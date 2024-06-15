@@ -20,6 +20,8 @@ export const BUTTONS = {
 		R3: 'R3',
 		A1: 'A1',
 		A2: 'A2',
+		A3: 'A3',
+		A4: 'A4',
 		Fn: 'Function',
 	},
 	arcade: {
@@ -43,6 +45,8 @@ export const BUTTONS = {
 		R3: 'R3',
 		A1: 'Home',
 		A2: '-',
+		A3: '-',
+		A4: '-',
 		Fn: 'Function',
 	},
 	xinput: {
@@ -66,6 +70,8 @@ export const BUTTONS = {
 		R3: 'RS',
 		A1: 'Guide',
 		A2: '-',
+		A3: '-',
+		A4: '-',
 		Fn: 'Function',
 	},
 	switch: {
@@ -89,6 +95,8 @@ export const BUTTONS = {
 		R3: 'RS',
 		A1: 'Home',
 		A2: 'Capture',
+		A3: '-',
+		A4: '-',
 		Fn: 'Function',
 	},
 	ps3: {
@@ -112,6 +120,8 @@ export const BUTTONS = {
 		R3: 'R3',
 		A1: 'PS',
 		A2: '-',
+		A3: '-',
+		A4: '-',
 		Fn: 'Function',
 	},
 	ps4: {
@@ -134,7 +144,9 @@ export const BUTTONS = {
 		L3: 'L3',
 		R3: 'R3',
 		A1: 'PS',
-		A2: 'Touchpad',
+		A2: 'Touchpad Center',
+		A3: 'Touchpad Left',
+		A4: 'Touchpad Right',
 		Fn: 'Function',
 	},
 	dinput: {
@@ -158,6 +170,8 @@ export const BUTTONS = {
 		R3: '12',
 		A1: '13',
 		A2: '14',
+		A3: '15',
+		A4: '16',
 		Fn: 'Function',
 	},
 };
@@ -404,6 +418,8 @@ export const BUTTON_MASKS = [
 	{ label: 'R3', value: 1 << 11 },
 	{ label: 'A1', value: 1 << 12 },
 	{ label: 'A2', value: 1 << 13 },
+	{ label: 'A3', value: 1 << 14 },
+	{ label: 'A4', value: 1 << 15 },
 ];
 
 export const BUTTON_MASKS_OPTIONS = [

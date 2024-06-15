@@ -226,6 +226,8 @@ enum GpioAction
     BUTTON_PRESS_MACRO_5         = 38;
     BUTTON_PRESS_MACRO_6         = 39;
     CUSTOM_BUTTON_COMBO          = 40;
+    BUTTON_PRESS_A3              = 41;
+    BUTTON_PRESS_A4              = 42;
 }
 
 enum GpioDirection
@@ -276,6 +278,8 @@ enum GamepadHotkey
     HOTKEY_A1_BUTTON             = 33;
     HOTKEY_A2_BUTTON             = 34;
     HOTKEY_NEXT_PROFILE          = 35;
+    HOTKEY_A3_BUTTON             = 36;
+    HOTKEY_A4_BUTTON             = 37;
 }
 
 // This has to be kept in sync with LEDFormat in NeoPico.hpp

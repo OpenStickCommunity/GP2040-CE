@@ -93,6 +93,8 @@ void PS4Driver::process(Gamepad * gamepad, uint8_t * outBuffer) {
         default:                                     ps4Report.dpad = PS4_HAT_NOTHING;   break;
     }
 
+    bool anyA2A3A4 = gamepad->pressedA2() || gamepad->pressedA3() || gamepad->pressedA4();
+
     ps4Report.button_south    = gamepad->pressedB1();
     ps4Report.button_east     = gamepad->pressedB2();
     ps4Report.button_west     = gamepad->pressedB3();
@@ -101,12 +103,12 @@ void PS4Driver::process(Gamepad * gamepad, uint8_t * outBuffer) {
     ps4Report.button_r1       = gamepad->pressedR1();
     ps4Report.button_l2       = gamepad->pressedL2();
     ps4Report.button_r2       = gamepad->pressedR2();
-    ps4Report.button_select   = options.switchTpShareForDs4 ? gamepad->pressedA2() : gamepad->pressedS1();
+    ps4Report.button_select   = options.switchTpShareForDs4 ? anyA2A3A4 : gamepad->pressedS1();
     ps4Report.button_start    = gamepad->pressedS2();
     ps4Report.button_l3       = gamepad->pressedL3();
     ps4Report.button_r3       = gamepad->pressedR3();
     ps4Report.button_home     = gamepad->pressedA1();
-    ps4Report.button_touchpad = options.switchTpShareForDs4 ? gamepad->pressedS1() : gamepad->pressedA2();
+    ps4Report.button_touchpad = options.switchTpShareForDs4 ? gamepad->pressedS1() : anyA2A3A4;
 
     ps4Report.left_stick_x = static_cast<uint8_t>(gamepad->state.lx >> 8);
     ps4Report.left_stick_y = static_cast<uint8_t>(gamepad->state.ly >> 8);
@@ -126,17 +128,9 @@ void PS4Driver::process(Gamepad * gamepad, uint8_t * outBuffer) {
     touchpadData.p1.unpressed = ps4Report.button_touchpad ? 0 : 1;
     ps4Report.touchpad_active = ps4Report.button_touchpad ? 0x01 : 0x00;
     if (ps4Report.button_touchpad) {
-        if (gamepad->state.dpad & GAMEPAD_MASK_UP) {
-            touchpadData.p1.set_y(PS4_TP_Y_MIN);
-        } else if (gamepad->state.dpad & GAMEPAD_MASK_DOWN) {
-            touchpadData.p1.set_y(PS4_TP_Y_MAX);
-        } else {
-            touchpadData.p1.set_y(PS4_TP_Y_MAX / 2);
-        }
-
-        if (gamepad->state.dpad & GAMEPAD_MASK_LEFT) {
+        if (gamepad->pressedA3()) {
             touchpadData.p1.set_x(PS4_TP_X_MIN);
-        } else if (gamepad->state.dpad & GAMEPAD_MASK_RIGHT) {
+        } else if (gamepad->pressedA4()) {
             touchpadData.p1.set_x(PS4_TP_X_MAX);
         } else {
             touchpadData.p1.set_x(PS4_TP_X_MAX / 2);
