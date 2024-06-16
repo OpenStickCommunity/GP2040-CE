@@ -509,14 +509,12 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
 
 std::string getSplashImage()
 {
-    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN * 10); // TODO: Figoure out correct length
-
-    JsonArray splashImageArray = doc.createNestedArray("splashImage");
     const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
+    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN + displayOptions.splashImage.size);
+    JsonArray splashImageArray = doc.createNestedArray("splashImage");
     std::vector<char> temp(sizeof(displayOptions.splashImage.bytes), '\0');
     memcpy(temp.data(), displayOptions.splashImage.bytes, displayOptions.splashImage.size);
     copyArray(reinterpret_cast<const uint8_t*>(temp.data()), temp.size(), splashImageArray);
-
     return serialize_json(doc);
 }
 
