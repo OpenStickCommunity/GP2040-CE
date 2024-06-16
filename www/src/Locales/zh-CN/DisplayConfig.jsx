@@ -11,16 +11,16 @@ export default {
     },
 	table: {
 		header: 
-            '请使用这些表格来确定基于配置的 SDA 和 SCL 引脚选择哪个 I2C Block:',
+            '请使用这些表格来确定基于配置的 SDA 和 SCL 引脚选择哪个 I2C 模块:',
 		'sda-scl-pins-header': 'SDA/SCL 引脚',
-		'i2c-block-header': 'I2C Block',
+		'i2c-block-header': 'I2C 模块',
 	},
 	form: {
-		'i2c-block-label': 'I2C Block',
+		'i2c-block-label': 'I2C 模块',
 		'sda-pin-label': 'SDA 引脚',
 		'scl-pin-label': 'SCL 引脚',
-		'i2c-address-label': 'I2C Address',
-		'i2c-speed-label': 'I2C Speed',
+		'i2c-address-label': 'I2C 地址',
+		'i2c-speed-label': 'I2C 速度',
 		'flip-display-label': '翻转显示',
 		'invert-display-label': '反相显示',
 		'button-layout-label': '按键布局 (左)',

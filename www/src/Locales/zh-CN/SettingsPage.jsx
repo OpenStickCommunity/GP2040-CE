@@ -36,7 +36,7 @@ export default {
 		none: '无',
 		key: '上传的密钥文件',
 		usb: 'Host USB',
-		i2c: 'Attached I2C',
+		i2c: '集成的 I2C',
 	},
 	'd-pad-mode-label': '方向模式',
 	'd-pad-mode-options': {
