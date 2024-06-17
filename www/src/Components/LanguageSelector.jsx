@@ -7,12 +7,14 @@ import UsFlag from '../Icons/Flags/Us';
 import zhCNFlag from '../Icons/Flags/zhCN';
 import ptBRFlag from '../Icons/Flags/ptBR';
 import deDEFlag from '../Icons/Flags/De';
+import jaJPFlag from '../Icons/Flags/jaJP';
 
 const dropdownOptions = [
 	{ code: 'en', icon: UsFlag },
 	{ code: 'pt-BR', icon: ptBRFlag },
 	{ code: 'zh-CN', icon: zhCNFlag },
 	{ code: 'de-DE', icon: deDEFlag },
+	{ code: 'ja-JP', icon: jaJPFlag },
 ];
 
 const LanguageSelector = () => {
