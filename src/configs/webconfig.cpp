@@ -5,6 +5,7 @@
 #include "storagemanager.h"
 #include "configmanager.h"
 #include "layoutmanager.h"
+#include "peripheralmanager.h"
 #include "AnimationStorage.hpp"
 #include "system.h"
 #include "config_utils.h"
@@ -215,6 +216,8 @@ static int32_t cleanPin(int32_t pin) { return isValidPin(pin) ? pin : -1; }
 
 void WebConfig::setup() {
     rndis_init();
+
+    stdio_init_all();
 }
 
 void WebConfig::loop() {
@@ -1192,6 +1195,29 @@ std::string getPeripheralOptions()
     writeDoc(doc, "peripheral", "usb0", "dp",      peripheralOptions.blockUSB0.dp);
     writeDoc(doc, "peripheral", "usb0", "enable5v",peripheralOptions.blockUSB0.enable5v);
     writeDoc(doc, "peripheral", "usb0", "order",   peripheralOptions.blockUSB0.order);
+
+    return serialize_json(doc);
+}
+
+std::string getI2CPeripheralMap() {
+    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+
+    PeripheralOptions& peripheralOptions = Storage::getInstance().getPeripheralOptions();
+
+
+    if (peripheralOptions.blockI2C0.enabled && PeripheralManager::getInstance().isI2CEnabled(0)) {
+        std::map<uint8_t,bool> result = PeripheralManager::getInstance().getI2C(0)->scan();
+        for (std::map<uint8_t,bool>::iterator it = result.begin(); it != result.end(); ++it) {
+            writeDoc(doc, "i2c0", std::to_string(it->first), it->second);
+        }
+    }
+
+    if (peripheralOptions.blockI2C1.enabled && PeripheralManager::getInstance().isI2CEnabled(1)) {
+        std::map<uint8_t,bool> result = PeripheralManager::getInstance().getI2C(1)->scan();
+        for (std::map<uint8_t,bool>::iterator it = result.begin(); it != result.end(); ++it) {
+            writeDoc(doc, "i2c1", std::to_string(it->first), it->second);
+        }
+    }
 
     return serialize_json(doc);
 }
@@ -2180,6 +2206,7 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/setProfileOptions", setProfileOptions },
     { "/api/setPeripheralOptions", setPeripheralOptions },
     { "/api/getPeripheralOptions", getPeripheralOptions },
+    { "/api/getI2CPeripheralMap", getI2CPeripheralMap },
     { "/api/setExpansionPins", setExpansionPins },
     { "/api/getExpansionPins", getExpansionPins },
     { "/api/setKeyMappings", setKeyMappings },
