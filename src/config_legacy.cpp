@@ -32,7 +32,7 @@ namespace ConfigLegacy
     {
         INPUT_MODE_XINPUT,
         INPUT_MODE_SWITCH,
-        INPUT_MODE_HID,
+        INPUT_MODE_PS3,
         INPUT_MODE_KEYBOARD,
         INPUT_MODE_PS4,
         INPUT_MODE_CONFIG = 255,
@@ -483,7 +483,7 @@ static bool isValidInputMode(ConfigLegacy::InputMode inputMode)
     {
         case INPUT_MODE_XINPUT:
         case INPUT_MODE_SWITCH:
-        case INPUT_MODE_HID:
+        case INPUT_MODE_PS3:
         case INPUT_MODE_KEYBOARD:
         case INPUT_MODE_PS4:
             return true;
