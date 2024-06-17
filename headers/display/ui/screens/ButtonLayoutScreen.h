@@ -26,8 +26,8 @@
 #define CHAR_DL       "\x8A"
 #define CHAR_DR       "\x8B"
 
-#define CHAR_HOME_S   "\x8C"
-#define CHAR_CAP_S    "\x8D"
+#define CHAR_CAP_S    "\x8C"
+#define CHAR_HOME_S   "\x8D"
 
 #define CHAR_VIEW_X   "\x8E"
 #define CHAR_MENU_X   "\x8F"
@@ -140,7 +140,8 @@ class ButtonLayoutScreen : public GPScreen {
         void generateHeader();
 
         const std::map<uint16_t, uint16_t> displayModeLookup = {
-            {INPUT_MODE_HID, 0},
+            {INPUT_MODE_PS3, 0},
+            {INPUT_MODE_GENERIC, 0},
             {INPUT_MODE_SWITCH, 1},
             {INPUT_MODE_XINPUT, 2},
             {INPUT_MODE_XBONE, 2},

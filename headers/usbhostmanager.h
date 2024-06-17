@@ -12,9 +12,6 @@
 // USB Host manager decides on TinyUSB Host driver
 usbh_class_driver_t const* usbh_app_driver_get_cb(uint8_t *driver_count);
 
-// Missing TinyUSB call
-bool tuh_hid_get_report(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, void* report, uint16_t len);
-
 class USBHostManager {
 public:
 	USBHostManager(USBHostManager const&) = delete;

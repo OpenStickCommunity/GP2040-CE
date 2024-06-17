@@ -38,13 +38,9 @@ void GPShape::draw() {
         uint16_t width = this->_sizeX - baseX;
         uint16_t height = this->_sizeY - baseY;
 
-        getRenderer()->drawRectangle(baseX, baseY, sizeX+offsetX, sizeY, this->strokeColor, this->fillColor);
-    } else if (this->_shape == GP_SHAPE_DIAMOND) {
-        uint16_t size = (this->_sizeX) * scaleX + this->getViewport().left;
-        getRenderer()->drawLine(baseX - size, baseY, baseX, baseY - size, this->strokeColor, 0);
-        getRenderer()->drawLine(baseX, baseY - size, baseX + size, baseY, this->strokeColor, 0);
-        getRenderer()->drawLine(baseX + size, baseY, baseX, baseY + size, this->strokeColor, 0);
-        getRenderer()->drawLine(baseX, baseY + size, baseX - size, baseY, this->strokeColor, 0);
+        getRenderer()->drawRectangle(baseX, baseY, sizeX+offsetX, sizeY, this->strokeColor, this->fillColor, this->_angle);
+    } else if (this->_shape == GP_SHAPE_LINE) {
+        getRenderer()->drawLine(baseX, baseY, this->_sizeX, this->_sizeY, this->strokeColor, 0);
     } else if (this->_shape == GP_SHAPE_POLYGON) {
         uint16_t scaledSize = (uint16_t)((double)this->_sizeX * scaleX);
         uint16_t baseRadius = (uint16_t)scaledSize;

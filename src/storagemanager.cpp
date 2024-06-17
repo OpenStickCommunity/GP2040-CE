@@ -119,6 +119,11 @@ void Storage::setProfile(const uint32_t profileNum)
 	this->config.gamepadOptions.profileNumber = (profileNum < 1 || profileNum > 4) ? 1 : profileNum;
 }
 
+void Storage::nextProfile()
+{
+    this->config.gamepadOptions.profileNumber = (this->config.gamepadOptions.profileNumber % 4) + 1;
+}
+
 void Storage::setFunctionalPinMappings()
 {
 	GpioMappingInfo* alts = nullptr;
@@ -136,9 +141,9 @@ void Storage::setFunctionalPinMappings()
 				alts[pin].action != GpioAction::ASSIGNED_TO_ADDON &&
 				this->config.gpioMappings.pins[pin].action != GpioAction::RESERVED &&
 				this->config.gpioMappings.pins[pin].action != GpioAction::ASSIGNED_TO_ADDON) {
-			functionalPinMappings[pin] = alts[pin].action;
+			functionalPinMappings[pin] = alts[pin];
 		} else {
-			functionalPinMappings[pin] = this->config.gpioMappings.pins[pin].action;
+			functionalPinMappings[pin] = this->config.gpioMappings.pins[pin];
 		}
 	}
 }

@@ -11,7 +11,7 @@
 		"i18next-browser-languagedetector": "^7.0.2",
 		"javascript-color-gradient": "^2.4.4",
 		"jsencrypt": "^3.3.2",
-		"lodash": "^4.17.21",
+		"lodash-es": "^4.17.21",
 		"react": "^18.2.0",
 		"react-beautiful-dnd": "^13.1.1",
 		"react-bootstrap": "^2.7.4",
@@ -34,6 +34,7 @@
 		"start": "vite"
 	},
 	"devDependencies": {
+		"@types/lodash": "^4.17.1",
 		"@types/node": "^20.5.9",
 		"@typescript-eslint/eslint-plugin": "^6.13.2",
 		"@typescript-eslint/parser": "^6.13.2",

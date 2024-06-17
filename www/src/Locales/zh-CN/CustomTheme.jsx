@@ -5,9 +5,11 @@ export default {
 	'list-text':
 		'<1>单击按键选择正常和按下的颜色。</1> <1>单击背景取消选择颜色</1> <1>右击按键预览按下后的颜色</1>',
 	'led-layout-label': '预览布局',
+    'color-picker-location': '拾色器位置',
 	'has-custom-theme-label': '启用',
 	'modal-title': '确认清除主题',
-	'modal-body': '确定要清除当前的自定义主题吗',
+	'modal-body': 
+        '确定要清除当前的自定义主题吗？',
 	'modal-no': '否',
 	'modal-yes': '是',
 };

@@ -1,6 +1,3 @@
-// Hide from select options / Disable select if returned from board
-export const NON_SELECTABLE_BUTTON_ACTIONS = [-5, 0];
-
 // These could theoretically be created from enums.proto
 export const BUTTON_ACTIONS = {
 	NONE: -10,
@@ -45,7 +42,30 @@ export const BUTTON_ACTIONS = {
 	BUTTON_PRESS_MACRO_4: 37,
 	BUTTON_PRESS_MACRO_5: 38,
 	BUTTON_PRESS_MACRO_6: 39,
+	CUSTOM_BUTTON_COMBO: 40,
+	BUTTON_PRESS_A3: 41,
+	BUTTON_PRESS_A4: 42,
+	BUTTON_PRESS_E1: 43,
+	BUTTON_PRESS_E2: 44,
+	BUTTON_PRESS_E3: 45,
+	BUTTON_PRESS_E4: 46,
+	BUTTON_PRESS_E5: 47,
+	BUTTON_PRESS_E6: 48,
+	BUTTON_PRESS_E7: 49,
+	BUTTON_PRESS_E8: 50,
+	BUTTON_PRESS_E9: 51,
+	BUTTON_PRESS_E10: 52,
+	BUTTON_PRESS_E11: 53,
+	BUTTON_PRESS_E12: 54,
+} as const;
+
+export const PIN_DIRECTIONS = {
+	DIRECTION_INPUT: 0,
+	DIRECTION_OUTPUT: 1,
 } as const;
 
 type PinActionKeys = keyof typeof BUTTON_ACTIONS;
 export type PinActionValues = (typeof BUTTON_ACTIONS)[PinActionKeys];
+
+type PinDirectionKeys = keyof typeof PIN_DIRECTIONS;
+export type PinDirectionValues = (typeof PIN_DIRECTIONS)[PinDirectionKeys];

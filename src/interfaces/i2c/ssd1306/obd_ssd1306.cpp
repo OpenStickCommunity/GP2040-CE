@@ -58,7 +58,7 @@ void GPGFX_OBD_SSD1306::drawEllipse(uint16_t x, uint16_t y, uint32_t radiusX, ui
     obdPreciseEllipse(&obd, x, y, radiusX, radiusY, color, filled);
 }
 
-void GPGFX_OBD_SSD1306::drawRectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint32_t color, uint8_t filled) {
+void GPGFX_OBD_SSD1306::drawRectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint32_t color, uint8_t filled, double rotationAngle) {
     obdRectangle(&obd, x, y, width, height, color, filled);
 }
 

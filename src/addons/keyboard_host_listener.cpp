@@ -115,9 +115,19 @@ void KeyboardHostListener::process_kbd_report(uint8_t dev_addr, hid_keyboard_rep
   _keyboard_host_state.lt = 0;
   _keyboard_host_state.rt = 0;
 
-  for(uint8_t i=0; i<7; i++)
+  // make this 13 instead of 7 to include modifier bitfields from hid_keyboard_modifier_bm_t
+  for(uint8_t i=0; i<13; i++)
   {
-    uint8_t keycode = (i < 6) ? report->keycode[i] : getKeycodeFromModifier(report->modifier);
+    uint8_t keycode = 0;
+    if (i < 6) {
+        // process keycodes normally
+        keycode = report->keycode[i];
+    } else {
+        // keycode modifiers are bitfields, so the old getKeycodeFromModifier switch approach doesn't work
+        // keycode = getKeycodeFromModifier(report->modifier);
+        // new approach masks the modifier bit to determine which keys are pressed
+        keycode = getKeycodeFromModifier(report->modifier & (1 << (i - 6)));
+    }
     if ( keycode )
     {
       _keyboard_host_state.dpad |=

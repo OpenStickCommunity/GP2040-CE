@@ -14,7 +14,7 @@ export const tiltScheme = {
 	tilt1Pin: yup
 		.number()
 		.label('Tilt 1 Pin')
-		.validatePinWhenValue('TiltInputEnabled'),	
+		.validatePinWhenValue('TiltInputEnabled'),
 	factorTilt1LeftX: yup
 		.number()
 		.label('Tilt 1 Factor Left X')
@@ -375,7 +375,7 @@ const Tilt = ({ values, errors, handleChange, handleCheckbox }) => {
 					>
 						{TILT_SOCD_MODES.map((o, i) => (
 							<option key={`button-tiltSOCDMode-option-${i}`} value={o.value}>
-								{o.label}
+								{t(`AddonsConfig:tilt-socd-mode-${i}`)}
 							</option>
 						))}
 					</FormSelect>

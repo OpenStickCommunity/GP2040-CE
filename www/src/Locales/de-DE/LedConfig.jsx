@@ -31,5 +31,5 @@ export default {
 		'available-header-text': 'Verfügbare Tasten',
 		'assigned-header-text': 'Zugeordnete Tasten',
 	},
-	'turn-off-when-suspended': 'Ausschalten im Ruhezustand'
+	'turn-off-when-suspended': 'Ausschalten im Ruhezustand',
 };

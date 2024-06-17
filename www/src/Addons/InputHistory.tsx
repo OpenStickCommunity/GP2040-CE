@@ -37,10 +37,7 @@ const InputHistory = ({ values, errors, handleChange, handleCheckbox }) => {
 	const { t } = useTranslation();
 	return (
 		<Section title={t('AddonsConfig:input-history-header-text')}>
-			<div
-				id="InputHistoryOptions"
-				hidden={!values.InputHistoryAddonEnabled}
-			>
+			<div id="InputHistoryOptions" hidden={!values.InputHistoryAddonEnabled}>
 				<Row className="mb-3">
 					<FormControl
 						type="number"
