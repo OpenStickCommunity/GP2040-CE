@@ -85,3 +85,21 @@ void PeripheralI2C::clear() {
     // reset the bus
     test(0xFF);
 }
+
+std::map<uint8_t,bool> PeripheralI2C::scan() {
+    std::map<uint8_t,bool> result;
+
+    for (uint8_t addr = 0; addr < (1 << 7); ++addr) {
+        int8_t ret;
+        uint8_t rxdata;
+        ret = i2c_read_blocking(_I2C, addr, &rxdata, 1, false);
+
+        if (ret >= 0) {
+            result.insert({addr,(ret >= 0)});
+        }
+    }
+
+    printf("%d\n", result.size());
+
+    return result;
+}

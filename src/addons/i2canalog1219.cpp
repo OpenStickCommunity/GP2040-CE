@@ -22,7 +22,7 @@ void I2CAnalog1219Input::setup() {
     nextTimer = getMillis();
 
     // Init our ADS1219 library
-    ads = new ADS1219(i2c, options.i2cAddress);
+    ads = new ADS1219Device(i2c, options.i2cAddress);
     ads->begin();                               // setup I2C and chip start
     ads->setChannel(0);                         // Start on Channel 0
     ads->setConversionMode(CONTINUOUS);         // Read analog continuously

@@ -1,6 +1,7 @@
 #ifndef _PERIPHERAL_I2C_H_
 #define _PERIPHERAL_I2C_H_
 
+#include <map>
 #include <hardware/gpio.h>
 #include <hardware/i2c.h>
 #include <hardware/platform_defs.h>
@@ -57,6 +58,8 @@ public:
 
     uint8_t test(uint8_t address);
     void clear();
+
+    std::map<uint8_t,bool> scan();
 private:
     const uint32_t DEFAULT_SPEED = 400000;
 
