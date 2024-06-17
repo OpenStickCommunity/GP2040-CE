@@ -120,7 +120,7 @@ static const uint8_t hid_report_descriptor[] =
 	0x95, 0x01,        //   REPORT_COUNT (1)
 	0x75, 0x04,        //   REPORT_SIZE (4)
 	0x81, 0x01,        //   INPUT (Cnst,Ary,Abs)
-	/* // analogs */
+	// analogs
 	0x05, 0x01,        //   USAGE_PAGE (Generic Desktop)
 	0x26, 0xff, 0x00,  //   LOGICAL_MAXIMUM (255)
 	0x46, 0xff, 0x00,  //   PHYSICAL_MAXIMUM (255)
@@ -131,7 +131,7 @@ static const uint8_t hid_report_descriptor[] =
 	0x75, 0x08,        //   REPORT_SIZE (8)
 	0x95, 0x04,        //   REPORT_COUNT (4)
 	0x81, 0x02,        //   INPUT (Data,Var,Abs)
-	/* // done */
+	// done
 	0xc0               // END_COLLECTION
 };
 
