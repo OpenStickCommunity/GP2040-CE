@@ -12,6 +12,7 @@ export default {
 	'links-label': 'Links',
 	'macro-label': 'Macros Configuration',
 	'pin-mapping-label': 'Pin Mapping',
+	'multi-mapping-label': 'Multi Mapping',
 	'peripheral-mapping-label': 'Peripheral Mapping',
 	'profile-settings-label': 'Profile Settings',
 	'reboot-label': 'Reboot',

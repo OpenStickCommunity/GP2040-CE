@@ -169,6 +169,8 @@ message GpioMappingInfo
 {
     optional GpioAction action = 1;
     optional GpioDirection direction = 2;
+    optional uint32 customDpadMask = 3;
+    optional uint32 customButtonMask = 4;
 }
 
 message GpioMappings

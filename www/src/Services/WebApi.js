@@ -362,7 +362,7 @@ async function setCustomTheme(customThemeOptions) {
 		});
 }
 
-async function getButtonLayouts(setLoading) {
+async function getButtonLayouts() {
 	try {
 		const response = await Http.get(`${baseUrl}/api/getButtonLayouts`);
 
@@ -372,7 +372,7 @@ async function getButtonLayouts(setLoading) {
 	}
 }
 
-async function getButtonLayoutDefs(setLoading) {
+async function getButtonLayoutDefs() {
 	try {
 		const response = await Http.get(`${baseUrl}/api/getButtonLayoutDefs`);
 
@@ -673,7 +673,7 @@ function sanitizeRequest(request) {
 	return newRequest;
 }
 
-const WebApi = {
+export default {
 	resetSettings,
 	getDisplayOptions,
 	setDisplayOptions,
@@ -711,5 +711,3 @@ const WebApi = {
 	abortGetHeldPins,
 	reboot,
 };
-
-export default WebApi;

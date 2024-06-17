@@ -141,9 +141,9 @@ void Storage::setFunctionalPinMappings()
 				alts[pin].action != GpioAction::ASSIGNED_TO_ADDON &&
 				this->config.gpioMappings.pins[pin].action != GpioAction::RESERVED &&
 				this->config.gpioMappings.pins[pin].action != GpioAction::ASSIGNED_TO_ADDON) {
-			functionalPinMappings[pin] = alts[pin].action;
+			functionalPinMappings[pin] = alts[pin];
 		} else {
-			functionalPinMappings[pin] = this->config.gpioMappings.pins[pin].action;
+			functionalPinMappings[pin] = this->config.gpioMappings.pins[pin];
 		}
 	}
 }

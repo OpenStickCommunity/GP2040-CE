@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../Contexts/AppContext';
 import {
 	Badge,
@@ -19,7 +19,11 @@ import omit from 'lodash/omit';
 
 import Section from '../Components/Section';
 import WebApi from '../Services/WebApi';
-import { getButtonLabels, BUTTONS, BUTTON_MASKS } from '../Data/Buttons';
+import {
+	getButtonLabels,
+	BUTTONS,
+	BUTTON_MASKS_OPTIONS,
+} from '../Data/Buttons';
 
 const MACRO_TYPES = [
 	{ label: 'InputMacroAddon:input-macro-type.press', value: 1 },
@@ -181,7 +185,7 @@ const MacroInputComponent = (props) => {
 			</Col>
 			<Col sm={'auto'}>
 				<Row className="d-flex justify-content-center">
-					{BUTTON_MASKS.filter((mask) => buttonMask & mask.value).map(
+					{BUTTON_MASKS_OPTIONS.filter((mask) => buttonMask & mask.value).map(
 						(mask, i1) => (
 							<Col
 								key={`${key}.buttonMask[${i1}]`}
@@ -201,7 +205,7 @@ const MacroInputComponent = (props) => {
 									isInvalid={errors?.buttonMask}
 									translation={t}
 									buttonLabelType={buttonLabelType}
-									buttonMasks={BUTTON_MASKS}
+									buttonMasks={BUTTON_MASKS_OPTIONS}
 								/>
 							</Col>
 						),
@@ -218,7 +222,7 @@ const MacroInputComponent = (props) => {
 							isInvalid={errors?.buttonMask}
 							translation={t}
 							buttonLabelType={buttonLabelType}
-							buttonMasks={BUTTON_MASKS}
+							buttonMasks={BUTTON_MASKS_OPTIONS}
 						/>
 					</Col>
 				</Row>
@@ -433,7 +437,7 @@ const MacroComponent = (props) => {
 								}}
 								buttonLabelType={buttonLabelType}
 								translation={t}
-								buttonMasks={BUTTON_MASKS.filter(
+								buttonMasks={BUTTON_MASKS_OPTIONS.filter(
 									(b, i) =>
 										macroList.find(
 											(m, macroIdx) =>
@@ -621,7 +625,7 @@ export default function MacrosPage() {
 																			</td>
 																		) : (
 																			<td>{`${
-																				BUTTON_MASKS.find(
+																				BUTTON_MASKS_OPTIONS.find(
 																					(b) =>
 																						b.value == macro.macroTriggerButton,
 																				).label
