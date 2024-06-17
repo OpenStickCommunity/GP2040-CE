@@ -38,5 +38,9 @@ export default {
 		'inverted-label': '白黒反転',
 		'power-management-header': '電源管理',
 		'turn-off-when-suspended': 'サスペンド中OFFにする',
+		'flip-display-none': '無し',
+		'flip-display-flip': '180度回転',
+		'flip-display-mirror': '左右反転',
+		'flip-display-flip-mirror': '回転して左右反転',
 	},
 };

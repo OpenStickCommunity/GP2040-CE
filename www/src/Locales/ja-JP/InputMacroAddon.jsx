@@ -31,4 +31,6 @@ export default {
 		'hold-repeat': '長押しリピート',
 		toggle: '切り替え',
 	},
+	'macro-name': 'マクロ名',
+	'macro-activation-type': 'マクロ実行方式',
 };

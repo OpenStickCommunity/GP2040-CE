@@ -93,6 +93,7 @@ export default {
 		'load-profile-4': 'プロファイル #4をロード',
 		'next-profile': '次のプロファイルをロード',
 		'reboot-default': 'GP2040-CEを再起動',
+		'next-profile': '次のプロファイル',
 	},
 	'forced-setup-mode-label': '強制セットアップモード',
 	'forced-setup-mode-options': {
