@@ -31,4 +31,6 @@ export default {
 		'hold-repeat': 'Hold Repeat',
 		toggle: 'Toggle',
 	},
+	'macro-name': 'Macro Name',
+	'macro-activation-type': 'Macro Activation Type',
 };

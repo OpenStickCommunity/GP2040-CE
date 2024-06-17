@@ -4,6 +4,13 @@ export const DUAL_STICK_MODES = [
 	{ label: 'Right Analog', value: 2 },
 ];
 
+export const DUAL_COMBINE_MODES = [
+	{ label: 'Mixed', value: 0 },
+	{ label: 'Gamepad Override', value: 1 },
+	{ label: 'DDI Override', value: 2 },
+	{ label: 'None', value: 3 },
+];
+
 export const DPAD_MODES = [
 	{ label: 'Digital', value: 0 },
 	{ label: 'Left Analog', value: 1 },

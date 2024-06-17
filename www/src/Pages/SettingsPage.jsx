@@ -1011,19 +1011,19 @@ export default function SettingsPage() {
 										<Nav variant="pills" className="flex-column">
 											<Nav.Item>
 												<Nav.Link eventKey="inputmode">
-													Input Mode Settings
+												{t('SettingsPage:settings-header-text')}
 												</Nav.Link>
 											</Nav.Item>
 											<Nav.Item>
-												<Nav.Link eventKey="gamepad">Gamepad Settings</Nav.Link>
+												<Nav.Link eventKey="gamepad">{t('SettingsPage:gamepad-settings-header-text')}</Nav.Link>
 											</Nav.Item>
 											<Nav.Item>
 												<Nav.Link eventKey="bootmode">
-													Boot Input Modes
+												{t('SettingsPage:boot-input-mode-label')}
 												</Nav.Link>
 											</Nav.Item>
 											<Nav.Item>
-												<Nav.Link eventKey="hotkey">Hotkey Settings</Nav.Link>
+												<Nav.Link eventKey="hotkey">{t('SettingsPage:hotkey-settings-label')}</Nav.Link>
 											</Nav.Item>
 										</Nav>
 									</Col>

@@ -334,7 +334,7 @@ const MacroComponent = (props) => {
 				</Col>
 			</Row>
 			<Row className="my-2">
-				<Col sm={'auto'}>Macro Name:</Col>
+				<Col sm={'auto'}>{t('InputMacroAddon:macro-name')}:</Col>
 				<Col sm={'auto'}>
 					<Form.Control
 						size="sm"
@@ -351,7 +351,7 @@ const MacroComponent = (props) => {
 			</Row>
 			<Row className="my-2">
 				<Col sm={'auto'} mb={2}>
-					Macro Activation Type:
+					{t('InputMacroAddon:macro-activation-type')}:
 				</Col>
 				<Col sm={'auto'}>
 					<Form.Select
