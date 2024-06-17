@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "i2cdevicebase.h"
-#include "ads1219.h"
+#include "ADS1219.h"
 
 class ADS1219Device : public ADS1219, public I2CDeviceBase {
     public:
