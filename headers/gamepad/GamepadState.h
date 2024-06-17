@@ -56,6 +56,8 @@ using namespace std;
 #define GAMEPAD_MASK_R3    (1U << 11)
 #define GAMEPAD_MASK_A1    (1U << 12)
 #define GAMEPAD_MASK_A2    (1U << 13)
+#define GAMEPAD_MASK_A3    (1U << 14)
+#define GAMEPAD_MASK_A4    (1U << 15)
 
 // For detecting dpad as buttons
 

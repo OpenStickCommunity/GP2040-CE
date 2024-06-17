@@ -93,6 +93,8 @@ export default {
 		's2-button': 'S2 Button',
 		'a1-button': 'A1 Button',
 		'a2-button': 'A2 Button',
+		'a3-button': 'A3 Button',
+		'a4-button': 'A4 Button',
 		'touchpad-button': 'Touchpad Button',
 		'load-profile-1': 'Load Profile #1',
 		'load-profile-2': 'Load Profile #2',

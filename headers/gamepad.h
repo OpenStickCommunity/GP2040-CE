@@ -115,6 +115,8 @@ public:
 	inline bool __attribute__((always_inline)) pressedR3()    { return pressedButton(GAMEPAD_MASK_R3); }
 	inline bool __attribute__((always_inline)) pressedA1()    { return pressedButton(GAMEPAD_MASK_A1); }
 	inline bool __attribute__((always_inline)) pressedA2()    { return pressedButton(GAMEPAD_MASK_A2); }
+	inline bool __attribute__((always_inline)) pressedA3()    { return pressedButton(GAMEPAD_MASK_A3); }
+	inline bool __attribute__((always_inline)) pressedA4()    { return pressedButton(GAMEPAD_MASK_A4); }
 
 	const GamepadOptions& getOptions() const { return options; }
 
@@ -143,6 +145,8 @@ public:
 	GamepadButtonMapping *mapButtonR3;
 	GamepadButtonMapping *mapButtonA1;
 	GamepadButtonMapping *mapButtonA2;
+	GamepadButtonMapping *mapButtonA3;
+	GamepadButtonMapping *mapButtonA4;
 	GamepadButtonMapping *mapButtonFn;
 
 	// gamepad specific proxy of debounced buttons --- 1 = active (inverse of the raw GPIO)

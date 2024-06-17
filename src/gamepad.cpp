@@ -53,6 +53,8 @@ void Gamepad::setup()
 	mapButtonR3  = new GamepadButtonMapping(GAMEPAD_MASK_R3);
 	mapButtonA1  = new GamepadButtonMapping(GAMEPAD_MASK_A1);
 	mapButtonA2  = new GamepadButtonMapping(GAMEPAD_MASK_A2);
+	mapButtonA3  = new GamepadButtonMapping(GAMEPAD_MASK_A3);
+	mapButtonA4  = new GamepadButtonMapping(GAMEPAD_MASK_A4);
 	mapButtonFn  = new GamepadButtonMapping(AUX_MASK_FUNCTION);
 
 	const auto assignCustomMappingToMaps = [&](GpioMappingInfo mapInfo, Pin_t pin) -> void {
@@ -97,6 +99,8 @@ void Gamepad::setup()
 			case GpioAction::BUTTON_PRESS_R3:	mapButtonR3->pinMask |= 1 << pin; break;
 			case GpioAction::BUTTON_PRESS_A1:	mapButtonA1->pinMask |= 1 << pin; break;
 			case GpioAction::BUTTON_PRESS_A2:	mapButtonA2->pinMask |= 1 << pin; break;
+			case GpioAction::BUTTON_PRESS_A3:	mapButtonA3->pinMask |= 1 << pin; break;
+			case GpioAction::BUTTON_PRESS_A4:	mapButtonA4->pinMask |= 1 << pin; break;
 			case GpioAction::BUTTON_PRESS_FN:	mapButtonFn->pinMask |= 1 << pin; break;
 			case GpioAction::CUSTOM_BUTTON_COMBO:	assignCustomMappingToMaps(pinMappings[pin], pin); break;
 			default:				break;
@@ -128,6 +132,8 @@ void Gamepad::reinit()
 	delete mapButtonR3;
 	delete mapButtonA1;
 	delete mapButtonA2;
+	delete mapButtonA3;
+	delete mapButtonA4;
 	delete mapButtonFn;
 
 	// reinitialize pin mappings
@@ -242,6 +248,8 @@ void Gamepad::read()
 		| ((values & mapButtonR3->pinMask)  ? mapButtonR3->buttonMask  : 0)
 		| ((values & mapButtonA1->pinMask)  ? mapButtonA1->buttonMask  : 0)
 		| ((values & mapButtonA2->pinMask)  ? mapButtonA2->buttonMask  : 0)
+		| ((values & mapButtonA3->pinMask)  ? mapButtonA3->buttonMask  : 0)
+		| ((values & mapButtonA4->pinMask)  ? mapButtonA4->buttonMask  : 0)
 	;
 
 	state.lx = joystickMid;
@@ -366,6 +374,12 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 			break;
 		case HOTKEY_A2_BUTTON:
 			state.buttons |= GAMEPAD_MASK_A2;
+			break;
+		case HOTKEY_A3_BUTTON:
+			state.buttons |= GAMEPAD_MASK_A3;
+			break;
+		case HOTKEY_A4_BUTTON:
+			state.buttons |= GAMEPAD_MASK_A4;
 			break;
 		case HOTKEY_SOCD_UP_PRIORITY:
 			if (action != lastAction) {
