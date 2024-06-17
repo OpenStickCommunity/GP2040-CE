@@ -16,8 +16,6 @@
 extern uint32_t getMillis();
 extern uint64_t getMicro();
 
-#define GAMEPAD_FEATURE_REPORT_SIZE 32
-
 struct GamepadButtonMapping
 {
 	GamepadButtonMapping(Mask_t bm) :
@@ -26,10 +24,8 @@ struct GamepadButtonMapping
 	{}
 
 	uint32_t pinMask;
-	const uint16_t buttonMask;
+	const uint32_t buttonMask;
 };
-
-#define GAMEPAD_DIGITAL_INPUT_COUNT 18 // Total number of buttons, including D-pad
 
 class Gamepad {
 public:
@@ -62,7 +58,7 @@ public:
 	/**
 	 * @brief Check for a button press. Used by `pressed[Button]` helper methods.
 	 */
-	inline bool __attribute__((always_inline)) pressedButton(const uint16_t mask) {
+	inline bool __attribute__((always_inline)) pressedButton(const uint32_t mask) {
 		return (state.buttons & mask) == mask;
 	}
 
@@ -117,6 +113,18 @@ public:
 	inline bool __attribute__((always_inline)) pressedA2()    { return pressedButton(GAMEPAD_MASK_A2); }
 	inline bool __attribute__((always_inline)) pressedA3()    { return pressedButton(GAMEPAD_MASK_A3); }
 	inline bool __attribute__((always_inline)) pressedA4()    { return pressedButton(GAMEPAD_MASK_A4); }
+	inline bool __attribute__((always_inline)) pressedE1()    { return pressedButton(GAMEPAD_MASK_E1); }
+	inline bool __attribute__((always_inline)) pressedE2()    { return pressedButton(GAMEPAD_MASK_E2); }
+	inline bool __attribute__((always_inline)) pressedE3()    { return pressedButton(GAMEPAD_MASK_E3); }
+	inline bool __attribute__((always_inline)) pressedE4()    { return pressedButton(GAMEPAD_MASK_E4); }
+	inline bool __attribute__((always_inline)) pressedE5()    { return pressedButton(GAMEPAD_MASK_E5); }
+	inline bool __attribute__((always_inline)) pressedE6()    { return pressedButton(GAMEPAD_MASK_E6); }
+	inline bool __attribute__((always_inline)) pressedE7()    { return pressedButton(GAMEPAD_MASK_E7); }
+	inline bool __attribute__((always_inline)) pressedE8()    { return pressedButton(GAMEPAD_MASK_E8); }
+	inline bool __attribute__((always_inline)) pressedE9()    { return pressedButton(GAMEPAD_MASK_E9); }
+	inline bool __attribute__((always_inline)) pressedE10()   { return pressedButton(GAMEPAD_MASK_E10); }
+	inline bool __attribute__((always_inline)) pressedE11()   { return pressedButton(GAMEPAD_MASK_E11); }
+	inline bool __attribute__((always_inline)) pressedE12()   { return pressedButton(GAMEPAD_MASK_E12); }
 
 	const GamepadOptions& getOptions() const { return options; }
 
@@ -147,6 +155,18 @@ public:
 	GamepadButtonMapping *mapButtonA2;
 	GamepadButtonMapping *mapButtonA3;
 	GamepadButtonMapping *mapButtonA4;
+	GamepadButtonMapping *mapButtonE1;
+	GamepadButtonMapping *mapButtonE2;
+	GamepadButtonMapping *mapButtonE3;
+	GamepadButtonMapping *mapButtonE4;
+	GamepadButtonMapping *mapButtonE5;
+	GamepadButtonMapping *mapButtonE6;
+	GamepadButtonMapping *mapButtonE7;
+	GamepadButtonMapping *mapButtonE8;
+	GamepadButtonMapping *mapButtonE9;
+	GamepadButtonMapping *mapButtonE10;
+	GamepadButtonMapping *mapButtonE11;
+	GamepadButtonMapping *mapButtonE12;
 	GamepadButtonMapping *mapButtonFn;
 
 	// gamepad specific proxy of debounced buttons --- 1 = active (inverse of the raw GPIO)
@@ -158,7 +178,8 @@ public:
 	// These are special to SOCD
 	inline static const SOCDMode resolveSOCDMode(const GamepadOptions& options) {
 		return (options.socdMode == SOCD_MODE_BYPASS &&
-				(options.inputMode == INPUT_MODE_HID ||
+				(options.inputMode == INPUT_MODE_PS3 ||
+				 options.inputMode == INPUT_MODE_GENERIC ||
 				options.inputMode == INPUT_MODE_SWITCH ||
 				options.inputMode == INPUT_MODE_NEOGEO ||
 				options.inputMode == INPUT_MODE_PS4)) ?

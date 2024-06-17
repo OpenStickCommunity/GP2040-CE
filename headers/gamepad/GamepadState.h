@@ -12,8 +12,6 @@ using namespace std;
 #include "enums.pb.h"
 
 
-#define GAMEPAD_BUTTON_COUNT 14
-
 /*
 	Gamepad button mapping table:
 
@@ -66,12 +64,21 @@ using namespace std;
 #define GAMEPAD_MASK_DL    (1UL << 18)
 #define GAMEPAD_MASK_DR    (1UL << 19)
 
-// For detecting analog sticks as buttons
+// extra buttons (no particular host expectation for these, unlike 0..13 above
+// which have predetermined functions for consoles or whatever)
 
-#define GAMEPAD_MASK_LX    (1UL << 20)
-#define GAMEPAD_MASK_LY    (1UL << 21)
-#define GAMEPAD_MASK_RX    (1UL << 22)
-#define GAMEPAD_MASK_RY    (1UL << 23)
+#define GAMEPAD_MASK_E1    (1UL << 20)
+#define GAMEPAD_MASK_E2    (1UL << 21)
+#define GAMEPAD_MASK_E3    (1UL << 22)
+#define GAMEPAD_MASK_E4    (1UL << 23)
+#define GAMEPAD_MASK_E5    (1UL << 24)
+#define GAMEPAD_MASK_E6    (1UL << 25)
+#define GAMEPAD_MASK_E7    (1UL << 26)
+#define GAMEPAD_MASK_E8    (1UL << 27)
+#define GAMEPAD_MASK_E9    (1UL << 28)
+#define GAMEPAD_MASK_E10   (1UL << 29)
+#define GAMEPAD_MASK_E11   (1UL << 30)
+#define GAMEPAD_MASK_E12   (1UL << 31)
 
 #define GAMEPAD_MASK_DPAD (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT)
 
@@ -96,7 +103,7 @@ const uint8_t dpadMasks[] =
 	GAMEPAD_MASK_RIGHT,
 };
 
-const uint16_t buttonMasks[] =
+const uint32_t buttonMasks[] =
 {
 	GAMEPAD_MASK_B1,
 	GAMEPAD_MASK_B2,
@@ -112,12 +119,24 @@ const uint16_t buttonMasks[] =
 	GAMEPAD_MASK_R3,
 	GAMEPAD_MASK_A1,
 	GAMEPAD_MASK_A2,
+	GAMEPAD_MASK_E1,
+	GAMEPAD_MASK_E2,
+	GAMEPAD_MASK_E3,
+	GAMEPAD_MASK_E4,
+	GAMEPAD_MASK_E5,
+	GAMEPAD_MASK_E6,
+	GAMEPAD_MASK_E7,
+	GAMEPAD_MASK_E8,
+	GAMEPAD_MASK_E9,
+	GAMEPAD_MASK_E10,
+	GAMEPAD_MASK_E11,
+	GAMEPAD_MASK_E12,
 };
 
 struct GamepadState
 {
 	uint8_t dpad {0};
-	uint16_t buttons {0};
+	uint32_t buttons {0};
 	uint16_t aux {0};
 	uint16_t lx {GAMEPAD_JOYSTICK_MID};
 	uint16_t ly {GAMEPAD_JOYSTICK_MID};
