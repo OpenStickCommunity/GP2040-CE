@@ -216,8 +216,6 @@ static int32_t cleanPin(int32_t pin) { return isValidPin(pin) ? pin : -1; }
 
 void WebConfig::setup() {
     rndis_init();
-
-    stdio_init_all();
 }
 
 void WebConfig::loop() {

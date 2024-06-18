@@ -266,6 +266,7 @@ headers/interfaces/i2c
 headers/interfaces/i2c/ads1219
 headers/interfaces/i2c/pcf8575
 headers/interfaces/i2c/ssd1306
+headers/interfaces/i2c/wiiextension
 headers/gamepad
 headers/display
 headers/display/fonts
