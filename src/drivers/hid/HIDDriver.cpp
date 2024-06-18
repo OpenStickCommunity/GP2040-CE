@@ -72,7 +72,8 @@ void HIDDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 		| (gamepad->pressedR3()    ? GAMEPAD_MASK_R3     : 0)
 		| (gamepad->pressedA1()    ? GAMEPAD_MASK_A1     : 0)
 		| (gamepad->pressedA2()    ? GAMEPAD_MASK_A2     : 0)
-		// buttons 15 and 16 are reserved for future expansion
+		| (gamepad->pressedA3()    ? GAMEPAD_MASK_A3     : 0)
+		| (gamepad->pressedA4()    ? GAMEPAD_MASK_A4     : 0)
 		| (gamepad->pressedUp()    ? GAMEPAD_MASK_DU     : 0)
 		| (gamepad->pressedDown()  ? GAMEPAD_MASK_DD     : 0)
 		| (gamepad->pressedLeft()  ? GAMEPAD_MASK_DL     : 0)
