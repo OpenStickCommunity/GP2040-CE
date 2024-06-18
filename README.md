@@ -21,7 +21,7 @@
 </p>
 
 <p>
-  GP2040-CE is compatible with PC, PS3 and PS4, Nintendo Switch, Steam Deck, MiSTer and Android.
+  GP2040-CE is compatible with PC, PS3, PS4, PS5, Nintendo Switch, Xbox One, Steam Deck, MiSTer and Android.
 </p>
 
 ## Links
@@ -33,7 +33,7 @@ Full documentation can be found at [https://gp2040-ce.info](https://gp2040-ce.in
 ## Features
 
 - Select from 13 input modes including X-Input, Nintendo Switch, Playstation 4/5, Xbox One, D-Input, and Keyboard
-- Overclocked polling rate for an average of 0.76ms of input latency in Xinput and on average 1.72 for Playstation 4/5.
+- Input latency average of 0.76ms in Xinput and 0.91ms for Playstation 5.
 - Multiple SOCD cleaning modes - Up Priority (a.k.a. Stickless), Neutral, and Second Input Priority.
 - Left and Right stick emulation via D-pad inputs as well as dedicated toggle switches.
 - Dual direction via D-pad + LS/RS.
