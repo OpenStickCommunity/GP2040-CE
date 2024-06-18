@@ -17,6 +17,7 @@ void PS4AuthUSBListener::setup() {
     ps4_auth_buffer = nullptr;
     ps_dev_addr = 0xFF;
     ps_instance = 0xFF;
+    ps_mounted = false;
 }
 
 void PS4AuthUSBListener::process(PS4State pState, uint8_t pNonceId, uint8_t * pNonceBuffer) {
@@ -94,6 +95,10 @@ bool PS4AuthUSBListener::host_set_report(uint8_t report_id, void* report, uint16
 }
 
 void PS4AuthUSBListener::mount(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len) {
+    // Prevent Magic-X double mount
+    if ( ps_mounted == true )
+        return;
+
     // Only a PS4 interface has vendor IDs F0, F1, F2, and F3
     tuh_hid_report_info_t report_info[4];
     uint8_t report_count = tuh_hid_parse_report_descriptor(report_info, 4, desc_report, desc_len);
@@ -110,6 +115,7 @@ void PS4AuthUSBListener::mount(uint8_t dev_addr, uint8_t instance, uint8_t const
 
     ps_dev_addr = dev_addr;
     ps_instance = instance;
+    ps_mounted = true;
 
     // Reset as soon as its connected
     memset(report_buffer, 0, sizeof(report_buffer));
@@ -118,7 +124,7 @@ void PS4AuthUSBListener::mount(uint8_t dev_addr, uint8_t instance, uint8_t const
 }
 
 void PS4AuthUSBListener::unmount(uint8_t dev_addr) {
-    if ( dev_addr != ps_dev_addr )
+    if ( ps_mounted == false || dev_addr != ps_dev_addr )
         return;
     
     nonce_page = 0; // no nonce yet
@@ -126,10 +132,13 @@ void PS4AuthUSBListener::unmount(uint8_t dev_addr) {
     awaiting_cb = false; // did we receive the sign state yet
     passthrough_state = PS4State::no_nonce;
     ps4_auth_host_ready = false;
+    ps_dev_addr = 0xFF;
+    ps_instance = 0xFF;
+    ps_mounted = false;
 }
 
 void PS4AuthUSBListener::set_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
-    if ( dev_addr != ps_dev_addr || instance != ps_instance )
+    if ( ps_mounted == false || dev_addr != ps_dev_addr || instance != ps_instance )
         return;
 
     switch(report_id) {
@@ -146,7 +155,7 @@ void PS4AuthUSBListener::set_report_complete(uint8_t dev_addr, uint8_t instance,
 }
 
 void PS4AuthUSBListener::get_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
-    if ( dev_addr != ps_dev_addr || instance != ps_instance )
+    if ( ps_mounted == false || dev_addr != ps_dev_addr || instance != ps_instance )
         return;
     
     switch(report_id) {
