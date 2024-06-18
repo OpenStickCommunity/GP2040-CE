@@ -31,6 +31,7 @@ type PinSectionType = {
 	pins: { [key: string]: MaskPayload };
 	saveHandler: () => Promise<object>;
 	setHandler: SetPinType;
+	copyHandler?: () => void;
 };
 
 const disabledOptions = [
@@ -107,6 +108,7 @@ const PinSection = ({
 	pins,
 	saveHandler,
 	setHandler,
+	copyHandler,
 }: PinSectionType) => {
 	const { buttonLabels, updateUsedPins } = useContext(AppContext);
 	const { t } = useTranslation('');
@@ -229,27 +231,34 @@ const PinSection = ({
 							</div>
 						))}
 					</div>
-					<CaptureButton
-						labels={Object.values(buttonNames)}
-						onChange={(label, pin) =>
-							setHandler(
-								// Convert getHeldPins format to setPinMappings format
-								pin < 10 ? `pin0${pin}` : `pin${pin}`,
-								{
-									// Maps current mode buttons to actions
-									action:
-										BUTTON_ACTIONS[
-											`BUTTON_PRESS_${invert(buttonNames)[label].toUpperCase()}`
-										],
-									customButtonMask: 0,
-									customDpadMask: 0,
-								},
-							)
-						}
-					/>
-					<Button type="submit" className="m-4">
-						{t('Common:button-save-label')}
-					</Button>
+					<div className="d-flex gap-3 my-3">
+						<CaptureButton
+							labels={Object.values(buttonNames)}
+							onChange={(label, pin) =>
+								setHandler(
+									// Convert getHeldPins format to setPinMappings format
+									pin < 10 ? `pin0${pin}` : `pin${pin}`,
+									{
+										// Maps current mode buttons to actions
+										action:
+											BUTTON_ACTIONS[
+												`BUTTON_PRESS_${invert(buttonNames)[
+													label
+												].toUpperCase()}`
+											],
+										customButtonMask: 0,
+										customDpadMask: 0,
+									},
+								)
+							}
+						/>
+						{copyHandler && (
+							<Button onClick={() => copyHandler()}>
+								{t(`PinMapping:profile-copy-base`)}
+							</Button>
+						)}
+						<Button type="submit">{t('Common:button-save-label')}</Button>
+					</div>
 					{saveMessage && <Alert variant="info">{saveMessage}</Alert>}
 				</Form>
 			</Section>
@@ -259,7 +268,7 @@ const PinSection = ({
 
 export default function PinMapping() {
 	const { fetchPins, pins, setPin, savePins } = usePinStore();
-	const { fetchProfiles, profiles, setProfilePin, saveProfiles } =
+	const { fetchProfiles, profiles, setProfile, setProfilePin, saveProfiles } =
 		useProfilesStore();
 	const [pressedPin, setPressedPin] = useState<number | null>(null);
 	const { t } = useTranslation('');
@@ -325,6 +334,9 @@ export default function PinMapping() {
 									setHandler={(pin, maskPayload) =>
 										setProfilePin(profileIndex, pin, maskPayload)
 									}
+									copyHandler={() => {
+										setProfile(profileIndex, pins);
+									}}
 								/>
 							</Tab.Pane>
 						))}
