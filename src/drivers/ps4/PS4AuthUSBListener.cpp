@@ -92,6 +92,14 @@ bool PS4AuthUSBListener::host_set_report(uint8_t report_id, void* report, uint16
 }
 
 void PS4AuthUSBListener::mount(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len) {
+    // how do we verify this is a PS4 device?
+    // Interface protocol (hid_interface_protocol_enum_t)
+    uint8_t const itf_protocol = tuh_hid_interface_protocol(dev_addr, instance);
+
+    // tuh_hid_report_received_cb() will be invoked when report is available
+    if (itf_protocol != HID_ITF_PROTOCOL_NONE)
+        return;
+
     ps_dev_addr = dev_addr;
     ps_instance = instance;
 
