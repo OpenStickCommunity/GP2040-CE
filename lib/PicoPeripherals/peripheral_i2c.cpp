@@ -10,8 +10,8 @@ PeripheralI2C::PeripheralI2C() {
 #endif
 }
 
-void PeripheralI2C::setConfig(uint8_t block, uint8_t sda, uint8_t scl, uint32_t speed) {
-    if (block < NUM_I2CS) {
+void PeripheralI2C::setConfig(uint8_t block, int8_t sda, int8_t scl, uint32_t speed) {
+    if ((block < NUM_I2CS) && (sda > -1) && (scl > -1)) {
         _I2C = _hardwareBlocks[block];
         _SDA = sda;
         _SCL = scl;
