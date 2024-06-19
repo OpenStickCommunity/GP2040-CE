@@ -28,12 +28,19 @@ uint32_t System::getUsedFlash() {
     return &__flash_binary_end - &__flash_binary_start;
 }
 
-#define STORAGE_CMD_TOTAL_BYTES 8
+#define STORAGE_CMD_TOTAL_BYTES 3
+
+// Standard Storage instruction: 9f command prefix, Manufacturer ID, Flash Type, Capacity
+#define FLASH_STORAGE_CMD 0x9f
+#define FLASH_STORAGE_DATA_BYTES 3
+#define FLASH_STORAGE_TOTAL_BYTES (1 + FLASH_STORAGE_DATA_BYTES)
 
 uint32_t System::getPhysicalFlash() {
-    uint8_t txbuf[STORAGE_CMD_TOTAL_BYTES] = {0x9f};
-    uint8_t rxbuf[STORAGE_CMD_TOTAL_BYTES] = {0};
-    flash_do_cmd(txbuf, rxbuf, STORAGE_CMD_TOTAL_BYTES);
+
+    uint8_t txbuf[FLASH_STORAGE_TOTAL_BYTES] = {0};
+    uint8_t rxbuf[FLASH_STORAGE_TOTAL_BYTES] = {0};
+    txbuf[0] = FLASH_STORAGE_CMD;
+    flash_do_cmd(txbuf, rxbuf, FLASH_STORAGE_TOTAL_BYTES);
     return 1 << rxbuf[3];
 }
 
