@@ -30,6 +30,7 @@ private:
     bool awaiting_cb;
     bool ps4_auth_host_ready;
     uint8_t * ps4_auth_buffer;
+    bool ps_mounted;
 };
 
 #endif // _PS4AUTHUSBLISTENER_H_
