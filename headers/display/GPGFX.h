@@ -12,6 +12,8 @@ class GPGFX {
 
         void init(GPGFX_DisplayTypeOptions options);
 
+        GPGFX_DisplayTypeOptions getAvailableDisplay();
+
         GPGFX_DisplayBase* getDriver() { return displayDriver; }
 
         // drawing methods
