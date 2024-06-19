@@ -29,6 +29,8 @@ static uint32_t lastReportQueue = 0;
 
 void XBOneAuthUSBListener::setup() {
     xboxOneAuthData = nullptr;
+    xbone_dev_addr = 0;
+    xbone_instance = 0;
 }
 
 void XBOneAuthUSBListener::setAuthData(XboxOneAuthData * authData ) {
@@ -88,7 +90,7 @@ void XBOneAuthUSBListener::unmount(uint8_t dev_addr) {
 }
 
 void XBOneAuthUSBListener::report_received(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len) {
-    if ( mounted == false || xboxOneAuthData == nullptr || dev_addr != xbone_dev_addr) {
+    if ( mounted == false || xboxOneAuthData == nullptr || dev_addr != xbone_dev_addr || instance != xbone_instance ) {
         return;
     }
 
