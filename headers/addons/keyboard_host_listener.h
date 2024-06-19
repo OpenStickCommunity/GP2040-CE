@@ -58,6 +58,9 @@ private:
 	KeyboardButtonMapping _keyboard_host_mapButtonR3;
 	KeyboardButtonMapping _keyboard_host_mapButtonA1;
 	KeyboardButtonMapping _keyboard_host_mapButtonA2;
+
+    uint8_t _keyboard_dev_addr;
+    uint8_t _keyboard_instance;
 };
 
 #endif  // _KeyboardHost_H_

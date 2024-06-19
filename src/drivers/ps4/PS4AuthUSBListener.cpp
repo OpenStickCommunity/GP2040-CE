@@ -15,6 +15,9 @@ void PS4AuthUSBListener::setup() {
     passthrough_state = PS4State::no_nonce;
     ps4_auth_host_ready = false;
     ps4_auth_buffer = nullptr;
+    ps_dev_addr = 0xFF;
+    ps_instance = 0xFF;
+    ps_mounted = false;
 }
 
 void PS4AuthUSBListener::process(PS4State pState, uint8_t pNonceId, uint8_t * pNonceBuffer) {
@@ -92,8 +95,27 @@ bool PS4AuthUSBListener::host_set_report(uint8_t report_id, void* report, uint16
 }
 
 void PS4AuthUSBListener::mount(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len) {
+    // Prevent Magic-X double mount
+    if ( ps_mounted == true )
+        return;
+
+    // Only a PS4 interface has vendor IDs F0, F1, F2, and F3
+    tuh_hid_report_info_t report_info[4];
+    uint8_t report_count = tuh_hid_parse_report_descriptor(report_info, 4, desc_report, desc_len);
+    bool ps4Dongle = false;
+    for(uint8_t i = 0; i < report_count; i++) {
+        if ( report_info[i].usage_page == 0xFFF0 && 
+                (report_info[i].report_id == 0xF3) ) {
+            ps4Dongle = true;
+            break;
+        }
+    }
+    if (ps4Dongle == false )
+        return;
+
     ps_dev_addr = dev_addr;
     ps_instance = instance;
+    ps_mounted = true;
 
     // Reset as soon as its connected
     memset(report_buffer, 0, sizeof(report_buffer));
@@ -102,14 +124,23 @@ void PS4AuthUSBListener::mount(uint8_t dev_addr, uint8_t instance, uint8_t const
 }
 
 void PS4AuthUSBListener::unmount(uint8_t dev_addr) {
+    if ( ps_mounted == false || dev_addr != ps_dev_addr )
+        return;
+    
     nonce_page = 0; // no nonce yet
     send_nonce_part = 0; // which part of the nonce are we getting from send?
     awaiting_cb = false; // did we receive the sign state yet
     passthrough_state = PS4State::no_nonce;
     ps4_auth_host_ready = false;
+    ps_dev_addr = 0xFF;
+    ps_instance = 0xFF;
+    ps_mounted = false;
 }
 
 void PS4AuthUSBListener::set_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
+    if ( ps_mounted == false || dev_addr != ps_dev_addr || instance != ps_instance )
+        return;
+
     switch(report_id) {
         case PS4AuthReport::PS4_SET_AUTH_PAYLOAD:
             if (nonce_page == 5) {
@@ -124,6 +155,9 @@ void PS4AuthUSBListener::set_report_complete(uint8_t dev_addr, uint8_t instance,
 }
 
 void PS4AuthUSBListener::get_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
+    if ( ps_mounted == false || dev_addr != ps_dev_addr || instance != ps_instance )
+        return;
+    
     switch(report_id) {
         case PS4AuthReport::PS4_DEFINITION:
             break;
