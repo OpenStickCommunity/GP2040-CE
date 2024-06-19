@@ -28,6 +28,13 @@ uint32_t System::getUsedFlash() {
     return &__flash_binary_end - &__flash_binary_start;
 }
 
+uint32_t System::getPhysicalFlash() {
+    uint8_t txbuf[STORAGE_CMD_TOTAL_BYTES] = {0x9f};
+    uint8_t rxbuf[STORAGE_CMD_TOTAL_BYTES] = {0};
+    flash_do_cmd(txbuf, rxbuf, STORAGE_CMD_TOTAL_BYTES);
+    return 1 << rxbuf[3];
+}
+
 uint32_t System::getStaticAllocs() {
     const uint32_t inMemorySegmentsSize = reinterpret_cast<uint32_t>(&__bss_end__) - SRAM_BASE;
     const uint32_t stackSize = &__StackTop - &__StackLimit;

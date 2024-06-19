@@ -4,6 +4,7 @@ export default {
 	'header-text': 'Welcome to the GP2040-CE Web Configurator!',
 	'latest-text': 'Latest: {{version}}',
 	'memory-flash-text': 'Flash',
+	'memory-board-text': 'Board Flash',
 	'memory-header-text': 'Memory (KB)',
 	'memory-heap-text': 'Heap',
 	'memory-static-allocations-text': 'Static Allocations',
