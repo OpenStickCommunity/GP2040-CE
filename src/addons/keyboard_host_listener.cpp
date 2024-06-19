@@ -45,6 +45,8 @@ void KeyboardHostListener::setup() {
   _keyboard_host_mapButtonA2.setKey(keyboardMapping.keyButtonA2);
 
   _keyboard_host_enabled = false;
+  _keyboard_dev_addr = 0;
+  _keyboard_instance = 0;
 }
 
 void KeyboardHostListener::process() {
@@ -62,15 +64,29 @@ void KeyboardHostListener::process() {
 }
 
 void KeyboardHostListener::mount(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len) {
-  _keyboard_host_enabled = true;
+    // Interface protocol (hid_interface_protocol_enum_t)
+    uint8_t const itf_protocol = tuh_hid_interface_protocol(dev_addr, instance);
+
+    // tuh_hid_report_received_cb() will be invoked when report is available
+    if (itf_protocol != HID_ITF_PROTOCOL_KEYBOARD)
+        return;
+
+    _keyboard_dev_addr = dev_addr;
+    _keyboard_instance = instance;
+    _keyboard_host_enabled = true;
 }
 
 void KeyboardHostListener::unmount(uint8_t dev_addr) {
-  _keyboard_host_enabled = false;
+    if ( _keyboard_dev_addr == dev_addr ) {
+        _keyboard_host_enabled = false;
+        _keyboard_dev_addr = 0;
+        _keyboard_instance = 0;
+    }
 }
 
 void KeyboardHostListener::report_received(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len){
-  if ( _keyboard_host_enabled == false )
+  if ( _keyboard_host_enabled == false || 
+        _keyboard_dev_addr != dev_addr || _keyboard_instance != instance )
     return; // do nothing if we haven't mounted
 
   // Interface protocol (hid_interface_protocol_enum_t)
