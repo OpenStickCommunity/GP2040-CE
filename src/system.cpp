@@ -28,7 +28,7 @@ uint32_t System::getUsedFlash() {
     return &__flash_binary_end - &__flash_binary_start;
 }
 
-#define STORAGE_CMD_TOTAL_BYTES 1
+#define STORAGE_CMD_TOTAL_BYTES 8
 
 uint32_t System::getPhysicalFlash() {
     uint8_t txbuf[STORAGE_CMD_TOTAL_BYTES] = {0x9f};
