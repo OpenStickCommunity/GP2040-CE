@@ -1,5 +1,6 @@
 export default {
 	'auth-settings-label': 'Authentication Settings',
+	'no-mode-settings-text': 'There are no input mode settings for {{mode}}.',
 	'settings-header-text': 'Input Mode Settings',
 	'gamepad-settings-header-text': 'Gamepad Settings',
 	'input-mode-label': 'Input Mode',
@@ -57,8 +58,15 @@ export default {
 	},
 	'profile-number-label': 'Profile Number',
 	'debounce-delay-label': 'Debounce Delay in milliseconds',
+	'ps4-mode-explanation-text': 'PS4 mode allows GP2040-CE to run as an authenticated PS4 controller.',
+	'ps4-mode-warning-text': '<span>⏳ WARNING ⏳:</span> PS4 will timeout after 8 minutes without authentication.',
+	'ps4-usb-host-mode-text': '<span>INFO:</span> Please ensure USB Peripheral is enabled and a PS4 compatible USB device is plugged in.',
 	'ps4-compatibility-label':
 		'For <strong>PS5 compatibility</strong>, use "Arcade Stick" and enable PS Passthrough add-on<br/>For <strong>PS4 support</strong>, use "Controller" and enable PS4 Mode add-on if you have the necessary files',
+	'ps5-mode-explanation-text': 'PS5 mode allows GP2040-CE to run as an authenticated PS5 compatible arcade stick.',
+	'ps5-mode-warning-text': '<span>⏳ WARNING ⏳:</span> PS5 will timeout after 8 minutes without authentication.',
+	'ps5-usb-host-mode-text': '<span>INFO:</span> Please ensure USB Peripheral is enabled and a PS5 compatible USB device is plugged in.',
+	'xbone-mode-text': '<span>INFO:</span> Xbox One requires a USB host connection and USB dongle to properly authenticate in Xbox One mode.',
 	'hotkey-settings-label': 'Hotkey Settings',
 	'hotkey-settings-sub-header':
 		"The <1>Fn</1> slider provides a mappable Function button in the <3 exact='true' to='/pin-mapping'>Pin Mapping</3> page. By selecting the <1>Fn</1> slider option, the Function button must be held along with the selected hotkey settings.<5 />Additionally, select <1>None</1> from the dropdown to unassign any button.",
