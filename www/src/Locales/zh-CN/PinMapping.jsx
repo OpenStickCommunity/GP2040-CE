@@ -15,7 +15,6 @@ export default {
 		invalid: '{{pin}} 对该电路板无效',
 		used: '{{pin}} 已分配给另一个功能',
 	},
-    'all-capture-button-label': '分配游戏控制器引脚\u00A0\u00A0🎮',
 	actions: {
 		NONE: '无',
 		RESERVED: '预留引脚',

@@ -1,6 +1,6 @@
 export default {
 	'header-text': '插件配置',
-	'sub-header-text': 
+	'sub-header-text':
         '使用下面的选项重新配置 GP2040-CE 中的插件。',
 	'bootsel-header-text': 'BOOTSEL 键配置',
 	'bootsel-sub-header-text':
@@ -67,10 +67,6 @@ export default {
 	'i2c-analog-ads1219-speed-label': 'I2C Analog ADS1219 速度',
 	'i2c-analog-ads1219-address-label': 'I2C Analog ADS1219 地址',
 	'dual-directional-input-header-text': '双重方向输入 (DDI)',
-	'dual-directional-input-up-pin-label': '双重 Up 引脚',
-	'dual-directional-input-down-pin-label': '双重 Down 引脚',
-	'dual-directional-input-left-pin-label': '双重 Left 引脚',
-	'dual-directional-input-right-pin-label': '双重 Right 引脚',
 	'dual-directional-input-dpad-mode-label': '双十字键模式',
 	'dual-directional-input-combine-mode-label': '混合模式',
 	'dual-directional-input-four-way-joystick-mode-label':
@@ -99,28 +95,20 @@ export default {
 	'buzzer-speaker-pin-label': '蜂鸣器引脚',
     'buzzer-speaker-enable-pin-label': '启用蜂鸣器引脚',
 	'buzzer-speaker-volume-label': '蜂鸣器音量',
-	'extra-button-header-text': '额外按键配置',
-	'extra-button-pin-label': '额外按键引脚',
-	'extra-button-map-label': '额外按键',
 	'player-number-header-text': '玩家编号 (仅 X-INPUT 模式生效)',
     'player-number-sub-header': '警告',
 	'player-number-sub-header-text':
 		'请仅在连接了多个启用玩家编号功能的 GP2040-CE 设备时启用此功能 ',
 	'player-number-label': '玩家编号',
-	'socd-cleaning-mode-selection-slider-header-text': 
+	'socd-cleaning-mode-selection-slider-header-text':
         'SOCD 覆盖模式选择滑块',
 	'socd-cleaning-mode-selection-slider-sub-header-text':
 		'注意：PS4, PS3 and Nintendo Switch输入模式不支持设置 SOCD 覆盖模式为关闭，默认设置为回中模式。',
-	'socd-cleaning-mode-selection-slider-mode-default-label': 
+	'socd-cleaning-mode-selection-slider-mode-default-label':
         'SOCD 滑块默认模式',
-	'socd-cleaning-mode-selection-slider-mode-one-label': 'SOCD 滑块模式 1',
-	'socd-cleaning-mode-selection-slider-pin-one-label': '引脚 1',
-	'socd-cleaning-mode-selection-slider-mode-two-label': 'SOCD 滑块模式 2',
-	'socd-cleaning-mode-selection-slider-pin-two-label': '引脚 2',
-	'ps4-mode-header-text': 'PS4 模式',
 	'ps4-mode-sub-header': '免责声明！',
 	'ps4-mode-sub-header-text': 'GP2040-CE 从不会提供这些文件！！！',
-	'ps4-mode-text': 
+	'ps4-mode-text':
         '请上传以下 3 个文件，然后点击“验证并保存”启用 PS4 模式。',
 	'ps4-mode-private-key-label': '密钥 (PEM)',
 	'ps4-mode-serial-number-label': '序列号 (16 字节的十六进制 ASCII 码)',
@@ -136,11 +124,8 @@ export default {
 	'keyboard-host-header-text': '键盘配置',
 	'keyboard-host-sub-header-text':
 		'以下设置数据 +, - 和 5V(可选)引脚。仅数据 + 和 5V 引脚可配置。',
-	'keyboard-host-d-plus-label': 'D+',
-	'keyboard-host-d-minus-label': 'D-',
-	'keyboard-host-five-v-label': '5V 供电 (可选)',
-    'pin-config-moved-to-core-text':
-        '注意：此插件的引脚现在已在引脚映射页面上进行配置。',
+	'pin-config-moved-to-core-text':
+		'注意：此插件的引脚现在已在引脚映射页面上进行配置。',
 	'input-history-header-text': '输入历史',
 	'input-history-length-label': '历史长度 (字符)',
 	'input-history-col-label': '列',

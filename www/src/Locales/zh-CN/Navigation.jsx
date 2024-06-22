@@ -3,7 +3,6 @@ export default {
 	'backup-label': '数据备份和恢复',
 	'config-label': '功能配置',
 	'custom-theme-label': '自定义 LED 主题',
-	'dangerZone-label': '高风险操作',
 	'display-config-label': '显示屏配置',
 	'docs-label': '文档',
 	'github-label': 'GitHub',

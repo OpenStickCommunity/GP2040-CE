@@ -3,7 +3,6 @@ export default {
 	'backup-label': 'Backup e Restauração de Dados',
 	'config-label': 'Configuração',
 	'custom-theme-label': 'Tema de LED Personalizado',
-	'dangerZone-label': 'Zona de Perigo',
 	'display-config-label': 'Configuração do Display',
 	'docs-label': 'Documentação',
 	'github-label': 'GitHub',
