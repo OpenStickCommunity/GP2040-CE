@@ -60,6 +60,9 @@ public:
     void clear();
 
     std::map<uint8_t,bool> scan();
+
+    // if this is set to anything other than -1, any r/w operations against the address other than test()/scan() will not be processed
+    void setExclusiveUse(int8_t address = -1) { _exclusiveAddress = address; }
 private:
     const uint32_t DEFAULT_SPEED = 400000;
 
@@ -69,6 +72,8 @@ private:
     int32_t _Speed;
 
     i2c_inst_t* _hardwareBlocks[NUM_I2CS] = {i2c0,i2c1};
+
+    int8_t _exclusiveAddress = -1;
 
     void setup();
 };
