@@ -61,7 +61,7 @@ export default {
 	'xbone-mode-text': '<span>補足: </span> XBox One モードで正しく認証するにははUSBホスト接続とUSBドングルが必要です。',
 	'hotkey-settings-label': 'ホットキー設定',
 	'hotkey-settings-sub-header':
-		"<1>Fn</1>スライダーは<3 exact='true' to='/pin-mapping'>端子割り当て設定</3>ページで割り当て可能なファンクションボタン機能を有効化します。<1>Fn</1>スライダーを有効化することで、選択されたホットキーと同時にファンクションボタンを押す様に設定できます。<5 />また、<1>None</1>を選択することでボタンの割り当てを解除できます。",
+		"<strong>Fn</strong>スライダーは<link_pinmap>端子割り当て設定</link_pinmap>ページで割り当て可能なファンクションボタン機能を有効化します。<strong>Fn</strong>スライダーを有効化することで、選択されたホットキーと同時にファンクションボタンを押す様に設定できます。<br />また、<strong>None</strong>を選択することでボタンの割り当てを解除できます。",
 	'hotkey-settings-warning':
 		'ファンクションボタンが未割り当てです。Fnスライダーは無効化されます。',
 	'hotkey-actions': {

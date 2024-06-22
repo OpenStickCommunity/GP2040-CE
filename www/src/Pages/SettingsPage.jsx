@@ -1322,17 +1322,10 @@ export default function SettingsPage() {
 														<Trans
 															ns="SettingsPage"
 															i18nKey="hotkey-settings-sub-header"
-														>
-															The <strong>Fn</strong> slider provides a mappable
-															Function button in the{' '}
-															<NavLink to="/pin-mapping">Pin Mapping</NavLink>{' '}
-															page. By selecting the Fn slider option, the
-															Function button must be held along with the
-															selected hotkey settings.
-															<br />
-															Additionally, select <strong>None</strong> from
-															the dropdown to unassign any button.
-														</Trans>
+															components={{
+																link_pinmap: <NavLink to="/pin-mapping" />
+															}}
+														/>
 													</div>
 													{values.fnButtonPin === -1 && (
 														<div className="alert alert-warning">

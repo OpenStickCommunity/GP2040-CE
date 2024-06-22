@@ -69,7 +69,7 @@ export default {
 	'xbone-mode-text': '<span>INFO:</span> Xbox One requires a USB host connection and USB dongle to properly authenticate in Xbox One mode.',
 	'hotkey-settings-label': 'Hotkey Settings',
 	'hotkey-settings-sub-header':
-		"The <1>Fn</1> slider provides a mappable Function button in the <3 exact='true' to='/pin-mapping'>Pin Mapping</3> page. By selecting the <1>Fn</1> slider option, the Function button must be held along with the selected hotkey settings.<5 />Additionally, select <1>None</1> from the dropdown to unassign any button.",
+		'The <strong>Fn</strong> slider provides a mappable Function button in the <link_pinmap>Pin Mapping</link_pinmap> page. By selecting the <strong>Fn</strong> slider option, the Function button must be held along with the selected hotkey settings. <br /> Additionally, select <strong>None</strong> from the dropdown to unassign any button.',
 	'hotkey-settings-warning':
 		'Function button is not mapped. The Fn slider will be disabled.',
 	'hotkey-actions': {
