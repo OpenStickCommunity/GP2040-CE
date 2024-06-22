@@ -14,7 +14,7 @@ import {
 } from 'react-bootstrap';
 import { Formik, useFormikContext } from 'formik';
 import * as yup from 'yup';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import omit from 'lodash/omit';
 
 import Section from '../Components/Section';
@@ -496,7 +496,10 @@ const MacroComponent = (props) => {
 								});
 							}}
 						>
-							Add Input +
+							<Trans
+								ns="InputMacroAddon"
+								i18nKey="input-macro-add-input-label"
+							/>
 						</Button>
 					) : (
 						<></>

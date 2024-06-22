@@ -26,6 +26,7 @@ export default {
 		'マクロボタン端子が未割り当てのため「ボタンを利用」オプションは無効化されます。',
 	'input-macro-pin-label': 'マクロボタン端子',
 	'input-macro-macro-label-label': 'ラベル',
+	'input-macro-add-input-label': '入力追加 +',
 	'input-macro-type': {
 		press: '短押し',
 		'hold-repeat': '長押しリピート',

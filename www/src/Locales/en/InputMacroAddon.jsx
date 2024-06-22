@@ -26,6 +26,7 @@ export default {
 		'Macro Button Pin is not mapped. "Uses Buttons" option will be disabled.',
 	'input-macro-pin-label': 'Macro Button Pin',
 	'input-macro-macro-label-label': 'Label',
+	'input-macro-add-input-label': 'Add Input +',
 	'input-macro-type': {
 		press: 'Press',
 		'hold-repeat': 'Hold Repeat',
