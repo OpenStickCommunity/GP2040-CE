@@ -6,7 +6,6 @@ export default {
 	'input-mode-label': '入力モード',
 	'current-input-mode-label': '現在の入力モード',
 	'input-mode-extra-label': 'Switch タッチパッドと Share',
-	'ps4-report-hack': 'PS4応答速度ハック',
 	'input-mode-options': {
 		none: 'モード未選択',
 		'nintendo-switch': '任天堂Switch',
@@ -53,8 +52,6 @@ export default {
 	'ps4-mode-explanation-text': 'PS4モードはGP2040-CEコントローラを認証済みPS4コントローラとして動作させることができます。',
 	'ps4-mode-warning-text': '<span>⏳ 警告 ⏳:</span> 認証無しの場合8分でPS4はタイムアウトして切断します.',
 	'ps4-usb-host-mode-text': '<span>補足: </span> USB 周辺機器が有効化されており、PS4に互換性のあるデバイスが接続されていることを確認してください。',
-	'ps4-compatibility-label':
-		'<strong>PS5互換性</<strong>のためには入力モードで「アケコン」を選択し、PSパススルーadd-onを有効化してください。<br/><strong>PS4互換性</strong>のためには入力モードで「コントローラ」を選択し、PS4モードadd-onを有効化してください(関連ファイルを持っている場合)',
 	'ps5-mode-explanation-text': 'PS5モードはGP2040-CEコントローラを認証済みPS5互換アケコンとして動作させることができます。',
 	'ps5-mode-warning-text': '<span>⏳ 警告 ⏳:</span> 認証無しの場合8分でPS5はタイムアウトして切断します.',
 	'ps5-usb-host-mode-text': '<span>補足: </span> USB 周辺機器が有効化されており、PS5に互換性のあるデバイスが接続されていることを確認してください。',

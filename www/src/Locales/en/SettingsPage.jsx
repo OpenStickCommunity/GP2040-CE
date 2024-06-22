@@ -6,7 +6,6 @@ export default {
 	'input-mode-label': 'Input Mode',
 	'current-input-mode-label': 'Current Input Mode',
 	'input-mode-extra-label': 'Switch Touchpad and Share',
-	'ps4-report-hack': 'PS4 Report Speed Hack',
 	'input-mode-options': {
 		none: 'No Mode Selected',
 		xinput: 'XInput',
@@ -61,8 +60,6 @@ export default {
 	'ps4-mode-explanation-text': 'PS4 mode allows GP2040-CE to run as an authenticated PS4 controller.',
 	'ps4-mode-warning-text': '<span>⏳ WARNING ⏳:</span> PS4 will timeout after 8 minutes without authentication.',
 	'ps4-usb-host-mode-text': '<span>INFO:</span> Please ensure USB Peripheral is enabled and a PS4 compatible USB device is plugged in.',
-	'ps4-compatibility-label':
-		'For <strong>PS5 compatibility</strong>, use "Arcade Stick" and enable PS Passthrough add-on<br/>For <strong>PS4 support</strong>, use "Controller" and enable PS4 Mode add-on if you have the necessary files',
 	'ps5-mode-explanation-text': 'PS5 mode allows GP2040-CE to run as an authenticated PS5 compatible arcade stick.',
 	'ps5-mode-warning-text': '<span>⏳ WARNING ⏳:</span> PS5 will timeout after 8 minutes without authentication.',
 	'ps5-usb-host-mode-text': '<span>INFO:</span> Please ensure USB Peripheral is enabled and a PS5 compatible USB device is plugged in.',
