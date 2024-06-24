@@ -1,6 +1,6 @@
 # GP2040-CE Configuration for the MiSTercade V2 board by MiSTer Addons
 
-![MiSTercade V2](https://github.com/misteraddons/Reflex-CTRL/raw/main/Images/saturn.png)
+![MiSTercade V2](assets/MistercadeV2.jpg)
 
 The second version of the fan favorite MiSTercade, now using GP2040-CE as the base for the input firmware.
 
@@ -15,4 +15,4 @@ Features
 
 Purchase: https://misteraddons.com/products/mistercade-v2-kit-mister-fpga-jamma-arcade-kit
 
-GitHub: https://github.com/misteraddons/Reflex-CTRL
+GitHub: https://github.com/misteraddons/MiSTercade-Config
