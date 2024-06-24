@@ -168,6 +168,9 @@ message PinMappings
 message GpioMappingInfo
 {
     optional GpioAction action = 1;
+    optional GpioDirection direction = 2;
+    optional uint32 customDpadMask = 3;
+    optional uint32 customButtonMask = 4;
 }
 
 message GpioMappings
@@ -339,7 +342,7 @@ message AnalogOptions
     optional int32 analogAdc1PinX = 2;
     optional int32 analogAdc1PinY = 3;
     optional bool forced_circularity = 4;
-    optional uint32 analog_deadzone = 5;
+    optional uint32 inner_deadzone = 5;
     optional int32 analogAdc2PinX = 6;
     optional int32 analogAdc2PinY = 7;
     optional DpadMode analogAdc1Mode = 8;
@@ -347,6 +350,7 @@ message AnalogOptions
     optional InvertMode analogAdc1Invert = 10;
     optional InvertMode analogAdc2Invert = 11;
     optional bool auto_calibrate = 12;
+    optional uint32 outer_deadzone = 13;
 }
 
 message TurboOptions
@@ -727,6 +731,13 @@ message RotaryOptions
     optional RotaryPinOptions encoderTwo = 3;
 }
 
+message PCF8575Options
+{
+    optional bool enabled = 1;
+    optional int32 i2cBlock = 2;
+    repeated GpioMappingInfo pins = 3 [(nanopb).max_count = 16];
+}
+
 message AddonOptions
 {
     optional BootselButtonOptions bootselButtonOptions = 1;
@@ -753,6 +764,7 @@ message AddonOptions
     optional XBOnePassthroughOptions xbonePassthroughOptions = 22 [deprecated = true];
     optional AnalogADS1256Options analogADS1256Options = 23;
     optional RotaryOptions rotaryOptions = 24;
+    optional PCF8575Options pcf8575Options = 25;
 }
 
 message MigrationHistory

@@ -21,16 +21,16 @@
 #define DESC_EXTENDED_PROPERTIES_DESCRIPTOR 0x0005
 #define REQ_GET_XGIP_HEADER 0x90
 
-// Sent report queue every 15 milliseconds
-static uint32_t lastReportQueueSent = 0;
-#define REPORT_QUEUE_INTERVAL 15
+// Check report queue every 35 milliseconds
+static uint32_t lastReportQueue = 0;
+#define REPORT_QUEUE_INTERVAL 35
 
 typedef enum {
-    IDLE_STATE = 0,
     READY_ANNOUNCE,
     WAIT_DESCRIPTOR_REQUEST,
     SEND_DESCRIPTOR,
-    SETUP_AUTH
+    SETUP_AUTH,
+    AUTH_DONE
 } XboxOneDriverState;
 
 static XboxOneDriverState xboneDriverState;
@@ -150,8 +150,6 @@ static void xbone_reset(uint8_t rhport) {
     while(!report_queue.empty())
         report_queue.pop();
 
-    xboneDriverState = XboxOneDriverState::READY_ANNOUNCE;
-
     // close any endpoints that are open
     tu_memclr(&_xboned_itf, sizeof(_xboned_itf));
 }
@@ -159,7 +157,6 @@ static void xbone_reset(uint8_t rhport) {
 static void xbone_init(void) {
     xbone_reset(TUD_OPT_RHPORT);
 }
-
 
 static uint16_t xbone_open(uint8_t rhport, tusb_desc_interface_t const *itf_desc, uint16_t max_len) {
     uint16_t drv_len = 0;
@@ -196,6 +193,13 @@ static uint16_t xbone_open(uint8_t rhport, tusb_desc_interface_t const *itf_desc
                     TU_LOG_FAILED();
                     TU_BREAKPOINT();
                 }
+            }
+
+            // Setting up XGIPs and driver state
+            if (incomingXGIP != nullptr && outgoingXGIP != nullptr ) {
+                xboneDriverState = XboxOneDriverState::READY_ANNOUNCE;
+                incomingXGIP->reset();
+                outgoingXGIP->reset();
             }
         }
     }
@@ -270,14 +274,14 @@ bool xbone_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result,
         } else if ( command == GIP_POWER_MODE_DEVICE_CONFIG || command == GIP_CMD_WAKEUP || command == GIP_CMD_RUMBLE ) {
             xbox_one_powered_on = true;
         } else if ( command == GIP_AUTH || command == GIP_FINAL_AUTH) {
-            if (incomingXGIP->getDataLength() == 2 && memcmp(incomingXGIP->getData(), authReady, sizeof(authReady))==0 )
+            if (incomingXGIP->getDataLength() == 2 && memcmp(incomingXGIP->getData(), authReady, sizeof(authReady))==0 ) {
                 xboxOneAuthData->authCompleted = true;
+                xboneDriverState = AUTH_DONE;
+            }
             if ( (incomingXGIP->getChunked() == true && incomingXGIP->endOfChunk() == true) ||
                     (incomingXGIP->getChunked() == false )) {
-                memcpy(xboxOneAuthData->authBuffer, incomingXGIP->getData(), incomingXGIP->getDataLength());
-                xboxOneAuthData->authLen = incomingXGIP->getDataLength();
-                xboxOneAuthData->authType = incomingXGIP->getCommand();
-                xboxOneAuthData->authSequence = incomingXGIP->getSequence();
+                xboxOneAuthData->consoleBuffer.setBuffer(incomingXGIP->getData(), incomingXGIP->getDataLength(),
+                    incomingXGIP->getSequence(), incomingXGIP->getCommand());
                 xboxOneAuthData->xboneState = XboxOneState::send_auth_console_to_dongle;
                 incomingXGIP->reset();
             }
@@ -585,20 +589,8 @@ void XBOneDriver::set_ack_wait() {
 void XBOneDriver::update() {
     uint32_t now = to_ms_since_boot(get_absolute_time());
 
-    if ( !report_queue.empty() ) {	
-        if ( (now - lastReportQueueSent) > REPORT_QUEUE_INTERVAL ) {
-            report_queue_t & report_front = report_queue.front();
-            uint16_t xboneReportSize = report_front.len;
-            if ( send_xbone_usb(report_front.report, xboneReportSize) ) {
-                lastReportQueueSent = now;
-                // Set last report queue sent to our report sent by the queue
-                memcpy(last_report, &report_front.report, xboneReportSize);
-                report_queue.pop();
-            } else {
-                sleep_ms(REPORT_QUEUE_INTERVAL);
-            }
-        }
-    }
+    // Process our report queue
+    process_report_queue(now);
 
     // Do not add logic until our ACK returns
     if ( waiting_ack == true ) {
@@ -630,13 +622,22 @@ void XBOneDriver::update() {
             }
             break;
         case SETUP_AUTH:
+            // Received packet from dongle to console / PC
             if ( xboxOneAuthData->xboneState == XboxOneState::send_auth_dongle_to_console ) {
-                bool isChunked = (xboxOneAuthData->authLen > GIP_MAX_CHUNK_SIZE);
+                uint16_t len = xboxOneAuthData->dongleBuffer.length;
+                uint8_t type = xboxOneAuthData->dongleBuffer.type;
+                uint8_t sequence = xboxOneAuthData->dongleBuffer.sequence;
+                uint8_t * buffer = xboxOneAuthData->dongleBuffer.data;
+                bool isChunked = (len > GIP_MAX_CHUNK_SIZE);
                 outgoingXGIP->reset();
-                outgoingXGIP->setAttributes(xboxOneAuthData->authType, xboxOneAuthData->authSequence, 1, isChunked, 1);
-                outgoingXGIP->setData(xboxOneAuthData->authBuffer, xboxOneAuthData->authLen);
+                outgoingXGIP->setAttributes(type, sequence, 1, isChunked, 1);
+                outgoingXGIP->setData(buffer, len);
                 xboxOneAuthData->xboneState = wait_auth_dongle_to_console;
-            } else if ( xboxOneAuthData->xboneState == XboxOneState::wait_auth_dongle_to_console ) {
+                xboxOneAuthData->dongleBuffer.reset();
+            }
+            
+            // Process auth dongle to console
+            if ( xboxOneAuthData->xboneState == XboxOneState::wait_auth_dongle_to_console ) {
                 queue_xbone_report(outgoingXGIP->generatePacket(), outgoingXGIP->getPacketLength());
                 if ( outgoingXGIP->getChunked() == false || outgoingXGIP->endOfChunk() == true ) {
                     xboxOneAuthData->xboneState = XboxOneState::auth_idle_state;
@@ -646,10 +647,23 @@ void XBOneDriver::update() {
                 }
             }
             break;
-        case IDLE_STATE:
+        case AUTH_DONE:
         default:
             break;
     };
+}
+
+void XBOneDriver::process_report_queue(uint32_t now) {
+    if ( !report_queue.empty() && (now - lastReportQueue) > REPORT_QUEUE_INTERVAL ) {
+        if ( send_xbone_usb(report_queue.front().report, report_queue.front().len) ) {
+            memcpy(last_report, &report_queue.front().report, report_queue.front().len);
+            report_queue.pop();
+            lastReportQueue = now;
+        } else {
+            // THIS IS REQUIRED FOR TIMING ON PC / CONSOLE
+            sleep_ms(REPORT_QUEUE_INTERVAL); // sleep while we wait, never happens during input only auth
+        }
+    }
 }
 
 uint16_t XBOneDriver::GetJoystickMidValue() {

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { Dropdown , DropdownButton } from 'react-bootstrap';
+import { Dropdown, DropdownButton } from 'react-bootstrap';
 import { AppContext } from '../Contexts/AppContext';
 import { useTranslation } from 'react-i18next';
 import GlobeIcon from '../Icons/Globe';
@@ -7,12 +7,14 @@ import UsFlag from '../Icons/Flags/Us';
 import zhCNFlag from '../Icons/Flags/zhCN';
 import ptBRFlag from '../Icons/Flags/ptBR';
 import deDEFlag from '../Icons/Flags/De';
+import jaJPFlag from '../Icons/Flags/jaJP';
 
 const dropdownOptions = [
 	{ code: 'en', icon: UsFlag },
 	{ code: 'pt-BR', icon: ptBRFlag },
 	{ code: 'zh-CN', icon: zhCNFlag },
 	{ code: 'de-DE', icon: deDEFlag },
+	{ code: 'ja-JP', icon: jaJPFlag },
 ];
 
 const LanguageSelector = () => {
@@ -37,11 +39,7 @@ const LanguageSelector = () => {
 	};
 
 	return (
-		<DropdownButton
-			variant="secondary"
-			align="end"
-			title={<GlobeIcon />}
-		>
+		<DropdownButton variant="secondary" align="end" title={<GlobeIcon />}>
 			{dropdownOptions.map((option) => (
 				<Dropdown.Item
 					key={option.code}

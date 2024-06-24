@@ -44,10 +44,10 @@ void ButtonLayoutScreen::init() {
     // macro display now uses our pin functions, so we need to check if pins are enabled...
     macroEnabled = false;
     // Macro Button initialized by void Gamepad::setup()
-    GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
+    GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
     {
-        switch( pinMappings[pin] ) {
+        switch( pinMappings[pin].action ) {
             case GpioAction::BUTTON_PRESS_MACRO:
             case GpioAction::BUTTON_PRESS_MACRO_1:
             case GpioAction::BUTTON_PRESS_MACRO_2:
@@ -129,7 +129,8 @@ void ButtonLayoutScreen::generateHeader() {
 	// Display standard header
 	switch (inputMode)
 	{
-		case INPUT_MODE_HID:    statusBar += "DINPUT"; break;
+		case INPUT_MODE_PS3:    statusBar += "PS3"; break;
+		case INPUT_MODE_GENERIC: statusBar += "USBHID"; break;
 		case INPUT_MODE_SWITCH: statusBar += "SWITCH"; break;
 		case INPUT_MODE_XINPUT: statusBar += "XINPUT"; break;
 		case INPUT_MODE_MDMINI: statusBar += "GEN/MD"; break;
@@ -295,20 +296,20 @@ void ButtonLayoutScreen::processInputHistory() {
 		pressedDownLeft(),
 		pressedDownRight(),
 
-		getGamepad()->pressedB1(),
-		getGamepad()->pressedB2(),
-		getGamepad()->pressedB3(),
-		getGamepad()->pressedB4(),
-		getGamepad()->pressedL1(),
-		getGamepad()->pressedR1(),
-		getGamepad()->pressedL2(),
-		getGamepad()->pressedR2(),
-		getGamepad()->pressedS1(),
-		getGamepad()->pressedS2(),
-		getGamepad()->pressedL3(),
-		getGamepad()->pressedR3(),
-		getGamepad()->pressedA1(),
-		getGamepad()->pressedA2(),
+		getProcessedGamepad()->pressedB1(),
+		getProcessedGamepad()->pressedB2(),
+		getProcessedGamepad()->pressedB3(),
+		getProcessedGamepad()->pressedB4(),
+		getProcessedGamepad()->pressedL1(),
+		getProcessedGamepad()->pressedR1(),
+		getProcessedGamepad()->pressedL2(),
+		getProcessedGamepad()->pressedR2(),
+		getProcessedGamepad()->pressedS1(),
+		getProcessedGamepad()->pressedS2(),
+		getProcessedGamepad()->pressedL3(),
+		getProcessedGamepad()->pressedR3(),
+		getProcessedGamepad()->pressedA1(),
+		getProcessedGamepad()->pressedA2(),
 	};
 
 	uint8_t mode = ((displayModeLookup.count(getGamepad()->getOptions().inputMode) > 0) ? displayModeLookup.at(getGamepad()->getOptions().inputMode) : 0);
@@ -379,9 +380,9 @@ bool ButtonLayoutScreen::pressedUp()
 {
     switch (getGamepad()->getOptions().dpadMode)
     {
-        case DPAD_MODE_DIGITAL:      return ((getGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == GAMEPAD_MASK_UP);
-        case DPAD_MODE_LEFT_ANALOG:  return getGamepad()->state.ly == GAMEPAD_JOYSTICK_MIN;
-        case DPAD_MODE_RIGHT_ANALOG: return getGamepad()->state.ry == GAMEPAD_JOYSTICK_MIN;
+        case DPAD_MODE_DIGITAL:      return ((getProcessedGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == GAMEPAD_MASK_UP);
+        case DPAD_MODE_LEFT_ANALOG:  return getProcessedGamepad()->state.ly == GAMEPAD_JOYSTICK_MIN;
+        case DPAD_MODE_RIGHT_ANALOG: return getProcessedGamepad()->state.ry == GAMEPAD_JOYSTICK_MIN;
     }
 
     return false;
@@ -391,9 +392,9 @@ bool ButtonLayoutScreen::pressedDown()
 {
     switch (getGamepad()->getOptions().dpadMode)
     {
-        case DPAD_MODE_DIGITAL:      return ((getGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == GAMEPAD_MASK_DOWN);
-        case DPAD_MODE_LEFT_ANALOG:  return getGamepad()->state.ly == GAMEPAD_JOYSTICK_MAX;
-        case DPAD_MODE_RIGHT_ANALOG: return getGamepad()->state.ry == GAMEPAD_JOYSTICK_MAX;
+        case DPAD_MODE_DIGITAL:      return ((getProcessedGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == GAMEPAD_MASK_DOWN);
+        case DPAD_MODE_LEFT_ANALOG:  return getProcessedGamepad()->state.ly == GAMEPAD_JOYSTICK_MAX;
+        case DPAD_MODE_RIGHT_ANALOG: return getProcessedGamepad()->state.ry == GAMEPAD_JOYSTICK_MAX;
     }
 
     return false;
@@ -403,9 +404,9 @@ bool ButtonLayoutScreen::pressedLeft()
 {
     switch (getGamepad()->getOptions().dpadMode)
     {
-        case DPAD_MODE_DIGITAL:      return ((getGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == GAMEPAD_MASK_LEFT);
-        case DPAD_MODE_LEFT_ANALOG:  return getGamepad()->state.lx == GAMEPAD_JOYSTICK_MIN;
-        case DPAD_MODE_RIGHT_ANALOG: return getGamepad()->state.rx == GAMEPAD_JOYSTICK_MIN;
+        case DPAD_MODE_DIGITAL:      return ((getProcessedGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == GAMEPAD_MASK_LEFT);
+        case DPAD_MODE_LEFT_ANALOG:  return getProcessedGamepad()->state.lx == GAMEPAD_JOYSTICK_MIN;
+        case DPAD_MODE_RIGHT_ANALOG: return getProcessedGamepad()->state.rx == GAMEPAD_JOYSTICK_MIN;
     }
 
     return false;
@@ -415,9 +416,9 @@ bool ButtonLayoutScreen::pressedRight()
 {
     switch (getGamepad()->getOptions().dpadMode)
     {
-        case DPAD_MODE_DIGITAL:      return ((getGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == GAMEPAD_MASK_RIGHT);
-        case DPAD_MODE_LEFT_ANALOG:  return getGamepad()->state.lx == GAMEPAD_JOYSTICK_MAX;
-        case DPAD_MODE_RIGHT_ANALOG: return getGamepad()->state.rx == GAMEPAD_JOYSTICK_MAX;
+        case DPAD_MODE_DIGITAL:      return ((getProcessedGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == GAMEPAD_MASK_RIGHT);
+        case DPAD_MODE_LEFT_ANALOG:  return getProcessedGamepad()->state.lx == GAMEPAD_JOYSTICK_MAX;
+        case DPAD_MODE_RIGHT_ANALOG: return getProcessedGamepad()->state.rx == GAMEPAD_JOYSTICK_MAX;
     }
 
     return false;
@@ -427,9 +428,9 @@ bool ButtonLayoutScreen::pressedUpLeft()
 {
     switch (getGamepad()->getOptions().dpadMode)
     {
-        case DPAD_MODE_DIGITAL:      return ((getGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == (GAMEPAD_MASK_UP | GAMEPAD_MASK_LEFT));
-        case DPAD_MODE_LEFT_ANALOG:  return (getGamepad()->state.lx == GAMEPAD_JOYSTICK_MIN) && (getGamepad()->state.ly == GAMEPAD_JOYSTICK_MIN);
-        case DPAD_MODE_RIGHT_ANALOG: return (getGamepad()->state.rx == GAMEPAD_JOYSTICK_MIN) && (getGamepad()->state.ry == GAMEPAD_JOYSTICK_MIN);
+        case DPAD_MODE_DIGITAL:      return ((getProcessedGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == (GAMEPAD_MASK_UP | GAMEPAD_MASK_LEFT));
+        case DPAD_MODE_LEFT_ANALOG:  return (getProcessedGamepad()->state.lx == GAMEPAD_JOYSTICK_MIN) && (getProcessedGamepad()->state.ly == GAMEPAD_JOYSTICK_MIN);
+        case DPAD_MODE_RIGHT_ANALOG: return (getProcessedGamepad()->state.rx == GAMEPAD_JOYSTICK_MIN) && (getProcessedGamepad()->state.ry == GAMEPAD_JOYSTICK_MIN);
     }
 
     return false;
@@ -439,9 +440,9 @@ bool ButtonLayoutScreen::pressedUpRight()
 {
     switch (getGamepad()->getOptions().dpadMode)
     {
-        case DPAD_MODE_DIGITAL:      return ((getGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == (GAMEPAD_MASK_UP | GAMEPAD_MASK_RIGHT));
-        case DPAD_MODE_LEFT_ANALOG:  return (getGamepad()->state.lx == GAMEPAD_JOYSTICK_MAX) && (getGamepad()->state.ly == GAMEPAD_JOYSTICK_MIN);
-        case DPAD_MODE_RIGHT_ANALOG: return (getGamepad()->state.lx == GAMEPAD_JOYSTICK_MAX) && (getGamepad()->state.ly == GAMEPAD_JOYSTICK_MIN);
+        case DPAD_MODE_DIGITAL:      return ((getProcessedGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == (GAMEPAD_MASK_UP | GAMEPAD_MASK_RIGHT));
+        case DPAD_MODE_LEFT_ANALOG:  return (getProcessedGamepad()->state.lx == GAMEPAD_JOYSTICK_MAX) && (getProcessedGamepad()->state.ly == GAMEPAD_JOYSTICK_MIN);
+        case DPAD_MODE_RIGHT_ANALOG: return (getProcessedGamepad()->state.lx == GAMEPAD_JOYSTICK_MAX) && (getProcessedGamepad()->state.ly == GAMEPAD_JOYSTICK_MIN);
     }
 
     return false;
@@ -451,9 +452,9 @@ bool ButtonLayoutScreen::pressedDownLeft()
 {
     switch (getGamepad()->getOptions().dpadMode)
     {
-        case DPAD_MODE_DIGITAL:      return ((getGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == (GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT));
-        case DPAD_MODE_LEFT_ANALOG:  return (getGamepad()->state.lx == GAMEPAD_JOYSTICK_MIN) && (getGamepad()->state.ly == GAMEPAD_JOYSTICK_MAX);
-        case DPAD_MODE_RIGHT_ANALOG: return (getGamepad()->state.lx == GAMEPAD_JOYSTICK_MIN) && (getGamepad()->state.ly == GAMEPAD_JOYSTICK_MAX);
+        case DPAD_MODE_DIGITAL:      return ((getProcessedGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == (GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT));
+        case DPAD_MODE_LEFT_ANALOG:  return (getProcessedGamepad()->state.lx == GAMEPAD_JOYSTICK_MIN) && (getProcessedGamepad()->state.ly == GAMEPAD_JOYSTICK_MAX);
+        case DPAD_MODE_RIGHT_ANALOG: return (getProcessedGamepad()->state.lx == GAMEPAD_JOYSTICK_MIN) && (getProcessedGamepad()->state.ly == GAMEPAD_JOYSTICK_MAX);
     }
 
     return false;
@@ -463,9 +464,9 @@ bool ButtonLayoutScreen::pressedDownRight()
 {
     switch (getGamepad()->getOptions().dpadMode)
     {
-        case DPAD_MODE_DIGITAL:      return ((getGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == (GAMEPAD_MASK_DOWN | GAMEPAD_MASK_RIGHT));
-        case DPAD_MODE_LEFT_ANALOG:  return (getGamepad()->state.lx == GAMEPAD_JOYSTICK_MAX) && (getGamepad()->state.ly == GAMEPAD_JOYSTICK_MAX);
-        case DPAD_MODE_RIGHT_ANALOG: return (getGamepad()->state.lx == GAMEPAD_JOYSTICK_MAX) && (getGamepad()->state.ly == GAMEPAD_JOYSTICK_MAX);
+        case DPAD_MODE_DIGITAL:      return ((getProcessedGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == (GAMEPAD_MASK_DOWN | GAMEPAD_MASK_RIGHT));
+        case DPAD_MODE_LEFT_ANALOG:  return (getProcessedGamepad()->state.lx == GAMEPAD_JOYSTICK_MAX) && (getProcessedGamepad()->state.ly == GAMEPAD_JOYSTICK_MAX);
+        case DPAD_MODE_RIGHT_ANALOG: return (getProcessedGamepad()->state.lx == GAMEPAD_JOYSTICK_MAX) && (getProcessedGamepad()->state.ly == GAMEPAD_JOYSTICK_MAX);
     }
 
     return false;

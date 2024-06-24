@@ -11,7 +11,7 @@ import { AppContext } from '../Contexts/AppContext';
 import KeyboardMapper, { validateMappings } from '../Components/KeyboardMapper';
 import Section from '../Components/Section';
 import WebApi, { baseButtonMappings } from '../Services/WebApi';
-import { BUTTON_MASKS, getButtonLabels } from '../Data/Buttons';
+import { BUTTON_MASKS_OPTIONS, getButtonLabels } from '../Data/Buttons';
 
 import './SettingsPage.scss';
 
@@ -147,6 +147,7 @@ const INPUT_MODES = [
 		group: 'primary',
 		required: ['usb'],
 	},
+	{ labelKey: 'input-mode-options.generic', value: 14, group: 'primary' },
 	{ labelKey: 'input-mode-options.mdmini', value: 6, group: 'mini' },
 	{ labelKey: 'input-mode-options.neogeo', value: 7, group: 'mini' },
 	{ labelKey: 'input-mode-options.pcemini', value: 8, group: 'mini' },
@@ -184,6 +185,7 @@ const INPUT_BOOT_MODES = [
 		group: 'primary',
 		required: ['usb'],
 	},
+	{ labelKey: 'input-mode-options.generic', value: 14, group: 'primary' },
 	{ labelKey: 'input-mode-options.mdmini', value: 6, group: 'mini' },
 	{ labelKey: 'input-mode-options.neogeo', value: 7, group: 'mini' },
 	{ labelKey: 'input-mode-options.pcemini', value: 8, group: 'mini' },
@@ -244,13 +246,14 @@ const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.load-profile-2', value: 16 },
 	{ labelKey: 'hotkey-actions.load-profile-3', value: 17 },
 	{ labelKey: 'hotkey-actions.load-profile-4', value: 18 },
+	{ labelKey: 'hotkey-actions.next-profile', value: 35 },
 	{ labelKey: 'hotkey-actions.l3-button', value: 19 },
 	{ labelKey: 'hotkey-actions.r3-button', value: 20 },
 	{ labelKey: 'hotkey-actions.touchpad-button', value: 21 },
 	{ labelKey: 'hotkey-actions.reboot-default', value: 22 },
 	{ labelKey: 'hotkey-actions.b1-button', value: 23 },
 	{ labelKey: 'hotkey-actions.b2-button', value: 24 },
-	{ labelKey: 'hotkey-actions.b3-button', value: 24 },
+	{ labelKey: 'hotkey-actions.b3-button', value: 25 },
 	{ labelKey: 'hotkey-actions.b4-button', value: 26 },
 	{ labelKey: 'hotkey-actions.l1-button', value: 27 },
 	{ labelKey: 'hotkey-actions.r1-button', value: 28 },
@@ -260,6 +263,8 @@ const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.s2-button', value: 32 },
 	{ labelKey: 'hotkey-actions.a1-button', value: 33 },
 	{ labelKey: 'hotkey-actions.a2-button', value: 34 },
+	{ labelKey: 'hotkey-actions.a3-button', value: 36 },
+	{ labelKey: 'hotkey-actions.a4-button', value: 37 },
 ];
 
 const FORCED_SETUP_MODES = [
@@ -689,8 +694,7 @@ export default function SettingsPage() {
 					<div className="row mb-3">
 						<Row className="mb-3">
 							<Col sm={10}>
-								PS4 mode allows GP2040-CE to run as an authenticated PS4
-								controller.
+								{t('SettingsPage:ps4-mode-explanation-text')}
 							</Col>
 						</Row>
 						<Row className="mb-3">
@@ -721,8 +725,11 @@ export default function SettingsPage() {
 						{values.ps4AuthType === 0 && (
 							<Row className="mb-3">
 								<Col sm={10}>
-									<span className="text-warning">⏳ WARNING ⏳:</span> PS4 will
-									timeout after 8 minutes without authentication.
+									<Trans
+										ns="SettingsPage"
+										i18nKey="ps4-mode-warning-text"
+										components={{ span: <span className="text-warning" /> }}
+									/>
 								</Col>
 							</Row>
 						)}
@@ -803,9 +810,11 @@ export default function SettingsPage() {
 						{values.ps4AuthType === 2 && (
 							<Row className="mb-3">
 								<Col sm={10}>
-									<span className="text-info">INFO:</span> Please ensure USB
-									Peripheral is enabled and a PS4 compatible USB device is
-									plugged in.
+									<Trans
+										ns="SettingsPage"
+										i18nKey="ps4-usb-host-mode-text"
+										components={{ span: <span className="text-info" /> }}
+									/>
 								</Col>
 							</Row>
 						)}
@@ -816,8 +825,7 @@ export default function SettingsPage() {
 					<div className="row mb-3">
 						<Row className="mb-3">
 							<Col sm={10}>
-								PS5 mode allows GP2040-CE to run as an authenticated PS5
-								compatible arcade stick.
+								{t('SettingsPage:ps5-mode-explanation-text')}
 							</Col>
 						</Row>
 						<Row className="mb-3">
@@ -848,17 +856,22 @@ export default function SettingsPage() {
 						{values.ps5AuthType === 0 && (
 							<Row className="mb-3">
 								<Col sm={10}>
-									<span className="text-warning">⏳ WARNING ⏳:</span> PS5 will
-									timeout after 8 minutes without authentication.
+									<Trans
+										ns="SettingsPage"
+										i18nKey="ps5-mode-warning-text"
+										components={{ span: <span className="text-warning" /> }}
+									/>
 								</Col>
 							</Row>
 						)}
 						{values.ps5AuthType === 2 && (
 							<Row className="mb-3">
 								<Col sm={10}>
-									<span className="text-info">INFO:</span> Please ensure USB
-									Peripheral is enabled and a PS5 compatible USB device is
-									plugged in.
+									<Trans
+										ns="SettingsPage"
+										i18nKey="ps5-usb-host-mode-text"
+										components={{ span: <span className="text-info" /> }}
+									/>
 								</Col>
 							</Row>
 						)}
@@ -869,9 +882,11 @@ export default function SettingsPage() {
 					<div className="row mb-3">
 						<Row className="mb-3">
 							<Col sm={10}>
-								<span className="text-success">INFO:</span> Xbox One requires a
-								USB host connection and USB dongle to properly authenticate in
-								Xbox One mode.
+								<Trans
+									ns="SettingsPage"
+									i18nKey="xbone-mode-text"
+									components={{ span: <span className="text-success" /> }}
+								/>
 							</Col>
 						</Row>
 					</div>
@@ -880,8 +895,10 @@ export default function SettingsPage() {
 				return (
 					<div>
 						<p>
-							There are no input mode settings for{' '}
-							{t('SettingsPage:' + inputMode.labelKey)}.
+							{t('SettingsPage:no-mode-settings-text', {
+								mode: t(`SettingsPage:${inputMode.labelKey}`),
+								interpolation: { escapeValue: false }
+							})}
 						</p>
 					</div>
 				);
@@ -1010,19 +1027,19 @@ export default function SettingsPage() {
 										<Nav variant="pills" className="flex-column">
 											<Nav.Item>
 												<Nav.Link eventKey="inputmode">
-													Input Mode Settings
+												{t('SettingsPage:settings-header-text')}
 												</Nav.Link>
 											</Nav.Item>
 											<Nav.Item>
-												<Nav.Link eventKey="gamepad">Gamepad Settings</Nav.Link>
+												<Nav.Link eventKey="gamepad">{t('SettingsPage:gamepad-settings-header-text')}</Nav.Link>
 											</Nav.Item>
 											<Nav.Item>
 												<Nav.Link eventKey="bootmode">
-													Boot Input Modes
+												{t('SettingsPage:boot-input-mode-label')}
 												</Nav.Link>
 											</Nav.Item>
 											<Nav.Item>
-												<Nav.Link eventKey="hotkey">Hotkey Settings</Nav.Link>
+												<Nav.Link eventKey="hotkey">{t('SettingsPage:hotkey-settings-label')}</Nav.Link>
 											</Nav.Item>
 										</Nav>
 									</Col>
@@ -1305,17 +1322,10 @@ export default function SettingsPage() {
 														<Trans
 															ns="SettingsPage"
 															i18nKey="hotkey-settings-sub-header"
-														>
-															The <strong>Fn</strong> slider provides a mappable
-															Function button in the{' '}
-															<NavLink to="/pin-mapping">Pin Mapping</NavLink>{' '}
-															page. By selecting the Fn slider option, the
-															Function button must be held along with the
-															selected hotkey settings.
-															<br />
-															Additionally, select <strong>None</strong> from
-															the dropdown to unassign any button.
-														</Trans>
+															components={{
+																link_pinmap: <NavLink to="/pin-mapping" />
+															}}
+														/>
 													</div>
 													{values.fnButtonPin === -1 && (
 														<div className="alert alert-warning">
@@ -1349,7 +1359,7 @@ export default function SettingsPage() {
 																	</Form.Control.Feedback>
 																</Col>
 																<Col sm="auto">+</Col>
-																{BUTTON_MASKS.map((mask) =>
+																{BUTTON_MASKS_OPTIONS.map((mask) =>
 																	values[o] &&
 																	values[o]?.buttonsMask & mask.value ? (
 																		<>
@@ -1376,7 +1386,7 @@ export default function SettingsPage() {
 																						);
 																					}}
 																				>
-																					{BUTTON_MASKS.map((o, i2) => (
+																					{BUTTON_MASKS_OPTIONS.map((o, i2) => (
 																						<option
 																							key={`hotkey-${i}-button${i2}`}
 																							value={o.value}
@@ -1407,7 +1417,7 @@ export default function SettingsPage() {
 																			);
 																		}}
 																	>
-																		{BUTTON_MASKS.map((o, i2) => (
+																		{BUTTON_MASKS_OPTIONS.map((o, i2) => (
 																			<option
 																				key={`hotkey-${i}-buttonZero-${i2}`}
 																				value={o.value}

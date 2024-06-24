@@ -68,6 +68,12 @@
 #define PS4_JOYSTICK_MID 0x80
 #define PS4_JOYSTICK_MAX 0xFF
 
+// touchpad resolution = 1920x943
+#define PS4_TP_X_MIN 0
+#define PS4_TP_X_MAX 1920
+#define PS4_TP_Y_MIN 0
+#define PS4_TP_Y_MAX 943
+
 struct TouchpadXY {
   uint8_t counter : 7;
   uint8_t unpressed : 1;
@@ -127,8 +133,10 @@ typedef struct __attribute__((packed)) {
   // 16 bit timing counter
   uint16_t axis_timing;
 
-  uint32_t padding : 8;
-  uint8_t mystery[22];
+  uint8_t gyro_accel_misc[21];
+  uint8_t touchpad_active : 2;
+  uint8_t padding : 6;
+  uint8_t tpad_increment;
   TouchpadData touchpad_data;
   uint8_t mystery_2[21];
 } PS4Report;

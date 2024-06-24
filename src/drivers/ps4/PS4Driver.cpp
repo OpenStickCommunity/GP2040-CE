@@ -17,10 +17,12 @@
 #define PS4_KEEPALIVE_TIMER 5
 
 void PS4Driver::initialize() {
-    //touchpadData = {
-    //	.p1 = 0x00,
-    //	.p2 = 0x00
-    //};
+    touchpadData.p1.unpressed = 1;
+    touchpadData.p1.set_x(PS4_TP_X_MAX / 2);
+    touchpadData.p1.set_y(PS4_TP_Y_MAX / 2);
+    touchpadData.p2.unpressed = 1;
+    touchpadData.p2.set_x(PS4_TP_X_MAX / 2);
+    touchpadData.p2.set_y(PS4_TP_Y_MAX / 2);
 
     ps4Report = {
         .report_id = 0x01,
@@ -32,8 +34,7 @@ void PS4Driver::initialize() {
         .button_west = 0, .button_south = 0, .button_east = 0, .button_north = 0,
         .button_l1 = 0, .button_r1 = 0, .button_l2 = 0, .button_r2 = 0,
         .button_select = 0, .button_start = 0, .button_l3 = 0, .button_r3 = 0, .button_home = 0,
-        .padding = 0,
-        .mystery = { },
+        .gyro_accel_misc = { }, .touchpad_active = 0, .padding = 0, .tpad_increment = 0,
         .touchpad_data = touchpadData,
         .mystery_2 = { }
     };
@@ -92,6 +93,8 @@ void PS4Driver::process(Gamepad * gamepad, uint8_t * outBuffer) {
         default:                                     ps4Report.dpad = PS4_HAT_NOTHING;   break;
     }
 
+    bool anyA2A3A4 = gamepad->pressedA2() || gamepad->pressedA3() || gamepad->pressedA4();
+
     ps4Report.button_south    = gamepad->pressedB1();
     ps4Report.button_east     = gamepad->pressedB2();
     ps4Report.button_west     = gamepad->pressedB3();
@@ -100,12 +103,12 @@ void PS4Driver::process(Gamepad * gamepad, uint8_t * outBuffer) {
     ps4Report.button_r1       = gamepad->pressedR1();
     ps4Report.button_l2       = gamepad->pressedL2();
     ps4Report.button_r2       = gamepad->pressedR2();
-    ps4Report.button_select   = options.switchTpShareForDs4 ? gamepad->pressedA2() : gamepad->pressedS1();
+    ps4Report.button_select   = options.switchTpShareForDs4 ? anyA2A3A4 : gamepad->pressedS1();
     ps4Report.button_start    = gamepad->pressedS2();
     ps4Report.button_l3       = gamepad->pressedL3();
     ps4Report.button_r3       = gamepad->pressedR3();
     ps4Report.button_home     = gamepad->pressedA1();
-    ps4Report.button_touchpad = options.switchTpShareForDs4 ? gamepad->pressedS1() : gamepad->pressedA2();
+    ps4Report.button_touchpad = options.switchTpShareForDs4 ? gamepad->pressedS1() : anyA2A3A4;
 
     ps4Report.left_stick_x = static_cast<uint8_t>(gamepad->state.lx >> 8);
     ps4Report.left_stick_y = static_cast<uint8_t>(gamepad->state.ly >> 8);
@@ -121,9 +124,18 @@ void PS4Driver::process(Gamepad * gamepad, uint8_t * outBuffer) {
         ps4Report.right_trigger = gamepad->pressedR2() ? 0xFF : 0;
     }
 
-    // set touchpad to nothing
-    touchpadData.p1.unpressed = 1;
-    touchpadData.p2.unpressed = 1;
+    // if the touchpad is pressed (note A2 vs. S1 choice above), emulate one finger of the touchpad
+    touchpadData.p1.unpressed = ps4Report.button_touchpad ? 0 : 1;
+    ps4Report.touchpad_active = ps4Report.button_touchpad ? 0x01 : 0x00;
+    if (ps4Report.button_touchpad) {
+        if (gamepad->pressedA3()) {
+            touchpadData.p1.set_x(PS4_TP_X_MIN);
+        } else if (gamepad->pressedA4()) {
+            touchpadData.p1.set_x(PS4_TP_X_MAX);
+        } else {
+            touchpadData.p1.set_x(PS4_TP_X_MAX / 2);
+        }
+    }
     ps4Report.touchpad_data = touchpadData;
 
     // Wake up TinyUSB device

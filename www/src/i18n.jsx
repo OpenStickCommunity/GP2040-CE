@@ -5,6 +5,7 @@ import en from './Locales/en/Index';
 import zhCN from './Locales/zh-CN/Index';
 import ptBR from './Locales/pt-BR/Index';
 import deDE from './Locales/de-DE/Index';
+import jaJP from './Locales/ja-JP/Index';
 
 i18n
 	.use(LanguageDetector)
@@ -18,7 +19,7 @@ i18n
 		detection: {
 			order: ['localStorage', 'navigator'],
 		},
-		resources: { en, 'pt-BR': ptBR, 'zh-CN': zhCN, 'de-DE': deDE },
+		resources: { en, 'pt-BR': ptBR, 'zh-CN': zhCN, 'de-DE': deDE, 'ja-JP': jaJP },
 	});
 
 export default i18n;

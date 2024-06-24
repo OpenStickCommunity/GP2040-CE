@@ -3,7 +3,6 @@ export default {
 	'backup-label': 'Daten-Backup und Wiederherstellung',
 	'config-label': 'Konfiguration',
 	'custom-theme-label': 'Benutzerdefinierte LED Thema',
-	'dangerZone-label': 'Gefahrenzone',
 	'display-config-label': 'Display Konfiguration',
 	'docs-label': 'Dokumentation',
 	'github-label': 'GitHub',
@@ -23,7 +22,8 @@ export default {
 	'reboot-modal-button-progress-label': 'Starte neu',
 	'reboot-modal-button-success-label': 'Fertig!',
 	'reboot-modal-label': 'Neustart?',
-	'reboot-modal-success': 'Neustart ausgeführt, dieser Browser-Tab kann nun geschlossen werden.',
+	'reboot-modal-success':
+		'Neustart ausgeführt, dieser Browser-Tab kann nun geschlossen werden.',
 	'resetSettings-label': 'Neustart Einstellungen',
 	'settings-label': 'Einstellungen',
 };

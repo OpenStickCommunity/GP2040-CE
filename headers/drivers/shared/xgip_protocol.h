@@ -110,7 +110,7 @@ private:
     bool chunkEnded;                // did we hit the end of the chunk successfully?
     uint8_t packet[64];             // for output packets
     uint16_t packetLength;          // LAST SENT packet length
-    uint8_t * data;                 // Total data in this packet
+    uint8_t data[1024];             // Total data in this packet
     uint16_t dataLength;            // actual length of data
     bool isValidPacket;             // is this a valid packet or did we get an error?
 };

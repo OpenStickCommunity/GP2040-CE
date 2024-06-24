@@ -8,12 +8,10 @@ export default {
 	'input-macro-wait-duration-label': 'Warte Dauer',
 	'input-macro-time-label-ms': 'ms',
 	'input-macro-time-label-frames': 'frame(s)',
-	'input-macro-warning': 'Der Makro-Tasten-Pin ist nicht zugewiesen. "Benutzt Tasten" Option wird deaktiviert.',
-	'input-macro-pin-label': 'Makro Tasten Pin',
 	'input-macro-macro-label-label': 'Bezeichnung',
 	'input-macro-type': {
 		press: 'Drücken',
 		'hold-repeat': 'Wiederholung Halten',
-		'toggle': 'Umschalten',
+		toggle: 'Umschalten',
 	},
 };

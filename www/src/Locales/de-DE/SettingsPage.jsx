@@ -3,14 +3,14 @@ export default {
 	'input-mode-label': 'Eingabemodus',
 	'input-mode-extra-label': 'Touchpad und Share-Taste vertauschen',
 	'input-mode-options': {
-        none: 'Kein Modus ausgewählt',
+		none: 'Kein Modus ausgewählt',
 		xinput: 'XInput',
 		'nintendo-switch': 'Nintendo Switch',
 		ps3: 'PS3/DirectInput',
 		keyboard: 'Tastatur',
 		ps4: 'PS4',
 	},
-    'boot-input-mode-label': 'Eingabemodi beim Start',
+	'boot-input-mode-label': 'Eingabemodi beim Start',
 	'ps4-mode-options': {
 		controller: 'Controller',
 		arcadestick: 'Arcade Stick',
@@ -23,7 +23,7 @@ export default {
 	},
 	'socd-cleaning-mode-label': 'SOCD Säuberungsmodus',
 	'socd-cleaning-mode-note':
-		'Hinweis: PS4, PS3 und Nintendo Switch modi unterstützen nicht die SOCD-Säuberung auf \'Aus\' und verwenden standardmäßig den neutralen SOCD-Säuberungsmodus.',
+		"Hinweis: PS4, PS3 und Nintendo Switch modi unterstützen nicht die SOCD-Säuberung auf 'Aus' und verwenden standardmäßig den neutralen SOCD-Säuberungsmodus.",
 	'socd-cleaning-mode-options': {
 		'up-priority': 'Hoch-Taste Priorität',
 		neutral: 'Neutral',
@@ -33,11 +33,9 @@ export default {
 	},
 	'profile-number-label': 'Profil Nummer',
 	'debounce-delay-label': 'Entprellverzögerung in Millisekunden',
-	'ps4-compatibility-label':
-		'Für <strong>PS5-Kompatibilität</strong>, verwenden Sie "Arcade Stick" und aktivieren Sie das PS Durchleitung Add-on<br/>Für <strong>PS4-Unterstützung</strong>, verwenden Sie "Controller" und aktivieren Sie das PS4-Modus-Add-On, wenn Sie die erforderlichen Dateien haben.',
 	'hotkey-settings-label': 'Hotkey Einstellungen',
 	'hotkey-settings-sub-header':
-		"Der Schieberegler <1>Fn</1> bietet eine zuweisbare Funktionstaste auf der <3 exact='true' to='/pin-mapping'>Pin-Zuweisungen</3>-Seite. Durch Auswahl der <1>Fn</1>-Schieberegleroption muss die Funktionstaste zusammen mit den ausgewählten Hotkey-Einstellungen gehalten werden.<5 />Wählen Sie außerdem <1>None</1> aus dem Dropdown-Menü, um einer Taste keine Zuordnung zuzuweisen.",
+		"Der Schieberegler <strong>Fn</strong> bietet eine zuweisbare Funktionstaste auf der <link_pinmap>Pin-Zuweisungen</link_pinmap>-Seite. Durch Auswahl der <strong>Fn</strong>-Schieberegleroption muss die Funktionstaste zusammen mit den ausgewählten Hotkey-Einstellungen gehalten werden.<br />Wählen Sie außerdem <strong>None</strong> aus dem Dropdown-Menü, um einer Taste keine Zuordnung zuzuweisen.",
 	'hotkey-settings-warning':
 		'Funktionstaste ist nicht zugewiesen. Der Fn Schieberegler wird deaktiviert.',
 	'hotkey-actions': {
@@ -75,6 +73,7 @@ export default {
 		'load-profile-2': 'Lade Profil #2',
 		'load-profile-3': 'Lade Profil #3',
 		'load-profile-4': 'Lade Profil #4',
+		'next-profile': 'Nächstes Profil',
 		'reboot-default': 'GP2040-CE Neustarten',
 	},
 	'forced-setup-mode-label': 'Erzwungener Einrichtungsmodus',

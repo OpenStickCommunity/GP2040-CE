@@ -47,11 +47,7 @@ const ColorScheme = () => {
 	};
 
 	return (
-		<DropdownButton
-			variant="secondary"
-			align="end"
-			title={<MoonStarsIcon />}
-		>
+		<DropdownButton variant="secondary" align="end" title={<MoonStarsIcon />}>
 			{translatedDropdownOptions.map((option) => (
 				<Dropdown.Item
 					key={option.scheme}

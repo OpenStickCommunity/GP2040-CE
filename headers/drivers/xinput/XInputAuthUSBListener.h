@@ -17,7 +17,6 @@ public:
 private:
     uint8_t xinput_dev_addr;
     uint8_t xinput_instance;
-    bool dongle_ready;
     bool mounted;
 };
 

@@ -17,6 +17,20 @@ export const DEFAULT_KEYBOARD_MAPPING = {
 	R3: 51,
 	A1: 0,
 	A2: 0,
+	A3: 0,
+	A4: 0,
+	E1: 0,
+	E2: 0,
+	E3: 0,
+	E4: 0,
+	E5: 0,
+	E6: 0,
+	E7: 0,
+	E8: 0,
+	E9: 0,
+	E10: 0,
+	E11: 0,
+	E12: 0,
 };
 
 export const KEY_CODES = [

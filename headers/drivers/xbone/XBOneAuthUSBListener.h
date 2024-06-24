@@ -23,7 +23,6 @@ private:
     void process_report_queue();
     uint8_t xbone_dev_addr;
     uint8_t xbone_instance;
-    bool dongle_ready;
     bool mounted;
     XGIPProtocol incomingXGIP;
     XGIPProtocol outgoingXGIP;

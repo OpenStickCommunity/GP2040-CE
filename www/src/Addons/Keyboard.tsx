@@ -50,7 +50,9 @@ const Keyboard = ({
 		<Section title={t('AddonsConfig:keyboard-host-header-text')}>
 			<div
 				id="KeyboardHostAddonOptions"
-				hidden={!(values.KeyboardHostAddonEnabled && getAvailablePeripherals('usb'))}
+				hidden={
+					!(values.KeyboardHostAddonEnabled && getAvailablePeripherals('usb'))
+				}
 			>
 				<Row className="mb-3">
 					<p>{t('AddonsConfig:keyboard-host-sub-header-text')}</p>
@@ -62,22 +64,32 @@ const Keyboard = ({
 					/>
 				</Row>
 			</div>
-            {getAvailablePeripherals('usb') ?
-			<FormCheck
-				label={t('Common:switch-enabled')}
-				type="switch"
-				id="KeyboardHostAddonButton"
-				reverse
-				isInvalid={false}
-				checked={Boolean(values.KeyboardHostAddonEnabled)}
-				onChange={(e) => {
-					handleCheckbox('KeyboardHostAddonEnabled', values);
-					handleChange(e);
-				}}
-			/>
-            :
-            <FormLabel><Trans ns="PeripheralMapping" i18nKey="peripheral-toggle-unavailable" values={{'name':'USB'}}><NavLink exact="true" to="/peripheral-mapping">{t('PeripheralMapping:header-text')}</NavLink></Trans></FormLabel>
-            }
+			{getAvailablePeripherals('usb') ? (
+				<FormCheck
+					label={t('Common:switch-enabled')}
+					type="switch"
+					id="KeyboardHostAddonButton"
+					reverse
+					isInvalid={false}
+					checked={Boolean(values.KeyboardHostAddonEnabled)}
+					onChange={(e) => {
+						handleCheckbox('KeyboardHostAddonEnabled', values);
+						handleChange(e);
+					}}
+				/>
+			) : (
+				<FormLabel>
+					<Trans
+						ns="PeripheralMapping"
+						i18nKey="peripheral-toggle-unavailable"
+						values={{ name: 'USB' }}
+					>
+						<NavLink exact="true" to="/peripheral-mapping">
+							{t('PeripheralMapping:header-text')}
+						</NavLink>
+					</Trans>
+				</FormLabel>
+			)}
 		</Section>
 	);
 };

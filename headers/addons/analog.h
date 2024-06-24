@@ -49,8 +49,12 @@
 #define FORCED_CIRCULARITY_ENABLED 0
 #endif
 
-#ifndef DEFAULT_ANALOG_DEADZONE
-#define DEFAULT_ANALOG_DEADZONE 5
+#ifndef DEFAULT_INNER_DEADZONE
+#define DEFAULT_INNER_DEADZONE 5
+#endif
+
+#ifndef DEFAULT_OUTER_DEADZONE
+#define DEFAULT_OUTER_DEADZONE 95
 #endif
 
 #ifndef AUTO_CALIBRATE_ENABLED
@@ -76,8 +80,7 @@ private:
 	static float readPin(int pin, uint16_t center, bool autoCalibrate);
 	static uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
 	static float magnitudeCalculation(float x, float y, float& x_magnitude, float& y_magnitude);
-	static void radialDeadzone(float& x, float& y, float deadzone, float x_magnitude, float y_magnitude, float magnitude);
-	static void adjustCircularity(float& x, float& y, float x_magnitude, float y_magnitude, float magnitude);
+	static void radialDeadzone(float& x, float& y, float in_deadzone, float out_deadzone, float x_magnitude, float y_magnitude, float magnitude, bool circularity);
 };
 
 #endif  // _Analog_H_

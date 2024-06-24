@@ -61,9 +61,13 @@ export const analogScheme = {
 		.number()
 		.label('Force Circularity')
 		.validateRangeWhenValue('AnalogInputEnabled', 0, 1),
-	analog_deadzone: yup
+	inner_deadzone: yup
 		.number()
-		.label('Deadzone Size (%)')
+		.label('Inner Deadzone Size (%)')
+		.validateRangeWhenValue('AnalogInputEnabled', 0, 100),
+	outer_deadzone: yup
+		.number()
+		.label('Outer Deadzone Size (%)')
 		.validateRangeWhenValue('AnalogInputEnabled', 0, 100),
 	auto_calibrate: yup
 		.number()
@@ -82,7 +86,8 @@ export const analogState = {
 	analogAdc2Mode: 2,
 	analogAdc2Invert: 0,
 	forced_circularity: 0,
-	analog_deadzone: 5,
+	inner_deadzone: 5,
+	outer_deadzone: 95,
 	auto_calibrate: 0,
 };
 
@@ -226,13 +231,26 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 				<Row className="mb-3">
 					<FormControl
 						type="number"
-						label={t('AddonsConfig:analog-deadzone-size')}
-						name="analog_deadzone"
+						label={t('AddonsConfig:inner-deadzone-size')}
+						name="inner_deadzone"
 						className="form-control-sm"
 						groupClassName="col-sm-3 mb-3"
-						value={values.analog_deadzone}
-						error={errors.analog_deadzone}
-						isInvalid={errors.analog_deadzone}
+						value={values.inner_deadzone}
+						error={errors.inner_deadzone}
+						isInvalid={errors.inner_deadzone}
+						onChange={handleChange}
+						min={0}
+						max={100}
+					/>
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:outer-deadzone-size')}
+						name="outer_deadzone"
+						className="form-control-sm"
+						groupClassName="col-sm-3 mb-3"
+						value={values.outer_deadzone}
+						error={errors.outer_deadzone}
+						isInvalid={errors.outer_deadzone}
 						onChange={handleChange}
 						min={0}
 						max={100}

@@ -10,7 +10,8 @@
 #define ADC_MAX ((1 << 12) - 1) // 4095
 #define ADC_PIN_OFFSET 26
 #define ANALOG_MAX 1.0f
-#define ANALOG_CENTER ANALOG_MAX / 2
+#define ANALOG_CENTER 0.5f
+#define ANALOG_MINIMUM 0.0f
 
 bool AnalogInput::available() {
     return Storage::getInstance().getAddonOptions().analogOptions.enabled;
@@ -54,7 +55,8 @@ void AnalogInput::process()
     float adc_1_y = ANALOG_CENTER;
     float adc_2_x = ANALOG_CENTER;
     float adc_2_y = ANALOG_CENTER;
-    float adc_deadzone = analogOptions.analog_deadzone / 200.0f;
+    float in_deadzone = analogOptions.inner_deadzone / 100.0f;
+    float out_deadzone = analogOptions.outer_deadzone / 100.0f;
     float x_magnitude_1 = 0.0f;
     float y_magnitude_1 = 0.0f;
     float x_magnitude_2 = 0.0f;
@@ -116,25 +118,20 @@ void AnalogInput::process()
             }
         }
 
-        if (adc_deadzone >= 0.0f || analogOptions.forced_circularity == true) {
+        if (in_deadzone >= 0.0f || analogOptions.forced_circularity == true) {
             adc_pairs[i].xy_magnitude = magnitudeCalculation(adc_pairs[i].x_value, adc_pairs[i].y_value, 
                                                             adc_pairs[i].x_magnitude, adc_pairs[i].y_magnitude);
 
-            if (adc_deadzone >= 0.0f) {
-                if (adc_pairs[i].xy_magnitude < adc_deadzone) {
+            if (in_deadzone >= 0.0f) {
+                if (adc_pairs[i].xy_magnitude < in_deadzone) {
                     adc_pairs[i].x_value = ANALOG_CENTER;
                     adc_pairs[i].y_value = ANALOG_CENTER;
                 }
                 else {
-                    radialDeadzone(adc_pairs[i].x_value, adc_pairs[i].y_value, adc_deadzone, 
-                                    adc_pairs[i].x_magnitude, adc_pairs[i].y_magnitude, adc_pairs[i].xy_magnitude);
+                    radialDeadzone(adc_pairs[i].x_value, adc_pairs[i].y_value, in_deadzone, out_deadzone, 
+                                    adc_pairs[i].x_magnitude, adc_pairs[i].y_magnitude, adc_pairs[i].xy_magnitude, 
+                                    analogOptions.forced_circularity);
                 }
-            }
-            if (adc_pairs[i].x_value != ANALOG_CENTER && adc_pairs[i].y_value != ANALOG_CENTER && 
-                analogOptions.forced_circularity == true && adc_pairs[i].xy_magnitude > ANALOG_CENTER) {
-
-                adjustCircularity(adc_pairs[i].x_value, adc_pairs[i].y_value, 
-                                adc_pairs[i].x_magnitude, adc_pairs[i].y_magnitude, adc_pairs[i].xy_magnitude);
             }
         }
 
@@ -185,17 +182,16 @@ float AnalogInput::magnitudeCalculation(float x, float y, float& x_magnitude, fl
     return std::sqrt((x_magnitude * x_magnitude) + (y_magnitude * y_magnitude));
 }
 
-void AnalogInput::radialDeadzone(float& x, float& y, float deadzone, float x_magnitude, float y_magnitude, float xy_magnitude) {
-    float scaling_factor = (xy_magnitude - deadzone) / (1.0f - 1.6f * deadzone);
-    
+void AnalogInput::radialDeadzone(float& x, float& y, float in_deadzone, float out_deadzone, float x_magnitude, float y_magnitude, float xy_magnitude, bool circularity) {
+    float scaling_factor = (xy_magnitude - in_deadzone) / (out_deadzone - in_deadzone);
+
+    if (circularity == true) {
+        scaling_factor = std::fmin(scaling_factor, ANALOG_CENTER);
+    }
+
     x = ((x_magnitude / xy_magnitude) * scaling_factor) + ANALOG_CENTER;
     y = ((y_magnitude / xy_magnitude) * scaling_factor) + ANALOG_CENTER;
 
-    x = std::fmin(x, 1.0f);
-    y = std::fmin(y, 1.0f);
-}
-
-void AnalogInput::adjustCircularity(float& x, float& y, float x_magnitude, float y_magnitude, float xy_magnitude) {
-    x = ((x_magnitude / xy_magnitude) * ANALOG_CENTER + ANALOG_CENTER);
-    y = ((y_magnitude / xy_magnitude) * ANALOG_CENTER + ANALOG_CENTER);
+    x = std::clamp(x, ANALOG_MINIMUM, ANALOG_MAX);
+    y = std::clamp(y, ANALOG_MINIMUM, ANALOG_MAX);
 }

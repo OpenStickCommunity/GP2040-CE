@@ -22,7 +22,6 @@ export default {
 	'analog-adc-2-mode-label': 'Modo Analógico 2',
 	'analog-adc-2-invert-label': 'Inverter Analógico 2',
 	'analog-force-circularity': 'Forçar Circularidade',
-	'analog-deadzone-size': 'Tamanho da Zona Morta (%)',
 	'analog-auto-calibrate': 'Calibração Automática',
 	'turbo-header-text': 'Turbo',
 	'turbo-button-pin-label': 'Pino do Turbo',
@@ -70,10 +69,6 @@ export default {
 	'i2c-analog-ads1219-speed-label': 'Velocidade do I2C Analógico ADS1219',
 	'i2c-analog-ads1219-address-label': 'Endereço do I2C Analógico ADS1219',
 	'dual-directional-input-header-text': 'Entrada Dual Direcional',
-	'dual-directional-input-up-pin-label': 'Pino de Cima da Entrada Dual',
-	'dual-directional-input-down-pin-label': 'Pino de Baixo da Entrada Dual',
-	'dual-directional-input-left-pin-label': 'Pino da Esquerda da Entrada Dual',
-	'dual-directional-input-right-pin-label': 'Pino da Direita da Entrada Dual',
 	'dual-directional-input-dpad-mode-label': 'Modo D-Pad Dual',
 	'dual-directional-input-combine-mode-label': 'Modo de Combinação',
 	'dual-directional-input-four-way-joystick-mode-label':
@@ -101,9 +96,6 @@ export default {
 	'buzzer-speaker-header-text': 'Alto-falante do Buzzer',
 	'buzzer-speaker-pin-label': 'Pino do Buzzer',
 	'buzzer-speaker-volume-label': 'Volume do Buzzer',
-	'extra-button-header-text': 'Configuração de Botão Extra',
-	'extra-button-pin-label': 'Pino do Botão Extra',
-	'extra-button-map-label': 'Botão Extra',
 	'player-number-header-text': 'Número do Jogador (APENAS X-INPUT)',
 	'player-number-sub-header-text':
 		'ATENÇÃO: ATIVE ESTA OPÇÃO APENAS SE VOCÊ ESTIVER CONECTANDO VÁRIOS DISPOSITIVOS GP2040-CE COM NÚMERO DE JOGADOR HABILITADO',
@@ -114,13 +106,6 @@ export default {
 		'Observação: os modos PS4, PS3 e Nintendo Switch não suportam a configuração SOCD Cleaning como Desligada e usarão o modo SOCD Cleaning Neutro por padrão.',
 	'socd-cleaning-mode-selection-slider-mode-default-label':
 		'Modo de Controle Deslizante SOCD Padrão',
-	'socd-cleaning-mode-selection-slider-mode-one-label':
-		'Modo de Controle Deslizante SOCD Um',
-	'socd-cleaning-mode-selection-slider-pin-one-label': 'Pino Um',
-	'socd-cleaning-mode-selection-slider-mode-two-label':
-		'Modo de Controle Deslizante SOCD Dois',
-	'socd-cleaning-mode-selection-slider-pin-two-label': 'Pino Dois',
-	'ps4-mode-header-text': 'Modo PS4',
 	'ps4-mode-sub-header-text':
 		'<0>!!!! AVISO: O GP2040-CE NUNCA FORNECERÁ ESSES ARQUIVOS !!!!</0> <1>Carregue os 3 arquivos necessários e clique no botão "Verificar e Salvar" para usar o Modo PS4.</1>',
 	'ps4-mode-private-key-label': 'Chave Privada (PEM)',
@@ -145,9 +130,6 @@ export default {
 	'keyboard-host-header-text': 'Configuração de Host de Teclado',
 	'keyboard-host-sub-header-text':
 		'A seguir, defina os pinos de dados +, - e 5V (opcional). Apenas os pinos + e 5V podem ser configurados.',
-	'keyboard-host-d-plus-label': 'D+',
-	'keyboard-host-d-minus-label': 'D-',
-	'keyboard-host-five-v-label': 'Alimentação 5V (opcional)',
 	'input-history-header-text': 'Histórico de Entrada',
 	'input-history-length-label': 'Comprimento do histórico (caracteres)',
 	'input-history-col-label': 'Coluna',

@@ -7,7 +7,7 @@ import Section from '../Components/Section';
 
 import FormControl from '../Components/FormControl';
 import FormSelect from '../Components/FormSelect';
-import { BUTTON_MASKS } from '../Data/Buttons';
+import { BUTTON_MASKS_OPTIONS } from '../Data/Buttons';
 
 export const focusModeScheme = {
 	FocusModeAddonEnabled: yup
@@ -93,7 +93,7 @@ const FocusMode = ({
 						/>
 					</div>
 					<Row>
-						{BUTTON_MASKS.map((mask) =>
+						{BUTTON_MASKS_OPTIONS.map((mask) =>
 							values.focusModeButtonLockMask & mask.value ? (
 								<FormSelect
 									key={`focusModeButtonLockMask-${mask.label}`}
@@ -111,7 +111,7 @@ const FocusMode = ({
 										);
 									}}
 								>
-									{BUTTON_MASKS.map((o, i) => (
+									{BUTTON_MASKS_OPTIONS.map((o, i) => (
 										<option
 											key={`focusModeButtonLockMask-option-${i}`}
 											value={o.value}
@@ -138,7 +138,7 @@ const FocusMode = ({
 								);
 							}}
 						>
-							{BUTTON_MASKS.map((o, i) => (
+							{BUTTON_MASKS_OPTIONS.map((o, i) => (
 								<option
 									key={`focusModeButtonLockMask-option-${i}`}
 									value={o.value}
