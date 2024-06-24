@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.13)
 include(CMakePrintHelpers)
 
 
-
+set(GP2040_BOARDCONFIG OSUMGP-2040)
 
 # initialize the SDK based on PICO_SDK_PATH
 # note: this must happen before project()
