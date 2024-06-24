@@ -5,7 +5,6 @@ export default {
 	'input-mode-label': '输入模式',
 	'current-input-mode-label': '当前输入模式',
 	'input-mode-extra-label': '触摸板(Touchpad)和分享键(Share)互换',
-	'ps4-report-hack': 'PS4 回报率破解',
 	'input-mode-options': {
 		none: '模式未选择',
 		xinput: 'XInput',
@@ -56,13 +55,11 @@ export default {
 	},
 	'profile-number-label': '档案编号',
     'debounce-delay-label': '去抖动延迟 (以毫秒为单位)',
-	'ps4-compatibility-label':
-		'对于 <strong>兼容PS5</strong>, 请使用“街机摇杆”模式并启用PS直通验证插件<br/>对于 <strong>支持PS4</strong>, 如果你已经上传了必要文件，请使用“游戏控制器”模式并启用PS4模式插件。',
 	'hotkey-settings-label': '快捷键设置',
 	'hotkey-settings-sub-header':
-		"<1>Fn</1> 组合映射在<4 exact='true' to='/pin-mapping'>引脚映射</4>页面提供了一个可映射的Function按键。 要选择 <1>Fn</1> 组合映射选项，请同时按住 Function 按键和其他快捷键。<5 />此外, 可从下拉列表中选择 <1>None</1> 以取消分配按钮",
-	'hotkey-settings-warning': 
-        'Function 按键未映射引脚时，Fn 组合映射将会被禁用',
+		"<strong>Fn</strong> 组合映射在<link_pinmap>引脚映射</link_pinmap>页面提供了一个可映射的Function按键。 要选择 <strong>Fn</strong> 组合映射选项，请同时按住 Function 按键和其他快捷键。<br />此外, 可从下拉列表中选择 <strong>None</strong> 以取消分配按钮",
+	'hotkey-settings-warning':
+		'Function 按键未映射引脚时，Fn 组合映射将会被禁用',
 	'hotkey-actions': {
 		'no-action': '无',
 		'dpad-digital': '十字键模式',
@@ -114,6 +111,6 @@ export default {
 	'4-way-joystick-mode-label': '4向摇杆模式',
 	'lock-hotkeys-label': '锁定快捷键',
 	'keyboard-mapping-header-text': '键盘映射',
-	'keyboard-mapping-sub-header-text': 
+	'keyboard-mapping-sub-header-text':
         '使用下方的表格重新配置按键映射。',
 };
