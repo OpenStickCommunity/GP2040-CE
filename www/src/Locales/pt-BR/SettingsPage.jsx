@@ -31,11 +31,9 @@ export default {
 		off: 'Desativado',
 	},
 	'profile-number-label': 'Número de Perfil',
-	'ps4-compatibility-label':
-		'Para <strong>compatibilidade com PS5</strong>, use "Arcade Stick" e ative o complemento PS Passthrough<br/>Para <strong>suporte ao PS4</strong>, use "Controle" e ative o complemento PS4 Mode se você tiver os arquivos necessários',
 	'hotkey-settings-label': 'Configurações de Teclas de Atalho',
 	'hotkey-settings-sub-header':
-		'O controle deslizante <1>Fn</1> fornece um botão de função mapeável na página de <3 to="/pin-mapping">Mapeamento de Pinos</3>. Ao selecionar a opção de controle deslizante <1>Fn</1>, o botão de função deve ser mantido junto com as configurações de teclas de atalho selecionadas.<5 />Além disso, selecione <1>Nenhum</1> no menu suspenso para desatribuir qualquer botão.',
+		'O controle deslizante <strong>Fn</strong> fornece um botão de função mapeável na página de <link_pinmap>Mapeamento de Pinos</link_pinmap>. Ao selecionar a opção de controle deslizante <strong>Fn</strong>, o botão de função deve ser mantido junto com as configurações de teclas de atalho selecionadas.<br />Além disso, selecione <strong>Nenhum</strong> no menu suspenso para desatribuir qualquer botão.',
 	'hotkey-settings-warning':
 		'O botão de função não está mapeado. O controle deslizante Fn será desativado.',
 	'hotkey-actions': {

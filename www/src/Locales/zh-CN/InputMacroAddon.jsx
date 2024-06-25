@@ -22,9 +22,6 @@ export default {
 	'input-macro-time-label-frames': '帧',
 	'input-macro-sub-header':
 		'注意：对于通过引脚映射的宏，请参见功能配置下的引脚映射页面。宏也可以分配给游戏手柄按钮，与相应的单个宏按钮结合使用。',
-	'input-macro-warning':
-		'宏按钮的引脚未被映射。“使用按键”选项将被禁用。',
-	'input-macro-pin-label': '宏按钮引脚',
 	'input-macro-macro-label-label': '标签',
 	'input-macro-type': {
 		press: '按下',
