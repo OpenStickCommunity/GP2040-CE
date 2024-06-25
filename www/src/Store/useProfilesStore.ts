@@ -28,7 +28,7 @@ type Actions = {
 	fetchProfiles: () => void;
 	setProfilePin: SetProfilePinType;
 	saveProfiles: () => Promise<object>;
-	// setProfile: (profileIndex: number, pins: ProfileType) => void;
+	setProfile: (profileIndex: number, pins: ProfilePinType) => void;
 };
 
 const DEFAULT_PIN_STATE = {
@@ -86,6 +86,13 @@ const useProfilesStore = create<State & Actions>()((set, get) => ({
 			loadingProfiles: false,
 		}));
 	},
+	setProfile: (profileIndex, pins) =>
+		set((state) => ({
+			...state,
+			profiles: state.profiles.map((profile, index) =>
+				index === profileIndex ? { ...profile, ...pins } : profile,
+			),
+		})),
 	setProfilePin: (
 		profileIndex,
 		pin,
