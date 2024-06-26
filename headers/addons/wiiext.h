@@ -299,6 +299,8 @@ private:
     bool dpadRight  = false;
 
     bool isAnalogTriggers = false;
+    bool isGyroscope = false;
+    bool isAccelerometer = false;
 
     uint16_t triggerLeft  = 0;
     uint16_t triggerRight = 0;
@@ -321,6 +323,10 @@ private:
     uint16_t accelerometerX = 0;
     uint16_t accelerometerY = 0;
     uint16_t accelerometerZ = 0;
+
+    uint16_t gyroscopeX = 0;
+    uint16_t gyroscopeY = 0;
+    uint16_t gyroscopeZ = 0;
 
     std::map<uint16_t, std::vector<WiiAnalogChange>> analogChanges = {
         {WII_ANALOG_TYPE_LEFT_STICK_X,{}},

@@ -115,6 +115,8 @@ void WiiExtensionInput::update() {
         //}
 
         isAnalogTriggers = false;
+        isAccelerometer = false;
+        isGyroscope = false;
 
         if (wii->extensionType == WII_EXTENSION_NUNCHUCK) {
             buttonZ = wii->getController()->buttons[WiiButtons::WII_BUTTON_Z];
@@ -128,6 +130,7 @@ void WiiExtensionInput::update() {
             accelerometerX = wii->getController()->motionState[WiiMotions::WII_MOTION_X];
             accelerometerY = wii->getController()->motionState[WiiMotions::WII_MOTION_Y];
             accelerometerZ = wii->getController()->motionState[WiiMotions::WII_MOTION_Z];
+            isAccelerometer = true;
 
             triggerLeft = 0;
             triggerRight = 0;
@@ -529,9 +532,19 @@ void WiiExtensionInput::updateAnalogState() {
 void WiiExtensionInput::updateMotionState() {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
 
-    gamepad->auxState.sensors.accelerometer.x = accelerometerX;
-    gamepad->auxState.sensors.accelerometer.y = accelerometerY;
-    gamepad->auxState.sensors.accelerometer.z = accelerometerZ;
+    gamepad->auxState.sensors.accelerometer.enabled = isAccelerometer;
+    if (isAccelerometer) {
+        gamepad->auxState.sensors.accelerometer.x = accelerometerX;
+        gamepad->auxState.sensors.accelerometer.y = accelerometerY;
+        gamepad->auxState.sensors.accelerometer.z = accelerometerZ;
+    }
+
+    gamepad->auxState.sensors.gyroscope.enabled = isGyroscope;
+    if (isGyroscope) {
+        gamepad->auxState.sensors.gyroscope.x = gyroscopeX;
+        gamepad->auxState.sensors.gyroscope.y = gyroscopeY;
+        gamepad->auxState.sensors.gyroscope.z = gyroscopeZ;
+    }
 }
 
 uint16_t WiiExtensionInput::getAverage(std::vector<WiiAnalogChange> const& changes) {
