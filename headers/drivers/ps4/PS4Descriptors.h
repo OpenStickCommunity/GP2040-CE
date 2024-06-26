@@ -98,6 +98,29 @@ struct TouchpadData {
   TouchpadXY p2;
 };
 
+struct PSSensor {
+  int16_t x;
+  int16_t y;
+  int16_t z;
+};
+
+typedef struct __attribute__((packed)) {
+  uint8_t battery;
+  PSSensor gyroscope;
+  PSSensor accelerometer;
+  uint8_t misc[5];
+  uint8_t powerPercent : 4;
+  uint8_t powerConnected : 1;
+  uint8_t headphonesConnected : 1;
+  uint8_t micConnected : 1;
+  uint8_t extensionConnected : 1;
+  uint8_t ext1 : 1;
+  uint8_t ext2 : 1;
+  uint8_t notConnected : 1;
+  uint8_t misc1 : 5;
+  uint8_t misc2;
+} PSSensorData;
+
 typedef struct __attribute__((packed)) {
   uint8_t report_id;
   uint8_t left_stick_x;
@@ -133,7 +156,8 @@ typedef struct __attribute__((packed)) {
   // 16 bit timing counter
   uint16_t axis_timing;
 
-  uint8_t gyro_accel_misc[21];
+  //uint8_t gyro_accel_misc[21];
+  PSSensorData gyro_accel_misc;
   uint8_t touchpad_active : 2;
   uint8_t padding : 6;
   uint8_t tpad_increment;

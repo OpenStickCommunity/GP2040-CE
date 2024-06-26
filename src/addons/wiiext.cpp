@@ -81,6 +81,8 @@ void WiiExtensionInput::process() {
         setButtonState(dpadLeft, WiiButtons::WII_BUTTON_LEFT);
         setButtonState(dpadRight, WiiButtons::WII_BUTTON_RIGHT);
 
+        updateMotionState();
+
         if (lastLeftX != leftX) lastLeftX = leftX;
         if (lastLeftY != leftY) lastLeftY = leftY;
         if (lastRightX != rightX) lastRightX = rightX;
@@ -122,6 +124,10 @@ void WiiExtensionInput::update() {
             leftY = map(wii->getController()->analogState[WiiAnalogs::WII_ANALOG_LEFT_Y],WII_ANALOG_PRECISION_3,0,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
             rightX = joystickMid;
             rightY = joystickMid;
+
+            accelerometerX = wii->getController()->motionState[WiiMotions::WII_MOTION_X];
+            accelerometerY = wii->getController()->motionState[WiiMotions::WII_MOTION_Y];
+            accelerometerZ = wii->getController()->motionState[WiiMotions::WII_MOTION_Z];
 
             triggerLeft = 0;
             triggerRight = 0;
@@ -516,8 +522,16 @@ void WiiExtensionInput::updateAnalogState() {
                     gamepad->state.rt = getDelta(currAxis->second, GAMEPAD_TRIGGER_MID);
                     break;
             }
-        }       
+        }
     }
+}
+
+void WiiExtensionInput::updateMotionState() {
+    Gamepad * gamepad = Storage::getInstance().GetGamepad();
+
+    gamepad->auxState.sensors.accelerometer.x = accelerometerX;
+    gamepad->auxState.sensors.accelerometer.y = accelerometerY;
+    gamepad->auxState.sensors.accelerometer.z = accelerometerZ;
 }
 
 uint16_t WiiExtensionInput::getAverage(std::vector<WiiAnalogChange> const& changes) {

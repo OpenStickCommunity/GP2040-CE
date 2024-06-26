@@ -67,6 +67,7 @@ private:
     uint8_t cur_nonce_id;
     PS4Report ps4Report;
     TouchpadData touchpadData;
+    PSSensorData sensorData;
     uint32_t last_report_timer;
     uint8_t send_nonce_part;
     uint32_t controllerType;

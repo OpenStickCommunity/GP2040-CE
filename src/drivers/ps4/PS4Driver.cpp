@@ -24,6 +24,13 @@ void PS4Driver::initialize() {
     touchpadData.p2.set_x(PS4_TP_X_MAX / 2);
     touchpadData.p2.set_y(PS4_TP_Y_MAX / 2);
 
+    sensorData.gyroscope.x = 0;
+    sensorData.gyroscope.y = 0;
+    sensorData.gyroscope.z = 0;
+    sensorData.accelerometer.x = 0;
+    sensorData.accelerometer.y = 0;
+    sensorData.accelerometer.z = 0;
+
     ps4Report = {
         .report_id = 0x01,
         .left_stick_x = PS4_JOYSTICK_MID,
@@ -34,7 +41,7 @@ void PS4Driver::initialize() {
         .button_west = 0, .button_south = 0, .button_east = 0, .button_north = 0,
         .button_l1 = 0, .button_r1 = 0, .button_l2 = 0, .button_r2 = 0,
         .button_select = 0, .button_start = 0, .button_l3 = 0, .button_r3 = 0, .button_home = 0,
-        .gyro_accel_misc = { }, .touchpad_active = 0, .padding = 0, .tpad_increment = 0,
+        .gyro_accel_misc = sensorData, .touchpad_active = 0, .padding = 0, .tpad_increment = 0,
         .touchpad_data = touchpadData,
         .mystery_2 = { }
     };
@@ -137,6 +144,10 @@ void PS4Driver::process(Gamepad * gamepad, uint8_t * outBuffer) {
         }
     }
     ps4Report.touchpad_data = touchpadData;
+
+    ps4Report.gyro_accel_misc.accelerometer.x = gamepad->auxState.sensors.accelerometer.x;
+    ps4Report.gyro_accel_misc.accelerometer.y = gamepad->auxState.sensors.accelerometer.y;
+    ps4Report.gyro_accel_misc.accelerometer.z = gamepad->auxState.sensors.accelerometer.z;
 
     // Wake up TinyUSB device
     if (tud_suspended())
