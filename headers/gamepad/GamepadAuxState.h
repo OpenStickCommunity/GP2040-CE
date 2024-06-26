@@ -16,28 +16,32 @@ struct GamepadAuxColor
 
 struct GamepadAux1DSensor
 {
-    double x;
+    bool enabled;
+    uint16_t x;
 };
 
 struct GamepadAux2DSensor
 {
-    double x;
-    double y;
+    bool enabled;
+    uint16_t x;
+    uint16_t y;
 };
 
 struct GamepadAux3DSensor
 {
-    double x;
-    double y;
-    double z;
+    bool enabled;
+    uint16_t x;
+    uint16_t y;
+    uint16_t z;
 };
 
 struct GamepadAux4DSensor
 {
-    double x;
-    double y;
-    double z;
-    double t;
+    bool enabled;
+    uint16_t x;
+    uint16_t y;
+    uint16_t z;
+    uint16_t t;
 };
 
 struct GamepadAuxHapticChannel

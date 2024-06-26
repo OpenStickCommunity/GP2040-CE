@@ -41,7 +41,8 @@ void PS4Driver::initialize() {
         .button_west = 0, .button_south = 0, .button_east = 0, .button_north = 0,
         .button_l1 = 0, .button_r1 = 0, .button_l2 = 0, .button_r2 = 0,
         .button_select = 0, .button_start = 0, .button_l3 = 0, .button_r3 = 0, .button_home = 0,
-        .gyro_accel_misc = sensorData, .touchpad_active = 0, .padding = 0, .tpad_increment = 0,
+        //.sensor_data = sensorData, .touchpad_active = 0, .padding = 0, .tpad_increment = 0,
+        .sensor_data = {}, .touchpad_active = 0, .padding = 0, .tpad_increment = 0,
         .touchpad_data = touchpadData,
         .mystery_2 = { }
     };
@@ -145,9 +146,17 @@ void PS4Driver::process(Gamepad * gamepad, uint8_t * outBuffer) {
     }
     ps4Report.touchpad_data = touchpadData;
 
-    ps4Report.gyro_accel_misc.accelerometer.x = gamepad->auxState.sensors.accelerometer.x;
-    ps4Report.gyro_accel_misc.accelerometer.y = gamepad->auxState.sensors.accelerometer.y;
-    ps4Report.gyro_accel_misc.accelerometer.z = gamepad->auxState.sensors.accelerometer.z;
+    if (gamepad->auxState.sensors.accelerometer.enabled) {
+        ps4Report.sensor_data.accelerometer.x = ((gamepad->auxState.sensors.accelerometer.x & 0xFF) << 8) | ((gamepad->auxState.sensors.accelerometer.x & 0xFF00) >> 8);
+        ps4Report.sensor_data.accelerometer.y = ((gamepad->auxState.sensors.accelerometer.y & 0xFF) << 8) | ((gamepad->auxState.sensors.accelerometer.y & 0xFF00) >> 8);
+        ps4Report.sensor_data.accelerometer.z = ((gamepad->auxState.sensors.accelerometer.z & 0xFF) << 8) | ((gamepad->auxState.sensors.accelerometer.z & 0xFF00) >> 8);
+    }
+
+    if (gamepad->auxState.sensors.gyroscope.enabled) {
+        ps4Report.sensor_data.gyroscope.x = ((gamepad->auxState.sensors.gyroscope.x & 0xFF) << 8) | ((gamepad->auxState.sensors.gyroscope.x & 0xFF00) >> 8);
+        ps4Report.sensor_data.gyroscope.y = ((gamepad->auxState.sensors.gyroscope.y & 0xFF) << 8) | ((gamepad->auxState.sensors.gyroscope.y & 0xFF00) >> 8);
+        ps4Report.sensor_data.gyroscope.z = ((gamepad->auxState.sensors.gyroscope.z & 0xFF) << 8) | ((gamepad->auxState.sensors.gyroscope.z & 0xFF00) >> 8);
+    }
 
     // Wake up TinyUSB device
     if (tud_suspended())
