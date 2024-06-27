@@ -12,7 +12,6 @@ namespace ConfigUtils {
 
     std::string toJSON(const Config& config);
     bool fromJSON(Config& config, const char* data, size_t dataLen);
-    bool fromLegacyStorage(Config& config);
 }
 
 #endif
