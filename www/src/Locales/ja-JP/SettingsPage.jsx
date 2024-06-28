@@ -49,16 +49,23 @@ export default {
 	},
 	'profile-number-label': 'プロファイル番号',
 	'debounce-delay-label': 'チャタリング除去ディレイ(ミリ秒)',
-	'ps4-mode-explanation-text': 'PS4モードはGP2040-CEコントローラを認証済みPS4コントローラとして動作させることができます。',
-	'ps4-mode-warning-text': '<span>⏳ 警告 ⏳:</span> 認証無しの場合8分でPS4はタイムアウトして切断します.',
-	'ps4-usb-host-mode-text': '<span>補足: </span> USB 周辺機器が有効化されており、PS4に互換性のあるデバイスが接続されていることを確認してください。',
-	'ps5-mode-explanation-text': 'PS5モードはGP2040-CEコントローラを認証済みPS5互換アケコンとして動作させることができます。',
-	'ps5-mode-warning-text': '<span>⏳ 警告 ⏳:</span> 認証無しの場合8分でPS5はタイムアウトして切断します.',
-	'ps5-usb-host-mode-text': '<span>補足: </span> USB 周辺機器が有効化されており、PS5に互換性のあるデバイスが接続されていることを確認してください。',
-	'xbone-mode-text': '<span>補足: </span> XBox One モードで正しく認証するにははUSBホスト接続とUSBドングルが必要です。',
+	'ps4-mode-explanation-text':
+		'PS4モードはGP2040-CEコントローラを認証済みPS4コントローラとして動作させることができます。',
+	'ps4-mode-warning-text':
+		'<span>⏳ 警告 ⏳:</span> 認証無しの場合8分でPS4はタイムアウトして切断します.',
+	'ps4-usb-host-mode-text':
+		'<span>補足: </span> USB 周辺機器が有効化されており、PS4に互換性のあるデバイスが接続されていることを確認してください。',
+	'ps5-mode-explanation-text':
+		'PS5モードはGP2040-CEコントローラを認証済みPS5互換アケコンとして動作させることができます。',
+	'ps5-mode-warning-text':
+		'<span>⏳ 警告 ⏳:</span> 認証無しの場合8分でPS5はタイムアウトして切断します.',
+	'ps5-usb-host-mode-text':
+		'<span>補足: </span> USB 周辺機器が有効化されており、PS5に互換性のあるデバイスが接続されていることを確認してください。',
+	'xbone-mode-text':
+		'<span>補足: </span> XBox One モードで正しく認証するにははUSBホスト接続とUSBドングルが必要です。',
 	'hotkey-settings-label': 'ホットキー設定',
 	'hotkey-settings-sub-header':
-		"<strong>Fn</strong>スライダーは<link_pinmap>端子割り当て設定</link_pinmap>ページで割り当て可能なファンクションボタン機能を有効化します。<strong>Fn</strong>スライダーを有効化することで、選択されたホットキーと同時にファンクションボタンを押す様に設定できます。<br />また、<strong>None</strong>を選択することでボタンの割り当てを解除できます。",
+		'<strong>Fn</strong>スライダーは<link_pinmap>端子割り当て設定</link_pinmap>ページで割り当て可能なファンクションボタン機能を有効化します。<strong>Fn</strong>スライダーを有効化することで、選択されたホットキーと同時にファンクションボタンを押す様に設定できます。<br />また、<strong>None</strong>を選択することでボタンの割り当てを解除できます。',
 	'hotkey-settings-warning':
 		'ファンクションボタンが未割り当てです。Fnスライダーは無効化されます。',
 	'hotkey-actions': {
@@ -96,7 +103,6 @@ export default {
 		'load-profile-2': 'プロファイル #2をロード',
 		'load-profile-3': 'プロファイル #3をロード',
 		'load-profile-4': 'プロファイル #4をロード',
-		'next-profile': '次のプロファイルをロード',
 		'reboot-default': 'GP2040-CEを再起動',
 		'next-profile': '次のプロファイル',
 	},

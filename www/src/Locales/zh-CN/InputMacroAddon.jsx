@@ -1,13 +1,10 @@
 export default {
 	'input-macro-board-led-enabled': '使用板载 LED 显示宏的状态',
 	'input-macro-macro-enabled': '启用',
-	'input-macro-macro-exclusive':
-		'独占 (不能切换到另一个宏)',
-	'input-macro-macro-interruptible':
-		'可打断 (用户输入可取消宏)',
+	'input-macro-macro-exclusive': '独占 (不能切换到另一个宏)',
+	'input-macro-macro-interruptible': '可打断 (用户输入可取消宏)',
 	'input-macro-macro-show-frames': '显示帧数 (1 Frame = 16.666 ms)',
-	'input-macro-macro-uses-buttons':
-		'使用宏按钮 + 游戏控制器按键来触发',
+	'input-macro-macro-uses-buttons': '使用宏按钮 + 游戏控制器按键来触发',
 	'input-macro-macro-button-pin-plus': '按键分配:',
 	'input-macro-header-text': '宏设定概要',
 	'input-macro-1-header-text': '宏 1 设定',
@@ -28,6 +25,6 @@ export default {
 		'hold-repeat': '按住重复',
 		toggle: '切换',
 	},
-    'macro-name': '宏名称',
+	'macro-name': '宏名称',
 	'macro-activation-type': '宏的激活类型',
 };

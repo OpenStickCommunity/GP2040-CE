@@ -4,14 +4,13 @@ export default {
 		'单色显示屏可用于显示控制器状态和按键活动。确保您的显示模块具有以下属性：',
 	'list-text':
 		'<1>分辨率为 128x64 的单色显示屏</1> <1>使用 I2C 协议驱动的 SSD1306, SH1106, SH1107 或其他可兼容的显示屏 IC </1> <1>支持 3.3v 电压运行</1>',
-    section: {
-        'hardware-header': '硬件选项',
-        'screen-header': '屏幕选项',
-        'layout-header': '布局选项',
-    },
+	section: {
+		'hardware-header': '硬件选项',
+		'screen-header': '屏幕选项',
+		'layout-header': '布局选项',
+	},
 	table: {
-		header: 
-            '请使用这些表格来确定基于配置的 SDA 和 SCL 引脚选择哪个 I2C 模块:',
+		header: '请使用这些表格来确定基于配置的 SDA 和 SCL 引脚选择哪个 I2C 模块:',
 		'sda-scl-pins-header': 'SDA/SCL 引脚',
 		'i2c-block-header': 'I2C 模块',
 	},
@@ -36,9 +35,9 @@ export default {
 		'splash-duration-label': '启动画面延迟 (秒, 0表示常开)',
 		'display-saver-timeout-label': '屏保超时 (分钟)',
 		'inverted-label': '反相',
-        'power-management-header': '电源管理',
+		'power-management-header': '电源管理',
 		'turn-off-when-suspended': '挂起时关闭',
-        'flip-display-none': '无',
+		'flip-display-none': '无',
 		'flip-display-flip': '翻转',
 		'flip-display-mirror': '镜像',
 		'flip-display-flip-mirror': '翻转并镜像',

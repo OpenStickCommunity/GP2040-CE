@@ -107,7 +107,8 @@ export default {
 	'socd-cleaning-mode-selection-slider-mode-default-label':
 		'SOCDクリーナ標準モード',
 	'ps4-mode-sub-header': '免責事項',
-	'ps4-mode-sub-header-text': 'いかなる場合においてもGP2040-CEから以下のファイルは提供いたしません！！',
+	'ps4-mode-sub-header-text':
+		'いかなる場合においてもGP2040-CEから以下のファイルは提供いたしません！！',
 	'ps4-mode-text':
 		'PS4モードを利用するには以下3種類のファイルをアップロードし、「検証して保存」をクリックしてください。',
 	'ps4-mode-private-key-label': '秘密鍵 (PEM)',
