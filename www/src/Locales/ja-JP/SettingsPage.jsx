@@ -103,7 +103,6 @@ export default {
 		'load-profile-2': 'プロファイル #2をロード',
 		'load-profile-3': 'プロファイル #3をロード',
 		'load-profile-4': 'プロファイル #4をロード',
-		'next-profile': '次のプロファイルをロード',
 		'reboot-default': 'GP2040-CEを再起動',
 		'next-profile': '次のプロファイル',
 	},
