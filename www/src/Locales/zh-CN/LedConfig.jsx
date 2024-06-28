@@ -10,8 +10,7 @@ export default {
 	},
 	player: {
 		'header-text': '玩家 LED (XInput)',
-		'pwm-sub-header-text': 
-            '对于 PWM LED，将每个 LED 设置为专用 GPIO 引脚',
+		'pwm-sub-header-text': '对于 PWM LED，将每个 LED 设置为专用 GPIO 引脚',
 		'rgb-sub-header-text':
 			'对于 RGB LED，索引必须在<1>RGB LED 按键顺序</1> 部分定义的最后一个 LED 按键之后，比如 <4>开始于 {{rgbLedStartIndex}}</4>。',
 		'pled-type-label': '玩家 LED 类型',
@@ -26,10 +25,9 @@ export default {
 		'header-text': 'RGB LED 按键顺序',
 		'sub-header-text':
 			'在这里，你可以定义哪些按键拥有 RGB LED，以及它们从控制电路板运行的顺序。这对于某些LED动画和静态主题的支持是必需的。',
-		'sub-header1-text': 
-            '拖放列表项可分配 RGB LED 并对其重新排序。',
+		'sub-header1-text': '拖放列表项可分配 RGB LED 并对其重新排序。',
 		'available-header-text': '可用按键',
 		'assigned-header-text': '已分配按键',
 	},
-    'turn-off-when-suspended': '挂起时关闭',
+	'turn-off-when-suspended': '挂起时关闭',
 };

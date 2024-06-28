@@ -1,12 +1,11 @@
 export default {
-	'input-macro-board-led-enabled': 'コントローラのLEDを利用してマクロの状態を表示',
+	'input-macro-board-led-enabled':
+		'コントローラのLEDを利用してマクロの状態を表示',
 	'input-macro-macro-enabled': '有効化',
 	'input-macro-macro-enabled-badge': '有効',
 	'input-macro-macro-disabled-badge': '無効',
-	'input-macro-macro-exclusive':
-		'排他（他のマクロへの切り替え不可）',
-	'input-macro-macro-interruptible':
-		'割り込み可能 （ユーザ操作でマクロ中断）',
+	'input-macro-macro-exclusive': '排他（他のマクロへの切り替え不可）',
+	'input-macro-macro-interruptible': '割り込み可能 （ユーザ操作でマクロ中断）',
 	'input-macro-macro-show-frames': 'フレームを表示 (1 フレーム = 16.666 ms)',
 	'input-macro-macro-uses-buttons':
 		'起動にマクロボタン＋コントローラボタンを利用',

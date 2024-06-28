@@ -1,5 +1,5 @@
 export default {
-    'auth-settings-label': '认证设置',
+	'auth-settings-label': '认证设置',
 	'settings-header-text': '输入模式设置',
 	'gamepad-settings-header-text': '游戏控制器设置',
 	'input-mode-label': '输入模式',
@@ -22,7 +22,7 @@ export default {
 		xboxoriginal: 'Original Xbox',
 		xbone: 'Xbox One',
 	},
-    'input-mode-group': {
+	'input-mode-group': {
 		primary: '主要输入模式',
 		mini: '迷你/经典主机模式',
 	},
@@ -31,7 +31,7 @@ export default {
 		controller: '游戏控制器',
 		arcadestick: '街机摇杆',
 	},
-    'input-mode-authentication': {
+	'input-mode-authentication': {
 		none: '无',
 		key: '上传的密钥文件',
 		usb: 'Host USB',
@@ -54,12 +54,11 @@ export default {
 		off: '关闭',
 	},
 	'profile-number-label': '档案编号',
-    'debounce-delay-label': '去抖动延迟 (以毫秒为单位)',
+	'debounce-delay-label': '去抖动延迟 (以毫秒为单位)',
 	'hotkey-settings-label': '快捷键设置',
 	'hotkey-settings-sub-header':
-		"<strong>Fn</strong> 组合映射在<link_pinmap>引脚映射</link_pinmap>页面提供了一个可映射的Function按键。 要选择 <strong>Fn</strong> 组合映射选项，请同时按住 Function 按键和其他快捷键。<br />此外, 可从下拉列表中选择 <strong>None</strong> 以取消分配按钮",
-	'hotkey-settings-warning':
-		'Function 按键未映射引脚时，Fn 组合映射将会被禁用',
+		'<strong>Fn</strong> 组合映射在<link_pinmap>引脚映射</link_pinmap>页面提供了一个可映射的Function按键。 要选择 <strong>Fn</strong> 组合映射选项，请同时按住 Function 按键和其他快捷键。<br />此外, 可从下拉列表中选择 <strong>None</strong> 以取消分配按钮',
+	'hotkey-settings-warning': 'Function 按键未映射引脚时，Fn 组合映射将会被禁用',
 	'hotkey-actions': {
 		'no-action': '无',
 		'dpad-digital': '十字键模式',
@@ -96,7 +95,7 @@ export default {
 		'load-profile-3': '加载 档案 #3',
 		'load-profile-4': '加载 档案 #4',
 		'reboot-default': '重启 GP2040-CE',
-        'next-profile': '下一个档案',
+		'next-profile': '下一个档案',
 	},
 	'forced-setup-mode-label': '强制设置模式',
 	'forced-setup-mode-options': {
@@ -111,6 +110,5 @@ export default {
 	'4-way-joystick-mode-label': '4向摇杆模式',
 	'lock-hotkeys-label': '锁定快捷键',
 	'keyboard-mapping-header-text': '键盘映射',
-	'keyboard-mapping-sub-header-text':
-        '使用下方的表格重新配置按键映射。',
+	'keyboard-mapping-sub-header-text': '使用下方的表格重新配置按键映射。',
 };

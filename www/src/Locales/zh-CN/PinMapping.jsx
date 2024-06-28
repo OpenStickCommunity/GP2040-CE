@@ -1,14 +1,15 @@
 export default {
 	'header-text': '引脚映射',
-	'sub-header-text': '在这里，您可以配置哪个引脚对应哪个动作。如果您不确定哪个按钮连接到哪个引脚，请尝试使用引脚查看器。',
+	'sub-header-text':
+		'在这里，您可以配置哪个引脚对应哪个动作。如果您不确定哪个按钮连接到哪个引脚，请尝试使用引脚查看器。',
 	'alert-text':
 		'将按键映射到未连接或不可用的引脚可能会导致设备无法正常工作。要清除无效配置，请转到 <2>恢复默认设置</2> 页面。',
-    'pin-viewer': '引脚查看器',
+	'pin-viewer': '引脚查看器',
 	'pin-pressed': '按下的引脚：{{pressedPin}}',
 	'pin-header-label': '引脚',
 	'profile-pins-warning':
 		'尽量避免修改已设置为切换档案快捷键的按键或方向键，否则之后将很难理解你选择的档案配置！',
-    'profile-copy-base': '复制基础档案',
+	'profile-copy-base': '复制基础档案',
 	errors: {
 		conflict: '引脚 {{pin}} 已分配给 {{conflictedMappings}}',
 		required: '{{button}} 是必需的',

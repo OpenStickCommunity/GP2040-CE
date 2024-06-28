@@ -637,9 +637,17 @@ export default function MacrosPage() {
 																		<td>{macro.macroInputs.length}</td>
 																		<td>
 																			{macro.enabled == true ? (
-																				<Badge bg="success">{t('InputMacroAddon:input-macro-macro-enabled-badge')}</Badge>
+																				<Badge bg="success">
+																					{t(
+																						'InputMacroAddon:input-macro-macro-enabled-badge',
+																					)}
+																				</Badge>
 																			) : (
-																				<Badge bg="danger">{t('InputMacroAddon:input-macro-macro-disabled-badge')}</Badge>
+																				<Badge bg="danger">
+																					{t(
+																						'InputMacroAddon:input-macro-macro-disabled-badge',
+																					)}
+																				</Badge>
 																			)}
 																		</td>
 																	</tr>

@@ -33,7 +33,7 @@ export default {
 	AddonsConfig,
 	CaptureButton,
 	WiiAddon,
-    Rotary,
+	Rotary,
 	InputMacroAddon,
 	LayoutConfig,
 };
