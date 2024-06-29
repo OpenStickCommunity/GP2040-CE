@@ -14,6 +14,7 @@
 class PCF8575 : public I2CDeviceBase {
     public:
         // Constructor
+        PCF8575() {}
         PCF8575(PeripheralI2C *i2cController, uint8_t addr = 0x20) {
             this->i2c = i2cController;
             this->address = addr;
@@ -28,6 +29,9 @@ class PCF8575 : public I2CDeviceBase {
         void reset();
         //void start();
 
+        void setI2C(PeripheralI2C *i2cController) { this->i2c = i2cController; }
+        void setAddress(uint8_t addr) { this->address = addr; }
+
         void send(uint16_t value);
         uint16_t receive();
 
@@ -35,14 +39,15 @@ class PCF8575 : public I2CDeviceBase {
 
         void setPin(uint8_t pinNumber, uint8_t value);
         bool getPin(uint8_t pinNumber);
-    protected:
-        uint8_t address;
     private:
         const uint16_t initialValue = 0xFFFF;
         uint8_t uc[128];
 
         uint16_t dataSent;
         uint16_t dataReceived = initialValue;
+    protected:
+        PeripheralI2C* i2c = nullptr;
+        uint8_t address = 0;
 };
 
 #endif

@@ -12,8 +12,6 @@ import FormSelect from '../Components/FormSelect';
 import Section from '../Components/Section';
 import WebApi from '../Services/WebApi';
 
-import { I2C_BLOCKS } from '../Data/Peripherals';
-
 const ON_OFF_OPTIONS = [
 	{ label: 'Disabled', value: 0 },
 	{ label: 'Enabled', value: 1 },
@@ -35,8 +33,6 @@ const DISPLAY_FLIP_MODES = [
 
 const defaultValues = {
 	enabled: false,
-	i2cAddress: '0x3C',
-	i2cBlock: 0,
 	flipDisplay: false,
 	invertDisplay: false,
 	buttonLayout: 0,
@@ -75,12 +71,6 @@ let buttonLayoutRightSchema = buttonLayoutSchemaBase.label(
 
 const schema = yup.object().shape({
 	enabled: yup.number().label('Enabled?'),
-	i2cAddress: yup.string().required().label('I2C Address'),
-	i2cBlock: yup
-		.number()
-		.required()
-		.oneOf(I2C_BLOCKS.map((o) => o.value))
-		.label('I2C Block'),
 	flipDisplay: yup
 		.number()
 		.oneOf(DISPLAY_FLIP_MODES.map((o) => o.value))
@@ -157,7 +147,6 @@ const FormContext = () => {
 	useEffect(() => {
 		async function setDisplayOptions() {
 			if (!!values.enabled) values.enabled = parseInt(values.enabled);
-			if (!!values.i2cBlock) values.i2cBlock = parseInt(values.i2cBlock);
 			if (!!values.flipDisplay)
 				values.flipDisplay = parseInt(values.flipDisplay);
 			if (!!values.invertDisplay)
@@ -183,7 +172,6 @@ const FormContext = () => {
 	useEffect(() => {
 		async function setSplashImage() {
 			if (!!values.enabled) values.enabled = parseInt(values.enabled);
-			if (!!values.i2cBlock) values.i2cBlock = parseInt(values.i2cBlock);
 			if (!!values.flipDisplay)
 				values.flipDisplay = parseInt(values.flipDisplay);
 			if (!!values.invertDisplay)
@@ -300,34 +288,6 @@ export default function DisplayConfigPage() {
 													</option>
 												))}
 											</FormSelect>
-											<FormSelect
-												label={t('DisplayConfig:form.i2c-block-label')}
-												name="i2cBlock"
-												className="form-select-sm"
-												groupClassName="col-sm-3 mb-3"
-												value={values.i2cBlock}
-												error={errors.i2cBlock}
-												isInvalid={errors.i2cBlock}
-												onChange={handlePeripheralChange}
-											>
-												{getAvailablePeripherals('i2c').map((o, i) => (
-													<option key={`i2cBlock-option-${i}`} value={o.value}>
-														{o.label}
-													</option>
-												))}
-											</FormSelect>
-											<FormControl
-												type="text"
-												label={t('DisplayConfig:form.i2c-address-label')}
-												name="i2cAddress"
-												className="form-control-sm"
-												groupClassName="col-sm-3 mb-3"
-												value={values.i2cAddress}
-												error={errors.i2cAddress}
-												isInvalid={errors.i2cAddress}
-												onChange={handleChange}
-												maxLength={4}
-											/>
 										</Row>
 										<h1>{t('DisplayConfig:section.screen-header')}</h1>
 										<Row className="mb-4">

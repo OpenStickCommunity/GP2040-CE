@@ -8,6 +8,9 @@
 
 class GPGFX_OBD_SSD1306 : public GPGFX_DisplayBase {
     public:
+        GPGFX_OBD_SSD1306() {}
+        ~GPGFX_OBD_SSD1306() {}
+        
         void init(GPGFX_DisplayTypeOptions options);
 
         void setPower(bool isPowered);
@@ -27,6 +30,13 @@ class GPGFX_OBD_SSD1306 : public GPGFX_DisplayBase {
         void drawSprite(uint8_t* spriteData, uint16_t width, uint16_t height, uint16_t pitch, uint16_t x, uint16_t y, uint8_t priority);
 
         void drawBuffer(uint8_t *pBuffer);
+
+        std::vector<uint8_t> getDeviceAddresses() const override {
+            return {0x3C, 0x3D};
+        }
+
+        bool isSPI() { return this->_isSPI; }
+        bool isI2C() { return this->_isI2C; }
     private:
         OBDISP obd;
         GPGFX_DisplayTypeOptions _options;
@@ -36,6 +46,9 @@ class GPGFX_OBD_SSD1306 : public GPGFX_DisplayBase {
         void clearScreen(int render);
 
 	    uint8_t ucBackBuffer[1024];
+
+        bool _isSPI = false;
+        bool _isI2C = true;
 };
 
 #endif

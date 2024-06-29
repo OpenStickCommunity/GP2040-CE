@@ -7,6 +7,9 @@
 
 class GPGFX_TinySSD1306 : public GPGFX_DisplayBase {
     public:
+        GPGFX_TinySSD1306() {}
+        ~GPGFX_TinySSD1306() {}
+
         void init(GPGFX_DisplayTypeOptions options);
 
         void setPower(bool isPowered);
@@ -32,6 +35,13 @@ class GPGFX_TinySSD1306 : public GPGFX_DisplayBase {
         void drawBuffer(uint8_t *pBuffer);
 
         bool isSH1106(int detectedDisplay);
+
+        std::vector<uint8_t> getDeviceAddresses() const override {
+            return {0x3C, 0x3D};
+        }
+
+        bool isSPI() { return this->_isSPI; }
+        bool isI2C() { return this->_isI2C; }
     private:
         typedef enum {
             SET_LOW_COLUMN = 0x00,
@@ -84,6 +94,8 @@ class GPGFX_TinySSD1306 : public GPGFX_DisplayBase {
         uint8_t framePage = 0;
 
         uint8_t screenType;
+        bool _isSPI = false;
+        bool _isI2C = true;
 };
 
 #endif

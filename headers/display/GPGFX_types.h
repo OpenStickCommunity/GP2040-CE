@@ -17,8 +17,9 @@ typedef enum {
 } GPGFX_DisplaySize;
 
 typedef enum {
-    TYPE_NONE,
-    TYPE_SSD1306
+    DISPLAY_TYPE_NONE,
+    DISPLAY_TYPE_SSD1306,
+    DISPLAY_TYPE_COUNT
 } GPGFX_DisplayType;
 
 typedef struct {

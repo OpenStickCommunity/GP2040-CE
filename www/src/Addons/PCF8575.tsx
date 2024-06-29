@@ -51,16 +51,10 @@ export const pcf8575Scheme = {
 		.number()
 		.required()
 		.label('PCF8575 IO Add-On Enabled'),
-	pcf8575Block: yup
-		.number()
-		.required()
-		.label('PCF8575 I2C Block')
-		.validateSelectionWhenValue('PCF8575AddonEnabled', I2C_BLOCKS),
 };
 
 export const pcf8575State = {
 	PCF8575AddonEnabled: 0,
-	pcf8575Block: 0,
 };
 
 const getOption = (foo, actionId) => {
@@ -265,28 +259,6 @@ const PCF8575 = ({ values, errors, handleChange, handleCheckbox }) => {
 				id="PCF8575AddonOptions"
 				hidden={!(values.PCF8575AddonEnabled && getAvailablePeripherals('i2c'))}
 			>
-				<Row className="mb-3">
-					{getAvailablePeripherals('i2c') ? (
-						<FormSelect
-							label={t('PCF8575:block-label')}
-							name="pcf8575Block"
-							className="form-select-sm"
-							groupClassName="col-sm-2 col-md-2 mb-3"
-							value={values.pcf8575Block}
-							error={errors.pcf8575Block}
-							isInvalid={errors.pcf8575Block}
-							onChange={handlePeripheralChange}
-						>
-							{getAvailablePeripherals('i2c').map((o, i) => (
-								<option key={`pcf8575Block-option-${i}`} value={o.value}>
-									{o.label}
-								</option>
-							))}
-						</FormSelect>
-					) : (
-						''
-					)}
-				</Row>
 				<Row className="mb-2">
 					<ExpansionPinsForm
 						pins={pins}

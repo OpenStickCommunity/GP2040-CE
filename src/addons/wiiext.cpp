@@ -6,19 +6,24 @@
 #include "config.pb.h"
 
 bool WiiExtensionInput::available() {
-    const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
     const WiiOptions& options = Storage::getInstance().getAddonOptions().wiiOptions;
-    bool result = (options.enabled && PeripheralManager::getInstance().isI2CEnabled(options.i2cBlock));
-    if (result && (displayOptions.enabled && (displayOptions.i2cBlock == options.i2cBlock))) {
-        // display check
-        result = false;
+    if (options.enabled) {
+        // addon is enabled. let's scan available blocks.
+        wii = new WiiExtensionDevice();
+        PeripheralI2CScanResult result = PeripheralManager::getInstance().scanForI2CDevice(wii->getDeviceAddresses());
+        if (result.address > -1) {
+            wii->setAddress(result.address);
+            wii->setI2C(PeripheralManager::getInstance().getI2C(result.block));
+            return true;
+        } else {
+            delete wii;
+        }
     }
-    return result;
+    return false;
 }
 
 void WiiExtensionInput::setup() {
     const WiiOptions& options = Storage::getInstance().getAddonOptions().wiiOptions;
-    PeripheralI2C* i2c = PeripheralManager::getInstance().getI2C(options.i2cBlock);
     nextTimer = getMillis();
 
 #if WII_EXTENSION_DEBUG==true
@@ -29,9 +34,9 @@ void WiiExtensionInput::setup() {
 
     currentConfig = NULL;
     
-    wii = new WiiExtension(
-        i2c,
-        WII_EXTENSION_I2C_ADDR);
+    //wii = new WiiExtensionDevice(
+    //    i2c,
+    //    WII_EXTENSION_I2C_ADDR);
     wii->begin();
     wii->start();
 

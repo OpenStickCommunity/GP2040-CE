@@ -13,17 +13,13 @@
 #include "gamepad.h"
 #include "storagemanager.h"
 #include "peripheralmanager.h"
-#include "WiiExtension.h"
+#include "wiiextension_dev.h"
 
 // WiiExtension Module Name
 #define WiiExtensionName "WiiExtension"
 
 #ifndef WII_EXTENSION_ENABLED
 #define WII_EXTENSION_ENABLED 0
-#endif
-
-#ifndef WII_EXTENSION_I2C_ADDR
-#define WII_EXTENSION_I2C_ADDR 0x52
 #endif
 
 #ifndef WII_EXTENSION_I2C_SDA_PIN
@@ -90,7 +86,7 @@ public:
     virtual void preprocess() {}
     virtual std::string name() { return WiiExtensionName; }
 private:
-    WiiExtension * wii;
+    WiiExtensionDevice * wii;
     uint32_t uIntervalMS;
     uint32_t nextTimer;
 

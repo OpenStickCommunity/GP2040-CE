@@ -1,7 +1,7 @@
 #ifndef _I2CAnalog_H
 #define _I2CAnalog_H
 
-#include <ADS1219.h>
+#include "ads1219_dev.h"
 
 #include "gpaddon.h"
 
@@ -47,7 +47,7 @@ public:
 	virtual void process();     // Analog Process
     virtual std::string name() { return I2CAnalog1219Name; }
 private:
-    ADS1219 * ads;
+    ADS1219Device * ads;
 	ADS_PINS pins;
 	int channelHop;
 	uint32_t uIntervalMS;       // ADS1219 Interval
