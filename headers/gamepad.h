@@ -7,6 +7,7 @@
 
 #include "enums.pb.h"
 #include "gamepad/GamepadState.h"
+#include "gamepad/GamepadAuxState.h"
 
 #include "pico/stdlib.h"
 
@@ -135,6 +136,9 @@ public:
 	GamepadState rawState;
 	GamepadState state;
 	GamepadState turboState;
+
+	GamepadAuxState auxState;
+
 	GamepadButtonMapping *mapDpadUp;
 	GamepadButtonMapping *mapDpadDown;
 	GamepadButtonMapping *mapDpadLeft;
