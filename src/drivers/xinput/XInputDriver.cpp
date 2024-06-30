@@ -27,6 +27,7 @@
 uint8_t endpoint_in = 0;
 uint8_t endpoint_out = 0;
 uint8_t xinput_out_buffer[XINPUT_OUT_SIZE] = {};
+bool xfer_cb_called = false;
 
 static bool authDriverPresent = false;
 
@@ -113,8 +114,10 @@ static bool xinput_xfer_callback(uint8_t rhport, uint8_t ep_addr, xfer_result_t 
 	(void)result;
 	(void)xferred_bytes;
 
-	if (ep_addr == endpoint_out)
+	if (ep_addr == endpoint_out) {
 		usbd_edpt_xfer(0, endpoint_out, xinput_out_buffer, XINPUT_OUT_SIZE);
+		xfer_cb_called = true;
+	}
 
 	return true;
 }
@@ -228,6 +231,12 @@ void XInputDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 		usbd_edpt_claim(0, endpoint_out);									 // Take control of OUT endpoint
 		usbd_edpt_xfer(0, endpoint_out, outBuffer, XINPUT_OUT_SIZE); 		 // Retrieve report buffer
 		usbd_edpt_release(0, endpoint_out);									 // Release control of OUT endpoint
+	}
+
+	// get rumble into featureData
+	if (xfer_cb_called) {
+		xfer_cb_called = false;
+		memcpy(outBuffer, xinput_out_buffer, XINPUT_OUT_SIZE);
 	}
 }
 
