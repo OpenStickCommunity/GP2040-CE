@@ -37,8 +37,6 @@ type PinSectionType = {
 const disabledOptions = [
 	BUTTON_ACTIONS.RESERVED,
 	BUTTON_ACTIONS.ASSIGNED_TO_ADDON,
-	BUTTON_ACTIONS.BUTTON_PRESS_TURBO,
-	BUTTON_ACTIONS.BUTTON_PRESS_MACRO,
 ];
 
 const getMask = (maskArr, key) =>
