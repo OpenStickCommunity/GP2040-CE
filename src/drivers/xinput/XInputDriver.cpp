@@ -234,19 +234,15 @@ void XInputDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 	}
 
 	// clear potential initial uncaught data in endpoint_out from before registration of xfer_cb
-	// will only run once
-	static bool endpoint_out_checked = false;
-	if ((!endpoint_out_checked)) {
-		if (tud_ready() &&
-			(endpoint_out != 0) && (!usbd_edpt_busy(0, endpoint_out)))
-		{
-			usbd_edpt_claim(0, endpoint_out);									 // Take control of OUT endpoint
-			usbd_edpt_xfer(0, endpoint_out, xinput_out_buffer, XINPUT_OUT_SIZE); 		 // Retrieve report buffer
-			memcpy(outBuffer, xinput_out_buffer, XINPUT_OUT_SIZE); // Copy to outBuffer so featureData is updated this call
-			usbd_edpt_release(0, endpoint_out);									 // Release control of OUT endpoint
-		}
-		endpoint_out_checked = true;
-	} else if (memcmp(xinput_out_buffer, outBuffer, XINPUT_OUT_SIZE) != 0) { // check if new write to xinput_out_buffer from xinput_xfer_callback
+	if (tud_ready() &&
+		(endpoint_out != 0) && (!usbd_edpt_busy(0, endpoint_out)))
+	{
+		usbd_edpt_claim(0, endpoint_out);									 // Take control of OUT endpoint
+		usbd_edpt_xfer(0, endpoint_out, xinput_out_buffer, XINPUT_OUT_SIZE); 		 // Retrieve report buffer
+		usbd_edpt_release(0, endpoint_out);									 // Release control of OUT endpoint
+	}
+
+	if (memcmp(xinput_out_buffer, outBuffer, XINPUT_OUT_SIZE) != 0) { // check if new write to xinput_out_buffer from xinput_xfer_callback
 		memcpy(outBuffer, xinput_out_buffer, XINPUT_OUT_SIZE);
 		_print_buff(outBuffer, XINPUT_OUT_SIZE);
 	}
