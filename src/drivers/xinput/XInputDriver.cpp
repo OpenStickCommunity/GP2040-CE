@@ -27,7 +27,9 @@
 uint8_t endpoint_in = 0;
 uint8_t endpoint_out = 0;
 uint8_t xinput_out_buffer[XINPUT_OUT_SIZE] = {};
-bool xfer_cb_called = false;
+
+#include <stdio.h>
+#include "pico/stdlib.h"
 
 static bool authDriverPresent = false;
 
@@ -108,16 +110,22 @@ static bool xinput_control_complete(uint8_t rhport, tusb_control_request_t const
 	return true;
 }
 
+static void _print_buff(uint8_t * buff, size_t n)
+{
+	for(size_t i{0}; i < n; i++) {
+		printf("%02X ", buff[i]);
+	}
+	printf("\n");
+}
+
 static bool xinput_xfer_callback(uint8_t rhport, uint8_t ep_addr, xfer_result_t result, uint32_t xferred_bytes)
 {
 	(void)rhport;
 	(void)result;
 	(void)xferred_bytes;
 
-	if (ep_addr == endpoint_out) {
+	if (ep_addr == endpoint_out)
 		usbd_edpt_xfer(0, endpoint_out, xinput_out_buffer, XINPUT_OUT_SIZE);
-		xfer_cb_called = true;
-	}
 
 	return true;
 }
@@ -150,6 +158,7 @@ void XInputDriver::initialize() {
 	};
 
 	authDriver = nullptr;
+	stdio_init_all();
 }
 
 void XInputDriver::initializeAux() {
@@ -224,19 +233,22 @@ void XInputDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 		}
 	}
 
-	// check for player LEDs
-	if (tud_ready() &&
+	// clear potential initial uncaught data in endpoint_out from before registration of xfer_cb
+	// will only run once
+	static bool endpoint_out_checked = false;
+	if ((!endpoint_out_checked) && tud_ready() &&
 		(endpoint_out != 0) && (!usbd_edpt_busy(0, endpoint_out)))
 	{
 		usbd_edpt_claim(0, endpoint_out);									 // Take control of OUT endpoint
-		usbd_edpt_xfer(0, endpoint_out, outBuffer, XINPUT_OUT_SIZE); 		 // Retrieve report buffer
+		usbd_edpt_xfer(0, endpoint_out, xinput_out_buffer, XINPUT_OUT_SIZE); 		 // Retrieve report buffer
 		usbd_edpt_release(0, endpoint_out);									 // Release control of OUT endpoint
+		endpoint_out_checked = true;
 	}
 
-	// get rumble into featureData
-	if (xfer_cb_called) {
-		xfer_cb_called = false;
+	// check if new write to xinput_out_buffer from xinput_xfer_callback
+	if (memcmp(xinput_out_buffer, outBuffer, XINPUT_OUT_SIZE) != 0) {
 		memcpy(outBuffer, xinput_out_buffer, XINPUT_OUT_SIZE);
+		_print_buff(outBuffer, XINPUT_OUT_SIZE);
 	}
 }
 
