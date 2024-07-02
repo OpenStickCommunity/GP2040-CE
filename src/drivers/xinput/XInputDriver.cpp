@@ -130,6 +130,15 @@ static bool xinput_xfer_callback(uint8_t rhport, uint8_t ep_addr, xfer_result_t 
 	return true;
 }
 
+static void check_and_set_rumble(Gamepad * gamepad, uint8_t * buffer) {
+	// Check for rumble bytes - starts with 0x00 0x08
+	if (!(buffer[0] == 0x00 && buffer[1] == 0x08))
+		return;
+
+	gamepad->rumbleState.leftMotor = buffer[3];
+	gamepad->rumbleState.rightMotor = buffer[4];
+}
+
 void XInputDriver::initialize() {
 	xinputReport = {
 		.report_id = 0,
@@ -245,6 +254,8 @@ void XInputDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 	if (memcmp(xinput_out_buffer, outBuffer, XINPUT_OUT_SIZE) != 0) { // check if new write to xinput_out_buffer from xinput_xfer_callback
 		memcpy(outBuffer, xinput_out_buffer, XINPUT_OUT_SIZE);
 		_print_buff(outBuffer, XINPUT_OUT_SIZE);
+		// Check if this new write to endpoint_out is a rumble packet
+		check_and_set_rumble(gamepad, outBuffer);
 	}
 }
 
