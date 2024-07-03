@@ -44,9 +44,12 @@ typedef enum {
 } WiiJoystickModes;
 
 typedef enum {
-    WII_MOTION_X,
-    WII_MOTION_Y,
-    WII_MOTION_Z,
+    WII_ACCELEROMETER_X,
+    WII_ACCELEROMETER_Y,
+    WII_ACCELEROMETER_Z,
+    WII_GYROSCOPE_ROLL,
+    WII_GYROSCOPE_PITCH,
+    WII_GYROSCOPE_YAW,
     WII_MAX_MOTIONS
 } WiiMotions;
 
@@ -82,6 +85,7 @@ class ExtensionBase {
 
         uint16_t initialAnalogState[WiiAnalogs::WII_MAX_ANALOGS];
         bool isFirstRead = true;
+        bool skipPostProcess = false;
 
         virtual void init(uint8_t dataType);
         virtual bool calibrate(uint8_t *calibrationData);

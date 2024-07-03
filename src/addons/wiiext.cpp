@@ -127,9 +127,9 @@ void WiiExtensionInput::update() {
             rightX = joystickMid;
             rightY = joystickMid;
 
-            accelerometerX = wii->getController()->motionState[WiiMotions::WII_MOTION_X];
-            accelerometerY = wii->getController()->motionState[WiiMotions::WII_MOTION_Y];
-            accelerometerZ = wii->getController()->motionState[WiiMotions::WII_MOTION_Z];
+            accelerometerX = wii->getController()->motionState[WiiMotions::WII_ACCELEROMETER_X];
+            accelerometerY = wii->getController()->motionState[WiiMotions::WII_ACCELEROMETER_Y];
+            accelerometerZ = wii->getController()->motionState[WiiMotions::WII_ACCELEROMETER_Z];
             isAccelerometer = true;
 
             triggerLeft = 0;
@@ -236,6 +236,27 @@ void WiiExtensionInput::update() {
             triggerRight = wii->getController()->analogState[TurntableAnalogs::TURNTABLE_CROSSFADE];
 
             isAnalogTriggers = true;
+        } else if (wii->extensionType == WII_EXTENSION_MOTION_PLUS) {
+            currentConfig = &extensionConfigs[WII_EXTENSION_NUNCHUCK];
+            
+            gyroscopeX = wii->getController()->motionState[WiiMotions::WII_GYROSCOPE_YAW];
+            gyroscopeY = wii->getController()->motionState[WiiMotions::WII_GYROSCOPE_ROLL];
+            gyroscopeZ = wii->getController()->motionState[WiiMotions::WII_GYROSCOPE_PITCH];
+            isGyroscope = true;
+
+            // add logic to know if an attachment is detected. for now, just stream it.
+            buttonZ = wii->getController()->buttons[WiiButtons::WII_BUTTON_Z];
+            buttonC = wii->getController()->buttons[WiiButtons::WII_BUTTON_C];
+
+            leftX = map(wii->getController()->analogState[WiiAnalogs::WII_ANALOG_LEFT_X],0,WII_ANALOG_PRECISION_3,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+            leftY = map(wii->getController()->analogState[WiiAnalogs::WII_ANALOG_LEFT_Y],WII_ANALOG_PRECISION_3,0,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+            rightX = joystickMid;
+            rightY = joystickMid;
+
+            accelerometerX = wii->getController()->motionState[WiiMotions::WII_ACCELEROMETER_X];
+            accelerometerY = wii->getController()->motionState[WiiMotions::WII_ACCELEROMETER_Y];
+            accelerometerZ = wii->getController()->motionState[WiiMotions::WII_ACCELEROMETER_Z];
+            isAccelerometer = true;
         }
     } else {
         currentConfig = NULL;
