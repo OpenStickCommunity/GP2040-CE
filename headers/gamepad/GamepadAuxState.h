@@ -44,6 +44,14 @@ struct GamepadAux4DSensor
     uint16_t t;
 };
 
+struct GamepadAuxRGBSensor
+{
+    bool enabled;
+    GamepadAuxColor color;
+    uint8_t durationOn;
+    uint8_t durationOff;
+};
+
 struct GamepadAuxHapticChannel
 {
     bool enabled;
@@ -57,6 +65,8 @@ struct GamepadAuxSensors
     GamepadAux3DSensor accelerometer;
     GamepadAux3DSensor magnetometer;
     GamepadAux4DSensor timeOfFlight;
+
+    GamepadAuxRGBSensor statusLight;
 };
 
 struct GamepadAuxHaptics

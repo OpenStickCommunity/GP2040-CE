@@ -290,49 +290,69 @@ uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
 
 // Only PS4 does anything with set report
 void PS4Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize) {
-    if ( report_type != HID_REPORT_TYPE_FEATURE )
+    if (( report_type != HID_REPORT_TYPE_FEATURE ) && ( report_type != HID_REPORT_TYPE_OUTPUT ))
         return;
 
-    uint8_t nonce_id;
-    uint8_t nonce_page;
-    uint32_t crc32;
-    uint8_t sendBuffer[64];
-    uint8_t nonce[56]; // max nonce data
-    uint16_t noncelen;
-    uint16_t buflen;
-
-    if (report_id == PS4AuthReport::PS4_SET_AUTH_PAYLOAD) {
-        if (bufsize != 63 ) {
-            return;
+    if (report_type == HID_REPORT_TYPE_OUTPUT) {
+        if (report_id == PS4AuthReport::PS4_SET_FEATURE_STATE) {
+            Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
+            // sets rumble, lightbar, etc
+            //report[3] = Rumble Weak
+            //report[4] = Rumble Strong
+            //
+            //report[5] = Red
+            //report[6] = Green
+            //report[7] = Blue
+            //
+            //report[8] = Flash On Period
+            //report[9] = Flash Off Period
+            gamepad->auxState.sensors.statusLight.enabled = true;
+            gamepad->auxState.sensors.statusLight.color.red = buffer[5];
+            gamepad->auxState.sensors.statusLight.color.green = buffer[6];
+            gamepad->auxState.sensors.statusLight.color.blue = buffer[7];
         }
+    } else if (report_type == HID_REPORT_TYPE_FEATURE) {
+        uint8_t nonce_id;
+        uint8_t nonce_page;
+        uint32_t crc32;
+        uint8_t sendBuffer[64];
+        uint8_t nonce[56]; // max nonce data
+        uint16_t noncelen;
+        uint16_t buflen;
 
-        // Setup CRC32 buffer
-        sendBuffer[0] = report_id;
-        memcpy(&sendBuffer[1], buffer, bufsize);
-        buflen = bufsize + 1;
+        if (report_id == PS4AuthReport::PS4_SET_AUTH_PAYLOAD) {
+            if (bufsize != 63 ) {
+                return;
+            }
 
-        nonce_id = buffer[0];
-        nonce_page = buffer[1];
-        // data[2] is zero padding
+            // Setup CRC32 buffer
+            sendBuffer[0] = report_id;
+            memcpy(&sendBuffer[1], buffer, bufsize);
+            buflen = bufsize + 1;
 
-        crc32 = CRC32::calculate(sendBuffer, buflen-sizeof(uint32_t));
-        if ( crc32 != *((unsigned int*)&sendBuffer[buflen-sizeof(uint32_t)])) {
-            return; // CRC32 failed on set report
+            nonce_id = buffer[0];
+            nonce_page = buffer[1];
+            // data[2] is zero padding
+
+            crc32 = CRC32::calculate(sendBuffer, buflen-sizeof(uint32_t));
+            if ( crc32 != *((unsigned int*)&sendBuffer[buflen-sizeof(uint32_t)])) {
+                return; // CRC32 failed on set report
+            }
+
+            // 256 byte nonce, with 56 byte packets leaves 24 extra bytes on the last packet?
+            if ( nonce_page == 4 ) {
+                // Copy/append data from buffer[4:64-28] into our nonce
+                noncelen = 32; // from 4 to 64 - 24 - 4
+                nonce_id = nonce_id; // for pass-through only
+            } else {
+                // Copy/append data from buffer[4:64-4] into our nonce
+                noncelen = 56;
+                // from 4 to 64 - 4
+            }
+
+            memcpy(nonce, &sendBuffer[4], noncelen);
+            save_nonce(nonce_id, nonce_page, nonce, noncelen);
         }
-
-        // 256 byte nonce, with 56 byte packets leaves 24 extra bytes on the last packet?
-        if ( nonce_page == 4 ) {
-            // Copy/append data from buffer[4:64-28] into our nonce
-            noncelen = 32; // from 4 to 64 - 24 - 4
-            nonce_id = nonce_id; // for pass-through only
-        } else {
-            // Copy/append data from buffer[4:64-4] into our nonce
-            noncelen = 56;
-            // from 4 to 64 - 4
-        }
-
-        memcpy(nonce, &sendBuffer[4], noncelen);
-        save_nonce(nonce_id, nonce_page, nonce, noncelen);
     }
 }
 

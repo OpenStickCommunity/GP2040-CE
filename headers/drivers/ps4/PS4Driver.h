@@ -24,6 +24,7 @@ typedef enum {
 typedef enum
 {
     PS4_DEFINITION           = 0x03,    // PS4 Controller Definition
+    PS4_SET_FEATURE_STATE    = 0x05,    // PS4 Controller Features
     PS4_SET_AUTH_PAYLOAD     = 0xF0,    // Set Auth Payload
     PS4_GET_SIGNATURE_NONCE  = 0xF1,    // Get Signature Nonce
     PS4_GET_SIGNING_STATE    = 0xF2,    // Get Signing State
