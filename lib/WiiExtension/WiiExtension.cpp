@@ -13,6 +13,7 @@ void WiiExtension::begin() {
 #if WII_EXTENSION_DEBUG==true
     printf("WiiExtension::begin\n");
 #endif
+
     isReady = false;
 }
 
@@ -22,12 +23,36 @@ void WiiExtension::start() {
     bool canContinue = true;
     int8_t result, retryCtr;
 
-    if (!isReady) {
+    // we need to determine which address gets used
+    if (isMotionPlus && !isExtension) {
+        // Motion Plus only
 #if WII_EXTENSION_DEBUG==true
-    if (isMotionPlus) printf("WiiExtension::start Motion Plus detected\n");
-    if (isExtension) printf("WiiExtension::start Extension detected\n");
+    printf("WiiExtension::start Motion Plus detected\n");
 #endif
+        address = WII_MOTIONPLUS_I2C_ADDR;
+    } else if (!isMotionPlus && isExtension) {
+        // Extension only
+#if WII_EXTENSION_DEBUG==true
+    printf("WiiExtension::start Extension detected\n");
+#endif
+        address = WII_EXTENSION_I2C_ADDR;
+    } else if (isMotionPlus && isExtension) {
+        // Both attached
+#if WII_EXTENSION_DEBUG==true
+    printf("WiiExtension::start Motion Plus & Extension detected\n");
+#endif
+        address = WII_MOTIONPLUS_I2C_ADDR;
+    } else {
+        // Nothing attached
+#if WII_EXTENSION_DEBUG==true
+    printf("WiiExtension::start No Extension devices detected\n");
+#endif
+        canContinue = false;
+        isReady = false;
+        return;
+    }
 
+    if (!isReady) {
 #if WII_EXTENSION_ENCRYPTION==false
         if (canContinue) {
             regWrite[0] = 0xF0;
@@ -291,15 +316,8 @@ void WiiExtension::doI2CInit() {
     waitUntil_us(WII_EXTENSION_DELAY);
 
     // since init is unused, let's use this to detect normal or MotionPlus mode
-    if (extensionCheck) {
-        isMotionPlus = false;
-        isExtension = true;
-        address = WII_EXTENSION_I2C_ADDR;
-    } else if (motionPlusCheck) {
-        isMotionPlus = true;
-        isExtension = false;
-        address = WII_MOTIONPLUS_I2C_ADDR;
-    }
+    if (extensionCheck) isExtension = true;
+    if (motionPlusCheck) isMotionPlus = true;
 }
 
 void WiiExtension::waitUntil_us(uint64_t us) {
