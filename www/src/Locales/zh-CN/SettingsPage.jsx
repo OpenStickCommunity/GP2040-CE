@@ -1,7 +1,7 @@
 export default {
 	'auth-settings-label': '认证设置',
-	'settings-header-text': '输入模式设置',
     'no-mode-settings-text': '没有与 {{mode}} 模式相关的设置项目。',
+	'settings-header-text': '输入模式设置',
 	'gamepad-settings-header-text': '游戏控制器设置',
 	'input-mode-label': '输入模式',
 	'current-input-mode-label': '当前输入模式',
@@ -10,7 +10,8 @@ export default {
 		none: '模式未选择',
 		xinput: 'XInput',
 		'nintendo-switch': 'Nintendo Switch',
-		ps3: 'PS3/DirectInput',
+		ps3: 'PS3',
+        generic: '通用 HID 设备',
 		keyboard: '键盘',
 		ps4: 'PS4',
 		ps5: 'PS5',
@@ -35,7 +36,7 @@ export default {
 	'input-mode-authentication': {
 		none: '无',
 		key: '上传的密钥文件',
-		usb: 'Host USB',
+		usb: 'USB 主机',
 		i2c: '集成的 I2C',
 	},
 	'd-pad-mode-label': '方向模式',

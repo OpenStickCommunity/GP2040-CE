@@ -11,6 +11,7 @@ export default {
 		'起動にマクロボタン＋コントローラボタンを利用',
 	'input-macro-macro-button-pin-plus': 'ボタン割り当て：',
 	'input-macro-header-text': 'マクロ設定概要',
+    'input-macro-macro-list-txt': 'マクロ {{macroNumber}} 設定',
 	'input-macro-duration-label': '持続時間',
 	'input-macro-wait-duration-label': '待機時間',
 	'input-macro-time-label-ms': 'ミリ秒',
