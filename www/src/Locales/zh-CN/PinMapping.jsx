@@ -7,6 +7,12 @@ export default {
 	'pin-viewer': '引脚查看器',
 	'pin-pressed': '按下的引脚：{{pressedPin}}',
 	'pin-header-label': '引脚',
+    'profile-text-1': '基础(档案 1)',
+    'profile-text-2': '档案 2',
+    'profile-text-3': '档案 3',
+    'profile-text-4': '档案 4',
+    'profile-pin-mapping-title-base': '基础(档案 1) - 引脚映射',
+    'profile-pin-mapping-title': '档案 {{profileNumber}} - 引脚映射',
 	'profile-pins-warning':
 		'尽量避免修改已设置为切换档案快捷键的按键或方向键，否则之后将很难理解你选择的档案配置！',
 	'profile-copy-base': '复制基础档案',
