@@ -27,7 +27,7 @@ export default {
 		primary: '主要输入模式',
 		mini: '迷你/经典主机模式',
 	},
-	'boot-input-mode-label': '引导输入模式',
+	'boot-input-mode-label': '输入模式引导',
 	'ps4-mode-options': {
 		controller: '游戏控制器',
 		arcadestick: '街机摇杆',
@@ -97,6 +97,8 @@ export default {
 		's2-button': 'S2 键',
 		'a1-button': 'A1 键',
 		'a2-button': 'A2 键',
+        'a3-button': 'A3 键',
+		'a4-button': 'A4 键',
 		'touchpad-button': '触摸板',
 		'load-profile-1': '加载 档案 #1',
 		'load-profile-2': '加载 档案 #2',
