@@ -282,16 +282,16 @@ export default function PinMapping() {
 				<Col sm={2}>
 					<Nav variant="pills" className="flex-column">
 						<Nav.Item>
-							<Nav.Link eventKey="profile-1">Base(Profile 1)</Nav.Link>
+							<Nav.Link eventKey="profile-1">{t('PinMapping:profile-text-1')}</Nav.Link>
 						</Nav.Item>
 						<Nav.Item>
-							<Nav.Link eventKey="profile-2">Profile 2</Nav.Link>
+							<Nav.Link eventKey="profile-2">{t('PinMapping:profile-text-2')}</Nav.Link>
 						</Nav.Item>
 						<Nav.Item>
-							<Nav.Link eventKey="profile-3">Profile 3</Nav.Link>
+							<Nav.Link eventKey="profile-3">{t('PinMapping:profile-text-3')}</Nav.Link>
 						</Nav.Item>
 						<Nav.Item>
-							<Nav.Link eventKey="profile-4">Profile 4</Nav.Link>
+							<Nav.Link eventKey="profile-4">{t('PinMapping:profile-text-4')}</Nav.Link>
 						</Nav.Item>
 					</Nav>
 					<hr />
@@ -313,7 +313,7 @@ export default function PinMapping() {
 					<Tab.Content>
 						<Tab.Pane eventKey="profile-1">
 							<PinSection
-								sectionTitle={`Base(Profile 1) - Pin Mapping`}
+								sectionTitle={t('PinMapping:profile-pin-mapping-title-base')}
 								pins={pins}
 								setHandler={setPin}
 								saveHandler={savePins}
@@ -326,7 +326,7 @@ export default function PinMapping() {
 								eventKey={`profile-${profileIndex + 2}`}
 							>
 								<PinSection
-									sectionTitle={`Profile ${profileIndex + 2} - Pin Mapping`}
+									sectionTitle={t('PinMapping:profile-pin-mapping-title', { profileNumber: profileIndex + 2 })}
 									pins={profilePins}
 									saveHandler={saveProfiles}
 									setHandler={(pin, maskPayload) =>
