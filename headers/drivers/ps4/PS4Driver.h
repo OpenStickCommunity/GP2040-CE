@@ -23,8 +23,13 @@ typedef enum {
 
 typedef enum
 {
+    PS4_GET_CALIBRATION      = 0x02,    // PS4 Controller Calibration
     PS4_DEFINITION           = 0x03,    // PS4 Controller Definition
     PS4_SET_FEATURE_STATE    = 0x05,    // PS4 Controller Features
+    PS4_GET_MAC_ADDRESS      = 0x12,    // PS4 Controller MAC
+    PS4_SET_HOST_MAC         = 0x13,    // Set Host MAC
+    PS4_SET_USB_BT_CONTROL   = 0x14,    // Set USB/BT Control Mode
+    PS4_GET_VERSION_DATE     = 0xA3,    // PS4 Controller Version & Date
     PS4_SET_AUTH_PAYLOAD     = 0xF0,    // Set Auth Payload
     PS4_GET_SIGNATURE_NONCE  = 0xF1,    // Get Signature Nonce
     PS4_GET_SIGNING_STATE    = 0xF2,    // Get Signing State

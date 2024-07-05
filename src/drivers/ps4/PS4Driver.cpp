@@ -31,6 +31,8 @@ void PS4Driver::initialize() {
     sensorData.accelerometer.y = 0;
     sensorData.accelerometer.z = 0;
 
+//    stdio_init_all();
+
     ps4Report = {
         .report_id = 0x01,
         .left_stick_x = PS4_JOYSTICK_MID,
@@ -41,8 +43,7 @@ void PS4Driver::initialize() {
         .button_west = 0, .button_south = 0, .button_east = 0, .button_north = 0,
         .button_l1 = 0, .button_r1 = 0, .button_l2 = 0, .button_r2 = 0,
         .button_select = 0, .button_start = 0, .button_l3 = 0, .button_r3 = 0, .button_home = 0,
-        //.sensor_data = sensorData, .touchpad_active = 0, .padding = 0, .tpad_increment = 0,
-        .sensor_data = {}, .touchpad_active = 0, .padding = 0, .tpad_increment = 0,
+        .sensor_data = sensorData, .touchpad_active = 0, .padding = 0, .tpad_increment = 0,
         .touchpad_data = touchpadData,
         .mystery_2 = { }
     };
@@ -204,6 +205,14 @@ USBListener * PS4Driver::get_usb_auth_listener() {
     return nullptr;
 }
 
+// Controller calibration
+static constexpr uint8_t output_0x02[] = {
+    0xfe, 0xff, 0x0e, 0x00, 0x04, 0x00, 0xd4, 0x22,
+    0x2a, 0xdd, 0xbb, 0x22, 0x5e, 0xdd, 0x81, 0x22, 
+    0x84, 0xdd, 0x1c, 0x02, 0x1c, 0x02, 0x85, 0x1f,
+    0xb0, 0xe0, 0xc6, 0x20, 0xb5, 0xe0, 0xb1, 0x20,
+    0x83, 0xdf, 0x0c, 0x00
+};
 
 // Controller descriptor (byte[4] = 0x00 for ps4, 0x07 for ps5)
 static constexpr uint8_t output_0x03[] = {
@@ -215,12 +224,28 @@ static constexpr uint8_t output_0x03[] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
+static constexpr uint8_t output_0x12[] = {
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x08, 0x25, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+};
+
+static constexpr uint8_t output_0xa3[] = {
+    0x4a, 0x75, 0x6e, 0x20, 0x20, 0x39, 0x20, 0x32,
+    0x30, 0x31, 0x37, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x31, 0x32, 0x3a, 0x33, 0x36, 0x3a, 0x34, 0x31,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x01, 0x08, 0xb4, 0x01, 0x00, 0x00, 0x00,
+    0x07, 0xa0, 0x10, 0x20, 0x00, 0xa0, 0x02, 0x00
+};
+
 // Nonce Page Size: 0x38 (56)
 // Response Page Size: 0x38 (56)
 static constexpr uint8_t output_0xf3[] = { 0x0, 0x38, 0x38, 0, 0, 0, 0 };
 
 // tud_hid_get_report_cb
 uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
+    //printf("PS4Driver::get_report RPT: %02x, Type: %02x, Size: %d\n", report_id, report_type, reqlen);
+
     if ( report_type != HID_REPORT_TYPE_FEATURE ) {
         memcpy(buffer, &ps4Report, sizeof(ps4Report));
         return sizeof(ps4Report);
@@ -234,12 +259,30 @@ uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
     //ps4_out_buffer[0] = report_id;
     switch(report_id) {
         // Controller Definition Report
+        case PS4AuthReport::PS4_GET_CALIBRATION:
+            if (reqlen != sizeof(output_0x02)) {
+                return -1;
+            }
+            memcpy(buffer, output_0x02, reqlen);
+            return reqlen;
         case PS4AuthReport::PS4_DEFINITION:
             if (reqlen != sizeof(output_0x03)) {
                 return -1;
             }
             memcpy(buffer, output_0x03, reqlen);
             buffer[4] = (uint8_t)controllerType; // Change controller type in definition
+            return reqlen;
+        case PS4AuthReport::PS4_GET_MAC_ADDRESS:
+            if (reqlen != sizeof(output_0x12)) {
+                return -1;
+            }
+            memcpy(buffer, output_0x12, reqlen);
+            return reqlen;
+        case PS4AuthReport::PS4_GET_VERSION_DATE:
+            if (reqlen != sizeof(output_0xa3)) {
+                return -1;
+            }
+            memcpy(buffer, output_0xa3, reqlen);
             return reqlen;
         // Use our private RSA key to sign the nonce and return chunks
         case PS4AuthReport::PS4_GET_SIGNATURE_NONCE:
@@ -290,6 +333,8 @@ uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
 
 // Only PS4 does anything with set report
 void PS4Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize) {
+    //printf("PS4Driver::set_report RPT: %02x, Type: %02x, Size: %d\n", report_id, report_type, bufsize);
+
     if (( report_type != HID_REPORT_TYPE_FEATURE ) && ( report_type != HID_REPORT_TYPE_OUTPUT ))
         return;
 
@@ -320,7 +365,17 @@ void PS4Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uin
         uint16_t noncelen;
         uint16_t buflen;
 
-        if (report_id == PS4AuthReport::PS4_SET_AUTH_PAYLOAD) {
+        if (report_id == PS4AuthReport::PS4_SET_HOST_MAC) {
+            //for (uint8_t i = 0; i < bufsize; i++) {
+            //    printf("%02x ", buffer[i]);
+            //}
+            //printf("\n");
+        } else if (report_id == PS4AuthReport::PS4_SET_USB_BT_CONTROL) {
+            //for (uint8_t i = 0; i < bufsize; i++) {
+            //    printf("%02x ", buffer[i]);
+            //}
+            //printf("\n");
+        } else if (report_id == PS4AuthReport::PS4_SET_AUTH_PAYLOAD) {
             if (bufsize != 63 ) {
                 return;
             }
