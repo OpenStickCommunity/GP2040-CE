@@ -49,7 +49,7 @@ void DRV8833RumbleAddon::setup() {
 }
 
 bool DRV8833RumbleAddon::compareRumbleState(Gamepad * gamepad) {
-	if (currentRumbleState.leftMotor == gamepad->rumbleState.leftMotor && currentRumbleState.rightMotor == gamepad->rumbleState.leftMotor)
+	if (currentRumbleState.leftMotor == gamepad->rumbleState.leftMotor && currentRumbleState.rightMotor == gamepad->rumbleState.rightMotor)
 		return true;
 
 	return false;
