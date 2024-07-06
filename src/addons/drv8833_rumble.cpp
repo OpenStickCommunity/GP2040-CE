@@ -21,6 +21,9 @@ void DRV8833RumbleAddon::setup() {
 	rightMotorPin = RIGHT_MOTOR_PIN;
 	motorSleepPin = MOTOR_SLEEP_PIN;
 	pwmFrequency = PWM_FREQUENCY;
+	rumbleDutyMin = RUMBLE_DUTY_MIN;
+	rumbleDutyMax = RUMBLE_DUTY_MAX;
+
 	// TODO: More robust clock check. Currently just assumes 120 MHz if USB Enabled, 125 MHz otherwise.
 	if ( PeripheralManager::getInstance().isUSBEnabled(0) )
 		sysClock = 120000000;
@@ -71,8 +74,8 @@ void DRV8833RumbleAddon::disableMotors() {
 }
 
 void DRV8833RumbleAddon::enableMotors(Gamepad * gamepad) {
-	pwmSetFreqDuty(leftMotorPinSlice, leftMotorPinChannel, pwmFrequency, motorToDuty(gamepad->rumbleState.leftMotor));
-	pwmSetFreqDuty(rightMotorPinSlice, rightMotorPinChannel, pwmFrequency, motorToDuty(gamepad->rumbleState.rightMotor));
+	pwmSetFreqDuty(leftMotorPinSlice, leftMotorPinChannel, pwmFrequency, scaleDuty(motorToDuty(gamepad->rumbleState.leftMotor), rumbleDutyMin, rumbleDutyMax));
+	pwmSetFreqDuty(rightMotorPinSlice, rightMotorPinChannel, pwmFrequency, scaleDuty(motorToDuty(gamepad->rumbleState.rightMotor), rumbleDutyMin, rumbleDutyMax));
 
 	// if motorSleepPin set and any motors are on, disable motor driver sleep mode
 	if (isValidPin(motorSleepPin))

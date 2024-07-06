@@ -26,11 +26,21 @@
 #define PWM_FREQUENCY 10000 // 10 kHz
 #endif
 
+#ifndef RUMBLE_DUTY_MIN
+#define RUMBLE_DUTY_MIN 20.0f
+#endif
+
+#ifndef RUMBLE_DUTY_MAX
+#define RUMBLE_DUTY_MAX 100.0f
+#endif
+
 // DRV8833 Rumble Module
 #define DRV8833RumbleName "DRV8833Rumble"
 
-// Scale uint8 to 0 - 100 range
+// Scale uint8 to 0 -> 100 range
 #define motorToDuty(m) (100.0f * (m/255.0f))
+// Rescale from 0 -> 100 range to min -> max range
+#define scaleDuty(in, min, max) ((in/100.0f) * (max-min) + min)
 
 // Buzzer Speaker
 class DRV8833RumbleAddon : public GPAddon
@@ -55,6 +65,8 @@ private:
 	uint8_t rightMotorPinSlice;
 	uint8_t rightMotorPinChannel;
 	uint32_t pwmFrequency;
+	float rumbleDutyMin;
+	float rumbleDutyMax;
 	uint32_t sysClock;
 	GamepadRumbleState currentRumbleState;
 };
