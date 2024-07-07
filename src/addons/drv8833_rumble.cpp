@@ -74,8 +74,8 @@ void DRV8833RumbleAddon::disableMotors() {
 }
 
 void DRV8833RumbleAddon::enableMotors(Gamepad * gamepad) {
-	pwmSetFreqDuty(leftMotorPinSlice, leftMotorPinChannel, pwmFrequency, scaleDuty(motorToDuty(gamepad->rumbleState.leftMotor), rumbleDutyMin, rumbleDutyMax));
-	pwmSetFreqDuty(rightMotorPinSlice, rightMotorPinChannel, pwmFrequency, scaleDuty(motorToDuty(gamepad->rumbleState.rightMotor), rumbleDutyMin, rumbleDutyMax));
+	pwmSetFreqDuty(leftMotorPinSlice, leftMotorPinChannel, pwmFrequency, (gamepad->rumbleState.leftMotor == 0) ? 0 : scaleDuty(motorToDuty(gamepad->rumbleState.leftMotor), rumbleDutyMin, rumbleDutyMax));
+	pwmSetFreqDuty(rightMotorPinSlice, rightMotorPinChannel, pwmFrequency, (gamepad->rumbleState.rightMotor == 0) ? 0 : scaleDuty(motorToDuty(gamepad->rumbleState.rightMotor), rumbleDutyMin, rumbleDutyMax));
 
 	// if motorSleepPin set and any motors are on, disable motor driver sleep mode
 	if (isValidPin(motorSleepPin))
