@@ -47,8 +47,6 @@ void DRV8833RumbleAddon::setup() {
 		// turn on sleep mode
 		gpio_put(motorSleepPin, false);
 	}
-
-	stdio_init_all();
 }
 
 bool DRV8833RumbleAddon::compareRumbleState(Gamepad * gamepad) {

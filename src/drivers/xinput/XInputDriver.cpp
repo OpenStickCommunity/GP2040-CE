@@ -110,14 +110,6 @@ static bool xinput_control_complete(uint8_t rhport, tusb_control_request_t const
 	return true;
 }
 
-static void _print_buff(uint8_t * buff, size_t n)
-{
-	for(size_t i{0}; i < n; i++) {
-		printf("%02X ", buff[i]);
-	}
-	printf("\n");
-}
-
 static bool xinput_xfer_callback(uint8_t rhport, uint8_t ep_addr, xfer_result_t result, uint32_t xferred_bytes)
 {
 	(void)rhport;
@@ -167,7 +159,6 @@ void XInputDriver::initialize() {
 	};
 
 	authDriver = nullptr;
-	stdio_init_all();
 }
 
 void XInputDriver::initializeAux() {
@@ -253,7 +244,6 @@ void XInputDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 
 	if (memcmp(xinput_out_buffer, outBuffer, XINPUT_OUT_SIZE) != 0) { // check if new write to xinput_out_buffer from xinput_xfer_callback
 		memcpy(outBuffer, xinput_out_buffer, XINPUT_OUT_SIZE);
-		_print_buff(outBuffer, XINPUT_OUT_SIZE);
 		// Check if this new write to endpoint_out is a rumble packet
 		check_and_set_rumble(gamepad, outBuffer);
 	}
