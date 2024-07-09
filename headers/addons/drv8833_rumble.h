@@ -6,32 +6,32 @@
 #include "gpaddon.h"
 #include "gamepad/GamepadState.h"
 
-#ifndef RUMBLE_ENABLED
-#define RUMBLE_ENABLED 1
+#ifndef DRV8833_RUMBLE_ENABLED
+#define DRV8833_RUMBLE_ENABLED 0
 #endif
 
-#ifndef LEFT_MOTOR_PIN
-#define LEFT_MOTOR_PIN 26
+#ifndef DRV8833_RUMBLE_LEFT_MOTOR_PIN
+#define DRV8833_RUMBLE_LEFT_MOTOR_PIN -1 //26
 #endif
 
-#ifndef RIGHT_MOTOR_PIN
-#define RIGHT_MOTOR_PIN 27
+#ifndef DRV8833_RUMBLE_RIGHT_MOTOR_PIN
+#define DRV8833_RUMBLE_RIGHT_MOTOR_PIN -1 //27
 #endif
 
-#ifndef MOTOR_SLEEP_PIN
-#define MOTOR_SLEEP_PIN 22
+#ifndef DRV8833_RUMBLE_MOTOR_SLEEP_PIN
+#define DRV8833_RUMBLE_MOTOR_SLEEP_PIN -1 //22
 #endif
 
-#ifndef PWM_FREQUENCY
-#define PWM_FREQUENCY 10000 // 10 kHz
+#ifndef DRV8833_RUMBLE_PWM_FREQUENCY
+#define DRV8833_RUMBLE_PWM_FREQUENCY 10000 // 10 kHz
 #endif
 
-#ifndef RUMBLE_DUTY_MIN
-#define RUMBLE_DUTY_MIN 20.0f
+#ifndef DRV8833_RUMBLE_DUTY_MIN
+#define DRV8833_RUMBLE_DUTY_MIN 0.0f
 #endif
 
-#ifndef RUMBLE_DUTY_MAX
-#define RUMBLE_DUTY_MAX 100.0f
+#ifndef DRV8833_RUMBLE_DUTY_MAX
+#define DRV8833_RUMBLE_DUTY_MAX 100.0f
 #endif
 
 // DRV8833 Rumble Module
@@ -65,8 +65,8 @@ private:
 	uint8_t rightMotorPinSlice;
 	uint8_t rightMotorPinChannel;
 	uint32_t pwmFrequency;
-	float rumbleDutyMin;
-	float rumbleDutyMax;
+	float dutyMin;
+	float dutyMax;
 	uint32_t sysClock;
 	GamepadRumbleState currentRumbleState;
 };
