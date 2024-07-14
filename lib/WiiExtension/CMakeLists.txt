@@ -8,6 +8,7 @@ add_library(WiiExtension
     extensions/NunchuckExtension.cpp
     extensions/TaikoExtension.cpp
     extensions/TurntableExtension.cpp
+    extensions/UDrawExtension.cpp
 )
 target_link_libraries(WiiExtension PUBLIC pico_stdlib PicoPeripherals CRC32)
 target_include_directories(WiiExtension INTERFACE .)

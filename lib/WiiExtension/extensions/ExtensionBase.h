@@ -50,6 +50,10 @@ typedef enum {
     WII_GYROSCOPE_ROLL,
     WII_GYROSCOPE_PITCH,
     WII_GYROSCOPE_YAW,
+    WII_TOUCH_X,
+    WII_TOUCH_Y,
+    WII_TOUCH_Z,
+    WII_TOUCH_PRESSED,
     WII_MAX_MOTIONS
 } WiiMotions;
 

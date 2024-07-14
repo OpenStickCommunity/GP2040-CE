@@ -168,6 +168,9 @@ void WiiExtension::start() {
             } else if (idRead[5] == 0x11) {
                 extensionType = WII_EXTENSION_TAIKO;
                 extensionController = new TaikoExtension();
+            } else if (idRead[5] == 0x12) {
+                extensionType = WII_EXTENSION_UDRAW;
+                extensionController = new UDrawExtension();
             }
 
             // in certain situations (eg. Nunchuck), setting the data type in reset() does not affect what this value will be

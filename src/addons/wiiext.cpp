@@ -236,6 +236,17 @@ void WiiExtensionInput::update() {
             triggerRight = wii->getController()->analogState[TurntableAnalogs::TURNTABLE_CROSSFADE];
 
             isAnalogTriggers = true;
+        } else if ((wii->extensionType == WII_EXTENSION_DRAWSOME) || (wii->extensionType == WII_EXTENSION_UDRAW)) {
+            buttonA = wii->getController()->buttons[WiiButtons::WII_BUTTON_A];
+            buttonL = wii->getController()->buttons[WiiButtons::WII_BUTTON_L];
+            buttonR = wii->getController()->buttons[WiiButtons::WII_BUTTON_R];
+
+            touchX = wii->getController()->motionState[WiiMotions::WII_TOUCH_X];
+            touchY = wii->getController()->motionState[WiiMotions::WII_TOUCH_Y];
+            touchZ = wii->getController()->motionState[WiiMotions::WII_TOUCH_Z];
+            touchPressed = wii->getController()->motionState[WiiMotions::WII_TOUCH_PRESSED];
+
+            isTouch = true;
         } else if (wii->extensionType == WII_EXTENSION_MOTION_PLUS) {
             currentConfig = &extensionConfigs[WII_EXTENSION_NUNCHUCK];
             
@@ -565,6 +576,14 @@ void WiiExtensionInput::updateMotionState() {
         gamepad->auxState.sensors.gyroscope.x = gyroscopeX;
         gamepad->auxState.sensors.gyroscope.y = gyroscopeY;
         gamepad->auxState.sensors.gyroscope.z = gyroscopeZ;
+    }
+
+    gamepad->auxState.sensors.touchpad[0].enabled = isTouch;
+    if (isTouch) {
+        gamepad->auxState.sensors.touchpad[0].x = touchX;
+        gamepad->auxState.sensors.touchpad[0].y = touchY;
+        gamepad->auxState.sensors.touchpad[0].z = touchZ;
+        gamepad->auxState.sensors.touchpad[0].active = touchPressed;
     }
 }
 

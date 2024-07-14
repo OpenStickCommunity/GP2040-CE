@@ -9,5 +9,6 @@
 #include "NunchuckExtension.h"
 #include "TaikoExtension.h"
 #include "TurntableExtension.h"
+#include "UDrawExtension.h"
 
 #endif
