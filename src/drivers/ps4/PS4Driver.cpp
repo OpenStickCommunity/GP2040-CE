@@ -17,6 +17,8 @@
 #define PS4_KEEPALIVE_TIMER 5
 
 void PS4Driver::initialize() {
+    Gamepad * gamepad = Storage::getInstance().GetGamepad();
+
     touchpadData.p1.unpressed = 1;
     touchpadData.p1.set_x(PS4_TP_X_MAX / 2);
     touchpadData.p1.set_y(PS4_TP_Y_MAX / 2);
@@ -24,6 +26,11 @@ void PS4Driver::initialize() {
     touchpadData.p2.set_x(PS4_TP_X_MAX / 2);
     touchpadData.p2.set_y(PS4_TP_Y_MAX / 2);
 
+    sensorData.powerLevel = 0xB; // 0x00-0x0A, 0x00-0x0B if charging
+    sensorData.charging = 1;
+    sensorData.headphones = 0;
+    sensorData.microphone = 0;
+    sensorData.extension = 0;
     sensorData.gyroscope.x = 0;
     sensorData.gyroscope.y = 0;
     sensorData.gyroscope.z = 0;
@@ -31,7 +38,13 @@ void PS4Driver::initialize() {
     sensorData.accelerometer.y = 0;
     sensorData.accelerometer.z = 0;
 
-//    stdio_init_all();
+    // preseed touchpad sensors with center position values
+    gamepad->auxState.sensors.touchpad[0].x = PS4_TP_X_MAX/2;
+    gamepad->auxState.sensors.touchpad[0].y = PS4_TP_Y_MAX/2;
+    gamepad->auxState.sensors.touchpad[1].x = PS4_TP_X_MAX/2;
+    gamepad->auxState.sensors.touchpad[1].y = PS4_TP_Y_MAX/2;
+
+    touchCounter = 0;
 
     ps4Report = {
         .report_id = 0x01,
@@ -137,6 +150,8 @@ void PS4Driver::process(Gamepad * gamepad, uint8_t * outBuffer) {
     touchpadData.p1.unpressed = ps4Report.button_touchpad ? 0 : 1;
     ps4Report.touchpad_active = ps4Report.button_touchpad ? 0x01 : 0x00;
     if (ps4Report.button_touchpad) {
+        // make the assumption that since touchpad button is already being pressed, 
+        // the first touch position is in use and no other "touches" will be present
         if (gamepad->pressedA3()) {
             touchpadData.p1.set_x(PS4_TP_X_MIN);
         } else if (gamepad->pressedA4()) {
@@ -144,6 +159,39 @@ void PS4Driver::process(Gamepad * gamepad, uint8_t * outBuffer) {
         } else {
             touchpadData.p1.set_x(PS4_TP_X_MAX / 2);
         }
+    } else {
+        // if more than one touch pad sensor, sensors will never be used out of order
+        if (gamepad->auxState.sensors.touchpad[0].enabled) {
+            touchpadData.p1.unpressed = !gamepad->auxState.sensors.touchpad[0].active;
+            ps4Report.touchpad_active = gamepad->auxState.sensors.touchpad[0].active;
+            touchpadData.p1.set_x(gamepad->auxState.sensors.touchpad[0].x);
+            touchpadData.p1.set_y(gamepad->auxState.sensors.touchpad[0].y);
+            
+            if (gamepad->auxState.sensors.touchpad[1].enabled) {
+                touchpadData.p2.unpressed = !gamepad->auxState.sensors.touchpad[1].active;
+                touchpadData.p2.set_x(gamepad->auxState.sensors.touchpad[1].x);
+                touchpadData.p2.set_y(gamepad->auxState.sensors.touchpad[1].y);
+            }
+        }
+    }
+    // check if any of the points are recently touched, rather than still being touched
+    if (!pointOneTouched && !touchpadData.p1.unpressed) {
+        touchCounter = (touchCounter < PS4_TP_MAX_COUNT ? touchCounter+1 : 0);
+
+        touchpadData.p1.counter = touchCounter;
+
+        pointOneTouched = true;
+    } else if (pointOneTouched && touchpadData.p1.unpressed) {
+        pointOneTouched = false;
+    }
+    if (!pointTwoTouched && touchpadData.p2.unpressed) {
+        touchCounter = (touchCounter < PS4_TP_MAX_COUNT ? touchCounter+1 : 0);
+    
+        touchpadData.p2.counter = touchCounter;
+    
+        pointTwoTouched = true;
+    } else if (pointTwoTouched && touchpadData.p1.unpressed) {
+        pointTwoTouched = false;
     }
     ps4Report.touchpad_data = touchpadData;
 

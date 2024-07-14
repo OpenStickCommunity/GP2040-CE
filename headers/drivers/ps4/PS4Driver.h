@@ -78,6 +78,9 @@ private:
     uint8_t send_nonce_part;
     uint32_t controllerType;
     GPAuthDriver * authDriver;
+    bool pointOneTouched = false;
+    bool pointTwoTouched = false;
+    uint8_t touchCounter;
 
     PS4State ps4State;
     bool authsent;

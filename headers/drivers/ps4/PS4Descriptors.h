@@ -77,6 +77,8 @@
 #define PS4_TP_Y_MIN 0
 #define PS4_TP_Y_MAX 943
 
+#define PS4_TP_MAX_COUNT 128
+
 struct TouchpadXY {
   uint8_t counter : 7;
   uint8_t unpressed : 1;
@@ -111,9 +113,17 @@ struct PSSensorData {
   uint16_t battery;
   PSSensor gyroscope;
   PSSensor accelerometer;
-  uint8_t misc[5];
-  uint8_t power;
-  uint8_t ext;
+  uint8_t misc[4];
+  uint8_t powerLevel : 4;
+  uint8_t charging : 1;
+  uint8_t headphones : 1;
+  uint8_t microphone : 1;
+  uint8_t extension : 1;
+  uint8_t extData0 : 1;
+  uint8_t extData1 : 1;
+  uint8_t notConnected : 1;
+  uint8_t extData3 : 5;
+  uint8_t misc2;
 } __attribute__((packed));
 
 typedef struct __attribute__((packed)) {
