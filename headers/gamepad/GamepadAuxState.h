@@ -23,12 +23,27 @@ struct GamepadAux1DSensor
     uint16_t x;
 };
 
+struct GamepadAux1DRelativeSensor
+{
+    bool enabled;
+    bool active;
+    int16_t x;
+};
+
 struct GamepadAux2DSensor
 {
     bool enabled;
     bool active;
     uint16_t x;
     uint16_t y;
+};
+
+struct GamepadAux2DRelativeSensor
+{
+    bool enabled;
+    bool active;
+    int16_t x;
+    int16_t y;
 };
 
 struct GamepadAux3DSensor
@@ -40,6 +55,15 @@ struct GamepadAux3DSensor
     uint16_t z;
 };
 
+struct GamepadAux3DRelativeSensor
+{
+    bool enabled;
+    bool active;
+    int16_t x;
+    int16_t y;
+    int16_t z;
+};
+
 struct GamepadAux4DSensor
 {
     bool enabled;
@@ -48,6 +72,16 @@ struct GamepadAux4DSensor
     uint16_t y;
     uint16_t z;
     uint16_t t;
+};
+
+struct GamepadAux4DRelativeSensor
+{
+    bool enabled;
+    bool active;
+    int16_t x;
+    int16_t y;
+    int16_t z;
+    int16_t t;
 };
 
 struct GamepadAuxRGBSensor
@@ -68,6 +102,8 @@ struct GamepadAuxHapticChannel
 
 struct GamepadAuxSensors
 {
+    GamepadAux3DRelativeSensor mouse;
+
     GamepadAux3DSensor touchpad[GAMEPAD_AUX_MAX_TOUCHPADS];
     GamepadAux3DSensor gyroscope;
     GamepadAux3DSensor accelerometer;
