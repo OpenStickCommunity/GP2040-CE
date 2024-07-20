@@ -437,6 +437,12 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		buzzerPin: -1,
 		buzzerEnablePin: -1,
 		buzzerVolume: 100,
+		drv8833RumbleLeftMotorPin: -1,
+		drv8833RumbleRightMotorPin: -1,
+		drv8833RumbleMotorSleepPin: -1,
+		drv8833RumblePWMFrequency: 10000,
+		drv8833RumbleDutyMin: 0,
+		drv8833RumbleDutyMax: 100,
 		focusModePin: -1,
 		focusModeButtonLockMask: 0,
 		focusModeButtonLockEnabled: 0,
@@ -508,6 +514,7 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		RotaryAddonEnabled: 1,
 		pcf8575Block: 0,
 		PCF8575AddonEnabled: 1,
+		DRV8833RumbleAddonEnabled: 1,
 		usedPins: Object.values(picoController),
 	});
 });

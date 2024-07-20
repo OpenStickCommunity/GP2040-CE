@@ -842,7 +842,7 @@ std::string getButtonLayoutDefs()
     for (layoutCtr = _ButtonLayout_MIN; layoutCtr < _ButtonLayout_ARRAYSIZE; layoutCtr++) {
         writeDoc(doc, "buttonLayout", LayoutManager::getInstance().getButtonLayoutName((ButtonLayout)layoutCtr), layoutCtr);
     }
-    
+
     for (layoutCtr = _ButtonLayoutRight_MIN; layoutCtr < _ButtonLayoutRight_ARRAYSIZE; layoutCtr++) {
         writeDoc(doc, "buttonLayoutRight", LayoutManager::getInstance().getButtonLayoutRightName((ButtonLayoutRight)layoutCtr), layoutCtr);
     }
@@ -856,7 +856,7 @@ std::string getButtonLayouts()
     const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
     const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
     uint16_t elementCtr = 0;
-    
+
     LayoutManager::LayoutList layoutA = LayoutManager::getInstance().getLayoutA();
     LayoutManager::LayoutList layoutB = LayoutManager::getInstance().getLayoutB();
 
@@ -917,7 +917,7 @@ std::string getButtonLayouts()
         writeDoc(ele, "parameters", "closed", layoutB[elementCtr].parameters.closed);
         writeDoc(doc, "displayLayouts", "buttonLayoutRight", std::to_string(elementCtr), ele);
     }
-    
+
     return serialize_json(doc);
 }
 
@@ -1499,6 +1499,15 @@ std::string setAddonOptions()
     docToValue(pcf8575Options.i2cBlock, doc, "pcf8575Block");
     docToValue(pcf8575Options.enabled, doc, "PCF8575AddonEnabled");
 
+    DRV8833RumbleOptions& drv8833RumbleOptions = Storage::getInstance().getAddonOptions().drv8833RumbleOptions;
+    docToValue(drv8833RumbleOptions.enabled, doc, "DRV8833RumbleAddonEnabled");
+    docToPin(drv8833RumbleOptions.leftMotorPin, doc, "drv8833RumbleLeftMotorPin");
+    docToPin(drv8833RumbleOptions.rightMotorPin, doc, "drv8833RumbleRightMotorPin");
+    docToPin(drv8833RumbleOptions.motorSleepPin, doc, "drv8833RumbleMotorSleepPin");
+    docToValue(drv8833RumbleOptions.pwmFrequency, doc, "drv8833RumblePWMFrequency");
+    docToValue(drv8833RumbleOptions.dutyMin, doc, "drv8833RumbleDutyMin");
+    docToValue(drv8833RumbleOptions.dutyMax, doc, "drv8833RumbleDutyMax");
+
     Storage::getInstance().save();
 
     return serialize_json(doc);
@@ -1922,6 +1931,15 @@ std::string getAddonOptions()
     PCF8575Options& pcf8575Options = Storage::getInstance().getAddonOptions().pcf8575Options;
     writeDoc(doc, "pcf8575Block", pcf8575Options.i2cBlock);
     writeDoc(doc, "PCF8575AddonEnabled", pcf8575Options.enabled);
+
+    const DRV8833RumbleOptions& drv8833RumbleOptions = Storage::getInstance().getAddonOptions().drv8833RumbleOptions;
+    writeDoc(doc, "DRV8833RumbleAddonEnabled", drv8833RumbleOptions.enabled);
+    writeDoc(doc, "drv8833RumbleLeftMotorPin", cleanPin(drv8833RumbleOptions.leftMotorPin));
+    writeDoc(doc, "drv8833RumbleRightMotorPin", cleanPin(drv8833RumbleOptions.rightMotorPin));
+    writeDoc(doc, "drv8833RumbleMotorSleepPin", cleanPin(drv8833RumbleOptions.motorSleepPin));
+    writeDoc(doc, "drv8833RumblePWMFrequency", drv8833RumbleOptions.pwmFrequency);
+    writeDoc(doc, "drv8833RumbleDutyMin", drv8833RumbleOptions.dutyMin);
+    writeDoc(doc, "drv8833RumbleDutyMax", drv8833RumbleOptions.dutyMax);
 
     return serialize_json(doc);
 }

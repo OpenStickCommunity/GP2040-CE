@@ -51,6 +51,7 @@ import InputHistory, {
 } from '../Addons/InputHistory';
 import Rotary, { rotaryScheme, rotaryState } from '../Addons/Rotary';
 import PCF8575, { pcf8575Scheme, pcf8575State } from '../Addons/PCF8575';
+import DRV8833Rumble, { drv8833RumbleScheme, drv8833RumbleState } from '../Addons/DRV8833';
 
 const schema = yup.object().shape({
 	...analogScheme,
@@ -72,6 +73,7 @@ const schema = yup.object().shape({
 	...inputHistoryScheme,
 	...rotaryScheme,
 	...pcf8575Scheme,
+	...drv8833RumbleScheme,
 });
 
 const defaultValues = {
@@ -95,6 +97,7 @@ const defaultValues = {
 	...inputHistoryState,
 	...rotaryState,
 	...pcf8575State,
+	...drv8833RumbleState,
 };
 
 const ADDONS = [
@@ -118,6 +121,7 @@ const ADDONS = [
 	InputHistory,
 	Rotary,
 	PCF8575,
+	DRV8833Rumble,
 ];
 
 const FormContext = ({ setStoredData }) => {
