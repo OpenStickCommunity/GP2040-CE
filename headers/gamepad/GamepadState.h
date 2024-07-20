@@ -133,6 +133,16 @@ const uint32_t buttonMasks[] =
 	GAMEPAD_MASK_E12,
 };
 
+struct GamepadRumbleState
+{
+	// XInput General Motors
+	uint8_t leftMotor {0};
+	uint8_t rightMotor {0};
+	// GameInput Trigger Motors (XBOne)
+	uint8_t leftTrigger {0};
+	uint8_t rightTrigger {0};
+};
+
 struct GamepadState
 {
 	uint8_t dpad {0};

@@ -395,7 +395,9 @@ $button-keycap: 19px;
 	.A1 {
 		@include arcade-button($button-24mm, true);
 		// left: calc(50% - #{$button-24mm * 3.5});
-		left: calc(50% - #{$button-24mm * 2.5}); // moves a little to the right so when the window is to narrow you can still see the A2 button
+		left: calc(
+			50% - #{$button-24mm * 2.5}
+		); // moves a little to the right so when the window is to narrow you can still see the A2 button
 		top: calc(0% - #{$button-24mm * 2.15});
 	}
 	.Up {
@@ -708,5 +710,5 @@ $button-keycap: 19px;
 }
 
 .led-color-picker {
-    min-width: 250px;
+	min-width: 250px;
 }

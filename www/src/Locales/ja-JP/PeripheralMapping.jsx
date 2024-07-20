@@ -1,6 +1,7 @@
 export default {
 	'header-text': '周辺機器設定',
-	'sub-header-text': 'ここでは周辺機器の端子割り当て及び動作に関する設定ができます',
+	'sub-header-text':
+		'ここでは周辺機器の端子割り当て及び動作に関する設定ができます',
 	'pins-label': '端子',
 	'pin-in-use': '割当済み',
 	'i2c-desc-header': 'I\u00B2C 情報',

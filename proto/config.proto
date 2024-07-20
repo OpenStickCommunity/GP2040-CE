@@ -207,26 +207,26 @@ message ProfileOptions
 message DisplayOptions
 {
     optional bool enabled = 1;
-    
+
     optional int32 i2cBlock = 2;
     optional int32 deprecatedI2cSDAPin = 3 [deprecated = true];
     optional int32 deprecatedI2cSCLPin = 4 [deprecated = true];
     optional int32 i2cAddress = 5;
     optional int32 deprecatedI2cSpeed = 6 [deprecated = true];
-    
+
     optional ButtonLayout buttonLayout = 7;
     optional ButtonLayoutRight buttonLayoutRight = 8;
     optional ButtonLayoutCustomOptions buttonLayoutCustomOptions = 9;
-    
+
     optional SplashMode splashMode = 10;
     optional SplashChoice splashChoice = 11;
     optional int32 splashDuration = 12;
     optional bytes splashImage = 13 [(nanopb).max_size = 1024];
-    
+
     optional int32 size = 14;
     optional int32 flip = 15;
     optional bool invert = 16;
-    
+
     optional int32 displaySaverTimeout = 17;
     optional bool turnOffWhenSuspended = 18;
 }
@@ -239,7 +239,7 @@ message LEDOptions
     optional uint32 ledsPerButton = 4;
     optional uint32 brightnessMaximum = 5;
     optional uint32 brightnessSteps = 6;
-    
+
     optional int32 indexUp = 7;
     optional int32 indexDown = 8;
     optional int32 indexLeft = 9;
@@ -258,7 +258,7 @@ message LEDOptions
     optional int32 indexR3 = 22;
     optional int32 indexA1 = 23;
     optional int32 indexA2 = 24;
-    
+
     optional PLEDType pledType = 25;
     optional int32 pledPin1 = 26;
     optional int32 pledPin2 = 27;
@@ -284,7 +284,7 @@ message AnimationOptions_Proto
     optional int32 chaseCycleTime = 5;
     optional int32 rainbowCycleTime = 6;
     optional uint32 themeIndex = 7;
-    
+
     optional bool hasCustomTheme = 8;
     optional uint32 customThemeUp = 9;
     optional uint32 customThemeDown = 10;
@@ -322,7 +322,7 @@ message AnimationOptions_Proto
     optional uint32 customThemeR3Pressed = 42;
     optional uint32 customThemeA1Pressed = 43;
     optional uint32 customThemeA2Pressed = 44;
-    optional uint32 buttonPressColorCooldownTimeInMs = 45;  	
+    optional uint32 buttonPressColorCooldownTimeInMs = 45;
 }
 
 message BootselButtonOptions
@@ -340,7 +340,7 @@ message OnBoardLedOptions
 message AnalogOptions
 {
     optional bool enabled = 1;
-    
+
     optional int32 analogAdc1PinX = 2;
     optional int32 analogAdc1PinY = 3;
     optional bool forced_circularity = 4;
@@ -358,12 +358,12 @@ message AnalogOptions
 message TurboOptions
 {
     optional bool enabled = 1;
-    
+
     optional int32 deprecatedButtonPin = 2 [deprecated = true];
     optional int32 ledPin = 3;
     optional uint32 shotCount = 4;
     optional int32 shmupDialPin = 5;
-    
+
     optional bool shmupModeEnabled = 6;
     optional uint32 shmupAlwaysOn1 = 7;
     optional uint32 shmupAlwaysOn2 = 8;
@@ -383,7 +383,7 @@ message TurboOptions
 message SliderOptions
 {
     optional bool enabled = 1;
-    
+
     optional int32 deprecatedPinSliderOne = 2 [deprecated = true];
     optional int32 deprecatedPinSliderTwo = 3 [deprecated = true];
     optional DpadMode deprecatedModeOne = 4 [deprecated = true];
@@ -394,10 +394,10 @@ message SliderOptions
 message SOCDSliderOptions
 {
     optional bool enabled = 1;
-    
+
     optional int32 deprecatedPinOne = 2 [deprecated = true];
     optional int32 deprecatedPinTwo = 3 [deprecated = true];
-    
+
     optional SOCDMode modeDefault = 4;
     optional SOCDMode deprecatedModeOne = 5 [deprecated = true];
     optional SOCDMode deprecatedModeTwo = 6 [deprecated = true];
@@ -406,10 +406,10 @@ message SOCDSliderOptions
 message ReverseOptions
 {
     optional bool enabled = 1;
-    
+
     optional int32 buttonPin = 2;
     optional int32 ledPin = 3;
-    
+
     optional uint32 actionUp = 4;
     optional uint32 actionDown = 5;
     optional uint32 actionLeft = 6;
@@ -419,7 +419,7 @@ message ReverseOptions
 message AnalogADS1219Options
 {
     optional bool enabled = 1;
-    
+
     optional int32 i2cBlock = 2;
     optional int32 deprecatedI2cSDAPin = 3 [deprecated = true];
     optional int32 deprecatedI2cSCLPin = 4 [deprecated = true];
@@ -441,12 +441,12 @@ message AnalogADS1256Options
 message DualDirectionalOptions
 {
     optional bool enabled = 1;
-    
+
     optional int32 deprecatedUpPin = 2 [deprecated = true];
     optional int32 deprecatedDownPin = 3 [deprecated = true];
     optional int32 deprecatedLeftPin = 4 [deprecated = true];
     optional int32 deprecatedRightPin = 5 [deprecated = true];
-    
+
     optional DpadMode dpadMode = 6;
     optional DualDirectionalCombinationMode combineMode = 7;
     optional bool fourWayMode = 8;
@@ -469,7 +469,7 @@ message TiltOptions
     optional int32 tiltRightAnalogRightPin = 12;
 
     optional SOCDMode tiltSOCDMode = 13;
-    
+
     optional int32 factorTilt1LeftX =  14;
     optional int32 factorTilt1LeftY =  15;
     optional int32 factorTilt1RightX =  16;
@@ -483,7 +483,7 @@ message TiltOptions
 message BuzzerOptions
 {
     optional bool enabled = 1;
-    
+
     optional int32 pin = 2;
     optional uint32 volume = 3;
     optional int32 enablePin = 4;
@@ -492,7 +492,7 @@ message BuzzerOptions
 message ExtraButtonOptions
 {
     optional bool enabled = 1;
-    
+
     optional int32 pin = 2;
     optional uint32 buttonMap = 3;
 }
@@ -545,7 +545,7 @@ message WiiOptions
         optional AnalogAxis x = 1;
         optional AnalogAxis y = 2;
     }
-    
+
     message NunchukOptions
     {
         optional int32 buttonC = 1;
@@ -576,7 +576,7 @@ message WiiOptions
         optional AnalogAxis rightTrigger = 19;
     }
 
-    message TaikoOptions 
+    message TaikoOptions
     {
         optional int32 buttonKatLeft = 1;
         optional int32 buttonKatRight = 2;
@@ -743,6 +743,18 @@ message PCF8575Options
     repeated GpioMappingInfo pins = 3 [(nanopb).max_count = 16];
 }
 
+message DRV8833RumbleOptions
+{
+		optional bool enabled = 1;
+
+		optional int32 leftMotorPin = 2;
+		optional int32 rightMotorPin = 3;
+		optional int32 motorSleepPin = 4;
+		optional uint32 pwmFrequency = 5;
+		optional float dutyMin = 6;
+		optional float dutyMax = 7;
+}
+
 message AddonOptions
 {
     optional BootselButtonOptions bootselButtonOptions = 1;
@@ -770,6 +782,7 @@ message AddonOptions
     optional AnalogADS1256Options analogADS1256Options = 23;
     optional RotaryOptions rotaryOptions = 24;
     optional PCF8575Options pcf8575Options = 25;
+    optional DRV8833RumbleOptions drv8833RumbleOptions = 26;
 }
 
 message MigrationHistory
@@ -782,7 +795,7 @@ message MigrationHistory
 message Config
 {
     optional string boardVersion = 1 [(nanopb).max_length = 31];
-    
+
     optional GamepadOptions gamepadOptions = 2;
     optional HotkeyOptions hotkeyOptions = 3;
     optional PinMappings deprecatedPinMappings = 4 [deprecated = true];
@@ -793,7 +806,7 @@ message Config
     optional AddonOptions addonOptions = 9;
     optional ForcedSetupOptions forcedSetupOptions = 10;
     optional ProfileOptions profileOptions = 11;
-    
+
     optional string boardConfig = 12 [(nanopb).max_length = 63];
     optional GpioMappings gpioMappings = 13;
     optional MigrationHistory migrations = 14;

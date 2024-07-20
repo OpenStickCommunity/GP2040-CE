@@ -157,4 +157,11 @@ export default {
 	'tilt-socd-mode-0': 'Up Priority',
 	'tilt-socd-mode-1': 'Neutral',
 	'tilt-socd-mode-2': 'Last Win',
+	'drv8833-rumble-header-text': 'DRV8833 Rumble Configuration',
+	'drv8833-rumble-left-motor-pin-label': 'Left Motor Pin',
+	'drv8833-rumble-right-motor-pin-label': 'Right Motor Pin',
+	'drv8833-rumble-motor-sleep-pin-label': 'Motor Sleep Pin',
+	'drv8833-rumble-pwm-frequency-label': 'PWM Frequency',
+	'drv8833-rumble-duty-min-label': 'Minimum Duty Cycle',
+	'drv8833-rumble-duty-max-label': 'Maximum Duty Cycle',
 };

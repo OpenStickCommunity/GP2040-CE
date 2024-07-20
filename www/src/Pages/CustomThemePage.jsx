@@ -26,19 +26,19 @@ import './CustomThemePage.scss';
 const COLOR_PICKER_POSITIONS = [
 	{
 		label: 'Top',
-		value: "top",
+		value: 'top',
 	},
 	{
 		label: 'Bottom',
-		value: "bottom",
+		value: 'bottom',
 	},
 	{
 		label: 'Left',
-		value: "left",
+		value: 'left',
 	},
 	{
 		label: 'Right',
-		value: "right",
+		value: 'right',
 	},
 ];
 
@@ -120,7 +120,7 @@ const CustomThemePage = () => {
 	} = useContext(AppContext);
 	const [saveMessage, setSaveMessage] = useState('');
 	const [ledLayout, setLedLayout] = useState(0);
-	const [colorPickerLocation, setColorPickerLocation] = useState("bottom");
+	const [colorPickerLocation, setColorPickerLocation] = useState('bottom');
 	const [pickerType, setPickerType] = useState(null);
 	const [selectedButton, setSelectedButton] = useState('');
 	const [selectedColor, setSelectedColor] = useState('#000000');
@@ -375,7 +375,10 @@ const CustomThemePage = () => {
 											style={{ width: 150 }}
 										>
 											{COLOR_PICKER_POSITIONS.map((o, i) => (
-												<option key={`colorPickerLocation-option-${i}`} value={o.value}>
+												<option
+													key={`colorPickerLocation-option-${i}`}
+													value={o.value}
+												>
 													{o.label}
 												</option>
 											))}
@@ -388,34 +391,42 @@ const CustomThemePage = () => {
 										onContextMenu={(e) => e.preventDefault()}
 									>
 										<div className="container-aux">
-											{BUTTON_LAYOUTS[ledLayout]?.auxButtons.map((buttonName) => (
-												<LEDButton
-													key={`led-button-${buttonName}`}
-													className={`${buttonName} ${
-														selectedButton === buttonName ? 'selected' : ''
-													}`}
-													name={BUTTONS[buttonLabelType][buttonName]}
-													buttonColor={customTheme[buttonName]?.normal}
-													buttonPressedColor={customTheme[buttonName]?.pressed}
-													labelUnder={true}
-													onClick={(e) => toggleSelectedButton(e, buttonName)}
-												/>
-											))}
+											{BUTTON_LAYOUTS[ledLayout]?.auxButtons.map(
+												(buttonName) => (
+													<LEDButton
+														key={`led-button-${buttonName}`}
+														className={`${buttonName} ${
+															selectedButton === buttonName ? 'selected' : ''
+														}`}
+														name={BUTTONS[buttonLabelType][buttonName]}
+														buttonColor={customTheme[buttonName]?.normal}
+														buttonPressedColor={
+															customTheme[buttonName]?.pressed
+														}
+														labelUnder={true}
+														onClick={(e) => toggleSelectedButton(e, buttonName)}
+													/>
+												),
+											)}
 										</div>
 										<div className="container-main">
-											{BUTTON_LAYOUTS[ledLayout]?.mainButtons.map((buttonName) => (
-												<LEDButton
-													key={`led-button-${buttonName}`}
-													className={`${buttonName} ${
-														selectedButton === buttonName ? 'selected' : ''
-													}`}
-													name={BUTTONS[buttonLabelType][buttonName]}
-													buttonColor={customTheme[buttonName]?.normal}
-													buttonPressedColor={customTheme[buttonName]?.pressed}
-													labelUnder={false}
-													onClick={(e) => toggleSelectedButton(e, buttonName)}
-												/>
-											))}
+											{BUTTON_LAYOUTS[ledLayout]?.mainButtons.map(
+												(buttonName) => (
+													<LEDButton
+														key={`led-button-${buttonName}`}
+														className={`${buttonName} ${
+															selectedButton === buttonName ? 'selected' : ''
+														}`}
+														name={BUTTONS[buttonLabelType][buttonName]}
+														buttonColor={customTheme[buttonName]?.normal}
+														buttonPressedColor={
+															customTheme[buttonName]?.pressed
+														}
+														labelUnder={false}
+														onClick={(e) => toggleSelectedButton(e, buttonName)}
+													/>
+												),
+											)}
 										</div>
 									</div>
 								</div>
@@ -444,7 +455,9 @@ const CustomThemePage = () => {
 						show={pickerVisible}
 						target={ledOverlayTarget}
 						placement={
-							specialButtons.indexOf(selectedButton) > -1 ? 'top' : colorPickerLocation
+							specialButtons.indexOf(selectedButton) > -1
+								? 'top'
+								: colorPickerLocation
 						}
 						container={this}
 						containerPadding={20}

@@ -1,6 +1,5 @@
 export default {
-	'pin-version-warning-text':
-		'v0.7.6以前の設定ファイル読み込みは無効です。',
+	'pin-version-warning-text': 'v0.7.6以前の設定ファイル読み込みは無効です。',
 	'saved-success-message': '{{name}} として保存完了',
 	'save-header-text': 'ファイルにバックアップ',
 	'save-export-option-label': '{{api}}オプションをエクスポート',
