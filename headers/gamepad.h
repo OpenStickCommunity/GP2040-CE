@@ -138,6 +138,7 @@ public:
 	GamepadState state;
 	GamepadState turboState;
 	GamepadRumbleState rumbleState;
+	GamepadAuxState auxState;
 	GamepadButtonMapping *mapDpadUp;
 	GamepadButtonMapping *mapDpadDown;
 	GamepadButtonMapping *mapDpadLeft;
