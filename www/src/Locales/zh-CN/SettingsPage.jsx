@@ -1,6 +1,6 @@
 export default {
 	'auth-settings-label': '认证设置',
-    'no-mode-settings-text': '没有与 {{mode}} 模式相关的设置项目。',
+	'no-mode-settings-text': '没有与 {{mode}} 模式相关的设置项目。',
 	'settings-header-text': '输入模式设置',
 	'gamepad-settings-header-text': '游戏控制器设置',
 	'input-mode-label': '输入模式',
@@ -11,7 +11,7 @@ export default {
 		xinput: 'XInput',
 		'nintendo-switch': 'Nintendo Switch',
 		ps3: 'PS3',
-        generic: '通用 HID 设备',
+		generic: '通用 HID 设备',
 		keyboard: '键盘',
 		ps4: 'PS4',
 		ps5: 'PS5',
@@ -57,13 +57,20 @@ export default {
 	},
 	'profile-number-label': '档案编号',
 	'debounce-delay-label': '去抖动延迟 (以毫秒为单位)',
-    'ps4-mode-explanation-text': 'PS4 模式允许 GP2040-CE 作为经过认证的 PS4 控制器运行。',
-	'ps4-mode-warning-text': '<span>⏳ 警告 ⏳：</span>在没有认证的情况下 PS4 将在 8 分钟后超时并断开连接。',
-	'ps4-usb-host-mode-text': '<span>补充信息：</span>请确保已启用 USB 外围设备，并已插入兼容 PS4 的 USB 设备。',
-	'ps5-mode-explanation-text': 'PS5 模式允许 GP2040-CE 作为经过认证的 PS5 兼容街机摇杆运行。',
-	'ps5-mode-warning-text': '<span>⏳ 警告 ⏳：</span>在没有认证的情况下 PS5 将在 8 分钟后超时并断开连接。',
-	'ps5-usb-host-mode-text': '<span>补充信息：</span>请确保已启用 USB 外围设备，并已插入兼容 PS5 的 USB 设备。',
-	'xbone-mode-text': '<span>补充信息：</span>Xbox One 模式需要 USB 主机(USB Host)连接和 USB 加密狗才能正确认证。',
+	'ps4-mode-explanation-text':
+		'PS4 模式允许 GP2040-CE 作为经过认证的 PS4 控制器运行。',
+	'ps4-mode-warning-text':
+		'<span>⏳ 警告 ⏳：</span>在没有认证的情况下 PS4 将在 8 分钟后超时并断开连接。',
+	'ps4-usb-host-mode-text':
+		'<span>补充信息：</span>请确保已启用 USB 外围设备，并已插入兼容 PS4 的 USB 设备。',
+	'ps5-mode-explanation-text':
+		'PS5 模式允许 GP2040-CE 作为经过认证的 PS5 兼容街机摇杆运行。',
+	'ps5-mode-warning-text':
+		'<span>⏳ 警告 ⏳：</span>在没有认证的情况下 PS5 将在 8 分钟后超时并断开连接。',
+	'ps5-usb-host-mode-text':
+		'<span>补充信息：</span>请确保已启用 USB 外围设备，并已插入兼容 PS5 的 USB 设备。',
+	'xbone-mode-text':
+		'<span>补充信息：</span>Xbox One 模式需要 USB 主机(USB Host)连接和 USB 加密狗才能正确认证。',
 	'hotkey-settings-label': '快捷键设置',
 	'hotkey-settings-sub-header':
 		'<strong>Fn</strong> 组合映射在<link_pinmap>引脚映射</link_pinmap>页面提供了一个可映射的Function按键。 要选择 <strong>Fn</strong> 组合映射选项，请同时按住 Function 按键和其他快捷键。<br />此外, 可从下拉列表中选择 <strong>None</strong> 以取消分配按钮',
@@ -98,7 +105,7 @@ export default {
 		's2-button': 'S2 键',
 		'a1-button': 'A1 键',
 		'a2-button': 'A2 键',
-        'a3-button': 'A3 键',
+		'a3-button': 'A3 键',
 		'a4-button': 'A4 键',
 		'touchpad-button': '触摸板',
 		'load-profile-1': '加载 档案 #1',
