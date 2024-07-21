@@ -2034,6 +2034,7 @@ std::string getMemoryReport()
     DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
     writeDoc(doc, "totalFlash", System::getTotalFlash());
     writeDoc(doc, "usedFlash", System::getUsedFlash());
+    writeDoc(doc, "physicalFlash", System::getPhysicalFlash());
     writeDoc(doc, "staticAllocs", System::getStaticAllocs());
     writeDoc(doc, "totalHeap", System::getTotalHeap());
     writeDoc(doc, "usedHeap", System::getUsedHeap());
