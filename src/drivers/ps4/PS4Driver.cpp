@@ -19,6 +19,8 @@
 void PS4Driver::initialize() {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
 
+    //stdio_init_all();
+
     touchpadData.p1.unpressed = 1;
     touchpadData.p1.set_x(PS4_TP_X_MAX / 2);
     touchpadData.p1.set_y(PS4_TP_Y_MAX / 2);
@@ -273,8 +275,9 @@ static constexpr uint8_t output_0x03[] = {
 };
 
 static constexpr uint8_t output_0x12[] = {
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x08, 0x25, 
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // device MAC address
+    0x08, 0x25, 0x00,                   // BT device class
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00  // host MAC address
 };
 
 static constexpr uint8_t output_0xa3[] = {
@@ -304,34 +307,39 @@ uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
     bool ps4_auth_buffer_ready = ps4AuthDriver->getAuthReady();
     uint8_t data[64] = {};
     uint32_t crc32;
+    uint16_t responseLen = 0;
     //ps4_out_buffer[0] = report_id;
     switch(report_id) {
         // Controller Definition Report
         case PS4AuthReport::PS4_GET_CALIBRATION:
-            if (reqlen != sizeof(output_0x02)) {
+            if (reqlen < sizeof(output_0x02)) {
                 return -1;
             }
-            memcpy(buffer, output_0x02, reqlen);
-            return reqlen;
+            responseLen = MAX(reqlen, sizeof(output_0x02));
+            memcpy(buffer, output_0x02, responseLen);
+            return responseLen;
         case PS4AuthReport::PS4_DEFINITION:
-            if (reqlen != sizeof(output_0x03)) {
+            if (reqlen < sizeof(output_0x03)) {
                 return -1;
             }
-            memcpy(buffer, output_0x03, reqlen);
+            responseLen = MAX(reqlen, sizeof(output_0x03));
+            memcpy(buffer, output_0x03, responseLen);
             buffer[4] = (uint8_t)controllerType; // Change controller type in definition
-            return reqlen;
+            return responseLen;
         case PS4AuthReport::PS4_GET_MAC_ADDRESS:
-            if (reqlen != sizeof(output_0x12)) {
+            if (reqlen < sizeof(output_0x12)) {
                 return -1;
             }
-            memcpy(buffer, output_0x12, reqlen);
-            return reqlen;
+            responseLen = MAX(reqlen, sizeof(output_0x12));
+            memcpy(buffer, output_0x12, responseLen);
+            return responseLen;
         case PS4AuthReport::PS4_GET_VERSION_DATE:
-            if (reqlen != sizeof(output_0xa3)) {
+            if (reqlen < sizeof(output_0xa3)) {
                 return -1;
             }
-            memcpy(buffer, output_0xa3, reqlen);
-            return reqlen;
+            responseLen = MAX(reqlen, sizeof(output_0xa3));
+            memcpy(buffer, output_0xa3, responseLen);
+            return responseLen;
         // Use our private RSA key to sign the nonce and return chunks
         case PS4AuthReport::PS4_GET_SIGNATURE_NONCE:
             // We send 56 byte chunks back to the PS4, we've already calculated these
@@ -364,15 +372,16 @@ uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
             memcpy(buffer, &data[1], 15); // move data over to buffer
             return 15;
         case PS4AuthReport::PS4_RESET_AUTH: // Reset the Authentication
-            if (reqlen != sizeof(output_0xf3)) {
+            if (reqlen < sizeof(output_0xf3)) {
                 return -1;
             }
-            memcpy(buffer, output_0xf3, reqlen);
+            responseLen = MAX(reqlen, sizeof(output_0xf3));
+            memcpy(buffer, output_0xf3, responseLen);
             ps4State = PS4State::no_nonce;
             if ( authDriver != nullptr ) {
                 ((PS4Auth*)authDriver)->resetAuth(); // reset the auth driver if it exists
             }
-            return reqlen;
+            return responseLen;
         default:
             break;
     };
