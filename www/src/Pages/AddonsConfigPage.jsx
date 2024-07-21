@@ -51,7 +51,10 @@ import InputHistory, {
 } from '../Addons/InputHistory';
 import Rotary, { rotaryScheme, rotaryState } from '../Addons/Rotary';
 import PCF8575, { pcf8575Scheme, pcf8575State } from '../Addons/PCF8575';
-import DRV8833Rumble, { drv8833RumbleScheme, drv8833RumbleState } from '../Addons/DRV8833';
+import DRV8833Rumble, {
+	drv8833RumbleScheme,
+	drv8833RumbleState,
+} from '../Addons/DRV8833';
 
 const schema = yup.object().shape({
 	...analogScheme,
