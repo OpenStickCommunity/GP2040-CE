@@ -396,8 +396,14 @@ void PS4Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uin
         return;
 
     if (report_type == HID_REPORT_TYPE_OUTPUT) {
-        if (report_id == PS4AuthReport::PS4_SET_FEATURE_STATE) {
-            Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
+        Gamepad * gamepad = Storage::getInstance().GetGamepad();
+        //printf("\x1B[0;0H");
+        //for (uint8_t i = 0; i < bufsize; i++) {
+        //    printf("%02x ", buffer[i]);
+        //}
+        //printf("\n");
+
+        if (report_id == 0) {
             // sets rumble, lightbar, etc
             //report[3] = Rumble Weak
             //report[4] = Rumble Strong
@@ -408,10 +414,17 @@ void PS4Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uin
             //
             //report[8] = Flash On Period
             //report[9] = Flash Off Period
+
+            gamepad->auxState.haptics.leftActuator.active = (buffer[4] > 0);
+            gamepad->auxState.haptics.leftActuator.intensity = buffer[4];
+            gamepad->auxState.haptics.rightActuator.active = (buffer[5] > 0);
+            gamepad->auxState.haptics.rightActuator.intensity = buffer[5];
+            
             gamepad->auxState.sensors.statusLight.enabled = true;
-            gamepad->auxState.sensors.statusLight.color.red = buffer[5];
-            gamepad->auxState.sensors.statusLight.color.green = buffer[6];
-            gamepad->auxState.sensors.statusLight.color.blue = buffer[7];
+            gamepad->auxState.sensors.statusLight.color.red = buffer[6];
+            gamepad->auxState.sensors.statusLight.color.green = buffer[7];
+            gamepad->auxState.sensors.statusLight.color.blue = buffer[8];
+        } else if (report_id == PS4AuthReport::PS4_SET_FEATURE_STATE) {
         }
     } else if (report_type == HID_REPORT_TYPE_FEATURE) {
         uint8_t nonce_id;

@@ -18,38 +18,38 @@ struct GamepadAuxColor
 
 struct GamepadAux1DSensor
 {
-    bool enabled;
-    bool active;
+    bool enabled = false;
+    bool active = false;
     uint16_t x;
 };
 
 struct GamepadAux1DRelativeSensor
 {
-    bool enabled;
-    bool active;
+    bool enabled = false;
+    bool active = false;
     int16_t x;
 };
 
 struct GamepadAux2DSensor
 {
-    bool enabled;
-    bool active;
+    bool enabled = false;
+    bool active = false;
     uint16_t x;
     uint16_t y;
 };
 
 struct GamepadAux2DRelativeSensor
 {
-    bool enabled;
-    bool active;
+    bool enabled = false;
+    bool active = false;
     int16_t x;
     int16_t y;
 };
 
 struct GamepadAux3DSensor
 {
-    bool enabled;
-    bool active;
+    bool enabled = false;
+    bool active = false;
     uint16_t x;
     uint16_t y;
     uint16_t z;
@@ -57,8 +57,8 @@ struct GamepadAux3DSensor
 
 struct GamepadAux3DRelativeSensor
 {
-    bool enabled;
-    bool active;
+    bool enabled = false;
+    bool active = false;
     int16_t x;
     int16_t y;
     int16_t z;
@@ -66,8 +66,8 @@ struct GamepadAux3DRelativeSensor
 
 struct GamepadAux4DSensor
 {
-    bool enabled;
-    bool active;
+    bool enabled = false;
+    bool active = false;
     uint16_t x;
     uint16_t y;
     uint16_t z;
@@ -76,8 +76,8 @@ struct GamepadAux4DSensor
 
 struct GamepadAux4DRelativeSensor
 {
-    bool enabled;
-    bool active;
+    bool enabled = false;
+    bool active = false;
     int16_t x;
     int16_t y;
     int16_t z;
@@ -86,8 +86,8 @@ struct GamepadAux4DRelativeSensor
 
 struct GamepadAuxRGBSensor
 {
-    bool enabled;
-    bool active;
+    bool enabled = false;
+    bool active = false;
     GamepadAuxColor color;
     uint8_t durationOn;
     uint8_t durationOff;
@@ -95,8 +95,8 @@ struct GamepadAuxRGBSensor
 
 struct GamepadAuxHapticChannel
 {
-    bool enabled;
-    bool active;
+    bool enabled = false;
+    bool active = false;
     uint16_t intensity;
 };
 
