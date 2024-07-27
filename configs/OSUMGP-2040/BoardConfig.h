@@ -56,23 +56,31 @@
 #define KEY_BUTTON_FN   -1                    // Hotkey Function                                        |
 
 
+// J4 - i2c
 // SparkFun Micro OLED Breakout recommended
-/*#define HAS_I2C_DISPLAY 1
+#define HAS_I2C_DISPLAY 1
 #define I2C0_ENABLED 1
 #define DISPLAY_I2C_ADDR 0x3D
 #define I2C0_PIN_SDA 0
 #define I2C0_PIN_SCL 1
 
 
+// J3 - USB Passthrough
 #define USB_PERIPHERAL_ENABLED 1
 #define USB_PERIPHERAL_PIN_DPLUS 11
-#define USB_PERIPHERAL_PIN_ORDER 1
-*/
+#define USB_PERIPHERAL_PIN_ORDER 0
 
+
+// On-board LED settings
+#define BOARD_LED_ENABLED 1
+#define BOARD_LED_TYPE ON_BOARD_LED_MODE_MODE_INDICATOR
+
+
+// Analog settings
 #define ANALOG_INPUT_ENABLED 1
-#define ANALOG_ADC_1_VRX 27
-#define ANALOG_ADC_1_VRY 26
-#define ANALOG_ADC_2_VRX 29
-#define ANALOG_ADC_2_VRY 28
+#define ANALOG_ADC_1_VRX 26
+#define ANALOG_ADC_1_VRY 28
+#define ANALOG_ADC_2_VRX 27
+#define ANALOG_ADC_2_VRY 29
 
 #endif
