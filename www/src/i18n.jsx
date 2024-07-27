@@ -19,7 +19,13 @@ i18n
 		detection: {
 			order: ['localStorage', 'navigator'],
 		},
-		resources: { en, 'pt-BR': ptBR, 'zh-CN': zhCN, 'de-DE': deDE, 'ja-JP': jaJP },
+		resources: {
+			en,
+			'pt-BR': ptBR,
+			'zh-CN': zhCN,
+			'de-DE': deDE,
+			'ja-JP': jaJP,
+		},
 	});
 
 export default i18n;

@@ -39,6 +39,7 @@ public:
 
 	void hotkey();
 	void clearState();
+	void clearRumbleState();
 
 	/**
 	 * @brief Flag to indicate analog trigger support.
@@ -135,6 +136,7 @@ public:
 	GamepadState rawState;
 	GamepadState state;
 	GamepadState turboState;
+	GamepadRumbleState rumbleState;
 	GamepadButtonMapping *mapDpadUp;
 	GamepadButtonMapping *mapDpadDown;
 	GamepadButtonMapping *mapDpadLeft;
