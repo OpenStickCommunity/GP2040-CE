@@ -9,7 +9,7 @@
 #include "enums.pb.h"
 #include "class/hid/hid.h"
 
-#define BOARD_CONFIG_LABEL "OSUMGP-2040"
+#define BOARD_CONFIG_LABEL "OSUMGP-RP2040"
 
 // Main pin mapping configuration
 //                                                  // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
