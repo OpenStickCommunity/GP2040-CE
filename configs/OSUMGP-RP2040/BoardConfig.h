@@ -33,6 +33,19 @@
 #define GPIO_PIN_20 GpioAction::BUTTON_PRESS_A2     // A2     | ~      | Capture | ~        | 14     | ~      |
 
 
+// Setting GPIO pins to assigned by add-on
+//
+#define GPIO_PIN_00 GpioAction::ASSIGNED_TO_ADDON // I2C SDA
+#define GPIO_PIN_01 GpioAction::ASSIGNED_TO_ADDON // I2C SCL
+#define GPIO_PIN_11 GpioAction::ASSIGNED_TO_ADDON // USB D+
+#define GPIO_PIN_12 GpioAction::ASSIGNED_TO_ADDON // USB D-
+#define GPIO_PIN_25 GpioAction::ASSIGNED_TO_ADDON // On-board LED
+#define GPIO_PIN_26 GpioAction::ASSIGNED_TO_ADDON // ADC1 X
+#define GPIO_PIN_27 GpioAction::ASSIGNED_TO_ADDON // ADC2 X
+#define GPIO_PIN_28 GpioAction::ASSIGNED_TO_ADDON // ADC1 Y
+#define GPIO_PIN_29 GpioAction::ASSIGNED_TO_ADDON // ADC2 Y
+
+
 // Keyboard mapping configuration
 //                                            // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
 #define KEY_DPAD_UP     HID_KEY_ARROW_UP      // UP     | UP     | UP      | UP       | UP     | UP     |
@@ -56,7 +69,7 @@
 #define KEY_BUTTON_FN   -1                    // Hotkey Function                                        |
 
 
-// J4 - i2c
+// J4 - I2C
 // SparkFun Micro OLED Breakout recommended
 #define HAS_I2C_DISPLAY 1
 #define I2C0_ENABLED 1
