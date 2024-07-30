@@ -54,4 +54,21 @@
 #define KEY_BUTTON_A2   HID_KEY_F2            // A2     | ~      | Capture | ~        | 14     | ~      |
 #define KEY_BUTTON_FN   -1                    // Hotkey Function                                        |
 
+// Analog Configuration
+//
+#define ANALOG_INPUT_ENABLED        1
+#define ANALOG_ADC_1_VRX            27
+#define ANALOG_ADC_1_VRY            26
+#define ANALOG_ADC_1_MODE           DPAD_MODE_LEFT_ANALOG
+#define ANALOG_ADC_1_INVERT         INVERT_X
+#define ANALOG_ADC_2_VRX            29
+#define ANALOG_ADC_2_VRY            28
+#define ANALOG_ADC_2_MODE           DPAD_MODE_RIGHT_ANALOG
+#define ANALOG_ADC_2_INVERT         INVERT_X
+#define FORCED_CIRCULARITY_ENABLED  0
+#define DEFAULT_INNER_DEADZONE      5
+#define DEFAULT_OUTER_DEADZONE      50
+#define AUTO_CALIBRATE_ENABLED      1
+
+
 #endif
