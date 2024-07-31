@@ -18,16 +18,10 @@ export const wiiScheme = {
 		.number()
 		.required()
 		.label('Wii Extensions Enabled'),
-	wiiExtensionBlock: yup
-		.number()
-		.required()
-		.label('WiiExtension I2C Block')
-		.validateSelectionWhenValue('WiiExtensionAddonEnabled', I2C_BLOCKS),
 };
 
 export const wiiState = {
 	WiiExtensionAddonEnabled: 0,
-	wiiExtensionBlock: 0,
 };
 
 const WII_EXTENSION_CONTROLS = [
@@ -363,31 +357,6 @@ const Wii = ({
 							be disabled.
 						</p>
 					</Trans>
-				</Row>
-				<Row className="mb-3">
-					{getAvailablePeripherals('i2c') ? (
-						<FormSelect
-							label={t('WiiAddon:block-label')}
-							name="wiiExtensionBlock"
-							className="form-select-sm"
-							groupClassName="col-sm-2 col-md-2 mb-3"
-							value={values.wiiExtensionBlock}
-							error={errors.wiiExtensionBlock}
-							isInvalid={errors.wiiExtensionBlock}
-							onChange={handlePeripheralChange}
-						>
-							{getAvailablePeripherals('i2c').map((o, i) => (
-								<option
-									key={`wiiExtensionI2cBlock-option-${i}`}
-									value={o.value}
-								>
-									{o.label}
-								</option>
-							))}
-						</FormSelect>
-					) : (
-						''
-					)}
 				</Row>
 				<Row className="mb-3">
 					<Tabs

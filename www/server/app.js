@@ -45,8 +45,6 @@ app.get('/api/resetSettings', (req, res) => {
 app.get('/api/getDisplayOptions', (req, res) => {
 	const data = {
 		enabled: 1,
-		i2cAddress: 61,
-		i2cBlock: 0,
 		flipDisplay: 0,
 		invertDisplay: 1,
 		buttonLayout: 0,
@@ -396,8 +394,6 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		reverseActionDown: 1,
 		reverseActionLeft: 1,
 		reverseActionRight: 1,
-		i2cAnalog1219Block: 0,
-		i2cAnalog1219Address: 0x40,
 		onBoardLedMode: 0,
 		dualDirDpadMode: 0,
 		dualDirCombineMode: 0,
@@ -463,7 +459,6 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		shmupBtnMask4: 0,
 		pinShmupDial: -1,
 		sliderSOCDModeDefault: 1,
-		wiiExtensionBlock: 0,
 		snesPadClockPin: -1,
 		snesPadLatchPin: -1,
 		snesPadDataPin: -1,
@@ -512,7 +507,6 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		encoderTwoAllowWrapAround: false,
 		encoderTwoMultiplier: 1,
 		RotaryAddonEnabled: 1,
-		pcf8575Block: 0,
 		PCF8575AddonEnabled: 1,
 		DRV8833RumbleAddonEnabled: 1,
 		usedPins: Object.values(picoController),

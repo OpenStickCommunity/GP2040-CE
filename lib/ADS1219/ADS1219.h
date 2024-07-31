@@ -77,8 +77,10 @@ typedef enum{
 class ADS1219  {
   protected:
 	uint8_t address;
+	PeripheralI2C* i2c;
   public:
     // Constructor 
+	ADS1219() {}
 	ADS1219(PeripheralI2C *i2cController, uint8_t addr = 0x40);
 
     // Methods
@@ -97,14 +99,17 @@ class ADS1219  {
 	void setChannel(int channel);
 	void powerDown();
 	uint8_t readRegister(adsRegister_t reg);
-  	void start();
+	void start();
 	uint32_t readConversionResult();
+
+	void setI2C(PeripheralI2C *i2cController) { this->i2c = i2cController; }
+	void setAddress(uint8_t addr) { this->address = addr; }
+
   private:
 	void writeRegister(uint8_t data);
 	
-	PeripheralI2C* i2c;
-	uint8_t config;
-	bool singleShot;
+	uint8_t config = 0x00;
+	bool singleShot = true;
 	int data_ready;
 	unsigned char uc[128];
 };

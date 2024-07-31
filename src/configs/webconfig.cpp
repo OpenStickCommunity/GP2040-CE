@@ -5,6 +5,7 @@
 #include "storagemanager.h"
 #include "configmanager.h"
 #include "layoutmanager.h"
+#include "peripheralmanager.h"
 #include "AnimationStorage.hpp"
 #include "system.h"
 #include "config_utils.h"
@@ -436,8 +437,6 @@ std::string setDisplayOptions(DisplayOptions& displayOptions)
 {
     DynamicJsonDocument doc = get_post_data();
     readDoc(displayOptions.enabled, doc, "enabled");
-    readDoc(displayOptions.i2cAddress, doc, "i2cAddress");
-    readDoc(displayOptions.i2cBlock, doc, "i2cBlock");
     readDoc(displayOptions.flip, doc, "flipDisplay");
     readDoc(displayOptions.invert, doc, "invertDisplay");
     readDoc(displayOptions.buttonLayout, doc, "buttonLayout");
@@ -480,8 +479,6 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
     DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
     const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
     writeDoc(doc, "enabled", displayOptions.enabled ? 1 : 0);
-    writeDoc(doc, "i2cAddress", displayOptions.i2cAddress);
-    writeDoc(doc, "i2cBlock", displayOptions.i2cBlock);
     writeDoc(doc, "flipDisplay", displayOptions.flip);
     writeDoc(doc, "invertDisplay", displayOptions.invert ? 1 : 0);
     writeDoc(doc, "buttonLayout", displayOptions.buttonLayout);
@@ -1196,6 +1193,29 @@ std::string getPeripheralOptions()
     return serialize_json(doc);
 }
 
+std::string getI2CPeripheralMap() {
+    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+
+    PeripheralOptions& peripheralOptions = Storage::getInstance().getPeripheralOptions();
+
+
+    if (peripheralOptions.blockI2C0.enabled && PeripheralManager::getInstance().isI2CEnabled(0)) {
+        std::map<uint8_t,bool> result = PeripheralManager::getInstance().getI2C(0)->scan();
+        for (std::map<uint8_t,bool>::iterator it = result.begin(); it != result.end(); ++it) {
+            writeDoc(doc, "i2c0", std::to_string(it->first), it->second);
+        }
+    }
+
+    if (peripheralOptions.blockI2C1.enabled && PeripheralManager::getInstance().isI2CEnabled(1)) {
+        std::map<uint8_t,bool> result = PeripheralManager::getInstance().getI2C(1)->scan();
+        for (std::map<uint8_t,bool>::iterator it = result.begin(); it != result.end(); ++it) {
+            writeDoc(doc, "i2c1", std::to_string(it->first), it->second);
+        }
+    }
+
+    return serialize_json(doc);
+}
+
 std::string setPeripheralOptions()
 {
     DynamicJsonDocument doc = get_post_data();
@@ -1390,8 +1410,6 @@ std::string setAddonOptions()
     docToValue(focusModeOptions.enabled, doc, "FocusModeAddonEnabled");
 
     AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
-    docToValue(analogADS1219Options.i2cBlock, doc, "i2cAnalog1219Block");
-    docToValue(analogADS1219Options.i2cAddress, doc, "i2cAnalog1219Address");
     docToValue(analogADS1219Options.enabled, doc, "I2CAnalog1219InputEnabled");
 
     SliderOptions& sliderOptions = Storage::getInstance().getAddonOptions().sliderOptions;
@@ -1440,7 +1458,6 @@ std::string setAddonOptions()
     docToValue(turboOptions.enabled, doc, "TurboInputEnabled");
 
     WiiOptions& wiiOptions = Storage::getInstance().getAddonOptions().wiiOptions;
-    docToValue(wiiOptions.i2cBlock, doc, "wiiExtensionBlock");
     docToValue(wiiOptions.enabled, doc, "WiiExtensionAddonEnabled");
 
     SNESOptions& snesOptions = Storage::getInstance().getAddonOptions().snesOptions;
@@ -1496,7 +1513,6 @@ std::string setAddonOptions()
     docToValue(rotaryOptions.encoderTwo.multiplier, doc, "encoderTwoMultiplier");
 
     PCF8575Options& pcf8575Options = Storage::getInstance().getAddonOptions().pcf8575Options;
-    docToValue(pcf8575Options.i2cBlock, doc, "pcf8575Block");
     docToValue(pcf8575Options.enabled, doc, "PCF8575AddonEnabled");
 
     DRV8833RumbleOptions& drv8833RumbleOptions = Storage::getInstance().getAddonOptions().drv8833RumbleOptions;
@@ -1808,8 +1824,6 @@ std::string getAddonOptions()
     writeDoc(doc, "TiltInputEnabled", tiltOptions.enabled);
 
     const AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
-    writeDoc(doc, "i2cAnalog1219Block", analogADS1219Options.i2cBlock);
-    writeDoc(doc, "i2cAnalog1219Address", analogADS1219Options.i2cAddress);
     writeDoc(doc, "I2CAnalog1219InputEnabled", analogADS1219Options.enabled);
 
     const SliderOptions& sliderOptions = Storage::getInstance().getAddonOptions().sliderOptions;
@@ -1858,7 +1872,6 @@ std::string getAddonOptions()
     writeDoc(doc, "TurboInputEnabled", turboOptions.enabled);
 
     const WiiOptions& wiiOptions = Storage::getInstance().getAddonOptions().wiiOptions;
-    writeDoc(doc, "wiiExtensionBlock", wiiOptions.i2cBlock);
     writeDoc(doc, "WiiExtensionAddonEnabled", wiiOptions.enabled);
 
     const SNESOptions& snesOptions = Storage::getInstance().getAddonOptions().snesOptions;
@@ -1929,7 +1942,6 @@ std::string getAddonOptions()
     writeDoc(doc, "encoderTwoMultiplier", rotaryOptions.encoderTwo.multiplier);
 
     PCF8575Options& pcf8575Options = Storage::getInstance().getAddonOptions().pcf8575Options;
-    writeDoc(doc, "pcf8575Block", pcf8575Options.i2cBlock);
     writeDoc(doc, "PCF8575AddonEnabled", pcf8575Options.enabled);
 
     const DRV8833RumbleOptions& drv8833RumbleOptions = Storage::getInstance().getAddonOptions().drv8833RumbleOptions;
@@ -2198,6 +2210,7 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/setProfileOptions", setProfileOptions },
     { "/api/setPeripheralOptions", setPeripheralOptions },
     { "/api/getPeripheralOptions", getPeripheralOptions },
+    { "/api/getI2CPeripheralMap", getI2CPeripheralMap },
     { "/api/setExpansionPins", setExpansionPins },
     { "/api/getExpansionPins", getExpansionPins },
     { "/api/setKeyMappings", setKeyMappings },
