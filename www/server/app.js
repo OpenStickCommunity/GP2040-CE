@@ -433,6 +433,12 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		buzzerPin: -1,
 		buzzerEnablePin: -1,
 		buzzerVolume: 100,
+		drv8833RumbleLeftMotorPin: -1,
+		drv8833RumbleRightMotorPin: -1,
+		drv8833RumbleMotorSleepPin: -1,
+		drv8833RumblePWMFrequency: 10000,
+		drv8833RumbleDutyMin: 0,
+		drv8833RumbleDutyMax: 100,
 		focusModePin: -1,
 		focusModeButtonLockMask: 0,
 		focusModeButtonLockEnabled: 0,
@@ -502,6 +508,7 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		encoderTwoMultiplier: 1,
 		RotaryAddonEnabled: 1,
 		PCF8575AddonEnabled: 1,
+		DRV8833RumbleAddonEnabled: 1,
 		usedPins: Object.values(picoController),
 	});
 });
@@ -679,6 +686,7 @@ app.get('/api/getButtonLayoutDefs', (req, res) => {
 			BUTTON_LAYOUT_6GAWD_A: 30,
 			BUTTON_LAYOUT_6GAWD_ALLBUTTON_A: 31,
 			BUTTON_LAYOUT_6GAWD_ALLBUTTONPLUS_A: 32,
+			BUTTON_LAYOUT_STICKLESS_R16: 33,
 		},
 		buttonLayoutRight: {
 			BUTTON_LAYOUT_ARCADE: 0,
@@ -718,6 +726,7 @@ app.get('/api/getButtonLayoutDefs', (req, res) => {
 			BUTTON_LAYOUT_6GAWD_B: 34,
 			BUTTON_LAYOUT_6GAWD_ALLBUTTON_B: 35,
 			BUTTON_LAYOUT_6GAWD_ALLBUTTONPLUS_B: 36,
+			BUTTON_LAYOUT_STICKLESS_R16B: 37,
 		},
 	});
 });

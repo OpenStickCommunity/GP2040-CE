@@ -217,6 +217,7 @@ src/addons/playernum.cpp
 src/addons/playerleds.cpp
 src/addons/rotaryencoder.cpp
 src/addons/reverse.cpp
+src/addons/drv8833_rumble.cpp
 src/addons/turbo.cpp
 src/addons/slider_socd.cpp
 src/addons/wiiext.cpp

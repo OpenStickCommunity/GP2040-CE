@@ -15,4 +15,4 @@ Addressible RGB LED order for the Open_Core0
 
 ![LED Order](assets/Open_Core0_LED_order.png)
 
-You can find the full Open_Core0 project over on our hardware section [HERE](https://github.com/OpenStickCommunity/Hardware/tree/main/Open_Core0)
+You can find the full Open_Core0 project over on our hardware section [HERE](https://github.com/OpenStickCommunity/Hardware/tree/main/Boards/GP2040-CE%20Official%20Controllers/Open_Core0)

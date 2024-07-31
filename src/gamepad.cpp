@@ -252,7 +252,7 @@ void Gamepad::process()
 void Gamepad::read()
 {
 	Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
-	
+
 	// Get the midpoint value for the current mode
 	uint16_t joystickMid = GAMEPAD_JOYSTICK_MID;
 	if ( DriverManager::getInstance().getDriver() != nullptr ) {
@@ -317,7 +317,7 @@ void Gamepad::hotkey()
 {
 	if (options.lockHotkeys)
 		return;
-	
+
 	GamepadHotkey action = HOTKEY_NONE;
 	if (pressedHotkey(hotkeyOptions.hotkey01))	    action = selectHotkey(hotkeyOptions.hotkey01);
 	else if (pressedHotkey(hotkeyOptions.hotkey02))	action = selectHotkey(hotkeyOptions.hotkey02);
@@ -352,6 +352,13 @@ void Gamepad::clearState() {
 	state.ry = GAMEPAD_JOYSTICK_MID;
 	state.lt = 0;
 	state.rt = 0;
+}
+
+void Gamepad::clearRumbleState() {
+	rumbleState.leftMotor = 0;
+	rumbleState.rightMotor = 0;
+	rumbleState.leftTrigger = 0;
+	rumbleState.rightTrigger = 0;
 }
 
 /**
@@ -467,7 +474,7 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 			break;
 		case HOTKEY_TOUCHPAD_BUTTON:
 			state.buttons |= GAMEPAD_MASK_A2;
-			break;				
+			break;
 		case HOTKEY_INVERT_X_AXIS:
 			if (action != lastAction) {
 				options.invertXAxis = !options.invertXAxis;

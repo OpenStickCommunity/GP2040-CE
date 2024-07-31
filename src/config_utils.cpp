@@ -33,6 +33,7 @@
 #include "addons/input_macro.h"
 #include "addons/rotaryencoder.h"
 #include "addons/i2c_gpio_pcf8575.h"
+#include "addons/drv8833_rumble.h"
 
 #include "CRC32.h"
 #include "FlashPROM.h"
@@ -456,7 +457,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.ledOptions, pledPin2, PLED2_PIN);
     INIT_UNSET_PROPERTY(config.ledOptions, pledPin3, PLED3_PIN);
     INIT_UNSET_PROPERTY(config.ledOptions, pledPin4, PLED4_PIN);
-    INIT_UNSET_PROPERTY(config.ledOptions, pledColor, static_cast<uint32_t>(PLED_COLOR.r) << 16 | static_cast<uint32_t>(PLED_COLOR.g) << 8 | static_cast<uint32_t>(PLED_COLOR.b)); 
+    INIT_UNSET_PROPERTY(config.ledOptions, pledColor, static_cast<uint32_t>(PLED_COLOR.r) << 16 | static_cast<uint32_t>(PLED_COLOR.g) << 8 | static_cast<uint32_t>(PLED_COLOR.b));
     // hacky, but previous versions used PLED1_PIN for either PWM GPIO pins or RGB indexes
     // so we're just going to copy the defined values into both locations and have the migration
     // to pin mappings sort it out
@@ -694,6 +695,15 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     }
     // reminder that this must be set or else nanopb won't retain anything
     config.addonOptions.pcf8575Options.pins_count = PCF8575_PIN_COUNT;
+
+    // addonOptions.drv8833RumbleOptions
+    INIT_UNSET_PROPERTY(config.addonOptions.drv8833RumbleOptions, enabled, !!DRV8833_RUMBLE_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.drv8833RumbleOptions, leftMotorPin, DRV8833_RUMBLE_LEFT_MOTOR_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.drv8833RumbleOptions, rightMotorPin, DRV8833_RUMBLE_RIGHT_MOTOR_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.drv8833RumbleOptions, motorSleepPin, DRV8833_RUMBLE_MOTOR_SLEEP_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.drv8833RumbleOptions, pwmFrequency, DRV8833_RUMBLE_PWM_FREQUENCY);
+    INIT_UNSET_PROPERTY(config.addonOptions.drv8833RumbleOptions, dutyMin, DRV8833_RUMBLE_DUTY_MIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.drv8833RumbleOptions, dutyMax, DRV8833_RUMBLE_DUTY_MAX);
 
     // addonOptions.rotaryOptions
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions, enabled, !!ROTARY_ENCODER_ENABLED);
@@ -1004,7 +1014,7 @@ void gpioMappingsMigrationCore(Config& config)
                                                GPIO_PIN_21, GPIO_PIN_22, GPIO_PIN_23,
                                                GPIO_PIN_24, GPIO_PIN_25, GPIO_PIN_26,
                                                GPIO_PIN_27, GPIO_PIN_28, GPIO_PIN_29};
-    
+
     // If we didn't import from protobuf, import from boardconfig
     for(unsigned int i = 0; i < NUM_BANK0_GPIOS; i++) {
         fromBoardConfig(i, boardConfig[i]);
@@ -1023,7 +1033,7 @@ void gpioMappingsMigrationCore(Config& config)
             (config.addonOptions.wiiOptions.enabled && (config.addonOptions.wiiOptions.deprecatedI2cBlock == 0)) | 
             (!!I2C0_ENABLED)
         );
-        
+
         // pin configuration
         peripheralOptions.blockI2C0.sda = (
             isValidPin(config.displayOptions.deprecatedI2cSDAPin) && (config.displayOptions.deprecatedI2cBlock == 0) ? 
@@ -1083,7 +1093,7 @@ void gpioMappingsMigrationCore(Config& config)
             (config.addonOptions.wiiOptions.enabled && (config.addonOptions.wiiOptions.deprecatedI2cBlock == 1)) | 
             (!!I2C1_ENABLED)
         );
-        
+
         // pin configuration
         peripheralOptions.blockI2C1.sda = (
             isValidPin(config.displayOptions.deprecatedI2cSDAPin) && (config.displayOptions.deprecatedI2cBlock == 1) ? 
@@ -1137,22 +1147,22 @@ void gpioMappingsMigrationCore(Config& config)
 
         if (peripheralOptions.blockUSB0.enabled) {
             peripheralOptions.blockUSB0.enable5v = (
-                isValidPin(keyboardHostOptions.deprecatedPin5V) ? 
-                keyboardHostOptions.deprecatedPin5V : 
+                isValidPin(keyboardHostOptions.deprecatedPin5V) ?
+                keyboardHostOptions.deprecatedPin5V :
                 (
-                    isValidPin(psPassthroughOptions.deprecatedPin5V) ? 
-                    psPassthroughOptions.deprecatedPin5V : 
+                    isValidPin(psPassthroughOptions.deprecatedPin5V) ?
+                    psPassthroughOptions.deprecatedPin5V :
                     -1
                 )
             );
             markAddonPinIfUsed(peripheralOptions.blockUSB0.enable5v);
 
             peripheralOptions.blockUSB0.dp = (
-                isValidPin(keyboardHostOptions.deprecatedPinDplus) ? 
-                keyboardHostOptions.deprecatedPinDplus : 
+                isValidPin(keyboardHostOptions.deprecatedPinDplus) ?
+                keyboardHostOptions.deprecatedPinDplus :
                 (
-                    isValidPin(psPassthroughOptions.deprecatedPinDplus) ? 
-                    psPassthroughOptions.deprecatedPinDplus : 
+                    isValidPin(psPassthroughOptions.deprecatedPinDplus) ?
+                    psPassthroughOptions.deprecatedPinDplus :
                     -1
                 )
             );
@@ -1288,7 +1298,7 @@ void migrateAuthenticationMethods(Config& config) {
         gamepadOptions.ps4AuthType = InputModeAuthType::INPUT_MODE_AUTH_TYPE_KEYS;
         ps4Options.enabled = false; // disable PS4-Mode add-on permanently
     }
-    
+
     if ( psPassthroughOptions.enabled == true ) { // PS5 add-on "on", USB pass through, update ps4->ps5 boot
         gamepadOptions.ps5AuthType = InputModeAuthType::INPUT_MODE_AUTH_TYPE_USB;
         // If current mode is PS4, update to PS5
@@ -1325,7 +1335,7 @@ void migrateMacroPinsToGpio(Config& config) {
         macroOptions.deprecatedPin = -1; // set our turbo options to -1 for subsequent calls
         macroOptions.has_deprecatedPin = false;
     }
-    
+
     if ( macroOptions.macroList_count == MAX_MACRO_LIMIT ) {
         const static GpioAction actionList[6] = { GpioAction::BUTTON_PRESS_MACRO_1, GpioAction::BUTTON_PRESS_MACRO_2,
                                                     GpioAction::BUTTON_PRESS_MACRO_3, GpioAction::BUTTON_PRESS_MACRO_4,
@@ -1519,7 +1529,7 @@ static void setHasFlags(const pb_msgdesc_t* fields, void* s)
     {
         return;
     }
-    
+
     do
     {
         // Not implemented for extension fields
@@ -1742,7 +1752,7 @@ std::string ConfigUtils::toJSON(const Config& config)
 // From JSON
 // -----------------------------------------------------
 
-#define TEST_VALUE(name, value) if (v == value) return true; 
+#define TEST_VALUE(name, value) if (v == value) return true;
 
 #define GEN_IS_VALID_ENUM_VALUE_FUNCTION(enumtype) \
     static bool isValid ## enumtype(int v) \

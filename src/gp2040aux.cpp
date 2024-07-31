@@ -11,6 +11,7 @@
 #include "addons/display.h"
 #include "addons/pleds.h"
 #include "addons/neopicoleds.h"
+#include "addons/drv8833_rumble.h"
 
 #include <iterator>
 
@@ -33,12 +34,13 @@ void GP2040Aux::setup() {
 	addons.LoadAddon(new PlayerLEDAddon(), CORE1_LOOP);
 	addons.LoadAddon(new BoardLedAddon(), CORE1_LOOP);
 	addons.LoadAddon(new BuzzerSpeakerAddon(), CORE1_LOOP);
+	addons.LoadAddon(new DRV8833RumbleAddon(), CORE1_LOOP);
 
 	// Initialize our input driver's auxilliary functions
 	inputDriver = DriverManager::getInstance().getDriver();
 	if ( inputDriver != nullptr ) {
 		inputDriver->initializeAux();
-		
+
 		// Check if we have a USB listener
 		USBListener * listener = inputDriver->get_usb_auth_listener();
 		if (listener != nullptr) {
@@ -53,7 +55,7 @@ void GP2040Aux::setup() {
 void GP2040Aux::run() {
 	while (1) {
 		addons.ProcessAddons(CORE1_LOOP);
-		
+
 		// Run auxiliary functions for input driver on Core1
 		if ( inputDriver != nullptr ) {
 			inputDriver->processAux();

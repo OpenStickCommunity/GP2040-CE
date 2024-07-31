@@ -66,10 +66,6 @@ export default {
 	'i2c-analog-ads1219-speed-label': 'I2C Analog ADS1219 Geschwindigkeit',
 	'i2c-analog-ads1219-address-label': 'I2C Analog ADS1219 Addresse',
 	'dual-directional-input-header-text': 'Zweifache Richtungseingabe',
-	'dual-directional-input-up-pin-label': 'Dualer Hoch Pin',
-	'dual-directional-input-down-pin-label': 'Dualer Runter Pin',
-	'dual-directional-input-left-pin-label': 'Dualer Links Pin',
-	'dual-directional-input-right-pin-label': 'Dualer Rechts Pin',
 	'dual-directional-input-dpad-mode-label': 'Dualer D-Pad Modus',
 	'dual-directional-input-combine-mode-label': 'Kombinationsmodus',
 	'dual-directional-input-four-way-joystick-mode-label':
@@ -97,9 +93,6 @@ export default {
 	'buzzer-speaker-header-text': 'Summer-Lautsprecher',
 	'buzzer-speaker-pin-label': 'Summer-Pin',
 	'buzzer-speaker-volume-label': 'Summer-Lautstärke',
-	'extra-button-header-text': 'Extra-Taste Konfiguration',
-	'extra-button-pin-label': 'Extra-Taste Pin',
-	'extra-button-map-label': 'Extra-Taste',
 	'player-number-header-text': 'Spieler-Nummer (NUR X-INPUT)',
 	'player-number-sub-header': 'Warnung',
 	'player-number-sub-header-text':
@@ -111,13 +104,6 @@ export default {
 		"Hinweis: PS4, PS3 und Nintendo Switch modi unterstützen nicht die SOCD-Säuberung auf 'Aus' und verwenden standardmäßig den neutralen SOCD-Säuberungsmodus",
 	'socd-cleaning-mode-selection-slider-mode-default-label':
 		'SOCD Schieberegler Modus Standard',
-	'socd-cleaning-mode-selection-slider-mode-one-label':
-		'SOCD Schieberegler Modus Eins',
-	'socd-cleaning-mode-selection-slider-pin-one-label': 'Pin Eins',
-	'socd-cleaning-mode-selection-slider-mode-two-label':
-		'SOCD Schieberegler Modus Zwei',
-	'socd-cleaning-mode-selection-slider-pin-two-label': 'Pin Zwei',
-	'ps4-mode-header-text': 'PS4 Modus',
 	'ps4-mode-sub-header': 'HAFTUNGSAUSSCHLUSS!',
 	'ps4-mode-sub-header-text':
 		'GP2040-CE WIRD NIEMALS DIESE DATEIEN ZUR VERFÜGUNG STELLEN!!!',
@@ -137,9 +123,6 @@ export default {
 	'keyboard-host-header-text': 'Tastatur-Host-Konfiguration',
 	'keyboard-host-sub-header-text':
 		'Nachfolgend sind die Daten, +, - und 5V (optional) Pins einzustellen. Nur der + und der 5V-Pin können konfiguriert werden.',
-	'keyboard-host-d-plus-label': 'D+',
-	'keyboard-host-d-minus-label': 'D-',
-	'keyboard-host-five-v-label': '5V-Stromversorgung (optional)',
 	'pin-config-moved-to-core-text':
 		'Hinweis: Die Pins für dieses Add-On werden jetzt auf der Seite für die Pin-Zuordnung konfiguriert',
 	'input-history-header-text': 'Eingabeverlauf',

@@ -28,6 +28,9 @@ uint8_t endpoint_in = 0;
 uint8_t endpoint_out = 0;
 uint8_t xinput_out_buffer[XINPUT_OUT_SIZE] = {};
 
+#include <stdio.h>
+#include "pico/stdlib.h"
+
 static bool authDriverPresent = false;
 
 static void xinput_init(void) {
@@ -117,6 +120,15 @@ static bool xinput_xfer_callback(uint8_t rhport, uint8_t ep_addr, xfer_result_t 
 		usbd_edpt_xfer(0, endpoint_out, xinput_out_buffer, XINPUT_OUT_SIZE);
 
 	return true;
+}
+
+static void check_and_set_rumble(Gamepad * gamepad, uint8_t * buffer) {
+	// Check for rumble bytes - starts with 0x00 0x08
+	if (!(buffer[0] == 0x00 && buffer[1] == 0x08))
+		return;
+
+	gamepad->rumbleState.leftMotor = buffer[3];
+	gamepad->rumbleState.rightMotor = buffer[4];
 }
 
 void XInputDriver::initialize() {
@@ -221,13 +233,19 @@ void XInputDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 		}
 	}
 
-	// check for player LEDs
+	// clear potential initial uncaught data in endpoint_out from before registration of xfer_cb
 	if (tud_ready() &&
 		(endpoint_out != 0) && (!usbd_edpt_busy(0, endpoint_out)))
 	{
 		usbd_edpt_claim(0, endpoint_out);									 // Take control of OUT endpoint
-		usbd_edpt_xfer(0, endpoint_out, outBuffer, XINPUT_OUT_SIZE); 		 // Retrieve report buffer
+		usbd_edpt_xfer(0, endpoint_out, xinput_out_buffer, XINPUT_OUT_SIZE); 		 // Retrieve report buffer
 		usbd_edpt_release(0, endpoint_out);									 // Release control of OUT endpoint
+	}
+
+	if (memcmp(xinput_out_buffer, outBuffer, XINPUT_OUT_SIZE) != 0) { // check if new write to xinput_out_buffer from xinput_xfer_callback
+		memcpy(outBuffer, xinput_out_buffer, XINPUT_OUT_SIZE);
+		// Check if this new write to endpoint_out is a rumble packet
+		check_and_set_rumble(gamepad, outBuffer);
 	}
 }
 

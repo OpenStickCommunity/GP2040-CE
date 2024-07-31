@@ -693,10 +693,7 @@ export default function SettingsPage() {
 				return (
 					<div className="row mb-3">
 						<Row className="mb-3">
-							<Col sm={10}>
-								PS4 mode allows GP2040-CE to run as an authenticated PS4
-								controller.
-							</Col>
+							<Col sm={10}>{t('SettingsPage:ps4-mode-explanation-text')}</Col>
 						</Row>
 						<Row className="mb-3">
 							<Col sm={10}>
@@ -726,8 +723,11 @@ export default function SettingsPage() {
 						{values.ps4AuthType === 0 && (
 							<Row className="mb-3">
 								<Col sm={10}>
-									<span className="text-warning">⏳ WARNING ⏳:</span> PS4 will
-									timeout after 8 minutes without authentication.
+									<Trans
+										ns="SettingsPage"
+										i18nKey="ps4-mode-warning-text"
+										components={{ span: <span className="text-warning" /> }}
+									/>
 								</Col>
 							</Row>
 						)}
@@ -808,9 +808,11 @@ export default function SettingsPage() {
 						{values.ps4AuthType === 2 && (
 							<Row className="mb-3">
 								<Col sm={10}>
-									<span className="text-info">INFO:</span> Please ensure USB
-									Peripheral is enabled and a PS4 compatible USB device is
-									plugged in.
+									<Trans
+										ns="SettingsPage"
+										i18nKey="ps4-usb-host-mode-text"
+										components={{ span: <span className="text-info" /> }}
+									/>
 								</Col>
 							</Row>
 						)}
@@ -820,10 +822,7 @@ export default function SettingsPage() {
 				return (
 					<div className="row mb-3">
 						<Row className="mb-3">
-							<Col sm={10}>
-								PS5 mode allows GP2040-CE to run as an authenticated PS5
-								compatible arcade stick.
-							</Col>
+							<Col sm={10}>{t('SettingsPage:ps5-mode-explanation-text')}</Col>
 						</Row>
 						<Row className="mb-3">
 							<Col sm={10}>
@@ -853,17 +852,22 @@ export default function SettingsPage() {
 						{values.ps5AuthType === 0 && (
 							<Row className="mb-3">
 								<Col sm={10}>
-									<span className="text-warning">⏳ WARNING ⏳:</span> PS5 will
-									timeout after 8 minutes without authentication.
+									<Trans
+										ns="SettingsPage"
+										i18nKey="ps5-mode-warning-text"
+										components={{ span: <span className="text-warning" /> }}
+									/>
 								</Col>
 							</Row>
 						)}
 						{values.ps5AuthType === 2 && (
 							<Row className="mb-3">
 								<Col sm={10}>
-									<span className="text-info">INFO:</span> Please ensure USB
-									Peripheral is enabled and a PS5 compatible USB device is
-									plugged in.
+									<Trans
+										ns="SettingsPage"
+										i18nKey="ps5-usb-host-mode-text"
+										components={{ span: <span className="text-info" /> }}
+									/>
 								</Col>
 							</Row>
 						)}
@@ -874,9 +878,11 @@ export default function SettingsPage() {
 					<div className="row mb-3">
 						<Row className="mb-3">
 							<Col sm={10}>
-								<span className="text-success">INFO:</span> Xbox One requires a
-								USB host connection and USB dongle to properly authenticate in
-								Xbox One mode.
+								<Trans
+									ns="SettingsPage"
+									i18nKey="xbone-mode-text"
+									components={{ span: <span className="text-success" /> }}
+								/>
 							</Col>
 						</Row>
 					</div>
@@ -885,8 +891,10 @@ export default function SettingsPage() {
 				return (
 					<div>
 						<p>
-							There are no input mode settings for{' '}
-							{t('SettingsPage:' + inputMode.labelKey)}.
+							{t('SettingsPage:no-mode-settings-text', {
+								mode: t(`SettingsPage:${inputMode.labelKey}`),
+								interpolation: { escapeValue: false },
+							})}
 						</p>
 					</div>
 				);
@@ -1015,19 +1023,23 @@ export default function SettingsPage() {
 										<Nav variant="pills" className="flex-column">
 											<Nav.Item>
 												<Nav.Link eventKey="inputmode">
-												{t('SettingsPage:settings-header-text')}
+													{t('SettingsPage:settings-header-text')}
 												</Nav.Link>
 											</Nav.Item>
 											<Nav.Item>
-												<Nav.Link eventKey="gamepad">{t('SettingsPage:gamepad-settings-header-text')}</Nav.Link>
+												<Nav.Link eventKey="gamepad">
+													{t('SettingsPage:gamepad-settings-header-text')}
+												</Nav.Link>
 											</Nav.Item>
 											<Nav.Item>
 												<Nav.Link eventKey="bootmode">
-												{t('SettingsPage:boot-input-mode-label')}
+													{t('SettingsPage:boot-input-mode-label')}
 												</Nav.Link>
 											</Nav.Item>
 											<Nav.Item>
-												<Nav.Link eventKey="hotkey">{t('SettingsPage:hotkey-settings-label')}</Nav.Link>
+												<Nav.Link eventKey="hotkey">
+													{t('SettingsPage:hotkey-settings-label')}
+												</Nav.Link>
 											</Nav.Item>
 										</Nav>
 									</Col>
@@ -1310,17 +1322,10 @@ export default function SettingsPage() {
 														<Trans
 															ns="SettingsPage"
 															i18nKey="hotkey-settings-sub-header"
-														>
-															The <strong>Fn</strong> slider provides a mappable
-															Function button in the{' '}
-															<NavLink to="/pin-mapping">Pin Mapping</NavLink>{' '}
-															page. By selecting the Fn slider option, the
-															Function button must be held along with the
-															selected hotkey settings.
-															<br />
-															Additionally, select <strong>None</strong> from
-															the dropdown to unassign any button.
-														</Trans>
+															components={{
+																link_pinmap: <NavLink to="/pin-mapping" />,
+															}}
+														/>
 													</div>
 													{values.fnButtonPin === -1 && (
 														<div className="alert alert-warning">
