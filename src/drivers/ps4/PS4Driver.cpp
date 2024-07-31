@@ -296,6 +296,10 @@ static constexpr uint8_t output_0xf3[] = { 0x0, 0x38, 0x38, 0, 0, 0, 0 };
 // tud_hid_get_report_cb
 uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
     //printf("PS4Driver::get_report RPT: %02x, Type: %02x, Size: %d\n", report_id, report_type, reqlen);
+    //if ((report_id == PS4AuthReport::PS4_SET_AUTH_PAYLOAD) || (report_id == PS4AuthReport::PS4_GET_SIGNATURE_NONCE) || (report_id == PS4AuthReport::PS4_GET_SIGNING_STATE) || (report_id == PS4AuthReport::PS4_RESET_AUTH)) {
+    //    uint32_t now = to_ms_since_boot(get_absolute_time());
+    //    printf("[%d] PS4Driver::get_report RPT: %02x, Type: %02x, Size: %d\n", now, report_id, report_type, reqlen);
+    //}
 
     if ( report_type != HID_REPORT_TYPE_FEATURE ) {
         memcpy(buffer, &ps4Report, sizeof(ps4Report));
@@ -383,6 +387,7 @@ uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
             }
             return responseLen;
         default:
+            //printf("[Data Undefined]\n");
             break;
     };
     return -1;
@@ -391,17 +396,16 @@ uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
 // Only PS4 does anything with set report
 void PS4Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize) {
     //printf("PS4Driver::set_report RPT: %02x, Type: %02x, Size: %d\n", report_id, report_type, bufsize);
+    //if ((report_id == PS4AuthReport::PS4_SET_AUTH_PAYLOAD) || (report_id == PS4AuthReport::PS4_GET_SIGNATURE_NONCE) || (report_id == PS4AuthReport::PS4_GET_SIGNING_STATE) || (report_id == PS4AuthReport::PS4_RESET_AUTH)) {
+    //    uint32_t now = to_ms_since_boot(get_absolute_time());
+    //    printf("[%d] PS4Driver::set_report RPT: %02x, Type: %02x, Size: %d\n", now, report_id, report_type, bufsize);
+    //}
 
     if (( report_type != HID_REPORT_TYPE_FEATURE ) && ( report_type != HID_REPORT_TYPE_OUTPUT ))
         return;
 
     if (report_type == HID_REPORT_TYPE_OUTPUT) {
         Gamepad * gamepad = Storage::getInstance().GetGamepad();
-        //printf("\x1B[0;0H");
-        //for (uint8_t i = 0; i < bufsize; i++) {
-        //    printf("%02x ", buffer[i]);
-        //}
-        //printf("\n");
 
         if (report_id == 0) {
             // sets rumble, lightbar, etc
@@ -424,7 +428,11 @@ void PS4Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uin
             gamepad->auxState.sensors.statusLight.color.red = buffer[6];
             gamepad->auxState.sensors.statusLight.color.green = buffer[7];
             gamepad->auxState.sensors.statusLight.color.blue = buffer[8];
-        } else if (report_id == PS4AuthReport::PS4_SET_FEATURE_STATE) {
+        } else {
+            //for (uint8_t i = 0; i < bufsize; i++) {
+            //    printf("%02x ", buffer[i]);
+            //}
+            //printf("\n");
         }
     } else if (report_type == HID_REPORT_TYPE_FEATURE) {
         uint8_t nonce_id;
@@ -477,6 +485,11 @@ void PS4Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uin
 
             memcpy(nonce, &sendBuffer[4], noncelen);
             save_nonce(nonce_id, nonce_page, nonce, noncelen);
+        } else {
+            //for (uint8_t i = 0; i < bufsize; i++) {
+            //    printf("%02x ", buffer[i]);
+            //}
+            //printf("\n");
         }
     }
 }
