@@ -98,7 +98,7 @@ export default {
 		's2-button': 'S2 ボタン',
 		'a1-button': 'A1 ボタン',
 		'a2-button': 'A2 ボタン',
-        'a3-button': 'A3 ボタン',
+		'a3-button': 'A3 ボタン',
 		'a4-button': 'A4 ボタン',
 		'touchpad-button': 'タッチパッドボタン',
 		'load-profile-1': 'プロファイル #1をロード',
