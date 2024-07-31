@@ -115,6 +115,7 @@ static volatile bool WiiExtension_alarmFired;
 class WiiExtension {
   protected:
     uint8_t address;
+    PeripheralI2C* i2c;
   public:
     int8_t extensionType = WII_EXTENSION_NONE;
     int8_t dataType = WII_DATA_TYPE_0;
@@ -122,6 +123,7 @@ class WiiExtension {
     bool isReady         = false;
 
     // Constructor 
+    WiiExtension() {}
     WiiExtension(PeripheralI2C *i2cController, uint8_t addr);
 
     // Methods
@@ -130,11 +132,12 @@ class WiiExtension {
     void start();
     void poll();
 
+    void setI2C(PeripheralI2C *i2cController) { this->i2c = i2cController; }
+    void setAddress(uint8_t addr) { this->address = addr; }
+
     ExtensionBase* getController() { return extensionController; };
   private:
     ExtensionBase *extensionController = NULL;
-
-    PeripheralI2C* i2c;
 
 #if WII_EXTENSION_DEBUG==true
     uint8_t _lastRead[16] = {0xFF};

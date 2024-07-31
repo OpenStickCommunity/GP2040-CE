@@ -13,7 +13,7 @@
 #include "gamepad.h"
 #include "storagemanager.h"
 #include "peripheralmanager.h"
-#include "WiiExtension.h"
+#include "wiiextension_dev.h"
 
 // WiiExtension Module Name
 #define WiiExtensionName "WiiExtension"
@@ -86,7 +86,7 @@ public:
     virtual void preprocess() {}
     virtual std::string name() { return WiiExtensionName; }
 private:
-    WiiExtension * wii;
+    WiiExtensionDevice * wii;
     uint32_t uIntervalMS;
     uint32_t nextTimer;
 
