@@ -33,15 +33,6 @@
 #define GPIO_PIN_02 GpioAction::BUTTON_PRESS_A1     // A1     | Guide  | Home    | PS       | 13     | ~      |
 #define GPIO_PIN_05 GpioAction::BUTTON_PRESS_A2     // A2     | ~      | Capture | ~        | 14     | ~      |
 
-// Setting GPIO pins to assigned by add-on
-//
-#define GPIO_PIN_00 GpioAction::ASSIGNED_TO_ADDON
-#define GPIO_PIN_11 GpioAction::ASSIGNED_TO_ADDON
-#define GPIO_PIN_24 GpioAction::ASSIGNED_TO_ADDON
-#define GPIO_PIN_25 GpioAction::ASSIGNED_TO_ADDON
-#define GPIO_PIN_26 GpioAction::ASSIGNED_TO_ADDON
-#define GPIO_PIN_27 GpioAction::ASSIGNED_TO_ADDON
-
 // Keyboard Mapping Configuration
 //                                            // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
 #define KEY_DPAD_UP     HID_KEY_ARROW_UP      // UP     | UP     | UP      | UP       | UP     | UP     |
