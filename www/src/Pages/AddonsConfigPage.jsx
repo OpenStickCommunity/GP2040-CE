@@ -26,6 +26,7 @@ import I2CAnalog1219, {
 	i2cAnalogState,
 } from '../Addons/I2CAnalog1219';
 import Joystick, { joystickScheme, joystickState } from '../Addons/Joystick';
+import ToggleJoystick, { toggleJoystickScheme, toggleJoystickState } from '../Addons/ToggleJoystick';
 import OnBoardLed, {
 	onBoardLedScheme,
 	onBoardLedState,
@@ -65,6 +66,7 @@ const schema = yup.object().shape({
 	...tiltScheme,
 	...buzzerScheme,
 	...playerNumberScheme,
+	...toggleJoystickScheme,
 	...socdScheme,
 	...wiiScheme,
 	...focusModeScheme,
@@ -87,6 +89,7 @@ const defaultValues = {
 	...tiltState,
 	...buzzerState,
 	...playerNumberState,
+	...toggleJoystickState,
 	...socdState,
 	...wiiState,
 	...snesState,
@@ -102,6 +105,7 @@ const ADDONS = [
 	OnBoardLed,
 	Analog,
 	Turbo,
+	ToggleJoystick,
 	Joystick,
 	Reverse,
 	I2CAnalog1219,

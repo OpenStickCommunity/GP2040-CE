@@ -837,7 +837,7 @@ std::string getButtonLayoutDefs()
     for (layoutCtr = _ButtonLayout_MIN; layoutCtr < _ButtonLayout_ARRAYSIZE; layoutCtr++) {
         writeDoc(doc, "buttonLayout", LayoutManager::getInstance().getButtonLayoutName((ButtonLayout)layoutCtr), layoutCtr);
     }
-    
+
     for (layoutCtr = _ButtonLayoutRight_MIN; layoutCtr < _ButtonLayoutRight_ARRAYSIZE; layoutCtr++) {
         writeDoc(doc, "buttonLayoutRight", LayoutManager::getInstance().getButtonLayoutRightName((ButtonLayoutRight)layoutCtr), layoutCtr);
     }
@@ -851,7 +851,7 @@ std::string getButtonLayouts()
     const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
     const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
     uint16_t elementCtr = 0;
-    
+
     LayoutManager::LayoutList layoutA = LayoutManager::getInstance().getLayoutA();
     LayoutManager::LayoutList layoutB = LayoutManager::getInstance().getLayoutB();
 
@@ -912,7 +912,7 @@ std::string getButtonLayouts()
         writeDoc(ele, "parameters", "closed", layoutB[elementCtr].parameters.closed);
         writeDoc(doc, "displayLayouts", "buttonLayoutRight", std::to_string(elementCtr), ele);
     }
-    
+
     return serialize_json(doc);
 }
 
@@ -1384,6 +1384,13 @@ std::string setAddonOptions()
     docToValue(sliderOptions.modeDefault, doc, "sliderModeZero");
     docToValue(sliderOptions.enabled, doc, "JSliderInputEnabled");
 
+    ToggleJoystickOptions& toggleJoystickOptions = Storage::getInstance().getAddonOptions().toggleJoystickOptions;
+    docToValue(toggleJoystickOptions.primaryTogglePin, doc, "toggleJoystickPrimaryTogglePin");
+    docToValue(toggleJoystickOptions.secondaryTogglePin, doc, "toggleJoystickSecondaryTogglePin");
+    docToValue(toggleJoystickOptions.primaryToggle, doc, "toggleJoystickPrimaryToggle");
+    docToValue(toggleJoystickOptions.secondaryToggle, doc, "toggleJoystickSecondaryToggle");
+    docToValue(toggleJoystickOptions.enabled, doc, "ToggleJoystickAddonEnabled");
+
     PlayerNumberOptions& playerNumberOptions = Storage::getInstance().getAddonOptions().playerNumberOptions;
     docToValue(playerNumberOptions.number, doc, "playerNumber");
     docToValue(playerNumberOptions.enabled, doc, "PlayerNumAddonEnabled");
@@ -1792,6 +1799,13 @@ std::string getAddonOptions()
     const SliderOptions& sliderOptions = Storage::getInstance().getAddonOptions().sliderOptions;
     writeDoc(doc, "sliderModeZero", sliderOptions.modeDefault);
     writeDoc(doc, "JSliderInputEnabled", sliderOptions.enabled);
+
+    const ToggleJoystickOptions& toggleJoystickOptions = Storage::getInstance().getAddonOptions().toggleJoystickOptions;
+    writeDoc(doc, "toggleJoystickPrimaryTogglePin", toggleJoystickOptions.primaryTogglePin);
+    writeDoc(doc, "toggleJoystickSecondaryTogglePin", toggleJoystickOptions.secondaryTogglePin);
+    writeDoc(doc, "toggleJoystickPrimaryToggle", toggleJoystickOptions.primaryToggle);
+    writeDoc(doc, "toggleJoystickSecondaryToggle", toggleJoystickOptions.secondaryToggle);
+    writeDoc(doc, "ToggleJoystickAddonEnabled", toggleJoystickOptions.enabled);
 
     const PlayerNumberOptions& playerNumberOptions = Storage::getInstance().getAddonOptions().playerNumberOptions;
     writeDoc(doc, "playerNumber", playerNumberOptions.number);

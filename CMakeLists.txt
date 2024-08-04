@@ -210,6 +210,7 @@ src/addons/keyboard_host_listener.cpp
 src/addons/i2canalog1219.cpp
 src/addons/i2c_gpio_pcf8575.cpp
 src/addons/jslider.cpp
+src/addons/togglejoystick.cpp
 src/addons/display.cpp
 src/addons/neopicoleds.cpp
 src/addons/playernum.cpp
