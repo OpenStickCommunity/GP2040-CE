@@ -54,7 +54,7 @@ typedef struct TU_ATTR_PACKED
   uint8_t  GD_GamePadPointerZ;                       // Usage 0x00010032: Z, Value = 0 to 255
   uint8_t  GD_GamePadPointerRz;                      // Usage 0x00010035: Rz, Value = 0 to 255
 
-  struct 
+  struct
   {
     uint8_t  GD_GamePadHatSwitch : 4;                  // Usage 0x00010039: Hat switch, Value = 0 to 7, Physical = Value x 45 in degrees
     uint8_t  BTN_GamePadButton1 : 1;                   // Usage 0x00090001: Button 1 Primary/trigger, Value = 0 to 1, Physical = Value x 315
@@ -63,7 +63,7 @@ typedef struct TU_ATTR_PACKED
     uint8_t  BTN_GamePadButton4 : 1;                   // Usage 0x00090004: Button 4, Value = 0 to 1, Physical = Value x 315
   };
 
-  struct 
+  struct
   {
     uint8_t  BTN_GamePadButton5 : 1;                   // Usage 0x00090005: Button 5, Value = 0 to 1, Physical = Value x 315
     uint8_t  BTN_GamePadButton6 : 1;                   // Usage 0x00090006: Button 6, Value = 0 to 1, Physical = Value x 315
@@ -72,20 +72,20 @@ typedef struct TU_ATTR_PACKED
     uint8_t  BTN_GamePadButton9 : 1;                   // Usage 0x00090009: Button 9, Value = 0 to 1, Physical = Value x 315
     uint8_t  BTN_GamePadButton10 : 1;                  // Usage 0x0009000A: Button 10, Value = 0 to 1, Physical = Value x 315
     uint8_t  BTN_GamePadButton11 : 1;                  // Usage 0x0009000B: Button 11, Value = 0 to 1, Physical = Value x 315
-    uint8_t  BTN_GamePadButton12 : 1;                  // Usage 0x0009000C: Button 12, Value = 0 to 1, Physical = Value x 315    
+    uint8_t  BTN_GamePadButton12 : 1;                  // Usage 0x0009000C: Button 12, Value = 0 to 1, Physical = Value x 315
   };
-  
+
   struct
   {
     uint8_t  BTN_GamePadButton13 : 1;                  // Usage 0x0009000D: Button 13, Value = 0 to 1, Physical = Value x 315
     uint8_t  BTN_GamePadButton14 : 1;                  // Usage 0x0009000E: Button 14, Value = 0 to 1, Physical = Value x 315
     uint8_t  counter : 6;                              // Usage 0xFF000020: , Value = 0 to 127, Physical = Value x 315 / 127
   };
-  
+
   uint8_t  SIM_GamePadBrake;                         // Usage 0x00010033: Rx, Value = 0 to 255, Physical = Value x 21 / 17
   uint8_t  SIM_GamePadAccelerator;                   // Usage 0x00010034: Ry, Value = 0 to 255, Physical = Value x 21 / 17
   uint8_t  VEN_GamePad0021[54];
-  
+
 } dualshock4_t;
 
 
@@ -108,9 +108,13 @@ private:
 	GamepadState _controller_host_state;
 	bool _controller_host_enabled;
 	void process_ctrlr_report(uint8_t dev_addr, uint8_t const* report, uint16_t len);
-	
+
+	// Controller report processor functions
+	void process_ds4(uint8_t const* report);
+	void process_stadia(uint8_t const* report);
+
   uint16_t controller_pid, controller_vid;
-  
+
   uint16_t map(uint8_t x, uint8_t in_min, uint8_t in_max, uint16_t out_min, uint16_t out_max);
 
   // check if different than 2
