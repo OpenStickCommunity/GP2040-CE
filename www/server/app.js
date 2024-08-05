@@ -383,8 +383,6 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		turboPinLED: -1,
 		sliderModeZero: 0,
 		turboShotCount: 20,
-		toggleJoystickPrimaryTogglePin: -1,
-		toggleJoystickSecondaryTogglePin: -1,
 		reversePin: -1,
 		reversePinLED: -1,
 		reverseActionUp: 1,

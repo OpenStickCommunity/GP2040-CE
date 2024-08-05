@@ -451,10 +451,8 @@ message DualDirectionalOptions
 message ToggleJoystickOptions
 {
     optional bool enabled = 1;
-    optional int32 primaryTogglePin = 2;
-    optional int32 secondaryTogglePin = 3;
-    optional DpadMode primaryToggle = 4;
-    optional DpadMode secondaryToggle = 5;
+    optional DpadMode primaryToggle = 2;
+    optional DpadMode secondaryToggle = 3;
 }
 
 message TiltOptions

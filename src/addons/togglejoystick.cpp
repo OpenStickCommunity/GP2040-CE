@@ -10,21 +10,40 @@
 bool ToggleJoystickAddon::available() {
   const ToggleJoystickOptions &options =
       Storage::getInstance().getAddonOptions().toggleJoystickOptions;
-  primaryTogglePin = options.primaryTogglePin;
-  secondaryTogglePin = options.secondaryTogglePin;
   primaryToggle = options.primaryToggle;
   secondaryToggle = options.secondaryToggle;
-  // return options.enabled && isValidPin(options.primaryTogglePin);
-  return options.enabled;
+	GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
+	bool pinSet = false;
+	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
+	{
+		switch( pinMappings[pin] ) {
+			case GpioAction::BUTTON_PRESS_TJ_PRIMARY:
+			case GpioAction::BUTTON_PRESS_TJ_SECONDARY:
+				pinSet = true;
+			default:
+				break;
+		}
+	}
+  return options.enabled && pinSet;
 }
 
 void ToggleJoystickAddon::setup() {
-  gpio_init(primaryTogglePin);             // Initialize pin
-  gpio_set_dir(primaryTogglePin, GPIO_IN); // Set as INPUT
-  gpio_pull_up(primaryTogglePin);          // Set as PULLUP
-  gpio_init(secondaryTogglePin);             // Initialize pin
-  gpio_set_dir(secondaryTogglePin, GPIO_IN); // Set as INPUT
-  gpio_pull_up(secondaryTogglePin);          // Set as PULLUP
+	GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
+	primaryToggleMask = 0;
+	secondaryToggleMask = 0;
+	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
+	{
+		switch( pinMappings[pin] ) {
+			case GpioAction::BUTTON_PRESS_TJ_PRIMARY:
+				primaryToggleMask = 1 << pin;
+				break;
+			case GpioAction::BUTTON_PRESS_TJ_SECONDARY:
+				secondaryToggleMask = 1 << pin;
+				break;
+			default:
+				break;
+		}
+	}
 
   Gamepad *gamepad = Storage::getInstance().GetGamepad();
   prevLX = gamepad->state.lx;
@@ -35,6 +54,7 @@ void ToggleJoystickAddon::setup() {
 
   defaultDpadMode = gamepad->getOptions().dpadMode;
   prevDpadMode = gamepad->getOptions().dpadMode;
+
   primaryState = false;
   secondaryState = false;
 	onStateChange = false;
@@ -43,13 +63,12 @@ void ToggleJoystickAddon::setup() {
 }
 
 void ToggleJoystickAddon::update() {
-  primaryState = !gpio_get(primaryTogglePin);
-  secondaryState = !gpio_get(secondaryTogglePin);
+  Gamepad *gamepad = Storage::getInstance().GetGamepad();
+  Mask_t allPins = gamepad->debouncedGpio;
+  primaryState = allPins & primaryToggleMask;
+  secondaryState = allPins & secondaryToggleMask;
 }
 
-/**
- * Reinitialize masks.
- */
 void ToggleJoystickAddon::reinit() {
   this->setup();
 }
@@ -104,6 +123,10 @@ void ToggleJoystickAddon::process() {
 
   if (primaryState) {
 		toggleJoystick(gamepad, currentDpadMode, primaryToggle, prevState == 1);
+		gamepad->state.lx = gamepad->state.lx * 0.5 - 0.5;
+		gamepad->state.ly = gamepad->state.ly * 0.5 - 0.5;
+		gamepad->state.rx = gamepad->state.rx * 0.5 - 0.5;
+		gamepad->state.ry = gamepad->state.ry * 0.5 - 0.5;
 	}
 	else if (secondaryState) {
 		toggleJoystick(gamepad, currentDpadMode, secondaryToggle, prevState >= 2);

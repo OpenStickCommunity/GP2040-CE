@@ -10,14 +10,6 @@
 #define TOGGLE_JOYSTICK_ENABLED 0
 #endif
 
-#ifndef TOGGLE_JOYSTICK_PRIMARY_PIN
-#define TOGGLE_JOYSTICK_PRIMARY_PIN -1
-#endif
-
-#ifndef TOGGLE_JOYSTICK_SECONDARY_PIN
-#define TOGGLE_JOYSTICK_SECONDARY_PIN -1
-#endif
-
 #ifndef TOGGLE_JOYSTICK_PRIMARY_TOGGLE
 #define TOGGLE_JOYSTICK_PRIMARY_TOGGLE DPAD_MODE_RIGHT_ANALOG
 #endif
@@ -47,6 +39,8 @@ private:
   DpadMode primaryToggle;
   DpadMode secondaryToggle;
 
+  uint32_t primaryToggleMask;
+  uint32_t secondaryToggleMask;
   uint32_t prevDpad;
 
   uint16_t prevLX;
@@ -54,8 +48,6 @@ private:
   uint16_t prevRX;
   uint16_t prevRY;
 
-  uint8_t primaryTogglePin;
-  uint8_t secondaryTogglePin;
   uint8_t prevState;
 
   bool primaryState;

@@ -1385,8 +1385,6 @@ std::string setAddonOptions()
     docToValue(sliderOptions.enabled, doc, "JSliderInputEnabled");
 
     ToggleJoystickOptions& toggleJoystickOptions = Storage::getInstance().getAddonOptions().toggleJoystickOptions;
-    docToValue(toggleJoystickOptions.primaryTogglePin, doc, "toggleJoystickPrimaryTogglePin");
-    docToValue(toggleJoystickOptions.secondaryTogglePin, doc, "toggleJoystickSecondaryTogglePin");
     docToValue(toggleJoystickOptions.primaryToggle, doc, "toggleJoystickPrimaryToggle");
     docToValue(toggleJoystickOptions.secondaryToggle, doc, "toggleJoystickSecondaryToggle");
     docToValue(toggleJoystickOptions.enabled, doc, "ToggleJoystickAddonEnabled");
@@ -1801,8 +1799,6 @@ std::string getAddonOptions()
     writeDoc(doc, "JSliderInputEnabled", sliderOptions.enabled);
 
     const ToggleJoystickOptions& toggleJoystickOptions = Storage::getInstance().getAddonOptions().toggleJoystickOptions;
-    writeDoc(doc, "toggleJoystickPrimaryTogglePin", toggleJoystickOptions.primaryTogglePin);
-    writeDoc(doc, "toggleJoystickSecondaryTogglePin", toggleJoystickOptions.secondaryTogglePin);
     writeDoc(doc, "toggleJoystickPrimaryToggle", toggleJoystickOptions.primaryToggle);
     writeDoc(doc, "toggleJoystickSecondaryToggle", toggleJoystickOptions.secondaryToggle);
     writeDoc(doc, "ToggleJoystickAddonEnabled", toggleJoystickOptions.enabled);

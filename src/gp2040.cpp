@@ -99,7 +99,6 @@ void GP2040::setup() {
 	addons.LoadAddon(new I2CAnalog1219Input(), CORE0_INPUT);
 	addons.LoadAddon(new SPIAnalog1256Input(), CORE0_INPUT);
 	addons.LoadAddon(new JSliderInput(), CORE0_INPUT);
-	addons.LoadAddon(new ToggleJoystickAddon(), CORE0_INPUT);
 	addons.LoadAddon(new WiiExtensionInput(), CORE0_INPUT);
 	addons.LoadAddon(new SNESpadInput(), CORE0_INPUT);
 	addons.LoadAddon(new PlayerNumAddon(), CORE0_USBREPORT);
@@ -109,6 +108,7 @@ void GP2040::setup() {
 	addons.LoadAddon(new PCF8575Addon(), CORE0_INPUT);
 
 	// Input override addons
+	addons.LoadAddon(new ToggleJoystickAddon(), CORE0_INPUT);
 	addons.LoadAddon(new ReverseInput(), CORE0_INPUT);
 	addons.LoadAddon(new TurboInput(), CORE0_INPUT); // Turbo overrides button states and should be close to the end
 	addons.LoadAddon(new InputMacro(), CORE0_INPUT);

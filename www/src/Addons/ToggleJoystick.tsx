@@ -10,14 +10,6 @@ import { DPAD_MODES } from '../Data/Addons';
 
 export const toggleJoystickScheme = {
 	ToggleJoystickAddonEnabled: yup.number().required().label('ToggleJoystick Addon Enabled'),
-	toggleJoystickPrimaryTogglePin: yup
-		.number()
-		.label('Primary Toggle Joystick Pin')
-		.validatePinWhenValue('ToggleJoystickAddonEnabled'),
-	toggleJoystickSecondaryTogglePin: yup
-		.number()
-		.label('Secondary Toggle Joystick Pin')
-		.validatePinWhenValue('ToggleJoystickAddonEnabled'),
 	toggleJoystickPrimaryToggle: yup
 		.number()
 		.label('Primary Toggle Mode')
@@ -30,8 +22,6 @@ export const toggleJoystickScheme = {
 
 export const toggleJoystickState = {
 	ToggleJoystickAddonEnabled: 0,
-	toggleJoystickPrimaryTogglePin: -1,
-	toggleJoystickSecondaryTogglePin: -1,
 	toggleJoystickPrimaryToggle: 0,
 	toggleJoystickSecondaryToggle: 0,
 };
@@ -42,19 +32,7 @@ const ToggleJoystick = ({ values, errors, handleChange, handleCheckbox }) => {
 		<Section title={t('AddonsConfig:toggle-joystick-addon-header-text')}>
 			<div id="ToggleJoystickAddonOptions" hidden={!values.ToggleJoystickAddonEnabled}>
 				<Row className="mb-3">
-					<FormControl
-						type="number"
-						label={t('AddonsConfig:toggle-joystick-addon-primary-pin-label')}
-						name="toggleJoystickPrimaryTogglePin"
-						className="form-select-sm"
-						groupClassName="col-sm-3 mb-3"
-						value={values.toggleJoystickPrimaryTogglePin}
-						error={errors.toggleJoystickPrimaryTogglePin}
-						isInvalid={errors.toggleJoystickPrimaryTogglePin}
-						onChange={handleChange}
-						min={-1}
-						max={29}
-					/>
+					<p>{t('AddonsConfig:pin-config-moved-to-core-text')}</p>
 					<FormSelect
 						label={t('AddonsConfig:toggle-joystick-addon-primary-mode-label')}
 						name="toggleJoystickPrimaryToggle"
@@ -73,19 +51,6 @@ const ToggleJoystick = ({ values, errors, handleChange, handleCheckbox }) => {
 					</FormSelect>
 				</Row>
 				<Row className="mb-3">
-					<FormControl
-						type="number"
-						label={t('AddonsConfig:toggle-joystick-addon-secondary-pin-label')}
-						name="toggleJoystickSecondaryTogglePin"
-						className="form-select-sm"
-						groupClassName="col-sm-3 mb-3"
-						value={values.toggleJoystickSecondaryTogglePin}
-						error={errors.toggleJoystickSecondaryTogglePin}
-						isInvalid={errors.toggleJoystickSecondaryTogglePin}
-						onChange={handleChange}
-						min={-1}
-						max={29}
-					/>
 					<FormSelect
 						label={t('AddonsConfig:toggle-joystick-addon-secondary-mode-label')}
 						name="toggleJoystickSecondaryToggle"
