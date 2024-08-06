@@ -17,7 +17,7 @@ class MotionPlusExtension : public ExtensionBase {
             uint16_t yawScale = 1;
             uint16_t rollScale = 1;
             uint16_t pitchScale = 1;
-            uint8_t degreeScale = 1;
+            uint16_t degreeScale = 1;
         } __attribute__((packed));
 
         struct CalibrationData {
@@ -29,9 +29,15 @@ class MotionPlusExtension : public ExtensionBase {
             uint16_t crc32LSB;
         } __attribute__((packed));
 
-        uint32_t yawValue;
-        uint32_t rollValue;
-        uint32_t pitchValue;
+        int16_t initialYawValue;
+        int16_t initialRollValue;
+        int16_t initialPitchValue;
+        bool initialRead = true;
+        
+        int16_t yawValue;
+        int16_t rollValue;
+        int16_t pitchValue;
+
         bool yawFastMode = false;
         bool rollFastMode = false;
         bool pitchFastMode = false;

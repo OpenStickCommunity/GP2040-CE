@@ -41,6 +41,10 @@ bool MotionPlusExtension::calibrate(uint8_t *calibrationData) {
     memcpy(&calibrationCheck[0], &calibrationData[0], 14);
     memcpy(&calibrationCheck[14], &calibrationData[16], 14);
 
+    initialYawValue = 0;
+    initialRollValue = 0;
+    initialPitchValue = 0;
+
     calibration = {
         .fastCalibration = {
             .yawZero = (calibrationData[0] << 8) | (calibrationData[1] << 0),
@@ -101,12 +105,29 @@ void MotionPlusExtension::process(uint8_t *inputData) {
         rollFastMode = ((inputData[3] & 0x02) >> 1);
         pitchFastMode = ((inputData[4] & 0x02) >> 1);
 
-        yawValue = (((inputData[0]) | ((inputData[3] & 0xFC) << 6)));
-        rollValue = (((inputData[1]) | ((inputData[4] & 0xFC) << 6)));
-        pitchValue = (((inputData[2]) | ((inputData[5] & 0xFC) << 6)));
-        motionState[WiiMotions::WII_GYROSCOPE_YAW]   = yawValue - (yawFastMode ? calibration.fastCalibration.yawZero : calibration.slowCalibration.yawZero);
-        motionState[WiiMotions::WII_GYROSCOPE_ROLL]  = rollValue - (rollFastMode ? calibration.fastCalibration.rollZero : calibration.slowCalibration.rollZero);
-        motionState[WiiMotions::WII_GYROSCOPE_PITCH] = pitchValue - (pitchFastMode ? calibration.fastCalibration.pitchZero : calibration.slowCalibration.pitchZero);
+        yawValue = inputData[0] | ((inputData[3] >> 2) << 8);
+        rollValue = inputData[1] | ((inputData[4] >> 2) << 8);
+        pitchValue = inputData[2] | ((inputData[5] >> 2) << 8);
+
+        if (((rollValue > 5000) && (pitchValue > 5000) && (yawValue > 5000) && (rollValue < 0x3FFF) && (pitchValue < 0x3FFF) && (yawValue < 0x3FFF) && !initialRollValue && !initialPitchValue && !initialYawValue)) {
+            initialYawValue = yawValue;
+            initialRollValue = rollValue;
+            initialPitchValue = pitchValue;
+        } else {
+            motionState[WiiMotions::WII_GYROSCOPE_YAW]   = yawValue - initialYawValue;
+            motionState[WiiMotions::WII_GYROSCOPE_ROLL]  = rollValue - initialRollValue;
+            motionState[WiiMotions::WII_GYROSCOPE_PITCH] = pitchValue - initialPitchValue;
+        }
+#if WII_EXTENSION_DEBUG==true
+//        printf("\x1B[0;0H");
+//        printf("                Roll  Pitch    Yaw\n");
+//        printf("Calib       - %6d %6d %6d\n", (rollFastMode ? calibration.fastCalibration.rollZero : calibration.slowCalibration.rollZero), (pitchFastMode ? calibration.fastCalibration.pitchZero : calibration.slowCalibration.pitchZero), (yawFastMode ? calibration.fastCalibration.yawZero : calibration.slowCalibration.yawZero));
+//        printf("Calib Scale - %6d %6d %6d\n", (rollFastMode ? calibration.fastCalibration.rollScale : calibration.slowCalibration.rollScale), (pitchFastMode ? calibration.fastCalibration.pitchScale : calibration.slowCalibration.pitchScale), (yawFastMode ? calibration.fastCalibration.yawScale : calibration.slowCalibration.yawScale));
+//        printf("Initial     - %6d %6d %6d\n", initialRollValue, initialPitchValue, initialYawValue);
+//        printf("Curr        - %6d %6d %6d\n", rollValue, pitchValue, yawValue);
+//        printf("Output      - %6d %6d %6d", motionState[WiiMotions::WII_GYROSCOPE_ROLL], motionState[WiiMotions::WII_GYROSCOPE_PITCH], motionState[WiiMotions::WII_GYROSCOPE_YAW]);
+//        printf("\x1B[0J");
+#endif
     } else {
         if (extensionConnected) {
             skipPostProcess = false;

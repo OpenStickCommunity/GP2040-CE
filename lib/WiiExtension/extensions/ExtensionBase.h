@@ -85,7 +85,7 @@ class ExtensionBase {
     public:
         bool buttons[WiiButtons::WII_MAX_BUTTONS];
         uint16_t analogState[WiiAnalogs::WII_MAX_ANALOGS];
-        uint16_t motionState[WiiMotions::WII_MAX_MOTIONS];
+        int16_t motionState[WiiMotions::WII_MAX_MOTIONS];
 
         uint16_t initialAnalogState[WiiAnalogs::WII_MAX_ANALOGS];
         bool isFirstRead = true;
