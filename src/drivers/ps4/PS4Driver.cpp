@@ -295,7 +295,6 @@ static constexpr uint8_t output_0xf3[] = { 0x0, 0x38, 0x38, 0, 0, 0, 0 };
 
 // tud_hid_get_report_cb
 uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
-    //printf("PS4Driver::get_report RPT: %02x, Type: %02x, Size: %d\n", report_id, report_type, reqlen);
     //if ((report_id == PS4AuthReport::PS4_SET_AUTH_PAYLOAD) || (report_id == PS4AuthReport::PS4_GET_SIGNATURE_NONCE) || (report_id == PS4AuthReport::PS4_GET_SIGNING_STATE) || (report_id == PS4AuthReport::PS4_RESET_AUTH)) {
     //    uint32_t now = to_ms_since_boot(get_absolute_time());
     //    printf("[%d] PS4Driver::get_report RPT: %02x, Type: %02x, Size: %d\n", now, report_id, report_type, reqlen);
@@ -395,7 +394,6 @@ uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
 
 // Only PS4 does anything with set report
 void PS4Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize) {
-    //printf("PS4Driver::set_report RPT: %02x, Type: %02x, Size: %d\n", report_id, report_type, bufsize);
     //if ((report_id == PS4AuthReport::PS4_SET_AUTH_PAYLOAD) || (report_id == PS4AuthReport::PS4_GET_SIGNATURE_NONCE) || (report_id == PS4AuthReport::PS4_GET_SIGNING_STATE) || (report_id == PS4AuthReport::PS4_RESET_AUTH)) {
     //    uint32_t now = to_ms_since_boot(get_absolute_time());
     //    printf("[%d] PS4Driver::set_report RPT: %02x, Type: %02x, Size: %d\n", now, report_id, report_type, bufsize);

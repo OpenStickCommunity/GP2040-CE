@@ -80,6 +80,11 @@
 
 #define PS4_TP_MAX_COUNT 128
 
+#define PS4_ACCEL_RES 8192
+#define PS4_ACCEL_RANGE (PS4_ACCEL_RES * 4)
+#define PS4_GYRO_RES 1024
+#define PS4_GYRO_RANGE (PS4_GYRO_RES * 2048)
+
 struct TouchpadXY {
   uint8_t counter : 7;
   uint8_t unpressed : 1;
