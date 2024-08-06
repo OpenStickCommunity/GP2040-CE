@@ -11,7 +11,7 @@
 #include "gp2040aux.h"
 
 #include <cstdlib>
-
+#include "pico/stdlib.h"
 // Custom implementation of __gnu_cxx::__verbose_terminate_handler() to reduce binary size
 namespace __gnu_cxx {
 void __verbose_terminate_handler()

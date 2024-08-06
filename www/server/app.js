@@ -509,6 +509,7 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		RotaryAddonEnabled: 1,
 		PCF8575AddonEnabled: 1,
 		DRV8833RumbleAddonEnabled: 1,
+		ControllerHostAddonEnabled: 1,
 		usedPins: Object.values(picoController),
 	});
 });
