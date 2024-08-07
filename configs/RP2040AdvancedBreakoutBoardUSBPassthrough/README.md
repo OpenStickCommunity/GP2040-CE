@@ -1,6 +1,6 @@
 # GP2040 Configuration for the RP2040 Advanced Breakout Board USB Passthrough Edition
 
-![RP2040 Advanced Breakout Board - USB Passthrough](assets/RP2040 Advanced Breakout Board - Passthrough.jpg)
+![RP2040 Advanced Breakout Board - USB Passthrough](assets/RP2040%20Advanced%20Breakout%20Board%20-%20Passthrough.jpg)
 
 Basic pin setup for the RP2040 Advanced Breakout Board.
 
