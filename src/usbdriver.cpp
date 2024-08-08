@@ -40,6 +40,7 @@ void tud_hid_set_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t rep
 void tud_mount_cb(void)
 {
 	usb_mounted = true;
+	usb_suspended = true;
 }
 
 // Invoked when device is unmounted
