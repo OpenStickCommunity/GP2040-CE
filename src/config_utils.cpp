@@ -24,6 +24,7 @@
 #include "addons/neopicoleds.h"
 #include "addons/playernum.h"
 #include "addons/pleds.h"
+#include "addons/reactiveleds.h"
 #include "addons/reverse.h"
 #include "addons/slider_socd.h"
 #include "addons/spi_analog_ads1256.h"
@@ -723,6 +724,17 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, resetAfter, ENCODER_TWO_RESET);
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, allowWrapAround, ENCODER_TWO_WRAP);
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, multiplier, ENCODER_TWO_MULTIPLIER);
+
+    // addonOptions.reactiveLEDOptions
+    INIT_UNSET_PROPERTY(config.addonOptions.reactiveLEDOptions, enabled, !!REACTIVE_LED_ENABLED);
+    for (uint16_t led = 0; led < REACTIVE_LED_COUNT; led++) {
+        INIT_UNSET_PROPERTY(config.addonOptions.reactiveLEDOptions.leds[led], pin, -1);
+        INIT_UNSET_PROPERTY(config.addonOptions.reactiveLEDOptions.leds[led], action, GpioAction::NONE);
+        INIT_UNSET_PROPERTY(config.addonOptions.reactiveLEDOptions.leds[led], modeDown, REACTIVE_LED_STATIC_ON);
+        INIT_UNSET_PROPERTY(config.addonOptions.reactiveLEDOptions.leds[led], modeUp, REACTIVE_LED_STATIC_OFF);
+    }
+    // reminder that this must be set or else nanopb won't retain anything
+    config.addonOptions.reactiveLEDOptions.leds_count = REACTIVE_LED_COUNT;
 
     // keyboardMapping
     INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions, enabled, KEYBOARD_HOST_ENABLED);
