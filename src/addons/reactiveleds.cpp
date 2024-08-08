@@ -20,9 +20,6 @@ bool ReactiveLEDAddon::available() {
 void ReactiveLEDAddon::setup() {
     const ReactiveLEDOptions& options = Storage::getInstance().getAddonOptions().reactiveLEDOptions;
 
-    //ledPins[0] = {28, ReactiveLEDMode::REACTIVE_LED_STATIC_ON, ReactiveLEDMode::REACTIVE_LED_STATIC_OFF, GAMEPAD_MASK_B1};
-    //ledPins[1] = {29, ReactiveLEDMode::REACTIVE_LED_STATIC_ON, ReactiveLEDMode::REACTIVE_LED_STATIC_OFF, GAMEPAD_MASK_B3};
-
     for (uint8_t led = 0; led < sizeof(REACTIVE_LED_COUNT); led++) {
         ReactiveLEDInfo ledInfo = options.leds[led];
 
@@ -55,10 +52,10 @@ void ReactiveLEDAddon::process() {
         if (isValidPin(ledPins[led].pinNumber) && ledPins[led].action != GpioAction::NONE) {
             ledPins[led].currUpdate = currUpdate;
             switch (ledPins[led].action) {
-                case BUTTON_PRESS_UP: setLEDByMode(ledPins[led], gamepad->pressedButton(GAMEPAD_MASK_UP)); break;
-                case BUTTON_PRESS_DOWN: setLEDByMode(ledPins[led], gamepad->pressedButton(GAMEPAD_MASK_DOWN)); break;
-                case BUTTON_PRESS_LEFT: setLEDByMode(ledPins[led], gamepad->pressedButton(GAMEPAD_MASK_LEFT)); break;
-                case BUTTON_PRESS_RIGHT: setLEDByMode(ledPins[led], gamepad->pressedButton(GAMEPAD_MASK_RIGHT)); break;
+                case BUTTON_PRESS_UP: setLEDByMode(ledPins[led], gamepad->pressedDpad(GAMEPAD_MASK_UP)); break;
+                case BUTTON_PRESS_DOWN: setLEDByMode(ledPins[led], gamepad->pressedDpad(GAMEPAD_MASK_DOWN)); break;
+                case BUTTON_PRESS_LEFT: setLEDByMode(ledPins[led], gamepad->pressedDpad(GAMEPAD_MASK_LEFT)); break;
+                case BUTTON_PRESS_RIGHT: setLEDByMode(ledPins[led], gamepad->pressedDpad(GAMEPAD_MASK_RIGHT)); break;
                 case BUTTON_PRESS_B1: setLEDByMode(ledPins[led], gamepad->pressedButton(GAMEPAD_MASK_B1)); break;
                 case BUTTON_PRESS_B2: setLEDByMode(ledPins[led], gamepad->pressedButton(GAMEPAD_MASK_B2)); break;
                 case BUTTON_PRESS_B3: setLEDByMode(ledPins[led], gamepad->pressedButton(GAMEPAD_MASK_B3)); break;
