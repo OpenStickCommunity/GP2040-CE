@@ -509,6 +509,7 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		RotaryAddonEnabled: 1,
 		PCF8575AddonEnabled: 1,
 		DRV8833RumbleAddonEnabled: 1,
+		ReactiveLEDAddonEnabled: 1,
 		usedPins: Object.values(picoController),
 	});
 });
@@ -728,6 +729,21 @@ app.get('/api/getButtonLayoutDefs', (req, res) => {
 			BUTTON_LAYOUT_6GAWD_ALLBUTTONPLUS_B: 36,
 			BUTTON_LAYOUT_STICKLESS_R16B: 37,
 		},
+	});
+});
+
+app.get('/api/getReactiveLEDs', (req, res) => {
+	return res.send({
+		leds: [
+			{ pin: -1, action: -10, modeDown: 0, modeUp: 1 },
+			{ pin: -1, action: -10, modeDown: 1, modeUp: 0 },
+			{ pin: -1, action: -10, modeDown: 1, modeUp: 0 },
+			{ pin: -1, action: -10, modeDown: 1, modeUp: 0 },
+			{ pin: -1, action: -10, modeDown: 1, modeUp: 0 },
+			{ pin: -1, action: -10, modeDown: 1, modeUp: 0 },
+			{ pin: -1, action: -10, modeDown: 1, modeUp: 0 },
+			{ pin: -1, action: -10, modeDown: 1, modeUp: 0 },
+		],
 	});
 });
 

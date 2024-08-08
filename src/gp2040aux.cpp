@@ -11,6 +11,7 @@
 #include "addons/display.h"
 #include "addons/pleds.h"
 #include "addons/neopicoleds.h"
+#include "addons/reactiveleds.h"
 #include "addons/drv8833_rumble.h"
 
 #include <iterator>
@@ -35,6 +36,7 @@ void GP2040Aux::setup() {
 	addons.LoadAddon(new BoardLedAddon(), CORE1_LOOP);
 	addons.LoadAddon(new BuzzerSpeakerAddon(), CORE1_LOOP);
 	addons.LoadAddon(new DRV8833RumbleAddon(), CORE1_LOOP);
+	addons.LoadAddon(new ReactiveLEDAddon(), CORE1_LOOP);
 
 	// Initialize our input driver's auxilliary functions
 	inputDriver = DriverManager::getInstance().getDriver();

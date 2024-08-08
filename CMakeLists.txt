@@ -215,6 +215,7 @@ src/addons/display.cpp
 src/addons/neopicoleds.cpp
 src/addons/playernum.cpp
 src/addons/playerleds.cpp
+src/addons/reactiveleds.cpp
 src/addons/rotaryencoder.cpp
 src/addons/reverse.cpp
 src/addons/drv8833_rumble.cpp
