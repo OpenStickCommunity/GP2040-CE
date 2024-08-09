@@ -50,7 +50,10 @@ void DRV8833RumbleAddon::setup() {
 }
 
 bool DRV8833RumbleAddon::compareRumbleState(Gamepad * gamepad) {
-	if (currentRumbleState.leftMotor == gamepad->rumbleState.leftMotor && currentRumbleState.rightMotor == gamepad->rumbleState.rightMotor)
+	if (currentRumbleState.leftActuator.active == gamepad->auxState.haptics.leftActuator.active && 
+		currentRumbleState.leftActuator.intensity == gamepad->auxState.haptics.leftActuator.intensity && 
+		currentRumbleState.rightActuator.active == gamepad->auxState.haptics.rightActuator.active && 
+		currentRumbleState.rightActuator.intensity == gamepad->auxState.haptics.rightActuator.intensity)
 		return true;
 
 	return false;
@@ -58,8 +61,10 @@ bool DRV8833RumbleAddon::compareRumbleState(Gamepad * gamepad) {
 }
 
 void DRV8833RumbleAddon::setRumbleState(Gamepad * gamepad) {
-	currentRumbleState.leftMotor = gamepad->rumbleState.leftMotor;
-	currentRumbleState.rightMotor = gamepad->rumbleState.rightMotor;
+	currentRumbleState.leftActuator.active = gamepad->auxState.haptics.leftActuator.active;
+	currentRumbleState.leftActuator.intensity = gamepad->auxState.haptics.leftActuator.intensity;
+	currentRumbleState.rightActuator.active = gamepad->auxState.haptics.rightActuator.active;
+	currentRumbleState.rightActuator.intensity = gamepad->auxState.haptics.rightActuator.intensity;
 }
 
 void DRV8833RumbleAddon::disableMotors() {
@@ -72,8 +77,8 @@ void DRV8833RumbleAddon::disableMotors() {
 }
 
 void DRV8833RumbleAddon::enableMotors(Gamepad * gamepad) {
-	pwmSetFreqDuty(leftMotorPinSlice, leftMotorPinChannel, pwmFrequency, (gamepad->rumbleState.leftMotor == 0) ? 0 : scaleDuty(motorToDuty(gamepad->rumbleState.leftMotor), dutyMin, dutyMax));
-	pwmSetFreqDuty(rightMotorPinSlice, rightMotorPinChannel, pwmFrequency, (gamepad->rumbleState.rightMotor == 0) ? 0 : scaleDuty(motorToDuty(gamepad->rumbleState.rightMotor), dutyMin, dutyMax));
+	pwmSetFreqDuty(leftMotorPinSlice, leftMotorPinChannel, pwmFrequency, (gamepad->auxState.haptics.leftActuator.intensity == 0) ? 0 : scaleDuty(motorToDuty(gamepad->auxState.haptics.leftActuator.intensity), dutyMin, dutyMax));
+	pwmSetFreqDuty(rightMotorPinSlice, rightMotorPinChannel, pwmFrequency, (gamepad->auxState.haptics.rightActuator.intensity == 0) ? 0 : scaleDuty(motorToDuty(gamepad->auxState.haptics.rightActuator.intensity), dutyMin, dutyMax));
 
 	// if motorSleepPin set and any motors are on, disable motor driver sleep mode
 	if (isValidPin(motorSleepPin))
@@ -85,7 +90,7 @@ void DRV8833RumbleAddon::process() {
 
 	if (!compareRumbleState(gamepad)) {
 		setRumbleState(gamepad);
-		if (!(gamepad->rumbleState.leftMotor || gamepad->rumbleState.rightMotor)) {
+		if (!(gamepad->auxState.haptics.leftActuator.active || gamepad->auxState.haptics.rightActuator.active)) {
 			disableMotors();
 			return;
 		}

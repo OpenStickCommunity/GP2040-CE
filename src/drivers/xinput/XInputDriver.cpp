@@ -127,8 +127,10 @@ static void check_and_set_rumble(Gamepad * gamepad, uint8_t * buffer) {
 	if (!(buffer[0] == 0x00 && buffer[1] == 0x08))
 		return;
 
-	gamepad->rumbleState.leftMotor = buffer[3];
-	gamepad->rumbleState.rightMotor = buffer[4];
+	gamepad->auxState.haptics.leftActuator.active = (buffer[3] > 0);
+	gamepad->auxState.haptics.leftActuator.intensity = buffer[3];
+	gamepad->auxState.haptics.rightActuator.active = (buffer[4] > 0);
+	gamepad->auxState.haptics.rightActuator.intensity = buffer[4];
 }
 
 void XInputDriver::initialize() {

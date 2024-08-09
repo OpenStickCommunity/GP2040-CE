@@ -50,6 +50,8 @@ message KeyboardMapping
     optional uint32 keyButtonR3 = 16;
     optional uint32 keyButtonA1 = 17;
     optional uint32 keyButtonA2 = 18;
+    optional uint32 keyButtonA3 = 19;
+    optional uint32 keyButtonA4 = 20;
 }
 
 message HotkeyEntry
@@ -662,6 +664,9 @@ message KeyboardHostOptions
     optional int32 deprecatedPinDplus = 2 [deprecated = true];
     optional KeyboardMapping mapping = 3;
     optional int32 deprecatedPin5V = 4 [deprecated = true];
+    optional uint32 mouseLeft = 5;
+    optional uint32 mouseMiddle = 6;
+    optional uint32 mouseRight = 7;
 }
 
 message FocusModeOptions

@@ -71,9 +71,9 @@ void NunchuckExtension::process(uint8_t *inputData) {
     buttons[WiiButtons::WII_BUTTON_Z]          = (!(inputData[5] & 0x01));
     buttons[WiiButtons::WII_BUTTON_C]          = (!(inputData[5] & 0x02));
 
-    motionState[WiiMotions::WII_MOTION_X]      = (((inputData[2] << 2) | ((inputData[5] >> 2) & 0x03)));
-    motionState[WiiMotions::WII_MOTION_Y]      = (((inputData[3] << 2) | ((inputData[5] >> 4) & 0x03)));
-    motionState[WiiMotions::WII_MOTION_Z]      = (((inputData[4] << 2) | ((inputData[5] >> 6) & 0x03)));
+    motionState[WiiMotions::WII_ACCELEROMETER_X]      = (((inputData[2] << 2) | ((inputData[5] >> 2) & 0x03)));
+    motionState[WiiMotions::WII_ACCELEROMETER_Y]      = (((inputData[3] << 2) | ((inputData[5] >> 4) & 0x03)));
+    motionState[WiiMotions::WII_ACCELEROMETER_Z]      = (((inputData[4] << 2) | ((inputData[5] >> 6) & 0x03)));
 
 #if WII_EXTENSION_DEBUG==true
     //printf("Joy X=%4d Y=%4d   Acc X=%4d Y=%4d Z=%4d   Btn Z=%1d C=%1d\n", analogState[WiiAnalogs::ANALOG_LEFT_X], analogState[WiiAnalogs::ANALOG_LEFT_Y], motionState[WiiMotions::MOTION_X], motionState[WiiMotions::MOTION_Y], motionState[WiiMotions::MOTION_Z], buttons[WiiButtons::BUTTON_Z], buttons[WiiButtons::BUTTON_C]);

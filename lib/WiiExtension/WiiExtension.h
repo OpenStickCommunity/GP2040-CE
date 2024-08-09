@@ -31,6 +31,11 @@ typedef enum {
 #define WII_DATA_TYPE_1             1
 #define WII_DATA_TYPE_2             2
 #define WII_DATA_TYPE_3             3
+// Motion Plus specific
+#define WII_DATA_TYPE_4             4
+#define WII_DATA_TYPE_5             5
+#define WII_DATA_TYPE_6             6
+#define WII_DATA_TYPE_7             7
 
 #define WII_ANALOG_PRECISION_0      32
 #define WII_ANALOG_PRECISION_1      64
@@ -78,6 +83,10 @@ typedef enum {
 
 #ifndef WII_EXTENSION_I2C_ADDR
 #define WII_EXTENSION_I2C_ADDR 0x52
+#endif
+
+#ifndef WII_MOTIONPLUS_I2C_ADDR
+#define WII_MOTIONPLUS_I2C_ADDR 0x53
 #endif
 
 #define WII_ALARM_NUM 0
@@ -141,6 +150,9 @@ class WiiExtension {
 
     void waitUntil_us(uint64_t us);
     static void alarmIRQ();
+
+    bool isMotionPlus = false;
+    bool isExtension = false;
 };
 
 #endif

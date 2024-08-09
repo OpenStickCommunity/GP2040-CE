@@ -4,6 +4,7 @@
 #include "drivers/xboxog/xid/xid_driver.h"
 
 #define XboxOriginalReport USB_XboxGamepad_InReport_t
+#define XboxOriginalReportOut USB_XboxGamepad_OutReport_t
 
 static const uint8_t xboxoriginal_string_language[]     = { 0x09, 0x04 };
 static const uint8_t xboxoriginal_string_manufacturer[] = "";

@@ -66,7 +66,6 @@ void ExtensionBase::postProcess() {
     for (i = 0; i < WiiAnalogs::WII_MAX_ANALOGS; ++i) {
         // scale calibration values before using
         if (i != WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION) {
-
             outVal = applyCalibration(analogState[i], _analogCalibration[i].minimum, _analogCalibration[i].maximum, _analogCalibration[i].center);
 
             minVal = map(_analogCalibration[i].minimum, 0, _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].origin-1, 0, _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].destination-1);

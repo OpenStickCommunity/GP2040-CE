@@ -43,24 +43,49 @@ void KeyboardHostListener::setup() {
   _keyboard_host_mapButtonR3.setKey(keyboardMapping.keyButtonR3);
   _keyboard_host_mapButtonA1.setKey(keyboardMapping.keyButtonA1);
   _keyboard_host_mapButtonA2.setKey(keyboardMapping.keyButtonA2);
+  _keyboard_host_mapButtonA3.setKey(keyboardMapping.keyButtonA3);
+  _keyboard_host_mapButtonA4.setKey(keyboardMapping.keyButtonA4);
+
+  mouseLeftMapping = keyboardHostOptions.mouseLeft;
+  mouseMiddleMapping = keyboardHostOptions.mouseMiddle;
+  mouseRightMapping = keyboardHostOptions.mouseRight;
 
   _keyboard_host_enabled = false;
   _keyboard_dev_addr = 0;
   _keyboard_instance = 0;
+  
+  _mouse_host_enabled = false;
+  _mouse_dev_addr = 0;
+  _mouse_instance = 0;
+
+  mouseX = 0;
+  mouseY = 0;
+  mouseZ = 0;
 }
 
 void KeyboardHostListener::process() {
   Gamepad *gamepad = Storage::getInstance().GetGamepad();
-  gamepad->state.dpad     |= _keyboard_host_state.dpad;
-  gamepad->state.buttons  |= _keyboard_host_state.buttons;
-  gamepad->state.lx       |= _keyboard_host_state.lx;
-  gamepad->state.ly       |= _keyboard_host_state.ly;
-  gamepad->state.rx       |= _keyboard_host_state.rx;
-  gamepad->state.ry       |= _keyboard_host_state.ry;
-  if (!gamepad->hasAnalogTriggers) {
-    gamepad->state.lt       |= _keyboard_host_state.lt;
-    gamepad->state.rt       |= _keyboard_host_state.rt;
+  if (_keyboard_host_enabled || _mouse_host_enabled) {
+    gamepad->state.dpad     |= _keyboard_host_state.dpad;
+    gamepad->state.buttons  |= _keyboard_host_state.buttons;
+    gamepad->state.lx       |= _keyboard_host_state.lx;
+    gamepad->state.ly       |= _keyboard_host_state.ly;
+    gamepad->state.rx       |= _keyboard_host_state.rx;
+    gamepad->state.ry       |= _keyboard_host_state.ry;
+    if (!gamepad->hasAnalogTriggers) {
+        gamepad->state.lt       |= _keyboard_host_state.lt;
+        gamepad->state.rt       |= _keyboard_host_state.rt;
+    }
   }
+
+  gamepad->auxState.sensors.mouse.enabled = _mouse_host_enabled;
+  gamepad->auxState.sensors.mouse.active = mouseActive;
+  if (_mouse_host_enabled && mouseActive) {
+    gamepad->auxState.sensors.mouse.x = mouseX;
+    gamepad->auxState.sensors.mouse.y = mouseY;
+    gamepad->auxState.sensors.mouse.z = mouseZ;
+  }
+  mouseActive = false;
 }
 
 void KeyboardHostListener::mount(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len) {
@@ -68,12 +93,17 @@ void KeyboardHostListener::mount(uint8_t dev_addr, uint8_t instance, uint8_t con
     uint8_t const itf_protocol = tuh_hid_interface_protocol(dev_addr, instance);
 
     // tuh_hid_report_received_cb() will be invoked when report is available
-    if (itf_protocol != HID_ITF_PROTOCOL_KEYBOARD)
+    if (itf_protocol == HID_ITF_PROTOCOL_KEYBOARD) {
+        _keyboard_dev_addr = dev_addr;
+        _keyboard_instance = instance;
+        _keyboard_host_enabled = true;
+    } else if (itf_protocol == HID_ITF_PROTOCOL_MOUSE) {
+        _mouse_dev_addr = dev_addr;
+        _mouse_instance = instance;
+        _mouse_host_enabled = true;
+    } else {
         return;
-
-    _keyboard_dev_addr = dev_addr;
-    _keyboard_instance = instance;
-    _keyboard_host_enabled = true;
+    }
 }
 
 void KeyboardHostListener::unmount(uint8_t dev_addr) {
@@ -81,22 +111,34 @@ void KeyboardHostListener::unmount(uint8_t dev_addr) {
         _keyboard_host_enabled = false;
         _keyboard_dev_addr = 0;
         _keyboard_instance = 0;
+    } else if ( _mouse_dev_addr == dev_addr ) {
+        _mouse_host_enabled = false;
+        _mouse_dev_addr = 0;
+        _mouse_instance = 0;
     }
 }
 
 void KeyboardHostListener::report_received(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len){
-  if ( _keyboard_host_enabled == false || 
-        _keyboard_dev_addr != dev_addr || _keyboard_instance != instance )
+  if (
+        ( _keyboard_host_enabled == false || _keyboard_dev_addr != dev_addr || _keyboard_instance != instance )
+        &&
+        ( _mouse_host_enabled == false || _mouse_dev_addr != dev_addr || _mouse_instance != instance )
+  )
     return; // do nothing if we haven't mounted
 
   // Interface protocol (hid_interface_protocol_enum_t)
   uint8_t const itf_protocol = tuh_hid_interface_protocol(dev_addr, instance);
 
-  // tuh_hid_report_received_cb() will be invoked when report is available
-  if (itf_protocol != HID_ITF_PROTOCOL_KEYBOARD)
-    return;
+  preprocess_report();
 
-  process_kbd_report(dev_addr, (hid_keyboard_report_t const*) report );
+  // tuh_hid_report_received_cb() will be invoked when report is available
+  if (itf_protocol == HID_ITF_PROTOCOL_KEYBOARD) {
+    process_kbd_report(dev_addr, (hid_keyboard_report_t const*) report );
+  } else if (itf_protocol == HID_ITF_PROTOCOL_MOUSE) {
+    process_mouse_report(dev_addr, (hid_mouse_report_t const*) report );
+  } else {
+    return;
+  }
 }
 
 uint8_t KeyboardHostListener::getKeycodeFromModifier(uint8_t modifier) {
@@ -114,8 +156,7 @@ uint8_t KeyboardHostListener::getKeycodeFromModifier(uint8_t modifier) {
 	return 0;
 }
 
-// convert hid keycode to ascii and print via usb device CDC (ignore non-printable)
-void KeyboardHostListener::process_kbd_report(uint8_t dev_addr, hid_keyboard_report_t const *report)
+void KeyboardHostListener::preprocess_report()
 {
   uint16_t joystickMid = GAMEPAD_JOYSTICK_MID;
   if ( DriverManager::getInstance().getDriver() != nullptr ) {
@@ -131,6 +172,11 @@ void KeyboardHostListener::process_kbd_report(uint8_t dev_addr, hid_keyboard_rep
   _keyboard_host_state.lt = 0;
   _keyboard_host_state.rt = 0;
 
+}
+
+// convert hid keycode to ascii and print via usb device CDC (ignore non-printable)
+void KeyboardHostListener::process_kbd_report(uint8_t dev_addr, hid_keyboard_report_t const *report)
+{
   // make this 13 instead of 7 to include modifier bitfields from hid_keyboard_modifier_bm_t
   for(uint8_t i=0; i<13; i++)
   {
@@ -168,7 +214,25 @@ void KeyboardHostListener::process_kbd_report(uint8_t dev_addr, hid_keyboard_rep
           | ((keycode == _keyboard_host_mapButtonR3.key)  ? _keyboard_host_mapButtonR3.buttonMask  : _keyboard_host_state.buttons)
           | ((keycode == _keyboard_host_mapButtonA1.key)  ? _keyboard_host_mapButtonA1.buttonMask  : _keyboard_host_state.buttons)
           | ((keycode == _keyboard_host_mapButtonA2.key)  ? _keyboard_host_mapButtonA2.buttonMask  : _keyboard_host_state.buttons)
+          | ((keycode == _keyboard_host_mapButtonA3.key)  ? _keyboard_host_mapButtonA3.buttonMask  : _keyboard_host_state.buttons)
+          | ((keycode == _keyboard_host_mapButtonA4.key)  ? _keyboard_host_mapButtonA4.buttonMask  : _keyboard_host_state.buttons)
         ;
     }
   }
+}
+
+void KeyboardHostListener::process_mouse_report(uint8_t dev_addr, hid_mouse_report_t const * report)
+{
+  //------------- button state  -------------//
+  _keyboard_host_state.buttons |=
+      (report->buttons & MOUSE_BUTTON_LEFT   ?   mouseLeftMapping : _keyboard_host_state.buttons)
+    | (report->buttons & MOUSE_BUTTON_MIDDLE ? mouseMiddleMapping : _keyboard_host_state.buttons)
+    | (report->buttons & MOUSE_BUTTON_RIGHT  ?  mouseRightMapping : _keyboard_host_state.buttons)
+  ;
+
+  //------------- cursor movement -------------//
+  mouseX = report->x;
+  mouseY = report->y;
+  mouseZ = report->wheel;
+  mouseActive = true;
 }

@@ -13,162 +13,197 @@ void WiiExtension::begin() {
 #if WII_EXTENSION_DEBUG==true
     printf("WiiExtension::begin\n");
 #endif
+
     isReady = false;
-    reset();
 }
 
-void WiiExtension::start(){
+void WiiExtension::start() {
     uint8_t idRead[32];
     uint8_t regWrite[16];
-    int8_t result;
+    bool canContinue = true;
+    int8_t result, retryCtr;
+
+    // we need to determine which address gets used
+    if (isMotionPlus && !isExtension) {
+        // Motion Plus only
+#if WII_EXTENSION_DEBUG==true
+    printf("WiiExtension::start Motion Plus detected\n");
+#endif
+        address = WII_MOTIONPLUS_I2C_ADDR;
+    } else if (!isMotionPlus && isExtension) {
+        // Extension only
+#if WII_EXTENSION_DEBUG==true
+    printf("WiiExtension::start Extension detected\n");
+#endif
+        address = WII_EXTENSION_I2C_ADDR;
+    } else if (isMotionPlus && isExtension) {
+        // Both attached
+#if WII_EXTENSION_DEBUG==true
+    printf("WiiExtension::start Motion Plus & Extension detected\n");
+#endif
+        address = WII_MOTIONPLUS_I2C_ADDR;
+    } else {
+        // Nothing attached
+#if WII_EXTENSION_DEBUG==true
+    printf("WiiExtension::start No Extension devices detected\n");
+#endif
+        canContinue = false;
+        isReady = false;
+        return;
+    }
+
+    if (!isReady) {
+#if WII_EXTENSION_ENCRYPTION==false
+        if (canContinue) {
+            regWrite[0] = 0xF0;
+            regWrite[1] = 0x55;
+            result = doI2CWrite(regWrite, 2);
+            canContinue = (result > -1);
 
 #if WII_EXTENSION_DEBUG==true
-    printf("WiiExtension::start\n");
-    printf("WiiExtension::start isReady? %1d\n", isReady);
-#endif
-
-    if (!isReady) return;
-
-    regWrite[0] = 0xFA;
-    result = doI2CWrite(&regWrite[0], 1);
-
-    extensionType = WII_EXTENSION_NONE;
-
-    // continue if the write was successful
-    if (result > -1) {
-        doI2CRead(idRead, 6);
-
-        if (idRead[2] != 0xA4 || idRead[3] != 0x20) return;
-
-        if (idRead[5] == 0x00) {
-            extensionType = WII_EXTENSION_NUNCHUCK;
-            extensionController = new NunchuckExtension();
-        } else if (idRead[5] == 0x01) {
-            extensionType = WII_EXTENSION_CLASSIC;
-            //if (idRead[0] == 0x01) {
-            //    extensionType = WII_EXTENSION_CLASSIC_PRO;
-            //}
-            extensionController = new ClassicExtension();
-        } else if (idRead[5] == 0x03) {
-            extensionType = WII_EXTENSION_GUITAR;
-            if (idRead[0] == 0x01) {
-                extensionType = WII_EXTENSION_DRUMS;
-                extensionController = new DrumExtension();
-            } else if (idRead[0] == 0x03) {
-                extensionType = WII_EXTENSION_TURNTABLE;
-                extensionController = new TurntableExtension();
-            } else {
-                extensionController = new GuitarExtension();
-            }
-        } else if (idRead[5] == 0x11) {
-            extensionType = WII_EXTENSION_TAIKO;
-            extensionController = new TaikoExtension();
-        }
-
-        // in certain situations (eg. Nunchuck), setting the data type in reset() does not affect what this value will be
-        dataType = idRead[4];
-        if (dataType == WII_DATA_TYPE_0) dataType = WII_DATA_TYPE_1;
-        extensionController->init(dataType);
-        extensionController->setExtensionType(extensionType);
-
-#if WII_EXTENSION_DEBUG==true
-        printf("WiiExtension::Extension ID: %02x%02x %02x%02x %02x%02x\n", idRead[0], idRead[1], idRead[2], idRead[3], idRead[4], idRead[5]);
-        printf("WiiExtension::Data Format: %02x\n",idRead[4]);
-#endif
-
-        if (extensionType != WII_EXTENSION_NONE) {
-#if WII_EXTENSION_CALIBRATION==true
-#if WII_EXTENSION_DEBUG==true
-            printf("WiiExtension::Calibration Data\n");
-#endif
-            regWrite[0] = 0x20;
-            doI2CWrite(regWrite, 1);
-            
-            doI2CRead(idRead, 16);
-            extensionController->calibrate(idRead);
+    printf("WiiExtension::start 0xF0? %1d\n", result);
 #endif
         } else {
+            canContinue = false;
+        }
+        result = doI2CRead(regWrite, 1);
+
+        if (canContinue) {
+            regWrite[0] = 0xFB;
+            regWrite[1] = 0x00;
+            result = doI2CWrite(regWrite, 2);
+            canContinue = (result > -1);
+
 #if WII_EXTENSION_DEBUG==true
-            printf("WiiExtension::Unknown Extension: %02x%02x %02x%02x %02x%02x\n", idRead[0], idRead[1], idRead[2], idRead[3], idRead[4], idRead[5]);
+    printf("WiiExtension::start 0xFB? %1d\n", result);
 #endif
+        } else {
+            canContinue = false;
+        }
+#endif
+
+        result = doI2CRead(regWrite, 1);
+
+        if (canContinue) {
+            for (retryCtr = 0; retryCtr < 3; retryCtr++) {
+                // set data format
+                regWrite[0] = 0xFE;
+                if (isMotionPlus) {
+                    //regWrite[1] = 0x04;
+                    regWrite[1] = 0x05;
+                } else {
+                    regWrite[1] = 0x03;
+                }
+                result = doI2CWrite(regWrite, 2);
+
+#if WII_EXTENSION_DEBUG==true
+    printf("WiiExtension::start 0xFE? %1d\n", result);
+#endif
+
+                // no error returned, check the device ID
+                if (result > -1) {
+                    if (isMotionPlus) {
+                        // switch address back
+                        address = WII_EXTENSION_I2C_ADDR;
+                    }
+                    
+                    result = doI2CRead(idRead, 2);
+                    isReady = true;
+
+#if WII_EXTENSION_DEBUG==true
+    printf("WiiExtension::start 0xFE Check %02x %02x\n", idRead[0], idRead[1]);
+#endif
+                    break;
+                }
+            }
         }
 
-        regWrite[0] = 0x00;
-        result = doI2CWrite(regWrite, 1);
-    }
-}
-
-void WiiExtension::reset(){
-    uint8_t regWrite[16];
-    int8_t result;
-    bool canContinue = true;
-
-#if WII_EXTENSION_DEBUG==true
-    printf("WiiExtension::reset\n");
-#endif
-
-    if (canContinue) {
-        result = doI2CTest();
-        canContinue = (result == 1);
+        result = doI2CRead(regWrite, 1);
     }
 
 #if WII_EXTENSION_DEBUG==true
-    printf("WiiExtension::i2C tested? %1d\n", result);
+    printf("WiiExtension::start Is Ready? %01d\n", isReady);
 #endif
 
-#if WII_EXTENSION_ENCRYPTION==true
-    if (canContinue) {
-        regWrite[0] = 0x40;
-        regWrite[1] = 0x00;
-        result = doI2CWrite(regWrite, 2);
-        canContinue = (result > -1);
-    }
-#endif
-
-#if WII_EXTENSION_ENCRYPTION==false
-    if (canContinue) {
-        regWrite[0] = 0xF0;
-        regWrite[1] = 0x55;
-        result = doI2CWrite(regWrite, 2);
-        canContinue = (result > -1);
-    }
+    if (isReady) {
+        // fetch the extension ID
+        regWrite[0] = 0xFA;
+        result = doI2CWrite(&regWrite[0], 1);
 
 #if WII_EXTENSION_DEBUG==true
-    printf("WiiExtension::reset 0xF0? %1d\n", result);
+    printf("WiiExtension::start Extension Check? %1d\n", result);
 #endif
 
-    if (canContinue) {
-        regWrite[0] = 0xFB;
-        regWrite[1] = 0x00;
-        result = doI2CWrite(regWrite, 2);
-        canContinue = (result > -1);
-    }
+        extensionType = WII_EXTENSION_NONE;
+
+        // continue if the write was successful
+        if (result > -1) {
+            result = doI2CRead(idRead, 6);
+
+            if (idRead[2] != 0xA4 || idRead[3] != 0x20) return;
+
+            if (idRead[5] == 0x00) {
+                extensionType = WII_EXTENSION_NUNCHUCK;
+                extensionController = new NunchuckExtension();
+            } else if (idRead[5] == 0x01) {
+                extensionType = WII_EXTENSION_CLASSIC;
+                //if (idRead[0] == 0x01) {
+                //    extensionType = WII_EXTENSION_CLASSIC_PRO;
+                //}
+                extensionController = new ClassicExtension();
+            } else if (idRead[5] == 0x03) {
+                extensionType = WII_EXTENSION_GUITAR;
+                if (idRead[0] == 0x01) {
+                    extensionType = WII_EXTENSION_DRUMS;
+                    extensionController = new DrumExtension();
+                } else if (idRead[0] == 0x03) {
+                    extensionType = WII_EXTENSION_TURNTABLE;
+                    extensionController = new TurntableExtension();
+                } else {
+                    extensionController = new GuitarExtension();
+                }
+            } else if (idRead[5] == 0x05) {
+                extensionType = WII_EXTENSION_MOTION_PLUS;
+                extensionController = new MotionPlusExtension();
+            } else if (idRead[5] == 0x11) {
+                extensionType = WII_EXTENSION_TAIKO;
+                extensionController = new TaikoExtension();
+            } else if (idRead[5] == 0x12) {
+                extensionType = WII_EXTENSION_UDRAW;
+                extensionController = new UDrawExtension();
+            }
+
+            // in certain situations (eg. Nunchuck), setting the data type in reset() does not affect what this value will be
+            dataType = idRead[4];
+            if (dataType == WII_DATA_TYPE_0) dataType = WII_DATA_TYPE_1;
+            extensionController->init(dataType);
+            extensionController->setExtensionType(extensionType);
+
 #if WII_EXTENSION_DEBUG==true
-    printf("WiiExtension::reset 0xFB? %1d\n", result);
-#endif
+    printf("WiiExtension::Extension ID: %02x%02x %02x%02x %02x%02x\n", idRead[0], idRead[1], idRead[2], idRead[3], idRead[4], idRead[5]);
+    printf("WiiExtension::Data Format: %02x\n",idRead[4]);
 #endif
 
-    if (canContinue) {
-        // set data format
-        regWrite[0] = 0xFE;
-        regWrite[1] = 0x03;
-        result = doI2CWrite(regWrite, 2);
-        canContinue = (result > -1);
-    }
+            if (extensionType != WII_EXTENSION_NONE) {
+#if WII_EXTENSION_CALIBRATION==true
+#if WII_EXTENSION_DEBUG==true
+    printf("WiiExtension::Calibration Data\n");
+#endif
+                regWrite[0] = 0x20;
+                doI2CWrite(regWrite, 1);
 
-#if WII_EXTENSION_DEBUG==true
-    printf("WiiExtension::reset 0xFE? %1d\n", result);
+                doI2CRead(idRead, 32);
+                extensionController->calibrate(idRead);
 #endif
+            } else {
+#if WII_EXTENSION_DEBUG==true
+    printf("WiiExtension::Unknown Extension: %02x%02x %02x%02x %02x%02x\n", idRead[0], idRead[1], idRead[2], idRead[3], idRead[4], idRead[5]);
+#endif
+            }
 
-    if (canContinue) {
-#if WII_EXTENSION_DEBUG==true
-        //printf("Reset Sent\n");
-#endif
-        isReady = true;
-    } else {
-#if WII_EXTENSION_DEBUG==true
-        //printf("Device not found\n");
-#endif
+            regWrite[0] = 0x00;
+            result = doI2CWrite(regWrite, 1);
+        }
     }
 }
 
@@ -195,6 +230,13 @@ void WiiExtension::poll() {
             case WII_DATA_TYPE_3:
                 result = doI2CRead(regRead, 8);
                 break;
+            // Motion Plus data types
+            case WII_DATA_TYPE_4:
+            case WII_DATA_TYPE_5:
+            case WII_DATA_TYPE_6:
+            case WII_DATA_TYPE_7:
+                result = doI2CRead(regRead, 16);
+                break;
             default:
                 // unknown. TBD
                 result = -1;
@@ -206,7 +248,7 @@ void WiiExtension::poll() {
 
         if (result > 0) {
             extensionController->process(regRead);
-            extensionController->postProcess();
+            if (!extensionController->skipPostProcess) extensionController->postProcess();
 
 #if WII_EXTENSION_DEBUG==true
             for (int i = 0; i < result; ++i) {
@@ -233,6 +275,10 @@ void WiiExtension::poll() {
         reset();
         start();
     }
+}
+
+void WiiExtension::reset() {
+    isReady = false;
 }
 
 int WiiExtension::doI2CWrite(uint8_t *pData, int iLen) {
@@ -263,6 +309,18 @@ uint8_t WiiExtension::doI2CTest() {
 }
 
 void WiiExtension::doI2CInit() {
+    isMotionPlus = false;
+    isExtension = false;
+
+    bool extensionCheck = i2c->test(WII_EXTENSION_I2C_ADDR);
+    waitUntil_us(WII_EXTENSION_DELAY);
+
+    bool motionPlusCheck = i2c->test(WII_MOTIONPLUS_I2C_ADDR);
+    waitUntil_us(WII_EXTENSION_DELAY);
+
+    // since init is unused, let's use this to detect normal or MotionPlus mode
+    if (extensionCheck) isExtension = true;
+    if (motionPlusCheck) isMotionPlus = true;
 }
 
 void WiiExtension::waitUntil_us(uint64_t us) {

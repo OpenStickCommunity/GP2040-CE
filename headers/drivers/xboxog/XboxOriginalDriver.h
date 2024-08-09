@@ -28,6 +28,7 @@ public:
 private:
     uint8_t last_report[CFG_TUD_ENDPOINT0_SIZE] = { };
     XboxOriginalReport xboxOriginalReport;
+    XboxOriginalReportOut xboxOriginalReportOut;
 };
 
 #endif // _XBOX_ORIGINAL_DRIVER_H_

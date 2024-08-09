@@ -270,6 +270,28 @@ private:
                 }
             }
         },
+        {
+            WiiExtensionController::WII_EXTENSION_DRAWSOME,
+            {
+                {
+                    {WiiButtons::WII_BUTTON_A, GAMEPAD_MASK_B2},
+                    {WiiButtons::WII_BUTTON_L, GAMEPAD_MASK_L2},
+                    {WiiButtons::WII_BUTTON_R, GAMEPAD_MASK_R2},
+                },
+                {}
+            }
+        },
+        {
+            WiiExtensionController::WII_EXTENSION_UDRAW,
+            {
+                {
+                    {WiiButtons::WII_BUTTON_A, GAMEPAD_MASK_B2},
+                    {WiiButtons::WII_BUTTON_L, GAMEPAD_MASK_L2},
+                    {WiiButtons::WII_BUTTON_R, GAMEPAD_MASK_R2},
+                },
+                {}
+            }
+        },
     };
     WiiExtensionConfig* currentConfig = NULL;
 
@@ -295,6 +317,9 @@ private:
     bool dpadRight  = false;
 
     bool isAnalogTriggers = false;
+    bool isGyroscope = false;
+    bool isAccelerometer = false;
+    bool isTouch = false;
 
     uint16_t triggerLeft  = 0;
     uint16_t triggerRight = 0;
@@ -313,6 +338,19 @@ private:
 
     uint16_t rightY = 0;
     uint16_t lastRightY = 0;
+
+    uint16_t accelerometerX = 0;
+    uint16_t accelerometerY = 0;
+    uint16_t accelerometerZ = 0;
+
+    uint16_t gyroscopeX = 0;
+    uint16_t gyroscopeY = 0;
+    uint16_t gyroscopeZ = 0;
+
+    uint16_t touchX = 0;
+    uint16_t touchY = 0;
+    uint16_t touchZ = 0;
+    bool touchPressed = false;
 
     std::map<uint16_t, std::vector<WiiAnalogChange>> analogChanges = {
         {WII_ANALOG_TYPE_LEFT_STICK_X,{}},
@@ -344,6 +382,7 @@ private:
     void setButtonState(bool buttonState, uint16_t buttonMask);
     void queueAnalogChange(uint16_t analogInput, uint16_t analogValue, uint16_t lastAnalogValue);
     void updateAnalogState();
+    void updateMotionState();
     void reloadConfig();
 
     uint16_t getAverage(std::vector<WiiAnalogChange> const& changes);
