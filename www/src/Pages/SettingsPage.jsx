@@ -265,6 +265,10 @@ const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.a2-button', value: 34 },
 	{ labelKey: 'hotkey-actions.a3-button', value: 36 },
 	{ labelKey: 'hotkey-actions.a4-button', value: 37 },
+	{ labelKey: 'hotkey-actions.dpad-up', value: 38 },
+	{ labelKey: 'hotkey-actions.dpad-down', value: 39 },
+	{ labelKey: 'hotkey-actions.dpad-left', value: 40 },
+	{ labelKey: 'hotkey-actions.dpad-right', value: 41 },
 ];
 
 const FORCED_SETUP_MODES = [

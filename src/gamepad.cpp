@@ -436,6 +436,18 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 		case HOTKEY_A4_BUTTON:
 			state.buttons |= GAMEPAD_MASK_A4;
 			break;
+		case HOTKEY_DPAD_UP:
+			state.dpad |= GAMEPAD_MASK_UP;
+			break;
+		case HOTKEY_DPAD_DOWN:
+			state.dpad |= GAMEPAD_MASK_DOWN;
+			break;
+		case HOTKEY_DPAD_LEFT:
+			state.dpad |= GAMEPAD_MASK_LEFT;
+			break;
+		case HOTKEY_DPAD_RIGHT:
+			state.dpad |= GAMEPAD_MASK_RIGHT;
+			break;
 		case HOTKEY_SOCD_UP_PRIORITY:
 			if (action != lastAction) {
 				options.socdMode = SOCD_MODE_UP_PRIORITY;
