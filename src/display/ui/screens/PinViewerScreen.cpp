@@ -16,29 +16,36 @@ void PinViewerScreen::drawScreen() {
 
     std::string pinsPressed = "PIN: ";
     std::string pinsInUse = "In Use: ";
+    std::string pinsUndefined = "Undef: ";
     std::string buttonsPressed = "BTN: ";
 
     getRenderer()->drawText(5, 0, "[Pin Viewer]");
 
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
         if ((pinMappings[pin].action > 0) && (pinMappings[pin].action != GpioAction::CUSTOM_BUTTON_COMBO)) {
-            const char * action = buttonLookup[pinMappings[pin].action];
-            if ((pinValues & (1 << pin)) == (1 << pin)) {
+            if ((pinValues >> pin) & 0x01) {
                 pinsPressed += std::to_string(pin);
                 pinsPressed += " ";
 
+                const char * action = buttonLookup[pinMappings[pin].action];
                 buttonsPressed += action;
                 buttonsPressed += " ";
             }
         } else {
-            pinsInUse += std::to_string(pin);
-            pinsInUse += " ";
+            if (pinMappings[pin].action != GpioAction::NONE) {
+                pinsInUse += std::to_string(pin);
+                pinsInUse += " ";
+            } else {
+                pinsUndefined += std::to_string(pin);
+                pinsUndefined += " ";
+            }
         }
     }
 
-    getRenderer()->drawText(0, 2, pinsInUse.c_str());
-    getRenderer()->drawText(0, 3, pinsPressed.c_str());
-    getRenderer()->drawText(0, 4, buttonsPressed.c_str());
+    getRenderer()->drawText(0, 2, pinsUndefined.c_str());
+    getRenderer()->drawText(0, 3, pinsInUse.c_str());
+    getRenderer()->drawText(0, 4, pinsPressed.c_str());
+    getRenderer()->drawText(0, 5, buttonsPressed.c_str());
 
     getRenderer()->drawText(4, 7, "A2 to Return");
 }
