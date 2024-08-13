@@ -1451,6 +1451,21 @@ export default function SettingsPage() {
 																		{errors[o] && errors[o]?.action}
 																	</Form.Control.Feedback>
 																</Col>
+																{Boolean(
+																	values[o]?.buttonsMask || values[o]?.action,
+																) && (
+																	<Col>
+																		<Button
+																			size="sm"
+																			onClick={() => {
+																				setFieldValue(`${o}.action`, 0);
+																				setFieldValue(`${o}.buttonsMask`, 0);
+																			}}
+																		>
+																			{'✕'}
+																		</Button>
+																	</Col>
+																)}
 															</Form.Group>
 														))}
 													</div>

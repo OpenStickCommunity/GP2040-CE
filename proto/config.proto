@@ -205,11 +205,11 @@ message ProfileOptions
 message DisplayOptions
 {
     optional bool enabled = 1;
-
-    optional int32 i2cBlock = 2;
+    
+    optional int32 deprecatedI2cBlock = 2 [deprecated = true];
     optional int32 deprecatedI2cSDAPin = 3 [deprecated = true];
     optional int32 deprecatedI2cSCLPin = 4 [deprecated = true];
-    optional int32 i2cAddress = 5;
+    optional int32 deprecatedI2cAddress = 5 [deprecated = true];
     optional int32 deprecatedI2cSpeed = 6 [deprecated = true];
 
     optional ButtonLayout buttonLayout = 7;
@@ -417,11 +417,11 @@ message ReverseOptions
 message AnalogADS1219Options
 {
     optional bool enabled = 1;
-
-    optional int32 i2cBlock = 2;
+    
+    optional int32 deprecatedI2cBlock = 2 [deprecated = true];
     optional int32 deprecatedI2cSDAPin = 3 [deprecated = true];
     optional int32 deprecatedI2cSCLPin = 4 [deprecated = true];
-    optional int32 i2cAddress = 5;
+    optional int32 deprecatedI2cAddress = 5 [deprecated = true];
     optional int32 deprecatedI2cSpeed = 6 [deprecated = true];
 }
 
@@ -640,7 +640,7 @@ message WiiOptions
     }
 
     optional bool enabled = 1;
-    optional int32 i2cBlock = 2;
+    optional int32 deprecatedI2cBlock = 2 [deprecated = true];
     optional int32 deprecatedI2cSDAPin = 3 [deprecated = true];
     optional int32 deprecatedI2cSCLPin = 4 [deprecated = true];
     optional int32 deprecatedI2cSpeed = 5 [deprecated = true];
@@ -734,7 +734,7 @@ message RotaryOptions
 message PCF8575Options
 {
     optional bool enabled = 1;
-    optional int32 i2cBlock = 2;
+    optional int32 deprecatedI2cBlock = 2 [deprecated = true];
     repeated GpioMappingInfo pins = 3 [(nanopb).max_count = 16];
 }
 
