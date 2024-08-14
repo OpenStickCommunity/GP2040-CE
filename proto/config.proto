@@ -761,7 +761,7 @@ message ReactiveLEDInfo
 message ReactiveLEDOptions
 {
     optional bool enabled = 1;
-    repeated ReactiveLEDInfo leds = 2 [(nanopb).max_count = 8];
+    repeated ReactiveLEDInfo leds = 2 [(nanopb).max_count = 10];
 }
 
 message AddonOptions

@@ -1348,7 +1348,7 @@ std::string getReactiveLEDs()
     DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
     ReactiveLEDInfo* ledInfo = Storage::getInstance().getAddonOptions().reactiveLEDOptions.leds;
 
-    for (uint16_t led = 0; led < 8; led++) {
+    for (uint16_t led = 0; led < 10; led++) {
         writeDoc(doc, "leds", led, "pin", ledInfo[led].pin);
         writeDoc(doc, "leds", led, "action", ledInfo[led].action);
         writeDoc(doc, "leds", led, "modeDown", ledInfo[led].modeDown);
@@ -1364,13 +1364,13 @@ std::string setReactiveLEDs()
 
     ReactiveLEDInfo* ledInfo = Storage::getInstance().getAddonOptions().reactiveLEDOptions.leds;
 
-    for (uint16_t led = 0; led < 8; led++) {
+    for (uint16_t led = 0; led < 10; led++) {
         ledInfo[led].pin = doc["leds"][led]["pin"];
         ledInfo[led].action = doc["leds"][led]["action"];
         ledInfo[led].modeDown = doc["leds"][led]["modeDown"];
         ledInfo[led].modeUp = doc["leds"][led]["modeUp"];
     }
-    Storage::getInstance().getAddonOptions().reactiveLEDOptions.leds_count = 8;
+    Storage::getInstance().getAddonOptions().reactiveLEDOptions.leds_count = 10;
 
     Storage::getInstance().save();
 

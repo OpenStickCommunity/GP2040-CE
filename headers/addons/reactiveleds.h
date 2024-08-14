@@ -8,7 +8,7 @@
 #endif
 
 #ifndef REACTIVE_LED_COUNT
-#define REACTIVE_LED_COUNT 8
+#define REACTIVE_LED_COUNT 10
 #endif
 
 #ifndef REACTIVE_LED_DELAY
