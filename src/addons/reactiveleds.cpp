@@ -8,7 +8,7 @@
 bool ReactiveLEDAddon::available() {
     bool pinsEnabled = false;
     const ReactiveLEDOptions& options = Storage::getInstance().getAddonOptions().reactiveLEDOptions;
-    for (uint8_t led = 0; led < sizeof(REACTIVE_LED_COUNT); led++) {
+    for (uint8_t led = 0; led < REACTIVE_LED_COUNT; led++) {
         if (isValidPin(options.leds[led].pin)) {
             pinsEnabled = true;
             break;
@@ -20,7 +20,7 @@ bool ReactiveLEDAddon::available() {
 void ReactiveLEDAddon::setup() {
     const ReactiveLEDOptions& options = Storage::getInstance().getAddonOptions().reactiveLEDOptions;
 
-    for (uint8_t led = 0; led < sizeof(REACTIVE_LED_COUNT); led++) {
+    for (uint8_t led = 0; led < REACTIVE_LED_COUNT; led++) {
         ReactiveLEDInfo ledInfo = options.leds[led];
 
         ledPins[led].pinNumber = ledInfo.pin;
@@ -48,7 +48,7 @@ void ReactiveLEDAddon::process() {
 
     uint32_t currUpdate = to_ms_since_boot(get_absolute_time());
 
-    for (uint8_t led = 0; led < sizeof(REACTIVE_LED_COUNT); led++) {
+    for (uint8_t led = 0; led < REACTIVE_LED_COUNT; led++) {
         if (isValidPin(ledPins[led].pinNumber) && ledPins[led].action != GpioAction::NONE) {
             ledPins[led].currUpdate = currUpdate;
             switch (ledPins[led].action) {

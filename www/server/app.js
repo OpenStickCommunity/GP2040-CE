@@ -743,6 +743,8 @@ app.get('/api/getReactiveLEDs', (req, res) => {
 			{ pin: -1, action: -10, modeDown: 1, modeUp: 0 },
 			{ pin: -1, action: -10, modeDown: 1, modeUp: 0 },
 			{ pin: -1, action: -10, modeDown: 1, modeUp: 0 },
+			{ pin: -1, action: -10, modeDown: 1, modeUp: 0 },
+			{ pin: -1, action: -10, modeDown: 1, modeUp: 0 },
 		],
 	});
 });
