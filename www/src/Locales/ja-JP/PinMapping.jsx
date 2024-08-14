@@ -5,6 +5,12 @@ export default {
 		'未接続や未実装の端子を割当設定するとコントローラが動作しない状態に陥る可能性があります。無効な設定を初期化したい場合は<2>設定初期化</2>のページで初期化を実行してください。',
 	'pin-viewer': '端子確認',
 	'pin-pressed': 'このボタンの配線先は {{pressedPin}} 番端子です！',
+	'profile-text-1': '基本(プロファイル 1)',
+	'profile-text-2': 'プロファイル 2',
+	'profile-text-3': 'プロファイル 3',
+	'profile-text-4': 'プロファイル 4',
+	'profile-pin-mapping-title-base': 'デフォルト(プロファイル 1) - 端子割当',
+	'profile-pin-mapping-title': 'プロファイル {{profileNumber}} - 端子割当',
 	'pin-header-label': '端子',
 	'profile-pins-warning':
 		'プロファイルの変更ホットキーに設定しているボタンや方向キーの設定変更は、現在のプロファイル選択状況がわからなくなる原因となるため非推奨です。',

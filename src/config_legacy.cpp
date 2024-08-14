@@ -113,6 +113,7 @@ namespace ConfigLegacy
         BUTTON_LAYOUT_STICKLESS_13,
         BUTTON_LAYOUT_STICKLESS_16,
         BUTTON_LAYOUT_STICKLESS_14,
+        BUTTON_LAYOUT_STICKLESS_R16,        
     };
 
     enum ButtonLayoutRight
@@ -139,6 +140,7 @@ namespace ConfigLegacy
         BUTTON_LAYOUT_STICKLESS_13B,
         BUTTON_LAYOUT_STICKLESS_16B,
         BUTTON_LAYOUT_STICKLESS_14B,
+        BUTTON_LAYOUT_STICKLESS_R16B,
     };
 
     enum SplashMode
@@ -561,6 +563,7 @@ static bool isValidButtonLayout(ConfigLegacy::ButtonLayout buttonLayout)
         case BUTTON_LAYOUT_OPENCORE0WASDA:
         case BUTTON_LAYOUT_STICKLESS_13:
         case BUTTON_LAYOUT_STICKLESS_16:
+        case BUTTON_LAYOUT_STICKLESS_R16:
         case BUTTON_LAYOUT_STICKLESS_14:
             return true;
     }
@@ -591,7 +594,8 @@ static bool isValidButtonLayoutRight(ConfigLegacy::ButtonLayoutRight buttonLayou
         case BUTTON_LAYOUT_KEYBOARD8B:
         case BUTTON_LAYOUT_OPENCORE0WASDB:
         case BUTTON_LAYOUT_STICKLESS_13B:
-        case BUTTON_LAYOUT_STICKLESS_16B:        
+        case BUTTON_LAYOUT_STICKLESS_16B: 
+        case BUTTON_LAYOUT_STICKLESS_R16B:
         case BUTTON_LAYOUT_STICKLESS_14B:
             return true;
     }
@@ -800,10 +804,10 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         DisplayOptions& displayOptions = config.displayOptions;
         config.has_displayOptions = true;
         SET_PROPERTY(displayOptions, enabled, legacyBoardOptions.hasI2CDisplay);
-        SET_PROPERTY(displayOptions, i2cBlock, legacyBoardOptions.i2cBlock);
+        SET_PROPERTY(displayOptions, deprecatedI2cBlock, legacyBoardOptions.i2cBlock);
         SET_PROPERTY(displayOptions, deprecatedI2cSDAPin, legacyBoardOptions.i2cSDAPin);
         SET_PROPERTY(displayOptions, deprecatedI2cSCLPin, legacyBoardOptions.i2cSCLPin);
-        SET_PROPERTY(displayOptions, i2cAddress, legacyBoardOptions.displayI2CAddress);
+        SET_PROPERTY(displayOptions, deprecatedI2cAddress, legacyBoardOptions.displayI2CAddress);
         SET_PROPERTY(displayOptions, deprecatedI2cSpeed, legacyBoardOptions.i2cSpeed);
         if (isValidButtonLayout(legacyBoardOptions.buttonLayout))
         {
@@ -999,10 +1003,10 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         AnalogADS1219Options& analogADS1219Options = config.addonOptions.analogADS1219Options;
         config.addonOptions.has_analogADS1219Options = true;
         SET_PROPERTY(analogADS1219Options, enabled, legacyAddonOptions.I2CAnalog1219InputEnabled);
-        SET_PROPERTY(analogADS1219Options, i2cBlock, legacyAddonOptions.i2cAnalog1219Block);
+        SET_PROPERTY(analogADS1219Options, deprecatedI2cBlock, legacyAddonOptions.i2cAnalog1219Block);
         SET_PROPERTY(analogADS1219Options, deprecatedI2cSDAPin, bytePinToIntPin(legacyAddonOptions.i2cAnalog1219SDAPin));
         SET_PROPERTY(analogADS1219Options, deprecatedI2cSCLPin, bytePinToIntPin(legacyAddonOptions.i2cAnalog1219SCLPin));
-        SET_PROPERTY(analogADS1219Options, i2cAddress, legacyAddonOptions.i2cAnalog1219Address);
+        SET_PROPERTY(analogADS1219Options, deprecatedI2cAddress, legacyAddonOptions.i2cAnalog1219Address);
         SET_PROPERTY(analogADS1219Options, deprecatedI2cSpeed, legacyAddonOptions.i2cAnalog1219Speed);
 
         SliderOptions& sliderOptions = config.addonOptions.sliderOptions;
@@ -1080,7 +1084,7 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         WiiOptions& wiiOptions = config.addonOptions.wiiOptions;
         config.addonOptions.has_wiiOptions = true;
         SET_PROPERTY(wiiOptions, enabled, legacyAddonOptions.WiiExtensionAddonEnabled);
-        SET_PROPERTY(wiiOptions, i2cBlock, legacyAddonOptions.wiiExtensionBlock);
+        SET_PROPERTY(wiiOptions, deprecatedI2cBlock, legacyAddonOptions.wiiExtensionBlock);
         SET_PROPERTY(wiiOptions, deprecatedI2cSDAPin, bytePinToIntPin(legacyAddonOptions.wiiExtensionSDAPin));
         SET_PROPERTY(wiiOptions, deprecatedI2cSCLPin, bytePinToIntPin(legacyAddonOptions.wiiExtensionSCLPin));
         SET_PROPERTY(wiiOptions, deprecatedI2cSpeed, legacyAddonOptions.wiiExtensionSpeed);

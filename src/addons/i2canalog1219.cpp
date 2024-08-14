@@ -8,12 +8,22 @@
 
 bool I2CAnalog1219Input::available() {
     const AnalogADS1219Options& options = Storage::getInstance().getAddonOptions().analogADS1219Options;
-    return (options.enabled && PeripheralManager::getInstance().isI2CEnabled(options.i2cBlock));
+    if (options.enabled) {
+        ads = new ADS1219Device();
+        PeripheralI2CScanResult result = PeripheralManager::getInstance().scanForI2CDevice(ads->getDeviceAddresses());
+        if (result.address > -1) {
+            ads->setAddress(result.address);
+            ads->setI2C(PeripheralManager::getInstance().getI2C(result.block));
+            return true;
+        } else {
+            delete ads;
+        }
+    }
+    return false;
 }
 
 void I2CAnalog1219Input::setup() {
     const AnalogADS1219Options& options = Storage::getInstance().getAddonOptions().analogADS1219Options;
-    PeripheralI2C* i2c = PeripheralManager::getInstance().getI2C(options.i2cBlock);
 
     memset(&pins, 0, sizeof(ADS_PINS));
     channelHop = 0;
@@ -22,7 +32,6 @@ void I2CAnalog1219Input::setup() {
     nextTimer = getMillis();
 
     // Init our ADS1219 library
-    ads = new ADS1219(i2c, options.i2cAddress);
     ads->begin();                               // setup I2C and chip start
     ads->setChannel(0);                         // Start on Channel 0
     ads->setConversionMode(CONTINUOUS);         // Read analog continuously

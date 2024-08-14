@@ -564,7 +564,9 @@ export default function MacrosPage() {
 											<Nav.Item key={`pills-item-${i}`}>
 												<Nav.Link eventKey={`macro-${i}`}>
 													{macro.macroLabel.length == 0
-														? t('InputMacroAddon:input-macro-macro-list-txt', { macroNumber: i + 1 })
+														? t('InputMacroAddon:input-macro-macro-list-txt', {
+																macroNumber: i + 1,
+														  })
 														: macro.macroLabel.length > 24
 														? macro.macroLabel.substr(0, 24) + '...'
 														: macro.macroLabel}
@@ -590,12 +592,26 @@ export default function MacrosPage() {
 															<thead>
 																<tr>
 																	<th>#</th>
-																	<th>{t('InputMacroAddon:table-thread-label')}</th>
-																	<th>{t('InputMacroAddon:table-thread-type')}</th>
-																	<th>{t('InputMacroAddon:table-thread-assigned-to')}</th>
-																	<th>{t('InputMacroAddon:table-thread-button')}</th>
-																	<th>{t('InputMacroAddon:table-thread-actions')}</th>
-																	<th>{t('InputMacroAddon:table-thread-status')}</th>
+																	<th>
+																		{t('InputMacroAddon:table-thread-label')}
+																	</th>
+																	<th>
+																		{t('InputMacroAddon:table-thread-type')}
+																	</th>
+																	<th>
+																		{t(
+																			'InputMacroAddon:table-thread-assigned-to',
+																		)}
+																	</th>
+																	<th>
+																		{t('InputMacroAddon:table-thread-button')}
+																	</th>
+																	<th>
+																		{t('InputMacroAddon:table-thread-actions')}
+																	</th>
+																	<th>
+																		{t('InputMacroAddon:table-thread-status')}
+																	</th>
 																</tr>
 															</thead>
 															<tbody>
@@ -619,8 +635,12 @@ export default function MacrosPage() {
 																		</td>
 																		<td>
 																			{macro.useMacroTriggerButton == 1
-																				? t('InputMacroAddon:input-macro-macro-trigger-type-button')
-																				: t('InputMacroAddon:input-macro-macro-trigger-type-pin')}
+																				? t(
+																						'InputMacroAddon:input-macro-macro-trigger-type-button',
+																				  )
+																				: t(
+																						'InputMacroAddon:input-macro-macro-trigger-type-pin',
+																				  )}
 																		</td>
 																		{macro.useMacroTriggerButton == 0 ? (
 																			<td>
@@ -701,7 +721,12 @@ export default function MacrosPage() {
 												key={`macro-list-tab-pane-${i}`}
 												eventKey={`macro-${i}`}
 											>
-												<Section title={t('InputMacroAddon:input-macro-macro-list-txt', { macroNumber: i + 1 })}>
+												<Section
+													title={t(
+														'InputMacroAddon:input-macro-macro-list-txt',
+														{ macroNumber: i + 1 },
+													)}
+												>
 													<MacroComponent
 														key={`macroList[${i}]`}
 														id={`macroList[${i}]`}
