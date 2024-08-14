@@ -12,6 +12,9 @@ static const uint8_t ps3_magic_init_bytes[8] = {0x21, 0x26, 0x01, 0x07, 0x00, 0x
 
 static bool ps3_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const * request)
 {
+    //uint32_t now = to_ms_since_boot(get_absolute_time());
+    //printf("[%d] PS3Driver::ps3_control_xfer_cb Type: %02x, Req: %02x, Val: %x\n", now, request->bmRequestType, request->bRequest, request->wValue);
+
 	if ( request->bmRequestType == 0xA1 &&
 		request->bRequest == HID_REQ_CONTROL_GET_REPORT &&
 		request->wValue == 0x0300 ) {
@@ -22,18 +25,24 @@ static bool ps3_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_requ
 }
 
 void PS3Driver::initialize() {
+    //stdio_init_all();
+
 	ps3Report = {
-		.square_btn = 0, .cross_btn = 0, .circle_btn = 0, .triangle_btn = 0,
+        .reportID = 1,
+        .reserved = 0,
+		.cross_btn = 0, .circle_btn = 0, .square_btn = 0, .triangle_btn = 0,
 		.l1_btn = 0, .r1_btn = 0, .l2_btn = 0, .r2_btn = 0,
-		.select_btn = 0, .start_btn = 0, .l3_btn = 0, .r3_btn = 0, .ps_btn = 0, .tp_btn = 0,
-		.direction = 0x08,
-		.l_x_axis = PS3_JOYSTICK_MID,
-		.l_y_axis = PS3_JOYSTICK_MID,
-		.r_x_axis = PS3_JOYSTICK_MID,
+        .select_btn = 0, .start_btn = 0, .l3_btn = 0, .r3_btn = 0, 
+        .dpad_up = 0, .dpad_down = 0, .dpad_left = 0, .dpad_right = 0,
+        .ps_btn = 0, .tp_btn = 0,
+        .l_x_axis = PS3_JOYSTICK_MID,
+        .l_y_axis = PS3_JOYSTICK_MID,
+        .r_x_axis = PS3_JOYSTICK_MID,
 		.r_y_axis = PS3_JOYSTICK_MID,
-		.right_axis = 0x00, .left_axis = 0x00, .up_axis = 0x00, .down_axis = 0x00,
+		.up_axis = 0x00, .right_axis = 0x00, .down_axis = 0x00, .left_axis = 0x00,
+		.l2_axis = 0x00, .r2_axis = 0x00, .l1_axis = 0x00, .r1_axis = 0x00,
 		.triangle_axis = 0x00, .circle_axis = 0x00, .cross_axis = 0x00, .square_axis = 0x00,
-		.l1_axis = 0x00, .r1_axis = 0x00, .l2_axis = 0x00, .r2_axis = 0x00
+        .reserved2 = {0x00}
 	};
 
 	class_driver = {
@@ -51,18 +60,10 @@ void PS3Driver::initialize() {
 
 // Generate PS3 report from gamepad and send to TUSB Device
 void PS3Driver::process(Gamepad * gamepad, uint8_t * outBuffer) {
-	switch (gamepad->state.dpad & GAMEPAD_MASK_DPAD)
-	{
-		case GAMEPAD_MASK_UP:                        ps3Report.direction = PS3_HAT_UP;        break;
-		case GAMEPAD_MASK_UP | GAMEPAD_MASK_RIGHT:   ps3Report.direction = PS3_HAT_UPRIGHT;   break;
-		case GAMEPAD_MASK_RIGHT:                     ps3Report.direction = PS3_HAT_RIGHT;     break;
-		case GAMEPAD_MASK_DOWN | GAMEPAD_MASK_RIGHT: ps3Report.direction = PS3_HAT_DOWNRIGHT; break;
-		case GAMEPAD_MASK_DOWN:                      ps3Report.direction = PS3_HAT_DOWN;      break;
-		case GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT:  ps3Report.direction = PS3_HAT_DOWNLEFT;  break;
-		case GAMEPAD_MASK_LEFT:                      ps3Report.direction = PS3_HAT_LEFT;      break;
-		case GAMEPAD_MASK_UP | GAMEPAD_MASK_LEFT:    ps3Report.direction = PS3_HAT_UPLEFT;    break;
-		default:                                     ps3Report.direction = PS3_HAT_NOTHING;   break;
-	}
+    ps3Report.dpad_left    = gamepad->pressedLeft();
+    ps3Report.dpad_down    = gamepad->pressedDown();
+    ps3Report.dpad_right   = gamepad->pressedRight();
+    ps3Report.dpad_up      = gamepad->pressedUp();
 
 	ps3Report.cross_btn    = gamepad->pressedB1();
 	ps3Report.circle_btn   = gamepad->pressedB2();
@@ -84,25 +85,25 @@ void PS3Driver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 	ps3Report.r_x_axis = static_cast<uint8_t>(gamepad->state.rx >> 8);
 	ps3Report.r_y_axis = static_cast<uint8_t>(gamepad->state.ry >> 8);
 
-	if (gamepad->hasAnalogTriggers)
-	{
-		ps3Report.l2_axis = gamepad->state.lt;
-		ps3Report.r2_axis = gamepad->state.rt;
-	} else {
-		ps3Report.l2_axis = gamepad->pressedL2() ? 0xFF : 0;
-		ps3Report.r2_axis = gamepad->pressedR2() ? 0xFF : 0;
-	}
-
-	ps3Report.triangle_axis =	gamepad->pressedB4() ? 0xFF : 0;
-	ps3Report.circle_axis =		gamepad->pressedB2() ? 0xFF : 0;
-	ps3Report.cross_axis =		gamepad->pressedB1() ? 0xFF : 0;
-	ps3Report.square_axis =		gamepad->pressedB3() ? 0xFF : 0;
-	ps3Report.l1_axis =		gamepad->pressedL1() ? 0xFF : 0;
-	ps3Report.r1_axis =		gamepad->pressedR1() ? 0xFF : 0;
-	ps3Report.right_axis =		gamepad->state.dpad & GAMEPAD_MASK_RIGHT ? 0xFF : 0;
-	ps3Report.left_axis =		gamepad->state.dpad & GAMEPAD_MASK_LEFT ? 0xFF : 0;
-	ps3Report.up_axis =		gamepad->state.dpad & GAMEPAD_MASK_UP ? 0xFF : 0;
-	ps3Report.down_axis =		gamepad->state.dpad & GAMEPAD_MASK_DOWN ? 0xFF : 0;
+//	if (gamepad->hasAnalogTriggers)
+//	{
+//		ps3Report.l2_axis = gamepad->state.lt;
+//		ps3Report.r2_axis = gamepad->state.rt;
+//	} else {
+//		ps3Report.l2_axis = gamepad->pressedL2() ? 0xFF : 0;
+//		ps3Report.r2_axis = gamepad->pressedR2() ? 0xFF : 0;
+//	}
+//
+//	ps3Report.triangle_axis =	gamepad->pressedB4() ? 0xFF : 0;
+//	ps3Report.circle_axis =		gamepad->pressedB2() ? 0xFF : 0;
+//	ps3Report.cross_axis =		gamepad->pressedB1() ? 0xFF : 0;
+//	ps3Report.square_axis =		gamepad->pressedB3() ? 0xFF : 0;
+//	ps3Report.l1_axis =		gamepad->pressedL1() ? 0xFF : 0;
+//	ps3Report.r1_axis =		gamepad->pressedR1() ? 0xFF : 0;
+//	ps3Report.right_axis =		gamepad->state.dpad & GAMEPAD_MASK_RIGHT ? 0xFF : 0;
+//	ps3Report.left_axis =		gamepad->state.dpad & GAMEPAD_MASK_LEFT ? 0xFF : 0;
+//	ps3Report.up_axis =		gamepad->state.dpad & GAMEPAD_MASK_UP ? 0xFF : 0;
+//	ps3Report.down_axis =		gamepad->state.dpad & GAMEPAD_MASK_DOWN ? 0xFF : 0;
 
 	// Wake up TinyUSB device
 	if (tud_suspended())
@@ -121,12 +122,22 @@ void PS3Driver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 
 // tud_hid_get_report_cb
 uint16_t PS3Driver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
+    //uint32_t now = to_ms_since_boot(get_absolute_time());
+    //printf("[%d] PS3Driver::get_report RPT: %02x, Type: %02x, Size: %d\n", now, report_id, report_type, reqlen);
+    //for (uint8_t i = 0; i < reqlen; i++) {
+    //    printf("%02x ", buffer[i]);
+    //}
+    //printf("\n");
+
     memcpy(buffer, &ps3Report, sizeof(PS3Report));
 	return sizeof(PS3Report);
 }
 
 // Only PS4 does anything with set report
-void PS3Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize) {}
+void PS3Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize) {
+    //uint32_t now = to_ms_since_boot(get_absolute_time());
+    //printf("[%d] PS3Driver::set_report RPT: %02x, Type: %02x, Size: %d\n", now, report_id, report_type, bufsize);
+}
 
 // Only XboxOG and Xbox One use vendor control xfer cb
 bool PS3Driver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request) {
