@@ -404,3 +404,13 @@ enum RotaryEncoderPinMode
     ENCODER_MODE_DPAD_X = 7;
     ENCODER_MODE_DPAD_Y = 8;
 };
+
+enum ReactiveLEDMode
+{
+    option (nanopb_enumopt).long_names = false;
+
+    REACTIVE_LED_STATIC_OFF = 0;
+    REACTIVE_LED_STATIC_ON = 1;
+    REACTIVE_LED_FADE_IN = 2;
+    REACTIVE_LED_FADE_OUT = 3;
+};
