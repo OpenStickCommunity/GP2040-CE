@@ -42,3 +42,5 @@ GitHub: https://github.com/misteraddons/MiSTercade-Config
 | GPIO_PIN_20| GpioAction::BUTTON_PRESS_E3   | Twin Stick Left
 | GPIO_PIN_21| GpioAction::BUTTON_PRESS_E4   | Twin Stick Right
 | GPIO_PIN_22| GpioAction::BUTTON_PRESS_E4   | Player 2 Start
+| GPIO_PIN_26| GpioAction::BUTTON_PRESS_B1   | B1     | A      | B       | Cross   | 2      | K1     |
+| GPIO_PIN_27| GpioAction::BUTTON_PRESS_B2   | B2     | B      | A       | Circle  | 3      | K2     |
