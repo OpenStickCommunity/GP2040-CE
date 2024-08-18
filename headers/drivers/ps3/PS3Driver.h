@@ -28,6 +28,8 @@ public:
 private:
     uint8_t last_report[CFG_TUD_ENDPOINT0_SIZE] = { };
     PS3Report ps3Report;
+    PS3Features ps3Features;
+    uint8_t efByte;
 };
 
 #endif // _PS3_DRIVER_H_

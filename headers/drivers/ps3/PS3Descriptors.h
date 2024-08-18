@@ -64,8 +64,40 @@
 
 // HID analog sticks only report 8 bits
 #define PS3_JOYSTICK_MIN 0x00
-#define PS3_JOYSTICK_MID 0x80
+#define PS3_JOYSTICK_MID 0x7F
 #define PS3_JOYSTICK_MAX 0xFF
+
+typedef enum {
+    PS3_FEATURE_01 = 0x01,
+    PS3_FEATURE_EF = 0xEF,
+    PS3_FEATURE_F2 = 0xF2,
+    PS3_FEATURE_F4 = 0xF4,
+    PS3_FEATURE_F5 = 0xF5,
+    PS3_FEATURE_F7 = 0xF7,
+    PS3_FEATURE_F8 = 0xF8,
+} PS3ReportTypes;
+
+typedef enum {
+    PS3_PLUGGED = 0x02,
+    PS3_UNPLUGGED = 0x03
+} PS3PluggedInState;
+
+typedef enum {
+    PS3_POWER_CHARGING = 0xEE,
+    PS3_POWER_NOT_CHARGING = 0xF1,
+    PS3_POWER_SHUTDOWN = 0x01,
+    PS3_POWER_DISCHARGING = 0x02,
+    PS3_POWER_LOW = 0x03,
+    PS3_POWER_HIGH = 0x04,
+    PS3_POWER_FULL = 0x05,
+} PS3PowerState;
+
+typedef enum {
+    PS3_WIRED_RUMBLE = 0x10,
+    PS3_WIRED_NO_RUMBLE = 0x12,
+    PS3_WIRELESS_RUMBLE = 0x14,
+    PS3_WIRELESS_NO_RUMBLE = 0x16,
+} PS3WiredState;
 
 typedef struct __attribute((packed, aligned(1)))
 {
@@ -76,26 +108,26 @@ typedef struct __attribute((packed, aligned(1)))
     uint8_t reserved;
 
     // 2
-	uint8_t cross_btn : 1;
-	uint8_t circle_btn : 1;
-	uint8_t square_btn : 1;
-	uint8_t triangle_btn : 1;
-
-	uint8_t l1_btn : 1;
-	uint8_t r1_btn : 1;
-	uint8_t l2_btn : 1;
-	uint8_t r2_btn : 1;
-
-    // 3
-	uint8_t select_btn : 1;
+    uint8_t select_btn : 1;
+    uint8_t l3_btn : 1;
+    uint8_t r3_btn : 1;
     uint8_t start_btn : 1;
-	uint8_t l3_btn : 1;
-	uint8_t r3_btn : 1;
-	
+
     uint8_t dpad_up : 1;
+    uint8_t dpad_right : 1;
     uint8_t dpad_down : 1;
     uint8_t dpad_left : 1;
-    uint8_t dpad_right : 1;
+
+    // 3
+    uint8_t l2_btn : 1;
+    uint8_t r2_btn : 1;
+    uint8_t l1_btn : 1;
+    uint8_t r1_btn : 1;
+
+    uint8_t triangle_btn : 1;
+    uint8_t circle_btn : 1;
+    uint8_t cross_btn : 1;
+    uint8_t square_btn : 1;
 
     // 4
     uint8_t ps_btn : 1;
@@ -113,13 +145,17 @@ typedef struct __attribute((packed, aligned(1)))
     // 8
     uint8_t r_x_axis;
     // 9
-    uint8_t : 8;
-    // 10
     uint8_t r_y_axis;
+    // 10
+    uint8_t : 8;
 
     // 11
     uint8_t : 8;
-    uint8_t : 8;
+
+    // 12
+    uint8_t movePowerStatus : 8;
+
+    // 13
     uint8_t : 8;
 
     // button analog values for the d-pad.
@@ -152,12 +188,57 @@ typedef struct __attribute((packed, aligned(1)))
     uint8_t square_axis;
 
     // 26
-    uint8_t reserved2[23];
+    uint8_t reserved2[3];
 
-//
-//    // 21
-//    uint8_t reserved2[27];
+    // 29
+    uint8_t plugged;
+    // 30
+    uint8_t powerStatus;
+
+    // 31
+    uint8_t rumbleStatus;
+
+    // 32
+    uint8_t reserved3[9];
+
+    // 40
+    uint8_t accelerometer_x[2];
+    // 42
+    uint8_t accelerometer_y[2];
+    // 44
+    uint8_t accelerometer_z[2];
+    // 46
+    uint8_t gyroscope_z[2];
+
+    // 48
+    uint8_t reserved4[2];
 } PS3Report; // 49 length
+
+typedef struct __attribute((packed, aligned(1)))
+{
+    // 0
+    uint8_t reserved;
+
+    // 1
+    uint8_t rightMotorDuration;
+    // 2
+    uint8_t rightMotorPower;
+
+    // 3
+    uint8_t leftMotorDuration;
+    // 4
+    uint8_t leftMotorPower;
+
+    // 5
+    uint8_t reserved2[4];
+
+    // 9
+    uint8_t playerLED : 4;
+    uint8_t : 4;
+
+    // 10
+    uint8_t reserved3[38];
+} PS3Features; // 48 length
 
 static const uint8_t ps3_string_language[]     = { 0x09, 0x04 };
 static const uint8_t ps3_string_manufacturer[] = "Open Stick Community";
@@ -188,20 +269,6 @@ static const uint8_t ps3_device_descriptor[] =
     0x02,        // iProduct (String Index)
     0x00,        // iSerialNumber (String Index)
     0x01,        // bNumConfigurations 1
-//		18,								  // bLength
-//		1,								  // bDescriptorType
-//		0x00, 0x02,						  // bcdUSB
-//		0,								  // bDeviceClass
-//		0,								  // bDeviceSubClass
-//		0,								  // bDeviceProtocol
-//		ENDPOINT0_SIZE,					  // bMaxPacketSize0
-//		LSB(VENDOR_ID), MSB(VENDOR_ID),	  // idVendor
-//		LSB(PRODUCT_ID), MSB(PRODUCT_ID), // idProduct
-//		0x00, 0x01,						  // bcdDevice
-//		1,								  // iManufacturer
-//		2,								  // iProduct
-//		0,								  // iSerialNumber
-//		1								  // bNumConfigurations
 };
 
 static const uint8_t ps3_report_descriptor[] =
@@ -284,61 +351,6 @@ static const uint8_t ps3_report_descriptor[] =
     0xB1, 0x02,        //     Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
     0xC0,              //   End Collection
     0xC0,              // End Collection
-
-//	0x05, 0x01,        // USAGE_PAGE (Generic Desktop)
-//	0x09, 0x05,        // USAGE (Gamepad)
-//	0xa1, 0x01,        // COLLECTION (Application)
-//	0x15, 0x00,        //   LOGICAL_MINIMUM (0)
-//	0x25, 0x01,        //   LOGICAL_MAXIMUM (1)
-//	0x35, 0x00,        //   PHYSICAL_MINIMUM (0)
-//	0x45, 0x01,        //   PHYSICAL_MAXIMUM (1)
-//	0x75, 0x01,        //   REPORT_SIZE (1)
-//	0x95, 0x0e,        //   REPORT_COUNT (13)
-//	0x05, 0x09,        //   USAGE_PAGE (Button)
-//	0x19, 0x01,        //   USAGE_MINIMUM (Button 1)
-//	0x29, 0x0e,        //   USAGE_MAXIMUM (Button 13)
-//	0x81, 0x02,        //   INPUT (Data,Var,Abs)
-//	0x95, 0x02,        //   REPORT_COUNT (3)
-//	0x81, 0x01,        //   INPUT (Cnst,Ary,Abs)
-//	0x05, 0x01,        //   USAGE_PAGE (Generic Desktop)
-//	0x25, 0x07,        //   LOGICAL_MAXIMUM (7)
-//	0x46, 0x3b, 0x01,  //   PHYSICAL_MAXIMUM (315)
-//	0x75, 0x04,        //   REPORT_SIZE (4)
-//	0x95, 0x01,        //   REPORT_COUNT (1)
-//	0x65, 0x14,        //   UNIT (Eng Rot:Angular Pos)
-//	0x09, 0x39,        //   USAGE (Hat switch)
-//	0x81, 0x42,        //   INPUT (Data,Var,Abs,Null)
-//	0x65, 0x00,        //   UNIT (None)
-//	0x95, 0x01,        //   REPORT_COUNT (1)
-//	0x81, 0x01,        //   INPUT (Cnst,Ary,Abs)
-//	0x26, 0xff, 0x00,  //   LOGICAL_MAXIMUM (255)
-//	0x46, 0xff, 0x00,  //   PHYSICAL_MAXIMUM (255)
-//	0x09, 0x30,        //   USAGE (X)
-//	0x09, 0x31,        //   USAGE (Y)
-//	0x09, 0x32,        //   USAGE (Z)
-//	0x09, 0x35,        //   USAGE (Rz)
-//	0x75, 0x08,        //   REPORT_SIZE (8)
-//	0x95, 0x04,        //   REPORT_COUNT (6)
-//	0x81, 0x02,        //   INPUT (Data,Var,Abs)
-//	0x06, 0x00, 0xff,  //   USAGE_PAGE (Vendor Specific)
-//	0x09, 0x20,        //   Unknown
-//	0x09, 0x21,        //   Unknown
-//	0x09, 0x22,        //   Unknown
-//	0x09, 0x23,        //   Unknown
-//	0x09, 0x24,        //   Unknown
-//	0x09, 0x25,        //   Unknown
-//	0x09, 0x26,        //   Unknown
-//	0x09, 0x27,        //   Unknown
-//	0x09, 0x28,        //   Unknown
-//	0x09, 0x29,        //   Unknown
-//	0x09, 0x2a,        //   Unknown
-//	0x09, 0x2b,        //   Unknown
-//	0x95, 0x0c,        //   REPORT_COUNT (12)
-//	0x81, 0x02,        //   INPUT (Data,Var,Abs)
-//	0x0a, 0x21, 0x26,  //   Unknown
-//	0x95, 0x08,        //   REPORT_COUNT (8)
-//	0xb1, 0x02,        //   FEATURE (Data,Var,Abs)
-//	0xc0               // END_COLLECTION
 };
 
 static const uint8_t ps3_hid_descriptor[] =
@@ -350,17 +362,8 @@ static const uint8_t ps3_hid_descriptor[] =
     0x01,        // bNumDescriptors
     0x22,        // bDescriptorType[0] (HID)
     0x94, 0x00,  // wDescriptorLength[0] 148
-
-//		0x09,								 // bLength
-//		0x21,								 // bDescriptorType (HID)
-//		0x11, 0x01,							 // bcdHID 1.11
-//		0x00,								 // bCountryCode
-//		0x01,								 // bNumDescriptors
-//		0x22,								 // bDescriptorType[0] (HID)
-//		sizeof(ps3_report_descriptor), 0x00, // wDescriptorLength[0] 90
 };
 
-#define CONFIG1_DESC_SIZE		(9+9+9+7)
 static const uint8_t ps3_configuration_descriptor[] =
 {
     0x09,        // bLength
@@ -403,41 +406,4 @@ static const uint8_t ps3_configuration_descriptor[] =
     0x03,        // bmAttributes (Interrupt)
     0x40, 0x00,  // wMaxPacketSize 64
     0x01,        // bInterval 1 (unit depends on device speed)
-
-//	    // configuration descriptor, USB spec 9.6.3, page 264-266, Table 9-10
-//	9,						       // bLength;
-//	2,						       // bDescriptorType;
-//	LSB(CONFIG1_DESC_SIZE),        // wTotalLength
-//	MSB(CONFIG1_DESC_SIZE),
-//	1,	                           // bNumInterfaces
-//	1,	                           // bConfigurationValue
-//	0,	                           // iConfiguration
-//	0x80,                          // bmAttributes
-//	50,	                           // bMaxPower
-//		// interface descriptor, USB spec 9.6.5, page 267-269, Table 9-12
-//	9,				               // bLength
-//	4,				               // bDescriptorType
-//	GAMEPAD_INTERFACE,             // bInterfaceNumber
-//	0,				               // bAlternateSetting
-//	1,				               // bNumEndpoints
-//	0x03,			               // bInterfaceClass (0x03 = HID)
-//	0x00,			               // bInterfaceSubClass (0x00 = No Boot)
-//	0x00,			               // bInterfaceProtocol (0x00 = No Protocol)
-//	0,				               // iInterface
-//		// HID interface descriptor, HID 1.11 spec, section 6.2.1
-//	9,							   // bLength
-//	0x21,						   // bDescriptorType
-//	0x11, 0x01,					   // bcdHID
-//	0,							   // bCountryCode
-//	1,							   // bNumDescriptors
-//	0x22,						   // bDescriptorType
-//	sizeof(ps3_report_descriptor), // wDescriptorLength
-//	0,
-//		// endpoint descriptor, USB spec 9.6.6, page 269-271, Table 9-13
-//	7,						 	   // bLength
-//	5,						       // bDescriptorType
-//	GAMEPAD_ENDPOINT | 0x80,       // bEndpointAddress
-//	0x03,					       // bmAttributes (0x03=intr)
-//	GAMEPAD_SIZE, 0,		       // wMaxPacketSize
-//	1						       // bInterval (1 ms)
 };
