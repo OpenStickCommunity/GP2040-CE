@@ -468,14 +468,14 @@ static const uint8_t ps4_hid_descriptor[] =
     LSB(sizeof(ps4_report_descriptor)), MSB(sizeof(ps4_report_descriptor))
 };
 
-#define CONFIG1_DESC_SIZE		(9+9+9+7+7)
+#define PS4_CONFIG1_DESC_SIZE		(9+9+9+7+7)
 static const uint8_t ps4_configuration_descriptor[] =
 {
 	// configuration descriptor, USB spec 9.6.3, page 264-266, Table 9-10
 	9,						       // bLength;
 	2,						       // bDescriptorType;
-	LSB(CONFIG1_DESC_SIZE),        // wTotalLength
-	MSB(CONFIG1_DESC_SIZE),
+	LSB(PS4_CONFIG1_DESC_SIZE),    // wTotalLength
+	MSB(PS4_CONFIG1_DESC_SIZE),
 	1,	                           // bNumInterfaces
 	1,	                           // bConfigurationValue
 	0,	                           // iConfiguration

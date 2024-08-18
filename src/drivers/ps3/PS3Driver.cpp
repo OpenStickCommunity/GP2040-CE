@@ -31,9 +31,9 @@ void PS3Driver::initialize() {
         .powerStatus = PS3PowerState::PS3_POWER_FULL,
         .rumbleStatus = PS3WiredState::PS3_WIRED_RUMBLE,
         .reserved3 = {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00},
-        .accelerometer_x = {0x01,0xff}, .accelerometer_y = {0x01,0xff}, .accelerometer_z = {0x01,0xff},
-        .gyroscope_z = {0x01,0xff},
-        .reserved4 = {0x01,0xff}
+        .accelerometer_x = PS3_CENTER_SIXAXIS, .accelerometer_y = PS3_CENTER_SIXAXIS, .accelerometer_z = PS3_CENTER_SIXAXIS,
+        .gyroscope_z = PS3_CENTER_SIXAXIS,
+        .reserved4 = PS3_CENTER_SIXAXIS
     };
 
     class_driver = {
@@ -85,30 +85,48 @@ void PS3Driver::process(Gamepad * gamepad, uint8_t * outBuffer) {
         ps3Report.r2_axis = gamepad->pressedR2() ? 0xFF : 0;
     }
 
-	ps3Report.triangle_axis = gamepad->pressedB4() ? 0xFF : 0;
-	ps3Report.circle_axis   = gamepad->pressedB2() ? 0xFF : 0;
-	ps3Report.cross_axis    = gamepad->pressedB1() ? 0xFF : 0;
-	ps3Report.square_axis   = gamepad->pressedB3() ? 0xFF : 0;
-	ps3Report.l1_axis       = gamepad->pressedL1() ? 0xFF : 0;
-	ps3Report.r1_axis       = gamepad->pressedR1() ? 0xFF : 0;
-	ps3Report.right_axis    = gamepad->state.dpad & GAMEPAD_MASK_RIGHT ? 0xFF : 0;
-	ps3Report.left_axis     = gamepad->state.dpad & GAMEPAD_MASK_LEFT ? 0xFF : 0;
-	ps3Report.up_axis       = gamepad->state.dpad & GAMEPAD_MASK_UP ? 0xFF : 0;
-	ps3Report.down_axis     = gamepad->state.dpad & GAMEPAD_MASK_DOWN ? 0xFF : 0;
+    ps3Report.triangle_axis = gamepad->pressedB4() ? 0xFF : 0;
+    ps3Report.circle_axis   = gamepad->pressedB2() ? 0xFF : 0;
+    ps3Report.cross_axis    = gamepad->pressedB1() ? 0xFF : 0;
+    ps3Report.square_axis   = gamepad->pressedB3() ? 0xFF : 0;
+    ps3Report.l1_axis       = gamepad->pressedL1() ? 0xFF : 0;
+    ps3Report.r1_axis       = gamepad->pressedR1() ? 0xFF : 0;
+    ps3Report.right_axis    = gamepad->state.dpad & GAMEPAD_MASK_RIGHT ? 0xFF : 0;
+    ps3Report.left_axis     = gamepad->state.dpad & GAMEPAD_MASK_LEFT ? 0xFF : 0;
+    ps3Report.up_axis       = gamepad->state.dpad & GAMEPAD_MASK_UP ? 0xFF : 0;
+    ps3Report.down_axis     = gamepad->state.dpad & GAMEPAD_MASK_DOWN ? 0xFF : 0;
 
-	// Wake up TinyUSB device
-	if (tud_suspended())
-		tud_remote_wakeup();
+    if (gamepad->auxState.sensors.accelerometer.enabled) {
+        ps3Report.accelerometer_x = ((gamepad->auxState.sensors.accelerometer.x & 0xFF) << 8) | ((gamepad->auxState.sensors.accelerometer.x & 0xFF00) >> 8);
+        ps3Report.accelerometer_y = ((gamepad->auxState.sensors.accelerometer.y & 0xFF) << 8) | ((gamepad->auxState.sensors.accelerometer.y & 0xFF00) >> 8);
+        ps3Report.accelerometer_z = ((gamepad->auxState.sensors.accelerometer.z & 0xFF) << 8) | ((gamepad->auxState.sensors.accelerometer.z & 0xFF00) >> 8);
+    } else {
+        ps3Report.accelerometer_x = PS3_CENTER_SIXAXIS;
+        ps3Report.accelerometer_y = PS3_CENTER_SIXAXIS;
+        ps3Report.accelerometer_z = PS3_CENTER_SIXAXIS;
+    }
 
-	void * report = &ps3Report;
-	uint16_t report_size = sizeof(ps3Report);
-	if (memcmp(last_report, report, report_size) != 0)
-	{
-		// HID ready + report sent, copy previous report
-		if (tud_hid_ready() && tud_hid_report(0, report, report_size) == true ) {
-			memcpy(last_report, report, report_size);
-		}
-	}
+    if (gamepad->auxState.sensors.gyroscope.enabled) {
+        ps3Report.gyroscope_z = ((gamepad->auxState.sensors.gyroscope.z & 0xFF) << 8) | ((gamepad->auxState.sensors.gyroscope.z & 0xFF00) >> 8);
+        ps3Report.reserved4 = PS3_CENTER_SIXAXIS;
+    } else {
+        ps3Report.gyroscope_z = PS3_CENTER_SIXAXIS;
+        ps3Report.reserved4 = PS3_CENTER_SIXAXIS;
+    }
+
+    // Wake up TinyUSB device
+    if (tud_suspended())
+        tud_remote_wakeup();
+
+    void * report = &ps3Report;
+    uint16_t report_size = sizeof(ps3Report);
+    if (memcmp(last_report, report, report_size) != 0)
+    {
+        // HID ready + report sent, copy previous report
+        if (tud_hid_ready() && tud_hid_report(0, report, report_size) == true ) {
+            memcpy(last_report, report, report_size);
+        }
+    }
 }
 
 // unknown
@@ -135,8 +153,9 @@ static constexpr uint8_t output_ps3_0xef[] = {
 
 // bluetooth data
 static constexpr uint8_t output_ps3_0xf2[] = {
-    0xff, 0xff, 0x00, 0xac, 0x7a, 0x4d, 0x2c, 0x6d,
-    0x7a, 0x00, 0x03, 0x55, 0x03, 0xc3, 0x01, 0x8a,
+    0xff, 0xff, 
+    0x00, 0xac, 0x7a, 0x4d, 0x2c, 0x6d, 0x7a, // device address 
+    0x00, 0x03, 0x55, 0x03, 0xc3, 0x01, 0x8a, // host address
     0x00,
 };
 

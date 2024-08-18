@@ -13,12 +13,12 @@
 // Windows, even though the driver is supplied by Microsoft, an
 // INF file is needed to load the driver.  These numbers need to
 // match the INF file.
-//#define VENDOR_ID     0x10C4
-//#define PRODUCT_ID    0x82C0
+//#define PS3_VENDOR_ID     0x10C4
+//#define PS3_PRODUCT_ID    0x82C0
 
 // DS3 Sixaxis
-#define VENDOR_ID       0x054C
-#define PRODUCT_ID      0x0268
+#define PS3_VENDOR_ID       0x054C
+#define PS3_PRODUCT_ID      0x0268
 
 /**************************************************************************
  *
@@ -66,6 +66,8 @@
 #define PS3_JOYSTICK_MIN 0x00
 #define PS3_JOYSTICK_MID 0x7F
 #define PS3_JOYSTICK_MAX 0xFF
+
+#define PS3_CENTER_SIXAXIS 0xFF01
 
 typedef enum {
     PS3_FEATURE_01 = 0x01,
@@ -202,16 +204,16 @@ typedef struct __attribute((packed, aligned(1)))
     uint8_t reserved3[9];
 
     // 40
-    uint8_t accelerometer_x[2];
+    uint16_t accelerometer_x;
     // 42
-    uint8_t accelerometer_y[2];
+    uint16_t accelerometer_y;
     // 44
-    uint8_t accelerometer_z[2];
+    uint16_t accelerometer_z;
     // 46
-    uint8_t gyroscope_z[2];
+    uint16_t gyroscope_z;
 
     // 48
-    uint8_t reserved4[2];
+    uint16_t reserved4;
 } PS3Report; // 49 length
 
 typedef struct __attribute((packed, aligned(1)))
@@ -262,8 +264,8 @@ static const uint8_t ps3_device_descriptor[] =
     0x00,        // bDeviceSubClass 
     0x00,        // bDeviceProtocol 
     0x40,        // bMaxPacketSize0 64
-    LSB(VENDOR_ID), MSB(VENDOR_ID),	  // idVendor
-    LSB(PRODUCT_ID), MSB(PRODUCT_ID), // idProduct
+    LSB(PS3_VENDOR_ID), MSB(PS3_VENDOR_ID),	  // idVendor
+    LSB(PS3_PRODUCT_ID), MSB(PS3_PRODUCT_ID), // idProduct
     0x00, 0x01,  // bcdDevice 1.00
     0x01,        // iManufacturer (String Index)
     0x02,        // iProduct (String Index)
