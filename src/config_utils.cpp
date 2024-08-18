@@ -976,6 +976,12 @@ void gpioMappingsMigrationCore(Config& config)
             case SOCDMode::SOCD_MODE_BYPASS: {
                 actions[socdSliderOptions.deprecatedPinOne] = GpioAction::SUSTAIN_SOCD_MODE_BYPASS; break;
             }
+            case SOCDMode::SOCD_MODE_Y_AXIS_SECOND_INPUT_PRIORITY: {
+                actions[socdSliderOptions.deprecatedPinOne] = GpioAction::SUSTAIN_SOCD_MODE_Y_AXIS_SECOND_WIN; break;
+            }
+            case SOCDMode::SOCD_MODE_X_AXIS_SECOND_INPUT_PRIORITY: {
+                actions[socdSliderOptions.deprecatedPinOne] = GpioAction::SUSTAIN_SOCD_MODE_X_AXIS_SECOND_WIN; break;
+            }
             default: break;
         }
         socdSliderOptions.deprecatedPinOne = -1;
@@ -997,6 +1003,12 @@ void gpioMappingsMigrationCore(Config& config)
             }
             case SOCDMode::SOCD_MODE_BYPASS: {
                 actions[socdSliderOptions.deprecatedPinTwo] = GpioAction::SUSTAIN_SOCD_MODE_BYPASS; break;
+            }
+            case SOCDMode::SOCD_MODE_Y_AXIS_SECOND_INPUT_PRIORITY: {
+                actions[socdSliderOptions.deprecatedPinTwo] = GpioAction::SUSTAIN_SOCD_MODE_Y_AXIS_SECOND_WIN; break;
+            }
+            case SOCDMode::SOCD_MODE_X_AXIS_SECOND_INPUT_PRIORITY: {
+                actions[socdSliderOptions.deprecatedPinTwo] = GpioAction::SUSTAIN_SOCD_MODE_X_AXIS_SECOND_WIN; break;
             }
             default: break;
         }

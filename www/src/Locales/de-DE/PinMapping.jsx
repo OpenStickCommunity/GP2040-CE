@@ -45,6 +45,8 @@ export default {
 		SUSTAIN_SOCD_MODE_NEUTRAL: 'Neutrale SOCD Säuberung',
 		SUSTAIN_SOCD_MODE_SECOND_WIN: 'Letzter Gewinnt SOCD Säuberung',
 		SUSTAIN_SOCD_MODE_FIRST_WIN: 'Erster Gewinnt SOCD Säuberung',
+		SUSTAIN_SOCD_MODE_Y_AXIS_SECOND_WIN: 'Y-Achse Letzter Gewinnt SOCD Säuberung',
+		SUSTAIN_SOCD_MODE_X_AXIS_SECOND_WIN: 'X-Achse Letzter Gewinnt SOCD Säuberung',
 		SUSTAIN_SOCD_MODE_BYPASS: 'SOCD Säuberung Aus',
 		BUTTON_PRESS_TURBO: 'Turbo',
 		BUTTON_PRESS_MACRO: 'Makro',

@@ -145,6 +145,8 @@ export default {
 	'socd-slider-mode-1': '回中',
 	'socd-slider-mode-2': '后输入优先',
 	'socd-slider-mode-3': '先输入优先',
+	'socd-slider-mode-5': 'TODO need translation',
+	'socd-slider-mode-6': 'TODO need translation',
 	'socd-slider-mode-4': 'SOCD 覆盖关闭',
 	'tilt-socd-mode-0': '上优先',
 	'tilt-socd-mode-1': '回中',

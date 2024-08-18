@@ -150,6 +150,8 @@ export default {
 	'socd-slider-mode-1': 'Neutral',
 	'socd-slider-mode-2': 'Last Win',
 	'socd-slider-mode-3': 'First Win',
+	'socd-slider-mode-5': 'Y-Axis Last Win',
+	'socd-slider-mode-6': 'X-Axis Last Win',
 	'socd-slider-mode-4': 'SOCD Cleaning Off',
 	'tilt-socd-mode-0': 'Up Priority',
 	'tilt-socd-mode-1': 'Neutral',

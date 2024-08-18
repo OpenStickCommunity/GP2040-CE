@@ -7,7 +7,7 @@ import Section from '../Components/Section';
 import FormSelect from '../Components/FormSelect';
 
 import FormControl from '../Components/FormControl';
-import { SOCD_MODES, TILT_SOCD_MODES } from '../Data/Addons';
+import { TILT_SOCD_MODES } from '../Data/Addons';
 
 export const tiltScheme = {
 	TiltInputEnabled: yup.number().required().label('Tilt Input Enabled'),
@@ -86,7 +86,7 @@ export const tiltScheme = {
 	tiltSOCDMode: yup
 		.number()
 		.label('Tilt SOCE Mode')
-		.validateSelectionWhenValue('TiltInputEnabled', SOCD_MODES),
+		.validateSelectionWhenValue('TiltInputEnabled', TILT_SOCD_MODES),
 };
 
 export const tiltState = {

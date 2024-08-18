@@ -6,8 +6,6 @@
 
 #include "GamepadEnums.h"
 
-#define SOCD_MODE_MASK (SOCD_MODE_UP_PRIORITY & SOCD_MODE_SECOND_INPUT_PRIORITY & SOCD_MODE_FIRST_INPUT_PRIORITY & SOCD_MODE_NEUTRAL)
-
 bool SliderSOCDInput::available() {
     const SOCDSliderOptions& options = Storage::getInstance().getAddonOptions().socdSliderOptions;
     return options.enabled;
@@ -19,11 +17,13 @@ void SliderSOCDInput::setup()
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
     {
         switch (pinMappings[pin].action) {
-            case SUSTAIN_SOCD_MODE_UP_PRIO:     upPrioModeMask |= 1 << pin; break;
-            case SUSTAIN_SOCD_MODE_NEUTRAL:     neutralModeMask |= 1 << pin; break;
-            case SUSTAIN_SOCD_MODE_SECOND_WIN:  secondInputModeMask |= 1 << pin; break;
-            case SUSTAIN_SOCD_MODE_FIRST_WIN:   firstInputModeMask |= 1 << pin; break;
-            case SUSTAIN_SOCD_MODE_BYPASS:      bypassModeMask |= 1 << pin; break;
+            case SUSTAIN_SOCD_MODE_UP_PRIO:             upPrioModeMask |= 1 << pin; break;
+            case SUSTAIN_SOCD_MODE_NEUTRAL:             neutralModeMask |= 1 << pin; break;
+            case SUSTAIN_SOCD_MODE_SECOND_WIN:          secondInputModeMask |= 1 << pin; break;
+            case SUSTAIN_SOCD_MODE_FIRST_WIN:           firstInputModeMask |= 1 << pin; break;
+            case SUSTAIN_SOCD_MODE_BYPASS:              bypassModeMask |= 1 << pin; break;
+            case SUSTAIN_SOCD_MODE_Y_AXIS_SECOND_WIN:   yAxisSecondInputModeMask |= 1 << pin; break;
+            case SUSTAIN_SOCD_MODE_X_AXIS_SECOND_WIN:   xAxisSecondInputModeMask |= 1 << pin; break;
             default:                            break;
         }
     }
@@ -37,6 +37,8 @@ SOCDMode SliderSOCDInput::read() {
     else if (values & secondInputModeMask)      return SOCDMode::SOCD_MODE_SECOND_INPUT_PRIORITY;
     else if (values & firstInputModeMask)       return SOCDMode::SOCD_MODE_FIRST_INPUT_PRIORITY;
     else if (values & bypassModeMask)           return SOCDMode::SOCD_MODE_BYPASS;
+    else if (values & yAxisSecondInputModeMask) return SOCDMode::SOCD_MODE_Y_AXIS_SECOND_INPUT_PRIORITY;
+    else if (values & xAxisSecondInputModeMask) return SOCDMode::SOCD_MODE_X_AXIS_SECOND_INPUT_PRIORITY;
     return options.modeDefault;
 }
 
@@ -50,6 +52,8 @@ void SliderSOCDInput::reinit()
     secondInputModeMask = 0;
     firstInputModeMask = 0;
     bypassModeMask = 0;
+    yAxisSecondInputModeMask = 0;
+    xAxisSecondInputModeMask = 0;
     this->setup();
 }
 

@@ -140,7 +140,9 @@ void DualDirectionalInput::process()
             dualOut = SOCDCombine(socdMode, gamepadDpad);
         } else if ( socdMode != SOCD_MODE_BYPASS ) {
             // else if not bypass, what's left is first/last input wins SOCD, which need a complicated re-clean
-            dualOut = SOCDGamepadClean(dualOut | gamepadDpad, socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY);
+            dualOut = SOCDGamepadClean(dualOut | gamepadDpad, 
+                socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY || socdMode == SOCD_MODE_Y_AXIS_SECOND_INPUT_PRIORITY,
+                socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY || socdMode == SOCD_MODE_X_AXIS_SECOND_INPUT_PRIORITY);
         } else {
             // this is bypass SOCD, just OR them together
             dualOut |= gamepadDpad;
@@ -176,11 +178,11 @@ void DualDirectionalInput::OverrideGamepad(Gamepad * gamepad, DpadMode mode, uin
     }
 }
 
-uint8_t DualDirectionalInput::SOCDGamepadClean(uint8_t gamepadState, bool isLastWin) {
+uint8_t DualDirectionalInput::SOCDGamepadClean(uint8_t gamepadState, bool isYLastWin, bool isXLastWin) {
     // Gamepad SOCD Last-Win OR First-Win Clean
     switch (gamepadState & (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN)) {
         case (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN): // If last state was Up or Down, exclude it from our gamepad
-            if (isLastWin) gamepadState ^= (lastGPUD == DIRECTION_UP) ? GAMEPAD_MASK_UP : GAMEPAD_MASK_DOWN;
+            if (isYLastWin) gamepadState ^= (lastGPUD == DIRECTION_UP) ? GAMEPAD_MASK_UP : GAMEPAD_MASK_DOWN;
             else gamepadState ^= (lastGPUD == DIRECTION_UP) ? GAMEPAD_MASK_DOWN : GAMEPAD_MASK_UP;
             break;
         case GAMEPAD_MASK_UP:
@@ -198,7 +200,7 @@ uint8_t DualDirectionalInput::SOCDGamepadClean(uint8_t gamepadState, bool isLast
     switch (gamepadState & (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT)) {
         case (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT):
             if (lastGPLR != DIRECTION_NONE)
-                if (isLastWin) gamepadState ^= (lastGPLR == DIRECTION_LEFT) ? GAMEPAD_MASK_LEFT : GAMEPAD_MASK_RIGHT;
+                if (isXLastWin) gamepadState ^= (lastGPLR == DIRECTION_LEFT) ? GAMEPAD_MASK_LEFT : GAMEPAD_MASK_RIGHT;
                 else gamepadState ^= (lastGPLR == DIRECTION_LEFT) ? GAMEPAD_MASK_RIGHT : GAMEPAD_MASK_LEFT;
             else
                 lastGPLR = DIRECTION_NONE;
@@ -258,7 +260,7 @@ void DualDirectionalInput::SOCDDualClean(SOCDMode socdMode) {
             if ( socdMode == SOCD_MODE_UP_PRIORITY ) {
                 dualState ^= GAMEPAD_MASK_DOWN; // Remove Down
                 lastDualUD = DIRECTION_UP; // We're in UP mode
-            } else if ( socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY && lastDualUD != DIRECTION_NONE ) {
+            } else if ( (socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY || socdMode == SOCD_MODE_Y_AXIS_SECOND_INPUT_PRIORITY) && lastDualUD != DIRECTION_NONE ) {
                 dualState ^= (lastDualUD == DIRECTION_UP) ? GAMEPAD_MASK_UP : GAMEPAD_MASK_DOWN;
             } else if ( socdMode == SOCD_MODE_FIRST_INPUT_PRIORITY && lastDualUD != DIRECTION_NONE ) {
                 dualState ^= (lastDualUD == DIRECTION_UP) ? GAMEPAD_MASK_DOWN : GAMEPAD_MASK_UP;
@@ -282,9 +284,9 @@ void DualDirectionalInput::SOCDDualClean(SOCDMode socdMode) {
             if ( socdMode == SOCD_MODE_UP_PRIORITY || socdMode == SOCD_MODE_NEUTRAL ) {
                 dualState ^= (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT); // Remove L + R to Neutral
                 lastDualLR = DIRECTION_NONE;
-            } else if ( socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY || socdMode == SOCD_MODE_FIRST_INPUT_PRIORITY ) {
+            } else if ( socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY || socdMode == SOCD_MODE_X_AXIS_SECOND_INPUT_PRIORITY || socdMode == SOCD_MODE_FIRST_INPUT_PRIORITY ) {
                 if (lastDualLR != DIRECTION_NONE)
-                    if (socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY) dualState ^= (lastDualLR == DIRECTION_LEFT) ? GAMEPAD_MASK_LEFT : GAMEPAD_MASK_RIGHT; // Last Win
+                    if (socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY || socdMode == SOCD_MODE_X_AXIS_SECOND_INPUT_PRIORITY) dualState ^= (lastDualLR == DIRECTION_LEFT) ? GAMEPAD_MASK_LEFT : GAMEPAD_MASK_RIGHT; // Last Win
                     else dualState ^= (lastDualLR == DIRECTION_LEFT) ? GAMEPAD_MASK_RIGHT : GAMEPAD_MASK_LEFT; // First Win
                 else
                     lastDualLR = DIRECTION_NONE;

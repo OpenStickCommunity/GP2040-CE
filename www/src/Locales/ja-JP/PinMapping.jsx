@@ -37,6 +37,8 @@ export default {
 		SUSTAIN_SOCD_MODE_NEUTRAL: 'ニュートラルモード(SOCDクリーナ)',
 		SUSTAIN_SOCD_MODE_SECOND_WIN: '後入力優先モード(SOCDクリーナ)',
 		SUSTAIN_SOCD_MODE_FIRST_WIN: '先入力優先モード(SOCDクリーナ)',
+		SUSTAIN_SOCD_MODE_Y_AXIS_SECOND_WIN: 'TODO need translation',
+		SUSTAIN_SOCD_MODE_X_AXIS_SECOND_WIN: 'TODO need translation',
 		SUSTAIN_SOCD_MODE_BYPASS: 'SOCDクリーナ無効',
 		BUTTON_PRESS_TURBO: '連射機能',
 		BUTTON_PRESS_MACRO: 'マクロボタン',

@@ -36,7 +36,7 @@ import {
 // currently using only the gamepad values here
 const NON_SELECTABLE_BUTTON_ACTIONS = [
 	-5, 0, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36,
-	37, 38, 39,
+	37, 38, 39, 55, 56,
 ];
 
 type PinCell = [

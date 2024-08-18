@@ -30,14 +30,14 @@ private:
     uint8_t filterToFourWayModeDDI(uint8_t dpad);
     void SOCDDualClean(SOCDMode);
     uint8_t SOCDCombine(SOCDMode, uint8_t);
-    uint8_t SOCDGamepadClean(uint8_t, bool isLastWin);
+    uint8_t SOCDGamepadClean(uint8_t, bool isYLastWin, bool isXLastWin);
     void OverrideGamepad(Gamepad *, DpadMode, uint8_t);
     const SOCDMode getSOCDMode(const GamepadOptions&);
     uint8_t dualState;          // Dual Directional State
     DpadDirection lastGPUD; // Gamepad Last Up-Down
     DpadDirection lastGPLR; // Gamepad Last Left-Right
     DpadDirection lastDualUD; // Dual Last Up-Down
-    DpadDirection lastDualLR; // Gamepad Last Left-Right
+    DpadDirection lastDualLR; // Dual Last Left-Right
     DpadMode dpadMode;
     GamepadButtonMapping *mapDpadUp;
     GamepadButtonMapping *mapDpadDown;
