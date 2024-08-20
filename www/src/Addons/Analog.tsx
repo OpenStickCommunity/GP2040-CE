@@ -305,7 +305,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 						hidden={!values.analog_smoothing}
 						type="number"
 						label={t('AddonsConfig:smoothing-factor')}
-						name="Smoothing_factor"
+						name="smoothing_factor"
 						className="form-control-sm"
 						groupClassName="col-sm-3 mb-3"
 						value={values.smoothing_factor}

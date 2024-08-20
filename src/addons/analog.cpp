@@ -65,7 +65,7 @@ void AnalogInput::process()
     float magnitude_2 = 0.0f;
 
     bool ema_option = analogOptions.analog_smoothing;
-    float ema_smoothing = analogOptions.smoothing_factor / 100.0f;
+    float ema_smoothing = analogOptions.smoothing_factor / 1000.0f;
 
     struct adc_pair
     {
