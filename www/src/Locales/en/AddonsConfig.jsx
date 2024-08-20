@@ -29,6 +29,8 @@ export default {
 	'inner-deadzone-size': 'Inner Deadzone Size (%)',
 	'outer-deadzone-size': 'Outer Deadzone Size (%)',
 	'analog-auto-calibrate': 'Auto Calibration',
+	'analog-smoothing': 'Analog Smoothing',
+	'smoothing-factor': 'Smoothing Factor',
 	'turbo-header-text': 'Turbo',
 	'turbo-button-pin-label': 'Turbo Pin',
 	'turbo-led-pin-label': 'Turbo LED Pin',

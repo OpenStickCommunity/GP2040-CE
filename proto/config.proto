@@ -351,6 +351,8 @@ message AnalogOptions
     optional InvertMode analogAdc2Invert = 11;
     optional bool auto_calibrate = 12;
     optional uint32 outer_deadzone = 13;
+    optional bool analog_smoothing = 14;
+    optional float smoothing_factor = 15;
 }
 
 message TurboOptions

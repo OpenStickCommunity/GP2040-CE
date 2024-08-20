@@ -536,6 +536,8 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, inner_deadzone, DEFAULT_INNER_DEADZONE);
     INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, outer_deadzone, DEFAULT_OUTER_DEADZONE);
     INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, auto_calibrate, !!AUTO_CALIBRATE_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, analog_smoothing, !!ANALOG_SMOOTHING_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, smoothing_factor, !!SMOOTHING_FACTOR);
 
     // addonOptions.turboOptions
     INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, enabled, !!TURBO_ENABLED);

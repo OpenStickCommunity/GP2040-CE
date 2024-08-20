@@ -61,6 +61,14 @@
 #define AUTO_CALIBRATE_ENABLED 0
 #endif
 
+#ifndef ANALOG_SMOOTHING_ENABLED
+#define ANALOG_SMOOTHING_ENABLED 0
+#endif
+
+#ifndef SMOOTHING_FACTOR
+#define SMOOTHING_FACTOR 5
+#endif
+
 // Analog Module Name
 #define AnalogName "Analog"
 
@@ -78,6 +86,7 @@ private:
 	uint16_t adc_2_y_center = 0;
 
 	static float readPin(int pin, uint16_t center, bool autoCalibrate);
+	static float emaCalculation(float ema_value, float smoothing_factor, float ema_previous);
 	static uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
 	static float magnitudeCalculation(float x, float y, float& x_magnitude, float& y_magnitude);
 	static void radialDeadzone(float& x, float& y, float in_deadzone, float out_deadzone, float x_magnitude, float y_magnitude, float magnitude, bool circularity);
