@@ -16,13 +16,20 @@ const __dirname = path.dirname(__filename);
 const { pico: picoController } = JSON.parse(
 	readFileSync(path.resolve(__dirname, '../src/Data/Controllers.json'), 'utf8'),
 );
-const PinMappings = Object.entries(picoController).reduce(
-	(acc, [key, value]) => ({
-		...acc,
-		[key]: { action: value, customButtonMask: 0, customDpadMask: 0 },
-	}),
-	{},
-);
+
+// Structure pin mappings to include masks and profile label
+const createPinMappings = ({ profileLabel = 'Profile' }) => {
+	let pinMappings = { profileLabel };
+
+	for (const [key, value] of Object.entries(picoController)) {
+		pinMappings[key] = {
+			action: value,
+			customButtonMask: 0,
+			customDpadMask: 0,
+		};
+	}
+	return pinMappings;
+};
 
 const port = process.env.PORT || 8080;
 
@@ -260,7 +267,7 @@ app.get('/api/getCustomTheme', (req, res) => {
 });
 
 app.get('/api/getPinMappings', (req, res) => {
-	return res.send(PinMappings);
+	return res.send(createPinMappings({ profileLabel: 'Base(Profile 1)' }));
 });
 
 app.get('/api/getKeyMappings', (req, res) =>
@@ -380,7 +387,11 @@ app.get('/api/getWiiControls', (req, res) =>
 
 app.get('/api/getProfileOptions', (req, res) => {
 	return res.send({
-		alternativePinMappings: [PinMappings, PinMappings, PinMappings],
+		alternativePinMappings: [
+			createPinMappings({ profileLabel: 'Profile 2' }),
+			createPinMappings({ profileLabel: 'Profile 3' }),
+			createPinMappings({ profileLabel: 'Profile 4' }),
+		],
 	});
 });
 

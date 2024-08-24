@@ -11,10 +11,42 @@ export type MaskPayload = {
 	action: PinActionValues;
 } & CustomMasks;
 
-type ProfilePinType = { [key: string]: MaskPayload };
+export type PinsType = {
+	pin00: MaskPayload;
+	pin01: MaskPayload;
+	pin02: MaskPayload;
+	pin03: MaskPayload;
+	pin04: MaskPayload;
+	pin05: MaskPayload;
+	pin06: MaskPayload;
+	pin07: MaskPayload;
+	pin08: MaskPayload;
+	pin09: MaskPayload;
+	pin10: MaskPayload;
+	pin11: MaskPayload;
+	pin12: MaskPayload;
+	pin13: MaskPayload;
+	pin14: MaskPayload;
+	pin15: MaskPayload;
+	pin16: MaskPayload;
+	pin17: MaskPayload;
+	pin18: MaskPayload;
+	pin19: MaskPayload;
+	pin20: MaskPayload;
+	pin21: MaskPayload;
+	pin22: MaskPayload;
+	pin23: MaskPayload;
+	pin24: MaskPayload;
+	pin25: MaskPayload;
+	pin26: MaskPayload;
+	pin27: MaskPayload;
+	pin28: MaskPayload;
+	pin29: MaskPayload;
+	profileLabel: string;
+};
 
 type State = {
-	profiles: ProfilePinType[];
+	profiles: PinsType[];
 	loadingProfiles: boolean;
 };
 
@@ -27,8 +59,9 @@ export type SetProfilePinType = (
 type Actions = {
 	fetchProfiles: () => void;
 	setProfilePin: SetProfilePinType;
+	copyBaseProfile: (profileIndex: number) => void;
+	setProfileLabel: (profileIndex: number, profileLabel: string) => void;
 	saveProfiles: () => Promise<object>;
-	setProfile: (profileIndex: number, pins: ProfilePinType) => void;
 };
 
 const DEFAULT_PIN_STATE = {
@@ -37,7 +70,7 @@ const DEFAULT_PIN_STATE = {
 	customDpadMask: 0,
 };
 
-const defaultProfilePins: ProfilePinType = {
+const defaultProfilePins: PinsType = {
 	pin00: DEFAULT_PIN_STATE,
 	pin01: DEFAULT_PIN_STATE,
 	pin02: DEFAULT_PIN_STATE,
@@ -68,10 +101,16 @@ const defaultProfilePins: ProfilePinType = {
 	pin27: DEFAULT_PIN_STATE,
 	pin28: DEFAULT_PIN_STATE,
 	pin29: DEFAULT_PIN_STATE,
+	profileLabel: '',
 };
 
 const INITIAL_STATE: State = {
-	profiles: [defaultProfilePins, defaultProfilePins, defaultProfilePins],
+	profiles: [
+		defaultProfilePins,
+		defaultProfilePins,
+		defaultProfilePins,
+		defaultProfilePins,
+	],
 	loadingProfiles: false,
 };
 
@@ -79,18 +118,28 @@ const useProfilesStore = create<State & Actions>()((set, get) => ({
 	...INITIAL_STATE,
 	fetchProfiles: async () => {
 		set({ loadingProfiles: true });
+
+		// TODO, unify baseProfile with other profiles when done in web api
+		const baseProfile = await WebApi.getPinMappings();
 		const profiles = await WebApi.getProfileOptions();
+
 		set((state) => ({
 			...state,
-			profiles,
+			profiles: [baseProfile, ...profiles],
 			loadingProfiles: false,
 		}));
 	},
-	setProfile: (profileIndex, pins) =>
+	copyBaseProfile: (profileIndex) =>
 		set((state) => ({
 			...state,
 			profiles: state.profiles.map((profile, index) =>
-				index === profileIndex ? { ...profile, ...pins } : profile,
+				index === profileIndex
+					? {
+							...profile,
+							...state.profiles[0],
+							profileLabel: profile.profileLabel,
+					  }
+					: profile,
 			),
 		})),
 	setProfilePin: (
@@ -98,22 +147,31 @@ const useProfilesStore = create<State & Actions>()((set, get) => ({
 		pin,
 		{ action, customButtonMask = 0, customDpadMask = 0 },
 	) =>
-		set((state) => ({
-			...state,
-			profiles: state.profiles.map((profile, index) =>
-				index === profileIndex
-					? {
-							...profile,
-							[pin]: {
-								action,
-								customButtonMask,
-								customDpadMask,
-							},
-					  }
-					: profile,
-			),
-		})),
-	saveProfiles: async () => WebApi.setProfileOptions(get().profiles),
+		set((state) => {
+			const profiles = [...state.profiles];
+			profiles[profileIndex] = {
+				...profiles[profileIndex],
+				[pin]: {
+					action,
+					customButtonMask,
+					customDpadMask,
+				},
+			};
+			return { profiles };
+		}),
+	setProfileLabel: (profileIndex, profileLabel) =>
+		set((state) => {
+			const profiles = [...state.profiles];
+			profiles[profileIndex] = { ...profiles[profileIndex], profileLabel };
+			return { profiles };
+		}),
+	saveProfiles: async () => {
+		const [baseProfile, ...profiles] = get().profiles;
+		return Promise.all([
+			WebApi.setPinMappings(baseProfile),
+			WebApi.setProfileOptions(profiles),
+		]);
+	},
 }));
 
 export default useProfilesStore;

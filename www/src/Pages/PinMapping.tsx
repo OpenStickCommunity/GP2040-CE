@@ -1,12 +1,18 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, {
+	memo,
+	useCallback,
+	useContext,
+	useEffect,
+	useState,
+} from 'react';
 import { NavLink } from 'react-router-dom';
+import { useShallow } from 'zustand/react/shallow';
 import { Alert, Button, Col, Form, Nav, Row, Tab } from 'react-bootstrap';
 import { Trans, useTranslation } from 'react-i18next';
 import invert from 'lodash/invert';
 import omit from 'lodash/omit';
 
 import { AppContext } from '../Contexts/AppContext';
-import usePinStore, { MaskPayload, SetPinType } from '../Store/usePinStore';
 import useProfilesStore from '../Store/useProfilesStore';
 
 import Section from '../Components/Section';
@@ -24,14 +30,6 @@ type OptionType = {
 	type: string;
 	customButtonMask: number;
 	customDpadMask: number;
-};
-
-type PinSectionType = {
-	sectionTitle: string;
-	pins: { [key: string]: MaskPayload };
-	saveHandler: () => Promise<object>;
-	setHandler: SetPinType;
-	copyHandler?: () => void;
 };
 
 const disabledOptions = [
@@ -100,18 +98,49 @@ const getMultiValue = (pinData) => {
 		  )
 		: options.filter((option) => option.value === pinData.action);
 };
-
-const PinSection = ({
-	sectionTitle,
-	pins,
-	saveHandler,
-	setHandler,
-	copyHandler,
-}: PinSectionType) => {
-	const { buttonLabels, updateUsedPins } = useContext(AppContext);
+const ProfileLabel = memo(function ProfileLabel({
+	profileIndex,
+}: {
+	profileIndex: number;
+}) {
 	const { t } = useTranslation('');
-	const [saveMessage, setSaveMessage] = useState('');
+	const setProfileLabel = useProfilesStore((state) => state.setProfileLabel);
+	const profileLabel = useProfilesStore(
+		(state) => state.profiles[profileIndex].profileLabel,
+	);
+	const onLabelChange = useCallback(
+		(event) => setProfileLabel(profileIndex, event.target.value),
+		[],
+	);
 
+	return (
+		<div className="pin-grid">
+			<Form.Label>{t('PinMapping:profile-label-title')}</Form.Label>
+			<Form.Control
+				type="text"
+				value={profileLabel}
+				placeholder={t('PinMapping:profile-label-default', {
+					profileNumber: profileIndex + 1,
+				})}
+				onChange={onLabelChange}
+				maxLength={16}
+			/>
+			<Form.Text muted>{t('PinMapping:profile-label-description')}</Form.Text>
+		</div>
+	);
+});
+
+const PinSelectList = memo(function PinSelectList({
+	profileIndex,
+}: {
+	profileIndex: number;
+}) {
+	const setProfilePin = useProfilesStore((state) => state.setProfilePin);
+	const pins = useProfilesStore(
+		useShallow((state) => omit(state.profiles[profileIndex], 'profileLabel')),
+	);
+	const { t } = useTranslation('');
+	const { buttonLabels } = useContext(AppContext);
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
 	const CURRENT_BUTTONS = getButtonLabels(buttonLabelType, swapTpShareLabels);
 	const buttonNames = omit(CURRENT_BUTTONS, ['label', 'value']);
@@ -121,7 +150,7 @@ const PinSection = ({
 			(selected: MultiValue<OptionType> | SingleValue<OptionType>) => {
 				// Handle clearing
 				if (!selected || (Array.isArray(selected) && !selected.length)) {
-					setHandler(pin, {
+					setProfilePin(profileIndex, pin, {
 						action: BUTTON_ACTIONS.NONE,
 						customButtonMask: 0,
 						customDpadMask: 0,
@@ -130,13 +159,14 @@ const PinSection = ({
 					const lastSelected = selected[selected.length - 1];
 					// Revert to single option if choosing action type
 					if (lastSelected.type === 'action') {
-						setHandler(pin, {
+						setProfilePin(profileIndex, pin, {
 							action: lastSelected.value,
 							customButtonMask: 0,
 							customDpadMask: 0,
 						});
 					} else {
-						setHandler(
+						setProfilePin(
+							profileIndex,
 							pin,
 							selected.reduce(
 								(masks, option) => ({
@@ -159,7 +189,7 @@ const PinSection = ({
 						);
 					}
 				} else {
-					setHandler(pin, {
+					setProfilePin(profileIndex, pin, {
 						action: selected[0].value,
 						customButtonMask: 0,
 						customDpadMask: 0,
@@ -180,12 +210,50 @@ const PinSection = ({
 		},
 		[buttonNames],
 	);
+	return Object.entries(pins).map(([pin, pinData], index) => (
+		<div key={`select-${index}`} className="d-flex col align-items-center">
+			<div className="d-flex flex-shrink-0" style={{ width: '4rem' }}>
+				<label>{pin.toUpperCase()}</label>
+			</div>
+			<CustomSelect
+				isClearable
+				isMulti={!isDisabled(pinData.action)}
+				options={groupedOptions}
+				isDisabled={isDisabled(pinData.action)}
+				getOptionLabel={getOptionLabel}
+				onChange={onChange(pin)}
+				value={getMultiValue(pinData)}
+			/>
+		</div>
+	));
+});
+
+const PinSection = memo(function PinSection({
+	profileIndex,
+}: {
+	profileIndex: number;
+}) {
+	const { t } = useTranslation('');
+	const copyBaseProfile = useProfilesStore((state) => state.copyBaseProfile);
+	const setProfilePin = useProfilesStore((state) => state.setProfilePin);
+	const saveProfiles = useProfilesStore((state) => state.saveProfiles);
+	const profileLabel =
+		useProfilesStore((state) => state.profiles[profileIndex].profileLabel) ||
+		t('PinMapping:profile-label-default', {
+			profileNumber: profileIndex + 1,
+		});
+	const { updateUsedPins, buttonLabels } = useContext(AppContext);
+	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
+	const CURRENT_BUTTONS = getButtonLabels(buttonLabelType, swapTpShareLabels);
+	const buttonNames = omit(CURRENT_BUTTONS, ['label', 'value']);
+
+	const [saveMessage, setSaveMessage] = useState('');
 
 	const handleSubmit = useCallback(async (e) => {
 		e.preventDefault();
 		e.stopPropagation();
 		try {
-			await saveHandler();
+			await saveProfiles();
 			updateUsedPins();
 			setSaveMessage(t('Common:saved-success-message'));
 		} catch (error) {
@@ -206,34 +274,23 @@ const PinSection = ({
 				<br />
 				{t(`PinMapping:profile-pins-warning`)}
 			</div>
-			<Section title={sectionTitle}>
+			<Section
+				title={t('PinMapping:profile-pin-mapping-title', {
+					profileLabel,
+				})}
+			>
 				<Form onSubmit={handleSubmit}>
-					<div className="pin-grid gap-3">
-						{Object.entries(pins).map(([pin, pinData], index) => (
-							<div
-								key={`select-${index}`}
-								className="d-flex col align-items-center"
-							>
-								<div className="d-flex flex-shrink-0" style={{ width: '4rem' }}>
-									<label>{pin.toUpperCase()}</label>
-								</div>
-								<CustomSelect
-									isClearable
-									isMulti={!isDisabled(pinData.action)}
-									options={groupedOptions}
-									isDisabled={isDisabled(pinData.action)}
-									getOptionLabel={getOptionLabel}
-									onChange={onChange(pin)}
-									value={getMultiValue(pinData)}
-								/>
-							</div>
-						))}
+					<ProfileLabel profileIndex={profileIndex} />
+					<hr />
+					<div className="pin-grid gap-3 mt-3">
+						<PinSelectList profileIndex={profileIndex} />
 					</div>
 					<div className="d-flex gap-3 my-3">
 						<CaptureButton
 							labels={Object.values(buttonNames)}
 							onChange={(label, pin) =>
-								setHandler(
+								setProfilePin(
+									profileIndex,
 									// Convert getHeldPins format to setPinMappings format
 									pin < 10 ? `pin0${pin}` : `pin${pin}`,
 									{
@@ -250,8 +307,8 @@ const PinSection = ({
 								)
 							}
 						/>
-						{copyHandler && (
-							<Button onClick={() => copyHandler()}>
+						{profileIndex > 0 && (
+							<Button onClick={() => copyBaseProfile(profileIndex)}>
 								{t(`PinMapping:profile-copy-base`)}
 							</Button>
 						)}
@@ -262,45 +319,33 @@ const PinSection = ({
 			</Section>
 		</>
 	);
-};
+});
 
 export default function PinMapping() {
-	const { fetchPins, pins, setPin, savePins } = usePinStore();
-	const { fetchProfiles, profiles, setProfile, setProfilePin, saveProfiles } =
-		useProfilesStore();
+	const fetchProfiles = useProfilesStore((state) => state.fetchProfiles);
+	const profiles = useProfilesStore((state) => state.profiles);
 	const [pressedPin, setPressedPin] = useState<number | null>(null);
 	const { t } = useTranslation('');
 
 	useEffect(() => {
-		fetchPins();
 		fetchProfiles();
 	}, []);
 
 	return (
-		<Tab.Container defaultActiveKey="profile-1">
+		<Tab.Container defaultActiveKey="profile-0">
 			<Row>
 				<Col sm={2}>
 					<Nav variant="pills" className="flex-column">
-						<Nav.Item>
-							<Nav.Link eventKey="profile-1">
-								{t('PinMapping:profile-text-1')}
-							</Nav.Link>
-						</Nav.Item>
-						<Nav.Item>
-							<Nav.Link eventKey="profile-2">
-								{t('PinMapping:profile-text-2')}
-							</Nav.Link>
-						</Nav.Item>
-						<Nav.Item>
-							<Nav.Link eventKey="profile-3">
-								{t('PinMapping:profile-text-3')}
-							</Nav.Link>
-						</Nav.Item>
-						<Nav.Item>
-							<Nav.Link eventKey="profile-4">
-								{t('PinMapping:profile-text-4')}
-							</Nav.Link>
-						</Nav.Item>
+						{profiles.map(({ profileLabel }, index) => (
+							<Nav.Item key={`profile-${index}`}>
+								<Nav.Link eventKey={`profile-${index}`}>
+									{profileLabel ||
+										t('PinMapping:profile-label-default', {
+											profileNumber: index + 1,
+										})}
+								</Nav.Link>
+							</Nav.Item>
+						))}
 					</Nav>
 					<hr />
 					<p className="text-center">{t('PinMapping:sub-header-text')}</p>
@@ -319,35 +364,18 @@ export default function PinMapping() {
 				</Col>
 				<Col sm={10}>
 					<Tab.Content>
-						<Tab.Pane eventKey="profile-1">
-							<PinSection
-								sectionTitle={t('PinMapping:profile-pin-mapping-title-base')}
-								pins={pins}
-								setHandler={setPin}
-								saveHandler={savePins}
-							/>
+						<Tab.Pane eventKey="profile-0">
+							<PinSection profileIndex={0} />
 						</Tab.Pane>
-
-						{profiles.map((profilePins, profileIndex) => (
-							<Tab.Pane
-								key={`profile-${profileIndex + 2}`}
-								eventKey={`profile-${profileIndex + 2}`}
-							>
-								<PinSection
-									sectionTitle={t('PinMapping:profile-pin-mapping-title', {
-										profileNumber: profileIndex + 2,
-									})}
-									pins={profilePins}
-									saveHandler={saveProfiles}
-									setHandler={(pin, maskPayload) =>
-										setProfilePin(profileIndex, pin, maskPayload)
-									}
-									copyHandler={() => {
-										setProfile(profileIndex, pins);
-									}}
-								/>
-							</Tab.Pane>
-						))}
+						<Tab.Pane eventKey="profile-1">
+							<PinSection profileIndex={1} />
+						</Tab.Pane>
+						<Tab.Pane eventKey="profile-2">
+							<PinSection profileIndex={2} />
+						</Tab.Pane>
+						<Tab.Pane eventKey="profile-3">
+							<PinSection profileIndex={3} />
+						</Tab.Pane>
 					</Tab.Content>
 				</Col>
 			</Row>
