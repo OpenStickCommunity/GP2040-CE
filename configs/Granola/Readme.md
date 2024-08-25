@@ -2,7 +2,14 @@
 
 ![Granola Arcade Logo](assets/granola-logo.png)
 
-Configuration for [Granola Arcade](https://granola.games) controllers.
+Configuration for [Granola Arcade](https://granola.games) controllers. This configuration is compatible with all Granola controllers including:
+
+* [Summit](https://github.com/michaelswitzer/granola-summit)![Granola Summit](assets/granola-summit.png)
+* [Raindrop](https://github.com/michaelswitzer/granola-raindrop)![Granola Raindrop](assets/granola-raindrop.png)
+* [TrailMix](https://github.com/michaelswitzer/granola-trailmix)![Granola TrailMix](assets/granola-trailmix.png)
+
+You can purchase the Granola Summit on the [Granola Arcade](https://granola.games) website.
+
 
 ## Main Pin Mapping Configuration
 
