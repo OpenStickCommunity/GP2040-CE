@@ -755,6 +755,20 @@ message DRV8833RumbleOptions
 		optional float dutyMax = 7;
 }
 
+message ReactiveLEDInfo
+{
+    optional int32 pin = 1;
+    optional GpioAction action = 2;
+    optional ReactiveLEDMode modeDown = 3;
+    optional ReactiveLEDMode modeUp = 4;
+}
+
+message ReactiveLEDOptions
+{
+    optional bool enabled = 1;
+    repeated ReactiveLEDInfo leds = 2 [(nanopb).max_count = 10];
+}
+
 message AddonOptions
 {
     optional BootselButtonOptions bootselButtonOptions = 1;
@@ -783,6 +797,7 @@ message AddonOptions
     optional RotaryOptions rotaryOptions = 24;
     optional PCF8575Options pcf8575Options = 25;
     optional DRV8833RumbleOptions drv8833RumbleOptions = 26;
+    optional ReactiveLEDOptions reactiveLEDOptions = 27;
 }
 
 message MigrationHistory

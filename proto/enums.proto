@@ -111,7 +111,7 @@ enum SplashChoice
 enum OnBoardLedMode
 {
     option (nanopb_enumopt).long_names = false;
-    
+
     ON_BOARD_LED_MODE_OFF = 0;
     ON_BOARD_LED_MODE_MODE_INDICATOR = 1;
     ON_BOARD_LED_MODE_INPUT_TEST = 2;
@@ -295,6 +295,10 @@ enum GamepadHotkey
     HOTKEY_NEXT_PROFILE          = 35;
     HOTKEY_A3_BUTTON             = 36;
     HOTKEY_A4_BUTTON             = 37;
+    HOTKEY_DPAD_UP               = 38;
+    HOTKEY_DPAD_DOWN             = 39;
+    HOTKEY_DPAD_LEFT             = 40;
+    HOTKEY_DPAD_RIGHT            = 41;
 }
 
 // This has to be kept in sync with LEDFormat in NeoPico.hpp
@@ -317,7 +321,7 @@ enum ShmupMixMode
 enum PLEDType
 {
     option (nanopb_enumopt).long_names = false;
-    
+
     PLED_TYPE_NONE = -1;
     PLED_TYPE_PWM = 0;
     PLED_TYPE_RGB = 1;
@@ -326,7 +330,7 @@ enum PLEDType
 enum ForcedSetupMode
 {
     option (nanopb_enumopt).long_names = false;
-    
+
 	FORCED_SETUP_MODE_OFF = 0;
 	FORCED_SETUP_MODE_LOCK_MODE_SWITCH = 1;
 	FORCED_SETUP_MODE_LOCK_WEB_CONFIG = 2;
@@ -346,7 +350,7 @@ enum DualDirectionalCombinationMode
 enum PS4ControllerType
 {
     option (nanopb_enumopt).long_names = false;
-    
+
     PS4_CONTROLLER = 0;
     PS4_ARCADESTICK = 7;
 }
@@ -378,7 +382,7 @@ enum GPElement
 enum GPShape_Type
 {
     option (nanopb_enumopt).long_names = false;
-    
+
     GP_SHAPE_ELLIPSE = 0;
     GP_SHAPE_SQUARE = 1;
     GP_SHAPE_LINE = 2;
@@ -399,4 +403,14 @@ enum RotaryEncoderPinMode
     ENCODER_MODE_RIGHT_TRIGGER = 6;
     ENCODER_MODE_DPAD_X = 7;
     ENCODER_MODE_DPAD_Y = 8;
+};
+
+enum ReactiveLEDMode
+{
+    option (nanopb_enumopt).long_names = false;
+
+    REACTIVE_LED_STATIC_OFF = 0;
+    REACTIVE_LED_STATIC_ON = 1;
+    REACTIVE_LED_FADE_IN = 2;
+    REACTIVE_LED_FADE_OUT = 3;
 };

@@ -1347,6 +1347,40 @@ std::string setExpansionPins()
     return serialize_json(doc);
 }
 
+std::string getReactiveLEDs()
+{
+    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    ReactiveLEDInfo* ledInfo = Storage::getInstance().getAddonOptions().reactiveLEDOptions.leds;
+
+    for (uint16_t led = 0; led < 10; led++) {
+        writeDoc(doc, "leds", led, "pin", ledInfo[led].pin);
+        writeDoc(doc, "leds", led, "action", ledInfo[led].action);
+        writeDoc(doc, "leds", led, "modeDown", ledInfo[led].modeDown);
+        writeDoc(doc, "leds", led, "modeUp", ledInfo[led].modeUp);
+    }
+
+    return serialize_json(doc);
+}
+
+std::string setReactiveLEDs()
+{
+    DynamicJsonDocument doc = get_post_data();
+
+    ReactiveLEDInfo* ledInfo = Storage::getInstance().getAddonOptions().reactiveLEDOptions.leds;
+
+    for (uint16_t led = 0; led < 10; led++) {
+        ledInfo[led].pin = doc["leds"][led]["pin"];
+        ledInfo[led].action = doc["leds"][led]["action"];
+        ledInfo[led].modeDown = doc["leds"][led]["modeDown"];
+        ledInfo[led].modeUp = doc["leds"][led]["modeUp"];
+    }
+    Storage::getInstance().getAddonOptions().reactiveLEDOptions.leds_count = 10;
+
+    Storage::getInstance().save();
+
+    return serialize_json(doc);
+}
+
 std::string setAddonOptions()
 {
     DynamicJsonDocument doc = get_post_data();
@@ -1523,6 +1557,9 @@ std::string setAddonOptions()
 
     PCF8575Options& pcf8575Options = Storage::getInstance().getAddonOptions().pcf8575Options;
     docToValue(pcf8575Options.enabled, doc, "PCF8575AddonEnabled");
+
+    ReactiveLEDOptions& reactiveLEDOptions = Storage::getInstance().getAddonOptions().reactiveLEDOptions;
+    docToValue(reactiveLEDOptions.enabled, doc, "ReactiveLEDAddonEnabled");
 
     DRV8833RumbleOptions& drv8833RumbleOptions = Storage::getInstance().getAddonOptions().drv8833RumbleOptions;
     docToValue(drv8833RumbleOptions.enabled, doc, "DRV8833RumbleAddonEnabled");
@@ -1958,6 +1995,9 @@ std::string getAddonOptions()
     PCF8575Options& pcf8575Options = Storage::getInstance().getAddonOptions().pcf8575Options;
     writeDoc(doc, "PCF8575AddonEnabled", pcf8575Options.enabled);
 
+    ReactiveLEDOptions& reactiveLEDOptions = Storage::getInstance().getAddonOptions().reactiveLEDOptions;
+    writeDoc(doc, "ReactiveLEDAddonEnabled", reactiveLEDOptions.enabled);
+
     const DRV8833RumbleOptions& drv8833RumbleOptions = Storage::getInstance().getAddonOptions().drv8833RumbleOptions;
     writeDoc(doc, "DRV8833RumbleAddonEnabled", drv8833RumbleOptions.enabled);
     writeDoc(doc, "drv8833RumbleLeftMotorPin", cleanPin(drv8833RumbleOptions.leftMotorPin));
@@ -2227,6 +2267,8 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/getI2CPeripheralMap", getI2CPeripheralMap },
     { "/api/setExpansionPins", setExpansionPins },
     { "/api/getExpansionPins", getExpansionPins },
+    { "/api/setReactiveLEDs", setReactiveLEDs },
+    { "/api/getReactiveLEDs", getReactiveLEDs },
     { "/api/setKeyMappings", setKeyMappings },
     { "/api/setAddonsOptions", setAddonOptions },
     { "/api/setMacroAddonOptions", setMacroAddonOptions },
