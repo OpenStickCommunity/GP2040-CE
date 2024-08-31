@@ -61,5 +61,6 @@ export default {
 		BUTTON_PRESS_MACRO_6: 'Macro 6',
 		BUTTON_PRESS_TJ_PRIMARY: 'Joystick Toggle Primary',
 		BUTTON_PRESS_TJ_SECONDARY: 'Joystick Toggle Secondary',
+		BUTTON_PRESS_TJ_TILT: 'Joystick Toggle Tilt',
 	},
 };

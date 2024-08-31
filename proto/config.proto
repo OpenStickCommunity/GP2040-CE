@@ -453,6 +453,7 @@ message ToggleJoystickOptions
     optional bool enabled = 1;
     optional DpadMode primaryToggle = 2;
     optional DpadMode secondaryToggle = 3;
+    optional uint32 tiltFactor = 4;
 }
 
 message TiltOptions

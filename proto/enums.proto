@@ -227,6 +227,7 @@ enum GpioAction
     BUTTON_PRESS_MACRO_6         = 39;
     BUTTON_PRESS_TJ_PRIMARY      = 40;
     BUTTON_PRESS_TJ_SECONDARY    = 41;
+    BUTTON_PRESS_TJ_TILT         = 42;
 }
 
 enum GpioDirection

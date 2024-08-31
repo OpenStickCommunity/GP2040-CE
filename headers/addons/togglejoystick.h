@@ -18,6 +18,10 @@
 #define TOGGLE_JOYSTICK_SECONDARY_TOGGLE DPAD_MODE_DIGITAL
 #endif
 
+#ifndef TOGGLE_JOYSTICK_TILT_FACTOR
+#define TOGGLE_JOYSTICK_TILT_FACTOR 50
+#endif
+
 // ToggleJoystick Module Name
 #define ToggleJoystickName "ToggleJoystick"
 
@@ -32,7 +36,10 @@ public:
   virtual std::string name() { return ToggleJoystickName; }
 
 private:
-	void toggleJoystick(Gamepad *gamepad, DpadMode currentDpadMode, DpadMode toggle, bool toggleSwapped);
+  void toggleJoystick(Gamepad *gamepad, DpadMode currentDpadMode,
+                      DpadMode toggle, bool toggleSwapped);
+  void tiltJoystick(Gamepad *gamepad);
+  void setPrevJoystick(Gamepad *gamepad, DpadMode toggle);
 
   DpadMode defaultDpadMode;
   DpadMode prevDpadMode;
@@ -41,6 +48,7 @@ private:
 
   uint32_t primaryToggleMask;
   uint32_t secondaryToggleMask;
+  uint32_t tiltFactorMask;
   uint32_t prevDpad;
 
   uint16_t prevLX;
@@ -49,12 +57,13 @@ private:
   uint16_t prevRY;
 
   uint8_t prevState;
+  uint8_t tiltFactor;
 
   bool primaryState;
   bool secondaryState;
+	bool tiltState;
   bool onStateChange;
-	bool joystickChanged;
-
+  bool joystickChanged;
 };
 
 #endif // _ToggleJoystick_H_

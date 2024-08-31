@@ -18,12 +18,17 @@ export const toggleJoystickScheme = {
 		.number()
 		.label('Secondary Toggle Mode')
 		.validateSelectionWhenValue('ToggleJoystickAddonEnabled', DPAD_MODES),
+	toggleJoystickTiltFactor: yup
+		.number()
+		.label('Tilt Factor')
+		.validateRangeWhenValue('ToggleJoystickAddonEnabled', 0, 100),
 };
 
 export const toggleJoystickState = {
 	ToggleJoystickAddonEnabled: 0,
 	toggleJoystickPrimaryToggle: 0,
 	toggleJoystickSecondaryToggle: 0,
+	toggleJoystickTiltFactor: 0,
 };
 
 const ToggleJoystick = ({ values, errors, handleChange, handleCheckbox }) => {
@@ -67,6 +72,21 @@ const ToggleJoystick = ({ values, errors, handleChange, handleCheckbox }) => {
 							</option>
 						))}
 					</FormSelect>
+				</Row>
+				<Row className="mb-3">
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:toggle-joystick-addon-tilt-factor-label')}
+						name="toggleJoystickTiltFactor"
+						className="form-select-sm"
+						groupClassName="col-sm-3 mb-3"
+						value={values.toggleJoystickTiltFactor}
+						error={errors.toggleJoystickTiltFactor}
+						isInvalid={errors.toggleJoystickTilt}Factor
+						onChange={handleChange}
+						min={0}
+						max={100}
+					/>
 				</Row>
 			</div>
 			<FormCheck

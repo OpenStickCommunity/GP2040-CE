@@ -565,6 +565,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.toggleJoystickOptions, enabled, !!TOGGLE_JOYSTICK_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.toggleJoystickOptions, primaryToggle, TOGGLE_JOYSTICK_PRIMARY_TOGGLE);
     INIT_UNSET_PROPERTY(config.addonOptions.toggleJoystickOptions, secondaryToggle, TOGGLE_JOYSTICK_SECONDARY_TOGGLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.toggleJoystickOptions, tiltFactor, TOGGLE_JOYSTICK_TILT_FACTOR);
 
     // addonOptions.reverseOptions
     INIT_UNSET_PROPERTY(config.addonOptions.reverseOptions, enabled, !!REVERSE_ENABLED);

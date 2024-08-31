@@ -47,6 +47,7 @@ export default {
 	'toggle-joystick-addon-header-text': 'Joystick Mode Toggle',
 	'toggle-joystick-addon-primary-mode-label': 'Primary Joystick Dpad Mode Toggle',
 	'toggle-joystick-addon-secondary-mode-label': ' Secondary Joystick Dpad Mode Toggle',
+	'toggle-joystick-addon-tilt-factor-label': ' Tilt Factor Percent',
 	'joystick-selection-slider-header-text': 'Joystick Selection Slider',
 	'joystick-selection-slider-pin-one-label': 'Slider Pin One',
 	'joystick-selection-slider-pin-two-label': 'Slider Pin Two',
