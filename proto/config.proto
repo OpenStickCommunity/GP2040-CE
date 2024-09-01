@@ -764,7 +764,7 @@ message AddonOptions
     optional SNESOptions snesOptions = 15;
     optional FocusModeOptions focusModeOptions = 16;
     optional KeyboardHostOptions keyboardHostOptions = 17;
-    optional TiltOptions tiltOptions = 18;
+    optional TiltOptions tiltOptions = 18 [deprecated = true];
     optional PSPassthroughOptions psPassthroughOptions = 19 [deprecated = true];
     optional MacroOptions macroOptions = 20;
     optional InputHistoryOptions inputHistoryOptions = 21;

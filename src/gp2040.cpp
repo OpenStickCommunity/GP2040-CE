@@ -17,7 +17,6 @@
 #include "addons/bootsel_button.h"
 #include "addons/focus_mode.h"
 #include "addons/dualdirectional.h"
-#include "addons/tilt.h"
 #include "addons/keyboard_host.h"
 #include "addons/i2canalog1219.h"
 #include "addons/jslider.h"
@@ -103,7 +102,6 @@ void GP2040::setup() {
 	addons.LoadAddon(new SNESpadInput(), CORE0_INPUT);
 	addons.LoadAddon(new PlayerNumAddon(), CORE0_USBREPORT);
 	addons.LoadAddon(new SliderSOCDInput(), CORE0_INPUT);
-	addons.LoadAddon(new TiltInput(), CORE0_INPUT);
 	addons.LoadAddon(new RotaryEncoderInput(), CORE0_INPUT);
 	addons.LoadAddon(new PCF8575Addon(), CORE0_INPUT);
 
