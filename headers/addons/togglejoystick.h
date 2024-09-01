@@ -18,8 +18,12 @@
 #define TOGGLE_JOYSTICK_SECONDARY_TOGGLE DPAD_MODE_DIGITAL
 #endif
 
-#ifndef TOGGLE_JOYSTICK_TILT_FACTOR
-#define TOGGLE_JOYSTICK_TILT_FACTOR 50
+#ifndef TOGGLE_JOYSTICK_PRIMARY_TILT_FACTOR
+#define TOGGLE_JOYSTICK_PRIMARY_TILT_FACTOR 50
+#endif
+
+#ifndef TOGGLE_JOYSTICK_SECONDARY_TILT_FACTOR
+#define TOGGLE_JOYSTICK_SECONDARY_TILT_FACTOR 25
 #endif
 
 // ToggleJoystick Module Name
@@ -48,7 +52,8 @@ private:
 
   uint32_t primaryToggleMask;
   uint32_t secondaryToggleMask;
-  uint32_t tiltFactorMask;
+  uint32_t primaryTiltMask;
+  uint32_t secondaryTiltMask;
   uint32_t prevDpad;
   uint32_t prev2Dpad;
 
@@ -61,12 +66,14 @@ private:
   uint16_t prev2RX;
   uint16_t prev2RY;
 
-  uint8_t prevState;
-  uint8_t tiltFactor;
+  uint8_t prevToggleState;
+  uint8_t primaryTiltFactor;
+  uint8_t secondaryTiltFactor;
 
-  bool primaryState;
-  bool secondaryState;
-	bool tiltState;
+  bool primaryToggleState;
+  bool secondaryToggleState;
+	bool primaryTiltState;
+	bool secondaryTiltState;
   bool onStateChange;
   bool joystickChanged;
 	bool holdSecondary;

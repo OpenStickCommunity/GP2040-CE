@@ -59,8 +59,9 @@ export default {
 		BUTTON_PRESS_MACRO_4: 'Macro 4',
 		BUTTON_PRESS_MACRO_5: 'Macro 5',
 		BUTTON_PRESS_MACRO_6: 'Macro 6',
-		BUTTON_PRESS_TJ_PRIMARY: 'Joystick Toggle Primary',
-		BUTTON_PRESS_TJ_SECONDARY: 'Joystick Toggle Secondary',
-		BUTTON_PRESS_TJ_TILT: 'Joystick Toggle Tilt',
+		BUTTON_PRESS_TJ_TOGGLE_1: 'Joystick Toggle Dpad Primary',
+		BUTTON_PRESS_TJ_TOGGLE_2: 'Joystick Toggle Dpad Secondary',
+		BUTTON_PRESS_TJ_TILT_1: 'Joystick Toggle Tilt Primary',
+		BUTTON_PRESS_TJ_TILT_2: 'Joystick Toggle Tilt Secondary',
 	},
 };

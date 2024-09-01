@@ -12,15 +12,19 @@ export const toggleJoystickScheme = {
 	ToggleJoystickAddonEnabled: yup.number().required().label('ToggleJoystick Addon Enabled'),
 	toggleJoystickPrimaryToggle: yup
 		.number()
-		.label('Primary Toggle Mode')
+		.label('Primary Toggle Dpad Mode')
 		.validateSelectionWhenValue('ToggleJoystickAddonEnabled', DPAD_MODES),
 	toggleJoystickSecondaryToggle: yup
 		.number()
-		.label('Secondary Toggle Mode')
+		.label('Secondary Toggle Dpad Mode')
 		.validateSelectionWhenValue('ToggleJoystickAddonEnabled', DPAD_MODES),
-	toggleJoystickTiltFactor: yup
+	toggleJoystickPrimaryTiltFactor: yup
 		.number()
-		.label('Tilt Factor')
+		.label('Primary Tilt Factor')
+		.validateRangeWhenValue('ToggleJoystickAddonEnabled', 0, 100),
+	toggleJoystickSecondaryTiltFactor: yup
+		.number()
+		.label('Secondary Tilt Factor')
 		.validateRangeWhenValue('ToggleJoystickAddonEnabled', 0, 100),
 };
 
@@ -28,7 +32,8 @@ export const toggleJoystickState = {
 	ToggleJoystickAddonEnabled: 0,
 	toggleJoystickPrimaryToggle: 0,
 	toggleJoystickSecondaryToggle: 0,
-	toggleJoystickTiltFactor: 0,
+	toggleJoystickPrimaryTiltFactor: 0,
+	toggleJoystickSecondaryTiltFactor: 0,
 };
 
 const ToggleJoystick = ({ values, errors, handleChange, handleCheckbox }) => {
@@ -76,13 +81,28 @@ const ToggleJoystick = ({ values, errors, handleChange, handleCheckbox }) => {
 				<Row className="mb-3">
 					<FormControl
 						type="number"
-						label={t('AddonsConfig:toggle-joystick-addon-tilt-factor-label')}
-						name="toggleJoystickTiltFactor"
+						label={t('AddonsConfig:toggle-joystick-addon-primary-tilt-factor-label')}
+						name="toggleJoystickPrimaryTiltFactor"
 						className="form-select-sm"
 						groupClassName="col-sm-3 mb-3"
-						value={values.toggleJoystickTiltFactor}
-						error={errors.toggleJoystickTiltFactor}
-						isInvalid={errors.toggleJoystickTilt}Factor
+						value={values.toggleJoystickPrimaryTiltFactor}
+						error={errors.toggleJoystickPrimaryTiltFactor}
+						isInvalid={errors.toggleJoystickPrimaryTiltFactor}
+						onChange={handleChange}
+						min={0}
+						max={100}
+					/>
+				</Row>
+				<Row className="mb-3">
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:toggle-joystick-addon-secondary-tilt-factor-label')}
+						name="toggleJoystickSecondaryTiltFactor"
+						className="form-select-sm"
+						groupClassName="col-sm-3 mb-3"
+						value={values.toggleJoystickSecondaryTiltFactor}
+						error={errors.toggleJoystickSecondaryTiltFactor}
+						isInvalid={errors.toggleJoystickSecondaryTiltFactor}
 						onChange={handleChange}
 						min={0}
 						max={100}

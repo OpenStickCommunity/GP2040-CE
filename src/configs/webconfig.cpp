@@ -1387,7 +1387,8 @@ std::string setAddonOptions()
     ToggleJoystickOptions& toggleJoystickOptions = Storage::getInstance().getAddonOptions().toggleJoystickOptions;
     docToValue(toggleJoystickOptions.primaryToggle, doc, "toggleJoystickPrimaryToggle");
     docToValue(toggleJoystickOptions.secondaryToggle, doc, "toggleJoystickSecondaryToggle");
-    docToValue(toggleJoystickOptions.tiltFactor, doc, "toggleJoystickTiltFactor");
+    docToValue(toggleJoystickOptions.primaryTiltFactor, doc, "toggleJoystickPrimaryTiltFactor");
+    docToValue(toggleJoystickOptions.secondaryTiltFactor, doc, "toggleJoystickSecondaryTiltFactor");
     docToValue(toggleJoystickOptions.enabled, doc, "ToggleJoystickAddonEnabled");
 
     PlayerNumberOptions& playerNumberOptions = Storage::getInstance().getAddonOptions().playerNumberOptions;
@@ -1802,7 +1803,8 @@ std::string getAddonOptions()
     const ToggleJoystickOptions& toggleJoystickOptions = Storage::getInstance().getAddonOptions().toggleJoystickOptions;
     writeDoc(doc, "toggleJoystickPrimaryToggle", toggleJoystickOptions.primaryToggle);
     writeDoc(doc, "toggleJoystickSecondaryToggle", toggleJoystickOptions.secondaryToggle);
-    writeDoc(doc, "toggleJoystickTiltFactor", toggleJoystickOptions.tiltFactor);
+    writeDoc(doc, "toggleJoystickPrimaryTiltFactor", toggleJoystickOptions.primaryTiltFactor);
+    writeDoc(doc, "toggleJoystickSecondaryTiltFactor", toggleJoystickOptions.secondaryTiltFactor);
     writeDoc(doc, "ToggleJoystickAddonEnabled", toggleJoystickOptions.enabled);
 
     const PlayerNumberOptions& playerNumberOptions = Storage::getInstance().getAddonOptions().playerNumberOptions;

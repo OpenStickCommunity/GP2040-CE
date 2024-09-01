@@ -15,9 +15,10 @@ bool ToggleJoystickAddon::available() {
   bool pinSet = false;
   for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
     switch (pinMappings[pin]) {
-    case GpioAction::BUTTON_PRESS_TJ_PRIMARY:
-    case GpioAction::BUTTON_PRESS_TJ_SECONDARY:
-    case GpioAction::BUTTON_PRESS_TJ_TILT:
+    case GpioAction::BUTTON_PRESS_TJ_TOGGLE_1:
+    case GpioAction::BUTTON_PRESS_TJ_TOGGLE_2:
+    case GpioAction::BUTTON_PRESS_TJ_TILT_1:
+    case GpioAction::BUTTON_PRESS_TJ_TILT_2:
       pinSet = true;
     default:
       break;
@@ -30,17 +31,21 @@ void ToggleJoystickAddon::setup() {
   GpioAction *pinMappings = Storage::getInstance().getProfilePinMappings();
   primaryToggleMask = 0;
   secondaryToggleMask = 0;
-  tiltFactorMask = 0;
+  primaryTiltMask = 0;
+  secondaryTiltMask = 0;
   for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
     switch (pinMappings[pin]) {
-    case GpioAction::BUTTON_PRESS_TJ_PRIMARY:
+    case GpioAction::BUTTON_PRESS_TJ_TOGGLE_1:
       primaryToggleMask = 1 << pin;
       break;
-    case GpioAction::BUTTON_PRESS_TJ_SECONDARY:
+    case GpioAction::BUTTON_PRESS_TJ_TOGGLE_2:
       secondaryToggleMask = 1 << pin;
       break;
-    case GpioAction::BUTTON_PRESS_TJ_TILT:
-      tiltFactorMask = 1 << pin;
+    case GpioAction::BUTTON_PRESS_TJ_TILT_1:
+      primaryTiltMask = 1 << pin;
+      break;
+    case GpioAction::BUTTON_PRESS_TJ_TILT_2:
+      secondaryTiltMask = 1 << pin;
       break;
     default:
       break;
@@ -50,7 +55,8 @@ void ToggleJoystickAddon::setup() {
       Storage::getInstance().getAddonOptions().toggleJoystickOptions;
   primaryToggle = options.primaryToggle;
   secondaryToggle = options.secondaryToggle;
-  tiltFactor = options.tiltFactor;
+  primaryTiltFactor = options.primaryTiltFactor;
+  secondaryTiltFactor = options.secondaryTiltFactor;
 
   Gamepad *gamepad = Storage::getInstance().GetGamepad();
   prevLX = gamepad->state.lx;
@@ -67,22 +73,23 @@ void ToggleJoystickAddon::setup() {
   defaultDpadMode = gamepad->getOptions().dpadMode;
   prevDpadMode = gamepad->getOptions().dpadMode;
 
-  primaryState = false;
-  secondaryState = false;
+  primaryToggleState = false;
+  secondaryToggleState = false;
   onStateChange = false;
   joystickChanged = false;
   holdSecondary = false;
   freezeInputs = true;
 
-  prevState = 0;
+  prevToggleState = 0;
 }
 
 void ToggleJoystickAddon::update() {
   Gamepad *gamepad = Storage::getInstance().GetGamepad();
   Mask_t allPins = gamepad->debouncedGpio;
-  primaryState = allPins & primaryToggleMask;
-  secondaryState = allPins & secondaryToggleMask;
-  tiltState = allPins & tiltFactorMask;
+  primaryToggleState = allPins & primaryToggleMask;
+  secondaryToggleState = allPins & secondaryToggleMask;
+  primaryTiltState = allPins & primaryTiltMask;
+  secondaryTiltState = allPins & secondaryTiltMask;
 }
 
 void ToggleJoystickAddon::reinit() { this->setup(); }
@@ -120,7 +127,7 @@ void ToggleJoystickAddon::toggleJoystick(Gamepad *gamepad,
         (secondaryToggle == DPAD_MODE_DIGITAL && (prevDpad != prev2Dpad));
     joystickChanged = holdSecondary ? false : joystickChanged;
   }
-  // Release secondary frozen inputs when secondaryState is false
+  // Release secondary frozen inputs when secondaryToggleState is false
   holdSecondary &= bothStatesHeld;
   // Only toggle joystick once the joystick has changed direction at least once
   if (!joystickChanged &&
@@ -167,18 +174,37 @@ void ToggleJoystickAddon::toggleJoystick(Gamepad *gamepad,
 }
 
 void ToggleJoystickAddon::tiltJoystick(Gamepad *gamepad) {
-  if (tiltState && tiltFactor < 100) {
-    gamepad->state.lx = (gamepad->state.lx * tiltFactor +
-                         GAMEPAD_JOYSTICK_MID * (100 - tiltFactor)) /
+  if (primaryTiltState && primaryTiltFactor < 100) {
+    gamepad->state.lx = (gamepad->state.lx * primaryTiltFactor +
+                         GAMEPAD_JOYSTICK_MID * (100 - primaryTiltFactor)) /
                         100;
-    gamepad->state.ly = (gamepad->state.ly * tiltFactor +
-                         GAMEPAD_JOYSTICK_MID * (100 - tiltFactor)) /
+    gamepad->state.ly = (gamepad->state.ly * primaryTiltFactor +
+                         GAMEPAD_JOYSTICK_MID * (100 - primaryTiltFactor)) /
                         100;
-    gamepad->state.rx = (gamepad->state.rx * tiltFactor +
-                         GAMEPAD_JOYSTICK_MID * (100 - tiltFactor)) /
+    gamepad->state.rx = (gamepad->state.rx * primaryTiltFactor +
+                         GAMEPAD_JOYSTICK_MID * (100 - primaryTiltFactor)) /
                         100;
-    gamepad->state.ry = (gamepad->state.ry * tiltFactor +
-                         GAMEPAD_JOYSTICK_MID * (100 - tiltFactor)) /
+    gamepad->state.ry = (gamepad->state.ry * primaryTiltFactor +
+                         GAMEPAD_JOYSTICK_MID * (100 - primaryTiltFactor)) /
+                        100;
+    // If the state is greater than GAMEPAD_JOYSTICK_MID, round up to make it
+    // symmetrical
+    gamepad->state.lx += gamepad->state.lx > GAMEPAD_JOYSTICK_MID;
+    gamepad->state.ly += gamepad->state.ly > GAMEPAD_JOYSTICK_MID;
+    gamepad->state.rx += gamepad->state.rx > GAMEPAD_JOYSTICK_MID;
+    gamepad->state.ry += gamepad->state.ry > GAMEPAD_JOYSTICK_MID;
+  } else if (secondaryTiltState && secondaryTiltFactor < 100) {
+    gamepad->state.lx = (gamepad->state.lx * secondaryTiltFactor +
+                         GAMEPAD_JOYSTICK_MID * (100 - secondaryTiltFactor)) /
+                        100;
+    gamepad->state.ly = (gamepad->state.ly * secondaryTiltFactor +
+                         GAMEPAD_JOYSTICK_MID * (100 - secondaryTiltFactor)) /
+                        100;
+    gamepad->state.rx = (gamepad->state.rx * secondaryTiltFactor +
+                         GAMEPAD_JOYSTICK_MID * (100 - secondaryTiltFactor)) /
+                        100;
+    gamepad->state.ry = (gamepad->state.ry * secondaryTiltFactor +
+                         GAMEPAD_JOYSTICK_MID * (100 - secondaryTiltFactor)) /
                         100;
     // If the state is greater than GAMEPAD_JOYSTICK_MID, round up to make it
     // symmetrical
@@ -226,23 +252,19 @@ void ToggleJoystickAddon::process() {
   Gamepad *gamepad = Storage::getInstance().GetGamepad();
   DpadMode currentDpadMode = gamepad->getOptions().dpadMode;
 
-  if (primaryState) {
-    toggleJoystick(gamepad, currentDpadMode, primaryToggle, prevState == 1,
-                   secondaryState);
-    tiltJoystick(gamepad);
+  tiltJoystick(gamepad);
+  if (primaryToggleState) {
+    toggleJoystick(gamepad, currentDpadMode, primaryToggle,
+                   prevToggleState == 1, secondaryToggleState);
     setPrevJoystick(gamepad, primaryToggle);
-  } else if (secondaryState) {
-    toggleJoystick(gamepad, currentDpadMode, secondaryToggle, prevState >= 2,
-                   false);
-    tiltJoystick(gamepad);
+  } else if (secondaryToggleState) {
+    toggleJoystick(gamepad, currentDpadMode, secondaryToggle,
+                   prevToggleState >= 2, false);
     setPrevJoystick(gamepad, secondaryToggle);
-  } else {
     // On pin release
-    if (onStateChange) {
-      onStateChange = false;
-      gamepad->setDpadMode(defaultDpadMode);
-    }
-    tiltJoystick(gamepad);
+  } else if (onStateChange) {
+    onStateChange = false;
+    gamepad->setDpadMode(defaultDpadMode);
   }
-  prevState = (primaryState << 1) + secondaryState;
+  prevToggleState = (primaryToggleState << 1) + secondaryToggleState;
 }
