@@ -37,7 +37,7 @@ public:
 
 private:
   void toggleJoystick(Gamepad *gamepad, DpadMode currentDpadMode,
-                      DpadMode toggle, bool toggleSwapped);
+                      DpadMode toggle, bool toggleSwapped, bool bothStatesHeld);
   void tiltJoystick(Gamepad *gamepad);
   void setPrevJoystick(Gamepad *gamepad, DpadMode toggle);
 
@@ -50,11 +50,16 @@ private:
   uint32_t secondaryToggleMask;
   uint32_t tiltFactorMask;
   uint32_t prevDpad;
+  uint32_t prev2Dpad;
 
   uint16_t prevLX;
   uint16_t prevLY;
   uint16_t prevRX;
   uint16_t prevRY;
+  uint16_t prev2LX;
+  uint16_t prev2LY;
+  uint16_t prev2RX;
+  uint16_t prev2RY;
 
   uint8_t prevState;
   uint8_t tiltFactor;
@@ -64,6 +69,8 @@ private:
 	bool tiltState;
   bool onStateChange;
   bool joystickChanged;
+	bool holdSecondary;
+	bool freezeInputs;
 };
 
 #endif // _ToggleJoystick_H_
