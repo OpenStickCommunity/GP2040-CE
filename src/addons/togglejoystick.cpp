@@ -167,7 +167,7 @@ void ToggleJoystickAddon::toggleJoystick(Gamepad *gamepad,
 }
 
 void ToggleJoystickAddon::tiltJoystick(Gamepad *gamepad) {
-  if (tiltState) {
+  if (tiltState && tiltFactor < 100) {
     gamepad->state.lx = (gamepad->state.lx * tiltFactor +
                          GAMEPAD_JOYSTICK_MID * (100 - tiltFactor)) /
                         100;
