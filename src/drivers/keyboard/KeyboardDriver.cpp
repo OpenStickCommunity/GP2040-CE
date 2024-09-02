@@ -73,6 +73,17 @@ void KeyboardDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 	if(gamepad->pressedA1()) 	{ pressKey(keyboardMapping.keyButtonA1); }
 	if(gamepad->pressedA2()) 	{ pressKey(keyboardMapping.keyButtonA2); }
 	if(gamepad->pressedE1()) 	{ pressKey(keyboardMapping.keyButtonE1); }
+	if(gamepad->pressedE2()) 	{ pressKey(keyboardMapping.keyButtonE2); }
+	if(gamepad->pressedE3()) 	{ pressKey(keyboardMapping.keyButtonE3); }
+	if(gamepad->pressedE4()) 	{ pressKey(keyboardMapping.keyButtonE4); }
+	if(gamepad->pressedE5()) 	{ pressKey(keyboardMapping.keyButtonE5); }
+	if(gamepad->pressedE6()) 	{ pressKey(keyboardMapping.keyButtonE6); }
+	if(gamepad->pressedE7()) 	{ pressKey(keyboardMapping.keyButtonE7); }
+	if(gamepad->pressedE8()) 	{ pressKey(keyboardMapping.keyButtonE8); }
+	if(gamepad->pressedE9()) 	{ pressKey(keyboardMapping.keyButtonE9); }
+	if(gamepad->pressedE10()) 	{ pressKey(keyboardMapping.keyButtonE10); }
+	if(gamepad->pressedE11()) 	{ pressKey(keyboardMapping.keyButtonE11); }
+	if(gamepad->pressedE12()) 	{ pressKey(keyboardMapping.keyButtonE12); }
 
 	// Wake up TinyUSB device
 	if (tud_suspended())
