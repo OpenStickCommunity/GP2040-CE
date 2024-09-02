@@ -73,7 +73,7 @@ static const uint8_t xinput_device_descriptor[] =
 	0xFF,	      // bDeviceClass
 	0xFF,	      // bDeviceSubClass
 	0xFF,	      // bDeviceProtocol
-	0x08,	      // bMaxPacketSize0
+	0x40,	      // bMaxPacketSize0 64
 	0x5E, 0x04, // idVendor 0x045E
 	0x8E, 0x02, // idProduct 0x028E
 	0x14, 0x01, // bcdDevice 2.14
