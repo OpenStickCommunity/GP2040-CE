@@ -1125,6 +1125,7 @@ std::string setKeyMappings()
     readDoc(keyboardMapping.keyButtonR3, doc, "R3");
     readDoc(keyboardMapping.keyButtonA1, doc, "A1");
     readDoc(keyboardMapping.keyButtonA2, doc, "A2");
+    readDoc(keyboardMapping.keyButtonE1, doc, "E1");
 
     Storage::getInstance().save();
 
@@ -1154,6 +1155,7 @@ std::string getKeyMappings()
     writeDoc(doc, "R3", keyboardMapping.keyButtonR3);
     writeDoc(doc, "A1", keyboardMapping.keyButtonA1);
     writeDoc(doc, "A2", keyboardMapping.keyButtonA2);
+    writeDoc(doc, "E1", keyboardMapping.keyButtonE1);
 
     return serialize_json(doc);
 }

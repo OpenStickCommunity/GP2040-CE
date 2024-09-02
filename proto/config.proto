@@ -50,6 +50,7 @@ message KeyboardMapping
     optional uint32 keyButtonR3 = 16;
     optional uint32 keyButtonA1 = 17;
     optional uint32 keyButtonA2 = 18;
+    optional uint32 keyButtonE1 = 19;
 }
 
 message HotkeyEntry
