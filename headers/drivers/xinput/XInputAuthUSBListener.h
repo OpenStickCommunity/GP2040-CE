@@ -2,6 +2,7 @@
 #define _XINPUTAUTHUSBLISTENER_H_
 
 #include "usblistener.h"
+#include "XInputAuth.h"
 
 class XInputAuthUSBListener : public USBListener {
 public:
@@ -14,10 +15,12 @@ public:
     virtual void set_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len){}
     virtual void get_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len){}
     void process();
+    void setAuthData(XInputAuthData *);
 private:
     uint8_t xinput_dev_addr;
     uint8_t xinput_instance;
     bool mounted;
+    XInputAuthData * xinputAuthData;
 };
 
 #endif // _XINPUTAUTHUSBLISTENER_H_

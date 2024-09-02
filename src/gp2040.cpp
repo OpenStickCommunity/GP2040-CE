@@ -58,6 +58,9 @@ void GP2040::setup() {
 		set_sys_clock_khz(120000, true); // Set Clock to 120MHz to avoid potential USB timing issues
 	}
 
+    stdio_init_all();
+    printf("[GP2040] Setup() \n");
+
 	Gamepad * gamepad = new Gamepad();
 	Gamepad * processedGamepad = new Gamepad();
 	Storage::getInstance().SetGamepad(gamepad);

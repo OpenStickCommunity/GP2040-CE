@@ -74,6 +74,7 @@ bool tuh_xinput_mounted(uint8_t dev_addr, uint8_t instance);
 // - true If succeeded, tuh_xinput_report_received_cb() callback will be invoked when report is available
 // - false if failed to queue the transfer e.g endpoint is busy
 bool tuh_xinput_receive_report(uint8_t dev_addr, uint8_t instance);
+bool tuh_xinput_receive_vendor_report(uint8_t dev_addr, uint8_t instance, uint8_t request, uint16_t value, uint8_t index, uint16_t length, uint8_t * recvBuf);
 
 //--------------------------------------------------------------------+
 // Callbacks (Weak is optional)

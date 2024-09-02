@@ -11,11 +11,42 @@ typedef enum {
     wait_auth_dongle_to_console = 4,
 } XInputAuthState;
 
-typedef struct {
-    XInputAuthState xboneState;
+class XInputAuthBuffer {
+public:
+    XInputAuthBuffer() {
+        data = nullptr;
+        length = 0;
+    }
+    ~XInputAuthBuffer(){
+        if ( data != nullptr ) {
+            delete [] data;
+        }
+    }
 
-    // Console-to-Host e.g. Xbox 360 to MagicBoots
-    bool authCompleted;
+    void setBuffer(uint8_t * inData, uint16_t inLen) {
+        data = new uint8_t[inLen];
+        length = inLen;
+        memcpy(data, inData, inLen);
+    }
+
+    void reset() {
+        if ( data != nullptr ) {
+            delete [] data;
+        }
+        data = nullptr;
+        length = 0;
+    }
+
+    uint8_t * data;
+    uint16_t length;
+};
+
+typedef struct {
+    XInputAuthState xinputState;
+    XInputAuthBuffer consoleBuffer;
+    XInputAuthBuffer dongleBuffer;
+    bool authCompleted = false;
+    bool dongle_ready = false;
 } XInputAuthData;
 
 class XInputAuth : public GPAuthDriver {
@@ -23,7 +54,9 @@ public:
     virtual void initialize();
     virtual bool available();
     void process();
+    XInputAuthData * getAuthData() { return &xinputAuthData; }
 private:
+    XInputAuthData xinputAuthData;
 };
 
 #endif
