@@ -285,7 +285,6 @@ void ButtonLayoutScreen::processInputHistory() {
 
 	// Get key states
 	std::array<bool, INPUT_HISTORY_MAX_INPUTS> currentInput = {
-
 		pressedUp(),
 		pressedDown(),
 		pressedLeft(),
@@ -310,6 +309,19 @@ void ButtonLayoutScreen::processInputHistory() {
 		getProcessedGamepad()->pressedR3(),
 		getProcessedGamepad()->pressedA1(),
 		getProcessedGamepad()->pressedA2(),
+
+        getProcessedGamepad()->pressedE1(),
+        getProcessedGamepad()->pressedE2(),
+        getProcessedGamepad()->pressedE3(),
+        getProcessedGamepad()->pressedE4(),
+        getProcessedGamepad()->pressedE5(),
+        getProcessedGamepad()->pressedE6(),
+        getProcessedGamepad()->pressedE7(),
+        getProcessedGamepad()->pressedE8(),
+        getProcessedGamepad()->pressedE9(),
+        getProcessedGamepad()->pressedE10(),
+        getProcessedGamepad()->pressedE11(),
+        getProcessedGamepad()->pressedE12(),
 	};
 
 	uint8_t mode = ((displayModeLookup.count(getGamepad()->getOptions().inputMode) > 0) ? displayModeLookup.at(getGamepad()->getOptions().inputMode) : 0);

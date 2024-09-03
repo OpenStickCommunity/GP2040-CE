@@ -11,7 +11,7 @@
 #include "GPGFX_UI_widgets.h"
 #include "GPGFX_UI_layouts.h"
 
-#define INPUT_HISTORY_MAX_INPUTS 22
+#define INPUT_HISTORY_MAX_INPUTS 34
 #define INPUT_HISTORY_MAX_MODES 11
 
 // Static to ensure memory is never doubled
@@ -42,7 +42,11 @@ static const char * displayNames[INPUT_HISTORY_MAX_MODES][INPUT_HISTORY_MAX_INPU
             CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
             "B1", "B2", "B3", "B4",
             "L1", "R1", "L2", "R2",
-            "S1", "S2", "L3", "R3", "A1", "A2"
+            "S1", "S2", "L3", "R3", 
+            "A1", "A2", "E1", "E2",
+            "E3", "E4", "E5", "E6",
+            "E7", "E8", "E9", "E10",
+            "E11", "E12"
     },
     {		// PS4
             CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
