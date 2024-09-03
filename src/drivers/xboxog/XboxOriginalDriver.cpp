@@ -73,10 +73,16 @@ void XboxOriginalDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
     {
         uint8_t leftValue = (xboxOriginalReportOut.lValue >> 8);
         uint8_t rightValue = (xboxOriginalReportOut.rValue >> 8);
-        gamepad->auxState.haptics.leftActuator.active = (leftValue > 0);
-        gamepad->auxState.haptics.leftActuator.intensity = leftValue;
-        gamepad->auxState.haptics.rightActuator.active = (rightValue > 0);
-        gamepad->auxState.haptics.rightActuator.intensity = rightValue;
+        
+        if (gamepad->auxState.haptics.leftActuator.enabled) {
+            gamepad->auxState.haptics.leftActuator.active = (leftValue > 0);
+            gamepad->auxState.haptics.leftActuator.intensity = leftValue;
+        }
+
+        if (gamepad->auxState.haptics.rightActuator.enabled) {
+            gamepad->auxState.haptics.rightActuator.active = (rightValue > 0);
+            gamepad->auxState.haptics.rightActuator.intensity = rightValue;
+        }
     }
 }
 

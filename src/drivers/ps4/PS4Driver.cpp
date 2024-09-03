@@ -417,15 +417,22 @@ void PS4Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uin
             //report[8] = Flash On Period
             //report[9] = Flash Off Period
 
-            gamepad->auxState.haptics.leftActuator.active = (buffer[4] > 0);
-            gamepad->auxState.haptics.leftActuator.intensity = buffer[4];
-            gamepad->auxState.haptics.rightActuator.active = (buffer[5] > 0);
-            gamepad->auxState.haptics.rightActuator.intensity = buffer[5];
-            
-            gamepad->auxState.sensors.statusLight.enabled = true;
-            gamepad->auxState.sensors.statusLight.color.red = buffer[6];
-            gamepad->auxState.sensors.statusLight.color.green = buffer[7];
-            gamepad->auxState.sensors.statusLight.color.blue = buffer[8];
+            if (gamepad->auxState.haptics.leftActuator.enabled) {
+                gamepad->auxState.haptics.leftActuator.active = (buffer[4] > 0);
+                gamepad->auxState.haptics.leftActuator.intensity = buffer[4];
+            }
+
+            if (gamepad->auxState.haptics.rightActuator.enabled) {
+                gamepad->auxState.haptics.rightActuator.active = (buffer[5] > 0);
+                gamepad->auxState.haptics.rightActuator.intensity = buffer[5];
+            }
+
+            if (gamepad->auxState.sensors.statusLight.enabled) {
+                gamepad->auxState.sensors.statusLight.active = true;
+                gamepad->auxState.sensors.statusLight.color.red = buffer[6];
+                gamepad->auxState.sensors.statusLight.color.green = buffer[7];
+                gamepad->auxState.sensors.statusLight.color.blue = buffer[8];
+            }
         } else {
             //for (uint8_t i = 0; i < bufsize; i++) {
             //    printf("%02x ", buffer[i]);

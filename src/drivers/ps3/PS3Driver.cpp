@@ -6,6 +6,7 @@
 #include "drivers/ps3/PS3Driver.h"
 #include "drivers/ps3/PS3Descriptors.h"
 #include "drivers/shared/driverhelper.h"
+#include "storagemanager.h"
 
 void PS3Driver::initialize() {
     //stdio_init_all();
@@ -262,7 +263,18 @@ void PS3Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uin
         }
         switch(report_id) {
             case PS3ReportTypes::PS3_FEATURE_01:
+                Gamepad * gamepad = Storage::getInstance().GetGamepad();
                 memcpy(&ps3Features, buf, bufsize);
+
+                if (gamepad->auxState.haptics.leftActuator.enabled) {
+                    gamepad->auxState.haptics.leftActuator.active = (ps3Features.leftMotorPower > 0);
+                    gamepad->auxState.haptics.leftActuator.intensity = ps3Features.leftMotorPower;
+                }
+
+                if (gamepad->auxState.haptics.rightActuator.enabled) {
+                    gamepad->auxState.haptics.rightActuator.active = (ps3Features.rightMotorPower > 0);
+                    gamepad->auxState.haptics.rightActuator.intensity = ps3Features.rightMotorPower;
+                }
                 break;
         }
     }
