@@ -19,8 +19,6 @@
 void PS4Driver::initialize() {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
 
-    //stdio_init_all();
-
     touchpadData.p1.unpressed = 1;
     touchpadData.p1.set_x(PS4_TP_X_MAX / 2);
     touchpadData.p1.set_y(PS4_TP_Y_MAX / 2);
@@ -29,7 +27,7 @@ void PS4Driver::initialize() {
     touchpadData.p2.set_y(PS4_TP_Y_MAX / 2);
 
     sensorData.powerLevel = 0xB; // 0x00-0x0A, 0x00-0x0B if charging
-    sensorData.charging = 1;
+    sensorData.charging = 1;     // set this to 1 to show as plugged in
     sensorData.headphones = 0;
     sensorData.microphone = 0;
     sensorData.extension = 0;
@@ -274,12 +272,14 @@ static constexpr uint8_t output_0x03[] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
+// Bluetooth device and host details
 static constexpr uint8_t output_0x12[] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // device MAC address
     0x08, 0x25, 0x00,                   // BT device class
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00  // host MAC address
 };
 
+// Controller firmware version and datestamp
 static constexpr uint8_t output_0xa3[] = {
     0x4a, 0x75, 0x6e, 0x20, 0x20, 0x39, 0x20, 0x32,
     0x30, 0x31, 0x37, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -295,11 +295,6 @@ static constexpr uint8_t output_0xf3[] = { 0x0, 0x38, 0x38, 0, 0, 0, 0 };
 
 // tud_hid_get_report_cb
 uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
-    //if ((report_id == PS4AuthReport::PS4_SET_AUTH_PAYLOAD) || (report_id == PS4AuthReport::PS4_GET_SIGNATURE_NONCE) || (report_id == PS4AuthReport::PS4_GET_SIGNING_STATE) || (report_id == PS4AuthReport::PS4_RESET_AUTH)) {
-    //    uint32_t now = to_ms_since_boot(get_absolute_time());
-    //    printf("[%d] PS4Driver::get_report RPT: %02x, Type: %02x, Size: %d\n", now, report_id, report_type, reqlen);
-    //}
-
     if ( report_type != HID_REPORT_TYPE_FEATURE ) {
         memcpy(buffer, &ps4Report, sizeof(ps4Report));
         return sizeof(ps4Report);
@@ -394,11 +389,6 @@ uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
 
 // Only PS4 does anything with set report
 void PS4Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize) {
-    //if ((report_id == PS4AuthReport::PS4_SET_AUTH_PAYLOAD) || (report_id == PS4AuthReport::PS4_GET_SIGNATURE_NONCE) || (report_id == PS4AuthReport::PS4_GET_SIGNING_STATE) || (report_id == PS4AuthReport::PS4_RESET_AUTH)) {
-    //    uint32_t now = to_ms_since_boot(get_absolute_time());
-    //    printf("[%d] PS4Driver::set_report RPT: %02x, Type: %02x, Size: %d\n", now, report_id, report_type, bufsize);
-    //}
-
     if (( report_type != HID_REPORT_TYPE_FEATURE ) && ( report_type != HID_REPORT_TYPE_OUTPUT ))
         return;
 
@@ -407,15 +397,15 @@ void PS4Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uin
 
         if (report_id == 0) {
             // sets rumble, lightbar, etc
-            //report[3] = Rumble Weak
-            //report[4] = Rumble Strong
+            //report[4] = Rumble Weak
+            //report[5] = Rumble Strong
             //
-            //report[5] = Red
-            //report[6] = Green
-            //report[7] = Blue
+            //report[6] = Red
+            //report[7] = Green
+            //report[8] = Blue
             //
-            //report[8] = Flash On Period
-            //report[9] = Flash Off Period
+            //report[9] = Flash On Period
+            //report[10] = Flash Off Period
 
             if (gamepad->auxState.haptics.leftActuator.enabled) {
                 gamepad->auxState.haptics.leftActuator.active = (buffer[4] > 0);
@@ -433,11 +423,6 @@ void PS4Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uin
                 gamepad->auxState.sensors.statusLight.color.green = buffer[7];
                 gamepad->auxState.sensors.statusLight.color.blue = buffer[8];
             }
-        } else {
-            //for (uint8_t i = 0; i < bufsize; i++) {
-            //    printf("%02x ", buffer[i]);
-            //}
-            //printf("\n");
         }
     } else if (report_type == HID_REPORT_TYPE_FEATURE) {
         uint8_t nonce_id;
@@ -449,15 +434,9 @@ void PS4Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uin
         uint16_t buflen;
 
         if (report_id == PS4AuthReport::PS4_SET_HOST_MAC) {
-            //for (uint8_t i = 0; i < bufsize; i++) {
-            //    printf("%02x ", buffer[i]);
-            //}
-            //printf("\n");
+            // 
         } else if (report_id == PS4AuthReport::PS4_SET_USB_BT_CONTROL) {
-            //for (uint8_t i = 0; i < bufsize; i++) {
-            //    printf("%02x ", buffer[i]);
-            //}
-            //printf("\n");
+            // 
         } else if (report_id == PS4AuthReport::PS4_SET_AUTH_PAYLOAD) {
             if (bufsize != 63 ) {
                 return;
@@ -490,11 +469,6 @@ void PS4Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uin
 
             memcpy(nonce, &sendBuffer[4], noncelen);
             save_nonce(nonce_id, nonce_page, nonce, noncelen);
-        } else {
-            //for (uint8_t i = 0; i < bufsize; i++) {
-            //    printf("%02x ", buffer[i]);
-            //}
-            //printf("\n");
         }
     }
 }
