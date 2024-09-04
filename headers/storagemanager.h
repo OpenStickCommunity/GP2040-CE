@@ -70,6 +70,7 @@ public:
 
 	void setProfile(const uint32_t);		// profile support for multiple mappings
 	void nextProfile();
+	void previousProfile();
 	void setFunctionalPinMappings();
 
 	void ResetSettings(); 				// EEPROM Reset Feature

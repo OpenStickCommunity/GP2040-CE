@@ -123,6 +123,17 @@ void Storage::nextProfile()
 {
     this->config.gamepadOptions.profileNumber = (this->config.gamepadOptions.profileNumber % 4) + 1;
 }
+void Storage::previousProfile()
+{
+	if (this->config.gamepadOptions.profileNumber == 1)
+	{
+		this->config.gamepadOptions.profileNumber = 4;
+	}
+	else
+	{
+		this->config.gamepadOptions.profileNumber -= 1;
+	}
+}
 
 void Storage::setFunctionalPinMappings()
 {
