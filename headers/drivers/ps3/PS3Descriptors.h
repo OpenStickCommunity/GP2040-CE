@@ -72,7 +72,7 @@
 typedef enum {
     PS3_FEATURE_01 = 0x01,
     PS3_FEATURE_EF = 0xEF,
-    PS3_FEATURE_F2 = 0xF2,
+    PS3_GET_PAIRING_INFO = 0xF2,
     PS3_FEATURE_F4 = 0xF4,
     PS3_FEATURE_F5 = 0xF5,
     PS3_FEATURE_F7 = 0xF7,

@@ -9,8 +9,6 @@
 #include "storagemanager.h"
 
 void PS3Driver::initialize() {
-    //stdio_init_all();
-
     ps3Report = {
         .reportID = 1,
         .reserved = 0,
@@ -155,14 +153,14 @@ static constexpr uint8_t output_ps3_0xef[] = {
 // bluetooth data
 static constexpr uint8_t output_ps3_0xf2[] = {
     0xff, 0xff, 
-    0x00, 0xac, 0x7a, 0x4d, 0x2c, 0x6d, 0x7a, // device address 
-    0x00, 0x03, 0x55, 0x03, 0xc3, 0x01, 0x8a, // host address
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // device address 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // host address
     0x00,
 };
 
 // unknown
 static constexpr uint8_t output_ps3_0xf5[] = {
-    0x00, 0x44, 0xd8, 0x32, 0x53, 0x87, 0xc2,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -198,9 +196,6 @@ static constexpr uint8_t output_ps3_0xf8[] = {
 
 // tud_hid_get_report_cb
 uint16_t PS3Driver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
-    //uint32_t now = to_ms_since_boot(get_absolute_time());
-    //printf("[%d] PS3Driver::get_report RPT: %02x, Type: %02x, Size: %d\n", now, report_id, report_type, reqlen);
-
     if ( report_type == HID_REPORT_TYPE_INPUT ) {
         memcpy(buffer, &ps3Report, sizeof(PS3Report));
         return sizeof(PS3Report);
@@ -216,7 +211,7 @@ uint16_t PS3Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
                 memcpy(buffer, output_ps3_0xef, responseLen);
                 buffer[6] = efByte;
                 return responseLen;
-            case PS3ReportTypes::PS3_FEATURE_F2:
+            case PS3ReportTypes::PS3_GET_PAIRING_INFO:
                 responseLen = reqlen;
                 memcpy(buffer, output_ps3_0xf2, responseLen);
                 return responseLen;
@@ -238,15 +233,7 @@ uint16_t PS3Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
     return -1;
 }
 
-// Only PS4 does anything with set report
 void PS3Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize) {
-//    uint32_t now = to_ms_since_boot(get_absolute_time());
-//    printf("[%d] PS3Driver::set_report RPT: %02x, Type: %02x, Size: %d\n", now, report_id, report_type, bufsize);
-//    for (uint8_t i = 0; i < bufsize; i++) {
-//        printf("%02x ", buffer[i]);
-//    }
-//    printf("\n");
-
     if ( report_type == HID_REPORT_TYPE_FEATURE ) {
         switch(report_id) {
             case PS3ReportTypes::PS3_FEATURE_EF:
