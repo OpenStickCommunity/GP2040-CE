@@ -8,7 +8,8 @@ export default {
 	'pin-header-label': 'Pin',
 
 	'profile-label-title': 'Profile name',
-	'profile-label-description': 'Max 16 characters',
+	'profile-label-description':
+		'Max 16 characters. Letters, numbers, and spaces allowed.',
 	'profile-pin-mapping-title': '{{profileLabel}} - Pin Mapping',
 	'profile-label-default': 'Profile {{profileNumber}}',
 	'profile-pins-warning':

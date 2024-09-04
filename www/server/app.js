@@ -267,7 +267,7 @@ app.get('/api/getCustomTheme', (req, res) => {
 });
 
 app.get('/api/getPinMappings', (req, res) => {
-	return res.send(createPinMappings({ profileLabel: 'Base(Profile 1)' }));
+	return res.send(createPinMappings({ profileLabel: 'Profile 1' }));
 });
 
 app.get('/api/getKeyMappings', (req, res) =>

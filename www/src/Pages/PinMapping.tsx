@@ -109,7 +109,11 @@ const ProfileLabel = memo(function ProfileLabel({
 		(state) => state.profiles[profileIndex].profileLabel,
 	);
 	const onLabelChange = useCallback(
-		(event) => setProfileLabel(profileIndex, event.target.value),
+		(event) =>
+			setProfileLabel(
+				profileIndex,
+				event.target.value.replace(/[^a-zA-Z0-9\s]/g, ''),
+			),
 		[],
 	);
 
@@ -124,6 +128,7 @@ const ProfileLabel = memo(function ProfileLabel({
 				})}
 				onChange={onLabelChange}
 				maxLength={16}
+				pattern="[a-zA-Z0-9\s]+"
 			/>
 			<Form.Text muted>{t('PinMapping:profile-label-description')}</Form.Text>
 		</div>
