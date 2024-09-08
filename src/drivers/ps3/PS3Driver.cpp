@@ -7,6 +7,7 @@
 #include "drivers/ps3/PS3Descriptors.h"
 #include "drivers/shared/driverhelper.h"
 #include "storagemanager.h"
+#include "pico/rand.h"
 
 void PS3Driver::initialize() {
     ps3Report = {
@@ -34,6 +35,21 @@ void PS3Driver::initialize() {
         .gyroscope_z = PS3_CENTER_SIXAXIS,
         .reserved4 = PS3_CENTER_SIXAXIS
     };
+
+    // generate addresses
+    ps3BTInfo = {
+        .reserved = {0xFF,0xFF},
+        .deviceAddress = { 0x00, 0x20, 0x40, 0xCE, 0x00, 0x00, 0x00 },
+        .hostAddress = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }
+    };
+
+    for (uint8_t addr = 0; addr < 3; addr++) {
+        ps3BTInfo.deviceAddress[4+addr] = (uint8_t)(get_rand_32() % 0xff);
+    }
+
+    for (uint8_t addr = 0; addr < 6; addr++) {
+        ps3BTInfo.hostAddress[1+addr] = (uint8_t)(get_rand_32() % 0xff);
+    }
 
     class_driver = {
     #if CFG_TUSB_DEBUG >= 2
@@ -150,17 +166,9 @@ static constexpr uint8_t output_ps3_0xef[] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06,
 };
 
-// bluetooth data
-static constexpr uint8_t output_ps3_0xf2[] = {
-    0xff, 0xff, 
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // device address 
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // host address
-    0x00,
-};
-
 // unknown
 static constexpr uint8_t output_ps3_0xf5[] = {
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // host address - must match 0xf2
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -201,6 +209,7 @@ uint16_t PS3Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
         return sizeof(PS3Report);
     } else if ( report_type == HID_REPORT_TYPE_FEATURE ) {
         uint16_t responseLen = 0;
+        uint8_t ctr = 0;
         switch(report_id) {
             case PS3ReportTypes::PS3_FEATURE_01:
                 responseLen = reqlen;
@@ -213,11 +222,14 @@ uint16_t PS3Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
                 return responseLen;
             case PS3ReportTypes::PS3_GET_PAIRING_INFO:
                 responseLen = reqlen;
-                memcpy(buffer, output_ps3_0xf2, responseLen);
+                memcpy(buffer, &ps3BTInfo, responseLen);
                 return responseLen;
             case PS3ReportTypes::PS3_FEATURE_F5:
                 responseLen = reqlen;
                 memcpy(buffer, output_ps3_0xf5, responseLen);
+                for (ctr = 0; ctr < 6; ctr++) {
+                    buffer[1+ctr] = ps3BTInfo.hostAddress[ctr];
+                }
                 return responseLen;
             case PS3ReportTypes::PS3_FEATURE_F7:
                 responseLen = reqlen;

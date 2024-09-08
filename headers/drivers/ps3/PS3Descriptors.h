@@ -242,6 +242,14 @@ typedef struct __attribute((packed, aligned(1)))
     uint8_t reserved3[38];
 } PS3Features; // 48 length
 
+typedef struct __attribute((packed, aligned(1)))
+{
+    uint8_t reserved[2];
+    uint8_t deviceAddress[7]; // leading zero followed by address
+    uint8_t hostAddress[7]; // leading zero followed by address
+    uint8_t reserved1;
+} PS3BTInfo;
+
 static const uint8_t ps3_string_language[]     = { 0x09, 0x04 };
 static const uint8_t ps3_string_manufacturer[] = "Open Stick Community";
 static const uint8_t ps3_string_product[]      = "GP2040-CE (PS3)";
