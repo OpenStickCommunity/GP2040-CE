@@ -7,14 +7,7 @@ import Section from '../Components/Section';
 import FormSelect from '../Components/FormSelect';
 
 import FormControl from '../Components/FormControl';
-import { DUAL_STICK_MODES } from '../Data/Addons';
-
-const DUAL_COMBINE_MODES = [
-	{ label: 'Mixed', value: 0 },
-	{ label: 'Gamepad Override', value: 1 },
-	{ label: 'DDI Override', value: 2 },
-	{ label: 'None', value: 3 },
-];
+import { DUAL_COMBINE_MODES, DUAL_STICK_MODES } from '../Data/Addons';
 
 export const dualDirectionScheme = {
 	DualDirectionalInputEnabled: yup
@@ -73,7 +66,7 @@ const DualDirection = ({ values, errors, handleChange, handleCheckbox }) => {
 								key={`button-dualDirDpadMode-option-${i}`}
 								value={o.value}
 							>
-								{o.label}
+								{t(`AddonsConfig:dual-directional-input-dual-dpad-mode-${i}`)}
 							</option>
 						))}
 					</FormSelect>
@@ -93,7 +86,7 @@ const DualDirection = ({ values, errors, handleChange, handleCheckbox }) => {
 								key={`button-dualDirCombineMode-option-${i}`}
 								value={o.value}
 							>
-								{o.label}
+								{t(`AddonsConfig:dual-directional-input-combine-mode-${i}`)}
 							</option>
 						))}
 					</FormSelect>

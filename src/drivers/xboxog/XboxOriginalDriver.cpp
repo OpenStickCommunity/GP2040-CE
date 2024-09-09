@@ -41,8 +41,8 @@ void XboxOriginalDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
     xboxOriginalReport.B     = (gamepad->pressedB2() ? 0xFF : 0);
     xboxOriginalReport.X     = (gamepad->pressedB3() ? 0xFF : 0);
     xboxOriginalReport.Y     = (gamepad->pressedB4() ? 0xFF : 0);
-    xboxOriginalReport.BLACK = (gamepad->pressedL1() ? 0xFF : 0);
-    xboxOriginalReport.WHITE = (gamepad->pressedR1() ? 0xFF : 0);
+    xboxOriginalReport.BLACK = (gamepad->pressedR1() ? 0xFF : 0);
+    xboxOriginalReport.WHITE = (gamepad->pressedL1() ? 0xFF : 0);
 
     // analog triggers
 	if (gamepad->hasAnalogTriggers) {

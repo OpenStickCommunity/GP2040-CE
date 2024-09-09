@@ -44,10 +44,10 @@ void ButtonLayoutScreen::init() {
     // macro display now uses our pin functions, so we need to check if pins are enabled...
     macroEnabled = false;
     // Macro Button initialized by void Gamepad::setup()
-    GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
+    GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
     {
-        switch( pinMappings[pin] ) {
+        switch( pinMappings[pin].action ) {
             case GpioAction::BUTTON_PRESS_MACRO:
             case GpioAction::BUTTON_PRESS_MACRO_1:
             case GpioAction::BUTTON_PRESS_MACRO_2:
@@ -129,7 +129,8 @@ void ButtonLayoutScreen::generateHeader() {
 	// Display standard header
 	switch (inputMode)
 	{
-		case INPUT_MODE_HID:    statusBar += "DINPUT"; break;
+		case INPUT_MODE_PS3:    statusBar += "PS3"; break;
+		case INPUT_MODE_GENERIC: statusBar += "USBHID"; break;
 		case INPUT_MODE_SWITCH: statusBar += "SWITCH"; break;
 		case INPUT_MODE_XINPUT: statusBar += "XINPUT"; break;
 		case INPUT_MODE_MDMINI: statusBar += "GEN/MD"; break;

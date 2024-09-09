@@ -18,11 +18,16 @@ execute_process(COMMAND ${GIT_EXECUTABLE} describe --tags --always --dirty
 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 	OUTPUT_VARIABLE GIT_REPO_VERSION
 	OUTPUT_STRIP_TRAILING_WHITESPACE)
+execute_process(COMMAND ${GIT_EXECUTABLE} describe --always --abbrev=7
+	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+	OUTPUT_VARIABLE GIT_REPO_BUILD_ID
+	OUTPUT_STRIP_TRAILING_WHITESPACE)
 string(REGEX REPLACE "v([0-9]+\\.[0-9]+\\.[0-9]+).*" "\\1" CMAKE_GIT_REPO_VERSION ${GIT_REPO_VERSION})
 string(REGEX REPLACE "^(.......-.*)|(.......)$" "0.0.0" CMAKE_GIT_REPO_VERSION ${CMAKE_GIT_REPO_VERSION}) # fix if all we have is the git SHA
 configure_file("headers/version.h.in" "headers/version.h")
 message("GIT_REPO_VERSION is ${GIT_REPO_VERSION}")
 message("CMAKE_GIT_REPO_VERSION is ${CMAKE_GIT_REPO_VERSION}")
+message("GIT_REPO_BUILD_ID is ${GIT_REPO_BUILD_ID}")
 
 # Uncomment the next line for an unomptimized build for debugging. Use in conjunction with the Debug build type.
 # set(PICO_DEOPTIMIZED_DEBUG 1)
@@ -155,6 +160,7 @@ src/drivers/mdmini/MDMiniDriver.cpp
 src/drivers/neogeo/NeoGeoDriver.cpp
 src/drivers/net/NetDriver.cpp
 src/drivers/pcengine/PCEngineDriver.cpp
+src/drivers/ps3/PS3Driver.cpp
 src/drivers/ps4/PS4Auth.cpp
 src/drivers/ps4/PS4AuthUSBListener.cpp
 src/drivers/ps4/PS4Driver.cpp
@@ -186,6 +192,8 @@ src/display/ui/elements/GPSprite.cpp
 src/display/ui/screens/ButtonLayoutScreen.cpp
 src/display/ui/screens/ConfigScreen.cpp
 src/display/ui/screens/MainMenuScreen.cpp
+src/display/ui/screens/PinViewerScreen.cpp
+src/display/ui/screens/StatsScreen.cpp
 src/display/ui/screens/SplashScreen.cpp
 src/display/GPGFX.cpp
 src/display/GPGFX_UI.cpp
@@ -215,8 +223,10 @@ src/addons/display.cpp
 src/addons/neopicoleds.cpp
 src/addons/playernum.cpp
 src/addons/playerleds.cpp
+src/addons/reactiveleds.cpp
 src/addons/rotaryencoder.cpp
 src/addons/reverse.cpp
+src/addons/drv8833_rumble.cpp
 src/addons/turbo.cpp
 src/addons/slider_socd.cpp
 src/addons/wiiext.cpp
@@ -263,8 +273,10 @@ headers/configs
 headers/drivers
 headers/interfaces
 headers/interfaces/i2c
+headers/interfaces/i2c/ads1219
 headers/interfaces/i2c/pcf8575
 headers/interfaces/i2c/ssd1306
+headers/interfaces/i2c/wiiextension
 headers/gamepad
 headers/display
 headers/display/fonts

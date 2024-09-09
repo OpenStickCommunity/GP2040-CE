@@ -25,6 +25,20 @@ export const baseButtonMappings = {
 	R3: { pin: -1, key: 0, error: null },
 	A1: { pin: -1, key: 0, error: null },
 	A2: { pin: -1, key: 0, error: null },
+	A3: { pin: -1, key: 0, error: null },
+	A4: { pin: -1, key: 0, error: null },
+	E1: { pin: -1, key: 0, error: null },
+	E2: { pin: -1, key: 0, error: null },
+	E3: { pin: -1, key: 0, error: null },
+	E4: { pin: -1, key: 0, error: null },
+	E5: { pin: -1, key: 0, error: null },
+	E6: { pin: -1, key: 0, error: null },
+	E7: { pin: -1, key: 0, error: null },
+	E8: { pin: -1, key: 0, error: null },
+	E9: { pin: -1, key: 0, error: null },
+	E10: { pin: -1, key: 0, error: null },
+	E11: { pin: -1, key: 0, error: null },
+	E12: { pin: -1, key: 0, error: null },
 	Fn: { pin: -1, key: 0, error: null },
 };
 
@@ -191,9 +205,6 @@ async function getDisplayOptions() {
 	try {
 		const response = await Http.get(`${baseUrl}/api/getDisplayOptions`);
 
-		if (response.data.i2cAddress) {
-			response.data.i2cAddress = '0x' + response.data.i2cAddress.toString(16);
-		}
 		response.data.splashDuration = response.data.splashDuration / 1000; // milliseconds to seconds
 		response.data.displaySaverTimeout =
 			response.data.displaySaverTimeout / 60000; // milliseconds to minutes
@@ -206,7 +217,6 @@ async function getDisplayOptions() {
 
 async function setDisplayOptions(options, isPreview) {
 	let newOptions = sanitizeRequest(options);
-	newOptions.i2cAddress = parseInt(options.i2cAddress);
 	newOptions.buttonLayout = parseInt(options.buttonLayout);
 	newOptions.buttonLayoutRight = parseInt(options.buttonLayoutRight);
 	newOptions.splashMode = parseInt(options.splashMode);
@@ -362,7 +372,7 @@ async function setCustomTheme(customThemeOptions) {
 		});
 }
 
-async function getButtonLayouts(setLoading) {
+async function getButtonLayouts() {
 	try {
 		const response = await Http.get(`${baseUrl}/api/getButtonLayouts`);
 
@@ -372,7 +382,7 @@ async function getButtonLayouts(setLoading) {
 	}
 }
 
-async function getButtonLayoutDefs(setLoading) {
+async function getButtonLayoutDefs() {
 	try {
 		const response = await Http.get(`${baseUrl}/api/getButtonLayoutDefs`);
 
@@ -555,6 +565,22 @@ async function setWiiControls(mappings) {
 		});
 }
 
+async function getReactiveLEDs(setLoading) {
+	setLoading(true);
+	try {
+		const response = await Http.get(`${baseUrl}/api/getReactiveLEDs`);
+		return response.data;
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+async function setReactiveLEDs(leds) {
+	console.dir(leds);
+
+	return Http.post(`${baseUrl}/api/setReactiveLEDs`, leds);
+}
+
 async function getPeripheralOptions(setLoading) {
 	setLoading(true);
 	try {
@@ -673,7 +699,7 @@ function sanitizeRequest(request) {
 	return newRequest;
 }
 
-const WebApi = {
+export default {
 	resetSettings,
 	getDisplayOptions,
 	setDisplayOptions,
@@ -700,6 +726,8 @@ const WebApi = {
 	setPeripheralOptions,
 	getExpansionPins,
 	setExpansionPins,
+	getReactiveLEDs,
+	setReactiveLEDs,
 	getButtonLayouts,
 	getButtonLayoutDefs,
 	getSplashImage,
@@ -711,5 +739,3 @@ const WebApi = {
 	abortGetHeldPins,
 	reboot,
 };
-
-export default WebApi;

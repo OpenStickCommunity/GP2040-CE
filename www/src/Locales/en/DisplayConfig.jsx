@@ -38,5 +38,9 @@ export default {
 		'inverted-label': 'Inverted',
 		'power-management-header': 'Power Management',
 		'turn-off-when-suspended': 'Turn Off When Suspended',
+		'flip-display-none': 'None',
+		'flip-display-flip': 'Flip',
+		'flip-display-mirror': 'Mirror',
+		'flip-display-flip-mirror': 'Flip and Mirror',
 	},
 };

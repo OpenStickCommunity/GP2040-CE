@@ -31,6 +31,12 @@
 	.react-select__input-container {
 		color: inherit;
 	}
+	.react-select__multi-value {
+		background-color: var(--bs-secondary-bg);
+		.react-select__multi-value__label {
+			color: inherit;
+		}
+	}
 }
 
 .react-select__option {

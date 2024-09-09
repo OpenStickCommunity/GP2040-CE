@@ -16,6 +16,13 @@ const __dirname = path.dirname(__filename);
 const { pico: picoController } = JSON.parse(
 	readFileSync(path.resolve(__dirname, '../src/Data/Controllers.json'), 'utf8'),
 );
+const PinMappings = Object.entries(picoController).reduce(
+	(acc, [key, value]) => ({
+		...acc,
+		[key]: { action: value, customButtonMask: 0, customDpadMask: 0 },
+	}),
+	{},
+);
 
 const port = process.env.PORT || 8080;
 
@@ -38,8 +45,6 @@ app.get('/api/resetSettings', (req, res) => {
 app.get('/api/getDisplayOptions', (req, res) => {
 	const data = {
 		enabled: 1,
-		i2cAddress: 61,
-		i2cBlock: 0,
 		flipDisplay: 0,
 		invertDisplay: 1,
 		buttonLayout: 0,
@@ -254,7 +259,7 @@ app.get('/api/getCustomTheme', (req, res) => {
 });
 
 app.get('/api/getPinMappings', (req, res) => {
-	return res.send(picoController);
+	return res.send(PinMappings);
 });
 
 app.get('/api/getKeyMappings', (req, res) =>
@@ -374,7 +379,7 @@ app.get('/api/getWiiControls', (req, res) =>
 
 app.get('/api/getProfileOptions', (req, res) => {
 	return res.send({
-		alternativePinMappings: [picoController, picoController, picoController],
+		alternativePinMappings: [PinMappings, PinMappings, PinMappings],
 	});
 });
 
@@ -389,8 +394,6 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		reverseActionDown: 1,
 		reverseActionLeft: 1,
 		reverseActionRight: 1,
-		i2cAnalog1219Block: 0,
-		i2cAnalog1219Address: 0x40,
 		onBoardLedMode: 0,
 		dualDirDpadMode: 0,
 		dualDirCombineMode: 0,
@@ -430,6 +433,12 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		buzzerPin: -1,
 		buzzerEnablePin: -1,
 		buzzerVolume: 100,
+		drv8833RumbleLeftMotorPin: -1,
+		drv8833RumbleRightMotorPin: -1,
+		drv8833RumbleMotorSleepPin: -1,
+		drv8833RumblePWMFrequency: 10000,
+		drv8833RumbleDutyMin: 0,
+		drv8833RumbleDutyMax: 100,
 		focusModePin: -1,
 		focusModeButtonLockMask: 0,
 		focusModeButtonLockEnabled: 0,
@@ -450,7 +459,6 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		shmupBtnMask4: 0,
 		pinShmupDial: -1,
 		sliderSOCDModeDefault: 1,
-		wiiExtensionBlock: 0,
 		snesPadClockPin: -1,
 		snesPadLatchPin: -1,
 		snesPadDataPin: -1,
@@ -500,8 +508,9 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		encoderTwoAllowWrapAround: false,
 		encoderTwoMultiplier: 1,
 		RotaryAddonEnabled: 1,
-		pcf8575Block: 0,
 		PCF8575AddonEnabled: 1,
+		DRV8833RumbleAddonEnabled: 1,
+		ReactiveLEDAddonEnabled: 1,
 		usedPins: Object.values(picoController),
 	});
 });
@@ -679,6 +688,7 @@ app.get('/api/getButtonLayoutDefs', (req, res) => {
 			BUTTON_LAYOUT_6GAWD_A: 30,
 			BUTTON_LAYOUT_6GAWD_ALLBUTTON_A: 31,
 			BUTTON_LAYOUT_6GAWD_ALLBUTTONPLUS_A: 32,
+			BUTTON_LAYOUT_STICKLESS_R16: 33,
 		},
 		buttonLayoutRight: {
 			BUTTON_LAYOUT_ARCADE: 0,
@@ -718,7 +728,25 @@ app.get('/api/getButtonLayoutDefs', (req, res) => {
 			BUTTON_LAYOUT_6GAWD_B: 34,
 			BUTTON_LAYOUT_6GAWD_ALLBUTTON_B: 35,
 			BUTTON_LAYOUT_6GAWD_ALLBUTTONPLUS_B: 36,
+			BUTTON_LAYOUT_STICKLESS_R16B: 37,
 		},
+	});
+});
+
+app.get('/api/getReactiveLEDs', (req, res) => {
+	return res.send({
+		leds: [
+			{ pin: -1, action: -10, modeDown: 0, modeUp: 1 },
+			{ pin: -1, action: -10, modeDown: 1, modeUp: 0 },
+			{ pin: -1, action: -10, modeDown: 1, modeUp: 0 },
+			{ pin: -1, action: -10, modeDown: 1, modeUp: 0 },
+			{ pin: -1, action: -10, modeDown: 1, modeUp: 0 },
+			{ pin: -1, action: -10, modeDown: 1, modeUp: 0 },
+			{ pin: -1, action: -10, modeDown: 1, modeUp: 0 },
+			{ pin: -1, action: -10, modeDown: 1, modeUp: 0 },
+			{ pin: -1, action: -10, modeDown: 1, modeUp: 0 },
+			{ pin: -1, action: -10, modeDown: 1, modeUp: 0 },
+		],
 	});
 });
 

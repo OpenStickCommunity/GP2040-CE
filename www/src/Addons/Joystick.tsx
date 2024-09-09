@@ -40,7 +40,7 @@ const Joystick = ({ values, errors, handleChange, handleCheckbox }) => {
 					>
 						{DPAD_MODES.map((o, i) => (
 							<option key={`sliderModeZero-option-${i}`} value={o.value}>
-								{o.label}
+								{t(`AddonsConfig:joystick-selection-slider-mode-${i}`)}
 							</option>
 						))}
 					</FormSelect>

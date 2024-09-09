@@ -1,45 +1,27 @@
 import { AppContext } from '../Contexts/AppContext';
 import React, { useContext, useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import {
-	Button,
-	Form,
-	Row,
-	FormCheck,
-	Tab,
-	Tabs,
-	FormLabel,
-} from 'react-bootstrap';
+import { Button, Row, FormCheck, Tab, Tabs, FormLabel } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import * as yup from 'yup';
 
 import Section from '../Components/Section';
 
-import FormControl from '../Components/FormControl';
 import FormSelect from '../Components/FormSelect';
-import { I2C_BLOCKS, PERIPHERAL_DEVICES } from '../Data/Peripherals';
-import { BUTTON_MASKS } from '../Data/Buttons';
+import { I2C_BLOCKS } from '../Data/Peripherals';
+import { BUTTON_MASKS_OPTIONS } from '../Data/Buttons';
 
-import WebApi, {
-	baseWiiControls,
-	basePeripheralMapping,
-} from '../Services/WebApi';
+import WebApi, { baseWiiControls } from '../Services/WebApi';
 
 export const wiiScheme = {
 	WiiExtensionAddonEnabled: yup
 		.number()
 		.required()
 		.label('Wii Extensions Enabled'),
-	wiiExtensionBlock: yup
-		.number()
-		.required()
-		.label('WiiExtension I2C Block')
-		.validateSelectionWhenValue('WiiExtensionAddonEnabled', I2C_BLOCKS),
 };
 
 export const wiiState = {
 	WiiExtensionAddonEnabled: 0,
-	wiiExtensionBlock: 0,
 };
 
 const WII_EXTENSION_CONTROLS = [
@@ -377,31 +359,6 @@ const Wii = ({
 					</Trans>
 				</Row>
 				<Row className="mb-3">
-					{getAvailablePeripherals('i2c') ? (
-						<FormSelect
-							label={t('WiiAddon:block-label')}
-							name="wiiExtensionBlock"
-							className="form-select-sm"
-							groupClassName="col-sm-2 col-md-2 mb-3"
-							value={values.wiiExtensionBlock}
-							error={errors.wiiExtensionBlock}
-							isInvalid={errors.wiiExtensionBlock}
-							onChange={handlePeripheralChange}
-						>
-							{getAvailablePeripherals('i2c').map((o, i) => (
-								<option
-									key={`wiiExtensionI2cBlock-option-${i}`}
-									value={o.value}
-								>
-									{o.label}
-								</option>
-							))}
-						</FormSelect>
-					) : (
-						''
-					)}
-				</Row>
-				<Row className="mb-3">
 					<Tabs
 						defaultActiveKey={`wii${WII_EXTENSION_CONTROLS[0].id}Config`}
 						id="wiiControllerConfig"
@@ -454,7 +411,7 @@ const Wii = ({
 													}))
 												}
 											>
-												{BUTTON_MASKS.map((o, i) => (
+												{BUTTON_MASKS_OPTIONS.map((o, i) => (
 													<option
 														key={`wiiExtensionController${controlObj.id}Button${buttonObj.id}-option-${i}`}
 														value={o.value}

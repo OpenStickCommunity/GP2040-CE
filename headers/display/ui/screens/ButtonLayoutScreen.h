@@ -11,32 +11,6 @@
 #include "GPGFX_UI_widgets.h"
 #include "GPGFX_UI_layouts.h"
 
-#define CHAR_TRIANGLE "\x80"
-#define CHAR_CIRCLE   "\x81"
-#define CHAR_CROSS    "\x82"
-#define CHAR_SQUARE   "\x83"
-
-#define CHAR_UP       "\x84"
-#define CHAR_DOWN     "\x85"
-#define CHAR_LEFT     "\x86"
-#define CHAR_RIGHT    "\x87"
-
-#define CHAR_UL       "\x88"
-#define CHAR_UR       "\x89"
-#define CHAR_DL       "\x8A"
-#define CHAR_DR       "\x8B"
-
-#define CHAR_CAP_S    "\x8C"
-#define CHAR_HOME_S   "\x8D"
-
-#define CHAR_VIEW_X   "\x8E"
-#define CHAR_MENU_X   "\x8F"
-#define CHAR_HOME_X   "\x90"
-
-#define CHAR_TPAD_P   "\x91"
-#define CHAR_HOME_P   "\x92"
-#define CHAR_SHARE_P  "\x93"
-
 #define INPUT_HISTORY_MAX_INPUTS 22
 #define INPUT_HISTORY_MAX_MODES 11
 
@@ -140,7 +114,8 @@ class ButtonLayoutScreen : public GPScreen {
         void generateHeader();
 
         const std::map<uint16_t, uint16_t> displayModeLookup = {
-            {INPUT_MODE_HID, 0},
+            {INPUT_MODE_PS3, 0},
+            {INPUT_MODE_GENERIC, 0},
             {INPUT_MODE_SWITCH, 1},
             {INPUT_MODE_XINPUT, 2},
             {INPUT_MODE_XBONE, 2},

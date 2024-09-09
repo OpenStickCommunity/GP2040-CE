@@ -44,7 +44,7 @@ public:
 	AddonOptions& getAddonOptions() { return config.addonOptions; }
 	AnimationOptions_Proto& getAnimationOptions() { return config.animationOptions; }
 	ProfileOptions& getProfileOptions() { return config.profileOptions; }
-	GpioAction* getProfilePinMappings() { return functionalPinMappings; }
+	GpioMappingInfo* getProfilePinMappings() { return functionalPinMappings; }
 	PeripheralOptions& getPeripheralOptions() { return config.peripheralOptions; }
 
 	void init();
@@ -86,7 +86,7 @@ private:
 	critical_section_t animationOptionsCs;
 	uint32_t animationOptionsCrc = 0;
 	AnimationOptions animationOptionsToSave = {};
-	GpioAction functionalPinMappings[NUM_BANK0_GPIOS];
+	GpioMappingInfo functionalPinMappings[NUM_BANK0_GPIOS];
 };
 
 #endif

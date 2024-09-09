@@ -169,6 +169,8 @@ message GpioMappingInfo
 {
     optional GpioAction action = 1;
     optional GpioDirection direction = 2;
+    optional uint32 customDpadMask = 3;
+    optional uint32 customButtonMask = 4;
 }
 
 message GpioMappings
@@ -203,11 +205,10 @@ message ProfileOptions
 message DisplayOptions
 {
     optional bool enabled = 1;
-
-    optional int32 i2cBlock = 2;
+    optional int32 deprecatedI2cBlock = 2 [deprecated = true];
     optional int32 deprecatedI2cSDAPin = 3 [deprecated = true];
     optional int32 deprecatedI2cSCLPin = 4 [deprecated = true];
-    optional int32 i2cAddress = 5;
+    optional int32 deprecatedI2cAddress = 5 [deprecated = true];
     optional int32 deprecatedI2cSpeed = 6 [deprecated = true];
 
     optional ButtonLayout buttonLayout = 7;
@@ -415,11 +416,10 @@ message ReverseOptions
 message AnalogADS1219Options
 {
     optional bool enabled = 1;
-
-    optional int32 i2cBlock = 2;
+    optional int32 deprecatedI2cBlock = 2 [deprecated = true];
     optional int32 deprecatedI2cSDAPin = 3 [deprecated = true];
     optional int32 deprecatedI2cSCLPin = 4 [deprecated = true];
-    optional int32 i2cAddress = 5;
+    optional int32 deprecatedI2cAddress = 5 [deprecated = true];
     optional int32 deprecatedI2cSpeed = 6 [deprecated = true];
 }
 
@@ -645,7 +645,7 @@ message WiiOptions
     }
 
     optional bool enabled = 1;
-    optional int32 i2cBlock = 2;
+    optional int32 deprecatedI2cBlock = 2 [deprecated = true];
     optional int32 deprecatedI2cSDAPin = 3 [deprecated = true];
     optional int32 deprecatedI2cSCLPin = 4 [deprecated = true];
     optional int32 deprecatedI2cSpeed = 5 [deprecated = true];
@@ -739,8 +739,34 @@ message RotaryOptions
 message PCF8575Options
 {
     optional bool enabled = 1;
-    optional int32 i2cBlock = 2;
+    optional int32 deprecatedI2cBlock = 2 [deprecated = true];
     repeated GpioMappingInfo pins = 3 [(nanopb).max_count = 16];
+}
+
+message DRV8833RumbleOptions
+{
+		optional bool enabled = 1;
+
+		optional int32 leftMotorPin = 2;
+		optional int32 rightMotorPin = 3;
+		optional int32 motorSleepPin = 4;
+		optional uint32 pwmFrequency = 5;
+		optional float dutyMin = 6;
+		optional float dutyMax = 7;
+}
+
+message ReactiveLEDInfo
+{
+    optional int32 pin = 1;
+    optional GpioAction action = 2;
+    optional ReactiveLEDMode modeDown = 3;
+    optional ReactiveLEDMode modeUp = 4;
+}
+
+message ReactiveLEDOptions
+{
+    optional bool enabled = 1;
+    repeated ReactiveLEDInfo leds = 2 [(nanopb).max_count = 10];
 }
 
 message AddonOptions
@@ -770,7 +796,9 @@ message AddonOptions
     optional AnalogADS1256Options analogADS1256Options = 23;
     optional RotaryOptions rotaryOptions = 24;
     optional PCF8575Options pcf8575Options = 25;
-    optional ToggleJoystickOptions toggleJoystickOptions = 26;
+    optional DRV8833RumbleOptions drv8833RumbleOptions = 26;
+    optional ReactiveLEDOptions reactiveLEDOptions = 27;
+    optional ToggleJoystickOptions toggleJoystickOptions = 28;
 }
 
 message MigrationHistory

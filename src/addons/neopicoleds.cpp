@@ -441,6 +441,7 @@ std::vector<std::vector<Pixel>> NeoPicoLEDAddon::createLEDLayout(ButtonLayout la
 		case BUTTON_LAYOUT_STICKLESS_13:
 		case BUTTON_LAYOUT_STICKLESS_14:
 		case BUTTON_LAYOUT_STICKLESS_16:
+		case BUTTON_LAYOUT_STICKLESS_R16:
 		case BUTTON_LAYOUT_BOARD_DEFINED_A:
 			return generatedLEDStickless(&positions);
 		case BUTTON_LAYOUT_FIGHTBOARD_MIRRORED:

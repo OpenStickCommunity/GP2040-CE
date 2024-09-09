@@ -1,0 +1,35 @@
+export default {
+	'header-text': '外围设备映射',
+	'sub-header-text': '',
+	'pins-label': '引脚',
+	'pin-in-use': '被占用',
+	'i2c-label': 'I\u00B2C',
+	'i2c-desc-header': 'I\u00B2C Information',
+	'i2c-description':
+		'I\u00B2C(Inter-Integrated Circuit) 是一种两线接口，用于通过 SDA 和 SCL 连接附件设备，如显示器、GPIO 扩展和传感器。RP2040 支持两个 I\u00B2C 控制器块：I2C0 和 I2C1。以下是每个块支持的 GPIO 引脚：',
+	'spi-label': 'SPI',
+	'spi-desc-header': 'SPI Information',
+	'spi-description':
+		'SPI(Serial Peripheral Interface) 是一种四线接口，用于连接附件设备，如显示器、GPIO 扩展和传感器，通过 RX 和 TX 数据线，以及 SCK 线和 CS 线。RP2040 支持两个 SPI 控制器块：SPI0 和 SPI1。以下是每个块支持的 GPIO 引脚：',
+	'usb-label': 'USB 主机',
+	'usb-desc-header': 'USB 主机信息',
+	'usb-description':
+		'USB 主机模式允许使用支持的 USB 客户端设备，例如键盘、游戏手柄或其他设备。',
+	'peripheral-toggle-unavailable':
+		'无法启用。 外围设备 "{{name}}" 不可用。 请在 <0>外围设备映射</0> 页面中启用它。',
+	'pin-sda-label': 'SDA',
+	'pin-scl-label': 'SCL',
+	'option-speed-label': 'Speed',
+	'option-speed-choice-100000-label': 'Normal',
+	'option-speed-choice-400000-label': 'Fast',
+	'option-speed-choice-1000000-label': 'Fast Plus',
+	'pin-rx-label': 'RX',
+	'pin-cs-label': 'CS',
+	'pin-sck-label': 'SCK',
+	'pin-tx-label': 'TX',
+	'pin-dp-label': 'D+',
+	'pin-enable5v-label': '启用 5V',
+	'option-order-label': '引脚顺序',
+	'option-order-choice-0-label': 'D+/D-',
+	'option-order-choice-1-label': 'D-/D+',
+};

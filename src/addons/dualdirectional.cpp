@@ -17,10 +17,10 @@ void DualDirectionalInput::setup() {
     mapDpadLeft  = new GamepadButtonMapping(GAMEPAD_MASK_LEFT);
     mapDpadRight = new GamepadButtonMapping(GAMEPAD_MASK_RIGHT);
 
-    GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
+    GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
     {
-        switch (pinMappings[pin]) {
+        switch (pinMappings[pin].action) {
             case GpioAction::BUTTON_PRESS_DDI_UP:    mapDpadUp->pinMask |= 1 << pin; break;
             case GpioAction::BUTTON_PRESS_DDI_DOWN:  mapDpadDown->pinMask |= 1 << pin; break;
             case GpioAction::BUTTON_PRESS_DDI_LEFT:  mapDpadLeft->pinMask |= 1 << pin; break;

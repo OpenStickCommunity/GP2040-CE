@@ -39,6 +39,7 @@ enum ButtonLayout
     BUTTON_LAYOUT_6GAWD_A = 30;
     BUTTON_LAYOUT_6GAWD_ALLBUTTON_A = 31;
     BUTTON_LAYOUT_6GAWD_ALLBUTTONPLUS_A = 32;
+    BUTTON_LAYOUT_STICKLESS_R16 = 33;
 }
 
 enum ButtonLayoutRight
@@ -82,6 +83,7 @@ enum ButtonLayoutRight
     BUTTON_LAYOUT_6GAWD_B = 34;
     BUTTON_LAYOUT_6GAWD_ALLBUTTON_B = 35;
     BUTTON_LAYOUT_6GAWD_ALLBUTTONPLUS_B = 36;
+    BUTTON_LAYOUT_STICKLESS_R16B = 37;
 }
 
 enum SplashMode
@@ -122,7 +124,7 @@ enum InputMode
 
     INPUT_MODE_XINPUT = 0;
     INPUT_MODE_SWITCH = 1;
-    INPUT_MODE_HID = 2;
+    INPUT_MODE_PS3 = 2;
     INPUT_MODE_KEYBOARD = 3;
     INPUT_MODE_PS4 = 4;
     INPUT_MODE_XBONE = 5;
@@ -134,6 +136,7 @@ enum InputMode
     INPUT_MODE_PSCLASSIC = 11;
     INPUT_MODE_XBOXORIGINAL = 12;
     INPUT_MODE_PS5 = 13;
+    INPUT_MODE_GENERIC = 14;
     INPUT_MODE_CONFIG = 255;
 }
 
@@ -225,8 +228,23 @@ enum GpioAction
     BUTTON_PRESS_MACRO_4         = 37;
     BUTTON_PRESS_MACRO_5         = 38;
     BUTTON_PRESS_MACRO_6         = 39;
-    BUTTON_PRESS_TJ_TOGGLE_1     = 40;
-    BUTTON_PRESS_TJ_TOGGLE_2     = 41;
+    CUSTOM_BUTTON_COMBO          = 40;
+    BUTTON_PRESS_A3              = 41;
+    BUTTON_PRESS_A4              = 42;
+    BUTTON_PRESS_E1              = 43;
+    BUTTON_PRESS_E2              = 44;
+    BUTTON_PRESS_E3              = 45;
+    BUTTON_PRESS_E4              = 46;
+    BUTTON_PRESS_E5              = 47;
+    BUTTON_PRESS_E6              = 48;
+    BUTTON_PRESS_E7              = 49;
+    BUTTON_PRESS_E8              = 50;
+    BUTTON_PRESS_E9              = 51;
+    BUTTON_PRESS_E10             = 52;
+    BUTTON_PRESS_E11             = 53;
+    BUTTON_PRESS_E12             = 54;
+    BUTTON_PRESS_TJ_TOGGLE_1     = 55;
+    BUTTON_PRESS_TJ_TOGGLE_2     = 56;
 }
 
 enum GpioDirection
@@ -277,6 +295,12 @@ enum GamepadHotkey
     HOTKEY_A1_BUTTON             = 33;
     HOTKEY_A2_BUTTON             = 34;
     HOTKEY_NEXT_PROFILE          = 35;
+    HOTKEY_A3_BUTTON             = 36;
+    HOTKEY_A4_BUTTON             = 37;
+    HOTKEY_DPAD_UP               = 38;
+    HOTKEY_DPAD_DOWN             = 39;
+    HOTKEY_DPAD_LEFT             = 40;
+    HOTKEY_DPAD_RIGHT            = 41;
 }
 
 // This has to be kept in sync with LEDFormat in NeoPico.hpp
@@ -381,4 +405,14 @@ enum RotaryEncoderPinMode
     ENCODER_MODE_RIGHT_TRIGGER = 6;
     ENCODER_MODE_DPAD_X = 7;
     ENCODER_MODE_DPAD_Y = 8;
+};
+
+enum ReactiveLEDMode
+{
+    option (nanopb_enumopt).long_names = false;
+
+    REACTIVE_LED_STATIC_OFF = 0;
+    REACTIVE_LED_STATIC_ON = 1;
+    REACTIVE_LED_FADE_IN = 2;
+    REACTIVE_LED_FADE_OUT = 3;
 };

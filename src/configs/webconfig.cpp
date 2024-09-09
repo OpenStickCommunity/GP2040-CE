@@ -5,6 +5,7 @@
 #include "storagemanager.h"
 #include "configmanager.h"
 #include "layoutmanager.h"
+#include "peripheralmanager.h"
 #include "AnimationStorage.hpp"
 #include "system.h"
 #include "config_utils.h"
@@ -34,7 +35,7 @@
 
 #define PATH_CGI_ACTION "/cgi/action"
 
-#define LWIP_HTTPD_POST_MAX_PAYLOAD_LEN (1024 * 8)
+#define LWIP_HTTPD_POST_MAX_PAYLOAD_LEN (1024 * 16)
 
 using namespace std;
 
@@ -436,8 +437,6 @@ std::string setDisplayOptions(DisplayOptions& displayOptions)
 {
     DynamicJsonDocument doc = get_post_data();
     readDoc(displayOptions.enabled, doc, "enabled");
-    readDoc(displayOptions.i2cAddress, doc, "i2cAddress");
-    readDoc(displayOptions.i2cBlock, doc, "i2cBlock");
     readDoc(displayOptions.flip, doc, "flipDisplay");
     readDoc(displayOptions.invert, doc, "invertDisplay");
     readDoc(displayOptions.buttonLayout, doc, "buttonLayout");
@@ -480,8 +479,6 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
     DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
     const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
     writeDoc(doc, "enabled", displayOptions.enabled ? 1 : 0);
-    writeDoc(doc, "i2cAddress", displayOptions.i2cAddress);
-    writeDoc(doc, "i2cBlock", displayOptions.i2cBlock);
     writeDoc(doc, "flipDisplay", displayOptions.flip);
     writeDoc(doc, "invertDisplay", displayOptions.invert ? 1 : 0);
     writeDoc(doc, "buttonLayout", displayOptions.buttonLayout);
@@ -509,14 +506,12 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
 
 std::string getSplashImage()
 {
-    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN * 10); // TODO: Figoure out correct length
-
-    JsonArray splashImageArray = doc.createNestedArray("splashImage");
     const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
+    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN + displayOptions.splashImage.size);
+    JsonArray splashImageArray = doc.createNestedArray("splashImage");
     std::vector<char> temp(sizeof(displayOptions.splashImage.bytes), '\0');
     memcpy(temp.data(), displayOptions.splashImage.bytes, displayOptions.splashImage.size);
     copyArray(reinterpret_cast<const uint8_t*>(temp.data()), temp.size(), splashImageArray);
-
     return serialize_json(doc);
 }
 
@@ -554,9 +549,11 @@ std::string setProfileOptions()
             // setting a pin shouldn't change a new existing addon/reserved pin
             if (profileOptions.gpioMappingsSets[altsIndex].pins[pin].action != GpioAction::ASSIGNED_TO_ADDON &&
                     profileOptions.gpioMappingsSets[altsIndex].pins[pin].action != GpioAction::RESERVED &&
-                    (GpioAction)alt[pinName] != GpioAction::RESERVED &&
-                    (GpioAction)alt[pinName] != GpioAction::ASSIGNED_TO_ADDON) {
-                profileOptions.gpioMappingsSets[altsIndex].pins[pin].action = (GpioAction)alt[pinName];
+                    (GpioAction)alt[pinName]["action"] != GpioAction::RESERVED &&
+                    (GpioAction)alt[pinName]["action"] != GpioAction::ASSIGNED_TO_ADDON) {
+                profileOptions.gpioMappingsSets[altsIndex].pins[pin].action = (GpioAction)alt[pinName]["action"];
+                profileOptions.gpioMappingsSets[altsIndex].pins[pin].customButtonMask = (uint32_t)alt[pinName]["customButtonMask"];
+                profileOptions.gpioMappingsSets[altsIndex].pins[pin].customDpadMask = (uint32_t)alt[pinName]["customDpadMask"];
             }
         }
         profileOptions.gpioMappingsSets_count = ++altsIndex;
@@ -571,43 +568,48 @@ std::string getProfileOptions()
 {
     DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
 
+    const auto writePinDoc = [&](const int item, const char* key, const GpioMappingInfo& value) -> void
+    {
+        writeDoc(doc, "alternativePinMappings", item, key, "action", value.action);
+        writeDoc(doc, "alternativePinMappings", item, key, "customButtonMask", value.customButtonMask);
+        writeDoc(doc, "alternativePinMappings", item, key, "customDpadMask", value.customDpadMask);
+    };
+
     ProfileOptions& profileOptions = Storage::getInstance().getProfileOptions();
-    JsonArray alts = doc.createNestedArray("alternativePinMappings");
     for (int i = 0; i < profileOptions.gpioMappingsSets_count; i++) {
-        JsonObject altMappings = alts.createNestedObject();
         // this looks duplicative, but something in arduinojson treats the doc
         // field string by reference so you can't be "clever" and do an snprintf
         // thing or else you only send the last field in the JSON
-        altMappings["pin00"] = profileOptions.gpioMappingsSets[i].pins[0].action;
-        altMappings["pin01"] = profileOptions.gpioMappingsSets[i].pins[1].action;
-        altMappings["pin02"] = profileOptions.gpioMappingsSets[i].pins[2].action;
-        altMappings["pin03"] = profileOptions.gpioMappingsSets[i].pins[3].action;
-        altMappings["pin04"] = profileOptions.gpioMappingsSets[i].pins[4].action;
-        altMappings["pin05"] = profileOptions.gpioMappingsSets[i].pins[5].action;
-        altMappings["pin06"] = profileOptions.gpioMappingsSets[i].pins[6].action;
-        altMappings["pin07"] = profileOptions.gpioMappingsSets[i].pins[7].action;
-        altMappings["pin08"] = profileOptions.gpioMappingsSets[i].pins[8].action;
-        altMappings["pin09"] = profileOptions.gpioMappingsSets[i].pins[9].action;
-        altMappings["pin10"] = profileOptions.gpioMappingsSets[i].pins[10].action;
-        altMappings["pin11"] = profileOptions.gpioMappingsSets[i].pins[11].action;
-        altMappings["pin12"] = profileOptions.gpioMappingsSets[i].pins[12].action;
-        altMappings["pin13"] = profileOptions.gpioMappingsSets[i].pins[13].action;
-        altMappings["pin14"] = profileOptions.gpioMappingsSets[i].pins[14].action;
-        altMappings["pin15"] = profileOptions.gpioMappingsSets[i].pins[15].action;
-        altMappings["pin16"] = profileOptions.gpioMappingsSets[i].pins[16].action;
-        altMappings["pin17"] = profileOptions.gpioMappingsSets[i].pins[17].action;
-        altMappings["pin18"] = profileOptions.gpioMappingsSets[i].pins[18].action;
-        altMappings["pin19"] = profileOptions.gpioMappingsSets[i].pins[19].action;
-        altMappings["pin20"] = profileOptions.gpioMappingsSets[i].pins[20].action;
-        altMappings["pin21"] = profileOptions.gpioMappingsSets[i].pins[21].action;
-        altMappings["pin22"] = profileOptions.gpioMappingsSets[i].pins[22].action;
-        altMappings["pin23"] = profileOptions.gpioMappingsSets[i].pins[23].action;
-        altMappings["pin24"] = profileOptions.gpioMappingsSets[i].pins[24].action;
-        altMappings["pin25"] = profileOptions.gpioMappingsSets[i].pins[25].action;
-        altMappings["pin26"] = profileOptions.gpioMappingsSets[i].pins[26].action;
-        altMappings["pin27"] = profileOptions.gpioMappingsSets[i].pins[27].action;
-        altMappings["pin28"] = profileOptions.gpioMappingsSets[i].pins[28].action;
-        altMappings["pin29"] = profileOptions.gpioMappingsSets[i].pins[29].action;
+        writePinDoc(i, "pin00", profileOptions.gpioMappingsSets[i].pins[0]);
+        writePinDoc(i, "pin01", profileOptions.gpioMappingsSets[i].pins[1]);
+        writePinDoc(i, "pin02", profileOptions.gpioMappingsSets[i].pins[2]);
+        writePinDoc(i, "pin03", profileOptions.gpioMappingsSets[i].pins[3]);
+        writePinDoc(i, "pin04", profileOptions.gpioMappingsSets[i].pins[4]);
+        writePinDoc(i, "pin05", profileOptions.gpioMappingsSets[i].pins[5]);
+        writePinDoc(i, "pin06", profileOptions.gpioMappingsSets[i].pins[6]);
+        writePinDoc(i, "pin07", profileOptions.gpioMappingsSets[i].pins[7]);
+        writePinDoc(i, "pin08", profileOptions.gpioMappingsSets[i].pins[8]);
+        writePinDoc(i, "pin09", profileOptions.gpioMappingsSets[i].pins[9]);
+        writePinDoc(i, "pin10", profileOptions.gpioMappingsSets[i].pins[10]);
+        writePinDoc(i, "pin11", profileOptions.gpioMappingsSets[i].pins[11]);
+        writePinDoc(i, "pin12", profileOptions.gpioMappingsSets[i].pins[12]);
+        writePinDoc(i, "pin13", profileOptions.gpioMappingsSets[i].pins[13]);
+        writePinDoc(i, "pin14", profileOptions.gpioMappingsSets[i].pins[14]);
+        writePinDoc(i, "pin15", profileOptions.gpioMappingsSets[i].pins[15]);
+        writePinDoc(i, "pin16", profileOptions.gpioMappingsSets[i].pins[16]);
+        writePinDoc(i, "pin17", profileOptions.gpioMappingsSets[i].pins[17]);
+        writePinDoc(i, "pin18", profileOptions.gpioMappingsSets[i].pins[18]);
+        writePinDoc(i, "pin19", profileOptions.gpioMappingsSets[i].pins[19]);
+        writePinDoc(i, "pin20", profileOptions.gpioMappingsSets[i].pins[20]);
+        writePinDoc(i, "pin21", profileOptions.gpioMappingsSets[i].pins[21]);
+        writePinDoc(i, "pin22", profileOptions.gpioMappingsSets[i].pins[22]);
+        writePinDoc(i, "pin23", profileOptions.gpioMappingsSets[i].pins[23]);
+        writePinDoc(i, "pin24", profileOptions.gpioMappingsSets[i].pins[24]);
+        writePinDoc(i, "pin25", profileOptions.gpioMappingsSets[i].pins[25]);
+        writePinDoc(i, "pin26", profileOptions.gpioMappingsSets[i].pins[26]);
+        writePinDoc(i, "pin27", profileOptions.gpioMappingsSets[i].pins[27]);
+        writePinDoc(i, "pin28", profileOptions.gpioMappingsSets[i].pins[28]);
+        writePinDoc(i, "pin29", profileOptions.gpioMappingsSets[i].pins[29]);
     }
 
     return serialize_json(doc);
@@ -1039,9 +1041,11 @@ std::string setPinMappings()
         // setting a pin shouldn't change a new existing addon/reserved pin
         if (gpioMappings[pin].action != GpioAction::RESERVED &&
                 gpioMappings[pin].action != GpioAction::ASSIGNED_TO_ADDON &&
-                (GpioAction)doc[pinName] != GpioAction::RESERVED &&
-                (GpioAction)doc[pinName] != GpioAction::ASSIGNED_TO_ADDON) {
-            gpioMappings[pin].action = (GpioAction)doc[pinName];
+                (GpioAction)doc[pinName]["action"] != GpioAction::RESERVED &&
+                (GpioAction)doc[pinName]["action"] != GpioAction::ASSIGNED_TO_ADDON) {
+            gpioMappings[pin].action = (GpioAction)doc[pinName]["action"];
+            gpioMappings[pin].customButtonMask = (uint32_t)doc[pinName]["customButtonMask"];
+            gpioMappings[pin].customDpadMask = (uint32_t)doc[pinName]["customDpadMask"];
         }
     }
 
@@ -1056,36 +1060,43 @@ std::string getPinMappings()
 
     GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
 
-    writeDoc(doc, "pin00", gpioMappings[0].action);
-    writeDoc(doc, "pin01", gpioMappings[1].action);
-    writeDoc(doc, "pin02", gpioMappings[2].action);
-    writeDoc(doc, "pin03", gpioMappings[3].action);
-    writeDoc(doc, "pin04", gpioMappings[4].action);
-    writeDoc(doc, "pin05", gpioMappings[5].action);
-    writeDoc(doc, "pin06", gpioMappings[6].action);
-    writeDoc(doc, "pin07", gpioMappings[7].action);
-    writeDoc(doc, "pin08", gpioMappings[8].action);
-    writeDoc(doc, "pin09", gpioMappings[9].action);
-    writeDoc(doc, "pin10", gpioMappings[10].action);
-    writeDoc(doc, "pin11", gpioMappings[11].action);
-    writeDoc(doc, "pin12", gpioMappings[12].action);
-    writeDoc(doc, "pin13", gpioMappings[13].action);
-    writeDoc(doc, "pin14", gpioMappings[14].action);
-    writeDoc(doc, "pin15", gpioMappings[15].action);
-    writeDoc(doc, "pin16", gpioMappings[16].action);
-    writeDoc(doc, "pin17", gpioMappings[17].action);
-    writeDoc(doc, "pin18", gpioMappings[18].action);
-    writeDoc(doc, "pin19", gpioMappings[19].action);
-    writeDoc(doc, "pin20", gpioMappings[20].action);
-    writeDoc(doc, "pin21", gpioMappings[21].action);
-    writeDoc(doc, "pin22", gpioMappings[22].action);
-    writeDoc(doc, "pin23", gpioMappings[23].action);
-    writeDoc(doc, "pin24", gpioMappings[24].action);
-    writeDoc(doc, "pin25", gpioMappings[25].action);
-    writeDoc(doc, "pin26", gpioMappings[26].action);
-    writeDoc(doc, "pin27", gpioMappings[27].action);
-    writeDoc(doc, "pin28", gpioMappings[28].action);
-    writeDoc(doc, "pin29", gpioMappings[29].action);
+    const auto writePinDoc = [&](const char* key, const GpioMappingInfo& value) -> void
+    {
+        writeDoc(doc, key, "action", value.action);
+        writeDoc(doc, key, "customButtonMask", value.customButtonMask);
+        writeDoc(doc, key, "customDpadMask", value.customDpadMask);
+    };
+
+    writePinDoc("pin00", gpioMappings[0]);
+    writePinDoc("pin01", gpioMappings[1]);
+    writePinDoc("pin02", gpioMappings[2]);
+    writePinDoc("pin03", gpioMappings[3]);
+    writePinDoc("pin04", gpioMappings[4]);
+    writePinDoc("pin05", gpioMappings[5]);
+    writePinDoc("pin06", gpioMappings[6]);
+    writePinDoc("pin07", gpioMappings[7]);
+    writePinDoc("pin08", gpioMappings[8]);
+    writePinDoc("pin09", gpioMappings[9]);
+    writePinDoc("pin10", gpioMappings[10]);
+    writePinDoc("pin11", gpioMappings[11]);
+    writePinDoc("pin12", gpioMappings[12]);
+    writePinDoc("pin13", gpioMappings[13]);
+    writePinDoc("pin14", gpioMappings[14]);
+    writePinDoc("pin15", gpioMappings[15]);
+    writePinDoc("pin16", gpioMappings[16]);
+    writePinDoc("pin17", gpioMappings[17]);
+    writePinDoc("pin18", gpioMappings[18]);
+    writePinDoc("pin19", gpioMappings[19]);
+    writePinDoc("pin20", gpioMappings[20]);
+    writePinDoc("pin21", gpioMappings[21]);
+    writePinDoc("pin22", gpioMappings[22]);
+    writePinDoc("pin23", gpioMappings[23]);
+    writePinDoc("pin24", gpioMappings[24]);
+    writePinDoc("pin25", gpioMappings[25]);
+    writePinDoc("pin26", gpioMappings[26]);
+    writePinDoc("pin27", gpioMappings[27]);
+    writePinDoc("pin28", gpioMappings[28]);
+    writePinDoc("pin29", gpioMappings[29]);
 
     return serialize_json(doc);
 }
@@ -1178,6 +1189,29 @@ std::string getPeripheralOptions()
     writeDoc(doc, "peripheral", "usb0", "dp",      peripheralOptions.blockUSB0.dp);
     writeDoc(doc, "peripheral", "usb0", "enable5v",peripheralOptions.blockUSB0.enable5v);
     writeDoc(doc, "peripheral", "usb0", "order",   peripheralOptions.blockUSB0.order);
+
+    return serialize_json(doc);
+}
+
+std::string getI2CPeripheralMap() {
+    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+
+    PeripheralOptions& peripheralOptions = Storage::getInstance().getPeripheralOptions();
+
+
+    if (peripheralOptions.blockI2C0.enabled && PeripheralManager::getInstance().isI2CEnabled(0)) {
+        std::map<uint8_t,bool> result = PeripheralManager::getInstance().getI2C(0)->scan();
+        for (std::map<uint8_t,bool>::iterator it = result.begin(); it != result.end(); ++it) {
+            writeDoc(doc, "i2c0", std::to_string(it->first), it->second);
+        }
+    }
+
+    if (peripheralOptions.blockI2C1.enabled && PeripheralManager::getInstance().isI2CEnabled(1)) {
+        std::map<uint8_t,bool> result = PeripheralManager::getInstance().getI2C(1)->scan();
+        for (std::map<uint8_t,bool>::iterator it = result.begin(); it != result.end(); ++it) {
+            writeDoc(doc, "i2c1", std::to_string(it->first), it->second);
+        }
+    }
 
     return serialize_json(doc);
 }
@@ -1309,6 +1343,40 @@ std::string setExpansionPins()
     return serialize_json(doc);
 }
 
+std::string getReactiveLEDs()
+{
+    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    ReactiveLEDInfo* ledInfo = Storage::getInstance().getAddonOptions().reactiveLEDOptions.leds;
+
+    for (uint16_t led = 0; led < 10; led++) {
+        writeDoc(doc, "leds", led, "pin", ledInfo[led].pin);
+        writeDoc(doc, "leds", led, "action", ledInfo[led].action);
+        writeDoc(doc, "leds", led, "modeDown", ledInfo[led].modeDown);
+        writeDoc(doc, "leds", led, "modeUp", ledInfo[led].modeUp);
+    }
+
+    return serialize_json(doc);
+}
+
+std::string setReactiveLEDs()
+{
+    DynamicJsonDocument doc = get_post_data();
+
+    ReactiveLEDInfo* ledInfo = Storage::getInstance().getAddonOptions().reactiveLEDOptions.leds;
+
+    for (uint16_t led = 0; led < 10; led++) {
+        ledInfo[led].pin = doc["leds"][led]["pin"];
+        ledInfo[led].action = doc["leds"][led]["action"];
+        ledInfo[led].modeDown = doc["leds"][led]["modeDown"];
+        ledInfo[led].modeUp = doc["leds"][led]["modeUp"];
+    }
+    Storage::getInstance().getAddonOptions().reactiveLEDOptions.leds_count = 10;
+
+    Storage::getInstance().save();
+
+    return serialize_json(doc);
+}
+
 std::string setAddonOptions()
 {
     DynamicJsonDocument doc = get_post_data();
@@ -1376,8 +1444,6 @@ std::string setAddonOptions()
     docToValue(focusModeOptions.enabled, doc, "FocusModeAddonEnabled");
 
     AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
-    docToValue(analogADS1219Options.i2cBlock, doc, "i2cAnalog1219Block");
-    docToValue(analogADS1219Options.i2cAddress, doc, "i2cAnalog1219Address");
     docToValue(analogADS1219Options.enabled, doc, "I2CAnalog1219InputEnabled");
 
     SliderOptions& sliderOptions = Storage::getInstance().getAddonOptions().sliderOptions;
@@ -1431,7 +1497,6 @@ std::string setAddonOptions()
     docToValue(turboOptions.enabled, doc, "TurboInputEnabled");
 
     WiiOptions& wiiOptions = Storage::getInstance().getAddonOptions().wiiOptions;
-    docToValue(wiiOptions.i2cBlock, doc, "wiiExtensionBlock");
     docToValue(wiiOptions.enabled, doc, "WiiExtensionAddonEnabled");
 
     SNESOptions& snesOptions = Storage::getInstance().getAddonOptions().snesOptions;
@@ -1487,8 +1552,19 @@ std::string setAddonOptions()
     docToValue(rotaryOptions.encoderTwo.multiplier, doc, "encoderTwoMultiplier");
 
     PCF8575Options& pcf8575Options = Storage::getInstance().getAddonOptions().pcf8575Options;
-    docToValue(pcf8575Options.i2cBlock, doc, "pcf8575Block");
     docToValue(pcf8575Options.enabled, doc, "PCF8575AddonEnabled");
+
+    ReactiveLEDOptions& reactiveLEDOptions = Storage::getInstance().getAddonOptions().reactiveLEDOptions;
+    docToValue(reactiveLEDOptions.enabled, doc, "ReactiveLEDAddonEnabled");
+
+    DRV8833RumbleOptions& drv8833RumbleOptions = Storage::getInstance().getAddonOptions().drv8833RumbleOptions;
+    docToValue(drv8833RumbleOptions.enabled, doc, "DRV8833RumbleAddonEnabled");
+    docToPin(drv8833RumbleOptions.leftMotorPin, doc, "drv8833RumbleLeftMotorPin");
+    docToPin(drv8833RumbleOptions.rightMotorPin, doc, "drv8833RumbleRightMotorPin");
+    docToPin(drv8833RumbleOptions.motorSleepPin, doc, "drv8833RumbleMotorSleepPin");
+    docToValue(drv8833RumbleOptions.pwmFrequency, doc, "drv8833RumblePWMFrequency");
+    docToValue(drv8833RumbleOptions.dutyMin, doc, "drv8833RumbleDutyMin");
+    docToValue(drv8833RumbleOptions.dutyMax, doc, "drv8833RumbleDutyMax");
 
     Storage::getInstance().save();
 
@@ -1790,8 +1866,6 @@ std::string getAddonOptions()
     writeDoc(doc, "TiltInputEnabled", tiltOptions.enabled);
 
     const AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
-    writeDoc(doc, "i2cAnalog1219Block", analogADS1219Options.i2cBlock);
-    writeDoc(doc, "i2cAnalog1219Address", analogADS1219Options.i2cAddress);
     writeDoc(doc, "I2CAnalog1219InputEnabled", analogADS1219Options.enabled);
 
     const SliderOptions& sliderOptions = Storage::getInstance().getAddonOptions().sliderOptions;
@@ -1845,7 +1919,6 @@ std::string getAddonOptions()
     writeDoc(doc, "TurboInputEnabled", turboOptions.enabled);
 
     const WiiOptions& wiiOptions = Storage::getInstance().getAddonOptions().wiiOptions;
-    writeDoc(doc, "wiiExtensionBlock", wiiOptions.i2cBlock);
     writeDoc(doc, "WiiExtensionAddonEnabled", wiiOptions.enabled);
 
     const SNESOptions& snesOptions = Storage::getInstance().getAddonOptions().snesOptions;
@@ -1916,8 +1989,19 @@ std::string getAddonOptions()
     writeDoc(doc, "encoderTwoMultiplier", rotaryOptions.encoderTwo.multiplier);
 
     PCF8575Options& pcf8575Options = Storage::getInstance().getAddonOptions().pcf8575Options;
-    writeDoc(doc, "pcf8575Block", pcf8575Options.i2cBlock);
     writeDoc(doc, "PCF8575AddonEnabled", pcf8575Options.enabled);
+
+    ReactiveLEDOptions& reactiveLEDOptions = Storage::getInstance().getAddonOptions().reactiveLEDOptions;
+    writeDoc(doc, "ReactiveLEDAddonEnabled", reactiveLEDOptions.enabled);
+
+    const DRV8833RumbleOptions& drv8833RumbleOptions = Storage::getInstance().getAddonOptions().drv8833RumbleOptions;
+    writeDoc(doc, "DRV8833RumbleAddonEnabled", drv8833RumbleOptions.enabled);
+    writeDoc(doc, "drv8833RumbleLeftMotorPin", cleanPin(drv8833RumbleOptions.leftMotorPin));
+    writeDoc(doc, "drv8833RumbleRightMotorPin", cleanPin(drv8833RumbleOptions.rightMotorPin));
+    writeDoc(doc, "drv8833RumbleMotorSleepPin", cleanPin(drv8833RumbleOptions.motorSleepPin));
+    writeDoc(doc, "drv8833RumblePWMFrequency", drv8833RumbleOptions.pwmFrequency);
+    writeDoc(doc, "drv8833RumbleDutyMin", drv8833RumbleOptions.dutyMin);
+    writeDoc(doc, "drv8833RumbleDutyMax", drv8833RumbleOptions.dutyMax);
 
     return serialize_json(doc);
 }
@@ -2176,8 +2260,11 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/setProfileOptions", setProfileOptions },
     { "/api/setPeripheralOptions", setPeripheralOptions },
     { "/api/getPeripheralOptions", getPeripheralOptions },
+    { "/api/getI2CPeripheralMap", getI2CPeripheralMap },
     { "/api/setExpansionPins", setExpansionPins },
     { "/api/getExpansionPins", getExpansionPins },
+    { "/api/setReactiveLEDs", setReactiveLEDs },
+    { "/api/getReactiveLEDs", getReactiveLEDs },
     { "/api/setKeyMappings", setKeyMappings },
     { "/api/setAddonsOptions", setAddonOptions },
     { "/api/setMacroAddonOptions", setMacroAddonOptions },
