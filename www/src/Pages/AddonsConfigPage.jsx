@@ -37,6 +37,7 @@ import PlayerNumber, {
 } from '../Addons/PlayerNumber';
 import Reverse, { reverseScheme, reverseState } from '../Addons/Reverse';
 import SOCD, { socdScheme, socdState } from '../Addons/SOCD';
+import Tilt, { tiltScheme, tiltState } from '../Addons/Tilt';
 import Turbo, { turboScheme, turboState } from '../Addons/Turbo';
 import Wii, { wiiScheme, wiiState } from '../Addons/Wii';
 import SNES, { snesState } from '../Addons/SNES';
@@ -62,6 +63,7 @@ const schema = yup.object().shape({
 	...reverseScheme,
 	...i2cAnalogScheme,
 	...dualDirectionScheme,
+	...tiltScheme,
 	...buzzerScheme,
 	...playerNumberScheme,
 	...toggleJoystickScheme,
@@ -84,6 +86,7 @@ const defaultValues = {
 	...reverseState,
 	...i2cAnalogState,
 	...dualDirectionState,
+	...tiltState,
 	...buzzerState,
 	...playerNumberState,
 	...toggleJoystickState,
@@ -108,6 +111,7 @@ const ADDONS = [
 	I2CAnalog1219,
 	Analog1256,
 	DualDirection,
+	Tilt,
 	Buzzer,
 	PlayerNumber,
 	SOCD,

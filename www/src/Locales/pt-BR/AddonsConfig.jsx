@@ -77,6 +77,26 @@ export default {
 	'dual-directional-input-combine-mode-label': 'Modo de Combinação',
 	'dual-directional-input-four-way-joystick-mode-label':
 		'Modo Joystick de 4 Vias Dual Direcional',
+	'tilt-header-text': 'Entrada de Inclinação',
+	'tilt-1-pin-label': 'Pino 1 de Inclinação',
+	'tilt-2-pin-label': 'Pino 2 de Inclinação',
+	'tilt-left-analog-up-pin-label':
+		'Pino de Inclinação Analógica Esquerda para Cima',
+	'tilt-left-analog-down-pin-label':
+		'Pino de Inclinação Analógica Esquerda para Baixo',
+	'tilt-left-analog-left-pin-label':
+		'Pino de Inclinação Analógica Esquerda para a Esquerda',
+	'tilt-left-analog-right-pin-label':
+		'Pino de Inclinação Analógica Esquerda para a Direita',
+	'tilt-right-analog-up-pin-label':
+		'Pino de Inclinação Analógica Direita para Cima',
+	'tilt-right-analog-down-pin-label':
+		'Pino de Inclinação Analógica Direita para Baixo',
+	'tilt-right-analog-left-pin-label':
+		'Pino de Inclinação Analógica Direita para a Esquerda',
+	'tilt-right-analog-right-pin-label':
+		'Pino de Inclinação Analógica Direita para a Direita',
+	'tilt-socd-mode-label': 'Modo SOCD de Inclinação',
 	'buzzer-speaker-header-text': 'Alto-falante do Buzzer',
 	'buzzer-speaker-pin-label': 'Pino do Buzzer',
 	'buzzer-speaker-volume-label': 'Volume do Buzzer',

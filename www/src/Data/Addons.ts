@@ -10,6 +10,12 @@ export const DPAD_MODES = [
 	{ label: 'Right Analog', value: 2 },
 ];
 
+export const TILT_SOCD_MODES = [
+	{ label: 'Up Priority', value: 0 },
+	{ label: 'Neutral', value: 1 },
+	{ label: 'Last Win', value: 2 },
+];
+
 export const SOCD_MODES = [
 	{ label: 'Up Priority', value: 0 },
 	{ label: 'Neutral', value: 1 },
