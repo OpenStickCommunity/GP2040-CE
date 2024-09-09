@@ -11,10 +11,10 @@
 bool ToggleJoystickAddon::available() {
   const ToggleJoystickOptions &options =
       Storage::getInstance().getAddonOptions().toggleJoystickOptions;
-  GpioAction *pinMappings = Storage::getInstance().getProfilePinMappings();
+  GpioMappingInfo *pinMappings = Storage::getInstance().getProfilePinMappings();
   bool pinSet = false;
   for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
-    switch (pinMappings[pin]) {
+    switch (pinMappings[pin].action) {
     case GpioAction::BUTTON_PRESS_TJ_TOGGLE_1:
     case GpioAction::BUTTON_PRESS_TJ_TOGGLE_2:
       pinSet = true;
@@ -26,11 +26,11 @@ bool ToggleJoystickAddon::available() {
 }
 
 void ToggleJoystickAddon::setup() {
-  GpioAction *pinMappings = Storage::getInstance().getProfilePinMappings();
+  GpioMappingInfo *pinMappings = Storage::getInstance().getProfilePinMappings();
   primaryToggleMask = 0;
   secondaryToggleMask = 0;
   for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
-    switch (pinMappings[pin]) {
+    switch (pinMappings[pin].action) {
     case GpioAction::BUTTON_PRESS_TJ_TOGGLE_1:
       primaryToggleMask = 1 << pin;
       break;
