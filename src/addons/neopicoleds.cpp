@@ -60,7 +60,7 @@ typedef enum
 
 // TODO: Make this a helper function
 // Animation Helper for Player LEDs
-PLEDAnimationState getXInputAnimationNEOPICO(uint8_t *data)
+PLEDAnimationState getXInputAnimationNEOPICO(uint16_t ledState)
 {
 	PLEDAnimationState animationState =
 	{
@@ -69,52 +69,48 @@ PLEDAnimationState getXInputAnimationNEOPICO(uint8_t *data)
 		.speed = PLED_SPEED_OFF,
 	};
 
-	// Check first byte for LED payload
-	if (data[0] == 0x01)
+	switch (ledState)
 	{
-		switch (data[2])
-		{
-			case XINPUT_PLED_BLINKALL:
-			case XINPUT_PLED_ROTATE:
-			case XINPUT_PLED_BLINK:
-			case XINPUT_PLED_SLOWBLINK:
-			case XINPUT_PLED_ALTERNATE:
-				animationState.state = (PLED_STATE_LED1 | PLED_STATE_LED2 | PLED_STATE_LED3 | PLED_STATE_LED4);
-				animationState.animation = PLED_ANIM_BLINK;
-				animationState.speed = PLED_SPEED_FAST;
-				break;
+		case XINPUT_PLED_BLINKALL:
+		case XINPUT_PLED_ROTATE:
+		case XINPUT_PLED_BLINK:
+		case XINPUT_PLED_SLOWBLINK:
+		case XINPUT_PLED_ALTERNATE:
+			animationState.state = (PLED_STATE_LED1 | PLED_STATE_LED2 | PLED_STATE_LED3 | PLED_STATE_LED4);
+			animationState.animation = PLED_ANIM_BLINK;
+			animationState.speed = PLED_SPEED_FAST;
+			break;
 
-			case XINPUT_PLED_FLASH1:
-			case XINPUT_PLED_ON1:
-				animationState.state = PLED_STATE_LED1;
-				animationState.animation = PLED_ANIM_SOLID;
-				animationState.speed = PLED_SPEED_OFF;
-				break;
+		case XINPUT_PLED_FLASH1:
+		case XINPUT_PLED_ON1:
+			animationState.state = PLED_STATE_LED1;
+			animationState.animation = PLED_ANIM_SOLID;
+			animationState.speed = PLED_SPEED_OFF;
+			break;
 
-			case XINPUT_PLED_FLASH2:
-			case XINPUT_PLED_ON2:
-				animationState.state = PLED_STATE_LED2;
-				animationState.animation = PLED_ANIM_SOLID;
-				animationState.speed = PLED_SPEED_OFF;
-				break;
+		case XINPUT_PLED_FLASH2:
+		case XINPUT_PLED_ON2:
+			animationState.state = PLED_STATE_LED2;
+			animationState.animation = PLED_ANIM_SOLID;
+			animationState.speed = PLED_SPEED_OFF;
+			break;
 
-			case XINPUT_PLED_FLASH3:
-			case XINPUT_PLED_ON3:
-				animationState.state = PLED_STATE_LED3;
-				animationState.animation = PLED_ANIM_SOLID;
-				animationState.speed = PLED_SPEED_OFF;
-				break;
+		case XINPUT_PLED_FLASH3:
+		case XINPUT_PLED_ON3:
+			animationState.state = PLED_STATE_LED3;
+			animationState.animation = PLED_ANIM_SOLID;
+			animationState.speed = PLED_SPEED_OFF;
+			break;
 
-			case XINPUT_PLED_FLASH4:
-			case XINPUT_PLED_ON4:
-				animationState.state = PLED_STATE_LED4;
-				animationState.animation = PLED_ANIM_SOLID;
-				animationState.speed = PLED_SPEED_OFF;
-				break;
+		case XINPUT_PLED_FLASH4:
+		case XINPUT_PLED_ON4:
+			animationState.state = PLED_STATE_LED4;
+			animationState.animation = PLED_ANIM_SOLID;
+			animationState.speed = PLED_SPEED_OFF;
+			break;
 
-			default:
-				break;
-		}
+		default:
+			break;
 	}
 
 	return animationState;
@@ -151,15 +147,17 @@ void NeoPicoLEDAddon::process()
 		return;
 
 	Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
-	uint8_t * featureData = Storage::getInstance().GetFeatureData();
 	AnimationHotkey action = animationHotkeys(gamepad);
 	if (ledOptions.pledType == PLED_TYPE_RGB) {
 		inputMode = gamepad->getOptions().inputMode; // HACK
-		if (inputMode == INPUT_MODE_XINPUT) {
-			animationState = getXInputAnimationNEOPICO(featureData);
-			if (neoPLEDs != nullptr && animationState.animation != PLED_ANIM_NONE)
-				neoPLEDs->animate(animationState);
+		if (gamepad->auxState.playerID.enabled && gamepad->auxState.playerID.active) {
+			if (inputMode == INPUT_MODE_XINPUT) {
+				animationState = getXInputAnimationNEOPICO(gamepad->auxState.playerID.ledValue);
+			}
 		}
+
+		if (neoPLEDs != nullptr && animationState.animation != PLED_ANIM_NONE)
+			neoPLEDs->animate(animationState);
 	}
 
 	if ( action != HOTKEY_LEDS_NONE ) {

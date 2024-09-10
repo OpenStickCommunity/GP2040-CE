@@ -23,7 +23,7 @@ void XboxOriginalDriver::initialize() {
     memcpy(&class_driver, xid_get_driver(), sizeof(usbd_class_driver_t));
 }
 
-void XboxOriginalDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
+void XboxOriginalDriver::process(Gamepad * gamepad) {
 	// digital buttons
 	xboxOriginalReport.dButtons = 0
 		| (gamepad->pressedUp()    ? XID_DUP    : 0)

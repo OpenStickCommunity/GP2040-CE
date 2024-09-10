@@ -100,7 +100,7 @@ void PS4Driver::initializeAux() {
     }
 }
 
-void PS4Driver::process(Gamepad * gamepad, uint8_t * outBuffer) {
+void PS4Driver::process(Gamepad * gamepad) {
     const GamepadOptions & options = gamepad->getOptions();
     switch (gamepad->state.dpad & GAMEPAD_MASK_DPAD)
     {

@@ -30,6 +30,7 @@ bool PlayerNumAddon::available() {
 
 void PlayerNumAddon::setup() {
     const PlayerNumberOptions& options = Storage::getInstance().getAddonOptions().playerNumberOptions;
+
     xinputIDs[0] = XINPUT_PLED_ON1;
     xinputIDs[1] = XINPUT_PLED_ON2;
     xinputIDs[2] = XINPUT_PLED_ON3;
@@ -47,9 +48,8 @@ void PlayerNumAddon::process()
         Gamepad * gamepad = Storage::getInstance().GetGamepad();
         InputMode inputMode = static_cast<InputMode>(gamepad->getOptions().inputMode);
         if ( inputMode == INPUT_MODE_XINPUT ) {
-            uint8_t * featureData = Storage::getInstance().GetFeatureData();
-            if (featureData[0] == 0x01) {
-                XInputPLEDPattern ledAction = (XInputPLEDPattern)featureData[2];
+            if (gamepad->auxState.playerID.enabled && gamepad->auxState.playerID.active) {
+                XInputPLEDPattern ledAction = (XInputPLEDPattern)gamepad->auxState.playerID.value;
                 if ( ledAction == XINPUT_PLED_ON1 )
                     handleLED(1);
                 else if ( ledAction == XINPUT_PLED_ON2 )

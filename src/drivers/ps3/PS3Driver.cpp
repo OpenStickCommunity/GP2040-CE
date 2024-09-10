@@ -65,7 +65,7 @@ void PS3Driver::initialize() {
 }
 
 // Generate PS3 report from gamepad and send to TUSB Device
-void PS3Driver::process(Gamepad * gamepad, uint8_t * outBuffer) {
+void PS3Driver::process(Gamepad * gamepad) {
     ps3Report.dpad_left    = gamepad->pressedLeft();
     ps3Report.dpad_down    = gamepad->pressedDown();
     ps3Report.dpad_right   = gamepad->pressedRight();

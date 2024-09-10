@@ -10,78 +10,86 @@ using namespace std;
 
 struct GamepadAuxColor
 {
-    uint8_t alpha;
-    uint8_t red;
-    uint8_t green;
-    uint8_t blue;
+    uint8_t alpha = 0;
+    uint8_t red = 0;
+    uint8_t green = 0;
+    uint8_t blue = 0;
+};
+
+struct GamepadAuxPlayerID
+{
+    bool enabled = false;
+    bool active = false;
+    uint16_t value = 0;
+    uint16_t ledValue = 0;
 };
 
 struct GamepadAux1DSensor
 {
     bool enabled = false;
     bool active = false;
-    uint16_t x;
+    uint16_t x = 0;
 };
 
 struct GamepadAux1DRelativeSensor
 {
     bool enabled = false;
     bool active = false;
-    int16_t x;
+    int16_t x = 0;
 };
 
 struct GamepadAux2DSensor
 {
     bool enabled = false;
     bool active = false;
-    uint16_t x;
-    uint16_t y;
+    uint16_t x = 0;
+    uint16_t y = 0;
 };
 
 struct GamepadAux2DRelativeSensor
 {
     bool enabled = false;
     bool active = false;
-    int16_t x;
-    int16_t y;
+    int16_t x = 0;
+    int16_t y = 0;
 };
 
 struct GamepadAux3DSensor
 {
     bool enabled = false;
     bool active = false;
-    uint16_t x;
-    uint16_t y;
-    uint16_t z;
+    uint16_t x = 0;
+    uint16_t y = 0;
+    uint16_t z = 0;
 };
 
 struct GamepadAux3DRelativeSensor
 {
     bool enabled = false;
     bool active = false;
-    int16_t x;
-    int16_t y;
-    int16_t z;
+    int16_t x = 0;
+    int16_t y = 0;
+    int16_t z = 0;
 };
 
 struct GamepadAux4DSensor
 {
     bool enabled = false;
     bool active = false;
-    uint16_t x;
-    uint16_t y;
-    uint16_t z;
-    uint16_t t;
+    uint16_t x = 0;
+    uint16_t y = 0;
+    uint16_t z = 0;
+    uint16_t t = 0;
 };
 
 struct GamepadAux4DRelativeSensor
 {
     bool enabled = false;
     bool active = false;
-    int16_t x;
-    int16_t y;
-    int16_t z;
-    int16_t t;
+    int16_t x = 0;
+    int16_t y = 0;
+    int16_t z = 0;
+    int16_t t = 0;
 };
 
 struct GamepadAuxRGBSensor
@@ -89,15 +97,15 @@ struct GamepadAuxRGBSensor
     bool enabled = false;
     bool active = false;
     GamepadAuxColor color;
-    uint8_t durationOn;
-    uint8_t durationOff;
+    uint8_t durationOn = 0;
+    uint8_t durationOff = 0;
 };
 
 struct GamepadAuxHapticChannel
 {
     bool enabled = false;
     bool active = false;
-    uint16_t intensity;
+    uint16_t intensity = 0;
 };
 
 struct GamepadAuxSensors
@@ -124,6 +132,8 @@ struct GamepadAuxHaptics
 
 struct GamepadAuxState
 {
+    GamepadAuxPlayerID playerID;
+    
     GamepadAuxColor primaryColor;
     GamepadAuxColor secondaryColor;
 
