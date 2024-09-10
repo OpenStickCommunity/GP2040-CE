@@ -17,6 +17,8 @@ bool DRV8833RumbleAddon::available() {
 
 void DRV8833RumbleAddon::setup() {
 	const DRV8833RumbleOptions& options = Storage::getInstance().getAddonOptions().drv8833RumbleOptions;
+    Gamepad * gamepad = Storage::getInstance().GetGamepad();
+
 	leftMotorPin = options.leftMotorPin;
 	rightMotorPin = options.rightMotorPin;
 	motorSleepPin = options.motorSleepPin;
@@ -30,16 +32,25 @@ void DRV8833RumbleAddon::setup() {
 	else
 		sysClock = 125000000;
 
-	gpio_set_function(leftMotorPin, GPIO_FUNC_PWM);
-	gpio_set_function(rightMotorPin, GPIO_FUNC_PWM);
-	leftMotorPinSlice = pwm_gpio_to_slice_num (leftMotorPin);
-	leftMotorPinChannel = pwm_gpio_to_channel (leftMotorPin);
-	rightMotorPinSlice = pwm_gpio_to_slice_num (rightMotorPin);
-	rightMotorPinChannel = pwm_gpio_to_channel (rightMotorPin);
-	pwmSetFreqDuty(leftMotorPinSlice, leftMotorPinChannel, pwmFrequency, 0);
-	pwmSetFreqDuty(rightMotorPinSlice, rightMotorPinChannel, pwmFrequency, 0);
-	pwm_set_enabled(leftMotorPinSlice, true);
-	pwm_set_enabled(rightMotorPinSlice, true);
+
+	// enable haptics in Aux sensors depending on pin assignments
+	if(isValidPin(leftMotorPin)) {
+		gpio_set_function(leftMotorPin, GPIO_FUNC_PWM);
+		leftMotorPinSlice = pwm_gpio_to_slice_num (leftMotorPin);
+		leftMotorPinChannel = pwm_gpio_to_channel (leftMotorPin);
+		pwmSetFreqDuty(leftMotorPinSlice, leftMotorPinChannel, pwmFrequency, 0);
+		pwm_set_enabled(leftMotorPinSlice, true);
+		gamepad->auxState.haptics.leftActuator.enabled = true;
+	}
+
+	if(isValidPin(rightMotorPin)) {
+		gpio_set_function(rightMotorPin, GPIO_FUNC_PWM);
+		rightMotorPinSlice = pwm_gpio_to_slice_num (rightMotorPin);
+		rightMotorPinChannel = pwm_gpio_to_channel (rightMotorPin);
+		pwmSetFreqDuty(rightMotorPinSlice, rightMotorPinChannel, pwmFrequency, 0);
+		pwm_set_enabled(rightMotorPinSlice, true);
+		gamepad->auxState.haptics.rightActuator.enabled = true;
+	}
 
 	if(isValidPin(motorSleepPin)) {
 		gpio_init(motorSleepPin);
