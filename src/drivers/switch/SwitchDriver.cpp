@@ -56,9 +56,9 @@ void SwitchDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 		| (gamepad->pressedA2() ? SWITCH_MASK_CAPTURE : 0)
 	;
 
-	switchReport.lx = static_cast<uint8_t>((gamepad->state.ry + 128) >> 8);
-	switchReport.ly = static_cast<uint8_t>((gamepad->state.ry + 128) >> 8);
-	switchReport.rx = static_cast<uint8_t>((gamepad->state.ry + 128) >> 8);
+	switchReport.lx = static_cast<uint8_t>((gamepad->state.lx + 128) >> 8);
+	switchReport.ly = static_cast<uint8_t>((gamepad->state.ly + 128) >> 8);
+	switchReport.rx = static_cast<uint8_t>((gamepad->state.rx + 128) >> 8);
 	switchReport.ry = static_cast<uint8_t>((gamepad->state.ry + 128) >> 8);
 
 	// Wake up TinyUSB device
