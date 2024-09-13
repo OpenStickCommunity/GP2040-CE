@@ -429,6 +429,8 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		inner_deadzone: 5,
 		outer_deadzone: 95,
 		auto_calibrate: 0,
+		analog_smoothing: 0,
+		smoothing_factor: 5,
 		bootselButtonMap: 0,
 		buzzerPin: -1,
 		buzzerEnablePin: -1,
