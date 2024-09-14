@@ -192,7 +192,7 @@ USBListener * XInputDriver::get_usb_auth_listener() {
 }
 
 void XInputDriver::process(Gamepad * gamepad) {
-	if (gamepad->auxState.playerID.enabled) gamepad->auxState.playerID.active = false;
+	Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
 
 	xinputReport.buttons1 = 0
 		| (gamepad->pressedUp()    ? XBOX_MASK_UP    : 0)
@@ -255,21 +255,16 @@ void XInputDriver::process(Gamepad * gamepad) {
 	//---------------
 	if (memcmp(xinput_out_buffer, featureBuffer, XINPUT_OUT_SIZE) != 0) { // check if new write to xinput_out_buffer from xinput_xfer_callback
 		memcpy(featureBuffer, xinput_out_buffer, XINPUT_OUT_SIZE);
-//        printf("Feature: %d, Size: %d, Value:", featureBuffer[0], featureBuffer[1]);
-//        for (uint8_t i = 0; i < featureBuffer[1]; i++) {
-//            printf(" %02x", featureBuffer[2+i]);
-//        }
-//        printf("\n");
 		switch (featureBuffer[0]) {
 			case 0x00:
 				if (featureBuffer[1] == 0x08) {
-					if (gamepad->auxState.haptics.leftActuator.enabled) {
-						gamepad->auxState.haptics.leftActuator.active = (featureBuffer[3] > 0);
-						gamepad->auxState.haptics.leftActuator.intensity = featureBuffer[3];
+					if (processedGamepad->auxState.haptics.leftActuator.enabled) {
+						processedGamepad->auxState.haptics.leftActuator.active = (featureBuffer[3] > 0);
+						processedGamepad->auxState.haptics.leftActuator.intensity = featureBuffer[3];
 					}
-					if (gamepad->auxState.haptics.rightActuator.enabled) {
-						gamepad->auxState.haptics.rightActuator.active = (featureBuffer[4] > 0);
-						gamepad->auxState.haptics.rightActuator.intensity = featureBuffer[4];
+					if (processedGamepad->auxState.haptics.rightActuator.enabled) {
+						processedGamepad->auxState.haptics.rightActuator.active = (featureBuffer[4] > 0);
+						processedGamepad->auxState.haptics.rightActuator.intensity = featureBuffer[4];
 					}
 				}
 				break;
@@ -277,20 +272,19 @@ void XInputDriver::process(Gamepad * gamepad) {
 				// Player LED
 				if (featureBuffer[1] == 0x03) {
 					// determine the player ID based on LED status
-					gamepad->auxState.playerID.enabled = true;
-					gamepad->auxState.playerID.active = true;
-					gamepad->auxState.playerID.ledValue = featureBuffer[2];
+					processedGamepad->auxState.playerID.active = true;
+					processedGamepad->auxState.playerID.ledValue = featureBuffer[2];
 
 					if ( featureBuffer[2] == XINPUT_PLED_ON1 ) {
-						gamepad->auxState.playerID.value = 1;
+						processedGamepad->auxState.playerID.value = 1;
 					} else if ( featureBuffer[2] == XINPUT_PLED_ON2 ) {
-						gamepad->auxState.playerID.value = 2;
+						processedGamepad->auxState.playerID.value = 2;
 					} else if ( featureBuffer[2] == XINPUT_PLED_ON3 ) {
-						gamepad->auxState.playerID.value = 3;
+						processedGamepad->auxState.playerID.value = 3;
 					} else if ( featureBuffer[2] == XINPUT_PLED_ON4 ) {
-						gamepad->auxState.playerID.value = 4;
+						processedGamepad->auxState.playerID.value = 4;
 					} else {
-						gamepad->auxState.playerID.value = 0;
+						processedGamepad->auxState.playerID.value = 0;
 					}
 				}
 				break;

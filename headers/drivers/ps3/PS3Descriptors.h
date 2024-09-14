@@ -27,6 +27,7 @@
  **************************************************************************/
 
 #define ENDPOINT0_SIZE	64
+#define PS3_FEATURES_SIZE 48
 
 #define GAMEPAD_INTERFACE	0
 #define GAMEPAD_ENDPOINT	1

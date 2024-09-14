@@ -236,6 +236,49 @@ void PS4Driver::process(Gamepad * gamepad) {
             // the *next* process() will be a forced report (or real user input)
         }
     }
+
+    uint16_t featureSize = sizeof(PS4FeatureOutputReport);
+    if (memcmp(lastFeatures, &ps4Features, featureSize) != 0) {
+        memcpy(lastFeatures, &ps4Features, featureSize);
+        Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
+
+        if (gamepad->auxState.haptics.leftActuator.enabled) {
+            gamepad->auxState.haptics.leftActuator.active = (ps4Features.rumbleLeft > 0);
+            gamepad->auxState.haptics.leftActuator.intensity = ps4Features.rumbleLeft;
+        }
+
+        if (gamepad->auxState.haptics.rightActuator.enabled) {
+            gamepad->auxState.haptics.rightActuator.active = (ps4Features.rumbleRight > 0);
+            gamepad->auxState.haptics.rightActuator.intensity = ps4Features.rumbleRight;
+        }
+
+        if (gamepad->auxState.sensors.statusLight.enabled) {
+            uint32_t rgbColor = 0;
+
+            gamepad->auxState.sensors.statusLight.active = true;
+            gamepad->auxState.sensors.statusLight.color.red = ps4Features.ledRed;
+            gamepad->auxState.sensors.statusLight.color.green = ps4Features.ledGreen;
+            gamepad->auxState.sensors.statusLight.color.blue = ps4Features.ledBlue;
+
+            rgbColor = (ps4Features.ledRed << 16) | (ps4Features.ledGreen << 8) | (ps4Features.ledBlue << 0);
+
+            // set player ID based on color combos
+            gamepad->auxState.playerID.active = true;
+            if (rgbColor == 0x000040) {
+                gamepad->auxState.playerID.value = 1;
+                gamepad->auxState.playerID.ledValue = 1;
+            } else if (rgbColor == 0x400000) {
+                gamepad->auxState.playerID.value = 2;
+                gamepad->auxState.playerID.ledValue = 2;
+            } else if (rgbColor == 0x004000) {
+                gamepad->auxState.playerID.value = 3;
+                gamepad->auxState.playerID.ledValue = 3;
+            } else if (rgbColor == 0x200020) {
+                gamepad->auxState.playerID.value = 4;
+                gamepad->auxState.playerID.ledValue = 4;
+            }
+        }
+    }
 }
 
 // Called by Core1, PS4 key signing will lock the CPU
@@ -396,33 +439,7 @@ void PS4Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uin
         Gamepad * gamepad = Storage::getInstance().GetGamepad();
 
         if (report_id == 0) {
-            // sets rumble, lightbar, etc
-            //report[4] = Rumble Weak
-            //report[5] = Rumble Strong
-            //
-            //report[6] = Red
-            //report[7] = Green
-            //report[8] = Blue
-            //
-            //report[9] = Flash On Period
-            //report[10] = Flash Off Period
-
-            if (gamepad->auxState.haptics.leftActuator.enabled) {
-                gamepad->auxState.haptics.leftActuator.active = (buffer[4] > 0);
-                gamepad->auxState.haptics.leftActuator.intensity = buffer[4];
-            }
-
-            if (gamepad->auxState.haptics.rightActuator.enabled) {
-                gamepad->auxState.haptics.rightActuator.active = (buffer[5] > 0);
-                gamepad->auxState.haptics.rightActuator.intensity = buffer[5];
-            }
-
-            if (gamepad->auxState.sensors.statusLight.enabled) {
-                gamepad->auxState.sensors.statusLight.active = true;
-                gamepad->auxState.sensors.statusLight.color.red = buffer[6];
-                gamepad->auxState.sensors.statusLight.color.green = buffer[7];
-                gamepad->auxState.sensors.statusLight.color.blue = buffer[8];
-            }
+            memcpy(&ps4Features, buffer, bufsize);
         }
     } else if (report_type == HID_REPORT_TYPE_FEATURE) {
         uint8_t nonce_id;

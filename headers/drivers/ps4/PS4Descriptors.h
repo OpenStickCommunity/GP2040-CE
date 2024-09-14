@@ -33,6 +33,8 @@
 
 #define ENDPOINT0_SIZE	64
 
+#define PS4_FEATURES_SIZE 32
+
 #define GAMEPAD_INTERFACE	0
 #define GAMEPAD_ENDPOINT	1
 #define GAMEPAD_SIZE		64
@@ -131,6 +133,69 @@ struct PSSensorData {
   uint8_t extData3 : 5;
   uint8_t misc2;
 } __attribute__((packed));
+
+typedef struct __attribute__((packed)) {
+  // 0
+  uint8_t reportID;
+
+  // 1
+  uint8_t enableUpdateRumble : 1;
+  uint8_t enableUpdateLED : 1;
+  uint8_t enableUpdateLEDBlink : 1;
+  uint8_t enableUpdateExtData : 1;
+  uint8_t enableUpdateVolLeft : 1;
+  uint8_t enableUpdateVolRight : 1;
+  uint8_t enableUpdateVolMic : 1;
+  uint8_t enableUpdateVolSpeaker : 1;
+
+  // 2
+  uint8_t : 8;
+
+  // 3 
+  uint8_t unknown0;
+
+  // 4
+  uint8_t rumbleRight;
+
+  // 5
+  uint8_t rumbleLeft;
+
+  // 6
+  uint8_t ledRed;
+
+  // 7
+  uint8_t ledGreen;
+
+  // 8
+  uint8_t ledBlue;
+
+  // 9
+  uint8_t ledFlashOn;
+
+  // 10
+  uint8_t ledFlashOff;
+
+  // 11
+  uint8_t extData[8];
+
+  // 19
+  uint8_t volumeLeft; // 0x00-0x4F
+
+  // 20
+  uint8_t volumeRight; // 0x00-0x4F
+
+  // 21
+  uint8_t volumeMic; // 0x01-0x4F, 0x00 is special state
+
+  // 22
+  uint8_t volumeSpeaker; // 0x00-0x4F
+
+  // 23
+  uint8_t unknownAudio;
+
+  // 24
+  uint8_t padding[8];
+} PS4FeatureOutputReport;
 
 typedef struct __attribute__((packed)) {
   uint8_t report_id;

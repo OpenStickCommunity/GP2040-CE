@@ -116,6 +116,60 @@ PLEDAnimationState getXInputAnimationNEOPICO(uint16_t ledState)
 	return animationState;
 }
 
+PLEDAnimationState getPS3AnimationNEOPICO(uint16_t ledState)
+{
+	const uint8_t ps3LEDs[10][4] = {
+		{ 0x01, 0x00, 0x00, 0x00 },
+		{ 0x00, 0x01, 0x00, 0x00 },
+		{ 0x00, 0x00, 0x01, 0x00 },
+		{ 0x00, 0x00, 0x00, 0x01 },
+		{ 0x01, 0x00, 0x00, 0x01 },
+		{ 0x00, 0x01, 0x00, 0x01 },
+		{ 0x00, 0x00, 0x01, 0x01 },
+		{ 0x01, 0x00, 0x01, 0x01 },
+		{ 0x00, 0x01, 0x01, 0x01 },
+		{ 0x01, 0x01, 0x01, 0x01 }
+	};
+
+	PLEDAnimationState animationState =
+	{
+		.state = 0,
+		.animation = PLED_ANIM_NONE,
+		.speed = PLED_SPEED_OFF,
+	};
+
+	if (ledState != 0) {
+		uint8_t ledNumber = ledState & 0x0F;
+		if (ps3LEDs[ledNumber-1][0] == 0x01) animationState.state |= PLED_STATE_LED1;
+		if (ps3LEDs[ledNumber-1][1] == 0x01) animationState.state |= PLED_STATE_LED2;
+		if (ps3LEDs[ledNumber-1][2] == 0x01) animationState.state |= PLED_STATE_LED3;
+		if (ps3LEDs[ledNumber-1][3] == 0x01) animationState.state |= PLED_STATE_LED4;
+	}
+
+	if (animationState.state != 0) {
+		animationState.animation = PLED_ANIM_SOLID;
+		animationState.speed = PLED_SPEED_OFF;
+	} else {
+		animationState.state = 0;
+		animationState.animation = PLED_ANIM_OFF;
+		animationState.speed = PLED_SPEED_OFF;
+	}
+
+	return animationState;
+}
+
+PLEDAnimationState getPS4AnimationNEOPICO(uint8_t flashOn, uint8_t flashOff)
+{
+	PLEDAnimationState animationState =
+	{
+		.state = (PLED_STATE_LED1 | PLED_STATE_LED2 | PLED_STATE_LED3 | PLED_STATE_LED4),
+		.animation = PLED_ANIM_SOLID,
+		.speed = PLED_SPEED_OFF,
+	};
+
+	return animationState;
+}
+
 bool NeoPicoLEDAddon::available() {
 	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
 	return isValidPin(ledOptions.dataPin);
@@ -126,6 +180,10 @@ void NeoPicoLEDAddon::setup()
 	// Set Default LED Options
 	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
 	turnOffWhenSuspended = ledOptions.turnOffWhenSuspended;
+
+	Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
+	gamepad->auxState.playerID.enabled = true;
+    gamepad->auxState.sensors.statusLight.enabled = true;
 
 	if ( ledOptions.pledType == PLED_TYPE_RGB ) {
 		neoPLEDs = new NeoPicoPlayerLEDs();
@@ -151,13 +209,25 @@ void NeoPicoLEDAddon::process()
 	if (ledOptions.pledType == PLED_TYPE_RGB) {
 		inputMode = gamepad->getOptions().inputMode; // HACK
 		if (gamepad->auxState.playerID.enabled && gamepad->auxState.playerID.active) {
-			if (inputMode == INPUT_MODE_XINPUT) {
-				animationState = getXInputAnimationNEOPICO(gamepad->auxState.playerID.ledValue);
+			switch (inputMode) {
+				case INPUT_MODE_XINPUT:
+					animationState = getXInputAnimationNEOPICO(gamepad->auxState.playerID.ledValue);
+					break;
+				case INPUT_MODE_PS3:
+					animationState = getPS3AnimationNEOPICO(gamepad->auxState.playerID.ledValue);
+					break;
+				case INPUT_MODE_PS4:
+				case INPUT_MODE_PS5:
+					animationState = getPS4AnimationNEOPICO(0, 0);
+					break;
+				default:
+					break;
 			}
 		}
 
-		if (neoPLEDs != nullptr && animationState.animation != PLED_ANIM_NONE)
+		if (neoPLEDs != nullptr && animationState.animation != PLED_ANIM_NONE) {
 			neoPLEDs->animate(animationState);
+		}
 	}
 
 	if ( action != HOTKEY_LEDS_NONE ) {
@@ -191,18 +261,20 @@ void NeoPicoLEDAddon::process()
 
 	// Apply the player LEDs to our first 4 leds if we're in NEOPIXEL mode
 	if (ledOptions.pledType == PLED_TYPE_RGB) {
-		if (inputMode == INPUT_MODE_XINPUT) { // HACK
-			LEDOptions & ledOptions = Storage::getInstance().getLedOptions();
-			int32_t pledIndexes[] = { ledOptions.pledIndex1, ledOptions.pledIndex2, ledOptions.pledIndex3, ledOptions.pledIndex4 };
-			for (int i = 0; i < PLED_COUNT; i++) {
-				if (pledIndexes[i] < 0)
-					continue;
+		LEDOptions & ledOptions = Storage::getInstance().getLedOptions();
+		int32_t pledIndexes[] = { ledOptions.pledIndex1, ledOptions.pledIndex2, ledOptions.pledIndex3, ledOptions.pledIndex4 };
+		for (int i = 0; i < PLED_COUNT; i++) {
+			if (pledIndexes[i] < 0)
+				continue;
 
-				float level = (static_cast<float>(PLED_MAX_LEVEL - neoPLEDs->getLedLevels()[i]) / static_cast<float>(PLED_MAX_LEVEL));
-				float brightness = as.GetBrightnessX() * level;
+			float level = (static_cast<float>(PLED_MAX_LEVEL - neoPLEDs->getLedLevels()[i]) / static_cast<float>(PLED_MAX_LEVEL));
+			float brightness = as.GetBrightnessX() * level;
+			if (gamepad->auxState.sensors.statusLight.enabled && gamepad->auxState.sensors.statusLight.active) {
+				rgbPLEDValues[i] = (RGB(gamepad->auxState.sensors.statusLight.color.red, gamepad->auxState.sensors.statusLight.color.green, gamepad->auxState.sensors.statusLight.color.blue)).value(neopico->GetFormat(), brightness);
+			} else {
 				rgbPLEDValues[i] = ((RGB)ledOptions.pledColor).value(neopico->GetFormat(), brightness);
-				frame[pledIndexes[i]] = rgbPLEDValues[i];
 			}
+			frame[pledIndexes[i]] = rgbPLEDValues[i];
 		}
 	}
 

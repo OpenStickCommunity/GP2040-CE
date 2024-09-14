@@ -100,6 +100,10 @@ void PlayerLEDAddon::setup() {
 	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
 	turnOffWhenSuspended = ledOptions.turnOffWhenSuspended;
 
+	Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
+	gamepad->auxState.playerID.enabled = true;
+    gamepad->auxState.sensors.statusLight.enabled = true;
+
 	switch (ledOptions.pledType)
 	{
 		case PLED_TYPE_PWM:
@@ -107,6 +111,8 @@ void PlayerLEDAddon::setup() {
 			break;
 		case PLED_TYPE_RGB:
 			// Do not assign pwmLEDs (support later on?)
+			break;
+		default:
 			break;
 	}
 

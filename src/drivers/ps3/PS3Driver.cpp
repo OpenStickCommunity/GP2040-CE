@@ -142,6 +142,26 @@ void PS3Driver::process(Gamepad * gamepad) {
             memcpy(last_report, report, report_size);
         }
     }
+
+    uint16_t featureSize = sizeof(PS3Features);
+    if (memcmp(lastFeatures, &ps3Features, featureSize) != 0) {
+        memcpy(lastFeatures, &ps3Features, featureSize);
+        Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
+
+        if (gamepad->auxState.haptics.leftActuator.enabled) {
+            gamepad->auxState.haptics.leftActuator.active = (ps3Features.leftMotorPower > 0);
+            gamepad->auxState.haptics.leftActuator.intensity = ps3Features.leftMotorPower;
+        }
+
+        if (gamepad->auxState.haptics.rightActuator.enabled) {
+            gamepad->auxState.haptics.rightActuator.active = (ps3Features.rightMotorPower > 0);
+            gamepad->auxState.haptics.rightActuator.intensity = ps3Features.rightMotorPower;
+        }
+
+        gamepad->auxState.playerID.active = true;
+        gamepad->auxState.playerID.ledValue = ps3Features.playerLED;
+        gamepad->auxState.playerID.value = (ps3Features.playerLED & 0x0F);
+    }
 }
 
 // unknown
@@ -262,18 +282,7 @@ void PS3Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uin
         }
         switch(report_id) {
             case PS3ReportTypes::PS3_FEATURE_01:
-                Gamepad * gamepad = Storage::getInstance().GetGamepad();
                 memcpy(&ps3Features, buf, bufsize);
-
-                if (gamepad->auxState.haptics.leftActuator.enabled) {
-                    gamepad->auxState.haptics.leftActuator.active = (ps3Features.leftMotorPower > 0);
-                    gamepad->auxState.haptics.leftActuator.intensity = ps3Features.leftMotorPower;
-                }
-
-                if (gamepad->auxState.haptics.rightActuator.enabled) {
-                    gamepad->auxState.haptics.rightActuator.active = (ps3Features.rightMotorPower > 0);
-                    gamepad->auxState.haptics.rightActuator.intensity = ps3Features.rightMotorPower;
-                }
                 break;
         }
     }

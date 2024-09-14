@@ -82,6 +82,9 @@ private:
     bool pointTwoTouched = false;
     uint8_t touchCounter;
 
+    PS4FeatureOutputReport ps4Features;
+    uint8_t lastFeatures[PS4_FEATURES_SIZE] = { };
+
     PS4State ps4State;
     bool authsent;
     uint8_t nonce_buffer[256];

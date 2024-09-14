@@ -29,6 +29,7 @@ private:
     uint8_t last_report[CFG_TUD_ENDPOINT0_SIZE] = { };
     PS3Report ps3Report;
     PS3Features ps3Features;
+    uint8_t lastFeatures[PS3_FEATURES_SIZE] = { };
     PS3BTInfo ps3BTInfo;
 
     // this is an identification byte from the H2D 0xEF feature report that needs to be the same 

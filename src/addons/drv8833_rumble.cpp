@@ -17,7 +17,7 @@ bool DRV8833RumbleAddon::available() {
 
 void DRV8833RumbleAddon::setup() {
 	const DRV8833RumbleOptions& options = Storage::getInstance().getAddonOptions().drv8833RumbleOptions;
-    Gamepad * gamepad = Storage::getInstance().GetGamepad();
+    Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
 
 	leftMotorPin = options.leftMotorPin;
 	rightMotorPin = options.rightMotorPin;
@@ -97,7 +97,7 @@ void DRV8833RumbleAddon::enableMotors(Gamepad * gamepad) {
 }
 
 void DRV8833RumbleAddon::process() {
-	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+	Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
 
 	if (!compareRumbleState(gamepad)) {
 		setRumbleState(gamepad);
