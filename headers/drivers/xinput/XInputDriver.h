@@ -9,6 +9,7 @@
 #include "gpdriver.h"
 #include "usblistener.h"
 #include "drivers/shared/gpauthdriver.h"
+#include "drivers/xinput/XInputAuth.h"
 #include "drivers/xinput/XInputDescriptors.h"
 
 class XInputDriver : public GPDriver {
@@ -30,7 +31,7 @@ public:
 private:
     uint8_t last_report[CFG_TUD_ENDPOINT0_SIZE] = { };
     XInputReport xinputReport;
-    GPAuthDriver * authDriver;
+    XInputAuth * xAuthDriver;
 };
 
 #endif

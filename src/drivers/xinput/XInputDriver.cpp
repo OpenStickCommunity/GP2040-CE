@@ -4,7 +4,6 @@
  */
 
 #include "drivers/xinput/XInputDriver.h"
-#include "drivers/xinput/XInputAuth.h"
 #include "drivers/shared/driverhelper.h"
 #include "storagemanager.h"
 
@@ -44,11 +43,20 @@ typedef struct {
 
 CFG_TUSB_MEM_SECTION static xinputd_interface_t _xinputd_itf[CFG_TUD_XINPUT];
 
+
 uint8_t endpoint_in = 0;
 uint8_t endpoint_out = 0;
 uint8_t xinput_out_buffer[XINPUT_OUT_SIZE] = {};
+static XInputAuthData * xinputAuthData = nullptr;
 
-static bool authDriverPresent = false;
+/*------------- Helpers -------------*/
+static inline uint8_t get_index_by_itfnum(uint8_t itf_num) {
+    for (uint8_t i = 0; i < CFG_TUD_XINPUT; i++) {
+        if (itf_num == _xinputd_itf[i].itf_num) return i;
+    }
+
+    return 0xFF;
+}
 
 static void xinput_init(void) {
 }
@@ -59,23 +67,52 @@ static void xinput_reset(uint8_t rhport) {
 
 static uint16_t xinput_open(uint8_t rhport, tusb_desc_interface_t const *itf_descriptor, uint16_t max_length)
 {
-	uint16_t driver_length;
+	uint16_t driver_length = 0;
     // Xbox 360 Vendor USB Interfaces: Control, Audio, Plug-in, Security
     if ( TUSB_CLASS_VENDOR_SPECIFIC == itf_descriptor->bInterfaceClass) {
         driver_length = sizeof(tusb_desc_interface_t) + (itf_descriptor->bNumEndpoints * sizeof(tusb_desc_endpoint_t));
         TU_VERIFY(max_length >= driver_length, 0);
+
+        // Find available interface
+        xinputd_interface_t *p_xinput = NULL;
+        for (uint8_t i = 0; i < CFG_TUD_XINPUT; i++) {
+            if (_xinputd_itf[i].ep_in == 0 && _xinputd_itf[i].ep_out == 0) {
+                p_xinput = &_xinputd_itf[i];
+                break;
+            }
+        }
+
         tusb_desc_interface_t *p_desc = (tusb_desc_interface_t *)itf_descriptor;
         // Xbox 360 Interfaces (Control 0x01, Audio 0x02, Plug-in 0x03)
         if (itf_descriptor->bInterfaceSubClass == 0x5D &&
-                (itf_descriptor->bInterfaceProtocol == 0x01 ) ||
+                ((itf_descriptor->bInterfaceProtocol == 0x01 ) ||
                 (itf_descriptor->bInterfaceProtocol == 0x02 ) ||
-                (itf_descriptor->bInterfaceProtocol == 0x03 ) ) {
+                (itf_descriptor->bInterfaceProtocol == 0x03 )) ) {
             // Get Xbox 360 Definition
             p_desc = (tusb_desc_interface_t *)tu_desc_next(p_desc);
             TU_VERIFY(XINPUT_DESC_TYPE_RESERVED == p_desc->bDescriptorType, 0);
             driver_length += p_desc->bLength;
+
+            p_desc = (tusb_desc_interface_t *)tu_desc_next(p_desc);
+            TU_ASSERT(usbd_open_edpt_pair(rhport, (const uint8_t*)p_desc, itf_descriptor->bNumEndpoints,
+                                          TUSB_XFER_INTERRUPT, &p_xinput->ep_out, &p_xinput->ep_in), 0);
+            p_xinput->itf_num = itf_descriptor->bInterfaceNumber;
+            //if (p_xinput->ep_out) {
+            //    if (!usbd_edpt_xfer(rhport, p_xinput->ep_out, p_xinput->epout_buf, sizeof(p_xinput->epout_buf))) {
+            //        TU_LOG_FAILED();
+            //        TU_BREAKPOINT();
+            //    }
+            //}
+
+            // Control Endpoints are used for gamepad input/output
+            if ( itf_descriptor->bInterfaceProtocol == 0x01 ) {
+                endpoint_in = p_xinput->ep_in;
+                endpoint_out = p_xinput->ep_out;
+            }
+/*
             // Xbox 360 CONTROL ONLY: ignore audio and plug-in for our purposes
             if ( itf_descriptor->bInterfaceProtocol == 0x01 ) {
+                printf("[xinput_open] Found xbox 360 control interface, setup the endpoints\n");
                 uint8_t const *current_descriptor = tu_desc_next(itf_descriptor);
                 uint8_t found_endpoints = 0;
                 while ((found_endpoints < itf_descriptor->bNumEndpoints) && (driver_length <= max_length))
@@ -96,6 +133,7 @@ static uint16_t xinput_open(uint8_t rhport, tusb_desc_interface_t const *itf_des
                     current_descriptor = tu_desc_next(current_descriptor);
                 }
             }
+*/
         // Xbox 360 Security Interface
         } else if (itf_descriptor->bInterfaceSubClass == 0xFD &&
                 itf_descriptor->bInterfaceProtocol == 0x13) {
@@ -116,38 +154,6 @@ static bool xinput_device_control_request(uint8_t rhport, uint8_t stage, tusb_co
 	(void)stage;
 	(void)request;
 
-	// if authentication is present
-	if ( authDriverPresent &&
-		request->bmRequestType == (USB_SETUP_DEVICE_TO_HOST | USB_SETUP_RECIPIENT_INTERFACE | USB_SETUP_TYPE_VENDOR)) {
-		switch(request->bRequest) {
-			case 0x81:
-				uint8_t serial[0x0B];
-                printf("[xinput_device_control_request] 0x81 [Get Serial] %08x ...", serial);
-            	//return sizeof(id_data_ms_controller);
-                break;
-			case 0x82:
-                printf("[xinput_device_control_request] 0x82 [???]");
-				//return 0;
-			case 0x83:
-                printf("[xinput_device_control_request] 0x83 [Challenge Response]");
-				//memcpy(requestBuffer, challenge_response, sizeof(challenge_response));
-            	//return sizeof(challenge_response);
-                break;
-			case 0x84:
-                printf("[xinput_device_control_request] 0x84 [???]");
-				break;
-			case 0x86:
-				//short state = 2;  // 1 = in-progress, 2 = complete
-				//memcpy(&request->wValue, &state, sizeof(state));
-				//return sizeof(state);
-                printf("[xinput_device_control_request] 0x84 [Get Challenge State]");
-                break;
-			case 0x87:
-				break;
-			default:
-				break;
-		};
-	}
 	return true;
 }
 
@@ -198,25 +204,27 @@ void XInputDriver::initialize() {
 		.sof = NULL
 	};
 
-	authDriver = nullptr;
+	xAuthDriver = nullptr;
 }
 
 void XInputDriver::initializeAux() {
-	authDriver = nullptr;
+	xAuthDriver = nullptr;
 	// AUTH DRIVER NON-FUNCTIONAL FOR NOW
 	GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();
 	//if ( gamepadOptions.xinputAuthType == InputModeAuthType::INPUT_MODE_AUTH_TYPE_USB )  {
-		authDriver = new XInputAuth();
-		if ( authDriver->available() ) {
-			authDriver->initialize();
-			authDriverPresent = true; // for callbacks
-		}
-	//}
+		xAuthDriver = new XInputAuth();
+		if ( xAuthDriver->available() ) {
+			xAuthDriver->initialize();
+            xinputAuthData = xAuthDriver->getAuthData();
+		} else {
+            xinputAuthData = nullptr;
+        }
+    //}
 }
 
 USBListener * XInputDriver::get_usb_auth_listener() {
-	if ( authDriver != nullptr && authDriver->available() ) {
-		return authDriver->getListener();
+	if ( xAuthDriver != nullptr && xAuthDriver->available() ) {
+		return xAuthDriver->getListener();
 	}
 	return nullptr;
 }
@@ -282,8 +290,8 @@ void XInputDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 }
 
 void XInputDriver::processAux() {
-	if ( authDriver != nullptr && authDriver->available() ) {
-		((XInputAuth*)authDriver)->process();
+	if ( xAuthDriver != nullptr && xAuthDriver->available() ) {
+		xAuthDriver->process();
 	}
 }
 
@@ -295,11 +303,11 @@ uint16_t XInputDriver::get_report(uint8_t report_id, hid_report_type_t report_ty
 
 // Only PS4 does anything with set report
 void XInputDriver::set_report(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize) {}
-
+/*
 static const uint8_t xsm3_id_data_ms_controller[] = {
     0x49, 0x4B, 0x00, 0x00, 0x17, 0xFA, 0xAB, 0x2D, 0xFA, 0xFB, 0x55, 0x49, 0xCE, 0x02, 0x03, 0x20,
     0x00, 0x00, 0x80, 0x02, 0x5E, 0x04, 0x8E, 0x02, 0x03, 0x00, 0x01, 0x01, 0xD9
-};
+};*/
 
 // Class variable
 static uint8_t buf[255];
@@ -307,97 +315,93 @@ static uint8_t buf[255];
 // Only respond to vendor control xfers if we have a mounted x360 device
 bool XInputDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request) {
     // Do nothing if we have no auth driver
-	if ( authDriver == nullptr || !authDriver->available() ) {
-        printf("[XInputDriver] No auth driver available\n");
+	if ( xAuthDriver == nullptr || !xAuthDriver->available() ) {
         return true;
 	}
 
-    printf("[XInputDriver] Got Vendor Control XFER\nrequest->bmRequestType_bit.direction == %02x\nstage == %02x\nrequest->bRequest=%02x\n\n", request->bmRequestType_bit.direction, stage);
-
-    //if (request->bmRequestType == (USB_SETUP_DEVICE_TO_HOST | USB_SETUP_RECIPIENT_INTERFACE | USB_SETUP_TYPE_VENDOR) 
-    //    && request->bRequest == XSM360_RESPOND_CHALLENGE) {
-        //if (xbox_360_state == Auth1) {
-        //    xbox_360_state = Auth2;
-        //} else if (xbox_360_state == Auth2) {
-        //    xbox_360_state = Authenticated;
-        //    handle_auth_led();
-        //}
-    //}
     uint16_t len = 0;
     if (request->bmRequestType_bit.direction == TUSB_DIR_IN) {
+        // Write IN data on control_stage_setup only
         if (stage == CONTROL_STAGE_SETUP) {
-            // we generate the buffer and send using a tud_control_xfer request
-            uint8_t serial[0x0B];
-
-            // read from auth driver
-            short state = 2;  // 1 = in-progress, 2 = complete            
-
-            // Generate a serial number from the pico's unique ID
-		    //pico_unique_board_id_t id;
-
+            uint16_t state = 1; // 1 = in-progress, 2 = complete
             switch (request->bRequest) {
                     case XSM360_GET_SERIAL:
-                        printf("[XInputDriver] Serial Request!\n");
-//                        pico_get_unique_board_id(&id);
-//                        memcpy(uniqueSerial, (uint8_t*)&serial, PICO_UNIQUE_BOARD_ID_SIZE_BYTES);
-                        //read_serial(serial, sizeof(serial));
-                        //xsm3_set_serial(serial);
-                        //xsm3_initialise_state();
-                        //xsm3_set_identification_data(xsm3_id_data_ms_controller);
-                        memcpy(buf, xsm3_id_data_ms_controller, sizeof(xsm3_id_data_ms_controller));
-                        len = sizeof(xsm3_id_data_ms_controller);
-                        break;
-                    case XSM360_INIT_AUTH:
-                        //xsm3_do_challenge_init((uint8_t *)requestBuffer);
-                        len = 0;
+                        if ( xinputAuthData->dongle_ready == false ) {
+                            // Stall if we don't have a dongle ready
+                            //printf("[XInputDriver] Stall our xinput driver serial request, no dongle ready\n");
+                            return false;
+                        }
+                        //printf("[XInputDriver] Sent Serial Request from dongle!\n");
+                        len = X360_AUTHLEN_DONGLE_SERIAL;
+                        memcpy(buf, xinputAuthData->dongleSerial, len);
                         break;
                     case XSM360_RESPOND_CHALLENGE:
-                        //memcpy(requestBuffer, xsm3_challenge_response, sizeof(xsm3_challenge_response));
-                        len = 0x30; // sizeof(xsm3_challenge_response);
+                        if ( xinputAuthData->xinputState == XInputAuthState::send_auth_dongle_to_console ) {
+                            //printf("[XInputDriver] PASS THRU: Sending dongle response challenge to console %02x\n", xinputAuthData->passthruBufferLen);
+                            memcpy(buf, xinputAuthData->passthruBuffer, xinputAuthData->passthruBufferLen);
+                            len = xinputAuthData->passthruBufferLen;
+                        } else {
+                            // Stall if we don't have a dongle ready
+                            //printf("[XInputDriver] ERROR: Something went wrong with respond challenge!\n");
+                            return false;
+                        }
                         break;
                     case XSM360_AUTH_KEEPALIVE:
-                        len = 0;
-                        break;
-                    case XSM360_VERIFY_AUTH:
-                        //xsm3_do_challenge_verify((uint8_t *)requestBuffer);
+                        //printf("[XInputDriver] Xbox360 requesting auth keepalive\n");
                         len = 0;
                         break;
                     case XSM360_REQUEST_STATE:
+                        //printf("[XInputDriver] Xbox360 asked if auth is done\n");
+                        if ( xinputAuthData->xinputState == XInputAuthState::send_auth_dongle_to_console ) {
+                            //printf("[XInputDriver] Xbox360 auth is ready from dongle!\n");
+                            state = 2;
+                        } else {
+                            //printf("[XInputDriver] Xbox360 auth is NOT ready from dongle!\n");
+                            state = 1;
+                        }
                         memcpy(buf, &state, sizeof(state));
                         len = sizeof(state);
                         break;
                     default:
-                        return true;
+                        break;
             };
             tud_control_xfer(rhport, request, buf, len);
+            //tud_task(); //?
         }
     } else if (request->bmRequestType_bit.direction == TUSB_DIR_OUT) {
         if (stage == CONTROL_STAGE_SETUP ) {
-            // Request buf in setup stage
-            switch (request->bRequest) {
-                    case XSM360_INIT_AUTH:
-                        // request buf
-                        len = request->wLength;
-                        break;
-                    case XSM360_VERIFY_AUTH:
-                        // fill xsm3 with buf
-                        len = request->wLength;
-                        break;
-                    default:
-                        return true;
-            };
-            tud_control_xfer(rhport, request, buf, len);
+            //printf("[XInputDriver] TUSB_DIR_OUT STAGE_SETUP Request Length: %04x\n", request->wLength);
+            memset(buf, 0, request->wLength);
+            tud_control_xfer(rhport, request, buf, request->wLength);
+            if ( request->wLength == 0 ) {
+                //printf("[XInputDriver] Setup Request with 0 length data\n");
+            }
         } else if ( stage == CONTROL_STAGE_DATA ) {
             // Buf is filled, we can save the data to our auth
             switch (request->bRequest) {
-                    case XSM360_INIT_AUTH:
-                        // fill xsm3 with buf
+                    case XSM360AuthRequest::XSM360_INIT_AUTH:
+                        if ( xinputAuthData->xinputState == XInputAuthState::auth_idle_state ) {
+                            if ( request->wLength != X360_AUTHLEN_CONSOLE_INIT ) {
+                                //printf("[XInputDriver] ERROR: Xbox 360 console init came in with the wrong length: %04x\n", request->wLength);
+                                break;
+                            }
+                            memcpy(xinputAuthData->passthruBuffer, buf, request->wLength);
+                            xinputAuthData->passthruBufferLen = request->wLength;
+                            xinputAuthData->passthruBufferID = XSM360AuthRequest::XSM360_INIT_AUTH;
+                            xinputAuthData->xinputState = XInputAuthState::send_auth_console_to_dongle;
+                        } else { // debug
+                            //printf("[XInputDriver] Waiting for dongle, don't do anything\n");
+                        }
                         break;
-                    case XSM360_VERIFY_AUTH:
-                        // fill xsm3 with buf
+                    case XSM360AuthRequest::XSM360_VERIFY_AUTH:
+                        //printf("[XInputDriver] Verifying auth with buffer length: %02x\n", request->wLength);
+                        memcpy(xinputAuthData->passthruBuffer, buf, request->wLength);
+                        xinputAuthData->passthruBufferLen = request->wLength;
+                        xinputAuthData->passthruBufferID = XSM360AuthRequest::XSM360_VERIFY_AUTH;
+                        xinputAuthData->xinputState = XInputAuthState::send_auth_console_to_dongle;
                         break;
                     default:
-                        return true;
+                        break;
             };
         }
     }

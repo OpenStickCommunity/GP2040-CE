@@ -117,7 +117,7 @@ static const uint8_t xinput_configuration_descriptor[] =
 	0x81,        // DEVICE_EPADDR_IN
     0x14,        // bMaxDataSizeIn
     0x00, 0x00, 0x00, 0x00, 0x13, // reserved3
-	0x01,        // DEVICE_EPADDR_OUT is this right?
+	0x02,        // DEVICE_EPADDR_OUT is this right?
 	0x08,        // bMaxDataSizeOut
     0x00, 0x00,  // reserved4
 
@@ -127,12 +127,12 @@ static const uint8_t xinput_configuration_descriptor[] =
 	0x81,        // bEndpointAddress (IN/D2H)
 	0x03,        // bmAttributes (Interrupt)
 	0x20, 0x00,  // wMaxPacketSize 32
-	0x04,        // bInterval 1 (unit depends on device speed)
+	0x01,        // bInterval 1 (unit depends on device speed)
 
     // Report OUT Endpoint 1.2
 	0x07,        // bLength
 	0x05,        // bDescriptorType (Endpoint)
-	0x01,        // bEndpointAddress (OUT/H2D)
+	0x02,        // bEndpointAddress (OUT/H2D)
 	0x03,        // bmAttributes (Interrupt)
 	0x20, 0x00,  // wMaxPacketSize 32
 	0x08,        // bInterval 8 (unit depends on device speed)
@@ -155,13 +155,13 @@ static const uint8_t xinput_configuration_descriptor[] =
     0x01,
     0x01,
     0x01,
-    0x82,        // XINPUT_MIC_IN
+    0x83,        // XINPUT_MIC_IN
     0x40,        // ??
     0x01,        // ??
-    0x02,        // XINPUT_AUDIO_OUT
+    0x04,        // XINPUT_AUDIO_OUT
     0x20,        // ??
     0x16,        // ??
-    0x83,        // XINPUT_UNK_IN
+    0x85,        // XINPUT_UNK_IN
     0x00,
     0x00,
     0x00,
@@ -169,7 +169,7 @@ static const uint8_t xinput_configuration_descriptor[] =
     0x00,
     0x00,
     0x16,
-    0x03,        // XINPUT_UNK_OUT
+    0x06,        // XINPUT_UNK_OUT
     0x00,
     0x00,
     0x00,
@@ -180,7 +180,7 @@ static const uint8_t xinput_configuration_descriptor[] =
     // Report IN Endpoint 2.1
 	0x07,        // bLength
 	0x05,        // bDescriptorType (Endpoint)
-	0x82,        // bEndpointAddress (XINPUT_MIC_IN)
+	0x83,        // bEndpointAddress (XINPUT_MIC_IN)
 	0x03,        // bmAttributes (Interrupt)
 	0x20, 0x00,  // wMaxPacketSize 32
 	0x02,        // bInterval 2 (unit depends on device speed)
@@ -188,7 +188,7 @@ static const uint8_t xinput_configuration_descriptor[] =
     // Report OUT Endpoint 2.2
 	0x07,        // bLength
 	0x05,        // bDescriptorType (Endpoint)
-	0x02,        // bEndpointAddress (XINPUT_AUDIO_OUT)
+	0x04,        // bEndpointAddress (XINPUT_AUDIO_OUT)
 	0x03,        // bmAttributes (Interrupt)
 	0x20, 0x00,  // wMaxPacketSize 32
 	0x04,        // bInterval 4 (unit depends on device speed)
@@ -196,7 +196,7 @@ static const uint8_t xinput_configuration_descriptor[] =
     // Report IN Endpoint 2.3
 	0x07,        // bLength
 	0x05,        // bDescriptorType (Endpoint)
-	0x83,        // bEndpointAddress (XINPUT_UNK_IN)
+	0x85,        // bEndpointAddress (XINPUT_UNK_IN)
 	0x03,        // bmAttributes (Interrupt)
 	0x20, 0x00,  // wMaxPacketSize 32
 	0x40,        // bInterval 128
@@ -204,7 +204,7 @@ static const uint8_t xinput_configuration_descriptor[] =
     // Report OUT Endpoint 2.4
     0x07,        // bLength
 	0x05,        // bDescriptorType (Endpoint)
-	0x03,        // bEndpointAddress (XINPUT_UNK_OUT)
+	0x06,        // bEndpointAddress (XINPUT_UNK_OUT)
 	0x03,        // bmAttributes (Interrupt)
 	0x20, 0x00,  // wMaxPacketSize 32
 	0x10,        // bInterval 16
@@ -226,14 +226,14 @@ static const uint8_t xinput_configuration_descriptor[] =
     0x00, 0x01,  // version 1.00
     0x01,        // ??
     0x22,        // ??
-    0x84,        // XINPUT_PLUGIN_MODULE_IN,
-    0x07,        // ??
+    0x86,        // XINPUT_PLUGIN_MODULE_IN,
+    0x03,        // ??
     0x00,        // ??
 
     // Report IN Endpoint 3.1
     0x07,        // bLength
 	0x05,        // bDescriptorType (Endpoint)
-	0x84,        // bEndpointAddress (XINPUT_PLUGIN_MODULE_IN)
+	0x86,        // bEndpointAddress (XINPUT_PLUGIN_MODULE_IN)
 	0x03,        // bmAttributes (Interrupt)
 	0x20, 0x00,  // wMaxPacketSize 32
 	0x10,        // bInterval 8 (unit depends on device speed)
@@ -260,6 +260,7 @@ static const uint8_t xinput_configuration_descriptor[] =
 
 typedef enum
 {
+    XSM360_AUTH_NONE                  = 0x00,    // None
     XSM360_GET_SERIAL                 = 0x81,    // Xbox 360 Get Controller Serial
     XSM360_INIT_AUTH                  = 0x82,    // Xbox 360 Initialize Authentication
     XSM360_RESPOND_CHALLENGE          = 0x83,    // Xbox 360 Respond with Challenge
