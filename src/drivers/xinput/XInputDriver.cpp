@@ -328,35 +328,35 @@ bool XInputDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_co
                     case XSM360_GET_SERIAL:
                         if ( xinputAuthData->dongle_ready == false ) {
                             // Stall if we don't have a dongle ready
-                            //printf("[XInputDriver] Stall our xinput driver serial request, no dongle ready\n");
+                            printf("[XInputDriver] Stall our xinput driver serial request, no dongle ready\n");
                             return false;
                         }
-                        //printf("[XInputDriver] Sent Serial Request from dongle!\n");
+                        printf("[XInputDriver] Sent Serial Request from dongle!\n");
                         len = X360_AUTHLEN_DONGLE_SERIAL;
                         memcpy(buf, xinputAuthData->dongleSerial, len);
                         break;
                     case XSM360_RESPOND_CHALLENGE:
                         if ( xinputAuthData->xinputState == XInputAuthState::send_auth_dongle_to_console ) {
-                            //printf("[XInputDriver] PASS THRU: Sending dongle response challenge to console %02x\n", xinputAuthData->passthruBufferLen);
+                            printf("[XInputDriver] PASS THRU: Sending dongle response challenge to console %02x\n", xinputAuthData->passthruBufferLen);
                             memcpy(buf, xinputAuthData->passthruBuffer, xinputAuthData->passthruBufferLen);
                             len = xinputAuthData->passthruBufferLen;
                         } else {
                             // Stall if we don't have a dongle ready
-                            //printf("[XInputDriver] ERROR: Something went wrong with respond challenge!\n");
+                            printf("[XInputDriver] ERROR: Something went wrong with respond challenge!\n");
                             return false;
                         }
                         break;
                     case XSM360_AUTH_KEEPALIVE:
-                        //printf("[XInputDriver] Xbox360 requesting auth keepalive\n");
+                        printf("[XInputDriver] Xbox360 requesting auth keepalive\n");
                         len = 0;
                         break;
                     case XSM360_REQUEST_STATE:
                         //printf("[XInputDriver] Xbox360 asked if auth is done\n");
                         if ( xinputAuthData->xinputState == XInputAuthState::send_auth_dongle_to_console ) {
-                            //printf("[XInputDriver] Xbox360 auth is ready from dongle!\n");
+                            printf("[XInputDriver] Xbox360 auth is ready from dongle!\n");
                             state = 2;
                         } else {
-                            //printf("[XInputDriver] Xbox360 auth is NOT ready from dongle!\n");
+                            printf("[XInputDriver] Xbox360 auth is NOT ready from dongle!\n");
                             state = 1;
                         }
                         memcpy(buf, &state, sizeof(state));
@@ -390,11 +390,11 @@ bool XInputDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_co
                             xinputAuthData->passthruBufferID = XSM360AuthRequest::XSM360_INIT_AUTH;
                             xinputAuthData->xinputState = XInputAuthState::send_auth_console_to_dongle;
                         } else { // debug
-                            //printf("[XInputDriver] Waiting for dongle, don't do anything\n");
+                            printf("[XInputDriver] Waiting for dongle, don't do anything\n");
                         }
                         break;
                     case XSM360AuthRequest::XSM360_VERIFY_AUTH:
-                        //printf("[XInputDriver] Verifying auth with buffer length: %02x\n", request->wLength);
+                        printf("[XInputDriver] Verifying auth with buffer length: %02x\n", request->wLength);
                         memcpy(xinputAuthData->passthruBuffer, buf, request->wLength);
                         xinputAuthData->passthruBufferLen = request->wLength;
                         xinputAuthData->passthruBufferID = XSM360AuthRequest::XSM360_VERIFY_AUTH;
