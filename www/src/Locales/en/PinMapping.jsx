@@ -57,6 +57,8 @@ export default {
 		SUSTAIN_SOCD_MODE_NEUTRAL: 'Neutral SOCD Cleaning',
 		SUSTAIN_SOCD_MODE_SECOND_WIN: 'Last Win SOCD Cleaning',
 		SUSTAIN_SOCD_MODE_FIRST_WIN: 'First Win SOCD Cleaning',
+		SUSTAIN_SOCD_MODE_Y_AXIS_SECOND_WIN: 'Y-Axis Last Win SOCD Cleaning',
+		SUSTAIN_SOCD_MODE_X_AXIS_SECOND_WIN: 'X-Axis Last Win SOCD Cleaning',
 		SUSTAIN_SOCD_MODE_BYPASS: 'SOCD Cleaning Off',
 		BUTTON_PRESS_TURBO: 'Turbo',
 		BUTTON_PRESS_MACRO: 'Macro Button',

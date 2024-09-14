@@ -478,6 +478,18 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 				reqSave = true;
 			}
 			break;
+		case HOTKEY_SOCD_Y_AXIS_LAST_INPUT:
+			if (action != lastAction) {
+				options.socdMode = SOCD_MODE_Y_AXIS_SECOND_INPUT_PRIORITY;
+				reqSave = true;
+			}
+			break;
+		case HOTKEY_SOCD_X_AXIS_LAST_INPUT:
+			if (action != lastAction) {
+				options.socdMode = SOCD_MODE_X_AXIS_SECOND_INPUT_PRIORITY;
+				reqSave = true;
+			}
+			break;
 		case HOTKEY_REBOOT_DEFAULT:
 			System::reboot(System::BootMode::DEFAULT);
 			break;

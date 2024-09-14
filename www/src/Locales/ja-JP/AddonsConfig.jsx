@@ -151,6 +151,8 @@ export default {
 	'socd-slider-mode-1': 'ニュートラル',
 	'socd-slider-mode-2': '後入力優先',
 	'socd-slider-mode-3': '先入力優先',
+	'socd-slider-mode-5': 'TODO need translation',
+	'socd-slider-mode-6': 'TODO need translation',
 	'socd-slider-mode-4': 'SOCDクリーナ無効',
 	'tilt-socd-mode-0': '上優先',
 	'tilt-socd-mode-1': 'ニュートラル',

@@ -28,5 +28,7 @@ export const SOCD_MODES = [
 	{ label: 'Neutral', value: 1 },
 	{ label: 'Last Win', value: 2 },
 	{ label: 'First Win', value: 3 },
+	{ label: 'Y-Axis Last Win', value: 5 },
+	{ label: 'X-Axis Last Win', value: 6 },
 	{ label: 'SOCD Cleaning Off', value: 4 },
 ];

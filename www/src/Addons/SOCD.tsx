@@ -51,9 +51,9 @@ const SOCD = ({ values, errors, handleChange, handleCheckbox }) => {
 						isInvalid={errors.sliderSOCDModeDefault}
 						onChange={handleChange}
 					>
-						{SOCD_MODES.map((o, i) => (
-							<option key={`sliderSOCDModeDefault-option-${i}`} value={o.value}>
-								{t(`AddonsConfig:socd-slider-mode-${i}`)}
+						{SOCD_MODES.map((o) => (
+							<option key={`sliderSOCDModeDefault-option-${o.value}`} value={o.value}>
+								{t(`AddonsConfig:socd-slider-mode-${o.value}`)}
 							</option>
 						))}
 					</FormSelect>

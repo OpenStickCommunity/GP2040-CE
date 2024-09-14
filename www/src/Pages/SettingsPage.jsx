@@ -211,6 +211,8 @@ const SOCD_MODES = [
 	{ labelKey: 'socd-cleaning-mode-options.neutral', value: 1 },
 	{ labelKey: 'socd-cleaning-mode-options.last-win', value: 2 },
 	{ labelKey: 'socd-cleaning-mode-options.first-win', value: 3 },
+	{ labelKey: 'socd-cleaning-mode-options.y-axis-last-win', value: 5 },
+	{ labelKey: 'socd-cleaning-mode-options.x-axis-last-win', value: 6 },
 	{ labelKey: 'socd-cleaning-mode-options.off', value: 4 },
 ];
 
@@ -237,6 +239,8 @@ const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.socd-neutral', value: 7 },
 	{ labelKey: 'hotkey-actions.socd-last-win', value: 8 },
 	{ labelKey: 'hotkey-actions.socd-first-win', value: 11 },
+	{ labelKey: 'hotkey-actions.socd-y-axis-last-win', value: 42 },
+	{ labelKey: 'hotkey-actions.socd-x-axis-last-win', value: 43 },
 	{ labelKey: 'hotkey-actions.socd-off', value: 12 },
 	{ labelKey: 'hotkey-actions.invert-x', value: 9 },
 	{ labelKey: 'hotkey-actions.invert-y', value: 10 },

@@ -13,7 +13,7 @@ void ButtonLayoutScreen::init() {
     profileDelayStart = getMillis();
     gamepad = Storage::getInstance().GetGamepad();
     inputMode = DriverManager::getInstance().getInputMode();
-    
+
     footer = "";
     historyString = "";
     inputHistory.clear();
@@ -40,7 +40,7 @@ void ButtonLayoutScreen::init() {
     prevRightOptions = Storage::getInstance().getDisplayOptions().buttonLayoutCustomOptions.paramsRight;
 
     // we cannot look at macro options enabled, pull the pins
-    
+
     // macro display now uses our pin functions, so we need to check if pins are enabled...
     macroEnabled = false;
     // Macro Button initialized by void Gamepad::setup()
@@ -72,7 +72,7 @@ void ButtonLayoutScreen::shutdown() {
 int8_t ButtonLayoutScreen::update() {
     bool configMode = Storage::getInstance().GetConfigMode();
     uint8_t profileNumber = getGamepad()->getOptions().profileNumber;
-    
+
     // Check if we've updated button layouts while in config mode
     if (configMode) {
         uint8_t layoutLeft = Storage::getInstance().getDisplayOptions().buttonLayout;
@@ -186,11 +186,13 @@ void ButtonLayoutScreen::generateHeader() {
 
 	switch (Gamepad::resolveSOCDMode(gamepad->getOptions()))
 	{
-		case SOCD_MODE_NEUTRAL:               statusBar += " SOCD-N"; break;
-		case SOCD_MODE_UP_PRIORITY:           statusBar += " SOCD-U"; break;
-		case SOCD_MODE_SECOND_INPUT_PRIORITY: statusBar += " SOCD-L"; break;
-		case SOCD_MODE_FIRST_INPUT_PRIORITY:  statusBar += " SOCD-F"; break;
-		case SOCD_MODE_BYPASS:                statusBar += " SOCD-X"; break;
+		case SOCD_MODE_NEUTRAL:                         statusBar += " SOCD-N"; break;
+		case SOCD_MODE_UP_PRIORITY:                     statusBar += " SOCD-U"; break;
+		case SOCD_MODE_SECOND_INPUT_PRIORITY:           statusBar += " SOCD-L"; break;
+		case SOCD_MODE_FIRST_INPUT_PRIORITY:            statusBar += " SOCD-F"; break;
+		case SOCD_MODE_BYPASS:                          statusBar += " SOCD-O"; break;
+		case SOCD_MODE_Y_AXIS_SECOND_INPUT_PRIORITY:    statusBar += " SOCD-Y"; break;
+		case SOCD_MODE_X_AXIS_SECOND_INPUT_PRIORITY:    statusBar += " SOCD-X"; break;
 	}
 	if (macroEnabled)
 		statusBar += " M";
@@ -372,7 +374,7 @@ bool ButtonLayoutScreen::compareCustomLayouts()
 
     bool leftChanged = ((leftOptions.layout != prevLeftOptions.layout) || (leftOptions.common.startX != prevLeftOptions.common.startX) || (leftOptions.common.startY != prevLeftOptions.common.startY) || (leftOptions.common.buttonPadding != prevLeftOptions.common.buttonPadding) || (leftOptions.common.buttonRadius != prevLeftOptions.common.buttonRadius));
     bool rightChanged = ((rightOptions.layout != prevRightOptions.layout) || (rightOptions.common.startX != prevRightOptions.common.startX) || (rightOptions.common.startY != prevRightOptions.common.startY) || (rightOptions.common.buttonPadding != prevRightOptions.common.buttonPadding) || (rightOptions.common.buttonRadius != prevRightOptions.common.buttonRadius));
-    
+
     return (leftChanged || rightChanged);
 }
 

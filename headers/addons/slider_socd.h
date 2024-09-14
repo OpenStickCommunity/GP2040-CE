@@ -41,6 +41,8 @@ private:
     Mask_t secondInputModeMask = 0;
     Mask_t firstInputModeMask = 0;
     Mask_t bypassModeMask = 0;
+    Mask_t yAxisSecondInputModeMask = 0;
+    Mask_t xAxisSecondInputModeMask = 0;
 };
 
 #endif  // _SliderSOCD_H_
