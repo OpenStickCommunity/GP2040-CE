@@ -93,36 +93,35 @@ const FocusMode = ({
 						/>
 					</div>
 					<Row>
-						{BUTTON_MASKS_OPTIONS.map((mask) =>
-							values.focusModeButtonLockMask & mask.value ? (
-								<FormSelect
-									key={`focusModeButtonLockMask-${mask.label}`}
-									name="focusModeButtonLockMask"
-									className="form-select-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.focusModeButtonLockMask & mask.value}
-									error={errors.focusModeButtonLockMask}
-									isInvalid={errors.focusModeButtonLockMask}
-									onChange={(e) => {
-										setFieldValue(
-											'focusModeButtonLockMask',
-											(values.focusModeButtonLockMask ^ mask.value) |
-												e.target.value,
-										);
-									}}
-								>
-									{BUTTON_MASKS_OPTIONS.map((o, i) => (
-										<option
-											key={`focusModeButtonLockMask-option-${i}`}
-											value={o.value}
-										>
-											{o.label}
-										</option>
-									))}
-								</FormSelect>
-							) : (
-								<></>
-							),
+						{BUTTON_MASKS_OPTIONS.map(
+							(mask) =>
+								Boolean(values.focusModeButtonLockMask & mask.value) && (
+									<FormSelect
+										key={`focusModeButtonLockMask-${mask.label}`}
+										name="focusModeButtonLockMask"
+										className="form-select-sm"
+										groupClassName="col-sm-3 mb-3"
+										value={values.focusModeButtonLockMask & mask.value}
+										error={errors.focusModeButtonLockMask}
+										isInvalid={errors.focusModeButtonLockMask}
+										onChange={(e) => {
+											setFieldValue(
+												'focusModeButtonLockMask',
+												(values.focusModeButtonLockMask ^ mask.value) |
+													e.target.value,
+											);
+										}}
+									>
+										{BUTTON_MASKS_OPTIONS.map((o, i) => (
+											<option
+												key={`focusModeButtonLockMask-option-${i}`}
+												value={o.value}
+											>
+												{o.label}
+											</option>
+										))}
+									</FormSelect>
+								),
 						)}
 						<FormSelect
 							name="focusModeButtonLockMask"
