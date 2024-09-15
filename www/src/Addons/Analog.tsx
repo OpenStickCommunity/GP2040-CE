@@ -302,14 +302,11 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 						isInvalid={errors.analog_error}
 						onChange={handleChange}
 					>
-						{ANALOG_ERROR_RATES.map(
-							(o, i) =>
-								console.log(o, 'hehu') || (
-									<option key={`analog_error-option-${i}`} value={o.value}>
-										{o.label}
-									</option>
-								),
-						)}
+						{ANALOG_ERROR_RATES.map((o, i) => (
+							<option key={`analog_error-option-${i}`} value={o.value}>
+								{o.label}
+							</option>
+						))}
 					</FormSelect>
 					<FormControl
 						hidden={!values.analog_smoothing}
