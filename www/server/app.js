@@ -431,6 +431,7 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		auto_calibrate: 0,
 		analog_smoothing: 0,
 		smoothing_factor: 5,
+		analog_error: 1.0,
 		bootselButtonMap: 0,
 		buzzerPin: -1,
 		buzzerEnablePin: -1,

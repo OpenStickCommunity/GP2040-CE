@@ -22,6 +22,25 @@ const INVERT_MODES = [
 	{ label: 'X/Y Axis', value: 3 },
 ];
 
+const ANALOG_ERROR_RATES = [
+	{ label: '0%', value: 1.0 },
+	{ label: '1%', value: 0.99 },
+	{ label: '2%', value: 0.979 },
+	{ label: '3%', value: 0.969 },
+	{ label: '4%', value: 0.958 },
+	{ label: '5%', value: 0.946 },
+	{ label: '6%', value: 0.934 },
+	{ label: '7%', value: 0.922 },
+	{ label: '8%', value: 0.911 },
+	{ label: '9%', value: 0.9 },
+	{ label: '10%', value: 0.89 },
+	{ label: '11%', value: 0.876 },
+	{ label: '12%', value: 0.863 },
+	{ label: '13%', value: 0.848 },
+	{ label: '14%', value: 0.834 },
+	{ label: '15%', value: 0.821 },
+];
+
 export const analogScheme = {
 	AnalogInputEnabled: yup.number().required().label('Analog Input Enabled'),
 	analogAdc1PinX: yup
@@ -81,6 +100,10 @@ export const analogScheme = {
 		.number()
 		.label('Smoothing Factor')
 		.validateRangeWhenValue('AnalogInputEnabled', 0, 100),
+	analog_error: yup
+		.number()
+		.label('Error Rate')
+		.validateSelectionWhenValue('AnalogInputEnabled', ANALOG_ERROR_RATES),
 };
 
 export const analogState = {
@@ -99,6 +122,7 @@ export const analogState = {
 	auto_calibrate: 0,
 	analog_smoothing: 0,
 	smoothing_factor: 5,
+	analog_error: 1.0,
 };
 
 const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
@@ -277,6 +301,26 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 							handleChange(e);
 						}}
 					/>
+					<FormSelect
+						hidden={!Boolean(values.forced_circularity)}
+						label={t('AddonsConfig:analog-error-label')}
+						name="analog_error"
+						className="form-control-sm"
+						groupClassName="col-sm-3 mb-3"
+						value={values.analog_error}
+						error={errors.analog_error}
+						isInvalid={errors.analog_error}
+						onChange={handleChange}
+					>
+						{ANALOG_ERROR_RATES.map((o, i) => (
+							<option
+								key={`analog_error-option-${i}`}
+								value={o.value}
+							>
+								{o.label}
+							</option>
+						))}
+					</FormSelect>
 					<FormCheck
 						label={t('AddonsConfig:analog-auto-calibrate')}
 						type="switch"
