@@ -170,10 +170,10 @@ typedef struct __attribute__((packed)) {
   uint8_t ledBlue;
 
   // 9
-  uint8_t ledFlashOn;
+  uint8_t ledBlinkOn;
 
   // 10
-  uint8_t ledFlashOff;
+  uint8_t ledBlinkOff;
 
   // 11
   uint8_t extData[8];

@@ -264,6 +264,8 @@ void PS4Driver::process(Gamepad * gamepad) {
 
             // set player ID based on color combos
             gamepad->auxState.playerID.active = true;
+            gamepad->auxState.playerID.ledBlinkOn = (ps4Features.ledBlinkOn * 10); // centiseconds to milliseconds
+            gamepad->auxState.playerID.ledBlinkOff = (ps4Features.ledBlinkOff * 10); // centiseconds to milliseconds
             if (rgbColor == 0x000040) {
                 gamepad->auxState.playerID.value = 1;
                 gamepad->auxState.playerID.ledValue = 1;

@@ -158,7 +158,7 @@ PLEDAnimationState getPS3AnimationNEOPICO(uint16_t ledState)
 	return animationState;
 }
 
-PLEDAnimationState getPS4AnimationNEOPICO(uint8_t flashOn, uint8_t flashOff)
+PLEDAnimationState getPS4AnimationNEOPICO(uint32_t flashOn, uint32_t flashOff)
 {
 	PLEDAnimationState animationState =
 	{
@@ -166,6 +166,12 @@ PLEDAnimationState getPS4AnimationNEOPICO(uint8_t flashOn, uint8_t flashOff)
 		.animation = PLED_ANIM_SOLID,
 		.speed = PLED_SPEED_OFF,
 	};
+
+	if (flashOn > 0 || flashOff > 0) {
+		animationState.animation = PLED_ANIM_BLINK_CUSTOM;
+		animationState.speedOn = flashOn;
+		animationState.speedOff = flashOff;
+	}
 
 	return animationState;
 }
@@ -183,7 +189,7 @@ void NeoPicoLEDAddon::setup()
 
 	Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
 	gamepad->auxState.playerID.enabled = true;
-    gamepad->auxState.sensors.statusLight.enabled = true;
+	gamepad->auxState.sensors.statusLight.enabled = true;
 
 	if ( ledOptions.pledType == PLED_TYPE_RGB ) {
 		neoPLEDs = new NeoPicoPlayerLEDs();
@@ -218,7 +224,7 @@ void NeoPicoLEDAddon::process()
 					break;
 				case INPUT_MODE_PS4:
 				case INPUT_MODE_PS5:
-					animationState = getPS4AnimationNEOPICO(0, 0);
+					animationState = getPS4AnimationNEOPICO(gamepad->auxState.playerID.ledBlinkOn, gamepad->auxState.playerID.ledBlinkOff);
 					break;
 				default:
 					break;
@@ -646,7 +652,7 @@ AnimationHotkey animationHotkeys(Gamepad *gamepad)
 		{
 			action = HOTKEY_LEDS_FADETIME_UP;
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_R3 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
-		}        
+		}
 	}
 
 	return action;

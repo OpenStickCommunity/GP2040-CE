@@ -20,8 +20,10 @@ struct GamepadAuxPlayerID
 {
     bool enabled = false;
     bool active = false;
-    uint16_t value = 0;
-    uint16_t ledValue = 0;
+    uint32_t value = 0;
+    uint32_t ledValue = 0;
+    uint32_t ledBlinkOn = 0;
+    uint32_t ledBlinkOff = 0;
 };
 
 struct GamepadAux1DSensor
