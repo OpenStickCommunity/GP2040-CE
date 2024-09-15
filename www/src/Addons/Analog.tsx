@@ -131,6 +131,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 	const availableAnalogPins = ANALOG_PINS.filter(
 		(pin) => !usedPins?.includes(pin),
 	);
+
 	return (
 		<Section title={t('AddonsConfig:analog-header-text')}>
 			<div id="AnalogInputOptions" hidden={!values.AnalogInputEnabled}>
@@ -289,6 +290,38 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 						min={0}
 						max={100}
 					/>
+
+					<FormSelect
+						hidden={!values.forced_circularity}
+						label={t('AddonsConfig:analog-error-label')}
+						name="analog_error"
+						className="form-control-sm"
+						groupClassName="col-sm-3 mb-3"
+						value={values.analog_error}
+						error={errors.analog_error}
+						isInvalid={errors.analog_error}
+						onChange={handleChange}
+					>
+						{ANALOG_ERROR_RATES.map((o, i) => (
+							<option key={`analog_error-option-${i}`} value={o.value}>
+								{o.label}
+							</option>
+						))}
+					</FormSelect>
+					<FormControl
+						hidden={!values.analog_smoothing}
+						type="number"
+						label={t('AddonsConfig:smoothing-factor')}
+						name="smoothing_factor"
+						className="form-control-sm"
+						groupClassName="col-sm-3 mb-3"
+						value={values.smoothing_factor}
+						error={errors.smoothing_factor}
+						isInvalid={errors.smoothing_factor}
+						onChange={handleChange}
+						min={0}
+						max={100}
+					/>
 					<FormCheck
 						label={t('AddonsConfig:analog-force-circularity')}
 						type="switch"
@@ -301,26 +334,6 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 							handleChange(e);
 						}}
 					/>
-					<FormSelect
-						hidden={!Boolean(values.forced_circularity)}
-						label={t('AddonsConfig:analog-error-label')}
-						name="analog_error"
-						className="form-control-sm"
-						groupClassName="col-sm-3 mb-3"
-						value={values.analog_error}
-						error={errors.analog_error}
-						isInvalid={errors.analog_error}
-						onChange={handleChange}
-					>
-						{ANALOG_ERROR_RATES.map((o, i) => (
-							<option
-								key={`analog_error-option-${i}`}
-								value={o.value}
-							>
-								{o.label}
-							</option>
-						))}
-					</FormSelect>
 					<FormCheck
 						label={t('AddonsConfig:analog-auto-calibrate')}
 						type="switch"
@@ -344,20 +357,6 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 							handleCheckbox('analog_smoothing', values);
 							handleChange(e);
 						}}
-					/>
-					<FormControl
-						hidden={!values.analog_smoothing}
-						type="number"
-						label={t('AddonsConfig:smoothing-factor')}
-						name="smoothing_factor"
-						className="form-control-sm"
-						groupClassName="col-sm-3 mb-3"
-						value={values.smoothing_factor}
-						error={errors.smoothing_factor}
-						isInvalid={errors.smoothing_factor}
-						onChange={handleChange}
-						min={0}
-						max={100}
 					/>
 				</Row>
 			</div>
