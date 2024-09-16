@@ -18,7 +18,27 @@
 
 void PS4Driver::initialize() {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
+    const GamepadOptions & options = gamepad->getOptions();
 
+    // set up device descriptor IDs depending on mode
+    uint8_t descSize = sizeof(ps4_device_descriptor);
+    memcpy(deviceDescriptor, &ps4_device_descriptor, descSize);
+
+    bool isDeviceEmulated = options.ps4ControllerIDMode == PS4ControllerIDMode::PS4_ID_EMULATION;
+
+    if (!isDeviceEmulated) {
+        deviceDescriptor[8] = LSB(PS4_VENDOR_ID);
+        deviceDescriptor[9] = MSB(PS4_VENDOR_ID);
+        deviceDescriptor[10] = LSB(PS4_PRODUCT_ID);
+        deviceDescriptor[11] = MSB(PS4_PRODUCT_ID);
+    } else {
+        deviceDescriptor[8] = LSB(DS4_VENDOR_ID);
+        deviceDescriptor[9] = MSB(DS4_VENDOR_ID);
+        deviceDescriptor[10] = LSB(DS4_PRODUCT_ID);
+        deviceDescriptor[11] = MSB(DS4_PRODUCT_ID);
+    }
+
+    // init feature data
     touchpadData.p1.unpressed = 1;
     touchpadData.p1.set_x(PS4_TP_X_MAX / 2);
     touchpadData.p1.set_y(PS4_TP_Y_MAX / 2);
@@ -438,8 +458,6 @@ void PS4Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uin
         return;
 
     if (report_type == HID_REPORT_TYPE_OUTPUT) {
-        Gamepad * gamepad = Storage::getInstance().GetGamepad();
-
         if (report_id == 0) {
             memcpy(&ps4Features, buffer, bufsize);
         }
@@ -518,7 +536,7 @@ const uint16_t * PS4Driver::get_descriptor_string_cb(uint8_t index, uint16_t lan
 }
 
 const uint8_t * PS4Driver::get_descriptor_device_cb() {
-    return ps4_device_descriptor;
+    return deviceDescriptor;
 }
 
 const uint8_t * PS4Driver::get_hid_descriptor_report_cb(uint8_t itf) {

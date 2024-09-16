@@ -63,6 +63,14 @@ export default {
 		'<span>⏳ WARNING ⏳:</span> PS4 will timeout after 8 minutes without authentication.',
 	'ps4-usb-host-mode-text':
 		'<span>INFO:</span> Please ensure USB Peripheral is enabled and a PS4 compatible USB device is plugged in.',
+	'ps4-id-mode-label':
+		'Identification Mode',
+	'ps4-id-mode-explanation-text':
+		'TBD',
+	'ps4-id-mode-options': {
+		'console': 'Console',
+		'emulation': 'Remote/Emulation',
+	},
 	'ps5-mode-explanation-text':
 		'PS5 mode allows GP2040-CE to run as an authenticated PS5 compatible arcade stick.',
 	'ps5-mode-warning-text':

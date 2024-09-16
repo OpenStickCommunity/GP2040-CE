@@ -22,8 +22,8 @@
 //#define PS4_PRODUCT_ID      0x8180
 
 // DS4
-//#define PS4_VENDOR_ID       0x054C
-//#define PS4_PRODUCT_ID      0x09CC
+#define DS4_VENDOR_ID       0x054C
+#define DS4_PRODUCT_ID      0x09CC
 
 /**************************************************************************
  *

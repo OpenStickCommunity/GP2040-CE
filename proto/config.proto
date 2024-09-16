@@ -28,6 +28,7 @@ message GamepadOptions
     optional InputModeAuthType ps4AuthType = 21;
     optional InputModeAuthType ps5AuthType = 22;
     optional InputModeAuthType xinputAuthType = 23;
+    optional PS4ControllerIDMode ps4ControllerIDMode = 24;
 }
 
 message KeyboardMapping
