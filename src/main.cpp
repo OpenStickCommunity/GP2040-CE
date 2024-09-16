@@ -31,7 +31,7 @@ void core1() {
 	gp2040Core1->setup();
 
     // Sync Core0 and Core1
-    //while(gp2040Core0->ready() == false ) {}
+    while(gp2040Core0->ready() == false ) {}
 	gp2040Core1->run();
 }
 
@@ -47,7 +47,7 @@ int main() {
 	multicore_launch_core1(core1);
 
 	// Sync Core0 and Core1
-    //while(gp2040Core1->ready() == false ) {}
+    while(gp2040Core1->ready() == false ) {}
 	gp2040Core0->run();
 
 	return 0;
