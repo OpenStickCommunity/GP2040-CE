@@ -66,7 +66,7 @@ export default {
 	'ps4-id-mode-label':
 		'Identification Mode',
 	'ps4-id-mode-explanation-text':
-		'TBD',
+		'<ul><li>Console mode is used when connecting primarily to a PS4 console.</li><li>Remote/Emulation mode should only be used when connecting to an emulation layer or remote playing environment that requires a DualShock 4-compatible controller.</li></ul>',
 	'ps4-id-mode-options': {
 		'console': 'Console',
 		'emulation': 'Remote/Emulation',
