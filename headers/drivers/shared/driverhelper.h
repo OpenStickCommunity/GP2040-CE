@@ -3,14 +3,14 @@
 
 static uint16_t * getStringDescriptor(const char * value, uint8_t index)
 {
-	static uint16_t descriptorStringBuffer[32]; // Max 64 bytes, 31 unicode characters
+	static uint16_t descriptorStringBuffer[128]; // Max 256 bytes, 127 unicode characters
 	size_t charCount;
 	if ( index == 0 ) // language always has a character count of 1
 		charCount = 1;
 	else {
 		charCount = strlen(value);
-		if (charCount > 31)
-			charCount = 31;
+		if (charCount > 127)
+			charCount = 127;
 	}
 	// Fill descriptionStringBuffer[1] .. [32]
 	for (uint8_t i = 0; i < charCount; i++)
