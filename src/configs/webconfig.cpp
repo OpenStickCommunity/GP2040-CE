@@ -618,7 +618,7 @@ std::string getProfileOptions()
         writePinDoc(i, "pin27", profileOptions.gpioMappingsSets[i].pins[27]);
         writePinDoc(i, "pin28", profileOptions.gpioMappingsSets[i].pins[28]);
         writePinDoc(i, "pin29", profileOptions.gpioMappingsSets[i].pins[29]);
-        writeDoc(doc, i, "profileLabel", profileOptions.gpioMappingsSets[i].profileLabel);
+        writeDoc(doc, "alternativePinMappings", i, "profileLabel", profileOptions.gpioMappingsSets[i].profileLabel);
     }
 
     return serialize_json(doc);
