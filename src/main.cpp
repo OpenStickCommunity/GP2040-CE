@@ -29,9 +29,6 @@ void core1() {
 
 	// Create GP2040 w/ Additional Modules for Core 1	
 	gp2040Core1->setup();
-
-    // Sync Core0 and Core1
-    while(gp2040Core0->ready() == false ) {}
 	gp2040Core1->run();
 }
 
@@ -47,7 +44,9 @@ int main() {
 	multicore_launch_core1(core1);
 
 	// Sync Core0 and Core1
-    while(gp2040Core1->ready() == false ) {}
+    while(gp2040Core1->ready() == false ) {
+        __asm volatile ("nop\n");
+    }
 	gp2040Core0->run();
 
 	return 0;

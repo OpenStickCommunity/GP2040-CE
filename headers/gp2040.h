@@ -21,7 +21,6 @@ public:
     ~GP2040();
     void setup();           // setup core0
     void run();             // loop core0
-    bool ready() { return isReady; }
 private:
     Gamepad snapshot;
     AddonManager addons;
@@ -72,8 +71,6 @@ private:
 
     // input mask, action
     std::map<uint32_t, int32_t> bootActions;
-
-    bool isReady;
 };
 
 #endif

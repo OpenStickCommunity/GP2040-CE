@@ -46,7 +46,7 @@
 static const uint32_t REBOOT_HOTKEY_ACTIVATION_TIME_MS = 50;
 static const uint32_t REBOOT_HOTKEY_HOLD_TIME_MS = 4000;
 
-GP2040::GP2040() : isReady(false) {
+GP2040::GP2040() {
 }
 
 GP2040::~GP2040() {
@@ -63,9 +63,6 @@ void GP2040::setup() {
 	if ( PeripheralManager::getInstance().isUSBEnabled(0) ) {
 		set_sys_clock_khz(120000, true); // Set Clock to 120MHz to avoid potential USB timing issues
 	}
-
-    //stdio_init_all();
-    printf("[GP2040] Setup() \n");
 
 	Gamepad * gamepad = new Gamepad();
 	Gamepad * processedGamepad = new Gamepad();
@@ -190,9 +187,6 @@ void GP2040::setup() {
 		gamepad->setInputMode(inputMode);
 		gamepad->save();
 	}
-
-    // Ready to sync Core0 and Core1
-    isReady = true;
 }
 
 /**
