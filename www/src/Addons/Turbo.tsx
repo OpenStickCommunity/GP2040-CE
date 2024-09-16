@@ -58,7 +58,7 @@ export const turboScheme = {
 	turboShotCount: yup
 		.number()
 		.label('Turbo Shot Count')
-		.validateRangeWhenValue('TurboInputEnabled', 5, 30),
+		.validateRangeWhenValue('TurboInputEnabled', 2, 30),
 	shmupMode: yup
 		.number()
 		.label('Shmup Mode Enabled')
