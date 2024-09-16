@@ -270,6 +270,10 @@ const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.a2-button', value: 34 },
 	{ labelKey: 'hotkey-actions.a3-button', value: 36 },
 	{ labelKey: 'hotkey-actions.a4-button', value: 37 },
+	{ labelKey: 'hotkey-actions.dpad-up', value: 38 },
+	{ labelKey: 'hotkey-actions.dpad-down', value: 39 },
+	{ labelKey: 'hotkey-actions.dpad-left', value: 40 },
+	{ labelKey: 'hotkey-actions.dpad-right', value: 41 },
 ];
 
 const FORCED_SETUP_MODES = [
@@ -698,9 +702,7 @@ export default function SettingsPage() {
 				return (
 					<div className="row mb-3">
 						<Row className="mb-3">
-							<Col sm={10}>
-								{t('SettingsPage:ps4-mode-explanation-text')}
-							</Col>
+							<Col sm={10}>{t('SettingsPage:ps4-mode-explanation-text')}</Col>
 						</Row>
 						<Row className="mb-3">
 							<Col sm={10}>
@@ -829,9 +831,7 @@ export default function SettingsPage() {
 				return (
 					<div className="row mb-3">
 						<Row className="mb-3">
-							<Col sm={10}>
-								{t('SettingsPage:ps5-mode-explanation-text')}
-							</Col>
+							<Col sm={10}>{t('SettingsPage:ps5-mode-explanation-text')}</Col>
 						</Row>
 						<Row className="mb-3">
 							<Col sm={10}>
@@ -924,7 +924,7 @@ export default function SettingsPage() {
 						<p>
 							{t('SettingsPage:no-mode-settings-text', {
 								mode: t(`SettingsPage:${inputMode.labelKey}`),
-								interpolation: { escapeValue: false }
+								interpolation: { escapeValue: false },
 							})}
 						</p>
 					</div>
@@ -1054,19 +1054,23 @@ export default function SettingsPage() {
 										<Nav variant="pills" className="flex-column">
 											<Nav.Item>
 												<Nav.Link eventKey="inputmode">
-												{t('SettingsPage:settings-header-text')}
+													{t('SettingsPage:settings-header-text')}
 												</Nav.Link>
 											</Nav.Item>
 											<Nav.Item>
-												<Nav.Link eventKey="gamepad">{t('SettingsPage:gamepad-settings-header-text')}</Nav.Link>
+												<Nav.Link eventKey="gamepad">
+													{t('SettingsPage:gamepad-settings-header-text')}
+												</Nav.Link>
 											</Nav.Item>
 											<Nav.Item>
 												<Nav.Link eventKey="bootmode">
-												{t('SettingsPage:boot-input-mode-label')}
+													{t('SettingsPage:boot-input-mode-label')}
 												</Nav.Link>
 											</Nav.Item>
 											<Nav.Item>
-												<Nav.Link eventKey="hotkey">{t('SettingsPage:hotkey-settings-label')}</Nav.Link>
+												<Nav.Link eventKey="hotkey">
+													{t('SettingsPage:hotkey-settings-label')}
+												</Nav.Link>
 											</Nav.Item>
 										</Nav>
 									</Col>
@@ -1350,7 +1354,7 @@ export default function SettingsPage() {
 															ns="SettingsPage"
 															i18nKey="hotkey-settings-sub-header"
 															components={{
-																link_pinmap: <NavLink to="/pin-mapping" />
+																link_pinmap: <NavLink to="/pin-mapping" />,
 															}}
 														/>
 													</div>
@@ -1478,6 +1482,21 @@ export default function SettingsPage() {
 																		{errors[o] && errors[o]?.action}
 																	</Form.Control.Feedback>
 																</Col>
+																{Boolean(
+																	values[o]?.buttonsMask || values[o]?.action,
+																) && (
+																	<Col>
+																		<Button
+																			size="sm"
+																			onClick={() => {
+																				setFieldValue(`${o}.action`, 0);
+																				setFieldValue(`${o}.buttonsMask`, 0);
+																			}}
+																		>
+																			{'✕'}
+																		</Button>
+																	</Col>
+																)}
 															</Form.Group>
 														))}
 													</div>

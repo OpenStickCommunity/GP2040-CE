@@ -6,17 +6,18 @@
 bool PCF8575Addon::available() {
     const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
     const PCF8575Options& options = Storage::getInstance().getAddonOptions().pcf8575Options;
-    if (options.enabled && PeripheralManager::getInstance().isI2CEnabled(options.i2cBlock)) {
-        if (displayOptions.enabled && (displayOptions.i2cBlock == options.i2cBlock)) {
-            return false;
+    if (options.enabled) {
+        pcf = new PCF8575();
+        PeripheralI2CScanResult result = PeripheralManager::getInstance().scanForI2CDevice(pcf->getDeviceAddresses());
+        if (result.address > -1) {
+            pcf->setAddress(result.address);
+            pcf->setI2C(PeripheralManager::getInstance().getI2C(result.block));
+            return true;
         } else {
-            PeripheralI2C* i2c = PeripheralManager::getInstance().getI2C(options.i2cBlock);
-            pcf = new PCF8575(i2c);
-            return (pcf->scanForDevice() > -1);
+            delete pcf;
         }
-    } else {
-        return false;
     }
+    return false;
 }
 
 void PCF8575Addon::setup() {

@@ -57,15 +57,23 @@ export default {
 	},
 	'profile-number-label': 'Profile Number',
 	'debounce-delay-label': 'Debounce Delay in milliseconds',
-	'ps4-mode-explanation-text': 'PS4 mode allows GP2040-CE to run as an authenticated PS4 controller.',
-	'ps4-mode-warning-text': '<span>⏳ WARNING ⏳:</span> PS4 will timeout after 8 minutes without authentication.',
-	'ps4-usb-host-mode-text': '<span>INFO:</span> Please ensure USB Peripheral is enabled and a PS4 compatible USB device is plugged in.',
-	'ps5-mode-explanation-text': 'PS5 mode allows GP2040-CE to run as an authenticated PS5 compatible arcade stick.',
-	'ps5-mode-warning-text': '<span>⏳ WARNING ⏳:</span> PS5 will timeout after 8 minutes without authentication.',
-	'ps5-usb-host-mode-text': '<span>INFO:</span> Please ensure USB Peripheral is enabled and a PS5 compatible USB device is plugged in.',
-    'xinput-mode-text': '<span>INFO:</span> Xbox 360 mode can either work without authentication or with a USB dongle attached.',
-	'xbone-mode-text': '<span>INFO:</span> Xbox One requires a USB host connection and USB dongle to properly authenticate in Xbox One mode.',
-    'hotkey-settings-label': 'Hotkey Settings',
+	'ps4-mode-explanation-text':
+		'PS4 mode allows GP2040-CE to run as an authenticated PS4 controller.',
+	'ps4-mode-warning-text':
+		'<span>⏳ WARNING ⏳:</span> PS4 will timeout after 8 minutes without authentication.',
+	'ps4-usb-host-mode-text':
+		'<span>INFO:</span> Please ensure USB Peripheral is enabled and a PS4 compatible USB device is plugged in.',
+	'ps5-mode-explanation-text':
+		'PS5 mode allows GP2040-CE to run as an authenticated PS5 compatible arcade stick.',
+	'ps5-mode-warning-text':
+		'<span>⏳ WARNING ⏳:</span> PS5 will timeout after 8 minutes without authentication.',
+	'ps5-usb-host-mode-text':
+		'<span>INFO:</span> Please ensure USB Peripheral is enabled and a PS5 compatible USB device is plugged in.',
+	'xbone-mode-text':
+		'<span>INFO:</span> Xbox One requires a USB host connection and USB dongle to properly authenticate in Xbox One mode.',
+	'xinput-mode-text':
+		'<span>INFO:</span> Xbox 360 mode can either work without authentication or with a USB dongle attached.',
+	'hotkey-settings-label': 'Hotkey Settings',
 	'hotkey-settings-sub-header':
 		'The <strong>Fn</strong> slider provides a mappable Function button in the <link_pinmap>Pin Mapping</link_pinmap> page. By selecting the <strong>Fn</strong> slider option, the Function button must be held along with the selected hotkey settings. <br /> Additionally, select <strong>None</strong> from the dropdown to unassign any button.',
 	'hotkey-settings-warning':
@@ -102,12 +110,15 @@ export default {
 		'a2-button': 'A2 Button',
 		'a3-button': 'A3 Button',
 		'a4-button': 'A4 Button',
+		'dpad-up': 'Dpad Up',
+		'dpad-down': 'Dpad Down',
+		'dpad-left': 'Dpad Left',
+		'dpad-right': 'Dpad Right',
 		'touchpad-button': 'Touchpad Button',
 		'load-profile-1': 'Load Profile #1',
 		'load-profile-2': 'Load Profile #2',
 		'load-profile-3': 'Load Profile #3',
 		'load-profile-4': 'Load Profile #4',
-		'next-profile': 'Next Profile',
 		'reboot-default': 'Reboot GP2040-CE',
 		'next-profile': 'Next Profile',
 	},

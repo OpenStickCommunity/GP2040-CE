@@ -73,6 +73,14 @@ export const analogScheme = {
 		.number()
 		.label('Auto Calibration')
 		.validateRangeWhenValue('AnalogInputEnabled', 0, 1),
+	analog_smoothing: yup
+		.number()
+		.label('Analog Smoothing')
+		.validateRangeWhenValue('AnalogInputEnabled', 0, 1),
+	smoothing_factor: yup
+		.number()
+		.label('Smoothing Factor')
+		.validateRangeWhenValue('AnalogInputEnabled', 0, 100),
 };
 
 export const analogState = {
@@ -89,6 +97,8 @@ export const analogState = {
 	inner_deadzone: 5,
 	outer_deadzone: 95,
 	auto_calibrate: 0,
+	analog_smoothing: 0,
+	smoothing_factor: 5,
 };
 
 const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
@@ -278,6 +288,32 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 							handleCheckbox('auto_calibrate', values);
 							handleChange(e);
 						}}
+					/>
+					<FormCheck
+						label={t('AddonsConfig:analog-smoothing')}
+						type="switch"
+						id="Analog_smoothing"
+						className="col-sm-3 ms-2"
+						isInvalid={false}
+						checked={Boolean(values.analog_smoothing)}
+						onChange={(e) => {
+							handleCheckbox('analog_smoothing', values);
+							handleChange(e);
+						}}
+					/>
+					<FormControl
+						hidden={!values.analog_smoothing}
+						type="number"
+						label={t('AddonsConfig:smoothing-factor')}
+						name="smoothing_factor"
+						className="form-control-sm"
+						groupClassName="col-sm-3 mb-3"
+						value={values.smoothing_factor}
+						error={errors.smoothing_factor}
+						isInvalid={errors.smoothing_factor}
+						onChange={handleChange}
+						min={0}
+						max={100}
 					/>
 				</Row>
 			</div>
