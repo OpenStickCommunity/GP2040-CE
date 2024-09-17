@@ -70,7 +70,7 @@
 #endif
 
 #ifndef ANALOG_ERROR
-#define ANALOG_ERROR 0
+#define ANALOG_ERROR 1
 #endif
 
 // Analog Module Name

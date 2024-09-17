@@ -23,7 +23,7 @@ const INVERT_MODES = [
 ];
 
 const ANALOG_ERROR_RATES = [
-	{ label: '0%', value: 1.0 },
+	{ label: '0%', value: 1 },
 	{ label: '1%', value: 0.99 },
 	{ label: '2%', value: 0.979 },
 	{ label: '3%', value: 0.969 },
@@ -122,7 +122,7 @@ export const analogState = {
 	auto_calibrate: 0,
 	analog_smoothing: 0,
 	smoothing_factor: 5,
-	analog_error: 1.0,
+	analog_error: 1,
 };
 
 const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
@@ -298,8 +298,6 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 						className="form-control-sm"
 						groupClassName="col-sm-3 mb-3"
 						value={values.analog_error}
-						error={errors.analog_error}
-						isInvalid={errors.analog_error}
 						onChange={handleChange}
 					>
 						{ANALOG_ERROR_RATES.map((o, i) => (
