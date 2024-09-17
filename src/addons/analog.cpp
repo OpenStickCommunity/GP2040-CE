@@ -66,7 +66,7 @@ void AnalogInput::process()
 
     bool ema_option = analogOptions.analog_smoothing;
     float ema_smoothing = analogOptions.smoothing_factor / 1000.0f;
-    float error_rate = analogOptions.analog_error;
+    float error_rate = analogOptions.analog_error / 1000.0f;
 
     struct adc_pair
     {

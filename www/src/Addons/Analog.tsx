@@ -23,22 +23,22 @@ const INVERT_MODES = [
 ];
 
 const ANALOG_ERROR_RATES = [
-	{ label: '0%', value: 1 },
-	{ label: '1%', value: 0.99 },
-	{ label: '2%', value: 0.979 },
-	{ label: '3%', value: 0.969 },
-	{ label: '4%', value: 0.958 },
-	{ label: '5%', value: 0.946 },
-	{ label: '6%', value: 0.934 },
-	{ label: '7%', value: 0.922 },
-	{ label: '8%', value: 0.911 },
-	{ label: '9%', value: 0.9 },
-	{ label: '10%', value: 0.89 },
-	{ label: '11%', value: 0.876 },
-	{ label: '12%', value: 0.863 },
-	{ label: '13%', value: 0.848 },
-	{ label: '14%', value: 0.834 },
-	{ label: '15%', value: 0.821 },
+	{ label: '0%', value: 1000 },
+	{ label: '1%', value: 990 },
+	{ label: '2%', value: 979 },
+	{ label: '3%', value: 969 },
+	{ label: '4%', value: 958 },
+	{ label: '5%', value: 946 },
+	{ label: '6%', value: 934 },
+	{ label: '7%', value: 922 },
+	{ label: '8%', value: 911 },
+	{ label: '9%', value: 900 },
+	{ label: '10%', value: 890 },
+	{ label: '11%', value: 876 },
+	{ label: '12%', value: 863 },
+	{ label: '13%', value: 848 },
+	{ label: '14%', value: 834 },
+	{ label: '15%', value: 821 },
 ];
 
 export const analogScheme = {
