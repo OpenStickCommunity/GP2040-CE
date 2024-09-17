@@ -131,6 +131,16 @@ void Storage::previousProfile()
 		this->config.gamepadOptions.profileNumber -= 1;
 }
 
+/**
+ * @brief Return the current profile label.
+ */
+char* Storage::currentProfileLabel() {
+	if (this->config.gamepadOptions.profileNumber == 1)
+		return this->config.gpioMappings.profileLabel;
+	else
+		return this->config.profileOptions.gpioMappingsSets[config.gamepadOptions.profileNumber-2].profileLabel;
+}
+
 void Storage::setFunctionalPinMappings()
 {
 	GpioMappingInfo* alts = nullptr;

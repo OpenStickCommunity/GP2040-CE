@@ -68,6 +68,7 @@ public:
 	void nextProfile();
 	void previousProfile();
 	void setFunctionalPinMappings();
+	char* currentProfileLabel();
 
 	void ResetSettings(); 				// EEPROM Reset Feature
 
