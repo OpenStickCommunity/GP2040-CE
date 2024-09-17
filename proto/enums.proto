@@ -414,3 +414,11 @@ enum ReactiveLEDMode
     REACTIVE_LED_FADE_IN = 2;
     REACTIVE_LED_FADE_OUT = 3;
 };
+
+enum PS4ControllerIDMode
+{
+    option (nanopb_enumopt).long_names = false;
+
+    PS4_ID_CONSOLE = 0;
+    PS4_ID_EMULATION = 1;
+};

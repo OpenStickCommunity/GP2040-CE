@@ -178,21 +178,6 @@ Gamepad * Storage::GetProcessedGamepad()
 	return processedGamepad;
 }
 
-void Storage::SetFeatureData(uint8_t * newData)
-{
-	memcpy(newData, featureData, sizeof(uint8_t)*sizeof(featureData));
-}
-
-void Storage::ClearFeatureData()
-{
-	memset(featureData, 0, sizeof(uint8_t)*sizeof(featureData));
-}
-
-uint8_t * Storage::GetFeatureData()
-{
-	return featureData;
-}
-
 /* Animation stuffs */
 AnimationOptions AnimationStorage::getAnimationOptions()
 {

@@ -107,6 +107,7 @@ app.get('/api/getGamepadOptions', (req, res) => {
 		ps4AuthType: 0,
 		ps5AuthType: 0,
 		xinputAuthType: 0,
+		ps4ControllerIDMode: 0,
 		hotkey01: {
 			auxMask: 32768,
 			buttonsMask: 66304,
@@ -465,6 +466,9 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		snesPadLatchPin: -1,
 		snesPadDataPin: -1,
 		keyboardHostMap: DEFAULT_KEYBOARD_MAPPING,
+		keyboardHostMouseLeft: 0,
+		keyboardHostMouseMiddle: 0,
+		keyboardHostMouseRight: 0,
 		AnalogInputEnabled: 1,
 		BoardLedAddonEnabled: 1,
 		FocusModeAddonEnabled: 1,

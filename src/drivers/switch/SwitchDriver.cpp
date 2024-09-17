@@ -25,7 +25,7 @@ void SwitchDriver::initialize() {
 	};
 }
 
-void SwitchDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
+void SwitchDriver::process(Gamepad * gamepad) {
 	switch (gamepad->state.dpad & GAMEPAD_MASK_DPAD)
 	{
 		case GAMEPAD_MASK_UP:                        switchReport.hat = SWITCH_HAT_UP;        break;
