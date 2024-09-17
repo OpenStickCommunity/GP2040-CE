@@ -214,7 +214,11 @@ static void __attribute__((noinline)) writeDoc(DynamicJsonDocument& doc, const K
 
 static int32_t cleanPin(int32_t pin) { return isValidPin(pin) ? pin : -1; }
 
+static uint32_t systemFlashSize;
+
 void WebConfig::setup() {
+    // System Flash Size must be called once
+    systemFlashSize = System::getPhysicalFlash();
     rndis_init();
 }
 
@@ -2106,7 +2110,7 @@ std::string getMemoryReport()
     DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
     writeDoc(doc, "totalFlash", System::getTotalFlash());
     writeDoc(doc, "usedFlash", System::getUsedFlash());
-    writeDoc(doc, "physicalFlash", System::getPhysicalFlash());
+    writeDoc(doc, "physicalFlash", systemFlashSize);
     writeDoc(doc, "staticAllocs", System::getStaticAllocs());
     writeDoc(doc, "totalHeap", System::getTotalHeap());
     writeDoc(doc, "usedHeap", System::getUsedHeap());
