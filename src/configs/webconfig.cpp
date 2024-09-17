@@ -5,6 +5,7 @@
 #include "storagemanager.h"
 #include "configmanager.h"
 #include "layoutmanager.h"
+#include "peripheralmanager.h"
 #include "AnimationStorage.hpp"
 #include "system.h"
 #include "config_utils.h"
@@ -436,8 +437,6 @@ std::string setDisplayOptions(DisplayOptions& displayOptions)
 {
     DynamicJsonDocument doc = get_post_data();
     readDoc(displayOptions.enabled, doc, "enabled");
-    readDoc(displayOptions.i2cAddress, doc, "i2cAddress");
-    readDoc(displayOptions.i2cBlock, doc, "i2cBlock");
     readDoc(displayOptions.flip, doc, "flipDisplay");
     readDoc(displayOptions.invert, doc, "invertDisplay");
     readDoc(displayOptions.buttonLayout, doc, "buttonLayout");
@@ -480,8 +479,6 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
     DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
     const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
     writeDoc(doc, "enabled", displayOptions.enabled ? 1 : 0);
-    writeDoc(doc, "i2cAddress", displayOptions.i2cAddress);
-    writeDoc(doc, "i2cBlock", displayOptions.i2cBlock);
     writeDoc(doc, "flipDisplay", displayOptions.flip);
     writeDoc(doc, "invertDisplay", displayOptions.invert ? 1 : 0);
     writeDoc(doc, "buttonLayout", displayOptions.buttonLayout);
@@ -642,6 +639,7 @@ std::string setGamepadOptions()
     readDoc(gamepadOptions.ps4AuthType, doc, "ps4AuthType");
     readDoc(gamepadOptions.ps5AuthType, doc, "ps5AuthType");
     readDoc(gamepadOptions.xinputAuthType, doc, "xinputAuthType");
+    readDoc(gamepadOptions.ps4ControllerIDMode, doc, "ps4ControllerIDMode");
 
     HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
     save_hotkey(&hotkeyOptions.hotkey01, doc, "hotkey01");
@@ -693,6 +691,7 @@ std::string getGamepadOptions()
     writeDoc(doc, "ps4AuthType", gamepadOptions.ps4AuthType);
     writeDoc(doc, "ps5AuthType", gamepadOptions.ps5AuthType);
     writeDoc(doc, "xinputAuthType", gamepadOptions.xinputAuthType);
+    writeDoc(doc, "ps4ControllerIDMode", gamepadOptions.ps4ControllerIDMode);
 
     writeDoc(doc, "fnButtonPin", -1);
     GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
@@ -842,7 +841,7 @@ std::string getButtonLayoutDefs()
     for (layoutCtr = _ButtonLayout_MIN; layoutCtr < _ButtonLayout_ARRAYSIZE; layoutCtr++) {
         writeDoc(doc, "buttonLayout", LayoutManager::getInstance().getButtonLayoutName((ButtonLayout)layoutCtr), layoutCtr);
     }
-    
+
     for (layoutCtr = _ButtonLayoutRight_MIN; layoutCtr < _ButtonLayoutRight_ARRAYSIZE; layoutCtr++) {
         writeDoc(doc, "buttonLayoutRight", LayoutManager::getInstance().getButtonLayoutRightName((ButtonLayoutRight)layoutCtr), layoutCtr);
     }
@@ -856,7 +855,7 @@ std::string getButtonLayouts()
     const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
     const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
     uint16_t elementCtr = 0;
-    
+
     LayoutManager::LayoutList layoutA = LayoutManager::getInstance().getLayoutA();
     LayoutManager::LayoutList layoutB = LayoutManager::getInstance().getLayoutB();
 
@@ -917,7 +916,7 @@ std::string getButtonLayouts()
         writeDoc(ele, "parameters", "closed", layoutB[elementCtr].parameters.closed);
         writeDoc(doc, "displayLayouts", "buttonLayoutRight", std::to_string(elementCtr), ele);
     }
-    
+
     return serialize_json(doc);
 }
 
@@ -1128,6 +1127,8 @@ std::string setKeyMappings()
     readDoc(keyboardMapping.keyButtonR3, doc, "R3");
     readDoc(keyboardMapping.keyButtonA1, doc, "A1");
     readDoc(keyboardMapping.keyButtonA2, doc, "A2");
+    readDoc(keyboardMapping.keyButtonA3, doc, "A3");
+    readDoc(keyboardMapping.keyButtonA4, doc, "A4");
 
     Storage::getInstance().save();
 
@@ -1157,6 +1158,8 @@ std::string getKeyMappings()
     writeDoc(doc, "R3", keyboardMapping.keyButtonR3);
     writeDoc(doc, "A1", keyboardMapping.keyButtonA1);
     writeDoc(doc, "A2", keyboardMapping.keyButtonA2);
+    writeDoc(doc, "A3", keyboardMapping.keyButtonA3);
+    writeDoc(doc, "A4", keyboardMapping.keyButtonA4);
 
     return serialize_json(doc);
 }
@@ -1192,6 +1195,29 @@ std::string getPeripheralOptions()
     writeDoc(doc, "peripheral", "usb0", "dp",      peripheralOptions.blockUSB0.dp);
     writeDoc(doc, "peripheral", "usb0", "enable5v",peripheralOptions.blockUSB0.enable5v);
     writeDoc(doc, "peripheral", "usb0", "order",   peripheralOptions.blockUSB0.order);
+
+    return serialize_json(doc);
+}
+
+std::string getI2CPeripheralMap() {
+    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+
+    PeripheralOptions& peripheralOptions = Storage::getInstance().getPeripheralOptions();
+
+
+    if (peripheralOptions.blockI2C0.enabled && PeripheralManager::getInstance().isI2CEnabled(0)) {
+        std::map<uint8_t,bool> result = PeripheralManager::getInstance().getI2C(0)->scan();
+        for (std::map<uint8_t,bool>::iterator it = result.begin(); it != result.end(); ++it) {
+            writeDoc(doc, "i2c0", std::to_string(it->first), it->second);
+        }
+    }
+
+    if (peripheralOptions.blockI2C1.enabled && PeripheralManager::getInstance().isI2CEnabled(1)) {
+        std::map<uint8_t,bool> result = PeripheralManager::getInstance().getI2C(1)->scan();
+        for (std::map<uint8_t,bool>::iterator it = result.begin(); it != result.end(); ++it) {
+            writeDoc(doc, "i2c1", std::to_string(it->first), it->second);
+        }
+    }
 
     return serialize_json(doc);
 }
@@ -1323,6 +1349,40 @@ std::string setExpansionPins()
     return serialize_json(doc);
 }
 
+std::string getReactiveLEDs()
+{
+    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    ReactiveLEDInfo* ledInfo = Storage::getInstance().getAddonOptions().reactiveLEDOptions.leds;
+
+    for (uint16_t led = 0; led < 10; led++) {
+        writeDoc(doc, "leds", led, "pin", ledInfo[led].pin);
+        writeDoc(doc, "leds", led, "action", ledInfo[led].action);
+        writeDoc(doc, "leds", led, "modeDown", ledInfo[led].modeDown);
+        writeDoc(doc, "leds", led, "modeUp", ledInfo[led].modeUp);
+    }
+
+    return serialize_json(doc);
+}
+
+std::string setReactiveLEDs()
+{
+    DynamicJsonDocument doc = get_post_data();
+
+    ReactiveLEDInfo* ledInfo = Storage::getInstance().getAddonOptions().reactiveLEDOptions.leds;
+
+    for (uint16_t led = 0; led < 10; led++) {
+        ledInfo[led].pin = doc["leds"][led]["pin"];
+        ledInfo[led].action = doc["leds"][led]["action"];
+        ledInfo[led].modeDown = doc["leds"][led]["modeDown"];
+        ledInfo[led].modeUp = doc["leds"][led]["modeUp"];
+    }
+    Storage::getInstance().getAddonOptions().reactiveLEDOptions.leds_count = 10;
+
+    Storage::getInstance().save();
+
+    return serialize_json(doc);
+}
+
 std::string setAddonOptions()
 {
     DynamicJsonDocument doc = get_post_data();
@@ -1342,6 +1402,8 @@ std::string setAddonOptions()
     docToValue(analogOptions.inner_deadzone, doc, "inner_deadzone");
     docToValue(analogOptions.outer_deadzone, doc, "outer_deadzone");
     docToValue(analogOptions.auto_calibrate, doc, "auto_calibrate");
+    docToValue(analogOptions.analog_smoothing, doc, "analog_smoothing");
+    docToValue(analogOptions.smoothing_factor, doc, "smoothing_factor");
     docToValue(analogOptions.enabled, doc, "AnalogInputEnabled");
 
     BootselButtonOptions& bootselButtonOptions = Storage::getInstance().getAddonOptions().bootselButtonOptions;
@@ -1390,8 +1452,6 @@ std::string setAddonOptions()
     docToValue(focusModeOptions.enabled, doc, "FocusModeAddonEnabled");
 
     AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
-    docToValue(analogADS1219Options.i2cBlock, doc, "i2cAnalog1219Block");
-    docToValue(analogADS1219Options.i2cAddress, doc, "i2cAnalog1219Address");
     docToValue(analogADS1219Options.enabled, doc, "I2CAnalog1219InputEnabled");
 
     SliderOptions& sliderOptions = Storage::getInstance().getAddonOptions().sliderOptions;
@@ -1440,7 +1500,6 @@ std::string setAddonOptions()
     docToValue(turboOptions.enabled, doc, "TurboInputEnabled");
 
     WiiOptions& wiiOptions = Storage::getInstance().getAddonOptions().wiiOptions;
-    docToValue(wiiOptions.i2cBlock, doc, "wiiExtensionBlock");
     docToValue(wiiOptions.enabled, doc, "WiiExtensionAddonEnabled");
 
     SNESOptions& snesOptions = Storage::getInstance().getAddonOptions().snesOptions;
@@ -1475,6 +1534,11 @@ std::string setAddonOptions()
     docToValue(keyboardHostOptions.mapping.keyButtonR3, doc, "keyboardHostMap", "R3");
     docToValue(keyboardHostOptions.mapping.keyButtonA1, doc, "keyboardHostMap", "A1");
     docToValue(keyboardHostOptions.mapping.keyButtonA2, doc, "keyboardHostMap", "A2");
+    docToValue(keyboardHostOptions.mapping.keyButtonA3, doc, "keyboardHostMap", "A3");
+    docToValue(keyboardHostOptions.mapping.keyButtonA4, doc, "keyboardHostMap", "A4");
+    docToValue(keyboardHostOptions.mouseLeft, doc, "keyboardHostMouseLeft");
+    docToValue(keyboardHostOptions.mouseMiddle, doc, "keyboardHostMouseMiddle");
+    docToValue(keyboardHostOptions.mouseRight, doc, "keyboardHostMouseRight");
 
     RotaryOptions& rotaryOptions = Storage::getInstance().getAddonOptions().rotaryOptions;
     docToValue(rotaryOptions.enabled, doc, "RotaryAddonEnabled");
@@ -1496,8 +1560,19 @@ std::string setAddonOptions()
     docToValue(rotaryOptions.encoderTwo.multiplier, doc, "encoderTwoMultiplier");
 
     PCF8575Options& pcf8575Options = Storage::getInstance().getAddonOptions().pcf8575Options;
-    docToValue(pcf8575Options.i2cBlock, doc, "pcf8575Block");
     docToValue(pcf8575Options.enabled, doc, "PCF8575AddonEnabled");
+
+    ReactiveLEDOptions& reactiveLEDOptions = Storage::getInstance().getAddonOptions().reactiveLEDOptions;
+    docToValue(reactiveLEDOptions.enabled, doc, "ReactiveLEDAddonEnabled");
+
+    DRV8833RumbleOptions& drv8833RumbleOptions = Storage::getInstance().getAddonOptions().drv8833RumbleOptions;
+    docToValue(drv8833RumbleOptions.enabled, doc, "DRV8833RumbleAddonEnabled");
+    docToPin(drv8833RumbleOptions.leftMotorPin, doc, "drv8833RumbleLeftMotorPin");
+    docToPin(drv8833RumbleOptions.rightMotorPin, doc, "drv8833RumbleRightMotorPin");
+    docToPin(drv8833RumbleOptions.motorSleepPin, doc, "drv8833RumbleMotorSleepPin");
+    docToValue(drv8833RumbleOptions.pwmFrequency, doc, "drv8833RumblePWMFrequency");
+    docToValue(drv8833RumbleOptions.dutyMin, doc, "drv8833RumbleDutyMin");
+    docToValue(drv8833RumbleOptions.dutyMax, doc, "drv8833RumbleDutyMax");
 
     Storage::getInstance().save();
 
@@ -1758,6 +1833,8 @@ std::string getAddonOptions()
     writeDoc(doc, "inner_deadzone", analogOptions.inner_deadzone);
     writeDoc(doc, "outer_deadzone", analogOptions.outer_deadzone);
     writeDoc(doc, "auto_calibrate", analogOptions.auto_calibrate);
+    writeDoc(doc, "analog_smoothing", analogOptions.analog_smoothing);
+    writeDoc(doc, "smoothing_factor", analogOptions.smoothing_factor);
     writeDoc(doc, "AnalogInputEnabled", analogOptions.enabled);
 
     const BootselButtonOptions& bootselButtonOptions = Storage::getInstance().getAddonOptions().bootselButtonOptions;
@@ -1799,8 +1876,6 @@ std::string getAddonOptions()
     writeDoc(doc, "TiltInputEnabled", tiltOptions.enabled);
 
     const AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
-    writeDoc(doc, "i2cAnalog1219Block", analogADS1219Options.i2cBlock);
-    writeDoc(doc, "i2cAnalog1219Address", analogADS1219Options.i2cAddress);
     writeDoc(doc, "I2CAnalog1219InputEnabled", analogADS1219Options.enabled);
 
     const SliderOptions& sliderOptions = Storage::getInstance().getAddonOptions().sliderOptions;
@@ -1849,7 +1924,6 @@ std::string getAddonOptions()
     writeDoc(doc, "TurboInputEnabled", turboOptions.enabled);
 
     const WiiOptions& wiiOptions = Storage::getInstance().getAddonOptions().wiiOptions;
-    writeDoc(doc, "wiiExtensionBlock", wiiOptions.i2cBlock);
     writeDoc(doc, "WiiExtensionAddonEnabled", wiiOptions.enabled);
 
     const SNESOptions& snesOptions = Storage::getInstance().getAddonOptions().snesOptions;
@@ -1884,6 +1958,11 @@ std::string getAddonOptions()
     writeDoc(doc, "keyboardHostMap", "R3", keyboardHostOptions.mapping.keyButtonR3);
     writeDoc(doc, "keyboardHostMap", "A1", keyboardHostOptions.mapping.keyButtonA1);
     writeDoc(doc, "keyboardHostMap", "A2", keyboardHostOptions.mapping.keyButtonA2);
+    writeDoc(doc, "keyboardHostMap", "A3", keyboardHostOptions.mapping.keyButtonA3);
+    writeDoc(doc, "keyboardHostMap", "A4", keyboardHostOptions.mapping.keyButtonA4);
+    writeDoc(doc, "keyboardHostMouseLeft", keyboardHostOptions.mouseLeft);
+    writeDoc(doc, "keyboardHostMouseMiddle", keyboardHostOptions.mouseMiddle);
+    writeDoc(doc, "keyboardHostMouseRight", keyboardHostOptions.mouseRight);
 
     AnalogADS1256Options& ads1256Options = Storage::getInstance().getAddonOptions().analogADS1256Options;
     writeDoc(doc, "Analog1256Enabled", ads1256Options.enabled);
@@ -1920,8 +1999,19 @@ std::string getAddonOptions()
     writeDoc(doc, "encoderTwoMultiplier", rotaryOptions.encoderTwo.multiplier);
 
     PCF8575Options& pcf8575Options = Storage::getInstance().getAddonOptions().pcf8575Options;
-    writeDoc(doc, "pcf8575Block", pcf8575Options.i2cBlock);
     writeDoc(doc, "PCF8575AddonEnabled", pcf8575Options.enabled);
+
+    ReactiveLEDOptions& reactiveLEDOptions = Storage::getInstance().getAddonOptions().reactiveLEDOptions;
+    writeDoc(doc, "ReactiveLEDAddonEnabled", reactiveLEDOptions.enabled);
+
+    const DRV8833RumbleOptions& drv8833RumbleOptions = Storage::getInstance().getAddonOptions().drv8833RumbleOptions;
+    writeDoc(doc, "DRV8833RumbleAddonEnabled", drv8833RumbleOptions.enabled);
+    writeDoc(doc, "drv8833RumbleLeftMotorPin", cleanPin(drv8833RumbleOptions.leftMotorPin));
+    writeDoc(doc, "drv8833RumbleRightMotorPin", cleanPin(drv8833RumbleOptions.rightMotorPin));
+    writeDoc(doc, "drv8833RumbleMotorSleepPin", cleanPin(drv8833RumbleOptions.motorSleepPin));
+    writeDoc(doc, "drv8833RumblePWMFrequency", drv8833RumbleOptions.pwmFrequency);
+    writeDoc(doc, "drv8833RumbleDutyMin", drv8833RumbleOptions.dutyMin);
+    writeDoc(doc, "drv8833RumbleDutyMax", drv8833RumbleOptions.dutyMax);
 
     return serialize_json(doc);
 }
@@ -2181,8 +2271,11 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/setProfileOptions", setProfileOptions },
     { "/api/setPeripheralOptions", setPeripheralOptions },
     { "/api/getPeripheralOptions", getPeripheralOptions },
+    { "/api/getI2CPeripheralMap", getI2CPeripheralMap },
     { "/api/setExpansionPins", setExpansionPins },
     { "/api/getExpansionPins", getExpansionPins },
+    { "/api/setReactiveLEDs", setReactiveLEDs },
+    { "/api/getReactiveLEDs", getReactiveLEDs },
     { "/api/setKeyMappings", setKeyMappings },
     { "/api/setAddonsOptions", setAddonOptions },
     { "/api/setMacroAddonOptions", setMacroAddonOptions },

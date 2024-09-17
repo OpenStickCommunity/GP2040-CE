@@ -11,7 +11,6 @@ export default {
 		invalid: '{{pin}} ist ungültig für dieses Board',
 		used: '{{pin}} ist bereits einer anderen Funktion zugewiesen',
 	},
-	'all-capture-button-label': 'Gamepad Pins Zuweisen\u00A0\u00A0🎮',
 	actions: {
 		NONE: 'Keine',
 		RESERVED: 'Reserviert',

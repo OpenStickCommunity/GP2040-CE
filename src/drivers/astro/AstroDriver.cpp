@@ -25,7 +25,7 @@ void AstroDriver::initialize() {
 	};
 }
 
-void AstroDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
+void AstroDriver::process(Gamepad * gamepad) {
 	astroReport.lx = 0x7f;
 	astroReport.ly = 0x7f;
 

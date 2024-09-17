@@ -23,7 +23,7 @@ void XboxOriginalDriver::initialize() {
     memcpy(&class_driver, xid_get_driver(), sizeof(usbd_class_driver_t));
 }
 
-void XboxOriginalDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
+void XboxOriginalDriver::process(Gamepad * gamepad) {
 	// digital buttons
 	xboxOriginalReport.dButtons = 0
 		| (gamepad->pressedUp()    ? XID_DUP    : 0)
@@ -41,8 +41,8 @@ void XboxOriginalDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
     xboxOriginalReport.B     = (gamepad->pressedB2() ? 0xFF : 0);
     xboxOriginalReport.X     = (gamepad->pressedB3() ? 0xFF : 0);
     xboxOriginalReport.Y     = (gamepad->pressedB4() ? 0xFF : 0);
-    xboxOriginalReport.BLACK = (gamepad->pressedL1() ? 0xFF : 0);
-    xboxOriginalReport.WHITE = (gamepad->pressedR1() ? 0xFF : 0);
+    xboxOriginalReport.BLACK = (gamepad->pressedR1() ? 0xFF : 0);
+    xboxOriginalReport.WHITE = (gamepad->pressedL1() ? 0xFF : 0);
 
     // analog triggers
 	if (gamepad->hasAnalogTriggers) {
@@ -66,6 +66,22 @@ void XboxOriginalDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 	if (memcmp(last_report, &xboxOriginalReport, sizeof(XboxOriginalReport)) != 0) {
         if ( xid_send_report(xIndex, &xboxOriginalReport, sizeof(XboxOriginalReport)) == true ) {
             memcpy(last_report, &xboxOriginalReport, sizeof(XboxOriginalReport));
+        }
+    }
+
+    if (xid_get_report(xIndex, &xboxOriginalReportOut, sizeof(xboxOriginalReportOut)))
+    {
+        uint8_t leftValue = (xboxOriginalReportOut.lValue >> 8);
+        uint8_t rightValue = (xboxOriginalReportOut.rValue >> 8);
+        
+        if (gamepad->auxState.haptics.leftActuator.enabled) {
+            gamepad->auxState.haptics.leftActuator.active = (leftValue > 0);
+            gamepad->auxState.haptics.leftActuator.intensity = leftValue;
+        }
+
+        if (gamepad->auxState.haptics.rightActuator.enabled) {
+            gamepad->auxState.haptics.rightActuator.active = (rightValue > 0);
+            gamepad->auxState.haptics.rightActuator.intensity = rightValue;
         }
     }
 }

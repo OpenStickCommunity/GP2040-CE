@@ -23,7 +23,7 @@ export default {
 	'switch-enabled': '启用',
 	'lock-oled-screen': '锁定 OLED 屏',
 	'lock-rgb-led': '锁定 RGB LED',
-    'lock-macro': '锁定宏',
+	'lock-macro': '锁定宏',
 	'lock-buttons': '锁定按键',
 	'loading-text': '加载中...',
 };

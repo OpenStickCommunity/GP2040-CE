@@ -205,9 +205,6 @@ async function getDisplayOptions() {
 	try {
 		const response = await Http.get(`${baseUrl}/api/getDisplayOptions`);
 
-		if (response.data.i2cAddress) {
-			response.data.i2cAddress = '0x' + response.data.i2cAddress.toString(16);
-		}
 		response.data.splashDuration = response.data.splashDuration / 1000; // milliseconds to seconds
 		response.data.displaySaverTimeout =
 			response.data.displaySaverTimeout / 60000; // milliseconds to minutes
@@ -220,7 +217,6 @@ async function getDisplayOptions() {
 
 async function setDisplayOptions(options, isPreview) {
 	let newOptions = sanitizeRequest(options);
-	newOptions.i2cAddress = parseInt(options.i2cAddress);
 	newOptions.buttonLayout = parseInt(options.buttonLayout);
 	newOptions.buttonLayoutRight = parseInt(options.buttonLayoutRight);
 	newOptions.splashMode = parseInt(options.splashMode);
@@ -569,6 +565,22 @@ async function setWiiControls(mappings) {
 		});
 }
 
+async function getReactiveLEDs(setLoading) {
+	setLoading(true);
+	try {
+		const response = await Http.get(`${baseUrl}/api/getReactiveLEDs`);
+		return response.data;
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+async function setReactiveLEDs(leds) {
+	console.dir(leds);
+
+	return Http.post(`${baseUrl}/api/setReactiveLEDs`, leds);
+}
+
 async function getPeripheralOptions(setLoading) {
 	setLoading(true);
 	try {
@@ -714,6 +726,8 @@ export default {
 	setPeripheralOptions,
 	getExpansionPins,
 	setExpansionPins,
+	getReactiveLEDs,
+	setReactiveLEDs,
 	getButtonLayouts,
 	getButtonLayoutDefs,
 	getSplashImage,

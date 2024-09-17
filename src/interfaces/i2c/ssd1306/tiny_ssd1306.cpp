@@ -147,7 +147,9 @@ void GPGFX_TinySSD1306::drawText(uint8_t x, uint8_t y, std::string text, uint8_t
 	uint8_t charOffset = 0;
 	const uint8_t* currGlyph;
 
-	for (uint8_t charIndex = 0; charIndex < text.size(); charIndex++) {
+    uint8_t maxTextSize = (MAX_SCREEN_WIDTH / _options.font.width);
+
+	for (uint8_t charIndex = 0; charIndex < MIN(text.size(), maxTextSize); charIndex++) {
 		currChar = text[charIndex];
 		glyphIndex = currChar - GPGFX_FONT_CHAR_OFFSET;
 		currGlyph = &_options.font.fontData[glyphIndex * ((_options.font.width - 1) * (_options.font.height/8))];

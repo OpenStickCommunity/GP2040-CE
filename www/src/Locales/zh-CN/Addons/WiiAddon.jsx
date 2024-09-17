@@ -1,7 +1,6 @@
 export default {
 	'header-text': 'Wii 扩展',
-	'sub-header-text':
-		'<0>注意：如果显示屏同时启用，此插件将被禁用。</0>',
+	'sub-header-text': '<0>注意：如果显示屏同时启用，此插件将被禁用。</0>',
 	'sda-pin-label': 'I2C SDA 引脚',
 	'scl-pin-label': 'I2C SCL 引脚',
 	'block-label': 'I2C 模块',
@@ -29,11 +28,11 @@ export default {
 	'controller-button-minus': 'Minus',
 	'controller-button-home': 'Home',
 	'controller-button-plus': 'Plus',
-    'controller-button-up': '上',
-    'controller-button-down': '下',
+	'controller-button-up': '上',
+	'controller-button-down': '下',
 	'controller-button-left': '左',
 	'controller-button-right': '右',
-    'controller-button-euphoria': 'Euphoria',
+	'controller-button-euphoria': 'Euphoria',
 	'controller-button-leftgreen': '绿色 (左侧)',
 	'controller-button-leftred': '红色 (左侧)',
 	'controller-button-leftblue': '蓝色 (左侧)',
@@ -65,8 +64,7 @@ export default {
 	'controller-analog-axis-x': 'X 轴 +/-',
 	'controller-analog-axis-y': 'Y 轴 +/-',
 	'controller-analog-axis-trigger': '扳机键',
-	'analog-axis-mode-trigger':
-		'<0>完整的值范围将被发送到接口。</0>',
+	'analog-axis-mode-trigger': '<0>完整的值范围将被发送到接口。</0>',
 	'analog-axis-mode-button':
 		'<0>这个功能作为一个数字开关，当达到定义的阈值后，会设置一个“按下”的状态。</0>',
 	'analog-axis-mode-normal-direction':

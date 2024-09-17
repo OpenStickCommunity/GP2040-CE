@@ -59,3 +59,29 @@ bool PeripheralManager::isUSBEnabled(uint8_t block) {
     }
     return false;
 }
+
+PeripheralI2CScanResult PeripheralManager::scanForI2CDevice(std::vector<uint8_t> addressList) {
+    PeripheralI2CScanResult scanResult = {
+        .address = -1,
+        .block = 0
+    };
+    
+    for (uint8_t block = 0; block < NUM_I2CS; block++) {
+        if (isI2CEnabled(block)) {
+            PeripheralI2C* i2c = getI2C(block);
+
+            for (uint8_t i = 0; i < addressList.size(); i++) {
+                if (!((addressList[i] & 0x78) == 0 || (addressList[i] & 0x78) == 0x78)) {
+                    uint8_t result = i2c->test(addressList[i]);
+
+                    if (result) {
+                        scanResult.address = addressList[i];
+                        scanResult.block = block;
+                        return scanResult;
+                    }
+                }
+            }
+        }
+    }
+    return scanResult;
+}

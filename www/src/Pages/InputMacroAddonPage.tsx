@@ -14,7 +14,7 @@ import {
 } from 'react-bootstrap';
 import { Formik, useFormikContext } from 'formik';
 import * as yup from 'yup';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import omit from 'lodash/omit';
 
 import Section from '../Components/Section';
@@ -235,7 +235,7 @@ const MacroInputComponent = (props) => {
 				className="d-flex justify-content-center text-nowrap"
 			>
 				{' '}
-				release and wait{' '}
+				{t('InputMacroAddon:input-macro-release-and-wait-label')}{' '}
 			</Col>
 			<Col
 				style={{
@@ -496,7 +496,10 @@ const MacroComponent = (props) => {
 								});
 							}}
 						>
-							Add Input +
+							<Trans
+								ns="InputMacroAddon"
+								i18nKey="input-macro-add-input-label"
+							/>
 						</Button>
 					) : (
 						<></>
@@ -561,7 +564,9 @@ export default function MacrosPage() {
 											<Nav.Item key={`pills-item-${i}`}>
 												<Nav.Link eventKey={`macro-${i}`}>
 													{macro.macroLabel.length == 0
-														? `Macro ${i + 1}`
+														? t('InputMacroAddon:input-macro-macro-list-txt', {
+																macroNumber: i + 1,
+														  })
 														: macro.macroLabel.length > 24
 														? macro.macroLabel.substr(0, 24) + '...'
 														: macro.macroLabel}
@@ -587,12 +592,26 @@ export default function MacrosPage() {
 															<thead>
 																<tr>
 																	<th>#</th>
-																	<th>Label</th>
-																	<th>Type</th>
-																	<th>Assigned To</th>
-																	<th>Button</th>
-																	<th>Actions</th>
-																	<th>Status</th>
+																	<th>
+																		{t('InputMacroAddon:table-thread-label')}
+																	</th>
+																	<th>
+																		{t('InputMacroAddon:table-thread-type')}
+																	</th>
+																	<th>
+																		{t(
+																			'InputMacroAddon:table-thread-assigned-to',
+																		)}
+																	</th>
+																	<th>
+																		{t('InputMacroAddon:table-thread-button')}
+																	</th>
+																	<th>
+																		{t('InputMacroAddon:table-thread-actions')}
+																	</th>
+																	<th>
+																		{t('InputMacroAddon:table-thread-status')}
+																	</th>
 																</tr>
 															</thead>
 															<tbody>
@@ -616,8 +635,12 @@ export default function MacrosPage() {
 																		</td>
 																		<td>
 																			{macro.useMacroTriggerButton == 1
-																				? 'Button'
-																				: 'Pin'}
+																				? t(
+																						'InputMacroAddon:input-macro-macro-trigger-type-button',
+																				  )
+																				: t(
+																						'InputMacroAddon:input-macro-macro-trigger-type-pin',
+																				  )}
 																		</td>
 																		{macro.useMacroTriggerButton == 0 ? (
 																			<td>
@@ -634,9 +657,17 @@ export default function MacrosPage() {
 																		<td>{macro.macroInputs.length}</td>
 																		<td>
 																			{macro.enabled == true ? (
-																				<Badge bg="success">Enabled</Badge>
+																				<Badge bg="success">
+																					{t(
+																						'InputMacroAddon:input-macro-macro-enabled-badge',
+																					)}
+																				</Badge>
 																			) : (
-																				<Badge bg="danger">Disabled</Badge>
+																				<Badge bg="danger">
+																					{t(
+																						'InputMacroAddon:input-macro-macro-disabled-badge',
+																					)}
+																				</Badge>
 																			)}
 																		</td>
 																	</tr>
@@ -690,7 +721,12 @@ export default function MacrosPage() {
 												key={`macro-list-tab-pane-${i}`}
 												eventKey={`macro-${i}`}
 											>
-												<Section title={`Macro ${i + 1}`}>
+												<Section
+													title={t(
+														'InputMacroAddon:input-macro-macro-list-txt',
+														{ macroNumber: i + 1 },
+													)}
+												>
 													<MacroComponent
 														key={`macroList[${i}]`}
 														id={`macroList[${i}]`}

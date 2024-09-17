@@ -144,6 +144,10 @@ struct GamepadState
 	uint16_t ry {GAMEPAD_JOYSTICK_MID};
 	uint8_t lt {0};
 	uint8_t rt {0};
+	float ema_1_x {GAMEPAD_JOYSTICK_MID};
+	float ema_1_y {GAMEPAD_JOYSTICK_MID};
+	float ema_2_x {GAMEPAD_JOYSTICK_MID};
+	float ema_2_y {GAMEPAD_JOYSTICK_MID};
 };
 
 // Convert the horizontal GamepadState dpad axis value into an analog value
