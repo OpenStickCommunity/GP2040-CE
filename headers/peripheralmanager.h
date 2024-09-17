@@ -4,8 +4,14 @@
 #include "peripheral_i2c.h"
 #include "peripheral_spi.h"
 #include "peripheral_usb.h"
+#include "i2cdevicebase.h"
 
 #define PMGR PeripheralManager::getInstance()
+
+typedef struct {
+    int8_t address;
+    uint8_t block;
+} PeripheralI2CScanResult;
 
 class PeripheralManager {
 public:
@@ -28,6 +34,8 @@ public:
     bool isI2CEnabled(uint8_t block);
     bool isSPIEnabled(uint8_t block);
     bool isUSBEnabled(uint8_t block);
+
+    PeripheralI2CScanResult scanForI2CDevice(std::vector<uint8_t> addressList);
 private:
     PeripheralManager(){}
 

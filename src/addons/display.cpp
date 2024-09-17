@@ -18,31 +18,33 @@
 
 bool DisplayAddon::available() {
     const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
-    return options.enabled && PeripheralManager::getInstance().isI2CEnabled(options.i2cBlock);
+    bool result = false;
+    if (options.enabled) {
+        // create the gfx interface
+        gpDisplay = new GPGFX();
+        gpOptions = gpDisplay->getAvailableDisplay();
+        result = (gpOptions.displayType != GPGFX_DisplayType::DISPLAY_TYPE_NONE);
+        if (!result) delete gpDisplay;
+    }
+    return result;
 }
 
 void DisplayAddon::setup() {
     const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
-    PeripheralI2C* i2c = PeripheralManager::getInstance().getI2C(options.i2cBlock);
 
     // Setup GPGFX Options
-    GPGFX_DisplayTypeOptions gpOptions;
-    if (PeripheralManager::getInstance().isI2CEnabled(options.i2cBlock)) {
-        gpOptions.displayType = GPGFX_DisplayType::TYPE_SSD1306;
-        gpOptions.i2c = i2c;
+    if (gpOptions.displayType != GPGFX_DisplayType::DISPLAY_TYPE_NONE) {
         gpOptions.size = options.size;
-        gpOptions.address = options.i2cAddress;
         gpOptions.orientation = options.flip;
         gpOptions.inverted = options.invert;
         gpOptions.font.fontData = GP_Font_Standard;
         gpOptions.font.width = 6;
         gpOptions.font.height = 8;
     } else {
-        return; // Do not run our display
+        return;
     }
 
     // Setup GPGFX
-    gpDisplay = new GPGFX();
     gpDisplay->init(gpOptions);
 
     gamepad = Storage::getInstance().GetGamepad();
@@ -82,6 +84,12 @@ bool DisplayAddon::updateDisplayScreen() {
             case BUTTONS:
                 delete (ButtonLayoutScreen*)gpScreen;
                 break;
+            case PIN_VIEWER:
+                delete (PinViewerScreen*)gpScreen;
+                break;
+            case STATS:
+                delete (StatsScreen*)gpScreen;
+                break;
             default:
                 break;
         }
@@ -99,6 +107,12 @@ bool DisplayAddon::updateDisplayScreen() {
             break;
         case BUTTONS:
             gpScreen = new ButtonLayoutScreen(gpDisplay);
+            break;
+        case PIN_VIEWER:
+            gpScreen = new PinViewerScreen(gpDisplay);
+            break;
+        case STATS:
+            gpScreen = new StatsScreen(gpDisplay);
             break;
         default:
             gpScreen = nullptr;

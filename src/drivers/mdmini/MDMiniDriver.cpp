@@ -25,7 +25,7 @@ void MDMiniDriver::initialize() {
 	};
 }
 
-void MDMiniDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
+void MDMiniDriver::process(Gamepad * gamepad) {
 	mdminiReport.lx = 0x7f;
 	mdminiReport.ly = 0x7f;
 

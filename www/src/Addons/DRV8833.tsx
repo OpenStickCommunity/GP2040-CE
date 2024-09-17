@@ -35,7 +35,11 @@ export const drv8833RumbleScheme = {
 	drv8833RumbleDutyMax: yup
 		.number()
 		.label('Maximum PWM Duty')
-		.validateRangeWhenValue('DRV8833RumbleAddonEnabled', yup.ref('drv8833RumbleDutyMin'), 100),
+		.validateRangeWhenValue(
+			'DRV8833RumbleAddonEnabled',
+			yup.ref('drv8833RumbleDutyMin'),
+			100,
+		),
 };
 
 export const drv8833RumbleState = {
