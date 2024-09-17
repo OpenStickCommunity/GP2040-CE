@@ -761,11 +761,12 @@ app.get('/api/reboot', (req, res) => {
 
 app.get('/api/getMemoryReport', (req, res) => {
 	return res.send({
-		totalFlash: 2048,
-		usedFlash: 1048,
+		totalFlash: 2048 * 1024,
+		usedFlash: 1048 * 1024,
+		physicalFlash: 2048 * 1024,
 		staticAllocs: 200,
-		totalHeap: 2048,
-		usedHeap: 1048,
+		totalHeap: 2048 * 1024,
+		usedHeap: 1048 * 1024,
 	});
 });
 
