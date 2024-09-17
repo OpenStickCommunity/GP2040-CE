@@ -639,6 +639,7 @@ std::string setGamepadOptions()
     readDoc(gamepadOptions.ps4AuthType, doc, "ps4AuthType");
     readDoc(gamepadOptions.ps5AuthType, doc, "ps5AuthType");
     readDoc(gamepadOptions.xinputAuthType, doc, "xinputAuthType");
+    readDoc(gamepadOptions.ps4ControllerIDMode, doc, "ps4ControllerIDMode");
 
     HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
     save_hotkey(&hotkeyOptions.hotkey01, doc, "hotkey01");
@@ -690,6 +691,7 @@ std::string getGamepadOptions()
     writeDoc(doc, "ps4AuthType", gamepadOptions.ps4AuthType);
     writeDoc(doc, "ps5AuthType", gamepadOptions.ps5AuthType);
     writeDoc(doc, "xinputAuthType", gamepadOptions.xinputAuthType);
+    writeDoc(doc, "ps4ControllerIDMode", gamepadOptions.ps4ControllerIDMode);
 
     writeDoc(doc, "fnButtonPin", -1);
     GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
@@ -1125,6 +1127,8 @@ std::string setKeyMappings()
     readDoc(keyboardMapping.keyButtonR3, doc, "R3");
     readDoc(keyboardMapping.keyButtonA1, doc, "A1");
     readDoc(keyboardMapping.keyButtonA2, doc, "A2");
+    readDoc(keyboardMapping.keyButtonA3, doc, "A3");
+    readDoc(keyboardMapping.keyButtonA4, doc, "A4");
 
     Storage::getInstance().save();
 
@@ -1154,6 +1158,8 @@ std::string getKeyMappings()
     writeDoc(doc, "R3", keyboardMapping.keyButtonR3);
     writeDoc(doc, "A1", keyboardMapping.keyButtonA1);
     writeDoc(doc, "A2", keyboardMapping.keyButtonA2);
+    writeDoc(doc, "A3", keyboardMapping.keyButtonA3);
+    writeDoc(doc, "A4", keyboardMapping.keyButtonA4);
 
     return serialize_json(doc);
 }
@@ -1396,6 +1402,8 @@ std::string setAddonOptions()
     docToValue(analogOptions.inner_deadzone, doc, "inner_deadzone");
     docToValue(analogOptions.outer_deadzone, doc, "outer_deadzone");
     docToValue(analogOptions.auto_calibrate, doc, "auto_calibrate");
+    docToValue(analogOptions.analog_smoothing, doc, "analog_smoothing");
+    docToValue(analogOptions.smoothing_factor, doc, "smoothing_factor");
     docToValue(analogOptions.enabled, doc, "AnalogInputEnabled");
 
     BootselButtonOptions& bootselButtonOptions = Storage::getInstance().getAddonOptions().bootselButtonOptions;
@@ -1531,6 +1539,11 @@ std::string setAddonOptions()
     docToValue(keyboardHostOptions.mapping.keyButtonR3, doc, "keyboardHostMap", "R3");
     docToValue(keyboardHostOptions.mapping.keyButtonA1, doc, "keyboardHostMap", "A1");
     docToValue(keyboardHostOptions.mapping.keyButtonA2, doc, "keyboardHostMap", "A2");
+    docToValue(keyboardHostOptions.mapping.keyButtonA3, doc, "keyboardHostMap", "A3");
+    docToValue(keyboardHostOptions.mapping.keyButtonA4, doc, "keyboardHostMap", "A4");
+    docToValue(keyboardHostOptions.mouseLeft, doc, "keyboardHostMouseLeft");
+    docToValue(keyboardHostOptions.mouseMiddle, doc, "keyboardHostMouseMiddle");
+    docToValue(keyboardHostOptions.mouseRight, doc, "keyboardHostMouseRight");
 
     RotaryOptions& rotaryOptions = Storage::getInstance().getAddonOptions().rotaryOptions;
     docToValue(rotaryOptions.enabled, doc, "RotaryAddonEnabled");
@@ -1825,6 +1838,8 @@ std::string getAddonOptions()
     writeDoc(doc, "inner_deadzone", analogOptions.inner_deadzone);
     writeDoc(doc, "outer_deadzone", analogOptions.outer_deadzone);
     writeDoc(doc, "auto_calibrate", analogOptions.auto_calibrate);
+    writeDoc(doc, "analog_smoothing", analogOptions.analog_smoothing);
+    writeDoc(doc, "smoothing_factor", analogOptions.smoothing_factor);
     writeDoc(doc, "AnalogInputEnabled", analogOptions.enabled);
 
     const BootselButtonOptions& bootselButtonOptions = Storage::getInstance().getAddonOptions().bootselButtonOptions;
@@ -1953,6 +1968,11 @@ std::string getAddonOptions()
     writeDoc(doc, "keyboardHostMap", "R3", keyboardHostOptions.mapping.keyButtonR3);
     writeDoc(doc, "keyboardHostMap", "A1", keyboardHostOptions.mapping.keyButtonA1);
     writeDoc(doc, "keyboardHostMap", "A2", keyboardHostOptions.mapping.keyButtonA2);
+    writeDoc(doc, "keyboardHostMap", "A3", keyboardHostOptions.mapping.keyButtonA3);
+    writeDoc(doc, "keyboardHostMap", "A4", keyboardHostOptions.mapping.keyButtonA4);
+    writeDoc(doc, "keyboardHostMouseLeft", keyboardHostOptions.mouseLeft);
+    writeDoc(doc, "keyboardHostMouseMiddle", keyboardHostOptions.mouseMiddle);
+    writeDoc(doc, "keyboardHostMouseRight", keyboardHostOptions.mouseRight);
 
     AnalogADS1256Options& ads1256Options = Storage::getInstance().getAddonOptions().analogADS1256Options;
     writeDoc(doc, "Analog1256Enabled", ads1256Options.enabled);

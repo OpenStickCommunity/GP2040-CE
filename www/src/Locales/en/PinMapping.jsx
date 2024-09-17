@@ -1,6 +1,6 @@
 export default {
 	'header-text': 'Pin Mapping',
-	'sub-header-text': `If you're unsure what button is connect to what pin, try out the pin viewer.`,
+	'sub-header-text': `Use Pin Viewer to see button to pin connection.`,
 	'alert-text':
 		"Mapping buttons to pins that aren't connected or available can leave the device in non-functional state. To clear the invalid configuration go to the <2>Reset Settings</2> page.",
 	'pin-viewer': 'Pin viewer',

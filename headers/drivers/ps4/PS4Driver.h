@@ -23,7 +23,13 @@ typedef enum {
 
 typedef enum
 {
+    PS4_GET_CALIBRATION      = 0x02,    // PS4 Controller Calibration
     PS4_DEFINITION           = 0x03,    // PS4 Controller Definition
+    PS4_SET_FEATURE_STATE    = 0x05,    // PS4 Controller Features
+    PS4_GET_MAC_ADDRESS      = 0x12,    // PS4 Controller MAC
+    PS4_SET_HOST_MAC         = 0x13,    // Set Host MAC
+    PS4_SET_USB_BT_CONTROL   = 0x14,    // Set USB/BT Control Mode
+    PS4_GET_VERSION_DATE     = 0xA3,    // PS4 Controller Version & Date
     PS4_SET_AUTH_PAYLOAD     = 0xF0,    // Set Auth Payload
     PS4_GET_SIGNATURE_NONCE  = 0xF1,    // Get Signature Nonce
     PS4_GET_SIGNING_STATE    = 0xF2,    // Get Signing State
@@ -43,7 +49,7 @@ class PS4Driver : public GPDriver {
 public:
     PS4Driver(uint32_t type): controllerType(type) {}
     virtual void initialize();
-    virtual void process(Gamepad * gamepad, uint8_t * outBuffer);
+    virtual void process(Gamepad * gamepad);
     virtual void initializeAux();
     virtual void processAux();
     virtual uint16_t get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen);
@@ -67,10 +73,19 @@ private:
     uint8_t cur_nonce_id;
     PS4Report ps4Report;
     TouchpadData touchpadData;
+    PSSensorData sensorData;
     uint32_t last_report_timer;
     uint8_t send_nonce_part;
     uint32_t controllerType;
     GPAuthDriver * authDriver;
+    bool pointOneTouched = false;
+    bool pointTwoTouched = false;
+    uint8_t touchCounter;
+
+    PS4FeatureOutputReport ps4Features;
+    uint8_t lastFeatures[PS4_FEATURES_SIZE] = { };
+
+    uint8_t deviceDescriptor[sizeof(ps4_device_descriptor)];
 
     PS4State ps4State;
     bool authsent;

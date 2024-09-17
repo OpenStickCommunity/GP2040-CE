@@ -63,6 +63,14 @@ export default {
 		'<span>⏳ WARNING ⏳:</span> PS4 will timeout after 8 minutes without authentication.',
 	'ps4-usb-host-mode-text':
 		'<span>INFO:</span> Please ensure USB Peripheral is enabled and a PS4 compatible USB device is plugged in.',
+	'ps4-id-mode-label':
+		'Identification Mode',
+	'ps4-id-mode-explanation-text':
+		'<ul><li>Console mode is used when connecting primarily to a PS4 console.</li><li>Remote/Emulation mode should only be used when connecting to an emulation layer or remote playing environment that requires a DualShock 4-compatible controller.</li></ul>',
+	'ps4-id-mode-options': {
+		'console': 'Console',
+		'emulation': 'Remote/Emulation',
+	},
 	'ps5-mode-explanation-text':
 		'PS5 mode allows GP2040-CE to run as an authenticated PS5 compatible arcade stick.',
 	'ps5-mode-warning-text':
@@ -119,6 +127,7 @@ export default {
 		'load-profile-4': 'Load Profile #4',
 		'reboot-default': 'Reboot GP2040-CE',
 		'next-profile': 'Next Profile',
+		'previous-profile': 'Previous Profile',
 	},
 	'forced-setup-mode-label': 'Forced Setup Mode',
 	'forced-setup-mode-options': {

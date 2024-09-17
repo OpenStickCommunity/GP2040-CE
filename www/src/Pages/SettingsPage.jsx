@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import { Trans, useTranslation } from 'react-i18next';
 import JSEncrypt from 'jsencrypt';
 import isNil from 'lodash/isNil';
+import ContextualHelpOverlay from '../Components/ContextualHelpOverlay';
 
 import { AppContext } from '../Contexts/AppContext';
 import KeyboardMapper, { validateMappings } from '../Components/KeyboardMapper';
@@ -219,6 +220,11 @@ const PS4_MODES = [
 	{ labelKey: 'ps4-mode-options.arcadestick', value: 7 },
 ];
 
+const PS4_ID_MODES = [
+	{ labelKey: 'ps4-id-mode-options.console', value: 0 },
+	{ labelKey: 'ps4-id-mode-options.emulation', value: 1 },
+];
+
 const AUTHENTICATION_TYPES = [
 	{ labelKey: 'input-mode-authentication.none', value: 0 },
 	{ labelKey: 'input-mode-authentication.key', value: 1 },
@@ -247,6 +253,7 @@ const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.load-profile-3', value: 17 },
 	{ labelKey: 'hotkey-actions.load-profile-4', value: 18 },
 	{ labelKey: 'hotkey-actions.next-profile', value: 35 },
+	{ labelKey: 'hotkey-actions.previous-profile', value: 42 },
 	{ labelKey: 'hotkey-actions.l3-button', value: 19 },
 	{ labelKey: 'hotkey-actions.r3-button', value: 20 },
 	{ labelKey: 'hotkey-actions.touchpad-button', value: 21 },
@@ -332,6 +339,11 @@ const schema = yup.object().shape({
 		.number()
 		.required()
 		.label('Switch Touchpad and Share'),
+	ps4ControllerIDMode: yup
+		.number()
+		.required()
+		.oneOf(PS4_ID_MODES.map((o) => o.value))
+		.label('PS4 Controller Identification Mode'),
 	forcedSetupMode: yup
 		.number()
 		.required()
@@ -431,6 +443,8 @@ const FormContext = ({ setButtonLabels, setKeyMappings }) => {
 		if (!!values.ps5AuthType) values.ps5AuthType = parseInt(values.ps5AuthType);
 		if (!!values.xinputAuthType)
 			values.xinputAuthType = parseInt(values.xinputAuthType);
+		if (!!values.ps4ControllerIDMode)
+			values.ps4ControllerIDMode = parseInt(values.ps4ControllerIDMode);
 
 		setButtonLabels({
 			swapTpShareLabels:
@@ -716,6 +730,38 @@ export default function SettingsPage() {
 								/>
 							</Col>
 						</Row>
+						<Row className="mb-3">
+							<Col sm={3}>
+								<Form.Label>
+									{t('SettingsPage:ps4-id-mode-label')}
+									<ContextualHelpOverlay
+										title={t('SettingsPage:ps4-id-mode-label')}
+										body={
+											<Trans
+												ns="SettingsPage"
+												i18nKey="ps4-id-mode-explanation-text"
+												components={{ ul: <ul />, li: <li/> }}
+											/>
+										}
+									/>
+								</Form.Label>
+								<Form.Select
+									name="ps4ControllerIDMode"
+									className="form-select-sm"
+									value={values.ps4ControllerIDMode}
+									onChange={handleChange}
+								>
+									{PS4_ID_MODES.map((o) => (
+										<option
+											key={`ps4-id-option-${o.value}`}
+											value={o.value}
+										>
+											{`${t('SettingsPage:'+o.labelKey)}`}
+										</option>
+									))}
+								</Form.Select>
+							</Col>
+						</Row>
 						{generateAuthSelection(
 							inputMode,
 							t('SettingsPage:auth-settings-label'),
@@ -843,6 +889,38 @@ export default function SettingsPage() {
 										);
 									}}
 								/>
+							</Col>
+						</Row>
+						<Row className="mb-3">
+							<Col sm={3}>
+								<Form.Label>
+									{t('SettingsPage:ps4-id-mode-label')}
+									<ContextualHelpOverlay
+										title={t('SettingsPage:ps4-id-mode-label')}
+										body={
+											<Trans
+												ns="SettingsPage"
+												i18nKey="ps4-id-mode-explanation-text"
+												components={{ ul: <ul />, li: <li/> }}
+											/>
+										}
+									/>
+								</Form.Label>
+								<Form.Select
+									name="ps4ControllerIDMode"
+									className="form-select-sm"
+									value={values.ps4ControllerIDMode}
+									onChange={handleChange}
+								>
+									{PS4_ID_MODES.map((o) => (
+										<option
+											key={`ps4-id-option-${o.value}`}
+											value={o.value}
+										>
+											{`${t('SettingsPage:'+o.labelKey)}`}
+										</option>
+									))}
+								</Form.Select>
 							</Col>
 						</Row>
 						{generateAuthSelection(

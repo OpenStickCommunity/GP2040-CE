@@ -12,7 +12,7 @@
 class XboxOriginalDriver : public GPDriver {
 public:
     virtual void initialize();
-    virtual void process(Gamepad * gamepad, uint8_t * outBuffer);
+    virtual void process(Gamepad * gamepad);
     virtual void initializeAux() {}
     virtual void processAux() {}
     virtual uint16_t get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen);
@@ -28,6 +28,7 @@ public:
 private:
     uint8_t last_report[CFG_TUD_ENDPOINT0_SIZE] = { };
     XboxOriginalReport xboxOriginalReport;
+    XboxOriginalReportOut xboxOriginalReportOut;
 };
 
 #endif // _XBOX_ORIGINAL_DRIVER_H_

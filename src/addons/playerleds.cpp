@@ -36,7 +36,7 @@ typedef enum
 
 // TODO: make this a helper function
 // Animation Helper for Player LEDs
-PLEDAnimationState getXInputAnimationPWM(uint8_t *data)
+PLEDAnimationState getXInputAnimationPWM(uint16_t ledState)
 {
 	PLEDAnimationState animationState =
 	{
@@ -45,52 +45,48 @@ PLEDAnimationState getXInputAnimationPWM(uint8_t *data)
 		.speed = PLED_SPEED_OFF,
 	};
 
-	// Check first byte for LED payload
-	if (data[0] == 0x01)
+	switch (ledState)
 	{
-		switch (data[2])
-		{
-			case XINPUT_PLED_BLINKALL:
-			case XINPUT_PLED_ROTATE:
-			case XINPUT_PLED_BLINK:
-			case XINPUT_PLED_SLOWBLINK:
-			case XINPUT_PLED_ALTERNATE:
-				animationState.state = (PLED_STATE_LED1 | PLED_STATE_LED2 | PLED_STATE_LED3 | PLED_STATE_LED4);
-				animationState.animation = PLED_ANIM_BLINK;
-				animationState.speed = PLED_SPEED_FAST;
-				break;
+		case XINPUT_PLED_BLINKALL:
+		case XINPUT_PLED_ROTATE:
+		case XINPUT_PLED_BLINK:
+		case XINPUT_PLED_SLOWBLINK:
+		case XINPUT_PLED_ALTERNATE:
+			animationState.state = (PLED_STATE_LED1 | PLED_STATE_LED2 | PLED_STATE_LED3 | PLED_STATE_LED4);
+			animationState.animation = PLED_ANIM_BLINK;
+			animationState.speed = PLED_SPEED_FAST;
+			break;
 
-			case XINPUT_PLED_FLASH1:
-			case XINPUT_PLED_ON1:
-				animationState.state = PLED_STATE_LED1;
-				animationState.animation = PLED_ANIM_SOLID;
-				animationState.speed = PLED_SPEED_OFF;
-				break;
+		case XINPUT_PLED_FLASH1:
+		case XINPUT_PLED_ON1:
+			animationState.state = PLED_STATE_LED1;
+			animationState.animation = PLED_ANIM_SOLID;
+			animationState.speed = PLED_SPEED_OFF;
+			break;
 
-			case XINPUT_PLED_FLASH2:
-			case XINPUT_PLED_ON2:
-				animationState.state = PLED_STATE_LED2;
-				animationState.animation = PLED_ANIM_SOLID;
-				animationState.speed = PLED_SPEED_OFF;
-				break;
+		case XINPUT_PLED_FLASH2:
+		case XINPUT_PLED_ON2:
+			animationState.state = PLED_STATE_LED2;
+			animationState.animation = PLED_ANIM_SOLID;
+			animationState.speed = PLED_SPEED_OFF;
+			break;
 
-			case XINPUT_PLED_FLASH3:
-			case XINPUT_PLED_ON3:
-				animationState.state = PLED_STATE_LED3;
-				animationState.animation = PLED_ANIM_SOLID;
-				animationState.speed = PLED_SPEED_OFF;
-				break;
+		case XINPUT_PLED_FLASH3:
+		case XINPUT_PLED_ON3:
+			animationState.state = PLED_STATE_LED3;
+			animationState.animation = PLED_ANIM_SOLID;
+			animationState.speed = PLED_SPEED_OFF;
+			break;
 
-			case XINPUT_PLED_FLASH4:
-			case XINPUT_PLED_ON4:
-				animationState.state = PLED_STATE_LED4;
-				animationState.animation = PLED_ANIM_SOLID;
-				animationState.speed = PLED_SPEED_OFF;
-				break;
+		case XINPUT_PLED_FLASH4:
+		case XINPUT_PLED_ON4:
+			animationState.state = PLED_STATE_LED4;
+			animationState.animation = PLED_ANIM_SOLID;
+			animationState.speed = PLED_SPEED_OFF;
+			break;
 
-			default:
-				break;
-		}
+		default:
+			break;
 	}
 
 	return animationState;
@@ -104,6 +100,10 @@ void PlayerLEDAddon::setup() {
 	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
 	turnOffWhenSuspended = ledOptions.turnOffWhenSuspended;
 
+	Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
+	gamepad->auxState.playerID.enabled = true;
+    gamepad->auxState.sensors.statusLight.enabled = true;
+
 	switch (ledOptions.pledType)
 	{
 		case PLED_TYPE_PWM:
@@ -111,6 +111,8 @@ void PlayerLEDAddon::setup() {
 			break;
 		case PLED_TYPE_RGB:
 			// Do not assign pwmLEDs (support later on?)
+			break;
+		default:
 			break;
 	}
 
@@ -126,13 +128,15 @@ void PlayerLEDAddon::process()
 	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
 
 	// Player LEDs can be PWM or driven by NeoPixel
-	uint8_t * featureData = Storage::getInstance().GetFeatureData();
 	if (ledOptions.pledType == PLED_TYPE_PWM) { // only process the feature queue if we're on PWM
 		if (pwmLEDs != nullptr)
 			pwmLEDs->display();
 
-		if (gamepad->getOptions().inputMode == INPUT_MODE_XINPUT)
-			animationState = getXInputAnimationPWM(featureData);
+		if (gamepad->auxState.playerID.enabled && gamepad->auxState.playerID.active) {
+			if (gamepad->getOptions().inputMode == INPUT_MODE_XINPUT) {
+				animationState = getXInputAnimationPWM(gamepad->auxState.playerID.ledValue);
+			}
+		}
 
 		if (pwmLEDs != nullptr && animationState.animation != PLED_ANIM_NONE)
 			pwmLEDs->animate(animationState);

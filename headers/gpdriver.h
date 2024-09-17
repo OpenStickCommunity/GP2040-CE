@@ -27,7 +27,7 @@ class GPDriver {
 public:
     virtual void initialize() = 0;
     virtual void initializeAux() = 0;
-    virtual void process(Gamepad * gamepad, uint8_t * outBuffer) = 0;
+    virtual void process(Gamepad * gamepad) = 0;
     virtual void processAux() = 0;
     virtual uint16_t get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) = 0;
     virtual void set_report(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize) = 0;

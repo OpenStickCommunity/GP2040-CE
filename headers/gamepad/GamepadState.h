@@ -133,16 +133,6 @@ const uint32_t buttonMasks[] =
 	GAMEPAD_MASK_E12,
 };
 
-struct GamepadRumbleState
-{
-	// XInput General Motors
-	uint8_t leftMotor {0};
-	uint8_t rightMotor {0};
-	// GameInput Trigger Motors (XBOne)
-	uint8_t leftTrigger {0};
-	uint8_t rightTrigger {0};
-};
-
 struct GamepadState
 {
 	uint8_t dpad {0};
@@ -154,6 +144,10 @@ struct GamepadState
 	uint16_t ry {GAMEPAD_JOYSTICK_MID};
 	uint8_t lt {0};
 	uint8_t rt {0};
+	float ema_1_x {GAMEPAD_JOYSTICK_MID};
+	float ema_1_y {GAMEPAD_JOYSTICK_MID};
+	float ema_2_x {GAMEPAD_JOYSTICK_MID};
+	float ema_2_y {GAMEPAD_JOYSTICK_MID};
 };
 
 // Convert the horizontal GamepadState dpad axis value into an analog value

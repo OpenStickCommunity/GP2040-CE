@@ -364,7 +364,7 @@ USBListener * XBOneDriver::get_usb_auth_listener() {
     return nullptr;
 }
 
-void XBOneDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
+void XBOneDriver::process(Gamepad * gamepad) {
     // Do nothing if we couldn't setup our auth listener
     if ( xboxOneAuthData == nullptr) {
         return;
