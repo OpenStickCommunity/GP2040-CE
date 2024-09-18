@@ -28,6 +28,7 @@ message GamepadOptions
     optional InputModeAuthType ps4AuthType = 21;
     optional InputModeAuthType ps5AuthType = 22;
     optional InputModeAuthType xinputAuthType = 23;
+    optional PS4ControllerIDMode ps4ControllerIDMode = 24;
 }
 
 message KeyboardMapping
@@ -62,6 +63,8 @@ message KeyboardMapping
     optional uint32 keyButtonE10 = 28;
     optional uint32 keyButtonE11 = 29;
     optional uint32 keyButtonE12 = 30;
+    optional uint32 keyButtonA3 = 19;
+    optional uint32 keyButtonA4 = 20;
 }
 
 message HotkeyEntry
@@ -363,6 +366,8 @@ message AnalogOptions
     optional InvertMode analogAdc2Invert = 11;
     optional bool auto_calibrate = 12;
     optional uint32 outer_deadzone = 13;
+    optional bool analog_smoothing = 14;
+    optional float smoothing_factor = 15;
 }
 
 message TurboOptions
@@ -674,6 +679,9 @@ message KeyboardHostOptions
     optional int32 deprecatedPinDplus = 2 [deprecated = true];
     optional KeyboardMapping mapping = 3;
     optional int32 deprecatedPin5V = 4 [deprecated = true];
+    optional uint32 mouseLeft = 5;
+    optional uint32 mouseMiddle = 6;
+    optional uint32 mouseRight = 7;
 }
 
 message FocusModeOptions

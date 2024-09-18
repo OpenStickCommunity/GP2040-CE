@@ -34,7 +34,7 @@ void HIDDriver::initialize() {
 }
 
 // Generate HID report from gamepad and send to TUSB Device
-void HIDDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
+void HIDDriver::process(Gamepad * gamepad) {
 	switch (gamepad->state.dpad & GAMEPAD_MASK_DPAD)
 	{
 		case GAMEPAD_MASK_UP:                        hidReport.direction = HID_HAT_UP;        break;

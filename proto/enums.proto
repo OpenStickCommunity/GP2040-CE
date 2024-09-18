@@ -299,6 +299,7 @@ enum GamepadHotkey
     HOTKEY_DPAD_DOWN             = 39;
     HOTKEY_DPAD_LEFT             = 40;
     HOTKEY_DPAD_RIGHT            = 41;
+    HOTKEY_PREVIOUS_PROFILE      = 42;
 }
 
 // This has to be kept in sync with LEDFormat in NeoPico.hpp
@@ -413,4 +414,12 @@ enum ReactiveLEDMode
     REACTIVE_LED_STATIC_ON = 1;
     REACTIVE_LED_FADE_IN = 2;
     REACTIVE_LED_FADE_OUT = 3;
+};
+
+enum PS4ControllerIDMode
+{
+    option (nanopb_enumopt).long_names = false;
+
+    PS4_ID_CONSOLE = 0;
+    PS4_ID_EMULATION = 1;
 };

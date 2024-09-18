@@ -64,6 +64,9 @@ void AnalogInput::process()
     float magnitude_1 = 0.0f;
     float magnitude_2 = 0.0f;
 
+    bool ema_option = analogOptions.analog_smoothing;
+    float ema_smoothing = analogOptions.smoothing_factor / 1000.0f;
+
     struct adc_pair
     {
         int x_pin;
@@ -77,6 +80,8 @@ void AnalogInput::process()
         float& y_magnitude;
         InvertMode analog_invert;
         DpadMode analog_dpad;
+        float& x_ema;
+        float& y_ema;
     };
 
     adc_pair adc_pairs[num_adc_pairs] =
@@ -86,14 +91,16 @@ void AnalogInput::process()
         adc_1_x_center, adc_1_y_center, 
         magnitude_1, x_magnitude_1, y_magnitude_1, 
         analogOptions.analogAdc1Invert, 
-        analogOptions.analogAdc1Mode},
+        analogOptions.analogAdc1Mode, 
+        gamepad->state.ema_1_x, gamepad->state.ema_1_y},
 
         {analogOptions.analogAdc2PinX, analogOptions.analogAdc2PinY, 
         adc_2_x, adc_2_y, 
         adc_2_x_center, adc_2_y_center, 
         magnitude_2, x_magnitude_2, y_magnitude_2, 
         analogOptions.analogAdc2Invert, 
-        analogOptions.analogAdc2Mode}
+        analogOptions.analogAdc2Mode, 
+        gamepad->state.ema_2_x, gamepad->state.ema_2_y}
     };
 
     for(size_t i = 0; i < num_adc_pairs; i++) {
@@ -106,6 +113,11 @@ void AnalogInput::process()
                 
                 adc_pairs[i].x_value = ANALOG_MAX - adc_pairs[i].x_value;
             }
+
+            if (ema_option) {
+                adc_pairs[i].x_value = emaCalculation(adc_pairs[i].x_value, ema_smoothing, adc_pairs[i].x_ema);
+                adc_pairs[i].x_ema = adc_pairs[i].x_value;
+            }
         }
         if (isValidPin(adc_pairs[i].y_pin)) {
             adc_select_input(adc_pairs[i].y_pin - ADC_PIN_OFFSET);
@@ -115,6 +127,11 @@ void AnalogInput::process()
                 adc_pairs[i].analog_invert == InvertMode::INVERT_XY) {
                 
                 adc_pairs[i].y_value = ANALOG_MAX - adc_pairs[i].y_value;
+            }
+
+            if (ema_option) {
+                adc_pairs[i].y_value = emaCalculation(adc_pairs[i].y_value, ema_smoothing, adc_pairs[i].y_ema);
+                adc_pairs[i].y_ema = adc_pairs[i].y_value;
             }
         }
 
@@ -169,6 +186,10 @@ float AnalogInput::readPin(int pin, uint16_t center, bool autoCalibrate) {
 	}
 
 	return ((float)adc_calibrated) / ADC_MAX;
+}
+
+float AnalogInput::emaCalculation(float ema_value, float smoothing_factor, float ema_previous) {
+    return (smoothing_factor * ema_value) + ((1.0f - smoothing_factor) * ema_previous);
 }
 
 uint16_t AnalogInput::map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max) {
