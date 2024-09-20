@@ -72,6 +72,8 @@ void KeyboardDriver::process(Gamepad * gamepad) {
 	if(gamepad->pressedR3()) 	{ pressKey(keyboardMapping.keyButtonR3); }
 	if(gamepad->pressedA1()) 	{ pressKey(keyboardMapping.keyButtonA1); }
 	if(gamepad->pressedA2()) 	{ pressKey(keyboardMapping.keyButtonA2); }
+	if(gamepad->pressedA3()) 	{ pressKey(keyboardMapping.keyButtonA3); }
+	if(gamepad->pressedA4()) 	{ pressKey(keyboardMapping.keyButtonA4); }
 	if(gamepad->pressedE1()) 	{ pressKey(keyboardMapping.keyButtonE1); }
 	if(gamepad->pressedE2()) 	{ pressKey(keyboardMapping.keyButtonE2); }
 	if(gamepad->pressedE3()) 	{ pressKey(keyboardMapping.keyButtonE3); }
