@@ -53,6 +53,19 @@ message KeyboardMapping
     optional uint32 keyButtonA2 = 18;
     optional uint32 keyButtonA3 = 19;
     optional uint32 keyButtonA4 = 20;
+    optional uint32 keyButtonE1 = 21;
+    optional uint32 keyButtonE2 = 22;
+    optional uint32 keyButtonE3 = 23;
+    optional uint32 keyButtonE4 = 24;
+    optional uint32 keyButtonE5 = 25;
+    optional uint32 keyButtonE6 = 26;
+    optional uint32 keyButtonE7 = 27;
+    optional uint32 keyButtonE8 = 28;
+    optional uint32 keyButtonE9 = 29;
+    optional uint32 keyButtonE10 = 30;
+    optional uint32 keyButtonE11 = 31;
+    optional uint32 keyButtonE12 = 32;
+
 }
 
 message HotkeyEntry
