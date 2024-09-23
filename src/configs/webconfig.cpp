@@ -214,7 +214,11 @@ static void __attribute__((noinline)) writeDoc(DynamicJsonDocument& doc, const K
 
 static int32_t cleanPin(int32_t pin) { return isValidPin(pin) ? pin : -1; }
 
+static uint32_t systemFlashSize;
+
 void WebConfig::setup() {
+    // System Flash Size must be called once
+    systemFlashSize = System::getPhysicalFlash();
     rndis_init();
 }
 
@@ -639,6 +643,7 @@ std::string setGamepadOptions()
     readDoc(gamepadOptions.ps4AuthType, doc, "ps4AuthType");
     readDoc(gamepadOptions.ps5AuthType, doc, "ps5AuthType");
     readDoc(gamepadOptions.xinputAuthType, doc, "xinputAuthType");
+    readDoc(gamepadOptions.ps4ControllerIDMode, doc, "ps4ControllerIDMode");
 
     HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
     save_hotkey(&hotkeyOptions.hotkey01, doc, "hotkey01");
@@ -690,6 +695,7 @@ std::string getGamepadOptions()
     writeDoc(doc, "ps4AuthType", gamepadOptions.ps4AuthType);
     writeDoc(doc, "ps5AuthType", gamepadOptions.ps5AuthType);
     writeDoc(doc, "xinputAuthType", gamepadOptions.xinputAuthType);
+    writeDoc(doc, "ps4ControllerIDMode", gamepadOptions.ps4ControllerIDMode);
 
     writeDoc(doc, "fnButtonPin", -1);
     GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
@@ -1125,6 +1131,20 @@ std::string setKeyMappings()
     readDoc(keyboardMapping.keyButtonR3, doc, "R3");
     readDoc(keyboardMapping.keyButtonA1, doc, "A1");
     readDoc(keyboardMapping.keyButtonA2, doc, "A2");
+    readDoc(keyboardMapping.keyButtonA3, doc, "A3");
+    readDoc(keyboardMapping.keyButtonA4, doc, "A4");
+    readDoc(keyboardMapping.keyButtonE1, doc, "E1");
+    readDoc(keyboardMapping.keyButtonE2, doc, "E2");
+    readDoc(keyboardMapping.keyButtonE3, doc, "E3");
+    readDoc(keyboardMapping.keyButtonE4, doc, "E4");
+    readDoc(keyboardMapping.keyButtonE5, doc, "E5");
+    readDoc(keyboardMapping.keyButtonE6, doc, "E6");
+    readDoc(keyboardMapping.keyButtonE7, doc, "E7");
+    readDoc(keyboardMapping.keyButtonE8, doc, "E8");
+    readDoc(keyboardMapping.keyButtonE9, doc, "E9");
+    readDoc(keyboardMapping.keyButtonE10, doc, "E10");
+    readDoc(keyboardMapping.keyButtonE11, doc, "E11");
+    readDoc(keyboardMapping.keyButtonE12, doc, "E12");
 
     Storage::getInstance().save();
 
@@ -1154,7 +1174,21 @@ std::string getKeyMappings()
     writeDoc(doc, "R3", keyboardMapping.keyButtonR3);
     writeDoc(doc, "A1", keyboardMapping.keyButtonA1);
     writeDoc(doc, "A2", keyboardMapping.keyButtonA2);
-
+    writeDoc(doc, "A3", keyboardMapping.keyButtonA3);
+    writeDoc(doc, "A4", keyboardMapping.keyButtonA4);
+    writeDoc(doc, "E1", keyboardMapping.keyButtonE1);
+    writeDoc(doc, "E2", keyboardMapping.keyButtonE2);
+    writeDoc(doc, "E3", keyboardMapping.keyButtonE3);
+    writeDoc(doc, "E4", keyboardMapping.keyButtonE4);
+    writeDoc(doc, "E5", keyboardMapping.keyButtonE5);
+    writeDoc(doc, "E6", keyboardMapping.keyButtonE6);
+    writeDoc(doc, "E7", keyboardMapping.keyButtonE7);
+    writeDoc(doc, "E8", keyboardMapping.keyButtonE8);
+    writeDoc(doc, "E9", keyboardMapping.keyButtonE9);
+    writeDoc(doc, "E10", keyboardMapping.keyButtonE10);
+    writeDoc(doc, "E11", keyboardMapping.keyButtonE11);
+    writeDoc(doc, "E12", keyboardMapping.keyButtonE12);
+    
     return serialize_json(doc);
 }
 
@@ -1528,6 +1562,11 @@ std::string setAddonOptions()
     docToValue(keyboardHostOptions.mapping.keyButtonR3, doc, "keyboardHostMap", "R3");
     docToValue(keyboardHostOptions.mapping.keyButtonA1, doc, "keyboardHostMap", "A1");
     docToValue(keyboardHostOptions.mapping.keyButtonA2, doc, "keyboardHostMap", "A2");
+    docToValue(keyboardHostOptions.mapping.keyButtonA3, doc, "keyboardHostMap", "A3");
+    docToValue(keyboardHostOptions.mapping.keyButtonA4, doc, "keyboardHostMap", "A4");
+    docToValue(keyboardHostOptions.mouseLeft, doc, "keyboardHostMouseLeft");
+    docToValue(keyboardHostOptions.mouseMiddle, doc, "keyboardHostMouseMiddle");
+    docToValue(keyboardHostOptions.mouseRight, doc, "keyboardHostMouseRight");
 
     RotaryOptions& rotaryOptions = Storage::getInstance().getAddonOptions().rotaryOptions;
     docToValue(rotaryOptions.enabled, doc, "RotaryAddonEnabled");
@@ -1947,6 +1986,11 @@ std::string getAddonOptions()
     writeDoc(doc, "keyboardHostMap", "R3", keyboardHostOptions.mapping.keyButtonR3);
     writeDoc(doc, "keyboardHostMap", "A1", keyboardHostOptions.mapping.keyButtonA1);
     writeDoc(doc, "keyboardHostMap", "A2", keyboardHostOptions.mapping.keyButtonA2);
+    writeDoc(doc, "keyboardHostMap", "A3", keyboardHostOptions.mapping.keyButtonA3);
+    writeDoc(doc, "keyboardHostMap", "A4", keyboardHostOptions.mapping.keyButtonA4);
+    writeDoc(doc, "keyboardHostMouseLeft", keyboardHostOptions.mouseLeft);
+    writeDoc(doc, "keyboardHostMouseMiddle", keyboardHostOptions.mouseMiddle);
+    writeDoc(doc, "keyboardHostMouseRight", keyboardHostOptions.mouseRight);
 
     AnalogADS1256Options& ads1256Options = Storage::getInstance().getAddonOptions().analogADS1256Options;
     writeDoc(doc, "Analog1256Enabled", ads1256Options.enabled);
@@ -2090,6 +2134,7 @@ std::string getMemoryReport()
     DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
     writeDoc(doc, "totalFlash", System::getTotalFlash());
     writeDoc(doc, "usedFlash", System::getUsedFlash());
+    writeDoc(doc, "physicalFlash", systemFlashSize);
     writeDoc(doc, "staticAllocs", System::getStaticAllocs());
     writeDoc(doc, "totalHeap", System::getTotalHeap());
     writeDoc(doc, "usedHeap", System::getUsedHeap());

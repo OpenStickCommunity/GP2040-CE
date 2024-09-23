@@ -107,6 +107,7 @@ app.get('/api/getGamepadOptions', (req, res) => {
 		ps4AuthType: 0,
 		ps5AuthType: 0,
 		xinputAuthType: 0,
+		ps4ControllerIDMode: 0,
 		hotkey01: {
 			auxMask: 32768,
 			buttonsMask: 66304,
@@ -465,6 +466,9 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		snesPadLatchPin: -1,
 		snesPadDataPin: -1,
 		keyboardHostMap: DEFAULT_KEYBOARD_MAPPING,
+		keyboardHostMouseLeft: 0,
+		keyboardHostMouseMiddle: 0,
+		keyboardHostMouseRight: 0,
 		AnalogInputEnabled: 1,
 		BoardLedAddonEnabled: 1,
 		FocusModeAddonEnabled: 1,
@@ -757,11 +761,12 @@ app.get('/api/reboot', (req, res) => {
 
 app.get('/api/getMemoryReport', (req, res) => {
 	return res.send({
-		totalFlash: 2048,
-		usedFlash: 1048,
+		totalFlash: 2048 * 1024,
+		usedFlash: 1048 * 1024,
+		physicalFlash: 2048 * 1024,
 		staticAllocs: 200,
-		totalHeap: 2048,
-		usedHeap: 1048,
+		totalHeap: 2048 * 1024,
+		usedHeap: 1048 * 1024,
 	});
 });
 

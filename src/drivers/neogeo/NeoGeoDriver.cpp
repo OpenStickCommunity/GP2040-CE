@@ -38,7 +38,7 @@ void NeoGeoDriver::initialize() {
 	};
 }
 
-void NeoGeoDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
+void NeoGeoDriver::process(Gamepad * gamepad) {
 	switch (gamepad->state.dpad & GAMEPAD_MASK_DPAD)
 	{
 		case GAMEPAD_MASK_UP:                        neogeoReport.hat = NEOGEO_HAT_UP;        break;

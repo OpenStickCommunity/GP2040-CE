@@ -12,10 +12,12 @@
 #include "drivers/xinput/XInputAuth.h"
 #include "drivers/xinput/XInputDescriptors.h"
 
+#define XINPUT_OUT_SIZE 32
+
 class XInputDriver : public GPDriver {
 public:
     virtual void initialize();
-    virtual void process(Gamepad * gamepad, uint8_t * outBuffer);
+    virtual void process(Gamepad * gamepad);
     virtual void initializeAux();
     virtual void processAux();
     virtual uint16_t get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen);
@@ -33,7 +35,7 @@ private:
     uint8_t last_report[CFG_TUD_ENDPOINT0_SIZE] = { };
     XInputReport xinputReport;
     XInputAuth * xAuthDriver;
-    uint8_t tud_buffer[64];
+    uint8_t tud_buffer[XINPUT_OUT_SIZE];
 };
 
 #endif

@@ -21,7 +21,7 @@ void EgretDriver::initialize() {
 	};
 }
 
-void EgretDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
+void EgretDriver::process(Gamepad * gamepad) {
 	switch (gamepad->state.dpad & GAMEPAD_MASK_DPAD)
 	{
 		case GAMEPAD_MASK_UP:                        egretReport.lx = EGRET_JOYSTICK_MID; egretReport.ly = EGRET_JOYSTICK_MIN; break;
