@@ -280,6 +280,7 @@ bool xbone_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result,
             }
             if ( (incomingXGIP->getChunked() == true && incomingXGIP->endOfChunk() == true) ||
                     (incomingXGIP->getChunked() == false )) {
+                printf("[Xbox One] Creating sending Console to Dongle\n");
                 xboxOneAuthData->consoleBuffer.setBuffer(incomingXGIP->getData(), incomingXGIP->getDataLength(),
                     incomingXGIP->getSequence(), incomingXGIP->getCommand());
                 xboxOneAuthData->xboneState = XboxOneState::send_auth_console_to_dongle;
@@ -624,6 +625,7 @@ void XBOneDriver::update() {
         case SETUP_AUTH:
             // Received packet from dongle to console / PC
             if ( xboxOneAuthData->xboneState == XboxOneState::send_auth_dongle_to_console ) {
+                printf("[Xbox One] Dongle to Console happening\n");
                 uint16_t len = xboxOneAuthData->dongleBuffer.length;
                 uint8_t type = xboxOneAuthData->dongleBuffer.type;
                 uint8_t sequence = xboxOneAuthData->dongleBuffer.sequence;
@@ -638,6 +640,7 @@ void XBOneDriver::update() {
             
             // Process auth dongle to console
             if ( xboxOneAuthData->xboneState == XboxOneState::wait_auth_dongle_to_console ) {
+                printf("[Xbox One] Dongle to Console WAIT happening\n");
                 queue_xbone_report(outgoingXGIP->generatePacket(), outgoingXGIP->getPacketLength());
                 if ( outgoingXGIP->getChunked() == false || outgoingXGIP->endOfChunk() == true ) {
                     xboxOneAuthData->xboneState = XboxOneState::auth_idle_state;

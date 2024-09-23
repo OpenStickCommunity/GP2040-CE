@@ -3,6 +3,7 @@
 #include "drivermanager.h"
 #include "drivers/ps4/PS4Driver.h"
 #include "drivers/xbone/XBOneDriver.h"
+#include "drivers/xinput/XInputDriver.h"
 
 void ButtonLayoutScreen::init() {
     const InputHistoryOptions& inputHistoryOptions = Storage::getInstance().getAddonOptions().inputHistoryOptions;
@@ -132,7 +133,6 @@ void ButtonLayoutScreen::generateHeader() {
 		case INPUT_MODE_PS3:    statusBar += "PS3"; break;
 		case INPUT_MODE_GENERIC: statusBar += "USBHID"; break;
 		case INPUT_MODE_SWITCH: statusBar += "SWITCH"; break;
-		case INPUT_MODE_XINPUT: statusBar += "XINPUT"; break;
 		case INPUT_MODE_MDMINI: statusBar += "GEN/MD"; break;
 		case INPUT_MODE_NEOGEO: statusBar += "NGMINI"; break;
 		case INPUT_MODE_PCEMINI: statusBar += "PCE/TG"; break;
@@ -161,6 +161,13 @@ void ButtonLayoutScreen::generateHeader() {
 			else
 				statusBar += "*";
 			break;
+		case INPUT_MODE_XINPUT:
+            statusBar += "X";
+            if(((XInputDriver*)DriverManager::getInstance().getDriver())->getAuthEnabled() == true )
+                statusBar += "B360";
+            else
+                statusBar += "INPUT";
+            break;
 		case INPUT_MODE_KEYBOARD: statusBar += "HID-KB"; break;
 		case INPUT_MODE_CONFIG: statusBar += "CONFIG"; break;
 	}
