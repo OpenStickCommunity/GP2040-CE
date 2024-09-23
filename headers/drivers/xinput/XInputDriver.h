@@ -35,7 +35,8 @@ private:
     uint8_t last_report[CFG_TUD_ENDPOINT0_SIZE] = { };
     XInputReport xinputReport;
     XInputAuth * xAuthDriver;
-    uint8_t tud_buffer[XINPUT_OUT_SIZE];
+    uint8_t featureBuffer[XINPUT_OUT_SIZE];
+    uint8_t tud_buffer[64];
 };
 
 #endif
