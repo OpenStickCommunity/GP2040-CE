@@ -64,12 +64,13 @@ void XInputAuthUSBListener::xmount(uint8_t dev_addr, uint8_t instance, uint8_t c
         // Get Xbox Security Method 3 (XSM3)
         uint8_t recvBuf[0xB2];
         tuh_descriptor_get_string_sync(xinput_dev_addr, 4, 0x0409, recvBuf, 0xB2);
-        auth_dongle_get_serial();
         // If our dongle has remounted for any reason, trigger a re-auth (Magicboots X360)
         if ( xinputAuthData->hasInitAuth == true ) {
-            if ( auth_dongle_init_challenge() == true) {
+           if ( auth_dongle_init_challenge() == true) {
                 auth_dongle_wait(XSM360AuthRequest::XSM360_INIT_AUTH);
             }
+        } else {
+            auth_dongle_get_serial();
         }
         xinputAuthData->dongle_ready = true;
     }
@@ -79,6 +80,7 @@ void XInputAuthUSBListener::unmount(uint8_t dev_addr) {
     // Do not reset dongle_ready on unmount (Magic-X will remount but still be ready)
     if ( dev_addr == xinput_dev_addr ) {
         xinputAuthData->dongle_ready = false;
+        dongleAuthState = DONGLE_AUTH_STATE::DONGLE_AUTH_IDLE;
     }
 }
 
@@ -147,6 +149,7 @@ void XInputAuthUSBListener::process() {
                         break;
                 }
                 dongleAuthState = DONGLE_AUTH_STATE::DONGLE_AUTH_IDLE;
+                wait_count = 0;
             }
             // TIMEOUT after 60 attempts
             if ( wait_count == 60 ) {
@@ -190,7 +193,7 @@ bool XInputAuthUSBListener::auth_dongle_data_reply(uint8_t replyLen) {
     xfer_result_t user_result;
     if ( xinputh_vendor_report(TUSB_DIR_IN,
                 XSM360AuthRequest::XSM360_RESPOND_CHALLENGE, TU_U16(X360_WVALUE_CONTROLLER_DATA, replyLen-6),
-                xinputAuthData->passthruBufferLen, xinputAuthData->passthruBuffer, (uintptr_t)&user_result) == false
+                replyLen, xinputAuthData->passthruBuffer, (uintptr_t)&user_result) == false
             || user_result != xfer_result_t::XFER_RESULT_SUCCESS) {
         return false;    
     }
@@ -204,7 +207,7 @@ bool XInputAuthUSBListener::auth_dongle_challenge_verify() {
     xfer_result_t user_result;
     if ( xinputh_vendor_report(TUSB_DIR_OUT,
                 XSM360AuthRequest::XSM360_VERIFY_AUTH, X360_WVALUE_CONSOLE_DATA,
-                xinputAuthData->passthruBufferLen, xinputAuthData->passthruBuffer, (uintptr_t)&user_result) == false
+                X360_AUTHLEN_CHALLENGE, xinputAuthData->passthruBuffer, (uintptr_t)&user_result) == false
                 || user_result != xfer_result_t::XFER_RESULT_SUCCESS) {
         return false;        
     }

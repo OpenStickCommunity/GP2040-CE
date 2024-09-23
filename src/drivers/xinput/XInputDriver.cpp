@@ -65,8 +65,7 @@ static void xinput_reset(uint8_t rhport) {
 	(void)rhport;
 }
 
-static uint16_t xinput_open(uint8_t rhport, tusb_desc_interface_t const *itf_descriptor, uint16_t max_length)
-{
+static uint16_t xinput_open(uint8_t rhport, tusb_desc_interface_t const *itf_descriptor, uint16_t max_length) {
 	uint16_t driver_length = 0;
     // Xbox 360 Vendor USB Interfaces: Control, Audio, Plug-in, Security
     if ( TUSB_CLASS_VENDOR_SPECIFIC == itf_descriptor->bInterfaceClass) {
@@ -322,7 +321,7 @@ uint16_t XInputDriver::get_report(uint8_t report_id, hid_report_type_t report_ty
 bool XInputDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request) {
     // Do nothing if we have no auth driver
 	if ( xAuthDriver == nullptr || !xAuthDriver->available() ) {
-        return true;
+        return false;
 	}
 
     uint16_t len = 0;
@@ -333,7 +332,7 @@ bool XInputDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_co
             switch (request->bRequest) {
                     case XSM360_GET_SERIAL:
                         // Stall if we don't have a dongle ready
-                        if ( xinputAuthData->dongle_ready == false ) {    
+                        if ( xinputAuthData->dongle_ready == false ) {
                             return false;
                         }
                         len = X360_AUTHLEN_DONGLE_SERIAL;
