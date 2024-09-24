@@ -51,8 +51,8 @@ void GP2040Aux::setup() {
 	addons.LoadAddon(new BoardLedAddon(), CORE1_LOOP);
 	addons.LoadAddon(new BuzzerSpeakerAddon(), CORE1_LOOP);
 
-    // Ready to sync Core0 and Core1
-    isReady = true;
+	// Ready to sync Core0 and Core1
+	isReady = true;
 }
 
 void GP2040Aux::run() {

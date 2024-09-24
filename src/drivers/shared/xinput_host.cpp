@@ -117,7 +117,6 @@ bool tuh_xinput_receive_report(uint8_t dev_addr, uint8_t instance) {
 }
 
 bool tuh_xinput_receive_vendor_report(uint8_t dev_addr, uint8_t instance, uint8_t request, uint16_t value, uint8_t index, uint16_t length, uint8_t * recvBuf) {
-    //xinputh_interface_t *xid_itf = get_instance(dev_addr, instance);
     const tusb_control_request_t xfer_ctrl_req = {
             .bmRequestType_bit {
                 .recipient = TUSB_REQ_RCPT_INTERFACE,
@@ -313,9 +312,7 @@ bool xinputh_open(uint8_t rhport, uint8_t dev_addr, tusb_desc_interface_t const 
 // Set Configure
 //--------------------------------------------------------------------+
 static void config_driver_mount_complete(uint8_t dev_addr, uint8_t instance);
-static void process_set_config(tuh_xfer_t *xfer) {
-    
-}
+static void process_set_config(tuh_xfer_t *xfer);
 
 bool xinputh_set_config(uint8_t dev_addr, uint8_t itf_num) {
     uint8_t instance = get_instance_id_by_itfnum(dev_addr, itf_num);

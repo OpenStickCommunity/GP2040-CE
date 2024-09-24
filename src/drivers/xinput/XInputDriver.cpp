@@ -114,43 +114,12 @@ static uint16_t xinput_open(uint8_t rhport, tusb_desc_interface_t const *itf_des
             TU_ASSERT(usbd_open_edpt_pair(rhport, (const uint8_t*)p_desc, itf_descriptor->bNumEndpoints,
                                           TUSB_XFER_INTERRUPT, &p_xinput->ep_out, &p_xinput->ep_in), 0);
             p_xinput->itf_num = itf_descriptor->bInterfaceNumber;
-            //if (p_xinput->ep_out) {
-            //    if (!usbd_edpt_xfer(rhport, p_xinput->ep_out, p_xinput->epout_buf, sizeof(p_xinput->epout_buf))) {
-            //        TU_LOG_FAILED();
-            //        TU_BREAKPOINT();
-            //    }
-            //}
 
             // Control Endpoints are used for gamepad input/output
             if ( itf_descriptor->bInterfaceProtocol == 0x01 ) {
                 endpoint_in = p_xinput->ep_in;
                 endpoint_out = p_xinput->ep_out;
             }
-/*
-            // Xbox 360 CONTROL ONLY: ignore audio and plug-in for our purposes
-            if ( itf_descriptor->bInterfaceProtocol == 0x01 ) {
-                printf("[xinput_open] Found xbox 360 control interface, setup the endpoints\n");
-                uint8_t const *current_descriptor = tu_desc_next(itf_descriptor);
-                uint8_t found_endpoints = 0;
-                while ((found_endpoints < itf_descriptor->bNumEndpoints) && (driver_length <= max_length))
-                {
-                    tusb_desc_endpoint_t const *endpoint_descriptor = (tusb_desc_endpoint_t const *)current_descriptor;
-                    if (TUSB_DESC_ENDPOINT == tu_desc_type(endpoint_descriptor))
-                    {
-                        TU_ASSERT(usbd_edpt_open(rhport, endpoint_descriptor));
-
-                        if (tu_edpt_dir(endpoint_descriptor->bEndpointAddress) == TUSB_DIR_IN)
-                            endpoint_in = endpoint_descriptor->bEndpointAddress;
-                        else
-                            endpoint_out = endpoint_descriptor->bEndpointAddress;
-
-                        ++found_endpoints;
-                    }
-
-                    current_descriptor = tu_desc_next(current_descriptor);
-                }
-            }
-*/
         // Xbox 360 Security Interface
         } else if (itf_descriptor->bInterfaceSubClass == 0xFD &&
                 itf_descriptor->bInterfaceProtocol == 0x13) {

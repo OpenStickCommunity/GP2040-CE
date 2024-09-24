@@ -35,18 +35,18 @@ void core1() {
 int main() {
 	// Create GP2040 Main Core (core0), Core1 is dependent on Core0
 	gp2040Core0 = new GP2040();
-    gp2040Core1 = new GP2040Aux();
+	gp2040Core1 = new GP2040Aux();
 
-    // Create GP2040 Main Core - Setup Core0
+	// Create GP2040 Main Core - Setup Core0
 	gp2040Core0->setup();
 
 	// Create GP2040 Thread for Core1
 	multicore_launch_core1(core1);
 
 	// Sync Core0 and Core1
-    while(gp2040Core1->ready() == false ) {
-        __asm volatile ("nop\n");
-    }
+	while(gp2040Core1->ready() == false ) {
+		__asm volatile ("nop\n");
+	}
 	gp2040Core0->run();
 
 	return 0;

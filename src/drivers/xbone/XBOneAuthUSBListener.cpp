@@ -45,7 +45,6 @@ void XBOneAuthUSBListener::process() {
 
     // Received a packet from the console (or Windows) to dongle
     if ( xboxOneAuthData->xboneState == XboxOneState::send_auth_console_to_dongle ) {
-        printf("[Xbox One Auth USB] Sending Console to Dongle\n");
         uint8_t isChunked = ( xboxOneAuthData->consoleBuffer.length > GIP_MAX_CHUNK_SIZE );
         uint8_t needsAck = ( xboxOneAuthData->consoleBuffer.length > 2 );
         outgoingXGIP.reset();
@@ -58,7 +57,6 @@ void XBOneAuthUSBListener::process() {
 
     // Process waiting (always on first frame)
     if ( xboxOneAuthData->xboneState == XboxOneState::wait_auth_console_to_dongle) {
-        printf("[Xbox One Auth USB] Waiting console to dongle\n");
         queue_host_report(outgoingXGIP.generatePacket(), outgoingXGIP.getPacketLength());
         if ( outgoingXGIP.getChunked() == false || outgoingXGIP.endOfChunk() == true) {
             xboxOneAuthData->xboneState = XboxOneState::auth_idle_state;
@@ -77,29 +75,6 @@ void XBOneAuthUSBListener::xmount(uint8_t dev_addr, uint8_t instance, uint8_t co
         incomingXGIP.reset();
         outgoingXGIP.reset();
         mounted = true;
-/*
-        // Get Xbox Security Method 3 (XSM3)
-        uint8_t recvBuf[0xB2];
-        const tusb_control_request_t xfer_ctrl_req = {
-            .bmRequestType_bit {
-                .recipient = TUSB_REQ_RCPT_DEVICE,
-                .type = TUSB_REQ_TYPE_STANDARD,
-                .direction = TUSB_DIR_IN,
-            },
-            .bRequest = TUSB_REQ_GET_DESCRIPTOR,
-            .wValue = TU_U16(0x03,0x04),
-            .wIndex = TU_U16(0x04,0x09),
-            .wLength = 0xB2
-        };
-        tuh_xfer_t xfer = {
-            .daddr       = dev_addr,
-            .ep_addr     = 0,//xid_itf->ep_in,
-            .setup       = &xfer_ctrl_req,
-            .buffer      = recvBuf,
-            .complete_cb = NULL,
-            //.user_data   = user_data
-        };
-        tuh_control_xfer(&xfer);*/
     }
 }
 
@@ -121,7 +96,6 @@ void XBOneAuthUSBListener::report_received(uint8_t dev_addr, uint8_t instance, u
 
     incomingXGIP.parse(report, len);
     if ( incomingXGIP.validate() == false ) {
-        printf("[Xbox One Dongle] Bad Packet\n");
         sleep_ms(50); // First packet is invalid, drop and wait for dongle to boot
         incomingXGIP.reset();
         return;
@@ -139,9 +113,7 @@ void XBOneAuthUSBListener::report_received(uint8_t dev_addr, uint8_t instance, u
             queue_host_report((uint8_t*)outgoingXGIP.generatePacket(), outgoingXGIP.getPacketLength());
             break;
         case GIP_DEVICE_DESCRIPTOR:
-            printf("[Xbox One Dongle] Got device descriptor sequence : %02x\n", incomingXGIP.getSequence());
             if ( incomingXGIP.endOfChunk() == true && xboxOneAuthData->dongle_ready != true) {
-                printf("[Xbox One Dongle] Got device descriptor\n");
                 outgoingXGIP.reset();  // Power-on full string
                 outgoingXGIP.setAttributes(GIP_POWER_MODE_DEVICE_CONFIG, 2, 1, false, 0);
                 outgoingXGIP.setData(xb1_power_on, sizeof(xb1_power_on));
@@ -163,16 +135,13 @@ void XBOneAuthUSBListener::report_received(uint8_t dev_addr, uint8_t instance, u
             break;
         case GIP_AUTH:
         case GIP_FINAL_AUTH:
-            printf("[Xbox One] Got auth ..");
             if ( incomingXGIP.getChunked() == false || 
                 (incomingXGIP.getChunked() == true && incomingXGIP.endOfChunk() == true )) {
-                printf("final auth");
                 xboxOneAuthData->dongleBuffer.setBuffer(incomingXGIP.getData(), incomingXGIP.getDataLength(),
                     incomingXGIP.getSequence(), incomingXGIP.getCommand());
                 xboxOneAuthData->xboneState = XboxOneState::send_auth_dongle_to_console;
                 incomingXGIP.reset();
             }
-            printf("\n");
             break;
         case GIP_ACK_RESPONSE:
         default:

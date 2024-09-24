@@ -46,12 +46,6 @@
 static const uint32_t REBOOT_HOTKEY_ACTIVATION_TIME_MS = 50;
 static const uint32_t REBOOT_HOTKEY_HOLD_TIME_MS = 4000;
 
-GP2040::GP2040() {
-}
-
-GP2040::~GP2040() {
-}
-
 void GP2040::setup() {
 	Storage::getInstance().init();
 
