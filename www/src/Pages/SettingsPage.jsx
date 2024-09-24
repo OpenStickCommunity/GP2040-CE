@@ -121,11 +121,11 @@ const SHA256 = (ascii) => {
 
 const INPUT_MODES = [
 	{ labelKey: 'input-mode-options.xinput',
-      value: 0,
-      group: 'primary',
-      optional: ['usb'],
-      authentication: ['none', 'usb'],
-    },
+		value: 0,
+		group: 'primary',
+		optional: ['usb'],
+		authentication: ['none', 'usb'],
+	},
 	{
 		labelKey: 'input-mode-options.nintendo-switch',
 		value: 1,
@@ -960,10 +960,10 @@ export default function SettingsPage() {
 						)}
 					</div>
 				);
-            case 'input-mode-options.xinput':
-                return (
-                    <div className="row mb-3">
-                        {generateAuthSelection(
+			case 'input-mode-options.xinput':
+				return (
+					<div className="row mb-3">
+						{generateAuthSelection(
 							inputMode,
 							t('SettingsPage:auth-settings-label'),
 							'xinputAuthType',
@@ -971,17 +971,17 @@ export default function SettingsPage() {
 							errors.xinputAuthType,
 							handleChange,
 						)}
-                        <Row className="mb-3">
-                            <Col sm={10}>
-                                <Trans
-                                    ns="SettingsPage"
-                                    i18nKey="xinput-mode-text"
-                                    components={{ span: <span className="text-success" /> }}
-                                />
-                            </Col>
-                        </Row>
-                    </div>
-                );
+						<Row className="mb-3">
+							<Col sm={10}>
+								<Trans
+									ns="SettingsPage"
+									i18nKey="xinput-mode-text"
+									components={{ span: <span className="text-success" /> }}
+								/>
+							</Col>
+						</Row>
+					</div>
+				);
 			case 'input-mode-options.xbone':
 				return (
 					<div className="row mb-3">
