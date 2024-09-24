@@ -113,7 +113,7 @@ void XBOneAuthUSBListener::report_received(uint8_t dev_addr, uint8_t instance, u
             queue_host_report((uint8_t*)outgoingXGIP.generatePacket(), outgoingXGIP.getPacketLength());
             break;
         case GIP_DEVICE_DESCRIPTOR:
-            if ( incomingXGIP.endOfChunk() == true ) {
+            if ( incomingXGIP.endOfChunk() == true && xboxOneAuthData->dongle_ready != true) {
                 outgoingXGIP.reset();  // Power-on full string
                 outgoingXGIP.setAttributes(GIP_POWER_MODE_DEVICE_CONFIG, 2, 1, false, 0);
                 outgoingXGIP.setData(xb1_power_on, sizeof(xb1_power_on));

@@ -15,9 +15,11 @@ public:
     ~GP2040Aux();
     void setup();           // setup core1
     void run();             // loop core1
+    bool ready(){ return isReady; }
 private:
     GPDriver * inputDriver;
     AddonManager addons;
+    bool isReady;
 };
 
 #endif
