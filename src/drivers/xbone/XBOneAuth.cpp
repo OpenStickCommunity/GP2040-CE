@@ -14,7 +14,7 @@
 void XBOneAuth::initialize() {
     if ( available() ) {
         listener = new XBOneAuthUSBListener();
-        xboxOneAuthData.xboneState = auth_idle_state;
+        xboxOneAuthData.xboneState = GPAuthState::auth_idle_state;
         xboxOneAuthData.authCompleted = false;
         ((XBOneAuthUSBListener*)listener)->setup();
         ((XBOneAuthUSBListener*)listener)->setAuthData(&xboxOneAuthData);

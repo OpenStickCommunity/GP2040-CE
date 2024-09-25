@@ -3,12 +3,6 @@
 
 #include "drivers/shared/gpauthdriver.h"
 
-typedef enum {
-    auth_idle_state = 0,
-    send_auth_console_to_dongle = 1,
-    send_auth_dongle_to_console = 2
-} XInputAuthState;
-
 class XInputAuthBuffer {
 public:
     XInputAuthBuffer() {
@@ -49,7 +43,7 @@ public:
 //     Dongle Serial 29 bytes
 //     Console-Dongle Back and Forth 46 bytes & 22 bytes
 typedef struct {
-    XInputAuthState xinputState;
+    GPAuthState xinputState;
     uint8_t consoleInitialAuth[X360_AUTHLEN_CONSOLE_INIT]; // Console Init (Keep when Dongle Reboots)
     uint8_t dongleSerial[X360_AUTHLEN_DONGLE_SERIAL];       // Dongle Serial
     uint8_t passthruBuffer[X360_AUTHLEN_DONGLE_INIT];     // Back-and-Forth Buffer (46 or 22 bytes)
