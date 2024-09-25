@@ -31,6 +31,7 @@ export default {
 	'analog-auto-calibrate': 'Auto Calibration',
 	'analog-smoothing': 'Analog Smoothing',
 	'smoothing-factor': 'Smoothing Factor',
+	'analog-error-label': 'Error Rate',
 	'turbo-header-text': 'Turbo',
 	'turbo-button-pin-label': 'Turbo Pin',
 	'turbo-led-pin-label': 'Turbo LED Pin',
@@ -123,9 +124,12 @@ export default {
 	'snes-extension-data-pin-label': 'Data Pin',
 	'focus-mode-header-text': 'Focus Mode Configuration',
 	'focus-mode-pin-label': 'Focus Mode Pin',
-	'keyboard-host-header-text': 'Keyboard Host Configuration',
-	'keyboard-host-sub-header-text':
-		'Following set the data +, - and 5V (optional) pins. Only the + and 5V pin can be configured.',
+	'keyboard-host-header-text': 'Keyboard/Mouse Host Configuration',
+	'keyboard-host-sub-header-text': 'Keyboard Buttons',
+	'keyboard-host-mouse-header-text': 'Mouse Buttons',
+	'keyboard-host-left-mouse': 'Left',
+	'keyboard-host-middle-mouse': 'Middle',
+	'keyboard-host-right-mouse': 'Right',
 	'pin-config-moved-to-core-text':
 		'Note: the pins for this add-on are now configured on the Pin Mapping page.',
 	'input-history-header-text': 'Input History',

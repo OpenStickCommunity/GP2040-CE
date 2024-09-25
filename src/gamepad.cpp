@@ -355,10 +355,14 @@ void Gamepad::clearState() {
 }
 
 void Gamepad::clearRumbleState() {
-	rumbleState.leftMotor = 0;
-	rumbleState.rightMotor = 0;
-	rumbleState.leftTrigger = 0;
-	rumbleState.rightTrigger = 0;
+	auxState.haptics.leftActuator.active = false;
+	auxState.haptics.leftActuator.intensity = 0;
+	auxState.haptics.rightActuator.active = false;
+	auxState.haptics.rightActuator.intensity = 0;
+	auxState.haptics.leftTrigger.active = false;
+	auxState.haptics.leftTrigger.intensity = 0;
+	auxState.haptics.rightTrigger.active = false;
+	auxState.haptics.rightTrigger.intensity = 0;
 }
 
 /**
@@ -543,6 +547,13 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 		case HOTKEY_NEXT_PROFILE:
 			if (action != lastAction) {
 				Storage::getInstance().nextProfile();
+				userRequestedReinit = true;
+				reqSave = true;
+			}
+			break;
+		case HOTKEY_PREVIOUS_PROFILE:
+			if (action != lastAction) {
+				Storage::getInstance().previousProfile();
 				userRequestedReinit = true;
 				reqSave = true;
 			}

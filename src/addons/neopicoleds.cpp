@@ -60,7 +60,7 @@ typedef enum
 
 // TODO: Make this a helper function
 // Animation Helper for Player LEDs
-PLEDAnimationState getXInputAnimationNEOPICO(uint8_t *data)
+PLEDAnimationState getXInputAnimationNEOPICO(uint16_t ledState)
 {
 	PLEDAnimationState animationState =
 	{
@@ -69,52 +69,108 @@ PLEDAnimationState getXInputAnimationNEOPICO(uint8_t *data)
 		.speed = PLED_SPEED_OFF,
 	};
 
-	// Check first byte for LED payload
-	if (data[0] == 0x01)
+	switch (ledState)
 	{
-		switch (data[2])
-		{
-			case XINPUT_PLED_BLINKALL:
-			case XINPUT_PLED_ROTATE:
-			case XINPUT_PLED_BLINK:
-			case XINPUT_PLED_SLOWBLINK:
-			case XINPUT_PLED_ALTERNATE:
-				animationState.state = (PLED_STATE_LED1 | PLED_STATE_LED2 | PLED_STATE_LED3 | PLED_STATE_LED4);
-				animationState.animation = PLED_ANIM_BLINK;
-				animationState.speed = PLED_SPEED_FAST;
-				break;
+		case XINPUT_PLED_BLINKALL:
+		case XINPUT_PLED_ROTATE:
+		case XINPUT_PLED_BLINK:
+		case XINPUT_PLED_SLOWBLINK:
+		case XINPUT_PLED_ALTERNATE:
+			animationState.state = (PLED_STATE_LED1 | PLED_STATE_LED2 | PLED_STATE_LED3 | PLED_STATE_LED4);
+			animationState.animation = PLED_ANIM_BLINK;
+			animationState.speed = PLED_SPEED_FAST;
+			break;
 
-			case XINPUT_PLED_FLASH1:
-			case XINPUT_PLED_ON1:
-				animationState.state = PLED_STATE_LED1;
-				animationState.animation = PLED_ANIM_SOLID;
-				animationState.speed = PLED_SPEED_OFF;
-				break;
+		case XINPUT_PLED_FLASH1:
+		case XINPUT_PLED_ON1:
+			animationState.state = PLED_STATE_LED1;
+			animationState.animation = PLED_ANIM_SOLID;
+			animationState.speed = PLED_SPEED_OFF;
+			break;
 
-			case XINPUT_PLED_FLASH2:
-			case XINPUT_PLED_ON2:
-				animationState.state = PLED_STATE_LED2;
-				animationState.animation = PLED_ANIM_SOLID;
-				animationState.speed = PLED_SPEED_OFF;
-				break;
+		case XINPUT_PLED_FLASH2:
+		case XINPUT_PLED_ON2:
+			animationState.state = PLED_STATE_LED2;
+			animationState.animation = PLED_ANIM_SOLID;
+			animationState.speed = PLED_SPEED_OFF;
+			break;
 
-			case XINPUT_PLED_FLASH3:
-			case XINPUT_PLED_ON3:
-				animationState.state = PLED_STATE_LED3;
-				animationState.animation = PLED_ANIM_SOLID;
-				animationState.speed = PLED_SPEED_OFF;
-				break;
+		case XINPUT_PLED_FLASH3:
+		case XINPUT_PLED_ON3:
+			animationState.state = PLED_STATE_LED3;
+			animationState.animation = PLED_ANIM_SOLID;
+			animationState.speed = PLED_SPEED_OFF;
+			break;
 
-			case XINPUT_PLED_FLASH4:
-			case XINPUT_PLED_ON4:
-				animationState.state = PLED_STATE_LED4;
-				animationState.animation = PLED_ANIM_SOLID;
-				animationState.speed = PLED_SPEED_OFF;
-				break;
+		case XINPUT_PLED_FLASH4:
+		case XINPUT_PLED_ON4:
+			animationState.state = PLED_STATE_LED4;
+			animationState.animation = PLED_ANIM_SOLID;
+			animationState.speed = PLED_SPEED_OFF;
+			break;
 
-			default:
-				break;
-		}
+		default:
+			break;
+	}
+
+	return animationState;
+}
+
+PLEDAnimationState getPS3AnimationNEOPICO(uint16_t ledState)
+{
+	const uint8_t ps3LEDs[10][4] = {
+		{ 0x01, 0x00, 0x00, 0x00 },
+		{ 0x00, 0x01, 0x00, 0x00 },
+		{ 0x00, 0x00, 0x01, 0x00 },
+		{ 0x00, 0x00, 0x00, 0x01 },
+		{ 0x01, 0x00, 0x00, 0x01 },
+		{ 0x00, 0x01, 0x00, 0x01 },
+		{ 0x00, 0x00, 0x01, 0x01 },
+		{ 0x01, 0x00, 0x01, 0x01 },
+		{ 0x00, 0x01, 0x01, 0x01 },
+		{ 0x01, 0x01, 0x01, 0x01 }
+	};
+
+	PLEDAnimationState animationState =
+	{
+		.state = 0,
+		.animation = PLED_ANIM_NONE,
+		.speed = PLED_SPEED_OFF,
+	};
+
+	if (ledState != 0) {
+		uint8_t ledNumber = ledState & 0x0F;
+		if (ps3LEDs[ledNumber-1][0] == 0x01) animationState.state |= PLED_STATE_LED1;
+		if (ps3LEDs[ledNumber-1][1] == 0x01) animationState.state |= PLED_STATE_LED2;
+		if (ps3LEDs[ledNumber-1][2] == 0x01) animationState.state |= PLED_STATE_LED3;
+		if (ps3LEDs[ledNumber-1][3] == 0x01) animationState.state |= PLED_STATE_LED4;
+	}
+
+	if (animationState.state != 0) {
+		animationState.animation = PLED_ANIM_SOLID;
+		animationState.speed = PLED_SPEED_OFF;
+	} else {
+		animationState.state = 0;
+		animationState.animation = PLED_ANIM_OFF;
+		animationState.speed = PLED_SPEED_OFF;
+	}
+
+	return animationState;
+}
+
+PLEDAnimationState getPS4AnimationNEOPICO(uint32_t flashOn, uint32_t flashOff)
+{
+	PLEDAnimationState animationState =
+	{
+		.state = (PLED_STATE_LED1 | PLED_STATE_LED2 | PLED_STATE_LED3 | PLED_STATE_LED4),
+		.animation = PLED_ANIM_SOLID,
+		.speed = PLED_SPEED_OFF,
+	};
+
+	if (flashOn > 0 || flashOff > 0) {
+		animationState.animation = PLED_ANIM_BLINK_CUSTOM;
+		animationState.speedOn = flashOn;
+		animationState.speedOff = flashOff;
 	}
 
 	return animationState;
@@ -130,6 +186,10 @@ void NeoPicoLEDAddon::setup()
 	// Set Default LED Options
 	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
 	turnOffWhenSuspended = ledOptions.turnOffWhenSuspended;
+
+	Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
+	gamepad->auxState.playerID.enabled = true;
+	gamepad->auxState.sensors.statusLight.enabled = true;
 
 	if ( ledOptions.pledType == PLED_TYPE_RGB ) {
 		neoPLEDs = new NeoPicoPlayerLEDs();
@@ -151,14 +211,28 @@ void NeoPicoLEDAddon::process()
 		return;
 
 	Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
-	uint8_t * featureData = Storage::getInstance().GetFeatureData();
 	AnimationHotkey action = animationHotkeys(gamepad);
 	if (ledOptions.pledType == PLED_TYPE_RGB) {
 		inputMode = gamepad->getOptions().inputMode; // HACK
-		if (inputMode == INPUT_MODE_XINPUT) {
-			animationState = getXInputAnimationNEOPICO(featureData);
-			if (neoPLEDs != nullptr && animationState.animation != PLED_ANIM_NONE)
-				neoPLEDs->animate(animationState);
+		if (gamepad->auxState.playerID.enabled && gamepad->auxState.playerID.active) {
+			switch (inputMode) {
+				case INPUT_MODE_XINPUT:
+					animationState = getXInputAnimationNEOPICO(gamepad->auxState.playerID.ledValue);
+					break;
+				case INPUT_MODE_PS3:
+					animationState = getPS3AnimationNEOPICO(gamepad->auxState.playerID.ledValue);
+					break;
+				case INPUT_MODE_PS4:
+				case INPUT_MODE_PS5:
+					animationState = getPS4AnimationNEOPICO(gamepad->auxState.playerID.ledBlinkOn, gamepad->auxState.playerID.ledBlinkOff);
+					break;
+				default:
+					break;
+			}
+		}
+
+		if (neoPLEDs != nullptr && animationState.animation != PLED_ANIM_NONE) {
+			neoPLEDs->animate(animationState);
 		}
 	}
 
@@ -193,18 +267,20 @@ void NeoPicoLEDAddon::process()
 
 	// Apply the player LEDs to our first 4 leds if we're in NEOPIXEL mode
 	if (ledOptions.pledType == PLED_TYPE_RGB) {
-		if (inputMode == INPUT_MODE_XINPUT) { // HACK
-			LEDOptions & ledOptions = Storage::getInstance().getLedOptions();
-			int32_t pledIndexes[] = { ledOptions.pledIndex1, ledOptions.pledIndex2, ledOptions.pledIndex3, ledOptions.pledIndex4 };
-			for (int i = 0; i < PLED_COUNT; i++) {
-				if (pledIndexes[i] < 0)
-					continue;
+		LEDOptions & ledOptions = Storage::getInstance().getLedOptions();
+		int32_t pledIndexes[] = { ledOptions.pledIndex1, ledOptions.pledIndex2, ledOptions.pledIndex3, ledOptions.pledIndex4 };
+		for (int i = 0; i < PLED_COUNT; i++) {
+			if (pledIndexes[i] < 0)
+				continue;
 
-				float level = (static_cast<float>(PLED_MAX_LEVEL - neoPLEDs->getLedLevels()[i]) / static_cast<float>(PLED_MAX_LEVEL));
-				float brightness = as.GetBrightnessX() * level;
+			float level = (static_cast<float>(PLED_MAX_LEVEL - neoPLEDs->getLedLevels()[i]) / static_cast<float>(PLED_MAX_LEVEL));
+			float brightness = as.GetBrightnessX() * level;
+			if (gamepad->auxState.sensors.statusLight.enabled && gamepad->auxState.sensors.statusLight.active) {
+				rgbPLEDValues[i] = (RGB(gamepad->auxState.sensors.statusLight.color.red, gamepad->auxState.sensors.statusLight.color.green, gamepad->auxState.sensors.statusLight.color.blue)).value(neopico->GetFormat(), brightness);
+			} else {
 				rgbPLEDValues[i] = ((RGB)ledOptions.pledColor).value(neopico->GetFormat(), brightness);
-				frame[pledIndexes[i]] = rgbPLEDValues[i];
 			}
+			frame[pledIndexes[i]] = rgbPLEDValues[i];
 		}
 	}
 
@@ -576,7 +652,7 @@ AnimationHotkey animationHotkeys(Gamepad *gamepad)
 		{
 			action = HOTKEY_LEDS_FADETIME_UP;
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_R3 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
-		}        
+		}
 	}
 
 	return action;

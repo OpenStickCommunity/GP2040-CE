@@ -260,8 +260,6 @@ void GP2040::run() {
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
 	bool configMode = Storage::getInstance().GetConfigMode();
-	uint8_t * featureData = Storage::getInstance().GetFeatureData();
-	memset(featureData, 0, 32); // X-Input is the only feature data currently supported
 	while (1) { // LOOP
 		this->getReinitGamepad(gamepad);
 
@@ -299,7 +297,7 @@ void GP2040::run() {
 		memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
 
 		// Process Input Driver
-		inputDriver->process(gamepad, featureData);
+		inputDriver->process(gamepad);
 		
 		// Process USB Report Addons
 		addons.ProcessAddons(ADDON_PROCESS::CORE0_USBREPORT);

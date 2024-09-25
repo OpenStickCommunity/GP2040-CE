@@ -63,6 +63,14 @@ export default {
 		'<span>⏳ WARNING ⏳:</span> PS4 will timeout after 8 minutes without authentication.',
 	'ps4-usb-host-mode-text':
 		'<span>INFO:</span> Please ensure USB Peripheral is enabled and a PS4 compatible USB device is plugged in.',
+	'ps4-id-mode-label':
+		'Identification Mode',
+	'ps4-id-mode-explanation-text':
+		'<ul><li>Console mode is used when connecting primarily to a PS4 console.</li><li>Remote/Emulation mode should only be used when connecting to an emulation layer or remote playing environment that requires a DualShock 4-compatible controller.</li></ul>',
+	'ps4-id-mode-options': {
+		'console': 'Console',
+		'emulation': 'Remote/Emulation',
+	},
 	'ps5-mode-explanation-text':
 		'PS5 mode allows GP2040-CE to run as an authenticated PS5 compatible arcade stick.',
 	'ps5-mode-warning-text':
@@ -71,6 +79,8 @@ export default {
 		'<span>INFO:</span> Please ensure USB Peripheral is enabled and a PS5 compatible USB device is plugged in.',
 	'xbone-mode-text':
 		'<span>INFO:</span> Xbox One requires a USB host connection and USB dongle to properly authenticate in Xbox One mode.',
+	'xinput-mode-text':
+		'<span>INFO:</span> Xbox 360 mode can either work without authentication or with a USB dongle attached.',
 	'hotkey-settings-label': 'Hotkey Settings',
 	'hotkey-settings-sub-header':
 		'The <strong>Fn</strong> slider provides a mappable Function button in the <link_pinmap>Pin Mapping</link_pinmap> page. By selecting the <strong>Fn</strong> slider option, the Function button must be held along with the selected hotkey settings. <br /> Additionally, select <strong>None</strong> from the dropdown to unassign any button.',
@@ -119,6 +129,7 @@ export default {
 		'load-profile-4': 'Load Profile #4',
 		'reboot-default': 'Reboot GP2040-CE',
 		'next-profile': 'Next Profile',
+		'previous-profile': 'Previous Profile',
 	},
 	'forced-setup-mode-label': 'Forced Setup Mode',
 	'forced-setup-mode-options': {

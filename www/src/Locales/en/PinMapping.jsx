@@ -1,17 +1,17 @@
 export default {
 	'header-text': 'Pin Mapping',
-	'sub-header-text': `If you're unsure what button is connect to what pin, try out the pin viewer.`,
+	'sub-header-text': `Use Pin Viewer to see button to pin connection.`,
 	'alert-text':
 		"Mapping buttons to pins that aren't connected or available can leave the device in non-functional state. To clear the invalid configuration go to the <2>Reset Settings</2> page.",
 	'pin-viewer': 'Pin viewer',
 	'pin-pressed': 'Pressed pin: {{pressedPin}}',
 	'pin-header-label': 'Pin',
-	'profile-text-1': 'Base(Profile 1)',
-	'profile-text-2': 'Profile 2',
-	'profile-text-3': 'Profile 3',
-	'profile-text-4': 'Profile 4',
-	'profile-pin-mapping-title-base': 'Base(Profile 1) - Pin Mapping',
-	'profile-pin-mapping-title': 'Profile {{profileNumber}} - Pin Mapping',
+
+	'profile-label-title': 'Profile name',
+	'profile-label-description':
+		'Max 16 characters. Letters, numbers, and spaces allowed.',
+	'profile-pin-mapping-title': '{{profileLabel}} - Pin Mapping',
+	'profile-label-default': 'Profile {{profileNumber}}',
 	'profile-pins-warning':
 		'Try to avoid changing the buttons and/or directions used for the switch profile hotkeys. Otherwise, it will be difficult to understand what profile is being selected!',
 	'profile-copy-base': 'Copy base profile',

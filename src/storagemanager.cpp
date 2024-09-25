@@ -123,6 +123,23 @@ void Storage::nextProfile()
 {
     this->config.gamepadOptions.profileNumber = (this->config.gamepadOptions.profileNumber % 4) + 1;
 }
+void Storage::previousProfile()
+{
+	if (this->config.gamepadOptions.profileNumber == 1)
+		this->config.gamepadOptions.profileNumber = 4;
+	else
+		this->config.gamepadOptions.profileNumber -= 1;
+}
+
+/**
+ * @brief Return the current profile label.
+ */
+char* Storage::currentProfileLabel() {
+	if (this->config.gamepadOptions.profileNumber == 1)
+		return this->config.gpioMappings.profileLabel;
+	else
+		return this->config.profileOptions.gpioMappingsSets[config.gamepadOptions.profileNumber-2].profileLabel;
+}
 
 void Storage::setFunctionalPinMappings()
 {
@@ -176,21 +193,6 @@ void Storage::SetProcessedGamepad(Gamepad * newpad)
 Gamepad * Storage::GetProcessedGamepad()
 {
 	return processedGamepad;
-}
-
-void Storage::SetFeatureData(uint8_t * newData)
-{
-	memcpy(newData, featureData, sizeof(uint8_t)*sizeof(featureData));
-}
-
-void Storage::ClearFeatureData()
-{
-	memset(featureData, 0, sizeof(uint8_t)*sizeof(featureData));
-}
-
-uint8_t * Storage::GetFeatureData()
-{
-	return featureData;
 }
 
 /* Animation stuffs */

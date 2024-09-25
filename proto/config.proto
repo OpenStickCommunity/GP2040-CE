@@ -28,6 +28,7 @@ message GamepadOptions
     optional InputModeAuthType ps4AuthType = 21;
     optional InputModeAuthType ps5AuthType = 22;
     optional InputModeAuthType xinputAuthType = 23;
+    optional PS4ControllerIDMode ps4ControllerIDMode = 24;
 }
 
 message KeyboardMapping
@@ -50,6 +51,21 @@ message KeyboardMapping
     optional uint32 keyButtonR3 = 16;
     optional uint32 keyButtonA1 = 17;
     optional uint32 keyButtonA2 = 18;
+    optional uint32 keyButtonA3 = 19;
+    optional uint32 keyButtonA4 = 20;
+    optional uint32 keyButtonE1 = 21;
+    optional uint32 keyButtonE2 = 22;
+    optional uint32 keyButtonE3 = 23;
+    optional uint32 keyButtonE4 = 24;
+    optional uint32 keyButtonE5 = 25;
+    optional uint32 keyButtonE6 = 26;
+    optional uint32 keyButtonE7 = 27;
+    optional uint32 keyButtonE8 = 28;
+    optional uint32 keyButtonE9 = 29;
+    optional uint32 keyButtonE10 = 30;
+    optional uint32 keyButtonE11 = 31;
+    optional uint32 keyButtonE12 = 32;
+
 }
 
 message HotkeyEntry
@@ -176,6 +192,7 @@ message GpioMappingInfo
 message GpioMappings
 {
     repeated GpioMappingInfo pins = 1 [(nanopb).max_count = 30];
+    optional string profileLabel = 2 [(nanopb).max_length = 16];
 }
 
 
@@ -353,6 +370,7 @@ message AnalogOptions
     optional uint32 outer_deadzone = 13;
     optional bool analog_smoothing = 14;
     optional float smoothing_factor = 15;
+    optional uint32 analog_error = 16;
 }
 
 message TurboOptions
@@ -664,6 +682,9 @@ message KeyboardHostOptions
     optional int32 deprecatedPinDplus = 2 [deprecated = true];
     optional KeyboardMapping mapping = 3;
     optional int32 deprecatedPin5V = 4 [deprecated = true];
+    optional uint32 mouseLeft = 5;
+    optional uint32 mouseMiddle = 6;
+    optional uint32 mouseRight = 7;
 }
 
 message FocusModeOptions
