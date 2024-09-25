@@ -369,6 +369,7 @@ message AnalogOptions
     optional uint32 outer_deadzone = 13;
     optional bool analog_smoothing = 14;
     optional float smoothing_factor = 15;
+    optional uint32 analog_error = 16;
 }
 
 message TurboOptions

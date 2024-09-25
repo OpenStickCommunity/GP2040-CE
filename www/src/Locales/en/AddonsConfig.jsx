@@ -31,6 +31,7 @@ export default {
 	'analog-auto-calibrate': 'Auto Calibration',
 	'analog-smoothing': 'Analog Smoothing',
 	'smoothing-factor': 'Smoothing Factor',
+	'analog-error-label': 'Error Rate',
 	'turbo-header-text': 'Turbo',
 	'turbo-button-pin-label': 'Turbo Pin',
 	'turbo-led-pin-label': 'Turbo LED Pin',

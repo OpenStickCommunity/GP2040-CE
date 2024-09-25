@@ -1432,6 +1432,7 @@ std::string setAddonOptions()
     docToValue(analogOptions.auto_calibrate, doc, "auto_calibrate");
     docToValue(analogOptions.analog_smoothing, doc, "analog_smoothing");
     docToValue(analogOptions.smoothing_factor, doc, "smoothing_factor");
+    docToValue(analogOptions.analog_error, doc, "analog_error");
     docToValue(analogOptions.enabled, doc, "AnalogInputEnabled");
 
     BootselButtonOptions& bootselButtonOptions = Storage::getInstance().getAddonOptions().bootselButtonOptions;
@@ -1863,6 +1864,7 @@ std::string getAddonOptions()
     writeDoc(doc, "auto_calibrate", analogOptions.auto_calibrate);
     writeDoc(doc, "analog_smoothing", analogOptions.analog_smoothing);
     writeDoc(doc, "smoothing_factor", analogOptions.smoothing_factor);
+    writeDoc(doc, "analog_error", analogOptions.analog_error);
     writeDoc(doc, "AnalogInputEnabled", analogOptions.enabled);
 
     const BootselButtonOptions& bootselButtonOptions = Storage::getInstance().getAddonOptions().bootselButtonOptions;

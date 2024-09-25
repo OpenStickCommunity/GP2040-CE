@@ -66,6 +66,7 @@ void AnalogInput::process()
 
     bool ema_option = analogOptions.analog_smoothing;
     float ema_smoothing = analogOptions.smoothing_factor / 1000.0f;
+    float error_rate = analogOptions.analog_error / 1000.0f;
 
     struct adc_pair
     {
@@ -137,7 +138,7 @@ void AnalogInput::process()
 
         if (in_deadzone >= 0.0f || analogOptions.forced_circularity == true) {
             adc_pairs[i].xy_magnitude = magnitudeCalculation(adc_pairs[i].x_value, adc_pairs[i].y_value, 
-                                                            adc_pairs[i].x_magnitude, adc_pairs[i].y_magnitude);
+                                                            adc_pairs[i].x_magnitude, adc_pairs[i].y_magnitude, error_rate);
 
             if (in_deadzone >= 0.0f) {
                 if (adc_pairs[i].xy_magnitude < in_deadzone) {
@@ -196,11 +197,11 @@ uint16_t AnalogInput::map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
-float AnalogInput::magnitudeCalculation(float x, float y, float& x_magnitude, float& y_magnitude) {
+float AnalogInput::magnitudeCalculation(float x, float y, float& x_magnitude, float& y_magnitude, float error) {
     x_magnitude = x - ANALOG_CENTER;
     y_magnitude = y - ANALOG_CENTER;
     
-    return std::sqrt((x_magnitude * x_magnitude) + (y_magnitude * y_magnitude));
+    return error * std::sqrt((x_magnitude * x_magnitude) + (y_magnitude * y_magnitude));
 }
 
 void AnalogInput::radialDeadzone(float& x, float& y, float in_deadzone, float out_deadzone, float x_magnitude, float y_magnitude, float xy_magnitude, bool circularity) {
