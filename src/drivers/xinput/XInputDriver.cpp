@@ -352,7 +352,7 @@ bool XInputDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_co
                         memcpy(tud_buffer, xinputAuthData->dongleSerial, len);
                         break;
                     case XSM360_RESPOND_CHALLENGE:
-                        if ( xinputAuthData->xinputState == XInputAuthState::send_auth_dongle_to_console ) {
+                        if ( xinputAuthData->xinputState == GPAuthState::send_auth_dongle_to_console ) {
                             memcpy(tud_buffer, xinputAuthData->passthruBuffer, xinputAuthData->passthruBufferLen);
                             len = xinputAuthData->passthruBufferLen;
                         } else {
@@ -365,7 +365,7 @@ bool XInputDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_co
                         break;
                     case XSM360_REQUEST_STATE:
                         // State Ready = 2, Not-Ready = 1
-                        if ( xinputAuthData->xinputState == XInputAuthState::send_auth_dongle_to_console ) {
+                        if ( xinputAuthData->xinputState == GPAuthState::send_auth_dongle_to_console ) {
                             state = 2;
                         } else {
                             state = 1;
@@ -385,18 +385,18 @@ bool XInputDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_co
             // Buf is filled, we can save the data to our auth
             switch (request->bRequest) {
                     case XSM360AuthRequest::XSM360_INIT_AUTH:
-                        if ( xinputAuthData->xinputState == XInputAuthState::auth_idle_state ) {
+                        if ( xinputAuthData->xinputState == GPAuthState::auth_idle_state ) {
                             memcpy(xinputAuthData->passthruBuffer, tud_buffer, request->wLength);
                             xinputAuthData->passthruBufferLen = request->wLength;
                             xinputAuthData->passthruBufferID = XSM360AuthRequest::XSM360_INIT_AUTH;
-                            xinputAuthData->xinputState = XInputAuthState::send_auth_console_to_dongle;
+                            xinputAuthData->xinputState = GPAuthState::send_auth_console_to_dongle;
                         }
                         break;
                     case XSM360AuthRequest::XSM360_VERIFY_AUTH:
                         memcpy(xinputAuthData->passthruBuffer, tud_buffer, request->wLength);
                         xinputAuthData->passthruBufferLen = request->wLength;
                         xinputAuthData->passthruBufferID = XSM360AuthRequest::XSM360_VERIFY_AUTH;
-                        xinputAuthData->xinputState = XInputAuthState::send_auth_console_to_dongle;
+                        xinputAuthData->xinputState = GPAuthState::send_auth_console_to_dongle;
                         break;
                     default:
                         break;

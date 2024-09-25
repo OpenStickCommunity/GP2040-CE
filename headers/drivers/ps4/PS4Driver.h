@@ -10,16 +10,7 @@
 #include "drivers/ps4/PS4Descriptors.h"
 
 // Authentication
-#include "drivers/shared/gpauthdriver.h"
-
-typedef enum {
-    no_nonce = 0,
-    receiving_nonce = 1,
-    nonce_ready = 2,
-    signed_nonce_ready = 3,
-    sending_nonce = 4,
-    waiting_reset = 5
-} PS4State;
+#include "drivers/ps4/PS4Auth.h"
 
 typedef enum
 {
@@ -44,7 +35,6 @@ typedef enum
 //    256 byte - RSA E
 //    256 byte - ps4 signature
 //    24 byte  - zero padding
-
 class PS4Driver : public GPDriver {
 public:
     PS4Driver(uint32_t type): controllerType(type) {}
@@ -62,35 +52,27 @@ public:
     virtual const uint8_t * get_descriptor_device_qualifier_cb();
     virtual uint16_t GetJoystickMidValue();
     virtual USBListener * get_usb_auth_listener();
-
     bool getAuthSent() { return authsent;}
 private:
-    // Lots of things here
-    void save_nonce(uint8_t nonce_id, uint8_t nonce_page, uint8_t * buffer, uint16_t buflen);
     uint8_t last_report[CFG_TUD_ENDPOINT0_SIZE] = { };
     uint8_t last_report_counter;
     uint16_t last_axis_counter;
-    uint8_t cur_nonce_id;
     PS4Report ps4Report;
     TouchpadData touchpadData;
     PSSensorData sensorData;
     uint32_t last_report_timer;
-    uint8_t send_nonce_part;
-    uint32_t controllerType;
-    GPAuthDriver * authDriver;
+    PS4Auth * ps4AuthDriver;
+    PS4AuthData * ps4AuthData;      // PS4 Authentication Data
+    uint8_t cur_nonce_chunk;            // PS4 Encryption Nonce Chunk (Max 19)
+    uint8_t cur_nonce_id;
+    uint32_t controllerType;        // PS4 DS4 / PS5 Third-Party
     bool pointOneTouched = false;
     bool pointTwoTouched = false;
     uint8_t touchCounter;
-
     PS4FeatureOutputReport ps4Features;
     uint8_t lastFeatures[PS4_FEATURES_SIZE] = { };
-
     uint8_t deviceDescriptor[sizeof(ps4_device_descriptor)];
-
-    PS4State ps4State;
     bool authsent;
-    uint8_t nonce_buffer[256];
-    uint8_t nonce_id; // used in pass-through mode
 };
 
 #endif // _PS4_DRIVER_H_

@@ -19,7 +19,7 @@ void XInputAuthUSBListener::setAuthData(XInputAuthData * authData ) {
     xinputAuthData->dongle_ready = false;
     memset(xinputAuthData->dongleSerial, 0, X360_AUTHLEN_DONGLE_SERIAL);
     xinputAuthData->passthruBufferLen = 0;
-    xinputAuthData->xinputState = XInputAuthState::auth_idle_state;
+    xinputAuthData->xinputState = GPAuthState::auth_idle_state;
 }
 
 void XInputAuthUSBListener::setup() {
@@ -93,7 +93,7 @@ void XInputAuthUSBListener::process() {
     // Idle State, check for incoming console data
     if ( dongleAuthState == DONGLE_AUTH_STATE::DONGLE_AUTH_IDLE ) {
         // Received a packet from the console to dongle
-        if ( xinputAuthData->xinputState == XInputAuthState::send_auth_console_to_dongle ) {
+        if ( xinputAuthData->xinputState == GPAuthState::send_auth_console_to_dongle ) {
             switch(xinputAuthData->passthruBufferID) {
                 case XSM360AuthRequest::XSM360_INIT_AUTH:
                     // Copy to our initial auth buffer incase the dongle reconnects
@@ -104,7 +104,7 @@ void XInputAuthUSBListener::process() {
 
                     // Actions are performed in this order
                     if ( auth_dongle_init_challenge() == false) {
-                        xinputAuthData->xinputState = XInputAuthState::auth_idle_state;
+                        xinputAuthData->xinputState = GPAuthState::auth_idle_state;
                         return;
                     }
                     auth_dongle_wait(XSM360AuthRequest::XSM360_INIT_AUTH);
@@ -112,7 +112,7 @@ void XInputAuthUSBListener::process() {
                 case XSM360AuthRequest::XSM360_VERIFY_AUTH:
                     // Challenge Verify (22 bytes)
                     if ( auth_dongle_challenge_verify() == false) {
-                        xinputAuthData->xinputState = XInputAuthState::auth_idle_state;
+                        xinputAuthData->xinputState = GPAuthState::auth_idle_state;
                         return;
                     }
                     auth_dongle_wait(XSM360AuthRequest::XSM360_VERIFY_AUTH);
@@ -132,17 +132,17 @@ void XInputAuthUSBListener::process() {
                     case XSM360AuthRequest::XSM360_INIT_AUTH:
                         // Actions are performed in this order
                         if ( auth_dongle_data_reply(X360_AUTHLEN_DONGLE_INIT) == false ) {
-                            xinputAuthData->xinputState = XInputAuthState::auth_idle_state;
+                            xinputAuthData->xinputState = GPAuthState::auth_idle_state;
                         } else {
                             auth_dongle_keepalive();
-                            xinputAuthData->xinputState = XInputAuthState::send_auth_dongle_to_console;    
+                            xinputAuthData->xinputState = GPAuthState::send_auth_dongle_to_console;    
                         }        
                         break;
                     case XSM360AuthRequest::XSM360_VERIFY_AUTH:
                         if ( auth_dongle_data_reply(X360_AUTHLEN_CHALLENGE) == false ) {
-                            xinputAuthData->xinputState = XInputAuthState::auth_idle_state;
+                            xinputAuthData->xinputState = GPAuthState::auth_idle_state;
                         } else {
-                            xinputAuthData->xinputState = XInputAuthState::send_auth_dongle_to_console;    
+                            xinputAuthData->xinputState = GPAuthState::send_auth_dongle_to_console;    
                         }    
                         break;
                     default:
@@ -156,7 +156,7 @@ void XInputAuthUSBListener::process() {
                 dongleAuthState = DONGLE_AUTH_STATE::DONGLE_AUTH_IDLE;
                 wait_count = 0;
                 wait_time = 0;
-                xinputAuthData->xinputState = XInputAuthState::auth_idle_state;
+                xinputAuthData->xinputState = GPAuthState::auth_idle_state;
             }
         }
     }
