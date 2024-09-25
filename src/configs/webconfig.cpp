@@ -584,6 +584,12 @@ std::string getProfileOptions()
     };
 
     ProfileOptions& profileOptions = Storage::getInstance().getProfileOptions();
+
+    // return an empty list if no profiles are currently set, since we no longer populate by default
+    if (profileOptions.gpioMappingsSets_count == 0) {
+        doc.createNestedArray("alternativePinMappings");
+    }
+
     for (int i = 0; i < profileOptions.gpioMappingsSets_count; i++) {
         // this looks duplicative, but something in arduinojson treats the doc
         // field string by reference so you can't be "clever" and do an snprintf
