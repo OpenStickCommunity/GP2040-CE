@@ -15,7 +15,6 @@ typedef struct {
     bool dongle_ready = false;
     GPAuthState passthrough_state;    // PS4 Encryption Passthrough State
     uint8_t nonce_id;                 // for nonce passing
-    //uint8_t nonce_buffer[256];      // for nonce passing
 } PS4AuthData;
 
 class PS4Auth : public GPAuthDriver {

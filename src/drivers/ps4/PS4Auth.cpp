@@ -36,8 +36,7 @@ void PS4Auth::initialize() {
     ps4AuthData.dongle_ready = false;
     ps4AuthData.nonce_id = 0;
     ps4AuthData.passthrough_state = GPAuthState::auth_idle_state;
-    memset(ps4AuthData.ps4_auth_buffer, 0, 1064); // we might not need to 0
-    //memset(ps4AuthData.nonce_buffer, 0, 256);
+    memset(ps4AuthData.ps4_auth_buffer, 0, 1064);
     if (authType == InputModeAuthType::INPUT_MODE_AUTH_TYPE_KEYS ) {
         keyModeInitialize();
     } else if (authType == InputModeAuthType::INPUT_MODE_AUTH_TYPE_USB ) {
@@ -106,7 +105,6 @@ void PS4Auth::keyModeProcess() {
         int rss_error = 0;
         uint8_t hashed_nonce[32];
         // Sign our nonce into hashed_nonce
-        //if ( mbedtls_sha256_ret(ps4AuthData.nonce_buffer, 256, hashed_nonce, 0) < 0 ) {
         if ( mbedtls_sha256_ret(ps4AuthData.ps4_auth_buffer, 256, hashed_nonce, 0) < 0 ) {
             return;
         }
