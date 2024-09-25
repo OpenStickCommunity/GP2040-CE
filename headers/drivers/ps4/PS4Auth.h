@@ -4,10 +4,7 @@
 #include "drivers/shared/gpauthdriver.h"
 #include "mbedtls/rsa.h"
 
-// We need to keep track of:
-//     Xbox 360 Console Auth Init 34 bytes
-//     Dongle Serial 29 bytes
-//     Console-Dongle Back and Forth 46 bytes & 22 bytes
+// PS4 Auth Data in a single struct
 typedef struct {
     struct mbedtls_rsa_context rsa_context;
     uint8_t ps4_auth_buffer[1064];
