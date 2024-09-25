@@ -89,7 +89,7 @@ void PS4Driver::initialize() {
     touchpadData.p2.set_y(PS4_TP_Y_MAX / 2);
 
     sensorData.powerLevel = 0xB; // 0x00-0x0A, 0x00-0x0B if charging
-    sensorData.charging = 1;     // set this to 0 to show as not plugged in
+    sensorData.charging = 1;     // set this to 1 to show as plugged in
     sensorData.headphones = 0;
     sensorData.microphone = 0;
     sensorData.extension = 0;
