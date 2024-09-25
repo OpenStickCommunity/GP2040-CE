@@ -560,6 +560,10 @@ std::string setProfileOptions()
                 profileOptions.gpioMappingsSets[altsIndex].pins[pin].customDpadMask = (uint32_t)alt[pinName]["customDpadMask"];
             }
         }
+        size_t profileLabelSize = sizeof(profileOptions.gpioMappingsSets[altsIndex].profileLabel);
+        strncpy(profileOptions.gpioMappingsSets[altsIndex].profileLabel, alt["profileLabel"], profileLabelSize - 1);
+        profileOptions.gpioMappingsSets[altsIndex].profileLabel[profileLabelSize - 1] = '\0';
+
         profileOptions.gpioMappingsSets_count = ++altsIndex;
         if (altsIndex > 2) break;
     }
@@ -614,6 +618,7 @@ std::string getProfileOptions()
         writePinDoc(i, "pin27", profileOptions.gpioMappingsSets[i].pins[27]);
         writePinDoc(i, "pin28", profileOptions.gpioMappingsSets[i].pins[28]);
         writePinDoc(i, "pin29", profileOptions.gpioMappingsSets[i].pins[29]);
+        writeDoc(doc, "alternativePinMappings", i, "profileLabel", profileOptions.gpioMappingsSets[i].profileLabel);
     }
 
     return serialize_json(doc);
@@ -1039,21 +1044,24 @@ std::string setPinMappings()
 {
     DynamicJsonDocument doc = get_post_data();
 
-    GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
+    GpioMappings& gpioMappings = Storage::getInstance().getGpioMappings();
 
     char pinName[6];
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
         snprintf(pinName, 6, "pin%0*d", 2, pin);
         // setting a pin shouldn't change a new existing addon/reserved pin
-        if (gpioMappings[pin].action != GpioAction::RESERVED &&
-                gpioMappings[pin].action != GpioAction::ASSIGNED_TO_ADDON &&
+        if (gpioMappings.pins[pin].action != GpioAction::RESERVED &&
+                gpioMappings.pins[pin].action != GpioAction::ASSIGNED_TO_ADDON &&
                 (GpioAction)doc[pinName]["action"] != GpioAction::RESERVED &&
                 (GpioAction)doc[pinName]["action"] != GpioAction::ASSIGNED_TO_ADDON) {
-            gpioMappings[pin].action = (GpioAction)doc[pinName]["action"];
-            gpioMappings[pin].customButtonMask = (uint32_t)doc[pinName]["customButtonMask"];
-            gpioMappings[pin].customDpadMask = (uint32_t)doc[pinName]["customDpadMask"];
+            gpioMappings.pins[pin].action = (GpioAction)doc[pinName]["action"];
+            gpioMappings.pins[pin].customButtonMask = (uint32_t)doc[pinName]["customButtonMask"];
+            gpioMappings.pins[pin].customDpadMask = (uint32_t)doc[pinName]["customDpadMask"];
         }
     }
+    size_t profileLabelSize = sizeof(gpioMappings.profileLabel);
+    strncpy(gpioMappings.profileLabel, doc["profileLabel"], profileLabelSize - 1);
+    gpioMappings.profileLabel[profileLabelSize - 1] = '\0';
 
     Storage::getInstance().save();
 
@@ -1064,7 +1072,7 @@ std::string getPinMappings()
 {
     DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
 
-    GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
+    GpioMappings& gpioMappings = Storage::getInstance().getGpioMappings();
 
     const auto writePinDoc = [&](const char* key, const GpioMappingInfo& value) -> void
     {
@@ -1073,36 +1081,38 @@ std::string getPinMappings()
         writeDoc(doc, key, "customDpadMask", value.customDpadMask);
     };
 
-    writePinDoc("pin00", gpioMappings[0]);
-    writePinDoc("pin01", gpioMappings[1]);
-    writePinDoc("pin02", gpioMappings[2]);
-    writePinDoc("pin03", gpioMappings[3]);
-    writePinDoc("pin04", gpioMappings[4]);
-    writePinDoc("pin05", gpioMappings[5]);
-    writePinDoc("pin06", gpioMappings[6]);
-    writePinDoc("pin07", gpioMappings[7]);
-    writePinDoc("pin08", gpioMappings[8]);
-    writePinDoc("pin09", gpioMappings[9]);
-    writePinDoc("pin10", gpioMappings[10]);
-    writePinDoc("pin11", gpioMappings[11]);
-    writePinDoc("pin12", gpioMappings[12]);
-    writePinDoc("pin13", gpioMappings[13]);
-    writePinDoc("pin14", gpioMappings[14]);
-    writePinDoc("pin15", gpioMappings[15]);
-    writePinDoc("pin16", gpioMappings[16]);
-    writePinDoc("pin17", gpioMappings[17]);
-    writePinDoc("pin18", gpioMappings[18]);
-    writePinDoc("pin19", gpioMappings[19]);
-    writePinDoc("pin20", gpioMappings[20]);
-    writePinDoc("pin21", gpioMappings[21]);
-    writePinDoc("pin22", gpioMappings[22]);
-    writePinDoc("pin23", gpioMappings[23]);
-    writePinDoc("pin24", gpioMappings[24]);
-    writePinDoc("pin25", gpioMappings[25]);
-    writePinDoc("pin26", gpioMappings[26]);
-    writePinDoc("pin27", gpioMappings[27]);
-    writePinDoc("pin28", gpioMappings[28]);
-    writePinDoc("pin29", gpioMappings[29]);
+    writePinDoc("pin00", gpioMappings.pins[0]);
+    writePinDoc("pin01", gpioMappings.pins[1]);
+    writePinDoc("pin02", gpioMappings.pins[2]);
+    writePinDoc("pin03", gpioMappings.pins[3]);
+    writePinDoc("pin04", gpioMappings.pins[4]);
+    writePinDoc("pin05", gpioMappings.pins[5]);
+    writePinDoc("pin06", gpioMappings.pins[6]);
+    writePinDoc("pin07", gpioMappings.pins[7]);
+    writePinDoc("pin08", gpioMappings.pins[8]);
+    writePinDoc("pin09", gpioMappings.pins[9]);
+    writePinDoc("pin10", gpioMappings.pins[10]);
+    writePinDoc("pin11", gpioMappings.pins[11]);
+    writePinDoc("pin12", gpioMappings.pins[12]);
+    writePinDoc("pin13", gpioMappings.pins[13]);
+    writePinDoc("pin14", gpioMappings.pins[14]);
+    writePinDoc("pin15", gpioMappings.pins[15]);
+    writePinDoc("pin16", gpioMappings.pins[16]);
+    writePinDoc("pin17", gpioMappings.pins[17]);
+    writePinDoc("pin18", gpioMappings.pins[18]);
+    writePinDoc("pin19", gpioMappings.pins[19]);
+    writePinDoc("pin20", gpioMappings.pins[20]);
+    writePinDoc("pin21", gpioMappings.pins[21]);
+    writePinDoc("pin22", gpioMappings.pins[22]);
+    writePinDoc("pin23", gpioMappings.pins[23]);
+    writePinDoc("pin24", gpioMappings.pins[24]);
+    writePinDoc("pin25", gpioMappings.pins[25]);
+    writePinDoc("pin26", gpioMappings.pins[26]);
+    writePinDoc("pin27", gpioMappings.pins[27]);
+    writePinDoc("pin28", gpioMappings.pins[28]);
+    writePinDoc("pin29", gpioMappings.pins[29]);
+
+    writeDoc(doc, "profileLabel", gpioMappings.profileLabel);
 
     return serialize_json(doc);
 }

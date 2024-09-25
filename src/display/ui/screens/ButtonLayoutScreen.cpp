@@ -115,13 +115,19 @@ int8_t ButtonLayoutScreen::update() {
 void ButtonLayoutScreen::generateHeader() {
 	// Limit to 21 chars with 6x8 font for now
 	statusBar.clear();
+	Storage& storage = Storage::getInstance();
 
 	// Display Profile # banner
 	if ( profileModeDisplay ) {
 		if (((getMillis() - profileDelayStart) / 1000) < profileDelay) {
-			statusBar = "     Profile #";
-			statusBar +=  std::to_string(getGamepad()->getOptions().profileNumber);
-        	return;
+			statusBar.assign(storage.currentProfileLabel(), strlen(storage.currentProfileLabel()));
+			if (statusBar.empty()) {
+				statusBar = "     Profile #";
+				statusBar +=  std::to_string(getGamepad()->getOptions().profileNumber);
+			} else {
+				statusBar.insert(statusBar.begin(), (21-statusBar.length())/2, ' ');
+			}
+			return;
 		} else {
 			profileModeDisplay = false;
 		}
@@ -172,7 +178,7 @@ void ButtonLayoutScreen::generateHeader() {
 		case INPUT_MODE_CONFIG: statusBar += "CONFIG"; break;
 	}
 
-	const TurboOptions& turboOptions = Storage::getInstance().getAddonOptions().turboOptions;
+	const TurboOptions& turboOptions = storage.getAddonOptions().turboOptions;
 	if ( turboOptions.enabled ) {
 		statusBar += " T";
 		if ( turboOptions.shotCount < 10 ) // padding

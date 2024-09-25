@@ -4,6 +4,7 @@
 #include "BoardConfig.h"
 #include "types.h"
 #include <string.h>
+#include <string>
 
 #include "enums.pb.h"
 #include "gamepad/GamepadState.h"
