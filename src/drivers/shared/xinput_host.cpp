@@ -116,6 +116,29 @@ bool tuh_xinput_receive_report(uint8_t dev_addr, uint8_t instance) {
     return true;
 }
 
+bool tuh_xinput_receive_vendor_report(uint8_t dev_addr, uint8_t instance, uint8_t request, uint16_t value, uint8_t index, uint16_t length, uint8_t * recvBuf) {
+    const tusb_control_request_t xfer_ctrl_req = {
+            .bmRequestType_bit {
+                .recipient = TUSB_REQ_RCPT_INTERFACE,
+                .type = TUSB_REQ_TYPE_VENDOR,
+                .direction = TUSB_DIR_IN,
+            },
+            .bRequest = request,
+            .wValue = value,
+            .wIndex = TU_U16(index, 0x03),
+            .wLength = length
+    };
+    tuh_xfer_t xfer = {
+        .daddr       = dev_addr,
+        .ep_addr     = 0,
+        .setup       = &xfer_ctrl_req,
+        .buffer      = recvBuf,
+        .complete_cb = NULL,
+    };
+    return tuh_control_xfer(&xfer);
+}
+
+
 bool tuh_xinput_send_report(uint8_t dev_addr, uint8_t instance, uint8_t const *report, uint16_t len) {
     xinputh_interface_t *xid_itf = get_instance(dev_addr, instance);
 
@@ -138,6 +161,28 @@ bool tuh_xinput_send_report(uint8_t dev_addr, uint8_t instance, uint8_t const *r
     } 
 
     return ret;
+}
+
+bool tuh_xinput_send_vendor_report(uint8_t dev_addr, uint8_t instance, uint8_t request, uint16_t value, uint8_t index, uint16_t length, uint8_t * sendBuf) {
+    const tusb_control_request_t xfer_ctrl_req = {
+            .bmRequestType_bit {
+                .recipient = TUSB_REQ_RCPT_INTERFACE,
+                .type = TUSB_REQ_TYPE_VENDOR,
+                .direction = TUSB_DIR_OUT,
+            },
+            .bRequest = request,
+            .wValue = value,
+            .wIndex = TU_U16(index, 0x03),
+            .wLength = length
+    };
+    tuh_xfer_t xfer = {
+        .daddr       = dev_addr,
+        .ep_addr     = 0,
+        .setup       = &xfer_ctrl_req,
+        .buffer      = sendBuf,
+        .complete_cb = NULL,
+    };
+    return tuh_control_xfer(&xfer);
 }
 
 bool tuh_xinput_ready(uint8_t dev_addr, uint8_t instance) {

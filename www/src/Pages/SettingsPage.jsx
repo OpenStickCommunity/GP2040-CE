@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import { Trans, useTranslation } from 'react-i18next';
 import JSEncrypt from 'jsencrypt';
 import isNil from 'lodash/isNil';
+import ContextualHelpOverlay from '../Components/ContextualHelpOverlay';
 
 import { AppContext } from '../Contexts/AppContext';
 import KeyboardMapper, { validateMappings } from '../Components/KeyboardMapper';
@@ -119,7 +120,12 @@ const SHA256 = (ascii) => {
 };
 
 const INPUT_MODES = [
-	{ labelKey: 'input-mode-options.xinput', value: 0, group: 'primary' }, //, authentication: ['none', 'usb'] }, AUTH WIP
+	{ labelKey: 'input-mode-options.xinput',
+		value: 0,
+		group: 'primary',
+		optional: ['usb'],
+		authentication: ['none', 'usb'],
+	},
 	{
 		labelKey: 'input-mode-options.nintendo-switch',
 		value: 1,
@@ -219,6 +225,11 @@ const PS4_MODES = [
 	{ labelKey: 'ps4-mode-options.arcadestick', value: 7 },
 ];
 
+const PS4_ID_MODES = [
+	{ labelKey: 'ps4-id-mode-options.console', value: 0 },
+	{ labelKey: 'ps4-id-mode-options.emulation', value: 1 },
+];
+
 const AUTHENTICATION_TYPES = [
 	{ labelKey: 'input-mode-authentication.none', value: 0 },
 	{ labelKey: 'input-mode-authentication.key', value: 1 },
@@ -247,6 +258,7 @@ const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.load-profile-3', value: 17 },
 	{ labelKey: 'hotkey-actions.load-profile-4', value: 18 },
 	{ labelKey: 'hotkey-actions.next-profile', value: 35 },
+	{ labelKey: 'hotkey-actions.previous-profile', value: 42 },
 	{ labelKey: 'hotkey-actions.l3-button', value: 19 },
 	{ labelKey: 'hotkey-actions.r3-button', value: 20 },
 	{ labelKey: 'hotkey-actions.touchpad-button', value: 21 },
@@ -265,6 +277,10 @@ const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.a2-button', value: 34 },
 	{ labelKey: 'hotkey-actions.a3-button', value: 36 },
 	{ labelKey: 'hotkey-actions.a4-button', value: 37 },
+	{ labelKey: 'hotkey-actions.dpad-up', value: 38 },
+	{ labelKey: 'hotkey-actions.dpad-down', value: 39 },
+	{ labelKey: 'hotkey-actions.dpad-left', value: 40 },
+	{ labelKey: 'hotkey-actions.dpad-right', value: 41 },
 ];
 
 const FORCED_SETUP_MODES = [
@@ -328,6 +344,11 @@ const schema = yup.object().shape({
 		.number()
 		.required()
 		.label('Switch Touchpad and Share'),
+	ps4ControllerIDMode: yup
+		.number()
+		.required()
+		.oneOf(PS4_ID_MODES.map((o) => o.value))
+		.label('PS4 Controller Identification Mode'),
 	forcedSetupMode: yup
 		.number()
 		.required()
@@ -427,6 +448,8 @@ const FormContext = ({ setButtonLabels, setKeyMappings }) => {
 		if (!!values.ps5AuthType) values.ps5AuthType = parseInt(values.ps5AuthType);
 		if (!!values.xinputAuthType)
 			values.xinputAuthType = parseInt(values.xinputAuthType);
+		if (!!values.ps4ControllerIDMode)
+			values.ps4ControllerIDMode = parseInt(values.ps4ControllerIDMode);
 
 		setButtonLabels({
 			swapTpShareLabels:
@@ -693,9 +716,7 @@ export default function SettingsPage() {
 				return (
 					<div className="row mb-3">
 						<Row className="mb-3">
-							<Col sm={10}>
-								{t('SettingsPage:ps4-mode-explanation-text')}
-							</Col>
+							<Col sm={10}>{t('SettingsPage:ps4-mode-explanation-text')}</Col>
 						</Row>
 						<Row className="mb-3">
 							<Col sm={10}>
@@ -712,6 +733,38 @@ export default function SettingsPage() {
 										);
 									}}
 								/>
+							</Col>
+						</Row>
+						<Row className="mb-3">
+							<Col sm={3}>
+								<Form.Label>
+									{t('SettingsPage:ps4-id-mode-label')}
+									<ContextualHelpOverlay
+										title={t('SettingsPage:ps4-id-mode-label')}
+										body={
+											<Trans
+												ns="SettingsPage"
+												i18nKey="ps4-id-mode-explanation-text"
+												components={{ ul: <ul />, li: <li/> }}
+											/>
+										}
+									/>
+								</Form.Label>
+								<Form.Select
+									name="ps4ControllerIDMode"
+									className="form-select-sm"
+									value={values.ps4ControllerIDMode}
+									onChange={handleChange}
+								>
+									{PS4_ID_MODES.map((o) => (
+										<option
+											key={`ps4-id-option-${o.value}`}
+											value={o.value}
+										>
+											{`${t('SettingsPage:'+o.labelKey)}`}
+										</option>
+									))}
+								</Form.Select>
 							</Col>
 						</Row>
 						{generateAuthSelection(
@@ -824,9 +877,7 @@ export default function SettingsPage() {
 				return (
 					<div className="row mb-3">
 						<Row className="mb-3">
-							<Col sm={10}>
-								{t('SettingsPage:ps5-mode-explanation-text')}
-							</Col>
+							<Col sm={10}>{t('SettingsPage:ps5-mode-explanation-text')}</Col>
 						</Row>
 						<Row className="mb-3">
 							<Col sm={10}>
@@ -843,6 +894,38 @@ export default function SettingsPage() {
 										);
 									}}
 								/>
+							</Col>
+						</Row>
+						<Row className="mb-3">
+							<Col sm={3}>
+								<Form.Label>
+									{t('SettingsPage:ps4-id-mode-label')}
+									<ContextualHelpOverlay
+										title={t('SettingsPage:ps4-id-mode-label')}
+										body={
+											<Trans
+												ns="SettingsPage"
+												i18nKey="ps4-id-mode-explanation-text"
+												components={{ ul: <ul />, li: <li/> }}
+											/>
+										}
+									/>
+								</Form.Label>
+								<Form.Select
+									name="ps4ControllerIDMode"
+									className="form-select-sm"
+									value={values.ps4ControllerIDMode}
+									onChange={handleChange}
+								>
+									{PS4_ID_MODES.map((o) => (
+										<option
+											key={`ps4-id-option-${o.value}`}
+											value={o.value}
+										>
+											{`${t('SettingsPage:'+o.labelKey)}`}
+										</option>
+									))}
+								</Form.Select>
 							</Col>
 						</Row>
 						{generateAuthSelection(
@@ -877,6 +960,28 @@ export default function SettingsPage() {
 						)}
 					</div>
 				);
+			case 'input-mode-options.xinput':
+				return (
+					<div className="row mb-3">
+						{generateAuthSelection(
+							inputMode,
+							t('SettingsPage:auth-settings-label'),
+							'xinputAuthType',
+							values.xinputAuthType,
+							errors.xinputAuthType,
+							handleChange,
+						)}
+						<Row className="mb-3">
+							<Col sm={10}>
+								<Trans
+									ns="SettingsPage"
+									i18nKey="xinput-mode-text"
+									components={{ span: <span className="text-success" /> }}
+								/>
+							</Col>
+						</Row>
+					</div>
+				);
 			case 'input-mode-options.xbone':
 				return (
 					<div className="row mb-3">
@@ -897,7 +1002,7 @@ export default function SettingsPage() {
 						<p>
 							{t('SettingsPage:no-mode-settings-text', {
 								mode: t(`SettingsPage:${inputMode.labelKey}`),
-								interpolation: { escapeValue: false }
+								interpolation: { escapeValue: false },
 							})}
 						</p>
 					</div>
@@ -1027,19 +1132,23 @@ export default function SettingsPage() {
 										<Nav variant="pills" className="flex-column">
 											<Nav.Item>
 												<Nav.Link eventKey="inputmode">
-												{t('SettingsPage:settings-header-text')}
+													{t('SettingsPage:settings-header-text')}
 												</Nav.Link>
 											</Nav.Item>
 											<Nav.Item>
-												<Nav.Link eventKey="gamepad">{t('SettingsPage:gamepad-settings-header-text')}</Nav.Link>
+												<Nav.Link eventKey="gamepad">
+													{t('SettingsPage:gamepad-settings-header-text')}
+												</Nav.Link>
 											</Nav.Item>
 											<Nav.Item>
 												<Nav.Link eventKey="bootmode">
-												{t('SettingsPage:boot-input-mode-label')}
+													{t('SettingsPage:boot-input-mode-label')}
 												</Nav.Link>
 											</Nav.Item>
 											<Nav.Item>
-												<Nav.Link eventKey="hotkey">{t('SettingsPage:hotkey-settings-label')}</Nav.Link>
+												<Nav.Link eventKey="hotkey">
+													{t('SettingsPage:hotkey-settings-label')}
+												</Nav.Link>
 											</Nav.Item>
 										</Nav>
 									</Col>
@@ -1323,7 +1432,7 @@ export default function SettingsPage() {
 															ns="SettingsPage"
 															i18nKey="hotkey-settings-sub-header"
 															components={{
-																link_pinmap: <NavLink to="/pin-mapping" />
+																link_pinmap: <NavLink to="/pin-mapping" />,
 															}}
 														/>
 													</div>
@@ -1451,6 +1560,21 @@ export default function SettingsPage() {
 																		{errors[o] && errors[o]?.action}
 																	</Form.Control.Feedback>
 																</Col>
+																{Boolean(
+																	values[o]?.buttonsMask || values[o]?.action,
+																) && (
+																	<Col>
+																		<Button
+																			size="sm"
+																			onClick={() => {
+																				setFieldValue(`${o}.action`, 0);
+																				setFieldValue(`${o}.buttonsMask`, 0);
+																			}}
+																		>
+																			{'✕'}
+																		</Button>
+																	</Col>
+																)}
 															</Form.Group>
 														))}
 													</div>

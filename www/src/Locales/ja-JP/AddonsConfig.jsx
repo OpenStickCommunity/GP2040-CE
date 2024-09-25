@@ -107,7 +107,8 @@ export default {
 	'socd-cleaning-mode-selection-slider-mode-default-label':
 		'SOCDクリーナ標準モード',
 	'ps4-mode-sub-header': '免責事項',
-	'ps4-mode-sub-header-text': 'いかなる場合においてもGP2040-CEから以下のファイルは提供いたしません！！',
+	'ps4-mode-sub-header-text':
+		'いかなる場合においてもGP2040-CEから以下のファイルは提供いたしません！！',
 	'ps4-mode-text':
 		'PS4モードを利用するには以下3種類のファイルをアップロードし、「検証して保存」をクリックしてください。',
 	'ps4-mode-private-key-label': '秘密鍵 (PEM)',
@@ -154,4 +155,11 @@ export default {
 	'tilt-socd-mode-0': '上優先',
 	'tilt-socd-mode-1': 'ニュートラル',
 	'tilt-socd-mode-2': '後入力優先',
+	'drv8833-rumble-header-text': 'DRV8833 振動機能設定',
+	'drv8833-rumble-left-motor-pin-label': '左振動モーター端子',
+	'drv8833-rumble-right-motor-pin-label': '右振動モーター端子',
+	'drv8833-rumble-motor-sleep-pin-label': 'モータースリープ端子',
+	'drv8833-rumble-pwm-frequency-label': 'PWM 周波数',
+	'drv8833-rumble-duty-min-label': '最低デューティー比',
+	'drv8833-rumble-duty-max-label': '最大デューティー比',
 };

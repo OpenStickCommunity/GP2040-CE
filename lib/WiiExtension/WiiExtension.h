@@ -31,6 +31,11 @@ typedef enum {
 #define WII_DATA_TYPE_1             1
 #define WII_DATA_TYPE_2             2
 #define WII_DATA_TYPE_3             3
+// Motion Plus specific
+#define WII_DATA_TYPE_4             4
+#define WII_DATA_TYPE_5             5
+#define WII_DATA_TYPE_6             6
+#define WII_DATA_TYPE_7             7
 
 #define WII_ANALOG_PRECISION_0      32
 #define WII_ANALOG_PRECISION_1      64
@@ -76,6 +81,14 @@ typedef enum {
 #define WII_EXTENSION_CALIBRATION true
 #endif
 
+#ifndef WII_EXTENSION_I2C_ADDR
+#define WII_EXTENSION_I2C_ADDR 0x52
+#endif
+
+#ifndef WII_MOTIONPLUS_I2C_ADDR
+#define WII_MOTIONPLUS_I2C_ADDR 0x53
+#endif
+
 #define WII_ALARM_NUM 0
 #define WII_ALARM_IRQ TIMER_IRQ_0
 
@@ -102,6 +115,7 @@ static volatile bool WiiExtension_alarmFired;
 class WiiExtension {
   protected:
     uint8_t address;
+    PeripheralI2C* i2c;
   public:
     int8_t extensionType = WII_EXTENSION_NONE;
     int8_t dataType = WII_DATA_TYPE_0;
@@ -109,6 +123,7 @@ class WiiExtension {
     bool isReady         = false;
 
     // Constructor 
+    WiiExtension() {}
     WiiExtension(PeripheralI2C *i2cController, uint8_t addr);
 
     // Methods
@@ -117,11 +132,12 @@ class WiiExtension {
     void start();
     void poll();
 
+    void setI2C(PeripheralI2C *i2cController) { this->i2c = i2cController; }
+    void setAddress(uint8_t addr) { this->address = addr; }
+
     ExtensionBase* getController() { return extensionController; };
   private:
     ExtensionBase *extensionController = NULL;
-
-    PeripheralI2C* i2c;
 
 #if WII_EXTENSION_DEBUG==true
     uint8_t _lastRead[16] = {0xFF};
@@ -134,6 +150,9 @@ class WiiExtension {
 
     void waitUntil_us(uint64_t us);
     static void alarmIRQ();
+
+    bool isMotionPlus = false;
+    bool isExtension = false;
 };
 
 #endif

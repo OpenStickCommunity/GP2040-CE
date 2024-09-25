@@ -3,6 +3,7 @@
 #include "drivermanager.h"
 #include "drivers/ps4/PS4Driver.h"
 #include "drivers/xbone/XBOneDriver.h"
+#include "drivers/xinput/XInputDriver.h"
 
 void ButtonLayoutScreen::init() {
     const InputHistoryOptions& inputHistoryOptions = Storage::getInstance().getAddonOptions().inputHistoryOptions;
@@ -114,13 +115,19 @@ int8_t ButtonLayoutScreen::update() {
 void ButtonLayoutScreen::generateHeader() {
 	// Limit to 21 chars with 6x8 font for now
 	statusBar.clear();
+	Storage& storage = Storage::getInstance();
 
 	// Display Profile # banner
 	if ( profileModeDisplay ) {
 		if (((getMillis() - profileDelayStart) / 1000) < profileDelay) {
-			statusBar = "     Profile #";
-			statusBar +=  std::to_string(getGamepad()->getOptions().profileNumber);
-        	return;
+			statusBar.assign(storage.currentProfileLabel(), strlen(storage.currentProfileLabel()));
+			if (statusBar.empty()) {
+				statusBar = "     Profile #";
+				statusBar +=  std::to_string(getGamepad()->getOptions().profileNumber);
+			} else {
+				statusBar.insert(statusBar.begin(), (21-statusBar.length())/2, ' ');
+			}
+			return;
 		} else {
 			profileModeDisplay = false;
 		}
@@ -132,7 +139,6 @@ void ButtonLayoutScreen::generateHeader() {
 		case INPUT_MODE_PS3:    statusBar += "PS3"; break;
 		case INPUT_MODE_GENERIC: statusBar += "USBHID"; break;
 		case INPUT_MODE_SWITCH: statusBar += "SWITCH"; break;
-		case INPUT_MODE_XINPUT: statusBar += "XINPUT"; break;
 		case INPUT_MODE_MDMINI: statusBar += "GEN/MD"; break;
 		case INPUT_MODE_NEOGEO: statusBar += "NGMINI"; break;
 		case INPUT_MODE_PCEMINI: statusBar += "PCE/TG"; break;
@@ -161,11 +167,18 @@ void ButtonLayoutScreen::generateHeader() {
 			else
 				statusBar += "*";
 			break;
+		case INPUT_MODE_XINPUT:
+            statusBar += "X";
+            if(((XInputDriver*)DriverManager::getInstance().getDriver())->getAuthEnabled() == true )
+                statusBar += "B360";
+            else
+                statusBar += "INPUT";
+            break;
 		case INPUT_MODE_KEYBOARD: statusBar += "HID-KB"; break;
 		case INPUT_MODE_CONFIG: statusBar += "CONFIG"; break;
 	}
 
-	const TurboOptions& turboOptions = Storage::getInstance().getAddonOptions().turboOptions;
+	const TurboOptions& turboOptions = storage.getAddonOptions().turboOptions;
 	if ( turboOptions.enabled ) {
 		statusBar += " T";
 		if ( turboOptions.shotCount < 10 ) // padding

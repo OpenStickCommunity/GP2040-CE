@@ -44,7 +44,7 @@ void XBOneAuthUSBListener::process() {
         return;
 
     // Received a packet from the console (or Windows) to dongle
-    if ( xboxOneAuthData->xboneState == XboxOneState::send_auth_console_to_dongle ) {
+    if ( xboxOneAuthData->xboneState == GPAuthState::send_auth_console_to_dongle ) {
         uint8_t isChunked = ( xboxOneAuthData->consoleBuffer.length > GIP_MAX_CHUNK_SIZE );
         uint8_t needsAck = ( xboxOneAuthData->consoleBuffer.length > 2 );
         outgoingXGIP.reset();
@@ -52,14 +52,14 @@ void XBOneAuthUSBListener::process() {
             xboxOneAuthData->consoleBuffer.sequence, 1, isChunked, needsAck);
         outgoingXGIP.setData(xboxOneAuthData->consoleBuffer.data, xboxOneAuthData->consoleBuffer.length);
         xboxOneAuthData->consoleBuffer.reset();
-        xboxOneAuthData->xboneState = XboxOneState::wait_auth_console_to_dongle;
+        xboxOneAuthData->xboneState = GPAuthState::wait_auth_console_to_dongle;
     }
 
     // Process waiting (always on first frame)
-    if ( xboxOneAuthData->xboneState == XboxOneState::wait_auth_console_to_dongle) {
+    if ( xboxOneAuthData->xboneState == GPAuthState::wait_auth_console_to_dongle) {
         queue_host_report(outgoingXGIP.generatePacket(), outgoingXGIP.getPacketLength());
         if ( outgoingXGIP.getChunked() == false || outgoingXGIP.endOfChunk() == true) {
-            xboxOneAuthData->xboneState = XboxOneState::auth_idle_state;
+            xboxOneAuthData->xboneState = GPAuthState::auth_idle_state;
         }
     }
 
@@ -113,7 +113,7 @@ void XBOneAuthUSBListener::report_received(uint8_t dev_addr, uint8_t instance, u
             queue_host_report((uint8_t*)outgoingXGIP.generatePacket(), outgoingXGIP.getPacketLength());
             break;
         case GIP_DEVICE_DESCRIPTOR:
-            if ( incomingXGIP.endOfChunk() == true ) {
+            if ( incomingXGIP.endOfChunk() == true && xboxOneAuthData->dongle_ready != true) {
                 outgoingXGIP.reset();  // Power-on full string
                 outgoingXGIP.setAttributes(GIP_POWER_MODE_DEVICE_CONFIG, 2, 1, false, 0);
                 outgoingXGIP.setData(xb1_power_on, sizeof(xb1_power_on));
@@ -139,7 +139,7 @@ void XBOneAuthUSBListener::report_received(uint8_t dev_addr, uint8_t instance, u
                 (incomingXGIP.getChunked() == true && incomingXGIP.endOfChunk() == true )) {
                 xboxOneAuthData->dongleBuffer.setBuffer(incomingXGIP.getData(), incomingXGIP.getDataLength(),
                     incomingXGIP.getSequence(), incomingXGIP.getCommand());
-                xboxOneAuthData->xboneState = XboxOneState::send_auth_dongle_to_console;
+                xboxOneAuthData->xboneState = GPAuthState::send_auth_dongle_to_console;
                 incomingXGIP.reset();
             }
             break;

@@ -4,10 +4,12 @@
 #include <cstdint>
 
 namespace System {
-    // Returns the size of on-board flash memory in bytes
+    // Returns the size of on-board flash memory reserved by the config
     uint32_t getTotalFlash();
     // Returns the amount of on-board flash memory used by the firmware in bytes
     uint32_t getUsedFlash();
+    // Returns the amount of physical flash memory on the board
+    uint32_t getPhysicalFlash();
     // Returns the amount of memory used for static allocations in bytes
     uint32_t getStaticAllocs();
     // Returns the total size of heap memory in bytes

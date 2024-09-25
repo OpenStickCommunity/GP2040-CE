@@ -252,7 +252,7 @@ void Gamepad::process()
 void Gamepad::read()
 {
 	Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
-	
+
 	// Get the midpoint value for the current mode
 	uint16_t joystickMid = GAMEPAD_JOYSTICK_MID;
 	if ( DriverManager::getInstance().getDriver() != nullptr ) {
@@ -317,7 +317,7 @@ void Gamepad::hotkey()
 {
 	if (options.lockHotkeys)
 		return;
-	
+
 	GamepadHotkey action = HOTKEY_NONE;
 	if (pressedHotkey(hotkeyOptions.hotkey01))	    action = selectHotkey(hotkeyOptions.hotkey01);
 	else if (pressedHotkey(hotkeyOptions.hotkey02))	action = selectHotkey(hotkeyOptions.hotkey02);
@@ -352,6 +352,17 @@ void Gamepad::clearState() {
 	state.ry = GAMEPAD_JOYSTICK_MID;
 	state.lt = 0;
 	state.rt = 0;
+}
+
+void Gamepad::clearRumbleState() {
+	auxState.haptics.leftActuator.active = false;
+	auxState.haptics.leftActuator.intensity = 0;
+	auxState.haptics.rightActuator.active = false;
+	auxState.haptics.rightActuator.intensity = 0;
+	auxState.haptics.leftTrigger.active = false;
+	auxState.haptics.leftTrigger.intensity = 0;
+	auxState.haptics.rightTrigger.active = false;
+	auxState.haptics.rightTrigger.intensity = 0;
 }
 
 /**
@@ -429,6 +440,18 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 		case HOTKEY_A4_BUTTON:
 			state.buttons |= GAMEPAD_MASK_A4;
 			break;
+		case HOTKEY_DPAD_UP:
+			state.dpad |= GAMEPAD_MASK_UP;
+			break;
+		case HOTKEY_DPAD_DOWN:
+			state.dpad |= GAMEPAD_MASK_DOWN;
+			break;
+		case HOTKEY_DPAD_LEFT:
+			state.dpad |= GAMEPAD_MASK_LEFT;
+			break;
+		case HOTKEY_DPAD_RIGHT:
+			state.dpad |= GAMEPAD_MASK_RIGHT;
+			break;
 		case HOTKEY_SOCD_UP_PRIORITY:
 			if (action != lastAction) {
 				options.socdMode = SOCD_MODE_UP_PRIORITY;
@@ -467,7 +490,7 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 			break;
 		case HOTKEY_TOUCHPAD_BUTTON:
 			state.buttons |= GAMEPAD_MASK_A2;
-			break;				
+			break;
 		case HOTKEY_INVERT_X_AXIS:
 			if (action != lastAction) {
 				options.invertXAxis = !options.invertXAxis;
@@ -524,6 +547,13 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 		case HOTKEY_NEXT_PROFILE:
 			if (action != lastAction) {
 				Storage::getInstance().nextProfile();
+				userRequestedReinit = true;
+				reqSave = true;
+			}
+			break;
+		case HOTKEY_PREVIOUS_PROFILE:
+			if (action != lastAction) {
+				Storage::getInstance().previousProfile();
 				userRequestedReinit = true;
 				reqSave = true;
 			}

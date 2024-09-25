@@ -2,6 +2,7 @@
 #define PLAYER_LEDS_H_
 
 #include <cstring>
+#include <cstdio>
 #include <stdint.h>
 
 #include "pico/time.h"
@@ -26,6 +27,7 @@ typedef enum
 	PLED_ANIM_BLINK,
 	PLED_ANIM_CYCLE,
 	PLED_ANIM_FADE,
+	PLED_ANIM_BLINK_CUSTOM,
 } PLEDAnimationType;
 
 const PLEDAnimationType ANIMATION_TYPES[] =
@@ -36,22 +38,27 @@ const PLEDAnimationType ANIMATION_TYPES[] =
 	PLED_ANIM_BLINK,
 	PLED_ANIM_CYCLE,
 	PLED_ANIM_FADE,
+	PLED_ANIM_BLINK_CUSTOM,
 };
 
 typedef enum
 {
-	PLED_SPEED_OFF       = 0,
-	PLED_SPEED_LUDICROUS = 20,
-	PLED_SPEED_FASTER    = 100,
-	PLED_SPEED_FAST      = 250,
-	PLED_SPEED_NORMAL    = 500,
-	PLED_SPEED_SLOW      = 1000,
+	PLED_SPEED_OFF        = 0,
+	PLED_SPEED_PLAID      = 10,
+	PLED_SPEED_LUDICROUS  = 20,
+	PLED_SPEED_RIDICULOUS = 50,
+	PLED_SPEED_FASTER     = 100,
+	PLED_SPEED_FAST       = 250,
+	PLED_SPEED_NORMAL     = 500,
+	PLED_SPEED_SLOW       = 1000,
 } PLEDAnimationSpeed;
 
 const PLEDAnimationSpeed ANIMATION_SPEEDS[] =
 {
 	PLED_SPEED_OFF,
+	PLED_SPEED_PLAID,
 	PLED_SPEED_LUDICROUS,
+	PLED_SPEED_RIDICULOUS,
 	PLED_SPEED_FASTER,
 	PLED_SPEED_FAST,
 	PLED_SPEED_NORMAL,
@@ -63,6 +70,8 @@ struct PLEDAnimationState
 	uint8_t state = 0;
 	PLEDAnimationType animation;
 	PLEDAnimationSpeed speed;
+	uint32_t speedOn = 0;
+	uint32_t speedOff = 0;
 };
 
 class PlayerLEDs
@@ -97,6 +106,29 @@ class PlayerLEDs
 					currentPledState[i] = false;
 			}
 			nextAnimationTime = make_timeout_time_ms(speed);
+		}
+
+		inline void handleBlinkCustom(uint32_t speed, uint32_t speedOff)
+		{
+			uint32_t nextSpeed = 0;
+			for (int i = 0; i < PLED_COUNT; i++)
+			{
+				if (speed > 0 && speedOff == 0) {
+					if (lastPledState[i]) {
+						currentPledState[i] = true;
+						nextSpeed = speed;
+					}
+				} else {
+					if (lastPledState[i]) {
+						currentPledState[i] = false;
+						nextSpeed = speed;
+					} else {
+						currentPledState[i] = true;
+						nextSpeed = speedOff;
+					}
+				}
+			}
+			nextAnimationTime = make_timeout_time_ms(nextSpeed);
 		}
 
 		inline void handleCycle(PLEDAnimationSpeed speed)
