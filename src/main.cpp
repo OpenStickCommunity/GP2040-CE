@@ -45,7 +45,7 @@ int main() {
 
 	// Sync Core0 and Core1
 	while(gp2040Core1->ready() == false ) {
-		tud_task();
+		__asm volatile ("nop\n");
 	}
 	gp2040Core0->run();
 
