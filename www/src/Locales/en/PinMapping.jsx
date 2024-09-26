@@ -13,7 +13,7 @@ export default {
 	'profile-pin-mapping-title': '{{profileLabel}} - Pin Mapping',
 	'profile-label-default': 'Profile {{profileNumber}}',
 	'profile-add-button': '+ Add Profile',
-	'profile-disabled': 'Disabled',
+	'profile-disabled': ' - (Disabled)',
 	'profile-enabled-tooltip':
 		'Disabled profiles will not be available when using hotkeys to change profile.',
 	'profile-pins-warning':

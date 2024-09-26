@@ -408,9 +408,7 @@ export default function PinMapping() {
 											profileNumber: index + 1,
 										})}
 
-									{!enabled && (
-										<span>{` - (${t('PinMapping:profile-disabled')}`}</span>
-									)}
+									{!enabled && <span>{t('PinMapping:profile-disabled')}</span>}
 								</Nav.Link>
 							</Nav.Item>
 						))}
