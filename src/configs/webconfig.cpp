@@ -1497,6 +1497,11 @@ std::string setAddonOptions()
     docToValue(sliderOptions.modeDefault, doc, "sliderModeZero");
     docToValue(sliderOptions.enabled, doc, "JSliderInputEnabled");
 
+    ToggleJoystickOptions& toggleJoystickOptions = Storage::getInstance().getAddonOptions().toggleJoystickOptions;
+    docToValue(toggleJoystickOptions.primaryToggle, doc, "toggleJoystickPrimaryToggle");
+    docToValue(toggleJoystickOptions.secondaryToggle, doc, "toggleJoystickSecondaryToggle");
+    docToValue(toggleJoystickOptions.enabled, doc, "ToggleJoystickAddonEnabled");
+
     PlayerNumberOptions& playerNumberOptions = Storage::getInstance().getAddonOptions().playerNumberOptions;
     docToValue(playerNumberOptions.number, doc, "playerNumber");
     docToValue(playerNumberOptions.enabled, doc, "PlayerNumAddonEnabled");
@@ -1921,6 +1926,11 @@ std::string getAddonOptions()
     const SliderOptions& sliderOptions = Storage::getInstance().getAddonOptions().sliderOptions;
     writeDoc(doc, "sliderModeZero", sliderOptions.modeDefault);
     writeDoc(doc, "JSliderInputEnabled", sliderOptions.enabled);
+
+    const ToggleJoystickOptions& toggleJoystickOptions = Storage::getInstance().getAddonOptions().toggleJoystickOptions;
+    writeDoc(doc, "toggleJoystickPrimaryToggle", toggleJoystickOptions.primaryToggle);
+    writeDoc(doc, "toggleJoystickSecondaryToggle", toggleJoystickOptions.secondaryToggle);
+    writeDoc(doc, "ToggleJoystickAddonEnabled", toggleJoystickOptions.enabled);
 
     const PlayerNumberOptions& playerNumberOptions = Storage::getInstance().getAddonOptions().playerNumberOptions;
     writeDoc(doc, "playerNumber", playerNumberOptions.number);

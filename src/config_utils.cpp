@@ -20,6 +20,7 @@
 #include "addons/i2canalog1219.h"
 #include "addons/display.h"
 #include "addons/jslider.h"
+#include "addons/togglejoystick.h"
 #include "addons/keyboard_host.h"
 #include "addons/neopicoleds.h"
 #include "addons/playernum.h"
@@ -574,6 +575,11 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, deprecatedModeTwo, SLIDER_MODE_TWO);
     INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, modeDefault, SLIDER_MODE_ZERO);
 
+    // addonOptions.toggleJoystickOptions
+    INIT_UNSET_PROPERTY(config.addonOptions.toggleJoystickOptions, enabled, !!TOGGLE_JOYSTICK_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.toggleJoystickOptions, primaryToggle, TOGGLE_JOYSTICK_PRIMARY_TOGGLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.toggleJoystickOptions, secondaryToggle, TOGGLE_JOYSTICK_SECONDARY_TOGGLE);
+
     // addonOptions.reverseOptions
     INIT_UNSET_PROPERTY(config.addonOptions.reverseOptions, enabled, !!REVERSE_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.reverseOptions, buttonPin, (Pin_t)-1);
@@ -1071,6 +1077,7 @@ void gpioMappingsMigrationCore(Config& config)
         markAddonPinIfUsed(peripheralOptions.blockI2C0.sda);
 
         peripheralOptions.blockI2C0.scl = (
+
             isValidPin(config.displayOptions.deprecatedI2cSCLPin) && (config.displayOptions.deprecatedI2cBlock == 0) ? 
             config.displayOptions.deprecatedI2cSCLPin : 
             (
@@ -1087,6 +1094,7 @@ void gpioMappingsMigrationCore(Config& config)
 
         // option configuration
         peripheralOptions.blockI2C0.speed = (
+
             isValidPin(config.displayOptions.deprecatedI2cSpeed) && (config.displayOptions.deprecatedI2cBlock == 0) ? 
             config.displayOptions.deprecatedI2cSpeed : 
             (

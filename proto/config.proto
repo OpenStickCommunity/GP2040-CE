@@ -222,7 +222,6 @@ message ProfileOptions
 message DisplayOptions
 {
     optional bool enabled = 1;
-    
     optional int32 deprecatedI2cBlock = 2 [deprecated = true];
     optional int32 deprecatedI2cSDAPin = 3 [deprecated = true];
     optional int32 deprecatedI2cSCLPin = 4 [deprecated = true];
@@ -437,7 +436,6 @@ message ReverseOptions
 message AnalogADS1219Options
 {
     optional bool enabled = 1;
-    
     optional int32 deprecatedI2cBlock = 2 [deprecated = true];
     optional int32 deprecatedI2cSDAPin = 3 [deprecated = true];
     optional int32 deprecatedI2cSCLPin = 4 [deprecated = true];
@@ -468,6 +466,13 @@ message DualDirectionalOptions
     optional DpadMode dpadMode = 6;
     optional DualDirectionalCombinationMode combineMode = 7;
     optional bool fourWayMode = 8;
+}
+
+message ToggleJoystickOptions
+{
+    optional bool enabled = 1;
+    optional DpadMode primaryToggle = 2;
+    optional DpadMode secondaryToggle = 3;
 }
 
 message TiltOptions
@@ -816,6 +821,7 @@ message AddonOptions
     optional PCF8575Options pcf8575Options = 25;
     optional DRV8833RumbleOptions drv8833RumbleOptions = 26;
     optional ReactiveLEDOptions reactiveLEDOptions = 27;
+    optional ToggleJoystickOptions toggleJoystickOptions = 28;
 }
 
 message MigrationHistory

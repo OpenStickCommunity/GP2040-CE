@@ -243,6 +243,8 @@ enum GpioAction
     BUTTON_PRESS_E10             = 52;
     BUTTON_PRESS_E11             = 53;
     BUTTON_PRESS_E12             = 54;
+    BUTTON_PRESS_TJ_TOGGLE_1     = 55;
+    BUTTON_PRESS_TJ_TOGGLE_2     = 56;
 }
 
 enum GpioDirection

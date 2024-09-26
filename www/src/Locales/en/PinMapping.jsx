@@ -79,5 +79,7 @@ export default {
 		BUTTON_PRESS_E10: 'Extra 10',
 		BUTTON_PRESS_E11: 'Extra 11',
 		BUTTON_PRESS_E12: 'Extra 12',
+    BUTTON_PRESS_TJ_TOGGLE_1: 'Joystick Toggle Dpad Primary',
+		BUTTON_PRESS_TJ_TOGGLE_2: 'Joystick Toggle Dpad Secondary',
 	},
 };
