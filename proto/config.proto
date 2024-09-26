@@ -231,7 +231,7 @@ message ProfileOptions
 message DisplayOptions
 {
     optional bool enabled = 1;
-    
+
     optional int32 deprecatedI2cBlock = 2 [deprecated = true];
     optional int32 deprecatedI2cSDAPin = 3 [deprecated = true];
     optional int32 deprecatedI2cSCLPin = 4 [deprecated = true];
@@ -481,7 +481,7 @@ message ReverseOptions
 message AnalogADS1219Options
 {
     optional bool enabled = 1;
-    
+
     optional int32 deprecatedI2cBlock = 2 [deprecated = true];
     optional int32 deprecatedI2cSDAPin = 3 [deprecated = true];
     optional int32 deprecatedI2cSCLPin = 4 [deprecated = true];
@@ -836,6 +836,11 @@ message ReactiveLEDOptions
     repeated ReactiveLEDInfo leds = 2 [(nanopb).max_count = 10];
 }
 
+message QMI8658Options
+{
+    optional bool enabled = 1;
+}
+
 message AddonOptions
 {
     optional BootselButtonOptions bootselButtonOptions = 1;
@@ -866,6 +871,7 @@ message AddonOptions
     optional DRV8833RumbleOptions drv8833RumbleOptions = 26;
     optional ReactiveLEDOptions reactiveLEDOptions = 27;
     optional GamepadUSBHostOptions gamepadUSBHostOptions = 28;
+    optional QMI8658Options qmi8658Options = 29;
 }
 
 message MigrationHistory

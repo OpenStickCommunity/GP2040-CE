@@ -253,6 +253,7 @@ src/addons/tilt.cpp
 src/addons/spi_analog_ads1256.cpp
 src/addons/gamepad_usb_host.cpp
 src/addons/gamepad_usb_host_listener.cpp
+src/addons/i2c_qmi8658.cpp
 src/animationstation/animation.cpp
 src/animationstation/animationstation.cpp
 src/animationstation/effects/chase.cpp
@@ -290,6 +291,7 @@ WiiExtension
 SNESpad
 pico_mbedtls
 nanopb
+QMI8658
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
