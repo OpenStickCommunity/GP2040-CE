@@ -41,15 +41,15 @@ void GP2040Aux::setup() {
 		}
 	}
 
-	// Initialize our USB manager
-	USBHostManager::getInstance().start();
-
 	// Setup Add-ons
 	addons.LoadAddon(new DisplayAddon(), CORE1_LOOP);
 	addons.LoadAddon(new NeoPicoLEDAddon(), CORE1_LOOP);
 	addons.LoadAddon(new PlayerLEDAddon(), CORE1_LOOP);
 	addons.LoadAddon(new BoardLedAddon(), CORE1_LOOP);
 	addons.LoadAddon(new BuzzerSpeakerAddon(), CORE1_LOOP);
+
+	// Initialize our USB manager
+	USBHostManager::getInstance().start();
 
 	// Ready to sync Core0 and Core1
 	isReady = true;
