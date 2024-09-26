@@ -329,7 +329,7 @@ const PinSection = memo(function PinSection({
 									}
 									type="switch"
 									reverse
-									checked={!enabled}
+									checked={enabled}
 									onChange={() => {
 										toggleProfileEnabled(profileIndex);
 									}}
@@ -408,7 +408,7 @@ export default function PinMapping() {
 											profileNumber: index + 1,
 										})}
 
-									{enabled && (
+									{!enabled && (
 										<span>{` - (${t('PinMapping:profile-disabled')}`}</span>
 									)}
 								</Nav.Link>
