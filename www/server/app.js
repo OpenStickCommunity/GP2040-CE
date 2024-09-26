@@ -390,7 +390,6 @@ app.get('/api/getProfileOptions', (req, res) => {
 		alternativePinMappings: [
 			createPinMappings({ profileLabel: 'Profile 2' }),
 			createPinMappings({ profileLabel: 'Profile 3' }),
-			createPinMappings({ profileLabel: 'Profile 4' }),
 		],
 	});
 });
