@@ -563,6 +563,7 @@ std::string setProfileOptions()
         size_t profileLabelSize = sizeof(profileOptions.gpioMappingsSets[altsIndex].profileLabel);
         strncpy(profileOptions.gpioMappingsSets[altsIndex].profileLabel, alt["profileLabel"], profileLabelSize - 1);
         profileOptions.gpioMappingsSets[altsIndex].profileLabel[profileLabelSize - 1] = '\0';
+        profileOptions.gpioMappingsSets[altsIndex].enabled = alt["enabled"];
 
         profileOptions.gpioMappingsSets_count = ++altsIndex;
         if (altsIndex > 2) break;
@@ -625,6 +626,7 @@ std::string getProfileOptions()
         writePinDoc(i, "pin28", profileOptions.gpioMappingsSets[i].pins[28]);
         writePinDoc(i, "pin29", profileOptions.gpioMappingsSets[i].pins[29]);
         writeDoc(doc, "alternativePinMappings", i, "profileLabel", profileOptions.gpioMappingsSets[i].profileLabel);
+        doc["alternativePinMappings"][i]["enabled"] = profileOptions.gpioMappingsSets[i].enabled;
     }
 
     return serialize_json(doc);
@@ -1068,6 +1070,7 @@ std::string setPinMappings()
     size_t profileLabelSize = sizeof(gpioMappings.profileLabel);
     strncpy(gpioMappings.profileLabel, doc["profileLabel"], profileLabelSize - 1);
     gpioMappings.profileLabel[profileLabelSize - 1] = '\0';
+    gpioMappings.enabled = doc["enabled"];
 
     Storage::getInstance().save();
 
@@ -1119,6 +1122,7 @@ std::string getPinMappings()
     writePinDoc("pin29", gpioMappings.pins[29]);
 
     writeDoc(doc, "profileLabel", gpioMappings.profileLabel);
+    doc["enabled"] = gpioMappings.enabled;
 
     return serialize_json(doc);
 }
