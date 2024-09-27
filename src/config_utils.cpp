@@ -19,7 +19,6 @@
 #include "addons/focus_mode.h"
 #include "addons/i2canalog1219.h"
 #include "addons/display.h"
-#include "addons/jslider.h"
 #include "addons/keyboard_host.h"
 #include "addons/neopicoleds.h"
 #include "addons/playernum.h"
@@ -566,14 +565,6 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, shmupBtnMask4, SHMUP_BUTTON4);
     INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, shmupMixMode, SHMUP_MIX_MODE);
 
-    // addonOptions.sliderOptions
-    INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, enabled, !!JSLIDER_ENABLED);
-    INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, deprecatedPinSliderOne, (Pin_t)-1);
-    INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, deprecatedPinSliderTwo, (Pin_t)-1);
-    INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, deprecatedModeOne, SLIDER_MODE_ONE);
-    INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, deprecatedModeTwo, SLIDER_MODE_TWO);
-    INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, modeDefault, SLIDER_MODE_ZERO);
-
     // addonOptions.reverseOptions
     INIT_UNSET_PROPERTY(config.addonOptions.reverseOptions, enabled, !!REVERSE_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.reverseOptions, buttonPin, (Pin_t)-1);
@@ -809,7 +800,7 @@ void gpioMappingsMigrationCore(Config& config)
     PinMappings& deprecatedPinMappings = config.deprecatedPinMappings;
     ExtraButtonOptions& extraButtonOptions = config.addonOptions.deprecatedExtraButtonOptions;
     DualDirectionalOptions& ddiOptions = config.addonOptions.dualDirectionalOptions;
-    SliderOptions& jsSliderOptions = config.addonOptions.sliderOptions;
+    SliderOptions& jsSliderOptions = config.addonOptions.deprecatedSliderOptions;
     SOCDSliderOptions& socdSliderOptions = config.addonOptions.socdSliderOptions;
     PeripheralOptions& peripheralOptions = config.peripheralOptions;
     TiltOptions& tiltOptions = config.addonOptions.tiltOptions;
@@ -1247,6 +1238,60 @@ void gpioMappingsMigrationCore(Config& config)
     config.migrations.gpioMappingsMigrated = true;
 }
 
+// if the user previously had the JS slider addon enabled, copy its default to the
+// core gamepad setting, since the functionality is within the core now
+void migrateJSliderToCore(Config& config)
+{
+    if (config.addonOptions.deprecatedSliderOptions.enabled) {
+        config.gamepadOptions.dpadMode = config.addonOptions.deprecatedSliderOptions.deprecatedModeDefault;
+        config.addonOptions.deprecatedSliderOptions.enabled = false;
+    }
+}
+
+// populate the alternative gpio mapping sets, aka profiles, with
+// the old values or whatever is in the core mappings
+// NOTE: this also handles initializations for a blank config! if/when the deprecated
+// pin mappings go away, the remainder of this code should go in there (there was no point
+// in duplicating it right now)
+void gpioMappingsMigrationProfiles(Config& config)
+{
+    AlternativePinMappings* deprecatedAlts = config.profileOptions.deprecatedAlternativePinMappings;
+
+    const auto assignProfilePinIfUsed = [&](uint8_t profileNum, Pin_t profilePin, GpioAction action) -> void {
+        if (isValidPin(profilePin)) {
+            config.profileOptions.gpioMappingsSets[profileNum].pins[profilePin].action = action;
+        }
+    };
+
+    for (uint8_t profileNum = 0; profileNum <= 2; profileNum++) {
+        for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
+            config.profileOptions.gpioMappingsSets[profileNum].pins[pin].action = config.gpioMappings.pins[pin].action;
+        }
+        // only check protobuf if profiles are defined
+        if (profileNum < config.profileOptions.deprecatedAlternativePinMappings_count) {
+            assignProfilePinIfUsed(profileNum, deprecatedAlts[profileNum].pinButtonB1,  GpioAction::BUTTON_PRESS_B1);
+            assignProfilePinIfUsed(profileNum, deprecatedAlts[profileNum].pinButtonB2,  GpioAction::BUTTON_PRESS_B2);
+            assignProfilePinIfUsed(profileNum, deprecatedAlts[profileNum].pinButtonB3,  GpioAction::BUTTON_PRESS_B3);
+            assignProfilePinIfUsed(profileNum, deprecatedAlts[profileNum].pinButtonB4,  GpioAction::BUTTON_PRESS_B4);
+            assignProfilePinIfUsed(profileNum, deprecatedAlts[profileNum].pinButtonL1,  GpioAction::BUTTON_PRESS_L1);
+            assignProfilePinIfUsed(profileNum, deprecatedAlts[profileNum].pinButtonR1,  GpioAction::BUTTON_PRESS_R1);
+            assignProfilePinIfUsed(profileNum, deprecatedAlts[profileNum].pinButtonL2,  GpioAction::BUTTON_PRESS_L2);
+            assignProfilePinIfUsed(profileNum, deprecatedAlts[profileNum].pinButtonR2,  GpioAction::BUTTON_PRESS_R2);
+            assignProfilePinIfUsed(profileNum, deprecatedAlts[profileNum].pinDpadUp,    GpioAction::BUTTON_PRESS_UP);
+            assignProfilePinIfUsed(profileNum, deprecatedAlts[profileNum].pinDpadDown,  GpioAction::BUTTON_PRESS_DOWN);
+            assignProfilePinIfUsed(profileNum, deprecatedAlts[profileNum].pinDpadLeft,  GpioAction::BUTTON_PRESS_LEFT);
+            assignProfilePinIfUsed(profileNum, deprecatedAlts[profileNum].pinDpadRight, GpioAction::BUTTON_PRESS_RIGHT);
+        }
+
+        // reminder that this must be set or else nanopb won't retain anything
+        config.profileOptions.gpioMappingsSets[profileNum].pins_count = NUM_BANK0_GPIOS;
+    }
+    // reminder that this must be set or else nanopb won't retain anything
+    config.profileOptions.gpioMappingsSets_count = 3;
+
+    config.migrations.buttonProfilesMigrated = true;
+}
+
 void migrateTurboPinToGpio(Config& config) {
     // Features converted here must set their previous deprecated pin/set value as well (pin = -1)
     TurboOptions & turboOptions = config.addonOptions.turboOptions;
@@ -1516,6 +1561,8 @@ void ConfigUtils::load(Config& config)
     migrateAuthenticationMethods(config);
     // Macro pins to gpio
     migrateMacroPinsToGpio(config);
+    // Migrate old JS slider add-on to core
+    migrateJSliderToCore(config);
 
     // Update boardVersion, in case we migrated from an older version
     strncpy(config.boardVersion, GP2040VERSION, sizeof(config.boardVersion));

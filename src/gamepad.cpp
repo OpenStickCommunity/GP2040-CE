@@ -68,6 +68,9 @@ void Gamepad::setup()
 	mapButtonE11 = new GamepadButtonMapping(GAMEPAD_MASK_E11);
 	mapButtonE12 = new GamepadButtonMapping(GAMEPAD_MASK_E12);
 	mapButtonFn  = new GamepadButtonMapping(AUX_MASK_FUNCTION);
+	mapButtonDP  = new GamepadButtonMapping(SUSTAIN_DP_MODE_DP);
+	mapButtonLS  = new GamepadButtonMapping(SUSTAIN_DP_MODE_LS);
+	mapButtonRS  = new GamepadButtonMapping(SUSTAIN_DP_MODE_RS);
 
 	const auto assignCustomMappingToMaps = [&](GpioMappingInfo mapInfo, Pin_t pin) -> void {
 		if (mapDpadUp->buttonMask & mapInfo.customDpadMask)	mapDpadUp->pinMask |= 1 << pin;
@@ -126,6 +129,9 @@ void Gamepad::setup()
 			case GpioAction::BUTTON_PRESS_E11:	mapButtonE11->pinMask |= 1 << pin; break;
 			case GpioAction::BUTTON_PRESS_E12:	mapButtonE12->pinMask |= 1 << pin; break;
 			case GpioAction::BUTTON_PRESS_FN:	mapButtonFn->pinMask |= 1 << pin; break;
+			case GpioAction::SUSTAIN_DP_MODE_DP:	mapButtonDP->pinMask |= 1 << pin; break;
+			case GpioAction::SUSTAIN_DP_MODE_LS:	mapButtonLS->pinMask |= 1 << pin; break;
+			case GpioAction::SUSTAIN_DP_MODE_RS:	mapButtonRS->pinMask |= 1 << pin; break;
 			case GpioAction::CUSTOM_BUTTON_COMBO:	assignCustomMappingToMaps(pinMappings[pin], pin); break;
 			default:				break;
 		}
@@ -214,7 +220,7 @@ void Gamepad::process()
 
 	state.dpad = runSOCDCleaner(resolveSOCDMode(options), state.dpad);
 
-	switch (options.dpadMode)
+	switch (activeDpadMode)
 	{
 		case DpadMode::DPAD_MODE_LEFT_ANALOG:
 			if (!hasRightAnalogStick) {
@@ -299,6 +305,12 @@ void Gamepad::read()
 		| ((values & mapButtonE11->pinMask) ? mapButtonE11->buttonMask : 0)
 		| ((values & mapButtonE12->pinMask) ? mapButtonE12->buttonMask : 0)
 	;
+
+	// set the effective dpad mode based on settings + overrides
+	if (values & mapButtonDP->pinMask)	activeDpadMode = DpadMode::DPAD_MODE_DIGITAL;
+	else if (values & mapButtonLS->pinMask)	activeDpadMode = DpadMode::DPAD_MODE_LEFT_ANALOG;
+	else if (values & mapButtonRS->pinMask)	activeDpadMode = DpadMode::DPAD_MODE_RIGHT_ANALOG;
+	else					activeDpadMode = options.dpadMode;
 
 	state.lx = joystickMid;
 	state.ly = joystickMid;
