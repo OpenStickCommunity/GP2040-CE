@@ -127,6 +127,13 @@ set(PICO_TINYUSB_PATH "${CMAKE_CURRENT_LIST_DIR}/lib/tinyusb")
 # initialize the Raspberry Pi Pico SDK
 pico_sdk_init()
 
+add_compile_definitions(
+        PICO_SDK_VERSION_MAJOR=${PICO_SDK_VERSION_MAJOR}
+        PICO_SDK_VERSION_MINOR=${PICO_SDK_VERSION_MINOR}
+        PICO_SDK_VERSION_REVISION=${PICO_SDK_VERSION_REVISION}
+        PICO_SDK_VERSION_STRING=${PICO_SDK_VERSION_STRING}
+        )
+
 # Remove unused code and data
 add_compile_options(-fdata-sections -ffunction-sections)
 add_link_options(-Wl,--gc-sections)
