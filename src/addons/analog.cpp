@@ -4,6 +4,7 @@
 #include "hardware/adc.h"
 #include "helper.h"
 #include "storagemanager.h"
+#include "drivermanager.h"
 
 #include <math.h>
 
@@ -19,201 +20,150 @@ bool AnalogInput::available() {
 
 void AnalogInput::setup() {
     const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
-    const size_t num_adc_pins = 4;
-
-    struct pin_center_pair
-    {
-        int pin;
-        uint16_t& center;
-    };
-
-    pin_center_pair adc_pins[num_adc_pins] =
-    {
-        {analogOptions.analogAdc1PinX, adc_1_x_center},
-        {analogOptions.analogAdc1PinY, adc_1_y_center},
-        {analogOptions.analogAdc2PinX, adc_2_x_center},
-        {analogOptions.analogAdc2PinY, adc_2_y_center}
-    };
     
-    for(size_t i = 0; i < num_adc_pins; i++) {
-        if(isValidPin(adc_pins[i].pin)) {
-            adc_gpio_init(adc_pins[i].pin);
+    // Setup our ADC Pair of Sticks
+    adc_pairs[0].x_pin = analogOptions.analogAdc1PinX;
+    adc_pairs[0].y_pin = analogOptions.analogAdc1PinY;
+    adc_pairs[0].analog_invert = analogOptions.analogAdc1Invert;
+    adc_pairs[0].analog_dpad = analogOptions.analogAdc1Mode;
+    adc_pairs[1].x_pin = analogOptions.analogAdc2PinX;
+    adc_pairs[1].y_pin = analogOptions.analogAdc2PinY;
+    adc_pairs[1].analog_invert = analogOptions.analogAdc2Invert;
+    adc_pairs[1].analog_dpad = analogOptions.analogAdc2Mode;
+
+    // Setup defaults and helpers
+    for (int i = 0; i < ADC_COUNT; i++) {
+        adc_pairs[i].x_pin_adc = adc_pairs[i].x_pin - ADC_PIN_OFFSET;
+        adc_pairs[i].y_pin_adc = adc_pairs[i].y_pin - ADC_PIN_OFFSET;
+        adc_pairs[i].x_value = ANALOG_CENTER;
+        adc_pairs[i].y_value = ANALOG_CENTER;
+        adc_pairs[i].xy_magnitude = 0.0f;
+        adc_pairs[i].x_magnitude = 0.0f;
+        adc_pairs[i].y_magnitude = 0.0f;
+        adc_pairs[i].x_ema = 0.0f;
+        adc_pairs[i].y_ema = 0.0f;
+    }
+
+    // Intialize and auto center X/Y for each pair
+    for (int i = 0; i < ADC_COUNT; i++) {
+        if(isValidPin(adc_pairs[i].x_pin)) {
+            adc_gpio_init(adc_pairs[i].x_pin);
             if (analogOptions.auto_calibrate) {
-                adc_select_input(adc_pins[i].pin - ADC_PIN_OFFSET);
-                adc_pins[i].center = adc_read();
+                adc_select_input(adc_pairs[i].x_pin - ADC_PIN_OFFSET);
+                adc_pairs[i].x_center = adc_read();
+            }
+        }
+        if(isValidPin(adc_pairs[i].y_pin)) {
+            adc_gpio_init(adc_pairs[i].y_pin);
+            if (analogOptions.auto_calibrate) {
+                adc_select_input(adc_pairs[i].y_pin - ADC_PIN_OFFSET);
+                adc_pairs[i].y_center = adc_read();
             }
         }
     }
+
+    // Read options from Analog Options
+    ema_option = analogOptions.analog_smoothing;
+    ema_smoothing = analogOptions.smoothing_factor / 1000.0f;
+    error_rate = analogOptions.analog_error / 1000.0f;
+    in_deadzone = analogOptions.inner_deadzone / 100.0f;
+    out_deadzone = analogOptions.outer_deadzone / 100.0f;
+    auto_calibration = analogOptions.auto_calibrate;
+    forced_circularity = analogOptions.forced_circularity;
 }
 
-void AnalogInput::process()
-{
-    const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
-    const size_t num_adc_pairs = 2;
+void AnalogInput::process() {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
-    float adc_1_x = ANALOG_CENTER;
-    float adc_1_y = ANALOG_CENTER;
-    float adc_2_x = ANALOG_CENTER;
-    float adc_2_y = ANALOG_CENTER;
-    float in_deadzone = analogOptions.inner_deadzone / 100.0f;
-    float out_deadzone = analogOptions.outer_deadzone / 100.0f;
-    float x_magnitude_1 = 0.0f;
-    float y_magnitude_1 = 0.0f;
-    float x_magnitude_2 = 0.0f;
-    float y_magnitude_2 = 0.0f;
-    float magnitude_1 = 0.0f;
-    float magnitude_2 = 0.0f;
-
-    bool ema_option = analogOptions.analog_smoothing;
-    float ema_smoothing = analogOptions.smoothing_factor / 1000.0f;
-    float error_rate = analogOptions.analog_error / 1000.0f;
-
-    struct adc_pair
-    {
-        int x_pin;
-        int y_pin;
-        float& x_value;
-        float& y_value;
-        uint16_t& x_center;
-        uint16_t& y_center;
-        float& xy_magnitude;
-        float& x_magnitude;
-        float& y_magnitude;
-        InvertMode analog_invert;
-        DpadMode analog_dpad;
-        float& x_ema;
-        float& y_ema;
-    };
-
-    adc_pair adc_pairs[num_adc_pairs] =
-    {
-        {analogOptions.analogAdc1PinX, analogOptions.analogAdc1PinY, 
-        adc_1_x, adc_1_y, 
-        adc_1_x_center, adc_1_y_center, 
-        magnitude_1, x_magnitude_1, y_magnitude_1, 
-        analogOptions.analogAdc1Invert, 
-        analogOptions.analogAdc1Mode, 
-        gamepad->state.ema_1_x, gamepad->state.ema_1_y},
-
-        {analogOptions.analogAdc2PinX, analogOptions.analogAdc2PinY, 
-        adc_2_x, adc_2_y, 
-        adc_2_x_center, adc_2_y_center, 
-        magnitude_2, x_magnitude_2, y_magnitude_2, 
-        analogOptions.analogAdc2Invert, 
-        analogOptions.analogAdc2Mode, 
-        gamepad->state.ema_2_x, gamepad->state.ema_2_y}
-    };
-
-    for(size_t i = 0; i < num_adc_pairs; i++) {
+    for(int i = 0; i < ADC_COUNT; i++) {
+        // Read X-Axis
         if (isValidPin(adc_pairs[i].x_pin)) {
-            adc_select_input(adc_pairs[i].x_pin - ADC_PIN_OFFSET);
-            adc_pairs[i].x_value = readPin(adc_pairs[i].x_pin, adc_pairs[i].x_center, analogOptions.auto_calibrate);
-
+            adc_pairs[i].x_value = readPin(adc_pairs[i].x_pin_adc, adc_pairs[i].x_center);
             if (adc_pairs[i].analog_invert == InvertMode::INVERT_X || 
                 adc_pairs[i].analog_invert == InvertMode::INVERT_XY) {
-                
                 adc_pairs[i].x_value = ANALOG_MAX - adc_pairs[i].x_value;
             }
-
             if (ema_option) {
-                adc_pairs[i].x_value = emaCalculation(adc_pairs[i].x_value, ema_smoothing, adc_pairs[i].x_ema);
+                adc_pairs[i].x_value = emaCalculation(adc_pairs[i].x_value, adc_pairs[i].x_ema);
                 adc_pairs[i].x_ema = adc_pairs[i].x_value;
             }
         }
+        // Read Y-Axis
         if (isValidPin(adc_pairs[i].y_pin)) {
-            adc_select_input(adc_pairs[i].y_pin - ADC_PIN_OFFSET);
-            adc_pairs[i].y_value = readPin(adc_pairs[i].y_pin, adc_pairs[i].y_center, analogOptions.auto_calibrate);
-
+            adc_pairs[i].y_value = readPin(adc_pairs[i].y_pin_adc, adc_pairs[i].y_center);
             if (adc_pairs[i].analog_invert == InvertMode::INVERT_Y || 
                 adc_pairs[i].analog_invert == InvertMode::INVERT_XY) {
-                
                 adc_pairs[i].y_value = ANALOG_MAX - adc_pairs[i].y_value;
             }
-
             if (ema_option) {
-                adc_pairs[i].y_value = emaCalculation(adc_pairs[i].y_value, ema_smoothing, adc_pairs[i].y_ema);
+                adc_pairs[i].y_value = emaCalculation(adc_pairs[i].y_value, adc_pairs[i].y_ema);
                 adc_pairs[i].y_ema = adc_pairs[i].y_value;
             }
         }
-
-        if (in_deadzone >= 0.0f || analogOptions.forced_circularity == true) {
-            adc_pairs[i].xy_magnitude = magnitudeCalculation(adc_pairs[i].x_value, adc_pairs[i].y_value, 
-                                                            adc_pairs[i].x_magnitude, adc_pairs[i].y_magnitude, error_rate);
-
-            if (in_deadzone >= 0.0f) {
-                if (adc_pairs[i].xy_magnitude < in_deadzone) {
-                    adc_pairs[i].x_value = ANALOG_CENTER;
-                    adc_pairs[i].y_value = ANALOG_CENTER;
-                }
-                else {
-                    radialDeadzone(adc_pairs[i].x_value, adc_pairs[i].y_value, in_deadzone, out_deadzone, 
-                                    adc_pairs[i].x_magnitude, adc_pairs[i].y_magnitude, adc_pairs[i].xy_magnitude, 
-                                    analogOptions.forced_circularity);
-                }
-            }
+        // Look for dead-zones and circularity
+        adc_pairs[i].xy_magnitude = magnitudeCalculation(adc_pairs[i]);
+        if (adc_pairs[i].xy_magnitude < in_deadzone) {
+            adc_pairs[i].x_value = ANALOG_CENTER;
+            adc_pairs[i].y_value = ANALOG_CENTER;
+        } else {
+            radialDeadzone(adc_pairs[i]);
         }
 
         if (adc_pairs[i].analog_dpad == DpadMode::DPAD_MODE_LEFT_ANALOG) {
-            gamepad->state.lx = static_cast<uint16_t>(65535.0f * adc_pairs[i].x_value);
-            gamepad->state.ly = static_cast<uint16_t>(65535.0f * adc_pairs[i].y_value);
-        }
-        else if (adc_pairs[i].analog_dpad == DpadMode::DPAD_MODE_RIGHT_ANALOG) {
-            gamepad->state.rx = static_cast<uint16_t>(65535.0f * adc_pairs[i].x_value);
-            gamepad->state.ry = static_cast<uint16_t>(65535.0f * adc_pairs[i].y_value);
+            if ( DriverManager::getInstance().getDriver()->GetJoystickMidValue() == 0x8000 ) {
+                gamepad->state.lx = static_cast<uint16_t>(std::ceil(65535.0f * adc_pairs[i].x_value));
+                gamepad->state.ly = static_cast<uint16_t>(std::ceil(65535.0f * adc_pairs[i].y_value));
+            } else { // 0x7FFF
+                gamepad->state.lx = static_cast<uint16_t>(65535.0f * adc_pairs[i].x_value);
+                gamepad->state.ly = static_cast<uint16_t>(65535.0f * adc_pairs[i].y_value);
+            }
+        } else if (adc_pairs[i].analog_dpad == DpadMode::DPAD_MODE_RIGHT_ANALOG) {
+            if ( DriverManager::getInstance().getDriver()->GetJoystickMidValue() == 0x8000 ) {
+                gamepad->state.rx = static_cast<uint16_t>(std::ceil(65535.0f * adc_pairs[i].x_value));
+                gamepad->state.ry = static_cast<uint16_t>(std::ceil(65535.0f * adc_pairs[i].y_value));
+            } else { // 0x7FFF
+                gamepad->state.rx = static_cast<uint16_t>(65535.0f * adc_pairs[i].x_value);
+                gamepad->state.ry = static_cast<uint16_t>(65535.0f * adc_pairs[i].y_value);
+            }
         }
     }
 }
 
-float AnalogInput::readPin(int pin, uint16_t center, bool autoCalibrate) {
-	adc_select_input(pin - ADC_PIN_OFFSET);
-	uint16_t adc_hold = adc_read();
-
-	// Calibrate axis based on off-center
-	uint16_t adc_calibrated;
-
-	if (autoCalibrate) {
-		if (adc_hold > center) {
-			adc_calibrated = map(adc_hold, center, ADC_MAX, ADC_MAX / 2, ADC_MAX);
-		}
-		else if (adc_hold == center) {
-			adc_calibrated = ADC_MAX / 2;
-		}
-		else {
-			adc_calibrated = map(adc_hold, 0, center, 0, ADC_MAX / 2);
-		}
-	}
-	else {
-		adc_calibrated = adc_hold;
-	}
-
-	return ((float)adc_calibrated) / ADC_MAX;
+float AnalogInput::readPin(Pin_t pin_adc, uint16_t center) {
+    adc_select_input(pin_adc);
+    uint16_t adc_value = adc_read();
+    if (auto_calibration) {
+        if (adc_value > center) {
+            adc_value = map(adc_value, center, ADC_MAX, ADC_MAX / 2, ADC_MAX);
+        } else if (adc_value == center) {
+            adc_value = ADC_MAX / 2;
+        } else {
+            adc_value = map(adc_value, 0, center, 0, ADC_MAX / 2);
+        }
+    }
+    return ((float)adc_value) / ADC_MAX;
 }
 
-float AnalogInput::emaCalculation(float ema_value, float smoothing_factor, float ema_previous) {
-    return (smoothing_factor * ema_value) + ((1.0f - smoothing_factor) * ema_previous);
+float AnalogInput::emaCalculation(float ema_value, float ema_previous) {
+    return (ema_smoothing * ema_value) + ((1.0f - ema_smoothing) * ema_previous);
 }
 
 uint16_t AnalogInput::map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max) {
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
-float AnalogInput::magnitudeCalculation(float x, float y, float& x_magnitude, float& y_magnitude, float error) {
-    x_magnitude = x - ANALOG_CENTER;
-    y_magnitude = y - ANALOG_CENTER;
-    
-    return error * std::sqrt((x_magnitude * x_magnitude) + (y_magnitude * y_magnitude));
+float AnalogInput::magnitudeCalculation(adc_instance & adc_inst) {
+    adc_inst.x_magnitude = adc_inst.x_value - ANALOG_CENTER;
+    adc_inst.y_magnitude = adc_inst.y_value - ANALOG_CENTER;
+    return error_rate * std::sqrt((adc_inst.x_magnitude * adc_inst.x_magnitude) + (adc_inst.y_magnitude * adc_inst.y_magnitude));
 }
 
-void AnalogInput::radialDeadzone(float& x, float& y, float in_deadzone, float out_deadzone, float x_magnitude, float y_magnitude, float xy_magnitude, bool circularity) {
-    float scaling_factor = (xy_magnitude - in_deadzone) / (out_deadzone - in_deadzone);
-
-    if (circularity == true) {
+void AnalogInput::radialDeadzone(adc_instance & adc_inst) {
+    float scaling_factor = (adc_inst.xy_magnitude - in_deadzone) / (out_deadzone - in_deadzone);
+    if (forced_circularity == true) {
         scaling_factor = std::fmin(scaling_factor, ANALOG_CENTER);
     }
-
-    x = ((x_magnitude / xy_magnitude) * scaling_factor) + ANALOG_CENTER;
-    y = ((y_magnitude / xy_magnitude) * scaling_factor) + ANALOG_CENTER;
-
-    x = std::clamp(x, ANALOG_MINIMUM, ANALOG_MAX);
-    y = std::clamp(y, ANALOG_MINIMUM, ANALOG_MAX);
+    adc_inst.x_value = ((adc_inst.x_magnitude / adc_inst.xy_magnitude) * scaling_factor) + ANALOG_CENTER;
+    adc_inst.y_value = ((adc_inst.y_magnitude / adc_inst.xy_magnitude) * scaling_factor) + ANALOG_CENTER;
+    adc_inst.x_value = std::clamp(adc_inst.x_value, ANALOG_MINIMUM, ANALOG_MAX);
+    adc_inst.y_value = std::clamp(adc_inst.y_value, ANALOG_MINIMUM, ANALOG_MAX);
 }

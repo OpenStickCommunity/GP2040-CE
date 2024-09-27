@@ -114,21 +114,39 @@ void Storage::ResetSettings()
 	watchdog_reboot(0, SRAM_END, 2000);
 }
 
-void Storage::setProfile(const uint32_t profileNum)
+bool Storage::setProfile(const uint32_t profileNum)
 {
-	this->config.gamepadOptions.profileNumber = (profileNum < 1 || profileNum > 4) ? 1 : profileNum;
+	// is this profile defined?
+	if (profileNum >= 1 && profileNum <= config.profileOptions.gpioMappingsSets_count + 1) {
+		// is this profile enabled?
+		// profile 1 (core) is always enabled, others we must check
+		if (profileNum == 1 || config.profileOptions.gpioMappingsSets[profileNum-2].enabled) {
+			this->config.gamepadOptions.profileNumber = profileNum;
+			return true;
+		}
+	}
+	// if we get here, the requested profile doesn't exist or isn't enabled, so don't change it
+	return false;
 }
 
 void Storage::nextProfile()
 {
-    this->config.gamepadOptions.profileNumber = (this->config.gamepadOptions.profileNumber % 4) + 1;
+	uint32_t profileCeiling = config.profileOptions.gpioMappingsSets_count + 1;
+	uint32_t requestedProfile = (this->config.gamepadOptions.profileNumber % profileCeiling) + 1;
+	while (!setProfile(requestedProfile)) {
+		// if the set failed, try again with the next in the sequence
+		requestedProfile = (requestedProfile % profileCeiling) + 1;
+	}
 }
 void Storage::previousProfile()
 {
-	if (this->config.gamepadOptions.profileNumber == 1)
-		this->config.gamepadOptions.profileNumber = 4;
-	else
-		this->config.gamepadOptions.profileNumber -= 1;
+	uint32_t profileCeiling = config.profileOptions.gpioMappingsSets_count + 1;
+	uint32_t requestedProfile = this->config.gamepadOptions.profileNumber > 1 ?
+			config.gamepadOptions.profileNumber - 1 : profileCeiling;
+	while (!setProfile(requestedProfile)) {
+		// if the set failed, try again with the next in the sequence
+		requestedProfile = requestedProfile > 1 ? requestedProfile - 1 : profileCeiling;
+	}
 }
 
 /**

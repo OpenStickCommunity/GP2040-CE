@@ -12,6 +12,10 @@ export default {
 		'Max 16 characters. Letters, numbers, and spaces allowed.',
 	'profile-pin-mapping-title': '{{profileLabel}} - Pin Mapping',
 	'profile-label-default': 'Profile {{profileNumber}}',
+	'profile-add-button': '+ Add Profile',
+	'profile-disabled': ' - (Disabled)',
+	'profile-enabled-tooltip':
+		'Disabled profiles will not be available when using hotkeys to change profile.',
 	'profile-pins-warning':
 		'Try to avoid changing the buttons and/or directions used for the switch profile hotkeys. Otherwise, it will be difficult to understand what profile is being selected!',
 	'profile-copy-base': 'Copy base profile',

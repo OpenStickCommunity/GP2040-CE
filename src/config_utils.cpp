@@ -1344,6 +1344,34 @@ void migrateAuthenticationMethods(Config& config) {
     }
 }
 
+// enable profiles that have real data in them (profile 1 is always enabled)
+// note that profiles 2-4 are no longer populated with profile 1's data on a fresh
+// config, and this is checking previous configs with non-copy mappings to enable them
+void profileEnabledFlagsMigration(Config& config) {
+    config.gpioMappings.enabled = true;
+    for (uint8_t profileNum = 0; profileNum < config.profileOptions.gpioMappingsSets_count; profileNum++) {
+        if (!config.profileOptions.gpioMappingsSets[profileNum].pins_count) {
+            // uninitialized profile, skip it and leave it disabled
+            config.profileOptions.gpioMappingsSets[profileNum].enabled = false;
+            continue;
+        }
+        for (uint8_t pinNum = 0; pinNum < config.gpioMappings.pins_count; pinNum++) {
+            // check each pin: if the alt. mapping pin is different than the base (profile 1)
+            // mapping, enable the profile and check the next one
+            if (config.gpioMappings.pins[pinNum].action !=
+                        config.profileOptions.gpioMappingsSets[profileNum].pins[pinNum].action ||
+                    config.gpioMappings.pins[pinNum].customButtonMask !=
+                        config.profileOptions.gpioMappingsSets[profileNum].pins[pinNum].customButtonMask ||
+                    config.gpioMappings.pins[pinNum].customDpadMask !=
+                        config.profileOptions.gpioMappingsSets[profileNum].pins[pinNum].customDpadMask) {
+                config.profileOptions.gpioMappingsSets[profileNum].enabled = true;
+                break;
+            }
+        }
+    }
+    config.migrations.profileEnabledFlagsMigrated = true;
+}
+
 void migrateMacroPinsToGpio(Config& config) {
     // Convert Macro pin mapping to GPIO mapping configs
     MacroOptions & macroOptions = config.addonOptions.macroOptions;
@@ -1522,9 +1550,9 @@ void ConfigUtils::load(Config& config)
     if (!config.migrations.gpioMappingsMigrated)
         gpioMappingsMigrationCore(config);
 
-    // Run button profile migrations
-    if (!config.migrations.buttonProfilesMigrated)
-        gpioMappingsMigrationProfiles(config);
+    // Run migration to enable or disable pre-existing profiles
+    if (!config.migrations.profileEnabledFlagsMigrated)
+        profileEnabledFlagsMigration(config);
 
     // following migrations are simple enough to not need a protobuf boolean to track
     // Migrate turbo into GpioMappings
@@ -2166,7 +2194,6 @@ bool ConfigUtils::fromJSON(Config& config, const char* data, size_t dataLen)
 
     // we need to run migrations here too, in case the json document changed pins or things derived from pins
     gpioMappingsMigrationCore(config);
-    gpioMappingsMigrationProfiles(config);
     migrateTurboPinToGpio(config);
     migrateAuthenticationMethods(config);
     migrateMacroPinsToGpio(config);
