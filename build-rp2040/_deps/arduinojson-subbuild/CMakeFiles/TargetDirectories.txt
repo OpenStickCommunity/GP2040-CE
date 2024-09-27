@@ -1,3 +1,0 @@
-I:/Users/qqss6/Documents/GitHub/GP2040-CE/build-rp2040/_deps/arduinojson-subbuild/CMakeFiles/arduinojson-populate.dir
-I:/Users/qqss6/Documents/GitHub/GP2040-CE/build-rp2040/_deps/arduinojson-subbuild/CMakeFiles/edit_cache.dir
-I:/Users/qqss6/Documents/GitHub/GP2040-CE/build-rp2040/_deps/arduinojson-subbuild/CMakeFiles/rebuild_cache.dir
