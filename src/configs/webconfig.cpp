@@ -543,6 +543,7 @@ std::string setProfileOptions()
     DynamicJsonDocument doc = get_post_data();
 
     ProfileOptions& profileOptions = Storage::getInstance().getProfileOptions();
+    GpioMappings& coreMappings = Storage::getInstance().getGpioMappings();
     JsonObject options = doc.as<JsonObject>();
     JsonArray alts = options["alternativePinMappings"];
     int altsIndex = 0;
@@ -551,6 +552,7 @@ std::string setProfileOptions()
         for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
             snprintf(pinName, 6, "pin%0*d", 2, pin);
             // setting a pin shouldn't change a new existing addon/reserved pin
+            // but if the profile definition is new, we should still capture the addon/reserved state
             if (profileOptions.gpioMappingsSets[altsIndex].pins[pin].action != GpioAction::ASSIGNED_TO_ADDON &&
                     profileOptions.gpioMappingsSets[altsIndex].pins[pin].action != GpioAction::RESERVED &&
                     (GpioAction)alt[pinName]["action"] != GpioAction::RESERVED &&
@@ -558,6 +560,11 @@ std::string setProfileOptions()
                 profileOptions.gpioMappingsSets[altsIndex].pins[pin].action = (GpioAction)alt[pinName]["action"];
                 profileOptions.gpioMappingsSets[altsIndex].pins[pin].customButtonMask = (uint32_t)alt[pinName]["customButtonMask"];
                 profileOptions.gpioMappingsSets[altsIndex].pins[pin].customDpadMask = (uint32_t)alt[pinName]["customDpadMask"];
+            } else if ((coreMappings.pins[pin].action == GpioAction::RESERVED &&
+                        (GpioAction)alt[pinName]["action"] == GpioAction::RESERVED) ||
+                    (coreMappings.pins[pin].action == GpioAction::ASSIGNED_TO_ADDON &&
+                        (GpioAction)alt[pinName]["action"] == GpioAction::ASSIGNED_TO_ADDON)) {
+                profileOptions.gpioMappingsSets[altsIndex].pins[pin].action = (GpioAction)alt[pinName]["action"];
             }
         }
         profileOptions.gpioMappingsSets[altsIndex].pins_count = NUM_BANK0_GPIOS;
