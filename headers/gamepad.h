@@ -130,6 +130,7 @@ public:
 	inline bool __attribute__((always_inline)) pressedE12()   { return pressedButton(GAMEPAD_MASK_E12); }
 
 	const GamepadOptions& getOptions() const { return options; }
+	const DpadMode getActiveDpadMode() { return activeDpadMode; }
 
 	void setInputMode(InputMode inputMode) { options.inputMode = inputMode; }
 	void setSOCDMode(SOCDMode socdMode) { options.socdMode = socdMode; }
@@ -172,6 +173,9 @@ public:
 	GamepadButtonMapping *mapButtonE11;
 	GamepadButtonMapping *mapButtonE12;
 	GamepadButtonMapping *mapButtonFn;
+	GamepadButtonMapping *mapButtonDP;
+	GamepadButtonMapping *mapButtonLS;
+	GamepadButtonMapping *mapButtonRS;
 
 	// gamepad specific proxy of debounced buttons --- 1 = active (inverse of the raw GPIO)
 	// see GP2040::debounceGpioGetAll for details
@@ -197,6 +201,7 @@ private:
 	void processHotkeyAction(GamepadHotkey action);
 
 	GamepadOptions & options;
+	DpadMode activeDpadMode;
 	const HotkeyOptions & hotkeyOptions;
 
 	GamepadHotkey lastAction = HOTKEY_NONE;

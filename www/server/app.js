@@ -490,7 +490,6 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		DualDirectionalInputEnabled: 1,
 		TiltInputEnabled: 1,
 		I2CAnalog1219InputEnabled: 1,
-		JSliderInputEnabled: 1,
 		KeyboardHostAddonEnabled: 1,
 		PlayerNumAddonEnabled: 1,
 		ReverseInputEnabled: 1,

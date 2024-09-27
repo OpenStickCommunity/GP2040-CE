@@ -60,7 +60,6 @@
 #define KEY_BUTTON_A2   HID_KEY_F2            // A2     | ~      | Capture | ~        | 14     | ~      |
 #define KEY_BUTTON_FN   -1                    // Hotkey Function                                        |
 
-#define JSLIDER_ENABLED 1
 #define GPIO_PIN_06 GpioAction::SUSTAIN_DP_MODE_LS
 #define GPIO_PIN_07 GpioAction::SUSTAIN_DP_MODE_RS
 

@@ -296,7 +296,6 @@ namespace ConfigLegacy
         uint8_t ExtraButtonAddonEnabled;
         uint8_t I2CAnalog1219InputEnabled;
         //bool I2CDisplayAddonEnabled; // I2C is special case
-        uint8_t JSliderInputEnabled;
         //bool NeoPicoLEDAddonEnabled; // NeoPico is special case
         //bool PlayerLEDAddonEnabled; // PlayerLED is special case
         uint8_t PlayerNumAddonEnabled;
@@ -1008,12 +1007,6 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         SET_PROPERTY(analogADS1219Options, deprecatedI2cSCLPin, bytePinToIntPin(legacyAddonOptions.i2cAnalog1219SCLPin));
         SET_PROPERTY(analogADS1219Options, deprecatedI2cAddress, legacyAddonOptions.i2cAnalog1219Address);
         SET_PROPERTY(analogADS1219Options, deprecatedI2cSpeed, legacyAddonOptions.i2cAnalog1219Speed);
-
-        SliderOptions& sliderOptions = config.addonOptions.sliderOptions;
-        config.addonOptions.has_sliderOptions = true;
-        SET_PROPERTY(sliderOptions, enabled, legacyAddonOptions.JSliderInputEnabled);
-        SET_PROPERTY(sliderOptions, deprecatedPinSliderOne, bytePinToIntPin(legacyAddonOptions.pinSliderLS));
-        SET_PROPERTY(sliderOptions, deprecatedPinSliderTwo, bytePinToIntPin(legacyAddonOptions.pinSliderRS));
 
         PlayerNumberOptions& playerNumberOptions = config.addonOptions.playerNumberOptions;
         config.addonOptions.has_playerNumberOptions = true;

@@ -74,7 +74,6 @@
 #define TURBO_ENABLED 1
 #define GPIO_PIN_27 GpioAction::BUTTON_PRESS_TURBO
 
-#define JSLIDER_ENABLED 1
 #define GPIO_PIN_26 GpioAction::SUSTAIN_DP_MODE_LS
 #define GPIO_PIN_25 GpioAction::SUSTAIN_DP_MODE_RS
 

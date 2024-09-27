@@ -25,7 +25,6 @@ import I2CAnalog1219, {
 	i2cAnalogScheme,
 	i2cAnalogState,
 } from '../Addons/I2CAnalog1219';
-import Joystick, { joystickScheme, joystickState } from '../Addons/Joystick';
 import OnBoardLed, {
 	onBoardLedScheme,
 	onBoardLedState,
@@ -63,7 +62,6 @@ const schema = yup.object().shape({
 	...bootselScheme,
 	...onBoardLedScheme,
 	...turboScheme,
-	...joystickScheme,
 	...reverseScheme,
 	...i2cAnalogScheme,
 	...dualDirectionScheme,
@@ -87,7 +85,6 @@ const defaultValues = {
 	...bootselState,
 	...onBoardLedState,
 	...turboState,
-	...joystickState,
 	...reverseState,
 	...i2cAnalogState,
 	...dualDirectionState,
@@ -111,7 +108,6 @@ const ADDONS = [
 	OnBoardLed,
 	Analog,
 	Turbo,
-	Joystick,
 	Reverse,
 	I2CAnalog1219,
 	Analog1256,

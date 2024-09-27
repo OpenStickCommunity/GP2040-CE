@@ -38,7 +38,6 @@ private:
     DpadDirection lastGPLR; // Gamepad Last Left-Right
     DpadDirection lastDualUD; // Dual Last Up-Down
     DpadDirection lastDualLR; // Gamepad Last Left-Right
-    DpadMode dpadMode;
     GamepadButtonMapping *mapDpadUp;
     GamepadButtonMapping *mapDpadDown;
     GamepadButtonMapping *mapDpadLeft;
