@@ -518,30 +518,34 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 			break;
 		case HOTKEY_LOAD_PROFILE_1:
 			if (action != lastAction) {
-				Storage::getInstance().setProfile(1);
-				userRequestedReinit = true;
-				reqSave = true;
+				if (Storage::getInstance().setProfile(1)) {
+					userRequestedReinit = true;
+					reqSave = true;
+				}
 			}
 			break;
 		case HOTKEY_LOAD_PROFILE_2:
 			if (action != lastAction) {
-				Storage::getInstance().setProfile(2);
-				userRequestedReinit = true;
-				reqSave = true;
+				if (Storage::getInstance().setProfile(2)) {
+					userRequestedReinit = true;
+					reqSave = true;
+				}
 			}
 			break;
 		case HOTKEY_LOAD_PROFILE_3:
 			if (action != lastAction) {
-				Storage::getInstance().setProfile(3);
-				userRequestedReinit = true;
-				reqSave = true;
+				if (Storage::getInstance().setProfile(3)) {
+					userRequestedReinit = true;
+					reqSave = true;
+				}
 			}
 			break;
 		case HOTKEY_LOAD_PROFILE_4:
 			if (action != lastAction) {
-				Storage::getInstance().setProfile(4);
-				userRequestedReinit = true;
-				reqSave = true;
+				if (Storage::getInstance().setProfile(4)) {
+					userRequestedReinit = true;
+					reqSave = true;
+				}
 			}
 			break;
 		case HOTKEY_NEXT_PROFILE:

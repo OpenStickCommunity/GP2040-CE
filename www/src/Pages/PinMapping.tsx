@@ -7,13 +7,24 @@ import React, {
 } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useShallow } from 'zustand/react/shallow';
-import { Alert, Button, Col, Form, Nav, Row, Tab } from 'react-bootstrap';
+import {
+	Alert,
+	Button,
+	Col,
+	Form,
+	FormCheck,
+	Nav,
+	OverlayTrigger,
+	Row,
+	Tab,
+	Tooltip,
+} from 'react-bootstrap';
 import { Trans, useTranslation } from 'react-i18next';
 import invert from 'lodash/invert';
 import omit from 'lodash/omit';
 
 import { AppContext } from '../Contexts/AppContext';
-import useProfilesStore from '../Store/useProfilesStore';
+import useProfilesStore, { MAX_PROFILES } from '../Store/useProfilesStore';
 
 import Section from '../Components/Section';
 import CustomSelect from '../Components/CustomSelect';
@@ -23,6 +34,7 @@ import { BUTTON_MASKS, DPAD_MASKS, getButtonLabels } from '../Data/Buttons';
 import { BUTTON_ACTIONS, PinActionValues } from '../Data/Pins';
 import './PinMapping.scss';
 import { MultiValue, SingleValue } from 'react-select';
+import InfoCircle from '../Icons/InfoCircle';
 
 type OptionType = {
 	label: string;
@@ -141,8 +153,11 @@ const PinSelectList = memo(function PinSelectList({
 	profileIndex: number;
 }) {
 	const setProfilePin = useProfilesStore((state) => state.setProfilePin);
+
 	const pins = useProfilesStore(
-		useShallow((state) => omit(state.profiles[profileIndex], 'profileLabel')),
+		useShallow((state) =>
+			omit(state.profiles[profileIndex], ['profileLabel', 'enabled']),
+		),
 	);
 	const { t } = useTranslation('');
 	const { buttonLabels } = useContext(AppContext);
@@ -242,11 +257,18 @@ const PinSection = memo(function PinSection({
 	const copyBaseProfile = useProfilesStore((state) => state.copyBaseProfile);
 	const setProfilePin = useProfilesStore((state) => state.setProfilePin);
 	const saveProfiles = useProfilesStore((state) => state.saveProfiles);
+	const toggleProfileEnabled = useProfilesStore(
+		(state) => state.toggleProfileEnabled,
+	);
+	const enabled = useProfilesStore(
+		(state) => state.profiles[profileIndex].enabled,
+	);
 	const profileLabel =
 		useProfilesStore((state) => state.profiles[profileIndex].profileLabel) ||
 		t('PinMapping:profile-label-default', {
 			profileNumber: profileIndex + 1,
 		});
+
 	const { updateUsedPins, buttonLabels } = useContext(AppContext);
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
 	const CURRENT_BUTTONS = getButtonLabels(buttonLabelType, swapTpShareLabels);
@@ -285,7 +307,36 @@ const PinSection = memo(function PinSection({
 				})}
 			>
 				<Form onSubmit={handleSubmit}>
-					<ProfileLabel profileIndex={profileIndex} />
+					<div className="d-flex justify-content-between">
+						<ProfileLabel profileIndex={profileIndex} />
+						{profileIndex > 0 && (
+							<div className="d-flex">
+								<FormCheck
+									size={3}
+									label={
+										<OverlayTrigger
+											overlay={
+												<Tooltip>
+													{t('PinMapping:profile-enabled-tooltip')}
+												</Tooltip>
+											}
+										>
+											<div className="d-flex gap-1">
+												<label>{t('Common:switch-enabled')} </label>
+												<InfoCircle />
+											</div>
+										</OverlayTrigger>
+									}
+									type="switch"
+									reverse
+									checked={enabled}
+									onChange={() => {
+										toggleProfileEnabled(profileIndex);
+									}}
+								/>
+							</div>
+						)}
+					</div>
 					<hr />
 					<div className="pin-grid gap-3 mt-3">
 						<PinSelectList profileIndex={profileIndex} />
@@ -328,7 +379,10 @@ const PinSection = memo(function PinSection({
 
 export default function PinMapping() {
 	const fetchProfiles = useProfilesStore((state) => state.fetchProfiles);
+	const addProfile = useProfilesStore((state) => state.addProfile);
 	const profiles = useProfilesStore((state) => state.profiles);
+	const loadingProfiles = useProfilesStore((state) => state.loadingProfiles);
+
 	const [pressedPin, setPressedPin] = useState<number | null>(null);
 	const { t } = useTranslation('');
 
@@ -340,17 +394,36 @@ export default function PinMapping() {
 		<Tab.Container defaultActiveKey="profile-0">
 			<Row>
 				<Col sm={2}>
+					{loadingProfiles && (
+						<div className="d-flex justify-content-center">
+							<span className="spinner-border" />
+						</div>
+					)}
 					<Nav variant="pills" className="flex-column">
-						{profiles.map(({ profileLabel }, index) => (
+						{profiles.map(({ profileLabel, enabled }, index) => (
 							<Nav.Item key={`profile-${index}`}>
 								<Nav.Link eventKey={`profile-${index}`}>
 									{profileLabel ||
 										t('PinMapping:profile-label-default', {
 											profileNumber: index + 1,
 										})}
+
+									{!enabled && index > 0 && (
+										<span>{t('PinMapping:profile-disabled')}</span>
+									)}
 								</Nav.Link>
 							</Nav.Item>
 						))}
+						{profiles.length !== MAX_PROFILES && (
+							<Button
+								type="button"
+								className="mt-1"
+								variant="outline"
+								onClick={addProfile}
+							>
+								{t('PinMapping:profile-add-button')}
+							</Button>
+						)}
 					</Nav>
 					<hr />
 					<p className="text-center">{t('PinMapping:sub-header-text')}</p>
@@ -369,18 +442,11 @@ export default function PinMapping() {
 				</Col>
 				<Col sm={10}>
 					<Tab.Content>
-						<Tab.Pane eventKey="profile-0">
-							<PinSection profileIndex={0} />
-						</Tab.Pane>
-						<Tab.Pane eventKey="profile-1">
-							<PinSection profileIndex={1} />
-						</Tab.Pane>
-						<Tab.Pane eventKey="profile-2">
-							<PinSection profileIndex={2} />
-						</Tab.Pane>
-						<Tab.Pane eventKey="profile-3">
-							<PinSection profileIndex={3} />
-						</Tab.Pane>
+						{profiles.map((_, index) => (
+							<Tab.Pane key={`profile-${index}`} eventKey={`profile-${index}`}>
+								<PinSection profileIndex={index} />
+							</Tab.Pane>
+						))}
 					</Tab.Content>
 				</Col>
 			</Row>

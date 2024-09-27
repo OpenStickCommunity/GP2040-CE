@@ -64,7 +64,7 @@ public:
 	void SetProcessedGamepad(Gamepad *); // MPGS Processed Gamepad Get/Set
 	Gamepad * GetProcessedGamepad();
 
-	void setProfile(const uint32_t);		// profile support for multiple mappings
+	bool setProfile(const uint32_t);		// profile support for multiple mappings
 	void nextProfile();
 	void previousProfile();
 	void setFunctionalPinMappings();

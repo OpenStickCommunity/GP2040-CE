@@ -193,6 +193,7 @@ message GpioMappings
 {
     repeated GpioMappingInfo pins = 1 [(nanopb).max_count = 30];
     optional string profileLabel = 2 [(nanopb).max_length = 16];
+    optional bool enabled = 3 [default = false];
 }
 
 
@@ -823,6 +824,7 @@ message MigrationHistory
     optional bool hotkeysMigrated = 1 [default = false];
     optional bool gpioMappingsMigrated = 2 [default = false];
     optional bool buttonProfilesMigrated = 3 [default = false];
+    optional bool profileEnabledFlagsMigrated = 4 [default = false];
 }
 
 message Config
