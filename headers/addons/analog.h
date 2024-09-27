@@ -97,17 +97,17 @@ typedef struct
 
 class AnalogInput : public GPAddon {
 public:
-	virtual bool available();
-	virtual void setup();       // Analog Setup
-	virtual void process();     // Analog Process
-	virtual void preprocess() {}
+    virtual bool available();
+    virtual void setup();       // Analog Setup
+    virtual void process();     // Analog Process
+    virtual void preprocess() {}
     virtual std::string name() { return AnalogName; }
 private:
-	float readPin(Pin_t pin, uint16_t center);
-	float emaCalculation(float ema_value, float ema_previous);
-	uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
-	float magnitudeCalculation(adc_instance & adc_inst);
-	void radialDeadzone(adc_instance & adc_inst);
+    float readPin(Pin_t pin, uint16_t center);
+    float emaCalculation(float ema_value, float ema_previous);
+    uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
+    float magnitudeCalculation(adc_instance & adc_inst);
+    void radialDeadzone(adc_instance & adc_inst);
     adc_instance adc_pairs[ADC_COUNT];
     bool ema_option;
     float ema_smoothing;

@@ -129,18 +129,18 @@ void AnalogInput::process() {
 }
 
 float AnalogInput::readPin(Pin_t pin_adc, uint16_t center) {
-	adc_select_input(pin_adc);
+    adc_select_input(pin_adc);
     uint16_t adc_value = adc_read();
-	if (auto_calibration) {
-		if (adc_value > center) {
-			adc_value = map(adc_value, center, ADC_MAX, ADC_MAX / 2, ADC_MAX);
-		} else if (adc_value == center) {
-			adc_value = ADC_MAX / 2;
-		} else {
-			adc_value = map(adc_value, 0, center, 0, ADC_MAX / 2);
-		}
-	}
-	return ((float)adc_value) / ADC_MAX;
+    if (auto_calibration) {
+        if (adc_value > center) {
+            adc_value = map(adc_value, center, ADC_MAX, ADC_MAX / 2, ADC_MAX);
+        } else if (adc_value == center) {
+            adc_value = ADC_MAX / 2;
+        } else {
+            adc_value = map(adc_value, 0, center, 0, ADC_MAX / 2);
+        }
+    }
+    return ((float)adc_value) / ADC_MAX;
 }
 
 float AnalogInput::emaCalculation(float ema_value, float ema_previous) {
