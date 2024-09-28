@@ -63,13 +63,12 @@ export default {
 		'<span>⏳警告⏳：</span>在没有认证的情况下 PS4 将在 8 分钟后超时并断开连接。',
 	'ps4-usb-host-mode-text':
 		'<span>补充信息：</span>请确保已启用 USB 外围设备，并已插入兼容 PS4 的 USB 设备。',
-		'ps4-id-mode-label':
-		'识别模式',
+	'ps4-id-mode-label': '识别模式',
 	'ps4-id-mode-explanation-text':
 		'<ul><li>主机模式用于主要连接到 PS4 主机。</li><li>串流/模拟模式仅在连接到需要兼容 DualShock4 控制器的模拟层或远程游玩环境时使用。</li></ul>',
 	'ps4-id-mode-options': {
-		'console': '主机',
-		'emulation': '串流/模拟',
+		console: '主机',
+		emulation: '串流/模拟',
 	},
 	'ps5-mode-explanation-text':
 		'PS5 模式允许 GP2040-CE 作为经过认证的 PS5 兼容街机摇杆运行。',
