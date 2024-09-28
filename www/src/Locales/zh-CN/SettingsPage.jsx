@@ -55,7 +55,6 @@ export default {
 		'first-win': '先输入优先',
 		off: '关闭',
 	},
-	'profile-number-label': '档案编号',
 	'debounce-delay-label': '去抖动延迟 (以毫秒为单位)',
 	'ps4-mode-explanation-text':
 		'PS4 模式允许 GP2040-CE 作为经过认证的 PS4 控制器运行。',

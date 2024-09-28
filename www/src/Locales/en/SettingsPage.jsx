@@ -55,7 +55,7 @@ export default {
 		'first-win': 'First Win',
 		off: 'Off',
 	},
-	'profile-number-label': 'Profile Number',
+	'profile-label': 'Profile',
 	'debounce-delay-label': 'Debounce Delay in milliseconds',
 	'ps4-mode-explanation-text':
 		'PS4 mode allows GP2040-CE to run as an authenticated PS4 controller.',

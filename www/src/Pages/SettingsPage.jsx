@@ -6,9 +6,11 @@ import * as yup from 'yup';
 import { Trans, useTranslation } from 'react-i18next';
 import JSEncrypt from 'jsencrypt';
 import isNil from 'lodash/isNil';
-import ContextualHelpOverlay from '../Components/ContextualHelpOverlay';
 
+import useProfilesStore from '../Store/useProfilesStore';
 import { AppContext } from '../Contexts/AppContext';
+
+import ContextualHelpOverlay from '../Components/ContextualHelpOverlay';
 import KeyboardMapper, { validateMappings } from '../Components/KeyboardMapper';
 import Section from '../Components/Section';
 import WebApi, { baseButtonMappings } from '../Services/WebApi';
@@ -120,7 +122,8 @@ const SHA256 = (ascii) => {
 };
 
 const INPUT_MODES = [
-	{ labelKey: 'input-mode-options.xinput',
+	{
+		labelKey: 'input-mode-options.xinput',
 		value: 0,
 		group: 'primary',
 		optional: ['usb'],
@@ -476,11 +479,17 @@ export default function SettingsPage() {
 		buttonLabels,
 		setButtonLabels,
 		getAvailablePeripherals,
-		getSelectedPeripheral,
-		getAvailableAddons,
 		updateAddons,
 		updatePeripherals,
 	} = useContext(AppContext);
+
+	const fetchProfiles = useProfilesStore((state) => state.fetchProfiles);
+	const profiles = useProfilesStore((state) => state.profiles);
+
+	useEffect(() => {
+		fetchProfiles();
+	}, []);
+
 	const [saveMessage, setSaveMessage] = useState('');
 	const [warning, setWarning] = useState({ show: false, acceptText: '' });
 	const [validated, setValidated] = useState(false);
@@ -1312,7 +1321,7 @@ export default function SettingsPage() {
 													</Form.Group>
 													<Form.Group className="row mb-3">
 														<Form.Label>
-															{t('SettingsPage:profile-number-label')}
+															{t('SettingsPage:profile-label')}
 														</Form.Label>
 														<Col sm={3}>
 															<Form.Select
@@ -1322,12 +1331,17 @@ export default function SettingsPage() {
 																onChange={handleChange}
 																isInvalid={errors.profileNumber}
 															>
-																{[1, 2, 3, 4].map((i) => (
+																{profiles.map((profile, index) => (
 																	<option
-																		key={`button-profileNumber-option-${i}`}
-																		value={i}
+																		key={`button-profileNumber-option-${
+																			index + 1
+																		}`}
+																		value={index + 1}
 																	>
-																		{i}
+																		{profile.profileLabel ||
+																			t('PinMapping:profile-label-default', {
+																				profileNumber: index + 1,
+																			})}
 																	</option>
 																))}
 															</Form.Select>
