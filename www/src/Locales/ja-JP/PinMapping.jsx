@@ -8,8 +8,7 @@ export default {
 	'pin-header-label': '端子',
 
 	'profile-label-title': 'プロファイル名',
-	'profile-label-description':
-		'最大１６文字。半角英数とスペースのみ。',
+	'profile-label-description': '最大１６文字。半角英数とスペースのみ。',
 	'profile-pin-mapping-title': '{{profileLabel}} - 端子割当',
 	'profile-label-default': 'プロファイル {{profileNumber}}',
 	'profile-add-button': '+ プロファイル追加',

@@ -55,13 +55,12 @@ export default {
 		'<span>⏳ 警告 ⏳:</span> 認証無しの場合8分でPS4はタイムアウトして切断します.',
 	'ps4-usb-host-mode-text':
 		'<span>補足: </span> USB 周辺機器が有効化されており、PS4に互換性のあるデバイスが接続されていることを確認してください。',
-	'ps4-id-mode-label':
-		'識別モード',
+	'ps4-id-mode-label': '識別モード',
 	'ps4-id-mode-explanation-text':
 		'<ul><li>コンソールモードはPS4接続時に利用してください。</li><li></li>リモート/エミュレーションモードはエミュレーションレイヤーとの接続やリモートプレイ環境でDualShock 4互換コントローラーが必要な際にのみ利用してください。</ul>',
 	'ps4-id-mode-options': {
-		'console': 'コンソール',
-		'emulation': 'リモート/エミュレーション',
+		console: 'コンソール',
+		emulation: 'リモート/エミュレーション',
 	},
 	'ps5-mode-explanation-text':
 		'PS5モードはGP2040-CEコントローラを認証済みPS5互換アケコンとして動作させることができます。',
