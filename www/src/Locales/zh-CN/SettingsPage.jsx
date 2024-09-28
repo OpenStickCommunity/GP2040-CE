@@ -63,7 +63,7 @@ export default {
 		'<span>⏳警告⏳：</span>在没有认证的情况下 PS4 将在 8 分钟后超时并断开连接。',
 	'ps4-usb-host-mode-text':
 		'<span>补充信息：</span>请确保已启用 USB 外围设备，并已插入兼容 PS4 的 USB 设备。',
-        'ps4-id-mode-label':
+		'ps4-id-mode-label':
 		'识别模式',
 	'ps4-id-mode-explanation-text':
 		'<ul><li>主机模式用于主要连接到 PS4 主机。</li><li>串流/模拟模式仅在连接到需要兼容 DualShock4 控制器的模拟层或远程游玩环境时使用。</li></ul>',
@@ -79,7 +79,7 @@ export default {
 		'<span>补充信息：</span>请确保已启用 USB 外围设备，并已插入兼容 PS5 的 USB 设备。',
 	'xbone-mode-text':
 		'<span>补充信息：</span>Xbox One 模式需要 USB 主机(USB Host)连接和 USB 加密狗才能正确认证。',
-    'xinput-mode-text':
+	'xinput-mode-text':
 		'<span>补充信息：</span> Xbox 360 模式可以在没有身份验证或连接USB加密狗的情况下工作。',
 	'hotkey-settings-label': '快捷键设置',
 	'hotkey-settings-sub-header':
@@ -117,7 +117,7 @@ export default {
 		'a2-button': 'A2 键',
 		'a3-button': 'A3 键',
 		'a4-button': 'A4 键',
-        'dpad-up': '十字键 上',
+		'dpad-up': '十字键 上',
 		'dpad-down': '十字键 下',
 		'dpad-left': '十字键 左',
 		'dpad-right': '十字键 右',
@@ -128,7 +128,7 @@ export default {
 		'load-profile-4': '加载 档案 #4',
 		'reboot-default': '重启 GP2040-CE',
 		'next-profile': '下一个档案',
-        'previous-profile': '上一个档案',
+		'previous-profile': '上一个档案',
 	},
 	'forced-setup-mode-label': '强制设置模式',
 	'forced-setup-mode-options': {

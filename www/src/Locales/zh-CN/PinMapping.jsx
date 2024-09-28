@@ -7,7 +7,7 @@ export default {
 	'pin-viewer': '引脚查看器',
 	'pin-pressed': '按下的引脚：{{pressedPin}}',
 	'pin-header-label': '引脚',
-    'profile-label-title': '档案名称',
+	'profile-label-title': '档案名称',
 	'profile-label-description':
 		'最多16个字符。允许使用字母、数字和空格。',
 	'profile-pin-mapping-title': '{{profileLabel}} - 引脚映射',
@@ -16,7 +16,7 @@ export default {
 	'profile-disabled': ' - (禁用)',
 	'profile-enabled-tooltip':
 		'禁用的档案在使用快捷键切换档案时将不可用。',
-    'profile-pins-warning':
+	'profile-pins-warning':
 		'尽量避免修改已设置为切换档案快捷键的按键或方向键，否则之后将很难理解你选择的档案配置！',
 	'profile-copy-base': '复制基础档案',
 	errors: {
@@ -47,7 +47,7 @@ export default {
 		BUTTON_PRESS_A2: 'A2',
 		BUTTON_PRESS_L3: 'L3',
 		BUTTON_PRESS_R3: 'R3',
-        BUTTON_PRESS_A3: 'A3',
+		BUTTON_PRESS_A3: 'A3',
 		BUTTON_PRESS_A4: 'A4',
 		BUTTON_PRESS_FN: 'Function',
 		BUTTON_PRESS_DDI_UP: 'DDI 上',
