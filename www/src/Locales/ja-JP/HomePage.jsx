@@ -4,6 +4,7 @@ export default {
 	'header-text': 'GP2040-CE Web Configurator へようこそ!',
 	'latest-text': '最新バージョン: {{version}}',
 	'memory-flash-text': 'フラッシュ',
+	'memory-board-text': '基板フラッシュ',
 	'memory-header-text': 'メモリ(KB)',
 	'memory-heap-text': 'ヒープ',
 	'memory-static-allocations-text': '割当済みメモリ',
