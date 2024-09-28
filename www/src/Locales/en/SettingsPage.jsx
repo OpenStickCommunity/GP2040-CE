@@ -55,7 +55,7 @@ export default {
 		'first-win': 'First Win',
 		off: 'Off',
 	},
-	'profile-number-label': 'Profile Number',
+	'profile-label': 'Profile',
 	'debounce-delay-label': 'Debounce Delay in milliseconds',
 	'ps4-mode-explanation-text':
 		'PS4 mode allows GP2040-CE to run as an authenticated PS4 controller.',
@@ -63,13 +63,12 @@ export default {
 		'<span>⏳ WARNING ⏳:</span> PS4 will timeout after 8 minutes without authentication.',
 	'ps4-usb-host-mode-text':
 		'<span>INFO:</span> Please ensure USB Peripheral is enabled and a PS4 compatible USB device is plugged in.',
-	'ps4-id-mode-label':
-		'Identification Mode',
+	'ps4-id-mode-label': 'Identification Mode',
 	'ps4-id-mode-explanation-text':
 		'<ul><li>Console mode is used when connecting primarily to a PS4 console.</li><li>Remote/Emulation mode should only be used when connecting to an emulation layer or remote playing environment that requires a DualShock 4-compatible controller.</li></ul>',
 	'ps4-id-mode-options': {
-		'console': 'Console',
-		'emulation': 'Remote/Emulation',
+		console: 'Console',
+		emulation: 'Remote/Emulation',
 	},
 	'ps5-mode-explanation-text':
 		'PS5 mode allows GP2040-CE to run as an authenticated PS5 compatible arcade stick.',

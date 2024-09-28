@@ -47,7 +47,7 @@ export default {
 		'first-win': '先入力優先',
 		off: '無効',
 	},
-	'profile-number-label': 'プロファイル番号',
+	'profile-label': 'プロファイル',
 	'debounce-delay-label': 'チャタリング除去ディレイ(ミリ秒)',
 	'ps4-mode-explanation-text':
 		'PS4モードはGP2040-CEコントローラを認証済みPS4コントローラとして動作させることができます。',
