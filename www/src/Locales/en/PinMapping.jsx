@@ -6,7 +6,6 @@ export default {
 	'pin-viewer': 'Pin viewer',
 	'pin-pressed': 'Pressed pin: {{pressedPin}}',
 	'pin-header-label': 'Pin',
-
 	'profile-label-title': 'Profile name',
 	'profile-label-description':
 		'Max 16 characters. Letters, numbers, and spaces allowed.',
