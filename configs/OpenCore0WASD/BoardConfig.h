@@ -98,6 +98,7 @@
 #define LEDS_BUTTON_R2   9
 #define LEDS_BUTTON_B2   10
 #define LEDS_BUTTON_B1   11
+#define LEDS_BUTTON_A2   12
 
 #define PLED_TYPE PLED_TYPE_RGB
 #define PLED1_PIN 13
