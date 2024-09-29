@@ -116,6 +116,21 @@ PLEDAnimationState getXInputAnimationNEOPICO(uint16_t ledState)
 	return animationState;
 }
 
+PLEDAnimationState getXBoneAnimationNEOPICO(Gamepad * gamepad)
+{
+	PLEDAnimationState animationState =
+	{
+		.state = (PLED_STATE_LED1 | PLED_STATE_LED2 | PLED_STATE_LED3 | PLED_STATE_LED4),
+		.animation = PLED_ANIM_OFF
+	};
+
+	if ( gamepad->auxState.playerID.ledValue == 1 ) { 
+		animationState.animation = PLED_ANIM_SOLID;
+	}
+
+	return animationState;
+}
+
 PLEDAnimationState getPS3AnimationNEOPICO(uint16_t ledState)
 {
 	const uint8_t ps3LEDs[10][4] = {
@@ -225,6 +240,9 @@ void NeoPicoLEDAddon::process()
 				case INPUT_MODE_PS4:
 				case INPUT_MODE_PS5:
 					animationState = getPS4AnimationNEOPICO(gamepad->auxState.playerID.ledBlinkOn, gamepad->auxState.playerID.ledBlinkOff);
+					break;
+				case INPUT_MODE_XBONE:
+					animationState = getXBoneAnimationNEOPICO(gamepad);
 					break;
 				default:
 					break;
