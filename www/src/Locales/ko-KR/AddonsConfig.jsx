@@ -94,7 +94,7 @@ export default {
 	'tilt-right-analog-left-pin-label': '틸트 오른쪽 아날로그 Left단자',
 	'tilt-right-analog-right-pin-label': '틸트 오른쪽 아날로그 Right단자',
 	'tilt-socd-mode-label': '틸트SOCD모드',
-	'buzzer-speaker-header-text': '경고음 스피커ブザースピーカー',
+	'buzzer-speaker-header-text': '경고음 스피커',
 	'buzzer-speaker-pin-label': '경고음 단자',
 	'buzzer-speaker-enable-pin-label': '경고음 유효화 단자',
 	'buzzer-speaker-volume-label': '경고음 볼류',
