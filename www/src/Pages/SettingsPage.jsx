@@ -488,6 +488,8 @@ export default function SettingsPage() {
 
 	useEffect(() => {
 		fetchProfiles();
+		updatePeripherals();
+        updateAddons();
 	}, []);
 
 	const [saveMessage, setSaveMessage] = useState('');
@@ -1109,11 +1111,6 @@ export default function SettingsPage() {
 	const getKeyMappingForButton = (button) => keyMappings[button];
 
 	const { t } = useTranslation('');
-
-	useEffect(() => {
-		updateAddons();
-		updatePeripherals();
-	}, []);
 
 	const translatedInputBootModes = translateArray(
 		checkRequiredArray(INPUT_BOOT_MODES),
