@@ -66,6 +66,8 @@ void PS4Driver::initialize() {
     uint8_t descSize = sizeof(ps4_device_descriptor);
     memcpy(deviceDescriptor, &ps4_device_descriptor, descSize);
 
+    memset(&ps4Features, 0, sizeof(ps4Features));
+
     bool isDeviceEmulated = options.ps4ControllerIDMode == PS4ControllerIDMode::PS4_ID_EMULATION;
 
     if (!isDeviceEmulated) {
