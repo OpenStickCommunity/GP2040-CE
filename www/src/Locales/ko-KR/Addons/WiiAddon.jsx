@@ -58,7 +58,7 @@ export default {
 	'controller-analog-righttrigger': 'R',
 	'controller-analog-leftturntable': '턴테이블 왼쪽',
 	'controller-analog-rightturntable': '턴테이블 오른쪽',
-	'controller-analog-fader': '페이더r',
+	'controller-analog-fader': '페이더',
 	'controller-analog-effects': '이펙트 다이얼',
 	'controller-analog-whammybar': '와미 바',
 	'controller-analog-axis-x': 'X +/- 축',
