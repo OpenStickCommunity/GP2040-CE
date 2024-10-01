@@ -479,7 +479,6 @@ export default function SettingsPage() {
 		buttonLabels,
 		setButtonLabels,
 		getAvailablePeripherals,
-		updateAddons,
 		updatePeripherals,
 	} = useContext(AppContext);
 
@@ -488,6 +487,7 @@ export default function SettingsPage() {
 
 	useEffect(() => {
 		fetchProfiles();
+		updatePeripherals();
 	}, []);
 
 	const [saveMessage, setSaveMessage] = useState('');
@@ -1110,11 +1110,6 @@ export default function SettingsPage() {
 
 	const { t } = useTranslation('');
 
-	useEffect(() => {
-		updateAddons();
-		updatePeripherals();
-	}, []);
-
 	const translatedInputBootModes = translateArray(
 		checkRequiredArray(INPUT_BOOT_MODES),
 	);
@@ -1458,7 +1453,7 @@ export default function SettingsPage() {
 													<div id="Hotkeys" hidden={values.lockHotkeys}>
 														{Object.keys(hotkeyFields).map((o, i) => (
 															<Form.Group
-																key={`hotkey-${i}`}
+																key={`hotkey-${i}-base`}
 																className="row mb-3"
 															>
 																<Col sm="auto">
