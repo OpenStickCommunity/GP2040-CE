@@ -177,6 +177,9 @@ void Gamepad::reinit()
 	delete mapButtonE11;
 	delete mapButtonE12;
 	delete mapButtonFn;
+	delete mapButtonDP;
+	delete mapButtonLS;
+	delete mapButtonRS;
 
 	// reinitialize pin mappings
 	this->setup();
