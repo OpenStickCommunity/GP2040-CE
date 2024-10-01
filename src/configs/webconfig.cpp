@@ -469,7 +469,7 @@ std::string setDisplayOptions(DisplayOptions& displayOptions)
 std::string setDisplayOptions()
 {
     std::string response = setDisplayOptions(Storage::getInstance().getDisplayOptions());
-    Storage::getInstance().save();
+    Storage::getInstance().save(true);
     return response;
 }
 
@@ -533,7 +533,7 @@ std::string setSplashImage()
     memcpy(displayOptions.splashImage.bytes, decoded.data(), length);
     displayOptions.splashImage.size = length;
 
-    Storage::getInstance().save();
+    Storage::getInstance().save(true);
 
     return serialize_json(doc);
 }
@@ -578,7 +578,7 @@ std::string setProfileOptions()
         if (altsIndex > 2) break;
     }
 
-    Storage::getInstance().save();
+    Storage::getInstance().save(true);
     return serialize_json(doc);
 }
 
@@ -688,7 +688,7 @@ std::string setGamepadOptions()
     ForcedSetupOptions& forcedSetupOptions = Storage::getInstance().getForcedSetupOptions();
     readDoc(forcedSetupOptions.mode, doc, "forcedSetupMode");
 
-    Storage::getInstance().save();
+    Storage::getInstance().save(true);
 
     return serialize_json(doc);
 }
@@ -800,7 +800,7 @@ std::string setLedOptions()
     readDoc(ledOptions.pledIndex4, doc, "pledIndex4");
     readDoc(ledOptions.pledColor, doc, "pledColor");
 
-    Storage::getInstance().save();
+    Storage::getInstance().save(true);
     return serialize_json(doc);
 }
 
@@ -1005,7 +1005,7 @@ std::string setCustomTheme()
     options.buttonPressColorCooldownTimeInMs = pressCooldown;
 
     AnimationStation::SetOptions(options);
-    AnimationStore.save();
+    Storage::getInstance().save(true);
 
     return serialize_json(doc);
 }
@@ -1081,7 +1081,7 @@ std::string setPinMappings()
     gpioMappings.profileLabel[profileLabelSize - 1] = '\0';
     gpioMappings.enabled = doc["enabled"];
 
-    Storage::getInstance().save();
+    Storage::getInstance().save(true);
 
     return serialize_json(doc);
 }
@@ -1175,7 +1175,7 @@ std::string setKeyMappings()
     readDoc(keyboardMapping.keyButtonE11, doc, "E11");
     readDoc(keyboardMapping.keyButtonE12, doc, "E12");
 
-    Storage::getInstance().save();
+    Storage::getInstance().save(true);
 
     return serialize_json(doc);
 }
@@ -1335,7 +1335,7 @@ std::string setPeripheralOptions()
         profiles.gpioMappingsSets[2].pins[oldPinDplus+adjacent].action = GpioAction::NONE;
     }
 
-    Storage::getInstance().save();
+    Storage::getInstance().save(true);
 
     return serialize_json(doc);
 }
@@ -1401,7 +1401,7 @@ std::string setExpansionPins()
     }
     Storage::getInstance().getAddonOptions().pcf8575Options.pins_count = 16;
 
-    Storage::getInstance().save();
+    Storage::getInstance().save(true);
 
     return serialize_json(doc);
 }
@@ -1435,7 +1435,7 @@ std::string setReactiveLEDs()
     }
     Storage::getInstance().getAddonOptions().reactiveLEDOptions.leds_count = 10;
 
-    Storage::getInstance().save();
+    Storage::getInstance().save(true);
 
     return serialize_json(doc);
 }
@@ -1628,7 +1628,7 @@ std::string setAddonOptions()
     docToValue(drv8833RumbleOptions.dutyMin, doc, "drv8833RumbleDutyMin");
     docToValue(drv8833RumbleOptions.dutyMax, doc, "drv8833RumbleDutyMax");
 
-    Storage::getInstance().save();
+    Storage::getInstance().save(true);
 
     return serialize_json(doc);
 }
@@ -1701,7 +1701,7 @@ std::string setPS4Options()
     if (ps4Options.rsaQP.size != 0) ps4Options.rsaQP.size = 0;
     if (ps4Options.rsaRN.size != 0) ps4Options.rsaRN.size = 0;
 
-    Storage::getInstance().save();
+    Storage::getInstance().save(true);
 
     return "{\"success\":true}";
 }
@@ -1784,7 +1784,7 @@ std::string setWiiControls()
     readDoc(wiiOptions.controllers.turntable.effects.axisType, doc, "turntable.analogEffects.axisType");
     readDoc(wiiOptions.controllers.turntable.fader.axisType, doc, "turntable.analogFader.axisType");
 
-    Storage::getInstance().save();
+    Storage::getInstance().save(true);
 
     return "{\"success\":true}";
 }
@@ -2106,7 +2106,7 @@ std::string setMacroAddonOptions()
 
     macroOptions.macroList_count = MAX_MACRO_LIMIT;
 
-    Storage::getInstance().save();
+    Storage::getInstance().save(true);
     return serialize_json(doc);
 }
 
@@ -2254,7 +2254,7 @@ DataAndStatusCode setConfig()
     {
         Storage::getInstance().getConfig() = *config.get();
         config.reset();
-        if (Storage::getInstance().save())
+        if (Storage::getInstance().save(true))
         {
             return DataAndStatusCode(getConfig(), HttpStatusCode::_200);
         }
