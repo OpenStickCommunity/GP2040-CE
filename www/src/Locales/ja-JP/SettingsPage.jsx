@@ -71,7 +71,7 @@ export default {
 	'xbone-mode-text':
 		'<span>補足: </span> XBox One モードで正しく認証するにははUSBホスト接続とUSBドングルが必要です。',
 	'xinput-mode-text':
-		'<span>補足:</span> Xbox 360 モードは認証無し、もしくはUSBドングル接続状態で利用できます',
+		'<span>補足:</span> Xinput モードはPCでは認証無しで利用可能です。Xbox 360本体で利用する場合は適切な認証用のUSBドングルを接続することで利用可能です。',
 	'hotkey-settings-label': 'ホットキー設定',
 	'hotkey-settings-sub-header':
 		'<strong>Fn</strong>スライダーは<link_pinmap>端子割り当て設定</link_pinmap>ページで割り当て可能なファンクションボタン機能を有効化します。<strong>Fn</strong>スライダーを有効化することで、選択されたホットキーと同時にファンクションボタンを押す様に設定できます。<br />また、<strong>None</strong>を選択することでボタンの割り当てを解除できます。',
