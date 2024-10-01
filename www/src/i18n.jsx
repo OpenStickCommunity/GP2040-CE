@@ -6,7 +6,7 @@ import zhCN from './Locales/zh-CN/Index';
 import ptBR from './Locales/pt-BR/Index';
 import deDE from './Locales/de-DE/Index';
 import jaJP from './Locales/ja-JP/Index';
-import jaJP from './Locales/ko-KR/Index';
+import koKR from './Locales/ko-KR/Index';
 
 i18n
 	.use(LanguageDetector)
