@@ -8,7 +8,7 @@ import zhCNFlag from '../Icons/Flags/zhCN';
 import ptBRFlag from '../Icons/Flags/ptBR';
 import deDEFlag from '../Icons/Flags/De';
 import jaJPFlag from '../Icons/Flags/jaJP';
-import krKOFlag from '../Icons/Flags/kr';
+import krKOFlag from '../Icons/Flags/koKR';
 
 const dropdownOptions = [
 	{ code: 'en', icon: UsFlag },
