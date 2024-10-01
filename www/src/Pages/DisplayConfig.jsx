@@ -204,7 +204,6 @@ export default function DisplayConfigPage() {
 		getAvailablePeripherals,
 		getSelectedPeripheral,
 		updatePeripherals,
-		updateAddons,
 	} = useContext(AppContext);
 	const [saveMessage, setSaveMessage] = useState('');
 
@@ -218,7 +217,6 @@ export default function DisplayConfigPage() {
 	);
 
 	useEffect(() => {
-		updateAddons();
 		updatePeripherals();
 	}, []);
 
