@@ -323,11 +323,6 @@ void Gamepad::read()
 	state.rt = 0;
 }
 
-void Gamepad::save()
-{
-	Storage::getInstance().save();
-}
-
 void Gamepad::hotkey()
 {
 	if (options.lockHotkeys)
@@ -583,6 +578,6 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 
 	// only save if requested
 	if (reqSave) {
-		save();
+		Storage::getInstance().save();
 	}
 }

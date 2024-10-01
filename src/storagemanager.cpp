@@ -7,19 +7,14 @@
 
 #include "BoardConfig.h"
 #include "AnimationStorage.hpp"
-#include "Effects/StaticColor.hpp"
 #include "FlashPROM.h"
+#include "peripheralmanager.h"
 #include "config.pb.h"
 #include "hardware/watchdog.h"
-#include "Animation.hpp"
 #include "CRC32.h"
 #include "types.h"
 
 #include "config_utils.h"
-
-#include "bitmaps.h"
-
-#include "helper.h"
 
 void Storage::init() {
 	EEPROM.start();
@@ -27,9 +22,23 @@ void Storage::init() {
 	ConfigUtils::load(config);
 }
 
+/**
+ * @brief Save the config, but only if it is safe to (as in USB host is not being used.)
+ */
 bool Storage::save()
 {
-	return ConfigUtils::save(config);
+	return save(false);
+}
+
+/**
+ * @brief Save the config; if forcing a save is requested, or if USB host is not enabled, this will write to flash.
+ */
+bool Storage::save(const bool force) {
+	if (!PeripheralManager::getInstance().isUSBEnabled(0) || force) {
+		return ConfigUtils::save(config);
+	} else {
+		return false;
+	}
 }
 
 static void updateAnimationOptionsProto(const AnimationOptions& options)
