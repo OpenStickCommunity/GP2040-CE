@@ -52,7 +52,7 @@ void KeyboardHostListener::setup() {
   mouseMiddleMapping = keyboardHostOptions.mouseMiddle;
   mouseRightMapping = keyboardHostOptions.mouseRight;
 
-  _mouse_host_mounted = false;
+  _keyboard_host_mounted = false;
   _keyboard_dev_addr = DEV_ADDR_NONE;
   _keyboard_instance = 0;
   
