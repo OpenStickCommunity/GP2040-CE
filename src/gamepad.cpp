@@ -495,6 +495,9 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 		case HOTKEY_REBOOT_DEFAULT:
 			System::reboot(System::BootMode::DEFAULT);
 			break;
+		case HOTKEY_SAVE_CONFIG:
+			Storage::getInstance().save(true);
+			break;
 		case HOTKEY_CAPTURE_BUTTON:
 			state.buttons |= GAMEPAD_MASK_A2;
 			break;
