@@ -407,7 +407,7 @@ message SliderOptions
     optional int32 deprecatedPinSliderTwo = 3 [deprecated = true];
     optional DpadMode deprecatedModeOne = 4 [deprecated = true];
     optional DpadMode deprecatedModeTwo = 5 [deprecated = true];
-    optional DpadMode deprecatedModeDefault = 6;
+    optional DpadMode deprecatedModeDefault = 6 [deprecated = true];
 }
 
 message SOCDSliderOptions
@@ -794,7 +794,7 @@ message AddonOptions
     optional OnBoardLedOptions onBoardLedOptions = 2;
     optional AnalogOptions analogOptions = 3;
     optional TurboOptions turboOptions = 4;
-    optional SliderOptions deprecatedSliderOptions = 5;
+    optional SliderOptions deprecatedSliderOptions = 5 [deprecated = true];
     optional ReverseOptions reverseOptions = 6;
     optional AnalogADS1219Options analogADS1219Options = 7;
     optional DualDirectionalOptions dualDirectionalOptions = 8;
