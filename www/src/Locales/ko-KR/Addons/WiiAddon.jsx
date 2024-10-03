@@ -65,7 +65,7 @@ export default {
 	'controller-analog-axis-y': 'Y +/- 축',
 	'controller-analog-axis-trigger': '트리거',
 	'analog-axis-mode-trigger':	'<0>"모든 값의 범위가 인터페이스로 전송됩니다.</0>',
-	'analog-axis-mode-button':'<0>정의된 임계값을 초과한 후 '눌림' 상태로 설정하는 디지털 스위치 역할을 합니다.</0>',
+	'analog-axis-mode-button':'<0>정의된 임계값을 초과한 후 [눌림] 상태로 설정하는 디지털 스위치 역할을 합니다.</0>',
 	'analog-axis-mode-normal-direction':'<0>모든 값의 범위는 조이스틱의 축으로 변환되며, 최솟값은 음의 극을, 최댓값은 양의 극으로 가정됩니다.</0>',
 	'analog-axis-mode-invert-direction':'<0>모든 값의 범위는 조이스틱의 축으로 변환되며, 최솟값은 음의 극을, 최댓값은 양의 극으로 가정됩니다..</0>',
 	'button-save': '컨트롤러 저장',
