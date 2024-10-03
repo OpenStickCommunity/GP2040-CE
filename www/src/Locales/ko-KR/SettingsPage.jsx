@@ -23,7 +23,7 @@ export default {
 	'boot-input-mode-label': '재기동시 입력모드',
 	'ps4-mode-options': {
 		controller: '컨트롤러',
-		arcadestick: '아케콘',
+		arcadestick: '아케이드 스틱',
 	},
 	'input-mode-authentication': {
 		none: '없음',
@@ -39,7 +39,7 @@ export default {
 	},
 	'socd-cleaning-mode-label': 'SOCD 클리닝 모드',
 	'socd-cleaning-mode-note':
-		'주의：PS4、PS3、닌텐도Switch 또는 미니미니 콘솔 시리즈 모드에서는 SOCD 클리닝 모드 비활성화 설정이 불가능하므로, 중립 SOCD 클리닝으로 설정됩니다.',
+		'주의：PS4、PS3、닌텐도Switch 또는 미니 콘솔 시리즈 모드에서는 SOCD 클리닝 모드 끄기 설정이 불가능하므로, 중립 SOCD 클리닝으로 설정됩니다.',
 	'socd-cleaning-mode-options': {
 		'up-priority': '위 우선',
 		neutral: '중립',
@@ -71,7 +71,7 @@ export default {
 	'xbone-mode-text':
 		'<span>추가 설명:</span>Xbox One 모드에서 올바르게 인증하려면 USB 호스트 연결과 USB 동글이 필요합니다.',
 	'xinput-mode-text':
-		'<span>추가 설명:</span>Xbox 360 모드는 인증 없이 또는 USB 동글 연결 상태에서 사용할 수 있습니다.',
+		'<span>추가 설명:</span>Xinput모드는 pc에서 인증 없이 사용 할 수 있습니다. Xbox 360에서 사용할때는 적절한 동글을 꽂아주세요',
 	'hotkey-settings-label': '핫키 설정',
 	'hotkey-settings-sub-header':
 		'<strong>Fn</strong>슬라이더는<link_pinmap>단자 할당 설정</link_pinmap>페이지에서 할당 가능한 펑션 버튼 기능을 활성화 합니다.<strong>Fn</strong>슬라이더를 활성화 하면 선택한 핫 키와 동시에 펑션 버튼을 누르도록 설정할 수 있습니다.<br />또、<strong>None</strong>을 선택 하는 것으로 버튼 할당을 해제 할 수 있습니다.',
@@ -134,7 +134,7 @@ export default {
 		'저장후 컨트롤러를 재기동하면, 이후로 Web설정 모드에 액세스 할 수 없게됩니다. 주의사항을 잘 이해한 뒤에 저장버튼을 활성화 하기 위해서는「{{warningCheckText}}」을 아래에 입력 해 주세요. 닫기 버튼을 누른 경우 이 설정은 원래 상태로 되돌아 간뒤에 저장됩니다.',
 	'4-way-joystick-mode-label': '4방향 조이스틱 모드',
 	'lock-hotkeys-label': '핫키 잠금',
-	'keyboard-mapping-header-text': '키보드 할당',
+	'keyboard-mapping-header-text': '키보드 키 할당',
 	'keyboard-mapping-sub-header-text':
 		'아래의 폼을 사용하여 버튼과 키를 할당 변경 해주세요',
 };
