@@ -1,7 +1,7 @@
 export default {
 	'add-ons-label': 'Add-Ons 설정',
-	'backup-label': '설정 백업 저장과 복원',
-	'config-label': '구성 성정',
+	'backup-label': '데이터 백업 and 복원',
+	'config-label': '구성 설정',
 	'custom-theme-label': '커스텀 LED 테마',
 	'display-config-label': '디스플레이 설정',
 	'docs-label': '공식 사이트',
@@ -23,6 +23,7 @@ export default {
 	'reboot-modal-button-success-label': '완료!',
 	'reboot-modal-label': '재기동 하시겠습니까？',
 	'reboot-modal-success': '재기동 완료 브라우저 탭을 닫아주세요',
+	'reboot-modal-button-success-label': '완료!',
 	'resetSettings-label': '설정 초기화',
 	'settings-label': '설정',
 };
