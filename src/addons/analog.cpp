@@ -74,6 +74,12 @@ void AnalogInput::setup() {
 
 void AnalogInput::process() {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
+    
+    uint16_t joystickMid = GAMEPAD_JOYSTICK_MID;
+    if ( DriverManager::getInstance().getDriver() != nullptr ) {
+        joystickMid = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
+    }
+
     for(int i = 0; i < ADC_COUNT; i++) {
         // Read X-Axis
         if (isValidPin(adc_pairs[i].x_pin)) {
@@ -109,7 +115,7 @@ void AnalogInput::process() {
         }
 
         if (adc_pairs[i].analog_dpad == DpadMode::DPAD_MODE_LEFT_ANALOG) {
-            if ( DriverManager::getInstance().getDriver()->GetJoystickMidValue() == 0x8000 ) {
+            if ( joystickMid == 0x8000 ) {
                 gamepad->state.lx = static_cast<uint16_t>(std::ceil(65535.0f * adc_pairs[i].x_value));
                 gamepad->state.ly = static_cast<uint16_t>(std::ceil(65535.0f * adc_pairs[i].y_value));
             } else { // 0x7FFF
@@ -117,7 +123,7 @@ void AnalogInput::process() {
                 gamepad->state.ly = static_cast<uint16_t>(65535.0f * adc_pairs[i].y_value);
             }
         } else if (adc_pairs[i].analog_dpad == DpadMode::DPAD_MODE_RIGHT_ANALOG) {
-            if ( DriverManager::getInstance().getDriver()->GetJoystickMidValue() == 0x8000 ) {
+            if ( joystickMid == 0x8000 ) {
                 gamepad->state.rx = static_cast<uint16_t>(std::ceil(65535.0f * adc_pairs[i].x_value));
                 gamepad->state.ry = static_cast<uint16_t>(std::ceil(65535.0f * adc_pairs[i].y_value));
             } else { // 0x7FFF
