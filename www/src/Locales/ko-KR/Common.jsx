@@ -23,7 +23,7 @@ export default {
 	'switch-enabled': '유효화',
 	'lock-oled-screen': 'OLED 디스플레이 잠그기',
 	'lock-rgb-led': 'RGB LED 잠그기',
-	'lock-macro': '마우스 잠그기',
+	'lock-macro': '매크로 잠그기',
 	'lock-buttons': '버튼 잠그기',
 	'loading-text': '로딩중..',
 };
