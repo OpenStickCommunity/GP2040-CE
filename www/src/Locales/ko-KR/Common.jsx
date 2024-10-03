@@ -12,7 +12,7 @@ export default {
 	'button-set-pressed-gradient-label': '누른 상태의 그라데이션 설정',
 	'button-verify-save-label': '검증하여 저장',
 	'saved-success-message': '저장완료! 컨트롤러를 재기동 해주세요.',
-	'saved-error-message': '저장하지 못했습비다.',
+	'saved-error-message': '저장실패.. 저장하지 못했습니다...',
 	errors: {
 		required: '필수',
 		conflict: '충돌',
