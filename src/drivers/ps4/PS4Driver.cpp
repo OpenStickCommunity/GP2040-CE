@@ -245,13 +245,13 @@ void PS4Driver::process(Gamepad * gamepad) {
     } else if (pointOneTouched && touchpadData.p1.unpressed) {
         pointOneTouched = false;
     }
-    if (!pointTwoTouched && touchpadData.p2.unpressed) {
+    if (!pointTwoTouched && !touchpadData.p2.unpressed) {
         touchCounter = (touchCounter < PS4_TP_MAX_COUNT ? touchCounter+1 : 0);
     
         touchpadData.p2.counter = touchCounter;
     
         pointTwoTouched = true;
-    } else if (pointTwoTouched && touchpadData.p1.unpressed) {
+    } else if (pointTwoTouched && touchpadData.p2.unpressed) {
         pointTwoTouched = false;
     }
     ps4Report.touchpad_data = touchpadData;
