@@ -393,7 +393,7 @@ export default function PinMapping() {
 	return (
 		<Tab.Container defaultActiveKey="profile-0">
 			<Row>
-				<Col sm={2}>
+				<Col md={3}>
 					{loadingProfiles && (
 						<div className="d-flex justify-content-center">
 							<span className="spinner-border" />
@@ -427,7 +427,7 @@ export default function PinMapping() {
 					</Nav>
 					<hr />
 					<p className="text-center">{t('PinMapping:sub-header-text')}</p>
-					<div className="d-flex justify-content-center">
+					<div className="d-flex justify-content-center pb-3">
 						<CaptureButton
 							buttonLabel={t('PinMapping:pin-viewer')}
 							labels={['']}
@@ -440,7 +440,7 @@ export default function PinMapping() {
 						</div>
 					)}
 				</Col>
-				<Col sm={10}>
+				<Col md={9}>
 					<Tab.Content>
 						{profiles.map((_, index) => (
 							<Tab.Pane key={`profile-${index}`} eventKey={`profile-${index}`}>
