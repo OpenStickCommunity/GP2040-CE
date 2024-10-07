@@ -231,7 +231,7 @@ const PinSelectList = memo(function PinSelectList({
 		[buttonNames],
 	);
 	return Object.entries(pins).map(([pin, pinData], index) => (
-		<div key={`select-${index}`} className="d-flex col align-items-center">
+		<div key={`select-${index}`} className="d-flex align-items-center">
 			<div className="d-flex flex-shrink-0" style={{ width: '4rem' }}>
 				<label>{pin.toUpperCase()}</label>
 			</div>
