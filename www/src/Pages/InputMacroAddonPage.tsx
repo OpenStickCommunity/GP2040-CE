@@ -148,7 +148,7 @@ const MacroInputComponent = (props) => {
 
 	return (
 		<Row className="align-content-start align-items-center row-gap-2 pb-2">
-			<Col xs="auto">
+			<Col xs="auto" style={{ width: 180 }}>
 				<InputGroup size="sm">
 					<Form.Control
 						className="text-center"
@@ -212,7 +212,7 @@ const MacroInputComponent = (props) => {
 					buttonMasks={BUTTON_MASKS_OPTIONS}
 				/>
 			</Col>
-			<Col xs="auto">
+			<Col xs="auto" style={{ width: 290 }}>
 				<InputGroup size="sm">
 					<InputGroup.Text>
 						{t('InputMacroAddon:input-macro-release-and-wait-label')}
