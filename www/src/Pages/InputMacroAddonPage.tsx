@@ -167,7 +167,7 @@ const MacroInputComponent = (props) => {
 						}}
 						min={0}
 					/>
-					<InputGroup.Text id="basic-addon2">
+					<InputGroup.Text>
 						{t(
 							showFrames
 								? 'InputMacroAddon:input-macro-time-label-frames'
