@@ -253,6 +253,7 @@ ADS1219
 ADS1256
 PlayerLEDs
 NeoPico
+pico_pio_uart_tx_stdio
 OneBitDisplay
 ArduinoJson
 rndis
