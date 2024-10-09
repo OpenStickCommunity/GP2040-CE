@@ -5,6 +5,7 @@ import {
 	Button,
 	Col,
 	Form,
+	InputGroup,
 	Nav,
 	OverlayTrigger,
 	Row,
@@ -111,23 +112,23 @@ const ButtonMasksComponent = (props) => {
 		buttonMasks,
 	} = props;
 	return (
-		<div key={key} className={className}>
-			<Form.Select
-				size="sm"
-				name={`${key}.buttonMask`}
-				className="form-control col-sm-auto"
-				value={value}
-				error={error}
-				isInvalid={isInvalid}
-				onChange={onChange}
-			>
-				{buttonMasks.map((o, i2) => (
-					<option key={`${key}.mask[${i2}]`} value={o.value}>
-						{(buttonLabelType && BUTTONS[buttonLabelType][o.label]) || o.label}
-					</option>
-				))}
-			</Form.Select>
-		</div>
+		// <div key={key} className={className}>
+		<Form.Select
+			size="sm"
+			name={`${key}.buttonMask`}
+			// className="form-control"
+			value={value}
+			error={error}
+			isInvalid={isInvalid}
+			onChange={onChange}
+		>
+			{buttonMasks.map((o, i2) => (
+				<option key={`${key}.mask[${i2}]`} value={o.value}>
+					{(buttonLabelType && BUTTONS[buttonLabelType][o.label]) || o.label}
+				</option>
+			))}
+		</Form.Select>
+		// </div>
 	);
 };
 
@@ -146,77 +147,46 @@ const MacroInputComponent = (props) => {
 	} = props;
 
 	return (
-		<Row key={key} className="py-2 flex-nowrap">
-			<Col
-				style={{
-					minWidth: '150px',
-					maxWidth: '150px',
-				}}
-			>
-				<Row className="d-flex justify-content-center">
-					<Col sm={6} className="px-0">
-						<Form.Control
-							className="text-center"
-							size="sm"
-							type="number"
-							placeholder={t('InputMacroAddon:input-macro-duration-label')}
-							name={`${key}.duration`}
-							value={duration / (showFrames ? ONE_FRAME_US : 1000)}
-							step="any"
-							error={errors?.duration}
-							isInvalid={errors?.duration}
-							onChange={(e) => {
-								setFieldValue(
-									`${key}.duration`,
-									e.target.value * (showFrames ? ONE_FRAME_US : 1000),
-								);
-							}}
-							min={0}
-						/>
-					</Col>
-					<Col sm={5} className="px-1 text-nowrap">
+		<Row className="align-content-start align-items-center row-gap-2 pb-2">
+			<Col xs="auto" style={{ width: 180 }}>
+				<InputGroup size="sm">
+					<Form.Control
+						className="text-center"
+						type="number"
+						placeholder={t('InputMacroAddon:input-macro-duration-label')}
+						name={`${key}.duration`}
+						value={duration / (showFrames ? ONE_FRAME_US : 1000)}
+						step="any"
+						error={errors?.duration}
+						isInvalid={errors?.duration}
+						onChange={(e) => {
+							setFieldValue(
+								`${key}.duration`,
+								e.target.value * (showFrames ? ONE_FRAME_US : 1000),
+							);
+						}}
+						min={0}
+					/>
+					<InputGroup.Text>
 						{t(
 							showFrames
 								? 'InputMacroAddon:input-macro-time-label-frames'
 								: 'InputMacroAddon:input-macro-time-label-ms',
 						)}
-					</Col>
-				</Row>
+					</InputGroup.Text>
+				</InputGroup>
 			</Col>
-			<Col sm={'auto'}>
-				<Row className="d-flex justify-content-center">
-					{BUTTON_MASKS_OPTIONS.filter((mask) => buttonMask & mask.value).map(
-						(mask, i1) => (
-							<Col
-								key={`${key}.buttonMask[${i1}]`}
-								sm={'auto'}
-								className="px-1"
-							>
-								<ButtonMasksComponent
-									id={`${key}.buttonMask[${i1}]`}
-									value={buttonMask & mask.value}
-									onChange={(e) => {
-										setFieldValue(
-											`${key}.buttonMask`,
-											(buttonMask ^ mask.value) | e.target.value,
-										);
-									}}
-									error={errors?.buttonMask}
-									isInvalid={errors?.buttonMask}
-									translation={t}
-									buttonLabelType={buttonLabelType}
-									buttonMasks={BUTTON_MASKS_OPTIONS}
-								/>
-							</Col>
-						),
-					)}
-					<Col sm={'auto'} className="px-1">
+			{BUTTON_MASKS_OPTIONS.filter((mask) => buttonMask & mask.value).map(
+				(mask, i1) => (
+					<Col xs="auto" key={`${key}.buttonMask[${i1}]`}>
 						<ButtonMasksComponent
-							id={`${key}.buttonMaskPlaceholder`}
-							className="col-sm-auto"
-							value={0}
+							id={`${key}.buttonMask[${i1}]`}
+							value={buttonMask & mask.value}
 							onChange={(e) => {
-								setFieldValue(`${key}.buttonMask`, buttonMask | e.target.value);
+								setFieldValue(
+									`${key}.buttonMask`,
+									(buttonMask ^ mask.value) | e.target.value,
+								);
 							}}
 							error={errors?.buttonMask}
 							isInvalid={errors?.buttonMask}
@@ -225,68 +195,68 @@ const MacroInputComponent = (props) => {
 							buttonMasks={BUTTON_MASKS_OPTIONS}
 						/>
 					</Col>
-				</Row>
+				),
+			)}
+			<Col xs="auto">
+				<ButtonMasksComponent
+					id={`${key}.buttonMaskPlaceholder`}
+					className="col-sm-auto"
+					value={0}
+					onChange={(e) => {
+						setFieldValue(`${key}.buttonMask`, buttonMask | e.target.value);
+					}}
+					error={errors?.buttonMask}
+					isInvalid={errors?.buttonMask}
+					translation={t}
+					buttonLabelType={buttonLabelType}
+					buttonMasks={BUTTON_MASKS_OPTIONS}
+				/>
 			</Col>
-			<Col
-				style={{
-					minWidth: '125px',
-					maxWidth: '125px',
-				}}
-				className="d-flex justify-content-center text-nowrap"
-			>
-				{' '}
-				{t('InputMacroAddon:input-macro-release-and-wait-label')}{' '}
-			</Col>
-			<Col
-				style={{
-					minWidth: '150px',
-					maxWidth: '150px',
-				}}
-			>
-				<Row className="d-flex justify-content-center">
-					<Col sm={6} className="px-0">
-						<Form.Control
-							className="text-center"
-							size="sm"
-							type="number"
-							placeholder={t('InputMacroAddon:input-macro-wait-duration-label')}
-							name={`${key}.waitDuration`}
-							value={waitDuration / (showFrames ? ONE_FRAME_US : 1000)}
-							step="any"
-							error={errors?.waitDuration}
-							isInvalid={errors?.waitDuration}
-							onChange={(e) => {
-								setFieldValue(
-									`${key}.waitDuration`,
-									e.target.value * (showFrames ? ONE_FRAME_US : 1000),
-								);
-							}}
-							min={0}
-						/>
-					</Col>
-					<Col sm={5} className="px-1 text-nowrap">
+			<Col xs="auto" style={{ width: 290 }}>
+				<InputGroup size="sm">
+					<InputGroup.Text>
+						{t('InputMacroAddon:input-macro-release-and-wait-label')}
+					</InputGroup.Text>
+					<Form.Control
+						className="text-center d-flex"
+						type="number"
+						placeholder={t('InputMacroAddon:input-macro-wait-duration-label')}
+						name={`${key}.waitDuration`}
+						value={waitDuration / (showFrames ? ONE_FRAME_US : 1000)}
+						step="any"
+						error={errors?.waitDuration}
+						isInvalid={errors?.waitDuration}
+						onChange={(e) => {
+							setFieldValue(
+								`${key}.waitDuration`,
+								e.target.value * (showFrames ? ONE_FRAME_US : 1000),
+							);
+						}}
+						min={0}
+					/>
+					<InputGroup.Text>
 						{t(
 							showFrames
 								? 'InputMacroAddon:input-macro-time-label-frames'
 								: 'InputMacroAddon:input-macro-time-label-ms',
 						)}
-					</Col>
-					<Col sm={1} className="px-0 text-nowrap">
-						<OverlayTrigger
-							placement="right"
-							overlay={tooltip}
-							delay={{ show: 500, hide: 100 }}
-						>
-							<Button
-								variant="transparent"
-								size="sm"
-								onDoubleClick={deleteMacroInput}
-							>
-								💥
-							</Button>
-						</OverlayTrigger>
-					</Col>
-				</Row>
+					</InputGroup.Text>
+				</InputGroup>
+			</Col>
+			<Col xs="auto">
+				<OverlayTrigger
+					placement="right"
+					overlay={tooltip}
+					delay={{ show: 500, hide: 100 }}
+				>
+					<Button
+						variant="transparent"
+						size="sm"
+						onDoubleClick={deleteMacroInput}
+					>
+						💥
+					</Button>
+				</OverlayTrigger>
 			</Col>
 		</Row>
 	);
@@ -553,7 +523,7 @@ export default function MacrosPage() {
 					<Form noValidate onSubmit={handleSubmit}>
 						<Tab.Container defaultActiveKey="settings">
 							<Row>
-								<Col sm={2}>
+								<Col md={3}>
 									<Nav variant="pills" className="flex-column text-nowrap">
 										<Nav.Item key="pills-header">
 											<Nav.Link eventKey="settings">
@@ -575,7 +545,7 @@ export default function MacrosPage() {
 										))}
 									</Nav>
 								</Col>
-								<Col sm={10}>
+								<Col md={9}>
 									<Tab.Content>
 										<Tab.Pane eventKey="settings">
 											<Section
