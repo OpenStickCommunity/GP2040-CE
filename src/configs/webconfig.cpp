@@ -1628,6 +1628,9 @@ std::string setAddonOptions()
     docToValue(drv8833RumbleOptions.dutyMin, doc, "drv8833RumbleDutyMin");
     docToValue(drv8833RumbleOptions.dutyMax, doc, "drv8833RumbleDutyMax");
 
+    QMI8658Options& qmi8658Options = Storage::getInstance().getAddonOptions().qmi8658Options;
+    docToValue(qmi8658Options.enabled, doc, "I2CQMI8658InputEnabled");
+
     Storage::getInstance().save();
 
     return serialize_json(doc);
@@ -2063,6 +2066,9 @@ std::string getAddonOptions()
     writeDoc(doc, "drv8833RumblePWMFrequency", drv8833RumbleOptions.pwmFrequency);
     writeDoc(doc, "drv8833RumbleDutyMin", drv8833RumbleOptions.dutyMin);
     writeDoc(doc, "drv8833RumbleDutyMax", drv8833RumbleOptions.dutyMax);
+
+    const QMI8658Options& qmi8658Options = Storage::getInstance().getAddonOptions().qmi8658Options;
+    writeDoc(doc, "I2CQMI8658InputEnabled", qmi8658Options.enabled);
 
     return serialize_json(doc);
 }

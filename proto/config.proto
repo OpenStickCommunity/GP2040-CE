@@ -788,6 +788,11 @@ message ReactiveLEDOptions
     repeated ReactiveLEDInfo leds = 2 [(nanopb).max_count = 10];
 }
 
+message QMI8658Options
+{
+    optional bool enabled = 1;
+}
+
 message AddonOptions
 {
     optional BootselButtonOptions bootselButtonOptions = 1;
@@ -817,6 +822,7 @@ message AddonOptions
     optional PCF8575Options pcf8575Options = 25;
     optional DRV8833RumbleOptions drv8833RumbleOptions = 26;
     optional ReactiveLEDOptions reactiveLEDOptions = 27;
+    optional QMI8658Options qmi8658Options = 28;
 }
 
 message MigrationHistory
