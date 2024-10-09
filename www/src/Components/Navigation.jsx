@@ -180,8 +180,8 @@ const Navigation = () => {
 						{isRebooting !== BOOT_MODES.BOOTSEL
 							? t('Navigation:reboot-modal-button-bootsel-label')
 							: isRebooting
-							? t('Navigation:reboot-modal-button-progress-label')
-							: t('Navigation:reboot-modal-button-success-label')}
+								? t('Navigation:reboot-modal-button-progress-label')
+								: t('Navigation:reboot-modal-button-success-label')}
 					</Button>
 					<Button
 						variant="primary"
@@ -190,8 +190,8 @@ const Navigation = () => {
 						{isRebooting !== BOOT_MODES.WEBCONFIG
 							? t('Navigation:reboot-modal-button-web-config-label')
 							: isRebooting
-							? t('Navigation:reboot-modal-button-progress-label')
-							: t('Navigation:reboot-modal-button-success-label')}
+								? t('Navigation:reboot-modal-button-progress-label')
+								: t('Navigation:reboot-modal-button-success-label')}
 					</Button>
 					<Button
 						variant="success"
@@ -200,8 +200,8 @@ const Navigation = () => {
 						{isRebooting !== BOOT_MODES.GAMEPAD
 							? t('Navigation:reboot-modal-button-controller-label')
 							: isRebooting
-							? t('Navigation:reboot-modal-button-progress-label')
-							: t('Navigation:reboot-modal-button-success-label')}
+								? t('Navigation:reboot-modal-button-progress-label')
+								: t('Navigation:reboot-modal-button-success-label')}
 					</Button>
 				</Modal.Footer>
 			</Modal>

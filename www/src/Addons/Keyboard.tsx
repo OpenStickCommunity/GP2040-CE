@@ -28,15 +28,24 @@ export const keyboardScheme = {
 	keyboardHostMouseLeft: yup
 		.number()
 		.label('Left Mouse Button')
-		.validateSelectionWhenValue('KeyboardHostAddonEnabled', BUTTON_MASKS_OPTIONS),
+		.validateSelectionWhenValue(
+			'KeyboardHostAddonEnabled',
+			BUTTON_MASKS_OPTIONS,
+		),
 	keyboardHostMouseMiddle: yup
 		.number()
 		.label('Middle Mouse Button')
-		.validateSelectionWhenValue('KeyboardHostAddonEnabled', BUTTON_MASKS_OPTIONS),
+		.validateSelectionWhenValue(
+			'KeyboardHostAddonEnabled',
+			BUTTON_MASKS_OPTIONS,
+		),
 	keyboardHostMouseRight: yup
 		.number()
 		.label('Right Mouse Button')
-		.validateSelectionWhenValue('KeyboardHostAddonEnabled', BUTTON_MASKS_OPTIONS),
+		.validateSelectionWhenValue(
+			'KeyboardHostAddonEnabled',
+			BUTTON_MASKS_OPTIONS,
+		),
 };
 
 export const keyboardState = {
@@ -47,16 +56,24 @@ export const keyboardState = {
 	KeyboardHostAddonEnabled: 0,
 };
 
-const options = Object.entries(BUTTON_ACTIONS)
-	.map(([key, value]) => ({
-		label: key,
-		value,
-	}));
+const options = Object.entries(BUTTON_ACTIONS).map(([key, value]) => ({
+	label: key,
+	value,
+}));
 
 const excludedButtons = [
-	'E1','E2','E3','E4',
-	'E5','E6','E7','E8',
-	'E9','E10','E11','E12',
+	'E1',
+	'E2',
+	'E3',
+	'E4',
+	'E5',
+	'E6',
+	'E7',
+	'E8',
+	'E9',
+	'E10',
+	'E11',
+	'E12',
 ];
 
 const Keyboard = ({
@@ -95,7 +112,7 @@ const Keyboard = ({
 					<div className="mb-2">
 						<KeyboardMapper
 							buttonLabels={buttonLabels}
-                            excludeButtons={excludedButtons}
+							excludeButtons={excludedButtons}
 							handleKeyChange={handleKeyChange(values, setFieldValue)}
 							validated={validated}
 							getKeyMappingForButton={getKeyMappingForButton(values)}
@@ -104,9 +121,7 @@ const Keyboard = ({
 				</Row>
 				<Row className="mb-3">
 					<p>{t('AddonsConfig:keyboard-host-mouse-header-text')}</p>
-					<div
-						className="col-sm-12 col-md-6 col-lg-2 mb-2"
-					>
+					<div className="col-sm-12 col-md-6 col-lg-2 mb-2">
 						<FormSelect
 							label={t(`AddonsConfig:keyboard-host-left-mouse`)}
 							name="keyboardHostMouseLeft"
@@ -117,18 +132,13 @@ const Keyboard = ({
 							onChange={handleChange}
 						>
 							{BUTTON_MASKS_OPTIONS.map((o, i) => (
-								<option
-									key={`keyboardHostMouseLeft-${i}`}
-									value={o.value}
-								>
+								<option key={`keyboardHostMouseLeft-${i}`} value={o.value}>
 									{o.label}
 								</option>
 							))}
 						</FormSelect>
 					</div>
-					<div
-						className="col-sm-12 col-md-6 col-lg-2 mb-2"
-					>
+					<div className="col-sm-12 col-md-6 col-lg-2 mb-2">
 						<FormSelect
 							label={t(`AddonsConfig:keyboard-host-middle-mouse`)}
 							name="keyboardHostMouseMiddle"
@@ -139,18 +149,13 @@ const Keyboard = ({
 							onChange={handleChange}
 						>
 							{BUTTON_MASKS_OPTIONS.map((o, i) => (
-								<option
-									key={`keyboardHostMouseMiddle-${i}`}
-									value={o.value}
-								>
+								<option key={`keyboardHostMouseMiddle-${i}`} value={o.value}>
 									{o.label}
 								</option>
 							))}
 						</FormSelect>
 					</div>
-					<div
-						className="col-sm-12 col-md-6 col-lg-2 mb-2"
-					>
+					<div className="col-sm-12 col-md-6 col-lg-2 mb-2">
 						<FormSelect
 							label={t(`AddonsConfig:keyboard-host-right-mouse`)}
 							name="keyboardHostMouseRight"
@@ -161,10 +166,7 @@ const Keyboard = ({
 							onChange={handleChange}
 						>
 							{BUTTON_MASKS_OPTIONS.map((o, i) => (
-								<option
-									key={`keyboardHostMouseRight-${i}`}
-									value={o.value}
-								>
+								<option key={`keyboardHostMouseRight-${i}`} value={o.value}>
 									{o.label}
 								</option>
 							))}

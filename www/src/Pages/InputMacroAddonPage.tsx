@@ -566,10 +566,10 @@ export default function MacrosPage() {
 													{macro.macroLabel.length == 0
 														? t('InputMacroAddon:input-macro-macro-list-txt', {
 																macroNumber: i + 1,
-														  })
+															})
 														: macro.macroLabel.length > 24
-														? macro.macroLabel.substr(0, 24) + '...'
-														: macro.macroLabel}
+															? macro.macroLabel.substr(0, 24) + '...'
+															: macro.macroLabel}
 												</Nav.Link>
 											</Nav.Item>
 										))}
@@ -637,10 +637,10 @@ export default function MacrosPage() {
 																			{macro.useMacroTriggerButton == 1
 																				? t(
 																						'InputMacroAddon:input-macro-macro-trigger-type-button',
-																				  )
+																					)
 																				: t(
 																						'InputMacroAddon:input-macro-macro-trigger-type-pin',
-																				  )}
+																					)}
 																		</td>
 																		{macro.useMacroTriggerButton == 0 ? (
 																			<td>

@@ -110,7 +110,7 @@ const CaptureButton = ({
 							buttonLabel
 								? buttonLabel
 								: t('CaptureButton:capture-button-button-label')
-					  } 🎮`}
+						} 🎮`}
 			</Button>
 		</>
 	);

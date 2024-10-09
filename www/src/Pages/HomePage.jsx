@@ -55,8 +55,14 @@ export default function HomePage() {
 
 		WebApi.getMemoryReport(setLoading)
 			.then((response) => {
-				const { totalFlash, usedFlash, physicalFlash, staticAllocs, totalHeap, usedHeap } =
-					response;
+				const {
+					totalFlash,
+					usedFlash,
+					physicalFlash,
+					staticAllocs,
+					totalHeap,
+					usedHeap,
+				} = response;
 				setMemoryReport({
 					totalFlash: toKB(totalFlash),
 					usedFlash: toKB(usedFlash),

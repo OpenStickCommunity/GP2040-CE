@@ -54,7 +54,10 @@ import DRV8833Rumble, {
 	drv8833RumbleScheme,
 	drv8833RumbleState,
 } from '../Addons/DRV8833';
-import ReactiveLED, { reactiveLEDScheme, reactiveLEDState } from '../Addons/ReactiveLED';
+import ReactiveLED, {
+	reactiveLEDScheme,
+	reactiveLEDState,
+} from '../Addons/ReactiveLED';
 
 const schema = yup.object().shape({
 	...analogScheme,
