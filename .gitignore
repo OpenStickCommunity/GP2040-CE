@@ -18,3 +18,4 @@ env.ini
 .devcontainer
 *Dockerfile
 *docker-compose.yml
+lib/NeoPico/src/generated/ws2812.pio.h
