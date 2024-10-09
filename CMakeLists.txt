@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.13)
 include(CMakePrintHelpers)
 
-
-
+# enable compile commands for use by IDE autocompletion
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # initialize the SDK based on PICO_SDK_PATH
 # note: this must happen before project()
