@@ -7,9 +7,9 @@ Open source replacement PCB for Sega Saturn controllers
 * Japanese controller
 * Retro-Bit Saturn controller
 
-Purchase: https://misteraddons.com/products/Reflex-CTRL
+Purchase: <https://misteraddons.com/products/Reflex-CTRL>
 
-GitHub: https://github.com/misteraddons/Reflex-CTRL
+GitHub: <https://github.com/misteraddons/Reflex-CTRL>
 
 ## Main Pin Mapping Configuration
 

@@ -4,9 +4,9 @@
 
 Open source replacement PCB for Nintendo NES-004 controllers
 
-Purchase: https://misteraddons.com/products/Reflex-CTRL
+Purchase: <https://misteraddons.com/products/Reflex-CTRL>
 
-GitHub: https://github.com/misteraddons/Reflex-CTRL
+GitHub: <https://github.com/misteraddons/Reflex-CTRL>
 
 ## Main Pin Mapping Configuration
 
