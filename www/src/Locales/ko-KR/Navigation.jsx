@@ -23,7 +23,6 @@ export default {
 	'reboot-modal-button-success-label': '완료!',
 	'reboot-modal-label': '재기동 하시겠습니까？',
 	'reboot-modal-success': '재기동 완료 브라우저 탭을 닫아주세요',
-	'reboot-modal-button-success-label': '완료!',
 	'resetSettings-label': '설정 초기화',
 	'settings-label': '설정',
 };
