@@ -79,7 +79,7 @@ export default {
 	'xbone-mode-text':
 		'<span>补充信息：</span>Xbox One 模式需要 USB 主机(USB Host)连接和 USB 加密狗才能正确认证。',
 	'xinput-mode-text':
-		'<span>补充信息：</span> Xbox 360 模式可以在没有身份验证或连接USB加密狗的情况下工作。',
+		'<span>补充信息：</span>Xinput 可以在没有认证的情况下在PC上运行。如果您想在 Xbox 360 上使用它，请选择USB验证并连接合适的加密狗。',
 	'hotkey-settings-label': '快捷键设置',
 	'hotkey-settings-sub-header':
 		'<strong>Fn</strong> 组合映射在<link_pinmap>引脚映射</link_pinmap>页面提供了一个可映射的Function按键。 要选择 <strong>Fn</strong> 组合映射选项，请同时按住 Function 按键和其他快捷键。<br />此外, 可从下拉列表中选择 <strong>None</strong> 以取消分配按钮',
@@ -138,7 +138,7 @@ export default {
 	},
 	'forced-setup-mode-modal-title': '强制设置模式警告',
 	'forced-setup-mode-modal-body':
-		'如果保存后重新启动到控制器模式，您将无法再访问网页配置。 如果你完全理解并打算解锁保存按钮，请在下方键入 "<strong>{{warningCheckText}}</strong>" 。 单击取消将还原此设置并保存。',
+		'如果您在保存后重新启动到控制器模式，您将无法再访问网页配置。如果您完全理解并同意这一点，请在下方键入 "<strong>{{warningCheckText}}</strong>" 以解锁保存按钮。 点击“取消”将恢复此设置并保存。',
 	'4-way-joystick-mode-label': '4向摇杆模式',
 	'lock-hotkeys-label': '锁定快捷键',
 	'keyboard-mapping-header-text': '键盘映射',
