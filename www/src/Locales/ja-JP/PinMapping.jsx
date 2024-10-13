@@ -18,6 +18,18 @@ export default {
 	'profile-pins-warning':
 		'プロファイルの変更ホットキーに設定しているボタンや方向キーの設定変更は、現在のプロファイル選択状況がわからなくなる原因となるため非推奨です。',
 	'profile-copy-base': 'Baseプロファイルをコピー',
+
+	'socd-mode-label': 'SOCDクリーニングモード',
+	'socd-mode-description':
+		'注：PS4、PS3、任天堂SwitchおよびミニコンソールシリーズのモードではSOCDクリーニングモード無効設定はできないため、ニュートラルSOCDクリーニングに設定されます。',
+	'socd-modes': {
+		SOCD_MODE_UP_PRIORITY: '上優先',
+		SOCD_MODE_NEUTRAL: 'ニュートラル',
+		SOCD_MODE_SECOND_INPUT_PRIORITY: '後入力優先',
+		SOCD_MODE_FIRST_INPUT_PRIORITY: '先入力優先',
+		SOCD_MODE_BYPASS: '無効',
+	},
+
 	errors: {
 		conflict: '{{pin}} 番端子は既に{{conflictedMappings}}に割り当て済みです',
 		required: '{{button}}の設定は必須です',

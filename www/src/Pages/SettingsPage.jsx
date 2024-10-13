@@ -215,14 +215,6 @@ const DPAD_MODES = [
 	{ labelKey: 'd-pad-mode-options.right-analog', value: 2 },
 ];
 
-const SOCD_MODES = [
-	{ labelKey: 'socd-cleaning-mode-options.up-priority', value: 0 },
-	{ labelKey: 'socd-cleaning-mode-options.neutral', value: 1 },
-	{ labelKey: 'socd-cleaning-mode-options.last-win', value: 2 },
-	{ labelKey: 'socd-cleaning-mode-options.first-win', value: 3 },
-	{ labelKey: 'socd-cleaning-mode-options.off', value: 4 },
-];
-
 const PS4_MODES = [
 	{ labelKey: 'ps4-mode-options.controller', value: 0 },
 	{ labelKey: 'ps4-mode-options.arcadestick', value: 7 },
@@ -338,11 +330,6 @@ const schema = yup.object().shape({
 		.required()
 		.oneOf(INPUT_MODES.map((o) => o.value))
 		.label('Input Mode'),
-	socdMode: yup
-		.number()
-		.required()
-		.oneOf(SOCD_MODES.map((o) => o.value))
-		.label('SOCD Cleaning Mode'),
 	switchTpShareForDs4: yup
 		.number()
 		.required()
@@ -438,7 +425,6 @@ const FormContext = ({ setButtonLabels, setKeyMappings }) => {
 	useEffect(() => {
 		if (!!values.dpadMode) values.dpadMode = parseInt(values.dpadMode);
 		if (!!values.inputMode) values.inputMode = parseInt(values.inputMode);
-		if (!!values.socdMode) values.socdMode = parseInt(values.socdMode);
 		if (!!values.switchTpShareForDs4)
 			values.switchTpShareForDs4 = parseInt(values.switchTpShareForDs4);
 		if (!!values.forcedSetupMode)
@@ -1110,7 +1096,6 @@ export default function SettingsPage() {
 	const translatedInputModes = translateArray(checkRequiredArray(INPUT_MODES));
 	const translatedInputModeGroups = translateArray(INPUT_MODE_GROUPS);
 	const translatedDpadModes = translateArray(DPAD_MODES);
-	const translatedSocdModes = translateArray(SOCD_MODES);
 	const translatedHotkeyActions = translateArray(HOTKEY_ACTIONS);
 	const translatedForcedSetupModes = translateArray(FORCED_SETUP_MODES);
 	// Not currently used but we might add the option at a later date (wheel type, etc.)
@@ -1255,33 +1240,6 @@ export default function SettingsPage() {
 															/>
 														</Col>
 													</Form.Group>
-													<Form.Group className="row mb-3">
-														<Form.Label>
-															{t('SettingsPage:socd-cleaning-mode-label')}
-														</Form.Label>
-														<Col sm={3}>
-															<Form.Select
-																name="socdMode"
-																className="form-select-sm"
-																value={values.socdMode}
-																onChange={handleChange}
-																isInvalid={errors.socdMode}
-															>
-																{translatedSocdModes.map((o, i) => (
-																	<option
-																		key={`button-socdMode-option-${i}`}
-																		value={o.value}
-																	>
-																		{o.label}
-																	</option>
-																))}
-															</Form.Select>
-															<Form.Control.Feedback type="invalid">
-																{errors.socdMode}
-															</Form.Control.Feedback>
-														</Col>
-													</Form.Group>
-													<p>{t('SettingsPage:socd-cleaning-mode-note')}</p>
 													<Form.Group className="row mb-3">
 														<Form.Label>
 															{t('SettingsPage:forced-setup-mode-label')}

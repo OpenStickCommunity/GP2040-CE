@@ -5,6 +5,16 @@ import { PinActionValues } from '../Data/Pins';
 // Max number of profiles that can be created, including the base profile
 export const MAX_PROFILES = 4;
 
+export const SOCD_MODES = {
+	SOCD_MODE_UP_PRIORITY: 0, // U+D=U, L+R=N
+	SOCD_MODE_NEUTRAL: 1, // U+D=N, L+R=N
+	SOCD_MODE_SECOND_INPUT_PRIORITY: 2, // U>D=D, L>R=R (Last Input Priority, aka Last Win)
+	SOCD_MODE_FIRST_INPUT_PRIORITY: 3, // U>D=U, L>R=L (First Input Priority, aka First Win)
+	SOCD_MODE_BYPASS: 4, // U+D=UD, L+R=LR (No cleaning applied)
+} as const;
+
+export type SOCD_MODE_VALUES = (typeof SOCD_MODES)[keyof typeof SOCD_MODES];
+
 type CustomMasks = {
 	customButtonMask: number;
 	customDpadMask: number;
@@ -47,6 +57,7 @@ export type PinsType = {
 	pin29: MaskPayload;
 	profileLabel: string;
 	enabled: boolean;
+	socdMode: SOCD_MODE_VALUES;
 };
 
 type State = {
@@ -67,6 +78,7 @@ type Actions = {
 	saveProfiles: () => Promise<object>;
 	setProfileLabel: (profileIndex: number, profileLabel: string) => void;
 	setProfilePin: SetProfilePinType;
+	setSocdMode: (profileIndex: number, socdMode: SOCD_MODE_VALUES) => void;
 	toggleProfileEnabled: (profileIndex: number) => void;
 };
 
@@ -139,6 +151,12 @@ const useProfilesStore = create<State & Actions>()((set, get) => ({
 		set((state) => {
 			const profiles = [...state.profiles];
 			profiles[profileIndex] = { ...profiles[profileIndex], profileLabel };
+			return { profiles };
+		}),
+	setSocdMode: (profileIndex, socdMode) =>
+		set((state) => {
+			const profiles = [...state.profiles];
+			profiles[profileIndex] = { ...profiles[profileIndex], socdMode };
 			return { profiles };
 		}),
 	saveProfiles: async () => {

@@ -37,16 +37,6 @@ export default {
 		'left-analog': '左アナログ',
 		'right-analog': '右アナログ',
 	},
-	'socd-cleaning-mode-label': 'SOCDクリーニングモード',
-	'socd-cleaning-mode-note':
-		'注：PS4、PS3、任天堂SwitchおよびミニコンソールシリーズのモードではSOCDクリーニングモード無効設定はできないため、ニュートラルSOCDクリーニングに設定されます。',
-	'socd-cleaning-mode-options': {
-		'up-priority': '上優先',
-		neutral: 'ニュートラル',
-		'last-win': '後入力優先',
-		'first-win': '先入力優先',
-		off: '無効',
-	},
 	'profile-label': 'プロファイル',
 	'debounce-delay-label': 'チャタリング除去ディレイ(ミリ秒)',
 	'ps4-mode-explanation-text':

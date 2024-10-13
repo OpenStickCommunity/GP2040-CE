@@ -19,7 +19,11 @@ const { pico: picoController } = JSON.parse(
 
 // Structure pin mappings to include masks and profile label
 const createPinMappings = ({ profileLabel = 'Profile' }) => {
-	let pinMappings = { profileLabel, enabled: true };
+	let pinMappings = {
+		profileLabel,
+		enabled: true,
+		socdMode: 1, // SOCD Neutral,
+	};
 
 	for (const [key, value] of Object.entries(picoController)) {
 		pinMappings[key] = {
@@ -95,7 +99,6 @@ app.get('/api/getGamepadOptions', (req, res) => {
 	return res.send({
 		dpadMode: 0,
 		inputMode: 4,
-		socdMode: 2,
 		switchTpShareForDs4: 0,
 		forcedSetupMode: 0,
 		lockHotkeys: 0,
