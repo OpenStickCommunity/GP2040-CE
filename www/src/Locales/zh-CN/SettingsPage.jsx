@@ -45,16 +45,6 @@ export default {
 		'left-analog': '左模拟摇杆',
 		'right-analog': '右模拟摇杆',
 	},
-	'socd-cleaning-mode-label': 'SOCD 覆盖模式',
-	'socd-cleaning-mode-note':
-		'注意：PS4、PS3、Nintendo Switch以及迷你系列模式不支持将 SOCD 覆盖模式设置为关闭，默认设置为回中模式。',
-	'socd-cleaning-mode-options': {
-		'up-priority': '上优先',
-		neutral: '回中',
-		'last-win': '后输入优先',
-		'first-win': '先输入优先',
-		off: '关闭',
-	},
 	'profile-label': '档案',
 	'debounce-delay-label': '去抖动延迟 (以毫秒为单位)',
 	'ps4-mode-explanation-text':

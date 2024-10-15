@@ -1,6 +1,7 @@
 export default {
 	'header-text': '단자 할당 설정',
-	'sub-header-text': '여기에서는 어떤 핀에 어떤 기능을 할당할지 설정할 수 있습니다. 어떤 버튼이 어떤 핀에 할당되어 있는지 모르겠다면 핀 확인 기능을 사용해 보세요',
+	'sub-header-text':
+		'여기에서는 어떤 핀에 어떤 기능을 할당할지 설정할 수 있습니다. 어떤 버튼이 어떤 핀에 할당되어 있는지 모르겠다면 핀 확인 기능을 사용해 보세요',
 	'alert-text':
 		'연결되지 않거나 구현되지 않은 핀에 할당 설정을 하면 컨트롤러가 작동하지 않는 상태가 될 수 있습니다. 잘못된 설정을 초기화하고 싶다면 <2>설정 초기화</2> 페이지에서 초기화를 실행해 주세요.',
 	'pin-viewer': '단자 확인',
@@ -18,8 +19,19 @@ export default {
 	'profile-pins-warning':
 		'프로파일 변경 핫키로 설정된 버튼이나 방향키의 설정 변경은 현재 프로파일 선택상황을 햇갈리게 할 수 있으므로 권장하지 않습니다',
 	'profile-copy-base': 'Base 프로파일을 복사',
+	'socd-mode-label': 'SOCD 클리닝 모드',
+	'socd-mode-description':
+		'주의：PS4、PS3、닌텐도Switch 또는 미니 콘솔 시리즈 모드에서는 SOCD 클리닝 모드 끄기 설정이 불가능하므로, 중립 SOCD 클리닝으로 설정됩니다.',
+	'socd-modes': {
+		SOCD_MODE_UP_PRIORITY: '위 우선',
+		SOCD_MODE_NEUTRAL: '중립',
+		SOCD_MODE_SECOND_INPUT_PRIORITY: '후 입력 우선',
+		SOCD_MODE_FIRST_INPUT_PRIORITY: '선 입력 우선',
+		SOCD_MODE_BYPASS: '끄기',
+	},
 	errors: {
-		conflict: '{{pin}} 번 단자에 이미 {{conflictedMappings}}에 할당 되어 있습니다.',
+		conflict:
+			'{{pin}} 번 단자에 이미 {{conflictedMappings}}에 할당 되어 있습니다.',
 		required: '{{button}}의 설정은 필수 입니다.',
 		invalid: '{{pin}}번 단자는 이 보드에서는 사용 할 수 없습니다.',
 		used: '{{pin}}번 단자는 이미 다른기능에 할당 되어 있습니다.',

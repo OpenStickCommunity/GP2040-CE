@@ -107,16 +107,13 @@ const ButtonMasksComponent = (props) => {
 		onChange,
 		error,
 		isInvalid,
-		className,
 		buttonLabelType,
 		buttonMasks,
 	} = props;
 	return (
-		// <div key={key} className={className}>
 		<Form.Select
 			size="sm"
 			name={`${key}.buttonMask`}
-			// className="form-control"
 			value={value}
 			error={error}
 			isInvalid={isInvalid}
@@ -128,7 +125,6 @@ const ButtonMasksComponent = (props) => {
 				</option>
 			))}
 		</Form.Select>
-		// </div>
 	);
 };
 
@@ -200,7 +196,6 @@ const MacroInputComponent = (props) => {
 			<Col xs="auto">
 				<ButtonMasksComponent
 					id={`${key}.buttonMaskPlaceholder`}
-					className="col-sm-auto"
 					value={0}
 					onChange={(e) => {
 						setFieldValue(`${key}.buttonMask`, buttonMask | e.target.value);
@@ -397,7 +392,6 @@ const MacroComponent = (props) => {
 						</Col>
 						<Col sm={'auto'}>
 							<ButtonMasksComponent
-								className="col-sm-auto"
 								value={macroTriggerButton}
 								onChange={(e) => {
 									setFieldValue(

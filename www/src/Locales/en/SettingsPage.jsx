@@ -45,16 +45,6 @@ export default {
 		'left-analog': 'Left Analog',
 		'right-analog': 'Right Analog',
 	},
-	'socd-cleaning-mode-label': 'SOCD Cleaning Mode',
-	'socd-cleaning-mode-note':
-		'Note: PS4, PS3, Nintendo Switch, and mini series modes do not support setting SOCD Cleaning to Off and will default to Neutral SOCD Cleaning mode.',
-	'socd-cleaning-mode-options': {
-		'up-priority': 'Up Priority',
-		neutral: 'Neutral',
-		'last-win': 'Last Win',
-		'first-win': 'First Win',
-		off: 'Off',
-	},
 	'profile-label': 'Profile',
 	'debounce-delay-label': 'Debounce Delay in milliseconds',
 	'ps4-mode-explanation-text':

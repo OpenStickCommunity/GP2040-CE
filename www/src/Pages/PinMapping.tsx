@@ -24,7 +24,11 @@ import invert from 'lodash/invert';
 import omit from 'lodash/omit';
 
 import { AppContext } from '../Contexts/AppContext';
-import useProfilesStore, { MAX_PROFILES } from '../Store/useProfilesStore';
+import useProfilesStore, {
+	MAX_PROFILES,
+	SOCD_MODE_VALUES,
+	SOCD_MODES,
+} from '../Store/useProfilesStore';
 
 import Section from '../Components/Section';
 import CustomSelect from '../Components/CustomSelect';
@@ -130,7 +134,7 @@ const ProfileLabel = memo(function ProfileLabel({
 	);
 
 	return (
-		<div className="pin-grid">
+		<div>
 			<Form.Label>{t('PinMapping:profile-label-title')}</Form.Label>
 			<Form.Control
 				type="text"
@@ -156,7 +160,11 @@ const PinSelectList = memo(function PinSelectList({
 
 	const pins = useProfilesStore(
 		useShallow((state) =>
-			omit(state.profiles[profileIndex], ['profileLabel', 'enabled']),
+			omit(state.profiles[profileIndex], [
+				'profileLabel',
+				'enabled',
+				'socdMode',
+			]),
 		),
 	);
 	const { t } = useTranslation('');
@@ -256,6 +264,7 @@ const PinSection = memo(function PinSection({
 	const { t } = useTranslation('');
 	const copyBaseProfile = useProfilesStore((state) => state.copyBaseProfile);
 	const setProfilePin = useProfilesStore((state) => state.setProfilePin);
+	const setSocdMode = useProfilesStore((state) => state.setSocdMode);
 	const saveProfiles = useProfilesStore((state) => state.saveProfiles);
 	const toggleProfileEnabled = useProfilesStore(
 		(state) => state.toggleProfileEnabled,
@@ -268,6 +277,9 @@ const PinSection = memo(function PinSection({
 		t('PinMapping:profile-label-default', {
 			profileNumber: profileIndex + 1,
 		});
+	const socdMode = useProfilesStore(
+		(state) => state.profiles[profileIndex].socdMode,
+	);
 
 	const { updateUsedPins, buttonLabels } = useContext(AppContext);
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
@@ -307,36 +319,62 @@ const PinSection = memo(function PinSection({
 				})}
 			>
 				<Form onSubmit={handleSubmit}>
-					<div className="d-flex justify-content-between">
-						<ProfileLabel profileIndex={profileIndex} />
-						{profileIndex > 0 && (
-							<div className="d-flex">
-								<FormCheck
-									size={3}
-									label={
-										<OverlayTrigger
-											overlay={
-												<Tooltip>
-													{t('PinMapping:profile-enabled-tooltip')}
-												</Tooltip>
-											}
-										>
-											<div className="d-flex gap-1">
-												<label>{t('Common:switch-enabled')} </label>
-												<InfoCircle />
-											</div>
-										</OverlayTrigger>
+					{profileIndex > 0 && (
+						<div className="d-flex justify-content-end">
+							<FormCheck
+								size={3}
+								label={
+									<OverlayTrigger
+										overlay={
+											<Tooltip>
+												{t('PinMapping:profile-enabled-tooltip')}
+											</Tooltip>
+										}
+									>
+										<div className="d-flex gap-1">
+											<label>{t('Common:switch-enabled')} </label>
+											<InfoCircle />
+										</div>
+									</OverlayTrigger>
+								}
+								type="switch"
+								reverse
+								checked={enabled}
+								onChange={() => {
+									toggleProfileEnabled(profileIndex);
+								}}
+							/>
+						</div>
+					)}
+					<div className="row gap-2 gap-md-0">
+						<div className="col-md">
+							<ProfileLabel profileIndex={profileIndex} />
+						</div>
+						<div className="col-md">
+							<Form.Group>
+								<Form.Label>{t('PinMapping:socd-mode-label')}</Form.Label>
+								<Form.Select
+									value={socdMode}
+									onChange={(e) =>
+										setSocdMode(
+											profileIndex,
+											parseInt(e.target.value) as SOCD_MODE_VALUES,
+										)
 									}
-									type="switch"
-									reverse
-									checked={enabled}
-									onChange={() => {
-										toggleProfileEnabled(profileIndex);
-									}}
-								/>
-							</div>
-						)}
+								>
+									{Object.entries(SOCD_MODES).map(([key, value]) => (
+										<option key={`button-socdMode-option-${key}`} value={value}>
+											{t(`PinMapping:socd-modes.${key}`)}
+										</option>
+									))}
+								</Form.Select>
+								<Form.Text muted>
+									{t('PinMapping:socd-mode-description')}
+								</Form.Text>
+							</Form.Group>
+						</div>
 					</div>
+
 					<hr />
 					<div className="pin-grid gap-3 mt-3">
 						<PinSelectList profileIndex={profileIndex} />

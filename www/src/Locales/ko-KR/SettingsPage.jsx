@@ -37,16 +37,6 @@ export default {
 		'left-analog': '왼쪽 아날로그',
 		'right-analog': '오른쪽 아날로그',
 	},
-	'socd-cleaning-mode-label': 'SOCD 클리닝 모드',
-	'socd-cleaning-mode-note':
-		'주의：PS4、PS3、닌텐도Switch 또는 미니 콘솔 시리즈 모드에서는 SOCD 클리닝 모드 끄기 설정이 불가능하므로, 중립 SOCD 클리닝으로 설정됩니다.',
-	'socd-cleaning-mode-options': {
-		'up-priority': '위 우선',
-		neutral: '중립',
-		'last-win': '후 입력 우선',
-		'first-win': '선 입력 우선',
-		off: '끄기',
-	},
 	'profile-label': '프로파일',
 	'debounce-delay-label': '채터링 제거 딜레이(밀리 초)',
 	'ps4-mode-explanation-text':

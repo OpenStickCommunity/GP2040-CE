@@ -20,16 +20,6 @@ export default {
 		'left-analog': 'Analógico Esquerdo',
 		'right-analog': 'Analógico Direito',
 	},
-	'socd-cleaning-mode-label': 'Modo de Limpeza SOCD',
-	'socd-cleaning-mode-note':
-		'Observação: Os modos PS4, PS3 e Nintendo Switch não suportam a configuração SOCD Cleaning como Desativado e padrão para o modo de Limpeza SOCD Neutra.',
-	'socd-cleaning-mode-options': {
-		'up-priority': 'Prioridade para Cima',
-		neutral: 'Neutra',
-		'last-win': 'Última Vitória',
-		'first-win': 'Primeira Vitória',
-		off: 'Desativado',
-	},
 	'profile-label': 'Perfil',
 	'hotkey-settings-label': 'Configurações de Teclas de Atalho',
 	'hotkey-settings-sub-header':

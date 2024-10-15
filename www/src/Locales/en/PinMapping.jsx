@@ -18,6 +18,16 @@ export default {
 	'profile-pins-warning':
 		'Try to avoid changing the buttons and/or directions used for the switch profile hotkeys. Otherwise, it will be difficult to understand what profile is being selected!',
 	'profile-copy-base': 'Copy base profile',
+	'socd-mode-label': 'SOCD Cleaning Mode',
+	'socd-mode-description':
+		'PS4, PS3, Nintendo Switch, and mini series modes do not support setting SOCD Cleaning to Off and will default to Neutral SOCD Cleaning mode.',
+	'socd-modes': {
+		SOCD_MODE_UP_PRIORITY: 'Up Priority',
+		SOCD_MODE_NEUTRAL: 'Neutral',
+		SOCD_MODE_SECOND_INPUT_PRIORITY: 'Last Win',
+		SOCD_MODE_FIRST_INPUT_PRIORITY: 'First Win',
+		SOCD_MODE_BYPASS: 'Off',
+	},
 	errors: {
 		conflict: 'Pin {{pin}} is already assigned to {{conflictedMappings}}',
 		required: '{{button}} is required',

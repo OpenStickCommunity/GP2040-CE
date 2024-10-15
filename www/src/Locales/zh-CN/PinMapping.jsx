@@ -16,6 +16,16 @@ export default {
 	'profile-pins-warning':
 		'尽量避免修改已设置为切换档案快捷键的按键或方向键，否则之后将很难理解你选择的档案配置！',
 	'profile-copy-base': '复制基础档案',
+	'socd-mode-label': 'SOCD 覆盖模式',
+	'socd-mode-description':
+		'注意：PS4、PS3、Nintendo Switch以及迷你系列模式不支持将 SOCD 覆盖模式设置为关闭，默认设置为回中模式。',
+	'socd-modes': {
+		SOCD_MODE_UP_PRIORITY: '上优先',
+		SOCD_MODE_NEUTRAL: '回中',
+		SOCD_MODE_SECOND_INPUT_PRIORITY: '后输入优先',
+		SOCD_MODE_FIRST_INPUT_PRIORITY: '先输入优先',
+		SOCD_MODE_BYPASS: '关闭',
+	},
 	errors: {
 		conflict: '引脚 {{pin}} 已分配给 {{conflictedMappings}}',
 		required: '{{button}} 是必需的',
