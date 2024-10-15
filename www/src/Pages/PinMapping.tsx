@@ -75,8 +75,8 @@ const options = Object.entries(BUTTON_ACTIONS)
 			type: buttonMask
 				? 'customButtonMask'
 				: dpadMask
-				? 'customDpadMask'
-				: 'action',
+					? 'customDpadMask'
+					: 'action',
 			customButtonMask: buttonMask?.value || 0,
 			customDpadMask: dpadMask?.value || 0,
 		};
@@ -107,7 +107,7 @@ const getMultiValue = (pinData) => {
 						type === 'customButtonMask') ||
 					(pinData.customDpadMask & customDpadMask &&
 						type === 'customDpadMask'),
-		  )
+			)
 		: options.filter((option) => option.value === pinData.action);
 };
 const ProfileLabel = memo(function ProfileLabel({

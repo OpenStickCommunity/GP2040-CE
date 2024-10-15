@@ -11,7 +11,7 @@ const KeyboardMapper = ({
 	handleKeyChange,
 	validated,
 	getKeyMappingForButton,
-    excludeButtons,
+	excludeButtons,
 	...props
 }) => {
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
@@ -31,7 +31,7 @@ const KeyboardMapper = ({
 			<tbody>
 				{Object.keys(BUTTONS[buttonLabelType])
 					?.filter((btn) => !['label', 'value', 'Fn'].includes(btn))
-					.filter((btn) => (!excludeButtons?.find(x => x === btn)))
+					.filter((btn) => !excludeButtons?.find((x) => x === btn))
 					.map((button, i) => {
 						let label = BUTTONS[buttonLabelType][button];
 						if (

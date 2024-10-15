@@ -41,9 +41,9 @@ const SHA256 = (ascii) => {
 	const k = (SHA256.k = SHA256.k || []);
 	let primeCounter = k[lengthProperty];
 	/*/
-    var hash = [], k = [];
-    var primeCounter = 0;
-    //*/
+		var hash = [], k = [];
+		var primeCounter = 0;
+		//*/
 
 	const isComposite = {};
 	for (let candidate = 2; primeCounter < 64; candidate++) {
@@ -97,7 +97,7 @@ const SHA256 = (ascii) => {
 								(rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3)) + // s0
 								w[i - 7] +
 								(rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10))) | // s1
-						  0);
+							0);
 			// This is only used once, so *could* be moved below, but it only saves 4 bytes and makes things unreadble
 			const temp2 =
 				(rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22)) + // S0

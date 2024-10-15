@@ -12,17 +12,14 @@ import FormSelect from '../Components/FormSelect';
 import FormControl from '../Components/FormControl';
 import { Button, FormCheck, Row, Col } from 'react-bootstrap';
 
-import WebApi, { } from '../Services/WebApi';
+import WebApi from '../Services/WebApi';
 
-import {
-	BUTTON_ACTIONS,
-	PinActionValues,
-} from '../Data/Pins';
+import { BUTTON_ACTIONS, PinActionValues } from '../Data/Pins';
 import { getButtonLabels } from '../Data/Buttons';
 
 const NON_SELECTABLE_BUTTON_ACTIONS = [
 	-5, 0, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36,
-	37, 38, 39, 40
+	37, 38, 39, 40,
 ];
 
 const REACTIVE_LED_MODES = [
@@ -72,82 +69,124 @@ const ReactiveLED = ({ values, errors, handleChange, handleCheckbox }) => {
 		fetchData();
 	}, [setSelectedLEDs, selectedLEDs]);
 
-	const handleLEDChange = (c : any, idx : Number, field : String, value : Number) => {
+	const handleLEDChange = (
+		c: any,
+		idx: Number,
+		field: String,
+		value: Number,
+	) => {
 		c[idx][field] = value;
 		console.dir(c);
 		return [...c];
 	};
 
 	const saveLEDSettings = async () => {
-		const ledSettings = await WebApi.setReactiveLEDs({leds: reactiveLEDs});
+		const ledSettings = await WebApi.setReactiveLEDs({ leds: reactiveLEDs });
 	};
 
 	return (
 		<Section title={t('ReactiveLED:header-text')}>
-			<div id="ReactiveLEDEnabledOptions" hidden={!values.ReactiveLEDAddonEnabled}>
+			<div
+				id="ReactiveLEDEnabledOptions"
+				hidden={!values.ReactiveLEDAddonEnabled}
+			>
 				<Row className="mb-3">
-					{reactiveLEDs?.length > 0 ? reactiveLEDs.map((o,i) => (
-						<div className="col card mb-1 me-1" key={`reactiveLED${i}`}>
-							<label>{t('ReactiveLED:led-panel-label', { index: i })}</label>
-							<FormControl
-								type="number"
-								label={t('ReactiveLED:led-pin-label')}
-								name={`led${i}Pin`}
-								className="form-control-sm"
-								groupClassName="mb-3"
-								value={reactiveLEDs[i].pin}
-								onChange={(e) => setSelectedLEDs((c) => handleLEDChange(c, i, 'pin', Number(e.target.value)))}
-								min={-1}
-								max={29}
-							/>
-							<FormSelect
-								label={t('ReactiveLED:led-action-label')}
-								name={`led${i}Action`}
-								className="form-select-sm"
-								groupClassName="mb-3"
-								value={reactiveLEDs[i].action}
-								onChange={(e) => setSelectedLEDs((c) => handleLEDChange(c, i, 'action', Number(e.target.value)))}
-							>
-								{Object.values(BUTTON_ACTIONS).filter((o) => !isNonSelectable(o)).map((mo,mi) => {
-								const opt = getOption(null,mo);
-								const labelKey = opt.label.split('BUTTON_PRESS_').pop();
-								return (
-									<option key={`led${i}Action-option-${mi}`} value={mo}>
-										{(labelKey && buttonNames[labelKey]) || t(`PinMapping:actions.${opt.label}`)}
-									</option>
-								);
-							})}
-							</FormSelect>
-							<FormSelect
-								label={t('ReactiveLED:led-mode-up-label')}
-								name={`led${i}ModeUp`}
-								className="form-select-sm"
-								groupClassName="mb-3"
-								value={reactiveLEDs[i].modeUp}
-								onChange={(e) => setSelectedLEDs((c) => handleLEDChange(c, i, 'modeUp', Number(e.target.value)))}
-							>
-								{REACTIVE_LED_MODES.map((mo, mi) => (
-									<option key={`led${i}ModeUp-option-${mi}`} value={mo.value}>
-										{t(`ReactiveLED:led-mode.${mo.label}`)}
-									</option>
-								))}
-							</FormSelect>
-							<FormSelect
-								label={t('ReactiveLED:led-mode-down-label')}
-								name={`led${i}ModeDown`}
-								className="form-select-sm"
-								groupClassName="mb-3"
-								value={reactiveLEDs[i].modeDown}
-								onChange={(e) => setSelectedLEDs((c) => handleLEDChange(c, i, 'modeDown', Number(e.target.value)))}
-							>
-								{REACTIVE_LED_MODES.map((mo, mi) => (
-									<option key={`led${i}ModeDown-option-${mi}`} value={mo.value}>
-										{t(`ReactiveLED:led-mode.${mo.label}`)}
-									</option>
-								))}
-							</FormSelect>
-						</div>
-					)) : ''}
+					{reactiveLEDs?.length > 0
+						? reactiveLEDs.map((o, i) => (
+								<div className="col card mb-1 me-1" key={`reactiveLED${i}`}>
+									<label>
+										{t('ReactiveLED:led-panel-label', { index: i })}
+									</label>
+									<FormControl
+										type="number"
+										label={t('ReactiveLED:led-pin-label')}
+										name={`led${i}Pin`}
+										className="form-control-sm"
+										groupClassName="mb-3"
+										value={reactiveLEDs[i].pin}
+										onChange={(e) =>
+											setSelectedLEDs((c) =>
+												handleLEDChange(c, i, 'pin', Number(e.target.value)),
+											)
+										}
+										min={-1}
+										max={29}
+									/>
+									<FormSelect
+										label={t('ReactiveLED:led-action-label')}
+										name={`led${i}Action`}
+										className="form-select-sm"
+										groupClassName="mb-3"
+										value={reactiveLEDs[i].action}
+										onChange={(e) =>
+											setSelectedLEDs((c) =>
+												handleLEDChange(c, i, 'action', Number(e.target.value)),
+											)
+										}
+									>
+										{Object.values(BUTTON_ACTIONS)
+											.filter((o) => !isNonSelectable(o))
+											.map((mo, mi) => {
+												const opt = getOption(null, mo);
+												const labelKey = opt.label.split('BUTTON_PRESS_').pop();
+												return (
+													<option key={`led${i}Action-option-${mi}`} value={mo}>
+														{(labelKey && buttonNames[labelKey]) ||
+															t(`PinMapping:actions.${opt.label}`)}
+													</option>
+												);
+											})}
+									</FormSelect>
+									<FormSelect
+										label={t('ReactiveLED:led-mode-up-label')}
+										name={`led${i}ModeUp`}
+										className="form-select-sm"
+										groupClassName="mb-3"
+										value={reactiveLEDs[i].modeUp}
+										onChange={(e) =>
+											setSelectedLEDs((c) =>
+												handleLEDChange(c, i, 'modeUp', Number(e.target.value)),
+											)
+										}
+									>
+										{REACTIVE_LED_MODES.map((mo, mi) => (
+											<option
+												key={`led${i}ModeUp-option-${mi}`}
+												value={mo.value}
+											>
+												{t(`ReactiveLED:led-mode.${mo.label}`)}
+											</option>
+										))}
+									</FormSelect>
+									<FormSelect
+										label={t('ReactiveLED:led-mode-down-label')}
+										name={`led${i}ModeDown`}
+										className="form-select-sm"
+										groupClassName="mb-3"
+										value={reactiveLEDs[i].modeDown}
+										onChange={(e) =>
+											setSelectedLEDs((c) =>
+												handleLEDChange(
+													c,
+													i,
+													'modeDown',
+													Number(e.target.value),
+												),
+											)
+										}
+									>
+										{REACTIVE_LED_MODES.map((mo, mi) => (
+											<option
+												key={`led${i}ModeDown-option-${mi}`}
+												value={mo.value}
+											>
+												{t(`ReactiveLED:led-mode.${mo.label}`)}
+											</option>
+										))}
+									</FormSelect>
+								</div>
+							))
+						: ''}
 				</Row>
 				<Row className="mb-3">
 					<div className="col-sm-3 mb-3">
