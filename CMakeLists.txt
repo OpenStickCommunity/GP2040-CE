@@ -1,31 +1,15 @@
-# == DO NEVER EDIT THE NEXT LINES for Raspberry Pi Pico VS Code Extension to work ==
-if(WIN32)
-    set(USERHOME $ENV{USERPROFILE})
-else()
-    set(USERHOME $ENV{HOME})
-endif()
-set(sdkVersion 2.0.0)
-set(toolchainVersion 13_2_Rel1)
-set(picotoolVersion 2.0.0)
-set(picoVscode ${USERHOME}/.pico-sdk/cmake/pico-vscode.cmake)
-if (EXISTS ${picoVscode})
-    include(${picoVscode})
-endif()
-# ====================================================================================
-
 cmake_minimum_required(VERSION 3.13)
 include(CMakePrintHelpers)
 
 # enable compile commands for use by IDE autocompletion
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-
 # initialize the SDK based on PICO_SDK_PATH
 # note: this must happen before project()
 include(pico_sdk_import.cmake)
 
-if (PICO_SDK_VERSION_STRING VERSION_LESS "2.0.0")
-  message(FATAL_ERROR "Raspberry Pi Pico SDK version 2.0.0 (or later) required. Your version is ${PICO_SDK_VERSION_STRING}")
+if (PICO_SDK_VERSION_STRING VERSION_LESS "1.5.0")
+  message(FATAL_ERROR "Raspberry Pi Pico SDK version 1.5.0 (or later) required. Your version is ${PICO_SDK_VERSION_STRING}")
 endif()
 
 # set the version for webconfig, etc. based on git
