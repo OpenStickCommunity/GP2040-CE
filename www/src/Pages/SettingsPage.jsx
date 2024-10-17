@@ -266,6 +266,7 @@ const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.r3-button', value: 20 },
 	{ labelKey: 'hotkey-actions.touchpad-button', value: 21 },
 	{ labelKey: 'hotkey-actions.reboot-default', value: 22 },
+	{ labelKey: 'hotkey-actions.save-config', value: 43 },
 	{ labelKey: 'hotkey-actions.b1-button', value: 23 },
 	{ labelKey: 'hotkey-actions.b2-button', value: 24 },
 	{ labelKey: 'hotkey-actions.b3-button', value: 25 },

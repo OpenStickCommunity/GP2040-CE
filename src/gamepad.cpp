@@ -323,11 +323,6 @@ void Gamepad::read()
 	state.rt = 0;
 }
 
-void Gamepad::save()
-{
-	Storage::getInstance().save();
-}
-
 void Gamepad::hotkey()
 {
 	if (options.lockHotkeys)
@@ -500,6 +495,9 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 		case HOTKEY_REBOOT_DEFAULT:
 			System::reboot(System::BootMode::DEFAULT);
 			break;
+		case HOTKEY_SAVE_CONFIG:
+			Storage::getInstance().save(true);
+			break;
 		case HOTKEY_CAPTURE_BUTTON:
 			state.buttons |= GAMEPAD_MASK_A2;
 			break;
@@ -583,6 +581,6 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 
 	// only save if requested
 	if (reqSave) {
-		save();
+		Storage::getInstance().save();
 	}
 }
