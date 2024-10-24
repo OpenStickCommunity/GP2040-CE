@@ -37,6 +37,10 @@ const std::string BUTTON_LABEL_A2 = "A2";
 
 static std::vector<uint8_t> EMPTY_VECTOR;
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Player LEDs ////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 uint32_t rgbPLEDValues[4];
 
 // Move to Proto Enums
@@ -191,6 +195,18 @@ PLEDAnimationState getPS4AnimationNEOPICO(uint32_t flashOn, uint32_t flashOff)
 	return animationState;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+//END Player LEDs ////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+//RBG LEDs ///////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////
+//GP Addon functions
+///////////////////////////////////
+
 bool NeoPicoLEDAddon::available() {
 	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
 	return isValidPin(ledOptions.dataPin);
@@ -221,12 +237,14 @@ void NeoPicoLEDAddon::setup()
 
 void NeoPicoLEDAddon::process()
 {
+	//Check we have LEDs enabled and is it time to update
 	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
 	if (!isValidPin(ledOptions.dataPin) || !time_reached(this->nextRunTime))
 		return;
 
+	//Process hotkeys and action any requests
 	Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
-	AnimationHotkey action = animationHotkeys(gamepad);
+	AnimationHotkey action = ProcessAnimationHotkeys(gamepad);
 	if (ledOptions.pledType == PLED_TYPE_RGB) {
 		inputMode = gamepad->getOptions().inputMode; // HACK
 		if (gamepad->auxState.playerID.enabled && gamepad->auxState.playerID.active) {
@@ -255,9 +273,10 @@ void NeoPicoLEDAddon::process()
 	}
 
 	if ( action != HOTKEY_LEDS_NONE ) {
-		as.HandleEvent(action);
+		AnimStation.HandleEvent(action);
 	}
 
+	//Legacy check for button pressed for animation. Needs changing to pin check instead
 	uint32_t buttonState = gamepad->state.dpad << 16 | gamepad->state.buttons;
 	vector<Pixel> pressed;
 	for (auto row : matrix.pixels)
@@ -269,19 +288,22 @@ void NeoPicoLEDAddon::process()
 		}
 	}
 	if (pressed.size() > 0)
-		as.HandlePressed(pressed);
+		AnimStation.HandlePressed(pressed);
 	else
-		as.ClearPressed();
+		AnimStation.ClearPressed();
 
-	as.Animate();
+	//Update idle, button and special move animations
+	AnimStation.Animate();
 
+	//check if need to turn off due to usb suspension
 	if (turnOffWhenSuspended && get_usb_suspended()) {
-		as.DimBrightnessTo0();
+		AnimStation.DimBrightnessTo0();
 	} else {
-		as.SetBrightness(AnimationStation::GetBrightness());
+		AnimStation.SetBrightness(AnimationStation::GetBrightness());
 	}
 
-	as.ApplyBrightness(frame);
+	//Grab led values this frame
+	AnimStation.ApplyBrightness(frame);
 
 	// Apply the player LEDs to our first 4 leds if we're in NEOPIXEL mode
 	if (ledOptions.pledType == PLED_TYPE_RGB) {
@@ -302,223 +324,180 @@ void NeoPicoLEDAddon::process()
 		}
 	}
 
+	//Set led values out to the actual leds
 	neopico->SetFrame(frame);
 	neopico->Show();
 	AnimationStore.save();
 
+	//queue up next frame time
 	this->nextRunTime = make_timeout_time_ms(NeoPicoLEDAddon::intervalMS);
 }
 
-std::vector<uint8_t> * NeoPicoLEDAddon::getLEDPositions(string button, std::vector<std::vector<uint8_t>> *positions)
-{
-	int buttonPosition = buttonPositions[button];
-	if (buttonPosition < 0)
-		return &EMPTY_VECTOR;
-	else
-		return &positions->at(buttonPosition);
-}
+///////////////////////////////////
+// Old Pixel Setup functions
+// Left here for legacy setup until all configs are converted
+///////////////////////////////////
 
-// Macro for Pixel() declarations
-#define PIXEL(BUTTON, MASK) \
-	Pixel(buttonPositions[BUTTON], MASK, *getLEDPositions(BUTTON, positions))
+void NeoPicoLEDAddon::generateLegacyIndividualLight(int lightIndex, int firstLedIndex, int xCoord, int yCoord, uint8_t ledsPerPixel, LEDOptions_lightData_t& out_lightData, GpioAction actionButton)
+{
+	const GpioMappings& pinMappings = Storage::getInstance().getGpioMappings();
+
+	int gpioPin = -1;
+	for(int configIndex = 0; configIndex < pinMappings.pins_count; ++configIndex)
+	{
+		if(actionButton == pinMappings.pins[configIndex].action)
+			gpioPin = configIndex;
+	}
+
+	int arrayOffset = lightIndex * 6;
+	out_lightData.bytes[arrayOffset] = firstLedIndex; //first led index
+	out_lightData.bytes[arrayOffset+1] = ledsPerPixel; //leds on this light
+	out_lightData.bytes[arrayOffset+2] = xCoord; //xcoord
+	out_lightData.bytes[arrayOffset+3] = yCoord; //ycoord
+	out_lightData.bytes[arrayOffset+4] = gpioPin; //GPIO pin
+	out_lightData.bytes[arrayOffset+5] = LightType::LightType_ActionButton; //Type
+}
 
 /**
  * @brief Create an LED layout using a 2x4 matrix.
  */
-std::vector<std::vector<Pixel>> NeoPicoLEDAddon::generatedLEDButtons(std::vector<std::vector<uint8_t>> *positions)
+void NeoPicoLEDAddon::generatedLEDButtons(std::vector<std::vector<uint8_t>> *positions, uint8_t ledsPerPixel, LEDOptions_lightData_t& out_lightData, int32_t& out_lightDataSize)
 {
-	std::vector<std::vector<Pixel>> pixels =
-	{
-		{
-			PIXEL(BUTTON_LABEL_B3, GAMEPAD_MASK_B3),
-			PIXEL(BUTTON_LABEL_B1, GAMEPAD_MASK_B1),
-		},
-		{
-			PIXEL(BUTTON_LABEL_B4, GAMEPAD_MASK_B4),
-			PIXEL(BUTTON_LABEL_B2, GAMEPAD_MASK_B2),
-		},
-		{
-			PIXEL(BUTTON_LABEL_R1, GAMEPAD_MASK_R1),
-			PIXEL(BUTTON_LABEL_R2, GAMEPAD_MASK_R2),
-		},
-		{
-			PIXEL(BUTTON_LABEL_L1, GAMEPAD_MASK_L1),
-			PIXEL(BUTTON_LABEL_L2, GAMEPAD_MASK_L2),
-		},
-		{
-			PIXEL(BUTTON_LABEL_LEFT, GAMEPAD_MASK_DL),
-			PIXEL(BUTTON_LABEL_DOWN, GAMEPAD_MASK_DD),
-			PIXEL(BUTTON_LABEL_RIGHT, GAMEPAD_MASK_DR),
-			PIXEL(BUTTON_LABEL_UP, GAMEPAD_MASK_DU),
-			PIXEL(BUTTON_LABEL_S1, GAMEPAD_MASK_S1),
-			PIXEL(BUTTON_LABEL_S2, GAMEPAD_MASK_S2),
-			PIXEL(BUTTON_LABEL_L3, GAMEPAD_MASK_L3),
-			PIXEL(BUTTON_LABEL_R3, GAMEPAD_MASK_R3),
-			PIXEL(BUTTON_LABEL_A1, GAMEPAD_MASK_A1),
-			PIXEL(BUTTON_LABEL_A2, GAMEPAD_MASK_A2),
-		},
-	};
+	out_lightDataSize = 18;
 
-	return pixels;
+	//8 action buttons in 2x4 array
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_B3], ledsPerPixel * buttonPositions[BUTTON_LABEL_B3], 0, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_B3);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_B1], ledsPerPixel * buttonPositions[BUTTON_LABEL_B1], 0, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_B1);
+
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_B4], ledsPerPixel * buttonPositions[BUTTON_LABEL_B4], 1, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_B4);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_B2], ledsPerPixel * buttonPositions[BUTTON_LABEL_B2], 1, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_B2);
+
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_R1], ledsPerPixel * buttonPositions[BUTTON_LABEL_R1], 2, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_R1);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_R2], ledsPerPixel * buttonPositions[BUTTON_LABEL_R2], 2, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_R2);
+
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_L1], ledsPerPixel * buttonPositions[BUTTON_LABEL_L1], 3, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_L1);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_L2], ledsPerPixel * buttonPositions[BUTTON_LABEL_L2], 3, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_L2);
+
+	//extras
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_LEFT], ledsPerPixel * buttonPositions[BUTTON_LABEL_LEFT], 4, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_LEFT);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_DOWN], ledsPerPixel * buttonPositions[BUTTON_LABEL_DOWN], 4, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_DOWN);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_RIGHT], ledsPerPixel * buttonPositions[BUTTON_LABEL_RIGHT], 4, 2, ledsPerPixel, out_lightData, BUTTON_PRESS_RIGHT);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_UP], ledsPerPixel * buttonPositions[BUTTON_LABEL_UP], 4, 3, ledsPerPixel, out_lightData, BUTTON_PRESS_UP);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_S1], ledsPerPixel * buttonPositions[BUTTON_LABEL_S1], 4, 4, ledsPerPixel, out_lightData, BUTTON_PRESS_S1);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_S2], ledsPerPixel * buttonPositions[BUTTON_LABEL_S2], 4, 5, ledsPerPixel, out_lightData, BUTTON_PRESS_S2);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_L3], ledsPerPixel * buttonPositions[BUTTON_LABEL_L3], 4, 6, ledsPerPixel, out_lightData, BUTTON_PRESS_L3);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_R3], ledsPerPixel * buttonPositions[BUTTON_LABEL_R3], 4, 7, ledsPerPixel, out_lightData, BUTTON_PRESS_R3);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_A1], ledsPerPixel * buttonPositions[BUTTON_LABEL_A1], 4, 8, ledsPerPixel, out_lightData, BUTTON_PRESS_A1);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_A2], ledsPerPixel * buttonPositions[BUTTON_LABEL_A2], 4, 9, ledsPerPixel, out_lightData, BUTTON_PRESS_A2);
 }
 
 /**
  * @brief Create an LED layout using a 3x8 matrix.
  */
-std::vector<std::vector<Pixel>> NeoPicoLEDAddon::generatedLEDStickless(vector<vector<uint8_t>> *positions)
+void NeoPicoLEDAddon::generatedLEDStickless(vector<vector<uint8_t>> *positions, uint8_t ledsPerPixel, LEDOptions_lightData_t& out_lightData, int32_t& out_lightDataSize)
 {
-	std::vector<std::vector<Pixel>> pixels =
-	{
-		{
-			PIXEL(BUTTON_LABEL_LEFT, GAMEPAD_MASK_DL),
-			NO_PIXEL,
-			NO_PIXEL,
-		},
-		{
-			PIXEL(BUTTON_LABEL_DOWN, GAMEPAD_MASK_DD),
-			NO_PIXEL,
-			NO_PIXEL,
-		},
-		{
-			PIXEL(BUTTON_LABEL_RIGHT, GAMEPAD_MASK_DR),
-			NO_PIXEL,
-			NO_PIXEL,
-		},
-		{
-			PIXEL(BUTTON_LABEL_UP, GAMEPAD_MASK_DU),
-			NO_PIXEL,
-			NO_PIXEL,
-		},
-		{
-			PIXEL(BUTTON_LABEL_B3, GAMEPAD_MASK_B3),
-			PIXEL(BUTTON_LABEL_B1, GAMEPAD_MASK_B1),
-			NO_PIXEL,
-		},
-		{
-			PIXEL(BUTTON_LABEL_B4, GAMEPAD_MASK_B4),
-			PIXEL(BUTTON_LABEL_B2, GAMEPAD_MASK_B2),
-			NO_PIXEL,
-		},
-		{
-			PIXEL(BUTTON_LABEL_R1, GAMEPAD_MASK_R1),
-			PIXEL(BUTTON_LABEL_R2, GAMEPAD_MASK_R2),
-			NO_PIXEL,
-		},
-		{
-			PIXEL(BUTTON_LABEL_L1, GAMEPAD_MASK_L1),
-			PIXEL(BUTTON_LABEL_L2, GAMEPAD_MASK_L2),
-			NO_PIXEL,
-		},
-		{
-			PIXEL(BUTTON_LABEL_S1, GAMEPAD_MASK_S1),
-			PIXEL(BUTTON_LABEL_S2, GAMEPAD_MASK_S2),
-			PIXEL(BUTTON_LABEL_L3, GAMEPAD_MASK_L3),
-			PIXEL(BUTTON_LABEL_R3, GAMEPAD_MASK_R3),
-			PIXEL(BUTTON_LABEL_A1, GAMEPAD_MASK_A1),
-			PIXEL(BUTTON_LABEL_A2, GAMEPAD_MASK_A2),
-		},
-	};
+	out_lightDataSize = 18;
 
-	return pixels;
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_LEFT], ledsPerPixel * buttonPositions[BUTTON_LABEL_LEFT], 0, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_LEFT);
+
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_DOWN], ledsPerPixel * buttonPositions[BUTTON_LABEL_DOWN], 1, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_DOWN);
+
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_RIGHT], ledsPerPixel * buttonPositions[BUTTON_LABEL_RIGHT], 2, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_RIGHT);
+
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_UP], ledsPerPixel * buttonPositions[BUTTON_LABEL_UP], 3, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_UP);
+
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_B3], ledsPerPixel * buttonPositions[BUTTON_LABEL_B3], 4, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_B3);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_B1], ledsPerPixel * buttonPositions[BUTTON_LABEL_B1], 4, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_B1);
+
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_B4], ledsPerPixel * buttonPositions[BUTTON_LABEL_B4], 5, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_B4);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_B2], ledsPerPixel * buttonPositions[BUTTON_LABEL_B2], 5, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_B2);
+
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_R1], ledsPerPixel * buttonPositions[BUTTON_LABEL_R1], 6, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_R1);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_R2], ledsPerPixel * buttonPositions[BUTTON_LABEL_R2], 6, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_R2);
+
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_L1], ledsPerPixel * buttonPositions[BUTTON_LABEL_L1], 7, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_L1);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_L2], ledsPerPixel * buttonPositions[BUTTON_LABEL_L2], 7, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_L2);
+
+	//extras
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_S1], ledsPerPixel * buttonPositions[BUTTON_LABEL_S1], 8, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_S1);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_S2], ledsPerPixel * buttonPositions[BUTTON_LABEL_S2], 8, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_S2);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_L3], ledsPerPixel * buttonPositions[BUTTON_LABEL_L3], 8, 2, ledsPerPixel, out_lightData, BUTTON_PRESS_L3);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_R3], ledsPerPixel * buttonPositions[BUTTON_LABEL_R3], 8, 3, ledsPerPixel, out_lightData, BUTTON_PRESS_R3);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_A1], ledsPerPixel * buttonPositions[BUTTON_LABEL_A1], 8, 4, ledsPerPixel, out_lightData, BUTTON_PRESS_A1);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_A2], ledsPerPixel * buttonPositions[BUTTON_LABEL_A2], 8, 5, ledsPerPixel, out_lightData, BUTTON_PRESS_A2);
 }
 
 /**
  * @brief Create an LED layout using a 2x7 matrix.
  */
-std::vector<std::vector<Pixel>> NeoPicoLEDAddon::generatedLEDWasd(std::vector<std::vector<uint8_t>> *positions)
+void NeoPicoLEDAddon::generatedLEDWasd(std::vector<std::vector<uint8_t>> *positions, uint8_t ledsPerPixel, LEDOptions_lightData_t& out_lightData, int32_t& out_lightDataSize)
 {
-	std::vector<std::vector<Pixel>> pixels =
-	{
-		{
-			NO_PIXEL,
-			PIXEL(BUTTON_LABEL_LEFT, GAMEPAD_MASK_DL),
-		},
-		{
-			PIXEL(BUTTON_LABEL_UP, GAMEPAD_MASK_DU),
-			PIXEL(BUTTON_LABEL_DOWN, GAMEPAD_MASK_DD),
-		},
-		{
-			NO_PIXEL,
-			PIXEL(BUTTON_LABEL_RIGHT, GAMEPAD_MASK_DR),
-		},
-		{
-			PIXEL(BUTTON_LABEL_B3, GAMEPAD_MASK_B3),
-			PIXEL(BUTTON_LABEL_B1, GAMEPAD_MASK_B1),
-		},
-		{
-			PIXEL(BUTTON_LABEL_B4, GAMEPAD_MASK_B4),
-			PIXEL(BUTTON_LABEL_B2, GAMEPAD_MASK_B2),
-		},
-		{
-			PIXEL(BUTTON_LABEL_R1, GAMEPAD_MASK_R1),
-			PIXEL(BUTTON_LABEL_R2, GAMEPAD_MASK_R2),
-		},
-		{
-			PIXEL(BUTTON_LABEL_L1, GAMEPAD_MASK_L1),
-			PIXEL(BUTTON_LABEL_L2, GAMEPAD_MASK_L2),
-		},
-		{
-			PIXEL(BUTTON_LABEL_S1, GAMEPAD_MASK_S1),
-			PIXEL(BUTTON_LABEL_S2, GAMEPAD_MASK_S2),
-			PIXEL(BUTTON_LABEL_L3, GAMEPAD_MASK_L3),
-			PIXEL(BUTTON_LABEL_R3, GAMEPAD_MASK_R3),
-			PIXEL(BUTTON_LABEL_A1, GAMEPAD_MASK_A1),
-			PIXEL(BUTTON_LABEL_A2, GAMEPAD_MASK_A2),
-		},
-	};
+	out_lightDataSize = 18;
 
-	return pixels;
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_LEFT], ledsPerPixel * buttonPositions[BUTTON_LABEL_LEFT], 0, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_LEFT);
+
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_UP], ledsPerPixel * buttonPositions[BUTTON_LABEL_UP], 1, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_UP);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_DOWN], ledsPerPixel * buttonPositions[BUTTON_LABEL_DOWN], 1, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_DOWN);
+
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_RIGHT], ledsPerPixel * buttonPositions[BUTTON_LABEL_RIGHT], 2, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_RIGHT);
+
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_B3], ledsPerPixel * buttonPositions[BUTTON_LABEL_B3], 3, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_B3);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_B1], ledsPerPixel * buttonPositions[BUTTON_LABEL_B1], 3, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_B1);
+
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_B4], ledsPerPixel * buttonPositions[BUTTON_LABEL_B4], 4, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_B4);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_B2], ledsPerPixel * buttonPositions[BUTTON_LABEL_B2], 4, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_B2);
+
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_R1], ledsPerPixel * buttonPositions[BUTTON_LABEL_R1], 5, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_R1);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_R2], ledsPerPixel * buttonPositions[BUTTON_LABEL_R2], 5, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_R2);
+
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_L1], ledsPerPixel * buttonPositions[BUTTON_LABEL_L1], 6, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_L1);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_L2], ledsPerPixel * buttonPositions[BUTTON_LABEL_L2], 6, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_L2);
+
+	//extras
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_S1], ledsPerPixel * buttonPositions[BUTTON_LABEL_S1], 7, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_S1);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_S2], ledsPerPixel * buttonPositions[BUTTON_LABEL_S2], 7, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_S2);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_L3], ledsPerPixel * buttonPositions[BUTTON_LABEL_L3], 7, 2, ledsPerPixel, out_lightData, BUTTON_PRESS_L3);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_R3], ledsPerPixel * buttonPositions[BUTTON_LABEL_R3], 7, 3, ledsPerPixel, out_lightData, BUTTON_PRESS_R3);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_A1], ledsPerPixel * buttonPositions[BUTTON_LABEL_A1], 7, 4, ledsPerPixel, out_lightData, BUTTON_PRESS_A1);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_A2], ledsPerPixel * buttonPositions[BUTTON_LABEL_A2], 7, 5, ledsPerPixel, out_lightData, BUTTON_PRESS_A2);
 }
 
 /**
  * @brief Create an LED layout using a 2x7 matrix for the mirrored Fightboard.
  */
-std::vector<std::vector<Pixel>> NeoPicoLEDAddon::generatedLEDWasdFBM(std::vector<std::vector<uint8_t>> *positions)
+void NeoPicoLEDAddon::generatedLEDWasdFBM(std::vector<std::vector<uint8_t>> *positions, uint8_t ledsPerPixel, LEDOptions_lightData_t& out_lightData, int32_t& out_lightDataSize)
 {
-	std::vector<std::vector<Pixel>> pixels =
-	{
-		{
-			PIXEL(BUTTON_LABEL_L1, GAMEPAD_MASK_L1),
-			PIXEL(BUTTON_LABEL_L2, GAMEPAD_MASK_L2),
-		},
-		{
-			PIXEL(BUTTON_LABEL_R1, GAMEPAD_MASK_R1),
-			PIXEL(BUTTON_LABEL_R2, GAMEPAD_MASK_R2),
-		},
-		{
-			PIXEL(BUTTON_LABEL_B4, GAMEPAD_MASK_B4),
-			PIXEL(BUTTON_LABEL_B2, GAMEPAD_MASK_B2),
-		},
-		{
-			PIXEL(BUTTON_LABEL_B3, GAMEPAD_MASK_B3),
-			PIXEL(BUTTON_LABEL_B1, GAMEPAD_MASK_B1),
-		},
-		{
-			NO_PIXEL,
-			PIXEL(BUTTON_LABEL_LEFT, GAMEPAD_MASK_DL),
-		},
-		{
-			PIXEL(BUTTON_LABEL_UP, GAMEPAD_MASK_DU),
-			PIXEL(BUTTON_LABEL_DOWN, GAMEPAD_MASK_DD),
-		},
-		{
-			NO_PIXEL,
-			PIXEL(BUTTON_LABEL_RIGHT, GAMEPAD_MASK_DR),
-		},
-		{
-			PIXEL(BUTTON_LABEL_S1, GAMEPAD_MASK_S1),
-			PIXEL(BUTTON_LABEL_S2, GAMEPAD_MASK_S2),
-			PIXEL(BUTTON_LABEL_L3, GAMEPAD_MASK_L3),
-			PIXEL(BUTTON_LABEL_R3, GAMEPAD_MASK_R3),
-			PIXEL(BUTTON_LABEL_A1, GAMEPAD_MASK_A1),
-			PIXEL(BUTTON_LABEL_A2, GAMEPAD_MASK_A2),
-		},
-	};
+		out_lightDataSize = 18;
 
-	return pixels;
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_L1], ledsPerPixel * buttonPositions[BUTTON_LABEL_L1], 0, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_L1);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_L2], ledsPerPixel * buttonPositions[BUTTON_LABEL_L2], 0, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_L2);
+
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_R1], ledsPerPixel * buttonPositions[BUTTON_LABEL_R1], 1, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_R1);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_R2], ledsPerPixel * buttonPositions[BUTTON_LABEL_R2], 1, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_R2);
+
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_B4], ledsPerPixel * buttonPositions[BUTTON_LABEL_B4], 2, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_B4);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_B2], ledsPerPixel * buttonPositions[BUTTON_LABEL_B2], 2, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_B2);
+
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_B3], ledsPerPixel * buttonPositions[BUTTON_LABEL_B3], 3, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_B3);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_B1], ledsPerPixel * buttonPositions[BUTTON_LABEL_B1], 3, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_B1);
+
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_LEFT], ledsPerPixel * buttonPositions[BUTTON_LABEL_LEFT], 4, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_LEFT);
+
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_UP], ledsPerPixel * buttonPositions[BUTTON_LABEL_UP], 5, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_UP);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_DOWN], ledsPerPixel * buttonPositions[BUTTON_LABEL_DOWN], 5, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_DOWN);
+
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_RIGHT], ledsPerPixel * buttonPositions[BUTTON_LABEL_RIGHT], 6, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_RIGHT);
+
+	//extras
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_S1], ledsPerPixel * buttonPositions[BUTTON_LABEL_S1], 7, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_S1);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_S2], ledsPerPixel * buttonPositions[BUTTON_LABEL_S2], 7, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_S2);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_L3], ledsPerPixel * buttonPositions[BUTTON_LABEL_L3], 7, 2, ledsPerPixel, out_lightData, BUTTON_PRESS_L3);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_R3], ledsPerPixel * buttonPositions[BUTTON_LABEL_R3], 7, 3, ledsPerPixel, out_lightData, BUTTON_PRESS_R3);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_A1], ledsPerPixel * buttonPositions[BUTTON_LABEL_A1], 7, 4, ledsPerPixel, out_lightData, BUTTON_PRESS_A1);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_A2], ledsPerPixel * buttonPositions[BUTTON_LABEL_A2], 7, 5, ledsPerPixel, out_lightData, BUTTON_PRESS_A2);
 }
 
-std::vector<std::vector<Pixel>> NeoPicoLEDAddon::createLEDLayout(ButtonLayout layout, uint8_t ledsPerPixel, uint8_t ledButtonCount)
+void NeoPicoLEDAddon::createLEDLayout(ButtonLayout layout, uint8_t ledsPerPixel, uint8_t ledButtonCount, LEDOptions_lightData_t& out_lightData, int32_t& out_lightDataSize)
 {
 	vector<vector<uint8_t>> positions(ledButtonCount);
 	for (int i = 0; i != ledButtonCount; i++)
@@ -537,12 +516,12 @@ std::vector<std::vector<Pixel>> NeoPicoLEDAddon::createLEDLayout(ButtonLayout la
 		case BUTTON_LAYOUT_STICKLESS_16:
 		case BUTTON_LAYOUT_STICKLESS_R16:
 		case BUTTON_LAYOUT_BOARD_DEFINED_A:
-			return generatedLEDStickless(&positions);
+			generatedLEDStickless(&positions, ledsPerPixel, out_lightData, out_lightDataSize);
 		case BUTTON_LAYOUT_FIGHTBOARD_MIRRORED:
-			return generatedLEDWasdFBM(&positions);
+			generatedLEDWasdFBM(&positions, ledsPerPixel, out_lightData, out_lightDataSize);
 		case BUTTON_LAYOUT_BUTTONS_ANGLED:
 		case BUTTON_LAYOUT_FIGHTBOARD_STICK:
-			return generatedLEDWasd(&positions);
+			generatedLEDWasd(&positions, ledsPerPixel, out_lightData, out_lightDataSize);
 		case BUTTON_LAYOUT_BLANKA:
 		case BUTTON_LAYOUT_BUTTONS_BASIC:
 		case BUTTON_LAYOUT_KEYBOARD_ANGLED:
@@ -552,11 +531,8 @@ std::vector<std::vector<Pixel>> NeoPicoLEDAddon::createLEDLayout(ButtonLayout la
 		case BUTTON_LAYOUT_ARCADE:
 		case BUTTON_LAYOUT_VLXA:
 		default:
-			return generatedLEDButtons(&positions);
+			generatedLEDButtons(&positions, ledsPerPixel, out_lightData, out_lightDataSize);
 	}
-
-	assert(false);
-	return std::vector<std::vector<Pixel>>();
 }
 
 uint8_t NeoPicoLEDAddon::setupButtonPositions()
@@ -594,10 +570,23 @@ uint8_t NeoPicoLEDAddon::setupButtonPositions()
 void NeoPicoLEDAddon::configureLEDs()
 {
 	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
-	uint8_t buttonCount = setupButtonPositions();
-	vector<vector<Pixel>> pixels = createLEDLayout(static_cast<ButtonLayout>(ledOptions.ledLayout), ledOptions.ledsPerButton, buttonCount);
-	matrix.setup(pixels, ledOptions.ledsPerButton);
-	ledCount = matrix.getLedCount();
+
+	//New grid based setup
+	LEDOptions_lightData_t lightData = ledOptions.lightData;
+	int32_t lightDataSize = ledOptions.lightDataSize;
+	if(lightDataSize == 0)
+	{
+		//fall back to old matrix setup which will now approximate a grid and return the same data struct ready for light creation
+		uint8_t buttonCount = setupButtonPositions();
+		createLEDLayout(static_cast<ButtonLayout>(ledOptions.ledLayout), ledOptions.ledsPerButton, buttonCount, lightData, lightDataSize);
+	}
+
+	GenerateLights(lightData, lightDataSize);
+	ledCount = RGBLights.GetLedCount();
+
+	//matrix.setup(pixels, ledOptions.ledsPerButton);
+	//ledCount = matrix.getLedCount();
+
 	if (ledOptions.pledType == PLED_TYPE_RGB && PLED_COUNT > 0)
 		ledCount += PLED_COUNT;
 
@@ -607,15 +596,43 @@ void NeoPicoLEDAddon::configureLEDs()
 	neopico->Off();
 
 	Animation::format = static_cast<LEDFormat>(ledOptions.ledFormat);
-	as.ConfigureBrightness(ledOptions.brightnessMaximum, ledOptions.brightnessSteps);
+	AnimStation.ConfigureBrightness(ledOptions.brightnessMaximum, ledOptions.brightnessSteps);
 	AnimationOptions animationOptions = AnimationStore.getAnimationOptions();
 	addStaticThemes(ledOptions, animationOptions);
-	as.SetOptions(animationOptions);
-	as.SetMatrix(matrix);
-	as.SetMode(as.options.baseAnimationIndex);
+	AnimStation.SetOptions(animationOptions);
+	AnimStation.SetMatrix(matrix);
+	AnimStation.SetMode(as.options.baseAnimationIndex);
 }
 
-AnimationHotkey animationHotkeys(Gamepad *gamepad)
+////////////////////////////////////////////
+//New RGBLight setups
+////////////////////////////////////////////
+
+void NeoPicoLEDAddon::GenerateLights(LEDOptions_lightData_t InLightData, uint32_t InLightDataSize)
+{
+	std::vector<Light> generatedLights;
+	for(int index = 0; index < (int)InLightDataSize; ++index)
+	{
+		int arrayOffset = index*6;
+		//Data format = {first led index, leds on this light, xcoord, ycoord, GPIO pin, Type}
+		LightPosition newLightPos (InLightData.bytes[arrayOffset+2], InLightData.bytes[arrayOffset+3]);
+		Light newLight (InLightData.bytes[arrayOffset],
+						InLightData.bytes[arrayOffset+1],
+						newLightPos,
+						InLightData.bytes[arrayOffset+4],
+						InLightData.bytes[arrayOffset+5]);
+
+		generatedLights.push_back(newLight);
+	}
+
+	RGBLights.Setup(generatedLights);
+}
+
+////////////////////////////////////////////
+//Helper functions
+////////////////////////////////////////////
+
+AnimationHotkey NeoPicoLEDAddon::ProcessAnimationHotkeys(Gamepad *gamepad)
 {
 	AnimationHotkey action = HOTKEY_LEDS_NONE;
 
@@ -675,3 +692,7 @@ AnimationHotkey animationHotkeys(Gamepad *gamepad)
 
 	return action;
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+//END RBG LEDs ///////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////

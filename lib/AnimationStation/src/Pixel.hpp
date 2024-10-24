@@ -54,4 +54,85 @@ inline bool operator==(const Pixel &lhs, const Pixel &rhs) {
   return lhs.index == rhs.index;
 }
 
+// Enums //////////////////////////////////////////////////////////////////////////
+
+// Structs //////////////////////////////////////////////////////////////////////////
+
+//Grid position of a single RGB Light
+struct LightPosition
+{
+  LightPosition() {}
+
+  LightPosition(uint32_t xCoord, uint32_t yCoord)
+  {
+    XPosition = xCoord;
+    YPosition = yCoord;
+  }
+  
+  int XPosition = 0;
+  int YPosition = 0;
+};
+
+//A single RGB light on the device. Replaced Pixel
+struct Light 
+{
+  Light(uint8_t InFirstLedIndex, uint8_t InNumLedsPerLight, LightPosition InPosition, uint8_t GIPOPin, uint8_t InType)
+  {
+    FirstLedIndex = InFirstLedIndex;
+    Position = InPosition;
+    Type = InType;
+    LedsPerLight = InNumLedsPerLight;
+    //GamePadMask = GamePadMask;
+    GIPOPin = GIPOPin;
+  }
+
+  // index of first LED
+  uint32_t FirstLedIndex; 
+
+  // Approximate grid position of Light on the device
+  LightPosition Position; 
+
+  // Type of light, used in animations to allow users to seperate off lights for different anims
+  uint8_t Type; 
+
+  //How many leds make up this light.
+  uint8_t LedsPerLight;
+
+  //Game pad mask (if applicaple) (Needed to do SOCD on Lights)
+ // uint32_t GamePadMask;
+
+  //GIPO pin this action (if applicaple) is on
+  int32_t GIPOPin = -1;
+};
+
+//All RGB lights on the device. Replaced PixelMatrix
+struct Lights
+{
+public:
+  Lights() {}
+
+  void Setup(std::vector<Light> InLights)
+  {
+    AllLights = InLights;
+  }
+
+  inline uint8_t GetLedCount() const
+  {
+    int count;
+    for(const Light& thisLight : AllLights )
+    {
+      count += thisLight.LedsPerLight;
+    }
+    return count;
+  }
+
+  inline uint16_t GetLightsCount() const
+  {
+    return AllLights.size();
+  }
+
+  //Array of all the lights
+  std::vector<Light> AllLights;
+};
+
 #endif

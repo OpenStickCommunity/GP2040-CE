@@ -34,6 +34,13 @@
 #define LED_FORMAT LED_FORMAT_GRB
 #endif
 
+#ifndef LIGHT_DATA_SIZE
+#define LIGHT_DATA_SIZE 0
+#endif
+#ifndef LIGHT_DATA
+#define LIGHT_DATA 0,0,0,0,0,LightType::LightType_ActionButton
+#endif
+
 #ifndef LEDS_PER_PIXEL
 #define LEDS_PER_PIXEL 1
 #endif
@@ -155,7 +162,6 @@
 #endif
 
 void configureAnimations(AnimationStation *as);
-AnimationHotkey animationHotkeys(Gamepad *gamepad);
 PixelMatrix createLedButtonLayout(ButtonLayout layout, int ledsPerPixel);
 PixelMatrix createLedButtonLayout(ButtonLayout layout, std::vector<uint8_t> *positions);
 
@@ -173,30 +179,51 @@ public:
 // NeoPico LED Addon
 class NeoPicoLEDAddon : public GPAddon {
 public:
+
+	//GP Addon functions
 	virtual bool available();
 	virtual void setup();
 	virtual void preprocess() {}
 	virtual void process();
 	virtual std::string name() { return NeoPicoLEDName; }
+
 	void configureLEDs();
 	uint32_t frame[100];
 private:
-	std::vector<uint8_t> * getLEDPositions(std::string button, std::vector<std::vector<uint8_t>> *positions);
-	std::vector<std::vector<Pixel>> generatedLEDButtons(std::vector<std::vector<uint8_t>> *positions);
-	std::vector<std::vector<Pixel>> generatedLEDStickless(std::vector<std::vector<uint8_t>> *positions);
-	std::vector<std::vector<Pixel>> generatedLEDWasd(std::vector<std::vector<uint8_t>> *positions);
-	std::vector<std::vector<Pixel>> generatedLEDWasdFBM(std::vector<std::vector<uint8_t>> *positions);
-	std::vector<std::vector<Pixel>> createLEDLayout(ButtonLayout layout, uint8_t ledsPerPixel, uint8_t ledButtonCount);
+
+	AnimationHotkey ProcessAnimationHotkeys(Gamepad *gamepad);
+
+	//Legacy setup functions
+	void generateLegacyIndividualLight(int lightIndex, int firstLedIndex, int xCoord, int yCoord, uint8_t ledsPerPixel, LEDOptions_lightData_t& out_lightData, GpioAction actionButton);
+	void generatedLEDButtons(std::vector<std::vector<uint8_t>> *positions, uint8_t ledsPerPixel, LEDOptions_lightData_t& out_lightData, int32_t& out_lightDataSize);
+	void generatedLEDStickless(std::vector<std::vector<uint8_t>> *positions, uint8_t ledsPerPixel, LEDOptions_lightData_t& out_lightData, int32_t& out_lightDataSize);
+	void generatedLEDWasd(std::vector<std::vector<uint8_t>> *positions, uint8_t ledsPerPixel, LEDOptions_lightData_t& out_lightData, int32_t& out_lightDataSize);
+	void generatedLEDWasdFBM(std::vector<std::vector<uint8_t>> *positions, uint8_t ledsPerPixel, LEDOptions_lightData_t& out_lightData, int32_t& out_lightDataSize);
+	void createLEDLayout(ButtonLayout layout, uint8_t ledsPerPixel, uint8_t ledButtonCount, LEDOptions_lightData_t& out_lightData, int32_t& out_lightDataSize);
 	uint8_t setupButtonPositions();
+
+	//New co-ordinated setup
+	void GenerateLights(LEDOptions_lightData_t InLightData, uint32_t InLightDataSize);
+
+	//Controls the actual lights on the board. Writes out state each frame
+	NeoPico *neopico;
+
+	//Classes to control the player LEDS
+	PLEDAnimationState animationState; // NeoPico can control the player LEDs
+	NeoPicoPlayerLEDs * neoPLEDs = nullptr;
+
+	//Data representation of the lights
+	Lights RGBLights;
+
+	//Animation class. Handles idle animations, special move animations and pressed button effects
+	AnimationStation AnimStation;
+
+
 	const uint32_t intervalMS = 10;
 	absolute_time_t nextRunTime;
 	uint8_t ledCount;
 	PixelMatrix matrix;
-	NeoPico *neopico;
 	InputMode inputMode; // HACK
-	PLEDAnimationState animationState; // NeoPico can control the player LEDs
-	NeoPicoPlayerLEDs * neoPLEDs = nullptr;
-	AnimationStation as;
 	std::map<std::string, int> buttonPositions;
 	bool turnOffWhenSuspended;
 };
