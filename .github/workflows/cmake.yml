@@ -1,12 +1,11 @@
+---
 name: CMake
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
-#  pull_request_target:
-#    branches: [ "main" ]
+    branches: ["main"]
   workflow_dispatch:
 
 env:
@@ -23,10 +22,56 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        GP2040_BOARDCONFIG: [ARCController, Blank, Pico, PicoW, BentoBox, ergoSHIFTRev2, FightboardV3, FightboardV3Mirrored, FlatboxRev4, FlatboxRev5, FlatboxRev5RGB, FlatboxRev5USBPassthrough, FlatboxRev5Southpaw, Granola, KB2040, KeyboardConverter, Haute42COSMOX, Liatris, MavercadeRev1, MavercadeRev2, MiSTercadeV2, OpenCore0, OpenCore0WASD, OSUMGP-RP2040, PicoAnn, PicoFightingBoard, PXPGamepad, RanaTadpole, ReflexCtrlGenesis6, ReflexCtrlNES, ReflexCtrlSaturn, ReflexCtrlSNES, ReflexCtrlVB, ReflexEncodeV1.2, ReflexEncodeV2.0, RP2040AdvancedBreakoutBoard, RP2040AdvancedBreakoutBoardUSBPassthrough, RP2040MiniBreakoutBoard, SparkFunProMicro, WaveshareZero, Stress, SGFDevices, ZeroRhythm]
+        GP2040_BOARDCONFIG:
+          [
+            ARCController,
+            Blank,
+            Pico,
+            PicoW,
+            BentoBox,
+            ergoSHIFTRev2,
+            FightboardV3,
+            FightboardV3Mirrored,
+            FlatboxRev4,
+            FlatboxRev5,
+            FlatboxRev5RGB,
+            FlatboxRev5USBPassthrough,
+            FlatboxRev5Southpaw,
+            Granola,
+            KB2040,
+            KeyboardConverter,
+            Haute42COSMOX,
+            Liatris,
+            MavercadeRev1,
+            MavercadeRev2,
+            MiSTercadeV2,
+            OpenCore0,
+            OpenCore0WASD,
+            OSUMGP-RP2040,
+            PicoAnn,
+            PicoFightingBoard,
+            PXPGamepad,
+            RanaTadpole,
+            ReflexCtrlGenesis6,
+            ReflexCtrlNES,
+            ReflexCtrlSaturn,
+            ReflexCtrlSNES,
+            ReflexCtrlVB,
+            ReflexEncodeV1.2,
+            ReflexEncodeV2.0,
+            RP2040AdvancedBreakoutBoard,
+            RP2040AdvancedBreakoutBoardUSBPassthrough,
+            RP2040MiniBreakoutBoard,
+            SparkFunProMicro,
+            WaveshareZero,
+            Stress,
+            SGFDevices,
+            ZeroRhythm,
+          ]
 
     steps:
-    #Global Setup
+    # Global Setup
+    # yamllint disable-line rule:indentation
     - name: Checkout GP2040-CE
       uses: actions/checkout@v4.1.1
       with:
@@ -44,8 +89,8 @@ jobs:
 
     - name: Get core count
       id: core_count
-      run : cat /proc/cpuinfo  | grep processor | wc -l
-      #End Global Setup
+      run: cat /proc/cpuinfo | grep processor | wc -l
+      # End Global Setup
 
     - name: Pico Build Configure CMake
       shell: bash

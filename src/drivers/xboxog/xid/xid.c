@@ -17,8 +17,8 @@ static inline int8_t get_index_by_itfnum(uint8_t itf_num)
         //Xremote has two interfaces. Handle is separately.
         if (_xid_itf[i].type == XID_TYPE_XREMOTE)
         {
-           if (itf_num == _xid_itf[i].itf_num + 1)
-            return i; 
+            if (itf_num == _xid_itf[i].itf_num + 1)
+                return i;
         }
     }
     return -1;
@@ -55,8 +55,8 @@ static void xid_init(void)
     for (uint8_t i = 0; i < MAX_XIDS; i++)
     {
         _xid_itf[i].type = (i < (XID_DUKE)) ? XID_TYPE_GAMECONTROLLER :
-                           (i < (XID_DUKE + XID_STEELBATTALION)) ? XID_TYPE_STEELBATTALION :
-                           (i < (XID_DUKE + XID_STEELBATTALION + XID_XREMOTE)) ? XID_TYPE_XREMOTE : 0xFF;
+                            (i < (XID_DUKE + XID_STEELBATTALION)) ? XID_TYPE_STEELBATTALION :
+                            (i < (XID_DUKE + XID_STEELBATTALION + XID_XREMOTE)) ? XID_TYPE_XREMOTE : 0xFF;
     }
 }
 
@@ -74,8 +74,8 @@ static uint16_t xid_open(uint8_t rhport, tusb_desc_interface_t const *itf_desc, 
     TU_ASSERT(p_xid != NULL, 0);
 
     uint16_t const drv_len = (p_xid->type == XID_TYPE_GAMECONTROLLER) ? TUD_XID_DUKE_DESC_LEN :
-                             (p_xid->type == XID_TYPE_STEELBATTALION) ? TUD_XID_SB_DESC_LEN :
-                             (p_xid->type == XID_TYPE_XREMOTE)        ? TUD_XID_XREMOTE_DESC_LEN : 0;
+                                (p_xid->type == XID_TYPE_STEELBATTALION) ? TUD_XID_SB_DESC_LEN :
+                                (p_xid->type == XID_TYPE_XREMOTE)        ? TUD_XID_XREMOTE_DESC_LEN : 0;
     TU_ASSERT(max_len >= drv_len, 0);
 
     p_xid->itf_num = itf_desc->bInterfaceNumber;
@@ -86,7 +86,7 @@ static uint16_t xid_open(uint8_t rhport, tusb_desc_interface_t const *itf_desc, 
     {
         usbd_edpt_open(rhport, ep_desc);
         (ep_desc->bEndpointAddress & 0x80) ? (p_xid->ep_in  = ep_desc->bEndpointAddress) :
-                                             (p_xid->ep_out = ep_desc->bEndpointAddress);
+                                                (p_xid->ep_out = ep_desc->bEndpointAddress);
     }
 
     TU_VERIFY(itf_desc->bNumEndpoints >= 2, drv_len);
@@ -95,7 +95,7 @@ static uint16_t xid_open(uint8_t rhport, tusb_desc_interface_t const *itf_desc, 
     {
         usbd_edpt_open(rhport, ep_desc);
         (ep_desc->bEndpointAddress & 0x80) ? (p_xid->ep_in  = ep_desc->bEndpointAddress) :
-                                             (p_xid->ep_out = ep_desc->bEndpointAddress);
+                                                (p_xid->ep_out = ep_desc->bEndpointAddress);
     }
 
     return drv_len;
@@ -182,7 +182,7 @@ bool xid_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t c
 
     bool ret = false;
 
-     //Get HID Report
+    //Get HID Report
     if (request->bmRequestType == 0xA1 && request->bRequest == 0x01 && request->wValue == 0x0100)
     {
         if (stage == CONTROL_STAGE_SETUP)

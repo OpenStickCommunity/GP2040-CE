@@ -1,0 +1,34 @@
+---
+# Configuration file for MegaLinter
+# See all available variables at https://oxsecurity.github.io/megalinter/configuration/ and in linters documentation
+
+# If you use ENABLE_LINTERS variable, all other linters will be disabled by default
+ENABLE_LINTERS: 
+  [
+    ACTION_ACTIONLINT,
+    EDITORCONFIG_EDITORCONFIG_CHECKER,
+    JSON_JSONLINT,
+    JSON_V8R,
+    MARKDOWN_MARKDOWNLINT,
+    REPOSITORY_DUSTILOCK,
+    REPOSITORY_GIT_DIFF,
+    REPOSITORY_GRYPE,
+    REPOSITORY_SECRETLINT,
+    REPOSITORY_SYFT,
+    REPOSITORY_TRIVY_SBOM,
+    REPOSITORY_TRUFFLEHOG,
+    YAML_V8R,
+    YAML_YAMLLINT,
+  ]
+DISABLE:
+  - COPYPASTE # Disable checks of excessive copy-pastes
+  - SPELL # Disable checks of spelling mistakes
+
+DISABLE_ERRORS_LINTERS: [ACTION_ACTIONLINT, REPOSITORY_GRYPE, REPOSITORY_TRIVY, REPOSITORY_TRUFFLEHOG]
+SHOW_ELAPSED_TIME: false
+FILEIO_REPORTER: false
+# DISABLE_ERRORS: true # Uncomment if you want MegaLinter to detect errors but not block CI to pass
+# Exclude certain files from linting
+FILTER_REGEX_EXCLUDE: "(lib/.*)"
+# If we enable ESLint in the future, use our ESLint rules file
+TSX_ESLINT_CONFIG_FILE: www/.eslintrc.yml

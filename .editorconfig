@@ -11,13 +11,36 @@ charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
 
-[*.md, *.yml]
+[*.{md,yml}]
 indent_style = space
 indent_size = 2
 trim_trailing_whitespace = false
+
+[configs/**CMakeLists.txt]
+insert_final_newline = false
 
 [*.scss]
 end_of_line = lf
 
 [*.{js,jsx,ts,tsx}]
 quote_type = single
+
+[{package-lock.json,CMakeLists.txt,www/public/manifest.json}]
+indent_style = space
+indent_size = 2
+
+[src/**.c]
+indent_style = space
+indent_size = 4
+
+[pico_sdk_import.cmake]
+indent_style = space
+indent_size = 4
+
+[modules/**.cmake]
+indent_style = space
+insert_final_newline = false
+
+[proto/**.proto]
+indent_style = space
+indent_size = 4
