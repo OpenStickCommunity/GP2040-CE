@@ -8,18 +8,38 @@
 #include <vector>
 #include "../AnimationStation.hpp"
 
-class Rainbow : public Animation {
+class RainbowSynced : public Animation 
+{
 public:
-  Rainbow(PixelMatrix &matrix);
-  ~Rainbow() {};
+  RainbowSynced(Lights& InRGBLights);
+  ~RainbowSynced() {};
 
   void Animate(RGB (&frame)[100]);
+
+  //These change the speed of the rainbow changing color
   void ParameterUp();
   void ParameterDown();
 
 protected:
   int currentFrame = 0;
   bool reverse = false;
+  absolute_time_t nextRunTime = nil_time;
+};
+
+class RainbowRotate : public Animation 
+{
+public:
+  RainbowRotate(Lights& InRGBLights);
+  ~RainbowRotate() {};
+
+  void Animate(RGB (&frame)[100]);
+
+  //These change the speed of the rainbow changing color
+  void ParameterUp();
+  void ParameterDown();
+
+protected:
+  int currentFrame = 0;
   absolute_time_t nextRunTime = nil_time;
 };
 

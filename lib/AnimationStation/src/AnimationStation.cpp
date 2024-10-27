@@ -12,108 +12,115 @@ uint8_t AnimationStation::brightnessSteps = 5;
 float AnimationStation::brightnessX = 0;
 absolute_time_t AnimationStation::nextChange = nil_time;
 AnimationOptions AnimationStation::options = {};
-uint8_t AnimationStation::effectCount = TOTAL_EFFECTS;
 
-
-AnimationStation::AnimationStation() {
+AnimationStation::AnimationStation()
+{
   AnimationStation::SetBrightness(1);
 }
 
-void AnimationStation::ConfigureBrightness(uint8_t max, uint8_t steps) {
+void AnimationStation::ConfigureBrightness(uint8_t max, uint8_t steps)
+{
   brightnessMax = max;
   brightnessSteps = steps;
 }
 
-void AnimationStation::HandleEvent(AnimationHotkey action) {
-  if (action == HOTKEY_LEDS_NONE || !time_reached(AnimationStation::nextChange)) {
+void AnimationStation::HandleEvent(AnimationHotkey action)
+{
+  if (action == HOTKEY_LEDS_NONE || !time_reached(AnimationStation::nextChange)) 
+  {
     return;
   }
   AnimationStation::nextChange = make_timeout_time_ms(250);
 
-  if (action == HOTKEY_LEDS_BRIGHTNESS_UP) {
+  //Adjust brigness
+  if (action == HOTKEY_LEDS_BRIGHTNESS_UP) 
+  {
     AnimationStation::IncreaseBrightness();
   }
-
-  if (action == HOTKEY_LEDS_BRIGHTNESS_DOWN) {
+  if (action == HOTKEY_LEDS_BRIGHTNESS_DOWN) 
+  {
     AnimationStation::DecreaseBrightness();
   }
 
-  if (action == HOTKEY_LEDS_ANIMATION_UP) {
-    ChangeAnimation(1);
+  //Switch to new profile
+  if (action == HOTKEY_LEDS_PROFILE_UP) 
+  {
+    ChangeProfile(1);
+  }
+  if (action == HOTKEY_LEDS_PROFILE_DOWN) 
+  {
+    ChangeProfile(-1);
   }
 
-  if (action == HOTKEY_LEDS_ANIMATION_DOWN) {
-    ChangeAnimation(-1);
-  }
-
-
-  if (this->baseAnimation == nullptr || this->buttonAnimation == nullptr) {
+  //Adjust existing profile hotkeys
+  if (this->baseAnimation == nullptr || this->buttonAnimation == nullptr) 
+  {
     return;
   }
-  
-  if (action == HOTKEY_LEDS_PARAMETER_UP) {
+
+  if (action == HOTKEY_LEDS_PARAMETER_UP) 
+  {
     this->baseAnimation->ParameterUp();
   }
-
-  if (action == HOTKEY_LEDS_PARAMETER_DOWN) {
+  if (action == HOTKEY_LEDS_PARAMETER_DOWN) 
+  {
     this->baseAnimation->ParameterDown();
   }
-
-  if (action == HOTKEY_LEDS_PRESS_PARAMETER_UP) {
+  if (action == HOTKEY_LEDS_PRESS_PARAMETER_UP) 
+  {
     this->buttonAnimation->ParameterUp();
   }
-
-  if (action == HOTKEY_LEDS_PRESS_PARAMETER_DOWN) {
+  if (action == HOTKEY_LEDS_PRESS_PARAMETER_DOWN) 
+  {
     this->buttonAnimation->ParameterDown();
-  }
-
-  if (action == HOTKEY_LEDS_FADETIME_UP) {
-    this->baseAnimation->FadeTimeUp();
-  }
-
-  if (action == HOTKEY_LEDS_FADETIME_DOWN) {
-    this->baseAnimation->FadeTimeDown();
   }  
-  
 }
 
-void AnimationStation::ChangeAnimation(int changeSize) {
+void AnimationStation::ChangeProfile(int changeSize) 
+{
   this->SetMode(this->AdjustIndex(changeSize));
 }
 
-uint16_t AnimationStation::AdjustIndex(int changeSize) {
-  int newIndex = (int)this->options.baseAnimationIndex + changeSize;
+uint16_t AnimationStation::AdjustIndex(int changeSize)
+{
+  //if no profiles defined then return -1 to turn everything off
+  if(this->options.profiles.size())
+    return -1;
 
-  if (newIndex >= AnimationStation::effectCount) {
+  int newIndex = (int)this->options.baseProfileIndex + changeSize;
+
+  if (newIndex >= this->options.profiles.size())
+  {
     return 0;
   }
 
-  if (newIndex < 0) {
-    return (AnimationStation::effectCount - 1);
+  if (newIndex < 0) 
+  {
+    return (this->options.profiles.size() - 1);
   }
 
   return (uint16_t)newIndex;
 }
 
-void AnimationStation::HandlePressed(std::vector<Pixel> pressed) {
-  this->lastPressed = pressed;
-  this->baseAnimation->UpdatePixels(pressed);  
-  this->buttonAnimation->UpdatePixels(pressed);
+void AnimationStation::HandlePressedPins(std::vector<int32_t> pressedPins)
+{
+  if(pressedPins.size())
+  {
+    this->lastPressed = pressedPins;
+    this->buttonAnimation->UpdatePressed(pressedPins);
+  }
+  else
+  {
+    this->lastPressed.clear();
+    this->buttonAnimation->ClearPressed();
+  }
 }
 
-void AnimationStation::ClearPressed() {
-  if (this->buttonAnimation != nullptr) {
-    this->buttonAnimation->ClearPixels();
-  }
-  if (this->baseAnimation != nullptr) {
-    this->baseAnimation->ClearPixels();
-  }
-
-  this->lastPressed.clear();
-}
-
-void AnimationStation::Animate() {
-  if (baseAnimation == nullptr || buttonAnimation == nullptr) {
+void AnimationStation::Animate() 
+{
+  //If no profiles running
+  if (baseAnimation == nullptr || buttonAnimation == nullptr) 
+  {
     this->Clear();
     return;
   }
@@ -122,71 +129,93 @@ void AnimationStation::Animate() {
   buttonAnimation->Animate(this->frame);
 }
 
-void AnimationStation::Clear() { memset(frame, 0, sizeof(frame)); }
-
-float AnimationStation::GetBrightnessX() {
-  return AnimationStation::brightnessX;
+void AnimationStation::Clear() 
+{ 
+  //sets all lights to black (off)
+  memset(frame, 0, sizeof(frame)); 
 }
 
-uint8_t AnimationStation::GetBrightness() {
-  return AnimationStation::options.brightness;
+uint8_t AnimationStation::GetMode() 
+{ 
+  return this->options.baseProfileIndex; 
 }
 
-uint8_t AnimationStation::GetMode() { return this->options.baseAnimationIndex; }
+void AnimationStation::SetMode(uint8_t mode) 
+{
+  this->options.baseProfileIndex = mode;
 
-void AnimationStation::SetMode(uint8_t mode) {
-  this->options.baseAnimationIndex = mode;
-  AnimationEffects newEffect =
-      static_cast<AnimationEffects>(this->options.baseAnimationIndex);
-
-  if (this->baseAnimation != nullptr) {
+  //remove old animations
+  if (this->baseAnimation != nullptr) 
+  {
     delete this->baseAnimation;
   }
-  if (this->buttonAnimation != nullptr) {
+  if (this->buttonAnimation != nullptr) 
+  {
     delete this->buttonAnimation;
   }
 
+  //turn off all lights
   this->Clear();
 
-  switch (newEffect) {
-  case AnimationEffects::EFFECT_RAINBOW:
-    this->baseAnimation = new Rainbow(matrix);
-    this->buttonAnimation = new StaticColor(matrix, lastPressed);
+  //no profiles
+  if(mode == -1)
+    return; 
+
+  //set new profile nonpressed animation
+  switch ((AnimationNonPressedEffects)this->options.profiles[this->options.baseProfileIndex].baseAnimationEffect) 
+  {
+  case AnimationNonPressedEffects::NONPRESSED_EFFECT_RAINBOW_SYNCED:
+    this->baseAnimation = new RainbowSynced(RGBLights);
     break;
-  case AnimationEffects::EFFECT_CHASE:
-    this->baseAnimation = new Chase(matrix);
-    this->buttonAnimation = new StaticColor(matrix, lastPressed);
+
+  case AnimationNonPressedEffects::NONPRESSED_EFFECT_RAINBOW_ROTATE:
+    this->baseAnimation = new RainbowRotate(RGBLights);
     break;
-  case AnimationEffects::EFFECT_STATIC_THEME:
-    this->baseAnimation = new StaticTheme(matrix);
-    this->buttonAnimation = new StaticColor(matrix, lastPressed);
+
+  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE:
+    this->baseAnimation = new Chase(RGBLights);
     break;
-  case AnimationEffects::EFFECT_CUSTOM_THEME:
-    this->baseAnimation = new CustomTheme(matrix);
-    this->buttonAnimation = new CustomThemePressed(matrix, lastPressed);
+
+  case AnimationNonPressedEffects::NONPRESSED_EFFECT_STATIC_COLOR:
+    this->baseAnimation = new StaticColor(RGBLights);
     break;
+
   default:
-    this->baseAnimation = new StaticColor(matrix);
-    this->buttonAnimation = new StaticColor(matrix, lastPressed);
+    break;
+  }
+
+  //set new profile pressed animation
+  switch ((AnimationPressedEffects)this->options.profiles[this->options.baseProfileIndex].basePressedEffect) 
+  {
+  case AnimationPressedEffects::PRESSED_EFFECT_RANDOM:
+    this->buttonAnimation = new RandomColour(RGBLights, lastPressed);
+
+  case AnimationPressedEffects::PRESSED_EFFECT_STATIC_COLOR:
+    this->buttonAnimation = new StaticColor(RGBLights, lastPressed);
+
+  default:
     break;
   }
 }
 
-void AnimationStation::SetMatrix(PixelMatrix matrix) {
-  this->matrix = matrix;
-}
-
-void AnimationStation::SetOptions(AnimationOptions options) {
+void AnimationStation::SetOptions(AnimationOptions options) 
+{
   AnimationStation::options = options;
   AnimationStation::SetBrightness(options.brightness);
 }
 
-void AnimationStation::ApplyBrightness(uint32_t *frameValue) {
+///////////////////////////////////
+// Brightness functions
+///////////////////////////////////
+
+void AnimationStation::ApplyBrightness(uint32_t *frameValue) 
+{
   for (int i = 0; i < 100; i++)
     frameValue[i] = this->frame[i].value(Animation::format, brightnessX);
 }
 
-void AnimationStation::SetBrightness(uint8_t brightness) {
+void AnimationStation::SetBrightness(uint8_t brightness) 
+{
   AnimationStation::options.brightness =
       (brightness > brightnessSteps) ? brightnessSteps : options.brightness;
   AnimationStation::brightnessX =
@@ -198,18 +227,31 @@ void AnimationStation::SetBrightness(uint8_t brightness) {
     AnimationStation::brightnessX = 0;
 }
 
-void AnimationStation::DecreaseBrightness() {
+void AnimationStation::DecreaseBrightness() 
+{
   if (AnimationStation::options.brightness > 0)
     AnimationStation::SetBrightness(--AnimationStation::options.brightness);
 }
 
-void AnimationStation::IncreaseBrightness() {
+void AnimationStation::IncreaseBrightness()
+{
   if (AnimationStation::options.brightness < getBrightnessStepSize())
     AnimationStation::SetBrightness(++AnimationStation::options.brightness);
   else if (AnimationStation::options.brightness > getBrightnessStepSize())
     AnimationStation::SetBrightness(brightnessSteps);
 }
 
-void AnimationStation::DimBrightnessTo0() {
+void AnimationStation::DimBrightnessTo0() 
+{
   AnimationStation::brightnessX = 0;
+}
+
+float AnimationStation::GetBrightnessX() 
+{
+  return AnimationStation::brightnessX;
+}
+
+uint8_t AnimationStation::GetBrightness() 
+{
+  return AnimationStation::options.brightness;
 }

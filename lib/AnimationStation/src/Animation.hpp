@@ -121,7 +121,7 @@ public:
 
   //Update timers for pressed buttons this frame
   void UpdatePresses();
-   void DecrementFadeCounters();
+  void DecrementFadeCounters();
 
   virtual void ParameterUp() = 0;
   virtual void ParameterDown() = 0;
@@ -131,6 +131,9 @@ public:
 protected:
   //Light data
   Lights* RGBLights;
+
+  //Is this running as a button animation
+  bool isButtonAnimation = false;
 
   //Pins currently pressed
   std::vector<int32_t> pressedPins;

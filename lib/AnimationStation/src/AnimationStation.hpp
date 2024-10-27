@@ -20,13 +20,18 @@
 //List of non-pressed animation types
 typedef enum
 {
-  EFFECT_STATIC_COLOR,
-  EFFECT_RAINBOW_SYNCED,
-  EFFECT_RAINBOW_ROTATE,
-  EFFECT_CHASE,
-} AnimationEffects;
+  NONPRESSED_EFFECT_STATIC_COLOR,
+  NONPRESSED_EFFECT_RAINBOW_SYNCED,
+  NONPRESSED_EFFECT_RAINBOW_ROTATE,
+  NONPRESSED_EFFECT_CHASE,
+} AnimationNonPressedEffects;
 
-const int TOTAL_EFFECTS = 4; // Exclude custom theme until verified present
+//List of non-pressed animation types
+typedef enum
+{
+  PRESSED_EFFECT_STATIC_COLOR,
+  PRESSED_EFFECT_RANDOM,
+} AnimationPressedEffects;
 
 typedef enum
 {
@@ -43,7 +48,8 @@ typedef enum
 
 struct __attribute__ ((__packed__)) AnimationProfile
 {
-  	AnimationEffects baseAnimationEffect;
+  	AnimationNonPressedEffects baseAnimationEffect;
+  	AnimationPressedEffects basePressedEffect;
 
     int16_t baseCycleTime;
 
