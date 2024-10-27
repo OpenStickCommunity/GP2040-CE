@@ -7,77 +7,83 @@
 #define PRESS_COOLDOWN_MIN 0
 
 LEDFormat Animation::format;
-std::map<uint32_t, int32_t> Animation::times = {};
-std::map<uint32_t, RGB> Animation::hitColor = {};
 
-Animation::Animation(PixelMatrix &matrix) : matrix(&matrix) {
-  for (size_t r = 0; r != matrix.pixels.size(); r++) {
-    for (size_t c = 0; c != matrix.pixels[r].size(); c++) {
-      if (matrix.pixels[r][c].index == NO_PIXEL.index)
-        continue;
-      times.insert_or_assign(matrix.pixels[r][c].index, 0);
-      hitColor.insert_or_assign(matrix.pixels[r][c].index, defaultColor);
-    }
+Animation::Animation(Lights& InRGBLights) : RGBLights(&InRGBLights) 
+{
+  fadeTimes.clear();
+  for(int ledIndex = 0; ledIndex < RGBLights->GetLedCount(); ++ledIndex)
+  {
+    fadeTimes.push_back(0); 
   }
+
+  holdTimeInMs = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].buttonPressHoldTimeInMs;
+  fadeoutTimeInMs = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].buttonPressFadeOutTimeInMs;
+  
+  //Since we use the fadeTimes array to know if a light is held. make sure that we hold for at least 1 ms.
+  if(holdTimeInMs <= 0)
+    holdTimeInMs = 1;
 }
 
-void Animation::UpdatePixels(std::vector<Pixel> inpixels) {
-  this->pixels = inpixels;
+void Animation::UpdatePressed(std::vector<int32_t> InPressedPins)
+{
+  this->pressedPins = InPressedPins;
 }
 
-void Animation::UpdateTime() {
-  coolDownTimeInMs = AnimationStation::options.buttonPressColorCooldownTimeInMs;
+void Animation::ClearPressed()
+{
+  this->pressedPins.clear();
+}
 
+void Animation::UpdateTime() 
+{
   absolute_time_t currentTime = get_absolute_time();
   updateTimeInMs = absolute_time_diff_us(lastUpdateTime, currentTime) / 1000;
   lastUpdateTime = currentTime;
 }
 
-void Animation::UpdatePresses(RGB (&frame)[100]) {
-  // Queue up blend on hit
-  for (size_t p = 0; p < pixels.size(); p++) {
-    if (pixels[p].index != NO_PIXEL.index) {
-      times[pixels[p].index] = coolDownTimeInMs;
-      hitColor[pixels[p].index] = frame[pixels[p].positions[0]];
+void Animation::UpdatePresses() 
+{
+  //Set hold/fade time for all pressed buttons
+  for(int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
+  {
+    for(int pressedPinIndex = 0; pressedPinIndex < pressedPins.size(); ++pressedPinIndex)
+    {
+      if(pressedPins[pressedPinIndex] == RGBLights->AllLights[lightIndex].GIPOPin)
+      {
+        uint8_t firstLightIndex = RGBLights->AllLights[lightIndex].FirstLedIndex;
+        uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[lightIndex].LedsPerLight;
+        for(int ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
+        {
+          fadeTimes[ledIndex] = holdTimeInMs + fadeoutTimeInMs; 
+        }
+      }
     }
   }
 }
 
-void Animation::DecrementFadeCounter(int32_t index) {
-  times[index] -= updateTimeInMs;
-  if (times[index] < 0) {
-    times[index] = 0;
-  };
-}
-
-void Animation::ClearPixels() {
-  this->pixels.clear();
-}
-
-/* Some of these animations are filtered to specific pixels, such as button press animations.
-This somewhat backwards named method determines if a specific pixel is _not_ included in the filter */
-bool Animation::notInFilter(Pixel pixel) {
-  if (!this->filtered) {
-    return false;
+void Animation::DecrementFadeCounters() 
+{
+  for(int ledIndex = 0; ledIndex < RGBLights->GetLedCount(); ++ledIndex)
+  {
+    fadeTimes[ledIndex] -= updateTimeInMs;
+    if (fadeTimes[ledIndex] < 0)
+      fadeTimes[ledIndex] = 0;
   }
-
-  for (size_t i = 0; i < this->pixels.size(); i++) {
-    if (pixel == this->pixels.at(i)) {
-      return false;
-    }
-  }
-
-  return true;
 }
 
-RGB Animation::BlendColor(RGB start, RGB end, uint32_t timeRemainingInMs) {
+RGB Animation::BlendColor(RGB start, RGB end, uint32_t timeRemainingInMs) 
+{
   RGB result = ColorBlack;
 
-  if (timeRemainingInMs <= 0) {
+  //fade over?
+  if (timeRemainingInMs <= 0) 
     return end;
-  }
 
-  float progress = 1.0f - (static_cast<float>(timeRemainingInMs) / static_cast<float>(coolDownTimeInMs));
+  //still in hold time?
+  if(timeRemainingInMs > fadeoutTimeInMs)
+    return start;
+
+  float progress = 1.0f - (static_cast<float>(timeRemainingInMs) / static_cast<float>(fadeoutTimeInMs));
   if (progress < 0.0f) progress = 0.0f;
   if (progress > 1.0f) progress = 1.0f;
 
@@ -86,21 +92,4 @@ RGB Animation::BlendColor(RGB start, RGB end, uint32_t timeRemainingInMs) {
   result.b = static_cast<uint32_t>(static_cast<float>(start.b + (end.b - start.b) * progress));
 
   return result;
-}
-
-
-void Animation::FadeTimeUp() {
-  AnimationStation::options.buttonPressColorCooldownTimeInMs = AnimationStation::options.buttonPressColorCooldownTimeInMs + PRESS_COOLDOWN_INCREMENT;
-
-  if (AnimationStation::options.buttonPressColorCooldownTimeInMs > PRESS_COOLDOWN_MAX) {
-    AnimationStation::options.buttonPressColorCooldownTimeInMs = PRESS_COOLDOWN_MAX;
-  }
-}
-
-void Animation::FadeTimeDown() {
-  AnimationStation::options.buttonPressColorCooldownTimeInMs = AnimationStation::options.buttonPressColorCooldownTimeInMs - PRESS_COOLDOWN_INCREMENT;
-
-  if (AnimationStation::options.buttonPressColorCooldownTimeInMs > PRESS_COOLDOWN_MAX) {
-    AnimationStation::options.buttonPressColorCooldownTimeInMs = PRESS_COOLDOWN_MIN;
-  }
 }

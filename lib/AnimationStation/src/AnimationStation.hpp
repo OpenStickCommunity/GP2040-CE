@@ -17,13 +17,13 @@
 #include "Effects/StaticColor.hpp"
 #include "Effects/StaticTheme.hpp"
 
+//List of non-pressed animation types
 typedef enum
 {
   EFFECT_STATIC_COLOR,
-  EFFECT_RAINBOW,
+  EFFECT_RAINBOW_SYNCED,
+  EFFECT_RAINBOW_ROTATE,
   EFFECT_CHASE,
-  EFFECT_STATIC_THEME,
-  EFFECT_CUSTOM_THEME,
 } AnimationEffects;
 
 const int TOTAL_EFFECTS = 4; // Exclude custom theme until verified present
@@ -31,66 +31,35 @@ const int TOTAL_EFFECTS = 4; // Exclude custom theme until verified present
 typedef enum
 {
   HOTKEY_LEDS_NONE,
-	HOTKEY_LEDS_ANIMATION_UP,
-	HOTKEY_LEDS_ANIMATION_DOWN,
-	HOTKEY_LEDS_PARAMETER_UP,
+	HOTKEY_LEDS_PROFILE_UP,
+	HOTKEY_LEDS_PROFILE_DOWN,
   HOTKEY_LEDS_PRESS_PARAMETER_UP,
   HOTKEY_LEDS_PRESS_PARAMETER_DOWN,
+	HOTKEY_LEDS_PARAMETER_UP,
 	HOTKEY_LEDS_PARAMETER_DOWN,
 	HOTKEY_LEDS_BRIGHTNESS_UP,
 	HOTKEY_LEDS_BRIGHTNESS_DOWN,
-	HOTKEY_LEDS_FADETIME_UP,
-	HOTKEY_LEDS_FADETIME_DOWN
 } AnimationHotkey;
+
+struct __attribute__ ((__packed__)) AnimationProfile
+{
+  	AnimationEffects baseAnimationEffect;
+
+    int16_t baseCycleTime;
+
+    uint32_t notPressedStaticColors[NUM_BANK0_GPIOS];
+    uint32_t pressedStaticColors[NUM_BANK0_GPIOS];
+
+    uint32_t buttonPressHoldTimeInMs;
+    uint32_t buttonPressFadeOutTimeInMs;
+};
 
 struct __attribute__ ((__packed__)) AnimationOptions
 {
   uint32_t checksum;
-	uint8_t baseAnimationIndex;
+  std::vector<AnimationProfile> profiles;
   uint8_t brightness;
-  uint8_t staticColorIndex;
-  uint8_t buttonColorIndex;
-  int16_t chaseCycleTime;
-  int16_t rainbowCycleTime;
-  uint8_t themeIndex;
-  bool hasCustomTheme;
-  uint32_t customThemeUp;
-  uint32_t customThemeDown;
-  uint32_t customThemeLeft;
-  uint32_t customThemeRight;
-  uint32_t customThemeB1;
-  uint32_t customThemeB2;
-  uint32_t customThemeB3;
-  uint32_t customThemeB4;
-  uint32_t customThemeL1;
-  uint32_t customThemeR1;
-  uint32_t customThemeL2;
-  uint32_t customThemeR2;
-  uint32_t customThemeS1;
-  uint32_t customThemeS2;
-  uint32_t customThemeL3;
-  uint32_t customThemeR3;
-  uint32_t customThemeA1;
-  uint32_t customThemeA2;
-  uint32_t customThemeUpPressed;
-  uint32_t customThemeDownPressed;
-  uint32_t customThemeLeftPressed;
-  uint32_t customThemeRightPressed;
-  uint32_t customThemeB1Pressed;
-  uint32_t customThemeB2Pressed;
-  uint32_t customThemeB3Pressed;
-  uint32_t customThemeB4Pressed;
-  uint32_t customThemeL1Pressed;
-  uint32_t customThemeR1Pressed;
-  uint32_t customThemeL2Pressed;
-  uint32_t customThemeR2Pressed;
-  uint32_t customThemeS1Pressed;
-  uint32_t customThemeS2Pressed;
-  uint32_t customThemeL3Pressed;
-  uint32_t customThemeR3Pressed;
-  uint32_t customThemeA1Pressed;
-  uint32_t customThemeA2Pressed;
-  uint32_t buttonPressColorCooldownTimeInMs;  
+  uint8_t baseProfileIndex;
 };
 
 class AnimationStation
@@ -101,15 +70,20 @@ public:
   void Animate();
   void HandleEvent(AnimationHotkey action);
   void Clear();
-  void ChangeAnimation(int changeSize);
   void ApplyBrightness(uint32_t *frameValue);
+
+  //Change profiles
+  void ChangeProfile(int changeSize);
   uint16_t AdjustIndex(int changeSize);
-  void HandlePressed(std::vector<Pixel> pressed);
-  void ClearPressed();
+
+  //What buttons (physical gpio pins) are pressed this frame
+  void HandlePressedPins(std::vector<int32_t> pressedPins);
 
   uint8_t GetMode();
   void SetMode(uint8_t mode);
-  void SetMatrix(PixelMatrix matrix);
+  void SetLights(Lights InRGBLights);
+
+  //Brightness settings
   static void ConfigureBrightness(uint8_t max, uint8_t steps);
   static float GetBrightnessX();
   static uint8_t GetBrightness();
@@ -117,14 +91,24 @@ public:
   static void DecreaseBrightness();
   static void IncreaseBrightness();
   static void DimBrightnessTo0();
+
+  //passed in user options
   static void SetOptions(AnimationOptions options);
 
+  //Running non-pressed animation
   Animation* baseAnimation;
+
+  //Running pressed animation
   Animation* buttonAnimation;
-  std::vector<Pixel> lastPressed;
+
+  //Buttons pressed (physical gipo pins) last frame, used when changing button theme so starts initialised
+  std::vector<int32_t> lastPressed;
+
   static AnimationOptions options;
+
   static absolute_time_t nextChange;
-  static uint8_t effectCount;
+
+  //Colour of all lights this frame
   RGB frame[100];
 
 protected:
@@ -132,7 +116,9 @@ protected:
   static uint8_t brightnessMax;
   static uint8_t brightnessSteps;
   static float brightnessX;
-  PixelMatrix matrix;
+
+  //Light data
+  Lights RGBLights;
 };
 
 #endif

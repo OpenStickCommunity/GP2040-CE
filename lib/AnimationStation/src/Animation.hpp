@@ -105,43 +105,45 @@ inline const std::vector<RGB> colors {
 
 class Animation {
 public:
-  Animation(PixelMatrix &matrix);
-  virtual void UpdatePixels(std::vector<Pixel> pixels);
-  void ClearPixels();
+  Animation(Lights& InRGBLights);
   virtual ~Animation(){};
+
+  //Which buttons are held at the moment
+  virtual void UpdatePressed(std::vector<int32_t> InPressedPins);
+  void ClearPressed();
 
   static LEDFormat format;
 
-  bool notInFilter(Pixel pixel);
   virtual void Animate(RGB (&frame)[100]) = 0;
+  
+  //gets current frame time
   void UpdateTime();
-  void UpdatePresses(RGB (&frame)[100]);
-  void DecrementFadeCounter(int32_t index);
+
+  //Update timers for pressed buttons this frame
+  void UpdatePresses();
+   void DecrementFadeCounters();
 
   virtual void ParameterUp() = 0;
   virtual void ParameterDown() = 0;
 
-  virtual void FadeTimeUp();
-  virtual void FadeTimeDown();
-
   RGB BlendColor(RGB start, RGB end, uint32_t frame);
 
 protected:
-/* We track both the full matrix as well as individual pixels here to support
-button press changes. Rather than adjusting the matrix to represent a subset of pixels,
-we provide a subset of pixels to use as a filter. */
-  PixelMatrix *matrix;
-  std::vector<Pixel> pixels;
-  bool filtered = false;
+  //Light data
+  Lights* RGBLights;
+
+  //Pins currently pressed
+  std::vector<int32_t> pressedPins;
 
   // Color fade 
-  RGB defaultColor = ColorBlack;  
-  static std::map<uint32_t, int32_t> times;
-  static std::map<uint32_t, RGB> hitColor;    
-  absolute_time_t lastUpdateTime = nil_time;
-  uint32_t coolDownTimeInMs = 1000;
-  int64_t updateTimeInMs = 20;
+  std::vector<uint32_t> fadeTimes;
 
+  absolute_time_t lastUpdateTime = nil_time;
+
+  uint32_t holdTimeInMs = 1000;
+  uint32_t fadeoutTimeInMs = 1000;
+
+  int64_t updateTimeInMs = 20;
 };
 
 #endif

@@ -244,7 +244,6 @@ void NeoPicoLEDAddon::process()
 
 	//Process hotkeys and action any requests
 	Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
-	AnimationHotkey action = ProcessAnimationHotkeys(gamepad);
 	if (ledOptions.pledType == PLED_TYPE_RGB) {
 		inputMode = gamepad->getOptions().inputMode; // HACK
 		if (gamepad->auxState.playerID.enabled && gamepad->auxState.playerID.active) {
@@ -272,25 +271,23 @@ void NeoPicoLEDAddon::process()
 		}
 	}
 
+	//Check for button combos that change animation settings
+	AnimationHotkey action = ProcessAnimationHotkeys(gamepad);
 	if ( action != HOTKEY_LEDS_NONE ) {
 		AnimStation.HandleEvent(action);
 	}
 
-	//Legacy check for button pressed for animation. Needs changing to pin check instead
-	uint32_t buttonState = gamepad->state.dpad << 16 | gamepad->state.buttons;
-	vector<Pixel> pressed;
-	for (auto row : matrix.pixels)
+	//New check for buttons being pressed. this is a direct check to see if a pin is held
+	Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
+	vector<int32_t> pressedPins;
+	for(auto thisLight : RGBLights.AllLights)
 	{
-		for (auto pixel : row)
+		if(values & 1 << thisLight.GIPOPin)
 		{
-			if (buttonState & pixel.mask)
-				pressed.push_back(pixel);
+			pressedPins.push_back(thisLight.GIPOPin);
 		}
 	}
-	if (pressed.size() > 0)
-		AnimStation.HandlePressed(pressed);
-	else
-		AnimStation.ClearPressed();
+	AnimStation.HandlePressedPins(pressedPins);
 
 	//Update idle, button and special move animations
 	AnimStation.Animate();
@@ -600,8 +597,8 @@ void NeoPicoLEDAddon::configureLEDs()
 	AnimationOptions animationOptions = AnimationStore.getAnimationOptions();
 	addStaticThemes(ledOptions, animationOptions);
 	AnimStation.SetOptions(animationOptions);
-	AnimStation.SetMatrix(matrix);
-	AnimStation.SetMode(as.options.baseAnimationIndex);
+	AnimStation.SetLights(RGBLights);
+	AnimStation.SetMode(as.options.baseProfileIndex);
 }
 
 ////////////////////////////////////////////
@@ -640,12 +637,12 @@ AnimationHotkey NeoPicoLEDAddon::ProcessAnimationHotkeys(Gamepad *gamepad)
 	{
 		if (gamepad->pressedB3())
 		{
-			action = HOTKEY_LEDS_ANIMATION_UP;
+			action = HOTKEY_LEDS_PROFILE_UP;
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_B3 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
 		}
 		else if (gamepad->pressedB1())
 		{
-			action = HOTKEY_LEDS_ANIMATION_DOWN;
+			action = HOTKEY_LEDS_PROFILE_DOWN;
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_B1 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
 		}
 		else if (gamepad->pressedB4())
@@ -677,16 +674,6 @@ AnimationHotkey NeoPicoLEDAddon::ProcessAnimationHotkeys(Gamepad *gamepad)
 		{
 			action = HOTKEY_LEDS_PRESS_PARAMETER_DOWN;
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_L2 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
-		}
-		else if (gamepad->pressedL3())
-		{
-			action = HOTKEY_LEDS_FADETIME_DOWN;
-			gamepad->state.buttons &= ~(GAMEPAD_MASK_L3 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
-		}
-		else if (gamepad->pressedR3())
-		{
-			action = HOTKEY_LEDS_FADETIME_UP;
-			gamepad->state.buttons &= ~(GAMEPAD_MASK_R3 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
 		}
 	}
 
