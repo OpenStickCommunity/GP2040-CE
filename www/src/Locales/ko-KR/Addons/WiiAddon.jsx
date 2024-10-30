@@ -50,7 +50,7 @@ export default {
 	'controller-button-donleft': '쿵 좌측',
 	'controller-button-katleft': '딱 좌측',
 	'controller-button-donright': '쿵 우측',
-	'controller-button-katright': '딱 우측'
+	'controller-button-katright': '딱 우측',
     'controller-analog-stick': '스틱',
     'controller-analog-leftstick': '좌 스틱',
     'controller-analog-rightstick': '우 스틱',
