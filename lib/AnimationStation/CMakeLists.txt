@@ -1,10 +1,8 @@
 add_library(AnimationStation
 src/Effects/Chase.cpp
-src/Effects/CustomTheme.cpp
-src/Effects/CustomThemePressed.cpp
 src/Effects/Rainbow.cpp
 src/Effects/StaticColor.cpp
-src/Effects/StaticTheme.cpp
+src/Effects/RandomColor.cpp
 src/AnimationStation.cpp
 src/Animation.cpp
 )

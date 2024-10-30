@@ -1,16 +1,27 @@
-#include "StaticColor.hpp"
+#include "RandomColor.hpp"
 
-StaticColor::StaticColor(Lights& InRGBLights) : Animation(InRGBLights) 
+RandomColor::RandomColor(Lights& InRGBLights) : Animation(InRGBLights) 
 {
 }
 
-StaticColor::StaticColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPins) : Animation(InRGBLights) 
+RandomColor::RandomColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPins) : Animation(InRGBLights) 
 {
   isButtonAnimation = true;
   pressedPins = InPressedPins;
+
+  savedPressedColour.clear();
+  for(int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
+  {
+    savedPressedColour.push_back(RGB(0));
+  }
 }
 
-void StaticColor::Animate(RGB (&frame)[100]) 
+void RandomColor::NewPressForPin(int lightIndex)
+{
+    savedPressedColour[lightIndex] = colors[rand() % colors.size()];
+}
+
+void RandomColor::Animate(RGB (&frame)[100]) 
 {
   UpdateTime();
   UpdatePresses();

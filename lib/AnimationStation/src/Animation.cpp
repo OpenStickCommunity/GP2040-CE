@@ -52,9 +52,18 @@ void Animation::UpdatePresses()
       {
         uint8_t firstLightIndex = RGBLights->AllLights[lightIndex].FirstLedIndex;
         uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[lightIndex].LedsPerLight;
+        bool wasPressedOrFading = false;
         for(int ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
         {
+          if(fadeTimes[ledIndex] > 0)
+            wasPressedOrFading = true;
           fadeTimes[ledIndex] = holdTimeInMs + fadeoutTimeInMs; 
+        }
+
+        //if this is a new press, let effects know
+        if(!wasPressedOrFading)
+        {
+          NewPressForPin(lightIndex);
         }
       }
     }
@@ -92,4 +101,21 @@ RGB Animation::BlendColor(RGB start, RGB end, uint32_t timeRemainingInMs)
   result.b = static_cast<uint32_t>(static_cast<float>(start.b + (end.b - start.b) * progress));
 
   return result;
+}
+
+//Type helpers
+bool Animation::LightTypeIsForNonPressedAnimation(LightType Type)
+{
+  if(Type == LightType::LightType_ActionButton || Type == LightType::LightType_Case)
+    return true;
+
+  return false;
+}
+
+bool Animation::LightTypeIsForPressedAnimation(LightType Type)
+{
+  if(Type == LightType::LightType_ActionButton)
+    return true;
+
+  return false;
 }

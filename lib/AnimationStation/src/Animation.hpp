@@ -116,6 +116,12 @@ public:
 
   virtual void Animate(RGB (&frame)[100]) = 0;
   
+  //param adjustment
+  virtual void ParameterUp() {};
+  virtual void ParameterDown() {};
+
+protected:
+
   //gets current frame time
   void UpdateTime();
 
@@ -123,12 +129,15 @@ public:
   void UpdatePresses();
   void DecrementFadeCounters();
 
-  virtual void ParameterUp() = 0;
-  virtual void ParameterDown() = 0;
+  //notifies
+  virtual void NewPressForPin(int lightIndex) {};
 
   RGB BlendColor(RGB start, RGB end, uint32_t frame);
 
-protected:
+  //Type Helpers
+  bool LightTypeIsForNonPressedAnimation(LightType Type);
+  bool LightTypeIsForPressedAnimation(LightType Type);
+
   //Light data
   Lights* RGBLights;
 

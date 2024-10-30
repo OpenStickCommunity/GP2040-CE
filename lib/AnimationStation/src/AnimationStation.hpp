@@ -10,12 +10,8 @@
 
 #include "NeoPico.hpp"
 #include "Animation.hpp"
-#include "Effects/Chase.hpp"
-#include "Effects/CustomTheme.hpp"
-#include "Effects/CustomThemePressed.hpp"
-#include "Effects/Rainbow.hpp"
-#include "Effects/StaticColor.hpp"
-#include "Effects/StaticTheme.hpp"
+
+#define MAX_ANIMATION_PROFILES 8
 
 //List of non-pressed animation types
 typedef enum
@@ -48,7 +44,9 @@ typedef enum
 
 struct __attribute__ ((__packed__)) AnimationProfile
 {
-  	AnimationNonPressedEffects baseAnimationEffect;
+    bool bIsValidProfile;
+
+  	AnimationNonPressedEffects baseNonPressedEffect;
   	AnimationPressedEffects basePressedEffect;
 
     int16_t baseCycleTime;
@@ -63,7 +61,7 @@ struct __attribute__ ((__packed__)) AnimationProfile
 struct __attribute__ ((__packed__)) AnimationOptions
 {
   uint32_t checksum;
-  std::vector<AnimationProfile> profiles;
+  AnimationProfile profiles[MAX_ANIMATION_PROFILES];
   uint8_t brightness;
   uint8_t baseProfileIndex;
 };
@@ -85,8 +83,8 @@ public:
   //What buttons (physical gpio pins) are pressed this frame
   void HandlePressedPins(std::vector<int32_t> pressedPins);
 
-  uint8_t GetMode();
-  void SetMode(uint8_t mode);
+  int8_t GetMode();
+  void SetMode(int8_t mode);
   void SetLights(Lights InRGBLights);
 
   //Brightness settings

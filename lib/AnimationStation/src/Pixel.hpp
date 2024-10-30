@@ -6,6 +6,15 @@
 #include <stdlib.h>
 #include <vector>
 
+typedef enum _LightType
+{
+    LightType_ActionButton = 0,
+    LightType_Case = 1,
+    LightType_Turbo = 2,
+    LightType_PlayerLight = 3,
+    LightType_MAX = 4,
+} LightType;
+
 struct Pixel {
   Pixel(int index, uint32_t mask = 0) : index(index), mask(mask) { }
   Pixel(int index, std::vector<uint8_t> positions) : index(index), positions(positions) { }
@@ -76,7 +85,7 @@ struct LightPosition
 //A single RGB light on the device. Replaced Pixel
 struct Light 
 {
-  Light(uint8_t InFirstLedIndex, uint8_t InNumLedsPerLight, LightPosition InPosition, uint8_t GIPOPin, uint8_t InType)
+  Light(uint8_t InFirstLedIndex, uint8_t InNumLedsPerLight, LightPosition InPosition, uint8_t GIPOPin, LightType InType)
   {
     FirstLedIndex = InFirstLedIndex;
     Position = InPosition;
@@ -93,7 +102,7 @@ struct Light
   LightPosition Position; 
 
   // Type of light, used in animations to allow users to seperate off lights for different anims
-  uint8_t Type; 
+  LightType Type; 
 
   //How many leds make up this light.
   uint8_t LedsPerLight;

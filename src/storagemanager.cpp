@@ -36,51 +36,22 @@ static void updateAnimationOptionsProto(const AnimationOptions& options)
 {
 	AnimationOptions_Proto& optionsProto = Storage::getInstance().getAnimationOptions();
 
-	optionsProto.baseAnimationIndex			= options.baseAnimationIndex;
+	for(int index = 0; index < 8; ++index) //MAX_ANIMATION_PROFILES from AnimationStation.hpp
+	{
+		optionsProto.profiles[index].bIsValidProfile = options.profiles[index].bIsValidProfile;
+		optionsProto.profiles[index].baseNonPressedEffect = (AnimationNonPressedEffects_Proto)((int)options.profiles[index].baseNonPressedEffect);
+		optionsProto.profiles[index].basePressedEffect = (AnimationPressedEffects_Proto)((int)options.profiles[index].basePressedEffect);
+		optionsProto.profiles[index].baseCycleTime = options.profiles[index].baseCycleTime;
+		for(int pinIndex = 0; pinIndex < NUM_BANK0_GPIOS; ++pinIndex)
+		{
+			optionsProto.profiles[index].notPressedStaticColors[pinIndex] = options.profiles[index].notPressedStaticColors[pinIndex];
+			optionsProto.profiles[index].pressedStaticColors[pinIndex] = options.profiles[index].pressedStaticColors[pinIndex];
+		}
+		optionsProto.profiles[index].buttonPressHoldTimeInMs = options.profiles[index].buttonPressHoldTimeInMs;
+		optionsProto.profiles[index].buttonPressFadeOutTimeInMs = options.profiles[index].buttonPressFadeOutTimeInMs;
+	}
 	optionsProto.brightness					= options.brightness;
-	optionsProto.staticColorIndex			= options.staticColorIndex;
-	optionsProto.buttonColorIndex			= options.buttonColorIndex;
-	optionsProto.chaseCycleTime				= options.chaseCycleTime;
-	optionsProto.rainbowCycleTime			= options.rainbowCycleTime;
-	optionsProto.themeIndex					= options.themeIndex;
-	optionsProto.hasCustomTheme				= options.hasCustomTheme;
-	optionsProto.customThemeUp				= options.customThemeUp;
-	optionsProto.customThemeDown			= options.customThemeDown;
-	optionsProto.customThemeLeft			= options.customThemeLeft;
-	optionsProto.customThemeRight			= options.customThemeRight;
-	optionsProto.customThemeB1				= options.customThemeB1;
-	optionsProto.customThemeB2				= options.customThemeB2;
-	optionsProto.customThemeB3				= options.customThemeB3;
-	optionsProto.customThemeB4				= options.customThemeB4;
-	optionsProto.customThemeL1				= options.customThemeL1;
-	optionsProto.customThemeR1				= options.customThemeR1;
-	optionsProto.customThemeL2				= options.customThemeL2;
-	optionsProto.customThemeR2				= options.customThemeR2;
-	optionsProto.customThemeS1				= options.customThemeS1;
-	optionsProto.customThemeS2				= options.customThemeS2;
-	optionsProto.customThemeA1				= options.customThemeA1;
-	optionsProto.customThemeA2				= options.customThemeA2;
-	optionsProto.customThemeL3				= options.customThemeL3;
-	optionsProto.customThemeR3				= options.customThemeR3;
-	optionsProto.customThemeUpPressed		= options.customThemeUpPressed;
-	optionsProto.customThemeDownPressed		= options.customThemeDownPressed;
-	optionsProto.customThemeLeftPressed		= options.customThemeLeftPressed;
-	optionsProto.customThemeRightPressed	= options.customThemeRightPressed;
-	optionsProto.customThemeB1Pressed		= options.customThemeB1Pressed;
-	optionsProto.customThemeB2Pressed		= options.customThemeB2Pressed;
-	optionsProto.customThemeB3Pressed		= options.customThemeB3Pressed;
-	optionsProto.customThemeB4Pressed		= options.customThemeB4Pressed;
-	optionsProto.customThemeL1Pressed		= options.customThemeL1Pressed;
-	optionsProto.customThemeR1Pressed		= options.customThemeR1Pressed;
-	optionsProto.customThemeL2Pressed		= options.customThemeL2Pressed;
-	optionsProto.customThemeR2Pressed		= options.customThemeR2Pressed;
-	optionsProto.customThemeS1Pressed		= options.customThemeS1Pressed;
-	optionsProto.customThemeS2Pressed		= options.customThemeS2Pressed;
-	optionsProto.customThemeA1Pressed		= options.customThemeA1Pressed;
-	optionsProto.customThemeA2Pressed		= options.customThemeA2Pressed;
-	optionsProto.customThemeL3Pressed		= options.customThemeL3Pressed;
-	optionsProto.customThemeR3Pressed		= options.customThemeR3Pressed;
-	optionsProto.buttonPressColorCooldownTimeInMs = options.buttonPressColorCooldownTimeInMs;	
+	optionsProto.baseProfileIndex			= options.baseProfileIndex;
 }
 
 void Storage::performEnqueuedSaves()
@@ -223,52 +194,36 @@ AnimationOptions AnimationStorage::getAnimationOptions()
 	AnimationOptions options;
 	const AnimationOptions_Proto& optionsProto = Storage::getInstance().getAnimationOptions();
 
+    bool bIsValidProfile;
+
+  	AnimationNonPressedEffects baseNonPressedEffect;
+  	AnimationPressedEffects basePressedEffect;
+
+    int16_t baseCycleTime;
+
+    uint32_t notPressedStaticColors[NUM_BANK0_GPIOS];
+    uint32_t pressedStaticColors[NUM_BANK0_GPIOS];
+
+    uint32_t buttonPressHoldTimeInMs;
+    uint32_t buttonPressFadeOutTimeInMs;
+	
 	options.checksum				= 0;
-	options.baseAnimationIndex		= std::min<uint32_t>(optionsProto.baseAnimationIndex, 255);
+	for(int index = 0; index < 8; ++index) //MAX_ANIMATION_PROFILES from AnimationStation.hpp
+	{
+		options.profiles[index].bIsValidProfile = optionsProto.profiles[index].bIsValidProfile;
+		options.profiles[index].baseNonPressedEffect = (AnimationNonPressedEffects)((int)optionsProto.profiles[index].baseNonPressedEffect);
+		options.profiles[index].basePressedEffect = (AnimationPressedEffects)((int)optionsProto.profiles[index].basePressedEffect);
+		options.profiles[index].baseCycleTime = optionsProto.profiles[index].baseCycleTime;
+		for(int pinIndex = 0; pinIndex < NUM_BANK0_GPIOS; ++pinIndex)
+		{
+			options.profiles[index].notPressedStaticColors[pinIndex] = optionsProto.profiles[index].notPressedStaticColors[pinIndex];
+			options.profiles[index].pressedStaticColors[pinIndex] = optionsProto.profiles[index].pressedStaticColors[pinIndex];
+		}
+		options.profiles[index].buttonPressHoldTimeInMs = optionsProto.profiles[index].buttonPressHoldTimeInMs;
+		options.profiles[index].buttonPressFadeOutTimeInMs = optionsProto.profiles[index].buttonPressFadeOutTimeInMs;
+	}
 	options.brightness				= std::min<uint32_t>(optionsProto.brightness, 255);
-	options.staticColorIndex		= std::min<uint32_t>(optionsProto.staticColorIndex, 255);
-	options.buttonColorIndex		= std::min<uint32_t>(optionsProto.buttonColorIndex, 255);
-	options.chaseCycleTime			= std::min<int32_t>(optionsProto.chaseCycleTime, 65535);
-	options.rainbowCycleTime		= std::min<int32_t>(optionsProto.rainbowCycleTime, 65535);
-	options.themeIndex				= std::min<uint8_t>(optionsProto.themeIndex, 255);
-	options.hasCustomTheme			= optionsProto.hasCustomTheme;
-	options.customThemeUp			= optionsProto.customThemeUp;
-	options.customThemeDown			= optionsProto.customThemeDown;
-	options.customThemeLeft			= optionsProto.customThemeLeft;
-	options.customThemeRight		= optionsProto.customThemeRight;
-	options.customThemeB1			= optionsProto.customThemeB1;
-	options.customThemeB2			= optionsProto.customThemeB2;
-	options.customThemeB3			= optionsProto.customThemeB3;
-	options.customThemeB4			= optionsProto.customThemeB4;
-	options.customThemeL1			= optionsProto.customThemeL1;
-	options.customThemeR1			= optionsProto.customThemeR1;
-	options.customThemeL2			= optionsProto.customThemeL2;
-	options.customThemeR2			= optionsProto.customThemeR2;
-	options.customThemeS1			= optionsProto.customThemeS1;
-	options.customThemeS2			= optionsProto.customThemeS2;
-	options.customThemeA1			= optionsProto.customThemeA1;
-	options.customThemeA2			= optionsProto.customThemeA2;
-	options.customThemeL3			= optionsProto.customThemeL3;
-	options.customThemeR3			= optionsProto.customThemeR3;
-	options.customThemeUpPressed	= optionsProto.customThemeUpPressed;
-	options.customThemeDownPressed	= optionsProto.customThemeDownPressed;
-	options.customThemeLeftPressed	= optionsProto.customThemeLeftPressed;
-	options.customThemeRightPressed	= optionsProto.customThemeRightPressed;
-	options.customThemeB1Pressed	= optionsProto.customThemeB1Pressed;
-	options.customThemeB2Pressed	= optionsProto.customThemeB2Pressed;
-	options.customThemeB3Pressed	= optionsProto.customThemeB3Pressed;
-	options.customThemeB4Pressed	= optionsProto.customThemeB4Pressed;
-	options.customThemeL1Pressed	= optionsProto.customThemeL1Pressed;
-	options.customThemeR1Pressed	= optionsProto.customThemeR1Pressed;
-	options.customThemeL2Pressed	= optionsProto.customThemeL2Pressed;
-	options.customThemeR2Pressed	= optionsProto.customThemeR2Pressed;
-	options.customThemeS1Pressed	= optionsProto.customThemeS1Pressed;
-	options.customThemeS2Pressed	= optionsProto.customThemeS2Pressed;
-	options.customThemeA1Pressed	= optionsProto.customThemeA1Pressed;
-	options.customThemeA2Pressed	= optionsProto.customThemeA2Pressed;
-	options.customThemeL3Pressed	= optionsProto.customThemeL3Pressed;
-	options.customThemeR3Pressed	= optionsProto.customThemeR3Pressed;
-	options.buttonPressColorCooldownTimeInMs = optionsProto.buttonPressColorCooldownTimeInMs;		
+	options.baseProfileIndex		= std::min<uint32_t>(optionsProto.baseProfileIndex, 255);
 
 	return options;
 }

@@ -21,28 +21,25 @@ void RainbowSynced::Animate(RGB (&frame)[100])
     return;
   }
 
-  UpdateTime();
-  UpdatePresses();
+  //UpdateTime();
+  //UpdatePresses();
 
   RGB color = RGB::wheel(this->currentFrame);
   for(int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
   {
-    for(int pressedPinIndex = 0; pressedPinIndex < pressedPins.size(); ++pressedPinIndex)
+    if(LightTypeIsForNonPressedAnimation(RGBLights->AllLights[lightIndex].Type))
     {
-      if(pressedPins[pressedPinIndex] == RGBLights->AllLights[lightIndex].GIPOPin)
+      uint8_t firstLightIndex = RGBLights->AllLights[lightIndex].FirstLedIndex;
+      uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[lightIndex].LedsPerLight;
+      for(int ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
       {
-        uint8_t firstLightIndex = RGBLights->AllLights[lightIndex].FirstLedIndex;
-        uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[lightIndex].LedsPerLight;
-        for(int ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
-        {
-          //Non pressed simply sets the RGB colour
-          frame[ledIndex] = color;
-        }
+        //Non pressed simply sets the RGB colour
+        frame[ledIndex] = color;
       }
     }
   }
 
-  DecrementFadeCounters();
+  //DecrementFadeCounters();
 
   if (reverse)
   {
@@ -108,33 +105,30 @@ void RainbowRotate::Animate(RGB (&frame)[100])
     return;
   }
 
-  UpdateTime();
-  UpdatePresses();
+  //UpdateTime();
+  //UpdatePresses();
 
   //the way this works is we offset the current frame by the distance from the top left of the grid
   int thisFrame = this->currentFrame;
   for(int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
   {
-    for(int pressedPinIndex = 0; pressedPinIndex < pressedPins.size(); ++pressedPinIndex)
+    if(LightTypeIsForNonPressedAnimation(RGBLights->AllLights[lightIndex].Type))
     {
-      if(pressedPins[pressedPinIndex] == RGBLights->AllLights[lightIndex].GIPOPin)
-      {
-        int gridOffset = RGBLights->AllLights[lightIndex].Position.XPosition + RGBLights->AllLights[lightIndex].Position.YPosition;
-        int thisLightFrame = (thisFrame + (gridOffset * RAINBOW_GRID_OFFSET_ADJUST)) % RAINBOW_COLORWHEEL_FRAME_MAX;
-        RGB color = RGB::wheel(this->currentFrame);
+      int gridOffset = RGBLights->AllLights[lightIndex].Position.XPosition + RGBLights->AllLights[lightIndex].Position.YPosition;
+      int thisLightFrame = (thisFrame + (gridOffset * RAINBOW_GRID_OFFSET_ADJUST)) % RAINBOW_COLORWHEEL_FRAME_MAX;
+      RGB color = RGB::wheel(thisLightFrame);
 
-        uint8_t firstLightIndex = RGBLights->AllLights[lightIndex].FirstLedIndex;
-        uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[lightIndex].LedsPerLight;
-        for(int ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
-        {
-          //Non pressed simply sets the RGB colour
-          frame[ledIndex] = color;
-        }
+      uint8_t firstLightIndex = RGBLights->AllLights[lightIndex].FirstLedIndex;
+      uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[lightIndex].LedsPerLight;
+      for(int ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
+      {
+        //Non pressed simply sets the RGB colour
+        frame[ledIndex] = color;
       }
     }
   }
 
-  DecrementFadeCounters();
+  //DecrementFadeCounters();
 
   currentFrame++;
 

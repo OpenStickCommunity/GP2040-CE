@@ -17,7 +17,7 @@ using namespace std;
 
 void addStaticThemes(const LEDOptions& options, const AnimationOptions& animationOptions)
 {
-	map<uint32_t, RGB> themeStaticRainbow({
+/*	map<uint32_t, RGB> themeStaticRainbow({
 		{ GAMEPAD_MASK_DL, ColorRed },
 		{ GAMEPAD_MASK_DD, ColorOrange },
 		{ GAMEPAD_MASK_DR, ColorYellow },
@@ -358,7 +358,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		customThemePressed[GAMEPAD_MASK_L3] = RGB(animationOptions.customThemeL3Pressed);
 		customThemePressed[GAMEPAD_MASK_R3] = RGB(animationOptions.customThemeR3Pressed);
 		CustomThemePressed::SetCustomTheme(customThemePressed);
-	}
+	}*/
 }
 
 #endif

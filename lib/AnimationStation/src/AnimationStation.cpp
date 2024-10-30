@@ -5,6 +5,11 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+#include "Effects/Chase.hpp"
+#include "Effects/Rainbow.hpp"
+#include "Effects/StaticColor.hpp"
+#include "Effects/RandomColor.hpp"
+
 #include "AnimationStation.hpp"
 
 uint8_t AnimationStation::brightnessMax = 100;
@@ -16,6 +21,9 @@ AnimationOptions AnimationStation::options = {};
 AnimationStation::AnimationStation()
 {
   AnimationStation::SetBrightness(1);
+
+  //ensure valid profile set
+  ChangeProfile(0);
 }
 
 void AnimationStation::ConfigureBrightness(uint8_t max, uint8_t steps)
@@ -83,23 +91,46 @@ void AnimationStation::ChangeProfile(int changeSize)
 
 uint16_t AnimationStation::AdjustIndex(int changeSize)
 {
+  std::vector<int> validIndexes;
+
   //if no profiles defined then return -1 to turn everything off
-  if(this->options.profiles.size())
+  for(int index = 0; index < MAX_ANIMATION_PROFILES; ++index)
+  {
+    if(options.profiles[index].bIsValidProfile)
+      validIndexes.push_back(index);
+  }
+
+  if(validIndexes.size() == 0)
     return -1;
 
-  int newIndex = (int)this->options.baseProfileIndex + changeSize;
-
-  if (newIndex >= this->options.profiles.size())
+  //find index of current profile
+  int indexOfCurrentProfile = 0;
+  for(int index = 0; index < validIndexes.size(); ++index)
   {
-    return 0;
+    if(validIndexes[index] == (int)this->options.baseProfileIndex)
+    {
+      indexOfCurrentProfile = index;
+      break;
+    }
   }
 
-  if (newIndex < 0) 
+  //if we cant find it then this is probably the first call and the first profile isnt valid. Just return whichever is the first valid profile
+  if(indexOfCurrentProfile == -1)
+    return validIndexes[0];
+
+  int newProfileIndex = indexOfCurrentProfile + changeSize;
+
+  if (newProfileIndex >= validIndexes.size())
   {
-    return (this->options.profiles.size() - 1);
+    return validIndexes[0];
   }
 
-  return (uint16_t)newIndex;
+  if (newProfileIndex < 0) 
+  {
+    return validIndexes[validIndexes.size() - 1];
+  }
+
+  return (uint16_t)validIndexes[newProfileIndex];
 }
 
 void AnimationStation::HandlePressedPins(std::vector<int32_t> pressedPins)
@@ -135,12 +166,12 @@ void AnimationStation::Clear()
   memset(frame, 0, sizeof(frame)); 
 }
 
-uint8_t AnimationStation::GetMode() 
+int8_t AnimationStation::GetMode() 
 { 
   return this->options.baseProfileIndex; 
 }
 
-void AnimationStation::SetMode(uint8_t mode) 
+void AnimationStation::SetMode(int8_t mode) 
 {
   this->options.baseProfileIndex = mode;
 
@@ -162,7 +193,7 @@ void AnimationStation::SetMode(uint8_t mode)
     return; 
 
   //set new profile nonpressed animation
-  switch ((AnimationNonPressedEffects)this->options.profiles[this->options.baseProfileIndex].baseAnimationEffect) 
+  switch ((AnimationNonPressedEffects)this->options.profiles[this->options.baseProfileIndex].baseNonPressedEffect) 
   {
   case AnimationNonPressedEffects::NONPRESSED_EFFECT_RAINBOW_SYNCED:
     this->baseAnimation = new RainbowSynced(RGBLights);
@@ -172,10 +203,10 @@ void AnimationStation::SetMode(uint8_t mode)
     this->baseAnimation = new RainbowRotate(RGBLights);
     break;
 
-  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE:
+/*  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE:
     this->baseAnimation = new Chase(RGBLights);
     break;
-
+*/
   case AnimationNonPressedEffects::NONPRESSED_EFFECT_STATIC_COLOR:
     this->baseAnimation = new StaticColor(RGBLights);
     break;
@@ -187,9 +218,9 @@ void AnimationStation::SetMode(uint8_t mode)
   //set new profile pressed animation
   switch ((AnimationPressedEffects)this->options.profiles[this->options.baseProfileIndex].basePressedEffect) 
   {
-  case AnimationPressedEffects::PRESSED_EFFECT_RANDOM:
+/*  case AnimationPressedEffects::PRESSED_EFFECT_RANDOM:
     this->buttonAnimation = new RandomColour(RGBLights, lastPressed);
-
+*/
   case AnimationPressedEffects::PRESSED_EFFECT_STATIC_COLOR:
     this->buttonAnimation = new StaticColor(RGBLights, lastPressed);
 
