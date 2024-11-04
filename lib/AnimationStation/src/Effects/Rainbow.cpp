@@ -25,13 +25,13 @@ void RainbowSynced::Animate(RGB (&frame)[100])
   //UpdatePresses();
 
   RGB color = RGB::wheel(this->currentFrame);
-  for(int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
+  for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
   {
     if(LightTypeIsForNonPressedAnimation(RGBLights->AllLights[lightIndex].Type))
     {
       uint8_t firstLightIndex = RGBLights->AllLights[lightIndex].FirstLedIndex;
       uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[lightIndex].LedsPerLight;
-      for(int ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
+      for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
       {
         //Non pressed simply sets the RGB colour
         frame[ledIndex] = color;
@@ -67,7 +67,7 @@ void RainbowSynced::Animate(RGB (&frame)[100])
 
 void RainbowSynced::ParameterUp() 
 {
-  int16_t& cycleTime = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime;
+  int16_t cycleTime = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime;
 
   if (cycleTime < RAINBOW_CYCLE_MAX) 
   {
@@ -77,11 +77,13 @@ void RainbowSynced::ParameterUp()
   {
     cycleTime = INT16_MAX;
   }
+
+  AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = cycleTime;
 }
 
 void RainbowSynced::ParameterDown() 
 {
-  int16_t& cycleTime = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime;
+  int16_t cycleTime = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime;
 
   if (cycleTime > RAINBOW_CYCLE_MIN) 
   {
@@ -91,6 +93,8 @@ void RainbowSynced::ParameterDown()
   {
     cycleTime = 1;
   }
+
+  AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = cycleTime;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -110,7 +114,7 @@ void RainbowRotate::Animate(RGB (&frame)[100])
 
   //the way this works is we offset the current frame by the distance from the top left of the grid
   int thisFrame = this->currentFrame;
-  for(int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
+  for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
   {
     if(LightTypeIsForNonPressedAnimation(RGBLights->AllLights[lightIndex].Type))
     {
@@ -120,7 +124,7 @@ void RainbowRotate::Animate(RGB (&frame)[100])
 
       uint8_t firstLightIndex = RGBLights->AllLights[lightIndex].FirstLedIndex;
       uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[lightIndex].LedsPerLight;
-      for(int ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
+      for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
       {
         //Non pressed simply sets the RGB colour
         frame[ledIndex] = color;
@@ -142,7 +146,7 @@ void RainbowRotate::Animate(RGB (&frame)[100])
 
 void RainbowRotate::ParameterUp() 
 {
-  int16_t& cycleTime = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime;
+  int16_t cycleTime = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime;
 
   if (cycleTime < RAINBOW_CYCLE_MAX) 
   {
@@ -152,11 +156,13 @@ void RainbowRotate::ParameterUp()
   {
     cycleTime = INT16_MAX;
   }
+
+  AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = cycleTime;
 }
 
 void RainbowRotate::ParameterDown() 
 {
-  int16_t& cycleTime = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime;
+  int16_t cycleTime = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime;
 
   if (cycleTime > RAINBOW_CYCLE_MIN) 
   {
@@ -166,4 +172,6 @@ void RainbowRotate::ParameterDown()
   {
     cycleTime = 1;
   }
+
+  AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = cycleTime;
 }

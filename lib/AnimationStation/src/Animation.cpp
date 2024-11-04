@@ -43,10 +43,18 @@ void Animation::UpdateTime()
 
 void Animation::UpdatePresses() 
 {
+  if(!isButtonAnimation)
+    return;
+
+  //AnimationStation::printfs[0] = "UpdatePresses";
+  //AnimationStation::printfs[1] = std::to_string(pressedPins.size());
+  //if(pressedPins.size() > 0)
+  //  AnimationStation::printfs[2] = std::to_string(pressedPins[0]);
+
   //Set hold/fade time for all pressed buttons
-  for(int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
+  for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
   {
-    for(int pressedPinIndex = 0; pressedPinIndex < pressedPins.size(); ++pressedPinIndex)
+    for(unsigned int pressedPinIndex = 0; pressedPinIndex < pressedPins.size(); ++pressedPinIndex)
     {
       if(pressedPins[pressedPinIndex] == RGBLights->AllLights[lightIndex].GIPOPin)
       {
@@ -72,7 +80,7 @@ void Animation::UpdatePresses()
 
 void Animation::DecrementFadeCounters() 
 {
-  for(int ledIndex = 0; ledIndex < RGBLights->GetLedCount(); ++ledIndex)
+  for(unsigned int ledIndex = 0; ledIndex < RGBLights->GetLedCount(); ++ledIndex)
   {
     fadeTimes[ledIndex] -= updateTimeInMs;
     if (fadeTimes[ledIndex] < 0)

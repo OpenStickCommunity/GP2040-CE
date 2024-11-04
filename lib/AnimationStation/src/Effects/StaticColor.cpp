@@ -15,12 +15,12 @@ void StaticColor::Animate(RGB (&frame)[100])
   UpdateTime();
   UpdatePresses();
 
-  for(int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
+  for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
   {
     uint8_t firstLightIndex = RGBLights->AllLights[lightIndex].FirstLedIndex;
     uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[lightIndex].LedsPerLight;
 
-    for(int ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
+    for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
     {
       //Non pressed simply sets the RGB colour
       if(!isButtonAnimation && LightTypeIsForNonPressedAnimation(RGBLights->AllLights[lightIndex].Type))

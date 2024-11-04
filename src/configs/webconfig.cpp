@@ -962,7 +962,7 @@ std::string setCustomTheme()
         return result;
     };
 
-    readDoc(options.hasCustomTheme, doc, "enabled");
+    /*readDoc(options.hasCustomTheme, doc, "enabled");
     options.customThemeUp 			= readDocDefaultToZero("Up", "u");
     options.customThemeDown 		= readDocDefaultToZero("Down", "u");
     options.customThemeLeft			= readDocDefaultToZero("Left", "u");
@@ -1002,7 +1002,7 @@ std::string setCustomTheme()
 
     uint32_t pressCooldown = 0;
     readDoc(pressCooldown, doc, "buttonPressColorCooldownTimeInMs");
-    options.buttonPressColorCooldownTimeInMs = pressCooldown;
+    options.buttonPressColorCooldownTimeInMs = pressCooldown;*/
 
     AnimationStation::SetOptions(options);
     AnimationStore.save();
@@ -1015,7 +1015,7 @@ std::string getCustomTheme()
     DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
     const AnimationOptions& options = AnimationStation::options;
 
-    writeDoc(doc, "enabled", options.hasCustomTheme);
+/*    writeDoc(doc, "enabled", options.hasCustomTheme);
     writeDoc(doc, "Up", "u", options.customThemeUp);
     writeDoc(doc, "Up", "d", options.customThemeUpPressed);
     writeDoc(doc, "Down", "u", options.customThemeDown);
@@ -1052,7 +1052,7 @@ std::string getCustomTheme()
     writeDoc(doc, "L3", "d", options.customThemeL3Pressed);
     writeDoc(doc, "R3", "u", options.customThemeR3);
     writeDoc(doc, "R3", "d", options.customThemeR3Pressed);
-    writeDoc(doc, "buttonPressColorCooldownTimeInMs", options.buttonPressColorCooldownTimeInMs);
+    writeDoc(doc, "buttonPressColorCooldownTimeInMs", options.buttonPressColorCooldownTimeInMs);*/
 
     return serialize_json(doc);
 }

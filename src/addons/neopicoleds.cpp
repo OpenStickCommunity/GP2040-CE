@@ -282,7 +282,7 @@ void NeoPicoLEDAddon::process()
 	vector<int32_t> pressedPins;
 	for(auto thisLight : RGBLights.AllLights)
 	{
-		if(values & 1 << thisLight.GIPOPin)
+		if(values & (1 << thisLight.GIPOPin))
 		{
 			pressedPins.push_back(thisLight.GIPOPin);
 		}
@@ -581,9 +581,6 @@ void NeoPicoLEDAddon::configureLEDs()
 	GenerateLights(lightData, lightDataSize);
 	ledCount = RGBLights.GetLedCount();
 
-	//matrix.setup(pixels, ledOptions.ledsPerButton);
-	//ledCount = matrix.getLedCount();
-
 	if (ledOptions.pledType == PLED_TYPE_RGB && PLED_COUNT > 0)
 		ledCount += PLED_COUNT;
 
@@ -595,7 +592,6 @@ void NeoPicoLEDAddon::configureLEDs()
 	Animation::format = static_cast<LEDFormat>(ledOptions.ledFormat);
 	AnimStation.ConfigureBrightness(ledOptions.brightnessMaximum, ledOptions.brightnessSteps);
 	AnimationOptions animationOptions = AnimationStore.getAnimationOptions();
-	addStaticThemes(ledOptions, animationOptions);
 	AnimStation.SetOptions(animationOptions);
 	AnimStation.SetLights(RGBLights);
 	AnimStation.SetMode(as.options.baseProfileIndex);
@@ -617,7 +613,7 @@ void NeoPicoLEDAddon::GenerateLights(LEDOptions_lightData_t InLightData, uint32_
 						InLightData.bytes[arrayOffset+1],
 						newLightPos,
 						InLightData.bytes[arrayOffset+4],
-						InLightData.bytes[arrayOffset+5]);
+						(LightType)InLightData.bytes[arrayOffset+5]);
 
 		generatedLights.push_back(newLight);
 	}

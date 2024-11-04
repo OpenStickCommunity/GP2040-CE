@@ -72,6 +72,8 @@ public:
 
 	void ResetSettings(); 				// EEPROM Reset Feature
 
+	std::string printfs[4];
+
 private:
 	Storage() {}
 	bool CONFIG_MODE = false; 			// Config mode (boot)

@@ -17,6 +17,7 @@ uint8_t AnimationStation::brightnessSteps = 5;
 float AnimationStation::brightnessX = 0;
 absolute_time_t AnimationStation::nextChange = nil_time;
 AnimationOptions AnimationStation::options = {};
+std::string AnimationStation::printfs[4];
 
 AnimationStation::AnimationStation()
 {
@@ -24,6 +25,11 @@ AnimationStation::AnimationStation()
 
   //ensure valid profile set
   ChangeProfile(0);
+}
+
+void AnimationStation::SetLights(Lights InRGBLights)
+{
+  RGBLights = InRGBLights;
 }
 
 void AnimationStation::ConfigureBrightness(uint8_t max, uint8_t steps)
@@ -105,7 +111,7 @@ uint16_t AnimationStation::AdjustIndex(int changeSize)
 
   //find index of current profile
   int indexOfCurrentProfile = 0;
-  for(int index = 0; index < validIndexes.size(); ++index)
+  for(unsigned int index = 0; index < validIndexes.size(); ++index)
   {
     if(validIndexes[index] == (int)this->options.baseProfileIndex)
     {
@@ -120,7 +126,7 @@ uint16_t AnimationStation::AdjustIndex(int changeSize)
 
   int newProfileIndex = indexOfCurrentProfile + changeSize;
 
-  if (newProfileIndex >= validIndexes.size())
+  if (newProfileIndex >= (int)validIndexes.size())
   {
     return validIndexes[0];
   }
@@ -218,20 +224,22 @@ void AnimationStation::SetMode(int8_t mode)
   //set new profile pressed animation
   switch ((AnimationPressedEffects)this->options.profiles[this->options.baseProfileIndex].basePressedEffect) 
   {
-/*  case AnimationPressedEffects::PRESSED_EFFECT_RANDOM:
-    this->buttonAnimation = new RandomColour(RGBLights, lastPressed);
-*/
+  case AnimationPressedEffects::PRESSED_EFFECT_RANDOM:
+    this->buttonAnimation = new RandomColor(RGBLights, lastPressed);
+    break;
+
   case AnimationPressedEffects::PRESSED_EFFECT_STATIC_COLOR:
     this->buttonAnimation = new StaticColor(RGBLights, lastPressed);
+    break;
 
   default:
     break;
   }
 }
 
-void AnimationStation::SetOptions(AnimationOptions options) 
+void AnimationStation::SetOptions(AnimationOptions InOptions) 
 {
-  AnimationStation::options = options;
+  options = InOptions;
   AnimationStation::SetBrightness(options.brightness);
 }
 

@@ -85,14 +85,14 @@ struct LightPosition
 //A single RGB light on the device. Replaced Pixel
 struct Light 
 {
-  Light(uint8_t InFirstLedIndex, uint8_t InNumLedsPerLight, LightPosition InPosition, uint8_t GIPOPin, LightType InType)
+  Light(uint8_t InFirstLedIndex, uint8_t InNumLedsPerLight, LightPosition InPosition, uint8_t InGIPOPin, LightType InType)
   {
     FirstLedIndex = InFirstLedIndex;
     Position = InPosition;
     Type = InType;
     LedsPerLight = InNumLedsPerLight;
     //GamePadMask = GamePadMask;
-    GIPOPin = GIPOPin;
+    GIPOPin = InGIPOPin;
   }
 
   // index of first LED
@@ -127,7 +127,7 @@ public:
 
   inline uint8_t GetLedCount() const
   {
-    int count;
+    int count = 0;
     for(const Light& thisLight : AllLights )
     {
       count += thisLight.LedsPerLight;

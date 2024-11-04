@@ -36,7 +36,7 @@ static void updateAnimationOptionsProto(const AnimationOptions& options)
 {
 	AnimationOptions_Proto& optionsProto = Storage::getInstance().getAnimationOptions();
 
-	for(int index = 0; index < 8; ++index) //MAX_ANIMATION_PROFILES from AnimationStation.hpp
+	for(int index = 0; index < 4; ++index) //MAX_ANIMATION_PROFILES from AnimationStation.hpp
 	{
 		optionsProto.profiles[index].bIsValidProfile = options.profiles[index].bIsValidProfile;
 		optionsProto.profiles[index].baseNonPressedEffect = (AnimationNonPressedEffects_Proto)((int)options.profiles[index].baseNonPressedEffect);
@@ -193,22 +193,9 @@ AnimationOptions AnimationStorage::getAnimationOptions()
 {
 	AnimationOptions options;
 	const AnimationOptions_Proto& optionsProto = Storage::getInstance().getAnimationOptions();
-
-    bool bIsValidProfile;
-
-  	AnimationNonPressedEffects baseNonPressedEffect;
-  	AnimationPressedEffects basePressedEffect;
-
-    int16_t baseCycleTime;
-
-    uint32_t notPressedStaticColors[NUM_BANK0_GPIOS];
-    uint32_t pressedStaticColors[NUM_BANK0_GPIOS];
-
-    uint32_t buttonPressHoldTimeInMs;
-    uint32_t buttonPressFadeOutTimeInMs;
 	
 	options.checksum				= 0;
-	for(int index = 0; index < 8; ++index) //MAX_ANIMATION_PROFILES from AnimationStation.hpp
+	for(int index = 0; index < 4; ++index) //MAX_ANIMATION_PROFILES from AnimationStation.hpp
 	{
 		options.profiles[index].bIsValidProfile = optionsProto.profiles[index].bIsValidProfile;
 		options.profiles[index].baseNonPressedEffect = (AnimationNonPressedEffects)((int)optionsProto.profiles[index].baseNonPressedEffect);

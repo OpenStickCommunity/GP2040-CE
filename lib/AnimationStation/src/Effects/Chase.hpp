@@ -10,7 +10,7 @@
 
 class Chase : public Animation {
 public:
-  Chase(PixelMatrix &matrix);
+  Chase(Lights& InRGBLights);
   ~Chase() {};
 
   void Animate(RGB (&frame)[100]);

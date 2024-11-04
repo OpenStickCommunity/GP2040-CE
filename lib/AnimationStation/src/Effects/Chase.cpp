@@ -4,11 +4,11 @@
 #define CHASE_CYCLE_MAX         INT16_MAX/2
 #define CHASE_CYCLE_MIN         10
 
-Chase::Chase(PixelMatrix &matrix) : Animation(matrix) {
+Chase::Chase(Lights& InRGBLights) : Animation(InRGBLights) {
 }
 
 void Chase::Animate(RGB (&frame)[100]) {
-  if (!time_reached(this->nextRunTime)) {
+/*  if (!time_reached(this->nextRunTime)) {
     return;
   }
 
@@ -63,7 +63,7 @@ void Chase::Animate(RGB (&frame)[100]) {
     AnimationStation::options.chaseCycleTime = CHASE_CYCLE_MAX;
   }
 
-  this->nextRunTime = make_timeout_time_ms(AnimationStation::options.chaseCycleTime);
+  this->nextRunTime = make_timeout_time_ms(AnimationStation::options.chaseCycleTime);*/
 }
 
 bool Chase::IsChasePixel(int i) {
@@ -76,7 +76,7 @@ bool Chase::IsChasePixel(int i) {
 }
 
 int Chase::WheelFrame(int i) {
-  int frame = this->currentFrame;
+/*  int frame = this->currentFrame;
   int pixelCount = matrix->getPixelCount();
   if (i == (this->currentPixel - 1) % pixelCount) {
     if (this->reverse) {
@@ -98,19 +98,20 @@ int Chase::WheelFrame(int i) {
     return 0;
   }
 
-  return frame;
+  return frame;*/
+  return 0;
 }
 
 void Chase::ParameterUp() {
-  AnimationStation::options.chaseCycleTime = AnimationStation::options.chaseCycleTime + CHASE_CYCLE_INCREMENT;
+/*  AnimationStation::options.chaseCycleTime = AnimationStation::options.chaseCycleTime + CHASE_CYCLE_INCREMENT;
   if (AnimationStation::options.chaseCycleTime > CHASE_CYCLE_MAX) {
     AnimationStation::options.chaseCycleTime = CHASE_CYCLE_MAX;
-  }
+  }*/
 }
 
 void Chase::ParameterDown() {
-  AnimationStation::options.chaseCycleTime = AnimationStation::options.chaseCycleTime - CHASE_CYCLE_INCREMENT;
+/*  AnimationStation::options.chaseCycleTime = AnimationStation::options.chaseCycleTime - CHASE_CYCLE_INCREMENT;
   if (AnimationStation::options.chaseCycleTime < CHASE_CYCLE_MIN) {
     AnimationStation::options.chaseCycleTime = CHASE_CYCLE_MIN;
-  }
+  }*/
 }

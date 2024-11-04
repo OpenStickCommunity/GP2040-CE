@@ -10,7 +10,7 @@ RandomColor::RandomColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPin
   pressedPins = InPressedPins;
 
   savedPressedColour.clear();
-  for(int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
+  for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
   {
     savedPressedColour.push_back(RGB(0));
   }
@@ -18,7 +18,9 @@ RandomColor::RandomColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPin
 
 void RandomColor::NewPressForPin(int lightIndex)
 {
-    savedPressedColour[lightIndex] = colors[rand() % colors.size()];
+  savedPressedColour[lightIndex] = colors[rand() % colors.size()];
+
+  AnimationStation::printfs[3] = std::to_string(lightIndex);
 }
 
 void RandomColor::Animate(RGB (&frame)[100]) 
@@ -26,12 +28,12 @@ void RandomColor::Animate(RGB (&frame)[100])
   UpdateTime();
   UpdatePresses();
 
-  for(int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
+  for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
   {
     uint8_t firstLightIndex = RGBLights->AllLights[lightIndex].FirstLedIndex;
     uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[lightIndex].LedsPerLight;
 
-    for(int ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
+    for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
     {
       //Non pressed simply sets the RGB colour
       if(!isButtonAnimation && LightTypeIsForNonPressedAnimation(RGBLights->AllLights[lightIndex].Type))

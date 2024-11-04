@@ -148,7 +148,7 @@ protected:
   std::vector<int32_t> pressedPins;
 
   // Color fade 
-  std::vector<uint32_t> fadeTimes;
+  std::vector<int32_t> fadeTimes;
 
   absolute_time_t lastUpdateTime = nil_time;
 

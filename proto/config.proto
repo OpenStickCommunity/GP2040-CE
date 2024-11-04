@@ -288,6 +288,9 @@ message LEDOptions
     optional int32 pledIndex2 = 33;
     optional int32 pledIndex3 = 34;
     optional int32 pledIndex4 = 35;
+
+    optional bytes lightData = 36 [(nanopb).max_size = 600];
+    optional int32 lightDataSize = 37;
 };
 
 // This has to be kept in sync with AnimationOptions in AnimationStation.hpp
@@ -300,8 +303,8 @@ message AnimationProfile_Proto
 
     optional int32 baseCycleTime = 4;
 
-    optional uint32 notPressedStaticColors[NUM_BANK0_GPIOS] = 5;
-    optional uint32 pressedStaticColors[NUM_BANK0_GPIOS] = 6;
+    repeated uint32 notPressedStaticColors = 5 [(nanopb).max_count = 30]; //NUM_BANK0_GPIOS from AnimationStation.hpp
+    repeated uint32 pressedStaticColors = 6 [(nanopb).max_count = 30]; //NUM_BANK0_GPIOS from AnimationStation.hpp
 
     optional uint32 buttonPressHoldTimeInMs = 7;
     optional uint32 buttonPressFadeOutTimeInMs = 8;
@@ -310,9 +313,55 @@ message AnimationProfile_Proto
 // This has to be kept in sync with AnimationOptions in AnimationStation.hpp
 message AnimationOptions_Proto
 {
-    optional AnimationProfile profiles = 1; [(nanopb).max_count = 8]; //MAX_ANIMATION_PROFILES from AnimationStation.hpp
+    optional uint32 baseAnimationIndex = 1 [deprecated = true];
     optional uint32 brightness = 2;
-    optional uint32 baseProfileIndex = 3;
+    optional uint32 staticColorIndex = 3 [deprecated = true];
+    optional uint32 buttonColorIndex = 4 [deprecated = true];
+    optional int32 chaseCycleTime = 5 [deprecated = true];
+    optional int32 rainbowCycleTime = 6 [deprecated = true];
+    optional uint32 themeIndex = 7 [deprecated = true];
+
+    optional bool hasCustomTheme = 8;
+    optional uint32 customThemeUp = 9 [deprecated = true];
+    optional uint32 customThemeDown = 10 [deprecated = true];
+    optional uint32 customThemeLeft = 11 [deprecated = true];
+    optional uint32 customThemeRight = 12 [deprecated = true];
+    optional uint32 customThemeB1 = 13 [deprecated = true];
+    optional uint32 customThemeB2 = 14 [deprecated = true];
+    optional uint32 customThemeB3 = 15 [deprecated = true];
+    optional uint32 customThemeB4 = 16 [deprecated = true];
+    optional uint32 customThemeL1 = 17 [deprecated = true];
+    optional uint32 customThemeR1 = 18 [deprecated = true];
+    optional uint32 customThemeL2 = 19 [deprecated = true];
+    optional uint32 customThemeR2 = 20 [deprecated = true];
+    optional uint32 customThemeS1 = 21 [deprecated = true];
+    optional uint32 customThemeS2 = 22 [deprecated = true];
+    optional uint32 customThemeL3 = 23 [deprecated = true];
+    optional uint32 customThemeR3 = 24 [deprecated = true];
+    optional uint32 customThemeA1 = 25 [deprecated = true];
+    optional uint32 customThemeA2 = 26 [deprecated = true];
+    optional uint32 customThemeUpPressed = 27 [deprecated = true];
+    optional uint32 customThemeDownPressed = 28 [deprecated = true];
+    optional uint32 customThemeLeftPressed = 29 [deprecated = true];
+    optional uint32 customThemeRightPressed = 30 [deprecated = true];
+    optional uint32 customThemeB1Pressed = 31 [deprecated = true];
+    optional uint32 customThemeB2Pressed = 32 [deprecated = true];
+    optional uint32 customThemeB3Pressed = 33 [deprecated = true];
+    optional uint32 customThemeB4Pressed = 34 [deprecated = true];
+    optional uint32 customThemeL1Pressed = 35 [deprecated = true];
+    optional uint32 customThemeR1Pressed = 36 [deprecated = true];
+    optional uint32 customThemeL2Pressed = 37 [deprecated = true];
+    optional uint32 customThemeR2Pressed = 38 [deprecated = true];
+    optional uint32 customThemeS1Pressed = 39 [deprecated = true];
+    optional uint32 customThemeS2Pressed = 40 [deprecated = true];
+    optional uint32 customThemeL3Pressed = 41 [deprecated = true];
+    optional uint32 customThemeR3Pressed = 42 [deprecated = true];
+    optional uint32 customThemeA1Pressed = 43 [deprecated = true];
+    optional uint32 customThemeA2Pressed = 44 [deprecated = true];
+    optional uint32 buttonPressColorCooldownTimeInMs = 45 [deprecated = true];
+    
+    repeated AnimationProfile_Proto profiles = 46 [(nanopb).max_count = 4]; //MAX_ANIMATION_PROFILES from AnimationStation.hpp
+    optional uint32 baseProfileIndex = 47;
 }
 
 message BootselButtonOptions
@@ -683,8 +732,8 @@ message MacroInput
 message Macro
 {
     optional MacroType macroType = 1;
-    optional string macroLabel = 2 [(nanopb).max_length = 64];
-    repeated MacroInput macroInputs = 3 [(nanopb).max_count = 30];
+    optional string macroLabel = 2 [(nanopb).max_length = 32];
+    repeated MacroInput macroInputs = 3 [(nanopb).max_count = 10];
     optional bool enabled = 4;
     optional bool useMacroTriggerButton = 5;
     optional int32 deprecatedMacroTriggerPin = 6 [deprecated = true];

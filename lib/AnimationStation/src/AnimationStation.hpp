@@ -6,12 +6,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
+#include <string>
 #include "hardware/clocks.h"
 
 #include "NeoPico.hpp"
 #include "Animation.hpp"
 
-#define MAX_ANIMATION_PROFILES 8
+#define MAX_ANIMATION_PROFILES 4
 
 //List of non-pressed animation types
 typedef enum
@@ -97,7 +98,7 @@ public:
   static void DimBrightnessTo0();
 
   //passed in user options
-  static void SetOptions(AnimationOptions options);
+  static void SetOptions(AnimationOptions InOptions);
 
   //Running non-pressed animation
   Animation* baseAnimation;
@@ -114,6 +115,8 @@ public:
 
   //Colour of all lights this frame
   RGB frame[100];
+
+  static std::string printfs[4];
 
 protected:
   inline static uint8_t getBrightnessStepSize() { return (brightnessMax / brightnessSteps); }

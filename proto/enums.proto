@@ -311,6 +311,31 @@ enum LEDFormat_Proto
     LED_FORMAT_RGBW = 3;
 }
 
+/* This has to be kept in sync with AnimationNonPressedEffects in AnimationStation.hpp */
+enum AnimationNonPressedEffects_Proto
+{
+  EFFECT_STATIC_COLOR = 0;
+  EFFECT_RAINBOW_SYNCED = 1;
+  EFFECT_RAINBOW_ROTATE = 2;
+  EFFECT_CHASE = 3;
+}
+
+/* This has to be kept in sync with AnimationPressedEffects in AnimationStation.hpp */
+enum AnimationPressedEffects_Proto
+{
+  EFFECT_HELD_STATIC_COLOR = 0;
+  EFFECT_RANDOM = 1;
+}
+
+/* This has to be kept in sync with LightType in Pixel.hpp */
+enum LightType_Proto
+{
+    ActionButton = 0;
+    Case = 1;
+    Turbo = 2;
+    PlayerLight = 3;
+}
+
 enum ShmupMixMode
 {
     option (nanopb_enumopt).long_names = false;
