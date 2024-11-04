@@ -372,9 +372,13 @@ GP2040::BootAction GP2040::getBootAction() {
 					return BootAction::ENTER_USB_MODE;
 				} else if (!webConfigLocked && gamepad->pressedS2()) {
 					return BootAction::ENTER_WEBCONFIG_MODE;
-				} else if (gamepad->pressedUp() && gamepad->pressedDown()) {
+				} else if (gamepad->pressedUp() && gamepad->pressedRight()) {
                     return BootAction::ENTER_USB_MODE;
-                } else if (gamepad->pressedLeft() && gamepad->pressedRight()) {
+                } else if (gamepad->pressedDown() && gamepad->pressedRight()) {
+                    return BootAction::ENTER_USB_MODE;
+				} else if (gamepad->pressedUp() && gamepad->pressedLeft()) {
+                    return BootAction::ENTER_USB_MODE;
+                } else if (gamepad->pressedDown() && gamepad->pressedLeft()) {
                     return BootAction::ENTER_USB_MODE;
                 } else {
                     if (!modeSwitchLocked) {
