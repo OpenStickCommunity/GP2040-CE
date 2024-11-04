@@ -372,6 +372,10 @@ GP2040::BootAction GP2040::getBootAction() {
 					return BootAction::ENTER_USB_MODE;
 				} else if (!webConfigLocked && gamepad->pressedS2()) {
 					return BootAction::ENTER_WEBCONFIG_MODE;
+				} else if (gamepad->pressedUp() && gamepad->pressedDown()) {
+                    return BootAction::ENTER_USB_MODE;
+                } else if (gamepad->pressedLeft() && gamepad->pressedRight()) {
+                    return BootAction::ENTER_USB_MODE;
                 } else {
                     if (!modeSwitchLocked) {
                         if (auto search = bootActions.find(gamepad->state.buttons); search != bootActions.end()) {
