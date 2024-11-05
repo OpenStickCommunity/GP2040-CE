@@ -26,4 +26,3 @@ Configuration for the [Flatbox rev5](https://github.com/jfedor2/flatbox/tree/mas
 | GPIO_PIN_05 | GpioAction::BUTTON_PRESS_R2     | S16              | R2     | RT     | ZR      | R2       | 8      | K3     |
 | GPIO_PIN_03 | GpioAction::BUTTON_PRESS_L2     | S17              | L2     | LT     | ZL      | L2       | 7      | K4     |
 | GPIO_PIN_10 | GpioAction::BUTTON_PRESS_UP     | S18              | UP     | UP     | UP      | UP       | UP     | UP     |
-

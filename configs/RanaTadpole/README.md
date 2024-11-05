@@ -32,4 +32,4 @@ GitHub repo for the Tadpole:
 | GPIO_PIN_16| GpioAction::BUTTON_PRESS_R3   | R3     | RS     | RS      | R3      | 12     | RS     |
 | GPIO_PIN_13| GpioAction::BUTTON_PRESS_A1   | A1     | Guide  | Home    | PS      | 13     | ~      |
 | GPIO_PIN_12| GpioAction::BUTTON_PRESS_A2   | A2     | ~      | Capture | ~       | 14     | ~      |
-| GPIO_PIN_14| GpioAction::BUTTON_PRESS_FN   | Hotkey Function                                       |
+| GPIO_PIN_14| GpioAction::BUTTON_PRESS_FN   | Hotkey Function |  | | | | |

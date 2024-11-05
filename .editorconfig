@@ -16,6 +16,13 @@ indent_style = space
 indent_size = 2
 trim_trailing_whitespace = false
 
+[configs/**.h]
+indent_style = space
+insert_final_newline = false
+
+[configs/**.md]
+insert_final_newline = false
+
 [*.scss]
 end_of_line = lf
 

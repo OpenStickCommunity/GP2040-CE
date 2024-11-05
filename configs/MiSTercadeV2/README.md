@@ -37,8 +37,8 @@ GitHub: <https://github.com/misteraddons/MiSTercade-Config>
 | GPIO_PIN_17| GpioAction::BUTTON_PRESS_S2   | S2     | Start  | Plus    | Start   | 10     | Start  |
 | GPIO_PIN_14| GpioAction::BUTTON_PRESS_L3   | L3     | LS     | LS      | L3      | 11     | LS     |
 | GPIO_PIN_15| GpioAction::BUTTON_PRESS_R3   | R3     | RS     | RS      | R3      | 12     | RS     |
-| GPIO_PIN_18| GpioAction::BUTTON_PRESS_E1   | Twin Stick Up
-| GPIO_PIN_19| GpioAction::BUTTON_PRESS_E2   | Twin Stick Down
-| GPIO_PIN_20| GpioAction::BUTTON_PRESS_E3   | Twin Stick Left
-| GPIO_PIN_21| GpioAction::BUTTON_PRESS_E4   | Twin Stick Right
-| GPIO_PIN_22| GpioAction::BUTTON_PRESS_E4   | Player 2 Start
+| GPIO_PIN_18| GpioAction::BUTTON_PRESS_E1   | Twin Stick Up | | | | | |
+| GPIO_PIN_19| GpioAction::BUTTON_PRESS_E2   | Twin Stick Down | | | | | |
+| GPIO_PIN_20| GpioAction::BUTTON_PRESS_E3   | Twin Stick Left | | | | | |
+| GPIO_PIN_21| GpioAction::BUTTON_PRESS_E4   | Twin Stick Right | | | | | |
+| GPIO_PIN_22| GpioAction::BUTTON_PRESS_E4   | Player 2 Start | | | | | |
