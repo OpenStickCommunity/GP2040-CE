@@ -135,7 +135,7 @@ struct GamepadAuxHaptics
 struct GamepadAuxState
 {
     GamepadAuxPlayerID playerID;
-    
+
     GamepadAuxColor primaryColor;
     GamepadAuxColor secondaryColor;
 

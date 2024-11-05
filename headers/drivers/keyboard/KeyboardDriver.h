@@ -27,7 +27,7 @@ public:
     virtual USBListener * get_usb_auth_listener() { return nullptr; }
 private:
     void releaseAllKeys(void);
-	void pressKey(uint8_t code);
+    void pressKey(uint8_t code);
     uint8_t getModifier(uint8_t code);
     uint8_t getMultimedia(uint8_t code);
     uint8_t last_report[CFG_TUD_ENDPOINT0_SIZE] = { };

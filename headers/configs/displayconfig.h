@@ -13,7 +13,7 @@ private:
 
 class DisplayMenu {
 public:
-    
+
 private:
 };
 

@@ -39,16 +39,16 @@
 
 typedef struct __attribute((packed, aligned(1)))
 {
-	uint16_t buttons;
-	uint8_t lx;
-	uint8_t ly;
+    uint16_t buttons;
+    uint8_t lx;
+    uint8_t ly;
 } EgretReport;
 
 typedef struct
 {
-	uint16_t buttons;
-	uint8_t lx;
-	uint8_t ly;
+    uint16_t buttons;
+    uint8_t lx;
+    uint8_t ly;
 } EgretOutReport;
 
 static const uint8_t egret_string_language[]     = { 0x09, 0x04 };
@@ -58,10 +58,10 @@ static const uint8_t egret_string_version[]      = "1.0";
 
 static const uint8_t *egret_string_descriptors[] __attribute__((unused)) =
 {
-	egret_string_language,
-	egret_string_manufacturer,
-	egret_string_product,
-	egret_string_version
+    egret_string_language,
+    egret_string_manufacturer,
+    egret_string_product,
+    egret_string_version
 };
 
 static const uint8_t egret_device_descriptor[] =
@@ -70,8 +70,8 @@ static const uint8_t egret_device_descriptor[] =
     0x01,        // bDescriptorType (Device)
     0x00, 0x02,  // bcdUSB 2.00
     0x00,        // bDeviceClass (Use class information in the Interface Descriptors)
-    0x00,        // bDeviceSubClass 
-    0x00,        // bDeviceProtocol 
+    0x00,        // bDeviceSubClass
+    0x00,        // bDeviceProtocol
     0x40,        // bMaxPacketSize0 64
     0xE4, 0x0A,  // idVendor 0x0AE4
     0x02, 0x07,  // idProduct 0x0702

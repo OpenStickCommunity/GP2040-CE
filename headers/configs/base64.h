@@ -29,7 +29,7 @@
 #include <string>
 
 class Base64 {
- public:
+  public:
 
   static std::string Encode(const char* dataPtr, size_t dataLen) {
     static constexpr char sEncodingTable[] = {

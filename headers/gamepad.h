@@ -187,7 +187,7 @@ public:
 	inline static const SOCDMode resolveSOCDMode(const GamepadOptions& options) {
 		return (options.socdMode == SOCD_MODE_BYPASS &&
 				(options.inputMode == INPUT_MODE_PS3 ||
-				 options.inputMode == INPUT_MODE_GENERIC ||
+				options.inputMode == INPUT_MODE_GENERIC ||
 				options.inputMode == INPUT_MODE_SWITCH ||
 				options.inputMode == INPUT_MODE_NEOGEO ||
 				options.inputMode == INPUT_MODE_PS4)) ?

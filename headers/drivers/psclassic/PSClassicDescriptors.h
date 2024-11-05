@@ -45,10 +45,10 @@ static const uint8_t psclassic_string_version[]      = { };
 
 static const uint8_t *psclassic_string_descriptors[] __attribute__((unused)) =
 {
-	psclassic_string_language,
-	psclassic_string_manufacturer,
-	psclassic_string_product,
-	psclassic_string_version
+    psclassic_string_language,
+    psclassic_string_manufacturer,
+    psclassic_string_product,
+    psclassic_string_version
 };
 
 static const uint8_t psclassic_device_descriptor[] =
@@ -57,8 +57,8 @@ static const uint8_t psclassic_device_descriptor[] =
     0x01,        // bDescriptorType (Device)
     0x00, 0x02,  // bcdUSB 2.00
     0x00,        // bDeviceClass (Use class information in the Interface Descriptors)
-    0x00,        // bDeviceSubClass 
-    0x00,        // bDeviceProtocol 
+    0x00,        // bDeviceSubClass
+    0x00,        // bDeviceProtocol
     0x40,        // bMaxPacketSize0 64
     0x4C, 0x05,  // idVendor 0x054C
     0xDA, 0x0C,  // idProduct 0x0CDA

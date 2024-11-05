@@ -14,12 +14,12 @@ usbh_class_driver_t const* usbh_app_driver_get_cb(uint8_t *driver_count);
 
 class USBHostManager {
 public:
-	USBHostManager(USBHostManager const&) = delete;
-	void operator=(USBHostManager const&)  = delete;
-    static USBHostManager& getInstance() {// Thread-safe storage ensures cross-thread talk
-		static USBHostManager instance; // Guaranteed to be destroyed. // Instantiated on first use.
-		return instance;
-	}
+    USBHostManager(USBHostManager const&) = delete;
+    void operator=(USBHostManager const&)  = delete;
+        static USBHostManager& getInstance() {// Thread-safe storage ensures cross-thread talk
+        static USBHostManager instance; // Guaranteed to be destroyed. // Instantiated on first use.
+        return instance;
+    }
     void start();               // Start USB Host
     void shutdown();            // Called on system reboot
     void pushListener(USBListener *); // If anything needs to update in the gpconfig driver
@@ -33,7 +33,7 @@ public:
     void xinput_umount_cb(uint8_t dev_addr);
     void xinput_report_received_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len);
     void xinput_report_sent_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len);
-    
+
 private:
     USBHostManager() : tuh_ready(false), core0Ready(false), core1Ready(false) {}
     std::vector<USBListener*> listeners;

@@ -10,7 +10,7 @@ class GPGFX_OBD_SSD1306 : public GPGFX_DisplayBase {
     public:
         GPGFX_OBD_SSD1306() {}
         ~GPGFX_OBD_SSD1306() {}
-        
+
         void init(GPGFX_DisplayTypeOptions options);
 
         void setPower(bool isPowered);
@@ -41,11 +41,11 @@ class GPGFX_OBD_SSD1306 : public GPGFX_DisplayBase {
         OBDISP obd;
         GPGFX_DisplayTypeOptions _options;
 
-	    int initDisplay(int typeOverride);
+        int initDisplay(int typeOverride);
         bool isSH1106(int detectedDisplay);
         void clearScreen(int render);
 
-	    uint8_t ucBackBuffer[1024];
+        uint8_t ucBackBuffer[1024];
 
         bool _isSPI = false;
         bool _isI2C = true;

@@ -13,9 +13,9 @@
 #define BOARD_LEDS_PIN -1
 #endif
 
-#ifndef BOARD_LED_TYPE 
+#ifndef BOARD_LED_TYPE
 #define BOARD_LED_TYPE ON_BOARD_LED_MODE_OFF
-#endif  
+#endif
 
 // BoardLed Module Name
 #define OnBoardLedName "OnBoardLed"

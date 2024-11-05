@@ -7,7 +7,7 @@
 namespace ConfigUtils {
     void load(Config& config);
     bool save(Config& config);
-    
+
     void initUnsetPropertiesWithDefaults(Config& config);
 
     std::string toJSON(const Config& config);

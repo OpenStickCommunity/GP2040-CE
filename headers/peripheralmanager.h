@@ -15,13 +15,13 @@ typedef struct {
 
 class PeripheralManager {
 public:
-	PeripheralManager(PeripheralManager const&) = delete;
-	void operator=(PeripheralManager const&)  = delete;
-	static PeripheralManager& getInstance() // Thread-safe storage ensures cross-thread talk
-	{
-		static PeripheralManager instance;
-		return instance;
-	}
+    PeripheralManager(PeripheralManager const&) = delete;
+    void operator=(PeripheralManager const&)  = delete;
+    static PeripheralManager& getInstance() // Thread-safe storage ensures cross-thread talk
+    {
+        static PeripheralManager instance;
+        return instance;
+    }
 
     PeripheralI2C* getI2C(uint8_t block);
     PeripheralSPI* getSPI(uint8_t block);

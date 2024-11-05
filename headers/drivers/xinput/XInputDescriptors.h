@@ -81,8 +81,8 @@ static const uint8_t xinput_device_descriptor[] =
 };
 
 // This needs to be:
- // 4 interfaces
- // remote wakeup enabled
+// 4 interfaces
+// remote wakeup enabled
 static const uint8_t xinput_configuration_descriptor[] =
 {
     0x09,        // bLength
@@ -148,7 +148,7 @@ static const uint8_t xinput_configuration_descriptor[] =
     // Audio Descriptor
     0x1B,        // bLength
     0x21,
-    0x00,        
+    0x00,
     0x01,
     0x01,
     0x01,
@@ -252,7 +252,7 @@ static const uint8_t xinput_configuration_descriptor[] =
     0x00,
     0x01,
     0x01,
-    0x03,  
+    0x03,
 };
 
 typedef enum
@@ -264,5 +264,5 @@ typedef enum
     XSM360_AUTH_KEEPALIVE             = 0x84,    // Xbox 360 Keep Authentication Alive
     XSM360_REQUEST_STATE              = 0x86,    // Xbox 360 Request Authentication State
     XSM360_VERIFY_AUTH                = 0x87,    // Xbox 360 Verify Authentication
-    
+
 } XSM360AuthRequest;

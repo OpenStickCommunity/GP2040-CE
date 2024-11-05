@@ -42,10 +42,10 @@ public:
 	virtual void setup();       // Reverse Button Setup
 	virtual void preprocess() {}
 	virtual void process();     // Reverse process
-    virtual std::string name() { return ReverseName; }
+	virtual std::string name() { return ReverseName; }
 private:
-    void update();
-    uint8_t input(uint32_t valueMask, uint16_t buttonMask, uint16_t buttonMaskReverse, uint8_t action, bool invertAxis);
+	void update();
+	uint8_t input(uint32_t valueMask, uint16_t buttonMask, uint16_t buttonMaskReverse, uint8_t action, bool invertAxis);
 
 	bool state;
 
@@ -59,11 +59,11 @@ private:
 	bool invertXAxis;
 	bool invertYAxis;
 
-    // 0 - Ignore, 1 - Enabled, 2 - Neutral
-    uint8_t actionUp;
-    uint8_t actionDown;
-    uint8_t actionLeft;
-    uint8_t actionRight;
+	// 0 - Ignore, 1 - Enabled, 2 - Neutral
+	uint8_t actionUp;
+	uint8_t actionDown;
+	uint8_t actionLeft;
+	uint8_t actionRight;
 
 	uint8_t pinButtonReverse;
 };

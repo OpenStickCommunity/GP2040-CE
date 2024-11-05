@@ -22,7 +22,7 @@ public:
 	virtual void process() {}     // BootselButton Process
 	virtual void preprocess();
 	virtual std::string name() { return BootselButtonName; }
-private:	
+private:
 	bool isBootselPressed();
 	uint32_t bootselButtonMap;
 };

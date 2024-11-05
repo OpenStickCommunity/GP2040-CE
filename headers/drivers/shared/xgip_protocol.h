@@ -31,7 +31,7 @@
 // XGIP10 or Xbox Game Input Protocol (1.0?)
 //  Used in Xbox 360 and Xbox One controller
 //  communication and reporting.
-//  
+//
 //  Documentation comes from various sources
 //  including Santroller (https://github.com/Santroller/Santroller),
 //  GIMX (https://github.com/matlo/GIMX), and other
@@ -89,7 +89,7 @@ public:
     bool setData(const uint8_t* data, uint16_t len); // Set data (buf and length)
     uint8_t * generatePacket();                 // Generate output packet (chunk will generate on-going packet)
     uint8_t * generateAckPacket();              // Generate an ack for the last received packet
-    bool validateAck(XGIPProtocol & ackPacket); // Validate an incoming ack packet against 
+    bool validateAck(XGIPProtocol & ackPacket); // Validate an incoming ack packet against
     uint8_t getCommand();                       // Get command of a parsed packet
     uint8_t getSequence();                      // Get sequence of a parsed packet
     uint8_t getChunked();                       // Is this packet chunked?

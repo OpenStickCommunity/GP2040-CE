@@ -27,7 +27,7 @@
 #define _TUSB_CONFIG_H_
 
 #ifdef __cplusplus
- extern "C" {
+  extern "C" {
 #endif
 
 //--------------------------------------------------------------------+
@@ -63,7 +63,7 @@
 // Default to Highspeed for MCU with internal HighSpeed PHY (can be port specific), otherwise FullSpeed
 #ifndef BOARD_DEVICE_RHPORT_SPEED
   #if (CFG_TUSB_MCU == OPT_MCU_LPC18XX || CFG_TUSB_MCU == OPT_MCU_LPC43XX || CFG_TUSB_MCU == OPT_MCU_MIMXRT10XX || \
-       CFG_TUSB_MCU == OPT_MCU_NUC505  || CFG_TUSB_MCU == OPT_MCU_CXD56)
+        CFG_TUSB_MCU == OPT_MCU_NUC505  || CFG_TUSB_MCU == OPT_MCU_CXD56)
     #define BOARD_DEVICE_RHPORT_SPEED   OPT_MODE_HIGH_SPEED
   #else
     #define BOARD_DEVICE_RHPORT_SPEED   OPT_MODE_FULL_SPEED
@@ -112,7 +112,7 @@
 #define CFG_TUSB_MEM_ALIGN          __attribute__ ((aligned(4)))
 #endif
 
-	// defined by compiler flags for flexibility
+// defined by compiler flags for flexibility
 #ifndef CFG_TUSB_MCU
 #error CFG_TUSB_MCU must be defined
 #endif
@@ -158,7 +158,7 @@
 #define CFG_TUH_HID_EPOUT_BUFSIZE   64
 
 #ifdef __cplusplus
- }
+  }
 #endif
 
 #endif /* _TUSB_CONFIG_H_ */

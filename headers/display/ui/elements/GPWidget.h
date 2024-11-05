@@ -18,7 +18,7 @@ class GPWidget : public GPGFX_UI {
 
         void setID(uint16_t id) { this->_ID = id; }
         uint16_t getID() { return this->_ID; }
-        
+
         void setPriority(uint16_t priority) { this->_priority = priority; }
         uint16_t getPriority() { return this->_priority; }
 

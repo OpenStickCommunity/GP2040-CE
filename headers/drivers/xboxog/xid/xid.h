@@ -24,9 +24,9 @@ extern "C"
 
 typedef enum
 {
-  XID_TYPE_GAMECONTROLLER,
-  XID_TYPE_STEELBATTALION,
-  XID_TYPE_XREMOTE,
+    XID_TYPE_GAMECONTROLLER,
+    XID_TYPE_STEELBATTALION,
+    XID_TYPE_XREMOTE,
 } xid_type_t;
 
 typedef struct

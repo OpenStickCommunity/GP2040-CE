@@ -21,3 +21,39 @@ end_of_line = lf
 
 [*.{js,jsx,ts,tsx}]
 quote_type = single
+
+[headers/**.h]
+indent_style = space
+indent_size = 4
+
+[{headers/tusb_config.h,headers/configs/base64.h}]
+indent_style = space
+indent_size = 2
+
+[{headers/enums.h,headers/gamepad.h,headers/gamepad/GamepadConfig.h,headers/gamepad/GamepadEnums.h,headers/gamepad/GamepadState.h,headers/storagemanager.h,headers/themes.h,headers/types.h}]
+indent_style = tab
+indent_size = 2
+
+# Use tabs for these files in the headers/addons directory
+[{headers/addons/board_led.h,headers/addons/bootsel_button.h,headers/addons/buzzerspeaker.h,headers/addons/display.h,headers/addons/drv8833_rumble.h,headers/addons/focus_mode.h,headers/addons/i2canalog1219.h}]
+indent_style = tab
+indent_size = 2
+
+# Use tabs for these files in the headers/addons directory
+[{headers/addons/input_macro.h,headers/addons/keyboard_host.h,headers/addons/keyboard_host_listener.h,headers/addons/neopicoleds.h,headers/addons/playernum.h,headers/addons/pleds.h,headers/addons/reverse.h,headers/addons/tilt.h}]
+indent_style = tab
+indent_size = 2
+
+[headers/display/fonts/**.h]
+indent_style = tab
+indent_size = 2
+
+# Use tabs for these files in the headers/drivers directory
+[{headers/drivers/astro/AstroDescriptors.h,headers/drivers/hid/HIDDescriptors.h,headers/drivers/keyboard/KeyboardDescriptors.h,headers/drivers/mdmini/MDMiniDescriptors.h,headers/drivers/neogeo/NeoGeoDescriptors.h}]
+indent_style = tab
+indent_size = 2
+
+# Use tabs for these files in the headers/drivers directory
+[{headers/drivers/shared/driverhelper.h,headers/drivers/switch/SwitchDescriptors.h,headers/drivers/xboxog/XboxOriginalDescriptors.h,headers/drivers/xboxog/xid/xid_steelbattalion.h}]
+indent_style = tab
+indent_size = 2

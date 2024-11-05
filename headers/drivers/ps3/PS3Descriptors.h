@@ -104,7 +104,7 @@ typedef enum {
 
 typedef struct __attribute((packed, aligned(1)))
 {
-	// digital buttons, 0 = off, 1 = on
+    // digital buttons, 0 = off, 1 = on
     // 0
     uint8_t reportID;
     // 1
@@ -139,7 +139,7 @@ typedef struct __attribute((packed, aligned(1)))
 
     // 5
     uint8_t : 8;
-    
+
     // left and right analog sticks, 0x00 left/up, 0x80 middle, 0xff right/down
     // 6
     uint8_t l_x_axis;
@@ -258,10 +258,10 @@ static const uint8_t ps3_string_version[]      = "1.0";
 
 static const uint8_t *ps3_string_descriptors[] __attribute__((unused)) =
 {
-	ps3_string_language,
-	ps3_string_manufacturer,
-	ps3_string_product,
-	ps3_string_version
+    ps3_string_language,
+    ps3_string_manufacturer,
+    ps3_string_product,
+    ps3_string_version
 };
 
 static const uint8_t ps3_device_descriptor[] =
@@ -270,8 +270,8 @@ static const uint8_t ps3_device_descriptor[] =
     0x01,        // bDescriptorType (Device)
     0x00, 0x02,  // bcdUSB 2.00
     0x00,        // bDeviceClass (Use class information in the Interface Descriptors)
-    0x00,        // bDeviceSubClass 
-    0x00,        // bDeviceProtocol 
+    0x00,        // bDeviceSubClass
+    0x00,        // bDeviceProtocol
     0x40,        // bMaxPacketSize0 64
     LSB(PS3_VENDOR_ID), MSB(PS3_VENDOR_ID),	  // idVendor
     LSB(PS3_PRODUCT_ID), MSB(PS3_PRODUCT_ID), // idProduct
@@ -294,7 +294,7 @@ static const uint8_t ps3_report_descriptor[] =
     0x15, 0x00,        //     Logical Minimum (0)
     0x26, 0xFF, 0x00,  //     Logical Maximum (255)
     0x81, 0x03,        //     Input (Const,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
-                       //     NOTE: reserved byte
+                        //     NOTE: reserved byte
     0x75, 0x01,        //     Report Size (1)
     0x95, 0x13,        //     Report Count (19)
     0x15, 0x00,        //     Logical Minimum (0)
@@ -309,7 +309,7 @@ static const uint8_t ps3_report_descriptor[] =
     0x95, 0x0D,        //     Report Count (13)
     0x06, 0x00, 0xFF,  //     Usage Page (Vendor Defined 0xFF00)
     0x81, 0x03,        //     Input (Const,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
-                       //     NOTE: 32 bit integer, where 0:18 are buttons and 19:31 are reserved
+                        //     NOTE: 32 bit integer, where 0:18 are buttons and 19:31 are reserved
     0x15, 0x00,        //     Logical Minimum (0)
     0x26, 0xFF, 0x00,  //     Logical Maximum (255)
     0x05, 0x01,        //     Usage Page (Generic Desktop Ctrls)
@@ -324,7 +324,7 @@ static const uint8_t ps3_report_descriptor[] =
     0x09, 0x32,        //       Usage (Z)
     0x09, 0x35,        //       Usage (Rz)
     0x81, 0x02,        //       Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
-                       //       NOTE: four joysticks
+                        //       NOTE: four joysticks
     0xC0,              //     End Collection
     0x05, 0x01,        //     Usage Page (Generic Desktop Ctrls)
     0x75, 0x08,        //     Report Size (8)

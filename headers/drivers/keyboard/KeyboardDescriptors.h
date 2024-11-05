@@ -84,7 +84,7 @@ static const uint8_t keyboard_report_descriptor[] =
 		0x05, 0x0C, //Usage Page (Consumer Devices)
 		0x09, 0x01, //Usage (Consumer Control)
 		0xA1, 0x01, 	//Collection (Application)
-		
+
 		//Report ID (2)
 		0x85, KEYBOARD_MULTIMEDIA_REPORT_ID,
 		0x05, 0x0C,			 //Usage Page (Consumer Devices)

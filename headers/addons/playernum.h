@@ -24,7 +24,7 @@ public:
 	virtual void setup();       // Analog Setup
 	virtual void process();     // Analog Process
 	virtual void preprocess() {}
-    virtual std::string name() { return PlayerNumName; }
+	virtual std::string name() { return PlayerNumName; }
 private:
 	void handleLED(int);
 	uint8_t assigned;

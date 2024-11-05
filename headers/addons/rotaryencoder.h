@@ -84,9 +84,9 @@
 class RotaryEncoderInput : public GPAddon {
 public:
     virtual bool available();
-	virtual void setup();       // Rotary Setup
+    virtual void setup();       // Rotary Setup
     virtual void preprocess() {}
-	virtual void process();     // Rotary process
+    virtual void process();     // Rotary process
     virtual std::string name() { return RotaryEncoderName; }
 
     typedef struct {
@@ -128,7 +128,7 @@ private:
     int8_t mapEncoderValueDPad(int8_t index, int32_t encoderValue, uint16_t ppr);
 
     int8_t getEncoderIndexByPin(uint8_t pin);
-    
+
     bool dpadUp = false;
     bool dpadDown = false;
     bool dpadLeft = false;

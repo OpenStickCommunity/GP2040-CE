@@ -45,9 +45,9 @@ public:
 	virtual void setup();       // Analog Setup
 	virtual void preprocess() {}
 	virtual void process();     // Analog Process
-    virtual std::string name() { return I2CAnalog1219Name; }
+	virtual std::string name() { return I2CAnalog1219Name; }
 private:
-    ADS1219Device * ads;
+	ADS1219Device * ads;
 	ADS_PINS pins;
 	int channelHop;
 	uint32_t uIntervalMS;       // ADS1219 Interval

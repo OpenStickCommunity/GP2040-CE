@@ -138,10 +138,10 @@
 
 class PCF8575Addon : public GPAddon {
 public:
-	virtual bool available();
-	virtual void setup();
-	virtual void preprocess() {}
-	virtual void process();
+    virtual bool available();
+    virtual void setup();
+    virtual void preprocess() {}
+    virtual void process();
     virtual std::string name() { return PCF8575AddonName; }
 
     std::map<uint8_t, GpioMappingInfo> pinRef;

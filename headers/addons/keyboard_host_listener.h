@@ -36,9 +36,10 @@ public:// USB Listener Features
 	void process();
 private:
 	uint8_t getKeycodeFromModifier(uint8_t modifier);
-    void preprocess_report();
+	void preprocess_report();
 	void process_kbd_report(uint8_t dev_addr, hid_keyboard_report_t const *report);
-    void process_mouse_report(uint8_t dev_addr, hid_mouse_report_t const *report);
+	void process_mouse_report(uint8_t dev_addr, hid_mouse_report_t const *report);
+
 	KeyboardButtonMapping _keyboard_host_mapDpadUp;
 	KeyboardButtonMapping _keyboard_host_mapDpadDown;
 	KeyboardButtonMapping _keyboard_host_mapDpadLeft;
@@ -61,18 +62,18 @@ private:
 	KeyboardButtonMapping _keyboard_host_mapButtonA4;
 	GamepadState _keyboard_host_state;
 	bool _keyboard_host_mounted;
-    uint8_t _keyboard_dev_addr;
-    uint8_t _keyboard_instance;
-    bool _mouse_host_mounted;
-    uint8_t _mouse_dev_addr;
-    uint8_t _mouse_instance;
-    uint16_t mouseLeftMapping;
-    uint16_t mouseMiddleMapping;
-    uint16_t mouseRightMapping;
-    int16_t mouseX;
-    int16_t mouseY;
-    int16_t mouseZ;
-    bool mouseActive;
+	uint8_t _keyboard_dev_addr;
+	uint8_t _keyboard_instance;
+	bool _mouse_host_mounted;
+	uint8_t _mouse_dev_addr;
+	uint8_t _mouse_instance;
+	uint16_t mouseLeftMapping;
+	uint16_t mouseMiddleMapping;
+	uint16_t mouseRightMapping;
+	int16_t mouseX;
+	int16_t mouseY;
+	int16_t mouseZ;
+	bool mouseActive;
 };
 
 #endif  // _KeyboardHost_H_

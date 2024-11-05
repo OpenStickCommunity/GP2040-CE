@@ -11,7 +11,7 @@
 
 class GP2040Aux {
 public:
-	GP2040Aux();
+    GP2040Aux();
     ~GP2040Aux();
     void setup();           // setup core1
     void run();             // loop core1

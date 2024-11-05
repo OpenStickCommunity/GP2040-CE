@@ -32,7 +32,7 @@ private:
     uint8_t lastFeatures[PS3_FEATURES_SIZE] = { };
     PS3BTInfo ps3BTInfo;
 
-    // this is an identification byte from the H2D 0xEF feature report that needs to be the same 
+    // this is an identification byte from the H2D 0xEF feature report that needs to be the same
     // in multiple D2H reports for the controller to function
     uint8_t efByte;
 };
