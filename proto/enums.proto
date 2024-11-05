@@ -332,20 +332,20 @@ enum ForcedSetupMode
 {
     option (nanopb_enumopt).long_names = false;
 
-	FORCED_SETUP_MODE_OFF = 0;
-	FORCED_SETUP_MODE_LOCK_MODE_SWITCH = 1;
-	FORCED_SETUP_MODE_LOCK_WEB_CONFIG = 2;
-	FORCED_SETUP_MODE_LOCK_BOTH = 3;
+    FORCED_SETUP_MODE_OFF = 0;
+    FORCED_SETUP_MODE_LOCK_MODE_SWITCH = 1;
+    FORCED_SETUP_MODE_LOCK_WEB_CONFIG = 2;
+    FORCED_SETUP_MODE_LOCK_BOTH = 3;
 };
 
 enum DualDirectionalCombinationMode
 {
-	option (nanopb_enumopt).long_names = false;
+    option (nanopb_enumopt).long_names = false;
 
-	MIXED_MODE = 0;
-	GAMEPAD_MODE = 1;
-	DUAL_MODE = 2;
-	NONE_MODE = 3;
+    MIXED_MODE = 0;
+    GAMEPAD_MODE = 1;
+    DUAL_MODE = 2;
+    NONE_MODE = 3;
 }
 
 enum PS4ControllerType

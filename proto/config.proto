@@ -223,7 +223,7 @@ message ProfileOptions
 message DisplayOptions
 {
     optional bool enabled = 1;
-    
+
     optional int32 deprecatedI2cBlock = 2 [deprecated = true];
     optional int32 deprecatedI2cSDAPin = 3 [deprecated = true];
     optional int32 deprecatedI2cSCLPin = 4 [deprecated = true];
@@ -438,7 +438,7 @@ message ReverseOptions
 message AnalogADS1219Options
 {
     optional bool enabled = 1;
-    
+
     optional int32 deprecatedI2cBlock = 2 [deprecated = true];
     optional int32 deprecatedI2cSDAPin = 3 [deprecated = true];
     optional int32 deprecatedI2cSCLPin = 4 [deprecated = true];
@@ -764,14 +764,14 @@ message PCF8575Options
 
 message DRV8833RumbleOptions
 {
-		optional bool enabled = 1;
+        optional bool enabled = 1;
 
-		optional int32 leftMotorPin = 2;
-		optional int32 rightMotorPin = 3;
-		optional int32 motorSleepPin = 4;
-		optional uint32 pwmFrequency = 5;
-		optional float dutyMin = 6;
-		optional float dutyMax = 7;
+        optional int32 leftMotorPin = 2;
+        optional int32 rightMotorPin = 3;
+        optional int32 motorSleepPin = 4;
+        optional uint32 pwmFrequency = 5;
+        optional float dutyMin = 6;
+        optional float dutyMax = 7;
 }
 
 message ReactiveLEDInfo
