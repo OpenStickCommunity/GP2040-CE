@@ -5,8 +5,8 @@
 #include "addons/neopicoleds.h"
 
 void ConfigManager::setup(ConfigType config) {
-	if (config == CONFIG_TYPE_WEB)
-		setupConfig(new WebConfig());
+    if (config == CONFIG_TYPE_WEB)
+        setupConfig(new WebConfig());
 
     this->cType = config;
 }
@@ -21,5 +21,5 @@ void ConfigManager::setupConfig(GPConfig * gpconfig) {
 }
 
 void ConfigManager::setGamepadOptions(Gamepad* gamepad) {
-	gamepad->save();
+    gamepad->save();
 }

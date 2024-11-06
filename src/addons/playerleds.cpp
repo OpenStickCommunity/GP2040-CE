@@ -102,7 +102,7 @@ void PlayerLEDAddon::setup() {
 
 	Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
 	gamepad->auxState.playerID.enabled = true;
-    gamepad->auxState.sensors.statusLight.enabled = true;
+	gamepad->auxState.sensors.statusLight.enabled = true;
 
 	switch (ledOptions.pledType)
 	{

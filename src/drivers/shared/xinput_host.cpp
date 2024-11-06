@@ -158,7 +158,7 @@ bool tuh_xinput_send_report(uint8_t dev_addr, uint8_t instance, uint8_t const *r
         }
         ret = true;
 
-    } 
+    }
 
     return ret;
 }
@@ -209,7 +209,7 @@ bool xinputh_xfer_cb(uint8_t dev_addr, uint8_t ep_addr, xfer_result_t result, ui
 
     if (dir == TUSB_DIR_IN) {
         tuh_xinput_report_received_cb(dev_addr, instance, xinput_itf->epin_buf, (uint16_t)xferred_bytes);
-        
+
         // Is this double sending?
         usbh_edpt_xfer(dev_addr, xinput_itf->ep_in, xinput_itf->epin_buf, xinput_itf->epin_size);
     } else {
@@ -247,8 +247,8 @@ bool xinputh_open(uint8_t rhport, uint8_t dev_addr, tusb_desc_interface_t const 
     // add instance for Xbox 360 dongle
     if (desc_itf->bInterfaceSubClass == 0x5D &&
         (desc_itf->bInterfaceProtocol == 0x01 ||
-         desc_itf->bInterfaceProtocol == 0x03 ||
-         desc_itf->bInterfaceProtocol == 0x02)) {
+            desc_itf->bInterfaceProtocol == 0x03 ||
+            desc_itf->bInterfaceProtocol == 0x02)) {
 
         //-------------- Xinput Descriptor --------------//
         p_desc = tu_desc_next(p_desc);
@@ -281,7 +281,7 @@ bool xinputh_open(uint8_t rhport, uint8_t dev_addr, tusb_desc_interface_t const 
         return true;
     // Xbox One instance == 0x47 0xD0
     } else if (desc_itf->bInterfaceSubClass == 0x47 &&
-               desc_itf->bInterfaceProtocol == 0xD0 && desc_itf->bNumEndpoints) {
+                desc_itf->bInterfaceProtocol == 0xD0 && desc_itf->bNumEndpoints) {
         uint8_t endpoints = desc_itf->bNumEndpoints;
         while (endpoints--) {
             p_desc = tu_desc_next(p_desc);
@@ -304,7 +304,7 @@ bool xinputh_open(uint8_t rhport, uint8_t dev_addr, tusb_desc_interface_t const 
         _xinputh_dev->inst_count++;
         usbh_edpt_xfer(dev_addr, p_xinput->ep_in, p_xinput->epin_buf, p_xinput->epin_size);
         return true;
-    } 
+    }
     return false;
 }
 
@@ -322,7 +322,7 @@ bool xinputh_set_config(uint8_t dev_addr, uint8_t itf_num) {
 
 static void config_driver_mount_complete(uint8_t dev_addr, uint8_t instance) {
     xinputh_interface_t *xid_itf = get_instance(dev_addr, instance);
-    
+
     // enumeration is complete
     tuh_xinput_mount_cb(dev_addr, instance, xid_itf->type, xid_itf->subtype);
 

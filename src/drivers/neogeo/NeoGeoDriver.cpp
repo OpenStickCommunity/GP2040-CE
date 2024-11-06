@@ -9,20 +9,20 @@ void NeoGeoDriver::initialize() {
 		.const1 = 0x80,
 		.const2 = 0x80,
 		.const3 = 0x80,
-		.const4 = 0,	
-		.const5 = 0,	
-		.const6 = 0,	
-		.const7 = 0,	
-		.const8 = 0,	
-		.const9 = 0,	
-		.const10 = 0,	
-		.const11 = 0,	
-		.const12 = 0,	
-		.const13 = 0,	
-		.const14 = 0,	
-		.const15 = 0,	
-		.const16 = 0,	
-		.const17 = 0,	
+		.const4 = 0,
+		.const5 = 0,
+		.const6 = 0,
+		.const7 = 0,
+		.const8 = 0,
+		.const9 = 0,
+		.const10 = 0,
+		.const11 = 0,
+		.const12 = 0,
+		.const13 = 0,
+		.const14 = 0,
+		.const15 = 0,
+		.const16 = 0,
+		.const17 = 0,
 	};
 
 	class_driver = {
@@ -83,7 +83,7 @@ void NeoGeoDriver::process(Gamepad * gamepad) {
 
 // tud_hid_get_report_cb
 uint16_t NeoGeoDriver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
-    memcpy(buffer, &neogeoReport, sizeof(NeogeoReport));
+	memcpy(buffer, &neogeoReport, sizeof(NeogeoReport));
 	return sizeof(NeogeoReport);
 }
 
@@ -92,7 +92,7 @@ void NeoGeoDriver::set_report(uint8_t report_id, hid_report_type_t report_type, 
 
 // Only XboxOG and Xbox One use vendor control xfer cb
 bool NeoGeoDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request) {
-    return false;
+	return false;
 }
 
 const uint16_t * NeoGeoDriver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
@@ -101,15 +101,15 @@ const uint16_t * NeoGeoDriver::get_descriptor_string_cb(uint8_t index, uint16_t 
 }
 
 const uint8_t * NeoGeoDriver::get_descriptor_device_cb() {
-    return neogeo_device_descriptor;
+	return neogeo_device_descriptor;
 }
 
 const uint8_t * NeoGeoDriver::get_hid_descriptor_report_cb(uint8_t itf) {
-    return neogeo_report_descriptor;
+	return neogeo_report_descriptor;
 }
 
 const uint8_t * NeoGeoDriver::get_descriptor_configuration_cb(uint8_t index) {
-    return neogeo_configuration_descriptor;
+	return neogeo_configuration_descriptor;
 }
 
 const uint8_t * NeoGeoDriver::get_descriptor_device_qualifier_cb() {

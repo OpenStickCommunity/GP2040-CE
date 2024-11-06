@@ -38,12 +38,12 @@ bool __no_inline_not_in_flash_func(BootselButtonAddon::isBootselPressed)() {
 }
 
 bool BootselButtonAddon::available() {
-    const BootselButtonOptions& options = Storage::getInstance().getAddonOptions().bootselButtonOptions;
+	const BootselButtonOptions& options = Storage::getInstance().getAddonOptions().bootselButtonOptions;
 	return options.enabled && options.buttonMap != 0;
 }
 
 void BootselButtonAddon::setup() {
-    const BootselButtonOptions& options = Storage::getInstance().getAddonOptions().bootselButtonOptions;
+	const BootselButtonOptions& options = Storage::getInstance().getAddonOptions().bootselButtonOptions;
 	bootselButtonMap = options.buttonMap;
 }
 

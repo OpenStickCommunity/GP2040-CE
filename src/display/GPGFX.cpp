@@ -18,7 +18,7 @@ std::map<GPGFX_DisplayType, std::map<GPGFX_DisplaySize, GPGFX_DisplayMetrics>> G
 };
 
 GPGFX::GPGFX() {
-    
+
 }
 
 void GPGFX::init(GPGFX_DisplayTypeOptions options) {

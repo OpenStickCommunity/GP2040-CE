@@ -344,8 +344,8 @@ void load_hotkey(const HotkeyEntry* hotkey, DynamicJsonDocument& doc, const stri
 
 // LWIP callback on HTTP POST to validate the URI
 err_t httpd_post_begin(void *connection, const char *uri, const char *http_request,
-                       uint16_t http_request_len, int content_len, char *response_uri,
-                       uint16_t response_uri_len, uint8_t *post_auto_wnd)
+                        uint16_t http_request_len, int content_len, char *response_uri,
+                        uint16_t response_uri_len, uint8_t *post_auto_wnd)
 {
     LWIP_UNUSED_ARG(http_request);
     LWIP_UNUSED_ARG(http_request_len);
@@ -1217,7 +1217,7 @@ std::string getKeyMappings()
     writeDoc(doc, "E10", keyboardMapping.keyButtonE10);
     writeDoc(doc, "E11", keyboardMapping.keyButtonE11);
     writeDoc(doc, "E12", keyboardMapping.keyButtonE12);
-    
+
     return serialize_json(doc);
 }
 
@@ -2208,7 +2208,7 @@ std::string getHeldPins()
         uint32_t newPin = newState ^ oldState;
         for (uint32_t pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
             if (gpio_get_function(pin) == GPIO_FUNC_SIO &&
-               !gpio_is_dir_out(pin) && (newPin & (1 << pin))) {
+                !gpio_is_dir_out(pin) && (newPin & (1 << pin))) {
                 if (debounceStartTime == 0) debounceStartTime = currentMillis;
                 if ((currentMillis - debounceStartTime) > 5) { // wait 5ms
                     heldPinsSet.insert(pin);

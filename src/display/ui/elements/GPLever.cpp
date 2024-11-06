@@ -81,7 +81,7 @@ void GPLever::draw() {
 
     // base
     getRenderer()->drawEllipse(baseX, baseY, baseRadius, baseRadius, this->strokeColor, 0);
-    
+
     if (this->_showCardinal) {
         uint16_t cardinalSize = 3;
         uint16_t cardinalN = std::max(0,(baseY - baseRadius)-cardinalSize);
@@ -99,15 +99,15 @@ void GPLever::draw() {
         for (int angle = 45; angle <= 315; angle += 90) {
             // Convert angle to radians
             double radians = angle * M_PI / 180.0;
-    
+
             // Calculate coordinates of point on ellipse
             int xEllipse = baseX + baseRadius * cos(radians);
             int yEllipse = baseY + baseRadius * sin(radians);
-    
+
             // Calculate coordinates of endpoint of line
             int xEndpoint = xEllipse + ordinalSize * cos(radians);
             int yEndpoint = yEllipse + ordinalSize * sin(radians);
-    
+
             // Draw line from point on ellipse to endpoint
             getRenderer()->drawLine(xEllipse, yEllipse, xEndpoint, yEndpoint, this->strokeColor, 1);
         }

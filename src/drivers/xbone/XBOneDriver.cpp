@@ -40,9 +40,9 @@ static uint8_t xb1_guide_on[] = { 0x01, 0x5b };
 static uint8_t xb1_guide_off[] = { 0x00, 0x5b };
 
 static uint8_t xboneIdle[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0xff,
-                       0x00, 0x00, 0xff, 0xff, 0x00, 0x00, 0x00, 0x00,
-                       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-                       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+                        0x00, 0x00, 0xff, 0xff, 0x00, 0x00, 0x00, 0x00,
+                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
 
 // Check if Auth is completed (start is 0x01, 0x01, and invalid is 0x01, 0x07)
@@ -50,9 +50,9 @@ const uint8_t authReady[] = {0x01, 0x00};
 
 // Xbox One Announce
 static uint8_t announcePacket[] = {
-    0x00, 0x2a, 0x00, 0xff, 0xff, 0xff, 0x00, 0x00, 
-    0xdf, 0x33, 0x14, 0x00, 0x01, 0x00, 0x01, 0x00, 
-    0x17, 0x01, 0x02, 0x00, 0x01, 0x00, 0x01, 0x00, 
+    0x00, 0x2a, 0x00, 0xff, 0xff, 0xff, 0x00, 0x00,
+    0xdf, 0x33, 0x14, 0x00, 0x01, 0x00, 0x01, 0x00,
+    0x17, 0x01, 0x02, 0x00, 0x01, 0x00, 0x01, 0x00,
     0x01, 0x00, 0x01, 0x00};
 
 // Xbox One Descriptor
@@ -166,9 +166,9 @@ static uint16_t xbone_open(uint8_t rhport, tusb_desc_interface_t const *itf_desc
     uint16_t drv_len = 0;
     if (TUSB_CLASS_VENDOR_SPECIFIC == itf_desc->bInterfaceClass) {
         TU_VERIFY(TUSB_CLASS_VENDOR_SPECIFIC == itf_desc->bInterfaceClass, 0);
-        
+
         drv_len = sizeof(tusb_desc_interface_t) +
-                  (itf_desc->bNumEndpoints * sizeof(tusb_desc_endpoint_t));
+                    (itf_desc->bNumEndpoints * sizeof(tusb_desc_endpoint_t));
         TU_VERIFY(max_len >= drv_len, 0);
 
         // Find available interface
@@ -185,7 +185,7 @@ static uint16_t xbone_open(uint8_t rhport, tusb_desc_interface_t const *itf_desc
 
         // Xbox One interface  (subclass = 0x47, protocol = 0xD0)
         if (itf_desc->bInterfaceSubClass == 0x47 &&
-                   itf_desc->bInterfaceProtocol == 0xD0) {
+                    itf_desc->bInterfaceProtocol == 0xD0) {
             p_desc = tu_desc_next(p_desc);
             TU_ASSERT(usbd_open_edpt_pair(rhport, p_desc, itf_desc->bNumEndpoints, TUSB_XFER_INTERRUPT, &p_xbone->ep_out, &p_xbone->ep_in), 0);
 
@@ -221,33 +221,33 @@ static void queue_xbone_report(void *report, uint16_t report_size) {
 // DevCompatIDsOne sends back XGIP10 data when requested by Windows
 bool xbone_vendor_control_xfer_cb(uint8_t rhport, uint8_t stage,
                                 tusb_control_request_t const *request) {
-	uint8_t buf[255];
+    uint8_t buf[255];
 
-  	// nothing to with DATA & ACK stage
-  	if (stage != CONTROL_STAGE_SETUP)
-		return true;
+    // nothing to with DATA & ACK stage
+    if (stage != CONTROL_STAGE_SETUP)
+        return true;
 
-	if (request->bmRequestType_bit.direction == TUSB_DIR_IN) { // This is where we should be
-		uint16_t len = request->wLength;
-		if ( request->bmRequestType == (USB_SETUP_DEVICE_TO_HOST | USB_SETUP_RECIPIENT_DEVICE | USB_SETUP_TYPE_VENDOR) && request->bRequest == REQ_GET_OS_FEATURE_DESCRIPTOR &&
-			request->wIndex == DESC_EXTENDED_COMPATIBLE_ID_DESCRIPTOR) {
-			memcpy(buf, &DevCompatIDsOne, len);
-		}
-		tud_control_xfer(rhport, request, (void*)buf, len);
-	} else {
-		tud_control_xfer(rhport, request, (void*)buf, request->wLength);
-	}
-	return true;
+    if (request->bmRequestType_bit.direction == TUSB_DIR_IN) { // This is where we should be
+        uint16_t len = request->wLength;
+        if ( request->bmRequestType == (USB_SETUP_DEVICE_TO_HOST | USB_SETUP_RECIPIENT_DEVICE | USB_SETUP_TYPE_VENDOR) && request->bRequest == REQ_GET_OS_FEATURE_DESCRIPTOR &&
+            request->wIndex == DESC_EXTENDED_COMPATIBLE_ID_DESCRIPTOR) {
+            memcpy(buf, &DevCompatIDsOne, len);
+        }
+        tud_control_xfer(rhport, request, (void*)buf, len);
+    } else {
+        tud_control_xfer(rhport, request, (void*)buf, request->wLength);
+    }
+    return true;
 }
 
 bool xbone_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result,
-                     uint32_t xferred_bytes) {
+                    uint32_t xferred_bytes) {
     // Do nothing if we couldn't setup our auth listener
     if ( xboxOneAuthData == nullptr || incomingXGIP == nullptr ||
             outgoingXGIP == nullptr) {
         return true;
     }
-    
+
     (void)result;
     uint8_t itf = 0;
     xboned_interface_t *p_xbone = _xboned_itf;
@@ -299,7 +299,7 @@ bool xbone_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result,
         }
 
         TU_ASSERT(usbd_edpt_xfer(rhport, p_xbone->ep_out, p_xbone->epout_buf,
-                                 sizeof(p_xbone->epout_buf)));
+                                    sizeof(p_xbone->epout_buf)));
     } else if (ep_addr == p_xbone->ep_in) {
         // Nothing needed
     }
@@ -332,7 +332,7 @@ void XBOneDriver::initialize() {
         .rightStickY = GAMEPAD_JOYSTICK_MID,
         .reserved = {}
     };
-    class_driver = 	{
+    class_driver = {
 #if CFG_TUSB_DEBUG >= 2
         .name = "XBONE",
 #endif
@@ -422,7 +422,7 @@ void XBOneDriver::process(Gamepad * gamepad) {
         }
         return;
     }
-    
+
     // Virtual Keycode for Guide Button
     bool virtual_keycode_change = false;
     if ( (xb1_guide_pressed == true && !gamepad->pressedA1())||
@@ -472,7 +472,7 @@ void XBOneDriver::process(Gamepad * gamepad) {
     newInputReport.start = gamepad->pressedS2();
     newInputReport.back = gamepad->pressedS1();
     newInputReport.guide = 0; // always 0
-    newInputReport.sync = 0; 
+    newInputReport.sync = 0;
     newInputReport.dpadUp = gamepad->pressedUp();
     newInputReport.dpadDown = gamepad->pressedDown();
     newInputReport.dpadLeft = gamepad->pressedLeft();
@@ -537,12 +537,12 @@ bool XBOneDriver::send_xbone_usb(uint8_t const *report, uint16_t report_size) {
         if (p_xbone->ep_in)
             break;
     }
-    if ( tud_ready() &&											// Is the device ready?
+    if ( tud_ready() &&                                                             // Is the device ready?
         (p_xbone->ep_in != 0) && (!usbd_edpt_busy(TUD_OPT_RHPORT, p_xbone->ep_in))) // Is the IN endpoint available?
     {
-        usbd_edpt_claim(0, p_xbone->ep_in);										// Take control of IN endpoint
-        usbd_edpt_xfer(0, p_xbone->ep_in, (uint8_t *)report, report_size); 	// Send report buffer
-        usbd_edpt_release(0, p_xbone->ep_in);										// Release control of IN endpoint
+        usbd_edpt_claim(0, p_xbone->ep_in);                                // Take control of IN endpoint
+        usbd_edpt_xfer(0, p_xbone->ep_in, (uint8_t *)report, report_size); // Send report buffer
+        usbd_edpt_release(0, p_xbone->ep_in);                              // Release control of IN endpoint
 
         // we successfully sent the report
         return true;
@@ -563,8 +563,8 @@ void XBOneDriver::set_report(uint8_t report_id, hid_report_type_t report_type, u
 bool XBOneDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request) {
     uint8_t buf[255];
 
-      // nothing to with DATA & ACK stage
-      if (stage != CONTROL_STAGE_SETUP)
+    // nothing to with DATA & ACK stage
+    if (stage != CONTROL_STAGE_SETUP)
         return true;
 
     if (request->bmRequestType_bit.direction == TUSB_DIR_IN) { // This is where we should be
@@ -655,7 +655,7 @@ void XBOneDriver::update() {
                 xboxOneAuthData->xboneState = wait_auth_dongle_to_console;
                 xboxOneAuthData->dongleBuffer.reset();
             }
-            
+
             // Process auth dongle to console
             if ( xboxOneAuthData->xboneState == GPAuthState::wait_auth_dongle_to_console ) {
                 queue_xbone_report(outgoingXGIP->generatePacket(), outgoingXGIP->getPacketLength());

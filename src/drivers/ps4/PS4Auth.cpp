@@ -47,7 +47,7 @@ void PS4Auth::initialize() {
 }
 
 bool PS4Auth::available() {
-     // Move options over to their own ps4 data structure or gamepad?
+    // Move options over to their own ps4 data structure or gamepad?
     if ( authType == InputModeAuthType::INPUT_MODE_AUTH_TYPE_KEYS ) {
         const PS4Options& options = Storage::getInstance().getAddonOptions().ps4Options;
         return options.serial.size == sizeof(options.serial.bytes)

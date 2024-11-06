@@ -17,48 +17,48 @@ void GPGFX_TinySSD1306::init(GPGFX_DisplayTypeOptions options) {
         this->screenType = SCREEN_132x64;
     }
 
-	uint8_t commands[] = {
-		0x00,
-		CommandOps::DISPLAY_OFF,
-		CommandOps::SET_LOW_COLUMN,
-		CommandOps::SET_HIGH_COLUMN,
-		CommandOps::SET_START_LINE,
+    uint8_t commands[] = {
+        0x00,
+        CommandOps::DISPLAY_OFF,
+        CommandOps::SET_LOW_COLUMN,
+        CommandOps::SET_HIGH_COLUMN,
+        CommandOps::SET_START_LINE,
 
-		CommandOps::MEMORY_MODE,
-		0x00,
+        CommandOps::MEMORY_MODE,
+        0x00,
 
-		CommandOps::SET_CONTRAST,
-		0xFF,
+        CommandOps::SET_CONTRAST,
+        0xFF,
 
-		(!_options.inverted ? CommandOps::NORMAL_DISPLAY : CommandOps::INVERT_DISPLAY),
+        (!_options.inverted ? CommandOps::NORMAL_DISPLAY : CommandOps::INVERT_DISPLAY),
 
-		CommandOps::SET_MULTIPLEX,
-		63,
+        CommandOps::SET_MULTIPLEX,
+        63,
 
-		CommandOps::SET_DISPLAY_OFFSET,
-		0x00,
+        CommandOps::SET_DISPLAY_OFFSET,
+        0x00,
 
-		CommandOps::SET_DISPLAY_CLOCK_DIVIDE,
-		0x80,
+        CommandOps::SET_DISPLAY_CLOCK_DIVIDE,
+        0x80,
 
-		CommandOps::SET_PRECHARGE,
-		0x22,
+        CommandOps::SET_PRECHARGE,
+        0x22,
 
-		CommandOps::SET_COM_PINS,
-		0x12,
+        CommandOps::SET_COM_PINS,
+        0x12,
 
-		CommandOps::SET_VCOM_DETECT,
-		0x40,
+        CommandOps::SET_VCOM_DETECT,
+        0x40,
 
-		CommandOps::CHARGE_PUMP,
-		0x14,
+        CommandOps::CHARGE_PUMP,
+        0x14,
 
-		((_options.orientation == 2) || (_options.orientation == 3) ? CommandOps::SEGMENT_REMAP_0 : CommandOps::SEGMENT_REMAP_127),
-		((_options.orientation == 1) || (_options.orientation == 3) ? CommandOps::COM_SCAN_NORMAL : CommandOps::COM_SCAN_REVERSE),
+        ((_options.orientation == 2) || (_options.orientation == 3) ? CommandOps::SEGMENT_REMAP_0 : CommandOps::SEGMENT_REMAP_127),
+        ((_options.orientation == 1) || (_options.orientation == 3) ? CommandOps::COM_SCAN_NORMAL : CommandOps::COM_SCAN_REVERSE),
 
-		CommandOps::FULL_DISPLAY_ON_RESUME,
-		CommandOps::DISPLAY_ON
-	};
+        CommandOps::FULL_DISPLAY_ON_RESUME,
+        CommandOps::DISPLAY_ON
+    };
 
     sendCommands(commands, sizeof(commands));
 
@@ -106,66 +106,66 @@ bool GPGFX_TinySSD1306::isSH1106(int detectedDisplay) {
 }
 
 void GPGFX_TinySSD1306::setPower(bool isPowered) {
-	_isPowered = isPowered;
-	sendCommand(_isPowered ? CommandOps::DISPLAY_ON : CommandOps::DISPLAY_OFF);
+    _isPowered = isPowered;
+    sendCommand(_isPowered ? CommandOps::DISPLAY_ON : CommandOps::DISPLAY_OFF);
 }
 
 void GPGFX_TinySSD1306::clear() {
-	memset(frameBuffer, 0, MAX_SCREEN_SIZE);
+    memset(frameBuffer, 0, MAX_SCREEN_SIZE);
 }
 
 void GPGFX_TinySSD1306::drawPixel(uint8_t x, uint8_t y, uint32_t color) {
-	uint16_t row, bitIndex;
+    uint16_t row, bitIndex;
 
-	if ((x<MAX_SCREEN_WIDTH) and (y<MAX_SCREEN_HEIGHT))
-	{
+    if ((x<MAX_SCREEN_WIDTH) and (y<MAX_SCREEN_HEIGHT))
+    {
         if (this->screenType == ScreenAlternatives::SCREEN_132x64) {
             x+=2;
         }
 
         if (x>=MAX_SCREEN_WIDTH) return;
 
-		row=((y/8)*MAX_SCREEN_WIDTH)+x;
-		bitIndex=y % 8;
+        row=((y/8)*MAX_SCREEN_WIDTH)+x;
+        bitIndex=y % 8;
 
         if (color == 1) {
-		    frameBuffer[row] |= (color<<bitIndex);
+            frameBuffer[row] |= (color<<bitIndex);
         } else if (color == 0) {
             frameBuffer[row] &= ~(1<<bitIndex);
         } else {
             frameBuffer[row] ^= (1 << bitIndex);
         }
-	}
+    }
 }
 
 void GPGFX_TinySSD1306::drawText(uint8_t x, uint8_t y, std::string text, uint8_t invert) {
-	uint8_t spriteX, spriteY;
-	uint8_t spriteByte;
-	uint8_t spriteBit;
-	uint8_t color;
-	uint8_t currChar, glyphIndex;
-	uint8_t charOffset = 0;
-	const uint8_t* currGlyph;
+    uint8_t spriteX, spriteY;
+    uint8_t spriteByte;
+    uint8_t spriteBit;
+    uint8_t color;
+    uint8_t currChar, glyphIndex;
+    uint8_t charOffset = 0;
+    const uint8_t* currGlyph;
 
     uint8_t maxTextSize = (MAX_SCREEN_WIDTH / _options.font.width);
 
-	for (uint8_t charIndex = 0; charIndex < MIN(text.size(), maxTextSize); charIndex++) {
-		currChar = text[charIndex];
-		glyphIndex = currChar - GPGFX_FONT_CHAR_OFFSET;
-		currGlyph = &_options.font.fontData[glyphIndex * ((_options.font.width - 1) * (_options.font.height/8))];
+    for (uint8_t charIndex = 0; charIndex < MIN(text.size(), maxTextSize); charIndex++) {
+        currChar = text[charIndex];
+        glyphIndex = currChar - GPGFX_FONT_CHAR_OFFSET;
+        currGlyph = &_options.font.fontData[glyphIndex * ((_options.font.width - 1) * (_options.font.height/8))];
 
-		for (spriteY = 0; spriteY < _options.font.height; spriteY++) {
-			for (spriteX = 0; spriteX < _options.font.width-1; spriteX++) {
-				spriteBit = spriteY % 8;
-				spriteByte = currGlyph[spriteX];
-				color = ((spriteByte >> spriteBit) & 0x01);
+        for (spriteY = 0; spriteY < _options.font.height; spriteY++) {
+            for (spriteX = 0; spriteX < _options.font.width-1; spriteX++) {
+                spriteBit = spriteY % 8;
+                spriteByte = currGlyph[spriteX];
+                color = ((spriteByte >> spriteBit) & 0x01);
                 if (invert) color = !color;
-				drawPixel(((x*_options.font.width)+spriteX)+charOffset, (y*_options.font.height)+spriteY, color);
-			}
-		}
+                drawPixel(((x*_options.font.width)+spriteX)+charOffset, (y*_options.font.height)+spriteY, color);
+            }
+        }
 
-		charOffset += _options.font.width;
-	}
+        charOffset += _options.font.width;
+    }
 }
 
 void GPGFX_TinySSD1306::drawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint32_t color, uint8_t filled) {
@@ -236,44 +236,44 @@ void GPGFX_TinySSD1306::drawArc(uint16_t x, uint16_t y, uint32_t radiusX, uint32
 
 void GPGFX_TinySSD1306::drawEllipse(uint16_t x, uint16_t y, uint32_t radiusX, uint32_t radiusY, uint32_t color, uint8_t filled) {
     //printf("Ellipse %d, %d, %d, %d, %d, %d\n", x, y, radiusX, radiusY, color, filled);
-	long x1 = -radiusX, y1 = 0;
-	long e2 = radiusY, dx = (1 + 2 * x1) * e2 * e2;
-	long dy = x1 * x1, err = dx + dy;
-	long diff = 0;
+    long x1 = -radiusX, y1 = 0;
+    long e2 = radiusY, dx = (1 + 2 * x1) * e2 * e2;
+    long dy = x1 * x1, err = dx + dy;
+    long diff = 0;
 
-	while (x1 <= 0) {
-		drawPixel(x - x1, y + y1, color);
-		drawPixel(x + x1, y + y1, color);
-		drawPixel(x + x1, y - y1, color);
-		drawPixel(x - x1, y - y1, color);
+    while (x1 <= 0) {
+        drawPixel(x - x1, y + y1, color);
+        drawPixel(x + x1, y + y1, color);
+        drawPixel(x + x1, y - y1, color);
+        drawPixel(x - x1, y - y1, color);
 
-		if (filled)
-		{
-			for (int i = 0; i < ((x - x1) - (x + x1)) / 2; i++) {
-				drawPixel(x - i, y + y1, color);
-				drawPixel(x + i, y + y1, color);
-				drawPixel(x + i, y - y1, color);
-				drawPixel(x - i, y - y1, color);
-			}
-		}
+        if (filled)
+        {
+            for (int i = 0; i < ((x - x1) - (x + x1)) / 2; i++) {
+                drawPixel(x - i, y + y1, color);
+                drawPixel(x + i, y + y1, color);
+                drawPixel(x + i, y - y1, color);
+                drawPixel(x - i, y - y1, color);
+            }
+        }
 
-		e2 = 2 * err;
+        e2 = 2 * err;
 
-		if (e2 >= dx) {
-			x1++;
-			err += dx += 2 * (long)radiusY * radiusY;
-		}
+        if (e2 >= dx) {
+            x1++;
+            err += dx += 2 * (long)radiusY * radiusY;
+        }
 
-		if (e2 <= dy) {
-			y1++;
-			err += dy += 2 * (long)radiusX * radiusX;
-		}
-	};
+        if (e2 <= dy) {
+            y1++;
+            err += dy += 2 * (long)radiusX * radiusX;
+        }
+    };
 
-	while (y1++ < radiusY) {
-		drawPixel(x, y + y1, color);
-		drawPixel(x, y - y1, color);
-	}
+    while (y1++ < radiusY) {
+        drawPixel(x, y + y1, color);
+        drawPixel(x, y - y1, color);
+    }
 }
 
 void GPGFX_TinySSD1306::drawRectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint32_t color, uint8_t filled, double rotationAngle) {
@@ -321,7 +321,7 @@ void GPGFX_TinySSD1306::drawRectangle(uint16_t x, uint16_t y, uint16_t width, ui
     drawLine(x2_rounded, y2_rounded, x3_rounded, y3_rounded, color, filled);
     drawLine(x3_rounded, y3_rounded, x0_rounded, y0_rounded, color, filled);
 
-	if (filled) {
+    if (filled) {
         // Calculate the number of lines needed for the filling
         uint16_t numLines = (uint16_t)round(sqrt(halfWidth * halfWidth + halfHeight * halfHeight) * 2);
 
@@ -334,7 +334,7 @@ void GPGFX_TinySSD1306::drawRectangle(uint16_t x, uint16_t y, uint16_t width, ui
 
             drawLine((uint16_t)round(xStart), (uint16_t)round(yStart), (uint16_t)round(xEnd), (uint16_t)round(yEnd), color, filled);
         }
-	}
+    }
 }
 
 void GPGFX_TinySSD1306::drawPolygon(uint16_t x, uint16_t y, uint16_t radius, uint16_t sides, uint32_t color, uint8_t filled, double rotation) {
@@ -396,29 +396,29 @@ void GPGFX_TinySSD1306::drawPolygon(uint16_t x, uint16_t y, uint16_t radius, uin
 }
 
 void GPGFX_TinySSD1306::drawSprite(uint8_t* image, uint16_t width, uint16_t height, uint16_t pitch, uint16_t x, uint16_t y, uint8_t priority) {
-	uint8_t spriteByte;
-	uint8_t spriteBit;
-	uint8_t spriteX, spriteY;
-	uint8_t color;
+    uint8_t spriteByte;
+    uint8_t spriteBit;
+    uint8_t spriteX, spriteY;
+    uint8_t color;
 
-	for (spriteY = 0; spriteY < height; spriteY++) {
-		for (spriteX = 0; spriteX < width; spriteX++) {
-			spriteBit = spriteX % 8;
-			//spriteByte = image[(spriteY * (width / 8)) + (spriteX / 8)];
-			spriteByte = image[(spriteY * ((width + 7) / 8)) + (spriteX / 8)];
-			color = ((spriteByte >> (7 - spriteBit)) & 0x01);
+    for (spriteY = 0; spriteY < height; spriteY++) {
+        for (spriteX = 0; spriteX < width; spriteX++) {
+            spriteBit = spriteX % 8;
+            //spriteByte = image[(spriteY * (width / 8)) + (spriteX / 8)];
+            spriteByte = image[(spriteY * ((width + 7) / 8)) + (spriteX / 8)];
+            color = ((spriteByte >> (7 - spriteBit)) & 0x01);
 
-			drawPixel(x+spriteX, y+spriteY, color);
-		}
-	}
+            drawPixel(x+spriteX, y+spriteY, color);
+        }
+    }
 }
 
 void GPGFX_TinySSD1306::drawBuffer(uint8_t* pBuffer) {
-	uint16_t bufferSize = MAX_SCREEN_SIZE;
-	uint8_t buffer[bufferSize+1] = {SET_START_LINE};
+    uint16_t bufferSize = MAX_SCREEN_SIZE;
+    uint8_t buffer[bufferSize+1] = {SET_START_LINE};
 
-	int result = -1;
-	
+    int result = -1;
+
     if (this->screenType == ScreenAlternatives::SCREEN_132x64) {
         uint16_t x = 0;
         uint16_t y = 0;
@@ -426,13 +426,13 @@ void GPGFX_TinySSD1306::drawBuffer(uint8_t* pBuffer) {
             sendCommand(0xB0 + y);
             sendCommand(x & 0x0F);
             sendCommand(0x10 | (x >> 4));
-        
+
             if (pBuffer == NULL) {
                 memcpy(&buffer[1],&frameBuffer[y*MAX_SCREEN_WIDTH],MAX_SCREEN_WIDTH);
             } else {
                 memcpy(&buffer[1],&pBuffer[y*MAX_SCREEN_WIDTH],MAX_SCREEN_WIDTH);
             }
-        
+
             result = _options.i2c->write(_options.address, buffer, MAX_SCREEN_WIDTH+3, false);
         }
     } else {
@@ -451,18 +451,18 @@ void GPGFX_TinySSD1306::drawBuffer(uint8_t* pBuffer) {
         result = _options.i2c->write(_options.address, buffer, sizeof(buffer), false);
     }
 
-	if (framePage < MAX_SCREEN_HEIGHT/8) {
-		framePage++;
-	} else {
-		framePage = 0;
-	}
+    if (framePage < MAX_SCREEN_HEIGHT/8) {
+        framePage++;
+    } else {
+        framePage = 0;
+    }
 }
 
-void GPGFX_TinySSD1306::sendCommand(uint8_t command){ 
-	uint8_t commandData[] = {0x00, command};
-	sendCommands(commandData, 2);
+void GPGFX_TinySSD1306::sendCommand(uint8_t command){
+    uint8_t commandData[] = {0x00, command};
+    sendCommands(commandData, 2);
 }
 
-void GPGFX_TinySSD1306::sendCommands(uint8_t* commands, uint16_t length){ 
-	int result = _options.i2c->write(_options.address, commands, length, false);
+void GPGFX_TinySSD1306::sendCommands(uint8_t* commands, uint16_t length){
+    int result = _options.i2c->write(_options.address, commands, length, false);
 }

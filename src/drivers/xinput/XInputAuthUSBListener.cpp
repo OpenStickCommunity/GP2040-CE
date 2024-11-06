@@ -66,7 +66,7 @@ void XInputAuthUSBListener::xmount(uint8_t dev_addr, uint8_t instance, uint8_t c
         tuh_descriptor_get_string_sync(xinput_dev_addr, 4, 0x0409, recvBuf, 0xB2);
         // If our dongle has remounted for any reason, trigger a re-auth (Magicboots X360)
         if ( xinputAuthData->hasInitAuth == true ) {
-           if ( auth_dongle_init_challenge() == true) {
+            if ( auth_dongle_init_challenge() == true) {
                 auth_dongle_wait(XSM360AuthRequest::XSM360_INIT_AUTH);
             }
         } else {
@@ -135,15 +135,15 @@ void XInputAuthUSBListener::process() {
                             xinputAuthData->xinputState = GPAuthState::auth_idle_state;
                         } else {
                             auth_dongle_keepalive();
-                            xinputAuthData->xinputState = GPAuthState::send_auth_dongle_to_console;    
-                        }        
+                            xinputAuthData->xinputState = GPAuthState::send_auth_dongle_to_console;
+                        }
                         break;
                     case XSM360AuthRequest::XSM360_VERIFY_AUTH:
                         if ( auth_dongle_data_reply(X360_AUTHLEN_CHALLENGE) == false ) {
                             xinputAuthData->xinputState = GPAuthState::auth_idle_state;
                         } else {
-                            xinputAuthData->xinputState = GPAuthState::send_auth_dongle_to_console;    
-                        }    
+                            xinputAuthData->xinputState = GPAuthState::send_auth_dongle_to_console;
+                        }
                         break;
                     default:
                         break;
@@ -182,7 +182,7 @@ bool XInputAuthUSBListener::auth_dongle_init_challenge() {
                 XSM360AuthRequest::XSM360_INIT_AUTH, X360_WVALUE_CONSOLE_DATA,
                 X360_AUTHLEN_CONSOLE_INIT, xinputAuthData->consoleInitialAuth, (uintptr_t)&user_result) == false
                 || user_result != xfer_result_t::XFER_RESULT_SUCCESS) {
-        return false;        
+        return false;
     }
     return true;
 }
@@ -195,7 +195,7 @@ bool XInputAuthUSBListener::auth_dongle_data_reply(uint8_t replyLen) {
                 XSM360AuthRequest::XSM360_RESPOND_CHALLENGE, TU_U16(X360_WVALUE_CONTROLLER_DATA, replyLen-6),
                 replyLen, xinputAuthData->passthruBuffer, (uintptr_t)&user_result) == false
             || user_result != xfer_result_t::XFER_RESULT_SUCCESS) {
-        return false;    
+        return false;
     }
     xinputAuthData->passthruBufferLen = replyLen;
     return true;
@@ -209,7 +209,7 @@ bool XInputAuthUSBListener::auth_dongle_challenge_verify() {
                 XSM360AuthRequest::XSM360_VERIFY_AUTH, X360_WVALUE_CONSOLE_DATA,
                 X360_AUTHLEN_CHALLENGE, xinputAuthData->passthruBuffer, (uintptr_t)&user_result) == false
                 || user_result != xfer_result_t::XFER_RESULT_SUCCESS) {
-        return false;        
+        return false;
     }
     return true;
 }

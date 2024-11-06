@@ -21,3 +21,15 @@ end_of_line = lf
 
 [*.{js,jsx,ts,tsx}]
 quote_type = single
+
+[src/**.cpp]
+indent_style = space
+indent_size = 4
+
+[{src/addons/keyboard_host_listener.cpp,src/addons/keyboard_host.cpp}]
+indent_style = space
+indent_size = 2
+
+[{src/addons/bootsel_button.cpp,src/addons/buzzerspeaker.cpp,src/addons/drv8833_rumble.cpp,src/addons/focus_mode.cpp,src/addons/neopicoleds.cpp,src/addons/playerleds.cpp,src/addons/tilt.cpp,src/drivers/astro/AstroDriver.cpp,src/drivers/egret/EgretDriver.cpp,src/drivers/hid/HIDDriver.cpp,src/gamepad/GamepadState.cpp,src/drivers/keyboard/KeyboardDriver.cpp,src/drivers/mdmini/MDMiniDriver.cpp,src/drivers/neogeo/NeoGeoDriver.cpp,src/drivers/pcengine/PCEngineDriver.cpp,src/drivers/psclassic/PSClassicDriver.cpp,src/drivers/switch/SwitchDriver.cpp,src/drivers/xinput/XInputDriver.cpp,src/interfaces/i2c/ssd1306/obd_ssd1306.cpp,src/gamepad.cpp,src/gp2040.cpp,src/gp2040aux.cpp,src/main.cpp,src/storagemanager.cpp,src/system.cpp,src/usbdriver.cpp}]
+indent_style = tab
+indent_size = 2

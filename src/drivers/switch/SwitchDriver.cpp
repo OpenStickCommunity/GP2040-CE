@@ -77,7 +77,7 @@ void SwitchDriver::process(Gamepad * gamepad) {
 
 // tud_hid_get_report_cb
 uint16_t SwitchDriver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
-    memcpy(buffer, &switchReport, sizeof(SwitchReport));
+	memcpy(buffer, &switchReport, sizeof(SwitchReport));
 	return sizeof(SwitchReport);
 }
 
@@ -86,7 +86,7 @@ void SwitchDriver::set_report(uint8_t report_id, hid_report_type_t report_type, 
 
 // Only XboxOG and Xbox One use vendor control xfer cb
 bool SwitchDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request) {
-    return false;
+	return false;
 }
 
 const uint16_t * SwitchDriver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
@@ -95,15 +95,15 @@ const uint16_t * SwitchDriver::get_descriptor_string_cb(uint8_t index, uint16_t 
 }
 
 const uint8_t * SwitchDriver::get_descriptor_device_cb() {
-    return switch_device_descriptor;
+	return switch_device_descriptor;
 }
 
 const uint8_t * SwitchDriver::get_hid_descriptor_report_cb(uint8_t itf) {
-    return switch_report_descriptor;
+	return switch_report_descriptor;
 }
 
 const uint8_t * SwitchDriver::get_descriptor_configuration_cb(uint8_t index) {
-    return switch_configuration_descriptor;
+	return switch_configuration_descriptor;
 }
 
 const uint8_t * SwitchDriver::get_descriptor_device_qualifier_cb() {

@@ -90,18 +90,18 @@ int8_t MainMenuScreen::update() {
 }
 
 /*
-	void testMenu();
+    void testMenu();
 
-	std::vector<MenuEntry> mainMenu = {
-		{"Menu 1", NULL, std::bind(&DisplayAddon::testMenu, this)},
-		{"Menu 2", NULL, std::bind(&DisplayAddon::testMenu, this)},
-		{"Menu 3", NULL, std::bind(&DisplayAddon::testMenu, this)},
-		{"Menu 4", NULL, std::bind(&DisplayAddon::testMenu, this)},
-		{"Menu 5", NULL, std::bind(&DisplayAddon::testMenu, this)},
-		{"Menu 6", NULL, std::bind(&DisplayAddon::testMenu, this)},
-		{"Menu 7", NULL, std::bind(&DisplayAddon::testMenu, this)},
-		{"Menu 8", NULL, std::bind(&DisplayAddon::testMenu, this)},
-	};
+    std::vector<MenuEntry> mainMenu = {
+        {"Menu 1", NULL, std::bind(&DisplayAddon::testMenu, this)},
+        {"Menu 2", NULL, std::bind(&DisplayAddon::testMenu, this)},
+        {"Menu 3", NULL, std::bind(&DisplayAddon::testMenu, this)},
+        {"Menu 4", NULL, std::bind(&DisplayAddon::testMenu, this)},
+        {"Menu 5", NULL, std::bind(&DisplayAddon::testMenu, this)},
+        {"Menu 6", NULL, std::bind(&DisplayAddon::testMenu, this)},
+        {"Menu 7", NULL, std::bind(&DisplayAddon::testMenu, this)},
+        {"Menu 8", NULL, std::bind(&DisplayAddon::testMenu, this)},
+    };
 
-	std::vector<MenuEntry>* currentMenu = &mainMenu;
+    std::vector<MenuEntry>* currentMenu = &mainMenu;
 */

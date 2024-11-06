@@ -9,7 +9,7 @@ void PCEngineDriver::initialize() {
 		.const1 = 0x80,
 		.const2 = 0x80,
 		.const3 = 0x80,
-		.const4 = 0,	
+		.const4 = 0,
 	};
 
 	class_driver = {
@@ -63,7 +63,7 @@ void PCEngineDriver::process(Gamepad * gamepad) {
 
 // tud_hid_get_report_cb
 uint16_t PCEngineDriver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
-    memcpy(buffer, &pcengineReport, sizeof(PCEngineReport));
+	memcpy(buffer, &pcengineReport, sizeof(PCEngineReport));
 	return sizeof(PCEngineReport);
 }
 
@@ -72,7 +72,7 @@ void PCEngineDriver::set_report(uint8_t report_id, hid_report_type_t report_type
 
 // Only XboxOG and Xbox One use vendor control xfer cb
 bool PCEngineDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request) {
-    return false;
+	return false;
 }
 
 const uint16_t * PCEngineDriver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
@@ -81,15 +81,15 @@ const uint16_t * PCEngineDriver::get_descriptor_string_cb(uint8_t index, uint16_
 }
 
 const uint8_t * PCEngineDriver::get_descriptor_device_cb() {
-    return pcengine_device_descriptor;
+	return pcengine_device_descriptor;
 }
 
 const uint8_t * PCEngineDriver::get_hid_descriptor_report_cb(uint8_t itf) {
-    return pcengine_report_descriptor;
+	return pcengine_report_descriptor;
 }
 
 const uint8_t * PCEngineDriver::get_descriptor_configuration_cb(uint8_t index) {
-    return pcengine_configuration_descriptor;
+	return pcengine_configuration_descriptor;
 }
 
 const uint8_t * PCEngineDriver::get_descriptor_device_qualifier_cb() {

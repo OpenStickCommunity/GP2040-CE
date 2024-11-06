@@ -35,7 +35,7 @@ void PS4AuthUSBListener::process() {
             if ( nonce_page == 4 ) {
                 noncelen = 32; // from 4 to 64 - 24 - 4
                 memcpy(&report_buffer[4], &ps4AuthData->ps4_auth_buffer[nonce_page*56], noncelen);
-                memset(&report_buffer[4+noncelen], 0, 24); // zero padding  
+                memset(&report_buffer[4+noncelen], 0, 24); // zero padding
             } else {
                 noncelen = 56;
                 memcpy(&report_buffer[4], &ps4AuthData->ps4_auth_buffer[nonce_page*56], noncelen);
@@ -92,7 +92,7 @@ void PS4AuthUSBListener::mount(uint8_t dev_addr, uint8_t instance, uint8_t const
     uint8_t report_count = tuh_hid_parse_report_descriptor(report_info, 4, desc_report, desc_len);
     bool isPS4Dongle = false;
     for(uint8_t i = 0; i < report_count; i++) {
-        if ( report_info[i].usage_page == 0xFFF0 && 
+        if ( report_info[i].usage_page == 0xFFF0 &&
                 (report_info[i].report_id == 0xF3) ) {
             isPS4Dongle = true;
             break;
@@ -143,11 +143,11 @@ void PS4AuthUSBListener::set_report_complete(uint8_t dev_addr, uint8_t instance,
 }
 
 void PS4AuthUSBListener::get_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
-    if ( ps4AuthData->dongle_ready == false || 
+    if ( ps4AuthData->dongle_ready == false ||
         (dev_addr != ps_dev_addr) || (instance != ps_instance) ) {
         return;
     }
-    
+
     switch(report_id) {
         case PS4AuthReport::PS4_DEFINITION:
             break;

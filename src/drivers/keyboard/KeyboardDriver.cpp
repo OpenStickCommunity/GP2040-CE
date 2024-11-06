@@ -96,14 +96,14 @@ void KeyboardDriver::process(Gamepad * gamepad) {
 	if ( keyboardReport.reportId == KEYBOARD_KEY_REPORT_ID ) {
 		keyboard_report_payload = (void *)keyboardReport.keycode;
 		keyboard_report_size = sizeof(KeyboardReport::keycode);
-		
+
 	} else {
 		keyboard_report_payload = (void *)&keyboardReport.multimedia;
 		keyboard_report_size = sizeof(KeyboardReport::multimedia);
 	}
 
 	// If we had a keycode but now have a multimedia key OR report is different
-	if (keyboard_report_size != last_report_size || 
+	if (keyboard_report_size != last_report_size ||
 			memcmp(last_report, &keyboardReport, last_report_size) != 0) {
 		if (tud_hid_ready()) {
 			if ( tud_hid_report(keyboardReport.reportId, keyboard_report_payload, keyboard_report_size) ) {
@@ -147,7 +147,7 @@ void KeyboardDriver::set_report(uint8_t report_id, hid_report_type_t report_type
 
 // Only XboxOG and Xbox One use vendor control xfer cb
 bool KeyboardDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request) {
-    return false;
+	return false;
 }
 
 const uint16_t * KeyboardDriver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
@@ -156,15 +156,15 @@ const uint16_t * KeyboardDriver::get_descriptor_string_cb(uint8_t index, uint16_
 }
 
 const uint8_t * KeyboardDriver::get_descriptor_device_cb() {
-    return keyboard_device_descriptor;
+	return keyboard_device_descriptor;
 }
 
 const uint8_t * KeyboardDriver::get_hid_descriptor_report_cb(uint8_t itf) {
-    return keyboard_report_descriptor;
+	return keyboard_report_descriptor;
 }
 
 const uint8_t * KeyboardDriver::get_descriptor_configuration_cb(uint8_t index) {
-    return keyboard_configuration_descriptor;
+	return keyboard_configuration_descriptor;
 }
 
 const uint8_t * KeyboardDriver::get_descriptor_device_qualifier_cb() {

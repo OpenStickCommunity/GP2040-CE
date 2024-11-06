@@ -27,7 +27,7 @@ static GP2040Aux * gp2040Core1 = nullptr;
 void core1() {
 	multicore_lockout_victim_init(); // block core 1
 
-	// Create GP2040 w/ Additional Modules for Core 1	
+	// Create GP2040 w/ Additional Modules for Core 1
 	gp2040Core1->setup();
 	gp2040Core1->run();
 }

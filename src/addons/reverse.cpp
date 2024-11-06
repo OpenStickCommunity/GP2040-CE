@@ -7,7 +7,7 @@
 bool ReverseInput::available() {
     const ReverseOptions& options = Storage::getInstance().getAddonOptions().reverseOptions;
     pinButtonReverse = options.buttonPin;
-	return options.enabled && isValidPin(options.buttonPin);
+    return options.enabled && isValidPin(options.buttonPin);
 }
 
 void ReverseInput::setup()
@@ -33,10 +33,10 @@ void ReverseInput::setup()
     actionRight = options.actionRight;
 
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
-	mapDpadUp    = gamepad->mapDpadUp;
-	mapDpadDown  = gamepad->mapDpadDown;
-	mapDpadLeft  = gamepad->mapDpadLeft;
-	mapDpadRight = gamepad->mapDpadRight;
+    mapDpadUp    = gamepad->mapDpadUp;
+    mapDpadDown  = gamepad->mapDpadDown;
+    mapDpadLeft  = gamepad->mapDpadLeft;
+    mapDpadRight = gamepad->mapDpadRight;
 
     invertXAxis = gamepad->getOptions().invertXAxis;
     invertYAxis = gamepad->getOptions().invertYAxis;

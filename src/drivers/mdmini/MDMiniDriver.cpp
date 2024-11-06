@@ -71,7 +71,7 @@ void MDMiniDriver::set_report(uint8_t report_id, hid_report_type_t report_type, 
 
 // Only XboxOG and Xbox One use vendor control xfer cb
 bool MDMiniDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request) {
-    return false;
+	return false;
 }
 
 const uint16_t * MDMiniDriver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
@@ -80,15 +80,15 @@ const uint16_t * MDMiniDriver::get_descriptor_string_cb(uint8_t index, uint16_t 
 }
 
 const uint8_t * MDMiniDriver::get_descriptor_device_cb() {
-    return mdmini_device_descriptor;
+	return mdmini_device_descriptor;
 }
 
 const uint8_t * MDMiniDriver::get_hid_descriptor_report_cb(uint8_t itf) {
-    return mdmini_report_descriptor;
+	return mdmini_report_descriptor;
 }
 
 const uint8_t * MDMiniDriver::get_descriptor_configuration_cb(uint8_t index) {
-    return mdmini_configuration_descriptor;
+	return mdmini_configuration_descriptor;
 }
 
 const uint8_t * MDMiniDriver::get_descriptor_device_qualifier_cb() {

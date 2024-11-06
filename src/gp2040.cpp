@@ -67,23 +67,23 @@ void GP2040::setup() {
 
 	// Setup Gamepad
 	gamepad->setup();
-	
+
 	// now we can load the latest configured profile, which will map the
 	// new set of GPIOs to use...
-    this->initializeStandardGpio();
+	this->initializeStandardGpio();
 
-    const GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
+	const GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
 
-    // check setup options and add modes to the list
-    // user modes
-    bootActions.insert({GAMEPAD_MASK_B1, gamepadOptions.inputModeB1});
-    bootActions.insert({GAMEPAD_MASK_B2, gamepadOptions.inputModeB2});
-    bootActions.insert({GAMEPAD_MASK_B3, gamepadOptions.inputModeB3});
-    bootActions.insert({GAMEPAD_MASK_B4, gamepadOptions.inputModeB4});
-    bootActions.insert({GAMEPAD_MASK_L1, gamepadOptions.inputModeL1});
-    bootActions.insert({GAMEPAD_MASK_L2, gamepadOptions.inputModeL2});
-    bootActions.insert({GAMEPAD_MASK_R1, gamepadOptions.inputModeR1});
-    bootActions.insert({GAMEPAD_MASK_R2, gamepadOptions.inputModeR2});
+	// check setup options and add modes to the list
+	// user modes
+	bootActions.insert({GAMEPAD_MASK_B1, gamepadOptions.inputModeB1});
+	bootActions.insert({GAMEPAD_MASK_B2, gamepadOptions.inputModeB2});
+	bootActions.insert({GAMEPAD_MASK_B3, gamepadOptions.inputModeB3});
+	bootActions.insert({GAMEPAD_MASK_B4, gamepadOptions.inputModeB4});
+	bootActions.insert({GAMEPAD_MASK_L1, gamepadOptions.inputModeL1});
+	bootActions.insert({GAMEPAD_MASK_L2, gamepadOptions.inputModeL2});
+	bootActions.insert({GAMEPAD_MASK_R1, gamepadOptions.inputModeR1});
+	bootActions.insert({GAMEPAD_MASK_R2, gamepadOptions.inputModeR2});
 
 	// Initialize our ADC (various add-ons)
 	adc_init();
@@ -175,7 +175,7 @@ void GP2040::setup() {
 	DriverManager::getInstance().setup(inputMode);
 
 	// Save the changed input mode
-	if (inputMode != gamepad->getOptions().inputMode) {	
+	if (inputMode != gamepad->getOptions().inputMode) {
 		gamepad->setInputMode(inputMode);
 		gamepad->save();
 	}
@@ -258,16 +258,16 @@ void GP2040::run() {
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
 	bool configMode = Storage::getInstance().GetConfigMode();
-    
-    // Start the TinyUSB Device functionality
-    tud_init(TUD_OPT_RHPORT);
-    
+
+	// Start the TinyUSB Device functionality
+	tud_init(TUD_OPT_RHPORT);
+
 	while (1) { // LOOP
 		this->getReinitGamepad(gamepad);
 
 		// Do any queued saves in StorageManager
 		Storage::getInstance().performEnqueuedSaves();
-		
+
 		// Debounce
 		debounceGpioGetAll();
 		// Read Gamepad
@@ -275,7 +275,7 @@ void GP2040::run() {
 
 		// Config Loop (Web-Config does not require gamepad)
 		if (configMode == true) {
-			
+
 			ConfigManager::getInstance().loop();
 			rebootHotkeys.process(gamepad, configMode);
 			continue;
@@ -289,7 +289,7 @@ void GP2040::run() {
 
 		gamepad->hotkey(); 	// check for MPGS hotkeys
 		rebootHotkeys.process(gamepad, configMode);
-		
+
 		gamepad->process(); // process through MPGS
 
 		// (Post) Process for add-ons
@@ -300,10 +300,10 @@ void GP2040::run() {
 
 		// Process Input Driver
 		inputDriver->process(gamepad);
-		
+
 		// Process USB Report Addons
 		addons.ProcessAddons(ADDON_PROCESS::CORE0_USBREPORT);
-		
+
 		tud_task(); // TinyUSB Task update
 	}
 }
@@ -346,13 +346,13 @@ GP2040::BootAction GP2040::getBootAction() {
 				// Determine boot action based on gamepad state during boot
 				Gamepad * gamepad = Storage::getInstance().GetGamepad();
 				Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
-				
+
 				debounceGpioGetAll();
 				gamepad->read();
 
 				// Pre-Process add-ons for MPGS
 				addons.PreprocessAddons(ADDON_PROCESS::CORE0_INPUT);
-				
+
 				gamepad->process(); // process through MPGS
 
 				// (Post) Process for add-ons
@@ -361,57 +361,57 @@ GP2040::BootAction GP2040::getBootAction() {
 				// Copy Processed Gamepad for Core1 (race condition otherwise)
 				memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
 
-                const ForcedSetupOptions& forcedSetupOptions = Storage::getInstance().getForcedSetupOptions();
-                bool modeSwitchLocked = forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_MODE_SWITCH ||
-                                        forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_BOTH;
+				const ForcedSetupOptions& forcedSetupOptions = Storage::getInstance().getForcedSetupOptions();
+				bool modeSwitchLocked = forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_MODE_SWITCH ||
+										forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_BOTH;
 
-                bool webConfigLocked  = forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_WEB_CONFIG ||
-                                        forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_BOTH;
+				bool webConfigLocked  = forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_WEB_CONFIG ||
+										forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_BOTH;
 
 				if (gamepad->pressedS1() && gamepad->pressedS2() && gamepad->pressedUp()) {
 					return BootAction::ENTER_USB_MODE;
 				} else if (!webConfigLocked && gamepad->pressedS2()) {
 					return BootAction::ENTER_WEBCONFIG_MODE;
-                } else {
-                    if (!modeSwitchLocked) {
-                        if (auto search = bootActions.find(gamepad->state.buttons); search != bootActions.end()) {
-                            switch (search->second) {
-                                case INPUT_MODE_XINPUT: 
-                                    return BootAction::SET_INPUT_MODE_XINPUT;
-                                case INPUT_MODE_SWITCH: 
-                                    return BootAction::SET_INPUT_MODE_SWITCH;
-                                case INPUT_MODE_KEYBOARD: 
-                                    return BootAction::SET_INPUT_MODE_KEYBOARD;
-                                case INPUT_MODE_GENERIC:
-                                    return BootAction::SET_INPUT_MODE_GENERIC;
-                                case INPUT_MODE_PS3:
-                                    return BootAction::SET_INPUT_MODE_PS3;
-                                case INPUT_MODE_PS4: 
-                                    return BootAction::SET_INPUT_MODE_PS4;
-                                case INPUT_MODE_PS5: 
-                                    return BootAction::SET_INPUT_MODE_PS5;
-                                case INPUT_MODE_NEOGEO: 
-                                    return BootAction::SET_INPUT_MODE_NEOGEO;
-                                case INPUT_MODE_MDMINI: 
-                                    return BootAction::SET_INPUT_MODE_MDMINI;
-                                case INPUT_MODE_PCEMINI: 
-                                    return BootAction::SET_INPUT_MODE_PCEMINI;
-                                case INPUT_MODE_EGRET: 
-                                    return BootAction::SET_INPUT_MODE_EGRET;
-                                case INPUT_MODE_ASTRO: 
-                                    return BootAction::SET_INPUT_MODE_ASTRO;
-                                case INPUT_MODE_PSCLASSIC: 
-                                    return BootAction::SET_INPUT_MODE_PSCLASSIC;
-                                case INPUT_MODE_XBOXORIGINAL: 
-                                    return BootAction::SET_INPUT_MODE_XBOXORIGINAL;
-                                case INPUT_MODE_XBONE:
-                                    return BootAction::SET_INPUT_MODE_XBONE;
-                                default:
-                                    return BootAction::NONE;
-                            }
-                        }
-                    }
-                }
+				} else {
+					if (!modeSwitchLocked) {
+						if (auto search = bootActions.find(gamepad->state.buttons); search != bootActions.end()) {
+							switch (search->second) {
+								case INPUT_MODE_XINPUT:
+									return BootAction::SET_INPUT_MODE_XINPUT;
+								case INPUT_MODE_SWITCH:
+									return BootAction::SET_INPUT_MODE_SWITCH;
+								case INPUT_MODE_KEYBOARD:
+									return BootAction::SET_INPUT_MODE_KEYBOARD;
+								case INPUT_MODE_GENERIC:
+									return BootAction::SET_INPUT_MODE_GENERIC;
+								case INPUT_MODE_PS3:
+									return BootAction::SET_INPUT_MODE_PS3;
+								case INPUT_MODE_PS4:
+									return BootAction::SET_INPUT_MODE_PS4;
+								case INPUT_MODE_PS5:
+									return BootAction::SET_INPUT_MODE_PS5;
+								case INPUT_MODE_NEOGEO:
+									return BootAction::SET_INPUT_MODE_NEOGEO;
+								case INPUT_MODE_MDMINI:
+									return BootAction::SET_INPUT_MODE_MDMINI;
+								case INPUT_MODE_PCEMINI:
+									return BootAction::SET_INPUT_MODE_PCEMINI;
+								case INPUT_MODE_EGRET:
+									return BootAction::SET_INPUT_MODE_EGRET;
+								case INPUT_MODE_ASTRO:
+									return BootAction::SET_INPUT_MODE_ASTRO;
+								case INPUT_MODE_PSCLASSIC:
+									return BootAction::SET_INPUT_MODE_PSCLASSIC;
+								case INPUT_MODE_XBOXORIGINAL:
+									return BootAction::SET_INPUT_MODE_XBOXORIGINAL;
+								case INPUT_MODE_XBONE:
+									return BootAction::SET_INPUT_MODE_XBONE;
+								default:
+									return BootAction::NONE;
+							}
+						}
+					}
+				}
 
 				break;
 			}

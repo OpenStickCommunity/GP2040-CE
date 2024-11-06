@@ -19,7 +19,7 @@
 // Controller calibration
 static constexpr uint8_t output_0x02[] = {
     0xfe, 0xff, 0x0e, 0x00, 0x04, 0x00, 0xd4, 0x22,
-    0x2a, 0xdd, 0xbb, 0x22, 0x5e, 0xdd, 0x81, 0x22, 
+    0x2a, 0xdd, 0xbb, 0x22, 0x5e, 0xdd, 0x81, 0x22,
     0x84, 0xdd, 0x1c, 0x02, 0x1c, 0x02, 0x85, 0x1f,
     0xb0, 0xe0, 0xc6, 0x20, 0xb5, 0xe0, 0xb1, 0x20,
     0x83, 0xdf, 0x0c, 0x00
@@ -211,7 +211,7 @@ void PS4Driver::process(Gamepad * gamepad) {
     touchpadData.p1.unpressed = ps4Report.button_touchpad ? 0 : 1;
     ps4Report.touchpad_active = ps4Report.button_touchpad ? 0x01 : 0x00;
     if (ps4Report.button_touchpad) {
-        // make the assumption that since touchpad button is already being pressed, 
+        // make the assumption that since touchpad button is already being pressed,
         // the first touch position is in use and no other "touches" will be present
         if (gamepad->pressedA3()) {
             touchpadData.p1.set_x(PS4_TP_X_MIN);
@@ -227,7 +227,7 @@ void PS4Driver::process(Gamepad * gamepad) {
             ps4Report.touchpad_active = gamepad->auxState.sensors.touchpad[0].active;
             touchpadData.p1.set_x(gamepad->auxState.sensors.touchpad[0].x);
             touchpadData.p1.set_y(gamepad->auxState.sensors.touchpad[0].y);
-            
+
             if (gamepad->auxState.sensors.touchpad[1].enabled) {
                 touchpadData.p2.unpressed = !gamepad->auxState.sensors.touchpad[1].active;
                 touchpadData.p2.set_x(gamepad->auxState.sensors.touchpad[1].x);
@@ -247,9 +247,9 @@ void PS4Driver::process(Gamepad * gamepad) {
     }
     if (!pointTwoTouched && !touchpadData.p2.unpressed) {
         touchCounter = (touchCounter < PS4_TP_MAX_COUNT ? touchCounter+1 : 0);
-    
+
         touchpadData.p2.counter = touchCounter;
-    
+
         pointTwoTouched = true;
     } else if (pointTwoTouched && touchpadData.p2.unpressed) {
         pointTwoTouched = false;
@@ -462,9 +462,9 @@ void PS4Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uin
         }
     } else if (report_type == HID_REPORT_TYPE_FEATURE) {
         if (report_id == PS4AuthReport::PS4_SET_HOST_MAC) {
-            // 
+            //
         } else if (report_id == PS4AuthReport::PS4_SET_USB_BT_CONTROL) {
-            // 
+            //
         } else if (report_id == PS4AuthReport::PS4_SET_AUTH_PAYLOAD) {
             uint8_t sendBuffer[64];
             uint8_t nonce_id;

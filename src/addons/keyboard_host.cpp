@@ -8,7 +8,7 @@
 
 bool KeyboardHostAddon::available() {
   const KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;
-	return keyboardHostOptions.enabled && PeripheralManager::getInstance().isUSBEnabled(0);
+  return keyboardHostOptions.enabled && PeripheralManager::getInstance().isUSBEnabled(0);
 }
 
 void KeyboardHostAddon::setup() {

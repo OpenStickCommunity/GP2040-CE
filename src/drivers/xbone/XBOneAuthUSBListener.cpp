@@ -12,7 +12,7 @@
 
 // power-on states and rumble-on with everything disabled
 static uint8_t xb1_power_on[] = {0x06, 0x62, 0x45, 0xb8, 0x77, 0x26, 0x2c, 0x55,
-                                 0x53, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1f};
+                                0x53, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1f};
 static uint8_t xb1_power_on_single[] = {0x00};
 static uint8_t xb1_rumble_on[] = {0x00, 0x0f, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0xeb};
 static uint8_t xb1_led_on[] = {0x00, 0x01, 0x14}; // 0x01 - LED on, 0x14 - Brightness
@@ -20,8 +20,8 @@ static uint8_t xb1_led_on[] = {0x00, 0x01, 0x14}; // 0x01 - LED on, 0x14 - Brigh
 // Report Queue for big report sizes from dongle
 #include <queue>
 typedef struct {
-	uint8_t report[XBONE_ENDPOINT_SIZE];
-	uint16_t len;
+    uint8_t report[XBONE_ENDPOINT_SIZE];
+    uint16_t len;
 } report_queue_t;
 
 static std::queue<report_queue_t> report_queue;
@@ -40,7 +40,7 @@ void XBOneAuthUSBListener::setAuthData(XboxOneAuthData * authData ) {
 }
 
 void XBOneAuthUSBListener::process() {
-    // Do nothing if auth data or dongle are not ready 
+    // Do nothing if auth data or dongle are not ready
     if ( mounted == false || xboxOneAuthData == nullptr) // do nothing if we have not mounted an xbox one dongle
         return;
 
@@ -141,7 +141,7 @@ void XBOneAuthUSBListener::report_received(uint8_t dev_addr, uint8_t instance, u
             break;
         case GIP_AUTH:
         case GIP_FINAL_AUTH:
-            if ( incomingXGIP.getChunked() == false || 
+            if ( incomingXGIP.getChunked() == false ||
                 (incomingXGIP.getChunked() == true && incomingXGIP.endOfChunk() == true )) {
                 xboxOneAuthData->dongleBuffer.setBuffer(incomingXGIP.getData(), incomingXGIP.getDataLength(),
                     incomingXGIP.getSequence(), incomingXGIP.getCommand());
@@ -166,10 +166,10 @@ void XBOneAuthUSBListener::process_report_queue() {
     uint32_t now = to_ms_since_boot(get_absolute_time());
     if ( mounted == true && !report_queue.empty() && (now - lastReportQueue) > REPORT_QUEUE_INTERVAL  ) {
         if ( tuh_xinput_send_report(xbone_dev_addr, xbone_instance, report_queue.front().report, report_queue.front().len) ) {
-			report_queue.pop();
+            report_queue.pop();
             lastReportQueue = now; // last time we checked report queue
         } else {
             sleep_ms(REPORT_QUEUE_INTERVAL);
         }
-	}
+    }
 }

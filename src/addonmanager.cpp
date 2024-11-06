@@ -10,7 +10,7 @@ bool AddonManager::LoadAddon(GPAddon* addon, ADDON_PROCESS processAt) {
         addons.push_back(block);
         return true;
     } else {
-        delete addon; // Don't use the memory if we don't have to   
+        delete addon; // Don't use the memory if we don't have to
     }
 
     return false;

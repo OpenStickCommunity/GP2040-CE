@@ -33,7 +33,7 @@ void WiiExtensionInput::setup() {
     uIntervalMS = 0;
 
     currentConfig = NULL;
-    
+
     //wii = new WiiExtensionDevice(
     //    i2c,
     //    WII_EXTENSION_I2C_ADDR);
@@ -53,7 +53,7 @@ void WiiExtensionInput::process() {
         wii->poll();
 
         update();
-              
+
         nextTimer = getMillis() + uIntervalMS;
     }
 
@@ -254,7 +254,7 @@ void WiiExtensionInput::update() {
             isTouch = true;
         } else if (wii->extensionType == WII_EXTENSION_MOTION_PLUS) {
             currentConfig = &extensionConfigs[WII_EXTENSION_NUNCHUCK];
-            
+
             gyroscopeX = wii->getController()->motionState[WiiMotions::WII_GYROSCOPE_YAW];
             gyroscopeY = wii->getController()->motionState[WiiMotions::WII_GYROSCOPE_ROLL];
             gyroscopeZ = wii->getController()->motionState[WiiMotions::WII_GYROSCOPE_PITCH];
@@ -293,7 +293,7 @@ void WiiExtensionInput::reloadConfig() {
     // digital mapping
     setControllerButton(WII_EXTENSION_NUNCHUCK, WiiButtons::WII_BUTTON_C, wiiOptions.controllers.nunchuk.buttonC);
     setControllerButton(WII_EXTENSION_NUNCHUCK, WiiButtons::WII_BUTTON_Z, wiiOptions.controllers.nunchuk.buttonZ);
-    
+
     setControllerButton(WII_EXTENSION_CLASSIC, WiiButtons::WII_BUTTON_A, wiiOptions.controllers.classic.buttonA);
     setControllerButton(WII_EXTENSION_CLASSIC, WiiButtons::WII_BUTTON_B, wiiOptions.controllers.classic.buttonB);
     setControllerButton(WII_EXTENSION_CLASSIC, WiiButtons::WII_BUTTON_X, wiiOptions.controllers.classic.buttonX);
@@ -421,7 +421,7 @@ void WiiExtensionInput::updateAnalogState() {
 
     for (auto currChange = analogChanges.begin(); currChange != analogChanges.end(); ++currChange) {
         if (!currChange->second.empty()) {
-            // this analog type has changes. get the last one, use it, and clear the list.            
+            // this analog type has changes. get the last one, use it, and clear the list.
             axisType = currChange->first;
             analogInput = currChange->second.front().analogInput;
             analogValue = getAverage(currChange->second);

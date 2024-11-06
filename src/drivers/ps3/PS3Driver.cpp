@@ -166,7 +166,7 @@ void PS3Driver::process(Gamepad * gamepad) {
 
 // unknown
 static constexpr uint8_t output_ps3_0x01[] = {
-    0x01, 0x04, 0x00, 0x0b, 0x0c, 0x01, 0x02, 0x18, 
+    0x01, 0x04, 0x00, 0x0b, 0x0c, 0x01, 0x02, 0x18,
     0x18, 0x18, 0x18, 0x09, 0x0a, 0x10, 0x11, 0x12,
     0x13, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x02,
     0x02, 0x02, 0x02, 0x00, 0x00, 0x00, 0x04, 0x04,
@@ -294,8 +294,8 @@ bool PS3Driver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_contr
 }
 
 const uint16_t * PS3Driver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
-	const char *value = (const char *)ps3_string_descriptors[index];
-	return getStringDescriptor(value, index); // getStringDescriptor returns a static array
+    const char *value = (const char *)ps3_string_descriptors[index];
+    return getStringDescriptor(value, index); // getStringDescriptor returns a static array
 }
 
 const uint8_t * PS3Driver::get_descriptor_device_cb() {
@@ -311,9 +311,9 @@ const uint8_t * PS3Driver::get_descriptor_configuration_cb(uint8_t index) {
 }
 
 const uint8_t * PS3Driver::get_descriptor_device_qualifier_cb() {
-	return nullptr;
+    return nullptr;
 }
 
 uint16_t PS3Driver::GetJoystickMidValue() {
-	return PS3_JOYSTICK_MID << 8;
+    return PS3_JOYSTICK_MID << 8;
 }

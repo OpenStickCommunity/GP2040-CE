@@ -1,24 +1,24 @@
 #include "obd_ssd1306.h"
 
 void GPGFX_OBD_SSD1306::init(GPGFX_DisplayTypeOptions options) {
-    _options.displayType = options.displayType;
-    _options.i2c = options.i2c;
-    _options.spi = options.spi;
-    _options.size = options.size;
-    _options.address = options.address;
-    _options.orientation = options.orientation;
-    _options.inverted = options.inverted;
-    _options.font = options.font;
+	_options.displayType = options.displayType;
+	_options.i2c = options.i2c;
+	_options.spi = options.spi;
+	_options.size = options.size;
+	_options.address = options.address;
+	_options.orientation = options.orientation;
+	_options.inverted = options.inverted;
+	_options.font = options.font;
 
-    obdI2CInit(&obd,
-        _options.size,
-        _options.address,
-        _options.orientation,
-        _options.inverted,
-        1,
-        _options.i2c,
-        -1
-    );
+	obdI2CInit(&obd,
+		_options.size,
+		_options.address,
+		_options.orientation,
+		_options.inverted,
+		1,
+		_options.i2c,
+		-1
+	);
 
 	obdSetFonts(GP_Font_Standard, GP_Font_Basic, GP_Font_Big);
 
@@ -35,11 +35,11 @@ void GPGFX_OBD_SSD1306::init(GPGFX_DisplayTypeOptions options) {
 }
 
 void GPGFX_OBD_SSD1306::setPower(bool isPowered) {
-    obdPower(&obd, isPowered);
+	obdPower(&obd, isPowered);
 }
 
 void GPGFX_OBD_SSD1306::clear() {
-    clearScreen(0);
+	clearScreen(0);
 }
 
 void GPGFX_OBD_SSD1306::drawPixel(uint8_t x, uint8_t y, uint32_t color) {
@@ -47,41 +47,41 @@ void GPGFX_OBD_SSD1306::drawPixel(uint8_t x, uint8_t y, uint32_t color) {
 }
 
 void GPGFX_OBD_SSD1306::drawText(uint8_t x, uint8_t y, std::string text, uint8_t invert) {
-    obdWriteString(&obd, 0, x, y, (char*)text.c_str(), FONT_6x8, 0, 1);
+	obdWriteString(&obd, 0, x, y, (char*)text.c_str(), FONT_6x8, 0, 1);
 }
 
 void GPGFX_OBD_SSD1306::drawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint32_t color, uint8_t filled) {
-    obdDrawLine(&obd, x1, y1, x2, y2, color, filled);
+	obdDrawLine(&obd, x1, y1, x2, y2, color, filled);
 }
 
 void GPGFX_OBD_SSD1306::drawEllipse(uint16_t x, uint16_t y, uint32_t radiusX, uint32_t radiusY, uint32_t color, uint8_t filled) {
-    obdPreciseEllipse(&obd, x, y, radiusX, radiusY, color, filled);
+	obdPreciseEllipse(&obd, x, y, radiusX, radiusY, color, filled);
 }
 
 void GPGFX_OBD_SSD1306::drawRectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint32_t color, uint8_t filled, double rotationAngle) {
-    obdRectangle(&obd, x, y, width, height, color, filled);
+	obdRectangle(&obd, x, y, width, height, color, filled);
 }
 
 void GPGFX_OBD_SSD1306::drawSprite(uint8_t* spriteData, uint16_t width, uint16_t height, uint16_t pitch, uint16_t x, uint16_t y, uint8_t priority) {
-    obdDrawSprite(&obd, spriteData, width, height, pitch, x, y, priority);
+	obdDrawSprite(&obd, spriteData, width, height, pitch, x, y, priority);
 }
 
 void GPGFX_OBD_SSD1306::drawBuffer(uint8_t *pBuffer) {
-    obdDumpBuffer(&obd, NULL);
+	obdDumpBuffer(&obd, NULL);
 }
 
 //------------------------------------------------------------
 
 int GPGFX_OBD_SSD1306::initDisplay(int typeOverride) {
 	return obdI2CInit(&obd,
-	    typeOverride > 0 ? typeOverride : _options.size,
+		typeOverride > 0 ? typeOverride : _options.size,
 		_options.address,
 		_options.orientation,
 		_options.inverted,
 		1,
 		_options.i2c,
 		-1
-    );
+	);
 }
 
 bool GPGFX_OBD_SSD1306::isSH1106(int detectedDisplay) {

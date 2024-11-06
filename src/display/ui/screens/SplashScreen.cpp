@@ -13,8 +13,8 @@ void SplashScreen::shutdown() {
 }
 
 void SplashScreen::drawScreen() {
-	if (getDisplayOptions().splashMode == static_cast<SplashMode>(SPLASH_MODE_NONE)) {
-		getRenderer()->drawText(0, 4, " Splash NOT enabled.");
+    if (getDisplayOptions().splashMode == static_cast<SplashMode>(SPLASH_MODE_NONE)) {
+        getRenderer()->drawText(0, 4, " Splash NOT enabled.");
     } else {
         int splashMode = getDisplayOptions().splashMode;
         int splashSpeed = 40;
@@ -36,7 +36,7 @@ void SplashScreen::drawScreen() {
                 getRenderer()->drawSprite((uint8_t *)bootLogoBottom, 128, 35, 10, 0, std::max<int>(64 - (timeMS / splashSpeed), 20), 1);
             }
         }
-	}
+    }
 }
 
 int8_t SplashScreen::update() {

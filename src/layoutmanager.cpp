@@ -45,7 +45,7 @@ LayoutManager::LayoutList LayoutManager::getLeftLayout(uint16_t index) {
     // buttons
     // parameters: x, y, radiusX/width, radiusY/height, stroke, fill, Gamepad button mask, shape
     switch(index) {
-         // levers
+        // levers
         // parameters: x, y, radiusX/width, radiusY/height, stroke, fill, DpadMode
         case BUTTON_LAYOUT_STICK:
             return drawArcadeStick();
@@ -129,7 +129,7 @@ LayoutManager::LayoutList LayoutManager::getRightLayout(uint16_t index) {
     // buttons
     // parameters: x, y, radiusX/width, radiusY/height, stroke, fill, Gamepad button mask, shape
     switch(index) {
-         case BUTTON_LAYOUT_ARCADE:
+        case BUTTON_LAYOUT_ARCADE:
             return this->drawArcadeButtons();
         case BUTTON_LAYOUT_STICKLESSB:
             return this->drawSticklessButtons();
@@ -257,7 +257,7 @@ LayoutManager::LayoutList LayoutManager::adjustByCustomSettings(LayoutManager::L
 
 LayoutManager::LayoutList LayoutManager::drawStickless()
 {
-	return BUTTON_GROUP_STICKLESS;
+    return BUTTON_GROUP_STICKLESS;
 }
 
 LayoutManager::LayoutList LayoutManager::drawWasdBox()
@@ -500,17 +500,17 @@ LayoutManager::LayoutList LayoutManager::drawBandHeroStrumA()
     return BUTTON_GROUP_BANDHERO_STRUM_A;
 }
 
-LayoutManager::LayoutList LayoutManager::draw6GAWDLeft() 
+LayoutManager::LayoutList LayoutManager::draw6GAWDLeft()
 {
     return BUTTON_GROUP_6GAWD_A;
 }
 
-LayoutManager::LayoutList LayoutManager::draw6GAWDAllButtonLeft() 
+LayoutManager::LayoutList LayoutManager::draw6GAWDAllButtonLeft()
 {
     return BUTTON_GROUP_6GAWD_ALLBUTTON_A;
 }
 
-LayoutManager::LayoutList LayoutManager::draw6GAWDAllButtonPlusLeft() 
+LayoutManager::LayoutList LayoutManager::draw6GAWDAllButtonPlusLeft()
 {
     return BUTTON_GROUP_6GAWD_ALLBUTTONPLUS_A;
 }

@@ -124,7 +124,7 @@ PLEDAnimationState getXBoneAnimationNEOPICO(Gamepad * gamepad)
 		.animation = PLED_ANIM_OFF
 	};
 
-	if ( gamepad->auxState.playerID.ledValue == 1 ) { 
+	if ( gamepad->auxState.playerID.ledValue == 1 ) {
 		animationState.animation = PLED_ANIM_SOLID;
 	}
 

@@ -17,7 +17,7 @@ bool DRV8833RumbleAddon::available() {
 
 void DRV8833RumbleAddon::setup() {
 	const DRV8833RumbleOptions& options = Storage::getInstance().getAddonOptions().drv8833RumbleOptions;
-    Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
+	Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
 
 	leftMotorPin = options.leftMotorPin;
 	rightMotorPin = options.rightMotorPin;
@@ -61,9 +61,9 @@ void DRV8833RumbleAddon::setup() {
 }
 
 bool DRV8833RumbleAddon::compareRumbleState(Gamepad * gamepad) {
-	if (currentRumbleState.leftActuator.active == gamepad->auxState.haptics.leftActuator.active && 
-		currentRumbleState.leftActuator.intensity == gamepad->auxState.haptics.leftActuator.intensity && 
-		currentRumbleState.rightActuator.active == gamepad->auxState.haptics.rightActuator.active && 
+	if (currentRumbleState.leftActuator.active == gamepad->auxState.haptics.leftActuator.active &&
+		currentRumbleState.leftActuator.intensity == gamepad->auxState.haptics.leftActuator.intensity &&
+		currentRumbleState.rightActuator.active == gamepad->auxState.haptics.rightActuator.active &&
 		currentRumbleState.rightActuator.intensity == gamepad->auxState.haptics.rightActuator.intensity)
 		return true;
 

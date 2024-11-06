@@ -64,7 +64,7 @@ void tud_resume_cb(void) {
 
 // Vendor Controlled XFER occured
 bool tud_vendor_control_xfer_cb(uint8_t rhport, uint8_t stage,
-                                tusb_control_request_t const *request) {
+								tusb_control_request_t const *request) {
 	return DriverManager::getInstance().getDriver()->vendor_control_xfer_cb(rhport, stage, request);
 }
 

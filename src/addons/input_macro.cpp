@@ -203,7 +203,7 @@ void InputMacro::runCurrentMacro() {
     if ((currentMicros - macroStartTime) >= macroInputHoldTime) {
         macroStartTime = currentMicros;
         macroInputPosition++;
-        
+
         if (macroInputPosition >= (macro.macroInputs_count)) {
             if ( macro.macroType == ON_PRESS ) {
                 reset(); // On press = no more macro

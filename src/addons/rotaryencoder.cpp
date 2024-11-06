@@ -41,17 +41,17 @@ void RotaryEncoderInput::setup()
 
     for (uint8_t i = 0; i < MAX_ENCODERS; i++) {
         encoderValues[i] = 0;
-   
+
         if (encoderMap[i].enabled) {
             gpio_init(encoderMap[i].pinA);             // Initialize pin
             gpio_set_dir(encoderMap[i].pinA, GPIO_IN); // Set as INPUT
             gpio_pull_up(encoderMap[i].pinA);          // Set as PULLUP
-            
+
             gpio_init(encoderMap[i].pinB);             // Initialize pin
             gpio_set_dir(encoderMap[i].pinB, GPIO_IN); // Set as INPUT
             gpio_pull_up(encoderMap[i].pinB);          // Set as PULLUP
         }
-    
+
         if ((encoderMap[i].mode == ENCODER_MODE_LEFT_TRIGGER) || (encoderMap[i].mode == ENCODER_MODE_RIGHT_TRIGGER)) {
             gamepad->hasAnalogTriggers = true;
             encoderMap[i].minRange = GAMEPAD_TRIGGER_MIN;
@@ -156,7 +156,7 @@ uint16_t RotaryEncoderInput::mapEncoderValueStick(int8_t index, int32_t encoderV
     } else {
         int32_t mappedValue = map(encoderValue, minValue, maxValue, encoderMap[index].minRange+1, encoderMap[index].maxRange);
         int32_t constrainedValue = mappedValue;
-        
+
         if (constrainedValue < encoderMap[index].minRange+1) constrainedValue = encoderMap[index].minRange+1;
         if (constrainedValue > encoderMap[index].maxRange) constrainedValue = encoderMap[index].maxRange;
 

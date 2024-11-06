@@ -20,7 +20,7 @@ bool AnalogInput::available() {
 
 void AnalogInput::setup() {
     const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
-    
+
     // Setup our ADC Pair of Sticks
     adc_pairs[0].x_pin = analogOptions.analogAdc1PinX;
     adc_pairs[0].y_pin = analogOptions.analogAdc1PinY;
@@ -74,7 +74,7 @@ void AnalogInput::setup() {
 
 void AnalogInput::process() {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
-    
+
     uint16_t joystickMid = GAMEPAD_JOYSTICK_MID;
     if ( DriverManager::getInstance().getDriver() != nullptr ) {
         joystickMid = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
@@ -84,7 +84,7 @@ void AnalogInput::process() {
         // Read X-Axis
         if (isValidPin(adc_pairs[i].x_pin)) {
             adc_pairs[i].x_value = readPin(adc_pairs[i].x_pin_adc, adc_pairs[i].x_center);
-            if (adc_pairs[i].analog_invert == InvertMode::INVERT_X || 
+            if (adc_pairs[i].analog_invert == InvertMode::INVERT_X ||
                 adc_pairs[i].analog_invert == InvertMode::INVERT_XY) {
                 adc_pairs[i].x_value = ANALOG_MAX - adc_pairs[i].x_value;
             }
@@ -96,7 +96,7 @@ void AnalogInput::process() {
         // Read Y-Axis
         if (isValidPin(adc_pairs[i].y_pin)) {
             adc_pairs[i].y_value = readPin(adc_pairs[i].y_pin_adc, adc_pairs[i].y_center);
-            if (adc_pairs[i].analog_invert == InvertMode::INVERT_Y || 
+            if (adc_pairs[i].analog_invert == InvertMode::INVERT_Y ||
                 adc_pairs[i].analog_invert == InvertMode::INVERT_XY) {
                 adc_pairs[i].y_value = ANALOG_MAX - adc_pairs[i].y_value;
             }

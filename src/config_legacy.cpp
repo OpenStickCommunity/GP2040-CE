@@ -113,7 +113,7 @@ namespace ConfigLegacy
         BUTTON_LAYOUT_STICKLESS_13,
         BUTTON_LAYOUT_STICKLESS_16,
         BUTTON_LAYOUT_STICKLESS_14,
-        BUTTON_LAYOUT_STICKLESS_R16,        
+        BUTTON_LAYOUT_STICKLESS_R16,
     };
 
     enum ButtonLayoutRight
@@ -160,7 +160,7 @@ namespace ConfigLegacy
         CUSTOM,
         LEGACY
     };
-    
+
     struct ButtonLayoutParams
     {
         union {
@@ -321,7 +321,7 @@ namespace ConfigLegacy
 
     struct GamepadOptions
     {
-        InputMode inputMode {InputMode::INPUT_MODE_XINPUT}; 
+        InputMode inputMode {InputMode::INPUT_MODE_XINPUT};
         DpadMode dpadMode {DpadMode::DPAD_MODE_DIGITAL};
         SOCDMode socdMode {SOCDMode::SOCD_MODE_NEUTRAL};
         bool invertXAxis;
@@ -593,7 +593,7 @@ static bool isValidButtonLayoutRight(ConfigLegacy::ButtonLayoutRight buttonLayou
         case BUTTON_LAYOUT_KEYBOARD8B:
         case BUTTON_LAYOUT_OPENCORE0WASDB:
         case BUTTON_LAYOUT_STICKLESS_13B:
-        case BUTTON_LAYOUT_STICKLESS_16B: 
+        case BUTTON_LAYOUT_STICKLESS_16B:
         case BUTTON_LAYOUT_STICKLESS_R16B:
         case BUTTON_LAYOUT_STICKLESS_14B:
             return true;
@@ -1081,7 +1081,7 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         SET_PROPERTY(wiiOptions, deprecatedI2cSDAPin, bytePinToIntPin(legacyAddonOptions.wiiExtensionSDAPin));
         SET_PROPERTY(wiiOptions, deprecatedI2cSCLPin, bytePinToIntPin(legacyAddonOptions.wiiExtensionSCLPin));
         SET_PROPERTY(wiiOptions, deprecatedI2cSpeed, legacyAddonOptions.wiiExtensionSpeed);
-        
+
         PS4Options& ps4Options = config.addonOptions.ps4Options;
         config.addonOptions.has_ps4Options = true;
         SET_PROPERTY(ps4Options, enabled, legacyAddonOptions.PS4ModeAddonEnabled);

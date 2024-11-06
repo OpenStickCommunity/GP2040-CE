@@ -9,7 +9,7 @@ void AstroDriver::initialize() {
 		.lx = 0x7f,
 		.ly = 0x7f,
 		.buttons = 0xf,
-		.notuse3 = 0,	
+		.notuse3 = 0,
 	};
 
 	class_driver = {
@@ -80,7 +80,7 @@ void AstroDriver::set_report(uint8_t report_id, hid_report_type_t report_type, u
 
 // Only XboxOG and Xbox One use vendor control xfer cb
 bool AstroDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request) {
-    return false;
+	return false;
 }
 
 const uint16_t * AstroDriver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
@@ -89,15 +89,15 @@ const uint16_t * AstroDriver::get_descriptor_string_cb(uint8_t index, uint16_t l
 }
 
 const uint8_t * AstroDriver::get_descriptor_device_cb() {
-    return astro_device_descriptor;
+	return astro_device_descriptor;
 }
 
 const uint8_t * AstroDriver::get_hid_descriptor_report_cb(uint8_t itf) {
-    return astro_report_descriptor;
+	return astro_report_descriptor;
 }
 
 const uint8_t * AstroDriver::get_descriptor_configuration_cb(uint8_t index) {
-    return astro_configuration_descriptor;
+	return astro_configuration_descriptor;
 }
 
 const uint8_t * AstroDriver::get_descriptor_device_qualifier_cb() {

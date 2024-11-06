@@ -36,7 +36,7 @@ void PSClassicDriver::process(Gamepad * gamepad) {
 	}
 
 	psClassicReport.buttons |=
-          (gamepad->pressedS2()    ? PSCLASSIC_MASK_SELECT   : 0)
+			(gamepad->pressedS2()    ? PSCLASSIC_MASK_SELECT   : 0)
 		| (gamepad->pressedS1()    ? PSCLASSIC_MASK_START    : 0)
 		| (gamepad->pressedB1()    ? PSCLASSIC_MASK_CROSS    : 0)
 		| (gamepad->pressedB2()    ? PSCLASSIC_MASK_CIRCLE   : 0)
@@ -64,7 +64,7 @@ void PSClassicDriver::process(Gamepad * gamepad) {
 
 // tud_hid_get_report_cb
 uint16_t PSClassicDriver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
-    memcpy(buffer, &psClassicReport, sizeof(PSClassicReport));
+	memcpy(buffer, &psClassicReport, sizeof(PSClassicReport));
 	return sizeof(PSClassicReport);
 }
 
@@ -73,7 +73,7 @@ void PSClassicDriver::set_report(uint8_t report_id, hid_report_type_t report_typ
 
 // Only XboxOG and Xbox One use vendor control xfer cb
 bool PSClassicDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request) {
-    return false;
+	return false;
 }
 
 const uint16_t * PSClassicDriver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
@@ -82,15 +82,15 @@ const uint16_t * PSClassicDriver::get_descriptor_string_cb(uint8_t index, uint16
 }
 
 const uint8_t * PSClassicDriver::get_descriptor_device_cb() {
-    return psclassic_device_descriptor;
+	return psclassic_device_descriptor;
 }
 
 const uint8_t * PSClassicDriver::get_hid_descriptor_report_cb(uint8_t itf) {
-    return psclassic_report_descriptor;
+	return psclassic_report_descriptor;
 }
 
 const uint8_t * PSClassicDriver::get_descriptor_configuration_cb(uint8_t index) {
-    return psclassic_configuration_descriptor;
+	return psclassic_configuration_descriptor;
 }
 
 const uint8_t * PSClassicDriver::get_descriptor_device_qualifier_cb() {

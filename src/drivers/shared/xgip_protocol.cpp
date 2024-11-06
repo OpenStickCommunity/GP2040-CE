@@ -118,7 +118,7 @@ bool XGIPProtocol::parse(const uint8_t * buffer, uint16_t len) {
             if ( header.length > GIP_MAX_CHUNK_SIZE ) { // if length is greater than 0x3A (bigger than 64 bytes), we know it is | 0x80 so we can ^ 0x80 and get the real length
                 copyLength ^= 0x80;  // packet length is set to length | 0x80 (0xBA instead of 0x3A)
             }
-            memcpy(&data[actualDataReceived], &buffer[6], copyLength); // 
+            memcpy(&data[actualDataReceived], &buffer[6], copyLength); //
             actualDataReceived += copyLength;
             numberOfChunksSent++; // count our chunks for the ACK
             isValidPacket = true;
