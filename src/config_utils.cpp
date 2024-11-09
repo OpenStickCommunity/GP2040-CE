@@ -477,23 +477,28 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
     // animationOptions
     if(config.animationOptions.profiles_count == 0)
+        config.animationOptions.profiles_count = 1;
+    for (unsigned int profileIndex = 0; profileIndex < 4; ++profileIndex) /* MAX_ANIMATION_PROFILES from AnimationStation.hpp */
     {
-      config.animationOptions.profiles_count = 1;
-      INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bIsValidProfile, true);
-      INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], baseNonPressedEffect, AnimationNonPressedEffects_Proto::AnimationNonPressedEffects_Proto_EFFECT_RAINBOW_ROTATE);
-      INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], basePressedEffect, AnimationPressedEffects_Proto::AnimationPressedEffects_Proto_EFFECT_RANDOM);
-      INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], baseCycleTime, 1);
-      config.animationOptions.profiles[0].notPressedStaticColors_count = NUM_BANK0_GPIOS;
-      config.animationOptions.profiles[0].pressedStaticColors_count = NUM_BANK0_GPIOS;
-      for (unsigned int index = 0; index < NUM_BANK0_GPIOS; ++index) 
-      {
-        config.animationOptions.profiles[0].notPressedStaticColors[index] = 0;
-        config.animationOptions.profiles[0].pressedStaticColors[index] = 0;
-      }
-      INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], buttonPressHoldTimeInMs, 0);
-      INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], buttonPressFadeOutTimeInMs, 0);
+        config.animationOptions.profiles[profileIndex].notPressedStaticColors_count = NUM_BANK0_GPIOS;
+        config.animationOptions.profiles[profileIndex].pressedStaticColors_count = NUM_BANK0_GPIOS;
+        if(config.animationOptions.profiles[profileIndex].has_bIsValidProfile || config.animationOptions.profiles[profileIndex].bIsValidProfile == false)
+        {
+            for (unsigned int lightIndex = 0; lightIndex < NUM_BANK0_GPIOS; ++lightIndex) 
+            {
+                config.animationOptions.profiles[profileIndex].notPressedStaticColors[lightIndex] = 0;
+                config.animationOptions.profiles[profileIndex].pressedStaticColors[lightIndex] = 0;
+            }
+        }
+
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], bIsValidProfile, profileIndex == 0 ? true : false);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], baseNonPressedEffect, AnimationNonPressedEffects_Proto::AnimationNonPressedEffects_Proto_EFFECT_RAINBOW_SYNCED);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], basePressedEffect, AnimationPressedEffects_Proto::AnimationPressedEffects_Proto_EFFECT_HELD_STATIC_COLOR);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], baseCycleTime, 1);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], buttonPressHoldTimeInMs, 500);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], buttonPressFadeOutTimeInMs, 500);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], nonPressedSpecialColour, 255 << 16); //RED
     }
-    //INIT_UNSET_PROPERTY(config.animationOptions, profiles[0], defaultProfile);
     INIT_UNSET_PROPERTY(config.animationOptions, brightness, LEDS_BRIGHTNESS);
     INIT_UNSET_PROPERTY(config.animationOptions, baseProfileIndex, 0);
     

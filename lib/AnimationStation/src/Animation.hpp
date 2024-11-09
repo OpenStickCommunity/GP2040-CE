@@ -132,7 +132,8 @@ protected:
   //notifies
   virtual void NewPressForPin(int lightIndex) {};
 
-  RGB BlendColor(RGB start, RGB end, uint32_t frame);
+  RGB BlendColor(RGB start, RGB end, float alpha);
+  RGB FadeColor(RGB start, RGB end, uint32_t TimeLeft);
 
   //Type Helpers
   bool LightTypeIsForNonPressedAnimation(LightType Type);

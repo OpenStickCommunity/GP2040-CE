@@ -198,8 +198,11 @@ void AnimationStation::SetMode(int8_t mode)
   if(mode == -1)
     return; 
 
+  //debug
+  //this->options.profiles[this->options.baseProfileIndex].baseNonPressedEffect = NONPRESSED_EFFECT_CHASE_RANDOM;
+
   //set new profile nonpressed animation
-  switch ((AnimationNonPressedEffects)this->options.profiles[this->options.baseProfileIndex].baseNonPressedEffect) 
+  switch (this->options.profiles[this->options.baseProfileIndex].baseNonPressedEffect) 
   {
   case AnimationNonPressedEffects::NONPRESSED_EFFECT_RAINBOW_SYNCED:
     this->baseAnimation = new RainbowSynced(RGBLights);
@@ -209,10 +212,34 @@ void AnimationStation::SetMode(int8_t mode)
     this->baseAnimation = new RainbowRotate(RGBLights);
     break;
 
-/*  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE:
-    this->baseAnimation = new Chase(RGBLights);
+  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_SEQUENTIAL:
+    this->baseAnimation = new Chase(RGBLights, ChaseTypes::CHASETYPES_SEQUENTIAL);
     break;
-*/
+  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_LEFT_TO_RIGHT:
+    this->baseAnimation = new Chase(RGBLights, ChaseTypes::CHASETYPES_LEFT_TO_RIGHT);
+    break;  
+  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_RIGHT_TO_LEFT:
+    this->baseAnimation = new Chase(RGBLights, ChaseTypes::CHASETYPES_RIGHT_TO_LEFT);
+    break;  
+  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_TOP_TO_BOTTOM:
+    this->baseAnimation = new Chase(RGBLights, ChaseTypes::CHASETYPES_TOP_TO_BOTTOM);
+    break;  
+  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_BOTTOM_TO_TOP:
+    this->baseAnimation = new Chase(RGBLights, ChaseTypes::CHASETYPES_BOTTOM_TO_TOP);
+    break;  
+  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_SEQUENTIAL_PINGPONG:
+    this->baseAnimation = new Chase(RGBLights, ChaseTypes::CHASETYPES_SEQUENTIAL_PINGPONG);
+    break;  
+  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_HORIZONTAL_PINGPONG:
+    this->baseAnimation = new Chase(RGBLights, ChaseTypes::CHASETYPES_HORIZONTAL_PINGPONG);
+    break;
+  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_VERTICAL_PINGPONG:
+    this->baseAnimation = new Chase(RGBLights, ChaseTypes::CHASETYPES_VERTICAL_PINGPONG);
+    break;  
+  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_RANDOM:
+    this->baseAnimation = new Chase(RGBLights, ChaseTypes::CHASETYPES_RANDOM);
+    break; 
+
   case AnimationNonPressedEffects::NONPRESSED_EFFECT_STATIC_COLOR:
     this->baseAnimation = new StaticColor(RGBLights);
     break;
@@ -222,7 +249,7 @@ void AnimationStation::SetMode(int8_t mode)
   }
 
   //set new profile pressed animation
-  switch ((AnimationPressedEffects)this->options.profiles[this->options.baseProfileIndex].basePressedEffect) 
+  switch (this->options.profiles[this->options.baseProfileIndex].basePressedEffect) 
   {
   case AnimationPressedEffects::PRESSED_EFFECT_RANDOM:
     this->buttonAnimation = new RandomColor(RGBLights, lastPressed);

@@ -12,6 +12,10 @@
 
 RainbowSynced::RainbowSynced(Lights& InRGBLights) : Animation(InRGBLights) 
 {
+  if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime > RAINBOW_CYCLE_MAX + RAINBOW_CYCLE_INCREMENT)
+    AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = RAINBOW_CYCLE_MAX + RAINBOW_CYCLE_INCREMENT;
+  if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime < RAINBOW_CYCLE_MIN - RAINBOW_CYCLE_INCREMENT)
+    AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = RAINBOW_CYCLE_MIN - RAINBOW_CYCLE_INCREMENT;
 }
 
 void RainbowSynced::Animate(RGB (&frame)[100]) 
@@ -20,9 +24,6 @@ void RainbowSynced::Animate(RGB (&frame)[100])
   {
     return;
   }
-
-  //UpdateTime();
-  //UpdatePresses();
 
   RGB color = RGB::wheel(this->currentFrame);
   for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
@@ -38,8 +39,6 @@ void RainbowSynced::Animate(RGB (&frame)[100])
       }
     }
   }
-
-  //DecrementFadeCounters();
 
   if (reverse)
   {
@@ -100,7 +99,10 @@ void RainbowSynced::ParameterDown()
 ////////////////////////////////////////////////////////////////////////////////////////////
 RainbowRotate::RainbowRotate(Lights& InRGBLights) : Animation(InRGBLights) 
 {
-}
+  if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime > RAINBOW_CYCLE_MAX)
+    AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = RAINBOW_CYCLE_MAX;
+  if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime < RAINBOW_CYCLE_MIN)
+    AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = RAINBOW_CYCLE_MIN;}
 
 void RainbowRotate::Animate(RGB (&frame)[100]) 
 {
@@ -108,9 +110,6 @@ void RainbowRotate::Animate(RGB (&frame)[100])
   {
     return;
   }
-
-  //UpdateTime();
-  //UpdatePresses();
 
   //the way this works is we offset the current frame by the distance from the top left of the grid
   int thisFrame = this->currentFrame;
@@ -131,8 +130,6 @@ void RainbowRotate::Animate(RGB (&frame)[100])
       }
     }
   }
-
-  //DecrementFadeCounters();
 
   currentFrame++;
 

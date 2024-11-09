@@ -18,9 +18,8 @@ RandomColor::RandomColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPin
 
 void RandomColor::NewPressForPin(int lightIndex)
 {
-  savedPressedColour[lightIndex] = colors[rand() % colors.size()];
-
-  AnimationStation::printfs[3] = std::to_string(lightIndex);
+  //dont pick 0 as thats black
+  savedPressedColour[lightIndex] = colors[(rand() % (colors.size()-1)) + 1];
 }
 
 void RandomColor::Animate(RGB (&frame)[100]) 
@@ -36,13 +35,9 @@ void RandomColor::Animate(RGB (&frame)[100])
     for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
     {
       //Non pressed simply sets the RGB colour
-      if(!isButtonAnimation && LightTypeIsForNonPressedAnimation(RGBLights->AllLights[lightIndex].Type))
+      if (LightTypeIsForPressedAnimation(RGBLights->AllLights[lightIndex].Type))
       {
-        frame[ledIndex] = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].notPressedStaticColors[RGBLights->AllLights[lightIndex].GIPOPin];
-      }
-      else if (isButtonAnimation && LightTypeIsForNonPressedAnimation(RGBLights->AllLights[lightIndex].Type))
-      {
-        frame[ledIndex] = BlendColor(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].notPressedStaticColors[RGBLights->AllLights[lightIndex].GIPOPin],
+        frame[ledIndex] = FadeColor(savedPressedColour[lightIndex],
                                         frame[ledIndex],
                                         fadeTimes[ledIndex]);    
       }

@@ -210,24 +210,15 @@ void ButtonLayoutScreen::generateHeader() {
 }
 
 void ButtonLayoutScreen::drawScreen() {
-/*    if (profileModeDisplay) {
+    if (profileModeDisplay) {
         getRenderer()->drawRectangle(0, 0, 128, 7, true, true);
     	getRenderer()->drawText(0, 0, statusBar, true);
     } else {
 		getRenderer()->drawText(0, 0, statusBar);
 	}
     getRenderer()->drawText(0, 7, footer);
-*/
 
  	Storage& storage = Storage::getInstance();
-/*    storage.printfs[0] = "Pods";
-    storage.printfs[1] = "TEST1";
-    storage.printfs[2] = "TEST2";
-    storage.printfs[3] = "TEST3";
-    storage.printfs[4] = "TEST4";
-    storage.printfs[5] = "TEST5";
-    storage.printfs[6] = "TEST6";
-    storage.printfs[7] = "TEST7";*/
    	getRenderer()->drawText(0, 0, AnimationStation::printfs[0]);
     getRenderer()->drawText(0, 1, AnimationStation::printfs[1]);
     getRenderer()->drawText(0, 2, AnimationStation::printfs[2]);

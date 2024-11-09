@@ -46,14 +46,12 @@ void Animation::UpdatePresses()
   if(!isButtonAnimation)
     return;
 
-  //AnimationStation::printfs[0] = "UpdatePresses";
-  //AnimationStation::printfs[1] = std::to_string(pressedPins.size());
-  //if(pressedPins.size() > 0)
-  //  AnimationStation::printfs[2] = std::to_string(pressedPins[0]);
-
   //Set hold/fade time for all pressed buttons
   for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
   {
+    if(RGBLights->AllLights[lightIndex].Type != LightType_ActionButton)
+      continue;
+
     for(unsigned int pressedPinIndex = 0; pressedPinIndex < pressedPins.size(); ++pressedPinIndex)
     {
       if(pressedPins[pressedPinIndex] == RGBLights->AllLights[lightIndex].GIPOPin)
@@ -80,15 +78,56 @@ void Animation::UpdatePresses()
 
 void Animation::DecrementFadeCounters() 
 {
-  for(unsigned int ledIndex = 0; ledIndex < RGBLights->GetLedCount(); ++ledIndex)
+  if(!isButtonAnimation)
+    return;
+
+  //Set hold/fade time for all pressed buttons
+  for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
   {
-    fadeTimes[ledIndex] -= updateTimeInMs;
-    if (fadeTimes[ledIndex] < 0)
-      fadeTimes[ledIndex] = 0;
+    //early out, save frames!
+    if(RGBLights->AllLights[lightIndex].Type != LightType_ActionButton || fadeTimes[RGBLights->AllLights[lightIndex].FirstLedIndex] <= 0)
+      continue;
+
+    //is this button still pressed ? 
+    bool wasPressed = false;
+    for(unsigned int pressedPinIndex = 0; pressedPinIndex < pressedPins.size(); ++pressedPinIndex)
+    {
+      if(pressedPins[pressedPinIndex] == RGBLights->AllLights[lightIndex].GIPOPin)
+      {
+        wasPressed = true;
+      }
+    }
+
+    //if not then we can safely decrement the timer
+    if(!wasPressed)
+    {
+      uint8_t firstLightIndex = RGBLights->AllLights[lightIndex].FirstLedIndex;
+      uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[lightIndex].LedsPerLight;
+      for(int ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
+      {
+        fadeTimes[ledIndex] -= updateTimeInMs;
+        if (fadeTimes[ledIndex] < 0)
+          fadeTimes[ledIndex] = 0;        
+      }
+    }
   }
 }
 
-RGB Animation::BlendColor(RGB start, RGB end, uint32_t timeRemainingInMs) 
+RGB Animation::BlendColor(RGB start, RGB end, float alpha) 
+{
+  RGB result = ColorBlack;
+
+  if (alpha < 0.0f) alpha = 0.0f;
+  if (alpha > 1.0f) alpha = 1.0f;
+
+  result.r = static_cast<uint32_t>(static_cast<float>(start.r) + ((static_cast<float>(end.r) - static_cast<float>(start.r)) * alpha));
+  result.g = static_cast<uint32_t>(static_cast<float>(start.g) + ((static_cast<float>(end.g) - static_cast<float>(start.g)) * alpha));
+  result.b = static_cast<uint32_t>(static_cast<float>(start.b) + ((static_cast<float>(end.b) - static_cast<float>(start.b)) * alpha));
+
+  return result;
+}
+
+RGB Animation::FadeColor(RGB start, RGB end, uint32_t timeRemainingInMs) 
 {
   RGB result = ColorBlack;
 
@@ -104,9 +143,9 @@ RGB Animation::BlendColor(RGB start, RGB end, uint32_t timeRemainingInMs)
   if (progress < 0.0f) progress = 0.0f;
   if (progress > 1.0f) progress = 1.0f;
 
-  result.r = static_cast<uint32_t>(static_cast<float>(start.r + (end.r - start.r) * progress));
-  result.g = static_cast<uint32_t>(static_cast<float>(start.g + (end.g - start.g) * progress));
-  result.b = static_cast<uint32_t>(static_cast<float>(start.b + (end.b - start.b) * progress));
+  result.r = static_cast<uint32_t>(static_cast<float>(start.r) + ((static_cast<float>(end.r) - static_cast<float>(start.r)) * progress));
+  result.g = static_cast<uint32_t>(static_cast<float>(start.g) + ((static_cast<float>(end.g) - static_cast<float>(start.g)) * progress));
+  result.b = static_cast<uint32_t>(static_cast<float>(start.b) + ((static_cast<float>(end.b) - static_cast<float>(start.b)) * progress));
 
   return result;
 }

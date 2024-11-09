@@ -308,6 +308,8 @@ message AnimationProfile_Proto
 
     optional uint32 buttonPressHoldTimeInMs = 7;
     optional uint32 buttonPressFadeOutTimeInMs = 8;
+
+    optional uint32 nonPressedSpecialColour = 9;
 };
 
 // This has to be kept in sync with AnimationOptions in AnimationStation.hpp

@@ -49,6 +49,7 @@ static void updateAnimationOptionsProto(const AnimationOptions& options)
 		}
 		optionsProto.profiles[index].buttonPressHoldTimeInMs = options.profiles[index].buttonPressHoldTimeInMs;
 		optionsProto.profiles[index].buttonPressFadeOutTimeInMs = options.profiles[index].buttonPressFadeOutTimeInMs;
+		optionsProto.profiles[index].nonPressedSpecialColour = options.profiles[index].nonPressedSpecialColour;
 	}
 	optionsProto.brightness					= options.brightness;
 	optionsProto.baseProfileIndex			= options.baseProfileIndex;
@@ -208,6 +209,7 @@ AnimationOptions AnimationStorage::getAnimationOptions()
 		}
 		options.profiles[index].buttonPressHoldTimeInMs = optionsProto.profiles[index].buttonPressHoldTimeInMs;
 		options.profiles[index].buttonPressFadeOutTimeInMs = optionsProto.profiles[index].buttonPressFadeOutTimeInMs;
+		options.profiles[index].nonPressedSpecialColour = optionsProto.profiles[index].nonPressedSpecialColour;
 	}
 	options.brightness				= std::min<uint32_t>(optionsProto.brightness, 255);
 	options.baseProfileIndex		= std::min<uint32_t>(optionsProto.baseProfileIndex, 255);

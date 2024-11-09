@@ -20,7 +20,15 @@ typedef enum
   NONPRESSED_EFFECT_STATIC_COLOR,
   NONPRESSED_EFFECT_RAINBOW_SYNCED,
   NONPRESSED_EFFECT_RAINBOW_ROTATE,
-  NONPRESSED_EFFECT_CHASE,
+  NONPRESSED_EFFECT_CHASE_SEQUENTIAL,
+  NONPRESSED_EFFECT_CHASE_LEFT_TO_RIGHT,
+  NONPRESSED_EFFECT_CHASE_RIGHT_TO_LEFT,
+  NONPRESSED_EFFECT_CHASE_TOP_TO_BOTTOM,
+  NONPRESSED_EFFECT_CHASE_BOTTOM_TO_TOP,
+  NONPRESSED_EFFECT_CHASE_SEQUENTIAL_PINGPONG,
+  NONPRESSED_EFFECT_CHASE_HORIZONTAL_PINGPONG,
+  NONPRESSED_EFFECT_CHASE_VERTICAL_PINGPONG,
+  NONPRESSED_EFFECT_CHASE_RANDOM,
 } AnimationNonPressedEffects;
 
 //List of non-pressed animation types
@@ -51,12 +59,14 @@ struct __attribute__ ((__packed__)) AnimationProfile
   	AnimationPressedEffects basePressedEffect;
 
     int16_t baseCycleTime;
-
+   
     uint32_t notPressedStaticColors[NUM_BANK0_GPIOS];
     uint32_t pressedStaticColors[NUM_BANK0_GPIOS];
 
     uint32_t buttonPressHoldTimeInMs;
     uint32_t buttonPressFadeOutTimeInMs;
+
+    uint32_t nonPressedSpecialColour;
 };
 
 struct __attribute__ ((__packed__)) AnimationOptions
