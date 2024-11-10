@@ -176,6 +176,10 @@ public:
 	GamepadButtonMapping *mapButtonDP;
 	GamepadButtonMapping *mapButtonLS;
 	GamepadButtonMapping *mapButtonRS;
+	GamepadButtonMapping *mapDigitalUp;
+	GamepadButtonMapping *mapDigitalDown;
+	GamepadButtonMapping *mapDigitalLeft;
+	GamepadButtonMapping *mapDigitalRight;
 
 	// gamepad specific proxy of debounced buttons --- 1 = active (inverse of the raw GPIO)
 	// see GP2040::debounceGpioGetAll for details
