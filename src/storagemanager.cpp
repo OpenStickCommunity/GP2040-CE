@@ -38,21 +38,16 @@ static void updateAnimationOptionsProto(const AnimationOptions& options)
 
 	for(int index = 0; index < 4; ++index) //MAX_ANIMATION_PROFILES from AnimationStation.hpp
 	{
-		optionsProto.profiles[index].bIsValidProfile = options.profiles[index].bIsValidProfile;
-		optionsProto.profiles[index].baseNonPressedEffect = (AnimationNonPressedEffects_Proto)((int)options.profiles[index].baseNonPressedEffect);
-		optionsProto.profiles[index].basePressedEffect = (AnimationPressedEffects_Proto)((int)options.profiles[index].basePressedEffect);
 		optionsProto.profiles[index].baseCycleTime = options.profiles[index].baseCycleTime;
-		for(int pinIndex = 0; pinIndex < NUM_BANK0_GPIOS; ++pinIndex)
-		{
-			optionsProto.profiles[index].notPressedStaticColors[pinIndex] = options.profiles[index].notPressedStaticColors[pinIndex];
-			optionsProto.profiles[index].pressedStaticColors[pinIndex] = options.profiles[index].pressedStaticColors[pinIndex];
-		}
-		optionsProto.profiles[index].buttonPressHoldTimeInMs = options.profiles[index].buttonPressHoldTimeInMs;
-		optionsProto.profiles[index].buttonPressFadeOutTimeInMs = options.profiles[index].buttonPressFadeOutTimeInMs;
-		optionsProto.profiles[index].nonPressedSpecialColour = options.profiles[index].nonPressedSpecialColour;
 	}
 	optionsProto.brightness					= options.brightness;
 	optionsProto.baseProfileIndex			= options.baseProfileIndex;
+}
+
+static void updateSpecialMoveOptionsProto(const SpecialMoveOptions& options)
+{
+	SpecialMoveOptions_Proto& optionsProto = Storage::getInstance().getSpecialMoveOptions();
+	optionsProto.CurrentProfileIndex			= options.CurrentProfileIndex;
 }
 
 void Storage::performEnqueuedSaves()
@@ -64,6 +59,15 @@ void Storage::performEnqueuedSaves()
 		save();
 		animationOptionsSavePending.store(false);
 		critical_section_exit(&animationOptionsCs);
+	}
+
+	if (specialMoveOptionsSavePending.load())
+	{
+		critical_section_enter_blocking(&specialMoveOptionsCs);
+		updateSpecialMoveOptionsProto(specialMoveOptionsToSave);
+		save();
+		specialMoveOptionsSavePending.store(false);
+		critical_section_exit(&specialMoveOptionsCs);
 	}
 }
 
@@ -78,6 +82,19 @@ void Storage::enqueueAnimationOptionsSave(const AnimationOptions& animationOptio
 		animationOptionsSavePending.store(true);
 	}
 	critical_section_exit(&animationOptionsCs);
+}
+
+void Storage::enqueueSpecialMoveOptionsSave(const SpecialMoveOptions& specialMoveOptions)
+{
+	const uint32_t crc = CRC32::calculate(&specialMoveOptions);
+	critical_section_enter_blocking(&specialMoveOptionsCs);
+	if (crc != specialMoveOptionsCrc)
+	{
+		specialMoveOptionsToSave = specialMoveOptions;
+		specialMoveOptionsCrc = crc;
+		specialMoveOptionsSavePending.store(true);
+	}
+	critical_section_exit(&specialMoveOptionsCs);
 }
 
 void Storage::ResetSettings()
@@ -202,7 +219,7 @@ AnimationOptions AnimationStorage::getAnimationOptions()
 		options.profiles[index].baseNonPressedEffect = (AnimationNonPressedEffects)((int)optionsProto.profiles[index].baseNonPressedEffect);
 		options.profiles[index].basePressedEffect = (AnimationPressedEffects)((int)optionsProto.profiles[index].basePressedEffect);
 		options.profiles[index].baseCycleTime = optionsProto.profiles[index].baseCycleTime;
-		for(int pinIndex = 0; pinIndex < NUM_BANK0_GPIOS; ++pinIndex)
+		for(unsigned int pinIndex = 0; pinIndex < NUM_BANK0_GPIOS; ++pinIndex)
 		{
 			options.profiles[index].notPressedStaticColors[pinIndex] = optionsProto.profiles[index].notPressedStaticColors[pinIndex];
 			options.profiles[index].pressedStaticColors[pinIndex] = optionsProto.profiles[index].pressedStaticColors[pinIndex];
@@ -213,6 +230,41 @@ AnimationOptions AnimationStorage::getAnimationOptions()
 	}
 	options.brightness				= std::min<uint32_t>(optionsProto.brightness, 255);
 	options.baseProfileIndex		= std::min<uint32_t>(optionsProto.baseProfileIndex, 255);
+
+	return options;
+}
+
+SpecialMoveOptions AnimationStorage::getSpecialMoveOptions()
+{
+	SpecialMoveOptions options;
+	const SpecialMoveOptions_Proto& optionsProto = Storage::getInstance().getSpecialMoveOptions();
+	
+	options.NumValidProfiles = optionsProto.profiles_count;
+	for(unsigned int profileIndex = 0; profileIndex < 4 && profileIndex < options.NumValidProfiles; ++profileIndex) //MAX_SPECIALMOVE_PROFILES from SpecialMoveSystem.hpp
+	{
+		options.profiles[profileIndex].NumValidMoves = optionsProto.profiles[profileIndex].AllSpecialMoves_count;
+		for(unsigned int moveIndex = 0; moveIndex < 20 && moveIndex < options.profiles[profileIndex].NumValidMoves; ++moveIndex) //MAX_SPECIALMOVES from SpecialMoveSystem.hpp
+		{
+			options.profiles[profileIndex].AllSpecialMoves[moveIndex].NumRequiredInputCombos = optionsProto.profiles[profileIndex].AllSpecialMoves[moveIndex].RequiredInputCombos_count;
+			for(unsigned int inputsIndex = 0; inputsIndex < 4 && inputsIndex < options.profiles[profileIndex].AllSpecialMoves[moveIndex].NumRequiredInputCombos; ++inputsIndex) //MAX_SPECIALMOVE_INPUTTYPES_PER_MOVE from SpecialMoveSystem.hpp
+			{
+				options.profiles[profileIndex].AllSpecialMoves[moveIndex].RequiredInputCombos[inputsIndex] = (SpecialMoveInputTypes)((int)optionsProto.profiles[profileIndex].AllSpecialMoves[moveIndex].RequiredInputCombos[inputsIndex]);
+			}
+
+			options.profiles[profileIndex].AllSpecialMoves[moveIndex].NumRequiredTriggerCombos = optionsProto.profiles[profileIndex].AllSpecialMoves[moveIndex].RequiredTriggerCombos_count;
+			for(unsigned int triggersIndex = 0; triggersIndex < 3 && triggersIndex < options.profiles[profileIndex].AllSpecialMoves[moveIndex].NumRequiredTriggerCombos; ++triggersIndex) //MAX_SPECIALMOVE_TRIGGERS_PER_MOVE from SpecialMoveSystem.hpp
+			{
+				options.profiles[profileIndex].AllSpecialMoves[moveIndex].RequiredTriggerCombos[triggersIndex].OptionalParams = optionsProto.profiles[profileIndex].AllSpecialMoves[moveIndex].RequiredTriggerCombos[triggersIndex].OptionalParams;				
+				options.profiles[profileIndex].AllSpecialMoves[moveIndex].RequiredTriggerCombos[triggersIndex].RequiredTriggers = optionsProto.profiles[profileIndex].AllSpecialMoves[moveIndex].RequiredTriggerCombos[triggersIndex].RequiredTriggers;				
+			}
+
+			options.profiles[profileIndex].AllSpecialMoves[moveIndex].Animation = (SpecialMoveEffects)((int)optionsProto.profiles[profileIndex].AllSpecialMoves[moveIndex].Animation);
+ 			options.profiles[profileIndex].AllSpecialMoves[moveIndex].bIsChargeMove = optionsProto.profiles[profileIndex].AllSpecialMoves[moveIndex].bIsChargeMove;
+		}
+	}
+
+	options.ChargeTimeInMs			= optionsProto.ChargeTimeInMs;
+	options.CurrentProfileIndex		= optionsProto.CurrentProfileIndex;
 
 	return options;
 }

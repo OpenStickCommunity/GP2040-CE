@@ -4,6 +4,7 @@
  */
 
 #include "AnimationStation.hpp"
+#include "SpecialMoveSystem.hpp"
 #include "AnimationStorage.hpp"
 #include "NeoPico.hpp"
 #include "Pixel.hpp"
@@ -288,6 +289,10 @@ void NeoPicoLEDAddon::process()
 		}
 	}
 	AnimStation.HandlePressedPins(pressedPins);
+
+	//Still need to check logical buttons so that we can trigger special moves
+	uint32_t buttonState = gamepad->state.dpad << 16 | gamepad->state.buttons;
+	AnimStation.HandlePressedButtons(buttonState);
 
 	//Update idle, button and special move animations
 	AnimStation.Animate();
@@ -593,6 +598,8 @@ void NeoPicoLEDAddon::configureLEDs()
 	AnimStation.ConfigureBrightness(ledOptions.brightnessMaximum, ledOptions.brightnessSteps);
 	AnimationOptions animationOptions = AnimationStore.getAnimationOptions();
 	AnimStation.SetOptions(animationOptions);
+	SpecialMoveOptions specialMoveOptions = AnimationStore.getSpecialMoveOptions();
+	AnimStation.specialMoveSystem.SetOptions(specialMoveOptions);
 	AnimStation.SetLights(RGBLights);
 	AnimStation.SetMode(as.options.baseProfileIndex);
 }

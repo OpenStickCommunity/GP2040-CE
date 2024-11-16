@@ -293,7 +293,38 @@ message LEDOptions
     optional int32 lightDataSize = 37;
 };
 
-// This has to be kept in sync with AnimationOptions in AnimationStation.hpp
+// This has to be kept in sync with SpecialMoveAnimation in SpecialMoveSystem.hpp
+message SpecialMoveInputTriggers_Proto 
+{
+    optional uint32 OptionalParams = 1; //8 uint4's packed in here (assigned to custom enums later)
+    optional uint32 RequiredTriggers = 2; //buttonmasks
+};
+
+// This has to be kept in sync with SpecialMoveDescription in SpecialMoveSystem.hpp
+message SpecialMoveDescription_Proto 
+{
+    repeated SpecialMoveInputTypes_Proto RequiredInputCombos = 1 [(nanopb).max_count = 4]; //MAX_SPECIALMOVE_INPUTTYPES_PER_MOVE from SpecialMoveSystem.hpp
+    repeated SpecialMoveInputTriggers_Proto RequiredTriggerCombos = 2 [(nanopb).max_count = 3]; //MAX_SPECIALMOVE_TRIGGERCOMBOS from SpecialMoveSystem.hpp
+
+    optional SpecialMoveEffects_Proto Animation = 3;
+    optional bool bIsChargeMove = 4;
+};
+
+// This has to be kept in sync with SpecialMoveProfile in SpecialMoveSystem.hpp
+message SpecialMoveProfile_Proto
+{
+    repeated SpecialMoveDescription_Proto AllSpecialMoves = 1 [(nanopb).max_count = 20]; //MAX_SPECIALMOVES from SpecialMoveSystem.hpp
+};
+
+// This has to be kept in sync with SpecialMoveOptions in SpecialMoveSystem.hpp
+message SpecialMoveOptions_Proto
+{
+    repeated SpecialMoveProfile_Proto profiles = 1 [(nanopb).max_count = 4]; //MAX_SPECIALMOVE_PROFILES from SpecialMoveSystem.hpp
+    optional uint32 ChargeTimeInMs = 2;
+    optional uint32 CurrentProfileIndex = 3;
+};
+
+// This has to be kept in sync with AnimationProfile in AnimationStation.hpp
 message AnimationProfile_Proto
 {
     optional bool bIsValidProfile = 1;
@@ -734,8 +765,8 @@ message MacroInput
 message Macro
 {
     optional MacroType macroType = 1;
-    optional string macroLabel = 2 [(nanopb).max_length = 32];
-    repeated MacroInput macroInputs = 3 [(nanopb).max_count = 10];
+    optional string macroLabel = 2 [(nanopb).max_length = 64];
+    repeated MacroInput macroInputs = 3 [(nanopb).max_count = 30];
     optional bool enabled = 4;
     optional bool useMacroTriggerButton = 5;
     optional int32 deprecatedMacroTriggerPin = 6 [deprecated = true];
@@ -871,4 +902,6 @@ message Config
     optional GpioMappings gpioMappings = 13;
     optional MigrationHistory migrations = 14;
     optional PeripheralOptions peripheralOptions = 15;
+
+    optional SpecialMoveOptions_Proto specialMoveOptions = 16;
 }

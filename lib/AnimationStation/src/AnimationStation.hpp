@@ -11,6 +11,7 @@
 
 #include "NeoPico.hpp"
 #include "Animation.hpp"
+#include "SpecialMoveSystem.hpp"
 
 #define MAX_ANIMATION_PROFILES 4
 
@@ -94,6 +95,9 @@ public:
   //What buttons (physical gpio pins) are pressed this frame
   void HandlePressedPins(std::vector<int32_t> pressedPins);
 
+  //What buttons (logical ones) are pressed this frame
+  void HandlePressedButtons(uint32_t pressedButtons);
+
   int8_t GetMode();
   void SetMode(int8_t mode);
   void SetLights(Lights InRGBLights);
@@ -109,12 +113,17 @@ public:
 
   //passed in user options
   static void SetOptions(AnimationOptions InOptions);
+ 
+  SpecialMoveSystem specialMoveSystem;
 
   //Running non-pressed animation
   Animation* baseAnimation;
 
   //Running pressed animation
   Animation* buttonAnimation;
+
+  //Running special move animation
+  Animation* specialMoveAnimation;
 
   //Buttons pressed (physical gipo pins) last frame, used when changing button theme so starts initialised
   std::vector<int32_t> lastPressed;

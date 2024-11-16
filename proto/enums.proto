@@ -311,6 +311,29 @@ enum LEDFormat_Proto
     LED_FORMAT_RGBW = 3;
 }
 
+/* This has to be kept in sync with SpecialMoveEffects in SpecialMoveSystem.hpp */
+enum SpecialMoveEffects_Proto
+{
+  SMEFFECT_WAVE = 0;
+  SMEFFECT_SUPERWAVE = 1;
+  SMEFFECT_PULSECOLOR = 2;
+  SMEFFECT_CIRCLECOLOR = 3;
+  SMEFFECT_FLASHCOLOR = 4;
+  SMEFFECT_KNIGHTRIDER = 5;
+  SMEFFECT_RANDOMFLASH = 6;
+}
+
+/* This has to be kept in sync with SpecialMoveInputTypes in SpecialMoveSystem.hpp */
+enum SpecialMoveInputTypes_Proto
+{
+  INPUT_QUARTER_DOWN_RIGHT = 0;
+  INPUT_QUARTER_DOWN_LEFT = 1;
+  INPUT_DP_RIGHT = 2;
+  INPUT_DP_SHORTCUT_RIGHT = 3;
+  INPUT_DP_LEFT = 4;
+  INPUT_DP_SHORTCUT_LEFT = 5;
+}
+
 /* This has to be kept in sync with AnimationNonPressedEffects in AnimationStation.hpp */
 enum AnimationNonPressedEffects_Proto
 {

@@ -46,6 +46,7 @@ public:
 	ProfileOptions& getProfileOptions() { return config.profileOptions; }
 	GpioMappingInfo* getProfilePinMappings() { return functionalPinMappings; }
 	PeripheralOptions& getPeripheralOptions() { return config.peripheralOptions; }
+	SpecialMoveOptions_Proto& getSpecialMoveOptions() { return config.specialMoveOptions; }
 
 	void init();
 	bool save();
@@ -54,6 +55,7 @@ public:
 	void performEnqueuedSaves();
 
 	void enqueueAnimationOptionsSave(const AnimationOptions& animationOptions);
+	void enqueueSpecialMoveOptionsSave(const SpecialMoveOptions& specialMoveOptions);
 
 	void SetConfigMode(bool); 			// Config Mode (on-boot)
 	bool GetConfigMode();
@@ -86,6 +88,10 @@ private:
 	critical_section_t animationOptionsCs;
 	uint32_t animationOptionsCrc = 0;
 	AnimationOptions animationOptionsToSave = {};
+	std::atomic<bool> specialMoveOptionsSavePending;
+	critical_section_t specialMoveOptionsCs;
+	uint32_t specialMoveOptionsCrc = 0;
+	SpecialMoveOptions specialMoveOptionsToSave = {};
 	GpioMappingInfo functionalPinMappings[NUM_BANK0_GPIOS];
 };
 

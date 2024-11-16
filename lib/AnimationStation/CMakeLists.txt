@@ -5,6 +5,7 @@ src/Effects/StaticColor.cpp
 src/Effects/RandomColor.cpp
 src/AnimationStation.cpp
 src/Animation.cpp
+src/SpecialMoveSystem.cpp
 )
 target_include_directories(AnimationStation PUBLIC 
 src

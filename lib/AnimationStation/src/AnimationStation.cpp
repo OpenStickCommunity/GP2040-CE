@@ -9,6 +9,7 @@
 #include "Effects/Rainbow.hpp"
 #include "Effects/StaticColor.hpp"
 #include "Effects/RandomColor.hpp"
+#include "SpecialMoveSystem.hpp"
 
 #include "AnimationStation.hpp"
 
@@ -151,6 +152,11 @@ void AnimationStation::HandlePressedPins(std::vector<int32_t> pressedPins)
     this->lastPressed.clear();
     this->buttonAnimation->ClearPressed();
   }
+}
+
+void AnimationStation::HandlePressedButtons(uint32_t pressedButtons)
+{
+  specialMoveSystem.HandlePressedButtons(pressedButtons);
 }
 
 void AnimationStation::Animate() 

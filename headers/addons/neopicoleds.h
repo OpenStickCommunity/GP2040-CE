@@ -20,6 +20,7 @@
 // MPGS
 #include "BoardConfig.h"
 #include "AnimationStation.hpp"
+#include "SpecialMoveSystem.hpp"
 #include "NeoPico.hpp"
 
 #ifndef BOARD_LEDS_PIN
@@ -222,7 +223,6 @@ private:
 	const uint32_t intervalMS = 10;
 	absolute_time_t nextRunTime;
 	uint8_t ledCount;
-	PixelMatrix matrix;
 	InputMode inputMode; // HACK
 	std::map<std::string, int> buttonPositions;
 	bool turnOffWhenSuspended;

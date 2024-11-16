@@ -475,6 +475,45 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
  	const unsigned char lightData[] = { LIGHT_DATA };
     INIT_UNSET_PROPERTY_BYTES(config.ledOptions, lightData, lightData);
 
+    //SpecialMoveOptions
+    //TESTING
+    if(config.specialMoveOptions.profiles[0].AllSpecialMoves_count == 0)
+    {
+        config.specialMoveOptions.profiles[0].AllSpecialMoves_count = 2;
+        
+        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[0], bIsChargeMove, false);
+        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[0], Animation, SpecialMoveEffects_Proto::SpecialMoveEffects_Proto_SMEFFECT_WAVE);
+        config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredInputCombos_count = 1;
+        config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredInputCombos[0] = SpecialMoveInputTypes_Proto::SpecialMoveInputTypes_Proto_INPUT_QUARTER_DOWN_RIGHT;
+        config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos_count = 3;
+        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[0], RequiredTriggers, GAMEPAD_MASK_B3);
+        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[0], OptionalParams, 2 + (2 << 4) + (10 << 8)); //right //slow //colour blue
+        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[1], RequiredTriggers, GAMEPAD_MASK_B4);
+        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[1], OptionalParams, 2 + (1 << 4) + (10 << 8)); //right //medium //colour blue
+        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[2], RequiredTriggers, GAMEPAD_MASK_R1);
+        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[2], OptionalParams, 2 + (0 << 4) + (10 << 8)); //right //fast //colour blue
+
+        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[1], bIsChargeMove, false);
+        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[1], Animation, SpecialMoveEffects_Proto::SpecialMoveEffects_Proto_SMEFFECT_PULSECOLOR);
+        config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredInputCombos_count = 2;
+        config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredInputCombos[0] = SpecialMoveInputTypes_Proto::SpecialMoveInputTypes_Proto_INPUT_DP_RIGHT;
+        config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredInputCombos[1] = SpecialMoveInputTypes_Proto::SpecialMoveInputTypes_Proto_INPUT_DP_SHORTCUT_RIGHT;
+        config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos_count = 3;
+        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[0], RequiredTriggers, GAMEPAD_MASK_B3);
+        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[0], OptionalParams, 2 + (1 << 8)); //fast //colour white
+ 
+        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[1], RequiredTriggers, GAMEPAD_MASK_B4);
+        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[1], OptionalParams, 1 + (1 << 8)); //med //colour white
+
+        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[2], RequiredTriggers, GAMEPAD_MASK_R1);
+        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[2], OptionalParams, 0 + (1 << 8)); //slow //colour white
+    }
+
+    if(config.specialMoveOptions.profiles_count == 0)
+        config.specialMoveOptions.profiles_count = 1;
+    INIT_UNSET_PROPERTY(config.specialMoveOptions, ChargeTimeInMs, 750);
+    INIT_UNSET_PROPERTY(config.specialMoveOptions, CurrentProfileIndex, 0);
+ 
     // animationOptions
     if(config.animationOptions.profiles_count == 0)
         config.animationOptions.profiles_count = 1;
