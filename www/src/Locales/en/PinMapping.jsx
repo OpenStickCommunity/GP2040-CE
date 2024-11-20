@@ -96,5 +96,6 @@ export default {
 		ANALOG_DIRECTION_RS_Y_POS: 'Right Analog Stick Y+',
 		ANALOG_DIRECTION_MOD_LOW: 'Analog Stick Modifier Low',
 		ANALOG_DIRECTION_MOD_HIGH: 'Analog Stick Modifier High',
+		BUTTON_PRESS_INPUT_REVERSE: 'Reverse Input',
 	},
 };

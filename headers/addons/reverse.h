@@ -55,6 +55,7 @@ private:
 	GamepadButtonMapping *mapDpadDown;
 	GamepadButtonMapping *mapDpadLeft;
 	GamepadButtonMapping *mapDpadRight;
+	GamepadButtonMapping *mapInputReverse;
 
 	bool invertXAxis;
 	bool invertYAxis;
