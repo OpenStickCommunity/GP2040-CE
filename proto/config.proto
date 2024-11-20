@@ -426,7 +426,7 @@ message ReverseOptions
 {
     optional bool enabled = 1;
 
-    optional int32 buttonPin = 2;
+    optional int32 buttonPin = 2 [deprecated = true];
     optional int32 ledPin = 3;
 
     optional uint32 actionUp = 4;
