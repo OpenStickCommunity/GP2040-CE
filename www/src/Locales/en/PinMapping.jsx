@@ -97,5 +97,6 @@ export default {
 		ANALOG_DIRECTION_MOD_LOW: 'Analog Stick Modifier Low',
 		ANALOG_DIRECTION_MOD_HIGH: 'Analog Stick Modifier High',
 		BUTTON_PRESS_INPUT_REVERSE: 'Reverse Input',
+		SUSTAIN_FOCUS_MODE: 'Focus Mode Enable',
 	},
 };
