@@ -65,8 +65,6 @@ private:
     uint8_t actionDown;
     uint8_t actionLeft;
     uint8_t actionRight;
-
-	uint8_t pinButtonReverse;
 };
 
 #endif // _Reverse_H_
