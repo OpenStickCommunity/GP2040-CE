@@ -75,6 +75,14 @@ void Gamepad::setup()
 	mapDigitalDown  = new GamepadButtonMapping(GAMEPAD_MASK_DOWN);
 	mapDigitalLeft  = new GamepadButtonMapping(GAMEPAD_MASK_LEFT);
 	mapDigitalRight = new GamepadButtonMapping(GAMEPAD_MASK_RIGHT);
+	mapAnalogLSXNeg = new GamepadButtonMapping(ANALOG_DIRECTION_LS_X_NEG);
+	mapAnalogLSXPos = new GamepadButtonMapping(ANALOG_DIRECTION_LS_X_POS);
+	mapAnalogLSYNeg = new GamepadButtonMapping(ANALOG_DIRECTION_LS_Y_NEG);
+	mapAnalogLSYPos = new GamepadButtonMapping(ANALOG_DIRECTION_LS_Y_POS);
+	mapAnalogRSXNeg = new GamepadButtonMapping(ANALOG_DIRECTION_RS_X_NEG);
+	mapAnalogRSXPos = new GamepadButtonMapping(ANALOG_DIRECTION_RS_X_POS);
+	mapAnalogRSYNeg = new GamepadButtonMapping(ANALOG_DIRECTION_RS_Y_NEG);
+	mapAnalogRSYPos = new GamepadButtonMapping(ANALOG_DIRECTION_RS_Y_POS);
 
 	const auto assignCustomMappingToMaps = [&](GpioMappingInfo mapInfo, Pin_t pin) -> void {
 		if (mapDpadUp->buttonMask & mapInfo.customDpadMask)	mapDpadUp->pinMask |= 1 << pin;
@@ -145,6 +153,14 @@ void Gamepad::setup()
 			case GpioAction::DIGITAL_DIRECTION_DOWN:	mapDigitalDown->pinMask |= 1 << pin; break;
 			case GpioAction::DIGITAL_DIRECTION_LEFT:	mapDigitalLeft->pinMask |= 1 << pin; break;
 			case GpioAction::DIGITAL_DIRECTION_RIGHT:	mapDigitalRight->pinMask |= 1 << pin; break;
+			case GpioAction::ANALOG_DIRECTION_LS_X_NEG:	mapAnalogLSXNeg->pinMask |= 1 << pin; break;
+			case GpioAction::ANALOG_DIRECTION_LS_X_POS:	mapAnalogLSXPos->pinMask |= 1 << pin; break;
+			case GpioAction::ANALOG_DIRECTION_LS_Y_NEG:	mapAnalogLSYNeg->pinMask |= 1 << pin; break;
+			case GpioAction::ANALOG_DIRECTION_LS_Y_POS:	mapAnalogLSYPos->pinMask |= 1 << pin; break;
+			case GpioAction::ANALOG_DIRECTION_RS_X_NEG:	mapAnalogRSXNeg->pinMask |= 1 << pin; break;
+			case GpioAction::ANALOG_DIRECTION_RS_X_POS:	mapAnalogRSXPos->pinMask |= 1 << pin; break;
+			case GpioAction::ANALOG_DIRECTION_RS_Y_NEG:	mapAnalogRSYNeg->pinMask |= 1 << pin; break;
+			case GpioAction::ANALOG_DIRECTION_RS_Y_POS:	mapAnalogRSYPos->pinMask |= 1 << pin; break;
 			default:				break;
 		}
 	}
@@ -196,6 +212,14 @@ void Gamepad::reinit()
 	delete mapDigitalDown;
 	delete mapDigitalLeft;
 	delete mapDigitalRight;
+	delete mapAnalogLSXNeg;
+	delete mapAnalogLSXPos;
+	delete mapAnalogLSYNeg;
+	delete mapAnalogLSYPos;
+	delete mapAnalogRSXNeg;
+	delete mapAnalogRSXPos;
+	delete mapAnalogRSYNeg;
+	delete mapAnalogRSYPos;
 
 	// reinitialize pin mappings
 	this->setup();
@@ -268,14 +292,14 @@ void Gamepad::process()
 			break;
 	
 		default:
-			if (!hasLeftAnalogStick) {
-				state.lx = joystickMid;
-				state.ly = joystickMid;
-			}
-			if (!hasRightAnalogStick) {
-				state.rx = joystickMid;
-				state.ry = joystickMid;
-			}
+			//if (!hasLeftAnalogStick) {
+			//	state.lx = joystickMid;
+			//	state.ly = joystickMid;
+			//}
+			//if (!hasRightAnalogStick) {
+			//	state.rx = joystickMid;
+			//	state.ry = joystickMid;
+			//}
 			break;
 	}
 }
@@ -341,10 +365,36 @@ void Gamepad::read()
 	else if (values & mapButtonRS->pinMask)	activeDpadMode = DpadMode::DPAD_MODE_RIGHT_ANALOG;
 	else					activeDpadMode = options.dpadMode;
 
-	state.lx = joystickMid;
-	state.ly = joystickMid;
-	state.rx = joystickMid;
-	state.ry = joystickMid;
+	if (values & mapAnalogLSXNeg->pinMask) {
+		state.lx = GAMEPAD_JOYSTICK_MIN;
+	} else if (values & mapAnalogLSXPos->pinMask) {
+		state.lx = GAMEPAD_JOYSTICK_MAX;
+	} else {
+		state.lx = joystickMid;
+	}
+	if (values & mapAnalogLSYNeg->pinMask) {
+		state.ly = GAMEPAD_JOYSTICK_MIN;
+	} else if (values & mapAnalogLSYPos->pinMask) {
+		state.ly = GAMEPAD_JOYSTICK_MAX;
+	} else {
+		state.ly = joystickMid;
+	}
+
+	if (values & mapAnalogRSXNeg->pinMask) {
+		state.rx = GAMEPAD_JOYSTICK_MIN;
+	} else if (values & mapAnalogRSXPos->pinMask) {
+		state.rx = GAMEPAD_JOYSTICK_MAX;
+	} else {
+		state.rx = joystickMid;
+	}
+	if (values & mapAnalogRSYNeg->pinMask) {
+		state.ry = GAMEPAD_JOYSTICK_MIN;
+	} else if (values & mapAnalogRSYPos->pinMask) {
+		state.ry = GAMEPAD_JOYSTICK_MAX;
+	} else {
+		state.ry = joystickMid;
+	}
+
 	state.lt = 0;
 	state.rt = 0;
 }

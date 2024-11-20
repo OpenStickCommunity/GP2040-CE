@@ -6,51 +6,48 @@
 
 bool TiltInput::available() {
     const TiltOptions& options = Storage::getInstance().getAddonOptions().tiltOptions;
-    return options.enabled && ((options.tilt1Pin != -1) || (options.tilt2Pin != -1));
+    return options.enabled;
 }
 
 void TiltInput::setup() {
 	const TiltOptions& options = Storage::getInstance().getAddonOptions().tiltOptions;
 	tiltSOCDMode = options.tiltSOCDMode;
 
-	pinTilt1 = options.tilt1Pin;
 	tilt1FactorLeftX = options.factorTilt1LeftX;
 	tilt1FactorLeftY = options.factorTilt1LeftY;
 	tilt1FactorRightX = options.factorTilt1RightX;
 	tilt1FactorRightY = options.factorTilt1RightY;
-	pinTilt2 = options.tilt2Pin;
 	tilt2FactorLeftX = options.factorTilt2LeftX;
 	tilt2FactorLeftY = options.factorTilt2LeftY;
 	tilt2FactorRightX = options.factorTilt2RightX;
 	tilt2FactorRightY = options.factorTilt2RightY;
-	pinTiltLeftAnalogDown = options.tiltLeftAnalogDownPin;
-	pinTiltLeftAnalogUp = options.tiltLeftAnalogUpPin;
-	pinTiltLeftAnalogLeft = options.tiltLeftAnalogLeftPin;
-	pinTiltLeftAnalogRight = options.tiltLeftAnalogRightPin;
-	pinTiltRightAnalogDown = options.tiltRightAnalogDownPin;
-	pinTiltRightAnalogUp = options.tiltRightAnalogUpPin;
-	pinTiltRightAnalogLeft = options.tiltRightAnalogLeftPin;
-	pinTiltRightAnalogRight = options.tiltRightAnalogRightPin;
 
+	mapAnalogLSXNeg = new GamepadButtonMapping(0);
+	mapAnalogLSXPos = new GamepadButtonMapping(0);
+	mapAnalogLSYNeg = new GamepadButtonMapping(0);
+	mapAnalogLSYPos = new GamepadButtonMapping(0);
+	mapAnalogRSXNeg = new GamepadButtonMapping(GAMEPAD_MASK_LEFT);
+	mapAnalogRSXPos = new GamepadButtonMapping(GAMEPAD_MASK_RIGHT);
+	mapAnalogRSYNeg = new GamepadButtonMapping(GAMEPAD_MASK_UP);
+	mapAnalogRSYPos = new GamepadButtonMapping(GAMEPAD_MASK_DOWN);
+	mapAnalogModLow = new GamepadButtonMapping(ANALOG_DIRECTION_MOD_LOW);
+	mapAnalogModHigh = new GamepadButtonMapping(ANALOG_DIRECTION_MOD_HIGH);
 
-	// Setup Tilt Key
-	uint8_t pinTilt[10] = {
-											pinTilt1,
-											pinTilt2,
-											pinTiltLeftAnalogDown,
-											pinTiltLeftAnalogUp,
-											pinTiltLeftAnalogLeft,
-											pinTiltLeftAnalogRight,
-											pinTiltRightAnalogDown,
-											pinTiltRightAnalogUp,
-											pinTiltRightAnalogLeft,
-											pinTiltRightAnalogRight };
-
-	for (int i = 0; i < 10; i++) {
-		if (pinTilt[i] != (uint8_t)-1) {
-			gpio_init(pinTilt[i]);             // Initialize pin
-			gpio_set_dir(pinTilt[i], GPIO_IN); // Set as INPUT
-			gpio_pull_up(pinTilt[i]);          // Set as PULLUP
+	GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
+	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
+	{
+		switch (pinMappings[pin].action) {
+			case GpioAction::ANALOG_DIRECTION_LS_X_NEG:	mapAnalogLSXNeg->pinMask |= 1 << pin; break;
+			case GpioAction::ANALOG_DIRECTION_LS_X_POS:	mapAnalogLSXPos->pinMask |= 1 << pin; break;
+			case GpioAction::ANALOG_DIRECTION_LS_Y_NEG:	mapAnalogLSYNeg->pinMask |= 1 << pin; break;
+			case GpioAction::ANALOG_DIRECTION_LS_Y_POS:	mapAnalogLSYPos->pinMask |= 1 << pin; break;
+			case GpioAction::ANALOG_DIRECTION_RS_X_NEG:	mapAnalogRSXNeg->pinMask |= 1 << pin; break;
+			case GpioAction::ANALOG_DIRECTION_RS_X_POS:	mapAnalogRSXPos->pinMask |= 1 << pin; break;
+			case GpioAction::ANALOG_DIRECTION_RS_Y_NEG:	mapAnalogRSYNeg->pinMask |= 1 << pin; break;
+			case GpioAction::ANALOG_DIRECTION_RS_Y_POS:	mapAnalogRSYPos->pinMask |= 1 << pin; break;
+			case GpioAction::ANALOG_DIRECTION_MOD_LOW:	mapAnalogModLow->pinMask |= 1 << pin; break;
+			case GpioAction::ANALOG_DIRECTION_MOD_HIGH:	mapAnalogModHigh->pinMask |= 1 << pin; break;
+			default:	break;
 		}
 	}
 
@@ -75,35 +72,20 @@ void TiltInput::setup() {
 void TiltInput::preprocess()
 {
 	Gamepad* gamepad = Storage::getInstance().GetGamepad();
+    Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
 
 	// Need to invert since we're using pullups
-	tiltLeftState = 0;
-	if (pinTiltLeftAnalogUp != (uint8_t)-1) {
-		tiltLeftState |= (!gpio_get(pinTiltLeftAnalogUp) ? gamepad->mapDpadUp->buttonMask : 0);
-	}
-	if (pinTiltLeftAnalogDown != (uint8_t)-1) {
-		tiltLeftState |= (!gpio_get(pinTiltLeftAnalogDown) ? gamepad->mapDpadDown->buttonMask : 0);
-	}
-	if (pinTiltLeftAnalogLeft != (uint8_t)-1) {
-		tiltLeftState |= (!gpio_get(pinTiltLeftAnalogLeft) ? gamepad->mapDpadLeft->buttonMask : 0);
-	}
-	if (pinTiltLeftAnalogRight != (uint8_t)-1) {
-		tiltLeftState |= (!gpio_get(pinTiltLeftAnalogRight) ? gamepad->mapDpadRight->buttonMask : 0);
-	}
+	tiltLeftState = 0
+		| ((values & mapAnalogLSXNeg->pinMask)    ? mapAnalogLSXNeg->buttonMask : 0)
+		| ((values & mapAnalogLSXPos->pinMask)    ? mapAnalogLSXPos->buttonMask : 0)
+		| ((values & mapAnalogLSYNeg->pinMask)    ? mapAnalogLSYNeg->buttonMask : 0)
+		| ((values & mapAnalogLSYPos->pinMask)    ? mapAnalogLSYPos->buttonMask : 0);
 
-	tiltRightState = 0;
-	if (pinTiltRightAnalogUp != (uint8_t)-1) {
-		tiltRightState |= (!gpio_get(pinTiltRightAnalogUp) ? gamepad->mapDpadUp->buttonMask : 0);
-	}
-	if (pinTiltRightAnalogDown != (uint8_t)-1) {
-		tiltRightState |= (!gpio_get(pinTiltRightAnalogDown) ? gamepad->mapDpadDown->buttonMask : 0);
-	}
-	if (pinTiltRightAnalogLeft != (uint8_t)-1) {
-		tiltRightState |= (!gpio_get(pinTiltRightAnalogLeft) ? gamepad->mapDpadLeft->buttonMask : 0);
-	}
-	if (pinTiltRightAnalogRight != (uint8_t)-1) {
-		tiltRightState |= (!gpio_get(pinTiltRightAnalogRight) ? gamepad->mapDpadRight->buttonMask : 0);
-	}
+	tiltRightState = 0
+		| ((values & mapAnalogRSXNeg->pinMask)    ? mapAnalogRSXNeg->buttonMask : 0)
+		| ((values & mapAnalogRSXPos->pinMask)    ? mapAnalogRSXPos->buttonMask : 0)
+		| ((values & mapAnalogRSYNeg->pinMask)    ? mapAnalogRSYNeg->buttonMask : 0)
+		| ((values & mapAnalogRSYPos->pinMask)    ? mapAnalogRSYPos->buttonMask : 0);
 
 	// Convert gamepad from process() output to uint8 value
 	uint8_t gamepadState = gamepad->state.dpad;
@@ -121,15 +103,11 @@ void TiltInput::process()
 	OverrideGamepad(gamepad, tiltLeftState, tiltRightState);
 }
 
-//The character's movement changes depending on the degree to which the stick is tilted.
-//I added the functionality to allow the all - button controller to perform the operations that can be performed by the sticks.
-//Two buttons, tilt1 and tilt2, have been implemented.
-//While pressing these buttons, pressing the left or right analog stick will cause the character to walk or walk more slowly.
-//Since this is an auxiliary function for appeals and such,
-//pressing Tilt1 and Tilt2 at the same time will cause the light analog stick to correspond to each of the DPad methods.
 void TiltInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dpad2) {
-	bool pinTilt1Pressed = (pinTilt1 != (uint8_t)-1) ? !gpio_get(pinTilt1) : false;
-	bool pinTilt2Pressed = (pinTilt2 != (uint8_t)-1) ? !gpio_get(pinTilt2) : false;
+	Mask_t values = gamepad->debouncedGpio;
+
+	bool pinTilt1Pressed = (values & mapAnalogModLow->pinMask);
+	bool pinTilt2Pressed = (values & mapAnalogModHigh->pinMask);
 
 	// Scales input from 0-100% of maximum input
 	double scaledTilt1FactorLeftX  = 1.0 - (tilt1FactorLeftX  / 100.0);
@@ -146,33 +124,67 @@ void TiltInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dpad2) 
 		midValue = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
 	}
 
+	uint16_t leftXValue = midValue;
+	uint16_t leftYValue = midValue;
+	uint16_t rightXValue = midValue;
+	uint16_t rightYValue = midValue;
+
     if (pinTilt1Pressed && pinTilt2Pressed) {
-        // inputs act as dpad
-        gamepad->state.dpad |= dpad1|dpad2;
+        if (dpad2 > 0) {
+            // right inputs act as dpad
+            gamepad->state.dpad |= dpad2;
+        } else {
+            // prioritize tilt 1
+            leftXValue = getAnalogValue((values & mapAnalogLSXNeg->pinMask), (values & mapAnalogLSXPos->pinMask)) + (midValue - getAnalogValue((values & mapAnalogLSXNeg->pinMask), (values & mapAnalogLSXPos->pinMask))) * scaledTilt1FactorLeftX;
+            leftYValue = getAnalogValue((values & mapAnalogLSYNeg->pinMask), (values & mapAnalogLSYPos->pinMask)) + (midValue - getAnalogValue((values & mapAnalogLSYNeg->pinMask), (values & mapAnalogLSYPos->pinMask))) * scaledTilt1FactorLeftY;
+
+            rightXValue = getAnalogValue((values & mapAnalogRSXNeg->pinMask), (values & mapAnalogRSXPos->pinMask)) + (midValue - getAnalogValue((values & mapAnalogRSXNeg->pinMask), (values & mapAnalogRSXPos->pinMask))) * scaledTilt1FactorRightX;
+            rightYValue = getAnalogValue((values & mapAnalogRSYNeg->pinMask), (values & mapAnalogRSYPos->pinMask)) + (midValue - getAnalogValue((values & mapAnalogRSYNeg->pinMask), (values & mapAnalogRSYPos->pinMask))) * scaledTilt1FactorRightY;
+        }
     } else {
         // analog input mode
         if (pinTilt1Pressed) {
-            gamepad->state.lx = dpadToAnalogX(dpad1) + (midValue - dpadToAnalogX(dpad1)) * scaledTilt1FactorLeftX;
-            gamepad->state.ly = dpadToAnalogY(dpad1) + (midValue - dpadToAnalogY(dpad1)) * scaledTilt1FactorLeftY;
+            leftXValue = getAnalogValue((values & mapAnalogLSXNeg->pinMask), (values & mapAnalogLSXPos->pinMask)) + (midValue - getAnalogValue((values & mapAnalogLSXNeg->pinMask), (values & mapAnalogLSXPos->pinMask))) * scaledTilt1FactorLeftX;
+            leftYValue = getAnalogValue((values & mapAnalogLSYNeg->pinMask), (values & mapAnalogLSYPos->pinMask)) + (midValue - getAnalogValue((values & mapAnalogLSYNeg->pinMask), (values & mapAnalogLSYPos->pinMask))) * scaledTilt1FactorLeftY;
 
-            gamepad->state.rx = dpadToAnalogX(dpad2) + (midValue - dpadToAnalogX(dpad2)) * scaledTilt1FactorRightX;
-            gamepad->state.ry = dpadToAnalogY(dpad2) + (midValue - dpadToAnalogY(dpad2)) * scaledTilt1FactorRightY;
+            rightXValue = getAnalogValue((values & mapAnalogRSXNeg->pinMask), (values & mapAnalogRSXPos->pinMask)) + (midValue - getAnalogValue((values & mapAnalogRSXNeg->pinMask), (values & mapAnalogRSXPos->pinMask))) * scaledTilt1FactorRightX;
+            rightYValue = getAnalogValue((values & mapAnalogRSYNeg->pinMask), (values & mapAnalogRSYPos->pinMask)) + (midValue - getAnalogValue((values & mapAnalogRSYNeg->pinMask), (values & mapAnalogRSYPos->pinMask))) * scaledTilt1FactorRightY;
         } else if (pinTilt2Pressed) {
-            gamepad->state.lx = dpadToAnalogX(dpad1) + (midValue - dpadToAnalogX(dpad1)) * scaledTilt2FactorLeftX;
-            gamepad->state.ly = dpadToAnalogY(dpad1) + (midValue - dpadToAnalogY(dpad1)) * scaledTilt2FactorLeftY;
+            leftXValue = getAnalogValue((values & mapAnalogLSXNeg->pinMask), (values & mapAnalogLSXPos->pinMask)) + (midValue - getAnalogValue((values & mapAnalogLSXNeg->pinMask), (values & mapAnalogLSXPos->pinMask))) * scaledTilt2FactorLeftX;
+            leftYValue = getAnalogValue((values & mapAnalogLSYNeg->pinMask), (values & mapAnalogLSYPos->pinMask)) + (midValue - getAnalogValue((values & mapAnalogLSYNeg->pinMask), (values & mapAnalogLSYPos->pinMask))) * scaledTilt2FactorLeftY;
 
-            gamepad->state.rx = dpadToAnalogX(dpad2) + (midValue - dpadToAnalogX(dpad2)) * scaledTilt2FactorRightX;
-            gamepad->state.ry = dpadToAnalogY(dpad2) + (midValue - dpadToAnalogY(dpad2)) * scaledTilt2FactorRightY;
+            rightXValue = getAnalogValue((values & mapAnalogRSXNeg->pinMask), (values & mapAnalogRSXPos->pinMask)) + (midValue - getAnalogValue((values & mapAnalogRSXNeg->pinMask), (values & mapAnalogRSXPos->pinMask))) * scaledTilt2FactorRightX;
+            rightYValue = getAnalogValue((values & mapAnalogRSYNeg->pinMask), (values & mapAnalogRSYPos->pinMask)) + (midValue - getAnalogValue((values & mapAnalogRSYNeg->pinMask), (values & mapAnalogRSYPos->pinMask))) * scaledTilt2FactorRightY;
         } else {
-            gamepad->state.lx = dpadToAnalogX(dpad1);
-            gamepad->state.ly = dpadToAnalogY(dpad1);
+            leftXValue = getAnalogValue((values & mapAnalogLSXNeg->pinMask), (values & mapAnalogLSXPos->pinMask));
+            leftYValue = getAnalogValue((values & mapAnalogLSYNeg->pinMask), (values & mapAnalogLSYPos->pinMask));
 
-            gamepad->state.rx = dpadToAnalogX(dpad2);
-            gamepad->state.ry = dpadToAnalogY(dpad2);
+            rightXValue = getAnalogValue((values & mapAnalogRSXNeg->pinMask), (values & mapAnalogRSXPos->pinMask));
+            rightYValue = getAnalogValue((values & mapAnalogRSYNeg->pinMask), (values & mapAnalogRSYPos->pinMask));
         }
     }
+
+    gamepad->state.lx = leftXValue;
+    gamepad->state.ly = leftYValue;
+
+    gamepad->state.rx = rightXValue;
+    gamepad->state.ry = rightYValue;
 }
 
+uint16_t TiltInput::getAnalogValue(bool isMin, bool isMax) {
+	uint16_t midValue = GAMEPAD_JOYSTICK_MID;
+	if ( DriverManager::getInstance().getDriver() != nullptr ) {
+		midValue = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
+	}
+
+	if (isMin && !isMax) {
+		return GAMEPAD_JOYSTICK_MIN;
+	} else if (!isMin && isMax) {
+		return GAMEPAD_JOYSTICK_MAX;
+	} else {
+		return midValue;
+	}
+}
 
 void TiltInput::SOCDTiltClean(SOCDMode socdMode) {
     // Left Stick SOCD Cleaning
