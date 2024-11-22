@@ -1,8 +1,7 @@
-# GP2040 Configuration for Raspberry Pi Pico
-
+# GP2040 Configuration for SZ's Corner flatbox SZ V2
 ![Pin Mapping](assets/PinMapping.png)
 
-Basic pin setup for a stock Raspberry Pi Pico. Combine with a simple GPIO breakout/screw terminal board for an easy DIY arcade stick.
+Basic pin setup for flatbox SZ v2. Combine with a simple GPIO breakout/screw terminal board for an easy DIY arcade stick.
 
 ## Main Pin Mapping Configuration
 
