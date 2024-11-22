@@ -2,9 +2,9 @@
 
 ![sz corner logo](assets/sz_corner_logo.png)
 
-![SZ's Corner V2](assets/SZ_Corner_V2.png)
-
 Basic pin setup for flatbox SZ v2. 
+
+![SZ's Corner V2](assets/SZ_Corner_V2.png)
 
 ## Main Pin Mapping Configuration
 
