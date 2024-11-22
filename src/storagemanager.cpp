@@ -234,9 +234,8 @@ AnimationOptions AnimationStorage::getAnimationOptions()
 	return options;
 }
 
-SpecialMoveOptions AnimationStorage::getSpecialMoveOptions()
+void AnimationStorage::getSpecialMoveOptions(SpecialMoveOptions& options)
 {
-	SpecialMoveOptions options;
 	const SpecialMoveOptions_Proto& optionsProto = Storage::getInstance().getSpecialMoveOptions();
 	
 	options.NumValidProfiles = optionsProto.profiles_count;
@@ -265,11 +264,10 @@ SpecialMoveOptions AnimationStorage::getSpecialMoveOptions()
 
 	options.ChargeTimeInMs			= optionsProto.ChargeTimeInMs;
 	options.CurrentProfileIndex		= optionsProto.CurrentProfileIndex;
-
-	return options;
 }
 
 void AnimationStorage::save()
 {
 	Storage::getInstance().enqueueAnimationOptionsSave(AnimationStation::options);
+	Storage::getInstance().enqueueSpecialMoveOptionsSave(SpecialMoveSystem::Options);
 }

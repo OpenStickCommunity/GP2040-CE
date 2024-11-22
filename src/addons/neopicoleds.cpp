@@ -598,8 +598,9 @@ void NeoPicoLEDAddon::configureLEDs()
 	AnimStation.ConfigureBrightness(ledOptions.brightnessMaximum, ledOptions.brightnessSteps);
 	AnimationOptions animationOptions = AnimationStore.getAnimationOptions();
 	AnimStation.SetOptions(animationOptions);
-	SpecialMoveOptions specialMoveOptions = AnimationStore.getSpecialMoveOptions();
-	AnimStation.specialMoveSystem.SetOptions(specialMoveOptions);
+	AnimationStore.getSpecialMoveOptions(AnimStation.specialMoveSystem.Options);
+	AnimStation.specialMoveSystem.SetParentAnimationStation(&AnimStation);
+	AnimStation.specialMoveSystem.SetDirectionMasks(GAMEPAD_MASK_DU, GAMEPAD_MASK_DD, GAMEPAD_MASK_DL, GAMEPAD_MASK_DR);
 	AnimStation.SetLights(RGBLights);
 	AnimStation.SetMode(as.options.baseProfileIndex);
 }

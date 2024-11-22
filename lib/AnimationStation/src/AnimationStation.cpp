@@ -9,6 +9,7 @@
 #include "Effects/Rainbow.hpp"
 #include "Effects/StaticColor.hpp"
 #include "Effects/RandomColor.hpp"
+#include "Effects/SMPulseColour.hpp"
 #include "SpecialMoveSystem.hpp"
 
 #include "AnimationStation.hpp"
@@ -168,14 +169,49 @@ void AnimationStation::Animate()
     return;
   }
 
+  specialMoveSystem.Update();
+
   baseAnimation->Animate(this->frame);
   buttonAnimation->Animate(this->frame);
+  if(specialMoveAnimation)
+  {
+    specialMoveAnimation->Animate(this->frame);
+    //Special moves can end once their animation is over. Clean up if its finished
+    if(specialMoveAnimation->IsFinished())
+    {
+      delete specialMoveAnimation;
+      specialMoveAnimation = nullptr;
+      specialMoveSystem.SetSpecialMoveAnimationOver();
+    }
+  }
 }
 
 void AnimationStation::Clear() 
 { 
   //sets all lights to black (off)
   memset(frame, 0, sizeof(frame)); 
+}
+
+void AnimationStation::SetSpecialMoveAnimation(SpecialMoveEffects AnimationToPlay, uint32_t OptionalParams)
+{
+    switch(AnimationToPlay)
+    {
+    case SpecialMoveEffects::SPECIALMOVE_SMEFFECT_WAVE:
+        //this->specialMoveAnimation = new SMWaveEffect(RGBLights);
+        break;
+
+    case SpecialMoveEffects::SPECIALMOVE_SMEFFECT_PULSECOLOR:
+        this->specialMoveAnimation = new SMPulseColour(RGBLights);
+        break;
+
+    default:
+        break;
+    }
+
+    if(this->specialMoveAnimation)
+    {
+        this->specialMoveAnimation->SetOptionalParams(OptionalParams);
+    }
 }
 
 int8_t AnimationStation::GetMode() 
@@ -191,10 +227,12 @@ void AnimationStation::SetMode(int8_t mode)
   if (this->baseAnimation != nullptr) 
   {
     delete this->baseAnimation;
+    this->baseAnimation = nullptr;
   }
   if (this->buttonAnimation != nullptr) 
   {
     delete this->buttonAnimation;
+    this->buttonAnimation = nullptr;
   }
 
   //turn off all lights

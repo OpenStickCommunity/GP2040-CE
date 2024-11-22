@@ -120,6 +120,10 @@ public:
   virtual void ParameterUp() {};
   virtual void ParameterDown() {};
 
+  virtual void SetOptionalParams(uint32_t OptionalParams) {};
+
+  virtual bool IsFinished() { return false; } //ready for delete? Only applicable to special move anims really
+
 protected:
 
   //gets current frame time
@@ -138,6 +142,7 @@ protected:
   //Type Helpers
   bool LightTypeIsForNonPressedAnimation(LightType Type);
   bool LightTypeIsForPressedAnimation(LightType Type);
+  bool LightTypeIsForSpecialMoveAnimation(LightType Type);
 
   //Light data
   Lights* RGBLights;

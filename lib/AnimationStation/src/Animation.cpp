@@ -166,3 +166,11 @@ bool Animation::LightTypeIsForPressedAnimation(LightType Type)
 
   return false;
 }
+
+bool Animation::LightTypeIsForSpecialMoveAnimation(LightType Type)
+{
+  if(Type == LightType::LightType_ActionButton || Type == LightType::LightType_Case)
+    return true;
+
+  return false;
+}

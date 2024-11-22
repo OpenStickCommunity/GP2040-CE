@@ -9,7 +9,7 @@ class AnimationStorage
   public:
     void save();
     AnimationOptions getAnimationOptions();
-    SpecialMoveOptions getSpecialMoveOptions();
+    void getSpecialMoveOptions(SpecialMoveOptions& options);
 };
 
 static AnimationStorage AnimationStore;

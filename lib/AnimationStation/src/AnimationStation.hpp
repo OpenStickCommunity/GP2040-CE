@@ -114,6 +114,9 @@ public:
   //passed in user options
   static void SetOptions(AnimationOptions InOptions);
  
+  //special move anim
+  void SetSpecialMoveAnimation(SpecialMoveEffects AnimationToPlay, uint32_t OptionalParams);
+
   SpecialMoveSystem specialMoveSystem;
 
   //Running non-pressed animation
