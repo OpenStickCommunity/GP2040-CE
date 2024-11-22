@@ -1,7 +1,7 @@
 # GP2040 Configuration for SZ's Corner flatbox SZ V2
 ![Pin Mapping](assets/PinMapping.png)
 
-Basic pin setup for flatbox SZ v2. Combine with a simple GPIO breakout/screw terminal board for an easy DIY arcade stick.
+Basic pin setup for flatbox SZ v2. 
 
 ## Main Pin Mapping Configuration
 
