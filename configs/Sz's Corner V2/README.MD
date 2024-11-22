@@ -1,5 +1,5 @@
 # GP2040 Configuration for SZ's Corner flatbox SZ V2
-![Pin Mapping](assets/PinMapping.png)
+![Pin Mapping](assets/SZ's Corner V2.jpg)
 
 Basic pin setup for flatbox SZ v2. 
 
