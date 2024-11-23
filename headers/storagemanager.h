@@ -49,6 +49,7 @@ public:
 
 	void init();
 	bool save();
+	bool save(const bool force);
 
 	// Perform saves that were enqueued from core1
 	void performEnqueuedSaves();

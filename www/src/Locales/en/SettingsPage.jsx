@@ -127,6 +127,7 @@ export default {
 		'load-profile-3': 'Load Profile #3',
 		'load-profile-4': 'Load Profile #4',
 		'reboot-default': 'Reboot GP2040-CE',
+		'save-config': 'Save Config',
 		'next-profile': 'Next Profile',
 		'previous-profile': 'Previous Profile',
 	},

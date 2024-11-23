@@ -177,7 +177,9 @@ void GP2040::setup() {
 	// Save the changed input mode
 	if (inputMode != gamepad->getOptions().inputMode) {	
 		gamepad->setInputMode(inputMode);
-		gamepad->save();
+		// save to match user expectations on choosing mode at boot, and this is
+		// before USB host will be used so we can force it to ignore the check
+		Storage::getInstance().save(true);
 	}
 }
 
