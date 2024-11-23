@@ -1016,7 +1016,7 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         ReverseOptions& reverseOptions = config.addonOptions.reverseOptions;
         config.addonOptions.has_reverseOptions = true;
         SET_PROPERTY(reverseOptions, enabled, legacyAddonOptions.ReverseInputEnabled);
-        SET_PROPERTY(reverseOptions, deprecatedButtonPin, bytePinToIntPin(legacyAddonOptions.pinButtonReverse));
+        SET_PROPERTY(reverseOptions, buttonPin, bytePinToIntPin(legacyAddonOptions.pinButtonReverse));
         SET_PROPERTY(reverseOptions, ledPin, bytePinToIntPin(legacyAddonOptions.pinReverseLED));
         SET_PROPERTY(reverseOptions, actionUp, legacyAddonOptions.reverseActionUp);
         SET_PROPERTY(reverseOptions, actionDown, legacyAddonOptions.reverseActionDown);

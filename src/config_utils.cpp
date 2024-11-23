@@ -567,7 +567,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
     // addonOptions.reverseOptions
     INIT_UNSET_PROPERTY(config.addonOptions.reverseOptions, enabled, !!REVERSE_ENABLED);
-    INIT_UNSET_PROPERTY(config.addonOptions.reverseOptions, deprecatedButtonPin, (Pin_t)-1);
+    INIT_UNSET_PROPERTY(config.addonOptions.reverseOptions, buttonPin, (Pin_t)-1);
     INIT_UNSET_PROPERTY(config.addonOptions.reverseOptions, ledPin, REVERSE_LED_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.reverseOptions, actionUp, REVERSE_UP_DEFAULT);
     INIT_UNSET_PROPERTY(config.addonOptions.reverseOptions, actionDown, REVERSE_DOWN_DEFAULT);
@@ -609,24 +609,24 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
 	// addonOptions.tiltOptions
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, enabled, !!TILT_ENABLED);
-    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, deprecatedTilt1Pin, (Pin_t)-1);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tilt1Pin, (Pin_t)-1);
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, factorTilt1LeftX, TILT1_FACTOR_LEFT_X);
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, factorTilt1LeftY, TILT1_FACTOR_LEFT_Y);
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, factorTilt1RightX, TILT1_FACTOR_RIGHT_X);
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, factorTilt1RightY, TILT1_FACTOR_RIGHT_Y);
-    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, deprecatedTilt2Pin, (Pin_t)-1);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tilt2Pin, (Pin_t)-1);
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, factorTilt2LeftX, TILT2_FACTOR_LEFT_X);
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, factorTilt2LeftY, TILT2_FACTOR_LEFT_Y);
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, factorTilt2RightX, TILT2_FACTOR_RIGHT_X);
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, factorTilt2RightY, TILT2_FACTOR_RIGHT_Y);
-    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, deprecatedTiltLeftAnalogDownPin, (Pin_t)-1);
-    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, deprecatedTiltLeftAnalogUpPin, (Pin_t)-1);
-    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, deprecatedTiltLeftAnalogLeftPin, (Pin_t)-1);
-    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, deprecatedTiltLeftAnalogRightPin, (Pin_t)-1);
-    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, deprecatedTiltRightAnalogDownPin, (Pin_t)-1);
-    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, deprecatedTiltRightAnalogUpPin, (Pin_t)-1);
-    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, deprecatedTiltRightAnalogLeftPin, (Pin_t)-1);
-    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, deprecatedTiltRightAnalogRightPin, (Pin_t)-1);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tiltLeftAnalogDownPin, (Pin_t)-1);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tiltLeftAnalogUpPin, (Pin_t)-1);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tiltLeftAnalogLeftPin, (Pin_t)-1);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tiltLeftAnalogRightPin, (Pin_t)-1);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tiltRightAnalogDownPin, (Pin_t)-1);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tiltRightAnalogUpPin, (Pin_t)-1);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tiltRightAnalogLeftPin, (Pin_t)-1);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tiltRightAnalogRightPin, (Pin_t)-1);
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tiltSOCDMode, TILT_SOCD_MODE);
 
     // addonOptions.buzzerOptions
@@ -760,7 +760,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
     // addonOptions.focusModeOptions
     INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, enabled, !!FOCUS_MODE_ENABLED);
-    INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, deprecatedPin, -1);
+    INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, pin, -1);
     INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, buttonLockMask, FOCUS_MODE_BUTTON_MASK);
     INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, buttonLockEnabled, !!FOCUS_MODE_BUTTON_LOCK_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, macroLockEnabled, !!FOCUS_MODE_MACRO_LOCK_ENABLED);
@@ -803,10 +803,10 @@ void gpioMappingsMigrationCore(Config& config)
     SliderOptions& jsSliderOptions = config.addonOptions.deprecatedSliderOptions;
     SOCDSliderOptions& socdSliderOptions = config.addonOptions.socdSliderOptions;
     PeripheralOptions& peripheralOptions = config.peripheralOptions;
-    TiltOptions& tiltOptions = config.addonOptions.tiltOptions;
     KeyboardHostOptions& keyboardHostOptions = config.addonOptions.keyboardHostOptions;
     PSPassthroughOptions& psPassthroughOptions = config.addonOptions.psPassthroughOptions;
     TurboOptions& turboOptions = config.addonOptions.turboOptions;
+    TiltOptions& tiltOptions = config.addonOptions.tiltOptions;
     FocusModeOptions& focusModeOptions = config.addonOptions.focusModeOptions;
     ReverseOptions& reverseOptions = config.addonOptions.reverseOptions;
 
@@ -1005,11 +1005,11 @@ void gpioMappingsMigrationCore(Config& config)
     }
 
     if (focusModeOptions.enabled) {
-        fromProtoBuf(focusModeOptions.has_deprecatedPin, &focusModeOptions.deprecatedPin, GpioAction::SUSTAIN_FOCUS_MODE);
+        if (focusModeOptions.has_pin && isValidPin(focusModeOptions.has_pin)) actions[focusModeOptions.pin] = GpioAction::SUSTAIN_FOCUS_MODE;
     }
 
     if (reverseOptions.enabled) {
-        fromProtoBuf(reverseOptions.has_deprecatedButtonPin, &reverseOptions.deprecatedButtonPin, GpioAction::BUTTON_PRESS_INPUT_REVERSE);
+        if (reverseOptions.has_buttonPin && isValidPin(reverseOptions.has_buttonPin)) actions[reverseOptions.buttonPin] = GpioAction::BUTTON_PRESS_INPUT_REVERSE;
     }
 
     // verify that tilt factors are not set to -1
@@ -1023,16 +1023,18 @@ void gpioMappingsMigrationCore(Config& config)
         if (tiltOptions.factorTilt2RightX == -1) tiltOptions.factorTilt2RightX = TILT2_FACTOR_RIGHT_X;
         if (tiltOptions.factorTilt2RightY == -1) tiltOptions.factorTilt2RightY = TILT2_FACTOR_RIGHT_Y;
 
-        fromProtoBuf(tiltOptions.has_deprecatedTilt1Pin,                &tiltOptions.deprecatedTilt1Pin,                GpioAction::ANALOG_DIRECTION_MOD_LOW);
-        fromProtoBuf(tiltOptions.has_deprecatedTilt2Pin,                &tiltOptions.deprecatedTilt2Pin,                GpioAction::ANALOG_DIRECTION_MOD_HIGH);
-        fromProtoBuf(tiltOptions.has_deprecatedTiltLeftAnalogUpPin,     &tiltOptions.deprecatedTiltLeftAnalogUpPin,     GpioAction::ANALOG_DIRECTION_LS_Y_NEG);
-        fromProtoBuf(tiltOptions.has_deprecatedTiltLeftAnalogDownPin,   &tiltOptions.deprecatedTiltLeftAnalogDownPin,   GpioAction::ANALOG_DIRECTION_LS_Y_POS);
-        fromProtoBuf(tiltOptions.has_deprecatedTiltLeftAnalogLeftPin,   &tiltOptions.deprecatedTiltLeftAnalogLeftPin,   GpioAction::ANALOG_DIRECTION_LS_X_NEG);
-        fromProtoBuf(tiltOptions.has_deprecatedTiltLeftAnalogRightPin,  &tiltOptions.deprecatedTiltLeftAnalogRightPin,  GpioAction::ANALOG_DIRECTION_LS_X_POS);
-        fromProtoBuf(tiltOptions.has_deprecatedTiltRightAnalogUpPin,    &tiltOptions.deprecatedTiltRightAnalogUpPin,    GpioAction::ANALOG_DIRECTION_RS_Y_NEG);
-        fromProtoBuf(tiltOptions.has_deprecatedTiltRightAnalogDownPin,  &tiltOptions.deprecatedTiltRightAnalogDownPin,  GpioAction::ANALOG_DIRECTION_RS_Y_POS);
-        fromProtoBuf(tiltOptions.has_deprecatedTiltRightAnalogLeftPin,  &tiltOptions.deprecatedTiltRightAnalogLeftPin,  GpioAction::ANALOG_DIRECTION_RS_X_NEG);
-        fromProtoBuf(tiltOptions.has_deprecatedTiltRightAnalogRightPin, &tiltOptions.deprecatedTiltRightAnalogRightPin, GpioAction::ANALOG_DIRECTION_RS_X_POS);
+        tiltOptions.factorTilt1LeftX = tiltOptions.tilt1Pin;
+
+        if (tiltOptions.has_tilt1Pin && isValidPin(tiltOptions.tilt1Pin)) actions[tiltOptions.tilt1Pin] = GpioAction::ANALOG_DIRECTION_MOD_LOW;
+        if (tiltOptions.has_tilt2Pin && isValidPin(tiltOptions.tilt2Pin)) actions[tiltOptions.tilt2Pin] = GpioAction::ANALOG_DIRECTION_MOD_HIGH;
+        if (tiltOptions.has_tiltLeftAnalogUpPin && isValidPin(tiltOptions.tiltLeftAnalogUpPin)) actions[tiltOptions.tiltLeftAnalogUpPin] = GpioAction::ANALOG_DIRECTION_LS_Y_NEG;
+        if (tiltOptions.has_tiltLeftAnalogDownPin && isValidPin(tiltOptions.tiltLeftAnalogDownPin)) actions[tiltOptions.tiltLeftAnalogDownPin] = GpioAction::ANALOG_DIRECTION_LS_Y_POS;
+        if (tiltOptions.has_tiltLeftAnalogLeftPin && isValidPin(tiltOptions.tiltLeftAnalogLeftPin)) actions[tiltOptions.tiltLeftAnalogLeftPin] = GpioAction::ANALOG_DIRECTION_LS_X_NEG;
+        if (tiltOptions.has_tiltLeftAnalogRightPin && isValidPin(tiltOptions.tiltLeftAnalogRightPin)) actions[tiltOptions.tiltLeftAnalogRightPin] = GpioAction::ANALOG_DIRECTION_LS_X_POS;
+        if (tiltOptions.has_tiltRightAnalogUpPin && isValidPin(tiltOptions.tiltRightAnalogUpPin)) actions[tiltOptions.tiltRightAnalogUpPin] = GpioAction::ANALOG_DIRECTION_RS_Y_NEG;
+        if (tiltOptions.has_tiltRightAnalogDownPin && isValidPin(tiltOptions.tiltRightAnalogDownPin)) actions[tiltOptions.tiltRightAnalogDownPin] = GpioAction::ANALOG_DIRECTION_RS_Y_POS;
+        if (tiltOptions.has_tiltRightAnalogLeftPin && isValidPin(tiltOptions.tiltRightAnalogLeftPin)) actions[tiltOptions.tiltRightAnalogLeftPin] = GpioAction::ANALOG_DIRECTION_RS_X_NEG;
+        if (tiltOptions.has_tiltRightAnalogRightPin && isValidPin(tiltOptions.tiltRightAnalogRightPin)) actions[tiltOptions.tiltRightAnalogRightPin] = GpioAction::ANALOG_DIRECTION_RS_X_POS;
     }
 
     // Assign all potential board config pins
