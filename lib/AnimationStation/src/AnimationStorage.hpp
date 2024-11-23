@@ -8,7 +8,7 @@ class AnimationStorage
 {
   public:
     void save();
-    AnimationOptions getAnimationOptions();
+    void getAnimationOptions(AnimationOptions& options);
     void getSpecialMoveOptions(SpecialMoveOptions& options);
 };
 

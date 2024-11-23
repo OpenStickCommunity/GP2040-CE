@@ -204,7 +204,7 @@ private:
 	uint8_t setupButtonPositions();
 
 	//New co-ordinated setup
-	void GenerateLights(LEDOptions_lightData_t InLightData, uint32_t InLightDataSize);
+	void GenerateLights(const LEDOptions_lightData_t& InLightData, uint32_t InLightDataSize);
 
 	//Controls the actual lights on the board. Writes out state each frame
 	NeoPico *neopico;

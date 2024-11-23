@@ -166,6 +166,7 @@ protected:
     void UpdateHistoryForInput(uint32_t buttonMask, SpecialMoveStickDirection directionHeld, bool bIsPressed);
     bool CheckJoystickDirection(SpecialMoveStickDirection& FoundDirection, SpecialMoveStickDirection TestDirection, uint32_t PressedButtons, uint32_t DirectionOne, uint32_t DirectionTwo);
     bool DoesInputMatch(int HistoryIndex, ComboEntry ComboInput, bool bIsChargeMove);
+    void SwitchHistoryCreateNew(uint32_t buttonMask, SpecialMoveStickDirection directionHeld);
 
     bool TestAllMoves();
     bool TestForActivatedSpecialMove(SpecialMoveDescription* MoveToTestFor, int ComboIndex, int TriggerIndex);
@@ -177,7 +178,7 @@ protected:
     class AnimationStation* ParentAnimationStation;
 
     //history of all buttons/directions held. (newest entries first)
-    std::deque<InputHistory> SwitchHistory;
+    InputHistory SwitchHistory[MAX_INPUT_HISTORY];
 
     // after a special move we need to wait for all inputs to be released before continuing to avoid repeats
     bool SwitchClearAwaitingAllRelease = false;

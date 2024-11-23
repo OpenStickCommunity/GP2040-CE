@@ -574,7 +574,7 @@ void NeoPicoLEDAddon::configureLEDs()
 	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
 
 	//New grid based setup
-	LEDOptions_lightData_t lightData = ledOptions.lightData;
+	LEDOptions_lightData_t lightData = ledOptions.lightData; //todo make this const ref if we remove the legacy version
 	int32_t lightDataSize = ledOptions.lightDataSize;
 	if(lightDataSize == 0)
 	{
@@ -596,9 +596,9 @@ void NeoPicoLEDAddon::configureLEDs()
 
 	Animation::format = static_cast<LEDFormat>(ledOptions.ledFormat);
 	AnimStation.ConfigureBrightness(ledOptions.brightnessMaximum, ledOptions.brightnessSteps);
-	AnimationOptions animationOptions = AnimationStore.getAnimationOptions();
-	AnimStation.SetOptions(animationOptions);
+	AnimationStore.getAnimationOptions(AnimStation.options);
 	AnimationStore.getSpecialMoveOptions(AnimStation.specialMoveSystem.Options);
+	AnimStation.SetBrightness(AnimStation.options.brightness);
 	AnimStation.specialMoveSystem.SetParentAnimationStation(&AnimStation);
 	AnimStation.specialMoveSystem.SetDirectionMasks(GAMEPAD_MASK_DU, GAMEPAD_MASK_DD, GAMEPAD_MASK_DL, GAMEPAD_MASK_DR);
 	AnimStation.SetLights(RGBLights);
@@ -609,7 +609,7 @@ void NeoPicoLEDAddon::configureLEDs()
 //New RGBLight setups
 ////////////////////////////////////////////
 
-void NeoPicoLEDAddon::GenerateLights(LEDOptions_lightData_t InLightData, uint32_t InLightDataSize)
+void NeoPicoLEDAddon::GenerateLights(const LEDOptions_lightData_t& InLightData, uint32_t InLightDataSize)
 {
 	std::vector<Light> generatedLights;
 	for(int index = 0; index < (int)InLightDataSize; ++index)

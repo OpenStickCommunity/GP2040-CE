@@ -207,9 +207,8 @@ Gamepad * Storage::GetProcessedGamepad()
 }
 
 /* Animation stuffs */
-AnimationOptions AnimationStorage::getAnimationOptions()
+void AnimationStorage::getAnimationOptions(AnimationOptions& options)
 {
-	AnimationOptions options;
 	const AnimationOptions_Proto& optionsProto = Storage::getInstance().getAnimationOptions();
 	
 	options.checksum				= 0;
@@ -230,8 +229,6 @@ AnimationOptions AnimationStorage::getAnimationOptions()
 	}
 	options.brightness				= std::min<uint32_t>(optionsProto.brightness, 255);
 	options.baseProfileIndex		= std::min<uint32_t>(optionsProto.baseProfileIndex, 255);
-
-	return options;
 }
 
 void AnimationStorage::getSpecialMoveOptions(SpecialMoveOptions& options)

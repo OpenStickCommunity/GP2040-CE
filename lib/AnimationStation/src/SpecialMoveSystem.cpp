@@ -11,25 +11,12 @@ SpecialMoveSystem::SpecialMoveSystem()
 void SpecialMoveSystem::SetParentAnimationStation(class AnimationStation* InParentAnimationStation)
 {
     ParentAnimationStation = InParentAnimationStation;
-    SwitchHistory.resize(0);
+    ClearHistory();
 }
 
 void SpecialMoveSystem::Update()
 {
     thisFrameTime = get_absolute_time();
-
-    //trim history if required
-//    if(SwitchHistory.size() > MAX_INPUT_HISTORY)
-//        SwitchHistory.resize(MAX_INPUT_HISTORY);
-
-    //Debug
-    AnimationStation::printfs[0] = std::to_string(SwitchHistory.size()) + " ";
-    if(SwitchHistory.size() > 0)
-    {
-        AnimationStation::printfs[1] = (SwitchHistory[0].bIsHeld ? "true " : "false ") + std::to_string(SwitchHistory[0].ButtonMaskInput) + " ";
-        AnimationStation::printfs[2] = std::to_string(SwitchHistory[0].ButtonMaskInput) + " " + std::to_string(SwitchHistory[0].DirectionInput);
-        AnimationStation::printfs[3] = std::to_string(to_us_since_boot(SwitchHistory[0].TimeSet)) + " " + std::to_string(to_us_since_boot(SwitchHistory[0].TimeReleased));
-    }
 
     if(bMoveIsRunning == false)
     {
@@ -97,12 +84,24 @@ bool SpecialMoveSystem::CheckJoystickDirection(SpecialMoveStickDirection& FoundD
     return bWasPressed;
 }
 
+static uint64_t count = 0;
+static bool halt = false;
+
 void SpecialMoveSystem::HandlePressedButtons(uint32_t pressedButtons)
 {
     bool bWasAnythingPressed = false;
 
+    uint32_t oldButtonMask = SwitchHistory[0].ButtonMaskInput;
+    count++;
+
+    if(halt)
+    {
+        while(true)
+        {}
+    }
+
     //do directions explicitly due to needing to do diagonals
-    SpecialMoveStickDirection FoundDirection = SpecialMoveStickDirection::SPECIALMOVE_STICK_INVALID;
+/*    SpecialMoveStickDirection FoundDirection = SpecialMoveStickDirection::SPECIALMOVE_STICK_INVALID;
     bWasAnythingPressed |= CheckJoystickDirection(FoundDirection, SpecialMoveStickDirection::SPECIALMOVE_STICK_UPLEFT, pressedButtons, SPECIAL_MOVE_DIRECTION_MASK_LEFT, SPECIAL_MOVE_DIRECTION_MASK_UP);
     bWasAnythingPressed |= CheckJoystickDirection(FoundDirection, SpecialMoveStickDirection::SPECIALMOVE_STICK_UPRIGHT, pressedButtons, SPECIAL_MOVE_DIRECTION_MASK_RIGHT, SPECIAL_MOVE_DIRECTION_MASK_UP);
     bWasAnythingPressed |= CheckJoystickDirection(FoundDirection, SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNLEFT, pressedButtons, SPECIAL_MOVE_DIRECTION_MASK_LEFT, SPECIAL_MOVE_DIRECTION_MASK_DOWN);
@@ -110,7 +109,7 @@ void SpecialMoveSystem::HandlePressedButtons(uint32_t pressedButtons)
     bWasAnythingPressed |= CheckJoystickDirection(FoundDirection, SpecialMoveStickDirection::SPECIALMOVE_STICK_UP, pressedButtons, SPECIAL_MOVE_DIRECTION_MASK_UP, 0);
     bWasAnythingPressed |= CheckJoystickDirection(FoundDirection, SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWN, pressedButtons, SPECIAL_MOVE_DIRECTION_MASK_DOWN, 0);
     bWasAnythingPressed |= CheckJoystickDirection(FoundDirection, SpecialMoveStickDirection::SPECIALMOVE_STICK_LEFT, pressedButtons, SPECIAL_MOVE_DIRECTION_MASK_LEFT, 0);
-    bWasAnythingPressed |= CheckJoystickDirection(FoundDirection, SpecialMoveStickDirection::SPECIALMOVE_STICK_RIGHT, pressedButtons, SPECIAL_MOVE_DIRECTION_MASK_RIGHT, 0);
+    bWasAnythingPressed |= CheckJoystickDirection(FoundDirection, SpecialMoveStickDirection::SPECIALMOVE_STICK_RIGHT, pressedButtons, SPECIAL_MOVE_DIRECTION_MASK_RIGHT, 0);*/
 
     //check each button input and update history
     for(uint32_t buttonMask = 1; buttonMask < (1 << 20); buttonMask = buttonMask << 1)
@@ -122,6 +121,14 @@ void SpecialMoveSystem::HandlePressedButtons(uint32_t pressedButtons)
         bWasAnythingPressed |= bIsPressed;
         UpdateHistoryForInput(buttonMask, SpecialMoveStickDirection::SPECIALMOVE_STICK_INVALID, bIsPressed);
     }
+
+    if(count > 300 && oldButtonMask <= 32 && SwitchHistory[0].ButtonMaskInput > 32)
+    {
+        halt = true;
+    }
+    AnimationStation::printfs[1] = std::to_string(pressedButtons) + " " + std::to_string(oldButtonMask);
+    AnimationStation::printfs[2] = std::to_string(SwitchHistory[0].ButtonMaskInput) + " " + std::to_string(SwitchHistory[0].DirectionInput);
+    AnimationStation::printfs[0] = std::to_string(count) + " ";
 
     //After a special move we need to wait for all buttons to be released before we trigger another or we could potentially chain two together by accident. 
     //If nothing is pressed this frame then we can remove this block.
@@ -140,13 +147,37 @@ void SpecialMoveSystem::HandlePressedButtons(uint32_t pressedButtons)
 
 void SpecialMoveSystem::ClearHistory()
 {
-    SwitchHistory.resize(0);
+  for(int historyIndex = 0; historyIndex < MAX_INPUT_HISTORY; ++historyIndex)
+  {
+    SwitchHistory[historyIndex].ButtonMaskInput = 0;
+    SwitchHistory[historyIndex].DirectionInput = SpecialMoveStickDirection::SPECIALMOVE_STICK_INVALID;
+  }
+}
+
+void SpecialMoveSystem::SwitchHistoryCreateNew(uint32_t buttonMask, SpecialMoveStickDirection directionHeld)
+{
+  //Shift all entries up by 1
+  for(int historyIndex = (MAX_INPUT_HISTORY-1) ; historyIndex > 0; --historyIndex)
+  {
+    SwitchHistory[historyIndex].ButtonMaskInput = SwitchHistory[historyIndex-1].ButtonMaskInput;
+    SwitchHistory[historyIndex].DirectionInput = SwitchHistory[historyIndex-1].DirectionInput;
+    SwitchHistory[historyIndex].TimeSet = SwitchHistory[historyIndex-1].TimeSet;
+    SwitchHistory[historyIndex].TimeReleased = SwitchHistory[historyIndex-1].TimeReleased;
+    SwitchHistory[historyIndex].bIsHeld = SwitchHistory[historyIndex-1].bIsHeld;
+  }
+
+  //Stick new input onto front of array and set the held start time
+  SwitchHistory[0].ButtonMaskInput = buttonMask;
+  SwitchHistory[0].DirectionInput = directionHeld;
+  SwitchHistory[0].TimeSet = thisFrameTime;
+  //SwitchHistory[0].TimeReleased = (absolute_time_t)0;
+  SwitchHistory[0].bIsHeld = true;
 }
 
 void SpecialMoveSystem::UpdateHistoryForInput(uint32_t buttonMask, SpecialMoveStickDirection directionHeld, bool bIsPressed)
 {
     //search history for recent instance of this button
-    for(unsigned int historyIndex = 0; historyIndex < SwitchHistory.size() ; ++historyIndex)
+    for(unsigned int historyIndex = 0; historyIndex < MAX_INPUT_HISTORY; ++historyIndex)
     {
         if(SwitchHistory[historyIndex].ButtonMaskInput == buttonMask && SwitchHistory[historyIndex].DirectionInput == directionHeld)
         {
@@ -154,12 +185,7 @@ void SpecialMoveSystem::UpdateHistoryForInput(uint32_t buttonMask, SpecialMoveSt
             if(bIsPressed && SwitchHistory[historyIndex].bIsHeld == false)
             {
                 //create new entry at start of history array
-                InputHistory newHistory;
-                newHistory.bIsHeld = true;
-                newHistory.TimeSet = thisFrameTime;
-                newHistory.ButtonMaskInput = buttonMask;
-                newHistory.DirectionInput = directionHeld;
-                SwitchHistory.push_front(newHistory);
+                SwitchHistoryCreateNew(buttonMask, directionHeld);
             }
             else if(!bIsPressed && SwitchHistory[historyIndex].bIsHeld)
             {
@@ -173,12 +199,7 @@ void SpecialMoveSystem::UpdateHistoryForInput(uint32_t buttonMask, SpecialMoveSt
     }
 
     //no previous entry found. Add new one
-    InputHistory newHistory;
-    newHistory.bIsHeld = true;
-    newHistory.TimeSet = thisFrameTime;
-    newHistory.ButtonMaskInput = buttonMask;
-    newHistory.DirectionInput = directionHeld;
-    SwitchHistory.push_front(newHistory); 
+    SwitchHistoryCreateNew(buttonMask, directionHeld);
 }
 
 void SpecialMoveSystem::GetComboArrayForMove(SpecialMoveInputTypes InputType, std::vector<ComboEntry>& comboArray)
@@ -292,7 +313,7 @@ bool SpecialMoveSystem::TestForActivatedSpecialMove(SpecialMoveDescription* Move
 
             // In which case, we only care if it was pressed within the last COMBO_TRIGGER_INPUT_TIME_WINDOW
             bool bFoundTrigger = false;
-            for (unsigned int historyIndex = 0; historyIndex < SwitchHistory.size(); ++historyIndex)
+            for (unsigned int historyIndex = 0; historyIndex < MAX_INPUT_HISTORY; ++historyIndex)
             {
                 // are we past the time window?
                 if (absolute_time_diff_us(SwitchHistory[historyIndex].TimeSet, timeNow) > COMBO_TRIGGER_INPUT_TIME_WINDOW)
