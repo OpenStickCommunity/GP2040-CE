@@ -9,7 +9,7 @@ export default {
 		'led-brightness-steps-label': 'Brightness Steps',
 	},
 	player: {
-		'header-text': 'Player LEDs (XInput)',
+		'header-text': 'Player LEDs',
 		'pwm-sub-header-text':
 			'For PWM LEDs, set each LED to a dedicated GPIO pin.',
 		'rgb-sub-header-text':

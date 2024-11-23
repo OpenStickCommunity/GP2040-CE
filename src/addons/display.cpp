@@ -84,6 +84,12 @@ bool DisplayAddon::updateDisplayScreen() {
             case BUTTONS:
                 delete (ButtonLayoutScreen*)gpScreen;
                 break;
+            case PIN_VIEWER:
+                delete (PinViewerScreen*)gpScreen;
+                break;
+            case STATS:
+                delete (StatsScreen*)gpScreen;
+                break;
             default:
                 break;
         }
@@ -101,6 +107,12 @@ bool DisplayAddon::updateDisplayScreen() {
             break;
         case BUTTONS:
             gpScreen = new ButtonLayoutScreen(gpDisplay);
+            break;
+        case PIN_VIEWER:
+            gpScreen = new PinViewerScreen(gpDisplay);
+            break;
+        case STATS:
+            gpScreen = new StatsScreen(gpDisplay);
             break;
         default:
             gpScreen = nullptr;

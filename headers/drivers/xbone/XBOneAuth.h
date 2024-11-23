@@ -4,14 +4,6 @@
 #include "drivers/shared/gpauthdriver.h"
 #include "drivers/shared/xgip_protocol.h"
 
-typedef enum {
-    auth_idle_state = 0,
-    send_auth_console_to_dongle = 1,
-    send_auth_dongle_to_console = 2,
-    wait_auth_console_to_dongle = 3,
-    wait_auth_dongle_to_console = 4,
-} XboxOneState;
-
 class XBOneAuthBuffer {
 public:
     XBOneAuthBuffer() {
@@ -51,7 +43,7 @@ public:
 };
 
 typedef struct {
-    XboxOneState xboneState;
+    GPAuthState xboneState;
 
     // Auth Buffer Queue
     XBOneAuthBuffer consoleBuffer;

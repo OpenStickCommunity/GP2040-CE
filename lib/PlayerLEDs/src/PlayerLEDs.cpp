@@ -31,6 +31,10 @@ void PlayerLEDs::animate(PLEDAnimationState animationState)
 			handleFade();
 			break;
 
+		case PLED_ANIM_BLINK_CUSTOM:
+			handleBlinkCustom(animationState.speedOn, animationState.speedOff);
+			break;
+
 		default:
 			break;
 	}

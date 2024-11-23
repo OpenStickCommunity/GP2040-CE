@@ -25,7 +25,6 @@ import I2CAnalog1219, {
 	i2cAnalogScheme,
 	i2cAnalogState,
 } from '../Addons/I2CAnalog1219';
-import Joystick, { joystickScheme, joystickState } from '../Addons/Joystick';
 import OnBoardLed, {
 	onBoardLedScheme,
 	onBoardLedState,
@@ -56,6 +55,10 @@ import DRV8833Rumble, {
 	drv8833RumbleScheme,
 	drv8833RumbleState,
 } from '../Addons/DRV8833';
+import ReactiveLED, {
+	reactiveLEDScheme,
+	reactiveLEDState,
+} from '../Addons/ReactiveLED';
 
 const schema = yup.object().shape({
 	...analogScheme,
@@ -63,7 +66,6 @@ const schema = yup.object().shape({
 	...bootselScheme,
 	...onBoardLedScheme,
 	...turboScheme,
-	...joystickScheme,
 	...reverseScheme,
 	...i2cAnalogScheme,
 	...dualDirectionScheme,
@@ -78,7 +80,8 @@ const schema = yup.object().shape({
 	...rotaryScheme,
 	...pcf8575Scheme,
 	...drv8833RumbleScheme,
-	...controllerScheme,
+	...reactiveLEDScheme,
+  ...controllerScheme,
 });
 
 const defaultValues = {
@@ -87,7 +90,6 @@ const defaultValues = {
 	...bootselState,
 	...onBoardLedState,
 	...turboState,
-	...joystickState,
 	...reverseState,
 	...i2cAnalogState,
 	...dualDirectionState,
@@ -103,7 +105,8 @@ const defaultValues = {
 	...rotaryState,
 	...pcf8575State,
 	...drv8833RumbleState,
-	...controllerState,
+	...reactiveLEDState,
+  ...controllerState,
 };
 
 const ADDONS = [
@@ -111,7 +114,6 @@ const ADDONS = [
 	OnBoardLed,
 	Analog,
 	Turbo,
-	Joystick,
 	Reverse,
 	I2CAnalog1219,
 	Analog1256,
@@ -129,6 +131,7 @@ const ADDONS = [
 	Rotary,
 	PCF8575,
 	DRV8833Rumble,
+	ReactiveLED,
 ];
 
 const FormContext = ({ setStoredData }) => {

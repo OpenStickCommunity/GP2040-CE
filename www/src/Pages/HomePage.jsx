@@ -55,11 +55,18 @@ export default function HomePage() {
 
 		WebApi.getMemoryReport(setLoading)
 			.then((response) => {
-				const { totalFlash, usedFlash, staticAllocs, totalHeap, usedHeap } =
-					response;
+				const {
+					totalFlash,
+					usedFlash,
+					physicalFlash,
+					staticAllocs,
+					totalHeap,
+					usedHeap,
+				} = response;
 				setMemoryReport({
 					totalFlash: toKB(totalFlash),
 					usedFlash: toKB(usedFlash),
+					physicalFlash: toKB(physicalFlash),
 					staticAllocs: toKB(staticAllocs),
 					totalHeap: toKB(totalHeap),
 					usedHeap: toKB(usedHeap),
@@ -110,6 +117,9 @@ export default function HomePage() {
 							<div>
 								{t('HomePage:memory-static-allocations-text')}:{' '}
 								{memoryReport.staticAllocs}
+							</div>
+							<div>
+								{t('HomePage:memory-board-text')}: {memoryReport.physicalFlash}
 							</div>
 						</div>
 					)}

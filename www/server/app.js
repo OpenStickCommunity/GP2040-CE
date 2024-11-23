@@ -16,13 +16,20 @@ const __dirname = path.dirname(__filename);
 const { pico: picoController } = JSON.parse(
 	readFileSync(path.resolve(__dirname, '../src/Data/Controllers.json'), 'utf8'),
 );
-const PinMappings = Object.entries(picoController).reduce(
-	(acc, [key, value]) => ({
-		...acc,
-		[key]: { action: value, customButtonMask: 0, customDpadMask: 0 },
-	}),
-	{},
-);
+
+// Structure pin mappings to include masks and profile label
+const createPinMappings = ({ profileLabel = 'Profile' }) => {
+	let pinMappings = { profileLabel, enabled: true };
+
+	for (const [key, value] of Object.entries(picoController)) {
+		pinMappings[key] = {
+			action: value,
+			customButtonMask: 0,
+			customDpadMask: 0,
+		};
+	}
+	return pinMappings;
+};
 
 const port = process.env.PORT || 8080;
 
@@ -107,6 +114,7 @@ app.get('/api/getGamepadOptions', (req, res) => {
 		ps4AuthType: 0,
 		ps5AuthType: 0,
 		xinputAuthType: 0,
+		ps4ControllerIDMode: 0,
 		hotkey01: {
 			auxMask: 32768,
 			buttonsMask: 66304,
@@ -259,7 +267,7 @@ app.get('/api/getCustomTheme', (req, res) => {
 });
 
 app.get('/api/getPinMappings', (req, res) => {
-	return res.send(PinMappings);
+	return res.send(createPinMappings({ profileLabel: 'Profile 1' }));
 });
 
 app.get('/api/getKeyMappings', (req, res) =>
@@ -379,7 +387,10 @@ app.get('/api/getWiiControls', (req, res) =>
 
 app.get('/api/getProfileOptions', (req, res) => {
 	return res.send({
-		alternativePinMappings: [PinMappings, PinMappings, PinMappings],
+		alternativePinMappings: [
+			createPinMappings({ profileLabel: 'Profile 2' }),
+			createPinMappings({ profileLabel: 'Profile 3' }),
+		],
 	});
 });
 
@@ -429,6 +440,9 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		inner_deadzone: 5,
 		outer_deadzone: 95,
 		auto_calibrate: 0,
+		analog_smoothing: 0,
+		smoothing_factor: 5,
+		analog_error: 1000,
 		bootselButtonMap: 0,
 		buzzerPin: -1,
 		buzzerEnablePin: -1,
@@ -463,6 +477,9 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		snesPadLatchPin: -1,
 		snesPadDataPin: -1,
 		keyboardHostMap: DEFAULT_KEYBOARD_MAPPING,
+		keyboardHostMouseLeft: 0,
+		keyboardHostMouseMiddle: 0,
+		keyboardHostMouseRight: 0,
 		AnalogInputEnabled: 1,
 		BoardLedAddonEnabled: 1,
 		FocusModeAddonEnabled: 1,
@@ -472,7 +489,6 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		DualDirectionalInputEnabled: 1,
 		TiltInputEnabled: 1,
 		I2CAnalog1219InputEnabled: 1,
-		JSliderInputEnabled: 1,
 		KeyboardHostAddonEnabled: 1,
 		PlayerNumAddonEnabled: 1,
 		ReverseInputEnabled: 1,
@@ -509,7 +525,8 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		RotaryAddonEnabled: 1,
 		PCF8575AddonEnabled: 1,
 		DRV8833RumbleAddonEnabled: 1,
-		ControllerHostAddonEnabled: 1,
+		ReactiveLEDAddonEnabled: 1,
+    ControllerHostAddonEnabled: 1,
 		usedPins: Object.values(picoController),
 	});
 });
@@ -732,17 +749,35 @@ app.get('/api/getButtonLayoutDefs', (req, res) => {
 	});
 });
 
+app.get('/api/getReactiveLEDs', (req, res) => {
+	return res.send({
+		leds: [
+			{ pin: -1, action: -10, modeDown: 0, modeUp: 1 },
+			{ pin: -1, action: -10, modeDown: 1, modeUp: 0 },
+			{ pin: -1, action: -10, modeDown: 1, modeUp: 0 },
+			{ pin: -1, action: -10, modeDown: 1, modeUp: 0 },
+			{ pin: -1, action: -10, modeDown: 1, modeUp: 0 },
+			{ pin: -1, action: -10, modeDown: 1, modeUp: 0 },
+			{ pin: -1, action: -10, modeDown: 1, modeUp: 0 },
+			{ pin: -1, action: -10, modeDown: 1, modeUp: 0 },
+			{ pin: -1, action: -10, modeDown: 1, modeUp: 0 },
+			{ pin: -1, action: -10, modeDown: 1, modeUp: 0 },
+		],
+	});
+});
+
 app.get('/api/reboot', (req, res) => {
 	return res.send({});
 });
 
 app.get('/api/getMemoryReport', (req, res) => {
 	return res.send({
-		totalFlash: 2048,
-		usedFlash: 1048,
+		totalFlash: 2048 * 1024,
+		usedFlash: 1048 * 1024,
+		physicalFlash: 2048 * 1024,
 		staticAllocs: 200,
-		totalHeap: 2048,
-		usedHeap: 1048,
+		totalHeap: 2048 * 1024,
+		usedHeap: 1048 * 1024,
 	});
 });
 

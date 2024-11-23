@@ -1,6 +1,9 @@
 import { create } from 'zustand';
 import WebApi from '../Services/WebApi';
-import { BUTTON_ACTIONS, PinActionValues } from '../Data/Pins';
+import { PinActionValues } from '../Data/Pins';
+
+// Max number of profiles that can be created, including the base profile
+export const MAX_PROFILES = 4;
 
 type CustomMasks = {
 	customButtonMask: number;
@@ -11,10 +14,43 @@ export type MaskPayload = {
 	action: PinActionValues;
 } & CustomMasks;
 
-type ProfilePinType = { [key: string]: MaskPayload };
+export type PinsType = {
+	pin00: MaskPayload;
+	pin01: MaskPayload;
+	pin02: MaskPayload;
+	pin03: MaskPayload;
+	pin04: MaskPayload;
+	pin05: MaskPayload;
+	pin06: MaskPayload;
+	pin07: MaskPayload;
+	pin08: MaskPayload;
+	pin09: MaskPayload;
+	pin10: MaskPayload;
+	pin11: MaskPayload;
+	pin12: MaskPayload;
+	pin13: MaskPayload;
+	pin14: MaskPayload;
+	pin15: MaskPayload;
+	pin16: MaskPayload;
+	pin17: MaskPayload;
+	pin18: MaskPayload;
+	pin19: MaskPayload;
+	pin20: MaskPayload;
+	pin21: MaskPayload;
+	pin22: MaskPayload;
+	pin23: MaskPayload;
+	pin24: MaskPayload;
+	pin25: MaskPayload;
+	pin26: MaskPayload;
+	pin27: MaskPayload;
+	pin28: MaskPayload;
+	pin29: MaskPayload;
+	profileLabel: string;
+	enabled: boolean;
+};
 
 type State = {
-	profiles: ProfilePinType[];
+	profiles: PinsType[];
 	loadingProfiles: boolean;
 };
 
@@ -25,72 +61,61 @@ export type SetProfilePinType = (
 ) => void;
 
 type Actions = {
+	addProfile: () => void;
+	copyBaseProfile: (profileIndex: number) => void;
 	fetchProfiles: () => void;
-	setProfilePin: SetProfilePinType;
 	saveProfiles: () => Promise<object>;
-	setProfile: (profileIndex: number, pins: ProfilePinType) => void;
-};
-
-const DEFAULT_PIN_STATE = {
-	action: BUTTON_ACTIONS.NONE,
-	customButtonMask: 0,
-	customDpadMask: 0,
-};
-
-const defaultProfilePins: ProfilePinType = {
-	pin00: DEFAULT_PIN_STATE,
-	pin01: DEFAULT_PIN_STATE,
-	pin02: DEFAULT_PIN_STATE,
-	pin03: DEFAULT_PIN_STATE,
-	pin04: DEFAULT_PIN_STATE,
-	pin05: DEFAULT_PIN_STATE,
-	pin06: DEFAULT_PIN_STATE,
-	pin07: DEFAULT_PIN_STATE,
-	pin08: DEFAULT_PIN_STATE,
-	pin09: DEFAULT_PIN_STATE,
-	pin10: DEFAULT_PIN_STATE,
-	pin11: DEFAULT_PIN_STATE,
-	pin12: DEFAULT_PIN_STATE,
-	pin13: DEFAULT_PIN_STATE,
-	pin14: DEFAULT_PIN_STATE,
-	pin15: DEFAULT_PIN_STATE,
-	pin16: DEFAULT_PIN_STATE,
-	pin17: DEFAULT_PIN_STATE,
-	pin18: DEFAULT_PIN_STATE,
-	pin19: DEFAULT_PIN_STATE,
-	pin20: DEFAULT_PIN_STATE,
-	pin21: DEFAULT_PIN_STATE,
-	pin22: DEFAULT_PIN_STATE,
-	pin23: DEFAULT_PIN_STATE,
-	pin24: DEFAULT_PIN_STATE,
-	pin25: DEFAULT_PIN_STATE,
-	pin26: DEFAULT_PIN_STATE,
-	pin27: DEFAULT_PIN_STATE,
-	pin28: DEFAULT_PIN_STATE,
-	pin29: DEFAULT_PIN_STATE,
+	setProfileLabel: (profileIndex: number, profileLabel: string) => void;
+	setProfilePin: SetProfilePinType;
+	toggleProfileEnabled: (profileIndex: number) => void;
 };
 
 const INITIAL_STATE: State = {
-	profiles: [defaultProfilePins, defaultProfilePins, defaultProfilePins],
+	profiles: [
+		// Profiles will be populated dynamically
+	],
 	loadingProfiles: false,
 };
 
 const useProfilesStore = create<State & Actions>()((set, get) => ({
 	...INITIAL_STATE,
+	addProfile: () => {
+		if (get().profiles.length < MAX_PROFILES) {
+			set((state) => ({
+				profiles: [
+					...state.profiles,
+					{
+						...state.profiles[0],
+						profileLabel: `Profile ${state.profiles.length + 1}`,
+					},
+				],
+			}));
+		}
+	},
 	fetchProfiles: async () => {
 		set({ loadingProfiles: true });
+
+		// TODO, unify baseProfile with other profiles when done in web api
+		const baseProfile = await WebApi.getPinMappings();
 		const profiles = await WebApi.getProfileOptions();
+
 		set((state) => ({
 			...state,
-			profiles,
+			profiles: [baseProfile, ...profiles],
 			loadingProfiles: false,
 		}));
 	},
-	setProfile: (profileIndex, pins) =>
+	copyBaseProfile: (profileIndex) =>
 		set((state) => ({
 			...state,
 			profiles: state.profiles.map((profile, index) =>
-				index === profileIndex ? { ...profile, ...pins } : profile,
+				index === profileIndex
+					? {
+							...profile,
+							...state.profiles[0],
+							profileLabel: profile.profileLabel,
+						}
+					: profile,
 			),
 		})),
 	setProfilePin: (
@@ -98,22 +123,40 @@ const useProfilesStore = create<State & Actions>()((set, get) => ({
 		pin,
 		{ action, customButtonMask = 0, customDpadMask = 0 },
 	) =>
-		set((state) => ({
-			...state,
-			profiles: state.profiles.map((profile, index) =>
-				index === profileIndex
-					? {
-							...profile,
-							[pin]: {
-								action,
-								customButtonMask,
-								customDpadMask,
-							},
-					  }
-					: profile,
-			),
-		})),
-	saveProfiles: async () => WebApi.setProfileOptions(get().profiles),
+		set((state) => {
+			const profiles = [...state.profiles];
+			profiles[profileIndex] = {
+				...profiles[profileIndex],
+				[pin]: {
+					action,
+					customButtonMask,
+					customDpadMask,
+				},
+			};
+			return { profiles };
+		}),
+	setProfileLabel: (profileIndex, profileLabel) =>
+		set((state) => {
+			const profiles = [...state.profiles];
+			profiles[profileIndex] = { ...profiles[profileIndex], profileLabel };
+			return { profiles };
+		}),
+	saveProfiles: async () => {
+		const [baseProfile, ...profiles] = get().profiles;
+		return Promise.all([
+			WebApi.setPinMappings(baseProfile),
+			WebApi.setProfileOptions(profiles),
+		]);
+	},
+	toggleProfileEnabled: (profileIndex) =>
+		set((state) => {
+			const profiles = [...state.profiles];
+			profiles[profileIndex] = {
+				...profiles[profileIndex],
+				enabled: !profiles[profileIndex].enabled,
+			};
+			return { ...state, profiles };
+		}),
 }));
 
 export default useProfilesStore;

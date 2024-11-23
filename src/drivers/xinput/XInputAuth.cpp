@@ -6,6 +6,14 @@ void XInputAuth::initialize() {
     if ( available() ) {
         listener = new XInputAuthUSBListener();
     }
+
+    if ( available() ) {
+        listener = new XInputAuthUSBListener();
+        xinputAuthData.xinputState = auth_idle_state;
+        xinputAuthData.authCompleted = false;
+        ((XInputAuthUSBListener*)listener)->setup();
+        ((XInputAuthUSBListener*)listener)->setAuthData(&xinputAuthData);
+    }
 }
 
 bool XInputAuth::available() {
@@ -13,5 +21,5 @@ bool XInputAuth::available() {
 }
 
 void XInputAuth::process() {
-
+    ((XInputAuthUSBListener*)listener)->process();
 }

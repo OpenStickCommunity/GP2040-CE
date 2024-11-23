@@ -19,7 +19,7 @@ void PSClassicDriver::initialize() {
 	};
 }
 
-void PSClassicDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
+void PSClassicDriver::process(Gamepad * gamepad) {
 	psClassicReport.buttons = PSCLASSIC_MASK_CENTER;
 
 	switch (gamepad->state.dpad & GAMEPAD_MASK_DPAD)

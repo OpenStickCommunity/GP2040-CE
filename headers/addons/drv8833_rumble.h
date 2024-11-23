@@ -5,6 +5,7 @@
 #include <string>
 #include "gpaddon.h"
 #include "gamepad/GamepadState.h"
+#include "gamepad/GamepadAuxState.h"
 
 #ifndef DRV8833_RUMBLE_ENABLED
 #define DRV8833_RUMBLE_ENABLED 0
@@ -68,7 +69,7 @@ private:
 	float dutyMin;
 	float dutyMax;
 	uint32_t sysClock;
-	GamepadRumbleState currentRumbleState;
+	GamepadAuxHaptics currentRumbleState;
 };
 
 #endif

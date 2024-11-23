@@ -2,27 +2,30 @@
 #define _PS4AUTH_H_
 
 #include "drivers/shared/gpauthdriver.h"
-#include "drivers/ps4/PS4Driver.h"
-#include "usblistener.h"
 #include "mbedtls/rsa.h"
+
+// PS4 Auth Data in a single struct
+typedef struct {
+    struct mbedtls_rsa_context rsa_context;
+    uint8_t ps4_auth_buffer[1064];
+    bool valid_rsa = false;
+    bool dongle_ready = false;
+    GPAuthState passthrough_state;    // PS4 Encryption Passthrough State
+    uint8_t nonce_id;                 // for nonce passing
+} PS4AuthData;
 
 class PS4Auth : public GPAuthDriver {
 public:
     PS4Auth(InputModeAuthType inType) { authType = inType; }
     virtual void initialize();
     virtual bool available();
-    void process(PS4State, uint8_t, uint8_t*);
-    uint8_t * getAuthBuffer() { return ps4_auth_buffer; }
-    bool getAuthReady();
+    void process();
+    PS4AuthData * getAuthData() { return &ps4AuthData; }
     void resetAuth();
 private:
-    struct mbedtls_rsa_context rsa_context;
-    bool valid_rsa;
-
-    // buffer = 256 + 16 + 256 + 256 + 256 + 24
-    // == 1064 bytes (almost 1 kb)
-    uint8_t ps4_auth_buffer[1064];
-    bool ps4_keys_signature_ready;
+    void keyModeInitialize();
+    void keyModeProcess();
+    PS4AuthData ps4AuthData;
 };
 
 #endif

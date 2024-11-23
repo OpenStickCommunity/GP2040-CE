@@ -5,11 +5,13 @@ export default {
 	'custom-theme-label': 'カスタムLEDテーマ',
 	'display-config-label': 'ディスプレイ設定',
 	'docs-label': '公式サイト',
+
 	'home-label': 'ホーム',
 	'led-config-label': 'LED 設定',
 	'links-label': 'リンク',
 	'macro-label': 'マクロ設定',
 	'pin-mapping-label': '端子割り当て設定',
+	'multi-mapping-label': 'マルチマッピング',
 	'peripheral-mapping-label': '周辺機器設定',
 	'profile-settings-label': 'プロファイル設定',
 	'reboot-label': '再起動',

@@ -14,7 +14,7 @@
 class XBOneDriver : public GPDriver {
 public:
     virtual void initialize();
-    virtual void process(Gamepad * gamepad, uint8_t * outBuffer);
+    virtual void process(Gamepad * gamepad);
     virtual void initializeAux();
     virtual void processAux();
     virtual uint16_t get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen);
@@ -41,6 +41,7 @@ private:
     uint8_t virtual_keycode_sequence;
     bool xb1_guide_pressed;
     GPAuthDriver * authDriver;
+    uint8_t xbone_led_mode;
 };
 
 #endif // _XBONE_DRIVER_H_

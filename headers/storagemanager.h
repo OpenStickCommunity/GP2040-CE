@@ -64,13 +64,11 @@ public:
 	void SetProcessedGamepad(Gamepad *); // MPGS Processed Gamepad Get/Set
 	Gamepad * GetProcessedGamepad();
 
-	void SetFeatureData(uint8_t *); 	// USB Feature Data Get/Set
-	void ClearFeatureData();
-	uint8_t * GetFeatureData();
-
-	void setProfile(const uint32_t);		// profile support for multiple mappings
+	bool setProfile(const uint32_t);		// profile support for multiple mappings
 	void nextProfile();
+	void previousProfile();
 	void setFunctionalPinMappings();
+	char* currentProfileLabel();
 
 	void ResetSettings(); 				// EEPROM Reset Feature
 

@@ -565,6 +565,22 @@ async function setWiiControls(mappings) {
 		});
 }
 
+async function getReactiveLEDs(setLoading) {
+	setLoading(true);
+	try {
+		const response = await Http.get(`${baseUrl}/api/getReactiveLEDs`);
+		return response.data;
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+async function setReactiveLEDs(leds) {
+	console.dir(leds);
+
+	return Http.post(`${baseUrl}/api/setReactiveLEDs`, leds);
+}
+
 async function getPeripheralOptions(setLoading) {
 	setLoading(true);
 	try {
@@ -710,6 +726,8 @@ export default {
 	setPeripheralOptions,
 	getExpansionPins,
 	setExpansionPins,
+	getReactiveLEDs,
+	setReactiveLEDs,
 	getButtonLayouts,
 	getButtonLayoutDefs,
 	getSplashImage,

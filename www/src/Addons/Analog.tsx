@@ -22,6 +22,25 @@ const INVERT_MODES = [
 	{ label: 'X/Y Axis', value: 3 },
 ];
 
+const ANALOG_ERROR_RATES = [
+	{ label: '0%', value: 1000 },
+	{ label: '1%', value: 990 },
+	{ label: '2%', value: 979 },
+	{ label: '3%', value: 969 },
+	{ label: '4%', value: 958 },
+	{ label: '5%', value: 946 },
+	{ label: '6%', value: 934 },
+	{ label: '7%', value: 922 },
+	{ label: '8%', value: 911 },
+	{ label: '9%', value: 900 },
+	{ label: '10%', value: 890 },
+	{ label: '11%', value: 876 },
+	{ label: '12%', value: 863 },
+	{ label: '13%', value: 848 },
+	{ label: '14%', value: 834 },
+	{ label: '15%', value: 821 },
+];
+
 export const analogScheme = {
 	AnalogInputEnabled: yup.number().required().label('Analog Input Enabled'),
 	analogAdc1PinX: yup
@@ -73,6 +92,18 @@ export const analogScheme = {
 		.number()
 		.label('Auto Calibration')
 		.validateRangeWhenValue('AnalogInputEnabled', 0, 1),
+	analog_smoothing: yup
+		.number()
+		.label('Analog Smoothing')
+		.validateRangeWhenValue('AnalogInputEnabled', 0, 1),
+	smoothing_factor: yup
+		.number()
+		.label('Smoothing Factor')
+		.validateRangeWhenValue('AnalogInputEnabled', 0, 100),
+	analog_error: yup
+		.number()
+		.label('Error Rate')
+		.validateSelectionWhenValue('AnalogInputEnabled', ANALOG_ERROR_RATES),
 };
 
 export const analogState = {
@@ -89,6 +120,9 @@ export const analogState = {
 	inner_deadzone: 5,
 	outer_deadzone: 95,
 	auto_calibrate: 0,
+	analog_smoothing: 0,
+	smoothing_factor: 5,
+	analog_error: 1,
 };
 
 const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
@@ -97,6 +131,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 	const availableAnalogPins = ANALOG_PINS.filter(
 		(pin) => !usedPins?.includes(pin),
 	);
+
 	return (
 		<Section title={t('AddonsConfig:analog-header-text')}>
 			<div id="AnalogInputOptions" hidden={!values.AnalogInputEnabled}>
@@ -255,6 +290,36 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 						min={0}
 						max={100}
 					/>
+
+					<FormSelect
+						hidden={!values.forced_circularity}
+						label={t('AddonsConfig:analog-error-label')}
+						name="analog_error"
+						className="form-control-sm"
+						groupClassName="col-sm-3 mb-3"
+						value={values.analog_error}
+						onChange={handleChange}
+					>
+						{ANALOG_ERROR_RATES.map((o, i) => (
+							<option key={`analog_error-option-${i}`} value={o.value}>
+								{o.label}
+							</option>
+						))}
+					</FormSelect>
+					<FormControl
+						hidden={!values.analog_smoothing}
+						type="number"
+						label={t('AddonsConfig:smoothing-factor')}
+						name="smoothing_factor"
+						className="form-control-sm"
+						groupClassName="col-sm-3 mb-3"
+						value={values.smoothing_factor}
+						error={errors.smoothing_factor}
+						isInvalid={errors.smoothing_factor}
+						onChange={handleChange}
+						min={0}
+						max={100}
+					/>
 					<FormCheck
 						label={t('AddonsConfig:analog-force-circularity')}
 						type="switch"
@@ -276,6 +341,18 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 						checked={Boolean(values.auto_calibrate)}
 						onChange={(e) => {
 							handleCheckbox('auto_calibrate', values);
+							handleChange(e);
+						}}
+					/>
+					<FormCheck
+						label={t('AddonsConfig:analog-smoothing')}
+						type="switch"
+						id="Analog_smoothing"
+						className="col-sm-3 ms-2"
+						isInvalid={false}
+						checked={Boolean(values.analog_smoothing)}
+						onChange={(e) => {
+							handleCheckbox('analog_smoothing', values);
 							handleChange(e);
 						}}
 					/>

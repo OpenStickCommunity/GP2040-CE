@@ -68,6 +68,9 @@ void Gamepad::setup()
 	mapButtonE11 = new GamepadButtonMapping(GAMEPAD_MASK_E11);
 	mapButtonE12 = new GamepadButtonMapping(GAMEPAD_MASK_E12);
 	mapButtonFn  = new GamepadButtonMapping(AUX_MASK_FUNCTION);
+	mapButtonDP  = new GamepadButtonMapping(SUSTAIN_DP_MODE_DP);
+	mapButtonLS  = new GamepadButtonMapping(SUSTAIN_DP_MODE_LS);
+	mapButtonRS  = new GamepadButtonMapping(SUSTAIN_DP_MODE_RS);
 
 	const auto assignCustomMappingToMaps = [&](GpioMappingInfo mapInfo, Pin_t pin) -> void {
 		if (mapDpadUp->buttonMask & mapInfo.customDpadMask)	mapDpadUp->pinMask |= 1 << pin;
@@ -126,6 +129,9 @@ void Gamepad::setup()
 			case GpioAction::BUTTON_PRESS_E11:	mapButtonE11->pinMask |= 1 << pin; break;
 			case GpioAction::BUTTON_PRESS_E12:	mapButtonE12->pinMask |= 1 << pin; break;
 			case GpioAction::BUTTON_PRESS_FN:	mapButtonFn->pinMask |= 1 << pin; break;
+			case GpioAction::SUSTAIN_DP_MODE_DP:	mapButtonDP->pinMask |= 1 << pin; break;
+			case GpioAction::SUSTAIN_DP_MODE_LS:	mapButtonLS->pinMask |= 1 << pin; break;
+			case GpioAction::SUSTAIN_DP_MODE_RS:	mapButtonRS->pinMask |= 1 << pin; break;
 			case GpioAction::CUSTOM_BUTTON_COMBO:	assignCustomMappingToMaps(pinMappings[pin], pin); break;
 			default:				break;
 		}
@@ -171,6 +177,9 @@ void Gamepad::reinit()
 	delete mapButtonE11;
 	delete mapButtonE12;
 	delete mapButtonFn;
+	delete mapButtonDP;
+	delete mapButtonLS;
+	delete mapButtonRS;
 
 	// reinitialize pin mappings
 	this->setup();
@@ -214,7 +223,7 @@ void Gamepad::process()
 
 	state.dpad = runSOCDCleaner(resolveSOCDMode(options), state.dpad);
 
-	switch (options.dpadMode)
+	switch (activeDpadMode)
 	{
 		case DpadMode::DPAD_MODE_LEFT_ANALOG:
 			if (!hasRightAnalogStick) {
@@ -300,6 +309,12 @@ void Gamepad::read()
 		| ((values & mapButtonE12->pinMask) ? mapButtonE12->buttonMask : 0)
 	;
 
+	// set the effective dpad mode based on settings + overrides
+	if (values & mapButtonDP->pinMask)	activeDpadMode = DpadMode::DPAD_MODE_DIGITAL;
+	else if (values & mapButtonLS->pinMask)	activeDpadMode = DpadMode::DPAD_MODE_LEFT_ANALOG;
+	else if (values & mapButtonRS->pinMask)	activeDpadMode = DpadMode::DPAD_MODE_RIGHT_ANALOG;
+	else					activeDpadMode = options.dpadMode;
+
 	state.lx = joystickMid;
 	state.ly = joystickMid;
 	state.rx = joystickMid;
@@ -355,10 +370,14 @@ void Gamepad::clearState() {
 }
 
 void Gamepad::clearRumbleState() {
-	rumbleState.leftMotor = 0;
-	rumbleState.rightMotor = 0;
-	rumbleState.leftTrigger = 0;
-	rumbleState.rightTrigger = 0;
+	auxState.haptics.leftActuator.active = false;
+	auxState.haptics.leftActuator.intensity = 0;
+	auxState.haptics.rightActuator.active = false;
+	auxState.haptics.rightActuator.intensity = 0;
+	auxState.haptics.leftTrigger.active = false;
+	auxState.haptics.leftTrigger.intensity = 0;
+	auxState.haptics.rightTrigger.active = false;
+	auxState.haptics.rightTrigger.intensity = 0;
 }
 
 /**
@@ -436,6 +455,18 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 		case HOTKEY_A4_BUTTON:
 			state.buttons |= GAMEPAD_MASK_A4;
 			break;
+		case HOTKEY_DPAD_UP:
+			state.dpad |= GAMEPAD_MASK_UP;
+			break;
+		case HOTKEY_DPAD_DOWN:
+			state.dpad |= GAMEPAD_MASK_DOWN;
+			break;
+		case HOTKEY_DPAD_LEFT:
+			state.dpad |= GAMEPAD_MASK_LEFT;
+			break;
+		case HOTKEY_DPAD_RIGHT:
+			state.dpad |= GAMEPAD_MASK_RIGHT;
+			break;
 		case HOTKEY_SOCD_UP_PRIORITY:
 			if (action != lastAction) {
 				options.socdMode = SOCD_MODE_UP_PRIORITY;
@@ -502,35 +533,46 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 			break;
 		case HOTKEY_LOAD_PROFILE_1:
 			if (action != lastAction) {
-				Storage::getInstance().setProfile(1);
-				userRequestedReinit = true;
-				reqSave = true;
+				if (Storage::getInstance().setProfile(1)) {
+					userRequestedReinit = true;
+					reqSave = true;
+				}
 			}
 			break;
 		case HOTKEY_LOAD_PROFILE_2:
 			if (action != lastAction) {
-				Storage::getInstance().setProfile(2);
-				userRequestedReinit = true;
-				reqSave = true;
+				if (Storage::getInstance().setProfile(2)) {
+					userRequestedReinit = true;
+					reqSave = true;
+				}
 			}
 			break;
 		case HOTKEY_LOAD_PROFILE_3:
 			if (action != lastAction) {
-				Storage::getInstance().setProfile(3);
-				userRequestedReinit = true;
-				reqSave = true;
+				if (Storage::getInstance().setProfile(3)) {
+					userRequestedReinit = true;
+					reqSave = true;
+				}
 			}
 			break;
 		case HOTKEY_LOAD_PROFILE_4:
 			if (action != lastAction) {
-				Storage::getInstance().setProfile(4);
-				userRequestedReinit = true;
-				reqSave = true;
+				if (Storage::getInstance().setProfile(4)) {
+					userRequestedReinit = true;
+					reqSave = true;
+				}
 			}
 			break;
 		case HOTKEY_NEXT_PROFILE:
 			if (action != lastAction) {
 				Storage::getInstance().nextProfile();
+				userRequestedReinit = true;
+				reqSave = true;
+			}
+			break;
+		case HOTKEY_PREVIOUS_PROFILE:
+			if (action != lastAction) {
+				Storage::getInstance().previousProfile();
 				userRequestedReinit = true;
 				reqSave = true;
 			}

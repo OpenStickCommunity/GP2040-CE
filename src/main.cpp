@@ -20,25 +20,34 @@ void __verbose_terminate_handler()
 }
 }
 
+static GP2040 * gp2040Core0 = nullptr;
+static GP2040Aux * gp2040Core1 = nullptr;
+
 // Launch our second core with additional modules loaded in
 void core1() {
 	multicore_lockout_victim_init(); // block core 1
 
-	// Create GP2040 w/ Additional Modules for Core 1
-	GP2040Aux * gp2040Core1 = new GP2040Aux();
+	// Create GP2040 w/ Additional Modules for Core 1	
 	gp2040Core1->setup();
 	gp2040Core1->run();
 }
 
 int main() {
 	// Create GP2040 Main Core (core0), Core1 is dependent on Core0
-	GP2040 * gp2040 = new GP2040();
-	gp2040->setup();
+	gp2040Core0 = new GP2040();
+	gp2040Core1 = new GP2040Aux();
+
+	// Create GP2040 Main Core - Setup Core0
+	gp2040Core0->setup();
 
 	// Create GP2040 Thread for Core1
 	multicore_launch_core1(core1);
 
-	// Start Core0 Loop
-	gp2040->run();
+	// Sync Core0 and Core1
+	while(gp2040Core1->ready() == false ) {
+		__asm volatile ("nop\n");
+	}
+	gp2040Core0->run();
+
 	return 0;
 }

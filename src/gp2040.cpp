@@ -20,7 +20,6 @@
 #include "addons/tilt.h"
 #include "addons/keyboard_host.h"
 #include "addons/i2canalog1219.h"
-#include "addons/jslider.h"
 #include "addons/playernum.h"
 #include "addons/reverse.h"
 #include "addons/turbo.h"
@@ -100,7 +99,6 @@ void GP2040::setup() {
 	addons.LoadAddon(new FocusModeAddon(), CORE0_INPUT);
 	addons.LoadAddon(new I2CAnalog1219Input(), CORE0_INPUT);
 	addons.LoadAddon(new SPIAnalog1256Input(), CORE0_INPUT);
-	addons.LoadAddon(new JSliderInput(), CORE0_INPUT);
 	addons.LoadAddon(new WiiExtensionInput(), CORE0_INPUT);
 	addons.LoadAddon(new SNESpadInput(), CORE0_INPUT);
 	addons.LoadAddon(new PlayerNumAddon(), CORE0_USBREPORT);
@@ -263,8 +261,10 @@ void GP2040::run() {
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
 	bool configMode = Storage::getInstance().GetConfigMode();
-	uint8_t * featureData = Storage::getInstance().GetFeatureData();
-	memset(featureData, 0, 32); // X-Input is the only feature data currently supported
+    
+    // Start the TinyUSB Device functionality
+    tud_init(TUD_OPT_RHPORT);
+    
 	while (1) { // LOOP
 		this->getReinitGamepad(gamepad);
 
@@ -302,7 +302,7 @@ void GP2040::run() {
 		memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
 
 		// Process Input Driver
-		inputDriver->process(gamepad, featureData);
+		inputDriver->process(gamepad);
 		
 		// Process USB Report Addons
 		addons.ProcessAddons(ADDON_PROCESS::CORE0_USBREPORT);

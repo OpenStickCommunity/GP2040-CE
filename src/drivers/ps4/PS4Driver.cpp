@@ -16,13 +16,99 @@
 // force a report to be sent every X ms
 #define PS4_KEEPALIVE_TIMER 5
 
+// Controller calibration
+static constexpr uint8_t output_0x02[] = {
+    0xfe, 0xff, 0x0e, 0x00, 0x04, 0x00, 0xd4, 0x22,
+    0x2a, 0xdd, 0xbb, 0x22, 0x5e, 0xdd, 0x81, 0x22, 
+    0x84, 0xdd, 0x1c, 0x02, 0x1c, 0x02, 0x85, 0x1f,
+    0xb0, 0xe0, 0xc6, 0x20, 0xb5, 0xe0, 0xb1, 0x20,
+    0x83, 0xdf, 0x0c, 0x00
+};
+
+// Controller descriptor (byte[4] = 0x00 for ps4, 0x07 for ps5)
+static constexpr uint8_t output_0x03[] = {
+    0x21, 0x27, 0x04, 0xcf, 0x00, 0x2c, 0x56,
+    0x08, 0x00, 0x3d, 0x00, 0xe8, 0x03, 0x04, 0x00,
+    0xff, 0x7f, 0x0d, 0x0d, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+};
+
+// Bluetooth device and host details
+static constexpr uint8_t output_0x12[] = {
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // device MAC address
+    0x08, 0x25, 0x00,                   // BT device class
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00  // host MAC address
+};
+
+// Controller firmware version and datestamp
+static constexpr uint8_t output_0xa3[] = {
+    0x4a, 0x75, 0x6e, 0x20, 0x20, 0x39, 0x20, 0x32,
+    0x30, 0x31, 0x37, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x31, 0x32, 0x3a, 0x33, 0x36, 0x3a, 0x34, 0x31,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x01, 0x08, 0xb4, 0x01, 0x00, 0x00, 0x00,
+    0x07, 0xa0, 0x10, 0x20, 0x00, 0xa0, 0x02, 0x00
+};
+
+// Nonce Page Size: 0x38 (56)
+// Response Page Size: 0x38 (56)
+static constexpr uint8_t output_0xf3[] = {
+    0x0, 0x38, 0x38, 0, 0, 0, 0
+};
+
 void PS4Driver::initialize() {
+    Gamepad * gamepad = Storage::getInstance().GetGamepad();
+    const GamepadOptions & options = gamepad->getOptions();
+
+    // set up device descriptor IDs depending on mode
+    uint8_t descSize = sizeof(ps4_device_descriptor);
+    memcpy(deviceDescriptor, &ps4_device_descriptor, descSize);
+
+    memset(&ps4Features, 0, sizeof(ps4Features));
+
+    bool isDeviceEmulated = options.ps4ControllerIDMode == PS4ControllerIDMode::PS4_ID_EMULATION;
+
+    if (!isDeviceEmulated) {
+        deviceDescriptor[8] = LSB(PS4_VENDOR_ID);
+        deviceDescriptor[9] = MSB(PS4_VENDOR_ID);
+        deviceDescriptor[10] = LSB(PS4_PRODUCT_ID);
+        deviceDescriptor[11] = MSB(PS4_PRODUCT_ID);
+    } else {
+        deviceDescriptor[8] = LSB(DS4_VENDOR_ID);
+        deviceDescriptor[9] = MSB(DS4_VENDOR_ID);
+        deviceDescriptor[10] = LSB(DS4_PRODUCT_ID);
+        deviceDescriptor[11] = MSB(DS4_PRODUCT_ID);
+    }
+
+    // init feature data
     touchpadData.p1.unpressed = 1;
     touchpadData.p1.set_x(PS4_TP_X_MAX / 2);
     touchpadData.p1.set_y(PS4_TP_Y_MAX / 2);
     touchpadData.p2.unpressed = 1;
     touchpadData.p2.set_x(PS4_TP_X_MAX / 2);
     touchpadData.p2.set_y(PS4_TP_Y_MAX / 2);
+
+    sensorData.powerLevel = 0xB; // 0x00-0x0A, 0x00-0x0B if charging
+    sensorData.charging = 1;     // set this to 1 to show as plugged in
+    sensorData.headphones = 0;
+    sensorData.microphone = 0;
+    sensorData.extension = 0;
+    sensorData.gyroscope.x = 0;
+    sensorData.gyroscope.y = 0;
+    sensorData.gyroscope.z = 0;
+    sensorData.accelerometer.x = 0;
+    sensorData.accelerometer.y = 0;
+    sensorData.accelerometer.z = 0;
+
+    // preseed touchpad sensors with center position values
+    gamepad->auxState.sensors.touchpad[0].x = PS4_TP_X_MAX/2;
+    gamepad->auxState.sensors.touchpad[0].y = PS4_TP_Y_MAX/2;
+    gamepad->auxState.sensors.touchpad[1].x = PS4_TP_X_MAX/2;
+    gamepad->auxState.sensors.touchpad[1].y = PS4_TP_Y_MAX/2;
+
+    touchCounter = 0;
 
     ps4Report = {
         .report_id = 0x01,
@@ -34,7 +120,7 @@ void PS4Driver::initialize() {
         .button_west = 0, .button_south = 0, .button_east = 0, .button_north = 0,
         .button_l1 = 0, .button_r1 = 0, .button_l2 = 0, .button_r2 = 0,
         .button_select = 0, .button_start = 0, .button_l3 = 0, .button_r3 = 0, .button_home = 0,
-        .gyro_accel_misc = { }, .touchpad_active = 0, .padding = 0, .tpad_increment = 0,
+        .sensor_data = sensorData, .touchpad_active = 0, .padding = 0, .tpad_increment = 0,
         .touchpad_data = touchpadData,
         .mystery_2 = { }
     };
@@ -51,34 +137,31 @@ void PS4Driver::initialize() {
         .sof = NULL
     };
 
-    last_report_counter = 0;
+    last_report_counter = 0; // PS4 Reports
     last_axis_counter = 0;
-    cur_nonce_id = 1;
     last_report_timer = to_ms_since_boot(get_absolute_time());
-    send_nonce_part = 0;
-
-    // for PS4 encryption
-    ps4State = PS4State::no_nonce;
-    authsent = false;
-    memset(nonce_buffer, 0, 256);
+    cur_nonce_id = 1; // PS4 Auth
+    cur_nonce_chunk = 0;
 }
 
 void PS4Driver::initializeAux() {
-    authDriver = nullptr;
+    ps4AuthDriver = nullptr;
     GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();
     if ( controllerType == PS4ControllerType::PS4_CONTROLLER ) {
-        authDriver = new PS4Auth(gamepadOptions.ps4AuthType);
+        ps4AuthDriver = new PS4Auth(gamepadOptions.ps4AuthType);
     } else if ( controllerType == PS4ControllerType::PS4_ARCADESTICK ) {
         // Setup PS5 Auth System
-        authDriver = new PS4Auth(gamepadOptions.ps5AuthType);
+        ps4AuthDriver = new PS4Auth(gamepadOptions.ps5AuthType);
     }
     // If authentication driver is set AND auth driver can load (usb enabled, i2c enabled, keys loaded, etc.)
-    if ( authDriver != nullptr && authDriver->available() ) {
-        authDriver->initialize();
+    if ( ps4AuthDriver != nullptr && ps4AuthDriver->available() ) {
+        ps4AuthDriver->initialize();
+        ps4AuthData = ps4AuthDriver->getAuthData();
+        authsent = false;
     }
 }
 
-void PS4Driver::process(Gamepad * gamepad, uint8_t * outBuffer) {
+void PS4Driver::process(Gamepad * gamepad) {
     const GamepadOptions & options = gamepad->getOptions();
     switch (gamepad->state.dpad & GAMEPAD_MASK_DPAD)
     {
@@ -128,6 +211,8 @@ void PS4Driver::process(Gamepad * gamepad, uint8_t * outBuffer) {
     touchpadData.p1.unpressed = ps4Report.button_touchpad ? 0 : 1;
     ps4Report.touchpad_active = ps4Report.button_touchpad ? 0x01 : 0x00;
     if (ps4Report.button_touchpad) {
+        // make the assumption that since touchpad button is already being pressed, 
+        // the first touch position is in use and no other "touches" will be present
         if (gamepad->pressedA3()) {
             touchpadData.p1.set_x(PS4_TP_X_MIN);
         } else if (gamepad->pressedA4()) {
@@ -135,8 +220,53 @@ void PS4Driver::process(Gamepad * gamepad, uint8_t * outBuffer) {
         } else {
             touchpadData.p1.set_x(PS4_TP_X_MAX / 2);
         }
+    } else {
+        // if more than one touch pad sensor, sensors will never be used out of order
+        if (gamepad->auxState.sensors.touchpad[0].enabled) {
+            touchpadData.p1.unpressed = !gamepad->auxState.sensors.touchpad[0].active;
+            ps4Report.touchpad_active = gamepad->auxState.sensors.touchpad[0].active;
+            touchpadData.p1.set_x(gamepad->auxState.sensors.touchpad[0].x);
+            touchpadData.p1.set_y(gamepad->auxState.sensors.touchpad[0].y);
+            
+            if (gamepad->auxState.sensors.touchpad[1].enabled) {
+                touchpadData.p2.unpressed = !gamepad->auxState.sensors.touchpad[1].active;
+                touchpadData.p2.set_x(gamepad->auxState.sensors.touchpad[1].x);
+                touchpadData.p2.set_y(gamepad->auxState.sensors.touchpad[1].y);
+            }
+        }
+    }
+    // check if any of the points are recently touched, rather than still being touched
+    if (!pointOneTouched && !touchpadData.p1.unpressed) {
+        touchCounter = (touchCounter < PS4_TP_MAX_COUNT ? touchCounter+1 : 0);
+
+        touchpadData.p1.counter = touchCounter;
+
+        pointOneTouched = true;
+    } else if (pointOneTouched && touchpadData.p1.unpressed) {
+        pointOneTouched = false;
+    }
+    if (!pointTwoTouched && !touchpadData.p2.unpressed) {
+        touchCounter = (touchCounter < PS4_TP_MAX_COUNT ? touchCounter+1 : 0);
+    
+        touchpadData.p2.counter = touchCounter;
+    
+        pointTwoTouched = true;
+    } else if (pointTwoTouched && touchpadData.p2.unpressed) {
+        pointTwoTouched = false;
     }
     ps4Report.touchpad_data = touchpadData;
+
+    if (gamepad->auxState.sensors.accelerometer.enabled) {
+        ps4Report.sensor_data.accelerometer.x = ((gamepad->auxState.sensors.accelerometer.x & 0xFF) << 8) | ((gamepad->auxState.sensors.accelerometer.x & 0xFF00) >> 8);
+        ps4Report.sensor_data.accelerometer.y = ((gamepad->auxState.sensors.accelerometer.y & 0xFF) << 8) | ((gamepad->auxState.sensors.accelerometer.y & 0xFF00) >> 8);
+        ps4Report.sensor_data.accelerometer.z = ((gamepad->auxState.sensors.accelerometer.z & 0xFF) << 8) | ((gamepad->auxState.sensors.accelerometer.z & 0xFF00) >> 8);
+    }
+
+    if (gamepad->auxState.sensors.gyroscope.enabled) {
+        ps4Report.sensor_data.gyroscope.x = ((gamepad->auxState.sensors.gyroscope.x & 0xFF) << 8) | ((gamepad->auxState.sensors.gyroscope.x & 0xFF00) >> 8);
+        ps4Report.sensor_data.gyroscope.y = ((gamepad->auxState.sensors.gyroscope.y & 0xFF) << 8) | ((gamepad->auxState.sensors.gyroscope.y & 0xFF00) >> 8);
+        ps4Report.sensor_data.gyroscope.z = ((gamepad->auxState.sensors.gyroscope.z & 0xFF) << 8) | ((gamepad->auxState.sensors.gyroscope.z & 0xFF00) >> 8);
+    }
 
     // Wake up TinyUSB device
     if (tud_suspended())
@@ -167,37 +297,67 @@ void PS4Driver::process(Gamepad * gamepad, uint8_t * outBuffer) {
             // the *next* process() will be a forced report (or real user input)
         }
     }
+
+    uint16_t featureSize = sizeof(PS4FeatureOutputReport);
+    if (memcmp(lastFeatures, &ps4Features, featureSize) != 0) {
+        memcpy(lastFeatures, &ps4Features, featureSize);
+        Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
+
+        if (gamepad->auxState.haptics.leftActuator.enabled) {
+            gamepad->auxState.haptics.leftActuator.active = (ps4Features.rumbleLeft > 0);
+            gamepad->auxState.haptics.leftActuator.intensity = ps4Features.rumbleLeft;
+        }
+
+        if (gamepad->auxState.haptics.rightActuator.enabled) {
+            gamepad->auxState.haptics.rightActuator.active = (ps4Features.rumbleRight > 0);
+            gamepad->auxState.haptics.rightActuator.intensity = ps4Features.rumbleRight;
+        }
+
+        if (gamepad->auxState.sensors.statusLight.enabled) {
+            uint32_t rgbColor = 0;
+
+            gamepad->auxState.sensors.statusLight.active = true;
+            gamepad->auxState.sensors.statusLight.color.red = ps4Features.ledRed;
+            gamepad->auxState.sensors.statusLight.color.green = ps4Features.ledGreen;
+            gamepad->auxState.sensors.statusLight.color.blue = ps4Features.ledBlue;
+
+            rgbColor = (ps4Features.ledRed << 16) | (ps4Features.ledGreen << 8) | (ps4Features.ledBlue << 0);
+
+            // set player ID based on color combos
+            gamepad->auxState.playerID.active = true;
+            gamepad->auxState.playerID.ledBlinkOn = (ps4Features.ledBlinkOn * 10); // centiseconds to milliseconds
+            gamepad->auxState.playerID.ledBlinkOff = (ps4Features.ledBlinkOff * 10); // centiseconds to milliseconds
+            if (rgbColor == 0x000040) {
+                gamepad->auxState.playerID.value = 1;
+                gamepad->auxState.playerID.ledValue = 1;
+            } else if (rgbColor == 0x400000) {
+                gamepad->auxState.playerID.value = 2;
+                gamepad->auxState.playerID.ledValue = 2;
+            } else if (rgbColor == 0x004000) {
+                gamepad->auxState.playerID.value = 3;
+                gamepad->auxState.playerID.ledValue = 3;
+            } else if (rgbColor == 0x200020) {
+                gamepad->auxState.playerID.value = 4;
+                gamepad->auxState.playerID.ledValue = 4;
+            }
+        }
+    }
 }
 
 // Called by Core1, PS4 key signing will lock the CPU
 void PS4Driver::processAux() {
     // If authentication driver is set AND auth driver can load (usb enabled, i2c enabled, keys loaded, etc.)
-    if ( authDriver != nullptr && authDriver->available() ) {
-        ((PS4Auth*)authDriver)->process(ps4State, nonce_id, nonce_buffer);
+    if ( ps4AuthDriver != nullptr && ps4AuthDriver->available() ) {
+        ps4AuthDriver->process();
     }
 }
 
 USBListener * PS4Driver::get_usb_auth_listener() {
-    if ( authDriver != nullptr && authDriver->getAuthType() == InputModeAuthType::INPUT_MODE_AUTH_TYPE_USB ) {
-        return authDriver->getListener();;
+    if ( ps4AuthDriver != nullptr && ps4AuthDriver->getAuthType() == InputModeAuthType::INPUT_MODE_AUTH_TYPE_USB ) {
+        return ps4AuthDriver->getListener();
     }
     return nullptr;
 }
-
-
-// Controller descriptor (byte[4] = 0x00 for ps4, 0x07 for ps5)
-static constexpr uint8_t output_0x03[] = {
-    0x21, 0x27, 0x04, 0xcf, 0x00, 0x2c, 0x56,
-    0x08, 0x00, 0x3d, 0x00, 0xe8, 0x03, 0x04, 0x00,
-    0xff, 0x7f, 0x0d, 0x0d, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-};
-
-// Nonce Page Size: 0x38 (56)
-// Response Page Size: 0x38 (56)
-static constexpr uint8_t output_0xf3[] = { 0x0, 0x38, 0x38, 0, 0, 0, 0 };
 
 // tud_hid_get_report_cb
 uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
@@ -206,62 +366,85 @@ uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
         return sizeof(ps4Report);
     }
 
-    PS4Auth * ps4AuthDriver = (PS4Auth*)authDriver;
-    uint8_t * ps4_auth_buffer = ps4AuthDriver->getAuthBuffer();
-    bool ps4_auth_buffer_ready = ps4AuthDriver->getAuthReady();
+    // Do nothing if we do not have host authentication data or a driver to run on
+    if ( ps4AuthData == nullptr || ps4AuthDriver == nullptr) {
+        return sizeof(ps4Report);
+    }
+
     uint8_t data[64] = {};
     uint32_t crc32;
-    //ps4_out_buffer[0] = report_id;
+    uint16_t responseLen = 0;
     switch(report_id) {
         // Controller Definition Report
-        case PS4AuthReport::PS4_DEFINITION:
-            if (reqlen != sizeof(output_0x03)) {
+        case PS4AuthReport::PS4_GET_CALIBRATION:
+            if (reqlen < sizeof(output_0x02)) {
                 return -1;
             }
-            memcpy(buffer, output_0x03, reqlen);
+            responseLen = MAX(reqlen, sizeof(output_0x02));
+            memcpy(buffer, output_0x02, responseLen);
+            return responseLen;
+        case PS4AuthReport::PS4_DEFINITION:
+            if (reqlen < sizeof(output_0x03)) {
+                return -1;
+            }
+            responseLen = MAX(reqlen, sizeof(output_0x03));
+            memcpy(buffer, output_0x03, responseLen);
             buffer[4] = (uint8_t)controllerType; // Change controller type in definition
-            return reqlen;
+            return responseLen;
+        case PS4AuthReport::PS4_GET_MAC_ADDRESS:
+            if (reqlen < sizeof(output_0x12)) {
+                return -1;
+            }
+            responseLen = MAX(reqlen, sizeof(output_0x12));
+            memcpy(buffer, output_0x12, responseLen);
+            return responseLen;
+        case PS4AuthReport::PS4_GET_VERSION_DATE:
+            if (reqlen < sizeof(output_0xa3)) {
+                return -1;
+            }
+            responseLen = MAX(reqlen, sizeof(output_0xa3));
+            memcpy(buffer, output_0xa3, responseLen);
+            return responseLen;
         // Use our private RSA key to sign the nonce and return chunks
         case PS4AuthReport::PS4_GET_SIGNATURE_NONCE:
             // We send 56 byte chunks back to the PS4, we've already calculated these
             data[0] = 0xF1;
             data[1] = cur_nonce_id;    // nonce_id
-            data[2] = send_nonce_part; // next_part
+            data[2] = cur_nonce_chunk; // next_part
             data[3] = 0;
 
             // 56 byte chunks
-            memcpy(&data[4], &ps4_auth_buffer[send_nonce_part*56], 56);
+            memcpy(&data[4], &ps4AuthData->ps4_auth_buffer[cur_nonce_chunk*56], 56);
 
             // calculate the CRC32 of the buffer and write it back
             crc32 = CRC32::calculate(data, 60);
             memcpy(&data[60], &crc32, sizeof(uint32_t));
             memcpy(buffer, &data[1], 63); // move data over to buffer
-            if ( (++send_nonce_part) == 19 ) {
-                ps4State = PS4State::no_nonce;
+            cur_nonce_chunk++;
+            if ( cur_nonce_chunk == 19 ) { // done!
+                ps4AuthData->passthrough_state = GPAuthState::auth_idle_state;
                 authsent = true;
-                send_nonce_part = 0;
+                cur_nonce_chunk = 0;
             }
             return 63;
-        // Are we ready to sign?
-        case PS4AuthReport::PS4_GET_SIGNING_STATE:
-              data[0] = 0xF2;
+        case PS4AuthReport::PS4_GET_SIGNING_STATE:  // Are we ready to sign?
+            data[0] = 0xF2;
             data[1] = cur_nonce_id;
-            data[2] = ps4_auth_buffer_ready == true ? 0 : 16; // 0 means auth is ready, 16 means we're still signing
+            data[2] = (ps4AuthData->passthrough_state == GPAuthState::send_auth_dongle_to_console) ? 0 : 16; // 0 means auth is ready, 16 means we're still signing
             memset(&data[3], 0, 9);
             crc32 = CRC32::calculate(data, 12);
             memcpy(&data[12], &crc32, sizeof(uint32_t));
             memcpy(buffer, &data[1], 15); // move data over to buffer
             return 15;
-        case PS4AuthReport::PS4_RESET_AUTH: // Reset the Authentication
-            if (reqlen != sizeof(output_0xf3)) {
+        case PS4AuthReport::PS4_RESET_AUTH:         // Reset the Authentication
+            if (reqlen < sizeof(output_0xf3)) {
                 return -1;
             }
-            memcpy(buffer, output_0xf3, reqlen);
-            ps4State = PS4State::no_nonce;
-            if ( authDriver != nullptr ) {
-                ((PS4Auth*)authDriver)->resetAuth(); // reset the auth driver if it exists
-            }
-            return reqlen;
+            responseLen = MAX(reqlen, sizeof(output_0xf3));
+            memcpy(buffer, output_0xf3, responseLen);
+            ps4AuthData->passthrough_state = GPAuthState::auth_idle_state;
+            ps4AuthDriver->resetAuth(); // reset our auth driver (ps4 keys or usb host)
+            return responseLen;
         default:
             break;
     };
@@ -270,66 +453,54 @@ uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
 
 // Only PS4 does anything with set report
 void PS4Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize) {
-    if ( report_type != HID_REPORT_TYPE_FEATURE )
+    if (( report_type != HID_REPORT_TYPE_FEATURE ) && ( report_type != HID_REPORT_TYPE_OUTPUT ))
         return;
 
-    uint8_t nonce_id;
-    uint8_t nonce_page;
-    uint32_t crc32;
-    uint8_t sendBuffer[64];
-    uint8_t nonce[56]; // max nonce data
-    uint16_t noncelen;
-    uint16_t buflen;
-
-    if (report_id == PS4AuthReport::PS4_SET_AUTH_PAYLOAD) {
-        if (bufsize != 63 ) {
-            return;
+    if (report_type == HID_REPORT_TYPE_OUTPUT) {
+        if (report_id == 0) {
+            memcpy(&ps4Features, buffer, bufsize);
         }
-
-        // Setup CRC32 buffer
-        sendBuffer[0] = report_id;
-        memcpy(&sendBuffer[1], buffer, bufsize);
-        buflen = bufsize + 1;
-
-        nonce_id = buffer[0];
-        nonce_page = buffer[1];
-        // data[2] is zero padding
-
-        crc32 = CRC32::calculate(sendBuffer, buflen-sizeof(uint32_t));
-        if ( crc32 != *((unsigned int*)&sendBuffer[buflen-sizeof(uint32_t)])) {
-            return; // CRC32 failed on set report
+    } else if (report_type == HID_REPORT_TYPE_FEATURE) {
+        if (report_id == PS4AuthReport::PS4_SET_HOST_MAC) {
+            // 
+        } else if (report_id == PS4AuthReport::PS4_SET_USB_BT_CONTROL) {
+            // 
+        } else if (report_id == PS4AuthReport::PS4_SET_AUTH_PAYLOAD) {
+            uint8_t sendBuffer[64];
+            uint8_t nonce_id;
+            uint8_t nonce_page;
+            uint16_t buflen;
+            if (bufsize != 63 ) {
+                return;
+            }
+            // Calculate CRC32 of buffer
+            sendBuffer[0] = report_id;
+            memcpy(&sendBuffer[1], buffer, bufsize);
+            buflen = bufsize + 1;
+            if ( CRC32::calculate(sendBuffer, buflen-sizeof(uint32_t)) !=
+                    *((unsigned int*)&sendBuffer[buflen-sizeof(uint32_t)])) {
+                return; // CRC32 failed on set report
+            }
+            // 256 byte nonce, 4 56-byte chunks, 1 32-byte chunk
+            nonce_id = buffer[0];
+            nonce_page = buffer[1];
+            if ( nonce_page == 4 ) {    // Nonce page 4 : 32 bytes
+                memcpy(&ps4AuthData->ps4_auth_buffer[nonce_page*56], &sendBuffer[4], 32);
+                ps4AuthData->nonce_id = nonce_id;
+                ps4AuthData->passthrough_state = GPAuthState::send_auth_console_to_dongle;
+            } else {                    // Nonce page 0-3 : 56 bytes
+                memcpy(&ps4AuthData->ps4_auth_buffer[nonce_page*56], &sendBuffer[4], 56);
+            }
+            if ( nonce_page == 0 ) { // Set our passthrough state on first nonce
+                cur_nonce_id = nonce_id; // update current nonce ID
+            } else if ( nonce_id != cur_nonce_id ) {
+                // ERROR: Nonce ID is incorrect
+                ps4AuthData->passthrough_state = GPAuthState::auth_idle_state;
+            }
         }
-
-        // 256 byte nonce, with 56 byte packets leaves 24 extra bytes on the last packet?
-        if ( nonce_page == 4 ) {
-            // Copy/append data from buffer[4:64-28] into our nonce
-            noncelen = 32; // from 4 to 64 - 24 - 4
-            nonce_id = nonce_id; // for pass-through only
-        } else {
-            // Copy/append data from buffer[4:64-4] into our nonce
-            noncelen = 56;
-            // from 4 to 64 - 4
-        }
-
-        memcpy(nonce, &sendBuffer[4], noncelen);
-        save_nonce(nonce_id, nonce_page, nonce, noncelen);
     }
 }
 
-void PS4Driver::save_nonce(uint8_t nonce_id, uint8_t nonce_page, uint8_t * buffer, uint16_t buflen) {
-    if ( nonce_page != 0 && nonce_id != cur_nonce_id ) {
-        ps4State = PS4State::no_nonce;
-        return; // setting nonce with mismatched id
-    }
-
-    memcpy(&nonce_buffer[nonce_page*56], buffer, buflen);
-    if ( nonce_page == 4 ) {
-        ps4State = PS4State::nonce_ready;
-    } else if ( nonce_page == 0 ) {
-        cur_nonce_id = nonce_id;
-        ps4State = PS4State::receiving_nonce;
-    }
-}
 
 // Only XboxOG and Xbox One use vendor control xfer cb
 bool PS4Driver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request) {
@@ -342,7 +513,7 @@ const uint16_t * PS4Driver::get_descriptor_string_cb(uint8_t index, uint16_t lan
 }
 
 const uint8_t * PS4Driver::get_descriptor_device_cb() {
-    return ps4_device_descriptor;
+    return deviceDescriptor;
 }
 
 const uint8_t * PS4Driver::get_hid_descriptor_report_cb(uint8_t itf) {

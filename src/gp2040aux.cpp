@@ -11,11 +11,12 @@
 #include "addons/display.h"
 #include "addons/pleds.h"
 #include "addons/neopicoleds.h"
+#include "addons/reactiveleds.h"
 #include "addons/drv8833_rumble.h"
 
 #include <iterator>
 
-GP2040Aux::GP2040Aux() : inputDriver(nullptr) {
+GP2040Aux::GP2040Aux() : isReady(false), inputDriver(nullptr) {
 }
 
 GP2040Aux::~GP2040Aux() {
@@ -27,14 +28,6 @@ void GP2040Aux::setup() {
 	PeripheralManager::getInstance().initI2C();
 	PeripheralManager::getInstance().initSPI();
 	PeripheralManager::getInstance().initUSB();
-
-	// Setup Add-ons
-	addons.LoadAddon(new DisplayAddon(), CORE1_LOOP);
-	addons.LoadAddon(new NeoPicoLEDAddon(), CORE1_LOOP);
-	addons.LoadAddon(new PlayerLEDAddon(), CORE1_LOOP);
-	addons.LoadAddon(new BoardLedAddon(), CORE1_LOOP);
-	addons.LoadAddon(new BuzzerSpeakerAddon(), CORE1_LOOP);
-	addons.LoadAddon(new DRV8833RumbleAddon(), CORE1_LOOP);
 
 	// Initialize our input driver's auxilliary functions
 	inputDriver = DriverManager::getInstance().getDriver();
@@ -48,8 +41,18 @@ void GP2040Aux::setup() {
 		}
 	}
 
+	// Setup Add-ons
+	addons.LoadAddon(new DisplayAddon(), CORE1_LOOP);
+	addons.LoadAddon(new NeoPicoLEDAddon(), CORE1_LOOP);
+	addons.LoadAddon(new PlayerLEDAddon(), CORE1_LOOP);
+	addons.LoadAddon(new BoardLedAddon(), CORE1_LOOP);
+	addons.LoadAddon(new BuzzerSpeakerAddon(), CORE1_LOOP);
+
 	// Initialize our USB manager
 	USBHostManager::getInstance().start();
+
+	// Ready to sync Core0 and Core1
+	isReady = true;
 }
 
 void GP2040Aux::run() {

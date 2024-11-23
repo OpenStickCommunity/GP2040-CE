@@ -10,20 +10,17 @@
 #include "drivers/ps4/PS4Descriptors.h"
 
 // Authentication
-#include "drivers/shared/gpauthdriver.h"
-
-typedef enum {
-    no_nonce = 0,
-    receiving_nonce = 1,
-    nonce_ready = 2,
-    signed_nonce_ready = 3,
-    sending_nonce = 4,
-    waiting_reset = 5
-} PS4State;
+#include "drivers/ps4/PS4Auth.h"
 
 typedef enum
 {
+    PS4_GET_CALIBRATION      = 0x02,    // PS4 Controller Calibration
     PS4_DEFINITION           = 0x03,    // PS4 Controller Definition
+    PS4_SET_FEATURE_STATE    = 0x05,    // PS4 Controller Features
+    PS4_GET_MAC_ADDRESS      = 0x12,    // PS4 Controller MAC
+    PS4_SET_HOST_MAC         = 0x13,    // Set Host MAC
+    PS4_SET_USB_BT_CONTROL   = 0x14,    // Set USB/BT Control Mode
+    PS4_GET_VERSION_DATE     = 0xA3,    // PS4 Controller Version & Date
     PS4_SET_AUTH_PAYLOAD     = 0xF0,    // Set Auth Payload
     PS4_GET_SIGNATURE_NONCE  = 0xF1,    // Get Signature Nonce
     PS4_GET_SIGNING_STATE    = 0xF2,    // Get Signing State
@@ -38,12 +35,11 @@ typedef enum
 //    256 byte - RSA E
 //    256 byte - ps4 signature
 //    24 byte  - zero padding
-
 class PS4Driver : public GPDriver {
 public:
     PS4Driver(uint32_t type): controllerType(type) {}
     virtual void initialize();
-    virtual void process(Gamepad * gamepad, uint8_t * outBuffer);
+    virtual void process(Gamepad * gamepad);
     virtual void initializeAux();
     virtual void processAux();
     virtual uint16_t get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen);
@@ -56,26 +52,27 @@ public:
     virtual const uint8_t * get_descriptor_device_qualifier_cb();
     virtual uint16_t GetJoystickMidValue();
     virtual USBListener * get_usb_auth_listener();
-
     bool getAuthSent() { return authsent;}
 private:
-    // Lots of things here
-    void save_nonce(uint8_t nonce_id, uint8_t nonce_page, uint8_t * buffer, uint16_t buflen);
     uint8_t last_report[CFG_TUD_ENDPOINT0_SIZE] = { };
     uint8_t last_report_counter;
     uint16_t last_axis_counter;
-    uint8_t cur_nonce_id;
     PS4Report ps4Report;
     TouchpadData touchpadData;
+    PSSensorData sensorData;
     uint32_t last_report_timer;
-    uint8_t send_nonce_part;
-    uint32_t controllerType;
-    GPAuthDriver * authDriver;
-
-    PS4State ps4State;
+    PS4Auth * ps4AuthDriver;
+    PS4AuthData * ps4AuthData;      // PS4 Authentication Data
+    uint8_t cur_nonce_chunk;            // PS4 Encryption Nonce Chunk (Max 19)
+    uint8_t cur_nonce_id;
+    uint32_t controllerType;        // PS4 DS4 / PS5 Third-Party
+    bool pointOneTouched = false;
+    bool pointTwoTouched = false;
+    uint8_t touchCounter;
+    PS4FeatureOutputReport ps4Features;
+    uint8_t lastFeatures[PS4_FEATURES_SIZE] = { };
+    uint8_t deviceDescriptor[sizeof(ps4_device_descriptor)];
     bool authsent;
-    uint8_t nonce_buffer[256];
-    uint8_t nonce_id; // used in pass-through mode
 };
 
 #endif // _PS4_DRIVER_H_
