@@ -1594,6 +1594,9 @@ std::string setAddonOptions()
     docToValue(keyboardHostOptions.mouseMiddle, doc, "keyboardHostMouseMiddle");
     docToValue(keyboardHostOptions.mouseRight, doc, "keyboardHostMouseRight");
 
+    GamepadUSBHostOptions& gamepadUSBHostOptions = Storage::getInstance().getAddonOptions().gamepadUSBHostOptions;
+    docToValue(gamepadUSBHostOptions.enabled, doc, "GamepadUSBHostAddonEnabled");
+
     RotaryOptions& rotaryOptions = Storage::getInstance().getAddonOptions().rotaryOptions;
     docToValue(rotaryOptions.enabled, doc, "RotaryAddonEnabled");
     docToValue(rotaryOptions.encoderOne.enabled, doc, "encoderOneEnabled");
@@ -2014,6 +2017,9 @@ std::string getAddonOptions()
     writeDoc(doc, "keyboardHostMouseLeft", keyboardHostOptions.mouseLeft);
     writeDoc(doc, "keyboardHostMouseMiddle", keyboardHostOptions.mouseMiddle);
     writeDoc(doc, "keyboardHostMouseRight", keyboardHostOptions.mouseRight);
+
+    const GamepadUSBHostOptions& gamepadUSBHostOptions = Storage::getInstance().getAddonOptions().gamepadUSBHostOptions;
+    writeDoc(doc, "GamepadUSBHostAddonEnabled", gamepadUSBHostOptions.enabled);
 
     AnalogADS1256Options& ads1256Options = Storage::getInstance().getAddonOptions().analogADS1256Options;
     writeDoc(doc, "Analog1256Enabled", ads1256Options.enabled);

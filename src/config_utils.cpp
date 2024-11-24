@@ -34,6 +34,7 @@
 #include "addons/rotaryencoder.h"
 #include "addons/i2c_gpio_pcf8575.h"
 #include "addons/drv8833_rumble.h"
+#include "addons/gamepad_usb_host.h"
 
 #include "CRC32.h"
 #include "FlashPROM.h"
@@ -764,6 +765,10 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, buttonLockMask, FOCUS_MODE_BUTTON_MASK);
     INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, buttonLockEnabled, !!FOCUS_MODE_BUTTON_LOCK_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, macroLockEnabled, !!FOCUS_MODE_MACRO_LOCK_ENABLED);
+
+
+    // addonOptions.gamepadUSBHostOptions
+    INIT_UNSET_PROPERTY(config.addonOptions.gamepadUSBHostOptions, enabled, GAMEPAD_USB_HOST_ENABLED)
 
     // Macro options (always on)
     INIT_UNSET_PROPERTY(config.addonOptions.macroOptions, enabled, true);
