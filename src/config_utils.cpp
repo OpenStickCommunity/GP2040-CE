@@ -1005,11 +1005,11 @@ void gpioMappingsMigrationCore(Config& config)
     }
 
     if (focusModeOptions.enabled) {
-        if (focusModeOptions.has_pin && isValidPin(focusModeOptions.has_pin)) actions[focusModeOptions.pin] = GpioAction::SUSTAIN_FOCUS_MODE;
+        fromProtoBuf(focusModeOptions.has_pin, &focusModeOptions.pin, = GpioAction::SUSTAIN_FOCUS_MODE);
     }
 
     if (reverseOptions.enabled) {
-        if (reverseOptions.has_buttonPin && isValidPin(reverseOptions.has_buttonPin)) actions[reverseOptions.buttonPin] = GpioAction::BUTTON_PRESS_INPUT_REVERSE;
+        fromProtoBuf(reverseOptions.has_buttonPin, &reverseOptions.buttonPin, GpioAction::BUTTON_PRESS_INPUT_REVERSE);
     }
 
     // verify that tilt factors are not set to -1
@@ -1023,18 +1023,16 @@ void gpioMappingsMigrationCore(Config& config)
         if (tiltOptions.factorTilt2RightX == -1) tiltOptions.factorTilt2RightX = TILT2_FACTOR_RIGHT_X;
         if (tiltOptions.factorTilt2RightY == -1) tiltOptions.factorTilt2RightY = TILT2_FACTOR_RIGHT_Y;
 
-        tiltOptions.factorTilt1LeftX = tiltOptions.tilt1Pin;
-
-        if (tiltOptions.has_tilt1Pin && isValidPin(tiltOptions.tilt1Pin)) actions[tiltOptions.tilt1Pin] = GpioAction::ANALOG_DIRECTION_MOD_LOW;
-        if (tiltOptions.has_tilt2Pin && isValidPin(tiltOptions.tilt2Pin)) actions[tiltOptions.tilt2Pin] = GpioAction::ANALOG_DIRECTION_MOD_HIGH;
-        if (tiltOptions.has_tiltLeftAnalogUpPin && isValidPin(tiltOptions.tiltLeftAnalogUpPin)) actions[tiltOptions.tiltLeftAnalogUpPin] = GpioAction::ANALOG_DIRECTION_LS_Y_NEG;
-        if (tiltOptions.has_tiltLeftAnalogDownPin && isValidPin(tiltOptions.tiltLeftAnalogDownPin)) actions[tiltOptions.tiltLeftAnalogDownPin] = GpioAction::ANALOG_DIRECTION_LS_Y_POS;
-        if (tiltOptions.has_tiltLeftAnalogLeftPin && isValidPin(tiltOptions.tiltLeftAnalogLeftPin)) actions[tiltOptions.tiltLeftAnalogLeftPin] = GpioAction::ANALOG_DIRECTION_LS_X_NEG;
-        if (tiltOptions.has_tiltLeftAnalogRightPin && isValidPin(tiltOptions.tiltLeftAnalogRightPin)) actions[tiltOptions.tiltLeftAnalogRightPin] = GpioAction::ANALOG_DIRECTION_LS_X_POS;
-        if (tiltOptions.has_tiltRightAnalogUpPin && isValidPin(tiltOptions.tiltRightAnalogUpPin)) actions[tiltOptions.tiltRightAnalogUpPin] = GpioAction::ANALOG_DIRECTION_RS_Y_NEG;
-        if (tiltOptions.has_tiltRightAnalogDownPin && isValidPin(tiltOptions.tiltRightAnalogDownPin)) actions[tiltOptions.tiltRightAnalogDownPin] = GpioAction::ANALOG_DIRECTION_RS_Y_POS;
-        if (tiltOptions.has_tiltRightAnalogLeftPin && isValidPin(tiltOptions.tiltRightAnalogLeftPin)) actions[tiltOptions.tiltRightAnalogLeftPin] = GpioAction::ANALOG_DIRECTION_RS_X_NEG;
-        if (tiltOptions.has_tiltRightAnalogRightPin && isValidPin(tiltOptions.tiltRightAnalogRightPin)) actions[tiltOptions.tiltRightAnalogRightPin] = GpioAction::ANALOG_DIRECTION_RS_X_POS;
+        fromProtoBuf(tiltOptions.has_tilt1Pin, &tiltOptions.tilt1Pin, GpioAction::ANALOG_DIRECTION_MOD_LOW);
+        fromProtoBuf(tiltOptions.has_tilt2Pin, &tiltOptions.tilt2Pin, GpioAction::ANALOG_DIRECTION_MOD_HIGH);
+        fromProtoBuf(tiltOptions.has_tiltLeftAnalogUpPin, &tiltOptions.tiltLeftAnalogUpPin, GpioAction::ANALOG_DIRECTION_LS_Y_NEG);
+        fromProtoBuf(tiltOptions.has_tiltLeftAnalogDownPin, &tiltOptions.tiltLeftAnalogDownPin, GpioAction::ANALOG_DIRECTION_LS_Y_POS);
+        fromProtoBuf(tiltOptions.has_tiltLeftAnalogLeftPin, &tiltOptions.tiltLeftAnalogLeftPin, GpioAction::ANALOG_DIRECTION_LS_X_NEG);
+        fromProtoBuf(tiltOptions.has_tiltLeftAnalogRightPin, &tiltOptions.tiltLeftAnalogRightPin, GpioAction::ANALOG_DIRECTION_LS_X_POS);
+        fromProtoBuf(tiltOptions.has_tiltRightAnalogUpPin, &tiltOptions.tiltRightAnalogUpPin, GpioAction::ANALOG_DIRECTION_RS_Y_NEG);
+        fromProtoBuf(tiltOptions.has_tiltRightAnalogDownPin, &tiltOptions.tiltRightAnalogDownPin, GpioAction::ANALOG_DIRECTION_RS_Y_POS);
+        fromProtoBuf(tiltOptions.has_tiltRightAnalogLeftPin, &tiltOptions.tiltRightAnalogLeftPin, GpioAction::ANALOG_DIRECTION_RS_X_NEG);
+        fromProtoBuf(tiltOptions.has_tiltRightAnalogRightPin, &tiltOptions.tiltRightAnalogRightPin, GpioAction::ANALOG_DIRECTION_RS_X_POS);
     }
 
     // Assign all potential board config pins
