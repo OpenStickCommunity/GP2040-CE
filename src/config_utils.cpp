@@ -1005,7 +1005,7 @@ void gpioMappingsMigrationCore(Config& config)
     }
 
     if (focusModeOptions.enabled) {
-        fromProtoBuf(focusModeOptions.has_pin, &focusModeOptions.pin, = GpioAction::SUSTAIN_FOCUS_MODE);
+        fromProtoBuf(focusModeOptions.has_pin, &focusModeOptions.pin, GpioAction::SUSTAIN_FOCUS_MODE);
     }
 
     if (reverseOptions.enabled) {
