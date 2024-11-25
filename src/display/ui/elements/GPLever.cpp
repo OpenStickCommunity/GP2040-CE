@@ -43,26 +43,13 @@ void GPLever::draw() {
         bool leftState  = (this->_leftMask > -1 ? getProcessedGamepad()->pressedButton((uint16_t)this->_leftMask) : getProcessedGamepad()->pressedLeft());
         bool downState  = (this->_downMask > -1 ? getProcessedGamepad()->pressedButton((uint16_t)this->_downMask) : getProcessedGamepad()->pressedDown());
         bool rightState = (this->_rightMask > -1 ? getProcessedGamepad()->pressedButton((uint16_t)this->_rightMask) : getProcessedGamepad()->pressedRight());
-        if (upState) {
-            leverY -= leverRadius;
-            if (leftState) {
-                leverX -= leverRadius;
-            } else if (rightState) {
-                leverX += leverRadius;
-            }
-        } else if (downState) {
-            leverY += leverRadius;
-            if (leftState) {
-                leverX -= leverRadius;
-            } else if (rightState) {
-                leverX += leverRadius;
-            }
-        } else if (leftState) {
-            leverX -= leverRadius;
-        } else if (rightState) {
-            leverX += leverRadius;
+				if (upState != downState) {
+          leverY -= upState ? leverRadius : -leverRadius;
         }
-    } else {
+				if (leftState != rightState) {
+					leverX -= leftState ? leverRadius : -leverRadius;
+				}
+		} else {
         // analog
         uint16_t analogX = map((this->_inputType == DPAD_MODE_LEFT_ANALOG ? getProcessedGamepad()->state.lx : getProcessedGamepad()->state.rx), 0, 0xFFFF, 0, 100);
         uint16_t analogY = map((this->_inputType == DPAD_MODE_LEFT_ANALOG ? getProcessedGamepad()->state.ly : getProcessedGamepad()->state.ry), 0, 0xFFFF, 0, 100);
@@ -81,7 +68,7 @@ void GPLever::draw() {
 
     // base
     getRenderer()->drawEllipse(baseX, baseY, baseRadius, baseRadius, this->strokeColor, 0);
-    
+
     if (this->_showCardinal) {
         uint16_t cardinalSize = 3;
         uint16_t cardinalN = std::max(0,(baseY - baseRadius)-cardinalSize);
@@ -99,15 +86,15 @@ void GPLever::draw() {
         for (int angle = 45; angle <= 315; angle += 90) {
             // Convert angle to radians
             double radians = angle * M_PI / 180.0;
-    
+
             // Calculate coordinates of point on ellipse
             int xEllipse = baseX + baseRadius * cos(radians);
             int yEllipse = baseY + baseRadius * sin(radians);
-    
+
             // Calculate coordinates of endpoint of line
             int xEndpoint = xEllipse + ordinalSize * cos(radians);
             int yEndpoint = yEllipse + ordinalSize * sin(radians);
-    
+
             // Draw line from point on ellipse to endpoint
             getRenderer()->drawLine(xEllipse, yEllipse, xEndpoint, yEndpoint, this->strokeColor, 1);
         }
