@@ -426,7 +426,7 @@ message ReverseOptions
 {
     optional bool enabled = 1;
 
-    optional int32 buttonPin = 2;
+    optional int32 buttonPin = 2 [deprecated = true];
     optional int32 ledPin = 3;
 
     optional uint32 actionUp = 4;
@@ -475,17 +475,17 @@ message TiltOptions
 {
     optional bool enabled = 1;
 
-    optional int32 tilt1Pin = 2;
-    optional int32 tilt2Pin = 3;
-    optional int32 deprecatedTiltFunctionPin = 4 [deprecated = true];
-    optional int32 tiltLeftAnalogUpPin = 5;
-    optional int32 tiltLeftAnalogDownPin = 6;
-    optional int32 tiltLeftAnalogLeftPin = 7;
-    optional int32 tiltLeftAnalogRightPin = 8;
-    optional int32 tiltRightAnalogUpPin = 9;
-    optional int32 tiltRightAnalogDownPin = 10;
-    optional int32 tiltRightAnalogLeftPin = 11;
-    optional int32 tiltRightAnalogRightPin = 12;
+    optional int32 tilt1Pin = 2 [deprecated = true];
+    optional int32 tilt2Pin = 3 [deprecated = true];
+    optional int32 tiltFunctionPin = 4 [deprecated = true];
+    optional int32 tiltLeftAnalogUpPin = 5 [deprecated = true];
+    optional int32 tiltLeftAnalogDownPin = 6 [deprecated = true];
+    optional int32 tiltLeftAnalogLeftPin = 7 [deprecated = true];
+    optional int32 tiltLeftAnalogRightPin = 8 [deprecated = true];
+    optional int32 tiltRightAnalogUpPin = 9 [deprecated = true];
+    optional int32 tiltRightAnalogDownPin = 10 [deprecated = true];
+    optional int32 tiltRightAnalogLeftPin = 11 [deprecated = true];
+    optional int32 tiltRightAnalogRightPin = 12 [deprecated = true];
 
     optional SOCDMode tiltSOCDMode = 13;
 
@@ -691,7 +691,7 @@ message KeyboardHostOptions
 message FocusModeOptions
 {
     optional bool enabled = 1;
-    optional int32 pin = 2;
+    optional int32 pin = 2 [deprecated = true];
     optional int32 buttonLockMask = 3;
     optional bool oledLockEnabled = 4;
     optional bool rgbLockEnabled = 5;

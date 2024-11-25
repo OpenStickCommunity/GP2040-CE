@@ -14,10 +14,6 @@ export const focusModeScheme = {
 		.number()
 		.required()
 		.label('Focus Mode Add-On Enabled'),
-	focusModePin: yup
-		.number()
-		.label('Focus Mode Pin')
-		.validatePinWhenValue('FocusModeAddonEnabled'),
 	focusModeButtonLockEnabled: yup
 		.number()
 		.label('Focus Mode Button Lock Enabled')
@@ -49,19 +45,6 @@ const FocusMode = ({
 		<Section title={t('AddonsConfig:focus-mode-header-text')}>
 			<div id="FocusModeAddonOptions" hidden={!values.FocusModeAddonEnabled}>
 				<Row className="mb-3">
-					<FormControl
-						type="number"
-						label={t('AddonsConfig:focus-mode-pin-label')}
-						name="focusModePin"
-						className="form-select-sm col-3"
-						groupClassName="col-sm-3 mb-3"
-						value={values.focusModePin}
-						error={errors.focusModePin}
-						isInvalid={errors.focusModePin}
-						onChange={handleChange}
-						min={-1}
-						max={29}
-					/>
 					<div className="col-sm-3">
 						<FormCheck
 							label={t('Common:lock-macro')}

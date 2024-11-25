@@ -1481,29 +1481,18 @@ std::string setAddonOptions()
     docToValue(dualDirectionalOptions.enabled, doc, "DualDirectionalInputEnabled");
 
     TiltOptions& tiltOptions = Storage::getInstance().getAddonOptions().tiltOptions;
-    docToPin(tiltOptions.tilt1Pin, doc, "tilt1Pin");
     docToValue(tiltOptions.factorTilt1LeftX, doc, "factorTilt1LeftX");
     docToValue(tiltOptions.factorTilt1LeftY, doc, "factorTilt1LeftY");
     docToValue(tiltOptions.factorTilt1RightX, doc, "factorTilt1RightX");
     docToValue(tiltOptions.factorTilt1RightY, doc, "factorTilt1RightY");
-    docToPin(tiltOptions.tilt2Pin, doc, "tilt2Pin");
     docToValue(tiltOptions.factorTilt2LeftX, doc, "factorTilt2LeftX");
     docToValue(tiltOptions.factorTilt2LeftY, doc, "factorTilt2LeftY");
     docToValue(tiltOptions.factorTilt2RightX, doc, "factorTilt2RightX");
     docToValue(tiltOptions.factorTilt2RightY, doc, "factorTilt2RightY");
-    docToPin(tiltOptions.tiltLeftAnalogUpPin, doc, "tiltLeftAnalogUpPin");
-    docToPin(tiltOptions.tiltLeftAnalogDownPin, doc, "tiltLeftAnalogDownPin");
-    docToPin(tiltOptions.tiltLeftAnalogLeftPin, doc, "tiltLeftAnalogLeftPin");
-    docToPin(tiltOptions.tiltLeftAnalogRightPin, doc, "tiltLeftAnalogRightPin");
-    docToPin(tiltOptions.tiltRightAnalogUpPin, doc, "tiltRightAnalogUpPin");
-    docToPin(tiltOptions.tiltRightAnalogDownPin, doc, "tiltRightAnalogDownPin");
-    docToPin(tiltOptions.tiltRightAnalogLeftPin, doc, "tiltRightAnalogLeftPin");
-    docToPin(tiltOptions.tiltRightAnalogRightPin, doc, "tiltRightAnalogRightPin");
     docToValue(tiltOptions.tiltSOCDMode, doc, "tiltSOCDMode");
     docToValue(tiltOptions.enabled, doc, "TiltInputEnabled");
 
     FocusModeOptions& focusModeOptions = Storage::getInstance().getAddonOptions().focusModeOptions;
-    docToPin(focusModeOptions.pin, doc, "focusModePin");
     docToValue(focusModeOptions.buttonLockMask, doc, "focusModeButtonLockMask");
     docToValue(focusModeOptions.buttonLockEnabled, doc, "focusModeButtonLockEnabled");
     docToValue(focusModeOptions.macroLockEnabled, doc, "focusModeMacroLockEnabled");
@@ -1518,7 +1507,6 @@ std::string setAddonOptions()
 
     ReverseOptions& reverseOptions = Storage::getInstance().getAddonOptions().reverseOptions;
     docToValue(reverseOptions.enabled, doc, "ReverseInputEnabled");
-    docToPin(reverseOptions.buttonPin, doc, "reversePin");
     docToPin(reverseOptions.ledPin, doc, "reversePinLED");
     docToValue(reverseOptions.actionUp, doc, "reverseActionUp");
     docToValue(reverseOptions.actionDown, doc, "reverseActionDown");
@@ -1909,24 +1897,14 @@ std::string getAddonOptions()
     writeDoc(doc, "DualDirectionalInputEnabled", dualDirectionalOptions.enabled);
 
     const TiltOptions& tiltOptions = Storage::getInstance().getAddonOptions().tiltOptions;
-    writeDoc(doc, "tilt1Pin", cleanPin(tiltOptions.tilt1Pin));
     writeDoc(doc, "factorTilt1LeftX", tiltOptions.factorTilt1LeftX);
     writeDoc(doc, "factorTilt1LeftY", tiltOptions.factorTilt1LeftY);
     writeDoc(doc, "factorTilt1RightX", tiltOptions.factorTilt1RightX);
     writeDoc(doc, "factorTilt1RightY", tiltOptions.factorTilt1RightY);
-    writeDoc(doc, "tilt2Pin", cleanPin(tiltOptions.tilt2Pin));
     writeDoc(doc, "factorTilt2LeftX", tiltOptions.factorTilt2LeftX);
     writeDoc(doc, "factorTilt2LeftY", tiltOptions.factorTilt2LeftY);
     writeDoc(doc, "factorTilt2RightX", tiltOptions.factorTilt2RightX);
     writeDoc(doc, "factorTilt2RightY", tiltOptions.factorTilt2RightY);
-    writeDoc(doc, "tiltLeftAnalogUpPin", cleanPin(tiltOptions.tiltLeftAnalogUpPin));
-    writeDoc(doc, "tiltLeftAnalogDownPin", cleanPin(tiltOptions.tiltLeftAnalogDownPin));
-    writeDoc(doc, "tiltLeftAnalogLeftPin", cleanPin(tiltOptions.tiltLeftAnalogLeftPin));
-    writeDoc(doc, "tiltLeftAnalogRightPin", cleanPin(tiltOptions.tiltLeftAnalogRightPin));
-    writeDoc(doc, "tiltRightAnalogUpPin", cleanPin(tiltOptions.tiltRightAnalogUpPin));
-    writeDoc(doc, "tiltRightAnalogDownPin", cleanPin(tiltOptions.tiltRightAnalogDownPin));
-    writeDoc(doc, "tiltRightAnalogLeftPin", cleanPin(tiltOptions.tiltRightAnalogLeftPin));
-    writeDoc(doc, "tiltRightAnalogRightPin", cleanPin(tiltOptions.tiltRightAnalogRightPin));
     writeDoc(doc, "tiltSOCDMode", tiltOptions.tiltSOCDMode);
     writeDoc(doc, "TiltInputEnabled", tiltOptions.enabled);
 
@@ -1938,7 +1916,6 @@ std::string getAddonOptions()
     writeDoc(doc, "PlayerNumAddonEnabled", playerNumberOptions.enabled);
 
     const ReverseOptions& reverseOptions = Storage::getInstance().getAddonOptions().reverseOptions;
-    writeDoc(doc, "reversePin", cleanPin(reverseOptions.buttonPin));
     writeDoc(doc, "reversePinLED", cleanPin(reverseOptions.ledPin));
     writeDoc(doc, "reverseActionUp", reverseOptions.actionUp);
     writeDoc(doc, "reverseActionDown", reverseOptions.actionDown);
@@ -2024,7 +2001,6 @@ std::string getAddonOptions()
     writeDoc(doc, "analog1256EnableTriggers", ads1256Options.enableTriggers);
 
     const FocusModeOptions& focusModeOptions = Storage::getInstance().getAddonOptions().focusModeOptions;
-    writeDoc(doc, "focusModePin", cleanPin(focusModeOptions.pin));
     writeDoc(doc, "focusModeButtonLockMask", focusModeOptions.buttonLockMask);
     writeDoc(doc, "focusModeButtonLockEnabled", focusModeOptions.buttonLockEnabled);
     writeDoc(doc, "focusModeMacroLockEnabled", focusModeOptions.macroLockEnabled);
