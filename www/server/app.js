@@ -19,7 +19,7 @@ const { pico: picoController } = JSON.parse(
 
 // Structure pin mappings to include masks and profile label
 const createPinMappings = ({ profileLabel = 'Profile' }) => {
-	let pinMappings = { profileLabel };
+	let pinMappings = { profileLabel, enabled: true };
 
 	for (const [key, value] of Object.entries(picoController)) {
 		pinMappings[key] = {
@@ -390,7 +390,6 @@ app.get('/api/getProfileOptions', (req, res) => {
 		alternativePinMappings: [
 			createPinMappings({ profileLabel: 'Profile 2' }),
 			createPinMappings({ profileLabel: 'Profile 3' }),
-			createPinMappings({ profileLabel: 'Profile 4' }),
 		],
 	});
 });
@@ -490,7 +489,6 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		DualDirectionalInputEnabled: 1,
 		TiltInputEnabled: 1,
 		I2CAnalog1219InputEnabled: 1,
-		JSliderInputEnabled: 1,
 		KeyboardHostAddonEnabled: 1,
 		PlayerNumAddonEnabled: 1,
 		ReverseInputEnabled: 1,
@@ -528,6 +526,7 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		PCF8575AddonEnabled: 1,
 		DRV8833RumbleAddonEnabled: 1,
 		ReactiveLEDAddonEnabled: 1,
+		GamepadUSBHostAddonEnabled: 1,
 		usedPins: Object.values(picoController),
 	});
 });

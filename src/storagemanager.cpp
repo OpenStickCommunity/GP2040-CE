@@ -7,19 +7,14 @@
 
 #include "BoardConfig.h"
 #include "AnimationStorage.hpp"
-#include "Effects/StaticColor.hpp"
 #include "FlashPROM.h"
+#include "peripheralmanager.h"
 #include "config.pb.h"
 #include "hardware/watchdog.h"
-#include "Animation.hpp"
 #include "CRC32.h"
 #include "types.h"
 
 #include "config_utils.h"
-
-#include "bitmaps.h"
-
-#include "helper.h"
 
 void Storage::init() {
 	EEPROM.start();
@@ -27,9 +22,23 @@ void Storage::init() {
 	ConfigUtils::load(config);
 }
 
+/**
+ * @brief Save the config, but only if it is safe to (as in USB host is not being used.)
+ */
 bool Storage::save()
 {
-	return ConfigUtils::save(config);
+	return save(false);
+}
+
+/**
+ * @brief Save the config; if forcing a save is requested, or if USB host is not enabled, this will write to flash.
+ */
+bool Storage::save(const bool force) {
+	if (!PeripheralManager::getInstance().isUSBEnabled(0) || force) {
+		return ConfigUtils::save(config);
+	} else {
+		return false;
+	}
 }
 
 static void updateAnimationOptionsProto(const AnimationOptions& options)
@@ -114,21 +123,39 @@ void Storage::ResetSettings()
 	watchdog_reboot(0, SRAM_END, 2000);
 }
 
-void Storage::setProfile(const uint32_t profileNum)
+bool Storage::setProfile(const uint32_t profileNum)
 {
-	this->config.gamepadOptions.profileNumber = (profileNum < 1 || profileNum > 4) ? 1 : profileNum;
+	// is this profile defined?
+	if (profileNum >= 1 && profileNum <= config.profileOptions.gpioMappingsSets_count + 1) {
+		// is this profile enabled?
+		// profile 1 (core) is always enabled, others we must check
+		if (profileNum == 1 || config.profileOptions.gpioMappingsSets[profileNum-2].enabled) {
+			this->config.gamepadOptions.profileNumber = profileNum;
+			return true;
+		}
+	}
+	// if we get here, the requested profile doesn't exist or isn't enabled, so don't change it
+	return false;
 }
 
 void Storage::nextProfile()
 {
-    this->config.gamepadOptions.profileNumber = (this->config.gamepadOptions.profileNumber % 4) + 1;
+	uint32_t profileCeiling = config.profileOptions.gpioMappingsSets_count + 1;
+	uint32_t requestedProfile = (this->config.gamepadOptions.profileNumber % profileCeiling) + 1;
+	while (!setProfile(requestedProfile)) {
+		// if the set failed, try again with the next in the sequence
+		requestedProfile = (requestedProfile % profileCeiling) + 1;
+	}
 }
 void Storage::previousProfile()
 {
-	if (this->config.gamepadOptions.profileNumber == 1)
-		this->config.gamepadOptions.profileNumber = 4;
-	else
-		this->config.gamepadOptions.profileNumber -= 1;
+	uint32_t profileCeiling = config.profileOptions.gpioMappingsSets_count + 1;
+	uint32_t requestedProfile = this->config.gamepadOptions.profileNumber > 1 ?
+			config.gamepadOptions.profileNumber - 1 : profileCeiling;
+	while (!setProfile(requestedProfile)) {
+		// if the set failed, try again with the next in the sequence
+		requestedProfile = requestedProfile > 1 ? requestedProfile - 1 : profileCeiling;
+	}
 }
 
 /**
@@ -144,8 +171,12 @@ char* Storage::currentProfileLabel() {
 void Storage::setFunctionalPinMappings()
 {
 	GpioMappingInfo* alts = nullptr;
-	if (config.gamepadOptions.profileNumber >= 2 && config.gamepadOptions.profileNumber <= 4)
-		alts = this->config.profileOptions.gpioMappingsSets[config.gamepadOptions.profileNumber-2].pins;
+	if (config.gamepadOptions.profileNumber >= 2 &&
+			config.gamepadOptions.profileNumber <= config.profileOptions.gpioMappingsSets_count + 1) {
+		if (config.profileOptions.gpioMappingsSets[config.gamepadOptions.profileNumber-2].enabled) {
+			alts = config.profileOptions.gpioMappingsSets[config.gamepadOptions.profileNumber-2].pins;
+		}
+	}
 
 	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
 		// assign the functional pin to the profile pin if:

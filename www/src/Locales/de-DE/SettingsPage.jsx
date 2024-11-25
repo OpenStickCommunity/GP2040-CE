@@ -31,7 +31,7 @@ export default {
 		'first-win': 'Erster Gewinnt',
 		off: 'Aus',
 	},
-	'profile-number-label': 'Profil Nummer',
+	'profile-label': 'Profil',
 	'debounce-delay-label': 'Entprellverzögerung in Millisekunden',
 	'hotkey-settings-label': 'Hotkey Einstellungen',
 	'hotkey-settings-sub-header':

@@ -25,7 +25,6 @@ import I2CAnalog1219, {
 	i2cAnalogScheme,
 	i2cAnalogState,
 } from '../Addons/I2CAnalog1219';
-import Joystick, { joystickScheme, joystickState } from '../Addons/Joystick';
 import OnBoardLed, {
 	onBoardLedScheme,
 	onBoardLedState,
@@ -45,6 +44,7 @@ import FocusMode, {
 	focusModeState,
 } from '../Addons/FocusMode';
 import Keyboard, { keyboardScheme, keyboardState } from '../Addons/Keyboard';
+import GamepadUSBHost, { gamepadUSBHostScheme, gamepadUSBHostState} from '../Addons/GamepadUSBHost';
 import InputHistory, {
 	inputHistoryScheme,
 	inputHistoryState,
@@ -55,7 +55,10 @@ import DRV8833Rumble, {
 	drv8833RumbleScheme,
 	drv8833RumbleState,
 } from '../Addons/DRV8833';
-import ReactiveLED, { reactiveLEDScheme, reactiveLEDState } from '../Addons/ReactiveLED';
+import ReactiveLED, {
+	reactiveLEDScheme,
+	reactiveLEDState,
+} from '../Addons/ReactiveLED';
 
 const schema = yup.object().shape({
 	...analogScheme,
@@ -63,7 +66,6 @@ const schema = yup.object().shape({
 	...bootselScheme,
 	...onBoardLedScheme,
 	...turboScheme,
-	...joystickScheme,
 	...reverseScheme,
 	...i2cAnalogScheme,
 	...dualDirectionScheme,
@@ -79,6 +81,7 @@ const schema = yup.object().shape({
 	...pcf8575Scheme,
 	...drv8833RumbleScheme,
 	...reactiveLEDScheme,
+	...gamepadUSBHostScheme,
 });
 
 const defaultValues = {
@@ -87,7 +90,6 @@ const defaultValues = {
 	...bootselState,
 	...onBoardLedState,
 	...turboState,
-	...joystickState,
 	...reverseState,
 	...i2cAnalogState,
 	...dualDirectionState,
@@ -104,6 +106,7 @@ const defaultValues = {
 	...pcf8575State,
 	...drv8833RumbleState,
 	...reactiveLEDState,
+	...gamepadUSBHostState,
 };
 
 const ADDONS = [
@@ -111,7 +114,6 @@ const ADDONS = [
 	OnBoardLed,
 	Analog,
 	Turbo,
-	Joystick,
 	Reverse,
 	I2CAnalog1219,
 	Analog1256,
@@ -124,6 +126,7 @@ const ADDONS = [
 	SNES,
 	FocusMode,
 	Keyboard,
+	GamepadUSBHost,
 	InputHistory,
 	Rotary,
 	PCF8575,

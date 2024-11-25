@@ -21,10 +21,10 @@ int8_t ConfigScreen::update() {
             case (GAMEPAD_MASK_B2):
                 prevButtonState = 0;
                 return DisplayMode::SPLASH;
-            case (GAMEPAD_MASK_B3):
+            case (GAMEPAD_MASK_R2):
                 prevButtonState = 0;
                 return DisplayMode::PIN_VIEWER;
-            case (GAMEPAD_MASK_B4):
+            case (GAMEPAD_MASK_L2):
                 prevButtonState = 0;
                 return DisplayMode::STATS;
             default:
@@ -42,6 +42,6 @@ void ConfigScreen::drawScreen() {
     getRenderer()->drawText(0, 3, "Preview:");
     getRenderer()->drawText(3, 4, "  B1 > Button");
     getRenderer()->drawText(3, 5, "  B2 > Splash");
-    getRenderer()->drawText(3, 6, "  B3 > Pin Viewer");
-    getRenderer()->drawText(3, 7, "  B4 > Stats");
+    getRenderer()->drawText(3, 6, "  R2 > Pin Viewer");
+    getRenderer()->drawText(3, 7, "  L2 > Stats");
 }

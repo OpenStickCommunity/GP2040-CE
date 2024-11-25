@@ -190,7 +190,7 @@ void ButtonLayoutScreen::generateHeader() {
 
 	const GamepadOptions & options = gamepad->getOptions();
 
-	switch (gamepad->getOptions().dpadMode)
+	switch (gamepad->getActiveDpadMode())
 	{
 		case DPAD_MODE_DIGITAL:      statusBar += " D"; break;
 		case DPAD_MODE_LEFT_ANALOG:  statusBar += " L"; break;
@@ -391,7 +391,7 @@ bool ButtonLayoutScreen::compareCustomLayouts()
 
 bool ButtonLayoutScreen::pressedUp()
 {
-    switch (getGamepad()->getOptions().dpadMode)
+    switch (getGamepad()->getActiveDpadMode())
     {
         case DPAD_MODE_DIGITAL:      return ((getProcessedGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == GAMEPAD_MASK_UP);
         case DPAD_MODE_LEFT_ANALOG:  return getProcessedGamepad()->state.ly == GAMEPAD_JOYSTICK_MIN;
@@ -403,7 +403,7 @@ bool ButtonLayoutScreen::pressedUp()
 
 bool ButtonLayoutScreen::pressedDown()
 {
-    switch (getGamepad()->getOptions().dpadMode)
+    switch (getGamepad()->getActiveDpadMode())
     {
         case DPAD_MODE_DIGITAL:      return ((getProcessedGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == GAMEPAD_MASK_DOWN);
         case DPAD_MODE_LEFT_ANALOG:  return getProcessedGamepad()->state.ly == GAMEPAD_JOYSTICK_MAX;
@@ -415,7 +415,7 @@ bool ButtonLayoutScreen::pressedDown()
 
 bool ButtonLayoutScreen::pressedLeft()
 {
-    switch (getGamepad()->getOptions().dpadMode)
+    switch (getGamepad()->getActiveDpadMode())
     {
         case DPAD_MODE_DIGITAL:      return ((getProcessedGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == GAMEPAD_MASK_LEFT);
         case DPAD_MODE_LEFT_ANALOG:  return getProcessedGamepad()->state.lx == GAMEPAD_JOYSTICK_MIN;
@@ -427,7 +427,7 @@ bool ButtonLayoutScreen::pressedLeft()
 
 bool ButtonLayoutScreen::pressedRight()
 {
-    switch (getGamepad()->getOptions().dpadMode)
+    switch (getGamepad()->getActiveDpadMode())
     {
         case DPAD_MODE_DIGITAL:      return ((getProcessedGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == GAMEPAD_MASK_RIGHT);
         case DPAD_MODE_LEFT_ANALOG:  return getProcessedGamepad()->state.lx == GAMEPAD_JOYSTICK_MAX;
@@ -439,7 +439,7 @@ bool ButtonLayoutScreen::pressedRight()
 
 bool ButtonLayoutScreen::pressedUpLeft()
 {
-    switch (getGamepad()->getOptions().dpadMode)
+    switch (getGamepad()->getActiveDpadMode())
     {
         case DPAD_MODE_DIGITAL:      return ((getProcessedGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == (GAMEPAD_MASK_UP | GAMEPAD_MASK_LEFT));
         case DPAD_MODE_LEFT_ANALOG:  return (getProcessedGamepad()->state.lx == GAMEPAD_JOYSTICK_MIN) && (getProcessedGamepad()->state.ly == GAMEPAD_JOYSTICK_MIN);
@@ -451,7 +451,7 @@ bool ButtonLayoutScreen::pressedUpLeft()
 
 bool ButtonLayoutScreen::pressedUpRight()
 {
-    switch (getGamepad()->getOptions().dpadMode)
+    switch (getGamepad()->getActiveDpadMode())
     {
         case DPAD_MODE_DIGITAL:      return ((getProcessedGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == (GAMEPAD_MASK_UP | GAMEPAD_MASK_RIGHT));
         case DPAD_MODE_LEFT_ANALOG:  return (getProcessedGamepad()->state.lx == GAMEPAD_JOYSTICK_MAX) && (getProcessedGamepad()->state.ly == GAMEPAD_JOYSTICK_MIN);
@@ -463,7 +463,7 @@ bool ButtonLayoutScreen::pressedUpRight()
 
 bool ButtonLayoutScreen::pressedDownLeft()
 {
-    switch (getGamepad()->getOptions().dpadMode)
+    switch (getGamepad()->getActiveDpadMode())
     {
         case DPAD_MODE_DIGITAL:      return ((getProcessedGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == (GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT));
         case DPAD_MODE_LEFT_ANALOG:  return (getProcessedGamepad()->state.lx == GAMEPAD_JOYSTICK_MIN) && (getProcessedGamepad()->state.ly == GAMEPAD_JOYSTICK_MAX);
@@ -475,7 +475,7 @@ bool ButtonLayoutScreen::pressedDownLeft()
 
 bool ButtonLayoutScreen::pressedDownRight()
 {
-    switch (getGamepad()->getOptions().dpadMode)
+    switch (getGamepad()->getActiveDpadMode())
     {
         case DPAD_MODE_DIGITAL:      return ((getProcessedGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == (GAMEPAD_MASK_DOWN | GAMEPAD_MASK_RIGHT));
         case DPAD_MODE_LEFT_ANALOG:  return (getProcessedGamepad()->state.lx == GAMEPAD_JOYSTICK_MAX) && (getProcessedGamepad()->state.ly == GAMEPAD_JOYSTICK_MAX);

@@ -29,6 +29,9 @@ export default {
 	'inner-deadzone-size': '内側デッドゾーン(%)',
 	'outer-deadzone-size': '外側デッドゾーン(%)',
 	'analog-auto-calibrate': '自動調整',
+	'analog-smoothing': 'アナログスムージング',
+	'smoothing-factor': 'スムージング強度',
+	'analog-error-label': '誤差率',
 	'turbo-header-text': '連射機能',
 	'turbo-button-pin-label': '連射ボタン端子',
 	'turbo-led-pin-label': '連射LED端子',
@@ -125,6 +128,10 @@ export default {
 	'keyboard-host-header-text': 'キーボードホスト設定',
 	'keyboard-host-sub-header-text':
 		'以下のフォームでボタンとキーの割り当てを設定してください',
+	'keyboard-host-mouse-header-text': 'マウスボタン',
+	'keyboard-host-left-mouse': '左クリック',
+	'keyboard-host-middle-mouse': '中央クリック',
+	'keyboard-host-right-mouse': '右クリック',
 	'pin-config-moved-to-core-text':
 		'注：このAdd-onに関する端子設定は端子割り当て設定ページに移動しました。',
 	'input-history-header-text': '入力履歴',

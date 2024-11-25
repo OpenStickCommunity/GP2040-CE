@@ -49,6 +49,7 @@ public:
 
 	void init();
 	bool save();
+	bool save(const bool force);
 
 	// Perform saves that were enqueued from core1
 	void performEnqueuedSaves();
@@ -64,7 +65,7 @@ public:
 	void SetProcessedGamepad(Gamepad *); // MPGS Processed Gamepad Get/Set
 	Gamepad * GetProcessedGamepad();
 
-	void setProfile(const uint32_t);		// profile support for multiple mappings
+	bool setProfile(const uint32_t);		// profile support for multiple mappings
 	void nextProfile();
 	void previousProfile();
 	void setFunctionalPinMappings();

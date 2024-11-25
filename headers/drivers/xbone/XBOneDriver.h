@@ -41,6 +41,7 @@ private:
     uint8_t virtual_keycode_sequence;
     bool xb1_guide_pressed;
     GPAuthDriver * authDriver;
+    uint8_t xbone_led_mode;
 };
 
 #endif // _XBONE_DRIVER_H_

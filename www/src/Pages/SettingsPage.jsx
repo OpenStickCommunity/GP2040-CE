@@ -6,9 +6,11 @@ import * as yup from 'yup';
 import { Trans, useTranslation } from 'react-i18next';
 import JSEncrypt from 'jsencrypt';
 import isNil from 'lodash/isNil';
-import ContextualHelpOverlay from '../Components/ContextualHelpOverlay';
 
+import useProfilesStore from '../Store/useProfilesStore';
 import { AppContext } from '../Contexts/AppContext';
+
+import ContextualHelpOverlay from '../Components/ContextualHelpOverlay';
 import KeyboardMapper, { validateMappings } from '../Components/KeyboardMapper';
 import Section from '../Components/Section';
 import WebApi, { baseButtonMappings } from '../Services/WebApi';
@@ -39,9 +41,9 @@ const SHA256 = (ascii) => {
 	const k = (SHA256.k = SHA256.k || []);
 	let primeCounter = k[lengthProperty];
 	/*/
-    var hash = [], k = [];
-    var primeCounter = 0;
-    //*/
+		var hash = [], k = [];
+		var primeCounter = 0;
+		//*/
 
 	const isComposite = {};
 	for (let candidate = 2; primeCounter < 64; candidate++) {
@@ -95,7 +97,7 @@ const SHA256 = (ascii) => {
 								(rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3)) + // s0
 								w[i - 7] +
 								(rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10))) | // s1
-						  0);
+							0);
 			// This is only used once, so *could* be moved below, but it only saves 4 bytes and makes things unreadble
 			const temp2 =
 				(rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22)) + // S0
@@ -120,7 +122,8 @@ const SHA256 = (ascii) => {
 };
 
 const INPUT_MODES = [
-	{ labelKey: 'input-mode-options.xinput',
+	{
+		labelKey: 'input-mode-options.xinput',
 		value: 0,
 		group: 'primary',
 		optional: ['usb'],
@@ -263,6 +266,7 @@ const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.r3-button', value: 20 },
 	{ labelKey: 'hotkey-actions.touchpad-button', value: 21 },
 	{ labelKey: 'hotkey-actions.reboot-default', value: 22 },
+	{ labelKey: 'hotkey-actions.save-config', value: 43 },
 	{ labelKey: 'hotkey-actions.b1-button', value: 23 },
 	{ labelKey: 'hotkey-actions.b2-button', value: 24 },
 	{ labelKey: 'hotkey-actions.b3-button', value: 25 },
@@ -476,11 +480,17 @@ export default function SettingsPage() {
 		buttonLabels,
 		setButtonLabels,
 		getAvailablePeripherals,
-		getSelectedPeripheral,
-		getAvailableAddons,
-		updateAddons,
 		updatePeripherals,
 	} = useContext(AppContext);
+
+	const fetchProfiles = useProfilesStore((state) => state.fetchProfiles);
+	const profiles = useProfilesStore((state) => state.profiles);
+
+	useEffect(() => {
+		fetchProfiles();
+		updatePeripherals();
+	}, []);
+
 	const [saveMessage, setSaveMessage] = useState('');
 	const [warning, setWarning] = useState({ show: false, acceptText: '' });
 	const [validated, setValidated] = useState(false);
@@ -745,7 +755,7 @@ export default function SettingsPage() {
 											<Trans
 												ns="SettingsPage"
 												i18nKey="ps4-id-mode-explanation-text"
-												components={{ ul: <ul />, li: <li/> }}
+												components={{ ul: <ul />, li: <li /> }}
 											/>
 										}
 									/>
@@ -757,11 +767,8 @@ export default function SettingsPage() {
 									onChange={handleChange}
 								>
 									{PS4_ID_MODES.map((o) => (
-										<option
-											key={`ps4-id-option-${o.value}`}
-											value={o.value}
-										>
-											{`${t('SettingsPage:'+o.labelKey)}`}
+										<option key={`ps4-id-option-${o.value}`} value={o.value}>
+											{`${t('SettingsPage:' + o.labelKey)}`}
 										</option>
 									))}
 								</Form.Select>
@@ -906,7 +913,7 @@ export default function SettingsPage() {
 											<Trans
 												ns="SettingsPage"
 												i18nKey="ps4-id-mode-explanation-text"
-												components={{ ul: <ul />, li: <li/> }}
+												components={{ ul: <ul />, li: <li /> }}
 											/>
 										}
 									/>
@@ -918,11 +925,8 @@ export default function SettingsPage() {
 									onChange={handleChange}
 								>
 									{PS4_ID_MODES.map((o) => (
-										<option
-											key={`ps4-id-option-${o.value}`}
-											value={o.value}
-										>
-											{`${t('SettingsPage:'+o.labelKey)}`}
+										<option key={`ps4-id-option-${o.value}`} value={o.value}>
+											{`${t('SettingsPage:' + o.labelKey)}`}
 										</option>
 									))}
 								</Form.Select>
@@ -1101,11 +1105,6 @@ export default function SettingsPage() {
 
 	const { t } = useTranslation('');
 
-	useEffect(() => {
-		updateAddons();
-		updatePeripherals();
-	}, []);
-
 	const translatedInputBootModes = translateArray(
 		checkRequiredArray(INPUT_BOOT_MODES),
 	);
@@ -1128,7 +1127,7 @@ export default function SettingsPage() {
 						<Form noValidate onSubmit={handleSubmit}>
 							<Tab.Container defaultActiveKey="inputmode">
 								<Row>
-									<Col sm={2}>
+									<Col md={3}>
 										<Nav variant="pills" className="flex-column">
 											<Nav.Item>
 												<Nav.Link eventKey="inputmode">
@@ -1152,7 +1151,7 @@ export default function SettingsPage() {
 											</Nav.Item>
 										</Nav>
 									</Col>
-									<Col sm={10}>
+									<Col md={9}>
 										<Tab.Content>
 											<Tab.Pane eventKey="inputmode">
 												<Section title={t('SettingsPage:settings-header-text')}>
@@ -1312,7 +1311,7 @@ export default function SettingsPage() {
 													</Form.Group>
 													<Form.Group className="row mb-3">
 														<Form.Label>
-															{t('SettingsPage:profile-number-label')}
+															{t('SettingsPage:profile-label')}
 														</Form.Label>
 														<Col sm={3}>
 															<Form.Select
@@ -1322,12 +1321,17 @@ export default function SettingsPage() {
 																onChange={handleChange}
 																isInvalid={errors.profileNumber}
 															>
-																{[1, 2, 3, 4].map((i) => (
+																{profiles.map((profile, index) => (
 																	<option
-																		key={`button-profileNumber-option-${i}`}
-																		value={i}
+																		key={`button-profileNumber-option-${
+																			index + 1
+																		}`}
+																		value={index + 1}
 																	>
-																		{i}
+																		{profile.profileLabel ||
+																			t('PinMapping:profile-label-default', {
+																				profileNumber: index + 1,
+																			})}
 																	</option>
 																))}
 															</Form.Select>
@@ -1444,7 +1448,7 @@ export default function SettingsPage() {
 													<div id="Hotkeys" hidden={values.lockHotkeys}>
 														{Object.keys(hotkeyFields).map((o, i) => (
 															<Form.Group
-																key={`hotkey-${i}`}
+																key={`hotkey-${i}-base`}
 																className="row mb-3"
 															>
 																<Col sm="auto">

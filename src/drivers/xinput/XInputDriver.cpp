@@ -22,40 +22,14 @@
 #define DESC_EXTENDED_PROPERTIES_DESCRIPTOR 0x0005
 
 #define XINPUT_OUT_SIZE 32
-#define CFG_TUD_XINPUT 4
 
 #define XINPUT_DESC_TYPE_RESERVED 0x21
 #define XINPUT_SECURITY_DESC_TYPE_RESERVED 0x41
 
-//--------------------------------------------------------------------+
-// MACRO CONSTANT TYPEDEF
-//--------------------------------------------------------------------+
-typedef struct {
-    uint8_t itf_num;
-    uint8_t ep_in;
-    uint8_t ep_out;         // optional Out endpoint
-    uint8_t boot_protocol;  // Boot mouse or keyboard
-    bool boot_mode;         // default = false (Report)
-
-    CFG_TUSB_MEM_ALIGN uint8_t epin_buf[XINPUT_OUT_SIZE];
-    CFG_TUSB_MEM_ALIGN uint8_t epout_buf[XINPUT_OUT_SIZE];
-} xinputd_interface_t;
-
-CFG_TUSB_MEM_SECTION static xinputd_interface_t _xinputd_itf[CFG_TUD_XINPUT];
-
-uint8_t endpoint_in = 0;
-uint8_t endpoint_out = 0;
-uint8_t xinput_out_buffer[XINPUT_OUT_SIZE] = {};
+static uint8_t endpoint_in = 0;
+static uint8_t endpoint_out = 0;
+static uint8_t xinput_out_buffer[XINPUT_OUT_SIZE] = {};
 static XInputAuthData * xinputAuthData = nullptr;
-
-/*------------- Helpers -------------*/
-static inline uint8_t get_index_by_itfnum(uint8_t itf_num) {
-    for (uint8_t i = 0; i < CFG_TUD_XINPUT; i++) {
-        if (itf_num == _xinputd_itf[i].itf_num) return i;
-    }
-
-    return 0xFF;
-}
 
 // Move to Proto Enums
 typedef enum
@@ -90,15 +64,6 @@ static uint16_t xinput_open(uint8_t rhport, tusb_desc_interface_t const *itf_des
         driver_length = sizeof(tusb_desc_interface_t) + (itf_descriptor->bNumEndpoints * sizeof(tusb_desc_endpoint_t));
         TU_VERIFY(max_length >= driver_length, 0);
 
-        // Find available interface
-        xinputd_interface_t *p_xinput = NULL;
-        for (uint8_t i = 0; i < CFG_TUD_XINPUT; i++) {
-            if (_xinputd_itf[i].ep_in == 0 && _xinputd_itf[i].ep_out == 0) {
-                p_xinput = &_xinputd_itf[i];
-                break;
-            }
-        }
-
         tusb_desc_interface_t *p_desc = (tusb_desc_interface_t *)itf_descriptor;
         // Xbox 360 Interfaces (Control 0x01, Audio 0x02, Plug-in 0x03)
         if (itf_descriptor->bInterfaceSubClass == 0x5D &&
@@ -109,16 +74,11 @@ static uint16_t xinput_open(uint8_t rhport, tusb_desc_interface_t const *itf_des
             p_desc = (tusb_desc_interface_t *)tu_desc_next(p_desc);
             TU_VERIFY(XINPUT_DESC_TYPE_RESERVED == p_desc->bDescriptorType, 0);
             driver_length += p_desc->bLength;
-
             p_desc = (tusb_desc_interface_t *)tu_desc_next(p_desc);
-            TU_ASSERT(usbd_open_edpt_pair(rhport, (const uint8_t*)p_desc, itf_descriptor->bNumEndpoints,
-                                          TUSB_XFER_INTERRUPT, &p_xinput->ep_out, &p_xinput->ep_in), 0);
-            p_xinput->itf_num = itf_descriptor->bInterfaceNumber;
-
             // Control Endpoints are used for gamepad input/output
             if ( itf_descriptor->bInterfaceProtocol == 0x01 ) {
-                endpoint_in = p_xinput->ep_in;
-                endpoint_out = p_xinput->ep_out;
+                TU_ASSERT(usbd_open_edpt_pair(rhport, (const uint8_t*)p_desc, itf_descriptor->bNumEndpoints,
+                            TUSB_XFER_INTERRUPT, &endpoint_out, &endpoint_in), 0);
             }
         // Xbox 360 Security Interface
         } else if (itf_descriptor->bInterfaceSubClass == 0xFD &&

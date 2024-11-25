@@ -8,7 +8,7 @@ Basic button setup for the Rana Tadpole.
 ![Buttons](assets/RanaTadpole_buttons.png)
 
 GitHub repo for the Tadpole:
-https://github.com/rana-sylvatica/rana-tadpole
+<https://github.com/rana-sylvatica/rana-tadpole>
 
 ## Main Pin Mapping Configuration
 

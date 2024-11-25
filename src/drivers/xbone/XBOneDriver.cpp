@@ -3,6 +3,7 @@
 
 #include "drivers/xbone/XBOneAuth.h"
 #include "peripheralmanager.h"
+#include "storagemanager.h"
 
 #define XBONE_KEEPALIVE_TIMER 15000
 
@@ -87,6 +88,8 @@ static bool waiting_ack = false;
 static uint32_t waiting_ack_timeout=0;
 static uint32_t timer_wait_for_announce;
 static bool xbox_one_powered_on;
+static uint8_t report_led_mode;
+static uint8_t report_led_brightness;
 
 // Report Queue for big report sizes from dongle
 #include <queue>
@@ -147,6 +150,7 @@ static void xbone_reset(uint8_t rhport) {
     (void)rhport;
     timer_wait_for_announce = to_ms_since_boot(get_absolute_time());
     xbox_one_powered_on = false;
+    report_led_mode = 0; // 0 = OFF
     while(!report_queue.empty())
         report_queue.pop();
 
@@ -271,8 +275,15 @@ bool xbone_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result,
             outgoingXGIP->setAttributes(GIP_DEVICE_DESCRIPTOR, incomingXGIP->getSequence(), 1, 1, 0);
             outgoingXGIP->setData(xboxOneDescriptor, sizeof(xboxOneDescriptor));
             xboneDriverState = XboxOneDriverState::SEND_DESCRIPTOR;
-        } else if ( command == GIP_POWER_MODE_DEVICE_CONFIG || command == GIP_CMD_WAKEUP || command == GIP_CMD_RUMBLE ) {
+        } else if ( command == GIP_POWER_MODE_DEVICE_CONFIG ) {
+            // Power Mode On!
             xbox_one_powered_on = true;
+        } else if ( command == GIP_CMD_LED_ON ) {
+            // Set all player LEDs to on
+            report_led_mode = incomingXGIP->getData()[1]; // 1 - turn LEDs on
+            report_led_brightness = incomingXGIP->getData()[2]; // 2 - brightness (ignored for now)
+        } else if ( command == GIP_CMD_RUMBLE ) {
+            // TO-DO
         } else if ( command == GIP_AUTH || command == GIP_FINAL_AUTH) {
             if (incomingXGIP->getDataLength() == 2 && memcmp(incomingXGIP->getData(), authReady, sizeof(authReady))==0 ) {
                 xboxOneAuthData->authCompleted = true;
@@ -339,11 +350,12 @@ void XBOneDriver::initialize() {
     xb1_guide_pressed = false;
     last_report_counter = 0;
 
-
     incomingXGIP = new XGIPProtocol();
     outgoingXGIP = new XGIPProtocol();
 
     xboxOneAuthData = nullptr;
+
+    xbone_led_mode = 0;
 }
 
 
@@ -374,6 +386,14 @@ void XBOneDriver::process(Gamepad * gamepad) {
 
     // Perform update
     this->update();
+
+    // Check if LEDs need to turn on
+    if ( xbone_led_mode != report_led_mode ) {
+        Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
+        processedGamepad->auxState.playerID.active = true;
+        processedGamepad->auxState.playerID.ledValue = report_led_mode;
+        processedGamepad->auxState.playerID.ledBlinkOn = report_led_brightness;
+    }
 
     // No input until auth is ready
     if ( xboxOneAuthData->authCompleted == false ) {

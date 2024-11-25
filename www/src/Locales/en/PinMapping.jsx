@@ -6,12 +6,15 @@ export default {
 	'pin-viewer': 'Pin viewer',
 	'pin-pressed': 'Pressed pin: {{pressedPin}}',
 	'pin-header-label': 'Pin',
-
 	'profile-label-title': 'Profile name',
 	'profile-label-description':
 		'Max 16 characters. Letters, numbers, and spaces allowed.',
 	'profile-pin-mapping-title': '{{profileLabel}} - Pin Mapping',
 	'profile-label-default': 'Profile {{profileNumber}}',
+	'profile-add-button': '+ Add Profile',
+	'profile-disabled': ' - (Disabled)',
+	'profile-enabled-tooltip':
+		'Disabled profiles will not be available when using hotkeys to change profile.',
 	'profile-pins-warning':
 		'Try to avoid changing the buttons and/or directions used for the switch profile hotkeys. Otherwise, it will be difficult to understand what profile is being selected!',
 	'profile-copy-base': 'Copy base profile',
@@ -79,5 +82,21 @@ export default {
 		BUTTON_PRESS_E10: 'Extra 10',
 		BUTTON_PRESS_E11: 'Extra 11',
 		BUTTON_PRESS_E12: 'Extra 12',
+		DIGITAL_DIRECTION_UP: 'Digital/D-Pad Up',
+		DIGITAL_DIRECTION_DOWN: 'Digital/D-Pad Down',
+		DIGITAL_DIRECTION_LEFT: 'Digital/D-Pad Left',
+		DIGITAL_DIRECTION_RIGHT: 'Digital/D-Pad Right',
+		ANALOG_DIRECTION_LS_X_NEG: 'Left Analog Stick X-',
+		ANALOG_DIRECTION_LS_X_POS: 'Left Analog Stick X+',
+		ANALOG_DIRECTION_LS_Y_NEG: 'Left Analog Stick Y-',
+		ANALOG_DIRECTION_LS_Y_POS: 'Left Analog Stick Y+',
+		ANALOG_DIRECTION_RS_X_NEG: 'Right Analog Stick X-',
+		ANALOG_DIRECTION_RS_X_POS: 'Right Analog Stick X+',
+		ANALOG_DIRECTION_RS_Y_NEG: 'Right Analog Stick Y-',
+		ANALOG_DIRECTION_RS_Y_POS: 'Right Analog Stick Y+',
+		ANALOG_DIRECTION_MOD_LOW: 'Analog Stick Modifier Low',
+		ANALOG_DIRECTION_MOD_HIGH: 'Analog Stick Modifier High',
+		BUTTON_PRESS_INPUT_REVERSE: 'Reverse Input',
+		SUSTAIN_FOCUS_MODE: 'Focus Mode Enable',
 	},
 };

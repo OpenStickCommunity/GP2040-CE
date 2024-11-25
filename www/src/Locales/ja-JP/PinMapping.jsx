@@ -5,9 +5,16 @@ export default {
 		'未接続や未実装の端子を割当設定するとコントローラが動作しない状態に陥る可能性があります。無効な設定を初期化したい場合は<2>設定初期化</2>のページで初期化を実行してください。',
 	'pin-viewer': '端子確認',
 	'pin-pressed': 'このボタンの配線先は {{pressedPin}} 番端子です！',
+	'pin-header-label': '端子',
+
+	'profile-label-title': 'プロファイル名',
+	'profile-label-description': '最大１６文字。半角英数とスペースのみ。',
 	'profile-pin-mapping-title': '{{profileLabel}} - 端子割当',
 	'profile-label-default': 'プロファイル {{profileNumber}}',
-	'pin-header-label': '端子',
+	'profile-add-button': '+ プロファイル追加',
+	'profile-disabled': ' - (無効)',
+	'profile-enabled-tooltip':
+		'無効化されたプロファイルはホットキーでのプロファイル変更では利用できません。',
 	'profile-pins-warning':
 		'プロファイルの変更ホットキーに設定しているボタンや方向キーの設定変更は、現在のプロファイル選択状況がわからなくなる原因となるため非推奨です。',
 	'profile-copy-base': 'Baseプロファイルをコピー',
@@ -26,6 +33,10 @@ export default {
 		BUTTON_PRESS_LEFT: '左',
 		BUTTON_PRESS_RIGHT: '右',
 		BUTTON_PRESS_FN: 'ファンクション(FN)',
+		BUTTON_PRESS_DDI_UP: 'DDI 上',
+		BUTTON_PRESS_DDI_DOWN: 'DDI 下',
+		BUTTON_PRESS_DDI_LEFT: 'DDI 左',
+		BUTTON_PRESS_DDI_RIGHT: 'DDI 右',
 		SUSTAIN_DP_MODE_DP: '十字キーモード: 十字キー',
 		SUSTAIN_DP_MODE_LS: '十字キーモード: 左アナログ',
 		SUSTAIN_DP_MODE_RS: '十字キーモード: 右アナログ',
@@ -42,5 +53,6 @@ export default {
 		BUTTON_PRESS_MACRO_4: 'マクロ 4',
 		BUTTON_PRESS_MACRO_5: 'マクロ 5',
 		BUTTON_PRESS_MACRO_6: 'マクロ 6',
+		CUSTOM_BUTTON_COMBO: 'マルチマッピングに割当済み',
 	},
 };

@@ -35,39 +35,54 @@ void Gamepad::setup()
 	// Configure pin mapping
 	GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
 
-	mapDpadUp    = new GamepadButtonMapping(GAMEPAD_MASK_UP);
-	mapDpadDown  = new GamepadButtonMapping(GAMEPAD_MASK_DOWN);
-	mapDpadLeft  = new GamepadButtonMapping(GAMEPAD_MASK_LEFT);
-	mapDpadRight = new GamepadButtonMapping(GAMEPAD_MASK_RIGHT);
-	mapButtonB1  = new GamepadButtonMapping(GAMEPAD_MASK_B1);
-	mapButtonB2  = new GamepadButtonMapping(GAMEPAD_MASK_B2);
-	mapButtonB3  = new GamepadButtonMapping(GAMEPAD_MASK_B3);
-	mapButtonB4  = new GamepadButtonMapping(GAMEPAD_MASK_B4);
-	mapButtonL1  = new GamepadButtonMapping(GAMEPAD_MASK_L1);
-	mapButtonR1  = new GamepadButtonMapping(GAMEPAD_MASK_R1);
-	mapButtonL2  = new GamepadButtonMapping(GAMEPAD_MASK_L2);
-	mapButtonR2  = new GamepadButtonMapping(GAMEPAD_MASK_R2);
-	mapButtonS1  = new GamepadButtonMapping(GAMEPAD_MASK_S1);
-	mapButtonS2  = new GamepadButtonMapping(GAMEPAD_MASK_S2);
-	mapButtonL3  = new GamepadButtonMapping(GAMEPAD_MASK_L3);
-	mapButtonR3  = new GamepadButtonMapping(GAMEPAD_MASK_R3);
-	mapButtonA1  = new GamepadButtonMapping(GAMEPAD_MASK_A1);
-	mapButtonA2  = new GamepadButtonMapping(GAMEPAD_MASK_A2);
-	mapButtonA3  = new GamepadButtonMapping(GAMEPAD_MASK_A3);
-	mapButtonA4  = new GamepadButtonMapping(GAMEPAD_MASK_A4);
-	mapButtonE1  = new GamepadButtonMapping(GAMEPAD_MASK_E1);
-	mapButtonE2  = new GamepadButtonMapping(GAMEPAD_MASK_E2);
-	mapButtonE3  = new GamepadButtonMapping(GAMEPAD_MASK_E3);
-	mapButtonE4  = new GamepadButtonMapping(GAMEPAD_MASK_E4);
-	mapButtonE5  = new GamepadButtonMapping(GAMEPAD_MASK_E5);
-	mapButtonE6  = new GamepadButtonMapping(GAMEPAD_MASK_E6);
-	mapButtonE7  = new GamepadButtonMapping(GAMEPAD_MASK_E7);
-	mapButtonE8  = new GamepadButtonMapping(GAMEPAD_MASK_E8);
-	mapButtonE9  = new GamepadButtonMapping(GAMEPAD_MASK_E9);
-	mapButtonE10 = new GamepadButtonMapping(GAMEPAD_MASK_E10);
-	mapButtonE11 = new GamepadButtonMapping(GAMEPAD_MASK_E11);
-	mapButtonE12 = new GamepadButtonMapping(GAMEPAD_MASK_E12);
-	mapButtonFn  = new GamepadButtonMapping(AUX_MASK_FUNCTION);
+	mapDpadUp       = new GamepadButtonMapping(GAMEPAD_MASK_UP);
+	mapDpadDown     = new GamepadButtonMapping(GAMEPAD_MASK_DOWN);
+	mapDpadLeft     = new GamepadButtonMapping(GAMEPAD_MASK_LEFT);
+	mapDpadRight    = new GamepadButtonMapping(GAMEPAD_MASK_RIGHT);
+	mapButtonB1     = new GamepadButtonMapping(GAMEPAD_MASK_B1);
+	mapButtonB2     = new GamepadButtonMapping(GAMEPAD_MASK_B2);
+	mapButtonB3     = new GamepadButtonMapping(GAMEPAD_MASK_B3);
+	mapButtonB4     = new GamepadButtonMapping(GAMEPAD_MASK_B4);
+	mapButtonL1     = new GamepadButtonMapping(GAMEPAD_MASK_L1);
+	mapButtonR1     = new GamepadButtonMapping(GAMEPAD_MASK_R1);
+	mapButtonL2     = new GamepadButtonMapping(GAMEPAD_MASK_L2);
+	mapButtonR2     = new GamepadButtonMapping(GAMEPAD_MASK_R2);
+	mapButtonS1     = new GamepadButtonMapping(GAMEPAD_MASK_S1);
+	mapButtonS2     = new GamepadButtonMapping(GAMEPAD_MASK_S2);
+	mapButtonL3     = new GamepadButtonMapping(GAMEPAD_MASK_L3);
+	mapButtonR3     = new GamepadButtonMapping(GAMEPAD_MASK_R3);
+	mapButtonA1     = new GamepadButtonMapping(GAMEPAD_MASK_A1);
+	mapButtonA2     = new GamepadButtonMapping(GAMEPAD_MASK_A2);
+	mapButtonA3     = new GamepadButtonMapping(GAMEPAD_MASK_A3);
+	mapButtonA4     = new GamepadButtonMapping(GAMEPAD_MASK_A4);
+	mapButtonE1     = new GamepadButtonMapping(GAMEPAD_MASK_E1);
+	mapButtonE2     = new GamepadButtonMapping(GAMEPAD_MASK_E2);
+	mapButtonE3     = new GamepadButtonMapping(GAMEPAD_MASK_E3);
+	mapButtonE4     = new GamepadButtonMapping(GAMEPAD_MASK_E4);
+	mapButtonE5     = new GamepadButtonMapping(GAMEPAD_MASK_E5);
+	mapButtonE6     = new GamepadButtonMapping(GAMEPAD_MASK_E6);
+	mapButtonE7     = new GamepadButtonMapping(GAMEPAD_MASK_E7);
+	mapButtonE8     = new GamepadButtonMapping(GAMEPAD_MASK_E8);
+	mapButtonE9     = new GamepadButtonMapping(GAMEPAD_MASK_E9);
+	mapButtonE10    = new GamepadButtonMapping(GAMEPAD_MASK_E10);
+	mapButtonE11    = new GamepadButtonMapping(GAMEPAD_MASK_E11);
+	mapButtonE12    = new GamepadButtonMapping(GAMEPAD_MASK_E12);
+	mapButtonFn     = new GamepadButtonMapping(AUX_MASK_FUNCTION);
+	mapButtonDP     = new GamepadButtonMapping(SUSTAIN_DP_MODE_DP);
+	mapButtonLS     = new GamepadButtonMapping(SUSTAIN_DP_MODE_LS);
+	mapButtonRS     = new GamepadButtonMapping(SUSTAIN_DP_MODE_RS);
+	mapDigitalUp    = new GamepadButtonMapping(GAMEPAD_MASK_UP);
+	mapDigitalDown  = new GamepadButtonMapping(GAMEPAD_MASK_DOWN);
+	mapDigitalLeft  = new GamepadButtonMapping(GAMEPAD_MASK_LEFT);
+	mapDigitalRight = new GamepadButtonMapping(GAMEPAD_MASK_RIGHT);
+	mapAnalogLSXNeg = new GamepadButtonMapping(ANALOG_DIRECTION_LS_X_NEG);
+	mapAnalogLSXPos = new GamepadButtonMapping(ANALOG_DIRECTION_LS_X_POS);
+	mapAnalogLSYNeg = new GamepadButtonMapping(ANALOG_DIRECTION_LS_Y_NEG);
+	mapAnalogLSYPos = new GamepadButtonMapping(ANALOG_DIRECTION_LS_Y_POS);
+	mapAnalogRSXNeg = new GamepadButtonMapping(ANALOG_DIRECTION_RS_X_NEG);
+	mapAnalogRSXPos = new GamepadButtonMapping(ANALOG_DIRECTION_RS_X_POS);
+	mapAnalogRSYNeg = new GamepadButtonMapping(ANALOG_DIRECTION_RS_Y_NEG);
+	mapAnalogRSYPos = new GamepadButtonMapping(ANALOG_DIRECTION_RS_Y_POS);
 
 	const auto assignCustomMappingToMaps = [&](GpioMappingInfo mapInfo, Pin_t pin) -> void {
 		if (mapDpadUp->buttonMask & mapInfo.customDpadMask)	mapDpadUp->pinMask |= 1 << pin;
@@ -88,6 +103,10 @@ void Gamepad::setup()
 		if (mapButtonR3->buttonMask & mapInfo.customButtonMask)	mapButtonR3->pinMask |= 1 << pin;
 		if (mapButtonA1->buttonMask & mapInfo.customButtonMask)	mapButtonA1->pinMask |= 1 << pin;
 		if (mapButtonA2->buttonMask & mapInfo.customButtonMask)	mapButtonA2->pinMask |= 1 << pin;
+		if (mapDigitalUp->buttonMask & mapInfo.customDpadMask)	mapDigitalUp->pinMask |= 1 << pin;
+		if (mapDigitalDown->buttonMask & mapInfo.customDpadMask)	mapDigitalDown->pinMask |= 1 << pin;
+		if (mapDigitalLeft->buttonMask & mapInfo.customDpadMask)	mapDigitalLeft->pinMask |= 1 << pin;
+		if (mapDigitalRight->buttonMask & mapInfo.customDpadMask)	mapDigitalRight->pinMask |= 1 << pin;
 	};
 
 	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
@@ -126,7 +145,22 @@ void Gamepad::setup()
 			case GpioAction::BUTTON_PRESS_E11:	mapButtonE11->pinMask |= 1 << pin; break;
 			case GpioAction::BUTTON_PRESS_E12:	mapButtonE12->pinMask |= 1 << pin; break;
 			case GpioAction::BUTTON_PRESS_FN:	mapButtonFn->pinMask |= 1 << pin; break;
+			case GpioAction::SUSTAIN_DP_MODE_DP:	mapButtonDP->pinMask |= 1 << pin; break;
+			case GpioAction::SUSTAIN_DP_MODE_LS:	mapButtonLS->pinMask |= 1 << pin; break;
+			case GpioAction::SUSTAIN_DP_MODE_RS:	mapButtonRS->pinMask |= 1 << pin; break;
 			case GpioAction::CUSTOM_BUTTON_COMBO:	assignCustomMappingToMaps(pinMappings[pin], pin); break;
+			case GpioAction::DIGITAL_DIRECTION_UP:	mapDigitalUp->pinMask |= 1 << pin; break;
+			case GpioAction::DIGITAL_DIRECTION_DOWN:	mapDigitalDown->pinMask |= 1 << pin; break;
+			case GpioAction::DIGITAL_DIRECTION_LEFT:	mapDigitalLeft->pinMask |= 1 << pin; break;
+			case GpioAction::DIGITAL_DIRECTION_RIGHT:	mapDigitalRight->pinMask |= 1 << pin; break;
+			case GpioAction::ANALOG_DIRECTION_LS_X_NEG:	mapAnalogLSXNeg->pinMask |= 1 << pin; break;
+			case GpioAction::ANALOG_DIRECTION_LS_X_POS:	mapAnalogLSXPos->pinMask |= 1 << pin; break;
+			case GpioAction::ANALOG_DIRECTION_LS_Y_NEG:	mapAnalogLSYNeg->pinMask |= 1 << pin; break;
+			case GpioAction::ANALOG_DIRECTION_LS_Y_POS:	mapAnalogLSYPos->pinMask |= 1 << pin; break;
+			case GpioAction::ANALOG_DIRECTION_RS_X_NEG:	mapAnalogRSXNeg->pinMask |= 1 << pin; break;
+			case GpioAction::ANALOG_DIRECTION_RS_X_POS:	mapAnalogRSXPos->pinMask |= 1 << pin; break;
+			case GpioAction::ANALOG_DIRECTION_RS_Y_NEG:	mapAnalogRSYNeg->pinMask |= 1 << pin; break;
+			case GpioAction::ANALOG_DIRECTION_RS_Y_POS:	mapAnalogRSYPos->pinMask |= 1 << pin; break;
 			default:				break;
 		}
 	}
@@ -171,6 +205,21 @@ void Gamepad::reinit()
 	delete mapButtonE11;
 	delete mapButtonE12;
 	delete mapButtonFn;
+	delete mapButtonDP;
+	delete mapButtonLS;
+	delete mapButtonRS;
+	delete mapDigitalUp;
+	delete mapDigitalDown;
+	delete mapDigitalLeft;
+	delete mapDigitalRight;
+	delete mapAnalogLSXNeg;
+	delete mapAnalogLSXPos;
+	delete mapAnalogLSYNeg;
+	delete mapAnalogLSYPos;
+	delete mapAnalogRSXNeg;
+	delete mapAnalogRSXPos;
+	delete mapAnalogRSYNeg;
+	delete mapAnalogRSYPos;
 
 	// reinitialize pin mappings
 	this->setup();
@@ -212,9 +261,13 @@ void Gamepad::process()
 		state.dpad = filterToFourWayMode(state.dpad);
 	}
 
+	uint8_t dpadCheck = state.dpad;
+	uint8_t dpadOnlyMask = 0;
+	uint8_t dpadModeMask = 0;
 	state.dpad = runSOCDCleaner(resolveSOCDMode(options), state.dpad);
+	dpadOnlyMask = ((dpadCheck & 0xF0) >> 4);
 
-	switch (options.dpadMode)
+	switch (activeDpadMode)
 	{
 		case DpadMode::DPAD_MODE_LEFT_ANALOG:
 			if (!hasRightAnalogStick) {
@@ -223,9 +276,10 @@ void Gamepad::process()
 			}
 			state.lx = dpadToAnalogX(state.dpad);
 			state.ly = dpadToAnalogY(state.dpad);
-			state.dpad = 0;
+			state.dpad &= ~dpadOnlyMask;
+			state.dpad = dpadOnlyMask;
 			break;
-
+	
 		case DpadMode::DPAD_MODE_RIGHT_ANALOG:
 			if (!hasLeftAnalogStick) {
 				state.lx = joystickMid;
@@ -233,18 +287,19 @@ void Gamepad::process()
 			}
 			state.rx = dpadToAnalogX(state.dpad);
 			state.ry = dpadToAnalogY(state.dpad);
-			state.dpad = 0;
+			state.dpad &= ~dpadOnlyMask;
+			state.dpad = dpadOnlyMask;
 			break;
-
+	
 		default:
-			if (!hasLeftAnalogStick) {
-				state.lx = joystickMid;
-				state.ly = joystickMid;
-			}
-			if (!hasRightAnalogStick) {
-				state.rx = joystickMid;
-				state.ry = joystickMid;
-			}
+			//if (!hasLeftAnalogStick) {
+			//	state.lx = joystickMid;
+			//	state.ly = joystickMid;
+			//}
+			//if (!hasRightAnalogStick) {
+			//	state.rx = joystickMid;
+			//	state.ry = joystickMid;
+			//}
 			break;
 	}
 }
@@ -263,10 +318,14 @@ void Gamepad::read()
 		| (values & mapButtonFn->pinMask)   ? mapButtonFn->buttonMask : 0;
 
 	state.dpad = 0
-		| ((values & mapDpadUp->pinMask)    ? mapDpadUp->buttonMask : 0)
-		| ((values & mapDpadDown->pinMask)  ? mapDpadDown->buttonMask : 0)
-		| ((values & mapDpadLeft->pinMask)  ? mapDpadLeft->buttonMask  : 0)
-		| ((values & mapDpadRight->pinMask) ? mapDpadRight->buttonMask : 0)
+		| ((values & mapDpadUp->pinMask)       ? mapDpadUp->buttonMask                                              : 0)
+		| ((values & mapDpadDown->pinMask)     ? mapDpadDown->buttonMask                                            : 0)
+		| ((values & mapDpadLeft->pinMask)     ? mapDpadLeft->buttonMask                                            : 0)
+		| ((values & mapDpadRight->pinMask)    ? mapDpadRight->buttonMask                                           : 0)
+		| ((values & mapDigitalUp->pinMask)    ? (mapDigitalUp->buttonMask) | (mapDigitalUp->buttonMask << 4)       : 0)
+		| ((values & mapDigitalDown->pinMask)  ? (mapDigitalDown->buttonMask) | (mapDigitalDown->buttonMask << 4)   : 0)
+		| ((values & mapDigitalLeft->pinMask)  ? (mapDigitalLeft->buttonMask) | (mapDigitalLeft->buttonMask << 4)   : 0)
+		| ((values & mapDigitalRight->pinMask) ? (mapDigitalRight->buttonMask) | (mapDigitalRight->buttonMask << 4) : 0)
 	;
 
 	state.buttons = 0
@@ -300,17 +359,44 @@ void Gamepad::read()
 		| ((values & mapButtonE12->pinMask) ? mapButtonE12->buttonMask : 0)
 	;
 
-	state.lx = joystickMid;
-	state.ly = joystickMid;
-	state.rx = joystickMid;
-	state.ry = joystickMid;
+	// set the effective dpad mode based on settings + overrides
+	if (values & mapButtonDP->pinMask)	activeDpadMode = DpadMode::DPAD_MODE_DIGITAL;
+	else if (values & mapButtonLS->pinMask)	activeDpadMode = DpadMode::DPAD_MODE_LEFT_ANALOG;
+	else if (values & mapButtonRS->pinMask)	activeDpadMode = DpadMode::DPAD_MODE_RIGHT_ANALOG;
+	else					activeDpadMode = options.dpadMode;
+
+	if (values & mapAnalogLSXNeg->pinMask) {
+		state.lx = GAMEPAD_JOYSTICK_MIN;
+	} else if (values & mapAnalogLSXPos->pinMask) {
+		state.lx = GAMEPAD_JOYSTICK_MAX;
+	} else {
+		state.lx = joystickMid;
+	}
+	if (values & mapAnalogLSYNeg->pinMask) {
+		state.ly = GAMEPAD_JOYSTICK_MIN;
+	} else if (values & mapAnalogLSYPos->pinMask) {
+		state.ly = GAMEPAD_JOYSTICK_MAX;
+	} else {
+		state.ly = joystickMid;
+	}
+
+	if (values & mapAnalogRSXNeg->pinMask) {
+		state.rx = GAMEPAD_JOYSTICK_MIN;
+	} else if (values & mapAnalogRSXPos->pinMask) {
+		state.rx = GAMEPAD_JOYSTICK_MAX;
+	} else {
+		state.rx = joystickMid;
+	}
+	if (values & mapAnalogRSYNeg->pinMask) {
+		state.ry = GAMEPAD_JOYSTICK_MIN;
+	} else if (values & mapAnalogRSYPos->pinMask) {
+		state.ry = GAMEPAD_JOYSTICK_MAX;
+	} else {
+		state.ry = joystickMid;
+	}
+
 	state.lt = 0;
 	state.rt = 0;
-}
-
-void Gamepad::save()
-{
-	Storage::getInstance().save();
 }
 
 void Gamepad::hotkey()
@@ -485,6 +571,9 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 		case HOTKEY_REBOOT_DEFAULT:
 			System::reboot(System::BootMode::DEFAULT);
 			break;
+		case HOTKEY_SAVE_CONFIG:
+			Storage::getInstance().save(true);
+			break;
 		case HOTKEY_CAPTURE_BUTTON:
 			state.buttons |= GAMEPAD_MASK_A2;
 			break;
@@ -518,30 +607,34 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 			break;
 		case HOTKEY_LOAD_PROFILE_1:
 			if (action != lastAction) {
-				Storage::getInstance().setProfile(1);
-				userRequestedReinit = true;
-				reqSave = true;
+				if (Storage::getInstance().setProfile(1)) {
+					userRequestedReinit = true;
+					reqSave = true;
+				}
 			}
 			break;
 		case HOTKEY_LOAD_PROFILE_2:
 			if (action != lastAction) {
-				Storage::getInstance().setProfile(2);
-				userRequestedReinit = true;
-				reqSave = true;
+				if (Storage::getInstance().setProfile(2)) {
+					userRequestedReinit = true;
+					reqSave = true;
+				}
 			}
 			break;
 		case HOTKEY_LOAD_PROFILE_3:
 			if (action != lastAction) {
-				Storage::getInstance().setProfile(3);
-				userRequestedReinit = true;
-				reqSave = true;
+				if (Storage::getInstance().setProfile(3)) {
+					userRequestedReinit = true;
+					reqSave = true;
+				}
 			}
 			break;
 		case HOTKEY_LOAD_PROFILE_4:
 			if (action != lastAction) {
-				Storage::getInstance().setProfile(4);
-				userRequestedReinit = true;
-				reqSave = true;
+				if (Storage::getInstance().setProfile(4)) {
+					userRequestedReinit = true;
+					reqSave = true;
+				}
 			}
 			break;
 		case HOTKEY_NEXT_PROFILE:
@@ -564,6 +657,6 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 
 	// only save if requested
 	if (reqSave) {
-		save();
+		Storage::getInstance().save();
 	}
 }

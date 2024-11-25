@@ -20,7 +20,6 @@
 #include "addons/tilt.h"
 #include "addons/keyboard_host.h"
 #include "addons/i2canalog1219.h"
-#include "addons/jslider.h"
 #include "addons/playernum.h"
 #include "addons/reverse.h"
 #include "addons/turbo.h"
@@ -31,6 +30,8 @@
 #include "addons/snes_input.h"
 #include "addons/rotaryencoder.h"
 #include "addons/i2c_gpio_pcf8575.h"
+#include "addons/gamepad_usb_host.h"
+
 
 // Pico includes
 #include "pico/bootrom.h"
@@ -91,13 +92,13 @@ void GP2040::setup() {
 
 	// Setup Add-ons
 	addons.LoadUSBAddon(new KeyboardHostAddon(), CORE0_INPUT);
+	addons.LoadUSBAddon(new GamepadUSBHostAddon(), CORE0_INPUT);
 	addons.LoadAddon(new AnalogInput(), CORE0_INPUT);
 	addons.LoadAddon(new BootselButtonAddon(), CORE0_INPUT);
 	addons.LoadAddon(new DualDirectionalInput(), CORE0_INPUT);
 	addons.LoadAddon(new FocusModeAddon(), CORE0_INPUT);
 	addons.LoadAddon(new I2CAnalog1219Input(), CORE0_INPUT);
 	addons.LoadAddon(new SPIAnalog1256Input(), CORE0_INPUT);
-	addons.LoadAddon(new JSliderInput(), CORE0_INPUT);
 	addons.LoadAddon(new WiiExtensionInput(), CORE0_INPUT);
 	addons.LoadAddon(new SNESpadInput(), CORE0_INPUT);
 	addons.LoadAddon(new PlayerNumAddon(), CORE0_USBREPORT);
@@ -179,7 +180,9 @@ void GP2040::setup() {
 	// Save the changed input mode
 	if (inputMode != gamepad->getOptions().inputMode) {	
 		gamepad->setInputMode(inputMode);
-		gamepad->save();
+		// save to match user expectations on choosing mode at boot, and this is
+		// before USB host will be used so we can force it to ignore the check
+		Storage::getInstance().save(true);
 	}
 }
 
@@ -260,6 +263,10 @@ void GP2040::run() {
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
 	bool configMode = Storage::getInstance().GetConfigMode();
+    
+    // Start the TinyUSB Device functionality
+    tud_init(TUD_OPT_RHPORT);
+    
 	while (1) { // LOOP
 		this->getReinitGamepad(gamepad);
 

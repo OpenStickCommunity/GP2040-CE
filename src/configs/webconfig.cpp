@@ -469,7 +469,7 @@ std::string setDisplayOptions(DisplayOptions& displayOptions)
 std::string setDisplayOptions()
 {
     std::string response = setDisplayOptions(Storage::getInstance().getDisplayOptions());
-    Storage::getInstance().save();
+    Storage::getInstance().save(true);
     return response;
 }
 
@@ -533,7 +533,7 @@ std::string setSplashImage()
     memcpy(displayOptions.splashImage.bytes, decoded.data(), length);
     displayOptions.splashImage.size = length;
 
-    Storage::getInstance().save();
+    Storage::getInstance().save(true);
 
     return serialize_json(doc);
 }
@@ -543,6 +543,7 @@ std::string setProfileOptions()
     DynamicJsonDocument doc = get_post_data();
 
     ProfileOptions& profileOptions = Storage::getInstance().getProfileOptions();
+    GpioMappings& coreMappings = Storage::getInstance().getGpioMappings();
     JsonObject options = doc.as<JsonObject>();
     JsonArray alts = options["alternativePinMappings"];
     int altsIndex = 0;
@@ -551,6 +552,7 @@ std::string setProfileOptions()
         for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
             snprintf(pinName, 6, "pin%0*d", 2, pin);
             // setting a pin shouldn't change a new existing addon/reserved pin
+            // but if the profile definition is new, we should still capture the addon/reserved state
             if (profileOptions.gpioMappingsSets[altsIndex].pins[pin].action != GpioAction::ASSIGNED_TO_ADDON &&
                     profileOptions.gpioMappingsSets[altsIndex].pins[pin].action != GpioAction::RESERVED &&
                     (GpioAction)alt[pinName]["action"] != GpioAction::RESERVED &&
@@ -558,17 +560,25 @@ std::string setProfileOptions()
                 profileOptions.gpioMappingsSets[altsIndex].pins[pin].action = (GpioAction)alt[pinName]["action"];
                 profileOptions.gpioMappingsSets[altsIndex].pins[pin].customButtonMask = (uint32_t)alt[pinName]["customButtonMask"];
                 profileOptions.gpioMappingsSets[altsIndex].pins[pin].customDpadMask = (uint32_t)alt[pinName]["customDpadMask"];
+            } else if ((coreMappings.pins[pin].action == GpioAction::RESERVED &&
+                        (GpioAction)alt[pinName]["action"] == GpioAction::RESERVED) ||
+                    (coreMappings.pins[pin].action == GpioAction::ASSIGNED_TO_ADDON &&
+                        (GpioAction)alt[pinName]["action"] == GpioAction::ASSIGNED_TO_ADDON)) {
+                profileOptions.gpioMappingsSets[altsIndex].pins[pin].action = (GpioAction)alt[pinName]["action"];
             }
         }
+        profileOptions.gpioMappingsSets[altsIndex].pins_count = NUM_BANK0_GPIOS;
+
         size_t profileLabelSize = sizeof(profileOptions.gpioMappingsSets[altsIndex].profileLabel);
         strncpy(profileOptions.gpioMappingsSets[altsIndex].profileLabel, alt["profileLabel"], profileLabelSize - 1);
         profileOptions.gpioMappingsSets[altsIndex].profileLabel[profileLabelSize - 1] = '\0';
+        profileOptions.gpioMappingsSets[altsIndex].enabled = alt["enabled"];
 
         profileOptions.gpioMappingsSets_count = ++altsIndex;
         if (altsIndex > 2) break;
     }
 
-    Storage::getInstance().save();
+    Storage::getInstance().save(true);
     return serialize_json(doc);
 }
 
@@ -584,6 +594,12 @@ std::string getProfileOptions()
     };
 
     ProfileOptions& profileOptions = Storage::getInstance().getProfileOptions();
+
+    // return an empty list if no profiles are currently set, since we no longer populate by default
+    if (profileOptions.gpioMappingsSets_count == 0) {
+        doc.createNestedArray("alternativePinMappings");
+    }
+
     for (int i = 0; i < profileOptions.gpioMappingsSets_count; i++) {
         // this looks duplicative, but something in arduinojson treats the doc
         // field string by reference so you can't be "clever" and do an snprintf
@@ -619,6 +635,7 @@ std::string getProfileOptions()
         writePinDoc(i, "pin28", profileOptions.gpioMappingsSets[i].pins[28]);
         writePinDoc(i, "pin29", profileOptions.gpioMappingsSets[i].pins[29]);
         writeDoc(doc, "alternativePinMappings", i, "profileLabel", profileOptions.gpioMappingsSets[i].profileLabel);
+        doc["alternativePinMappings"][i]["enabled"] = profileOptions.gpioMappingsSets[i].enabled;
     }
 
     return serialize_json(doc);
@@ -671,7 +688,7 @@ std::string setGamepadOptions()
     ForcedSetupOptions& forcedSetupOptions = Storage::getInstance().getForcedSetupOptions();
     readDoc(forcedSetupOptions.mode, doc, "forcedSetupMode");
 
-    Storage::getInstance().save();
+    Storage::getInstance().save(true);
 
     return serialize_json(doc);
 }
@@ -783,7 +800,7 @@ std::string setLedOptions()
     readDoc(ledOptions.pledIndex4, doc, "pledIndex4");
     readDoc(ledOptions.pledColor, doc, "pledColor");
 
-    Storage::getInstance().save();
+    Storage::getInstance().save(true);
     return serialize_json(doc);
 }
 
@@ -988,7 +1005,7 @@ std::string setCustomTheme()
     options.buttonPressColorCooldownTimeInMs = pressCooldown;
 
     AnimationStation::SetOptions(options);
-    AnimationStore.save();
+    Storage::getInstance().save(true);
 
     return serialize_json(doc);
 }
@@ -1062,8 +1079,9 @@ std::string setPinMappings()
     size_t profileLabelSize = sizeof(gpioMappings.profileLabel);
     strncpy(gpioMappings.profileLabel, doc["profileLabel"], profileLabelSize - 1);
     gpioMappings.profileLabel[profileLabelSize - 1] = '\0';
+    gpioMappings.enabled = doc["enabled"];
 
-    Storage::getInstance().save();
+    Storage::getInstance().save(true);
 
     return serialize_json(doc);
 }
@@ -1113,6 +1131,7 @@ std::string getPinMappings()
     writePinDoc("pin29", gpioMappings.pins[29]);
 
     writeDoc(doc, "profileLabel", gpioMappings.profileLabel);
+    doc["enabled"] = gpioMappings.enabled;
 
     return serialize_json(doc);
 }
@@ -1156,7 +1175,7 @@ std::string setKeyMappings()
     readDoc(keyboardMapping.keyButtonE11, doc, "E11");
     readDoc(keyboardMapping.keyButtonE12, doc, "E12");
 
-    Storage::getInstance().save();
+    Storage::getInstance().save(true);
 
     return serialize_json(doc);
 }
@@ -1316,7 +1335,7 @@ std::string setPeripheralOptions()
         profiles.gpioMappingsSets[2].pins[oldPinDplus+adjacent].action = GpioAction::NONE;
     }
 
-    Storage::getInstance().save();
+    Storage::getInstance().save(true);
 
     return serialize_json(doc);
 }
@@ -1382,7 +1401,7 @@ std::string setExpansionPins()
     }
     Storage::getInstance().getAddonOptions().pcf8575Options.pins_count = 16;
 
-    Storage::getInstance().save();
+    Storage::getInstance().save(true);
 
     return serialize_json(doc);
 }
@@ -1416,7 +1435,7 @@ std::string setReactiveLEDs()
     }
     Storage::getInstance().getAddonOptions().reactiveLEDOptions.leds_count = 10;
 
-    Storage::getInstance().save();
+    Storage::getInstance().save(true);
 
     return serialize_json(doc);
 }
@@ -1462,29 +1481,18 @@ std::string setAddonOptions()
     docToValue(dualDirectionalOptions.enabled, doc, "DualDirectionalInputEnabled");
 
     TiltOptions& tiltOptions = Storage::getInstance().getAddonOptions().tiltOptions;
-    docToPin(tiltOptions.tilt1Pin, doc, "tilt1Pin");
     docToValue(tiltOptions.factorTilt1LeftX, doc, "factorTilt1LeftX");
     docToValue(tiltOptions.factorTilt1LeftY, doc, "factorTilt1LeftY");
     docToValue(tiltOptions.factorTilt1RightX, doc, "factorTilt1RightX");
     docToValue(tiltOptions.factorTilt1RightY, doc, "factorTilt1RightY");
-    docToPin(tiltOptions.tilt2Pin, doc, "tilt2Pin");
     docToValue(tiltOptions.factorTilt2LeftX, doc, "factorTilt2LeftX");
     docToValue(tiltOptions.factorTilt2LeftY, doc, "factorTilt2LeftY");
     docToValue(tiltOptions.factorTilt2RightX, doc, "factorTilt2RightX");
     docToValue(tiltOptions.factorTilt2RightY, doc, "factorTilt2RightY");
-    docToPin(tiltOptions.tiltLeftAnalogUpPin, doc, "tiltLeftAnalogUpPin");
-    docToPin(tiltOptions.tiltLeftAnalogDownPin, doc, "tiltLeftAnalogDownPin");
-    docToPin(tiltOptions.tiltLeftAnalogLeftPin, doc, "tiltLeftAnalogLeftPin");
-    docToPin(tiltOptions.tiltLeftAnalogRightPin, doc, "tiltLeftAnalogRightPin");
-    docToPin(tiltOptions.tiltRightAnalogUpPin, doc, "tiltRightAnalogUpPin");
-    docToPin(tiltOptions.tiltRightAnalogDownPin, doc, "tiltRightAnalogDownPin");
-    docToPin(tiltOptions.tiltRightAnalogLeftPin, doc, "tiltRightAnalogLeftPin");
-    docToPin(tiltOptions.tiltRightAnalogRightPin, doc, "tiltRightAnalogRightPin");
     docToValue(tiltOptions.tiltSOCDMode, doc, "tiltSOCDMode");
     docToValue(tiltOptions.enabled, doc, "TiltInputEnabled");
 
     FocusModeOptions& focusModeOptions = Storage::getInstance().getAddonOptions().focusModeOptions;
-    docToPin(focusModeOptions.pin, doc, "focusModePin");
     docToValue(focusModeOptions.buttonLockMask, doc, "focusModeButtonLockMask");
     docToValue(focusModeOptions.buttonLockEnabled, doc, "focusModeButtonLockEnabled");
     docToValue(focusModeOptions.macroLockEnabled, doc, "focusModeMacroLockEnabled");
@@ -1493,17 +1501,12 @@ std::string setAddonOptions()
     AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
     docToValue(analogADS1219Options.enabled, doc, "I2CAnalog1219InputEnabled");
 
-    SliderOptions& sliderOptions = Storage::getInstance().getAddonOptions().sliderOptions;
-    docToValue(sliderOptions.modeDefault, doc, "sliderModeZero");
-    docToValue(sliderOptions.enabled, doc, "JSliderInputEnabled");
-
     PlayerNumberOptions& playerNumberOptions = Storage::getInstance().getAddonOptions().playerNumberOptions;
     docToValue(playerNumberOptions.number, doc, "playerNumber");
     docToValue(playerNumberOptions.enabled, doc, "PlayerNumAddonEnabled");
 
     ReverseOptions& reverseOptions = Storage::getInstance().getAddonOptions().reverseOptions;
     docToValue(reverseOptions.enabled, doc, "ReverseInputEnabled");
-    docToPin(reverseOptions.buttonPin, doc, "reversePin");
     docToPin(reverseOptions.ledPin, doc, "reversePinLED");
     docToValue(reverseOptions.actionUp, doc, "reverseActionUp");
     docToValue(reverseOptions.actionDown, doc, "reverseActionDown");
@@ -1579,6 +1582,9 @@ std::string setAddonOptions()
     docToValue(keyboardHostOptions.mouseMiddle, doc, "keyboardHostMouseMiddle");
     docToValue(keyboardHostOptions.mouseRight, doc, "keyboardHostMouseRight");
 
+    GamepadUSBHostOptions& gamepadUSBHostOptions = Storage::getInstance().getAddonOptions().gamepadUSBHostOptions;
+    docToValue(gamepadUSBHostOptions.enabled, doc, "GamepadUSBHostAddonEnabled");
+
     RotaryOptions& rotaryOptions = Storage::getInstance().getAddonOptions().rotaryOptions;
     docToValue(rotaryOptions.enabled, doc, "RotaryAddonEnabled");
     docToValue(rotaryOptions.encoderOne.enabled, doc, "encoderOneEnabled");
@@ -1613,7 +1619,7 @@ std::string setAddonOptions()
     docToValue(drv8833RumbleOptions.dutyMin, doc, "drv8833RumbleDutyMin");
     docToValue(drv8833RumbleOptions.dutyMax, doc, "drv8833RumbleDutyMax");
 
-    Storage::getInstance().save();
+    Storage::getInstance().save(true);
 
     return serialize_json(doc);
 }
@@ -1686,7 +1692,7 @@ std::string setPS4Options()
     if (ps4Options.rsaQP.size != 0) ps4Options.rsaQP.size = 0;
     if (ps4Options.rsaRN.size != 0) ps4Options.rsaRN.size = 0;
 
-    Storage::getInstance().save();
+    Storage::getInstance().save(true);
 
     return "{\"success\":true}";
 }
@@ -1769,7 +1775,7 @@ std::string setWiiControls()
     readDoc(wiiOptions.controllers.turntable.effects.axisType, doc, "turntable.analogEffects.axisType");
     readDoc(wiiOptions.controllers.turntable.fader.axisType, doc, "turntable.analogFader.axisType");
 
-    Storage::getInstance().save();
+    Storage::getInstance().save(true);
 
     return "{\"success\":true}";
 }
@@ -1894,40 +1900,25 @@ std::string getAddonOptions()
     writeDoc(doc, "DualDirectionalInputEnabled", dualDirectionalOptions.enabled);
 
     const TiltOptions& tiltOptions = Storage::getInstance().getAddonOptions().tiltOptions;
-    writeDoc(doc, "tilt1Pin", cleanPin(tiltOptions.tilt1Pin));
     writeDoc(doc, "factorTilt1LeftX", tiltOptions.factorTilt1LeftX);
     writeDoc(doc, "factorTilt1LeftY", tiltOptions.factorTilt1LeftY);
     writeDoc(doc, "factorTilt1RightX", tiltOptions.factorTilt1RightX);
     writeDoc(doc, "factorTilt1RightY", tiltOptions.factorTilt1RightY);
-    writeDoc(doc, "tilt2Pin", cleanPin(tiltOptions.tilt2Pin));
     writeDoc(doc, "factorTilt2LeftX", tiltOptions.factorTilt2LeftX);
     writeDoc(doc, "factorTilt2LeftY", tiltOptions.factorTilt2LeftY);
     writeDoc(doc, "factorTilt2RightX", tiltOptions.factorTilt2RightX);
     writeDoc(doc, "factorTilt2RightY", tiltOptions.factorTilt2RightY);
-    writeDoc(doc, "tiltLeftAnalogUpPin", cleanPin(tiltOptions.tiltLeftAnalogUpPin));
-    writeDoc(doc, "tiltLeftAnalogDownPin", cleanPin(tiltOptions.tiltLeftAnalogDownPin));
-    writeDoc(doc, "tiltLeftAnalogLeftPin", cleanPin(tiltOptions.tiltLeftAnalogLeftPin));
-    writeDoc(doc, "tiltLeftAnalogRightPin", cleanPin(tiltOptions.tiltLeftAnalogRightPin));
-    writeDoc(doc, "tiltRightAnalogUpPin", cleanPin(tiltOptions.tiltRightAnalogUpPin));
-    writeDoc(doc, "tiltRightAnalogDownPin", cleanPin(tiltOptions.tiltRightAnalogDownPin));
-    writeDoc(doc, "tiltRightAnalogLeftPin", cleanPin(tiltOptions.tiltRightAnalogLeftPin));
-    writeDoc(doc, "tiltRightAnalogRightPin", cleanPin(tiltOptions.tiltRightAnalogRightPin));
     writeDoc(doc, "tiltSOCDMode", tiltOptions.tiltSOCDMode);
     writeDoc(doc, "TiltInputEnabled", tiltOptions.enabled);
 
     const AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
     writeDoc(doc, "I2CAnalog1219InputEnabled", analogADS1219Options.enabled);
 
-    const SliderOptions& sliderOptions = Storage::getInstance().getAddonOptions().sliderOptions;
-    writeDoc(doc, "sliderModeZero", sliderOptions.modeDefault);
-    writeDoc(doc, "JSliderInputEnabled", sliderOptions.enabled);
-
     const PlayerNumberOptions& playerNumberOptions = Storage::getInstance().getAddonOptions().playerNumberOptions;
     writeDoc(doc, "playerNumber", playerNumberOptions.number);
     writeDoc(doc, "PlayerNumAddonEnabled", playerNumberOptions.enabled);
 
     const ReverseOptions& reverseOptions = Storage::getInstance().getAddonOptions().reverseOptions;
-    writeDoc(doc, "reversePin", cleanPin(reverseOptions.buttonPin));
     writeDoc(doc, "reversePinLED", cleanPin(reverseOptions.ledPin));
     writeDoc(doc, "reverseActionUp", reverseOptions.actionUp);
     writeDoc(doc, "reverseActionDown", reverseOptions.actionDown);
@@ -2004,6 +1995,9 @@ std::string getAddonOptions()
     writeDoc(doc, "keyboardHostMouseMiddle", keyboardHostOptions.mouseMiddle);
     writeDoc(doc, "keyboardHostMouseRight", keyboardHostOptions.mouseRight);
 
+    const GamepadUSBHostOptions& gamepadUSBHostOptions = Storage::getInstance().getAddonOptions().gamepadUSBHostOptions;
+    writeDoc(doc, "GamepadUSBHostAddonEnabled", gamepadUSBHostOptions.enabled);
+
     AnalogADS1256Options& ads1256Options = Storage::getInstance().getAddonOptions().analogADS1256Options;
     writeDoc(doc, "Analog1256Enabled", ads1256Options.enabled);
     writeDoc(doc, "analog1256Block", ads1256Options.spiBlock);
@@ -2013,7 +2007,6 @@ std::string getAddonOptions()
     writeDoc(doc, "analog1256EnableTriggers", ads1256Options.enableTriggers);
 
     const FocusModeOptions& focusModeOptions = Storage::getInstance().getAddonOptions().focusModeOptions;
-    writeDoc(doc, "focusModePin", cleanPin(focusModeOptions.pin));
     writeDoc(doc, "focusModeButtonLockMask", focusModeOptions.buttonLockMask);
     writeDoc(doc, "focusModeButtonLockEnabled", focusModeOptions.buttonLockEnabled);
     writeDoc(doc, "focusModeMacroLockEnabled", focusModeOptions.macroLockEnabled);
@@ -2095,7 +2088,7 @@ std::string setMacroAddonOptions()
 
     macroOptions.macroList_count = MAX_MACRO_LIMIT;
 
-    Storage::getInstance().save();
+    Storage::getInstance().save(true);
     return serialize_json(doc);
 }
 
@@ -2243,7 +2236,7 @@ DataAndStatusCode setConfig()
     {
         Storage::getInstance().getConfig() = *config.get();
         config.reset();
-        if (Storage::getInstance().save())
+        if (Storage::getInstance().save(true))
         {
             return DataAndStatusCode(getConfig(), HttpStatusCode::_200);
         }

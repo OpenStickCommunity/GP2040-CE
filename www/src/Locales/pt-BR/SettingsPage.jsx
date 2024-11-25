@@ -30,7 +30,7 @@ export default {
 		'first-win': 'Primeira Vitória',
 		off: 'Desativado',
 	},
-	'profile-number-label': 'Número de Perfil',
+	'profile-label': 'Perfil',
 	'hotkey-settings-label': 'Configurações de Teclas de Atalho',
 	'hotkey-settings-sub-header':
 		'O controle deslizante <strong>Fn</strong> fornece um botão de função mapeável na página de <link_pinmap>Mapeamento de Pinos</link_pinmap>. Ao selecionar a opção de controle deslizante <strong>Fn</strong>, o botão de função deve ser mantido junto com as configurações de teclas de atalho selecionadas.<br />Além disso, selecione <strong>Nenhum</strong> no menu suspenso para desatribuir qualquer botão.',

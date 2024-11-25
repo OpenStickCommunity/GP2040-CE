@@ -193,6 +193,7 @@ message GpioMappings
 {
     repeated GpioMappingInfo pins = 1 [(nanopb).max_count = 30];
     optional string profileLabel = 2 [(nanopb).max_length = 16];
+    optional bool enabled = 3 [default = false];
 }
 
 
@@ -406,7 +407,7 @@ message SliderOptions
     optional int32 deprecatedPinSliderTwo = 3 [deprecated = true];
     optional DpadMode deprecatedModeOne = 4 [deprecated = true];
     optional DpadMode deprecatedModeTwo = 5 [deprecated = true];
-    optional DpadMode modeDefault = 6;
+    optional DpadMode deprecatedModeDefault = 6 [deprecated = true];
 }
 
 message SOCDSliderOptions
@@ -425,7 +426,7 @@ message ReverseOptions
 {
     optional bool enabled = 1;
 
-    optional int32 buttonPin = 2;
+    optional int32 buttonPin = 2 [deprecated = true];
     optional int32 ledPin = 3;
 
     optional uint32 actionUp = 4;
@@ -474,17 +475,17 @@ message TiltOptions
 {
     optional bool enabled = 1;
 
-    optional int32 tilt1Pin = 2;
-    optional int32 tilt2Pin = 3;
-    optional int32 deprecatedTiltFunctionPin = 4 [deprecated = true];
-    optional int32 tiltLeftAnalogUpPin = 5;
-    optional int32 tiltLeftAnalogDownPin = 6;
-    optional int32 tiltLeftAnalogLeftPin = 7;
-    optional int32 tiltLeftAnalogRightPin = 8;
-    optional int32 tiltRightAnalogUpPin = 9;
-    optional int32 tiltRightAnalogDownPin = 10;
-    optional int32 tiltRightAnalogLeftPin = 11;
-    optional int32 tiltRightAnalogRightPin = 12;
+    optional int32 tilt1Pin = 2 [deprecated = true];
+    optional int32 tilt2Pin = 3 [deprecated = true];
+    optional int32 tiltFunctionPin = 4 [deprecated = true];
+    optional int32 tiltLeftAnalogUpPin = 5 [deprecated = true];
+    optional int32 tiltLeftAnalogDownPin = 6 [deprecated = true];
+    optional int32 tiltLeftAnalogLeftPin = 7 [deprecated = true];
+    optional int32 tiltLeftAnalogRightPin = 8 [deprecated = true];
+    optional int32 tiltRightAnalogUpPin = 9 [deprecated = true];
+    optional int32 tiltRightAnalogDownPin = 10 [deprecated = true];
+    optional int32 tiltRightAnalogLeftPin = 11 [deprecated = true];
+    optional int32 tiltRightAnalogRightPin = 12 [deprecated = true];
 
     optional SOCDMode tiltSOCDMode = 13;
 
@@ -687,10 +688,15 @@ message KeyboardHostOptions
     optional uint32 mouseRight = 7;
 }
 
+message GamepadUSBHostOptions
+{
+    optional bool enabled = 1;
+}
+
 message FocusModeOptions
 {
     optional bool enabled = 1;
-    optional int32 pin = 2;
+    optional int32 pin = 2 [deprecated = true];
     optional int32 buttonLockMask = 3;
     optional bool oledLockEnabled = 4;
     optional bool rgbLockEnabled = 5;
@@ -793,7 +799,7 @@ message AddonOptions
     optional OnBoardLedOptions onBoardLedOptions = 2;
     optional AnalogOptions analogOptions = 3;
     optional TurboOptions turboOptions = 4;
-    optional SliderOptions sliderOptions = 5;
+    optional SliderOptions deprecatedSliderOptions = 5 [deprecated = true];
     optional ReverseOptions reverseOptions = 6;
     optional AnalogADS1219Options analogADS1219Options = 7;
     optional DualDirectionalOptions dualDirectionalOptions = 8;
@@ -816,6 +822,7 @@ message AddonOptions
     optional PCF8575Options pcf8575Options = 25;
     optional DRV8833RumbleOptions drv8833RumbleOptions = 26;
     optional ReactiveLEDOptions reactiveLEDOptions = 27;
+    optional GamepadUSBHostOptions gamepadUSBHostOptions = 28;
 }
 
 message MigrationHistory
@@ -823,6 +830,7 @@ message MigrationHistory
     optional bool hotkeysMigrated = 1 [default = false];
     optional bool gpioMappingsMigrated = 2 [default = false];
     optional bool buttonProfilesMigrated = 3 [default = false];
+    optional bool profileEnabledFlagsMigrated = 4 [default = false];
 }
 
 message Config

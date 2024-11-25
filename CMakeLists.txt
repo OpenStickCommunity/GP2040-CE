@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.13)
 include(CMakePrintHelpers)
 
-
-
+# enable compile commands for use by IDE autocompletion
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # initialize the SDK based on PICO_SDK_PATH
 # note: this must happen before project()
@@ -217,7 +217,6 @@ src/addons/keyboard_host.cpp
 src/addons/keyboard_host_listener.cpp
 src/addons/i2canalog1219.cpp
 src/addons/i2c_gpio_pcf8575.cpp
-src/addons/jslider.cpp
 src/addons/display.cpp
 src/addons/neopicoleds.cpp
 src/addons/playernum.cpp
@@ -233,6 +232,8 @@ src/addons/input_macro.cpp
 src/addons/snes_input.cpp
 src/addons/tilt.cpp
 src/addons/spi_analog_ads1256.cpp
+src/addons/gamepad_usb_host.cpp
+src/addons/gamepad_usb_host_listener.cpp
 ${PROTO_OUTPUT_DIR}/enums.pb.c
 ${PROTO_OUTPUT_DIR}/config.pb.c
 )

@@ -2,12 +2,10 @@
 #define _Analog_H
 
 #include "gpaddon.h"
-
 #include "GamepadEnums.h"
-
 #include "BoardConfig.h"
-
 #include "enums.pb.h"
+#include "types.h"
 
 #ifndef ANALOG_INPUT_ENABLED
 #define ANALOG_INPUT_ENABLED 0
@@ -76,24 +74,48 @@
 // Analog Module Name
 #define AnalogName "Analog"
 
+#define ADC_COUNT 2
+
+typedef struct
+{
+    Pin_t x_pin;
+    Pin_t y_pin;
+    Pin_t x_pin_adc;
+    Pin_t y_pin_adc;
+    float x_value;
+    float y_value;
+    uint16_t x_center;
+    uint16_t y_center;
+    float xy_magnitude;
+    float x_magnitude;
+    float y_magnitude;
+    InvertMode analog_invert;
+    DpadMode analog_dpad;
+    float x_ema;
+    float y_ema;
+} adc_instance;
+
 class AnalogInput : public GPAddon {
 public:
-	virtual bool available();
-	virtual void setup();       // Analog Setup
-	virtual void process();     // Analog Process
-	virtual void preprocess() {}
+    virtual bool available();
+    virtual void setup();       // Analog Setup
+    virtual void process();     // Analog Process
+    virtual void preprocess() {}
     virtual std::string name() { return AnalogName; }
 private:
-	uint16_t adc_1_x_center = 0;
-	uint16_t adc_1_y_center = 0;
-	uint16_t adc_2_x_center = 0;
-	uint16_t adc_2_y_center = 0;
-
-	static float readPin(int pin, uint16_t center, bool autoCalibrate);
-	static float emaCalculation(float ema_value, float smoothing_factor, float ema_previous);
-	static uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
-	static float magnitudeCalculation(float x, float y, float& x_magnitude, float& y_magnitude, float error);
-	static void radialDeadzone(float& x, float& y, float in_deadzone, float out_deadzone, float x_magnitude, float y_magnitude, float magnitude, bool circularity);
+    float readPin(Pin_t pin, uint16_t center);
+    float emaCalculation(float ema_value, float ema_previous);
+    uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
+    float magnitudeCalculation(adc_instance & adc_inst);
+    void radialDeadzone(adc_instance & adc_inst);
+    adc_instance adc_pairs[ADC_COUNT];
+    bool ema_option;
+    float ema_smoothing;
+    float error_rate;
+    float in_deadzone;
+    float out_deadzone;
+    bool auto_calibration;
+    bool forced_circularity;
 };
 
 #endif  // _Analog_H_

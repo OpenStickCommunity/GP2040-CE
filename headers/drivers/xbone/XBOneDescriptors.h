@@ -60,7 +60,7 @@ typedef enum
     GIP_AUTH                        = 0x06,    // Xbox One Authentication
     GIP_VIRTUAL_KEYCODE             = 0x07,    // XBox One Guide button pressed
     GIP_CMD_RUMBLE                  = 0x09,    // Xbox One Rumble Command
-    GIP_CMD_WAKEUP                  = 0x0A,    // Xbox One (Wake-up Maybe?)
+    GIP_CMD_LED_ON                  = 0x0A,    // Xbox One (LED On)
     GIP_FINAL_AUTH                  = 0x1E,    // Xbox One (Final auth?)
     GIP_INPUT_REPORT                = 0x20,    // Xbox One Input Report
     GIP_HID_REPORT                  = 0x21,    // Xbox One HID Report
@@ -108,6 +108,14 @@ typedef struct {
     uint8_t start : 1;  // menu
     uint8_t back : 1;   // view
 } __attribute__((packed)) XboxOneInputHeader_Data_t;
+
+typedef struct
+{
+    GipHeader_t Header;
+    uint8_t unk;
+    uint8_t mode;
+    uint8_t brightness;
+} __attribute__((packed)) XboxOneLED_Data_t;
 
 static const uint8_t xbone_device_qualifier[] =
 {

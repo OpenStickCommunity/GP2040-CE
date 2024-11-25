@@ -243,6 +243,24 @@ enum GpioAction
     BUTTON_PRESS_E10             = 52;
     BUTTON_PRESS_E11             = 53;
     BUTTON_PRESS_E12             = 54;
+
+    DIGITAL_DIRECTION_UP         = 55;
+    DIGITAL_DIRECTION_DOWN       = 56;
+    DIGITAL_DIRECTION_LEFT       = 57;
+    DIGITAL_DIRECTION_RIGHT      = 58;
+    ANALOG_DIRECTION_LS_X_NEG    = 59;
+    ANALOG_DIRECTION_LS_X_POS    = 60;
+    ANALOG_DIRECTION_LS_Y_NEG    = 61;
+    ANALOG_DIRECTION_LS_Y_POS    = 62;
+    ANALOG_DIRECTION_RS_X_NEG    = 63;
+    ANALOG_DIRECTION_RS_X_POS    = 64;
+    ANALOG_DIRECTION_RS_Y_NEG    = 65;
+    ANALOG_DIRECTION_RS_Y_POS    = 66;
+    ANALOG_DIRECTION_MOD_LOW     = 67;
+    ANALOG_DIRECTION_MOD_HIGH    = 68;
+
+    BUTTON_PRESS_INPUT_REVERSE   = 69;
+    SUSTAIN_FOCUS_MODE           = 70;
 }
 
 enum GpioDirection
@@ -300,6 +318,7 @@ enum GamepadHotkey
     HOTKEY_DPAD_LEFT             = 40;
     HOTKEY_DPAD_RIGHT            = 41;
     HOTKEY_PREVIOUS_PROFILE      = 42;
+    HOTKEY_SAVE_CONFIG           = 43;
 }
 
 // This has to be kept in sync with LEDFormat in NeoPico.hpp

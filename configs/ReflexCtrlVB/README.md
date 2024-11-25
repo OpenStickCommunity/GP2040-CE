@@ -6,9 +6,9 @@ Open source replacement PCB for Nintendo Virtual Boy controllers
 
 Note: Do not connect any packs to the controller. The USB cable powers the controller.
 
-Purchase: https://misteraddons.com/products/Reflex-CTRL
+Purchase: <https://misteraddons.com/products/Reflex-CTRL>
 
-GitHub: https://github.com/misteraddons/Reflex-CTRL
+GitHub: <https://github.com/misteraddons/Reflex-CTRL>
 
 ## Main Pin Mapping Configuration
 

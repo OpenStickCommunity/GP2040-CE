@@ -4,6 +4,7 @@ export default {
 	'header-text': '欢迎来到 GP2040-CE 网页配置器',
 	'latest-text': '最新：{{version}}',
 	'memory-flash-text': '闪存',
+	'memory-board-text': '板载闪存',
 	'memory-header-text': '内存 (KB)',
 	'memory-heap-text': '堆',
 	'memory-static-allocations-text': '静态分配',

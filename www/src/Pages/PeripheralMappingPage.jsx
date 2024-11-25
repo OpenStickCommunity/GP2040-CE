@@ -246,7 +246,7 @@ export default function PeripheralMappingPage() {
 																		? o
 																		: `${o} - ${t(
 																				'PeripheralMapping:pin-in-use',
-																		  )}`}
+																			)}`}
 																</option>
 															))}
 														</FormSelect>

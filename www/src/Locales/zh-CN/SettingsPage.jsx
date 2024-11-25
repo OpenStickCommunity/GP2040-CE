@@ -11,7 +11,7 @@ export default {
 		xinput: 'XInput',
 		'nintendo-switch': 'Nintendo Switch',
 		ps3: 'PS3',
-		generic: '通用 HID 设备',
+		generic: '通用HID设备',
 		keyboard: '键盘',
 		ps4: 'PS4',
 		ps5: 'PS5',
@@ -36,8 +36,8 @@ export default {
 	'input-mode-authentication': {
 		none: '无',
 		key: '上传的密钥文件',
-		usb: 'USB 主机',
-		i2c: '集成的 I2C',
+		usb: '主机 USB',
+		i2c: '集成的I2C',
 	},
 	'd-pad-mode-label': '方向模式',
 	'd-pad-mode-options': {
@@ -55,22 +55,31 @@ export default {
 		'first-win': '先输入优先',
 		off: '关闭',
 	},
-	'profile-number-label': '档案编号',
+	'profile-label': '档案',
 	'debounce-delay-label': '去抖动延迟 (以毫秒为单位)',
 	'ps4-mode-explanation-text':
 		'PS4 模式允许 GP2040-CE 作为经过认证的 PS4 控制器运行。',
 	'ps4-mode-warning-text':
-		'<span>⏳ 警告 ⏳：</span>在没有认证的情况下 PS4 将在 8 分钟后超时并断开连接。',
+		'<span>⏳警告⏳：</span>在没有认证的情况下 PS4 将在 8 分钟后超时并断开连接。',
 	'ps4-usb-host-mode-text':
 		'<span>补充信息：</span>请确保已启用 USB 外围设备，并已插入兼容 PS4 的 USB 设备。',
+	'ps4-id-mode-label': '识别模式',
+	'ps4-id-mode-explanation-text':
+		'<ul><li>主机模式用于主要连接到 PS4 主机。</li><li>串流/模拟模式仅在连接到需要兼容 DualShock4 控制器的模拟层或远程游玩环境时使用。</li></ul>',
+	'ps4-id-mode-options': {
+		console: '主机',
+		emulation: '串流/模拟',
+	},
 	'ps5-mode-explanation-text':
 		'PS5 模式允许 GP2040-CE 作为经过认证的 PS5 兼容街机摇杆运行。',
 	'ps5-mode-warning-text':
-		'<span>⏳ 警告 ⏳：</span>在没有认证的情况下 PS5 将在 8 分钟后超时并断开连接。',
+		'<span>⏳警告⏳：</span>在没有认证的情况下 PS5 将在 8 分钟后超时并断开连接。',
 	'ps5-usb-host-mode-text':
 		'<span>补充信息：</span>请确保已启用 USB 外围设备，并已插入兼容 PS5 的 USB 设备。',
 	'xbone-mode-text':
 		'<span>补充信息：</span>Xbox One 模式需要 USB 主机(USB Host)连接和 USB 加密狗才能正确认证。',
+	'xinput-mode-text':
+		'<span>补充信息：</span>Xinput 可以在没有认证的情况下在PC上运行。如果您想在 Xbox 360 上使用它，请选择USB验证并连接合适的加密狗。',
 	'hotkey-settings-label': '快捷键设置',
 	'hotkey-settings-sub-header':
 		'<strong>Fn</strong> 组合映射在<link_pinmap>引脚映射</link_pinmap>页面提供了一个可映射的Function按键。 要选择 <strong>Fn</strong> 组合映射选项，请同时按住 Function 按键和其他快捷键。<br />此外, 可从下拉列表中选择 <strong>None</strong> 以取消分配按钮',
@@ -83,7 +92,7 @@ export default {
 		'home-button': 'Home 键',
 		'capture-button': 'Capture 键',
 		'socd-up-priority': 'SOCD 上优先',
-		'socd-neutral': 'SOCD 回中模式',
+		'socd-neutral': 'SOCD 回中',
 		'socd-last-win': 'SOCD 后输入优先',
 		'socd-first-win': 'SOCD 先输入优先',
 		'socd-off': 'SOCD 关闭',
@@ -107,6 +116,10 @@ export default {
 		'a2-button': 'A2 键',
 		'a3-button': 'A3 键',
 		'a4-button': 'A4 键',
+		'dpad-up': '十字键 上',
+		'dpad-down': '十字键 下',
+		'dpad-left': '十字键 左',
+		'dpad-right': '十字键 右',
 		'touchpad-button': '触摸板',
 		'load-profile-1': '加载 档案 #1',
 		'load-profile-2': '加载 档案 #2',
@@ -114,6 +127,7 @@ export default {
 		'load-profile-4': '加载 档案 #4',
 		'reboot-default': '重启 GP2040-CE',
 		'next-profile': '下一个档案',
+		'previous-profile': '上一个档案',
 	},
 	'forced-setup-mode-label': '强制设置模式',
 	'forced-setup-mode-options': {
@@ -124,7 +138,7 @@ export default {
 	},
 	'forced-setup-mode-modal-title': '强制设置模式警告',
 	'forced-setup-mode-modal-body':
-		'如果保存后重新启动到控制器模式，您将无法再访问网页配置。 如果你完全理解并打算解锁保存按钮，请在下方键入 "<strong>{{warningCheckText}}</strong>" 。 单击取消将还原此设置并保存。',
+		'如果您在保存后重新启动到控制器模式，您将无法再访问网页配置。如果您完全理解并同意这一点，请在下方键入 "<strong>{{warningCheckText}}</strong>" 以解锁保存按钮。 点击“取消”将恢复此设置并保存。',
 	'4-way-joystick-mode-label': '4向摇杆模式',
 	'lock-hotkeys-label': '锁定快捷键',
 	'keyboard-mapping-header-text': '键盘映射',

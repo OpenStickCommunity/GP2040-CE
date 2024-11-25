@@ -68,12 +68,13 @@
 #define KEY_BUTTON_A2   HID_KEY_F2            // A2     | ~      | Capture | ~        | 14     | ~      |
 #define KEY_BUTTON_FN   -1                    // Hotkey Function                                        |
 
-#define DEFAULT_INPUT_MODE_R1 INPUT_MODE_XBONE
-#define DEFAULT_INPUT_MODE_B4 INPUT_MODE_PS5
-#define DEFAULT_PS5AUTHENTICATION_TYPE INPUT_MODE_AUTH_TYPE_USB
+#define I2C0_ENABLED 0
 
 #define USB_PERIPHERAL_ENABLED 1
 #define USB_PERIPHERAL_PIN_DPLUS 28
-#define USB_PERIPHERAL_PIN_ORDER 0
+
+#define DEFAULT_INPUT_MODE_R1 INPUT_MODE_XBONE
+#define DEFAULT_INPUT_MODE_B4 INPUT_MODE_PS5
+#define DEFAULT_PS5AUTHENTICATION_TYPE INPUT_MODE_AUTH_TYPE_USB
 
 #endif
