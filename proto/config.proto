@@ -688,6 +688,11 @@ message KeyboardHostOptions
     optional uint32 mouseRight = 7;
 }
 
+message GamepadUSBHostOptions
+{
+    optional bool enabled = 1;
+}
+
 message FocusModeOptions
 {
     optional bool enabled = 1;
@@ -817,6 +822,7 @@ message AddonOptions
     optional PCF8575Options pcf8575Options = 25;
     optional DRV8833RumbleOptions drv8833RumbleOptions = 26;
     optional ReactiveLEDOptions reactiveLEDOptions = 27;
+    optional GamepadUSBHostOptions gamepadUSBHostOptions = 28;
 }
 
 message MigrationHistory

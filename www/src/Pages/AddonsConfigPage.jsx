@@ -44,6 +44,7 @@ import FocusMode, {
 	focusModeState,
 } from '../Addons/FocusMode';
 import Keyboard, { keyboardScheme, keyboardState } from '../Addons/Keyboard';
+import GamepadUSBHost, { gamepadUSBHostScheme, gamepadUSBHostState} from '../Addons/GamepadUSBHost';
 import InputHistory, {
 	inputHistoryScheme,
 	inputHistoryState,
@@ -80,6 +81,7 @@ const schema = yup.object().shape({
 	...pcf8575Scheme,
 	...drv8833RumbleScheme,
 	...reactiveLEDScheme,
+	...gamepadUSBHostScheme,
 });
 
 const defaultValues = {
@@ -104,6 +106,7 @@ const defaultValues = {
 	...pcf8575State,
 	...drv8833RumbleState,
 	...reactiveLEDState,
+	...gamepadUSBHostState,
 };
 
 const ADDONS = [
@@ -123,6 +126,7 @@ const ADDONS = [
 	SNES,
 	FocusMode,
 	Keyboard,
+	GamepadUSBHost,
 	InputHistory,
 	Rotary,
 	PCF8575,

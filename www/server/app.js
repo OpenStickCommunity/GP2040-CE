@@ -526,6 +526,7 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		PCF8575AddonEnabled: 1,
 		DRV8833RumbleAddonEnabled: 1,
 		ReactiveLEDAddonEnabled: 1,
+		GamepadUSBHostAddonEnabled: 1,
 		usedPins: Object.values(picoController),
 	});
 });
