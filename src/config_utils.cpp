@@ -487,11 +487,11 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredInputCombos[0] = SpecialMoveInputTypes_Proto::SpecialMoveInputTypes_Proto_INPUT_QUARTER_DOWN_RIGHT;
         config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos_count = 3;
         INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[0], RequiredTriggers, GAMEPAD_MASK_B3);
-        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[0], OptionalParams, 2 + (2 << 4) + (10 << 8)); //right //slow //colour blue
+        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[0], OptionalParams, 2 + (2 << 4) + (1 << 8) + (0 << 12) + (10 << 16)); //right //slow //1 loop //all lights //colour blue
         INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[1], RequiredTriggers, GAMEPAD_MASK_B4);
-        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[1], OptionalParams, 2 + (1 << 4) + (10 << 8)); //right //medium //colour blue
+        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[1], OptionalParams, 2 + (1 << 4) + (1 << 8) + (1 << 12) + (10 << 16)); //right //medium //1 loop //top lights //colour blue
         INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[2], RequiredTriggers, GAMEPAD_MASK_R1);
-        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[2], OptionalParams, 2 + (0 << 4) + (10 << 8)); //right //fast //colour blue
+        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[2], OptionalParams, 2 + (0 << 4) + (1 << 8) + (2 << 12) + (10 << 16)); //right //fast //1 loop //bottom lights //colour blue
 
         INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[1], bIsChargeMove, false);
         INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[1], Animation, SpecialMoveEffects_Proto::SpecialMoveEffects_Proto_SMEFFECT_PULSECOLOR);

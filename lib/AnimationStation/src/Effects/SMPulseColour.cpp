@@ -1,8 +1,8 @@
 #include "SMPulseColour.hpp"
 #include "SpecialMoveSystem.hpp"
 
-#define PULSE_PREWAIT_MS 100
-#define PULSE_POSTWAIT_MS 250
+#define PULSE_PREWAIT_MS 150
+#define PULSE_POSTWAIT_MS 150
 
 SMPulseColour::SMPulseColour(Lights& InRGBLights) : Animation(InRGBLights) 
 {
@@ -183,12 +183,12 @@ void SMPulseColour::Animate(RGB (&frame)[100])
 
     for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
     {
-        uint8_t firstLightIndex = RGBLights->AllLights[lightIndex].FirstLedIndex;
-        uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[lightIndex].LedsPerLight;
-
-        for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
+        if (LightTypeIsForSpecialMoveAnimation(RGBLights->AllLights[lightIndex].Type))
         {
-            if (LightTypeIsForSpecialMoveAnimation(RGBLights->AllLights[lightIndex].Type))
+            uint8_t firstLightIndex = RGBLights->AllLights[lightIndex].FirstLedIndex;
+            uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[lightIndex].LedsPerLight;
+
+            for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
             {
                 frame[ledIndex] = BlendColor(ColorBlack, colors[ColourIndex], thisFrameFade);    
             }

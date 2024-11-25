@@ -16,8 +16,8 @@
 #define MAX_SPECIALMOVE_TRIGGERS_PER_MOVE 3
 #define MAX_INPUT_HISTORY 100
 
-#define COMBO_INPUT_TIME_WINDOW 200 //Maximum time between combo movements that arent a charge
-#define COMBO_TRIGGER_INPUT_TIME_WINDOW 125 //Maximum time between combined button inputs eg PP, PPP, KK or PK etc
+#define COMBO_INPUT_TIME_WINDOW 250 //Maximum time between combo movements that arent a charge
+#define COMBO_TRIGGER_INPUT_TIME_WINDOW 200 //Maximum time between combined button inputs eg PP, PPP, KK or PK etc
 #define COMBO_INPUT_COUNT_FOR_ONE_OUT_OF_TWO 7 //if the combo input is 7 or more moves then the input system will allow you to succeed if you dont miss 2 in a row window. eg LDRU would be fine for a SPD
 
 //List of specialMove animation
@@ -60,6 +60,14 @@ typedef enum
   SPECIALMOVE_DIRECTION_RIGHT,
   SPECIALMOVE_DIRECTION_DOWN,
 } SpecialMoveAnimationDirection;
+
+// SpecialMove animation Divider Modifier
+typedef enum
+{
+  SPECIALMOVE_DIVIDER_ALL_LIGHTS,
+  SPECIALMOVE_DIVIDER_FIRSTHALF_LIGHTS,
+  SPECIALMOVE_DIVIDER_SECONDHALF_LIGHTS,
+} SpecialMoveAnimationDivider;
 
 // SpecialMove input types
 typedef enum
@@ -163,14 +171,15 @@ public:
 protected:
 
     void ClearHistory();
+    int64_t GetMsBetweenTimes(absolute_time_t start, absolute_time_t end);
     void UpdateHistoryForInput(uint32_t buttonMask, SpecialMoveStickDirection directionHeld, bool bIsPressed);
     bool CheckJoystickDirection(SpecialMoveStickDirection& FoundDirection, SpecialMoveStickDirection TestDirection, uint32_t PressedButtons, uint32_t DirectionOne, uint32_t DirectionTwo);
-    bool DoesInputMatch(int HistoryIndex, ComboEntry ComboInput, bool bIsChargeMove);
+    SpecialMoveStickDirection GetDirectionPressed(uint32_t PressedButtons);
+    bool DoesInputMatch(int HistoryIndex, ComboEntry& ComboInput, bool bIsChargeMove);
     void SwitchHistoryCreateNew(uint32_t buttonMask, SpecialMoveStickDirection directionHeld);
 
     bool TestAllMoves();
     bool TestForActivatedSpecialMove(SpecialMoveDescription* MoveToTestFor, int ComboIndex, int TriggerIndex);
-    void UpdateRunningSpecialMove();
     void StartMoveAnimation(SpecialMoveEffects AnimationToPlay, uint32_t OptionalParams);
 
     void GetComboArrayForMove(SpecialMoveInputTypes InputType, std::vector<ComboEntry>& comboArray);

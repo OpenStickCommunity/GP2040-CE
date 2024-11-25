@@ -10,6 +10,7 @@
 #include "Effects/StaticColor.hpp"
 #include "Effects/RandomColor.hpp"
 #include "Effects/SMPulseColour.hpp"
+#include "Effects/SMWave.hpp"
 #include "SpecialMoveSystem.hpp"
 
 #include "AnimationStation.hpp"
@@ -197,7 +198,7 @@ void AnimationStation::SetSpecialMoveAnimation(SpecialMoveEffects AnimationToPla
     switch(AnimationToPlay)
     {
     case SpecialMoveEffects::SPECIALMOVE_SMEFFECT_WAVE:
-        //this->specialMoveAnimation = new SMWaveEffect(RGBLights);
+        this->specialMoveAnimation = new SMWave(RGBLights);
         break;
 
     case SpecialMoveEffects::SPECIALMOVE_SMEFFECT_PULSECOLOR:

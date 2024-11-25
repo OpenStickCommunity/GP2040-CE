@@ -4,6 +4,7 @@ src/Effects/Rainbow.cpp
 src/Effects/StaticColor.cpp
 src/Effects/RandomColor.cpp
 src/Effects/SMPulseColour.cpp
+src/Effects/SMWave.cpp
 src/AnimationStation.cpp
 src/Animation.cpp
 src/SpecialMoveSystem.cpp

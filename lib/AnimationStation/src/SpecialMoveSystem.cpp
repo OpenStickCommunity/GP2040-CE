@@ -67,6 +67,28 @@ void SpecialMoveSystem::SetDirectionMasks(uint32_t UpMask, uint32_t DownMask, ui
     SPECIAL_MOVE_DIRECTION_MASK_RIGHT = RightMask;
 }
 
+SpecialMoveStickDirection SpecialMoveSystem::GetDirectionPressed(uint32_t PressedButtons)
+{
+    if((PressedButtons & (SPECIAL_MOVE_DIRECTION_MASK_LEFT | SPECIAL_MOVE_DIRECTION_MASK_UP)) == (SPECIAL_MOVE_DIRECTION_MASK_LEFT | SPECIAL_MOVE_DIRECTION_MASK_UP))
+        return SpecialMoveStickDirection::SPECIALMOVE_STICK_UPLEFT;
+    else if((PressedButtons & (SPECIAL_MOVE_DIRECTION_MASK_RIGHT | SPECIAL_MOVE_DIRECTION_MASK_UP)) == (SPECIAL_MOVE_DIRECTION_MASK_RIGHT | SPECIAL_MOVE_DIRECTION_MASK_UP))
+        return SpecialMoveStickDirection::SPECIALMOVE_STICK_UPRIGHT;
+    else if((PressedButtons & (SPECIAL_MOVE_DIRECTION_MASK_LEFT | SPECIAL_MOVE_DIRECTION_MASK_DOWN)) == (SPECIAL_MOVE_DIRECTION_MASK_LEFT | SPECIAL_MOVE_DIRECTION_MASK_DOWN))
+        return SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNLEFT;
+    else if((PressedButtons & (SPECIAL_MOVE_DIRECTION_MASK_RIGHT | SPECIAL_MOVE_DIRECTION_MASK_DOWN)) == (SPECIAL_MOVE_DIRECTION_MASK_RIGHT | SPECIAL_MOVE_DIRECTION_MASK_DOWN))
+        return SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNRIGHT;
+    else if((PressedButtons & SPECIAL_MOVE_DIRECTION_MASK_UP) == SPECIAL_MOVE_DIRECTION_MASK_UP)
+        return SpecialMoveStickDirection::SPECIALMOVE_STICK_UP;
+    else if((PressedButtons & SPECIAL_MOVE_DIRECTION_MASK_DOWN) == SPECIAL_MOVE_DIRECTION_MASK_DOWN)
+        return SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWN;
+    else if((PressedButtons & SPECIAL_MOVE_DIRECTION_MASK_LEFT) == SPECIAL_MOVE_DIRECTION_MASK_LEFT)
+        return SpecialMoveStickDirection::SPECIALMOVE_STICK_LEFT;
+    else if((PressedButtons & SPECIAL_MOVE_DIRECTION_MASK_RIGHT) == SPECIAL_MOVE_DIRECTION_MASK_RIGHT)
+        return SpecialMoveStickDirection::SPECIALMOVE_STICK_RIGHT;
+
+    return SpecialMoveStickDirection::SPECIALMOVE_STICK_INVALID;
+}
+
 bool SpecialMoveSystem::CheckJoystickDirection(SpecialMoveStickDirection& FoundDirection, SpecialMoveStickDirection TestDirection, uint32_t PressedButtons, uint32_t DirectionOne, uint32_t DirectionTwo)
 {
     bool bWasPressed = false;
@@ -84,24 +106,12 @@ bool SpecialMoveSystem::CheckJoystickDirection(SpecialMoveStickDirection& FoundD
     return bWasPressed;
 }
 
-static uint64_t count = 0;
-static bool halt = false;
-
 void SpecialMoveSystem::HandlePressedButtons(uint32_t pressedButtons)
 {
     bool bWasAnythingPressed = false;
 
-    uint32_t oldButtonMask = SwitchHistory[0].ButtonMaskInput;
-    count++;
-
-    if(halt)
-    {
-        while(true)
-        {}
-    }
-
     //do directions explicitly due to needing to do diagonals
-/*    SpecialMoveStickDirection FoundDirection = SpecialMoveStickDirection::SPECIALMOVE_STICK_INVALID;
+    SpecialMoveStickDirection FoundDirection = SpecialMoveStickDirection::SPECIALMOVE_STICK_INVALID;
     bWasAnythingPressed |= CheckJoystickDirection(FoundDirection, SpecialMoveStickDirection::SPECIALMOVE_STICK_UPLEFT, pressedButtons, SPECIAL_MOVE_DIRECTION_MASK_LEFT, SPECIAL_MOVE_DIRECTION_MASK_UP);
     bWasAnythingPressed |= CheckJoystickDirection(FoundDirection, SpecialMoveStickDirection::SPECIALMOVE_STICK_UPRIGHT, pressedButtons, SPECIAL_MOVE_DIRECTION_MASK_RIGHT, SPECIAL_MOVE_DIRECTION_MASK_UP);
     bWasAnythingPressed |= CheckJoystickDirection(FoundDirection, SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNLEFT, pressedButtons, SPECIAL_MOVE_DIRECTION_MASK_LEFT, SPECIAL_MOVE_DIRECTION_MASK_DOWN);
@@ -109,7 +119,7 @@ void SpecialMoveSystem::HandlePressedButtons(uint32_t pressedButtons)
     bWasAnythingPressed |= CheckJoystickDirection(FoundDirection, SpecialMoveStickDirection::SPECIALMOVE_STICK_UP, pressedButtons, SPECIAL_MOVE_DIRECTION_MASK_UP, 0);
     bWasAnythingPressed |= CheckJoystickDirection(FoundDirection, SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWN, pressedButtons, SPECIAL_MOVE_DIRECTION_MASK_DOWN, 0);
     bWasAnythingPressed |= CheckJoystickDirection(FoundDirection, SpecialMoveStickDirection::SPECIALMOVE_STICK_LEFT, pressedButtons, SPECIAL_MOVE_DIRECTION_MASK_LEFT, 0);
-    bWasAnythingPressed |= CheckJoystickDirection(FoundDirection, SpecialMoveStickDirection::SPECIALMOVE_STICK_RIGHT, pressedButtons, SPECIAL_MOVE_DIRECTION_MASK_RIGHT, 0);*/
+    bWasAnythingPressed |= CheckJoystickDirection(FoundDirection, SpecialMoveStickDirection::SPECIALMOVE_STICK_RIGHT, pressedButtons, SPECIAL_MOVE_DIRECTION_MASK_RIGHT, 0);
 
     //check each button input and update history
     for(uint32_t buttonMask = 1; buttonMask < (1 << 20); buttonMask = buttonMask << 1)
@@ -121,14 +131,6 @@ void SpecialMoveSystem::HandlePressedButtons(uint32_t pressedButtons)
         bWasAnythingPressed |= bIsPressed;
         UpdateHistoryForInput(buttonMask, SpecialMoveStickDirection::SPECIALMOVE_STICK_INVALID, bIsPressed);
     }
-
-    if(count > 300 && oldButtonMask <= 32 && SwitchHistory[0].ButtonMaskInput > 32)
-    {
-        halt = true;
-    }
-    AnimationStation::printfs[1] = std::to_string(pressedButtons) + " " + std::to_string(oldButtonMask);
-    AnimationStation::printfs[2] = std::to_string(SwitchHistory[0].ButtonMaskInput) + " " + std::to_string(SwitchHistory[0].DirectionInput);
-    AnimationStation::printfs[0] = std::to_string(count) + " ";
 
     //After a special move we need to wait for all buttons to be released before we trigger another or we could potentially chain two together by accident. 
     //If nothing is pressed this frame then we can remove this block.
@@ -198,15 +200,16 @@ void SpecialMoveSystem::UpdateHistoryForInput(uint32_t buttonMask, SpecialMoveSt
         }
     }
 
-    //no previous entry found. Add new one
-    SwitchHistoryCreateNew(buttonMask, directionHeld);
+    //no previous entry found. Add new one if its being held
+    if(bIsPressed)
+        SwitchHistoryCreateNew(buttonMask, directionHeld);
 }
 
 void SpecialMoveSystem::GetComboArrayForMove(SpecialMoveInputTypes InputType, std::vector<ComboEntry>& comboArray)
 { 
     switch(InputType)
     {
-        case SpecialMoveInputTypes::SPECIALMOVE_INPUT_QUARTER_DOWN_LEFT:
+        case SpecialMoveInputTypes::SPECIALMOVE_INPUT_QUARTER_DOWN_RIGHT:
         {
             comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWN, 0));
             comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNRIGHT, 0));
@@ -231,7 +234,7 @@ void SpecialMoveSystem::GetComboArrayForMove(SpecialMoveInputTypes InputType, st
     }
 }
 
-bool SpecialMoveSystem::DoesInputMatch(int HistoryIndex, ComboEntry ComboInput, bool bIsChargeMove)
+bool SpecialMoveSystem::DoesInputMatch(int HistoryIndex, ComboEntry& ComboInput, bool bIsChargeMove)
 {
     if(ComboInput.DirectionInput != SpecialMoveStickDirection::SPECIALMOVE_STICK_INVALID)
     {
@@ -265,6 +268,11 @@ bool SpecialMoveSystem::DoesInputMatch(int HistoryIndex, ComboEntry ComboInput, 
     return SwitchHistory[HistoryIndex].ButtonMaskInput == ComboInput.ButtonMaskInput;
 }
 
+int64_t SpecialMoveSystem::GetMsBetweenTimes(absolute_time_t start, absolute_time_t end)
+{
+    return absolute_time_diff_us(start, end) / 1000;
+}
+
 bool SpecialMoveSystem::TestForActivatedSpecialMove(SpecialMoveDescription* MoveToTestFor, int ComboIndex, int TriggerIndex)
 {
     int lastIndexComboInputWasFound = -1;
@@ -272,7 +280,6 @@ bool SpecialMoveSystem::TestForActivatedSpecialMove(SpecialMoveDescription* Move
     absolute_time_t timeNow = thisFrameTime;
     absolute_time_t timeLastInputSet = thisFrameTime;
     int numMissed = 0;
-    bool bAllowMiss = MoveToTestFor->NumRequiredInputCombos >= COMBO_INPUT_COUNT_FOR_ONE_OUT_OF_TWO;
     bool bIsChargeCombo = MoveToTestFor->bIsChargeMove;
     int64_t OptionsChargeTime = Options.ChargeTimeInMs;
 
@@ -280,18 +287,30 @@ bool SpecialMoveSystem::TestForActivatedSpecialMove(SpecialMoveDescription* Move
     std::vector<ComboEntry> comboArray;
     GetComboArrayForMove(MoveToTestFor->RequiredInputCombos[ComboIndex], comboArray);
     int moveLength = comboArray.size();
+    bool bAllowMiss = moveLength >= COMBO_INPUT_COUNT_FOR_ONE_OUT_OF_TWO;
     
     // put triggers on the end for easier processing
     int triggerLength = 0;
-    for(int triggerIndex = 0; triggerIndex < 3; ++triggerIndex)
+    uint32_t thisCombinedTrigger = MoveToTestFor->RequiredTriggerCombos[TriggerIndex].RequiredTriggers;
+    SpecialMoveStickDirection triggerDirection = GetDirectionPressed(thisCombinedTrigger);
+    if(triggerDirection != SpecialMoveStickDirection::SPECIALMOVE_STICK_INVALID)
     {
-        int32_t thisTrigger = ((MoveToTestFor->RequiredTriggerCombos[TriggerIndex].RequiredTriggers) >> (4*triggerIndex)) & 0xFF;
-        if(thisTrigger != 0)
+        comboArray.push_back(ComboEntry(triggerDirection, 0));
+        triggerLength++;
+    }
+    for(uint32_t buttonMask = 1; buttonMask < (1 << 20); buttonMask = buttonMask << 1)
+    {
+        if(buttonMask == SPECIAL_MOVE_DIRECTION_MASK_UP || buttonMask == SPECIAL_MOVE_DIRECTION_MASK_DOWN || buttonMask == SPECIAL_MOVE_DIRECTION_MASK_LEFT || buttonMask == SPECIAL_MOVE_DIRECTION_MASK_RIGHT)
+            continue;
+
+        if((thisCombinedTrigger & buttonMask) != 0)
         {
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_INVALID, buttonMask));
             triggerLength++;
-            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_INVALID, thisTrigger));
         }
     }
+    if(triggerLength == 0)
+        return false;
 
     int comboLength = moveLength + triggerLength;
     if (comboLength > MAX_INPUT_HISTORY)
@@ -299,7 +318,7 @@ bool SpecialMoveSystem::TestForActivatedSpecialMove(SpecialMoveDescription* Move
 
     // Moves are specified in normal order. History is newest first. So start from the end of the combo and work back
     int triggersFound = 0;
-    for (int comboIndex = comboLength - 1; comboIndex >= 0; --comboIndex)
+    for (int comboSearchIndex = comboLength - 1; comboSearchIndex >= 0; --comboSearchIndex)
     {
         // First see if the button(s) and the final movement that finish this combo routine have recently been pressed
         if (bHasFinishedDoingTriggerButtons == false)
@@ -316,16 +335,17 @@ bool SpecialMoveSystem::TestForActivatedSpecialMove(SpecialMoveDescription* Move
             for (unsigned int historyIndex = 0; historyIndex < MAX_INPUT_HISTORY; ++historyIndex)
             {
                 // are we past the time window?
-                if (absolute_time_diff_us(SwitchHistory[historyIndex].TimeSet, timeNow) > COMBO_TRIGGER_INPUT_TIME_WINDOW)
+                if (GetMsBetweenTimes(SwitchHistory[historyIndex].TimeSet, timeNow) > (bHasFinishedDoingTriggerButtons ? COMBO_INPUT_TIME_WINDOW : COMBO_TRIGGER_INPUT_TIME_WINDOW))
                 {
                     return false; // we havent managed to find this trigger in time
                 }
 
-                if (DoesInputMatch(historyIndex, comboArray[comboIndex], bIsChargeCombo))
+                if (DoesInputMatch(historyIndex, comboArray[comboSearchIndex], bIsChargeCombo))
                 {
                     // we found this trigger. Move onto the next one
                     bFoundTrigger = true;
                     triggersFound++;
+                    lastIndexComboInputWasFound = historyIndex;
                     break;
                 }
             }
@@ -343,15 +363,15 @@ bool SpecialMoveSystem::TestForActivatedSpecialMove(SpecialMoveDescription* Move
         bool bFoundInput = false;
         for (int historyIndex = lastIndexComboInputWasFound + 1; historyIndex < MAX_INPUT_HISTORY; ++historyIndex)
         {
-            if (DoesInputMatch(historyIndex, comboArray[comboIndex], bIsChargeCombo))
+            if (DoesInputMatch(historyIndex, comboArray[comboSearchIndex], bIsChargeCombo))
             {
                 bFoundInput = true;
 
                 // Is this the last input and if so is it a charge input as they're special and
-                if (comboIndex == 0 && bIsChargeCombo)
+                if (comboSearchIndex == 0 && bIsChargeCombo)
                 {
                     // Its a charge move. In which case, this move must be held for CHARGE_COMBO_INPUT_TIME_WINDOW as well as released within COMBO_INPUT_TIME_WINDOW of the last one
-                    if (SwitchHistory[historyIndex].bIsHeld == false && absolute_time_diff_us(SwitchHistory[historyIndex].TimeReleased, timeLastInputSet) < COMBO_INPUT_TIME_WINDOW && absolute_time_diff_us(SwitchHistory[historyIndex].TimeSet, SwitchHistory[historyIndex].TimeReleased) > OptionsChargeTime)
+                    if (SwitchHistory[historyIndex].bIsHeld == false && GetMsBetweenTimes(SwitchHistory[historyIndex].TimeReleased, timeLastInputSet) < COMBO_INPUT_TIME_WINDOW && GetMsBetweenTimes(SwitchHistory[historyIndex].TimeSet, SwitchHistory[historyIndex].TimeReleased) > OptionsChargeTime)
                     {
                         // Clear the history to prevent retrigger if animation is really quick
                         ClearHistory();
@@ -365,7 +385,7 @@ bool SpecialMoveSystem::TestForActivatedSpecialMove(SpecialMoveDescription* Move
 
                 // regular input
                 absolute_time_t timeToUse = SwitchHistory[historyIndex].bIsHeld ? SwitchHistory[historyIndex].TimeSet : SwitchHistory[historyIndex].TimeReleased;
-                if (absolute_time_diff_us(timeToUse, timeLastInputSet) > COMBO_INPUT_TIME_WINDOW)
+                if (GetMsBetweenTimes(timeToUse, timeLastInputSet) > COMBO_INPUT_TIME_WINDOW)
                 {
                     if (bAllowMiss)
                     {
@@ -402,11 +422,5 @@ bool SpecialMoveSystem::TestForActivatedSpecialMove(SpecialMoveDescription* Move
     }
 
     // if we get here we've found every single input! Combo passed
-
     return true;
-}
-
-void SpecialMoveSystem::UpdateRunningSpecialMove()
-{
-
 }
