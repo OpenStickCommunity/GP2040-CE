@@ -85,6 +85,33 @@ typedef struct TU_ATTR_PACKED
     uint8_t  VEN_GamePad0021[54];
 } dualshock4_t;
 
+// Ultrastik 360
+typedef struct TU_ATTR_PACKED
+{
+    uint8_t GD_GamePadPointerX;
+    uint8_t GD_GamePadPointerY;
+
+    struct {
+        uint8_t BTN_GamePadButton1 : 1;
+        uint8_t BTN_GamePadButton2 : 1;
+        uint8_t BTN_GamePadButton3 : 1;
+        uint8_t BTN_GamePadButton4 : 1;
+        uint8_t BTN_GamePadButton5 : 1;
+        uint8_t BTN_GamePadButton6 : 1;
+        uint8_t BTN_GamePadButton7 : 1;
+        uint8_t BTN_GamePadButton8 : 1;
+        uint8_t BTN_GamePadButton9 : 1;
+        uint8_t BTN_GamePadButton10 : 1;
+        uint8_t BTN_GamePadButton11 : 1;
+        uint8_t BTN_GamePadButton12 : 1;
+        uint8_t BTN_GamePadButton13 : 1;
+        uint8_t BTN_GamePadButton14 : 1;
+        uint8_t BTN_GamePadButton15 : 1;
+        uint8_t padding : 1;
+    };
+
+} ultrastik360_t;
+
 // Add other controller structs here
 class GamepadUSBHostListener : public USBListener {
     public:// USB Listener Features
@@ -105,6 +132,7 @@ class GamepadUSBHostListener : public USBListener {
         // Controller report processor functions
         void process_ds4(uint8_t const* report);
         void process_stadia(uint8_t const* report);
+        void process_ultrastik360(uint8_t const* report);
 
         uint16_t controller_pid, controller_vid;
 
