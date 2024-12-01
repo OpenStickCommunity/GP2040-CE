@@ -261,6 +261,14 @@ enum GpioAction
 
     BUTTON_PRESS_INPUT_REVERSE   = 69;
     SUSTAIN_FOCUS_MODE           = 70;
+
+    MENU_NAVIGATION_UP           = 71;
+    MENU_NAVIGATION_DOWN         = 72;
+    MENU_NAVIGATION_LEFT         = 73;
+    MENU_NAVIGATION_RIGHT        = 74;
+    MENU_NAVIGATION_SELECT       = 75;
+    MENU_NAVIGATION_BACK         = 76;
+    MENU_NAVIGATION_TOGGLE       = 77;
 }
 
 enum GpioDirection

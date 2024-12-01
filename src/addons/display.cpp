@@ -56,11 +56,12 @@ void DisplayAddon::setup() {
 
     // set current display mode
     if (!configMode) {
-        if (Storage::getInstance().getDisplayOptions().splashMode != static_cast<SplashMode>(SPLASH_MODE_NONE)) {
-            currDisplayMode = DisplayMode::SPLASH;
-        } else {
-            currDisplayMode = DisplayMode::BUTTONS;
-        }
+        //if (Storage::getInstance().getDisplayOptions().splashMode != static_cast<SplashMode>(SPLASH_MODE_NONE)) {
+        //    currDisplayMode = DisplayMode::SPLASH;
+        //} else {
+        //    currDisplayMode = DisplayMode::BUTTONS;
+        //}
+        currDisplayMode = DisplayMode::MAIN_MENU;
     } else {
         currDisplayMode = DisplayMode::CONFIG_INSTRUCTION;
     }
@@ -79,7 +80,7 @@ bool DisplayAddon::updateDisplayScreen() {
                 delete (SplashScreen*)gpScreen;
                 break;
             case MAIN_MENU:
-                delete (SplashScreen*)gpScreen;
+                delete (MainMenuScreen*)gpScreen;
                 break;
             case BUTTONS:
                 delete (ButtonLayoutScreen*)gpScreen;
