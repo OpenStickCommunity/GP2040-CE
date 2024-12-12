@@ -601,6 +601,7 @@ void NeoPicoLEDAddon::configureLEDs()
 	AnimStation.SetBrightness(AnimStation.options.brightness);
 	AnimStation.specialMoveSystem.SetParentAnimationStation(&AnimStation);
 	AnimStation.specialMoveSystem.SetDirectionMasks(GAMEPAD_MASK_DU, GAMEPAD_MASK_DD, GAMEPAD_MASK_DL, GAMEPAD_MASK_DR);
+	AnimStation.specialMoveSystem.SetButtonMasks(GAMEPAD_MASK_B3);
 	AnimStation.SetLights(RGBLights);
 	AnimStation.SetMode(as.options.baseProfileIndex);
 }

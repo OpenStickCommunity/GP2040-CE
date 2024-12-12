@@ -10,6 +10,7 @@
 #include "Effects/StaticColor.hpp"
 #include "Effects/RandomColor.hpp"
 #include "Effects/SMPulseColour.hpp"
+#include "Effects/SMCircleColour.hpp"
 #include "Effects/SMWave.hpp"
 #include "SpecialMoveSystem.hpp"
 
@@ -203,6 +204,18 @@ void AnimationStation::SetSpecialMoveAnimation(SpecialMoveEffects AnimationToPla
 
     case SpecialMoveEffects::SPECIALMOVE_SMEFFECT_PULSECOLOR:
         this->specialMoveAnimation = new SMPulseColour(RGBLights);
+        break;
+
+    case SpecialMoveEffects::SPECIALMOVE_SMEFFECT_CIRCLECOLOR:
+        this->specialMoveAnimation = new SMCircleColour(RGBLights);
+        break;
+
+    case SpecialMoveEffects::SPECIALMOVE_SMEFFECT_KNIGHTRIDER:
+        //this->specialMoveAnimation = new SMKnightRider(RGBLights);
+        break;
+
+    case SpecialMoveEffects::SPECIALMOVE_SMEFFECT_RANDOMFLASH:
+        //this->specialMoveAnimation = new SMRandomFlash(RGBLights);
         break;
 
     default:

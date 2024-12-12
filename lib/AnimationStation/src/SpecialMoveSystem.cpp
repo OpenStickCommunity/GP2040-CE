@@ -41,16 +41,27 @@ bool SpecialMoveSystem::TestAllMoves()
         {
             for(uint32_t triggerIndex = 0; triggerIndex < numTriggers; ++triggerIndex)
             {
-                bool bSucceeded = TestForActivatedSpecialMove(&thisMove, comboIndex, triggerIndex);
-                if(bSucceeded)
+                //360/720 inputs require us to try all possible start locations (although we only bother with cardinals as an optimisation)
+                bool doCircleLoop = false; 
+                if(thisMove.RequiredInputCombos[comboIndex] == SpecialMoveInputTypes::SPECIALMOVE_INPUT_360 || thisMove.RequiredInputCombos[comboIndex] == SpecialMoveInputTypes::SPECIALMOVE_INPUT_720)
                 {
-                    // Clear the history to prevent retrigger if animation is really quick
-                    ClearHistory();
-                    if(ParentAnimationStation)
-                        ParentAnimationStation->SetSpecialMoveAnimation(thisMove.Animation, thisMove.RequiredTriggerCombos[triggerIndex].OptionalParams);
-                    SwitchClearAwaitingAllRelease = true;
+                    doCircleLoop = true;
+                }
 
-                    return true;
+                for(int circleLoops = 0; circleLoops < (doCircleLoop ? (int)SPECIALMOVE_CIRCLETYPE_MAX : 1); ++circleLoops)
+                {               
+                    bool bSucceeded = TestForActivatedSpecialMove(&thisMove, comboIndex, triggerIndex, (SpecialMoveCircleType)circleLoops);
+                    
+                    if(bSucceeded)
+                    {
+                        // Clear the history to prevent retrigger if animation is really quick
+                        ClearHistory();
+                        if(ParentAnimationStation)
+                            ParentAnimationStation->SetSpecialMoveAnimation(thisMove.Animation, thisMove.RequiredTriggerCombos[triggerIndex].OptionalParams);
+                        SwitchClearAwaitingAllRelease = true;
+
+                        return true;
+                    }
                 }
             }
         }
@@ -65,6 +76,11 @@ void SpecialMoveSystem::SetDirectionMasks(uint32_t UpMask, uint32_t DownMask, ui
     SPECIAL_MOVE_DIRECTION_MASK_DOWN = DownMask;
     SPECIAL_MOVE_DIRECTION_MASK_LEFT = LeftMask;
     SPECIAL_MOVE_DIRECTION_MASK_RIGHT = RightMask;
+}
+
+void SpecialMoveSystem::SetButtonMasks(uint32_t P1Mask)
+{
+    SPECIAL_MOVE_BUTTON_MASK_P1 = P1Mask;
 }
 
 SpecialMoveStickDirection SpecialMoveSystem::GetDirectionPressed(uint32_t PressedButtons)
@@ -205,43 +221,18 @@ void SpecialMoveSystem::UpdateHistoryForInput(uint32_t buttonMask, SpecialMoveSt
         SwitchHistoryCreateNew(buttonMask, directionHeld);
 }
 
-void SpecialMoveSystem::GetComboArrayForMove(SpecialMoveInputTypes InputType, std::vector<ComboEntry>& comboArray)
-{ 
-    switch(InputType)
-    {
-        case SpecialMoveInputTypes::SPECIALMOVE_INPUT_QUARTER_DOWN_RIGHT:
-        {
-            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWN, 0));
-            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNRIGHT, 0));
-            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_RIGHT, 0));
-        } break;
-
-        case SpecialMoveInputTypes::SPECIALMOVE_INPUT_DP_RIGHT:
-        {
-            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_RIGHT, 0));
-            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWN, 0));
-            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNRIGHT, 0));
-        } break;
-        
-        case SpecialMoveInputTypes::SPECIALMOVE_INPUT_DP_SHORTCUT_RIGHT:
-        {
-            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNRIGHT, 0));
-            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNRIGHT, 0));
-        } break;
-        
-        default:
-            break;
-    }
-}
-
 bool SpecialMoveSystem::DoesInputMatch(int HistoryIndex, ComboEntry& ComboInput, bool bIsChargeMove)
 {
     if(ComboInput.DirectionInput != SpecialMoveStickDirection::SPECIALMOVE_STICK_INVALID)
     {
-        //direction input check
+        //exact match always true
+        if(SwitchHistory[HistoryIndex].DirectionInput == ComboInput.DirectionInput)
+            return true;
+
+        //charge moves are allowed to use diagonals
         if(bIsChargeMove)
         {
-            //Charge moves allow the surrounding directions to also count
+             //Charge moves allow the surrounding directions to also count
             if(ComboInput.DirectionInput == SpecialMoveStickDirection::SPECIALMOVE_STICK_LEFT)
             {
                 return SwitchHistory[HistoryIndex].DirectionInput == SpecialMoveStickDirection::SPECIALMOVE_STICK_UPLEFT || SwitchHistory[HistoryIndex].DirectionInput == SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNLEFT;
@@ -260,8 +251,8 @@ bool SpecialMoveSystem::DoesInputMatch(int HistoryIndex, ComboEntry& ComboInput,
             }
         }
 
-        //other wise just an exact match will do
-        return SwitchHistory[HistoryIndex].DirectionInput == ComboInput.DirectionInput;
+        //other wise we didnt find a match
+        return false;
     }
 
     //otherwise its button matching
@@ -273,21 +264,23 @@ int64_t SpecialMoveSystem::GetMsBetweenTimes(absolute_time_t start, absolute_tim
     return absolute_time_diff_us(start, end) / 1000;
 }
 
-bool SpecialMoveSystem::TestForActivatedSpecialMove(SpecialMoveDescription* MoveToTestFor, int ComboIndex, int TriggerIndex)
+bool SpecialMoveSystem::TestForActivatedSpecialMove(SpecialMoveDescription* MoveToTestFor, int ComboIndex, int TriggerIndex, SpecialMoveCircleType CircleStartDirection)
 {
     int lastIndexComboInputWasFound = -1;
     bool bHasFinishedDoingTriggerButtons = false;
     absolute_time_t timeNow = thisFrameTime;
     absolute_time_t timeLastInputSet = thisFrameTime;
-    int numMissed = 0;
+    int numMissedConsecutive = 0;
+    int numMissedMiddle = 0;
     bool bIsChargeCombo = MoveToTestFor->bIsChargeMove;
     int64_t OptionsChargeTime = Options.ChargeTimeInMs;
 
     // Get combo array
     std::vector<ComboEntry> comboArray;
-    GetComboArrayForMove(MoveToTestFor->RequiredInputCombos[ComboIndex], comboArray);
+    GetComboArrayForMove(MoveToTestFor->RequiredInputCombos[ComboIndex], comboArray, CircleStartDirection);
     int moveLength = comboArray.size();
-    bool bAllowMiss = moveLength >= COMBO_INPUT_COUNT_FOR_ONE_OUT_OF_TWO;
+    bool bAllowNoConsecutiveMiss = moveLength >= COMBO_INPUT_COUNT_FOR_ONE_OUT_OF_TWO;
+    bool bAllowMissInMiddle = moveLength >= COMBO_INPUT_COUNT_FOR_ONE_MISSING_IN_MIDDLE;
     
     // put triggers on the end for easier processing
     int triggerLength = 0;
@@ -363,8 +356,14 @@ bool SpecialMoveSystem::TestForActivatedSpecialMove(SpecialMoveDescription* Move
         bool bFoundInput = false;
         for (int historyIndex = lastIndexComboInputWasFound + 1; historyIndex < MAX_INPUT_HISTORY; ++historyIndex)
         {
+            AnimationStation::printfs[0] = "LastTested = " + std::to_string(comboSearchIndex);
             if (DoesInputMatch(historyIndex, comboArray[comboSearchIndex], bIsChargeCombo))
-            {
+            {   
+                if(comboSearchIndex == 0 || comboSearchIndex == 1)
+                {
+                    AnimationStation::printfs[1] = "passed = " + std::to_string(comboSearchIndex);
+                }
+
                 bFoundInput = true;
 
                 // Is this the last input and if so is it a charge input as they're special and
@@ -387,12 +386,19 @@ bool SpecialMoveSystem::TestForActivatedSpecialMove(SpecialMoveDescription* Move
                 absolute_time_t timeToUse = SwitchHistory[historyIndex].bIsHeld ? SwitchHistory[historyIndex].TimeSet : SwitchHistory[historyIndex].TimeReleased;
                 if (GetMsBetweenTimes(timeToUse, timeLastInputSet) > COMBO_INPUT_TIME_WINDOW)
                 {
-                    if (bAllowMiss)
+                    if (bAllowNoConsecutiveMiss)
                     {
                         // too long between inputs on this one. but might be ok to continue if this was an older input in the history
-                        numMissed++;
-                        if (numMissed == 2)
+                        numMissedConsecutive++;
+                        if (numMissedConsecutive == 2)
                             return false; // too many missing
+                    }
+                    else if(bAllowMissInMiddle)
+                    {
+                        if(comboSearchIndex != 0 &&numMissedMiddle == 0)
+                            numMissedMiddle++;
+                        else
+                            return false;
                     }
                     else
                         return false; // too long between inputs
@@ -401,7 +407,7 @@ bool SpecialMoveSystem::TestForActivatedSpecialMove(SpecialMoveDescription* Move
                 // Store this time and location and move onto next input
                 timeLastInputSet = SwitchHistory[historyIndex].TimeSet;
                 lastIndexComboInputWasFound = historyIndex;
-                numMissed = 0;
+                numMissedConsecutive = 0;
 
                 break;
             }
@@ -409,18 +415,335 @@ bool SpecialMoveSystem::TestForActivatedSpecialMove(SpecialMoveDescription* Move
 
         if (bFoundInput == false)
         {
-            if (bAllowMiss)
-            {
-                // didnt find this one. but might be ok to continue
-                numMissed++;
-                if (numMissed == 2)
-                    return false; // too many missing
-            }
-            else
-                return false; // we havent found the input at all
+                if (bAllowNoConsecutiveMiss)
+                {
+                    // too long between inputs on this one. but might be ok to continue if this was an older input in the history
+                    numMissedConsecutive++;
+                    if (numMissedConsecutive == 2)
+                        return false; // too many missing
+                }
+                else if(bAllowMissInMiddle)
+                {
+                    if(comboSearchIndex != 0 &&numMissedMiddle == 0)
+                        numMissedMiddle++;
+                    else
+                        return false;
+                }
+                else
+                    return false; // we havent found the input at all
         }
     }
 
     // if we get here we've found every single input! Combo passed
     return true;
+}
+
+void SpecialMoveSystem::GetComboArrayForMove(SpecialMoveInputTypes InputType, std::vector<ComboEntry>& comboArray, SpecialMoveCircleType CircleStartDirection)
+{ 
+    switch(InputType)
+    {
+        case SpecialMoveInputTypes::SPECIALMOVE_INPUT_QUARTER_DOWN_RIGHT:
+        {
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWN, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNRIGHT, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_RIGHT, 0));
+        } break;
+
+        case SpecialMoveInputTypes::SPECIALMOVE_INPUT_QUARTER_DOWN_LEFT:
+        {
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWN, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNLEFT, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_LEFT, 0));
+        } break;
+        
+        case SpecialMoveInputTypes::SPECIALMOVE_INPUT_DP_RIGHT:
+        {
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_RIGHT, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWN, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNRIGHT, 0));
+        } break;
+        
+        case SpecialMoveInputTypes::SPECIALMOVE_INPUT_DP_LEFT:
+        {
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_LEFT, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWN, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNLEFT, 0));
+        } break;
+        
+        case SpecialMoveInputTypes::SPECIALMOVE_INPUT_DP_SHORTCUT_RIGHT:
+        {
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNRIGHT, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNRIGHT, 0));
+        } break;
+        
+        case SpecialMoveInputTypes::SPECIALMOVE_INPUT_DP_SHORTCUT_LEFT:
+        {
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNLEFT, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNLEFT, 0));
+        } break;
+        
+        case SpecialMoveInputTypes::SPECIALMOVE_INPUT_HALFCIRCLE_LEFT_RIGHT:
+        {
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_LEFT, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNLEFT, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWN, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNRIGHT, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_RIGHT, 0));
+        } break;
+
+        case SpecialMoveInputTypes::SPECIALMOVE_INPUT_HALFCIRCLE_RIGHT_LEFT:
+        {
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_RIGHT, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNRIGHT, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWN, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNLEFT, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_LEFT, 0));
+        } break;
+
+        case SpecialMoveInputTypes::SPECIALMOVE_INPUT_DOUBLE_DOWN:
+        {
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWN, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWN, 0));
+
+        } break;
+
+        case SpecialMoveInputTypes::SPECIALMOVE_INPUT_DOUBLE_QUARTER_DOWN_RIGHT:
+        {
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWN, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNRIGHT, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_RIGHT, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWN, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNRIGHT, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_RIGHT, 0));
+        } break;
+
+        case SpecialMoveInputTypes::SPECIALMOVE_INPUT_DOUBLE_QUARTER_DOWN_LEFT:
+        {
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWN, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNLEFT, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_LEFT, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWN, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNLEFT, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_LEFT, 0));
+        } break;
+
+        case SpecialMoveInputTypes::SPECIALMOVE_INPUT_CHARGE_LEFT_RIGHT:
+        {
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_LEFT, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_RIGHT, 0));
+        } break;
+
+        case SpecialMoveInputTypes::SPECIALMOVE_INPUT_CHARGE_RIGHT_LEFT:
+        {
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_RIGHT, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_LEFT, 0));
+        } break;
+
+        case SpecialMoveInputTypes::SPECIALMOVE_INPUT_CHARGE_DOWN_UP:
+        {
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWN, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_UP, 0));
+        } break;
+
+        case SpecialMoveInputTypes::SPECIALMOVE_INPUT_SUPERCHARGE_LEFT_RIGHT:
+        {
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_LEFT, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_RIGHT, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_LEFT, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_RIGHT, 0));
+        } break;
+
+        case SpecialMoveInputTypes::SPECIALMOVE_INPUT_SUPERCHARGE_RIGHT_LEFT:
+        {
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_RIGHT, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_LEFT, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_RIGHT, 0));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_LEFT, 0));
+        } break;
+
+        case SpecialMoveInputTypes::SPECIALMOVE_INPUT_RAGING_DEMON_RIGHT:
+        {
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_INVALID, SPECIAL_MOVE_BUTTON_MASK_P1));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_INVALID, SPECIAL_MOVE_BUTTON_MASK_P1));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_RIGHT, 0));
+        } break;
+
+        case SpecialMoveInputTypes::SPECIALMOVE_INPUT_RAGING_DEMON_LEFT:
+        {
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_INVALID, SPECIAL_MOVE_BUTTON_MASK_P1));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_INVALID, SPECIAL_MOVE_BUTTON_MASK_P1));
+            comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_LEFT, 0));
+        } break;
+
+        case SpecialMoveInputTypes::SPECIALMOVE_INPUT_360:
+        {
+            if(CircleStartDirection == SPECIALMOVE_CIRCLETYPE_RIGHT_LEFT || CircleStartDirection == SPECIALMOVE_CIRCLETYPE_RIGHT_DOWN ||CircleStartDirection == SPECIALMOVE_CIRCLETYPE_RIGHT_UP ||CircleStartDirection == SPECIALMOVE_CIRCLETYPE_RIGHT_RIGHT)
+            {
+                if(CircleStartDirection == SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_RIGHT_LEFT)
+                {
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_LEFT, 0));
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNLEFT, 0));
+                }
+                if(CircleStartDirection == SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_RIGHT_LEFT || CircleStartDirection == SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_RIGHT_DOWN)
+                {
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWN, 0));
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNRIGHT, 0));
+                }
+                if(CircleStartDirection == SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_RIGHT_LEFT || CircleStartDirection == SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_RIGHT_DOWN || CircleStartDirection == SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_RIGHT_RIGHT)
+                {
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_RIGHT, 0));
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_UPRIGHT, 0));
+                }
+
+                comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_UP, 0));
+
+                if(CircleStartDirection != SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_RIGHT_LEFT)
+                {
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_UPLEFT, 0));
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_LEFT, 0));
+                }
+                if(CircleStartDirection != SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_RIGHT_LEFT && CircleStartDirection != SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_RIGHT_DOWN)
+                {
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNLEFT, 0));
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWN, 0));
+                }
+                if(CircleStartDirection != SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_RIGHT_LEFT && CircleStartDirection != SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_RIGHT_DOWN && CircleStartDirection != SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_RIGHT_RIGHT)
+                {
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNRIGHT, 0));
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_RIGHT, 0));
+                }
+            }
+            else
+            {
+                if(CircleStartDirection == SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_LEFT_RIGHT)
+                {
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_RIGHT, 0));
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNRIGHT, 0));
+                }
+                if(CircleStartDirection == SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_LEFT_RIGHT || CircleStartDirection == SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_LEFT_DOWN)
+                {
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWN, 0));
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNLEFT, 0));
+                }
+                if(CircleStartDirection == SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_LEFT_RIGHT || CircleStartDirection == SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_LEFT_DOWN || CircleStartDirection == SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_LEFT_LEFT)
+                {
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_LEFT, 0));
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_UPLEFT, 0));
+                }
+
+                comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_UP, 0));
+
+                if(CircleStartDirection != SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_LEFT_RIGHT)
+                {
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_UPRIGHT, 0));
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_RIGHT, 0));
+                }
+                if(CircleStartDirection != SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_LEFT_RIGHT && CircleStartDirection != SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_LEFT_DOWN)
+                {
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNRIGHT, 0));
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWN, 0));
+                }
+                if(CircleStartDirection != SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_LEFT_RIGHT && CircleStartDirection != SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_LEFT_DOWN && CircleStartDirection != SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_LEFT_LEFT)
+                {
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNLEFT, 0));
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_LEFT, 0));
+                }
+            }
+        } break;
+        
+        case SpecialMoveInputTypes::SPECIALMOVE_INPUT_720:
+        {
+            if(CircleStartDirection == SPECIALMOVE_CIRCLETYPE_RIGHT_LEFT || CircleStartDirection == SPECIALMOVE_CIRCLETYPE_RIGHT_DOWN ||CircleStartDirection == SPECIALMOVE_CIRCLETYPE_RIGHT_UP ||CircleStartDirection == SPECIALMOVE_CIRCLETYPE_RIGHT_RIGHT)
+            {
+                if(CircleStartDirection == SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_RIGHT_LEFT)
+                {
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_LEFT, 0));
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNLEFT, 0));
+                }
+                if(CircleStartDirection == SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_RIGHT_LEFT || CircleStartDirection == SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_RIGHT_DOWN)
+                {
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWN, 0));
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNRIGHT, 0));
+                }
+                if(CircleStartDirection == SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_RIGHT_LEFT || CircleStartDirection == SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_RIGHT_DOWN || CircleStartDirection == SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_RIGHT_RIGHT)
+                {
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_RIGHT, 0));
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_UPRIGHT, 0));
+                }
+
+                comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_UP, 0));
+                comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_UPLEFT, 0));
+                comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_LEFT, 0));
+                comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNLEFT, 0));
+                comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWN, 0));
+                comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNRIGHT, 0));
+                comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_RIGHT, 0));
+                comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_UPRIGHT, 0));
+                comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_UP, 0));
+
+                if(CircleStartDirection != SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_RIGHT_LEFT)
+                {
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_UPLEFT, 0));
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_LEFT, 0));
+                }
+                if(CircleStartDirection != SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_RIGHT_LEFT && CircleStartDirection != SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_RIGHT_DOWN)
+                {
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNLEFT, 0));
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWN, 0));
+                }
+                if(CircleStartDirection != SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_RIGHT_LEFT && CircleStartDirection != SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_RIGHT_DOWN && CircleStartDirection != SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_RIGHT_RIGHT)
+                {
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNRIGHT, 0));
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_RIGHT, 0));
+                }
+            }
+            else
+            {
+                if(CircleStartDirection == SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_LEFT_RIGHT)
+                {
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_RIGHT, 0));
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNRIGHT, 0));
+                }
+                if(CircleStartDirection == SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_LEFT_RIGHT || CircleStartDirection == SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_LEFT_DOWN)
+                {
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWN, 0));
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNLEFT, 0));
+                }
+                if(CircleStartDirection == SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_LEFT_RIGHT || CircleStartDirection == SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_LEFT_DOWN || CircleStartDirection == SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_LEFT_LEFT)
+                {
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_LEFT, 0));
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_UPLEFT, 0));
+                }
+
+                comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_UP, 0));
+                comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_UPRIGHT, 0));
+                comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_RIGHT, 0));
+                comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNRIGHT, 0));
+                comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWN, 0));
+                comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNLEFT, 0));
+                comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_LEFT, 0));
+                comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_UPLEFT, 0));
+                comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_UP, 0));
+
+                if(CircleStartDirection != SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_LEFT_RIGHT)
+                {
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_UPRIGHT, 0));
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_RIGHT, 0));
+                }
+                if(CircleStartDirection != SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_LEFT_RIGHT && CircleStartDirection != SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_LEFT_DOWN)
+                {
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNRIGHT, 0));
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWN, 0));
+                }
+                if(CircleStartDirection != SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_LEFT_RIGHT && CircleStartDirection != SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_LEFT_DOWN && CircleStartDirection != SpecialMoveCircleType::SPECIALMOVE_CIRCLETYPE_LEFT_LEFT)
+                {
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWNLEFT, 0));
+                    comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_LEFT, 0));
+                }
+            }
+        } break;
+
+        default:
+            break;
+    }
 }

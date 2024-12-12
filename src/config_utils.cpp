@@ -477,36 +477,22 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
     //SpecialMoveOptions
     //TESTING
-    if(config.specialMoveOptions.profiles[0].AllSpecialMoves_count == 0)
+    if(/*config.specialMoveOptions.profiles[0].AllSpecialMoves_count == 0*/true)
     {
-        config.specialMoveOptions.profiles[0].AllSpecialMoves_count = 2;
+        config.specialMoveOptions.profiles[0].AllSpecialMoves_count = 1;
         
-        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[0], bIsChargeMove, false);
-        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[0], Animation, SpecialMoveEffects_Proto::SpecialMoveEffects_Proto_SMEFFECT_WAVE);
+        config.specialMoveOptions.profiles[0].AllSpecialMoves[0].bIsChargeMove = false;
+        config.specialMoveOptions.profiles[0].AllSpecialMoves[0].Animation = SpecialMoveEffects_Proto::SpecialMoveEffects_Proto_SMEFFECT_CIRCLECOLOR;
         config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredInputCombos_count = 1;
-        config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredInputCombos[0] = SpecialMoveInputTypes_Proto::SpecialMoveInputTypes_Proto_INPUT_QUARTER_DOWN_RIGHT;
-        config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos_count = 3;
-        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[0], RequiredTriggers, GAMEPAD_MASK_B3);
-        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[0], OptionalParams, 2 + (2 << 4) + (1 << 8) + (0 << 12) + (10 << 16)); //right //slow //1 loop //all lights //colour blue
-        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[1], RequiredTriggers, GAMEPAD_MASK_B4);
-        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[1], OptionalParams, 2 + (1 << 4) + (1 << 8) + (1 << 12) + (10 << 16)); //right //medium //1 loop //top lights //colour blue
-        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[2], RequiredTriggers, GAMEPAD_MASK_R1);
-        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[2], OptionalParams, 2 + (0 << 4) + (1 << 8) + (2 << 12) + (10 << 16)); //right //fast //1 loop //bottom lights //colour blue
-
-        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[1], bIsChargeMove, false);
-        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[1], Animation, SpecialMoveEffects_Proto::SpecialMoveEffects_Proto_SMEFFECT_PULSECOLOR);
-        config.specialMoveOptions.profiles[0].AllSpecialMoves[1].RequiredInputCombos_count = 2;
-        config.specialMoveOptions.profiles[0].AllSpecialMoves[1].RequiredInputCombos[0] = SpecialMoveInputTypes_Proto::SpecialMoveInputTypes_Proto_INPUT_DP_RIGHT;
-        config.specialMoveOptions.profiles[0].AllSpecialMoves[1].RequiredInputCombos[1] = SpecialMoveInputTypes_Proto::SpecialMoveInputTypes_Proto_INPUT_DP_SHORTCUT_RIGHT;
-        config.specialMoveOptions.profiles[0].AllSpecialMoves[1].RequiredTriggerCombos_count = 3;
-        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[1].RequiredTriggerCombos[0], RequiredTriggers, GAMEPAD_MASK_B3);
-        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[1].RequiredTriggerCombos[0], OptionalParams, 0 + (3 << 4) + (0 << 8) + (1 << 16)); //instant in //long duration //instant out //colour white
- 
-        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[1].RequiredTriggerCombos[1], RequiredTriggers, GAMEPAD_MASK_B4);
-        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[1].RequiredTriggerCombos[1], OptionalParams, 3 + (2 << 4) + (3 << 8) + (1 << 16)); //med in //med duration //med out //colour white
-
-        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[1].RequiredTriggerCombos[2], RequiredTriggers, GAMEPAD_MASK_R1);
-        INIT_UNSET_PROPERTY(config.specialMoveOptions.profiles[0].AllSpecialMoves[1].RequiredTriggerCombos[2], OptionalParams, 5 + (1 << 4) + (5 << 8) + (1 << 16)); //v.slow in //short duration //v.slow out //colour white
+        config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredInputCombos[0] = SpecialMoveInputTypes_Proto::SpecialMoveInputTypes_Proto_INPUT_720;
+        //config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredInputCombos[1] = SpecialMoveInputTypes_Proto::SpecialMoveInputTypes_Proto_INPUT_RAGING_DEMON_LEFT;
+        config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos_count = 1;
+        config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[0].RequiredTriggers = GAMEPAD_MASK_B3;
+        config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[0].OptionalParams = 0 + (1 << 4) + (1 << 8) + (11 << 12) + (0 << 20); //anti //slow //1 loop //colour blue //colour black
+        //config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[1].RequiredTriggers = GAMEPAD_MASK_B4;
+        //config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[1].OptionalParams = 0 + (2 << 4) + (4 << 8) + (11 << 12) + (2 << 20); //anti //medium //4 loop //colour blue //colour Red
+        //config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[2].RequiredTriggers = GAMEPAD_MASK_R1;
+        //config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[2].OptionalParams = 1 + (3 << 4) + (4 << 8) + (11 << 12) + (2 << 20); //clock //fast //4 loop //colour blue //colour Red
     }
 
     if(config.specialMoveOptions.profiles_count == 0)

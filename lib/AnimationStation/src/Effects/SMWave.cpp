@@ -43,9 +43,6 @@ void SMWave::SetOptionalParams(uint32_t OptionalParams)
     WaveDivider = (SpecialMoveAnimationDivider)((OptionalParams >> 12) & 0xF);
     ColourIndex = (uint8_t)((OptionalParams >> 16) & 0xFF);
 
-WaveLoops = 5;
-WaveDirection = SpecialMoveAnimationDirection::SPECIALMOVE_DIRECTION_RIGHT;
-
     CurrentState = SMWaveState::SM_WAVE_STATE_PREFRAMES;
 }
 

@@ -18,13 +18,13 @@
 
 #define COMBO_INPUT_TIME_WINDOW 250 //Maximum time between combo movements that arent a charge
 #define COMBO_TRIGGER_INPUT_TIME_WINDOW 200 //Maximum time between combined button inputs eg PP, PPP, KK or PK etc
-#define COMBO_INPUT_COUNT_FOR_ONE_OUT_OF_TWO 7 //if the combo input is 7 or more moves then the input system will allow you to succeed if you dont miss 2 in a row window. eg LDRU would be fine for a SPD
+#define COMBO_INPUT_COUNT_FOR_ONE_OUT_OF_TWO 7 //if the combo input is 7  or more moves then the input system will allow you to succeed if you dont miss 2 in a row window. eg LDRU would be fine for a SPD
+#define COMBO_INPUT_COUNT_FOR_ONE_MISSING_IN_MIDDLE 5 //if the combo input is 5 (HCF) or more moves then the input system will allow you to succeed if you dont miss more than 1 in the middle
 
 //List of specialMove animation
 typedef enum
 {
   SPECIALMOVE_SMEFFECT_WAVE,
-  SPECIALMOVE_SMEFFECT_SUPERWAVE,
   SPECIALMOVE_SMEFFECT_PULSECOLOR,
   SPECIALMOVE_SMEFFECT_CIRCLECOLOR,
   SPECIALMOVE_SMEFFECT_KNIGHTRIDER,
@@ -78,6 +78,20 @@ typedef enum
   SPECIALMOVE_INPUT_DP_SHORTCUT_RIGHT,
   SPECIALMOVE_INPUT_DP_LEFT,
   SPECIALMOVE_INPUT_DP_SHORTCUT_LEFT,
+  SPECIALMOVE_INPUT_HALFCIRCLE_LEFT_RIGHT,
+  SPECIALMOVE_INPUT_HALFCIRCLE_RIGHT_LEFT,
+  SPECIALMOVE_INPUT_DOUBLE_DOWN,
+  SPECIALMOVE_INPUT_DOUBLE_QUARTER_DOWN_RIGHT,
+  SPECIALMOVE_INPUT_DOUBLE_QUARTER_DOWN_LEFT,
+  SPECIALMOVE_INPUT_CHARGE_LEFT_RIGHT,
+  SPECIALMOVE_INPUT_CHARGE_RIGHT_LEFT,
+  SPECIALMOVE_INPUT_CHARGE_DOWN_UP,
+  SPECIALMOVE_INPUT_SUPERCHARGE_LEFT_RIGHT,
+  SPECIALMOVE_INPUT_SUPERCHARGE_RIGHT_LEFT,
+  SPECIALMOVE_INPUT_360,
+  SPECIALMOVE_INPUT_720,
+  SPECIALMOVE_INPUT_RAGING_DEMON_RIGHT,
+  SPECIALMOVE_INPUT_RAGING_DEMON_LEFT,
 } SpecialMoveInputTypes;
 
 // SpecialMove joystick directions
@@ -93,6 +107,20 @@ typedef enum
   SPECIALMOVE_STICK_DOWNRIGHT,
   SPECIALMOVE_STICK_RIGHT,
 } SpecialMoveStickDirection;
+
+// CircleType
+typedef enum
+{
+  SPECIALMOVE_CIRCLETYPE_LEFT_LEFT,
+  SPECIALMOVE_CIRCLETYPE_LEFT_DOWN,
+  SPECIALMOVE_CIRCLETYPE_LEFT_RIGHT,
+  SPECIALMOVE_CIRCLETYPE_LEFT_UP,
+  SPECIALMOVE_CIRCLETYPE_RIGHT_LEFT,
+  SPECIALMOVE_CIRCLETYPE_RIGHT_DOWN,
+  SPECIALMOVE_CIRCLETYPE_RIGHT_RIGHT,
+  SPECIALMOVE_CIRCLETYPE_RIGHT_UP,
+  SPECIALMOVE_CIRCLETYPE_MAX,
+} SpecialMoveCircleType;
 
 struct ComboEntry
 {
@@ -159,6 +187,7 @@ public:
  
     //passed in user options
     void SetDirectionMasks(uint32_t UpMask, uint32_t DownMask, uint32_t LeftMask, uint32_t RightMask);
+    void SetButtonMasks(uint32_t P1Mask);
 
     //What buttons (logical ones) are pressed this frame
     void HandlePressedButtons(uint32_t pressedButtons);
@@ -179,10 +208,10 @@ protected:
     void SwitchHistoryCreateNew(uint32_t buttonMask, SpecialMoveStickDirection directionHeld);
 
     bool TestAllMoves();
-    bool TestForActivatedSpecialMove(SpecialMoveDescription* MoveToTestFor, int ComboIndex, int TriggerIndex);
+    bool TestForActivatedSpecialMove(SpecialMoveDescription* MoveToTestFor, int ComboIndex, int TriggerIndex, SpecialMoveCircleType CircleStartDirection);
     void StartMoveAnimation(SpecialMoveEffects AnimationToPlay, uint32_t OptionalParams);
 
-    void GetComboArrayForMove(SpecialMoveInputTypes InputType, std::vector<ComboEntry>& comboArray);
+    void GetComboArrayForMove(SpecialMoveInputTypes InputType, std::vector<ComboEntry>& comboArray, SpecialMoveCircleType CircleStartDirection);
 
     class AnimationStation* ParentAnimationStation;
 
@@ -198,6 +227,8 @@ protected:
     uint32_t SPECIAL_MOVE_DIRECTION_MASK_DOWN;
     uint32_t SPECIAL_MOVE_DIRECTION_MASK_LEFT;
     uint32_t SPECIAL_MOVE_DIRECTION_MASK_RIGHT;
+
+    uint32_t SPECIAL_MOVE_BUTTON_MASK_P1;
 
     bool bMoveIsRunning = false;
 };
