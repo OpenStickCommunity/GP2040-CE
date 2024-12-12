@@ -5,8 +5,6 @@
 extern uint32_t getMillis();
 
 void MainMenuScreen::init() {
-    stdio_init_all();
-
     getRenderer()->clearScreen();
     currentMenu = &mainMenu;
     previousMenu = nullptr;
