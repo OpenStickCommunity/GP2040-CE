@@ -1,25 +1,30 @@
 #include "MainMenuScreen.h"
+#include "hardware/watchdog.h"
+#include "system.h"
 
 extern uint32_t getMillis();
 
 void MainMenuScreen::init() {
-    //stdio_init_all();
+    stdio_init_all();
 
     getRenderer()->clearScreen();
     currentMenu = &mainMenu;
+    previousMenu = nullptr;
+
+    exitToScreen = -1;
 
     gpMenu = new GPMenu();
     gpMenu->setRenderer(getRenderer());
     gpMenu->setPosition(8, 16);
     gpMenu->setStrokeColor(1);
     gpMenu->setFillColor(1);
-    gpMenu->setMenuSize(18, 5);
+    gpMenu->setMenuSize(18, 4);
     gpMenu->setViewport(this->getViewport());
     gpMenu->setShape(GPShape_Type::GP_SHAPE_SQUARE);
     gpMenu->setMenuData(currentMenu);
+    gpMenu->setMenuTitle(MAIN_MENU_NAME);
     addElement(gpMenu);
 
-    // Setup Reverse Input Button
     mapMenuUp = new GamepadButtonMapping(0);
     mapMenuDown = new GamepadButtonMapping(0);
     mapMenuLeft = new GamepadButtonMapping(0);
@@ -27,6 +32,22 @@ void MainMenuScreen::init() {
     mapMenuSelect = new GamepadButtonMapping(0);
     mapMenuBack = new GamepadButtonMapping(0);
     mapMenuToggle = new GamepadButtonMapping(0);
+
+    // populate the profiles menu
+    uint8_t profileCount = (sizeof(Storage::getInstance().getProfileOptions().gpioMappingsSets)/sizeof(GpioMappings))+1;
+    for (uint8_t profileCtr = 0; profileCtr < profileCount; profileCtr++) {
+        std::string menuLabel = "";
+        if (profileCtr == 0) {
+            menuLabel = Storage::getInstance().getGpioMappings().profileLabel;
+        } else {
+            menuLabel = Storage::getInstance().getProfileOptions().gpioMappingsSets[profileCtr-1].profileLabel;
+        }
+        if (menuLabel.empty()) {
+            menuLabel = "Profile #" + std::to_string(profileCtr);
+        }
+        MenuEntry menuEntry = {menuLabel, NULL, nullptr, std::bind(&MainMenuScreen::currentProfile, this), std::bind(&MainMenuScreen::selectProfile, this), profileCtr};
+        profilesMenu.push_back(menuEntry);
+    }
 
     GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
@@ -45,18 +66,10 @@ void MainMenuScreen::init() {
 
 void MainMenuScreen::shutdown() {
     clearElements();
+    exitToScreen = -1;
 }
 
 void MainMenuScreen::drawScreen() {
-    getRenderer()->drawText(0, 0, "012345678901234567890");
-    //
-    //for (size_t i = 0; i < currentMenu->size(); ++i) {
-    //    MenuEntry entry = currentMenu->at(i);
-    //
-    //    getRenderer()->drawText(3, 3+i, entry.label);
-    //}
-    //
-    //getRenderer()->drawText(1, 3+menuIndex, ">");
 }
 
 void MainMenuScreen::setMenu(std::vector<MenuEntry>* menu) {
@@ -68,45 +81,146 @@ int8_t MainMenuScreen::update() {
     Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
 
     uint16_t buttonState = getGamepad()->state.buttons;
+    uint16_t menuSize = gpMenu->getDataSize();
+    bool changeIndex = false;
 
     if (!isPressed && prevValues != values) {
         if (values & mapMenuUp->pinMask) {
             if (menuIndex > 0) {
                 menuIndex--;
             } else {
-                menuIndex = gpMenu->getDataSize()-1;
+                menuIndex = menuSize-1;
             }
+            changeIndex = true;
             isPressed = true;
         } else if (values & mapMenuDown->pinMask) {
-            if (menuIndex < gpMenu->getDataSize()-1) {
+            if (menuIndex < menuSize-1) {
                 menuIndex++;
             } else {
                 menuIndex = 0;
             }
+            changeIndex = true;
             isPressed = true;
         } else if (values & mapMenuSelect->pinMask) {
-            currentMenu->at(menuIndex).action();
+            if (currentMenu->at(menuIndex).submenu != nullptr) {
+                previousMenu = currentMenu;
+                currentMenu = currentMenu->at(menuIndex).submenu;
+                gpMenu->setMenuData(currentMenu);
+                gpMenu->setMenuTitle(previousMenu->at(menuIndex).label);
+                menuIndex = 0;
+                changeIndex = true;
+            } else {
+                currentMenu->at(menuIndex).action();
+            }
+            isPressed = true;
+        } else if (values & mapMenuBack->pinMask) {
+            if (previousMenu != nullptr) {
+                currentMenu = previousMenu;
+                previousMenu = nullptr;
+                menuIndex = 0;
+                changeIndex = true;
+                gpMenu->setMenuData(currentMenu);
+                gpMenu->setMenuTitle(MAIN_MENU_NAME);
+            } else {
+                exitToScreen = DisplayMode::BUTTONS;
+                isPressed = false;
+            }
             isPressed = true;
         }
-        gpMenu->setIndex(menuIndex);
+
+        if (changeIndex) gpMenu->setIndex(menuIndex);
     } else {
         isPressed = false;
-    }
-
-    if (prevButtonState && !buttonState) {
-        switch (prevButtonState) {
-            default:
-                //prevDisplayMode = DisplayMode::CONFIG_INSTRUCTION;
-                break;
-        }
     }
 
     prevButtonState = buttonState;
     prevValues = values;
 
-    return -1;
+    return exitToScreen;
 }
 
 void MainMenuScreen::testMenu() {
     
+}
+
+void MainMenuScreen::saveAndExit() {
+    saveOptions();
+    exitToScreen = DisplayMode::BUTTONS;
+}
+
+int32_t MainMenuScreen::modeValue() {
+    return -1;
+}
+
+void MainMenuScreen::selectInputMode() {
+    if (currentMenu->at(menuIndex).optionValue != -1) {
+        if (Storage::getInstance().GetGamepad()->getOptions().inputMode != (InputMode)currentMenu->at(menuIndex).optionValue) {
+            Storage::getInstance().GetGamepad()->setInputMode((InputMode)currentMenu->at(menuIndex).optionValue);
+            saveOptions();
+        }
+    }
+}
+
+int32_t MainMenuScreen::currentInputMode() {
+    return Storage::getInstance().getGamepadOptions().inputMode;
+}
+
+void MainMenuScreen::selectDPadMode() {
+    if (currentMenu->at(menuIndex).optionValue != -1) {
+        Storage::getInstance().GetGamepad()->setDpadMode((DpadMode)currentMenu->at(menuIndex).optionValue);
+        saveOptions();
+    }
+}
+
+int32_t MainMenuScreen::currentDpadMode() {
+    return Storage::getInstance().getGamepadOptions().dpadMode;
+}
+
+void MainMenuScreen::selectSOCDMode() {
+    if (currentMenu->at(menuIndex).optionValue != -1) {
+        Storage::getInstance().GetGamepad()->setSOCDMode((SOCDMode)currentMenu->at(menuIndex).optionValue);
+        saveOptions();
+    }
+}
+
+int32_t MainMenuScreen::currentSOCDMode() {
+    return Storage::getInstance().getGamepadOptions().socdMode;
+}
+
+void MainMenuScreen::saveOptions() {
+    //Storage::getInstance().save(true);
+    //System::reboot(System::BootMode::DEFAULT);
+}
+
+void MainMenuScreen::selectProfile() {
+    if (currentMenu->at(menuIndex).optionValue != -1) {
+        Storage::getInstance().setProfile(currentMenu->at(menuIndex).optionValue);
+        saveOptions();
+    }
+}
+
+int32_t MainMenuScreen::currentProfile() {
+    return Storage::getInstance().GetGamepad()->getOptions().profileNumber;
+}
+
+void MainMenuScreen::selectFocusMode() {
+    if (currentMenu->at(menuIndex).optionValue != -1) {
+        Storage::getInstance().getAddonOptions().focusModeOptions.enabled = (bool)currentMenu->at(menuIndex).optionValue;
+        saveOptions();
+    }
+}
+
+int32_t MainMenuScreen::currentFocusMode() {
+    return Storage::getInstance().getAddonOptions().focusModeOptions.enabled;
+}
+
+void MainMenuScreen::selectTurboMode() {
+    if (currentMenu->at(menuIndex).optionValue != -1) {
+        Storage::getInstance().getAddonOptions().turboOptions.enabled = (bool)currentMenu->at(menuIndex).optionValue;
+        saveOptions();
+    }
+}
+
+int32_t MainMenuScreen::currentTurboMode() {
+    return Storage::getInstance().getAddonOptions().turboOptions.enabled;
 }

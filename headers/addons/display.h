@@ -211,6 +211,8 @@ private:
 	bool turnOffWhenSuspended;
 
     GPGFX_DisplayTypeOptions gpOptions;
+
+    GamepadButtonMapping *mapMenuToggle;
 };
 
 #endif

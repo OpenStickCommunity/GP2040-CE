@@ -54,14 +54,22 @@ void DisplayAddon::setup() {
     configMode = Storage::getInstance().GetConfigMode();
     turnOffWhenSuspended = options.turnOffWhenSuspended;
 
+    mapMenuToggle = new GamepadButtonMapping(0);
+    GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
+    for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
+        switch (pinMappings[pin].action) {
+            case GpioAction::MENU_NAVIGATION_TOGGLE: mapMenuToggle->pinMask |= 1 << pin; break;
+            default:    break;
+        }
+    }
+
     // set current display mode
     if (!configMode) {
-        //if (Storage::getInstance().getDisplayOptions().splashMode != static_cast<SplashMode>(SPLASH_MODE_NONE)) {
-        //    currDisplayMode = DisplayMode::SPLASH;
-        //} else {
-        //    currDisplayMode = DisplayMode::BUTTONS;
-        //}
-        currDisplayMode = DisplayMode::MAIN_MENU;
+        if (Storage::getInstance().getDisplayOptions().splashMode != static_cast<SplashMode>(SPLASH_MODE_NONE)) {
+            currDisplayMode = DisplayMode::SPLASH;
+        } else {
+            currDisplayMode = DisplayMode::BUTTONS;
+        }
     } else {
         currDisplayMode = DisplayMode::CONFIG_INSTRUCTION;
     }
@@ -170,6 +178,15 @@ void DisplayAddon::process() {
 
     int8_t screenReturn = gpScreen->update();
     gpScreen->draw();
+
+    if (!configMode && screenReturn < 0) {
+        Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
+        if (values & mapMenuToggle->pinMask) {
+            if (currDisplayMode != DisplayMode::MAIN_MENU) {
+                screenReturn = DisplayMode::MAIN_MENU;
+            }
+        }
+    }
 
     // -1 = we do not change state
     if (screenReturn >= 0) {

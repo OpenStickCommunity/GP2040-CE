@@ -16,6 +16,7 @@ class GPMenu : public GPShape {
         uint16_t getIndex() { return this->menuIndex; };
 
         void setMenuData(std::vector<MenuEntry>* menu) { this->menuEntryData = menu; };
+        void setMenuTitle(std::string title) { this->menuTitle = title; };
     private:
         uint16_t menuSizeX = 0;
         uint16_t menuSizeY = 0;
@@ -24,6 +25,7 @@ class GPMenu : public GPShape {
         uint16_t menuIndex = 0;
 
         std::vector<MenuEntry>* menuEntryData;
+        std::string menuTitle;
 };
 
 #endif
