@@ -69,7 +69,7 @@ static const uint8_t * xinput_get_string_descriptor(int index) {
 		pico_unique_board_id_t unique_id;
 		pico_get_unique_board_id(&unique_id);
         for(int i = 0; i < 3; i++) {
-            sprintf((char*)(&xinput_string_version[i*2+1]), "%02X", (uint8_t)unique_id.id[i]);
+            sprintf((char*)(&xinput_string_version[i*2+1]), "%02X", (uint8_t)unique_id.id[i+5]);
         }
 	}
 
