@@ -127,6 +127,7 @@ private:
 	GamepadButtonMapping *mapAnalogRSXPos;
 	GamepadButtonMapping *mapAnalogRSYNeg;
 	GamepadButtonMapping *mapAnalogRSYPos;
+	GamepadButtonMapping *mapAnalogTilt1;
 	GamepadButtonMapping *mapAnalogModLow;
 	GamepadButtonMapping *mapAnalogModHigh;
 };

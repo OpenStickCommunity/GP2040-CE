@@ -73,6 +73,7 @@ export const BUTTON_ACTIONS = {
 	ANALOG_DIRECTION_MOD_HIGH: 68,
 	BUTTON_PRESS_INPUT_REVERSE: 69,
 	SUSTAIN_FOCUS_MODE: 70,
+	Button_Press_Tilt1: 71,
 } as const;
 
 export const PIN_DIRECTIONS = {

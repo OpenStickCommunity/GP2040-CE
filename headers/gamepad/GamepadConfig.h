@@ -213,3 +213,6 @@
 #ifndef HOTKEY_16_ACTION
 #define HOTKEY_16_ACTION 0
 #endif
+#ifndef HOTKEY_17_Tilt1_Mask
+#define HOTKEY_17_Tilt1_Mask 71		// Tilt1
+#endif

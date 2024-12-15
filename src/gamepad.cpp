@@ -83,6 +83,7 @@ void Gamepad::setup()
 	mapAnalogRSXPos = new GamepadButtonMapping(ANALOG_DIRECTION_RS_X_POS);
 	mapAnalogRSYNeg = new GamepadButtonMapping(ANALOG_DIRECTION_RS_Y_NEG);
 	mapAnalogRSYPos = new GamepadButtonMapping(ANALOG_DIRECTION_RS_Y_POS);
+	mapAnalogTilt1	= new GamepadButtonMapping(Button_Press_Tilt1);
 
 	const auto assignCustomMappingToMaps = [&](GpioMappingInfo mapInfo, Pin_t pin) -> void {
 		if (mapDpadUp->buttonMask & mapInfo.customDpadMask)	mapDpadUp->pinMask |= 1 << pin;
@@ -161,6 +162,7 @@ void Gamepad::setup()
 			case GpioAction::ANALOG_DIRECTION_RS_X_POS:	mapAnalogRSXPos->pinMask |= 1 << pin; break;
 			case GpioAction::ANALOG_DIRECTION_RS_Y_NEG:	mapAnalogRSYNeg->pinMask |= 1 << pin; break;
 			case GpioAction::ANALOG_DIRECTION_RS_Y_POS:	mapAnalogRSYPos->pinMask |= 1 << pin; break;
+			case GpioAction::Button_Press_Tilt1:		mapAnalogTilt1->pinMask  |= 1 << pin; break;
 			default:				break;
 		}
 	}
@@ -220,6 +222,7 @@ void Gamepad::reinit()
 	delete mapAnalogRSXPos;
 	delete mapAnalogRSYNeg;
 	delete mapAnalogRSYPos;
+	delete mapAnalogTilt1;
 
 	// reinitialize pin mappings
 	this->setup();
@@ -365,32 +368,55 @@ void Gamepad::read()
 	else if (values & mapButtonRS->pinMask)	activeDpadMode = DpadMode::DPAD_MODE_RIGHT_ANALOG;
 	else					activeDpadMode = options.dpadMode;
 
-	if (values & mapAnalogLSXNeg->pinMask) {
+	// set the effective dpad mode based on settings + overrides
+	if (values & mapButtonDP->pinMask)	activeDpadMode = DpadMode::DPAD_MODE_DIGITAL;
+	else if (values & mapButtonLS->pinMask)	activeDpadMode = DpadMode::DPAD_MODE_LEFT_ANALOG;
+	else if (values & mapButtonRS->pinMask)	activeDpadMode = DpadMode::DPAD_MODE_RIGHT_ANALOG;
+	else					activeDpadMode = options.dpadMode;
+
+	// If The Tilt button is pressed, returns value for halfway-tilted input
+	if ((values & mapAnalogLSXNeg->pinMask) && !(values & mapAnalogTilt1->pinMask)) {
 		state.lx = GAMEPAD_JOYSTICK_MIN;
-	} else if (values & mapAnalogLSXPos->pinMask) {
+	}	else if ((values & mapAnalogLSXPos->pinMask) && !(values & mapAnalogTilt1->pinMask)) {  
 		state.lx = GAMEPAD_JOYSTICK_MAX;
+		}	else if (values & mapAnalogLSXNeg & mapAnalogTilt1->pinMask) {
+		state.lx = GAMEPAD_JOYSTICK_3rd;
+	} 			else if (values & mapAnalogLSXPos & mapAnalogTilt1->pinMask) {
+				state.lx = GAMEPAD_JOYSTICK_6th;
 	} else {
 		state.lx = joystickMid;
 	}
-	if (values & mapAnalogLSYNeg->pinMask) {
+	if ((values & mapAnalogLSYNeg->pinMask) && !(values & mapAnalogTilt1->pinMask)){
 		state.ly = GAMEPAD_JOYSTICK_MIN;
-	} else if (values & mapAnalogLSYPos->pinMask) {
+	} else if ((values & mapAnalogLSYPos->pinMask) && !(values & mapAnalogTilt1->pinMask)) {
 		state.ly = GAMEPAD_JOYSTICK_MAX;
+		}	else if (values & mapAnalogLSYNeg & mapAnalogTilt1->pinMask) {
+			state.ly = GAMEPAD_JOYSTICK_3rd;
+	} 			else if (values & mapAnalogLSYPos & mapAnalogTilt1->pinMask) {
+				state.ly = GAMEPAD_JOYSTICK_6th;
 	} else {
 		state.ly = joystickMid;
 	}
 
-	if (values & mapAnalogRSXNeg->pinMask) {
+	if ((values & mapAnalogRSXNeg->pinMask) && !(values & mapAnalogTilt1->pinMask)){
 		state.rx = GAMEPAD_JOYSTICK_MIN;
-	} else if (values & mapAnalogRSXPos->pinMask) {
+	} else if ((values & mapAnalogRSXPos->pinMask) && !(values & mapAnalogTilt1->pinMask)) {
 		state.rx = GAMEPAD_JOYSTICK_MAX;
+		}	else if (values & mapAnalogRSXNeg & mapAnalogTilt1->pinMask) {
+		state.rx = GAMEPAD_JOYSTICK_3rd;
+	} 			else if (values & mapAnalogRSXPos & mapAnalogTilt1->pinMask) {
+		state.ry = GAMEPAD_JOYSTICK_6th;
 	} else {
 		state.rx = joystickMid;
 	}
-	if (values & mapAnalogRSYNeg->pinMask) {
+	if ((values & mapAnalogRSYNeg->pinMask) && !(values & mapAnalogTilt1->pinMask)){
 		state.ry = GAMEPAD_JOYSTICK_MIN;
-	} else if (values & mapAnalogRSYPos->pinMask) {
+	} else if ((values & mapAnalogRSYPos->pinMask) && !(values & mapAnalogTilt1->pinMask)){
 		state.ry = GAMEPAD_JOYSTICK_MAX;
+		}	else if (values & mapAnalogRSYNeg & mapAnalogTilt1->pinMask) {
+		state.rx = GAMEPAD_JOYSTICK_3rd;
+			} else if (values & mapAnalogRSYPos & mapAnalogTilt1->pinMask) {
+		state.ry = GAMEPAD_JOYSTICK_6th;
 	} else {
 		state.ry = joystickMid;
 	}
