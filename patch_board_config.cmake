@@ -22,12 +22,13 @@ function (patch_board_config)
 		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/proto/config.proto ${PROTO_OUTPUT_DIR}
 		COMMAND ${VENV_BIN_DIR}/concatenate
 			-P ${PROTO_OUTPUT_DIR}
-			./build/${PROJECT_NAME}_${CMAKE_PROJECT_VERSION}_${GP2040_BOARDCONFIG}.bin
+			${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}_${CMAKE_PROJECT_VERSION}_${GP2040_BOARDCONFIG}.bin
 			--json-board-config-filename ./configs/${GP2040_BOARDCONFIG}/board-config.json
 			--backup
-			--new-filename ./build/${PROJECT_NAME}_${CMAKE_PROJECT_VERSION}_${GP2040_BOARDCONFIG}.uf2
+			--new-filename ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}_${CMAKE_PROJECT_VERSION}_${GP2040_BOARDCONFIG}.uf2
 		COMMAND ${VENV_BIN_DIR}/summarize-gp2040ce
-			--filename ./build/${PROJECT_NAME}_${CMAKE_PROJECT_VERSION}_${GP2040_BOARDCONFIG}.uf2
+			-P ${PROTO_OUTPUT_DIR}
+			--filename ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}_${CMAKE_PROJECT_VERSION}_${GP2040_BOARDCONFIG}.uf2
 		COMMENT "Patching binary with board config"
 	)
 endfunction()
