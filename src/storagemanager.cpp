@@ -212,9 +212,10 @@ void AnimationStorage::getAnimationOptions(AnimationOptions& options)
 	const AnimationOptions_Proto& optionsProto = Storage::getInstance().getAnimationOptions();
 	
 	options.checksum				= 0;
-	for(int index = 0; index < 4; ++index) //MAX_ANIMATION_PROFILES from AnimationStation.hpp
+	options.NumValidProfiles = optionsProto.profiles_count;
+	for(int index = 0; index < options.NumValidProfiles && index < 4; ++index) //MAX_ANIMATION_PROFILES from AnimationStation.hpp
 	{
-		options.profiles[index].bIsValidProfile = optionsProto.profiles[index].bIsValidProfile;
+		options.profiles[index].bEnabled = optionsProto.profiles[index].bEnabled;
 		options.profiles[index].baseNonPressedEffect = (AnimationNonPressedEffects)((int)optionsProto.profiles[index].baseNonPressedEffect);
 		options.profiles[index].basePressedEffect = (AnimationPressedEffects)((int)optionsProto.profiles[index].basePressedEffect);
 		options.profiles[index].baseCycleTime = optionsProto.profiles[index].baseCycleTime;
@@ -226,6 +227,7 @@ void AnimationStorage::getAnimationOptions(AnimationOptions& options)
 		options.profiles[index].buttonPressHoldTimeInMs = optionsProto.profiles[index].buttonPressHoldTimeInMs;
 		options.profiles[index].buttonPressFadeOutTimeInMs = optionsProto.profiles[index].buttonPressFadeOutTimeInMs;
 		options.profiles[index].nonPressedSpecialColour = optionsProto.profiles[index].nonPressedSpecialColour;
+		options.profiles[index].bUseCaseLightsInSpecialMoves = optionsProto.profiles[index].bUseCaseLightsInSpecialMoves;
 	}
 	options.brightness				= std::min<uint32_t>(optionsProto.brightness, 255);
 	options.baseProfileIndex		= std::min<uint32_t>(optionsProto.baseProfileIndex, 255);
@@ -238,6 +240,7 @@ void AnimationStorage::getSpecialMoveOptions(SpecialMoveOptions& options)
 	options.NumValidProfiles = optionsProto.profiles_count;
 	for(unsigned int profileIndex = 0; profileIndex < 4 && profileIndex < options.NumValidProfiles; ++profileIndex) //MAX_SPECIALMOVE_PROFILES from SpecialMoveSystem.hpp
 	{
+		options.profiles[profileIndex].bEnabled = optionsProto.profiles[profileIndex].bEnabled;
 		options.profiles[profileIndex].NumValidMoves = optionsProto.profiles[profileIndex].AllSpecialMoves_count;
 		for(unsigned int moveIndex = 0; moveIndex < 20 && moveIndex < options.profiles[profileIndex].NumValidMoves; ++moveIndex) //MAX_SPECIALMOVES from SpecialMoveSystem.hpp
 		{

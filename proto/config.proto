@@ -313,7 +313,9 @@ message SpecialMoveDescription_Proto
 // This has to be kept in sync with SpecialMoveProfile in SpecialMoveSystem.hpp
 message SpecialMoveProfile_Proto
 {
-    repeated SpecialMoveDescription_Proto AllSpecialMoves = 1 [(nanopb).max_count = 20]; //MAX_SPECIALMOVES from SpecialMoveSystem.hpp
+    optional bool bEnabled = 1;
+    repeated SpecialMoveDescription_Proto AllSpecialMoves = 2 [(nanopb).max_count = 20]; //MAX_SPECIALMOVES from SpecialMoveSystem.hpp
+    optional string Label = 3 [(nanopb).max_length = 12];
 };
 
 // This has to be kept in sync with SpecialMoveOptions in SpecialMoveSystem.hpp
@@ -327,7 +329,7 @@ message SpecialMoveOptions_Proto
 // This has to be kept in sync with AnimationProfile in AnimationStation.hpp
 message AnimationProfile_Proto
 {
-    optional bool bIsValidProfile = 1;
+    optional bool bEnabled = 1;
 
  	optional AnimationNonPressedEffects_Proto baseNonPressedEffect = 2;
   	optional AnimationPressedEffects_Proto basePressedEffect = 3;
@@ -341,6 +343,8 @@ message AnimationProfile_Proto
     optional uint32 buttonPressFadeOutTimeInMs = 8;
 
     optional uint32 nonPressedSpecialColour = 9;
+
+    optional bool bUseCaseLightsInSpecialMoves = 10;
 };
 
 // This has to be kept in sync with AnimationOptions in AnimationStation.hpp

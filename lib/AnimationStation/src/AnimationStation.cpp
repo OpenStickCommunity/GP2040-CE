@@ -70,6 +70,16 @@ void AnimationStation::HandleEvent(AnimationHotkey action)
     ChangeProfile(-1);
   }
 
+  //Switch to new profile
+  if (action == HOTKEY_LEDS_SPECIALMOVE_PROFILE_UP) 
+  {
+    specialMoveSystem.ChangeSpecialMoveProfile(1);
+  }
+  if (action == HOTKEY_LEDS_SPECIALMOVE_PROFILE_DOWN) 
+  {
+    specialMoveSystem.ChangeSpecialMoveProfile(-1);
+  }
+
   //Adjust existing profile hotkeys
   if (this->baseAnimation == nullptr || this->buttonAnimation == nullptr) 
   {
@@ -104,17 +114,20 @@ uint16_t AnimationStation::AdjustIndex(int changeSize)
   std::vector<int> validIndexes;
 
   //if no profiles defined then return -1 to turn everything off
+  if(options.NumValidProfiles == 0)
+    return -1;
+
+  //Check to see which ones are enabled. If none then return -1 to turn everything off
   for(int index = 0; index < MAX_ANIMATION_PROFILES; ++index)
   {
-    if(options.profiles[index].bIsValidProfile)
+    if(options.profiles[index].bEnabled)
       validIndexes.push_back(index);
   }
-
   if(validIndexes.size() == 0)
     return -1;
 
   //find index of current profile
-  int indexOfCurrentProfile = 0;
+  int indexOfCurrentProfile = -1;
   for(unsigned int index = 0; index < validIndexes.size(); ++index)
   {
     if(validIndexes[index] == (int)this->options.baseProfileIndex)
@@ -148,12 +161,14 @@ void AnimationStation::HandlePressedPins(std::vector<int32_t> pressedPins)
   if(pressedPins.size())
   {
     this->lastPressed = pressedPins;
-    this->buttonAnimation->UpdatePressed(pressedPins);
+    if(this->buttonAnimation)
+      this->buttonAnimation->UpdatePressed(pressedPins);
   }
   else
   {
     this->lastPressed.clear();
-    this->buttonAnimation->ClearPressed();
+    if(this->buttonAnimation)
+      this->buttonAnimation->ClearPressed();
   }
 }
 
@@ -322,11 +337,11 @@ void AnimationStation::SetMode(int8_t mode)
   }
 }
 
-void AnimationStation::SetOptions(AnimationOptions InOptions) 
+/*void AnimationStation::SetOptions(AnimationOptions InOptions) 
 {
   options = InOptions;
   AnimationStation::SetBrightness(options.brightness);
-}
+}*/
 
 ///////////////////////////////////
 // Brightness functions

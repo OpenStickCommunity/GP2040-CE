@@ -102,6 +102,7 @@ class ButtonLayoutScreen : public GPScreen {
         virtual int8_t update();
         virtual void init();
         virtual void shutdown();
+
     protected:
         virtual void drawScreen();
     private:
@@ -112,6 +113,9 @@ class ButtonLayoutScreen : public GPScreen {
         GPShape* addShape(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor);
         GPWidget* pushElement(GPButtonLayout element);
         void generateHeader();
+
+        void updateCustomHeaders();
+        void addCustomHeader(std::string newStr);
 
         const std::map<uint16_t, uint16_t> displayModeLookup = {
             {INPUT_MODE_PS3, 0},
@@ -144,13 +148,20 @@ class ButtonLayoutScreen : public GPScreen {
         std::deque<std::string> inputHistory;
         std::array<bool, INPUT_HISTORY_MAX_INPUTS> lastInput;
 
+        bool gamepadProfileModeDisplay;
+        bool ledAnimationProfileModeDisplay;
+        bool specialMoveProfileModeDisplay;
         bool profileModeDisplay;
         uint8_t profileDelay = 2;
         int profileDelayStart = 0;
+        std::string profileModeString;
+        uint8_t prevGamepadProfileNumber = 0;
+        uint8_t prevLEDAnimationProfileNumber = 0;
+        uint8_t prevSpecialMoveProfileNumber = 0;
+ 
         uint16_t prevButtonState = 0;
         uint8_t prevLayoutLeft = 0;
         uint8_t prevLayoutRight = 0;
-        uint8_t prevProfileNumber = 0;
         ButtonLayoutParamsLeft prevLeftOptions;
         ButtonLayoutParamsRight prevRightOptions;
 

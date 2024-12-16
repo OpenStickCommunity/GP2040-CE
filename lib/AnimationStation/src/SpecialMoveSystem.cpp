@@ -14,6 +14,73 @@ void SpecialMoveSystem::SetParentAnimationStation(class AnimationStation* InPare
     ClearHistory();
 }
 
+void SpecialMoveSystem::Init()
+{
+    AdjustSpecialMoveProfileIndex(0);
+}
+
+void SpecialMoveSystem::ChangeSpecialMoveProfile(int changeSize) 
+{
+    AdjustSpecialMoveProfileIndex(changeSize);
+}
+
+void SpecialMoveSystem::AdjustSpecialMoveProfileIndex(int changeSize)
+{
+    std::vector<int> validIndexes;
+
+    //if no profiles defined then return -1 to turn everything off
+    if(Options.NumValidProfiles == 0)
+    {
+        this->Options.CurrentProfileIndex = 0;
+        return;
+    }
+
+    for(int index = 0; index < MAX_SPECIALMOVE_PROFILES; ++index)
+    {
+        if(Options.profiles[index].bEnabled)
+            validIndexes.push_back(index);
+    }
+
+    if(validIndexes.size() == 0)
+    {
+        this->Options.CurrentProfileIndex = 0;
+        return;
+    }
+
+    //find index of current profile
+    int indexOfCurrentProfile = -1;
+    for(unsigned int index = 0; index < validIndexes.size(); ++index)
+    {
+        if(validIndexes[index] == (int)this->Options.CurrentProfileIndex)
+        {
+            indexOfCurrentProfile = index;
+            break;
+        }
+    }
+
+    //if we cant find it then this is probably the first call and the first profile isnt valid. Just return whichever is the first valid profile
+    if(indexOfCurrentProfile == -1)
+    {
+        this->Options.CurrentProfileIndex = 0;
+        return;
+    }
+
+    int newProfileIndex = indexOfCurrentProfile + changeSize;
+
+    if (newProfileIndex >= (int)validIndexes.size())
+    {
+        this->Options.CurrentProfileIndex = validIndexes[0];
+    }
+    else if (newProfileIndex < 0) 
+    {
+        this->Options.CurrentProfileIndex = validIndexes[validIndexes.size() - 1];
+    }
+    else
+    {
+        this->Options.CurrentProfileIndex = validIndexes[newProfileIndex];
+    }
+}
+
 void SpecialMoveSystem::Update()
 {
     thisFrameTime = get_absolute_time();
@@ -29,6 +96,10 @@ void SpecialMoveSystem::Update()
 
 bool SpecialMoveSystem::TestAllMoves()
 {
+    //Do we have any valid profiles?
+    if(Options.NumValidProfiles == 0 || Options.CurrentProfileIndex > Options.NumValidProfiles ||  Options.profiles[Options.CurrentProfileIndex].bEnabled == false)
+        return false;
+
     //Test Each move
     uint32_t numMoves = Options.profiles[Options.CurrentProfileIndex].NumValidMoves;
     for(uint32_t moveIndex = 0; moveIndex < numMoves; ++moveIndex)
@@ -356,14 +427,8 @@ bool SpecialMoveSystem::TestForActivatedSpecialMove(SpecialMoveDescription* Move
         bool bFoundInput = false;
         for (int historyIndex = lastIndexComboInputWasFound + 1; historyIndex < MAX_INPUT_HISTORY; ++historyIndex)
         {
-            AnimationStation::printfs[0] = "LastTested = " + std::to_string(comboSearchIndex);
             if (DoesInputMatch(historyIndex, comboArray[comboSearchIndex], bIsChargeCombo))
             {   
-                if(comboSearchIndex == 0 || comboSearchIndex == 1)
-                {
-                    AnimationStation::printfs[1] = "passed = " + std::to_string(comboSearchIndex);
-                }
-
                 bFoundInput = true;
 
                 // Is this the last input and if so is it a charge input as they're special and

@@ -169,7 +169,7 @@ bool Animation::LightTypeIsForPressedAnimation(LightType Type)
 
 bool Animation::LightTypeIsForSpecialMoveAnimation(LightType Type)
 {
-  if(Type == LightType::LightType_ActionButton || Type == LightType::LightType_Case)
+  if(Type == LightType::LightType_ActionButton || (Type == LightType::LightType_Case && AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].bUseCaseLightsInSpecialMoves))
     return true;
 
   return false;

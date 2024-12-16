@@ -164,6 +164,7 @@ struct __attribute__ ((__packed__)) SpecialMoveDescription
 
 struct __attribute__ ((__packed__)) SpecialMoveProfile 
 {
+    bool bEnabled = false;
     uint32_t NumValidMoves = 0;
     SpecialMoveDescription AllSpecialMoves[MAX_SPECIALMOVES];
 };
@@ -182,6 +183,9 @@ public:
     SpecialMoveSystem();
     virtual ~SpecialMoveSystem(){};
 
+    void Init();
+    void ChangeSpecialMoveProfile(int changeSize);
+
     //Which buttons are held at the moment
     void Update();
  
@@ -199,6 +203,7 @@ public:
 
 protected:
 
+    void AdjustSpecialMoveProfileIndex(int changeSize);
     void ClearHistory();
     int64_t GetMsBetweenTimes(absolute_time_t start, absolute_time_t end);
     void UpdateHistoryForInput(uint32_t buttonMask, SpecialMoveStickDirection directionHeld, bool bIsPressed);

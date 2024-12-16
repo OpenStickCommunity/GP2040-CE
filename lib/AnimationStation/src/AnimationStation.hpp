@@ -50,11 +50,13 @@ typedef enum
 	HOTKEY_LEDS_PARAMETER_DOWN,
 	HOTKEY_LEDS_BRIGHTNESS_UP,
 	HOTKEY_LEDS_BRIGHTNESS_DOWN,
+  HOTKEY_LEDS_SPECIALMOVE_PROFILE_UP,
+	HOTKEY_LEDS_SPECIALMOVE_PROFILE_DOWN,
 } AnimationHotkey;
 
 struct __attribute__ ((__packed__)) AnimationProfile
 {
-    bool bIsValidProfile;
+    bool bEnabled = false;
 
   	AnimationNonPressedEffects baseNonPressedEffect;
   	AnimationPressedEffects basePressedEffect;
@@ -68,11 +70,14 @@ struct __attribute__ ((__packed__)) AnimationProfile
     uint32_t buttonPressFadeOutTimeInMs;
 
     uint32_t nonPressedSpecialColour;
+
+    bool bUseCaseLightsInSpecialMoves;
 };
 
 struct __attribute__ ((__packed__)) AnimationOptions
 {
   uint32_t checksum;
+  uint8_t NumValidProfiles;
   AnimationProfile profiles[MAX_ANIMATION_PROFILES];
   uint8_t brightness;
   uint8_t baseProfileIndex;
@@ -112,7 +117,7 @@ public:
   static void DimBrightnessTo0();
 
   //passed in user options
-  static void SetOptions(AnimationOptions InOptions);
+  //static void SetOptions(AnimationOptions InOptions);
  
   //special move anim
   void SetSpecialMoveAnimation(SpecialMoveEffects AnimationToPlay, uint32_t OptionalParams);

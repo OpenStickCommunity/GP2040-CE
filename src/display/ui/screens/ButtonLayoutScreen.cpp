@@ -33,8 +33,9 @@ void ButtonLayoutScreen::init() {
     }
 
 	// start with profile mode displayed
-	profileModeDisplay = true;
-    prevProfileNumber = -1;
+    prevGamepadProfileNumber = -1;
+    prevLEDAnimationProfileNumber = -1;
+    prevSpecialMoveProfileNumber = -1;
     prevLayoutLeft = Storage::getInstance().getDisplayOptions().buttonLayout;
     prevLayoutRight = Storage::getInstance().getDisplayOptions().buttonLayoutRight;
     prevLeftOptions = Storage::getInstance().getDisplayOptions().buttonLayoutCustomOptions.paramsLeft;
@@ -70,27 +71,89 @@ void ButtonLayoutScreen::shutdown() {
     clearElements();
 }
 
+void ButtonLayoutScreen::addCustomHeader(std::string newStr){
+    profileDelayStart = getMillis();
+    profileModeString = newStr;
+    profileModeDisplay = true;
+}
+
+void ButtonLayoutScreen::updateCustomHeaders()
+{
+	Storage& storage = Storage::getInstance();
+
+    // Check to see if gamepad profile has changed
+    if(!ledAnimationProfileModeDisplay && !specialMoveProfileModeDisplay){
+        uint8_t profileNumber = getGamepad()->getOptions().profileNumber;
+        if (prevGamepadProfileNumber != profileNumber) {
+            prevGamepadProfileNumber = profileNumber;
+
+            std::string profileStr;
+            profileStr.assign(storage.currentProfileLabel(), strlen(storage.currentProfileLabel()));
+            if (profileStr.empty()) {
+                profileStr = "     Profile #";
+                profileStr +=  std::to_string(profileNumber);
+            } else {
+                profileStr.insert(profileStr.begin(), (21-profileStr.length())/2, ' ');
+            }
+
+            gamepadProfileModeDisplay = true;
+            addCustomHeader(profileStr);
+        }
+    }
+
+    // Check to see if LED animation profile has changed
+    if(!gamepadProfileModeDisplay && !specialMoveProfileModeDisplay){
+        uint8_t profileNumber = AnimationStation::options.baseProfileIndex;
+        if (prevLEDAnimationProfileNumber != profileNumber) {
+            prevLEDAnimationProfileNumber = profileNumber;
+
+            std::string profileStr;
+            profileStr = "    LED Profile #";
+            profileStr +=  std::to_string(profileNumber);
+
+            ledAnimationProfileModeDisplay = true;
+            addCustomHeader(profileStr);
+        }
+    }
+    
+    // Check to see if special move profile has changed
+    if(!gamepadProfileModeDisplay && !ledAnimationProfileModeDisplay){
+        uint8_t profileNumber = SpecialMoveSystem::Options.CurrentProfileIndex;
+        if (prevSpecialMoveProfileNumber != profileNumber) {
+            prevSpecialMoveProfileNumber = profileNumber;
+
+        	const SpecialMoveOptions_Proto& optionsProto = storage.getSpecialMoveOptions();
+            std::string profileStr;
+            profileStr.assign(optionsProto.profiles[profileNumber].Label, strlen(optionsProto.profiles[profileNumber].Label));
+            if (profileStr.empty()) {
+                profileStr = "Special Profile #";
+                profileStr +=  std::to_string(profileNumber);
+            } else {
+                profileStr.insert(profileStr.begin(), (21-profileStr.length())/2, ' ');
+            }
+
+            specialMoveProfileModeDisplay = true;
+            addCustomHeader(profileStr);
+        }
+    }
+}
+
 int8_t ButtonLayoutScreen::update() {
-    bool configMode = Storage::getInstance().GetConfigMode();
-    uint8_t profileNumber = getGamepad()->getOptions().profileNumber;
+	Storage& storage = Storage::getInstance();
+    bool configMode = storage.GetConfigMode();
     
     // Check if we've updated button layouts while in config mode
     if (configMode) {
-        uint8_t layoutLeft = Storage::getInstance().getDisplayOptions().buttonLayout;
-        uint8_t layoutRight = Storage::getInstance().getDisplayOptions().buttonLayoutRight;
-        bool inputHistoryEnabled = Storage::getInstance().getAddonOptions().inputHistoryOptions.enabled;
+        uint8_t layoutLeft = storage.getDisplayOptions().buttonLayout;
+        uint8_t layoutRight = storage.getDisplayOptions().buttonLayoutRight;
+        bool inputHistoryEnabled = storage.getAddonOptions().inputHistoryOptions.enabled;
         if ((prevLayoutLeft != layoutLeft) || (prevLayoutRight != layoutRight) || (isInputHistoryEnabled != inputHistoryEnabled) || compareCustomLayouts()) {
             shutdown();
             init();
         }
     }
 
-    // main logic loop
-    if (prevProfileNumber != profileNumber) {
-        profileDelayStart = getMillis();
-        prevProfileNumber = profileNumber;
-        profileModeDisplay = true;
-    }
+    updateCustomHeaders();
 
     // main logic loop
 	generateHeader();
@@ -120,16 +183,13 @@ void ButtonLayoutScreen::generateHeader() {
  	// Display Profile # banner
 	if ( profileModeDisplay ) {
 		if (((getMillis() - profileDelayStart) / 1000) < profileDelay) {
-			statusBar.assign(storage.currentProfileLabel(), strlen(storage.currentProfileLabel()));
-			if (statusBar.empty()) {
-				statusBar = "     Profile #";
-				statusBar +=  std::to_string(getGamepad()->getOptions().profileNumber);
-			} else {
-				statusBar.insert(statusBar.begin(), (21-statusBar.length())/2, ' ');
-			}
+			statusBar = profileModeString;
 			return;
 		} else {
 			profileModeDisplay = false;
+            gamepadProfileModeDisplay = false;
+            ledAnimationProfileModeDisplay = false;
+            specialMoveProfileModeDisplay = false;           
 		}
 	}
 
