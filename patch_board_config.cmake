@@ -12,7 +12,7 @@ function (patch_board_config)
 
 	add_custom_target(
 		PatchBoardConfig ALL
-		DEPENDS ${PROJECT_NAME}
+		DEPENDS ${PROJECT_NAME} ${PROTO_OUTPUT_DIR}/config_pb2.py ${PROTO_OUTPUT_DIR}/enums_pb2.py ${PROTO_OUTPUT_DIR}/nanopb_pb2.py
 		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 		# something in the protobuf compiler doesn't like the multiple paths,
 		# so we'll copy all the .proto files into one location
