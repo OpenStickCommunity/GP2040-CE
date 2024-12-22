@@ -450,3 +450,13 @@ enum PS4ControllerIDMode
     PS4_ID_CONSOLE = 0;
     PS4_ID_EMULATION = 1;
 };
+
+enum DisplaySaverMode {
+    option (nanopb_enumopt).long_names = false;
+
+    DISPLAY_SAVER_DISPLAY_OFF = 0;
+    DISPLAY_SAVER_SNOW = 1;
+    DISPLAY_SAVER_BOUNCE = 2;
+    DISPLAY_SAVER_PIPES = 3;
+    DISPLAY_SAVER_TOAST = 4;
+};

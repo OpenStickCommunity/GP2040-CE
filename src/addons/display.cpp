@@ -53,6 +53,7 @@ void DisplayAddon::setup() {
     displaySaverTimeout = displaySaverTimer;
     configMode = Storage::getInstance().GetConfigMode();
     turnOffWhenSuspended = options.turnOffWhenSuspended;
+    displaySaverMode = options.displaySaverMode;
 
     mapMenuToggle = new GamepadButtonMapping(0);
     GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
@@ -99,6 +100,9 @@ bool DisplayAddon::updateDisplayScreen() {
             case STATS:
                 delete (StatsScreen*)gpScreen;
                 break;
+            case DISPLAY_SAVER:
+                delete (DisplaySaverScreen*)gpScreen;
+                break;
             default:
                 break;
         }
@@ -122,6 +126,9 @@ bool DisplayAddon::updateDisplayScreen() {
             break;
         case STATS:
             gpScreen = new StatsScreen(gpDisplay);
+            break;
+        case DISPLAY_SAVER:
+            gpScreen = new DisplaySaverScreen(gpDisplay);
             break;
         default:
             gpScreen = nullptr;
@@ -153,12 +160,19 @@ bool DisplayAddon::isDisplayPowerOff()
         displaySaverTimer = displaySaverTimeout;
         setDisplayPower(1);
     } else if (!!displaySaverTimeout && displaySaverTimer <= 0) {
-        setDisplayPower(0);
+        if (displaySaverMode == DisplaySaverMode::DISPLAY_SAVER_DISPLAY_OFF) {
+            setDisplayPower(0);
+        } else {
+            if (currDisplayMode != DISPLAY_SAVER) {
+                currDisplayMode = DISPLAY_SAVER;
+                updateDisplayScreen();
+            }
+        }
     }
 
     prevMillis = getMillis();
 
-    return (!!displaySaverTimeout && displaySaverTimer <= 0);
+    return ((!!displaySaverTimeout && displaySaverTimer <= 0) && (displaySaverMode == DisplaySaverMode::DISPLAY_SAVER_DISPLAY_OFF));
 }
 
 void DisplayAddon::setDisplayPower(uint8_t status)

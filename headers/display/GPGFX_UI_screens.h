@@ -7,13 +7,15 @@ enum DisplayMode {
     SPLASH,
     PIN_VIEWER,
     STATS,
-    MAIN_MENU
+    MAIN_MENU,
+    DISPLAY_SAVER
 };
 
 #include "ui/screens/ButtonLayoutScreen.h"
 #include "ui/screens/ConfigScreen.h"
 #include "ui/screens/MainMenuScreen.h"
 #include "ui/screens/PinViewerScreen.h"
+#include "ui/screens/DisplaySaverScreen.h"
 #include "ui/screens/SplashScreen.h"
 #include "ui/screens/StatsScreen.h"
 

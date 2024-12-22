@@ -31,6 +31,14 @@ const DISPLAY_FLIP_MODES = [
 	{ label: 'Flip and Mirror', value: 3 },
 ];
 
+const DISPLAY_SAVER_MODES = [
+	{ label: 'Display Off', value: 0 },
+	{ label: 'Snow', value: 1 },
+	{ label: 'Bounce', value: 2 },
+	{ label: 'Pipes', value: 3 },
+	{ label: 'Toast', value: 4 },
+];
+
 const defaultValues = {
 	enabled: false,
 	flipDisplay: false,
@@ -58,6 +66,7 @@ const defaultValues = {
 		},
 	},
 	displaySaverTimeout: 0,
+	displaySaverMode: 0,
 };
 
 let buttonLayoutDefinitions = { buttonLayout: {}, buttonLayoutRight: {} };
@@ -121,7 +130,8 @@ const schema = yup.object().shape({
 		}),
 	}),
 	splashDuration: yup.number().required().min(0).label('Splash Duration'),
-	displaySaverTimeout: yup.number().required().min(0).label('Display Saver'),
+	displaySaverTimeout: yup.number().required().min(0).label('Display Saver Timeout'),
+	displaySaverMode: yup.number().required().min(0).label('Screen Saver'),
 });
 
 const FormContext = () => {
@@ -162,6 +172,8 @@ const FormContext = () => {
 				values.splashDuration = parseInt(values.splashDuration);
 			if (!!values.turnOffWhenSuspended)
 				values.turnOffWhenSuspended = parseInt(values.turnOffWhenSuspended);
+			if (!!values.displaySaverMode)
+				values.displaySaverMode = parseInt(values.displaySaverMode);
 
 			await WebApi.setDisplayOptions(values, true);
 		}
@@ -185,6 +197,8 @@ const FormContext = () => {
 			if (!!values.splashMode) values.splashMode = parseInt(values.splashMode);
 			if (!!values.splashChoice)
 				values.splashChoice = parseInt(values.splashChoice);
+			if (!!values.displaySaverMode)
+				values.displaySaverMode = parseInt(values.displaySaverMode);
 
 			await WebApi.setDisplayOptions(values, true);
 		}
@@ -640,6 +654,25 @@ export default function DisplayConfigPage() {
 												onChange={handleChange}
 												min={0}
 											/>
+											<FormSelect
+												label={t('DisplayConfig:form.screen-saver-mode-label')}
+												name="displaySaverMode"
+												className="form-select-sm"
+												groupClassName="col-sm-3 mb-3"
+												value={values.displaySaverMode}
+												error={errors.displaySaverMode}
+												isInvalid={errors.displaySaverMode}
+												onChange={handleChange}
+											>
+												{DISPLAY_SAVER_MODES.map((o, i) => (
+													<option
+														key={`displaySaverMode-option-${i}`}
+														value={o.value}
+													>
+														{o.label}
+													</option>
+												))}
+											</FormSelect>
 										</Row>
 										<Row>
 											<Field name="splashImage">

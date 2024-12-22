@@ -17,6 +17,8 @@ class GPGFX_OBD_SSD1306 : public GPGFX_DisplayBase {
 
         void clear();
 
+        uint32_t getPixel(uint8_t x, uint8_t y);
+
         void drawPixel(uint8_t x, uint8_t y, uint32_t color);
 
         void drawText(uint8_t x, uint8_t y, std::string text, uint8_t invert = 0);
@@ -27,7 +29,7 @@ class GPGFX_OBD_SSD1306 : public GPGFX_DisplayBase {
 
         void drawRectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint32_t color, uint8_t filled, double rotationAngle = 0);
 
-        void drawSprite(uint8_t* spriteData, uint16_t width, uint16_t height, uint16_t pitch, uint16_t x, uint16_t y, uint8_t priority);
+        void drawSprite(uint8_t* spriteData, uint16_t width, uint16_t height, uint16_t pitch, uint16_t x, uint16_t y, uint8_t priority, double scale = 1.0);
 
         void drawBuffer(uint8_t *pBuffer);
 
