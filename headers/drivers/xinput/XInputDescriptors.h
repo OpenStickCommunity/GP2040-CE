@@ -64,16 +64,16 @@ static const uint8_t *xinput_string_descriptors[] __attribute__((unused)) =
 };
 
 static const uint8_t * xinput_get_string_descriptor(int index) {
-	if ( index == 3 ) {
-		// Generate a serial number of hex bytes from the pico's unique ID
-		pico_unique_board_id_t unique_id;
-		pico_get_unique_board_id(&unique_id);
+    if ( index == 3 ) {
+        // Generate a serial number of hex bytes from the pico's unique ID
+        pico_unique_board_id_t unique_id;
+        pico_get_unique_board_id(&unique_id);
         for(int i = 0; i < 3; i++) {
             sprintf((char*)(&xinput_string_version[i*2+1]), "%02X", (uint8_t)unique_id.id[i+5]);
         }
-	}
+    }
 
-	return xinput_string_descriptors[index];
+    return xinput_string_descriptors[index];
 }
 
 static const uint8_t xinput_device_descriptor[] =
