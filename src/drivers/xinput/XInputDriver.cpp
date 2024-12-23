@@ -34,31 +34,31 @@ static XInputAuthData * xinputAuthData = nullptr;
 // Move to Proto Enums
 typedef enum
 {
-	XINPUT_PLED_OFF       = 0x00, // All off
-	XINPUT_PLED_BLINKALL  = 0x01, // All blinking
-	XINPUT_PLED_FLASH1    = 0x02, // 1 flashes, then on
-	XINPUT_PLED_FLASH2    = 0x03, // 2 flashes, then on
-	XINPUT_PLED_FLASH3    = 0x04, // 3 flashes, then on
-	XINPUT_PLED_FLASH4    = 0x05, // 4 flashes, then on
-	XINPUT_PLED_ON1       = 0x06, // 1 on
-	XINPUT_PLED_ON2       = 0x07, // 2 on
-	XINPUT_PLED_ON3       = 0x08, // 3 on
-	XINPUT_PLED_ON4       = 0x09, // 4 on
-	XINPUT_PLED_ROTATE    = 0x0A, // Rotating (e.g. 1-2-4-3)
-	XINPUT_PLED_BLINK     = 0x0B, // Blinking*
-	XINPUT_PLED_SLOWBLINK = 0x0C, // Slow blinking*
-	XINPUT_PLED_ALTERNATE = 0x0D, // Alternating (e.g. 1+4-2+3), then back to previous*
+    XINPUT_PLED_OFF       = 0x00, // All off
+    XINPUT_PLED_BLINKALL  = 0x01, // All blinking
+    XINPUT_PLED_FLASH1    = 0x02, // 1 flashes, then on
+    XINPUT_PLED_FLASH2    = 0x03, // 2 flashes, then on
+    XINPUT_PLED_FLASH3    = 0x04, // 3 flashes, then on
+    XINPUT_PLED_FLASH4    = 0x05, // 4 flashes, then on
+    XINPUT_PLED_ON1       = 0x06, // 1 on
+    XINPUT_PLED_ON2       = 0x07, // 2 on
+    XINPUT_PLED_ON3       = 0x08, // 3 on
+    XINPUT_PLED_ON4       = 0x09, // 4 on
+    XINPUT_PLED_ROTATE    = 0x0A, // Rotating (e.g. 1-2-4-3)
+    XINPUT_PLED_BLINK     = 0x0B, // Blinking*
+    XINPUT_PLED_SLOWBLINK = 0x0C, // Slow blinking*
+    XINPUT_PLED_ALTERNATE = 0x0D, // Alternating (e.g. 1+4-2+3), then back to previous*
 } XInputPLEDPattern;
 
 static void xinput_init(void) {
 }
 
 static void xinput_reset(uint8_t rhport) {
-	(void)rhport;
+    (void)rhport;
 }
 
 static uint16_t xinput_open(uint8_t rhport, tusb_desc_interface_t const *itf_descriptor, uint16_t max_length) {
-	uint16_t driver_length = 0;
+    uint16_t driver_length = 0;
     // Xbox 360 Vendor USB Interfaces: Control, Audio, Plug-in, Security
     if ( TUSB_CLASS_VENDOR_SPECIFIC == itf_descriptor->bInterfaceClass) {
         driver_length = sizeof(tusb_desc_interface_t) + (itf_descriptor->bNumEndpoints * sizeof(tusb_desc_endpoint_t));
@@ -91,86 +91,86 @@ static uint16_t xinput_open(uint8_t rhport, tusb_desc_interface_t const *itf_des
         }
     }
 
-	return driver_length;
+    return driver_length;
 }
 
 static bool xinput_device_control_request(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request)
 {
-	(void)rhport;
-	(void)stage;
-	(void)request;
+    (void)rhport;
+    (void)stage;
+    (void)request;
 
-	return true;
+    return true;
 }
 
 static bool xinput_control_complete(uint8_t rhport, tusb_control_request_t const *request)
 {
-	(void)rhport;
-	(void)request;
+    (void)rhport;
+    (void)request;
 
-	return true;
+    return true;
 }
 
 static bool xinput_xfer_callback(uint8_t rhport, uint8_t ep_addr, xfer_result_t result, uint32_t xferred_bytes)
 {
-	(void)rhport;
-	(void)result;
-	(void)xferred_bytes;
+    (void)rhport;
+    (void)result;
+    (void)xferred_bytes;
 
-	if (ep_addr == endpoint_out)
-		usbd_edpt_xfer(0, endpoint_out, xinput_out_buffer, XINPUT_OUT_SIZE);
+    if (ep_addr == endpoint_out)
+        usbd_edpt_xfer(0, endpoint_out, xinput_out_buffer, XINPUT_OUT_SIZE);
 
-	return true;
+    return true;
 }
 
 void XInputDriver::initialize() {
-	xinputReport = {
-		.report_id = 0,
-		.report_size = XINPUT_ENDPOINT_SIZE,
-		.buttons1 = 0,
-		.buttons2 = 0,
-		.lt = 0,
-		.rt = 0,
-		.lx = GAMEPAD_JOYSTICK_MID,
-		.ly = GAMEPAD_JOYSTICK_MID,
-		.rx = GAMEPAD_JOYSTICK_MID,
-		.ry = GAMEPAD_JOYSTICK_MID,
-		._reserved = { },
-	};
+    xinputReport = {
+        .report_id = 0,
+        .report_size = XINPUT_ENDPOINT_SIZE,
+        .buttons1 = 0,
+        .buttons2 = 0,
+        .lt = 0,
+        .rt = 0,
+        .lx = GAMEPAD_JOYSTICK_MID,
+        .ly = GAMEPAD_JOYSTICK_MID,
+        .rx = GAMEPAD_JOYSTICK_MID,
+        .ry = GAMEPAD_JOYSTICK_MID,
+        ._reserved = { },
+    };
 
-	class_driver = {
-	#if CFG_TUSB_DEBUG >= 2
-		.name = "XINPUT",
-	#endif
-		.init = xinput_init,
-		.reset = xinput_reset,
-		.open = xinput_open,
-		.control_xfer_cb = xinput_device_control_request,
-		.xfer_cb = xinput_xfer_callback,
-		.sof = NULL
-	};
+    class_driver = {
+    #if CFG_TUSB_DEBUG >= 2
+        .name = "XINPUT",
+    #endif
+        .init = xinput_init,
+        .reset = xinput_reset,
+        .open = xinput_open,
+        .control_xfer_cb = xinput_device_control_request,
+        .xfer_cb = xinput_xfer_callback,
+        .sof = NULL
+    };
 
-	xAuthDriver = nullptr;
+    xAuthDriver = nullptr;
 }
 
 void XInputDriver::initializeAux() {
-	xAuthDriver = nullptr;
-	// AUTH DRIVER NON-FUNCTIONAL FOR NOW
-	GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();
-	if ( gamepadOptions.xinputAuthType == InputModeAuthType::INPUT_MODE_AUTH_TYPE_USB )  {
-		xAuthDriver = new XInputAuth();
-		if ( xAuthDriver->available() ) {
-			xAuthDriver->initialize();
+    xAuthDriver = nullptr;
+    // AUTH DRIVER NON-FUNCTIONAL FOR NOW
+    GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();
+    if ( gamepadOptions.xinputAuthType == InputModeAuthType::INPUT_MODE_AUTH_TYPE_USB )  {
+        xAuthDriver = new XInputAuth();
+        if ( xAuthDriver->available() ) {
+            xAuthDriver->initialize();
             xinputAuthData = xAuthDriver->getAuthData();
-		}
+        }
     }
 }
 
 USBListener * XInputDriver::get_usb_auth_listener() {
-	if ( xAuthDriver != nullptr && xAuthDriver->available() ) {
-		return xAuthDriver->getListener();
-	}
-	return nullptr;
+    if ( xAuthDriver != nullptr && xAuthDriver->available() ) {
+        return xAuthDriver->getListener();
+    }
+    return nullptr;
 }
 
 bool XInputDriver::getAuthEnabled() {
@@ -178,124 +178,124 @@ bool XInputDriver::getAuthEnabled() {
 }
 
 void XInputDriver::process(Gamepad * gamepad) {
-	Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
+    Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
 
-	xinputReport.buttons1 = 0
-		| (gamepad->pressedUp()    ? XBOX_MASK_UP    : 0)
-		| (gamepad->pressedDown()  ? XBOX_MASK_DOWN  : 0)
-		| (gamepad->pressedLeft()  ? XBOX_MASK_LEFT  : 0)
-		| (gamepad->pressedRight() ? XBOX_MASK_RIGHT : 0)
-		| (gamepad->pressedS2()    ? XBOX_MASK_START : 0)
-		| (gamepad->pressedS1()    ? XBOX_MASK_BACK  : 0)
-		| (gamepad->pressedL3()    ? XBOX_MASK_LS    : 0)
-		| (gamepad->pressedR3()    ? XBOX_MASK_RS    : 0)
-	;
+    xinputReport.buttons1 = 0
+        | (gamepad->pressedUp()    ? XBOX_MASK_UP    : 0)
+        | (gamepad->pressedDown()  ? XBOX_MASK_DOWN  : 0)
+        | (gamepad->pressedLeft()  ? XBOX_MASK_LEFT  : 0)
+        | (gamepad->pressedRight() ? XBOX_MASK_RIGHT : 0)
+        | (gamepad->pressedS2()    ? XBOX_MASK_START : 0)
+        | (gamepad->pressedS1()    ? XBOX_MASK_BACK  : 0)
+        | (gamepad->pressedL3()    ? XBOX_MASK_LS    : 0)
+        | (gamepad->pressedR3()    ? XBOX_MASK_RS    : 0)
+    ;
 
-	xinputReport.buttons2 = 0
-		| (gamepad->pressedL1() ? XBOX_MASK_LB   : 0)
-		| (gamepad->pressedR1() ? XBOX_MASK_RB   : 0)
-		| (gamepad->pressedA1() ? XBOX_MASK_HOME : 0)
-		| (gamepad->pressedB1() ? XBOX_MASK_A    : 0)
-		| (gamepad->pressedB2() ? XBOX_MASK_B    : 0)
-		| (gamepad->pressedB3() ? XBOX_MASK_X    : 0)
-		| (gamepad->pressedB4() ? XBOX_MASK_Y    : 0)
-	;
+    xinputReport.buttons2 = 0
+        | (gamepad->pressedL1() ? XBOX_MASK_LB   : 0)
+        | (gamepad->pressedR1() ? XBOX_MASK_RB   : 0)
+        | (gamepad->pressedA1() ? XBOX_MASK_HOME : 0)
+        | (gamepad->pressedB1() ? XBOX_MASK_A    : 0)
+        | (gamepad->pressedB2() ? XBOX_MASK_B    : 0)
+        | (gamepad->pressedB3() ? XBOX_MASK_X    : 0)
+        | (gamepad->pressedB4() ? XBOX_MASK_Y    : 0)
+    ;
 
-	xinputReport.lx = static_cast<int16_t>(gamepad->state.lx) + INT16_MIN;
-	xinputReport.ly = static_cast<int16_t>(~gamepad->state.ly) + INT16_MIN;
-	xinputReport.rx = static_cast<int16_t>(gamepad->state.rx) + INT16_MIN;
-	xinputReport.ry = static_cast<int16_t>(~gamepad->state.ry) + INT16_MIN;
+    xinputReport.lx = static_cast<int16_t>(gamepad->state.lx) + INT16_MIN;
+    xinputReport.ly = static_cast<int16_t>(~gamepad->state.ly) + INT16_MIN;
+    xinputReport.rx = static_cast<int16_t>(gamepad->state.rx) + INT16_MIN;
+    xinputReport.ry = static_cast<int16_t>(~gamepad->state.ry) + INT16_MIN;
 
-	if (gamepad->hasAnalogTriggers)
-	{
-		xinputReport.lt = gamepad->pressedL2() ? 0xFF : gamepad->state.lt;
-		xinputReport.rt = gamepad->pressedR2() ? 0xFF : gamepad->state.rt;
-	}
-	else
-	{
-		xinputReport.lt = gamepad->pressedL2() ? 0xFF : 0;
-		xinputReport.rt = gamepad->pressedR2() ? 0xFF : 0;
-	}
+    if (gamepad->hasAnalogTriggers)
+    {
+        xinputReport.lt = gamepad->pressedL2() ? 0xFF : gamepad->state.lt;
+        xinputReport.rt = gamepad->pressedR2() ? 0xFF : gamepad->state.rt;
+    }
+    else
+    {
+        xinputReport.lt = gamepad->pressedL2() ? 0xFF : 0;
+        xinputReport.rt = gamepad->pressedR2() ? 0xFF : 0;
+    }
 
-	// compare against previous report and send new
-	if ( memcmp(last_report, &xinputReport, sizeof(XInputReport)) != 0) {
-		if ( tud_ready() &&											// Is the device ready?
-			(endpoint_in != 0) && (!usbd_edpt_busy(0, endpoint_in)) ) // Is the IN endpoint available?
-		{
-			usbd_edpt_claim(0, endpoint_in);								// Take control of IN endpoint
-			usbd_edpt_xfer(0, endpoint_in, (uint8_t *)&xinputReport, sizeof(XInputReport)); // Send report buffer
-			usbd_edpt_release(0, endpoint_in);								// Release control of IN endpoint
-			memcpy(last_report, &xinputReport, sizeof(XInputReport)); // save if we sent it
-		}
-	}
+    // compare against previous report and send new
+    if ( memcmp(last_report, &xinputReport, sizeof(XInputReport)) != 0) {
+        if ( tud_ready() &&											// Is the device ready?
+            (endpoint_in != 0) && (!usbd_edpt_busy(0, endpoint_in)) ) // Is the IN endpoint available?
+        {
+            usbd_edpt_claim(0, endpoint_in);								// Take control of IN endpoint
+            usbd_edpt_xfer(0, endpoint_in, (uint8_t *)&xinputReport, sizeof(XInputReport)); // Send report buffer
+            usbd_edpt_release(0, endpoint_in);								// Release control of IN endpoint
+            memcpy(last_report, &xinputReport, sizeof(XInputReport)); // save if we sent it
+        }
+    }
 
-	// clear potential initial uncaught data in endpoint_out from before registration of xfer_cb
-	if (tud_ready() &&
-		(endpoint_out != 0) && (!usbd_edpt_busy(0, endpoint_out)))
-	{
-		usbd_edpt_claim(0, endpoint_out);									 // Take control of OUT endpoint
-		usbd_edpt_xfer(0, endpoint_out, xinput_out_buffer, XINPUT_OUT_SIZE); 		 // Retrieve report buffer
-		usbd_edpt_release(0, endpoint_out);									 // Release control of OUT endpoint
-	}
+    // clear potential initial uncaught data in endpoint_out from before registration of xfer_cb
+    if (tud_ready() &&
+        (endpoint_out != 0) && (!usbd_edpt_busy(0, endpoint_out)))
+    {
+        usbd_edpt_claim(0, endpoint_out);									 // Take control of OUT endpoint
+        usbd_edpt_xfer(0, endpoint_out, xinput_out_buffer, XINPUT_OUT_SIZE); 		 // Retrieve report buffer
+        usbd_edpt_release(0, endpoint_out);									 // Release control of OUT endpoint
+    }
 
-	//---------------
-	if (memcmp(xinput_out_buffer, featureBuffer, XINPUT_OUT_SIZE) != 0) { // check if new write to xinput_out_buffer from xinput_xfer_callback
-		memcpy(featureBuffer, xinput_out_buffer, XINPUT_OUT_SIZE);
-		switch (featureBuffer[0]) {
-			case 0x00:
-				if (featureBuffer[1] == 0x08) {
-					if (processedGamepad->auxState.haptics.leftActuator.enabled) {
-						processedGamepad->auxState.haptics.leftActuator.active = (featureBuffer[3] > 0);
-						processedGamepad->auxState.haptics.leftActuator.intensity = featureBuffer[3];
-					}
-					if (processedGamepad->auxState.haptics.rightActuator.enabled) {
-						processedGamepad->auxState.haptics.rightActuator.active = (featureBuffer[4] > 0);
-						processedGamepad->auxState.haptics.rightActuator.intensity = featureBuffer[4];
-					}
-				}
-				break;
-			case 0x01:
-				// Player LED
-				if (featureBuffer[1] == 0x03) {
-					// determine the player ID based on LED status
-					processedGamepad->auxState.playerID.active = true;
-					processedGamepad->auxState.playerID.ledValue = featureBuffer[2];
+    //---------------
+    if (memcmp(xinput_out_buffer, featureBuffer, XINPUT_OUT_SIZE) != 0) { // check if new write to xinput_out_buffer from xinput_xfer_callback
+        memcpy(featureBuffer, xinput_out_buffer, XINPUT_OUT_SIZE);
+        switch (featureBuffer[0]) {
+            case 0x00:
+                if (featureBuffer[1] == 0x08) {
+                    if (processedGamepad->auxState.haptics.leftActuator.enabled) {
+                        processedGamepad->auxState.haptics.leftActuator.active = (featureBuffer[3] > 0);
+                        processedGamepad->auxState.haptics.leftActuator.intensity = featureBuffer[3];
+                    }
+                    if (processedGamepad->auxState.haptics.rightActuator.enabled) {
+                        processedGamepad->auxState.haptics.rightActuator.active = (featureBuffer[4] > 0);
+                        processedGamepad->auxState.haptics.rightActuator.intensity = featureBuffer[4];
+                    }
+                }
+                break;
+            case 0x01:
+                // Player LED
+                if (featureBuffer[1] == 0x03) {
+                    // determine the player ID based on LED status
+                    processedGamepad->auxState.playerID.active = true;
+                    processedGamepad->auxState.playerID.ledValue = featureBuffer[2];
 
-					if ( featureBuffer[2] == XINPUT_PLED_ON1 ) {
-						processedGamepad->auxState.playerID.value = 1;
-					} else if ( featureBuffer[2] == XINPUT_PLED_ON2 ) {
-						processedGamepad->auxState.playerID.value = 2;
-					} else if ( featureBuffer[2] == XINPUT_PLED_ON3 ) {
-						processedGamepad->auxState.playerID.value = 3;
-					} else if ( featureBuffer[2] == XINPUT_PLED_ON4 ) {
-						processedGamepad->auxState.playerID.value = 4;
-					} else {
-						processedGamepad->auxState.playerID.value = 0;
-					}
-				}
-				break;
-		}
+                    if ( featureBuffer[2] == XINPUT_PLED_ON1 ) {
+                        processedGamepad->auxState.playerID.value = 1;
+                    } else if ( featureBuffer[2] == XINPUT_PLED_ON2 ) {
+                        processedGamepad->auxState.playerID.value = 2;
+                    } else if ( featureBuffer[2] == XINPUT_PLED_ON3 ) {
+                        processedGamepad->auxState.playerID.value = 3;
+                    } else if ( featureBuffer[2] == XINPUT_PLED_ON4 ) {
+                        processedGamepad->auxState.playerID.value = 4;
+                    } else {
+                        processedGamepad->auxState.playerID.value = 0;
+                    }
+                }
+                break;
+        }
     }
 }
 
 void XInputDriver::processAux() {
-	if ( xAuthDriver != nullptr && xAuthDriver->available() ) {
-		xAuthDriver->process();
-	}
+    if ( xAuthDriver != nullptr && xAuthDriver->available() ) {
+        xAuthDriver->process();
+    }
 }
 
 // tud_hid_get_report_cb
 uint16_t XInputDriver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
-	memcpy(buffer, &xinputReport, sizeof(XInputReport));
-	return sizeof(XInputReport);
+    memcpy(buffer, &xinputReport, sizeof(XInputReport));
+    return sizeof(XInputReport);
 }
 
 // Only respond to vendor control xfers if we have a mounted x360 device
 bool XInputDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request) {
   // Do nothing if we have no auth driver
-	if ( xAuthDriver == nullptr || !xAuthDriver->available() ) {
+    if ( xAuthDriver == nullptr || !xAuthDriver->available() ) {
         return false;
-	}
+    }
 
     uint16_t len = 0;
     if (request->bmRequestType_bit.direction == TUSB_DIR_IN) {
@@ -368,26 +368,26 @@ bool XInputDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_co
 }
 
 const uint16_t * XInputDriver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
-	const char *value = (const char *)xinput_string_descriptors[index];
-	return getStringDescriptor(value, index); // getStringDescriptor returns a static array
+    const char *value = (const char *)xinput_get_string_descriptor(index);
+    return getStringDescriptor(value, index); // getStringDescriptor returns a static array
 }
 
 const uint8_t * XInputDriver::get_descriptor_device_cb() {
-	return xinput_device_descriptor;
+    return xinput_device_descriptor;
 }
 
 const uint8_t * XInputDriver::get_hid_descriptor_report_cb(uint8_t itf) {
-	return nullptr;
+    return nullptr;
 }
 
 const uint8_t * XInputDriver::get_descriptor_configuration_cb(uint8_t index) {
-	return xinput_configuration_descriptor;
+    return xinput_configuration_descriptor;
 }
 
 const uint8_t * XInputDriver::get_descriptor_device_qualifier_cb() {
-	return nullptr;
+    return nullptr;
 }
 
 uint16_t XInputDriver::GetJoystickMidValue() {
-	return GAMEPAD_JOYSTICK_MID;
+    return GAMEPAD_JOYSTICK_MID;
 }
