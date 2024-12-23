@@ -22,6 +22,18 @@
 #define TURBO_LED_PIN -1
 #endif
 
+#ifndef TURBO_LED_INDEX
+#define TURBO_LED_INDEX -1
+#endif
+
+#ifndef TURBO_LED_TYPE
+#define TURBO_LED_TYPE PLED_TYPE_NONE
+#endif
+
+#ifndef TURBO_LED_COLOR
+#define TURBO_LED_COLOR ColorRed
+#endif
+
 // TURBO SHMUP MODE
 #ifndef TURBO_SHMUP_MODE
 #define TURBO_SHMUP_MODE 0

@@ -202,11 +202,15 @@ void NeoPicoLEDAddon::setup()
 	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
 	turnOffWhenSuspended = ledOptions.turnOffWhenSuspended;
 
+    // Get turbo options (turbo RGB led)
+    const TurboOptions& turboOptions = Storage::getInstance().getAddonOptions().turboOptions;
+
 	Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
 	gamepad->auxState.playerID.enabled = true;
 	gamepad->auxState.sensors.statusLight.enabled = true;
 
-	if ( ledOptions.pledType == PLED_TYPE_RGB ) {
+	if ( ledOptions.pledType == PLED_TYPE_RGB ||
+            turboOptions.turboLedType == PLED_TYPE_RGB) {
 		neoPLEDs = new NeoPicoPlayerLEDs();
 	}
 
@@ -224,6 +228,9 @@ void NeoPicoLEDAddon::process()
 	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
 	if (!isValidPin(ledOptions.dataPin) || !time_reached(this->nextRunTime))
 		return;
+
+    // Get turbo options (turbo RGB led)
+    const TurboOptions& turboOptions = Storage::getInstance().getAddonOptions().turboOptions;
 
 	Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
 	AnimationHotkey action = animationHotkeys(gamepad);
@@ -285,10 +292,9 @@ void NeoPicoLEDAddon::process()
 
 	// Apply the player LEDs to our first 4 leds if we're in NEOPIXEL mode
 	if (ledOptions.pledType == PLED_TYPE_RGB) {
-		LEDOptions & ledOptions = Storage::getInstance().getLedOptions();
 		int32_t pledIndexes[] = { ledOptions.pledIndex1, ledOptions.pledIndex2, ledOptions.pledIndex3, ledOptions.pledIndex4 };
 		for (int i = 0; i < PLED_COUNT; i++) {
-			if (pledIndexes[i] < 0)
+			if (pledIndexes[i] < 0 || pledIndexes[i] > 99)
 				continue;
 
 			float level = (static_cast<float>(PLED_MAX_LEVEL - neoPLEDs->getLedLevels()[i]) / static_cast<float>(PLED_MAX_LEVEL));
@@ -301,6 +307,16 @@ void NeoPicoLEDAddon::process()
 			frame[pledIndexes[i]] = rgbPLEDValues[i];
 		}
 	}
+
+    // Turbo LED is a separate RGB that is on if turbo is on, and off if its off
+    if ( turboOptions.turboLedType == PLED_TYPE_RGB ) { // RGB or PWM?
+        if ( gamepad->auxState.turbo.activity == 1) { // Turbo is on (active sensor)
+            if (turboOptions.turboLedIndex >= 0 && turboOptions.turboLedIndex < 100) { // Double check index value
+			    float brightness = as.GetBrightnessX();
+			    frame[turboOptions.turboLedIndex] = ((RGB)turboOptions.turboLedColor).value(neopico->GetFormat(), brightness);
+            }
+        }
+    }
 
 	neopico->SetFrame(frame);
 	neopico->Show();

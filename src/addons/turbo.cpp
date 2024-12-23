@@ -55,8 +55,8 @@ void TurboInput::setup()
         dialValue = 0;
     }
 
-    // Setup Turbo LED if available
-    if (isValidPin(options.ledPin)) {
+    // Setup Turbo PWM LED if available (RGB is handled in neopicoleds.cpp)
+    if (isValidPin(options.ledPin) && options.turboLedType == PLED_TYPE_PWM) {
         hasLedPin = true;
         gpio_init(options.ledPin);
         gpio_set_dir(options.ledPin, GPIO_OUT);
@@ -192,15 +192,20 @@ void TurboInput::process()
     // OFF: No turbo buttons enabled
     // ON: 1 or more turbo buttons enabled
     // BLINK: OFF on turbo shot, ON on turbo flicker
-    if (hasLedPin) {
-        // Turbo toggled on
-        if (turboButtonsMask) {
-            if (gamepad->state.buttons & turboButtonsMask)
-                gpio_put(options.ledPin, bTurboFlicker ? TURBO_LED_STATE_ON : TURBO_LED_STATE_OFF);
-            else
-                gpio_put(options.ledPin, TURBO_LED_STATE_ON);
-        }
-        else {
+    if (turboButtonsMask) {
+        if (gamepad->state.buttons & turboButtonsMask)
+            gamepad->auxState.turbo.activity = bTurboFlicker ? TURBO_LED_STATE_ON : TURBO_LED_STATE_OFF;
+        else
+            gamepad->auxState.turbo.activity = TURBO_LED_STATE_ON;
+    } else {
+        gamepad->auxState.turbo.activity = TURBO_LED_STATE_OFF;
+    }
+
+    // PWM LED Pin
+    if ( hasLedPin ) {
+        if ( gamepad->auxState.turbo.activity == TURBO_LED_STATE_ON ) {
+            gpio_put(options.ledPin, TURBO_LED_STATE_ON);
+        } else {
             gpio_put(options.ledPin, TURBO_LED_STATE_OFF);
         }
     }
