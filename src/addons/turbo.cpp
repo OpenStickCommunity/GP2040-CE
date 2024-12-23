@@ -63,6 +63,10 @@ void TurboInput::setup()
         gpio_put(options.ledPin, 1);
     }
 
+    Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
+	gamepad->auxState.turbo.enabled = true;
+    gamepad->auxState.turbo.active = 1;
+
     // SHMUP Mode
     if ( options.shmupModeEnabled ) {
         shmupBtnPin[0] = options.shmupBtn1Pin; // Charge Buttons Pins
@@ -192,18 +196,19 @@ void TurboInput::process()
     // OFF: No turbo buttons enabled
     // ON: 1 or more turbo buttons enabled
     // BLINK: OFF on turbo shot, ON on turbo flicker
+    Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
     if (turboButtonsMask) {
         if (gamepad->state.buttons & turboButtonsMask)
-            gamepad->auxState.turbo.activity = bTurboFlicker ? TURBO_LED_STATE_ON : TURBO_LED_STATE_OFF;
+            processedGamepad->auxState.turbo.activity = bTurboFlicker ? TURBO_LED_STATE_ON : TURBO_LED_STATE_OFF;
         else
-            gamepad->auxState.turbo.activity = TURBO_LED_STATE_ON;
+            processedGamepad->auxState.turbo.activity = TURBO_LED_STATE_ON;
     } else {
-        gamepad->auxState.turbo.activity = TURBO_LED_STATE_OFF;
+        processedGamepad->auxState.turbo.activity = TURBO_LED_STATE_OFF;
     }
 
     // PWM LED Pin
     if ( hasLedPin ) {
-        if ( gamepad->auxState.turbo.activity == TURBO_LED_STATE_ON ) {
+        if ( processedGamepad->auxState.turbo.activity == TURBO_LED_STATE_ON ) {
             gpio_put(options.ledPin, TURBO_LED_STATE_ON);
         } else {
             gpio_put(options.ledPin, TURBO_LED_STATE_OFF);
