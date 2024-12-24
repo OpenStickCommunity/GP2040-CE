@@ -43,7 +43,7 @@ export const rotaryScheme = {
 		.number()
 		.required()
 		.label('Rotary Encoder Add-On Enabled'),
-	encoderOneEnabled: yup.boolean().required().label('Encoder One Enabled'),
+	encoderOneEnabled: yup.number().required().label('Encoder One Enabled'),
 	encoderOnePinA: yup
 		.number()
 		.label('Encoder One Pin A')
@@ -61,11 +61,11 @@ export const rotaryScheme = {
 		.label('Encoder One Reset After')
 		.required(),
 	encoderOneAllowWrapAround: yup
-		.boolean()
+		.number()
 		.required()
 		.label('Encoder One Allow Wrap Around'),
 	encoderOneMultiplier: yup.number().label('Encoder One Multiplier').required(),
-	encoderTwoEnabled: yup.boolean().required().label('Encoder Two Enabled'),
+	encoderTwoEnabled: yup.number().required().label('Encoder Two Enabled'),
 	encoderTwoPinA: yup
 		.number()
 		.label('Encoder Two Pin A')
@@ -83,7 +83,7 @@ export const rotaryScheme = {
 		.label('Encoder Two Reset After')
 		.required(),
 	encoderTwoAllowWrapAround: yup
-		.boolean()
+		.number()
 		.required()
 		.label('Encoder Two Allow Wrap Around'),
 	encoderTwoMultiplier: yup.number().label('Encoder Two Multiplier').required(),
