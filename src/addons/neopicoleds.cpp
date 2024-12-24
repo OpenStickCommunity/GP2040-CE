@@ -631,6 +631,10 @@ void NeoPicoLEDAddon::configureLEDs()
     if (turboOptions.turboLedType == PLED_TYPE_RGB)
         ledCount += 1;
 
+    if (ledOptions.caseRGBType == CASE_RGB_TYPE_STATIC ) {
+        ledCount += ledOptions.caseRGBCount;
+    }
+
     // Remove the old neopico (config can call this)
     delete neopico;
     neopico = new NeoPico(ledOptions.dataPin, ledCount, static_cast<LEDFormat>(ledOptions.ledFormat));

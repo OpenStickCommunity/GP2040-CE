@@ -859,7 +859,6 @@ std::string getLedOptions()
     writeDoc(doc, "pledIndex3", ledOptions.pledIndex3);
     writeDoc(doc, "pledIndex4", ledOptions.pledIndex4);
     writeDoc(doc, "pledColor", ((RGB)ledOptions.pledColor).value(LED_FORMAT_RGB));
-
     writeDoc(doc, "caseRGBType", ledOptions.caseRGBType);
     writeDoc(doc, "caseRGBIndex", ledOptions.caseRGBIndex);
     writeDoc(doc, "caseRGBCount", ledOptions.caseRGBCount);

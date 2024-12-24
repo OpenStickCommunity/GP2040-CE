@@ -44,7 +44,7 @@
 #endif
 
 #ifndef CASE_RGB_COLOR
-#define CASE_RGB_COLOR ColorWhite // White
+#define CASE_RGB_COLOR ColorGreen // Green
 #endif
 
 #ifndef CASE_RGB_COUNT
