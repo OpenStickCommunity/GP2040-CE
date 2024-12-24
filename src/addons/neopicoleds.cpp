@@ -209,8 +209,7 @@ void NeoPicoLEDAddon::setup()
     gamepad->auxState.playerID.enabled = true;
     gamepad->auxState.sensors.statusLight.enabled = true;
 
-    if ( ledOptions.pledType == PLED_TYPE_RGB ||
-            turboOptions.turboLedType == PLED_TYPE_RGB) {
+    if ( ledOptions.pledType == PLED_TYPE_RGB ) {
         neoPLEDs = new NeoPicoPlayerLEDs();
     }
 
@@ -315,6 +314,17 @@ void NeoPicoLEDAddon::process()
                 float brightness = as.GetBrightnessX();
                 frame[turboOptions.turboLedIndex] = ((RGB)turboOptions.turboLedColor).value(neopico->GetFormat(), brightness);
             }
+        }
+    }
+
+    // Case RGB LEDs for a single static color go here
+    if ( ledOptions.caseRGBType == CASE_RGB_TYPE_STATIC &&
+        ledOptions.caseRGBIndex >= 0 &&
+        ledOptions.caseRGBCount > 0 ) {
+        float brightness = as.GetBrightnessX();
+        uint32_t colorVal = ((RGB)ledOptions.caseRGBColor).value(neopico->GetFormat(), brightness);
+        for(int i = 0; i < ledOptions.caseRGBCount; i++) {
+            frame[ledOptions.caseRGBIndex+i] = colorVal;
         }
     }
 
