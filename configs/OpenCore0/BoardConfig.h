@@ -106,7 +106,7 @@
 #define PLED4_PIN 27
 #define PLED_COLOR ColorGreen
 
-#define TURBO_RGB_INDEX 28
+#define TURBO_LED_INDEX 28
 #define TURBO_LED_TYPE PLED_TYPE_RGB
 #define TURBO_LED_COLOR ColorRed
 
