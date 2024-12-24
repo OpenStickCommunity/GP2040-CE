@@ -565,6 +565,9 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, shmupBtnMask3, SHMUP_BUTTON3);
     INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, shmupBtnMask4, SHMUP_BUTTON4);
     INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, shmupMixMode, SHMUP_MIX_MODE);
+    INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, turboLedType, TURBO_LED_TYPE);
+    INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, turboLedIndex, TURBO_LED_INDEX);
+    INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, turboLedColor, static_cast<uint32_t>(TURBO_LED_COLOR.r) << 16 | static_cast<uint32_t>(TURBO_LED_COLOR.g) << 8 | static_cast<uint32_t>(TURBO_LED_COLOR.b));
 
     // addonOptions.reverseOptions
     INIT_UNSET_PROPERTY(config.addonOptions.reverseOptions, enabled, !!REVERSE_ENABLED);
@@ -1319,6 +1322,11 @@ void migrateTurboPinToGpio(Config& config) {
             config.profileOptions.gpioMappingsSets[profileNum].pins[pin].action = GpioAction::BUTTON_PRESS_TURBO;
         }
         turboOptions.deprecatedButtonPin = -1; // set our turbo options to -1 for subsequent calls
+    }
+    
+    // Make sure we set PWM mode if we are using led pin
+    if ( turboOptions.turboLedType == PLED_TYPE_NONE && isValidPin(turboOptions.ledPin) ) {
+        turboOptions.turboLedType = PLED_TYPE_PWM;
     }
 }
 

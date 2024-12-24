@@ -397,6 +397,10 @@ message TurboOptions
     optional uint32 shmupBtnMask3 = 17;
     optional uint32 shmupBtnMask4 = 18;
     optional ShmupMixMode shmupMixMode = 19;
+
+    optional PLEDType turboLedType = 20;
+    optional int32 turboLedIndex = 21;
+    optional uint32 turboLedColor = 22;
 }
 
 message SliderOptions
