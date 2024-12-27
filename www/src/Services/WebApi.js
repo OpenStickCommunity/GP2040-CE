@@ -461,7 +461,8 @@ async function getAddonsOptions(setLoading) {
 		const data = response.data;
 		setLoading(false);
 
-		response.data.turboLedColor = rgbIntToHex(response.data.turboLedColor) || '#ffffff';
+		response.data.turboLedColor =
+			rgbIntToHex(response.data.turboLedColor) || '#ffffff';
 
 		// Merge saved keyMappings with defaults
 		const keyboardHostMap = Object.entries(data.keyboardHostMap).reduce(
@@ -614,33 +615,6 @@ async function setPeripheralOptions(mappings) {
 		});
 }
 
-async function getFirmwareVersion(setLoading) {
-	setLoading(true);
-
-	try {
-		const response = await Http.get(`${baseUrl}/api/getFirmwareVersion`);
-		console.log('got firmware version:', response.data);
-		setLoading(false);
-		return response.data;
-	} catch (error) {
-		setLoading(false);
-		console.error(error);
-	}
-}
-
-async function getMemoryReport(setLoading) {
-	setLoading(true);
-
-	try {
-		const response = await Http.get(`${baseUrl}/api/getMemoryReport`);
-		setLoading(false);
-		return response.data;
-	} catch (error) {
-		setLoading(false);
-		console.error(error);
-	}
-}
-
 async function getUsedPins(setLoading) {
 	setLoading(true);
 
@@ -734,8 +708,6 @@ export default {
 	getButtonLayoutDefs,
 	getSplashImage,
 	setSplashImage,
-	getFirmwareVersion,
-	getMemoryReport,
 	getUsedPins,
 	getHeldPins,
 	abortGetHeldPins,
