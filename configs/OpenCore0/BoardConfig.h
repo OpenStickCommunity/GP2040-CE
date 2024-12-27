@@ -106,6 +106,15 @@
 #define PLED4_PIN 27
 #define PLED_COLOR ColorGreen
 
+#define TURBO_LED_INDEX 28
+#define TURBO_LED_TYPE PLED_TYPE_RGB
+#define TURBO_LED_COLOR ColorRed
+
+#define CASE_RGB_TYPE CASE_RGB_TYPE_STATIC
+#define CASE_RGB_INDEX 29
+#define CASE_RGB_COUNT 20
+#define CASE_RGB_COLOR ColorGreen
+
 #define HAS_I2C_DISPLAY 1
 #define I2C0_ENABLED 1
 #define I2C0_PIN_SDA 0

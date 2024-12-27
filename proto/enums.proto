@@ -347,6 +347,14 @@ enum PLEDType
     PLED_TYPE_RGB = 1;
 };
 
+enum CaseRGBType
+{
+    option (nanopb_enumopt).long_names = false;
+
+    CASE_RGB_TYPE_NONE = -1;
+    CASE_RGB_TYPE_STATIC = 0;
+};
+
 enum ForcedSetupMode
 {
     option (nanopb_enumopt).long_names = false;
