@@ -2,10 +2,13 @@ $nav-outer-margin: 0.75rem;
 
 .nav {
 	padding-bottom: 1.5rem;
+	// background-color: var(--bs-primary-rgb);
 }
 
 nav.navbar {
 	padding: 0;
+	background-color: white;
+	box-shadow: 0 1px 2px 0 #0000001a;
 
 	.navbar-brand {
 		margin-right: $nav-outer-margin;
@@ -28,6 +31,11 @@ nav.navbar {
 
 	.reset-settings-link {
 		color: #ff0000;
+	}
+}
+[data-bs-theme="dark"] {
+	nav.navbar {
+		background-color: #242526;
 	}
 }
 

@@ -1,13 +1,13 @@
 // Override default variables before the import
 $primary: #495057;
 $danger: #7b2d26;
+
+$body-color-dark: white;
+$body-bg-dark: #1b1b1d;
+
 $enable-cssgrid: true;
 
 @import "~bootstrap/scss/bootstrap";
-
-:root {
-	--bs-primary-rgb: 20, 23, 30;
-}
 
 * {
 	font-size: 16px;
@@ -21,7 +21,6 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
-
 h1 {
 	font-size: 1.5rem;
 }
