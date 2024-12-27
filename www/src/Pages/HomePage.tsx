@@ -30,7 +30,6 @@ export default function HomePage() {
 			</div>
 		);
 	}
-
 	return (
 		<div>
 			<h1>{t('HomePage:header-text')}</h1>
@@ -45,18 +44,20 @@ export default function HomePage() {
 					<div className="system-text">
 						{t('HomePage:latest-text', { version: latestVersion })}
 					</div>
-					{currentVersion !== latestVersion && (
-						<div className="mt-3 mb-3">
-							<a
-								target="_blank"
-								rel="noreferrer"
-								href={latestDownloadUrl}
-								className="btn btn-primary"
-							>
-								{t('HomePage:get-update-text')}
-							</a>
-						</div>
-					)}
+					{latestVersion &&
+						currentVersion?.split('-').length == 1 &&
+						currentVersion !== latestVersion && (
+							<div className="mt-3 mb-3">
+								<a
+									target="_blank"
+									rel="noreferrer"
+									href={latestDownloadUrl}
+									className="btn btn-primary"
+								>
+									{t('HomePage:get-update-text')}
+								</a>
+							</div>
+						)}
 
 					<strong className="system-text">
 						{t('HomePage:memory-header-text')}
