@@ -648,8 +648,6 @@ std::string setGamepadOptions()
 
     GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
 
-    uint8_t prevProfileNumber = gamepadOptions.profileNumber;
-
     readDoc(gamepadOptions.dpadMode, doc, "dpadMode");
     readDoc(gamepadOptions.inputMode, doc, "inputMode");
     readDoc(gamepadOptions.socdMode, doc, "socdMode");
@@ -671,7 +669,6 @@ std::string setGamepadOptions()
     readDoc(gamepadOptions.xinputAuthType, doc, "xinputAuthType");
     readDoc(gamepadOptions.ps4ControllerIDMode, doc, "ps4ControllerIDMode");
 
-    EventManager::getInstance().triggerEvent(new GPProfileChangeEvent(prevProfileNumber, gamepadOptions.profileNumber));
 
     HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
     save_hotkey(&hotkeyOptions.hotkey01, doc, "hotkey01");
