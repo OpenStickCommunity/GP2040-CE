@@ -41,6 +41,7 @@ import Tilt, { tiltScheme, tiltState } from '../Addons/Tilt';
 import Turbo, { turboScheme, turboState } from '../Addons/Turbo';
 import Wii, { wiiScheme, wiiState } from '../Addons/Wii';
 import SNES, { snesState } from '../Addons/SNES';
+import PSX, { psxScheme, psxState } from '../Addons/PSX';
 import FocusMode, {
 	focusModeScheme,
 	focusModeState,
@@ -77,6 +78,7 @@ const schema = yup.object().shape({
 	...playerNumberScheme,
 	...socdScheme,
 	...wiiScheme,
+	...psxScheme,
 	...focusModeScheme,
 	...keyboardScheme,
 	...inputHistoryScheme,
@@ -102,6 +104,7 @@ const defaultValues = {
 	...socdState,
 	...wiiState,
 	...snesState,
+	...psxState,
 	...focusModeState,
 	...keyboardState,
 	...inputHistoryState,
@@ -127,6 +130,7 @@ const ADDONS = [
 	SOCD,
 	Wii,
 	SNES,
+	PSX,
 	FocusMode,
 	Keyboard,
 	GamepadUSBHost,
