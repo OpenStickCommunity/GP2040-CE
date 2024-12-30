@@ -30,6 +30,7 @@
 #include "addons/turbo.h"
 #include "addons/wiiext.h"
 #include "addons/snes_input.h"
+#include "addons/psx.h"
 #include "addons/input_macro.h"
 #include "addons/rotaryencoder.h"
 #include "addons/i2c_gpio_pcf8575.h"
@@ -714,6 +715,14 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.snesOptions, clockPin, SNES_PAD_CLOCK_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.snesOptions, latchPin, SNES_PAD_LATCH_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.snesOptions, dataPin, SNES_PAD_DATA_PIN);
+
+    // addonOptions.psxOptions
+    INIT_UNSET_PROPERTY(config.addonOptions.psxOptions, enabled, !!PSX_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.psxOptions, dataPin, PSX_DATA_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.psxOptions, attentionPin, PSX_ATTENTION_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.psxOptions, commandPin, PSX_COMMAND_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.psxOptions, clockPin, PSX_CLOCK_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.psxOptions, acknowledgePin, PSX_ACKNOWLEDGE_PIN);
 
     // addonOptions.pcf8575Options
     INIT_UNSET_PROPERTY(config.addonOptions.pcf8575Options, enabled, I2C_PCF8575_ENABLED);
