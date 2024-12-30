@@ -42,6 +42,17 @@ public:
 	virtual void preprocess() {}
 	virtual std::string name() { return PsxAddonName; }
 private:
+    uint32_t acknowledgePin;
+    uint32_t attentionPin;
+    uint32_t clockPin;
+    uint32_t commandPin;
+    uint32_t dataPin;
+    virtual uint8_t readwrite(uint8_t i);
+    virtual void PsxAddon::takeAttention();
+    virtual void PsxAddon::releaseAttention();
+    const int PsxAddon::CLOCK_DELAY_US = 2;
+    const int PsxAddon::BYTE_DELAY_US = 4;
+
 };
 
 #endif  // _PsxAddon_H
