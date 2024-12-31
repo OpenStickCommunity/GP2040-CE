@@ -153,6 +153,7 @@ class ButtonLayoutScreen : public GPScreen {
         uint8_t prevProfileNumber = 0;
         ButtonLayoutParamsLeft prevLeftOptions;
         ButtonLayoutParamsRight prevRightOptions;
+        ButtonLayoutOrientation prevOrientation;
 
         bool macroEnabled;
 

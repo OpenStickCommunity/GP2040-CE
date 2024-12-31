@@ -246,6 +246,8 @@ message DisplayOptions
     optional int32 displaySaverTimeout = 17;
     optional bool turnOffWhenSuspended = 18;
     optional DisplaySaverMode displaySaverMode = 19;
+
+    optional ButtonLayoutOrientation buttonLayoutOrientation = 20;
 }
 
 message LEDOptions

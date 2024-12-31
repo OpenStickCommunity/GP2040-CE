@@ -450,6 +450,7 @@ std::string setDisplayOptions(DisplayOptions& displayOptions)
     readDoc(displayOptions.splashDuration, doc, "splashDuration");
     readDoc(displayOptions.displaySaverTimeout, doc, "displaySaverTimeout");
     readDoc(displayOptions.displaySaverMode, doc, "displaySaverMode");
+    readDoc(displayOptions.buttonLayoutOrientation, doc, "buttonLayoutOrientation");
     readDoc(displayOptions.turnOffWhenSuspended, doc, "turnOffWhenSuspended");
 
     readDoc(displayOptions.buttonLayoutCustomOptions.paramsLeft.layout, doc, "buttonLayoutCustomOptions", "params", "layout");
@@ -493,6 +494,7 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
     writeDoc(doc, "splashDuration", displayOptions.splashDuration);
     writeDoc(doc, "displaySaverTimeout", displayOptions.displaySaverTimeout);
     writeDoc(doc, "displaySaverMode", displayOptions.displaySaverMode);
+    writeDoc(doc, "buttonLayoutOrientation", displayOptions.buttonLayoutOrientation);
     writeDoc(doc, "turnOffWhenSuspended", displayOptions.turnOffWhenSuspended);
 
     writeDoc(doc, "buttonLayoutCustomOptions", "params", "layout", displayOptions.buttonLayoutCustomOptions.paramsLeft.layout);

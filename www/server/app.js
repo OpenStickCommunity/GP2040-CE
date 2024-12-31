@@ -56,6 +56,7 @@ app.get('/api/getDisplayOptions', (req, res) => {
 		invertDisplay: 1,
 		buttonLayout: 0,
 		buttonLayoutRight: 3,
+		buttonLayoutOrientation: 0,
 		splashMode: 3,
 		splashChoice: 0,
 		splashDuration: 0,
@@ -77,6 +78,7 @@ app.get('/api/getDisplayOptions', (req, res) => {
 		},
 
 		displaySaverTimeout: 0,
+		displaySaverMode: 0,
 		turnOffWhenSuspended: 0,
 	};
 	console.log('data', data);

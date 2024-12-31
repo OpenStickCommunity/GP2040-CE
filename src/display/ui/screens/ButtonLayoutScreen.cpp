@@ -39,6 +39,7 @@ void ButtonLayoutScreen::init() {
     prevLayoutRight = Storage::getInstance().getDisplayOptions().buttonLayoutRight;
     prevLeftOptions = Storage::getInstance().getDisplayOptions().buttonLayoutCustomOptions.paramsLeft;
     prevRightOptions = Storage::getInstance().getDisplayOptions().buttonLayoutCustomOptions.paramsRight;
+    prevOrientation = Storage::getInstance().getDisplayOptions().buttonLayoutOrientation;
 
     // we cannot look at macro options enabled, pull the pins
     
@@ -78,8 +79,9 @@ int8_t ButtonLayoutScreen::update() {
     if (configMode) {
         uint8_t layoutLeft = Storage::getInstance().getDisplayOptions().buttonLayout;
         uint8_t layoutRight = Storage::getInstance().getDisplayOptions().buttonLayoutRight;
+        uint8_t buttonLayoutOrientation = Storage::getInstance().getDisplayOptions().buttonLayoutOrientation;
         bool inputHistoryEnabled = Storage::getInstance().getAddonOptions().inputHistoryOptions.enabled;
-        if ((prevLayoutLeft != layoutLeft) || (prevLayoutRight != layoutRight) || (isInputHistoryEnabled != inputHistoryEnabled) || compareCustomLayouts()) {
+        if ((prevLayoutLeft != layoutLeft) || (prevLayoutRight != layoutRight) || (isInputHistoryEnabled != inputHistoryEnabled) || compareCustomLayouts() || (prevOrientation != buttonLayoutOrientation)) {
             shutdown();
             init();
         }

@@ -4,13 +4,35 @@
 #include "enums.pb.h"
 
 LayoutManager::LayoutList LayoutManager::getLayoutA() {
-    uint16_t layoutLeft = Storage::getInstance().getDisplayOptions().buttonLayout;
-    return getLeftLayout(layoutLeft);
+    const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
+    uint16_t layoutLeft = options.buttonLayout;
+    if (options.buttonLayoutOrientation != BUTTON_ORIENTATION_DEFAULT) {
+        uint16_t layoutRight = options.buttonLayoutRight;
+        LayoutManager::LayoutList rightLayout = getRightLayout(layoutRight);
+        if (options.buttonLayoutOrientation == BUTTON_ORIENTATION_SWITCHED) {
+            return adjustByOffset(rightLayout, -64);
+        } else {
+            return adjustByOffset(flipHorizontally(rightLayout, 64, 0, 128, 0), -64);
+        }
+    } else {
+        return getLeftLayout(layoutLeft);
+    }
 }
 
 LayoutManager::LayoutList LayoutManager::getLayoutB() {
-    uint16_t layoutRight = Storage::getInstance().getDisplayOptions().buttonLayoutRight;
-    return getRightLayout(layoutRight);
+    const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
+    uint16_t layoutRight = options.buttonLayoutRight;
+    if (options.buttonLayoutOrientation != BUTTON_ORIENTATION_DEFAULT) {
+        uint16_t layoutLeft = options.buttonLayout;
+        LayoutManager::LayoutList leftLayout = getLeftLayout(layoutLeft);
+        if (options.buttonLayoutOrientation == BUTTON_ORIENTATION_SWITCHED) {
+            return adjustByOffset(leftLayout, 64);
+        } else {
+            return adjustByOffset(flipHorizontally(leftLayout, 0, 0, 64, 0), 64);
+        }
+    } else {
+        return getRightLayout(layoutRight);
+    }
 }
 
 std::string LayoutManager::getLayoutAName() {
@@ -145,6 +167,8 @@ LayoutManager::LayoutList LayoutManager::getRightLayout(uint16_t index) {
             return this->drawCapcom6();
         case BUTTON_LAYOUT_SEGA2P:
             return this->drawSega2p();
+        case BUTTON_LAYOUT_SEGA2P_6B:
+            return this->drawSega2p6b();
         case BUTTON_LAYOUT_NOIR8:
             return this->drawNoir8();
         case BUTTON_LAYOUT_KEYBOARDB:
@@ -155,6 +179,8 @@ LayoutManager::LayoutList LayoutManager::getRightLayout(uint16_t index) {
             return this->drawBlankB();
         case BUTTON_LAYOUT_VLXB:
             return this->drawVLXB();
+        case BUTTON_LAYOUT_VLXB_6B:
+            return this->drawVLXB6B();
         case BUTTON_LAYOUT_FIGHTBOARD:
             return this->drawFightboard();
         case BUTTON_LAYOUT_FIGHTBOARD_STICK_MIRRORED:
@@ -255,6 +281,52 @@ LayoutManager::LayoutList LayoutManager::adjustByCustomSettings(LayoutManager::L
     return layout;
 }
 
+LayoutManager::LayoutList LayoutManager::adjustByOffset(LayoutManager::LayoutList layout, int16_t originX, int16_t originY) {
+    if (layout.size() > 0) {
+        int16_t minX = INT16_MAX;
+        int16_t maxX = INT16_MIN;
+
+        for (uint16_t elementCtr = 0; elementCtr < layout.size(); elementCtr++) {
+            int16_t newX = layout[elementCtr].parameters.x1 + originX;
+            if (((GPShape_Type)layout[elementCtr].parameters.shape == GP_SHAPE_ELLIPSE) || ((GPShape_Type)layout[elementCtr].parameters.shape == GP_SHAPE_POLYGON)) {
+                newX = (layout[elementCtr].parameters.x1-(layout[elementCtr].parameters.x2)) + originX;
+            } else if ((GPShape_Type)layout[elementCtr].parameters.shape == GP_SHAPE_SQUARE) {
+                if (originX > 0) newX = layout[elementCtr].parameters.x2 + originX;
+            }
+            minX = std::min(minX, newX);
+            maxX = std::max(maxX, newX);
+        }
+
+        int16_t offsetX = 0;
+        if (minX < 0) {
+            offsetX = -minX;
+        } else if (maxX > 127) {
+            offsetX = 127 - maxX;
+        }
+
+        // Apply the calculated adjustment to all objects
+        for (uint16_t elementCtr = 0; elementCtr < layout.size(); elementCtr++) {
+            layout[elementCtr].parameters.x1 += originX + offsetX;
+            if ((GPShape_Type)layout[elementCtr].parameters.shape == GP_SHAPE_SQUARE) {
+                layout[elementCtr].parameters.x2 += originX + offsetX;
+            }
+            layout[elementCtr].parameters.y1 += originY; // Apply y offset directly
+        }
+    }
+    return layout;
+}
+
+LayoutManager::LayoutList LayoutManager::flipHorizontally(LayoutList layout, int16_t startX, int16_t startY, int16_t endX, int16_t endY) {
+    if (layout.size() > 0) {
+        for (uint16_t elementCtr = 0; elementCtr < layout.size(); elementCtr++) {
+            int16_t originalX = layout[elementCtr].parameters.x1;
+
+            layout[elementCtr].parameters.x1 = (endX-1) - (originalX - startX);
+        }
+    }
+    return layout;
+}
+
 LayoutManager::LayoutList LayoutManager::drawStickless()
 {
 	return BUTTON_GROUP_STICKLESS;
@@ -345,6 +417,11 @@ LayoutManager::LayoutList LayoutManager::drawVLXB()
     return BUTTON_GROUP_VLXB;
 }
 
+LayoutManager::LayoutList LayoutManager::drawVLXB6B()
+{
+    return BUTTON_GROUP_VLXB_6B;
+}
+
 LayoutManager::LayoutList LayoutManager::drawFightboard()
 {
     return BUTTON_GROUP_FIGHTBOARD;
@@ -358,6 +435,11 @@ LayoutManager::LayoutList LayoutManager::drawVewlix7()
 LayoutManager::LayoutList LayoutManager::drawSega2p()
 {
     return BUTTON_GROUP_SEGA_2P;
+}
+
+LayoutManager::LayoutList LayoutManager::drawSega2p6b()
+{
+    return BUTTON_GROUP_SEGA_2P_6B;
 }
 
 LayoutManager::LayoutList LayoutManager::drawNoir8()

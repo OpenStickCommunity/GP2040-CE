@@ -84,6 +84,8 @@ enum ButtonLayoutRight
     BUTTON_LAYOUT_6GAWD_ALLBUTTON_B = 35;
     BUTTON_LAYOUT_6GAWD_ALLBUTTONPLUS_B = 36;
     BUTTON_LAYOUT_STICKLESS_R16B = 37;
+    BUTTON_LAYOUT_VLXB_6B = 38;
+    BUTTON_LAYOUT_SEGA2P_6B = 39;
 }
 
 enum SplashMode
@@ -459,4 +461,12 @@ enum DisplaySaverMode {
     DISPLAY_SAVER_BOUNCE = 2;
     DISPLAY_SAVER_PIPES = 3;
     DISPLAY_SAVER_TOAST = 4;
+};
+
+enum ButtonLayoutOrientation {
+    option (nanopb_enumopt).long_names = false;
+
+    BUTTON_ORIENTATION_DEFAULT = 0;
+    BUTTON_ORIENTATION_SOUTHPAW = 1;
+    BUTTON_ORIENTATION_SWITCHED = 2;
 };
