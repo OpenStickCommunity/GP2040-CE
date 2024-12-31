@@ -975,7 +975,7 @@ export default function SettingsPage() {
                 <Row className="mb-3">
                     <Col sm={12}>
                         <Form.Check
-                            label={'⚠️ Advanced USB Override'}
+                            label={t('SettingsPage:usb-override.advanced-override')}
                             type="switch"
                             id="usbDescOverride"
                             isInvalid={false}
@@ -993,14 +993,12 @@ export default function SettingsPage() {
                     <>
                     <Row className="mb-4 mt-4">
                         <Col>
-                            <span className="alert alert-danger">
-                            DANGER: Invalid USB parameters will cause your input modes to not function!
-                            </span>
+                            <span className="alert alert-danger">{t('SettingsPage:usb-override.invalid-warning-danger')}</span>
                         </Col>
                     </Row>
                     <Row className="mb-3">
                         <Col sm={4}>
-                            <Form.Label>Product Name</Form.Label>
+                            <Form.Label>{t('SettingsPage:usb-override.product-name')}</Form.Label>
                             <Form.Control
                                 size="sm"
                                 type="text"
@@ -1014,7 +1012,7 @@ export default function SettingsPage() {
                             />
                         </Col>
                         <Col sm={4}>
-                            <Form.Label>Manufacturer</Form.Label>
+                            <Form.Label>{t('SettingsPage:usb-override.manufacturer')}</Form.Label>
                             <Form.Control
                                 size="sm"
                                 type="text"
@@ -1027,7 +1025,7 @@ export default function SettingsPage() {
                             />
                         </Col>
                         <Col sm={2}>
-                            <Form.Label>Version</Form.Label>
+                            <Form.Label>{t('SettingsPage:usb-override.version')}</Form.Label>
                             <Form.Control
                                 size="sm"
                                 type="text"
@@ -1043,7 +1041,7 @@ export default function SettingsPage() {
                     <Row className="mb-3">
                         <Col sm={6}>
                             <Form.Check
-                                label={'⚡ Override Physical IDs ⚡ '}
+                                label={t('SettingsPage:usb-override.physical-warning-danger')}
                                 type="switch"
                                 id="usbOverrideID"
                                 isInvalid={false}
@@ -1059,12 +1057,12 @@ export default function SettingsPage() {
                     </Row>
                     <Row className="mb-3" hidden={values.usbOverrideID !== 1}>
                         <Col sm={2}>
-                            <Form.Label>Vendor ID</Form.Label>
+                            <Form.Label>{t('SettingsPage:usb-override.vendor-id')}</Form.Label>
                             <Form.Control
                                 size="sm"
                                 type="text"
                                 name="usbVendorID"
-                                value={console.log("Setting USB Vendor ID ", values.usbVendorID) || values.usbVendorID.toString(16).toUpperCase()}
+                                value={values.usbVendorID.toString(16).toUpperCase()}
                                 error={errors.usbVendorID}
                                 isInvalid={errors?.usbVendorID}
                                 onChange={handleChange}
@@ -1073,12 +1071,12 @@ export default function SettingsPage() {
                             />
                         </Col>
                         <Col sm={2}>
-                            <Form.Label>Product ID</Form.Label>
+                            <Form.Label>{t('SettingsPage:usb-override.product-id')}</Form.Label>
                             <Form.Control
                                 size="sm"
                                 type="text"
                                 name="usbProductID"
-                                value={console.log("Setting USB Product ID", values.usbProductID) || values.usbProductID.toString(16).toUpperCase()}
+                                value={values.usbProductID.toString(16).toUpperCase()}
                                 error={errors?.usbProductID}
                                 isInvalid={errors?.usbProductID}
                                 onChange={handleChange}
