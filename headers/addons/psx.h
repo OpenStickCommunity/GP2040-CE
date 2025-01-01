@@ -39,7 +39,7 @@ public:
 	virtual bool available();
 	virtual void setup();
 	virtual void process();
-	virtual void preprocess() {}
+	virtual void preprocess();
 	virtual std::string name() { return PsxAddonName; }
 private:
     uint32_t acknowledgePin;
@@ -47,11 +47,11 @@ private:
     uint32_t clockPin;
     uint32_t commandPin;
     uint32_t dataPin;
-    virtual uint8_t readwrite(uint8_t i);
-    virtual void PsxAddon::takeAttention();
-    virtual void PsxAddon::releaseAttention();
-    const int PsxAddon::CLOCK_DELAY_US = 2;
-    const int PsxAddon::BYTE_DELAY_US = 4;
+    uint8_t readwrite(uint8_t i);
+    void takeAttention();
+    void releaseAttention();
+    const int CLOCK_DELAY_US = 2;
+    const int BYTE_DELAY_US = 20;
 
 };
 

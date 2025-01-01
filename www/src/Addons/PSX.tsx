@@ -12,24 +12,32 @@ export const psxScheme = {
 	psxEnabled: yup.number().required().label('PSX Enabled'),
 	psxDataPin: yup
 		.number()
+		.min(-1)
+		.max(29)
 		.label('Validation message PSX Data')
 		.validatePinWhenValue('psxEnabled'),
 	psxCommandPin: yup
 		.number()
 		.min(-1)
-		.max(4)
+		.max(29)
 		.label('Validation message PSX Command')
 		.validatePinWhenValue('psxEnabled'),
 	psxAttentionPin: yup
 		.number()
+		.min(-1)
+		.max(29)
 		.label('Validation message PSX Attention')
 		.validatePinWhenValue('psxEnabled'),
 	psxClockPin: yup
 		.number()
+		.min(-1)
+		.max(29)
 		.label('Validation message PSX Clock')
 		.validatePinWhenValue('psxEnabled'),
 	psxAcknowledgePin: yup
 		.number()
+		.min(-1)
+		.max(29)
 		.label('Validation message PSX Acknowledge')
 		.validatePinWhenValue('psxEnabled'),
 };
