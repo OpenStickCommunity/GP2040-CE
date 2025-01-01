@@ -98,5 +98,12 @@ export default {
 		ANALOG_DIRECTION_MOD_HIGH: 'Analog Stick Modifier High',
 		BUTTON_PRESS_INPUT_REVERSE: 'Reverse Input',
 		SUSTAIN_FOCUS_MODE: 'Focus Mode Enable',
+		MENU_NAVIGATION_UP: 'Menu Up',
+		MENU_NAVIGATION_DOWN: 'Menu Down',
+		MENU_NAVIGATION_LEFT: 'Menu Left',
+		MENU_NAVIGATION_RIGHT: 'Menu Right',
+		MENU_NAVIGATION_SELECT: 'Menu Select',
+		MENU_NAVIGATION_BACK: 'Menu Back',
+		MENU_NAVIGATION_TOGGLE: 'Menu Toggle',
 	},
 };

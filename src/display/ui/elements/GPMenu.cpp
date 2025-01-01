@@ -20,7 +20,7 @@ void GPMenu::draw() {
         currPageItems = 0;
     }
 
-    getRenderer()->drawText((21-this->menuTitle.length()) / 2, 1, this->menuTitle.c_str());
+    getRenderer()->drawText((21-this->menuTitle.length()) / 2, 0, this->menuTitle.c_str());
 
     std::string pageDisplay = "";
     pageDisplay += "Page: " + std::to_string(itemPage+1) + "/" + std::to_string(totalPages);

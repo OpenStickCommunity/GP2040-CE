@@ -88,6 +88,7 @@ class MainMenuScreen : public GPScreen {
         GamepadButtonMapping *mapMenuToggle;
 
         void saveOptions();
+        void updateMenuNavigation(GpioAction action);
 
         #define INPUT_MODE_ENTRIES(name, value) {name##_NAME, NULL, nullptr, std::bind(&MainMenuScreen::currentInputMode, this), std::bind(&MainMenuScreen::selectInputMode, this), value},
         #define DPAD_MODE_ENTRIES(name, value)  {name##_NAME, NULL, nullptr, std::bind(&MainMenuScreen::currentDpadMode,  this), std::bind(&MainMenuScreen::selectDPadMode,  this), value},

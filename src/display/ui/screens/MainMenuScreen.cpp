@@ -79,11 +79,33 @@ int8_t MainMenuScreen::update() {
     Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
 
     uint16_t buttonState = getGamepad()->state.buttons;
-    uint16_t menuSize = gpMenu->getDataSize();
-    bool changeIndex = false;
 
     if (!isPressed && prevValues != values) {
         if (values & mapMenuUp->pinMask) {
+            updateMenuNavigation(GpioAction::MENU_NAVIGATION_UP);
+        } else if (values & mapMenuDown->pinMask) {
+            updateMenuNavigation(GpioAction::MENU_NAVIGATION_DOWN);
+        } else if (values & mapMenuSelect->pinMask) {
+            updateMenuNavigation(GpioAction::MENU_NAVIGATION_SELECT);
+        } else if (values & mapMenuBack->pinMask) {
+            updateMenuNavigation(GpioAction::MENU_NAVIGATION_BACK);
+        }
+    } else {
+        isPressed = false;
+    }
+
+    prevButtonState = buttonState;
+    prevValues = values;
+
+    return exitToScreen;
+}
+
+void MainMenuScreen::updateMenuNavigation(GpioAction action) {
+    bool changeIndex = false;
+    uint16_t menuSize = gpMenu->getDataSize();
+
+    switch (action) { 
+        case GpioAction::MENU_NAVIGATION_UP:
             if (menuIndex > 0) {
                 menuIndex--;
             } else {
@@ -91,7 +113,8 @@ int8_t MainMenuScreen::update() {
             }
             changeIndex = true;
             isPressed = true;
-        } else if (values & mapMenuDown->pinMask) {
+            break;
+        case GpioAction::MENU_NAVIGATION_DOWN:
             if (menuIndex < menuSize-1) {
                 menuIndex++;
             } else {
@@ -99,7 +122,12 @@ int8_t MainMenuScreen::update() {
             }
             changeIndex = true;
             isPressed = true;
-        } else if (values & mapMenuSelect->pinMask) {
+            break;
+        case GpioAction::MENU_NAVIGATION_LEFT:
+            break;
+        case GpioAction::MENU_NAVIGATION_RIGHT:
+            break;
+        case GpioAction::MENU_NAVIGATION_SELECT:
             if (currentMenu->at(menuIndex).submenu != nullptr) {
                 previousMenu = currentMenu;
                 currentMenu = currentMenu->at(menuIndex).submenu;
@@ -111,7 +139,8 @@ int8_t MainMenuScreen::update() {
                 currentMenu->at(menuIndex).action();
             }
             isPressed = true;
-        } else if (values & mapMenuBack->pinMask) {
+            break;
+        case GpioAction::MENU_NAVIGATION_BACK:
             if (previousMenu != nullptr) {
                 currentMenu = previousMenu;
                 previousMenu = nullptr;
@@ -124,17 +153,17 @@ int8_t MainMenuScreen::update() {
                 isPressed = false;
             }
             isPressed = true;
-        }
-
-        if (changeIndex) gpMenu->setIndex(menuIndex);
-    } else {
-        isPressed = false;
+            break;
+        case GpioAction::MENU_NAVIGATION_TOGGLE:
+            // when in the menu screen, this exits the menu without confirming changes
+            exitToScreen = DisplayMode::BUTTONS;
+            isPressed = false;
+            break;
+        default:
+            break;
     }
 
-    prevButtonState = buttonState;
-    prevValues = values;
-
-    return exitToScreen;
+    if (changeIndex) gpMenu->setIndex(menuIndex);
 }
 
 void MainMenuScreen::testMenu() {
