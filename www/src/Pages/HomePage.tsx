@@ -74,6 +74,9 @@ export default function HomePage() {
 						{t('HomePage:memory-static-allocations-text')}:{' '}
 						{memoryReport.staticAllocs}
 					</div>
+					<div>
+						{t('HomePage:memory-board-text')}: {memoryReport.physicalFlash}
+					</div>
 
 					<ProgressBar
 						className="my-1 system-text w-50"

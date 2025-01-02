@@ -13,13 +13,14 @@ type State = {
 		fileName: string;
 	};
 	memoryReport: {
-		totalFlash: number;
-		usedFlash: number;
-		staticAllocs: number;
-		totalHeap: number;
-		usedHeap: number;
 		percentageFlash: number;
 		percentageHeap: number;
+		physicalFlash: number;
+		staticAllocs: number;
+		totalFlash: number;
+		totalHeap: number;
+		usedFlash: number;
+		usedHeap: number;
 	};
 	loading: boolean;
 	error: boolean;
@@ -82,10 +83,11 @@ const useSystemStats = create<State & Actions>()((set) => ({
 					fileName: firmwareVersion.boardConfigFileName,
 				},
 				memoryReport: {
-					totalFlash: toKB(memoryReport.totalFlash),
-					usedFlash: toKB(memoryReport.usedFlash),
+					physicalFlash: toKB(memoryReport.physicalFlash),
 					staticAllocs: toKB(memoryReport.staticAllocs),
+					totalFlash: toKB(memoryReport.totalFlash),
 					totalHeap: toKB(memoryReport.totalHeap),
+					usedFlash: toKB(memoryReport.usedFlash),
 					usedHeap: toKB(memoryReport.usedHeap),
 					percentageFlash: percentage(
 						memoryReport.usedFlash,
