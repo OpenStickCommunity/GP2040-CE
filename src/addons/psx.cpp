@@ -27,11 +27,14 @@ void PsxAddon::setup() {
     commandPin = psxOptions.commandPin;
     dataPin = psxOptions.dataPin;
 
+    // this pins can be used for debugging, to find if problems are tied to configuration or code itself.
+    /*
     dataPin = 8;
     commandPin = 10;
     attentionPin = 12;
     clockPin = 11;
     acknowledgePin = 9;
+    */
 
     // Data (IN, 1, brown)
     gpio_init(dataPin);
@@ -78,30 +81,29 @@ void PsxAddon::preprocess() {
     uint8_t shouldBe0Xff = readwrite(0x01);
     uint8_t shouldBe0X41 = readwrite(0x42);
     uint8_t shouldBe0X5a = readwrite(0x00);
-    uint8_t answer1      = readwrite(0x00);     // [SLCT] [    ] [    ] [STRT] [ UP ] [RGHT] [DOWN] [LEFT]
-    uint8_t answer2      = readwrite(0x00);     // [ L2 ] [ R2 ] [ L1 ] [ R1 ] [ /\ ] [ O  ] [ X  ] [ [] ]
+    uint8_t answer1      = readwrite(0x00);     // MSB [LEFT] [DOWN] [RGHT] [ UP ] [STRT] [    ] [    ] [SLCT] LSB
+    uint8_t answer2      = readwrite(0x00);     // MSB [ [] ] [ X  ] [ O  ] [ /\ ] [ R1 ] [ L1 ] [ R2 ] [ L2 ] LSB (bits are sent LSB first on protocol but read MSB first by the function)
 
     gamepad->state.buttons =
         0
-        | ((answer2 & 0b00000100) ? 0 : GAMEPAD_MASK_B1)
-        | ((answer2 & 0b00000010) ? 0 : GAMEPAD_MASK_B2)
-        | ((answer2 & 0b00001000) ? 0 : GAMEPAD_MASK_B3)
-        | ((answer2 & 0b00000001) ? 0 : GAMEPAD_MASK_B4)
-        | ((answer2 & 0b00100000) ? 0 : GAMEPAD_MASK_L1)
-        | ((answer2 & 0b00010000) ? 0 : GAMEPAD_MASK_R1)
-        | ((answer2 & 0b10000000) ? 0 : GAMEPAD_MASK_L2)
-        | ((answer2 & 0b01000000) ? 0 : GAMEPAD_MASK_R2)
-        | ((answer1 & 0b10000000) ? 0 : GAMEPAD_MASK_S1)
-        | ((answer1 & 0b00010000) ? 0 : GAMEPAD_MASK_S2)
-        | ((to_ms_since_boot(get_absolute_time()) & (2048+1024+512)) ? 0 : GAMEPAD_MASK_L2) // just for debug
+        | ((answer2 & 0b01000000) ? 0 : GAMEPAD_MASK_B1)
+        | ((answer2 & 0b00100000) ? 0 : GAMEPAD_MASK_B2)
+        | ((answer2 & 0b10000000) ? 0 : GAMEPAD_MASK_B3)
+        | ((answer2 & 0b00010000) ? 0 : GAMEPAD_MASK_B4)
+        | ((answer2 & 0b00000100) ? 0 : GAMEPAD_MASK_L1)
+        | ((answer2 & 0b00001000) ? 0 : GAMEPAD_MASK_R1)
+        | ((answer2 & 0b00000001) ? 0 : GAMEPAD_MASK_L2)
+        | ((answer2 & 0b00000010) ? 0 : GAMEPAD_MASK_R2)
+        | ((answer1 & 0b00000001) ? 0 : GAMEPAD_MASK_S1)
+        | ((answer1 & 0b00001000) ? 0 : GAMEPAD_MASK_S2)
     ;
 
     gamepad->state.dpad =
         0
-        | ((answer1 & 0b00001000) ? 0 : GAMEPAD_MASK_UP)
-        | ((answer1 & 0b00000100) ? 0 : GAMEPAD_MASK_RIGHT)
-        | ((answer1 & 0b00000010) ? 0 : GAMEPAD_MASK_DOWN)
-        | ((answer1 & 0b00000001) ? 0 : GAMEPAD_MASK_LEFT)
+        | ((answer1 & 0b00010000) ? 0 : GAMEPAD_MASK_UP)
+        | ((answer1 & 0b00100000) ? 0 : GAMEPAD_MASK_RIGHT)
+        | ((answer1 & 0b01000000) ? 0 : GAMEPAD_MASK_DOWN)
+        | ((answer1 & 0b10000000) ? 0 : GAMEPAD_MASK_LEFT)
     ;
 
     releaseAttention();
@@ -124,10 +126,6 @@ void PsxAddon::releaseAttention() {
  * Attention must be taken
  */
 uint8_t PsxAddon::readwrite(uint8_t sent) {
-    gpio_init(dataPin);
-    gpio_disable_pulls(dataPin);
-    gpio_set_dir(dataPin, GPIO_IN);
-
     uint8_t received = 0;
 
     sleep_us(BYTE_DELAY_US);
@@ -143,10 +141,9 @@ uint8_t PsxAddon::readwrite(uint8_t sent) {
         sleep_us(1);
         received = received >> 1;
         received |= gpio_get(dataPin) ? 0b10000000 : 0;
-
         sleep_us(1);
+
     }
 
     return received;
 }
-
