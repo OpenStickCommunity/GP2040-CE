@@ -738,13 +738,12 @@ std::string getGamepadOptions()
     writeDoc(doc, "usbDescVersion", gamepadOptions.usbDescVersion);
     writeDoc(doc, "usbOverrideID", gamepadOptions.usbOverrideID);
     // Write USB Vendor ID and Product ID as 4 character hex strings with 0 padding
-    char idBuffer[5];
-    snprintf(idBuffer, 4, "%04X", gamepadOptions.usbVendorID);
-    idBuffer[4] = '\0';
-    writeDoc(doc, "usbVendorID", idBuffer);
-    snprintf(idBuffer, 4, "%04X", gamepadOptions.usbProductID);
-    idBuffer[4] = '\0';
-    writeDoc(doc, "usbProductID", idBuffer);
+    char usbVendorStr[5];
+    snprintf(usbVendorStr, 5, "%04X", gamepadOptions.usbVendorID);
+    writeDoc(doc, "usbVendorID", usbVendorStr);
+    char usbProductStr[5];
+    snprintf(usbProductStr, 5, "%04X", gamepadOptions.usbProductID);
+    writeDoc(doc, "usbProductID", usbProductStr);
     writeDoc(doc, "fnButtonPin", -1);
     GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
     for (unsigned int pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
