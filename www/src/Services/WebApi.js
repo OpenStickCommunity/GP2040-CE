@@ -276,10 +276,6 @@ async function getGamepadOptions(setLoading) {
 	try {
 		const response = await Http.get(`${baseUrl}/api/getGamepadOptions`);
 		setLoading(false);
-
-        response.data.usbVendorID = response.data.usbVendorID.toString(16).toUpperCase() || '0000';
-        response.data.usbProductID =  response.data.usbProductID.toString(16).toUpperCase() || '0000';
-
 		return response.data;
 	} catch (error) {
 		setLoading(false);

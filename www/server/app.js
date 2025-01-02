@@ -120,8 +120,8 @@ app.get('/api/getGamepadOptions', (req, res) => {
         usbDescManufacturer: 'Open Stick Community',
         usbDescVersion: '1.0',
         usbOverrideID: 0,
-        usbVendorID: 4292,
-        usbProductID: 33472,
+        usbVendorID: '10C4',
+        usbProductID: '82C0',
 		hotkey01: {
 			auxMask: 32768,
 			buttonsMask: 66304,

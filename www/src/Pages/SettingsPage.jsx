@@ -1062,10 +1062,11 @@ export default function SettingsPage() {
                                 size="sm"
                                 type="text"
                                 name="usbVendorID"
-                                value={values.usbVendorID.toString(16).toUpperCase()}
+                                value={values.usbVendorID}
                                 error={errors.usbVendorID}
                                 isInvalid={errors?.usbVendorID}
                                 onChange={handleChange}
+                                onBlur={(e)=>{e.target.value = e.target.value.padStart(4,'0'); return handleChange(e)}}
                                 minLength={4}
                                 maxLength={4}
                             />
@@ -1076,10 +1077,11 @@ export default function SettingsPage() {
                                 size="sm"
                                 type="text"
                                 name="usbProductID"
-                                value={values.usbProductID.toString(16).toUpperCase()}
+                                value={values.usbProductID}
                                 error={errors?.usbProductID}
                                 isInvalid={errors?.usbProductID}
                                 onChange={handleChange}
+                                onBlur={(e)=>{e.target.value = e.target.value.padStart(4,'0'); return handleChange(e)}}
                                 minLength={4}
                                 maxLength={4}
                             />
