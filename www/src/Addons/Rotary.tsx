@@ -61,7 +61,7 @@ export const rotaryScheme = {
 		.label('Encoder One Reset After')
 		.required(),
 	encoderOneAllowWrapAround: yup
-		.number()
+		.boolean()
 		.required()
 		.label('Encoder One Allow Wrap Around'),
 	encoderOneMultiplier: yup.number().label('Encoder One Multiplier').required(),
@@ -83,7 +83,7 @@ export const rotaryScheme = {
 		.label('Encoder Two Reset After')
 		.required(),
 	encoderTwoAllowWrapAround: yup
-		.number()
+		.boolean()
 		.required()
 		.label('Encoder Two Allow Wrap Around'),
 	encoderTwoMultiplier: yup.number().label('Encoder Two Multiplier').required(),

@@ -201,15 +201,17 @@ export default function AddonsConfigPage() {
 		const flattened = flattenObject(storedData);
 
         // Convert turbo LED color if available
-        values.turboLedColor = hexToInt(values.turboLedColor || '#000000');
-
-		const valuesCopy = schema.cast(values); // Strip invalid values
+        const data = {
+            ...values,
+            turboLedColor: hexToInt(values.turboLedColor || '#000000')
+        };
+		const valuesSchema = schema.cast(data); // Strip invalid values
 
 		// Compare what's changed and set it to resultObject
 		let resultObject = {};
 		Object.entries(flattened)?.map((entry) => {
 			const [key, oldVal] = entry;
-			const newVal = get(valuesCopy, key);
+			const newVal = get(valuesSchema, key);
 			if (newVal !== oldVal) {
 				set(resultObject, key, newVal);
 			}

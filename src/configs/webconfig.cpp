@@ -666,6 +666,20 @@ std::string setGamepadOptions()
     readDoc(gamepadOptions.ps5AuthType, doc, "ps5AuthType");
     readDoc(gamepadOptions.xinputAuthType, doc, "xinputAuthType");
     readDoc(gamepadOptions.ps4ControllerIDMode, doc, "ps4ControllerIDMode");
+    readDoc(gamepadOptions.usbDescOverride, doc, "usbDescOverride");
+    // Copy USB descriptor strings
+    size_t strSize = sizeof(gamepadOptions.usbDescManufacturer);
+    strncpy(gamepadOptions.usbDescManufacturer, doc["usbDescManufacturer"], strSize - 1);
+    gamepadOptions.usbDescManufacturer[strSize - 1] = '\0';
+    strSize = sizeof(gamepadOptions.usbDescProduct);
+    strncpy(gamepadOptions.usbDescProduct, doc["usbDescProduct"], strSize - 1);
+    gamepadOptions.usbDescProduct[strSize - 1] = '\0';
+    strSize = sizeof(gamepadOptions.usbDescVersion);
+    strncpy(gamepadOptions.usbDescVersion, doc["usbDescVersion"], strSize - 1);
+    gamepadOptions.usbDescVersion[strSize - 1] = '\0';
+    readDoc(gamepadOptions.usbOverrideID, doc, "usbOverrideID");
+    readDoc(gamepadOptions.usbVendorID, doc, "usbVendorID");
+    readDoc(gamepadOptions.usbProductID, doc, "usbProductID");
 
     HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
     save_hotkey(&hotkeyOptions.hotkey01, doc, "hotkey01");
@@ -718,7 +732,18 @@ std::string getGamepadOptions()
     writeDoc(doc, "ps5AuthType", gamepadOptions.ps5AuthType);
     writeDoc(doc, "xinputAuthType", gamepadOptions.xinputAuthType);
     writeDoc(doc, "ps4ControllerIDMode", gamepadOptions.ps4ControllerIDMode);
-
+    writeDoc(doc, "usbDescOverride", gamepadOptions.usbDescOverride);
+    writeDoc(doc, "usbDescManufacturer", gamepadOptions.usbDescManufacturer);
+    writeDoc(doc, "usbDescProduct", gamepadOptions.usbDescProduct);
+    writeDoc(doc, "usbDescVersion", gamepadOptions.usbDescVersion);
+    writeDoc(doc, "usbOverrideID", gamepadOptions.usbOverrideID);
+    // Write USB Vendor ID and Product ID as 4 character hex strings with 0 padding
+    char usbVendorStr[5];
+    snprintf(usbVendorStr, 5, "%04X", gamepadOptions.usbVendorID);
+    writeDoc(doc, "usbVendorID", usbVendorStr);
+    char usbProductStr[5];
+    snprintf(usbProductStr, 5, "%04X", gamepadOptions.usbProductID);
+    writeDoc(doc, "usbProductID", usbProductStr);
     writeDoc(doc, "fnButtonPin", -1);
     GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
     for (unsigned int pin = 0; pin < NUM_BANK0_GPIOS; pin++) {

@@ -16,6 +16,12 @@ yup.addMethod(yup.string, 'validateColor', function () {
 	);
 });
 
+yup.addMethod(yup.string, 'validateUSBHexID', function() {
+	return this.test('', 'Valid USB hex ID required', (value) =>
+		value?.match(/^([0-9a-f]{4})$/i),
+	);
+});
+
 yup.addMethod(
 	yup.NumberSchema,
 	'validateSelectionWhenValue',
