@@ -97,11 +97,11 @@ bool DisplayAddon::updateDisplayScreen() {
             case PIN_VIEWER:
                 delete (PinViewerScreen*)gpScreen;
                 break;
-            case STATS:
-                delete (StatsScreen*)gpScreen;
-                break;
             case DISPLAY_SAVER:
                 delete (DisplaySaverScreen*)gpScreen;
+                break;
+            case STATS:
+                delete (StatsScreen*)gpScreen;
                 break;
             default:
                 break;
@@ -124,11 +124,11 @@ bool DisplayAddon::updateDisplayScreen() {
         case PIN_VIEWER:
             gpScreen = new PinViewerScreen(gpDisplay);
             break;
-        case STATS:
-            gpScreen = new StatsScreen(gpDisplay);
-            break;
         case DISPLAY_SAVER:
             gpScreen = new DisplaySaverScreen(gpDisplay);
+            break;
+        case STATS:
+            gpScreen = new StatsScreen(gpDisplay);
             break;
         default:
             gpScreen = nullptr;

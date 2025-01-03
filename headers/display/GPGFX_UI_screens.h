@@ -9,8 +9,7 @@ enum DisplayMode {
     STATS,
     MAIN_MENU,
     DISPLAY_SAVER,
-    RESTART,
-    
+    RESTART
 };
 
 #include "ui/screens/ButtonLayoutScreen.h"
