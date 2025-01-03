@@ -9,6 +9,8 @@ import set from 'lodash/set';
 
 import { AppContext } from '../Contexts/AppContext';
 
+import { hexToInt } from '../Services/Utilities';
+
 import WebApi from '../Services/WebApi';
 import Analog, { analogScheme, analogState } from '../Addons/Analog';
 import Analog1256, {
@@ -59,6 +61,7 @@ import ReactiveLED, {
 	reactiveLEDScheme,
 	reactiveLEDState,
 } from '../Addons/ReactiveLED';
+import { rgbIntToHex } from '../Services/Utilities';
 
 const schema = yup.object().shape({
 	...analogScheme,
@@ -196,13 +199,19 @@ export default function AddonsConfigPage() {
 
 	const onSuccess = async (values) => {
 		const flattened = flattenObject(storedData);
-		const valuesCopy = schema.cast(values); // Strip invalid values
+
+        // Convert turbo LED color if available
+        const data = {
+            ...values,
+            turboLedColor: hexToInt(values.turboLedColor || '#000000')
+        };
+		const valuesSchema = schema.cast(data); // Strip invalid values
 
 		// Compare what's changed and set it to resultObject
 		let resultObject = {};
 		Object.entries(flattened)?.map((entry) => {
 			const [key, oldVal] = entry;
-			const newVal = get(valuesCopy, key);
+			const newVal = get(valuesSchema, key);
 			if (newVal !== oldVal) {
 				set(resultObject, key, newVal);
 			}

@@ -277,6 +277,13 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.gamepadOptions, ps5AuthType, DEFAULT_PS5AUTHENTICATION_TYPE);
     INIT_UNSET_PROPERTY(config.gamepadOptions, xinputAuthType, DEFAULT_XINPUTAUTHENTICATION_TYPE);
     INIT_UNSET_PROPERTY(config.gamepadOptions, ps4ControllerIDMode, DEFAULT_PS4_ID_MODE);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, usbDescOverride, false);
+    INIT_UNSET_PROPERTY_STR(config.gamepadOptions, usbDescProduct, "GP2040-CE (Custom)");
+    INIT_UNSET_PROPERTY_STR(config.gamepadOptions, usbDescManufacturer, "Open Stick Community");
+    INIT_UNSET_PROPERTY_STR(config.gamepadOptions, usbDescVersion, "1.0");
+    INIT_UNSET_PROPERTY(config.gamepadOptions, usbOverrideID, false);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, usbVendorID, 0x10C4);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, usbProductID, 0x82C0);
 
     // hotkeyOptions
     HotkeyOptions& hotkeyOptions = config.hotkeyOptions;
@@ -474,6 +481,11 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.ledOptions, pledIndex3, PLED3_PIN);
     INIT_UNSET_PROPERTY(config.ledOptions, pledIndex4, PLED4_PIN);
 
+    INIT_UNSET_PROPERTY(config.ledOptions, caseRGBType, CASE_RGB_TYPE);
+    INIT_UNSET_PROPERTY(config.ledOptions, caseRGBIndex, CASE_RGB_INDEX);
+    INIT_UNSET_PROPERTY(config.ledOptions, caseRGBColor, static_cast<uint32_t>(CASE_RGB_COLOR.r) << 16 | static_cast<uint32_t>(CASE_RGB_COLOR.g) << 8 | static_cast<uint32_t>(CASE_RGB_COLOR.b));    
+    INIT_UNSET_PROPERTY(config.ledOptions, caseRGBCount, CASE_RGB_COUNT);
+
     // animationOptions
     INIT_UNSET_PROPERTY(config.animationOptions, baseAnimationIndex, LEDS_BASE_ANIMATION_INDEX);
     INIT_UNSET_PROPERTY(config.animationOptions, brightness, LEDS_BRIGHTNESS);
@@ -567,6 +579,9 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, shmupBtnMask3, SHMUP_BUTTON3);
     INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, shmupBtnMask4, SHMUP_BUTTON4);
     INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, shmupMixMode, SHMUP_MIX_MODE);
+    INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, turboLedType, TURBO_LED_TYPE);
+    INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, turboLedIndex, TURBO_LED_INDEX);
+    INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, turboLedColor, static_cast<uint32_t>(TURBO_LED_COLOR.r) << 16 | static_cast<uint32_t>(TURBO_LED_COLOR.g) << 8 | static_cast<uint32_t>(TURBO_LED_COLOR.b));
 
     // addonOptions.reverseOptions
     INIT_UNSET_PROPERTY(config.addonOptions.reverseOptions, enabled, !!REVERSE_ENABLED);
@@ -1321,6 +1336,11 @@ void migrateTurboPinToGpio(Config& config) {
             config.profileOptions.gpioMappingsSets[profileNum].pins[pin].action = GpioAction::BUTTON_PRESS_TURBO;
         }
         turboOptions.deprecatedButtonPin = -1; // set our turbo options to -1 for subsequent calls
+    }
+    
+    // Make sure we set PWM mode if we are using led pin
+    if ( turboOptions.turboLedType == PLED_TYPE_NONE && isValidPin(turboOptions.ledPin) ) {
+        turboOptions.turboLedType = PLED_TYPE_PWM;
     }
 }
 

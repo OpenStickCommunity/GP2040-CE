@@ -110,6 +110,13 @@ struct GamepadAuxHapticChannel
     uint16_t intensity = 0;
 };
 
+struct GamepadAuxTurbo
+{
+    bool enabled = false;
+    bool active = false;
+    uint8_t activity = 0;
+};
+
 struct GamepadAuxSensors
 {
     GamepadAux3DRelativeSensor mouse;
@@ -142,4 +149,6 @@ struct GamepadAuxState
     GamepadAuxSensors sensors;
 
     GamepadAuxHaptics haptics;
+
+    GamepadAuxTurbo turbo;
 };

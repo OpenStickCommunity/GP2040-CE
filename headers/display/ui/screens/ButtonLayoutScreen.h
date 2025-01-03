@@ -102,6 +102,9 @@ class ButtonLayoutScreen : public GPScreen {
         virtual int8_t update();
         virtual void init();
         virtual void shutdown();
+
+        void handleProfileChange(GPEvent* e);
+        void handleUSB(GPEvent* e);
     protected:
         virtual void drawScreen();
     private:
@@ -144,9 +147,6 @@ class ButtonLayoutScreen : public GPScreen {
         std::deque<std::string> inputHistory;
         std::array<bool, INPUT_HISTORY_MAX_INPUTS> lastInput;
 
-        bool profileModeDisplay;
-        uint8_t profileDelay = 2;
-        int profileDelayStart = 0;
         bool bannerDisplay;
         uint8_t bannerDelay = 2;
         int bannerDelayStart = 0;

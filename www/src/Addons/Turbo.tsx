@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FormCheck, Row } from 'react-bootstrap';
 import * as yup from 'yup';
 
+import { AppContext } from '../Contexts/AppContext';
+import ColorPicker from '../Components/ColorPicker';
 import Section from '../Components/Section';
 import FormSelect from '../Components/FormSelect';
 import FormControl from '../Components/FormControl';
 import AnalogPinOptions from '../Components/AnalogPinOptions';
 import { BUTTON_MASKS_OPTIONS } from '../Data/Buttons';
 import { DUAL_STICK_MODES } from '../Data/Addons';
+import LEDColors from '../Data/LEDColors';
 
 const SHMUP_MIXED_MODES = [
 	{ label: 'Turbo Priority', value: 0 },
@@ -99,6 +102,12 @@ export const turboScheme = {
 		.number()
 		.label('Charge Shot Button 4 Map')
 		.validateSelectionWhenValue('TurboInputEnabled', BUTTON_MASKS_OPTIONS),
+    turboLedType: yup.number().required().label('Turbo LED Type'),
+    turboLedIndex: yup
+            .number()
+            .label('Turbo LED Index')
+            .validateMinWhenEqualTo('turboLedType', 1, 0),
+    turboLedColor: yup.string().label('RGB Turbo LED').validateColor(),
 };
 
 export const turboState = {
@@ -120,18 +129,54 @@ export const turboState = {
 	TurboInputEnabled: 0,
 	turboPinLED: -1,
 	turboShotCount: 5,
+    turboLedType: 0,
+    turboLedIndex: 0,
+    turboLedColor: '#000000'
 };
 
-const Turbo = ({ values, errors, handleChange, handleCheckbox }) => {
+const Turbo = ({ values, errors, handleChange, handleCheckbox, handleBlur, setFieldValue}) => {
 	const { t } = useTranslation();
+
+    const [colorPickerTarget, setColorPickerTarget] = useState(null);
+    const [showPicker, setShowPicker] = useState(false);
+
+    const toggleRgbPledPicker = (e) => {
+		e.stopPropagation();
+		setColorPickerTarget(e.target);
+		setShowPicker(!showPicker);
+	};
+
 	return (
 		<Section title={t('AddonsConfig:turbo-header-text')}>
 			<div id="TurboInputOptions" hidden={!values.TurboInputEnabled}>
 				<Row className="mb-3">
+                    <FormSelect
+                        label={t('AddonsConfig:turbo-led-type-label')}
+                        name="turboLedType"
+                        className="form-select-sm"
+                        groupClassName="col-sm-2 mb-3"
+                        value={values.turboLedType}
+                        error={errors.turboLedType}
+                        isInvalid={errors.turboLedType}
+                        onChange={(e) =>
+                            setFieldValue('turboLedType', parseInt(e.target.value))
+                        }
+                    >
+                        <option value="-1" defaultValue={true}>
+                            {t('AddonsConfig:turbo-led-type-label-off')}
+                        </option>
+                        <option value="0">
+                            {t('AddonsConfig:turbo-led-type-label-pwm')}
+                        </option>
+                        <option value="1">
+                            {t('AddonsConfig:turbo-led-type-label-rgb')}
+                        </option>
+                    </FormSelect>
 					<FormControl
 						type="number"
 						label={t('AddonsConfig:turbo-led-pin-label')}
 						name="turboPinLED"
+                        hidden={parseInt(values.turboLedType) !== 0}
 						className="form-select-sm"
 						groupClassName="col-sm-3 mb-3"
 						value={values.turboPinLED}
@@ -141,6 +186,52 @@ const Turbo = ({ values, errors, handleChange, handleCheckbox }) => {
 						min={-1}
 						max={29}
 					/>
+                    <FormControl
+                        type="number"
+                        name="turboLedIndex"
+                        hidden={parseInt(values.turboLedType) !== 1}
+                        label={t('AddonsConfig:turbo-led-index-label')}
+                        className="form-control-sm"
+                        groupClassName="col-sm-2 mb-3"
+                        value={values.turboLedIndex}
+                        error={errors.turboLedIndex}
+                        isInvalid={errors.turboLedIndex}
+                        onChange={(e) =>
+                            setFieldValue('turboLedIndex', parseInt(e.target.value))
+                        }
+                        min={0}
+                    />
+                    <FormControl
+                        label={t('AddonsConfig:turbo-led-color-label')}
+                        hidden={parseInt(values.turboLedType) !== 1}
+                        name="turboLedColor"
+                        className="form-control-sm"
+                        groupClassName="col-sm-2 mb-3"
+                        value={values.turboLedColor}
+                        error={errors.turboLedColor}
+                        isInvalid={errors.turboLedColor}
+                        onBlur={handleBlur}
+                        onClick={toggleRgbPledPicker}
+                        onChange={(e) => {
+                            handleChange(e);
+                            setShowPicker(false);
+                        }}
+                    />
+                    <ColorPicker
+                        name="turboLedColor"
+                        types={[{ value: values.turboLedColor }]}
+                        onChange={(c) => setFieldValue('turboLedColor', c)}
+                        onDismiss={() => setShowPicker(false)}
+                        placement="top"
+                        presetColors={LEDColors.map((c) => ({
+                            title: c.name,
+                            color: c.value,
+                        }))}
+                        show={showPicker}
+                        target={colorPickerTarget}
+                    ></ColorPicker>
+                </Row>
+                <Row className="mb-3">
 					<FormControl
 						type="number"
 						label={t('AddonsConfig:turbo-shot-count-label')}
@@ -166,6 +257,8 @@ const Turbo = ({ values, errors, handleChange, handleCheckbox }) => {
 					>
 						<AnalogPinOptions />
 					</FormSelect>
+                </Row>
+                <Row className="mb-3">
 					<FormCheck
 						label={t('AddonsConfig:turbo-shmup-mode-label')}
 						type="switch"
