@@ -11,9 +11,13 @@ void ButtonLayoutScreen::init() {
     inputHistoryX = inputHistoryOptions.row;
     inputHistoryY = inputHistoryOptions.col;
     inputHistoryLength = inputHistoryOptions.length;
-    profileDelayStart = getMillis();
+    bannerDelayStart = getMillis();
     gamepad = Storage::getInstance().GetGamepad();
     inputMode = DriverManager::getInstance().getInputMode();
+
+    EventManager::getInstance().registerEventHandler(GP_EVENT_PROFILE_CHANGE, GPEVENT_CALLBACK(this->handleProfileChange(event)));
+    EventManager::getInstance().registerEventHandler(GP_EVENT_USBHOST_MOUNT, GPEVENT_CALLBACK(this->handleUSB(event)));
+    EventManager::getInstance().registerEventHandler(GP_EVENT_USBHOST_UNMOUNT, GPEVENT_CALLBACK(this->handleUSB(event)));
     
     footer = "";
     historyString = "";
@@ -33,8 +37,9 @@ void ButtonLayoutScreen::init() {
     }
 
 	// start with profile mode displayed
-	profileModeDisplay = true;
+	bannerDisplay = true;
     prevProfileNumber = -1;
+
     prevLayoutLeft = Storage::getInstance().getDisplayOptions().buttonLayout;
     prevLayoutRight = Storage::getInstance().getDisplayOptions().buttonLayoutRight;
     prevLeftOptions = Storage::getInstance().getDisplayOptions().buttonLayoutCustomOptions.paramsLeft;
@@ -87,9 +92,9 @@ int8_t ButtonLayoutScreen::update() {
 
     // main logic loop
     if (prevProfileNumber != profileNumber) {
-        profileDelayStart = getMillis();
+        bannerDelayStart = getMillis();
         prevProfileNumber = profileNumber;
-        profileModeDisplay = true;
+        bannerDisplay = true;
     }
 
     // main logic loop
@@ -118,18 +123,23 @@ void ButtonLayoutScreen::generateHeader() {
 	Storage& storage = Storage::getInstance();
 
 	// Display Profile # banner
-	if ( profileModeDisplay ) {
-		if (((getMillis() - profileDelayStart) / 1000) < profileDelay) {
-			statusBar.assign(storage.currentProfileLabel(), strlen(storage.currentProfileLabel()));
-			if (statusBar.empty()) {
-				statusBar = "     Profile #";
-				statusBar +=  std::to_string(getGamepad()->getOptions().profileNumber);
+	if ( bannerDisplay ) {
+		if (((getMillis() - bannerDelayStart) / 1000) < bannerDelay) {
+			if (bannerMessage.empty()) {
+				statusBar.assign(storage.currentProfileLabel(), strlen(storage.currentProfileLabel()));
+				if (statusBar.empty()) {
+					statusBar = "     Profile #";
+					statusBar +=  std::to_string(getGamepad()->getOptions().profileNumber);
+				} else {
+					statusBar.insert(statusBar.begin(), (21-statusBar.length())/2, ' ');
+				}
 			} else {
-				statusBar.insert(statusBar.begin(), (21-statusBar.length())/2, ' ');
+				statusBar = bannerMessage;
 			}
 			return;
 		} else {
-			profileModeDisplay = false;
+			bannerDisplay = false;
+            bannerMessage.clear();
 		}
 	}
 
@@ -210,7 +220,7 @@ void ButtonLayoutScreen::generateHeader() {
 }
 
 void ButtonLayoutScreen::drawScreen() {
-    if (profileModeDisplay) {
+    if (bannerDisplay) {
         getRenderer()->drawRectangle(0, 0, 128, 7, true, true);
     	getRenderer()->drawText(0, 0, statusBar, true);
     } else {
@@ -483,4 +493,24 @@ bool ButtonLayoutScreen::pressedDownRight()
     }
 
     return false;
+}
+
+void ButtonLayoutScreen::handleProfileChange(GPEvent* e) {
+    GPProfileChangeEvent* event = (GPProfileChangeEvent*)e;
+
+    profileNumber = event->currentValue;
+    prevProfileNumber = event->previousValue;
+}
+
+void ButtonLayoutScreen::handleUSB(GPEvent* e) {
+    GPUSBHostEvent* event = (GPUSBHostEvent*)e;
+    bannerDelayStart = getMillis();
+    prevProfileNumber = profileNumber;
+
+    if (e->eventType() == GP_EVENT_USBHOST_MOUNT) {
+        bannerMessage = "    USB Connected";
+    } else if (e->eventType() == GP_EVENT_USBHOST_UNMOUNT) {
+        bannerMessage = "  USB Disconnnected";
+    }
+    bannerDisplay = true;
 }

@@ -4,6 +4,7 @@
 
 #include "storagemanager.h"
 #include "configmanager.h"
+#include "eventmanager.h"
 #include "layoutmanager.h"
 #include "peripheralmanager.h"
 #include "AnimationStorage.hpp"
@@ -646,6 +647,7 @@ std::string setGamepadOptions()
     DynamicJsonDocument doc = get_post_data();
 
     GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
+
     readDoc(gamepadOptions.dpadMode, doc, "dpadMode");
     readDoc(gamepadOptions.inputMode, doc, "inputMode");
     readDoc(gamepadOptions.socdMode, doc, "socdMode");
@@ -680,6 +682,7 @@ std::string setGamepadOptions()
     readDoc(gamepadOptions.usbOverrideID, doc, "usbOverrideID");
     readDoc(gamepadOptions.usbVendorID, doc, "usbVendorID");
     readDoc(gamepadOptions.usbProductID, doc, "usbProductID");
+
 
     HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
     save_hotkey(&hotkeyOptions.hotkey01, doc, "hotkey01");
@@ -2327,6 +2330,7 @@ std::string reboot()
         default:
             rebootMode = System::BootMode::DEFAULT;
     }
+    EventManager::getInstance().triggerEvent(new GPRestartEvent(rebootMode));
     return serialize_json(doc);
 }
 

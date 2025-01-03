@@ -3,6 +3,7 @@
 
 #include "gpaddon.h"
 #include "storagemanager.h"
+#include "eventmanager.h"
 #include "enums.pb.h"
 
 #ifndef TURBO_ENABLED
@@ -106,6 +107,8 @@ public:
     virtual void preprocess() {}
     virtual void process();     // TURBO Setting of buttons (Enable/Disable)
     virtual std::string name() { return TurboName; }
+
+    void handleEncoder(GPEvent* e);
 private:
     void updateInterval(uint8_t shotCount);
     void updateTurboShotCount(uint8_t turboShotCount);
@@ -132,5 +135,6 @@ private:
     uint16_t shmupBtnMask[4];   // Turbo SHMUP Non-Turbo Button Masks
     uint16_t lastButtons;       // Last buttons (for Turbo Reset on Release)
     bool hasLedPin;             // Flag for LED pin presence
+    uint8_t encoderValue;       // Rotary encoder value 
 };
 #endif  // TURBO_H_

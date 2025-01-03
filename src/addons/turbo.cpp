@@ -42,6 +42,7 @@ void TurboInput::setup()
     const TurboOptions& options = Storage::getInstance().getAddonOptions().turboOptions;
     uint32_t now = getMillis();
 
+
     // Turbo Dial
     uint8_t shotCount = std::clamp<uint8_t>(options.shotCount, TURBO_SHOT_MIN, TURBO_SHOT_MAX);
     if (isValidPin(options.shmupDialPin)) {
@@ -107,6 +108,7 @@ void TurboInput::setup()
     bTurboFlicker = false;
     updateInterval(shotCount);
     nextTimer = getMicro();
+    encoderValue = shotCount;
 }
 
 /**
