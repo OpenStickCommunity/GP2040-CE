@@ -43,11 +43,6 @@ nav.navbar {
 	margin: 0.25rem 0rem 0.25rem $nav-outer-margin;
 }
 
-.nav-link,
-.nav-item * {
-	font-size: 0.875rem;
-}
-
 @media (max-width: 767.98px) {
 	nav.navbar {
 		.navbar-actions {
@@ -57,6 +52,13 @@ nav.navbar {
 
 		.nav-link {
 			margin-left: $nav-outer-margin;
+		}
+		.dropdown-menu {
+			background-color: transparent;
+			border: none;
+			.dropdown-item {
+				padding-left: 1.5rem;
+			}
 		}
 	}
 }
