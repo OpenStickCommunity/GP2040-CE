@@ -147,6 +147,7 @@ class ButtonLayoutScreen : public GPScreen {
         bool profileModeDisplay;
         uint8_t profileDelay = 2;
         int profileDelayStart = 0;
+
         uint32_t prevButtonState = 0;
         uint8_t prevLayoutLeft = 0;
         uint8_t prevLayoutRight = 0;

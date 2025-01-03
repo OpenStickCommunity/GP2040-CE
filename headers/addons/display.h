@@ -217,6 +217,7 @@ private:
 	DisplayMode currDisplayMode;
 	DisplayMode prevDisplayMode;
 	bool turnOffWhenSuspended;
+
 	DisplaySaverMode displaySaverMode;
 
 	GPGFX_DisplayTypeOptions gpOptions;
