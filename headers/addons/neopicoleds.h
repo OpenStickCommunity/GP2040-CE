@@ -199,6 +199,7 @@ private:
 	AnimationStation as;
 	std::map<std::string, int> buttonPositions;
 	bool turnOffWhenSuspended;
+    PLEDType ledType;
 };
 
 #endif

@@ -194,6 +194,8 @@ public:
 	virtual void preprocess() {}
 	virtual void process();
 	virtual std::string name() { return DisplayName; }
+
+    void handleSystemRestart(GPEvent* e);
 private:
 	bool updateDisplayScreen();
 	void drawStatusBar(Gamepad*);
@@ -217,6 +219,7 @@ private:
 	DisplayMode currDisplayMode;
 	DisplayMode prevDisplayMode;
 	bool turnOffWhenSuspended;
+	uint32_t bootMode;
 
 	DisplaySaverMode displaySaverMode;
 

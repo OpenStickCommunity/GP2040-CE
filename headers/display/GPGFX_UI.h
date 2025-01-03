@@ -10,6 +10,7 @@
 #include "config.pb.h"
 #include "GamepadState.h"
 #include "storagemanager.h"
+#include "eventmanager.h"
 
 class GPGFX_UI {
     public:

@@ -357,6 +357,14 @@ enum PLEDType
     PLED_TYPE_RGB = 1;
 };
 
+enum CaseRGBType
+{
+    option (nanopb_enumopt).long_names = false;
+
+    CASE_RGB_TYPE_NONE = -1;
+    CASE_RGB_TYPE_STATIC = 0;
+};
+
 enum ForcedSetupMode
 {
     option (nanopb_enumopt).long_names = false;
@@ -473,3 +481,20 @@ enum ButtonLayoutOrientation
     BUTTON_ORIENTATION_SWITCHED = 2;
 };
 
+enum GPEventType
+{
+    option (nanopb_enumopt).long_names = false;
+
+    GP_EVENT_BASE = 0;
+    GP_EVENT_RESTART = 1;
+    GP_EVENT_USBHOST_MOUNT = 2;
+    GP_EVENT_USBHOST_UNMOUNT = 3;
+    GP_EVENT_PROFILE_CHANGE = 4;
+    GP_EVENT_ENCODER_CHANGE = 5;
+    GP_EVENT_BUTTON_UP = 6;
+    GP_EVENT_BUTTON_DOWN = 7;
+    GP_EVENT_BUTTON_PROCESSED_UP = 8;
+    GP_EVENT_BUTTON_PROCESSED_DOWN = 9;
+    GP_EVENT_ANALOG_MOVE = 10;
+    GP_EVENT_ANALOG_PROCESSED_MOVE = 11;
+};

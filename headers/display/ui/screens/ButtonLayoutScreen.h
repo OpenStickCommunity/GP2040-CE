@@ -102,6 +102,9 @@ class ButtonLayoutScreen : public GPScreen {
         virtual int8_t update();
         virtual void init();
         virtual void shutdown();
+
+        void handleProfileChange(GPEvent* e);
+        void handleUSB(GPEvent* e);
     protected:
         virtual void drawScreen();
     private:
