@@ -58,6 +58,10 @@ const defaultValue = {
 	pledIndex3: -1,
 	pledIndex4: -1,
 	pledColor: '#00ff00',
+    caseRGBType: 0,
+    caseRGBIndex: -1,
+    caseRGBCount: 0,
+    caseRGBColor: '#00ff00',
 	ledButtonMap: {},
 };
 
@@ -137,6 +141,21 @@ const schema = yup.object().shape({
 		.label('PLED Index 4')
 		.validateMinWhenEqualTo('pledType', 1, 0),
 	turnOffWhenSuspended: yup.number().label('Turn Off When Suspended'),
+	caseRGBType: yup.number().required().label('Case RGB Type'),
+	caseRGBColor: yup.string().label('Case RGB LEDs').validateColor(),
+    caseRGBCount: yup
+        .number()
+        .required()
+        .positive()
+        .integer()
+        .min(0)
+        .max(100)
+        .label('Case RGB Count'),
+    caseRGBIndex: yup
+		.number()
+		.label('Case RGB Index')
+        .min(-1)
+        .max(100),
 	ledButtonMap: yup.object(),
 });
 
@@ -272,6 +291,7 @@ export default function LEDConfigPage() {
 		const data = {
 			...values,
 			pledColor: hexToInt(values.pledColor || '#000000'),
+            caseRGBColor: hexToInt(values.caseRGBColor || '#000000'),
 		};
 
 		const success = await WebApi.setLedOptions(data);
@@ -643,6 +663,93 @@ export default function LEDConfigPage() {
 									defined in <em>RGB LED Button Order</em> section and likely{' '}
 									<strong>starts at index {{ rgbLedStartIndex }}</strong>.
 								</Trans>
+							</p>
+						</Form.Group>
+					</Section>
+                    <Section title={t('LedConfig:case.header-text')}>
+						<Form.Group as={Col}>
+							<Row>
+								<FormSelect
+									label={t('LedConfig:case.case-type-label')}
+									name="caseRGBType"
+									className="form-select-sm"
+									groupClassName="col-sm-2 mb-3"
+									value={values.caseRGBType}
+									error={errors.caseRGBType}
+									isInvalid={errors.caseRGBType}
+									onChange={(e) =>
+										setFieldValue('caseRGBType', parseInt(e.target.value))
+									}
+								>
+									<option value="-1" defaultValue={true}>
+										{t('LedConfig:case.case-type-off')}
+									</option>
+									<option value="0">
+										{t('LedConfig:case.case-type-static')}
+									</option>
+								</FormSelect>
+                                <FormControl
+									type="number"
+									name="caseRGBIndex"
+                                    hidden={parseInt(values.caseRGBType) === -1}
+									label={t('LedConfig:case.case-index-label')}
+									className="form-control-sm"
+									groupClassName="col-sm-2 mb-3"
+									value={values.caseRGBIndex}
+									error={errors.caseRGBIndex}
+									isInvalid={errors.caseRGBIndex}
+									onChange={(e) =>
+										setFieldValue('caseRGBIndex', parseInt(e.target.value))
+									}
+									min={0}
+								/>
+                                <FormControl
+									type="number"
+									name="caseRGBCount"
+                                    hidden={parseInt(values.caseRGBType) === -1}
+									label={t('LedConfig:case.case-count-label')}
+									className="form-control-sm"
+									groupClassName="col-sm-2 mb-3"
+									value={values.caseRGBCount}
+									error={errors.caseRGBCount}
+									isInvalid={errors.caseRGBCount}
+									onChange={(e) =>
+										setFieldValue('caseRGBCount', parseInt(e.target.value))
+									}
+									min={0}
+								/>
+                                <FormControl
+									label={t('LedConfig:case.case-color-label')}
+									hidden={parseInt(values.caseRGBType) !== 0}
+									name="caseRGBColor"
+									className="form-control-sm"
+									groupClassName="col-sm-2 mb-3"
+									value={values.caseRGBColor}
+									error={errors.caseRGBColor}
+									isInvalid={errors.caseRGBColor}
+									onBlur={handleBlur}
+									onClick={toggleRgbPledPicker}
+									onChange={(e) => {
+										handleChange(e);
+										setShowPicker(false);
+									}}
+								/>
+								<ColorPicker
+									name="caseRGBColor"
+									types={[{ value: values.caseRGBColor }]}
+									onChange={(c) => setFieldValue('caseRGBColor', c)}
+									onDismiss={() => setShowPicker(false)}
+									placement="top"
+									presetColors={LEDColors.map((c) => ({
+										title: c.name,
+										color: c.value,
+									}))}
+									show={showPicker}
+									target={colorPickerTarget}
+								></ColorPicker>
+							</Row>
+							<p >
+								{t('LedConfig:case.sub-header-text')}
 							</p>
 						</Form.Group>
 					</Section>

@@ -115,6 +115,13 @@ app.get('/api/getGamepadOptions', (req, res) => {
 		ps5AuthType: 0,
 		xinputAuthType: 0,
 		ps4ControllerIDMode: 0,
+		usbDescOverride: 0,
+		usbDescProduct: 'GP2040-CE (Custom)',
+		usbDescManufacturer: 'Open Stick Community',
+		usbDescVersion: '1.0',
+		usbOverrideID: 0,
+		usbVendorID: '10C4',
+		usbProductID: '82C0',
 		hotkey01: {
 			auxMask: 32768,
 			buttonsMask: 66304,
@@ -237,6 +244,10 @@ app.get('/api/getLedOptions', (req, res) => {
 		pledIndex3: 14,
 		pledIndex4: 15,
 		pledColor: 65280,
+		caseRGBType: 0,
+		caseRGBColor: 65280,
+		caseRGBIndex: -1,
+		caseRGBCount: 0,
 		turnOffWhenSuspended: 0,
 	});
 });
