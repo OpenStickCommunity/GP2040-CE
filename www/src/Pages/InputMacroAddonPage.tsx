@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { AppContext } from '../Contexts/AppContext';
 import {
 	Badge,
 	Button,
@@ -7,17 +6,16 @@ import {
 	Form,
 	InputGroup,
 	Nav,
-	OverlayTrigger,
 	Row,
 	Tab,
 	Table,
-	Tooltip,
 } from 'react-bootstrap';
 import { Formik, useFormikContext } from 'formik';
 import * as yup from 'yup';
 import { Trans, useTranslation } from 'react-i18next';
 import omit from 'lodash/omit';
 
+import { AppContext } from '../Contexts/AppContext';
 import Section from '../Components/Section';
 import WebApi from '../Services/WebApi';
 import {
@@ -83,11 +81,8 @@ const defaultValues = {
 const ONE_FRAME_US = 16666;
 
 const FormContext = () => {
-	const { values, setValues } = useFormikContext();
-	const { buttonLabels, setLoading } = useContext(AppContext);
-	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
-
-	const CURRENT_BUTTONS = getButtonLabels(buttonLabelType, swapTpShareLabels);
+	const { setValues } = useFormikContext();
+	const { setLoading } = useContext(AppContext);
 
 	useEffect(() => {
 		async function fetchData() {
@@ -132,8 +127,6 @@ const ButtonMasksComponent = (props) => {
 	);
 };
 
-const tooltip = <Tooltip id="tooltip">Double click to delete.</Tooltip>;
-
 const MacroInputComponent = (props) => {
 	const {
 		value: { duration, buttonMask, waitDuration },
@@ -147,8 +140,8 @@ const MacroInputComponent = (props) => {
 	} = props;
 
 	return (
-		<Row className="align-content-start align-items-center row-gap-2 pb-2">
-			<Col xs="auto" style={{ width: 180 }}>
+		<Row className="align-content-start align-items-center row-gap-2 gx-2 pb-2">
+			<Col xs="auto" style={{ width: 150 }}>
 				<InputGroup size="sm">
 					<Form.Control
 						className="text-center"
@@ -244,19 +237,9 @@ const MacroInputComponent = (props) => {
 				</InputGroup>
 			</Col>
 			<Col xs="auto">
-				<OverlayTrigger
-					placement="right"
-					overlay={tooltip}
-					delay={{ show: 500, hide: 100 }}
-				>
-					<Button
-						variant="transparent"
-						size="sm"
-						onDoubleClick={deleteMacroInput}
-					>
-						💥
-					</Button>
-				</OverlayTrigger>
+				<Button size="sm" onClick={deleteMacroInput}>
+					{'✕'}
+				</Button>
 			</Col>
 		</Row>
 	);
@@ -437,22 +420,20 @@ const MacroComponent = (props) => {
 					/>
 				</Col>
 			</Row>
-			<Row>
-				{macroInputs.map((macroInput, a) => (
-					<MacroInputComponent
-						key={`${key}.macroInputs[${a}]`}
-						id={`${key}.macroInputs[${a}]`}
-						value={macroInput}
-						errors={errors?.macroInputs?.at(a)}
-						showFrames={showFrames}
-						translation={t}
-						buttonLabelType={buttonLabelType}
-						deleteMacroInput={() => deleteMacroInput(a)}
-						handleChange={handleChange}
-						setFieldValue={setFieldValue}
-					/>
-				))}
-			</Row>
+			{macroInputs.map((macroInput, a) => (
+				<MacroInputComponent
+					key={`${key}.macroInputs[${a}]`}
+					id={`${key}.macroInputs[${a}]`}
+					value={macroInput}
+					errors={errors?.macroInputs?.at(a)}
+					showFrames={showFrames}
+					translation={t}
+					buttonLabelType={buttonLabelType}
+					deleteMacroInput={() => deleteMacroInput(a)}
+					handleChange={handleChange}
+					setFieldValue={setFieldValue}
+				/>
+			))}
 			<Row>
 				<Col sm={3}>
 					{macroInputs.length < MACRO_INPUTS_MAX ? (
