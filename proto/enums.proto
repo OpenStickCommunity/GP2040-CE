@@ -453,7 +453,8 @@ enum PS4ControllerIDMode
     PS4_ID_EMULATION = 1;
 };
 
-enum DisplaySaverMode {
+enum DisplaySaverMode
+{
     option (nanopb_enumopt).long_names = false;
 
     DISPLAY_SAVER_DISPLAY_OFF = 0;
@@ -463,7 +464,8 @@ enum DisplaySaverMode {
     DISPLAY_SAVER_TOAST = 4;
 };
 
-enum ButtonLayoutOrientation {
+enum ButtonLayoutOrientation
+{
     option (nanopb_enumopt).long_names = false;
 
     BUTTON_ORIENTATION_DEFAULT = 0;
