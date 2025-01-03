@@ -23,7 +23,7 @@ class GPButton : public GPWidget {
         double _angle = 0;
         double _angleEnd = 0;
         bool _closed = false;
-        int16_t _inputMask = -1;
+        int32_t _inputMask = -1;
         bool _inputDirection = false;
         GPElement _inputType = GP_ELEMENT_BTN_BUTTON;
         GPShape_Type _shape = GP_SHAPE_ELLIPSE;

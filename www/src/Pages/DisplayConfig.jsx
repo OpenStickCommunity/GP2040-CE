@@ -13,22 +13,36 @@ import Section from '../Components/Section';
 import WebApi from '../Services/WebApi';
 
 const ON_OFF_OPTIONS = [
-	{ label: 'Disabled', value: 0 },
-	{ label: 'Enabled', value: 1 },
+	{ label: 'form.display-state.disabled', value: 0 },
+	{ label: 'form.display-state.enabled', value: 1 },
 ];
 
 const SPLASH_MODES = [
-	{ label: 'Enabled (Custom Splash Screen)', value: 0 }, // STATICSPLASH
-	{ label: 'Logo Close In', value: 1 }, // CLOSEIN
-	{ label: 'Logo Close In Custom', value: 2 }, // CLOSEINCUSTOM
-	{ label: 'Disabled', value: 3 }, // NOSPLASH
+	{ label: 'form.splash-modes.enabled', value: 0 }, // STATICSPLASH
+	{ label: 'form.splash-modes.close-in', value: 1 }, // CLOSEIN
+	{ label: 'form.splash-modes.close-in-custom', value: 2 }, // CLOSEINCUSTOM
+	{ label: 'form.splash-modes.disabled', value: 3 }, // NOSPLASH
 ];
 
 const DISPLAY_FLIP_MODES = [
-	{ label: 'None', value: 0 },
-	{ label: 'Flip', value: 1 },
-	{ label: 'Mirror', value: 2 },
-	{ label: 'Flip and Mirror', value: 3 },
+	{ label: 'form.flip-display.none', value: 0 },
+	{ label: 'form.flip-display.flip', value: 1 },
+	{ label: 'form.flip-display.mirror', value: 2 },
+	{ label: 'form.flip-display.flip-mirror', value: 3 },
+];
+
+const DISPLAY_SAVER_MODES = [
+	{ label: 'form.saver-modes.display-off', value: 0 },
+	{ label: 'form.saver-modes.snow', value: 1 },
+	{ label: 'form.saver-modes.bounce', value: 2 },
+	{ label: 'form.saver-modes.pipes', value: 3 },
+	{ label: 'form.saver-modes.toast', value: 4 },
+];
+
+const LAYOUT_ORIENTATION = [
+	{ label: 'form.layout-modes.standard', value: 0 },
+	{ label: 'form.layout-modes.southpaw', value: 1 },
+	{ label: 'form.layout-modes.switched', value: 2 },
 ];
 
 const defaultValues = {
@@ -37,6 +51,7 @@ const defaultValues = {
 	invertDisplay: false,
 	buttonLayout: 0,
 	buttonLayoutRight: 3,
+	buttonLayoutOrientation: 0,
 	splashDuration: 0,
 	splashMode: 3,
 	splashImage: Array(16 * 64).fill(0), // 128 columns represented by bytes so 16 and 64 rows
@@ -58,6 +73,7 @@ const defaultValues = {
 		},
 	},
 	displaySaverTimeout: 0,
+	displaySaverMode: 0,
 };
 
 let buttonLayoutDefinitions = { buttonLayout: {}, buttonLayoutRight: {} };
@@ -79,6 +95,7 @@ const schema = yup.object().shape({
 	turnOffWhenSuspended: yup.number().label('Turn Off When Suspended'),
 	buttonLayout: buttonLayoutSchema,
 	buttonLayoutRight: buttonLayoutRightSchema,
+	buttonLayoutOrientation: yup.number().label('Layout Reversed'),
 	splashMode: yup
 		.number()
 		.required()
@@ -121,7 +138,8 @@ const schema = yup.object().shape({
 		}),
 	}),
 	splashDuration: yup.number().required().min(0).label('Splash Duration'),
-	displaySaverTimeout: yup.number().required().min(0).label('Display Saver'),
+	displaySaverTimeout: yup.number().required().min(0).label('Display Saver Timeout'),
+	displaySaverMode: yup.number().required().min(0).label('Screen Saver'),
 });
 
 const FormContext = () => {
@@ -162,6 +180,8 @@ const FormContext = () => {
 				values.splashDuration = parseInt(values.splashDuration);
 			if (!!values.turnOffWhenSuspended)
 				values.turnOffWhenSuspended = parseInt(values.turnOffWhenSuspended);
+			if (!!values.displaySaverMode)
+				values.displaySaverMode = parseInt(values.displaySaverMode);
 
 			await WebApi.setDisplayOptions(values, true);
 		}
@@ -185,6 +205,8 @@ const FormContext = () => {
 			if (!!values.splashMode) values.splashMode = parseInt(values.splashMode);
 			if (!!values.splashChoice)
 				values.splashChoice = parseInt(values.splashChoice);
+			if (!!values.displaySaverMode)
+				values.displaySaverMode = parseInt(values.displaySaverMode);
 
 			await WebApi.setDisplayOptions(values, true);
 		}
@@ -208,13 +230,6 @@ export default function DisplayConfigPage() {
 	const [saveMessage, setSaveMessage] = useState('');
 
 	const { t } = useTranslation('');
-
-	DISPLAY_FLIP_MODES[0].label = t('DisplayConfig:form.flip-display-none');
-	DISPLAY_FLIP_MODES[1].label = t('DisplayConfig:form.flip-display-flip');
-	DISPLAY_FLIP_MODES[2].label = t('DisplayConfig:form.flip-display-mirror');
-	DISPLAY_FLIP_MODES[3].label = t(
-		'DisplayConfig:form.flip-display-flip-mirror',
-	);
 
 	useEffect(() => {
 		updatePeripherals();
@@ -282,7 +297,7 @@ export default function DisplayConfigPage() {
 											>
 												{ON_OFF_OPTIONS.map((o, i) => (
 													<option key={`enabled-option-${i}`} value={o.value}>
-														{o.label}
+														{t(`DisplayConfig:${o.label}`)}
 													</option>
 												))}
 											</FormSelect>
@@ -304,7 +319,7 @@ export default function DisplayConfigPage() {
 														key={`flipDisplay-option-${i}`}
 														value={o.value}
 													>
-														{o.label}
+														{t(`DisplayConfig:${o.label}`)}
 													</option>
 												))}
 											</FormSelect>
@@ -323,7 +338,7 @@ export default function DisplayConfigPage() {
 														key={`invertDisplay-option-${i}`}
 														value={o.value}
 													>
-														{o.label}
+														{t(`DisplayConfig:${o.label}`)}
 													</option>
 												))}
 											</FormSelect>
@@ -396,21 +411,21 @@ export default function DisplayConfigPage() {
 												))}
 											</FormSelect>
 											<FormSelect
-												label={t('DisplayConfig:form.splash-mode-label')}
-												name="splashMode"
+												label={t('DisplayConfig:form.button-layout-orientation')}
+												name="buttonLayoutOrientation"
 												className="form-select-sm"
 												groupClassName="col-sm-3 mb-3"
-												value={values.splashMode}
-												error={errors.splashMode}
-												isInvalid={errors.splashMode}
+												value={values.buttonLayoutOrientation}
+												error={errors.buttonLayoutOrientation}
+												isInvalid={errors.buttonLayoutOrientation}
 												onChange={handleChange}
 											>
-												{SPLASH_MODES.map((o, i) => (
+												{LAYOUT_ORIENTATION.map((o, i) => (
 													<option
-														key={`splashMode-option-${i}`}
+														key={`buttonLayoutOrientation-option-${i}`}
 														value={o.value}
 													>
-														{o.label}
+														{t(`DisplayConfig:${o.label}`)}
 													</option>
 												))}
 											</FormSelect>
@@ -613,7 +628,27 @@ export default function DisplayConfigPage() {
 												</Col>
 											</Row>
 										)}
-										<Row className="mb-3">
+										<h1>{t('DisplayConfig:section.mode-header')}</h1>
+										<Row className="mb-4">
+											<FormSelect
+												label={t('DisplayConfig:form.splash-mode-label')}
+												name="splashMode"
+												className="form-select-sm"
+												groupClassName="col-sm-3 mb-3"
+												value={values.splashMode}
+												error={errors.splashMode}
+												isInvalid={errors.splashMode}
+												onChange={handleChange}
+											>
+												{SPLASH_MODES.map((o, i) => (
+													<option
+														key={`splashMode-option-${i}`}
+														value={o.value}
+													>
+														{t(`DisplayConfig:${o.label}`)}
+													</option>
+												))}
+											</FormSelect>
 											<FormControl
 												type="number"
 												label={t('DisplayConfig:form.splash-duration-label')}
@@ -626,6 +661,27 @@ export default function DisplayConfigPage() {
 												onChange={handleChange}
 												min={0}
 											/>
+										</Row>
+										<Row className="mb-3">
+											<FormSelect
+												label={t('DisplayConfig:form.screen-saver-mode-label')}
+												name="displaySaverMode"
+												className="form-select-sm"
+												groupClassName="col-sm-3 mb-3"
+												value={values.displaySaverMode}
+												error={errors.displaySaverMode}
+												isInvalid={errors.displaySaverMode}
+												onChange={handleChange}
+											>
+												{DISPLAY_SAVER_MODES.map((o, i) => (
+													<option
+														key={`displaySaverMode-option-${i}`}
+														value={o.value}
+													>
+														{t(`DisplayConfig:${o.label}`)}
+													</option>
+												))}
+											</FormSelect>
 											<FormControl
 												type="number"
 												label={t(
