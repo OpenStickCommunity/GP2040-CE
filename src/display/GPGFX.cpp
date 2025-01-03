@@ -24,7 +24,6 @@ GPGFX::GPGFX() {
 void GPGFX::init(GPGFX_DisplayTypeOptions options) {
     switch (options.displayType) {
         case GPGFX_DisplayType::DISPLAY_TYPE_SSD1306:
-            //this->displayDriver = new GPGFX_OBD_SSD1306();
             this->displayDriver = new GPGFX_TinySSD1306();
             break;
         default:
@@ -37,36 +36,51 @@ void GPGFX::init(GPGFX_DisplayTypeOptions options) {
     }
 }
 
-GPGFX_DisplayTypeOptions GPGFX::getAvailableDisplay() {
-    GPGFX_DisplayBase* driver = nullptr;
+GPGFX_DisplayTypeOptions GPGFX::getAvailableDisplay(GPGFX_DisplayType displayType) {
     GPGFX_DisplayTypeOptions display;
 
-    display.displayType = GPGFX_DisplayType::DISPLAY_TYPE_NONE;
+    display.displayType = displayType;
 
-    for (uint16_t i = GPGFX_DisplayType::DISPLAY_TYPE_NONE; i < GPGFX_DisplayType::DISPLAY_TYPE_COUNT; i++) {
-        if (i == GPGFX_DisplayType::DISPLAY_TYPE_SSD1306) {
-            driver = new GPGFX_TinySSD1306();
-        } else {
-            driver = nullptr;
+    if (display.displayType == GPGFX_DisplayType::DISPLAY_TYPE_NONE) {
+        // autoscan for device
+        for (uint16_t i = GPGFX_DisplayType::DISPLAY_TYPE_NONE; i < GPGFX_DisplayType::DISPLAY_TYPE_COUNT; i++) {
+            if (detectDisplay(&display, (GPGFX_DisplayType)i)) break;
         }
-        if ((driver != nullptr) && (display.displayType == GPGFX_DisplayType::DISPLAY_TYPE_NONE)) {
-            if (driver->isI2C()) {
-                PeripheralI2CScanResult result = PeripheralManager::getInstance().scanForI2CDevice(driver->getDeviceAddresses());
-                if (result.address > -1) {
-                    display.displayType = (GPGFX_DisplayType)i;
-                    display.address = result.address;
-                    display.i2c = PeripheralManager::getInstance().getI2C(result.block);
-                    display.i2c->setExclusiveUse(result.address);
-                    return display;
-                }
-            }
-            if (driver->isSPI()) {
-                // NYI: check if SPI display exists
-            }
-            delete driver;
+    } else {
+        if (!detectDisplay(&display, display.displayType)) {
+            display.displayType = GPGFX_DisplayType::DISPLAY_TYPE_NONE;
         }
     }
     return display;
+}
+
+bool GPGFX::detectDisplay(GPGFX_DisplayTypeOptions* display, GPGFX_DisplayType displayType) {
+    GPGFX_DisplayBase* driver = nullptr;
+
+    if (displayType == GPGFX_DisplayType::DISPLAY_TYPE_SSD1306) {
+        driver = new GPGFX_TinySSD1306();
+    } else {
+        driver = nullptr;
+    }
+
+    if (driver != nullptr) {
+        if (driver->isI2C()) {
+            PeripheralI2CScanResult result = PeripheralManager::getInstance().scanForI2CDevice(driver->getDeviceAddresses());
+            if (result.address > -1) {
+                display->displayType = displayType;
+                display->address = result.address;
+                display->i2c = PeripheralManager::getInstance().getI2C(result.block);
+                display->i2c->setExclusiveUse(result.address);
+                return true;
+            }
+        }
+        if (driver->isSPI()) {
+            // NYI: check if SPI display exists
+        }
+        delete driver;
+    }
+
+    return false;
 }
 
 void GPGFX::clearScreen() {

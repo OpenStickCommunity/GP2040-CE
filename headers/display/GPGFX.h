@@ -12,7 +12,7 @@ class GPGFX {
 
         void init(GPGFX_DisplayTypeOptions options);
 
-        GPGFX_DisplayTypeOptions getAvailableDisplay();
+        GPGFX_DisplayTypeOptions getAvailableDisplay(GPGFX_DisplayType displayType);
 
         GPGFX_DisplayBase* getDriver() { return displayDriver; }
 
@@ -31,6 +31,8 @@ class GPGFX {
         void drawSprite(uint8_t* spriteData, uint16_t width, uint16_t height, uint16_t pitch, uint16_t x, uint16_t y, uint8_t priority, double scale = 1.0);
     private:
         GPGFX_DisplayBase* displayDriver = nullptr;
+
+        bool detectDisplay(GPGFX_DisplayTypeOptions* display, GPGFX_DisplayType displayType);
 };
 
 #endif

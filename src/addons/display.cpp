@@ -22,7 +22,7 @@ bool DisplayAddon::available() {
     if (options.enabled) {
         // create the gfx interface
         gpDisplay = new GPGFX();
-        gpOptions = gpDisplay->getAvailableDisplay();
+        gpOptions = gpDisplay->getAvailableDisplay(GPGFX_DisplayType::DISPLAY_TYPE_NONE);
         result = (gpOptions.displayType != GPGFX_DisplayType::DISPLAY_TYPE_NONE);
         if (!result) delete gpDisplay;
     }
