@@ -1,3 +1,5 @@
+$gp-primary: #ec008c;
+
 // Override default variables before the import
 $primary: #495057;
 $danger: #7b2d26;
@@ -5,8 +7,8 @@ $danger: #7b2d26;
 $body-color-dark: #e3e3e3;
 $body-bg-dark: #1b1b1d;
 
-$navbar-light-hover-color: #ec008c;
-$navbar-light-active-color: #ec008c;
+$navbar-light-hover-color: $gp-primary;
+$navbar-light-active-color: $gp-primary;
 
 $enable-cssgrid: true;
 
