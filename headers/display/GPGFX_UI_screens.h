@@ -6,9 +6,9 @@ enum DisplayMode {
     BUTTONS,
     SPLASH,
     PIN_VIEWER,
+    DISPLAY_SAVER,
     STATS,
     MAIN_MENU,
-    DISPLAY_SAVER,
     RESTART
 };
 

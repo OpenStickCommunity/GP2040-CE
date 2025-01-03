@@ -147,8 +147,11 @@ class ButtonLayoutScreen : public GPScreen {
         bool profileModeDisplay;
         uint8_t profileDelay = 2;
         int profileDelayStart = 0;
-        uint32_t prevButtonState = 0;
-
+        bool bannerDisplay;
+        uint8_t bannerDelay = 2;
+        int bannerDelayStart = 0;
+        std::string bannerMessage;
+        uint16_t prevButtonState = 0;
         uint8_t prevLayoutLeft = 0;
         uint8_t prevLayoutRight = 0;
         uint8_t prevProfileNumber = 0;
