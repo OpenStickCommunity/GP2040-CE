@@ -1,7 +1,7 @@
 #ifndef _GPEVENT_H_
 #define _GPEVENT_H_
 
-#define GPEVENT_CALLBACK(x) ([this](GPEvent* event){x})
+#define GPEVENT_CALLBACK(x) ([this](GPEvent* event){x;})
 
 class GPEvent {
     public:
