@@ -144,9 +144,6 @@ class ButtonLayoutScreen : public GPScreen {
         std::deque<std::string> inputHistory;
         std::array<bool, INPUT_HISTORY_MAX_INPUTS> lastInput;
 
-        bool profileModeDisplay;
-        uint8_t profileDelay = 2;
-        int profileDelayStart = 0;
         bool bannerDisplay;
         uint8_t bannerDelay = 2;
         int bannerDelayStart = 0;
@@ -159,7 +156,7 @@ class ButtonLayoutScreen : public GPScreen {
         ButtonLayoutParamsLeft prevLeftOptions;
         ButtonLayoutParamsRight prevRightOptions;
         ButtonLayoutOrientation prevOrientation;
-
+		
         bool macroEnabled;
 
         uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
