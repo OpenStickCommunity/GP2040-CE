@@ -67,7 +67,7 @@ void DisplayAddon::setup() {
     gpScreen = nullptr;
     updateDisplayScreen();
 
-    EventManager::getInstance().registerEventHandler(GP_EVENT_RESTART, GPEVENT_CALLBACK(this->handleSystemRestart(event);));
+    EventManager::getInstance().registerEventHandler(GP_EVENT_RESTART, GPEVENT_CALLBACK(this->handleSystemRestart(event)));
 }
 
 bool DisplayAddon::updateDisplayScreen() {
