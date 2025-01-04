@@ -50,23 +50,19 @@ const Navigation = () => {
 	let eventKey = 0;
 
 	return (
-		<Navbar
-			collapseOnSelect
-			bg="primary"
-			variant="dark"
-			expand="md"
-			fixed="top"
-		>
-			<Navbar.Brand href="/" title={`GP2040-CE ${t('Navigation:home-label')}`}>
-				<img
-					src="images/logo.png"
-					className="title-logo"
-					alt="GP2040-CE logo"
-				/>{' '}
+		<Navbar collapseOnSelect expand="md" fixed="top">
+			<Navbar.Brand title={`GP2040-CE ${t('Navigation:home-label')}`}>
+				<Nav.Link as={NavLink} to="/" eventKey={eventKey++}>
+					<img
+						src="images/logo.png"
+						className="title-logo"
+						alt="GP2040-CE logo"
+					/>
+				</Nav.Link>
 			</Navbar.Brand>
 			<Navbar.Toggle aria-controls="responsive-navbar-nav" />
 			<Navbar.Collapse id="basic-navbar-nav">
-				<Nav className="me-auto">
+				<Nav className="me-auto nav-menu">
 					<Nav.Link as={NavLink} to="/settings" eventKey={eventKey++}>
 						{t('Navigation:settings-label')}
 					</Nav.Link>

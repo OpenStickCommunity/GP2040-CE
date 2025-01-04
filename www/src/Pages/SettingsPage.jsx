@@ -698,7 +698,12 @@ export default function SettingsPage() {
 		);
 	};
 
-	const keyboardModeSpecifics = (values, errors, setFieldValue, handleChange) => {
+	const keyboardModeSpecifics = (
+		values,
+		errors,
+		setFieldValue,
+		handleChange,
+	) => {
 		return (
 			<div>
 				<Row className="mb-3">
@@ -723,7 +728,13 @@ export default function SettingsPage() {
 		);
 	};
 
-	const ps4ModeSpecifics = (values, errors, setFieldValue, handleChange, inputMode) => {
+	const ps4ModeSpecifics = (
+		values,
+		errors,
+		setFieldValue,
+		handleChange,
+		inputMode,
+	) => {
 		return (
 			<div className="row mb-3">
 				<Row className="mb-3">
@@ -738,10 +749,7 @@ export default function SettingsPage() {
 							isInvalid={false}
 							checked={Boolean(values.switchTpShareForDs4)}
 							onChange={(e) => {
-								setFieldValue(
-									'switchTpShareForDs4',
-									e.target.checked ? 1 : 0,
-								);
+								setFieldValue('switchTpShareForDs4', e.target.checked ? 1 : 0);
 							}}
 						/>
 					</Col>
@@ -883,7 +891,13 @@ export default function SettingsPage() {
 		);
 	};
 
-	const ps5ModeSpecifics = (values, errors, setFieldValue, handleChange, inputMode) => {
+	const ps5ModeSpecifics = (
+		values,
+		errors,
+		setFieldValue,
+		handleChange,
+		inputMode,
+	) => {
 		return (
 			<div className="row mb-3">
 				<Row className="mb-3">
@@ -898,10 +912,7 @@ export default function SettingsPage() {
 							isInvalid={false}
 							checked={Boolean(values.switchTpShareForDs4)}
 							onChange={(e) => {
-								setFieldValue(
-									'switchTpShareForDs4',
-									e.target.checked ? 1 : 0,
-								);
+								setFieldValue('switchTpShareForDs4', e.target.checked ? 1 : 0);
 							}}
 						/>
 					</Col>
@@ -981,118 +992,137 @@ export default function SettingsPage() {
 							isInvalid={false}
 							checked={Boolean(values.usbDescOverride)}
 							onChange={(e) => {
-								setFieldValue(
-									'usbDescOverride',
-									e.target.checked ? 1 : 0,
-								);
+								setFieldValue('usbDescOverride', e.target.checked ? 1 : 0);
 							}}
 						/>
 					</Col>
 				</Row>
-				{ values.usbDescOverride === 1 && (
+				{values.usbDescOverride === 1 && (
 					<>
-					<Row className="mb-4 mt-4">
-						<Col>
-							<span className="alert alert-danger">{t('SettingsPage:usb-override.invalid-warning-danger')}</span>
-						</Col>
-					</Row>
-					<Row className="mb-3">
-						<Col sm={4}>
-							<Form.Label>{t('SettingsPage:usb-override.product-name')}</Form.Label>
-							<Form.Control
-								size="sm"
-								type="text"
-								placeholder={'test'}
-								name="usbDescProduct"
-								value={values.usbDescProduct}
-								error={errors?.usbDescProduct}
-								isInvalid={errors?.usbDescProduct}
-								onChange={handleChange}
-								maxLength={32}
-							/>
-						</Col>
-						<Col sm={4}>
-							<Form.Label>{t('SettingsPage:usb-override.manufacturer')}</Form.Label>
-							<Form.Control
-								size="sm"
-								type="text"
-								name="usbDescManufacturer"
-								value={values.usbDescManufacturer}
-								error={errors?.usbDescManufacturer}
-								isInvalid={errors?.usbDescManufacturer}
-								onChange={handleChange}
-								maxLength={32}
-							/>
-						</Col>
-						<Col sm={2}>
-							<Form.Label>{t('SettingsPage:usb-override.version')}</Form.Label>
-							<Form.Control
-								size="sm"
-								type="text"
-								name="usbDescVersion"
-								value={values.usbDescVersion}
-								error={errors?.usbDescVersion}
-								isInvalid={errors?.usbDescVersion}
-								onChange={handleChange}
-								maxLength={8}
-							/>
-						</Col>
-					</Row>
-					<Row className="mb-3">
-						<Col sm={6}>
-							<Form.Check
-								label={t('SettingsPage:usb-override.physical-warning-danger')}
-								type="switch"
-								id="usbOverrideID"
-								isInvalid={false}
-								checked={Boolean(values.usbOverrideID)}
-								onChange={(e) => {
-									setFieldValue(
-										'usbOverrideID',
-										e.target.checked ? 1 : 0,
-									);
-								}}
-							/>
-						</Col>
-					</Row>
-					<Row className="mb-3" hidden={values.usbOverrideID !== 1}>
-						<Col sm={2}>
-							<Form.Label>{t('SettingsPage:usb-override.vendor-id')}</Form.Label>
-							<Form.Control
-								size="sm"
-								type="text"
-								name="usbVendorID"
-								value={values.usbVendorID}
-								error={errors.usbVendorID}
-								isInvalid={errors?.usbVendorID}
-								onChange={handleChange}
-								onBlur={(e)=>{e.target.value = e.target.value.padStart(4,'0'); return handleChange(e)}}
-								minLength={4}
-								maxLength={4}
-							/>
-						</Col>
-						<Col sm={2}>
-							<Form.Label>{t('SettingsPage:usb-override.product-id')}</Form.Label>
-							<Form.Control
-								size="sm"
-								type="text"
-								name="usbProductID"
-								value={values.usbProductID}
-								error={errors?.usbProductID}
-								isInvalid={errors?.usbProductID}
-								onChange={handleChange}
-								onBlur={(e)=>{e.target.value = e.target.value.padStart(4,'0'); return handleChange(e)}}
-								minLength={4}
-								maxLength={4}
-							/>
-						</Col>
-					</Row>
-					</>)}
+						<Row className="mb-4 mt-4">
+							<Col>
+								<span className="alert alert-danger">
+									{t('SettingsPage:usb-override.invalid-warning-danger')}
+								</span>
+							</Col>
+						</Row>
+						<Row className="mb-3">
+							<Col sm={4}>
+								<Form.Label>
+									{t('SettingsPage:usb-override.product-name')}
+								</Form.Label>
+								<Form.Control
+									size="sm"
+									type="text"
+									placeholder={'test'}
+									name="usbDescProduct"
+									value={values.usbDescProduct}
+									error={errors?.usbDescProduct}
+									isInvalid={errors?.usbDescProduct}
+									onChange={handleChange}
+									maxLength={32}
+								/>
+							</Col>
+							<Col sm={4}>
+								<Form.Label>
+									{t('SettingsPage:usb-override.manufacturer')}
+								</Form.Label>
+								<Form.Control
+									size="sm"
+									type="text"
+									name="usbDescManufacturer"
+									value={values.usbDescManufacturer}
+									error={errors?.usbDescManufacturer}
+									isInvalid={errors?.usbDescManufacturer}
+									onChange={handleChange}
+									maxLength={32}
+								/>
+							</Col>
+							<Col sm={2}>
+								<Form.Label>
+									{t('SettingsPage:usb-override.version')}
+								</Form.Label>
+								<Form.Control
+									size="sm"
+									type="text"
+									name="usbDescVersion"
+									value={values.usbDescVersion}
+									error={errors?.usbDescVersion}
+									isInvalid={errors?.usbDescVersion}
+									onChange={handleChange}
+									maxLength={8}
+								/>
+							</Col>
+						</Row>
+						<Row className="mb-3">
+							<Col sm={6}>
+								<Form.Check
+									label={t('SettingsPage:usb-override.physical-warning-danger')}
+									type="switch"
+									id="usbOverrideID"
+									isInvalid={false}
+									checked={Boolean(values.usbOverrideID)}
+									onChange={(e) => {
+										setFieldValue('usbOverrideID', e.target.checked ? 1 : 0);
+									}}
+								/>
+							</Col>
+						</Row>
+						<Row className="mb-3" hidden={values.usbOverrideID !== 1}>
+							<Col sm={2}>
+								<Form.Label>
+									{t('SettingsPage:usb-override.vendor-id')}
+								</Form.Label>
+								<Form.Control
+									size="sm"
+									type="text"
+									name="usbVendorID"
+									value={values.usbVendorID}
+									error={errors.usbVendorID}
+									isInvalid={errors?.usbVendorID}
+									onChange={handleChange}
+									onBlur={(e) => {
+										e.target.value = e.target.value.padStart(4, '0');
+										return handleChange(e);
+									}}
+									minLength={4}
+									maxLength={4}
+								/>
+							</Col>
+							<Col sm={2}>
+								<Form.Label>
+									{t('SettingsPage:usb-override.product-id')}
+								</Form.Label>
+								<Form.Control
+									size="sm"
+									type="text"
+									name="usbProductID"
+									value={values.usbProductID}
+									error={errors?.usbProductID}
+									isInvalid={errors?.usbProductID}
+									onChange={handleChange}
+									onBlur={(e) => {
+										e.target.value = e.target.value.padStart(4, '0');
+										return handleChange(e);
+									}}
+									minLength={4}
+									maxLength={4}
+								/>
+							</Col>
+						</Row>
+					</>
+				)}
 			</div>
 		);
 	};
 
-	const xinputModeSpecifics = (values, errors, setFieldValue, handleChange, inputMode) => {
+	const xinputModeSpecifics = (
+		values,
+		errors,
+		setFieldValue,
+		handleChange,
+		inputMode,
+	) => {
 		return (
 			<div className="row mb-3">
 				{generateAuthSelection(
@@ -1112,7 +1142,7 @@ export default function SettingsPage() {
 						/>
 					</Col>
 				</Row>
-				{ usbOverride(values, errors, setFieldValue, handleChange) }
+				{usbOverride(values, errors, setFieldValue, handleChange)}
 			</div>
 		);
 	};
@@ -1133,10 +1163,16 @@ export default function SettingsPage() {
 		);
 	};
 
-	const genericHidModeSpecifics = (values, errors, setFieldValue, handleChange, inputMode) => {
+	const genericHidModeSpecifics = (
+		values,
+		errors,
+		setFieldValue,
+		handleChange,
+		inputMode,
+	) => {
 		return (
 			<div className="row mb-3">
-				{ usbOverride(values, errors, setFieldValue, handleChange) }
+				{usbOverride(values, errors, setFieldValue, handleChange)}
 			</div>
 		);
 	};
@@ -1150,15 +1186,43 @@ export default function SettingsPage() {
 		const inputMode = INPUT_MODES.find((o) => o.value == values.inputMode);
 		switch (inputMode.labelKey) {
 			case 'input-mode-options.keyboard':
-				return keyboardModeSpecifics(values, errors, setFieldValue, handleChange);
+				return keyboardModeSpecifics(
+					values,
+					errors,
+					setFieldValue,
+					handleChange,
+				);
 			case 'input-mode-options.ps4':
-				return ps4ModeSpecifics(values, errors, setFieldValue, handleChange, inputMode);
+				return ps4ModeSpecifics(
+					values,
+					errors,
+					setFieldValue,
+					handleChange,
+					inputMode,
+				);
 			case 'input-mode-options.ps5':
-				return ps5ModeSpecifics(values, errors, setFieldValue, handleChange, inputMode);
+				return ps5ModeSpecifics(
+					values,
+					errors,
+					setFieldValue,
+					handleChange,
+					inputMode,
+				);
 			case 'input-mode-options.generic':
-				return genericHidModeSpecifics(values, errors, setFieldValue, handleChange);
+				return genericHidModeSpecifics(
+					values,
+					errors,
+					setFieldValue,
+					handleChange,
+				);
 			case 'input-mode-options.xinput':
-				return xinputModeSpecifics(values, errors, setFieldValue, handleChange, inputMode);
+				return xinputModeSpecifics(
+					values,
+					errors,
+					setFieldValue,
+					handleChange,
+					inputMode,
+				);
 			case 'input-mode-options.xbone':
 				return xboneModeSpecifics(values, errors, setFieldValue, handleChange);
 			default:
@@ -1210,8 +1274,8 @@ export default function SettingsPage() {
 		const data = {
 			...values,
 			usbProductID: hexToInt(values.usbProductID || '0000'),
-			usbVendorID: hexToInt(values.usbVendorID || '0000')
-		}
+			usbVendorID: hexToInt(values.usbVendorID || '0000'),
+		};
 
 		if (values.forcedSetupMode > 1) {
 			setWarning({ show: true, acceptText: '' });
@@ -1322,9 +1386,8 @@ export default function SettingsPage() {
 										<Tab.Content>
 											<Tab.Pane eventKey="inputmode">
 												<Section title={t('SettingsPage:settings-header-text')}>
-
 													<Form.Group className="row mb-3">
-														  <Row className="mb-3">
+														<Row className="mb-3">
 															<Col sm={4}>
 																<Form.Label>
 																	{t('SettingsPage:current-input-mode-label')}
@@ -1378,7 +1441,6 @@ export default function SettingsPage() {
 														<span className="alert">{saveMessage}</span>
 													) : null}
 												</Section>
- 
 											</Tab.Pane>
 											<Tab.Pane eventKey="gamepad">
 												<Section
@@ -1620,7 +1682,7 @@ export default function SettingsPage() {
 														{Object.keys(hotkeyFields).map((o, i) => (
 															<Form.Group
 																key={`hotkey-${i}-base`}
-																className="row mb-3"
+																className="row row-gap-2 gx-2 pb-2"
 															>
 																<Col sm="auto">
 																	<Form.Check
