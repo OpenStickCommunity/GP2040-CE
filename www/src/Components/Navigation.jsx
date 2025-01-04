@@ -62,7 +62,7 @@ const Navigation = () => {
 			</Navbar.Brand>
 			<Navbar.Toggle aria-controls="responsive-navbar-nav" />
 			<Navbar.Collapse id="basic-navbar-nav">
-				<Nav className="me-auto">
+				<Nav className="me-auto nav-menu">
 					<Nav.Link as={NavLink} to="/settings" eventKey={eventKey++}>
 						{t('Navigation:settings-label')}
 					</Nav.Link>
