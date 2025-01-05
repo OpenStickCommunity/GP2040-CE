@@ -8,6 +8,7 @@
 #include "BoardConfig.h"
 #include "AnimationStorage.hpp"
 #include "FlashPROM.h"
+#include "eventmanager.h"
 #include "peripheralmanager.h"
 #include "config.pb.h"
 #include "hardware/watchdog.h"
@@ -130,6 +131,7 @@ bool Storage::setProfile(const uint32_t profileNum)
 		// is this profile enabled?
 		// profile 1 (core) is always enabled, others we must check
 		if (profileNum == 1 || config.profileOptions.gpioMappingsSets[profileNum-2].enabled) {
+			EventManager::getInstance().triggerEvent(new GPProfileChangeEvent(this->config.gamepadOptions.profileNumber, profileNum));
 			this->config.gamepadOptions.profileNumber = profileNum;
 			return true;
 		}

@@ -146,4 +146,15 @@ export default {
 	'keyboard-mapping-header-text': 'Keyboard Mapping',
 	'keyboard-mapping-sub-header-text':
 		'Use the form below to reconfigure your button-to-key mapping.',
+    'usb-override': {
+        'advanced-override': '⚠️ Advanced USB Override',
+        'invalid-warning-danger':
+        	'DANGER: Invalid USB parameters will cause your input modes to not function!',
+        'product-name':'Product Name',
+        'manufacturer':'Manufacturer',
+        'version':'Version',
+        'physical-warning-danger':'⚡ Override Physical IDs ⚡ ',
+        'product-id':'Product ID',
+        'vendor-id':'Vendor ID',
+    },
 };

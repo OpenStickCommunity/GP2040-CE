@@ -277,6 +277,13 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.gamepadOptions, ps5AuthType, DEFAULT_PS5AUTHENTICATION_TYPE);
     INIT_UNSET_PROPERTY(config.gamepadOptions, xinputAuthType, DEFAULT_XINPUTAUTHENTICATION_TYPE);
     INIT_UNSET_PROPERTY(config.gamepadOptions, ps4ControllerIDMode, DEFAULT_PS4_ID_MODE);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, usbDescOverride, false);
+    INIT_UNSET_PROPERTY_STR(config.gamepadOptions, usbDescProduct, "GP2040-CE (Custom)");
+    INIT_UNSET_PROPERTY_STR(config.gamepadOptions, usbDescManufacturer, "Open Stick Community");
+    INIT_UNSET_PROPERTY_STR(config.gamepadOptions, usbDescVersion, "1.0");
+    INIT_UNSET_PROPERTY(config.gamepadOptions, usbOverrideID, false);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, usbVendorID, 0x10C4);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, usbProductID, 0x82C0);
 
     // hotkeyOptions
     HotkeyOptions& hotkeyOptions = config.hotkeyOptions;
