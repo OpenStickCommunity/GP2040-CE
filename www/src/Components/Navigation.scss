@@ -6,6 +6,8 @@ $nav-outer-margin: 0.75rem;
 
 nav.navbar {
 	padding: 0;
+	background-color: white;
+	box-shadow: 0 1px 2px 0 #0000001a;
 
 	.navbar-brand {
 		margin-right: $nav-outer-margin;
@@ -30,15 +32,15 @@ nav.navbar {
 		color: #ff0000;
 	}
 }
+[data-bs-theme="dark"] {
+	nav.navbar {
+		background-color: #242526;
+	}
+}
 
 .title-logo {
 	height: 40px;
 	margin: 0.25rem 0rem 0.25rem $nav-outer-margin;
-}
-
-.nav-link,
-.nav-item * {
-	font-size: 0.875rem;
 }
 
 @media (max-width: 767.98px) {
@@ -50,6 +52,15 @@ nav.navbar {
 
 		.nav-link {
 			margin-left: $nav-outer-margin;
+		}
+		.nav-menu {
+			.dropdown-menu {
+				background-color: transparent;
+				border: none;
+				.dropdown-item {
+					padding-left: 1.5rem;
+				}
+			}
 		}
 	}
 }
