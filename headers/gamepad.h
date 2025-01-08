@@ -188,6 +188,8 @@ public:
 	GamepadButtonMapping *mapAnalogRSXPos;
 	GamepadButtonMapping *mapAnalogRSYNeg;
 	GamepadButtonMapping *mapAnalogRSYPos;
+	GamepadButtonMapping *map4WayMode;
+	GamepadButtonMapping *map8WayMode;
 
 	// gamepad specific proxy of debounced buttons --- 1 = active (inverse of the raw GPIO)
 	// see GP2040::debounceGpioGetAll for details
@@ -213,6 +215,7 @@ private:
 
 	GamepadOptions & options;
 	DpadMode activeDpadMode;
+	bool fourWayMode;
 	const HotkeyOptions & hotkeyOptions;
 
 	GamepadHotkey lastAction = HOTKEY_NONE;

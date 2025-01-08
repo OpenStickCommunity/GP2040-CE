@@ -83,6 +83,8 @@ void Gamepad::setup()
 	mapAnalogRSXPos = new GamepadButtonMapping(ANALOG_DIRECTION_RS_X_POS);
 	mapAnalogRSYNeg = new GamepadButtonMapping(ANALOG_DIRECTION_RS_Y_NEG);
 	mapAnalogRSYPos = new GamepadButtonMapping(ANALOG_DIRECTION_RS_Y_POS);
+	map4WayMode     = new GamepadButtonMapping(SUSTAIN_4_WAY_MODE);
+	map8WayMode     = new GamepadButtonMapping(SUSTAIN_8_WAY_MODE);
 
 	const auto assignCustomMappingToMaps = [&](GpioMappingInfo mapInfo, Pin_t pin) -> void {
 		if (mapDpadUp->buttonMask & mapInfo.customDpadMask)	mapDpadUp->pinMask |= 1 << pin;
@@ -161,6 +163,8 @@ void Gamepad::setup()
 			case GpioAction::ANALOG_DIRECTION_RS_X_POS:	mapAnalogRSXPos->pinMask |= 1 << pin; break;
 			case GpioAction::ANALOG_DIRECTION_RS_Y_NEG:	mapAnalogRSYNeg->pinMask |= 1 << pin; break;
 			case GpioAction::ANALOG_DIRECTION_RS_Y_POS:	mapAnalogRSYPos->pinMask |= 1 << pin; break;
+			case GpioAction::SUSTAIN_4_WAY_MODE:	map4WayMode->pinMask |= 1 << pin; break;
+			case GpioAction::SUSTAIN_8_WAY_MODE:	map8WayMode->pinMask |= 1 << pin; break;
 			default:				break;
 		}
 	}
@@ -220,6 +224,8 @@ void Gamepad::reinit()
 	delete mapAnalogRSXPos;
 	delete mapAnalogRSYNeg;
 	delete mapAnalogRSYPos;
+	delete map4WayMode;
+	delete map8WayMode;
 
 	// reinitialize pin mappings
 	this->setup();
@@ -257,7 +263,7 @@ void Gamepad::process()
 	}
 
 	// 4-way before SOCD, might have better history without losing any coherent functionality
-	if (options.fourWayMode) {
+	if (fourWayMode) {
 		state.dpad = filterToFourWayMode(state.dpad);
 	}
 
@@ -279,7 +285,7 @@ void Gamepad::process()
 			state.dpad &= ~dpadOnlyMask;
 			state.dpad = dpadOnlyMask;
 			break;
-	
+
 		case DpadMode::DPAD_MODE_RIGHT_ANALOG:
 			if (!hasLeftAnalogStick) {
 				state.lx = joystickMid;
@@ -290,7 +296,7 @@ void Gamepad::process()
 			state.dpad &= ~dpadOnlyMask;
 			state.dpad = dpadOnlyMask;
 			break;
-	
+
 		default:
 			//if (!hasLeftAnalogStick) {
 			//	state.lx = joystickMid;
@@ -364,6 +370,10 @@ void Gamepad::read()
 	else if (values & mapButtonLS->pinMask)	activeDpadMode = DpadMode::DPAD_MODE_LEFT_ANALOG;
 	else if (values & mapButtonRS->pinMask)	activeDpadMode = DpadMode::DPAD_MODE_RIGHT_ANALOG;
 	else					activeDpadMode = options.dpadMode;
+
+	if (values & map4WayMode->pinMask) fourWayMode = true;
+	else if (values & map8WayMode->pinMask) fourWayMode = false;
+	else fourWayMode = options.fourWayMode;
 
 	if (values & mapAnalogLSXNeg->pinMask) {
 		state.lx = GAMEPAD_JOYSTICK_MIN;
