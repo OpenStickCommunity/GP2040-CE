@@ -5,6 +5,7 @@
 #include "GPGFX_UI_types.h"
 #include "enums.pb.h"
 #include "AnimationStation.hpp"
+#include "eventmanager.h"
 
 #define INPUT_MODE_XINPUT_NAME "XInput"
 #define INPUT_MODE_SWITCH_NAME "Nintendo Switch"
@@ -65,6 +66,8 @@ class MainMenuScreen : public GPScreen {
 
         void selectTurboMode();
         int32_t currentTurboMode();
+
+        void updateMenuNavigation(GpioAction action);
     protected:
         virtual void drawScreen();
     private:
@@ -77,6 +80,10 @@ class MainMenuScreen : public GPScreen {
         Mask_t prevValues;
         GPMenu* gpMenu;
 
+        bool screenIsPrompting = false;
+        bool promptChoice = false;
+
+        int8_t exitToScreenBeforePrompt = -1;
         int8_t exitToScreen = -1;
 
         GamepadButtonMapping *mapMenuUp;
@@ -88,7 +95,8 @@ class MainMenuScreen : public GPScreen {
         GamepadButtonMapping *mapMenuToggle;
 
         void saveOptions();
-        void updateMenuNavigation(GpioAction action);
+        bool changeRequiresReboot = false;
+        bool changeRequiresSave = false;
 
         #define INPUT_MODE_ENTRIES(name, value) {name##_NAME, NULL, nullptr, std::bind(&MainMenuScreen::currentInputMode, this), std::bind(&MainMenuScreen::selectInputMode, this), value},
         #define DPAD_MODE_ENTRIES(name, value)  {name##_NAME, NULL, nullptr, std::bind(&MainMenuScreen::currentDpadMode,  this), std::bind(&MainMenuScreen::selectDPadMode,  this), value},
@@ -97,26 +105,38 @@ class MainMenuScreen : public GPScreen {
         std::vector<MenuEntry> inputModeMenu = {
             InputMode_VALUELIST(INPUT_MODE_ENTRIES)
         };
+        InputMode prevInputMode;
+        InputMode updateInputMode;
 
         std::vector<MenuEntry> dpadModeMenu = {
             DpadMode_VALUELIST(DPAD_MODE_ENTRIES)
         };
+        DpadMode prevDpadMode;
+        DpadMode updateDpadMode;
 
         std::vector<MenuEntry> socdModeMenu = {
             SOCDMode_VALUELIST(SOCD_MODE_ENTRIES)
         };
+        SOCDMode prevSocdMode;
+        SOCDMode updateSocdMode;
 
         std::vector<MenuEntry> profilesMenu = {};
+        uint8_t prevProfile;
+        uint8_t updateProfile;
 
         std::vector<MenuEntry> focusModeMenu = {
-            {"On",         NULL, nullptr,        std::bind(&MainMenuScreen::currentFocusMode, this), std::bind(&MainMenuScreen::selectFocusMode, this), 1},
             {"Off",        NULL, nullptr,        std::bind(&MainMenuScreen::currentFocusMode, this), std::bind(&MainMenuScreen::selectFocusMode, this), 0},
+            {"On",         NULL, nullptr,        std::bind(&MainMenuScreen::currentFocusMode, this), std::bind(&MainMenuScreen::selectFocusMode, this), 1},
         };
+        bool prevFocus;
+        bool updateFocus;
 
         std::vector<MenuEntry> turboModeMenu = {
-            {"On",         NULL, nullptr,        std::bind(&MainMenuScreen::currentTurboMode, this), std::bind(&MainMenuScreen::selectTurboMode, this), 1},
             {"Off",        NULL, nullptr,        std::bind(&MainMenuScreen::currentTurboMode, this), std::bind(&MainMenuScreen::selectTurboMode, this), 0},
+            {"On",         NULL, nullptr,        std::bind(&MainMenuScreen::currentTurboMode, this), std::bind(&MainMenuScreen::selectTurboMode, this), 1},
         };
+        bool prevTurbo;
+        bool updateTurbo;
 
         std::vector<MenuEntry> mainMenu = {
             {"Input Mode", NULL, &inputModeMenu, std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::testMenu, this)},

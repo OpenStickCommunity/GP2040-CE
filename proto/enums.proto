@@ -329,6 +329,13 @@ enum GamepadHotkey
     HOTKEY_DPAD_RIGHT            = 41;
     HOTKEY_PREVIOUS_PROFILE      = 42;
     HOTKEY_SAVE_CONFIG           = 43;
+    HOTKEY_MENU_NAV_UP           = 44;
+    HOTKEY_MENU_NAV_DOWN         = 45;
+    HOTKEY_MENU_NAV_LEFT         = 46;
+    HOTKEY_MENU_NAV_RIGHT        = 47;
+    HOTKEY_MENU_NAV_SELECT       = 48;
+    HOTKEY_MENU_NAV_BACK         = 49;
+    HOTKEY_MENU_NAV_TOGGLE       = 50;
 }
 
 // This has to be kept in sync with LEDFormat in NeoPico.hpp
@@ -497,4 +504,7 @@ enum GPEventType
     GP_EVENT_BUTTON_PROCESSED_DOWN = 9;
     GP_EVENT_ANALOG_MOVE = 10;
     GP_EVENT_ANALOG_PROCESSED_MOVE = 11;
+    GP_EVENT_STORAGE_SAVE = 12;
+    GP_EVENT_SYSTEM_REBOOT = 13;
+    GP_EVENT_MENU_NAVIGATE = 14;
 };

@@ -196,6 +196,7 @@ public:
 	virtual std::string name() { return DisplayName; }
 
     void handleSystemRestart(GPEvent* e);
+    void handleMenuNavigation(GPEvent* e);
 private:
 	bool updateDisplayScreen();
 	void drawStatusBar(Gamepad*);

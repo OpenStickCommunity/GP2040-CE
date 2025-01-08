@@ -184,6 +184,9 @@ void GP2040::setup() {
 		// before USB host will be used so we can force it to ignore the check
 		Storage::getInstance().save(true);
 	}
+
+	// register system event handlers
+	EventManager::getInstance().registerEventHandler(GP_EVENT_STORAGE_SAVE, GPEVENT_CALLBACK(this->handleStorageSave(event)));
 }
 
 /**
@@ -317,6 +320,20 @@ void GP2040::run() {
 		addons.ProcessAddons(ADDON_PROCESS::CORE0_USBREPORT);
 		
 		tud_task(); // TinyUSB Task update
+
+        if (rebootRequested) {
+            rebootRequested = false;
+            if (saveRequested) {
+                saveRequested = false;
+                Storage::getInstance().save(true);
+            }
+            System::reboot(System::BootMode::DEFAULT);
+        } else {
+            if (saveRequested) {
+                saveRequested = false;
+                Storage::getInstance().save(true);
+            }
+        }
 	}
 }
 
@@ -525,4 +542,13 @@ void GP2040::checkProcessedState(GamepadState prevState, GamepadState currState)
     ) {
         EventManager::getInstance().triggerEvent(new GPAnalogProcessedMoveEvent(currState.lx, currState.ly, currState.rx, currState.ry, currState.lt, currState.rt));
     }
+}
+
+void GP2040::handleStorageSave(GPEvent* e) {
+    saveRequested = true;
+    rebootRequested = ((GPStorageSaveEvent*)e)->restartAfterSave;
+}
+
+void GP2040::handleSystemReboot(GPEvent* e) {
+    rebootRequested = true;
 }

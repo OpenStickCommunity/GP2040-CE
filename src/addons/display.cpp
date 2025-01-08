@@ -78,6 +78,7 @@ void DisplayAddon::setup() {
     updateDisplayScreen();
 
     EventManager::getInstance().registerEventHandler(GP_EVENT_RESTART, GPEVENT_CALLBACK(this->handleSystemRestart(event)));
+    EventManager::getInstance().registerEventHandler(GP_EVENT_MENU_NAVIGATE, GPEVENT_CALLBACK(this->handleMenuNavigation(event)));
 }
 
 bool DisplayAddon::updateDisplayScreen() {
@@ -231,4 +232,20 @@ void DisplayAddon::handleSystemRestart(GPEvent* e) {
     currDisplayMode = DisplayMode::RESTART;
     bootMode = (uint32_t)((GPRestartEvent*)e)->bootMode;
     updateDisplayScreen();
+}
+
+void DisplayAddon::handleMenuNavigation(GPEvent* e) {
+    if (currDisplayMode != MAIN_MENU) {
+        if (((GPMenuNavigateEvent*)e)->menuAction == GpioAction::MENU_NAVIGATION_TOGGLE) {
+            currDisplayMode = MAIN_MENU;
+            updateDisplayScreen();
+        }
+    } else {
+        if (((GPMenuNavigateEvent*)e)->menuAction != GpioAction::MENU_NAVIGATION_TOGGLE) {
+            ((MainMenuScreen*)gpScreen)->updateMenuNavigation(((GPMenuNavigateEvent*)e)->menuAction);
+        } else {
+            currDisplayMode = BUTTONS;
+            updateDisplayScreen();
+        }
+    }
 }
