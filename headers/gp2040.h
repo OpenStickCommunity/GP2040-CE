@@ -11,6 +11,7 @@
 // GP2040 Classes
 #include "gamepad.h"
 #include "addonmanager.h"
+#include "eventmanager.h"
 #include "gpdriver.h"
 
 #include "pico/types.h"
@@ -75,6 +76,13 @@ private:
 
     // input mask, action
     std::map<uint32_t, int32_t> bootActions;
+
+    bool saveRequested = false;
+    bool saveSuccessful = false;
+    void handleStorageSave(GPEvent* e);
+
+    bool rebootRequested = false;
+    void handleSystemReboot(GPEvent* e);
 };
 
 #endif

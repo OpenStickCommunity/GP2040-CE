@@ -130,6 +130,13 @@ export default {
 		'save-config': 'Save Config',
 		'next-profile': 'Next Profile',
 		'previous-profile': 'Previous Profile',
+		'menu-nav-up': 'Menu Up',
+		'menu-nav-down': 'Menu Down',
+		'menu-nav-left': 'Menu Left',
+		'menu-nav-right': 'Menu Right',
+		'menu-nav-select': 'Menu Select',
+		'menu-nav-back': 'Menu Back',
+		'menu-nav-toggle': 'Menu Toggle',
 	},
 	'forced-setup-mode-label': 'Forced Setup Mode',
 	'forced-setup-mode-options': {
