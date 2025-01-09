@@ -261,6 +261,8 @@ enum GpioAction
 
     BUTTON_PRESS_INPUT_REVERSE   = 69;
     SUSTAIN_FOCUS_MODE           = 70;
+
+    SUSTAIN_4_8_WAY_MODE = 71;
 }
 
 enum GpioDirection
