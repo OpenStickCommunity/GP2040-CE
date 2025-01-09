@@ -14,7 +14,7 @@ public:
   RainbowSynced(Lights& InRGBLights);
   ~RainbowSynced() {};
 
-  void Animate(RGB (&frame)[100]);
+  virtual void Animate(RGB (&frame)[100]) override;
 
   //These change the speed of the rainbow changing color
   void ParameterUp();

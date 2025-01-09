@@ -25,11 +25,11 @@ void StaticColor::Animate(RGB (&frame)[100])
       //Non pressed simply sets the RGB colour
       if(!isButtonAnimation && LightTypeIsForNonPressedAnimation(RGBLights->AllLights[lightIndex].Type))
       {
-        frame[ledIndex] = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].notPressedStaticColors[RGBLights->AllLights[lightIndex].GIPOPin];
+        frame[ledIndex] = GetNonPressedColorForLight(lightIndex);
       }
       else if (isButtonAnimation && LightTypeIsForPressedAnimation(RGBLights->AllLights[lightIndex].Type))
       {
-        frame[ledIndex] = FadeColor(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].pressedStaticColors[RGBLights->AllLights[lightIndex].GIPOPin],
+        frame[ledIndex] = FadeColor(GetPressedColorForLight(lightIndex),
                                         frame[ledIndex],
                                         fadeTimes[ledIndex]);    
       }

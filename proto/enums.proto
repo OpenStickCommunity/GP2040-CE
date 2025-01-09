@@ -317,9 +317,8 @@ enum SpecialMoveEffects_Proto
   SMEFFECT_WAVE = 0;
   SMEFFECT_PULSECOLOR = 1;
   SMEFFECT_CIRCLECOLOR = 2;
-  SMEFFECT_FLASHCOLOR = 3;
-  SMEFFECT_KNIGHTRIDER = 4;
-  SMEFFECT_RANDOMFLASH = 5;
+  SMEFFECT_KNIGHTRIDER = 3;
+  SMEFFECT_RANDOMFLASH = 4;
 }
 
 /* This has to be kept in sync with SpecialMoveInputTypes in SpecialMoveSystem.hpp */
@@ -345,6 +344,7 @@ enum SpecialMoveInputTypes_Proto
   INPUT_720 = 17;
   INPUT_RAGING_DEMON_RIGHT = 18;
   INPUT_RAGING_DEMON_LEFT = 19;
+  INPUT_NONE = 20;
 }
 
 /* This has to be kept in sync with AnimationNonPressedEffects in AnimationStation.hpp */

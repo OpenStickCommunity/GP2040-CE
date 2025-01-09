@@ -97,7 +97,7 @@
 #define LEDS_BUTTON_R3   14
 #define LEDS_BUTTON_A2   15
 
-//Data format = {first led index, leds on this light, xcoord, ycoord, GPIO pin, Type}
+//Data format = {first led index, leds on this light, xcoord, ycoord, GPIO pin/case light Index, Type}
 //Eg,  your first light would be "first led index" = 0 and "leds on this light" = 2. 
 //      your second light would be "first led index" = 2 (as 0 and 1 were just taken by the first light)
 //T16 
@@ -140,8 +140,28 @@
 14, 1, 8, 5, 19, LightType_Proto::LightType_Proto_ActionButton, \
 15, 1, 3, 6, 26, LightType_Proto::LightType_Proto_ActionButton*/
 
+//Test setup for making some of the buttons act as case lights
+#define LIGHT_DATA_SIZE 16 //number of sets in the below data
+#define LIGHT_DATA \
+0, 1, 0, 2, 5, LightType_Proto::LightType_Proto_ActionButton, \
+1, 1, 2, 2, 3, LightType_Proto::LightType_Proto_ActionButton, \
+2, 1, 4, 3, 4, LightType_Proto::LightType_Proto_ActionButton, \
+3, 1, 6, 7, 2, LightType_Proto::LightType_Proto_ActionButton, \
+4, 1, 6, 2, 10, LightType_Proto::LightType_Proto_ActionButton, \
+5, 1, 8, 1, 11, LightType_Proto::LightType_Proto_ActionButton, \
+6, 1, 10, 1, 12, LightType_Proto::LightType_Proto_ActionButton, \
+7, 1, 12, 1, 13, LightType_Proto::LightType_Proto_ActionButton, \
+8, 1, 6, 4, 6, LightType_Proto::LightType_Proto_ActionButton, \
+9, 1, 8, 3, 7, LightType_Proto::LightType_Proto_ActionButton, \
+10, 1, 10, 3, 8, LightType_Proto::LightType_Proto_ActionButton, \
+11, 1, 12, 3, 9, LightType_Proto::LightType_Proto_ActionButton, \
+12, 1, 3, 0, 0, LightType_Proto::LightType_Proto_Case, \
+13, 1, 6, 0, 1, LightType_Proto::LightType_Proto_Case, \
+14, 1, 8, 5, 2, LightType_Proto::LightType_Proto_Case, \
+15, 1, 3, 6, 3, LightType_Proto::LightType_Proto_Case
+
 //define for prototype with rim lighting
-#define LIGHT_DATA_SIZE 27 //number of sets in the below data
+/*#define LIGHT_DATA_SIZE 27 //number of sets in the below data
 #define LIGHT_DATA \
 0, 1, 1, 3, 5, LightType_Proto::LightType_Proto_ActionButton, \
 1, 1, 3, 3, 3, LightType_Proto::LightType_Proto_ActionButton, \
@@ -160,16 +180,16 @@
 14, 1, 9, 6, 19, LightType_Proto::LightType_Proto_ActionButton, \
 15, 1, 4, 7, 26, LightType_Proto::LightType_Proto_ActionButton, \
 16, 1, 5, 0, 0, LightType_Proto::LightType_Proto_Case, \
-17, 1, 0, 0, 0, LightType_Proto::LightType_Proto_Case, \
-18, 1, 0, 4, 0, LightType_Proto::LightType_Proto_Case, \
-19, 1, 0, 9, 0, LightType_Proto::LightType_Proto_Case, \
-20, 1, 4, 9, 0, LightType_Proto::LightType_Proto_Case, \
-21, 1, 8, 9, 0, LightType_Proto::LightType_Proto_Case, \
-22, 1, 12, 9, 0, LightType_Proto::LightType_Proto_Case, \
-23, 1, 15, 9, 0, LightType_Proto::LightType_Proto_Case, \
-24, 1, 15, 4, 0, LightType_Proto::LightType_Proto_Case, \
-25, 1, 15, 0, 0, LightType_Proto::LightType_Proto_Case, \
-26, 1, 10, 0, 0, LightType_Proto::LightType_Proto_Case
+17, 1, 0, 0, 1, LightType_Proto::LightType_Proto_Case, \
+18, 1, 0, 4, 2, LightType_Proto::LightType_Proto_Case, \
+19, 1, 0, 9, 3, LightType_Proto::LightType_Proto_Case, \
+20, 1, 4, 9, 4, LightType_Proto::LightType_Proto_Case, \
+21, 1, 8, 9, 5, LightType_Proto::LightType_Proto_Case, \
+22, 1, 12, 9, 6, LightType_Proto::LightType_Proto_Case, \
+23, 1, 15, 9, 7, LightType_Proto::LightType_Proto_Case, \
+24, 1, 15, 4, 8, LightType_Proto::LightType_Proto_Case, \
+25, 1, 15, 0, 9, LightType_Proto::LightType_Proto_Case, \
+26, 1, 10, 0, 10, LightType_Proto::LightType_Proto_Case*/
 
 #define HAS_I2C_DISPLAY 1
 #define I2C0_ENABLED 1

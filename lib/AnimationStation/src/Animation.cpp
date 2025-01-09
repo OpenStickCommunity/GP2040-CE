@@ -174,3 +174,45 @@ bool Animation::LightTypeIsForSpecialMoveAnimation(LightType Type)
 
   return false;
 }
+
+//Get correct colour for light index
+RGB Animation::GetNonPressedColorForLight(uint32_t LightIndex)
+{
+  int colIndex = 0;
+  Light* thisLight = &(RGBLights->AllLights[LightIndex]);
+  if(thisLight->Type == LightType::LightType_ActionButton)
+  {
+    //button
+    colIndex = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].notPressedStaticColors[thisLight->GIPOPin];
+  }
+  else
+  {
+    //case light
+    colIndex = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].caseStaticColors[thisLight->CaseLightIndex];
+  }
+
+  return GetColorForIndex(colIndex);
+}
+
+RGB Animation::GetPressedColorForLight(uint32_t LightIndex)
+{
+  Light* thisLight = &(RGBLights->AllLights[LightIndex]);
+  int colIndex = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].pressedStaticColors[thisLight->GIPOPin];
+  return GetColorForIndex(colIndex);
+}
+
+RGB Animation::GetColorForIndex(uint32_t ColorIndex)
+{
+    //pre defined color?
+    if(ColorIndex < (int)colors.size())
+      return colors[ColorIndex];
+
+    //must be custom color
+    ColorIndex -= colors.size();
+    if(ColorIndex > customColors.size())
+    {
+      //error, no such color
+      return colors[0];
+    }
+    return customColors[ColorIndex];
+}

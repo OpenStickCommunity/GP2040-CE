@@ -92,6 +92,7 @@ typedef enum
   SPECIALMOVE_INPUT_720,
   SPECIALMOVE_INPUT_RAGING_DEMON_RIGHT,
   SPECIALMOVE_INPUT_RAGING_DEMON_LEFT,
+  SPECIALMOVE_INPUT_NONE,
 } SpecialMoveInputTypes;
 
 // SpecialMove joystick directions

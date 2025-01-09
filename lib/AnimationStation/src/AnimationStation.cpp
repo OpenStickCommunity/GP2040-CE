@@ -12,6 +12,7 @@
 #include "Effects/SMPulseColour.hpp"
 #include "Effects/SMCircleColour.hpp"
 #include "Effects/SMWave.hpp"
+#include "Effects/SMKnightRider.hpp"
 #include "SpecialMoveSystem.hpp"
 
 #include "AnimationStation.hpp"
@@ -226,7 +227,7 @@ void AnimationStation::SetSpecialMoveAnimation(SpecialMoveEffects AnimationToPla
         break;
 
     case SpecialMoveEffects::SPECIALMOVE_SMEFFECT_KNIGHTRIDER:
-        //this->specialMoveAnimation = new SMKnightRider(RGBLights);
+        this->specialMoveAnimation = new SMKnightRider(RGBLights);
         break;
 
     case SpecialMoveEffects::SPECIALMOVE_SMEFFECT_RANDOMFLASH:

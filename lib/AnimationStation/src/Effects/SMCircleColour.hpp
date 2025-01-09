@@ -22,7 +22,7 @@ public:
     SMCircleColour(Lights& InRGBLights);
     ~SMCircleColour() { };
 
-    void Animate(RGB (&frame)[100]);
+    virtual void Animate(RGB (&frame)[100]) override;
 
     virtual void SetOptionalParams(uint32_t OptionalParams) override;
     virtual bool IsFinished() override; 

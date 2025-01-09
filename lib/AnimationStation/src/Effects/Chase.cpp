@@ -120,7 +120,7 @@ void Chase::Animate(RGB (&frame)[100])
       uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[OrderedLights[lightIndex]].LedsPerLight;
       for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
       {
-        frame[ledIndex] = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].notPressedStaticColors[RGBLights->AllLights[OrderedLights[lightIndex]].GIPOPin];
+        frame[ledIndex] = GetNonPressedColorForLight(OrderedLights[lightIndex]);
       }
   }
 
@@ -160,7 +160,7 @@ void Chase::Animate(RGB (&frame)[100])
       uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[OrderedLights[currentLightReverseAdjusted]].LedsPerLight;
       for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
       {
-        frame[ledIndex] = BlendColor(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].notPressedStaticColors[RGBLights->AllLights[OrderedLights[currentLightReverseAdjusted]].GIPOPin],
+        frame[ledIndex] = BlendColor(GetNonPressedColorForLight(OrderedLights[currentLightReverseAdjusted]),
                                       AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColour, 
                                       fadeTimeOne);
       }      
@@ -171,7 +171,7 @@ void Chase::Animate(RGB (&frame)[100])
         uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[OrderedLights[nextLightReverseAdjusted]].LedsPerLight;
         for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
         {
-          frame[ledIndex] = BlendColor(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].notPressedStaticColors[RGBLights->AllLights[OrderedLights[nextLightReverseAdjusted]].GIPOPin],
+          frame[ledIndex] = BlendColor(GetNonPressedColorForLight(OrderedLights[nextLightReverseAdjusted]),
                                         AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColour, 
                                         fadeTimeTwo);
         }          
@@ -194,7 +194,7 @@ void Chase::Animate(RGB (&frame)[100])
           uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[OrderedLights[lightIndex]].LedsPerLight;
           for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
           {
-            frame[ledIndex] = BlendColor(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].notPressedStaticColors[RGBLights->AllLights[OrderedLights[lightIndex]].GIPOPin],
+            frame[ledIndex] = BlendColor(GetNonPressedColorForLight(OrderedLights[lightIndex]),
                                           AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColour, 
                                           fadeTimeOne);
           }      
@@ -208,7 +208,7 @@ void Chase::Animate(RGB (&frame)[100])
             uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[OrderedLights[lightIndex]].LedsPerLight;
             for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
             {
-              frame[ledIndex] = BlendColor(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].notPressedStaticColors[RGBLights->AllLights[OrderedLights[lightIndex]].GIPOPin],
+              frame[ledIndex] = BlendColor(GetNonPressedColorForLight(OrderedLights[lightIndex]),
                                             AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColour, 
                                             fadeTimeTwo);
             }          
@@ -233,7 +233,7 @@ void Chase::Animate(RGB (&frame)[100])
           uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[OrderedLights[lightIndex]].LedsPerLight;
           for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
           {
-            frame[ledIndex] = BlendColor(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].notPressedStaticColors[RGBLights->AllLights[OrderedLights[lightIndex]].GIPOPin],
+            frame[ledIndex] = BlendColor(GetNonPressedColorForLight(OrderedLights[lightIndex]),
                                           AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColour, 
                                           fadeTimeOne);
           }      
@@ -247,7 +247,7 @@ void Chase::Animate(RGB (&frame)[100])
             uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[OrderedLights[lightIndex]].LedsPerLight;
             for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
             {
-              frame[ledIndex] = BlendColor(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].notPressedStaticColors[RGBLights->AllLights[OrderedLights[lightIndex]].GIPOPin],
+              frame[ledIndex] = BlendColor(GetNonPressedColorForLight(OrderedLights[lightIndex]),
                                             AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColour, 
                                             fadeTimeTwo);
             }          

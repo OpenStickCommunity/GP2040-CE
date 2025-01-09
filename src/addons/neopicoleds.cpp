@@ -342,6 +342,10 @@ void NeoPicoLEDAddon::process()
 
 void NeoPicoLEDAddon::generateLegacyIndividualLight(int lightIndex, int firstLedIndex, int xCoord, int yCoord, uint8_t ledsPerPixel, LEDOptions_lightData_t& out_lightData, GpioAction actionButton)
 {
+	int arrayOffset = lightIndex * 6;
+	if(arrayOffset + 5 >= 600) //Max data array size (defined in config proto)
+		return;
+
 	const GpioMappings& pinMappings = Storage::getInstance().getGpioMappings();
 
 	int gpioPin = -1;
@@ -351,7 +355,6 @@ void NeoPicoLEDAddon::generateLegacyIndividualLight(int lightIndex, int firstLed
 			gpioPin = configIndex;
 	}
 
-	int arrayOffset = lightIndex * 6;
 	out_lightData.bytes[arrayOffset] = firstLedIndex; //first led index
 	out_lightData.bytes[arrayOffset+1] = ledsPerPixel; //leds on this light
 	out_lightData.bytes[arrayOffset+2] = xCoord; //xcoord

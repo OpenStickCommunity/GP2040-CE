@@ -167,7 +167,7 @@ bool SMWave::UpdateWave(RGB (&frame)[100])
                 else
                     bFinished = false;
 
-                frame[ledIndex] = BlendColor(ColorBlack, colors[ColourIndex], lightStr);    
+                frame[ledIndex] = BlendColor(ColorBlack, GetColorForIndex(ColourIndex), lightStr);    
             }
         }
     }

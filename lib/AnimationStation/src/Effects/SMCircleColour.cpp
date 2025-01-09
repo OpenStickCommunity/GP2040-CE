@@ -177,9 +177,9 @@ bool SMCircleColour::UpdateCircle(RGB (&frame)[100])
             else if(NumLoopsDone == (CircleLoops-1) && inSecondCircle && useSecondColour)
                 colToUse = ColorBlack;
             else if(useSecondColour)
-                colToUse = colors[SecondColourIndex];
+                colToUse = GetColorForIndex(SecondColourIndex);
             else
-                colToUse = colors[ColourIndex];
+                colToUse = GetColorForIndex(ColourIndex);
 
             for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
             {

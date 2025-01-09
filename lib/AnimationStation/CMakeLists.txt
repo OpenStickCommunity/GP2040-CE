@@ -5,6 +5,7 @@ src/Effects/StaticColor.cpp
 src/Effects/RandomColor.cpp
 src/Effects/SMPulseColour.cpp
 src/Effects/SMWave.cpp
+src/Effects/SMKnightRider.cpp
 src/Effects/SMCircleColour.cpp
 src/AnimationStation.cpp
 src/Animation.cpp

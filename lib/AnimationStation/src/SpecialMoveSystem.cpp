@@ -507,6 +507,11 @@ void SpecialMoveSystem::GetComboArrayForMove(SpecialMoveInputTypes InputType, st
 { 
     switch(InputType)
     {
+        case SpecialMoveInputTypes::SPECIALMOVE_INPUT_NONE:
+        {
+            //Nothing. Used for stuff like Giefs Lariat
+        } break;
+
         case SpecialMoveInputTypes::SPECIALMOVE_INPUT_QUARTER_DOWN_RIGHT:
         {
             comboArray.push_back(ComboEntry(SpecialMoveStickDirection::SPECIALMOVE_STICK_DOWN, 0));

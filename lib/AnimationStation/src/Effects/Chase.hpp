@@ -40,7 +40,8 @@ public:
   Chase(Lights& InRGBLights, ChaseTypes InChaseType);
   ~Chase() {};
 
-  void Animate(RGB (&frame)[100]);
+  virtual void Animate(RGB (&frame)[100]) override;
+  
   void ParameterUp();
   void ParameterDown();
 
@@ -51,7 +52,7 @@ protected:
   void CheckForEndOfSequence();
 
   float ChaseTimes[2];
-  std::vector<int32_t> OrderedLights;
+  std::vector<uint32_t> OrderedLights;
 
   int MinXCoord = 0;
   int MinYCoord = 0;

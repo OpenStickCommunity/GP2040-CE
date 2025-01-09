@@ -190,7 +190,7 @@ void SMPulseColour::Animate(RGB (&frame)[100])
 
             for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
             {
-                frame[ledIndex] = BlendColor(ColorBlack, colors[ColourIndex], thisFrameFade);    
+                frame[ledIndex] = BlendColor(ColorBlack, GetColorForIndex(ColourIndex), thisFrameFade);    
             }
         }
     }

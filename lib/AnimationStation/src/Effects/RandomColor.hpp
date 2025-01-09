@@ -13,7 +13,7 @@ public:
   RandomColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPins);
   ~RandomColor() { };
 
-  void Animate(RGB (&frame)[100]);
+  virtual void Animate(RGB (&frame)[100]) override;
  
 protected:
 

@@ -14,6 +14,7 @@
 #include "SpecialMoveSystem.hpp"
 
 #define MAX_ANIMATION_PROFILES 4
+#define MAX_CASE_LIGHTS 40          //this should be divisible by 4 as we pack 4 indexes into one config int32
 
 //List of non-pressed animation types
 typedef enum
@@ -60,11 +61,14 @@ struct __attribute__ ((__packed__)) AnimationProfile
 
   	AnimationNonPressedEffects baseNonPressedEffect;
   	AnimationPressedEffects basePressedEffect;
+    AnimationNonPressedEffects baseCaseEffect;
 
     int16_t baseCycleTime;
    
     uint32_t notPressedStaticColors[NUM_BANK0_GPIOS];
     uint32_t pressedStaticColors[NUM_BANK0_GPIOS];
+
+    uint32_t caseStaticColors[MAX_CASE_LIGHTS];
 
     uint32_t buttonPressHoldTimeInMs;
     uint32_t buttonPressFadeOutTimeInMs;

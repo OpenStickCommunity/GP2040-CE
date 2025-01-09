@@ -103,6 +103,9 @@ inline const std::vector<RGB> colors {
     ColorLimeGreen, ColorGreen,  ColorSeafoam, ColorAqua,   ColorSkyBlue,
     ColorBlue,      ColorPurple, ColorPink,    ColorMagenta };
 
+#define MAX_CUSTOM_COLORS 16
+inline std::vector<RGB> customColors { };
+
 class Animation {
 public:
   Animation(Lights& InRGBLights);
@@ -143,6 +146,11 @@ protected:
   bool LightTypeIsForNonPressedAnimation(LightType Type);
   bool LightTypeIsForPressedAnimation(LightType Type);
   bool LightTypeIsForSpecialMoveAnimation(LightType Type);
+
+  //Get colour helpers
+  RGB GetNonPressedColorForLight(uint32_t LightIndex);
+  RGB GetPressedColorForLight(uint32_t LightIndex);
+  RGB GetColorForIndex(uint32_t ColorIndex);
 
   //Light data
   Lights* RGBLights;

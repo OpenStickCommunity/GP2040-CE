@@ -218,11 +218,27 @@ void AnimationStorage::getAnimationOptions(AnimationOptions& options)
 		options.profiles[index].bEnabled = optionsProto.profiles[index].bEnabled;
 		options.profiles[index].baseNonPressedEffect = (AnimationNonPressedEffects)((int)optionsProto.profiles[index].baseNonPressedEffect);
 		options.profiles[index].basePressedEffect = (AnimationPressedEffects)((int)optionsProto.profiles[index].basePressedEffect);
+		options.profiles[index].baseCaseEffect = (AnimationNonPressedEffects)((int)optionsProto.profiles[index].baseCaseEffect);
 		options.profiles[index].baseCycleTime = optionsProto.profiles[index].baseCycleTime;
-		for(unsigned int pinIndex = 0; pinIndex < NUM_BANK0_GPIOS; ++pinIndex)
+		for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS/4)+1; ++packedPinIndex)
 		{
-			options.profiles[index].notPressedStaticColors[pinIndex] = optionsProto.profiles[index].notPressedStaticColors[pinIndex];
-			options.profiles[index].pressedStaticColors[pinIndex] = optionsProto.profiles[index].pressedStaticColors[pinIndex];
+			int pinIndex = packedPinIndex * 4;
+			options.profiles[index].notPressedStaticColors[pinIndex + 0] = optionsProto.profiles[index].notPressedStaticColors[packedPinIndex] & 0xFF;
+			options.profiles[index].notPressedStaticColors[pinIndex + 1] = (optionsProto.profiles[index].notPressedStaticColors[packedPinIndex] >> 8) & 0xFF;
+			options.profiles[index].notPressedStaticColors[pinIndex + 2] = (optionsProto.profiles[index].notPressedStaticColors[packedPinIndex] >> 16) & 0xFF;
+			options.profiles[index].notPressedStaticColors[pinIndex + 3] = (optionsProto.profiles[index].notPressedStaticColors[packedPinIndex] >> 24) & 0xFF;
+			options.profiles[index].pressedStaticColors[pinIndex + 0] = optionsProto.profiles[index].pressedStaticColors[packedPinIndex] & 0xFF;
+			options.profiles[index].pressedStaticColors[pinIndex + 1] = (optionsProto.profiles[index].pressedStaticColors[packedPinIndex] >> 8) & 0xFF;
+			options.profiles[index].pressedStaticColors[pinIndex + 2] = (optionsProto.profiles[index].pressedStaticColors[packedPinIndex] >> 16) & 0xFF;
+			options.profiles[index].pressedStaticColors[pinIndex + 3] = (optionsProto.profiles[index].pressedStaticColors[packedPinIndex] >> 24) & 0xFF;
+		}
+		for(unsigned int packedCaseIndex = 0; packedCaseIndex < MAX_CASE_LIGHTS / 4; ++packedCaseIndex)
+		{
+			int caseIndex = packedCaseIndex * 4;
+			options.profiles[index].caseStaticColors[caseIndex + 0] = optionsProto.profiles[index].caseStaticColors[packedCaseIndex] & 0xFF;
+			options.profiles[index].caseStaticColors[caseIndex + 1] = (optionsProto.profiles[index].caseStaticColors[packedCaseIndex] >> 8) & 0xFF;
+			options.profiles[index].caseStaticColors[caseIndex + 2] = (optionsProto.profiles[index].caseStaticColors[packedCaseIndex] >> 16) & 0xFF;
+			options.profiles[index].caseStaticColors[caseIndex + 3] = (optionsProto.profiles[index].caseStaticColors[packedCaseIndex] >> 24) & 0xFF;
 		}
 		options.profiles[index].buttonPressHoldTimeInMs = optionsProto.profiles[index].buttonPressHoldTimeInMs;
 		options.profiles[index].buttonPressFadeOutTimeInMs = optionsProto.profiles[index].buttonPressFadeOutTimeInMs;
@@ -231,6 +247,12 @@ void AnimationStorage::getAnimationOptions(AnimationOptions& options)
 	}
 	options.brightness				= std::min<uint32_t>(optionsProto.brightness, 255);
 	options.baseProfileIndex		= std::min<uint32_t>(optionsProto.baseProfileIndex, 255);
+
+	customColors.clear();
+	for(unsigned int customColIndex = 0; customColIndex < MAX_CUSTOM_COLORS; ++customColIndex)
+	{
+		customColors.push_back(optionsProto.customColors[customColIndex]);
+	}
 }
 
 void AnimationStorage::getSpecialMoveOptions(SpecialMoveOptions& options)

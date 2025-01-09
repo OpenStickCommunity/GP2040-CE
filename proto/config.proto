@@ -336,8 +336,8 @@ message AnimationProfile_Proto
 
     optional int32 baseCycleTime = 4;
 
-    repeated uint32 notPressedStaticColors = 5 [(nanopb).max_count = 30]; //NUM_BANK0_GPIOS from AnimationStation.hpp
-    repeated uint32 pressedStaticColors = 6 [(nanopb).max_count = 30]; //NUM_BANK0_GPIOS from AnimationStation.hpp
+    repeated uint32 notPressedStaticColors = 5 [(nanopb).max_count = 8]; //NUM_BANK0_GPIOS/4 from platform_defs.h
+    repeated uint32 pressedStaticColors = 6 [(nanopb).max_count = 8]; //NUM_BANK0_GPIOS/4 from platform_defs.h
 
     optional uint32 buttonPressHoldTimeInMs = 7;
     optional uint32 buttonPressFadeOutTimeInMs = 8;
@@ -345,6 +345,10 @@ message AnimationProfile_Proto
     optional uint32 nonPressedSpecialColour = 9;
 
     optional bool bUseCaseLightsInSpecialMoves = 10;
+
+ 	optional AnimationNonPressedEffects_Proto baseCaseEffect = 11;
+
+    repeated uint32 caseStaticColors = 12 [(nanopb).max_count = 10]; //(MAX_CASE_LIGHTS/4) from AnimationStation.hpp
 };
 
 // This has to be kept in sync with AnimationOptions in AnimationStation.hpp
@@ -399,6 +403,8 @@ message AnimationOptions_Proto
     
     repeated AnimationProfile_Proto profiles = 46 [(nanopb).max_count = 4]; //MAX_ANIMATION_PROFILES from AnimationStation.hpp
     optional uint32 baseProfileIndex = 47;
+    
+    repeated uint32 customColors = 48 [(nanopb).max_count = 16]; //MAX_CUSTOM_COLORS from Animation.hpp
 }
 
 message BootselButtonOptions
