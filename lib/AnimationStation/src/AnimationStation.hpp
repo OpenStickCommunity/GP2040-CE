@@ -31,6 +31,8 @@ typedef enum
   NONPRESSED_EFFECT_CHASE_HORIZONTAL_PINGPONG,
   NONPRESSED_EFFECT_CHASE_VERTICAL_PINGPONG,
   NONPRESSED_EFFECT_CHASE_RANDOM,
+  NONPRESSED_EFFECT_JIGGLESTATIC,
+  NONPRESSED_EFFECT_JIGGLETWOSTATIC,
 } AnimationNonPressedEffects;
 
 //List of non-pressed animation types
@@ -38,6 +40,8 @@ typedef enum
 {
   PRESSED_EFFECT_STATIC_COLOR,
   PRESSED_EFFECT_RANDOM,
+  PRESSED_EFFECT_JIGGLESTATIC,
+  PRESSED_EFFECT_JIGGLETWOSTATIC,
 } AnimationPressedEffects;
 
 typedef enum
@@ -65,8 +69,8 @@ struct __attribute__ ((__packed__)) AnimationProfile
 
     int16_t baseCycleTime;
    
-    uint32_t notPressedStaticColors[NUM_BANK0_GPIOS];
-    uint32_t pressedStaticColors[NUM_BANK0_GPIOS];
+    uint32_t notPressedStaticColors[NUM_BANK0_GPIOS + 3]; //since we pack 4 into each. Adding 3 ensures we have space for extra pading
+    uint32_t pressedStaticColors[NUM_BANK0_GPIOS + 3]; //since we pack 4 into each. Adding 3 ensures we have space for extra pading
 
     uint32_t caseStaticColors[MAX_CASE_LIGHTS];
 
@@ -74,6 +78,7 @@ struct __attribute__ ((__packed__)) AnimationProfile
     uint32_t buttonPressFadeOutTimeInMs;
 
     uint32_t nonPressedSpecialColour;
+    uint32_t pressedSpecialColour;
 
     bool bUseCaseLightsInSpecialMoves;
 };

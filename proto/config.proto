@@ -308,6 +308,8 @@ message SpecialMoveDescription_Proto
 
     optional SpecialMoveEffects_Proto Animation = 3;
     optional bool bIsChargeMove = 4;
+
+    optional int32 Priority = 5;
 };
 
 // This has to be kept in sync with SpecialMoveProfile in SpecialMoveSystem.hpp
@@ -349,6 +351,8 @@ message AnimationProfile_Proto
  	optional AnimationNonPressedEffects_Proto baseCaseEffect = 11;
 
     repeated uint32 caseStaticColors = 12 [(nanopb).max_count = 10]; //(MAX_CASE_LIGHTS/4) from AnimationStation.hpp
+
+    optional uint32 pressedSpecialColour = 13;
 };
 
 // This has to be kept in sync with AnimationOptions in AnimationStation.hpp

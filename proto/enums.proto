@@ -362,6 +362,8 @@ enum AnimationNonPressedEffects_Proto
   EFFECT_CHASE_HORIZONTAL_PINGPONG = 9;
   EFFECT_CHASE_VERTICAL_PINGPONG = 10;
   EFFECT_CHASE_RANDOM = 11;
+  EFFECT_JIGGLESTATIC = 12;
+  EFFECT_JIGGLETWOSTATICS = 13;
 }
 
 /* This has to be kept in sync with AnimationPressedEffects in AnimationStation.hpp */
@@ -369,6 +371,8 @@ enum AnimationPressedEffects_Proto
 {
   EFFECT_HELD_STATIC_COLOR = 0;
   EFFECT_RANDOM = 1;
+  EFFECT_HELD_JIGGLESTATIC = 2;
+  EFFECT_HELD_JIGGLETWOSTATICS = 3;
 }
 
 /* This has to be kept in sync with LightType in Pixel.hpp */

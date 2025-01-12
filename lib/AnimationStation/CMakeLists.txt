@@ -2,6 +2,8 @@ add_library(AnimationStation
 src/Effects/Chase.cpp
 src/Effects/Rainbow.cpp
 src/Effects/StaticColor.cpp
+src/Effects/JiggleStaticColor.cpp
+src/Effects/JiggleTwoStaticColor.cpp
 src/Effects/RandomColor.cpp
 src/Effects/SMPulseColour.cpp
 src/Effects/SMWave.cpp

@@ -100,7 +100,19 @@ bool SpecialMoveSystem::TestAllMoves()
     if(Options.NumValidProfiles == 0 || Options.CurrentProfileIndex > Options.NumValidProfiles ||  Options.profiles[Options.CurrentProfileIndex].bEnabled == false)
         return false;
 
-    //Test Each move
+    //Move is ready to fire
+    if(bHasCachedSucceededMove && GetMsBetweenTimes(cachedSucceededMoveTime, thisFrameTime) > PRIORITY_LEEWAY_TIME)
+    {
+        bHasCachedSucceededMove = false;
+        // Clear the history to prevent retrigger if animation is really quick
+        ClearHistory();
+        if(ParentAnimationStation)
+            ParentAnimationStation->SetSpecialMoveAnimation(cachedSucceededMoveAnimation, cachedSucceededMoveParams);
+        SwitchClearAwaitingAllRelease = true;
+        return true;
+    }
+
+    //Test Each move and cache successes so higher priority ones can take preferrence
     uint32_t numMoves = Options.profiles[Options.CurrentProfileIndex].NumValidMoves;
     for(uint32_t moveIndex = 0; moveIndex < numMoves; ++moveIndex)
     {
@@ -125,13 +137,17 @@ bool SpecialMoveSystem::TestAllMoves()
                     
                     if(bSucceeded)
                     {
-                        // Clear the history to prevent retrigger if animation is really quick
-                        ClearHistory();
-                        if(ParentAnimationStation)
-                            ParentAnimationStation->SetSpecialMoveAnimation(thisMove.Animation, thisMove.RequiredTriggerCombos[triggerIndex].OptionalParams);
-                        SwitchClearAwaitingAllRelease = true;
-
-                        return true;
+                        if(!bHasCachedSucceededMove || thisMove.Priority > cachedSucceededMovePriority)
+                        {
+                            if(!bHasCachedSucceededMove)
+                            {   
+                                bHasCachedSucceededMove = true;
+                                cachedSucceededMoveTime = thisFrameTime;
+                            }
+                            cachedSucceededMovePriority = thisMove.Priority;
+                            cachedSucceededMoveAnimation = thisMove.Animation;
+                            cachedSucceededMoveParams = thisMove.RequiredTriggerCombos[triggerIndex].OptionalParams;
+                        }
                     }
                 }
             }

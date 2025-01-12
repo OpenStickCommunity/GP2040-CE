@@ -8,6 +8,8 @@
 #include "Effects/Chase.hpp"
 #include "Effects/Rainbow.hpp"
 #include "Effects/StaticColor.hpp"
+#include "Effects/JiggleStaticColor.hpp"
+#include "Effects/JiggleTwoStaticColor.hpp"
 #include "Effects/RandomColor.hpp"
 #include "Effects/SMPulseColour.hpp"
 #include "Effects/SMCircleColour.hpp"
@@ -317,6 +319,12 @@ void AnimationStation::SetMode(int8_t mode)
   case AnimationNonPressedEffects::NONPRESSED_EFFECT_STATIC_COLOR:
     this->baseAnimation = new StaticColor(RGBLights);
     break;
+  case AnimationNonPressedEffects::NONPRESSED_EFFECT_JIGGLESTATIC:
+    this->baseAnimation = new JiggleStaticColor(RGBLights);
+    break;
+  case AnimationNonPressedEffects::NONPRESSED_EFFECT_JIGGLETWOSTATIC:
+    this->baseAnimation = new JiggleTwoStaticColor(RGBLights);
+    break;
 
   default:
     break;
@@ -331,6 +339,12 @@ void AnimationStation::SetMode(int8_t mode)
 
   case AnimationPressedEffects::PRESSED_EFFECT_STATIC_COLOR:
     this->buttonAnimation = new StaticColor(RGBLights, lastPressed);
+    break;
+  case AnimationPressedEffects::PRESSED_EFFECT_JIGGLESTATIC:
+    this->buttonAnimation = new JiggleStaticColor(RGBLights, lastPressed);
+    break;
+  case AnimationPressedEffects::PRESSED_EFFECT_JIGGLETWOSTATIC:
+    this->buttonAnimation = new JiggleTwoStaticColor(RGBLights, lastPressed);
     break;
 
   default:

@@ -25,11 +25,11 @@ void StaticColor::Animate(RGB (&frame)[100])
       //Non pressed simply sets the RGB colour
       if(!isButtonAnimation && LightTypeIsForNonPressedAnimation(RGBLights->AllLights[lightIndex].Type))
       {
-        frame[ledIndex] = GetNonPressedColorForLight(lightIndex);
+        frame[ledIndex] = AdjustColor(GetNonPressedColorForLight(lightIndex));
       }
       else if (isButtonAnimation && LightTypeIsForPressedAnimation(RGBLights->AllLights[lightIndex].Type))
       {
-        frame[ledIndex] = FadeColor(GetPressedColorForLight(lightIndex),
+        frame[ledIndex] = FadeColor(AdjustColor(GetPressedColorForLight(lightIndex)),
                                         frame[ledIndex],
                                         fadeTimes[ledIndex]);    
       }

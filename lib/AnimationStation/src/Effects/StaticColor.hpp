@@ -14,8 +14,9 @@ public:
   ~StaticColor() { };
 
   virtual void Animate(RGB (&frame)[100]) override;
- 
 protected:
+
+  virtual RGB AdjustColor(RGB InColor) { return InColor; }
 };
 
 #endif

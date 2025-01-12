@@ -243,6 +243,7 @@ void AnimationStorage::getAnimationOptions(AnimationOptions& options)
 		options.profiles[index].buttonPressHoldTimeInMs = optionsProto.profiles[index].buttonPressHoldTimeInMs;
 		options.profiles[index].buttonPressFadeOutTimeInMs = optionsProto.profiles[index].buttonPressFadeOutTimeInMs;
 		options.profiles[index].nonPressedSpecialColour = optionsProto.profiles[index].nonPressedSpecialColour;
+		options.profiles[index].pressedSpecialColour = optionsProto.profiles[index].pressedSpecialColour;
 		options.profiles[index].bUseCaseLightsInSpecialMoves = optionsProto.profiles[index].bUseCaseLightsInSpecialMoves;
 	}
 	options.brightness				= std::min<uint32_t>(optionsProto.brightness, 255);
@@ -281,6 +282,7 @@ void AnimationStorage::getSpecialMoveOptions(SpecialMoveOptions& options)
 
 			options.profiles[profileIndex].AllSpecialMoves[moveIndex].Animation = (SpecialMoveEffects)((int)optionsProto.profiles[profileIndex].AllSpecialMoves[moveIndex].Animation);
  			options.profiles[profileIndex].AllSpecialMoves[moveIndex].bIsChargeMove = optionsProto.profiles[profileIndex].AllSpecialMoves[moveIndex].bIsChargeMove;
+			options.profiles[profileIndex].AllSpecialMoves[moveIndex].Priority = optionsProto.profiles[profileIndex].AllSpecialMoves[moveIndex].Priority;
 		}
 	}
 

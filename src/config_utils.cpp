@@ -498,6 +498,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
         config.specialMoveOptions.profiles[0].AllSpecialMoves[0].bIsChargeMove = false;
         config.specialMoveOptions.profiles[0].AllSpecialMoves[0].Animation = SpecialMoveEffects_Proto::SpecialMoveEffects_Proto_SMEFFECT_WAVE;
+        config.specialMoveOptions.profiles[0].AllSpecialMoves[0].Priority = 0;
         config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredInputCombos_count = 1;
         config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredInputCombos[0] = SpecialMoveInputTypes_Proto::SpecialMoveInputTypes_Proto_INPUT_QUARTER_DOWN_LEFT;
         config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos_count = 3;
@@ -510,6 +511,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         
         config.specialMoveOptions.profiles[0].AllSpecialMoves[1].bIsChargeMove = false;
         config.specialMoveOptions.profiles[0].AllSpecialMoves[1].Animation = SpecialMoveEffects_Proto::SpecialMoveEffects_Proto_SMEFFECT_WAVE;
+        config.specialMoveOptions.profiles[0].AllSpecialMoves[1].Priority = 0;
         config.specialMoveOptions.profiles[0].AllSpecialMoves[1].RequiredInputCombos_count = 1;
         config.specialMoveOptions.profiles[0].AllSpecialMoves[1].RequiredInputCombos[0] = SpecialMoveInputTypes_Proto::SpecialMoveInputTypes_Proto_INPUT_QUARTER_DOWN_RIGHT;
         config.specialMoveOptions.profiles[0].AllSpecialMoves[1].RequiredTriggerCombos_count = 3;
@@ -527,6 +529,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
         config.specialMoveOptions.profiles[1].AllSpecialMoves[0].bIsChargeMove = false;
         config.specialMoveOptions.profiles[1].AllSpecialMoves[0].Animation = SpecialMoveEffects_Proto::SpecialMoveEffects_Proto_SMEFFECT_WAVE;
+        config.specialMoveOptions.profiles[1].AllSpecialMoves[0].Priority = 0;
         config.specialMoveOptions.profiles[1].AllSpecialMoves[0].RequiredInputCombos_count = 2;
         config.specialMoveOptions.profiles[1].AllSpecialMoves[0].RequiredInputCombos[0] = SpecialMoveInputTypes_Proto::SpecialMoveInputTypes_Proto_INPUT_DP_LEFT;
         config.specialMoveOptions.profiles[1].AllSpecialMoves[0].RequiredInputCombos[1] = SpecialMoveInputTypes_Proto::SpecialMoveInputTypes_Proto_INPUT_DP_RIGHT;
@@ -539,20 +542,28 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         config.specialMoveOptions.profiles[1].AllSpecialMoves[0].RequiredTriggerCombos[2].OptionalParams = 0 + (1 << 4) + (1 << 8) + (0 << 12) + (1 << 16); //up //slow //1 loop //all lights //colour white
 
         config.specialMoveOptions.profiles[2].bEnabled = true;
-        config.specialMoveOptions.profiles[2].AllSpecialMoves_count = 1;
+        config.specialMoveOptions.profiles[2].AllSpecialMoves_count = 2;
         strncpy(config.specialMoveOptions.profiles[2].Label, "Gief", sizeof(config.specialMoveOptions.profiles[1].Label) - 1);
 
         config.specialMoveOptions.profiles[2].AllSpecialMoves[0].bIsChargeMove = false;
         config.specialMoveOptions.profiles[2].AllSpecialMoves[0].Animation = SpecialMoveEffects_Proto::SpecialMoveEffects_Proto_SMEFFECT_KNIGHTRIDER;
+        config.specialMoveOptions.profiles[2].AllSpecialMoves[0].Priority = 0;
         config.specialMoveOptions.profiles[2].AllSpecialMoves[0].RequiredInputCombos_count = 1;
         config.specialMoveOptions.profiles[2].AllSpecialMoves[0].RequiredInputCombos[0] = SpecialMoveInputTypes_Proto::SpecialMoveInputTypes_Proto_INPUT_NONE;
-        config.specialMoveOptions.profiles[2].AllSpecialMoves[0].RequiredTriggerCombos_count = 3;
-        config.specialMoveOptions.profiles[2].AllSpecialMoves[0].RequiredTriggerCombos[1].RequiredTriggers = GAMEPAD_MASK_B3 | GAMEPAD_MASK_B4;
-        config.specialMoveOptions.profiles[2].AllSpecialMoves[0].RequiredTriggerCombos[1].OptionalParams = 2 + (2 << 4) + (1 << 8) + (1 << 12) + (2 << 16); //Left //slow //1 loop //top lights //colour Red
-        config.specialMoveOptions.profiles[2].AllSpecialMoves[0].RequiredTriggerCombos[2].RequiredTriggers = GAMEPAD_MASK_B4 | GAMEPAD_MASK_R1; 
-        config.specialMoveOptions.profiles[2].AllSpecialMoves[0].RequiredTriggerCombos[2].OptionalParams = 2 + (3 << 4) + (1 << 8) + (1 << 12) + (2 << 16); //Left //medium //1 loop //top lights //colour Red
-        config.specialMoveOptions.profiles[2].AllSpecialMoves[0].RequiredTriggerCombos[0].RequiredTriggers = GAMEPAD_MASK_B3 | GAMEPAD_MASK_B4 | GAMEPAD_MASK_R1;
-        config.specialMoveOptions.profiles[2].AllSpecialMoves[0].RequiredTriggerCombos[0].OptionalParams = 2 + (4 << 4) + (2 << 8) + (1 << 12) + (4 << 16); //Left //fast //1 loop //top lights //colour Yellow
+        config.specialMoveOptions.profiles[2].AllSpecialMoves[0].RequiredTriggerCombos_count = 2;
+        config.specialMoveOptions.profiles[2].AllSpecialMoves[0].RequiredTriggerCombos[0].RequiredTriggers = GAMEPAD_MASK_B3 | GAMEPAD_MASK_B4;
+        config.specialMoveOptions.profiles[2].AllSpecialMoves[0].RequiredTriggerCombos[0].OptionalParams = 2 + (2 << 4) + (1 << 8) + (1 << 12) + (2 << 16); //Left //slow //1 loop //top lights //colour Red
+        config.specialMoveOptions.profiles[2].AllSpecialMoves[0].RequiredTriggerCombos[1].RequiredTriggers = GAMEPAD_MASK_B4 | GAMEPAD_MASK_R1; 
+        config.specialMoveOptions.profiles[2].AllSpecialMoves[0].RequiredTriggerCombos[1].OptionalParams = 2 + (3 << 4) + (1 << 8) + (1 << 12) + (2 << 16); //Left //medium //1 loop //top lights //colour Red
+
+        config.specialMoveOptions.profiles[2].AllSpecialMoves[1].bIsChargeMove = false;
+        config.specialMoveOptions.profiles[2].AllSpecialMoves[1].Animation = SpecialMoveEffects_Proto::SpecialMoveEffects_Proto_SMEFFECT_KNIGHTRIDER;
+        config.specialMoveOptions.profiles[2].AllSpecialMoves[1].Priority = 1;
+        config.specialMoveOptions.profiles[2].AllSpecialMoves[1].RequiredInputCombos_count = 1;
+        config.specialMoveOptions.profiles[2].AllSpecialMoves[1].RequiredInputCombos[0] = SpecialMoveInputTypes_Proto::SpecialMoveInputTypes_Proto_INPUT_NONE;
+        config.specialMoveOptions.profiles[2].AllSpecialMoves[1].RequiredTriggerCombos_count = 1;
+        config.specialMoveOptions.profiles[2].AllSpecialMoves[1].RequiredTriggerCombos[0].RequiredTriggers = GAMEPAD_MASK_B3 | GAMEPAD_MASK_B4 | GAMEPAD_MASK_R1;
+        config.specialMoveOptions.profiles[2].AllSpecialMoves[1].RequiredTriggerCombos[0].OptionalParams = 2 + (4 << 4) + (2 << 8) + (1 << 12) + (4 << 16); //Left //fast //1 loop //top lights //colour Yellow
 
 
         config.animationOptions.profiles_count = 2;
@@ -579,7 +590,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         for (unsigned int lightIndex = 0; lightIndex < (NUM_BANK0_GPIOS/4)+1; ++lightIndex) 
         {
             config.animationOptions.profiles[1].notPressedStaticColors[lightIndex] = 6 + (6<<8) + (6<<16) + (6<<24); //Green
-            config.animationOptions.profiles[1].pressedStaticColors[lightIndex] = 0; //Black
+            config.animationOptions.profiles[1].pressedStaticColors[lightIndex] = 2 + (2<<8) + (2<<16) + (2<<24); //Black
         }
         config.animationOptions.profiles[1].caseStaticColors_count = MAX_CASE_LIGHTS/4;
         for (unsigned int caseLightIndex = 0; caseLightIndex < MAX_CASE_LIGHTS/4; ++caseLightIndex) 
@@ -587,12 +598,13 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
             config.animationOptions.profiles[1].caseStaticColors[caseLightIndex] = 14 + (1<<8) + (1<<16) + (1<<24); //custom 1, white, white, white
         }
 
-        config.animationOptions.profiles[1].baseNonPressedEffect = AnimationNonPressedEffects_Proto::AnimationNonPressedEffects_Proto_EFFECT_CHASE_SEQUENTIAL;
-        config.animationOptions.profiles[1].basePressedEffect = AnimationPressedEffects_Proto::AnimationPressedEffects_Proto_EFFECT_RANDOM;
+        config.animationOptions.profiles[1].baseNonPressedEffect = AnimationNonPressedEffects_Proto::AnimationNonPressedEffects_Proto_EFFECT_STATIC_COLOR;
+        config.animationOptions.profiles[1].basePressedEffect = AnimationPressedEffects_Proto::AnimationPressedEffects_Proto_EFFECT_HELD_JIGGLETWOSTATICS;
         config.animationOptions.profiles[1].baseCycleTime = 1;
         config.animationOptions.profiles[1].buttonPressHoldTimeInMs = 500;
         config.animationOptions.profiles[1].buttonPressFadeOutTimeInMs = 500;
-        config.animationOptions.profiles[1].nonPressedSpecialColour = 255 << 16; //RED
+        config.animationOptions.profiles[1].nonPressedSpecialColour = 255; //BLUE
+        config.animationOptions.profiles[1].pressedSpecialColour = (255 << 16) + (50 << 8); //reddy YELLOW
         config.animationOptions.profiles[1].bUseCaseLightsInSpecialMoves = true;
     }
 

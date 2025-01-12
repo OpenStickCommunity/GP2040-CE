@@ -204,7 +204,7 @@ RGB Animation::GetPressedColorForLight(uint32_t LightIndex)
 RGB Animation::GetColorForIndex(uint32_t ColorIndex)
 {
     //pre defined color?
-    if(ColorIndex < (int)colors.size())
+    if(ColorIndex < (uint32_t)colors.size())
       return colors[ColorIndex];
 
     //must be custom color

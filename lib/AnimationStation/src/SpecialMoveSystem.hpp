@@ -20,6 +20,7 @@
 #define COMBO_TRIGGER_INPUT_TIME_WINDOW 200 //Maximum time between combined button inputs eg PP, PPP, KK or PK etc
 #define COMBO_INPUT_COUNT_FOR_ONE_OUT_OF_TWO 7 //if the combo input is 7  or more moves then the input system will allow you to succeed if you dont miss 2 in a row window. eg LDRU would be fine for a SPD
 #define COMBO_INPUT_COUNT_FOR_ONE_MISSING_IN_MIDDLE 5 //if the combo input is 5 (HCF) or more moves then the input system will allow you to succeed if you dont miss more than 1 in the middle
+#define PRIORITY_LEEWAY_TIME 75
 
 //List of specialMove animation
 typedef enum
@@ -161,6 +162,7 @@ struct __attribute__ ((__packed__)) SpecialMoveDescription
 
     SpecialMoveEffects Animation;
     bool bIsChargeMove = false;
+    int Priority;
 };
 
 struct __attribute__ ((__packed__)) SpecialMoveProfile 
@@ -237,6 +239,12 @@ protected:
     uint32_t SPECIAL_MOVE_BUTTON_MASK_P1;
 
     bool bMoveIsRunning = false;
+
+    absolute_time_t cachedSucceededMoveTime;
+    int cachedSucceededMovePriority;
+    SpecialMoveEffects cachedSucceededMoveAnimation;
+    uint32_t cachedSucceededMoveParams;
+    bool bHasCachedSucceededMove = false;
 };
 
 #endif
