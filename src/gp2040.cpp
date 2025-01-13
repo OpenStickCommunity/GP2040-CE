@@ -47,6 +47,9 @@
 static const uint32_t REBOOT_HOTKEY_ACTIVATION_TIME_MS = 50;
 static const uint32_t REBOOT_HOTKEY_HOLD_TIME_MS = 4000;
 
+const static uint32_t rebootDelayMs = 500;
+static absolute_time_t rebootDelayTimeout = nil_time;
+
 void GP2040::setup() {
 	Storage::getInstance().init();
 
@@ -327,12 +330,16 @@ void GP2040::run() {
                 saveRequested = false;
                 Storage::getInstance().save(true);
             }
-            System::reboot(System::BootMode::DEFAULT);
+            rebootDelayTimeout = make_timeout_time_ms(rebootDelayMs);
         } else {
             if (saveRequested) {
                 saveRequested = false;
                 Storage::getInstance().save(true);
             }
+        }
+
+        if (!is_nil_time(rebootDelayTimeout) && time_reached(rebootDelayTimeout)) {
+            System::reboot(System::BootMode::DEFAULT);
         }
 	}
 }

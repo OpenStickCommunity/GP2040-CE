@@ -45,7 +45,7 @@ class MainMenuScreen : public GPScreen {
         virtual void init();
         virtual void shutdown();
 
-        void testMenu();
+        void testMenu() {}
         void saveAndExit();
         int32_t modeValue();
 
@@ -95,6 +95,7 @@ class MainMenuScreen : public GPScreen {
         GamepadButtonMapping *mapMenuToggle;
 
         void saveOptions();
+        void resetOptions();
         bool changeRequiresReboot = false;
         bool changeRequiresSave = false;
 
