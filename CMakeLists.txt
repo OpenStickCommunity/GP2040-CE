@@ -1,3 +1,19 @@
+# == DO NOT EDIT THE FOLLOWING LINES for the Raspberry Pi Pico VS Code Extension to work ==
+if(WIN32)
+    set(USERHOME $ENV{USERPROFILE})
+else()
+    set(USERHOME $ENV{HOME})
+endif()
+set(sdkVersion 2.1.0)
+set(toolchainVersion 13_3_Rel1)
+set(picotoolVersion 2.1.0)
+set(picoVscode ${USERHOME}/.pico-sdk/cmake/pico-vscode.cmake)
+if (EXISTS ${picoVscode})
+    include(${picoVscode})
+endif()
+# ====================================================================================
+set(PICO_BOARD pimoroni_pico_plus2_rp2350 CACHE STRING "Board type")
+
 cmake_minimum_required(VERSION 3.13)
 include(CMakePrintHelpers)
 
@@ -39,7 +55,7 @@ set(CMAKE_CXX_STANDARD 17)
 if(DEFINED ENV{GP2040_BOARDCONFIG})
   set(GP2040_BOARDCONFIG $ENV{GP2040_BOARDCONFIG})
 elseif(NOT DEFINED GP2040_BOARDCONFIG)
-  set(GP2040_BOARDCONFIG Pico)
+  set(GP2040_BOARDCONFIG PicoPlus2)
 endif()
 
 if(DEFINED ENV{SKIP_SUBMODULES})

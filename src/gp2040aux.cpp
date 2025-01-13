@@ -43,7 +43,7 @@ void GP2040Aux::setup() {
 
 	// Setup Add-ons
 	addons.LoadAddon(new DisplayAddon(), CORE1_LOOP);
-	addons.LoadAddon(new NeoPicoLEDAddon(), CORE1_LOOP);
+	// addons.LoadAddon(new NeoPicoLEDAddon(), CORE1_LOOP);
 	addons.LoadAddon(new PlayerLEDAddon(), CORE1_LOOP);
 	addons.LoadAddon(new BoardLedAddon(), CORE1_LOOP);
 	addons.LoadAddon(new BuzzerSpeakerAddon(), CORE1_LOOP);
