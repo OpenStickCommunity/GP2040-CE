@@ -89,7 +89,7 @@ struct __attribute__ ((__packed__)) AnimationOptions
   uint8_t NumValidProfiles;
   AnimationProfile profiles[MAX_ANIMATION_PROFILES];
   uint8_t brightness;
-  uint8_t baseProfileIndex;
+  int8_t baseProfileIndex;
 };
 
 class AnimationStation

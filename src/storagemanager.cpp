@@ -247,7 +247,7 @@ void AnimationStorage::getAnimationOptions(AnimationOptions& options)
 		options.profiles[index].bUseCaseLightsInSpecialMoves = optionsProto.profiles[index].bUseCaseLightsInSpecialMoves;
 	}
 	options.brightness				= std::min<uint32_t>(optionsProto.brightness, 255);
-	options.baseProfileIndex		= std::min<uint32_t>(optionsProto.baseProfileIndex, 255);
+	options.baseProfileIndex		= optionsProto.baseProfileIndex;
 
 	customColors.clear();
 	for(unsigned int customColIndex = 0; customColIndex < MAX_CUSTOM_COLORS; ++customColIndex)

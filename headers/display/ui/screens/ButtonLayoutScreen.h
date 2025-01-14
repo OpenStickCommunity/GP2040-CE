@@ -148,16 +148,16 @@ class ButtonLayoutScreen : public GPScreen {
         std::deque<std::string> inputHistory;
         std::array<bool, INPUT_HISTORY_MAX_INPUTS> lastInput;
 
-        bool gamepadProfileModeDisplay;
-        bool ledAnimationProfileModeDisplay;
-        bool specialMoveProfileModeDisplay;
-        bool profileModeDisplay;
+        bool gamepadProfileModeDisplay = false;
+        bool ledAnimationProfileModeDisplay = false;
+        bool specialMoveProfileModeDisplay = false;
+        bool profileModeDisplay = false;
         uint8_t profileDelay = 2;
         int profileDelayStart = 0;
         std::string profileModeString;
-        uint8_t prevGamepadProfileNumber = 0;
-        uint8_t prevLEDAnimationProfileNumber = 0;
-        uint8_t prevSpecialMoveProfileNumber = 0;
+        int8_t prevGamepadProfileNumber = -2;
+        int8_t prevLEDAnimationProfileNumber = -2;
+        int8_t prevSpecialMoveProfileNumber = -2;
  
         uint16_t prevButtonState = 0;
         uint8_t prevLayoutLeft = 0;

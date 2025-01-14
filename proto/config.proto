@@ -363,55 +363,12 @@ message AnimationProfile_Proto
 // This has to be kept in sync with AnimationOptions in AnimationStation.hpp
 message AnimationOptions_Proto
 {
-    optional uint32 baseAnimationIndex = 1 [deprecated = true];
+    reserved 1, 3 to 45;
+    
     optional uint32 brightness = 2;
-    optional uint32 staticColorIndex = 3 [deprecated = true];
-    optional uint32 buttonColorIndex = 4 [deprecated = true];
-    optional int32 chaseCycleTime = 5 [deprecated = true];
-    optional int32 rainbowCycleTime = 6 [deprecated = true];
-    optional uint32 themeIndex = 7 [deprecated = true];
-
-    optional bool hasCustomTheme = 8;
-    optional uint32 customThemeUp = 9 [deprecated = true];
-    optional uint32 customThemeDown = 10 [deprecated = true];
-    optional uint32 customThemeLeft = 11 [deprecated = true];
-    optional uint32 customThemeRight = 12 [deprecated = true];
-    optional uint32 customThemeB1 = 13 [deprecated = true];
-    optional uint32 customThemeB2 = 14 [deprecated = true];
-    optional uint32 customThemeB3 = 15 [deprecated = true];
-    optional uint32 customThemeB4 = 16 [deprecated = true];
-    optional uint32 customThemeL1 = 17 [deprecated = true];
-    optional uint32 customThemeR1 = 18 [deprecated = true];
-    optional uint32 customThemeL2 = 19 [deprecated = true];
-    optional uint32 customThemeR2 = 20 [deprecated = true];
-    optional uint32 customThemeS1 = 21 [deprecated = true];
-    optional uint32 customThemeS2 = 22 [deprecated = true];
-    optional uint32 customThemeL3 = 23 [deprecated = true];
-    optional uint32 customThemeR3 = 24 [deprecated = true];
-    optional uint32 customThemeA1 = 25 [deprecated = true];
-    optional uint32 customThemeA2 = 26 [deprecated = true];
-    optional uint32 customThemeUpPressed = 27 [deprecated = true];
-    optional uint32 customThemeDownPressed = 28 [deprecated = true];
-    optional uint32 customThemeLeftPressed = 29 [deprecated = true];
-    optional uint32 customThemeRightPressed = 30 [deprecated = true];
-    optional uint32 customThemeB1Pressed = 31 [deprecated = true];
-    optional uint32 customThemeB2Pressed = 32 [deprecated = true];
-    optional uint32 customThemeB3Pressed = 33 [deprecated = true];
-    optional uint32 customThemeB4Pressed = 34 [deprecated = true];
-    optional uint32 customThemeL1Pressed = 35 [deprecated = true];
-    optional uint32 customThemeR1Pressed = 36 [deprecated = true];
-    optional uint32 customThemeL2Pressed = 37 [deprecated = true];
-    optional uint32 customThemeR2Pressed = 38 [deprecated = true];
-    optional uint32 customThemeS1Pressed = 39 [deprecated = true];
-    optional uint32 customThemeS2Pressed = 40 [deprecated = true];
-    optional uint32 customThemeL3Pressed = 41 [deprecated = true];
-    optional uint32 customThemeR3Pressed = 42 [deprecated = true];
-    optional uint32 customThemeA1Pressed = 43 [deprecated = true];
-    optional uint32 customThemeA2Pressed = 44 [deprecated = true];
-    optional uint32 buttonPressColorCooldownTimeInMs = 45 [deprecated = true];
     
     repeated AnimationProfile_Proto profiles = 46 [(nanopb).max_count = 4]; //MAX_ANIMATION_PROFILES from AnimationStation.hpp
-    optional uint32 baseProfileIndex = 47;
+    optional int32 baseProfileIndex = 47;
     
     repeated uint32 customColors = 48 [(nanopb).max_count = 16]; //MAX_CUSTOM_COLORS from Animation.hpp
 }

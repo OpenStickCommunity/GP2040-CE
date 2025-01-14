@@ -32,10 +32,10 @@ void ButtonLayoutScreen::init() {
         pushElement(currLayoutRight[elementCtr]);
     }
 
-	// start with profile mode displayed
-    prevGamepadProfileNumber = -1;
-    prevLEDAnimationProfileNumber = -1;
-    prevSpecialMoveProfileNumber = -1;
+	// start with profile modes displayed
+    prevGamepadProfileNumber = -2;
+    prevLEDAnimationProfileNumber = -2;
+    prevSpecialMoveProfileNumber = -2;
     prevLayoutLeft = Storage::getInstance().getDisplayOptions().buttonLayout;
     prevLayoutRight = Storage::getInstance().getDisplayOptions().buttonLayoutRight;
     prevLeftOptions = Storage::getInstance().getDisplayOptions().buttonLayoutCustomOptions.paramsLeft;
@@ -83,7 +83,7 @@ void ButtonLayoutScreen::updateCustomHeaders()
 
     // Check to see if gamepad profile has changed
     if(!ledAnimationProfileModeDisplay && !specialMoveProfileModeDisplay){
-        uint8_t profileNumber = getGamepad()->getOptions().profileNumber;
+        int16_t profileNumber = (int16_t)(getGamepad()->getOptions().profileNumber);
         if (prevGamepadProfileNumber != profileNumber) {
             prevGamepadProfileNumber = profileNumber;
 
@@ -103,13 +103,20 @@ void ButtonLayoutScreen::updateCustomHeaders()
 
     // Check to see if LED animation profile has changed
     if(!gamepadProfileModeDisplay && !specialMoveProfileModeDisplay){
-        uint8_t profileNumber = AnimationStation::options.baseProfileIndex;
+        int8_t profileNumber = AnimationStation::options.baseProfileIndex;
         if (prevLEDAnimationProfileNumber != profileNumber) {
             prevLEDAnimationProfileNumber = profileNumber;
 
             std::string profileStr;
-            profileStr = "    LED Profile #";
-            profileStr +=  std::to_string(profileNumber);
+            if(profileNumber != -1)
+            {
+                profileStr = "    LED Profile #";
+                profileStr +=  std::to_string(profileNumber+1); //add 1 so its from 1-x not from 0-x
+            }
+            else
+            {
+                profileStr = "    LED Profile OFF";
+            }
 
             ledAnimationProfileModeDisplay = true;
             addCustomHeader(profileStr);
@@ -118,7 +125,7 @@ void ButtonLayoutScreen::updateCustomHeaders()
     
     // Check to see if special move profile has changed
     /*if(!gamepadProfileModeDisplay && !ledAnimationProfileModeDisplay){
-        uint8_t profileNumber = SpecialMoveSystem::Options.CurrentProfileIndex;
+        int8_t profileNumber = SpecialMoveSystem::Options.CurrentProfileIndex;
         if (prevSpecialMoveProfileNumber != profileNumber) {
             prevSpecialMoveProfileNumber = profileNumber;
 

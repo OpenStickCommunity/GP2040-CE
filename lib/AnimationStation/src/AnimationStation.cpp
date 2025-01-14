@@ -140,20 +140,25 @@ uint16_t AnimationStation::AdjustIndex(int changeSize)
     }
   }
 
-  //if we cant find it then this is probably the first call and the first profile isnt valid. Just return whichever is the first valid profile
+  //if we cant find it then either we're in the off state or this is probably the first call and the first profile isnt valid. 
   if(indexOfCurrentProfile == -1)
-    return validIndexes[0];
+  {
+    if(changeSize >= 0)
+      return validIndexes[0];
+    else
+      return validIndexes[validIndexes.size() - 1];
+  }
 
   int newProfileIndex = indexOfCurrentProfile + changeSize;
 
+  //if we're going to wrap around then move to "OFF" profile
   if (newProfileIndex >= (int)validIndexes.size())
   {
-    return validIndexes[0];
+    return -1;
   }
-
-  if (newProfileIndex < 0) 
+  else if (newProfileIndex < 0) 
   {
-    return validIndexes[validIndexes.size() - 1];
+    return -1;
   }
 
   return (uint16_t)validIndexes[newProfileIndex];

@@ -474,6 +474,10 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.ledOptions, lightDataSize, LIGHT_DATA_SIZE);
  	const unsigned char lightData[] = { LIGHT_DATA };
     INIT_UNSET_PROPERTY_BYTES(config.ledOptions, lightData, lightData);
+
+    //SpecialMoveOptions
+    //INIT_UNSET_PROPERTY(config.specialMoveOptions, ChargeTimeInMs, 750);
+    //INIT_UNSET_PROPERTY(config.specialMoveOptions, CurrentProfileIndex, 0);
  
     // animationOptions
     INIT_UNSET_PROPERTY(config.animationOptions, brightness, LEDS_BRIGHTNESS);
