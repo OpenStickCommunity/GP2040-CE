@@ -7,6 +7,9 @@
 #include <deque>
 #include <array>
 #include <functional>
+#include <algorithm> 
+#include <cctype>
+#include <locale>
 #include "layoutmanager.h"
 #include "GPGFX_UI_widgets.h"
 #include "GPGFX_UI_layouts.h"
@@ -161,6 +164,14 @@ class ButtonLayoutScreen : public GPScreen {
         ButtonLayoutOrientation prevOrientation;
 		
         bool macroEnabled;
+
+        bool showInputMode = true;
+        bool showTurboMode = true;
+        bool showDpadMode = true;
+        bool showSocdMode = true;
+        bool showMacroMode = true;
+        bool showProfileMode = false;
+        void trim(std::string &s);
 
         uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
         void processInputHistory();

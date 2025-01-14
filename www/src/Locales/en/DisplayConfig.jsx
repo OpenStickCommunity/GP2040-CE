@@ -9,6 +9,9 @@ export default {
 		'screen-header': 'Screen Options',
 		'layout-header': 'Layout Options',
 		'mode-header': 'Mode Options',
+		'button-layout-header': 'Button Layout',
+		'status-layout-header': 'Status Bar Layout',
+		'history-layout-header': 'Input History Layout',
 	},
 	table: {
 		header:
@@ -41,6 +44,7 @@ export default {
 		'inverted-label': 'Inverted',
 		'power-management-header': 'Power Management',
 		'turn-off-when-suspended': 'Turn Off When Suspended',
+		'input-history-label': 'Input History',
 		'display-state': {
 			'disabled': 'Disabled',
 			'enabled': 'Enabled'
@@ -68,6 +72,14 @@ export default {
 			'standard': 'Default',
 			'southpaw': 'Southpaw',
 			'switched': 'Switched',
+		},
+		'status-header': {
+			'input-mode': 'Input Mode',
+			'turbo-mode': 'Turbo',
+			'dpad-mode': 'D-Pad Mode',
+			'socd-mode': 'SOCD Mode',
+			'macro-mode': 'Macro',
+			'profile-mode': 'Profile',
 		},
 	},
 };
