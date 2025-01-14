@@ -298,6 +298,11 @@ message SpecialMoveInputTriggers_Proto
 {
     optional uint32 OptionalParams = 1; //8 uint4's packed in here (assigned to custom enums later)
     optional uint32 RequiredTriggers = 2; //buttonmasks
+
+    optional SpecialMoveEffects_Proto ChainedAnimation = 3;
+    optional uint32 ChainedOptionalParams = 4; 
+    optional SpecialMoveEffects_Proto ChainedAnimationTwo = 5;
+    optional uint32 ChainedOptionalParamsTwo = 6; 
 };
 
 // This has to be kept in sync with SpecialMoveDescription in SpecialMoveSystem.hpp
