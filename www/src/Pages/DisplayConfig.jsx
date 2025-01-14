@@ -325,7 +325,7 @@ export default function DisplayConfigPage() {
 									<Form noValidate onSubmit={handleSubmit}>
 										<Tabs
 											defaultActiveKey="displayLayoutOptions"
-											id="displayConfigTabs"
+											id="defaultHardwareOptions"
 											className="mb-3 pb-0"
 											fill
 										>
