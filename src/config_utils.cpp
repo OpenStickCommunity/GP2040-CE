@@ -145,6 +145,34 @@
     #define DEFAULT_PS4_ID_MODE PS4_ID_CONSOLE
 #endif
 
+#ifndef DEFAULT_USB_DESC_OVERRIDE
+   #define DEFAULT_USB_DESC_OVERRIDE false
+#endif
+
+#ifndef DEFAULT_USB_DESC_PRODUCT
+   #define DEFAULT_USB_DESC_PRODUCT "GP2040-CE (Custom)"
+#endif
+
+#ifndef DEFAULT_USB_DESC_MANUFACTURER
+   #define DEFAULT_USB_DESC_MANUFACTURER "Open Stick Community"
+#endif
+
+#ifndef DEFAULT_USB_DESC_VERSION
+   #define DEFAULT_USB_DESC_VERSION "1.0"
+#endif
+
+#ifndef DEFAULT_USB_ID_OVERRIDE
+   #define DEFAULT_USB_ID_OVERRIDE false
+#endif
+
+#ifndef DEFAULT_USB_VENDOR_ID
+   #define DEFAULT_USB_VENDOR_ID 0x10C4
+#endif
+
+#ifndef DEFAULT_USB_PRODUCT_ID
+   #define DEFAULT_USB_PRODUCT_ID 0x82C0
+#endif
+
 #ifndef GPIO_PIN_00
     #define GPIO_PIN_00 GpioAction::NONE
 #endif
@@ -277,13 +305,13 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.gamepadOptions, ps5AuthType, DEFAULT_PS5AUTHENTICATION_TYPE);
     INIT_UNSET_PROPERTY(config.gamepadOptions, xinputAuthType, DEFAULT_XINPUTAUTHENTICATION_TYPE);
     INIT_UNSET_PROPERTY(config.gamepadOptions, ps4ControllerIDMode, DEFAULT_PS4_ID_MODE);
-    INIT_UNSET_PROPERTY(config.gamepadOptions, usbDescOverride, false);
-    INIT_UNSET_PROPERTY_STR(config.gamepadOptions, usbDescProduct, "GP2040-CE (Custom)");
-    INIT_UNSET_PROPERTY_STR(config.gamepadOptions, usbDescManufacturer, "Open Stick Community");
-    INIT_UNSET_PROPERTY_STR(config.gamepadOptions, usbDescVersion, "1.0");
-    INIT_UNSET_PROPERTY(config.gamepadOptions, usbOverrideID, false);
-    INIT_UNSET_PROPERTY(config.gamepadOptions, usbVendorID, 0x10C4);
-    INIT_UNSET_PROPERTY(config.gamepadOptions, usbProductID, 0x82C0);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, usbDescOverride, DEFAULT_USB_DESC_OVERRIDE);
+    INIT_UNSET_PROPERTY_STR(config.gamepadOptions, usbDescProduct, DEFAULT_USB_DESC_PRODUCT);
+    INIT_UNSET_PROPERTY_STR(config.gamepadOptions, usbDescManufacturer, DEFAULT_USB_DESC_MANUFACTURER);
+    INIT_UNSET_PROPERTY_STR(config.gamepadOptions, usbDescVersion, DEFAULT_USB_DESC_VERSION);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, usbOverrideID, DEFAULT_USB_ID_OVERRIDE);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, usbVendorID, DEFAULT_USB_VENDOR_ID);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, usbProductID, DEFAULT_USB_PRODUCT_ID);
 
     // hotkeyOptions
     HotkeyOptions& hotkeyOptions = config.hotkeyOptions;
