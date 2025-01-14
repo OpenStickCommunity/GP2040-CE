@@ -46,8 +46,8 @@ static void updateAnimationOptionsProto(const AnimationOptions& options)
 
 static void updateSpecialMoveOptionsProto(const SpecialMoveOptions& options)
 {
-	SpecialMoveOptions_Proto& optionsProto = Storage::getInstance().getSpecialMoveOptions();
-	optionsProto.CurrentProfileIndex			= options.CurrentProfileIndex;
+	//SpecialMoveOptions_Proto& optionsProto = Storage::getInstance().getSpecialMoveOptions();
+	//optionsProto.CurrentProfileIndex			= options.CurrentProfileIndex;
 }
 
 void Storage::performEnqueuedSaves()
@@ -258,7 +258,9 @@ void AnimationStorage::getAnimationOptions(AnimationOptions& options)
 
 void AnimationStorage::getSpecialMoveOptions(SpecialMoveOptions& options)
 {
-	const SpecialMoveOptions_Proto& optionsProto = Storage::getInstance().getSpecialMoveOptions();
+	options.NumValidProfiles = 0;
+	
+	/*const SpecialMoveOptions_Proto& optionsProto = Storage::getInstance().getSpecialMoveOptions();
 	
 	options.NumValidProfiles = optionsProto.profiles_count;
 	for(unsigned int profileIndex = 0; profileIndex < 4 && profileIndex < options.NumValidProfiles; ++profileIndex) //MAX_SPECIALMOVE_PROFILES from SpecialMoveSystem.hpp
@@ -287,11 +289,11 @@ void AnimationStorage::getSpecialMoveOptions(SpecialMoveOptions& options)
 	}
 
 	options.ChargeTimeInMs			= optionsProto.ChargeTimeInMs;
-	options.CurrentProfileIndex		= optionsProto.CurrentProfileIndex;
+	options.CurrentProfileIndex		= optionsProto.CurrentProfileIndex;*/
 }
 
 void AnimationStorage::save()
 {
 	Storage::getInstance().enqueueAnimationOptionsSave(AnimationStation::options);
-	Storage::getInstance().enqueueSpecialMoveOptionsSave(SpecialMoveSystem::Options);
+	//Storage::getInstance().enqueueSpecialMoveOptionsSave(SpecialMoveSystem::Options);
 }

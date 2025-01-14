@@ -294,44 +294,44 @@ message LEDOptions
 };
 
 // This has to be kept in sync with SpecialMoveAnimation in SpecialMoveSystem.hpp
-message SpecialMoveInputTriggers_Proto 
-{
-    optional uint32 OptionalParams = 1; //8 uint4's packed in here (assigned to custom enums later)
-    optional uint32 RequiredTriggers = 2; //buttonmasks
-
-    optional SpecialMoveEffects_Proto ChainedAnimation = 3;
-    optional uint32 ChainedOptionalParams = 4; 
-    optional SpecialMoveEffects_Proto ChainedAnimationTwo = 5;
-    optional uint32 ChainedOptionalParamsTwo = 6; 
-};
+//message SpecialMoveInputTriggers_Proto 
+//{
+//    optional uint32 OptionalParams = 1; //8 uint4's packed in here (assigned to custom enums later)
+//    optional uint32 RequiredTriggers = 2; //buttonmasks
+//
+//    optional SpecialMoveEffects_Proto ChainedAnimation = 3;
+//    optional uint32 ChainedOptionalParams = 4; 
+//    optional SpecialMoveEffects_Proto ChainedAnimationTwo = 5;
+//    optional uint32 ChainedOptionalParamsTwo = 6; 
+//};
 
 // This has to be kept in sync with SpecialMoveDescription in SpecialMoveSystem.hpp
-message SpecialMoveDescription_Proto 
-{
-    repeated SpecialMoveInputTypes_Proto RequiredInputCombos = 1 [(nanopb).max_count = 4]; //MAX_SPECIALMOVE_INPUTTYPES_PER_MOVE from SpecialMoveSystem.hpp
-    repeated SpecialMoveInputTriggers_Proto RequiredTriggerCombos = 2 [(nanopb).max_count = 3]; //MAX_SPECIALMOVE_TRIGGERCOMBOS from SpecialMoveSystem.hpp
-
-    optional SpecialMoveEffects_Proto Animation = 3;
-    optional bool bIsChargeMove = 4;
-
-    optional int32 Priority = 5;
-};
+//message SpecialMoveDescription_Proto 
+//{
+//    repeated SpecialMoveInputTypes_Proto RequiredInputCombos = 1 [(nanopb).max_count = 4]; //MAX_SPECIALMOVE_INPUTTYPES_PER_MOVE from SpecialMoveSystem.hpp
+//    repeated SpecialMoveInputTriggers_Proto RequiredTriggerCombos = 2 [(nanopb).max_count = 3]; //MAX_SPECIALMOVE_TRIGGERCOMBOS from SpecialMoveSystem.hpp
+//
+//    optional SpecialMoveEffects_Proto Animation = 3;
+//    optional bool bIsChargeMove = 4;
+//
+//    optional int32 Priority = 5;
+//};
 
 // This has to be kept in sync with SpecialMoveProfile in SpecialMoveSystem.hpp
-message SpecialMoveProfile_Proto
-{
-    optional bool bEnabled = 1;
-    repeated SpecialMoveDescription_Proto AllSpecialMoves = 2 [(nanopb).max_count = 20]; //MAX_SPECIALMOVES from SpecialMoveSystem.hpp
-    optional string Label = 3 [(nanopb).max_length = 12];
-};
+//message SpecialMoveProfile_Proto
+//{
+//    optional bool bEnabled = 1;
+//    repeated SpecialMoveDescription_Proto AllSpecialMoves = 2 [(nanopb).max_count = 20]; //MAX_SPECIALMOVES from SpecialMoveSystem.hpp
+//    optional string Label = 3 [(nanopb).max_length = 12];
+//};
 
 // This has to be kept in sync with SpecialMoveOptions in SpecialMoveSystem.hpp
-message SpecialMoveOptions_Proto
-{
-    repeated SpecialMoveProfile_Proto profiles = 1 [(nanopb).max_count = 4]; //MAX_SPECIALMOVE_PROFILES from SpecialMoveSystem.hpp
-    optional uint32 ChargeTimeInMs = 2;
-    optional uint32 CurrentProfileIndex = 3;
-};
+//message SpecialMoveOptions_Proto
+//{
+//    repeated SpecialMoveProfile_Proto profiles = 1 [(nanopb).max_count = 4]; //MAX_SPECIALMOVE_PROFILES from SpecialMoveSystem.hpp
+//    optional uint32 ChargeTimeInMs = 2;
+//    optional uint32 CurrentProfileIndex = 3;
+//};
 
 // This has to be kept in sync with AnimationProfile in AnimationStation.hpp
 message AnimationProfile_Proto
@@ -922,5 +922,5 @@ message Config
     optional MigrationHistory migrations = 14;
     optional PeripheralOptions peripheralOptions = 15;
 
-    optional SpecialMoveOptions_Proto specialMoveOptions = 16;
+    //optional SpecialMoveOptions_Proto specialMoveOptions = 16;
 }

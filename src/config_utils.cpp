@@ -474,10 +474,6 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.ledOptions, lightDataSize, LIGHT_DATA_SIZE);
  	const unsigned char lightData[] = { LIGHT_DATA };
     INIT_UNSET_PROPERTY_BYTES(config.ledOptions, lightData, lightData);
-
-    //SpecialMoveOptions
-    INIT_UNSET_PROPERTY(config.specialMoveOptions, ChargeTimeInMs, 750);
-    INIT_UNSET_PROPERTY(config.specialMoveOptions, CurrentProfileIndex, 0);
  
     // animationOptions
     INIT_UNSET_PROPERTY(config.animationOptions, brightness, LEDS_BRIGHTNESS);
@@ -486,86 +482,9 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     //TESTING
     config.animationOptions.customColors_count = 1;
     config.animationOptions.customColors[0] = 255;
-    config.specialMoveOptions.profiles_count = 0;
     config.animationOptions.profiles_count = 0;
     if(true)
     { 
-        config.specialMoveOptions.profiles_count = 3;
-
-        config.specialMoveOptions.profiles[0].bEnabled = true;
-        config.specialMoveOptions.profiles[0].AllSpecialMoves_count = 2;
-        strncpy(config.specialMoveOptions.profiles[0].Label, "Ryu", sizeof(config.specialMoveOptions.profiles[0].Label) - 1);
-
-        config.specialMoveOptions.profiles[0].AllSpecialMoves[0].bIsChargeMove = false;
-        config.specialMoveOptions.profiles[0].AllSpecialMoves[0].Animation = SpecialMoveEffects_Proto::SpecialMoveEffects_Proto_SMEFFECT_WAVE;
-        config.specialMoveOptions.profiles[0].AllSpecialMoves[0].Priority = 0;
-        config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredInputCombos_count = 1;
-        config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredInputCombos[0] = SpecialMoveInputTypes_Proto::SpecialMoveInputTypes_Proto_INPUT_QUARTER_DOWN_LEFT;
-        config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos_count = 3;
-        config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[0].RequiredTriggers = GAMEPAD_MASK_B3;
-        config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[0].OptionalParams = 1 + (1 << 4) + (1 << 8) + (0 << 12) + (14 << 16); //Left //slow //1 loop //all lights //colour custom 1
-        config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[1].RequiredTriggers = GAMEPAD_MASK_B4;
-        config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[1].OptionalParams = 1 + (2 << 4) + (1 << 8) + (0 << 12) + (9 << 16); //Left //medium //1 loop //all lights //colour skyblue
-        config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[2].RequiredTriggers = GAMEPAD_MASK_R1;
-        config.specialMoveOptions.profiles[0].AllSpecialMoves[0].RequiredTriggerCombos[2].OptionalParams = 1 + (3 << 4) + (1 << 8) + (0 << 12) + (9 << 16); //Left //fast //1 loop //all lights //colour skyblue
-        
-        config.specialMoveOptions.profiles[0].AllSpecialMoves[1].bIsChargeMove = false;
-        config.specialMoveOptions.profiles[0].AllSpecialMoves[1].Animation = SpecialMoveEffects_Proto::SpecialMoveEffects_Proto_SMEFFECT_WAVE;
-        config.specialMoveOptions.profiles[0].AllSpecialMoves[1].Priority = 0;
-        config.specialMoveOptions.profiles[0].AllSpecialMoves[1].RequiredInputCombos_count = 1;
-        config.specialMoveOptions.profiles[0].AllSpecialMoves[1].RequiredInputCombos[0] = SpecialMoveInputTypes_Proto::SpecialMoveInputTypes_Proto_INPUT_QUARTER_DOWN_RIGHT;
-        config.specialMoveOptions.profiles[0].AllSpecialMoves[1].RequiredTriggerCombos_count = 3;
-        config.specialMoveOptions.profiles[0].AllSpecialMoves[1].RequiredTriggerCombos[0].RequiredTriggers = GAMEPAD_MASK_B3;
-        config.specialMoveOptions.profiles[0].AllSpecialMoves[1].RequiredTriggerCombos[0].OptionalParams = 2 + (1 << 4) + (1 << 8) + (0 << 12) + (9 << 16); //right //slow //1 loop //all lights //colour skyblue
-        config.specialMoveOptions.profiles[0].AllSpecialMoves[1].RequiredTriggerCombos[1].RequiredTriggers = GAMEPAD_MASK_B4;
-        config.specialMoveOptions.profiles[0].AllSpecialMoves[1].RequiredTriggerCombos[1].OptionalParams = 2 + (2 << 4) + (1 << 8) + (0 << 12) + (9 << 16); //right //medium //1 loop //all lights //colour skyblue
-        config.specialMoveOptions.profiles[0].AllSpecialMoves[1].RequiredTriggerCombos[2].RequiredTriggers = GAMEPAD_MASK_R1;
-        config.specialMoveOptions.profiles[0].AllSpecialMoves[1].RequiredTriggerCombos[2].OptionalParams = 2 + (3 << 4) + (1 << 8) + (0 << 12) + (9 << 16); //right //fast //1 loop //all lights //colour skyblue
-
-
-        config.specialMoveOptions.profiles[1].bEnabled = true;
-        config.specialMoveOptions.profiles[1].AllSpecialMoves_count = 1;
-        strncpy(config.specialMoveOptions.profiles[1].Label, "Ken Masters", sizeof(config.specialMoveOptions.profiles[1].Label) - 1);
-
-        config.specialMoveOptions.profiles[1].AllSpecialMoves[0].bIsChargeMove = false;
-        config.specialMoveOptions.profiles[1].AllSpecialMoves[0].Animation = SpecialMoveEffects_Proto::SpecialMoveEffects_Proto_SMEFFECT_WAVE;
-        config.specialMoveOptions.profiles[1].AllSpecialMoves[0].Priority = 0;
-        config.specialMoveOptions.profiles[1].AllSpecialMoves[0].RequiredInputCombos_count = 2;
-        config.specialMoveOptions.profiles[1].AllSpecialMoves[0].RequiredInputCombos[0] = SpecialMoveInputTypes_Proto::SpecialMoveInputTypes_Proto_INPUT_DP_LEFT;
-        config.specialMoveOptions.profiles[1].AllSpecialMoves[0].RequiredInputCombos[1] = SpecialMoveInputTypes_Proto::SpecialMoveInputTypes_Proto_INPUT_DP_RIGHT;
-        config.specialMoveOptions.profiles[1].AllSpecialMoves[0].RequiredTriggerCombos_count = 3;
-        config.specialMoveOptions.profiles[1].AllSpecialMoves[0].RequiredTriggerCombos[0].RequiredTriggers = GAMEPAD_MASK_B3;
-        config.specialMoveOptions.profiles[1].AllSpecialMoves[0].RequiredTriggerCombos[0].OptionalParams = 0 + (3 << 4) + (1 << 8) + (0 << 12) + (1 << 16); //up //fast //1 loop //all lights //colour white
-        config.specialMoveOptions.profiles[1].AllSpecialMoves[0].RequiredTriggerCombos[1].RequiredTriggers = GAMEPAD_MASK_B4;
-        config.specialMoveOptions.profiles[1].AllSpecialMoves[0].RequiredTriggerCombos[1].OptionalParams = 0 + (2 << 4) + (1 << 8) + (0 << 12) + (1 << 16); //up //medium //1 loop //all lights //colour white
-        config.specialMoveOptions.profiles[1].AllSpecialMoves[0].RequiredTriggerCombos[2].RequiredTriggers = GAMEPAD_MASK_R1;
-        config.specialMoveOptions.profiles[1].AllSpecialMoves[0].RequiredTriggerCombos[2].OptionalParams = 0 + (1 << 4) + (1 << 8) + (0 << 12) + (1 << 16); //up //slow //1 loop //all lights //colour white
-
-        config.specialMoveOptions.profiles[2].bEnabled = true;
-        config.specialMoveOptions.profiles[2].AllSpecialMoves_count = 2;
-        strncpy(config.specialMoveOptions.profiles[2].Label, "Gief", sizeof(config.specialMoveOptions.profiles[1].Label) - 1);
-
-        config.specialMoveOptions.profiles[2].AllSpecialMoves[0].bIsChargeMove = false;
-        config.specialMoveOptions.profiles[2].AllSpecialMoves[0].Animation = SpecialMoveEffects_Proto::SpecialMoveEffects_Proto_SMEFFECT_KNIGHTRIDER;
-        config.specialMoveOptions.profiles[2].AllSpecialMoves[0].Priority = 0;
-        config.specialMoveOptions.profiles[2].AllSpecialMoves[0].RequiredInputCombos_count = 1;
-        config.specialMoveOptions.profiles[2].AllSpecialMoves[0].RequiredInputCombos[0] = SpecialMoveInputTypes_Proto::SpecialMoveInputTypes_Proto_INPUT_NONE;
-        config.specialMoveOptions.profiles[2].AllSpecialMoves[0].RequiredTriggerCombos_count = 2;
-        config.specialMoveOptions.profiles[2].AllSpecialMoves[0].RequiredTriggerCombos[0].RequiredTriggers = GAMEPAD_MASK_B3 | GAMEPAD_MASK_B4;
-        config.specialMoveOptions.profiles[2].AllSpecialMoves[0].RequiredTriggerCombos[0].OptionalParams = 2 + (2 << 4) + (1 << 8) + (1 << 12) + (2 << 16); //Left //slow //1 loop //top lights //colour Red
-        config.specialMoveOptions.profiles[2].AllSpecialMoves[0].RequiredTriggerCombos[1].RequiredTriggers = GAMEPAD_MASK_B4 | GAMEPAD_MASK_R1; 
-        config.specialMoveOptions.profiles[2].AllSpecialMoves[0].RequiredTriggerCombos[1].OptionalParams = 2 + (3 << 4) + (1 << 8) + (1 << 12) + (2 << 16); //Left //medium //1 loop //top lights //colour Red
-
-        config.specialMoveOptions.profiles[2].AllSpecialMoves[1].bIsChargeMove = false;
-        config.specialMoveOptions.profiles[2].AllSpecialMoves[1].Animation = SpecialMoveEffects_Proto::SpecialMoveEffects_Proto_SMEFFECT_KNIGHTRIDER;
-        config.specialMoveOptions.profiles[2].AllSpecialMoves[1].Priority = 1;
-        config.specialMoveOptions.profiles[2].AllSpecialMoves[1].RequiredInputCombos_count = 1;
-        config.specialMoveOptions.profiles[2].AllSpecialMoves[1].RequiredInputCombos[0] = SpecialMoveInputTypes_Proto::SpecialMoveInputTypes_Proto_INPUT_NONE;
-        config.specialMoveOptions.profiles[2].AllSpecialMoves[1].RequiredTriggerCombos_count = 1;
-        config.specialMoveOptions.profiles[2].AllSpecialMoves[1].RequiredTriggerCombos[0].RequiredTriggers = GAMEPAD_MASK_B3 | GAMEPAD_MASK_B4 | GAMEPAD_MASK_R1;
-        config.specialMoveOptions.profiles[2].AllSpecialMoves[1].RequiredTriggerCombos[0].OptionalParams = 2 + (4 << 4) + (2 << 8) + (1 << 12) + (4 << 16); //Left //fast //1 loop //top lights //colour Yellow
-
-
         config.animationOptions.profiles_count = 2;
 
         config.animationOptions.profiles[0].bEnabled = true;

@@ -117,7 +117,7 @@ void ButtonLayoutScreen::updateCustomHeaders()
     }
     
     // Check to see if special move profile has changed
-    if(!gamepadProfileModeDisplay && !ledAnimationProfileModeDisplay){
+    /*if(!gamepadProfileModeDisplay && !ledAnimationProfileModeDisplay){
         uint8_t profileNumber = SpecialMoveSystem::Options.CurrentProfileIndex;
         if (prevSpecialMoveProfileNumber != profileNumber) {
             prevSpecialMoveProfileNumber = profileNumber;
@@ -135,7 +135,7 @@ void ButtonLayoutScreen::updateCustomHeaders()
             specialMoveProfileModeDisplay = true;
             addCustomHeader(profileStr);
         }
-    }
+    }*/
 }
 
 int8_t ButtonLayoutScreen::update() {
