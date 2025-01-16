@@ -47,6 +47,9 @@
 static const uint32_t REBOOT_HOTKEY_ACTIVATION_TIME_MS = 50;
 static const uint32_t REBOOT_HOTKEY_HOLD_TIME_MS = 4000;
 
+const static uint32_t rebootDelayMs = 500;
+static absolute_time_t rebootDelayTimeout = nil_time;
+
 void GP2040::setup() {
 	Storage::getInstance().init();
 
@@ -184,6 +187,9 @@ void GP2040::setup() {
 		// before USB host will be used so we can force it to ignore the check
 		Storage::getInstance().save(true);
 	}
+
+	// register system event handlers
+	EventManager::getInstance().registerEventHandler(GP_EVENT_STORAGE_SAVE, GPEVENT_CALLBACK(this->handleStorageSave(event)));
 }
 
 /**
@@ -317,6 +323,24 @@ void GP2040::run() {
 		addons.ProcessAddons(ADDON_PROCESS::CORE0_USBREPORT);
 		
 		tud_task(); // TinyUSB Task update
+
+        if (rebootRequested) {
+            rebootRequested = false;
+            if (saveRequested) {
+                saveRequested = false;
+                Storage::getInstance().save(true);
+            }
+            rebootDelayTimeout = make_timeout_time_ms(rebootDelayMs);
+        } else {
+            if (saveRequested) {
+                saveRequested = false;
+                Storage::getInstance().save(true);
+            }
+        }
+
+        if (!is_nil_time(rebootDelayTimeout) && time_reached(rebootDelayTimeout)) {
+            System::reboot(System::BootMode::DEFAULT);
+        }
 	}
 }
 
@@ -525,4 +549,13 @@ void GP2040::checkProcessedState(GamepadState prevState, GamepadState currState)
     ) {
         EventManager::getInstance().triggerEvent(new GPAnalogProcessedMoveEvent(currState.lx, currState.ly, currState.rx, currState.ry, currState.lt, currState.rt));
     }
+}
+
+void GP2040::handleStorageSave(GPEvent* e) {
+    saveRequested = true;
+    rebootRequested = ((GPStorageSaveEvent*)e)->restartAfterSave;
+}
+
+void GP2040::handleSystemReboot(GPEvent* e) {
+    rebootRequested = true;
 }

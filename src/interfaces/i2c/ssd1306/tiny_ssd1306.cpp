@@ -114,6 +114,25 @@ void GPGFX_TinySSD1306::clear() {
 	memset(frameBuffer, 0, MAX_SCREEN_SIZE);
 }
 
+uint32_t GPGFX_TinySSD1306::getPixel(uint8_t x, uint8_t y) {
+	uint16_t row, bitIndex;
+    uint32_t result = 0;
+
+	if ((x<MAX_SCREEN_WIDTH) and (y<MAX_SCREEN_HEIGHT))
+	{
+        if (this->screenType == ScreenAlternatives::SCREEN_132x64) {
+            x+=2;
+        }
+
+		row=((y/8)*MAX_SCREEN_WIDTH)+x;
+		bitIndex=y % 8;
+
+        result = (frameBuffer[row] >> bitIndex) && 0x01;
+	}
+
+    return result;
+}
+
 void GPGFX_TinySSD1306::drawPixel(uint8_t x, uint8_t y, uint32_t color) {
 	uint16_t row, bitIndex;
 
@@ -395,20 +414,22 @@ void GPGFX_TinySSD1306::drawPolygon(uint16_t x, uint16_t y, uint16_t radius, uin
     }
 }
 
-void GPGFX_TinySSD1306::drawSprite(uint8_t* image, uint16_t width, uint16_t height, uint16_t pitch, uint16_t x, uint16_t y, uint8_t priority) {
+void GPGFX_TinySSD1306::drawSprite(uint8_t* image, uint16_t width, uint16_t height, uint16_t pitch, uint16_t x, uint16_t y, uint8_t priority, double scale) {
 	uint8_t spriteByte;
 	uint8_t spriteBit;
 	uint8_t spriteX, spriteY;
 	uint8_t color;
 
-	for (spriteY = 0; spriteY < height; spriteY++) {
-		for (spriteX = 0; spriteX < width; spriteX++) {
+	for (uint16_t scaledY = 0; scaledY < height * scale; ++scaledY) {
+		for (uint16_t scaledX = 0; scaledX < width * scale; ++scaledX) {
+			spriteX = scaledX / scale;
+			spriteY = scaledY / scale;
+			
 			spriteBit = spriteX % 8;
-			//spriteByte = image[(spriteY * (width / 8)) + (spriteX / 8)];
 			spriteByte = image[(spriteY * ((width + 7) / 8)) + (spriteX / 8)];
 			color = ((spriteByte >> (7 - spriteBit)) & 0x01);
-
-			drawPixel(x+spriteX, y+spriteY, color);
+			
+			drawPixel(x + scaledX, y + scaledY, color);
 		}
 	}
 }

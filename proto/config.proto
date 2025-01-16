@@ -252,6 +252,21 @@ message DisplayOptions
 
     optional int32 displaySaverTimeout = 17;
     optional bool turnOffWhenSuspended = 18;
+    optional DisplaySaverMode displaySaverMode = 19;
+
+    optional ButtonLayoutOrientation buttonLayoutOrientation = 20;
+
+    optional bool inputMode = 21;
+    optional bool turboMode = 22;
+    optional bool dpadMode = 23;
+    optional bool socdMode = 24;
+    optional bool macroMode = 25;
+    optional bool profileMode = 26;
+
+    optional bool inputHistoryEnabled = 27;
+    optional uint32 inputHistoryLength = 28;
+    optional uint32 inputHistoryCol = 29;
+    optional uint32 inputHistoryRow = 30;
 }
 
 message LEDOptions
@@ -751,10 +766,10 @@ message MacroOptions
 
 message InputHistoryOptions
 {
-    optional bool enabled = 1;
-    optional uint32 length = 2;
-    optional uint32 col = 3;
-    optional uint32 row = 4;
+    optional bool deprecatedEnabled = 1  [deprecated = true];
+    optional uint32 deprecatedLength = 2  [deprecated = true];
+    optional uint32 deprecatedCol = 3  [deprecated = true];
+    optional uint32 deprecatedRow = 4  [deprecated = true];
 }
 
 message RotaryPinOptions
@@ -831,7 +846,7 @@ message AddonOptions
     optional TiltOptions tiltOptions = 18;
     optional PSPassthroughOptions psPassthroughOptions = 19 [deprecated = true];
     optional MacroOptions macroOptions = 20;
-    optional InputHistoryOptions inputHistoryOptions = 21;
+    optional InputHistoryOptions inputHistoryOptions = 21  [deprecated = true];
     optional XBOnePassthroughOptions xbonePassthroughOptions = 22 [deprecated = true];
     optional AnalogADS1256Options analogADS1256Options = 23;
     optional RotaryOptions rotaryOptions = 24;

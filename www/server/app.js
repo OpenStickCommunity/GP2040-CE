@@ -56,6 +56,7 @@ app.get('/api/getDisplayOptions', (req, res) => {
 		invertDisplay: 1,
 		buttonLayout: 0,
 		buttonLayoutRight: 3,
+		buttonLayoutOrientation: 0,
 		splashMode: 3,
 		splashChoice: 0,
 		splashDuration: 0,
@@ -77,7 +78,18 @@ app.get('/api/getDisplayOptions', (req, res) => {
 		},
 
 		displaySaverTimeout: 0,
+		displaySaverMode: 0,
 		turnOffWhenSuspended: 0,
+		inputMode: 1,
+		turboMode: 1,
+		dpadMode: 1,
+		socdMode: 1,
+		macroMode: 1,
+		profileMode: 0,
+		inputHistoryEnabled: 0,
+		inputHistoryLength: 21,
+		inputHistoryCol: 0,
+		inputHistoryRow: 7,
 	};
 	console.log('data', data);
 	return res.send(data);
@@ -510,10 +522,6 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		TurboInputEnabled: 1,
 		WiiExtensionAddonEnabled: 1,
 		SNESpadAddonEnabled: 1,
-		InputHistoryAddonEnabled: 1,
-		inputHistoryLength: 21,
-		inputHistoryCol: 0,
-		inputHistoryRow: 7,
 		Analog1256Enabled: 1,
 		analog1256Block: 0,
 		analog1256CsPin: -1,

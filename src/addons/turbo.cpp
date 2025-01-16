@@ -134,6 +134,8 @@ void TurboInput::process()
     uint16_t buttonsPressed = gamepad->state.buttons & TURBO_BUTTON_MASK;
     uint8_t dpadPressed = gamepad->state.dpad & GAMEPAD_MASK_DPAD;
 
+    if (!options.enabled) return;
+
     // Check for TURBO pin enabled
     if (gamepad->debouncedGpio & turboPinMask) {
         if (buttonsPressed && (lastPressed != buttonsPressed)) {

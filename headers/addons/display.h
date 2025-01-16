@@ -106,6 +106,14 @@
 #define INPUT_HISTORY_ROW 7
 #endif
 
+#ifndef DISPLAY_SAVER_MODE
+#define DISPLAY_SAVER_MODE DISPLAY_SAVER_DISPLAY_OFF
+#endif
+
+#ifndef DISPLAY_LAYOUT_ORIENTATION
+#define DISPLAY_LAYOUT_ORIENTATION BUTTON_ORIENTATION_DEFAULT
+#endif
+
 #ifndef DEFAULT_SPLASH
 #define DEFAULT_SPLASH \
 	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
@@ -188,8 +196,9 @@ public:
 	virtual std::string name() { return DisplayName; }
 
     void handleSystemRestart(GPEvent* e);
+    void handleMenuNavigation(GPEvent* e);
 private:
-    bool updateDisplayScreen();
+	bool updateDisplayScreen();
 	void drawStatusBar(Gamepad*);
 	void initMenu(char**);
 	bool pressedUp();
@@ -209,11 +218,15 @@ private:
 	GPGFX* gpDisplay;
 	GPScreen* gpScreen;
 	DisplayMode currDisplayMode;
-    DisplayMode prevDisplayMode;
+	DisplayMode prevDisplayMode;
 	bool turnOffWhenSuspended;
 	uint32_t bootMode;
 
-    GPGFX_DisplayTypeOptions gpOptions;
+	DisplaySaverMode displaySaverMode;
+
+	GPGFX_DisplayTypeOptions gpOptions;
+
+	GamepadButtonMapping *mapMenuToggle;
 };
 
 #endif
