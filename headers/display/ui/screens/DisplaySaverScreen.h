@@ -31,8 +31,8 @@ class DisplaySaverScreen : public GPScreen {
         uint16_t bounceSpriteY = 0;
         uint16_t bounceSpriteWidth = 128;
         uint16_t bounceSpriteHeight = 35;
-        double bounceSpriteVelocityX = 1.75;
-        double bounceSpriteVelocityY = 1.5;
+        double bounceSpriteVelocityX = 1;
+        double bounceSpriteVelocityY = 1;
         double bounceScale = 0.5;
         void drawBounceScene();
 
