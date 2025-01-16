@@ -15,7 +15,5 @@ export default {
 	},
 	'keyboard-mapper': {
 		'key-header': 'Taste',
-		'error-conflict': 'Die Taste {{key}} ist bereits zugewiesen',
-		'error-invalid': '{{key}} ist für dieses Board ungültig',
 	},
 };

@@ -15,7 +15,5 @@ export default {
 	},
 	'keyboard-mapper': {
 		'key-header': 'キー',
-		'error-conflict': '{{key}} キーは既に割り当て済みです',
-		'error-invalid': 'このボードでは {{key}} は無効です',
 	},
 };
