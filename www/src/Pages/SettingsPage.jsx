@@ -11,7 +11,7 @@ import useProfilesStore from '../Store/useProfilesStore';
 import { AppContext } from '../Contexts/AppContext';
 
 import ContextualHelpOverlay from '../Components/ContextualHelpOverlay';
-import KeyboardMapper, { validateMappings } from '../Components/KeyboardMapper';
+import KeyboardMapper from '../Components/KeyboardMapper';
 import Section from '../Components/Section';
 import WebApi, { baseButtonMappings } from '../Services/WebApi';
 import { BUTTON_MASKS_OPTIONS, getButtonLabels } from '../Data/Buttons';
@@ -99,7 +99,7 @@ const SHA256 = (ascii) => {
 								(rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3)) + // s0
 								w[i - 7] +
 								(rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10))) | // s1
-							0);
+						  0);
 			// This is only used once, so *could* be moved below, but it only saves 4 bytes and makes things unreadble
 			const temp2 =
 				(rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22)) + // S0
@@ -651,9 +651,7 @@ export default function SettingsPage() {
 	const handleKeyChange = (value, button) => {
 		const newMappings = { ...keyMappings };
 		newMappings[button].key = value;
-		const mappings = validateMappings(newMappings, t);
-		setKeyMappings(mappings);
-		setValidated(true);
+		setKeyMappings(newMappings);
 	};
 
 	const generateAuthSelection = (
@@ -721,7 +719,6 @@ export default function SettingsPage() {
 				<KeyboardMapper
 					buttonLabels={buttonLabels}
 					handleKeyChange={handleKeyChange}
-					validated={validated}
 					getKeyMappingForButton={getKeyMappingForButton}
 				/>
 			</div>
@@ -1260,16 +1257,6 @@ export default function SettingsPage() {
 
 	const onSubmit = async (values) => {
 		const isKeyboardMode = values.inputMode === 3;
-
-		if (isKeyboardMode) {
-			const mappings = validateMappings(keyMappings, t);
-			setKeyMappings(mappings);
-			setValidated(true);
-			if (Object.keys(mappings).some((p) => !!mappings[p].error)) {
-				setSaveMessage(t('Common:errors.validation-error'));
-				return;
-			}
-		}
 
 		const data = {
 			...values,
