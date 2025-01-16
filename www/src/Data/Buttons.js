@@ -207,7 +207,6 @@ export const BUTTONS = {
 		A2: 'Touchpad Center',
 		A3: 'Touchpad Left',
 		A4: 'Touchpad Right',
-		A2: 'Touchpad',
 		E1: '-',
 		E2: '-',
 		E3: '-',
