@@ -946,113 +946,108 @@ std::string getButtonLayouts()
     return serialize_json(doc);
 }
 
-std::string setCustomTheme()
+std::string setAnimationProtoOptions()
 {
     DynamicJsonDocument doc = get_post_data();
 
-    AnimationOptions options = AnimationStation::options;
+    AnimationOptions_Proto& options = Storage::getInstance().getAnimationOptions();
+    docToValue(options.brightness, doc, "brightness");
+    docToValue(options.baseProfileIndex, doc, "baseProfileIndex");
 
-    const auto readDocDefaultToZero = [&](const char* key0, const char* key1) -> uint32_t
+    JsonObject docOptions = doc.as<JsonObject>();
+    JsonArray customColorsList = docOptions["customColors"];
+    for(unsigned int customColorsIndex = 0; customColorsIndex < customColorsList.size() && customColorsIndex < MAX_CUSTOM_COLORS; ++customColorsIndex)
     {
-        uint32_t result = 0;
-        if (hasValue(doc, key0, key1))
+        options.customColors[customColorsIndex] = customColorsList[customColorsIndex];
+        options.customColors_count = customColorsIndex;
+    }
+
+    JsonArray profilesList = docOptions["profiles"];
+    int profilesIndex = 0;
+    for (JsonObject profile : profilesList)
+    {
+        options.profiles[profilesIndex].bEnabled = profile["bEnabled"].as<bool>();
+        options.profiles[profilesIndex].baseNonPressedEffect = (AnimationNonPressedEffects_Proto)(profile["baseNonPressedEffect"].as<uint32_t>());
+        options.profiles[profilesIndex].basePressedEffect = (AnimationPressedEffects_Proto)(profile["basePressedEffect"].as<uint32_t>());
+        options.profiles[profilesIndex].buttonPressHoldTimeInMs = profile["buttonPressHoldTimeInMs"].as<uint32_t>();
+        options.profiles[profilesIndex].buttonPressFadeOutTimeInMs = profile["buttonPressFadeOutTimeInMs"].as<uint32_t>();
+        options.profiles[profilesIndex].nonPressedSpecialColour = profile["nonPressedSpecialColour"].as<uint32_t>();
+        options.profiles[profilesIndex].bUseCaseLightsInSpecialMoves = profile["bUseCaseLightsInSpecialMoves"].as<bool>();
+        options.profiles[profilesIndex].baseCaseEffect = (AnimationNonPressedEffects_Proto)(profile["baseCaseEffect"].as<uint32_t>());
+        options.profiles[profilesIndex].pressedSpecialColour = profile["pressedSpecialColour"].as<uint32_t>();
+
+        JsonArray notPressedStaticColorsList = profile["notPressedStaticColors"];
+        for(unsigned int notPressedStaticColorsIndex = 0; notPressedStaticColorsIndex < notPressedStaticColorsList.size() && notPressedStaticColorsIndex < 8/*((NUM_BANK0_GPIOS+3)/4)*/; ++notPressedStaticColorsIndex)
         {
-            readDoc(result, doc, key0, key1);
+            options.profiles[profilesIndex].notPressedStaticColors[notPressedStaticColorsIndex] = notPressedStaticColorsList[notPressedStaticColorsList];
+            options.profiles[profilesIndex].notPressedStaticColors_count = notPressedStaticColorsIndex;
         }
-        return result;
-    };
+        JsonArray pressedStaticColorsList = profile["pressedStaticColors"];
+        for(unsigned int pressedStaticColorsIndex = 0; pressedStaticColorsIndex < pressedStaticColorsList.size() && pressedStaticColorsIndex < 8/*((NUM_BANK0_GPIOS+3)/4)*/; ++pressedStaticColorsIndex)
+        {
+            options.profiles[profilesIndex].pressedStaticColors[pressedStaticColorsIndex] = pressedStaticColorsList[pressedStaticColorsList];
+            options.profiles[profilesIndex].pressedStaticColors_count = pressedStaticColorsIndex;
+        }
+        JsonArray caseStaticColorsList = profile["caseStaticColors"];
+        for(unsigned int caseStaticColorsIndex = 0; caseStaticColorsIndex < caseStaticColorsList.size() && caseStaticColorsIndex < (MAX_CASE_LIGHTS/4); ++caseStaticColorsIndex)
+        {
+            options.profiles[profilesIndex].caseStaticColors[caseStaticColorsIndex] = caseStaticColorsList[caseStaticColorsList];
+            options.profiles[profilesIndex].caseStaticColors_count = caseStaticColorsIndex;
+        }
 
-    /*readDoc(options.hasCustomTheme, doc, "enabled");
-    options.customThemeUp 			= readDocDefaultToZero("Up", "u");
-    options.customThemeDown 		= readDocDefaultToZero("Down", "u");
-    options.customThemeLeft			= readDocDefaultToZero("Left", "u");
-    options.customThemeRight		= readDocDefaultToZero("Right", "u");
-    options.customThemeB1			= readDocDefaultToZero("B1", "u");
-    options.customThemeB2			= readDocDefaultToZero("B2", "u");
-    options.customThemeB3			= readDocDefaultToZero("B3", "u");
-    options.customThemeB4			= readDocDefaultToZero("B4", "u");
-    options.customThemeL1			= readDocDefaultToZero("L1", "u");
-    options.customThemeR1			= readDocDefaultToZero("R1", "u");
-    options.customThemeL2			= readDocDefaultToZero("L2", "u");
-    options.customThemeR2			= readDocDefaultToZero("R2", "u");
-    options.customThemeS1			= readDocDefaultToZero("S1", "u");
-    options.customThemeS2			= readDocDefaultToZero("S2", "u");
-    options.customThemeL3			= readDocDefaultToZero("L3", "u");
-    options.customThemeR3			= readDocDefaultToZero("R3", "u");
-    options.customThemeA1			= readDocDefaultToZero("A1", "u");
-    options.customThemeA2			= readDocDefaultToZero("A2", "u");
-    options.customThemeUpPressed	= readDocDefaultToZero("Up", "d");
-    options.customThemeDownPressed	= readDocDefaultToZero("Down", "d");
-    options.customThemeLeftPressed	= readDocDefaultToZero("Left", "d");
-    options.customThemeRightPressed	= readDocDefaultToZero("Right", "d");
-    options.customThemeB1Pressed	= readDocDefaultToZero("B1", "d");
-    options.customThemeB2Pressed	= readDocDefaultToZero("B2", "d");
-    options.customThemeB3Pressed	= readDocDefaultToZero("B3", "d");
-    options.customThemeB4Pressed	= readDocDefaultToZero("B4", "d");
-    options.customThemeL1Pressed	= readDocDefaultToZero("L1", "d");
-    options.customThemeR1Pressed	= readDocDefaultToZero("R1", "d");
-    options.customThemeL2Pressed	= readDocDefaultToZero("L2", "d");
-    options.customThemeR2Pressed	= readDocDefaultToZero("R2", "d");
-    options.customThemeS1Pressed	= readDocDefaultToZero("S1", "d");
-    options.customThemeS2Pressed	= readDocDefaultToZero("S2", "d");
-    options.customThemeL3Pressed	= readDocDefaultToZero("L3", "d");
-    options.customThemeR3Pressed	= readDocDefaultToZero("R3", "d");
-    options.customThemeA1Pressed	= readDocDefaultToZero("A1", "d");
-    options.customThemeA2Pressed	= readDocDefaultToZero("A2", "d");
+        options.profiles_count = profilesIndex;
 
-    uint32_t pressCooldown = 0;
-    readDoc(pressCooldown, doc, "buttonPressColorCooldownTimeInMs");
-    options.buttonPressColorCooldownTimeInMs = pressCooldown;*/
+        if (++profilesIndex >= MAX_ANIMATION_PROFILES)
+            break;
+    }
 
-    //AnimationStation::SetOptions(options);
-    //AnimationStore.save();
-
+    Storage::getInstance().save();
     return serialize_json(doc);
 }
 
-std::string getCustomTheme()
+std::string getAnimationProtoOptions()
 {
     DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-    const AnimationOptions& options = AnimationStation::options;
+    const AnimationOptions_Proto& options = Storage::getInstance().getAnimationOptions();
 
-/*    writeDoc(doc, "enabled", options.hasCustomTheme);
-    writeDoc(doc, "Up", "u", options.customThemeUp);
-    writeDoc(doc, "Up", "d", options.customThemeUpPressed);
-    writeDoc(doc, "Down", "u", options.customThemeDown);
-    writeDoc(doc, "Down", "d", options.customThemeDownPressed);
-    writeDoc(doc, "Left", "u", options.customThemeLeft);
-    writeDoc(doc, "Left", "d", options.customThemeLeftPressed);
-    writeDoc(doc, "Right", "u", options.customThemeRight);
-    writeDoc(doc, "Right", "d", options.customThemeRightPressed);
-    writeDoc(doc, "B1", "u", options.customThemeB1);
-    writeDoc(doc, "B1", "d", options.customThemeB1Pressed);
-    writeDoc(doc, "B2", "u", options.customThemeB2);
-    writeDoc(doc, "B2", "d", options.customThemeB2Pressed);
-    writeDoc(doc, "B3", "u", options.customThemeB3);
-    writeDoc(doc, "B3", "d", options.customThemeB3Pressed);
-    writeDoc(doc, "B4", "u", options.customThemeB4);
-    writeDoc(doc, "B4", "d", options.customThemeB4Pressed);
-    writeDoc(doc, "L1", "u", options.customThemeL1);
-    writeDoc(doc, "L1", "d", options.customThemeL1Pressed);
-    writeDoc(doc, "R1", "u", options.customThemeR1);
-    writeDoc(doc, "R1", "d", options.customThemeR1Pressed);
-    writeDoc(doc, "L2", "u", options.customThemeL2);
-    writeDoc(doc, "L2", "d", options.customThemeL2Pressed);
-    writeDoc(doc, "R2", "u", options.customThemeR2);
-    writeDoc(doc, "R2", "d", options.customThemeR2Pressed);
-    writeDoc(doc, "S1", "u", options.customThemeS1);
-    writeDoc(doc, "S1", "d", options.customThemeS1Pressed);
-    writeDoc(doc, "S2", "u", options.customThemeS2);
-    writeDoc(doc, "S2", "d", options.customThemeS2Pressed);
-    writeDoc(doc, "A1", "u", options.customThemeA1);
-    writeDoc(doc, "A1", "d", options.customThemeA1Pressed);
-    writeDoc(doc, "A2", "u", options.customThemeA2);
-    writeDoc(doc, "A2", "d", options.customThemeA2Pressed);
-    writeDoc(doc, "L3", "u", options.customThemeL3);
-    writeDoc(doc, "L3", "d", options.customThemeL3Pressed);
-    writeDoc(doc, "R3", "u", options.customThemeR3);
-    writeDoc(doc, "R3", "d", options.customThemeR3Pressed);
-    writeDoc(doc, "buttonPressColorCooldownTimeInMs", options.buttonPressColorCooldownTimeInMs);*/
+    writeDoc(doc, "AnimationOptions", "brightness", options.brightness);
+    writeDoc(doc, "AnimationOptions", "baseProfileIndex", options.baseProfileIndex);
+    JsonArray customColorsList = doc.createNestedArray("customColors");
+    for (int customColorsIndex = 0; customColorsIndex < options.customColors_count; ++customColorsIndex)
+    {
+        customColorsList.add(options.customColors[customColorsIndex]);
+    }
+
+    JsonArray profileList = doc.createNestedArray("profiles");
+    for (int profilesIndex = 0; profilesIndex < options.profiles_count; ++profilesIndex)
+    {
+        JsonObject profile = profileList.createNestedObject();
+        profile["bEnabled"] = options.profiles[profilesIndex].bEnabled ? 1 : 0;
+        profile["baseNonPressedEffect"] = options.profiles[profilesIndex].baseNonPressedEffect;
+        profile["basePressedEffect"] = options.profiles[profilesIndex].basePressedEffect;
+        profile["buttonPressHoldTimeInMs"] = options.profiles[profilesIndex].buttonPressHoldTimeInMs;
+        profile["buttonPressFadeOutTimeInMs"] = options.profiles[profilesIndex].buttonPressFadeOutTimeInMs;
+        profile["nonPressedSpecialColour"] = options.profiles[profilesIndex].nonPressedSpecialColour;
+        profile["bUseCaseLightsInSpecialMoves"] = options.profiles[profilesIndex].bUseCaseLightsInSpecialMoves ? 1 : 0;
+        profile["baseCaseEffect"] = options.profiles[profilesIndex].baseCaseEffect;
+        profile["pressedSpecialColour"] = options.profiles[profilesIndex].pressedSpecialColour;
+
+        JsonArray notPressedStaticColorsList = doc.createNestedArray("notPressedStaticColors");
+        for (int notPressedStaticColorsIndex = 0; notPressedStaticColorsIndex < options.profiles[profilesIndex].notPressedStaticColors_count; ++notPressedStaticColorsIndex)
+        {
+            notPressedStaticColorsList.add(options.profiles[profilesIndex].notPressedStaticColors[notPressedStaticColorsIndex]);
+        }
+        JsonArray pressedStaticColorsList = doc.createNestedArray("pressedStaticColors");
+        for (int pressedStaticColorsIndex = 0; pressedStaticColorsIndex < options.profiles[profilesIndex].pressedStaticColors_count; ++pressedStaticColorsIndex)
+        {
+            pressedStaticColorsList.add(options.profiles[profilesIndex].pressedStaticColors[pressedStaticColorsIndex]);
+        }
+        JsonArray caseStaticColorsList = doc.createNestedArray("caseStaticColors");
+        for (int caseStaticColorsIndex = 0; caseStaticColorsIndex < options.profiles[profilesIndex].caseStaticColors_count; ++caseStaticColorsIndex)
+        {
+            caseStaticColorsList.add(options.profiles[profilesIndex].caseStaticColors[caseStaticColorsIndex]);
+        }        
+    }
 
     return serialize_json(doc);
 }
@@ -2316,8 +2311,8 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/setPreviewDisplayOptions", setPreviewDisplayOptions },
     { "/api/setGamepadOptions", setGamepadOptions },
     { "/api/setLedOptions", setLedOptions },
-    { "/api/setCustomTheme", setCustomTheme },
-    { "/api/getCustomTheme", getCustomTheme },
+    { "/api/setAnimationProtoOptions", setAnimationProtoOptions },
+    { "/api/getAnimationProtoOptions", getAnimationProtoOptions },
     { "/api/setPinMappings", setPinMappings },
     { "/api/setProfileOptions", setProfileOptions },
     { "/api/setPeripheralOptions", setPeripheralOptions },

@@ -351,13 +351,13 @@ message AnimationProfile_Proto
 
     optional uint32 nonPressedSpecialColour = 9;
 
-    optional bool bUseCaseLightsInSpecialMoves = 10;
+ 	optional AnimationNonPressedEffects_Proto baseCaseEffect = 10;
 
- 	optional AnimationNonPressedEffects_Proto baseCaseEffect = 11;
+    repeated uint32 caseStaticColors = 11 [(nanopb).max_count = 10]; //(MAX_CASE_LIGHTS/4) from AnimationStation.hpp
 
-    repeated uint32 caseStaticColors = 12 [(nanopb).max_count = 10]; //(MAX_CASE_LIGHTS/4) from AnimationStation.hpp
+    optional uint32 pressedSpecialColour = 12;
 
-    optional uint32 pressedSpecialColour = 13;
+    optional bool bUseCaseLightsInSpecialMoves = 13; 
 };
 
 // This has to be kept in sync with AnimationOptions in AnimationStation.hpp
