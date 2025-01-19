@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import WebApi from '../Services/WebApi';
 
+export const MAX_CUSTOM_COLORS = 8;
 export const MAX_ANIMATION_PROFILES = 4;
 
 type Profile = {
