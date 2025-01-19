@@ -392,6 +392,15 @@ async function getButtonLayoutDefs() {
 	}
 }
 
+async function getAnimationOptions() {
+	try {
+		const { data } = await Http.get(`${baseUrl}/api/getAnimationOptions`);
+		return data;
+	} catch (error) {
+		console.log(error);
+	}
+}
+
 async function getPinMappings() {
 	try {
 		const { data } = await Http.get(`${baseUrl}/api/getPinMappings`);
@@ -701,6 +710,7 @@ function sanitizeRequest(request) {
 
 export default {
 	resetSettings,
+	getAnimationOptions,
 	getDisplayOptions,
 	setDisplayOptions,
 	getGamepadOptions,
