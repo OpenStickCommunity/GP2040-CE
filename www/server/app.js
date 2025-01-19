@@ -91,6 +91,55 @@ app.get('/api/getSplashImage', (req, res) => {
 	return res.send(data);
 });
 
+app.get('/api/getAnimationOptions', (req, res) => {
+	return res.send({
+		AnimationOptions: {
+			brightness: 5,
+			baseProfileIndex: 0,
+			customColors: [255],
+			profiles: [
+				{
+					bEnabled: 1,
+					baseNonPressedEffect: 1,
+					basePressedEffect: 0,
+					buttonPressHoldTimeInMs: 500,
+					buttonPressFadeOutTimeInMs: 500,
+					nonPressedSpecialColour: 16711680,
+					bUseCaseLightsInSpecialMoves: 0,
+					baseCaseEffect: 0,
+					pressedSpecialColour: 0,
+					notPressedStaticColors: [0, 0, 0, 0, 0, 0, 0, 0],
+					pressedStaticColors: [0, 0, 0, 0, 0, 0, 0, 0],
+					caseStaticColors: [],
+				},
+				{
+					bEnabled: 1,
+					baseNonPressedEffect: 0,
+					basePressedEffect: 3,
+					buttonPressHoldTimeInMs: 500,
+					buttonPressFadeOutTimeInMs: 500,
+					nonPressedSpecialColour: 255,
+					bUseCaseLightsInSpecialMoves: 1,
+					baseCaseEffect: 0,
+					pressedSpecialColour: 16724480,
+					notPressedStaticColors: [
+						101058054, 101058054, 101058054, 101058054, 101058054, 101058054,
+						101058054, 101058054,
+					],
+					pressedStaticColors: [
+						33686018, 33686018, 33686018, 33686018, 33686018, 33686018,
+						33686018, 33686018,
+					],
+					caseStaticColors: [
+						16843022, 16843022, 16843022, 16843022, 16843022, 16843022,
+						16843022, 16843022, 16843022, 16843022,
+					],
+				},
+			],
+		},
+	});
+});
+
 app.get('/api/getGamepadOptions', (req, res) => {
 	return res.send({
 		dpadMode: 0,
