@@ -88,6 +88,13 @@ const Navigation = () => {
 						<NavDropdown.Item
 							as={NavLink}
 							eventKey={eventKey++}
+							to="/animation"
+						>
+							Animation
+						</NavDropdown.Item>
+						<NavDropdown.Item
+							as={NavLink}
+							eventKey={eventKey++}
 							to="/led-config"
 						>
 							{t('Navigation:led-config-label')}
