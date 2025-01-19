@@ -482,13 +482,15 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     // animationOptions
     INIT_UNSET_PROPERTY(config.animationOptions, brightness, LEDS_BRIGHTNESS);
     INIT_UNSET_PROPERTY(config.animationOptions, baseProfileIndex, 0);
-    
+
+    for (unsigned int profileIndex = 0; profileIndex < MAX_ANIMATION_PROFILES; ++profileIndex) 
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], bEnabled, 0);
+     
     //TESTING
-    config.animationOptions.customColors_count = 1;
-    config.animationOptions.customColors[0] = 255;
-    config.animationOptions.profiles_count = 0;
-    if(true)
+    if(false)
     { 
+        config.animationOptions.customColors_count = 1;
+        config.animationOptions.customColors[0] = 255;
         config.animationOptions.profiles_count = 2;
 
         config.animationOptions.profiles[0].bEnabled = true;

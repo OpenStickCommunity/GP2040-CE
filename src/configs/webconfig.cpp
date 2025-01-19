@@ -951,19 +951,23 @@ std::string setAnimationProtoOptions()
     DynamicJsonDocument doc = get_post_data();
 
     AnimationOptions_Proto& options = Storage::getInstance().getAnimationOptions();
-    docToValue(options.brightness, doc, "brightness");
-    docToValue(options.baseProfileIndex, doc, "baseProfileIndex");
 
-    JsonObject docOptions = doc.as<JsonObject>();
-    JsonArray customColorsList = docOptions["customColors"];
+    JsonObject docJson = doc.as<JsonObject>();
+    JsonObject AnimOptions = docJson["AnimationOptions"];
+
+    options.brightness = AnimOptions["brightness"].as<uint32_t>();
+    options.baseProfileIndex = AnimOptions["baseProfileIndex"].as<uint32_t>();
+    JsonArray customColorsList = AnimOptions["customColors"];
+    options.customColors_count = 0;
     for(unsigned int customColorsIndex = 0; customColorsIndex < customColorsList.size() && customColorsIndex < MAX_CUSTOM_COLORS; ++customColorsIndex)
     {
         options.customColors[customColorsIndex] = customColorsList[customColorsIndex];
-        options.customColors_count = customColorsIndex;
+        options.customColors_count = customColorsIndex+1;
     }
 
-    JsonArray profilesList = docOptions["profiles"];
+    JsonArray profilesList = AnimOptions["profiles"];
     int profilesIndex = 0;
+    options.profiles_count = 0;
     for (JsonObject profile : profilesList)
     {
         options.profiles[profilesIndex].bEnabled = profile["bEnabled"].as<bool>();
@@ -977,25 +981,28 @@ std::string setAnimationProtoOptions()
         options.profiles[profilesIndex].pressedSpecialColour = profile["pressedSpecialColour"].as<uint32_t>();
 
         JsonArray notPressedStaticColorsList = profile["notPressedStaticColors"];
+        options.profiles[profilesIndex].notPressedStaticColors_count = 0;
         for(unsigned int notPressedStaticColorsIndex = 0; notPressedStaticColorsIndex < notPressedStaticColorsList.size() && notPressedStaticColorsIndex < 8/*((NUM_BANK0_GPIOS+3)/4)*/; ++notPressedStaticColorsIndex)
         {
             options.profiles[profilesIndex].notPressedStaticColors[notPressedStaticColorsIndex] = notPressedStaticColorsList[notPressedStaticColorsList];
-            options.profiles[profilesIndex].notPressedStaticColors_count = notPressedStaticColorsIndex;
+            options.profiles[profilesIndex].notPressedStaticColors_count = notPressedStaticColorsIndex+1;
         }
         JsonArray pressedStaticColorsList = profile["pressedStaticColors"];
+        options.profiles[profilesIndex].pressedStaticColors_count = 0;
         for(unsigned int pressedStaticColorsIndex = 0; pressedStaticColorsIndex < pressedStaticColorsList.size() && pressedStaticColorsIndex < 8/*((NUM_BANK0_GPIOS+3)/4)*/; ++pressedStaticColorsIndex)
         {
             options.profiles[profilesIndex].pressedStaticColors[pressedStaticColorsIndex] = pressedStaticColorsList[pressedStaticColorsList];
-            options.profiles[profilesIndex].pressedStaticColors_count = pressedStaticColorsIndex;
+            options.profiles[profilesIndex].pressedStaticColors_count = pressedStaticColorsIndex+1;
         }
         JsonArray caseStaticColorsList = profile["caseStaticColors"];
+        options.profiles[profilesIndex].caseStaticColors_count = 0;
         for(unsigned int caseStaticColorsIndex = 0; caseStaticColorsIndex < caseStaticColorsList.size() && caseStaticColorsIndex < (MAX_CASE_LIGHTS/4); ++caseStaticColorsIndex)
         {
             options.profiles[profilesIndex].caseStaticColors[caseStaticColorsIndex] = caseStaticColorsList[caseStaticColorsList];
-            options.profiles[profilesIndex].caseStaticColors_count = caseStaticColorsIndex;
+            options.profiles[profilesIndex].caseStaticColors_count = caseStaticColorsIndex+1;
         }
 
-        options.profiles_count = profilesIndex;
+        options.profiles_count = profilesIndex+1;
 
         if (++profilesIndex >= MAX_ANIMATION_PROFILES)
             break;
@@ -1010,15 +1017,16 @@ std::string getAnimationProtoOptions()
     DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
     const AnimationOptions_Proto& options = Storage::getInstance().getAnimationOptions();
 
-    writeDoc(doc, "AnimationOptions", "brightness", options.brightness);
-    writeDoc(doc, "AnimationOptions", "baseProfileIndex", options.baseProfileIndex);
-    JsonArray customColorsList = doc.createNestedArray("customColors");
+    JsonObject AnimOptions = doc.createNestedObject("AnimationOptions");
+    AnimOptions["brightness"] = options.brightness;
+    AnimOptions["baseProfileIndex"] = options.baseProfileIndex;
+    JsonArray customColorsList = AnimOptions.createNestedArray("customColors");
     for (int customColorsIndex = 0; customColorsIndex < options.customColors_count; ++customColorsIndex)
     {
         customColorsList.add(options.customColors[customColorsIndex]);
     }
 
-    JsonArray profileList = doc.createNestedArray("profiles");
+    JsonArray profileList = AnimOptions.createNestedArray("profiles");
     for (int profilesIndex = 0; profilesIndex < options.profiles_count; ++profilesIndex)
     {
         JsonObject profile = profileList.createNestedObject();
@@ -1032,17 +1040,17 @@ std::string getAnimationProtoOptions()
         profile["baseCaseEffect"] = options.profiles[profilesIndex].baseCaseEffect;
         profile["pressedSpecialColour"] = options.profiles[profilesIndex].pressedSpecialColour;
 
-        JsonArray notPressedStaticColorsList = doc.createNestedArray("notPressedStaticColors");
+        JsonArray notPressedStaticColorsList = profile.createNestedArray("notPressedStaticColors");
         for (int notPressedStaticColorsIndex = 0; notPressedStaticColorsIndex < options.profiles[profilesIndex].notPressedStaticColors_count; ++notPressedStaticColorsIndex)
         {
             notPressedStaticColorsList.add(options.profiles[profilesIndex].notPressedStaticColors[notPressedStaticColorsIndex]);
         }
-        JsonArray pressedStaticColorsList = doc.createNestedArray("pressedStaticColors");
+        JsonArray pressedStaticColorsList = profile.createNestedArray("pressedStaticColors");
         for (int pressedStaticColorsIndex = 0; pressedStaticColorsIndex < options.profiles[profilesIndex].pressedStaticColors_count; ++pressedStaticColorsIndex)
         {
             pressedStaticColorsList.add(options.profiles[profilesIndex].pressedStaticColors[pressedStaticColorsIndex]);
         }
-        JsonArray caseStaticColorsList = doc.createNestedArray("caseStaticColors");
+        JsonArray caseStaticColorsList = profile.createNestedArray("caseStaticColors");
         for (int caseStaticColorsIndex = 0; caseStaticColorsIndex < options.profiles[profilesIndex].caseStaticColors_count; ++caseStaticColorsIndex)
         {
             caseStaticColorsList.add(options.profiles[profilesIndex].caseStaticColors[caseStaticColorsIndex]);
