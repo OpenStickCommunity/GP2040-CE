@@ -982,24 +982,56 @@ std::string setAnimationProtoOptions()
 
         JsonArray notPressedStaticColorsList = profile["notPressedStaticColors"];
         options.profiles[profilesIndex].notPressedStaticColors_count = 0;
-        for(unsigned int notPressedStaticColorsIndex = 0; notPressedStaticColorsIndex < notPressedStaticColorsList.size() && notPressedStaticColorsIndex < 8/*((NUM_BANK0_GPIOS+3)/4)*/; ++notPressedStaticColorsIndex)
-        {
-            options.profiles[profilesIndex].notPressedStaticColors[notPressedStaticColorsIndex] = notPressedStaticColorsList[notPressedStaticColorsList];
-            options.profiles[profilesIndex].notPressedStaticColors_count = notPressedStaticColorsIndex+1;
+		for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS/4)+1; ++packedPinIndex)
+		{
+            unsigned int pinIndex = packedPinIndex * 4;
+			if(pinIndex < notPressedStaticColorsList.size())
+				options.profiles[profilesIndex].notPressedStaticColors[packedPinIndex] = notPressedStaticColorsList[pinIndex].as<uint32_t>() & 0xFF;
+            else
+                break;
+			if(pinIndex+1 < notPressedStaticColorsList.size())
+				options.profiles[profilesIndex].notPressedStaticColors[packedPinIndex] += ((notPressedStaticColorsList[pinIndex+1].as<uint32_t>() & 0xFF) << 8);
+			if(pinIndex+2 < notPressedStaticColorsList.size())
+				options.profiles[profilesIndex].notPressedStaticColors[packedPinIndex] += ((notPressedStaticColorsList[pinIndex+2].as<uint32_t>() & 0xFF) << 16);
+			if(pinIndex+3 < notPressedStaticColorsList.size())
+				options.profiles[profilesIndex].notPressedStaticColors[packedPinIndex] += ((notPressedStaticColorsList[pinIndex+3].as<uint32_t>() & 0xFF) << 24);
+            options.profiles[profilesIndex].notPressedStaticColors_count = packedPinIndex+1;
         }
+
         JsonArray pressedStaticColorsList = profile["pressedStaticColors"];
         options.profiles[profilesIndex].pressedStaticColors_count = 0;
-        for(unsigned int pressedStaticColorsIndex = 0; pressedStaticColorsIndex < pressedStaticColorsList.size() && pressedStaticColorsIndex < 8/*((NUM_BANK0_GPIOS+3)/4)*/; ++pressedStaticColorsIndex)
-        {
-            options.profiles[profilesIndex].pressedStaticColors[pressedStaticColorsIndex] = pressedStaticColorsList[pressedStaticColorsList];
-            options.profiles[profilesIndex].pressedStaticColors_count = pressedStaticColorsIndex+1;
+        for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS/4)+1; ++packedPinIndex)
+		{
+            unsigned int pinIndex = packedPinIndex * 4;
+			if(pinIndex < pressedStaticColorsList.size())
+				options.profiles[profilesIndex].pressedStaticColors[packedPinIndex] = pressedStaticColorsList[pinIndex].as<uint32_t>() & 0xFF;
+            else
+                break;
+			if(pinIndex+1 < pressedStaticColorsList.size())
+				options.profiles[profilesIndex].pressedStaticColors[packedPinIndex] += ((pressedStaticColorsList[pinIndex+1].as<uint32_t>() & 0xFF) << 8);
+			if(pinIndex+2 < pressedStaticColorsList.size())
+				options.profiles[profilesIndex].pressedStaticColors[packedPinIndex] += ((pressedStaticColorsList[pinIndex+2].as<uint32_t>() & 0xFF) << 16);
+			if(pinIndex+3 < pressedStaticColorsList.size())
+				options.profiles[profilesIndex].pressedStaticColors[packedPinIndex] += ((pressedStaticColorsList[pinIndex+3].as<uint32_t>() & 0xFF) << 24);
+            options.profiles[profilesIndex].pressedStaticColors_count = packedPinIndex+1;
         }
+
         JsonArray caseStaticColorsList = profile["caseStaticColors"];
         options.profiles[profilesIndex].caseStaticColors_count = 0;
-        for(unsigned int caseStaticColorsIndex = 0; caseStaticColorsIndex < caseStaticColorsList.size() && caseStaticColorsIndex < (MAX_CASE_LIGHTS/4); ++caseStaticColorsIndex)
-        {
-            options.profiles[profilesIndex].caseStaticColors[caseStaticColorsIndex] = caseStaticColorsList[caseStaticColorsList];
-            options.profiles[profilesIndex].caseStaticColors_count = caseStaticColorsIndex+1;
+        for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS/4)+1; ++packedPinIndex)
+		{
+            unsigned int pinIndex = packedPinIndex * 4;
+			if(pinIndex < caseStaticColorsList.size())
+				options.profiles[profilesIndex].caseStaticColors[packedPinIndex] = caseStaticColorsList[pinIndex].as<uint32_t>() & 0xFF;
+            else
+                break;
+			if(pinIndex+1 < caseStaticColorsList.size())
+				options.profiles[profilesIndex].caseStaticColors[packedPinIndex] += ((caseStaticColorsList[pinIndex+1].as<uint32_t>() & 0xFF) << 8);
+			if(pinIndex+2 < caseStaticColorsList.size())
+				options.profiles[profilesIndex].caseStaticColors[packedPinIndex] += ((caseStaticColorsList[pinIndex+2].as<uint32_t>() & 0xFF) << 16);
+			if(pinIndex+3 < caseStaticColorsList.size())
+				options.profiles[profilesIndex].caseStaticColors[packedPinIndex] += ((caseStaticColorsList[pinIndex+3].as<uint32_t>() & 0xFF) << 24);
+            options.profiles[profilesIndex].caseStaticColors_count = packedPinIndex+1;
         }
 
         options.profiles_count = profilesIndex+1;
@@ -1043,17 +1075,26 @@ std::string getAnimationProtoOptions()
         JsonArray notPressedStaticColorsList = profile.createNestedArray("notPressedStaticColors");
         for (int notPressedStaticColorsIndex = 0; notPressedStaticColorsIndex < options.profiles[profilesIndex].notPressedStaticColors_count; ++notPressedStaticColorsIndex)
         {
-            notPressedStaticColorsList.add(options.profiles[profilesIndex].notPressedStaticColors[notPressedStaticColorsIndex]);
+            notPressedStaticColorsList.add(options.profiles[profilesIndex].notPressedStaticColors[notPressedStaticColorsIndex] & 0xFF);
+            notPressedStaticColorsList.add((options.profiles[profilesIndex].notPressedStaticColors[notPressedStaticColorsIndex] >> 8) & 0xFF);
+            notPressedStaticColorsList.add((options.profiles[profilesIndex].notPressedStaticColors[notPressedStaticColorsIndex] >> 16) & 0xFF);
+            notPressedStaticColorsList.add((options.profiles[profilesIndex].notPressedStaticColors[notPressedStaticColorsIndex] >> 24) & 0xFF);
         }
         JsonArray pressedStaticColorsList = profile.createNestedArray("pressedStaticColors");
         for (int pressedStaticColorsIndex = 0; pressedStaticColorsIndex < options.profiles[profilesIndex].pressedStaticColors_count; ++pressedStaticColorsIndex)
         {
-            pressedStaticColorsList.add(options.profiles[profilesIndex].pressedStaticColors[pressedStaticColorsIndex]);
+            pressedStaticColorsList.add(options.profiles[profilesIndex].pressedStaticColors[pressedStaticColorsIndex] & 0xFF);
+            pressedStaticColorsList.add((options.profiles[profilesIndex].pressedStaticColors[pressedStaticColorsIndex] >> 8) & 0xFF);
+            pressedStaticColorsList.add((options.profiles[profilesIndex].pressedStaticColors[pressedStaticColorsIndex] >> 16) & 0xFF);
+            pressedStaticColorsList.add((options.profiles[profilesIndex].pressedStaticColors[pressedStaticColorsIndex] >> 24) & 0xFF);
         }
         JsonArray caseStaticColorsList = profile.createNestedArray("caseStaticColors");
         for (int caseStaticColorsIndex = 0; caseStaticColorsIndex < options.profiles[profilesIndex].caseStaticColors_count; ++caseStaticColorsIndex)
         {
-            caseStaticColorsList.add(options.profiles[profilesIndex].caseStaticColors[caseStaticColorsIndex]);
+            caseStaticColorsList.add(options.profiles[profilesIndex].caseStaticColors[caseStaticColorsIndex] & 0xFF);
+            caseStaticColorsList.add((options.profiles[profilesIndex].caseStaticColors[caseStaticColorsIndex] >> 8) & 0xFF);
+            caseStaticColorsList.add((options.profiles[profilesIndex].caseStaticColors[caseStaticColorsIndex] >> 16) & 0xFF);
+            caseStaticColorsList.add((options.profiles[profilesIndex].caseStaticColors[caseStaticColorsIndex] >> 24) & 0xFF);
         }        
     }
 

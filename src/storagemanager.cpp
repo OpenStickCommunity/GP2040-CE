@@ -223,16 +223,22 @@ void AnimationStorage::getAnimationOptions(AnimationOptions& options)
 		for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS/4)+1; ++packedPinIndex)
 		{
 			int pinIndex = packedPinIndex * 4;
-			options.profiles[index].notPressedStaticColors[pinIndex + 0] = optionsProto.profiles[index].notPressedStaticColors[packedPinIndex] & 0xFF;
-			options.profiles[index].notPressedStaticColors[pinIndex + 1] = (optionsProto.profiles[index].notPressedStaticColors[packedPinIndex] >> 8) & 0xFF;
-			options.profiles[index].notPressedStaticColors[pinIndex + 2] = (optionsProto.profiles[index].notPressedStaticColors[packedPinIndex] >> 16) & 0xFF;
-			options.profiles[index].notPressedStaticColors[pinIndex + 3] = (optionsProto.profiles[index].notPressedStaticColors[packedPinIndex] >> 24) & 0xFF;
-			options.profiles[index].pressedStaticColors[pinIndex + 0] = optionsProto.profiles[index].pressedStaticColors[packedPinIndex] & 0xFF;
-			options.profiles[index].pressedStaticColors[pinIndex + 1] = (optionsProto.profiles[index].pressedStaticColors[packedPinIndex] >> 8) & 0xFF;
-			options.profiles[index].pressedStaticColors[pinIndex + 2] = (optionsProto.profiles[index].pressedStaticColors[packedPinIndex] >> 16) & 0xFF;
-			options.profiles[index].pressedStaticColors[pinIndex + 3] = (optionsProto.profiles[index].pressedStaticColors[packedPinIndex] >> 24) & 0xFF;
+			if(packedPinIndex < optionsProto.profiles[index].notPressedStaticColors_count)
+			{
+				options.profiles[index].notPressedStaticColors[pinIndex + 0] = optionsProto.profiles[index].notPressedStaticColors[packedPinIndex] & 0xFF;
+				options.profiles[index].notPressedStaticColors[pinIndex + 1] = (optionsProto.profiles[index].notPressedStaticColors[packedPinIndex] >> 8) & 0xFF;
+				options.profiles[index].notPressedStaticColors[pinIndex + 2] = (optionsProto.profiles[index].notPressedStaticColors[packedPinIndex] >> 16) & 0xFF;
+				options.profiles[index].notPressedStaticColors[pinIndex + 3] = (optionsProto.profiles[index].notPressedStaticColors[packedPinIndex] >> 24) & 0xFF;
+			}
+			if(packedPinIndex < optionsProto.profiles[index].pressedStaticColors_count)
+			{
+				options.profiles[index].pressedStaticColors[pinIndex + 0] = optionsProto.profiles[index].pressedStaticColors[packedPinIndex] & 0xFF;
+				options.profiles[index].pressedStaticColors[pinIndex + 1] = (optionsProto.profiles[index].pressedStaticColors[packedPinIndex] >> 8) & 0xFF;
+				options.profiles[index].pressedStaticColors[pinIndex + 2] = (optionsProto.profiles[index].pressedStaticColors[packedPinIndex] >> 16) & 0xFF;
+				options.profiles[index].pressedStaticColors[pinIndex + 3] = (optionsProto.profiles[index].pressedStaticColors[packedPinIndex] >> 24) & 0xFF;
+			}
 		}
-		for(unsigned int packedCaseIndex = 0; packedCaseIndex < MAX_CASE_LIGHTS / 4; ++packedCaseIndex)
+		for(unsigned int packedCaseIndex = 0; packedCaseIndex < (MAX_CASE_LIGHTS / 4) && packedCaseIndex < optionsProto.profiles[index].caseStaticColors_count; ++packedCaseIndex)
 		{
 			int caseIndex = packedCaseIndex * 4;
 			options.profiles[index].caseStaticColors[caseIndex + 0] = optionsProto.profiles[index].caseStaticColors[packedCaseIndex] & 0xFF;
