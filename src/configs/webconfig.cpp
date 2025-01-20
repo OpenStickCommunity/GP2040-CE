@@ -1589,6 +1589,13 @@ std::string setAddonOptions()
     docToPin(snesOptions.latchPin, doc, "snesPadLatchPin");
     docToPin(snesOptions.dataPin, doc, "snesPadDataPin");
 
+    PsxOptions& psxOptions = Storage::getInstance().getAddonOptions().psxOptions;
+    docToValue(psxOptions.enabled, doc, "psxEnabled");
+    docToPin(psxOptions.dataPin, doc, "psxDataPin");
+    docToPin(psxOptions.commandPin, doc, "psxCommandPin");
+    docToPin(psxOptions.attentionPin, doc, "psxAttentionPin");
+    docToPin(psxOptions.clockPin, doc, "psxClockPin");
+
     InputHistoryOptions& inputHistoryOptions = Storage::getInstance().getAddonOptions().inputHistoryOptions;
     docToValue(inputHistoryOptions.length, doc, "inputHistoryLength");
     docToValue(inputHistoryOptions.enabled, doc, "InputHistoryAddonEnabled");
@@ -2000,10 +2007,17 @@ std::string getAddonOptions()
     writeDoc(doc, "WiiExtensionAddonEnabled", wiiOptions.enabled);
 
     const SNESOptions& snesOptions = Storage::getInstance().getAddonOptions().snesOptions;
-    writeDoc(doc, "snesPadClockPin", cleanPin(snesOptions.clockPin));
+    writeDoc(doc, "clockPin", cleanPin(snesOptions.clockPin));
     writeDoc(doc, "snesPadLatchPin", cleanPin(snesOptions.latchPin));
     writeDoc(doc, "snesPadDataPin", cleanPin(snesOptions.dataPin));
     writeDoc(doc, "SNESpadAddonEnabled", snesOptions.enabled);
+
+    const PsxOptions& psxOptions = Storage::getInstance().getAddonOptions().psxOptions;
+    writeDoc(doc, "psxEnabled", psxOptions.enabled);
+    writeDoc(doc, "psxDataPin", cleanPin(psxOptions.dataPin));
+    writeDoc(doc, "psxCommandPin", cleanPin(psxOptions.commandPin));
+    writeDoc(doc, "psxAttentionPin", cleanPin(psxOptions.attentionPin));
+    writeDoc(doc, "psxClockPin", cleanPin(psxOptions.clockPin));
 
     const InputHistoryOptions& inputHistoryOptions = Storage::getInstance().getAddonOptions().inputHistoryOptions;
     writeDoc(doc, "inputHistoryLength", inputHistoryOptions.length);
