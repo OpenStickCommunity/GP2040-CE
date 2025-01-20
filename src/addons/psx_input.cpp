@@ -1,4 +1,4 @@
-#include "addons/psx.h"
+#include "addons/psx_input.h"
 #include "drivermanager.h"
 #include "storagemanager.h"
 #include "hardware/gpio.h"
@@ -26,15 +26,6 @@ void PsxAddon::setup() {
     clockPin = psxOptions.clockPin;
     commandPin = psxOptions.commandPin;
     dataPin = psxOptions.dataPin;
-
-    // this pins can be used for debugging, to find if problems are tied to configuration or code itself.
-    /*
-    dataPin = 8;
-    commandPin = 10;
-    attentionPin = 12;
-    clockPin = 11;
-    acknowledgePin = 9;
-    */
 
     // Data (IN, 1, brown)
     gpio_init(dataPin);
@@ -69,14 +60,14 @@ void PsxAddon::setup() {
     gpio_pull_up(acknowledgePin);
     gpio_set_dir(acknowledgePin, GPIO_IN);
 
-    //todo : fill the gamePad so input can be used at boot to change mode and  maybe reboot
 };
 
 // Called after the gamepad is read, but before the read values are processed
 void PsxAddon::preprocess() {
     Gamepad *gamepad = Storage::getInstance().GetGamepad();
 
-    takeAttention();
+    // Set attention signal low
+    gpio_put(attentionPin, 0);
 
     uint8_t shouldBe0Xff = readwrite(0x01);
     uint8_t shouldBe0X41 = readwrite(0x42);
@@ -106,20 +97,13 @@ void PsxAddon::preprocess() {
         | ((answer1 & 0b10000000) ? 0 : GAMEPAD_MASK_LEFT)
     ;
 
-    releaseAttention();
+    // Set attention signal high
+    gpio_put(attentionPin, 1);
 }
 
 // Called after the gamepad values avec been processed
 void PsxAddon::process() {
 };
-
-void PsxAddon::takeAttention() {
-    gpio_put(attentionPin, 0);
-}
-
-void PsxAddon::releaseAttention() {
-    gpio_put(attentionPin, 1);
-}
 
 /**
  * Pins must be set up
