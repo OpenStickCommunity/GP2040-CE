@@ -30,10 +30,6 @@
     #define PSX_CLOCK_PIN -1
 #endif
 
-#ifndef PSX_ACKNOWLEDGE_PIN
-    #define PSX_ACKNOWLEDGE_PIN -1
-#endif
-
 class PsxAddon : public GPAddon {
 public:
 	virtual bool available();
@@ -42,7 +38,6 @@ public:
 	virtual void preprocess();
 	virtual std::string name() { return PsxAddonName; }
 private:
-    uint32_t acknowledgePin;
     uint32_t attentionPin;
     uint32_t clockPin;
     uint32_t commandPin;

@@ -722,7 +722,6 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.psxOptions, attentionPin, PSX_ATTENTION_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.psxOptions, commandPin, PSX_COMMAND_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.psxOptions, clockPin, PSX_CLOCK_PIN);
-    INIT_UNSET_PROPERTY(config.addonOptions.psxOptions, acknowledgePin, PSX_ACKNOWLEDGE_PIN);
 
     // addonOptions.pcf8575Options
     INIT_UNSET_PROPERTY(config.addonOptions.pcf8575Options, enabled, I2C_PCF8575_ENABLED);

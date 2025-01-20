@@ -34,12 +34,6 @@ export const psxScheme = {
 		.max(29)
 		.label('Validation message PSX Clock')
 		.validatePinWhenValue('psxEnabled'),
-	psxAcknowledgePin: yup
-		.number()
-		.min(-1)
-		.max(29)
-		.label('Validation message PSX Acknowledge')
-		.validatePinWhenValue('psxEnabled'),
 };
 
 export const psxState = {
@@ -48,7 +42,6 @@ export const psxState = {
 	psxCommandPin: -1,
 	psxAttentionPin: -1,
 	psxClockPin: -1,
-	psxAcknowledgePin: -1,
 };
 
 const PSX = ({ values, errors, handleChange, handleCheckbox }) => {
@@ -117,21 +110,6 @@ const PSX = ({ values, errors, handleChange, handleCheckbox }) => {
 						value={values.psxClockPin}
 						error={errors.psxClockPin}
 						isInvalid={errors.psxClockPin}
-						onChange={handleChange}
-						min={-1}
-						max={29}
-					/>
-				</Row>
-				<Row className="mb-3">
-					<FormControl
-						type="number"
-						label={t('PSX:acknowledge-pin')}
-						name="psxAcknowledgePin"
-						className="form-select-sm"
-						groupClassName="col-sm-3 mb-3"
-						value={values.psxAcknowledgePin}
-						error={errors.psxAcknowledgePin}
-						isInvalid={errors.psxAcknowledgePin}
 						onChange={handleChange}
 						min={-1}
 						max={29}

@@ -700,7 +700,6 @@ message PsxOptions
 	optional int32 attentionPin = 3;
 	optional int32 commandPin = 4;
 	optional int32 clockPin = 5;
-	optional int32 acknowledgePin = 6;
 }
 
 message KeyboardHostOptions

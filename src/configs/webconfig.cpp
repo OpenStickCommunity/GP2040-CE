@@ -1595,7 +1595,6 @@ std::string setAddonOptions()
     docToPin(psxOptions.commandPin, doc, "psxCommandPin");
     docToPin(psxOptions.attentionPin, doc, "psxAttentionPin");
     docToPin(psxOptions.clockPin, doc, "psxClockPin");
-    docToPin(psxOptions.acknowledgePin, doc, "psxAcknowledgePin");
 
     InputHistoryOptions& inputHistoryOptions = Storage::getInstance().getAddonOptions().inputHistoryOptions;
     docToValue(inputHistoryOptions.length, doc, "inputHistoryLength");
@@ -2019,7 +2018,6 @@ std::string getAddonOptions()
     writeDoc(doc, "psxCommandPin", cleanPin(psxOptions.commandPin));
     writeDoc(doc, "psxAttentionPin", cleanPin(psxOptions.attentionPin));
     writeDoc(doc, "psxClockPin", cleanPin(psxOptions.clockPin));
-    writeDoc(doc, "psxAcknowledgePin", cleanPin(psxOptions.acknowledgePin));
 
     const InputHistoryOptions& inputHistoryOptions = Storage::getInstance().getAddonOptions().inputHistoryOptions;
     writeDoc(doc, "inputHistoryLength", inputHistoryOptions.length);

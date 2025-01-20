@@ -9,7 +9,6 @@ bool PsxAddon::available() {
     const PsxOptions& psxOptions = Storage::getInstance().getAddonOptions().psxOptions;
     return 
         psxOptions.enabled
-        && isValidPin(psxOptions.acknowledgePin)
         && isValidPin(psxOptions.attentionPin)
         && isValidPin(psxOptions.clockPin)
         && isValidPin(psxOptions.commandPin)
@@ -21,7 +20,6 @@ bool PsxAddon::available() {
 void PsxAddon::setup() {
     const PsxOptions& psxOptions = Storage::getInstance().getAddonOptions().psxOptions;
 
-    acknowledgePin = psxOptions.acknowledgePin;
     attentionPin = psxOptions.attentionPin;
     clockPin = psxOptions.clockPin;
     commandPin = psxOptions.commandPin;
@@ -56,9 +54,6 @@ void PsxAddon::setup() {
     // Unknown (??, 8, white)
 
     // Acknowledge (IN, 9, green)
-    gpio_init(acknowledgePin);
-    gpio_pull_up(acknowledgePin);
-    gpio_set_dir(acknowledgePin, GPIO_IN);
 
 };
 
