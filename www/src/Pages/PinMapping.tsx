@@ -396,7 +396,7 @@ export default function PinMapping() {
 				<Col sm={2}>
 					{loadingProfiles && (
 						<div className="d-flex justify-content-center">
-							<span className="spinner-border" />
+							<span className="spinner-border"></span>
 						</div>
 					)}
 					<Nav variant="pills" className="flex-column">

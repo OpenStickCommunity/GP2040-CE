@@ -1,14 +1,20 @@
 import { create } from 'zustand';
 import WebApi from '../Services/WebApi';
+import {
+	ANIMATION_NON_PRESSED_EFFECTS,
+	ANIMATION_PRESSED_EFFECTS,
+} from '../Data/Animations';
 
 export const MAX_CUSTOM_COLORS = 8;
+export const MAX_CASE_LIGHTS = 40;
+export const MAX_PRESSED_COLORS = 30;
 export const MAX_ANIMATION_PROFILES = 4;
 
 type Profile = {
-	bEnabled: boolean;
-	baseCaseEffect: number;
-	baseNonPressedEffect: number;
-	basePressedEffect: number;
+	bEnabled: 0 | 1;
+	baseCaseEffect: typeof ANIMATION_NON_PRESSED_EFFECTS;
+	baseNonPressedEffect: typeof ANIMATION_NON_PRESSED_EFFECTS;
+	basePressedEffect: typeof ANIMATION_PRESSED_EFFECTS;
 	buttonPressFadeOutTimeInMs: number;
 	buttonPressHoldTimeInMs: number;
 	caseStaticColors: number[];
@@ -32,6 +38,7 @@ type State = {
 
 type Actions = {
 	fetchAnimationOptions: () => void;
+	saveAnimationOptions: () => Promise<object>;
 };
 
 const INITIAL_STATE: State = {
@@ -50,10 +57,15 @@ const useAnimationStore = create<State & Actions>()((set, get) => ({
 		set({ loadingAnimationOptions: true });
 
 		const { AnimationOptions } = await WebApi.getAnimationOptions();
-		set(() => ({
+		set((state) => ({
+			...state,
 			animationOptions: AnimationOptions,
 			loadingAnimationOptions: false,
 		}));
+	},
+	saveAnimationOptions: async () => {
+		const { animationOptions } = get();
+		return WebApi.setAnimationOptions({ animationOptions });
 	},
 }));
 

@@ -401,6 +401,10 @@ async function getAnimationOptions() {
 	}
 }
 
+async function setAnimationOptions(options) {
+	return Http.post(`${baseUrl}/api/setAnimationOptions`, options);
+}
+
 async function getPinMappings() {
 	try {
 		const { data } = await Http.get(`${baseUrl}/api/getPinMappings`);
@@ -711,6 +715,7 @@ function sanitizeRequest(request) {
 export default {
 	resetSettings,
 	getAnimationOptions,
+	setAnimationOptions,
 	getDisplayOptions,
 	setDisplayOptions,
 	getGamepadOptions,
