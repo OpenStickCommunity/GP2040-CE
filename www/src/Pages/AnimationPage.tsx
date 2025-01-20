@@ -61,7 +61,7 @@ export default function AnimationPage() {
 								<FormSelect
 									label={'Active profile'}
 									name="baseProfileIndex"
-									className="form-control-sm"
+									className="form-select-sm"
 									groupClassName="col-sm-4 mb-3"
 									value={values.baseProfileIndex}
 									error={errors.baseProfileIndex}
@@ -97,17 +97,13 @@ export default function AnimationPage() {
 									<FieldArray
 										name="customColors"
 										render={(arrayHelpers) => (
-											<div className="">
+											<div className="d-flex col gap-2">
 												{values.customColors.map((color, index) => (
-													<div
-														key={`color-${index}`}
-														className="d-flex col gap-2"
-													>
+													<div key={`color-${index}`} className="d-flex  gap-2">
 														<FormControl
 															type="color"
 															name={`customColors.${index}`}
-															className="w-100 form-control-sm"
-															groupClassName="col-2"
+															className="form-control-sm"
 															value={convertToHex(color)}
 															onChange={(e) =>
 																arrayHelpers.replace(
@@ -158,7 +154,7 @@ export default function AnimationPage() {
 												eventKey={`profile-${index}`}
 												title={`Profile ${index + 1}`}
 											>
-												Tab content for Profile {index + 1}
+												{/* Tab content for Profile {index + 1} */}
 											</Tab>
 										))}
 									</Tabs>
