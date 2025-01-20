@@ -91,7 +91,7 @@ app.get('/api/getSplashImage', (req, res) => {
 	return res.send(data);
 });
 
-app.get('/api/getAnimationOptions', (req, res) => {
+app.get('/api/getAnimationProtoOptions', (req, res) => {
 	return res.send({
 		AnimationOptions: {
 			brightness: 5,

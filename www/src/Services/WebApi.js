@@ -394,7 +394,7 @@ async function getButtonLayoutDefs() {
 
 async function getAnimationOptions() {
 	try {
-		const { data } = await Http.get(`${baseUrl}/api/getAnimationOptions`);
+		const { data } = await Http.get(`${baseUrl}/api/getAnimationProtoOptions`);
 		return data;
 	} catch (error) {
 		console.log(error);
@@ -402,7 +402,7 @@ async function getAnimationOptions() {
 }
 
 async function setAnimationOptions(options) {
-	return Http.post(`${baseUrl}/api/setAnimationOptions`, options);
+	return Http.post(`${baseUrl}/api/setAnimationProtoOptions`, options);
 }
 
 async function getPinMappings() {
