@@ -856,6 +856,8 @@ std::string getLedOptions()
     writeDoc(doc, "pledIndex4", ledOptions.pledIndex4);
     writeDoc(doc, "pledColor", ((RGB)ledOptions.pledColor).value(LED_FORMAT_RGB));
 
+
+
     return serialize_json(doc);
 }
 
@@ -941,6 +943,57 @@ std::string getButtonLayouts()
         writeDoc(ele, "parameters", "angleEnd", layoutB[elementCtr].parameters.angleEnd);
         writeDoc(ele, "parameters", "closed", layoutB[elementCtr].parameters.closed);
         writeDoc(doc, "displayLayouts", "buttonLayoutRight", std::to_string(elementCtr), ele);
+    }
+
+    return serialize_json(doc);
+}
+
+std::string setLightsDataOptions()
+{
+    DynamicJsonDocument doc = get_post_data();
+
+    LEDOptions& options = Storage::getInstance().getLedOptions();
+
+    JsonObject docJson = doc.as<JsonObject>();
+    JsonObject AnimOptions = docJson["LightData"];
+    JsonArray lightsList = AnimOptions["Lights"];
+    options.lightDataSize = 0;
+    for (JsonObject light : lightsList)
+    {
+        int thisEntryIndex = options.lightDataSize * 6;
+        options.lightData.bytes[thisEntryIndex] = light["firstLedIndex"].as<uint8_t>();
+        options.lightData.bytes[thisEntryIndex+1] = light["numLedsOnLight"].as<uint8_t>();
+        options.lightData.bytes[thisEntryIndex+2] = light["xCoord"].as<uint8_t>();
+        options.lightData.bytes[thisEntryIndex+3] = light["yCoord"].as<uint8_t>();
+        options.lightData.bytes[thisEntryIndex+4] = light["GPIOPinorCaseChainIndex"].as<uint8_t>();
+        options.lightData.bytes[thisEntryIndex+5] = (LightType_Proto)(light["lightType"].as<uint8_t>());
+
+        options.lightDataSize++;
+        if(options.lightDataSize >= 100) //600 bytes total, 6 elements per light. 100 max lights
+            break;
+    }
+
+    Storage::getInstance().save();
+    return serialize_json(doc);
+}
+
+std::string getLightsDataOptions()
+{
+    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    const LEDOptions& options = Storage::getInstance().getLedOptions();
+
+    JsonObject LedOptions = doc.createNestedObject("LightData");
+    JsonArray lightsList = LedOptions.createNestedArray("Lights");
+    for (int lightsIndex = 0; lightsIndex < options.lightDataSize; ++lightsIndex)
+    {
+        int thisEntryIndex = lightsIndex * 6;
+        JsonObject light = lightsList.createNestedObject();
+        light["firstLedIndex"] = options.lightData.bytes[thisEntryIndex];
+        light["numLedsOnLight"] = options.lightData.bytes[thisEntryIndex+1];
+        light["xCoord"] = options.lightData.bytes[thisEntryIndex+2];
+        light["yCoord"] = options.lightData.bytes[thisEntryIndex]+3;
+        light["GPIOPinorCaseChainIndex"] = options.lightData.bytes[thisEntryIndex+4];
+        light["lightType"] = options.lightData.bytes[thisEntryIndex+5];
     }
 
     return serialize_json(doc);
@@ -2362,6 +2415,8 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/setLedOptions", setLedOptions },
     { "/api/setAnimationProtoOptions", setAnimationProtoOptions },
     { "/api/getAnimationProtoOptions", getAnimationProtoOptions },
+    { "/api/setLightsDataOptions", setLightsDataOptions },
+    { "/api/getLightsDataOptions", getLightsDataOptions },
     { "/api/setPinMappings", setPinMappings },
     { "/api/setProfileOptions", setProfileOptions },
     { "/api/setPeripheralOptions", setPeripheralOptions },
