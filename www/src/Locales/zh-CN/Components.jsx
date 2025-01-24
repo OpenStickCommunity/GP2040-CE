@@ -15,7 +15,5 @@ export default {
 	},
 	'keyboard-mapper': {
 		'key-header': '按键',
-		'error-conflict': '按键 {{key}} 已分配',
-		'error-invalid': '{{key}} 对该电路板无效',
 	},
 };
