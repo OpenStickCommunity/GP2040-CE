@@ -450,7 +450,19 @@ std::string setDisplayOptions(DisplayOptions& displayOptions)
     readDoc(displayOptions.splashChoice, doc, "splashChoice");
     readDoc(displayOptions.splashDuration, doc, "splashDuration");
     readDoc(displayOptions.displaySaverTimeout, doc, "displaySaverTimeout");
+    readDoc(displayOptions.displaySaverMode, doc, "displaySaverMode");
+    readDoc(displayOptions.buttonLayoutOrientation, doc, "buttonLayoutOrientation");
     readDoc(displayOptions.turnOffWhenSuspended, doc, "turnOffWhenSuspended");
+    readDoc(displayOptions.inputMode, doc, "inputMode");
+    readDoc(displayOptions.turboMode, doc, "turboMode");
+    readDoc(displayOptions.dpadMode, doc, "dpadMode");
+    readDoc(displayOptions.socdMode, doc, "socdMode");
+    readDoc(displayOptions.macroMode, doc, "macroMode");
+    readDoc(displayOptions.profileMode, doc, "profileMode");
+    readDoc(displayOptions.inputHistoryEnabled, doc, "inputHistoryEnabled");
+    readDoc(displayOptions.inputHistoryLength, doc, "inputHistoryLength");
+    readDoc(displayOptions.inputHistoryCol, doc, "inputHistoryCol");
+    readDoc(displayOptions.inputHistoryRow, doc, "inputHistoryRow");
 
     readDoc(displayOptions.buttonLayoutCustomOptions.paramsLeft.layout, doc, "buttonLayoutCustomOptions", "params", "layout");
     readDoc(displayOptions.buttonLayoutCustomOptions.paramsLeft.common.startX, doc, "buttonLayoutCustomOptions", "params", "startX");
@@ -492,7 +504,19 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
     writeDoc(doc, "splashChoice", displayOptions.splashChoice);
     writeDoc(doc, "splashDuration", displayOptions.splashDuration);
     writeDoc(doc, "displaySaverTimeout", displayOptions.displaySaverTimeout);
+    writeDoc(doc, "displaySaverMode", displayOptions.displaySaverMode);
+    writeDoc(doc, "buttonLayoutOrientation", displayOptions.buttonLayoutOrientation);
     writeDoc(doc, "turnOffWhenSuspended", displayOptions.turnOffWhenSuspended);
+    writeDoc(doc, "inputMode", displayOptions.inputMode);
+    writeDoc(doc, "turboMode", displayOptions.turboMode);
+    writeDoc(doc, "dpadMode", displayOptions.dpadMode);
+    writeDoc(doc, "socdMode", displayOptions.socdMode);
+    writeDoc(doc, "macroMode", displayOptions.macroMode);
+    writeDoc(doc, "profileMode", displayOptions.profileMode);
+    writeDoc(doc, "inputHistoryEnabled", displayOptions.inputHistoryEnabled);
+    writeDoc(doc, "inputHistoryLength", displayOptions.inputHistoryLength);
+    writeDoc(doc, "inputHistoryCol", displayOptions.inputHistoryCol);
+    writeDoc(doc, "inputHistoryRow", displayOptions.inputHistoryRow);
 
     writeDoc(doc, "buttonLayoutCustomOptions", "params", "layout", displayOptions.buttonLayoutCustomOptions.paramsLeft.layout);
     writeDoc(doc, "buttonLayoutCustomOptions", "params", "startX", displayOptions.buttonLayoutCustomOptions.paramsLeft.common.startX);
@@ -1589,12 +1613,6 @@ std::string setAddonOptions()
     docToPin(snesOptions.latchPin, doc, "snesPadLatchPin");
     docToPin(snesOptions.dataPin, doc, "snesPadDataPin");
 
-    InputHistoryOptions& inputHistoryOptions = Storage::getInstance().getAddonOptions().inputHistoryOptions;
-    docToValue(inputHistoryOptions.length, doc, "inputHistoryLength");
-    docToValue(inputHistoryOptions.enabled, doc, "InputHistoryAddonEnabled");
-    docToValue(inputHistoryOptions.col, doc, "inputHistoryCol");
-    docToValue(inputHistoryOptions.row, doc, "inputHistoryRow");
-
     KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;
     docToValue(keyboardHostOptions.enabled, doc, "KeyboardHostAddonEnabled");
     docToValue(keyboardHostOptions.mapping.keyDpadUp, doc, "keyboardHostMap", "Up");
@@ -2004,12 +2022,6 @@ std::string getAddonOptions()
     writeDoc(doc, "snesPadLatchPin", cleanPin(snesOptions.latchPin));
     writeDoc(doc, "snesPadDataPin", cleanPin(snesOptions.dataPin));
     writeDoc(doc, "SNESpadAddonEnabled", snesOptions.enabled);
-
-    const InputHistoryOptions& inputHistoryOptions = Storage::getInstance().getAddonOptions().inputHistoryOptions;
-    writeDoc(doc, "inputHistoryLength", inputHistoryOptions.length);
-    writeDoc(doc, "InputHistoryAddonEnabled", inputHistoryOptions.enabled);
-    writeDoc(doc, "inputHistoryCol", inputHistoryOptions.col);
-    writeDoc(doc, "inputHistoryRow", inputHistoryOptions.row);
 
     const KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;
     writeDoc(doc, "KeyboardHostAddonEnabled", keyboardHostOptions.enabled);

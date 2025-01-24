@@ -186,6 +186,7 @@ src/display/ui/elements/GPWidget.cpp
 src/display/ui/elements/GPButton.cpp
 src/display/ui/elements/GPLever.cpp
 src/display/ui/elements/GPLabel.cpp
+src/display/ui/elements/GPMenu.cpp
 src/display/ui/elements/GPScreen.cpp
 src/display/ui/elements/GPShape.cpp
 src/display/ui/elements/GPSprite.cpp
@@ -196,6 +197,7 @@ src/display/ui/screens/PinViewerScreen.cpp
 src/display/ui/screens/RestartScreen.cpp
 src/display/ui/screens/StatsScreen.cpp
 src/display/ui/screens/SplashScreen.cpp
+src/display/ui/screens/DisplaySaverScreen.cpp
 src/display/GPGFX.cpp
 src/display/GPGFX_UI.cpp
 src/drivermanager.cpp

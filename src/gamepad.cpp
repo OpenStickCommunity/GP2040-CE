@@ -656,12 +656,47 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 				reqSave = true;
 			}
 			break;
+		case HOTKEY_MENU_NAV_UP:
+			if (action != lastAction) {
+                EventManager::getInstance().triggerEvent(new GPMenuNavigateEvent(GpioAction::MENU_NAVIGATION_UP));
+            }
+			break;
+		case HOTKEY_MENU_NAV_DOWN:
+			if (action != lastAction) {
+                EventManager::getInstance().triggerEvent(new GPMenuNavigateEvent(GpioAction::MENU_NAVIGATION_DOWN));
+            }
+			break;
+		case HOTKEY_MENU_NAV_LEFT:
+			if (action != lastAction) {
+                EventManager::getInstance().triggerEvent(new GPMenuNavigateEvent(GpioAction::MENU_NAVIGATION_LEFT));
+            }
+			break;
+		case HOTKEY_MENU_NAV_RIGHT:
+			if (action != lastAction) {
+                EventManager::getInstance().triggerEvent(new GPMenuNavigateEvent(GpioAction::MENU_NAVIGATION_RIGHT));
+            }
+			break;
+		case HOTKEY_MENU_NAV_SELECT:
+			if (action != lastAction) {
+                EventManager::getInstance().triggerEvent(new GPMenuNavigateEvent(GpioAction::MENU_NAVIGATION_SELECT));
+            }
+			break;
+		case HOTKEY_MENU_NAV_BACK:
+			if (action != lastAction) {
+                EventManager::getInstance().triggerEvent(new GPMenuNavigateEvent(GpioAction::MENU_NAVIGATION_BACK));
+            }
+			break;
+		case HOTKEY_MENU_NAV_TOGGLE:
+			if (action != lastAction) {
+				EventManager::getInstance().triggerEvent(new GPMenuNavigateEvent(GpioAction::MENU_NAVIGATION_TOGGLE));
+			}
+			break;
 		default: // Unknown action
 			return;
 	}
 
 	// only save if requested
 	if (reqSave) {
-		Storage::getInstance().save();
+		EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 	}
 }

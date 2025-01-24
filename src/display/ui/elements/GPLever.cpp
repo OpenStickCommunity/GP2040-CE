@@ -43,13 +43,13 @@ void GPLever::draw() {
         bool leftState  = (this->_leftMask > -1 ? getProcessedGamepad()->pressedButton((uint16_t)this->_leftMask) : getProcessedGamepad()->pressedLeft());
         bool downState  = (this->_downMask > -1 ? getProcessedGamepad()->pressedButton((uint16_t)this->_downMask) : getProcessedGamepad()->pressedDown());
         bool rightState = (this->_rightMask > -1 ? getProcessedGamepad()->pressedButton((uint16_t)this->_rightMask) : getProcessedGamepad()->pressedRight());
-				if (upState != downState) {
-          leverY -= upState ? leverRadius : -leverRadius;
+        if (upState != downState) {
+            leverY -= upState ? leverRadius : -leverRadius;
         }
-				if (leftState != rightState) {
-					leverX -= leftState ? leverRadius : -leverRadius;
-				}
-		} else {
+        if (leftState != rightState) {
+            leverX -= leftState ? leverRadius : -leverRadius;
+        }
+    } else {
         // analog
         uint16_t analogX = map((this->_inputType == DPAD_MODE_LEFT_ANALOG ? getProcessedGamepad()->state.lx : getProcessedGamepad()->state.rx), 0, 0xFFFF, 0, 100);
         uint16_t analogY = map((this->_inputType == DPAD_MODE_LEFT_ANALOG ? getProcessedGamepad()->state.ly : getProcessedGamepad()->state.ry), 0, 0xFFFF, 0, 100);
