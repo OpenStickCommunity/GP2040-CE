@@ -8,6 +8,7 @@
 
 #include "gpdriver.h"
 #include "drivers/keyboard/KeyboardDescriptors.h"
+#include "eventmanager.h"
 
 class KeyboardDriver : public GPDriver {
 public:
