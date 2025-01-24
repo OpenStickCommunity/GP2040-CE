@@ -95,10 +95,8 @@ void KeyboardDriver::process(Gamepad * gamepad) {
 
     if( volumeChange > 0 ) {
         pressKey(KEYBOARD_MULTIMEDIA_VOLUME_UP);
-        volumeChange--;
     } else if ( volumeChange < 0 ) {
         pressKey(KEYBOARD_MULTIMEDIA_VOLUME_DOWN);
-        volumeChange++;
     }
 
 	// Wake up TinyUSB device
@@ -123,6 +121,13 @@ void KeyboardDriver::process(Gamepad * gamepad) {
 			if ( tud_hid_report(keyboardReport.reportId, keyboard_report_payload, keyboard_report_size) ) {
 				memcpy(last_report, keyboard_report_payload, keyboard_report_size);
 				last_report_size = keyboard_report_size;
+
+                // Adjust volume on success
+                if( volumeChange > 0 ) {
+                    volumeChange--;
+                } else if ( volumeChange < 0 ) {
+                    volumeChange++;
+                }
 			}
 		}
 	}
