@@ -6,7 +6,7 @@
 #define CHASE_CYCLE_MIN         10
 #define CHASE_SECOND_LIGHT_OFFSET 0.5f
 
-Chase::Chase(Lights& InRGBLights, ChaseTypes InChaseType) : Animation(InRGBLights) 
+Chase::Chase(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType, ChaseTypes InChaseType) : Animation(InRGBLights, InButtonCaseEffectType) 
 {
   ChaseTypeInUse = InChaseType;
 

@@ -6,6 +6,7 @@
  */
 
 #include "Effects/Chase.hpp"
+#include "Effects/Rain.hpp"
 #include "Effects/Rainbow.hpp"
 #include "Effects/StaticColor.hpp"
 #include "Effects/JiggleStaticColor.hpp"
@@ -197,6 +198,8 @@ void AnimationStation::Animate()
   specialMoveSystem.Update();
 
   baseAnimation->Animate(this->frame);
+  if(caseAnimation != nullptr)
+    caseAnimation->Animate(this->frame);
   buttonAnimation->Animate(this->frame);
   if(specialMoveAnimation)
   {
@@ -219,41 +222,114 @@ void AnimationStation::Clear()
 
 void AnimationStation::SetSpecialMoveAnimation(SpecialMoveEffects AnimationToPlay, uint32_t OptionalParams)
 {
-    switch(AnimationToPlay)
-    {
-    case SpecialMoveEffects::SPECIALMOVE_SMEFFECT_WAVE:
-        this->specialMoveAnimation = new SMWave(RGBLights);
-        break;
+  EButtonCaseEffectType buttonCaseEffect = EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_ONLY;
+  if(this->options.profiles[this->options.baseProfileIndex].bUseCaseLightsInSpecialMoves)
+    buttonCaseEffect = EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE;
 
-    case SpecialMoveEffects::SPECIALMOVE_SMEFFECT_PULSECOLOR:
-        this->specialMoveAnimation = new SMPulseColour(RGBLights);
-        break;
+  switch(AnimationToPlay)
+  {
+  case SpecialMoveEffects::SPECIALMOVE_SMEFFECT_WAVE:
+    this->specialMoveAnimation = new SMWave(RGBLights, buttonCaseEffect);
+    break;
 
-    case SpecialMoveEffects::SPECIALMOVE_SMEFFECT_CIRCLECOLOR:
-        this->specialMoveAnimation = new SMCircleColour(RGBLights);
-        break;
+  case SpecialMoveEffects::SPECIALMOVE_SMEFFECT_PULSECOLOR:
+    this->specialMoveAnimation = new SMPulseColour(RGBLights, buttonCaseEffect);
+    break;
 
-    case SpecialMoveEffects::SPECIALMOVE_SMEFFECT_KNIGHTRIDER:
-        this->specialMoveAnimation = new SMKnightRider(RGBLights);
-        break;
+  case SpecialMoveEffects::SPECIALMOVE_SMEFFECT_CIRCLECOLOR:
+    this->specialMoveAnimation = new SMCircleColour(RGBLights, buttonCaseEffect);
+    break;
 
-    case SpecialMoveEffects::SPECIALMOVE_SMEFFECT_RANDOMFLASH:
-        //this->specialMoveAnimation = new SMRandomFlash(RGBLights);
-        break;
+  case SpecialMoveEffects::SPECIALMOVE_SMEFFECT_KNIGHTRIDER:
+    this->specialMoveAnimation = new SMKnightRider(RGBLights, buttonCaseEffect);
+    break;
 
-    default:
-        break;
-    }
+  case SpecialMoveEffects::SPECIALMOVE_SMEFFECT_RANDOMFLASH:
+    //this->specialMoveAnimation = new SMRandomFlash(RGBLights, buttonCaseEffect);
+    break;
 
-    if(this->specialMoveAnimation)
-    {
-        this->specialMoveAnimation->SetOptionalParams(OptionalParams);
-    }
+  default:
+      break;
+  }
+
+  if(this->specialMoveAnimation)
+  {
+      this->specialMoveAnimation->SetOptionalParams(OptionalParams);
+  }
 }
 
 int8_t AnimationStation::GetMode() 
 { 
   return this->options.baseProfileIndex; 
+}
+
+Animation* AnimationStation::GetNonPressedEffectForEffectType(AnimationNonPressedEffects EffectType, EButtonCaseEffectType InButtonCaseEffectType)
+{
+  Animation* newEffect = nullptr;
+
+  switch (EffectType) 
+  {
+  case AnimationNonPressedEffects::NONPRESSED_EFFECT_RAINBOW_SYNCED:
+    newEffect = new RainbowSynced(RGBLights, InButtonCaseEffectType);
+    break;
+
+  case AnimationNonPressedEffects::NONPRESSED_EFFECT_RAINBOW_ROTATE:
+    newEffect = new RainbowRotate(RGBLights, InButtonCaseEffectType);
+    break;
+
+  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_SEQUENTIAL:
+    newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_SEQUENTIAL);
+    break;
+  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_LEFT_TO_RIGHT:
+    newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_LEFT_TO_RIGHT);
+    break;  
+  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_RIGHT_TO_LEFT:
+    newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_RIGHT_TO_LEFT);
+    break;  
+  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_TOP_TO_BOTTOM:
+    newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_TOP_TO_BOTTOM);
+    break;  
+  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_BOTTOM_TO_TOP:
+    newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_BOTTOM_TO_TOP);
+    break;  
+  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_SEQUENTIAL_PINGPONG:
+    newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_SEQUENTIAL_PINGPONG);
+    break;  
+  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_HORIZONTAL_PINGPONG:
+    newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_HORIZONTAL_PINGPONG);
+    break;
+  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_VERTICAL_PINGPONG:
+    newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_VERTICAL_PINGPONG);
+    break;  
+  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_RANDOM:
+    newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_RANDOM);
+    break; 
+
+  case AnimationNonPressedEffects::NONPRESSED_EFFECT_STATIC_COLOR:
+    newEffect = new StaticColor(RGBLights, InButtonCaseEffectType);
+    break;
+  case AnimationNonPressedEffects::NONPRESSED_EFFECT_JIGGLESTATIC:
+    newEffect = new JiggleStaticColor(RGBLights, InButtonCaseEffectType);
+    break;
+  case AnimationNonPressedEffects::NONPRESSED_EFFECT_JIGGLETWOSTATIC:
+    newEffect = new JiggleTwoStaticColor(RGBLights, InButtonCaseEffectType);
+    break;
+
+  case AnimationNonPressedEffects::NONPRESSED_EFFECT_RAIN_LOW:
+    newEffect = new Rain(RGBLights, InButtonCaseEffectType, ERainFrequency::RAIN_LOW);
+    break;
+  case AnimationNonPressedEffects::NONPRESSED_EFFECT_RAIN_MEDIUM:
+    newEffect = new Rain(RGBLights, InButtonCaseEffectType, ERainFrequency::RAIN_MEDIUM);
+    break;  
+  case AnimationNonPressedEffects::NONPRESSED_EFFECT_RAIN_HIGH:
+    newEffect = new Rain(RGBLights, InButtonCaseEffectType, ERainFrequency::RAIN_HIGH);
+    break;
+
+  default:
+    break;
+  }
+
+  return newEffect;
 }
 
 void AnimationStation::SetMode(int8_t mode) 
@@ -265,6 +341,11 @@ void AnimationStation::SetMode(int8_t mode)
   {
     delete this->baseAnimation;
     this->baseAnimation = nullptr;
+  }
+  if (this->caseAnimation != nullptr) 
+  {
+    delete this->caseAnimation;
+    this->caseAnimation = nullptr;
   }
   if (this->buttonAnimation != nullptr) 
   {
@@ -279,62 +360,17 @@ void AnimationStation::SetMode(int8_t mode)
   if(mode == -1)
     return; 
 
-  //debug
-  //this->options.profiles[this->options.baseProfileIndex].baseNonPressedEffect = NONPRESSED_EFFECT_CHASE_RANDOM;
+  bool bCaseLightsUsingButtonNonPressedAnim = this->options.profiles[this->options.baseProfileIndex].baseNonPressedEffect == this->options.profiles[this->options.baseProfileIndex].baseCaseEffect;
 
   //set new profile nonpressed animation
-  switch (this->options.profiles[this->options.baseProfileIndex].baseNonPressedEffect) 
+  this->baseAnimation = GetNonPressedEffectForEffectType(this->options.profiles[this->options.baseProfileIndex].baseNonPressedEffect, bCaseLightsUsingButtonNonPressedAnim ? EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE : EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_ONLY);
+
+  //Set case animation if required
+  if(!bCaseLightsUsingButtonNonPressedAnim)
   {
-  case AnimationNonPressedEffects::NONPRESSED_EFFECT_RAINBOW_SYNCED:
-    this->baseAnimation = new RainbowSynced(RGBLights);
-    break;
-
-  case AnimationNonPressedEffects::NONPRESSED_EFFECT_RAINBOW_ROTATE:
-    this->baseAnimation = new RainbowRotate(RGBLights);
-    break;
-
-  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_SEQUENTIAL:
-    this->baseAnimation = new Chase(RGBLights, ChaseTypes::CHASETYPES_SEQUENTIAL);
-    break;
-  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_LEFT_TO_RIGHT:
-    this->baseAnimation = new Chase(RGBLights, ChaseTypes::CHASETYPES_LEFT_TO_RIGHT);
-    break;  
-  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_RIGHT_TO_LEFT:
-    this->baseAnimation = new Chase(RGBLights, ChaseTypes::CHASETYPES_RIGHT_TO_LEFT);
-    break;  
-  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_TOP_TO_BOTTOM:
-    this->baseAnimation = new Chase(RGBLights, ChaseTypes::CHASETYPES_TOP_TO_BOTTOM);
-    break;  
-  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_BOTTOM_TO_TOP:
-    this->baseAnimation = new Chase(RGBLights, ChaseTypes::CHASETYPES_BOTTOM_TO_TOP);
-    break;  
-  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_SEQUENTIAL_PINGPONG:
-    this->baseAnimation = new Chase(RGBLights, ChaseTypes::CHASETYPES_SEQUENTIAL_PINGPONG);
-    break;  
-  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_HORIZONTAL_PINGPONG:
-    this->baseAnimation = new Chase(RGBLights, ChaseTypes::CHASETYPES_HORIZONTAL_PINGPONG);
-    break;
-  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_VERTICAL_PINGPONG:
-    this->baseAnimation = new Chase(RGBLights, ChaseTypes::CHASETYPES_VERTICAL_PINGPONG);
-    break;  
-  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_RANDOM:
-    this->baseAnimation = new Chase(RGBLights, ChaseTypes::CHASETYPES_RANDOM);
-    break; 
-
-  case AnimationNonPressedEffects::NONPRESSED_EFFECT_STATIC_COLOR:
-    this->baseAnimation = new StaticColor(RGBLights);
-    break;
-  case AnimationNonPressedEffects::NONPRESSED_EFFECT_JIGGLESTATIC:
-    this->baseAnimation = new JiggleStaticColor(RGBLights);
-    break;
-  case AnimationNonPressedEffects::NONPRESSED_EFFECT_JIGGLETWOSTATIC:
-    this->baseAnimation = new JiggleTwoStaticColor(RGBLights);
-    break;
-
-  default:
-    break;
+    this->caseAnimation = GetNonPressedEffectForEffectType(this->options.profiles[this->options.baseProfileIndex].baseCaseEffect, EButtonCaseEffectType::BUTTONCASELIGHTTYPE_CASE_ONLY);
   }
-
+  
   //set new profile pressed animation
   switch (this->options.profiles[this->options.baseProfileIndex].basePressedEffect) 
   {

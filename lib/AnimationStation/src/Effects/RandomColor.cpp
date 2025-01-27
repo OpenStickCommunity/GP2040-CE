@@ -1,10 +1,10 @@
 #include "RandomColor.hpp"
 
-RandomColor::RandomColor(Lights& InRGBLights) : Animation(InRGBLights) 
+RandomColor::RandomColor(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType) : Animation(InRGBLights, InButtonCaseEffectType) 
 {
 }
 
-RandomColor::RandomColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPins) : Animation(InRGBLights) 
+RandomColor::RandomColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPins) : Animation(InRGBLights, EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_ONLY) 
 {
   isButtonAnimation = true;
   pressedPins = InPressedPins;

@@ -9,7 +9,7 @@
 
 class StaticColor : public Animation {
 public:
-  StaticColor(Lights& InRGBLights);
+  StaticColor(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType);
   StaticColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPins);
   ~StaticColor() { };
 

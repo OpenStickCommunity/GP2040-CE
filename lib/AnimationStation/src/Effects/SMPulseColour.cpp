@@ -4,7 +4,7 @@
 #define PULSE_PREWAIT_MS 150
 #define PULSE_POSTWAIT_MS 150
 
-SMPulseColour::SMPulseColour(Lights& InRGBLights) : Animation(InRGBLights) 
+SMPulseColour::SMPulseColour(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType) : Animation(InRGBLights, InButtonCaseEffectType) 
 {
 }
 
@@ -183,7 +183,7 @@ void SMPulseColour::Animate(RGB (&frame)[100])
 
     for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
     {
-        if (LightTypeIsForSpecialMoveAnimation(RGBLights->AllLights[lightIndex].Type))
+        if (LightTypeIsForNonPressedAnimation(RGBLights->AllLights[lightIndex].Type))
         {
             uint8_t firstLightIndex = RGBLights->AllLights[lightIndex].FirstLedIndex;
             uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[lightIndex].LedsPerLight;

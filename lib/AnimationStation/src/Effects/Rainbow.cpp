@@ -10,7 +10,7 @@
 //grid distance to frame offset value
 #define RAINBOW_GRID_OFFSET_ADJUST  30
 
-RainbowSynced::RainbowSynced(Lights& InRGBLights) : Animation(InRGBLights) 
+RainbowSynced::RainbowSynced(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType) : Animation(InRGBLights, InButtonCaseEffectType) 
 {
   if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime > RAINBOW_CYCLE_MAX + RAINBOW_CYCLE_INCREMENT)
     AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = RAINBOW_CYCLE_MAX + RAINBOW_CYCLE_INCREMENT;
@@ -97,7 +97,7 @@ void RainbowSynced::ParameterDown()
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
-RainbowRotate::RainbowRotate(Lights& InRGBLights) : Animation(InRGBLights) 
+RainbowRotate::RainbowRotate(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType) : Animation(InRGBLights, InButtonCaseEffectType) 
 {
   if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime > RAINBOW_CYCLE_MAX)
     AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = RAINBOW_CYCLE_MAX;

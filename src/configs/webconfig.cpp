@@ -991,7 +991,7 @@ std::string getLightsDataOptions()
         light["firstLedIndex"] = options.lightData.bytes[thisEntryIndex];
         light["numLedsOnLight"] = options.lightData.bytes[thisEntryIndex+1];
         light["xCoord"] = options.lightData.bytes[thisEntryIndex+2];
-        light["yCoord"] = options.lightData.bytes[thisEntryIndex]+3;
+        light["yCoord"] = options.lightData.bytes[thisEntryIndex+3];
         light["GPIOPinorCaseChainIndex"] = options.lightData.bytes[thisEntryIndex+4];
         light["lightType"] = options.lightData.bytes[thisEntryIndex+5];
     }

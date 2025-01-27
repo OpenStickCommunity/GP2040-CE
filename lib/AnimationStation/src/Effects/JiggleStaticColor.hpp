@@ -10,7 +10,7 @@
 
 class JiggleStaticColor : public StaticColor {
 public:
-  JiggleStaticColor(Lights& InRGBLights);
+  JiggleStaticColor(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType);
   JiggleStaticColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPins);
   ~JiggleStaticColor() { };
 

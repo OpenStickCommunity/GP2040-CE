@@ -8,8 +8,10 @@
 
 LEDFormat Animation::format;
 
-Animation::Animation(Lights& InRGBLights) : RGBLights(&InRGBLights) 
+Animation::Animation(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType) : RGBLights(&InRGBLights) 
 {
+  ButtonCaseEffectType = InButtonCaseEffectType;
+
   fadeTimes.clear();
   for(int ledIndex = 0; ledIndex < RGBLights->GetLedCount(); ++ledIndex)
   {
@@ -153,7 +155,8 @@ RGB Animation::FadeColor(RGB start, RGB end, uint32_t timeRemainingInMs)
 //Type helpers
 bool Animation::LightTypeIsForNonPressedAnimation(LightType Type)
 {
-  if(Type == LightType::LightType_ActionButton || Type == LightType::LightType_Case)
+  if((Type == LightType::LightType_ActionButton && (ButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_ONLY || ButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE) ) || 
+    (Type == LightType::LightType_Case && (ButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_CASE_ONLY || ButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE) ) )
     return true;
 
   return false;
@@ -162,14 +165,6 @@ bool Animation::LightTypeIsForNonPressedAnimation(LightType Type)
 bool Animation::LightTypeIsForPressedAnimation(LightType Type)
 {
   if(Type == LightType::LightType_ActionButton)
-    return true;
-
-  return false;
-}
-
-bool Animation::LightTypeIsForSpecialMoveAnimation(LightType Type)
-{
-  if(Type == LightType::LightType_ActionButton || (Type == LightType::LightType_Case && AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].bUseCaseLightsInSpecialMoves))
     return true;
 
   return false;

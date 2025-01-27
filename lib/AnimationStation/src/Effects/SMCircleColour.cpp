@@ -7,12 +7,13 @@
 #define TWOCIRCLES 12.5666
 #define ONECIRCLE (TWOCIRCLES / 2.0f)
 
-SMCircleColour::SMCircleColour(Lights& InRGBLights) : Animation(InRGBLights) 
+SMCircleColour::SMCircleColour(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType) : Animation(InRGBLights, InButtonCaseEffectType) 
 {
     for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
     {
         if(LightTypeIsForNonPressedAnimation(RGBLights->AllLights[lightIndex].Type) == false)
             continue;
+
         if(RGBLights->AllLights[lightIndex].Position.XPosition > MaxXCoord)
             MaxXCoord = RGBLights->AllLights[lightIndex].Position.XPosition;
         if(RGBLights->AllLights[lightIndex].Position.YPosition > MaxYCoord)
@@ -141,7 +142,7 @@ bool SMCircleColour::UpdateCircle(RGB (&frame)[100])
 
     for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
     {
-        if (LightTypeIsForSpecialMoveAnimation(RGBLights->AllLights[lightIndex].Type))
+        if (LightTypeIsForNonPressedAnimation(RGBLights->AllLights[lightIndex].Type))
         {
             uint8_t firstLightIndex = RGBLights->AllLights[lightIndex].FirstLedIndex;
             uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[lightIndex].LedsPerLight;

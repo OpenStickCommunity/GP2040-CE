@@ -33,6 +33,9 @@ typedef enum
   NONPRESSED_EFFECT_CHASE_RANDOM,
   NONPRESSED_EFFECT_JIGGLESTATIC,
   NONPRESSED_EFFECT_JIGGLETWOSTATIC,
+  NONPRESSED_EFFECT_RAIN_LOW,
+  NONPRESSED_EFFECT_RAIN_MEDIUM,
+  NONPRESSED_EFFECT_RAIN_HIGH,
 } AnimationNonPressedEffects;
 
 //List of non-pressed animation types
@@ -136,6 +139,9 @@ public:
   //Running non-pressed animation
   Animation* baseAnimation;
 
+  //Running case animation
+  Animation* caseAnimation;
+
   //Running pressed animation
   Animation* buttonAnimation;
 
@@ -159,6 +165,8 @@ protected:
   static uint8_t brightnessMax;
   static uint8_t brightnessSteps;
   static float brightnessX;
+
+  Animation* GetNonPressedEffectForEffectType(AnimationNonPressedEffects EffectType, EButtonCaseEffectType InButtonCaseEffectType);
 
   //Light data
   Lights RGBLights;

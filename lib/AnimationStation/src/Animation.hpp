@@ -106,9 +106,16 @@ inline const std::vector<RGB> colors {
 #define MAX_CUSTOM_COLORS 16
 inline std::vector<RGB> customColors { };
 
+typedef enum
+{
+  BUTTONCASELIGHTTYPE_BUTTON_ONLY,
+  BUTTONCASELIGHTTYPE_CASE_ONLY,
+  BUTTONCASELIGHTTYPE_BUTTON_AND_CASE,
+} EButtonCaseEffectType;
+
 class Animation {
 public:
-  Animation(Lights& InRGBLights);
+  Animation(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType);
   virtual ~Animation(){};
 
   //Which buttons are held at the moment
@@ -145,7 +152,6 @@ protected:
   //Type Helpers
   bool LightTypeIsForNonPressedAnimation(LightType Type);
   bool LightTypeIsForPressedAnimation(LightType Type);
-  bool LightTypeIsForSpecialMoveAnimation(LightType Type);
 
   //Get colour helpers
   RGB GetNonPressedColorForLight(uint32_t LightIndex);
@@ -155,7 +161,7 @@ protected:
   //Light data
   Lights* RGBLights;
 
-  //Is this running as a button animation
+  //Is this running as a button pressed animation
   bool isButtonAnimation = false;
 
   //Pins currently pressed
@@ -170,6 +176,8 @@ protected:
   uint32_t fadeoutTimeInMs = 1000;
 
   int64_t updateTimeInMs = 20;
+
+  EButtonCaseEffectType ButtonCaseEffectType = EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE;
 };
 
 #endif
