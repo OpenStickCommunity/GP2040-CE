@@ -82,6 +82,35 @@ void PS4Driver::initialize() {
         deviceDescriptor[11] = MSB(DS4_PRODUCT_ID);
     }
 
+    deviceType = InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GUITAR;
+
+    // check InputModeDeviceType mode for PS4 driver and set PS4ControllerType where applicable
+    // PS5 mode currently forces PS4ControllerType 7 (PS4_ARCADESTICK) for PS5 compatibility
+    switch (deviceType) {
+        case InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_WHEEL:
+            controllerType = PS4ControllerType::PS4_WHEEL;
+            break;
+        case InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_HOTAS:
+            controllerType = PS4ControllerType::PS4_HOTAS;
+            break;
+        case InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GUITAR:
+            controllerType = PS4ControllerType::PS4_GUITAR;
+            break;
+        case InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_DRUM:
+            controllerType = PS4ControllerType::PS4_DRUMS;
+            break;
+        case InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GAMEPAD:
+        default:
+            // if PS4, PS4ControllerType::PS4_CONTROLLER
+            // if PS5, PS4ControllerType::PS4_ARCADESTICK
+            if (options.inputMode == INPUT_MODE_PS4) {
+                controllerType = PS4ControllerType::PS4_CONTROLLER;
+            } else {
+                controllerType = PS4ControllerType::PS4_ARCADESTICK;
+            }
+            break;
+    }
+
     // init feature data
     touchpadData.p1.unpressed = 1;
     touchpadData.p1.set_x(PS4_TP_X_MAX / 2);
@@ -122,6 +151,8 @@ void PS4Driver::initialize() {
         .button_select = 0, .button_start = 0, .button_l3 = 0, .button_r3 = 0, .button_home = 0,
         .sensor_data = sensorData, .touchpad_active = 0, .padding = 0, .tpad_increment = 0,
         .touchpad_data = touchpadData,
+        .joystick_x = PS4_JOYSTICK_MID, .joystick_y = PS4_JOYSTICK_MID, 
+        .twist_rudder = PS4_JOYSTICK_MID, .throttle = PS4_JOYSTICK_MID, .rocker_switch = PS4_JOYSTICK_MID,
         .mystery_2 = { }
     };
 
@@ -147,11 +178,12 @@ void PS4Driver::initialize() {
 void PS4Driver::initializeAux() {
     ps4AuthDriver = nullptr;
     GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();
-    if ( controllerType == PS4ControllerType::PS4_CONTROLLER ) {
-        ps4AuthDriver = new PS4Auth(gamepadOptions.ps4AuthType);
-    } else if ( controllerType == PS4ControllerType::PS4_ARCADESTICK ) {
+    
+    if ( controllerType == PS4ControllerType::PS4_ARCADESTICK ) {
         // Setup PS5 Auth System
         ps4AuthDriver = new PS4Auth(gamepadOptions.ps5AuthType);
+    } else {
+        ps4AuthDriver = new PS4Auth(gamepadOptions.ps4AuthType);
     }
     // If authentication driver is set AND auth driver can load (usb enabled, i2c enabled, keys loaded, etc.)
     if ( ps4AuthDriver != nullptr && ps4AuthDriver->available() ) {

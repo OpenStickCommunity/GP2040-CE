@@ -152,6 +152,17 @@ enum InputModeAuthType
     INPUT_MODE_AUTH_TYPE_I2C = 3;
 }
 
+enum InputModeDeviceType
+{
+    option (nanopb_enumopt).long_names = false;
+
+    INPUT_MODE_DEVICE_TYPE_GAMEPAD = 0;
+    INPUT_MODE_DEVICE_TYPE_WHEEL = 1;
+    INPUT_MODE_DEVICE_TYPE_HOTAS = 2;
+    INPUT_MODE_DEVICE_TYPE_GUITAR = 3;
+    INPUT_MODE_DEVICE_TYPE_DRUM = 4;
+}
+
 enum DpadMode
 {
     option (nanopb_enumopt).long_names = false;
@@ -399,7 +410,11 @@ enum PS4ControllerType
     option (nanopb_enumopt).long_names = false;
 
     PS4_CONTROLLER = 0;
+    PS4_GUITAR = 1;
+    PS4_DRUMS = 2;
+    PS4_WHEEL = 6;
     PS4_ARCADESTICK = 7;
+    PS4_HOTAS = 8;
 }
 
 enum MacroType
