@@ -21,7 +21,7 @@ export default defineConfig({
 		alias: {
 			"~bootstrap": path.resolve(__dirname, "node_modules/bootstrap"),
 			lodash: 'lodash-es',
-			proto: path.resolve(__dirname, "src_gen"),
+			"@proto": path.resolve(__dirname, "src_gen"),
 		},
 	},
 });
