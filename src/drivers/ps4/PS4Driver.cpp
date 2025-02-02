@@ -140,20 +140,19 @@ void PS4Driver::initialize() {
     touchCounter = 0;
 
     ps4Report = {
-        .report_id = 0x01,
-        .left_stick_x = PS4_JOYSTICK_MID,
-        .left_stick_y = PS4_JOYSTICK_MID,
-        .right_stick_x = PS4_JOYSTICK_MID,
-        .right_stick_y = PS4_JOYSTICK_MID,
+        .reportID = 0x01,
+        .leftStickX = PS4_JOYSTICK_MID,
+        .leftStickY = PS4_JOYSTICK_MID,
+        .rightStickX = PS4_JOYSTICK_MID,
+        .rightStickY = PS4_JOYSTICK_MID,
         .dpad = 0x08,
-        .button_west = 0, .button_south = 0, .button_east = 0, .button_north = 0,
-        .button_l1 = 0, .button_r1 = 0, .button_l2 = 0, .button_r2 = 0,
-        .button_select = 0, .button_start = 0, .button_l3 = 0, .button_r3 = 0, .button_home = 0,
-        .sensor_data = sensorData, .touchpad_active = 0, .padding = 0, .tpad_increment = 0,
-        .touchpad_data = touchpadData,
-        .joystick_x = PS4_JOYSTICK_MID, .joystick_y = PS4_JOYSTICK_MID, 
-        .twist_rudder = PS4_JOYSTICK_MID, .throttle = PS4_JOYSTICK_MID, .rocker_switch = PS4_JOYSTICK_MID,
-        .mystery_2 = { }
+        .buttonWest = 0, .buttonSouth = 0, .buttonEast = 0, .buttonNorth = 0,
+        .buttonL1 = 0, .buttonR1 = 0, .buttonL2 = 0, .buttonR2 = 0,
+        .buttonSelect = 0, .buttonStart = 0, .buttonL3 = 0, .buttonR3 = 0, .buttonHome = 0, .buttonTouchpad = 0,
+        .reportCounter = 0, .leftTrigger = 0, .rightTrigger = 0,
+        //.axisTiming = 0,
+        //.sensorData = sensorData, .touchpadActive = 0, .padding = 0, .tpadIncrement = 0,
+        //.touchpadData = touchpadData
     };
 
     class_driver = {
@@ -210,39 +209,46 @@ void PS4Driver::process(Gamepad * gamepad) {
 
     bool anyA2A3A4 = gamepad->pressedA2() || gamepad->pressedA3() || gamepad->pressedA4();
 
-    ps4Report.button_south    = gamepad->pressedB1();
-    ps4Report.button_east     = gamepad->pressedB2();
-    ps4Report.button_west     = gamepad->pressedB3();
-    ps4Report.button_north    = gamepad->pressedB4();
-    ps4Report.button_l1       = gamepad->pressedL1();
-    ps4Report.button_r1       = gamepad->pressedR1();
-    ps4Report.button_l2       = gamepad->pressedL2();
-    ps4Report.button_r2       = gamepad->pressedR2();
-    ps4Report.button_select   = options.switchTpShareForDs4 ? anyA2A3A4 : gamepad->pressedS1();
-    ps4Report.button_start    = gamepad->pressedS2();
-    ps4Report.button_l3       = gamepad->pressedL3();
-    ps4Report.button_r3       = gamepad->pressedR3();
-    ps4Report.button_home     = gamepad->pressedA1();
-    ps4Report.button_touchpad = options.switchTpShareForDs4 ? gamepad->pressedS1() : anyA2A3A4;
+    if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GAMEPAD) {
+    } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GUITAR) {
+        ps4Report.guitar.blue    = gamepad->pressedB1();
+        ps4Report.guitar.red     = gamepad->pressedB2();
+        ps4Report.guitar.yellow  = gamepad->pressedB3();
+        ps4Report.guitar.green   = gamepad->pressedB4();
+    }
+    ps4Report.buttonSouth    = gamepad->pressedB1();
+    ps4Report.buttonEast     = gamepad->pressedB2();
+    ps4Report.buttonWest     = gamepad->pressedB3();
+    ps4Report.buttonNorth    = gamepad->pressedB4();
+    ps4Report.buttonL1       = gamepad->pressedL1();
+    ps4Report.buttonR1       = gamepad->pressedR1();
+    ps4Report.buttonL2       = gamepad->pressedL2();
+    ps4Report.buttonR2       = gamepad->pressedR2();
+    ps4Report.buttonSelect   = options.switchTpShareForDs4 ? anyA2A3A4 : gamepad->pressedS1();
+    ps4Report.buttonStart    = gamepad->pressedS2();
+    ps4Report.buttonL3       = gamepad->pressedL3();
+    ps4Report.buttonR3       = gamepad->pressedR3();
+    ps4Report.buttonHome     = gamepad->pressedA1();
+    ps4Report.buttonTouchpad = options.switchTpShareForDs4 ? gamepad->pressedS1() : anyA2A3A4;
 
-    ps4Report.left_stick_x = static_cast<uint8_t>(gamepad->state.lx >> 8);
-    ps4Report.left_stick_y = static_cast<uint8_t>(gamepad->state.ly >> 8);
-    ps4Report.right_stick_x = static_cast<uint8_t>(gamepad->state.rx >> 8);
-    ps4Report.right_stick_y = static_cast<uint8_t>(gamepad->state.ry >> 8);
+    ps4Report.leftStickX = static_cast<uint8_t>(gamepad->state.lx >> 8);
+    ps4Report.leftStickY = static_cast<uint8_t>(gamepad->state.ly >> 8);
+    ps4Report.rightStickX = static_cast<uint8_t>(gamepad->state.rx >> 8);
+    ps4Report.rightStickY = static_cast<uint8_t>(gamepad->state.ry >> 8);
 
     if (gamepad->hasAnalogTriggers)
     {
-        ps4Report.left_trigger = gamepad->state.lt;
-        ps4Report.right_trigger = gamepad->state.rt;
+        ps4Report.leftTrigger = gamepad->state.lt;
+        ps4Report.rightTrigger = gamepad->state.rt;
     } else {
-        ps4Report.left_trigger = gamepad->pressedL2() ? 0xFF : 0;
-        ps4Report.right_trigger = gamepad->pressedR2() ? 0xFF : 0;
+        ps4Report.leftTrigger = gamepad->pressedL2() ? 0xFF : 0;
+        ps4Report.rightTrigger = gamepad->pressedR2() ? 0xFF : 0;
     }
 
     // if the touchpad is pressed (note A2 vs. S1 choice above), emulate one finger of the touchpad
-    touchpadData.p1.unpressed = ps4Report.button_touchpad ? 0 : 1;
-    ps4Report.touchpad_active = ps4Report.button_touchpad ? 0x01 : 0x00;
-    if (ps4Report.button_touchpad) {
+    touchpadData.p1.unpressed = ps4Report.buttonTouchpad ? 0 : 1;
+    ps4Report.gamepad.touchpadActive = ps4Report.buttonTouchpad ? 0x01 : 0x00;
+    if (ps4Report.buttonTouchpad) {
         // make the assumption that since touchpad button is already being pressed, 
         // the first touch position is in use and no other "touches" will be present
         if (gamepad->pressedA3()) {
@@ -256,7 +262,7 @@ void PS4Driver::process(Gamepad * gamepad) {
         // if more than one touch pad sensor, sensors will never be used out of order
         if (gamepad->auxState.sensors.touchpad[0].enabled) {
             touchpadData.p1.unpressed = !gamepad->auxState.sensors.touchpad[0].active;
-            ps4Report.touchpad_active = gamepad->auxState.sensors.touchpad[0].active;
+            ps4Report.gamepad.touchpadActive = gamepad->auxState.sensors.touchpad[0].active;
             touchpadData.p1.set_x(gamepad->auxState.sensors.touchpad[0].x);
             touchpadData.p1.set_y(gamepad->auxState.sensors.touchpad[0].y);
             
@@ -286,18 +292,18 @@ void PS4Driver::process(Gamepad * gamepad) {
     } else if (pointTwoTouched && touchpadData.p2.unpressed) {
         pointTwoTouched = false;
     }
-    ps4Report.touchpad_data = touchpadData;
+    ps4Report.gamepad.touchpadData = touchpadData;
 
     if (gamepad->auxState.sensors.accelerometer.enabled) {
-        ps4Report.sensor_data.accelerometer.x = ((gamepad->auxState.sensors.accelerometer.x & 0xFF) << 8) | ((gamepad->auxState.sensors.accelerometer.x & 0xFF00) >> 8);
-        ps4Report.sensor_data.accelerometer.y = ((gamepad->auxState.sensors.accelerometer.y & 0xFF) << 8) | ((gamepad->auxState.sensors.accelerometer.y & 0xFF00) >> 8);
-        ps4Report.sensor_data.accelerometer.z = ((gamepad->auxState.sensors.accelerometer.z & 0xFF) << 8) | ((gamepad->auxState.sensors.accelerometer.z & 0xFF00) >> 8);
+        ps4Report.gamepad.sensorData.accelerometer.x = ((gamepad->auxState.sensors.accelerometer.x & 0xFF) << 8) | ((gamepad->auxState.sensors.accelerometer.x & 0xFF00) >> 8);
+        ps4Report.gamepad.sensorData.accelerometer.y = ((gamepad->auxState.sensors.accelerometer.y & 0xFF) << 8) | ((gamepad->auxState.sensors.accelerometer.y & 0xFF00) >> 8);
+        ps4Report.gamepad.sensorData.accelerometer.z = ((gamepad->auxState.sensors.accelerometer.z & 0xFF) << 8) | ((gamepad->auxState.sensors.accelerometer.z & 0xFF00) >> 8);
     }
 
     if (gamepad->auxState.sensors.gyroscope.enabled) {
-        ps4Report.sensor_data.gyroscope.x = ((gamepad->auxState.sensors.gyroscope.x & 0xFF) << 8) | ((gamepad->auxState.sensors.gyroscope.x & 0xFF00) >> 8);
-        ps4Report.sensor_data.gyroscope.y = ((gamepad->auxState.sensors.gyroscope.y & 0xFF) << 8) | ((gamepad->auxState.sensors.gyroscope.y & 0xFF00) >> 8);
-        ps4Report.sensor_data.gyroscope.z = ((gamepad->auxState.sensors.gyroscope.z & 0xFF) << 8) | ((gamepad->auxState.sensors.gyroscope.z & 0xFF00) >> 8);
+        ps4Report.gamepad.sensorData.gyroscope.x = ((gamepad->auxState.sensors.gyroscope.x & 0xFF) << 8) | ((gamepad->auxState.sensors.gyroscope.x & 0xFF00) >> 8);
+        ps4Report.gamepad.sensorData.gyroscope.y = ((gamepad->auxState.sensors.gyroscope.y & 0xFF) << 8) | ((gamepad->auxState.sensors.gyroscope.y & 0xFF00) >> 8);
+        ps4Report.gamepad.sensorData.gyroscope.z = ((gamepad->auxState.sensors.gyroscope.z & 0xFF) << 8) | ((gamepad->auxState.sensors.gyroscope.z & 0xFF00) >> 8);
     }
 
     // Wake up TinyUSB device
@@ -324,8 +330,8 @@ void PS4Driver::process(Gamepad * gamepad) {
         // report to send.
         if ((now - last_report_timer) > PS4_KEEPALIVE_TIMER) {
             last_report_counter = (last_report_counter+1) & 0x3F;
-            ps4Report.report_counter = last_report_counter;		// report counter is 6 bits
-            ps4Report.axis_timing = now;		 		// axis counter is 16 bits
+            ps4Report.reportCounter = last_report_counter;		// report counter is 6 bits
+            ps4Report.gamepad.axisTiming = now;		 		// axis counter is 16 bits
             // the *next* process() will be a forced report (or real user input)
         }
     }

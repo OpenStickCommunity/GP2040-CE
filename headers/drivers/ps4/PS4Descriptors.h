@@ -88,164 +88,203 @@
 #define PS4_GYRO_RANGE (PS4_GYRO_RES * 2048)
 
 struct TouchpadXY {
-  uint8_t counter : 7;
-  uint8_t unpressed : 1;
+    uint8_t counter : 7;
+    uint8_t unpressed : 1;
 
-  // 12 bit X, followed by 12 bit Y
-  uint8_t data[3];
+    // 12 bit X, followed by 12 bit Y
+    uint8_t data[3];
 
-  void set_x(uint16_t x) {
-    data[0] = x & 0xff;
-    data[1] = (data[1] & 0xf0) | ((x >> 8) & 0xf);
-  }
+    void set_x(uint16_t x) {
+        data[0] = x & 0xff;
+        data[1] = (data[1] & 0xf0) | ((x >> 8) & 0xf);
+    }
 
-  void set_y(uint16_t y) {
-    data[1] = (data[1] & 0x0f) | ((y & 0xf) << 4);
-    data[2] = y >> 4;
-    return;
-  }
+    void set_y(uint16_t y) {
+        data[1] = (data[1] & 0x0f) | ((y & 0xf) << 4);
+        data[2] = y >> 4;
+        return;
+    }
 };
 
 struct TouchpadData {
-  TouchpadXY p1;
-  TouchpadXY p2;
+    TouchpadXY p1;
+    TouchpadXY p2;
 };
 
 struct PSSensor {
-  int16_t x;
-  int16_t y;
-  int16_t z;
+    int16_t x;
+    int16_t y;
+    int16_t z;
 };
 
 struct PSSensorData {
-  uint16_t battery;
-  PSSensor gyroscope;
-  PSSensor accelerometer;
-  uint8_t misc[4];
-  uint8_t powerLevel : 4;
-  uint8_t charging : 1;
-  uint8_t headphones : 1;
-  uint8_t microphone : 1;
-  uint8_t extension : 1;
-  uint8_t extData0 : 1;
-  uint8_t extData1 : 1;
-  uint8_t notConnected : 1;
-  uint8_t extData3 : 5;
-  uint8_t misc2;
+    uint16_t battery;
+    PSSensor gyroscope;
+    PSSensor accelerometer;
+    uint8_t misc[4];
+    uint8_t powerLevel : 4;
+    uint8_t charging : 1;
+    uint8_t headphones : 1;
+    uint8_t microphone : 1;
+    uint8_t extension : 1;
+    uint8_t extData0 : 1;
+    uint8_t extData1 : 1;
+    uint8_t notConnected : 1;
+    uint8_t extData3 : 5;
+    uint8_t misc2;
 } __attribute__((packed));
 
 typedef struct __attribute__((packed)) {
-  // 0
-  uint8_t reportID;
+    // 0
+    uint8_t reportID;
 
-  // 1
-  uint8_t enableUpdateRumble : 1;
-  uint8_t enableUpdateLED : 1;
-  uint8_t enableUpdateLEDBlink : 1;
-  uint8_t enableUpdateExtData : 1;
-  uint8_t enableUpdateVolLeft : 1;
-  uint8_t enableUpdateVolRight : 1;
-  uint8_t enableUpdateVolMic : 1;
-  uint8_t enableUpdateVolSpeaker : 1;
+    // 1
+    uint8_t enableUpdateRumble : 1;
+    uint8_t enableUpdateLED : 1;
+    uint8_t enableUpdateLEDBlink : 1;
+    uint8_t enableUpdateExtData : 1;
+    uint8_t enableUpdateVolLeft : 1;
+    uint8_t enableUpdateVolRight : 1;
+    uint8_t enableUpdateVolMic : 1;
+    uint8_t enableUpdateVolSpeaker : 1;
 
-  // 2
-  uint8_t : 8;
+    // 2
+    uint8_t : 8;
 
-  // 3 
-  uint8_t unknown0;
+    // 3 
+    uint8_t unknown0;
 
-  // 4
-  uint8_t rumbleRight;
+    // 4
+    uint8_t rumbleRight;
 
-  // 5
-  uint8_t rumbleLeft;
+    // 5
+    uint8_t rumbleLeft;
 
-  // 6
-  uint8_t ledRed;
+    // 6
+    uint8_t ledRed;
 
-  // 7
-  uint8_t ledGreen;
+    // 7
+    uint8_t ledGreen;
 
-  // 8
-  uint8_t ledBlue;
+    // 8
+    uint8_t ledBlue;
 
-  // 9
-  uint8_t ledBlinkOn;
+    // 9
+    uint8_t ledBlinkOn;
 
-  // 10
-  uint8_t ledBlinkOff;
+    // 10
+    uint8_t ledBlinkOff;
 
-  // 11
-  uint8_t extData[8];
+    // 11
+    uint8_t extData[8];
 
-  // 19
-  uint8_t volumeLeft; // 0x00-0x4F
+    // 19
+    uint8_t volumeLeft; // 0x00-0x4F
 
-  // 20
-  uint8_t volumeRight; // 0x00-0x4F
+    // 20
+    uint8_t volumeRight; // 0x00-0x4F
 
-  // 21
-  uint8_t volumeMic; // 0x01-0x4F, 0x00 is special state
+    // 21
+    uint8_t volumeMic; // 0x01-0x4F, 0x00 is special state
 
-  // 22
-  uint8_t volumeSpeaker; // 0x00-0x4F
+    // 22
+    uint8_t volumeSpeaker; // 0x00-0x4F
 
-  // 23
-  uint8_t unknownAudio;
+    // 23
+    uint8_t unknownAudio;
 
-  // 24
-  uint8_t padding[8];
+    // 24
+    uint8_t padding[8];
 } PS4FeatureOutputReport;
 
 typedef struct __attribute__((packed)) {
-  uint8_t report_id;
-  uint8_t left_stick_x;
-  uint8_t left_stick_y;
-  uint8_t right_stick_x;
-  uint8_t right_stick_y;
+    uint8_t reportID;
+    uint8_t leftStickX;
+    uint8_t leftStickY;
+    uint8_t rightStickX;
+    uint8_t rightStickY;
 
-  // 4 bits for the d-pad.
-  uint32_t dpad : 4;
+    // 4 bits for the d-pad.
+    uint8_t dpad : 4;
 
-  // 14 bits for buttons.
-  uint32_t button_west : 1;
-  uint32_t button_south : 1;
-  uint32_t button_east : 1;
-  uint32_t button_north : 1;
-  uint32_t button_l1 : 1;
-  uint32_t button_r1 : 1;
-  uint32_t button_l2 : 1;
-  uint32_t button_r2 : 1;
-  uint32_t button_select : 1;
-  uint32_t button_start : 1;
-  uint32_t button_l3 : 1;
-  uint32_t button_r3 : 1;
-  uint32_t button_home : 1;
-  uint32_t button_touchpad : 1;
+    // 14 bits for buttons.
+    uint16_t buttonWest : 1;
+    uint16_t buttonSouth : 1;
+    uint16_t buttonEast : 1;
+    uint16_t buttonNorth : 1;
+    uint16_t buttonL1 : 1;
+    uint16_t buttonR1 : 1;
+    uint16_t buttonL2 : 1;
+    uint16_t buttonR2 : 1;
+    uint16_t buttonSelect : 1;
+    uint16_t buttonStart : 1;
+    uint16_t buttonL3 : 1;
+    uint16_t buttonR3 : 1;
+    uint16_t buttonHome : 1;
+    uint16_t buttonTouchpad : 1;
 
-  // 6 bit report counter.
-  uint32_t report_counter : 6;
+    // 6 bit report counter.
+    uint8_t reportCounter : 6;
 
-  uint32_t left_trigger : 8;
-  uint32_t right_trigger : 8;
+    uint8_t leftTrigger : 8;
+    uint8_t rightTrigger : 8;
 
-  // 16 bit timing counter
-  uint16_t axis_timing;
+    // vendor specific
+    // ---------------
+    union {
+        uint8_t miscData[54];
+        
+        struct __attribute__((packed)) {
+            // 16 bit timing counter
+            uint16_t axisTiming;
 
-  PSSensorData sensor_data;
+            PSSensorData sensorData;
 
-  uint8_t touchpad_active : 2;
-  uint8_t padding : 6;
-  uint8_t tpad_increment;
-  TouchpadData touchpad_data;
+            uint8_t touchpadActive : 2;
+            uint8_t padding : 6;
+            uint8_t tpadIncrement;
+            TouchpadData touchpadData;
+    
+            uint8_t mystery2[21];
+        } gamepad;
+        struct __attribute__((packed)) {
+            uint8_t unused0[22];
+            
+            uint8_t powerLevel : 4;
+            uint8_t : 4;
+            
+            uint8_t unused1[12];
+            
+            uint8_t pickup;
+            uint8_t whammy;
+            uint8_t tilt;
 
-  uint16_t joystick_x;
-  uint16_t joystick_y;
-  uint8_t twist_rudder;
-  uint8_t throttle;
-  uint8_t rocker_switch;
+            uint8_t green : 1;
+            uint8_t red : 1;
+            uint8_t yellow : 1;
+            uint8_t blue : 1;
+            uint8_t orange : 1;
+            uint8_t : 3;
 
-  uint8_t mystery_2[14];
+            uint8_t soloGreen : 1;
+            uint8_t soloRed : 1;
+            uint8_t soloYellow : 1;
+            uint8_t soloBlue : 1;
+            uint8_t soloOrange : 1;
+            uint8_t : 3;
+            
+            uint8_t unused2[14];
+        } guitar;
+        struct __attribute__((packed)) {
+            uint16_t joystickX;
+            uint16_t joystickY;
+            uint8_t twistRudder;
+            uint8_t throttle;
+            uint8_t rockerSwitch;
+
+            uint8_t mystery2[14];
+        } hotas;
+    };
 } PS4Report;
 
 static const uint8_t ps4_string_language[]     = { 0x09, 0x04 };
@@ -255,10 +294,10 @@ static const uint8_t ps4_string_version[]      = "1.0";
 
 static const uint8_t *ps4_string_descriptors[] __attribute__((unused)) =
 {
-	ps4_string_language,
-	ps4_string_manufacturer,
-	ps4_string_product,
-	ps4_string_version
+    ps4_string_language,
+    ps4_string_manufacturer,
+    ps4_string_product,
+    ps4_string_version
 };
 
 static const uint8_t ps4_device_descriptor[] =
