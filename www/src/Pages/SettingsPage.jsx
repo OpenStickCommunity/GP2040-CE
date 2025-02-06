@@ -331,7 +331,28 @@ const hotkeyFields = Array(16)
 		const newSchema = yup
 			.object()
 			.label('Hotkey ' + number)
-			.shape({ ...hotkeySchema });
+			.shape({ ...hotkeySchema })
+			.test(
+				'duplicate-hotkeys',
+				'Duplicate button combinations are not allowed',
+				function (currentValue) {
+					return !Object.entries(this.parent).some(
+						([key, { buttonsMask, auxMask }]) => {
+							if (
+								!key.includes('hotkey') || // Skip non-hotkey rows
+								key === 'hotkey' + number || // Skip current hotkey
+								!Boolean(currentValue.buttonsMask + currentValue.auxMask) // Skip unset hotkey rows
+							) {
+								return false;
+							}
+							return (
+								buttonsMask === currentValue.buttonsMask &&
+								auxMask === currentValue.auxMask
+							);
+						},
+					);
+				},
+			);
 		acc['hotkey' + number] = newSchema;
 		return acc;
 	}, {});
@@ -1672,18 +1693,25 @@ export default function SettingsPage() {
 															{t('SettingsPage:hotkey-settings-warning')}
 														</div>
 													)}
-													<div id="Hotkeys" hidden={values.lockHotkeys}>
+													<div
+														id="Hotkeys"
+														hidden={values.lockHotkeys}
+														className="d-grid gap-2"
+													>
 														{Object.keys(hotkeyFields).map((o, i) => (
 															<Form.Group
 																key={`hotkey-${i}-base`}
-																className="row row-gap-2 gx-2 pb-2"
+																className={`row row-gap-2 align-items-center gx-2`}
 															>
-																<Col sm="auto">
+																<Col
+																	sm="auto"
+																	className="d-flex align-items-center"
+																>
 																	<Form.Check
 																		name={`${o}.auxMask`}
-																		label="&nbsp;&nbsp;Fn"
+																		label="Fn"
 																		type="switch"
-																		className="form-select-sm"
+																		className="text my-auto"
 																		disabled={values.fnButtonPin === -1}
 																		checked={values[o] && !!values[o]?.auxMask}
 																		onChange={(e) => {
@@ -1692,7 +1720,7 @@ export default function SettingsPage() {
 																				e.target.checked ? 32768 : 0,
 																			);
 																		}}
-																		isInvalid={errors[o] && errors[o]?.auxMask}
+																		isInvalid={errors[o] || errors[o]?.auxMask}
 																	/>
 																	<Form.Control.Feedback type="invalid">
 																		{errors[o] && errors[o]?.action}
@@ -1712,10 +1740,10 @@ export default function SettingsPage() {
 																						values[o]?.buttonsMask & mask.value
 																					}
 																					error={
-																						errors[o] && errors[o]?.buttonsMask
+																						errors[o] || errors[o]?.buttonsMask
 																					}
 																					isInvalid={
-																						errors[o] && errors[o]?.buttonsMask
+																						errors[o] || errors[o]?.buttonsMask
 																					}
 																					onChange={(e) => {
 																						setFieldValue(
@@ -1806,6 +1834,12 @@ export default function SettingsPage() {
 																		</Button>
 																	</Col>
 																)}
+																<Form.Control.Feedback
+																	type="invalid"
+																	className={errors[o] ? 'd-block' : ''}
+																>
+																	{errors[o]}
+																</Form.Control.Feedback>
 															</Form.Group>
 														))}
 													</div>
