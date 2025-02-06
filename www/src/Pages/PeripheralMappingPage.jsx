@@ -102,6 +102,7 @@ export default function PeripheralMappingPage() {
 						);
 						return (
 							<Table
+								key={`details-${i}`}
 								className="caption-top"
 								striped="columns"
 								responsive
@@ -246,7 +247,7 @@ export default function PeripheralMappingPage() {
 																		? o
 																		: `${o} - ${t(
 																				'PeripheralMapping:pin-in-use',
-																			)}`}
+																		  )}`}
 																</option>
 															))}
 														</FormSelect>

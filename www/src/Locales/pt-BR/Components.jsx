@@ -16,7 +16,5 @@ export default {
 	},
 	'keyboard-mapper': {
 		'key-header': 'Tecla',
-		'error-conflict': 'A tecla {{key}} já está atribuída',
-		'error-invalid': '{{key}} é inválida para esta placa',
 	},
 };

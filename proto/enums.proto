@@ -84,6 +84,8 @@ enum ButtonLayoutRight
     BUTTON_LAYOUT_6GAWD_ALLBUTTON_B = 35;
     BUTTON_LAYOUT_6GAWD_ALLBUTTONPLUS_B = 36;
     BUTTON_LAYOUT_STICKLESS_R16B = 37;
+    BUTTON_LAYOUT_VLXB_6B = 38;
+    BUTTON_LAYOUT_SEGA2P_6B = 39;
 }
 
 enum SplashMode
@@ -261,6 +263,16 @@ enum GpioAction
 
     BUTTON_PRESS_INPUT_REVERSE   = 69;
     SUSTAIN_FOCUS_MODE           = 70;
+
+    SUSTAIN_4_8_WAY_MODE         = 71;
+    
+    MENU_NAVIGATION_UP           = 72;
+    MENU_NAVIGATION_DOWN         = 73;
+    MENU_NAVIGATION_LEFT         = 74;
+    MENU_NAVIGATION_RIGHT        = 75;
+    MENU_NAVIGATION_SELECT       = 76;
+    MENU_NAVIGATION_BACK         = 77;
+    MENU_NAVIGATION_TOGGLE       = 78;
 }
 
 enum GpioDirection
@@ -319,6 +331,13 @@ enum GamepadHotkey
     HOTKEY_DPAD_RIGHT            = 41;
     HOTKEY_PREVIOUS_PROFILE      = 42;
     HOTKEY_SAVE_CONFIG           = 43;
+    HOTKEY_MENU_NAV_UP           = 44;
+    HOTKEY_MENU_NAV_DOWN         = 45;
+    HOTKEY_MENU_NAV_LEFT         = 46;
+    HOTKEY_MENU_NAV_RIGHT        = 47;
+    HOTKEY_MENU_NAV_SELECT       = 48;
+    HOTKEY_MENU_NAV_BACK         = 49;
+    HOTKEY_MENU_NAV_TOGGLE       = 50;
 }
 
 // This has to be kept in sync with LEDFormat in NeoPico.hpp
@@ -431,6 +450,7 @@ enum RotaryEncoderPinMode
     ENCODER_MODE_RIGHT_TRIGGER = 6;
     ENCODER_MODE_DPAD_X = 7;
     ENCODER_MODE_DPAD_Y = 8;
+    ENCODER_MODE_VOLUME = 9;
 };
 
 enum ReactiveLEDMode
@@ -451,6 +471,26 @@ enum PS4ControllerIDMode
     PS4_ID_EMULATION = 1;
 };
 
+enum DisplaySaverMode
+{
+    option (nanopb_enumopt).long_names = false;
+
+    DISPLAY_SAVER_DISPLAY_OFF = 0;
+    DISPLAY_SAVER_SNOW = 1;
+    DISPLAY_SAVER_BOUNCE = 2;
+    DISPLAY_SAVER_PIPES = 3;
+    DISPLAY_SAVER_TOAST = 4;
+};
+
+enum ButtonLayoutOrientation
+{
+    option (nanopb_enumopt).long_names = false;
+
+    BUTTON_ORIENTATION_DEFAULT = 0;
+    BUTTON_ORIENTATION_SOUTHPAW = 1;
+    BUTTON_ORIENTATION_SWITCHED = 2;
+};
+
 enum GPEventType
 {
     option (nanopb_enumopt).long_names = false;
@@ -467,4 +507,7 @@ enum GPEventType
     GP_EVENT_BUTTON_PROCESSED_DOWN = 9;
     GP_EVENT_ANALOG_MOVE = 10;
     GP_EVENT_ANALOG_PROCESSED_MOVE = 11;
+    GP_EVENT_STORAGE_SAVE = 12;
+    GP_EVENT_SYSTEM_REBOOT = 13;
+    GP_EVENT_MENU_NAVIGATE = 14;
 };

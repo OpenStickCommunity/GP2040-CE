@@ -93,7 +93,6 @@ void GPButton::draw() {
 
     if (useMask && mapMask != NULL) {
         maskedPins = (pinValues & mapMask->pinMask);
-        
         for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
             if ((maskedPins & (1 << pin)) == (1 << pin)) {
                 setPin = pin;

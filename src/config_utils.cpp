@@ -413,6 +413,16 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.displayOptions, buttonLayout, BUTTON_LAYOUT);
     INIT_UNSET_PROPERTY(config.displayOptions, buttonLayoutRight, BUTTON_LAYOUT_RIGHT);
     INIT_UNSET_PROPERTY(config.displayOptions, turnOffWhenSuspended, DISPLAY_TURN_OFF_WHEN_SUSPENDED);
+    INIT_UNSET_PROPERTY(config.displayOptions, inputMode, 1);
+    INIT_UNSET_PROPERTY(config.displayOptions, turboMode, 1);
+    INIT_UNSET_PROPERTY(config.displayOptions, dpadMode, 1);
+    INIT_UNSET_PROPERTY(config.displayOptions, socdMode, 1);
+    INIT_UNSET_PROPERTY(config.displayOptions, macroMode, 1);
+    INIT_UNSET_PROPERTY(config.displayOptions, profileMode, 0);
+    INIT_UNSET_PROPERTY(config.displayOptions, inputHistoryEnabled, !!INPUT_HISTORY_ENABLED);
+    INIT_UNSET_PROPERTY(config.displayOptions, inputHistoryLength, INPUT_HISTORY_LENGTH);
+    INIT_UNSET_PROPERTY(config.displayOptions, inputHistoryCol, INPUT_HISTORY_COL);
+    INIT_UNSET_PROPERTY(config.displayOptions, inputHistoryRow, INPUT_HISTORY_ROW);
 
     ButtonLayoutParamsLeft& paramsLeft = config.displayOptions.buttonLayoutCustomOptions.paramsLeft;
     INIT_UNSET_PROPERTY(paramsLeft, layout, BUTTON_LAYOUT);
@@ -437,6 +447,8 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.displayOptions, flip, DISPLAY_FLIP);
     INIT_UNSET_PROPERTY(config.displayOptions, invert, !!DISPLAY_INVERT);
     INIT_UNSET_PROPERTY(config.displayOptions, displaySaverTimeout, DISPLAY_SAVER_TIMEOUT);
+    INIT_UNSET_PROPERTY(config.displayOptions, displaySaverMode, DISPLAY_SAVER_MODE);
+    INIT_UNSET_PROPERTY(config.displayOptions, buttonLayoutOrientation, DISPLAY_LAYOUT_ORIENTATION);
 
     // peripheralOptions
     PeripheralOptions& peripheralOptions = config.peripheralOptions;
@@ -678,12 +690,6 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.buzzerOptions, pin, BUZZER_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.buzzerOptions, volume, BUZZER_VOLUME);
     INIT_UNSET_PROPERTY(config.addonOptions.buzzerOptions, enablePin, BUZZER_ENABLE_PIN);
-
-    // addonOptions.inputHistoryOptions
-    INIT_UNSET_PROPERTY(config.addonOptions.inputHistoryOptions, enabled, !!INPUT_HISTORY_ENABLED);
-    INIT_UNSET_PROPERTY(config.addonOptions.inputHistoryOptions, length, INPUT_HISTORY_LENGTH);
-    INIT_UNSET_PROPERTY(config.addonOptions.inputHistoryOptions, col, INPUT_HISTORY_COL);
-    INIT_UNSET_PROPERTY(config.addonOptions.inputHistoryOptions, row, INPUT_HISTORY_ROW);
 
     // addonOptions.playerNumberOptions
     INIT_UNSET_PROPERTY(config.addonOptions.playerNumberOptions, enabled, !!PLAYERNUM_ADDON_ENABLED);

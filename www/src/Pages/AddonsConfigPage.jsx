@@ -47,10 +47,6 @@ import FocusMode, {
 } from '../Addons/FocusMode';
 import Keyboard, { keyboardScheme, keyboardState } from '../Addons/Keyboard';
 import GamepadUSBHost, { gamepadUSBHostScheme, gamepadUSBHostState} from '../Addons/GamepadUSBHost';
-import InputHistory, {
-	inputHistoryScheme,
-	inputHistoryState,
-} from '../Addons/InputHistory';
 import Rotary, { rotaryScheme, rotaryState } from '../Addons/Rotary';
 import PCF8575, { pcf8575Scheme, pcf8575State } from '../Addons/PCF8575';
 import DRV8833Rumble, {
@@ -79,7 +75,6 @@ const schema = yup.object().shape({
 	...wiiScheme,
 	...focusModeScheme,
 	...keyboardScheme,
-	...inputHistoryScheme,
 	...rotaryScheme,
 	...pcf8575Scheme,
 	...drv8833RumbleScheme,
@@ -104,7 +99,6 @@ const defaultValues = {
 	...snesState,
 	...focusModeState,
 	...keyboardState,
-	...inputHistoryState,
 	...rotaryState,
 	...pcf8575State,
 	...drv8833RumbleState,
@@ -130,7 +124,6 @@ const ADDONS = [
 	FocusMode,
 	Keyboard,
 	GamepadUSBHost,
-	InputHistory,
 	Rotary,
 	PCF8575,
 	DRV8833Rumble,

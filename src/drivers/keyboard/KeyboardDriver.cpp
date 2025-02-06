@@ -3,6 +3,8 @@
 #include "drivers/shared/driverhelper.h"
 #include "drivers/hid/HIDDescriptors.h"
 
+#include "eventmanager.h"
+
 void KeyboardDriver::initialize() {
 	keyboardReport = {
 		.keycode = { 0 },
@@ -20,6 +22,10 @@ void KeyboardDriver::initialize() {
 		.xfer_cb = hidd_xfer_cb,
 		.sof = NULL
 	};
+
+    // Handle Volume for Rotary Encoder
+    EventManager::getInstance().registerEventHandler(GP_EVENT_ENCODER_CHANGE, GPEVENT_CALLBACK(this->handleEncoder(event)));
+    volumeChange = 0; // no change
 }
 
 uint8_t KeyboardDriver::getModifier(uint8_t code) {
@@ -87,6 +93,12 @@ void KeyboardDriver::process(Gamepad * gamepad) {
 	if(gamepad->pressedE11()) 	{ pressKey(keyboardMapping.keyButtonE11); }
 	if(gamepad->pressedE12()) 	{ pressKey(keyboardMapping.keyButtonE12); }
 
+    if( volumeChange > 0 ) {
+        pressKey(KEYBOARD_MULTIMEDIA_VOLUME_UP);
+    } else if ( volumeChange < 0 ) {
+        pressKey(KEYBOARD_MULTIMEDIA_VOLUME_DOWN);
+    }
+
 	// Wake up TinyUSB device
 	if (tud_suspended())
 		tud_remote_wakeup();
@@ -109,6 +121,13 @@ void KeyboardDriver::process(Gamepad * gamepad) {
 			if ( tud_hid_report(keyboardReport.reportId, keyboard_report_payload, keyboard_report_size) ) {
 				memcpy(last_report, keyboard_report_payload, keyboard_report_size);
 				last_report_size = keyboard_report_size;
+
+                // Adjust volume on success
+                if( volumeChange > 0 ) {
+                    volumeChange--;
+                } else if ( volumeChange < 0 ) {
+                    volumeChange++;
+                }
 			}
 		}
 	}
@@ -173,4 +192,15 @@ const uint8_t * KeyboardDriver::get_descriptor_device_qualifier_cb() {
 
 uint16_t KeyboardDriver::GetJoystickMidValue() {
 	return HID_JOYSTICK_MID << 8;
+}
+
+void KeyboardDriver::handleEncoder(GPEvent* e) {
+    GPEncoderChangeEvent * encoderEvent = (GPEncoderChangeEvent*)e;
+    if ( encoderEvent->direction == 1 ) {
+        // volume up
+        volumeChange++;
+    } else if ( encoderEvent->direction == -1 ) {
+        // volume down
+        volumeChange--;
+    }
 }

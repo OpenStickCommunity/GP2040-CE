@@ -10,19 +10,21 @@
 // -----------------------------------------------------
 
 
-#ifndef _BOARDS_RANATADPOLE_H
-#define _BOARDS_RANATADPOLE_H
+#ifndef _BOARDS_RP2040MINIBREAKOUTBOARDUSBPASSTHROUGH_H
+#define _BOARDS_RP2040MINIBREAKOUTBOARDUSBPASSTHROUGH_H
 
 // For board detection
-#define RANATADPOLE
+#define RP2040MINIBREAKOUTBOARD
 
 //For crappy crystal
 #ifndef PICO_XOSC_STARTUP_DELAY_MULTIPLIER
 #define PICO_XOSC_STARTUP_DELAY_MULTIPLIER 64
 #endif
 
-// no onboard LED
-
+// --- LED ---
+#ifndef PICO_DEFAULT_LED_PIN
+#define PICO_DEFAULT_LED_PIN 25
+#endif
 // no PICO_DEFAULT_WS2812_PIN
 
 // --- FLASH ---

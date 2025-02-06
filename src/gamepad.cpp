@@ -83,6 +83,7 @@ void Gamepad::setup()
 	mapAnalogRSXPos = new GamepadButtonMapping(ANALOG_DIRECTION_RS_X_POS);
 	mapAnalogRSYNeg = new GamepadButtonMapping(ANALOG_DIRECTION_RS_Y_NEG);
 	mapAnalogRSYPos = new GamepadButtonMapping(ANALOG_DIRECTION_RS_Y_POS);
+	map48WayMode    = new GamepadButtonMapping(SUSTAIN_4_8_WAY_MODE);
 
 	const auto assignCustomMappingToMaps = [&](GpioMappingInfo mapInfo, Pin_t pin) -> void {
 		if (mapDpadUp->buttonMask & mapInfo.customDpadMask)	mapDpadUp->pinMask |= 1 << pin;
@@ -161,6 +162,7 @@ void Gamepad::setup()
 			case GpioAction::ANALOG_DIRECTION_RS_X_POS:	mapAnalogRSXPos->pinMask |= 1 << pin; break;
 			case GpioAction::ANALOG_DIRECTION_RS_Y_NEG:	mapAnalogRSYNeg->pinMask |= 1 << pin; break;
 			case GpioAction::ANALOG_DIRECTION_RS_Y_POS:	mapAnalogRSYPos->pinMask |= 1 << pin; break;
+			case GpioAction::SUSTAIN_4_8_WAY_MODE:	map48WayMode->pinMask |= 1 << pin; break;
 			default:				break;
 		}
 	}
@@ -220,6 +222,7 @@ void Gamepad::reinit()
 	delete mapAnalogRSXPos;
 	delete mapAnalogRSYNeg;
 	delete mapAnalogRSYPos;
+	delete map48WayMode;
 
 	// reinitialize pin mappings
 	this->setup();
@@ -257,7 +260,7 @@ void Gamepad::process()
 	}
 
 	// 4-way before SOCD, might have better history without losing any coherent functionality
-	if (options.fourWayMode) {
+	if (options.fourWayMode ^ map48WayModeToggle) {
 		state.dpad = filterToFourWayMode(state.dpad);
 	}
 
@@ -279,7 +282,7 @@ void Gamepad::process()
 			state.dpad &= ~dpadOnlyMask;
 			state.dpad = dpadOnlyMask;
 			break;
-	
+
 		case DpadMode::DPAD_MODE_RIGHT_ANALOG:
 			if (!hasLeftAnalogStick) {
 				state.lx = joystickMid;
@@ -290,7 +293,7 @@ void Gamepad::process()
 			state.dpad &= ~dpadOnlyMask;
 			state.dpad = dpadOnlyMask;
 			break;
-	
+
 		default:
 			//if (!hasLeftAnalogStick) {
 			//	state.lx = joystickMid;
@@ -364,6 +367,8 @@ void Gamepad::read()
 	else if (values & mapButtonLS->pinMask)	activeDpadMode = DpadMode::DPAD_MODE_LEFT_ANALOG;
 	else if (values & mapButtonRS->pinMask)	activeDpadMode = DpadMode::DPAD_MODE_RIGHT_ANALOG;
 	else					activeDpadMode = options.dpadMode;
+
+	map48WayModeToggle = (values & map48WayMode->pinMask);
 
 	if (values & mapAnalogLSXNeg->pinMask) {
 		state.lx = GAMEPAD_JOYSTICK_MIN;
@@ -651,12 +656,47 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 				reqSave = true;
 			}
 			break;
+		case HOTKEY_MENU_NAV_UP:
+			if (action != lastAction) {
+                EventManager::getInstance().triggerEvent(new GPMenuNavigateEvent(GpioAction::MENU_NAVIGATION_UP));
+            }
+			break;
+		case HOTKEY_MENU_NAV_DOWN:
+			if (action != lastAction) {
+                EventManager::getInstance().triggerEvent(new GPMenuNavigateEvent(GpioAction::MENU_NAVIGATION_DOWN));
+            }
+			break;
+		case HOTKEY_MENU_NAV_LEFT:
+			if (action != lastAction) {
+                EventManager::getInstance().triggerEvent(new GPMenuNavigateEvent(GpioAction::MENU_NAVIGATION_LEFT));
+            }
+			break;
+		case HOTKEY_MENU_NAV_RIGHT:
+			if (action != lastAction) {
+                EventManager::getInstance().triggerEvent(new GPMenuNavigateEvent(GpioAction::MENU_NAVIGATION_RIGHT));
+            }
+			break;
+		case HOTKEY_MENU_NAV_SELECT:
+			if (action != lastAction) {
+                EventManager::getInstance().triggerEvent(new GPMenuNavigateEvent(GpioAction::MENU_NAVIGATION_SELECT));
+            }
+			break;
+		case HOTKEY_MENU_NAV_BACK:
+			if (action != lastAction) {
+                EventManager::getInstance().triggerEvent(new GPMenuNavigateEvent(GpioAction::MENU_NAVIGATION_BACK));
+            }
+			break;
+		case HOTKEY_MENU_NAV_TOGGLE:
+			if (action != lastAction) {
+				EventManager::getInstance().triggerEvent(new GPMenuNavigateEvent(GpioAction::MENU_NAVIGATION_TOGGLE));
+			}
+			break;
 		default: // Unknown action
 			return;
 	}
 
 	// only save if requested
 	if (reqSave) {
-		Storage::getInstance().save();
+		EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 	}
 }

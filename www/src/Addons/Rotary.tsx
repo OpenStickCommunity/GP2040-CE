@@ -17,6 +17,7 @@ const ENCODER_MODES = [
 	{ label: 'encoder-mode-right-trigger', value: 6 },
 	{ label: 'encoder-mode-dpad-x', value: 7 },
 	{ label: 'encoder-mode-dpad-y', value: 8 },
+	{ label: 'encoder-mode-volume', value: 9 },
 ];
 
 const ENCODER_MULTIPLES = [
@@ -43,7 +44,7 @@ export const rotaryScheme = {
 		.number()
 		.required()
 		.label('Rotary Encoder Add-On Enabled'),
-	encoderOneEnabled: yup.number().required().label('Encoder One Enabled'),
+	encoderOneEnabled: yup.boolean().required().label('Encoder One Enabled'),
 	encoderOnePinA: yup
 		.number()
 		.label('Encoder One Pin A')
@@ -65,7 +66,7 @@ export const rotaryScheme = {
 		.required()
 		.label('Encoder One Allow Wrap Around'),
 	encoderOneMultiplier: yup.number().label('Encoder One Multiplier').required(),
-	encoderTwoEnabled: yup.number().required().label('Encoder Two Enabled'),
+	encoderTwoEnabled: yup.boolean().required().label('Encoder Two Enabled'),
 	encoderTwoPinA: yup
 		.number()
 		.label('Encoder Two Pin A')

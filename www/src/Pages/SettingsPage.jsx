@@ -11,7 +11,7 @@ import useProfilesStore from '../Store/useProfilesStore';
 import { AppContext } from '../Contexts/AppContext';
 
 import ContextualHelpOverlay from '../Components/ContextualHelpOverlay';
-import KeyboardMapper, { validateMappings } from '../Components/KeyboardMapper';
+import KeyboardMapper from '../Components/KeyboardMapper';
 import Section from '../Components/Section';
 import WebApi, { baseButtonMappings } from '../Services/WebApi';
 import { BUTTON_MASKS_OPTIONS, getButtonLabels } from '../Data/Buttons';
@@ -99,7 +99,7 @@ const SHA256 = (ascii) => {
 								(rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3)) + // s0
 								w[i - 7] +
 								(rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10))) | // s1
-							0);
+						  0);
 			// This is only used once, so *could* be moved below, but it only saves 4 bytes and makes things unreadble
 			const temp2 =
 				(rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22)) + // S0
@@ -287,6 +287,13 @@ const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.dpad-down', value: 39 },
 	{ labelKey: 'hotkey-actions.dpad-left', value: 40 },
 	{ labelKey: 'hotkey-actions.dpad-right', value: 41 },
+	{ labelKey: 'hotkey-actions.menu-nav-up', value: 44 },
+	{ labelKey: 'hotkey-actions.menu-nav-down', value: 45 },
+	{ labelKey: 'hotkey-actions.menu-nav-left', value: 46 },
+	{ labelKey: 'hotkey-actions.menu-nav-right', value: 47 },
+	{ labelKey: 'hotkey-actions.menu-nav-select', value: 48 },
+	{ labelKey: 'hotkey-actions.menu-nav-back', value: 49 },
+	{ labelKey: 'hotkey-actions.menu-nav-toggle', value: 50 },
 ];
 
 const FORCED_SETUP_MODES = [
@@ -324,7 +331,28 @@ const hotkeyFields = Array(16)
 		const newSchema = yup
 			.object()
 			.label('Hotkey ' + number)
-			.shape({ ...hotkeySchema });
+			.shape({ ...hotkeySchema })
+			.test(
+				'duplicate-hotkeys',
+				'Duplicate button combinations are not allowed',
+				function (currentValue) {
+					return !Object.entries(this.parent).some(
+						([key, { buttonsMask, auxMask }]) => {
+							if (
+								!key.includes('hotkey') || // Skip non-hotkey rows
+								key === 'hotkey' + number || // Skip current hotkey
+								!Boolean(currentValue.buttonsMask + currentValue.auxMask) // Skip unset hotkey rows
+							) {
+								return false;
+							}
+							return (
+								buttonsMask === currentValue.buttonsMask &&
+								auxMask === currentValue.auxMask
+							);
+						},
+					);
+				},
+			);
 		acc['hotkey' + number] = newSchema;
 		return acc;
 	}, {});
@@ -651,9 +679,7 @@ export default function SettingsPage() {
 	const handleKeyChange = (value, button) => {
 		const newMappings = { ...keyMappings };
 		newMappings[button].key = value;
-		const mappings = validateMappings(newMappings, t);
-		setKeyMappings(mappings);
-		setValidated(true);
+		setKeyMappings(newMappings);
 	};
 
 	const generateAuthSelection = (
@@ -721,7 +747,6 @@ export default function SettingsPage() {
 				<KeyboardMapper
 					buttonLabels={buttonLabels}
 					handleKeyChange={handleKeyChange}
-					validated={validated}
 					getKeyMappingForButton={getKeyMappingForButton}
 				/>
 			</div>
@@ -1261,16 +1286,6 @@ export default function SettingsPage() {
 	const onSubmit = async (values) => {
 		const isKeyboardMode = values.inputMode === 3;
 
-		if (isKeyboardMode) {
-			const mappings = validateMappings(keyMappings, t);
-			setKeyMappings(mappings);
-			setValidated(true);
-			if (Object.keys(mappings).some((p) => !!mappings[p].error)) {
-				setSaveMessage(t('Common:errors.validation-error'));
-				return;
-			}
-		}
-
 		const data = {
 			...values,
 			usbProductID: hexToInt(values.usbProductID || '0000'),
@@ -1678,18 +1693,25 @@ export default function SettingsPage() {
 															{t('SettingsPage:hotkey-settings-warning')}
 														</div>
 													)}
-													<div id="Hotkeys" hidden={values.lockHotkeys}>
+													<div
+														id="Hotkeys"
+														hidden={values.lockHotkeys}
+														className="d-grid gap-2"
+													>
 														{Object.keys(hotkeyFields).map((o, i) => (
 															<Form.Group
 																key={`hotkey-${i}-base`}
-																className="row row-gap-2 gx-2 pb-2"
+																className={`row row-gap-2 align-items-center gx-2`}
 															>
-																<Col sm="auto">
+																<Col
+																	sm="auto"
+																	className="d-flex align-items-center"
+																>
 																	<Form.Check
 																		name={`${o}.auxMask`}
-																		label="&nbsp;&nbsp;Fn"
+																		label="Fn"
 																		type="switch"
-																		className="form-select-sm"
+																		className="text my-auto"
 																		disabled={values.fnButtonPin === -1}
 																		checked={values[o] && !!values[o]?.auxMask}
 																		onChange={(e) => {
@@ -1698,7 +1720,7 @@ export default function SettingsPage() {
 																				e.target.checked ? 32768 : 0,
 																			);
 																		}}
-																		isInvalid={errors[o] && errors[o]?.auxMask}
+																		isInvalid={errors[o] || errors[o]?.auxMask}
 																	/>
 																	<Form.Control.Feedback type="invalid">
 																		{errors[o] && errors[o]?.action}
@@ -1718,10 +1740,10 @@ export default function SettingsPage() {
 																						values[o]?.buttonsMask & mask.value
 																					}
 																					error={
-																						errors[o] && errors[o]?.buttonsMask
+																						errors[o] || errors[o]?.buttonsMask
 																					}
 																					isInvalid={
-																						errors[o] && errors[o]?.buttonsMask
+																						errors[o] || errors[o]?.buttonsMask
 																					}
 																					onChange={(e) => {
 																						setFieldValue(
@@ -1812,6 +1834,12 @@ export default function SettingsPage() {
 																		</Button>
 																	</Col>
 																)}
+																<Form.Control.Feedback
+																	type="invalid"
+																	className={errors[o] ? 'd-block' : ''}
+																>
+																	{errors[o]}
+																</Form.Control.Feedback>
 															</Form.Group>
 														))}
 													</div>

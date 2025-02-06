@@ -49,6 +49,7 @@ export const KEY_CODES = [
 	{ label: 'CapsLock', value: 0x39 },
 	{ label: 'Comma', value: 0x36 },
 	{ label: 'Control Left', value: 0xe0 },
+	{ label: 'Control Right', value: 0xe4 },
 	{ label: 'Delete', value: 0x4c },
 	{ label: '0', value: 0x27 },
 	{ label: '1', value: 0x1e },

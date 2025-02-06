@@ -124,6 +124,8 @@ void RotaryEncoderInput::process()
                 int8_t axis = mapEncoderValueDPad(i, encoderValues[i], encoderMap[i].pulsesPerRevolution);
                 dpadUp = (axis == 1);
                 dpadDown = (axis == -1);
+            } else if (encoderMap[i].mode == ENCODER_MODE_VOLUME) {
+                // Prevents NONE kick-out, do nothing for now but rely on GP events
             }
 
             if ((encoderValues[i] - prevValues[i]) != 0) {
