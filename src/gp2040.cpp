@@ -271,12 +271,12 @@ void GP2040::run() {
 	Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
 	bool configMode = Storage::getInstance().GetConfigMode();
     GamepadState prevState;
-    
-    // Start the TinyUSB Device functionality
-    tud_init(TUD_OPT_RHPORT);
 
 	// Initialize our USB manager
 	USBHostManager::getInstance().start();
+
+    // Start the TinyUSB Device functionality
+    tud_init(TUD_OPT_RHPORT);
 
 	while (1) { // LOOP
 		this->getReinitGamepad(gamepad);
