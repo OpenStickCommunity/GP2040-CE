@@ -50,6 +50,9 @@ void GP2040Aux::setup() {
 	addons.LoadAddon(new DRV8833RumbleAddon(), CORE1_LOOP);
 	addons.LoadAddon(new ReactiveLEDAddon(), CORE1_LOOP);
 
+	// Initialize our USB manager
+	USBHostManager::getInstance().start();
+
 	// Ready to sync Core0 and Core1
 	isReady = true;
 }

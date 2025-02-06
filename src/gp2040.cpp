@@ -272,9 +272,6 @@ void GP2040::run() {
 	bool configMode = Storage::getInstance().GetConfigMode();
     GamepadState prevState;
 
-	// Initialize our USB manager
-	USBHostManager::getInstance().start();
-
     // Start the TinyUSB Device functionality
     tud_init(TUD_OPT_RHPORT);
 
