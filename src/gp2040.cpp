@@ -60,6 +60,7 @@ void GP2040::setup() {
 	// Reduce CPU if USB host is enabled
 	if ( PeripheralManager::getInstance().isUSBEnabled(0) ) {
 		set_sys_clock_khz(120000, true); // Set Clock to 120MHz to avoid potential USB timing issues
+        sleep_ms(100); // wait for our clock to settle, fixes Xbox One auth
 	}
 
 	Gamepad * gamepad = new Gamepad();
@@ -273,7 +274,10 @@ void GP2040::run() {
     
     // Start the TinyUSB Device functionality
     tud_init(TUD_OPT_RHPORT);
-    
+
+	// Initialize our USB manager
+	USBHostManager::getInstance().start();
+
 	while (1) { // LOOP
 		this->getReinitGamepad(gamepad);
 
