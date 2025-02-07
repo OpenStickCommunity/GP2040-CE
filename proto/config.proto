@@ -357,7 +357,9 @@ message AnimationProfile_Proto
 
     optional uint32 pressedSpecialColour = 12;
 
-    optional bool bUseCaseLightsInSpecialMoves = 13; 
+    optional bool bUseCaseLightsInSpecialMoves = 13;
+
+    optional int32 basePressedCycleTime = 14; 
 };
 
 // This has to be kept in sync with AnimationOptions in AnimationStation.hpp

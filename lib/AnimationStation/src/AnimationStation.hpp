@@ -45,6 +45,10 @@ typedef enum
   PRESSED_EFFECT_RANDOM,
   PRESSED_EFFECT_JIGGLESTATIC,
   PRESSED_EFFECT_JIGGLETWOSTATIC,
+  PRESSED_EFFECT_BURST,
+  PRESSED_EFFECT_BURST_RANDOM,
+  PRESSED_EFFECT_BURST_SMALL,
+  PRESSED_EFFECT_BURST_SMALL_RANDOM
 } AnimationPressedEffects;
 
 typedef enum
@@ -71,7 +75,8 @@ struct __attribute__ ((__packed__)) AnimationProfile
     AnimationNonPressedEffects baseCaseEffect;
 
     int16_t baseCycleTime;
-   
+    int16_t basePressedCycleTime;
+
     uint32_t notPressedStaticColors[NUM_BANK0_GPIOS + 3]; //since we pack 4 into each. Adding 3 ensures we have space for extra pading
     uint32_t pressedStaticColors[NUM_BANK0_GPIOS + 3]; //since we pack 4 into each. Adding 3 ensures we have space for extra pading
 

@@ -65,7 +65,7 @@ void Animation::UpdatePresses()
         {
           if(fadeTimes[ledIndex] > 0)
             wasPressedOrFading = true;
-          fadeTimes[ledIndex] = holdTimeInMs + fadeoutTimeInMs; 
+          fadeTimes[ledIndex] = GetFadeTime(); 
         }
 
         //if this is a new press, let effects know
@@ -76,6 +76,11 @@ void Animation::UpdatePresses()
       }
     }
   }
+}
+
+int32_t Animation::GetFadeTime()
+{
+  return holdTimeInMs + fadeoutTimeInMs;
 }
 
 void Animation::DecrementFadeCounters() 

@@ -39,6 +39,7 @@ static void updateAnimationOptionsProto(const AnimationOptions& options)
 	for(int index = 0; index < 4; ++index) //MAX_ANIMATION_PROFILES from AnimationStation.hpp
 	{
 		optionsProto.profiles[index].baseCycleTime = options.profiles[index].baseCycleTime;
+		optionsProto.profiles[index].basePressedCycleTime = options.profiles[index].basePressedCycleTime;
 	}
 	optionsProto.brightness					= options.brightness;
 	optionsProto.baseProfileIndex			= options.baseProfileIndex;
@@ -220,6 +221,7 @@ void AnimationStorage::getAnimationOptions(AnimationOptions& options)
 		options.profiles[index].basePressedEffect = (AnimationPressedEffects)((int)optionsProto.profiles[index].basePressedEffect);
 		options.profiles[index].baseCaseEffect = (AnimationNonPressedEffects)((int)optionsProto.profiles[index].baseCaseEffect);
 		options.profiles[index].baseCycleTime = optionsProto.profiles[index].baseCycleTime;
+		options.profiles[index].basePressedCycleTime = optionsProto.profiles[index].basePressedCycleTime;
 		for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS/4)+1; ++packedPinIndex)
 		{
 			int pinIndex = packedPinIndex * 4;

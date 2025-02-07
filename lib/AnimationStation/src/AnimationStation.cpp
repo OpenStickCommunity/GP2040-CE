@@ -10,6 +10,7 @@
 #include "Effects/Rainbow.hpp"
 #include "Effects/StaticColor.hpp"
 #include "Effects/JiggleStaticColor.hpp"
+#include "Effects/BurstColor.hpp"
 #include "Effects/JiggleTwoStaticColor.hpp"
 #include "Effects/RandomColor.hpp"
 #include "Effects/SMPulseColour.hpp"
@@ -100,11 +101,11 @@ void AnimationStation::HandleEvent(AnimationHotkey action)
   }
   if (action == HOTKEY_LEDS_PRESS_PARAMETER_UP) 
   {
-    this->buttonAnimation->ParameterUp();
+    this->buttonAnimation->PressParameterUp();
   }
   if (action == HOTKEY_LEDS_PRESS_PARAMETER_DOWN) 
   {
-    this->buttonAnimation->ParameterDown();
+    this->buttonAnimation->PressParameterDown();
   }  
 }
 
@@ -386,6 +387,19 @@ void AnimationStation::SetMode(int8_t mode)
     break;
   case AnimationPressedEffects::PRESSED_EFFECT_JIGGLETWOSTATIC:
     this->buttonAnimation = new JiggleTwoStaticColor(RGBLights, lastPressed);
+    break;
+
+  case AnimationPressedEffects::PRESSED_EFFECT_BURST:
+    this->buttonAnimation = new BurstColor(RGBLights, false, false, lastPressed);
+    break;
+  case AnimationPressedEffects::PRESSED_EFFECT_BURST_RANDOM:
+    this->buttonAnimation = new BurstColor(RGBLights, true, false, lastPressed);
+    break;
+  case AnimationPressedEffects::PRESSED_EFFECT_BURST_SMALL:
+    this->buttonAnimation = new BurstColor(RGBLights, false, true, lastPressed);
+    break;
+  case AnimationPressedEffects::PRESSED_EFFECT_BURST_SMALL_RANDOM:
+    this->buttonAnimation = new BurstColor(RGBLights, true, true, lastPressed);
     break;
 
   default:

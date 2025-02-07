@@ -130,6 +130,9 @@ public:
   virtual void ParameterUp() {};
   virtual void ParameterDown() {};
 
+  virtual void PressParameterUp() {};
+  virtual void PressParameterDown() {};
+
   virtual void SetOptionalParams(uint32_t OptionalParams) {};
 
   virtual bool IsFinished() { return false; } //ready for delete? Only applicable to special move anims really
@@ -148,6 +151,8 @@ protected:
 
   RGB BlendColor(RGB start, RGB end, float alpha);
   RGB FadeColor(RGB start, RGB end, uint32_t TimeLeft);
+
+  virtual int32_t GetFadeTime();
 
   //Type Helpers
   bool LightTypeIsForNonPressedAnimation(LightType Type);

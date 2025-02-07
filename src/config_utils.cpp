@@ -498,17 +498,21 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         config.animationOptions.profiles[0].pressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
         for (unsigned int lightIndex = 0; lightIndex < (NUM_BANK0_GPIOS/4)+1; ++lightIndex) 
         {
-            config.animationOptions.profiles[0].notPressedStaticColors[lightIndex] = 0; //Black
-            config.animationOptions.profiles[0].pressedStaticColors[lightIndex] = 0; //Black
+            config.animationOptions.profiles[0].notPressedStaticColors[lightIndex] = 2 + (2<<8) + (2<<16) + (2<<24); //Red
+            config.animationOptions.profiles[0].pressedStaticColors[lightIndex] = 4 + (6<<8) + (10<<16) + (12<<24); //Black
         }
-        config.animationOptions.profiles[0].baseNonPressedEffect = AnimationNonPressedEffects_Proto::AnimationNonPressedEffects_Proto_EFFECT_RAIN_HIGH;
-        config.animationOptions.profiles[0].basePressedEffect = AnimationPressedEffects_Proto::AnimationPressedEffects_Proto_EFFECT_HELD_STATIC_COLOR;
-        config.animationOptions.profiles[0].baseCaseEffect = AnimationNonPressedEffects_Proto::AnimationNonPressedEffects_Proto_EFFECT_RAIN_HIGH;
-        config.animationOptions.profiles[0].baseCycleTime = 1;
+        config.animationOptions.profiles[0].baseNonPressedEffect = AnimationNonPressedEffects_Proto::AnimationNonPressedEffects_Proto_EFFECT_STATIC_COLOR;
+        config.animationOptions.profiles[0].basePressedEffect = AnimationPressedEffects_Proto::AnimationPressedEffects_Proto_EFFECT_BURST_SMALL;
+        config.animationOptions.profiles[0].baseCaseEffect = AnimationNonPressedEffects_Proto::AnimationNonPressedEffects_Proto_EFFECT_STATIC_COLOR;
         config.animationOptions.profiles[0].buttonPressHoldTimeInMs = 500;
         config.animationOptions.profiles[0].buttonPressFadeOutTimeInMs = 500;
-        config.animationOptions.profiles[0].nonPressedSpecialColour = 255 << 8; //GREEN
+        config.animationOptions.profiles[0].nonPressedSpecialColour = (128 << 16) + 255; //MAGENTA
         config.animationOptions.profiles[0].bUseCaseLightsInSpecialMoves = false;
+        config.animationOptions.profiles[0].caseStaticColors_count = MAX_CASE_LIGHTS/4;
+        for (unsigned int caseLightIndex = 0; caseLightIndex < MAX_CASE_LIGHTS/4; ++caseLightIndex) 
+        {
+            config.animationOptions.profiles[0].caseStaticColors[caseLightIndex] = 2 + (2<<8) + (2<<16) + (2<<24); //Red
+        }
 
         config.animationOptions.profiles[1].bEnabled = true;
         config.animationOptions.profiles[1].notPressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
@@ -525,9 +529,8 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         }
 
         config.animationOptions.profiles[1].baseNonPressedEffect = AnimationNonPressedEffects_Proto::AnimationNonPressedEffects_Proto_EFFECT_CHASE_LEFT_TO_RIGHT;
-        config.animationOptions.profiles[1].basePressedEffect = AnimationPressedEffects_Proto::AnimationPressedEffects_Proto_EFFECT_HELD_JIGGLETWOSTATICS;
+        config.animationOptions.profiles[1].basePressedEffect = AnimationPressedEffects_Proto::AnimationPressedEffects_Proto_EFFECT_BURST_RANDOM;
         config.animationOptions.profiles[1].baseCaseEffect = AnimationNonPressedEffects_Proto::AnimationNonPressedEffects_Proto_EFFECT_CHASE_LEFT_TO_RIGHT;
-        config.animationOptions.profiles[1].baseCycleTime = 1;
         config.animationOptions.profiles[1].buttonPressHoldTimeInMs = 500;
         config.animationOptions.profiles[1].buttonPressFadeOutTimeInMs = 500;
         config.animationOptions.profiles[1].nonPressedSpecialColour = 255; //BLUE

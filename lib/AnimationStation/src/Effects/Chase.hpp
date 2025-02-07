@@ -42,8 +42,8 @@ public:
 
   virtual void Animate(RGB (&frame)[100]) override;
   
-  void ParameterUp();
-  void ParameterDown();
+  virtual void ParameterUp() override;
+  virtual void ParameterDown() override;
 
   ChaseTypes ChaseTypeInUse = CHASETYPES_SEQUENTIAL;
 

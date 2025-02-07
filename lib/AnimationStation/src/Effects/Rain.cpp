@@ -1,18 +1,18 @@
 #include "Rain.hpp"
 #include <algorithm>
 
-#define CHASE_CYCLE_INCREMENT   50
-#define CHASE_CYCLE_MAX         500
-#define CHASE_CYCLE_MIN         10
+#define RAIN_CYCLE_INCREMENT   50
+#define RAIN_CYCLE_MAX         500
+#define RAIN_CYCLE_MIN         10
 
 Rain::Rain(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType, ERainFrequency InRainFrequency) : Animation(InRGBLights, InButtonCaseEffectType) 
 {
     RainFrequency = InRainFrequency;
 
-    if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime > CHASE_CYCLE_MAX)
-        AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = CHASE_CYCLE_MAX;
-    if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime < CHASE_CYCLE_MIN)
-        AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = CHASE_CYCLE_MIN;
+    if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime > RAIN_CYCLE_MAX)
+        AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = RAIN_CYCLE_MAX;
+    if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime < RAIN_CYCLE_MIN)
+        AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = RAIN_CYCLE_MIN;
 
     for(int index = 0; index < MAX_RAIN_DROPS; ++index)
     {
@@ -232,11 +232,11 @@ void Rain::Animate(RGB (&frame)[100])
 void Rain::ParameterUp() 
 {
   int32_t cycleTime = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime;
-  cycleTime = cycleTime + CHASE_CYCLE_INCREMENT;
+  cycleTime = cycleTime + RAIN_CYCLE_INCREMENT;
 
-  if (cycleTime > CHASE_CYCLE_MAX) 
+  if (cycleTime > RAIN_CYCLE_MAX) 
   {
-    cycleTime = CHASE_CYCLE_MAX;
+    cycleTime = RAIN_CYCLE_MAX;
   }
 
   AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = cycleTime;
@@ -245,11 +245,11 @@ void Rain::ParameterUp()
 void Rain::ParameterDown() 
 {
   int16_t cycleTime = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime;
-  cycleTime = cycleTime - CHASE_CYCLE_INCREMENT;
+  cycleTime = cycleTime - RAIN_CYCLE_INCREMENT;
 
-  if (cycleTime < CHASE_CYCLE_MIN) 
+  if (cycleTime < RAIN_CYCLE_MIN) 
   {
-    cycleTime = CHASE_CYCLE_MIN;
+    cycleTime = RAIN_CYCLE_MIN;
   }
 
   AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = cycleTime;

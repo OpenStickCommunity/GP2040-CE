@@ -373,6 +373,10 @@ enum AnimationPressedEffects_Proto
   EFFECT_RANDOM = 1;
   EFFECT_HELD_JIGGLESTATIC = 2;
   EFFECT_HELD_JIGGLETWOSTATICS = 3;
+  EFFECT_BURST = 4;
+  EFFECT_BURST_RANDOM = 5;
+  EFFECT_BURST_SMALL = 6;
+  EFFECT_BURST_SMALL_RANDOM = 7;
 }
 
 /* This has to be kept in sync with LightType in Pixel.hpp */
