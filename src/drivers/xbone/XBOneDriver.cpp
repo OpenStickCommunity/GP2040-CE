@@ -31,10 +31,11 @@ typedef enum {
     WAIT_DESCRIPTOR_REQUEST,
     SEND_DESCRIPTOR,
     SETUP_AUTH,
-    AUTH_DONE
+    AUTH_DONE,
+    NOT_READY
 } XboxOneDriverState;
 
-static XboxOneDriverState xboneDriverState;
+static XboxOneDriverState xboneDriverState = NOT_READY;
 
 static uint8_t xb1_guide_on[] = { 0x01, 0x5b };
 static uint8_t xb1_guide_off[] = { 0x00, 0x5b };
@@ -668,6 +669,7 @@ void XBOneDriver::update() {
             }
             break;
         case AUTH_DONE:
+        case NOT_READY:
         default:
             break;
     };
