@@ -283,6 +283,14 @@ bool xbone_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result,
             // Set all player LEDs to on
             report_led_mode = incomingXGIP->getData()[1]; // 1 - turn LEDs on
             report_led_brightness = incomingXGIP->getData()[2]; // 2 - brightness (ignored for now)
+
+            // Send our descriptor if descriptor is waiting (Player 2)
+            if ( xboneDriverState == XboxOneDriverState::WAIT_DESCRIPTOR_REQUEST ) {
+                outgoingXGIP->reset(); // reset if anything was in there
+                outgoingXGIP->setAttributes(GIP_DEVICE_DESCRIPTOR, incomingXGIP->getSequence(), 1, 1, 0);
+                outgoingXGIP->setData(xboxOneDescriptor, sizeof(xboxOneDescriptor));
+                xboneDriverState = XboxOneDriverState::SEND_DESCRIPTOR;
+            }
         } else if ( command == GIP_CMD_RUMBLE ) {
             // TO-DO
         } else if ( command == GIP_AUTH || command == GIP_FINAL_AUTH) {
