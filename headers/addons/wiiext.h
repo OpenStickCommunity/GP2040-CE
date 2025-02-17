@@ -84,6 +84,8 @@ public:
     virtual void setup();       // WiiExtension Setup
     virtual void process();     // WiiExtension Process
     virtual void preprocess() {}
+	virtual void postprocess() {}
+    virtual void reinit() {}
     virtual std::string name() { return WiiExtensionName; }
 private:
     WiiExtensionDevice * wii;

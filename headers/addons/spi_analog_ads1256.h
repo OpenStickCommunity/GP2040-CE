@@ -38,6 +38,8 @@ public:
 	virtual void setup();       // Analog Setup
 	virtual void preprocess() {}
 	virtual void process();     // Analog Process
+	virtual void postprocess() {}
+    virtual void reinit() {}
     virtual std::string name() { return SPIAnalog1256Name; }
 private:
     uint8_t convert24to8bit(float voltage);

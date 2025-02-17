@@ -51,6 +51,8 @@ public:
 	virtual void setup();
 	virtual void preprocess() {}
 	virtual void process();
+    virtual void postprocess() {}
+    virtual void reinit() {}
 	virtual std::string name() { return DRV8833RumbleName; }
 private:
 	uint32_t pwmSetFreqDuty(uint slice, uint channel, uint32_t frequency, float duty);

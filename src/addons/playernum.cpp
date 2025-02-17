@@ -42,8 +42,10 @@ void PlayerNumAddon::setup() {
     assigned = 0; // what player ID did we get assigned to
 }
 
-void PlayerNumAddon::process()
-{
+void PlayerNumAddon::process() {
+}
+
+void PlayerNumAddon::postprocess() {
     if ( assigned == 0 ) {
         Gamepad * gamepad = Storage::getInstance().GetGamepad();
         InputMode inputMode = static_cast<InputMode>(gamepad->getOptions().inputMode);

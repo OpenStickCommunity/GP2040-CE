@@ -193,6 +193,8 @@ public:
 	virtual void setup();
 	virtual void preprocess() {}
 	virtual void process();
+    virtual void postprocess() {}
+    virtual void reinit() {}
 	virtual std::string name() { return DisplayName; }
 
     void handleSystemRestart(GPEvent* e);

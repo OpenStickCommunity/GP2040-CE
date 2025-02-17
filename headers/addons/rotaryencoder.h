@@ -87,6 +87,8 @@ public:
 	virtual void setup();       // Rotary Setup
     virtual void preprocess() {}
 	virtual void process();     // Rotary process
+	virtual void postprocess() {}
+    virtual void reinit() {}
     virtual std::string name() { return RotaryEncoderName; }
 
     typedef struct {

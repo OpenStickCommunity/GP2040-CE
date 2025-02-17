@@ -30,6 +30,8 @@ public:
 	virtual void setup();       // BoardLed Setup
 	virtual void process();     // BoardLed Process
 	virtual void preprocess() {}
+    virtual void postprocess() {}
+    virtual void reinit() {}
 	virtual std::string name() { return OnBoardLedName; }
 private:
 	OnBoardLedMode onBoardLedMode;

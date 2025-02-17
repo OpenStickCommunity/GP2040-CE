@@ -42,6 +42,8 @@ public:
 	virtual void setup();       // Reverse Button Setup
 	virtual void preprocess() {}
 	virtual void process();     // Reverse process
+	virtual void postprocess() {}
+    virtual void reinit() {}
     virtual std::string name() { return ReverseName; }
 private:
     void update();

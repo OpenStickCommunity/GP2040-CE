@@ -34,6 +34,8 @@ public:
 	virtual void setup();       // SNESpad Setup
 	virtual void process();     // SNESpad Process
 	virtual void preprocess() {}
+	virtual void postprocess() {}
+    virtual void reinit() {}
 	virtual std::string name() { return SNESpadName; }
 private:
     SNESpad * snes;

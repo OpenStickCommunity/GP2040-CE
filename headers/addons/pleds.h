@@ -38,6 +38,8 @@ public:
 	virtual void setup();
 	virtual void preprocess() {}
 	virtual void process();
+	virtual void postprocess() {}
+    virtual void reinit() {}
 	virtual std::string name() { return PLEDName; }
 	PlayerLEDAddon() {
 		type = static_cast<PLEDType>(Storage::getInstance().getLedOptions().pledType);

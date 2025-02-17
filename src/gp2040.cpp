@@ -94,26 +94,26 @@ void GP2040::setup() {
 	adc_init();
 
 	// Setup Add-ons
-	addons.LoadUSBAddon(new KeyboardHostAddon(), CORE0_INPUT);
-	addons.LoadUSBAddon(new GamepadUSBHostAddon(), CORE0_INPUT);
-	addons.LoadAddon(new AnalogInput(), CORE0_INPUT);
-	addons.LoadAddon(new BootselButtonAddon(), CORE0_INPUT);
-	addons.LoadAddon(new DualDirectionalInput(), CORE0_INPUT);
-	addons.LoadAddon(new FocusModeAddon(), CORE0_INPUT);
-	addons.LoadAddon(new I2CAnalog1219Input(), CORE0_INPUT);
-	addons.LoadAddon(new SPIAnalog1256Input(), CORE0_INPUT);
-	addons.LoadAddon(new WiiExtensionInput(), CORE0_INPUT);
-	addons.LoadAddon(new SNESpadInput(), CORE0_INPUT);
-	addons.LoadAddon(new PlayerNumAddon(), CORE0_USBREPORT);
-	addons.LoadAddon(new SliderSOCDInput(), CORE0_INPUT);
-	addons.LoadAddon(new TiltInput(), CORE0_INPUT);
-	addons.LoadAddon(new RotaryEncoderInput(), CORE0_INPUT);
-	addons.LoadAddon(new PCF8575Addon(), CORE0_INPUT);
+	addons.LoadUSBAddon(new KeyboardHostAddon());
+	addons.LoadUSBAddon(new GamepadUSBHostAddon());
+	addons.LoadAddon(new AnalogInput());
+	addons.LoadAddon(new BootselButtonAddon());
+	addons.LoadAddon(new DualDirectionalInput());
+	addons.LoadAddon(new FocusModeAddon());
+	addons.LoadAddon(new I2CAnalog1219Input());
+	addons.LoadAddon(new SPIAnalog1256Input());
+	addons.LoadAddon(new WiiExtensionInput());
+	addons.LoadAddon(new SNESpadInput());
+	addons.LoadAddon(new PlayerNumAddon());
+	addons.LoadAddon(new SliderSOCDInput());
+	addons.LoadAddon(new TiltInput());
+	addons.LoadAddon(new RotaryEncoderInput());
+	addons.LoadAddon(new PCF8575Addon());
 
 	// Input override addons
-	addons.LoadAddon(new ReverseInput(), CORE0_INPUT);
-	addons.LoadAddon(new TurboInput(), CORE0_INPUT); // Turbo overrides button states and should be close to the end
-	addons.LoadAddon(new InputMacro(), CORE0_INPUT);
+	addons.LoadAddon(new ReverseInput());
+	addons.LoadAddon(new TurboInput()); // Turbo overrides button states and should be close to the end
+	addons.LoadAddon(new InputMacro());
 
 	InputMode inputMode = gamepad->getOptions().inputMode;
 	const BootAction bootAction = getBootAction();
@@ -301,7 +301,7 @@ void GP2040::run() {
 		USBHostManager::getInstance().process();
 
 		// Pre-Process add-ons for MPGS
-		addons.PreprocessAddons(ADDON_PROCESS::CORE0_INPUT);
+		addons.PreprocessAddons();
 
 		gamepad->hotkey(); 	// check for MPGS hotkeys
 		rebootHotkeys.process(gamepad, configMode);
@@ -309,7 +309,7 @@ void GP2040::run() {
 		gamepad->process(); // process through MPGS
 
 		// (Post) Process for add-ons
-		addons.ProcessAddons(ADDON_PROCESS::CORE0_INPUT);
+		addons.ProcessAddons();
 
 		checkProcessedState(processedGamepad->state, gamepad->state);
 
@@ -317,12 +317,13 @@ void GP2040::run() {
 		memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
 
 		// Process Input Driver
-		inputDriver->process(gamepad);
-		
-		// Process USB Report Addons
-		addons.ProcessAddons(ADDON_PROCESS::CORE0_USBREPORT);
+		bool processed = inputDriver->process(gamepad);
 		
 		tud_task(); // TinyUSB Task update
+
+		if ( processed == true ) {
+			addons.PostprocessAddons();
+		}
 
         if (rebootRequested) {
             rebootRequested = false;
@@ -365,7 +366,7 @@ void GP2040::getReinitGamepad(Gamepad * gamepad) {
 		gamepad->reinit();
 		// ...and addons on this core, if they implemented reinit (just things
 		// with simple GPIO pin usage, at time of writing)
-		addons.ReinitializeAddons(ADDON_PROCESS::CORE0_INPUT);
+		addons.ReinitializeAddons();
 
 		// and we're done
 		gamepad->userRequestedReinit = false;
@@ -387,15 +388,18 @@ GP2040::BootAction GP2040::getBootAction() {
 				gamepad->read();
 
 				// Pre-Process add-ons for MPGS
-				addons.PreprocessAddons(ADDON_PROCESS::CORE0_INPUT);
+				addons.PreprocessAddons();
 				
 				gamepad->process(); // process through MPGS
 
-				// (Post) Process for add-ons
-				addons.ProcessAddons(ADDON_PROCESS::CORE0_INPUT);
+				// Process for add-ons
+				addons.ProcessAddons();
 
 				// Copy Processed Gamepad for Core1 (race condition otherwise)
 				memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
+
+				// Post-rocess for add-ons
+				addons.PostprocessAddons();
 
                 const ForcedSetupOptions& forcedSetupOptions = Storage::getInstance().getForcedSetupOptions();
                 bool modeSwitchLocked = forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_MODE_SWITCH ||

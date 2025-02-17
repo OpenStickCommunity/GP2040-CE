@@ -142,6 +142,8 @@ public:
 	virtual void setup();
 	virtual void preprocess() {}
 	virtual void process();
+	virtual void postprocess() {}
+    virtual void reinit() {}
     virtual std::string name() { return PCF8575AddonName; }
 
     std::map<uint8_t, GpioMappingInfo> pinRef;

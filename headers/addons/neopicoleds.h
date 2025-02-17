@@ -177,6 +177,8 @@ public:
 	virtual void setup();
 	virtual void preprocess() {}
 	virtual void process();
+	virtual void postprocess() {}
+    virtual void reinit() {}
 	virtual std::string name() { return NeoPicoLEDName; }
 	void configureLEDs();
 	uint32_t frame[100];

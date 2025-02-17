@@ -45,6 +45,8 @@ public:
 	virtual void setup();       // Analog Setup
 	virtual void preprocess() {}
 	virtual void process();     // Analog Process
+	virtual void postprocess() {}
+    virtual void reinit() {}
     virtual std::string name() { return I2CAnalog1219Name; }
 private:
     ADS1219Device * ads;

@@ -41,6 +41,8 @@ public:
 	virtual void setup();       // FocusMode Setup
 	virtual void process();     // FocusMode Process
 	virtual void preprocess() {}
+	virtual void postprocess() {}
+    virtual void reinit() {}
 	virtual std::string name() { return FocusModeName; }
 private:
 	uint32_t buttonLockMask;
