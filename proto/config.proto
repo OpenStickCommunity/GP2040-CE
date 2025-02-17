@@ -541,16 +541,16 @@ message BuzzerOptions
 
 message ExtraButtonOptions
 {
-    optional bool enabled = 1;
+    optional bool enabled = 1 [deprecated = true];
 
-    optional int32 pin = 2;
-    optional uint32 buttonMap = 3;
+    optional int32 pin = 2 [deprecated = true];
+    optional uint32 buttonMap = 3 [deprecated = true];
 }
 
 message PlayerNumberOptions
 {
-    optional bool enabled = 1;
-    optional uint32 number = 2;
+    optional bool enabled = 1 [deprecated = true];
+    optional uint32 number = 2 [deprecated = true];
 }
 
 message PS4Options
@@ -836,7 +836,7 @@ message AddonOptions
     optional DualDirectionalOptions dualDirectionalOptions = 8;
     optional BuzzerOptions buzzerOptions = 9;
     optional ExtraButtonOptions deprecatedExtraButtonOptions = 10 [deprecated = true];
-    optional PlayerNumberOptions playerNumberOptions = 11;
+    optional PlayerNumberOptions playerNumberOptions = 11 [deprecated = true];
     optional PS4Options ps4Options = 12 [(nanopb).disallow_export = true];
     optional WiiOptions wiiOptions = 13;
     optional SOCDSliderOptions socdSliderOptions = 14;

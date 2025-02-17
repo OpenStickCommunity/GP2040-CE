@@ -188,12 +188,11 @@ void TurboInput::process()
         nextAdcRead = now + 100000; // Sample every 100ms
     }
 
-    /*
     // Check if we've reached the next timer right before applying turbo state
     if (nextTimer < now) {
         bTurboFlicker ^= true;
         nextTimer = now + uIntervalUS - TURBO_LOOP_OFFSET;
-    }*/
+    }
 
     // Set TURBO LED
     // OFF: No turbo buttons enabled
@@ -233,18 +232,6 @@ void TurboInput::process()
         } else {
             gamepad->state.buttons &= ~(turboButtonsMask);
         }
-    }
-}
-
-void TurboInput::postprocess() {
-    const TurboOptions& options = Storage::getInstance().getAddonOptions().turboOptions;
-    if (!options.enabled) return;
-    uint64_t now = getMicro();
-
-    // Check if we've reached the next timer right before applying turbo state
-    if (nextTimer < now) {
-        bTurboFlicker ^= true;
-        nextTimer = now + uIntervalUS - TURBO_LOOP_OFFSET;
     }
 }
 

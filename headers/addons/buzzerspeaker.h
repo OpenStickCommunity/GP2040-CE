@@ -133,7 +133,7 @@ public:
 	virtual void setup();
 	virtual void preprocess() {}
 	virtual void process();
-    virtual void postprocess() {}
+    virtual void postprocess(bool sent) {}
     virtual void reinit() {}
 	virtual std::string name() { return BuzzerSpeakerName; }
 private:

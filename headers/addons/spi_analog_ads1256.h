@@ -38,7 +38,7 @@ public:
 	virtual void setup();       // Analog Setup
 	virtual void preprocess() {}
 	virtual void process();     // Analog Process
-	virtual void postprocess() {}
+	virtual void postprocess(bool sent) {}
     virtual void reinit() {}
     virtual std::string name() { return SPIAnalog1256Name; }
 private:

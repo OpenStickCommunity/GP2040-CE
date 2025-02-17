@@ -32,7 +32,7 @@ public:
     virtual void reinit();
     virtual void preprocess() {}
 	virtual void process();     // SliderSOCD process
-	virtual void postprocess() {}
+	virtual void postprocess(bool sent) {}
     virtual std::string name() { return SliderSOCDName; }
 private:
     SOCDMode read();

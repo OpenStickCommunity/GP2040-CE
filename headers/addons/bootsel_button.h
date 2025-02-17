@@ -21,7 +21,7 @@ public:
 	virtual void setup();       // BootselButton Setup
 	virtual void process() {}     // BootselButton Process
 	virtual void preprocess();
-    virtual void postprocess() {}
+    virtual void postprocess(bool sent) {}
     virtual void reinit() {}
 	virtual std::string name() { return BootselButtonName; }
 private:	

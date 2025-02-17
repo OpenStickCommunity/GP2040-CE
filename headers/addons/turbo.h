@@ -106,7 +106,7 @@ public:
     virtual void reinit();
     virtual void preprocess() {}
     virtual void process();     // TURBO Setting of buttons (Enable/Disable)
-    virtual void postprocess();
+    virtual void postprocess(bool sent) {}
     virtual std::string name() { return TurboName; }
 
     void handleEncoder(GPEvent* e);

@@ -62,7 +62,6 @@ void GP2040Aux::run() {
 		// Pre, Process, and Post
 		addons.PreprocessAddons();
 		addons.ProcessAddons();
-		addons.PostprocessAddons();
 
 		// Run auxiliary functions for input driver on Core1
 		if ( inputDriver != nullptr ) {

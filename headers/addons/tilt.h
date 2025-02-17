@@ -94,7 +94,7 @@ public:
 	virtual void setup();       // Tilt Setup
 	virtual void process();     // Tilt Process
 	virtual void preprocess();  // Tilt Pre-Process (Cheat)
-	virtual void postprocess() {}
+	virtual void postprocess(bool sent) {}
     virtual void reinit() {}
 	virtual std::string name() { return TiltName; }
 private:

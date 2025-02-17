@@ -43,11 +43,11 @@ void AddonManager::ProcessAddons() {
     }
 }
 
-void AddonManager::PostprocessAddons() {
+void AddonManager::PostprocessAddons(bool reportSent) {
     // Loop through all addons and process any that match our type
     for (std::vector<AddonBlock*>::iterator it = addons.begin(); it != addons.end(); it++) {
-        (*it)->ptr->postprocess();
-}
+        (*it)->ptr->postprocess(reportSent);
+    }
 }
 
 // HACK : change this for NeoPicoLED

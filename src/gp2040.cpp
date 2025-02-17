@@ -20,7 +20,6 @@
 #include "addons/tilt.h"
 #include "addons/keyboard_host.h"
 #include "addons/i2canalog1219.h"
-#include "addons/playernum.h"
 #include "addons/reverse.h"
 #include "addons/turbo.h"
 #include "addons/slider_socd.h"
@@ -104,7 +103,6 @@ void GP2040::setup() {
 	addons.LoadAddon(new SPIAnalog1256Input());
 	addons.LoadAddon(new WiiExtensionInput());
 	addons.LoadAddon(new SNESpadInput());
-	addons.LoadAddon(new PlayerNumAddon());
 	addons.LoadAddon(new SliderSOCDInput());
 	addons.LoadAddon(new TiltInput());
 	addons.LoadAddon(new RotaryEncoderInput());
@@ -321,9 +319,8 @@ void GP2040::run() {
 		
 		tud_task(); // TinyUSB Task update
 
-		if ( processed == true ) {
-			addons.PostprocessAddons();
-		}
+		// Post-Process Add-ons with USB Report Processed Sent
+		addons.PostprocessAddons(processed);
 
         if (rebootRequested) {
             rebootRequested = false;
@@ -397,9 +394,6 @@ GP2040::BootAction GP2040::getBootAction() {
 
 				// Copy Processed Gamepad for Core1 (race condition otherwise)
 				memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
-
-				// Post-rocess for add-ons
-				addons.PostprocessAddons();
 
                 const ForcedSetupOptions& forcedSetupOptions = Storage::getInstance().getForcedSetupOptions();
                 bool modeSwitchLocked = forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_MODE_SWITCH ||

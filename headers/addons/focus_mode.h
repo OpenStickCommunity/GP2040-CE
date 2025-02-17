@@ -41,7 +41,7 @@ public:
 	virtual void setup();       // FocusMode Setup
 	virtual void process();     // FocusMode Process
 	virtual void preprocess() {}
-	virtual void postprocess() {}
+	virtual void postprocess(bool sent) {}
     virtual void reinit() {}
 	virtual std::string name() { return FocusModeName; }
 private:

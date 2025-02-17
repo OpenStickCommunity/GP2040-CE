@@ -21,7 +21,6 @@
 #include "addons/display.h"
 #include "addons/keyboard_host.h"
 #include "addons/neopicoleds.h"
-#include "addons/playernum.h"
 #include "addons/pleds.h"
 #include "addons/reactiveleds.h"
 #include "addons/reverse.h"
@@ -690,10 +689,6 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.buzzerOptions, pin, BUZZER_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.buzzerOptions, volume, BUZZER_VOLUME);
     INIT_UNSET_PROPERTY(config.addonOptions.buzzerOptions, enablePin, BUZZER_ENABLE_PIN);
-
-    // addonOptions.playerNumberOptions
-    INIT_UNSET_PROPERTY(config.addonOptions.playerNumberOptions, enabled, !!PLAYERNUM_ADDON_ENABLED);
-    INIT_UNSET_PROPERTY(config.addonOptions.playerNumberOptions, number, PLAYER_NUMBER);
 
     // addonOptions.ps4Options
     INIT_UNSET_PROPERTY_BYTES(config.addonOptions.ps4Options, serial, emptyByteArray);

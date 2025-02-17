@@ -14,7 +14,7 @@ public:
     virtual void setup() = 0;
     virtual void process() = 0;
     virtual void preprocess() = 0;
-    virtual void postprocess() = 0;
+    virtual void postprocess(bool) = 0;
     virtual std::string name() = 0;
 
     /**

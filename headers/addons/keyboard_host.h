@@ -24,7 +24,7 @@ public:
 	virtual void setup();       // KeyboardHost Setup
 	virtual void process() {}   // KeyboardHost Process
 	virtual void preprocess();
-	virtual void postprocess() {}
+	virtual void postprocess(bool sent) {}
     virtual void reinit() {}
 	virtual std::string name() { return KeyboardHostName; }
 private:
