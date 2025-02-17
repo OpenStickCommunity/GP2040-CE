@@ -30,13 +30,13 @@
 
 class SNESpadInput : public GPAddon {
 public:
-	virtual bool available();
-	virtual void setup();       // SNESpad Setup
-	virtual void process();     // SNESpad Process
-	virtual void preprocess() {}
-	virtual void postprocess(bool sent) {}
+    virtual bool available();
+    virtual void setup();       // SNESpad Setup
+    virtual void process();     // SNESpad Process
+    virtual void preprocess() {}
+    virtual void postprocess(bool sent) {}
     virtual void reinit() {}
-	virtual std::string name() { return SNESpadName; }
+    virtual std::string name() { return SNESpadName; }
 private:
     SNESpad * snes;
     uint32_t uIntervalMS;

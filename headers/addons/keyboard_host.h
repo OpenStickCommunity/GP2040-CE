@@ -20,13 +20,13 @@
 
 class KeyboardHostAddon : public GPAddon {
 public:
-	virtual bool available();
-	virtual void setup();       // KeyboardHost Setup
-	virtual void process() {}   // KeyboardHost Process
-	virtual void preprocess();
-	virtual void postprocess(bool sent) {}
+    virtual bool available();
+    virtual void setup();       // KeyboardHost Setup
+    virtual void process() {}   // KeyboardHost Process
+    virtual void preprocess();
+    virtual void postprocess(bool sent) {}
     virtual void reinit() {}
-	virtual std::string name() { return KeyboardHostName; }
+    virtual std::string name() { return KeyboardHostName; }
 private:
 };
 
