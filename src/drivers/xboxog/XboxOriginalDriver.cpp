@@ -23,7 +23,7 @@ void XboxOriginalDriver::initialize() {
     memcpy(&class_driver, xid_get_driver(), sizeof(usbd_class_driver_t));
 }
 
-void XboxOriginalDriver::process(Gamepad * gamepad) {
+bool XboxOriginalDriver::process(Gamepad * gamepad) {
 	// digital buttons
 	xboxOriginalReport.dButtons = 0
 		| (gamepad->pressedUp()    ? XID_DUP    : 0)
@@ -62,10 +62,12 @@ void XboxOriginalDriver::process(Gamepad * gamepad) {
 	if (tud_suspended())
 		tud_remote_wakeup();
 
+    bool reportSent = false;
     uint8_t xIndex = xid_get_index_by_type(0, XID_TYPE_GAMECONTROLLER);
 	if (memcmp(last_report, &xboxOriginalReport, sizeof(XboxOriginalReport)) != 0) {
         if ( xid_send_report(xIndex, &xboxOriginalReport, sizeof(XboxOriginalReport)) == true ) {
             memcpy(last_report, &xboxOriginalReport, sizeof(XboxOriginalReport));
+            reportSent = true;
         }
     }
 
@@ -84,6 +86,8 @@ void XboxOriginalDriver::process(Gamepad * gamepad) {
             gamepad->auxState.haptics.rightActuator.intensity = rightValue;
         }
     }
+    
+    return reportSent;
 }
 
 // tud_hid_get_report_cb

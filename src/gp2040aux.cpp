@@ -42,13 +42,13 @@ void GP2040Aux::setup() {
 	}
 
 	// Setup Add-ons
-	addons.LoadAddon(new DisplayAddon(), CORE1_LOOP);
-	addons.LoadAddon(new NeoPicoLEDAddon(), CORE1_LOOP);
-	addons.LoadAddon(new PlayerLEDAddon(), CORE1_LOOP);
-	addons.LoadAddon(new BoardLedAddon(), CORE1_LOOP);
-	addons.LoadAddon(new BuzzerSpeakerAddon(), CORE1_LOOP);
-	addons.LoadAddon(new DRV8833RumbleAddon(), CORE1_LOOP);
-	addons.LoadAddon(new ReactiveLEDAddon(), CORE1_LOOP);
+	addons.LoadAddon(new DisplayAddon());
+	addons.LoadAddon(new NeoPicoLEDAddon());
+	addons.LoadAddon(new PlayerLEDAddon());
+	addons.LoadAddon(new BoardLedAddon());
+	addons.LoadAddon(new BuzzerSpeakerAddon());
+	addons.LoadAddon(new DRV8833RumbleAddon());
+	addons.LoadAddon(new ReactiveLEDAddon());
 
 	// Initialize our USB manager
 	USBHostManager::getInstance().start();
@@ -59,7 +59,9 @@ void GP2040Aux::setup() {
 
 void GP2040Aux::run() {
 	while (1) {
-		addons.ProcessAddons(CORE1_LOOP);
+		// Pre, Process, and Post
+		addons.PreprocessAddons();
+		addons.ProcessAddons();
 
 		// Run auxiliary functions for input driver on Core1
 		if ( inputDriver != nullptr ) {

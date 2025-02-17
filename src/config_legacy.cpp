@@ -265,7 +265,6 @@ namespace ConfigLegacy
         uint32_t extraButtonMap;
         uint8_t buzzerPin;
         uint8_t buzzerVolume;
-        uint8_t playerNumber;
         uint8_t shmupMode; // Turbo SHMUP Mode
         uint8_t shmupMixMode; // How we mix turbo and non-turbo buttons
         uint16_t shmupAlwaysOn1;
@@ -1007,11 +1006,6 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         SET_PROPERTY(analogADS1219Options, deprecatedI2cSCLPin, bytePinToIntPin(legacyAddonOptions.i2cAnalog1219SCLPin));
         SET_PROPERTY(analogADS1219Options, deprecatedI2cAddress, legacyAddonOptions.i2cAnalog1219Address);
         SET_PROPERTY(analogADS1219Options, deprecatedI2cSpeed, legacyAddonOptions.i2cAnalog1219Speed);
-
-        PlayerNumberOptions& playerNumberOptions = config.addonOptions.playerNumberOptions;
-        config.addonOptions.has_playerNumberOptions = true;
-        SET_PROPERTY(playerNumberOptions, enabled, legacyAddonOptions.PlayerNumAddonEnabled);
-        SET_PROPERTY(playerNumberOptions, number, legacyAddonOptions.playerNumber);
 
         ReverseOptions& reverseOptions = config.addonOptions.reverseOptions;
         config.addonOptions.has_reverseOptions = true;

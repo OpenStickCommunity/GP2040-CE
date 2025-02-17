@@ -385,10 +385,10 @@ USBListener * XBOneDriver::get_usb_auth_listener() {
     return nullptr;
 }
 
-void XBOneDriver::process(Gamepad * gamepad) {
+bool XBOneDriver::process(Gamepad * gamepad) {
     // Do nothing if we couldn't setup our auth listener
     if ( xboxOneAuthData == nullptr) {
-        return;
+        return false;
     }
 
     uint16_t xboneReportSize = 0;
@@ -410,7 +410,7 @@ void XBOneDriver::process(Gamepad * gamepad) {
         memcpy((void*)&((uint8_t*)&xboneReport)[4], xboneIdle, sizeof(xboneIdle));
         xboneReportSize = sizeof(XboxOneGamepad_Data_t);
         send_xbone_usb((uint8_t*)&xboneReport, xboneReportSize);
-        return;
+        return true;
     }
 
     uint32_t now = to_ms_since_boot(get_absolute_time());
@@ -429,7 +429,7 @@ void XBOneDriver::process(Gamepad * gamepad) {
             if ( keep_alive_sequence == 0 )
                 keep_alive_sequence = 1;
         }
-        return;
+        return true;
     }
     
     // Virtual Keycode for Guide Button
@@ -460,7 +460,7 @@ void XBOneDriver::process(Gamepad * gamepad) {
             virtual_keycode_sequence = new_sequence;
             xb1_guide_pressed = !xb1_guide_pressed;
         }
-        return;
+        return true;
     }
 
     // Only change xbox one input report if we have different inputs!
@@ -518,9 +518,12 @@ void XBOneDriver::process(Gamepad * gamepad) {
                 if (last_report_counter == 0)
                     last_report_counter = 1;
                 memcpy(last_report, &xboneReport, xboneReportSize);
+                return true;
             }
         }
     }
+    
+    return false;
 }
 
 void XBOneDriver::processAux() {

@@ -37,11 +37,9 @@ bool TurboInput::available() {
     return Storage::getInstance().getAddonOptions().turboOptions.enabled && (hasTurboAssigned == true);
 }
 
-void TurboInput::setup()
-{
+void TurboInput::setup(){
     const TurboOptions& options = Storage::getInstance().getAddonOptions().turboOptions;
     uint32_t now = getMillis();
-
 
     // Turbo Dial
     uint8_t shotCount = std::clamp<uint8_t>(options.shotCount, TURBO_SHOT_MIN, TURBO_SHOT_MAX);
@@ -237,13 +235,11 @@ void TurboInput::process()
     }
 }
 
-void TurboInput::updateInterval(uint8_t shotCount)
-{
+void TurboInput::updateInterval(uint8_t shotCount) {
     uIntervalUS = (uint32_t)std::floor(1000000.0 / (shotCount * 2));
 }
 
-void TurboInput::updateTurboShotCount(uint8_t shotCount)
-{
+void TurboInput::updateTurboShotCount(uint8_t shotCount) {
     TurboOptions& options = Storage::getInstance().getAddonOptions().turboOptions;
     shotCount = std::clamp<uint8_t>(shotCount, TURBO_SHOT_MIN, TURBO_SHOT_MAX);
     if (shotCount != options.shotCount) {

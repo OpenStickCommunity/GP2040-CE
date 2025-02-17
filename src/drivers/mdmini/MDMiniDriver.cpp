@@ -25,7 +25,7 @@ void MDMiniDriver::initialize() {
 	};
 }
 
-void MDMiniDriver::process(Gamepad * gamepad) {
+bool MDMiniDriver::process(Gamepad * gamepad) {
 	mdminiReport.lx = 0x7f;
 	mdminiReport.ly = 0x7f;
 
@@ -56,8 +56,11 @@ void MDMiniDriver::process(Gamepad * gamepad) {
 		// HID ready + report sent, copy previous report
 		if (tud_hid_ready() && tud_hid_report(0, report, report_size) == true ) {
 			memcpy(last_report, report, report_size);
+			return true;
 		}
 	}
+
+	return false;
 }
 
 // tud_hid_get_report_cb

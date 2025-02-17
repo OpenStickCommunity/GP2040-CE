@@ -34,31 +34,32 @@
 
 class InputMacro : public GPAddon {
 public:
-	virtual bool available();   // GPAddon available
-	virtual void setup();       // Analog Setup
-	virtual void process() {};     // Analog Process
-	virtual void preprocess();
+    virtual bool available();   // GPAddon available
+    virtual void setup();       // Analog Setup
+    virtual void process() {};     // Analog Process
+    virtual void preprocess();
+    virtual void postprocess(bool sent) {}
     virtual void reinit();
     virtual std::string name() { return InputMacroName; }
 private:
-	void checkMacroPress();
-	void checkMacroAction();
-	void runCurrentMacro();
-	void reset();
-	void restart(Macro& macro);
-	bool isMacroRunning;
-	bool isMacroTriggerHeld;
-	int macroPosition;
-	uint32_t macroButtonMask;
-	uint32_t macroPinMasks[6];
-	uint64_t macroStartTime;
-	uint64_t currentMicros;
-	int pressedMacro;
-	int macroInputPosition;
-	uint32_t macroInputHoldTime;
-	bool prevMacroInputPressed;
-	bool boardLedEnabled;
-	MacroOptions * inputMacroOptions;
+    void checkMacroPress();
+    void checkMacroAction();
+    void runCurrentMacro();
+    void reset();
+    void restart(Macro& macro);
+    bool isMacroRunning;
+    bool isMacroTriggerHeld;
+    int macroPosition;
+    uint32_t macroButtonMask;
+    uint32_t macroPinMasks[6];
+    uint64_t macroStartTime;
+    uint64_t currentMicros;
+    int pressedMacro;
+    int macroInputPosition;
+    uint32_t macroInputHoldTime;
+    bool prevMacroInputPressed;
+    bool boardLedEnabled;
+    MacroOptions * inputMacroOptions;
 };
 
 #endif  // _InputMacro_H_
