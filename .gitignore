@@ -18,4 +18,4 @@ env.ini
 .devcontainer
 *Dockerfile
 *docker-compose.yml
-/www/src_gen/enums.js
+www/src_gen/enums.ts
