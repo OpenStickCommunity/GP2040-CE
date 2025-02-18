@@ -32,8 +32,6 @@
 #include "lwip/mem.h"
 #include "addons/input_macro.h"
 
-#include "bitmaps.h"
-
 #define PATH_CGI_ACTION "/cgi/action"
 
 #define LWIP_HTTPD_POST_MAX_PAYLOAD_LEN (1024 * 16)
