@@ -56,9 +56,7 @@ export default {
 			'flip-mirror': 'Flip and Mirror',
 		},
 		'splash-modes': {
-			'enabled': 'Enabled (Custom Splash Screen)',
-			'close-in': 'Logo Close In',
-			'close-in-custom': 'Logo Close In Custom',
+			'enabled': 'Enabled',
 			'disabled': 'Disabled',
 		},
 		'saver-modes': {

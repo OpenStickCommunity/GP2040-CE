@@ -2,7 +2,6 @@
 #define _RESTARTSCREEN_H_
 
 #include "GPGFX_UI_widgets.h"
-#include "bitmaps.h"
 
 class RestartScreen : public GPScreen {
     public:

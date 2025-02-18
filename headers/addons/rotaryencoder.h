@@ -84,9 +84,11 @@
 class RotaryEncoderInput : public GPAddon {
 public:
     virtual bool available();
-	virtual void setup();       // Rotary Setup
+    virtual void setup();       // Rotary Setup
     virtual void preprocess() {}
-	virtual void process();     // Rotary process
+    virtual void process();     // Rotary process
+    virtual void postprocess(bool sent) {}
+    virtual void reinit() {}
     virtual std::string name() { return RotaryEncoderName; }
 
     typedef struct {

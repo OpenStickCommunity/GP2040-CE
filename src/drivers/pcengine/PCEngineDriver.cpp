@@ -25,7 +25,7 @@ void PCEngineDriver::initialize() {
 	};
 }
 
-void PCEngineDriver::process(Gamepad * gamepad) {
+bool PCEngineDriver::process(Gamepad * gamepad) {
 	switch (gamepad->state.dpad & GAMEPAD_MASK_DPAD)
 	{
 		case GAMEPAD_MASK_UP:                        pcengineReport.hat = PCENGINE_HAT_UP;        break;
@@ -57,8 +57,10 @@ void PCEngineDriver::process(Gamepad * gamepad) {
 		// HID ready + report sent, copy previous report
 		if (tud_hid_ready() && tud_hid_report(0, report, report_size) == true ) {
 			memcpy(last_report, report, report_size);
+			return true;
 		}
 	}
+	return false;
 }
 
 // tud_hid_get_report_cb

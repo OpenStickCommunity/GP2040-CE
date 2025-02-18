@@ -26,16 +26,18 @@
 
 class BoardLedAddon : public GPAddon {
 public:
-	virtual bool available();
-	virtual void setup();       // BoardLed Setup
-	virtual void process();     // BoardLed Process
-	virtual void preprocess() {}
-	virtual std::string name() { return OnBoardLedName; }
+    virtual bool available();
+    virtual void setup();       // BoardLed Setup
+    virtual void process();     // BoardLed Process
+    virtual void preprocess() {}
+    virtual void postprocess(bool sent) {}
+    virtual void reinit() {}
+    virtual std::string name() { return OnBoardLedName; }
 private:
-	OnBoardLedMode onBoardLedMode;
-	bool isConfigMode;
-	bool prevState;
-	uint32_t timeSinceBlink;
+    OnBoardLedMode onBoardLedMode;
+    bool isConfigMode;
+    bool prevState;
+    uint32_t timeSinceBlink;
 };
 
 #endif  // _BoardLed_H_

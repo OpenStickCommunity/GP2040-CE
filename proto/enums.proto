@@ -93,8 +93,8 @@ enum SplashMode
     option (nanopb_enumopt).long_names = false;
 
     SPLASH_MODE_STATIC = 0;
-    SPLASH_MODE_CLOSEIN = 1;
-    SPLASH_MODE_CLOSEINCUSTOM = 2;
+    SPLASH_MODE_RESERVED_01 = 1;
+    SPLASH_MODE_RESERVED_02 = 2;
     SPLASH_MODE_NONE = 3;
 }
 

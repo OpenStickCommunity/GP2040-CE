@@ -34,10 +34,12 @@
 
 class SPIAnalog1256Input : public GPAddon {
 public:
-	virtual bool available();
-	virtual void setup();       // Analog Setup
-	virtual void preprocess() {}
-	virtual void process();     // Analog Process
+    virtual bool available();
+    virtual void setup();       // Analog Setup
+    virtual void preprocess() {}
+    virtual void process();     // Analog Process
+    virtual void postprocess(bool sent) {}
+    virtual void reinit() {}
     virtual std::string name() { return SPIAnalog1256Name; }
 private:
     uint8_t convert24to8bit(float voltage);
