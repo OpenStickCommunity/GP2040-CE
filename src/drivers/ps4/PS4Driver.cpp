@@ -27,10 +27,23 @@ static constexpr uint8_t output_0x02[] = {
 
 // Controller descriptor (byte[4] = 0x00 for ps4, 0x07 for ps5)
 static constexpr uint8_t output_0x03[] = {
-    0x21, 0x27, 0x04, 0xcf, 0x00, 0x2c, 0x56,
-    0x08, 0x00, 0x3d, 0x00, 0xe8, 0x03, 0x04, 0x00,
-    0xff, 0x7f, 0x0d, 0x0d, 0x00, 0x00, 0x00, 0x00,
+//--------------------------------------------------
+// Use for normal controlller support.
+//--------------------------------------------------
+//    0x21, 0x27, 0x04, 0xcf, 0x00, 0x2c, 0x56,
+//    0x08, 0x00, 0x3d, 0x00, 0xe8, 0x03, 0x04, 0x00,
+//    0xff, 0x7f, 0x0d, 0x0d, 0x00, 0x00, 0x00, 0x00,
+//    0x0D, 0x84, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00,
+//    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+//    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+
+//--------------------------------------------------
+// Use for wheel support. What's different?
+//--------------------------------------------------
+    0x21, 0x27, 0x03, 0x11, 0x06, 0x00, 0x00, 
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x0D, 0x0D, 0x00, 0x00, 0x00, 0x00,
+    0x0D, 0x84, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
@@ -62,6 +75,8 @@ void PS4Driver::initialize() {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     const GamepadOptions & options = gamepad->getOptions();
 
+    //stdio_init_all();
+
     // set up device descriptor IDs depending on mode
     uint8_t descSize = sizeof(ps4_device_descriptor);
     memcpy(deviceDescriptor, &ps4_device_descriptor, descSize);
@@ -70,19 +85,28 @@ void PS4Driver::initialize() {
 
     bool isDeviceEmulated = options.ps4ControllerIDMode == PS4ControllerIDMode::PS4_ID_EMULATION;
 
+    deviceType = InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GAMEPAD;
+
     if (!isDeviceEmulated) {
-        deviceDescriptor[8] = LSB(PS4_VENDOR_ID);
-        deviceDescriptor[9] = MSB(PS4_VENDOR_ID);
-        deviceDescriptor[10] = LSB(PS4_PRODUCT_ID);
-        deviceDescriptor[11] = MSB(PS4_PRODUCT_ID);
+        if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_WHEEL) {
+            // wheel
+            deviceDescriptor[8] = LSB(PS4_WHEEL_VENDOR_ID);
+            deviceDescriptor[9] = MSB(PS4_WHEEL_VENDOR_ID);
+            deviceDescriptor[10] = LSB(PS4_WHEEL_PRODUCT_ID);
+            deviceDescriptor[11] = MSB(PS4_WHEEL_PRODUCT_ID);
+        } else {
+            // assume gamepad if not special cased
+            deviceDescriptor[8] = LSB(PS4_VENDOR_ID);
+            deviceDescriptor[9] = MSB(PS4_VENDOR_ID);
+            deviceDescriptor[10] = LSB(PS4_PRODUCT_ID);
+            deviceDescriptor[11] = MSB(PS4_PRODUCT_ID);
+        }
     } else {
         deviceDescriptor[8] = LSB(DS4_VENDOR_ID);
         deviceDescriptor[9] = MSB(DS4_VENDOR_ID);
         deviceDescriptor[10] = LSB(DS4_PRODUCT_ID);
         deviceDescriptor[11] = MSB(DS4_PRODUCT_ID);
     }
-
-    deviceType = InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GUITAR;
 
     // check InputModeDeviceType mode for PS4 driver and set PS4ControllerType where applicable
     // PS5 mode currently forces PS4ControllerType 7 (PS4_ARCADESTICK) for PS5 compatibility
@@ -112,24 +136,26 @@ void PS4Driver::initialize() {
     }
 
     // init feature data
-    touchpadData.p1.unpressed = 1;
-    touchpadData.p1.set_x(PS4_TP_X_MAX / 2);
-    touchpadData.p1.set_y(PS4_TP_Y_MAX / 2);
-    touchpadData.p2.unpressed = 1;
-    touchpadData.p2.set_x(PS4_TP_X_MAX / 2);
-    touchpadData.p2.set_y(PS4_TP_Y_MAX / 2);
+    if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GAMEPAD) {
+        touchpadData.p1.unpressed = 1;
+        touchpadData.p1.set_x(PS4_TP_X_MAX / 2);
+        touchpadData.p1.set_y(PS4_TP_Y_MAX / 2);
+        touchpadData.p2.unpressed = 1;
+        touchpadData.p2.set_x(PS4_TP_X_MAX / 2);
+        touchpadData.p2.set_y(PS4_TP_Y_MAX / 2);
 
-    sensorData.powerLevel = 0xB; // 0x00-0x0A, 0x00-0x0B if charging
-    sensorData.charging = 1;     // set this to 1 to show as plugged in
-    sensorData.headphones = 0;
-    sensorData.microphone = 0;
-    sensorData.extension = 0;
-    sensorData.gyroscope.x = 0;
-    sensorData.gyroscope.y = 0;
-    sensorData.gyroscope.z = 0;
-    sensorData.accelerometer.x = 0;
-    sensorData.accelerometer.y = 0;
-    sensorData.accelerometer.z = 0;
+        sensorData.powerLevel = 0xB; // 0x00-0x0A, 0x00-0x0B if charging
+        sensorData.charging = 1;     // set this to 1 to show as plugged in
+        sensorData.headphones = 0;
+        sensorData.microphone = 0;
+        sensorData.extension = 0;
+        sensorData.gyroscope.x = 0;
+        sensorData.gyroscope.y = 0;
+        sensorData.gyroscope.z = 0;
+        sensorData.accelerometer.x = 0;
+        sensorData.accelerometer.y = 0;
+        sensorData.accelerometer.z = 0;
+    }
 
     // preseed touchpad sensors with center position values
     gamepad->auxState.sensors.touchpad[0].x = PS4_TP_X_MAX/2;
@@ -150,9 +176,34 @@ void PS4Driver::initialize() {
         .buttonL1 = 0, .buttonR1 = 0, .buttonL2 = 0, .buttonR2 = 0,
         .buttonSelect = 0, .buttonStart = 0, .buttonL3 = 0, .buttonR3 = 0, .buttonHome = 0, .buttonTouchpad = 0,
         .reportCounter = 0, .leftTrigger = 0, .rightTrigger = 0,
-        //.axisTiming = 0,
-        //.sensorData = sensorData, .touchpadActive = 0, .padding = 0, .tpadIncrement = 0,
-        //.touchpadData = touchpadData
+        .miscData = {}
+    };
+
+    // see output_0x03
+    controllerConfig = {
+        .hidUsage = 0x2721,
+        .mystery0 = 0x04,
+        .features = {
+            .enableController = 1,
+            .enableMotion = 1,
+            .enableLED = 1,
+            .enableRumble = 1,
+            .enableWheel = 1,
+            .enableTouchpad = 1,
+        },
+        .controllerType = controllerType,
+        .touchpadParam = {0x2c, 0x56},
+        .imuConfig = {
+            .gyroRange = 0x0008,
+            .gyroResPerDegDenom = 0x003D,
+            .gyroResPerDegNumer = 0x03E8,
+            .accelRange = 0x0004,
+            .accelResPerG = 0x7FFF,
+        },
+        .magicID = 0x0d0d,
+        .mystery1 = {},
+        .wheelParam = {0x0D, 0x84, 0x03},
+        .mystery2 = {}
     };
 
     class_driver = {
@@ -211,10 +262,25 @@ void PS4Driver::process(Gamepad * gamepad) {
 
     if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GAMEPAD) {
     } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GUITAR) {
-        ps4Report.guitar.blue    = gamepad->pressedB1();
-        ps4Report.guitar.red     = gamepad->pressedB2();
-        ps4Report.guitar.yellow  = gamepad->pressedB3();
-        ps4Report.guitar.green   = gamepad->pressedB4();
+
+    } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_WHEEL) {
+        ps4Report.wheel.steeringWheel = PS4_NAV_JOYSTICK_MID;
+        ps4Report.wheel.gasPedal = PS4_NAV_JOYSTICK_MAX;
+        ps4Report.wheel.breakPedal = PS4_NAV_JOYSTICK_MAX;
+        ps4Report.wheel.clutchPedal = PS4_NAV_JOYSTICK_MAX;
+        ps4Report.wheel.unknownVal = 0xFFFF;
+
+        if (gamepad->pressedLeft()) ps4Report.wheel.steeringWheel = PS4_NAV_JOYSTICK_MIN;
+        if (gamepad->pressedRight()) ps4Report.wheel.steeringWheel = PS4_NAV_JOYSTICK_MAX;
+        if (gamepad->pressedL3()) ps4Report.wheel.breakPedal = PS4_NAV_JOYSTICK_MIN;
+        if (gamepad->pressedR3()) ps4Report.wheel.gasPedal = PS4_NAV_JOYSTICK_MIN;
+    } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_HOTAS) {
+        ps4Report.hotas.joystickX = PS4_NAV_JOYSTICK_MID;
+        ps4Report.hotas.joystickY = PS4_NAV_JOYSTICK_MID;
+
+        ps4Report.hotas.twistRudder = PS4_JOYSTICK_MID;
+        ps4Report.hotas.throttle = PS4_JOYSTICK_MID;
+        ps4Report.hotas.rockerSwitch = PS4_JOYSTICK_MID;
     }
     ps4Report.buttonSouth    = gamepad->pressedB1();
     ps4Report.buttonEast     = gamepad->pressedB2();
@@ -246,53 +312,55 @@ void PS4Driver::process(Gamepad * gamepad) {
     }
 
     // if the touchpad is pressed (note A2 vs. S1 choice above), emulate one finger of the touchpad
-    touchpadData.p1.unpressed = ps4Report.buttonTouchpad ? 0 : 1;
-    ps4Report.gamepad.touchpadActive = ps4Report.buttonTouchpad ? 0x01 : 0x00;
-    if (ps4Report.buttonTouchpad) {
-        // make the assumption that since touchpad button is already being pressed, 
-        // the first touch position is in use and no other "touches" will be present
-        if (gamepad->pressedA3()) {
-            touchpadData.p1.set_x(PS4_TP_X_MIN);
-        } else if (gamepad->pressedA4()) {
-            touchpadData.p1.set_x(PS4_TP_X_MAX);
+    if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GAMEPAD) {
+        touchpadData.p1.unpressed = ps4Report.buttonTouchpad ? 0 : 1;
+        ps4Report.gamepad.touchpadActive = ps4Report.buttonTouchpad ? 0x01 : 0x00;
+        if (ps4Report.buttonTouchpad) {
+            // make the assumption that since touchpad button is already being pressed, 
+            // the first touch position is in use and no other "touches" will be present
+            if (gamepad->pressedA3()) {
+                touchpadData.p1.set_x(PS4_TP_X_MIN);
+            } else if (gamepad->pressedA4()) {
+                touchpadData.p1.set_x(PS4_TP_X_MAX);
+            } else {
+                touchpadData.p1.set_x(PS4_TP_X_MAX / 2);
+            }
         } else {
-            touchpadData.p1.set_x(PS4_TP_X_MAX / 2);
-        }
-    } else {
-        // if more than one touch pad sensor, sensors will never be used out of order
-        if (gamepad->auxState.sensors.touchpad[0].enabled) {
-            touchpadData.p1.unpressed = !gamepad->auxState.sensors.touchpad[0].active;
-            ps4Report.gamepad.touchpadActive = gamepad->auxState.sensors.touchpad[0].active;
-            touchpadData.p1.set_x(gamepad->auxState.sensors.touchpad[0].x);
-            touchpadData.p1.set_y(gamepad->auxState.sensors.touchpad[0].y);
-            
-            if (gamepad->auxState.sensors.touchpad[1].enabled) {
-                touchpadData.p2.unpressed = !gamepad->auxState.sensors.touchpad[1].active;
-                touchpadData.p2.set_x(gamepad->auxState.sensors.touchpad[1].x);
-                touchpadData.p2.set_y(gamepad->auxState.sensors.touchpad[1].y);
+            // if more than one touch pad sensor, sensors will never be used out of order
+            if (gamepad->auxState.sensors.touchpad[0].enabled) {
+                touchpadData.p1.unpressed = !gamepad->auxState.sensors.touchpad[0].active;
+                ps4Report.gamepad.touchpadActive = gamepad->auxState.sensors.touchpad[0].active;
+                touchpadData.p1.set_x(gamepad->auxState.sensors.touchpad[0].x);
+                touchpadData.p1.set_y(gamepad->auxState.sensors.touchpad[0].y);
+                
+                if (gamepad->auxState.sensors.touchpad[1].enabled) {
+                    touchpadData.p2.unpressed = !gamepad->auxState.sensors.touchpad[1].active;
+                    touchpadData.p2.set_x(gamepad->auxState.sensors.touchpad[1].x);
+                    touchpadData.p2.set_y(gamepad->auxState.sensors.touchpad[1].y);
+                }
             }
         }
-    }
-    // check if any of the points are recently touched, rather than still being touched
-    if (!pointOneTouched && !touchpadData.p1.unpressed) {
-        touchCounter = (touchCounter < PS4_TP_MAX_COUNT ? touchCounter+1 : 0);
+        // check if any of the points are recently touched, rather than still being touched
+        if (!pointOneTouched && !touchpadData.p1.unpressed) {
+            touchCounter = (touchCounter < PS4_TP_MAX_COUNT ? touchCounter+1 : 0);
 
-        touchpadData.p1.counter = touchCounter;
+            touchpadData.p1.counter = touchCounter;
 
-        pointOneTouched = true;
-    } else if (pointOneTouched && touchpadData.p1.unpressed) {
-        pointOneTouched = false;
+            pointOneTouched = true;
+        } else if (pointOneTouched && touchpadData.p1.unpressed) {
+            pointOneTouched = false;
+        }
+        if (!pointTwoTouched && !touchpadData.p2.unpressed) {
+            touchCounter = (touchCounter < PS4_TP_MAX_COUNT ? touchCounter+1 : 0);
+        
+            touchpadData.p2.counter = touchCounter;
+        
+            pointTwoTouched = true;
+        } else if (pointTwoTouched && touchpadData.p2.unpressed) {
+            pointTwoTouched = false;
+        }
+        ps4Report.gamepad.touchpadData = touchpadData;
     }
-    if (!pointTwoTouched && !touchpadData.p2.unpressed) {
-        touchCounter = (touchCounter < PS4_TP_MAX_COUNT ? touchCounter+1 : 0);
-    
-        touchpadData.p2.counter = touchCounter;
-    
-        pointTwoTouched = true;
-    } else if (pointTwoTouched && touchpadData.p2.unpressed) {
-        pointTwoTouched = false;
-    }
-    ps4Report.gamepad.touchpadData = touchpadData;
 
     if (gamepad->auxState.sensors.accelerometer.enabled) {
         ps4Report.gamepad.sensorData.accelerometer.x = ((gamepad->auxState.sensors.accelerometer.x & 0xFF) << 8) | ((gamepad->auxState.sensors.accelerometer.x & 0xFF00) >> 8);
@@ -331,7 +399,9 @@ void PS4Driver::process(Gamepad * gamepad) {
         if ((now - last_report_timer) > PS4_KEEPALIVE_TIMER) {
             last_report_counter = (last_report_counter+1) & 0x3F;
             ps4Report.reportCounter = last_report_counter;		// report counter is 6 bits
-            ps4Report.gamepad.axisTiming = now;		 		// axis counter is 16 bits
+            if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GAMEPAD) {
+                ps4Report.gamepad.axisTiming = now;		 		// axis counter is 16 bits
+            }
             // the *next* process() will be a forced report (or real user input)
         }
     }
@@ -399,6 +469,11 @@ USBListener * PS4Driver::get_usb_auth_listener() {
 
 // tud_hid_get_report_cb
 uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
+    if (!((report_id == PS4AuthReport::PS4_SET_AUTH_PAYLOAD) || (report_id == PS4AuthReport::PS4_GET_SIGNATURE_NONCE) || (report_id == PS4AuthReport::PS4_GET_SIGNING_STATE) || (report_id == PS4AuthReport::PS4_RESET_AUTH))) {
+        //uint32_t now = to_ms_since_boot(get_absolute_time());
+        //printf("[%d] PS4Driver::get_report RPT: %02x, Type: %02x, Size: %d\n", now, report_id, report_type, reqlen);
+    }
+
     if ( report_type != HID_REPORT_TYPE_FEATURE ) {
         memcpy(buffer, &ps4Report, sizeof(ps4Report));
         return sizeof(ps4Report);
@@ -422,12 +497,13 @@ uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
             memcpy(buffer, output_0x02, responseLen);
             return responseLen;
         case PS4AuthReport::PS4_DEFINITION:
-            if (reqlen < sizeof(output_0x03)) {
+            if (reqlen < sizeof(controllerConfig)) {
                 return -1;
             }
-            responseLen = MAX(reqlen, sizeof(output_0x03));
-            memcpy(buffer, output_0x03, responseLen);
-            buffer[4] = (uint8_t)controllerType; // Change controller type in definition
+            controllerConfig.controllerType = (uint8_t)controllerType;
+            responseLen = MAX(reqlen, sizeof(controllerConfig));
+            memcpy(buffer, &controllerConfig, responseLen);
+            //buffer[4] = (uint8_t)controllerType; // Change controller type in definition
             return responseLen;
         case PS4AuthReport::PS4_GET_MAC_ADDRESS:
             if (reqlen < sizeof(output_0x12)) {
@@ -491,6 +567,11 @@ uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
 
 // Only PS4 does anything with set report
 void PS4Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize) {
+    if (!((report_id == PS4AuthReport::PS4_SET_AUTH_PAYLOAD) || (report_id == PS4AuthReport::PS4_GET_SIGNATURE_NONCE) || (report_id == PS4AuthReport::PS4_GET_SIGNING_STATE) || (report_id == PS4AuthReport::PS4_RESET_AUTH))) {
+        //uint32_t now = to_ms_since_boot(get_absolute_time());
+        //printf("[%d] PS4Driver::set_report RPT: %02x, Type: %02x, Size: %d\n", now, report_id, report_type, bufsize);
+    }
+
     if (( report_type != HID_REPORT_TYPE_FEATURE ) && ( report_type != HID_REPORT_TYPE_OUTPUT ))
         return;
 

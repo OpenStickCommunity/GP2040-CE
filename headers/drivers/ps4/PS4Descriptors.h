@@ -22,8 +22,12 @@
 //#define PS4_PRODUCT_ID      0x8180
 
 // DS4
-#define DS4_VENDOR_ID       0x054C
-#define DS4_PRODUCT_ID      0x09CC
+#define DS4_VENDOR_ID         0x054C
+#define DS4_PRODUCT_ID        0x09CC
+
+// G29
+#define PS4_WHEEL_VENDOR_ID   0x046D
+#define PS4_WHEEL_PRODUCT_ID  0xC260
 
 /**************************************************************************
  *
@@ -73,6 +77,11 @@
 #define PS4_JOYSTICK_MIN 0x00
 #define PS4_JOYSTICK_MID 0x80
 #define PS4_JOYSTICK_MAX 0xFF
+
+// PS4 navigation (HOTAS/flight/wheel) analog inputs report 16 bits
+#define PS4_NAV_JOYSTICK_MIN 0x0000
+#define PS4_NAV_JOYSTICK_MID 0x8000
+#define PS4_NAV_JOYSTICK_MAX 0xFFFF
 
 // touchpad resolution = 1920x943
 #define PS4_TP_X_MIN 0
@@ -198,6 +207,44 @@ typedef struct __attribute__((packed)) {
 } PS4FeatureOutputReport;
 
 typedef struct __attribute__((packed)) {
+    uint16_t gyroRange;
+    uint16_t gyroResPerDegDenom;
+    uint16_t gyroResPerDegNumer;
+    uint16_t accelRange;
+    uint16_t accelResPerG;
+} PS4IMUConfig;
+
+typedef struct __attribute__((packed)) {
+    uint16_t hidUsage;
+    uint8_t mystery0;
+
+    // features
+    union {
+        uint8_t featureValue;
+
+        struct __attribute__((packed)) {
+            uint8_t enableController : 1;
+            uint8_t enableMotion : 1;
+            uint8_t enableLED : 1;
+            uint8_t enableRumble : 1;
+            uint8_t enableAnalog : 1;
+            uint8_t : 1;
+            uint8_t enableTouchpad : 1;
+            uint8_t : 1;
+        } features;
+    };
+
+    uint8_t controllerType; // use PS4ControllerType
+
+    uint8_t touchpadParam[2];
+    PS4IMUConfig imuConfig;
+    uint16_t magicID;
+    uint8_t mystery1[4];
+    uint8_t wheelParam[3];
+    uint8_t mystery2[21];
+} PS4ControllerConfig;
+
+typedef struct __attribute__((packed)) {
     uint8_t reportID;
     uint8_t leftStickX;
     uint8_t leftStickY;
@@ -248,12 +295,12 @@ typedef struct __attribute__((packed)) {
             uint8_t mystery2[21];
         } gamepad;
         struct __attribute__((packed)) {
-            uint8_t unused0[22];
+            uint8_t mystery0[22];
             
             uint8_t powerLevel : 4;
             uint8_t : 4;
             
-            uint8_t unused1[12];
+            uint8_t mystery1[12];
             
             uint8_t pickup;
             uint8_t whammy;
@@ -273,17 +320,76 @@ typedef struct __attribute__((packed)) {
             uint8_t soloOrange : 1;
             uint8_t : 3;
             
-            uint8_t unused2[14];
+            uint8_t mystery2[14];
         } guitar;
         struct __attribute__((packed)) {
+            uint8_t mystery0[22];
+        
+            uint8_t powerLevel : 4;
+            uint8_t : 4;
+        
+            uint8_t mystery1[12];
+        
+            uint8_t redDrumVelocity;
+            uint8_t blueDrumVelocity;
+            uint8_t yellowDrumVelocity;
+            uint8_t greenDrumVelocity;
+        
+            uint8_t yellowCymbalVelocity;
+            uint8_t blueCymbalVelocity;
+            uint8_t greenCymbalVelocity;
+        
+            uint8_t mystery2[12];
+        } drums;
+        struct __attribute__((packed)) {
+            uint8_t mystery0[22];
+        
+            uint8_t powerLevel : 4;
+            uint8_t : 4;
+        
+            uint8_t mystery1[12];
+
             uint16_t joystickX;
             uint16_t joystickY;
             uint8_t twistRudder;
             uint8_t throttle;
             uint8_t rockerSwitch;
 
-            uint8_t mystery2[14];
+            uint8_t mystery2[2];
         } hotas;
+        struct __attribute__((packed)) {
+            uint8_t mystery0[22];
+            
+            uint8_t powerLevel : 4;
+            uint8_t : 4;
+            
+            uint8_t mystery1[12];
+            
+            uint16_t steeringWheel;
+            uint16_t gasPedal;
+            uint16_t breakPedal;
+            uint16_t clutchPedal; // ?
+
+            uint8_t shifterGear1 : 1;
+            uint8_t shifterGear2 : 1;
+            uint8_t shifterGear3 : 1;
+            uint8_t shifterGear4 : 1;
+            uint8_t shifterGear5 : 1;
+            uint8_t shifterGear6 : 1;
+            uint8_t shifterGearR : 1;
+            uint8_t : 1;
+
+            uint16_t unknownVal;
+
+            uint8_t buttonPlus : 1;
+            uint8_t buttonMinus : 1;
+            uint8_t buttonDialUp : 1;
+            uint8_t buttonDialDown : 1;
+            uint8_t buttonEnter : 1;
+            uint8_t : 3;
+            
+            uint8_t mystery2[7];
+        } wheel;
     };
 } PS4Report;
 
