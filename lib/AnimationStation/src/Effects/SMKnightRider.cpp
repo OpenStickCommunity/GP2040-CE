@@ -2,7 +2,7 @@
 #include "SMKnightRider.hpp"
 #include "SpecialMoveSystem.hpp"
 
-SMKnightRider::SMKnightRider(Lights& InRGBLights) : SMWave(InRGBLights) 
+SMKnightRider::SMKnightRider(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType) : SMWave(InRGBLights, InButtonCaseEffectType) 
 {
 }
 

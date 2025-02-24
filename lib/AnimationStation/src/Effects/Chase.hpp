@@ -37,13 +37,13 @@ typedef enum
 
 class Chase : public Animation {
 public:
-  Chase(Lights& InRGBLights, ChaseTypes InChaseType);
+  Chase(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType, ChaseTypes InChaseType);
   ~Chase() {};
 
   virtual void Animate(RGB (&frame)[100]) override;
   
-  void ParameterUp();
-  void ParameterDown();
+  virtual void ParameterUp() override;
+  virtual void ParameterDown() override;
 
   ChaseTypes ChaseTypeInUse = CHASETYPES_SEQUENTIAL;
 

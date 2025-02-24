@@ -11,7 +11,7 @@
 
 class SMKnightRider : public SMWave {
 public:
-    SMKnightRider(Lights& InRGBLights);
+    SMKnightRider(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType);
     ~SMKnightRider() { };
 
     virtual void Animate(RGB (&frame)[100]) override;

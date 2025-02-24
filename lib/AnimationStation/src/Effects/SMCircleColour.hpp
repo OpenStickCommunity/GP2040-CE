@@ -19,7 +19,7 @@ typedef enum
 
 class SMCircleColour : public Animation {
 public:
-    SMCircleColour(Lights& InRGBLights);
+    SMCircleColour(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType);
     ~SMCircleColour() { };
 
     virtual void Animate(RGB (&frame)[100]) override;

@@ -1,10 +1,10 @@
 #include "StaticColor.hpp"
 
-StaticColor::StaticColor(Lights& InRGBLights) : Animation(InRGBLights) 
+StaticColor::StaticColor(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType) : Animation(InRGBLights, InButtonCaseEffectType) 
 {
 }
 
-StaticColor::StaticColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPins) : Animation(InRGBLights) 
+StaticColor::StaticColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPins) : Animation(InRGBLights, EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_ONLY) 
 {
   isButtonAnimation = true;
   pressedPins = InPressedPins;

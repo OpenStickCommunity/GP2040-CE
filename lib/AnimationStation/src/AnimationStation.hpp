@@ -33,6 +33,9 @@ typedef enum
   NONPRESSED_EFFECT_CHASE_RANDOM,
   NONPRESSED_EFFECT_JIGGLESTATIC,
   NONPRESSED_EFFECT_JIGGLETWOSTATIC,
+  NONPRESSED_EFFECT_RAIN_LOW,
+  NONPRESSED_EFFECT_RAIN_MEDIUM,
+  NONPRESSED_EFFECT_RAIN_HIGH,
 } AnimationNonPressedEffects;
 
 //List of non-pressed animation types
@@ -42,6 +45,10 @@ typedef enum
   PRESSED_EFFECT_RANDOM,
   PRESSED_EFFECT_JIGGLESTATIC,
   PRESSED_EFFECT_JIGGLETWOSTATIC,
+  PRESSED_EFFECT_BURST,
+  PRESSED_EFFECT_BURST_RANDOM,
+  PRESSED_EFFECT_BURST_SMALL,
+  PRESSED_EFFECT_BURST_SMALL_RANDOM
 } AnimationPressedEffects;
 
 typedef enum
@@ -68,7 +75,8 @@ struct __attribute__ ((__packed__)) AnimationProfile
     AnimationNonPressedEffects baseCaseEffect;
 
     int16_t baseCycleTime;
-   
+    int16_t basePressedCycleTime;
+
     uint32_t notPressedStaticColors[NUM_BANK0_GPIOS + 3]; //since we pack 4 into each. Adding 3 ensures we have space for extra pading
     uint32_t pressedStaticColors[NUM_BANK0_GPIOS + 3]; //since we pack 4 into each. Adding 3 ensures we have space for extra pading
 
@@ -136,6 +144,9 @@ public:
   //Running non-pressed animation
   Animation* baseAnimation;
 
+  //Running case animation
+  Animation* caseAnimation;
+
   //Running pressed animation
   Animation* buttonAnimation;
 
@@ -159,6 +170,8 @@ protected:
   static uint8_t brightnessMax;
   static uint8_t brightnessSteps;
   static float brightnessX;
+
+  Animation* GetNonPressedEffectForEffectType(AnimationNonPressedEffects EffectType, EButtonCaseEffectType InButtonCaseEffectType);
 
   //Light data
   Lights RGBLights;

@@ -21,7 +21,7 @@ typedef enum
 
 class SMPulseColour : public Animation {
 public:
-    SMPulseColour(Lights& InRGBLights);
+    SMPulseColour(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType);
     ~SMPulseColour() { };
 
     virtual void Animate(RGB (&frame)[100]) override;

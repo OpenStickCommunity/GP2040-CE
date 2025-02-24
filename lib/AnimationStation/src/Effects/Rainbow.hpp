@@ -11,7 +11,7 @@
 class RainbowSynced : public Animation 
 {
 public:
-  RainbowSynced(Lights& InRGBLights);
+  RainbowSynced(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType);
   ~RainbowSynced() {};
 
   virtual void Animate(RGB (&frame)[100]) override;
@@ -29,7 +29,7 @@ protected:
 class RainbowRotate : public Animation 
 {
 public:
-  RainbowRotate(Lights& InRGBLights);
+  RainbowRotate(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType);
   ~RainbowRotate() {};
 
   void Animate(RGB (&frame)[100]);

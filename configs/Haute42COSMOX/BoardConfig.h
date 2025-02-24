@@ -121,7 +121,7 @@
 //m2 (extra button 2)
 
 //Defines for T16
-/*#define LIGHT_DATA_SIZE 16 //number of sets in the below data
+#define LIGHT_DATA_SIZE 16 //number of sets in the below data
 #define LIGHT_DATA \
 0, 1, 0, 2, 5, LightType_Proto::LightType_Proto_ActionButton, \
 1, 1, 2, 2, 3, LightType_Proto::LightType_Proto_ActionButton, \
@@ -138,10 +138,10 @@
 12, 1, 3, 0, 27, LightType_Proto::LightType_Proto_ActionButton, \
 13, 1, 6, 0, 18, LightType_Proto::LightType_Proto_ActionButton, \
 14, 1, 8, 5, 19, LightType_Proto::LightType_Proto_ActionButton, \
-15, 1, 3, 6, 26, LightType_Proto::LightType_Proto_ActionButton*/
+15, 1, 3, 6, 26, LightType_Proto::LightType_Proto_ActionButton
 
 //Test setup for making some of the buttons act as case lights
-#define LIGHT_DATA_SIZE 16 //number of sets in the below data
+/*#define LIGHT_DATA_SIZE 16 //number of sets in the below data
 #define LIGHT_DATA \
 0, 1, 0, 2, 5, LightType_Proto::LightType_Proto_ActionButton, \
 1, 1, 2, 2, 3, LightType_Proto::LightType_Proto_ActionButton, \
@@ -158,7 +158,7 @@
 12, 1, 3, 0, 0, LightType_Proto::LightType_Proto_Case, \
 13, 1, 6, 0, 1, LightType_Proto::LightType_Proto_Case, \
 14, 1, 8, 5, 2, LightType_Proto::LightType_Proto_Case, \
-15, 1, 3, 6, 3, LightType_Proto::LightType_Proto_Case
+15, 1, 3, 6, 3, LightType_Proto::LightType_Proto_Case*/
 
 //define for prototype with rim lighting
 /*#define LIGHT_DATA_SIZE 27 //number of sets in the below data

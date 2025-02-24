@@ -19,7 +19,7 @@ typedef enum
 
 class SMWave : public Animation {
 public:
-    SMWave(Lights& InRGBLights);
+    SMWave(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType);
     ~SMWave() { };
 
     virtual void Animate(RGB (&frame)[100]) override;

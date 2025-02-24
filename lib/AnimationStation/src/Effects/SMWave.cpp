@@ -7,12 +7,13 @@
 #define WAVE_LENGTH 1.0f
 #define WAVE_HOLDLOOPS 2
 
-SMWave::SMWave(Lights& InRGBLights) : Animation(InRGBLights) 
+SMWave::SMWave(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType) : Animation(InRGBLights, InButtonCaseEffectType) 
 {
     for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
     {
         if(LightTypeIsForNonPressedAnimation(RGBLights->AllLights[lightIndex].Type) == false)
             continue;
+
         if(RGBLights->AllLights[lightIndex].Position.XPosition > MaxXCoord)
             MaxXCoord = RGBLights->AllLights[lightIndex].Position.XPosition;
         if(RGBLights->AllLights[lightIndex].Position.YPosition > MaxYCoord)
@@ -139,7 +140,7 @@ bool SMWave::UpdateWave(RGB (&frame)[100])
 
     for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
     {
-        if (LightTypeIsForSpecialMoveAnimation(RGBLights->AllLights[lightIndex].Type))
+        if (LightTypeIsForNonPressedAnimation(RGBLights->AllLights[lightIndex].Type))
         {
             uint8_t firstLightIndex = RGBLights->AllLights[lightIndex].FirstLedIndex;
             uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[lightIndex].LedsPerLight;

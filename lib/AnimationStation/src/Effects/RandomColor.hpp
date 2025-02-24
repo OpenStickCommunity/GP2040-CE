@@ -9,7 +9,7 @@
 
 class RandomColor : public Animation {
 public:
-  RandomColor(Lights& InRGBLights);
+  RandomColor(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType);
   RandomColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPins);
   ~RandomColor() { };
 
