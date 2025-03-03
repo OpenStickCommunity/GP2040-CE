@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        GP2040_BOARDCONFIG: 
+        GP2040_BOARDCONFIG:
           [ARCController,
           Blank,
           Pico,
@@ -63,6 +63,7 @@ jobs:
           WaveshareZero,
           Stress,
           SGFDevices,
+          VenomEZ,
           ZeroRhythm]
 
     steps:
