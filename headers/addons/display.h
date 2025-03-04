@@ -227,6 +227,7 @@ private:
 	GPGFX_DisplayTypeOptions gpOptions;
 
 	GamepadButtonMapping *mapMenuToggle;
+	GamepadButtonMapping *mapMenuSelect;
 };
 
 #endif

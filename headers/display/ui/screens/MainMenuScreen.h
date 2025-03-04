@@ -69,6 +69,8 @@ class MainMenuScreen : public GPScreen {
 
         void updateMenuNavigation(GpioAction action);
         void chooseAndReturn();
+
+        void setMenuHome();
     protected:
         virtual void drawScreen();
     private:
@@ -83,6 +85,7 @@ class MainMenuScreen : public GPScreen {
 
         bool screenIsPrompting = false;
         bool promptChoice = false;
+        bool isMenuReady = false;
 
         int8_t exitToScreenBeforePrompt = -1;
         int8_t exitToScreen = -1;
