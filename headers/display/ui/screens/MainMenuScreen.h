@@ -68,6 +68,7 @@ class MainMenuScreen : public GPScreen {
         int32_t currentTurboMode();
 
         void updateMenuNavigation(GpioAction action);
+        void chooseAndReturn();
     protected:
         virtual void drawScreen();
     private:

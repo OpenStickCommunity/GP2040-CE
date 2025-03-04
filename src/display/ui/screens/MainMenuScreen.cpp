@@ -180,13 +180,27 @@ void MainMenuScreen::updateMenuNavigation(GpioAction action) {
             isPressed = true;
             break;
         case GpioAction::MENU_NAVIGATION_LEFT:
-            if (screenIsPrompting) {
+            if (!screenIsPrompting) {
+                if ((menuIndex-menuSize) > 0) {
+                    menuIndex -= menuSize;
+                } else {
+                    menuIndex = 0;
+                }
+                changeIndex = true;
+            } else {
                 promptChoice = !promptChoice;
             }
             isPressed = true;
             break;
         case GpioAction::MENU_NAVIGATION_RIGHT:
-            if (screenIsPrompting) {
+            if (!screenIsPrompting) {
+                if ((menuIndex+menuSize) < (menuSize-1)) {
+                    menuIndex += (menuSize-1);
+                } else {
+                    menuIndex = (menuSize-1);
+                }
+                changeIndex = true;
+            } else {
                 promptChoice = !promptChoice;
             }
             isPressed = true;
@@ -243,8 +257,24 @@ void MainMenuScreen::updateMenuNavigation(GpioAction action) {
     if (changeIndex) gpMenu->setIndex(menuIndex);
 }
 
+void MainMenuScreen::chooseAndReturn() {
+    if (previousMenu != nullptr) {
+        currentMenu = previousMenu;
+        previousMenu = nullptr;
+        menuIndex = 0;
+        gpMenu->setMenuData(currentMenu);
+        gpMenu->setMenuTitle(MAIN_MENU_NAME);
+        gpMenu->setIndex(menuIndex);
+    } else {
+        exitToScreen = DisplayMode::BUTTONS;
+        exitToScreenBeforePrompt = DisplayMode::BUTTONS;
+        isPressed = false;
+    }
+}
+
 void MainMenuScreen::saveAndExit() {
     saveOptions();
+    exitToScreen = DisplayMode::BUTTONS;
 }
 
 int32_t MainMenuScreen::modeValue() {
@@ -256,6 +286,8 @@ void MainMenuScreen::selectInputMode() {
         InputMode valueToSave = (InputMode)currentMenu->at(menuIndex).optionValue;
         prevInputMode = Storage::getInstance().GetGamepad()->getOptions().inputMode;
         updateInputMode = valueToSave;
+
+        chooseAndReturn();
 
         if (prevInputMode != valueToSave) {
             // input mode requires a save and reboot
@@ -275,6 +307,8 @@ void MainMenuScreen::selectDPadMode() {
         prevDpadMode = Storage::getInstance().GetGamepad()->getOptions().dpadMode;
         updateDpadMode = valueToSave;
 
+        chooseAndReturn();
+
         if (prevDpadMode != valueToSave) changeRequiresSave = true;
     }
 }
@@ -289,7 +323,9 @@ void MainMenuScreen::selectSOCDMode() {
         prevSocdMode = Storage::getInstance().GetGamepad()->getOptions().socdMode;
         updateSocdMode = valueToSave;
 
-        if (prevDpadMode != valueToSave) changeRequiresSave = true;
+        chooseAndReturn();
+
+        if (prevSocdMode != valueToSave) changeRequiresSave = true;
     }
 }
 
@@ -344,11 +380,12 @@ void MainMenuScreen::saveOptions() {
 
         if (saveHasChanged) {
             EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true, changeRequiresReboot));
-            screenIsPrompting = false;
         }
         changeRequiresSave = false;
         changeRequiresReboot = false;
     }
+
+    screenIsPrompting = false;
 
     if (exitToScreenBeforePrompt != -1) {
         exitToScreen = exitToScreenBeforePrompt;
@@ -361,6 +398,8 @@ void MainMenuScreen::selectProfile() {
         uint8_t valueToSave = currentMenu->at(menuIndex).optionValue;
         prevProfile = Storage::getInstance().GetGamepad()->getOptions().profileNumber;
         updateProfile = valueToSave;
+
+        chooseAndReturn();
 
         if (prevProfile != valueToSave) changeRequiresSave = true;
     }
@@ -376,6 +415,8 @@ void MainMenuScreen::selectFocusMode() {
         prevFocus = Storage::getInstance().getAddonOptions().focusModeOptions.enabled;
         updateFocus = valueToSave;
 
+        chooseAndReturn();
+
         if (prevFocus != valueToSave) changeRequiresSave = true;
     }
 }
@@ -389,6 +430,8 @@ void MainMenuScreen::selectTurboMode() {
         uint8_t valueToSave = currentMenu->at(menuIndex).optionValue;
         prevTurbo = Storage::getInstance().getAddonOptions().turboOptions.enabled;
         updateTurbo = valueToSave;
+
+        chooseAndReturn();
 
         if (updateTurbo != valueToSave) changeRequiresSave = true;
     }
