@@ -472,8 +472,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.ledOptions, pledIndex4, PLED4_PIN);
     // lightEntries
     INIT_UNSET_PROPERTY(config.ledOptions, lightDataSize, LIGHT_DATA_SIZE);
- 	const unsigned char lightData[] = { LIGHT_DATA };
-    INIT_UNSET_PROPERTY_BYTES(config.ledOptions, lightData, lightData);
+    INIT_UNSET_PROPERTY_BYTES(config.ledOptions, lightData, emptyByteArray);
 
     //SpecialMoveOptions
     //INIT_UNSET_PROPERTY(config.specialMoveOptions, ChargeTimeInMs, 750);

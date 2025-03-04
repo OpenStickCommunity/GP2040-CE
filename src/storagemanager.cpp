@@ -70,6 +70,14 @@ void Storage::performEnqueuedSaves()
 		specialMoveOptionsSavePending.store(false);
 		critical_section_exit(&specialMoveOptionsCs);
 	}
+
+	if (ledOptionsSavePending.load())
+	{
+		critical_section_enter_blocking(&ledOptionsCs);
+		save();
+		ledOptionsSavePending.store(false);
+		critical_section_exit(&ledOptionsCs);
+	}
 }
 
 void Storage::enqueueAnimationOptionsSave(const AnimationOptions& animationOptions)
@@ -96,6 +104,15 @@ void Storage::enqueueSpecialMoveOptionsSave(const SpecialMoveOptions& specialMov
 		specialMoveOptionsSavePending.store(true);
 	}
 	critical_section_exit(&specialMoveOptionsCs);
+}
+
+void Storage::enqueueLEDOptionsSave()
+{
+	//no need to crc this. The only thing that can request a save is if the data had to be built the old way.
+	//and thats only in one place so we know it must have changed
+	critical_section_enter_blocking(&ledOptionsCs);
+	ledOptionsSavePending.store(true);
+	critical_section_exit(&ledOptionsCs);
 }
 
 void Storage::ResetSettings()
@@ -304,4 +321,9 @@ void AnimationStorage::save()
 {
 	Storage::getInstance().enqueueAnimationOptionsSave(AnimationStation::options);
 	//Storage::getInstance().enqueueSpecialMoveOptionsSave(SpecialMoveSystem::Options);
+}
+
+void AnimationStorage::saveLEDData()
+{
+	Storage::getInstance().enqueueLEDOptionsSave();
 }

@@ -8,6 +8,7 @@ class AnimationStorage
 {
   public:
     void save();
+    void saveLEDData();
     void getAnimationOptions(AnimationOptions& options);
     void getSpecialMoveOptions(SpecialMoveOptions& options);
 };

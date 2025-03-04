@@ -578,16 +578,18 @@ uint8_t NeoPicoLEDAddon::setupButtonPositions()
 
 void NeoPicoLEDAddon::configureLEDs()
 {
-	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
+	LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
 
 	//New grid based setup
-	LEDOptions_lightData_t lightData = ledOptions.lightData; //todo make this const ref if we remove the legacy version
-	int32_t lightDataSize = ledOptions.lightDataSize;
+	LEDOptions_lightData_t& lightData = ledOptions.lightData; //todo make this const ref if we remove the legacy version
+	int32_t& lightDataSize = ledOptions.lightDataSize;
 	if(lightDataSize == 0)
 	{
 		//fall back to old matrix setup which will now approximate a grid and return the same data struct ready for light creation
 		uint8_t buttonCount = setupButtonPositions();
 		createLEDLayout(static_cast<ButtonLayout>(ledOptions.ledLayout), ledOptions.ledsPerButton, buttonCount, lightData, lightDataSize);
+		ledOptions.lightData.size = lightDataSize*6; //6 entries per data
+		AnimationStore.saveLEDData();
 	}
 
 	GenerateLights(lightData, lightDataSize);

@@ -54,6 +54,7 @@ public:
 	// Perform saves that were enqueued from core1
 	void performEnqueuedSaves();
 
+	void enqueueLEDOptionsSave();
 	void enqueueAnimationOptionsSave(const AnimationOptions& animationOptions);
 	void enqueueSpecialMoveOptionsSave(const SpecialMoveOptions& specialMoveOptions);
 
@@ -92,6 +93,8 @@ private:
 	critical_section_t specialMoveOptionsCs;
 	uint32_t specialMoveOptionsCrc = 0;
 	SpecialMoveOptions specialMoveOptionsToSave = {};
+	std::atomic<bool> ledOptionsSavePending;
+	critical_section_t ledOptionsCs;
 	GpioMappingInfo functionalPinMappings[NUM_BANK0_GPIOS];
 };
 

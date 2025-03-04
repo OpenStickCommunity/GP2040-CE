@@ -969,6 +969,8 @@ std::string setLightsDataOptions()
         options.lightData.bytes[thisEntryIndex+5] = (LightType_Proto)(light["lightType"].as<uint8_t>());
 
         options.lightDataSize++;
+        options.lightData.size = options.lightDataSize * 6;
+
         if(options.lightDataSize >= 100) //600 bytes total, 6 elements per light. 100 max lights
             break;
     }
