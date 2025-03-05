@@ -82,6 +82,7 @@ class MainMenuScreen : public GPScreen {
         uint16_t prevButtonState = 0;
         Mask_t prevValues;
         GPMenu* gpMenu;
+        const uint8_t menuLineSize = 4;
 
         bool screenIsPrompting = false;
         bool promptChoice = false;

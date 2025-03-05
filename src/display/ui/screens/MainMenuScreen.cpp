@@ -16,7 +16,7 @@ void MainMenuScreen::init() {
     gpMenu->setPosition(8, 16);
     gpMenu->setStrokeColor(1);
     gpMenu->setFillColor(1);
-    gpMenu->setMenuSize(18, 4);
+    gpMenu->setMenuSize(18, menuLineSize);
     gpMenu->setViewport(this->getViewport());
     gpMenu->setShape(GPShape_Type::GP_SHAPE_SQUARE);
     gpMenu->setMenuData(currentMenu);
@@ -192,8 +192,8 @@ void MainMenuScreen::updateMenuNavigation(GpioAction action) {
                 break;
             case GpioAction::MENU_NAVIGATION_LEFT:
                 if (!screenIsPrompting) {
-                    if ((menuIndex-menuSize) > 0) {
-                        menuIndex -= menuSize;
+                    if ((menuIndex-menuLineSize) > 0) {
+                        menuIndex -= menuLineSize;
                     } else {
                         menuIndex = 0;
                     }
@@ -205,8 +205,8 @@ void MainMenuScreen::updateMenuNavigation(GpioAction action) {
                 break;
             case GpioAction::MENU_NAVIGATION_RIGHT:
                 if (!screenIsPrompting) {
-                    if ((menuIndex+menuSize) < (menuSize-1)) {
-                        menuIndex += (menuSize-1);
+                    if ((menuIndex+menuLineSize) < (menuSize-1)) {
+                        menuIndex += menuLineSize;
                     } else {
                         menuIndex = (menuSize-1);
                     }
