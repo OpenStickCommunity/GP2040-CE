@@ -16,6 +16,7 @@ import * as yup from 'yup';
 
 import Section from '../Components/Section';
 import useAnimationStore, {
+	AnimationOptions,
 	MAX_ANIMATION_PROFILES,
 	MAX_CASE_LIGHTS,
 	MAX_CUSTOM_COLORS,
@@ -96,13 +97,13 @@ const convertToDecimal = (hex: string) => parseInt(hex.replace('#', ''), 16);
 
 export default function AnimationPage() {
 	const {
-		animationOptions,
+		AnimationOptions,
 		loadingAnimationOptions,
 		fetchAnimationOptions,
 		saveAnimationOptions,
 	} = useAnimationStore();
 	const [key, setKey] = useState(
-		`profile-${animationOptions.baseProfileIndex}`,
+		`profile-${AnimationOptions.baseProfileIndex}`,
 	);
 	const { t } = useTranslation('');
 
@@ -112,9 +113,9 @@ export default function AnimationPage() {
 		fetchAnimationOptions();
 	}, []);
 
-	const onSuccess = async () => {
+	const onSuccess = async (values: AnimationOptions) => {
 		try {
-			await saveAnimationOptions();
+			await saveAnimationOptions(values);
 			setSaveMessage(t('Common:saved-success-message'));
 		} catch (error) {
 			console.error(error);
@@ -134,7 +135,7 @@ export default function AnimationPage() {
 			<Formik
 				validationSchema={schema}
 				onSubmit={onSuccess}
-				initialValues={animationOptions}
+				initialValues={AnimationOptions}
 			>
 				{({ handleSubmit, handleChange, values, errors, setFieldValue }) => (
 					<Form noValidate onSubmit={handleSubmit}>

@@ -24,7 +24,7 @@ type Profile = {
 	pressedStaticColors: number[];
 };
 
-type AnimationOptions = {
+export type AnimationOptions = {
 	brightness: number;
 	baseProfileIndex: number;
 	customColors: number[];
@@ -32,17 +32,17 @@ type AnimationOptions = {
 };
 
 type State = {
-	animationOptions: AnimationOptions;
+	AnimationOptions: AnimationOptions;
 	loadingAnimationOptions: boolean;
 };
 
 type Actions = {
 	fetchAnimationOptions: () => void;
-	saveAnimationOptions: () => Promise<object>;
+	saveAnimationOptions: (AnimationOptions: AnimationOptions) => Promise<object>;
 };
 
 const INITIAL_STATE: State = {
-	animationOptions: {
+	AnimationOptions: {
 		brightness: 0,
 		baseProfileIndex: 0,
 		customColors: [],
@@ -59,13 +59,12 @@ const useAnimationStore = create<State & Actions>()((set, get) => ({
 		const { AnimationOptions } = await WebApi.getAnimationOptions();
 		set((state) => ({
 			...state,
-			animationOptions: AnimationOptions,
+			AnimationOptions,
 			loadingAnimationOptions: false,
 		}));
 	},
-	saveAnimationOptions: async () => {
-		const { animationOptions } = get();
-		return WebApi.setAnimationOptions({ animationOptions });
+	saveAnimationOptions: async (AnimationOptions: AnimationOptions) => {
+		return WebApi.setAnimationOptions({ AnimationOptions });
 	},
 }));
 
