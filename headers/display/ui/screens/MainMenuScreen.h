@@ -47,6 +47,7 @@ class MainMenuScreen : public GPScreen {
 
         void testMenu() {}
         void saveAndExit();
+        void exitOnly();
         int32_t modeValue();
 
         void selectInputMode();
@@ -151,12 +152,12 @@ class MainMenuScreen : public GPScreen {
             {"Profile",    NULL, &profilesMenu,  std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::testMenu, this)},
             {"Focus Mode", NULL, &focusModeMenu, std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::testMenu, this)},
             {"Turbo",      NULL, &turboModeMenu, std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::testMenu, this)},
-            {"Save & Exit",NULL, &saveMenu,      std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::testMenu, this)},
+            {"Exit",NULL, &saveMenu,      std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::testMenu, this)},
         };
 
         std::vector<MenuEntry> saveMenu = {
-            {"Yes",        NULL, nullptr,        std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::saveAndExit, this), 1},
-            {"No",         NULL, nullptr,        std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::testMenu, this), 0},
+            {"Save & Exit",NULL, nullptr,        std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::saveAndExit, this), 1},
+            {"Exit",       NULL, nullptr,        std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::exitOnly, this), 0},
         };
 };
 

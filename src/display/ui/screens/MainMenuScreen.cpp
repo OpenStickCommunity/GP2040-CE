@@ -289,6 +289,10 @@ void MainMenuScreen::saveAndExit() {
     exitToScreen = DisplayMode::BUTTONS;
 }
 
+void MainMenuScreen::exitOnly() {
+    exitToScreen = DisplayMode::BUTTONS;
+}
+
 int32_t MainMenuScreen::modeValue() {
     return -1;
 }
