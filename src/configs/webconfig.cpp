@@ -1642,6 +1642,14 @@ std::string setAddonOptions()
     GamepadUSBHostOptions& gamepadUSBHostOptions = Storage::getInstance().getAddonOptions().gamepadUSBHostOptions;
     docToValue(gamepadUSBHostOptions.enabled, doc, "GamepadUSBHostAddonEnabled");
 
+    AnalogADS1256Options& ads1256Options = Storage::getInstance().getAddonOptions().analogADS1256Options;
+    docToValue(ads1256Options.enabled, doc, "Analog1256Enabled");
+    docToValue(ads1256Options.spiBlock, doc, "analog1256Block");
+    docToValue(ads1256Options.csPin, doc, "analog1256CsPin");
+    docToValue(ads1256Options.drdyPin, doc, "analog1256DrdyPin");
+    docToValue(ads1256Options.avdd, doc, "analog1256AnalogMax");
+    docToValue(ads1256Options.enableTriggers, doc, "analog1256EnableTriggers");
+
     RotaryOptions& rotaryOptions = Storage::getInstance().getAddonOptions().rotaryOptions;
     docToValue(rotaryOptions.enabled, doc, "RotaryAddonEnabled");
     docToValue(rotaryOptions.encoderOne.enabled, doc, "encoderOneEnabled");
