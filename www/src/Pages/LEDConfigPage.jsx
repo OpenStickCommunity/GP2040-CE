@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -58,10 +58,10 @@ const defaultValue = {
 	pledIndex3: -1,
 	pledIndex4: -1,
 	pledColor: '#00ff00',
-    caseRGBType: 0,
-    caseRGBIndex: -1,
-    caseRGBCount: 0,
-    caseRGBColor: '#00ff00',
+	caseRGBType: 0,
+	caseRGBIndex: -1,
+	caseRGBCount: 0,
+	caseRGBColor: '#00ff00',
 	ledButtonMap: {},
 };
 
@@ -143,19 +143,15 @@ const schema = yup.object().shape({
 	turnOffWhenSuspended: yup.number().label('Turn Off When Suspended'),
 	caseRGBType: yup.number().required().label('Case RGB Type'),
 	caseRGBColor: yup.string().label('Case RGB LEDs').validateColor(),
-    caseRGBCount: yup
-        .number()
-        .required()
-        .positive()
-        .integer()
-        .min(0)
-        .max(100)
-        .label('Case RGB Count'),
-    caseRGBIndex: yup
+	caseRGBCount: yup
 		.number()
-		.label('Case RGB Index')
-        .min(-1)
-        .max(100),
+		.required()
+		.positive()
+		.integer()
+		.min(0)
+		.max(100)
+		.label('Case RGB Count'),
+	caseRGBIndex: yup.number().label('Case RGB Index').min(-1).max(100),
 	ledButtonMap: yup.object(),
 });
 
@@ -291,7 +287,7 @@ export default function LEDConfigPage() {
 		const data = {
 			...values,
 			pledColor: hexToInt(values.pledColor || '#000000'),
-            caseRGBColor: hexToInt(values.caseRGBColor || '#000000'),
+			caseRGBColor: hexToInt(values.caseRGBColor || '#000000'),
 		};
 
 		const success = await WebApi.setLedOptions(data);
@@ -666,7 +662,7 @@ export default function LEDConfigPage() {
 							</p>
 						</Form.Group>
 					</Section>
-                    <Section title={t('LedConfig:case.header-text')}>
+					<Section title={t('LedConfig:case.header-text')}>
 						<Form.Group as={Col}>
 							<Row>
 								<FormSelect
@@ -688,10 +684,10 @@ export default function LEDConfigPage() {
 										{t('LedConfig:case.case-type-static')}
 									</option>
 								</FormSelect>
-                                <FormControl
+								<FormControl
 									type="number"
 									name="caseRGBIndex"
-                                    hidden={parseInt(values.caseRGBType) === -1}
+									hidden={parseInt(values.caseRGBType) === -1}
 									label={t('LedConfig:case.case-index-label')}
 									className="form-control-sm"
 									groupClassName="col-sm-2 mb-3"
@@ -703,10 +699,10 @@ export default function LEDConfigPage() {
 									}
 									min={0}
 								/>
-                                <FormControl
+								<FormControl
 									type="number"
 									name="caseRGBCount"
-                                    hidden={parseInt(values.caseRGBType) === -1}
+									hidden={parseInt(values.caseRGBType) === -1}
 									label={t('LedConfig:case.case-count-label')}
 									className="form-control-sm"
 									groupClassName="col-sm-2 mb-3"
@@ -718,7 +714,7 @@ export default function LEDConfigPage() {
 									}
 									min={0}
 								/>
-                                <FormControl
+								<FormControl
 									label={t('LedConfig:case.case-color-label')}
 									hidden={parseInt(values.caseRGBType) !== 0}
 									name="caseRGBColor"
@@ -748,9 +744,7 @@ export default function LEDConfigPage() {
 									target={colorPickerTarget}
 								></ColorPicker>
 							</Row>
-							<p >
-								{t('LedConfig:case.sub-header-text')}
-							</p>
+							<p>{t('LedConfig:case.sub-header-text')}</p>
 						</Form.Group>
 					</Section>
 					<Button type="submit">{t('Common:button-save-label')}</Button>
