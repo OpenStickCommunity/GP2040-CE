@@ -14,8 +14,8 @@ void RestartScreen::shutdown() {
 }
 
 void RestartScreen::drawScreen() {
-    getRenderer()->drawSprite((uint8_t *)bootLogoBottom, 128, 35, 10, 0, 2, 1);
-    
+    getRenderer()->drawText(1, 1, "....:GP2040-CE:....");
+
     switch ((System::BootMode)this->bootMode) {
         case System::BootMode::USB:
             getRenderer()->drawText(1, 6, "Rebooting to BOOTSEL");

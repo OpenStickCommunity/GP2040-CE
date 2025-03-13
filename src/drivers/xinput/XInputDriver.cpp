@@ -177,7 +177,7 @@ bool XInputDriver::getAuthEnabled() {
     return (xAuthDriver != nullptr);
 }
 
-void XInputDriver::process(Gamepad * gamepad) {
+bool XInputDriver::process(Gamepad * gamepad) {
     Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
 
     xinputReport.buttons1 = 0
@@ -217,6 +217,8 @@ void XInputDriver::process(Gamepad * gamepad) {
         xinputReport.rt = gamepad->pressedR2() ? 0xFF : 0;
     }
 
+    bool reportSent = false;
+
     // compare against previous report and send new
     if ( memcmp(last_report, &xinputReport, sizeof(XInputReport)) != 0) {
         if ( tud_ready() &&											// Is the device ready?
@@ -226,6 +228,7 @@ void XInputDriver::process(Gamepad * gamepad) {
             usbd_edpt_xfer(0, endpoint_in, (uint8_t *)&xinputReport, sizeof(XInputReport)); // Send report buffer
             usbd_edpt_release(0, endpoint_in);								// Release control of IN endpoint
             memcpy(last_report, &xinputReport, sizeof(XInputReport)); // save if we sent it
+            reportSent = true;
         }
     }
 
@@ -276,6 +279,8 @@ void XInputDriver::process(Gamepad * gamepad) {
                 break;
         }
     }
+
+    return reportSent;
 }
 
 void XInputDriver::processAux() {

@@ -19,8 +19,6 @@ const ON_OFF_OPTIONS = [
 
 const SPLASH_MODES = [
 	{ label: 'form.splash-modes.enabled', value: 0 }, // STATICSPLASH
-	{ label: 'form.splash-modes.close-in', value: 1 }, // CLOSEIN
-	{ label: 'form.splash-modes.close-in-custom', value: 2 }, // CLOSEINCUSTOM
 	{ label: 'form.splash-modes.disabled', value: 3 }, // NOSPLASH
 ];
 

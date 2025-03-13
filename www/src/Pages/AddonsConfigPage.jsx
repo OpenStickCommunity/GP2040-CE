@@ -31,10 +31,6 @@ import OnBoardLed, {
 	onBoardLedScheme,
 	onBoardLedState,
 } from '../Addons/OnBoardLed';
-import PlayerNumber, {
-	playerNumberScheme,
-	playerNumberState,
-} from '../Addons/PlayerNumber';
 import Reverse, { reverseScheme, reverseState } from '../Addons/Reverse';
 import SOCD, { socdScheme, socdState } from '../Addons/SOCD';
 import Tilt, { tiltScheme, tiltState } from '../Addons/Tilt';
@@ -72,7 +68,6 @@ const schema = yup.object().shape({
 	...dualDirectionScheme,
 	...tiltScheme,
 	...buzzerScheme,
-	...playerNumberScheme,
 	...socdScheme,
 	...wiiScheme,
 	...focusModeScheme,
@@ -95,7 +90,6 @@ const defaultValues = {
 	...dualDirectionState,
 	...tiltState,
 	...buzzerState,
-	...playerNumberState,
 	...socdState,
 	...wiiState,
 	...snesState,
@@ -119,7 +113,6 @@ const ADDONS = [
 	DualDirection,
 	Tilt,
 	Buzzer,
-	PlayerNumber,
 	SOCD,
 	Wii,
 	SNES,
