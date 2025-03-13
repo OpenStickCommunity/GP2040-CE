@@ -32,8 +32,6 @@
 #include "lwip/mem.h"
 #include "addons/input_macro.h"
 
-#include "bitmaps.h"
-
 #define PATH_CGI_ACTION "/cgi/action"
 
 #define LWIP_HTTPD_POST_MAX_PAYLOAD_LEN (1024 * 16)
@@ -1561,10 +1559,6 @@ std::string setAddonOptions()
     AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
     docToValue(analogADS1219Options.enabled, doc, "I2CAnalog1219InputEnabled");
 
-    PlayerNumberOptions& playerNumberOptions = Storage::getInstance().getAddonOptions().playerNumberOptions;
-    docToValue(playerNumberOptions.number, doc, "playerNumber");
-    docToValue(playerNumberOptions.enabled, doc, "PlayerNumAddonEnabled");
-
     ReverseOptions& reverseOptions = Storage::getInstance().getAddonOptions().reverseOptions;
     docToValue(reverseOptions.enabled, doc, "ReverseInputEnabled");
     docToPin(reverseOptions.ledPin, doc, "reversePinLED");
@@ -1641,6 +1635,14 @@ std::string setAddonOptions()
 
     GamepadUSBHostOptions& gamepadUSBHostOptions = Storage::getInstance().getAddonOptions().gamepadUSBHostOptions;
     docToValue(gamepadUSBHostOptions.enabled, doc, "GamepadUSBHostAddonEnabled");
+
+    AnalogADS1256Options& ads1256Options = Storage::getInstance().getAddonOptions().analogADS1256Options;
+    docToValue(ads1256Options.enabled, doc, "Analog1256Enabled");
+    docToValue(ads1256Options.spiBlock, doc, "analog1256Block");
+    docToValue(ads1256Options.csPin, doc, "analog1256CsPin");
+    docToValue(ads1256Options.drdyPin, doc, "analog1256DrdyPin");
+    docToValue(ads1256Options.avdd, doc, "analog1256AnalogMax");
+    docToValue(ads1256Options.enableTriggers, doc, "analog1256EnableTriggers");
 
     RotaryOptions& rotaryOptions = Storage::getInstance().getAddonOptions().rotaryOptions;
     docToValue(rotaryOptions.enabled, doc, "RotaryAddonEnabled");
@@ -1970,10 +1972,6 @@ std::string getAddonOptions()
 
     const AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
     writeDoc(doc, "I2CAnalog1219InputEnabled", analogADS1219Options.enabled);
-
-    const PlayerNumberOptions& playerNumberOptions = Storage::getInstance().getAddonOptions().playerNumberOptions;
-    writeDoc(doc, "playerNumber", playerNumberOptions.number);
-    writeDoc(doc, "PlayerNumAddonEnabled", playerNumberOptions.enabled);
 
     const ReverseOptions& reverseOptions = Storage::getInstance().getAddonOptions().reverseOptions;
     writeDoc(doc, "reversePinLED", cleanPin(reverseOptions.ledPin));

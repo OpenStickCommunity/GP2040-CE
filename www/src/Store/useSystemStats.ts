@@ -1,8 +1,9 @@
 import { create } from 'zustand';
 import { baseUrl } from '../Services/WebApi';
 
-const percentage = (x, y) => parseFloat(((x / y) * 100).toFixed(2));
-const toKB = (x) => parseFloat((x / 1024).toFixed(2));
+const percentage = (x: number, y: number): number =>
+	parseFloat(((x / y) * 100).toFixed(2));
+const toKB = (x: number): number => parseFloat((x / 1024).toFixed(2));
 
 type State = {
 	latestVersion: string;
@@ -67,7 +68,7 @@ const useSystemStats = create<State & Actions>()((set) => ({
 			]);
 			const latestDownloadUrl =
 				latestRelease.assets?.find(
-					({ name }) =>
+					({ name }: { name: string }) =>
 						name
 							?.substring(name.lastIndexOf('_') + 1)
 							?.replace('.uf2', '')

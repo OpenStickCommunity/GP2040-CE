@@ -1,5 +1,3 @@
-import React from 'react';
-
 // Source: https://flagicons.lipis.dev/
 const De = () => (
 	<svg

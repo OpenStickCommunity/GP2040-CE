@@ -8,7 +8,6 @@
 #include "enums.h"
 #include "storagemanager.h"
 #include "pico/stdlib.h"
-#include "bitmaps.h"
 
 #include "drivermanager.h"
 #include "usbdriver.h"

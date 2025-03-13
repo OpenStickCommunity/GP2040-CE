@@ -7,7 +7,7 @@ export default {
 	'current-input-mode-label': '현재 입력 모드',
 	'input-mode-extra-label': '터치패드/쉐어 버튼 변경',
 	'input-mode-options': {
-        none: '선택된 모드 없음',
+		none: '선택된 모드 없음',
 		xinput: 'XInput',
 		'nintendo-switch': '닌텐도 스위치',
 		ps3: 'PS3/DirectInput',
@@ -24,11 +24,11 @@ export default {
 		xboxoriginal: '오리지널 Xbox',
 		xbone: 'Xbox One',
 	},
-    'input-mode-group': {
-        primary: '주 입력 모드',
-        mini: '미니/클래식 콘솔 모드',
-    },
-    'boot-input-mode-label': '부트 입력 모드',
+	'input-mode-group': {
+		primary: '주 입력 모드',
+		mini: '미니/클래식 콘솔 모드',
+	},
+	'boot-input-mode-label': '부트 입력 모드',
 	'ps4-mode-options': {
 		controller: '컨트롤러',
 		arcadestick: '아케이드 스틱',
@@ -82,7 +82,7 @@ export default {
 		'<span>정보:</span> Xinput은 별동의 인증이 필요없는 PC에서 사용가능합니다. Xbox360에서 사용하려면 USB인증을 선택하고 적절한 동글을 연결해주세요.',
 	'hotkey-settings-label': '핫키 설정',
 	'hotkey-settings-sub-header':
-		"<strong>Fn</strong> 슬라이더는 <link_pinmap>핀 매핑</link_pinmap> 페이지에서 설정 가능한 펑션 버튼(FN)을 활성화합니다. <strong>Fn</strong> 버튼을 활성화 하면 선택한 핫키 설정과 펑션 버튼을 함께 눌러야 합니다.<br />버튼 할당을 해제하려면 드롭다운 메뉴에서 <strong>없음</strong>을 선택하십시오.",
+		'<strong>Fn</strong> 슬라이더는 <link_pinmap>핀 매핑</link_pinmap> 페이지에서 설정 가능한 펑션 버튼(FN)을 활성화합니다. <strong>Fn</strong> 버튼을 활성화 하면 선택한 핫키 설정과 펑션 버튼을 함께 눌러야 합니다.<br />버튼 할당을 해제하려면 드롭다운 메뉴에서 <strong>없음</strong>을 선택하십시오.',
 	'hotkey-settings-warning':
 		'펑션 버튼이 설정되지 않으면 Fn 슬라이더도 사용불가합니다.',
 	'hotkey-actions': {

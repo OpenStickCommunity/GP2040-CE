@@ -1,4 +1,3 @@
-import React from 'react';
 import { Form, FormSelectProps } from 'react-bootstrap';
 
 type FormSelectTypes = {

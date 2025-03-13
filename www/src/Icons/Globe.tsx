@@ -1,5 +1,3 @@
-import React from 'react';
-
 // Source: https://icons.getbootstrap.com/icons/globe/
 
 const Globe = () => (

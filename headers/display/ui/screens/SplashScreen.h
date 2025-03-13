@@ -2,7 +2,6 @@
 #define _SPLASHSCREEN_H_
 
 #include "GPGFX_UI_widgets.h"
-#include "bitmaps.h"
 
 class SplashScreen : public GPScreen {
     public:

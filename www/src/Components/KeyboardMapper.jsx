@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import FormSelect from './FormSelect';
 import { KEY_CODES } from '../Data/Keyboard';

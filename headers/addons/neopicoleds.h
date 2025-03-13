@@ -163,9 +163,9 @@ PixelMatrix createLedButtonLayout(ButtonLayout layout, std::vector<uint8_t> *pos
 class NeoPicoPlayerLEDs : public PlayerLEDs
 {
 public:
-	virtual void setup(){}
-	virtual void display(){}
-	uint16_t * getLedLevels() { return ledLevels; }
+    virtual void setup(){}
+    virtual void display(){}
+    uint16_t * getLedLevels() { return ledLevels; }
 };
 
 #define NeoPicoLEDName "NeoPicoLED"
@@ -173,32 +173,34 @@ public:
 // NeoPico LED Addon
 class NeoPicoLEDAddon : public GPAddon {
 public:
-	virtual bool available();
-	virtual void setup();
-	virtual void preprocess() {}
-	virtual void process();
-	virtual std::string name() { return NeoPicoLEDName; }
-	void configureLEDs();
-	uint32_t frame[100];
+    virtual bool available();
+    virtual void setup();
+    virtual void preprocess() {}
+    virtual void process();
+    virtual void postprocess(bool sent) {}
+    virtual void reinit() {}
+    virtual std::string name() { return NeoPicoLEDName; }
+    void configureLEDs();
+    uint32_t frame[100];
 private:
-	std::vector<uint8_t> * getLEDPositions(std::string button, std::vector<std::vector<uint8_t>> *positions);
-	std::vector<std::vector<Pixel>> generatedLEDButtons(std::vector<std::vector<uint8_t>> *positions);
-	std::vector<std::vector<Pixel>> generatedLEDStickless(std::vector<std::vector<uint8_t>> *positions);
-	std::vector<std::vector<Pixel>> generatedLEDWasd(std::vector<std::vector<uint8_t>> *positions);
-	std::vector<std::vector<Pixel>> generatedLEDWasdFBM(std::vector<std::vector<uint8_t>> *positions);
-	std::vector<std::vector<Pixel>> createLEDLayout(ButtonLayout layout, uint8_t ledsPerPixel, uint8_t ledButtonCount);
-	uint8_t setupButtonPositions();
-	const uint32_t intervalMS = 10;
-	absolute_time_t nextRunTime;
-	uint8_t ledCount;
-	PixelMatrix matrix;
-	NeoPico *neopico;
-	InputMode inputMode; // HACK
-	PLEDAnimationState animationState; // NeoPico can control the player LEDs
-	NeoPicoPlayerLEDs * neoPLEDs = nullptr;
-	AnimationStation as;
-	std::map<std::string, int> buttonPositions;
-	bool turnOffWhenSuspended;
+    std::vector<uint8_t> * getLEDPositions(std::string button, std::vector<std::vector<uint8_t>> *positions);
+    std::vector<std::vector<Pixel>> generatedLEDButtons(std::vector<std::vector<uint8_t>> *positions);
+    std::vector<std::vector<Pixel>> generatedLEDStickless(std::vector<std::vector<uint8_t>> *positions);
+    std::vector<std::vector<Pixel>> generatedLEDWasd(std::vector<std::vector<uint8_t>> *positions);
+    std::vector<std::vector<Pixel>> generatedLEDWasdFBM(std::vector<std::vector<uint8_t>> *positions);
+    std::vector<std::vector<Pixel>> createLEDLayout(ButtonLayout layout, uint8_t ledsPerPixel, uint8_t ledButtonCount);
+    uint8_t setupButtonPositions();
+    const uint32_t intervalMS = 10;
+    absolute_time_t nextRunTime;
+    uint8_t ledCount;
+    PixelMatrix matrix;
+    NeoPico *neopico;
+    InputMode inputMode; // HACK
+    PLEDAnimationState animationState; // NeoPico can control the player LEDs
+    NeoPicoPlayerLEDs * neoPLEDs = nullptr;
+    AnimationStation as;
+    std::map<std::string, int> buttonPositions;
+    bool turnOffWhenSuspended;
     PLEDType ledType;
 };
 

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
+import { useContext, useEffect, useState, useRef } from 'react';
 import { Button, Form, Row, Col, FormLabel, Tab, Tabs } from 'react-bootstrap';
 import { Formik, useFormikContext, Field } from 'formik';
 import chunk from 'lodash/chunk';
@@ -19,8 +19,6 @@ const ON_OFF_OPTIONS = [
 
 const SPLASH_MODES = [
 	{ label: 'form.splash-modes.enabled', value: 0 }, // STATICSPLASH
-	{ label: 'form.splash-modes.close-in', value: 1 }, // CLOSEIN
-	{ label: 'form.splash-modes.close-in-custom', value: 2 }, // CLOSEINCUSTOM
 	{ label: 'form.splash-modes.disabled', value: 3 }, // NOSPLASH
 ];
 
@@ -148,7 +146,11 @@ const schema = yup.object().shape({
 		}),
 	}),
 	splashDuration: yup.number().required().min(0).label('Splash Duration'),
-	displaySaverTimeout: yup.number().required().min(0).label('Display Saver Timeout'),
+	displaySaverTimeout: yup
+		.number()
+		.required()
+		.min(0)
+		.label('Display Saver Timeout'),
 	displaySaverMode: yup.number().required().min(0).label('Screen Saver'),
 	inputMode: yup.number().label('Display Input Mode'),
 	turboMode: yup.number().label('Display Turbo Mode'),
@@ -207,11 +209,16 @@ const FormContext = () => {
 			if (!!values.dpadMode) values.dpadMode = parseInt(values.dpadMode);
 			if (!!values.socdMode) values.socdMode = parseInt(values.socdMode);
 			if (!!values.macroMode) values.macroMode = parseInt(values.macroMode);
-			if (!!values.profileMode) values.profileMode = parseInt(values.profileMode);
-			if (!!values.inputHistoryEnabled) values.inputHistoryEnabled = parseInt(values.inputHistoryEnabled);
-			if (!!values.inputHistoryLength) values.inputHistoryLength = parseInt(values.inputHistoryLength);
-			if (!!values.inputHistoryCol) values.inputHistoryCol = parseInt(values.inputHistoryCol);
-			if (!!values.inputHistoryRow) values.inputHistoryRow = parseInt(values.inputHistoryRow);
+			if (!!values.profileMode)
+				values.profileMode = parseInt(values.profileMode);
+			if (!!values.inputHistoryEnabled)
+				values.inputHistoryEnabled = parseInt(values.inputHistoryEnabled);
+			if (!!values.inputHistoryLength)
+				values.inputHistoryLength = parseInt(values.inputHistoryLength);
+			if (!!values.inputHistoryCol)
+				values.inputHistoryCol = parseInt(values.inputHistoryCol);
+			if (!!values.inputHistoryRow)
+				values.inputHistoryRow = parseInt(values.inputHistoryRow);
 
 			await WebApi.setDisplayOptions(values, true);
 		}
@@ -242,11 +249,16 @@ const FormContext = () => {
 			if (!!values.dpadMode) values.dpadMode = parseInt(values.dpadMode);
 			if (!!values.socdMode) values.socdMode = parseInt(values.socdMode);
 			if (!!values.macroMode) values.macroMode = parseInt(values.macroMode);
-			if (!!values.profileMode) values.profileMode = parseInt(values.profileMode);
-			if (!!values.inputHistoryEnabled) values.inputHistoryEnabled = parseInt(values.inputHistoryEnabled);
-			if (!!values.inputHistoryLength) values.inputHistoryLength = parseInt(values.inputHistoryLength);
-			if (!!values.inputHistoryCol) values.inputHistoryCol = parseInt(values.inputHistoryCol);
-			if (!!values.inputHistoryRow) values.inputHistoryRow = parseInt(values.inputHistoryRow);
+			if (!!values.profileMode)
+				values.profileMode = parseInt(values.profileMode);
+			if (!!values.inputHistoryEnabled)
+				values.inputHistoryEnabled = parseInt(values.inputHistoryEnabled);
+			if (!!values.inputHistoryLength)
+				values.inputHistoryLength = parseInt(values.inputHistoryLength);
+			if (!!values.inputHistoryCol)
+				values.inputHistoryCol = parseInt(values.inputHistoryCol);
+			if (!!values.inputHistoryRow)
+				values.inputHistoryRow = parseInt(values.inputHistoryRow);
 
 			await WebApi.setDisplayOptions(values, true);
 		}
@@ -346,7 +358,10 @@ export default function DisplayConfigPage() {
 														onChange={handleChange}
 													>
 														{ON_OFF_OPTIONS.map((o, i) => (
-															<option key={`enabled-option-${i}`} value={o.value}>
+															<option
+																key={`enabled-option-${i}`}
+																value={o.value}
+															>
 																{t(`DisplayConfig:${o.label}`)}
 															</option>
 														))}
@@ -425,7 +440,9 @@ export default function DisplayConfigPage() {
 												eventKey="displayLayoutOptions"
 												title={t('DisplayConfig:section.layout-header')}
 											>
-												<h1>{t('DisplayConfig:section.button-layout-header')}</h1>
+												<h1>
+													{t('DisplayConfig:section.button-layout-header')}
+												</h1>
 												<Row className="mb-4">
 													<FormSelect
 														label={t('DisplayConfig:form.button-layout-label')}
@@ -437,16 +454,16 @@ export default function DisplayConfigPage() {
 														isInvalid={errors.buttonLayout}
 														onChange={handleChange}
 													>
-														{Object.keys(buttonLayoutDefinitions.buttonLayout).map(
-															(o, i) => (
-																<option
-																	key={`buttonLayout-option-${i}`}
-																	value={buttonLayoutDefinitions.buttonLayout[o]}
-																>
-																	{t(`LayoutConfig:layouts.left.${o}`)}
-																</option>
-															),
-														)}
+														{Object.keys(
+															buttonLayoutDefinitions.buttonLayout,
+														).map((o, i) => (
+															<option
+																key={`buttonLayout-option-${i}`}
+																value={buttonLayoutDefinitions.buttonLayout[o]}
+															>
+																{t(`LayoutConfig:layouts.left.${o}`)}
+															</option>
+														))}
 													</FormSelect>
 													<FormSelect
 														label={t(
@@ -465,14 +482,18 @@ export default function DisplayConfigPage() {
 														).map((o, i) => (
 															<option
 																key={`buttonLayoutRight-option-${i}`}
-																value={buttonLayoutDefinitions.buttonLayoutRight[o]}
+																value={
+																	buttonLayoutDefinitions.buttonLayoutRight[o]
+																}
 															>
 																{t(`LayoutConfig:layouts.right.${o}`)}
 															</option>
 														))}
 													</FormSelect>
 													<FormSelect
-														label={t('DisplayConfig:form.button-layout-orientation')}
+														label={t(
+															'DisplayConfig:form.button-layout-orientation',
+														)}
 														name="buttonLayoutOrientation"
 														className="form-select-sm"
 														groupClassName="col-sm-3 mb-3"
@@ -494,10 +515,15 @@ export default function DisplayConfigPage() {
 												{isButtonLayoutCustom(values) && (
 													<Row className="mb-3">
 														<FormLabel>
-															{t('DisplayConfig:form.button-layout-custom-header')}
+															{t(
+																'DisplayConfig:form.button-layout-custom-header',
+															)}
 														</FormLabel>
 														<Col sm="6">
-															<Form.Group as={Row} name="buttonLayoutCustomOptions">
+															<Form.Group
+																as={Row}
+																name="buttonLayoutCustomOptions"
+															>
 																<Form.Label column>
 																	{t(
 																		'DisplayConfig:form.button-layout-custom-left-label',
@@ -508,7 +534,8 @@ export default function DisplayConfigPage() {
 																	className="form-select-sm"
 																	groupClassName="col-sm-10 mb-1"
 																	value={
-																		values.buttonLayoutCustomOptions.params.layout
+																		values.buttonLayoutCustomOptions.params
+																			.layout
 																	}
 																	onChange={handleChange}
 																>
@@ -614,7 +641,8 @@ export default function DisplayConfigPage() {
 																		<option
 																			key={`buttonLayoutRight-option-${i}`}
 																			value={
-																				buttonLayoutDefinitions.buttonLayoutRight[o]
+																				buttonLayoutDefinitions
+																					.buttonLayoutRight[o]
 																			}
 																		>
 																			{t(`LayoutConfig:layouts.right.${o}`)}
@@ -689,7 +717,9 @@ export default function DisplayConfigPage() {
 														</Col>
 													</Row>
 												)}
-												<h1>{t('DisplayConfig:section.status-layout-header')}</h1>
+												<h1>
+													{t('DisplayConfig:section.status-layout-header')}
+												</h1>
 												<Row className="mb-4">
 													<div className="col-sm-2 mb-3">
 														<Form.Check
@@ -800,7 +830,9 @@ export default function DisplayConfigPage() {
 														/>
 													</div>
 												</Row>
-												<h1>{t('DisplayConfig:section.history-layout-header')}</h1>
+												<h1>
+													{t('DisplayConfig:section.history-layout-header')}
+												</h1>
 												<Row className="mb-4">
 													<div className="col-sm-2 mb-3">
 														<label></label>
@@ -889,7 +921,9 @@ export default function DisplayConfigPage() {
 													</FormSelect>
 													<FormControl
 														type="number"
-														label={t('DisplayConfig:form.splash-duration-label')}
+														label={t(
+															'DisplayConfig:form.splash-duration-label',
+														)}
 														name="splashDuration"
 														className="form-select-sm"
 														groupClassName="col-sm-3 mb-3"
@@ -902,7 +936,9 @@ export default function DisplayConfigPage() {
 												</Row>
 												<Row className="mb-3">
 													<FormSelect
-														label={t('DisplayConfig:form.screen-saver-mode-label')}
+														label={t(
+															'DisplayConfig:form.screen-saver-mode-label',
+														)}
 														name="displaySaverMode"
 														className="form-select-sm"
 														groupClassName="col-sm-3 mb-3"

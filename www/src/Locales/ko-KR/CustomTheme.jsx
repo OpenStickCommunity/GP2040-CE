@@ -8,8 +8,7 @@ export default {
 	'color-picker-location': '색상 선택기 위치',
 	'has-custom-theme-label': '사용',
 	'modal-title': '커스텀 테마 삭제 확인',
-	'modal-body':
-		'현재의 LED 테마를 삭제 하시겠습니까?',
+	'modal-body': '현재의 LED 테마를 삭제 하시겠습니까?',
 	'modal-no': '아니오',
 	'modal-yes': '예',
 };

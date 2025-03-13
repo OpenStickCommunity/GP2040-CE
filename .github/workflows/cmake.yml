@@ -29,6 +29,7 @@ jobs:
           Pico,
           PicoW,
           BentoBox,
+          DuelPadZen,
           FlatboxRev4,
           FlatboxRev5,
           FlatboxRev5RGB,
