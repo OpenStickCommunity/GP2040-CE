@@ -32,8 +32,6 @@
 #include "lwip/mem.h"
 #include "addons/input_macro.h"
 
-#include "bitmaps.h"
-
 #define PATH_CGI_ACTION "/cgi/action"
 
 #define LWIP_HTTPD_POST_MAX_PAYLOAD_LEN (1024 * 16)
@@ -1561,10 +1559,6 @@ std::string setAddonOptions()
     AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
     docToValue(analogADS1219Options.enabled, doc, "I2CAnalog1219InputEnabled");
 
-    PlayerNumberOptions& playerNumberOptions = Storage::getInstance().getAddonOptions().playerNumberOptions;
-    docToValue(playerNumberOptions.number, doc, "playerNumber");
-    docToValue(playerNumberOptions.enabled, doc, "PlayerNumAddonEnabled");
-
     ReverseOptions& reverseOptions = Storage::getInstance().getAddonOptions().reverseOptions;
     docToValue(reverseOptions.enabled, doc, "ReverseInputEnabled");
     docToPin(reverseOptions.ledPin, doc, "reversePinLED");
@@ -1978,10 +1972,6 @@ std::string getAddonOptions()
 
     const AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
     writeDoc(doc, "I2CAnalog1219InputEnabled", analogADS1219Options.enabled);
-
-    const PlayerNumberOptions& playerNumberOptions = Storage::getInstance().getAddonOptions().playerNumberOptions;
-    writeDoc(doc, "playerNumber", playerNumberOptions.number);
-    writeDoc(doc, "PlayerNumAddonEnabled", playerNumberOptions.enabled);
 
     const ReverseOptions& reverseOptions = Storage::getInstance().getAddonOptions().reverseOptions;
     writeDoc(doc, "reversePinLED", cleanPin(reverseOptions.ledPin));

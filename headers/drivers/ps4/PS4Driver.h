@@ -39,7 +39,7 @@ class PS4Driver : public GPDriver {
 public:
     PS4Driver(uint32_t type): controllerType(type) {}
     virtual void initialize();
-    virtual void process(Gamepad * gamepad);
+    virtual bool process(Gamepad * gamepad);
     virtual void initializeAux();
     virtual void processAux();
     virtual uint16_t get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen);
