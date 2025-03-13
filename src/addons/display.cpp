@@ -55,10 +55,12 @@ void DisplayAddon::setup() {
     displaySaverMode = options.displaySaverMode;
 
     mapMenuToggle = new GamepadButtonMapping(0);
+    mapMenuSelect = new GamepadButtonMapping(0);
     GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
         switch (pinMappings[pin].action) {
             case GpioAction::MENU_NAVIGATION_TOGGLE: mapMenuToggle->pinMask |= 1 << pin; break;
+            case GpioAction::MENU_NAVIGATION_SELECT: mapMenuSelect->pinMask |= 1 << pin; break;
             default:    break;
         }
     }
@@ -122,6 +124,7 @@ bool DisplayAddon::updateDisplayScreen() {
             break;
         case MAIN_MENU:
             gpScreen = new MainMenuScreen(gpDisplay);
+            ((MainMenuScreen*)gpScreen)->setMenuHome();
             break;
         case BUTTONS:
             gpScreen = new ButtonLayoutScreen(gpDisplay);
@@ -204,7 +207,7 @@ void DisplayAddon::process() {
 
     if (!configMode && screenReturn < 0) {
         Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
-        if (values & mapMenuToggle->pinMask) {
+        if ((values & mapMenuToggle->pinMask) || (values & mapMenuSelect->pinMask)) {
             if (currDisplayMode != DisplayMode::MAIN_MENU) {
                 screenReturn = DisplayMode::MAIN_MENU;
             }
