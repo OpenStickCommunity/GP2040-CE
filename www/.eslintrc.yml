@@ -22,6 +22,7 @@ plugins:
 rules:
   react-refresh/only-export-components: warn
   react/prop-types: off
+  react/react-in-jsx-scope: off
   no-template-curly-in-string: off
   no-unused-vars: off
   react-hooks/exhaustive-deps: off

@@ -1,5 +1,5 @@
 import { AppContext } from '../Contexts/AppContext';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { Button, Row, FormCheck, Tab, Tabs, FormLabel } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';

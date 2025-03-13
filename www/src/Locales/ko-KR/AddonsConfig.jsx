@@ -17,7 +17,7 @@ export default {
 		'참고: 설정시 아날로그 스틱이 게임패드의 좌/우 스틱 입력보다 우선하게 됩니다',
 	'analog-available-pins-text': '이용 가능 핀: {{pins}}',
 	'analog-available-pins-option-not-set': '없음',
-	'analog-adc-1-pin-x-label':  '아날로그 스틱 1 X 핀',
+	'analog-adc-1-pin-x-label': '아날로그 스틱 1 X 핀',
 	'analog-adc-1-pin-y-label': '아날로그 스틱 1 Y 핀',
 	'analog-adc-1-mode-label': '아날로그 스틱 1 모드',
 	'analog-adc-1-invert-label': '아날로그 스틱 1 반전',
@@ -73,7 +73,7 @@ export default {
 	'dual-directional-input-dpad-mode-label': '듀얼 D-패드 모드',
 	'dual-directional-input-combine-mode-label': '조합 모드',
 	'dual-directional-input-four-way-joystick-mode-label':
-         '듀얼 4방향 조이스틱 모드',
+		'듀얼 4방향 조이스틱 모드',
 	'tilt-header-text': '틸트 입력',
 	'tilt-1-pin-label': '틸트１핀',
 	'tilt-1-factor-left-x-label': '틸트１왼쪽 X축 비율',
@@ -103,8 +103,7 @@ export default {
 	'player-number-sub-header-text':
 		'플레이어 번호가 활성화된 여러개의 GP2040-CE 장치를 연결하는 경우에만 이 옵션을 활성화하십시오.',
 	'player-number-label': '플레이어 번호',
-	'socd-cleaning-mode-selection-slider-header-text':
-		'SOCD 모드 선택 슬라이더',
+	'socd-cleaning-mode-selection-slider-header-text': 'SOCD 모드 선택 슬라이더',
 	'socd-cleaning-mode-selection-slider-sub-header-text':
 		'참고：PS4, PS3 및 닌텐도 스위치 모드에서는 SOCD 클리닝 끄기를 지원하지 않으며 중립이 기본 값으로 설정됩니다.',
 	'socd-cleaning-mode-selection-slider-mode-default-label':
