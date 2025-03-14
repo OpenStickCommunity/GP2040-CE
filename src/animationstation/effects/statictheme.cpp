@@ -1,4 +1,4 @@
-#include "StaticTheme.h"
+#include "statictheme.h"
 
 std::vector<std::map<uint32_t, RGB>> StaticTheme::themes = {};
 
