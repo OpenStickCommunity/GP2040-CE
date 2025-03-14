@@ -366,6 +366,17 @@ message AnimationOptions_Proto
     optional uint32 customThemeA1Pressed = 43;
     optional uint32 customThemeA2Pressed = 44;
     optional uint32 buttonPressColorCooldownTimeInMs = 45;
+    optional uint32 ambientLightEffectsCountIndex = 46; 
+    optional bool ambientLightCustomLinkageModeFlag = 47; 
+    optional uint32 ambientLightGradientSpeed = 48; 
+    optional int32 ambientLightChaseSpeed = 49; 
+    optional float ambientLightBreathSpeed = 50; 
+    optional float alGradientBrightnessCustomX = 51; 
+    optional float alChaseBrightnessCustomX = 52; 
+    optional float alStaticColorBrightnessCustomX = 53; 
+    optional float alStaticBrightnessCustomThemeX = 54;  
+    optional uint32 alCustomStaticThemeIndex = 55;
+    optional uint32 alCustomStaticColorIndex = 56; 
 }
 
 message BootselButtonOptions

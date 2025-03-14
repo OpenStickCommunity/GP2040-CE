@@ -6,10 +6,12 @@
  */
 
 #include "AnimationStation.hpp"
+#include "AnimationStorage.hpp"
 
 uint8_t AnimationStation::brightnessMax = 100;
 uint8_t AnimationStation::brightnessSteps = 5;
 float AnimationStation::brightnessX = 0;
+float AnimationStation::linkageModeOfBrightnessX = 0;
 absolute_time_t AnimationStation::nextChange = nil_time;
 AnimationOptions AnimationStation::options = {};
 uint8_t AnimationStation::effectCount = TOTAL_EFFECTS;
@@ -29,6 +31,8 @@ void AnimationStation::HandleEvent(AnimationHotkey action) {
     return;
   }
   AnimationStation::nextChange = make_timeout_time_ms(250);
+  AnimationOptions hotkeyAnimationOptions = AnimationStore.getAnimationOptions();
+  bool isCustomLinkageMode = hotkeyAnimationOptions.ambientLightCustomLinkageModeFlag;
 
   if (action == HOTKEY_LEDS_BRIGHTNESS_UP) {
     AnimationStation::IncreaseBrightness();
@@ -73,8 +77,62 @@ void AnimationStation::HandleEvent(AnimationHotkey action) {
 
   if (action == HOTKEY_LEDS_FADETIME_DOWN) {
     this->baseAnimation->FadeTimeDown();
-  }  
-  
+  }
+
+  if(action == AMBIENT_LIGHT_EFFECTS_CHANGE){
+    if(isCustomLinkageMode == false){ // Custom mode
+      this->ambientLightEffectsChangeFlag = true;
+    }
+  } 
+
+  if(action == AMBIENT_LIGHT_EFFECTS_ON_OFF){
+    if(isCustomLinkageMode == false){ // Custom mode
+      this->ambientLightOnOffFlag = !this->ambientLightOnOffFlag;
+    }
+    else{ // Linkage mode
+      this->ambientLightLinlageOnOffFlag = !this->ambientLightLinlageOnOffFlag;
+    }
+  }
+
+  if(action == AMBIENT_LIGHT_EFFECTS_BRIGHTNESS_UP){
+    if(isCustomLinkageMode == false){ // Custom mode
+      this->aleLedsBrightnessCustomXupFlag = true;
+    }
+  }
+
+  if(action == AMBIENT_LIGHT_EFFECTS_BRIGHTNESS_DOWN){
+    if(isCustomLinkageMode == false){ // Custom mode
+      this->aleLedsBrightnessCustomXDownFlag = true;
+    }
+  }
+
+  if(action == AMBIENT_LIGHT_EFFECTS_PARAMETER_UP){
+    if(isCustomLinkageMode == false){ // Custom mode
+      this->aleLedsParameterCustomUpFlag = true;
+    }
+  }
+
+  if(action == AMBIENT_LIGHT_EFFECTS_PARAMETER_DOWN){
+    if(isCustomLinkageMode == false){ // Custom mode
+      this->aleLedsParameterCustomDownFlag = true;
+    }
+  }
+
+  if(action == AMBIENT_LIGHT_EFFECTS_FRAME_SPEED_UP){
+    if(isCustomLinkageMode == false){ // Custom mode
+      this->alGradientChaseBreathSpeedUpFlag = true;
+    }
+  }
+
+  if(action == AMBIENT_LIGHT_EFFECTS_FRAME_SPEED_DOWN){
+    if(isCustomLinkageMode == false){ // Custom mode
+      this->alGradientChaseBreathSpeedDownFlag = true;
+    }
+  }
+
+  if(action == AMBIENT_LIGHT_EFFECTS_CUSTOM_LINKAGE){
+    this->alCustomLinkageModeFlag = true;
+  }
 }
 
 void AnimationStation::ChangeAnimation(int changeSize) {
@@ -119,6 +177,11 @@ void AnimationStation::Animate() {
   }
 
   baseAnimation->Animate(this->frame);
+
+  for(int i = 0; i < 100; i++){
+    this->linkageFrame[i] = this->frame[i];
+  }
+
   buttonAnimation->Animate(this->frame);
 }
 
@@ -126,6 +189,10 @@ void AnimationStation::Clear() { memset(frame, 0, sizeof(frame)); }
 
 float AnimationStation::GetBrightnessX() {
   return AnimationStation::brightnessX;
+}
+
+float AnimationStation::GetLinkageModeOfBrightnessX() {
+  return AnimationStation::linkageModeOfBrightnessX;
 }
 
 uint8_t AnimationStation::GetBrightness() {
@@ -191,6 +258,14 @@ void AnimationStation::SetBrightness(uint8_t brightness) {
       (brightness > brightnessSteps) ? brightnessSteps : options.brightness;
   AnimationStation::brightnessX =
       (AnimationStation::options.brightness * getBrightnessStepSize()) / 255.0F;
+
+  AnimationStation::linkageModeOfBrightnessX =
+      (AnimationStation::options.brightness * getLinkageModeOfBrightnessStepSize()) / 255.0F;
+
+  if (AnimationStation::linkageModeOfBrightnessX > 1)
+      AnimationStation::linkageModeOfBrightnessX = 1;
+  else if (AnimationStation::linkageModeOfBrightnessX < 0)
+      AnimationStation::linkageModeOfBrightnessX = 0;
 
   if (AnimationStation::brightnessX > 1)
     AnimationStation::brightnessX = 1;

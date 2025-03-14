@@ -40,7 +40,16 @@ typedef enum
 	HOTKEY_LEDS_BRIGHTNESS_UP,
 	HOTKEY_LEDS_BRIGHTNESS_DOWN,
 	HOTKEY_LEDS_FADETIME_UP,
-	HOTKEY_LEDS_FADETIME_DOWN
+	HOTKEY_LEDS_FADETIME_DOWN,
+	AMBIENT_LIGHT_EFFECTS_CHANGE, 
+	AMBIENT_LIGHT_EFFECTS_ON_OFF, 
+	AMBIENT_LIGHT_EFFECTS_BRIGHTNESS_UP,
+	AMBIENT_LIGHT_EFFECTS_BRIGHTNESS_DOWN,
+	AMBIENT_LIGHT_EFFECTS_PARAMETER_UP,
+	AMBIENT_LIGHT_EFFECTS_PARAMETER_DOWN,
+	AMBIENT_LIGHT_EFFECTS_FRAME_SPEED_UP,
+	AMBIENT_LIGHT_EFFECTS_FRAME_SPEED_DOWN,
+	AMBIENT_LIGHT_EFFECTS_CUSTOM_LINKAGE,
 } AnimationHotkey;
 
 struct __attribute__ ((__packed__)) AnimationOptions
@@ -90,7 +99,18 @@ struct __attribute__ ((__packed__)) AnimationOptions
   uint32_t customThemeR3Pressed;
   uint32_t customThemeA1Pressed;
   uint32_t customThemeA2Pressed;
-  uint32_t buttonPressColorCooldownTimeInMs;  
+  uint32_t buttonPressColorCooldownTimeInMs;
+  uint8_t ambientLightEffectsCountIndex;
+  float alStaticColorBrightnessCustomX;  
+  float alGradientBrightnessCustomX;
+  float alChaseBrightnessCustomX;
+  float alStaticBrightnessCustomThemeX;
+  bool ambientLightCustomLinkageModeFlag;
+  uint8_t ambientLightGradientSpeed;
+  int16_t ambientLightChaseSpeed;
+  float ambientLightBreathSpeed;
+  uint8_t alCustomStaticThemeIndex;
+  uint8_t alCustomStaticColorIndex;
 };
 
 class AnimationStation
@@ -112,6 +132,7 @@ public:
   void SetMatrix(PixelMatrix matrix);
   static void ConfigureBrightness(uint8_t max, uint8_t steps);
   static float GetBrightnessX();
+  static float GetLinkageModeOfBrightnessX();
   static uint8_t GetBrightness();
   static void SetBrightness(uint8_t brightness);
   static void DecreaseBrightness();
@@ -126,9 +147,24 @@ public:
   static absolute_time_t nextChange;
   static uint8_t effectCount;
   RGB frame[100];
+  uint8_t GetBrightnessSteps(){ return this->brightnessSteps; };
+  uint8_t GetCustomBrightnessStepsSize(){ return (brightnessMax / brightnessSteps); };
+  RGB linkageFrame[100]; // copy baseAnimation frame exclude buttonAnimation frame
+  bool ambientLightEffectsChangeFlag = false; 
+  bool ambientLightOnOffFlag = false;
+  bool ambientLightLinlageOnOffFlag = false;
+  bool aleLedsBrightnessCustomXupFlag = false;
+  bool aleLedsBrightnessCustomXDownFlag = false;
+  bool aleLedsParameterCustomUpFlag = false;
+  bool aleLedsParameterCustomDownFlag = false;
+  bool alGradientChaseBreathSpeedUpFlag = false;
+  bool alGradientChaseBreathSpeedDownFlag = false;
+  bool alCustomLinkageModeFlag = false; 
 
 protected:
   inline static uint8_t getBrightnessStepSize() { return (brightnessMax / brightnessSteps); }
+  inline static uint8_t getLinkageModeOfBrightnessStepSize() { return (255 / brightnessSteps); }
+  static float linkageModeOfBrightnessX;
   static uint8_t brightnessMax;
   static uint8_t brightnessSteps;
   static float brightnessX;

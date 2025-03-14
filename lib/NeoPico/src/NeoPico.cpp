@@ -53,6 +53,11 @@ void NeoPico::Show() {
   for (int i = 0; i < this->numPixels; ++i) {
      this->PutPixel(this->frame[i]);
   }
+
+  for(int j = this->numPixels; j < 100; ++j) { 
+    // this->PutPixel(this->frame[j]);
+    pio_sm_put_blocking(pio0, 0, (this->frame[j]) << 8u);
+  }
   sleep_ms(10);
 }
 

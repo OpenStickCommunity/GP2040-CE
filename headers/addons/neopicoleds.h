@@ -181,6 +181,8 @@ public:
     virtual void reinit() {}
     virtual std::string name() { return NeoPicoLEDName; }
     void configureLEDs();
+    void ambientLightCustom(uint32_t alFrame[100]); 
+	void ambientLightLinkage(uint32_t alFrame[100]); 
     uint32_t frame[100];
 private:
     std::vector<uint8_t> * getLEDPositions(std::string button, std::vector<std::vector<uint8_t>> *positions);

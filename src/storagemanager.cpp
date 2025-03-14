@@ -91,6 +91,17 @@ static void updateAnimationOptionsProto(const AnimationOptions& options)
 	optionsProto.customThemeL3Pressed		= options.customThemeL3Pressed;
 	optionsProto.customThemeR3Pressed		= options.customThemeR3Pressed;
 	optionsProto.buttonPressColorCooldownTimeInMs = options.buttonPressColorCooldownTimeInMs;	
+	optionsProto.ambientLightEffectsCountIndex = options.ambientLightEffectsCountIndex;	
+	optionsProto.alStaticColorBrightnessCustomX = options.alStaticColorBrightnessCustomX;	
+	optionsProto.alGradientBrightnessCustomX = options.alGradientBrightnessCustomX;	
+	optionsProto.alChaseBrightnessCustomX = options.alChaseBrightnessCustomX;
+	optionsProto.alStaticBrightnessCustomThemeX = options.alStaticBrightnessCustomThemeX;		
+	optionsProto.ambientLightCustomLinkageModeFlag = options.ambientLightCustomLinkageModeFlag;	
+	optionsProto.ambientLightGradientSpeed = options.ambientLightGradientSpeed;	
+	optionsProto.ambientLightChaseSpeed = options.ambientLightChaseSpeed;	
+	optionsProto.ambientLightBreathSpeed = options.ambientLightBreathSpeed;	
+	optionsProto.alCustomStaticThemeIndex = options.alCustomStaticThemeIndex;	
+	optionsProto.alCustomStaticColorIndex = options.alCustomStaticColorIndex;
 }
 
 void Storage::performEnqueuedSaves()
@@ -280,7 +291,17 @@ AnimationOptions AnimationStorage::getAnimationOptions()
 	options.customThemeL3Pressed	= optionsProto.customThemeL3Pressed;
 	options.customThemeR3Pressed	= optionsProto.customThemeR3Pressed;
 	options.buttonPressColorCooldownTimeInMs = optionsProto.buttonPressColorCooldownTimeInMs;		
-
+	options.ambientLightEffectsCountIndex = optionsProto.ambientLightEffectsCountIndex;	
+	options.alStaticColorBrightnessCustomX = optionsProto.alStaticColorBrightnessCustomX;	
+	options.alGradientBrightnessCustomX = optionsProto.alGradientBrightnessCustomX;
+	options.alChaseBrightnessCustomX = optionsProto.alChaseBrightnessCustomX;
+	options.alStaticBrightnessCustomThemeX = optionsProto.alStaticBrightnessCustomThemeX;	
+	options.ambientLightCustomLinkageModeFlag = optionsProto.ambientLightCustomLinkageModeFlag;	
+	options.ambientLightGradientSpeed = optionsProto.ambientLightGradientSpeed;	
+	options.ambientLightChaseSpeed = optionsProto.ambientLightChaseSpeed;	
+	options.ambientLightBreathSpeed = optionsProto.ambientLightBreathSpeed;	
+	options.alCustomStaticThemeIndex = optionsProto.alCustomStaticThemeIndex;	
+	options.alCustomStaticColorIndex = optionsProto.alCustomStaticColorIndex;
 	return options;
 }
 
