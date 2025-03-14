@@ -6,7 +6,7 @@
 #include "animationstation.h"
 #include "animationstorage.h"
 #include "NeoPico.hpp"
-#include "Pixel.h"
+#include "pixel.h"
 #include "PlayerLEDs.h"
 #include "gp2040.h"
 #include "addons/neopicoleds.h"
