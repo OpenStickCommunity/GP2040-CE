@@ -1,7 +1,7 @@
 #ifndef _ANIMATION_H_
 #define _ANIMATION_H_
 
-#include "Pixel.hpp"
+#include "Pixel.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>

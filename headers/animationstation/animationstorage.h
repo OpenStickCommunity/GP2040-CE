@@ -1,7 +1,7 @@
-#ifndef _CONFIG_STORAGE_H_
-#define _CONFIG_STORAGE_H_
+#ifndef _ANIMATION_STORAGE_H_
+#define _ANIMATION_STORAGE_H_
 
-#include "AnimationStation.hpp"
+#include "AnimationStation.h"
 
 class AnimationStorage
 {

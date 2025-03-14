@@ -5,8 +5,8 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#include "AnimationStation.hpp"
-#include "AnimationStorage.hpp"
+#include "AnimationStation.h"
+#include "AnimationStorage.h"
 
 uint8_t AnimationStation::brightnessMax = 100;
 uint8_t AnimationStation::brightnessSteps = 5;

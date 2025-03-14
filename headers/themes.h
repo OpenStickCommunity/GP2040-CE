@@ -8,7 +8,7 @@
 
 #include "BoardConfig.h"
 #include <vector>
-#include "AnimationStation.hpp"
+#include "AnimationStation.h"
 #include "helper.h"
 
 #include "config.pb.h"

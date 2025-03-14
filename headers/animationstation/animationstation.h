@@ -9,13 +9,13 @@
 #include "hardware/clocks.h"
 
 #include "NeoPico.hpp"
-#include "Animation.hpp"
-#include "Effects/Chase.hpp"
-#include "Effects/CustomTheme.hpp"
-#include "Effects/CustomThemePressed.hpp"
-#include "Effects/Rainbow.hpp"
-#include "Effects/StaticColor.hpp"
-#include "Effects/StaticTheme.hpp"
+#include "Animation.h"
+#include "Effects/Chase.h"
+#include "Effects/CustomTheme.h"
+#include "Effects/CustomThemePressed.h"
+#include "Effects/Rainbow.h"
+#include "Effects/StaticColor.h"
+#include "Effects/StaticTheme.h"
 
 typedef enum
 {

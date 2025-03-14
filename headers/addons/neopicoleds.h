@@ -19,7 +19,7 @@
 
 // MPGS
 #include "BoardConfig.h"
-#include "AnimationStation.hpp"
+#include "AnimationStation.h"
 #include "NeoPico.hpp"
 
 #ifndef BOARD_LEDS_PIN

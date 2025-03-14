@@ -1,24 +1,27 @@
-#ifndef _RAINBOW_H_
-#define _RAINBOW_H_
+#ifndef _CHASE_H_
+#define _CHASE_H_
 
-#include "../Animation.hpp"
+#include "Animation.h"
 #include "hardware/clocks.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
-#include "../AnimationStation.hpp"
+#include "AnimationStation.h"
 
-class Rainbow : public Animation {
+class Chase : public Animation {
 public:
-  Rainbow(PixelMatrix &matrix);
-  ~Rainbow() {};
+  Chase(PixelMatrix &matrix);
+  ~Chase() {};
 
   void Animate(RGB (&frame)[100]);
   void ParameterUp();
   void ParameterDown();
 
 protected:
+  bool IsChasePixel(int i);
+  int WheelFrame(int i);
   int currentFrame = 0;
+  int currentPixel = 0;
   bool reverse = false;
   absolute_time_t nextRunTime = nil_time;
 };

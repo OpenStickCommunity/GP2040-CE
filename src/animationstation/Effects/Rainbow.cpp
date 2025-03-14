@@ -1,4 +1,4 @@
-#include "Rainbow.hpp"
+#include "Rainbow.h"
 
 Rainbow::Rainbow(PixelMatrix &matrix) : Animation(matrix) {
 }

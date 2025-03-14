@@ -1,4 +1,4 @@
-#include "Chase.hpp"
+#include "Chase.h"
 
 #define CHASE_CYCLE_INCREMENT   10
 #define CHASE_CYCLE_MAX         INT16_MAX/2

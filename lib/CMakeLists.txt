@@ -1,6 +1,5 @@
 add_subdirectory(ADS1219)
 add_subdirectory(ADS1256)
-add_subdirectory(AnimationStation)
 add_subdirectory(CRC32)
 add_subdirectory(FlashPROM)
 add_subdirectory(httpd)

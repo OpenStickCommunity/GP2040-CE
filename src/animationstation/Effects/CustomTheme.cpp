@@ -1,4 +1,4 @@
-#include "CustomTheme.hpp"
+#include "CustomTheme.h"
 
 std::map<uint32_t, RGB> CustomTheme::theme;
 
