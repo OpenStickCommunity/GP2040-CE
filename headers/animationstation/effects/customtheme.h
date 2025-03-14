@@ -2,8 +2,8 @@
 #define CUSTOM_THEME_H_
 
 #include <map>
-#include "../Animation.hpp"
-#include "../AnimationStation.hpp"
+#include "animation.h"
+#include "animationstation.h"
 
 class CustomTheme : public Animation {
 public:

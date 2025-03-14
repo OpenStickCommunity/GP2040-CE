@@ -237,6 +237,14 @@ src/addons/tilt.cpp
 src/addons/spi_analog_ads1256.cpp
 src/addons/gamepad_usb_host.cpp
 src/addons/gamepad_usb_host_listener.cpp
+src/animationstation/animation.cpp
+src/animationstation/animationstation.cpp
+src/animationstation/effects/chase.cpp
+src/animationstation/effects/customtheme.cpp
+src/animationstation/effects/customthemepressed.cpp
+src/animationstation/effects/rainbow.cpp
+src/animationstation/effects/staticcolor.cpp
+src/animationstation/effects/statictheme.cpp
 ${PROTO_OUTPUT_DIR}/enums.pb.c
 ${PROTO_OUTPUT_DIR}/config.pb.c
 )
@@ -251,7 +259,6 @@ pico_stdlib
 pico_bootsel_via_double_reset
 tinyusb_host
 tinyusb_pico_pio_usb
-AnimationStation
 CRC32
 FlashPROM
 ADS1219
@@ -287,6 +294,8 @@ headers/display/fonts
 headers/display/ui
 headers/display/ui/elements
 headers/display/ui/screens
+headers/animationstation
+headers/animationstation/effects
 configs/${GP2040_BOARDCONFIG}
 ${PROTO_OUTPUT_DIR}
 ${CMAKE_BINARY_DIR}/headers

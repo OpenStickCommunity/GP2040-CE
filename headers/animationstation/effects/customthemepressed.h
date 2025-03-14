@@ -3,8 +3,8 @@
 
 #include <map>
 #include <vector>
-#include "../Animation.hpp"
-#include "../AnimationStation.hpp"
+#include "animation.h"
+#include "animationstation.h"
 
 class CustomThemePressed : public Animation {
 public:

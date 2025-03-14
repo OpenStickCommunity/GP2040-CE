@@ -4,7 +4,7 @@
 #include "GPGFX_UI_widgets.h"
 #include "GPGFX_UI_types.h"
 #include "enums.pb.h"
-#include "AnimationStation.hpp"
+#include "animationstation.h"
 #include "eventmanager.h"
 
 #define INPUT_MODE_XINPUT_NAME "XInput"

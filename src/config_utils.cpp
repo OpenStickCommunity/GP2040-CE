@@ -570,6 +570,17 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.animationOptions, customThemeA2Pressed, 0);
     INIT_UNSET_PROPERTY(config.animationOptions, buttonPressColorCooldownTimeInMs, LEDS_PRESS_COLOR_COOLDOWN_TIME);
 
+    INIT_UNSET_PROPERTY(config.animationOptions, alStaticColorBrightnessCustomX, 1.00f);
+    INIT_UNSET_PROPERTY(config.animationOptions, alGradientBrightnessCustomX, 1.00f);
+    INIT_UNSET_PROPERTY(config.animationOptions, alChaseBrightnessCustomX, 1.00f);
+    INIT_UNSET_PROPERTY(config.animationOptions, alStaticBrightnessCustomThemeX, 1.00f);
+    INIT_UNSET_PROPERTY(config.animationOptions, ambientLightGradientSpeed, 2);
+    INIT_UNSET_PROPERTY(config.animationOptions, ambientLightChaseSpeed, 100);
+    INIT_UNSET_PROPERTY(config.animationOptions, ambientLightBreathSpeed, 0.01f);
+    INIT_UNSET_PROPERTY(config.animationOptions, alCustomStaticThemeIndex, 0);
+    INIT_UNSET_PROPERTY(config.animationOptions, ambientLightCustomLinkageModeFlag, false);
+    INIT_UNSET_PROPERTY(config.animationOptions, alCustomStaticColorIndex, 10);
+
     // addonOptions.bootselButtonOptions
     INIT_UNSET_PROPERTY(config.addonOptions.bootselButtonOptions, enabled, !!BOOTSEL_BUTTON_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.bootselButtonOptions, buttonMap, BOOTSEL_BUTTON_MASK);
