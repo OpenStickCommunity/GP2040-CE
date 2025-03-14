@@ -317,7 +317,7 @@ message LEDOptions
     optional uint32 caseRGBCount = 39;
 };
 
-// This has to be kept in sync with AnimationOptions in AnimationStation.hpp
+// This has to be kept in sync with AnimationOptions in animationstation.hpp
 message AnimationOptions_Proto
 {
     optional uint32 baseAnimationIndex = 1;

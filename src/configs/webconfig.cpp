@@ -7,7 +7,7 @@
 #include "eventmanager.h"
 #include "layoutmanager.h"
 #include "peripheralmanager.h"
-#include "AnimationStorage.h"
+#include "animationstorage.h"
 #include "system.h"
 #include "config_utils.h"
 #include "types.h"

@@ -8,7 +8,7 @@
 
 #include "BoardConfig.h"
 #include <stdint.h>
-#include "AnimationStation.h"
+#include "animationstation.h"
 #include "storagemanager.h"
 #include "PlayerLEDs.h"
 #include "gpaddon.h"

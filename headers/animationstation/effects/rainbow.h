@@ -1,12 +1,12 @@
 #ifndef _RAINBOW_H_
 #define _RAINBOW_H_
 
-#include "Animation.h"
+#include "animation.h"
 #include "hardware/clocks.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
-#include "AnimationStation.h"
+#include "animationstation.h"
 
 class Rainbow : public Animation {
 public:

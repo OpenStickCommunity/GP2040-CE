@@ -1,5 +1,5 @@
-#include "Animation.h"
-#include "AnimationStation.h"
+#include "animation.h"
+#include "animationstation.h"
 
 #define PRESS_COOLDOWN_INCREMENT 500
 #define PRESS_COOLDOWN_MAX 5000

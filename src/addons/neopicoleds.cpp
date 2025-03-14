@@ -3,8 +3,8 @@
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
  */
 
-#include "AnimationStation.h"
-#include "AnimationStorage.h"
+#include "animationstation.h"
+#include "animationstorage.h"
 #include "NeoPico.hpp"
 #include "Pixel.h"
 #include "PlayerLEDs.h"

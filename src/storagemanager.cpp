@@ -6,7 +6,7 @@
 #include "storagemanager.h"
 
 #include "BoardConfig.h"
-#include "AnimationStorage.h"
+#include "animationstorage.h"
 #include "FlashPROM.h"
 #include "eventmanager.h"
 #include "peripheralmanager.h"

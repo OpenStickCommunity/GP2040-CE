@@ -7,8 +7,8 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "Animation.h"
-#include "AnimationStation.h"
+#include "animation.h"
+#include "animationstation.h"
 
 class StaticTheme : public Animation {
 public:
