@@ -91,7 +91,7 @@ const ReactiveLED = ({ values, errors, handleChange, handleCheckbox }) => {
 				id="ReactiveLEDEnabledOptions"
 				hidden={!values.ReactiveLEDAddonEnabled}
 			>
-				<div className="reactive-led-grid gap-2">
+				<div className="reactive-led-grid gap-3">
 					{reactiveLEDs?.length > 0 &&
 						reactiveLEDs.map((o, i) => (
 							<div className="align-items-center gap-2" key={`reactiveLED${i}`}>
@@ -177,7 +177,6 @@ const ReactiveLED = ({ values, errors, handleChange, handleCheckbox }) => {
 								</FormSelect>
 							</div>
 						))}
-					{/* </Row> */}
 				</div>
 				<Row className="mb-3">
 					<div className="col-sm-3 mb-3">
