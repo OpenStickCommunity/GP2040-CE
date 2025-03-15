@@ -20,7 +20,7 @@ export default {
 		'pled-type-rgb': 'RGB',
 		'pled-color-label': 'RGB PLED 색상',
 	},
-	'pled-pin-label': 'PLED #{{pin}} 핀',
+	'pled-pin-label': 'PLED #{{pin}} GPIO 핀',
 	'pled-index-label': 'PLED #{{index}} 인덱스',
 	'rgb-order': {
 		'header-text': 'RGB LED 버튼 순서',

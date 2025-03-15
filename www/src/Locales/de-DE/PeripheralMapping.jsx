@@ -29,7 +29,7 @@ export default {
 	'pin-tx-label': 'TX',
 	'pin-dp-label': 'D+',
 	'pin-enable5v-label': '5V Aktivieren',
-	'option-order-label': 'Pin Reihenfolge',
+	'option-order-label': 'GPIO Pin Reihenfolge',
 	'option-order-choice-0-label': 'D+/D-',
 	'option-order-choice-1-label': 'D-/D+',
 };

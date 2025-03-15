@@ -20,7 +20,7 @@ export default {
 		'pled-type-rgb': 'RGB',
 		'pled-color-label': 'RGB PLED カラー',
 	},
-	'pled-pin-label': 'PLED #{{pin}} 端子',
+	'pled-pin-label': 'PLED #{{pin}} GPIO 端子',
 	'pled-index-label': 'PLED #{{index}} インデックス',
 	'rgb-order': {
 		'header-text': 'RGB LED ボタン順序',

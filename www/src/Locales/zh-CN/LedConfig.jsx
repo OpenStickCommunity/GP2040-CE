@@ -19,7 +19,7 @@ export default {
 		'pled-type-rgb': 'RGB',
 		'pled-color-label': 'RGB PLED 颜色',
 	},
-	'pled-pin-label': 'PLED #{{pin}} 引脚',
+	'pled-pin-label': 'PLED #{{pin}} GPIO 引脚',
 	'pled-index-label': 'PLED #{{index}} 索引',
 	'rgb-order': {
 		'header-text': 'RGB LED 按键顺序',

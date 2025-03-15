@@ -10,7 +10,7 @@ export default {
 	'led-config-label': 'LED 配置',
 	'links-label': '链接',
 	'macro-label': '宏配置',
-	'pin-mapping-label': '引脚映射',
+	'pin-mapping-label': 'GPIO 引脚映射',
 	'peripheral-mapping-label': '外围设备映射',
 	'profile-settings-label': '档案配置',
 	'reboot-label': '重启',
