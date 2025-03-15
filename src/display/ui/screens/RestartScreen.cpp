@@ -1,5 +1,7 @@
 #include "RestartScreen.h"
 
+#include "BitmapScreens.h"
+
 #include "pico/stdlib.h"
 #include "system.h"
 
@@ -14,7 +16,7 @@ void RestartScreen::shutdown() {
 }
 
 void RestartScreen::drawScreen() {
-    getRenderer()->drawText(1, 1, "....:GP2040-CE:....");
+    getRenderer()->drawSprite((uint8_t *)bitmapGP2040Logo, 128, 35, 10, 0, 2, 1);
 
     switch ((System::BootMode)this->bootMode) {
         case System::BootMode::USB:
