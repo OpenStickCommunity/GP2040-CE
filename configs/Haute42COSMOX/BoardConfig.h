@@ -31,6 +31,8 @@
 #define GPIO_PIN_19 GpioAction::BUTTON_PRESS_R3     // R3     | RS     | RS      | R3       | 12     | RS     |
 #define GPIO_PIN_20 GpioAction::BUTTON_PRESS_A1     // A1     | Guide  | Home    | PS       | 13     | ~      |
 #define GPIO_PIN_21 GpioAction::BUTTON_PRESS_A2     // A2     | ~      | Capture | ~        | 14     | ~      |
+#define GPIO_PIN_27 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
+#define GPIO_PIN_26 GpioAction::BUTTON_PRESS_L3     // L3     | LS     | LS      | L3       | 11     | LS     |
 
 // Setting GPIO pins to assigned by add-on
 //
@@ -101,14 +103,28 @@
 #define I2C0_ENABLED 1
 #define I2C0_PIN_SDA 0
 #define I2C0_PIN_SCL 1
-#define BUTTON_LAYOUT BUTTON_LAYOUT_STICKLESS
-#define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_STICKLESSB
+#define BUTTON_LAYOUT BUTTON_LAYOUT_BOARD_DEFINED_A
+#define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_BOARD_DEFINED_B
 #define SPLASH_MODE SPLASH_MODE_STATIC
 #define SPLASH_DURATION 3000
 
-// Additional Button Support
-#define GPIO_PIN_27 GpioAction::BUTTON_PRESS_UP
-#define GPIO_PIN_26 GpioAction::BUTTON_PRESS_L3
+#define DEFAULT_BOARD_LAYOUT_A {\
+    {GP_ELEMENT_PIN_BUTTON, {8,  20, 8, 8, 1, 1, 5,      GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {26, 20, 8, 8, 1, 1, 3,      GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {41, 29, 8, 8, 1, 1, 4,      GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {48, 53, 8, 8, 1, 1, 2,      GP_SHAPE_ELLIPSE}}\
+}
+
+#define DEFAULT_BOARD_LAYOUT_B {\
+    {GP_ELEMENT_PIN_BUTTON, {57, 20,  8,  8, 1, 1, 10,   GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {75, 16,  8,  8, 1, 1, 11,   GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {93, 16,  8,  8, 1, 1, 12,   GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {111,20,  8,  8, 1, 1, 13,   GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {57, 38,  8,  8, 1, 1, 6,    GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {75, 34,  8,  8, 1, 1, 7,    GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {93, 34,  8,  8, 1, 1, 8,    GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {111,38,  8,  8, 1, 1, 9,    GP_SHAPE_ELLIPSE}}\
+}
 
 // Keyboard Host enabled by default
 #define KEYBOARD_HOST_ENABLED 1
