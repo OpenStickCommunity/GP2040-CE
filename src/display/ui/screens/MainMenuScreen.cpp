@@ -366,6 +366,7 @@ void MainMenuScreen::resetOptions() {
 
 void MainMenuScreen::saveOptions() {
     GamepadOptions& options = Storage::getInstance().getGamepadOptions();
+    AddonOptions& addonOptions = Storage::getInstance().getAddonOptions();
 
     if (changeRequiresSave) {
         bool saveHasChanged = false;
@@ -385,12 +386,12 @@ void MainMenuScreen::saveOptions() {
             options.profileNumber = updateProfile;
             saveHasChanged = true;
         }
-        if (prevFocus != updateFocus) {
-            Storage::getInstance().getAddonOptions().focusModeOptions.enabled = updateFocus;
+        if ((bool)prevFocus != (bool)updateFocus) {
+            addonOptions.focusModeOptions.enabled = (bool)updateFocus;
             saveHasChanged = true;
         }
-        if (prevTurbo != updateTurbo) {
-            Storage::getInstance().getAddonOptions().turboOptions.enabled = updateTurbo;
+        if ((bool)prevTurbo != (bool)updateTurbo) {
+            addonOptions.turboOptions.enabled = (bool)updateTurbo;
             saveHasChanged = true;
         }
 
@@ -427,7 +428,7 @@ int32_t MainMenuScreen::currentProfile() {
 
 void MainMenuScreen::selectFocusMode() {
     if (currentMenu->at(menuIndex).optionValue != -1) {
-        uint8_t valueToSave = currentMenu->at(menuIndex).optionValue;
+        bool valueToSave = (bool)currentMenu->at(menuIndex).optionValue;
         prevFocus = Storage::getInstance().getAddonOptions().focusModeOptions.enabled;
         updateFocus = valueToSave;
 
@@ -443,13 +444,13 @@ int32_t MainMenuScreen::currentFocusMode() {
 
 void MainMenuScreen::selectTurboMode() {
     if (currentMenu->at(menuIndex).optionValue != -1) {
-        uint8_t valueToSave = currentMenu->at(menuIndex).optionValue;
+        bool valueToSave = (bool)currentMenu->at(menuIndex).optionValue;
         prevTurbo = Storage::getInstance().getAddonOptions().turboOptions.enabled;
         updateTurbo = valueToSave;
 
         chooseAndReturn();
 
-        if (updateTurbo != valueToSave) changeRequiresSave = true;
+        if (prevTurbo != valueToSave) changeRequiresSave = true;
     }
 }
 
