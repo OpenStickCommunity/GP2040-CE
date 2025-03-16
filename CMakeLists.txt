@@ -285,6 +285,7 @@ headers/gamepad
 headers/display
 headers/display/fonts
 headers/display/ui
+headers/display/ui/static
 headers/display/ui/elements
 headers/display/ui/screens
 configs/${GP2040_BOARDCONFIG}
