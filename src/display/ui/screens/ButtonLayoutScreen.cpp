@@ -49,6 +49,7 @@ void ButtonLayoutScreen::init() {
     
     // macro display now uses our pin functions, so we need to check if pins are enabled...
     macroEnabled = false;
+    hasTurboAssigned = false;
     // Macro Button initialized by void Gamepad::setup()
     GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
@@ -63,6 +64,9 @@ void ButtonLayoutScreen::init() {
             case GpioAction::BUTTON_PRESS_MACRO_6:
                 macroEnabled = true;
                 break;
+            case GpioAction::BUTTON_PRESS_TURBO:
+                hasTurboAssigned = true;
+                break;
             default:
                 break;
         }
@@ -70,7 +74,7 @@ void ButtonLayoutScreen::init() {
 
     // determine which fields will be displayed on the status bar
     showInputMode = Storage::getInstance().getDisplayOptions().inputMode;
-    showTurboMode = Storage::getInstance().getDisplayOptions().turboMode;
+    showTurboMode = Storage::getInstance().getDisplayOptions().turboMode && hasTurboAssigned;
     showDpadMode = Storage::getInstance().getDisplayOptions().dpadMode;
     showSocdMode = Storage::getInstance().getDisplayOptions().socdMode;
     showMacroMode = Storage::getInstance().getDisplayOptions().macroMode;

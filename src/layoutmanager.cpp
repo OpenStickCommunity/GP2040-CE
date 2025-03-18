@@ -139,6 +139,16 @@ LayoutManager::LayoutList LayoutManager::getLeftLayout(uint16_t index) {
             return draw6GAWDAllButtonLeft();
         case BUTTON_LAYOUT_6GAWD_ALLBUTTONPLUS_A:
             return draw6GAWDAllButtonPlusLeft();
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT0_A:
+            return drawBoardDefinedAlt0A();
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT1_A:
+            return drawBoardDefinedAlt1A();
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT2_A:
+            return drawBoardDefinedAlt2A();
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT3_A:
+            return drawBoardDefinedAlt3A();
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT4_A:
+            return drawBoardDefinedAlt4A();
         default:
             break;
     }
@@ -231,6 +241,16 @@ LayoutManager::LayoutList LayoutManager::getRightLayout(uint16_t index) {
             return draw6GAWDAllButtonRight();
         case BUTTON_LAYOUT_6GAWD_ALLBUTTONPLUS_B:
             return draw6GAWDAllButtonPlusRight();
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT0_B:
+            return this->drawBoardDefinedAlt0B();
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT1_B:
+            return this->drawBoardDefinedAlt1B();
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT2_B:
+            return this->drawBoardDefinedAlt2B();
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT3_B:
+            return this->drawBoardDefinedAlt3B();
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT4_B:
+            return this->drawBoardDefinedAlt4B();
         default:
             break;
     }
@@ -681,7 +701,47 @@ LayoutManager::LayoutList LayoutManager::drawBoardDefinedA() {
 #ifdef DEFAULT_BOARD_LAYOUT_A
     return DEFAULT_BOARD_LAYOUT_A;
 #else
-    return drawBlankA();
+    return {};
+#endif
+}
+
+LayoutManager::LayoutList LayoutManager::drawBoardDefinedAlt0A() {
+#ifdef DEFAULT_BOARD_LAYOUT_A_ALT0
+    return DEFAULT_BOARD_LAYOUT_A_ALT0;
+#else
+    return {};
+#endif
+}
+
+LayoutManager::LayoutList LayoutManager::drawBoardDefinedAlt1A() {
+#ifdef DEFAULT_BOARD_LAYOUT_A_ALT1
+    return DEFAULT_BOARD_LAYOUT_A_ALT1;
+#else
+    return {};
+#endif
+}
+
+LayoutManager::LayoutList LayoutManager::drawBoardDefinedAlt2A() {
+#ifdef DEFAULT_BOARD_LAYOUT_A_ALT2
+    return DEFAULT_BOARD_LAYOUT_A_ALT2;
+#else
+    return {};
+#endif
+}
+
+LayoutManager::LayoutList LayoutManager::drawBoardDefinedAlt3A() {
+#ifdef DEFAULT_BOARD_LAYOUT_A_ALT3
+    return DEFAULT_BOARD_LAYOUT_A_ALT3;
+#else
+    return {};
+#endif
+}
+
+LayoutManager::LayoutList LayoutManager::drawBoardDefinedAlt4A() {
+#ifdef DEFAULT_BOARD_LAYOUT_A_ALT4
+    return DEFAULT_BOARD_LAYOUT_A_ALT4;
+#else
+    return {};
 #endif
 }
 
@@ -689,6 +749,46 @@ LayoutManager::LayoutList LayoutManager::drawBoardDefinedB() {
 #ifdef DEFAULT_BOARD_LAYOUT_B
     return DEFAULT_BOARD_LAYOUT_B;
 #else
-    return drawBlankA();
+    return {};
+#endif
+}
+
+LayoutManager::LayoutList LayoutManager::drawBoardDefinedAlt0B() {
+#ifdef DEFAULT_BOARD_LAYOUT_B_ALT1
+    return DEFAULT_BOARD_LAYOUT_B_ALT0;
+#else
+    return {};
+#endif
+}
+
+LayoutManager::LayoutList LayoutManager::drawBoardDefinedAlt1B() {
+#ifdef DEFAULT_BOARD_LAYOUT_B_ALT1
+    return DEFAULT_BOARD_LAYOUT_B_ALT1;
+#else
+    return {};
+#endif
+}
+
+LayoutManager::LayoutList LayoutManager::drawBoardDefinedAlt2B() {
+#ifdef DEFAULT_BOARD_LAYOUT_B_ALT2
+    return DEFAULT_BOARD_LAYOUT_B_ALT2;
+#else
+    return {};
+#endif
+}
+
+LayoutManager::LayoutList LayoutManager::drawBoardDefinedAlt3B() {
+#ifdef DEFAULT_BOARD_LAYOUT_B_ALT3
+    return DEFAULT_BOARD_LAYOUT_B_ALT3;
+#else
+    return {};
+#endif
+}
+
+LayoutManager::LayoutList LayoutManager::drawBoardDefinedAlt4B() {
+#ifdef DEFAULT_BOARD_LAYOUT_B_ALT4
+    return DEFAULT_BOARD_LAYOUT_B_ALT4;
+#else
+    return {};
 #endif
 }
