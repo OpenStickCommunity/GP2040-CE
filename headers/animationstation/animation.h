@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include "pico/stdlib.h"
 #include <vector>
-#include "NeoPico.hpp"
+#include "NeoPico.h"
 #include <map>
 
 struct RGB {

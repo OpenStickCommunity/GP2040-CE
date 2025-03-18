@@ -8,17 +8,20 @@
 #include "animationstation.h"
 #include "animationstorage.h"
 
-uint8_t AnimationStation::brightnessMax = 100;
-uint8_t AnimationStation::brightnessSteps = 5;
-float AnimationStation::brightnessX = 0;
-float AnimationStation::linkageModeOfBrightnessX = 0;
-absolute_time_t AnimationStation::nextChange = nil_time;
-AnimationOptions AnimationStation::options = {};
-uint8_t AnimationStation::effectCount = TOTAL_EFFECTS;
-
+#include "storagemanager.h"
 
 AnimationStation::AnimationStation() {
-  AnimationStation::SetBrightness(1);
+    SetBrightness(1);
+    brightnessMax = 100;
+    brightnessSteps = 5;
+    brightnessX = 0;
+    linkageModeOfBrightnessX = 0;
+    nextChange = nil_time;
+    effectCount = TOTAL_EFFECTS;
+    AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
+    if (animationOptions.hasCustomTheme) {
+        effectCount++; // increase our effect count
+    }
 }
 
 void AnimationStation::ConfigureBrightness(uint8_t max, uint8_t steps) {
@@ -26,20 +29,20 @@ void AnimationStation::ConfigureBrightness(uint8_t max, uint8_t steps) {
   brightnessSteps = steps;
 }
 
-void AnimationStation::HandleEvent(AnimationHotkey action) {
-  if (action == HOTKEY_LEDS_NONE || !time_reached(AnimationStation::nextChange)) {
+void AnimationStation::HandleEvent(GamepadHotkey action) {
+  if (action == HOTKEY_LEDS_NONE || !time_reached(nextChange) ) {
     return;
   }
-  AnimationStation::nextChange = make_timeout_time_ms(250);
-  AnimationOptions hotkeyAnimationOptions = AnimationStore.getAnimationOptions();
+  nextChange = make_timeout_time_ms(250);
+  AnimationOptions hotkeyAnimationOptions = Storage::getInstance().getAnimationOptions();
   bool isCustomLinkageMode = hotkeyAnimationOptions.ambientLightCustomLinkageModeFlag;
 
   if (action == HOTKEY_LEDS_BRIGHTNESS_UP) {
-    AnimationStation::IncreaseBrightness();
+    IncreaseBrightness();
   }
 
   if (action == HOTKEY_LEDS_BRIGHTNESS_DOWN) {
-    AnimationStation::DecreaseBrightness();
+    DecreaseBrightness();
   }
 
   if (action == HOTKEY_LEDS_ANIMATION_UP) {
@@ -49,7 +52,6 @@ void AnimationStation::HandleEvent(AnimationHotkey action) {
   if (action == HOTKEY_LEDS_ANIMATION_DOWN) {
     ChangeAnimation(-1);
   }
-
 
   if (this->baseAnimation == nullptr || this->buttonAnimation == nullptr) {
     return;
@@ -79,58 +81,60 @@ void AnimationStation::HandleEvent(AnimationHotkey action) {
     this->baseAnimation->FadeTimeDown();
   }
 
-  if(action == AMBIENT_LIGHT_EFFECTS_CHANGE){
-    if(isCustomLinkageMode == false){ // Custom mode
-      this->ambientLightEffectsChangeFlag = true;
-    }
+  if(action == HOTKEY_AMBIENT_LIGHT_EFFECTS_CHANGE){
+    // HANDLED INSIDE OF NEOPICO
+    //if(isCustomLinkageMode == false){ // Custom mode
+    //  this->ambientLightEffectsChangeFlag = true;
+    //}
+    //ChangeAmbientAnimation(1);
   } 
 
-  if(action == AMBIENT_LIGHT_EFFECTS_ON_OFF){
+  if(action == HOTKEY_AMBIENT_LIGHT_EFFECTS_ON_OFF){
     if(isCustomLinkageMode == false){ // Custom mode
       this->ambientLightOnOffFlag = !this->ambientLightOnOffFlag;
     }
     else{ // Linkage mode
-      this->ambientLightLinlageOnOffFlag = !this->ambientLightLinlageOnOffFlag;
+      this->ambientLightLinkageOnOffFlag = !this->ambientLightLinkageOnOffFlag;
     }
   }
 
-  if(action == AMBIENT_LIGHT_EFFECTS_BRIGHTNESS_UP){
+  if(action == HOTKEY_AMBIENT_LIGHT_EFFECTS_BRIGHTNESS_UP){
     if(isCustomLinkageMode == false){ // Custom mode
       this->aleLedsBrightnessCustomXupFlag = true;
     }
   }
 
-  if(action == AMBIENT_LIGHT_EFFECTS_BRIGHTNESS_DOWN){
+  if(action == HOTKEY_AMBIENT_LIGHT_EFFECTS_BRIGHTNESS_DOWN){
     if(isCustomLinkageMode == false){ // Custom mode
       this->aleLedsBrightnessCustomXDownFlag = true;
     }
   }
 
-  if(action == AMBIENT_LIGHT_EFFECTS_PARAMETER_UP){
+  if(action == HOTKEY_AMBIENT_LIGHT_EFFECTS_PARAMETER_UP){
     if(isCustomLinkageMode == false){ // Custom mode
       this->aleLedsParameterCustomUpFlag = true;
     }
   }
 
-  if(action == AMBIENT_LIGHT_EFFECTS_PARAMETER_DOWN){
+  if(action == HOTKEY_AMBIENT_LIGHT_EFFECTS_PARAMETER_DOWN){
     if(isCustomLinkageMode == false){ // Custom mode
       this->aleLedsParameterCustomDownFlag = true;
     }
   }
 
-  if(action == AMBIENT_LIGHT_EFFECTS_FRAME_SPEED_UP){
+  if(action == HOTKEY_AMBIENT_LIGHT_EFFECTS_FRAME_SPEED_UP){
     if(isCustomLinkageMode == false){ // Custom mode
       this->alGradientChaseBreathSpeedUpFlag = true;
     }
   }
 
-  if(action == AMBIENT_LIGHT_EFFECTS_FRAME_SPEED_DOWN){
+  if(action == HOTKEY_AMBIENT_LIGHT_EFFECTS_FRAME_SPEED_DOWN){
     if(isCustomLinkageMode == false){ // Custom mode
       this->alGradientChaseBreathSpeedDownFlag = true;
     }
   }
 
-  if(action == AMBIENT_LIGHT_EFFECTS_CUSTOM_LINKAGE){
+  if(action == HOTKEY_AMBIENT_LIGHT_EFFECTS_CUSTOM_LINKAGE){
     this->alCustomLinkageModeFlag = true;
   }
 }
@@ -140,14 +144,16 @@ void AnimationStation::ChangeAnimation(int changeSize) {
 }
 
 uint16_t AnimationStation::AdjustIndex(int changeSize) {
-  int newIndex = (int)this->options.baseAnimationIndex + changeSize;
+  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
 
-  if (newIndex >= AnimationStation::effectCount) {
+  int newIndex = animationOptions.baseAnimationIndex + changeSize;
+
+  if (newIndex >= effectCount) {
     return 0;
   }
 
   if (newIndex < 0) {
-    return (AnimationStation::effectCount - 1);
+    return (effectCount - 1);
   }
 
   return (uint16_t)newIndex;
@@ -185,26 +191,28 @@ void AnimationStation::Animate() {
   buttonAnimation->Animate(this->frame);
 }
 
-void AnimationStation::Clear() { memset(frame, 0, sizeof(frame)); }
+void AnimationStation::Clear() {
+  memset(frame, 0, sizeof(frame));
+}
 
 float AnimationStation::GetBrightnessX() {
-  return AnimationStation::brightnessX;
+  return brightnessX;
 }
 
 float AnimationStation::GetLinkageModeOfBrightnessX() {
-  return AnimationStation::linkageModeOfBrightnessX;
+  return linkageModeOfBrightnessX;
 }
 
 uint8_t AnimationStation::GetBrightness() {
-  return AnimationStation::options.brightness;
+  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
+  return animationOptions.brightness;
 }
 
-uint8_t AnimationStation::GetMode() { return this->options.baseAnimationIndex; }
-
 void AnimationStation::SetMode(uint8_t mode) {
-  this->options.baseAnimationIndex = mode;
+  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
+  animationOptions.baseAnimationIndex = mode;
   AnimationEffects newEffect =
-      static_cast<AnimationEffects>(this->options.baseAnimationIndex);
+      static_cast<AnimationEffects>(animationOptions.baseAnimationIndex);
 
   if (this->baseAnimation != nullptr) {
     delete this->baseAnimation;
@@ -243,48 +251,46 @@ void AnimationStation::SetMatrix(PixelMatrix matrix) {
   this->matrix = matrix;
 }
 
-void AnimationStation::SetOptions(AnimationOptions options) {
-  AnimationStation::options = options;
-  AnimationStation::SetBrightness(options.brightness);
-}
-
 void AnimationStation::ApplyBrightness(uint32_t *frameValue) {
   for (int i = 0; i < 100; i++)
     frameValue[i] = this->frame[i].value(Animation::format, brightnessX);
 }
 
 void AnimationStation::SetBrightness(uint8_t brightness) {
-  AnimationStation::options.brightness =
-      (brightness > brightnessSteps) ? brightnessSteps : options.brightness;
-  AnimationStation::brightnessX =
-      (AnimationStation::options.brightness * getBrightnessStepSize()) / 255.0F;
+  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
+  animationOptions.brightness =
+      (brightness > brightnessSteps) ? brightnessSteps : animationOptions.brightness;
+  brightnessX =
+      (animationOptions.brightness * getBrightnessStepSize()) / 255.0F;
 
-  AnimationStation::linkageModeOfBrightnessX =
-      (AnimationStation::options.brightness * getLinkageModeOfBrightnessStepSize()) / 255.0F;
+  linkageModeOfBrightnessX =
+      (animationOptions.brightness * getLinkageModeOfBrightnessStepSize()) / 255.0F;
 
-  if (AnimationStation::linkageModeOfBrightnessX > 1)
-      AnimationStation::linkageModeOfBrightnessX = 1;
-  else if (AnimationStation::linkageModeOfBrightnessX < 0)
-      AnimationStation::linkageModeOfBrightnessX = 0;
+  if (linkageModeOfBrightnessX > 1)
+      linkageModeOfBrightnessX = 1;
+  else if (linkageModeOfBrightnessX < 0)
+      linkageModeOfBrightnessX = 0;
 
-  if (AnimationStation::brightnessX > 1)
-    AnimationStation::brightnessX = 1;
-  else if (AnimationStation::brightnessX < 0)
-    AnimationStation::brightnessX = 0;
+  if (brightnessX > 1)
+    brightnessX = 1;
+  else if (brightnessX < 0)
+    brightnessX = 0;
 }
 
 void AnimationStation::DecreaseBrightness() {
-  if (AnimationStation::options.brightness > 0)
-    AnimationStation::SetBrightness(--AnimationStation::options.brightness);
+  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
+  if (animationOptions.brightness > 0)
+    SetBrightness(animationOptions.brightness-1);
 }
 
 void AnimationStation::IncreaseBrightness() {
-  if (AnimationStation::options.brightness < getBrightnessStepSize())
-    AnimationStation::SetBrightness(++AnimationStation::options.brightness);
-  else if (AnimationStation::options.brightness > getBrightnessStepSize())
-    AnimationStation::SetBrightness(brightnessSteps);
+  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
+  if (animationOptions.brightness < getBrightnessStepSize())
+    SetBrightness(animationOptions.brightness+1);
+  else if (animationOptions.brightness > getBrightnessStepSize())
+    SetBrightness(brightnessSteps);
 }
 
 void AnimationStation::DimBrightnessTo0() {
-  AnimationStation::brightnessX = 0;
+  brightnessX = 0;
 }

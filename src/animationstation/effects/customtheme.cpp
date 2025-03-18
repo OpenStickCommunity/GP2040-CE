@@ -1,8 +1,29 @@
 #include "customtheme.h"
-
-std::map<uint32_t, RGB> CustomTheme::theme;
+#include "storagemanager.h"
 
 CustomTheme::CustomTheme(PixelMatrix &matrix) : Animation(matrix) {
+  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
+  if (animationOptions.hasCustomTheme)
+	{
+      theme[GAMEPAD_MASK_DU] = RGB(animationOptions.customThemeUp);
+      theme[GAMEPAD_MASK_DD] = RGB(animationOptions.customThemeDown);
+      theme[GAMEPAD_MASK_DL] = RGB(animationOptions.customThemeLeft);
+      theme[GAMEPAD_MASK_DR] = RGB(animationOptions.customThemeRight);
+      theme[GAMEPAD_MASK_B1] = RGB(animationOptions.customThemeB1);
+      theme[GAMEPAD_MASK_B2] = RGB(animationOptions.customThemeB2);
+      theme[GAMEPAD_MASK_B3] = RGB(animationOptions.customThemeB3);
+      theme[GAMEPAD_MASK_B4] = RGB(animationOptions.customThemeB4);
+      theme[GAMEPAD_MASK_L1] = RGB(animationOptions.customThemeL1);
+      theme[GAMEPAD_MASK_R1] = RGB(animationOptions.customThemeR1);
+      theme[GAMEPAD_MASK_L2] = RGB(animationOptions.customThemeL2);
+      theme[GAMEPAD_MASK_R2] = RGB(animationOptions.customThemeR2);
+      theme[GAMEPAD_MASK_S1] = RGB(animationOptions.customThemeS1);
+      theme[GAMEPAD_MASK_S2] = RGB(animationOptions.customThemeS2);
+      theme[GAMEPAD_MASK_A1] = RGB(animationOptions.customThemeA1);
+      theme[GAMEPAD_MASK_A2] = RGB(animationOptions.customThemeA2);
+      theme[GAMEPAD_MASK_L3] = RGB(animationOptions.customThemeL3);
+      theme[GAMEPAD_MASK_R3] = RGB(animationOptions.customThemeR3);
+	}
 }
 
 void CustomTheme::Animate(RGB (&frame)[100]) {
@@ -33,12 +54,7 @@ void CustomTheme::Animate(RGB (&frame)[100]) {
 }
 
 bool CustomTheme::HasTheme() {
-  return CustomTheme::theme.size() > 0;
-}
-
-void CustomTheme::SetCustomTheme(std::map<uint32_t, RGB> customTheme) {
-  CustomTheme::theme = customTheme;
-  AnimationStation::effectCount = TOTAL_EFFECTS + 1;
+  return theme.size() > 0;
 }
 
 void CustomTheme::ParameterUp() {

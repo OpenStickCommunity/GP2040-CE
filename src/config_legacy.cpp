@@ -906,7 +906,7 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
     {
         legacyConfigFound = true;
 
-        AnimationOptions_Proto& animationOptions = config.animationOptions;
+        AnimationOptions& animationOptions = config.animationOptions;
         config.has_animationOptions = true;
         SET_PROPERTY(animationOptions, baseAnimationIndex, legacyAnimationOptions.baseAnimationIndex);
         SET_PROPERTY(animationOptions, brightness, legacyAnimationOptions.brightness);

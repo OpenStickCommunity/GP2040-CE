@@ -41,6 +41,13 @@ const PLED_LABELS = [
 	{ 0: 'PLED #4 Pin', 1: 'PLED #4 Index' },
 ];
 
+const CASE_TYPE = [
+	{ value: -1, label: 'Off'},
+	{ value: 0, label: 'Static'},
+	{ value: 1, label: 'Ambient'},
+	{ value: 2, label: 'Linked'}
+];
+
 const defaultValue = {
 	brightnessMaximum: 255,
 	brightnessSteps: 5,
@@ -255,6 +262,11 @@ export default function LEDConfigPage() {
 		p[0] = t(`LedConfig:pled-pin-label`, { pin: ++n });
 		p[1] = t(`LedConfig:pled-index-label`, { index: n });
 	});
+
+	CASE_TYPE[0].label = t(`LedConfig:case.case-type-off`);
+	CASE_TYPE[1].label = t(`LedConfig:case.case-type-static`);
+	CASE_TYPE[2].label = t(`LedConfig:case.case-type-ambient`);
+	CASE_TYPE[3].label = t(`LedConfig:case.case-type-linked`);
 
 	const ledOrderChanged = (setFieldValue, ledOrderArrays, ledsPerButton) => {
 		if (ledOrderArrays.length === 2) {
@@ -677,12 +689,11 @@ export default function LEDConfigPage() {
 										setFieldValue('caseRGBType', parseInt(e.target.value))
 									}
 								>
-									<option value="-1" defaultValue={true}>
-										{t('LedConfig:case.case-type-off')}
-									</option>
-									<option value="0">
-										{t('LedConfig:case.case-type-static')}
-									</option>
+									{CASE_TYPE.map((o, i) => (
+										<option key={`caseType-option-${i}`} value={o.value}>
+											{o.label}
+										</option>
+									))}
 								</FormSelect>
 								<FormControl
 									type="number"
@@ -732,6 +743,7 @@ export default function LEDConfigPage() {
 								/>
 								<ColorPicker
 									name="caseRGBColor"
+									hidden={parseInt(values.caseRGBType) !== 0}
 									types={[{ value: values.caseRGBColor }]}
 									onChange={(c) => setFieldValue('caseRGBColor', c)}
 									onDismiss={() => setShowPicker(false)}

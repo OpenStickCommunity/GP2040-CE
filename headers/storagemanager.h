@@ -7,7 +7,7 @@
 #define STORAGE_H_
 
 #include <stdint.h>
-#include "NeoPico.hpp"
+#include "NeoPico.h"
 #include "FlashPROM.h"
 
 #include "enums.h"
@@ -44,7 +44,7 @@ public:
 	DisplayOptions& getPreviewDisplayOptions() { return previewDisplayOptions; }
 	LEDOptions& getLedOptions() { return config.ledOptions; }
 	AddonOptions& getAddonOptions() { return config.addonOptions; }
-	AnimationOptions_Proto& getAnimationOptions() { return config.animationOptions; }
+	AnimationOptions& getAnimationOptions() { return config.animationOptions; }
 	ProfileOptions& getProfileOptions() { return config.profileOptions; }
 	GpioMappingInfo* getProfilePinMappings() { return functionalPinMappings; }
 	PeripheralOptions& getPeripheralOptions() { return config.peripheralOptions; }

@@ -150,6 +150,7 @@ src/gamepad.cpp
 src/gamepad/GamepadState.cpp
 src/addonmanager.cpp
 src/configmanager.cpp
+src/playerleds.cpp
 src/drivers/shared/xinput_host.cpp
 src/drivers/shared/xgip_protocol.cpp
 src/drivers/astro/AstroDriver.cpp
@@ -263,12 +264,12 @@ CRC32
 FlashPROM
 ADS1219
 ADS1256
-PlayerLEDs
 NeoPico
 OneBitDisplay
 ArduinoJson
 rndis
 hardware_adc
+hardware_pwm
 PicoPeripherals
 WiiExtension
 SNESpad

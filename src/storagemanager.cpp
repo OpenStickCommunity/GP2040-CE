@@ -44,7 +44,7 @@ bool Storage::save(const bool force) {
 
 static void updateAnimationOptionsProto(const AnimationOptions& options)
 {
-	AnimationOptions_Proto& optionsProto = Storage::getInstance().getAnimationOptions();
+	AnimationOptions& optionsProto = Storage::getInstance().getAnimationOptions();
 
 	optionsProto.baseAnimationIndex			= options.baseAnimationIndex;
 	optionsProto.brightness					= options.brightness;
@@ -237,75 +237,4 @@ void Storage::SetProcessedGamepad(Gamepad * newpad)
 Gamepad * Storage::GetProcessedGamepad()
 {
 	return processedGamepad;
-}
-
-/* Animation stuffs */
-AnimationOptions AnimationStorage::getAnimationOptions()
-{
-	AnimationOptions options;
-	const AnimationOptions_Proto& optionsProto = Storage::getInstance().getAnimationOptions();
-
-	options.checksum				= 0;
-	options.baseAnimationIndex		= std::min<uint32_t>(optionsProto.baseAnimationIndex, 255);
-	options.brightness				= std::min<uint32_t>(optionsProto.brightness, 255);
-	options.staticColorIndex		= std::min<uint32_t>(optionsProto.staticColorIndex, 255);
-	options.buttonColorIndex		= std::min<uint32_t>(optionsProto.buttonColorIndex, 255);
-	options.chaseCycleTime			= std::min<int32_t>(optionsProto.chaseCycleTime, 65535);
-	options.rainbowCycleTime		= std::min<int32_t>(optionsProto.rainbowCycleTime, 65535);
-	options.themeIndex				= std::min<uint8_t>(optionsProto.themeIndex, 255);
-	options.hasCustomTheme			= optionsProto.hasCustomTheme;
-	options.customThemeUp			= optionsProto.customThemeUp;
-	options.customThemeDown			= optionsProto.customThemeDown;
-	options.customThemeLeft			= optionsProto.customThemeLeft;
-	options.customThemeRight		= optionsProto.customThemeRight;
-	options.customThemeB1			= optionsProto.customThemeB1;
-	options.customThemeB2			= optionsProto.customThemeB2;
-	options.customThemeB3			= optionsProto.customThemeB3;
-	options.customThemeB4			= optionsProto.customThemeB4;
-	options.customThemeL1			= optionsProto.customThemeL1;
-	options.customThemeR1			= optionsProto.customThemeR1;
-	options.customThemeL2			= optionsProto.customThemeL2;
-	options.customThemeR2			= optionsProto.customThemeR2;
-	options.customThemeS1			= optionsProto.customThemeS1;
-	options.customThemeS2			= optionsProto.customThemeS2;
-	options.customThemeA1			= optionsProto.customThemeA1;
-	options.customThemeA2			= optionsProto.customThemeA2;
-	options.customThemeL3			= optionsProto.customThemeL3;
-	options.customThemeR3			= optionsProto.customThemeR3;
-	options.customThemeUpPressed	= optionsProto.customThemeUpPressed;
-	options.customThemeDownPressed	= optionsProto.customThemeDownPressed;
-	options.customThemeLeftPressed	= optionsProto.customThemeLeftPressed;
-	options.customThemeRightPressed	= optionsProto.customThemeRightPressed;
-	options.customThemeB1Pressed	= optionsProto.customThemeB1Pressed;
-	options.customThemeB2Pressed	= optionsProto.customThemeB2Pressed;
-	options.customThemeB3Pressed	= optionsProto.customThemeB3Pressed;
-	options.customThemeB4Pressed	= optionsProto.customThemeB4Pressed;
-	options.customThemeL1Pressed	= optionsProto.customThemeL1Pressed;
-	options.customThemeR1Pressed	= optionsProto.customThemeR1Pressed;
-	options.customThemeL2Pressed	= optionsProto.customThemeL2Pressed;
-	options.customThemeR2Pressed	= optionsProto.customThemeR2Pressed;
-	options.customThemeS1Pressed	= optionsProto.customThemeS1Pressed;
-	options.customThemeS2Pressed	= optionsProto.customThemeS2Pressed;
-	options.customThemeA1Pressed	= optionsProto.customThemeA1Pressed;
-	options.customThemeA2Pressed	= optionsProto.customThemeA2Pressed;
-	options.customThemeL3Pressed	= optionsProto.customThemeL3Pressed;
-	options.customThemeR3Pressed	= optionsProto.customThemeR3Pressed;
-	options.buttonPressColorCooldownTimeInMs = optionsProto.buttonPressColorCooldownTimeInMs;		
-	options.ambientLightEffectsCountIndex = optionsProto.ambientLightEffectsCountIndex;	
-	options.alStaticColorBrightnessCustomX = optionsProto.alStaticColorBrightnessCustomX;	
-	options.alGradientBrightnessCustomX = optionsProto.alGradientBrightnessCustomX;
-	options.alChaseBrightnessCustomX = optionsProto.alChaseBrightnessCustomX;
-	options.alStaticBrightnessCustomThemeX = optionsProto.alStaticBrightnessCustomThemeX;	
-	options.ambientLightCustomLinkageModeFlag = optionsProto.ambientLightCustomLinkageModeFlag;	
-	options.ambientLightGradientSpeed = optionsProto.ambientLightGradientSpeed;	
-	options.ambientLightChaseSpeed = optionsProto.ambientLightChaseSpeed;	
-	options.ambientLightBreathSpeed = optionsProto.ambientLightBreathSpeed;	
-	options.alCustomStaticThemeIndex = optionsProto.alCustomStaticThemeIndex;	
-	options.alCustomStaticColorIndex = optionsProto.alCustomStaticColorIndex;
-	return options;
-}
-
-void AnimationStorage::save()
-{
-	Storage::getInstance().enqueueAnimationOptionsSave(AnimationStation::options);
 }

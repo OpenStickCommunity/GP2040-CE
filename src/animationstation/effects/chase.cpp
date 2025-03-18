@@ -1,4 +1,5 @@
 #include "chase.h"
+#include "storagemanager.h"
 
 #define CHASE_CYCLE_INCREMENT   10
 #define CHASE_CYCLE_MAX         INT16_MAX/2
@@ -57,13 +58,14 @@ void Chase::Animate(RGB (&frame)[100]) {
   }
 
   // this really shouldn't be nessecary, but something outside the param down might be changing this
-  if (AnimationStation::options.chaseCycleTime < CHASE_CYCLE_MIN) {
-    AnimationStation::options.chaseCycleTime = CHASE_CYCLE_MIN;
-  } else if (AnimationStation::options.chaseCycleTime > CHASE_CYCLE_MAX) {
-    AnimationStation::options.chaseCycleTime = CHASE_CYCLE_MAX;
+  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
+  if (animationOptions.chaseCycleTime < CHASE_CYCLE_MIN) {
+    animationOptions.chaseCycleTime = CHASE_CYCLE_MIN;
+  } else if (animationOptions.chaseCycleTime > CHASE_CYCLE_MAX) {
+    animationOptions.chaseCycleTime = CHASE_CYCLE_MAX;
   }
 
-  this->nextRunTime = make_timeout_time_ms(AnimationStation::options.chaseCycleTime);
+  this->nextRunTime = make_timeout_time_ms(animationOptions.chaseCycleTime);
 }
 
 bool Chase::IsChasePixel(int i) {
@@ -102,15 +104,17 @@ int Chase::WheelFrame(int i) {
 }
 
 void Chase::ParameterUp() {
-  AnimationStation::options.chaseCycleTime = AnimationStation::options.chaseCycleTime + CHASE_CYCLE_INCREMENT;
-  if (AnimationStation::options.chaseCycleTime > CHASE_CYCLE_MAX) {
-    AnimationStation::options.chaseCycleTime = CHASE_CYCLE_MAX;
+  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
+  animationOptions.chaseCycleTime = animationOptions.chaseCycleTime + CHASE_CYCLE_INCREMENT;
+  if (animationOptions.chaseCycleTime > CHASE_CYCLE_MAX) {
+    animationOptions.chaseCycleTime = CHASE_CYCLE_MAX;
   }
 }
 
 void Chase::ParameterDown() {
-  AnimationStation::options.chaseCycleTime = AnimationStation::options.chaseCycleTime - CHASE_CYCLE_INCREMENT;
-  if (AnimationStation::options.chaseCycleTime < CHASE_CYCLE_MIN) {
-    AnimationStation::options.chaseCycleTime = CHASE_CYCLE_MIN;
+  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
+  animationOptions.chaseCycleTime =animationOptions.chaseCycleTime - CHASE_CYCLE_INCREMENT;
+  if (animationOptions.chaseCycleTime < CHASE_CYCLE_MIN) {
+    animationOptions.chaseCycleTime = CHASE_CYCLE_MIN;
   }
 }

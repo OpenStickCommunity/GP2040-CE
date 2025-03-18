@@ -11,16 +11,14 @@ public:
   CustomThemePressed(PixelMatrix &matrix);
   CustomThemePressed(PixelMatrix &matrix, std::vector<Pixel> &pixels);
   ~CustomThemePressed() { pixels = nullptr; };
-
-  static bool HasTheme();
-  static void SetCustomTheme(std::map<uint32_t, RGB> customTheme);
+  bool HasTheme();
   void Animate(RGB (&frame)[100]);
   void ParameterUp() { }
   void ParameterDown() { }
 protected:
   std::vector<Pixel> *pixels;
   RGB defaultColor = ColorBlack;
-  static std::map<uint32_t, RGB> theme;
+  std::map<uint32_t, RGB> theme;
 };
 
 #endif

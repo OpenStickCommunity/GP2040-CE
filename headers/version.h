@@ -1,0 +1,5 @@
+#define GP2040VERSION "v0.7.10-44-ga667a4b2-dirty"
+#define GP2040VERSIONID "0.7.10"
+#define GP2040BUILD "a667a4b"
+#define GP2040CONFIG "Release"
+#define GP2040PLATFORM "rp2040"

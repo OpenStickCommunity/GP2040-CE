@@ -28,7 +28,8 @@ uint64_t getMicro() {
 Gamepad::Gamepad() :
 	options(Storage::getInstance().getGamepadOptions())
 	, hotkeyOptions(Storage::getInstance().getHotkeyOptions())
-{}
+{
+}
 
 void Gamepad::setup()
 {
@@ -167,6 +168,23 @@ void Gamepad::setup()
 		}
 	}
 
+	// Define our hotkey array
+	hotkeys[0] = hotkeyOptions.hotkey01;
+	hotkeys[1] = hotkeyOptions.hotkey02;
+	hotkeys[2] = hotkeyOptions.hotkey03;
+	hotkeys[3] = hotkeyOptions.hotkey04;
+	hotkeys[4] = hotkeyOptions.hotkey05;
+	hotkeys[5] = hotkeyOptions.hotkey06;
+	hotkeys[6] = hotkeyOptions.hotkey07;
+	hotkeys[7] = hotkeyOptions.hotkey08;
+	hotkeys[8] = hotkeyOptions.hotkey09;
+	hotkeys[9] = hotkeyOptions.hotkey10;
+	hotkeys[10] = hotkeyOptions.hotkey11;
+	hotkeys[11] = hotkeyOptions.hotkey12;
+	hotkeys[12] = hotkeyOptions.hotkey13;
+	hotkeys[13] = hotkeyOptions.hotkey14;
+	hotkeys[14] = hotkeyOptions.hotkey15;
+	hotkeys[15] = hotkeyOptions.hotkey16;
 }
 
 /**
@@ -409,28 +427,15 @@ void Gamepad::hotkey()
 	if (options.lockHotkeys)
 		return;
 
-	GamepadHotkey action = HOTKEY_NONE;
-	if (pressedHotkey(hotkeyOptions.hotkey01))	    action = selectHotkey(hotkeyOptions.hotkey01);
-	else if (pressedHotkey(hotkeyOptions.hotkey02))	action = selectHotkey(hotkeyOptions.hotkey02);
-	else if (pressedHotkey(hotkeyOptions.hotkey03))	action = selectHotkey(hotkeyOptions.hotkey03);
-	else if (pressedHotkey(hotkeyOptions.hotkey04))	action = selectHotkey(hotkeyOptions.hotkey04);
-	else if (pressedHotkey(hotkeyOptions.hotkey05))	action = selectHotkey(hotkeyOptions.hotkey05);
-	else if (pressedHotkey(hotkeyOptions.hotkey06))	action = selectHotkey(hotkeyOptions.hotkey06);
-	else if (pressedHotkey(hotkeyOptions.hotkey07))	action = selectHotkey(hotkeyOptions.hotkey07);
-	else if (pressedHotkey(hotkeyOptions.hotkey08))	action = selectHotkey(hotkeyOptions.hotkey08);
-	else if (pressedHotkey(hotkeyOptions.hotkey09))	action = selectHotkey(hotkeyOptions.hotkey09);
-	else if (pressedHotkey(hotkeyOptions.hotkey10))	action = selectHotkey(hotkeyOptions.hotkey10);
-	else if (pressedHotkey(hotkeyOptions.hotkey11))	action = selectHotkey(hotkeyOptions.hotkey11);
-	else if (pressedHotkey(hotkeyOptions.hotkey12))	action = selectHotkey(hotkeyOptions.hotkey12);
-	else if (pressedHotkey(hotkeyOptions.hotkey13))	action = selectHotkey(hotkeyOptions.hotkey13);
-	else if (pressedHotkey(hotkeyOptions.hotkey14))	action = selectHotkey(hotkeyOptions.hotkey14);
-	else if (pressedHotkey(hotkeyOptions.hotkey15))	action = selectHotkey(hotkeyOptions.hotkey15);
-	else if (pressedHotkey(hotkeyOptions.hotkey16))	action = selectHotkey(hotkeyOptions.hotkey16);
-	if ( action != HOTKEY_NONE ) {
-		// processHotkeyAction checks lastAction to determine if the action is repeatable or not
-		processHotkeyAction(action);
+	// Look for a hot-key
+	GamepadHotkey action;
+	for(int i = 0; i < 16; i++) {
+		if (pressedHotkey(hotkeys[i])) {
+			action = selectHotkey(hotkeys[i]);
+			processHotkeyAction(action);
+			lastAction = action;
+		}
 	}
-	lastAction = action;
 }
 
 void Gamepad::clearState() {
@@ -574,10 +579,14 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 			}
 			break;
 		case HOTKEY_REBOOT_DEFAULT:
-			System::reboot(System::BootMode::DEFAULT);
+			if (action != lastAction) {
+				System::reboot(System::BootMode::DEFAULT);
+			}
 			break;
 		case HOTKEY_SAVE_CONFIG:
-			Storage::getInstance().save(true);
+			if (action != lastAction) {
+				Storage::getInstance().save(true);
+			}
 			break;
 		case HOTKEY_CAPTURE_BUTTON:
 			state.buttons |= GAMEPAD_MASK_A2;

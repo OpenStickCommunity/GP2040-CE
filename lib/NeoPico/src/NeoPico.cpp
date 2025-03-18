@@ -12,7 +12,10 @@
 #include "pico/stdlib.h"
 #include "hardware/pio.h"
 #include "hardware/clocks.h"
-#include "NeoPico.hpp"
+#include "NeoPico.h"
+
+NeoPico::NeoPico(){
+}
 
 LEDFormat NeoPico::GetFormat() {
   return format;
@@ -31,14 +34,16 @@ void NeoPico::PutPixel(uint32_t pixelData) {
   }
 }
 
-NeoPico::NeoPico(int ledPin, int numPixels, LEDFormat format) : format(format), numPixels(numPixels) {
-  PIO pio = pio0;
+void NeoPico::Setup(int ledPin, int inNumPixels, LEDFormat inFormat, PIO inPio){
+  format = inFormat;
+  pio = inPio;
+  numPixels = inNumPixels;
   int sm = 0;
   uint offset = pio_add_program(pio, &ws2812_program);
   bool rgbw = (format == LED_FORMAT_GRBW) || (format == LED_FORMAT_RGBW);
   ws2812_program_init(pio, sm, offset, ledPin, 800000, rgbw);
   this->Clear();
-  sleep_ms(10);
+  //sleep_ms(10);
 }
 
 void NeoPico::Clear() {
@@ -58,7 +63,7 @@ void NeoPico::Show() {
     // this->PutPixel(this->frame[j]);
     pio_sm_put_blocking(pio0, 0, (this->frame[j]) << 8u);
   }
-  sleep_ms(10);
+  //sleep_ms(10);
 }
 
 void NeoPico::Off() {
@@ -66,5 +71,5 @@ void NeoPico::Off() {
   for (int i = 0; i < this->numPixels; ++i) {
      this->PutPixel(this->frame[i]);
   }
-  sleep_ms(10);
+  //sleep_ms(10);
 }

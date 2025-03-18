@@ -1008,7 +1008,7 @@ std::string setCustomTheme()
 {
     DynamicJsonDocument doc = get_post_data();
 
-    AnimationOptions options = AnimationStation::options;
+    AnimationOptions & options = Storage::getInstance().getAnimationOptions();
 
     const auto readDocDefaultToZero = [&](const char* key0, const char* key1) -> uint32_t
     {
@@ -1062,16 +1062,14 @@ std::string setCustomTheme()
     readDoc(pressCooldown, doc, "buttonPressColorCooldownTimeInMs");
     options.buttonPressColorCooldownTimeInMs = pressCooldown;
 
-    AnimationStation::SetOptions(options);
     Storage::getInstance().save(true);
-
     return serialize_json(doc);
 }
 
 std::string getCustomTheme()
 {
     DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-    const AnimationOptions& options = AnimationStation::options;
+    const AnimationOptions& options = Storage::getInstance().getAnimationOptions();
 
     writeDoc(doc, "enabled", options.hasCustomTheme);
     writeDoc(doc, "Up", "u", options.customThemeUp);

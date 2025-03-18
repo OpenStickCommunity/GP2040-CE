@@ -338,9 +338,40 @@ enum GamepadHotkey
     HOTKEY_MENU_NAV_SELECT       = 48;
     HOTKEY_MENU_NAV_BACK         = 49;
     HOTKEY_MENU_NAV_TOGGLE       = 50;
+	HOTKEY_LEDS_NONE             = 51;
+	HOTKEY_LEDS_ANIMATION_UP     = 52;
+	HOTKEY_LEDS_ANIMATION_DOWN   = 53;
+	HOTKEY_LEDS_PARAMETER_UP     = 54;
+	HOTKEY_LEDS_PRESS_PARAMETER_UP                = 55;
+	HOTKEY_LEDS_PRESS_PARAMETER_DOWN              = 56;
+	HOTKEY_LEDS_PARAMETER_DOWN                    = 57;
+	HOTKEY_LEDS_BRIGHTNESS_UP                     = 58;
+	HOTKEY_LEDS_BRIGHTNESS_DOWN                   = 59;
+	HOTKEY_LEDS_FADETIME_UP                       = 60;
+	HOTKEY_LEDS_FADETIME_DOWN                     = 61;
+	HOTKEY_AMBIENT_LIGHT_EFFECTS_CHANGE           = 62; 
+	HOTKEY_AMBIENT_LIGHT_EFFECTS_ON_OFF           = 63; 
+	HOTKEY_AMBIENT_LIGHT_EFFECTS_BRIGHTNESS_UP    = 64;
+	HOTKEY_AMBIENT_LIGHT_EFFECTS_BRIGHTNESS_DOWN  = 65;
+	HOTKEY_AMBIENT_LIGHT_EFFECTS_PARAMETER_UP     = 66;
+	HOTKEY_AMBIENT_LIGHT_EFFECTS_PARAMETER_DOWN   = 67;
+	HOTKEY_AMBIENT_LIGHT_EFFECTS_FRAME_SPEED_UP   = 68;
+	HOTKEY_AMBIENT_LIGHT_EFFECTS_FRAME_SPEED_DOWN = 69;
+	HOTKEY_AMBIENT_LIGHT_EFFECTS_CUSTOM_LINKAGE   = 70;
 }
 
-// This has to be kept in sync with LEDFormat in NeoPico.hpp
+enum AnimationEffects
+{
+    option (nanopb_enumopt).long_names = false;
+    
+    EFFECT_STATIC_COLOR = 0;
+    EFFECT_RAINBOW = 1;
+    EFFECT_CHASE = 2;
+    EFFECT_STATIC_THEME = 3;
+    EFFECT_CUSTOM_THEME = 4;
+}
+
+// This has to be kept in sync with LEDFormat in NeoPico.h
 enum LEDFormat_Proto
 {
     LED_FORMAT_GRB = 0;
@@ -372,6 +403,8 @@ enum CaseRGBType
 
     CASE_RGB_TYPE_NONE = -1;
     CASE_RGB_TYPE_STATIC = 0;
+    CASE_RGB_TYPE_AMBIENT = 1;
+    CASE_RGB_TYPE_LINKED = 2;
 };
 
 enum ForcedSetupMode

@@ -1,6 +1,6 @@
-#include "PlayerLEDs.h"
+#include "playerleds.h"
 #include "pico/stdlib.h"
-#include "hardware/pwm.h"
+#include <hardware/pwm.h>
 
 void PlayerLEDs::animate(PLEDAnimationState animationState)
 {

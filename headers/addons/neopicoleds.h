@@ -20,7 +20,9 @@
 // MPGS
 #include "BoardConfig.h"
 #include "animationstation.h"
-#include "NeoPico.hpp"
+#include "NeoPico.h"
+
+#include "enums.pb.h"
 
 #ifndef BOARD_LEDS_PIN
 #define BOARD_LEDS_PIN -1
@@ -155,7 +157,7 @@
 #endif
 
 void configureAnimations(AnimationStation *as);
-AnimationHotkey animationHotkeys(Gamepad *gamepad);
+GamepadHotkey animationHotkeys(Gamepad *gamepad);
 PixelMatrix createLedButtonLayout(ButtonLayout layout, int ledsPerPixel);
 PixelMatrix createLedButtonLayout(ButtonLayout layout, std::vector<uint8_t> *positions);
 
@@ -180,7 +182,6 @@ public:
     virtual void postprocess(bool sent) {}
     virtual void reinit() {}
     virtual std::string name() { return NeoPicoLEDName; }
-    void configureLEDs();
     void ambientLightCustom(uint32_t alFrame[100]); 
 	void ambientLightLinkage(uint32_t alFrame[100]); 
     uint32_t frame[100];
@@ -192,18 +193,31 @@ private:
     std::vector<std::vector<Pixel>> generatedLEDWasdFBM(std::vector<std::vector<uint8_t>> *positions);
     std::vector<std::vector<Pixel>> createLEDLayout(ButtonLayout layout, uint8_t ledsPerPixel, uint8_t ledButtonCount);
     uint8_t setupButtonPositions();
+    GamepadHotkey animationHotkeys(Gamepad *gamepad);
     const uint32_t intervalMS = 10;
     absolute_time_t nextRunTime;
     uint8_t ledCount;
     PixelMatrix matrix;
-    NeoPico *neopico;
-    InputMode inputMode; // HACK
+    NeoPico neopico;
     PLEDAnimationState animationState; // NeoPico can control the player LEDs
     NeoPicoPlayerLEDs * neoPLEDs = nullptr;
     AnimationStation as;
     std::map<std::string, int> buttonPositions;
-    bool turnOffWhenSuspended;
     PLEDType ledType;
+    GamepadHotkey lastAction;
+
+    // Ambient neopico leds
+	float alBrightnessBreathX;
+	uint8_t breathLedEffectCycle;
+	bool alReverse;
+	int alCurrentFrame;
+	int alFrameToRGB;
+	int alFrameSpeed;
+	uint8_t alR;
+	uint8_t alG;
+	uint8_t alB;
+	absolute_time_t nextRunTimeAmbientLight;
+    uint8_t chaseLightIndex;
 };
 
 #endif

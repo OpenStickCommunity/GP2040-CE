@@ -1,4 +1,5 @@
 #include "staticcolor.h"
+#include "storagemanager.h"
 
 StaticColor::StaticColor(PixelMatrix &matrix) : Animation(matrix) {
 }
@@ -33,19 +34,21 @@ void StaticColor::Animate(RGB (&frame)[100]) {
 }
 
 uint8_t StaticColor::GetColor() {
+  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
   if (this->filtered) {
-    return AnimationStation::options.buttonColorIndex;
+    return animationOptions.buttonColorIndex;
   } else {
-    return AnimationStation::options.staticColorIndex;
+    return animationOptions.staticColorIndex;
   }
 }
 
 void StaticColor::ParameterUp() {
   uint8_t colorIndex;
+  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
   if (this->filtered) {
-    colorIndex = AnimationStation::options.buttonColorIndex;
+    colorIndex = animationOptions.buttonColorIndex;
   } else {
-    colorIndex = AnimationStation::options.staticColorIndex;
+    colorIndex = animationOptions.staticColorIndex;
   }
 
   if (colorIndex < colors.size() - 1) {
@@ -58,19 +61,21 @@ void StaticColor::ParameterUp() {
 }
 
 void StaticColor::SaveIndexOptions(uint8_t colorIndex) {
+  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
   if (this->filtered) {
-    AnimationStation::options.buttonColorIndex = colorIndex;
+    animationOptions.buttonColorIndex = colorIndex;
   } else {
-    AnimationStation::options.staticColorIndex = colorIndex;
+    animationOptions.staticColorIndex = colorIndex;
   }
 }
 
 void StaticColor::ParameterDown() {
   uint8_t colorIndex;
+  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
   if (this->filtered) {
-    colorIndex = AnimationStation::options.buttonColorIndex;
+    colorIndex = animationOptions.buttonColorIndex;
   } else {
-    colorIndex = AnimationStation::options.staticColorIndex;
+    colorIndex = animationOptions.staticColorIndex;
   }
 
   if (colorIndex > 0) {

@@ -29,6 +29,8 @@ export default {
 		'case-type-label': 'Color Type',
 		'case-type-off': 'Off',
 		'case-type-static': 'Static',
+		'case-type-ambient': 'Ambient',
+		'case-type-linked': 'Linked',
 		'case-color-label': 'Case RGB Color',
 	},
 	'pled-pin-label': 'PLED #{{pin}} Pin',
