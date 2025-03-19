@@ -416,6 +416,39 @@ enum CaseRGBType
     CASE_RGB_TYPE_LINKED = 1;
 };
 
+enum AmbientEffectType
+{
+    option (nanopb_enumopt).long_names = false; 
+
+    AL_CUSTOM_EFFECT_STATIC_COLOR = 0;	// Static
+    AL_CUSTOM_EFFECT_GRADIENT = 1;	    // Gradient Color
+    AL_CUSTOM_EFFECT_CHASE = 2;		    // Chase
+    AL_CUSTOM_EFFECT_BREATH = 3;		// Breathing
+    AL_CUSTOM_EFFECT_STATIC_THEME = 4;	// Custom Static
+};
+
+enum AnimationColor // Sync with Animation.h
+{
+    option (nanopb_enumopt).long_names = false; 
+
+    ANIMATION_COLOR_BLACK = 0;
+    ANIMATION_COLOR_WHITE = 1;
+    ANIMATION_COLOR_RED = 2;
+    ANIMATION_COLOR_ORANGE = 3;
+    ANIMATION_COLOR_YELLOW = 4;
+    ANIMATION_COLOR_LIMEGREEN = 5;
+    ANIMATION_COLOR_GREEN = 6;
+    ANIMATION_COLOR_SEAFOAM = 7;
+    ANIMATION_COLOR_AQUA = 8;
+    ANIMATION_COLOR_SKYBLUE = 9;
+    ANIMATION_COLOR_BLUE = 10;
+    ANIMATION_COLOR_PURPLE = 11;
+    ANIMATION_COLOR_PINK = 12;
+    ANIMATION_COLOR_MAGENTA = 13;
+    ANIMATION_COLOR_INDIGO = 14;
+    ANIMATION_COLOR_VIOLET = 15;
+};
+
 enum ForcedSetupMode
 {
     option (nanopb_enumopt).long_names = false;

@@ -29,15 +29,6 @@
 #define RESERVE_DUMMY_LEDS_NUM 8
 #define POWER_ON_CHASE_BRIGHTNESSX 1
 
-typedef enum
-{
-  AL_CUSTOM_EFFECT_STATIC_COLOR,	// Static
-  AL_CUSTOM_EFFECT_GRADIENT,	    // Gradient Color
-  AL_CUSTOM_EFFECT_CHASE,		    // Chase
-  AL_CUSTOM_EFFECT_BREATH,		    // Breathing
-  AL_CUSTOM_EFFECT_STATIC_THEME,	// Custom Static
-} AmbientLightCustomEffects;
-
 const RGB alCustomStaticTheme[AL_ROW][AL_COL] = 
 									  {{ColorRed, ColorOrange, ColorYellow, ColorGreen, ColorBlue, ColorIndigo, ColorViolet, ColorWhite},
 									   {ColorOrange, ColorRed, ColorGreen, ColorYellow, ColorIndigo, ColorBlue, ColorWhite, ColorViolet},

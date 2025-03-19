@@ -83,6 +83,7 @@ struct RGB {
   }
 };
 
+// Also defined in Enums.proto
 constexpr RGB ColorBlack(0, 0, 0);
 constexpr RGB ColorWhite(255, 255, 255);
 constexpr RGB ColorRed(255, 0, 0);
@@ -103,7 +104,9 @@ constexpr RGB ColorViolet(238, 130, 238);
 inline const std::vector<RGB> colors {
     ColorBlack,     ColorWhite,  ColorRed,     ColorOrange, ColorYellow,
     ColorLimeGreen, ColorGreen,  ColorSeafoam, ColorAqua,   ColorSkyBlue,
-    ColorBlue,      ColorPurple, ColorPink,    ColorMagenta };
+    ColorBlue,      ColorPurple, ColorPink,    ColorMagenta, ColorIndigo,
+    ColorViolet
+};
 
 class Animation {
 public:

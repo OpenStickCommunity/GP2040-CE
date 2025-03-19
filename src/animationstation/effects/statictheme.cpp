@@ -1,5 +1,6 @@
 #include "statictheme.h"
 #include "storagemanager.h"
+#include "enums.pb.h"
 
 StaticTheme::StaticTheme(PixelMatrix &matrix) : Animation(matrix) {
   AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
