@@ -241,7 +241,7 @@ private:
     uint8_t setupButtonPositions();
     GamepadHotkey animationHotkeys(Gamepad *gamepad);
     void ambientHotkeys(Gamepad *gamepad);
-    void ambientLightCustom(); 
+    void ambientLightCustom();
     const uint32_t intervalMS = 10;
     absolute_time_t nextRunTime;
     int ledCount;
@@ -263,11 +263,10 @@ private:
 	int alCurrentFrame;
 	int alFrameToRGB;
 	int alFrameSpeed;
-	uint8_t alR;
-	uint8_t alG;
-	uint8_t alB;
+    RGB ambientLight;
 	absolute_time_t nextRunTimeAmbientLight;
     uint8_t chaseLightIndex;
+    uint8_t chaseLightMaxIndexPos;
 };
 
 #endif

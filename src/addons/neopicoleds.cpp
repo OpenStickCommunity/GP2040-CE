@@ -221,8 +221,7 @@ bool NeoPicoLEDAddon::available() {
     return isValidPin(ledOptions.dataPin);
 }
 
-void NeoPicoLEDAddon::setup()
-{
+void NeoPicoLEDAddon::setup() {
     // Set Default LED Options
     const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
 
@@ -283,274 +282,131 @@ void NeoPicoLEDAddon::setup()
 	alCurrentFrame = 0;
 	alFrameToRGB = 0;
 	alFrameSpeed = 2;
-	alR = 0x00;
-	alG = 0x00;
-	alB = 0x00;
+	ambientLight.r = 0x00;
+	ambientLight.g = 0x00;
+	ambientLight.b = 0x00;
 	nextRunTimeAmbientLight = make_timeout_time_ms(0);
 
 	// Start of chase light index is case rgb index
 	chaseLightIndex = ledOptions.caseRGBIndex;
+	chaseLightMaxIndexPos = ledCount;
 }
 
-void NeoPicoLEDAddon::ambientLightCustom() 
-{
+void NeoPicoLEDAddon::ambientLightCustom() {
 	const AnimationOptions& options = Storage::getInstance().getAnimationOptions();
 	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
-
-	uint8_t chaseLightMaxIndexPos = ledCount;
+	
 	uint8_t alStartIndex = ledOptions.caseRGBIndex;
-	//uint8_t buttonCount = setupButtonPositions();
-	//uint8_t totalOfButtonLedsCount = this->ledCount;
-
 	uint8_t multipleOfCustomStaticThemeCount;
 	uint8_t remainderOfCustomStaticThemeCount;
-	uint8_t customStaticColorIndex = 0;
-	//int8_t customStaticThemeCount = options.alCustomStaticThemeIndex;
-	//int8_t customStaticColorCount = options.alCustomStaticColorIndex;
+	int maxFrame = (int)ledOptions.caseRGBCount;
+	if ( maxFrame > FRAME_MAX - alStartIndex )
+		maxFrame = FRAME_MAX - alStartIndex; // make sure we don't go over 100 and overflow frame[]
 
-	// POWER-ON EFFECTS??
-	/*
-	#if POWER_ON_EFFECT == 1	// Power-on animation chase
-	uint8_t ledsCount = totalOfButtonLedsCount;
-
-	if (ledOptions.pledType == PLED_TYPE_RGB && PLED_COUNT > 0){
-		ledsCount = totalOfButtonLedsCount - PLED_COUNT;
-	}
-
-	if(ledOptions.ledsPerButton == 1){
-		if (ledOptions.pledType == PLED_TYPE_RGB && PLED_COUNT > 0){
-			alStartIndex = ledsCount;
-			chaseLightMaxIndexPos = buttonCount*1 + POWER_ON_CHASE_FRAME_MAX + RESERVE_DUMMY_LEDS_NUM + PLED_COUNT;
-		}
-		else{
-			alStartIndex = ledsCount;
-			chaseLightMaxIndexPos = buttonCount*1 + POWER_ON_CHASE_FRAME_MAX + RESERVE_DUMMY_LEDS_NUM;
-		}
-	}
-	else if(ledOptions.ledsPerButton == 2){
-		if (ledOptions.pledType == PLED_TYPE_RGB && PLED_COUNT > 0){
-			alStartIndex = ledsCount;
-			chaseLightMaxIndexPos = buttonCount*2 + POWER_ON_CHASE_FRAME_MAX + RESERVE_DUMMY_LEDS_NUM + PLED_COUNT;
-		}
-		else{
-			alStartIndex = ledsCount;
-			chaseLightMaxIndexPos = buttonCount*2 + POWER_ON_CHASE_FRAME_MAX + RESERVE_DUMMY_LEDS_NUM;
-		}
-	}
-	else if(ledOptions.ledsPerButton == 3){
-		if (ledOptions.pledType == PLED_TYPE_RGB && PLED_COUNT > 0){
-			alStartIndex = ledsCount;
-			chaseLightMaxIndexPos = buttonCount*3 + POWER_ON_CHASE_FRAME_MAX + RESERVE_DUMMY_LEDS_NUM + PLED_COUNT; // max 96
-		}
-		else{
-			alStartIndex = ledsCount;
-			chaseLightMaxIndexPos = buttonCount*3 + POWER_ON_CHASE_FRAME_MAX + RESERVE_DUMMY_LEDS_NUM;
-		}
-	}
-	else{
-		alStartIndex = ledsCount;	
-		chaseLightMaxIndexPos = FRAME_MAX - 1;	
-	}
-
-	static uint8_t chaseLightOfPowerOnIndex = alStartIndex;
-	uint32_t now = to_ms_since_boot(get_absolute_time());
-
-	if(now < POWER_ON_EFFECT_DURATION){ 
-		alR = 0;
-		alG = 0;
-		alB = 255;
-		for(int j = 0; j < (FRAME_MAX - alStartIndex); j++){
-			alFrame[alStartIndex + j] = 0x0;
-		}
-
-		if(chaseLightOfPowerOnIndex < (FRAME_MAX - CHASE_LIGHTS_TURN_ON - 1)){
-			for(int i = 0; i < CHASE_LIGHTS_TURN_ON; i++){
-				alFrame[chaseLightOfPowerOnIndex + i] = ((uint32_t)(alG * POWER_ON_CHASE_BRIGHTNESSX) << 16) 
-													  | ((uint32_t)(alR * POWER_ON_CHASE_BRIGHTNESSX) << 8) 
-													  | (uint32_t)(alB * POWER_ON_CHASE_BRIGHTNESSX);
-			}
-				
-			if((chaseLightOfPowerOnIndex - totalOfButtonLedsCount) > CHASE_LIGHTS_INTERVAL){
-				for(int i = 0; i < CHASE_LIGHTS_TURN_ON; i++){
-					alFrame[chaseLightOfPowerOnIndex - CHASE_LIGHTS_INTERVAL + i] = ((uint32_t)(alG * POWER_ON_CHASE_BRIGHTNESSX) << 16) 
-																			    | ((uint32_t)(alR * POWER_ON_CHASE_BRIGHTNESSX) << 8) 
-																				| (uint32_t)(alB * POWER_ON_CHASE_BRIGHTNESSX);
-				}
-			}
-		}
-
-		chaseLightOfPowerOnIndex++;
-		if(chaseLightOfPowerOnIndex > (chaseLightMaxIndexPos - CHASE_LIGHTS_TURN_ON - 1)){
-			chaseLightOfPowerOnIndex = alStartIndex;
-		}
-
-		return;
-	}
-	#else	// Power-on animation breathing lights
-	static float alPowerOnBrightnessY = 0.0f; 
-	static bool alPowerOnReverse = true;
-
-	uint8_t ledsCount = totalOfButtonLedsCount;
-
-	if (ledOptions.pledType == PLED_TYPE_RGB && PLED_COUNT > 0){
-		ledsCount = totalOfButtonLedsCount - PLED_COUNT;
-	}
-	alStartIndex = ledsCount;
-
-	uint32_t now = to_ms_since_boot(get_absolute_time());
-
-	if(now < POWER_ON_EFFECT_DURATION){ 
-		alR = 0;
-		alG = 0;
-		alB = 255;
-
-		if((now > POWER_ON_EFFECT_DURATION) && (alPowerOnBrightnessY == 0.0f) && (alPowerOnReverse == true)){
-			alPowerOnBrightnessY = 0.0f;
-			alPowerOnReverse = true;
-			return;
-		}
-
-		if(alPowerOnReverse){
-			alPowerOnBrightnessY += 0.1f;
-			if(alPowerOnBrightnessY > 1.0f){
-				alPowerOnBrightnessY = 1.0f;
-				alPowerOnReverse = false;
-			}
-		}
-		else{
-			alPowerOnBrightnessY -= 0.1f;
-			if(alPowerOnBrightnessY < 0.0f){
-				alPowerOnBrightnessY = 0.0f;
-				alPowerOnReverse = true;
-			}
-		}
-
-		for(int i = 0; i < (FRAME_MAX - alStartIndex); i++){
-			alFrame[alStartIndex + i] = ((uint32_t)(alG * alPowerOnBrightnessY) << 16) 
-									  | ((uint32_t)(alR * alPowerOnBrightnessY) << 8) 
-									  | (uint32_t)(alB * alPowerOnBrightnessY);
-		}
-		
-		return;
-	}
-	#endif
-	*/
-
-	switch(options.ambientLightEffectsCountIndex)
-	{
+	// Start-up Animations in Haute were here
+	switch(options.ambientLightEffectsCountIndex) {
 		case AL_CUSTOM_EFFECT_STATIC_COLOR: 
-			customStaticColorIndex = options.alCustomStaticColorIndex;
+			for(int i = 0; i < maxFrame; i++) {
+				frame[alStartIndex + i] = alCustomStaticColors[options.alCustomStaticColorIndex].value(Animation::format, options.alStaticColorBrightnessCustomX);
+			}
 			break;
 
 		case AL_CUSTOM_EFFECT_GRADIENT: 
 			alFrameToRGB = 255 - alCurrentFrame; // From 0 -> 255 to 255 -> 0
-			if(alFrameToRGB < 85){ // Less than 85, transitions from red to yellow. The red component starts at 255 and gradually decreases, the green component always reaches 0, and the blue component starts at 0 and increases gradually.
-				alR = 255 - alFrameToRGB * 3;
-				alG = 0;
-				alB = alFrameToRGB * 3;
-			}
-			else if(alFrameToRGB < 170){ // Between 85 and 170, there is a transition from yellow to cyan. The red component is always 0, the green component starts at 0 and gradually increases, and the blue component starts at 255 and gradually decreases.
+			if(alFrameToRGB < 85) { // Less than 85, transitions from red to yellow. The red component starts at 255 and gradually decreases, the green component always reaches 0, and the blue component starts at 0 and increases gradually.
+				ambientLight.r = 255 - alFrameToRGB * 3;
+				ambientLight.g = 0;
+				ambientLight.b = alFrameToRGB * 3;
+			} else if(alFrameToRGB < 170) { // Between 85 and 170, there is a transition from yellow to cyan. The red component is always 0, the green component starts at 0 and gradually increases, and the blue component starts at 255 and gradually decreases.
 				alFrameToRGB -= 85;
-				alR = 0;
-				alG = alFrameToRGB * 3;
-				alB = 255 - alFrameToRGB * 3;
-			} 
-			else{ // When greater than or equal to 170, it transitions from cyan to blue. The red component is always 0, the green component starts at 255 and gradually decreases, and the blue component starts at 0 and gradually increases.
+				ambientLight.r = 0;
+				ambientLight.g = alFrameToRGB * 3;
+				ambientLight.b = 255 - alFrameToRGB * 3;
+			} else { // When greater than or equal to 170, it transitions from cyan to blue. The red component is always 0, the green component starts at 255 and gradually decreases, and the blue component starts at 0 and gradually increases.
 				alFrameToRGB -= 170;
-				alR = alFrameToRGB * 3;
-				alG = 255 - alFrameToRGB * 3; // Power-on animation chase
-				alB = 0;
+				ambientLight.r = alFrameToRGB * 3;
+				ambientLight.g = 255 - alFrameToRGB * 3; // Power-on animation chase
+				ambientLight.b = 0;
 			}
-
-			if(alReverse){
+			// Reverse color cycle if we hit the end of our cycle change
+			if (alReverse) {
 				alCurrentFrame -= options.ambientLightGradientSpeed;
-				if(alCurrentFrame < 0){
+				if(alCurrentFrame < 0) {
 					alCurrentFrame = 1;
 					alReverse = false;
 				}
-			}
-			else{
+			} else {
 				alCurrentFrame += options.ambientLightGradientSpeed;
-				if(alCurrentFrame > 255){
+				if(alCurrentFrame > 255) {
 					alCurrentFrame = 254;
 					alReverse = true;
 				}
+			}
+			// Fill Frame
+			for(int i = 0; i < maxFrame; i++){
+				frame[alStartIndex + i] = ambientLight.value(Animation::format, options.alGradientBrightnessCustomX);
 			}
 			break;
 		case AL_CUSTOM_EFFECT_CHASE: 
-			if(!time_reached(nextRunTimeAmbientLight)){
-				for(int j = 0; j < (FRAME_MAX - alStartIndex); j++){
-					frame[alStartIndex + j] = 0x0;
+			if(time_reached(nextRunTimeAmbientLight)){
+				alFrameToRGB = 255 - alCurrentFrame; // 从 0 -> 255 变为 255 -> 0
+				if(alFrameToRGB < 85) { // Less than 85, transitions from red to yellow. The red component starts at 255 and gradually decreases, the green component always reaches 0, and the blue component starts at 0 and increases gradually.
+					ambientLight.r = 255 - alFrameToRGB * 3;
+					ambientLight.g = 0;
+					ambientLight.b = alFrameToRGB * 3;
+				} else if (alFrameToRGB < 170) { // Between 85 and 170, there is a transition from yellow to cyan. The red component is always 0, the green component starts at 0 and gradually increases, and the blue component starts at 255 and gradually decreases.
+					alFrameToRGB -= 85;
+					ambientLight.r = 0;
+					ambientLight.g = alFrameToRGB * 3;
+					ambientLight.b = 255 - alFrameToRGB * 3;
+				} else { // When greater than or equal to 170, it transitions from cyan to blue. The red component is always 0, the green component starts at 255 and gradually decreases, and the blue component starts at 0 and gradually increases.
+					alFrameToRGB -= 170;
+					ambientLight.r = alFrameToRGB * 3;
+					ambientLight.g = 255 - alFrameToRGB * 3;
+					ambientLight.b = 0;
 				}
-				
-				if(chaseLightIndex < FRAME_MAX - CHASE_LIGHTS_TURN_ON - 1) {
-					for(int i = 0; i < CHASE_LIGHTS_TURN_ON; i++){
-						frame[chaseLightIndex + i] = ((uint32_t)(alG * options.alChaseBrightnessCustomX) << 16) 
-												     | ((uint32_t)(alR * options.alChaseBrightnessCustomX) << 8) 
-													 | (uint32_t)(alB * options.alChaseBrightnessCustomX);
+				if(alReverse) {
+					alCurrentFrame -= alFrameSpeed;
+					if(alCurrentFrame < 0) {
+						alCurrentFrame = 1;
+						alReverse = false;
 					}
-				
-					if((chaseLightIndex - ledCount) > CHASE_LIGHTS_INTERVAL){
-						for(int i = 0; i < CHASE_LIGHTS_TURN_ON; i++){
-							frame[chaseLightIndex - CHASE_LIGHTS_INTERVAL + i] = ((uint32_t)(alG * options.alChaseBrightnessCustomX) << 16) 
-																			   | ((uint32_t)(alR * options.alChaseBrightnessCustomX) << 8) 
-																			   | (uint32_t)(alB * options.alChaseBrightnessCustomX);
-						}
+				} else {
+					alCurrentFrame += alFrameSpeed;
+					if(alCurrentFrame > 255) {
+						alCurrentFrame = 254;
+						alReverse = true;
 					}
 				}
-				
-				return;
-			}
-
-			alFrameToRGB = 255 - alCurrentFrame; // 从 0 -> 255 变为 255 -> 0
-			if(alFrameToRGB < 85){ // Less than 85, transitions from red to yellow. The red component starts at 255 and gradually decreases, the green component always reaches 0, and the blue component starts at 0 and increases gradually.
-				alR = 255 - alFrameToRGB * 3;
-				alG = 0;
-				alB = alFrameToRGB * 3;
-			}
-			else if(alFrameToRGB < 170){ // Between 85 and 170, there is a transition from yellow to cyan. The red component is always 0, the green component starts at 0 and gradually increases, and the blue component starts at 255 and gradually decreases.
-				alFrameToRGB -= 85;
-				alR = 0;
-				alG = alFrameToRGB * 3;
-				alB = 255 - alFrameToRGB * 3;
-			} 
-			else{ // When greater than or equal to 170, it transitions from cyan to blue. The red component is always 0, the green component starts at 255 and gradually decreases, and the blue component starts at 0 and gradually increases.
-				alFrameToRGB -= 170;
-				alR = alFrameToRGB * 3;
-				alG = 255 - alFrameToRGB * 3;
-				alB = 0;
-			}
-
-			if(alReverse){
-				alCurrentFrame -= alFrameSpeed;
-				if(alCurrentFrame < 0){
-					alCurrentFrame = 1;
-					alReverse = false;
+				chaseLightIndex++;
+				if(chaseLightIndex >= chaseLightMaxIndexPos) {
+					chaseLightIndex = alStartIndex;
 				}
+				nextRunTimeAmbientLight = make_timeout_time_ms(options.ambientLightChaseSpeed);
 			}
-			else{
-				alCurrentFrame += alFrameSpeed;
-				if(alCurrentFrame > 255){
-					alCurrentFrame = 254;
-					alReverse = true;
+			// Blank out our caseRGBs
+			for(int j = 0; j < maxFrame; j++){
+				frame[alStartIndex + j] = 0x0;
+			}
+			// Fill up to four pixels forward
+			for(int i = 0; i < CHASE_LIGHTS_TURN_ON && chaseLightIndex + i < chaseLightMaxIndexPos; i++) {
+				frame[chaseLightIndex + i] = ambientLight.value(Animation::format, options.alChaseBrightnessCustomX);
+			}
+			// Fill up to 3 pixels in the beginning of our casergb (wrap-around)
+			if ( chaseLightIndex + CHASE_LIGHTS_TURN_ON > chaseLightMaxIndexPos ) {
+				for(int i = 0; i < (chaseLightIndex + CHASE_LIGHTS_TURN_ON) - chaseLightMaxIndexPos; i++) {
+					frame[alStartIndex + i] = ambientLight.value(Animation::format, options.alChaseBrightnessCustomX);
 				}
-			}
-
-			chaseLightIndex++;
-			if(chaseLightIndex > chaseLightMaxIndexPos - CHASE_LIGHTS_TURN_ON - 1){
-				chaseLightIndex = alStartIndex;
 			}
 			break;
-
 		case AL_CUSTOM_EFFECT_BREATH:
-			if(alReverse){
+			if(alReverse) {
 				alBrightnessBreathX += options.ambientLightBreathSpeed;
 				if(alBrightnessBreathX > 1.00f){
 					alBrightnessBreathX = 1.00f;
 					alReverse = false;
 				}
-			}
-			else{
+			} else {
 				alBrightnessBreathX -= options.ambientLightBreathSpeed;
 				if(alBrightnessBreathX < 0.00f){
 					alBrightnessBreathX = 0.00f;
@@ -559,277 +415,72 @@ void NeoPicoLEDAddon::ambientLightCustom()
 				}
 			}
 			
-			if(breathLedEffectCycle <= 1){
-				alR = 255;
-				alG = 0;
-				alB = 255;
+			if(breathLedEffectCycle <= 1) {
+				ambientLight.r = 255;
+				ambientLight.g = 0;
+				ambientLight.b = 255;
+			} else if ((breathLedEffectCycle > 1) && (breathLedEffectCycle <= 3)) {
+				ambientLight.r = 255;
+				ambientLight.g = 0;
+				ambientLight.b = 0;
+			} else if ((breathLedEffectCycle > 3) && (breathLedEffectCycle <= 5)) {
+				ambientLight.r = 0;
+				ambientLight.g = 255;
+				ambientLight.b = 0;
+			} else if ((breathLedEffectCycle > 5) && (breathLedEffectCycle <= 7)) {
+				ambientLight.r= 0;
+				ambientLight.g = 0;
+				ambientLight.b = 255;
 			}
-			else if((breathLedEffectCycle > 1) && (breathLedEffectCycle <= 3)){
-				alR = 255;
-				alG = 0;
-				alB = 0;
-			}
-			else if((breathLedEffectCycle > 3) && (breathLedEffectCycle <= 5)){
-				alR = 0;
-				alG = 255;
-				alB = 0;
-			}
-			else if((breathLedEffectCycle > 5) && (breathLedEffectCycle <= 7)){
-				alR = 0;
-				alG = 0;
-				alB = 255;
-			}
-			else{
+			else {
 				breathLedEffectCycle = 0;	
 			}
+			// Fill Frame
+			for(int i = 0; i < maxFrame; i++) {
+				frame[alStartIndex + i] = ambientLight.value(Animation::format, alBrightnessBreathX);
+			}
 			break;
-
 		case AL_CUSTOM_EFFECT_STATIC_THEME:
 			multipleOfCustomStaticThemeCount = (FRAME_MAX - ledCount) / AL_COL;
 			remainderOfCustomStaticThemeCount = (FRAME_MAX - ledCount) % AL_COL;
-			break;
-
-		default:
-			break;
-	}
-
-	int maxFrame = min((int)ledOptions.caseRGBCount, FRAME_MAX - alStartIndex); // make sure we don't go over 100
-
-	// Blank out all of our lights if lights are off...
-	switch(options.ambientLightEffectsCountIndex){
-		case AL_CUSTOM_EFFECT_STATIC_COLOR:
-			for(int i = 0; i < maxFrame; i++){
-				frame[alStartIndex + i] = alCustomStaticColors[customStaticColorIndex].value(Animation::format, options.alStaticColorBrightnessCustomX);
-			}
-			break;
-
-		case AL_CUSTOM_EFFECT_GRADIENT:
-			for(int i = 0; i < maxFrame; i++){
-				frame[alStartIndex + i] = ((uint32_t)(alG * options.alGradientBrightnessCustomX) << 16) 
-											| ((uint32_t)(alR * options.alGradientBrightnessCustomX) << 8) 
-											| (uint32_t)(alB * options.alGradientBrightnessCustomX);
-			}
-			break;
-
-		case AL_CUSTOM_EFFECT_CHASE:
-			for(int j = 0; j < maxFrame; j++){
-				frame[alStartIndex + j] = 0x0;
-			}
-
-			if(chaseLightIndex < FRAME_MAX - CHASE_LIGHTS_TURN_ON - 1){
-				for(int i = 0; i < CHASE_LIGHTS_TURN_ON; i++){
-					frame[chaseLightIndex + i] = ((uint32_t)(alG * options.alChaseBrightnessCustomX) << 16) 
-													| ((uint32_t)(alR * options.alChaseBrightnessCustomX) << 8) 
-													| (uint32_t)(alB * options.alChaseBrightnessCustomX);
-				}
-				
-				if((chaseLightIndex - ledCount) > CHASE_LIGHTS_INTERVAL){
-					for(int i = 0; i < CHASE_LIGHTS_TURN_ON; i++){
-						frame[chaseLightIndex - CHASE_LIGHTS_INTERVAL + i] = ((uint32_t)(alG * options.alChaseBrightnessCustomX) << 16) 
-																			| ((uint32_t)(alR * options.alChaseBrightnessCustomX) << 8) 
-																			| (uint32_t)(alB * options.alChaseBrightnessCustomX);
-					}
-				}
-			}
-			
-			nextRunTimeAmbientLight = make_timeout_time_ms(options.ambientLightChaseSpeed);
-			break;
-
-		case AL_CUSTOM_EFFECT_BREATH:
-			for(int i = 0; i < maxFrame; i++){
-				frame[alStartIndex + i] = ((uint32_t)(alG * alBrightnessBreathX) << 16) 
-											| ((uint32_t)(alR * alBrightnessBreathX) << 8) 
-											| (uint32_t)(alB * alBrightnessBreathX);
-			}
-			break;
-
-		case AL_CUSTOM_EFFECT_STATIC_THEME:
+			// Fill frame with extras on remainder
 			for(int i = 0; i < multipleOfCustomStaticThemeCount; i++){
 				for(int j = 0; j < AL_COL; j++){
 					frame[alStartIndex + i*AL_COL + j] = alCustomStaticTheme[options.alCustomStaticThemeIndex][j].value(Animation::format, options.alStaticBrightnessCustomThemeX);
 				}
 			}
-
 			if(remainderOfCustomStaticThemeCount != 0){
 				for(int k = 0; k < remainderOfCustomStaticThemeCount; k++){
 					frame[alStartIndex + multipleOfCustomStaticThemeCount * AL_COL + k] = alCustomStaticTheme[options.alCustomStaticThemeIndex][k].value(Animation::format, options.alStaticBrightnessCustomThemeX);
 				}
 			}
 			break;
-
 		default:
 			break;
-	};
+	}
 }
 
-void NeoPicoLEDAddon::ambientLightLinkage(){
+void NeoPicoLEDAddon::ambientLightLinkage() {
 	LEDOptions & ledOptions = Storage::getInstance().getLedOptions();
-	//uint8_t totalOfBaseAnimationLedsCount = ledOptions.caseRGBCount;
 	uint8_t alLinkageStartIndex = ledOptions.caseRGBIndex;
-	//uint8_t buttonLedsCount = totalOfBaseAnimationLedsCount; 
 	uint8_t multipleOfButtonLedsCount;
 	uint8_t remainderOfButtonLedsCount;
-/*
-	uint8_t powerOn_R = 0;
-	uint8_t powerOn_G = 0;
-	uint8_t powerOn_B = 255;
-	uint8_t powerOnStartIndex;
-*/
-	const AnimationOptions& animationOptions = Storage::getInstance().getAnimationOptions();
 	float preLinkageBrightnessX = as.GetLinkageModeOfBrightnessX();
-//	AnimationEffects preEffect = static_cast<AnimationEffects>(animationOptions.baseAnimationIndex);
-/*
-	if (ledOptions.pledType == PLED_TYPE_RGB && PLED_COUNT > 0){
-		buttonLedsCount = totalOfBaseAnimationLedsCount - PLED_COUNT;
-	}
-
-	#if POWER_ON_EFFECT == 1	// Power-On Animation Chase
-	uint8_t chasePowerOnLightMaxIndexPos = 0;
-	uint8_t buttonCount = setupButtonPositions();
-
-	if(ledOptions.ledsPerButton == 1){
-		if (ledOptions.pledType == PLED_TYPE_RGB && PLED_COUNT > 0){
-			powerOnStartIndex = buttonLedsCount;
-			chasePowerOnLightMaxIndexPos = buttonCount*1 + POWER_ON_CHASE_FRAME_MAX + RESERVE_DUMMY_LEDS_NUM + PLED_COUNT;
-		}
-		else{
-			powerOnStartIndex = buttonLedsCount;
-			chasePowerOnLightMaxIndexPos = buttonCount*1 + POWER_ON_CHASE_FRAME_MAX + RESERVE_DUMMY_LEDS_NUM;
-		}
-	}
-	else if(ledOptions.ledsPerButton == 2){
-		if (ledOptions.pledType == PLED_TYPE_RGB && PLED_COUNT > 0){
-			powerOnStartIndex = buttonLedsCount;
-			chasePowerOnLightMaxIndexPos = buttonCount*2 + POWER_ON_CHASE_FRAME_MAX + RESERVE_DUMMY_LEDS_NUM + PLED_COUNT;
-		}
-		else{
-			powerOnStartIndex = buttonLedsCount;
-			chasePowerOnLightMaxIndexPos = buttonCount*2 + POWER_ON_CHASE_FRAME_MAX + RESERVE_DUMMY_LEDS_NUM;
-		}
-	}
-	else if(ledOptions.ledsPerButton == 3){
-		if (ledOptions.pledType == PLED_TYPE_RGB && PLED_COUNT > 0){
-			powerOnStartIndex = buttonLedsCount;
-			chasePowerOnLightMaxIndexPos = buttonCount*3 + POWER_ON_CHASE_FRAME_MAX + RESERVE_DUMMY_LEDS_NUM + PLED_COUNT; // max 96
-		}
-		else{
-			powerOnStartIndex = buttonLedsCount;
-			chasePowerOnLightMaxIndexPos = buttonCount*3 + POWER_ON_CHASE_FRAME_MAX + RESERVE_DUMMY_LEDS_NUM;
-		}
-	}
-	else{
-		powerOnStartIndex = buttonLedsCount;	
-		chasePowerOnLightMaxIndexPos = FRAME_MAX - 1;	
-	}
-	
-	static uint8_t chasePowerOnIndex = powerOnStartIndex;
-	uint32_t now = to_ms_since_boot(get_absolute_time());
-	
-	if(now < POWER_ON_EFFECT_DURATION){
-		for(int j = 0; j < (FRAME_MAX - powerOnStartIndex); j++){
-			alFrame[powerOnStartIndex + j] = 0x0;
-		}
-
-		if(chasePowerOnIndex < (FRAME_MAX - CHASE_LIGHTS_TURN_ON - 1)){
-			for(int i = 0; i < CHASE_LIGHTS_TURN_ON; i++){
-				alFrame[chasePowerOnIndex + i] = ((uint32_t)(powerOn_G * POWER_ON_CHASE_BRIGHTNESSX) << 16) 
-													  | ((uint32_t)(powerOn_R * POWER_ON_CHASE_BRIGHTNESSX) << 8) 
-													  | (uint32_t)(powerOn_B * POWER_ON_CHASE_BRIGHTNESSX);
-			}
-				
-			if((chasePowerOnIndex - powerOnStartIndex) > CHASE_LIGHTS_INTERVAL){
-				for(int i = 0; i < CHASE_LIGHTS_TURN_ON; i++){
-					alFrame[chasePowerOnIndex - CHASE_LIGHTS_INTERVAL + i] = ((uint32_t)(powerOn_G * POWER_ON_CHASE_BRIGHTNESSX) << 16) 
-																			    | ((uint32_t)(powerOn_R * POWER_ON_CHASE_BRIGHTNESSX) << 8) 
-																				| (uint32_t)(powerOn_B * POWER_ON_CHASE_BRIGHTNESSX);
-				}
-			}
-		}
-
-		chasePowerOnIndex++;
-		if(chasePowerOnIndex > (chasePowerOnLightMaxIndexPos - CHASE_LIGHTS_TURN_ON - 1)){
-			chasePowerOnIndex = powerOnStartIndex;
-		}
-
-		return;
-	}
-	#else	// Power-On Animation Breathing Lights
-	static float alLinkagePowerOnBrightnessY = 0.0f;
-	static bool alLinkagePowerOnReverse = true;
-
-	powerOnStartIndex = buttonLedsCount;
-
-	uint32_t now = to_ms_since_boot(get_absolute_time());
-
-	if(now < POWER_ON_EFFECT_DURATION){ 
-		powerOn_R = 0;
-		powerOn_G = 0;
-		powerOn_B = 255;
-
-		if((now > POWER_ON_EFFECT_DURATION) && (alLinkagePowerOnBrightnessY == 0.0f) && (alLinkagePowerOnReverse == true)){
-			alLinkagePowerOnBrightnessY = 0.0f;
-			alLinkagePowerOnReverse = true;
-			return;
-		}
-
-		if(alLinkagePowerOnReverse){
-			alLinkagePowerOnBrightnessY += 0.1f;
-			if(alLinkagePowerOnBrightnessY > 1.0f){
-				alLinkagePowerOnBrightnessY = 1.0f;
-				alLinkagePowerOnReverse = false;
-			}
-		}
-		else{
-			alLinkagePowerOnBrightnessY -= 0.1f;
-			if(alLinkagePowerOnBrightnessY < 0.0f){
-				alLinkagePowerOnBrightnessY = 0.0f;
-				alLinkagePowerOnReverse = true;
-			}
-		}
-
-		for(int i = 0; i < (FRAME_MAX - powerOnStartIndex); i++){
-			alFrame[powerOnStartIndex + i] = ((uint32_t)(powerOn_G * alLinkagePowerOnBrightnessY) << 16) 
-									  | ((uint32_t)(powerOn_R * alLinkagePowerOnBrightnessY) << 8) 
-									  | (uint32_t)(powerOn_B * alLinkagePowerOnBrightnessY);
-		}
-		
-		return;
-	}
-	#endif
-
-	switch(preEffect){
-		case AnimationEffects::EFFECT_STATIC_COLOR:
-		case AnimationEffects::EFFECT_RAINBOW:
-		case AnimationEffects::EFFECT_CUSTOM_THEME:
-			break;
-	
-		case AnimationEffects::EFFECT_CHASE:
-		case AnimationEffects::EFFECT_STATIC_THEME:
-			buttonLedsCount = buttonLedsCount - 4;
-			break;
-
-		default:
-			break;
-	}
-*/
 	multipleOfButtonLedsCount = (ledOptions.caseRGBCount) / (buttonLedCount);
 	remainderOfButtonLedsCount = (ledOptions.caseRGBCount) % (buttonLedCount);
-
-	for(int i = 0; i < multipleOfButtonLedsCount; i++){
+	for(int i = 0; i < multipleOfButtonLedsCount; i++){ // Repeat buttons
 		for(int j = 0; j < buttonLedCount; j++){
 			frame[alLinkageStartIndex + i*buttonLedCount + j] = as.linkageFrame[j].value(Animation::format, preLinkageBrightnessX);
 		}
 	}
-
-	if(remainderOfButtonLedsCount != 0){
+	if(remainderOfButtonLedsCount != 0){ // Remainder
 		for(int k = 0; k < remainderOfButtonLedsCount; k++){
 			frame[alLinkageStartIndex + multipleOfButtonLedsCount * buttonLedCount + k] = as.linkageFrame[k].value(Animation::format, preLinkageBrightnessX);
 		}
 	}
 }
 
-void NeoPicoLEDAddon::process()
-{
+void NeoPicoLEDAddon::process() {
     const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
     if (!isValidPin(ledOptions.dataPin) || !time_reached(this->nextRunTime))
         return;
@@ -1226,11 +877,7 @@ uint8_t NeoPicoLEDAddon::setupButtonPositions()
 
 GamepadHotkey NeoPicoLEDAddon::animationHotkeys(Gamepad *gamepad)
 {
-	bool reqSave = false;
     GamepadHotkey action = HOTKEY_LEDS_NONE;
-	AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
-	LEDOptions & ledOptions = Storage::getInstance().getLedOptions();
-
     if (gamepad->pressedS1() && gamepad->pressedS2())
     {
         if (gamepad->pressedB3())
@@ -1308,9 +955,10 @@ void NeoPicoLEDAddon::ambientHotkeys(Gamepad *gamepad)
 				if(animationOptions.ambientLightEffectsCountIndex > AL_EFFECT_MODE_MAX - 1){
 					animationOptions.ambientLightEffectsCountIndex = 0;
 				}
-				alR = 0x00;
-				alG = 0x00;
-				alB = 0x00;
+				// Reset our ambient light RGB
+				ambientLight.r = 0x00;
+				ambientLight.g = 0x00;
+				ambientLight.b = 0x00;
 				alCurrentFrame = 0;
 				alFrameToRGB = 0;
 				alReverse = false;
