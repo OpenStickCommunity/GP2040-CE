@@ -575,8 +575,7 @@ void NeoPicoLEDAddon::process() {
     }
 
     // Case RGB LEDs for a single static color go here
-	if ( ledOptions.caseRGBType != CASE_RGB_TYPE_NONE && 
-		ledOptions.caseRGBIndex >= 0 &&
+	if ( ledOptions.caseRGBIndex >= 0 &&
 		ledOptions.caseRGBCount > 0 ) {
 		ambientHotkeys(gamepad);
 		if ( ledOptions.caseRGBType == CASE_RGB_TYPE_AMBIENT ) {
@@ -948,7 +947,6 @@ void NeoPicoLEDAddon::ambientHotkeys(Gamepad *gamepad)
 		{ 
 			action = HOTKEY_AMBIENT_LIGHT_EFFECTS_CHANGE;
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_L1 | GAMEPAD_MASK_S2);
-
 			if (lastAmbientAction != action ) {
 				// Ambient changes are all done inside of neopico instead of animation station?
 				animationOptions.ambientLightEffectsCountIndex++;
@@ -965,14 +963,30 @@ void NeoPicoLEDAddon::ambientHotkeys(Gamepad *gamepad)
 				chaseLightIndex = ledOptions.caseRGBIndex;
 				alBrightnessBreathX = 1.00f;
 				breathLedEffectCycle = 0;
-
 				reqSave = true;
 			}
 		}
-		else if(gamepad->pressedL2()) // LT
+		else if(gamepad->pressedL2()) // LT (Different from COSMOX, we just cycle instead of temporary disable)
 		{
 			action = HOTKEY_AMBIENT_LIGHT_EFFECTS_ON_OFF;
-
+			if (lastAmbientAction != action ) {
+				// Move the other way
+				if(animationOptions.ambientLightEffectsCountIndex == 0 )
+					animationOptions.ambientLightEffectsCountIndex = AL_EFFECT_MODE_MAX - 1;
+				else
+					animationOptions.ambientLightEffectsCountIndex--;
+				// Reset our ambient light RGB
+				ambientLight.r = 0x00;
+				ambientLight.g = 0x00;
+				ambientLight.b = 0x00;
+				alCurrentFrame = 0;
+				alFrameToRGB = 0;
+				alReverse = false;
+				chaseLightIndex = ledOptions.caseRGBIndex;
+				alBrightnessBreathX = 1.00f;
+				breathLedEffectCycle = 0;
+				reqSave = true;
+			}
 			// turn off brightness for ambient lights
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_L2 | GAMEPAD_MASK_S2);
 		}
@@ -1060,7 +1074,7 @@ void NeoPicoLEDAddon::ambientHotkeys(Gamepad *gamepad)
 				if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_GRADIENT ) {
 					animationOptions.ambientLightGradientSpeed = min(animationOptions.ambientLightGradientSpeed+1,(uint32_t)6);
 				} else if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_CHASE ) {
-					animationOptions.ambientLightChaseSpeed = max(animationOptions.ambientLightChaseSpeed-10,(int32_t)0);
+					animationOptions.ambientLightChaseSpeed = max(animationOptions.ambientLightChaseSpeed-20,(int32_t)0);
 				} else if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_BREATH ) {
 					animationOptions.ambientLightBreathSpeed = min(animationOptions.ambientLightBreathSpeed+0.01f,0.05f);
 				}
@@ -1075,7 +1089,7 @@ void NeoPicoLEDAddon::ambientHotkeys(Gamepad *gamepad)
 				if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_GRADIENT ) {
 					animationOptions.ambientLightGradientSpeed = max(animationOptions.ambientLightGradientSpeed-1,(uint32_t)1);
 				} else if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_CHASE ) {
-					animationOptions.ambientLightChaseSpeed = min(animationOptions.ambientLightChaseSpeed+10,(int32_t)100);
+					animationOptions.ambientLightChaseSpeed = min(animationOptions.ambientLightChaseSpeed+20,(int32_t)100);
 				} else if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_BREATH ) {
 					animationOptions.ambientLightBreathSpeed = max(animationOptions.ambientLightBreathSpeed-0.01f,0.01f);
 				}
@@ -1085,12 +1099,14 @@ void NeoPicoLEDAddon::ambientHotkeys(Gamepad *gamepad)
 		}
 		else if((gamepad->pressedB1()) && (gamepad->pressedB3())) // A + X
 		{
-			// Rework this entirely
+			// Cycle through off, ambient, and linked
 			action = HOTKEY_AMBIENT_LIGHT_EFFECTS_CUSTOM_LINKAGE;
 			if ( lastAmbientAction != action ) {
 			    if ( ledOptions.caseRGBType == CASE_RGB_TYPE_AMBIENT ) {
 					ledOptions.caseRGBType = CASE_RGB_TYPE_LINKED;
 				} else if ( ledOptions.caseRGBType == CASE_RGB_TYPE_LINKED ) {
+					ledOptions.caseRGBType = CASE_RGB_TYPE_NONE;
+				} else if ( ledOptions.caseRGBType == CASE_RGB_TYPE_NONE ) {
 					ledOptions.caseRGBType = CASE_RGB_TYPE_AMBIENT;
 				}
 				reqSave = true;
