@@ -21,13 +21,7 @@
 #define AL_COL	8
 #define AL_STATIC_COLOR_COUNT	14
 #define AL_EFFECT_MODE_MAX 5
-#define POWER_ON_EFFECT 1	            // chase:1	breath:0
 #define CHASE_LIGHTS_TURN_ON 4
-#define CHASE_LIGHTS_INTERVAL 11
-#define POWER_ON_EFFECT_DURATION 5000
-#define POWER_ON_CHASE_FRAME_MAX 30     // M Lite:20		M Ultra:30
-#define RESERVE_DUMMY_LEDS_NUM 8
-#define POWER_ON_CHASE_BRIGHTNESSX 1
 
 const RGB alCustomStaticTheme[AL_ROW][AL_COL] = 
 									  {{ColorRed, ColorOrange, ColorYellow, ColorGreen, ColorBlue, ColorIndigo, ColorViolet, ColorWhite},
@@ -943,8 +937,7 @@ void NeoPicoLEDAddon::ambientHotkeys(Gamepad *gamepad)
 	// Only allow Start + Key Ambient Changes if Case RGB is enabled
     if(gamepad->pressedS2() && (gamepad->pressedS1() == false)) // start (not start+back) 
 	{ 
-		if(gamepad->pressedL1()) // LB
-		{ 
+		if(gamepad->pressedL1()) { // LB
 			action = HOTKEY_AMBIENT_LIGHT_EFFECTS_CHANGE;
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_L1 | GAMEPAD_MASK_S2);
 			if (lastAmbientAction != action ) {
@@ -965,9 +958,7 @@ void NeoPicoLEDAddon::ambientHotkeys(Gamepad *gamepad)
 				breathLedEffectCycle = 0;
 				reqSave = true;
 			}
-		}
-		else if(gamepad->pressedL2()) // LT (Different from COSMOX, we just cycle instead of temporary disable)
-		{
+		} else if(gamepad->pressedL2()) { // LT (Different from COSMOX, we just cycle instead of temporary disable)
 			action = HOTKEY_AMBIENT_LIGHT_EFFECTS_ON_OFF;
 			if (lastAmbientAction != action ) {
 				// Move the other way
@@ -989,9 +980,7 @@ void NeoPicoLEDAddon::ambientHotkeys(Gamepad *gamepad)
 			}
 			// turn off brightness for ambient lights
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_L2 | GAMEPAD_MASK_S2);
-		}
-		else if(gamepad->pressedB4() && (gamepad->pressedB3() == false)) // Y  not X+Y
-		{
+		} else if(gamepad->pressedB4() && (gamepad->pressedB3() == false)) { // Y  not X+Y
 			action = HOTKEY_AMBIENT_LIGHT_EFFECTS_BRIGHTNESS_UP;
 			if ( lastAmbientAction != action ) {
 				float customBrightnessStep = 1.0f / as.GetBrightnessSteps();
@@ -1008,9 +997,7 @@ void NeoPicoLEDAddon::ambientHotkeys(Gamepad *gamepad)
 				reqSave = true;
 			}
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_B4 | GAMEPAD_MASK_S2);
-		}
-		else if(gamepad->pressedB2()) // B
-		{
+		} else if(gamepad->pressedB2()) { // B
 			action = HOTKEY_AMBIENT_LIGHT_EFFECTS_BRIGHTNESS_DOWN;
 			if ( lastAmbientAction != action ) {
 				float customBrightnessStep = 1.0f / as.GetBrightnessSteps();
@@ -1026,9 +1013,7 @@ void NeoPicoLEDAddon::ambientHotkeys(Gamepad *gamepad)
 				reqSave = true;
 			}
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_B2 | GAMEPAD_MASK_S2);
-		}
-		else if(gamepad->pressedR1()) // RB
-		{
+		} else if(gamepad->pressedR1()) { // RB
 			action = HOTKEY_AMBIENT_LIGHT_EFFECTS_PARAMETER_UP;
 			if ( lastAmbientAction != action ) {
 				if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_STATIC_COLOR ) {
@@ -1045,9 +1030,7 @@ void NeoPicoLEDAddon::ambientHotkeys(Gamepad *gamepad)
 				reqSave = true;
 			}
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_R1 | GAMEPAD_MASK_S2);
-		}
-		else if(gamepad->pressedR2()) // RT
-		{
+		} else if(gamepad->pressedR2()) { // RT
 			action = HOTKEY_AMBIENT_LIGHT_EFFECTS_PARAMETER_DOWN;
 			if ( lastAmbientAction != action ) {
 				if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_STATIC_COLOR ) {
@@ -1066,9 +1049,7 @@ void NeoPicoLEDAddon::ambientHotkeys(Gamepad *gamepad)
 				reqSave = true;
 			}
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_R2 | GAMEPAD_MASK_S2);
-		}
-		else if(gamepad->pressedL3()) // LS
-		{
+		} else if(gamepad->pressedL3()) { // LS
 			action = HOTKEY_AMBIENT_LIGHT_EFFECTS_FRAME_SPEED_UP;
 			if ( lastAmbientAction != action ) {
 				if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_GRADIENT ) {
@@ -1081,9 +1062,7 @@ void NeoPicoLEDAddon::ambientHotkeys(Gamepad *gamepad)
 				reqSave = true;
 			}
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_L3 | GAMEPAD_MASK_S2);
-		}
-		else if(gamepad->pressedR3()) // RS
-		{
+		} else if(gamepad->pressedR3()) { // RS
 			action = HOTKEY_AMBIENT_LIGHT_EFFECTS_FRAME_SPEED_DOWN;
 			if ( lastAmbientAction != action ) {
 				if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_GRADIENT ) {
@@ -1096,9 +1075,7 @@ void NeoPicoLEDAddon::ambientHotkeys(Gamepad *gamepad)
 				reqSave = true;
 			}
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_R3 | GAMEPAD_MASK_S2);
-		}
-		else if((gamepad->pressedB1()) && (gamepad->pressedB3())) // A + X
-		{
+		} else if((gamepad->pressedB1()) && (gamepad->pressedB3())) { // A + X
 			// Cycle through off, ambient, and linked
 			action = HOTKEY_AMBIENT_LIGHT_EFFECTS_CUSTOM_LINKAGE;
 			if ( lastAmbientAction != action ) {
