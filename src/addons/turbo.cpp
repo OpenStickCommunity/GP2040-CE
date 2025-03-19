@@ -24,7 +24,7 @@
 
 bool TurboInput::available() {
     // Turbo Button initialized by void Gamepad::setup()
-    bool hasTurboAssigned = false;
+    hasTurboAssigned = false;
     GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
     {
@@ -132,7 +132,7 @@ void TurboInput::process()
     uint16_t buttonsPressed = gamepad->state.buttons & TURBO_BUTTON_MASK;
     uint8_t dpadPressed = gamepad->state.dpad & GAMEPAD_MASK_DPAD;
 
-    if (!options.enabled) return;
+    if (!options.enabled && (!hasTurboAssigned == true)) return;
 
     // Check for TURBO pin enabled
     if (gamepad->debouncedGpio & turboPinMask) {

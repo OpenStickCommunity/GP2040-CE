@@ -137,5 +137,6 @@ private:
     uint16_t lastButtons;       // Last buttons (for Turbo Reset on Release)
     bool hasLedPin;             // Flag for LED pin presence
     uint8_t encoderValue;       // Rotary encoder value 
+    bool hasTurboAssigned;      // Turbo enabled on a pin.
 };
 #endif  // TURBO_H_

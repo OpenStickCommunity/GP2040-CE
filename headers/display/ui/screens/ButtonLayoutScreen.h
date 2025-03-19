@@ -162,7 +162,9 @@ class ButtonLayoutScreen : public GPScreen {
         ButtonLayoutParamsLeft prevLeftOptions;
         ButtonLayoutParamsRight prevRightOptions;
         ButtonLayoutOrientation prevOrientation;
-		
+
+        bool hasTurboAssigned = false;
+
         bool macroEnabled;
 
         bool showInputMode = true;

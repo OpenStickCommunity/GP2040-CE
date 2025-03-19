@@ -11,7 +11,6 @@
  #define BOARD_CONFIG_LABEL "DuelPadZen"
  
  // Main pin mapping Configuration
- // Mapping between Flatbox Rev4 switch number (as silkscreened) and GPIO pin listed under "Flatbox Rev4 SW#"
  //                                             //SW# | GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
  #define GPIO_PIN_16 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
  #define GPIO_PIN_10 GpioAction::BUTTON_PRESS_DOWN   // DOWN   | DOWN   | DOWN    | DOWN     | DOWN   | DOWN   |
@@ -63,7 +62,8 @@
  #define KEY_BUTTON_A1   HID_KEY_9             // A1     | Guide  | Home    | PS       | 13     | ~      |
  #define KEY_BUTTON_A2   HID_KEY_F2            // A2     | ~      | Capture | ~        | 14     | ~      |
  
- // Setting GPIO pins to assigned by add-on
+// Setting GPIO pins to assigned by add-on
+//
  #define GPIO_PIN_15 GpioAction::ASSIGNED_TO_ADDON
  
  #define USB_PERIPHERAL_ENABLED 1
@@ -84,19 +84,12 @@
  #define DEFAULT_PS5AUTHENTICATION_TYPE INPUT_MODE_AUTH_TYPE_USB
  #define XBONEPASSTHROUGH_ENABLED 1
  
- #define FOCUS_MODE_ENABLED 1
- #define FOCUS_MODE_MACRO_LOCK_ENABLED 1
- #define FOCUS_MODE_BUTTON_MASK GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2 | GAMEPAD_MASK_A1 | GAMEPAD_MASK_A2 | GAMEPAD_MASK_L3 | GAMEPAD_MASK_R3
- 
  #define BOARD_LEDS_PIN 15
- #define LEDS_THEME_INDEX 20
- #define LED_BRIGHTNESS_MAXIMUM 255
+ #define LED_BRIGHTNESS_MAXIMUM 100
  #define LED_BRIGHTNESS_STEPS 5
- #define LEDS_BRIGHTNESS 2
  #define LED_FORMAT LED_FORMAT_GRB
  #define LEDS_PER_PIXEL 2
  #define LEDS_BASE_ANIMATION_INDEX 1
- #define LEDS_STATIC_COLOR_INDEX 2
  
  #define LEDS_DPAD_LEFT   0  
  #define LEDS_DPAD_DOWN   1
