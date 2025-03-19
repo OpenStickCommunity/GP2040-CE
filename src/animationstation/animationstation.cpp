@@ -11,7 +11,6 @@
 #include "storagemanager.h"
 
 AnimationStation::AnimationStation() {
-    SetBrightness(1);
     brightnessMax = 100;
     brightnessSteps = 5;
     brightnessX = 0;
@@ -22,6 +21,7 @@ AnimationStation::AnimationStation() {
     if (animationOptions.hasCustomTheme) {
         effectCount++; // increase our effect count
     }
+    SetBrightness(1);
 }
 
 void AnimationStation::ConfigureBrightness(uint8_t max, uint8_t steps) {
@@ -35,22 +35,26 @@ void AnimationStation::HandleEvent(GamepadHotkey action) {
   }
   nextChange = make_timeout_time_ms(250);
   AnimationOptions hotkeyAnimationOptions = Storage::getInstance().getAnimationOptions();
-  bool isCustomLinkageMode = hotkeyAnimationOptions.ambientLightCustomLinkageModeFlag;
+  bool reqSave = false;
 
   if (action == HOTKEY_LEDS_BRIGHTNESS_UP) {
     IncreaseBrightness();
+    reqSave = true;
   }
 
   if (action == HOTKEY_LEDS_BRIGHTNESS_DOWN) {
     DecreaseBrightness();
+    reqSave = true;
   }
 
   if (action == HOTKEY_LEDS_ANIMATION_UP) {
     ChangeAnimation(1);
+    reqSave = true;
   }
 
   if (action == HOTKEY_LEDS_ANIMATION_DOWN) {
     ChangeAnimation(-1);
+    reqSave = true;
   }
 
   if (this->baseAnimation == nullptr || this->buttonAnimation == nullptr) {
@@ -59,84 +63,37 @@ void AnimationStation::HandleEvent(GamepadHotkey action) {
   
   if (action == HOTKEY_LEDS_PARAMETER_UP) {
     this->baseAnimation->ParameterUp();
+    reqSave = true;
   }
 
   if (action == HOTKEY_LEDS_PARAMETER_DOWN) {
     this->baseAnimation->ParameterDown();
+    reqSave = true;
   }
 
   if (action == HOTKEY_LEDS_PRESS_PARAMETER_UP) {
     this->buttonAnimation->ParameterUp();
+    reqSave = true;
   }
 
   if (action == HOTKEY_LEDS_PRESS_PARAMETER_DOWN) {
     this->buttonAnimation->ParameterDown();
+    reqSave = true;
   }
 
   if (action == HOTKEY_LEDS_FADETIME_UP) {
     this->baseAnimation->FadeTimeUp();
+    reqSave = true;
   }
 
   if (action == HOTKEY_LEDS_FADETIME_DOWN) {
     this->baseAnimation->FadeTimeDown();
+    reqSave = true;
   }
 
-  if(action == HOTKEY_AMBIENT_LIGHT_EFFECTS_CHANGE){
-    // HANDLED INSIDE OF NEOPICO
-    //if(isCustomLinkageMode == false){ // Custom mode
-    //  this->ambientLightEffectsChangeFlag = true;
-    //}
-    //ChangeAmbientAnimation(1);
-  } 
-
-  if(action == HOTKEY_AMBIENT_LIGHT_EFFECTS_ON_OFF){
-    if(isCustomLinkageMode == false){ // Custom mode
-      this->ambientLightOnOffFlag = !this->ambientLightOnOffFlag;
-    }
-    else{ // Linkage mode
-      this->ambientLightLinkageOnOffFlag = !this->ambientLightLinkageOnOffFlag;
-    }
-  }
-
-  if(action == HOTKEY_AMBIENT_LIGHT_EFFECTS_BRIGHTNESS_UP){
-    if(isCustomLinkageMode == false){ // Custom mode
-      this->aleLedsBrightnessCustomXupFlag = true;
-    }
-  }
-
-  if(action == HOTKEY_AMBIENT_LIGHT_EFFECTS_BRIGHTNESS_DOWN){
-    if(isCustomLinkageMode == false){ // Custom mode
-      this->aleLedsBrightnessCustomXDownFlag = true;
-    }
-  }
-
-  if(action == HOTKEY_AMBIENT_LIGHT_EFFECTS_PARAMETER_UP){
-    if(isCustomLinkageMode == false){ // Custom mode
-      this->aleLedsParameterCustomUpFlag = true;
-    }
-  }
-
-  if(action == HOTKEY_AMBIENT_LIGHT_EFFECTS_PARAMETER_DOWN){
-    if(isCustomLinkageMode == false){ // Custom mode
-      this->aleLedsParameterCustomDownFlag = true;
-    }
-  }
-
-  if(action == HOTKEY_AMBIENT_LIGHT_EFFECTS_FRAME_SPEED_UP){
-    if(isCustomLinkageMode == false){ // Custom mode
-      this->alGradientChaseBreathSpeedUpFlag = true;
-    }
-  }
-
-  if(action == HOTKEY_AMBIENT_LIGHT_EFFECTS_FRAME_SPEED_DOWN){
-    if(isCustomLinkageMode == false){ // Custom mode
-      this->alGradientChaseBreathSpeedDownFlag = true;
-    }
-  }
-
-  if(action == HOTKEY_AMBIENT_LIGHT_EFFECTS_CUSTOM_LINKAGE){
-    this->alCustomLinkageModeFlag = true;
-  }
+	if (reqSave) {
+		EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
+	}
 }
 
 void AnimationStation::ChangeAnimation(int changeSize) {
@@ -184,9 +141,8 @@ void AnimationStation::Animate() {
 
   baseAnimation->Animate(this->frame);
 
-  for(int i = 0; i < 100; i++){
-    this->linkageFrame[i] = this->frame[i];
-  }
+  // Copy frame to linkage frame before button press
+  memcpy(linkageFrame, frame, sizeof(RGB)*100);
 
   buttonAnimation->Animate(this->frame);
 }
@@ -259,22 +215,19 @@ void AnimationStation::ApplyBrightness(uint32_t *frameValue) {
 void AnimationStation::SetBrightness(uint8_t brightness) {
   AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
   animationOptions.brightness =
-      (brightness > brightnessSteps) ? brightnessSteps : animationOptions.brightness;
+      (brightness > brightnessSteps) ? brightnessSteps : brightness;
   brightnessX =
       (animationOptions.brightness * getBrightnessStepSize()) / 255.0F;
-
   linkageModeOfBrightnessX =
       (animationOptions.brightness * getLinkageModeOfBrightnessStepSize()) / 255.0F;
-
   if (linkageModeOfBrightnessX > 1)
       linkageModeOfBrightnessX = 1;
   else if (linkageModeOfBrightnessX < 0)
       linkageModeOfBrightnessX = 0;
-
-  if (brightnessX > 1)
-    brightnessX = 1;
-  else if (brightnessX < 0)
-    brightnessX = 0;
+  if (brightnessX > 1.0f)
+    brightnessX = 1.0f;
+  else if (brightnessX < 0.0f)
+    brightnessX = 0.0f;
 }
 
 void AnimationStation::DecreaseBrightness() {

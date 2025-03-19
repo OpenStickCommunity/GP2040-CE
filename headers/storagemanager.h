@@ -53,11 +53,6 @@ public:
 	bool save();
 	bool save(const bool force);
 
-	// Perform saves that were enqueued from core1
-	void performEnqueuedSaves();
-
-	void enqueueAnimationOptionsSave(const AnimationOptions& animationOptions);
-
 	void SetConfigMode(bool); 			// Config Mode (on-boot)
 	bool GetConfigMode();
 
@@ -83,10 +78,6 @@ private:
 	uint8_t featureData[32]; // USB X-Input Feature Data
 	DisplayOptions previewDisplayOptions;
 	Config config;
-	std::atomic<bool> animationOptionsSavePending;
-	critical_section_t animationOptionsCs;
-	uint32_t animationOptionsCrc = 0;
-	AnimationOptions animationOptionsToSave = {};
 	GpioMappingInfo functionalPinMappings[NUM_BANK0_GPIOS];
 };
 

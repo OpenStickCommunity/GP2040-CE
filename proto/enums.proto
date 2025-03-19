@@ -402,9 +402,8 @@ enum CaseRGBType
     option (nanopb_enumopt).long_names = false;
 
     CASE_RGB_TYPE_NONE = -1;
-    CASE_RGB_TYPE_STATIC = 0;
-    CASE_RGB_TYPE_AMBIENT = 1;
-    CASE_RGB_TYPE_LINKED = 2;
+    CASE_RGB_TYPE_AMBIENT = 0;
+    CASE_RGB_TYPE_LINKED = 1;
 };
 
 enum ForcedSetupMode

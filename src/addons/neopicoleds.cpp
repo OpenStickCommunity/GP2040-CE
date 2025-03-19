@@ -249,6 +249,7 @@ void NeoPicoLEDAddon::setup()
     vector<vector<Pixel>> pixels = createLEDLayout(static_cast<ButtonLayout>(ledOptions.ledLayout), ledOptions.ledsPerButton, buttonCount);
     matrix.setup(pixels, ledOptions.ledsPerButton);
     ledCount = matrix.getLedCount();
+	buttonLedCount = ledCount; // used in linkage
 
 	// Add Player LEDs to LED count
     if (ledOptions.pledType == PLED_TYPE_RGB && PLED_COUNT > 0)
@@ -261,7 +262,7 @@ void NeoPicoLEDAddon::setup()
 
 	// Add Case RGB LEDs to LED Count
     if (ledOptions.caseRGBType != CASE_RGB_TYPE_NONE ) {
-        ledCount += ledOptions.caseRGBCount;
+        ledCount += (int)ledOptions.caseRGBCount;
     }
 
 	// Setup NeoPico ws2812 PIO
@@ -282,7 +283,7 @@ void NeoPicoLEDAddon::setup()
     nextRunTime = make_timeout_time_ms(0); // Reset timeout
 
 	// Last Hot-key Action
-	lastAction = HOTKEY_LEDS_NONE;
+	lastAmbientAction = HOTKEY_LEDS_NONE;
 
 	// Ambient lights
 	alBrightnessBreathX = 1.00f;
@@ -300,14 +301,16 @@ void NeoPicoLEDAddon::setup()
 	chaseLightIndex = ledOptions.caseRGBIndex;
 }
 
-void NeoPicoLEDAddon::ambientLightCustom(uint32_t alFrame[100]) 
+void NeoPicoLEDAddon::ambientLightCustom() 
 {
-	uint8_t chaseLightMaxIndexPos = 0;
-	uint8_t alStartIndex = 0;
 	const AnimationOptions& options = Storage::getInstance().getAnimationOptions();
-	uint8_t buttonCount = setupButtonPositions();
-	//uint8_t totalOfButtonLedsCount = this->ledCount;
 	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
+
+	uint8_t chaseLightMaxIndexPos = ledCount;
+	uint8_t alStartIndex = ledOptions.caseRGBIndex;
+	//uint8_t buttonCount = setupButtonPositions();
+	//uint8_t totalOfButtonLedsCount = this->ledCount;
+
 	uint8_t multipleOfCustomStaticThemeCount;
 	uint8_t remainderOfCustomStaticThemeCount;
 	uint8_t customStaticColorIndex = 0;
@@ -486,19 +489,19 @@ void NeoPicoLEDAddon::ambientLightCustom(uint32_t alFrame[100])
 		case AL_CUSTOM_EFFECT_CHASE: 
 			if(!time_reached(nextRunTimeAmbientLight)){
 				for(int j = 0; j < (FRAME_MAX - alStartIndex); j++){
-					alFrame[alStartIndex + j] = 0x0;
+					frame[alStartIndex + j] = 0x0;
 				}
 				
 				if(chaseLightIndex < FRAME_MAX - CHASE_LIGHTS_TURN_ON - 1) {
 					for(int i = 0; i < CHASE_LIGHTS_TURN_ON; i++){
-						alFrame[chaseLightIndex + i] = ((uint32_t)(alG * options.alChaseBrightnessCustomX) << 16) 
+						frame[chaseLightIndex + i] = ((uint32_t)(alG * options.alChaseBrightnessCustomX) << 16) 
 												     | ((uint32_t)(alR * options.alChaseBrightnessCustomX) << 8) 
 													 | (uint32_t)(alB * options.alChaseBrightnessCustomX);
 					}
 				
 					if((chaseLightIndex - ledCount) > CHASE_LIGHTS_INTERVAL){
 						for(int i = 0; i < CHASE_LIGHTS_TURN_ON; i++){
-							alFrame[chaseLightIndex - CHASE_LIGHTS_INTERVAL + i] = ((uint32_t)(alG * options.alChaseBrightnessCustomX) << 16) 
+							frame[chaseLightIndex - CHASE_LIGHTS_INTERVAL + i] = ((uint32_t)(alG * options.alChaseBrightnessCustomX) << 16) 
 																			   | ((uint32_t)(alR * options.alChaseBrightnessCustomX) << 8) 
 																			   | (uint32_t)(alB * options.alChaseBrightnessCustomX);
 						}
@@ -599,98 +602,92 @@ void NeoPicoLEDAddon::ambientLightCustom(uint32_t alFrame[100])
 			break;
 	}
 
+	int maxFrame = min((int)ledOptions.caseRGBCount, FRAME_MAX - alStartIndex); // make sure we don't go over 100
+
 	// Blank out all of our lights if lights are off...
-	if(ledOptions.caseRGBType == CASE_RGB_TYPE_NONE){
-		for(int i = 0; i < (FRAME_MAX - alStartIndex); i++){
-			alFrame[alStartIndex + i] = 0x0;
-		}
-	}
-	else{
-		switch(options.ambientLightEffectsCountIndex){
-			case AL_CUSTOM_EFFECT_STATIC_COLOR:
-				for(int i = 0; i < (FRAME_MAX - alStartIndex); i++){
-					alFrame[alStartIndex + i] = alCustomStaticColors[customStaticColorIndex].value(Animation::format, options.alStaticColorBrightnessCustomX);
-				}
-				break;
+	switch(options.ambientLightEffectsCountIndex){
+		case AL_CUSTOM_EFFECT_STATIC_COLOR:
+			for(int i = 0; i < maxFrame; i++){
+				frame[alStartIndex + i] = alCustomStaticColors[customStaticColorIndex].value(Animation::format, options.alStaticColorBrightnessCustomX);
+			}
+			break;
 
-			case AL_CUSTOM_EFFECT_GRADIENT:
-				for(int i = 0; i < (FRAME_MAX - alStartIndex); i++){
-					alFrame[alStartIndex + i] = ((uint32_t)(alG * options.alGradientBrightnessCustomX) << 16) 
-											  | ((uint32_t)(alR * options.alGradientBrightnessCustomX) << 8) 
-											  | (uint32_t)(alB * options.alGradientBrightnessCustomX);
-				}
-				break;
+		case AL_CUSTOM_EFFECT_GRADIENT:
+			for(int i = 0; i < maxFrame; i++){
+				frame[alStartIndex + i] = ((uint32_t)(alG * options.alGradientBrightnessCustomX) << 16) 
+											| ((uint32_t)(alR * options.alGradientBrightnessCustomX) << 8) 
+											| (uint32_t)(alB * options.alGradientBrightnessCustomX);
+			}
+			break;
 
-			case AL_CUSTOM_EFFECT_CHASE:
-				for(int j = 0; j < (FRAME_MAX - alStartIndex); j++){
-					alFrame[alStartIndex + j] = 0x0;
-				}
+		case AL_CUSTOM_EFFECT_CHASE:
+			for(int j = 0; j < maxFrame; j++){
+				frame[alStartIndex + j] = 0x0;
+			}
 
-				if(chaseLightIndex < FRAME_MAX - CHASE_LIGHTS_TURN_ON - 1){
-					for(int i = 0; i < CHASE_LIGHTS_TURN_ON; i++){
-						alFrame[chaseLightIndex + i] = ((uint32_t)(alG * options.alChaseBrightnessCustomX) << 16) 
-													 | ((uint32_t)(alR * options.alChaseBrightnessCustomX) << 8) 
-													 | (uint32_t)(alB * options.alChaseBrightnessCustomX);
-					}
-					
-					if((chaseLightIndex - ledCount) > CHASE_LIGHTS_INTERVAL){
-						for(int i = 0; i < CHASE_LIGHTS_TURN_ON; i++){
-							alFrame[chaseLightIndex - CHASE_LIGHTS_INTERVAL + i] = ((uint32_t)(alG * options.alChaseBrightnessCustomX) << 16) 
-																			   | ((uint32_t)(alR * options.alChaseBrightnessCustomX) << 8) 
-																			   | (uint32_t)(alB * options.alChaseBrightnessCustomX);
-						}
-					}
+			if(chaseLightIndex < FRAME_MAX - CHASE_LIGHTS_TURN_ON - 1){
+				for(int i = 0; i < CHASE_LIGHTS_TURN_ON; i++){
+					frame[chaseLightIndex + i] = ((uint32_t)(alG * options.alChaseBrightnessCustomX) << 16) 
+													| ((uint32_t)(alR * options.alChaseBrightnessCustomX) << 8) 
+													| (uint32_t)(alB * options.alChaseBrightnessCustomX);
 				}
 				
-				nextRunTimeAmbientLight = make_timeout_time_ms(options.ambientLightChaseSpeed);
-				break;
-
-			case AL_CUSTOM_EFFECT_BREATH:
-				for(int i = 0; i < (FRAME_MAX - alStartIndex); i++){
-					alFrame[alStartIndex + i] = ((uint32_t)(alG * alBrightnessBreathX) << 16) 
-											  | ((uint32_t)(alR * alBrightnessBreathX) << 8) 
-											  | (uint32_t)(alB * alBrightnessBreathX);
-				}
-				break;
-
-			case AL_CUSTOM_EFFECT_STATIC_THEME:
-				for(int i = 0; i < multipleOfCustomStaticThemeCount; i++){
-					for(int j = 0; j < AL_COL; j++){
-						alFrame[alStartIndex + i*AL_COL + j] = alCustomStaticTheme[options.alCustomStaticThemeIndex][j].value(Animation::format, options.alStaticBrightnessCustomThemeX);
+				if((chaseLightIndex - ledCount) > CHASE_LIGHTS_INTERVAL){
+					for(int i = 0; i < CHASE_LIGHTS_TURN_ON; i++){
+						frame[chaseLightIndex - CHASE_LIGHTS_INTERVAL + i] = ((uint32_t)(alG * options.alChaseBrightnessCustomX) << 16) 
+																			| ((uint32_t)(alR * options.alChaseBrightnessCustomX) << 8) 
+																			| (uint32_t)(alB * options.alChaseBrightnessCustomX);
 					}
 				}
+			}
+			
+			nextRunTimeAmbientLight = make_timeout_time_ms(options.ambientLightChaseSpeed);
+			break;
 
-				if(remainderOfCustomStaticThemeCount != 0){
-					for(int k = 0; k < remainderOfCustomStaticThemeCount; k++){
-						alFrame[alStartIndex + multipleOfCustomStaticThemeCount * AL_COL + k] = alCustomStaticTheme[options.alCustomStaticThemeIndex][k].value(Animation::format, options.alStaticBrightnessCustomThemeX);
-					}
+		case AL_CUSTOM_EFFECT_BREATH:
+			for(int i = 0; i < maxFrame; i++){
+				frame[alStartIndex + i] = ((uint32_t)(alG * alBrightnessBreathX) << 16) 
+											| ((uint32_t)(alR * alBrightnessBreathX) << 8) 
+											| (uint32_t)(alB * alBrightnessBreathX);
+			}
+			break;
+
+		case AL_CUSTOM_EFFECT_STATIC_THEME:
+			for(int i = 0; i < multipleOfCustomStaticThemeCount; i++){
+				for(int j = 0; j < AL_COL; j++){
+					frame[alStartIndex + i*AL_COL + j] = alCustomStaticTheme[options.alCustomStaticThemeIndex][j].value(Animation::format, options.alStaticBrightnessCustomThemeX);
 				}
-				break;
+			}
 
-			default:
-				break;
-		}
-	}
+			if(remainderOfCustomStaticThemeCount != 0){
+				for(int k = 0; k < remainderOfCustomStaticThemeCount; k++){
+					frame[alStartIndex + multipleOfCustomStaticThemeCount * AL_COL + k] = alCustomStaticTheme[options.alCustomStaticThemeIndex][k].value(Animation::format, options.alStaticBrightnessCustomThemeX);
+				}
+			}
+			break;
+
+		default:
+			break;
+	};
 }
 
-void NeoPicoLEDAddon::ambientLightLinkage(uint32_t alFrame[100]){
-	/*
-	uint8_t totalOfBaseAnimationLedsCount = this->ledCount;
-	uint8_t alLinkageStartIndex = totalOfBaseAnimationLedsCount;
-	uint8_t buttonLedsCount = totalOfBaseAnimationLedsCount; 
+void NeoPicoLEDAddon::ambientLightLinkage(){
+	LEDOptions & ledOptions = Storage::getInstance().getLedOptions();
+	//uint8_t totalOfBaseAnimationLedsCount = ledOptions.caseRGBCount;
+	uint8_t alLinkageStartIndex = ledOptions.caseRGBIndex;
+	//uint8_t buttonLedsCount = totalOfBaseAnimationLedsCount; 
 	uint8_t multipleOfButtonLedsCount;
 	uint8_t remainderOfButtonLedsCount;
-
+/*
 	uint8_t powerOn_R = 0;
 	uint8_t powerOn_G = 0;
 	uint8_t powerOn_B = 255;
 	uint8_t powerOnStartIndex;
-
+*/
 	const AnimationOptions& animationOptions = Storage::getInstance().getAnimationOptions();
-	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
-	float preLinkageBrightnessX = AnimationStation::GetLinkageModeOfBrightnessX();
-	AnimationEffects preEffect = static_cast<AnimationEffects>(animationOptions.baseAnimationIndex);
-
+	float preLinkageBrightnessX = as.GetLinkageModeOfBrightnessX();
+//	AnimationEffects preEffect = static_cast<AnimationEffects>(animationOptions.baseAnimationIndex);
+/*
 	if (ledOptions.pledType == PLED_TYPE_RGB && PLED_COUNT > 0){
 		buttonLedsCount = totalOfBaseAnimationLedsCount - PLED_COUNT;
 	}
@@ -823,29 +820,21 @@ void NeoPicoLEDAddon::ambientLightLinkage(uint32_t alFrame[100]){
 		default:
 			break;
 	}
+*/
+	multipleOfButtonLedsCount = (ledOptions.caseRGBCount) / (buttonLedCount);
+	remainderOfButtonLedsCount = (ledOptions.caseRGBCount) % (buttonLedCount);
 
-	multipleOfButtonLedsCount = (FRAME_MAX - alLinkageStartIndex) / buttonLedsCount;
-	remainderOfButtonLedsCount = (FRAME_MAX - alLinkageStartIndex) % buttonLedsCount;
-
-	if(as.ambientLightLinkageOnOffFlag == true){
-		for(int i = 0; i < (FRAME_MAX - alLinkageStartIndex); i++){
-			alFrame[alLinkageStartIndex + i] = 0x0;
+	for(int i = 0; i < multipleOfButtonLedsCount; i++){
+		for(int j = 0; j < buttonLedCount; j++){
+			frame[alLinkageStartIndex + i*buttonLedCount + j] = as.linkageFrame[j].value(Animation::format, preLinkageBrightnessX);
 		}
 	}
-	else{
-		for(int i = 0; i < multipleOfButtonLedsCount; i++){
-			for(int j = 0; j < buttonLedsCount; j++){
-				alFrame[alLinkageStartIndex + i*buttonLedsCount + j] = as.linkageFrame[j].value(Animation::format, preLinkageBrightnessX);
-			}
-		}
 
-		if(remainderOfButtonLedsCount != 0){
-			for(int k = 0; k < remainderOfButtonLedsCount; k++){
-				alFrame[alLinkageStartIndex + multipleOfButtonLedsCount * buttonLedsCount + k] = as.linkageFrame[k].value(Animation::format, preLinkageBrightnessX);
-			}
+	if(remainderOfButtonLedsCount != 0){
+		for(int k = 0; k < remainderOfButtonLedsCount; k++){
+			frame[alLinkageStartIndex + multipleOfButtonLedsCount * buttonLedCount + k] = as.linkageFrame[k].value(Animation::format, preLinkageBrightnessX);
 		}
 	}
-	*/
 }
 
 void NeoPicoLEDAddon::process()
@@ -903,6 +892,7 @@ void NeoPicoLEDAddon::process()
     else
         as.ClearPressed();
 
+	// Animation Station calls Effect
     as.Animate();
 
     if (ledOptions.turnOffWhenSuspended && get_usb_suspended()) {
@@ -911,7 +901,8 @@ void NeoPicoLEDAddon::process()
         as.SetBrightness(as.GetBrightness());
     }
 
-    as.ApplyBrightness(frame);
+	// Copy Animation Station to NeoPico w/ Brightness Modification
+    as.ApplyBrightness(&frame[0]);
 
     // Apply the player LEDs to our first 4 leds if we're in NEOPIXEL mode
     if (ledOptions.pledType == PLED_TYPE_RGB) {
@@ -945,16 +936,11 @@ void NeoPicoLEDAddon::process()
 	if ( ledOptions.caseRGBType != CASE_RGB_TYPE_NONE && 
 		ledOptions.caseRGBIndex >= 0 &&
 		ledOptions.caseRGBCount > 0 ) {
-		if ( ledOptions.caseRGBType == CASE_RGB_TYPE_STATIC ) {
-			float brightness = as.GetBrightnessX();
-			uint32_t colorVal = ((RGB)ledOptions.caseRGBColor).value(neopico.GetFormat(), brightness);
-			for(uint32_t i = 0; i < ledOptions.caseRGBCount; i++) {
-				frame[ledOptions.caseRGBIndex+i] = colorVal;
-			}
-		} else if ( ledOptions.caseRGBType == CASE_RGB_TYPE_AMBIENT ) {
-			this->ambientLightCustom(frame);
+		ambientHotkeys(gamepad);
+		if ( ledOptions.caseRGBType == CASE_RGB_TYPE_AMBIENT ) {
+			this->ambientLightCustom();
 		} else if ( ledOptions.caseRGBType == CASE_RGB_TYPE_LINKED ) {
-			this->ambientLightLinkage(frame); //Custom mode
+			this->ambientLightLinkage(); //Custom mode
 		}
 	}
 
@@ -1307,7 +1293,17 @@ GamepadHotkey NeoPicoLEDAddon::animationHotkeys(Gamepad *gamepad)
             gamepad->state.buttons &= ~(GAMEPAD_MASK_R3 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
         }
     }
+    return action;
+}
 
+void NeoPicoLEDAddon::ambientHotkeys(Gamepad *gamepad)
+{
+	bool reqSave = false;
+    GamepadHotkey action = HOTKEY_LEDS_NONE;
+	AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
+	LEDOptions & ledOptions = Storage::getInstance().getLedOptions();
+
+	// Only allow Start + Key Ambient Changes if Case RGB is enabled
     if(gamepad->pressedS2() && (gamepad->pressedS1() == false)) // start (not start+back) 
 	{ 
 		if(gamepad->pressedL1()) // LB
@@ -1315,135 +1311,158 @@ GamepadHotkey NeoPicoLEDAddon::animationHotkeys(Gamepad *gamepad)
 			action = HOTKEY_AMBIENT_LIGHT_EFFECTS_CHANGE;
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_L1 | GAMEPAD_MASK_S2);
 
-			// Ambient changes are all done inside of neopico instead of animation station?
-			animationOptions.ambientLightEffectsCountIndex++;
-			if(animationOptions.ambientLightEffectsCountIndex > AL_EFFECT_MODE_MAX - 1){
-				animationOptions.ambientLightEffectsCountIndex = 0;
+			if (lastAmbientAction != action ) {
+				// Ambient changes are all done inside of neopico instead of animation station?
+				animationOptions.ambientLightEffectsCountIndex++;
+				if(animationOptions.ambientLightEffectsCountIndex > AL_EFFECT_MODE_MAX - 1){
+					animationOptions.ambientLightEffectsCountIndex = 0;
+				}
+				alR = 0x00;
+				alG = 0x00;
+				alB = 0x00;
+				alCurrentFrame = 0;
+				alFrameToRGB = 0;
+				alReverse = false;
+				chaseLightIndex = ledOptions.caseRGBIndex;
+				alBrightnessBreathX = 1.00f;
+				breathLedEffectCycle = 0;
+
+				reqSave = true;
 			}
-			alR = 0x00;
-			alG = 0x00;
-			alB = 0x00;
-			alCurrentFrame = 0;
-			alFrameToRGB = 0;
-			alReverse = false;
-			chaseLightIndex = ledOptions.caseRGBIndex;
-			alBrightnessBreathX = 1.00f;
-			breathLedEffectCycle = 0;
-			reqSave = true;
 		}
 		else if(gamepad->pressedL2()) // LT
 		{
 			action = HOTKEY_AMBIENT_LIGHT_EFFECTS_ON_OFF;
+
 			// turn off brightness for ambient lights
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_L2 | GAMEPAD_MASK_S2);
 		}
 		else if(gamepad->pressedB4() && (gamepad->pressedB3() == false)) // Y  not X+Y
 		{
-			//action = HOTKEY_AMBIENT_LIGHT_EFFECTS_BRIGHTNESS_UP;
-			float customBrightnessStep = 1.0f / as.GetBrightnessSteps();
-			if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_CHASE ) {
-				animationOptions.alChaseBrightnessCustomX = min(animationOptions.alChaseBrightnessCustomX+customBrightnessStep, 1.00f);
-			} else if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_GRADIENT ) {
-				animationOptions.alGradientBrightnessCustomX = min(animationOptions.alGradientBrightnessCustomX+customBrightnessStep, 1.00f);
-			} else if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_STATIC_COLOR ) {
-				animationOptions.alStaticColorBrightnessCustomX = min(animationOptions.alStaticColorBrightnessCustomX+customBrightnessStep, 1.00f);
-			} else if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_STATIC_THEME ) {
-				animationOptions.alStaticBrightnessCustomThemeX = min(animationOptions.alStaticBrightnessCustomThemeX+customBrightnessStep, 1.00f);
-			} // do nothing for breath
+			action = HOTKEY_AMBIENT_LIGHT_EFFECTS_BRIGHTNESS_UP;
+			if ( lastAmbientAction != action ) {
+				float customBrightnessStep = 1.0f / as.GetBrightnessSteps();
+				if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_CHASE ) {
+					animationOptions.alChaseBrightnessCustomX = min(animationOptions.alChaseBrightnessCustomX+customBrightnessStep, 1.00f);
+				} else if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_GRADIENT ) {
+					animationOptions.alGradientBrightnessCustomX = min(animationOptions.alGradientBrightnessCustomX+customBrightnessStep, 1.00f);
+				} else if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_STATIC_COLOR ) {
+					animationOptions.alStaticColorBrightnessCustomX = min(animationOptions.alStaticColorBrightnessCustomX+customBrightnessStep, 1.00f);
+				} else if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_STATIC_THEME ) {
+					animationOptions.alStaticBrightnessCustomThemeX = min(animationOptions.alStaticBrightnessCustomThemeX+customBrightnessStep, 1.00f);
+				} // do nothing for breath
 
+				reqSave = true;
+			}
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_B4 | GAMEPAD_MASK_S2);
 		}
 		else if(gamepad->pressedB2()) // B
 		{
-			//action = HOTKEY_AMBIENT_LIGHT_EFFECTS_BRIGHTNESS_DOWN;
-			float customBrightnessStep = 1.0f / as.GetBrightnessSteps();
-			if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_CHASE ) {
-				animationOptions.alChaseBrightnessCustomX = max(animationOptions.alChaseBrightnessCustomX-customBrightnessStep, 0.00f);
-			} else if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_GRADIENT ) {
-				animationOptions.alGradientBrightnessCustomX = max(animationOptions.alGradientBrightnessCustomX-customBrightnessStep, 0.00f);
-			} else if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_STATIC_COLOR ) {
-				animationOptions.alStaticColorBrightnessCustomX = max(animationOptions.alStaticColorBrightnessCustomX-customBrightnessStep, 0.00f);
-			} else if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_STATIC_THEME ) {
-				animationOptions.alStaticBrightnessCustomThemeX = max(animationOptions.alStaticBrightnessCustomThemeX-customBrightnessStep, 0.00f);
-			} // do nothing for breath
+			action = HOTKEY_AMBIENT_LIGHT_EFFECTS_BRIGHTNESS_DOWN;
+			if ( lastAmbientAction != action ) {
+				float customBrightnessStep = 1.0f / as.GetBrightnessSteps();
+				if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_CHASE ) {
+					animationOptions.alChaseBrightnessCustomX = max(animationOptions.alChaseBrightnessCustomX-customBrightnessStep, 0.00f);
+				} else if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_GRADIENT ) {
+					animationOptions.alGradientBrightnessCustomX = max(animationOptions.alGradientBrightnessCustomX-customBrightnessStep, 0.00f);
+				} else if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_STATIC_COLOR ) {
+					animationOptions.alStaticColorBrightnessCustomX = max(animationOptions.alStaticColorBrightnessCustomX-customBrightnessStep, 0.00f);
+				} else if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_STATIC_THEME ) {
+					animationOptions.alStaticBrightnessCustomThemeX = max(animationOptions.alStaticBrightnessCustomThemeX-customBrightnessStep, 0.00f);
+				} // do nothing for breath
+				reqSave = true;
+			}
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_B2 | GAMEPAD_MASK_S2);
 		}
 		else if(gamepad->pressedR1()) // RB
 		{
-			// Rework this entirely
-			//action = HOTKEY_AMBIENT_LIGHT_EFFECTS_PARAMETER_UP;
-			if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_STATIC_COLOR ) {
-				animationOptions.alCustomStaticColorIndex++;
-				if (animationOptions.alCustomStaticColorIndex > AL_STATIC_COLOR_COUNT - 1){
-					animationOptions.alCustomStaticColorIndex = 0; // loop
+			action = HOTKEY_AMBIENT_LIGHT_EFFECTS_PARAMETER_UP;
+			if ( lastAmbientAction != action ) {
+				if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_STATIC_COLOR ) {
+					animationOptions.alCustomStaticColorIndex++;
+					if (animationOptions.alCustomStaticColorIndex > AL_STATIC_COLOR_COUNT - 1){
+						animationOptions.alCustomStaticColorIndex = 0; // loop
+					}
+				} else if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_STATIC_THEME ) {
+					animationOptions.alCustomStaticThemeIndex++;
+					if (animationOptions.alCustomStaticThemeIndex > AL_ROW - 1){
+						animationOptions.alCustomStaticThemeIndex = 0; // loop
+					}
 				}
-			} else if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_STATIC_THEME ) {
-				animationOptions.alCustomStaticThemeIndex++;
-				if (animationOptions.alCustomStaticThemeIndex > AL_ROW - 1){
-					animationOptions.alCustomStaticThemeIndex = 0; // loop
-				}
+				reqSave = true;
 			}
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_R1 | GAMEPAD_MASK_S2);
 		}
 		else if(gamepad->pressedR2()) // RT
 		{
-			//action = HOTKEY_AMBIENT_LIGHT_EFFECTS_PARAMETER_DOWN;
-			if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_STATIC_COLOR ) {
-				if (animationOptions.alCustomStaticColorIndex == 0 ) {
-					animationOptions.alCustomStaticColorIndex = AL_STATIC_COLOR_COUNT - 1;
-				} else {
-					animationOptions.alCustomStaticColorIndex--;
+			action = HOTKEY_AMBIENT_LIGHT_EFFECTS_PARAMETER_DOWN;
+			if ( lastAmbientAction != action ) {
+				if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_STATIC_COLOR ) {
+					if (animationOptions.alCustomStaticColorIndex == 0 ) {
+						animationOptions.alCustomStaticColorIndex = AL_STATIC_COLOR_COUNT - 1;
+					} else {
+						animationOptions.alCustomStaticColorIndex--;
+					}
+				} else if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_STATIC_THEME ) {
+					if (animationOptions.alCustomStaticThemeIndex == 0 ) {
+						animationOptions.alCustomStaticThemeIndex = AL_ROW - 1;
+					} else {
+						animationOptions.alCustomStaticThemeIndex--;
+					}
 				}
-			} else if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_STATIC_THEME ) {
-				if (animationOptions.alCustomStaticThemeIndex == 0 ) {
-					animationOptions.alCustomStaticThemeIndex = AL_ROW - 1;
-				} else {
-					animationOptions.alCustomStaticThemeIndex--;
-				}
+				reqSave = true;
 			}
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_R2 | GAMEPAD_MASK_S2);
 		}
 		else if(gamepad->pressedL3()) // LS
 		{
-			//action = HOTKEY_AMBIENT_LIGHT_EFFECTS_FRAME_SPEED_UP;
-			if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_GRADIENT ) {
-				animationOptions.ambientLightGradientSpeed = min(animationOptions.ambientLightGradientSpeed+1,(uint32_t)6);
-			} else if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_CHASE ) {
-				animationOptions.ambientLightChaseSpeed = max(animationOptions.ambientLightChaseSpeed-20,(int32_t)0);
-			} else if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_BREATH ) {
-				animationOptions.ambientLightBreathSpeed = min(animationOptions.ambientLightBreathSpeed+0.01f,0.05f);
+			action = HOTKEY_AMBIENT_LIGHT_EFFECTS_FRAME_SPEED_UP;
+			if ( lastAmbientAction != action ) {
+				if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_GRADIENT ) {
+					animationOptions.ambientLightGradientSpeed = min(animationOptions.ambientLightGradientSpeed+1,(uint32_t)6);
+				} else if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_CHASE ) {
+					animationOptions.ambientLightChaseSpeed = max(animationOptions.ambientLightChaseSpeed-10,(int32_t)0);
+				} else if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_BREATH ) {
+					animationOptions.ambientLightBreathSpeed = min(animationOptions.ambientLightBreathSpeed+0.01f,0.05f);
+				}
+				reqSave = true;
 			}
-			
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_L3 | GAMEPAD_MASK_S2);
 		}
 		else if(gamepad->pressedR3()) // RS
 		{
-			//action = HOTKEY_AMBIENT_LIGHT_EFFECTS_FRAME_SPEED_DOWN;
-			if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_GRADIENT ) {
-				animationOptions.ambientLightGradientSpeed = max(animationOptions.ambientLightGradientSpeed-1,(uint32_t)2);
-			} else if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_CHASE ) {
-				animationOptions.ambientLightChaseSpeed = min(animationOptions.ambientLightChaseSpeed+20,(int32_t)100);
-			} else if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_BREATH ) {
-				animationOptions.ambientLightBreathSpeed = max(animationOptions.ambientLightBreathSpeed-0.01f,0.01f);
+			action = HOTKEY_AMBIENT_LIGHT_EFFECTS_FRAME_SPEED_DOWN;
+			if ( lastAmbientAction != action ) {
+				if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_GRADIENT ) {
+					animationOptions.ambientLightGradientSpeed = max(animationOptions.ambientLightGradientSpeed-1,(uint32_t)1);
+				} else if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_CHASE ) {
+					animationOptions.ambientLightChaseSpeed = min(animationOptions.ambientLightChaseSpeed+10,(int32_t)100);
+				} else if ( animationOptions.ambientLightEffectsCountIndex == AL_CUSTOM_EFFECT_BREATH ) {
+					animationOptions.ambientLightBreathSpeed = max(animationOptions.ambientLightBreathSpeed-0.01f,0.01f);
+				}
+				reqSave = true;
 			}
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_R3 | GAMEPAD_MASK_S2);
 		}
 		else if((gamepad->pressedB1()) && (gamepad->pressedB3())) // A + X
 		{
 			// Rework this entirely
-			//action = HOTKEY_AMBIENT_LIGHT_EFFECTS_CUSTOM_LINKAGE;
-			//if ( lastAction != action ) {
-			//	animationOptions.ambientLightCustomLinkageModeFlag = !animationOptions.ambientLightCustomLinkageModeFlag;
-			//	reqSave = true;
-			//}
+			action = HOTKEY_AMBIENT_LIGHT_EFFECTS_CUSTOM_LINKAGE;
+			if ( lastAmbientAction != action ) {
+			    if ( ledOptions.caseRGBType == CASE_RGB_TYPE_AMBIENT ) {
+					ledOptions.caseRGBType = CASE_RGB_TYPE_LINKED;
+				} else if ( ledOptions.caseRGBType == CASE_RGB_TYPE_LINKED ) {
+					ledOptions.caseRGBType = CASE_RGB_TYPE_AMBIENT;
+				}
+				reqSave = true;
+			}
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_B1 | GAMEPAD_MASK_B3 | GAMEPAD_MASK_S2);
 		}
 	}
 
 	if (reqSave) {
-
+		EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 	}
 
-	lastAction = action;
-    return action;
+	lastAmbientAction = action;
 }

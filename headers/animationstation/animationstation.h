@@ -46,6 +46,7 @@ public:
     void DimBrightnessTo0();
     uint8_t GetBrightnessSteps(){ return this->brightnessSteps; };
     uint8_t GetCustomBrightnessStepsSize(){ return (brightnessMax / brightnessSteps); };
+    RGB linkageFrame[100]; // copy baseAnimation frame exclude buttonAnimation frame
 
 private:
     Animation* baseAnimation;
@@ -54,7 +55,6 @@ private:
     absolute_time_t nextChange;
     uint8_t effectCount;
     RGB frame[100];
-    RGB linkageFrame[100]; // copy baseAnimation frame exclude buttonAnimation frame
     bool ambientLightEffectsChangeFlag = false; 
     bool ambientLightOnOffFlag = false;
     bool ambientLightLinkageOnOffFlag = false;

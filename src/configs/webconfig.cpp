@@ -852,7 +852,6 @@ std::string setLedOptions()
     readDoc(ledOptions.caseRGBType, doc, "caseRGBType");
     readDoc(ledOptions.caseRGBIndex, doc, "caseRGBIndex");
     readDoc(ledOptions.caseRGBCount, doc, "caseRGBCount");
-    readDoc(ledOptions.caseRGBColor, doc, "caseRGBColor");
 
     Storage::getInstance().save(true);
     return serialize_json(doc);
@@ -912,7 +911,6 @@ std::string getLedOptions()
     writeDoc(doc, "caseRGBType", ledOptions.caseRGBType);
     writeDoc(doc, "caseRGBIndex", ledOptions.caseRGBIndex);
     writeDoc(doc, "caseRGBCount", ledOptions.caseRGBCount);
-    writeDoc(doc, "caseRGBColor", ((RGB)ledOptions.caseRGBColor).value(LED_FORMAT_RGB));
 
     return serialize_json(doc);
 }

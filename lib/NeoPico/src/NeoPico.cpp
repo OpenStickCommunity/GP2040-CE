@@ -25,11 +25,11 @@ void NeoPico::PutPixel(uint32_t pixelData) {
   switch (format) {
     case LED_FORMAT_GRB:
     case LED_FORMAT_RGB:
-      pio_sm_put_blocking(pio0, 0, pixelData << 8u);
+      pio_sm_put_blocking(pio, 0, pixelData << 8u);
       break;
     case LED_FORMAT_GRBW:
     case LED_FORMAT_RGBW:
-      pio_sm_put_blocking(pio0, 0, pixelData);
+      pio_sm_put_blocking(pio, 0, pixelData);
       break;
   }
 }
@@ -59,10 +59,13 @@ void NeoPico::Show() {
      this->PutPixel(this->frame[i]);
   }
 
+  // Ambient lights
+  /*
   for(int j = this->numPixels; j < 100; ++j) { 
     // this->PutPixel(this->frame[j]);
-    pio_sm_put_blocking(pio0, 0, (this->frame[j]) << 8u);
+    pio_sm_put_blocking(pio, 0, (this->frame[j]) << 8u);
   }
+  */
   //sleep_ms(10);
 }
 

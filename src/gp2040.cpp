@@ -277,9 +277,6 @@ void GP2040::run() {
 
 		memcpy(&prevState, &gamepad->state, sizeof(GamepadState));
 
-		// Do any queued saves in StorageManager
-		Storage::getInstance().performEnqueuedSaves();
-		
 		// Debounce
 		debounceGpioGetAll();
 		// Read Gamepad

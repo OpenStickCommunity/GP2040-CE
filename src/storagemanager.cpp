@@ -19,7 +19,6 @@
 
 void Storage::init() {
 	EEPROM.start();
-	critical_section_init(&animationOptionsCs);
 	ConfigUtils::load(config);
 }
 
@@ -40,93 +39,6 @@ bool Storage::save(const bool force) {
 	} else {
 		return false;
 	}
-}
-
-static void updateAnimationOptionsProto(const AnimationOptions& options)
-{
-	AnimationOptions& optionsProto = Storage::getInstance().getAnimationOptions();
-
-	optionsProto.baseAnimationIndex			= options.baseAnimationIndex;
-	optionsProto.brightness					= options.brightness;
-	optionsProto.staticColorIndex			= options.staticColorIndex;
-	optionsProto.buttonColorIndex			= options.buttonColorIndex;
-	optionsProto.chaseCycleTime				= options.chaseCycleTime;
-	optionsProto.rainbowCycleTime			= options.rainbowCycleTime;
-	optionsProto.themeIndex					= options.themeIndex;
-	optionsProto.hasCustomTheme				= options.hasCustomTheme;
-	optionsProto.customThemeUp				= options.customThemeUp;
-	optionsProto.customThemeDown			= options.customThemeDown;
-	optionsProto.customThemeLeft			= options.customThemeLeft;
-	optionsProto.customThemeRight			= options.customThemeRight;
-	optionsProto.customThemeB1				= options.customThemeB1;
-	optionsProto.customThemeB2				= options.customThemeB2;
-	optionsProto.customThemeB3				= options.customThemeB3;
-	optionsProto.customThemeB4				= options.customThemeB4;
-	optionsProto.customThemeL1				= options.customThemeL1;
-	optionsProto.customThemeR1				= options.customThemeR1;
-	optionsProto.customThemeL2				= options.customThemeL2;
-	optionsProto.customThemeR2				= options.customThemeR2;
-	optionsProto.customThemeS1				= options.customThemeS1;
-	optionsProto.customThemeS2				= options.customThemeS2;
-	optionsProto.customThemeA1				= options.customThemeA1;
-	optionsProto.customThemeA2				= options.customThemeA2;
-	optionsProto.customThemeL3				= options.customThemeL3;
-	optionsProto.customThemeR3				= options.customThemeR3;
-	optionsProto.customThemeUpPressed		= options.customThemeUpPressed;
-	optionsProto.customThemeDownPressed		= options.customThemeDownPressed;
-	optionsProto.customThemeLeftPressed		= options.customThemeLeftPressed;
-	optionsProto.customThemeRightPressed	= options.customThemeRightPressed;
-	optionsProto.customThemeB1Pressed		= options.customThemeB1Pressed;
-	optionsProto.customThemeB2Pressed		= options.customThemeB2Pressed;
-	optionsProto.customThemeB3Pressed		= options.customThemeB3Pressed;
-	optionsProto.customThemeB4Pressed		= options.customThemeB4Pressed;
-	optionsProto.customThemeL1Pressed		= options.customThemeL1Pressed;
-	optionsProto.customThemeR1Pressed		= options.customThemeR1Pressed;
-	optionsProto.customThemeL2Pressed		= options.customThemeL2Pressed;
-	optionsProto.customThemeR2Pressed		= options.customThemeR2Pressed;
-	optionsProto.customThemeS1Pressed		= options.customThemeS1Pressed;
-	optionsProto.customThemeS2Pressed		= options.customThemeS2Pressed;
-	optionsProto.customThemeA1Pressed		= options.customThemeA1Pressed;
-	optionsProto.customThemeA2Pressed		= options.customThemeA2Pressed;
-	optionsProto.customThemeL3Pressed		= options.customThemeL3Pressed;
-	optionsProto.customThemeR3Pressed		= options.customThemeR3Pressed;
-	optionsProto.buttonPressColorCooldownTimeInMs = options.buttonPressColorCooldownTimeInMs;	
-	optionsProto.ambientLightEffectsCountIndex = options.ambientLightEffectsCountIndex;	
-	optionsProto.alStaticColorBrightnessCustomX = options.alStaticColorBrightnessCustomX;	
-	optionsProto.alGradientBrightnessCustomX = options.alGradientBrightnessCustomX;	
-	optionsProto.alChaseBrightnessCustomX = options.alChaseBrightnessCustomX;
-	optionsProto.alStaticBrightnessCustomThemeX = options.alStaticBrightnessCustomThemeX;		
-	optionsProto.ambientLightCustomLinkageModeFlag = options.ambientLightCustomLinkageModeFlag;	
-	optionsProto.ambientLightGradientSpeed = options.ambientLightGradientSpeed;	
-	optionsProto.ambientLightChaseSpeed = options.ambientLightChaseSpeed;	
-	optionsProto.ambientLightBreathSpeed = options.ambientLightBreathSpeed;	
-	optionsProto.alCustomStaticThemeIndex = options.alCustomStaticThemeIndex;	
-	optionsProto.alCustomStaticColorIndex = options.alCustomStaticColorIndex;
-}
-
-void Storage::performEnqueuedSaves()
-{
-	if (animationOptionsSavePending.load())
-	{
-		critical_section_enter_blocking(&animationOptionsCs);
-		updateAnimationOptionsProto(animationOptionsToSave);
-		save();
-		animationOptionsSavePending.store(false);
-		critical_section_exit(&animationOptionsCs);
-	}
-}
-
-void Storage::enqueueAnimationOptionsSave(const AnimationOptions& animationOptions)
-{
-	const uint32_t crc = CRC32::calculate(&animationOptions);
-	critical_section_enter_blocking(&animationOptionsCs);
-	if (crc != animationOptionsCrc)
-	{
-		animationOptionsToSave = animationOptions;
-		animationOptionsCrc = crc;
-		animationOptionsSavePending.store(true);
-	}
-	critical_section_exit(&animationOptionsCs);
 }
 
 void Storage::ResetSettings()

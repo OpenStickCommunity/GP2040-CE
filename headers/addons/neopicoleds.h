@@ -156,11 +156,6 @@
 #define LEDS_TURN_OFF_WHEN_SUSPENDED 0
 #endif
 
-void configureAnimations(AnimationStation *as);
-GamepadHotkey animationHotkeys(Gamepad *gamepad);
-PixelMatrix createLedButtonLayout(ButtonLayout layout, int ledsPerPixel);
-PixelMatrix createLedButtonLayout(ButtonLayout layout, std::vector<uint8_t> *positions);
-
 // Neo Pixel needs to tie into PlayerLEDS led Levels
 class NeoPicoPlayerLEDs : public PlayerLEDs
 {
@@ -181,10 +176,9 @@ public:
     virtual void process();
     virtual void postprocess(bool sent) {}
     virtual void reinit() {}
-    virtual std::string name() { return NeoPicoLEDName; }
-    void ambientLightCustom(uint32_t alFrame[100]); 
-	void ambientLightLinkage(uint32_t alFrame[100]); 
-    uint32_t frame[100];
+    virtual std::string name() { return NeoPicoLEDName; }    
+	void ambientLightLinkage(); 
+    
 private:
     std::vector<uint8_t> * getLEDPositions(std::string button, std::vector<std::vector<uint8_t>> *positions);
     std::vector<std::vector<Pixel>> generatedLEDButtons(std::vector<std::vector<uint8_t>> *positions);
@@ -194,9 +188,12 @@ private:
     std::vector<std::vector<Pixel>> createLEDLayout(ButtonLayout layout, uint8_t ledsPerPixel, uint8_t ledButtonCount);
     uint8_t setupButtonPositions();
     GamepadHotkey animationHotkeys(Gamepad *gamepad);
+    void ambientHotkeys(Gamepad *gamepad);
+    void ambientLightCustom(); 
     const uint32_t intervalMS = 10;
     absolute_time_t nextRunTime;
-    uint8_t ledCount;
+    int ledCount;
+    int buttonLedCount;
     PixelMatrix matrix;
     NeoPico neopico;
     PLEDAnimationState animationState; // NeoPico can control the player LEDs
@@ -204,7 +201,8 @@ private:
     AnimationStation as;
     std::map<std::string, int> buttonPositions;
     PLEDType ledType;
-    GamepadHotkey lastAction;
+    GamepadHotkey lastAmbientAction;
+    uint32_t frame[100];
 
     // Ambient neopico leds
 	float alBrightnessBreathX;
