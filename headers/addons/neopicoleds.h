@@ -267,6 +267,9 @@ private:
 	absolute_time_t nextRunTimeAmbientLight;
     uint8_t chaseLightIndex;
     uint8_t chaseLightMaxIndexPos;
+
+    uint8_t multipleOfButtonLedsCount;
+    uint8_t remainderOfButtonLedsCount;
 };
 
 #endif

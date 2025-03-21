@@ -284,6 +284,9 @@ void NeoPicoLEDAddon::setup() {
 	// Start of chase light index is case rgb index
 	chaseLightIndex = ledOptions.caseRGBIndex;
 	chaseLightMaxIndexPos = ledCount;
+
+	multipleOfButtonLedsCount = (ledOptions.caseRGBCount) / (buttonLedCount);
+	remainderOfButtonLedsCount = (ledOptions.caseRGBCount) % (buttonLedCount);
 }
 
 void NeoPicoLEDAddon::ambientLightCustom() {
@@ -435,8 +438,8 @@ void NeoPicoLEDAddon::ambientLightCustom() {
 			}
 			break;
 		case AL_CUSTOM_EFFECT_STATIC_THEME:
-			multipleOfCustomStaticThemeCount = (FRAME_MAX - ledCount) / AL_COL;
-			remainderOfCustomStaticThemeCount = (FRAME_MAX - ledCount) % AL_COL;
+			multipleOfCustomStaticThemeCount = maxFrame / AL_COL;
+			remainderOfCustomStaticThemeCount = maxFrame % AL_COL;
 			// Fill frame with extras on remainder
 			for(int i = 0; i < multipleOfCustomStaticThemeCount; i++){
 				for(int j = 0; j < AL_COL; j++){
@@ -455,18 +458,15 @@ void NeoPicoLEDAddon::ambientLightCustom() {
 }
 
 void NeoPicoLEDAddon::ambientLightLinkage() {
-	LEDOptions & ledOptions = Storage::getInstance().getLedOptions();
+	const LEDOptions & ledOptions = Storage::getInstance().getLedOptions();
 	uint8_t alLinkageStartIndex = ledOptions.caseRGBIndex;
-	uint8_t multipleOfButtonLedsCount;
-	uint8_t remainderOfButtonLedsCount;
 	float preLinkageBrightnessX = as.GetLinkageModeOfBrightnessX();
-	multipleOfButtonLedsCount = (ledOptions.caseRGBCount) / (buttonLedCount);
-	remainderOfButtonLedsCount = (ledOptions.caseRGBCount) % (buttonLedCount);
 	for(int i = 0; i < multipleOfButtonLedsCount; i++){ // Repeat buttons
 		for(int j = 0; j < buttonLedCount; j++){
 			frame[alLinkageStartIndex + i*buttonLedCount + j] = as.linkageFrame[j].value(Animation::format, preLinkageBrightnessX);
 		}
 	}
+	
 	if(remainderOfButtonLedsCount != 0){ // Remainder
 		for(int k = 0; k < remainderOfButtonLedsCount; k++){
 			frame[alLinkageStartIndex + multipleOfButtonLedsCount * buttonLedCount + k] = as.linkageFrame[k].value(Animation::format, preLinkageBrightnessX);
