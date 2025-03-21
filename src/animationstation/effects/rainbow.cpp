@@ -1,4 +1,5 @@
-#include "Rainbow.hpp"
+#include "rainbow.h"
+#include "storagemanager.h"
 
 Rainbow::Rainbow(PixelMatrix &matrix) : Animation(matrix) {
 }
@@ -41,7 +42,8 @@ void Rainbow::Animate(RGB (&frame)[100]) {
     }
   }
 
-  this->nextRunTime = make_timeout_time_ms(AnimationStation::options.rainbowCycleTime);
+  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
+  this->nextRunTime = make_timeout_time_ms(animationOptions.rainbowCycleTime);
 }
 
 // clamp rainbowCycleTime to [1 ... INT16_MAX]
@@ -50,17 +52,19 @@ void Rainbow::Animate(RGB (&frame)[100]) {
 #define RAINBOW_CYCLE_MIN         1         + RAINBOW_CYCLE_INCREMENT
 
 void Rainbow::ParameterUp() {
-  if (AnimationStation::options.rainbowCycleTime < RAINBOW_CYCLE_MAX) {
-    AnimationStation::options.rainbowCycleTime = AnimationStation::options.rainbowCycleTime + RAINBOW_CYCLE_INCREMENT;
+  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
+  if (animationOptions.rainbowCycleTime < RAINBOW_CYCLE_MAX) {
+    animationOptions.rainbowCycleTime = animationOptions.rainbowCycleTime + RAINBOW_CYCLE_INCREMENT;
   } else {
-    AnimationStation::options.rainbowCycleTime = INT16_MAX;
+    animationOptions.rainbowCycleTime = INT16_MAX;
   }
 }
 
 void Rainbow::ParameterDown() {
-  if (AnimationStation::options.rainbowCycleTime > RAINBOW_CYCLE_MIN) {
-    AnimationStation::options.rainbowCycleTime = AnimationStation::options.rainbowCycleTime - RAINBOW_CYCLE_INCREMENT;
+  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
+  if (animationOptions.rainbowCycleTime > RAINBOW_CYCLE_MIN) {
+    animationOptions.rainbowCycleTime = animationOptions.rainbowCycleTime - RAINBOW_CYCLE_INCREMENT;
   } else {
-    AnimationStation::options.rainbowCycleTime = 1;
+    animationOptions.rainbowCycleTime = 1;
   }
 }

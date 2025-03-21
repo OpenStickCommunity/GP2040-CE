@@ -7,7 +7,7 @@
 #include "eventmanager.h"
 #include "layoutmanager.h"
 #include "peripheralmanager.h"
-#include "AnimationStorage.hpp"
+#include "animationstorage.h"
 #include "system.h"
 #include "config_utils.h"
 #include "types.h"
@@ -852,7 +852,6 @@ std::string setLedOptions()
     readDoc(ledOptions.caseRGBType, doc, "caseRGBType");
     readDoc(ledOptions.caseRGBIndex, doc, "caseRGBIndex");
     readDoc(ledOptions.caseRGBCount, doc, "caseRGBCount");
-    readDoc(ledOptions.caseRGBColor, doc, "caseRGBColor");
 
     Storage::getInstance().save(true);
     return serialize_json(doc);
@@ -912,7 +911,6 @@ std::string getLedOptions()
     writeDoc(doc, "caseRGBType", ledOptions.caseRGBType);
     writeDoc(doc, "caseRGBIndex", ledOptions.caseRGBIndex);
     writeDoc(doc, "caseRGBCount", ledOptions.caseRGBCount);
-    writeDoc(doc, "caseRGBColor", ((RGB)ledOptions.caseRGBColor).value(LED_FORMAT_RGB));
 
     return serialize_json(doc);
 }
@@ -1010,7 +1008,7 @@ std::string setCustomTheme()
 {
     DynamicJsonDocument doc = get_post_data();
 
-    AnimationOptions options = AnimationStation::options;
+    AnimationOptions & options = Storage::getInstance().getAnimationOptions();
 
     const auto readDocDefaultToZero = [&](const char* key0, const char* key1) -> uint32_t
     {
@@ -1064,16 +1062,14 @@ std::string setCustomTheme()
     readDoc(pressCooldown, doc, "buttonPressColorCooldownTimeInMs");
     options.buttonPressColorCooldownTimeInMs = pressCooldown;
 
-    AnimationStation::SetOptions(options);
     Storage::getInstance().save(true);
-
     return serialize_json(doc);
 }
 
 std::string getCustomTheme()
 {
     DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-    const AnimationOptions& options = AnimationStation::options;
+    const AnimationOptions& options = Storage::getInstance().getAnimationOptions();
 
     writeDoc(doc, "enabled", options.hasCustomTheme);
     writeDoc(doc, "Up", "u", options.customThemeUp);

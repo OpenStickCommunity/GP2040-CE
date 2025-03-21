@@ -8,9 +8,9 @@
 
 #include "BoardConfig.h"
 #include <stdint.h>
-#include "AnimationStation.hpp"
+#include "animationstation.h"
 #include "storagemanager.h"
-#include "PlayerLEDs.h"
+#include "playerleds.h"
 #include "gpaddon.h"
 #include "helper.h"
 

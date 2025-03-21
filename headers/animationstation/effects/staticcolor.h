@@ -4,8 +4,8 @@
 #include <vector>
 #include <stdio.h>
 #include <stdlib.h>
-#include "../Animation.hpp"
-#include "../AnimationStation.hpp"
+#include "animation.h"
+#include "animationstation.h"
 
 class StaticColor : public Animation {
 public:

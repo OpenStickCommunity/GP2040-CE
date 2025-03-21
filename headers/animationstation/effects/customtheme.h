@@ -2,21 +2,20 @@
 #define CUSTOM_THEME_H_
 
 #include <map>
-#include "../Animation.hpp"
-#include "../AnimationStation.hpp"
+#include "animation.h"
+#include "animationstation.h"
 
 class CustomTheme : public Animation {
 public:
   CustomTheme(PixelMatrix &matrix);
   ~CustomTheme() {  };
 
-  static bool HasTheme();
-  static void SetCustomTheme(std::map<uint32_t, RGB> customTheme);
+  bool HasTheme();
   void Animate(RGB (&frame)[100]);
   void ParameterUp();
   void ParameterDown();
 protected:
-  static std::map<uint32_t, RGB> theme;
+  std::map<uint32_t, RGB> theme;
 };
 
 #endif

@@ -190,8 +190,9 @@ static void service_traffic(void)
   /* handle any packet received by tud_network_recv_cb() */
   if (received_frame)
   {
-    ethernet_input(received_frame, &netif_data);
-    pbuf_free(received_frame);
+    if (ethernet_input(received_frame, &netif_data)!=ERR_OK) {
+      pbuf_free(received_frame);
+    }
     received_frame = NULL;
     tud_network_recv_renew();
   }

@@ -19,8 +19,10 @@
 
 // MPGS
 #include "BoardConfig.h"
-#include "AnimationStation.hpp"
-#include "NeoPico.hpp"
+#include "animationstation.h"
+#include "NeoPico.h"
+
+#include "enums.pb.h"
 
 #ifndef BOARD_LEDS_PIN
 #define BOARD_LEDS_PIN -1
@@ -154,10 +156,57 @@
 #define LEDS_TURN_OFF_WHEN_SUSPENDED 0
 #endif
 
-void configureAnimations(AnimationStation *as);
-AnimationHotkey animationHotkeys(Gamepad *gamepad);
-PixelMatrix createLedButtonLayout(ButtonLayout layout, int ledsPerPixel);
-PixelMatrix createLedButtonLayout(ButtonLayout layout, std::vector<uint8_t> *positions);
+#ifndef CASE_RGB_TYPE
+#define CASE_RGB_TYPE CASE_RGB_TYPE_NONE
+#endif
+
+#ifndef CASE_RGB_INDEX
+#define CASE_RGB_INDEX -1
+#endif
+
+#ifndef CASE_RGB_COUNT
+#define CASE_RGB_COUNT 0
+#endif
+
+#ifndef AMBIENT_LIGHT_EFFECT
+#define AMBIENT_LIGHT_EFFECT AL_CUSTOM_EFFECT_STATIC_COLOR
+#endif
+
+#ifndef AMBIENT_STATIC_COLOR_BRIGHTNESS
+#define AMBIENT_STATIC_COLOR_BRIGHTNESS 1.00f
+#endif
+
+#ifndef AMBIENT_GRADIENT_COLOR_BRIGHTNESS
+#define AMBIENT_GRADIENT_COLOR_BRIGHTNESS 1.00f
+#endif
+
+#ifndef AMBIENT_CHASE_COLOR_BRIGHTNESS
+#define AMBIENT_CHASE_COLOR_BRIGHTNESS 1.00f
+#endif
+
+#ifndef AMBIENT_CUSTOM_THEME_BRIGHTNESS
+#define AMBIENT_CUSTOM_THEME_BRIGHTNESS 1.00f
+#endif
+
+#ifndef AMBIENT_GRADIENT_SPEED
+#define AMBIENT_GRADIENT_SPEED 2
+#endif
+
+#ifndef AMBIENT_CHASE_SPEED
+#define AMBIENT_CHASE_SPEED 100
+#endif
+
+#ifndef AMBIENT_BREATH_SPEED
+#define AMBIENT_BREATH_SPEED 0.01f
+#endif
+
+#ifndef AMBIENT_CUSTOM_THEME
+#define AMBIENT_CUSTOM_THEME 0
+#endif
+
+#ifndef AMBIENT_STATIC_COLOR
+#define AMBIENT_STATIC_COLOR ANIMATION_COLOR_PURPLE
+#endif
 
 // Neo Pixel needs to tie into PlayerLEDS led Levels
 class NeoPicoPlayerLEDs : public PlayerLEDs
@@ -179,9 +228,9 @@ public:
     virtual void process();
     virtual void postprocess(bool sent) {}
     virtual void reinit() {}
-    virtual std::string name() { return NeoPicoLEDName; }
-    void configureLEDs();
-    uint32_t frame[100];
+    virtual std::string name() { return NeoPicoLEDName; }    
+	void ambientLightLinkage(); 
+    
 private:
     std::vector<uint8_t> * getLEDPositions(std::string button, std::vector<std::vector<uint8_t>> *positions);
     std::vector<std::vector<Pixel>> generatedLEDButtons(std::vector<std::vector<uint8_t>> *positions);
@@ -190,18 +239,37 @@ private:
     std::vector<std::vector<Pixel>> generatedLEDWasdFBM(std::vector<std::vector<uint8_t>> *positions);
     std::vector<std::vector<Pixel>> createLEDLayout(ButtonLayout layout, uint8_t ledsPerPixel, uint8_t ledButtonCount);
     uint8_t setupButtonPositions();
+    GamepadHotkey animationHotkeys(Gamepad *gamepad);
+    void ambientHotkeys(Gamepad *gamepad);
+    void ambientLightCustom();
     const uint32_t intervalMS = 10;
     absolute_time_t nextRunTime;
-    uint8_t ledCount;
+    int ledCount;
+    int buttonLedCount;
     PixelMatrix matrix;
-    NeoPico *neopico;
-    InputMode inputMode; // HACK
+    NeoPico neopico;
     PLEDAnimationState animationState; // NeoPico can control the player LEDs
     NeoPicoPlayerLEDs * neoPLEDs = nullptr;
     AnimationStation as;
     std::map<std::string, int> buttonPositions;
-    bool turnOffWhenSuspended;
     PLEDType ledType;
+    GamepadHotkey lastAmbientAction;
+    uint32_t frame[100];
+
+    // Ambient neopico leds
+	float alBrightnessBreathX;
+	uint8_t breathLedEffectCycle;
+	bool alReverse;
+	int alCurrentFrame;
+	int alFrameToRGB;
+	int alFrameSpeed;
+    RGB ambientLight;
+	absolute_time_t nextRunTimeAmbientLight;
+    uint8_t chaseLightIndex;
+    uint8_t chaseLightMaxIndexPos;
+
+    uint8_t multipleOfButtonLedsCount;
+    uint8_t remainderOfButtonLedsCount;
 };
 
 #endif

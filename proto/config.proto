@@ -313,12 +313,12 @@ message LEDOptions
 
     optional CaseRGBType caseRGBType = 36;
     optional int32 caseRGBIndex = 37;
-    optional uint32 caseRGBColor = 38;
+    optional uint32 caseRGBColor = 38 [deprecated = true];
     optional uint32 caseRGBCount = 39;
 };
 
-// This has to be kept in sync with AnimationOptions in AnimationStation.hpp
-message AnimationOptions_Proto
+// This has to be kept in sync with AnimationOptions in animationstation.hpp
+message AnimationOptions
 {
     optional uint32 baseAnimationIndex = 1;
     optional uint32 brightness = 2;
@@ -366,6 +366,17 @@ message AnimationOptions_Proto
     optional uint32 customThemeA1Pressed = 43;
     optional uint32 customThemeA2Pressed = 44;
     optional uint32 buttonPressColorCooldownTimeInMs = 45;
+    optional uint32 ambientLightEffectsCountIndex = 46;     // ambient count
+    optional bool ambientLightCustomLinkageModeFlag = 47 [deprecated = true];
+    optional uint32 ambientLightGradientSpeed = 48;         // gradient speed
+    optional int32 ambientLightChaseSpeed = 49;             // chase speed
+    optional float ambientLightBreathSpeed = 50;            // breath speed
+    optional float alGradientBrightnessCustomX = 51;        // gradient brightness
+    optional float alChaseBrightnessCustomX = 52;           // chase brightness
+    optional float alStaticColorBrightnessCustomX = 53;     // static brightness
+    optional float alStaticBrightnessCustomThemeX = 54;     // static custom theme brightness
+    optional uint32 alCustomStaticThemeIndex = 55;          // custom theme index
+    optional uint32 alCustomStaticColorIndex = 56;          // static color index
 }
 
 message BootselButtonOptions
@@ -874,7 +885,7 @@ message Config
     optional KeyboardMapping keyboardMapping = 5;
     optional DisplayOptions displayOptions = 6;
     optional LEDOptions ledOptions = 7;
-    optional AnimationOptions_Proto animationOptions = 8;
+    optional AnimationOptions animationOptions = 8;
     optional AddonOptions addonOptions = 9;
     optional ForcedSetupOptions forcedSetupOptions = 10;
     optional ProfileOptions profileOptions = 11;

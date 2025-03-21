@@ -217,6 +217,7 @@ private:
 	bool map48WayModeToggle;
 	const HotkeyOptions & hotkeyOptions;
 
+	HotkeyEntry hotkeys[16];
 	GamepadHotkey lastAction = HOTKEY_NONE;
 };
 

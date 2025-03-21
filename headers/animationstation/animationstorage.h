@@ -1,7 +1,7 @@
-#ifndef _CONFIG_STORAGE_H_
-#define _CONFIG_STORAGE_H_
-
-#include "AnimationStation.hpp"
+#ifndef _ANIMATION_STORAGE_H_
+#define _ANIMATION_STORAGE_H_
+/*
+#include "animationstation.h"
 
 class AnimationStorage
 {
@@ -11,5 +11,5 @@ class AnimationStorage
 };
 
 static AnimationStorage AnimationStore;
-
+*/
 #endif

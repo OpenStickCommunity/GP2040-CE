@@ -1,38 +1,14 @@
-/*
- * SPDX-License-Identifier: MIT
- * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
- */
+#include "statictheme.h"
+#include "storagemanager.h"
+#include "enums.pb.h"
 
-#ifndef LED_THEMES_H_
-#define LED_THEMES_H_
+StaticTheme::StaticTheme(PixelMatrix &matrix) : Animation(matrix) {
+  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
+  if (animationOptions.themeIndex >= themes.size()) {
+    animationOptions.themeIndex = 0;
+  }
 
-#include "BoardConfig.h"
-#include <vector>
-#include "AnimationStation.hpp"
-#include "helper.h"
-
-#include "config.pb.h"
-
-using namespace std;
-
-void addStaticThemes(const LEDOptions& options, const AnimationOptions& animationOptions)
-{
-	map<uint32_t, RGB> themeStaticRainbow({
-		{ GAMEPAD_MASK_DL, ColorRed },
-		{ GAMEPAD_MASK_DD, ColorOrange },
-		{ GAMEPAD_MASK_DR, ColorYellow },
-		{ GAMEPAD_MASK_DU, ColorOrange },
-		{ GAMEPAD_MASK_B3, ColorGreen },
-		{ GAMEPAD_MASK_B1, ColorGreen },
-		{ GAMEPAD_MASK_B4, ColorAqua },
-		{ GAMEPAD_MASK_B2, ColorAqua },
-		{ GAMEPAD_MASK_R1, ColorBlue },
-		{ GAMEPAD_MASK_R2, ColorBlue },
-		{ GAMEPAD_MASK_L1, ColorMagenta },
-		{ GAMEPAD_MASK_L2, ColorMagenta },
-	});
-
-	const map<uint32_t, RGB> themeGuiltyGearTypeA({
+	const std::map<uint32_t, RGB> themeGuiltyGearTypeA({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -44,7 +20,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_R2, ColorOrange },
 	});
 
-	const map<uint32_t, RGB> themeGuiltyGearTypeB({
+	const std::map<uint32_t, RGB> themeGuiltyGearTypeB({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -56,7 +32,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_R2, ColorOrange },
 	});
 
-	const map<uint32_t, RGB> themeGuiltyGearTypeC({
+	const std::map<uint32_t, RGB> themeGuiltyGearTypeC({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -68,7 +44,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_R2, ColorRed },
 	});
 
-	const map<uint32_t, RGB> themeGuiltyGearTypeD({
+	const std::map<uint32_t, RGB> themeGuiltyGearTypeD({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -80,7 +56,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_R1, ColorOrange },
 	});
 
-	const map<uint32_t, RGB> themeGuiltyGearTypeE({
+	const std::map<uint32_t, RGB> themeGuiltyGearTypeE({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -92,7 +68,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_R1, ColorOrange },
 	});
 
-	const map<uint32_t, RGB> themeNeoGeo({
+	const std::map<uint32_t, RGB> themeNeoGeo({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -103,7 +79,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_L1, ColorBlue },
 	});
 
-	const map<uint32_t, RGB> themeNeoGeoCurved({
+	const std::map<uint32_t, RGB> themeNeoGeoCurved({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -114,7 +90,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_R1, ColorBlue },
 	});
 
-	const map<uint32_t, RGB> themeNeoGeoModern({
+	const std::map<uint32_t, RGB> themeNeoGeoModern({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -125,7 +101,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_B2, ColorBlue },
 	});
 
-	const map<uint32_t, RGB> themeSixButtonFighter({
+	const std::map<uint32_t, RGB> themeSixButtonFighter({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -138,7 +114,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_R2, ColorRed },
 	});
 
-	const map<uint32_t, RGB> themeSixButtonFighterPlus({
+	const std::map<uint32_t, RGB> themeSixButtonFighterPlus({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -153,7 +129,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_L2, ColorGreen },
 	});
 
-	const map<uint32_t, RGB> themeStreetFighter2({
+	const std::map<uint32_t, RGB> themeStreetFighter2({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -168,7 +144,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_L2, ColorBlack },
 	});
 
-	const map<uint32_t, RGB> themeTekken({
+	const std::map<uint32_t, RGB> themeTekken({
 		{ GAMEPAD_MASK_DL, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DR, ColorWhite },
@@ -180,7 +156,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_R1, ColorRed },
 	});
 
-	const map<uint32_t, RGB> themePlayStation({
+	const std::map<uint32_t, RGB> themePlayStation({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -195,7 +171,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_L2, ColorBlack },
 	});
 
-	const map<uint32_t, RGB> themePlayStationAll({
+	const std::map<uint32_t, RGB> themePlayStationAll({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -210,7 +186,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_L2, ColorWhite },
 	});
 
-	const map<uint32_t, RGB> themeSuperFamicom({
+	const std::map<uint32_t, RGB> themeSuperFamicom({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -225,7 +201,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_L2, ColorBlack },
 	});
 
-	const map<uint32_t, RGB> themeSuperFamicomAll({
+	const std::map<uint32_t, RGB> themeSuperFamicomAll({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -240,7 +216,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_L2, ColorWhite },
 	});
 
-	const map<uint32_t, RGB> themeXbox({
+	const std::map<uint32_t, RGB> themeXbox({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -255,7 +231,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_L2, ColorBlack },
 	});
 
-	const map<uint32_t, RGB> themeXboxAll({
+	const std::map<uint32_t, RGB> themeXboxAll({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -270,7 +246,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_L2, ColorWhite },
 	});
 
-	const map<uint32_t, RGB> themeFightboard({
+	const std::map<uint32_t, RGB> themeFightboard({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -286,79 +262,93 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 	});
 
 	// Rainbow theme on a Stickless layout should use green for up button
-	themeStaticRainbow[GAMEPAD_MASK_DU] = (options.ledLayout == BUTTON_LAYOUT_STICKLESS) ? ColorGreen : ColorOrange;
+  std::map<uint32_t, RGB> themeStaticRainbow({
+		{ GAMEPAD_MASK_DL, ColorRed },
+		{ GAMEPAD_MASK_DD, ColorOrange },
+		{ GAMEPAD_MASK_DR, ColorYellow },
+		{ GAMEPAD_MASK_DU, ColorOrange },
+		{ GAMEPAD_MASK_B3, ColorGreen },
+		{ GAMEPAD_MASK_B1, ColorGreen },
+		{ GAMEPAD_MASK_B4, ColorAqua },
+		{ GAMEPAD_MASK_B2, ColorAqua },
+		{ GAMEPAD_MASK_R1, ColorBlue },
+		{ GAMEPAD_MASK_R2, ColorBlue },
+		{ GAMEPAD_MASK_L1, ColorMagenta },
+		{ GAMEPAD_MASK_L2, ColorMagenta },
+	});
 
-	StaticTheme::ClearThemes();
+  LEDOptions & ledOptions = Storage::getInstance().getLedOptions();
+	themeStaticRainbow[GAMEPAD_MASK_DU] = (ledOptions.ledLayout == BUTTON_LAYOUT_STICKLESS) ? ColorGreen : ColorOrange;
 
-	StaticTheme::AddTheme(themeStaticRainbow);
-
-	StaticTheme::AddTheme(themeXbox);
-	StaticTheme::AddTheme(themeXboxAll);
-	StaticTheme::AddTheme(themeSuperFamicom);
-	StaticTheme::AddTheme(themeSuperFamicomAll);
-	StaticTheme::AddTheme(themePlayStation);
-	StaticTheme::AddTheme(themePlayStationAll);
-
-	StaticTheme::AddTheme(themeNeoGeo);
-	StaticTheme::AddTheme(themeNeoGeoCurved);
-	StaticTheme::AddTheme(themeNeoGeoModern);
-	StaticTheme::AddTheme(themeSixButtonFighter);
-	StaticTheme::AddTheme(themeSixButtonFighterPlus);
-
-	StaticTheme::AddTheme(themeStreetFighter2);
-	StaticTheme::AddTheme(themeTekken);
-	StaticTheme::AddTheme(themeGuiltyGearTypeA);
-	StaticTheme::AddTheme(themeGuiltyGearTypeB);
-	StaticTheme::AddTheme(themeGuiltyGearTypeC);
-	StaticTheme::AddTheme(themeGuiltyGearTypeD);
-	StaticTheme::AddTheme(themeGuiltyGearTypeE);
-
-	StaticTheme::AddTheme(themeFightboard);
-
-	if (animationOptions.hasCustomTheme)
-	{
-		map<uint32_t, RGB> customTheme;
-		customTheme[GAMEPAD_MASK_DU] = RGB(animationOptions.customThemeUp);
-		customTheme[GAMEPAD_MASK_DD] = RGB(animationOptions.customThemeDown);
-		customTheme[GAMEPAD_MASK_DL] = RGB(animationOptions.customThemeLeft);
-		customTheme[GAMEPAD_MASK_DR] = RGB(animationOptions.customThemeRight);
-		customTheme[GAMEPAD_MASK_B1] = RGB(animationOptions.customThemeB1);
-		customTheme[GAMEPAD_MASK_B2] = RGB(animationOptions.customThemeB2);
-		customTheme[GAMEPAD_MASK_B3] = RGB(animationOptions.customThemeB3);
-		customTheme[GAMEPAD_MASK_B4] = RGB(animationOptions.customThemeB4);
-		customTheme[GAMEPAD_MASK_L1] = RGB(animationOptions.customThemeL1);
-		customTheme[GAMEPAD_MASK_R1] = RGB(animationOptions.customThemeR1);
-		customTheme[GAMEPAD_MASK_L2] = RGB(animationOptions.customThemeL2);
-		customTheme[GAMEPAD_MASK_R2] = RGB(animationOptions.customThemeR2);
-		customTheme[GAMEPAD_MASK_S1] = RGB(animationOptions.customThemeS1);
-		customTheme[GAMEPAD_MASK_S2] = RGB(animationOptions.customThemeS2);
-		customTheme[GAMEPAD_MASK_A1] = RGB(animationOptions.customThemeA1);
-		customTheme[GAMEPAD_MASK_A2] = RGB(animationOptions.customThemeA2);
-		customTheme[GAMEPAD_MASK_L3] = RGB(animationOptions.customThemeL3);
-		customTheme[GAMEPAD_MASK_R3] = RGB(animationOptions.customThemeR3);
-		CustomTheme::SetCustomTheme(customTheme);
-
-		map<uint32_t, RGB> customThemePressed;
-		customThemePressed[GAMEPAD_MASK_DU] = RGB(animationOptions.customThemeUpPressed);
-		customThemePressed[GAMEPAD_MASK_DD] = RGB(animationOptions.customThemeDownPressed);
-		customThemePressed[GAMEPAD_MASK_DL] = RGB(animationOptions.customThemeLeftPressed);
-		customThemePressed[GAMEPAD_MASK_DR] = RGB(animationOptions.customThemeRightPressed);
-		customThemePressed[GAMEPAD_MASK_B1] = RGB(animationOptions.customThemeB1Pressed);
-		customThemePressed[GAMEPAD_MASK_B2] = RGB(animationOptions.customThemeB2Pressed);
-		customThemePressed[GAMEPAD_MASK_B3] = RGB(animationOptions.customThemeB3Pressed);
-		customThemePressed[GAMEPAD_MASK_B4] = RGB(animationOptions.customThemeB4Pressed);
-		customThemePressed[GAMEPAD_MASK_L1] = RGB(animationOptions.customThemeL1Pressed);
-		customThemePressed[GAMEPAD_MASK_R1] = RGB(animationOptions.customThemeR1Pressed);
-		customThemePressed[GAMEPAD_MASK_L2] = RGB(animationOptions.customThemeL2Pressed);
-		customThemePressed[GAMEPAD_MASK_R2] = RGB(animationOptions.customThemeR2Pressed);
-		customThemePressed[GAMEPAD_MASK_S1] = RGB(animationOptions.customThemeS1Pressed);
-		customThemePressed[GAMEPAD_MASK_S2] = RGB(animationOptions.customThemeS2Pressed);
-		customThemePressed[GAMEPAD_MASK_A1] = RGB(animationOptions.customThemeA1Pressed);
-		customThemePressed[GAMEPAD_MASK_A2] = RGB(animationOptions.customThemeA2Pressed);
-		customThemePressed[GAMEPAD_MASK_L3] = RGB(animationOptions.customThemeL3Pressed);
-		customThemePressed[GAMEPAD_MASK_R3] = RGB(animationOptions.customThemeR3Pressed);
-		CustomThemePressed::SetCustomTheme(customThemePressed);
-	}
+	ClearThemes();
+	AddTheme(themeStaticRainbow);
+	AddTheme(themeXbox);
+	AddTheme(themeXboxAll);
+	AddTheme(themeSuperFamicom);
+	AddTheme(themeSuperFamicomAll);
+	AddTheme(themePlayStation);
+	AddTheme(themePlayStationAll);
+	AddTheme(themeNeoGeo);
+	AddTheme(themeNeoGeoCurved);
+	AddTheme(themeNeoGeoModern);
+	AddTheme(themeSixButtonFighter);
+	AddTheme(themeSixButtonFighterPlus);
+	AddTheme(themeStreetFighter2);
+	AddTheme(themeTekken);
+	AddTheme(themeGuiltyGearTypeA);
+	AddTheme(themeGuiltyGearTypeB);
+	AddTheme(themeGuiltyGearTypeC);
+	AddTheme(themeGuiltyGearTypeD);
+	AddTheme(themeGuiltyGearTypeE);
+	AddTheme(themeFightboard);
 }
 
-#endif
+void StaticTheme::Animate(RGB (&frame)[100]) {
+  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
+  if (themes.size() > 0) {
+    UpdateTime();
+    UpdatePresses(frame);
+
+    for (size_t r = 0; r != matrix->pixels.size(); r++) {
+      for (size_t c = 0; c != matrix->pixels[r].size(); c++) {
+        if (matrix->pixels[r][c].index == NO_PIXEL.index)
+          continue;
+
+        // Count down the timer
+        DecrementFadeCounter(matrix->pixels[r][c].index);
+
+        std::map<uint32_t, RGB> theme = themes.at(animationOptions.themeIndex);
+
+        auto itr = theme.find(matrix->pixels[r][c].mask);
+        if (itr != theme.end()) {
+          for (size_t p = 0; p != matrix->pixels[r][c].positions.size(); p++) {
+            // Interpolate from hitColor (color the button was assigned when pressed) back to the theme color
+            frame[matrix->pixels[r][c].positions[p]] = BlendColor(hitColor[matrix->pixels[r][c].index], itr->second, times[matrix->pixels[r][c].index]);
+          }
+        } else {
+          for (size_t p = 0; p != matrix->pixels[r][c].positions.size(); p++) {
+            frame[matrix->pixels[r][c].positions[p]] = defaultColor;
+          }
+        }
+      }
+    }
+  }
+}
+
+void StaticTheme::ParameterUp() {
+  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
+  if (animationOptions.themeIndex < StaticTheme::themes.size() - 1) {
+    animationOptions.themeIndex++;
+  } else {
+    animationOptions.themeIndex = 0;
+  }
+}
+
+void StaticTheme::ParameterDown() {
+  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
+  if (animationOptions.themeIndex > 0) {
+    animationOptions.themeIndex--;
+  } else {
+    animationOptions.themeIndex = StaticTheme::themes.size() - 1;
+  }
+}

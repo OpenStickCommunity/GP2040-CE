@@ -1,13 +1,13 @@
 #ifndef _ANIMATION_H_
 #define _ANIMATION_H_
 
-#include "Pixel.hpp"
+#include "pixel.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "pico/stdlib.h"
 #include <vector>
-#include "NeoPico.hpp"
+#include "NeoPico.h"
 #include <map>
 
 struct RGB {
@@ -83,6 +83,7 @@ struct RGB {
   }
 };
 
+// Also defined in Enums.proto
 constexpr RGB ColorBlack(0, 0, 0);
 constexpr RGB ColorWhite(255, 255, 255);
 constexpr RGB ColorRed(255, 0, 0);
@@ -97,11 +98,15 @@ constexpr RGB ColorBlue(0, 0, 255);
 constexpr RGB ColorPurple(128, 0, 255);
 constexpr RGB ColorPink(255, 0, 255);
 constexpr RGB ColorMagenta(255, 0, 128);
+constexpr RGB ColorIndigo(75, 0, 130);
+constexpr RGB ColorViolet(238, 130, 238);
 
 inline const std::vector<RGB> colors {
     ColorBlack,     ColorWhite,  ColorRed,     ColorOrange, ColorYellow,
     ColorLimeGreen, ColorGreen,  ColorSeafoam, ColorAqua,   ColorSkyBlue,
-    ColorBlue,      ColorPurple, ColorPink,    ColorMagenta };
+    ColorBlue,      ColorPurple, ColorPink,    ColorMagenta, ColorIndigo,
+    ColorViolet
+};
 
 class Animation {
 public:

@@ -1,6 +1,6 @@
-#include "Animation.hpp"
-
-#include "AnimationStation.hpp"
+#include "animation.h"
+#include "animationstation.h"
+#include "storagemanager.h"
 
 #define PRESS_COOLDOWN_INCREMENT 500
 #define PRESS_COOLDOWN_MAX 5000
@@ -26,7 +26,8 @@ void Animation::UpdatePixels(std::vector<Pixel> inpixels) {
 }
 
 void Animation::UpdateTime() {
-  coolDownTimeInMs = AnimationStation::options.buttonPressColorCooldownTimeInMs;
+  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
+  coolDownTimeInMs = animationOptions.buttonPressColorCooldownTimeInMs;
 
   absolute_time_t currentTime = get_absolute_time();
   updateTimeInMs = absolute_time_diff_us(lastUpdateTime, currentTime) / 1000;
@@ -90,17 +91,19 @@ RGB Animation::BlendColor(RGB start, RGB end, uint32_t timeRemainingInMs) {
 
 
 void Animation::FadeTimeUp() {
-  AnimationStation::options.buttonPressColorCooldownTimeInMs = AnimationStation::options.buttonPressColorCooldownTimeInMs + PRESS_COOLDOWN_INCREMENT;
+  AnimationOptions & anmationOptions = Storage::getInstance().getAnimationOptions();
+  anmationOptions.buttonPressColorCooldownTimeInMs = anmationOptions.buttonPressColorCooldownTimeInMs + PRESS_COOLDOWN_INCREMENT;
 
-  if (AnimationStation::options.buttonPressColorCooldownTimeInMs > PRESS_COOLDOWN_MAX) {
-    AnimationStation::options.buttonPressColorCooldownTimeInMs = PRESS_COOLDOWN_MAX;
+  if (anmationOptions.buttonPressColorCooldownTimeInMs > PRESS_COOLDOWN_MAX) {
+    anmationOptions.buttonPressColorCooldownTimeInMs = PRESS_COOLDOWN_MAX;
   }
 }
 
 void Animation::FadeTimeDown() {
-  AnimationStation::options.buttonPressColorCooldownTimeInMs = AnimationStation::options.buttonPressColorCooldownTimeInMs - PRESS_COOLDOWN_INCREMENT;
+  AnimationOptions & anmationOptions = Storage::getInstance().getAnimationOptions();
+  anmationOptions.buttonPressColorCooldownTimeInMs = anmationOptions.buttonPressColorCooldownTimeInMs - PRESS_COOLDOWN_INCREMENT;
 
-  if (AnimationStation::options.buttonPressColorCooldownTimeInMs > PRESS_COOLDOWN_MAX) {
-    AnimationStation::options.buttonPressColorCooldownTimeInMs = PRESS_COOLDOWN_MIN;
+  if (anmationOptions.buttonPressColorCooldownTimeInMs > PRESS_COOLDOWN_MAX) {
+    anmationOptions.buttonPressColorCooldownTimeInMs = PRESS_COOLDOWN_MIN;
   }
 }
