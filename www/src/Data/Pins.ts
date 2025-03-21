@@ -88,7 +88,7 @@ export const PIN_DIRECTIONS = {
 	DIRECTION_OUTPUT: 1,
 } as const;
 
-type PinActionKeys = keyof typeof BUTTON_ACTIONS;
+export type PinActionKeys = keyof typeof BUTTON_ACTIONS;
 export type PinActionValues = (typeof BUTTON_ACTIONS)[PinActionKeys];
 
 type PinDirectionKeys = keyof typeof PIN_DIRECTIONS;

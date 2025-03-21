@@ -1,7 +1,7 @@
 export default {
 	rgb: {
 		'header-text': 'RGB LED Configuration',
-		'data-pin-label': 'Data Pin (-1 for disabled)',
+		'data-pin-label': 'Data GPIO Pin (-1 for disabled)',
 		'led-format-label': 'LED Format',
 		'led-layout-label': 'LED Layout',
 		'leds-per-button-label': 'LEDs Per Button',
@@ -31,7 +31,7 @@ export default {
 		'case-type-ambient': 'Ambient',
 		'case-type-linked': 'Linked',
 	},
-	'pled-pin-label': 'PLED #{{pin}} Pin',
+	'pled-pin-label': 'PLED #{{pin}} GPIO Pin',
 	'pled-index-label': 'PLED #{{index}} Index',
 	'rgb-order': {
 		'header-text': 'RGB LED Button Order',
