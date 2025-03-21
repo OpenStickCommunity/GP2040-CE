@@ -313,7 +313,7 @@ message LEDOptions
 
     optional CaseRGBType caseRGBType = 36;
     optional int32 caseRGBIndex = 37;
-    optional uint32 caseRGBColor = 38; // deprecated
+    optional uint32 caseRGBColor = 38 [deprecated = true];
     optional uint32 caseRGBCount = 39;
 };
 
@@ -366,8 +366,8 @@ message AnimationOptions
     optional uint32 customThemeA1Pressed = 43;
     optional uint32 customThemeA2Pressed = 44;
     optional uint32 buttonPressColorCooldownTimeInMs = 45;
-    optional uint32 ambientLightEffectsCountIndex = 46; 
-    optional bool ambientLightCustomLinkageModeFlag = 47;   // **replaced by case-rgb-type** deprecate this
+    optional uint32 ambientLightEffectsCountIndex = 46;     // ambient count
+    optional bool ambientLightCustomLinkageModeFlag = 47 [deprecated = true];
     optional uint32 ambientLightGradientSpeed = 48;         // gradient speed
     optional int32 ambientLightChaseSpeed = 49;             // chase speed
     optional float ambientLightBreathSpeed = 50;            // breath speed
