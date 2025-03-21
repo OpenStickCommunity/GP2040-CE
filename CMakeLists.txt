@@ -14,7 +14,7 @@ endif()
 
 # set the version for webconfig, etc. based on git
 find_package(Git)
-execute_process(COMMAND ${GIT_EXECUTABLE} describe --tags --always --dirty
+execute_process(COMMAND ${GIT_EXECUTABLE} describe --tags --always --dirty --abbrev=7
 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 	OUTPUT_VARIABLE GIT_REPO_VERSION
 	OUTPUT_STRIP_TRAILING_WHITESPACE)
