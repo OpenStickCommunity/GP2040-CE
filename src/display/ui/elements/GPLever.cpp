@@ -37,22 +37,28 @@ void GPLever::draw() {
     int baseRadius = (int)(((double)this->_radius * 1.00) * scaleX);
     int leverRadius = (int)(((double)this->_radius * 0.75) * scaleY);
 
-    if (this->_inputType == DPAD_MODE_DIGITAL) {
+    bool dpadInput = ((this->_inputType & GPLever_Mode::GP_LEVER_MODE_DIGITAL) == GPLever_Mode::GP_LEVER_MODE_DIGITAL);
+    bool leftAnalog = ((this->_inputType & GPLever_Mode::GP_LEVER_MODE_LEFT_ANALOG) == GPLever_Mode::GP_LEVER_MODE_LEFT_ANALOG);
+    bool rightAnalog = ((this->_inputType & GPLever_Mode::GP_LEVER_MODE_RIGHT_ANALOG) == GPLever_Mode::GP_LEVER_MODE_RIGHT_ANALOG);
+    bool invertX = ((this->_inputType & GPLever_Mode::GP_LEVER_MODE_INVERT_X) == GPLever_Mode::GP_LEVER_MODE_INVERT_X);
+    bool invertY = ((this->_inputType & GPLever_Mode::GP_LEVER_MODE_INVERT_Y) == GPLever_Mode::GP_LEVER_MODE_INVERT_Y);
+
+    if (dpadInput) {
         // dpad
         bool upState    = (this->_upMask > -1 ? getProcessedGamepad()->pressedButton((uint16_t)this->_upMask) : getProcessedGamepad()->pressedUp());
         bool leftState  = (this->_leftMask > -1 ? getProcessedGamepad()->pressedButton((uint16_t)this->_leftMask) : getProcessedGamepad()->pressedLeft());
         bool downState  = (this->_downMask > -1 ? getProcessedGamepad()->pressedButton((uint16_t)this->_downMask) : getProcessedGamepad()->pressedDown());
         bool rightState = (this->_rightMask > -1 ? getProcessedGamepad()->pressedButton((uint16_t)this->_rightMask) : getProcessedGamepad()->pressedRight());
         if (upState != downState) {
-            leverY -= upState ? leverRadius : -leverRadius;
+            leverY -= upState ? (!invertY ? leverRadius : -leverRadius) : (!invertY ? -leverRadius : leverRadius);
         }
         if (leftState != rightState) {
-            leverX -= leftState ? leverRadius : -leverRadius;
+            leverX -= leftState ? (!invertX ? leverRadius : -leverRadius) : (!invertX ? -leverRadius : leverRadius);
         }
-    } else {
+    } else if (leftAnalog || rightAnalog) {
         // analog
-        uint16_t analogX = map((this->_inputType == DPAD_MODE_LEFT_ANALOG ? getProcessedGamepad()->state.lx : getProcessedGamepad()->state.rx), 0, 0xFFFF, 0, 100);
-        uint16_t analogY = map((this->_inputType == DPAD_MODE_LEFT_ANALOG ? getProcessedGamepad()->state.ly : getProcessedGamepad()->state.ry), 0, 0xFFFF, 0, 100);
+        uint16_t analogX = map((leftAnalog ? getProcessedGamepad()->state.lx : getProcessedGamepad()->state.rx), (!invertX ? 0 : 0xFFFF), (!invertX ? 0xFFFF : 0), 0, 100);
+        uint16_t analogY = map((leftAnalog ? getProcessedGamepad()->state.ly : getProcessedGamepad()->state.ry), (!invertY ? 0 : 0xFFFF), (!invertY ? 0xFFFF : 0), 0, 100);
 
         uint16_t minX = std::max(0,(baseX - baseRadius));
         uint16_t maxX = std::min((baseX + baseRadius),128);
