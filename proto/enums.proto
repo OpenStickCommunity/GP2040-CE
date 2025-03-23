@@ -512,6 +512,18 @@ enum GPShape_Type
     GP_SHAPE_ARC = 4;
 };
 
+enum GPLever_Mode
+{
+    option (nanopb_enumopt).long_names = false;
+
+    GP_LEVER_MODE_NONE = 0;
+    GP_LEVER_MODE_DIGITAL = 1;
+    GP_LEVER_MODE_LEFT_ANALOG = 2;
+    GP_LEVER_MODE_RIGHT_ANALOG = 4;
+    GP_LEVER_MODE_INVERT_X = 8;
+    GP_LEVER_MODE_INVERT_Y = 16;
+};
+
 enum RotaryEncoderPinMode
 {
     option (nanopb_enumopt).long_names = false;
