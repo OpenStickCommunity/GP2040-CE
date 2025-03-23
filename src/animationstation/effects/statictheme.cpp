@@ -303,7 +303,7 @@ StaticTheme::StaticTheme(PixelMatrix &matrix) : Animation(matrix) {
 	AddTheme(themeFightboard);
 }
 
-void StaticTheme::Animate(RGB (&frame)[100]) {
+bool StaticTheme::Animate(RGB (&frame)[100]) {
   AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
   if (themes.size() > 0) {
     UpdateTime();
@@ -333,6 +333,7 @@ void StaticTheme::Animate(RGB (&frame)[100]) {
       }
     }
   }
+  return true;
 }
 
 void StaticTheme::ParameterUp() {

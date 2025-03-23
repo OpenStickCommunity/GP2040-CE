@@ -17,7 +17,7 @@ public:
 
   void AddTheme(const std::map<uint32_t, RGB>& theme) { themes.push_back(theme); }
   void ClearThemes() { themes.clear(); }
-  void Animate(RGB (&frame)[100]);
+  bool Animate(RGB (&frame)[100]);
   void ParameterUp();
   void ParameterDown();
 protected:

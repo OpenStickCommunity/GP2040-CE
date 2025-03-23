@@ -270,6 +270,8 @@ private:
 
     uint8_t multipleOfButtonLedsCount;
     uint8_t remainderOfButtonLedsCount;
+
+    uint8_t alLinkageStartIndex;
 };
 
 #endif

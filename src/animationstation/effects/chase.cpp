@@ -8,9 +8,9 @@
 Chase::Chase(PixelMatrix &matrix) : Animation(matrix) {
 }
 
-void Chase::Animate(RGB (&frame)[100]) {
+bool Chase::Animate(RGB (&frame)[100]) {
   if (!time_reached(this->nextRunTime)) {
-    return;
+    return false;
   }
 
   UpdateTime();
@@ -66,6 +66,8 @@ void Chase::Animate(RGB (&frame)[100]) {
   }
 
   this->nextRunTime = make_timeout_time_ms(animationOptions.chaseCycleTime);
+
+  return true;
 }
 
 bool Chase::IsChasePixel(int i) {

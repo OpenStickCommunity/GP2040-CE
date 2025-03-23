@@ -33,7 +33,7 @@ CustomThemePressed::CustomThemePressed(PixelMatrix &matrix, std::vector<Pixel> &
   this->filtered = true;
 }
 
-void CustomThemePressed::Animate(RGB (&frame)[100]) {
+bool CustomThemePressed::Animate(RGB (&frame)[100]) {
   for (size_t r = 0; r != matrix->pixels.size(); r++) {
     for (size_t c = 0; c != matrix->pixels[r].size(); c++) {
       if (matrix->pixels[r][c].index == NO_PIXEL.index || this->notInFilter(matrix->pixels[r][c]))
@@ -48,6 +48,7 @@ void CustomThemePressed::Animate(RGB (&frame)[100]) {
           frame[matrix->pixels[r][c].positions[p]] = defaultColor;
     }
   }
+  return true;
 }
 
 bool CustomThemePressed::HasTheme() {

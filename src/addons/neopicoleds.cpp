@@ -287,6 +287,8 @@ void NeoPicoLEDAddon::setup() {
 
 	multipleOfButtonLedsCount = (ledOptions.caseRGBCount) / (buttonLedCount);
 	remainderOfButtonLedsCount = (ledOptions.caseRGBCount) % (buttonLedCount);
+
+    alLinkageStartIndex = ledOptions.caseRGBIndex;
 }
 
 void NeoPicoLEDAddon::ambientLightCustom() {
@@ -458,8 +460,6 @@ void NeoPicoLEDAddon::ambientLightCustom() {
 }
 
 void NeoPicoLEDAddon::ambientLightLinkage() {
-	const LEDOptions & ledOptions = Storage::getInstance().getLedOptions();
-	uint8_t alLinkageStartIndex = ledOptions.caseRGBIndex;
 	float preLinkageBrightnessX = as.GetLinkageModeOfBrightnessX();
 	for(int i = 0; i < multipleOfButtonLedsCount; i++){ // Repeat buttons
 		for(int j = 0; j < buttonLedCount; j++){
@@ -579,10 +579,8 @@ void NeoPicoLEDAddon::process() {
 		}
 	}
 
-    neopico.SetFrame(frame); // this might have been a thing before?
+    neopico.SetFrame(frame);
     neopico.Show();
-	//Storage::getInstance().save(false);
-    //AnimationStore.save();
     this->nextRunTime = make_timeout_time_ms(intervalMS);
 }
 
