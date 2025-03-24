@@ -13,7 +13,7 @@ public:
   StaticColor(PixelMatrix &matrix, std::vector<Pixel> &pixels);
   ~StaticColor() { };
 
-  void Animate(RGB (&frame)[100]);
+  bool Animate(RGB (&frame)[100]);
   void SaveIndexOptions(uint8_t colorIndex);
   uint8_t GetColor();
   void ParameterUp();

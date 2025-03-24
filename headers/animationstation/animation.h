@@ -118,7 +118,7 @@ public:
   static LEDFormat format;
 
   bool notInFilter(Pixel pixel);
-  virtual void Animate(RGB (&frame)[100]) = 0;
+  virtual bool Animate(RGB (&frame)[100]) = 0;
   void UpdateTime();
   void UpdatePresses(RGB (&frame)[100]);
   void DecrementFadeCounter(int32_t index);

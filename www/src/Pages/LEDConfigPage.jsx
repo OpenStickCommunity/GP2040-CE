@@ -20,18 +20,13 @@ import { getButtonLabels } from '../Data/Buttons';
 import LEDColors from '../Data/LEDColors';
 import { hexToInt } from '../Services/Utilities';
 import WebApi from '../Services/WebApi';
+import { BUTTON_LAYOUTS } from '../Data/Buttons';
 
 const LED_FORMATS = [
 	{ label: 'GRB', value: 0 },
 	{ label: 'RGB', value: 1 },
 	{ label: 'GRBW', value: 2 },
 	{ label: 'RGBW', value: 3 },
-];
-
-const BUTTON_LAYOUTS = [
-	{ label: '8-Button Layout', value: 0 },
-	{ label: 'Stickless Layout', value: 1 },
-	{ label: 'WASD Layout', value: 2 },
 ];
 
 const PLED_LABELS = [
@@ -102,7 +97,7 @@ const schema = yup.object().shape({
 		.positive()
 		.integer()
 		.min(0)
-		.max(2)
+		.max(38)
 		.label('LED Layout'),
 	ledsPerButton: yup
 		.number()

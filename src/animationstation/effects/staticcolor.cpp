@@ -9,7 +9,7 @@ StaticColor::StaticColor(PixelMatrix &matrix, std::vector<Pixel> &inpixels) : An
   pixels = inpixels;
 }
 
-void StaticColor::Animate(RGB (&frame)[100]) {
+bool StaticColor::Animate(RGB (&frame)[100]) {
   UpdateTime();
   UpdatePresses(frame);
 
@@ -31,6 +31,7 @@ void StaticColor::Animate(RGB (&frame)[100]) {
       }
     }
   }
+  return true;
 }
 
 uint8_t StaticColor::GetColor() {

@@ -13,7 +13,7 @@ public:
   Chase(PixelMatrix &matrix);
   ~Chase() {};
 
-  void Animate(RGB (&frame)[100]);
+  bool Animate(RGB (&frame)[100]);
   void ParameterUp();
   void ParameterDown();
 
