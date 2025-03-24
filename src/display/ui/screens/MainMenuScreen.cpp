@@ -61,6 +61,16 @@ void MainMenuScreen::init() {
         }
     }
 
+    const GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();
+    if ( gamepadOptions.miniMenuGamepadInput == true ) {
+        mapMenuUp->buttonMask = GAMEPAD_MASK_UP;
+        mapMenuDown->buttonMask = GAMEPAD_MASK_DOWN;
+        mapMenuLeft->buttonMask = GAMEPAD_MASK_LEFT;
+        mapMenuRight->pinbuttonMaskMask = GAMEPAD_MASK_RIGHT;
+        mapMenuSelect->buttonMask = GAMEPAD_MASK_B1;
+        mapMenuBack->buttonMask = GAMEPAD_MASK_B2;
+    }
+
     changeRequiresReboot = false;
     changeRequiresSave = false;
     prevInputMode = Storage::getInstance().GetGamepad()->getOptions().inputMode;

@@ -222,6 +222,12 @@ void DisplayAddon::process() {
             updateDisplayScreen();
         }
     }
+
+    // if we are in mini menu AND we set gamepad inputs
+    GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();
+    if ( gamepadOptions.miniMenuGamepadInput == true ) {
+        
+    }
 }
 
 const DisplayOptions& DisplayAddon::getDisplayOptions() {
