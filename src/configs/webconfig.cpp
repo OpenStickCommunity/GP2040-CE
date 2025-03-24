@@ -691,6 +691,7 @@ std::string setGamepadOptions()
     readDoc(gamepadOptions.xinputAuthType, doc, "xinputAuthType");
     readDoc(gamepadOptions.ps4ControllerIDMode, doc, "ps4ControllerIDMode");
     readDoc(gamepadOptions.usbDescOverride, doc, "usbDescOverride");
+    readDoc(gamepadOptions.miniMenuGamepadInput, doc, "miniMenuGamepadInput");
     // Copy USB descriptor strings
     size_t strSize = sizeof(gamepadOptions.usbDescManufacturer);
     strncpy(gamepadOptions.usbDescManufacturer, doc["usbDescManufacturer"], strSize - 1);
@@ -762,6 +763,7 @@ std::string getGamepadOptions()
     writeDoc(doc, "usbDescProduct", gamepadOptions.usbDescProduct);
     writeDoc(doc, "usbDescVersion", gamepadOptions.usbDescVersion);
     writeDoc(doc, "usbOverrideID", gamepadOptions.usbOverrideID);
+    writeDoc(doc, "miniMenuGamepadInput", gamepadOptions.miniMenuGamepadInput);
     // Write USB Vendor ID and Product ID as 4 character hex strings with 0 padding
     char usbVendorStr[5];
     snprintf(usbVendorStr, 5, "%04X", gamepadOptions.usbVendorID);
