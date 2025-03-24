@@ -74,7 +74,7 @@ const useSystemStats = create<State & Actions>()((set) => ({
 							?.replace('.uf2', '')
 							?.toLowerCase() === firmwareVersion.boardConfig.toLowerCase(),
 				)?.browser_download_url ||
-				`https://github.com/OpenStickCommunity/GP2040-CE/releases/tag/${latestRelease.data.tag_name}`;
+				`https://github.com/OpenStickCommunity/GP2040-CE/releases/tag/${latestRelease.tag_name}`;
 
 			set({
 				currentVersion: firmwareVersion.version,
