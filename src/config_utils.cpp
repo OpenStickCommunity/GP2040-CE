@@ -173,7 +173,7 @@
 #endif
 
 #ifndef MINI_MENU_GAMEPAD_INPUT
-   #define MINI_MENU_GAMEPAD_INPUT 1
+   #define MINI_MENU_GAMEPAD_INPUT 0
 #endif
 
 #ifndef GPIO_PIN_00
