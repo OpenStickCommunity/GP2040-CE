@@ -40,6 +40,7 @@
 
  #define GPIO_PIN_03 GpioAction::BUTTON_PRESS_MACRO_2
  
+ #define MINI_MENU_GAMEPAD_INPUT 0             // Disable Gamepad Input for Mini Menu
  
  // Keyboard Mapping Configuration
  //                                            // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
