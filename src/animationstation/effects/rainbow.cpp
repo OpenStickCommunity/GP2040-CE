@@ -4,9 +4,9 @@
 Rainbow::Rainbow(PixelMatrix &matrix) : Animation(matrix) {
 }
 
-void Rainbow::Animate(RGB (&frame)[100]) {
+bool Rainbow::Animate(RGB (&frame)[100]) {
   if (!time_reached(this->nextRunTime)) {
-    return;
+    return false;
   }
 
   UpdateTime();
@@ -44,6 +44,8 @@ void Rainbow::Animate(RGB (&frame)[100]) {
 
   AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
   this->nextRunTime = make_timeout_time_ms(animationOptions.rainbowCycleTime);
+
+  return true;
 }
 
 // clamp rainbowCycleTime to [1 ... INT16_MAX]

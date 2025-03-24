@@ -26,7 +26,7 @@ CustomTheme::CustomTheme(PixelMatrix &matrix) : Animation(matrix) {
 	}
 }
 
-void CustomTheme::Animate(RGB (&frame)[100]) {
+bool CustomTheme::Animate(RGB (&frame)[100]) {
   UpdateTime();
   UpdatePresses(frame);
 
@@ -51,6 +51,8 @@ void CustomTheme::Animate(RGB (&frame)[100]) {
       }
     }
   }
+
+  return true;
 }
 
 bool CustomTheme::HasTheme() {

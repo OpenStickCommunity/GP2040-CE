@@ -43,14 +43,13 @@ void NeoPico::Setup(int ledPin, int inNumPixels, LEDFormat inFormat, PIO inPio){
   bool rgbw = (format == LED_FORMAT_GRBW) || (format == LED_FORMAT_RGBW);
   ws2812_program_init(pio, sm, offset, ledPin, 800000, rgbw);
   this->Clear();
-  //sleep_ms(10);
 }
 
 void NeoPico::Clear() {
   memset(frame, 0, sizeof(frame));
 }
 
-void NeoPico::SetFrame(uint32_t newFrame[100]) {
+void NeoPico::SetFrame(uint32_t * newFrame) {
   memcpy(frame, newFrame, sizeof(frame));
 }
 
@@ -58,15 +57,6 @@ void NeoPico::Show() {
   for (int i = 0; i < this->numPixels; ++i) {
      this->PutPixel(this->frame[i]);
   }
-
-  // Ambient lights
-  /*
-  for(int j = this->numPixels; j < 100; ++j) { 
-    // this->PutPixel(this->frame[j]);
-    pio_sm_put_blocking(pio, 0, (this->frame[j]) << 8u);
-  }
-  */
-  //sleep_ms(10);
 }
 
 void NeoPico::Off() {
@@ -74,5 +64,4 @@ void NeoPico::Off() {
   for (int i = 0; i < this->numPixels; ++i) {
      this->PutPixel(this->frame[i]);
   }
-  //sleep_ms(10);
 }
