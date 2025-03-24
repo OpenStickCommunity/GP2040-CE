@@ -97,7 +97,7 @@ const schema = yup.object().shape({
 		.positive()
 		.integer()
 		.min(0)
-		.max(6)
+		.max(38)
 		.label('LED Layout'),
 	ledsPerButton: yup
 		.number()
