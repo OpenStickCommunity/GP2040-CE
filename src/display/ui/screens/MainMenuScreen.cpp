@@ -153,7 +153,7 @@ int8_t MainMenuScreen::update() {
                 }
             }
         } else {
-            isPressed = false;// huh
+            isPressed = false; // Flip isPressed to false
         }
 
         prevButtonState = buttonState;
