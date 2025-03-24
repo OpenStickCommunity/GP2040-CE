@@ -248,8 +248,6 @@ void Gamepad::reinit()
 
 void Gamepad::process()
 {
-	memcpy(&rawState, &state, sizeof(GamepadState));
-
 	// Get the midpoint value for the current mode
 	uint16_t joystickMid = GAMEPAD_JOYSTICK_MID;
 	if ( DriverManager::getInstance().getDriver() != nullptr ) {

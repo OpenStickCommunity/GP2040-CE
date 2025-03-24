@@ -134,6 +134,7 @@ app.get('/api/getGamepadOptions', (req, res) => {
 		usbOverrideID: 0,
 		usbVendorID: '10C4',
 		usbProductID: '82C0',
+		miniMenuGamepadInput: 1,
 		hotkey01: {
 			auxMask: 32768,
 			buttonsMask: 66304,
