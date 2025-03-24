@@ -23,12 +23,12 @@ void MainMenuScreen::init() {
     gpMenu->setMenuTitle(MAIN_MENU_NAME);
     addElement(gpMenu);
 
-    mapMenuUp = new GamepadButtonMapping(0);
-    mapMenuDown = new GamepadButtonMapping(0);
-    mapMenuLeft = new GamepadButtonMapping(0);
-    mapMenuRight = new GamepadButtonMapping(0);
-    mapMenuSelect = new GamepadButtonMapping(0);
-    mapMenuBack = new GamepadButtonMapping(0);
+    mapMenuUp = new GamepadButtonMapping(GAMEPAD_MASK_UP);
+    mapMenuDown = new GamepadButtonMapping(GAMEPAD_MASK_DOWN);
+    mapMenuLeft = new GamepadButtonMapping(GAMEPAD_MASK_LEFT);
+    mapMenuRight = new GamepadButtonMapping(GAMEPAD_MASK_RIGHT);
+    mapMenuSelect = new GamepadButtonMapping(GAMEPAD_MASK_B1);
+    mapMenuBack = new GamepadButtonMapping(GAMEPAD_MASK_B2);
     mapMenuToggle = new GamepadButtonMapping(0);
 
     // populate the profiles menu
@@ -126,23 +126,38 @@ void MainMenuScreen::setMenuHome() {
 
 int8_t MainMenuScreen::update() {
     if (isMenuReady) {
-        Gamepad * gamepad = Storage::getInstance().GetGamepad();
+        GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();
         Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
-
         uint16_t buttonState = getGamepad()->state.buttons;
+        uint8_t dpadState = getGamepad()->state.dpad;
 
-        if (!isPressed && prevValues != values) {
-            if (values & mapMenuUp->pinMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_UP);
-            if (values & mapMenuDown->pinMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_DOWN);
-            if (values & mapMenuLeft->pinMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_LEFT);
-            if (values & mapMenuRight->pinMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_RIGHT);
-            if (values & mapMenuSelect->pinMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_SELECT);
-            if (values & mapMenuBack->pinMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_BACK);
+        if (!isPressed) {
+            if (prevValues != values) {
+                if (values & mapMenuUp->pinMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_UP);
+                else if (values & mapMenuDown->pinMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_DOWN);
+                else if (values & mapMenuLeft->pinMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_LEFT);
+                else if (values & mapMenuRight->pinMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_RIGHT);
+                else if (values & mapMenuSelect->pinMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_SELECT);
+                else if (values & mapMenuBack->pinMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_BACK);
+            }
+            if (gamepadOptions.miniMenuGamepadInput == true ) {
+                if (prevDpadState != dpadState ) {
+                    if (dpadState == mapMenuUp->buttonMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_UP);
+                    else if (dpadState == mapMenuDown->buttonMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_DOWN);
+                    else if (dpadState == mapMenuLeft->buttonMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_LEFT);
+                    else if (dpadState == mapMenuRight->buttonMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_RIGHT);
+                }
+                if ( prevButtonState != buttonState ) {
+                    if (buttonState == mapMenuSelect->buttonMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_SELECT);
+                    else if (buttonState == mapMenuBack->buttonMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_BACK);
+                }
+            }
         } else {
-            isPressed = false;
+            isPressed = false; // Flip isPressed to false
         }
 
         prevButtonState = buttonState;
+        prevDpadState = dpadState;
         prevValues = values;
 
         if ((exitToScreen != -1) && ((changeRequiresSave) || (changeRequiresReboot))) {

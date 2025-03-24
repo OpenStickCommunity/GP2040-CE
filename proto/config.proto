@@ -36,6 +36,7 @@ message GamepadOptions
     optional bool usbOverrideID = 29;
     optional uint32 usbProductID = 30;
     optional uint32 usbVendorID = 31;
+    optional uint32 miniMenuGamepadInput = 32;
 }
 
 message KeyboardMapping

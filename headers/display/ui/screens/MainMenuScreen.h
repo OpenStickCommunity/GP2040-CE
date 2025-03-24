@@ -81,6 +81,7 @@ class MainMenuScreen : public GPScreen {
         std::vector<MenuEntry>* currentMenu;
         std::vector<MenuEntry>* previousMenu;
         uint16_t prevButtonState = 0;
+        uint8_t prevDpadState = 0;
         Mask_t prevValues;
         GPMenu* gpMenu;
         const uint8_t menuLineSize = 4;

@@ -407,6 +407,7 @@ const schema = yup.object().shape({
 		.oneOf(AUTHENTICATION_TYPES.map((o) => o.value))
 		.label('X-Input Authentication Type'),
 	debounceDelay: yup.number().required().label('Debounce Delay'),
+	miniMenuGamepadInput: yup.number().required().label('Mini Menu'),
 	inputModeB1: yup
 		.number()
 		.required()
@@ -1600,6 +1601,23 @@ export default function SettingsPage() {
 																onChange={handleChange}
 																min={0}
 																max={5000}
+															/>
+														</Col>
+													</Form.Group>
+													<Form.Group className="row mb-5">
+														<Col sm={5}>
+															<Form.Check
+																label={t('SettingsPage:mini-menu-gamepad-input')}
+																type="switch"
+																id="miniMenuGamepadInput"
+																isInvalid={false}
+																checked={Boolean(values.miniMenuGamepadInput)}
+																onChange={(e) => {
+																	setFieldValue(
+																		'miniMenuGamepadInput',
+																		e.target.checked ? 1 : 0,
+																	);
+																}}
 															/>
 														</Col>
 													</Form.Group>

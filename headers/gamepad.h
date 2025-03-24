@@ -136,7 +136,6 @@ public:
 	void setSOCDMode(SOCDMode socdMode) { options.socdMode = socdMode; }
 	void setDpadMode(DpadMode dpadMode) { options.dpadMode = dpadMode; }
 
-	GamepadState rawState;
 	GamepadState state;
 	GamepadState turboState;
 	GamepadAuxState auxState;
