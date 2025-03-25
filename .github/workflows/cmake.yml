@@ -2,9 +2,9 @@ name: CMake
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "j-zhao" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "j-zhao" ]
 #  pull_request_target:
 #    branches: [ "main" ]
   workflow_dispatch:
@@ -23,51 +23,8 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        GP2040_BOARDCONFIG: 
-          [ARCController,
-          Blank,
-          Pico,
-          PicoW,
-          BentoBox,
-          DuelPadZen,
-          FlatboxRev4,
-          FlatboxRev5,
-          FlatboxRev5RGB,
-          FlatboxRev5USBPassthrough,
-          FlatboxRev5Southpaw,
-          Granola,
-          KB2040,
-          KeyboardConverter,
-          Haute42COSMOX,
-          Haute42COSMOXMLite,
-          Haute42COSMOXMUltra,
-          Haute42COSMOXXAnalog,
-          Liatris,
-          MavercadeRev1,
-          MavercadeRev2,
-          MiSTercadeV2,
-          OpenCore0,
-          OpenCore0WASD,
-          OSUMGP-RP2040,
-          PicoAnn,
-          PicoFightingBoard,
-          PXPGamepad,
-          ReflexCtrlGenesis6,
-          ReflexCtrlNES,
-          ReflexCtrlSaturn,
-          ReflexCtrlSNES,
-          ReflexCtrlVB,
-          ReflexEncodeV1.2,
-          ReflexEncodeV2.0,
-          RP2040AdvancedBreakoutBoard,
-          RP2040AdvancedBreakoutBoardUSBPassthrough,
-          RP2040MiniBreakoutBoard,
-          RP2040MiniBreakoutBoardUSBPassthrough,
-          SparkFunProMicro,
-          WaveshareZero,
-          Stress,
-          SGFDevices,
-          ZeroRhythm]
+        GP2040_BOARDCONFIG:
+          [Haute42COSMOX]
 
     steps:
     #Global Setup
