@@ -141,6 +141,11 @@ int8_t MainMenuScreen::update() {
             else if (values & mapMenuRight->pinMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_RIGHT);
             else if (values & mapMenuSelect->pinMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_SELECT);
             else if (values & mapMenuBack->pinMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_BACK);
+            else if (values & mapMenuToggle->pinMask) {
+                // Menu toggle will always exit out of main menu
+                exitToScreen = DisplayMode::BUTTONS;
+                exitToScreenBeforePrompt = DisplayMode::BUTTONS;
+            }
         }
         if (gamepadOptions.miniMenuGamepadInput == true ) {
             if (prevDpadState != dpadState ) {

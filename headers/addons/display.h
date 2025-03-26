@@ -218,6 +218,7 @@ private:
     bool configMode;
     GPGFX* gpDisplay;
     GPScreen* gpScreen;
+    Mask_t prevValues;
     DisplayMode currDisplayMode;
     DisplayMode prevDisplayMode;
     DisplayMode nextDisplayMode;

@@ -63,6 +63,8 @@ void DisplayAddon::setup() {
         }
     }
 
+    prevValues = Storage::getInstance().GetGamepad()->debouncedGpio;
+
     // set current display mode
     if (!configMode) {
         if (Storage::getInstance().getDisplayOptions().splashMode != static_cast<SplashMode>(SPLASH_MODE_NONE)) {
@@ -187,10 +189,13 @@ void DisplayAddon::process() {
 
     if (!configMode && screenReturn < 0) {
         Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
-        if ((values & mapMenuToggle->pinMask) || (values & mapMenuSelect->pinMask)) {
-            if (currDisplayMode != DisplayMode::MAIN_MENU) {
-                screenReturn = DisplayMode::MAIN_MENU;
+        if (prevValues != values) {
+            if ((values & mapMenuToggle->pinMask) || (values & mapMenuSelect->pinMask)) {
+                if (currDisplayMode != DisplayMode::MAIN_MENU) {
+                    screenReturn = DisplayMode::MAIN_MENU;
+                }
             }
+            prevValues = values;
         }
     }
 
