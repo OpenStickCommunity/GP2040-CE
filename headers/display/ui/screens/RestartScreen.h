@@ -6,7 +6,8 @@
 class RestartScreen : public GPScreen {
     public:
         RestartScreen() {}
-        RestartScreen(GPGFX* renderer) { setRenderer(renderer); }
+        RestartScreen(GPGFX* renderer, uint32_t mode) { setRenderer(renderer); setBootMode(mode); }
+        virtual ~RestartScreen() {}
         virtual int8_t update();
         virtual void init();
         virtual void shutdown();

@@ -11,6 +11,7 @@ class DisplaySaverScreen : public GPScreen {
     public:
         DisplaySaverScreen() {}
         DisplaySaverScreen(GPGFX* renderer) { setRenderer(renderer); }
+        virtual ~DisplaySaverScreen() {}
         virtual int8_t update();
         virtual void init();
         virtual void shutdown();

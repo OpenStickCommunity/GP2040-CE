@@ -41,7 +41,7 @@ void MainMenuScreen::init() {
             menuLabel = Storage::getInstance().getProfileOptions().gpioMappingsSets[profileCtr-1].profileLabel;
         }
         if (menuLabel.empty()) {
-            menuLabel = "Profile #" + std::to_string(profileCtr);
+            menuLabel = "Profile #" + std::to_string(profileCtr+1);
         }
         MenuEntry menuEntry = {menuLabel, NULL, nullptr, std::bind(&MainMenuScreen::currentProfile, this), std::bind(&MainMenuScreen::selectProfile, this), profileCtr+1};
         profilesMenu.push_back(menuEntry);
@@ -80,6 +80,8 @@ void MainMenuScreen::init() {
     
     prevTurbo = Storage::getInstance().getAddonOptions().turboOptions.enabled;
     updateTurbo = Storage::getInstance().getAddonOptions().turboOptions.enabled;
+
+    setMenuHome();
 }
 
 void MainMenuScreen::shutdown() {
@@ -157,6 +159,12 @@ int8_t MainMenuScreen::update() {
         prevDpadState = dpadState;
         prevValues = values;
 
+        // Core0 Event Navigations
+        if (eventAction != GpioAction::NONE) {
+            updateMenuNavigation(eventAction);
+            eventAction = GpioAction::NONE;
+        }
+
         if ((exitToScreen != -1) && ((changeRequiresSave) || (changeRequiresReboot))) {
             // trying to exit menu but a change requires a save/reboot
             exitToScreenBeforePrompt = exitToScreen;
@@ -168,6 +176,10 @@ int8_t MainMenuScreen::update() {
     } else {
         return -1;
     }
+}
+
+void MainMenuScreen::updateEventMenuNavigation(GpioAction action) {
+    eventAction = action;
 }
 
 void MainMenuScreen::updateMenuNavigation(GpioAction action) {
