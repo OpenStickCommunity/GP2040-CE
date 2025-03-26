@@ -6,7 +6,7 @@
 class GPEvent {
     public:
         GPEvent() {}
-        ~GPEvent() {}
+        virtual ~GPEvent() {}
 
         virtual GPEventType eventType() { return this->_eventType; }
     private:

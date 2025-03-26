@@ -75,7 +75,6 @@ class MainMenuScreen : public GPScreen {
     protected:
         virtual void drawScreen();
     private:
-        uint8_t menuIndex = 0;
         bool isPressed = false;
         uint32_t checkDebounce;
         std::vector<MenuEntry>* currentMenu;
@@ -83,7 +82,7 @@ class MainMenuScreen : public GPScreen {
         uint16_t prevButtonState = 0;
         uint8_t prevDpadState = 0;
         Mask_t prevValues;
-        GPMenu* gpMenu;
+        GPMenu* gpMenu = nullptr;
         const uint8_t menuLineSize = 4;
 
         bool screenIsPrompting = false;

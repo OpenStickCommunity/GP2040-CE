@@ -237,17 +237,17 @@ void DisplayAddon::handleSystemRestart(GPEvent* e) {
 }
 
 void DisplayAddon::handleMenuNavigation(GPEvent* e) {
-    if (currDisplayMode != MAIN_MENU) {
-        if (((GPMenuNavigateEvent*)e)->menuAction == GpioAction::MENU_NAVIGATION_TOGGLE) {
+    if (((GPMenuNavigateEvent*)e)->menuAction == GpioAction::MENU_NAVIGATION_TOGGLE) {
+        // Swap between main menu and buttons if we press toggle
+        if (currDisplayMode != MAIN_MENU) {
             currDisplayMode = MAIN_MENU;
             updateDisplayScreen();
-        }
-    } else {
-        if (((GPMenuNavigateEvent*)e)->menuAction != GpioAction::MENU_NAVIGATION_TOGGLE) {
-            ((MainMenuScreen*)gpScreen)->updateMenuNavigation(((GPMenuNavigateEvent*)e)->menuAction);
         } else {
             currDisplayMode = BUTTONS;
             updateDisplayScreen();
         }
+    } else if (currDisplayMode == MAIN_MENU) {
+        // Send our menu action to the menu if we're in main menu
+        ((MainMenuScreen*)gpScreen)->updateMenuNavigation(((GPMenuNavigateEvent*)e)->menuAction);
     }
 }

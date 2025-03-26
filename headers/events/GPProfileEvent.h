@@ -8,7 +8,7 @@ class GPProfileChangeEvent : public GPEvent {
             this->previousValue = prev;
             this->currentValue = curr;
         }
-        ~GPProfileChangeEvent() {}
+        virtual ~GPProfileChangeEvent() {}
 
         GPEventType eventType() { return this->_eventType; }
 

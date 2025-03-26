@@ -420,19 +420,20 @@ void Gamepad::read()
 	state.rt = 0;
 }
 
-void Gamepad::hotkey()
-{
+void Gamepad::hotkey() {
 	if (options.lockHotkeys)
 		return;
 
 	// Look for a hot-key
-	GamepadHotkey action;
+	bool hasHotkey = false;
 	for(int i = 0; i < 16; i++) {
 		if (pressedHotkey(hotkeys[i])) {
-			action = selectHotkey(hotkeys[i]);
-			processHotkeyAction(action);
-			lastAction = action;
+			processHotkeyAction(selectHotkey(hotkeys[i]));
+			hasHotkey = true;
 		}
+	}
+	if (hasHotkey == false ) {
+		lastAction = HOTKEY_NONE;
 	}
 }
 
@@ -699,11 +700,13 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 			}
 			break;
 		default: // Unknown action
-			return;
+			break;
 	}
 
 	// only save if requested
 	if (reqSave) {
 		EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 	}
+
+	lastAction = action;
 }
