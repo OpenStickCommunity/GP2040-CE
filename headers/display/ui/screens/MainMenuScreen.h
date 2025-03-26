@@ -40,6 +40,7 @@ class MainMenuScreen : public GPScreen {
     public:
         MainMenuScreen() {}
         MainMenuScreen(GPGFX* renderer) { setRenderer(renderer); }
+        virtual ~MainMenuScreen() {}
         void setMenu(std::vector<MenuEntry>* menu);
         virtual int8_t update();
         virtual void init();
@@ -69,13 +70,13 @@ class MainMenuScreen : public GPScreen {
         int32_t currentTurboMode();
 
         void updateMenuNavigation(GpioAction action);
+        void updateEventMenuNavigation(GpioAction action);
         void chooseAndReturn();
 
         void setMenuHome();
     protected:
         virtual void drawScreen();
     private:
-        uint8_t menuIndex = 0;
         bool isPressed = false;
         uint32_t checkDebounce;
         std::vector<MenuEntry>* currentMenu;
@@ -83,8 +84,10 @@ class MainMenuScreen : public GPScreen {
         uint16_t prevButtonState = 0;
         uint8_t prevDpadState = 0;
         Mask_t prevValues;
-        GPMenu* gpMenu;
+        GPMenu* gpMenu = nullptr;
         const uint8_t menuLineSize = 4;
+
+        GpioAction eventAction;
 
         bool screenIsPrompting = false;
         bool promptChoice = false;

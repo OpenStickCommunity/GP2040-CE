@@ -10,7 +10,7 @@ class GPStorageSaveEvent : public GPEvent {
             this->forceSave = force;
             this->restartAfterSave = restart;
         }
-        ~GPStorageSaveEvent() {}
+        virtual ~GPStorageSaveEvent() {}
 
         GPEventType eventType() { return this->_eventType; }
 

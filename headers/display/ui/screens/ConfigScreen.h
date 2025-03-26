@@ -7,6 +7,7 @@ class ConfigScreen : public GPScreen {
     public:
         ConfigScreen() {}
         ConfigScreen(GPGFX* renderer) { setRenderer(renderer); }
+        virtual ~ConfigScreen(){}
         virtual int8_t update();
         virtual void init();
         virtual void shutdown();

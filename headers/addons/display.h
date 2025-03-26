@@ -215,19 +215,17 @@ private:
     uint8_t displayIsPowerOn = 1;
     uint32_t prevMillis;
     std::string statusBar;
-    Gamepad* gamepad;
     bool configMode;
     GPGFX* gpDisplay;
     GPScreen* gpScreen;
+    Mask_t prevValues;
     DisplayMode currDisplayMode;
     DisplayMode prevDisplayMode;
+    DisplayMode nextDisplayMode;
     bool turnOffWhenSuspended;
     uint32_t bootMode;
-
     DisplaySaverMode displaySaverMode;
-
     GPGFX_DisplayTypeOptions gpOptions;
-
     GamepadButtonMapping *mapMenuToggle;
     GamepadButtonMapping *mapMenuSelect;
 };

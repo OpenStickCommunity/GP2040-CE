@@ -9,7 +9,7 @@ class GPSystemRebootEvent : public GPEvent {
         GPSystemRebootEvent(System::BootMode mode) {
             this->bootMode = mode;
         }
-        ~GPSystemRebootEvent() {}
+        virtual ~GPSystemRebootEvent() {}
 
         GPEventType eventType() { return this->_eventType; }
 

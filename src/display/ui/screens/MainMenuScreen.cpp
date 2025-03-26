@@ -41,7 +41,7 @@ void MainMenuScreen::init() {
             menuLabel = Storage::getInstance().getProfileOptions().gpioMappingsSets[profileCtr-1].profileLabel;
         }
         if (menuLabel.empty()) {
-            menuLabel = "Profile #" + std::to_string(profileCtr);
+            menuLabel = "Profile #" + std::to_string(profileCtr+1);
         }
         MenuEntry menuEntry = {menuLabel, NULL, nullptr, std::bind(&MainMenuScreen::currentProfile, this), std::bind(&MainMenuScreen::selectProfile, this), profileCtr+1};
         profilesMenu.push_back(menuEntry);
@@ -80,6 +80,8 @@ void MainMenuScreen::init() {
     
     prevTurbo = Storage::getInstance().getAddonOptions().turboOptions.enabled;
     updateTurbo = Storage::getInstance().getAddonOptions().turboOptions.enabled;
+
+    setMenuHome();
 }
 
 void MainMenuScreen::shutdown() {
@@ -88,6 +90,7 @@ void MainMenuScreen::shutdown() {
 }
 
 void MainMenuScreen::drawScreen() {
+    if (gpMenu == nullptr) return;
     gpMenu->setVisibility(!screenIsPrompting);
 
     if (!screenIsPrompting) {
@@ -131,34 +134,41 @@ int8_t MainMenuScreen::update() {
         uint16_t buttonState = getGamepad()->state.buttons;
         uint8_t dpadState = getGamepad()->state.dpad;
 
-        if (!isPressed) {
-            if (prevValues != values) {
-                if (values & mapMenuUp->pinMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_UP);
-                else if (values & mapMenuDown->pinMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_DOWN);
-                else if (values & mapMenuLeft->pinMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_LEFT);
-                else if (values & mapMenuRight->pinMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_RIGHT);
-                else if (values & mapMenuSelect->pinMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_SELECT);
-                else if (values & mapMenuBack->pinMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_BACK);
+        if (prevValues != values) {
+            if (values & mapMenuUp->pinMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_UP);
+            else if (values & mapMenuDown->pinMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_DOWN);
+            else if (values & mapMenuLeft->pinMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_LEFT);
+            else if (values & mapMenuRight->pinMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_RIGHT);
+            else if (values & mapMenuSelect->pinMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_SELECT);
+            else if (values & mapMenuBack->pinMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_BACK);
+            else if (values & mapMenuToggle->pinMask) {
+                // Menu toggle will always exit out of main menu
+                exitToScreen = DisplayMode::BUTTONS;
+                exitToScreenBeforePrompt = DisplayMode::BUTTONS;
             }
-            if (gamepadOptions.miniMenuGamepadInput == true ) {
-                if (prevDpadState != dpadState ) {
-                    if (dpadState == mapMenuUp->buttonMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_UP);
-                    else if (dpadState == mapMenuDown->buttonMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_DOWN);
-                    else if (dpadState == mapMenuLeft->buttonMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_LEFT);
-                    else if (dpadState == mapMenuRight->buttonMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_RIGHT);
-                }
-                if ( prevButtonState != buttonState ) {
-                    if (buttonState == mapMenuSelect->buttonMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_SELECT);
-                    else if (buttonState == mapMenuBack->buttonMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_BACK);
-                }
+        }
+        if (gamepadOptions.miniMenuGamepadInput == true ) {
+            if (prevDpadState != dpadState ) {
+                if (dpadState == mapMenuUp->buttonMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_UP);
+                else if (dpadState == mapMenuDown->buttonMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_DOWN);
+                else if (dpadState == mapMenuLeft->buttonMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_LEFT);
+                else if (dpadState == mapMenuRight->buttonMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_RIGHT);
             }
-        } else {
-            isPressed = false; // Flip isPressed to false
+            if ( prevButtonState != buttonState ) {
+                if (buttonState == mapMenuSelect->buttonMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_SELECT);
+                else if (buttonState == mapMenuBack->buttonMask) updateMenuNavigation(GpioAction::MENU_NAVIGATION_BACK);
+            }
         }
 
         prevButtonState = buttonState;
         prevDpadState = dpadState;
         prevValues = values;
+
+        // Core0 Event Navigations
+        if (eventAction != GpioAction::NONE) {
+            updateMenuNavigation(eventAction);
+            eventAction = GpioAction::NONE;
+        }
 
         if ((exitToScreen != -1) && ((changeRequiresSave) || (changeRequiresReboot))) {
             // trying to exit menu but a change requires a save/reboot
@@ -173,125 +183,109 @@ int8_t MainMenuScreen::update() {
     }
 }
 
+void MainMenuScreen::updateEventMenuNavigation(GpioAction action) {
+    eventAction = action;
+}
+
 void MainMenuScreen::updateMenuNavigation(GpioAction action) {
-    bool changeIndex = false;
+    if (gpMenu == nullptr)
+        return;
+
+    uint16_t menuIndex = gpMenu->getIndex();
     uint16_t menuSize = gpMenu->getDataSize();
 
     if (isMenuReady) {
-        switch (action) { 
-            case GpioAction::MENU_NAVIGATION_UP:
-                if (!screenIsPrompting) {
-                    if (menuIndex > 0) {
-                        menuIndex--;
-                    } else {
-                        menuIndex = menuSize-1;
-                    }
-                    changeIndex = true;
-                } else {
+        if (screenIsPrompting) {
+            switch(action) {
+                case GpioAction::MENU_NAVIGATION_UP:
+                case GpioAction::MENU_NAVIGATION_DOWN:
+                case GpioAction::MENU_NAVIGATION_LEFT:
+                case GpioAction::MENU_NAVIGATION_RIGHT:
                     promptChoice = !promptChoice;
-                }
-                isPressed = true;
-                break;
-            case GpioAction::MENU_NAVIGATION_DOWN:
-                if (!screenIsPrompting) {
-                    if (menuIndex < menuSize-1) {
-                        menuIndex++;
-                    } else {
-                        menuIndex = 0;
-                    }
-                    changeIndex = true;
-                } else {
-                    promptChoice = !promptChoice;
-                }
-                isPressed = true;
-                break;
-            case GpioAction::MENU_NAVIGATION_LEFT:
-                if (!screenIsPrompting) {
-                    if ((menuIndex-menuLineSize) > 0) {
-                        menuIndex -= menuLineSize;
-                    } else {
-                        menuIndex = 0;
-                    }
-                    changeIndex = true;
-                } else {
-                    promptChoice = !promptChoice;
-                }
-                isPressed = true;
-                break;
-            case GpioAction::MENU_NAVIGATION_RIGHT:
-                if (!screenIsPrompting) {
-                    if ((menuIndex+menuLineSize) < (menuSize-1)) {
-                        menuIndex += menuLineSize;
-                    } else {
-                        menuIndex = (menuSize-1);
-                    }
-                    changeIndex = true;
-                } else {
-                    promptChoice = !promptChoice;
-                }
-                isPressed = true;
-                break;
-            case GpioAction::MENU_NAVIGATION_SELECT:
-                if (!screenIsPrompting) {
-                    if (currentMenu->at(menuIndex).submenu != nullptr) {
-                        previousMenu = currentMenu;
-                        currentMenu = currentMenu->at(menuIndex).submenu;
-                        gpMenu->setMenuData(currentMenu);
-                        gpMenu->setMenuTitle(previousMenu->at(menuIndex).label);
-                        menuIndex = 0;
-                        changeIndex = true;
-                    } else {
-                        currentMenu->at(menuIndex).action();
-                    }
-                } else {
+                    break;
+                case GpioAction::MENU_NAVIGATION_SELECT:
                     if (promptChoice) {
                         saveOptions();
                     } else {
                         resetOptions();
                         exitToScreen = DisplayMode::BUTTONS;
                         exitToScreenBeforePrompt = DisplayMode::BUTTONS;
-                        isPressed = false;
                     }
-                }
-                isPressed = true;
-                break;
-            case GpioAction::MENU_NAVIGATION_BACK:
-                if (!screenIsPrompting) {
+                    break;
+                case GpioAction::MENU_NAVIGATION_BACK:
+                    // back again goes back to the menu
+                    screenIsPrompting = false;
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            switch (action) { 
+                case GpioAction::MENU_NAVIGATION_UP:
+                    if ( menuIndex == 0 ) {
+                        gpMenu->setIndex(menuSize-1);
+                    } else {
+                        gpMenu->setIndex(menuIndex-1);
+                    }
+                    break;
+                case GpioAction::MENU_NAVIGATION_DOWN:
+                    if (menuIndex < menuSize-1) {
+                        gpMenu->setIndex(menuIndex+1);
+                    } else {
+                        gpMenu->setIndex(0);
+                    }
+                    break;
+                case GpioAction::MENU_NAVIGATION_LEFT:
+                    if ((menuIndex-menuLineSize) > 0) {
+                        gpMenu->setIndex(menuIndex - menuLineSize);
+                    } else {
+                        gpMenu->setIndex(0);
+                    }
+                    break;
+                case GpioAction::MENU_NAVIGATION_RIGHT:
+                    if ((menuIndex+menuLineSize) < (menuSize-1)) {
+                        gpMenu->setIndex(menuIndex + menuLineSize);
+                    } else {
+                        gpMenu->setIndex(menuSize-1);
+                    }
+                    break;
+                case GpioAction::MENU_NAVIGATION_SELECT:
+                    if (currentMenu->at(menuIndex).submenu != nullptr) {
+                        previousMenu = currentMenu;
+                        currentMenu = currentMenu->at(menuIndex).submenu;
+                        gpMenu->setMenuData(currentMenu);
+                        gpMenu->setMenuTitle(previousMenu->at(menuIndex).label);
+                        gpMenu->setIndex(0);
+                    } else {
+                        currentMenu->at(menuIndex).action();
+                    }
+                    break;
+                case GpioAction::MENU_NAVIGATION_BACK:
                     if (previousMenu != nullptr) {
                         currentMenu = previousMenu;
                         previousMenu = nullptr;
-                        menuIndex = 0;
-                        changeIndex = true;
                         gpMenu->setMenuData(currentMenu);
                         gpMenu->setMenuTitle(MAIN_MENU_NAME);
+                        gpMenu->setIndex(0);
                     } else {
                         exitToScreen = DisplayMode::BUTTONS;
                         exitToScreenBeforePrompt = DisplayMode::BUTTONS;
-                        isPressed = false;
                     }
-                } else {
-                    // back again goes back to the menu
-                    screenIsPrompting = false;
-                    isPressed = false;
-                }
-                isPressed = true;
-                break;
-            default:
-                break;
+                    break;
+                default:
+                    break;
+            }
         }
     }
-
-    if (changeIndex) gpMenu->setIndex(menuIndex);
 }
 
 void MainMenuScreen::chooseAndReturn() {
     if (previousMenu != nullptr) {
         currentMenu = previousMenu;
         previousMenu = nullptr;
-        menuIndex = 0;
         gpMenu->setMenuData(currentMenu);
         gpMenu->setMenuTitle(MAIN_MENU_NAME);
-        gpMenu->setIndex(menuIndex);
+        gpMenu->setIndex(0);
     } else {
         exitToScreen = DisplayMode::BUTTONS;
         exitToScreenBeforePrompt = DisplayMode::BUTTONS;
@@ -313,8 +307,8 @@ int32_t MainMenuScreen::modeValue() {
 }
 
 void MainMenuScreen::selectInputMode() {
-    if (currentMenu->at(menuIndex).optionValue != -1) {
-        InputMode valueToSave = (InputMode)currentMenu->at(menuIndex).optionValue;
+    if (currentMenu->at(gpMenu->getIndex()).optionValue != -1) {
+        InputMode valueToSave = (InputMode)currentMenu->at(gpMenu->getIndex()).optionValue;
         prevInputMode = Storage::getInstance().GetGamepad()->getOptions().inputMode;
         updateInputMode = valueToSave;
 
@@ -333,8 +327,8 @@ int32_t MainMenuScreen::currentInputMode() {
 }
 
 void MainMenuScreen::selectDPadMode() {
-    if (currentMenu->at(menuIndex).optionValue != -1) {
-        DpadMode valueToSave = (DpadMode)currentMenu->at(menuIndex).optionValue;
+    if (currentMenu->at(gpMenu->getIndex()).optionValue != -1) {
+        DpadMode valueToSave = (DpadMode)currentMenu->at(gpMenu->getIndex()).optionValue;
         prevDpadMode = Storage::getInstance().GetGamepad()->getOptions().dpadMode;
         updateDpadMode = valueToSave;
 
@@ -349,8 +343,8 @@ int32_t MainMenuScreen::currentDpadMode() {
 }
 
 void MainMenuScreen::selectSOCDMode() {
-    if (currentMenu->at(menuIndex).optionValue != -1) {
-        SOCDMode valueToSave = (SOCDMode)currentMenu->at(menuIndex).optionValue;
+    if (currentMenu->at(gpMenu->getIndex()).optionValue != -1) {
+        SOCDMode valueToSave = (SOCDMode)currentMenu->at(gpMenu->getIndex()).optionValue;
         prevSocdMode = Storage::getInstance().GetGamepad()->getOptions().socdMode;
         updateSocdMode = valueToSave;
 
@@ -426,8 +420,8 @@ void MainMenuScreen::saveOptions() {
 }
 
 void MainMenuScreen::selectProfile() {
-    if (currentMenu->at(menuIndex).optionValue != -1) {
-        uint8_t valueToSave = currentMenu->at(menuIndex).optionValue;
+    if (currentMenu->at(gpMenu->getIndex()).optionValue != -1) {
+        uint8_t valueToSave = currentMenu->at(gpMenu->getIndex()).optionValue;
         prevProfile = Storage::getInstance().GetGamepad()->getOptions().profileNumber;
         updateProfile = valueToSave;
 
@@ -442,8 +436,8 @@ int32_t MainMenuScreen::currentProfile() {
 }
 
 void MainMenuScreen::selectFocusMode() {
-    if (currentMenu->at(menuIndex).optionValue != -1) {
-        bool valueToSave = (bool)currentMenu->at(menuIndex).optionValue;
+    if (currentMenu->at(gpMenu->getIndex()).optionValue != -1) {
+        bool valueToSave = (bool)currentMenu->at(gpMenu->getIndex()).optionValue;
         prevFocus = Storage::getInstance().getAddonOptions().focusModeOptions.enabled;
         updateFocus = valueToSave;
 
@@ -458,8 +452,8 @@ int32_t MainMenuScreen::currentFocusMode() {
 }
 
 void MainMenuScreen::selectTurboMode() {
-    if (currentMenu->at(menuIndex).optionValue != -1) {
-        bool valueToSave = (bool)currentMenu->at(menuIndex).optionValue;
+    if (currentMenu->at(gpMenu->getIndex()).optionValue != -1) {
+        bool valueToSave = (bool)currentMenu->at(gpMenu->getIndex()).optionValue;
         prevTurbo = Storage::getInstance().getAddonOptions().turboOptions.enabled;
         updateTurbo = valueToSave;
 
