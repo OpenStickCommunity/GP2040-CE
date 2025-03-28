@@ -20,6 +20,17 @@ export default {
 		'pled-type-rgb': 'RGB',
 		'pled-color-label': 'RGB PLED カラー',
 	},
+	case: {
+		'header-text': 'ケース RGB LED',
+		'sub-header-text':
+			'ケースRGB LEDでは開始インデックスとLED数を設定してください。開始インデックスはボタンLEDの以降のインデックスであればプレイヤLEDおよびターボLEDの前後どちらも指定可能です。',
+		'case-index-label': 'LED開始インデックス',
+		'case-count-label': 'LED数',
+		'case-type-label': '色種別',
+		'case-type-off': 'オフ',
+		'case-type-ambient': 'アンビエント',
+		'case-type-linked': '同期',
+	},
 	'pled-pin-label': 'PLED #{{pin}} GPIO 端子',
 	'pled-index-label': 'PLED #{{index}} インデックス',
 	'rgb-order': {
