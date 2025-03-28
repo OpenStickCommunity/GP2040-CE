@@ -104,14 +104,24 @@ app.get('/api/getAnimationProtoOptions', (req, res) => {
 					basePressedEffect: 0,
 					buttonPressHoldTimeInMs: 500,
 					buttonPressFadeOutTimeInMs: 500,
-					nonPressedSpecialColour: 16711680,
+					nonPressedSpecialColour: 0xffff00,
 					bUseCaseLightsInSpecialMoves: 0,
 					baseCaseEffect: 0,
 					pressedSpecialColour: 0,
-					notPressedStaticColors: [5052131, 11679800, 16765393],
-					pressedStaticColors: [16726072, 16777215, 6172977],
-					caseStaticColors: [11647771, 5847610, 2931246, 4589062],
+					notPressedStaticColors: [
+						2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+						2, 2, 2, 2, 2, 2, 2, 2, 2,
+					],
+					pressedStaticColors: [
+						4, 6, 10, 12, 4, 6, 10, 12, 4, 6, 10, 12, 4, 6, 10, 12, 4, 6, 10,
+						12, 4, 6, 10, 12, 4, 6, 10, 12, 4, 6, 10, 12,
+					],
+					caseStaticColors: [
+						2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+						2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+					],
 				},
+
 				{
 					bEnabled: 1,
 					baseNonPressedEffect: 0,
@@ -121,10 +131,19 @@ app.get('/api/getAnimationProtoOptions', (req, res) => {
 					nonPressedSpecialColour: 255,
 					bUseCaseLightsInSpecialMoves: 1,
 					baseCaseEffect: 0,
-					pressedSpecialColour: 16724480,
-					notPressedStaticColors: [727914, 5052131, 11679800, 16765393],
-					pressedStaticColors: [637896, 16726072, 16777215, 6172977],
-					caseStaticColors: [11647771, 8196626, 5847610, 2931246, 4589062],
+					pressedSpecialColour: 0x80ff00,
+					notPressedStaticColors: [
+						6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+						6, 6, 6, 6, 6, 6, 6, 6, 6,
+					],
+					pressedStaticColors: [
+						2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+						2, 2, 2, 2, 2, 2, 2, 2, 2,
+					],
+					caseStaticColors: [
+						14, 1, 1, 1, 14, 1, 1, 1, 14, 1, 1, 1, 14, 1, 1, 1, 14, 1, 1, 1, 14,
+						1, 1, 1, 14, 1, 1, 1, 14, 1, 1, 1, 14, 1, 1, 1, 14, 1, 1, 1,
+					],
 				},
 			],
 		},

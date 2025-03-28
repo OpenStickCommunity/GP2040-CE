@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
 	Form,
 	Alert,
@@ -11,26 +12,28 @@ import {
 	Tabs,
 	Tooltip,
 } from 'react-bootstrap';
-import { ErrorMessage, FieldArray, Formik } from 'formik';
+import { FieldArray, FieldArrayRenderProps, Formik } from 'formik';
 import * as yup from 'yup';
 
 import Section from '../Components/Section';
+import CustomSelect from '../Components/CustomSelect';
 import useAnimationStore, {
 	AnimationOptions,
 	MAX_ANIMATION_PROFILES,
 	MAX_CASE_LIGHTS,
 	MAX_CUSTOM_COLORS,
-	MAX_PRESSED_COLORS,
 } from '../Store/useAnimationStore';
 import FormControl from '../Components/FormControl';
 import FormSelect from '../Components/FormSelect';
-import { useTranslation } from 'react-i18next';
 import InfoCircle from '../Icons/InfoCircle';
 import { parseInt } from 'lodash';
 import {
 	ANIMATION_NON_PRESSED_EFFECTS,
 	ANIMATION_PRESSED_EFFECTS,
 } from '../Data/Animations';
+import boards from '../Data/Boards.json';
+
+const GPIO_PIN_LENGTH = boards[import.meta.env.VITE_GP2040_BOARD].maxPin + 1;
 
 const schema = yup.object().shape({
 	baseProfileIndex: yup.number().required('Selecting a profile is required'),
@@ -76,6 +79,24 @@ const schema = yup.object().shape({
 	),
 });
 
+// Values are indexes of color array in Animation.hpp
+const colorOptions = [
+	{ value: 0, label: 'Black' },
+	{ value: 1, label: 'White' },
+	{ value: 2, label: 'Red' },
+	{ value: 3, label: 'Orange' },
+	{ value: 4, label: 'Yellow' },
+	{ value: 5, label: 'Lime Green' },
+	{ value: 6, label: 'Green' },
+	{ value: 7, label: 'Seafoam' },
+	{ value: 8, label: 'Aqua' },
+	{ value: 9, label: 'Sky Blue' },
+	{ value: 10, label: 'Blue' },
+	{ value: 11, label: 'Purple' },
+	{ value: 12, label: 'Pink' },
+	{ value: 13, label: 'Magenta' },
+];
+
 const emptyAnimationProfile = {
 	bEnabled: 1,
 	baseCaseEffect: 0,
@@ -95,6 +116,43 @@ const convertToHex = (color: number) =>
 
 const convertToDecimal = (hex: string) => parseInt(hex.replace('#', ''), 16);
 
+function GpioColorSelector({
+	colors,
+	arrayHelpers,
+}: {
+	colors: number[];
+	arrayHelpers: FieldArrayRenderProps;
+}) {
+	return (
+		<div className="pin-grid gap-3 mt-3">
+			{Array.from({ length: GPIO_PIN_LENGTH }).map((_, gpioPinIndex) => (
+				<div
+					key={`select-${gpioPinIndex}`}
+					className="d-flex col align-items-center"
+				>
+					<div className="d-flex flex-shrink-0" style={{ width: '3.5rem' }}>
+						<label>GP{gpioPinIndex}</label>
+					</div>
+					<CustomSelect
+						isClearable
+						options={colorOptions}
+						onChange={(selected) => {
+							arrayHelpers.replace(gpioPinIndex, selected?.value || 0);
+						}}
+						value={
+							colors[gpioPinIndex]
+								? colorOptions.find(
+										({ value }) => value === colors[gpioPinIndex],
+										// eslint-disable-next-line no-mixed-spaces-and-tabs
+								  )
+								: colorOptions[0]
+						}
+					/>
+				</div>
+			))}
+		</div>
+	);
+}
 export default function AnimationPage() {
 	const {
 		AnimationOptions,
@@ -235,15 +293,15 @@ export default function AnimationPage() {
 									}}
 									className="my-3"
 								>
-									{values.profiles.map((profile, index) => (
+									{values.profiles.map((profile, profileIndex) => (
 										<Tab
-											key={`profile-${index}`}
-											eventKey={`profile-${index}`}
-											title={`Profile ${index + 1}`}
+											key={`profile-${profileIndex}`}
+											eventKey={`profile-${profileIndex}`}
+											title={`Profile ${profileIndex + 1}`}
 										>
 											<FormCheck
 												size={3}
-												name={`profiles.${index}.bEnabled`}
+												name={`profiles.${profileIndex}.bEnabled`}
 												label={
 													<OverlayTrigger
 														overlay={<Tooltip>Enabled does something</Tooltip>}
@@ -259,7 +317,7 @@ export default function AnimationPage() {
 												checked={Boolean(profile.bEnabled)}
 												onChange={() =>
 													setFieldValue(
-														`profiles.${index}.bEnabled`,
+														`profiles.${profileIndex}.bEnabled`,
 														Number(!profile.bEnabled),
 													)
 												}
@@ -267,13 +325,13 @@ export default function AnimationPage() {
 											<Row>
 												<FormSelect
 													label={'Base Case Effect'}
-													name={`profiles.${index}.baseCaseEffect`}
+													name={`profiles.${profileIndex}.baseCaseEffect`}
 													className="form-select-sm"
 													groupClassName="col-sm-4 mb-3"
 													value={Number(profile.baseCaseEffect)}
 													onChange={(e) =>
 														setFieldValue(
-															`profiles.${index}.baseCaseEffect`,
+															`profiles.${profileIndex}.baseCaseEffect`,
 															parseInt(e.target.value),
 														)
 													}
@@ -291,13 +349,13 @@ export default function AnimationPage() {
 												</FormSelect>
 												<FormSelect
 													label={'Base Non Pressed Effect'}
-													name={`profiles.${index}.baseNonPressedEffect`}
+													name={`profiles.${profileIndex}.baseNonPressedEffect`}
 													className="form-select-sm"
 													groupClassName="col-sm-4 mb-3"
 													value={Number(profile.baseNonPressedEffect)}
 													onChange={(e) =>
 														setFieldValue(
-															`profiles.${index}.baseNonPressedEffect`,
+															`profiles.${profileIndex}.baseNonPressedEffect`,
 															parseInt(e.target.value),
 														)
 													}
@@ -315,13 +373,13 @@ export default function AnimationPage() {
 												</FormSelect>
 												<FormSelect
 													label={'Base Pressed Effect'}
-													name={`profiles.${index}.basePressedEffect`}
+													name={`profiles.${profileIndex}.basePressedEffect`}
 													className="form-select-sm"
 													groupClassName="col-sm-4 mb-3"
 													value={Number(profile.basePressedEffect)}
 													onChange={(e) =>
 														setFieldValue(
-															`profiles.${index}.basePressedEffect`,
+															`profiles.${profileIndex}.basePressedEffect`,
 															parseInt(e.target.value),
 														)
 													}
@@ -342,7 +400,7 @@ export default function AnimationPage() {
 												<FormControl
 													type="number"
 													label={'Button Press Fade Out Time (ms)'}
-													name={`profiles.${index}.buttonPressFadeOutTimeInMs`}
+													name={`profiles.${profileIndex}.buttonPressFadeOutTimeInMs`}
 													className="form-control-sm"
 													groupClassName="col-sm-4 mb-3"
 													value={profile.buttonPressFadeOutTimeInMs}
@@ -351,7 +409,7 @@ export default function AnimationPage() {
 												<FormControl
 													type="number"
 													label={'Button Press Hold Time (ms)'}
-													name={`profiles.${index}.buttonPressHoldTimeInMs`}
+													name={`profiles.${profileIndex}.buttonPressHoldTimeInMs`}
 													className="form-control-sm"
 													groupClassName="col-sm-4 mb-3"
 													value={profile.buttonPressHoldTimeInMs}
@@ -361,12 +419,12 @@ export default function AnimationPage() {
 											<FormControl
 												type="color"
 												label={'Pressed Special Colour'}
-												name={`profiles.${index}.pressedSpecialColour`}
+												name={`profiles.${profileIndex}.pressedSpecialColour`}
 												className="form-control-sm p-0 border-0 mb-3"
 												value={convertToHex(profile.pressedSpecialColour)}
 												onChange={(e) =>
 													setFieldValue(
-														`profiles.${index}.pressedSpecialColour`,
+														`profiles.${profileIndex}.pressedSpecialColour`,
 														convertToDecimal(e.target.value),
 													)
 												}
@@ -374,12 +432,12 @@ export default function AnimationPage() {
 											<FormControl
 												type="color"
 												label={'Non Pressed Special Colour'}
-												name={`profiles.${index}.nonPressedSpecialColour`}
+												name={`profiles.${profileIndex}.nonPressedSpecialColour`}
 												className="form-control-sm p-0 border-0 mb-3"
 												value={convertToHex(profile.nonPressedSpecialColour)}
 												onChange={(e) =>
 													setFieldValue(
-														`profiles.${index}.nonPressedSpecialColour`,
+														`profiles.${profileIndex}.nonPressedSpecialColour`,
 														convertToDecimal(e.target.value),
 													)
 												}
@@ -387,7 +445,7 @@ export default function AnimationPage() {
 											<FormGroup className="mb-3">
 												<Form.Label>Case Static Colors</Form.Label>
 												<FieldArray
-													name={`profiles.${index}.caseStaticColors`}
+													name={`profiles.${profileIndex}.caseStaticColors`}
 													render={(arrayHelpers) => (
 														<div className="d-flex col gap-2 flex-wrap">
 															{profile.caseStaticColors.map((color, i) => (
@@ -397,7 +455,7 @@ export default function AnimationPage() {
 																>
 																	<FormControl
 																		type="color"
-																		name={`profiles.${index}.caseStaticColors.${i}`}
+																		name={`profiles.${profileIndex}.caseStaticColors.${i}`}
 																		className="form-control-sm p-0 border-0"
 																		value={convertToHex(color)}
 																		onChange={(e) =>
@@ -433,123 +491,37 @@ export default function AnimationPage() {
 													)}
 												/>
 											</FormGroup>
-											<FormGroup className="mb-3">
-												<Form.Label>Pressed Static Colors</Form.Label>
-												<FieldArray
-													name={`profiles.${index}.pressedStaticColors`}
-													render={(arrayHelpers) => (
-														<>
-															<div className="d-flex col gap-2 flex-wrap">
-																{profile.pressedStaticColors.map((color, i) => (
-																	<div
-																		key={`pressedStaticColors-${i}`}
-																		className="d-flex gap-1"
-																	>
-																		<FormControl
-																			type="color"
-																			name={`profiles.${index}.pressedStaticColors.${i}`}
-																			className="form-control-sm p-0 border-0"
-																			value={convertToHex(color)}
-																			onChange={(e) =>
-																				arrayHelpers.replace(
-																					i,
-																					convertToDecimal(e.target.value),
-																				)
-																			}
-																		/>
-																		<Button
-																			size="sm"
-																			onClick={() => {
-																				arrayHelpers.remove(i);
-																			}}
-																		>
-																			{'✕'}
-																		</Button>
-																	</div>
-																))}
-																{profile.pressedStaticColors.length !==
-																	MAX_PRESSED_COLORS && (
-																	<>
-																		<div className="vr"></div>
-																		<Button
-																			size="sm"
-																			onClick={() => arrayHelpers.push(0)}
-																		>
-																			{'+ Add color'}
-																		</Button>
-																	</>
-																)}
-															</div>
-															<ErrorMessage
-																name={`profiles.${index}.pressedStaticColors`}
-																render={(msg) => (
-																	<p className="text-danger">{msg}</p>
-																)}
-															/>
-														</>
-													)}
-												/>
-											</FormGroup>
-											<FormGroup className="mb-3">
-												<Form.Label>Non Pressed Static Colors</Form.Label>
-												<FieldArray
-													name={`profiles.${index}.notPressedStaticColors`}
-													render={(arrayHelpers) => (
-														<>
-															<div className="d-flex col gap-2 flex-wrap">
-																{profile.notPressedStaticColors.map(
-																	(color, i) => (
-																		<div
-																			key={`notPressedStaticColors-${i}`}
-																			className="d-flex gap-1"
-																		>
-																			<FormControl
-																				type="color"
-																				name={`profiles.${index}.notPressedStaticColors.${i}`}
-																				className="form-control-sm p-0 border-0"
-																				value={convertToHex(color)}
-																				onChange={(e) =>
-																					arrayHelpers.replace(
-																						i,
-																						convertToDecimal(e.target.value),
-																					)
-																				}
-																			/>
-																			<Button
-																				size="sm"
-																				onClick={() => {
-																					arrayHelpers.remove(i);
-																				}}
-																			>
-																				{'✕'}
-																			</Button>
-																		</div>
-																	),
-																)}
-																{profile.notPressedStaticColors.length !==
-																	MAX_PRESSED_COLORS && (
-																	<>
-																		<div className="vr"></div>
-																		<Button
-																			size="sm"
-																			onClick={() => arrayHelpers.push(0)}
-																		>
-																			{'+ Add color'}
-																		</Button>
-																	</>
-																)}
-															</div>
-
-															<ErrorMessage
-																name={`profiles.${index}.notPressedStaticColors`}
-																render={(msg) => (
-																	<p className="text-danger">{msg}</p>
-																)}
-															/>
-														</>
-													)}
-												/>
-											</FormGroup>
+											<Tabs defaultActiveKey="pressed" className="mb-3" fill>
+												<Tab eventKey="pressed" title="Pressed Static Colors">
+													<FormGroup className="mb-3">
+														<FieldArray
+															name={`profiles.${profileIndex}.pressedStaticColors`}
+															render={(arrayHelpers) => (
+																<GpioColorSelector
+																	colors={profile.pressedStaticColors}
+																	arrayHelpers={arrayHelpers}
+																/>
+															)}
+														/>
+													</FormGroup>
+												</Tab>
+												<Tab
+													eventKey="nonpressed"
+													title="Non Pressed Static Colors"
+												>
+													<FormGroup className="mb-3">
+														<FieldArray
+															name={`profiles.${profileIndex}.notPressedStaticColors`}
+															render={(arrayHelpers) => (
+																<GpioColorSelector
+																	colors={profile.notPressedStaticColors}
+																	arrayHelpers={arrayHelpers}
+																/>
+															)}
+														/>
+													</FormGroup>
+												</Tab>
+											</Tabs>
 										</Tab>
 									))}
 
