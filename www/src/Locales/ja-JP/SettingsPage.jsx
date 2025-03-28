@@ -9,6 +9,7 @@ export default {
 	'input-mode-options': {
 		none: 'モード未選択',
 		'nintendo-switch': '任天堂Switch',
+		generic: '標準HID',
 		keyboard: 'キーボード',
 		mdmini: 'Sega Genesis/メガドライブ Mini',
 		pcemini: 'PCエンジン/Turbografx 16 Mini',
@@ -49,6 +50,7 @@ export default {
 	},
 	'profile-label': 'プロファイル',
 	'debounce-delay-label': 'チャタリング除去ディレイ(ミリ秒)',
+	'mini-menu-gamepad-input': 'ディスプレイメニューの入力にゲームパッド入力を利用',
 	'ps4-mode-explanation-text':
 		'PS4モードはGP2040-CEコントローラを認証済みPS4コントローラとして動作させることができます。',
 	'ps4-mode-warning-text':
@@ -119,8 +121,16 @@ export default {
 		'load-profile-3': 'プロファイル #3をロード',
 		'load-profile-4': 'プロファイル #4をロード',
 		'reboot-default': 'GP2040-CEを再起動',
+		'save-config': '設定を保存',
 		'next-profile': '次のプロファイル',
 		'previous-profile': '前のプロファイル',
+		'menu-nav-up': 'メニュー 上',
+		'menu-nav-down': 'メニュー 下',
+		'menu-nav-left': 'メニュー 左',
+		'menu-nav-right': 'メニュー 右',
+		'menu-nav-select': 'メニュー 選択',
+		'menu-nav-back': 'メニュー 戻る',
+		'menu-nav-toggle': 'メニュー トグル',
 	},
 	'forced-setup-mode-label': '強制セットアップモード',
 	'forced-setup-mode-options': {
@@ -137,4 +147,15 @@ export default {
 	'keyboard-mapping-header-text': 'キーボードキー割り当て',
 	'keyboard-mapping-sub-header-text':
 		'以下のフォームを利用してボタンとキーの割り当て変更をしてください。',
+	'usb-override': {
+		'advanced-override': '⚠️ USBオーバーライド(上級者向け)',
+		'invalid-warning-danger':
+			'危険: 無効なUSBパラメータを設定するとデバイスが動作しなくなります。',
+		'product-name': '製品名',
+		manufacturer: '製造者',
+		version: 'バージョン',
+		'physical-warning-danger': '⚡ 物理ID変更 ⚡ ',
+		'product-id': 'プロダクトID',
+		'vendor-id': 'ベンダーID',
+	},
 };

@@ -18,4 +18,5 @@ export default {
 	'encoder-mode-right-trigger': '右トリガー',
 	'encoder-mode-dpad-x': '十字キー左右',
 	'encoder-mode-dpad-y': '十字キー上下',
+	'encoder-mode-volume': 'ボリューム (キーボード限定)',
 };
