@@ -40,6 +40,11 @@ enum ButtonLayout
     BUTTON_LAYOUT_6GAWD_ALLBUTTON_A = 31;
     BUTTON_LAYOUT_6GAWD_ALLBUTTONPLUS_A = 32;
     BUTTON_LAYOUT_STICKLESS_R16 = 33;
+    BUTTON_LAYOUT_BOARD_DEFINED_ALT0_A = 34;
+    BUTTON_LAYOUT_BOARD_DEFINED_ALT1_A = 35;
+    BUTTON_LAYOUT_BOARD_DEFINED_ALT2_A = 36;
+    BUTTON_LAYOUT_BOARD_DEFINED_ALT3_A = 37;
+    BUTTON_LAYOUT_BOARD_DEFINED_ALT4_A = 38;
 }
 
 enum ButtonLayoutRight
@@ -84,6 +89,13 @@ enum ButtonLayoutRight
     BUTTON_LAYOUT_6GAWD_ALLBUTTON_B = 35;
     BUTTON_LAYOUT_6GAWD_ALLBUTTONPLUS_B = 36;
     BUTTON_LAYOUT_STICKLESS_R16B = 37;
+    BUTTON_LAYOUT_VLXB_6B = 38;
+    BUTTON_LAYOUT_SEGA2P_6B = 39;
+    BUTTON_LAYOUT_BOARD_DEFINED_ALT0_B = 40;
+    BUTTON_LAYOUT_BOARD_DEFINED_ALT1_B = 41;
+    BUTTON_LAYOUT_BOARD_DEFINED_ALT2_B = 42;
+    BUTTON_LAYOUT_BOARD_DEFINED_ALT3_B = 43;
+    BUTTON_LAYOUT_BOARD_DEFINED_ALT4_B = 44;
 }
 
 enum SplashMode
@@ -91,8 +103,8 @@ enum SplashMode
     option (nanopb_enumopt).long_names = false;
 
     SPLASH_MODE_STATIC = 0;
-    SPLASH_MODE_CLOSEIN = 1;
-    SPLASH_MODE_CLOSEINCUSTOM = 2;
+    SPLASH_MODE_RESERVED_01 = 1;
+    SPLASH_MODE_RESERVED_02 = 2;
     SPLASH_MODE_NONE = 3;
 }
 
@@ -243,6 +255,34 @@ enum GpioAction
     BUTTON_PRESS_E10             = 52;
     BUTTON_PRESS_E11             = 53;
     BUTTON_PRESS_E12             = 54;
+
+    DIGITAL_DIRECTION_UP         = 55;
+    DIGITAL_DIRECTION_DOWN       = 56;
+    DIGITAL_DIRECTION_LEFT       = 57;
+    DIGITAL_DIRECTION_RIGHT      = 58;
+    ANALOG_DIRECTION_LS_X_NEG    = 59;
+    ANALOG_DIRECTION_LS_X_POS    = 60;
+    ANALOG_DIRECTION_LS_Y_NEG    = 61;
+    ANALOG_DIRECTION_LS_Y_POS    = 62;
+    ANALOG_DIRECTION_RS_X_NEG    = 63;
+    ANALOG_DIRECTION_RS_X_POS    = 64;
+    ANALOG_DIRECTION_RS_Y_NEG    = 65;
+    ANALOG_DIRECTION_RS_Y_POS    = 66;
+    ANALOG_DIRECTION_MOD_LOW     = 67;
+    ANALOG_DIRECTION_MOD_HIGH    = 68;
+
+    BUTTON_PRESS_INPUT_REVERSE   = 69;
+    SUSTAIN_FOCUS_MODE           = 70;
+
+    SUSTAIN_4_8_WAY_MODE         = 71;
+    
+    MENU_NAVIGATION_UP           = 72;
+    MENU_NAVIGATION_DOWN         = 73;
+    MENU_NAVIGATION_LEFT         = 74;
+    MENU_NAVIGATION_RIGHT        = 75;
+    MENU_NAVIGATION_SELECT       = 76;
+    MENU_NAVIGATION_BACK         = 77;
+    MENU_NAVIGATION_TOGGLE       = 78;
 }
 
 enum GpioDirection
@@ -300,9 +340,48 @@ enum GamepadHotkey
     HOTKEY_DPAD_LEFT             = 40;
     HOTKEY_DPAD_RIGHT            = 41;
     HOTKEY_PREVIOUS_PROFILE      = 42;
+    HOTKEY_SAVE_CONFIG           = 43;
+    HOTKEY_MENU_NAV_UP           = 44;
+    HOTKEY_MENU_NAV_DOWN         = 45;
+    HOTKEY_MENU_NAV_LEFT         = 46;
+    HOTKEY_MENU_NAV_RIGHT        = 47;
+    HOTKEY_MENU_NAV_SELECT       = 48;
+    HOTKEY_MENU_NAV_BACK         = 49;
+    HOTKEY_MENU_NAV_TOGGLE       = 50;
+	HOTKEY_LEDS_NONE             = 51;
+	HOTKEY_LEDS_ANIMATION_UP     = 52;
+	HOTKEY_LEDS_ANIMATION_DOWN   = 53;
+	HOTKEY_LEDS_PARAMETER_UP     = 54;
+	HOTKEY_LEDS_PRESS_PARAMETER_UP                = 55;
+	HOTKEY_LEDS_PRESS_PARAMETER_DOWN              = 56;
+	HOTKEY_LEDS_PARAMETER_DOWN                    = 57;
+	HOTKEY_LEDS_BRIGHTNESS_UP                     = 58;
+	HOTKEY_LEDS_BRIGHTNESS_DOWN                   = 59;
+	HOTKEY_LEDS_FADETIME_UP                       = 60;
+	HOTKEY_LEDS_FADETIME_DOWN                     = 61;
+	HOTKEY_AMBIENT_LIGHT_EFFECTS_CHANGE           = 62; 
+	HOTKEY_AMBIENT_LIGHT_EFFECTS_ON_OFF           = 63; 
+	HOTKEY_AMBIENT_LIGHT_EFFECTS_BRIGHTNESS_UP    = 64;
+	HOTKEY_AMBIENT_LIGHT_EFFECTS_BRIGHTNESS_DOWN  = 65;
+	HOTKEY_AMBIENT_LIGHT_EFFECTS_PARAMETER_UP     = 66;
+	HOTKEY_AMBIENT_LIGHT_EFFECTS_PARAMETER_DOWN   = 67;
+	HOTKEY_AMBIENT_LIGHT_EFFECTS_FRAME_SPEED_UP   = 68;
+	HOTKEY_AMBIENT_LIGHT_EFFECTS_FRAME_SPEED_DOWN = 69;
+	HOTKEY_AMBIENT_LIGHT_EFFECTS_CUSTOM_LINKAGE   = 70;
 }
 
-// This has to be kept in sync with LEDFormat in NeoPico.hpp
+enum AnimationEffects
+{
+    option (nanopb_enumopt).long_names = false;
+    
+    EFFECT_STATIC_COLOR = 0;
+    EFFECT_RAINBOW = 1;
+    EFFECT_CHASE = 2;
+    EFFECT_STATIC_THEME = 3;
+    EFFECT_CUSTOM_THEME = 4;
+}
+
+// This has to be kept in sync with LEDFormat in NeoPico.h
 enum LEDFormat_Proto
 {
     LED_FORMAT_GRB = 0;
@@ -326,6 +405,48 @@ enum PLEDType
     PLED_TYPE_NONE = -1;
     PLED_TYPE_PWM = 0;
     PLED_TYPE_RGB = 1;
+};
+
+enum CaseRGBType
+{
+    option (nanopb_enumopt).long_names = false;
+
+    CASE_RGB_TYPE_NONE = -1;
+    CASE_RGB_TYPE_AMBIENT = 0;
+    CASE_RGB_TYPE_LINKED = 1;
+};
+
+enum AmbientEffectType
+{
+    option (nanopb_enumopt).long_names = false; 
+
+    AL_CUSTOM_EFFECT_STATIC_COLOR = 0;	// Static
+    AL_CUSTOM_EFFECT_GRADIENT = 1;	    // Gradient Color
+    AL_CUSTOM_EFFECT_CHASE = 2;		    // Chase
+    AL_CUSTOM_EFFECT_BREATH = 3;		// Breathing
+    AL_CUSTOM_EFFECT_STATIC_THEME = 4;	// Custom Static
+};
+
+enum AnimationColor // Sync with Animation.h
+{
+    option (nanopb_enumopt).long_names = false; 
+
+    ANIMATION_COLOR_BLACK = 0;
+    ANIMATION_COLOR_WHITE = 1;
+    ANIMATION_COLOR_RED = 2;
+    ANIMATION_COLOR_ORANGE = 3;
+    ANIMATION_COLOR_YELLOW = 4;
+    ANIMATION_COLOR_LIMEGREEN = 5;
+    ANIMATION_COLOR_GREEN = 6;
+    ANIMATION_COLOR_SEAFOAM = 7;
+    ANIMATION_COLOR_AQUA = 8;
+    ANIMATION_COLOR_SKYBLUE = 9;
+    ANIMATION_COLOR_BLUE = 10;
+    ANIMATION_COLOR_PURPLE = 11;
+    ANIMATION_COLOR_PINK = 12;
+    ANIMATION_COLOR_MAGENTA = 13;
+    ANIMATION_COLOR_INDIGO = 14;
+    ANIMATION_COLOR_VIOLET = 15;
 };
 
 enum ForcedSetupMode
@@ -391,6 +512,18 @@ enum GPShape_Type
     GP_SHAPE_ARC = 4;
 };
 
+enum GPLever_Mode
+{
+    option (nanopb_enumopt).long_names = false;
+
+    GP_LEVER_MODE_NONE = 0;
+    GP_LEVER_MODE_DIGITAL = 1;
+    GP_LEVER_MODE_LEFT_ANALOG = 2;
+    GP_LEVER_MODE_RIGHT_ANALOG = 4;
+    GP_LEVER_MODE_INVERT_X = 8;
+    GP_LEVER_MODE_INVERT_Y = 16;
+};
+
 enum RotaryEncoderPinMode
 {
     option (nanopb_enumopt).long_names = false;
@@ -404,6 +537,7 @@ enum RotaryEncoderPinMode
     ENCODER_MODE_RIGHT_TRIGGER = 6;
     ENCODER_MODE_DPAD_X = 7;
     ENCODER_MODE_DPAD_Y = 8;
+    ENCODER_MODE_VOLUME = 9;
 };
 
 enum ReactiveLEDMode
@@ -422,4 +556,45 @@ enum PS4ControllerIDMode
 
     PS4_ID_CONSOLE = 0;
     PS4_ID_EMULATION = 1;
+};
+
+enum DisplaySaverMode
+{
+    option (nanopb_enumopt).long_names = false;
+
+    DISPLAY_SAVER_DISPLAY_OFF = 0;
+    DISPLAY_SAVER_SNOW = 1;
+    DISPLAY_SAVER_BOUNCE = 2;
+    DISPLAY_SAVER_PIPES = 3;
+    DISPLAY_SAVER_TOAST = 4;
+};
+
+enum ButtonLayoutOrientation
+{
+    option (nanopb_enumopt).long_names = false;
+
+    BUTTON_ORIENTATION_DEFAULT = 0;
+    BUTTON_ORIENTATION_SOUTHPAW = 1;
+    BUTTON_ORIENTATION_SWITCHED = 2;
+};
+
+enum GPEventType
+{
+    option (nanopb_enumopt).long_names = false;
+
+    GP_EVENT_BASE = 0;
+    GP_EVENT_RESTART = 1;
+    GP_EVENT_USBHOST_MOUNT = 2;
+    GP_EVENT_USBHOST_UNMOUNT = 3;
+    GP_EVENT_PROFILE_CHANGE = 4;
+    GP_EVENT_ENCODER_CHANGE = 5;
+    GP_EVENT_BUTTON_UP = 6;
+    GP_EVENT_BUTTON_DOWN = 7;
+    GP_EVENT_BUTTON_PROCESSED_UP = 8;
+    GP_EVENT_BUTTON_PROCESSED_DOWN = 9;
+    GP_EVENT_ANALOG_MOVE = 10;
+    GP_EVENT_ANALOG_PROCESSED_MOVE = 11;
+    GP_EVENT_STORAGE_SAVE = 12;
+    GP_EVENT_SYSTEM_REBOOT = 13;
+    GP_EVENT_MENU_NAVIGATE = 14;
 };

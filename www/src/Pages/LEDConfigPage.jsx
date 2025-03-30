@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -20,6 +20,7 @@ import { getButtonLabels } from '../Data/Buttons';
 import LEDColors from '../Data/LEDColors';
 import { hexToInt } from '../Services/Utilities';
 import WebApi from '../Services/WebApi';
+import { BUTTON_LAYOUTS } from '../Data/Buttons';
 
 const LED_FORMATS = [
 	{ label: 'GRB', value: 0 },
@@ -28,17 +29,17 @@ const LED_FORMATS = [
 	{ label: 'RGBW', value: 3 },
 ];
 
-const BUTTON_LAYOUTS = [
-	{ label: '8-Button Layout', value: 0 },
-	{ label: 'Stickless Layout', value: 1 },
-	{ label: 'WASD Layout', value: 2 },
-];
-
 const PLED_LABELS = [
 	{ 0: 'PLED #1 Pin', 1: 'PLED #1 Index' },
 	{ 0: 'PLED #2 Pin', 1: 'PLED #2 Index' },
 	{ 0: 'PLED #3 Pin', 1: 'PLED #3 Index' },
 	{ 0: 'PLED #4 Pin', 1: 'PLED #4 Index' },
+];
+
+const CASE_TYPE = [
+	{ value: -1, label: 'Off'},
+	{ value: 0, label: 'Ambient'},
+	{ value: 1, label: 'Linked'}
 ];
 
 const defaultValue = {
@@ -58,6 +59,9 @@ const defaultValue = {
 	pledIndex3: -1,
 	pledIndex4: -1,
 	pledColor: '#00ff00',
+	caseRGBType: 0,
+	caseRGBIndex: -1,
+	caseRGBCount: 0,
 	ledButtonMap: {},
 };
 
@@ -93,7 +97,7 @@ const schema = yup.object().shape({
 		.positive()
 		.integer()
 		.min(0)
-		.max(2)
+		.max(38)
 		.label('LED Layout'),
 	ledsPerButton: yup
 		.number()
@@ -137,6 +141,16 @@ const schema = yup.object().shape({
 		.label('PLED Index 4')
 		.validateMinWhenEqualTo('pledType', 1, 0),
 	turnOffWhenSuspended: yup.number().label('Turn Off When Suspended'),
+	caseRGBType: yup.number().required().label('Case RGB Type'),
+	caseRGBCount: yup
+		.number()
+		.required()
+		.positive()
+		.integer()
+		.min(0)
+		.max(100)
+		.label('Case RGB Count'),
+	caseRGBIndex: yup.number().label('Case RGB Index').min(-1).max(100),
 	ledButtonMap: yup.object(),
 });
 
@@ -240,6 +254,10 @@ export default function LEDConfigPage() {
 		p[0] = t(`LedConfig:pled-pin-label`, { pin: ++n });
 		p[1] = t(`LedConfig:pled-index-label`, { index: n });
 	});
+
+	CASE_TYPE[0].label = t(`LedConfig:case.case-type-off`);
+	CASE_TYPE[1].label = t(`LedConfig:case.case-type-ambient`);
+	CASE_TYPE[2].label = t(`LedConfig:case.case-type-linked`);
 
 	const ledOrderChanged = (setFieldValue, ledOrderArrays, ledsPerButton) => {
 		if (ledOrderArrays.length === 2) {
@@ -644,6 +662,61 @@ export default function LEDConfigPage() {
 									<strong>starts at index {{ rgbLedStartIndex }}</strong>.
 								</Trans>
 							</p>
+						</Form.Group>
+					</Section>
+					<Section title={t('LedConfig:case.header-text')}>
+						<Form.Group as={Col}>
+							<Row>
+								<FormSelect
+									label={t('LedConfig:case.case-type-label')}
+									name="caseRGBType"
+									className="form-select-sm"
+									groupClassName="col-sm-2 mb-3"
+									value={values.caseRGBType}
+									error={errors.caseRGBType}
+									isInvalid={errors.caseRGBType}
+									onChange={(e) =>
+										setFieldValue('caseRGBType', parseInt(e.target.value))
+									}
+								>
+									{CASE_TYPE.map((o, i) => (
+										<option key={`caseType-option-${i}`} value={o.value}>
+											{o.label}
+										</option>
+									))}
+								</FormSelect>
+								<FormControl
+									type="number"
+									name="caseRGBIndex"
+									hidden={parseInt(values.caseRGBType) === -1}
+									label={t('LedConfig:case.case-index-label')}
+									className="form-control-sm"
+									groupClassName="col-sm-2 mb-3"
+									value={values.caseRGBIndex}
+									error={errors.caseRGBIndex}
+									isInvalid={errors.caseRGBIndex}
+									onChange={(e) =>
+										setFieldValue('caseRGBIndex', parseInt(e.target.value))
+									}
+									min={0}
+								/>
+								<FormControl
+									type="number"
+									name="caseRGBCount"
+									hidden={parseInt(values.caseRGBType) === -1}
+									label={t('LedConfig:case.case-count-label')}
+									className="form-control-sm"
+									groupClassName="col-sm-2 mb-3"
+									value={values.caseRGBCount}
+									error={errors.caseRGBCount}
+									isInvalid={errors.caseRGBCount}
+									onChange={(e) =>
+										setFieldValue('caseRGBCount', parseInt(e.target.value))
+									}
+									min={0}
+								/>
+							</Row>
+							<p>{t('LedConfig:case.sub-header-text')}</p>
 						</Form.Group>
 					</Section>
 					<Button type="submit">{t('Common:button-save-label')}</Button>

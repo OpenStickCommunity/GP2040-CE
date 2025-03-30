@@ -1,36 +1,20 @@
-# == DO NEVER EDIT THE NEXT LINES for Raspberry Pi Pico VS Code Extension to work ==
-if(WIN32)
-    set(USERHOME $ENV{USERPROFILE})
-else()
-    set(USERHOME $ENV{HOME})
-endif()
-set(sdkVersion 2.0.0)
-set(toolchainVersion 13_2_Rel1)
-set(picotoolVersion 2.0.0)
-set(picoVscode ${USERHOME}/.pico-sdk/cmake/pico-vscode.cmake)
-if (EXISTS ${picoVscode})
-    include(${picoVscode})
-endif()
-# ====================================================================================
-
 cmake_minimum_required(VERSION 3.13)
 include(CMakePrintHelpers)
 
 # enable compile commands for use by IDE autocompletion
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-
 # initialize the SDK based on PICO_SDK_PATH
 # note: this must happen before project()
 include(pico_sdk_import.cmake)
 
-if (PICO_SDK_VERSION_STRING VERSION_LESS "2.0.0")
-  message(FATAL_ERROR "Raspberry Pi Pico SDK version 2.0.0 (or later) required. Your version is ${PICO_SDK_VERSION_STRING}")
+if (PICO_SDK_VERSION_STRING VERSION_LESS "1.5.0")
+  message(FATAL_ERROR "Raspberry Pi Pico SDK version 1.5.0 (or later) required. Your version is ${PICO_SDK_VERSION_STRING}")
 endif()
 
 # set the version for webconfig, etc. based on git
 find_package(Git)
-execute_process(COMMAND ${GIT_EXECUTABLE} describe --tags --always --dirty
+execute_process(COMMAND ${GIT_EXECUTABLE} describe --tags --always --dirty --abbrev=7
 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 	OUTPUT_VARIABLE GIT_REPO_VERSION
 	OUTPUT_STRIP_TRAILING_WHITESPACE)
@@ -166,6 +150,7 @@ src/gamepad.cpp
 src/gamepad/GamepadState.cpp
 src/addonmanager.cpp
 src/configmanager.cpp
+src/playerleds.cpp
 src/drivers/shared/xinput_host.cpp
 src/drivers/shared/xgip_protocol.cpp
 src/drivers/astro/AstroDriver.cpp
@@ -202,6 +187,7 @@ src/display/ui/elements/GPWidget.cpp
 src/display/ui/elements/GPButton.cpp
 src/display/ui/elements/GPLever.cpp
 src/display/ui/elements/GPLabel.cpp
+src/display/ui/elements/GPMenu.cpp
 src/display/ui/elements/GPScreen.cpp
 src/display/ui/elements/GPShape.cpp
 src/display/ui/elements/GPSprite.cpp
@@ -209,11 +195,14 @@ src/display/ui/screens/ButtonLayoutScreen.cpp
 src/display/ui/screens/ConfigScreen.cpp
 src/display/ui/screens/MainMenuScreen.cpp
 src/display/ui/screens/PinViewerScreen.cpp
+src/display/ui/screens/RestartScreen.cpp
 src/display/ui/screens/StatsScreen.cpp
 src/display/ui/screens/SplashScreen.cpp
+src/display/ui/screens/DisplaySaverScreen.cpp
 src/display/GPGFX.cpp
 src/display/GPGFX_UI.cpp
 src/drivermanager.cpp
+src/eventmanager.cpp
 src/layoutmanager.cpp
 src/peripheralmanager.cpp
 src/storagemanager.cpp
@@ -235,7 +224,6 @@ src/addons/i2canalog1219.cpp
 src/addons/i2c_gpio_pcf8575.cpp
 src/addons/display.cpp
 src/addons/neopicoleds.cpp
-src/addons/playernum.cpp
 src/addons/playerleds.cpp
 src/addons/reactiveleds.cpp
 src/addons/rotaryencoder.cpp
@@ -248,6 +236,16 @@ src/addons/input_macro.cpp
 src/addons/snes_input.cpp
 src/addons/tilt.cpp
 src/addons/spi_analog_ads1256.cpp
+src/addons/gamepad_usb_host.cpp
+src/addons/gamepad_usb_host_listener.cpp
+src/animationstation/animation.cpp
+src/animationstation/animationstation.cpp
+src/animationstation/effects/chase.cpp
+src/animationstation/effects/customtheme.cpp
+src/animationstation/effects/customthemepressed.cpp
+src/animationstation/effects/rainbow.cpp
+src/animationstation/effects/staticcolor.cpp
+src/animationstation/effects/statictheme.cpp
 ${PROTO_OUTPUT_DIR}/enums.pb.c
 ${PROTO_OUTPUT_DIR}/config.pb.c
 )
@@ -262,17 +260,16 @@ pico_stdlib
 pico_bootsel_via_double_reset
 tinyusb_host
 tinyusb_pico_pio_usb
-AnimationStation
 CRC32
 FlashPROM
 ADS1219
 ADS1256
-PlayerLEDs
 NeoPico
 OneBitDisplay
 ArduinoJson
 rndis
 hardware_adc
+hardware_pwm
 PicoPeripherals
 WiiExtension
 SNESpad
@@ -285,6 +282,7 @@ headers
 headers/addons
 headers/configs
 headers/drivers
+headers/events
 headers/interfaces
 headers/interfaces/i2c
 headers/interfaces/i2c/ads1219
@@ -295,8 +293,11 @@ headers/gamepad
 headers/display
 headers/display/fonts
 headers/display/ui
+headers/display/ui/static
 headers/display/ui/elements
 headers/display/ui/screens
+headers/animationstation
+headers/animationstation/effects
 configs/${GP2040_BOARDCONFIG}
 ${PROTO_OUTPUT_DIR}
 ${CMAKE_BINARY_DIR}/headers

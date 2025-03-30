@@ -1,11 +1,9 @@
 export default {
-	'header-text': '端子割り当て設定',
 	'sub-header-text': `ここではどの端子にどの機能を割り当てるかの設定ができます。どのボタンがどの端子に割当られているか分からない場合は端子確認機能をお試しください。`,
 	'alert-text':
 		'未接続や未実装の端子を割当設定するとコントローラが動作しない状態に陥る可能性があります。無効な設定を初期化したい場合は<2>設定初期化</2>のページで初期化を実行してください。',
 	'pin-viewer': '端子確認',
 	'pin-pressed': 'このボタンの配線先は {{pressedPin}} 番端子です！',
-	'pin-header-label': '端子',
 
 	'profile-label-title': 'プロファイル名',
 	'profile-label-description': '最大１６文字。半角英数とスペースのみ。',
@@ -18,12 +16,6 @@ export default {
 	'profile-pins-warning':
 		'プロファイルの変更ホットキーに設定しているボタンや方向キーの設定変更は、現在のプロファイル選択状況がわからなくなる原因となるため非推奨です。',
 	'profile-copy-base': 'Baseプロファイルをコピー',
-	errors: {
-		conflict: '{{pin}} 番端子は既に{{conflictedMappings}}に割り当て済みです',
-		required: '{{button}}の設定は必須です',
-		invalid: '{{pin}}番端子はこのボードでは無効です',
-		used: '{{pin}}番端子は既に別機能に割り当て済みです',
-	},
 	actions: {
 		NONE: '無し',
 		RESERVED: '予約',

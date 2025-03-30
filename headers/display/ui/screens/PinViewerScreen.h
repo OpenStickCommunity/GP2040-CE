@@ -8,6 +8,7 @@ class PinViewerScreen : public GPScreen {
     public:
         PinViewerScreen() {}
         PinViewerScreen(GPGFX* renderer) { setRenderer(renderer); }
+        virtual ~PinViewerScreen(){}
         virtual int8_t update();
         virtual void init();
         virtual void shutdown();

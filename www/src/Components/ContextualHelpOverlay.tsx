@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
 import InfoCircle from '../Icons/InfoCircle';
 
-const ContextualHelpOverlay = ({ name, ...props }) => {
+const ContextualHelpOverlay = ({ ...props }) => {
 	const [show, setShow] = useState(false);
 
 	const handleClose = () => setShow(false);

@@ -8,6 +8,7 @@ class GPWidget : public GPGFX_UI {
     public:
         GPWidget() {}
         GPWidget(GPGFX* renderer) { setRenderer(renderer); }
+        virtual ~GPWidget(){}
         virtual void draw() {}
         virtual int8_t update() { return 0; }
 
@@ -28,6 +29,9 @@ class GPWidget : public GPGFX_UI {
 
         double getScaleX() { return ((double)(this->getViewport().right - this->getViewport().left) / (double)(getRenderer()->getDriver()->getMetrics()->width)); }
         double getScaleY() { return ((double)(this->getViewport().bottom - this->getViewport().top) / (double)(getRenderer()->getDriver()->getMetrics()->height)); }
+
+        void setVisibility(bool visible) { this->_visibility = visible; }
+        bool getVisibility() { return this->_visibility; }
     protected:
         uint16_t x = 0;
         uint16_t y = 0;
@@ -36,6 +40,7 @@ class GPWidget : public GPGFX_UI {
         uint16_t fillColor = 0;
         uint16_t _ID;
         uint16_t _priority = 0;
+        bool _visibility = true;
 
         GPViewport _viewport;
 };

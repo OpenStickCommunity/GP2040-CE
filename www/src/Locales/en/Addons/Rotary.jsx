@@ -18,4 +18,5 @@ export default {
 	'encoder-mode-right-trigger': 'Right Trigger',
 	'encoder-mode-dpad-x': 'D-Pad Left/Right',
 	'encoder-mode-dpad-y': 'D-Pad Up/Down',
+	'encoder-mode-volume': 'Volume (Keyboard Only)',
 };

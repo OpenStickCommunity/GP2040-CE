@@ -114,7 +114,7 @@ const useProfilesStore = create<State & Actions>()((set, get) => ({
 							...profile,
 							...state.profiles[0],
 							profileLabel: profile.profileLabel,
-					  }
+						}
 					: profile,
 			),
 		})),

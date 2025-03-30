@@ -7,7 +7,7 @@
 #define STORAGE_H_
 
 #include <stdint.h>
-#include "NeoPico.hpp"
+#include "NeoPico.h"
 #include "FlashPROM.h"
 
 #include "enums.h"
@@ -17,6 +17,8 @@
 #include "config.pb.h"
 #include <atomic>
 #include "pico/critical_section.h"
+#include "eventmanager.h"
+#include "GPStorageSaveEvent.h"
 
 #define SI Storage::getInstance()
 
@@ -42,18 +44,14 @@ public:
 	DisplayOptions& getPreviewDisplayOptions() { return previewDisplayOptions; }
 	LEDOptions& getLedOptions() { return config.ledOptions; }
 	AddonOptions& getAddonOptions() { return config.addonOptions; }
-	AnimationOptions_Proto& getAnimationOptions() { return config.animationOptions; }
+	AnimationOptions& getAnimationOptions() { return config.animationOptions; }
 	ProfileOptions& getProfileOptions() { return config.profileOptions; }
 	GpioMappingInfo* getProfilePinMappings() { return functionalPinMappings; }
 	PeripheralOptions& getPeripheralOptions() { return config.peripheralOptions; }
 
 	void init();
 	bool save();
-
-	// Perform saves that were enqueued from core1
-	void performEnqueuedSaves();
-
-	void enqueueAnimationOptionsSave(const AnimationOptions& animationOptions);
+	bool save(const bool force);
 
 	void SetConfigMode(bool); 			// Config Mode (on-boot)
 	bool GetConfigMode();
@@ -80,10 +78,6 @@ private:
 	uint8_t featureData[32]; // USB X-Input Feature Data
 	DisplayOptions previewDisplayOptions;
 	Config config;
-	std::atomic<bool> animationOptionsSavePending;
-	critical_section_t animationOptionsCs;
-	uint32_t animationOptionsCrc = 0;
-	AnimationOptions animationOptionsToSave = {};
 	GpioMappingInfo functionalPinMappings[NUM_BANK0_GPIOS];
 };
 

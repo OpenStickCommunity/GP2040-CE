@@ -29,6 +29,14 @@ message GamepadOptions
     optional InputModeAuthType ps5AuthType = 22;
     optional InputModeAuthType xinputAuthType = 23;
     optional PS4ControllerIDMode ps4ControllerIDMode = 24;
+    optional bool usbDescOverride = 25;
+    optional string usbDescProduct = 26 [(nanopb).max_length = 32];
+    optional string usbDescManufacturer = 27 [(nanopb).max_length = 32];
+    optional string usbDescVersion = 28 [(nanopb).max_length = 8];
+    optional bool usbOverrideID = 29;
+    optional uint32 usbProductID = 30;
+    optional uint32 usbVendorID = 31;
+    optional uint32 miniMenuGamepadInput = 32;
 }
 
 message KeyboardMapping
@@ -245,6 +253,21 @@ message DisplayOptions
 
     optional int32 displaySaverTimeout = 17;
     optional bool turnOffWhenSuspended = 18;
+    optional DisplaySaverMode displaySaverMode = 19;
+
+    optional ButtonLayoutOrientation buttonLayoutOrientation = 20;
+
+    optional bool inputMode = 21;
+    optional bool turboMode = 22;
+    optional bool dpadMode = 23;
+    optional bool socdMode = 24;
+    optional bool macroMode = 25;
+    optional bool profileMode = 26;
+
+    optional bool inputHistoryEnabled = 27;
+    optional uint32 inputHistoryLength = 28;
+    optional uint32 inputHistoryCol = 29;
+    optional uint32 inputHistoryRow = 30;
 }
 
 message LEDOptions
@@ -288,10 +311,15 @@ message LEDOptions
     optional int32 pledIndex2 = 33;
     optional int32 pledIndex3 = 34;
     optional int32 pledIndex4 = 35;
+
+    optional CaseRGBType caseRGBType = 36;
+    optional int32 caseRGBIndex = 37;
+    optional uint32 caseRGBColor = 38 [deprecated = true];
+    optional uint32 caseRGBCount = 39;
 };
 
-// This has to be kept in sync with AnimationOptions in AnimationStation.hpp
-message AnimationOptions_Proto
+// This has to be kept in sync with AnimationOptions in animationstation.hpp
+message AnimationOptions
 {
     optional uint32 baseAnimationIndex = 1;
     optional uint32 brightness = 2;
@@ -339,6 +367,17 @@ message AnimationOptions_Proto
     optional uint32 customThemeA1Pressed = 43;
     optional uint32 customThemeA2Pressed = 44;
     optional uint32 buttonPressColorCooldownTimeInMs = 45;
+    optional uint32 ambientLightEffectsCountIndex = 46;     // ambient count
+    optional bool ambientLightCustomLinkageModeFlag = 47 [deprecated = true];
+    optional uint32 ambientLightGradientSpeed = 48;         // gradient speed
+    optional int32 ambientLightChaseSpeed = 49;             // chase speed
+    optional float ambientLightBreathSpeed = 50;            // breath speed
+    optional float alGradientBrightnessCustomX = 51;        // gradient brightness
+    optional float alChaseBrightnessCustomX = 52;           // chase brightness
+    optional float alStaticColorBrightnessCustomX = 53;     // static brightness
+    optional float alStaticBrightnessCustomThemeX = 54;     // static custom theme brightness
+    optional uint32 alCustomStaticThemeIndex = 55;          // custom theme index
+    optional uint32 alCustomStaticColorIndex = 56;          // static color index
 }
 
 message BootselButtonOptions
@@ -397,6 +436,10 @@ message TurboOptions
     optional uint32 shmupBtnMask3 = 17;
     optional uint32 shmupBtnMask4 = 18;
     optional ShmupMixMode shmupMixMode = 19;
+
+    optional PLEDType turboLedType = 20;
+    optional int32 turboLedIndex = 21;
+    optional uint32 turboLedColor = 22;
 }
 
 message SliderOptions
@@ -426,7 +469,7 @@ message ReverseOptions
 {
     optional bool enabled = 1;
 
-    optional int32 buttonPin = 2;
+    optional int32 buttonPin = 2 [deprecated = true];
     optional int32 ledPin = 3;
 
     optional uint32 actionUp = 4;
@@ -475,17 +518,17 @@ message TiltOptions
 {
     optional bool enabled = 1;
 
-    optional int32 tilt1Pin = 2;
-    optional int32 tilt2Pin = 3;
-    optional int32 deprecatedTiltFunctionPin = 4 [deprecated = true];
-    optional int32 tiltLeftAnalogUpPin = 5;
-    optional int32 tiltLeftAnalogDownPin = 6;
-    optional int32 tiltLeftAnalogLeftPin = 7;
-    optional int32 tiltLeftAnalogRightPin = 8;
-    optional int32 tiltRightAnalogUpPin = 9;
-    optional int32 tiltRightAnalogDownPin = 10;
-    optional int32 tiltRightAnalogLeftPin = 11;
-    optional int32 tiltRightAnalogRightPin = 12;
+    optional int32 tilt1Pin = 2 [deprecated = true];
+    optional int32 tilt2Pin = 3 [deprecated = true];
+    optional int32 tiltFunctionPin = 4 [deprecated = true];
+    optional int32 tiltLeftAnalogUpPin = 5 [deprecated = true];
+    optional int32 tiltLeftAnalogDownPin = 6 [deprecated = true];
+    optional int32 tiltLeftAnalogLeftPin = 7 [deprecated = true];
+    optional int32 tiltLeftAnalogRightPin = 8 [deprecated = true];
+    optional int32 tiltRightAnalogUpPin = 9 [deprecated = true];
+    optional int32 tiltRightAnalogDownPin = 10 [deprecated = true];
+    optional int32 tiltRightAnalogLeftPin = 11 [deprecated = true];
+    optional int32 tiltRightAnalogRightPin = 12 [deprecated = true];
 
     optional SOCDMode tiltSOCDMode = 13;
 
@@ -510,16 +553,16 @@ message BuzzerOptions
 
 message ExtraButtonOptions
 {
-    optional bool enabled = 1;
+    optional bool enabled = 1 [deprecated = true];
 
-    optional int32 pin = 2;
-    optional uint32 buttonMap = 3;
+    optional int32 pin = 2 [deprecated = true];
+    optional uint32 buttonMap = 3 [deprecated = true];
 }
 
 message PlayerNumberOptions
 {
-    optional bool enabled = 1;
-    optional uint32 number = 2;
+    optional bool enabled = 1 [deprecated = true];
+    optional uint32 number = 2 [deprecated = true];
 }
 
 message PS4Options
@@ -688,10 +731,15 @@ message KeyboardHostOptions
     optional uint32 mouseRight = 7;
 }
 
+message GamepadUSBHostOptions
+{
+    optional bool enabled = 1;
+}
+
 message FocusModeOptions
 {
     optional bool enabled = 1;
-    optional int32 pin = 2;
+    optional int32 pin = 2 [deprecated = true];
     optional int32 buttonLockMask = 3;
     optional bool oledLockEnabled = 4;
     optional bool rgbLockEnabled = 5;
@@ -730,10 +778,10 @@ message MacroOptions
 
 message InputHistoryOptions
 {
-    optional bool enabled = 1;
-    optional uint32 length = 2;
-    optional uint32 col = 3;
-    optional uint32 row = 4;
+    optional bool deprecatedEnabled = 1  [deprecated = true];
+    optional uint32 deprecatedLength = 2  [deprecated = true];
+    optional uint32 deprecatedCol = 3  [deprecated = true];
+    optional uint32 deprecatedRow = 4  [deprecated = true];
 }
 
 message RotaryPinOptions
@@ -800,7 +848,7 @@ message AddonOptions
     optional DualDirectionalOptions dualDirectionalOptions = 8;
     optional BuzzerOptions buzzerOptions = 9;
     optional ExtraButtonOptions deprecatedExtraButtonOptions = 10 [deprecated = true];
-    optional PlayerNumberOptions playerNumberOptions = 11;
+    optional PlayerNumberOptions playerNumberOptions = 11 [deprecated = true];
     optional PS4Options ps4Options = 12 [(nanopb).disallow_export = true];
     optional WiiOptions wiiOptions = 13;
     optional SOCDSliderOptions socdSliderOptions = 14;
@@ -810,13 +858,14 @@ message AddonOptions
     optional TiltOptions tiltOptions = 18;
     optional PSPassthroughOptions psPassthroughOptions = 19 [deprecated = true];
     optional MacroOptions macroOptions = 20;
-    optional InputHistoryOptions inputHistoryOptions = 21;
+    optional InputHistoryOptions inputHistoryOptions = 21  [deprecated = true];
     optional XBOnePassthroughOptions xbonePassthroughOptions = 22 [deprecated = true];
     optional AnalogADS1256Options analogADS1256Options = 23;
     optional RotaryOptions rotaryOptions = 24;
     optional PCF8575Options pcf8575Options = 25;
     optional DRV8833RumbleOptions drv8833RumbleOptions = 26;
     optional ReactiveLEDOptions reactiveLEDOptions = 27;
+    optional GamepadUSBHostOptions gamepadUSBHostOptions = 28;
 }
 
 message MigrationHistory
@@ -837,7 +886,7 @@ message Config
     optional KeyboardMapping keyboardMapping = 5;
     optional DisplayOptions displayOptions = 6;
     optional LEDOptions ledOptions = 7;
-    optional AnimationOptions_Proto animationOptions = 8;
+    optional AnimationOptions animationOptions = 8;
     optional AddonOptions addonOptions = 9;
     optional ForcedSetupOptions forcedSetupOptions = 10;
     optional ProfileOptions profileOptions = 11;

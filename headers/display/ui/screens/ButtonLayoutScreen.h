@@ -7,6 +7,9 @@
 #include <deque>
 #include <array>
 #include <functional>
+#include <algorithm> 
+#include <cctype>
+#include <locale>
 #include "layoutmanager.h"
 #include "GPGFX_UI_widgets.h"
 #include "GPGFX_UI_layouts.h"
@@ -99,9 +102,13 @@ class ButtonLayoutScreen : public GPScreen {
     public:
         ButtonLayoutScreen() {}
         ButtonLayoutScreen(GPGFX* renderer) { setRenderer(renderer); }
+        virtual ~ButtonLayoutScreen(){}
         virtual int8_t update();
         virtual void init();
         virtual void shutdown();
+
+        void handleProfileChange(GPEvent* e);
+        void handleUSB(GPEvent* e);
     protected:
         virtual void drawScreen();
     private:
@@ -144,17 +151,30 @@ class ButtonLayoutScreen : public GPScreen {
         std::deque<std::string> inputHistory;
         std::array<bool, INPUT_HISTORY_MAX_INPUTS> lastInput;
 
-        bool profileModeDisplay;
-        uint8_t profileDelay = 2;
-        int profileDelayStart = 0;
+        bool bannerDisplay;
+        uint8_t bannerDelay = 2;
+        int bannerDelayStart = 0;
+        std::string bannerMessage;
         uint16_t prevButtonState = 0;
         uint8_t prevLayoutLeft = 0;
         uint8_t prevLayoutRight = 0;
+        uint8_t profileNumber = 0;
         uint8_t prevProfileNumber = 0;
         ButtonLayoutParamsLeft prevLeftOptions;
         ButtonLayoutParamsRight prevRightOptions;
+        ButtonLayoutOrientation prevOrientation;
+
+        bool hasTurboAssigned = false;
 
         bool macroEnabled;
+
+        bool showInputMode = true;
+        bool showTurboMode = true;
+        bool showDpadMode = true;
+        bool showSocdMode = true;
+        bool showMacroMode = true;
+        bool showProfileMode = false;
+        void trim(std::string &s);
 
         uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
         void processInputHistory();

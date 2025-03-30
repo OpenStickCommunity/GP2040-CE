@@ -20,7 +20,7 @@ export default {
 		'pled-type-rgb': 'RGB',
 		'pled-color-label': 'Cor do LED RGB do Jogador',
 	},
-	'pled-pin-label': 'PLED Pino #{{pin}}',
+	'pled-pin-label': 'PLED GPIO Pino #{{pin}}',
 	'pled-index-label': 'Índice do PLED #{{index}}',
 	'rgb-order': {
 		'header-text': 'Ordem dos Botões de LED RGB',

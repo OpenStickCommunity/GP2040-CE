@@ -6,6 +6,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <pico/unique_id.h>
 
 #define XINPUT_ENDPOINT_SIZE 20
 
@@ -50,7 +51,7 @@ static const uint8_t xinput_string_language[]    = { 0x09, 0x04 };
 static const uint8_t xinput_string_serial[] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 static const uint8_t xinput_string_manfacturer[] = "\xa9Microsoft Corporation";
 static const uint8_t xinput_string_product[]     = "Controller";
-static const uint8_t xinput_string_version[]     = "08FEC93"; // Fake a random serial, doesn't matter
+static uint8_t xinput_string_version[]     = "08FEC93"; // Serial that is overridden by Pico ID
 static const uint8_t xinput_string_xsm3[]        = "Xbox Security Method 3, Version 1.00, \xa9 2005 Microsoft Corporation. All rights reserved.";
 
 static const uint8_t *xinput_string_descriptors[] __attribute__((unused)) =
@@ -61,6 +62,19 @@ static const uint8_t *xinput_string_descriptors[] __attribute__((unused)) =
     xinput_string_version,
     xinput_string_xsm3
 };
+
+static const uint8_t * xinput_get_string_descriptor(int index) {
+    if ( index == 3 ) {
+        // Generate a serial number of hex bytes from the pico's unique ID
+        pico_unique_board_id_t unique_id;
+        pico_get_unique_board_id(&unique_id);
+        for(int i = 0; i < 3; i++) {
+            sprintf((char*)(&xinput_string_version[i*2+1]), "%02X", (uint8_t)unique_id.id[i+5]);
+        }
+    }
+
+    return xinput_string_descriptors[index];
+}
 
 static const uint8_t xinput_device_descriptor[] =
 {
