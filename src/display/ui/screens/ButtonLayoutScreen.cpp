@@ -85,6 +85,10 @@ void ButtonLayoutScreen::init() {
 
 void ButtonLayoutScreen::shutdown() {
     clearElements();
+
+    EventManager::getInstance().unregisterEventHandler(GP_EVENT_PROFILE_CHANGE, GPEVENT_CALLBACK(this->handleProfileChange(event)));
+    EventManager::getInstance().unregisterEventHandler(GP_EVENT_USBHOST_MOUNT, GPEVENT_CALLBACK(this->handleUSB(event)));
+    EventManager::getInstance().unregisterEventHandler(GP_EVENT_USBHOST_UNMOUNT, GPEVENT_CALLBACK(this->handleUSB(event)));
 }
 
 int8_t ButtonLayoutScreen::update() {
