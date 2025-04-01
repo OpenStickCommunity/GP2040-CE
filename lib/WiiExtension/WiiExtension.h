@@ -90,7 +90,7 @@ typedef enum {
 #endif
 
 #define WII_ALARM_NUM 0
-#define WII_ALARM_IRQ TIMER1_IRQ_0
+#define WII_ALARM_IRQ TIMER_IRQ_0
 
 #define WII_CHECKSUM_MAGIC 0x55
 #define WII_CALIBRATION_SIZE 0x10
