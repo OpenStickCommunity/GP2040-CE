@@ -536,7 +536,7 @@ void GP2040::checkSaveRebootState() {
 			rebootDelayTimeout = make_timeout_time_ms(rebootDelayMs);
 		}
 		saveRequested = false;
-		//Storage::getInstance().save(forceSave);
+		Storage::getInstance().save(forceSave);
 	}
 
 	if (!is_nil_time(rebootDelayTimeout) && time_reached(rebootDelayTimeout)) {
