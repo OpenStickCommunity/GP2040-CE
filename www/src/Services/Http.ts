@@ -1,43 +1,24 @@
 // This is modeled after Axios to make an easier transition, so this may need more buildout
 // if more than simple GET and POST requests are required.
 
-type GetOptions = {
-	headers?: Record<string, string>;
-	signal?: AbortSignal;
-};
-
 class Http {
-	async get(url: string, { headers = {}, signal }: GetOptions = {}) {
+	async get(url: string) {
 		try {
-			const response = await fetch(url, {
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json',
-					...headers,
-				},
-				signal,
-			});
+			const [response] = await Promise.all([fetch(url).then((res) => res.json())]);
 
-			const json = await response.json();
-			return Promise.resolve({ data: json });
+			return Promise.resolve({ data: response });
 		} catch (err) {
 			return Promise.reject(err);
 		}
 	}
 
-	async post(url: string, body: unknown, headers: object = {}) {
+	async post(url: string, body: unknown) {
 		try {
-			const response = await fetch(url, {
+			const [response] = await Promise.all([fetch(url, {
 				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					...headers,
-				},
-				body: JSON.stringify(body),
-			});
-
-			const json = await response.json();
-			return Promise.resolve({ data: json });
+				body: JSON.stringify(body)
+			}).then((res) => res.json())]);
+			return Promise.resolve({ data: response });
 		} catch (err) {
 			return Promise.reject(err);
 		}

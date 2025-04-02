@@ -235,9 +235,10 @@ async function setDisplayOptions(options, isPreview) {
 	}
 
 	delete newOptions.splashImage;
-	const url = !isPreview
-		? `${baseUrl}/api/setDisplayOptions`
-		: `${baseUrl}/api/setPreviewDisplayOptions`;
+	var url = `${baseUrl}/api/setDisplayOptions`;
+	if (isPreview === true ) {
+		url = `${baseUrl}/api/setPreviewDisplayOptions`;
+	}
 	return Http.post(url, newOptions)
 		.then((response) => {
 			console.log(response.data);

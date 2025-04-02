@@ -23,7 +23,8 @@ bool DisplayAddon::available() {
         gpDisplay = new GPGFX();
         gpOptions = gpDisplay->getAvailableDisplay(GPGFX_DisplayType::DISPLAY_TYPE_NONE);
         result = (gpOptions.displayType != GPGFX_DisplayType::DISPLAY_TYPE_NONE);
-        if (!result) delete gpDisplay;
+        if (!result)
+            delete gpDisplay;
     }
     return result;
 }

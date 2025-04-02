@@ -220,6 +220,31 @@ const FormContext = () => {
 			if (!!values.inputHistoryRow)
 				values.inputHistoryRow = parseInt(values.inputHistoryRow);
 
+			if (!!values.buttonLayoutCustomOptions)
+				values.buttonLayoutCustomOptions = values.buttonLayoutCustomOptions;
+
+			if(!!values.buttonLayoutCustomOptions.params.buttonPadding)
+				values.buttonLayoutCustomOptions.params.buttonPadding = parseInt(values.buttonLayoutCustomOptions.params.buttonPadding);
+			if(!!values.buttonLayoutCustomOptions.params.buttonRadius)
+				values.buttonLayoutCustomOptions.params.buttonRadius = parseInt(values.buttonLayoutCustomOptions.params.buttonRadius);
+			if(!!values.buttonLayoutCustomOptions.params.layout)
+				values.buttonLayoutCustomOptions.params.layout = parseInt(values.buttonLayoutCustomOptions.params.layout);
+			if(!!values.buttonLayoutCustomOptions.params.startX)
+				values.buttonLayoutCustomOptions.params.startX = parseInt(values.buttonLayoutCustomOptions.params.startX);
+			if(!!values.buttonLayoutCustomOptions.params.startY)
+				values.buttonLayoutCustomOptions.params.startY = parseInt(values.buttonLayoutCustomOptions.params.startY);
+
+			if(!!values.buttonLayoutCustomOptions.paramsRight.buttonPadding)
+				values.buttonLayoutCustomOptions.paramsRight.buttonPadding = parseInt(values.buttonLayoutCustomOptions.paramsRight.buttonPadding);
+			if(!!values.buttonLayoutCustomOptions.paramsRight.buttonRadius)
+				values.buttonLayoutCustomOptions.paramsRight.buttonRadius = parseInt(values.buttonLayoutCustomOptions.paramsRight.buttonRadius);
+			if(!!values.buttonLayoutCustomOptions.paramsRight.layout)
+				values.buttonLayoutCustomOptions.paramsRight.layout = parseInt(values.buttonLayoutCustomOptions.paramsRight.layout);
+			if(!!values.buttonLayoutCustomOptions.paramsRight.startX)
+				values.buttonLayoutCustomOptions.paramsRight.startX = parseInt(values.buttonLayoutCustomOptions.paramsRight.startX);
+			if(!!values.buttonLayoutCustomOptions.paramsRight.startY)
+				values.buttonLayoutCustomOptions.paramsRight.startY = parseInt(values.buttonLayoutCustomOptions.paramsRight.startY);
+
 			await WebApi.setDisplayOptions(values, true);
 		}
 
@@ -259,6 +284,31 @@ const FormContext = () => {
 				values.inputHistoryCol = parseInt(values.inputHistoryCol);
 			if (!!values.inputHistoryRow)
 				values.inputHistoryRow = parseInt(values.inputHistoryRow);
+
+			if (!!values.buttonLayoutCustomOptions)
+				values.buttonLayoutCustomOptions = values.buttonLayoutCustomOptions;
+
+			if(!!values.buttonLayoutCustomOptions.params.buttonPadding)
+				values.buttonLayoutCustomOptions.params.buttonPadding = parseInt(values.buttonLayoutCustomOptions.params.buttonPadding);
+			if(!!values.buttonLayoutCustomOptions.params.buttonRadius)
+				values.buttonLayoutCustomOptions.params.buttonRadius = parseInt(values.buttonLayoutCustomOptions.params.buttonRadius);
+			if(!!values.buttonLayoutCustomOptions.params.layout)
+				values.buttonLayoutCustomOptions.params.layout = parseInt(values.buttonLayoutCustomOptions.params.layout);
+			if(!!values.buttonLayoutCustomOptions.params.startX)
+				values.buttonLayoutCustomOptions.params.startX = parseInt(values.buttonLayoutCustomOptions.params.startX);
+			if(!!values.buttonLayoutCustomOptions.params.startY)
+				values.buttonLayoutCustomOptions.params.startY = parseInt(values.buttonLayoutCustomOptions.params.startY);
+
+			if(!!values.buttonLayoutCustomOptions.paramsRight.buttonPadding)
+				values.buttonLayoutCustomOptions.paramsRight.buttonPadding = parseInt(values.buttonLayoutCustomOptions.paramsRight.buttonPadding);
+			if(!!values.buttonLayoutCustomOptions.paramsRight.buttonRadius)
+				values.buttonLayoutCustomOptions.paramsRight.buttonRadius = parseInt(values.buttonLayoutCustomOptions.paramsRight.buttonRadius);
+			if(!!values.buttonLayoutCustomOptions.paramsRight.layout)
+				values.buttonLayoutCustomOptions.paramsRight.layout = parseInt(values.buttonLayoutCustomOptions.paramsRight.layout);
+			if(!!values.buttonLayoutCustomOptions.paramsRight.startX)
+				values.buttonLayoutCustomOptions.paramsRight.startX = parseInt(values.buttonLayoutCustomOptions.paramsRight.startX);
+			if(!!values.buttonLayoutCustomOptions.paramsRight.startY)
+				values.buttonLayoutCustomOptions.paramsRight.startY = parseInt(values.buttonLayoutCustomOptions.paramsRight.startY);
 
 			await WebApi.setDisplayOptions(values, true);
 		}

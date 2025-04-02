@@ -284,14 +284,6 @@ void GP2040::run() {
 
 		checkRawState(prevState, gamepad->state);
 
-		// Config Loop (Web-Config does not require gamepad)
-		if (configMode == true) {
-			
-			ConfigManager::getInstance().loop();
-			rebootHotkeys.process(gamepad, configMode);
-			continue;
-		}
-
 		// Process USB Host on Core0
 		USBHostManager::getInstance().process();
 
@@ -311,31 +303,22 @@ void GP2040::run() {
 		// Copy Processed Gamepad for Core1 (race condition otherwise)
 		memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
 
-		// Process Input Driver
-		bool processed = inputDriver->process(gamepad);
+		if (configMode == true) {
+			ConfigManager::getInstance().loop();
+			addons.PostprocessAddons(false);
+		} else {
+			// Process Input Driver
+			bool processed = inputDriver->process(gamepad);
+			
+			tud_task(); // TinyUSB Task update
+
+			// Post-Process Add-ons with USB Report Processed Sent
+			addons.PostprocessAddons(processed);
+		}
+
+		// Check if we have a pending save
+		checkSaveRebootState();
 		
-		tud_task(); // TinyUSB Task update
-
-		// Post-Process Add-ons with USB Report Processed Sent
-		addons.PostprocessAddons(processed);
-
-        if (rebootRequested) {
-            rebootRequested = false;
-            if (saveRequested) {
-                saveRequested = false;
-                Storage::getInstance().save(true);
-            }
-            rebootDelayTimeout = make_timeout_time_ms(rebootDelayMs);
-        } else {
-            if (saveRequested) {
-                saveRequested = false;
-                Storage::getInstance().save(true);
-            }
-        }
-
-        if (!is_nil_time(rebootDelayTimeout) && time_reached(rebootDelayTimeout)) {
-            System::reboot(System::BootMode::DEFAULT);
-        }
 	}
 }
 
@@ -546,8 +529,24 @@ void GP2040::checkProcessedState(GamepadState prevState, GamepadState currState)
     }
 }
 
+void GP2040::checkSaveRebootState() {
+	if (saveRequested) {
+		if (rebootRequested) {
+			rebootRequested = false;
+			rebootDelayTimeout = make_timeout_time_ms(rebootDelayMs);
+		}
+		saveRequested = false;
+		//Storage::getInstance().save(forceSave);
+	}
+
+	if (!is_nil_time(rebootDelayTimeout) && time_reached(rebootDelayTimeout)) {
+		System::reboot(System::BootMode::DEFAULT);
+	}
+}
+
 void GP2040::handleStorageSave(GPEvent* e) {
     saveRequested = true;
+	forceSave = ((GPStorageSaveEvent*)e)->forceSave;
     rebootRequested = ((GPStorageSaveEvent*)e)->restartAfterSave;
 }
 
