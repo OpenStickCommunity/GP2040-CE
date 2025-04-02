@@ -76,7 +76,7 @@ jobs:
         cmake-version: '3.16.x'
     - name: Verify cmake
       run: cmake --version
-   
+
     #Global Setup
     - name: Checkout GP2040-CE
       uses: actions/checkout@v4.1.1
