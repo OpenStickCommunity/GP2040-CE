@@ -40,11 +40,12 @@ class EventManager {
         void clearEventHandlers();
 
         void registerEventHandler(GPEventType eventType, EventFunction handler);
+        void unregisterEventHandler(GPEventType eventType, EventFunction handler);
         void triggerEvent(GPEvent* event);
     private:
         EventManager(){}
 
-        std::vector<std::pair<GPEventType, std::vector<EventFunction>>> eventList;
+        std::vector<EventEntry> eventList;
 };
 
 #endif
