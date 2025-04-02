@@ -248,12 +248,6 @@ void Gamepad::reinit()
 
 void Gamepad::process()
 {
-	// Get the midpoint value for the current mode
-	uint16_t joystickMid = GAMEPAD_JOYSTICK_MID;
-	if ( DriverManager::getInstance().getDriver() != nullptr ) {
-		joystickMid = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
-	}
-
 	// NOTE: Inverted X/Y-axis must run before SOCD and Dpad processing
 	if (options.invertXAxis) {
 		bool left = (state.dpad & mapDpadLeft->buttonMask) != 0;
@@ -288,10 +282,6 @@ void Gamepad::process()
 	switch (activeDpadMode)
 	{
 		case DpadMode::DPAD_MODE_LEFT_ANALOG:
-			//if (!hasRightAnalogStick) {
-			//	state.rx = joystickMid;
-			//	state.ry = joystickMid;
-			//}
 			state.lx = dpadToAnalogX(state.dpad);
 			state.ly = dpadToAnalogY(state.dpad);
 			state.dpad &= ~dpadOnlyMask;
@@ -299,10 +289,6 @@ void Gamepad::process()
 			break;
 
 		case DpadMode::DPAD_MODE_RIGHT_ANALOG:
-			//if (!hasLeftAnalogStick) {
-			//	state.lx = joystickMid;
-			//	state.ly = joystickMid;
-			//}
 			state.rx = dpadToAnalogX(state.dpad);
 			state.ry = dpadToAnalogY(state.dpad);
 			state.dpad &= ~dpadOnlyMask;
@@ -310,14 +296,6 @@ void Gamepad::process()
 			break;
 
 		default:
-			//if (!hasLeftAnalogStick) {
-			//	state.lx = joystickMid;
-			//	state.ly = joystickMid;
-			//}
-			//if (!hasRightAnalogStick) {
-			//	state.rx = joystickMid;
-			//	state.ry = joystickMid;
-			//}
 			break;
 	}
 }
