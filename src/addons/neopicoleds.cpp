@@ -1091,7 +1091,7 @@ void NeoPicoLEDAddon::ambientHotkeys(Gamepad *gamepad)
 	}
 
 	if (reqSave) {
-		EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
+		EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(false));
 	}
 
 	lastAmbientAction = action;
