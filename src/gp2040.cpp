@@ -319,23 +319,8 @@ void GP2040::run() {
 		// Post-Process Add-ons with USB Report Processed Sent
 		addons.PostprocessAddons(processed);
 
-        if (rebootRequested) {
-            rebootRequested = false;
-            if (saveRequested) {
-                saveRequested = false;
-                Storage::getInstance().save(true);
-            }
-            rebootDelayTimeout = make_timeout_time_ms(rebootDelayMs);
-        } else {
-            if (saveRequested) {
-                saveRequested = false;
-                Storage::getInstance().save(true);
-            }
-        }
-
-        if (!is_nil_time(rebootDelayTimeout) && time_reached(rebootDelayTimeout)) {
-            System::reboot(System::BootMode::DEFAULT);
-        }
+		// Check if we have a pending save
+		checkSaveRebootState();
 	}
 }
 
@@ -546,8 +531,24 @@ void GP2040::checkProcessedState(GamepadState prevState, GamepadState currState)
     }
 }
 
+void GP2040::checkSaveRebootState() {
+	if (saveRequested) {
+		if (rebootRequested) {
+			rebootRequested = false;
+			rebootDelayTimeout = make_timeout_time_ms(rebootDelayMs);
+		}
+		saveRequested = false;
+		Storage::getInstance().save(forceSave);
+	}
+
+	if (!is_nil_time(rebootDelayTimeout) && time_reached(rebootDelayTimeout)) {
+		System::reboot(System::BootMode::DEFAULT);
+	}
+}
+
 void GP2040::handleStorageSave(GPEvent* e) {
     saveRequested = true;
+	forceSave = ((GPStorageSaveEvent*)e)->forceSave; 
     rebootRequested = ((GPStorageSaveEvent*)e)->restartAfterSave;
 }
 
