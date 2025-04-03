@@ -735,7 +735,7 @@ std::string setGamepadOptions()
 
 std::string getGamepadOptions()
 {
-    const size_t capacity = JSON_OBJECT_SIZE(100);
+    const size_t capacity = JSON_OBJECT_SIZE(500);
     DynamicJsonDocument doc(capacity);
 
     GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
