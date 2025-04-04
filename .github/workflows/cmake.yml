@@ -63,6 +63,7 @@ jobs:
           RP2040AdvancedBreakoutBoardUSBPassthrough,
           RP2040MiniBreakoutBoard,
           RP2040MiniBreakoutBoardUSBPassthrough,
+          SeeedXIAORP2040,
           SparkFunProMicro,
           WaveshareZero,
           Stress,
