@@ -35,8 +35,6 @@
 
 #define LWIP_HTTPD_POST_MAX_PAYLOAD_LEN (1024 * 16)
 
-using namespace std;
-
 extern struct fsdata_file file__index_html[];
 
 const static char* spaPaths[] = { "/backup", "/display-config", "/led-config", "/pin-mapping", "/settings", "/reset-settings", "/add-ons", "/custom-theme", "/macro", "/peripheral-mapping" };
@@ -402,16 +400,17 @@ void addUsedPinsArray(DynamicJsonDocument& doc)
     }
 }
 
-std::string serialize_json(JsonDocument &doc)
+std::string serialize_json(DynamicJsonDocument &doc)
 {
-    string data;
+    std::string data;
     serializeJson(doc, data);
     return data;
 }
 
 std::string getUsedPins()
 {
-    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    const size_t capacity = JSON_OBJECT_SIZE(100);
+    DynamicJsonDocument doc(capacity);
     addUsedPinsArray(doc);
     return serialize_json(doc);
 }
@@ -460,7 +459,7 @@ std::string setDisplayOptions(DisplayOptions& displayOptions)
 std::string setDisplayOptions()
 {
     std::string response = setDisplayOptions(Storage::getInstance().getDisplayOptions());
-    Storage::getInstance().save(true);
+    EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
     return response;
 }
 
@@ -471,7 +470,8 @@ std::string setPreviewDisplayOptions()
 
 std::string getDisplayOptions() // Manually set Document Attributes for the display
 {
-    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    const size_t capacity = JSON_OBJECT_SIZE(100);
+    DynamicJsonDocument doc(capacity);
     const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
     writeDoc(doc, "enabled", displayOptions.enabled ? 1 : 0);
     writeDoc(doc, "flipDisplay", displayOptions.flip);
@@ -514,11 +514,10 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
 std::string getSplashImage()
 {
     const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
-    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN + displayOptions.splashImage.size);
+    const size_t capacity = JSON_OBJECT_SIZE(1) + JSON_ARRAY_SIZE(displayOptions.splashImage.size);
+    DynamicJsonDocument doc(capacity);
     JsonArray splashImageArray = doc.createNestedArray("splashImage");
-    std::vector<char> temp(sizeof(displayOptions.splashImage.bytes), '\0');
-    memcpy(temp.data(), displayOptions.splashImage.bytes, displayOptions.splashImage.size);
-    copyArray(reinterpret_cast<const uint8_t*>(temp.data()), temp.size(), splashImageArray);
+    copyArray(displayOptions.splashImage.bytes, displayOptions.splashImage.size, splashImageArray);
     return serialize_json(doc);
 }
 
@@ -536,7 +535,7 @@ std::string setSplashImage()
     memcpy(displayOptions.splashImage.bytes, decoded.data(), length);
     displayOptions.splashImage.size = length;
 
-    Storage::getInstance().save(true);
+    EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
     return serialize_json(doc);
 }
@@ -581,13 +580,14 @@ std::string setProfileOptions()
         if (altsIndex > 2) break;
     }
 
-    Storage::getInstance().save(true);
+    EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
     return serialize_json(doc);
 }
 
 std::string getProfileOptions()
 {
-    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    const size_t capacity = JSON_OBJECT_SIZE(500);
+    DynamicJsonDocument doc(capacity);
 
     const auto writePinDoc = [&](const int item, const char* key, const GpioMappingInfo& value) -> void
     {
@@ -708,14 +708,15 @@ std::string setGamepadOptions()
     ForcedSetupOptions& forcedSetupOptions = Storage::getInstance().getForcedSetupOptions();
     readDoc(forcedSetupOptions.mode, doc, "forcedSetupMode");
 
-    Storage::getInstance().save(true);
+    EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
     return serialize_json(doc);
 }
 
 std::string getGamepadOptions()
 {
-    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    const size_t capacity = JSON_OBJECT_SIZE(500);
+    DynamicJsonDocument doc(capacity);
 
     GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
     writeDoc(doc, "dpadMode", gamepadOptions.dpadMode);
@@ -835,13 +836,14 @@ std::string setLedOptions()
     readDoc(ledOptions.caseRGBIndex, doc, "caseRGBIndex");
     readDoc(ledOptions.caseRGBCount, doc, "caseRGBCount");
 
-    Storage::getInstance().save(true);
+    EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
     return serialize_json(doc);
 }
 
 std::string getLedOptions()
 {
-    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    const size_t capacity = JSON_OBJECT_SIZE(500);
+    DynamicJsonDocument doc(capacity);
     const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
     writeDoc(doc, "dataPin", cleanPin(ledOptions.dataPin));
     writeDoc(doc, "ledFormat", ledOptions.ledFormat);
@@ -899,7 +901,8 @@ std::string getLedOptions()
 
 std::string getButtonLayoutDefs()
 {
-    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    const size_t capacity = JSON_OBJECT_SIZE(500);
+    DynamicJsonDocument doc(capacity);
     uint16_t layoutCtr = 0;
 
     for (layoutCtr = _ButtonLayout_MIN; layoutCtr < _ButtonLayout_ARRAYSIZE; layoutCtr++) {
@@ -917,7 +920,8 @@ std::string getButtonLayoutDefs()
 
 std::string getButtonLayouts()
 {
-    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    const size_t capacity = JSON_OBJECT_SIZE(500);
+    DynamicJsonDocument doc(capacity);
     const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
     const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
     uint16_t elementCtr = 0;
@@ -947,7 +951,8 @@ std::string getButtonLayouts()
 
     writeDoc(doc, "displayLayouts", "buttonLayoutId", displayOptions.buttonLayout);
     for (elementCtr = 0; elementCtr < layoutA.size(); elementCtr++) {
-        DynamicJsonDocument ele(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+        const size_t elementSize = JSON_OBJECT_SIZE(12);
+        DynamicJsonDocument ele(elementSize);
 
         writeDoc(ele, "elementType", layoutA[elementCtr].elementType);
         writeDoc(ele, "parameters", "x1", layoutA[elementCtr].parameters.x1);
@@ -966,7 +971,8 @@ std::string getButtonLayouts()
 
     writeDoc(doc, "displayLayouts", "buttonLayoutRightId", displayOptions.buttonLayoutRight);
     for (elementCtr = 0; elementCtr < layoutB.size(); elementCtr++) {
-        DynamicJsonDocument ele(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+        const size_t elementSize = JSON_OBJECT_SIZE(12);
+        DynamicJsonDocument ele(elementSize);
 
         writeDoc(ele, "elementType", layoutB[elementCtr].elementType);
         writeDoc(ele, "parameters", "x1", layoutB[elementCtr].parameters.x1);
@@ -1044,13 +1050,14 @@ std::string setCustomTheme()
     readDoc(pressCooldown, doc, "buttonPressColorCooldownTimeInMs");
     options.buttonPressColorCooldownTimeInMs = pressCooldown;
 
-    Storage::getInstance().save(true);
+    EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
     return serialize_json(doc);
 }
 
 std::string getCustomTheme()
 {
-    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    const size_t capacity = JSON_OBJECT_SIZE(100);
+    DynamicJsonDocument doc(capacity);
     const AnimationOptions& options = Storage::getInstance().getAnimationOptions();
 
     writeDoc(doc, "enabled", options.hasCustomTheme);
@@ -1119,14 +1126,15 @@ std::string setPinMappings()
     gpioMappings.profileLabel[profileLabelSize - 1] = '\0';
     gpioMappings.enabled = doc["enabled"];
 
-    Storage::getInstance().save(true);
+    EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
     return serialize_json(doc);
 }
 
 std::string getPinMappings()
 {
-    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    const size_t capacity = JSON_OBJECT_SIZE(500);
+    DynamicJsonDocument doc(capacity);
 
     GpioMappings& gpioMappings = Storage::getInstance().getGpioMappings();
 
@@ -1213,14 +1221,15 @@ std::string setKeyMappings()
     readDoc(keyboardMapping.keyButtonE11, doc, "E11");
     readDoc(keyboardMapping.keyButtonE12, doc, "E12");
 
-    Storage::getInstance().save(true);
+    EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
     return serialize_json(doc);
 }
 
 std::string getKeyMappings()
 {
-    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    const size_t capacity = JSON_OBJECT_SIZE(100);
+    DynamicJsonDocument doc(capacity);
     const KeyboardMapping& keyboardMapping = Storage::getInstance().getKeyboardMapping();
 
     writeDoc(doc, "Up", keyboardMapping.keyDpadUp);
@@ -1261,7 +1270,8 @@ std::string getKeyMappings()
 
 std::string getPeripheralOptions()
 {
-    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    const size_t capacity = JSON_OBJECT_SIZE(100);
+    DynamicJsonDocument doc(capacity);
     const PeripheralOptions& peripheralOptions = Storage::getInstance().getPeripheralOptions();
 
     writeDoc(doc, "peripheral", "i2c0", "enabled", peripheralOptions.blockI2C0.enabled);
@@ -1295,7 +1305,8 @@ std::string getPeripheralOptions()
 }
 
 std::string getI2CPeripheralMap() {
-    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    const size_t capacity = JSON_OBJECT_SIZE(500);
+    DynamicJsonDocument doc(capacity);
 
     PeripheralOptions& peripheralOptions = Storage::getInstance().getPeripheralOptions();
 
@@ -1373,14 +1384,15 @@ std::string setPeripheralOptions()
         profiles.gpioMappingsSets[2].pins[oldPinDplus+adjacent].action = GpioAction::NONE;
     }
 
-    Storage::getInstance().save(true);
+    EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
     return serialize_json(doc);
 }
 
 std::string getExpansionPins()
 {
-    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    const size_t capacity = JSON_OBJECT_SIZE(100);
+    DynamicJsonDocument doc(capacity);
     GpioMappingInfo* gpioMappings = Storage::getInstance().getAddonOptions().pcf8575Options.pins;
 
     writeDoc(doc, "pins", "pcf8575", 0, "pin00", "option", gpioMappings[0].action);
@@ -1439,14 +1451,15 @@ std::string setExpansionPins()
     }
     Storage::getInstance().getAddonOptions().pcf8575Options.pins_count = 16;
 
-    Storage::getInstance().save(true);
+    EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
     return serialize_json(doc);
 }
 
 std::string getReactiveLEDs()
 {
-    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    const size_t capacity = JSON_OBJECT_SIZE(100);
+    DynamicJsonDocument doc(capacity);
     ReactiveLEDInfo* ledInfo = Storage::getInstance().getAddonOptions().reactiveLEDOptions.leds;
 
     for (uint16_t led = 0; led < 10; led++) {
@@ -1473,7 +1486,7 @@ std::string setReactiveLEDs()
     }
     Storage::getInstance().getAddonOptions().reactiveLEDOptions.leds_count = 10;
 
-    Storage::getInstance().save(true);
+    EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
     return serialize_json(doc);
 }
@@ -1658,7 +1671,7 @@ std::string setAddonOptions()
     docToValue(drv8833RumbleOptions.dutyMin, doc, "drv8833RumbleDutyMin");
     docToValue(drv8833RumbleOptions.dutyMax, doc, "drv8833RumbleDutyMax");
 
-    Storage::getInstance().save(true);
+    EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
     return serialize_json(doc);
 }
@@ -1731,7 +1744,7 @@ std::string setPS4Options()
     if (ps4Options.rsaQP.size != 0) ps4Options.rsaQP.size = 0;
     if (ps4Options.rsaRN.size != 0) ps4Options.rsaRN.size = 0;
 
-    Storage::getInstance().save(true);
+    EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
     return "{\"success\":true}";
 }
@@ -1814,14 +1827,15 @@ std::string setWiiControls()
     readDoc(wiiOptions.controllers.turntable.effects.axisType, doc, "turntable.analogEffects.axisType");
     readDoc(wiiOptions.controllers.turntable.fader.axisType, doc, "turntable.analogFader.axisType");
 
-    Storage::getInstance().save(true);
+    EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
     return "{\"success\":true}";
 }
 
 std::string getWiiControls()
 {
-    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    const size_t capacity = JSON_OBJECT_SIZE(100);
+    DynamicJsonDocument doc(capacity);
     WiiOptions& wiiOptions = Storage::getInstance().getAddonOptions().wiiOptions;
 
     writeDoc(doc, "nunchuk.buttonC", wiiOptions.controllers.nunchuk.buttonC);
@@ -1902,7 +1916,8 @@ std::string getWiiControls()
 
 std::string getAddonOptions()
 {
-    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    const size_t capacity = JSON_OBJECT_SIZE(500);
+    DynamicJsonDocument doc(capacity);
 
     const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
     writeDoc(doc, "analogAdc1PinX", cleanPin(analogOptions.analogAdc1PinX));
@@ -2120,13 +2135,14 @@ std::string setMacroAddonOptions()
 
     macroOptions.macroList_count = MAX_MACRO_LIMIT;
 
-    Storage::getInstance().save(true);
+    EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
     return serialize_json(doc);
 }
 
 std::string getMacroAddonOptions()
 {
-    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    const size_t capacity = JSON_OBJECT_SIZE(500);
+    DynamicJsonDocument doc(capacity);
 
     MacroOptions& macroOptions = Storage::getInstance().getAddonOptions().macroOptions;
     JsonArray macroList = doc.createNestedArray("macroList");
@@ -2158,7 +2174,8 @@ std::string getMacroAddonOptions()
 
 std::string getFirmwareVersion()
 {
-    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    const size_t capacity = JSON_OBJECT_SIZE(10);
+    DynamicJsonDocument doc(capacity);
     writeDoc(doc, "version", GP2040VERSION);
     writeDoc(doc, "boardConfigLabel", BOARD_CONFIG_LABEL);
     writeDoc(doc, "boardConfigFileName", BOARD_CONFIG_FILE_NAME);
@@ -2168,7 +2185,8 @@ std::string getFirmwareVersion()
 
 std::string getMemoryReport()
 {
-    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    const size_t capacity = JSON_OBJECT_SIZE(10);
+    DynamicJsonDocument doc(capacity);
     writeDoc(doc, "totalFlash", System::getTotalFlash());
     writeDoc(doc, "usedFlash", System::getUsedFlash());
     writeDoc(doc, "physicalFlash", Storage::getInstance().GetFlashSize());
@@ -2182,7 +2200,8 @@ static bool _abortGetHeldPins = false;
 
 std::string getHeldPins()
 {
-    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    const size_t capacity = JSON_OBJECT_SIZE(100);
+    DynamicJsonDocument doc(capacity);
 
     // Initialize unassigned pins so that they can be read from
     std::vector<uint> uninitPins;
@@ -2288,7 +2307,8 @@ DataAndStatusCode setConfig()
 std::string resetSettings()
 {
     Storage::getInstance().ResetSettings();
-    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    const size_t capacity = JSON_OBJECT_SIZE(10);
+    DynamicJsonDocument doc(capacity);
     doc["success"] = true;
     return serialize_json(doc);
 }
