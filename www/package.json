@@ -32,7 +32,8 @@
 		"lint": "eslint src --ext js,jsx,ts,tsx --report-unused-disable-directives --max-warnings 0",
 		"makefsdata": "node makefsdata.js",
 		"start": "npm run build-proto && vite",
-		"build-proto": "npx pbjs --no-create --no-encode --no-decode --no-convert --no-verify --no-delimited --sparse -t static-module -w commonjs --path ../lib/nanopb/generator/proto/ ../proto/enums.proto | npx pbts --no-comments -m -o ./src_gen/enums.ts -"
+		"build-proto": "npx pbjs --no-create --no-encode --no-decode --no-convert --no-verify --no-delimited --sparse -t static-module -w commonjs --path ../lib/nanopb/generator/proto/ ../proto/enums.proto | npx pbts --no-comments -m -o ./src_gen/enums.ts -",
+		"check-locale": "./checklocale.sh"
 	},
 	"devDependencies": {
 		"@types/lodash": "^4.17.1",
