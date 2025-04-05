@@ -2301,11 +2301,25 @@ std::string echo()
 }
 #endif
 
-std::string reboot()
-{
+// MUST MATCH NAVIGATION.JSX
+enum BOOT_MODES {
+	GAMEPAD = 0,
+	WEBCONFIG = 1,
+	BOOTSEL = 2,
+};
+
+std::string reboot() {
     DynamicJsonDocument doc = get_post_data();
     uint32_t bootMode = doc["bootMode"];
-    EventManager::getInstance().triggerEvent(new GPRestartEvent((System::BootMode)bootMode));
+    System::BootMode systemBootMode = System::BootMode::DEFAULT;
+    if ( bootMode == BOOT_MODES::GAMEPAD ) {
+        systemBootMode = System::BootMode::GAMEPAD;
+    } else if ( bootMode == BOOT_MODES::WEBCONFIG ) {
+        systemBootMode = System::BootMode::WEBCONFIG;
+    } else if (bootMode == BOOT_MODES::BOOTSEL ) {
+        systemBootMode = System::BootMode::USB;
+    }
+    EventManager::getInstance().triggerEvent(new GPRestartEvent((System::BootMode)systemBootMode));
     doc["success"] = true;
     return serialize_json(doc);
 }
