@@ -12,9 +12,9 @@ import ColorScheme from './ColorScheme';
 import LanguageSelector from './LanguageSelector';
 
 const BOOT_MODES = {
-	GAMEPAD: 0,
-	WEBCONFIG: 1,
-	BOOTSEL: 2,
+	GAMEPAD: 0x43d566cd,
+	WEBCONFIG: 0xe77784a5,
+	BOOTSEL: 0xf737e4e1,
 };
 
 const Navigation = () => {

@@ -1,5 +1,6 @@
 #include "DisplaySaverScreen.h"
 
+#include "drivermanager.h"
 #include "pico/stdlib.h"
 #include "version.h"
 
@@ -45,7 +46,7 @@ void DisplaySaverScreen::drawScreen() {
 }
 
 int8_t DisplaySaverScreen::update() {
-    if (!Storage::getInstance().GetConfigMode()) {
+    if (!DriverManager::getInstance().isConfigMode()) {
         uint16_t buttonState = getGamepad()->state.buttons;
         if (prevButtonState && !buttonState) {
             if (prevButtonState != 0) {

@@ -2,6 +2,7 @@
 
 #include "pico/stdlib.h"
 #include "version.h"
+#include "drivermanager.h"
 
 void StatsScreen::init() {
     getRenderer()->clearScreen();
@@ -23,7 +24,7 @@ void StatsScreen::drawScreen() {
 }
 
 int8_t StatsScreen::update() {
-    if (Storage::getInstance().GetConfigMode()) {
+    if (DriverManager::getInstance().isConfigMode()) {
         uint16_t buttonState = getGamepad()->state.buttons;
         if (prevButtonState && !buttonState) {
             if (prevButtonState == GAMEPAD_MASK_B2) {

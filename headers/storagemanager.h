@@ -53,9 +53,6 @@ public:
 	bool save();
 	bool save(const bool force);
 
-	void SetConfigMode(bool); 			// Config Mode (on-boot)
-	bool GetConfigMode();
-
 	void SetGamepad(Gamepad *); 		// MPGS Gamepad Get/Set
 	Gamepad * GetGamepad();
 
@@ -70,6 +67,8 @@ public:
 
 	void ResetSettings(); 				// EEPROM Reset Feature
 
+	uint32_t GetFlashSize() { return systemFlashSize; }
+
 private:
 	Storage() {}
 	bool CONFIG_MODE = false; 			// Config mode (boot)
@@ -79,6 +78,7 @@ private:
 	DisplayOptions previewDisplayOptions;
 	Config config;
 	GpioMappingInfo functionalPinMappings[NUM_BANK0_GPIOS];
+	uint32_t systemFlashSize;
 };
 
 #endif

@@ -18,6 +18,7 @@
 #include "config_utils.h"
 
 void Storage::init() {
+	systemFlashSize = System::getPhysicalFlash(); // System Flash Size must be called once
 	EEPROM.start();
 	ConfigUtils::load(config);
 }
@@ -119,16 +120,6 @@ void Storage::setFunctionalPinMappings()
 			functionalPinMappings[pin] = this->config.gpioMappings.pins[pin];
 		}
 	}
-}
-
-void Storage::SetConfigMode(bool mode) { // hack for config mode
-	CONFIG_MODE = mode;
-	previewDisplayOptions = config.displayOptions;
-}
-
-bool Storage::GetConfigMode()
-{
-	return CONFIG_MODE;
 }
 
 void Storage::SetGamepad(Gamepad * newpad)
