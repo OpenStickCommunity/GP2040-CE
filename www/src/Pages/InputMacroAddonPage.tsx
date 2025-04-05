@@ -164,9 +164,6 @@ const MacroInputComponent = (props) => {
 								: 'InputMacroAddon:input-macro-time-label-ms',
 						)}
 					</InputGroup.Text>
-					<Form.Control.Feedback type="invalid">
-						{errors?.duration}
-					</Form.Control.Feedback>
 				</InputGroup>
 			</Col>
 			{BUTTON_MASKS_OPTIONS.filter((mask) => buttonMask & mask.value).map(
