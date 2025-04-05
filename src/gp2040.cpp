@@ -540,7 +540,7 @@ void GP2040::checkSaveRebootState() {
 	}
 
 	if (!is_nil_time(rebootDelayTimeout) && time_reached(rebootDelayTimeout)) {
-		System::reboot(System::BootMode::DEFAULT);
+		System::reboot(rebootMode);
 	}
 }
 
@@ -548,8 +548,10 @@ void GP2040::handleStorageSave(GPEvent* e) {
     saveRequested = true;
 	forceSave = ((GPStorageSaveEvent*)e)->forceSave; 
     rebootRequested = ((GPStorageSaveEvent*)e)->restartAfterSave;
+	rebootMode = System::BootMode::DEFAULT;
 }
 
 void GP2040::handleSystemReboot(GPEvent* e) {
     rebootRequested = true;
+	rebootMode = ((GPRestartEvent*)e)->bootMode;
 }
