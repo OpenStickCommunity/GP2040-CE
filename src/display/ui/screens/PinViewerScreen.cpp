@@ -1,6 +1,7 @@
 #include "PinViewerScreen.h"
 
 #include "pico/stdlib.h"
+#include "drivermanager.h"
 
 void PinViewerScreen::init() {
     getRenderer()->clearScreen();
@@ -51,7 +52,7 @@ void PinViewerScreen::drawScreen() {
 }
 
 int8_t PinViewerScreen::update() {
-    if (Storage::getInstance().GetConfigMode()) {
+    if (DriverManager::getInstance().isConfigMode()) {
         uint16_t buttonState = getGamepad()->state.buttons;
         if (prevButtonState && !buttonState) {
             if (prevButtonState == GAMEPAD_MASK_A2) {
