@@ -92,7 +92,7 @@ void ButtonLayoutScreen::shutdown() {
 }
 
 int8_t ButtonLayoutScreen::update() {
-    bool configMode = Storage::getInstance().GetConfigMode();
+    bool configMode = DriverManager::getInstance().isConfigMode();
     uint8_t profileNumber = getGamepad()->getOptions().profileNumber;
     
     // Check if we've updated button layouts while in config mode
@@ -120,7 +120,7 @@ int8_t ButtonLayoutScreen::update() {
 		processInputHistory();
 
     // check for exit/screen change
-    if (Storage::getInstance().GetConfigMode()) {
+    if (DriverManager::getInstance().isConfigMode()) {
         uint16_t buttonState = getGamepad()->state.buttons;
         if (prevButtonState && !buttonState) {
             if (prevButtonState == GAMEPAD_MASK_B1) {

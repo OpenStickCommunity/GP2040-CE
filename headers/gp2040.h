@@ -85,6 +85,8 @@ private:
 
     bool rebootRequested = false;
     void handleSystemReboot(GPEvent* e);
+
+    System::BootMode rebootMode = System::BootMode::DEFAULT;
 };
 
 #endif

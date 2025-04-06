@@ -37,7 +37,7 @@
 
 #include "CRC32.h"
 #include "FlashPROM.h"
-#include "configs/base64.h"
+#include "base64.h"
 
 #include <ArduinoJson.h>
 

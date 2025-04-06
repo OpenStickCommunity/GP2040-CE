@@ -1,5 +1,7 @@
 #include "GPGFX_UI.h"
 
+#include "drivermanager.h"
+
 #include <cstring>
 
 GPGFX_UI::GPGFX_UI() {
@@ -14,7 +16,7 @@ Gamepad* GPGFX_UI::getProcessedGamepad() {
 }
 
 DisplayOptions GPGFX_UI::getDisplayOptions() {
-    bool configMode = Storage::getInstance().GetConfigMode();
+    bool configMode = DriverManager::getInstance().isConfigMode();
     return configMode ? Storage::getInstance().getPreviewDisplayOptions() : Storage::getInstance().getDisplayOptions();
 }
 
