@@ -21,7 +21,6 @@ AnimationStation::AnimationStation() {
     if (animationOptions.hasCustomTheme) {
         effectCount++; // increase our effect count
     }
-    SetBrightness(1);
 }
 
 void AnimationStation::ConfigureBrightness(uint8_t max, uint8_t steps) {
