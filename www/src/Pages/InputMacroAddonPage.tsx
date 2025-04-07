@@ -51,9 +51,9 @@ const schema = yup.object().shape({
 				.max(MACRO_INPUTS_MAX, 'Exceeded maximum inputs')
 				.of(
 					yup.object().shape({
-						buttonMask: yup.number(),
-						duration: yup.number(),
-						waitDuration: yup.number(),
+						buttonMask: yup.number().required(),
+						duration: yup.number().required(),
+						waitDuration: yup.number().required(),
 					}),
 				),
 		}),
