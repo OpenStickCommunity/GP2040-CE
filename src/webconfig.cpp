@@ -1,9 +1,8 @@
-#include "configs/webconfig.h"
 #include "config.pb.h"
-#include "configs/base64.h"
+#include "base64.h"
 
+#include "drivermanager.h"
 #include "storagemanager.h"
-#include "configmanager.h"
 #include "eventmanager.h"
 #include "layoutmanager.h"
 #include "peripheralmanager.h"
@@ -44,8 +43,6 @@ const static uint32_t rebootDelayMs = 500;
 static string http_post_uri;
 static char http_post_payload[LWIP_HTTPD_POST_MAX_PAYLOAD_LEN];
 static uint16_t http_post_payload_len = 0;
-static absolute_time_t rebootDelayTimeout = nil_time;
-static System::BootMode rebootMode = System::BootMode::DEFAULT;
 
 // Don't inline this function, we do not want to consume stack space in the calling function
 template <typename T, typename K>
@@ -210,23 +207,6 @@ static void __attribute__((noinline)) writeDoc(DynamicJsonDocument& doc, const K
 }
 
 static int32_t cleanPin(int32_t pin) { return isValidPin(pin) ? pin : -1; }
-
-static uint32_t systemFlashSize;
-
-void WebConfig::setup() {
-    // System Flash Size must be called once
-    systemFlashSize = System::getPhysicalFlash();
-    rndis_init();
-}
-
-void WebConfig::loop() {
-    // rndis http server requires inline functions (non-class)
-    rndis_task();
-
-    if (!is_nil_time(rebootDelayTimeout) && time_reached(rebootDelayTimeout)) {
-        System::reboot(rebootMode);
-    }
-}
 
 enum class HttpStatusCode
 {
@@ -2209,7 +2189,7 @@ std::string getMemoryReport()
     DynamicJsonDocument doc(capacity);
     writeDoc(doc, "totalFlash", System::getTotalFlash());
     writeDoc(doc, "usedFlash", System::getUsedFlash());
-    writeDoc(doc, "physicalFlash", systemFlashSize);
+    writeDoc(doc, "physicalFlash", Storage::getInstance().GetFlashSize());
     writeDoc(doc, "staticAllocs", System::getStaticAllocs());
     writeDoc(doc, "totalHeap", System::getTotalHeap());
     writeDoc(doc, "usedHeap", System::getUsedHeap());
@@ -2250,7 +2230,8 @@ std::string getHeldPins()
 
     uint32_t currentMillis = 0;
     while ((isAnyPinHeld || (((currentMillis = getMillis()) - timePinWait) < 5000))) { // 5 seconds of idle time
-        ConfigManager::getInstance().loop(); // Keep the loop going for interrupt call
+        // rndis http server requires inline functions (non-class)
+        rndis_task();
 
         if (_abortGetHeldPins)
             break;
@@ -2340,27 +2321,26 @@ std::string echo()
 }
 #endif
 
-std::string reboot()
-{
+// MUST MATCH NAVIGATION.JSX
+enum BOOT_MODES {
+	GAMEPAD = 0,
+	WEBCONFIG = 1,
+	BOOTSEL = 2,
+};
+
+std::string reboot() {
     DynamicJsonDocument doc = get_post_data();
-    doc["success"] = true;
-    // We need to wait for a bit before we actually reboot to leave the webclient some time to receive the response
-    rebootDelayTimeout = make_timeout_time_ms(rebootDelayMs);
-    WebConfig::BootModes bootMode = doc["bootMode"];
-    switch (bootMode) {
-        case WebConfig::BootModes::GAMEPAD:
-            rebootMode = System::BootMode::GAMEPAD;
-        break;
-        case WebConfig::BootModes::WEBCONFIG:
-            rebootMode = System::BootMode::WEBCONFIG;
-        break;
-        case WebConfig::BootModes::BOOTSEL:
-            rebootMode = System::BootMode::USB;
-        break;
-        default:
-            rebootMode = System::BootMode::DEFAULT;
+    uint32_t bootMode = doc["bootMode"];
+    System::BootMode systemBootMode = System::BootMode::DEFAULT;
+    if ( bootMode == BOOT_MODES::GAMEPAD ) {
+        systemBootMode = System::BootMode::GAMEPAD;
+    } else if ( bootMode == BOOT_MODES::WEBCONFIG ) {
+        systemBootMode = System::BootMode::WEBCONFIG;
+    } else if (bootMode == BOOT_MODES::BOOTSEL ) {
+        systemBootMode = System::BootMode::USB;
     }
-    EventManager::getInstance().triggerEvent(new GPRestartEvent(rebootMode));
+    EventManager::getInstance().triggerEvent(new GPRestartEvent((System::BootMode)systemBootMode));
+    doc["success"] = true;
     return serialize_json(doc);
 }
 

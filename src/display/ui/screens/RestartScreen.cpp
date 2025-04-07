@@ -8,7 +8,6 @@
 void RestartScreen::init() {
     getRenderer()->clearScreen();
     //splashStartTime = getMillis();
-    //configMode = Storage::getInstance().GetConfigMode();
 }
 
 void RestartScreen::shutdown() {
