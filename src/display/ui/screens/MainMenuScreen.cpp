@@ -37,12 +37,18 @@ void MainMenuScreen::init() {
         std::string menuLabel = "";
         if (profileCtr == 0) {
             menuLabel = Storage::getInstance().getGpioMappings().profileLabel;
+            // If Profile #1 has no name, set it to Profile #1
+            if (menuLabel.empty()) {
+                menuLabel = "Profile #" + std::to_string(profileCtr+1);
+            }
         } else {
             menuLabel = Storage::getInstance().getProfileOptions().gpioMappingsSets[profileCtr-1].profileLabel;
+            // Do not show other profiles if they are empty
+            if (menuLabel.empty()) {
+                continue;
+            }
         }
-        if (menuLabel.empty()) {
-            menuLabel = "Profile #" + std::to_string(profileCtr+1);
-        }
+        
         MenuEntry menuEntry = {menuLabel, NULL, nullptr, std::bind(&MainMenuScreen::currentProfile, this), std::bind(&MainMenuScreen::selectProfile, this), profileCtr+1};
         profilesMenu.push_back(menuEntry);
     }
