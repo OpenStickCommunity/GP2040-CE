@@ -44,9 +44,9 @@ const LAYOUT_ORIENTATION = [
 ];
 
 const defaultValues = {
-	enabled: false,
-	flipDisplay: false,
-	invertDisplay: false,
+	enabled: 0,
+	flipDisplay: 0,
+	invertDisplay: 0,
 	buttonLayout: 0,
 	buttonLayoutRight: 3,
 	buttonLayoutOrientation: 0,
@@ -94,12 +94,18 @@ let buttonLayoutRightSchema = buttonLayoutSchemaBase.label(
 );
 
 const schema = yup.object().shape({
-	enabled: yup.number().label('Enabled?'),
+	enabled: yup
+		.number()
+		.oneOf(ON_OFF_OPTIONS.map((o) => o.value))
+		.label('Enabled?'),
 	flipDisplay: yup
 		.number()
 		.oneOf(DISPLAY_FLIP_MODES.map((o) => o.value))
 		.label('Flip Display'),
-	invertDisplay: yup.number().label('Invert Display'),
+	invertDisplay: yup
+		.number()
+		.oneOf(ON_OFF_OPTIONS.map((o) => o.value))
+		.label('Invert Display'),
 	turnOffWhenSuspended: yup.number().label('Turn Off When Suspended'),
 	buttonLayout: buttonLayoutSchema,
 	buttonLayoutRight: buttonLayoutRightSchema,
