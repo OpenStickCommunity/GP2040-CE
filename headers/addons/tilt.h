@@ -5,6 +5,8 @@
 
 #include "GamepadEnums.h"
 
+#include "eventmanager.h"
+
 #ifndef TILT_ENABLED
 #define TILT_ENABLED 0
 #endif
@@ -97,6 +99,8 @@ public:
     virtual void postprocess(bool sent) {}
     virtual void reinit() {}
     virtual std::string name() { return TiltName; }
+
+    void handleProfileChange(GPEvent* e);
 private:
     void SOCDTiltClean(SOCDMode);
     uint8_t SOCDCombine(SOCDMode, uint8_t);
@@ -131,6 +135,8 @@ private:
     GamepadButtonMapping *mapAnalogRSYPos;
     GamepadButtonMapping *mapAnalogModLow;
     GamepadButtonMapping *mapAnalogModHigh;
+
+    void reloadMappings();
 };
 
 #endif  // _Tilt_H
