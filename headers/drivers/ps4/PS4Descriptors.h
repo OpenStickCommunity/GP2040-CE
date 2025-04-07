@@ -25,6 +25,8 @@
 #define DS4_VENDOR_ID       0x054C
 #define DS4_PRODUCT_ID      0x09CC
 
+#define DS4_ORG_PRODUCT_ID  0x05C4
+
 /**************************************************************************
  *
  *  Endpoint Buffer Configuration
