@@ -6,22 +6,33 @@ function printUsage() {
 	console.log("usage: npm run check-locale -- [option]");
 	console.log("options:");
 	console.log(
-		"  -l|--locale <locale> Check changes in en from last change in <locale>",
+		"  -l|--locale <locale> Check changes in baselocale from last change in <locale>",
 	);
 	console.log("    de de-DE  Check changes in en from last change in de-JP");
 	console.log("    ja ja-JP  Check changes in en from last change in ja-JP");
 	console.log("    ko ko-KR  Check changes in en from last change in ko-KR");
 	console.log("    pt pt-BR  Check changes in en from last change in pt-BR");
 	console.log("    zh zh-CN  Check changes in en from last change in zh-CN");
+	console.log(
+		"  -b|--baselocale <locale> Locale folder to get the diffs in (default: en)",
+	);
+	console.log("    en        Get diffs in en Locale directory (default)");
+	console.log("    de de-DE  Get diffs in de-JP Locale directory");
+	console.log("    ja ja-JP  Get diffs in ja-JP Locale directory");
+	console.log("    ko ko-KR  Get diffs in ko-KR Locale directory");
+	console.log("    pt pt-BR  Get diffs in pt-BR Locale directory");
+	console.log("    zh zh-CN  Get diffs in zh-CN Locale directory");
 	console.log("  -f|--from <history> how many commits to go back");
 	console.log("  -t|--to <history> which commit to diff against (0 = HEAD)");
 }
 
-function getTargetDir(locale) {
+function getLocaleDir(locale) {
 	switch (locale) {
 		case "de":
 		case "de-DE":
 			return "./src/Locales/de-DE/";
+		case "en":
+			return "./src/Locales/en/";
 		case "ja":
 		case "ja-JP":
 			return "./src/Locales/ja-JP/";
@@ -98,6 +109,11 @@ function checkLocale() {
 			type: "string",
 			short: "l",
 		},
+		"baselocale": {
+			type: "string",
+			short: "b",
+			default: "en"
+		},
 		"from": {
 			type: "string",
 			short: "f",
@@ -110,12 +126,12 @@ function checkLocale() {
 		},
 	};
 	const args = parseArgs({ options });
-	const diffPath = "./src/Locales/en/";
 
 	let targetDir;
 	let hashArry;
 	let diffFrom;
 	let diffTo;
+	let diffPath;
 
 	if (!args.values.locale) {
 		console.log("Error: The --locale option is required");
@@ -128,7 +144,9 @@ function checkLocale() {
 	diffTo = parseInt(args.values.to, 10);
 
 	// get target directory for the locale
-	targetDir = getTargetDir(args.values.locale)
+	targetDir = getLocaleDir(args.values.locale)
+
+	diffPath = getLocaleDir(args.values.baselocale)
 
 	// get list of commit hashes for targetDir
 	hashArry = getHashArry(targetDir);
