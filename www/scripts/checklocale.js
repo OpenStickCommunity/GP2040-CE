@@ -105,6 +105,10 @@ function getDiff(fromHash, toHash, diffPath) {
 
 function checkLocale() {
 	const options = {
+		"help": {
+			type: "boolean",
+			short: "h"
+		},
 		"locale": {
 			type: "string",
 			short: "l",
@@ -132,6 +136,11 @@ function checkLocale() {
 	let diffFrom;
 	let diffTo;
 	let diffPath;
+
+	if (args.values.help) {
+		printUsage();
+		process.exit(0);
+	}
 
 	if (!args.values.locale) {
 		console.log("Error: The --locale option is required");
