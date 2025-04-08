@@ -465,7 +465,8 @@ std::string setDisplayOptions()
 
 std::string setPreviewDisplayOptions()
 {
-    return setDisplayOptions(Storage::getInstance().getPreviewDisplayOptions());
+    std::string response = setDisplayOptions(Storage::getInstance().getDisplayOptions());
+    return response;
 }
 
 std::string getDisplayOptions() // Manually set Document Attributes for the display
