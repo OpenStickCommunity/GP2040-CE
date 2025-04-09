@@ -12,6 +12,8 @@
 
 RainbowSynced::RainbowSynced(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType) : Animation(InRGBLights, InButtonCaseEffectType) 
 {
+  if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime == 0)
+    AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = ((RAINBOW_CYCLE_MAX - RAINBOW_CYCLE_MIN) / 2) + RAINBOW_CYCLE_MIN;
   if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime > RAINBOW_CYCLE_MAX + RAINBOW_CYCLE_INCREMENT)
     AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = RAINBOW_CYCLE_MAX + RAINBOW_CYCLE_INCREMENT;
   if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime < RAINBOW_CYCLE_MIN - RAINBOW_CYCLE_INCREMENT)

@@ -34,14 +34,19 @@ BurstColor::BurstColor(Lights& InRGBLights, bool bInRandomColor, bool bInSmallBu
     }
 
     int16_t cycleTime = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].basePressedCycleTime;
+    if (cycleTime == 0)
+    {
+        cycleTime = ((BURST_CYCLE_MAX - BURST_CYCLE_MIN) / 2) + BURST_CYCLE_MIN;
+    }
     if (cycleTime < BURST_CYCLE_MIN) 
     {
         cycleTime = BURST_CYCLE_MIN;
     }
-    if (cycleTime > BURST_CYCLE_MAX) 
+    else if (cycleTime > BURST_CYCLE_MAX) 
     {
         cycleTime = BURST_CYCLE_MAX;
     }
+    AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].basePressedCycleTime = cycleTime;
 }
 
 void BurstColor::NewPressForPin(int lightIndex)
@@ -82,7 +87,8 @@ void BurstColor::Animate(RGB (&frame)[100])
         float travelledDist = RunningBursts[burstIndex].RunningTime * BURST_DISTANCE_PER_SEC;
 
         //is this the last frame?
-        float distanceToTravel = bSmallBurst ? (float)BURST_DISTANCE : MAX(1 + (MaxXCoord - MinXCoord), 1 + (MaxYCoord - MinYCoord));
+        float largestCoord = MAX(1 + (MaxXCoord - MinXCoord), 1 + (MaxYCoord - MinYCoord));
+        float distanceToTravel = bSmallBurst ? (largestCoord / 13.0f) * (float)BURST_DISTANCE : largestCoord; //Burst_distance was designed with my setup for my T16 in mind which was 0-12 xcoord
         if(travelledDist > (float)distanceToTravel + 4.0f)
             RunningBursts[burstIndex].RunningTime = -1.0f;
 

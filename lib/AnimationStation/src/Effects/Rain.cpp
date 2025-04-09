@@ -9,6 +9,8 @@ Rain::Rain(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType, ER
 {
     RainFrequency = InRainFrequency;
 
+    if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime == 0)
+        AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = ((RAIN_CYCLE_MAX - RAIN_CYCLE_MIN) / 2) + RAIN_CYCLE_MIN;
     if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime > RAIN_CYCLE_MAX)
         AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = RAIN_CYCLE_MAX;
     if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime < RAIN_CYCLE_MIN)

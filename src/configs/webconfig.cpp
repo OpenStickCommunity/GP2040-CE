@@ -1026,8 +1026,16 @@ std::string setAnimationProtoOptions()
     for (JsonObject profile : profilesList)
     {
         options.profiles[profilesIndex].bEnabled = profile["bEnabled"].as<bool>();
-        options.profiles[profilesIndex].baseNonPressedEffect = (AnimationNonPressedEffects_Proto)(profile["baseNonPressedEffect"].as<uint32_t>());
-        options.profiles[profilesIndex].basePressedEffect = (AnimationPressedEffects_Proto)(profile["basePressedEffect"].as<uint32_t>());
+        if(options.profiles[profilesIndex].baseNonPressedEffect != (AnimationNonPressedEffects_Proto)(profile["baseNonPressedEffect"].as<uint32_t>()))
+        {
+            options.profiles[profilesIndex].baseNonPressedEffect = (AnimationNonPressedEffects_Proto)(profile["baseNonPressedEffect"].as<uint32_t>());
+            options.profiles[profilesIndex].baseCycleTime = 0;
+        }
+        if(options.profiles[profilesIndex].basePressedEffect != (AnimationPressedEffects_Proto)(profile["basePressedEffect"].as<uint32_t>()))
+        {
+            options.profiles[profilesIndex].basePressedEffect = (AnimationPressedEffects_Proto)(profile["basePressedEffect"].as<uint32_t>());
+            options.profiles[profilesIndex].basePressedCycleTime = 0;
+        }
         options.profiles[profilesIndex].buttonPressHoldTimeInMs = profile["buttonPressHoldTimeInMs"].as<uint32_t>();
         options.profiles[profilesIndex].buttonPressFadeOutTimeInMs = profile["buttonPressFadeOutTimeInMs"].as<uint32_t>();
         options.profiles[profilesIndex].nonPressedSpecialColour = profile["nonPressedSpecialColour"].as<uint32_t>();

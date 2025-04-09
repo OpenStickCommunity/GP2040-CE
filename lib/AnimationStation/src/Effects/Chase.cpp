@@ -10,6 +10,8 @@ Chase::Chase(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType, 
 {
   ChaseTypeInUse = InChaseType;
 
+  if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime == 0)
+    AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = ((CHASE_CYCLE_MAX - CHASE_CYCLE_MIN) / 2) + CHASE_CYCLE_MIN;
   if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime > CHASE_CYCLE_MAX)
     AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = CHASE_CYCLE_MAX;
   if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime < CHASE_CYCLE_MIN)

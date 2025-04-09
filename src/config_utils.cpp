@@ -472,7 +472,8 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.ledOptions, pledIndex4, PLED4_PIN);
     // lightEntries
     INIT_UNSET_PROPERTY(config.ledOptions, lightDataSize, LIGHT_DATA_SIZE);
-    INIT_UNSET_PROPERTY_BYTES(config.ledOptions, lightData, emptyByteArray);
+    const unsigned char lightData[] = { LIGHT_DATA };
+    INIT_UNSET_PROPERTY_BYTES(config.ledOptions, lightData, lightData);
 
     //SpecialMoveOptions
     //INIT_UNSET_PROPERTY(config.specialMoveOptions, ChargeTimeInMs, 750);
@@ -483,7 +484,11 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.animationOptions, baseProfileIndex, 0);
 
     for (unsigned int profileIndex = 0; profileIndex < MAX_ANIMATION_PROFILES; ++profileIndex) 
+    {
         INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], bEnabled, 0);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], basePressedCycleTime, 0);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], baseCycleTime, 0);
+    }
      
     //TESTING
     if(false)
@@ -528,7 +533,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         }
 
         config.animationOptions.profiles[1].baseNonPressedEffect = AnimationNonPressedEffects_Proto::AnimationNonPressedEffects_Proto_EFFECT_CHASE_LEFT_TO_RIGHT;
-        config.animationOptions.profiles[1].basePressedEffect = AnimationPressedEffects_Proto::AnimationPressedEffects_Proto_EFFECT_BURST_RANDOM;
+        config.animationOptions.profiles[1].basePressedEffect = AnimationPressedEffects_Proto::AnimationPressedEffects_Proto_EFFECT_BURST;
         config.animationOptions.profiles[1].baseCaseEffect = AnimationNonPressedEffects_Proto::AnimationNonPressedEffects_Proto_EFFECT_CHASE_LEFT_TO_RIGHT;
         config.animationOptions.profiles[1].buttonPressHoldTimeInMs = 500;
         config.animationOptions.profiles[1].buttonPressFadeOutTimeInMs = 500;
