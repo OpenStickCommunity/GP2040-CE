@@ -60,6 +60,11 @@ void TiltInput::preprocess()
 
 void TiltInput::process()
 {
+	const TiltOptions& options = Storage::getInstance().getAddonOptions().tiltOptions;
+	
+	// don't process if no pins are bound. we can pause by disabling the addon, but pins are required.
+	if (!options.enabled || ((mapAnalogModLow->pinMask == 0) && (mapAnalogModHigh->pinMask == 0))) return;
+
 	SOCDTiltClean(tiltSOCDMode);
 
 	Gamepad* gamepad = Storage::getInstance().GetGamepad();
