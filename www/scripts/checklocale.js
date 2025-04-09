@@ -3,27 +3,32 @@ import { spawn } from "child_process";
 import { parseArgs } from "node:util";
 
 function printUsage() {
-	console.log("usage: npm run check-locale -- [option]");
-	console.log("options:");
 	console.log(
-		"  -l|--locale <locale> Check changes in baselocale from last change in <locale>",
+		"usage: npm run check-locale -- [option]\n" +
+		"options:\n" +
+		"  -l|--locale <locale> Check changes in baselocale from last change in <locale>\n" +
+		"    de de-DE  Check changes in en from last change in de-DE\n" +
+		"    ja ja-JP  Check changes in en from last change in ja-JP\n" +
+		"    ko ko-KR  Check changes in en from last change in ko-KR\n" +
+		"    pt pt-BR  Check changes in en from last change in pt-BR\n" +
+		"    zh zh-CN  Check changes in en from last change in zh-CN\n" +
+		"  -f|--from <history> go back <history> commits in <locale> (default: 1)\n" +
+		"  -t|--to <history> which commit to diff against (default: 0 = HEAD)\n" +
+		"  -b|--baselocale <locale> Locale folder to get the diffs in (default: en)\n" +
+		"    en        Get diffs in en Locale directory (default)\n" +
+		"    de de-DE  Get diffs in de-DE Locale directory\n" +
+		"    ja ja-JP  Get diffs in ja-JP Locale directory\n" +
+		"    ko ko-KR  Get diffs in ko-KR Locale directory\n" +
+		"    pt pt-BR  Get diffs in pt-BR Locale directory\n" +
+		"    zh zh-CN  Get diffs in zh-CN Locale directory\n" +
+		"Example 1: check changes in en locale from last change in de-DE\n" +
+		"  npm run check-locale -- -l de\n" +
+		"Example 2: check changes in en locale from 3rd previous commit to 2nd previous commit in zh-CN\n" +
+		"  npm run check-locale -- -l zh -f 3 -t 2\n" +
+		"Example 2: check changes in ko-KR locale from 2nd previous commit to HEAD in ja-JP\n" +
+		"  npm run check-locale -- -l ja -b ko -f 2"
 	);
-	console.log("    de de-DE  Check changes in en from last change in de-JP");
-	console.log("    ja ja-JP  Check changes in en from last change in ja-JP");
-	console.log("    ko ko-KR  Check changes in en from last change in ko-KR");
-	console.log("    pt pt-BR  Check changes in en from last change in pt-BR");
-	console.log("    zh zh-CN  Check changes in en from last change in zh-CN");
-	console.log(
-		"  -b|--baselocale <locale> Locale folder to get the diffs in (default: en)",
-	);
-	console.log("    en        Get diffs in en Locale directory (default)");
-	console.log("    de de-DE  Get diffs in de-JP Locale directory");
-	console.log("    ja ja-JP  Get diffs in ja-JP Locale directory");
-	console.log("    ko ko-KR  Get diffs in ko-KR Locale directory");
-	console.log("    pt pt-BR  Get diffs in pt-BR Locale directory");
-	console.log("    zh zh-CN  Get diffs in zh-CN Locale directory");
-	console.log("  -f|--from <history> how many commits to go back");
-	console.log("  -t|--to <history> which commit to diff against (0 = HEAD)");
+
 }
 
 function getLocaleDir(locale) {
@@ -79,10 +84,14 @@ function getDiff(fromHash, toHash, diffPath) {
 	let fromLog = execSync(`git log -1 --format="%an <%ae> %ad %n%B" ${fromHash}`).toString().trim();
 	let toLog = execSync(`git log -1 --format="%an <%ae> %ad %n%B" ${toHash}`).toString().trim();
 
-	console.log(`commit log of ${fromHash}:`)
-	console.log(fromLog);
-	console.log(`commit log of ${toHash}:`)
-	console.log(toLog);
+	console.log(
+		"------------------------------------------------------------------------\n" +
+		`commit log of ${fromHash}:\n` +
+		`${fromLog}\n` +
+		"------------------------------------------------------------------------\n" +
+		`commit log of ${toHash}:\n` +
+		`${toLog}`
+	);
 
 	const gitDiff = spawn(
 		"git",
