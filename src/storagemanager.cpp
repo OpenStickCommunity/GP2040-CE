@@ -17,7 +17,7 @@
 #include "types.h"
 
 // Check for saves
-#include "xinput/XInputDriver.h"
+#include "ps4/PS4Driver.h"
 
 #include "config_utils.h"
 
@@ -41,29 +41,17 @@ bool Storage::save()
 bool Storage::save(const bool force) {
 	// Conditions for saving:
 	//   1. Force = True
-	//   2. Input Mode IS (Xbox 360) but NO AUTH USED
-	//   3. Input Mode NOT (PS4, PS5, Xbox One)
+	//   2. Input Mode NOT (PS4/PS5 with USB enabled)
 	// Save will disconnect USB host, which is okay for gamepad and keyboard hosts
-	if (force) {
-		// Force a save
-		return ConfigUtils::save(config);
-	} else if (PeripheralManager::getInstance().isUSBEnabled(0)) {
-		// Xbox360 and auth is disabled, save!
-		if ( DriverManager::getInstance().getInputMode() == INPUT_MODE_XINPUT &&
-			((XInputDriver*)DriverManager::getInstance().getDriver())->getAuthEnabled() == false ) {
-			return ConfigUtils::save(config);
-		// NOT (PS4, PS5, or Xbox One) save!
-		} else if ( DriverManager::getInstance().getInputMode() != INPUT_MODE_PS4 && 
-					DriverManager::getInstance().getInputMode() != INPUT_MODE_PS5 &&
-					DriverManager::getInstance().getInputMode() != INPUT_MODE_XBONE ) {
-			return ConfigUtils::save(config);
-		}
-	} else {
-		// USB is not enabled, we can save!
-		return ConfigUtils::save(config);
+	if (!force &&
+		PeripheralManager::getInstance().isUSBEnabled(0) &&
+		(DriverManager::getInstance().getInputMode() == INPUT_MODE_PS4 ||
+			DriverManager::getInstance().getInputMode() == INPUT_MODE_PS5) &&
+		((PS4Driver*)DriverManager::getInstance().getDriver())->getDongleAuthRequired() == true ) {
+		return false;
 	}
 
-	return false;
+	return ConfigUtils::save(config);
 }
 
 void Storage::ResetSettings()
