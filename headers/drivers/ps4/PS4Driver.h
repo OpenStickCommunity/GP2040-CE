@@ -53,6 +53,7 @@ public:
     virtual uint16_t GetJoystickMidValue();
     virtual USBListener * get_usb_auth_listener();
     bool getAuthSent() { return authsent;}
+    bool getDongleAuthRequired();
 private:
     uint8_t last_report[CFG_TUD_ENDPOINT0_SIZE] = { };
     uint8_t last_report_counter;
