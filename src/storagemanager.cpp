@@ -8,12 +8,16 @@
 #include "BoardConfig.h"
 #include "animationstorage.h"
 #include "FlashPROM.h"
+#include "drivermanager.h"
 #include "eventmanager.h"
 #include "peripheralmanager.h"
 #include "config.pb.h"
 #include "hardware/watchdog.h"
 #include "CRC32.h"
 #include "types.h"
+
+// Check for saves
+#include "xinput/XInputDriver.h"
 
 #include "config_utils.h"
 
@@ -35,11 +39,31 @@ bool Storage::save()
  * @brief Save the config; if forcing a save is requested, or if USB host is not enabled, this will write to flash.
  */
 bool Storage::save(const bool force) {
-	if (!PeripheralManager::getInstance().isUSBEnabled(0) || force) {
+	// Conditions for saving:
+	//   1. Force = True
+	//   2. Input Mode IS (Xbox 360) but NO AUTH USED
+	//   3. Input Mode NOT (PS4, PS5, Xbox One)
+	// Save will disconnect USB host, which is okay for gamepad and keyboard hosts
+	if (force) {
+		// Force a save
 		return ConfigUtils::save(config);
+	} else if (PeripheralManager::getInstance().isUSBEnabled(0)) {
+		// Xbox360 and auth is disabled, save!
+		if ( DriverManager::getInstance().getInputMode() == INPUT_MODE_XINPUT &&
+			((XInputDriver*)DriverManager::getInstance().getDriver())->getAuthEnabled() == false ) {
+			return ConfigUtils::save(config);
+		// NOT (PS4, PS5, or Xbox One) save!
+		} else if ( DriverManager::getInstance().getInputMode() != INPUT_MODE_PS4 && 
+					DriverManager::getInstance().getInputMode() != INPUT_MODE_PS5 &&
+					DriverManager::getInstance().getInputMode() != INPUT_MODE_XBONE ) {
+			return ConfigUtils::save(config);
+		}
 	} else {
-		return false;
+		// USB is not enabled, we can save!
+		return ConfigUtils::save(config);
 	}
+
+	return false;
 }
 
 void Storage::ResetSettings()
