@@ -139,7 +139,14 @@ function checkLocale() {
 			default: "0",
 		},
 	};
-	const args = parseArgs({ options });
+	let args;
+	try {
+		args = parseArgs({ options });
+	} catch (error) {
+		console.log("Error parsing arguments.  Try using `node ./scripts/checklocale.js` on Windows instead.");
+		printUsage();
+		process.exit(1);
+	}
 
 	let targetDir;
 	let hashArry;
