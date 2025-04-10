@@ -4,7 +4,8 @@ import { parseArgs } from "node:util";
 
 function printUsage() {
 	console.log(
-		"usage: npm run check-locale -- [option]\n" +
+		"usage:      npm run check-locale -- [option]\n" +
+		"on Windows: node ./scripts/checklocale.js [option]\n" +
 		"options:\n" +
 		"  -l|--locale <locale> Check changes in baselocale from last change in <locale>\n" +
 		"    de de-DE  Check changes in en from last change in de-DE\n" +
