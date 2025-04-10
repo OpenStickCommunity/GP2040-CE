@@ -62,15 +62,16 @@ function getHashArry(targetDir) {
 	let hashArry;
 	try {
 		// get diff hashes (max 100 to avoid tracking unnecessarily long history)
-		let CommitHashes = execSync(`git log -n 100 --pretty=format:%H -- ${targetDir}`)
-			.toString().trim();
-		hashArry = CommitHashes.split("\n").map(line => line.trim()).filter(line => line !== "");
-		hashArry.unshift("HEAD");
-
+		hashArry = execSync(`git log -n 100 --pretty=format:%H -- ${targetDir}`)
+			.toString()
+			.split("\n")
+			.map(line => line.trim())
+			.filter(line => line !== "");
 		if (!hashArry) {
 			console.error(`No commits found for the directory: ${targetDir}`);
 			process.exit(1);
 		}
+		hashArry.unshift("HEAD");
 	} catch (error) {
 		console.error(`Error executing git commands: ${error.message}`);
 		process.exit(1);
@@ -143,6 +144,7 @@ function checkLocale() {
 	try {
 		args = parseArgs({ options });
 	} catch (error) {
+		// unexpected option passed (positional) or user is on Windows and options are not properly handled through npm.
 		console.log("Error parsing arguments.  Try using `node ./scripts/checklocale.js` on Windows instead.");
 		printUsage();
 		process.exit(1);
