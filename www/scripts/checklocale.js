@@ -67,7 +67,7 @@ function getHashArry(targetDir) {
 			.split("\n")
 			.map(line => line.trim())
 			.filter(line => line !== "");
-		if (!hashArry) {
+		if (hashArry.length == 0) {
 			console.error(`No commits found for the directory: ${targetDir}`);
 			process.exit(1);
 		}
