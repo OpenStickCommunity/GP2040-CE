@@ -37,6 +37,9 @@ void GPLever::draw() {
     int baseRadius = (int)(((double)this->_radius * 1.00) * scaleX);
     int leverRadius = (int)(((double)this->_radius * 0.75) * scaleY);
 
+    // any zero-defined levers should be forced to dpad to avoid broken functionality. to be fixed.
+    if (this->_inputType == GPLever_Mode::GP_LEVER_MODE_NONE) this->_inputType = GPLever_Mode::GP_LEVER_MODE_DIGITAL;
+
     bool dpadInput = ((this->_inputType & GPLever_Mode::GP_LEVER_MODE_DIGITAL) == GPLever_Mode::GP_LEVER_MODE_DIGITAL);
     bool leftAnalog = ((this->_inputType & GPLever_Mode::GP_LEVER_MODE_LEFT_ANALOG) == GPLever_Mode::GP_LEVER_MODE_LEFT_ANALOG);
     bool rightAnalog = ((this->_inputType & GPLever_Mode::GP_LEVER_MODE_RIGHT_ANALOG) == GPLever_Mode::GP_LEVER_MODE_RIGHT_ANALOG);
