@@ -3,10 +3,10 @@
 #include "enums.pb.h"
 
 StaticTheme::StaticTheme(PixelMatrix &matrix) : Animation(matrix) {
-  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
-  if (animationOptions.themeIndex >= themes.size()) {
-    animationOptions.themeIndex = 0;
-  }
+	AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
+	if (animationOptions.themeIndex >= themes.size()) {
+		animationOptions.themeIndex = 0;
+	}
 
 	const std::map<uint32_t, RGB> themeGuiltyGearTypeA({
 		{ GAMEPAD_MASK_DU, ColorWhite },
@@ -277,7 +277,7 @@ StaticTheme::StaticTheme(PixelMatrix &matrix) : Animation(matrix) {
 		{ GAMEPAD_MASK_L2, ColorMagenta },
 	});
 
-  LEDOptions & ledOptions = Storage::getInstance().getLedOptions();
+  	LEDOptions & ledOptions = Storage::getInstance().getLedOptions();
 	themeStaticRainbow[GAMEPAD_MASK_DU] = (ledOptions.ledLayout == BUTTON_LAYOUT_STICKLESS) ? ColorGreen : ColorOrange;
 
 	ClearThemes();

@@ -21,7 +21,6 @@ AnimationStation::AnimationStation() {
     if (animationOptions.hasCustomTheme) {
         effectCount++; // increase our effect count
     }
-    SetBrightness(1);
 }
 
 void AnimationStation::ConfigureBrightness(uint8_t max, uint8_t steps) {
@@ -34,7 +33,6 @@ void AnimationStation::HandleEvent(GamepadHotkey action) {
     return;
   }
   nextChange = make_timeout_time_ms(250);
-  AnimationOptions hotkeyAnimationOptions = Storage::getInstance().getAnimationOptions();
   bool reqSave = false;
 
   if (action == HOTKEY_LEDS_BRIGHTNESS_UP) {
@@ -92,7 +90,7 @@ void AnimationStation::HandleEvent(GamepadHotkey action) {
   }
 
 	if (reqSave) {
-		EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
+		EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(false));
 	}
 }
 

@@ -161,6 +161,17 @@ void PS4Driver::initializeAux() {
     }
 }
 
+bool PS4Driver::getDongleAuthRequired() {
+    GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();
+    if ( (controllerType == PS4ControllerType::PS4_CONTROLLER && 
+                gamepadOptions.ps4AuthType == InputModeAuthType::INPUT_MODE_AUTH_TYPE_USB ) ||
+         (controllerType == PS4ControllerType::PS4_ARCADESTICK &&
+                gamepadOptions.ps5AuthType == InputModeAuthType::INPUT_MODE_AUTH_TYPE_USB )) {
+        return true;
+    }
+    return false;
+}
+
 bool PS4Driver::process(Gamepad * gamepad) {
     const GamepadOptions & options = gamepad->getOptions();
     switch (gamepad->state.dpad & GAMEPAD_MASK_DPAD)

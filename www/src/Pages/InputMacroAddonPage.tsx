@@ -8,8 +8,11 @@ import {
 	Nav,
 	Row,
 	Tab,
+	Tabs,
 	Table,
+	Alert,
 } from 'react-bootstrap';
+
 import { Formik, useFormikContext } from 'formik';
 import * as yup from 'yup';
 import { Trans, useTranslation } from 'react-i18next';
@@ -29,6 +32,8 @@ const MACRO_TYPES = [
 	{ label: 'InputMacroAddon:input-macro-type.hold-repeat', value: 2 },
 	{ label: 'InputMacroAddon:input-macro-type.toggle', value: 3 },
 ];
+const MACRO_INPUTS_MAX = 30;
+const MACRO_LIMIT = 6;
 
 const schema = yup.object().shape({
 	macroList: yup.array().of(
@@ -41,21 +46,20 @@ const schema = yup.object().shape({
 			showFrames: yup.number(),
 			useMacroTriggerButton: yup.number(),
 			macroTriggerButton: yup.number(),
-			macroInputs: yup.array().of(
-				yup.object().shape({
-					buttonMask: yup.number(),
-					duration: yup.number(),
-					waitDuration: yup.number(),
-				}),
-			),
+			macroInputs: yup
+				.array()
+				.max(MACRO_INPUTS_MAX, 'Exceeded maximum inputs')
+				.of(
+					yup.object().shape({
+						buttonMask: yup.number().required(),
+						duration: yup.number().required(),
+						waitDuration: yup.number().required(),
+					}),
+				),
 		}),
 	),
 	macroBoardLedEnabled: yup.number(),
 });
-
-const MACRO_INPUTS_MAX = 30;
-
-const MACRO_LIMIT = 6;
 
 const defaultMacroInput = {
 	buttonMask: 0,
@@ -100,20 +104,15 @@ const ButtonMasksComponent = (props) => {
 		id: key,
 		value,
 		onChange,
-		error,
 		isInvalid,
-		className,
 		buttonLabelType,
 		buttonMasks,
 	} = props;
 	return (
-		// <div key={key} className={className}>
 		<Form.Select
 			size="sm"
 			name={`${key}.buttonMask`}
-			// className="form-control"
 			value={value}
-			error={error}
 			isInvalid={isInvalid}
 			onChange={onChange}
 		>
@@ -123,7 +122,6 @@ const ButtonMasksComponent = (props) => {
 				</option>
 			))}
 		</Form.Select>
-		// </div>
 	);
 };
 
@@ -150,7 +148,6 @@ const MacroInputComponent = (props) => {
 						name={`${key}.duration`}
 						value={duration / (showFrames ? ONE_FRAME_US : 1000)}
 						step="any"
-						error={errors?.duration}
 						isInvalid={errors?.duration}
 						onChange={(e) => {
 							setFieldValue(
@@ -181,7 +178,6 @@ const MacroInputComponent = (props) => {
 									(buttonMask ^ mask.value) | e.target.value,
 								);
 							}}
-							error={errors?.buttonMask}
 							isInvalid={errors?.buttonMask}
 							translation={t}
 							buttonLabelType={buttonLabelType}
@@ -198,7 +194,6 @@ const MacroInputComponent = (props) => {
 					onChange={(e) => {
 						setFieldValue(`${key}.buttonMask`, buttonMask | e.target.value);
 					}}
-					error={errors?.buttonMask}
 					isInvalid={errors?.buttonMask}
 					translation={t}
 					buttonLabelType={buttonLabelType}
@@ -217,7 +212,6 @@ const MacroInputComponent = (props) => {
 						name={`${key}.waitDuration`}
 						value={waitDuration / (showFrames ? ONE_FRAME_US : 1000)}
 						step="any"
-						error={errors?.waitDuration}
 						isInvalid={errors?.waitDuration}
 						onChange={(e) => {
 							setFieldValue(
@@ -295,7 +289,6 @@ const MacroComponent = (props) => {
 						placeholder={t('InputMacroAddon:input-macro-macro-label-label')}
 						name={`${key}.macroLabel`}
 						value={macroLabel}
-						error={errors?.macroLabel}
 						isInvalid={errors?.macroLabel}
 						onChange={handleChange}
 						maxLength={256}
@@ -324,7 +317,8 @@ const MacroComponent = (props) => {
 				</Col>
 			</Row>
 
-			<hr className="mt-3" />
+			<hr className="mt-4" />
+
 			<Row>
 				<Col sm={'auto'}>
 					<Form.Check
@@ -391,7 +385,7 @@ const MacroComponent = (props) => {
 								buttonLabelType={buttonLabelType}
 								translation={t}
 								buttonMasks={BUTTON_MASKS_OPTIONS.filter(
-									(b, i) =>
+									(b) =>
 										macroList.find(
 											(m, macroIdx) =>
 												index != macroIdx &&
@@ -404,59 +398,93 @@ const MacroComponent = (props) => {
 					</Row>
 				)}
 			</Row>
-			<hr className="mt-3" />
-			<Row>
-				<Col sm={'auto'}>
-					<Form.Check
-						name={`${key}.showFrames`}
-						label={t('InputMacroAddon:input-macro-macro-show-frames')}
-						type="switch"
-						className="form-select-sm"
-						checked={showFrames}
-						onChange={(e) => {
-							setFieldValue(`${key}.showFrames`, e.target.checked ? 1 : 0);
-						}}
-						isInvalid={false}
-					/>
-				</Col>
-			</Row>
-			{macroInputs.map((macroInput, a) => (
-				<MacroInputComponent
-					key={`${key}.macroInputs[${a}]`}
-					id={`${key}.macroInputs[${a}]`}
-					value={macroInput}
-					errors={errors?.macroInputs?.at(a)}
-					showFrames={showFrames}
-					translation={t}
-					buttonLabelType={buttonLabelType}
-					deleteMacroInput={() => deleteMacroInput(a)}
-					handleChange={handleChange}
-					setFieldValue={setFieldValue}
-				/>
-			))}
-			<Row>
-				<Col sm={3}>
-					{macroInputs.length < MACRO_INPUTS_MAX ? (
-						<Button
-							variant="success"
-							className="col px-2"
-							size="sm"
-							onClick={() => {
-								setFieldValue(`${key}.macroInputs[${macroInputs.length}]`, {
-									...defaultMacroInput,
-								});
-							}}
-						>
-							<Trans
-								ns="InputMacroAddon"
-								i18nKey="input-macro-add-input-label"
+			<Tabs defaultActiveKey="editor" className="mt-3 mb-3 pb-0" fill>
+				<Tab
+					eventKey="editor"
+					title={t('InputMacroAddon:input-macro-editor-tab')}
+				>
+					<Row>
+						<Col sm={'auto'}>
+							<Form.Check
+								name={`${key}.showFrames`}
+								label={t('InputMacroAddon:input-macro-macro-show-frames')}
+								type="switch"
+								className="form-select-sm"
+								checked={showFrames}
+								onChange={(e) => {
+									setFieldValue(`${key}.showFrames`, e.target.checked ? 1 : 0);
+								}}
+								isInvalid={false}
 							/>
-						</Button>
-					) : (
-						<></>
+						</Col>
+					</Row>
+					{macroInputs.map((macroInput, a) => (
+						<MacroInputComponent
+							key={`${key}.macroInputs[${a}]`}
+							id={`${key}.macroInputs[${a}]`}
+							value={macroInput}
+							errors={errors?.macroInputs?.at(a)}
+							showFrames={showFrames}
+							translation={t}
+							buttonLabelType={buttonLabelType}
+							deleteMacroInput={() => deleteMacroInput(a)}
+							handleChange={handleChange}
+							setFieldValue={setFieldValue}
+						/>
+					))}
+					{!Array.isArray(errors?.macroInputs) && errors?.macroInputs && (
+						<Alert variant="danger" className="mt-2">
+							{errors.macroInputs}
+						</Alert>
 					)}
-				</Col>
-			</Row>
+					<Row>
+						<Col sm={3}>
+							{macroInputs.length < MACRO_INPUTS_MAX && (
+								<Button
+									variant="success"
+									className="col px-2"
+									size="sm"
+									onClick={() => {
+										setFieldValue(`${key}.macroInputs[${macroInputs.length}]`, {
+											...defaultMacroInput,
+										});
+									}}
+								>
+									<Trans
+										ns="InputMacroAddon"
+										i18nKey="input-macro-add-input-label"
+									/>
+								</Button>
+							)}
+						</Col>
+					</Row>
+				</Tab>
+				<Tab
+					eventKey="advanced"
+					title={t('InputMacroAddon:input-macro-advanced-tab')}
+				>
+					<Form.Control
+						as="textarea"
+						value={JSON.stringify(macroInputs) || ''}
+						isInvalid={errors?.macroInputs}
+						isValid={!errors?.macroInputs}
+						onChange={(e) => {
+							e.preventDefault();
+							if (!e.target.value.length) {
+								setFieldValue(`${key}.macroInputs`, []);
+								return;
+							}
+							try {
+								const parsed = JSON.parse(e.target.value);
+								setFieldValue(`${key}.macroInputs`, parsed);
+							} catch (error) {
+								console.error('Invalid JSON', error);
+							}
+						}}
+						rows={15}
+					/>
+				</Tab>
+			</Tabs>
 		</div>
 	);
 };

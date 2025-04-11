@@ -30,7 +30,7 @@ class DisplaySaverScreen : public GPScreen {
         uint16_t bounceSpriteX = 0;
         uint16_t bounceSpriteY = 0;
         uint16_t bounceSpriteWidth = 128;
-        uint16_t bounceSpriteHeight = 64;
+        uint16_t bounceSpriteHeight = 35;
         double bounceSpriteVelocityX = 1;
         double bounceSpriteVelocityY = 1;
         double bounceScale = 0.5;
@@ -50,10 +50,8 @@ class DisplaySaverScreen : public GPScreen {
 
         std::vector<ToastParams> toasters;
         uint16_t numberOfToasters = 10;
-        //uint16_t toasterSpriteWidth = 43;
-        //uint16_t toasterSpriteHeight = 39;
         uint16_t toasterSpriteWidth = 128;
-        uint16_t toasterSpriteHeight = 64;
+        uint16_t toasterSpriteHeight = 35;
         void initToasters();
         void drawToasterScene();
 };

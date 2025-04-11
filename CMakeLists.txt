@@ -165,7 +165,6 @@ src/gp2040aux.cpp
 src/gamepad.cpp
 src/gamepad/GamepadState.cpp
 src/addonmanager.cpp
-src/configmanager.cpp
 src/playerleds.cpp
 src/drivers/shared/xinput_host.cpp
 src/drivers/shared/xgip_protocol.cpp
@@ -227,7 +226,7 @@ src/usbdriver.cpp
 src/usbhostmanager.cpp
 src/config_legacy.cpp
 src/config_utils.cpp
-src/configs/webconfig.cpp
+src/webconfig.cpp
 src/addons/analog.cpp
 src/addons/board_led.cpp
 src/addons/bootsel_button.cpp

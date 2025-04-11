@@ -1,11 +1,12 @@
 #include "SplashScreen.h"
 
 #include "pico/stdlib.h"
+#include "drivermanager.h"
 
 void SplashScreen::init() {
     getRenderer()->clearScreen();
     splashStartTime = getMillis();
-    configMode = Storage::getInstance().GetConfigMode();
+    configMode = DriverManager::getInstance().isConfigMode();
 }
 
 void SplashScreen::shutdown() {
