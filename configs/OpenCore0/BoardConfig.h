@@ -32,13 +32,13 @@
 #define GPIO_PIN_05 GpioAction::BUTTON_PRESS_A1     // A1     | Guide  | Home    | PS       | 13     | ~      |
 #define GPIO_PIN_04 GpioAction::BUTTON_PRESS_A2     // A2     | ~      | Capture | ~        | 14     | ~      |
 #define GPIO_PIN_26 GpioAction::BUTTON_PRESS_FN     // FN
+#define GPIO_PIN_21 GpioAction::SUSTAIN_FOCUS_MODE
 
 // Setting GPIO pins to assigned by add-on
 //
 #define GPIO_PIN_00 GpioAction::ASSIGNED_TO_ADDON
 #define GPIO_PIN_01 GpioAction::ASSIGNED_TO_ADDON
 #define GPIO_PIN_08 GpioAction::ASSIGNED_TO_ADDON
-#define GPIO_PIN_21 GpioAction::ASSIGNED_TO_ADDON
 #define GPIO_PIN_28 GpioAction::ASSIGNED_TO_ADDON
 #define GPIO_PIN_29 GpioAction::ASSIGNED_TO_ADDON
 
@@ -162,7 +162,6 @@
 
 #define FOCUS_MODE_ENABLED 1
 #define FOCUS_MODE_BUTTON_MASK GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2 | GAMEPAD_MASK_A1 | GAMEPAD_MASK_A2 | GAMEPAD_MASK_L3 | GAMEPAD_MASK_R3
-#define FOCUS_MODE_PIN 21
 #define FOCUS_MODE_BUTTON_LOCK_ENABLED 1
 
 

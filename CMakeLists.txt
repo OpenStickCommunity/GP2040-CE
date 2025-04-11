@@ -1,3 +1,17 @@
+# == DO NOT EDIT THE FOLLOWING LINES for the Raspberry Pi Pico VS Code Extension to work ==
+if(WIN32)
+    set(USERHOME $ENV{USERPROFILE})
+else()
+    set(USERHOME $ENV{HOME})
+endif()
+set(sdkVersion 1.5.1)
+set(toolchainVersion 13_2_Rel1)
+set(picotoolVersion 2.0.0)
+set(picoVscode ${USERHOME}/.pico-sdk/cmake/pico-vscode.cmake)
+if (EXISTS ${picoVscode})
+    include(${picoVscode})
+endif()
+# ====================================================================================
 cmake_minimum_required(VERSION 3.13)
 include(CMakePrintHelpers)
 
@@ -39,7 +53,7 @@ set(CMAKE_CXX_STANDARD 17)
 if(DEFINED ENV{GP2040_BOARDCONFIG})
   set(GP2040_BOARDCONFIG $ENV{GP2040_BOARDCONFIG})
 elseif(NOT DEFINED GP2040_BOARDCONFIG)
-  set(GP2040_BOARDCONFIG Pico)
+  set(GP2040_BOARDCONFIG OpenCore0WASD)
 endif()
 
 if(DEFINED ENV{SKIP_SUBMODULES})
