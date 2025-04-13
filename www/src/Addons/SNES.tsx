@@ -22,16 +22,15 @@ const SNES = ({ values, errors, handleChange, handleCheckbox }) => {
 			<div id="SNESpadAddonOptions" hidden={!values.SNESpadAddonEnabled}>
 				<Row>
 					<Trans ns="AddonsConfig" i18nKey="snes-extension-sub-header-text">
-						<h3>Currently Supported Controllers</h3>
+						<p>Note: If the display is enabled at the same time, this add-on will be disabled.</p>
+						<p>Currently supported controllers:</p>
 						<p>
-							SNES pad: D-Pad Supported. B = B1, A = B2, Y = B3, X = B4, L = L1,
-							R = R1, Select = S1, Start = S2
+							SNES pad: D-pad supported. B = B1, A = B2, Y = B3, X = B4, L = L1, R = R1, Select = S1, Start = S2
+							<br/>
+							SNES mouse: Analog stick supported. Left Click = B1, Right Click = B2
+							<br/>
+							NES: D-pad supported. B = B1, A = B2, Select = S1, Start = S2
 						</p>
-						<p>
-							SNES mouse: Analog Stick Supported. Left Click = B1, Right Click =
-							B2
-						</p>
-						<p>NES: D-Pad Supported. B = B1, A = B2, Select = S1, Start = S2</p>
 					</Trans>
 				</Row>
 				<Row className="mb-3">
