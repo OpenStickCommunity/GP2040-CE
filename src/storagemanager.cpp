@@ -53,7 +53,7 @@ static void updateSpecialMoveOptionsProto(const SpecialMoveOptions& options)
 
 void Storage::performEnqueuedSaves()
 {
-	if (animationOptionsSavePending.load())
+	if (animationOptionsSavePending.load() && (absolute_time_diff_us(timeAnimationSaveSet, get_absolute_time()) / 1000) > 1000) // 1 second delay on saves
 	{
 		critical_section_enter_blocking(&animationOptionsCs);
 		updateAnimationOptionsProto(animationOptionsToSave);
@@ -86,6 +86,7 @@ void Storage::enqueueAnimationOptionsSave(const AnimationOptions& animationOptio
 	critical_section_enter_blocking(&animationOptionsCs);
 	if (crc != animationOptionsCrc)
 	{
+		timeAnimationSaveSet = get_absolute_time();
 		animationOptionsToSave = animationOptions;
 		animationOptionsCrc = crc;
 		animationOptionsSavePending.store(true);

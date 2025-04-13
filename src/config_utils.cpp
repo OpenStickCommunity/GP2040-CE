@@ -491,7 +491,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     }
      
     //TESTING
-    if(false)
+    if(true)
     { 
         config.animationOptions.customColors_count = 1;
         config.animationOptions.customColors[0] = 255;

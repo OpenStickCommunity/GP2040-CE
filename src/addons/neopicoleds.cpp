@@ -274,9 +274,7 @@ void NeoPicoLEDAddon::process()
 
 	//Check for button combos that change animation settings
 	AnimationHotkey action = ProcessAnimationHotkeys(gamepad);
-	if ( action != HOTKEY_LEDS_NONE ) {
-		AnimStation.HandleEvent(action);
-	}
+	AnimStation.HandleEvent(action);
 
 	//New check for buttons being pressed. this is a direct check to see if a pin is held
 	Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;

@@ -49,10 +49,16 @@ void AnimationStation::ConfigureBrightness(uint8_t max, uint8_t steps)
 
 void AnimationStation::HandleEvent(AnimationHotkey action)
 {
-  if (action == HOTKEY_LEDS_NONE || !time_reached(AnimationStation::nextChange)) 
+  if (action == HOTKEY_LEDS_NONE)
+  {
+    AnimationStation::nextChange = nil_time;
+    return;
+  } 
+  else if(!time_reached(AnimationStation::nextChange)) 
   {
     return;
   }
+  
   AnimationStation::nextChange = make_timeout_time_ms(250);
 
   //Adjust brigness

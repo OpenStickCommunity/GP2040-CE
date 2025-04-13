@@ -88,6 +88,7 @@ private:
 	std::atomic<bool> animationOptionsSavePending;
 	critical_section_t animationOptionsCs;
 	uint32_t animationOptionsCrc = 0;
+	absolute_time_t timeAnimationSaveSet;
 	AnimationOptions animationOptionsToSave = {};
 	std::atomic<bool> specialMoveOptionsSavePending;
 	critical_section_t specialMoveOptionsCs;
