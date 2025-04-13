@@ -248,12 +248,6 @@ void Gamepad::reinit()
 
 void Gamepad::process()
 {
-	// Get the midpoint value for the current mode
-	uint16_t joystickMid = GAMEPAD_JOYSTICK_MID;
-	if ( DriverManager::getInstance().getDriver() != nullptr ) {
-		joystickMid = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
-	}
-
 	// NOTE: Inverted X/Y-axis must run before SOCD and Dpad processing
 	if (options.invertXAxis) {
 		bool left = (state.dpad & mapDpadLeft->buttonMask) != 0;
@@ -280,45 +274,43 @@ void Gamepad::process()
 		state.dpad = filterToFourWayMode(state.dpad);
 	}
 
-	uint8_t dpadCheck = state.dpad;
-	uint8_t dpadOnlyMask = 0;
-	uint8_t dpadModeMask = 0;
-	state.dpad = runSOCDCleaner(resolveSOCDMode(options), state.dpad);
-	dpadOnlyMask = ((dpadCheck & 0xF0) >> 4);
+	// hold current dpad state regardless of input
+	uint8_t dpadOriginal = state.dpad;
 
+	// stash digital-only dpad state for later
+	uint8_t dpadOnlyMask = ((dpadOriginal & 0xF0) >> 4);
+
+	// and mask out the mode-specific mask
+	uint8_t dpadModeMask = (dpadOriginal & 0x0F);
+
+	// set dpad back to dpad mode-specific state
+	state.dpad = dpadModeMask;
+
+	// and join both states before cleanup, but only if the mode is dpad
+	// combine dpad mode directions and standalone digital directions
+	if (activeDpadMode == DpadMode::DPAD_MODE_DIGITAL) {
+		state.dpad |= dpadOnlyMask;
+	}
+
+	// clean up after yourself. nobody likes bad inputs.
+	state.dpad = runSOCDCleaner(resolveSOCDMode(options), state.dpad);
+
+	// since analog modes only care about the dpad mode inputs, set the dpad state to digital only dpad values
 	switch (activeDpadMode)
 	{
 		case DpadMode::DPAD_MODE_LEFT_ANALOG:
-			if (!hasRightAnalogStick) {
-				state.rx = joystickMid;
-				state.ry = joystickMid;
-			}
 			state.lx = dpadToAnalogX(state.dpad);
 			state.ly = dpadToAnalogY(state.dpad);
-			state.dpad &= ~dpadOnlyMask;
 			state.dpad = dpadOnlyMask;
 			break;
 
 		case DpadMode::DPAD_MODE_RIGHT_ANALOG:
-			if (!hasLeftAnalogStick) {
-				state.lx = joystickMid;
-				state.ly = joystickMid;
-			}
 			state.rx = dpadToAnalogX(state.dpad);
 			state.ry = dpadToAnalogY(state.dpad);
-			state.dpad &= ~dpadOnlyMask;
 			state.dpad = dpadOnlyMask;
 			break;
 
 		default:
-			//if (!hasLeftAnalogStick) {
-			//	state.lx = joystickMid;
-			//	state.ly = joystickMid;
-			//}
-			//if (!hasRightAnalogStick) {
-			//	state.rx = joystickMid;
-			//	state.ry = joystickMid;
-			//}
 			break;
 	}
 }
@@ -337,14 +329,14 @@ void Gamepad::read()
 		| (values & mapButtonFn->pinMask)   ? mapButtonFn->buttonMask : 0;
 
 	state.dpad = 0
-		| ((values & mapDpadUp->pinMask)       ? mapDpadUp->buttonMask                                              : 0)
-		| ((values & mapDpadDown->pinMask)     ? mapDpadDown->buttonMask                                            : 0)
-		| ((values & mapDpadLeft->pinMask)     ? mapDpadLeft->buttonMask                                            : 0)
-		| ((values & mapDpadRight->pinMask)    ? mapDpadRight->buttonMask                                           : 0)
-		| ((values & mapDigitalUp->pinMask)    ? (mapDigitalUp->buttonMask) | (mapDigitalUp->buttonMask << 4)       : 0)
-		| ((values & mapDigitalDown->pinMask)  ? (mapDigitalDown->buttonMask) | (mapDigitalDown->buttonMask << 4)   : 0)
-		| ((values & mapDigitalLeft->pinMask)  ? (mapDigitalLeft->buttonMask) | (mapDigitalLeft->buttonMask << 4)   : 0)
-		| ((values & mapDigitalRight->pinMask) ? (mapDigitalRight->buttonMask) | (mapDigitalRight->buttonMask << 4) : 0)
+		| ((values & mapDpadUp->pinMask)       ? mapDpadUp->buttonMask              : 0)
+		| ((values & mapDpadDown->pinMask)     ? mapDpadDown->buttonMask            : 0)
+		| ((values & mapDpadLeft->pinMask)     ? mapDpadLeft->buttonMask            : 0)
+		| ((values & mapDpadRight->pinMask)    ? mapDpadRight->buttonMask           : 0)
+		| ((values & mapDigitalUp->pinMask)    ? (mapDigitalUp->buttonMask << 4)    : 0)
+		| ((values & mapDigitalDown->pinMask)  ? (mapDigitalDown->buttonMask << 4)  : 0)
+		| ((values & mapDigitalLeft->pinMask)  ? (mapDigitalLeft->buttonMask << 4)  : 0)
+		| ((values & mapDigitalRight->pinMask) ? (mapDigitalRight->buttonMask << 4) : 0)
 	;
 
 	state.buttons = 0

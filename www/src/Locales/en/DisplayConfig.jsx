@@ -39,7 +39,7 @@ export default {
 		'button-layout-custom-button-padding-label': 'Button Padding',
 		'splash-mode-label': 'Splash Mode',
 		'splash-duration-label': 'Splash Duration (seconds, 0 for Always On)',
-		'display-saver-timeout-label': 'Display Saver Timeout (minutes)',
+		'display-saver-timeout-label': 'Display Saver Timeout (minutes, 0 for Off)',
 		'screen-saver-mode-label': 'Display Saver Mode',
 		'inverted-label': 'Inverted',
 		'power-management-header': 'Power Management',

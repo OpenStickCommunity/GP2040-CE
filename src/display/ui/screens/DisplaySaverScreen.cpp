@@ -1,5 +1,7 @@
 #include "DisplaySaverScreen.h"
+#include "BitmapScreens.h"
 
+#include "drivermanager.h"
 #include "pico/stdlib.h"
 #include "version.h"
 
@@ -19,6 +21,8 @@ void DisplaySaverScreen::init() {
             break;
         case DisplaySaverMode::DISPLAY_SAVER_TOAST:
             initToasters();
+            break;
+        default:
             break;
     }
 }
@@ -41,11 +45,13 @@ void DisplaySaverScreen::drawScreen() {
         case DisplaySaverMode::DISPLAY_SAVER_TOAST:
             drawToasterScene();
             break;
+        default:
+            break;
     }
 }
 
 int8_t DisplaySaverScreen::update() {
-    if (!Storage::getInstance().GetConfigMode()) {
+    if (!DriverManager::getInstance().isConfigMode()) {
         uint16_t buttonState = getGamepad()->state.buttons;
         if (prevButtonState && !buttonState) {
             if (prevButtonState != 0) {
@@ -117,7 +123,7 @@ void DisplaySaverScreen::drawBounceScene() {
 
     if (bounceSpriteY <= 0 || bounceSpriteY + scaledHeight >= SCREEN_HEIGHT) bounceSpriteVelocityY = -bounceSpriteVelocityY;
 
-    getRenderer()->drawSprite((uint8_t *)getDisplayOptions().splashImage.bytes, bounceSpriteWidth, bounceSpriteHeight, 0, bounceSpriteX, bounceSpriteY, 0, bounceScale);
+    getRenderer()->drawSprite((uint8_t *)bitmapGP2040Logo, bounceSpriteWidth, bounceSpriteHeight, 0, bounceSpriteX, bounceSpriteY, 0, bounceScale);
 }
 
 void DisplaySaverScreen::drawPipeScene() {
@@ -160,8 +166,8 @@ void DisplaySaverScreen::drawPipeScene() {
 void DisplaySaverScreen::initToasters() {
     for (uint16_t i = 0; i < numberOfToasters; ++i) {
         double scale = 1.0 / ((i/2)+2);
-        int16_t dx = (-1 - rand() % 3);
-        int16_t dy = (1 + rand() % 3);
+        int16_t dx = (-1 - rand() % 2);
+        int16_t dy = (1 + rand() % 2);
 
         toasters.push_back({
             scale,
@@ -177,7 +183,7 @@ void DisplaySaverScreen::drawToasterScene() {
     for (uint16_t i = 0; i < toasters.size(); ++i) {
         ToastParams& sprite = toasters[i];
 
-        getRenderer()->drawSprite((uint8_t *) getDisplayOptions().splashImage.bytes, toasterSpriteWidth, toasterSpriteHeight, 0, sprite.x, sprite.y, 0, sprite.scale);
+        getRenderer()->drawSprite((uint8_t *)bitmapGP2040Logo, toasterSpriteWidth, toasterSpriteHeight, 0, sprite.x, sprite.y, 0, sprite.scale);
 
         sprite.x += sprite.dx;
         sprite.y += sprite.dy;
@@ -185,8 +191,8 @@ void DisplaySaverScreen::drawToasterScene() {
         if (sprite.x + toasterSpriteWidth * sprite.scale < 0) {
             sprite.x = SCREEN_WIDTH;
             sprite.y = rand() % (SCREEN_HEIGHT - static_cast<int16_t>(toasterSpriteHeight * sprite.scale));
-            sprite.dx = (-1 - rand() % 3);
-            sprite.dy = (1 + rand() % 3);
+            sprite.dx = (-1 - rand() % 2);
+            sprite.dy = (1 + rand() % 2);
         }
 
         if (sprite.y > SCREEN_HEIGHT) {

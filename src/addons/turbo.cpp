@@ -244,7 +244,7 @@ void TurboInput::updateTurboShotCount(uint8_t shotCount) {
     shotCount = std::clamp<uint8_t>(shotCount, TURBO_SHOT_MIN, TURBO_SHOT_MAX);
     if (shotCount != options.shotCount) {
         options.shotCount = shotCount;
-        Storage::getInstance().save();
+    EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(false));
     }
     updateInterval(shotCount);
 }

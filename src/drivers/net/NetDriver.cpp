@@ -1,7 +1,7 @@
 #include "drivers/net/NetDriver.h"
 #include "drivers/shared/driverhelper.h"
 #include "class/net/net_device.h"
-
+#include "rndis.h"
 
 /* A combination of interfaces must have a unique product id, since PC will save device driver after the first plug.
  * Same VID/PID with different interface e.g MSC (first), then CDC (later) will possibly cause system error on PC.
@@ -54,9 +54,15 @@ void NetDriver::initialize() {
         .xfer_cb          = netd_xfer_cb,
         .sof              = NULL,
     };
+
+    rndis_init();
 }
 
-bool NetDriver::process(Gamepad * gamepad) {return false;}
+// Run RNDIS task from web config
+bool NetDriver::process(Gamepad * gamepad) {
+    rndis_task();
+    return false;
+}
 
 // tud_hid_get_report_cb
 uint16_t NetDriver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {

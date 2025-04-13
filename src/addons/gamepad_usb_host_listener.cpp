@@ -2,6 +2,7 @@
 #include "drivermanager.h"
 #include "storagemanager.h"
 #include "class/hid/hid_host.h"
+#include "drivers/ps4/PS4Driver.h"
 
 void GamepadUSBHostListener::setup() {
     _controller_host_enabled = false;
@@ -57,16 +58,17 @@ void GamepadUSBHostListener::process_ctrlr_report(uint8_t dev_addr, uint8_t cons
 
     switch(controller_pid)
     {
-        case 0x05c4: // Sony Dualshock 4 controller
-        case 0x09cc: // Sony Dualshock 4 controller
+        case DS4_ORG_PRODUCT_ID: // Sony Dualshock 4 controller
+        case DS4_PRODUCT_ID:     // Sony Dualshock 4 controller
+        case PS4_PRODUCT_ID:     // Razer Panthera
             process_ds4(report);
             break;
-        case 0x9400:// Google Stadia controller
+        case 0x9400:             // Google Stadia controller
             process_stadia(report);
             break;
 
-        case 0x0510: // pre-2015 Ultrakstik 360
-        case 0x0511: // Ultrakstik 360
+        case 0x0510:             // pre-2015 Ultrakstik 360
+        case 0x0511:             // Ultrakstik 360
             process_ultrastik360(report);
             break;
         default:

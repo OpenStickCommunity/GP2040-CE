@@ -5,7 +5,6 @@
 #include "enums.pb.h"
 
 #include "build_info.h"
-#include "configmanager.h" // Global Managers
 #include "peripheralmanager.h"
 #include "storagemanager.h"
 #include "addonmanager.h"
@@ -117,11 +116,8 @@ void GP2040::setup() {
 	const BootAction bootAction = getBootAction();
 	switch (bootAction) {
 		case BootAction::ENTER_WEBCONFIG_MODE:
-			// Move this to the Net driver initialize
-			Storage::getInstance().SetConfigMode(true);
-			DriverManager::getInstance().setup(INPUT_MODE_CONFIG);
-			ConfigManager::getInstance().setup(CONFIG_TYPE_WEB);
-			return;
+			inputMode = INPUT_MODE_CONFIG;
+			break;
 		case BootAction::ENTER_USB_MODE:
 			reset_usb_boot(0, 0);
 			return;
@@ -178,16 +174,16 @@ void GP2040::setup() {
 	// Setup USB Driver
 	DriverManager::getInstance().setup(inputMode);
 
-	// Save the changed input mode
-	if (inputMode != gamepad->getOptions().inputMode) {	
+	// save to match user expectations on choosing mode at boot, and this is
+	// before USB host will be used so we can force it to ignore the check
+	if (inputMode != INPUT_MODE_CONFIG && inputMode != gamepad->getOptions().inputMode) {
 		gamepad->setInputMode(inputMode);
-		// save to match user expectations on choosing mode at boot, and this is
-		// before USB host will be used so we can force it to ignore the check
 		Storage::getInstance().save(true);
 	}
 
 	// register system event handlers
 	EventManager::getInstance().registerEventHandler(GP_EVENT_STORAGE_SAVE, GPEVENT_CALLBACK(this->handleStorageSave(event)));
+	EventManager::getInstance().registerEventHandler(GP_EVENT_RESTART, GPEVENT_CALLBACK(this->handleSystemReboot(event)));
 }
 
 /**
@@ -263,10 +259,10 @@ void GP2040::debounceGpioGetAll() {
 }
 
 void GP2040::run() {
+	bool configMode = DriverManager::getInstance().isConfigMode();
 	GPDriver * inputDriver = DriverManager::getInstance().getDriver();
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
-	bool configMode = Storage::getInstance().GetConfigMode();
     GamepadState prevState;
 
     // Start the TinyUSB Device functionality
@@ -284,11 +280,11 @@ void GP2040::run() {
 
 		checkRawState(prevState, gamepad->state);
 
-		// Config Loop (Web-Config does not require gamepad)
+		// Config Loop (Web-Config skips Core0 add-ons)
 		if (configMode == true) {
-			
-			ConfigManager::getInstance().loop();
+			inputDriver->process(gamepad);
 			rebootHotkeys.process(gamepad, configMode);
+			checkSaveRebootState();
 			continue;
 		}
 
@@ -314,28 +310,14 @@ void GP2040::run() {
 		// Process Input Driver
 		bool processed = inputDriver->process(gamepad);
 		
-		tud_task(); // TinyUSB Task update
+		// TinyUSB Task update
+		tud_task();
 
 		// Post-Process Add-ons with USB Report Processed Sent
 		addons.PostprocessAddons(processed);
 
-        if (rebootRequested) {
-            rebootRequested = false;
-            if (saveRequested) {
-                saveRequested = false;
-                Storage::getInstance().save(true);
-            }
-            rebootDelayTimeout = make_timeout_time_ms(rebootDelayMs);
-        } else {
-            if (saveRequested) {
-                saveRequested = false;
-                Storage::getInstance().save(true);
-            }
-        }
-
-        if (!is_nil_time(rebootDelayTimeout) && time_reached(rebootDelayTimeout)) {
-            System::reboot(System::BootMode::DEFAULT);
-        }
+		// Check if we have a pending save
+		checkSaveRebootState();
 	}
 }
 
@@ -546,11 +528,30 @@ void GP2040::checkProcessedState(GamepadState prevState, GamepadState currState)
     }
 }
 
+void GP2040::checkSaveRebootState() {
+	if (saveRequested) {
+		saveRequested = false;
+		Storage::getInstance().save(forceSave);
+	}
+
+	if (rebootRequested) {
+		rebootRequested = false;
+		rebootDelayTimeout = make_timeout_time_ms(rebootDelayMs);
+	}
+
+	if (!is_nil_time(rebootDelayTimeout) && time_reached(rebootDelayTimeout)) {
+		System::reboot(rebootMode);
+	}
+}
+
 void GP2040::handleStorageSave(GPEvent* e) {
     saveRequested = true;
+	forceSave = ((GPStorageSaveEvent*)e)->forceSave; 
     rebootRequested = ((GPStorageSaveEvent*)e)->restartAfterSave;
+	rebootMode = System::BootMode::DEFAULT;
 }
 
 void GP2040::handleSystemReboot(GPEvent* e) {
     rebootRequested = true;
+	rebootMode = ((GPRestartEvent*)e)->bootMode;
 }

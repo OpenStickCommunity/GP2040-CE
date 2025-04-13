@@ -48,7 +48,7 @@ void DisplayAddon::setup() {
 
     displaySaverTimer = options.displaySaverTimeout;
     displaySaverTimeout = displaySaverTimer;
-    configMode = Storage::getInstance().GetConfigMode();
+    configMode = DriverManager::getInstance().isConfigMode();
     turnOffWhenSuspended = options.turnOffWhenSuspended;
     displaySaverMode = options.displaySaverMode;
 
@@ -210,8 +210,7 @@ void DisplayAddon::process() {
 }
 
 const DisplayOptions& DisplayAddon::getDisplayOptions() {
-    bool configMode = Storage::getInstance().GetConfigMode();
-    return configMode ? Storage::getInstance().getPreviewDisplayOptions() : Storage::getInstance().getDisplayOptions();
+    return Storage::getInstance().getDisplayOptions();
 }
 
 

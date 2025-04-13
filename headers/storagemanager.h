@@ -41,7 +41,6 @@ public:
 	GpioMappings& getGpioMappings() { return config.gpioMappings; }
 	KeyboardMapping& getKeyboardMapping() { return config.keyboardMapping; }
 	DisplayOptions& getDisplayOptions() { return config.displayOptions; }
-	DisplayOptions& getPreviewDisplayOptions() { return previewDisplayOptions; }
 	LEDOptions& getLedOptions() { return config.ledOptions; }
 	AddonOptions& getAddonOptions() { return config.addonOptions; }
 	AnimationOptions& getAnimationOptions() { return config.animationOptions; }
@@ -52,9 +51,6 @@ public:
 	void init();
 	bool save();
 	bool save(const bool force);
-
-	void SetConfigMode(bool); 			// Config Mode (on-boot)
-	bool GetConfigMode();
 
 	void SetGamepad(Gamepad *); 		// MPGS Gamepad Get/Set
 	Gamepad * GetGamepad();
@@ -70,15 +66,17 @@ public:
 
 	void ResetSettings(); 				// EEPROM Reset Feature
 
+	uint32_t GetFlashSize() { return systemFlashSize; }
+
 private:
 	Storage() {}
 	bool CONFIG_MODE = false; 			// Config mode (boot)
 	Gamepad * gamepad = nullptr;    		// Gamepad data
 	Gamepad * processedGamepad = nullptr; // Gamepad with ONLY processed data
 	uint8_t featureData[32]; // USB X-Input Feature Data
-	DisplayOptions previewDisplayOptions;
 	Config config;
 	GpioMappingInfo functionalPinMappings[NUM_BANK0_GPIOS];
+	uint32_t systemFlashSize;
 };
 
 #endif
