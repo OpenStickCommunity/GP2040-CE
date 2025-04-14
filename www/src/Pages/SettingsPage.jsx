@@ -99,7 +99,7 @@ const SHA256 = (ascii) => {
 								(rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3)) + // s0
 								w[i - 7] +
 								(rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10))) | // s1
-							0);
+						  0);
 			// This is only used once, so *could* be moved below, but it only saves 4 bytes and makes things unreadble
 			const temp2 =
 				(rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22)) + // S0
@@ -1572,15 +1572,22 @@ export default function SettingsPage() {
 															>
 																{profiles.map((profile, index) => (
 																	<option
+																		disabled={!profile.enabled}
 																		key={`button-profileNumber-option-${
 																			index + 1
 																		}`}
 																		value={index + 1}
 																	>
-																		{profile.profileLabel ||
+																		{`${
+																			profile.profileLabel ||
 																			t('PinMapping:profile-label-default', {
 																				profileNumber: index + 1,
-																			})}
+																			})
+																		}${
+																			!profile.enabled
+																				? t('PinMapping:profile-disabled')
+																				: ''
+																		}`}
 																	</option>
 																))}
 															</Form.Select>
@@ -1607,7 +1614,9 @@ export default function SettingsPage() {
 													<Form.Group className="row mb-5">
 														<Col sm={5}>
 															<Form.Check
-																label={t('SettingsPage:mini-menu-gamepad-input')}
+																label={t(
+																	'SettingsPage:mini-menu-gamepad-input',
+																)}
 																type="switch"
 																id="miniMenuGamepadInput"
 																isInvalid={false}
