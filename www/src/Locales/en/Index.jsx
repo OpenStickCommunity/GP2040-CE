@@ -1,3 +1,4 @@
+import AnimationPage from './AnimationPage';
 import Common from './Common';
 import HomePage from './HomePage';
 import Navigation from './Navigation';
@@ -20,6 +21,7 @@ import InputMacroAddon from './InputMacroAddon';
 import LayoutConfig from './LayoutConfig';
 
 export default {
+	AnimationPage,
 	Common,
 	HomePage,
 	Navigation,
