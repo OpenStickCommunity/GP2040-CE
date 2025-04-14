@@ -166,6 +166,7 @@ const INPUT_MODES = [
 	{ labelKey: 'input-mode-options.astro', value: 10, group: 'mini' },
 	{ labelKey: 'input-mode-options.psclassic', value: 11, group: 'mini' },
 	{ labelKey: 'input-mode-options.xboxoriginal', value: 12, group: 'primary' },
+	{ labelKey: 'input-mode-options.nintendo-switch-pro', value: 15, group: 'primary' },
 ];
 
 const INPUT_BOOT_MODES = [
@@ -176,6 +177,7 @@ const INPUT_BOOT_MODES = [
 		value: 1,
 		group: 'primary',
 	},
+	{ labelKey: 'input-mode-options.nintendo-switch-pro', value: 15, group: 'primary' },
 	{ labelKey: 'input-mode-options.ps3', value: 2, group: 'primary' },
 	{ labelKey: 'input-mode-options.keyboard', value: 3, group: 'primary' },
 	{
