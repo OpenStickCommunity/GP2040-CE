@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        GP2040_BOARDCONFIG: 
+        GP2040_BOARDCONFIG:
           [ARCController,
           Blank,
           Pico,
@@ -35,6 +35,7 @@ jobs:
           FlatboxRev5RGB,
           FlatboxRev5USBPassthrough,
           FlatboxRev5Southpaw,
+          FlatboxUltra,
           Granola,
           KB2040,
           KeyboardConverter,
