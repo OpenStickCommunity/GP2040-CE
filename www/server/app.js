@@ -18,8 +18,8 @@ const { pico: picoController } = JSON.parse(
 );
 
 // Structure pin mappings to include masks and profile label
-const createPinMappings = ({ profileLabel = 'Profile' }) => {
-	let pinMappings = { profileLabel, enabled: true };
+const createPinMappings = ({ profileLabel = 'Profile', enabled = true }) => {
+	let pinMappings = { profileLabel, enabled };
 
 	for (const [key, value] of Object.entries(picoController)) {
 		pinMappings[key] = {
@@ -113,7 +113,7 @@ app.get('/api/getGamepadOptions', (req, res) => {
 		lockHotkeys: 0,
 		fourWayMode: 0,
 		fnButtonPin: -1,
-		profileNumber: 1,
+		profileNumber: 2,
 		debounceDelay: 5,
 		inputModeB1: 1,
 		inputModeB2: 0,
@@ -412,7 +412,7 @@ app.get('/api/getProfileOptions', (req, res) => {
 	return res.send({
 		alternativePinMappings: [
 			createPinMappings({ profileLabel: 'Profile 2' }),
-			createPinMappings({ profileLabel: 'Profile 3' }),
+			createPinMappings({ profileLabel: 'Profile 3', enabled: false }),
 		],
 	});
 });
