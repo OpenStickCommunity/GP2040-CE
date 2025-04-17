@@ -124,7 +124,7 @@ export default {
 	'ps4-mode-signature-label': '서명파일 (256바이트 바이너리)',
 	'snes-extension-header-text': '슈퍼 패미컴 확장 설정',
 	'snes-extension-sub-header-text':
-		'<0>참고 ：디스플레이가 동시에 활성화되면 현재 애드온은 비활성화됩니다</0> <1>현재 지원되는 컨트롤러</1> <0>슈퍼 패미컴 컨트롤러(SNES)：D-패드 대응, B = B1, A = B2, Y = B3, X = B4, L = L1, R = R1, 셀렉트 = S1, 스타트 = S2</0> <0>슈퍼 패미컴 마우스: 아날로그 스틱 대응. 좌 클릭 = B1, 우 클릭 = B2</0> <0>패미컴(NES): D-패드 대응, B = B1, A = B2, 셀렉트 = S1, 스타트 = S2</0>',
+		'<0>참고 ：디스플레이가 동시에 활성화되면 현재 애드온은 비활성화됩니다</0> <1>현재 지원되는 컨트롤러</1> <2>슈퍼 패미컴 컨트롤러(SNES)：D-패드 대응, B = B1, A = B2, Y = B3, X = B4, L = L1, R = R1, 셀렉트 = S1, 스타트 = S2<br/>슈퍼 패미컴 마우스: 아날로그 스틱 대응. 좌 클릭 = B1, 우 클릭 = B2<br/>패미컴(NES): D-패드 대응, B = B1, A = B2, 셀렉트 = S1, 스타트 = S2</2>',
 	'snes-extension-clock-pin-label': 'Clock 핀',
 	'snes-extension-latch-pin-label': 'Latch 핀',
 	'snes-extension-data-pin-label': 'Data 핀',

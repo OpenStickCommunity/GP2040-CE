@@ -123,7 +123,7 @@ export default {
 	'ps4-mode-signature-label': '署名ファイル (256バイトバイナリー)',
 	'snes-extension-header-text': 'スーパーファミコン拡張設定',
 	'snes-extension-sub-header-text':
-		'<0>注：ディスプレイと同時に有効化した場合、このAdd-onは無効化されます</0> <1>現在サポートされているコントローラ</1> <0>スーパーファミコンコントローラ(SNES)：十字キー対応、B = B1, A = B2, Y = B3, X = B4, L = L1, R = R1, Select = S1, Start = S2</0> <0>スーパーファミコンマウス: アナログスティック対応。 左クリック = B1, 右クリック = B2</0> <0>ファミコン(NES): 十字キー対応、 B = B1, A = B2, Select = S1, Start = S2</0>',
+		'<0>注：ディスプレイと同時に有効化した場合、このAdd-onは無効化されます</0> <1>現在サポートされているコントローラ</1> <2>スーパーファミコンコントローラ(SNES)：十字キー対応、B = B1, A = B2, Y = B3, X = B4, L = L1, R = R1, Select = S1, Start = S2<br/>スーパーファミコンマウス: アナログスティック対応。 左クリック = B1, 右クリック = B2<br/>ファミコン(NES): 十字キー対応、 B = B1, A = B2, Select = S1, Start = S2</2>',
 	'snes-extension-clock-pin-label': 'Clock 端子',
 	'snes-extension-latch-pin-label': 'Latch 端子',
 	'snes-extension-data-pin-label': 'Data 端子',

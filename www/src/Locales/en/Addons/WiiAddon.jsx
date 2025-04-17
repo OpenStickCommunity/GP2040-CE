@@ -1,7 +1,7 @@
 export default {
 	'header-text': 'Wii Extension',
 	'sub-header-text':
-		'<0>Note: If the Display is enabled at the same time, this Addon will be disabled.</0>',
+		'<0>Note: If the display is enabled at the same time, this add-on will be disabled.</0>',
 	'sda-pin-label': 'I2C SDA Pin',
 	'scl-pin-label': 'I2C SCL Pin',
 	'block-label': 'I2C Block',

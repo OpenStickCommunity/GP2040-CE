@@ -353,7 +353,7 @@ const Wii = ({
 				<Row>
 					<Trans ns="WiiAddon" i18nKey="sub-header-text">
 						<p>
-							Note: If the Display is enabled at the same time, this Addon will
+							Note: If the display is enabled at the same time, this add-on will
 							be disabled.
 						</p>
 					</Trans>

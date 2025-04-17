@@ -124,7 +124,7 @@ export default {
 	'ps4-mode-signature-label': 'Signature (256 Bytes in Binary)',
 	'snes-extension-header-text': 'SNES Extension Configuration',
 	'snes-extension-sub-header-text':
-		'<0>Note: If the Display is enabled at the same time, this Addon will be disabled.</0> <1>Currently Supported Controllers</1> <0>SNES pad: D-Pad Supported. B = B1, A = B2, Y = B3, X = B4, L = L1, R = R1, Select = S1, Start = S2</0> <0>SNES mouse: Analog Stick Supported. Left Click = B1, Right Click = B2</0> <0>NES: D-Pad Supported. B = B1, A = B2, Select = S1, Start = S2</0>',
+		'<0>Note: If the display is enabled at the same time, this add-on will be disabled.</0> <1>Currently supported controllers:</1> <2>SNES pad: D-pad supported. B = B1, A = B2, Y = B3, X = B4, L = L1, R = R1, Select = S1, Start = S2<br/>SNES mouse: Analog stick supported. Left Click = B1, Right Click = B2<br/>NES: D-pad supported. B = B1, A = B2, Select = S1, Start = S2</2>',
 	'snes-extension-clock-pin-label': 'Clock GPIO Pin',
 	'snes-extension-latch-pin-label': 'Latch GPIO Pin',
 	'snes-extension-data-pin-label': 'Data GPIO Pin',
