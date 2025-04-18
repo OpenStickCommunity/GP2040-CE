@@ -1,7 +1,7 @@
 export default {
-	'capture-button-button-label': 'Map buttons with',
-	'capture-button-modal-title': 'Waiting for button press',
-	'capture-button-modal-content': 'Press a button on the gamepad.',
-	'capture-button-modal-skip': 'Skip Button',
-	'capture-button-modal-stop': 'Stop Capture',
+	'capture-button-button-label': 'Mapear botones con',
+	'capture-button-modal-title': 'Esperando pulsación de botón',
+	'capture-button-modal-content': 'Presione un botón en el control.',
+	'capture-button-modal-skip': 'Omitir Botón',
+	'capture-button-modal-stop': 'Detener Captura',
 };

@@ -1,15 +1,15 @@
 export default {
-	'header-text': 'Custom LED Theme',
+	'header-text': 'Tema LED Personalizado',
 	'sub-header-text':
-		'Here you can enable and configure a custom LED theme.<br />The custom theme will be selectable using the Next and Previous Animation shortcuts on your controller.',
+		'Aquí puede habilitar y configurar un tema LED personalizado.<br />El tema personalizado será seleccionable usando los atajos de Animación Siguiente y Anterior en su controlador.',
 	'list-text':
-		"<1>Click a button to bring up the normal and pressed color selection.</1> <1>Click on the controller background to dismiss the color selection.</1> <1>Right-click a button to preview the button's pressed color.</1>",
-	'led-layout-label': 'Preview Layout',
-	'color-picker-location': 'Color Picker Location',
-	'has-custom-theme-label': 'Enable',
-	'modal-title': 'Confirm Clear Custom Theme',
+		"<1>Haga clic en un botón para mostrar la selección de color normal y presionado.</1> <1>Haga clic en el fondo del controlador para cerrar la selección de color.</1> <1>Haga clic derecho en un botón para previsualizar el color presionado del botón.</1>",
+	'led-layout-label': 'Previsualizar Diseño',
+	'color-picker-location': 'Ubicación del Selector de Color',
+	'has-custom-theme-label': 'Habilitar',
+	'modal-title': 'Confirmar Borrar Tema Personalizado',
 	'modal-body':
-		'Are you sure you would like to clear your current custom LED theme?',
+		'¿Está seguro de que desea borrar su tema LED personalizado actual?',
 	'modal-no': 'No',
-	'modal-yes': 'Yes',
+	'modal-yes': 'Sí',
 };

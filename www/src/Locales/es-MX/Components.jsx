@@ -1,19 +1,20 @@
 export default {
 	'language-selector': {
 		en: 'English (US)',
-		nl: 'Nederlands (Dutch)',
-		'pt-BR': 'Português Brasil (Brazilian Portuguese)',
-		'zh-CN': '简体中文 (Simplified Chinese)',
-		'de-DE': 'Deutsch (German)',
-		'ja-JP': '日本語 (Japanese)',
-		'ko-KR': '한국어 (Korean)',
+		nl: 'Nederlands (Holandés)',
+		'pt-BR': 'Português Brasil (Portugués Brasileño)',
+		'zh-CN': '简体中文 (Chino Simplificado)',
+		'de-DE': 'Deutsch (Alemán)',
+		'ja-JP': '日本語 (Japonés)',
+		'ko-KR': '한국어 (Coreano)',
+		'es-MX': 'Español (México)',
 	},
 	'color-scheme': {
-		dark: 'Dark',
-		light: 'Light',
-		auto: 'Auto',
+		dark: 'Oscuro',
+		light: 'Claro',
+		auto: 'Automático',
 	},
 	'keyboard-mapper': {
-		'key-header': 'Key',
+		'key-header': 'Tecla',
 	},
 };
