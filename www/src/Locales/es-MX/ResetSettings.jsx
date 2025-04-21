@@ -1,6 +1,6 @@
 export default {
-	'header-text': 'Reset Settings',
+	'header-text': 'Restablecer Ajustes',
 	'sub-header-text':
-		'<0 className="card-text"> This option resets all saved configurations on your controller. Use this option as a last resort or when trying to diagnose odd issues with your controller. </0> <0 className="card-text">This process will automatically reset the controller.</0>',
-	'confirm-text': 'Are you sure you want to reset saved configuration?',
+		'<0 className="card-text"> Esta opción restablece todas las configuraciones guardadas en su controlador. Use esta opción como último recurso o cuando intente diagnosticar problemas extraños con su controlador. </0> <0 className="card-text">Este proceso reiniciará automáticamente el controlador.</0>',
+	'confirm-text': '¿Está seguro de que desea restablecer la configuración guardada?',
 };

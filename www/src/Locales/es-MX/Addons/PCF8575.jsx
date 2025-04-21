@@ -1,8 +1,8 @@
 export default {
-	'header-text': 'PCF8575 IO Expander',
-	'block-label': 'I2C Block',
+	'header-text': 'Expansor de IO PCF8575',
+	'block-label': 'Bloque I2C',
 	'label-direction': {
-		input: 'Input',
-		output: 'Output',
+		input: 'Entrada',
+		output: 'Salida',
 	},
 };
