@@ -102,6 +102,7 @@ class ButtonLayoutScreen : public GPScreen {
     public:
         ButtonLayoutScreen() {}
         ButtonLayoutScreen(GPGFX* renderer) { setRenderer(renderer); }
+        virtual ~ButtonLayoutScreen(){}
         virtual int8_t update();
         virtual void init();
         virtual void shutdown();
@@ -162,7 +163,9 @@ class ButtonLayoutScreen : public GPScreen {
         ButtonLayoutParamsLeft prevLeftOptions;
         ButtonLayoutParamsRight prevRightOptions;
         ButtonLayoutOrientation prevOrientation;
-		
+
+        bool hasTurboAssigned = false;
+
         bool macroEnabled;
 
         bool showInputMode = true;

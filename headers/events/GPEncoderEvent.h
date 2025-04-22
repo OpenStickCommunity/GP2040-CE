@@ -8,7 +8,7 @@ class GPEncoderChangeEvent : public GPEvent {
             this->encoder = id;
             this->direction = dir;
         }
-        ~GPEncoderChangeEvent() {}
+        virtual ~GPEncoderChangeEvent() {}
 
         uint8_t encoder = 0;
         int8_t direction = 0;

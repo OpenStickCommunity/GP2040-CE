@@ -5,7 +5,6 @@
 #include "enums.pb.h"
 
 #include "build_info.h"
-#include "configmanager.h" // Global Managers
 #include "peripheralmanager.h"
 #include "storagemanager.h"
 #include "addonmanager.h"
@@ -20,7 +19,6 @@
 #include "addons/tilt.h"
 #include "addons/keyboard_host.h"
 #include "addons/i2canalog1219.h"
-#include "addons/playernum.h"
 #include "addons/reverse.h"
 #include "addons/turbo.h"
 #include "addons/slider_socd.h"
@@ -94,36 +92,32 @@ void GP2040::setup() {
 	adc_init();
 
 	// Setup Add-ons
-	addons.LoadUSBAddon(new KeyboardHostAddon(), CORE0_INPUT);
-	addons.LoadUSBAddon(new GamepadUSBHostAddon(), CORE0_INPUT);
-	addons.LoadAddon(new AnalogInput(), CORE0_INPUT);
-	addons.LoadAddon(new BootselButtonAddon(), CORE0_INPUT);
-	addons.LoadAddon(new DualDirectionalInput(), CORE0_INPUT);
-	addons.LoadAddon(new FocusModeAddon(), CORE0_INPUT);
-	addons.LoadAddon(new I2CAnalog1219Input(), CORE0_INPUT);
-	addons.LoadAddon(new SPIAnalog1256Input(), CORE0_INPUT);
-	addons.LoadAddon(new WiiExtensionInput(), CORE0_INPUT);
-	addons.LoadAddon(new SNESpadInput(), CORE0_INPUT);
-	addons.LoadAddon(new PlayerNumAddon(), CORE0_USBREPORT);
-	addons.LoadAddon(new SliderSOCDInput(), CORE0_INPUT);
-	addons.LoadAddon(new TiltInput(), CORE0_INPUT);
-	addons.LoadAddon(new RotaryEncoderInput(), CORE0_INPUT);
-	addons.LoadAddon(new PCF8575Addon(), CORE0_INPUT);
+	addons.LoadUSBAddon(new KeyboardHostAddon());
+	addons.LoadUSBAddon(new GamepadUSBHostAddon());
+	addons.LoadAddon(new AnalogInput());
+	addons.LoadAddon(new BootselButtonAddon());
+	addons.LoadAddon(new DualDirectionalInput());
+	addons.LoadAddon(new FocusModeAddon());
+	addons.LoadAddon(new I2CAnalog1219Input());
+	addons.LoadAddon(new SPIAnalog1256Input());
+	addons.LoadAddon(new WiiExtensionInput());
+	addons.LoadAddon(new SNESpadInput());
+	addons.LoadAddon(new SliderSOCDInput());
+	addons.LoadAddon(new TiltInput());
+	addons.LoadAddon(new RotaryEncoderInput());
+	addons.LoadAddon(new PCF8575Addon());
 
 	// Input override addons
-	addons.LoadAddon(new ReverseInput(), CORE0_INPUT);
-	addons.LoadAddon(new TurboInput(), CORE0_INPUT); // Turbo overrides button states and should be close to the end
-	addons.LoadAddon(new InputMacro(), CORE0_INPUT);
+	addons.LoadAddon(new ReverseInput());
+	addons.LoadAddon(new TurboInput()); // Turbo overrides button states and should be close to the end
+	addons.LoadAddon(new InputMacro());
 
 	InputMode inputMode = gamepad->getOptions().inputMode;
 	const BootAction bootAction = getBootAction();
 	switch (bootAction) {
 		case BootAction::ENTER_WEBCONFIG_MODE:
-			// Move this to the Net driver initialize
-			Storage::getInstance().SetConfigMode(true);
-			DriverManager::getInstance().setup(INPUT_MODE_CONFIG);
-			ConfigManager::getInstance().setup(CONFIG_TYPE_WEB);
-			return;
+			inputMode = INPUT_MODE_CONFIG;
+			break;
 		case BootAction::ENTER_USB_MODE:
 			reset_usb_boot(0, 0);
 			return;
@@ -180,16 +174,16 @@ void GP2040::setup() {
 	// Setup USB Driver
 	DriverManager::getInstance().setup(inputMode);
 
-	// Save the changed input mode
-	if (inputMode != gamepad->getOptions().inputMode) {	
+	// save to match user expectations on choosing mode at boot, and this is
+	// before USB host will be used so we can force it to ignore the check
+	if (inputMode != INPUT_MODE_CONFIG && inputMode != gamepad->getOptions().inputMode) {
 		gamepad->setInputMode(inputMode);
-		// save to match user expectations on choosing mode at boot, and this is
-		// before USB host will be used so we can force it to ignore the check
 		Storage::getInstance().save(true);
 	}
 
 	// register system event handlers
 	EventManager::getInstance().registerEventHandler(GP_EVENT_STORAGE_SAVE, GPEVENT_CALLBACK(this->handleStorageSave(event)));
+	EventManager::getInstance().registerEventHandler(GP_EVENT_RESTART, GPEVENT_CALLBACK(this->handleSystemReboot(event)));
 }
 
 /**
@@ -265,23 +259,20 @@ void GP2040::debounceGpioGetAll() {
 }
 
 void GP2040::run() {
+	bool configMode = DriverManager::getInstance().isConfigMode();
 	GPDriver * inputDriver = DriverManager::getInstance().getDriver();
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
-	bool configMode = Storage::getInstance().GetConfigMode();
     GamepadState prevState;
-    
+
     // Start the TinyUSB Device functionality
     tud_init(TUD_OPT_RHPORT);
-    
+
 	while (1) { // LOOP
 		this->getReinitGamepad(gamepad);
 
 		memcpy(&prevState, &gamepad->state, sizeof(GamepadState));
 
-		// Do any queued saves in StorageManager
-		Storage::getInstance().performEnqueuedSaves();
-		
 		// Debounce
 		debounceGpioGetAll();
 		// Read Gamepad
@@ -289,11 +280,11 @@ void GP2040::run() {
 
 		checkRawState(prevState, gamepad->state);
 
-		// Config Loop (Web-Config does not require gamepad)
+		// Config Loop (Web-Config skips Core0 add-ons)
 		if (configMode == true) {
-			
-			ConfigManager::getInstance().loop();
+			inputDriver->process(gamepad);
 			rebootHotkeys.process(gamepad, configMode);
+			checkSaveRebootState();
 			continue;
 		}
 
@@ -301,7 +292,7 @@ void GP2040::run() {
 		USBHostManager::getInstance().process();
 
 		// Pre-Process add-ons for MPGS
-		addons.PreprocessAddons(ADDON_PROCESS::CORE0_INPUT);
+		addons.PreprocessAddons();
 
 		gamepad->hotkey(); 	// check for MPGS hotkeys
 		rebootHotkeys.process(gamepad, configMode);
@@ -309,7 +300,7 @@ void GP2040::run() {
 		gamepad->process(); // process through MPGS
 
 		// (Post) Process for add-ons
-		addons.ProcessAddons(ADDON_PROCESS::CORE0_INPUT);
+		addons.ProcessAddons();
 
 		checkProcessedState(processedGamepad->state, gamepad->state);
 
@@ -317,30 +308,16 @@ void GP2040::run() {
 		memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
 
 		// Process Input Driver
-		inputDriver->process(gamepad);
+		bool processed = inputDriver->process(gamepad);
 		
-		// Process USB Report Addons
-		addons.ProcessAddons(ADDON_PROCESS::CORE0_USBREPORT);
-		
-		tud_task(); // TinyUSB Task update
+		// TinyUSB Task update
+		tud_task();
 
-        if (rebootRequested) {
-            rebootRequested = false;
-            if (saveRequested) {
-                saveRequested = false;
-                Storage::getInstance().save(true);
-            }
-            rebootDelayTimeout = make_timeout_time_ms(rebootDelayMs);
-        } else {
-            if (saveRequested) {
-                saveRequested = false;
-                Storage::getInstance().save(true);
-            }
-        }
+		// Post-Process Add-ons with USB Report Processed Sent
+		addons.PostprocessAddons(processed);
 
-        if (!is_nil_time(rebootDelayTimeout) && time_reached(rebootDelayTimeout)) {
-            System::reboot(System::BootMode::DEFAULT);
-        }
+		// Check if we have a pending save
+		checkSaveRebootState();
 	}
 }
 
@@ -365,7 +342,7 @@ void GP2040::getReinitGamepad(Gamepad * gamepad) {
 		gamepad->reinit();
 		// ...and addons on this core, if they implemented reinit (just things
 		// with simple GPIO pin usage, at time of writing)
-		addons.ReinitializeAddons(ADDON_PROCESS::CORE0_INPUT);
+		addons.ReinitializeAddons();
 
 		// and we're done
 		gamepad->userRequestedReinit = false;
@@ -387,12 +364,12 @@ GP2040::BootAction GP2040::getBootAction() {
 				gamepad->read();
 
 				// Pre-Process add-ons for MPGS
-				addons.PreprocessAddons(ADDON_PROCESS::CORE0_INPUT);
+				addons.PreprocessAddons();
 				
 				gamepad->process(); // process through MPGS
 
-				// (Post) Process for add-ons
-				addons.ProcessAddons(ADDON_PROCESS::CORE0_INPUT);
+				// Process for add-ons
+				addons.ProcessAddons();
 
 				// Copy Processed Gamepad for Core1 (race condition otherwise)
 				memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
@@ -551,11 +528,30 @@ void GP2040::checkProcessedState(GamepadState prevState, GamepadState currState)
     }
 }
 
+void GP2040::checkSaveRebootState() {
+	if (saveRequested) {
+		saveRequested = false;
+		Storage::getInstance().save(forceSave);
+	}
+
+	if (rebootRequested) {
+		rebootRequested = false;
+		rebootDelayTimeout = make_timeout_time_ms(rebootDelayMs);
+	}
+
+	if (!is_nil_time(rebootDelayTimeout) && time_reached(rebootDelayTimeout)) {
+		System::reboot(rebootMode);
+	}
+}
+
 void GP2040::handleStorageSave(GPEvent* e) {
     saveRequested = true;
+	forceSave = ((GPStorageSaveEvent*)e)->forceSave; 
     rebootRequested = ((GPStorageSaveEvent*)e)->restartAfterSave;
+	rebootMode = System::BootMode::DEFAULT;
 }
 
 void GP2040::handleSystemReboot(GPEvent* e) {
     rebootRequested = true;
+	rebootMode = ((GPRestartEvent*)e)->bootMode;
 }

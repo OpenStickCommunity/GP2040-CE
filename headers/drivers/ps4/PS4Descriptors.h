@@ -29,6 +29,8 @@
 #define PS4_WHEEL_VENDOR_ID   0x046D
 #define PS4_WHEEL_PRODUCT_ID  0xC260
 
+#define DS4_ORG_PRODUCT_ID  0x05C4
+
 /**************************************************************************
  *
  *  Endpoint Buffer Configuration

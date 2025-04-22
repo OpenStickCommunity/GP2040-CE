@@ -7,7 +7,7 @@
 #define STORAGE_H_
 
 #include <stdint.h>
-#include "NeoPico.hpp"
+#include "NeoPico.h"
 #include "FlashPROM.h"
 
 #include "enums.h"
@@ -41,10 +41,9 @@ public:
 	GpioMappings& getGpioMappings() { return config.gpioMappings; }
 	KeyboardMapping& getKeyboardMapping() { return config.keyboardMapping; }
 	DisplayOptions& getDisplayOptions() { return config.displayOptions; }
-	DisplayOptions& getPreviewDisplayOptions() { return previewDisplayOptions; }
 	LEDOptions& getLedOptions() { return config.ledOptions; }
 	AddonOptions& getAddonOptions() { return config.addonOptions; }
-	AnimationOptions_Proto& getAnimationOptions() { return config.animationOptions; }
+	AnimationOptions& getAnimationOptions() { return config.animationOptions; }
 	ProfileOptions& getProfileOptions() { return config.profileOptions; }
 	GpioMappingInfo* getProfilePinMappings() { return functionalPinMappings; }
 	PeripheralOptions& getPeripheralOptions() { return config.peripheralOptions; }
@@ -52,14 +51,6 @@ public:
 	void init();
 	bool save();
 	bool save(const bool force);
-
-	// Perform saves that were enqueued from core1
-	void performEnqueuedSaves();
-
-	void enqueueAnimationOptionsSave(const AnimationOptions& animationOptions);
-
-	void SetConfigMode(bool); 			// Config Mode (on-boot)
-	bool GetConfigMode();
 
 	void SetGamepad(Gamepad *); 		// MPGS Gamepad Get/Set
 	Gamepad * GetGamepad();
@@ -75,19 +66,17 @@ public:
 
 	void ResetSettings(); 				// EEPROM Reset Feature
 
+	uint32_t GetFlashSize() { return systemFlashSize; }
+
 private:
 	Storage() {}
 	bool CONFIG_MODE = false; 			// Config mode (boot)
 	Gamepad * gamepad = nullptr;    		// Gamepad data
 	Gamepad * processedGamepad = nullptr; // Gamepad with ONLY processed data
 	uint8_t featureData[32]; // USB X-Input Feature Data
-	DisplayOptions previewDisplayOptions;
 	Config config;
-	std::atomic<bool> animationOptionsSavePending;
-	critical_section_t animationOptionsCs;
-	uint32_t animationOptionsCrc = 0;
-	AnimationOptions animationOptionsToSave = {};
 	GpioMappingInfo functionalPinMappings[NUM_BANK0_GPIOS];
+	uint32_t systemFlashSize;
 };
 
 #endif

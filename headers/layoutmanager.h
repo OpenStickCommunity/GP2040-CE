@@ -104,7 +104,17 @@ class LayoutManager {
         LayoutList drawButtonLayoutLeft();
         LayoutList drawButtonLayoutRight();
         LayoutList drawBoardDefinedA();
+        LayoutList drawBoardDefinedAlt0A();
+        LayoutList drawBoardDefinedAlt1A();
+        LayoutList drawBoardDefinedAlt2A();
+        LayoutList drawBoardDefinedAlt3A();
+        LayoutList drawBoardDefinedAlt4A();
         LayoutList drawBoardDefinedB();
+        LayoutList drawBoardDefinedAlt0B();
+        LayoutList drawBoardDefinedAlt1B();
+        LayoutList drawBoardDefinedAlt2B();
+        LayoutList drawBoardDefinedAlt3B();
+        LayoutList drawBoardDefinedAlt4B();
         LayoutList drawDancepadDDRLeft();
         LayoutList drawDancepadDDRSolo();
         LayoutList drawDancepadPIULeft();
@@ -134,13 +144,13 @@ class LayoutManager {
         LayoutList draw6GAWDRight();
         LayoutList draw6GAWDAllButtonRight();
         LayoutList draw6GAWDAllButtonPlusRight();
+
+        LayoutManager::LayoutList getLeftLayout(uint16_t index);
+        LayoutManager::LayoutList getRightLayout(uint16_t index);
     private:
         LayoutManager(){}
 
         std::string getLayoutNameByID();
-
-        LayoutManager::LayoutList getLeftLayout(uint16_t index);
-        LayoutManager::LayoutList getRightLayout(uint16_t index);
 };
 
 #endif

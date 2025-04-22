@@ -31,7 +31,7 @@ class GPGamepadEvent : public GPEvent {
             this->state.lt = lt;
             this->state.rt = rt;
         }
-        ~GPGamepadEvent() {}
+        virtual ~GPGamepadEvent() {}
         
         GamepadState state;
     private:

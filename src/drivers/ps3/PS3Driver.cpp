@@ -65,7 +65,7 @@ void PS3Driver::initialize() {
 }
 
 // Generate PS3 report from gamepad and send to TUSB Device
-void PS3Driver::process(Gamepad * gamepad) {
+bool PS3Driver::process(Gamepad * gamepad) {
     ps3Report.dpad_left    = gamepad->pressedLeft();
     ps3Report.dpad_down    = gamepad->pressedDown();
     ps3Report.dpad_right   = gamepad->pressedRight();
@@ -133,6 +133,7 @@ void PS3Driver::process(Gamepad * gamepad) {
     if (tud_suspended())
         tud_remote_wakeup();
 
+    bool reportSent = false;
     void * report = &ps3Report;
     uint16_t report_size = sizeof(ps3Report);
     if (memcmp(last_report, report, report_size) != 0)
@@ -140,6 +141,7 @@ void PS3Driver::process(Gamepad * gamepad) {
         // HID ready + report sent, copy previous report
         if (tud_hid_ready() && tud_hid_report(0, report, report_size) == true ) {
             memcpy(last_report, report, report_size);
+            reportSent = true;
         }
     }
 
@@ -162,6 +164,8 @@ void PS3Driver::process(Gamepad * gamepad) {
         gamepad->auxState.playerID.ledValue = ps3Features.playerLED;
         gamepad->auxState.playerID.value = (ps3Features.playerLED & 0x0F);
     }
+
+    return reportSent;
 }
 
 // unknown

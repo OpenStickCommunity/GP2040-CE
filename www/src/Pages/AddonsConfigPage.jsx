@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { Formik, useFormikContext } from 'formik';
 import * as yup from 'yup';
@@ -31,10 +31,6 @@ import OnBoardLed, {
 	onBoardLedScheme,
 	onBoardLedState,
 } from '../Addons/OnBoardLed';
-import PlayerNumber, {
-	playerNumberScheme,
-	playerNumberState,
-} from '../Addons/PlayerNumber';
 import Reverse, { reverseScheme, reverseState } from '../Addons/Reverse';
 import SOCD, { socdScheme, socdState } from '../Addons/SOCD';
 import Tilt, { tiltScheme, tiltState } from '../Addons/Tilt';
@@ -46,7 +42,10 @@ import FocusMode, {
 	focusModeState,
 } from '../Addons/FocusMode';
 import Keyboard, { keyboardScheme, keyboardState } from '../Addons/Keyboard';
-import GamepadUSBHost, { gamepadUSBHostScheme, gamepadUSBHostState} from '../Addons/GamepadUSBHost';
+import GamepadUSBHost, {
+	gamepadUSBHostScheme,
+	gamepadUSBHostState,
+} from '../Addons/GamepadUSBHost';
 import Rotary, { rotaryScheme, rotaryState } from '../Addons/Rotary';
 import PCF8575, { pcf8575Scheme, pcf8575State } from '../Addons/PCF8575';
 import DRV8833Rumble, {
@@ -57,7 +56,6 @@ import ReactiveLED, {
 	reactiveLEDScheme,
 	reactiveLEDState,
 } from '../Addons/ReactiveLED';
-import { rgbIntToHex } from '../Services/Utilities';
 
 const schema = yup.object().shape({
 	...analogScheme,
@@ -70,7 +68,6 @@ const schema = yup.object().shape({
 	...dualDirectionScheme,
 	...tiltScheme,
 	...buzzerScheme,
-	...playerNumberScheme,
 	...socdScheme,
 	...wiiScheme,
 	...focusModeScheme,
@@ -93,7 +90,6 @@ const defaultValues = {
 	...dualDirectionState,
 	...tiltState,
 	...buzzerState,
-	...playerNumberState,
 	...socdState,
 	...wiiState,
 	...snesState,
@@ -117,7 +113,6 @@ const ADDONS = [
 	DualDirection,
 	Tilt,
 	Buzzer,
-	PlayerNumber,
 	SOCD,
 	Wii,
 	SNES,
@@ -193,11 +188,11 @@ export default function AddonsConfigPage() {
 	const onSuccess = async (values) => {
 		const flattened = flattenObject(storedData);
 
-        // Convert turbo LED color if available
-        const data = {
-            ...values,
-            turboLedColor: hexToInt(values.turboLedColor || '#000000')
-        };
+		// Convert turbo LED color if available
+		const data = {
+			...values,
+			turboLedColor: hexToInt(values.turboLedColor || '#000000'),
+		};
 		const valuesSchema = schema.cast(data); // Strip invalid values
 
 		// Compare what's changed and set it to resultObject

@@ -38,7 +38,9 @@ static const uint8_t * xbone_get_string_descriptor(int index) {
 		// Generate a serial number from the pico's unique ID
 		pico_unique_board_id_t id;
 		pico_get_unique_board_id(&id);
-		memcpy(uniqueSerial, (uint8_t*)&id, PICO_UNIQUE_BOARD_ID_SIZE_BYTES);
+        for(int i = 0; i < PICO_UNIQUE_BOARD_ID_SIZE_BYTES; i++) {
+            uniqueSerial[i] = 'A' + (id.id[i]%25); // some alphanumeric from 'A' to 'Z'
+        }
         return uniqueSerial;
 	} else if ( index == 4 ) { // security method used
 		return xboxSecurityMethod;

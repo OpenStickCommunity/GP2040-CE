@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { FormCheck } from 'react-bootstrap';
 import * as yup from 'yup';

@@ -40,6 +40,11 @@ enum ButtonLayout
     BUTTON_LAYOUT_6GAWD_ALLBUTTON_A = 31;
     BUTTON_LAYOUT_6GAWD_ALLBUTTONPLUS_A = 32;
     BUTTON_LAYOUT_STICKLESS_R16 = 33;
+    BUTTON_LAYOUT_BOARD_DEFINED_ALT0_A = 34;
+    BUTTON_LAYOUT_BOARD_DEFINED_ALT1_A = 35;
+    BUTTON_LAYOUT_BOARD_DEFINED_ALT2_A = 36;
+    BUTTON_LAYOUT_BOARD_DEFINED_ALT3_A = 37;
+    BUTTON_LAYOUT_BOARD_DEFINED_ALT4_A = 38;
 }
 
 enum ButtonLayoutRight
@@ -86,6 +91,11 @@ enum ButtonLayoutRight
     BUTTON_LAYOUT_STICKLESS_R16B = 37;
     BUTTON_LAYOUT_VLXB_6B = 38;
     BUTTON_LAYOUT_SEGA2P_6B = 39;
+    BUTTON_LAYOUT_BOARD_DEFINED_ALT0_B = 40;
+    BUTTON_LAYOUT_BOARD_DEFINED_ALT1_B = 41;
+    BUTTON_LAYOUT_BOARD_DEFINED_ALT2_B = 42;
+    BUTTON_LAYOUT_BOARD_DEFINED_ALT3_B = 43;
+    BUTTON_LAYOUT_BOARD_DEFINED_ALT4_B = 44;
 }
 
 enum SplashMode
@@ -93,8 +103,8 @@ enum SplashMode
     option (nanopb_enumopt).long_names = false;
 
     SPLASH_MODE_STATIC = 0;
-    SPLASH_MODE_CLOSEIN = 1;
-    SPLASH_MODE_CLOSEINCUSTOM = 2;
+    SPLASH_MODE_RESERVED_01 = 1;
+    SPLASH_MODE_RESERVED_02 = 2;
     SPLASH_MODE_NONE = 3;
 }
 
@@ -349,9 +359,40 @@ enum GamepadHotkey
     HOTKEY_MENU_NAV_SELECT       = 48;
     HOTKEY_MENU_NAV_BACK         = 49;
     HOTKEY_MENU_NAV_TOGGLE       = 50;
+	HOTKEY_LEDS_NONE             = 51;
+	HOTKEY_LEDS_ANIMATION_UP     = 52;
+	HOTKEY_LEDS_ANIMATION_DOWN   = 53;
+	HOTKEY_LEDS_PARAMETER_UP     = 54;
+	HOTKEY_LEDS_PRESS_PARAMETER_UP                = 55;
+	HOTKEY_LEDS_PRESS_PARAMETER_DOWN              = 56;
+	HOTKEY_LEDS_PARAMETER_DOWN                    = 57;
+	HOTKEY_LEDS_BRIGHTNESS_UP                     = 58;
+	HOTKEY_LEDS_BRIGHTNESS_DOWN                   = 59;
+	HOTKEY_LEDS_FADETIME_UP                       = 60;
+	HOTKEY_LEDS_FADETIME_DOWN                     = 61;
+	HOTKEY_AMBIENT_LIGHT_EFFECTS_CHANGE           = 62; 
+	HOTKEY_AMBIENT_LIGHT_EFFECTS_ON_OFF           = 63; 
+	HOTKEY_AMBIENT_LIGHT_EFFECTS_BRIGHTNESS_UP    = 64;
+	HOTKEY_AMBIENT_LIGHT_EFFECTS_BRIGHTNESS_DOWN  = 65;
+	HOTKEY_AMBIENT_LIGHT_EFFECTS_PARAMETER_UP     = 66;
+	HOTKEY_AMBIENT_LIGHT_EFFECTS_PARAMETER_DOWN   = 67;
+	HOTKEY_AMBIENT_LIGHT_EFFECTS_FRAME_SPEED_UP   = 68;
+	HOTKEY_AMBIENT_LIGHT_EFFECTS_FRAME_SPEED_DOWN = 69;
+	HOTKEY_AMBIENT_LIGHT_EFFECTS_CUSTOM_LINKAGE   = 70;
 }
 
-// This has to be kept in sync with LEDFormat in NeoPico.hpp
+enum AnimationEffects
+{
+    option (nanopb_enumopt).long_names = false;
+    
+    EFFECT_STATIC_COLOR = 0;
+    EFFECT_RAINBOW = 1;
+    EFFECT_CHASE = 2;
+    EFFECT_STATIC_THEME = 3;
+    EFFECT_CUSTOM_THEME = 4;
+}
+
+// This has to be kept in sync with LEDFormat in NeoPico.h
 enum LEDFormat_Proto
 {
     LED_FORMAT_GRB = 0;
@@ -382,7 +423,41 @@ enum CaseRGBType
     option (nanopb_enumopt).long_names = false;
 
     CASE_RGB_TYPE_NONE = -1;
-    CASE_RGB_TYPE_STATIC = 0;
+    CASE_RGB_TYPE_AMBIENT = 0;
+    CASE_RGB_TYPE_LINKED = 1;
+};
+
+enum AmbientEffectType
+{
+    option (nanopb_enumopt).long_names = false; 
+
+    AL_CUSTOM_EFFECT_STATIC_COLOR = 0;	// Static
+    AL_CUSTOM_EFFECT_GRADIENT = 1;	    // Gradient Color
+    AL_CUSTOM_EFFECT_CHASE = 2;		    // Chase
+    AL_CUSTOM_EFFECT_BREATH = 3;		// Breathing
+    AL_CUSTOM_EFFECT_STATIC_THEME = 4;	// Custom Static
+};
+
+enum AnimationColor // Sync with Animation.h
+{
+    option (nanopb_enumopt).long_names = false; 
+
+    ANIMATION_COLOR_BLACK = 0;
+    ANIMATION_COLOR_WHITE = 1;
+    ANIMATION_COLOR_RED = 2;
+    ANIMATION_COLOR_ORANGE = 3;
+    ANIMATION_COLOR_YELLOW = 4;
+    ANIMATION_COLOR_LIMEGREEN = 5;
+    ANIMATION_COLOR_GREEN = 6;
+    ANIMATION_COLOR_SEAFOAM = 7;
+    ANIMATION_COLOR_AQUA = 8;
+    ANIMATION_COLOR_SKYBLUE = 9;
+    ANIMATION_COLOR_BLUE = 10;
+    ANIMATION_COLOR_PURPLE = 11;
+    ANIMATION_COLOR_PINK = 12;
+    ANIMATION_COLOR_MAGENTA = 13;
+    ANIMATION_COLOR_INDIGO = 14;
+    ANIMATION_COLOR_VIOLET = 15;
 };
 
 enum ForcedSetupMode
@@ -450,6 +525,18 @@ enum GPShape_Type
     GP_SHAPE_LINE = 2;
     GP_SHAPE_POLYGON = 3;
     GP_SHAPE_ARC = 4;
+};
+
+enum GPLever_Mode
+{
+    option (nanopb_enumopt).long_names = false;
+
+    GP_LEVER_MODE_NONE = 0;
+    GP_LEVER_MODE_DIGITAL = 1;
+    GP_LEVER_MODE_LEFT_ANALOG = 2;
+    GP_LEVER_MODE_RIGHT_ANALOG = 4;
+    GP_LEVER_MODE_INVERT_X = 8;
+    GP_LEVER_MODE_INVERT_Y = 16;
 };
 
 enum RotaryEncoderPinMode

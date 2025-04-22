@@ -3,7 +3,6 @@
 
 #include <vector>
 #include "GPGFX_UI_widgets.h"
-#include "bitmaps.h"
 
 const uint8_t SCREEN_WIDTH = 128;
 const uint8_t SCREEN_HEIGHT = 64;
@@ -12,6 +11,7 @@ class DisplaySaverScreen : public GPScreen {
     public:
         DisplaySaverScreen() {}
         DisplaySaverScreen(GPGFX* renderer) { setRenderer(renderer); }
+        virtual ~DisplaySaverScreen() {}
         virtual int8_t update();
         virtual void init();
         virtual void shutdown();
@@ -41,9 +41,6 @@ class DisplaySaverScreen : public GPScreen {
 
         // toaster
         struct ToastParams {
-            uint8_t* image;
-            uint16_t width;
-            uint16_t height;
             double scale;
             int16_t x;
             int16_t y;
@@ -53,8 +50,8 @@ class DisplaySaverScreen : public GPScreen {
 
         std::vector<ToastParams> toasters;
         uint16_t numberOfToasters = 10;
-        uint16_t toasterSpriteWidth = 43;
-        uint16_t toasterSpriteHeight = 39;
+        uint16_t toasterSpriteWidth = 128;
+        uint16_t toasterSpriteHeight = 35;
         void initToasters();
         void drawToasterScene();
 };

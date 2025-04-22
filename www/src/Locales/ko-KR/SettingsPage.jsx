@@ -1,18 +1,18 @@
 export default {
 	'auth-settings-label': '인증 설정',
-	'no-mode-settings-text': '{{mode}} 모드에 관한 설정항목은 없습니다..',
+	'no-mode-settings-text': '{{mode}} 모드에 관한 설정항목은 없습니다.',
 	'settings-header-text': '입력 모드 설정',
 	'gamepad-settings-header-text': '게임패드 설정',
 	'input-mode-label': '입력 모드',
 	'current-input-mode-label': '현재 입력 모드',
 	'input-mode-extra-label': '터치패드/쉐어 버튼 변경',
 	'input-mode-options': {
-        none: '선택된 모드 없음',
+		none: '선택된 모드 없음',
 		xinput: 'XInput',
 		'nintendo-switch': '닌텐도 스위치',
-		ps3: 'PS3/DirectInput',
-		keyboard: '키보드',
+		ps3: 'PS3',
 		generic: '일반 HID 입력',
+		keyboard: '키보드',
 		ps4: 'PS4',
 		ps5: 'PS5',
 		neogeo: 'NEOGEO 미니',
@@ -24,11 +24,11 @@ export default {
 		xboxoriginal: '오리지널 Xbox',
 		xbone: 'Xbox One',
 	},
-    'input-mode-group': {
-        primary: '주 입력 모드',
-        mini: '미니/클래식 콘솔 모드',
-    },
-    'boot-input-mode-label': '부트 입력 모드',
+	'input-mode-group': {
+		primary: '주 입력 모드',
+		mini: '미니/클래식 콘솔 모드',
+	},
+	'boot-input-mode-label': '부트 입력 모드',
 	'ps4-mode-options': {
 		controller: '컨트롤러',
 		arcadestick: '아케이드 스틱',
@@ -36,7 +36,7 @@ export default {
 	'input-mode-authentication': {
 		none: '없음',
 		key: '인증키 업로드',
-		usb: 'USB호스트',
+		usb: 'USB 호스트',
 		i2c: 'I2C 연결',
 	},
 	'd-pad-mode-label': 'D-패드 모드',
@@ -57,6 +57,7 @@ export default {
 	},
 	'profile-label': '프로필',
 	'debounce-delay-label': '디바운스 지연(ms)',
+	'mini-menu-gamepad-input': '미니 메뉴에 게임패드 입력 사용',
 	'ps4-mode-explanation-text':
 		'PS4 모드는 GP2040-CE를 인증된 PS4 컨트롤러로 실행합니다.',
 	'ps4-mode-warning-text':
@@ -82,7 +83,7 @@ export default {
 		'<span>정보:</span> Xinput은 별동의 인증이 필요없는 PC에서 사용가능합니다. Xbox360에서 사용하려면 USB인증을 선택하고 적절한 동글을 연결해주세요.',
 	'hotkey-settings-label': '핫키 설정',
 	'hotkey-settings-sub-header':
-		"<strong>Fn</strong> 슬라이더는 <link_pinmap>핀 매핑</link_pinmap> 페이지에서 설정 가능한 펑션 버튼(FN)을 활성화합니다. <strong>Fn</strong> 버튼을 활성화 하면 선택한 핫키 설정과 펑션 버튼을 함께 눌러야 합니다.<br />버튼 할당을 해제하려면 드롭다운 메뉴에서 <strong>없음</strong>을 선택하십시오.",
+		'<strong>Fn</strong> 슬라이더는 <link_pinmap>핀 매핑</link_pinmap> 페이지에서 설정 가능한 펑션 버튼(FN)을 활성화합니다. <strong>Fn</strong> 버튼을 활성화 하면 선택한 핫키 설정과 펑션 버튼을 함께 눌러야 합니다.<br />버튼 할당을 해제하려면 드롭다운 메뉴에서 <strong>없음</strong>을 선택하십시오.',
 	'hotkey-settings-warning':
 		'펑션 버튼이 설정되지 않으면 Fn 슬라이더도 사용불가합니다.',
 	'hotkey-actions': {
@@ -127,8 +128,16 @@ export default {
 		'load-profile-3': '프로필 불러오기 #3',
 		'load-profile-4': '프로필 불러오기 #4',
 		'reboot-default': 'GP2040-CE 재시작',
+		'save-config': '설정 저장',
 		'next-profile': '다음 프로필',
 		'previous-profile': '이전 프로필',
+		'menu-nav-up': '메뉴 위',
+		'menu-nav-down': '메뉴 아래',
+		'menu-nav-left': '메뉴 왼쪽',
+		'menu-nav-right': '메뉴 오른쪽',
+		'menu-nav-select': '메뉴 선택',
+		'menu-nav-back': '메뉴 이전',
+		'menu-nav-toggle': '메뉴 토글',
 	},
 	'forced-setup-mode-label': '강제 설정 모드',
 	'forced-setup-mode-options': {
@@ -145,4 +154,15 @@ export default {
 	'keyboard-mapping-header-text': '키보드 매핑',
 	'keyboard-mapping-sub-header-text':
 		'아래에서 버튼-키보드 매핑을 설정해 주세요.',
+	'usb-override': {
+		'advanced-override': '⚠️ 고급 USB 우선설정',
+		'invalid-warning-danger':
+			'위험: 잘못된 USB 매개변수 사용시 입력장치가 작동하지 않을 수 있습니다!',
+		'product-name': '제품명',
+		manufacturer: '제조사',
+		version: '버전',
+		'physical-warning-danger': '⚡ 물리적 ID 값 변경 ⚡ ',
+		'product-id': '제품 ID',
+		'vendor-id': '벤더 ID',
+	},
 };

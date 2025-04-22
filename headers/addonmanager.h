@@ -4,7 +4,6 @@
 #include "gpaddon.h"
 
 #include <vector>
-#include <pico/mutex.h>
 
 enum ADDON_PROCESS {
     CORE0_INPUT,
@@ -22,11 +21,12 @@ class AddonManager {
 public:
     AddonManager() {}
     ~AddonManager() {}
-    bool LoadAddon(GPAddon*, ADDON_PROCESS);
-    bool LoadUSBAddon(GPAddon*, ADDON_PROCESS);
-    void ReinitializeAddons(ADDON_PROCESS);
-    void PreprocessAddons(ADDON_PROCESS);
-    void ProcessAddons(ADDON_PROCESS);
+    bool LoadAddon(GPAddon*);
+    bool LoadUSBAddon(GPAddon*);
+    void ReinitializeAddons();
+    void PreprocessAddons();
+    void ProcessAddons();
+    void PostprocessAddons(bool);
     GPAddon * GetAddon(std::string); // hack for NeoPicoLED
 private:
     std::vector<AddonBlock*> addons;    // addons currently loaded

@@ -13,15 +13,6 @@ void TiltInput::setup() {
 	const TiltOptions& options = Storage::getInstance().getAddonOptions().tiltOptions;
 	tiltSOCDMode = options.tiltSOCDMode;
 
-	tilt1FactorLeftX = options.factorTilt1LeftX;
-	tilt1FactorLeftY = options.factorTilt1LeftY;
-	tilt1FactorRightX = options.factorTilt1RightX;
-	tilt1FactorRightY = options.factorTilt1RightY;
-	tilt2FactorLeftX = options.factorTilt2LeftX;
-	tilt2FactorLeftY = options.factorTilt2LeftY;
-	tilt2FactorRightX = options.factorTilt2RightX;
-	tilt2FactorRightY = options.factorTilt2RightY;
-
 	mapAnalogLSXNeg = new GamepadButtonMapping(0);
 	mapAnalogLSXPos = new GamepadButtonMapping(0);
 	mapAnalogLSYNeg = new GamepadButtonMapping(0);
@@ -32,6 +23,78 @@ void TiltInput::setup() {
 	mapAnalogRSYPos = new GamepadButtonMapping(GAMEPAD_MASK_DOWN);
 	mapAnalogModLow = new GamepadButtonMapping(ANALOG_DIRECTION_MOD_LOW);
 	mapAnalogModHigh = new GamepadButtonMapping(ANALOG_DIRECTION_MOD_HIGH);
+
+	EventManager::getInstance().registerEventHandler(GP_EVENT_PROFILE_CHANGE, GPEVENT_CALLBACK(this->handleProfileChange(event)));
+
+	reloadMappings();
+
+	uint32_t now = getMillis();
+	for (int i = 0; i < 4; i++) {
+		dpadTime[i] = now;
+	}
+}
+
+void TiltInput::preprocess()
+{
+	Gamepad* gamepad = Storage::getInstance().GetGamepad();
+	Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
+
+	// Need to invert since we're using pullups
+	tiltLeftState = 0
+		| ((values & mapAnalogLSXNeg->pinMask)    ? mapAnalogLSXNeg->buttonMask : 0)
+		| ((values & mapAnalogLSXPos->pinMask)    ? mapAnalogLSXPos->buttonMask : 0)
+		| ((values & mapAnalogLSYNeg->pinMask)    ? mapAnalogLSYNeg->buttonMask : 0)
+		| ((values & mapAnalogLSYPos->pinMask)    ? mapAnalogLSYPos->buttonMask : 0);
+
+	tiltRightState = 0
+		| ((values & mapAnalogRSXNeg->pinMask)    ? mapAnalogRSXNeg->buttonMask : 0)
+		| ((values & mapAnalogRSXPos->pinMask)    ? mapAnalogRSXPos->buttonMask : 0)
+		| ((values & mapAnalogRSYNeg->pinMask)    ? mapAnalogRSYNeg->buttonMask : 0)
+		| ((values & mapAnalogRSYPos->pinMask)    ? mapAnalogRSYPos->buttonMask : 0);
+
+	// Convert gamepad from process() output to uint8 value
+	uint8_t gamepadState = gamepad->state.dpad;
+
+	gamepad->state.dpad = gamepadState;
+}
+
+void TiltInput::process()
+{
+	const TiltOptions& options = Storage::getInstance().getAddonOptions().tiltOptions;
+	
+	// don't process if no pins are bound. we can pause by disabling the addon, but pins are required.
+	if (!options.enabled || ((mapAnalogModLow->pinMask == 0) && (mapAnalogModHigh->pinMask == 0))) return;
+
+	SOCDTiltClean(tiltSOCDMode);
+
+	Gamepad* gamepad = Storage::getInstance().GetGamepad();
+
+	// Set Tilt Output
+	OverrideGamepad(gamepad, tiltLeftState, tiltRightState);
+}
+
+void TiltInput::reloadMappings() {
+    const TiltOptions& options = Storage::getInstance().getAddonOptions().tiltOptions;
+
+	tilt1FactorLeftX = options.factorTilt1LeftX;
+	tilt1FactorLeftY = options.factorTilt1LeftY;
+	tilt1FactorRightX = options.factorTilt1RightX;
+	tilt1FactorRightY = options.factorTilt1RightY;
+	tilt2FactorLeftX = options.factorTilt2LeftX;
+	tilt2FactorLeftY = options.factorTilt2LeftY;
+	tilt2FactorRightX = options.factorTilt2RightX;
+	tilt2FactorRightY = options.factorTilt2RightY;
+
+	mapAnalogLSXNeg->pinMask  = 0;
+	mapAnalogLSXPos->pinMask  = 0;
+	mapAnalogLSYNeg->pinMask  = 0;
+	mapAnalogLSYPos->pinMask  = 0;
+	mapAnalogRSXNeg->pinMask  = 0;
+	mapAnalogRSXPos->pinMask  = 0;
+	mapAnalogRSYNeg->pinMask  = 0;
+	mapAnalogRSYPos->pinMask  = 0;
+	mapAnalogModLow->pinMask  = 0;
+	mapAnalogModHigh->pinMask = 0;
 
 	GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
 	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
@@ -62,45 +125,6 @@ void TiltInput::setup() {
 
 	rightLastTiltUD = DIRECTION_NONE;
 	rightLastTiltLR = DIRECTION_NONE;
-
-	uint32_t now = getMillis();
-	for (int i = 0; i < 4; i++) {
-		dpadTime[i] = now;
-	}
-}
-
-void TiltInput::preprocess()
-{
-	Gamepad* gamepad = Storage::getInstance().GetGamepad();
-    Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
-
-	// Need to invert since we're using pullups
-	tiltLeftState = 0
-		| ((values & mapAnalogLSXNeg->pinMask)    ? mapAnalogLSXNeg->buttonMask : 0)
-		| ((values & mapAnalogLSXPos->pinMask)    ? mapAnalogLSXPos->buttonMask : 0)
-		| ((values & mapAnalogLSYNeg->pinMask)    ? mapAnalogLSYNeg->buttonMask : 0)
-		| ((values & mapAnalogLSYPos->pinMask)    ? mapAnalogLSYPos->buttonMask : 0);
-
-	tiltRightState = 0
-		| ((values & mapAnalogRSXNeg->pinMask)    ? mapAnalogRSXNeg->buttonMask : 0)
-		| ((values & mapAnalogRSXPos->pinMask)    ? mapAnalogRSXPos->buttonMask : 0)
-		| ((values & mapAnalogRSYNeg->pinMask)    ? mapAnalogRSYNeg->buttonMask : 0)
-		| ((values & mapAnalogRSYPos->pinMask)    ? mapAnalogRSYPos->buttonMask : 0);
-
-	// Convert gamepad from process() output to uint8 value
-	uint8_t gamepadState = gamepad->state.dpad;
-
-	gamepad->state.dpad = gamepadState;
-}
-
-void TiltInput::process()
-{
-	SOCDTiltClean(tiltSOCDMode);
-
-	Gamepad* gamepad = Storage::getInstance().GetGamepad();
-
-	// Set Tilt Output
-	OverrideGamepad(gamepad, tiltLeftState, tiltRightState);
 }
 
 void TiltInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dpad2) {
@@ -288,3 +312,6 @@ void TiltInput::SOCDTiltClean(SOCDMode socdMode) {
 	}
 }
 
+void TiltInput::handleProfileChange(GPEvent* e) {
+	reloadMappings();
+}

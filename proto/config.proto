@@ -36,6 +36,7 @@ message GamepadOptions
     optional bool usbOverrideID = 29;
     optional uint32 usbProductID = 30;
     optional uint32 usbVendorID = 31;
+    optional uint32 miniMenuGamepadInput = 32;
 }
 
 message KeyboardMapping
@@ -313,12 +314,12 @@ message LEDOptions
 
     optional CaseRGBType caseRGBType = 36;
     optional int32 caseRGBIndex = 37;
-    optional uint32 caseRGBColor = 38;
+    optional uint32 caseRGBColor = 38 [deprecated = true];
     optional uint32 caseRGBCount = 39;
 };
 
-// This has to be kept in sync with AnimationOptions in AnimationStation.hpp
-message AnimationOptions_Proto
+// This has to be kept in sync with AnimationOptions in animationstation.hpp
+message AnimationOptions
 {
     optional uint32 baseAnimationIndex = 1;
     optional uint32 brightness = 2;
@@ -366,6 +367,17 @@ message AnimationOptions_Proto
     optional uint32 customThemeA1Pressed = 43;
     optional uint32 customThemeA2Pressed = 44;
     optional uint32 buttonPressColorCooldownTimeInMs = 45;
+    optional uint32 ambientLightEffectsCountIndex = 46;     // ambient count
+    optional bool ambientLightCustomLinkageModeFlag = 47 [deprecated = true];
+    optional uint32 ambientLightGradientSpeed = 48;         // gradient speed
+    optional int32 ambientLightChaseSpeed = 49;             // chase speed
+    optional float ambientLightBreathSpeed = 50;            // breath speed
+    optional float alGradientBrightnessCustomX = 51;        // gradient brightness
+    optional float alChaseBrightnessCustomX = 52;           // chase brightness
+    optional float alStaticColorBrightnessCustomX = 53;     // static brightness
+    optional float alStaticBrightnessCustomThemeX = 54;     // static custom theme brightness
+    optional uint32 alCustomStaticThemeIndex = 55;          // custom theme index
+    optional uint32 alCustomStaticColorIndex = 56;          // static color index
 }
 
 message BootselButtonOptions
@@ -541,16 +553,16 @@ message BuzzerOptions
 
 message ExtraButtonOptions
 {
-    optional bool enabled = 1;
+    optional bool enabled = 1 [deprecated = true];
 
-    optional int32 pin = 2;
-    optional uint32 buttonMap = 3;
+    optional int32 pin = 2 [deprecated = true];
+    optional uint32 buttonMap = 3 [deprecated = true];
 }
 
 message PlayerNumberOptions
 {
-    optional bool enabled = 1;
-    optional uint32 number = 2;
+    optional bool enabled = 1 [deprecated = true];
+    optional uint32 number = 2 [deprecated = true];
 }
 
 message PS4Options
@@ -836,7 +848,7 @@ message AddonOptions
     optional DualDirectionalOptions dualDirectionalOptions = 8;
     optional BuzzerOptions buzzerOptions = 9;
     optional ExtraButtonOptions deprecatedExtraButtonOptions = 10 [deprecated = true];
-    optional PlayerNumberOptions playerNumberOptions = 11;
+    optional PlayerNumberOptions playerNumberOptions = 11 [deprecated = true];
     optional PS4Options ps4Options = 12 [(nanopb).disallow_export = true];
     optional WiiOptions wiiOptions = 13;
     optional SOCDSliderOptions socdSliderOptions = 14;
@@ -874,7 +886,7 @@ message Config
     optional KeyboardMapping keyboardMapping = 5;
     optional DisplayOptions displayOptions = 6;
     optional LEDOptions ledOptions = 7;
-    optional AnimationOptions_Proto animationOptions = 8;
+    optional AnimationOptions animationOptions = 8;
     optional AddonOptions addonOptions = 9;
     optional ForcedSetupOptions forcedSetupOptions = 10;
     optional ProfileOptions profileOptions = 11;

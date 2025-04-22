@@ -77,12 +77,16 @@ private:
     // input mask, action
     std::map<uint32_t, int32_t> bootActions;
 
+    void checkSaveRebootState();
     bool saveRequested = false;
+    bool forceSave = false;
     bool saveSuccessful = false;
     void handleStorageSave(GPEvent* e);
 
     bool rebootRequested = false;
     void handleSystemReboot(GPEvent* e);
+
+    System::BootMode rebootMode = System::BootMode::DEFAULT;
 };
 
 #endif

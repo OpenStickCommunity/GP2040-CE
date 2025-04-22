@@ -36,22 +36,24 @@
 #define I2CAnalog1219Name "I2CAnalog"
 
 typedef struct {
-	float A[4];
+    float A[4];
 } ADS_PINS;
 
 class I2CAnalog1219Input : public GPAddon {
 public:
-	virtual bool available();
-	virtual void setup();       // Analog Setup
-	virtual void preprocess() {}
-	virtual void process();     // Analog Process
+    virtual bool available();
+    virtual void setup();       // Analog Setup
+    virtual void preprocess() {}
+    virtual void process();     // Analog Process
+    virtual void postprocess(bool sent) {}
+    virtual void reinit() {}
     virtual std::string name() { return I2CAnalog1219Name; }
 private:
     ADS1219Device * ads;
-	ADS_PINS pins;
-	int channelHop;
-	uint32_t uIntervalMS;       // ADS1219 Interval
-	uint32_t nextTimer;         // Turbo Timer
+    ADS_PINS pins;
+    int channelHop;
+    uint32_t uIntervalMS;       // ADS1219 Interval
+    uint32_t nextTimer;         // Turbo Timer
 };
 
 #endif  // _I2CAnalog_H_

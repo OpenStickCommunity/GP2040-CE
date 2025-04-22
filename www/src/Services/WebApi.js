@@ -217,6 +217,8 @@ async function getDisplayOptions() {
 
 async function setDisplayOptions(options, isPreview) {
 	let newOptions = sanitizeRequest(options);
+	newOptions.enabled = parseInt(options.enabled);
+	newOptions.invertDisplay = parseInt(options.invertDisplay);
 	newOptions.buttonLayout = parseInt(options.buttonLayout);
 	newOptions.buttonLayoutRight = parseInt(options.buttonLayoutRight);
 	newOptions.splashMode = parseInt(options.splashMode);
@@ -303,7 +305,6 @@ async function getLedOptions(setLoading) {
 		setLoading(false);
 
 		response.data.pledColor = rgbIntToHex(response.data.pledColor) || '#ffffff';
-        response.data.caseRGBColor = rgbIntToHex(response.data.caseRGBColor) || '#ffffff';
 
 		return response.data;
 	} catch (error) {

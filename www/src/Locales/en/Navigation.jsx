@@ -10,7 +10,7 @@ export default {
 	'led-config-label': 'LED Configuration',
 	'links-label': 'Links',
 	'macro-label': 'Macros Configuration',
-	'pin-mapping-label': 'Pin Mapping',
+	'pin-mapping-label': 'GPIO Pin Mapping',
 	'multi-mapping-label': 'Multi Mapping',
 	'peripheral-mapping-label': 'Peripheral Mapping',
 	'profile-settings-label': 'Profile Settings',

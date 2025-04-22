@@ -136,7 +136,6 @@ public:
 	void setSOCDMode(SOCDMode socdMode) { options.socdMode = socdMode; }
 	void setDpadMode(DpadMode dpadMode) { options.dpadMode = dpadMode; }
 
-	GamepadState rawState;
 	GamepadState state;
 	GamepadState turboState;
 	GamepadAuxState auxState;
@@ -217,6 +216,7 @@ private:
 	bool map48WayModeToggle;
 	const HotkeyOptions & hotkeyOptions;
 
+	HotkeyEntry hotkeys[16];
 	GamepadHotkey lastAction = HOTKEY_NONE;
 };
 

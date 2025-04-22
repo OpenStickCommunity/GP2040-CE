@@ -17,7 +17,7 @@ export default {
 		'참고: 설정시 아날로그 스틱이 게임패드의 좌/우 스틱 입력보다 우선하게 됩니다',
 	'analog-available-pins-text': '이용 가능 핀: {{pins}}',
 	'analog-available-pins-option-not-set': '없음',
-	'analog-adc-1-pin-x-label':  '아날로그 스틱 1 X 핀',
+	'analog-adc-1-pin-x-label': '아날로그 스틱 1 X 핀',
 	'analog-adc-1-pin-y-label': '아날로그 스틱 1 Y 핀',
 	'analog-adc-1-mode-label': '아날로그 스틱 1 모드',
 	'analog-adc-1-invert-label': '아날로그 스틱 1 반전',
@@ -51,6 +51,12 @@ export default {
 	'turbo-shmup-button-mask-3-label': '차지 버튼 3 할당',
 	'turbo-shmup-button-mask-4-label': '차지 버튼 4 할당',
 	'turbo-shmup-mix-mode-label': '동시 우선 모드',
+	'turbo-led-type-label': '터보 LED 타입',
+	'turbo-led-type-label-off': '끄기',
+	'turbo-led-type-label-pwm': 'PWM',
+	'turbo-led-type-label-rgb': 'RGB',
+	'turbo-led-index-label': '터보 LED 인덱스',
+	'turbo-led-color-label': '터보 LED 컬러',
 	'joystick-selection-slider-header-text': '조이스틱 선택 슬라이더',
 	'joystick-selection-slider-mode-zero-label': '슬라이더 핀 모드 기본값',
 	'input-reverse-header-text': '입력 반전',
@@ -73,7 +79,7 @@ export default {
 	'dual-directional-input-dpad-mode-label': '듀얼 D-패드 모드',
 	'dual-directional-input-combine-mode-label': '조합 모드',
 	'dual-directional-input-four-way-joystick-mode-label':
-         '듀얼 4방향 조이스틱 모드',
+		'듀얼 4방향 조이스틱 모드',
 	'tilt-header-text': '틸트 입력',
 	'tilt-1-pin-label': '틸트１핀',
 	'tilt-1-factor-left-x-label': '틸트１왼쪽 X축 비율',
@@ -103,8 +109,7 @@ export default {
 	'player-number-sub-header-text':
 		'플레이어 번호가 활성화된 여러개의 GP2040-CE 장치를 연결하는 경우에만 이 옵션을 활성화하십시오.',
 	'player-number-label': '플레이어 번호',
-	'socd-cleaning-mode-selection-slider-header-text':
-		'SOCD 모드 선택 슬라이더',
+	'socd-cleaning-mode-selection-slider-header-text': 'SOCD 모드 선택 슬라이더',
 	'socd-cleaning-mode-selection-slider-sub-header-text':
 		'참고：PS4, PS3 및 닌텐도 스위치 모드에서는 SOCD 클리닝 끄기를 지원하지 않으며 중립이 기본 값으로 설정됩니다.',
 	'socd-cleaning-mode-selection-slider-mode-default-label':
@@ -119,7 +124,7 @@ export default {
 	'ps4-mode-signature-label': '서명파일 (256바이트 바이너리)',
 	'snes-extension-header-text': '슈퍼 패미컴 확장 설정',
 	'snes-extension-sub-header-text':
-		'<0>참고 ：디스플레이가 동시에 활성화되면 현재 애드온은 비활성화됩니다</0> <1>현재 지원되는 컨트롤러</1> <0>슈퍼 패미컴 컨트롤러(SNES)：D-패드 대응, B = B1, A = B2, Y = B3, X = B4, L = L1, R = R1, 셀렉트 = S1, 스타트 = S2</0> <0>슈퍼 패미컴 마우스: 아날로그 스틱 대응. 좌 클릭 = B1, 우 클릭 = B2</0> <0>패미컴(NES): D-패드 대응, B = B1, A = B2, 셀렉트 = S1, 스타트 = S2</0>',
+		'<0>참고 ：디스플레이가 동시에 활성화되면 현재 애드온은 비활성화됩니다</0> <1>현재 지원되는 컨트롤러</1> <2>슈퍼 패미컴 컨트롤러(SNES)：D-패드 대응, B = B1, A = B2, Y = B3, X = B4, L = L1, R = R1, 셀렉트 = S1, 스타트 = S2<br/>슈퍼 패미컴 마우스: 아날로그 스틱 대응. 좌 클릭 = B1, 우 클릭 = B2<br/>패미컴(NES): D-패드 대응, B = B1, A = B2, 셀렉트 = S1, 스타트 = S2</2>',
 	'snes-extension-clock-pin-label': 'Clock 핀',
 	'snes-extension-latch-pin-label': 'Latch 핀',
 	'snes-extension-data-pin-label': 'Data 핀',

@@ -1,7 +1,7 @@
 export default {
 	rgb: {
 		'header-text': 'RGB LED Konfiguration',
-		'data-pin-label': 'Daten Pin (-1 für deaktiviert)',
+		'data-pin-label': 'Daten GPIO Pin (-1 für deaktiviert)',
 		'led-format-label': 'LED Format',
 		'led-layout-label': 'LED Layout',
 		'leds-per-button-label': 'LEDs Pro Taste',
@@ -11,7 +11,7 @@ export default {
 	player: {
 		'header-text': 'Spieler LEDs (XInput)',
 		'pwm-sub-header-text':
-			'Für PWM-LEDs, setzen Sie jede LED auf einen dedizierten GPIO-Pin.',
+			'Für PWM-LEDs, setzen Sie jede LED auf einen dedizierten GPIO Pin.',
 		'rgb-sub-header-text':
 			'Für RGB-LEDs müssen die Indizes nach der zuletzt definierten LED-Taste liegen.<1>RGB LED Tasten Reihenfolge</1> Sektion und wahrscheinlich <3>beginnt bei Index {{rgbLedStartIndex}}</3>.',
 		'pled-type-label': 'Spieler LED Typ',
@@ -20,7 +20,7 @@ export default {
 		'pled-type-rgb': 'RGB',
 		'pled-color-label': 'RGB SLED Farbe',
 	},
-	'pled-pin-label': 'SLED #{{pin}} Pin',
+	'pled-pin-label': 'SLED #{{pin}} GPIO Pin',
 	'pled-index-label': 'SLED #{{index}} Index',
 	'rgb-order': {
 		'header-text': 'RGB LED Tasten Reihenfolge',

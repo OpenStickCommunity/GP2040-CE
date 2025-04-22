@@ -9,7 +9,7 @@ class GPMenuNavigateEvent : public GPEvent {
         GPMenuNavigateEvent(GpioAction action) {
             this->menuAction = action;
         }
-        ~GPMenuNavigateEvent() {}
+        virtual ~GPMenuNavigateEvent() {}
 
         GPEventType eventType() { return this->_eventType; }
 

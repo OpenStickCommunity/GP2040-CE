@@ -18,8 +18,8 @@ const { pico: picoController } = JSON.parse(
 );
 
 // Structure pin mappings to include masks and profile label
-const createPinMappings = ({ profileLabel = 'Profile' }) => {
-	let pinMappings = { profileLabel, enabled: true };
+const createPinMappings = ({ profileLabel = 'Profile', enabled = true }) => {
+	let pinMappings = { profileLabel, enabled };
 
 	for (const [key, value] of Object.entries(picoController)) {
 		pinMappings[key] = {
@@ -113,7 +113,7 @@ app.get('/api/getGamepadOptions', (req, res) => {
 		lockHotkeys: 0,
 		fourWayMode: 0,
 		fnButtonPin: -1,
-		profileNumber: 1,
+		profileNumber: 2,
 		debounceDelay: 5,
 		inputModeB1: 1,
 		inputModeB2: 0,
@@ -134,6 +134,7 @@ app.get('/api/getGamepadOptions', (req, res) => {
 		usbOverrideID: 0,
 		usbVendorID: '10C4',
 		usbProductID: '82C0',
+		miniMenuGamepadInput: 1,
 		hotkey01: {
 			auxMask: 32768,
 			buttonsMask: 66304,
@@ -257,7 +258,6 @@ app.get('/api/getLedOptions', (req, res) => {
 		pledIndex4: 15,
 		pledColor: 65280,
 		caseRGBType: 0,
-		caseRGBColor: 65280,
 		caseRGBIndex: -1,
 		caseRGBCount: 0,
 		turnOffWhenSuspended: 0,
@@ -412,7 +412,7 @@ app.get('/api/getProfileOptions', (req, res) => {
 	return res.send({
 		alternativePinMappings: [
 			createPinMappings({ profileLabel: 'Profile 2' }),
-			createPinMappings({ profileLabel: 'Profile 3' }),
+			createPinMappings({ profileLabel: 'Profile 3', enabled: false }),
 		],
 	});
 });
@@ -479,7 +479,6 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		focusModePin: -1,
 		focusModeButtonLockMask: 0,
 		focusModeButtonLockEnabled: 0,
-		playerNumber: 1,
 		shmupMode: 0,
 		shmupMixMode: 0,
 		shmupAlwaysOn1: 0,

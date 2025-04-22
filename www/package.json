@@ -24,14 +24,15 @@
 	},
 	"scripts": {
 		"analyze": "npx vite-bundle-visualizer",
-		"build": "vite build && npm run makefsdata",
+		"build": "npm run build-proto && vite build && npm run makefsdata",
 		"dev-server": "nodemon -r dotenv/config ./server/app.js",
 		"dev": "concurrently --kill-others \"npm run dev-server\" \"npm start\"",
 		"dev-board": "cross-env VITE_DEV_BASE_URL=http://192.168.7.1 npm start ",
 		"format": "prettier --write \"{src,server}/**/*.{tsx,ts,jsx,js,json,scss}\"",
 		"lint": "eslint src --ext js,jsx,ts,tsx --report-unused-disable-directives --max-warnings 0",
 		"makefsdata": "node makefsdata.js",
-		"start": "vite"
+		"start": "npm run build-proto && vite",
+		"build-proto": "npx pbjs --no-create --no-encode --no-decode --no-convert --no-verify --no-delimited --sparse -t static-module -w commonjs --path ../lib/nanopb/generator/proto/ ../proto/enums.proto | npx pbts --no-comments -m -o ./src_gen/enums.ts -"
 	},
 	"devDependencies": {
 		"@types/lodash": "^4.17.1",
@@ -52,6 +53,7 @@
 		"nodemon": "^2.0.22",
 		"pako": "^2.1.0",
 		"prettier": "^3.3.3",
+		"protobufjs-cli": "^1.1.3",
 		"sass": "^1.62.1",
 		"typescript": "^5.3.3",
 		"vite": "^4.3.9"

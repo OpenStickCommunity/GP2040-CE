@@ -1,12 +1,13 @@
 #include "RestartScreen.h"
 
+#include "BitmapScreens.h"
+
 #include "pico/stdlib.h"
 #include "system.h"
 
 void RestartScreen::init() {
     getRenderer()->clearScreen();
     //splashStartTime = getMillis();
-    //configMode = Storage::getInstance().GetConfigMode();
 }
 
 void RestartScreen::shutdown() {
@@ -14,8 +15,8 @@ void RestartScreen::shutdown() {
 }
 
 void RestartScreen::drawScreen() {
-    getRenderer()->drawSprite((uint8_t *)bootLogoBottom, 128, 35, 10, 0, 2, 1);
-    
+    getRenderer()->drawSprite((uint8_t *)bitmapGP2040Logo, 128, 35, 10, 0, 2, 1);
+
     switch ((System::BootMode)this->bootMode) {
         case System::BootMode::USB:
             getRenderer()->drawText(1, 6, "Rebooting to BOOTSEL");

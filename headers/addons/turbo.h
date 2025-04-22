@@ -106,6 +106,7 @@ public:
     virtual void reinit();
     virtual void preprocess() {}
     virtual void process();     // TURBO Setting of buttons (Enable/Disable)
+    virtual void postprocess(bool sent) {}
     virtual std::string name() { return TurboName; }
 
     void handleEncoder(GPEvent* e);
@@ -136,5 +137,6 @@ private:
     uint16_t lastButtons;       // Last buttons (for Turbo Reset on Release)
     bool hasLedPin;             // Flag for LED pin presence
     uint8_t encoderValue;       // Rotary encoder value 
+    bool hasTurboAssigned;      // Turbo enabled on a pin.
 };
 #endif  // TURBO_H_

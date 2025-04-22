@@ -18,6 +18,21 @@ void EventManager::registerEventHandler(GPEventType eventType, EventFunction han
     }
 }
 
+void EventManager::unregisterEventHandler(GPEventType eventType, EventFunction handler) {
+    typename std::vector<EventEntry>::iterator it = std::find_if(eventList.begin(), eventList.end(), [&eventType](const EventEntry& entry) { return entry.first == eventType; });
+
+    // Verify we have this event in our pair list
+    if (it != eventList.end()) {
+        // Verify we have this function in our function vector
+        for(std::vector<EventFunction>::iterator funcIt = it->second.begin(); funcIt != it->second.end(); it++){
+            if(*(uint32_t *)(uint8_t *)&handler == *(uint32_t *)(uint8_t *)&(*funcIt)) {
+                it->second.erase(funcIt);
+                break;
+            }
+        }
+    }
+}
+
 void EventManager::triggerEvent(GPEvent* event) {
     GPEventType eventType = event->eventType();
     for (typename std::vector<EventEntry>::const_iterator it = eventList.begin(); it != eventList.end(); ++it) {

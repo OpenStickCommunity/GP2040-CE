@@ -4,7 +4,7 @@
 #include "GPGFX_UI_widgets.h"
 #include "GPGFX_UI_types.h"
 #include "enums.pb.h"
-#include "AnimationStation.hpp"
+#include "animationstation.h"
 #include "eventmanager.h"
 
 #define INPUT_MODE_XINPUT_NAME "XInput"
@@ -40,6 +40,7 @@ class MainMenuScreen : public GPScreen {
     public:
         MainMenuScreen() {}
         MainMenuScreen(GPGFX* renderer) { setRenderer(renderer); }
+        virtual ~MainMenuScreen() {}
         void setMenu(std::vector<MenuEntry>* menu);
         virtual int8_t update();
         virtual void init();
@@ -47,6 +48,7 @@ class MainMenuScreen : public GPScreen {
 
         void testMenu() {}
         void saveAndExit();
+        void exitOnly();
         int32_t modeValue();
 
         void selectInputMode();
@@ -68,20 +70,28 @@ class MainMenuScreen : public GPScreen {
         int32_t currentTurboMode();
 
         void updateMenuNavigation(GpioAction action);
+        void updateEventMenuNavigation(GpioAction action);
+        void chooseAndReturn();
+
+        void setMenuHome();
     protected:
         virtual void drawScreen();
     private:
-        uint8_t menuIndex = 0;
         bool isPressed = false;
         uint32_t checkDebounce;
         std::vector<MenuEntry>* currentMenu;
         std::vector<MenuEntry>* previousMenu;
         uint16_t prevButtonState = 0;
+        uint8_t prevDpadState = 0;
         Mask_t prevValues;
-        GPMenu* gpMenu;
+        GPMenu* gpMenu = nullptr;
+        const uint8_t menuLineSize = 4;
+
+        GpioAction eventAction;
 
         bool screenIsPrompting = false;
         bool promptChoice = false;
+        bool isMenuReady = false;
 
         int8_t exitToScreenBeforePrompt = -1;
         int8_t exitToScreen = -1;
@@ -146,12 +156,12 @@ class MainMenuScreen : public GPScreen {
             {"Profile",    NULL, &profilesMenu,  std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::testMenu, this)},
             {"Focus Mode", NULL, &focusModeMenu, std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::testMenu, this)},
             {"Turbo",      NULL, &turboModeMenu, std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::testMenu, this)},
-            {"Save & Exit",NULL, &saveMenu,      std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::testMenu, this)},
+            {"Exit",       NULL, &saveMenu,      std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::testMenu, this)},
         };
 
         std::vector<MenuEntry> saveMenu = {
-            {"Yes",        NULL, nullptr,        std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::saveAndExit, this), 1},
-            {"No",         NULL, nullptr,        std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::testMenu, this), 0},
+            {"Save & Exit",NULL, nullptr,        std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::saveAndExit, this), 1},
+            {"Exit",       NULL, nullptr,        std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::exitOnly, this), 0},
         };
 };
 
