@@ -1,4 +1,4 @@
-#include "smcirclecolour.h"
+#include "smcirclecolor.h"
 #include "specialmovesystem.h"
 #include <math.h>
 
@@ -7,7 +7,7 @@
 #define TWOCIRCLES 12.5666
 #define ONECIRCLE (TWOCIRCLES / 2.0f)
 
-SMCircleColour::SMCircleColour(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType) : Animation(InRGBLights, InButtonCaseEffectType) 
+SMCircleColor::SMCircleColor(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType) : Animation(InRGBLights, InButtonCaseEffectType) 
 {
     for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
     {
@@ -29,25 +29,25 @@ SMCircleColour::SMCircleColour(Lights& InRGBLights, EButtonCaseEffectType InButt
     MidYCoord = MinYCoord + ((MaxYCoord - MinYCoord) / 2);
 }
 
-void SMCircleColour::SetOptionalParams(uint32_t OptionalParams)
+void SMCircleColor::SetOptionalParams(uint32_t OptionalParams)
 {
     //FORMAT
     //4bit - bool - Clockwise
     //4bit - SpecialMoveAnimationDuration - Circle animation time
     //4bit - int - Num circle loops
-    //8bit - Animation::colors index - Circle colour
-    //8bit - Animation::colors index - Second Circle colour
+    //8bit - Animation::colors index - Circle color
+    //8bit - Animation::colors index - Second Circle color
 
     bClockwise = (OptionalParams & 0xF) != 0;
     CircleSpeed = (SpecialMoveAnimationDuration)((OptionalParams >> 4) & 0xF);
     CircleLoops = ((OptionalParams >> 8) & 0xF);
-    ColourIndex = (uint8_t)((OptionalParams >> 12) & 0xFF);
-    SecondColourIndex = (uint8_t)((OptionalParams >> 20) & 0xFF);
+    ColorIndex = (uint8_t)((OptionalParams >> 12) & 0xFF);
+    SecondColorIndex = (uint8_t)((OptionalParams >> 20) & 0xFF);
 
-    CurrentState = SMCircleColourState::SM_CIRCLE_STATE_PREFRAMES;
+    CurrentState = SMCircleColorState::SM_CIRCLE_STATE_PREFRAMES;
 }
 
-float SMCircleColour::GetCircleSpeedFromEnum()
+float SMCircleColor::GetCircleSpeedFromEnum()
 {
     //rads per frame
     float speed = 0;
@@ -82,12 +82,12 @@ float SMCircleColour::GetCircleSpeedFromEnum()
     return speed;
 }
 
-bool SMCircleColour::IsFinished()
+bool SMCircleColor::IsFinished()
 {
-    return CurrentState == SMCircleColourState::SM_CIRCLE_STATE_FINISHED;
+    return CurrentState == SMCircleColorState::SM_CIRCLE_STATE_FINISHED;
 }
 
-void SMCircleColour::Animate(RGB (&frame)[100]) 
+void SMCircleColor::Animate(RGB (&frame)[100]) 
 {
     UpdateTime();
 
@@ -95,46 +95,46 @@ void SMCircleColour::Animate(RGB (&frame)[100])
 
     switch(CurrentState)
     {
-        case SMCircleColourState::SM_CIRCLE_STATE_PREFRAMES:
+        case SMCircleColorState::SM_CIRCLE_STATE_PREFRAMES:
         {
             UpdateCircle(frame);
             if(CurrentStateTime > CIRCLE_PREWAIT_MS)
             {
                 CurrentStateTime = 0.0f;
-                CurrentState = SMCircleColourState::SM_CIRCLE_STATE_RUNNING;
+                CurrentState = SMCircleColorState::SM_CIRCLE_STATE_RUNNING;
             }         
         } break;
 
-        case SMCircleColourState::SM_CIRCLE_STATE_RUNNING:
+        case SMCircleColorState::SM_CIRCLE_STATE_RUNNING:
         {
             if(UpdateCircle(frame))
             {
                 CurrentStateTime = 0.0f;
-                CurrentState = SMCircleColourState::SM_CIRCLE_STATE_POSTFRAMES;
+                CurrentState = SMCircleColorState::SM_CIRCLE_STATE_POSTFRAMES;
             }
         } break;
 
-        case SMCircleColourState::SM_CIRCLE_STATE_POSTFRAMES:
+        case SMCircleColorState::SM_CIRCLE_STATE_POSTFRAMES:
         {
             UpdateCircle(frame);
             if(CurrentStateTime > CIRCLE_POSTWAIT_MS)
             {
                 CurrentStateTime = 0.0f;
-                CurrentState = SMCircleColourState::SM_CIRCLE_STATE_FINISHED;
+                CurrentState = SMCircleColorState::SM_CIRCLE_STATE_FINISHED;
             }         
         } break;
 
-        case SMCircleColourState::SM_CIRCLE_STATE_FINISHED:
-        case SMCircleColourState::SM_CIRCLE_STATE_NOTSTARTED:
+        case SMCircleColorState::SM_CIRCLE_STATE_FINISHED:
+        case SMCircleColorState::SM_CIRCLE_STATE_NOTSTARTED:
         default:
         {
         } break;
     }
 }
 
-bool SMCircleColour::UpdateCircle(RGB (&frame)[100])
+bool SMCircleColor::UpdateCircle(RGB (&frame)[100])
 {
-    if(CurrentState == SMCircleColourState::SM_CIRCLE_STATE_RUNNING)
+    if(CurrentState == SMCircleColorState::SM_CIRCLE_STATE_RUNNING)
         CurrentAngle += GetCircleSpeedFromEnum();
 
     bool inSecondCircle = CurrentAngle > ONECIRCLE;
@@ -148,7 +148,7 @@ bool SMCircleColour::UpdateCircle(RGB (&frame)[100])
             uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[lightIndex].LedsPerLight;
 
             //Work out angle to light
-            bool useSecondColour;
+            bool useSecondColor;
             float xToLight = RGBLights->AllLights[lightIndex].Position.XPosition - MidXCoord;
             float yToLight = RGBLights->AllLights[lightIndex].Position.YPosition - MidYCoord;
             float magnitude = std::sqrt((xToLight * xToLight) + (yToLight * yToLight));
@@ -159,33 +159,33 @@ bool SMCircleColour::UpdateCircle(RGB (&frame)[100])
                 angleBetweenUpAndLight = ONECIRCLE - angleBetweenUpAndLight;
             }
 
-            //should we light this light or turn it to the "off" colour?
-            useSecondColour = inSecondCircle ? false : true; 
+            //should we light this light or turn it to the "off" color?
+            useSecondColor = inSecondCircle ? false : true; 
             if(bClockwise)
             {
                 if(angleBetweenUpAndLight < currentAngleModOneCircle)
-                    useSecondColour = !useSecondColour; 
+                    useSecondColor = !useSecondColor; 
             }
             else
             {
                 if(angleBetweenUpAndLight > ONECIRCLE - currentAngleModOneCircle)
-                    useSecondColour = !useSecondColour; 
+                    useSecondColor = !useSecondColor; 
             }
 
             RGB colToUse = ColorBlack; //black
-            if(NumLoopsDone == 0 && !inSecondCircle && useSecondColour)
+            if(NumLoopsDone == 0 && !inSecondCircle && useSecondColor)
                 colToUse = ColorBlack;
-            else if(NumLoopsDone == (CircleLoops-1) && inSecondCircle && useSecondColour)
+            else if(NumLoopsDone == (CircleLoops-1) && inSecondCircle && useSecondColor)
                 colToUse = ColorBlack;
-            else if(useSecondColour)
-                colToUse = GetColorForIndex(SecondColourIndex);
+            else if(useSecondColor)
+                colToUse = GetColorForIndex(SecondColorIndex);
             else
-                colToUse = GetColorForIndex(ColourIndex);
+                colToUse = GetColorForIndex(ColorIndex);
 
             for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
             {
                 //default all to black if not running
-                if(CurrentState != SMCircleColourState::SM_CIRCLE_STATE_RUNNING)
+                if(CurrentState != SMCircleColorState::SM_CIRCLE_STATE_RUNNING)
                 {
                     frame[ledIndex] = ColorBlack;
                     continue;

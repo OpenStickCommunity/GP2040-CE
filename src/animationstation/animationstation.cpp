@@ -5,27 +5,32 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#include "Effects/Chase.hpp"
-#include "Effects/Rain.hpp"
-#include "Effects/Rainbow.hpp"
-#include "Effects/StaticColor.hpp"
-#include "Effects/JiggleStaticColor.hpp"
-#include "Effects/BurstColor.hpp"
-#include "Effects/JiggleTwoStaticColor.hpp"
-#include "Effects/RandomColor.hpp"
-#include "Effects/SMPulseColour.hpp"
-#include "Effects/SMCircleColour.hpp"
-#include "Effects/SMWave.hpp"
-#include "Effects/SMKnightRider.hpp"
-#include "SpecialMoveSystem.hpp"
+#include "effects/chase.h"
+#include "effects/rain.h"
+#include "effects/rainbow.h"
+#include "effects/staticcolor.h"
+#include "effects/jigglestaticcolor.h"
+#include "effects/burstcolor.h"
+#include "effects/jiggletwostaticcolor.h"
+#include "effects/randomcolor.h"
+#include "effects/smpulsecolor.h"
+#include "effects/smcirclecolor.h"
+#include "effects/smwave.h"
+#include "effects/smknightrider.h"
+#include "specialmovesystem.h"
 
-#include "AnimationStation.hpp"
+#include "animationstation.h"
+
+#include "storagemanager.h"
+
+#include "enums.pb.h"
+#include "config.pb.h"
 
 uint8_t AnimationStation::brightnessMax = 100;
 uint8_t AnimationStation::brightnessSteps = 5;
 float AnimationStation::brightnessX = 0;
 absolute_time_t AnimationStation::nextChange = nil_time;
-AnimationOptions AnimationStation::options = {};
+AnimationOptions_Unpacked AnimationStation::options = {};
 std::string AnimationStation::printfs[4];
 
 AnimationStation::AnimationStation()
@@ -47,7 +52,7 @@ void AnimationStation::ConfigureBrightness(uint8_t max, uint8_t steps)
   brightnessSteps = steps;
 }
 
-void AnimationStation::HandleEvent(AnimationHotkey action)
+void AnimationStation::HandleEvent(GamepadHotkey action)
 {
   if (action == HOTKEY_LEDS_NONE)
   {
@@ -100,12 +105,10 @@ void AnimationStation::HandleEvent(AnimationHotkey action)
   if (action == HOTKEY_LEDS_PARAMETER_UP) 
   {
     this->baseAnimation->ParameterUp();
-    reqSave = true;
   }
   if (action == HOTKEY_LEDS_PARAMETER_DOWN) 
   {
     this->baseAnimation->ParameterDown();
-    reqSave = true;
   }
   if (action == HOTKEY_LEDS_PRESS_PARAMETER_UP) 
   {
@@ -221,6 +224,9 @@ void AnimationStation::Animate()
       specialMoveSystem.SetSpecialMoveAnimationOver();
     }
   }
+
+  checkForOptionsUpdate();
+  specialMoveSystem.checkForOptionsUpdate();
 }
 
 void AnimationStation::Clear() 
@@ -237,23 +243,23 @@ void AnimationStation::SetSpecialMoveAnimation(SpecialMoveEffects AnimationToPla
 
   switch(AnimationToPlay)
   {
-  case SpecialMoveEffects::SPECIALMOVE_SMEFFECT_WAVE:
+  case SpecialMoveEffects::SpecialMoveEffects_SMEFFECT_WAVE:
     this->specialMoveAnimation = new SMWave(RGBLights, buttonCaseEffect);
     break;
 
-  case SpecialMoveEffects::SPECIALMOVE_SMEFFECT_PULSECOLOR:
-    this->specialMoveAnimation = new SMPulseColour(RGBLights, buttonCaseEffect);
+  case SpecialMoveEffects::SpecialMoveEffects_SMEFFECT_PULSECOLOR:
+    this->specialMoveAnimation = new SMPulseColor(RGBLights, buttonCaseEffect);
     break;
 
-  case SpecialMoveEffects::SPECIALMOVE_SMEFFECT_CIRCLECOLOR:
-    this->specialMoveAnimation = new SMCircleColour(RGBLights, buttonCaseEffect);
+  case SpecialMoveEffects::SpecialMoveEffects_SMEFFECT_CIRCLECOLOR:
+    this->specialMoveAnimation = new SMCircleColor(RGBLights, buttonCaseEffect);
     break;
 
-  case SpecialMoveEffects::SPECIALMOVE_SMEFFECT_KNIGHTRIDER:
+  case SpecialMoveEffects::SpecialMoveEffects_SMEFFECT_KNIGHTRIDER:
     this->specialMoveAnimation = new SMKnightRider(RGBLights, buttonCaseEffect);
     break;
 
-  case SpecialMoveEffects::SPECIALMOVE_SMEFFECT_RANDOMFLASH:
+  case SpecialMoveEffects::SpecialMoveEffects_SMEFFECT_RANDOMFLASH:
     //this->specialMoveAnimation = new SMRandomFlash(RGBLights, buttonCaseEffect);
     break;
 
@@ -278,59 +284,59 @@ Animation* AnimationStation::GetNonPressedEffectForEffectType(AnimationNonPresse
 
   switch (EffectType) 
   {
-  case AnimationNonPressedEffects::NONPRESSED_EFFECT_RAINBOW_SYNCED:
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_SYNCED:
     newEffect = new RainbowSynced(RGBLights, InButtonCaseEffectType);
     break;
 
-  case AnimationNonPressedEffects::NONPRESSED_EFFECT_RAINBOW_ROTATE:
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_ROTATE:
     newEffect = new RainbowRotate(RGBLights, InButtonCaseEffectType);
     break;
 
-  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_SEQUENTIAL:
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_SEQUENTIAL:
     newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_SEQUENTIAL);
     break;
-  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_LEFT_TO_RIGHT:
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_LEFT_TO_RIGHT:
     newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_LEFT_TO_RIGHT);
     break;  
-  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_RIGHT_TO_LEFT:
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_RIGHT_TO_LEFT:
     newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_RIGHT_TO_LEFT);
     break;  
-  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_TOP_TO_BOTTOM:
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_TOP_TO_BOTTOM:
     newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_TOP_TO_BOTTOM);
     break;  
-  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_BOTTOM_TO_TOP:
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_BOTTOM_TO_TOP:
     newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_BOTTOM_TO_TOP);
     break;  
-  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_SEQUENTIAL_PINGPONG:
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_SEQUENTIAL_PINGPONG:
     newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_SEQUENTIAL_PINGPONG);
     break;  
-  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_HORIZONTAL_PINGPONG:
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_HORIZONTAL_PINGPONG:
     newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_HORIZONTAL_PINGPONG);
     break;
-  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_VERTICAL_PINGPONG:
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_VERTICAL_PINGPONG:
     newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_VERTICAL_PINGPONG);
     break;  
-  case AnimationNonPressedEffects::NONPRESSED_EFFECT_CHASE_RANDOM:
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_RANDOM:
     newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_RANDOM);
     break; 
 
-  case AnimationNonPressedEffects::NONPRESSED_EFFECT_STATIC_COLOR:
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_STATIC_COLOR:
     newEffect = new StaticColor(RGBLights, InButtonCaseEffectType);
     break;
-  case AnimationNonPressedEffects::NONPRESSED_EFFECT_JIGGLESTATIC:
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_JIGGLESTATIC:
     newEffect = new JiggleStaticColor(RGBLights, InButtonCaseEffectType);
     break;
-  case AnimationNonPressedEffects::NONPRESSED_EFFECT_JIGGLETWOSTATIC:
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_JIGGLETWOSTATICS:
     newEffect = new JiggleTwoStaticColor(RGBLights, InButtonCaseEffectType);
     break;
 
-  case AnimationNonPressedEffects::NONPRESSED_EFFECT_RAIN_LOW:
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAIN_LOW:
     newEffect = new Rain(RGBLights, InButtonCaseEffectType, ERainFrequency::RAIN_LOW);
     break;
-  case AnimationNonPressedEffects::NONPRESSED_EFFECT_RAIN_MEDIUM:
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAIN_MEDIUM:
     newEffect = new Rain(RGBLights, InButtonCaseEffectType, ERainFrequency::RAIN_MEDIUM);
     break;  
-  case AnimationNonPressedEffects::NONPRESSED_EFFECT_RAIN_HIGH:
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAIN_HIGH:
     newEffect = new Rain(RGBLights, InButtonCaseEffectType, ERainFrequency::RAIN_HIGH);
     break;
 
@@ -383,30 +389,30 @@ void AnimationStation::SetMode(int8_t mode)
   //set new profile pressed animation
   switch (this->options.profiles[this->options.baseProfileIndex].basePressedEffect) 
   {
-  case AnimationPressedEffects::PRESSED_EFFECT_RANDOM:
+  case AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_RANDOM:
     this->buttonAnimation = new RandomColor(RGBLights, lastPressed);
     break;
 
-  case AnimationPressedEffects::PRESSED_EFFECT_STATIC_COLOR:
+  case AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_STATIC_COLOR:
     this->buttonAnimation = new StaticColor(RGBLights, lastPressed);
     break;
-  case AnimationPressedEffects::PRESSED_EFFECT_JIGGLESTATIC:
+  case AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_JIGGLESTATIC:
     this->buttonAnimation = new JiggleStaticColor(RGBLights, lastPressed);
     break;
-  case AnimationPressedEffects::PRESSED_EFFECT_JIGGLETWOSTATIC:
+  case AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_JIGGLETWOSTATICS:
     this->buttonAnimation = new JiggleTwoStaticColor(RGBLights, lastPressed);
     break;
 
-  case AnimationPressedEffects::PRESSED_EFFECT_BURST:
+  case AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_BURST:
     this->buttonAnimation = new BurstColor(RGBLights, false, false, lastPressed);
     break;
-  case AnimationPressedEffects::PRESSED_EFFECT_BURST_RANDOM:
+  case AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_BURST_RANDOM:
     this->buttonAnimation = new BurstColor(RGBLights, true, false, lastPressed);
     break;
-  case AnimationPressedEffects::PRESSED_EFFECT_BURST_SMALL:
+  case AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_BURST_SMALL:
     this->buttonAnimation = new BurstColor(RGBLights, false, true, lastPressed);
     break;
-  case AnimationPressedEffects::PRESSED_EFFECT_BURST_SMALL_RANDOM:
+  case AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_BURST_SMALL_RANDOM:
     this->buttonAnimation = new BurstColor(RGBLights, true, true, lastPressed);
     break;
 
@@ -471,4 +477,103 @@ float AnimationStation::GetBrightnessX()
 uint8_t AnimationStation::GetBrightness() 
 {
   return AnimationStation::options.brightness;
+}
+
+void AnimationStation::decompressSettings()
+{
+	const AnimationOptions& optionsProto = Storage::getInstance().getAnimationOptions();
+	
+	options.checksum				= 0;
+	options.NumValidProfiles = optionsProto.profiles_count;
+	for(int index = 0; index < options.NumValidProfiles && index < 4; ++index) //MAX_ANIMATION_PROFILES from AnimationStation.hpp
+	{
+		options.profiles[index].bEnabled = optionsProto.profiles[index].bEnabled;
+		options.profiles[index].baseNonPressedEffect = (AnimationNonPressedEffects)((int)optionsProto.profiles[index].baseNonPressedEffect);
+		options.profiles[index].basePressedEffect = (AnimationPressedEffects)((int)optionsProto.profiles[index].basePressedEffect);
+		options.profiles[index].baseCaseEffect = (AnimationNonPressedEffects)((int)optionsProto.profiles[index].baseCaseEffect);
+		options.profiles[index].baseCycleTime = optionsProto.profiles[index].baseCycleTime;
+		options.profiles[index].basePressedCycleTime = optionsProto.profiles[index].basePressedCycleTime;
+		for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS/4)+1; ++packedPinIndex)
+		{
+			int pinIndex = packedPinIndex * 4;
+			if(packedPinIndex < optionsProto.profiles[index].notPressedStaticColors_count)
+			{
+				options.profiles[index].notPressedStaticColors[pinIndex + 0] = optionsProto.profiles[index].notPressedStaticColors[packedPinIndex] & 0xFF;
+				options.profiles[index].notPressedStaticColors[pinIndex + 1] = (optionsProto.profiles[index].notPressedStaticColors[packedPinIndex] >> 8) & 0xFF;
+				options.profiles[index].notPressedStaticColors[pinIndex + 2] = (optionsProto.profiles[index].notPressedStaticColors[packedPinIndex] >> 16) & 0xFF;
+				options.profiles[index].notPressedStaticColors[pinIndex + 3] = (optionsProto.profiles[index].notPressedStaticColors[packedPinIndex] >> 24) & 0xFF;
+			}
+			if(packedPinIndex < optionsProto.profiles[index].pressedStaticColors_count)
+			{
+				options.profiles[index].pressedStaticColors[pinIndex + 0] = optionsProto.profiles[index].pressedStaticColors[packedPinIndex] & 0xFF;
+				options.profiles[index].pressedStaticColors[pinIndex + 1] = (optionsProto.profiles[index].pressedStaticColors[packedPinIndex] >> 8) & 0xFF;
+				options.profiles[index].pressedStaticColors[pinIndex + 2] = (optionsProto.profiles[index].pressedStaticColors[packedPinIndex] >> 16) & 0xFF;
+				options.profiles[index].pressedStaticColors[pinIndex + 3] = (optionsProto.profiles[index].pressedStaticColors[packedPinIndex] >> 24) & 0xFF;
+			}
+		}
+		for(unsigned int packedCaseIndex = 0; packedCaseIndex < (MAX_CASE_LIGHTS / 4) && packedCaseIndex < optionsProto.profiles[index].caseStaticColors_count; ++packedCaseIndex)
+		{
+			int caseIndex = packedCaseIndex * 4;
+			options.profiles[index].caseStaticColors[caseIndex + 0] = optionsProto.profiles[index].caseStaticColors[packedCaseIndex] & 0xFF;
+			options.profiles[index].caseStaticColors[caseIndex + 1] = (optionsProto.profiles[index].caseStaticColors[packedCaseIndex] >> 8) & 0xFF;
+			options.profiles[index].caseStaticColors[caseIndex + 2] = (optionsProto.profiles[index].caseStaticColors[packedCaseIndex] >> 16) & 0xFF;
+			options.profiles[index].caseStaticColors[caseIndex + 3] = (optionsProto.profiles[index].caseStaticColors[packedCaseIndex] >> 24) & 0xFF;
+		}
+		options.profiles[index].buttonPressHoldTimeInMs = optionsProto.profiles[index].buttonPressHoldTimeInMs;
+		options.profiles[index].buttonPressFadeOutTimeInMs = optionsProto.profiles[index].buttonPressFadeOutTimeInMs;
+		options.profiles[index].nonPressedSpecialColor = optionsProto.profiles[index].nonPressedSpecialColor;
+		options.profiles[index].pressedSpecialColor = optionsProto.profiles[index].pressedSpecialColor;
+		options.profiles[index].bUseCaseLightsInSpecialMoves = optionsProto.profiles[index].bUseCaseLightsInSpecialMoves;
+	}
+	options.brightness				= std::min<uint32_t>(optionsProto.brightness, 255);
+	options.baseProfileIndex		= optionsProto.baseProfileIndex;
+
+	customColors.clear();
+	for(unsigned int customColIndex = 0; customColIndex < MAX_CUSTOM_COLORS; ++customColIndex)
+	{
+		customColors.push_back(optionsProto.customColors[customColIndex]);
+	}
+}
+
+void AnimationStation::checkForOptionsUpdate()
+{
+  bool bChangeDetected = false;
+  AnimationOptions& optionsProto = Storage::getInstance().getAnimationOptions();
+
+  //Any changes?
+	for(int index = 0; index < MAX_ANIMATION_PROFILES && !bChangeDetected; ++index)
+	{
+		if(optionsProto.profiles[index].baseCycleTime != options.profiles[index].baseCycleTime)
+      bChangeDetected = true;
+		else if(optionsProto.profiles[index].basePressedCycleTime != options.profiles[index].basePressedCycleTime)
+      bChangeDetected = true;
+	}
+	if(optionsProto.brightness != options.brightness)
+      bChangeDetected = true;
+	else if(optionsProto.baseProfileIndex != options.baseProfileIndex)
+      bChangeDetected = true;
+
+  //only change settings if they've been static for a little while
+  if(bChangeDetected)
+  {
+    if(!bAnimConfigSaveNeeded)
+    {
+      bAnimConfigSaveNeeded = true;
+      timeAnimationSaveSet = get_absolute_time();
+    }
+
+    if(bAnimConfigSaveNeeded && (absolute_time_diff_us(timeAnimationSaveSet, get_absolute_time()) / 1000) > 1000) // 1 second delay on saves
+    {
+      bAnimConfigSaveNeeded = false;
+      for(int index = 0; index < MAX_ANIMATION_PROFILES; ++index)
+      {
+        optionsProto.profiles[index].baseCycleTime = options.profiles[index].baseCycleTime;
+        optionsProto.profiles[index].basePressedCycleTime = options.profiles[index].basePressedCycleTime;
+      }
+      optionsProto.brightness					= options.brightness;
+      optionsProto.baseProfileIndex			= options.baseProfileIndex;
+
+      EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(false));
+    }
+  }
 }

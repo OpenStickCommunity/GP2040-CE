@@ -14,9 +14,9 @@ RGB JiggleTwoStaticColor::AdjustColor(RGB InColor)
     RGB otherColor;
     
     if(isButtonAnimation)
-        otherColor = RGB(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].pressedSpecialColour);
+        otherColor = RGB(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].pressedSpecialColor);
     else
-        otherColor = RGB(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColour);
+        otherColor = RGB(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor);
 
     RGB outColor;
     float rDiff = (float)otherColor.r - (float)InColor.r;

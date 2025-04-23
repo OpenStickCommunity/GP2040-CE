@@ -13,7 +13,7 @@ public:
   StaticColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPins);
   ~StaticColor() { };
 
-  virtual void Animate(RGB (&frame)[100]) override;
+  virtual void Animate(RGB (&frame)[FRAME_MAX]) override;
 protected:
 
   virtual RGB AdjustColor(RGB InColor) { return InColor; }

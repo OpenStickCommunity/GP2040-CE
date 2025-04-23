@@ -14,7 +14,7 @@ public:
   RainbowSynced(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType);
   ~RainbowSynced() {};
 
-  virtual void Animate(RGB (&frame)[100]) override;
+  virtual void Animate(RGB (&frame)[FRAME_MAX]) override;
 
   //These change the speed of the rainbow changing color
   virtual void ParameterUp() override;
@@ -32,7 +32,7 @@ public:
   RainbowRotate(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType);
   ~RainbowRotate() {};
 
-  virtual void Animate(RGB (&frame)[100]) override;
+  virtual void Animate(RGB (&frame)[FRAME_MAX]) override;
 
   //These change the speed of the rainbow changing color
   virtual void ParameterUp() override;

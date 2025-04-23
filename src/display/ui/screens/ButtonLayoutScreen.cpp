@@ -10,7 +10,6 @@ void ButtonLayoutScreen::init() {
     inputHistoryX = Storage::getInstance().getDisplayOptions().inputHistoryRow;
     inputHistoryY = Storage::getInstance().getDisplayOptions().inputHistoryCol;
     inputHistoryLength = Storage::getInstance().getDisplayOptions().inputHistoryLength;
-    bannerDelayStart = getMillis();
     gamepad = Storage::getInstance().GetGamepad();
     inputMode = DriverManager::getInstance().getInputMode();
 
@@ -89,82 +88,76 @@ void ButtonLayoutScreen::shutdown() {
 }
 
 void ButtonLayoutScreen::addCustomHeader(std::string newStr){
-    profileDelayStart = getMillis();
-    profileModeString = newStr;
-    profileModeDisplay = true;
+    bannerDelayStart = getMillis();
+    bannerString = newStr;
+    bannerDisplay = true;
 }
 
 void ButtonLayoutScreen::updateCustomHeaders()
 {
+    if(bannerDisplay)
+        return;
+
 	Storage& storage = Storage::getInstance();
 
     // Check to see if gamepad profile has changed
-    if(!ledAnimationProfileModeDisplay && !specialMoveProfileModeDisplay){
-        int16_t profileNumber = (int16_t)(getGamepad()->getOptions().profileNumber);
-        if (prevGamepadProfileNumber != profileNumber) {
-            prevGamepadProfileNumber = profileNumber;
+    if (prevGamepadProfileNumber != gamePadProfileNumber) {
+        prevGamepadProfileNumber = gamePadProfileNumber;
 
-            std::string profileStr;
-            profileStr.assign(storage.currentProfileLabel(), strlen(storage.currentProfileLabel()));
-            if (profileStr.empty()) {
-                profileStr = "     Profile #";
-                profileStr +=  std::to_string(profileNumber);
-            } else {
-                profileStr.insert(profileStr.begin(), (21-profileStr.length())/2, ' ');
-            }
-
-            gamepadProfileModeDisplay = true;
-            addCustomHeader(profileStr);
+        std::string profileStr;
+        profileStr.assign(storage.currentProfileLabel(), strlen(storage.currentProfileLabel()));
+        if (profileStr.empty()) {
+            profileStr = "     Profile #";
+            profileStr +=  std::to_string(gamePadProfileNumber);
+        } else {
+            profileStr.insert(profileStr.begin(), (21-profileStr.length())/2, ' ');
         }
+
+        addCustomHeader(profileStr);
+
+        return;
     }
 
     // Check to see if LED animation profile has changed
-    if(!gamepadProfileModeDisplay && !specialMoveProfileModeDisplay){
-        int8_t profileNumber = AnimationStation::options.baseProfileIndex;
-        if (prevLEDAnimationProfileNumber != profileNumber) {
-            prevLEDAnimationProfileNumber = profileNumber;
+    int8_t profileNumber = AnimationStation::options.baseProfileIndex;
+    if (prevLEDAnimationProfileNumber != profileNumber) {
+        prevLEDAnimationProfileNumber = profileNumber;
 
-            std::string profileStr;
-            if(profileNumber != -1)
-            {
-                profileStr = "    LED Profile #";
-                profileStr +=  std::to_string(profileNumber+1); //add 1 so its from 1-x not from 0-x
-            }
-            else
-            {
-                profileStr = "    LED Profile OFF";
-            }
-
-            ledAnimationProfileModeDisplay = true;
-            addCustomHeader(profileStr);
+        std::string profileStr;
+        if(profileNumber != -1)
+        {
+            profileStr = "    LED Profile #";
+            profileStr +=  std::to_string(profileNumber+1); //add 1 so its from 1-x not from 0-x
         }
+        else
+        {
+            profileStr = "    LED Profile OFF";
+        }
+
+        addCustomHeader(profileStr);
     }
     
     // Check to see if special move profile has changed
-    /*if(!gamepadProfileModeDisplay && !ledAnimationProfileModeDisplay){
-        int8_t profileNumber = SpecialMoveSystem::Options.CurrentProfileIndex;
-        if (prevSpecialMoveProfileNumber != profileNumber) {
-            prevSpecialMoveProfileNumber = profileNumber;
+    /*int8_t profileNumber = SpecialMoveSystem::Options.CurrentProfileIndex;
+    if (prevSpecialMoveProfileNumber != profileNumber) {
+        prevSpecialMoveProfileNumber = profileNumber;
 
-        	const SpecialMoveOptions_Proto& optionsProto = storage.getSpecialMoveOptions();
-            std::string profileStr;
-            profileStr.assign(optionsProto.profiles[profileNumber].Label, strlen(optionsProto.profiles[profileNumber].Label));
-            if (profileStr.empty()) {
-                profileStr = "Special Profile #";
-                profileStr +=  std::to_string(profileNumber);
-            } else {
-                profileStr.insert(profileStr.begin(), (21-profileStr.length())/2, ' ');
-            }
-
-            specialMoveProfileModeDisplay = true;
-            addCustomHeader(profileStr);
+        const SpecialMoveOptions_Proto& optionsProto = storage.getSpecialMoveOptions();
+        std::string profileStr;
+        profileStr.assign(optionsProto.profiles[profileNumber].Label, strlen(optionsProto.profiles[profileNumber].Label));
+        if (profileStr.empty()) {
+            profileStr = "Special Profile #";
+            profileStr +=  std::to_string(profileNumber);
+        } else {
+            profileStr.insert(profileStr.begin(), (21-profileStr.length())/2, ' ');
         }
+
+        addCustomHeader(profileStr);
     }*/
 }
 
 int8_t ButtonLayoutScreen::update() {
     bool configMode = DriverManager::getInstance().isConfigMode();
-    uint8_t profileNumber = getGamepad()->getOptions().profileNumber;
     
     // Check if we've updated button layouts while in config mode
     if (configMode) {
@@ -206,15 +199,12 @@ void ButtonLayoutScreen::generateHeader() {
 	Storage& storage = Storage::getInstance();
 
  	// Display Profile # banner
-	if ( profileModeDisplay ) {
-		if (((getMillis() - profileDelayStart) / 1000) < profileDelay) {
-			statusBar = profileModeString;
+	if ( bannerDisplay ) {
+		if (((getMillis() - bannerDelayStart) / 1000) < bannerDelay) {
+			statusBar = bannerString;
 			return;
 		} else {
-			profileModeDisplay = false;
-            gamepadProfileModeDisplay = false;
-            ledAnimationProfileModeDisplay = false;
-            specialMoveProfileModeDisplay = false;           
+			bannerDisplay = false;
 		}
 	}
 
@@ -317,7 +307,7 @@ void ButtonLayoutScreen::generateHeader() {
 }
 
 void ButtonLayoutScreen::drawScreen() {
-    if (profileModeDisplay) {
+    if (bannerDisplay) {
         getRenderer()->drawRectangle(0, 0, 128, 7, true, true);
     	getRenderer()->drawText(0, 0, statusBar, true);
     } else {
@@ -330,10 +320,6 @@ void ButtonLayoutScreen::drawScreen() {
     getRenderer()->drawText(0, 1, AnimationStation::printfs[1]);
     getRenderer()->drawText(0, 2, AnimationStation::printfs[2]);
     getRenderer()->drawText(0, 3, AnimationStation::printfs[3]);
-    getRenderer()->drawText(0, 4, storage.printfs[0]);
-    getRenderer()->drawText(0, 5, storage.printfs[1]);
-    getRenderer()->drawText(0, 6, storage.printfs[2]);
-    getRenderer()->drawText(0, 7, storage.printfs[3]);
 }
 
 GPLever* ButtonLayoutScreen::addLever(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, uint16_t inputType) {
@@ -605,21 +591,22 @@ bool ButtonLayoutScreen::pressedDownRight()
 void ButtonLayoutScreen::handleProfileChange(GPEvent* e) {
     GPProfileChangeEvent* event = (GPProfileChangeEvent*)e;
 
-    profileNumber = event->currentValue;
-    prevProfileNumber = event->previousValue;
+    gamePadProfileNumber = event->currentValue;
+    prevGamepadProfileNumber = event->previousValue;
 }
 
 void ButtonLayoutScreen::handleUSB(GPEvent* e) {
     GPUSBHostEvent* event = (GPUSBHostEvent*)e;
-    bannerDelayStart = getMillis();
-    prevProfileNumber = profileNumber;
+    
+    std::string customBannerStr;
 
     if (e->eventType() == GP_EVENT_USBHOST_MOUNT) {
-        bannerMessage = "    USB Connected";
+        customBannerStr = "    USB Connected";
     } else if (e->eventType() == GP_EVENT_USBHOST_UNMOUNT) {
-        bannerMessage = "  USB Disconnnected";
+        customBannerStr = "  USB Disconnnected";
     }
-    bannerDisplay = true;
+
+    addCustomHeader(customBannerStr);
 }
 
 void ButtonLayoutScreen::trim(std::string &s) {

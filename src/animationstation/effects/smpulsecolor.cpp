@@ -1,56 +1,56 @@
-#include "smpulsecolour.h"
+#include "smpulsecolor.h"
 #include "specialmovesystem.h"
 
 #define PULSE_PREWAIT_MS 150
 #define PULSE_POSTWAIT_MS 150
 
-SMPulseColour::SMPulseColour(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType) : Animation(InRGBLights, InButtonCaseEffectType) 
+SMPulseColor::SMPulseColor(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType) : Animation(InRGBLights, InButtonCaseEffectType) 
 {
 }
 
-void SMPulseColour::SetOptionalParams(uint32_t OptionalParams)
+void SMPulseColor::SetOptionalParams(uint32_t OptionalParams)
 {
     //FORMAT
-    //4bit - SpecialMoveAnimationColourFadeSpeed - fade in speed
-    //4bit - SpecialMoveAnimationDuration - Hold colour time
-    //4bit - SpecialMoveAnimationColourFadeSpeed - fade out speed
-    //8bit - Animation::colors index - pulse colour
+    //4bit - SpecialMoveAnimationColorFadeSpeed - fade in speed
+    //4bit - SpecialMoveAnimationDuration - Hold color time
+    //4bit - SpecialMoveAnimationColorFadeSpeed - fade out speed
+    //8bit - Animation::colors index - pulse color
 
-    FadeInSpeed = (SpecialMoveAnimationColourFadeSpeed)(OptionalParams & 0xF);
-    HoldColourTime = (SpecialMoveAnimationDuration)((OptionalParams >> 4) & 0xF);
-    FadeOutSpeed = (SpecialMoveAnimationColourFadeSpeed)((OptionalParams >> 8) & 0xF);
-    ColourIndex = (uint8_t)((OptionalParams >> 16) & 0xFF);
+    FadeInSpeed = (SpecialMoveAnimationColorFadeSpeed)(OptionalParams & 0xF);
+    HoldColorTime = (SpecialMoveAnimationDuration)((OptionalParams >> 4) & 0xF);
+    FadeOutSpeed = (SpecialMoveAnimationColorFadeSpeed)((OptionalParams >> 8) & 0xF);
+    ColorIndex = (uint8_t)((OptionalParams >> 16) & 0xFF);
 
-    CurrentState = SMPulseColourState::SM_PULSE_COLOUR_STATE_PREFRAMES;
+    CurrentState = SMPulseColorState::SM_PULSE_COLOR_STATE_PREFRAMES;
 }
 
-uint32_t SMPulseColour::GetFadeTimeFromEnum(SpecialMoveAnimationColourFadeSpeed FadeEnum)
+uint32_t SMPulseColor::GetFadeTimeFromEnum(SpecialMoveAnimationColorFadeSpeed FadeEnum)
 {
     //in Ms
     uint32_t fadeTime = 0;
     switch(FadeEnum)
     {
-        case SpecialMoveAnimationColourFadeSpeed::SPECIALMOVE_COLOURFADE_INSTANT:
+        case SpecialMoveAnimationColorFadeSpeed::SPECIALMOVE_COLORFADE_INSTANT:
         {
             fadeTime = 0;
         } break;
-        case SpecialMoveAnimationColourFadeSpeed::SPECIALMOVE_COLOURFADE_VERYFAST:
+        case SpecialMoveAnimationColorFadeSpeed::SPECIALMOVE_COLORFADE_VERYFAST:
         {
             fadeTime = 100;
         } break;
-        case SpecialMoveAnimationColourFadeSpeed::SPECIALMOVE_COLOURFADE_FAST:
+        case SpecialMoveAnimationColorFadeSpeed::SPECIALMOVE_COLORFADE_FAST:
         {
             fadeTime = 200;
         } break;
-        case SpecialMoveAnimationColourFadeSpeed::SPECIALMOVE_COLOURFADE_MEDIUM:
+        case SpecialMoveAnimationColorFadeSpeed::SPECIALMOVE_COLORFADE_MEDIUM:
         {
             fadeTime = 500;
         } break;
-        case SpecialMoveAnimationColourFadeSpeed::SPECIALMOVE_COLOURFADE_SLOW:
+        case SpecialMoveAnimationColorFadeSpeed::SPECIALMOVE_COLORFADE_SLOW:
         {
             fadeTime = 750;
         } break;
-        case SpecialMoveAnimationColourFadeSpeed::SPECIALMOVE_COLOURFADE_VERYSLOW:
+        case SpecialMoveAnimationColorFadeSpeed::SPECIALMOVE_COLORFADE_VERYSLOW:
         {
             fadeTime = 1000;
         } break;
@@ -63,7 +63,7 @@ uint32_t SMPulseColour::GetFadeTimeFromEnum(SpecialMoveAnimationColourFadeSpeed 
     return fadeTime;
 }
 
-uint32_t SMPulseColour::GetHoldTimeFromEnum(SpecialMoveAnimationDuration FadeEnum)
+uint32_t SMPulseColor::GetHoldTimeFromEnum(SpecialMoveAnimationDuration FadeEnum)
 {
     //in Ms
     uint32_t holdTime = 0;
@@ -98,12 +98,12 @@ uint32_t SMPulseColour::GetHoldTimeFromEnum(SpecialMoveAnimationDuration FadeEnu
     return holdTime;
 }
 
-bool SMPulseColour::IsFinished()
+bool SMPulseColor::IsFinished()
 {
-    return CurrentState == SMPulseColourState::SM_PULSE_COLOUR_STATE_FINISHED;
+    return CurrentState == SMPulseColorState::SM_PULSE_COLOR_STATE_FINISHED;
 }
 
-void SMPulseColour::Animate(RGB (&frame)[100]) 
+void SMPulseColor::Animate(RGB (&frame)[100]) 
 {
     UpdateTime();
 
@@ -112,24 +112,24 @@ void SMPulseColour::Animate(RGB (&frame)[100])
     float thisFrameFade;
     switch(CurrentState)
     {
-        case SMPulseColourState::SM_PULSE_COLOUR_STATE_PREFRAMES:
+        case SMPulseColorState::SM_PULSE_COLOR_STATE_PREFRAMES:
         {
             thisFrameFade = 0.0f;
             if(CurrentStateTime > PULSE_PREWAIT_MS)
             {
                 CurrentStateTime = 0.0f;
-                CurrentState = SMPulseColourState::SM_PULSE_COLOUR_STATE_FADEIN;
+                CurrentState = SMPulseColorState::SM_PULSE_COLOR_STATE_FADEIN;
             }         
         } break;
 
-        case SMPulseColourState::SM_PULSE_COLOUR_STATE_FADEIN:
+        case SMPulseColorState::SM_PULSE_COLOR_STATE_FADEIN:
         {
             uint32_t fadeInTime = GetFadeTimeFromEnum(FadeInSpeed);
             if(CurrentStateTime > fadeInTime)
             {
                 thisFrameFade = 1.0f;
                 CurrentStateTime = 0.0f;
-                CurrentState = SMPulseColourState::SM_PULSE_COLOUR_STATE_HOLD;
+                CurrentState = SMPulseColorState::SM_PULSE_COLOR_STATE_HOLD;
             }
             else
             {
@@ -137,25 +137,25 @@ void SMPulseColour::Animate(RGB (&frame)[100])
             }
         } break;
 
-        case SMPulseColourState::SM_PULSE_COLOUR_STATE_HOLD:
+        case SMPulseColorState::SM_PULSE_COLOR_STATE_HOLD:
         {
             thisFrameFade = 1.0f;
-            uint32_t holdTime = GetHoldTimeFromEnum(HoldColourTime);
+            uint32_t holdTime = GetHoldTimeFromEnum(HoldColorTime);
             if(CurrentStateTime > holdTime)
             {
                 CurrentStateTime = 0.0f;
-                CurrentState = SMPulseColourState::SM_PULSE_COLOUR_STATE_FADEOUT;
+                CurrentState = SMPulseColorState::SM_PULSE_COLOR_STATE_FADEOUT;
             }
         } break;
 
-        case SMPulseColourState::SM_PULSE_COLOUR_STATE_FADEOUT:
+        case SMPulseColorState::SM_PULSE_COLOR_STATE_FADEOUT:
         {
             uint32_t fadeOutTime = GetFadeTimeFromEnum(FadeOutSpeed);
             if(CurrentStateTime > fadeOutTime)
             {
                 thisFrameFade = 0.0f;
                 CurrentStateTime = 0.0f;
-                CurrentState = SMPulseColourState::SM_PULSE_COLOUR_STATE_POSTFRAMES;
+                CurrentState = SMPulseColorState::SM_PULSE_COLOR_STATE_POSTFRAMES;
             }
             else
             {
@@ -163,18 +163,18 @@ void SMPulseColour::Animate(RGB (&frame)[100])
             }
         } break;
 
-        case SMPulseColourState::SM_PULSE_COLOUR_STATE_POSTFRAMES:
+        case SMPulseColorState::SM_PULSE_COLOR_STATE_POSTFRAMES:
         {
             thisFrameFade = 0.0f;
             if(CurrentStateTime > PULSE_POSTWAIT_MS)
             {
                 CurrentStateTime = 0.0f;
-                CurrentState = SMPulseColourState::SM_PULSE_COLOUR_STATE_FINISHED;
+                CurrentState = SMPulseColorState::SM_PULSE_COLOR_STATE_FINISHED;
             }         
         } break;
 
-        case SMPulseColourState::SM_PULSE_COLOUR_STATE_FINISHED:
-        case SMPulseColourState::SM_PULSE_COLOUR_STATE_NOTSTARTED:
+        case SMPulseColorState::SM_PULSE_COLOR_STATE_FINISHED:
+        case SMPulseColorState::SM_PULSE_COLOR_STATE_NOTSTARTED:
         default:
         {
             thisFrameFade = 0.0f;
@@ -190,7 +190,7 @@ void SMPulseColour::Animate(RGB (&frame)[100])
 
             for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
             {
-                frame[ledIndex] = BlendColor(ColorBlack, GetColorForIndex(ColourIndex), thisFrameFade);    
+                frame[ledIndex] = BlendColor(ColorBlack, GetColorForIndex(ColorIndex), thisFrameFade);    
             }
         }
     }

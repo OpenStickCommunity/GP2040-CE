@@ -6,7 +6,6 @@
 #include "eventmanager.h"
 #include "layoutmanager.h"
 #include "peripheralmanager.h"
-#include "animationstorage.h"
 #include "system.h"
 #include "config_utils.h"
 #include "types.h"
@@ -1010,7 +1009,7 @@ std::string setLightsDataOptions()
         options.lightData.bytes[thisEntryIndex+2] = light["xCoord"].as<uint8_t>();
         options.lightData.bytes[thisEntryIndex+3] = light["yCoord"].as<uint8_t>();
         options.lightData.bytes[thisEntryIndex+4] = light["GPIOPinorCaseChainIndex"].as<uint8_t>();
-        options.lightData.bytes[thisEntryIndex+5] = (LightType_Proto)(light["lightType"].as<uint8_t>());
+        options.lightData.bytes[thisEntryIndex+5] = (LightType)(light["lightType"].as<uint8_t>());
 
         options.lightDataSize++;
         options.lightData.size = options.lightDataSize * 6;
@@ -1049,7 +1048,7 @@ std::string setAnimationProtoOptions()
 {
     DynamicJsonDocument doc = get_post_data();
 
-    AnimationOptions_Proto& options = Storage::getInstance().getAnimationOptions();
+    AnimationOptions& options = Storage::getInstance().getAnimationOptions();
 
     JsonObject docJson = doc.as<JsonObject>();
     JsonObject AnimOptions = docJson["AnimationOptions"];
@@ -1070,22 +1069,22 @@ std::string setAnimationProtoOptions()
     for (JsonObject profile : profilesList)
     {
         options.profiles[profilesIndex].bEnabled = profile["bEnabled"].as<bool>();
-        if(options.profiles[profilesIndex].baseNonPressedEffect != (AnimationNonPressedEffects_Proto)(profile["baseNonPressedEffect"].as<uint32_t>()))
+        if(options.profiles[profilesIndex].baseNonPressedEffect != (AnimationNonPressedEffects)(profile["baseNonPressedEffect"].as<uint32_t>()))
         {
-            options.profiles[profilesIndex].baseNonPressedEffect = (AnimationNonPressedEffects_Proto)(profile["baseNonPressedEffect"].as<uint32_t>());
+            options.profiles[profilesIndex].baseNonPressedEffect = (AnimationNonPressedEffects)(profile["baseNonPressedEffect"].as<uint32_t>());
             options.profiles[profilesIndex].baseCycleTime = 0;
         }
-        if(options.profiles[profilesIndex].basePressedEffect != (AnimationPressedEffects_Proto)(profile["basePressedEffect"].as<uint32_t>()))
+        if(options.profiles[profilesIndex].basePressedEffect != (AnimationPressedEffects)(profile["basePressedEffect"].as<uint32_t>()))
         {
-            options.profiles[profilesIndex].basePressedEffect = (AnimationPressedEffects_Proto)(profile["basePressedEffect"].as<uint32_t>());
+            options.profiles[profilesIndex].basePressedEffect = (AnimationPressedEffects)(profile["basePressedEffect"].as<uint32_t>());
             options.profiles[profilesIndex].basePressedCycleTime = 0;
         }
         options.profiles[profilesIndex].buttonPressHoldTimeInMs = profile["buttonPressHoldTimeInMs"].as<uint32_t>();
         options.profiles[profilesIndex].buttonPressFadeOutTimeInMs = profile["buttonPressFadeOutTimeInMs"].as<uint32_t>();
-        options.profiles[profilesIndex].nonPressedSpecialColour = profile["nonPressedSpecialColour"].as<uint32_t>();
+        options.profiles[profilesIndex].nonPressedSpecialColor = profile["nonPressedSpecialColor"].as<uint32_t>();
         options.profiles[profilesIndex].bUseCaseLightsInSpecialMoves = profile["bUseCaseLightsInSpecialMoves"].as<bool>();
-        options.profiles[profilesIndex].baseCaseEffect = (AnimationNonPressedEffects_Proto)(profile["baseCaseEffect"].as<uint32_t>());
-        options.profiles[profilesIndex].pressedSpecialColour = profile["pressedSpecialColour"].as<uint32_t>();
+        options.profiles[profilesIndex].baseCaseEffect = (AnimationNonPressedEffects)(profile["baseCaseEffect"].as<uint32_t>());
+        options.profiles[profilesIndex].pressedSpecialColor = profile["pressedSpecialColor"].as<uint32_t>();
 
         JsonArray notPressedStaticColorsList = profile["notPressedStaticColors"];
         options.profiles[profilesIndex].notPressedStaticColors_count = 0;
@@ -1154,7 +1153,7 @@ std::string setAnimationProtoOptions()
 std::string getAnimationProtoOptions()
 {
     DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-    const AnimationOptions_Proto& options = Storage::getInstance().getAnimationOptions();
+    const AnimationOptions& options = Storage::getInstance().getAnimationOptions();
 
     JsonObject AnimOptions = doc.createNestedObject("AnimationOptions");
     AnimOptions["brightness"] = options.brightness;
@@ -1174,10 +1173,10 @@ std::string getAnimationProtoOptions()
         profile["basePressedEffect"] = options.profiles[profilesIndex].basePressedEffect;
         profile["buttonPressHoldTimeInMs"] = options.profiles[profilesIndex].buttonPressHoldTimeInMs;
         profile["buttonPressFadeOutTimeInMs"] = options.profiles[profilesIndex].buttonPressFadeOutTimeInMs;
-        profile["nonPressedSpecialColour"] = options.profiles[profilesIndex].nonPressedSpecialColour;
+        profile["nonPressedSpecialColor"] = options.profiles[profilesIndex].nonPressedSpecialColor;
         profile["bUseCaseLightsInSpecialMoves"] = options.profiles[profilesIndex].bUseCaseLightsInSpecialMoves ? 1 : 0;
         profile["baseCaseEffect"] = options.profiles[profilesIndex].baseCaseEffect;
-        profile["pressedSpecialColour"] = options.profiles[profilesIndex].pressedSpecialColour;
+        profile["pressedSpecialColor"] = options.profiles[profilesIndex].pressedSpecialColor;
 
         JsonArray notPressedStaticColorsList = profile.createNestedArray("notPressedStaticColors");
         for (int notPressedStaticColorsIndex = 0; notPressedStaticColorsIndex < options.profiles[profilesIndex].notPressedStaticColors_count; ++notPressedStaticColorsIndex)

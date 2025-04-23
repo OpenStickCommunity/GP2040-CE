@@ -175,7 +175,7 @@ bool Animation::LightTypeIsForPressedAnimation(LightType Type)
   return false;
 }
 
-//Get correct colour for light index
+//Get correct color for light index
 RGB Animation::GetNonPressedColorForLight(uint32_t LightIndex)
 {
   int colIndex = 0;

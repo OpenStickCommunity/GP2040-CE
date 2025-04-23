@@ -40,7 +40,7 @@ public:
   Chase(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType, ChaseTypes InChaseType);
   ~Chase() {};
 
-  virtual void Animate(RGB (&frame)[100]) override;
+  virtual void Animate(RGB (&frame)[FRAME_MAX]) override;
   
   virtual void ParameterUp() override;
   virtual void ParameterDown() override;

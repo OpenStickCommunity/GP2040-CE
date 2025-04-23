@@ -23,6 +23,8 @@
 #include "specialmovesystem.h"
 #include "NeoPico.h"
 
+#include "playerleds.h"
+
 #include "enums.pb.h"
 
 #ifndef BOARD_LEDS_PIN
@@ -164,10 +166,6 @@
 #define LEDS_TURN_OFF_WHEN_SUSPENDED 0
 #endif
 
-void configureAnimations(AnimationStation *as);
-PixelMatrix createLedButtonLayout(ButtonLayout layout, int ledsPerPixel);
-PixelMatrix createLedButtonLayout(ButtonLayout layout, std::vector<uint8_t> *positions);
-
 // Neo Pixel needs to tie into PlayerLEDS led Levels
 class NeoPicoPlayerLEDs : public PlayerLEDs
 {
@@ -192,11 +190,14 @@ public:
     virtual void reinit() {}
 	virtual std::string name() { return NeoPicoLEDName; }
 
-	void configureLEDs();
-	uint32_t frame[100];
+	uint32_t frame[FRAME_MAX];
 private:
 
-	AnimationHotkey ProcessAnimationHotkeys(Gamepad *gamepad);
+	void decompressSettings();
+
+	void configureLEDs();
+
+	GamepadHotkey ProcessAnimationHotkeys(Gamepad *gamepad);
 
 	//Legacy setup functions
 	void generateLegacyIndividualLight(int lightIndex, int firstLedIndex, int xCoord, int yCoord, uint8_t ledsPerPixel, LEDOptions_lightData_t& out_lightData, GpioAction actionButton);
@@ -211,7 +212,7 @@ private:
 	void GenerateLights(const LEDOptions_lightData_t& InLightData, uint32_t InLightDataSize);
 
 	//Controls the actual lights on the board. Writes out state each frame
-	NeoPico *neopico;
+	NeoPico neopico;
 
 	//Classes to control the player LEDS
 	PLEDAnimationState animationState; // NeoPico can control the player LEDs
@@ -221,7 +222,7 @@ private:
 	Lights RGBLights;
 
 	//Animation class. Handles idle animations, special move animations and pressed button effects
-	AnimationStation AnimStation;
+	class AnimationStation AnimStation;
 
 
 	const uint32_t intervalMS = 10;

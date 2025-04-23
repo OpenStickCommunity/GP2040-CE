@@ -10,6 +10,8 @@
 #include "NeoPico.h"
 #include <map>
 
+#include "enums.pb.h"
+
 struct RGB {
   // defaults allows trivial constructor, avoiding compiler complaints and avoiding unnessecary initialization
   // animation always memsets the frame before use, to this is safe.
@@ -83,7 +85,6 @@ struct RGB {
   }
 };
 
-// Also defined in Enums.proto
 constexpr RGB ColorBlack(0, 0, 0);
 constexpr RGB ColorWhite(255, 255, 255);
 constexpr RGB ColorRed(255, 0, 0);
@@ -98,25 +99,11 @@ constexpr RGB ColorBlue(0, 0, 255);
 constexpr RGB ColorPurple(128, 0, 255);
 constexpr RGB ColorPink(255, 0, 255);
 constexpr RGB ColorMagenta(255, 0, 128);
-constexpr RGB ColorIndigo(75, 0, 130);
-constexpr RGB ColorViolet(238, 130, 238);
 
 inline const std::vector<RGB> colors {
     ColorBlack,     ColorWhite,  ColorRed,     ColorOrange, ColorYellow,
     ColorLimeGreen, ColorGreen,  ColorSeafoam, ColorAqua,   ColorSkyBlue,
-    ColorBlue,      ColorPurple, ColorPink,    ColorMagenta, ColorIndigo,
-    ColorViolet
-};
-
-#define MAX_CUSTOM_COLORS 16
-inline std::vector<RGB> customColors { };
-
-typedef enum
-{
-  BUTTONCASELIGHTTYPE_BUTTON_ONLY,
-  BUTTONCASELIGHTTYPE_CASE_ONLY,
-  BUTTONCASELIGHTTYPE_BUTTON_AND_CASE,
-} EButtonCaseEffectType;
+    ColorBlue,      ColorPurple, ColorPink,    ColorMagenta };
 
 #define MAX_CUSTOM_COLORS 16
 inline std::vector<RGB> customColors { };
@@ -139,7 +126,7 @@ public:
 
   static LEDFormat format;
 
-  virtual void Animate(RGB (&frame)[100]) = 0;
+  virtual void Animate(RGB (&frame)[FRAME_MAX]) = 0;
   
   //param adjustment
   virtual void ParameterUp() {};
@@ -173,7 +160,7 @@ protected:
   bool LightTypeIsForNonPressedAnimation(LightType Type);
   bool LightTypeIsForPressedAnimation(LightType Type);
 
-  //Get colour helpers
+  //Get color helpers
   RGB GetNonPressedColorForLight(uint32_t LightIndex);
   RGB GetPressedColorForLight(uint32_t LightIndex);
   RGB GetColorForIndex(uint32_t ColorIndex);

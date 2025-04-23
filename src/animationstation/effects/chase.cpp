@@ -1,4 +1,4 @@
-#include "Chase.hpp"
+#include "chase.h"
 #include <algorithm>
 
 #define CHASE_CYCLE_INCREMENT   50
@@ -115,7 +115,7 @@ void Chase::Animate(RGB (&frame)[100])
     ChaseTimes[0] = 0.0f;
   }
 
-  //reset all lights first to ensure that if pressed lights are unpressed they can blend back to correct colour
+  //reset all lights first to ensure that if pressed lights are unpressed they can blend back to correct color
   for(unsigned int lightIndex = 0; lightIndex < OrderedLights.size(); ++lightIndex)
   {
       uint8_t firstLightIndex = RGBLights->AllLights[OrderedLights[lightIndex]].FirstLedIndex;
@@ -163,7 +163,7 @@ void Chase::Animate(RGB (&frame)[100])
       for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
       {
         frame[ledIndex] = BlendColor(GetNonPressedColorForLight(OrderedLights[currentLightReverseAdjusted]),
-                                      AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColour, 
+                                      AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor, 
                                       fadeTimeOne);
       }      
 
@@ -174,7 +174,7 @@ void Chase::Animate(RGB (&frame)[100])
         for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
         {
           frame[ledIndex] = BlendColor(GetNonPressedColorForLight(OrderedLights[nextLightReverseAdjusted]),
-                                        AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColour, 
+                                        AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor, 
                                         fadeTimeTwo);
         }          
       } 
@@ -197,7 +197,7 @@ void Chase::Animate(RGB (&frame)[100])
           for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
           {
             frame[ledIndex] = BlendColor(GetNonPressedColorForLight(OrderedLights[lightIndex]),
-                                          AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColour, 
+                                          AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor, 
                                           fadeTimeOne);
           }      
         }
@@ -211,7 +211,7 @@ void Chase::Animate(RGB (&frame)[100])
             for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
             {
               frame[ledIndex] = BlendColor(GetNonPressedColorForLight(OrderedLights[lightIndex]),
-                                            AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColour, 
+                                            AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor, 
                                             fadeTimeTwo);
             }          
           }
@@ -236,7 +236,7 @@ void Chase::Animate(RGB (&frame)[100])
           for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
           {
             frame[ledIndex] = BlendColor(GetNonPressedColorForLight(OrderedLights[lightIndex]),
-                                          AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColour, 
+                                          AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor, 
                                           fadeTimeOne);
           }      
         }
@@ -250,7 +250,7 @@ void Chase::Animate(RGB (&frame)[100])
             for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
             {
               frame[ledIndex] = BlendColor(GetNonPressedColorForLight(OrderedLights[lightIndex]),
-                                            AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColour, 
+                                            AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor, 
                                             fadeTimeTwo);
             }          
           }

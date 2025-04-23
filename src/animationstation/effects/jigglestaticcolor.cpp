@@ -1,5 +1,5 @@
 #include "jigglestaticcolor.h"
-#include "staticcolor.hpp"
+#include "staticcolor.h"
 
 JiggleStaticColor::JiggleStaticColor(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType) : StaticColor(InRGBLights, InButtonCaseEffectType) 
 {

@@ -76,7 +76,7 @@ void BurstColor::Animate(RGB (&frame)[100])
     std::vector<std::vector<FGridEntry>> FullGrid;
     FullGrid.assign(MaxXCoord+1, OneLineGrid);
 
-    //get each grid positions colour and strength
+    //get each grid positions color and strength
     for(int burstIndex = 0; burstIndex < MAX_BURSTS; ++burstIndex)
     {
         if(RunningBursts[burstIndex].RunningTime < 0.0f)

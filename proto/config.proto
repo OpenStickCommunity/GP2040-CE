@@ -321,53 +321,49 @@ message LEDOptions
     optional int32 lightDataSize = 41;
 };
 
-// This has to be kept in sync with SpecialMoveAnimation in SpecialMoveSystem.hpp
-//message SpecialMoveInputTriggers_Proto 
+//message SpecialMoveInputTriggers 
 //{
 //    optional uint32 OptionalParams = 1; //8 uint4's packed in here (assigned to custom enums later)
 //    optional uint32 RequiredTriggers = 2; //buttonmasks
 //
-//    optional SpecialMoveEffects_Proto ChainedAnimation = 3;
+//    optional SpecialMoveEffects ChainedAnimation = 3;
 //    optional uint32 ChainedOptionalParams = 4; 
-//    optional SpecialMoveEffects_Proto ChainedAnimationTwo = 5;
+//    optional SpecialMoveEffects ChainedAnimationTwo = 5;
 //    optional uint32 ChainedOptionalParamsTwo = 6; 
 //};
 
-// This has to be kept in sync with SpecialMoveDescription in SpecialMoveSystem.hpp
-//message SpecialMoveDescription_Proto 
+//message SpecialMoveDescription 
 //{
-//    repeated SpecialMoveInputTypes_Proto RequiredInputCombos = 1 [(nanopb).max_count = 4]; //MAX_SPECIALMOVE_INPUTTYPES_PER_MOVE from SpecialMoveSystem.hpp
-//    repeated SpecialMoveInputTriggers_Proto RequiredTriggerCombos = 2 [(nanopb).max_count = 3]; //MAX_SPECIALMOVE_TRIGGERCOMBOS from SpecialMoveSystem.hpp
+//    repeated SpecialMoveInputTypes RequiredInputCombos = 1 [(nanopb).max_count = 4]; //MAX_SPECIALMOVE_INPUTTYPES_PER_MOVE from SpecialMoveSystem.hpp
+//    repeated SpecialMoveInputTriggers RequiredTriggerCombos = 2 [(nanopb).max_count = 3]; //MAX_SPECIALMOVE_TRIGGERCOMBOS from SpecialMoveSystem.hpp
 //
-//    optional SpecialMoveEffects_Proto Animation = 3;
+//    optional SpecialMoveEffects Animation = 3;
 //    optional bool bIsChargeMove = 4;
 //
 //    optional int32 Priority = 5;
 //};
 
-// This has to be kept in sync with SpecialMoveProfile in SpecialMoveSystem.hpp
-//message SpecialMoveProfile_Proto
+//message SpecialMoveProfile
 //{
 //    optional bool bEnabled = 1;
-//    repeated SpecialMoveDescription_Proto AllSpecialMoves = 2 [(nanopb).max_count = 20]; //MAX_SPECIALMOVES from SpecialMoveSystem.hpp
+//    repeated SpecialMoveDescription AllSpecialMoves = 2 [(nanopb).max_count = 20]; //MAX_SPECIALMOVES from SpecialMoveSystem.hpp
 //    optional string Label = 3 [(nanopb).max_length = 12];
 //};
 
-// This has to be kept in sync with SpecialMoveOptions in SpecialMoveSystem.hpp
-//message SpecialMoveOptions_Proto
+//message SpecialMoveOptions
 //{
-//    repeated SpecialMoveProfile_Proto profiles = 1 [(nanopb).max_count = 4]; //MAX_SPECIALMOVE_PROFILES from SpecialMoveSystem.hpp
+//    repeated SpecialMoveProfile profiles = 1 [(nanopb).max_count = 4]; //MAX_SPECIALMOVE_PROFILES from SpecialMoveSystem.hpp
 //    optional uint32 ChargeTimeInMs = 2;
 //    optional uint32 CurrentProfileIndex = 3;
 //};
 
-// This has to be kept in sync with AnimationProfile in AnimationStation.hpp
-message AnimationProfile_Proto
+// This has to be kept in sync with AnimationProfile_Unpacked in AnimationStation.hpp
+message AnimationProfile
 {
     optional bool bEnabled = 1;
 
- 	optional AnimationNonPressedEffects_Proto baseNonPressedEffect = 2;
-  	optional AnimationPressedEffects_Proto basePressedEffect = 3;
+ 	optional AnimationNonPressedEffects baseNonPressedEffect = 2;
+  	optional AnimationPressedEffects basePressedEffect = 3;
 
     optional int32 baseCycleTime = 4;
 
@@ -377,27 +373,27 @@ message AnimationProfile_Proto
     optional uint32 buttonPressHoldTimeInMs = 7;
     optional uint32 buttonPressFadeOutTimeInMs = 8;
 
-    optional uint32 nonPressedSpecialColour = 9;
+    optional uint32 nonPressedSpecialColor = 9;
 
- 	optional AnimationNonPressedEffects_Proto baseCaseEffect = 10;
+ 	optional AnimationNonPressedEffects baseCaseEffect = 10;
 
     repeated uint32 caseStaticColors = 11 [(nanopb).max_count = 10]; //(MAX_CASE_LIGHTS/4) from AnimationStation.hpp
 
-    optional uint32 pressedSpecialColour = 12;
+    optional uint32 pressedSpecialColor = 12;
 
     optional bool bUseCaseLightsInSpecialMoves = 13;
 
     optional int32 basePressedCycleTime = 14; 
 };
 
-// This has to be kept in sync with AnimationOptions in animationstation.hpp
+// This has to be kept in sync with AnimationOptions_Unpacked in animationstation.hpp
 message AnimationOptions
 {
     reserved 1, 3 to 56;
     
     optional uint32 brightness = 2;
     
-    repeated AnimationProfile_Proto profiles = 57 [(nanopb).max_count = 4]; //MAX_ANIMATION_PROFILES from AnimationStation.hpp
+    repeated AnimationProfile profiles = 57 [(nanopb).max_count = 4]; //MAX_ANIMATION_PROFILES from AnimationStation.hpp
     optional int32 baseProfileIndex = 58;
     
     repeated uint32 customColors = 59 [(nanopb).max_count = 16]; //MAX_CUSTOM_COLORS from Animation.hpp

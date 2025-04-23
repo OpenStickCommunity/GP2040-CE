@@ -6,14 +6,7 @@
 #include <stdlib.h>
 #include <vector>
 
-typedef enum _LightType
-{
-    LightType_ActionButton = 0,
-    LightType_Case = 1,
-    LightType_Turbo = 2,
-    LightType_PlayerLight = 3,
-    LightType_MAX = 4,
-} LightType;
+#include "enums.pb.h"
 
 struct Pixel {
   Pixel(int index, uint32_t mask = 0) : index(index), mask(mask) { }

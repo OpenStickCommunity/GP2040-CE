@@ -119,7 +119,7 @@ void Rain::Animate(RGB (&frame)[100])
 {
     UpdateTime();
 
-    //reset all lights first to ensure that if pressed lights are unpressed they can blend back to correct colour
+    //reset all lights first to ensure that if pressed lights are unpressed they can blend back to correct color
     for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
     {
         if(LightTypeIsForNonPressedAnimation(RGBLights->AllLights[lightIndex].Type) == false)
@@ -201,7 +201,7 @@ void Rain::Animate(RGB (&frame)[100])
         float firstLightAlpha = 1.0f - (RainYCoords[rainIndex] - (float)firstYIndex);
         float secondLightAlpha = 1.0f - firstLightAlpha;
 
-        RGB specialLightCol = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColour;
+        RGB specialLightCol = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor;
         
         if(firstLightIndex >= 0)
         {

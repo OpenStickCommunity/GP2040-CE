@@ -349,36 +349,16 @@ enum GamepadHotkey
     HOTKEY_MENU_NAV_BACK         = 49;
     HOTKEY_MENU_NAV_TOGGLE       = 50;
 	HOTKEY_LEDS_NONE             = 51;
-	HOTKEY_LEDS_ANIMATION_UP     = 52;
-	HOTKEY_LEDS_ANIMATION_DOWN   = 53;
-	HOTKEY_LEDS_PARAMETER_UP     = 54;
-	HOTKEY_LEDS_PRESS_PARAMETER_UP                = 55;
-	HOTKEY_LEDS_PRESS_PARAMETER_DOWN              = 56;
-	HOTKEY_LEDS_PARAMETER_DOWN                    = 57;
-	HOTKEY_LEDS_BRIGHTNESS_UP                     = 58;
-	HOTKEY_LEDS_BRIGHTNESS_DOWN                   = 59;
-	HOTKEY_LEDS_FADETIME_UP                       = 60;
-	HOTKEY_LEDS_FADETIME_DOWN                     = 61;
-	HOTKEY_AMBIENT_LIGHT_EFFECTS_CHANGE           = 62; 
-	HOTKEY_AMBIENT_LIGHT_EFFECTS_ON_OFF           = 63; 
-	HOTKEY_AMBIENT_LIGHT_EFFECTS_BRIGHTNESS_UP    = 64;
-	HOTKEY_AMBIENT_LIGHT_EFFECTS_BRIGHTNESS_DOWN  = 65;
-	HOTKEY_AMBIENT_LIGHT_EFFECTS_PARAMETER_UP     = 66;
-	HOTKEY_AMBIENT_LIGHT_EFFECTS_PARAMETER_DOWN   = 67;
-	HOTKEY_AMBIENT_LIGHT_EFFECTS_FRAME_SPEED_UP   = 68;
-	HOTKEY_AMBIENT_LIGHT_EFFECTS_FRAME_SPEED_DOWN = 69;
-	HOTKEY_AMBIENT_LIGHT_EFFECTS_CUSTOM_LINKAGE   = 70;
-}
-
-enum AnimationEffects
-{
-    option (nanopb_enumopt).long_names = false;
-    
-    EFFECT_STATIC_COLOR = 0;
-    EFFECT_RAINBOW = 1;
-    EFFECT_CHASE = 2;
-    EFFECT_STATIC_THEME = 3;
-    EFFECT_CUSTOM_THEME = 4;
+	HOTKEY_LEDS_PROFILE_UP       = 52;
+	HOTKEY_LEDS_PROFILE_DOWN     = 53;
+    HOTKEY_LEDS_PRESS_PARAMETER_UP = 54;
+    HOTKEY_LEDS_PRESS_PARAMETER_DOWN = 55;
+	HOTKEY_LEDS_PARAMETER_UP     = 56;
+	HOTKEY_LEDS_PARAMETER_DOWN   = 57;
+	HOTKEY_LEDS_BRIGHTNESS_UP    = 58;
+	HOTKEY_LEDS_BRIGHTNESS_DOWN  = 59;
+    HOTKEY_LEDS_SPECIALMOVE_PROFILE_UP = 60;
+	HOTKEY_LEDS_SPECIALMOVE_PROFILE_DOWN = 61;
 }
 
 // This has to be kept in sync with LEDFormat in NeoPico.h
@@ -390,8 +370,7 @@ enum LEDFormat_Proto
     LED_FORMAT_RGBW = 3;
 }
 
-/* This has to be kept in sync with SpecialMoveEffects in SpecialMoveSystem.hpp */
-enum SpecialMoveEffects_Proto
+enum SpecialMoveEffects
 {
   SMEFFECT_WAVE = 0;
   SMEFFECT_PULSECOLOR = 1;
@@ -400,8 +379,7 @@ enum SpecialMoveEffects_Proto
   SMEFFECT_RANDOMFLASH = 4;
 }
 
-/* This has to be kept in sync with SpecialMoveInputTypes in SpecialMoveSystem.hpp */
-enum SpecialMoveInputTypes_Proto
+enum SpecialMoveInputTypes
 {
   INPUT_QUARTER_DOWN_RIGHT = 0;
   INPUT_QUARTER_DOWN_LEFT = 1;
@@ -427,7 +405,7 @@ enum SpecialMoveInputTypes_Proto
 }
 
 /* This has to be kept in sync with AnimationNonPressedEffects in AnimationStation.hpp */
-enum AnimationNonPressedEffects_Proto
+enum AnimationNonPressedEffects
 {
   EFFECT_STATIC_COLOR = 0;
   EFFECT_RAINBOW_SYNCED = 1;
@@ -443,23 +421,26 @@ enum AnimationNonPressedEffects_Proto
   EFFECT_CHASE_RANDOM = 11;
   EFFECT_JIGGLESTATIC = 12;
   EFFECT_JIGGLETWOSTATICS = 13;
+  EFFECT_RAIN_LOW = 14;
+  EFFECT_RAIN_MEDIUM = 15;
+  EFFECT_RAIN_HIGH = 16;
 }
 
 /* This has to be kept in sync with AnimationPressedEffects in AnimationStation.hpp */
-enum AnimationPressedEffects_Proto
+enum AnimationPressedEffects
 {
-  EFFECT_HELD_STATIC_COLOR = 0;
-  EFFECT_RANDOM = 1;
-  EFFECT_HELD_JIGGLESTATIC = 2;
-  EFFECT_HELD_JIGGLETWOSTATICS = 3;
-  EFFECT_BURST = 4;
-  EFFECT_BURST_RANDOM = 5;
-  EFFECT_BURST_SMALL = 6;
-  EFFECT_BURST_SMALL_RANDOM = 7;
+  PRESSEDEFFECT_STATIC_COLOR = 0;
+  PRESSEDEFFECT_RANDOM = 1;
+  PRESSEDEFFECT_JIGGLESTATIC = 2;
+  PRESSEDEFFECT_JIGGLETWOSTATICS = 3;
+  PRESSEDEFFECT_BURST = 4;
+  PRESSEDEFFECT_BURST_RANDOM = 5;
+  PRESSEDEFFECT_BURST_SMALL = 6;
+  PRESSEDEFFECT_BURST_SMALL_RANDOM = 7;
 }
 
 /* This has to be kept in sync with LightType in Pixel.hpp */
-enum LightType_Proto
+enum LightType
 {
     ActionButton = 0;
     Case = 1;

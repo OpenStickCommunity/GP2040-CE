@@ -11,12 +11,8 @@ StaticColor::StaticColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPin
   pressedPins = InPressedPins;
 }
 
-<<<<<<< HEAD:src/animationstation/effects/staticcolor.cpp
-bool StaticColor::Animate(RGB (&frame)[100]) {
-=======
 void StaticColor::Animate(RGB (&frame)[100]) 
 {
->>>>>>> LED_ConvertToGIPOWithNewAnimations:lib/AnimationStation/src/Effects/StaticColor.cpp
   UpdateTime();
   UpdatePresses();
 
@@ -27,7 +23,7 @@ void StaticColor::Animate(RGB (&frame)[100])
 
     for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
     {
-      //Non pressed simply sets the RGB colour
+      //Non pressed simply sets the RGB color
       if(!isButtonAnimation && LightTypeIsForNonPressedAnimation(RGBLights->AllLights[lightIndex].Type))
       {
         frame[ledIndex] = AdjustColor(GetNonPressedColorForLight(lightIndex));
@@ -40,65 +36,7 @@ void StaticColor::Animate(RGB (&frame)[100])
       }
     }
   }
-<<<<<<< HEAD:src/animationstation/effects/staticcolor.cpp
-  return true;
-}
-
-uint8_t StaticColor::GetColor() {
-  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
-  if (this->filtered) {
-    return animationOptions.buttonColorIndex;
-  } else {
-    return animationOptions.staticColorIndex;
-  }
-}
-
-void StaticColor::ParameterUp() {
-  uint8_t colorIndex;
-  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
-  if (this->filtered) {
-    colorIndex = animationOptions.buttonColorIndex;
-  } else {
-    colorIndex = animationOptions.staticColorIndex;
-  }
-
-  if (colorIndex < colors.size() - 1) {
-    colorIndex++;
-  } else {
-    colorIndex = 0;
-  }
-
-  this->SaveIndexOptions(colorIndex);
-}
-
-void StaticColor::SaveIndexOptions(uint8_t colorIndex) {
-  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
-  if (this->filtered) {
-    animationOptions.buttonColorIndex = colorIndex;
-  } else {
-    animationOptions.staticColorIndex = colorIndex;
-  }
-}
-
-void StaticColor::ParameterDown() {
-  uint8_t colorIndex;
-  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
-  if (this->filtered) {
-    colorIndex = animationOptions.buttonColorIndex;
-  } else {
-    colorIndex = animationOptions.staticColorIndex;
-  }
-
-  if (colorIndex > 0) {
-    colorIndex--;
-  } else {
-    colorIndex = colors.size() - 1;
-  }
-  this->SaveIndexOptions(colorIndex);
-}
-=======
 
   // Count down the timer
   DecrementFadeCounters();
 }
->>>>>>> LED_ConvertToGIPOWithNewAnimations:lib/AnimationStation/src/Effects/StaticColor.cpp

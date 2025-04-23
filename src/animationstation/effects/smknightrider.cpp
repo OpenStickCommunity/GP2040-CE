@@ -1,6 +1,6 @@
-#include "SMWave.hpp"
-#include "SMKnightRider.hpp"
-#include "SpecialMoveSystem.hpp"
+#include "smwave.h"
+#include "smknightrider.h"
+#include "specialmovesystem.h"
 
 SMKnightRider::SMKnightRider(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType) : SMWave(InRGBLights, InButtonCaseEffectType) 
 {
@@ -13,14 +13,14 @@ void SMKnightRider::SetOptionalParams(uint32_t OptionalParams)
     //4bit - SpecialMoveAnimationDuration - Wave animation time
     //4bit - int - Num wave loops
     //4bit - SpecialMoveAnimationDivider - divides lights into sections and only plays on that section
-    //8bit - Animation::colors index - wave colour
+    //8bit - Animation::colors index - wave color
 
     WaveDirection = (SpecialMoveAnimationDirection)(OptionalParams & 0xF);
     WaveSpeed = (SpecialMoveAnimationDuration)((OptionalParams >> 4) & 0xF);
     WaveLoops = 1;
     KRLoops = ((OptionalParams >> 8) & 0xF);
     WaveDivider = (SpecialMoveAnimationDivider)((OptionalParams >> 12) & 0xF);
-    ColourIndex = (uint8_t)((OptionalParams >> 16) & 0xFF);
+    ColorIndex = (uint8_t)((OptionalParams >> 16) & 0xFF);
 
     CurrentState = SMWaveState::SM_WAVE_STATE_PREFRAMES;
 }
