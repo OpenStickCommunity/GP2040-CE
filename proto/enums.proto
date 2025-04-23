@@ -390,6 +390,83 @@ enum LEDFormat_Proto
     LED_FORMAT_RGBW = 3;
 }
 
+/* This has to be kept in sync with SpecialMoveEffects in SpecialMoveSystem.hpp */
+enum SpecialMoveEffects_Proto
+{
+  SMEFFECT_WAVE = 0;
+  SMEFFECT_PULSECOLOR = 1;
+  SMEFFECT_CIRCLECOLOR = 2;
+  SMEFFECT_KNIGHTRIDER = 3;
+  SMEFFECT_RANDOMFLASH = 4;
+}
+
+/* This has to be kept in sync with SpecialMoveInputTypes in SpecialMoveSystem.hpp */
+enum SpecialMoveInputTypes_Proto
+{
+  INPUT_QUARTER_DOWN_RIGHT = 0;
+  INPUT_QUARTER_DOWN_LEFT = 1;
+  INPUT_DP_RIGHT = 2;
+  INPUT_DP_SHORTCUT_RIGHT = 3;
+  INPUT_DP_LEFT = 4;
+  INPUT_DP_SHORTCUT_LEFT = 5;
+  INPUT_HALFCIRCLE_LEFT_RIGHT = 6;
+  INPUT_HALFCIRCLE_RIGHT_LEFT = 7;
+  INPUT_DOUBLE_DOWN = 8;
+  INPUT_DOUBLE_QUARTER_DOWN_RIGHT = 9;
+  INPUT_DOUBLE_QUARTER_DOWN_LEFT = 10;
+  INPUT_CHARGE_LEFT_RIGHT = 11;
+  INPUT_CHARGE_RIGHT_LEFT = 12;
+  INPUT_CHARGE_DOWN_UP = 13;
+  INPUT_SUPERCHARGE_LEFT_RIGHT = 14;
+  INPUT_SUPERCHARGE_RIGHT_LEFT = 15;
+  INPUT_360 = 16;
+  INPUT_720 = 17;
+  INPUT_RAGING_DEMON_RIGHT = 18;
+  INPUT_RAGING_DEMON_LEFT = 19;
+  INPUT_NONE = 20;
+}
+
+/* This has to be kept in sync with AnimationNonPressedEffects in AnimationStation.hpp */
+enum AnimationNonPressedEffects_Proto
+{
+  EFFECT_STATIC_COLOR = 0;
+  EFFECT_RAINBOW_SYNCED = 1;
+  EFFECT_RAINBOW_ROTATE = 2;
+  EFFECT_CHASE_SEQUENTIAL = 3;
+  EFFECT_CHASE_LEFT_TO_RIGHT = 4;
+  EFFECT_CHASE_RIGHT_TO_LEFT = 5;
+  EFFECT_CHASE_TOP_TO_BOTTOM = 6;
+  EFFECT_CHASE_BOTTOM_TO_TOP = 7;
+  EFFECT_CHASE_SEQUENTIAL_PINGPONG = 8;
+  EFFECT_CHASE_HORIZONTAL_PINGPONG = 9;
+  EFFECT_CHASE_VERTICAL_PINGPONG = 10;
+  EFFECT_CHASE_RANDOM = 11;
+  EFFECT_JIGGLESTATIC = 12;
+  EFFECT_JIGGLETWOSTATICS = 13;
+}
+
+/* This has to be kept in sync with AnimationPressedEffects in AnimationStation.hpp */
+enum AnimationPressedEffects_Proto
+{
+  EFFECT_HELD_STATIC_COLOR = 0;
+  EFFECT_RANDOM = 1;
+  EFFECT_HELD_JIGGLESTATIC = 2;
+  EFFECT_HELD_JIGGLETWOSTATICS = 3;
+  EFFECT_BURST = 4;
+  EFFECT_BURST_RANDOM = 5;
+  EFFECT_BURST_SMALL = 6;
+  EFFECT_BURST_SMALL_RANDOM = 7;
+}
+
+/* This has to be kept in sync with LightType in Pixel.hpp */
+enum LightType_Proto
+{
+    ActionButton = 0;
+    Case = 1;
+    Turbo = 2;
+    PlayerLight = 3;
+}
+
 enum ShmupMixMode
 {
     option (nanopb_enumopt).long_names = false;

@@ -893,9 +893,8 @@ std::string getLedOptions()
     writeDoc(doc, "pledIndex3", ledOptions.pledIndex3);
     writeDoc(doc, "pledIndex4", ledOptions.pledIndex4);
     writeDoc(doc, "pledColor", ((RGB)ledOptions.pledColor).value(LED_FORMAT_RGB));
-    writeDoc(doc, "caseRGBType", ledOptions.caseRGBType);
-    writeDoc(doc, "caseRGBIndex", ledOptions.caseRGBIndex);
-    writeDoc(doc, "caseRGBCount", ledOptions.caseRGBCount);
+
+
 
     return serialize_json(doc);
 }
@@ -993,112 +992,218 @@ std::string getButtonLayouts()
     return serialize_json(doc);
 }
 
-std::string setCustomTheme()
+std::string setLightsDataOptions()
 {
     DynamicJsonDocument doc = get_post_data();
 
-    AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+    LEDOptions& options = Storage::getInstance().getLedOptions();
 
-    const auto readDocDefaultToZero = [&](const char* key0, const char* key1) -> uint32_t
+    JsonObject docJson = doc.as<JsonObject>();
+    JsonObject AnimOptions = docJson["LightData"];
+    JsonArray lightsList = AnimOptions["Lights"];
+    options.lightDataSize = 0;
+    for (JsonObject light : lightsList)
     {
-        uint32_t result = 0;
-        if (hasValue(doc, key0, key1))
-        {
-            readDoc(result, doc, key0, key1);
-        }
-        return result;
-    };
+        int thisEntryIndex = options.lightDataSize * 6;
+        options.lightData.bytes[thisEntryIndex] = light["firstLedIndex"].as<uint8_t>();
+        options.lightData.bytes[thisEntryIndex+1] = light["numLedsOnLight"].as<uint8_t>();
+        options.lightData.bytes[thisEntryIndex+2] = light["xCoord"].as<uint8_t>();
+        options.lightData.bytes[thisEntryIndex+3] = light["yCoord"].as<uint8_t>();
+        options.lightData.bytes[thisEntryIndex+4] = light["GPIOPinorCaseChainIndex"].as<uint8_t>();
+        options.lightData.bytes[thisEntryIndex+5] = (LightType_Proto)(light["lightType"].as<uint8_t>());
 
-    readDoc(options.hasCustomTheme, doc, "enabled");
-    options.customThemeUp 			= readDocDefaultToZero("Up", "u");
-    options.customThemeDown 		= readDocDefaultToZero("Down", "u");
-    options.customThemeLeft			= readDocDefaultToZero("Left", "u");
-    options.customThemeRight		= readDocDefaultToZero("Right", "u");
-    options.customThemeB1			= readDocDefaultToZero("B1", "u");
-    options.customThemeB2			= readDocDefaultToZero("B2", "u");
-    options.customThemeB3			= readDocDefaultToZero("B3", "u");
-    options.customThemeB4			= readDocDefaultToZero("B4", "u");
-    options.customThemeL1			= readDocDefaultToZero("L1", "u");
-    options.customThemeR1			= readDocDefaultToZero("R1", "u");
-    options.customThemeL2			= readDocDefaultToZero("L2", "u");
-    options.customThemeR2			= readDocDefaultToZero("R2", "u");
-    options.customThemeS1			= readDocDefaultToZero("S1", "u");
-    options.customThemeS2			= readDocDefaultToZero("S2", "u");
-    options.customThemeL3			= readDocDefaultToZero("L3", "u");
-    options.customThemeR3			= readDocDefaultToZero("R3", "u");
-    options.customThemeA1			= readDocDefaultToZero("A1", "u");
-    options.customThemeA2			= readDocDefaultToZero("A2", "u");
-    options.customThemeUpPressed	= readDocDefaultToZero("Up", "d");
-    options.customThemeDownPressed	= readDocDefaultToZero("Down", "d");
-    options.customThemeLeftPressed	= readDocDefaultToZero("Left", "d");
-    options.customThemeRightPressed	= readDocDefaultToZero("Right", "d");
-    options.customThemeB1Pressed	= readDocDefaultToZero("B1", "d");
-    options.customThemeB2Pressed	= readDocDefaultToZero("B2", "d");
-    options.customThemeB3Pressed	= readDocDefaultToZero("B3", "d");
-    options.customThemeB4Pressed	= readDocDefaultToZero("B4", "d");
-    options.customThemeL1Pressed	= readDocDefaultToZero("L1", "d");
-    options.customThemeR1Pressed	= readDocDefaultToZero("R1", "d");
-    options.customThemeL2Pressed	= readDocDefaultToZero("L2", "d");
-    options.customThemeR2Pressed	= readDocDefaultToZero("R2", "d");
-    options.customThemeS1Pressed	= readDocDefaultToZero("S1", "d");
-    options.customThemeS2Pressed	= readDocDefaultToZero("S2", "d");
-    options.customThemeL3Pressed	= readDocDefaultToZero("L3", "d");
-    options.customThemeR3Pressed	= readDocDefaultToZero("R3", "d");
-    options.customThemeA1Pressed	= readDocDefaultToZero("A1", "d");
-    options.customThemeA2Pressed	= readDocDefaultToZero("A2", "d");
+        options.lightDataSize++;
+        options.lightData.size = options.lightDataSize * 6;
 
-    uint32_t pressCooldown = 0;
-    readDoc(pressCooldown, doc, "buttonPressColorCooldownTimeInMs");
-    options.buttonPressColorCooldownTimeInMs = pressCooldown;
+        if(options.lightDataSize >= 100) //600 bytes total, 6 elements per light. 100 max lights
+            break;
+    }
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
     return serialize_json(doc);
 }
 
-std::string getCustomTheme()
+std::string getLightsDataOptions()
 {
-    const size_t capacity = JSON_OBJECT_SIZE(100);
-    DynamicJsonDocument doc(capacity);
-    const AnimationOptions& options = Storage::getInstance().getAnimationOptions();
+    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    const LEDOptions& options = Storage::getInstance().getLedOptions();
 
-    writeDoc(doc, "enabled", options.hasCustomTheme);
-    writeDoc(doc, "Up", "u", options.customThemeUp);
-    writeDoc(doc, "Up", "d", options.customThemeUpPressed);
-    writeDoc(doc, "Down", "u", options.customThemeDown);
-    writeDoc(doc, "Down", "d", options.customThemeDownPressed);
-    writeDoc(doc, "Left", "u", options.customThemeLeft);
-    writeDoc(doc, "Left", "d", options.customThemeLeftPressed);
-    writeDoc(doc, "Right", "u", options.customThemeRight);
-    writeDoc(doc, "Right", "d", options.customThemeRightPressed);
-    writeDoc(doc, "B1", "u", options.customThemeB1);
-    writeDoc(doc, "B1", "d", options.customThemeB1Pressed);
-    writeDoc(doc, "B2", "u", options.customThemeB2);
-    writeDoc(doc, "B2", "d", options.customThemeB2Pressed);
-    writeDoc(doc, "B3", "u", options.customThemeB3);
-    writeDoc(doc, "B3", "d", options.customThemeB3Pressed);
-    writeDoc(doc, "B4", "u", options.customThemeB4);
-    writeDoc(doc, "B4", "d", options.customThemeB4Pressed);
-    writeDoc(doc, "L1", "u", options.customThemeL1);
-    writeDoc(doc, "L1", "d", options.customThemeL1Pressed);
-    writeDoc(doc, "R1", "u", options.customThemeR1);
-    writeDoc(doc, "R1", "d", options.customThemeR1Pressed);
-    writeDoc(doc, "L2", "u", options.customThemeL2);
-    writeDoc(doc, "L2", "d", options.customThemeL2Pressed);
-    writeDoc(doc, "R2", "u", options.customThemeR2);
-    writeDoc(doc, "R2", "d", options.customThemeR2Pressed);
-    writeDoc(doc, "S1", "u", options.customThemeS1);
-    writeDoc(doc, "S1", "d", options.customThemeS1Pressed);
-    writeDoc(doc, "S2", "u", options.customThemeS2);
-    writeDoc(doc, "S2", "d", options.customThemeS2Pressed);
-    writeDoc(doc, "A1", "u", options.customThemeA1);
-    writeDoc(doc, "A1", "d", options.customThemeA1Pressed);
-    writeDoc(doc, "A2", "u", options.customThemeA2);
-    writeDoc(doc, "A2", "d", options.customThemeA2Pressed);
-    writeDoc(doc, "L3", "u", options.customThemeL3);
-    writeDoc(doc, "L3", "d", options.customThemeL3Pressed);
-    writeDoc(doc, "R3", "u", options.customThemeR3);
-    writeDoc(doc, "R3", "d", options.customThemeR3Pressed);
-    writeDoc(doc, "buttonPressColorCooldownTimeInMs", options.buttonPressColorCooldownTimeInMs);
+    JsonObject LedOptions = doc.createNestedObject("LightData");
+    JsonArray lightsList = LedOptions.createNestedArray("Lights");
+    for (int lightsIndex = 0; lightsIndex < options.lightDataSize; ++lightsIndex)
+    {
+        int thisEntryIndex = lightsIndex * 6;
+        JsonObject light = lightsList.createNestedObject();
+        light["firstLedIndex"] = options.lightData.bytes[thisEntryIndex];
+        light["numLedsOnLight"] = options.lightData.bytes[thisEntryIndex+1];
+        light["xCoord"] = options.lightData.bytes[thisEntryIndex+2];
+        light["yCoord"] = options.lightData.bytes[thisEntryIndex+3];
+        light["GPIOPinorCaseChainIndex"] = options.lightData.bytes[thisEntryIndex+4];
+        light["lightType"] = options.lightData.bytes[thisEntryIndex+5];
+    }
+
+    return serialize_json(doc);
+}
+
+std::string setAnimationProtoOptions()
+{
+    DynamicJsonDocument doc = get_post_data();
+
+    AnimationOptions_Proto& options = Storage::getInstance().getAnimationOptions();
+
+    JsonObject docJson = doc.as<JsonObject>();
+    JsonObject AnimOptions = docJson["AnimationOptions"];
+
+    options.brightness = AnimOptions["brightness"].as<uint32_t>();
+    options.baseProfileIndex = AnimOptions["baseProfileIndex"].as<uint32_t>();
+    JsonArray customColorsList = AnimOptions["customColors"];
+    options.customColors_count = 0;
+    for(unsigned int customColorsIndex = 0; customColorsIndex < customColorsList.size() && customColorsIndex < MAX_CUSTOM_COLORS; ++customColorsIndex)
+    {
+        options.customColors[customColorsIndex] = customColorsList[customColorsIndex];
+        options.customColors_count = customColorsIndex+1;
+    }
+
+    JsonArray profilesList = AnimOptions["profiles"];
+    int profilesIndex = 0;
+    options.profiles_count = 0;
+    for (JsonObject profile : profilesList)
+    {
+        options.profiles[profilesIndex].bEnabled = profile["bEnabled"].as<bool>();
+        if(options.profiles[profilesIndex].baseNonPressedEffect != (AnimationNonPressedEffects_Proto)(profile["baseNonPressedEffect"].as<uint32_t>()))
+        {
+            options.profiles[profilesIndex].baseNonPressedEffect = (AnimationNonPressedEffects_Proto)(profile["baseNonPressedEffect"].as<uint32_t>());
+            options.profiles[profilesIndex].baseCycleTime = 0;
+        }
+        if(options.profiles[profilesIndex].basePressedEffect != (AnimationPressedEffects_Proto)(profile["basePressedEffect"].as<uint32_t>()))
+        {
+            options.profiles[profilesIndex].basePressedEffect = (AnimationPressedEffects_Proto)(profile["basePressedEffect"].as<uint32_t>());
+            options.profiles[profilesIndex].basePressedCycleTime = 0;
+        }
+        options.profiles[profilesIndex].buttonPressHoldTimeInMs = profile["buttonPressHoldTimeInMs"].as<uint32_t>();
+        options.profiles[profilesIndex].buttonPressFadeOutTimeInMs = profile["buttonPressFadeOutTimeInMs"].as<uint32_t>();
+        options.profiles[profilesIndex].nonPressedSpecialColour = profile["nonPressedSpecialColour"].as<uint32_t>();
+        options.profiles[profilesIndex].bUseCaseLightsInSpecialMoves = profile["bUseCaseLightsInSpecialMoves"].as<bool>();
+        options.profiles[profilesIndex].baseCaseEffect = (AnimationNonPressedEffects_Proto)(profile["baseCaseEffect"].as<uint32_t>());
+        options.profiles[profilesIndex].pressedSpecialColour = profile["pressedSpecialColour"].as<uint32_t>();
+
+        JsonArray notPressedStaticColorsList = profile["notPressedStaticColors"];
+        options.profiles[profilesIndex].notPressedStaticColors_count = 0;
+		for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS/4)+1; ++packedPinIndex)
+		{
+            unsigned int pinIndex = packedPinIndex * 4;
+			if(pinIndex < notPressedStaticColorsList.size())
+				options.profiles[profilesIndex].notPressedStaticColors[packedPinIndex] = notPressedStaticColorsList[pinIndex].as<uint32_t>() & 0xFF;
+            else
+                break;
+			if(pinIndex+1 < notPressedStaticColorsList.size())
+				options.profiles[profilesIndex].notPressedStaticColors[packedPinIndex] += ((notPressedStaticColorsList[pinIndex+1].as<uint32_t>() & 0xFF) << 8);
+			if(pinIndex+2 < notPressedStaticColorsList.size())
+				options.profiles[profilesIndex].notPressedStaticColors[packedPinIndex] += ((notPressedStaticColorsList[pinIndex+2].as<uint32_t>() & 0xFF) << 16);
+			if(pinIndex+3 < notPressedStaticColorsList.size())
+				options.profiles[profilesIndex].notPressedStaticColors[packedPinIndex] += ((notPressedStaticColorsList[pinIndex+3].as<uint32_t>() & 0xFF) << 24);
+            options.profiles[profilesIndex].notPressedStaticColors_count = packedPinIndex+1;
+        }
+
+        JsonArray pressedStaticColorsList = profile["pressedStaticColors"];
+        options.profiles[profilesIndex].pressedStaticColors_count = 0;
+        for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS/4)+1; ++packedPinIndex)
+		{
+            unsigned int pinIndex = packedPinIndex * 4;
+			if(pinIndex < pressedStaticColorsList.size())
+				options.profiles[profilesIndex].pressedStaticColors[packedPinIndex] = pressedStaticColorsList[pinIndex].as<uint32_t>() & 0xFF;
+            else
+                break;
+			if(pinIndex+1 < pressedStaticColorsList.size())
+				options.profiles[profilesIndex].pressedStaticColors[packedPinIndex] += ((pressedStaticColorsList[pinIndex+1].as<uint32_t>() & 0xFF) << 8);
+			if(pinIndex+2 < pressedStaticColorsList.size())
+				options.profiles[profilesIndex].pressedStaticColors[packedPinIndex] += ((pressedStaticColorsList[pinIndex+2].as<uint32_t>() & 0xFF) << 16);
+			if(pinIndex+3 < pressedStaticColorsList.size())
+				options.profiles[profilesIndex].pressedStaticColors[packedPinIndex] += ((pressedStaticColorsList[pinIndex+3].as<uint32_t>() & 0xFF) << 24);
+            options.profiles[profilesIndex].pressedStaticColors_count = packedPinIndex+1;
+        }
+
+        JsonArray caseStaticColorsList = profile["caseStaticColors"];
+        options.profiles[profilesIndex].caseStaticColors_count = 0;
+        for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS/4)+1; ++packedPinIndex)
+		{
+            unsigned int pinIndex = packedPinIndex * 4;
+			if(pinIndex < caseStaticColorsList.size())
+				options.profiles[profilesIndex].caseStaticColors[packedPinIndex] = caseStaticColorsList[pinIndex].as<uint32_t>() & 0xFF;
+            else
+                break;
+			if(pinIndex+1 < caseStaticColorsList.size())
+				options.profiles[profilesIndex].caseStaticColors[packedPinIndex] += ((caseStaticColorsList[pinIndex+1].as<uint32_t>() & 0xFF) << 8);
+			if(pinIndex+2 < caseStaticColorsList.size())
+				options.profiles[profilesIndex].caseStaticColors[packedPinIndex] += ((caseStaticColorsList[pinIndex+2].as<uint32_t>() & 0xFF) << 16);
+			if(pinIndex+3 < caseStaticColorsList.size())
+				options.profiles[profilesIndex].caseStaticColors[packedPinIndex] += ((caseStaticColorsList[pinIndex+3].as<uint32_t>() & 0xFF) << 24);
+            options.profiles[profilesIndex].caseStaticColors_count = packedPinIndex+1;
+        }
+
+        options.profiles_count = profilesIndex+1;
+
+        if (++profilesIndex >= MAX_ANIMATION_PROFILES)
+            break;
+    }
+
+    EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
+    return serialize_json(doc);
+}
+
+std::string getAnimationProtoOptions()
+{
+    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    const AnimationOptions_Proto& options = Storage::getInstance().getAnimationOptions();
+
+    JsonObject AnimOptions = doc.createNestedObject("AnimationOptions");
+    AnimOptions["brightness"] = options.brightness;
+    AnimOptions["baseProfileIndex"] = options.baseProfileIndex;
+    JsonArray customColorsList = AnimOptions.createNestedArray("customColors");
+    for (int customColorsIndex = 0; customColorsIndex < options.customColors_count; ++customColorsIndex)
+    {
+        customColorsList.add(options.customColors[customColorsIndex]);
+    }
+
+    JsonArray profileList = AnimOptions.createNestedArray("profiles");
+    for (int profilesIndex = 0; profilesIndex < options.profiles_count; ++profilesIndex)
+    {
+        JsonObject profile = profileList.createNestedObject();
+        profile["bEnabled"] = options.profiles[profilesIndex].bEnabled ? 1 : 0;
+        profile["baseNonPressedEffect"] = options.profiles[profilesIndex].baseNonPressedEffect;
+        profile["basePressedEffect"] = options.profiles[profilesIndex].basePressedEffect;
+        profile["buttonPressHoldTimeInMs"] = options.profiles[profilesIndex].buttonPressHoldTimeInMs;
+        profile["buttonPressFadeOutTimeInMs"] = options.profiles[profilesIndex].buttonPressFadeOutTimeInMs;
+        profile["nonPressedSpecialColour"] = options.profiles[profilesIndex].nonPressedSpecialColour;
+        profile["bUseCaseLightsInSpecialMoves"] = options.profiles[profilesIndex].bUseCaseLightsInSpecialMoves ? 1 : 0;
+        profile["baseCaseEffect"] = options.profiles[profilesIndex].baseCaseEffect;
+        profile["pressedSpecialColour"] = options.profiles[profilesIndex].pressedSpecialColour;
+
+        JsonArray notPressedStaticColorsList = profile.createNestedArray("notPressedStaticColors");
+        for (int notPressedStaticColorsIndex = 0; notPressedStaticColorsIndex < options.profiles[profilesIndex].notPressedStaticColors_count; ++notPressedStaticColorsIndex)
+        {
+            notPressedStaticColorsList.add(options.profiles[profilesIndex].notPressedStaticColors[notPressedStaticColorsIndex] & 0xFF);
+            notPressedStaticColorsList.add((options.profiles[profilesIndex].notPressedStaticColors[notPressedStaticColorsIndex] >> 8) & 0xFF);
+            notPressedStaticColorsList.add((options.profiles[profilesIndex].notPressedStaticColors[notPressedStaticColorsIndex] >> 16) & 0xFF);
+            notPressedStaticColorsList.add((options.profiles[profilesIndex].notPressedStaticColors[notPressedStaticColorsIndex] >> 24) & 0xFF);
+        }
+        JsonArray pressedStaticColorsList = profile.createNestedArray("pressedStaticColors");
+        for (int pressedStaticColorsIndex = 0; pressedStaticColorsIndex < options.profiles[profilesIndex].pressedStaticColors_count; ++pressedStaticColorsIndex)
+        {
+            pressedStaticColorsList.add(options.profiles[profilesIndex].pressedStaticColors[pressedStaticColorsIndex] & 0xFF);
+            pressedStaticColorsList.add((options.profiles[profilesIndex].pressedStaticColors[pressedStaticColorsIndex] >> 8) & 0xFF);
+            pressedStaticColorsList.add((options.profiles[profilesIndex].pressedStaticColors[pressedStaticColorsIndex] >> 16) & 0xFF);
+            pressedStaticColorsList.add((options.profiles[profilesIndex].pressedStaticColors[pressedStaticColorsIndex] >> 24) & 0xFF);
+        }
+        JsonArray caseStaticColorsList = profile.createNestedArray("caseStaticColors");
+        for (int caseStaticColorsIndex = 0; caseStaticColorsIndex < options.profiles[profilesIndex].caseStaticColors_count; ++caseStaticColorsIndex)
+        {
+            caseStaticColorsList.add(options.profiles[profilesIndex].caseStaticColors[caseStaticColorsIndex] & 0xFF);
+            caseStaticColorsList.add((options.profiles[profilesIndex].caseStaticColors[caseStaticColorsIndex] >> 8) & 0xFF);
+            caseStaticColorsList.add((options.profiles[profilesIndex].caseStaticColors[caseStaticColorsIndex] >> 16) & 0xFF);
+            caseStaticColorsList.add((options.profiles[profilesIndex].caseStaticColors[caseStaticColorsIndex] >> 24) & 0xFF);
+        }        
+    }
 
     return serialize_json(doc);
 }
@@ -2352,8 +2457,10 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/setPreviewDisplayOptions", setPreviewDisplayOptions },
     { "/api/setGamepadOptions", setGamepadOptions },
     { "/api/setLedOptions", setLedOptions },
-    { "/api/setCustomTheme", setCustomTheme },
-    { "/api/getCustomTheme", getCustomTheme },
+    { "/api/setAnimationProtoOptions", setAnimationProtoOptions },
+    { "/api/getAnimationProtoOptions", getAnimationProtoOptions },
+    { "/api/setLightsDataOptions", setLightsDataOptions },
+    { "/api/getLightsDataOptions", getLightsDataOptions },
     { "/api/setPinMappings", setPinMappings },
     { "/api/setProfileOptions", setProfileOptions },
     { "/api/setPeripheralOptions", setPeripheralOptions },

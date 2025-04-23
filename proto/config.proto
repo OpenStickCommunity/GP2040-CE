@@ -312,72 +312,95 @@ message LEDOptions
     optional int32 pledIndex3 = 34;
     optional int32 pledIndex4 = 35;
 
-    optional CaseRGBType caseRGBType = 36;
-    optional int32 caseRGBIndex = 37;
+    optional CaseRGBType caseRGBType = 36 [deprecated = true];
+    optional int32 caseRGBIndex = 37 [deprecated = true];
     optional uint32 caseRGBColor = 38 [deprecated = true];
-    optional uint32 caseRGBCount = 39;
+    optional uint32 caseRGBCount = 39 [deprecated = true];
+
+    optional bytes lightData = 40 [(nanopb).max_size = 600];
+    optional int32 lightDataSize = 41;
+};
+
+// This has to be kept in sync with SpecialMoveAnimation in SpecialMoveSystem.hpp
+//message SpecialMoveInputTriggers_Proto 
+//{
+//    optional uint32 OptionalParams = 1; //8 uint4's packed in here (assigned to custom enums later)
+//    optional uint32 RequiredTriggers = 2; //buttonmasks
+//
+//    optional SpecialMoveEffects_Proto ChainedAnimation = 3;
+//    optional uint32 ChainedOptionalParams = 4; 
+//    optional SpecialMoveEffects_Proto ChainedAnimationTwo = 5;
+//    optional uint32 ChainedOptionalParamsTwo = 6; 
+//};
+
+// This has to be kept in sync with SpecialMoveDescription in SpecialMoveSystem.hpp
+//message SpecialMoveDescription_Proto 
+//{
+//    repeated SpecialMoveInputTypes_Proto RequiredInputCombos = 1 [(nanopb).max_count = 4]; //MAX_SPECIALMOVE_INPUTTYPES_PER_MOVE from SpecialMoveSystem.hpp
+//    repeated SpecialMoveInputTriggers_Proto RequiredTriggerCombos = 2 [(nanopb).max_count = 3]; //MAX_SPECIALMOVE_TRIGGERCOMBOS from SpecialMoveSystem.hpp
+//
+//    optional SpecialMoveEffects_Proto Animation = 3;
+//    optional bool bIsChargeMove = 4;
+//
+//    optional int32 Priority = 5;
+//};
+
+// This has to be kept in sync with SpecialMoveProfile in SpecialMoveSystem.hpp
+//message SpecialMoveProfile_Proto
+//{
+//    optional bool bEnabled = 1;
+//    repeated SpecialMoveDescription_Proto AllSpecialMoves = 2 [(nanopb).max_count = 20]; //MAX_SPECIALMOVES from SpecialMoveSystem.hpp
+//    optional string Label = 3 [(nanopb).max_length = 12];
+//};
+
+// This has to be kept in sync with SpecialMoveOptions in SpecialMoveSystem.hpp
+//message SpecialMoveOptions_Proto
+//{
+//    repeated SpecialMoveProfile_Proto profiles = 1 [(nanopb).max_count = 4]; //MAX_SPECIALMOVE_PROFILES from SpecialMoveSystem.hpp
+//    optional uint32 ChargeTimeInMs = 2;
+//    optional uint32 CurrentProfileIndex = 3;
+//};
+
+// This has to be kept in sync with AnimationProfile in AnimationStation.hpp
+message AnimationProfile_Proto
+{
+    optional bool bEnabled = 1;
+
+ 	optional AnimationNonPressedEffects_Proto baseNonPressedEffect = 2;
+  	optional AnimationPressedEffects_Proto basePressedEffect = 3;
+
+    optional int32 baseCycleTime = 4;
+
+    repeated uint32 notPressedStaticColors = 5 [(nanopb).max_count = 8]; //NUM_BANK0_GPIOS/4 from platform_defs.h
+    repeated uint32 pressedStaticColors = 6 [(nanopb).max_count = 8]; //NUM_BANK0_GPIOS/4 from platform_defs.h
+
+    optional uint32 buttonPressHoldTimeInMs = 7;
+    optional uint32 buttonPressFadeOutTimeInMs = 8;
+
+    optional uint32 nonPressedSpecialColour = 9;
+
+ 	optional AnimationNonPressedEffects_Proto baseCaseEffect = 10;
+
+    repeated uint32 caseStaticColors = 11 [(nanopb).max_count = 10]; //(MAX_CASE_LIGHTS/4) from AnimationStation.hpp
+
+    optional uint32 pressedSpecialColour = 12;
+
+    optional bool bUseCaseLightsInSpecialMoves = 13;
+
+    optional int32 basePressedCycleTime = 14; 
 };
 
 // This has to be kept in sync with AnimationOptions in animationstation.hpp
 message AnimationOptions
 {
-    optional uint32 baseAnimationIndex = 1;
+    reserved 1, 3 to 56;
+    
     optional uint32 brightness = 2;
-    optional uint32 staticColorIndex = 3;
-    optional uint32 buttonColorIndex = 4;
-    optional int32 chaseCycleTime = 5;
-    optional int32 rainbowCycleTime = 6;
-    optional uint32 themeIndex = 7;
-
-    optional bool hasCustomTheme = 8;
-    optional uint32 customThemeUp = 9;
-    optional uint32 customThemeDown = 10;
-    optional uint32 customThemeLeft = 11;
-    optional uint32 customThemeRight = 12;
-    optional uint32 customThemeB1 = 13;
-    optional uint32 customThemeB2 = 14;
-    optional uint32 customThemeB3 = 15;
-    optional uint32 customThemeB4 = 16;
-    optional uint32 customThemeL1 = 17;
-    optional uint32 customThemeR1 = 18;
-    optional uint32 customThemeL2 = 19;
-    optional uint32 customThemeR2 = 20;
-    optional uint32 customThemeS1 = 21;
-    optional uint32 customThemeS2 = 22;
-    optional uint32 customThemeL3 = 23;
-    optional uint32 customThemeR3 = 24;
-    optional uint32 customThemeA1 = 25;
-    optional uint32 customThemeA2 = 26;
-    optional uint32 customThemeUpPressed = 27;
-    optional uint32 customThemeDownPressed = 28;
-    optional uint32 customThemeLeftPressed = 29;
-    optional uint32 customThemeRightPressed = 30;
-    optional uint32 customThemeB1Pressed = 31;
-    optional uint32 customThemeB2Pressed = 32;
-    optional uint32 customThemeB3Pressed = 33;
-    optional uint32 customThemeB4Pressed = 34;
-    optional uint32 customThemeL1Pressed = 35;
-    optional uint32 customThemeR1Pressed = 36;
-    optional uint32 customThemeL2Pressed = 37;
-    optional uint32 customThemeR2Pressed = 38;
-    optional uint32 customThemeS1Pressed = 39;
-    optional uint32 customThemeS2Pressed = 40;
-    optional uint32 customThemeL3Pressed = 41;
-    optional uint32 customThemeR3Pressed = 42;
-    optional uint32 customThemeA1Pressed = 43;
-    optional uint32 customThemeA2Pressed = 44;
-    optional uint32 buttonPressColorCooldownTimeInMs = 45;
-    optional uint32 ambientLightEffectsCountIndex = 46;     // ambient count
-    optional bool ambientLightCustomLinkageModeFlag = 47 [deprecated = true];
-    optional uint32 ambientLightGradientSpeed = 48;         // gradient speed
-    optional int32 ambientLightChaseSpeed = 49;             // chase speed
-    optional float ambientLightBreathSpeed = 50;            // breath speed
-    optional float alGradientBrightnessCustomX = 51;        // gradient brightness
-    optional float alChaseBrightnessCustomX = 52;           // chase brightness
-    optional float alStaticColorBrightnessCustomX = 53;     // static brightness
-    optional float alStaticBrightnessCustomThemeX = 54;     // static custom theme brightness
-    optional uint32 alCustomStaticThemeIndex = 55;          // custom theme index
-    optional uint32 alCustomStaticColorIndex = 56;          // static color index
+    
+    repeated AnimationProfile_Proto profiles = 57 [(nanopb).max_count = 4]; //MAX_ANIMATION_PROFILES from AnimationStation.hpp
+    optional int32 baseProfileIndex = 58;
+    
+    repeated uint32 customColors = 59 [(nanopb).max_count = 16]; //MAX_CUSTOM_COLORS from Animation.hpp
 }
 
 message BootselButtonOptions
@@ -895,4 +918,6 @@ message Config
     optional GpioMappings gpioMappings = 13;
     optional MigrationHistory migrations = 14;
     optional PeripheralOptions peripheralOptions = 15;
+
+    //optional SpecialMoveOptions_Proto specialMoveOptions = 16;
 }

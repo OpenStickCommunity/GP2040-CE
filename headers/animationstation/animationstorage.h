@@ -7,7 +7,9 @@ class AnimationStorage
 {
   public:
     void save();
-    AnimationOptions getAnimationOptions();
+    void saveLEDData();
+    void getAnimationOptions(AnimationOptions& options);
+    void getSpecialMoveOptions(SpecialMoveOptions& options);
 };
 
 static AnimationStorage AnimationStore;
