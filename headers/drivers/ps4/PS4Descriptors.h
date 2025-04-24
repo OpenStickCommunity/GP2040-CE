@@ -209,20 +209,20 @@ typedef struct __attribute__((packed)) {
 } PS4FeatureOutputReport;
 
 typedef struct __attribute__((packed)) {
-    uint16_t gyroRange;
-    uint16_t gyroResPerDegDenom;
-    uint16_t gyroResPerDegNumer;
-    uint16_t accelRange;
-    uint16_t accelResPerG;
+    uint16_t gyroRange = 0;
+    uint16_t gyroResPerDegDenom = 0;
+    uint16_t gyroResPerDegNumer = 0;
+    uint16_t accelRange = 0;
+    uint16_t accelResPerG = 0;
 } PS4IMUConfig;
 
 typedef struct __attribute__((packed)) {
-    uint16_t hidUsage;
-    uint8_t mystery0;
+    uint16_t hidUsage = 0x2721;
+    uint8_t mystery0 = 0x04;
 
     // features
     union {
-        uint8_t featureValue;
+        uint8_t featureValue = 0xEF;
 
         struct __attribute__((packed)) {
             uint8_t enableController : 1;
@@ -230,20 +230,20 @@ typedef struct __attribute__((packed)) {
             uint8_t enableLED : 1;
             uint8_t enableRumble : 1;
             uint8_t enableAnalog : 1;
-            uint8_t : 1;
+            uint8_t enableUnknown0: 1;
             uint8_t enableTouchpad : 1;
-            uint8_t : 1;
+            uint8_t enableUnknown1: 1;
         } features;
     };
 
-    uint8_t controllerType; // use PS4ControllerType
+    uint8_t controllerType = 0; // use PS4ControllerType
 
-    uint8_t touchpadParam[2];
+    uint8_t touchpadParam[2] = {0x00,0x00};
     PS4IMUConfig imuConfig;
-    uint16_t magicID;
-    uint8_t mystery1[4];
-    uint8_t wheelParam[3];
-    uint8_t mystery2[21];
+    uint16_t magicID = 0x0d0d;
+    uint8_t mystery1[4] = {0x00,0x00,0x00,0x00};
+    uint8_t wheelParam[3] = {0x00,0x00,0x00};
+    uint8_t mystery2[21] = {0x00};
 } PS4ControllerConfig;
 
 typedef struct __attribute__((packed)) {

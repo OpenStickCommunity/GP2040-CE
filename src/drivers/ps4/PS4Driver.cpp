@@ -75,8 +75,6 @@ void PS4Driver::initialize() {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     const GamepadOptions & options = gamepad->getOptions();
 
-    //stdio_init_all();
-
     // set up device descriptor IDs depending on mode
     uint8_t descSize = sizeof(ps4_device_descriptor);
     memcpy(deviceDescriptor, &ps4_device_descriptor, descSize);
@@ -183,15 +181,18 @@ void PS4Driver::initialize() {
     controllerConfig = {
         .hidUsage = 0x2721,
         .mystery0 = 0x04,
+//        .featureValue = 0xEF,
         .features = {
             .enableController = 1,
             .enableMotion = 1,
             .enableLED = 1,
             .enableRumble = 1,
-            .enableWheel = 1,
+            .enableAnalog = 0,
+            .enableUnknown0 = 1,
             .enableTouchpad = 1,
+            .enableUnknown1 = 1,
         },
-        .controllerType = controllerType,
+        .controllerType = (uint8_t)controllerType,
         .touchpadParam = {0x2c, 0x56},
         .imuConfig = {
             .gyroRange = 0x0008,
@@ -485,11 +486,6 @@ USBListener * PS4Driver::get_usb_auth_listener() {
 
 // tud_hid_get_report_cb
 uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
-    if (!((report_id == PS4AuthReport::PS4_SET_AUTH_PAYLOAD) || (report_id == PS4AuthReport::PS4_GET_SIGNATURE_NONCE) || (report_id == PS4AuthReport::PS4_GET_SIGNING_STATE) || (report_id == PS4AuthReport::PS4_RESET_AUTH))) {
-        //uint32_t now = to_ms_since_boot(get_absolute_time());
-        //printf("[%d] PS4Driver::get_report RPT: %02x, Type: %02x, Size: %d\n", now, report_id, report_type, reqlen);
-    }
-
     if ( report_type != HID_REPORT_TYPE_FEATURE ) {
         memcpy(buffer, &ps4Report, sizeof(ps4Report));
         return sizeof(ps4Report);
@@ -583,11 +579,6 @@ uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
 
 // Only PS4 does anything with set report
 void PS4Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize) {
-    if (!((report_id == PS4AuthReport::PS4_SET_AUTH_PAYLOAD) || (report_id == PS4AuthReport::PS4_GET_SIGNATURE_NONCE) || (report_id == PS4AuthReport::PS4_GET_SIGNING_STATE) || (report_id == PS4AuthReport::PS4_RESET_AUTH))) {
-        //uint32_t now = to_ms_since_boot(get_absolute_time());
-        //printf("[%d] PS4Driver::set_report RPT: %02x, Type: %02x, Size: %d\n", now, report_id, report_type, bufsize);
-    }
-
     if (( report_type != HID_REPORT_TYPE_FEATURE ) && ( report_type != HID_REPORT_TYPE_OUTPUT ))
         return;
 
