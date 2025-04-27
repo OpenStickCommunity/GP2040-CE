@@ -7,15 +7,14 @@ export default {
 		'de-DE': 'Deutsch',
 		'ja-JP': '日本語 (Japanisch)',
 		'ko-KR': '한국어 (Koreanisch)',
-		'es-MX': 'Español (Mexiko)',
+		'es-MX': 'Español (Mexikanisches Spanisch)',
 	},
-},
-'color-scheme': {
-	dark: 'Dunkel',
+	'color-scheme': {
+		dark: 'Dunkel',
 		light: 'Hell',
-			auto: 'Automatisch',
+		auto: 'Automatisch',
 	},
-'keyboard-mapper': {
-	'key-header': 'Taste',
+	'keyboard-mapper': {
+		'key-header': 'Taste',
 	},
 };
