@@ -47,6 +47,7 @@ jobs:
           MavercadeRev2,
           MiSTercadeV2,
           OpenCore0,
+          OpenCore0MIXUP,
           OpenCore0WASD,
           OSUMGP-RP2040,
           PicoAnn,
