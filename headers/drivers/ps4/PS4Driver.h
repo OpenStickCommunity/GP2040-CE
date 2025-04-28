@@ -66,7 +66,6 @@ private:
     PS4AuthData * ps4AuthData;      // PS4 Authentication Data
     uint8_t cur_nonce_chunk;            // PS4 Encryption Nonce Chunk (Max 19)
     uint8_t cur_nonce_id;
-    uint32_t controllerType;        // PS4 DS4 / PS5 Third-Party
     bool pointOneTouched = false;
     bool pointTwoTouched = false;
     uint8_t touchCounter;
@@ -77,6 +76,39 @@ private:
     PS4ControllerConfig controllerConfig;
 
     InputModeDeviceType deviceType;
+
+    // settings for controllerConfig
+    uint32_t controllerType;        // PS4 DS4 / PS5 Third-Party
+    bool enableController = true;
+    bool enableMotion = true;
+    bool enableLED = true;
+    bool enableRumble = true;
+    bool enableAnalog = false;
+    bool enableUnknown0 = true;
+    bool enableTouchpad = true;
+    bool enableUnknown1 = true;
+
+    // controller type bindings
+    uint8_t shifterPosition = 0;
+    GamepadButtonMapping *buttonShiftUp;
+    GamepadButtonMapping *buttonShiftDown;
+    GamepadButtonMapping *buttonShift1;
+    GamepadButtonMapping *buttonShift2;
+    GamepadButtonMapping *buttonShift3;
+    GamepadButtonMapping *buttonShift4;
+    GamepadButtonMapping *buttonShift5;
+    GamepadButtonMapping *buttonShift6;
+    GamepadButtonMapping *buttonShiftR;
+    GamepadButtonMapping *buttonGas;
+    GamepadButtonMapping *buttonBrake;
+    GamepadButtonMapping *buttonClutch;
+    GamepadButtonMapping *buttonSteerLeft;
+    GamepadButtonMapping *buttonSteerRight;
+    GamepadButtonMapping *buttonPlus;
+    GamepadButtonMapping *buttonMinus;
+    GamepadButtonMapping *buttonDialDown;
+    GamepadButtonMapping *buttonDialUp;
+    GamepadButtonMapping *buttonDialEnter;
 };
 
 #endif // _PS4_DRIVER_H_

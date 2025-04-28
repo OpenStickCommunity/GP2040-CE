@@ -32,7 +32,7 @@ void GamepadUSBHostListener::mount(uint8_t dev_addr, uint8_t instance, uint8_t c
     tuh_vid_pid_get(dev_addr, &controller_vid, &controller_pid);
 
 #if GAMEPAD_HOST_DEBUG
-    printf("Mount: VID_%04x PID_%04x\n", controller_vid, controller_pid);
+    //printf("Mount: VID_%04x PID_%04x\n", controller_vid, controller_pid);
 #endif
 
     uint16_t joystick_mid = GAMEPAD_JOYSTICK_MID;
@@ -47,21 +47,22 @@ void GamepadUSBHostListener::mount(uint8_t dev_addr, uint8_t instance, uint8_t c
     {
         /* PS4/5 */
         // these require initialization
-        case PS4_PRODUCT_ID:     // Razer Panthera
-        case 0x00EE:             // Hori Minipad
+        case PS4_PRODUCT_ID:       // Razer Panthera
+        case 0x00EE:               // Hori Minipad
+        case PS4_WHEEL_PRODUCT_ID: // G29
             init_ds4(desc_report, desc_len);
             break;
         // while these do not
-        case DS4_ORG_PRODUCT_ID: // Sony Dualshock 4 controller
-        case DS4_PRODUCT_ID:     // Sony Dualshock 4 controller
+        case DS4_ORG_PRODUCT_ID:   // Sony Dualshock 4 controller
+        case DS4_PRODUCT_ID:       // Sony Dualshock 4 controller
             isDS4Identified = true;
             setup_ds4();
             break;
         /* Other */
-        // these types do not have an identification step
-        case 0x9400:             // Google Stadia controller
-        case 0x0510:             // pre-2015 Ultrakstik 360
-        case 0x0511:             // Ultrakstik 360
+        // these types do not have an identification step, at least for PS4
+        case 0x9400:               // Google Stadia controller
+        case 0x0510:               // pre-2015 Ultrakstik 360
+        case 0x0511:               // Ultrakstik 360
         default:
             break;
     }
@@ -93,21 +94,22 @@ void GamepadUSBHostListener::report_received(uint8_t dev_addr, uint8_t instance,
 void GamepadUSBHostListener::process_ctrlr_report(uint8_t dev_addr, uint8_t const* report, uint16_t len) {
     switch(controller_pid)
     {
-        case DS4_ORG_PRODUCT_ID: // Sony Dualshock 4 controller
-        case DS4_PRODUCT_ID:     // Sony Dualshock 4 controller
-        case PS4_PRODUCT_ID:     // Razer Panthera
-        case 0x00EE:             // Hori Minipad
+        case DS4_ORG_PRODUCT_ID:   // Sony Dualshock 4 controller
+        case DS4_PRODUCT_ID:       // Sony Dualshock 4 controller
+        case PS4_PRODUCT_ID:       // Razer Panthera
+        case PS4_WHEEL_PRODUCT_ID: // G29
+        case 0x00EE:               // Hori Minipad
             if (isDS4Identified) {
                 update_ds4();
                 process_ds4(report);
             }
             break;
-        case 0x9400:             // Google Stadia controller
+        case 0x9400:               // Google Stadia controller
             process_stadia(report);
             break;
     
-        case 0x0510:             // pre-2015 Ultrakstik 360
-        case 0x0511:             // Ultrakstik 360
+        case 0x0510:               // pre-2015 Ultrakstik 360
+        case 0x0511:               // Ultrakstik 360
             process_ultrastik360(report);
             break;
         default:
@@ -131,7 +133,7 @@ void GamepadUSBHostListener::set_report_complete(uint8_t dev_addr, uint8_t insta
 
 void GamepadUSBHostListener::get_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
 #if GAMEPAD_HOST_DEBUG
-    printf("get_report_complete Report ID: %02x\n", report_id);
+    //printf("get_report_complete Report ID: %02x\n", report_id);
 #endif
     if (!isDS4Identified) {
         switch (report_id) {
@@ -177,19 +179,19 @@ void GamepadUSBHostListener::setup_ds4() {
         // report came from the controller so copy the buffer
         memcpy(&ds4Config, report_buffer+1, sizeof(PS4ControllerConfig));
     }
-    if (ds4Config.hidUsage == 0x2721) {
+    if ((ds4Config.hidUsage == 0x2721) || (ds4Config.hidUsage == 0x2127)) {
         isDS4Identified = true;
 #if GAMEPAD_HOST_DEBUG
-        printf("PS4 controller details\n");
-        printf("----------------------\n");
-        printf("enableController: %d\n", ds4Config.features.enableController);
-        printf("enableMotion: %d\n", ds4Config.features.enableMotion);
-        printf("enableLED: %d\n", ds4Config.features.enableLED);
-        printf("enableRumble: %d\n", ds4Config.features.enableRumble);
-        printf("enableAnalog: %d\n", ds4Config.features.enableAnalog);
-        printf("enableUnknown0: %d\n", ds4Config.features.enableUnknown0);
-        printf("enableTouchpad: %d\n", ds4Config.features.enableTouchpad);
-        printf("enableUnknown1: %d\n", ds4Config.features.enableUnknown1);
+        //printf("PS4 controller details\n");
+        //printf("----------------------\n");
+        //printf("enableController: %d\n", ds4Config.features.enableController);
+        //printf("enableMotion: %d\n", ds4Config.features.enableMotion);
+        //printf("enableLED: %d\n", ds4Config.features.enableLED);
+        //printf("enableRumble: %d\n", ds4Config.features.enableRumble);
+        //printf("enableAnalog: %d\n", ds4Config.features.enableAnalog);
+        //printf("enableUnknown0: %d\n", ds4Config.features.enableUnknown0);
+        //printf("enableTouchpad: %d\n", ds4Config.features.enableTouchpad);
+        //printf("enableUnknown1: %d\n", ds4Config.features.enableUnknown1);
 #endif
     }
 }
@@ -201,7 +203,7 @@ void GamepadUSBHostListener::init_ds4(const uint8_t* descReport, uint16_t descLe
     uint8_t report_count = tuh_hid_parse_report_descriptor(report_info, 4, descReport, descLen);
     for(uint8_t i = 0; i < report_count; i++) {
 #if GAMEPAD_HOST_DEBUG
-        printf("Report: %02x, Usage: %04x, Usage Page: %04x\n", report_info[i].report_id, report_info[i].usage_page, report_info[i].usage);
+        //printf("Report: %02x, Usage: %04x, Usage Page: %04x\n", report_info[i].report_id, report_info[i].usage_page, report_info[i].usage);
 #endif
         if (report_info[i].report_id == PS4AuthReport::PS4_DEFINITION) {
             // controller is some other type that's not a DS4, so parse the config
@@ -261,6 +263,15 @@ void GamepadUSBHostListener::process_ds4(uint8_t const* report) {
     uint8_t const report_id = report[0];
 
     if (report_id == 1) {
+
+#if GAMEPAD_HOST_DEBUG
+    printf("\033[0;0H\nHost:\n");
+    for (uint8_t i = 0; i < sizeof(controller_report); i++) {
+        printf("%02x ", report[i]);
+        if (((i+1) % 16) == 0) printf("\n");
+    }
+    printf("----\n");
+#endif
 
         memcpy(&controller_report, report, sizeof(controller_report));
 

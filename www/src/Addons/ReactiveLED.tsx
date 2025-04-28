@@ -131,7 +131,7 @@ const ReactiveLED = ({ values, errors, handleChange, handleCheckbox }) => {
 											return (
 												<option key={`led${i}Action-option-${mi}`} value={mo}>
 													{(labelKey && buttonNames[labelKey]) ||
-														t(`PinMapping:actions.${opt.label}`)}
+														t(`Proto:GpioAction.${opt.label}`)}
 												</option>
 											);
 										})}

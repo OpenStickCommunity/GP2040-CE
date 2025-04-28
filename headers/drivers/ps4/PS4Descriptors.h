@@ -217,7 +217,7 @@ typedef struct __attribute__((packed)) {
 } PS4IMUConfig;
 
 typedef struct __attribute__((packed)) {
-    uint16_t hidUsage = 0x2721;
+    uint16_t hidUsage = 0x2127;
     uint8_t mystery0 = 0x04;
 
     // features
@@ -365,29 +365,36 @@ typedef struct __attribute__((packed)) {
             uint8_t powerLevel : 4;
             uint8_t : 4;
             
-            uint8_t mystery1[12];
+            uint8_t mystery1[10];
             
             uint16_t steeringWheel;
             uint16_t gasPedal;
-            uint16_t breakPedal;
+            uint16_t brakePedal;
             uint16_t clutchPedal; // ?
 
-            uint8_t shifterGear1 : 1;
-            uint8_t shifterGear2 : 1;
-            uint8_t shifterGear3 : 1;
-            uint8_t shifterGear4 : 1;
-            uint8_t shifterGear5 : 1;
-            uint8_t shifterGear6 : 1;
-            uint8_t shifterGearR : 1;
-            uint8_t : 1;
+            union {
+                uint8_t shifterValue;
+
+                struct __attribute__((packed)) {
+                    uint8_t shifterGear1 : 1;
+                    uint8_t shifterGear2 : 1;
+                    uint8_t shifterGear3 : 1;
+                    uint8_t shifterGear4 : 1;
+                    uint8_t shifterGear5 : 1;
+                    uint8_t shifterGear6 : 1;
+                    uint8_t shifterGearR : 1;
+                    uint8_t : 1;
+                } shifter;
+            };
 
             uint16_t unknownVal;
 
-            uint8_t buttonPlus : 1;
-            uint8_t buttonMinus : 1;
-            uint8_t buttonDialUp : 1;
+            uint8_t buttonDialEnter : 1;
             uint8_t buttonDialDown : 1;
-            uint8_t buttonEnter : 1;
+            uint8_t buttonDialUp : 1;
+            uint8_t buttonMinus : 1;
+            uint8_t buttonPlus : 1;
+            
             uint8_t : 3;
             
             uint8_t mystery2[7];

@@ -83,7 +83,8 @@ void PS4Driver::initialize() {
 
     bool isDeviceEmulated = options.ps4ControllerIDMode == PS4ControllerIDMode::PS4_ID_EMULATION;
 
-    deviceType = InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GAMEPAD;
+    //deviceType = InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GAMEPAD;
+    deviceType = options.inputDeviceType;
 
     if (!isDeviceEmulated) {
         if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_WHEEL) {
@@ -110,6 +111,16 @@ void PS4Driver::initialize() {
     // PS5 mode currently forces PS4ControllerType 7 (PS4_ARCADESTICK) for PS5 compatibility
     switch (deviceType) {
         case InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_WHEEL:
+            enableController = false;
+            enableMotion = false;
+            enableLED = false;
+            enableRumble = false;
+            enableAnalog = true;
+            enableUnknown0 = false;
+            enableTouchpad = false;
+            enableUnknown1 = false;
+            shifterPosition = 0;
+
             controllerType = PS4ControllerType::PS4_WHEEL;
             break;
         case InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_HOTAS:
@@ -123,6 +134,15 @@ void PS4Driver::initialize() {
             break;
         case InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GAMEPAD:
         default:
+            enableController = true;
+            enableMotion = true;
+            enableLED = true;
+            enableRumble = true;
+            enableAnalog = false;
+            enableUnknown0 = true;
+            enableTouchpad = true;
+            enableUnknown1 = true;
+
             // if PS4, PS4ControllerType::PS4_CONTROLLER
             // if PS5, PS4ControllerType::PS4_ARCADESTICK
             if (options.inputMode == INPUT_MODE_PS4) {
@@ -183,14 +203,14 @@ void PS4Driver::initialize() {
         .mystery0 = 0x04,
 //        .featureValue = 0xEF,
         .features = {
-            .enableController = 1,
-            .enableMotion = 1,
-            .enableLED = 1,
-            .enableRumble = 1,
-            .enableAnalog = 0,
-            .enableUnknown0 = 1,
-            .enableTouchpad = 1,
-            .enableUnknown1 = 1,
+            .enableController = enableController,
+            .enableMotion = enableMotion,
+            .enableLED = enableLED,
+            .enableRumble = enableRumble,
+            .enableAnalog = enableAnalog,
+            .enableUnknown0 = enableUnknown0,
+            .enableTouchpad = enableTouchpad,
+            .enableUnknown1 = enableUnknown1,
         },
         .controllerType = (uint8_t)controllerType,
         .touchpadParam = {0x2c, 0x56},
@@ -204,8 +224,61 @@ void PS4Driver::initialize() {
         .magicID = 0x0d0d,
         .mystery1 = {},
         .wheelParam = {0x0D, 0x84, 0x03},
-        .mystery2 = {}
+        .mystery2 = {
+            0x01,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x01,
+        }
     };
+
+    // controller type bindings
+    buttonShiftUp = new GamepadButtonMapping(0);
+    buttonShiftDown = new GamepadButtonMapping(0);
+    buttonShift1 = new GamepadButtonMapping(0);
+    buttonShift2 = new GamepadButtonMapping(0);
+    buttonShift3 = new GamepadButtonMapping(0);
+    buttonShift4 = new GamepadButtonMapping(0);
+    buttonShift5 = new GamepadButtonMapping(0);
+    buttonShift6 = new GamepadButtonMapping(0);
+    buttonGas = new GamepadButtonMapping(0);
+    buttonBrake = new GamepadButtonMapping(0);
+    buttonClutch = new GamepadButtonMapping(0);
+    buttonSteerLeft = new GamepadButtonMapping(0);
+    buttonSteerRight = new GamepadButtonMapping(0);
+    buttonPlus = new GamepadButtonMapping(0);
+    buttonMinus = new GamepadButtonMapping(0);
+    buttonDialDown = new GamepadButtonMapping(0);
+    buttonDialUp = new GamepadButtonMapping(0);
+    buttonDialEnter = new GamepadButtonMapping(0);
+
+    GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
+    for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
+        switch (pinMappings[pin].action) {
+            case GpioAction::MODE_WHEEL_SHIFTER_GEAR_1: buttonShift1->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_WHEEL_SHIFTER_GEAR_2: buttonShift2->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_WHEEL_SHIFTER_GEAR_3: buttonShift3->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_WHEEL_SHIFTER_GEAR_4: buttonShift4->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_WHEEL_SHIFTER_GEAR_5: buttonShift5->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_WHEEL_SHIFTER_GEAR_6: buttonShift6->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_WHEEL_SHIFTER_GEAR_R: buttonShiftR->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_WHEEL_SHIFTER_GEAR_UP: buttonShiftUp->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_WHEEL_SHIFTER_GEAR_DOWN: buttonShiftDown->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_WHEEL_STEERING_LEFT: buttonSteerLeft->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_WHEEL_STEERING_RIGHT: buttonSteerRight->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_WHEEL_BUTTON_PLUS: buttonPlus->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_WHEEL_BUTTON_MINUS: buttonMinus->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_WHEEL_DIAL_UP: buttonDialUp->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_WHEEL_DIAL_DOWN: buttonDialDown->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_WHEEL_DIAL_ENTER: buttonDialEnter->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_WHEEL_PEDAL_GAS: buttonGas->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_WHEEL_PEDAL_BRAKE: buttonBrake->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_WHEEL_PEDAL_CLUTCH: buttonClutch->pinMask |= 1 << pin; break;
+            default:    break;
+        }
+    }
 
     class_driver = {
     #if CFG_TUSB_DEBUG >= 2
@@ -257,6 +330,7 @@ bool PS4Driver::getDongleAuthRequired() {
 
 bool PS4Driver::process(Gamepad * gamepad) {
     const GamepadOptions & options = gamepad->getOptions();
+    Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
     switch (gamepad->state.dpad & GAMEPAD_MASK_DPAD)
     {
         case GAMEPAD_MASK_UP:                        ps4Report.dpad = PS4_HAT_UP;        break;
@@ -278,14 +352,39 @@ bool PS4Driver::process(Gamepad * gamepad) {
     } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_WHEEL) {
         ps4Report.wheel.steeringWheel = PS4_NAV_JOYSTICK_MID;
         ps4Report.wheel.gasPedal = PS4_NAV_JOYSTICK_MAX;
-        ps4Report.wheel.breakPedal = PS4_NAV_JOYSTICK_MAX;
+        ps4Report.wheel.brakePedal = PS4_NAV_JOYSTICK_MAX;
         ps4Report.wheel.clutchPedal = PS4_NAV_JOYSTICK_MAX;
         ps4Report.wheel.unknownVal = 0xFFFF;
+        ps4Report.wheel.buttonPlus = 0;
+        ps4Report.wheel.buttonMinus = 0;
+        ps4Report.wheel.buttonDialDown = 0;
+        ps4Report.wheel.buttonDialUp = 0;
+        ps4Report.wheel.buttonDialEnter = 0;
 
-        if (gamepad->pressedLeft()) ps4Report.wheel.steeringWheel = PS4_NAV_JOYSTICK_MIN;
-        if (gamepad->pressedRight()) ps4Report.wheel.steeringWheel = PS4_NAV_JOYSTICK_MAX;
-        if (gamepad->pressedL3()) ps4Report.wheel.breakPedal = PS4_NAV_JOYSTICK_MIN;
-        if (gamepad->pressedR3()) ps4Report.wheel.gasPedal = PS4_NAV_JOYSTICK_MIN;
+        if (values & buttonShiftUp->pinMask) if (shifterPosition < 5) shifterPosition++;
+        if (values & buttonShiftDown->pinMask) if (shifterPosition > 0) shifterPosition--;
+        if (values & buttonShift1->pinMask) shifterPosition=1;
+        if (values & buttonShift2->pinMask) shifterPosition=2;
+        if (values & buttonShift3->pinMask) shifterPosition=4;
+        if (values & buttonShift4->pinMask) shifterPosition=8;
+        if (values & buttonShift5->pinMask) shifterPosition=16;
+        if (values & buttonShift6->pinMask) shifterPosition=32;
+        if (values & buttonShiftR->pinMask) shifterPosition=128;
+
+        ps4Report.wheel.shifterValue = shifterPosition;
+
+        if (values & buttonSteerLeft->pinMask) ps4Report.wheel.steeringWheel = PS4_NAV_JOYSTICK_MIN;
+        if (values & buttonSteerRight->pinMask) ps4Report.wheel.steeringWheel = PS4_NAV_JOYSTICK_MAX;
+        if (values & buttonBrake->pinMask) ps4Report.wheel.brakePedal = PS4_NAV_JOYSTICK_MIN;
+        if (values & buttonClutch->pinMask) ps4Report.wheel.clutchPedal = PS4_NAV_JOYSTICK_MIN;
+        if (values & buttonGas->pinMask) ps4Report.wheel.gasPedal = PS4_NAV_JOYSTICK_MIN;
+
+        if (values & buttonPlus->pinMask) ps4Report.wheel.buttonPlus = 1;
+        if (values & buttonMinus->pinMask) ps4Report.wheel.buttonMinus = 1;
+        if (values & buttonDialDown->pinMask) ps4Report.wheel.buttonDialDown = 1;
+        if (values & buttonDialUp->pinMask) ps4Report.wheel.buttonDialUp = 1;
+        if (values & buttonDialEnter->pinMask) ps4Report.wheel.buttonDialEnter = 1;
+
     } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_HOTAS) {
         ps4Report.hotas.joystickX = PS4_NAV_JOYSTICK_MID;
         ps4Report.hotas.joystickY = PS4_NAV_JOYSTICK_MID;
@@ -395,6 +494,17 @@ bool PS4Driver::process(Gamepad * gamepad) {
     uint32_t now = to_ms_since_boot(get_absolute_time());
     void * report = &ps4Report;
     uint16_t report_size = sizeof(ps4Report);
+
+#if GAMEPAD_HOST_DEBUG
+    uint8_t * reportBytes = (uint8_t*)&ps4Report;
+    printf("\033[7;0H\nOut:\n");
+    for (uint8_t i = 0; i < 64; i++) {
+        printf("%02x ", reportBytes[i]);
+        if (((i+1) % 16) == 0) printf("\n");
+    }
+    printf("----\n");
+#endif
+
     if (memcmp(last_report, report, report_size) != 0)
     {
         // HID ready + report sent, copy previous report

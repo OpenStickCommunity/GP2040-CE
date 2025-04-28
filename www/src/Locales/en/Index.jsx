@@ -18,6 +18,7 @@ import PCF8575 from './Addons/PCF8575';
 import ReactiveLED from './Addons/ReactiveLED';
 import InputMacroAddon from './InputMacroAddon';
 import LayoutConfig from './LayoutConfig';
+import Proto from './Proto/Index';
 
 export default {
 	Common,
@@ -40,4 +41,5 @@ export default {
 	LayoutConfig,
 	PCF8575,
 	ReactiveLED,
+	Proto,
 };
