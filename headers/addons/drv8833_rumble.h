@@ -47,29 +47,31 @@
 class DRV8833RumbleAddon : public GPAddon
 {
 public:
-	virtual bool available();
-	virtual void setup();
-	virtual void preprocess() {}
-	virtual void process();
-	virtual std::string name() { return DRV8833RumbleName; }
+    virtual bool available();
+    virtual void setup();
+    virtual void preprocess() {}
+    virtual void process();
+    virtual void postprocess(bool sent) {}
+    virtual void reinit() {}
+    virtual std::string name() { return DRV8833RumbleName; }
 private:
-	uint32_t pwmSetFreqDuty(uint slice, uint channel, uint32_t frequency, float duty);
-	bool compareRumbleState(Gamepad * gamepad);
-	void setRumbleState(Gamepad * gamepad);
-	void disableMotors();
-	void enableMotors(Gamepad * gamepad);
-	uint8_t leftMotorPin;
-	uint8_t rightMotorPin;
-	uint8_t motorSleepPin;
-	uint8_t leftMotorPinSlice;
-	uint8_t leftMotorPinChannel;
-	uint8_t rightMotorPinSlice;
-	uint8_t rightMotorPinChannel;
-	uint32_t pwmFrequency;
-	float dutyMin;
-	float dutyMax;
-	uint32_t sysClock;
-	GamepadAuxHaptics currentRumbleState;
+    uint32_t pwmSetFreqDuty(uint slice, uint channel, uint32_t frequency, float duty);
+    bool compareRumbleState(Gamepad * gamepad);
+    void setRumbleState(Gamepad * gamepad);
+    void disableMotors();
+    void enableMotors(Gamepad * gamepad);
+    uint8_t leftMotorPin;
+    uint8_t rightMotorPin;
+    uint8_t motorSleepPin;
+    uint8_t leftMotorPinSlice;
+    uint8_t leftMotorPinChannel;
+    uint8_t rightMotorPinSlice;
+    uint8_t rightMotorPinChannel;
+    uint32_t pwmFrequency;
+    float dutyMin;
+    float dutyMax;
+    uint32_t sysClock;
+    GamepadAuxHaptics currentRumbleState;
 };
 
 #endif

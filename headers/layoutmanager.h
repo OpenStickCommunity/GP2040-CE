@@ -56,6 +56,8 @@ class LayoutManager {
         std::string getButtonLayoutRightName(ButtonLayoutRight layout);
 
         LayoutList adjustByCustomSettings(LayoutList layout, ButtonLayoutParamsCommon common, uint16_t originX = 0, uint16_t originY = 0);
+        LayoutList adjustByOffset(LayoutList layout, int16_t originX = 0, int16_t originY = 0);
+        LayoutList flipHorizontally(LayoutList layout, int16_t startX = 0, int16_t startY = 0, int16_t endX = 0, int16_t endY = 0);
 
         // old layout methods
         LayoutList drawStickless();
@@ -71,6 +73,7 @@ class LayoutManager {
         LayoutList drawVewlix();
         LayoutList drawVewlix7();
         LayoutList drawSega2p();
+        LayoutList drawSega2p6b();
         LayoutList drawNoir8();
         LayoutList drawCapcom();
         LayoutList drawCapcom6();
@@ -85,6 +88,7 @@ class LayoutManager {
         LayoutList drawBlankB();
         LayoutList drawVLXA();
         LayoutList drawVLXB();
+        LayoutList drawVLXB6B();
         LayoutList drawFightboard();
         LayoutList drawFightboardMirrored();
         LayoutList drawFightboardStick();
@@ -100,7 +104,17 @@ class LayoutManager {
         LayoutList drawButtonLayoutLeft();
         LayoutList drawButtonLayoutRight();
         LayoutList drawBoardDefinedA();
+        LayoutList drawBoardDefinedAlt0A();
+        LayoutList drawBoardDefinedAlt1A();
+        LayoutList drawBoardDefinedAlt2A();
+        LayoutList drawBoardDefinedAlt3A();
+        LayoutList drawBoardDefinedAlt4A();
         LayoutList drawBoardDefinedB();
+        LayoutList drawBoardDefinedAlt0B();
+        LayoutList drawBoardDefinedAlt1B();
+        LayoutList drawBoardDefinedAlt2B();
+        LayoutList drawBoardDefinedAlt3B();
+        LayoutList drawBoardDefinedAlt4B();
         LayoutList drawDancepadDDRLeft();
         LayoutList drawDancepadDDRSolo();
         LayoutList drawDancepadPIULeft();
@@ -130,13 +144,13 @@ class LayoutManager {
         LayoutList draw6GAWDRight();
         LayoutList draw6GAWDAllButtonRight();
         LayoutList draw6GAWDAllButtonPlusRight();
+
+        LayoutManager::LayoutList getLeftLayout(uint16_t index);
+        LayoutManager::LayoutList getRightLayout(uint16_t index);
     private:
         LayoutManager(){}
 
         std::string getLayoutNameByID();
-
-        LayoutManager::LayoutList getLeftLayout(uint16_t index);
-        LayoutManager::LayoutList getRightLayout(uint16_t index);
 };
 
 #endif

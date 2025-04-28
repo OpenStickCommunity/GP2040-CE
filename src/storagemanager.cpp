@@ -6,114 +6,51 @@
 #include "storagemanager.h"
 
 #include "BoardConfig.h"
-#include "AnimationStorage.hpp"
-#include "Effects/StaticColor.hpp"
 #include "FlashPROM.h"
+#include "drivermanager.h"
+#include "eventmanager.h"
+#include "peripheralmanager.h"
 #include "config.pb.h"
 #include "hardware/watchdog.h"
-#include "Animation.hpp"
 #include "CRC32.h"
 #include "types.h"
 
+// Check for saves
+#include "ps4/PS4Driver.h"
+
 #include "config_utils.h"
 
-#include "bitmaps.h"
-
-#include "helper.h"
-
 void Storage::init() {
+	systemFlashSize = System::getPhysicalFlash(); // System Flash Size must be called once
 	EEPROM.start();
-	critical_section_init(&animationOptionsCs);
 	ConfigUtils::load(config);
 }
 
+/**
+ * @brief Save the config, but only if it is safe to (as in USB host is not being used.)
+ */
 bool Storage::save()
 {
+	return save(false);
+}
+
+/**
+ * @brief Save the config; if forcing a save is requested, or if USB host is not enabled, this will write to flash.
+ */
+bool Storage::save(const bool force) {
+	// Conditions for saving:
+	//   1. Force = True
+	//   2. Input Mode NOT (PS4/PS5 with USB enabled)
+	// Save will disconnect USB host, which is okay for gamepad and keyboard hosts
+	if (!force &&
+		PeripheralManager::getInstance().isUSBEnabled(0) &&
+		(DriverManager::getInstance().getInputMode() == INPUT_MODE_PS4 ||
+			DriverManager::getInstance().getInputMode() == INPUT_MODE_PS5) &&
+		((PS4Driver*)DriverManager::getInstance().getDriver())->getDongleAuthRequired() == true ) {
+		return false;
+	}
+
 	return ConfigUtils::save(config);
-}
-
-static void updateAnimationOptionsProto(const AnimationOptions& options)
-{
-	AnimationOptions_Proto& optionsProto = Storage::getInstance().getAnimationOptions();
-
-	for(int index = 0; index < 4; ++index) //MAX_ANIMATION_PROFILES from AnimationStation.hpp
-	{
-		optionsProto.profiles[index].baseCycleTime = options.profiles[index].baseCycleTime;
-		optionsProto.profiles[index].basePressedCycleTime = options.profiles[index].basePressedCycleTime;
-	}
-	optionsProto.brightness					= options.brightness;
-	optionsProto.baseProfileIndex			= options.baseProfileIndex;
-}
-
-static void updateSpecialMoveOptionsProto(const SpecialMoveOptions& options)
-{
-	//SpecialMoveOptions_Proto& optionsProto = Storage::getInstance().getSpecialMoveOptions();
-	//optionsProto.CurrentProfileIndex			= options.CurrentProfileIndex;
-}
-
-void Storage::performEnqueuedSaves()
-{
-	if (animationOptionsSavePending.load() && (absolute_time_diff_us(timeAnimationSaveSet, get_absolute_time()) / 1000) > 1000) // 1 second delay on saves
-	{
-		critical_section_enter_blocking(&animationOptionsCs);
-		updateAnimationOptionsProto(animationOptionsToSave);
-		save();
-		animationOptionsSavePending.store(false);
-		critical_section_exit(&animationOptionsCs);
-	}
-
-	if (specialMoveOptionsSavePending.load())
-	{
-		critical_section_enter_blocking(&specialMoveOptionsCs);
-		updateSpecialMoveOptionsProto(specialMoveOptionsToSave);
-		save();
-		specialMoveOptionsSavePending.store(false);
-		critical_section_exit(&specialMoveOptionsCs);
-	}
-
-	if (ledOptionsSavePending.load())
-	{
-		critical_section_enter_blocking(&ledOptionsCs);
-		save();
-		ledOptionsSavePending.store(false);
-		critical_section_exit(&ledOptionsCs);
-	}
-}
-
-void Storage::enqueueAnimationOptionsSave(const AnimationOptions& animationOptions)
-{
-	const uint32_t crc = CRC32::calculate(&animationOptions);
-	critical_section_enter_blocking(&animationOptionsCs);
-	if (crc != animationOptionsCrc)
-	{
-		timeAnimationSaveSet = get_absolute_time();
-		animationOptionsToSave = animationOptions;
-		animationOptionsCrc = crc;
-		animationOptionsSavePending.store(true);
-	}
-	critical_section_exit(&animationOptionsCs);
-}
-
-void Storage::enqueueSpecialMoveOptionsSave(const SpecialMoveOptions& specialMoveOptions)
-{
-	const uint32_t crc = CRC32::calculate(&specialMoveOptions);
-	critical_section_enter_blocking(&specialMoveOptionsCs);
-	if (crc != specialMoveOptionsCrc)
-	{
-		specialMoveOptionsToSave = specialMoveOptions;
-		specialMoveOptionsCrc = crc;
-		specialMoveOptionsSavePending.store(true);
-	}
-	critical_section_exit(&specialMoveOptionsCs);
-}
-
-void Storage::enqueueLEDOptionsSave()
-{
-	//no need to crc this. The only thing that can request a save is if the data had to be built the old way.
-	//and thats only in one place so we know it must have changed
-	critical_section_enter_blocking(&ledOptionsCs);
-	ledOptionsSavePending.store(true);
-	critical_section_exit(&ledOptionsCs);
 }
 
 void Storage::ResetSettings()
@@ -129,6 +66,7 @@ bool Storage::setProfile(const uint32_t profileNum)
 		// is this profile enabled?
 		// profile 1 (core) is always enabled, others we must check
 		if (profileNum == 1 || config.profileOptions.gpioMappingsSets[profileNum-2].enabled) {
+			EventManager::getInstance().triggerEvent(new GPProfileChangeEvent(this->config.gamepadOptions.profileNumber, profileNum));
 			this->config.gamepadOptions.profileNumber = profileNum;
 			return true;
 		}
@@ -195,16 +133,6 @@ void Storage::setFunctionalPinMappings()
 	}
 }
 
-void Storage::SetConfigMode(bool mode) { // hack for config mode
-	CONFIG_MODE = mode;
-	previewDisplayOptions = config.displayOptions;
-}
-
-bool Storage::GetConfigMode()
-{
-	return CONFIG_MODE;
-}
-
 void Storage::SetGamepad(Gamepad * newpad)
 {
 	gamepad = newpad;
@@ -223,108 +151,4 @@ void Storage::SetProcessedGamepad(Gamepad * newpad)
 Gamepad * Storage::GetProcessedGamepad()
 {
 	return processedGamepad;
-}
-
-/* Animation stuffs */
-void AnimationStorage::getAnimationOptions(AnimationOptions& options)
-{
-	const AnimationOptions_Proto& optionsProto = Storage::getInstance().getAnimationOptions();
-	
-	options.checksum				= 0;
-	options.NumValidProfiles = optionsProto.profiles_count;
-	for(int index = 0; index < options.NumValidProfiles && index < 4; ++index) //MAX_ANIMATION_PROFILES from AnimationStation.hpp
-	{
-		options.profiles[index].bEnabled = optionsProto.profiles[index].bEnabled;
-		options.profiles[index].baseNonPressedEffect = (AnimationNonPressedEffects)((int)optionsProto.profiles[index].baseNonPressedEffect);
-		options.profiles[index].basePressedEffect = (AnimationPressedEffects)((int)optionsProto.profiles[index].basePressedEffect);
-		options.profiles[index].baseCaseEffect = (AnimationNonPressedEffects)((int)optionsProto.profiles[index].baseCaseEffect);
-		options.profiles[index].baseCycleTime = optionsProto.profiles[index].baseCycleTime;
-		options.profiles[index].basePressedCycleTime = optionsProto.profiles[index].basePressedCycleTime;
-		for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS/4)+1; ++packedPinIndex)
-		{
-			int pinIndex = packedPinIndex * 4;
-			if(packedPinIndex < optionsProto.profiles[index].notPressedStaticColors_count)
-			{
-				options.profiles[index].notPressedStaticColors[pinIndex + 0] = optionsProto.profiles[index].notPressedStaticColors[packedPinIndex] & 0xFF;
-				options.profiles[index].notPressedStaticColors[pinIndex + 1] = (optionsProto.profiles[index].notPressedStaticColors[packedPinIndex] >> 8) & 0xFF;
-				options.profiles[index].notPressedStaticColors[pinIndex + 2] = (optionsProto.profiles[index].notPressedStaticColors[packedPinIndex] >> 16) & 0xFF;
-				options.profiles[index].notPressedStaticColors[pinIndex + 3] = (optionsProto.profiles[index].notPressedStaticColors[packedPinIndex] >> 24) & 0xFF;
-			}
-			if(packedPinIndex < optionsProto.profiles[index].pressedStaticColors_count)
-			{
-				options.profiles[index].pressedStaticColors[pinIndex + 0] = optionsProto.profiles[index].pressedStaticColors[packedPinIndex] & 0xFF;
-				options.profiles[index].pressedStaticColors[pinIndex + 1] = (optionsProto.profiles[index].pressedStaticColors[packedPinIndex] >> 8) & 0xFF;
-				options.profiles[index].pressedStaticColors[pinIndex + 2] = (optionsProto.profiles[index].pressedStaticColors[packedPinIndex] >> 16) & 0xFF;
-				options.profiles[index].pressedStaticColors[pinIndex + 3] = (optionsProto.profiles[index].pressedStaticColors[packedPinIndex] >> 24) & 0xFF;
-			}
-		}
-		for(unsigned int packedCaseIndex = 0; packedCaseIndex < (MAX_CASE_LIGHTS / 4) && packedCaseIndex < optionsProto.profiles[index].caseStaticColors_count; ++packedCaseIndex)
-		{
-			int caseIndex = packedCaseIndex * 4;
-			options.profiles[index].caseStaticColors[caseIndex + 0] = optionsProto.profiles[index].caseStaticColors[packedCaseIndex] & 0xFF;
-			options.profiles[index].caseStaticColors[caseIndex + 1] = (optionsProto.profiles[index].caseStaticColors[packedCaseIndex] >> 8) & 0xFF;
-			options.profiles[index].caseStaticColors[caseIndex + 2] = (optionsProto.profiles[index].caseStaticColors[packedCaseIndex] >> 16) & 0xFF;
-			options.profiles[index].caseStaticColors[caseIndex + 3] = (optionsProto.profiles[index].caseStaticColors[packedCaseIndex] >> 24) & 0xFF;
-		}
-		options.profiles[index].buttonPressHoldTimeInMs = optionsProto.profiles[index].buttonPressHoldTimeInMs;
-		options.profiles[index].buttonPressFadeOutTimeInMs = optionsProto.profiles[index].buttonPressFadeOutTimeInMs;
-		options.profiles[index].nonPressedSpecialColour = optionsProto.profiles[index].nonPressedSpecialColour;
-		options.profiles[index].pressedSpecialColour = optionsProto.profiles[index].pressedSpecialColour;
-		options.profiles[index].bUseCaseLightsInSpecialMoves = optionsProto.profiles[index].bUseCaseLightsInSpecialMoves;
-	}
-	options.brightness				= std::min<uint32_t>(optionsProto.brightness, 255);
-	options.baseProfileIndex		= optionsProto.baseProfileIndex;
-
-	customColors.clear();
-	for(unsigned int customColIndex = 0; customColIndex < MAX_CUSTOM_COLORS; ++customColIndex)
-	{
-		customColors.push_back(optionsProto.customColors[customColIndex]);
-	}
-}
-
-void AnimationStorage::getSpecialMoveOptions(SpecialMoveOptions& options)
-{
-	options.NumValidProfiles = 0;
-	
-	/*const SpecialMoveOptions_Proto& optionsProto = Storage::getInstance().getSpecialMoveOptions();
-	
-	options.NumValidProfiles = optionsProto.profiles_count;
-	for(unsigned int profileIndex = 0; profileIndex < 4 && profileIndex < options.NumValidProfiles; ++profileIndex) //MAX_SPECIALMOVE_PROFILES from SpecialMoveSystem.hpp
-	{
-		options.profiles[profileIndex].bEnabled = optionsProto.profiles[profileIndex].bEnabled;
-		options.profiles[profileIndex].NumValidMoves = optionsProto.profiles[profileIndex].AllSpecialMoves_count;
-		for(unsigned int moveIndex = 0; moveIndex < 20 && moveIndex < options.profiles[profileIndex].NumValidMoves; ++moveIndex) //MAX_SPECIALMOVES from SpecialMoveSystem.hpp
-		{
-			options.profiles[profileIndex].AllSpecialMoves[moveIndex].NumRequiredInputCombos = optionsProto.profiles[profileIndex].AllSpecialMoves[moveIndex].RequiredInputCombos_count;
-			for(unsigned int inputsIndex = 0; inputsIndex < 4 && inputsIndex < options.profiles[profileIndex].AllSpecialMoves[moveIndex].NumRequiredInputCombos; ++inputsIndex) //MAX_SPECIALMOVE_INPUTTYPES_PER_MOVE from SpecialMoveSystem.hpp
-			{
-				options.profiles[profileIndex].AllSpecialMoves[moveIndex].RequiredInputCombos[inputsIndex] = (SpecialMoveInputTypes)((int)optionsProto.profiles[profileIndex].AllSpecialMoves[moveIndex].RequiredInputCombos[inputsIndex]);
-			}
-
-			options.profiles[profileIndex].AllSpecialMoves[moveIndex].NumRequiredTriggerCombos = optionsProto.profiles[profileIndex].AllSpecialMoves[moveIndex].RequiredTriggerCombos_count;
-			for(unsigned int triggersIndex = 0; triggersIndex < 3 && triggersIndex < options.profiles[profileIndex].AllSpecialMoves[moveIndex].NumRequiredTriggerCombos; ++triggersIndex) //MAX_SPECIALMOVE_TRIGGERS_PER_MOVE from SpecialMoveSystem.hpp
-			{
-				options.profiles[profileIndex].AllSpecialMoves[moveIndex].RequiredTriggerCombos[triggersIndex].OptionalParams = optionsProto.profiles[profileIndex].AllSpecialMoves[moveIndex].RequiredTriggerCombos[triggersIndex].OptionalParams;				
-				options.profiles[profileIndex].AllSpecialMoves[moveIndex].RequiredTriggerCombos[triggersIndex].RequiredTriggers = optionsProto.profiles[profileIndex].AllSpecialMoves[moveIndex].RequiredTriggerCombos[triggersIndex].RequiredTriggers;				
-			}
-
-			options.profiles[profileIndex].AllSpecialMoves[moveIndex].Animation = (SpecialMoveEffects)((int)optionsProto.profiles[profileIndex].AllSpecialMoves[moveIndex].Animation);
- 			options.profiles[profileIndex].AllSpecialMoves[moveIndex].bIsChargeMove = optionsProto.profiles[profileIndex].AllSpecialMoves[moveIndex].bIsChargeMove;
-			options.profiles[profileIndex].AllSpecialMoves[moveIndex].Priority = optionsProto.profiles[profileIndex].AllSpecialMoves[moveIndex].Priority;
-		}
-	}
-
-	options.ChargeTimeInMs			= optionsProto.ChargeTimeInMs;
-	options.CurrentProfileIndex		= optionsProto.CurrentProfileIndex;*/
-}
-
-void AnimationStorage::save()
-{
-	Storage::getInstance().enqueueAnimationOptionsSave(AnimationStation::options);
-	//Storage::getInstance().enqueueSpecialMoveOptionsSave(SpecialMoveSystem::Options);
-}
-
-void AnimationStorage::saveLEDData()
-{
-	Storage::getInstance().enqueueLEDOptionsSave();
 }

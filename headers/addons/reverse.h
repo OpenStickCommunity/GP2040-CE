@@ -38,34 +38,35 @@
 
 class ReverseInput : public GPAddon {
 public:
-	virtual bool available();
-	virtual void setup();       // Reverse Button Setup
-	virtual void preprocess() {}
-	virtual void process();     // Reverse process
+    virtual bool available();
+    virtual void setup();       // Reverse Button Setup
+    virtual void preprocess() {}
+    virtual void process();     // Reverse process
+    virtual void postprocess(bool sent) {}
+    virtual void reinit() {}
     virtual std::string name() { return ReverseName; }
 private:
     void update();
     uint8_t input(uint32_t valueMask, uint16_t buttonMask, uint16_t buttonMaskReverse, uint8_t action, bool invertAxis);
 
-	bool state;
+    bool state;
 
-	uint8_t pinLED;
+    uint8_t pinLED;
 
-	GamepadButtonMapping *mapDpadUp;
-	GamepadButtonMapping *mapDpadDown;
-	GamepadButtonMapping *mapDpadLeft;
-	GamepadButtonMapping *mapDpadRight;
+    GamepadButtonMapping *mapDpadUp;
+    GamepadButtonMapping *mapDpadDown;
+    GamepadButtonMapping *mapDpadLeft;
+    GamepadButtonMapping *mapDpadRight;
+    GamepadButtonMapping *mapInputReverse;
 
-	bool invertXAxis;
-	bool invertYAxis;
+    bool invertXAxis;
+    bool invertYAxis;
 
     // 0 - Ignore, 1 - Enabled, 2 - Neutral
     uint8_t actionUp;
     uint8_t actionDown;
     uint8_t actionLeft;
     uint8_t actionRight;
-
-	uint8_t pinButtonReverse;
 };
 
 #endif // _Reverse_H_

@@ -8,11 +8,12 @@
 
 #include "gpdriver.h"
 #include "drivers/keyboard/KeyboardDescriptors.h"
+#include "eventmanager.h"
 
 class KeyboardDriver : public GPDriver {
 public:
     virtual void initialize();
-    virtual void process(Gamepad * gamepad);
+    virtual bool process(Gamepad * gamepad);
     virtual void initializeAux() {}
     virtual void processAux() {}
     virtual uint16_t get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen);
@@ -25,6 +26,7 @@ public:
     virtual const uint8_t * get_descriptor_device_qualifier_cb();
     virtual uint16_t GetJoystickMidValue();
     virtual USBListener * get_usb_auth_listener() { return nullptr; }
+    void handleEncoder(GPEvent* e); // for Volume - rotary encoder
 private:
     void releaseAllKeys(void);
 	void pressKey(uint8_t code);
@@ -33,6 +35,7 @@ private:
     uint8_t last_report[CFG_TUD_ENDPOINT0_SIZE] = { };
     uint16_t last_report_size;
     KeyboardReport keyboardReport;
+    int8_t volumeChange;
 };
 
 #endif // _KEYBOARD_DRIVER_H_

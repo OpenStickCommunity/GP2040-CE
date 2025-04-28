@@ -8,7 +8,6 @@
 #include "enums.h"
 #include "storagemanager.h"
 #include "pico/stdlib.h"
-#include "bitmaps.h"
 
 #include "drivermanager.h"
 #include "usbdriver.h"
@@ -22,7 +21,7 @@ bool DisplayAddon::available() {
     if (options.enabled) {
         // create the gfx interface
         gpDisplay = new GPGFX();
-        gpOptions = gpDisplay->getAvailableDisplay();
+        gpOptions = gpDisplay->getAvailableDisplay(GPGFX_DisplayType::DISPLAY_TYPE_NONE);
         result = (gpOptions.displayType != GPGFX_DisplayType::DISPLAY_TYPE_NONE);
         if (!result) delete gpDisplay;
     }
@@ -47,12 +46,24 @@ void DisplayAddon::setup() {
     // Setup GPGFX
     gpDisplay->init(gpOptions);
 
-    gamepad = Storage::getInstance().GetGamepad();
-
     displaySaverTimer = options.displaySaverTimeout;
     displaySaverTimeout = displaySaverTimer;
-    configMode = Storage::getInstance().GetConfigMode();
+    configMode = DriverManager::getInstance().isConfigMode();
     turnOffWhenSuspended = options.turnOffWhenSuspended;
+    displaySaverMode = options.displaySaverMode;
+
+    mapMenuToggle = new GamepadButtonMapping(0);
+    mapMenuSelect = new GamepadButtonMapping(0);
+    GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
+    for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
+        switch (pinMappings[pin].action) {
+            case GpioAction::MENU_NAVIGATION_TOGGLE: mapMenuToggle->pinMask |= 1 << pin; break;
+            case GpioAction::MENU_NAVIGATION_SELECT: mapMenuSelect->pinMask |= 1 << pin; break;
+            default:    break;
+        }
+    }
+
+    prevValues = Storage::getInstance().GetGamepad()->debouncedGpio;
 
     // set current display mode
     if (!configMode) {
@@ -66,33 +77,15 @@ void DisplayAddon::setup() {
     }
     gpScreen = nullptr;
     updateDisplayScreen();
+
+    EventManager::getInstance().registerEventHandler(GP_EVENT_RESTART, GPEVENT_CALLBACK(this->handleSystemRestart(event)));
+    EventManager::getInstance().registerEventHandler(GP_EVENT_MENU_NAVIGATE, GPEVENT_CALLBACK(this->handleMenuNavigation(event)));
 }
 
 bool DisplayAddon::updateDisplayScreen() {
     if ( gpScreen != nullptr ) {
         gpScreen->shutdown();
-        switch(prevDisplayMode) {
-            case CONFIG_INSTRUCTION:
-                delete (ConfigScreen*)gpScreen;
-                break;
-            case SPLASH:
-                delete (SplashScreen*)gpScreen;
-                break;
-            case MAIN_MENU:
-                delete (SplashScreen*)gpScreen;
-                break;
-            case BUTTONS:
-                delete (ButtonLayoutScreen*)gpScreen;
-                break;
-            case PIN_VIEWER:
-                delete (PinViewerScreen*)gpScreen;
-                break;
-            case STATS:
-                delete (StatsScreen*)gpScreen;
-                break;
-            default:
-                break;
-        }
+        delete gpScreen; // Virtual deconstructor
         gpScreen = nullptr;
     }
     switch(currDisplayMode) {
@@ -111,29 +104,40 @@ bool DisplayAddon::updateDisplayScreen() {
         case PIN_VIEWER:
             gpScreen = new PinViewerScreen(gpDisplay);
             break;
+        case DISPLAY_SAVER:
+            gpScreen = new DisplaySaverScreen(gpDisplay);
+            break;
         case STATS:
             gpScreen = new StatsScreen(gpDisplay);
+            break;
+        case RESTART:
+            gpScreen = new RestartScreen(gpDisplay, bootMode);
             break;
         default:
             gpScreen = nullptr;
             break;
     };
 
-    if (gpScreen != nullptr) {
-        gpScreen->init();
-        prevDisplayMode = currDisplayMode;
-        return true;
-    }
+    if (gpScreen == nullptr )
+        return false;
+
+    gpScreen->init();
+    prevDisplayMode = currDisplayMode;
+    nextDisplayMode = currDisplayMode;
     return true;
 }
 
 bool DisplayAddon::isDisplayPowerOff()
 {
+    Gamepad * gamepad = Storage::getInstance().GetGamepad();
+
     if (turnOffWhenSuspended && get_usb_suspended()) {
-        if (displayIsPowerOn) setDisplayPower(0);
+        if (displayIsPowerOn)
+            setDisplayPower(0);
         return true;
     } else {
-        if (!displayIsPowerOn) setDisplayPower(1);
+        if (!displayIsPowerOn)
+            setDisplayPower(1);
     }
 
     if (!displaySaverTimeout) return false;
@@ -144,12 +148,19 @@ bool DisplayAddon::isDisplayPowerOff()
         displaySaverTimer = displaySaverTimeout;
         setDisplayPower(1);
     } else if (!!displaySaverTimeout && displaySaverTimer <= 0) {
-        setDisplayPower(0);
+        if (displaySaverMode == DisplaySaverMode::DISPLAY_SAVER_DISPLAY_OFF) {
+            setDisplayPower(0);
+        } else {
+            if (currDisplayMode != DISPLAY_SAVER) {
+                currDisplayMode = DISPLAY_SAVER;
+                updateDisplayScreen();
+            }
+        }
     }
 
     prevMillis = getMillis();
 
-    return (!!displaySaverTimeout && displaySaverTimer <= 0);
+    return ((!!displaySaverTimeout && displaySaverTimer <= 0) && (displaySaverMode == DisplaySaverMode::DISPLAY_SAVER_DISPLAY_OFF));
 }
 
 void DisplayAddon::setDisplayPower(uint8_t status)
@@ -167,8 +178,26 @@ void DisplayAddon::process() {
         return;
     }
 
+    // Core0 requested a new display mode
+    if (nextDisplayMode != currDisplayMode ) {
+        currDisplayMode = nextDisplayMode;
+        updateDisplayScreen();
+    }
+
     int8_t screenReturn = gpScreen->update();
     gpScreen->draw();
+
+    if (!configMode && screenReturn < 0) {
+        Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
+        if (prevValues != values) {
+            if ((values & mapMenuToggle->pinMask) || (values & mapMenuSelect->pinMask)) {
+                if (currDisplayMode != DisplayMode::MAIN_MENU) {
+                    screenReturn = DisplayMode::MAIN_MENU;
+                }
+            }
+            prevValues = values;
+        }
+    }
 
     // -1 = we do not change state
     if (screenReturn >= 0) {
@@ -181,7 +210,24 @@ void DisplayAddon::process() {
 }
 
 const DisplayOptions& DisplayAddon::getDisplayOptions() {
-    bool configMode = Storage::getInstance().GetConfigMode();
-    return configMode ? Storage::getInstance().getPreviewDisplayOptions() : Storage::getInstance().getDisplayOptions();
+    return Storage::getInstance().getDisplayOptions();
 }
 
+
+void DisplayAddon::handleSystemRestart(GPEvent* e) {
+    nextDisplayMode = DisplayMode::RESTART;
+    bootMode = (uint32_t)((GPRestartEvent*)e)->bootMode;
+}
+
+void DisplayAddon::handleMenuNavigation(GPEvent* e) {
+    // Swap between main menu and buttons if we press toggle
+    if (((GPMenuNavigateEvent*)e)->menuAction == GpioAction::MENU_NAVIGATION_TOGGLE) {
+        if (currDisplayMode == BUTTONS) {
+            nextDisplayMode = MAIN_MENU;
+        } else if (currDisplayMode == MAIN_MENU) {
+            nextDisplayMode = BUTTONS;
+        }
+    } else if (currDisplayMode == MAIN_MENU) {
+        ((MainMenuScreen*)gpScreen)->updateEventMenuNavigation(((GPMenuNavigateEvent*)e)->menuAction);
+    }
+}

@@ -7,6 +7,7 @@ export default {
 		'zh-CN': '简体中文 (Chinês simplificado)',
 		'de-DE': 'Deutsch (Alemão)',
 		'ja-JP': '日本語 (Japonesa)',
+		'ko-KR': '한국어 (coreano)',
 	},
 	'color-scheme': {
 		dark: 'Escuro',
@@ -15,7 +16,5 @@ export default {
 	},
 	'keyboard-mapper': {
 		'key-header': 'Tecla',
-		'error-conflict': 'A tecla {{key}} já está atribuída',
-		'error-invalid': '{{key}} é inválida para esta placa',
 	},
 };

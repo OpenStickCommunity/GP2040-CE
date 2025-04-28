@@ -1,6 +1,8 @@
 #include "addons/rotaryencoder.h"
 
+#include "eventmanager.h"
 #include "storagemanager.h"
+#include "GPEncoderEvent.h"
 #include "types.h"
 
 #include "GamepadEnums.h"
@@ -122,10 +124,18 @@ void RotaryEncoderInput::process()
                 int8_t axis = mapEncoderValueDPad(i, encoderValues[i], encoderMap[i].pulsesPerRevolution);
                 dpadUp = (axis == 1);
                 dpadDown = (axis == -1);
+            } else if (encoderMap[i].mode == ENCODER_MODE_VOLUME) {
+                // Prevents NONE kick-out, do nothing for now but rely on GP events
             }
 
             if ((encoderValues[i] - prevValues[i]) != 0) {
                 encoderState[i].changeTime = now;
+
+                if ((encoderValues[i] - prevValues[i]) > 0) {
+                    EventManager::getInstance().triggerEvent(new GPEncoderChangeEvent(i, 1));
+                } else if ((encoderValues[i] - prevValues[i]) < 0) {
+                    EventManager::getInstance().triggerEvent(new GPEncoderChangeEvent(i, -1));
+                }
             }
 
             if ((encoderMap[i].resetAfter > 0) && (lastChange >= encoderMap[i].resetAfter)) {

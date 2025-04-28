@@ -1,0 +1,11 @@
+.reactive-led-grid {
+	display: grid;
+	grid-template-columns: auto auto auto auto auto;
+}
+
+@media only screen and (max-width: 680px) {
+	.reactive-led-grid {
+		display: flex;
+		flex-direction: column;
+	}
+}

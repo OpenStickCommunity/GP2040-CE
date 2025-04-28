@@ -1,4 +1,3 @@
-import React from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { FormCheck, Row } from 'react-bootstrap';
 
@@ -23,10 +22,6 @@ const SNES = ({ values, errors, handleChange, handleCheckbox }) => {
 			<div id="SNESpadAddonOptions" hidden={!values.SNESpadAddonEnabled}>
 				<Row>
 					<Trans ns="AddonsConfig" i18nKey="snes-extension-sub-header-text">
-						<p>
-							Note: If the Display is enabled at the same time, this Addon will
-							be disabled.
-						</p>
 						<h3>Currently Supported Controllers</h3>
 						<p>
 							SNES pad: D-Pad Supported. B = B1, A = B2, Y = B3, X = B4, L = L1,

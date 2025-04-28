@@ -1,5 +1,5 @@
 import { AppContext } from '../Contexts/AppContext';
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { FormCheck, Row, FormLabel } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
@@ -36,8 +36,7 @@ const I2CAnalog1219 = ({ values, errors, handleChange, handleCheckbox }) => {
 				hidden={
 					!(values.I2CAnalog1219InputEnabled && getAvailablePeripherals('i2c'))
 				}
-			>
-			</div>
+			></div>
 			{getAvailablePeripherals('i2c') ? (
 				<FormCheck
 					label={t('Common:switch-enabled')}

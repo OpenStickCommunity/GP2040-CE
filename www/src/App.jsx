@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import { AppContextProvider } from './Contexts/AppContext';
@@ -25,7 +24,7 @@ const App = () => {
 		<AppContextProvider>
 			<Router>
 				<Navigation />
-				<div className="container-fluid body-content">
+				<div className="body-content container-lg">
 					<Routes>
 						<Route path="/" element={<HomePage />} />
 						<Route path="/settings" element={<SettingsPage />} />

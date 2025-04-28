@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import * as yup from 'yup';
 
 import WebApi, { basePeripheralMapping } from '../Services/WebApi';
@@ -13,6 +13,12 @@ let checkExpansionPins = null;
 yup.addMethod(yup.string, 'validateColor', function () {
 	return this.test('', 'Valid hex color required', (value) =>
 		value?.match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i),
+	);
+});
+
+yup.addMethod(yup.string, 'validateUSBHexID', function () {
+	return this.test('', 'Valid USB hex ID required', (value) =>
+		value?.match(/^([0-9a-f]{4})$/i),
 	);
 });
 

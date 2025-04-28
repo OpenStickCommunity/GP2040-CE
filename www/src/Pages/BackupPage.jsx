@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useContext } from 'react';
+import { useEffect, useState, useRef, useContext } from 'react';
 import { AppContext } from '../Contexts/AppContext';
 import { Button, Form, Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';

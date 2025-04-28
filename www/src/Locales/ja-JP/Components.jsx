@@ -6,6 +6,7 @@ export default {
 		'zh-CN': '简体中文 (中国語 簡体字)',
 		'de-DE': 'Deutsch (ドイツ語)',
 		'ja-JP': '日本語 (Japanese)',
+		'ko-KR': '한국어 (韓国語)',
 	},
 	'color-scheme': {
 		dark: 'ダーク',
@@ -14,7 +15,5 @@ export default {
 	},
 	'keyboard-mapper': {
 		'key-header': 'キー',
-		'error-conflict': '{{key}} キーは既に割り当て済みです',
-		'error-invalid': 'このボードでは {{key}} は無効です',
 	},
 };

@@ -46,6 +46,10 @@ void GPGFX_OBD_SSD1306::drawPixel(uint8_t x, uint8_t y, uint32_t color) {
 	obdSetPixel(&obd, x, y, color, 1);
 }
 
+uint32_t GPGFX_OBD_SSD1306::getPixel(uint8_t x, uint8_t y) {
+	return 0;
+}
+
 void GPGFX_OBD_SSD1306::drawText(uint8_t x, uint8_t y, std::string text, uint8_t invert) {
     obdWriteString(&obd, 0, x, y, (char*)text.c_str(), FONT_6x8, 0, 1);
 }
@@ -62,7 +66,7 @@ void GPGFX_OBD_SSD1306::drawRectangle(uint16_t x, uint16_t y, uint16_t width, ui
     obdRectangle(&obd, x, y, width, height, color, filled);
 }
 
-void GPGFX_OBD_SSD1306::drawSprite(uint8_t* spriteData, uint16_t width, uint16_t height, uint16_t pitch, uint16_t x, uint16_t y, uint8_t priority) {
+void GPGFX_OBD_SSD1306::drawSprite(uint8_t* spriteData, uint16_t width, uint16_t height, uint16_t pitch, uint16_t x, uint16_t y, uint8_t priority, double scale) {
     obdDrawSprite(&obd, spriteData, width, height, pitch, x, y, priority);
 }
 

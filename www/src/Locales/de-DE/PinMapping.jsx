@@ -1,16 +1,8 @@
 export default {
-	'header-text': 'Pin Zuweisung',
 	'sub-header-text':
 		'Verwenden Sie das Formular unten, um Ihre Tasten-zu-Pin-Zuordnung neu zu konfigurieren.',
 	'alert-text':
 		'Die Zuordnung von Tasten zu Pins, die nicht verbunden oder verfügbar sind, kann das Gerät in einen nicht funktionsfähigen Zustand versetzen. Um die ungültige Konfiguration zu löschen, gehen Sie zur Seite <2>Einstellungen zurücksetzen</2>.',
-	'pin-header-label': 'Pin',
-	errors: {
-		conflict: 'Pin {{pin}} ist bereits zugewiesen zu {{conflictedMappings}}',
-		required: '{{button}} ist erforderlich',
-		invalid: '{{pin}} ist ungültig für dieses Board',
-		used: '{{pin}} ist bereits einer anderen Funktion zugewiesen',
-	},
 	actions: {
 		NONE: 'Keine',
 		RESERVED: 'Reserviert',

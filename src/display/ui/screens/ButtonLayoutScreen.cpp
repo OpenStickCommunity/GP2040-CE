@@ -6,14 +6,16 @@
 #include "drivers/xinput/XInputDriver.h"
 
 void ButtonLayoutScreen::init() {
-    const InputHistoryOptions& inputHistoryOptions = Storage::getInstance().getAddonOptions().inputHistoryOptions;
-    isInputHistoryEnabled = inputHistoryOptions.enabled;
-    inputHistoryX = inputHistoryOptions.row;
-    inputHistoryY = inputHistoryOptions.col;
-    inputHistoryLength = inputHistoryOptions.length;
-    profileDelayStart = getMillis();
+    isInputHistoryEnabled = Storage::getInstance().getDisplayOptions().inputHistoryEnabled;
+    inputHistoryX = Storage::getInstance().getDisplayOptions().inputHistoryRow;
+    inputHistoryY = Storage::getInstance().getDisplayOptions().inputHistoryCol;
+    inputHistoryLength = Storage::getInstance().getDisplayOptions().inputHistoryLength;
     gamepad = Storage::getInstance().GetGamepad();
     inputMode = DriverManager::getInstance().getInputMode();
+
+    EventManager::getInstance().registerEventHandler(GP_EVENT_PROFILE_CHANGE, GPEVENT_CALLBACK(this->handleProfileChange(event)));
+    EventManager::getInstance().registerEventHandler(GP_EVENT_USBHOST_MOUNT, GPEVENT_CALLBACK(this->handleUSB(event)));
+    EventManager::getInstance().registerEventHandler(GP_EVENT_USBHOST_UNMOUNT, GPEVENT_CALLBACK(this->handleUSB(event)));
     
     footer = "";
     historyString = "";
@@ -32,19 +34,20 @@ void ButtonLayoutScreen::init() {
         pushElement(currLayoutRight[elementCtr]);
     }
 
-	// start with profile modes displayed
-    prevGamepadProfileNumber = -2;
-    prevLEDAnimationProfileNumber = -2;
-    prevSpecialMoveProfileNumber = -2;
+	// get current profile number. Future changes are communicated by event
+    gamePadProfileNumber = (int16_t)(getGamepad()->getOptions().profileNumber);
+ 
     prevLayoutLeft = Storage::getInstance().getDisplayOptions().buttonLayout;
     prevLayoutRight = Storage::getInstance().getDisplayOptions().buttonLayoutRight;
     prevLeftOptions = Storage::getInstance().getDisplayOptions().buttonLayoutCustomOptions.paramsLeft;
     prevRightOptions = Storage::getInstance().getDisplayOptions().buttonLayoutCustomOptions.paramsRight;
+    prevOrientation = Storage::getInstance().getDisplayOptions().buttonLayoutOrientation;
 
     // we cannot look at macro options enabled, pull the pins
     
     // macro display now uses our pin functions, so we need to check if pins are enabled...
     macroEnabled = false;
+    hasTurboAssigned = false;
     // Macro Button initialized by void Gamepad::setup()
     GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
@@ -59,10 +62,21 @@ void ButtonLayoutScreen::init() {
             case GpioAction::BUTTON_PRESS_MACRO_6:
                 macroEnabled = true;
                 break;
+            case GpioAction::BUTTON_PRESS_TURBO:
+                hasTurboAssigned = true;
+                break;
             default:
                 break;
         }
     }
+
+    // determine which fields will be displayed on the status bar
+    showInputMode = Storage::getInstance().getDisplayOptions().inputMode;
+    showTurboMode = Storage::getInstance().getDisplayOptions().turboMode && hasTurboAssigned;
+    showDpadMode = Storage::getInstance().getDisplayOptions().dpadMode;
+    showSocdMode = Storage::getInstance().getDisplayOptions().socdMode;
+    showMacroMode = Storage::getInstance().getDisplayOptions().macroMode;
+    showProfileMode = Storage::getInstance().getDisplayOptions().profileMode;
 
     getRenderer()->clearScreen();
 }
@@ -71,10 +85,22 @@ void ButtonLayoutScreen::shutdown() {
     clearElements();
 }
 
-void ButtonLayoutScreen::addCustomHeader(std::string newStr){
-    profileDelayStart = getMillis();
-    profileModeString = newStr;
-    profileModeDisplay = true;
+void ButtonLayoutScreen::addCustomHeader(std::string newStr, std::string identifier){
+    for(unsigned int index = 0; index < bannerIdentifier.size(); ++index)
+    {
+        if(bannerIdentifier[index].compare(identifier) == 0)
+        {
+            bannerDelayStart = getMillis();
+            bannerString[index] = newStr;
+            return;
+        }
+    }
+
+    if(bannerString.size() == 0)
+        bannerDelayStart = getMillis();
+
+    bannerString.push_back(newStr);
+    bannerIdentifier.push_back(identifier);
 }
 
 void ButtonLayoutScreen::updateCustomHeaders()
@@ -82,79 +108,69 @@ void ButtonLayoutScreen::updateCustomHeaders()
 	Storage& storage = Storage::getInstance();
 
     // Check to see if gamepad profile has changed
-    if(!ledAnimationProfileModeDisplay && !specialMoveProfileModeDisplay){
-        int16_t profileNumber = (int16_t)(getGamepad()->getOptions().profileNumber);
-        if (prevGamepadProfileNumber != profileNumber) {
-            prevGamepadProfileNumber = profileNumber;
+    if (prevGamepadProfileNumber != gamePadProfileNumber) {
+        prevGamepadProfileNumber = gamePadProfileNumber;
 
-            std::string profileStr;
-            profileStr.assign(storage.currentProfileLabel(), strlen(storage.currentProfileLabel()));
-            if (profileStr.empty()) {
-                profileStr = "     Profile #";
-                profileStr +=  std::to_string(profileNumber);
-            } else {
-                profileStr.insert(profileStr.begin(), (21-profileStr.length())/2, ' ');
-            }
-
-            gamepadProfileModeDisplay = true;
-            addCustomHeader(profileStr);
+        std::string profileStr;
+        profileStr.assign(storage.currentProfileLabel(), strlen(storage.currentProfileLabel()));
+        if (profileStr.empty()) {
+            profileStr = "     Profile #";
+            profileStr +=  std::to_string(gamePadProfileNumber);
+        } else {
+            profileStr.insert(profileStr.begin(), (21-profileStr.length())/2, ' ');
         }
+
+        addCustomHeader(profileStr, "profile");
     }
 
     // Check to see if LED animation profile has changed
-    if(!gamepadProfileModeDisplay && !specialMoveProfileModeDisplay){
-        int8_t profileNumber = AnimationStation::options.baseProfileIndex;
-        if (prevLEDAnimationProfileNumber != profileNumber) {
-            prevLEDAnimationProfileNumber = profileNumber;
+    int8_t profileNumber = AnimationStation::options.baseProfileIndex;
+    if (prevLEDAnimationProfileNumber != profileNumber) {
+        prevLEDAnimationProfileNumber = profileNumber;
 
-            std::string profileStr;
-            if(profileNumber != -1)
-            {
-                profileStr = "    LED Profile #";
-                profileStr +=  std::to_string(profileNumber+1); //add 1 so its from 1-x not from 0-x
-            }
-            else
-            {
-                profileStr = "    LED Profile OFF";
-            }
-
-            ledAnimationProfileModeDisplay = true;
-            addCustomHeader(profileStr);
+        std::string profileStr;
+        if(profileNumber != -1)
+        {
+            profileStr = "    LED Profile #";
+            profileStr +=  std::to_string(profileNumber+1); //add 1 so its from 1-x not from 0-x
         }
+        else
+        {
+            profileStr = "    LED Profile OFF";
+        }
+
+        addCustomHeader(profileStr, "led");
     }
     
     // Check to see if special move profile has changed
-    /*if(!gamepadProfileModeDisplay && !ledAnimationProfileModeDisplay){
-        int8_t profileNumber = SpecialMoveSystem::Options.CurrentProfileIndex;
-        if (prevSpecialMoveProfileNumber != profileNumber) {
-            prevSpecialMoveProfileNumber = profileNumber;
+    /*int8_t profileNumber = SpecialMoveSystem::Options.CurrentProfileIndex;
+    if (prevSpecialMoveProfileNumber != profileNumber) {
+        prevSpecialMoveProfileNumber = profileNumber;
 
-        	const SpecialMoveOptions_Proto& optionsProto = storage.getSpecialMoveOptions();
-            std::string profileStr;
-            profileStr.assign(optionsProto.profiles[profileNumber].Label, strlen(optionsProto.profiles[profileNumber].Label));
-            if (profileStr.empty()) {
-                profileStr = "Special Profile #";
-                profileStr +=  std::to_string(profileNumber);
-            } else {
-                profileStr.insert(profileStr.begin(), (21-profileStr.length())/2, ' ');
-            }
-
-            specialMoveProfileModeDisplay = true;
-            addCustomHeader(profileStr);
+        const SpecialMoveOptions_Proto& optionsProto = storage.getSpecialMoveOptions();
+        std::string profileStr;
+        profileStr.assign(optionsProto.profiles[profileNumber].Label, strlen(optionsProto.profiles[profileNumber].Label));
+        if (profileStr.empty()) {
+            profileStr = "Special Profile #";
+            profileStr +=  std::to_string(profileNumber);
+        } else {
+            profileStr.insert(profileStr.begin(), (21-profileStr.length())/2, ' ');
         }
+
+        addCustomHeader(profileStr, "special");
     }*/
 }
 
 int8_t ButtonLayoutScreen::update() {
-	Storage& storage = Storage::getInstance();
-    bool configMode = storage.GetConfigMode();
+    bool configMode = DriverManager::getInstance().isConfigMode();
     
     // Check if we've updated button layouts while in config mode
     if (configMode) {
-        uint8_t layoutLeft = storage.getDisplayOptions().buttonLayout;
-        uint8_t layoutRight = storage.getDisplayOptions().buttonLayoutRight;
-        bool inputHistoryEnabled = storage.getAddonOptions().inputHistoryOptions.enabled;
-        if ((prevLayoutLeft != layoutLeft) || (prevLayoutRight != layoutRight) || (isInputHistoryEnabled != inputHistoryEnabled) || compareCustomLayouts()) {
+        uint8_t layoutLeft = Storage::getInstance().getDisplayOptions().buttonLayout;
+        uint8_t layoutRight = Storage::getInstance().getDisplayOptions().buttonLayoutRight;
+        uint8_t buttonLayoutOrientation = Storage::getInstance().getDisplayOptions().buttonLayoutOrientation;
+        bool inputHistoryEnabled = Storage::getInstance().getDisplayOptions().inputHistoryEnabled;
+        if ((prevLayoutLeft != layoutLeft) || (prevLayoutRight != layoutRight) || (isInputHistoryEnabled != inputHistoryEnabled) || compareCustomLayouts() || (prevOrientation != buttonLayoutOrientation)) {
             shutdown();
             init();
         }
@@ -168,7 +184,7 @@ int8_t ButtonLayoutScreen::update() {
 		processInputHistory();
 
     // check for exit/screen change
-    if (Storage::getInstance().GetConfigMode()) {
+    if (DriverManager::getInstance().isConfigMode()) {
         uint16_t buttonState = getGamepad()->state.buttons;
         if (prevButtonState && !buttonState) {
             if (prevButtonState == GAMEPAD_MASK_B1) {
@@ -188,96 +204,135 @@ void ButtonLayoutScreen::generateHeader() {
 	Storage& storage = Storage::getInstance();
 
  	// Display Profile # banner
-	if ( profileModeDisplay ) {
-		if (((getMillis() - profileDelayStart) / 1000) < profileDelay) {
-			statusBar = profileModeString;
-			return;
-		} else {
-			profileModeDisplay = false;
-            gamepadProfileModeDisplay = false;
-            ledAnimationProfileModeDisplay = false;
-            specialMoveProfileModeDisplay = false;           
+	if ( bannerString.size() ) {
+		if (!inbetweenBanners)
+        {
+            if(((getMillis() - bannerDelayStart) / 1000) < bannerDelay) {
+			    statusBar = bannerString[0];
+            } else {
+                bannerString.pop_front();
+                bannerIdentifier.pop_front();
+                if( bannerString.size() ) {
+                    inbetweenBanners = true;
+                    bannerDelayStart = getMillis();
+                }
+            }
+		} else if (inbetweenBanners){
+            if (((float)(getMillis() - bannerDelayStart) / 1000.0f) > inbetweenBannerDelay) {
+                inbetweenBanners = false;
+                bannerDelayStart = getMillis();
+            }
 		}
+        
+        return;
 	}
 
-	// Display standard header
-	switch (inputMode)
-	{
-		case INPUT_MODE_PS3:    statusBar += "PS3"; break;
-		case INPUT_MODE_GENERIC: statusBar += "USBHID"; break;
-		case INPUT_MODE_SWITCH: statusBar += "SWITCH"; break;
-		case INPUT_MODE_MDMINI: statusBar += "GEN/MD"; break;
-		case INPUT_MODE_NEOGEO: statusBar += "NGMINI"; break;
-		case INPUT_MODE_PCEMINI: statusBar += "PCE/TG"; break;
-		case INPUT_MODE_EGRET: statusBar += "EGRET"; break;
-		case INPUT_MODE_ASTRO: statusBar += "ASTRO"; break;
-		case INPUT_MODE_PSCLASSIC: statusBar += "PSC"; break;
-		case INPUT_MODE_XBOXORIGINAL: statusBar += "OGXBOX"; break;
-		case INPUT_MODE_PS4:
-			statusBar += "PS4";
-			if(((PS4Driver*)DriverManager::getInstance().getDriver())->getAuthSent() == true )
-				statusBar += ":AS";
-			else
-				statusBar += "   ";
-			break;
-		case INPUT_MODE_PS5:
-			statusBar += "PS5";
-			if(((PS4Driver*)DriverManager::getInstance().getDriver())->getAuthSent() == true )
-				statusBar += ":AS";
-			else
-				statusBar += "   ";
-			break;
-		case INPUT_MODE_XBONE:
-			statusBar += "XBON";
-			if(((XBOneDriver*)DriverManager::getInstance().getDriver())->getAuthSent() == true )
-				statusBar += "E";
-			else
-				statusBar += "*";
-			break;
-		case INPUT_MODE_XINPUT:
-            statusBar += "X";
-            if(((XInputDriver*)DriverManager::getInstance().getDriver())->getAuthEnabled() == true )
-                statusBar += "B360";
-            else
-                statusBar += "INPUT";
-            break;
-		case INPUT_MODE_KEYBOARD: statusBar += "HID-KB"; break;
-		case INPUT_MODE_CONFIG: statusBar += "CONFIG"; break;
-	}
+    if (showInputMode) {
+        // Display standard header
+        switch (inputMode)
+        {
+            case INPUT_MODE_PS3:    statusBar += "PS3"; break;
+            case INPUT_MODE_GENERIC: statusBar += "USBHID"; break;
+            case INPUT_MODE_SWITCH: statusBar += "SWITCH"; break;
+            case INPUT_MODE_MDMINI: statusBar += "GEN/MD"; break;
+            case INPUT_MODE_NEOGEO: statusBar += "NGMINI"; break;
+            case INPUT_MODE_PCEMINI: statusBar += "PCE/TG"; break;
+            case INPUT_MODE_EGRET: statusBar += "EGRET"; break;
+            case INPUT_MODE_ASTRO: statusBar += "ASTRO"; break;
+            case INPUT_MODE_PSCLASSIC: statusBar += "PSC"; break;
+            case INPUT_MODE_XBOXORIGINAL: statusBar += "OGXBOX"; break;
+            case INPUT_MODE_PS4:
+                statusBar += "PS4";
+                if(((PS4Driver*)DriverManager::getInstance().getDriver())->getAuthSent() == true )
+                    statusBar += ":AS";
+                else
+                    statusBar += "   ";
+                break;
+            case INPUT_MODE_PS5:
+                statusBar += "PS5";
+                if(((PS4Driver*)DriverManager::getInstance().getDriver())->getAuthSent() == true )
+                    statusBar += ":AS";
+                else
+                    statusBar += "   ";
+                break;
+            case INPUT_MODE_XBONE:
+                statusBar += "XBON";
+                if(((XBOneDriver*)DriverManager::getInstance().getDriver())->getAuthSent() == true )
+                    statusBar += "E";
+                else
+                    statusBar += "*";
+                break;
+            case INPUT_MODE_XINPUT:
+                statusBar += "X";
+                if(((XInputDriver*)DriverManager::getInstance().getDriver())->getAuthEnabled() == true )
+                    statusBar += "B360";
+                else
+                    statusBar += "INPUT";
+                break;
+            case INPUT_MODE_KEYBOARD: statusBar += "HID-KB"; break;
+            case INPUT_MODE_CONFIG: statusBar += "CONFIG"; break;
+        }
+    }
 
-	const TurboOptions& turboOptions = storage.getAddonOptions().turboOptions;
-	if ( turboOptions.enabled ) {
-		statusBar += " T";
-		if ( turboOptions.shotCount < 10 ) // padding
-			statusBar += "0";
-		statusBar += std::to_string(turboOptions.shotCount);
-	} else {
-		statusBar += "    "; // no turbo, don't show Txx setting
-	}
+    if (showTurboMode) {
+        const TurboOptions& turboOptions = storage.getAddonOptions().turboOptions;
+        if ( turboOptions.enabled ) {
+            statusBar += " T";
+            if ( turboOptions.shotCount < 10 ) // padding
+                statusBar += "0";
+            statusBar += std::to_string(turboOptions.shotCount);
+        } else {
+            statusBar += "    "; // no turbo, don't show Txx setting
+        }
+    }
 
-	const GamepadOptions & options = gamepad->getOptions();
+    if (showDpadMode) {
+        switch (gamepad->getActiveDpadMode())
+        {
+            case DPAD_MODE_DIGITAL:      statusBar += " D"; break;
+            case DPAD_MODE_LEFT_ANALOG:  statusBar += " L"; break;
+            case DPAD_MODE_RIGHT_ANALOG: statusBar += " R"; break;
+        }
+    }
 
-	switch (gamepad->getActiveDpadMode())
-	{
-		case DPAD_MODE_DIGITAL:      statusBar += " D"; break;
-		case DPAD_MODE_LEFT_ANALOG:  statusBar += " L"; break;
-		case DPAD_MODE_RIGHT_ANALOG: statusBar += " R"; break;
-	}
+    if (showSocdMode) {
+        switch (Gamepad::resolveSOCDMode(gamepad->getOptions()))
+        {
+            case SOCD_MODE_NEUTRAL:               statusBar += " SOCD-N"; break;
+            case SOCD_MODE_UP_PRIORITY:           statusBar += " SOCD-U"; break;
+            case SOCD_MODE_SECOND_INPUT_PRIORITY: statusBar += " SOCD-L"; break;
+            case SOCD_MODE_FIRST_INPUT_PRIORITY:  statusBar += " SOCD-F"; break;
+            case SOCD_MODE_BYPASS:                statusBar += " SOCD-X"; break;
+        }
+    }
 
-	switch (Gamepad::resolveSOCDMode(gamepad->getOptions()))
-	{
-		case SOCD_MODE_NEUTRAL:               statusBar += " SOCD-N"; break;
-		case SOCD_MODE_UP_PRIORITY:           statusBar += " SOCD-U"; break;
-		case SOCD_MODE_SECOND_INPUT_PRIORITY: statusBar += " SOCD-L"; break;
-		case SOCD_MODE_FIRST_INPUT_PRIORITY:  statusBar += " SOCD-F"; break;
-		case SOCD_MODE_BYPASS:                statusBar += " SOCD-X"; break;
-	}
-	if (macroEnabled)
-		statusBar += " M";
+    if (showMacroMode && macroEnabled) statusBar += " M";
+
+    if (showProfileMode) {
+        statusBar += " Pr:";
+
+        std::string profile;
+        profile.assign(storage.currentProfileLabel(), strlen(storage.currentProfileLabel()));
+        if (profile.empty()) {
+            statusBar += std::to_string(getGamepad()->getOptions().profileNumber);
+        } else {
+            statusBar += profile;
+        }
+    }
+
+    trim(statusBar);
+}
+
+void ButtonLayoutScreen::drawDebug() {
+ 	//LED debug
+   	getRenderer()->drawText(0, 0, AnimationStation::printfs[0]);
+    getRenderer()->drawText(0, 1, AnimationStation::printfs[1]);
+    getRenderer()->drawText(0, 2, AnimationStation::printfs[2]);
+    getRenderer()->drawText(0, 3, AnimationStation::printfs[3]);
 }
 
 void ButtonLayoutScreen::drawScreen() {
-    if (profileModeDisplay) {
+    if (bannerString.size() > 0) {
         getRenderer()->drawRectangle(0, 0, 128, 7, true, true);
     	getRenderer()->drawText(0, 0, statusBar, true);
     } else {
@@ -285,15 +340,7 @@ void ButtonLayoutScreen::drawScreen() {
 	}
     getRenderer()->drawText(0, 7, footer);
 
- 	Storage& storage = Storage::getInstance();
-   	getRenderer()->drawText(0, 0, AnimationStation::printfs[0]);
-    getRenderer()->drawText(0, 1, AnimationStation::printfs[1]);
-    getRenderer()->drawText(0, 2, AnimationStation::printfs[2]);
-    getRenderer()->drawText(0, 3, AnimationStation::printfs[3]);
-    getRenderer()->drawText(0, 4, storage.printfs[0]);
-    getRenderer()->drawText(0, 5, storage.printfs[1]);
-    getRenderer()->drawText(0, 6, storage.printfs[2]);
-    getRenderer()->drawText(0, 7, storage.printfs[3]);
+    drawDebug();
 }
 
 GPLever* ButtonLayoutScreen::addLever(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, uint16_t inputType) {
@@ -560,4 +607,30 @@ bool ButtonLayoutScreen::pressedDownRight()
     }
 
     return false;
+}
+
+void ButtonLayoutScreen::handleProfileChange(GPEvent* e) {
+    GPProfileChangeEvent* event = (GPProfileChangeEvent*)e;
+
+    gamePadProfileNumber = event->currentValue;
+    prevGamepadProfileNumber = event->previousValue;
+}
+
+void ButtonLayoutScreen::handleUSB(GPEvent* e) {
+    //GPUSBHostEvent* event = (GPUSBHostEvent*)e;
+    
+    std::string customBannerStr;
+
+    if (e->eventType() == GP_EVENT_USBHOST_MOUNT) {
+        customBannerStr = "    USB Connected";
+    } else if (e->eventType() == GP_EVENT_USBHOST_UNMOUNT) {
+        customBannerStr = "  USB Disconnnected";
+    }
+
+    addCustomHeader(customBannerStr, "USB");
+}
+
+void ButtonLayoutScreen::trim(std::string &s) {
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(),
+            std::not1(std::ptr_fun<int, int>(std::isspace))));
 }

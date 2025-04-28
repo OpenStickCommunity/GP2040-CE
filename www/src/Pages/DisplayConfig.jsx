@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
-import { Button, Form, Row, Col, FormLabel } from 'react-bootstrap';
+import { useContext, useEffect, useState, useRef } from 'react';
+import { Button, Form, Row, Col, FormLabel, Tab, Tabs } from 'react-bootstrap';
 import { Formik, useFormikContext, Field } from 'formik';
 import chunk from 'lodash/chunk';
 import * as yup from 'yup';
@@ -13,34 +13,46 @@ import Section from '../Components/Section';
 import WebApi from '../Services/WebApi';
 
 const ON_OFF_OPTIONS = [
-	{ label: 'Disabled', value: 0 },
-	{ label: 'Enabled', value: 1 },
+	{ label: 'form.display-state.disabled', value: 0 },
+	{ label: 'form.display-state.enabled', value: 1 },
 ];
 
 const SPLASH_MODES = [
-	{ label: 'Enabled (Custom Splash Screen)', value: 0 }, // STATICSPLASH
-	{ label: 'Logo Close In', value: 1 }, // CLOSEIN
-	{ label: 'Logo Close In Custom', value: 2 }, // CLOSEINCUSTOM
-	{ label: 'Disabled', value: 3 }, // NOSPLASH
+	{ label: 'form.splash-modes.enabled', value: 0 }, // STATICSPLASH
+	{ label: 'form.splash-modes.disabled', value: 3 }, // NOSPLASH
 ];
 
 const DISPLAY_FLIP_MODES = [
-	{ label: 'None', value: 0 },
-	{ label: 'Flip', value: 1 },
-	{ label: 'Mirror', value: 2 },
-	{ label: 'Flip and Mirror', value: 3 },
+	{ label: 'form.flip-display.none', value: 0 },
+	{ label: 'form.flip-display.flip', value: 1 },
+	{ label: 'form.flip-display.mirror', value: 2 },
+	{ label: 'form.flip-display.flip-mirror', value: 3 },
+];
+
+const DISPLAY_SAVER_MODES = [
+	{ label: 'form.saver-modes.display-off', value: 0 },
+	{ label: 'form.saver-modes.snow', value: 1 },
+	{ label: 'form.saver-modes.bounce', value: 2 },
+	{ label: 'form.saver-modes.pipes', value: 3 },
+	{ label: 'form.saver-modes.toast', value: 4 },
+];
+
+const LAYOUT_ORIENTATION = [
+	{ label: 'form.layout-modes.standard', value: 0 },
+	{ label: 'form.layout-modes.southpaw', value: 1 },
+	{ label: 'form.layout-modes.switched', value: 2 },
 ];
 
 const defaultValues = {
-	enabled: false,
-	flipDisplay: false,
-	invertDisplay: false,
+	enabled: 0,
+	flipDisplay: 0,
+	invertDisplay: 0,
 	buttonLayout: 0,
 	buttonLayoutRight: 3,
+	buttonLayoutOrientation: 0,
 	splashDuration: 0,
 	splashMode: 3,
 	splashImage: Array(16 * 64).fill(0), // 128 columns represented by bytes so 16 and 64 rows
-	invertSplash: false,
 	buttonLayoutCustomOptions: {
 		params: {
 			layout: 0,
@@ -58,6 +70,18 @@ const defaultValues = {
 		},
 	},
 	displaySaverTimeout: 0,
+	displaySaverMode: 0,
+	inputMode: true,
+	turboMode: true,
+	dpadMode: true,
+	socdMode: true,
+	macroMode: true,
+	profileMode: false,
+	inputHistoryEnabled: false,
+	inputHistoryLength: 21,
+	inputHistoryCol: 0,
+	inputHistoryRow: 7,
+	turnOffWhenSuspended: 0,
 };
 
 let buttonLayoutDefinitions = { buttonLayout: {}, buttonLayoutRight: {} };
@@ -70,15 +94,22 @@ let buttonLayoutRightSchema = buttonLayoutSchemaBase.label(
 );
 
 const schema = yup.object().shape({
-	enabled: yup.number().label('Enabled?'),
+	enabled: yup
+		.number()
+		.oneOf(ON_OFF_OPTIONS.map((o) => o.value))
+		.label('Enabled?'),
 	flipDisplay: yup
 		.number()
 		.oneOf(DISPLAY_FLIP_MODES.map((o) => o.value))
 		.label('Flip Display'),
-	invertDisplay: yup.number().label('Invert Display'),
+	invertDisplay: yup
+		.number()
+		.oneOf(ON_OFF_OPTIONS.map((o) => o.value))
+		.label('Invert Display'),
 	turnOffWhenSuspended: yup.number().label('Turn Off When Suspended'),
 	buttonLayout: buttonLayoutSchema,
 	buttonLayoutRight: buttonLayoutRightSchema,
+	buttonLayoutOrientation: yup.number().label('Layout Reversed'),
 	splashMode: yup
 		.number()
 		.required()
@@ -121,11 +152,50 @@ const schema = yup.object().shape({
 		}),
 	}),
 	splashDuration: yup.number().required().min(0).label('Splash Duration'),
-	displaySaverTimeout: yup.number().required().min(0).label('Display Saver'),
+	displaySaverTimeout: yup
+		.number()
+		.required()
+		.min(0)
+		.label('Display Saver Timeout'),
+	displaySaverMode: yup.number().required().min(0).label('Screen Saver'),
+	inputMode: yup.number().label('Display Input Mode'),
+	turboMode: yup.number().label('Display Turbo Mode'),
+	dpadMode: yup.number().label('Display D-Pad Mode'),
+	socdMode: yup.number().label('Display SOCD Mode'),
+	macroMode: yup.number().label('Display Macro Mode'),
+	profileMode: yup.number().label('Display Profile Mode'),
+	inputHistoryEnabled: yup.number().label('Input History Enabled?'),
+	inputHistoryLength: yup.number().label('Input History Length'),
+	inputHistoryCol: yup.number().label('Input History Column Position'),
+	inputHistoryRow: yup.number().label('Input History Row Position'),
 });
 
 const FormContext = () => {
 	const { values, setValues } = useFormikContext();
+
+	useEffect(() => {
+		async function setDisplayOptions() {
+			await WebApi.setDisplayOptions(values, true);
+		}
+
+		setDisplayOptions();
+	}, [values, setValues]);
+
+	return null;
+};
+
+const isButtonLayoutCustom = (values) =>
+	values.buttonLayout === 12 || values.buttonLayoutRight === 16;
+
+export default function DisplayConfigPage() {
+	const [loadingValues, setLoadingValues] = useState(true);
+	const [values, setValues] = useState(defaultValues);
+
+	const { updateUsedPins, getAvailablePeripherals, updatePeripherals } =
+		useContext(AppContext);
+	const [saveMessage, setSaveMessage] = useState('');
+
+	const { t } = useTranslation('');
 
 	useEffect(() => {
 		async function fetchData() {
@@ -140,84 +210,10 @@ const FormContext = () => {
 				Object.values(buttonLayoutDefinitions.buttonLayoutRight),
 			);
 			setValues(data);
+			setLoadingValues(false);
 		}
-		fetchData();
-	}, [setValues]);
-
-	useEffect(() => {
-		async function setDisplayOptions() {
-			if (!!values.enabled) values.enabled = parseInt(values.enabled);
-			if (!!values.flipDisplay)
-				values.flipDisplay = parseInt(values.flipDisplay);
-			if (!!values.invertDisplay)
-				values.invertDisplay = parseInt(values.invertDisplay);
-			if (!!values.buttonLayout)
-				values.buttonLayout = parseInt(values.buttonLayout);
-			if (!!values.buttonLayoutRight)
-				values.buttonLayoutRight = parseInt(values.buttonLayoutRight);
-			if (!!values.splashMode) values.splashMode = parseInt(values.splashMode);
-			if (!!values.splashChoice)
-				values.splashChoice = parseInt(values.splashChoice);
-			if (!!values.splashDuration)
-				values.splashDuration = parseInt(values.splashDuration);
-			if (!!values.turnOffWhenSuspended)
-				values.turnOffWhenSuspended = parseInt(values.turnOffWhenSuspended);
-
-			await WebApi.setDisplayOptions(values, true);
-		}
-
-		setDisplayOptions();
-	}, [values, setValues]);
-
-	useEffect(() => {
-		async function setSplashImage() {
-			if (!!values.enabled) values.enabled = parseInt(values.enabled);
-			if (!!values.flipDisplay)
-				values.flipDisplay = parseInt(values.flipDisplay);
-			if (!!values.invertDisplay)
-				values.invertDisplay = parseInt(values.invertDisplay);
-			if (!!values.turnOffWhenSuspended)
-				values.turnOffWhenSuspended = parseInt(values.turnOffWhenSuspended);
-			if (!!values.buttonLayout)
-				values.buttonLayout = parseInt(values.buttonLayout);
-			if (!!values.buttonLayoutRight)
-				values.buttonLayoutRight = parseInt(values.buttonLayoutRight);
-			if (!!values.splashMode) values.splashMode = parseInt(values.splashMode);
-			if (!!values.splashChoice)
-				values.splashChoice = parseInt(values.splashChoice);
-
-			await WebApi.setDisplayOptions(values, true);
-		}
-
-		setSplashImage();
-	}, [values.splashImage]);
-
-	return null;
-};
-
-const isButtonLayoutCustom = (values) =>
-	values.buttonLayout === 12 || values.buttonLayoutRight === 16;
-
-export default function DisplayConfigPage() {
-	const {
-		updateUsedPins,
-		getAvailablePeripherals,
-		getSelectedPeripheral,
-		updatePeripherals,
-	} = useContext(AppContext);
-	const [saveMessage, setSaveMessage] = useState('');
-
-	const { t } = useTranslation('');
-
-	DISPLAY_FLIP_MODES[0].label = t('DisplayConfig:form.flip-display-none');
-	DISPLAY_FLIP_MODES[1].label = t('DisplayConfig:form.flip-display-flip');
-	DISPLAY_FLIP_MODES[2].label = t('DisplayConfig:form.flip-display-mirror');
-	DISPLAY_FLIP_MODES[3].label = t(
-		'DisplayConfig:form.flip-display-flip-mirror',
-	);
-
-	useEffect(() => {
 		updatePeripherals();
+		fetchData();
 	}, []);
 
 	const onSuccess = async (values) => {
@@ -238,37 +234,49 @@ export default function DisplayConfigPage() {
 		return form.setFieldValue(field.name, base64);
 	};
 
+	if (loadingValues) {
+		return (
+			<div className="d-flex justify-content-center align-items-center loading">
+				<div className="spinner-border" role="status">
+					<span className="visually-hidden">{t('Common:loading-text')}</span>
+				</div>
+			</div>
+		);
+	}
+
 	return (
 		<Formik
 			validationSchema={schema}
 			onSubmit={onSuccess}
-			initialValues={defaultValues}
+			initialValues={values}
 		>
-			{({ handleSubmit, handleChange, values, errors, setFieldValue }) => {
-				const handlePeripheralChange = (e) => {
-					let device = getSelectedPeripheral('i2c', e.target.value);
-					handleChange(e);
-				};
-
-				return (
-					console.log('errors', errors) ||
-					console.log('values', values) || (
-						<Section title={t('DisplayConfig:header-text')}>
-							{getAvailablePeripherals('i2c') ? (
-								<div>
-									<p>{t('DisplayConfig:sub-header-text')}</p>
-									<ul>
-										<Trans ns="DisplayConfig" i18nKey="list-text">
-											<li>Monochrome display with 128x64 resolution</li>
-											<li>
-												Uses I2C with a SSD1306, SH1106, SH1107 or other
-												compatible display IC
-											</li>
-											<li>Supports 3.3v operation</li>
-										</Trans>
-									</ul>
-									<Form noValidate onSubmit={handleSubmit}>
-										<h1>{t('DisplayConfig:section.hardware-header')}</h1>
+			{({ handleSubmit, handleChange, values, errors, setFieldValue }) => (
+				<Section title={t('DisplayConfig:header-text')}>
+					{getAvailablePeripherals('i2c') ? (
+						<div>
+							<p>{t('DisplayConfig:sub-header-text')}</p>
+							<ul>
+								<Trans ns="DisplayConfig" i18nKey="list-text">
+									<li>Monochrome display with 128x64 resolution</li>
+									<li>
+										Uses I2C with a SSD1306, SH1106, SH1107 or other compatible
+										display IC
+									</li>
+									<li>Supports 3.3v operation</li>
+								</Trans>
+							</ul>
+							<Form noValidate onSubmit={handleSubmit}>
+								<Tabs
+									defaultActiveKey="defaultHardwareOptions"
+									id="displayConfigTabs"
+									className="mb-3 pb-0"
+									fill
+								>
+									<Tab
+										key="defaultHardwareOptions"
+										eventKey="defaultHardwareOptions"
+										title={t('DisplayConfig:section.hardware-header')}
+									>
 										<Row className="mb-4">
 											<FormSelect
 												label={t('Common:switch-enabled')}
@@ -282,12 +290,17 @@ export default function DisplayConfigPage() {
 											>
 												{ON_OFF_OPTIONS.map((o, i) => (
 													<option key={`enabled-option-${i}`} value={o.value}>
-														{o.label}
+														{t(`DisplayConfig:${o.label}`)}
 													</option>
 												))}
 											</FormSelect>
 										</Row>
-										<h1>{t('DisplayConfig:section.screen-header')}</h1>
+									</Tab>
+									<Tab
+										key="displayScreenOptions"
+										eventKey="displayScreenOptions"
+										title={t('DisplayConfig:section.screen-header')}
+									>
 										<Row className="mb-4">
 											<FormSelect
 												label={t('DisplayConfig:form.flip-display-label')}
@@ -304,7 +317,7 @@ export default function DisplayConfigPage() {
 														key={`flipDisplay-option-${i}`}
 														value={o.value}
 													>
-														{o.label}
+														{t(`DisplayConfig:${o.label}`)}
 													</option>
 												))}
 											</FormSelect>
@@ -323,7 +336,7 @@ export default function DisplayConfigPage() {
 														key={`invertDisplay-option-${i}`}
 														value={o.value}
 													>
-														{o.label}
+														{t(`DisplayConfig:${o.label}`)}
 													</option>
 												))}
 											</FormSelect>
@@ -349,7 +362,13 @@ export default function DisplayConfigPage() {
 												/>
 											</div>
 										</Row>
-										<h1>{t('DisplayConfig:section.layout-header')}</h1>
+									</Tab>
+									<Tab
+										key="displayLayoutOptions"
+										eventKey="displayLayoutOptions"
+										title={t('DisplayConfig:section.layout-header')}
+									>
+										<h1>{t('DisplayConfig:section.button-layout-header')}</h1>
 										<Row className="mb-4">
 											<FormSelect
 												label={t('DisplayConfig:form.button-layout-label')}
@@ -396,21 +415,23 @@ export default function DisplayConfigPage() {
 												))}
 											</FormSelect>
 											<FormSelect
-												label={t('DisplayConfig:form.splash-mode-label')}
-												name="splashMode"
+												label={t(
+													'DisplayConfig:form.button-layout-orientation',
+												)}
+												name="buttonLayoutOrientation"
 												className="form-select-sm"
 												groupClassName="col-sm-3 mb-3"
-												value={values.splashMode}
-												error={errors.splashMode}
-												isInvalid={errors.splashMode}
+												value={values.buttonLayoutOrientation}
+												error={errors.buttonLayoutOrientation}
+												isInvalid={errors.buttonLayoutOrientation}
 												onChange={handleChange}
 											>
-												{SPLASH_MODES.map((o, i) => (
+												{LAYOUT_ORIENTATION.map((o, i) => (
 													<option
-														key={`splashMode-option-${i}`}
+														key={`buttonLayoutOrientation-option-${i}`}
 														value={o.value}
 													>
-														{o.label}
+														{t(`DisplayConfig:${o.label}`)}
 													</option>
 												))}
 											</FormSelect>
@@ -613,7 +634,196 @@ export default function DisplayConfigPage() {
 												</Col>
 											</Row>
 										)}
-										<Row className="mb-3">
+										<h1>{t('DisplayConfig:section.status-layout-header')}</h1>
+										<Row className="mb-4">
+											<div className="col-sm-2 mb-3">
+												<Form.Check
+													label={t(
+														'DisplayConfig:form.status-header.input-mode',
+													)}
+													type="switch"
+													name="inputMode"
+													className="align-middle"
+													isInvalid={false}
+													checked={Boolean(values.inputMode)}
+													onChange={(e) => {
+														setFieldValue(
+															'inputMode',
+															e.target.checked ? 1 : 0,
+														);
+													}}
+												/>
+											</div>
+											<div className="col-sm-2 mb-3">
+												<Form.Check
+													label={t(
+														'DisplayConfig:form.status-header.turbo-mode',
+													)}
+													type="switch"
+													name="turboMode"
+													className="align-middle"
+													isInvalid={false}
+													checked={Boolean(values.turboMode)}
+													onChange={(e) => {
+														setFieldValue(
+															'turboMode',
+															e.target.checked ? 1 : 0,
+														);
+													}}
+												/>
+											</div>
+											<div className="col-sm-2 mb-3">
+												<Form.Check
+													label={t(
+														'DisplayConfig:form.status-header.dpad-mode',
+													)}
+													type="switch"
+													name="dpadMode"
+													className="align-middle"
+													isInvalid={false}
+													checked={Boolean(values.dpadMode)}
+													onChange={(e) => {
+														setFieldValue('dpadMode', e.target.checked ? 1 : 0);
+													}}
+												/>
+											</div>
+											<div className="col-sm-2 mb-3">
+												<Form.Check
+													label={t(
+														'DisplayConfig:form.status-header.socd-mode',
+													)}
+													type="switch"
+													name="displaySocdMode"
+													className="align-middle"
+													isInvalid={false}
+													checked={Boolean(values.socdMode)}
+													onChange={(e) => {
+														setFieldValue('socdMode', e.target.checked ? 1 : 0);
+													}}
+												/>
+											</div>
+											<div className="col-sm-2 mb-3">
+												<Form.Check
+													label={t(
+														'DisplayConfig:form.status-header.macro-mode',
+													)}
+													type="switch"
+													name="macroMode"
+													className="align-middle"
+													isInvalid={false}
+													checked={Boolean(values.macroMode)}
+													onChange={(e) => {
+														setFieldValue(
+															'macroMode',
+															e.target.checked ? 1 : 0,
+														);
+													}}
+												/>
+											</div>
+											<div className="col-sm-2 mb-3">
+												<Form.Check
+													label={t(
+														'DisplayConfig:form.status-header.profile-mode',
+													)}
+													type="switch"
+													name="profileMode"
+													className="align-middle"
+													isInvalid={false}
+													checked={Boolean(values.profileMode)}
+													onChange={(e) => {
+														setFieldValue(
+															'profileMode',
+															e.target.checked ? 1 : 0,
+														);
+													}}
+												/>
+											</div>
+										</Row>
+										<h1>{t('DisplayConfig:section.history-layout-header')}</h1>
+										<Row className="mb-4">
+											<div className="col-sm-2 mb-3">
+												<label></label>
+												<Form.Check
+													label={t('DisplayConfig:form.input-history-label')}
+													type="switch"
+													name="inputHistoryEnabled"
+													className="align-middle mt-1"
+													isInvalid={false}
+													checked={Boolean(values.inputHistoryEnabled)}
+													onChange={(e) => {
+														setFieldValue(
+															'inputHistoryEnabled',
+															e.target.checked ? 1 : 0,
+														);
+													}}
+												/>
+											</div>
+											<FormControl
+												type="number"
+												label={t('AddonsConfig:input-history-length-label')}
+												name="inputHistoryLength"
+												className="form-control-sm"
+												groupClassName="col-sm-3 mb-3"
+												value={values.inputHistoryLength}
+												error={errors.inputHistoryLength}
+												isInvalid={errors.inputHistoryLength}
+												onChange={handleChange}
+												min={1}
+												max={21}
+											/>
+											<FormControl
+												type="number"
+												label={t('AddonsConfig:input-history-col-label')}
+												name="inputHistoryCol"
+												className="form-control-sm"
+												groupClassName="col-sm-3 mb-3"
+												value={values.inputHistoryCol}
+												error={errors.inputHistoryCol}
+												isInvalid={errors.inputHistoryCol}
+												onChange={handleChange}
+												min={0}
+												max={20}
+											/>
+											<FormControl
+												type="number"
+												label={t('AddonsConfig:input-history-row-label')}
+												name="inputHistoryRow"
+												className="form-control-sm"
+												groupClassName="col-sm-3 mb-3"
+												value={values.inputHistoryRow}
+												error={errors.inputHistoryRow}
+												isInvalid={errors.inputHistoryRow}
+												onChange={handleChange}
+												min={0}
+												max={7}
+											/>
+										</Row>
+									</Tab>
+									<Tab
+										key="displayModeOptions"
+										eventKey="displayModeOptions"
+										title={t('DisplayConfig:section.mode-header')}
+									>
+										<Row className="mb-4">
+											<FormSelect
+												label={t('DisplayConfig:form.splash-mode-label')}
+												name="splashMode"
+												className="form-select-sm"
+												groupClassName="col-sm-3 mb-3"
+												value={values.splashMode}
+												error={errors.splashMode}
+												isInvalid={errors.splashMode}
+												onChange={handleChange}
+											>
+												{SPLASH_MODES.map((o, i) => (
+													<option
+														key={`splashMode-option-${i}`}
+														value={o.value}
+													>
+														{t(`DisplayConfig:${o.label}`)}
+													</option>
+												))}
+											</FormSelect>
 											<FormControl
 												type="number"
 												label={t('DisplayConfig:form.splash-duration-label')}
@@ -626,6 +836,27 @@ export default function DisplayConfigPage() {
 												onChange={handleChange}
 												min={0}
 											/>
+										</Row>
+										<Row className="mb-3">
+											<FormSelect
+												label={t('DisplayConfig:form.screen-saver-mode-label')}
+												name="displaySaverMode"
+												className="form-select-sm"
+												groupClassName="col-sm-3 mb-3"
+												value={values.displaySaverMode}
+												error={errors.displaySaverMode}
+												isInvalid={errors.displaySaverMode}
+												onChange={handleChange}
+											>
+												{DISPLAY_SAVER_MODES.map((o, i) => (
+													<option
+														key={`displaySaverMode-option-${i}`}
+														value={o.value}
+													>
+														{t(`DisplayConfig:${o.label}`)}
+													</option>
+												))}
+											</FormSelect>
 											<FormControl
 												type="number"
 												label={t(
@@ -658,34 +889,32 @@ export default function DisplayConfigPage() {
 												)}
 											</Field>
 										</Row>
-										<div className="mt-3">
-											<Button type="submit">
-												{t('Common:button-save-label')}
-											</Button>
-											{saveMessage ? (
-												<span className="alert">{saveMessage}</span>
-											) : null}
-										</div>
-										<FormContext />
-									</Form>
+									</Tab>
+								</Tabs>
+								<div className="mt-3">
+									<Button type="submit">{t('Common:button-save-label')}</Button>
+									{saveMessage ? (
+										<span className="alert">{saveMessage}</span>
+									) : null}
 								</div>
-							) : (
-								<FormLabel>
-									<Trans
-										ns="PeripheralMapping"
-										i18nKey="peripheral-toggle-unavailable"
-										values={{ name: 'I2C' }}
-									>
-										<NavLink exact="true" to="/peripheral-mapping">
-											{t('PeripheralMapping:header-text')}
-										</NavLink>
-									</Trans>
-								</FormLabel>
-							)}
-						</Section>
-					)
-				);
-			}}
+								<FormContext />
+							</Form>
+						</div>
+					) : (
+						<FormLabel>
+							<Trans
+								ns="PeripheralMapping"
+								i18nKey="peripheral-toggle-unavailable"
+								values={{ name: 'I2C' }}
+							>
+								<NavLink exact="true" to="/peripheral-mapping">
+									{t('PeripheralMapping:header-text')}
+								</NavLink>
+							</Trans>
+						</FormLabel>
+					)}
+				</Section>
+			)}
 		</Formik>
 	);
 }

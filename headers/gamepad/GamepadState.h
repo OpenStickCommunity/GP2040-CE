@@ -92,6 +92,7 @@ using namespace std;
 
 /**
  * @brief AUX defines --- gamepad state that doesn't translate to an output button/dpad/etc.
+ * If you want to have requre the Function button for a hotkey in a board config, use `#define HOTKEY_0X_AUX_MASK 32768`
  */
 #define AUX_MASK_FUNCTION	(1U << 15)
 
