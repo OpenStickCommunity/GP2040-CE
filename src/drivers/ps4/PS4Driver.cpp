@@ -136,9 +136,27 @@ void PS4Driver::initialize() {
             controllerType = PS4ControllerType::PS4_HOTAS;
             break;
         case InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GUITAR:
+            enableController = true;
+            enableMotion = false;
+            enableLED = false;
+            enableRumble = false;
+            enableAnalog = true;
+            enableUnknown0 = false;
+            enableTouchpad = false;
+            enableUnknown1 = true;
+
             controllerType = PS4ControllerType::PS4_GUITAR;
             break;
         case InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_DRUM:
+            enableController = true;
+            enableMotion = false;
+            enableLED = false;
+            enableRumble = false;
+            enableAnalog = true;
+            enableUnknown0 = false;
+            enableTouchpad = false;
+            enableUnknown1 = true;
+
             controllerType = PS4ControllerType::PS4_DRUMS;
             break;
         case InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GAMEPAD:
@@ -274,9 +292,48 @@ void PS4Driver::initialize() {
     buttonPedalRudderLeft = new GamepadButtonMapping(0);
     buttonPedalRudderRight = new GamepadButtonMapping(0);
 
+    buttonFretGreen = new GamepadButtonMapping(0);
+    buttonFretRed = new GamepadButtonMapping(0);
+    buttonFretYellow = new GamepadButtonMapping(0);
+    buttonFretBlue = new GamepadButtonMapping(0);
+    buttonFretOrange = new GamepadButtonMapping(0);
+    buttonFretSoloGreen = new GamepadButtonMapping(0);
+    buttonFretSoloRed = new GamepadButtonMapping(0);
+    buttonFretSoloYellow = new GamepadButtonMapping(0);
+    buttonFretSoloBlue = new GamepadButtonMapping(0);
+    buttonFretSoloOrange = new GamepadButtonMapping(0);
+    buttonWhammy = new GamepadButtonMapping(0);
+    buttonPickup = new GamepadButtonMapping(0);
+    buttonTilt = new GamepadButtonMapping(0);
+
     GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
         switch (pinMappings[pin].action) {
+            case GpioAction::MODE_GUITAR_FRET_GREEN: buttonFretGreen->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_GUITAR_FRET_RED: buttonFretGreen->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_GUITAR_FRET_YELLOW: buttonFretGreen->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_GUITAR_FRET_BLUE: buttonFretGreen->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_GUITAR_FRET_ORANGE: buttonFretGreen->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_GUITAR_FRET_SOLO_GREEN: buttonFretGreen->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_GUITAR_FRET_SOLO_RED: buttonFretGreen->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_GUITAR_FRET_SOLO_YELLOW: buttonFretGreen->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_GUITAR_FRET_SOLO_BLUE: buttonFretGreen->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_GUITAR_FRET_SOLO_ORANGE: buttonFretGreen->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_GUITAR_WHAMMY: buttonWhammy->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_GUITAR_PICKUP: buttonPickup->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_GUITAR_TILT: buttonTilt->pinMask |= 1 << pin; break;
+
+            case GpioAction::MODE_HOTAS_RUDDER_LEFT: buttonRudderLeft->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_HOTAS_RUDDER_RIGHT: buttonRudderRight->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_HOTAS_THROTTLE_FORWARD: buttonThrottleForward->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_HOTAS_THROTTLE_REVERSE: buttonThrottleReverse->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_HOTAS_ROCKER_LEFT: buttonRockerLeft->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_HOTAS_ROCKER_RIGHT: buttonRockerRight->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_HOTAS_PEDAL_LEFT: buttonPedalLeft->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_HOTAS_PEDAL_RIGHT: buttonPedalRight->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_HOTAS_PEDAL_RUDDER_LEFT: buttonPedalRudderLeft->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_HOTAS_PEDAL_RUDDER_RIGHT: buttonPedalRudderRight->pinMask |= 1 << pin; break;
+
             case GpioAction::MODE_WHEEL_SHIFTER_GEAR_1: buttonShift1->pinMask |= 1 << pin; break;
             case GpioAction::MODE_WHEEL_SHIFTER_GEAR_2: buttonShift2->pinMask |= 1 << pin; break;
             case GpioAction::MODE_WHEEL_SHIFTER_GEAR_3: buttonShift3->pinMask |= 1 << pin; break;
@@ -296,16 +353,6 @@ void PS4Driver::initialize() {
             case GpioAction::MODE_WHEEL_PEDAL_GAS: buttonGas->pinMask |= 1 << pin; break;
             case GpioAction::MODE_WHEEL_PEDAL_BRAKE: buttonBrake->pinMask |= 1 << pin; break;
             case GpioAction::MODE_WHEEL_PEDAL_CLUTCH: buttonClutch->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_HOTAS_RUDDER_LEFT: buttonRudderLeft->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_HOTAS_RUDDER_RIGHT: buttonRudderRight->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_HOTAS_THROTTLE_FORWARD: buttonThrottleForward->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_HOTAS_THROTTLE_REVERSE: buttonThrottleReverse->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_HOTAS_ROCKER_LEFT: buttonRockerLeft->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_HOTAS_ROCKER_RIGHT: buttonRockerRight->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_HOTAS_PEDAL_LEFT: buttonPedalLeft->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_HOTAS_PEDAL_RIGHT: buttonPedalRight->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_HOTAS_PEDAL_RUDDER_LEFT: buttonPedalRudderLeft->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_HOTAS_PEDAL_RUDDER_RIGHT: buttonPedalRudderRight->pinMask |= 1 << pin; break;
             default:    break;
         }
     }
@@ -378,6 +425,35 @@ bool PS4Driver::process(Gamepad * gamepad) {
 
     if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GAMEPAD) {
     } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GUITAR) {
+        ps4Report.guitar.pickup = PS4_JOYSTICK_MIN;
+        ps4Report.guitar.whammy = PS4_JOYSTICK_MIN;
+        ps4Report.guitar.tilt = PS4_JOYSTICK_MIN;
+        ps4Report.guitar.fretGreen = 0;
+        ps4Report.guitar.fretRed = 0;
+        ps4Report.guitar.fretYellow = 0;
+        ps4Report.guitar.fretBlue = 0;
+        ps4Report.guitar.fretOrange = 0;
+        ps4Report.guitar.soloFretGreen  = 0;
+        ps4Report.guitar.soloFretRed = 0;
+        ps4Report.guitar.soloFretYellow = 0;
+        ps4Report.guitar.soloFretBlue = 0;
+        ps4Report.guitar.soloFretOrange = 0;
+
+        if (values & buttonFretGreen->pinMask) ps4Report.guitar.fretGreen = 1;
+        if (values & buttonFretRed->pinMask) ps4Report.guitar.fretRed = 1;
+        if (values & buttonFretYellow->pinMask) ps4Report.guitar.fretYellow = 1;
+        if (values & buttonFretBlue->pinMask) ps4Report.guitar.fretBlue = 1;
+        if (values & buttonFretOrange->pinMask) ps4Report.guitar.fretOrange = 1;
+
+        if (values & buttonFretSoloGreen->pinMask) ps4Report.guitar.soloFretGreen  = 1;
+        if (values & buttonFretSoloRed->pinMask) ps4Report.guitar.soloFretRed = 1;
+        if (values & buttonFretSoloYellow->pinMask) ps4Report.guitar.soloFretYellow = 1;
+        if (values & buttonFretSoloBlue->pinMask) ps4Report.guitar.soloFretBlue = 1;
+        if (values & buttonFretSoloOrange->pinMask) ps4Report.guitar.soloFretOrange = 1;
+
+        if (values & buttonWhammy->pinMask) ps4Report.guitar.pickup = PS4_JOYSTICK_MAX;
+        if (values & buttonPickup->pinMask) ps4Report.guitar.whammy = PS4_JOYSTICK_MAX;
+        if (values & buttonTilt->pinMask) ps4Report.guitar.tilt = PS4_JOYSTICK_MAX;
 
     } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_WHEEL) {
         ps4Report.wheel.steeringWheel = PS4_NAV_JOYSTICK_MID;
@@ -545,7 +621,7 @@ bool PS4Driver::process(Gamepad * gamepad) {
 
 #if GAMEPAD_HOST_DEBUG
     uint8_t * reportBytes = (uint8_t*)&ps4Report;
-    printf("\033[7;0H\nOut:\n");
+    printf("\033[8;0H\nOut:\n");
     for (uint8_t i = 0; i < 64; i++) {
         printf("%02x ", reportBytes[i]);
         if (((i+1) % 16) == 0) printf("\n");

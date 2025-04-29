@@ -32,7 +32,7 @@ void GamepadUSBHostListener::mount(uint8_t dev_addr, uint8_t instance, uint8_t c
     tuh_vid_pid_get(dev_addr, &controller_vid, &controller_pid);
 
 #if GAMEPAD_HOST_DEBUG
-    //printf("Mount: VID_%04x PID_%04x\n", controller_vid, controller_pid);
+    //printf("\033[0;0H\nMount: VID_%04x PID_%04x\n", controller_vid, controller_pid);
 #endif
 
     uint16_t joystick_mid = GAMEPAD_JOYSTICK_MID;
@@ -50,7 +50,7 @@ void GamepadUSBHostListener::mount(uint8_t dev_addr, uint8_t instance, uint8_t c
         case PS4_PRODUCT_ID:       // Razer Panthera
         case 0x00EE:               // Hori Minipad
         case PS4_WHEEL_PRODUCT_ID: // G29
-        case 0xB67B: // T-Flight
+        case 0xB67B:               // T-Flight
             init_ds4(desc_report, desc_len);
             break;
         // while these do not
@@ -58,6 +58,9 @@ void GamepadUSBHostListener::mount(uint8_t dev_addr, uint8_t instance, uint8_t c
         case DS4_PRODUCT_ID:       // Sony Dualshock 4 controller
             isDS4Identified = true;
             setup_ds4();
+            break;
+        case 0x0CE6:               // DualSense
+
             break;
         /* Other */
         // these types do not have an identification step, at least for PS4
@@ -93,6 +96,15 @@ void GamepadUSBHostListener::report_received(uint8_t dev_addr, uint8_t instance,
 }
 
 void GamepadUSBHostListener::process_ctrlr_report(uint8_t dev_addr, uint8_t const* report, uint16_t len) {
+#if GAMEPAD_HOST_DEBUG
+    printf("\033[1;0H\nHost (%d):\n", len);
+    for (uint8_t i = 0; i < len; i++) {
+        printf("%02x ", report[i]);
+        if (((i+1) % 16) == 0) printf("\n");
+    }
+    printf("----\n");
+#endif
+
     switch(controller_pid)
     {
         case DS4_ORG_PRODUCT_ID:   // Sony Dualshock 4 controller
@@ -105,6 +117,9 @@ void GamepadUSBHostListener::process_ctrlr_report(uint8_t dev_addr, uint8_t cons
                 update_ds4();
                 process_ds4(report);
             }
+            break;
+        case 0x0CE6:               // DualSense
+            process_ds(report);
             break;
         case 0x9400:               // Google Stadia controller
             process_stadia(report);
@@ -265,16 +280,6 @@ void GamepadUSBHostListener::process_ds4(uint8_t const* report) {
     uint8_t const report_id = report[0];
 
     if (report_id == 1) {
-
-#if GAMEPAD_HOST_DEBUG
-    printf("\033[0;0H\nHost:\n");
-    for (uint8_t i = 0; i < sizeof(controller_report); i++) {
-        printf("%02x ", report[i]);
-        if (((i+1) % 16) == 0) printf("\n");
-    }
-    printf("----\n");
-#endif
-
         memcpy(&controller_report, report, sizeof(controller_report));
 
         if ( diff_report(&prev_report, &controller_report) ) {
@@ -314,6 +319,58 @@ void GamepadUSBHostListener::process_ds4(uint8_t const* report) {
     }
 
     prev_report = controller_report;
+}
+
+void GamepadUSBHostListener::process_ds(uint8_t const* report) {
+    DSReport controller_report;
+
+    printf("%d\n", sizeof(controller_report));
+
+    // previous report used to compare for changes
+    static DSReport prev_ds_report = { 0 };
+
+    uint8_t const report_id = report[0];
+
+    if (report_id == 1) {
+        memcpy(&controller_report, report, sizeof(controller_report));
+
+        if ( prev_ds_report.reportCounter != controller_report.reportCounter ) {
+            _controller_host_state.lx = map(controller_report.leftStickX, 0,255,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+            _controller_host_state.ly = map(controller_report.leftStickY, 0,255,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+            _controller_host_state.rx = map(controller_report.rightStickX,0,255,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+            _controller_host_state.ry = map(controller_report.rightStickY,0,255,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+            _controller_host_state.lt = controller_report.leftTrigger;
+            _controller_host_state.rt = controller_report.rightTrigger;
+
+            _controller_host_state.buttons = 0;
+            if (controller_report.buttonTouchpad) _controller_host_state.buttons |= GAMEPAD_MASK_A2;
+            if (controller_report.buttonSelect) _controller_host_state.buttons |= GAMEPAD_MASK_S1;
+            if (controller_report.buttonR3) _controller_host_state.buttons |= GAMEPAD_MASK_R3;
+            if (controller_report.buttonL3) _controller_host_state.buttons |= GAMEPAD_MASK_L3;
+            if (controller_report.buttonHome) _controller_host_state.buttons |= GAMEPAD_MASK_A1;
+            if (controller_report.buttonStart) _controller_host_state.buttons |= GAMEPAD_MASK_S2;
+            if (controller_report.buttonR1) _controller_host_state.buttons |= GAMEPAD_MASK_R1;
+            if (controller_report.buttonL1) _controller_host_state.buttons |= GAMEPAD_MASK_L1;
+            if (controller_report.buttonNorth) _controller_host_state.buttons |= GAMEPAD_MASK_B4;
+            if (controller_report.buttonEast) _controller_host_state.buttons |= GAMEPAD_MASK_B2;
+            if (controller_report.buttonSouth) _controller_host_state.buttons |= GAMEPAD_MASK_B1;
+            if (controller_report.buttonWest) _controller_host_state.buttons |= GAMEPAD_MASK_B3;
+            if (controller_report.buttonR2) _controller_host_state.buttons |= GAMEPAD_MASK_R2;
+            if (controller_report.buttonL2) _controller_host_state.buttons |= GAMEPAD_MASK_L2;
+
+            _controller_host_state.dpad = 0;
+            if (controller_report.dpad == PS4_HAT_UP) _controller_host_state.dpad |= GAMEPAD_MASK_UP;
+            if (controller_report.dpad == PS4_HAT_UPRIGHT) _controller_host_state.dpad |= GAMEPAD_MASK_UP | GAMEPAD_MASK_RIGHT;
+            if (controller_report.dpad == PS4_HAT_RIGHT) _controller_host_state.dpad |= GAMEPAD_MASK_RIGHT;
+            if (controller_report.dpad == PS4_HAT_DOWNRIGHT) _controller_host_state.dpad |= GAMEPAD_MASK_RIGHT | GAMEPAD_MASK_DOWN;
+            if (controller_report.dpad == PS4_HAT_DOWN) _controller_host_state.dpad |= GAMEPAD_MASK_DOWN;
+            if (controller_report.dpad == PS4_HAT_DOWNLEFT) _controller_host_state.dpad |= GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT;
+            if (controller_report.dpad == PS4_HAT_LEFT) _controller_host_state.dpad |= GAMEPAD_MASK_LEFT;
+            if (controller_report.dpad == PS4_HAT_UPLEFT) _controller_host_state.dpad |= GAMEPAD_MASK_LEFT | GAMEPAD_MASK_UP;
+        }
+    }
+
+    prev_ds_report = controller_report;
 }
 
 void GamepadUSBHostListener::process_stadia(uint8_t const* report) {

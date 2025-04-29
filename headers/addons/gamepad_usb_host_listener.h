@@ -74,6 +74,41 @@ typedef struct TU_ATTR_PACKED
 
 } ultrastik360_t;
 
+typedef struct __attribute__((packed)) {
+    uint8_t reportID;
+    uint8_t leftStickX;
+    uint8_t leftStickY;
+    uint8_t rightStickX;
+    uint8_t rightStickY;
+    uint8_t leftTrigger;
+    uint8_t rightTrigger;
+
+    // 8 bit report counter.
+    uint8_t reportCounter;
+
+    // 4 bits for the d-pad.
+    uint8_t dpad : 4;
+
+    // 14 bits for buttons.
+    uint16_t buttonWest : 1;
+    uint16_t buttonSouth : 1;
+    uint16_t buttonEast : 1;
+    uint16_t buttonNorth : 1;
+    uint16_t buttonL1 : 1;
+    uint16_t buttonR1 : 1;
+    uint16_t buttonL2 : 1;
+    uint16_t buttonR2 : 1;
+    uint16_t buttonSelect : 1;
+    uint16_t buttonStart : 1;
+    uint16_t buttonL3 : 1;
+    uint16_t buttonR3 : 1;
+    uint16_t buttonHome : 1;
+    uint16_t buttonTouchpad : 1;
+    uint16_t buttonMicMute : 1;
+
+    uint8_t miscData[54];
+} DSReport;
+
 // Add other controller structs here
 class GamepadUSBHostListener : public USBListener {
     public:// USB Listener Features
@@ -110,6 +145,8 @@ class GamepadUSBHostListener : public USBListener {
         void process_ds4(uint8_t const* report);
         PS4ControllerConfig ds4Config;
         uint8_t report_buffer[PS4_ENDPOINT_SIZE];
+
+        void process_ds(uint8_t const* report);
 
         void process_stadia(uint8_t const* report);
 

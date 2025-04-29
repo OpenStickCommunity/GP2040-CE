@@ -308,18 +308,18 @@ typedef struct __attribute__((packed)) {
             uint8_t whammy;
             uint8_t tilt;
 
-            uint8_t green : 1;
-            uint8_t red : 1;
-            uint8_t yellow : 1;
-            uint8_t blue : 1;
-            uint8_t orange : 1;
+            uint8_t fretGreen : 1;
+            uint8_t fretRed : 1;
+            uint8_t fretYellow : 1;
+            uint8_t fretBlue : 1;
+            uint8_t fretOrange : 1;
             uint8_t : 3;
 
-            uint8_t soloGreen : 1;
-            uint8_t soloRed : 1;
-            uint8_t soloYellow : 1;
-            uint8_t soloBlue : 1;
-            uint8_t soloOrange : 1;
+            uint8_t soloFretGreen : 1;
+            uint8_t soloFretRed : 1;
+            uint8_t soloFretYellow : 1;
+            uint8_t soloFretBlue : 1;
+            uint8_t soloFretOrange : 1;
             uint8_t : 3;
             
             uint8_t mystery2[14];

@@ -120,6 +120,20 @@ private:
     GamepadButtonMapping *buttonPedalRight;
     GamepadButtonMapping *buttonPedalRudderLeft;
     GamepadButtonMapping *buttonPedalRudderRight;
+
+    GamepadButtonMapping *buttonFretGreen;
+    GamepadButtonMapping *buttonFretRed;
+    GamepadButtonMapping *buttonFretYellow;
+    GamepadButtonMapping *buttonFretBlue;
+    GamepadButtonMapping *buttonFretOrange;
+    GamepadButtonMapping *buttonFretSoloGreen;
+    GamepadButtonMapping *buttonFretSoloRed;
+    GamepadButtonMapping *buttonFretSoloYellow;
+    GamepadButtonMapping *buttonFretSoloBlue;
+    GamepadButtonMapping *buttonFretSoloOrange;
+    GamepadButtonMapping *buttonWhammy;
+    GamepadButtonMapping *buttonPickup;
+    GamepadButtonMapping *buttonTilt;
 };
 
 #endif // _PS4_DRIVER_H_
