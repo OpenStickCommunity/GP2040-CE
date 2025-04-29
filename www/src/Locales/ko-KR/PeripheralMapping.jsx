@@ -1,0 +1,35 @@
+export default {
+	'header-text': '주변기기 매핑',
+	'sub-header-text': '',
+	'pins-label': '핀',
+	'pin-in-use': '사용 중',
+	'i2c-label': 'I\u00B2C',
+	'i2c-desc-header': 'I\u00B2C 정보',
+	'i2c-description':
+		'I\u00B2C는 디스플레이나 GPIO 확장, 센서등의 악세사리 장치를 연결하는데 사용하는 SDL, SDA 2개의 선으로 이루어진 인터페이스 입니다. RP2040은 두 개의 I\u00B2C 컨트롤러 블록을 지원합니다 : I2C0 및 I2C1. 다음이 각각의 블록에 지원되는 GPIO 핀입니다:',
+	'spi-label': 'SPI',
+	'spi-desc-header': 'SPI 정보',
+	'spi-description':
+		'SPI 디스플레이나 GPIO 확장, 센서등의 악세사리 장치를 연결하는데 사용하는 RX, TX, SCK, CS 4개의 선으로 이루어진 인터페이스 입니다. RP2040은 두 개의 SPI 컨트롤러 블록을 지원합니다 : SPI0 및 SPI1. 다음이 각각의 블록에 지원되는 GPIO 핀입니다:',
+	'usb-label': 'USB 호스트',
+	'usb-desc-header': 'USB 호스트 정보',
+	'usb-description':
+		'USB 호스트는 키보드나 게임패드 등 지원되는 USB 장치를 사용할 수 있도록 해줍니다.',
+	'peripheral-toggle-unavailable':
+		'활성화 할 수 없습니다.주변기기 "{{name}}" 이용불가. <0>주변기기 매핑</0>에서 활성화 하십시오.',
+	'pin-sda-label': 'SDA',
+	'pin-scl-label': 'SCL',
+	'option-speed-label': '속도',
+	'option-speed-choice-100000-label': 'Normal',
+	'option-speed-choice-400000-label': 'Fast',
+	'option-speed-choice-1000000-label': 'Fast Plus',
+	'pin-rx-label': 'RX',
+	'pin-cs-label': 'CS',
+	'pin-sck-label': 'SCK',
+	'pin-tx-label': 'TX',
+	'pin-dp-label': 'D+',
+	'pin-enable5v-label': '5V 사용',
+	'option-order-label': '핀 순서',
+	'option-order-choice-0-label': 'D+/D-',
+	'option-order-choice-1-label': 'D-/D+',
+};

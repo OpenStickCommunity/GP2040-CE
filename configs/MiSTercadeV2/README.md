@@ -13,9 +13,9 @@ Features
 * Supports MiSTercade Remote and MiSTercade Versus accessories
 
 
-Purchase: https://misteraddons.com/products/mistercade-v2-kit-mister-fpga-jamma-arcade-kit
+Purchase: <https://misteraddons.com/products/mistercade-v2-kit-mister-fpga-jamma-arcade-kit>
 
-GitHub: https://github.com/misteraddons/MiSTercade-Config
+GitHub: <https://github.com/misteraddons/MiSTercade-Config>
 
 ## Main Pin Mapping Configuration
 

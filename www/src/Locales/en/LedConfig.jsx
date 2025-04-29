@@ -1,7 +1,7 @@
 export default {
 	rgb: {
 		'header-text': 'RGB LED Configuration',
-		'data-pin-label': 'Data Pin (-1 for disabled)',
+		'data-pin-label': 'Data GPIO Pin (-1 for disabled)',
 		'led-format-label': 'LED Format',
 		'led-layout-label': 'LED Layout',
 		'leds-per-button-label': 'LEDs Per Button',
@@ -20,7 +20,18 @@ export default {
 		'pled-type-rgb': 'RGB',
 		'pled-color-label': 'RGB PLED Color',
 	},
-	'pled-pin-label': 'PLED #{{pin}} Pin',
+	case: {
+		'header-text': 'Case RGB LEDs',
+		'sub-header-text':
+			'For Case RGB LEDs, set a starting index and the case RGB count. The index must be after the last LED button defined but can be before or after the player LEDs and turbo LED.',
+		'case-index-label': 'RGB LED Index',
+		'case-count-label': 'RGB LED Count',
+		'case-type-label': 'Color Type',
+		'case-type-off': 'Off',
+		'case-type-ambient': 'Ambient',
+		'case-type-linked': 'Linked',
+	},
+	'pled-pin-label': 'PLED #{{pin}} GPIO Pin',
 	'pled-index-label': 'PLED #{{index}} Index',
 	'rgb-order': {
 		'header-text': 'RGB LED Button Order',

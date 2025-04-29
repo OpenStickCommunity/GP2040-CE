@@ -57,6 +57,7 @@ export default {
 	},
 	'profile-label': 'Profile',
 	'debounce-delay-label': 'Debounce Delay in milliseconds',
+	'mini-menu-gamepad-input': 'Use Gamepad Input for Display Mini Menu',
 	'ps4-mode-explanation-text':
 		'PS4 mode allows GP2040-CE to run as an authenticated PS4 controller.',
 	'ps4-mode-warning-text':
@@ -127,8 +128,16 @@ export default {
 		'load-profile-3': 'Load Profile #3',
 		'load-profile-4': 'Load Profile #4',
 		'reboot-default': 'Reboot GP2040-CE',
+		'save-config': 'Save Config',
 		'next-profile': 'Next Profile',
 		'previous-profile': 'Previous Profile',
+		'menu-nav-up': 'Menu Up',
+		'menu-nav-down': 'Menu Down',
+		'menu-nav-left': 'Menu Left',
+		'menu-nav-right': 'Menu Right',
+		'menu-nav-select': 'Menu Select',
+		'menu-nav-back': 'Menu Back',
+		'menu-nav-toggle': 'Menu Toggle',
 	},
 	'forced-setup-mode-label': 'Forced Setup Mode',
 	'forced-setup-mode-options': {
@@ -145,4 +154,15 @@ export default {
 	'keyboard-mapping-header-text': 'Keyboard Mapping',
 	'keyboard-mapping-sub-header-text':
 		'Use the form below to reconfigure your button-to-key mapping.',
+	'usb-override': {
+		'advanced-override': '⚠️ Advanced USB Override',
+		'invalid-warning-danger':
+			'DANGER: Invalid USB parameters will cause your input modes to not function!',
+		'product-name': 'Product Name',
+		manufacturer: 'Manufacturer',
+		version: 'Version',
+		'physical-warning-danger': '⚡ Override Physical IDs ⚡ ',
+		'product-id': 'Product ID',
+		'vendor-id': 'Vendor ID',
+	},
 };

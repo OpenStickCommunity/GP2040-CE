@@ -6,16 +6,22 @@
 
 bool ReverseInput::available() {
     const ReverseOptions& options = Storage::getInstance().getAddonOptions().reverseOptions;
-    pinButtonReverse = options.buttonPin;
-	return options.enabled && isValidPin(options.buttonPin);
+	return options.enabled;
 }
 
 void ReverseInput::setup()
 {
     // Setup Reverse Input Button
-    gpio_init(pinButtonReverse);             // Initialize pin
-    gpio_set_dir(pinButtonReverse, GPIO_IN); // Set as INPUT
-    gpio_pull_up(pinButtonReverse);          // Set as PULLUP
+    mapInputReverse = new GamepadButtonMapping(0);
+
+    GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
+    for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
+    {
+        switch (pinMappings[pin].action) {
+            case GpioAction::BUTTON_PRESS_INPUT_REVERSE: mapInputReverse->pinMask |= 1 << pin; break;
+            default:    break;
+        }
+    }
 
     // Setup Reverse LED if available
     const ReverseOptions& options = Storage::getInstance().getAddonOptions().reverseOptions;
@@ -45,7 +51,9 @@ void ReverseInput::setup()
 }
 
 void ReverseInput::update() {
-    state = !gpio_get(pinButtonReverse);
+    Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
+
+    state = (values & mapInputReverse->pinMask);
 }
 
 uint8_t ReverseInput::input(uint32_t valueMask, uint16_t buttonMask, uint16_t buttonMaskReverse, uint8_t action, bool invertAxis) {

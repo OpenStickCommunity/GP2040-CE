@@ -6,9 +6,9 @@
 
 #include "BoardConfig.h"
 #include <stdint.h>
-#include "AnimationStation.hpp"
-#include "SpecialMoveSystem.hpp"
-#include "PlayerLEDs.h"
+#include "animationstation.h"
+#include "playerleds.h"
+#include "specialmovesystem.h"
 
 // GP2040-CE Board Config (64 character limit)
 #ifndef GP2040_BOARDCONFIG

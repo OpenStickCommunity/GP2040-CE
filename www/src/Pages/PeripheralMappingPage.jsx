@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../Contexts/AppContext';
 import { Button, Form, FormCheck, FormSelect, Table } from 'react-bootstrap';
 import { Formik, useFormikContext, getIn } from 'formik';
@@ -102,6 +102,7 @@ export default function PeripheralMappingPage() {
 						);
 						return (
 							<Table
+								key={`details-${i}`}
 								className="caption-top"
 								striped="columns"
 								responsive
@@ -246,7 +247,7 @@ export default function PeripheralMappingPage() {
 																		? o
 																		: `${o} - ${t(
 																				'PeripheralMapping:pin-in-use',
-																		  )}`}
+																			)}`}
 																</option>
 															))}
 														</FormSelect>

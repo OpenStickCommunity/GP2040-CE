@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { Formik, useFormikContext } from 'formik';
 import * as yup from 'yup';
@@ -8,6 +8,8 @@ import get from 'lodash/get';
 import set from 'lodash/set';
 
 import { AppContext } from '../Contexts/AppContext';
+
+import { hexToInt } from '../Services/Utilities';
 
 import WebApi from '../Services/WebApi';
 import Analog, { analogScheme, analogState } from '../Addons/Analog';
@@ -29,10 +31,6 @@ import OnBoardLed, {
 	onBoardLedScheme,
 	onBoardLedState,
 } from '../Addons/OnBoardLed';
-import PlayerNumber, {
-	playerNumberScheme,
-	playerNumberState,
-} from '../Addons/PlayerNumber';
 import Reverse, { reverseScheme, reverseState } from '../Addons/Reverse';
 import SOCD, { socdScheme, socdState } from '../Addons/SOCD';
 import Tilt, { tiltScheme, tiltState } from '../Addons/Tilt';
@@ -44,17 +42,20 @@ import FocusMode, {
 	focusModeState,
 } from '../Addons/FocusMode';
 import Keyboard, { keyboardScheme, keyboardState } from '../Addons/Keyboard';
-import InputHistory, {
-	inputHistoryScheme,
-	inputHistoryState,
-} from '../Addons/InputHistory';
+import GamepadUSBHost, {
+	gamepadUSBHostScheme,
+	gamepadUSBHostState,
+} from '../Addons/GamepadUSBHost';
 import Rotary, { rotaryScheme, rotaryState } from '../Addons/Rotary';
 import PCF8575, { pcf8575Scheme, pcf8575State } from '../Addons/PCF8575';
 import DRV8833Rumble, {
 	drv8833RumbleScheme,
 	drv8833RumbleState,
 } from '../Addons/DRV8833';
-import ReactiveLED, { reactiveLEDScheme, reactiveLEDState } from '../Addons/ReactiveLED';
+import ReactiveLED, {
+	reactiveLEDScheme,
+	reactiveLEDState,
+} from '../Addons/ReactiveLED';
 
 const schema = yup.object().shape({
 	...analogScheme,
@@ -67,16 +68,15 @@ const schema = yup.object().shape({
 	...dualDirectionScheme,
 	...tiltScheme,
 	...buzzerScheme,
-	...playerNumberScheme,
 	...socdScheme,
 	...wiiScheme,
 	...focusModeScheme,
 	...keyboardScheme,
-	...inputHistoryScheme,
 	...rotaryScheme,
 	...pcf8575Scheme,
 	...drv8833RumbleScheme,
 	...reactiveLEDScheme,
+	...gamepadUSBHostScheme,
 });
 
 const defaultValues = {
@@ -90,17 +90,16 @@ const defaultValues = {
 	...dualDirectionState,
 	...tiltState,
 	...buzzerState,
-	...playerNumberState,
 	...socdState,
 	...wiiState,
 	...snesState,
 	...focusModeState,
 	...keyboardState,
-	...inputHistoryState,
 	...rotaryState,
 	...pcf8575State,
 	...drv8833RumbleState,
 	...reactiveLEDState,
+	...gamepadUSBHostState,
 };
 
 const ADDONS = [
@@ -114,13 +113,12 @@ const ADDONS = [
 	DualDirection,
 	Tilt,
 	Buzzer,
-	PlayerNumber,
 	SOCD,
 	Wii,
 	SNES,
 	FocusMode,
 	Keyboard,
-	InputHistory,
+	GamepadUSBHost,
 	Rotary,
 	PCF8575,
 	DRV8833Rumble,
@@ -189,13 +187,19 @@ export default function AddonsConfigPage() {
 
 	const onSuccess = async (values) => {
 		const flattened = flattenObject(storedData);
-		const valuesCopy = schema.cast(values); // Strip invalid values
+
+		// Convert turbo LED color if available
+		const data = {
+			...values,
+			turboLedColor: hexToInt(values.turboLedColor || '#000000'),
+		};
+		const valuesSchema = schema.cast(data); // Strip invalid values
 
 		// Compare what's changed and set it to resultObject
 		let resultObject = {};
 		Object.entries(flattened)?.map((entry) => {
 			const [key, oldVal] = entry;
-			const newVal = get(valuesCopy, key);
+			const newVal = get(valuesSchema, key);
 			if (newVal !== oldVal) {
 				set(resultObject, key, newVal);
 			}

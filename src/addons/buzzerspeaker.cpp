@@ -1,6 +1,7 @@
 #include "hardware/pwm.h"
 #include "addons/buzzerspeaker.h"
 #include "songs.h"
+#include "drivermanager.h"
 #include "storagemanager.h"
 #include "usbdriver.h"
 #include "math.h"
@@ -45,7 +46,7 @@ void BuzzerSpeakerAddon::playIntro() {
 		return;
 	}
 
-	bool isConfigMode = Storage::getInstance().GetConfigMode();
+	bool isConfigMode = DriverManager::getInstance().isConfigMode();
 
 	if (!get_usb_mounted() || isConfigMode) {
 		play(&configModeSong);

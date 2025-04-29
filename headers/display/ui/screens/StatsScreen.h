@@ -7,6 +7,7 @@ class StatsScreen : public GPScreen {
     public:
         StatsScreen() {}
         StatsScreen(GPGFX* renderer) { setRenderer(renderer); }
+        virtual ~StatsScreen(){}
         virtual int8_t update();
         virtual void init();
         virtual void shutdown();

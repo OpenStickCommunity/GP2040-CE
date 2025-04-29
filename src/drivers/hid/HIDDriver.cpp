@@ -6,6 +6,7 @@
 #include "drivers/hid/HIDDriver.h"
 #include "drivers/hid/HIDDescriptors.h"
 #include "drivers/shared/driverhelper.h"
+#include "storagemanager.h"
 
 static bool hid_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const * request)
 {
@@ -34,7 +35,7 @@ void HIDDriver::initialize() {
 }
 
 // Generate HID report from gamepad and send to TUSB Device
-void HIDDriver::process(Gamepad * gamepad) {
+bool HIDDriver::process(Gamepad * gamepad) {
 	switch (gamepad->state.dpad & GAMEPAD_MASK_DPAD)
 	{
 		case GAMEPAD_MASK_UP:                        hidReport.direction = HID_HAT_UP;        break;
@@ -103,8 +104,11 @@ void HIDDriver::process(Gamepad * gamepad) {
 		// HID ready + report sent, copy previous report
 		if (tud_hid_ready() && tud_hid_report(0, report, report_size) == true ) {
 			memcpy(last_report, report, report_size);
+			return true;
 		}
 	}
+	
+	return false;
 }
 
 // tud_hid_get_report_cb
@@ -122,11 +126,41 @@ bool HIDDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_contr
 }
 
 const uint16_t * HIDDriver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
-	const char *value = (const char *)hid_string_descriptors[index];
+    char *value;
+    // Check for override settings
+    GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();
+    if ( gamepadOptions.usbDescOverride == true ) {
+        switch(index) {
+            case 1:
+                value = gamepadOptions.usbDescManufacturer;
+                break;
+            case 2:
+                value = gamepadOptions.usbDescProduct;
+                break;
+            case 3:
+                value = gamepadOptions.usbDescVersion;
+            default:
+                value = (char *)hid_string_descriptors[index];
+                break;
+        }
+    } else {
+        value = (char *)hid_string_descriptors[index];
+    }
+
 	return getStringDescriptor(value, index); // getStringDescriptor returns a static array
 }
 
 const uint8_t * HIDDriver::get_descriptor_device_cb() {
+    // Check for override settings
+    GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();
+    if ( gamepadOptions.usbOverrideID == true ) {
+        static uint8_t modified_device_descriptor[18];
+        memcpy(modified_device_descriptor, hid_device_descriptor, sizeof(hid_device_descriptor));
+        memcpy(&modified_device_descriptor[8], (uint8_t*)&gamepadOptions.usbVendorID, sizeof(uint16_t)); // Vendor ID
+        memcpy(&modified_device_descriptor[10], (uint8_t*)&gamepadOptions.usbProductID, sizeof(uint16_t)); // Product ID
+        return (const uint8_t*)modified_device_descriptor;
+    }
+
 	return hid_device_descriptor;
 }
 

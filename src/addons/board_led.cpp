@@ -13,7 +13,7 @@ bool BoardLedAddon::available() {
 void BoardLedAddon::setup() {
     const OnBoardLedOptions& options = Storage::getInstance().getAddonOptions().onBoardLedOptions;
     onBoardLedMode = options.mode;
-    isConfigMode = Storage::getInstance().GetConfigMode();
+    isConfigMode = DriverManager::getInstance().isConfigMode();
     timeSinceBlink = getMillis();
     prevState = -1;
 

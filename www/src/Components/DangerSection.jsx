@@ -1,4 +1,3 @@
-import React from 'react';
 import Section from './Section';
 
 const DangerSection = ({ className, titleClassName, ...props }) => {

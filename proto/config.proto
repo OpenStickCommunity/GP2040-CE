@@ -29,6 +29,14 @@ message GamepadOptions
     optional InputModeAuthType ps5AuthType = 22;
     optional InputModeAuthType xinputAuthType = 23;
     optional PS4ControllerIDMode ps4ControllerIDMode = 24;
+    optional bool usbDescOverride = 25;
+    optional string usbDescProduct = 26 [(nanopb).max_length = 32];
+    optional string usbDescManufacturer = 27 [(nanopb).max_length = 32];
+    optional string usbDescVersion = 28 [(nanopb).max_length = 8];
+    optional bool usbOverrideID = 29;
+    optional uint32 usbProductID = 30;
+    optional uint32 usbVendorID = 31;
+    optional uint32 miniMenuGamepadInput = 32;
 }
 
 message KeyboardMapping
@@ -245,6 +253,21 @@ message DisplayOptions
 
     optional int32 displaySaverTimeout = 17;
     optional bool turnOffWhenSuspended = 18;
+    optional DisplaySaverMode displaySaverMode = 19;
+
+    optional ButtonLayoutOrientation buttonLayoutOrientation = 20;
+
+    optional bool inputMode = 21;
+    optional bool turboMode = 22;
+    optional bool dpadMode = 23;
+    optional bool socdMode = 24;
+    optional bool macroMode = 25;
+    optional bool profileMode = 26;
+
+    optional bool inputHistoryEnabled = 27;
+    optional uint32 inputHistoryLength = 28;
+    optional uint32 inputHistoryCol = 29;
+    optional uint32 inputHistoryRow = 30;
 }
 
 message LEDOptions
@@ -289,57 +312,58 @@ message LEDOptions
     optional int32 pledIndex3 = 34;
     optional int32 pledIndex4 = 35;
 
-    optional bytes lightData = 36 [(nanopb).max_size = 600];
-    optional int32 lightDataSize = 37;
+    optional CaseRGBType caseRGBType = 36 [deprecated = true];
+    optional int32 caseRGBIndex = 37 [deprecated = true];
+    optional uint32 caseRGBColor = 38 [deprecated = true];
+    optional uint32 caseRGBCount = 39 [deprecated = true];
+
+    optional bytes lightData = 40 [(nanopb).max_size = 600];
+    optional int32 lightDataSize = 41;
 };
 
-// This has to be kept in sync with SpecialMoveAnimation in SpecialMoveSystem.hpp
-//message SpecialMoveInputTriggers_Proto 
+//message SpecialMoveInputTriggers 
 //{
 //    optional uint32 OptionalParams = 1; //8 uint4's packed in here (assigned to custom enums later)
 //    optional uint32 RequiredTriggers = 2; //buttonmasks
 //
-//    optional SpecialMoveEffects_Proto ChainedAnimation = 3;
+//    optional SpecialMoveEffects ChainedAnimation = 3;
 //    optional uint32 ChainedOptionalParams = 4; 
-//    optional SpecialMoveEffects_Proto ChainedAnimationTwo = 5;
+//    optional SpecialMoveEffects ChainedAnimationTwo = 5;
 //    optional uint32 ChainedOptionalParamsTwo = 6; 
 //};
 
-// This has to be kept in sync with SpecialMoveDescription in SpecialMoveSystem.hpp
-//message SpecialMoveDescription_Proto 
+//message SpecialMoveDescription 
 //{
-//    repeated SpecialMoveInputTypes_Proto RequiredInputCombos = 1 [(nanopb).max_count = 4]; //MAX_SPECIALMOVE_INPUTTYPES_PER_MOVE from SpecialMoveSystem.hpp
-//    repeated SpecialMoveInputTriggers_Proto RequiredTriggerCombos = 2 [(nanopb).max_count = 3]; //MAX_SPECIALMOVE_TRIGGERCOMBOS from SpecialMoveSystem.hpp
+//    repeated SpecialMoveInputTypes RequiredInputCombos = 1 [(nanopb).max_count = 4]; //MAX_SPECIALMOVE_INPUTTYPES_PER_MOVE from SpecialMoveSystem.hpp
+//    repeated SpecialMoveInputTriggers RequiredTriggerCombos = 2 [(nanopb).max_count = 3]; //MAX_SPECIALMOVE_TRIGGERCOMBOS from SpecialMoveSystem.hpp
 //
-//    optional SpecialMoveEffects_Proto Animation = 3;
+//    optional SpecialMoveEffects Animation = 3;
 //    optional bool bIsChargeMove = 4;
 //
 //    optional int32 Priority = 5;
 //};
 
-// This has to be kept in sync with SpecialMoveProfile in SpecialMoveSystem.hpp
-//message SpecialMoveProfile_Proto
+//message SpecialMoveProfile
 //{
 //    optional bool bEnabled = 1;
-//    repeated SpecialMoveDescription_Proto AllSpecialMoves = 2 [(nanopb).max_count = 20]; //MAX_SPECIALMOVES from SpecialMoveSystem.hpp
+//    repeated SpecialMoveDescription AllSpecialMoves = 2 [(nanopb).max_count = 20]; //MAX_SPECIALMOVES from SpecialMoveSystem.hpp
 //    optional string Label = 3 [(nanopb).max_length = 12];
 //};
 
-// This has to be kept in sync with SpecialMoveOptions in SpecialMoveSystem.hpp
-//message SpecialMoveOptions_Proto
+//message SpecialMoveOptions
 //{
-//    repeated SpecialMoveProfile_Proto profiles = 1 [(nanopb).max_count = 4]; //MAX_SPECIALMOVE_PROFILES from SpecialMoveSystem.hpp
+//    repeated SpecialMoveProfile profiles = 1 [(nanopb).max_count = 4]; //MAX_SPECIALMOVE_PROFILES from SpecialMoveSystem.hpp
 //    optional uint32 ChargeTimeInMs = 2;
 //    optional uint32 CurrentProfileIndex = 3;
 //};
 
-// This has to be kept in sync with AnimationProfile in AnimationStation.hpp
-message AnimationProfile_Proto
+// This has to be kept in sync with AnimationProfile_Unpacked in AnimationStation.hpp
+message AnimationProfile
 {
     optional bool bEnabled = 1;
 
- 	optional AnimationNonPressedEffects_Proto baseNonPressedEffect = 2;
-  	optional AnimationPressedEffects_Proto basePressedEffect = 3;
+ 	optional AnimationNonPressedEffects baseNonPressedEffect = 2;
+  	optional AnimationPressedEffects basePressedEffect = 3;
 
     optional int32 baseCycleTime = 4;
 
@@ -349,30 +373,30 @@ message AnimationProfile_Proto
     optional uint32 buttonPressHoldTimeInMs = 7;
     optional uint32 buttonPressFadeOutTimeInMs = 8;
 
-    optional uint32 nonPressedSpecialColour = 9;
+    optional uint32 nonPressedSpecialColor = 9;
 
- 	optional AnimationNonPressedEffects_Proto baseCaseEffect = 10;
+ 	optional AnimationNonPressedEffects baseCaseEffect = 10;
 
     repeated uint32 caseStaticColors = 11 [(nanopb).max_count = 10]; //(MAX_CASE_LIGHTS/4) from AnimationStation.hpp
 
-    optional uint32 pressedSpecialColour = 12;
+    optional uint32 pressedSpecialColor = 12;
 
     optional bool bUseCaseLightsInSpecialMoves = 13;
 
     optional int32 basePressedCycleTime = 14; 
 };
 
-// This has to be kept in sync with AnimationOptions in AnimationStation.hpp
-message AnimationOptions_Proto
+// This has to be kept in sync with AnimationOptions_Unpacked in animationstation.hpp
+message AnimationOptions
 {
-    reserved 1, 3 to 45;
+    reserved 1, 3 to 56;
     
     optional uint32 brightness = 2;
     
-    repeated AnimationProfile_Proto profiles = 46 [(nanopb).max_count = 4]; //MAX_ANIMATION_PROFILES from AnimationStation.hpp
-    optional int32 baseProfileIndex = 47;
+    repeated AnimationProfile profiles = 57 [(nanopb).max_count = 4]; //MAX_ANIMATION_PROFILES from AnimationStation.hpp
+    optional int32 baseProfileIndex = 58;
     
-    repeated uint32 customColors = 48 [(nanopb).max_count = 16]; //MAX_CUSTOM_COLORS from Animation.hpp
+    repeated uint32 customColors = 59 [(nanopb).max_count = 16]; //MAX_CUSTOM_COLORS from Animation.hpp
 }
 
 message BootselButtonOptions
@@ -431,6 +455,10 @@ message TurboOptions
     optional uint32 shmupBtnMask3 = 17;
     optional uint32 shmupBtnMask4 = 18;
     optional ShmupMixMode shmupMixMode = 19;
+
+    optional PLEDType turboLedType = 20;
+    optional int32 turboLedIndex = 21;
+    optional uint32 turboLedColor = 22;
 }
 
 message SliderOptions
@@ -460,7 +488,7 @@ message ReverseOptions
 {
     optional bool enabled = 1;
 
-    optional int32 buttonPin = 2;
+    optional int32 buttonPin = 2 [deprecated = true];
     optional int32 ledPin = 3;
 
     optional uint32 actionUp = 4;
@@ -509,17 +537,17 @@ message TiltOptions
 {
     optional bool enabled = 1;
 
-    optional int32 tilt1Pin = 2;
-    optional int32 tilt2Pin = 3;
-    optional int32 deprecatedTiltFunctionPin = 4 [deprecated = true];
-    optional int32 tiltLeftAnalogUpPin = 5;
-    optional int32 tiltLeftAnalogDownPin = 6;
-    optional int32 tiltLeftAnalogLeftPin = 7;
-    optional int32 tiltLeftAnalogRightPin = 8;
-    optional int32 tiltRightAnalogUpPin = 9;
-    optional int32 tiltRightAnalogDownPin = 10;
-    optional int32 tiltRightAnalogLeftPin = 11;
-    optional int32 tiltRightAnalogRightPin = 12;
+    optional int32 tilt1Pin = 2 [deprecated = true];
+    optional int32 tilt2Pin = 3 [deprecated = true];
+    optional int32 tiltFunctionPin = 4 [deprecated = true];
+    optional int32 tiltLeftAnalogUpPin = 5 [deprecated = true];
+    optional int32 tiltLeftAnalogDownPin = 6 [deprecated = true];
+    optional int32 tiltLeftAnalogLeftPin = 7 [deprecated = true];
+    optional int32 tiltLeftAnalogRightPin = 8 [deprecated = true];
+    optional int32 tiltRightAnalogUpPin = 9 [deprecated = true];
+    optional int32 tiltRightAnalogDownPin = 10 [deprecated = true];
+    optional int32 tiltRightAnalogLeftPin = 11 [deprecated = true];
+    optional int32 tiltRightAnalogRightPin = 12 [deprecated = true];
 
     optional SOCDMode tiltSOCDMode = 13;
 
@@ -544,16 +572,16 @@ message BuzzerOptions
 
 message ExtraButtonOptions
 {
-    optional bool enabled = 1;
+    optional bool enabled = 1 [deprecated = true];
 
-    optional int32 pin = 2;
-    optional uint32 buttonMap = 3;
+    optional int32 pin = 2 [deprecated = true];
+    optional uint32 buttonMap = 3 [deprecated = true];
 }
 
 message PlayerNumberOptions
 {
-    optional bool enabled = 1;
-    optional uint32 number = 2;
+    optional bool enabled = 1 [deprecated = true];
+    optional uint32 number = 2 [deprecated = true];
 }
 
 message PS4Options
@@ -722,10 +750,15 @@ message KeyboardHostOptions
     optional uint32 mouseRight = 7;
 }
 
+message GamepadUSBHostOptions
+{
+    optional bool enabled = 1;
+}
+
 message FocusModeOptions
 {
     optional bool enabled = 1;
-    optional int32 pin = 2;
+    optional int32 pin = 2 [deprecated = true];
     optional int32 buttonLockMask = 3;
     optional bool oledLockEnabled = 4;
     optional bool rgbLockEnabled = 5;
@@ -764,10 +797,10 @@ message MacroOptions
 
 message InputHistoryOptions
 {
-    optional bool enabled = 1;
-    optional uint32 length = 2;
-    optional uint32 col = 3;
-    optional uint32 row = 4;
+    optional bool deprecatedEnabled = 1  [deprecated = true];
+    optional uint32 deprecatedLength = 2  [deprecated = true];
+    optional uint32 deprecatedCol = 3  [deprecated = true];
+    optional uint32 deprecatedRow = 4  [deprecated = true];
 }
 
 message RotaryPinOptions
@@ -834,7 +867,7 @@ message AddonOptions
     optional DualDirectionalOptions dualDirectionalOptions = 8;
     optional BuzzerOptions buzzerOptions = 9;
     optional ExtraButtonOptions deprecatedExtraButtonOptions = 10 [deprecated = true];
-    optional PlayerNumberOptions playerNumberOptions = 11;
+    optional PlayerNumberOptions playerNumberOptions = 11 [deprecated = true];
     optional PS4Options ps4Options = 12 [(nanopb).disallow_export = true];
     optional WiiOptions wiiOptions = 13;
     optional SOCDSliderOptions socdSliderOptions = 14;
@@ -844,13 +877,14 @@ message AddonOptions
     optional TiltOptions tiltOptions = 18;
     optional PSPassthroughOptions psPassthroughOptions = 19 [deprecated = true];
     optional MacroOptions macroOptions = 20;
-    optional InputHistoryOptions inputHistoryOptions = 21;
+    optional InputHistoryOptions inputHistoryOptions = 21  [deprecated = true];
     optional XBOnePassthroughOptions xbonePassthroughOptions = 22 [deprecated = true];
     optional AnalogADS1256Options analogADS1256Options = 23;
     optional RotaryOptions rotaryOptions = 24;
     optional PCF8575Options pcf8575Options = 25;
     optional DRV8833RumbleOptions drv8833RumbleOptions = 26;
     optional ReactiveLEDOptions reactiveLEDOptions = 27;
+    optional GamepadUSBHostOptions gamepadUSBHostOptions = 28;
 }
 
 message MigrationHistory
@@ -871,7 +905,7 @@ message Config
     optional KeyboardMapping keyboardMapping = 5;
     optional DisplayOptions displayOptions = 6;
     optional LEDOptions ledOptions = 7;
-    optional AnimationOptions_Proto animationOptions = 8;
+    optional AnimationOptions animationOptions = 8;
     optional AddonOptions addonOptions = 9;
     optional ForcedSetupOptions forcedSetupOptions = 10;
     optional ProfileOptions profileOptions = 11;

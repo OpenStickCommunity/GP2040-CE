@@ -10,7 +10,7 @@ export default {
 	'keyboard-mapping-label': 'Mapeamento de Teclado',
 	'led-config-label': 'Configuração de LED',
 	'links-label': 'Links',
-	'pin-mapping-label': 'Mapeamento de Pinos',
+	'pin-mapping-label': 'Mapeamento de GPIO Pinos',
 	'profile-settings-label': 'Configurações de Perfil',
 	'reboot-label': 'Reiniciar',
 	'reboot-modal-body': 'Selecione o modo para reiniciar',

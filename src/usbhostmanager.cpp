@@ -1,6 +1,7 @@
 #include "usbhostmanager.h"
 #include "storagemanager.h"
 #include "peripheralmanager.h"
+#include "eventmanager.h"
 
 #include "pio_usb.h"
 #include "tusb.h"
@@ -110,6 +111,24 @@ void tuh_hid_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_re
     if ( !tuh_hid_receive_report(dev_addr, instance) ) {
         // Error: cannot request report
     }
+}
+
+void tuh_mount_cb(uint8_t dev_addr) {
+    uint16_t vid, pid;
+    if (!tuh_vid_pid_get(dev_addr, &vid, &pid)) {
+        vid = 0xFFFF;
+        pid = 0xFFFF;
+    }
+    EventManager::getInstance().triggerEvent(new GPUSBHostMountEvent(dev_addr, vid, pid));
+}
+
+void tuh_umount_cb(uint8_t dev_addr) {
+    uint16_t vid, pid;
+    if (!tuh_vid_pid_get(dev_addr, &vid, &pid)) {
+        vid = 0xFFFF;
+        pid = 0xFFFF;
+    }
+    EventManager::getInstance().triggerEvent(new GPUSBHostUnmountEvent(dev_addr, vid, pid));
 }
 
 /// Invoked when device is unmounted (bus reset/unplugged)

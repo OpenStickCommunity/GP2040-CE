@@ -161,7 +161,18 @@ void PS4Driver::initializeAux() {
     }
 }
 
-void PS4Driver::process(Gamepad * gamepad) {
+bool PS4Driver::getDongleAuthRequired() {
+    GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();
+    if ( (controllerType == PS4ControllerType::PS4_CONTROLLER && 
+                gamepadOptions.ps4AuthType == InputModeAuthType::INPUT_MODE_AUTH_TYPE_USB ) ||
+         (controllerType == PS4ControllerType::PS4_ARCADESTICK &&
+                gamepadOptions.ps5AuthType == InputModeAuthType::INPUT_MODE_AUTH_TYPE_USB )) {
+        return true;
+    }
+    return false;
+}
+
+bool PS4Driver::process(Gamepad * gamepad) {
     const GamepadOptions & options = gamepad->getOptions();
     switch (gamepad->state.dpad & GAMEPAD_MASK_DPAD)
     {
@@ -272,6 +283,8 @@ void PS4Driver::process(Gamepad * gamepad) {
     if (tud_suspended())
         tud_remote_wakeup();
 
+    bool reportSent = false;
+
     uint32_t now = to_ms_since_boot(get_absolute_time());
     void * report = &ps4Report;
     uint16_t report_size = sizeof(ps4Report);
@@ -280,6 +293,7 @@ void PS4Driver::process(Gamepad * gamepad) {
         // HID ready + report sent, copy previous report
         if (tud_hid_ready() && tud_hid_report(0, report, report_size) == true ) {
             memcpy(last_report, report, report_size);
+            reportSent = true;
         }
         // keep track of our last successful report, for keepalive purposes
         last_report_timer = now;
@@ -342,6 +356,8 @@ void PS4Driver::process(Gamepad * gamepad) {
             }
         }
     }
+
+    return reportSent;
 }
 
 // Called by Core1, PS4 key signing will lock the CPU

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { FormCheck, Row, FormLabel } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
@@ -6,18 +6,12 @@ import * as yup from 'yup';
 
 import Section from '../Components/Section';
 
-import FormControl from '../Components/FormControl';
 import FormSelect from '../Components/FormSelect';
-import KeyboardMapper, { validateMappings } from '../Components/KeyboardMapper';
+import KeyboardMapper from '../Components/KeyboardMapper';
 import { baseButtonMappings } from '../Services/WebApi';
 import { AppContext } from '../Contexts/AppContext';
 
-import {
-	BUTTON_ACTIONS,
-	PIN_DIRECTIONS,
-	PinActionValues,
-	PinDirectionValues,
-} from '../Data/Pins';
+import { BUTTON_ACTIONS } from '../Data/Pins';
 import { BUTTON_MASKS_OPTIONS } from '../Data/Buttons';
 
 export const keyboardScheme = {
@@ -28,15 +22,24 @@ export const keyboardScheme = {
 	keyboardHostMouseLeft: yup
 		.number()
 		.label('Left Mouse Button')
-		.validateSelectionWhenValue('KeyboardHostAddonEnabled', BUTTON_MASKS_OPTIONS),
+		.validateSelectionWhenValue(
+			'KeyboardHostAddonEnabled',
+			BUTTON_MASKS_OPTIONS,
+		),
 	keyboardHostMouseMiddle: yup
 		.number()
 		.label('Middle Mouse Button')
-		.validateSelectionWhenValue('KeyboardHostAddonEnabled', BUTTON_MASKS_OPTIONS),
+		.validateSelectionWhenValue(
+			'KeyboardHostAddonEnabled',
+			BUTTON_MASKS_OPTIONS,
+		),
 	keyboardHostMouseRight: yup
 		.number()
 		.label('Right Mouse Button')
-		.validateSelectionWhenValue('KeyboardHostAddonEnabled', BUTTON_MASKS_OPTIONS),
+		.validateSelectionWhenValue(
+			'KeyboardHostAddonEnabled',
+			BUTTON_MASKS_OPTIONS,
+		),
 };
 
 export const keyboardState = {
@@ -47,16 +50,19 @@ export const keyboardState = {
 	KeyboardHostAddonEnabled: 0,
 };
 
-const options = Object.entries(BUTTON_ACTIONS)
-	.map(([key, value]) => ({
-		label: key,
-		value,
-	}));
-
 const excludedButtons = [
-	'E1','E2','E3','E4',
-	'E5','E6','E7','E8',
-	'E9','E10','E11','E12',
+	'E1',
+	'E2',
+	'E3',
+	'E4',
+	'E5',
+	'E6',
+	'E7',
+	'E8',
+	'E9',
+	'E10',
+	'E11',
+	'E12',
 ];
 
 const Keyboard = ({
@@ -68,14 +74,11 @@ const Keyboard = ({
 }) => {
 	const { buttonLabels, getAvailablePeripherals } = useContext(AppContext);
 	const { t } = useTranslation();
-	const [validated, setValidated] = useState(false);
 
 	const handleKeyChange = (values, setFieldValue) => (value, button) => {
 		const newMappings = { ...values.keyboardHostMap };
 		newMappings[button].key = value;
-		const mappings = validateMappings(newMappings, t);
-		setFieldValue('keyboardHostMap', mappings);
-		setValidated(true);
+		setFieldValue('keyboardHostMap', newMappings);
 	};
 
 	const getKeyMappingForButton = (values) => (button) => {
@@ -95,18 +98,15 @@ const Keyboard = ({
 					<div className="mb-2">
 						<KeyboardMapper
 							buttonLabels={buttonLabels}
-                            excludeButtons={excludedButtons}
+							excludeButtons={excludedButtons}
 							handleKeyChange={handleKeyChange(values, setFieldValue)}
-							validated={validated}
 							getKeyMappingForButton={getKeyMappingForButton(values)}
 						/>
 					</div>
 				</Row>
 				<Row className="mb-3">
 					<p>{t('AddonsConfig:keyboard-host-mouse-header-text')}</p>
-					<div
-						className="col-sm-12 col-md-6 col-lg-2 mb-2"
-					>
+					<div className="col-sm-12 col-md-6 col-lg-2 mb-2">
 						<FormSelect
 							label={t(`AddonsConfig:keyboard-host-left-mouse`)}
 							name="keyboardHostMouseLeft"
@@ -117,18 +117,13 @@ const Keyboard = ({
 							onChange={handleChange}
 						>
 							{BUTTON_MASKS_OPTIONS.map((o, i) => (
-								<option
-									key={`keyboardHostMouseLeft-${i}`}
-									value={o.value}
-								>
+								<option key={`keyboardHostMouseLeft-${i}`} value={o.value}>
 									{o.label}
 								</option>
 							))}
 						</FormSelect>
 					</div>
-					<div
-						className="col-sm-12 col-md-6 col-lg-2 mb-2"
-					>
+					<div className="col-sm-12 col-md-6 col-lg-2 mb-2">
 						<FormSelect
 							label={t(`AddonsConfig:keyboard-host-middle-mouse`)}
 							name="keyboardHostMouseMiddle"
@@ -139,18 +134,13 @@ const Keyboard = ({
 							onChange={handleChange}
 						>
 							{BUTTON_MASKS_OPTIONS.map((o, i) => (
-								<option
-									key={`keyboardHostMouseMiddle-${i}`}
-									value={o.value}
-								>
+								<option key={`keyboardHostMouseMiddle-${i}`} value={o.value}>
 									{o.label}
 								</option>
 							))}
 						</FormSelect>
 					</div>
-					<div
-						className="col-sm-12 col-md-6 col-lg-2 mb-2"
-					>
+					<div className="col-sm-12 col-md-6 col-lg-2 mb-2">
 						<FormSelect
 							label={t(`AddonsConfig:keyboard-host-right-mouse`)}
 							name="keyboardHostMouseRight"
@@ -161,10 +151,7 @@ const Keyboard = ({
 							onChange={handleChange}
 						>
 							{BUTTON_MASKS_OPTIONS.map((o, i) => (
-								<option
-									key={`keyboardHostMouseRight-${i}`}
-									value={o.value}
-								>
+								<option key={`keyboardHostMouseRight-${i}`} value={o.value}>
 									{o.label}
 								</option>
 							))}
@@ -192,7 +179,7 @@ const Keyboard = ({
 						i18nKey="peripheral-toggle-unavailable"
 						values={{ name: 'USB' }}
 					>
-						<NavLink exact="true" to="/peripheral-mapping">
+						<NavLink to="/peripheral-mapping">
 							{t('PeripheralMapping:header-text')}
 						</NavLink>
 					</Trans>

@@ -7,6 +7,9 @@
 #include <deque>
 #include <array>
 #include <functional>
+#include <algorithm> 
+#include <cctype>
+#include <locale>
 #include "layoutmanager.h"
 #include "GPGFX_UI_widgets.h"
 #include "GPGFX_UI_layouts.h"
@@ -99,12 +102,16 @@ class ButtonLayoutScreen : public GPScreen {
     public:
         ButtonLayoutScreen() {}
         ButtonLayoutScreen(GPGFX* renderer) { setRenderer(renderer); }
+        virtual ~ButtonLayoutScreen(){}
         virtual int8_t update();
         virtual void init();
         virtual void shutdown();
 
+        void handleProfileChange(GPEvent* e);
+        void handleUSB(GPEvent* e);
     protected:
         virtual void drawScreen();
+        virtual void drawDebug();
     private:
         // new layout methods
         GPLever* addLever(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, uint16_t inputType);
@@ -115,7 +122,7 @@ class ButtonLayoutScreen : public GPScreen {
         void generateHeader();
 
         void updateCustomHeaders();
-        void addCustomHeader(std::string newStr);
+        void addCustomHeader(std::string newStr, std::string identifier);
 
         const std::map<uint16_t, uint16_t> displayModeLookup = {
             {INPUT_MODE_PS3, 0},
@@ -148,14 +155,16 @@ class ButtonLayoutScreen : public GPScreen {
         std::deque<std::string> inputHistory;
         std::array<bool, INPUT_HISTORY_MAX_INPUTS> lastInput;
 
-        bool gamepadProfileModeDisplay = false;
-        bool ledAnimationProfileModeDisplay = false;
-        bool specialMoveProfileModeDisplay = false;
-        bool profileModeDisplay = false;
-        uint8_t profileDelay = 2;
-        int profileDelayStart = 0;
-        std::string profileModeString;
+        uint8_t bannerDelay = 2;
+        float inbetweenBannerDelay = 0.3f;
+        int bannerDelayStart = 0;
+        bool inbetweenBanners = false;
+        std::deque<std::string> bannerString;
+        std::deque<std::string> bannerIdentifier;
+
+        int8_t gamePadProfileNumber = -2;
         int8_t prevGamepadProfileNumber = -2;
+        
         int8_t prevLEDAnimationProfileNumber = -2;
         int8_t prevSpecialMoveProfileNumber = -2;
  
@@ -164,8 +173,19 @@ class ButtonLayoutScreen : public GPScreen {
         uint8_t prevLayoutRight = 0;
         ButtonLayoutParamsLeft prevLeftOptions;
         ButtonLayoutParamsRight prevRightOptions;
+        ButtonLayoutOrientation prevOrientation;
+
+        bool hasTurboAssigned = false;
 
         bool macroEnabled;
+
+        bool showInputMode = true;
+        bool showTurboMode = true;
+        bool showDpadMode = true;
+        bool showSocdMode = true;
+        bool showMacroMode = true;
+        bool showProfileMode = false;
+        void trim(std::string &s);
 
         uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
         void processInputHistory();
