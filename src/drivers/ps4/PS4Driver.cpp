@@ -124,6 +124,15 @@ void PS4Driver::initialize() {
             controllerType = PS4ControllerType::PS4_WHEEL;
             break;
         case InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_HOTAS:
+            enableController = false;
+            enableMotion = false;
+            enableLED = false;
+            enableRumble = false;
+            enableAnalog = true;
+            enableUnknown0 = false;
+            enableTouchpad = false;
+            enableUnknown1 = false;
+
             controllerType = PS4ControllerType::PS4_HOTAS;
             break;
         case InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GUITAR:
@@ -254,6 +263,17 @@ void PS4Driver::initialize() {
     buttonDialUp = new GamepadButtonMapping(0);
     buttonDialEnter = new GamepadButtonMapping(0);
 
+    buttonRudderLeft = new GamepadButtonMapping(0);
+    buttonRudderRight = new GamepadButtonMapping(0);
+    buttonThrottleForward = new GamepadButtonMapping(0);
+    buttonThrottleReverse = new GamepadButtonMapping(0);
+    buttonRockerLeft = new GamepadButtonMapping(0);
+    buttonRockerRight = new GamepadButtonMapping(0);
+    buttonPedalLeft = new GamepadButtonMapping(0);
+    buttonPedalRight = new GamepadButtonMapping(0);
+    buttonPedalRudderLeft = new GamepadButtonMapping(0);
+    buttonPedalRudderRight = new GamepadButtonMapping(0);
+
     GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
         switch (pinMappings[pin].action) {
@@ -276,6 +296,16 @@ void PS4Driver::initialize() {
             case GpioAction::MODE_WHEEL_PEDAL_GAS: buttonGas->pinMask |= 1 << pin; break;
             case GpioAction::MODE_WHEEL_PEDAL_BRAKE: buttonBrake->pinMask |= 1 << pin; break;
             case GpioAction::MODE_WHEEL_PEDAL_CLUTCH: buttonClutch->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_HOTAS_RUDDER_LEFT: buttonRudderLeft->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_HOTAS_RUDDER_RIGHT: buttonRudderRight->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_HOTAS_THROTTLE_FORWARD: buttonThrottleForward->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_HOTAS_THROTTLE_REVERSE: buttonThrottleReverse->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_HOTAS_ROCKER_LEFT: buttonRockerLeft->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_HOTAS_ROCKER_RIGHT: buttonRockerRight->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_HOTAS_PEDAL_LEFT: buttonPedalLeft->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_HOTAS_PEDAL_RIGHT: buttonPedalRight->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_HOTAS_PEDAL_RUDDER_LEFT: buttonPedalRudderLeft->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_HOTAS_PEDAL_RUDDER_RIGHT: buttonPedalRudderRight->pinMask |= 1 << pin; break;
             default:    break;
         }
     }
@@ -392,6 +422,24 @@ bool PS4Driver::process(Gamepad * gamepad) {
         ps4Report.hotas.twistRudder = PS4_JOYSTICK_MID;
         ps4Report.hotas.throttle = PS4_JOYSTICK_MID;
         ps4Report.hotas.rockerSwitch = PS4_JOYSTICK_MID;
+
+        ps4Report.hotas.pedalRudder = PS4_JOYSTICK_MID;
+        ps4Report.hotas.pedalLeft = PS4_JOYSTICK_MIN;
+        ps4Report.hotas.pedalRight = PS4_JOYSTICK_MIN;
+
+        if (values & buttonRudderLeft->pinMask) ps4Report.hotas.twistRudder = PS4_JOYSTICK_MIN;
+        if (values & buttonRudderRight->pinMask) ps4Report.hotas.twistRudder = PS4_JOYSTICK_MAX;
+        if (values & buttonThrottleForward->pinMask) ps4Report.hotas.throttle = PS4_JOYSTICK_MIN;
+        if (values & buttonThrottleReverse->pinMask) ps4Report.hotas.throttle = PS4_JOYSTICK_MAX;
+        if (values & buttonRockerLeft->pinMask) ps4Report.hotas.rockerSwitch = PS4_JOYSTICK_MIN;
+        if (values & buttonRockerRight->pinMask) ps4Report.hotas.rockerSwitch = PS4_JOYSTICK_MAX;
+        if (values & buttonPedalLeft->pinMask) ps4Report.hotas.pedalLeft = PS4_JOYSTICK_MAX;
+        if (values & buttonPedalRight->pinMask) ps4Report.hotas.pedalRight = PS4_JOYSTICK_MAX;
+        if (values & buttonPedalRudderLeft->pinMask) ps4Report.hotas.pedalRudder = PS4_JOYSTICK_MAX;
+        if (values & buttonPedalRudderRight->pinMask) ps4Report.hotas.pedalRudder = PS4_JOYSTICK_MIN;
+
+        ps4Report.hotas.joystickX = PS4_NAV_JOYSTICK_MID;
+        ps4Report.hotas.joystickY = PS4_NAV_JOYSTICK_MID;
     }
     ps4Report.buttonSouth    = gamepad->pressedB1();
     ps4Report.buttonEast     = gamepad->pressedB2();

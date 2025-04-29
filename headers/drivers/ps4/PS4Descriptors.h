@@ -349,7 +349,7 @@ typedef struct __attribute__((packed)) {
             uint8_t powerLevel : 4;
             uint8_t : 4;
         
-            uint8_t mystery1[12];
+            uint8_t mystery1[10];
 
             uint16_t joystickX;
             uint16_t joystickY;
@@ -357,7 +357,9 @@ typedef struct __attribute__((packed)) {
             uint8_t throttle;
             uint8_t rockerSwitch;
 
-            uint8_t mystery2[2];
+            uint8_t pedalRudder;
+            uint8_t pedalLeft;
+            uint8_t pedalRight;
         } hotas;
         struct __attribute__((packed)) {
             uint8_t mystery0[22];

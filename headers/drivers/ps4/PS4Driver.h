@@ -109,6 +109,17 @@ private:
     GamepadButtonMapping *buttonDialDown;
     GamepadButtonMapping *buttonDialUp;
     GamepadButtonMapping *buttonDialEnter;
+
+    GamepadButtonMapping *buttonRudderLeft;
+    GamepadButtonMapping *buttonRudderRight;
+    GamepadButtonMapping *buttonThrottleForward;
+    GamepadButtonMapping *buttonThrottleReverse;
+    GamepadButtonMapping *buttonRockerLeft;
+    GamepadButtonMapping *buttonRockerRight;
+    GamepadButtonMapping *buttonPedalLeft;
+    GamepadButtonMapping *buttonPedalRight;
+    GamepadButtonMapping *buttonPedalRudderLeft;
+    GamepadButtonMapping *buttonPedalRudderRight;
 };
 
 #endif // _PS4_DRIVER_H_

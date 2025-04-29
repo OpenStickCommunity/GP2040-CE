@@ -50,6 +50,7 @@ void GamepadUSBHostListener::mount(uint8_t dev_addr, uint8_t instance, uint8_t c
         case PS4_PRODUCT_ID:       // Razer Panthera
         case 0x00EE:               // Hori Minipad
         case PS4_WHEEL_PRODUCT_ID: // G29
+        case 0xB67B: // T-Flight
             init_ds4(desc_report, desc_len);
             break;
         // while these do not
@@ -98,6 +99,7 @@ void GamepadUSBHostListener::process_ctrlr_report(uint8_t dev_addr, uint8_t cons
         case DS4_PRODUCT_ID:       // Sony Dualshock 4 controller
         case PS4_PRODUCT_ID:       // Razer Panthera
         case PS4_WHEEL_PRODUCT_ID: // G29
+        case 0xB67B:               // T-Flight
         case 0x00EE:               // Hori Minipad
             if (isDS4Identified) {
                 update_ds4();
