@@ -302,25 +302,37 @@ typedef struct __attribute__((packed)) {
             uint8_t powerLevel : 4;
             uint8_t : 4;
             
-            uint8_t mystery1[12];
+            uint8_t mystery1[10];
             
             uint8_t pickup;
             uint8_t whammy;
             uint8_t tilt;
 
-            uint8_t fretGreen : 1;
-            uint8_t fretRed : 1;
-            uint8_t fretYellow : 1;
-            uint8_t fretBlue : 1;
-            uint8_t fretOrange : 1;
-            uint8_t : 3;
+            union {
+                uint8_t fretValue;
 
-            uint8_t soloFretGreen : 1;
-            uint8_t soloFretRed : 1;
-            uint8_t soloFretYellow : 1;
-            uint8_t soloFretBlue : 1;
-            uint8_t soloFretOrange : 1;
-            uint8_t : 3;
+                struct __attribute__((packed)) {
+                    uint8_t green : 1;
+                    uint8_t red : 1;
+                    uint8_t yellow : 1;
+                    uint8_t blue : 1;
+                    uint8_t orange : 1;
+                    uint8_t : 3;
+                } frets;
+            };
+
+            union {
+                uint8_t soloFretValue;
+
+                struct __attribute__((packed)) {
+                    uint8_t green : 1;
+                    uint8_t red : 1;
+                    uint8_t yellow : 1;
+                    uint8_t blue : 1;
+                    uint8_t orange : 1;
+                    uint8_t : 3;
+                } soloFrets;
+            };
             
             uint8_t mystery2[14];
         } guitar;
@@ -330,16 +342,16 @@ typedef struct __attribute__((packed)) {
             uint8_t powerLevel : 4;
             uint8_t : 4;
         
-            uint8_t mystery1[12];
+            uint8_t mystery1[10];
         
-            uint8_t redDrumVelocity;
-            uint8_t blueDrumVelocity;
-            uint8_t yellowDrumVelocity;
-            uint8_t greenDrumVelocity;
+            uint8_t velocityDrumRed;
+            uint8_t velocityDrumBlue;
+            uint8_t velocityDrumYellow;
+            uint8_t velocityDrumGreen;
         
-            uint8_t yellowCymbalVelocity;
-            uint8_t blueCymbalVelocity;
-            uint8_t greenCymbalVelocity;
+            uint8_t velocityCymbalYellow;
+            uint8_t velocityCymbalBlue;
+            uint8_t velocityCymbalGreen;
         
             uint8_t mystery2[12];
         } drums;

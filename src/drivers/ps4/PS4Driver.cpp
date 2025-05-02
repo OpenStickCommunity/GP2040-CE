@@ -251,14 +251,7 @@ void PS4Driver::initialize() {
         .magicID = 0x0d0d,
         .mystery1 = {},
         .wheelParam = {0x0D, 0x84, 0x03},
-        .mystery2 = {
-            0x01,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x01,
-        }
+        .mystery2 = {0x00}
     };
 
     // controller type bindings
@@ -306,22 +299,38 @@ void PS4Driver::initialize() {
     buttonPickup = new GamepadButtonMapping(0);
     buttonTilt = new GamepadButtonMapping(0);
 
+    buttonDrumPadRed = new GamepadButtonMapping(0);
+    buttonDrumPadBlue = new GamepadButtonMapping(0);
+    buttonDrumPadYellow = new GamepadButtonMapping(0);
+    buttonDrumPadGreen = new GamepadButtonMapping(0);
+    buttonCymbolYellow = new GamepadButtonMapping(0);
+    buttonCymbolBlue = new GamepadButtonMapping(0);
+    buttonCymbolGreen = new GamepadButtonMapping(0);
+
     GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
         switch (pinMappings[pin].action) {
             case GpioAction::MODE_GUITAR_FRET_GREEN: buttonFretGreen->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_FRET_RED: buttonFretGreen->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_FRET_YELLOW: buttonFretGreen->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_FRET_BLUE: buttonFretGreen->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_FRET_ORANGE: buttonFretGreen->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_FRET_SOLO_GREEN: buttonFretGreen->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_FRET_SOLO_RED: buttonFretGreen->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_FRET_SOLO_YELLOW: buttonFretGreen->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_FRET_SOLO_BLUE: buttonFretGreen->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_FRET_SOLO_ORANGE: buttonFretGreen->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_GUITAR_FRET_RED: buttonFretRed->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_GUITAR_FRET_YELLOW: buttonFretYellow->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_GUITAR_FRET_BLUE: buttonFretBlue->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_GUITAR_FRET_ORANGE: buttonFretOrange->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_GUITAR_FRET_SOLO_GREEN: buttonFretSoloGreen->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_GUITAR_FRET_SOLO_RED: buttonFretSoloRed->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_GUITAR_FRET_SOLO_YELLOW: buttonFretSoloYellow->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_GUITAR_FRET_SOLO_BLUE: buttonFretSoloBlue->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_GUITAR_FRET_SOLO_ORANGE: buttonFretSoloOrange->pinMask |= 1 << pin; break;
             case GpioAction::MODE_GUITAR_WHAMMY: buttonWhammy->pinMask |= 1 << pin; break;
             case GpioAction::MODE_GUITAR_PICKUP: buttonPickup->pinMask |= 1 << pin; break;
             case GpioAction::MODE_GUITAR_TILT: buttonTilt->pinMask |= 1 << pin; break;
+
+            case GpioAction::MODE_DRUM_RED_DRUMPAD: buttonDrumPadRed->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_DRUM_BLUE_DRUMPAD: buttonDrumPadBlue->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_DRUM_YELLOW_DRUMPAD: buttonDrumPadYellow->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_DRUM_GREEN_DRUMPAD: buttonDrumPadGreen->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_DRUM_YELLOW_CYMBAL: buttonCymbolYellow->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_DRUM_BLUE_CYMBAL: buttonCymbolBlue->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_DRUM_GREEN_CYMBAL: buttonCymbolGreen->pinMask |= 1 << pin; break;
 
             case GpioAction::MODE_HOTAS_RUDDER_LEFT: buttonRudderLeft->pinMask |= 1 << pin; break;
             case GpioAction::MODE_HOTAS_RUDDER_RIGHT: buttonRudderRight->pinMask |= 1 << pin; break;
@@ -423,38 +432,70 @@ bool PS4Driver::process(Gamepad * gamepad) {
 
     bool anyA2A3A4 = gamepad->pressedA2() || gamepad->pressedA3() || gamepad->pressedA4();
 
+    // reset button states to false 
+    ps4Report.buttonSouth    = false;
+    ps4Report.buttonEast     = false;
+    ps4Report.buttonWest     = false;
+    ps4Report.buttonNorth    = false;
+    ps4Report.buttonL1       = false;
+    ps4Report.buttonR1       = false;
+    ps4Report.buttonL2       = false;
+    ps4Report.buttonR2       = false;
+    ps4Report.buttonSelect   = false;
+    ps4Report.buttonStart    = false;
+    ps4Report.buttonL3       = false;
+    ps4Report.buttonR3       = false;
+    ps4Report.buttonHome     = false;
+    ps4Report.buttonTouchpad = false;
+
     if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GAMEPAD) {
     } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GUITAR) {
         ps4Report.guitar.pickup = PS4_JOYSTICK_MIN;
         ps4Report.guitar.whammy = PS4_JOYSTICK_MIN;
         ps4Report.guitar.tilt = PS4_JOYSTICK_MIN;
-        ps4Report.guitar.fretGreen = 0;
-        ps4Report.guitar.fretRed = 0;
-        ps4Report.guitar.fretYellow = 0;
-        ps4Report.guitar.fretBlue = 0;
-        ps4Report.guitar.fretOrange = 0;
-        ps4Report.guitar.soloFretGreen  = 0;
-        ps4Report.guitar.soloFretRed = 0;
-        ps4Report.guitar.soloFretYellow = 0;
-        ps4Report.guitar.soloFretBlue = 0;
-        ps4Report.guitar.soloFretOrange = 0;
-
-        if (values & buttonFretGreen->pinMask) ps4Report.guitar.fretGreen = 1;
-        if (values & buttonFretRed->pinMask) ps4Report.guitar.fretRed = 1;
-        if (values & buttonFretYellow->pinMask) ps4Report.guitar.fretYellow = 1;
-        if (values & buttonFretBlue->pinMask) ps4Report.guitar.fretBlue = 1;
-        if (values & buttonFretOrange->pinMask) ps4Report.guitar.fretOrange = 1;
-
-        if (values & buttonFretSoloGreen->pinMask) ps4Report.guitar.soloFretGreen  = 1;
-        if (values & buttonFretSoloRed->pinMask) ps4Report.guitar.soloFretRed = 1;
-        if (values & buttonFretSoloYellow->pinMask) ps4Report.guitar.soloFretYellow = 1;
-        if (values & buttonFretSoloBlue->pinMask) ps4Report.guitar.soloFretBlue = 1;
-        if (values & buttonFretSoloOrange->pinMask) ps4Report.guitar.soloFretOrange = 1;
-
-        if (values & buttonWhammy->pinMask) ps4Report.guitar.pickup = PS4_JOYSTICK_MAX;
-        if (values & buttonPickup->pinMask) ps4Report.guitar.whammy = PS4_JOYSTICK_MAX;
+        ps4Report.guitar.frets.green = false;
+        ps4Report.guitar.frets.red = false;
+        ps4Report.guitar.frets.yellow = false;
+        ps4Report.guitar.frets.blue = false;
+        ps4Report.guitar.frets.orange = false;
+        ps4Report.guitar.soloFrets.green  = false;
+        ps4Report.guitar.soloFrets.red = false;
+        ps4Report.guitar.soloFrets.yellow = false;
+        ps4Report.guitar.soloFrets.blue = false;
+        ps4Report.guitar.soloFrets.orange = false;
+        
+        // frets also activate their face button counterparts
+        if (values & buttonFretGreen->pinMask)      { ps4Report.guitar.frets.green      = true; ps4Report.buttonSouth |= true; }
+        if (values & buttonFretRed->pinMask)        { ps4Report.guitar.frets.red        = true; ps4Report.buttonEast  |= true; }
+        if (values & buttonFretYellow->pinMask)     { ps4Report.guitar.frets.yellow     = true; ps4Report.buttonNorth |= true; }
+        if (values & buttonFretBlue->pinMask)       { ps4Report.guitar.frets.blue       = true; ps4Report.buttonWest  |= true; }
+        if (values & buttonFretOrange->pinMask)     { ps4Report.guitar.frets.orange     = true; ps4Report.buttonL1    |= true; }
+        
+        if (values & buttonFretSoloGreen->pinMask)  { ps4Report.guitar.soloFrets.green  = true; ps4Report.buttonSouth |= true; ps4Report.buttonL3 |= true; }
+        if (values & buttonFretSoloRed->pinMask)    { ps4Report.guitar.soloFrets.red    = true; ps4Report.buttonEast  |= true; ps4Report.buttonL3 |= true; }
+        if (values & buttonFretSoloYellow->pinMask) { ps4Report.guitar.soloFrets.yellow = true; ps4Report.buttonNorth |= true; ps4Report.buttonL3 |= true; }
+        if (values & buttonFretSoloBlue->pinMask)   { ps4Report.guitar.soloFrets.blue   = true; ps4Report.buttonWest  |= true; ps4Report.buttonL3 |= true; }
+        if (values & buttonFretSoloOrange->pinMask) { ps4Report.guitar.soloFrets.orange = true; ps4Report.buttonL1    |= true; ps4Report.buttonL3 |= true; }
+        
+        if (values & buttonPickup->pinMask) ps4Report.guitar.pickup = PS4_JOYSTICK_MID;
+        if (values & buttonWhammy->pinMask) ps4Report.guitar.whammy = PS4_JOYSTICK_MAX;
         if (values & buttonTilt->pinMask) ps4Report.guitar.tilt = PS4_JOYSTICK_MAX;
+    } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_DRUM) {
+        ps4Report.drums.velocityDrumRed = PS4_JOYSTICK_MIN;
+        ps4Report.drums.velocityDrumBlue = PS4_JOYSTICK_MIN;
+        ps4Report.drums.velocityDrumYellow = PS4_JOYSTICK_MIN;
+        ps4Report.drums.velocityDrumGreen = PS4_JOYSTICK_MIN;
+        ps4Report.drums.velocityCymbalYellow = PS4_JOYSTICK_MIN;
+        ps4Report.drums.velocityCymbalBlue = PS4_JOYSTICK_MIN;
+        ps4Report.drums.velocityCymbalGreen = PS4_JOYSTICK_MIN;
 
+        if (values & buttonDrumPadRed->pinMask)    { ps4Report.drums.velocityDrumRed      = PS4_JOYSTICK_MAX; ps4Report.buttonEast  |= true; }
+        if (values & buttonDrumPadBlue->pinMask)   { ps4Report.drums.velocityDrumBlue     = PS4_JOYSTICK_MAX; ps4Report.buttonWest  |= true; }
+        if (values & buttonDrumPadYellow->pinMask) { ps4Report.drums.velocityDrumYellow   = PS4_JOYSTICK_MAX; ps4Report.buttonNorth |= true; }
+        if (values & buttonDrumPadGreen->pinMask)  { ps4Report.drums.velocityDrumGreen    = PS4_JOYSTICK_MAX; ps4Report.buttonSouth |= true; }
+        if (values & buttonCymbolYellow->pinMask)  { ps4Report.drums.velocityCymbalYellow = PS4_JOYSTICK_MAX; ps4Report.buttonNorth |= true; }
+        if (values & buttonCymbolBlue->pinMask)    { ps4Report.drums.velocityCymbalBlue   = PS4_JOYSTICK_MAX; ps4Report.buttonWest  |= true; }
+        if (values & buttonCymbolGreen->pinMask)   { ps4Report.drums.velocityCymbalGreen  = PS4_JOYSTICK_MAX; ps4Report.buttonSouth |= true; }
     } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_WHEEL) {
         ps4Report.wheel.steeringWheel = PS4_NAV_JOYSTICK_MID;
         ps4Report.wheel.gasPedal = PS4_NAV_JOYSTICK_MAX;
@@ -517,20 +558,21 @@ bool PS4Driver::process(Gamepad * gamepad) {
         ps4Report.hotas.joystickX = PS4_NAV_JOYSTICK_MID;
         ps4Report.hotas.joystickY = PS4_NAV_JOYSTICK_MID;
     }
-    ps4Report.buttonSouth    = gamepad->pressedB1();
-    ps4Report.buttonEast     = gamepad->pressedB2();
-    ps4Report.buttonWest     = gamepad->pressedB3();
-    ps4Report.buttonNorth    = gamepad->pressedB4();
-    ps4Report.buttonL1       = gamepad->pressedL1();
-    ps4Report.buttonR1       = gamepad->pressedR1();
-    ps4Report.buttonL2       = gamepad->pressedL2();
-    ps4Report.buttonR2       = gamepad->pressedR2();
-    ps4Report.buttonSelect   = options.switchTpShareForDs4 ? anyA2A3A4 : gamepad->pressedS1();
-    ps4Report.buttonStart    = gamepad->pressedS2();
-    ps4Report.buttonL3       = gamepad->pressedL3();
-    ps4Report.buttonR3       = gamepad->pressedR3();
-    ps4Report.buttonHome     = gamepad->pressedA1();
-    ps4Report.buttonTouchpad = options.switchTpShareForDs4 ? gamepad->pressedS1() : anyA2A3A4;
+
+    ps4Report.buttonSouth    |= gamepad->pressedB1();
+    ps4Report.buttonEast     |= gamepad->pressedB2();
+    ps4Report.buttonWest     |= gamepad->pressedB3();
+    ps4Report.buttonNorth    |= gamepad->pressedB4();
+    ps4Report.buttonL1       |= gamepad->pressedL1();
+    ps4Report.buttonR1       |= gamepad->pressedR1();
+    ps4Report.buttonL2       |= gamepad->pressedL2();
+    ps4Report.buttonR2       |= gamepad->pressedR2();
+    ps4Report.buttonSelect   |= options.switchTpShareForDs4 ? anyA2A3A4 : gamepad->pressedS1();
+    ps4Report.buttonStart    |= gamepad->pressedS2();
+    ps4Report.buttonL3       |= gamepad->pressedL3();
+    ps4Report.buttonR3       |= gamepad->pressedR3();
+    ps4Report.buttonHome     |= gamepad->pressedA1();
+    ps4Report.buttonTouchpad |= options.switchTpShareForDs4 ? gamepad->pressedS1() : anyA2A3A4;
 
     ps4Report.leftStickX = static_cast<uint8_t>(gamepad->state.lx >> 8);
     ps4Report.leftStickY = static_cast<uint8_t>(gamepad->state.ly >> 8);
@@ -618,16 +660,6 @@ bool PS4Driver::process(Gamepad * gamepad) {
     uint32_t now = to_ms_since_boot(get_absolute_time());
     void * report = &ps4Report;
     uint16_t report_size = sizeof(ps4Report);
-
-#if GAMEPAD_HOST_DEBUG
-    uint8_t * reportBytes = (uint8_t*)&ps4Report;
-    printf("\033[8;0H\nOut:\n");
-    for (uint8_t i = 0; i < 64; i++) {
-        printf("%02x ", reportBytes[i]);
-        if (((i+1) % 16) == 0) printf("\n");
-    }
-    printf("----\n");
-#endif
 
     if (memcmp(last_report, report, report_size) != 0)
     {
