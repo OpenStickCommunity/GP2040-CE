@@ -138,7 +138,19 @@ const INPUT_MODES = [
 		value: 1,
 		group: 'primary',
 	},
-	{ labelKey: 'input-mode-options.ps3', value: 2, group: 'primary' },
+	{ 
+		labelKey: 'input-mode-options.ps3', 
+		value: 2, 
+		group: 'primary',
+		deviceTypes: [
+			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_GAMEPAD,
+			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_GAMEPAD_ALT,
+			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_WHEEL,
+			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_HOTAS,
+			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_GUITAR,
+			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_DRUM,
+		],
+	},
 	{ labelKey: 'input-mode-options.keyboard', value: 3, group: 'primary' },
 	{
 		labelKey: 'input-mode-options.ps4',
@@ -723,7 +735,7 @@ export default function SettingsPage() {
 		}));
 
 		if (mode) {
-			options = options.filter((o) => mode.deviceTypes?.indexOf(o.value) !== -1)
+			options = options.filter((o) => mode.deviceTypes?.indexOf(o.value) !== -1).sort((a,b) => mode.deviceTypes?.findIndex(o => o === a.value) - mode.deviceTypes?.findIndex(o => o === b.value))
 		} else {
 			options = []
 		}
