@@ -303,9 +303,9 @@ void PS4Driver::initialize() {
     buttonDrumPadBlue = new GamepadButtonMapping(0);
     buttonDrumPadYellow = new GamepadButtonMapping(0);
     buttonDrumPadGreen = new GamepadButtonMapping(0);
-    buttonCymbolYellow = new GamepadButtonMapping(0);
-    buttonCymbolBlue = new GamepadButtonMapping(0);
-    buttonCymbolGreen = new GamepadButtonMapping(0);
+    buttonCymbalYellow = new GamepadButtonMapping(0);
+    buttonCymbalBlue = new GamepadButtonMapping(0);
+    buttonCymbalGreen = new GamepadButtonMapping(0);
 
     GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
@@ -328,9 +328,9 @@ void PS4Driver::initialize() {
             case GpioAction::MODE_DRUM_BLUE_DRUMPAD: buttonDrumPadBlue->pinMask |= 1 << pin; break;
             case GpioAction::MODE_DRUM_YELLOW_DRUMPAD: buttonDrumPadYellow->pinMask |= 1 << pin; break;
             case GpioAction::MODE_DRUM_GREEN_DRUMPAD: buttonDrumPadGreen->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_DRUM_YELLOW_CYMBAL: buttonCymbolYellow->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_DRUM_BLUE_CYMBAL: buttonCymbolBlue->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_DRUM_GREEN_CYMBAL: buttonCymbolGreen->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_DRUM_YELLOW_CYMBAL: buttonCymbalYellow->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_DRUM_BLUE_CYMBAL: buttonCymbalBlue->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_DRUM_GREEN_CYMBAL: buttonCymbalGreen->pinMask |= 1 << pin; break;
 
             case GpioAction::MODE_HOTAS_RUDDER_LEFT: buttonRudderLeft->pinMask |= 1 << pin; break;
             case GpioAction::MODE_HOTAS_RUDDER_RIGHT: buttonRudderRight->pinMask |= 1 << pin; break;
@@ -493,9 +493,9 @@ bool PS4Driver::process(Gamepad * gamepad) {
         if (values & buttonDrumPadBlue->pinMask)   { ps4Report.drums.velocityDrumBlue     = PS4_JOYSTICK_MAX; ps4Report.buttonWest  |= true; }
         if (values & buttonDrumPadYellow->pinMask) { ps4Report.drums.velocityDrumYellow   = PS4_JOYSTICK_MAX; ps4Report.buttonNorth |= true; }
         if (values & buttonDrumPadGreen->pinMask)  { ps4Report.drums.velocityDrumGreen    = PS4_JOYSTICK_MAX; ps4Report.buttonSouth |= true; }
-        if (values & buttonCymbolYellow->pinMask)  { ps4Report.drums.velocityCymbalYellow = PS4_JOYSTICK_MAX; ps4Report.buttonNorth |= true; }
-        if (values & buttonCymbolBlue->pinMask)    { ps4Report.drums.velocityCymbalBlue   = PS4_JOYSTICK_MAX; ps4Report.buttonWest  |= true; }
-        if (values & buttonCymbolGreen->pinMask)   { ps4Report.drums.velocityCymbalGreen  = PS4_JOYSTICK_MAX; ps4Report.buttonSouth |= true; }
+        if (values & buttonCymbalYellow->pinMask)  { ps4Report.drums.velocityCymbalYellow = PS4_JOYSTICK_MAX; ps4Report.buttonNorth |= true; }
+        if (values & buttonCymbalBlue->pinMask)    { ps4Report.drums.velocityCymbalBlue   = PS4_JOYSTICK_MAX; ps4Report.buttonWest  |= true; }
+        if (values & buttonCymbalGreen->pinMask)   { ps4Report.drums.velocityCymbalGreen  = PS4_JOYSTICK_MAX; ps4Report.buttonSouth |= true; }
     } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_WHEEL) {
         ps4Report.wheel.steeringWheel = PS4_NAV_JOYSTICK_MID;
         ps4Report.wheel.gasPedal = PS4_NAV_JOYSTICK_MAX;

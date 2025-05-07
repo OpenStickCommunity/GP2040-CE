@@ -22,6 +22,9 @@
 #define PS3_GUITAR_VENDOR_ID  0x12BA
 #define PS3_GUITAR_PRODUCT_ID 0x0200
 
+#define PS3_DRUM_VENDOR_ID    0x12BA
+#define PS3_DRUM_PRODUCT_ID   0x0210
+
 /**************************************************************************
  *
  *  Endpoint Buffer Configuration
@@ -288,8 +291,8 @@ typedef struct __attribute((packed, aligned(1)))
             uint8_t solo : 1;
             uint8_t : 1;
 
-            uint8_t butttonSelect : 1;
-            uint8_t butttonStart : 1;
+            uint8_t buttonSelect : 1;
+            uint8_t buttonStart : 1;
             uint8_t : 2;
 
             uint8_t buttonPS : 1;
@@ -311,13 +314,13 @@ typedef struct __attribute((packed, aligned(1)))
             uint8_t red : 1;
             uint8_t yellow : 1;
 
-            uint8_t kick : 1;
-            uint8_t orange : 1;
-            uint8_t : 1;
-            uint8_t : 1;
+            uint8_t kickPedalLeft : 1;
+            uint8_t kickPedalRight : 1;
+            uint8_t pad : 1;
+            uint8_t cymbal : 1;
 
-            uint8_t butttonSelect : 1;
-            uint8_t butttonStart : 1;
+            uint8_t buttonSelect : 1;
+            uint8_t buttonStart : 1;
             uint8_t : 2;
 
             uint8_t buttonPS : 1;

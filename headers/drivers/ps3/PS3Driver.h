@@ -48,6 +48,14 @@ private:
     GamepadButtonMapping *buttonWhammy;
     GamepadButtonMapping *buttonPickup;
     GamepadButtonMapping *buttonTilt;
+
+    GamepadButtonMapping *buttonDrumPadRed;
+    GamepadButtonMapping *buttonDrumPadBlue;
+    GamepadButtonMapping *buttonDrumPadYellow;
+    GamepadButtonMapping *buttonDrumPadGreen;
+    GamepadButtonMapping *buttonCymbalYellow;
+    GamepadButtonMapping *buttonCymbalBlue;
+    GamepadButtonMapping *buttonCymbalGreen;
 };
 
 #endif // _PS3_DRIVER_H_

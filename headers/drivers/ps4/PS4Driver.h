@@ -139,9 +139,9 @@ private:
     GamepadButtonMapping *buttonDrumPadBlue;
     GamepadButtonMapping *buttonDrumPadYellow;
     GamepadButtonMapping *buttonDrumPadGreen;
-    GamepadButtonMapping *buttonCymbolYellow;
-    GamepadButtonMapping *buttonCymbolBlue;
-    GamepadButtonMapping *buttonCymbolGreen;
+    GamepadButtonMapping *buttonCymbalYellow;
+    GamepadButtonMapping *buttonCymbalBlue;
+    GamepadButtonMapping *buttonCymbalGreen;
 };
 
 #endif // _PS4_DRIVER_H_

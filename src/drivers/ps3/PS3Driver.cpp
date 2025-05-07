@@ -31,6 +31,12 @@ void PS3Driver::initialize() {
         deviceDescriptor[9] = MSB(PS3_GUITAR_VENDOR_ID);
         deviceDescriptor[10] = LSB(PS3_GUITAR_PRODUCT_ID);
         deviceDescriptor[11] = MSB(PS3_GUITAR_PRODUCT_ID);
+    } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_DRUM) {
+        // drum
+        deviceDescriptor[8] = LSB(PS3_DRUM_VENDOR_ID);
+        deviceDescriptor[9] = MSB(PS3_DRUM_VENDOR_ID);
+        deviceDescriptor[10] = LSB(PS3_DRUM_PRODUCT_ID);
+        deviceDescriptor[11] = MSB(PS3_DRUM_PRODUCT_ID);
     } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GAMEPAD_ALT) {
         deviceDescriptor[8] = LSB(PS3_ALT_VENDOR_ID);
         deviceDescriptor[9] = MSB(PS3_ALT_VENDOR_ID);
@@ -94,6 +100,14 @@ void PS3Driver::initialize() {
     buttonPickup = new GamepadButtonMapping(0);
     buttonTilt = new GamepadButtonMapping(0);
 
+    buttonDrumPadRed = new GamepadButtonMapping(0);
+    buttonDrumPadBlue = new GamepadButtonMapping(0);
+    buttonDrumPadYellow = new GamepadButtonMapping(0);
+    buttonDrumPadGreen = new GamepadButtonMapping(0);
+    buttonCymbalYellow = new GamepadButtonMapping(0);
+    buttonCymbalBlue = new GamepadButtonMapping(0);
+    buttonCymbalGreen = new GamepadButtonMapping(0);
+
     GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
         switch (pinMappings[pin].action) {
@@ -105,6 +119,14 @@ void PS3Driver::initialize() {
             case GpioAction::MODE_GUITAR_WHAMMY: buttonWhammy->pinMask |= 1 << pin; break;
             case GpioAction::MODE_GUITAR_PICKUP: buttonPickup->pinMask |= 1 << pin; break;
             case GpioAction::MODE_GUITAR_TILT: buttonTilt->pinMask |= 1 << pin; break;
+
+            case GpioAction::MODE_DRUM_RED_DRUMPAD: buttonDrumPadRed->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_DRUM_BLUE_DRUMPAD: buttonDrumPadBlue->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_DRUM_YELLOW_DRUMPAD: buttonDrumPadYellow->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_DRUM_GREEN_DRUMPAD: buttonDrumPadGreen->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_DRUM_YELLOW_CYMBAL: buttonCymbalYellow->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_DRUM_BLUE_CYMBAL: buttonCymbalBlue->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_DRUM_GREEN_CYMBAL: buttonCymbalGreen->pinMask |= 1 << pin; break;
             default:    break;
         }
     }
@@ -213,43 +235,84 @@ bool PS3Driver::process(Gamepad * gamepad) {
         report = &ps3Report;
         report_size = sizeof(ps3Report);
     } else if (deviceType != InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GAMEPAD) {
-        // reset button states to false 
-        ps3ReportAlt.gamepad.buttonSouth    = false;
-        ps3ReportAlt.gamepad.buttonEast     = false;
-        ps3ReportAlt.gamepad.buttonWest     = false;
-        ps3ReportAlt.gamepad.buttonNorth    = false;
-        ps3ReportAlt.gamepad.buttonL1       = false;
-        ps3ReportAlt.gamepad.buttonR1       = false;
-        ps3ReportAlt.gamepad.buttonL2       = false;
-        ps3ReportAlt.gamepad.buttonR2       = false;
-        ps3ReportAlt.gamepad.buttonSelect   = false;
-        ps3ReportAlt.gamepad.buttonStart    = false;
-        ps3ReportAlt.gamepad.buttonL3       = false;
-        ps3ReportAlt.gamepad.buttonR3       = false;
-        ps3ReportAlt.gamepad.buttonPS       = false;
-        ps3ReportAlt.gamepad.buttonTP       = false;
-
         if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GUITAR) {
             ps3ReportAlt.guitar.pickup = PS3_JOYSTICK_MIN;
             ps3ReportAlt.guitar.whammy = PS3_JOYSTICK_MIN;
             ps3ReportAlt.guitar.tilt = false;
+            ps3ReportAlt.guitar.solo = false;
             ps3ReportAlt.guitar.green = false;
             ps3ReportAlt.guitar.red = false;
             ps3ReportAlt.guitar.yellow = false;
             ps3ReportAlt.guitar.blue = false;
             ps3ReportAlt.guitar.orange = false;
+
+            switch (gamepad->state.dpad & GAMEPAD_MASK_DPAD)
+            {
+                case GAMEPAD_MASK_UP:                        ps3ReportAlt.guitar.dpadDirection = PS3_HAT_UP; break;
+                case GAMEPAD_MASK_UP | GAMEPAD_MASK_RIGHT:   ps3ReportAlt.guitar.dpadDirection = PS3_HAT_UPRIGHT; break;
+                case GAMEPAD_MASK_RIGHT:                     ps3ReportAlt.guitar.dpadDirection = PS3_HAT_RIGHT; break;
+                case GAMEPAD_MASK_DOWN | GAMEPAD_MASK_RIGHT: ps3ReportAlt.guitar.dpadDirection = PS3_HAT_DOWNRIGHT; break;
+                case GAMEPAD_MASK_DOWN:                      ps3ReportAlt.guitar.dpadDirection = PS3_HAT_DOWN; break;
+                case GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT:  ps3ReportAlt.guitar.dpadDirection = PS3_HAT_DOWNLEFT; break;
+                case GAMEPAD_MASK_LEFT:                      ps3ReportAlt.guitar.dpadDirection = PS3_HAT_LEFT; break;
+                case GAMEPAD_MASK_UP | GAMEPAD_MASK_LEFT:    ps3ReportAlt.guitar.dpadDirection = PS3_HAT_UPLEFT; break;
+                default:                                     ps3ReportAlt.guitar.dpadDirection = PS3_HAT_NOTHING; break;
+            }
+
+            ps3ReportAlt.guitar.buttonSelect = gamepad->pressedS1();
+            ps3ReportAlt.guitar.buttonStart  = gamepad->pressedS2();
+            ps3ReportAlt.guitar.buttonPS     = gamepad->pressedA1();
+            ps3ReportAlt.guitar.solo         = gamepad->pressedL2();
             
             // frets also activate their face button counterparts
-            if (values & buttonFretGreen->pinMask)      { ps3ReportAlt.guitar.green      = true; ps3ReportAlt.gamepad.buttonSouth |= true; }
-            if (values & buttonFretRed->pinMask)        { ps3ReportAlt.guitar.red        = true; ps3ReportAlt.gamepad.buttonEast  |= true; }
-            if (values & buttonFretYellow->pinMask)     { ps3ReportAlt.guitar.yellow     = true; ps3ReportAlt.gamepad.buttonNorth |= true; }
-            if (values & buttonFretBlue->pinMask)       { ps3ReportAlt.guitar.blue       = true; ps3ReportAlt.gamepad.buttonWest  |= true; }
-            if (values & buttonFretOrange->pinMask)     { ps3ReportAlt.guitar.orange     = true; ps3ReportAlt.gamepad.buttonL1    |= true; }
-            
-            if (values & buttonPickup->pinMask) ps3ReportAlt.guitar.pickup = PS3_JOYSTICK_MID;
+            if ((values & buttonFretGreen->pinMask)  || gamepad->pressedB1()) ps3ReportAlt.guitar.green  = true;
+            if ((values & buttonFretRed->pinMask)    || gamepad->pressedB2()) ps3ReportAlt.guitar.red    = true;
+            if ((values & buttonFretYellow->pinMask) || gamepad->pressedB4()) ps3ReportAlt.guitar.yellow = true;
+            if ((values & buttonFretBlue->pinMask)   || gamepad->pressedB3()) ps3ReportAlt.guitar.blue   = true;
+            if ((values & buttonFretOrange->pinMask) || gamepad->pressedL1()) ps3ReportAlt.guitar.orange = true;
+            if ((values & buttonTilt->pinMask)       || gamepad->pressedR2()) ps3ReportAlt.guitar.tilt   = true;
+
+            ps3ReportAlt.guitar.whammy = static_cast<uint8_t>(gamepad->state.rx >> 8);
+            ps3ReportAlt.guitar.pickup = static_cast<uint8_t>(gamepad->state.ry >> 8);
+
+            if (values & buttonPickup->pinMask) ps3ReportAlt.guitar.pickup = PS3_JOYSTICK_MAX;
             if (values & buttonWhammy->pinMask) ps3ReportAlt.guitar.whammy = PS3_JOYSTICK_MAX;
-            if (values & buttonTilt->pinMask) ps3ReportAlt.guitar.tilt = true;
         } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_DRUM) {
+            ps3ReportAlt.drums.blue = false;
+            ps3ReportAlt.drums.green = false;
+            ps3ReportAlt.drums.red = false;
+            ps3ReportAlt.drums.yellow = false;
+
+            ps3ReportAlt.drums.pad = false;
+            ps3ReportAlt.drums.cymbal = false;
+
+            switch (gamepad->state.dpad & GAMEPAD_MASK_DPAD)
+            {
+                case GAMEPAD_MASK_UP:                        ps3ReportAlt.drums.dpadDirection = PS3_HAT_UP; break;
+                case GAMEPAD_MASK_UP | GAMEPAD_MASK_RIGHT:   ps3ReportAlt.drums.dpadDirection = PS3_HAT_UPRIGHT; break;
+                case GAMEPAD_MASK_RIGHT:                     ps3ReportAlt.drums.dpadDirection = PS3_HAT_RIGHT; break;
+                case GAMEPAD_MASK_DOWN | GAMEPAD_MASK_RIGHT: ps3ReportAlt.drums.dpadDirection = PS3_HAT_DOWNRIGHT; break;
+                case GAMEPAD_MASK_DOWN:                      ps3ReportAlt.drums.dpadDirection = PS3_HAT_DOWN; break;
+                case GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT:  ps3ReportAlt.drums.dpadDirection = PS3_HAT_DOWNLEFT; break;
+                case GAMEPAD_MASK_LEFT:                      ps3ReportAlt.drums.dpadDirection = PS3_HAT_LEFT; break;
+                case GAMEPAD_MASK_UP | GAMEPAD_MASK_LEFT:    ps3ReportAlt.drums.dpadDirection = PS3_HAT_UPLEFT; break;
+                default:                                     ps3ReportAlt.drums.dpadDirection = PS3_HAT_NOTHING; break;
+            }
+
+            ps3ReportAlt.drums.buttonSelect   = gamepad->pressedS1();
+            ps3ReportAlt.drums.buttonStart    = gamepad->pressedS2();
+            ps3ReportAlt.drums.buttonPS       = gamepad->pressedA1();
+            ps3ReportAlt.drums.kickPedalLeft  = gamepad->pressedL1();
+            ps3ReportAlt.drums.kickPedalRight = gamepad->pressedR1();
+            
+            // frets also activate their face button counterparts
+            if ((values & buttonDrumPadGreen->pinMask)  || gamepad->pressedB1()) { ps3ReportAlt.drums.green  = true; ps3ReportAlt.drums.pad = true; }
+            if ((values & buttonDrumPadRed->pinMask)    || gamepad->pressedB2()) { ps3ReportAlt.drums.red    = true; ps3ReportAlt.drums.pad = true; }
+            if ((values & buttonDrumPadYellow->pinMask) || gamepad->pressedB4()) { ps3ReportAlt.drums.yellow = true; ps3ReportAlt.drums.pad = true; }
+            if ((values & buttonDrumPadBlue->pinMask)   || gamepad->pressedB3()) { ps3ReportAlt.drums.blue   = true; ps3ReportAlt.drums.pad = true; }
+            if ((values & buttonCymbalYellow->pinMask)  || gamepad->pressedL1()) { ps3ReportAlt.drums.yellow = true; ps3ReportAlt.drums.cymbal = true; ps3ReportAlt.drums.dpadDirection = PS3_HAT_UP; }
+            if ((values & buttonCymbalBlue->pinMask)    || gamepad->pressedR2()) { ps3ReportAlt.drums.blue   = true; ps3ReportAlt.drums.cymbal = true; ps3ReportAlt.drums.dpadDirection = PS3_HAT_DOWN; }
+            if ((values & buttonCymbalGreen->pinMask)   || gamepad->pressedR2()) { ps3ReportAlt.drums.green  = true; ps3ReportAlt.drums.cymbal = true; }
         } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GAMEPAD_ALT) {
             switch (gamepad->state.dpad & GAMEPAD_MASK_DPAD)
             {
@@ -264,19 +327,20 @@ bool PS3Driver::process(Gamepad * gamepad) {
                 default:                                     ps3ReportAlt.gamepad.dpadDirection = PS3_HAT_NOTHING; break;
             }
 
-            ps3ReportAlt.gamepad.buttonSouth            = gamepad->pressedB1();
-            ps3ReportAlt.gamepad.buttonEast             = gamepad->pressedB2();
-            ps3ReportAlt.gamepad.buttonWest             = gamepad->pressedB3();
-            ps3ReportAlt.gamepad.buttonNorth            = gamepad->pressedB4();
-            ps3ReportAlt.gamepad.buttonL1               = gamepad->pressedL1();
-            ps3ReportAlt.gamepad.buttonR1               = gamepad->pressedR1();
-            ps3ReportAlt.gamepad.buttonL2               = gamepad->pressedL2();
-            ps3ReportAlt.gamepad.buttonR2               = gamepad->pressedR2();
-            ps3ReportAlt.gamepad.buttonSelect           = gamepad->pressedS1();
-            ps3ReportAlt.gamepad.buttonStart            = gamepad->pressedS2();
-            ps3ReportAlt.gamepad.buttonL3               = gamepad->pressedL3();
-            ps3ReportAlt.gamepad.buttonR3               = gamepad->pressedR3();
-            ps3ReportAlt.gamepad.buttonPS               = gamepad->pressedA1();
+            ps3ReportAlt.gamepad.buttonSouth  = gamepad->pressedB1();
+            ps3ReportAlt.gamepad.buttonEast   = gamepad->pressedB2();
+            ps3ReportAlt.gamepad.buttonWest   = gamepad->pressedB3();
+            ps3ReportAlt.gamepad.buttonNorth  = gamepad->pressedB4();
+            ps3ReportAlt.gamepad.buttonL1     = gamepad->pressedL1();
+            ps3ReportAlt.gamepad.buttonR1     = gamepad->pressedR1();
+            ps3ReportAlt.gamepad.buttonL2     = gamepad->pressedL2();
+            ps3ReportAlt.gamepad.buttonR2     = gamepad->pressedR2();
+            ps3ReportAlt.gamepad.buttonSelect = gamepad->pressedS1();
+            ps3ReportAlt.gamepad.buttonStart  = gamepad->pressedS2();
+            ps3ReportAlt.gamepad.buttonL3     = gamepad->pressedL3();
+            ps3ReportAlt.gamepad.buttonR3     = gamepad->pressedR3();
+            ps3ReportAlt.gamepad.buttonPS     = gamepad->pressedA1();
+            ps3ReportAlt.gamepad.buttonTP     = gamepad->pressedA2();
 
             ps3ReportAlt.gamepad.leftStickX = static_cast<uint8_t>(gamepad->state.lx >> 8);
             ps3ReportAlt.gamepad.leftStickY = static_cast<uint8_t>(gamepad->state.ly >> 8);
