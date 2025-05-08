@@ -691,12 +691,20 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 				EventManager::getInstance().triggerEvent(new GPMenuNavigateEvent(GpioAction::MENU_NAVIGATION_TOGGLE));
 			}
 			break;
+		case HOTKEY_TOGGLE_FOCUS_MODE:
+			if (action != lastAction) {
+				Storage::getInstance().toggleFocusMode();
+			}
+			break;
 		default: // Unknown action
 			break;
 	}
 
 	// only save if requested
 	if (reqSave) {
+		//Should toggling focus mode trigger save?
+		//probably yes
+		//TODO: 
 		EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 	}
 

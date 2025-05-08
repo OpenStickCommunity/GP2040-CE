@@ -138,6 +138,7 @@ export default {
 		'menu-nav-select': 'Menu Select',
 		'menu-nav-back': 'Menu Back',
 		'menu-nav-toggle': 'Menu Toggle',
+		'focus-mode-toggle': 'Focus Mode Toggle',
 	},
 	'forced-setup-mode-label': 'Forced Setup Mode',
 	'forced-setup-mode-options': {
