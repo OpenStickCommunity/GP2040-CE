@@ -709,7 +709,7 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 				//if the timer has not yet been started
 				if( lastAction != action || is_nil_time(disableFocusModeTimeout))
 				{
-					constexpr uint32_t focusModeToggleHoldMs = 3000;
+					constexpr uint32_t focusModeToggleHoldMs = 2000;
 					disableFocusModeTimeout = make_timeout_time_ms(focusModeToggleHoldMs);
 				}
 
