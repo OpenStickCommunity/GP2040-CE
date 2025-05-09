@@ -106,14 +106,9 @@ char* Storage::currentProfileLabel() {
 		return this->config.profileOptions.gpioMappingsSets[config.gamepadOptions.profileNumber-2].profileLabel;
 }
 
-void Storage::toggleFocusMode()
+void Storage::setFocusModeOverride( bool enabled )
 {
-	auto& focusModeOptions = config.addonOptions.focusModeOptions;
-
-	if( focusModeOptions.enabled )
-	{
-		focusModeOptions.toggleState = !focusModeOptions.toggleState;		
-	}
+	config.addonOptions.focusModeOptions.overrideEnabled = enabled;
 }
 
 void Storage::setFunctionalPinMappings()

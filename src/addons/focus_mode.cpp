@@ -32,7 +32,7 @@ void FocusModeAddon::process() {
 
 	if (!options.enabled) return;
 	
-	if ( options.toggleState || values & mapFocusMode->pinMask ) {
+	if ( options.overrideEnabled || values & mapFocusMode->pinMask ) {
 			if (buttonLockMask & GAMEPAD_MASK_DU) {
 				gamepad->state.dpad &= ~GAMEPAD_MASK_UP;
 			}

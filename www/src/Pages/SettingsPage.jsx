@@ -294,7 +294,8 @@ const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.menu-nav-select', value: 48 },
 	{ labelKey: 'hotkey-actions.menu-nav-back', value: 49 },
 	{ labelKey: 'hotkey-actions.menu-nav-toggle', value: 50 },
-	{ labelKey: 'hotkey-actions.focus-mode-toggle', value: 71 },
+	{ labelKey: 'hotkey-actions.focus-mode-override-enable', value: 71 },
+	{ labelKey: 'hotkey-actions.focus-mode-override-disable', value: 72 },
 ];
 
 const FORCED_SETUP_MODES = [

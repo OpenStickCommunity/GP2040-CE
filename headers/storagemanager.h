@@ -64,7 +64,7 @@ public:
 	void setFunctionalPinMappings();
 	char* currentProfileLabel();
 
-	void toggleFocusMode();
+	void setFocusModeOverride( bool enabled );
 
 	void ResetSettings(); 				// EEPROM Reset Feature
 

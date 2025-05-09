@@ -691,9 +691,15 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 				EventManager::getInstance().triggerEvent(new GPMenuNavigateEvent(GpioAction::MENU_NAVIGATION_TOGGLE));
 			}
 			break;
-		case HOTKEY_TOGGLE_FOCUS_MODE:
+		case HOTKEY_ENABLE_FOCUS_MODE_OVERRIDE:
 			if (action != lastAction) {
-				Storage::getInstance().toggleFocusMode();
+				Storage::getInstance().setFocusModeOverride( true );
+				reqSave = true;
+			}
+			break;
+		case HOTKEY_DISABLE_FOCUS_MODE_OVERRIDE:
+			if (action != lastAction) {
+				Storage::getInstance().setFocusModeOverride( false );
 				reqSave = true;
 			}
 			break;
