@@ -139,8 +139,6 @@ export default {
 		'menu-nav-back': 'Menu Back',
 		'menu-nav-toggle': 'Menu Toggle',
 		'focus-mode-toggle': 'Focus Mode Toggle',
-		'focus-mode-override-enable': 'Enable Focus Mode Override',
-		'focus-mode-override-disable': 'Disable Focus Mode Override',
 	},
 	'forced-setup-mode-label': 'Forced Setup Mode',
 	'forced-setup-mode-options': {

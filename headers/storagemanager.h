@@ -64,8 +64,6 @@ public:
 	void setFunctionalPinMappings();
 	char* currentProfileLabel();
 
-	void setFocusModeOverride( bool enabled );
-
 	void ResetSettings(); 				// EEPROM Reset Feature
 
 	uint32_t GetFlashSize() { return systemFlashSize; }

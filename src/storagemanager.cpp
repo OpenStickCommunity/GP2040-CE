@@ -106,11 +106,6 @@ char* Storage::currentProfileLabel() {
 		return this->config.profileOptions.gpioMappingsSets[config.gamepadOptions.profileNumber-2].profileLabel;
 }
 
-void Storage::setFocusModeOverride( bool enabled )
-{
-	config.addonOptions.focusModeOptions.overrideEnabled = enabled;
-}
-
 void Storage::setFunctionalPinMappings()
 {
 	GpioMappingInfo* alts = nullptr;
