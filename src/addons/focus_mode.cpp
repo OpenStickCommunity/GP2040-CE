@@ -31,6 +31,23 @@ void FocusModeAddon::process() {
 	const FocusModeOptions& options = Storage::getInstance().getAddonOptions().focusModeOptions;
 
 	if (!options.enabled) return;
+
+	//check if held
+
+	//is buttons held?
+	//first just use aux
+	// if( gamepad->state.aux )
+	// {
+	// 	if (is_nil_time(focusModeDisableTimeout)) {
+	// 		focusModeDisableTimeout = make_timeout_time_ms(3000);
+	// 	}
+
+	// 	if( time_reached( focusModeDisableTimeout ) )
+	// 	{
+	// 		Storage::getInstance().getAddonOptions().focusModeOptions.overrideEnabled = false;
+	// 	}
+	// }
+
 	
 	if ( options.overrideEnabled || values & mapFocusMode->pinMask ) {
 			if (buttonLockMask & GAMEPAD_MASK_DU) {

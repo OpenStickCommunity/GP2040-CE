@@ -699,6 +699,9 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 			break;
 		case HOTKEY_DISABLE_FOCUS_MODE_OVERRIDE:
 			if (action != lastAction) {
+
+				//can I force timer here?
+
 				Storage::getInstance().setFocusModeOverride( false );
 				reqSave = true;
 			}

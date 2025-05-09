@@ -47,6 +47,7 @@ public:
 private:
     uint32_t buttonLockMask;
     GamepadButtonMapping *mapFocusMode;
+    absolute_time_t focusModeDisableTimeout = nil_time;
 };
 
 #endif  // _FocusMode_H_
