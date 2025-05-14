@@ -108,6 +108,18 @@ void PS3Driver::initialize() {
     buttonCymbalBlue = new GamepadButtonMapping(0);
     buttonCymbalGreen = new GamepadButtonMapping(0);
 
+    buttonShiftUp = new GamepadButtonMapping(0);
+    buttonShiftDown = new GamepadButtonMapping(0);
+    buttonGas = new GamepadButtonMapping(0);
+    buttonBrake = new GamepadButtonMapping(0);
+    buttonSteerLeft = new GamepadButtonMapping(0);
+    buttonSteerRight = new GamepadButtonMapping(0);
+    buttonPlus = new GamepadButtonMapping(0);
+    buttonMinus = new GamepadButtonMapping(0);
+    buttonDialDown = new GamepadButtonMapping(0);
+    buttonDialUp = new GamepadButtonMapping(0);
+    buttonDialEnter = new GamepadButtonMapping(0);
+
     GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
         switch (pinMappings[pin].action) {
@@ -127,6 +139,19 @@ void PS3Driver::initialize() {
             case GpioAction::MODE_DRUM_YELLOW_CYMBAL: buttonCymbalYellow->pinMask |= 1 << pin; break;
             case GpioAction::MODE_DRUM_BLUE_CYMBAL: buttonCymbalBlue->pinMask |= 1 << pin; break;
             case GpioAction::MODE_DRUM_GREEN_CYMBAL: buttonCymbalGreen->pinMask |= 1 << pin; break;
+
+            case GpioAction::MODE_WHEEL_SHIFTER_GEAR_UP: buttonShiftUp->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_WHEEL_SHIFTER_GEAR_DOWN: buttonShiftDown->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_WHEEL_STEERING_LEFT: buttonSteerLeft->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_WHEEL_STEERING_RIGHT: buttonSteerRight->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_WHEEL_BUTTON_PLUS: buttonPlus->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_WHEEL_BUTTON_MINUS: buttonMinus->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_WHEEL_DIAL_UP: buttonDialUp->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_WHEEL_DIAL_DOWN: buttonDialDown->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_WHEEL_DIAL_ENTER: buttonDialEnter->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_WHEEL_PEDAL_GAS: buttonGas->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_WHEEL_PEDAL_BRAKE: buttonBrake->pinMask |= 1 << pin; break;
+
             default:    break;
         }
     }
@@ -236,6 +261,8 @@ bool PS3Driver::process(Gamepad * gamepad) {
         report_size = sizeof(ps3Report);
     } else if (deviceType != InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GAMEPAD) {
         if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GUITAR) {
+            ps3ReportAlt.guitar.padding0[0] = PS3_JOYSTICK_MID;
+            ps3ReportAlt.guitar.padding0[1] = PS3_JOYSTICK_MID;
             ps3ReportAlt.guitar.pickup = PS3_JOYSTICK_MIN;
             ps3ReportAlt.guitar.whammy = PS3_JOYSTICK_MIN;
             ps3ReportAlt.guitar.tilt = false;
@@ -278,6 +305,8 @@ bool PS3Driver::process(Gamepad * gamepad) {
             if (values & buttonPickup->pinMask) ps3ReportAlt.guitar.pickup = PS3_JOYSTICK_MAX;
             if (values & buttonWhammy->pinMask) ps3ReportAlt.guitar.whammy = PS3_JOYSTICK_MAX;
         } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_DRUM) {
+            ps3ReportAlt.drums.padding0[0] = PS3_JOYSTICK_MID;
+            ps3ReportAlt.drums.padding0[1] = PS3_JOYSTICK_MID;
             ps3ReportAlt.drums.blue = false;
             ps3ReportAlt.drums.green = false;
             ps3ReportAlt.drums.red = false;
@@ -383,6 +412,52 @@ bool PS3Driver::process(Gamepad * gamepad) {
                 ps3ReportAlt.gamepad.gyroscopeZ = PS3_CENTER_SIXAXIS;
             }
         } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_WHEEL) {
+            ps3ReportAlt.wheel.steeringWheel = PS3_WHEEL_MID;
+
+            switch (gamepad->state.dpad & GAMEPAD_MASK_DPAD)
+            {
+                case GAMEPAD_MASK_UP:                        ps3ReportAlt.wheel.dpadDirection = PS3_HAT_UP; break;
+                case GAMEPAD_MASK_UP | GAMEPAD_MASK_RIGHT:   ps3ReportAlt.wheel.dpadDirection = PS3_HAT_UPRIGHT; break;
+                case GAMEPAD_MASK_RIGHT:                     ps3ReportAlt.wheel.dpadDirection = PS3_HAT_RIGHT; break;
+                case GAMEPAD_MASK_DOWN | GAMEPAD_MASK_RIGHT: ps3ReportAlt.wheel.dpadDirection = PS3_HAT_DOWNRIGHT; break;
+                case GAMEPAD_MASK_DOWN:                      ps3ReportAlt.wheel.dpadDirection = PS3_HAT_DOWN; break;
+                case GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT:  ps3ReportAlt.wheel.dpadDirection = PS3_HAT_DOWNLEFT; break;
+                case GAMEPAD_MASK_LEFT:                      ps3ReportAlt.wheel.dpadDirection = PS3_HAT_LEFT; break;
+                case GAMEPAD_MASK_UP | GAMEPAD_MASK_LEFT:    ps3ReportAlt.wheel.dpadDirection = PS3_HAT_UPLEFT; break;
+                default:                                     ps3ReportAlt.wheel.dpadDirection = PS3_HAT_NOTHING; break;
+            }
+
+            ps3ReportAlt.wheel.buttonSouth  = gamepad->pressedB1();
+            ps3ReportAlt.wheel.buttonEast   = gamepad->pressedB2();
+            ps3ReportAlt.wheel.buttonWest   = gamepad->pressedB3();
+            ps3ReportAlt.wheel.buttonNorth  = gamepad->pressedB4();
+            ps3ReportAlt.wheel.buttonL1     = gamepad->pressedL1();
+            ps3ReportAlt.wheel.buttonR1     = gamepad->pressedR1();
+            ps3ReportAlt.wheel.buttonL2     = gamepad->pressedL2();
+            ps3ReportAlt.wheel.buttonR2     = gamepad->pressedR2();
+            ps3ReportAlt.wheel.buttonSelect = gamepad->pressedS1();
+            ps3ReportAlt.wheel.buttonStart  = gamepad->pressedS2();
+            ps3ReportAlt.wheel.buttonL3     = gamepad->pressedL3();
+            ps3ReportAlt.wheel.buttonR3     = gamepad->pressedR3();
+            
+            ps3ReportAlt.wheel.buttonPS     = gamepad->pressedA1();
+
+            ps3ReportAlt.wheel.unknown = 5;
+            ps3ReportAlt.wheel.pedalConnected = 1;
+            ps3ReportAlt.wheel.powerConnected = 1;
+            ps3ReportAlt.wheel.calibrated = 1;
+
+            if (values & buttonSteerLeft->pinMask)  { ps3ReportAlt.wheel.steeringWheel   = PS3_WHEEL_MIN; }
+            if (values & buttonSteerRight->pinMask) { ps3ReportAlt.wheel.steeringWheel   = PS3_WHEEL_MAX; }
+            if (values & buttonGas->pinMask)        { ps3ReportAlt.wheel.gasPedal        = PS3_JOYSTICK_MAX; }
+            if (values & buttonBrake->pinMask)      { ps3ReportAlt.wheel.brakePedal      = PS3_JOYSTICK_MAX; }
+            if (values & buttonShiftUp->pinMask)    { ps3ReportAlt.wheel.shiftUp         = true; }
+            if (values & buttonShiftDown->pinMask)  { ps3ReportAlt.wheel.shiftDown       = true; }
+            if (values & buttonPlus->pinMask)       { ps3ReportAlt.wheel.buttonPlus      = true; }
+            if (values & buttonMinus->pinMask)      { ps3ReportAlt.wheel.buttonMinus     = true; }
+            if (values & buttonDialDown->pinMask)   { ps3ReportAlt.wheel.buttonDialDown  = true; }
+            if (values & buttonDialUp->pinMask)     { ps3ReportAlt.wheel.buttonDialUp    = true; }
+            if (values & buttonDialEnter->pinMask)  { ps3ReportAlt.wheel.buttonDialEnter = true; }
         } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_HOTAS) {
 
         }
@@ -544,6 +619,11 @@ uint16_t PS3Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
 
 void PS3Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize) {
     //printf("[PS3Driver::set_report] (%02x, %02x, %d)\n", report_id, report_type, bufsize);
+    //for(uint16_t i = 0; i < bufsize; i++) {
+    //    printf("%02x ", buffer[i]);
+    //    if (((i+1) % 16) == 0) printf("\n");
+    //}
+    //printf("\n");
 
     if ( report_type == HID_REPORT_TYPE_FEATURE ) {
         switch(report_id) {
@@ -602,5 +682,5 @@ const uint8_t * PS3Driver::get_descriptor_device_qualifier_cb() {
 }
 
 uint16_t PS3Driver::GetJoystickMidValue() {
-	return PS3_JOYSTICK_MID << 8;
+    return PS3_JOYSTICK_MID << 8;
 }

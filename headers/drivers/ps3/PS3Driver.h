@@ -56,6 +56,18 @@ private:
     GamepadButtonMapping *buttonCymbalYellow;
     GamepadButtonMapping *buttonCymbalBlue;
     GamepadButtonMapping *buttonCymbalGreen;
+
+    GamepadButtonMapping *buttonShiftUp;
+    GamepadButtonMapping *buttonShiftDown;
+    GamepadButtonMapping *buttonGas;
+    GamepadButtonMapping *buttonBrake;
+    GamepadButtonMapping *buttonSteerLeft;
+    GamepadButtonMapping *buttonSteerRight;
+    GamepadButtonMapping *buttonPlus;
+    GamepadButtonMapping *buttonMinus;
+    GamepadButtonMapping *buttonDialDown;
+    GamepadButtonMapping *buttonDialUp;
+    GamepadButtonMapping *buttonDialEnter;
 };
 
 #endif // _PS3_DRIVER_H_

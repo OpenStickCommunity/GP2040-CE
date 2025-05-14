@@ -16,8 +16,8 @@
 #define PS3_ALT_VENDOR_ID     0x10C4
 #define PS3_ALT_PRODUCT_ID    0x82C0
 
-#define PS3_WHEEL_VENDOR_ID   0x0000
-#define PS3_WHEEL_PRODUCT_ID  0x0000
+#define PS3_WHEEL_VENDOR_ID   0x046D
+#define PS3_WHEEL_PRODUCT_ID  0xC29A
 
 #define PS3_GUITAR_VENDOR_ID  0x12BA
 #define PS3_GUITAR_PRODUCT_ID 0x0200
@@ -72,6 +72,10 @@
 #define PS3_JOYSTICK_MIN 0x00
 #define PS3_JOYSTICK_MID 0x7F
 #define PS3_JOYSTICK_MAX 0xFF
+
+#define PS3_WHEEL_MIN 0x0000
+#define PS3_WHEEL_MID 0x1FFF
+#define PS3_WHEEL_MAX 0x3FFF
 
 #define PS3_CENTER_SIXAXIS 0xFF01
 
@@ -347,6 +351,42 @@ typedef struct __attribute((packed, aligned(1)))
             uint8_t unused2;
             uint16_t unused3;
         } drums;
+
+        struct  __attribute((packed, aligned(1))) {
+            uint8_t dpadDirection : 4;
+            uint8_t buttonSouth : 1;
+            uint8_t buttonWest : 1;
+            uint8_t buttonEast : 1;
+            uint8_t buttonNorth : 1;
+
+            uint8_t buttonR1 : 1;
+            uint8_t buttonL1 : 1;
+            uint8_t buttonR2 : 1;
+            uint8_t buttonL2 : 1;
+            uint8_t buttonSelect : 1;
+            uint8_t buttonStart : 1;
+            uint8_t buttonR3 : 1;
+            uint8_t buttonL3 : 1;
+
+            uint8_t shiftUp : 1;
+            uint8_t shiftDown : 1;
+            uint8_t buttonDialEnter : 1;
+            uint8_t buttonPlus : 1;
+            uint8_t buttonDialUp : 1;
+            uint8_t buttonDialDown : 1;
+            uint8_t buttonMinus : 1;
+            uint8_t buttonHorn : 1;
+
+            uint8_t buttonPS : 1;
+            uint8_t pedalConnected : 1;
+            uint8_t powerConnected : 1;
+            uint8_t calibrated : 1;
+            uint8_t unknown : 4;
+
+            uint16_t steeringWheel;
+            uint8_t gasPedal;
+            uint8_t brakePedal;
+        } wheel;
     };
 } PS3ReportAlt;
 
@@ -502,67 +542,77 @@ static const uint8_t ps3_alt_report_descriptor[] =
     0x05, 0x01,        // Usage Page (Generic Desktop Ctrls)
     0x09, 0x05,        // Usage (Game Pad)
     0xA1, 0x01,        // Collection (Application)
-    0x15, 0x00,        //   Logical Minimum (0)
-    0x25, 0x01,        //   Logical Maximum (1)
-    0x35, 0x00,        //   Physical Minimum (0)
-    0x45, 0x01,        //   Physical Maximum (1)
-    0x75, 0x01,        //   Report Size (1)
-    0x95, 0x0D,        //   Report Count (13)
-    0x05, 0x09,        //   Usage Page (Button)
-    0x19, 0x01,        //   Usage Minimum (0x01)
-    0x29, 0x0D,        //   Usage Maximum (0x0D)
-    0x81, 0x02,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
-    0x95, 0x03,        //   Report Count (3)
-    0x81, 0x01,        //   Input (Const,Array,Abs,No Wrap,Linear,Preferred State,No Null Position)
-    0x05, 0x01,        //   Usage Page (Generic Desktop Ctrls)
-    0x25, 0x07,        //   Logical Maximum (7)
-    0x46, 0x3B, 0x01,  //   Physical Maximum (315)
-    0x75, 0x04,        //   Report Size (4)
-    0x95, 0x01,        //   Report Count (1)
-    0x65, 0x14,        //   Unit (System: English Rotation, Length: Centimeter)
-    0x09, 0x39,        //   Usage (Hat switch)
-    0x81, 0x42,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,Null State)
-    0x65, 0x00,        //   Unit (None)
-    0x95, 0x01,        //   Report Count (1)
-    0x81, 0x01,        //   Input (Const,Array,Abs,No Wrap,Linear,Preferred State,No Null Position)
-    0x26, 0xFF, 0x00,  //   Logical Maximum (255)
-    0x46, 0xFF, 0x00,  //   Physical Maximum (255)
-    0x09, 0x30,        //   Usage (X)
-    0x09, 0x31,        //   Usage (Y)
-    0x09, 0x32,        //   Usage (Z)
-    0x09, 0x35,        //   Usage (Rz)
-    0x75, 0x08,        //   Report Size (8)
-    0x95, 0x04,        //   Report Count (4)
-    0x81, 0x02,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
-    0x06, 0x00, 0xFF,  //   Usage Page (Vendor Defined 0xFF00)
-    0x09, 0x20,        //   Usage (0x20)
-    0x09, 0x21,        //   Usage (0x21)
-    0x09, 0x22,        //   Usage (0x22)
-    0x09, 0x23,        //   Usage (0x23)
-    0x09, 0x24,        //   Usage (0x24)
-    0x09, 0x25,        //   Usage (0x25)
-    0x09, 0x26,        //   Usage (0x26)
-    0x09, 0x27,        //   Usage (0x27)
-    0x09, 0x28,        //   Usage (0x28)
-    0x09, 0x29,        //   Usage (0x29)
-    0x09, 0x2A,        //   Usage (0x2A)
-    0x09, 0x2B,        //   Usage (0x2B)
-    0x95, 0x0C,        //   Report Count (12)
-    0x81, 0x02,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
-    0x0A, 0x21, 0x26,  //   Usage (0x2621)
-    0x95, 0x08,        //   Report Count (8)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x0A, 0x21, 0x26,  //   Usage (0x2621)
-    0x91, 0x02,        //   Output (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x26, 0xFF, 0x03,  //   Logical Maximum (1023)
-    0x46, 0xFF, 0x03,  //   Physical Maximum (1023)
-    0x09, 0x2C,        //   Usage (0x2C)
-    0x09, 0x2D,        //   Usage (0x2D)
-    0x09, 0x2E,        //   Usage (0x2E)
-    0x09, 0x2F,        //   Usage (0x2F)
-    0x75, 0x10,        //   Report Size (16)
-    0x95, 0x04,        //   Report Count (4)
-    0x81, 0x02,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
+    0xA1, 0x02,        //   Collection (Logical)
+    0x15, 0x00,        //     Logical Minimum (0)
+    0x25, 0x01,        //     Logical Maximum (1)
+    0x35, 0x00,        //     Physical Minimum (0)
+    0x45, 0x01,        //     Physical Maximum (1)
+    0x75, 0x01,        //     Report Size (1)
+    0x95, 0x0D,        //     Report Count (13)
+    0x05, 0x09,        //     Usage Page (Button)
+    0x19, 0x01,        //     Usage Minimum (0x01)
+    0x29, 0x0D,        //     Usage Maximum (0x0D)
+    0x81, 0x02,        //     Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
+    0x95, 0x03,        //     Report Count (3)
+    0x81, 0x01,        //     Input (Const,Array,Abs,No Wrap,Linear,Preferred State,No Null Position)
+    0x05, 0x01,        //     Usage Page (Generic Desktop Ctrls)
+    0x25, 0x07,        //     Logical Maximum (7)
+    0x46, 0x3B, 0x01,  //     Physical Maximum (315)
+    0x75, 0x04,        //     Report Size (4)
+    0x95, 0x01,        //     Report Count (1)
+    0x65, 0x14,        //     Unit (System: English Rotation, Length: Centimeter)
+    0x09, 0x39,        //     Usage (Hat switch)
+    0x81, 0x42,        //     Input (Data,Var,Abs,No Wrap,Linear,Preferred State,Null State)
+    0x65, 0x00,        //     Unit (None)
+    0x95, 0x01,        //     Report Count (1)
+    0x81, 0x01,        //     Input (Const,Array,Abs,No Wrap,Linear,Preferred State,No Null Position)
+    0x26, 0xFF, 0x00,  //     Logical Maximum (255)
+    0x46, 0xFF, 0x00,  //     Physical Maximum (255)
+    0x09, 0x30,        //     Usage (X)
+    0x09, 0x31,        //     Usage (Y)
+    0x09, 0x32,        //     Usage (Z)
+    0x09, 0x35,        //     Usage (Rz)
+    0x75, 0x08,        //     Report Size (8)
+    0x95, 0x04,        //     Report Count (4)
+    0x81, 0x02,        //     Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
+    0x06, 0x00, 0xFF,  //     Usage Page (Vendor Defined 0xFF00)
+    0x09, 0x20,        //     Usage (0x20)
+    0x09, 0x21,        //     Usage (0x21)
+    0x09, 0x22,        //     Usage (0x22)
+    0x09, 0x23,        //     Usage (0x23)
+    0x09, 0x24,        //     Usage (0x24)
+    0x09, 0x25,        //     Usage (0x25)
+    0x09, 0x26,        //     Usage (0x26)
+    0x09, 0x27,        //     Usage (0x27)
+    0x09, 0x28,        //     Usage (0x28)
+    0x09, 0x29,        //     Usage (0x29)
+    0x09, 0x2A,        //     Usage (0x2A)
+    0x09, 0x2B,        //     Usage (0x2B)
+    0x95, 0x0C,        //     Report Count (12)
+    0x81, 0x02,        //     Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
+    0x0A, 0x21, 0x26,  //     Usage (0x2621)
+    0x95, 0x08,        //     Report Count (8)
+    0xB1, 0x02,        //     Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+    0x0A, 0x21, 0x26,  //     Usage (0x2621)
+    0x91, 0x02,        //     Output (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+    0x26, 0xFF, 0x03,  //     Logical Maximum (1023)
+    0x46, 0xFF, 0x03,  //     Physical Maximum (1023)
+    0x09, 0x2C,        //     Usage (0x2C)
+    0x09, 0x2D,        //     Usage (0x2D)
+    0x09, 0x2E,        //     Usage (0x2E)
+    0x09, 0x2F,        //     Usage (0x2F)
+    0x75, 0x10,        //     Report Size (16)
+    0x95, 0x04,        //     Report Count (4)
+    0x81, 0x02,        //     Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
+    0xC0,              //   End Collection
+    0xA1, 0x02,        //   Collection (Logical)
+    0x26, 0xFF, 0x00,  //     Logical Maximum (255)
+    0x46, 0xFF, 0x00,  //     Physical Maximum (255)
+    0x95, 0x07,        //     Report Count (7)
+    0x75, 0x08,        //     Report Size (8)
+    0x09, 0x03,        //     Usage (0x03)
+    0x91, 0x02,        //     Output (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+    0xC0,              //   End Collection
     0xC0,              // End Collection
 };
 
@@ -648,7 +698,7 @@ static const uint8_t ps3_alt_configuration_descriptor[] =
     0x00,        // bCountryCode
     0x01,        // bNumDescriptors
     0x22,        // bDescriptorType[0] (HID)
-    0x89, 0x00,  // wDescriptorLength[0] 148
+    0x9D, 0x00,  // wDescriptorLength[0] 157
 
     0x07,        // bLength
     0x05,        // bDescriptorType (Endpoint)

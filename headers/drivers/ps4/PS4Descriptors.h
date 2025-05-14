@@ -746,5 +746,10 @@ static const uint8_t ps4_configuration_descriptor[] =
 	0x03,					       // bmAttributes (0x03=intr)
 	GAMEPAD_SIZE, 0,		       // wMaxPacketSize
 	1,						       // bInterval (1 ms)
-	0x07, 0x05, 0x03, 0x03, 0x40, 0x00, 0x01
+	0x07,                          // bLength
+	0x05,                          // bDescriptorType (Endpoint)
+	0x03,                          // bEndpointAddress (OUT/H2D)
+	0x03,                          // bmAttributes (Interrupt)
+	0x40, 0x00,                    // wMaxPacketSize 64
+	0x01,                          // bInterval 1 (unit depends on device speed)
 };
