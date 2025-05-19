@@ -154,6 +154,7 @@ src/drivers/shared/xinput_host.cpp
 src/drivers/shared/xgip_protocol.cpp
 src/drivers/astro/AstroDriver.cpp
 src/drivers/egret/EgretDriver.cpp
+src/drivers/gamecube/GameCubeDriver.cpp
 src/drivers/hid/HIDDriver.cpp
 src/drivers/keyboard/KeyboardDriver.cpp
 src/drivers/mdmini/MDMiniDriver.cpp
@@ -214,18 +215,18 @@ src/webconfig.cpp
 src/addons/analog.cpp
 src/addons/board_led.cpp
 src/addons/bootsel_button.cpp
-src/addons/focus_mode.cpp
 src/addons/buzzerspeaker.cpp
 src/addons/dualdirectional.cpp
-src/addons/keyboard_host.cpp
-src/addons/keyboard_host_listener.cpp
+src/addons/focus_mode.cpp
+src/addons/i2cdisplay.cpp
 src/addons/i2canalog1219.cpp
-src/addons/i2c_gpio_pcf8575.cpp
-src/addons/display.cpp
+src/addons/i2canalog.cpp
+src/addons/jslider.cpp
+src/addons/keyboard_host.cpp
 src/addons/neopicoleds.cpp
-src/addons/playerleds.cpp
-src/addons/reactiveleds.cpp
-src/addons/rotaryencoder.cpp
+src/addons/playernum.cpp
+src/addons/pleds.cpp
+src/addons/ps4mode.cpp
 src/addons/reverse.cpp
 src/addons/drv8833_rumble.cpp
 src/addons/turbo.cpp
@@ -274,6 +275,7 @@ WiiExtension
 SNESpad
 pico_mbedtls
 nanopb
+joybus-pio
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC

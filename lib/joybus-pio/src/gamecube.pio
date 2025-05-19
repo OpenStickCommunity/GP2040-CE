@@ -1,0 +1,71 @@
+;
+; GameCube controller protocol implementation
+; Based on the joybus-pio library
+;
+
+.program gamecube
+.side_set 1 opt
+
+.wrap_target
+
+; Wait for start bit (low)
+wait_start:
+    wait 0 pin 0        side 0  ; Wait for line to go low
+    mov x, !null        side 0  ; Initialize bit counter (32 bits)
+
+; Read bits
+read_loop:
+    wait 1 pin 0        side 0  ; Wait for line to go high
+    wait 0 pin 0        side 0  ; Wait for line to go low
+    in pins, 1          side 0  ; Sample the bit
+    jmp x-- read_loop   side 0  ; Loop until all bits are read
+
+; Send response
+    mov x, !null        side 0  ; Initialize bit counter (32 bits)
+send_loop:
+    out pins, 1         side 0  ; Output next bit
+    wait 1 pin 0        side 0  ; Wait for line to go high
+    wait 0 pin 0        side 0  ; Wait for line to go low
+    jmp x-- send_loop   side 0  ; Loop until all bits are sent
+
+.wrap                           ; Loop back to start
+
+% c-sdk {
+static inline void gamecube_program_init(PIO pio, uint sm, uint offset, uint pin) {
+    pio_sm_config c = gamecube_program_get_default_config(offset);
+
+    // Set the IN base pin to the provided pin
+    sm_config_set_in_pins(&c, pin);
+
+    // Set the OUT and SET base pins to the provided pin
+    sm_config_set_out_pins(&c, pin, 1);
+    sm_config_set_set_pins(&c, pin, 1);
+
+    // Set the pin direction to input (initially)
+    pio_sm_set_consecutive_pindirs(pio, sm, pin, 1, false);
+
+    // Configure the pin for use by PIO
+    pio_gpio_init(pio, pin);
+
+    // Load our configuration, and start the program from the start
+    pio_sm_init(pio, sm, offset, &c);
+    pio_sm_set_enabled(pio, sm, true);
+}
+
+// Function to wait for a poll from the console
+static inline bool gamecube_wait_for_poll_start(PIO pio, uint sm) {
+    // TODO: Implement timeout
+    while (!(pio_sm_get_rx_fifo_level(pio, sm) > 0)) {
+        tight_loop_contents();
+    }
+    return true;
+}
+
+// Function to send a report to the console
+static inline void gamecube_send_report(PIO pio, uint sm, const void* report) {
+    uint32_t* data = (uint32_t*)report;
+    for (int i = 0; i < 8; i++) {  // 8 words = 256 bits
+        pio_sm_put_blocking(pio, sm, data[i]);
+    }
+}
+%}

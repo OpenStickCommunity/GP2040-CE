@@ -166,6 +166,7 @@ const INPUT_MODES = [
 	{ labelKey: 'input-mode-options.astro', value: 10, group: 'mini' },
 	{ labelKey: 'input-mode-options.psclassic', value: 11, group: 'mini' },
 	{ labelKey: 'input-mode-options.xboxoriginal', value: 12, group: 'primary' },
+	{ labelKey: 'input-mode-options.gamecube', value: 16, group: 'primary' },
 ];
 
 const INPUT_BOOT_MODES = [
@@ -204,6 +205,7 @@ const INPUT_BOOT_MODES = [
 	{ labelKey: 'input-mode-options.astro', value: 10, group: 'mini' },
 	{ labelKey: 'input-mode-options.psclassic', value: 11, group: 'mini' },
 	{ labelKey: 'input-mode-options.xboxoriginal', value: 12, group: 'primary' },
+	{ labelKey: 'input-mode-options.gamecube', value: 16, group: 'primary' },
 ];
 
 const INPUT_MODE_GROUPS = [
@@ -1630,70 +1632,6 @@ export default function SettingsPage() {
 															/>
 														</Col>
 													</Form.Group>
-													<Button type="submit">
-														{t('Common:button-save-label')}
-													</Button>
-													{saveMessage ? (
-														<span className="alert">{saveMessage}</span>
-													) : null}
-												</Section>
-											</Tab.Pane>
-											<Tab.Pane eventKey="bootmode">
-												<Section
-													title={t('SettingsPage:boot-input-mode-label')}
-												>
-													<Row sm={3}>
-														{INPUT_MODES_BINDS.map((mode, index) => (
-															<Form.Group
-																className="mb-3 col-sm-6"
-																key={`input-mode-${index}`}
-															>
-																<Form.Label>
-																	{mode.value in currentButtonLabels
-																		? currentButtonLabels[mode.value]
-																		: mode.value}
-																</Form.Label>
-																<Col sm={10}>
-																	<Form.Select
-																		name={`inputMode${mode.value}`}
-																		className="form-select-sm"
-																		value={values[`inputMode${mode.value}`]}
-																		onChange={handleChange}
-																		isInvalid={errors[`inputMode${mode.value}`]}
-																	>
-																		{translatedInputModeGroups.map((o, i) => (
-																			<optgroup
-																				label={o.label}
-																				key={`optgroup-${o.label}-${i}`}
-																			>
-																				{translatedInputBootModes
-																					.filter(
-																						({ group }) => group == o.group,
-																					)
-																					.map((o, i) => (
-																						<option
-																							key={`button-inputMode-${mode.value
-																								.toString()
-																								.toLowerCase()}-option-${i}`}
-																							value={o.value}
-																							disabled={o.disabled}
-																						>
-																							{o.label}
-																							{o.disabled && o.reason != ''
-																								? ' (' + o.reason + ')'
-																								: ''}
-																						</option>
-																					))}
-																			</optgroup>
-																		))}
-																	</Form.Select>
-																	<Form.Control.Feedback type="invalid">
-																		{errors[`inputMode${mode.value}`]}
-																	</Form.Control.Feedback>
-																</Col>
-															</Form.Group>
-														))}
-													</Row>
 													<Button type="submit">
 														{t('Common:button-save-label')}
 													</Button>

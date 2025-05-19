@@ -23,6 +23,7 @@ export default {
 		psclassic: 'Playstation Classic',
 		xboxoriginal: 'Original Xbox',
 		xbone: 'Xbox One',
+		gamecube: 'GameCube',
 	},
 	'input-mode-group': {
 		primary: 'Primary Input Modes',
