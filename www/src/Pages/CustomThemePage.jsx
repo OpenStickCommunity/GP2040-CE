@@ -290,7 +290,7 @@ const CustomThemePage = () => {
 		async function fetchData() {
 			const data = await WebApi.getCustomTheme(setLoading);
 
-			setHasCustomTheme(data.hasCustomTheme);
+			setHasCustomTheme(Boolean(data.hasCustomTheme));
 			if (!data.customTheme['ALL'])
 				data.customTheme['ALL'] = { normal: '#000000', pressed: '#000000' };
 			if (!data.customTheme['GRADIENT NORMAL'])
