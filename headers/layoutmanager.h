@@ -109,12 +109,14 @@ class LayoutManager {
         LayoutList drawBoardDefinedAlt2A();
         LayoutList drawBoardDefinedAlt3A();
         LayoutList drawBoardDefinedAlt4A();
+        LayoutList drawBoardDefinedAlt5A();
         LayoutList drawBoardDefinedB();
         LayoutList drawBoardDefinedAlt0B();
         LayoutList drawBoardDefinedAlt1B();
         LayoutList drawBoardDefinedAlt2B();
         LayoutList drawBoardDefinedAlt3B();
         LayoutList drawBoardDefinedAlt4B();
+        LayoutList drawBoardDefinedAlt5B();
         LayoutList drawDancepadDDRLeft();
         LayoutList drawDancepadDDRSolo();
         LayoutList drawDancepadPIULeft();

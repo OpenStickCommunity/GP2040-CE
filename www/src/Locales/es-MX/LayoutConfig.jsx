@@ -44,6 +44,7 @@ export default {
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT2_A: 'Definido por Placa Alternativo 2',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT3_A: 'Definido por Placa Alternativo 3',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT4_A: 'Definido por Placa Alternativo 4',
+			BUTTON_LAYOUT_BOARD_DEFINED_ALT5_A: 'Definido por Placa Alternativo 5',
 		},
 		right: {
 			BUTTON_LAYOUT_ARCADE: 'Arcade',
@@ -92,6 +93,7 @@ export default {
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT2_B: 'Definido por Placa Alternativo 2',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT3_B: 'Definido por Placa Alternativo 3',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT4_B: 'Definido por Placa Alternativo 4',
+			BUTTON_LAYOUT_BOARD_DEFINED_ALT5_B: 'Definido por Placa Alternativo 5',
 		},
 	},
 };
