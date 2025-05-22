@@ -421,12 +421,6 @@ void AnimationStation::SetMode(int8_t mode)
   }
 }
 
-/*void AnimationStation::SetOptions(AnimationOptions InOptions) 
-{
-  options = InOptions;
-  AnimationStation::SetBrightness(options.brightness);
-}*/
-
 ///////////////////////////////////
 // Brightness functions
 ///////////////////////////////////
@@ -439,29 +433,20 @@ void AnimationStation::ApplyBrightness(uint32_t *frameValue)
 
 void AnimationStation::SetBrightness(uint8_t brightness) 
 {
-  AnimationStation::options.brightness =
-      (brightness > brightnessSteps) ? brightnessSteps : options.brightness;
-  AnimationStation::brightnessX =
-      (AnimationStation::options.brightness * getBrightnessStepSize()) / 255.0F;
+  AnimationStation::options.brightness = std::clamp<uint32_t>(options.brightness, 0, brightnessSteps);
 
-  if (AnimationStation::brightnessX > 1)
-    AnimationStation::brightnessX = 1;
-  else if (AnimationStation::brightnessX < 0)
-    AnimationStation::brightnessX = 0;
+  AnimationStation::brightnessX = (AnimationStation::options.brightness * getBrightnessStepSize()) / 255.0F;
+  AnimationStation::brightnessX = std::clamp<float>(AnimationStation::brightnessX, 0.0f, 1.0f);
 }
 
 void AnimationStation::DecreaseBrightness() 
 {
-  if (AnimationStation::options.brightness > 0)
-    AnimationStation::SetBrightness(--AnimationStation::options.brightness);
+  AnimationStation::options.brightness = std::clamp<int32_t>(((int32_t)options.brightness)-1, 0, brightnessSteps);
 }
 
 void AnimationStation::IncreaseBrightness()
 {
-  if (AnimationStation::options.brightness < getBrightnessStepSize())
-    AnimationStation::SetBrightness(++AnimationStation::options.brightness);
-  else if (AnimationStation::options.brightness > getBrightnessStepSize())
-    AnimationStation::SetBrightness(brightnessSteps);
+  AnimationStation::options.brightness = std::clamp<int32_t>(options.brightness+1, 0, brightnessSteps);
 }
 
 void AnimationStation::DimBrightnessTo0() 

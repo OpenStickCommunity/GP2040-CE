@@ -51,7 +51,7 @@
 #endif
 
 #ifndef LEDS_BRIGHTNESS
-#define LEDS_BRIGHTNESS 75
+#define LEDS_BRIGHTNESS -1
 #endif
 
 #ifndef LEDS_BASE_ANIMATION_INDEX

@@ -1154,9 +1154,12 @@ std::string getAnimationProtoOptions()
 {
     DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
     const AnimationOptions& options = Storage::getInstance().getAnimationOptions();
+    const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
+
+    uint32_t checkedBrightness = std::clamp<uint32_t>(options.brightness, 0, ledOptions.brightnessSteps);
 
     JsonObject AnimOptions = doc.createNestedObject("AnimationOptions");
-    AnimOptions["brightness"] = options.brightness;
+    AnimOptions["brightness"] = checkedBrightness;
     AnimOptions["baseProfileIndex"] = options.baseProfileIndex;
     JsonArray customColorsList = AnimOptions.createNestedArray("customColors");
     for (int customColorsIndex = 0; customColorsIndex < options.customColors_count; ++customColorsIndex)

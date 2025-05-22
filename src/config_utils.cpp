@@ -532,7 +532,14 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     //INIT_UNSET_PROPERTY(config.specialMoveOptions, CurrentProfileIndex, 0);
  
     // animationOptions
-    INIT_UNSET_PROPERTY(config.animationOptions, brightness, LEDS_BRIGHTNESS);
+    if(LEDS_BRIGHTNESS >= 0 && LEDS_BRIGHTNESS <= config.ledOptions.brightnessSteps)
+    {
+        INIT_UNSET_PROPERTY(config.animationOptions, brightness, LEDS_BRIGHTNESS);
+    }
+    else
+    {
+        INIT_UNSET_PROPERTY(config.animationOptions, brightness, config.ledOptions.brightnessSteps);
+    }
     INIT_UNSET_PROPERTY(config.animationOptions, baseProfileIndex, 0);
 
     for (unsigned int profileIndex = 0; profileIndex < MAX_ANIMATION_PROFILES; ++profileIndex) 
