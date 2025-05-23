@@ -162,7 +162,7 @@ void GamepadUSBHostListener::process_stadia(uint8_t const* report) {
     _controller_host_state.lt = controller_report.SIM_GamePadBrake;
     _controller_host_state.rt = controller_report.SIM_GamePadAccelerator;
 
-    if (controller_report.BTN_GamePadButton18 == 1) _controller_host_state.buttons |= GAMEPAD_MASK_A4;
+    if (controller_report.BTN_GamePadButton18 == 1) _controller_host_state.buttons |= GAMEPAD_MASK_A2;
     if (controller_report.BTN_GamePadButton17 == 1) _controller_host_state.buttons |= GAMEPAD_MASK_A3;
     if (controller_report.BTN_GamePadButton11 == 1) _controller_host_state.buttons |= GAMEPAD_MASK_S1;
     if (controller_report.BTN_GamePadButton15 == 1) _controller_host_state.buttons |= GAMEPAD_MASK_R3;
