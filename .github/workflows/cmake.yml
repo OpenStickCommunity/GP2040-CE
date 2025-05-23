@@ -75,7 +75,7 @@ jobs:
     - name: Setup cmake
       uses: jwlawson/actions-setup-cmake@v2
       with:
-        cmake-version: '3.16.x'
+        cmake-version: '3.17.x'
     - name: Verify cmake
       run: cmake --version
 
@@ -87,7 +87,7 @@ jobs:
         fetch-tags: true
 
     - name: Setup SDK pipeline
-      uses: Fortinbra/RaspberryPiPicoBuild@v3
+      uses: Fortinbra/RaspberryPiPicoBuild@v6
 
     - name: Download a Build Artifact
       uses: actions/download-artifact@v4.1.2
