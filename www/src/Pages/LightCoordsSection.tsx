@@ -16,11 +16,9 @@ import { Coordinates } from '@dnd-kit/core/dist/types';
 import { LightIndicator } from '../Components/LightIndicator';
 import { Row, Col, Button } from 'react-bootstrap';
 import WebApi from '../Services/WebApi';
-import { set } from 'lodash';
 
 const useGetDivDimensions = () => {
 	const [dimensions, setDimensions] = useState({ height: 0, width: 0 });
-
 	const containerRef = useRef<HTMLDivElement | null>(null);
 
 	useEffect(() => {
@@ -31,8 +29,14 @@ const useGetDivDimensions = () => {
 			});
 		});
 
-		if (containerRef?.current) resizeObserver.observe(containerRef.current);
-	}, []);
+		const node = containerRef.current;
+		if (node) resizeObserver.observe(node);
+
+		return () => {
+			if (node) resizeObserver.unobserve(node);
+			resizeObserver.disconnect();
+		};
+	}, [containerRef.current]); // Re-run if ref changes
 
 	return { dimensions, containerRef };
 };
@@ -42,11 +46,11 @@ type light = {
 	coords: Coordinates;
 };
 
-const GRID_SIZE = 64;
+const GRID_SIZE = 30;
 const MIN_GRID_SIZE = 10;
 const MAX_GRID_SIZE = 30;
 
-export default function LightCoords() {
+export default function LightCoordsSection() {
 	const { dimensions, containerRef } = useGetDivDimensions();
 	const [gridSize, setGridSize] = useState(GRID_SIZE);
 	const [cellWidth, setCellWidth] = useState(dimensions.width / gridSize);
@@ -121,40 +125,16 @@ export default function LightCoords() {
 		[lights],
 	);
 
-	const fetchLayout = useCallback(async () => {
-		const { displayLayouts } = await WebApi.getButtonLayouts();
-
-		const buttonLayout = Object.values(displayLayouts.buttonLayout).map(
-			(item: any, index: number) => ({
-				id: `left-${index}`,
-				coords: {
-					x: Math.round(item.parameters.x1 / 2),
-					y: Math.round(item.parameters.y1 / 2),
-				},
-			}),
-		);
-		const buttonLayoutRight = Object.values(
-			displayLayouts.buttonLayoutRight,
-		).map((item: any, index: number) => ({
-			id: `right-${index}`,
-			coords: {
-				x: Math.round(item.parameters.x1 / 2),
-				y: Math.round(item.parameters.y1 / 2),
-			},
-		}));
-
-		setLights([...buttonLayout, ...buttonLayoutRight]);
-	}, []);
-
 	const selectedLightData = lights.find((light) => light.id === selectedLight);
+
 	return (
 		<div className={`card`}>
 			<div className={`card-header`}>
-				<strong>Light Coordinates</strong>
+				<strong>Coordinates</strong>
 			</div>
 			<div className="card-body">
 				<Row className="mb-3">
-					<Col md={8}>
+					<Col md={9}>
 						<div
 							ref={containerRef}
 							style={{
@@ -222,87 +202,99 @@ export default function LightCoords() {
 							</DndContext>
 						</div>
 					</Col>
-					<Col md={4}>
+					<Col md={3}>
 						<div className="d-flex flex-column h-100">
-							<div className="d-flex flex-grow-1 justify-content-center align-items-center text-center">
+							<div className="d-flex flex-grow-1">
 								{selectedLightData ? (
-									<div>
-										<h5>Light {selectedLightData.id}</h5>
-										<div className="mt-3">
-											<div className="mb-2">
-												<label className="form-label">First LED Index</label>
-												<input type="number" className="form-control" min={0} />
-											</div>
-											<div className="mb-2">
-												<label className="form-label">Num LEDs On Light</label>
-												<input type="number" className="form-control" min={1} />
-											</div>
-											<div className="mb-2">
-												<label className="form-label">X Coord</label>
-												<input
-													type="number"
-													className="form-control"
-													value={selectedLightData.coords.x}
-													onChange={(e) => {
-														setLights((prev) =>
-															prev.map((light) =>
-																light.id === selectedLightData.id
-																	? {
-																			...light,
-																			coords: {
-																				...light.coords,
-																				x: Number(e.target.value),
-																			},
-																		}
-																	: light,
-															),
-														);
-													}}
-													min={0}
-													max={gridSize - 1}
-												/>
-											</div>
-											<div className="mb-2">
-												<label className="form-label">Y Coord</label>
-												<input
-													type="number"
-													className="form-control"
-													value={selectedLightData.coords.y}
-													onChange={(e) => {
-														setLights((prev) =>
-															prev.map((light) =>
-																light.id === selectedLightData.id
-																	? {
-																			...light,
-																			coords: {
-																				...light.coords,
-																				y: Number(e.target.value),
-																			},
-																		}
-																	: light,
-															),
-														);
-													}}
-													min={0}
-													max={gridSize - 1}
-												/>
-											</div>
-											<div className="mb-2">
-												<label className="form-label">
-													GPIO Pin or Case Chain Index
-												</label>
-												<input type="number" className="form-control" min={0} />
-											</div>
-											<div className="mb-2">
-												<label className="form-label">Light Type</label>
-												<select className="form-select" value={0}>
-													<option value={0}>ActionButton</option>
-													<option value={1}>Case</option>
-													<option value={2}>Turbo</option>
-													<option value={3}>PlayerLight</option>
-												</select>
-											</div>
+									<div className="w-100">
+										<h3>Light {selectedLightData.id}</h3>
+										<div className="mb-2 ">
+											<label className="form-label">First LED Index</label>
+											<input type="number" className="form-control " min={0} />
 										</div>
+										<div className="mb-2">
+											<label className="form-label">Num LEDs On Light</label>
+											<input type="number" className="form-control" min={1} />
+										</div>
+										<div className="mb-2">
+											<label className="form-label">X Coord</label>
+											<input
+												type="number"
+												className="form-control"
+												value={selectedLightData.coords.x}
+												onChange={(e) => {
+													setLights((prev) =>
+														prev.map((light) =>
+															light.id === selectedLightData.id
+																? {
+																		...light,
+																		coords: {
+																			...light.coords,
+																			x: Number(e.target.value),
+																		},
+																	}
+																: light,
+														),
+													);
+												}}
+												min={0}
+												max={gridSize - 1}
+											/>
+										</div>
+										<div className="mb-2">
+											<label className="form-label">Y Coord</label>
+											<input
+												type="number"
+												className="form-control"
+												value={selectedLightData.coords.y}
+												onChange={(e) => {
+													setLights((prev) =>
+														prev.map((light) =>
+															light.id === selectedLightData.id
+																? {
+																		...light,
+																		coords: {
+																			...light.coords,
+																			y: Number(e.target.value),
+																		},
+																	}
+																: light,
+														),
+													);
+												}}
+												min={0}
+												max={gridSize - 1}
+											/>
+										</div>
+										<div className="mb-2">
+											<label className="form-label">
+												GPIO Pin or Case Chain Index
+											</label>
+											<input type="number" className="form-control" min={0} />
+										</div>
+										<div className="mb-2">
+											<label className="form-label">Light Type</label>
+											<select className="form-select" value={0}>
+												<option value={0}>ActionButton</option>
+												<option value={1}>Case</option>
+												<option value={2}>Turbo</option>
+												<option value={3}>PlayerLight</option>
+											</select>
+										</div>
+										<Button
+											variant="danger"
+											className="w-100 mt-3"
+											onClick={() => {
+												setLights((prev) =>
+													prev.filter(
+														(light) => light.id !== selectedLightData.id,
+													),
+												);
+												setSelectedLight(null);
+											}}
+										>
+											Delete Light
+										</Button>
 									</div>
 								) : (
 									<p>Select a light to configure</p>
@@ -311,20 +303,14 @@ export default function LightCoords() {
 							<hr className="mt-3" />
 							<div className="d-flex flex-column justify-content-between align-items-center">
 								<Button
-									onClick={() => {
-										fetchLayout();
-									}}
-								>
-									Fetch Button Layout
-								</Button>
-								<hr />
-								<Button
+									className="w-100"
+									variant="secondary"
 									onClick={() => {
 										setLights((prev) => [
 											...prev,
 											{
 												id: `${lights.length + 1}`,
-												coords: { x: 0, y: 0 },
+												coords: { x: gridSize - 1, y: gridSize - 1 },
 											},
 										]);
 									}}
