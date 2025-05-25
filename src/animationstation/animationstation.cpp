@@ -32,6 +32,10 @@ float AnimationStation::brightnessX = 0;
 absolute_time_t AnimationStation::nextChange = nil_time;
 AnimationOptions_Unpacked AnimationStation::options = {};
 std::string AnimationStation::printfs[4];
+AnimationStationTestMode AnimationStation::TestMode = AnimationStationTestMode::AnimationStation_TestModeInvalid;
+bool AnimationStation::bTestModeChangeRequested = false;
+int AnimationStation::TestModePinOrCaseIndex = -1;
+bool AnimationStation::TestModeLightIsCase = false;
 
 AnimationStation::AnimationStation()
 {
@@ -198,8 +202,35 @@ void AnimationStation::HandlePressedButtons(uint32_t pressedButtons)
   specialMoveSystem.HandlePressedButtons(pressedButtons);
 }
 
+void AnimationStation::UpdateTestMode()
+{
+  if(!bTestModeChangeRequested)
+    return;
+  bTestModeChangeRequested = false;
+
+  switch(TestMode)
+  {
+    case AnimationStationTestMode::AnimationStation_TestModeOff:
+    {
+      SetMode(-1);
+    } break;
+    case AnimationStationTestMode::AnimationStation_TestModeButtons:
+    case AnimationStationTestMode::AnimationStation_TestModeLayout:
+    case AnimationStationTestMode::AnimationStation_TestModeProfilePreview:
+    {
+      SetMode(MAX_ANIMATION_PROFILES_INCLUDING_TEST - 1);
+    } break;
+    
+    default:
+      break;
+  }
+}
+
 void AnimationStation::Animate() 
 {
+  //Test mode checks
+  UpdateTestMode();
+
   //If no profiles running
   if (baseAnimation == nullptr || buttonAnimation == nullptr) 
   {
@@ -225,8 +256,8 @@ void AnimationStation::Animate()
     }
   }
 
-  checkForOptionsUpdate();
-  specialMoveSystem.checkForOptionsUpdate();
+  CheckForOptionsUpdate();
+  specialMoveSystem.CheckForOptionsUpdate();
 }
 
 void AnimationStation::Clear() 
@@ -296,7 +327,10 @@ Animation* AnimationStation::GetNonPressedEffectForEffectType(AnimationNonPresse
     newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_SEQUENTIAL);
     break;
   case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_LEFT_TO_RIGHT:
-    newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_LEFT_TO_RIGHT);
+    if(TestMode == AnimationStationTestMode::AnimationStation_TestModeLayout)
+      newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_TESTLAYOUT);
+    else
+      newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_LEFT_TO_RIGHT);
     break;  
   case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_RIGHT_TO_LEFT:
     newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_RIGHT_TO_LEFT);
@@ -464,7 +498,76 @@ uint8_t AnimationStation::GetBrightness()
   return AnimationStation::options.brightness;
 }
 
-void AnimationStation::decompressSettings()
+void AnimationStation::DecompressProfile(int ProfileIndex, const AnimationProfile* ProfileToDecompress)
+{
+		options.profiles[ProfileIndex].bEnabled = ProfileToDecompress->bEnabled;
+		options.profiles[ProfileIndex].baseNonPressedEffect = (AnimationNonPressedEffects)((int)ProfileToDecompress->baseNonPressedEffect);
+		options.profiles[ProfileIndex].basePressedEffect = (AnimationPressedEffects)((int)ProfileToDecompress->basePressedEffect);
+		options.profiles[ProfileIndex].baseCaseEffect = (AnimationNonPressedEffects)((int)ProfileToDecompress->baseCaseEffect);
+		options.profiles[ProfileIndex].baseCycleTime = ProfileToDecompress->baseCycleTime;
+		options.profiles[ProfileIndex].basePressedCycleTime = ProfileToDecompress->basePressedCycleTime;
+		for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS/4)+1; ++packedPinIndex)
+		{
+			int pinIndex = packedPinIndex * 4;
+			if(packedPinIndex < ProfileToDecompress->notPressedStaticColors_count)
+			{
+				options.profiles[ProfileIndex].notPressedStaticColors[pinIndex + 0] = ProfileToDecompress->notPressedStaticColors[packedPinIndex] & 0xFF;
+				options.profiles[ProfileIndex].notPressedStaticColors[pinIndex + 1] = (ProfileToDecompress->notPressedStaticColors[packedPinIndex] >> 8) & 0xFF;
+				options.profiles[ProfileIndex].notPressedStaticColors[pinIndex + 2] = (ProfileToDecompress->notPressedStaticColors[packedPinIndex] >> 16) & 0xFF;
+				options.profiles[ProfileIndex].notPressedStaticColors[pinIndex + 3] = (ProfileToDecompress->notPressedStaticColors[packedPinIndex] >> 24) & 0xFF;
+			}
+      else
+      {
+        //Set all black
+				options.profiles[ProfileIndex].notPressedStaticColors[pinIndex + 0] = 0;
+				options.profiles[ProfileIndex].notPressedStaticColors[pinIndex + 1] = 0;
+				options.profiles[ProfileIndex].notPressedStaticColors[pinIndex + 2] = 0;
+				options.profiles[ProfileIndex].notPressedStaticColors[pinIndex + 3] = 0;
+      }
+
+			if(packedPinIndex < ProfileToDecompress->pressedStaticColors_count)
+			{
+				options.profiles[ProfileIndex].pressedStaticColors[pinIndex + 0] = ProfileToDecompress->pressedStaticColors[packedPinIndex] & 0xFF;
+				options.profiles[ProfileIndex].pressedStaticColors[pinIndex + 1] = (ProfileToDecompress->pressedStaticColors[packedPinIndex] >> 8) & 0xFF;
+				options.profiles[ProfileIndex].pressedStaticColors[pinIndex + 2] = (ProfileToDecompress->pressedStaticColors[packedPinIndex] >> 16) & 0xFF;
+				options.profiles[ProfileIndex].pressedStaticColors[pinIndex + 3] = (ProfileToDecompress->pressedStaticColors[packedPinIndex] >> 24) & 0xFF;
+			}
+      else
+      {
+        //Set all black
+				options.profiles[ProfileIndex].pressedStaticColors[pinIndex + 0] = 0;
+				options.profiles[ProfileIndex].pressedStaticColors[pinIndex + 1] = 0;
+				options.profiles[ProfileIndex].pressedStaticColors[pinIndex + 2] = 0;
+				options.profiles[ProfileIndex].pressedStaticColors[pinIndex + 3] = 0;
+      }
+		}
+		for(unsigned int packedCaseIndex = 0; packedCaseIndex < (MAX_CASE_LIGHTS / 4); ++packedCaseIndex)
+		{
+			int caseIndex = packedCaseIndex * 4;
+      if(packedCaseIndex < ProfileToDecompress->caseStaticColors_count)
+      {
+        options.profiles[ProfileIndex].caseStaticColors[caseIndex + 0] = ProfileToDecompress->caseStaticColors[packedCaseIndex] & 0xFF;
+        options.profiles[ProfileIndex].caseStaticColors[caseIndex + 1] = (ProfileToDecompress->caseStaticColors[packedCaseIndex] >> 8) & 0xFF;
+        options.profiles[ProfileIndex].caseStaticColors[caseIndex + 2] = (ProfileToDecompress->caseStaticColors[packedCaseIndex] >> 16) & 0xFF;
+        options.profiles[ProfileIndex].caseStaticColors[caseIndex + 3] = (ProfileToDecompress->caseStaticColors[packedCaseIndex] >> 24) & 0xFF;
+      }
+      else
+      {
+        //Set all black
+				options.profiles[ProfileIndex].caseStaticColors[caseIndex + 0] = 0;
+				options.profiles[ProfileIndex].caseStaticColors[caseIndex + 1] = 0;
+				options.profiles[ProfileIndex].caseStaticColors[caseIndex + 2] = 0;
+				options.profiles[ProfileIndex].caseStaticColors[caseIndex + 3] = 0;
+      }
+		}
+		options.profiles[ProfileIndex].buttonPressHoldTimeInMs = ProfileToDecompress->buttonPressHoldTimeInMs;
+		options.profiles[ProfileIndex].buttonPressFadeOutTimeInMs = ProfileToDecompress->buttonPressFadeOutTimeInMs;
+		options.profiles[ProfileIndex].nonPressedSpecialColor = ProfileToDecompress->nonPressedSpecialColor;
+		options.profiles[ProfileIndex].pressedSpecialColor = ProfileToDecompress->pressedSpecialColor;
+		options.profiles[ProfileIndex].bUseCaseLightsInSpecialMoves = ProfileToDecompress->bUseCaseLightsInSpecialMoves;
+}
+
+void AnimationStation::DecompressSettings()
 {
 	const AnimationOptions& optionsProto = Storage::getInstance().getAnimationOptions();
 	
@@ -472,44 +575,9 @@ void AnimationStation::decompressSettings()
 	options.NumValidProfiles = optionsProto.profiles_count;
 	for(int index = 0; index < options.NumValidProfiles && index < 4; ++index) //MAX_ANIMATION_PROFILES from AnimationStation.hpp
 	{
-		options.profiles[index].bEnabled = optionsProto.profiles[index].bEnabled;
-		options.profiles[index].baseNonPressedEffect = (AnimationNonPressedEffects)((int)optionsProto.profiles[index].baseNonPressedEffect);
-		options.profiles[index].basePressedEffect = (AnimationPressedEffects)((int)optionsProto.profiles[index].basePressedEffect);
-		options.profiles[index].baseCaseEffect = (AnimationNonPressedEffects)((int)optionsProto.profiles[index].baseCaseEffect);
-		options.profiles[index].baseCycleTime = optionsProto.profiles[index].baseCycleTime;
-		options.profiles[index].basePressedCycleTime = optionsProto.profiles[index].basePressedCycleTime;
-		for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS/4)+1; ++packedPinIndex)
-		{
-			int pinIndex = packedPinIndex * 4;
-			if(packedPinIndex < optionsProto.profiles[index].notPressedStaticColors_count)
-			{
-				options.profiles[index].notPressedStaticColors[pinIndex + 0] = optionsProto.profiles[index].notPressedStaticColors[packedPinIndex] & 0xFF;
-				options.profiles[index].notPressedStaticColors[pinIndex + 1] = (optionsProto.profiles[index].notPressedStaticColors[packedPinIndex] >> 8) & 0xFF;
-				options.profiles[index].notPressedStaticColors[pinIndex + 2] = (optionsProto.profiles[index].notPressedStaticColors[packedPinIndex] >> 16) & 0xFF;
-				options.profiles[index].notPressedStaticColors[pinIndex + 3] = (optionsProto.profiles[index].notPressedStaticColors[packedPinIndex] >> 24) & 0xFF;
-			}
-			if(packedPinIndex < optionsProto.profiles[index].pressedStaticColors_count)
-			{
-				options.profiles[index].pressedStaticColors[pinIndex + 0] = optionsProto.profiles[index].pressedStaticColors[packedPinIndex] & 0xFF;
-				options.profiles[index].pressedStaticColors[pinIndex + 1] = (optionsProto.profiles[index].pressedStaticColors[packedPinIndex] >> 8) & 0xFF;
-				options.profiles[index].pressedStaticColors[pinIndex + 2] = (optionsProto.profiles[index].pressedStaticColors[packedPinIndex] >> 16) & 0xFF;
-				options.profiles[index].pressedStaticColors[pinIndex + 3] = (optionsProto.profiles[index].pressedStaticColors[packedPinIndex] >> 24) & 0xFF;
-			}
-		}
-		for(unsigned int packedCaseIndex = 0; packedCaseIndex < (MAX_CASE_LIGHTS / 4) && packedCaseIndex < optionsProto.profiles[index].caseStaticColors_count; ++packedCaseIndex)
-		{
-			int caseIndex = packedCaseIndex * 4;
-			options.profiles[index].caseStaticColors[caseIndex + 0] = optionsProto.profiles[index].caseStaticColors[packedCaseIndex] & 0xFF;
-			options.profiles[index].caseStaticColors[caseIndex + 1] = (optionsProto.profiles[index].caseStaticColors[packedCaseIndex] >> 8) & 0xFF;
-			options.profiles[index].caseStaticColors[caseIndex + 2] = (optionsProto.profiles[index].caseStaticColors[packedCaseIndex] >> 16) & 0xFF;
-			options.profiles[index].caseStaticColors[caseIndex + 3] = (optionsProto.profiles[index].caseStaticColors[packedCaseIndex] >> 24) & 0xFF;
-		}
-		options.profiles[index].buttonPressHoldTimeInMs = optionsProto.profiles[index].buttonPressHoldTimeInMs;
-		options.profiles[index].buttonPressFadeOutTimeInMs = optionsProto.profiles[index].buttonPressFadeOutTimeInMs;
-		options.profiles[index].nonPressedSpecialColor = optionsProto.profiles[index].nonPressedSpecialColor;
-		options.profiles[index].pressedSpecialColor = optionsProto.profiles[index].pressedSpecialColor;
-		options.profiles[index].bUseCaseLightsInSpecialMoves = optionsProto.profiles[index].bUseCaseLightsInSpecialMoves;
+    DecompressProfile(index, &(optionsProto.profiles[index]));
 	}
+
 	options.brightness				= std::min<uint32_t>(optionsProto.brightness, 255);
 	options.baseProfileIndex		= optionsProto.baseProfileIndex;
 
@@ -520,8 +588,12 @@ void AnimationStation::decompressSettings()
 	}
 }
 
-void AnimationStation::checkForOptionsUpdate()
+void AnimationStation::CheckForOptionsUpdate()
 {
+  //No saving in test/webconfig mode
+  if(TestMode != AnimationStationTestMode::AnimationStation_TestModeInvalid)
+    return;
+
   bool bChangeDetected = false;
   AnimationOptions& optionsProto = Storage::getInstance().getAnimationOptions();
 
@@ -559,6 +631,116 @@ void AnimationStation::checkForOptionsUpdate()
       optionsProto.baseProfileIndex			= options.baseProfileIndex;
 
       EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(false));
+    }
+  }
+}
+
+//Testmode functions
+void AnimationStation::SetTestMode(AnimationStationTestMode TestType, const AnimationProfile* TestProfile)
+{
+  bTestModeChangeRequested = true;
+
+  TestMode = TestType;
+
+  //Decompress profile into the test entry
+  int testProfileIndex = MAX_ANIMATION_PROFILES_INCLUDING_TEST - 1;
+  if(TestMode == AnimationStationTestMode::AnimationStation_TestModeProfilePreview)
+    DecompressProfile(testProfileIndex, TestProfile);
+  else if(TestMode == AnimationStationTestMode::AnimationStation_TestModeLayout)
+  {
+    //Set up test profile that is Chase Random
+    options.profiles[testProfileIndex].baseCaseEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_STATIC_COLOR;
+    options.profiles[testProfileIndex].baseNonPressedEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_LEFT_TO_RIGHT;
+    options.profiles[testProfileIndex].basePressedEffect = AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_STATIC_COLOR;
+
+    for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS/4)+1; ++packedPinIndex)
+		{
+			int pinIndex = packedPinIndex * 4;
+      options.profiles[testProfileIndex].notPressedStaticColors[pinIndex + 0] = 0;
+      options.profiles[testProfileIndex].notPressedStaticColors[pinIndex + 1] = 0;
+      options.profiles[testProfileIndex].notPressedStaticColors[pinIndex + 2] = 0;
+      options.profiles[testProfileIndex].notPressedStaticColors[pinIndex + 3] = 0;
+ 
+      options.profiles[testProfileIndex].pressedStaticColors[pinIndex + 0] = 0;
+      options.profiles[testProfileIndex].pressedStaticColors[pinIndex + 1] = 0;
+      options.profiles[testProfileIndex].pressedStaticColors[pinIndex + 2] = 0;
+      options.profiles[testProfileIndex].pressedStaticColors[pinIndex + 3] = 0;
+		}
+
+		for(unsigned int packedCaseIndex = 0; packedCaseIndex < (MAX_CASE_LIGHTS / 4); ++packedCaseIndex)
+		{
+			int caseIndex = packedCaseIndex * 4;
+      options.profiles[testProfileIndex].caseStaticColors[caseIndex + 0] = 0;
+      options.profiles[testProfileIndex].caseStaticColors[caseIndex + 1] = 0;
+      options.profiles[testProfileIndex].caseStaticColors[caseIndex + 2] = 0;
+      options.profiles[testProfileIndex].caseStaticColors[caseIndex + 3] = 0;
+		}
+
+    options.profiles[testProfileIndex].nonPressedSpecialColor = 0xFFFFFF; //White
+    options.profiles[testProfileIndex].baseCycleTime = 50;
+  }
+  else if(TestMode == AnimationStationTestMode::AnimationStation_TestModeButtons)
+  {
+    //Set up test profile that is all black
+    options.profiles[testProfileIndex].baseCaseEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_STATIC_COLOR;
+    options.profiles[testProfileIndex].baseNonPressedEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_STATIC_COLOR;
+    options.profiles[testProfileIndex].basePressedEffect = AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_STATIC_COLOR;
+
+    for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS/4)+1; ++packedPinIndex)
+		{
+			int pinIndex = packedPinIndex * 4;
+      options.profiles[testProfileIndex].notPressedStaticColors[pinIndex + 0] = 0;
+      options.profiles[testProfileIndex].notPressedStaticColors[pinIndex + 1] = 0;
+      options.profiles[testProfileIndex].notPressedStaticColors[pinIndex + 2] = 0;
+      options.profiles[testProfileIndex].notPressedStaticColors[pinIndex + 3] = 0;
+ 
+      options.profiles[testProfileIndex].pressedStaticColors[pinIndex + 0] = 0;
+      options.profiles[testProfileIndex].pressedStaticColors[pinIndex + 1] = 0;
+      options.profiles[testProfileIndex].pressedStaticColors[pinIndex + 2] = 0;
+      options.profiles[testProfileIndex].pressedStaticColors[pinIndex + 3] = 0;
+		}
+
+		for(unsigned int packedCaseIndex = 0; packedCaseIndex < (MAX_CASE_LIGHTS / 4); ++packedCaseIndex)
+		{
+			int caseIndex = packedCaseIndex * 4;
+      options.profiles[testProfileIndex].caseStaticColors[caseIndex + 0] = 0;
+      options.profiles[testProfileIndex].caseStaticColors[caseIndex + 1] = 0;
+      options.profiles[testProfileIndex].caseStaticColors[caseIndex + 2] = 0;
+      options.profiles[testProfileIndex].caseStaticColors[caseIndex + 3] = 0;
+		}
+  }
+}
+
+void AnimationStation::SetTestPinState(int PinOrCaseIndex, bool IsCaseLight)
+{
+  int testProfileIndex = MAX_ANIMATION_PROFILES_INCLUDING_TEST - 1;
+
+  //reset old test light
+  if(TestModePinOrCaseIndex != -1)
+  {
+    if(TestModeLightIsCase)
+    {
+      options.profiles[testProfileIndex].caseStaticColors[TestModePinOrCaseIndex] = 0x00; //Black/off
+    }
+    else
+    {
+      options.profiles[testProfileIndex].notPressedStaticColors[TestModePinOrCaseIndex] = 0x00; //Black/off
+    }
+  }
+
+  //Store new test light
+  TestModePinOrCaseIndex = PinOrCaseIndex;
+  TestModeLightIsCase = IsCaseLight;
+
+  if(TestModePinOrCaseIndex != -1)
+  {
+    if(IsCaseLight)
+    {
+      options.profiles[testProfileIndex].caseStaticColors[PinOrCaseIndex] = 0x01; //White
+    }
+    else
+    {
+      options.profiles[testProfileIndex].notPressedStaticColors[PinOrCaseIndex] = 0x01; //White
     }
   }
 }

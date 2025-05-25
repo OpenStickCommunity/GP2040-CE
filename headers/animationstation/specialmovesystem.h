@@ -168,7 +168,7 @@ public:
     void SetParentAnimationStation(class AnimationStation* InParentAnimationStation);
     void SetSpecialMoveAnimationOver() { bMoveIsRunning = false; }
 
-    void checkForOptionsUpdate();
+    void CheckForOptionsUpdate();
 
     static SpecialMoveOptions Options;
 

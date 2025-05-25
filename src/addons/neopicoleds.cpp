@@ -608,7 +608,7 @@ void NeoPicoLEDAddon::configureLEDs()
 
 void NeoPicoLEDAddon::decompressSettings()
 {
-	AnimStation.decompressSettings();
+	AnimStation.DecompressSettings();
 }
 
 ////////////////////////////////////////////
@@ -617,6 +617,9 @@ void NeoPicoLEDAddon::decompressSettings()
 
 void NeoPicoLEDAddon::GenerateLights(const LEDOptions_lightData_t& InLightData, uint32_t InLightDataSize)
 {
+	int minX = -1;
+	int minY = -1;
+
 	std::vector<Light> generatedLights;
 	for(int index = 0; index < (int)InLightDataSize; ++index)
 	{
@@ -629,7 +632,24 @@ void NeoPicoLEDAddon::GenerateLights(const LEDOptions_lightData_t& InLightData, 
 						InLightData.bytes[arrayOffset+4],
 						(LightType)InLightData.bytes[arrayOffset+5]);
 
+		//Update mins
+		if(minX == -1 || newLight.Position.XPosition < minX)
+			minX = newLight.Position.XPosition;
+		if(minY == -1 || newLight.Position.YPosition < minY)
+			minY = newLight.Position.YPosition;
+
 		generatedLights.push_back(newLight);
+	}
+
+	//check for critical error
+	if(minX < 0 || minY < 0)
+		return;
+
+	//Strip Empty rows and coloums on left and top side
+	for(int index = 0; index < (int)generatedLights.size(); ++index)
+	{
+		generatedLights[index].Position.XPosition -= minX;
+		generatedLights[index].Position.YPosition -= minY;
 	}
 
 	RGBLights.Setup(generatedLights);
