@@ -1,6 +1,7 @@
 #include "addons/gamepad_usb_host_listener.h"
 #include "drivermanager.h"
 #include "storagemanager.h"
+#include "class/hid/hid.h"
 #include "class/hid/hid_host.h"
 
 void GamepadUSBHostListener::setup() {
@@ -32,7 +33,7 @@ void GamepadUSBHostListener::mount(uint8_t dev_addr, uint8_t instance, uint8_t c
     tuh_vid_pid_get(dev_addr, &controller_vid, &controller_pid);
 
 #if GAMEPAD_HOST_DEBUG
-    //printf("\033[0;0H\nMount: VID_%04x PID_%04x\n", controller_vid, controller_pid);
+    //printf("Mount: VID_%04x PID_%04x\n", controller_vid, controller_pid);
 #endif
 
     uint16_t joystick_mid = GAMEPAD_JOYSTICK_MID;
@@ -60,8 +61,16 @@ void GamepadUSBHostListener::mount(uint8_t dev_addr, uint8_t instance, uint8_t c
             setup_ds4();
             break;
         case 0x0CE6:               // DualSense
-
             break;
+
+        case 0xC294:               // Driving Force or similar
+            isDFInit = false;
+            setup_df_wheel();
+            break;
+        case 0xC29A:
+            isDFInit = true;
+            break;
+
         /* Other */
         // these types do not have an identification step, at least for PS4
         case 0x9400:               // Google Stadia controller
@@ -97,12 +106,12 @@ void GamepadUSBHostListener::report_received(uint8_t dev_addr, uint8_t instance,
 
 void GamepadUSBHostListener::process_ctrlr_report(uint8_t dev_addr, uint8_t const* report, uint16_t len) {
 #if GAMEPAD_HOST_DEBUG
-    printf("\033[1;0H\nHost (%d):\n", len);
-    for (uint8_t i = 0; i < len; i++) {
-        printf("%02x ", report[i]);
-        if (((i+1) % 16) == 0) printf("\n");
-    }
-    printf("----\n");
+    //printf("\033[1;0H\nHost (%d):\n", len);
+    //for (uint8_t i = 0; i < len; i++) {
+    //    printf("%02x ", report[i]);
+    //    if (((i+1) % 16) == 0) printf("\n");
+    //}
+    //printf("----\n");
 #endif
 
     switch(controller_pid)
@@ -115,19 +124,27 @@ void GamepadUSBHostListener::process_ctrlr_report(uint8_t dev_addr, uint8_t cons
         case 0x00EE:               // Hori Minipad
             if (isDS4Identified) {
                 update_ds4();
-                process_ds4(report);
+                process_ds4(report, len);
             }
             break;
         case 0x0CE6:               // DualSense
-            process_ds(report);
+            process_ds(report, len);
             break;
         case 0x9400:               // Google Stadia controller
-            process_stadia(report);
+            process_stadia(report, len);
             break;
-    
+
+        case 0xC294:               // Driving Force
+            if (!isDFInit) setup_df_wheel();
+            break;
+
+        case 0xC29A:
+            process_dfgt(report, len);
+            break;
+
         case 0x0510:               // pre-2015 Ultrakstik 360
         case 0x0511:               // Ultrakstik 360
-            process_ultrastik360(report);
+            process_ultrastik360(report, len);
             break;
         default:
             break;
@@ -271,7 +288,7 @@ void GamepadUSBHostListener::update_ds4() {
 #endif
 }
 
-void GamepadUSBHostListener::process_ds4(uint8_t const* report) {
+void GamepadUSBHostListener::process_ds4(uint8_t const* report, uint16_t len) {
     PS4Report controller_report;
 
     // previous report used to compare for changes
@@ -321,10 +338,8 @@ void GamepadUSBHostListener::process_ds4(uint8_t const* report) {
     prev_report = controller_report;
 }
 
-void GamepadUSBHostListener::process_ds(uint8_t const* report) {
+void GamepadUSBHostListener::process_ds(uint8_t const* report, uint16_t len) {
     DSReport controller_report;
-
-    printf("%d\n", sizeof(controller_report));
 
     // previous report used to compare for changes
     static DSReport prev_ds_report = { 0 };
@@ -373,7 +388,7 @@ void GamepadUSBHostListener::process_ds(uint8_t const* report) {
     prev_ds_report = controller_report;
 }
 
-void GamepadUSBHostListener::process_stadia(uint8_t const* report) {
+void GamepadUSBHostListener::process_stadia(uint8_t const* report, uint16_t len) {
     google_stadia_report_t controller_report;
 
     memcpy(&controller_report, report, sizeof(controller_report));
@@ -410,7 +425,7 @@ void GamepadUSBHostListener::process_stadia(uint8_t const* report) {
     if (controller_report.GD_GamePadHatSwitch == 7) _controller_host_state.dpad |= GAMEPAD_MASK_LEFT | GAMEPAD_MASK_UP;
 }
 
-void GamepadUSBHostListener::process_ultrastik360(uint8_t const* report) {
+void GamepadUSBHostListener::process_ultrastik360(uint8_t const* report, uint16_t len) {
 
     ultrastik360_t controller_report;
 
@@ -427,4 +442,32 @@ void GamepadUSBHostListener::process_ultrastik360(uint8_t const* report) {
     if (controller_report.BTN_GamePadButton6 == 1) _controller_host_state.buttons |= GAMEPAD_MASK_L2;
     if (controller_report.BTN_GamePadButton7 == 1) _controller_host_state.buttons |= GAMEPAD_MASK_R1;
     if (controller_report.BTN_GamePadButton8 == 1) _controller_host_state.buttons |= GAMEPAD_MASK_R2;
+}
+
+void GamepadUSBHostListener::setup_df_wheel() {
+    // send commands to see if can be reset to Driving Force GT mode for more compatibility
+    uint8_t command[8] = {0xF8, 0x09, 0x03, 0x01, 0x00, 0x00, 0x00, 0x00};
+    uint16_t commandSize = sizeof(command);
+
+    if (tuh_hid_send_report(_controller_dev_addr, _controller_instance, 0, command, commandSize)) {
+        isDFInit = true;
+    }
+}
+
+void GamepadUSBHostListener::process_dfgt(uint8_t const* report, uint16_t len) {
+    PS3ReportAlt ps3Report;
+    memcpy(&ps3Report, report, len);
+#if GAMEPAD_HOST_DEBUG
+    //printf("\033[2;0H");
+    //for (uint8_t i = 0; i < len; i++) {
+    //    printf("%02x ", report[i]);
+    //    if (((i+1) % 16) == 0) printf("\n");
+    //}
+    //printf("\033[2;0H Ste:%5d Gas:%3d Brk:%3d", ps3Report.wheel.steeringWheel, ps3Report.wheel.gasPedal, ps3Report.wheel.brakePedal);
+    //printf("\n-----\n");
+    //printf("\033[2;0HDPad: %1d", ps3Report.wheel.dpadDirection);
+    //printf("\033[3;0HWheel: %5d", ps3Report.wheel.steeringWheel);
+    //printf("\033[4;0HGas: %3d", ps3Report.wheel.gasPedal);
+    //printf("\033[5;0HBrake: %3d", ps3Report.wheel.brakePedal);
+#endif
 }

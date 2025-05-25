@@ -4,6 +4,7 @@
 #include "usblistener.h"
 #include "gamepad.h"
 #include "class/hid/hid.h"
+#include "drivers/ps3/PS3Descriptors.h"
 #include "drivers/ps4/PS4Descriptors.h"
 #include "drivers/ps4/PS4Driver.h"
 
@@ -142,15 +143,15 @@ class GamepadUSBHostListener : public USBListener {
         // update ds4 output reporting
         void update_ds4();
         // handle ds4 input reporting
-        void process_ds4(uint8_t const* report);
+        void process_ds4(uint8_t const* report, uint16_t len);
         PS4ControllerConfig ds4Config;
         uint8_t report_buffer[PS4_ENDPOINT_SIZE];
 
-        void process_ds(uint8_t const* report);
+        void process_ds(uint8_t const* report, uint16_t len);
 
-        void process_stadia(uint8_t const* report);
+        void process_stadia(uint8_t const* report, uint16_t len);
 
-        void process_ultrastik360(uint8_t const* report);
+        void process_ultrastik360(uint8_t const* report, uint16_t len);
 
         uint16_t controller_pid, controller_vid;
 
@@ -160,6 +161,11 @@ class GamepadUSBHostListener : public USBListener {
         bool diff_than_2(uint8_t x, uint8_t y);
         // check if 2 reports are different enough
         bool diff_report(PS4Report const* rpt1, PS4Report const* rpt2);
+
+        // wheel check
+        bool isDFInit = false;
+        void setup_df_wheel();
+        void process_dfgt(uint8_t const* report, uint16_t len);
 };
 
 #endif

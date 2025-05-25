@@ -174,7 +174,7 @@ bool PS3Driver::process(Gamepad * gamepad) {
     const GamepadOptions & options = gamepad->getOptions();
     Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
 
-    void * report;
+    uint8_t * report;
     uint16_t report_size = 0;
 
     if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GAMEPAD) {
@@ -257,7 +257,7 @@ bool PS3Driver::process(Gamepad * gamepad) {
             ps3Report.reserved4 = PS3_CENTER_SIXAXIS;
         }
 
-        report = &ps3Report;
+        report = (uint8_t*)&ps3Report;
         report_size = sizeof(ps3Report);
     } else if (deviceType != InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GAMEPAD) {
         if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GUITAR) {
@@ -413,6 +413,8 @@ bool PS3Driver::process(Gamepad * gamepad) {
             }
         } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_WHEEL) {
             ps3ReportAlt.wheel.steeringWheel = PS3_WHEEL_MID;
+            ps3ReportAlt.wheel.gasPedal      = PS3_JOYSTICK_MAX;
+            ps3ReportAlt.wheel.brakePedal    = PS3_JOYSTICK_MAX;
 
             switch (gamepad->state.dpad & GAMEPAD_MASK_DPAD)
             {
@@ -449,8 +451,8 @@ bool PS3Driver::process(Gamepad * gamepad) {
 
             if (values & buttonSteerLeft->pinMask)  { ps3ReportAlt.wheel.steeringWheel   = PS3_WHEEL_MIN; }
             if (values & buttonSteerRight->pinMask) { ps3ReportAlt.wheel.steeringWheel   = PS3_WHEEL_MAX; }
-            if (values & buttonGas->pinMask)        { ps3ReportAlt.wheel.gasPedal        = PS3_JOYSTICK_MAX; }
-            if (values & buttonBrake->pinMask)      { ps3ReportAlt.wheel.brakePedal      = PS3_JOYSTICK_MAX; }
+            if (values & buttonGas->pinMask)        { ps3ReportAlt.wheel.gasPedal        = PS3_JOYSTICK_MIN; }
+            if (values & buttonBrake->pinMask)      { ps3ReportAlt.wheel.brakePedal      = PS3_JOYSTICK_MIN; }
             if (values & buttonShiftUp->pinMask)    { ps3ReportAlt.wheel.shiftUp         = true; }
             if (values & buttonShiftDown->pinMask)  { ps3ReportAlt.wheel.shiftDown       = true; }
             if (values & buttonPlus->pinMask)       { ps3ReportAlt.wheel.buttonPlus      = true; }
@@ -462,7 +464,7 @@ bool PS3Driver::process(Gamepad * gamepad) {
 
         }
 
-        report = &ps3ReportAlt;
+        report = (uint8_t*)&ps3ReportAlt;
         report_size = sizeof(ps3ReportAlt);
     }
 
@@ -471,8 +473,7 @@ bool PS3Driver::process(Gamepad * gamepad) {
         tud_remote_wakeup();
 
     bool reportSent = false;
-    //void * report = &ps3Report;
-    //uint16_t report_size = sizeof(ps3Report);
+
     if (memcmp(last_report, report, report_size) != 0)
     {
         // HID ready + report sent, copy previous report
