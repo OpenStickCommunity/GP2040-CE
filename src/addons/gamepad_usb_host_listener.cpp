@@ -197,10 +197,8 @@ bool GamepadUSBHostListener::diff_report(PS4Report const* rpt1, PS4Report const*
     bool result;
 
     // x, y, z, rz must different than 2 to be counted
-    result = diff_than_2(rpt1->leftStickX, rpt2->leftStickX) || 
-            diff_than_2(rpt1->leftStickY, rpt2->leftStickY) ||
-            diff_than_2(rpt1->rightStickX, rpt2->rightStickX) || 
-            diff_than_2(rpt1->rightStickY, rpt2->rightStickY);
+    result = diff_than_2(rpt1->leftStickX, rpt2->leftStickX) || diff_than_2(rpt1->leftStickY, rpt2->leftStickY) ||
+            diff_than_2(rpt1->rightStickX, rpt2->rightStickX) || diff_than_2(rpt1->rightStickY, rpt2->rightStickY);
 
     // check the rest with mem compare
     result |= memcmp(&rpt1->rightStickY + 1, &rpt2->rightStickY + 1, sizeof(PS4Report)-6);
