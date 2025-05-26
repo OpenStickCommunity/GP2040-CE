@@ -147,7 +147,149 @@ export default function LightCoordsSection() {
 					}) => (
 						<Form noValidate onSubmit={handleSubmit}>
 							<Row className="mb-3">
-								<Col md={9}>
+								<Col md={3}>
+									<div className="d-flex flex-grow-1">
+										{selectedLight ? (
+											<div className="w-100">
+												<h3>Light {selectedLight}</h3>
+												<div className="mb-2 ">
+													<label className="form-label">First LED Index</label>
+													<input
+														type="number"
+														className="form-control "
+														name={`Lights[${selectedLight}].firstLedIndex`}
+														min={0}
+														value={
+															values.Lights[Number(selectedLight)]
+																?.firstLedIndex
+														}
+														onChange={handleChange}
+													/>
+												</div>
+												<div className="mb-2">
+													<label className="form-label">
+														Num LEDs On Light
+													</label>
+													<input
+														type="number"
+														className="form-control"
+														name={`Lights[${selectedLight}].numLedsOnLight`}
+														min={1}
+														value={
+															values.Lights[Number(selectedLight)]
+																?.numLedsOnLight
+														}
+														onChange={handleChange}
+													/>
+												</div>
+												<div className="mb-2">
+													<label className="form-label">X Coord</label>
+													<input
+														type="number"
+														className="form-control"
+														name={`Lights[${selectedLight}].xCoord`}
+														value={values.Lights[Number(selectedLight)]?.xCoord}
+														onChange={handleChange}
+														min={0}
+														max={gridSize - 1}
+													/>
+												</div>
+												<div className="mb-2">
+													<label className="form-label">Y Coord</label>
+													<input
+														type="number"
+														className="form-control"
+														name={`Lights[${selectedLight}].yCoord`}
+														value={values.Lights[Number(selectedLight)]?.yCoord}
+														onChange={handleChange}
+														min={0}
+														max={gridSize - 1}
+													/>
+												</div>
+												<div className="mb-2">
+													<label className="form-label">
+														GPIO Pin or Case Chain Index
+													</label>
+													<input
+														type="number"
+														className="form-control"
+														name={`Lights[${selectedLight}].GPIOPinorCaseChainIndex`}
+														min={0}
+														value={
+															values.Lights[Number(selectedLight)]
+																?.GPIOPinorCaseChainIndex
+														}
+														onChange={handleChange}
+													/>
+												</div>
+												<div className="mb-2">
+													<label className="form-label">Light Type</label>
+													<select
+														className="form-select"
+														name={`Lights[${selectedLight}].lightType`}
+														value={
+															values.Lights[Number(selectedLight)]?.lightType
+														}
+														onChange={handleChange}
+													>
+														<option value={0}>ActionButton</option>
+														<option value={1}>Case</option>
+														<option value={2}>Turbo</option>
+														<option value={3}>PlayerLight</option>
+													</select>
+												</div>
+												<Button
+													variant="danger"
+													className="w-100 mt-3"
+													onClick={() => {
+														setValues({
+															Lights: values.Lights.filter(
+																(_, index) =>
+																	index.toString() !== selectedLight,
+															),
+														});
+														setSelectedLight(null);
+													}}
+												>
+													Delete Light
+												</Button>
+											</div>
+										) : (
+											<div className="w-100 d-flex flex-column justify-content-center">
+												<h3>Select a Light</h3>
+												<p>
+													Click on a light in the grid to view and edit its
+													properties.
+												</p>
+											</div>
+										)}
+									</div>
+									<hr className="mt-3" />
+									<div className="d-flex flex-column justify-content-between align-items-center">
+										<Button
+											className="w-100"
+											variant="secondary"
+											onClick={() => {
+												setValues({
+													Lights: [
+														...values.Lights,
+														{
+															GPIOPinorCaseChainIndex: 0,
+															firstLedIndex: values.Lights.length,
+															lightType: 0,
+															numLedsOnLight: 1,
+															xCoord: 0,
+															yCoord: 0,
+														},
+													],
+												});
+											}}
+										>
+											Add light
+										</Button>
+									</div>
+								</Col>
+								<Col md={9} className="mt-3 mt-md-0">
 									<div
 										ref={containerRef}
 										style={{
@@ -228,174 +370,6 @@ export default function LightCoordsSection() {
 												/>
 											))}
 										</DndContext>
-									</div>
-								</Col>
-								<Col md={3}>
-									<div className="d-flex flex-column h-100">
-										<div className="d-flex flex-grow-1">
-											{selectedLight ? (
-												<div className="w-100">
-													<h3>Light {selectedLight}</h3>
-													<div className="mb-2 ">
-														<label className="form-label">
-															First LED Index
-														</label>
-														<input
-															type="number"
-															className="form-control "
-															min={0}
-															value={
-																values.Lights[Number(selectedLight)]
-																	?.firstLedIndex
-															}
-															onChange={(e) => {
-																setFieldValue(
-																	`Lights[${selectedLight}].firstLedIndex`,
-																	Number(e.target.value),
-																);
-															}}
-														/>
-													</div>
-													<div className="mb-2">
-														<label className="form-label">
-															Num LEDs On Light
-														</label>
-														<input
-															type="number"
-															className="form-control"
-															min={1}
-															value={
-																values.Lights[Number(selectedLight)]
-																	?.numLedsOnLight
-															}
-															onChange={(e) => {
-																setFieldValue(
-																	`Lights[${selectedLight}].numLedsOnLight`,
-																	Number(e.target.value),
-																);
-															}}
-														/>
-													</div>
-													<div className="mb-2">
-														<label className="form-label">X Coord</label>
-														<input
-															type="number"
-															className="form-control"
-															value={
-																values.Lights[Number(selectedLight)]?.xCoord
-															}
-															onChange={(e) => {
-																setFieldValue(
-																	`Lights[${selectedLight}].xCoord`,
-																	Number(e.target.value),
-																);
-															}}
-															min={0}
-															max={gridSize - 1}
-														/>
-													</div>
-													<div className="mb-2">
-														<label className="form-label">Y Coord</label>
-														<input
-															type="number"
-															className="form-control"
-															value={
-																values.Lights[Number(selectedLight)]?.yCoord
-															}
-															onChange={(e) => {
-																setFieldValue(
-																	`Lights[${selectedLight}].yCoord`,
-																	Number(e.target.value),
-																);
-															}}
-															min={0}
-															max={gridSize - 1}
-														/>
-													</div>
-													<div className="mb-2">
-														<label className="form-label">
-															GPIO Pin or Case Chain Index
-														</label>
-														<input
-															type="number"
-															className="form-control"
-															min={0}
-															value={
-																values.Lights[Number(selectedLight)]
-																	?.GPIOPinorCaseChainIndex
-															}
-															onChange={(e) => {
-																setFieldValue(
-																	`Lights[${selectedLight}].GPIOPinorCaseChainIndex`,
-																	Number(e.target.value),
-																);
-															}}
-														/>
-													</div>
-													<div className="mb-2">
-														<label className="form-label">Light Type</label>
-														<select
-															className="form-select"
-															value={
-																values.Lights[Number(selectedLight)]?.lightType
-															}
-															onChange={(e) => {
-																setFieldValue(
-																	`Lights[${selectedLight}].lightType`,
-																	Number(e.target.value),
-																);
-															}}
-														>
-															<option value={0}>ActionButton</option>
-															<option value={1}>Case</option>
-															<option value={2}>Turbo</option>
-															<option value={3}>PlayerLight</option>
-														</select>
-													</div>
-													<Button
-														variant="danger"
-														className="w-100 mt-3"
-														onClick={() => {
-															setValues({
-																Lights: values.Lights.filter(
-																	(_, index) =>
-																		index.toString() !== selectedLight,
-																),
-															});
-															setSelectedLight(null);
-														}}
-													>
-														Delete Light
-													</Button>
-												</div>
-											) : (
-												<p>Select a light to configure</p>
-											)}
-										</div>
-										<hr className="mt-3" />
-										<div className="d-flex flex-column justify-content-between align-items-center">
-											<Button
-												className="w-100"
-												variant="secondary"
-												onClick={() => {
-													setValues({
-														Lights: [
-															...values.Lights,
-															{
-																GPIOPinorCaseChainIndex: 0,
-																firstLedIndex: values.Lights.length,
-																lightType: 0,
-																numLedsOnLight: 1,
-																xCoord: gridSize - 1,
-																yCoord: gridSize - 1,
-															},
-														],
-													});
-												}}
-											>
-												Add light
-											</Button>
-										</div>
 									</div>
 								</Col>
 							</Row>
