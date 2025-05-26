@@ -24,6 +24,15 @@ type Profile = {
 	pressedStaticColors: number[];
 };
 
+export type Light = {
+	GPIOPinorCaseChainIndex: number;
+	firstLedIndex: number;
+	lightType: number;
+	numLedsOnLight: number;
+	xCoord: number;
+	yCoord: number;
+};
+
 export type AnimationOptions = {
 	brightness: number;
 	baseProfileIndex: number;
@@ -33,12 +42,14 @@ export type AnimationOptions = {
 
 type State = {
 	AnimationOptions: AnimationOptions;
-	loadingAnimationOptions: boolean;
+	Lights: Light[];
+	loading: boolean;
 };
 
 type Actions = {
-	fetchAnimationOptions: () => void;
+	fetchLedOptions: () => void;
 	saveAnimationOptions: (AnimationOptions: AnimationOptions) => Promise<object>;
+	saveLightOptions: (Lights: Light[]) => Promise<object>;
 };
 
 const INITIAL_STATE: State = {
@@ -48,24 +59,31 @@ const INITIAL_STATE: State = {
 		customColors: [],
 		profiles: [],
 	},
-	loadingAnimationOptions: false,
+	Lights: [],
+	loading: false,
 };
 
-const useAnimationStore = create<State & Actions>()((set, get) => ({
+const useLedStore = create<State & Actions>()((set, get) => ({
 	...INITIAL_STATE,
-	fetchAnimationOptions: async () => {
-		set({ loadingAnimationOptions: true });
+	fetchLedOptions: async () => {
+		set({ loading: true });
 
 		const { AnimationOptions } = await WebApi.getAnimationOptions();
+		const { LightData } = await WebApi.getLightsDataOptions();
+
 		set((state) => ({
 			...state,
 			AnimationOptions,
-			loadingAnimationOptions: false,
+			Lights: LightData?.Lights || [],
+			loading: false,
 		}));
 	},
 	saveAnimationOptions: async (AnimationOptions: AnimationOptions) => {
 		return WebApi.setAnimationOptions({ AnimationOptions });
 	},
+	saveLightOptions: async (Lights: Light[]) => {
+		return WebApi.setLightsDataOptions({ LightData: { Lights } });
+	},
 }));
 
-export default useAnimationStore;
+export default useLedStore;

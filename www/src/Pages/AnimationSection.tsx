@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { memo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
 	Form,
@@ -15,23 +15,24 @@ import {
 import { FieldArray, FieldArrayRenderProps, Formik } from 'formik';
 import * as yup from 'yup';
 import { StylesConfig } from 'react-select';
+import { parseInt } from 'lodash';
 
 import Section from '../Components/Section';
 import CustomSelect from '../Components/CustomSelect';
-import useAnimationStore, {
-	AnimationOptions,
-	MAX_ANIMATION_PROFILES,
-	MAX_CASE_LIGHTS,
-	MAX_CUSTOM_COLORS,
-} from '../Store/useAnimationStore';
+
 import FormControl from '../Components/FormControl';
 import FormSelect from '../Components/FormSelect';
 import InfoCircle from '../Icons/InfoCircle';
-import { parseInt } from 'lodash';
 import {
 	ANIMATION_NON_PRESSED_EFFECTS,
 	ANIMATION_PRESSED_EFFECTS,
 } from '../Data/Animations';
+import useLedStore, {
+	AnimationOptions,
+	MAX_ANIMATION_PROFILES,
+	MAX_CASE_LIGHTS,
+	MAX_CUSTOM_COLORS,
+} from '../Store/useLedStore';
 import boards from '../Data/Boards.json';
 
 const GPIO_PIN_LENGTH = boards[import.meta.env.VITE_GP2040_BOARD].maxPin + 1;
@@ -226,7 +227,7 @@ const ColorSelectorList = memo(function ColorSelectorList({
 				<>
 					<div className="vr"></div>
 					<Button size="sm" onClick={() => push(0)}>
-						{t('AnimationPage:add-color')}
+						{t('Leds:add-color')}
 					</Button>
 				</>
 			)}
@@ -234,22 +235,13 @@ const ColorSelectorList = memo(function ColorSelectorList({
 	);
 });
 export default function AnimationSection() {
-	const {
-		AnimationOptions,
-		loadingAnimationOptions,
-		fetchAnimationOptions,
-		saveAnimationOptions,
-	} = useAnimationStore();
+	const { AnimationOptions, saveAnimationOptions } = useLedStore();
 	const [key, setKey] = useState(
 		`profile-${AnimationOptions.baseProfileIndex}`,
 	);
 	const { t } = useTranslation('');
 
 	const [saveMessage, setSaveMessage] = useState('');
-
-	useEffect(() => {
-		fetchAnimationOptions();
-	}, []);
 
 	const onSuccess = async (values: AnimationOptions) => {
 		try {
@@ -260,13 +252,6 @@ export default function AnimationSection() {
 		}
 	};
 
-	if (loadingAnimationOptions) {
-		return (
-			<div className="d-flex justify-content-center">
-				<span className="spinner-border"></span>
-			</div>
-		);
-	}
 	return (
 		<Section title="Animation">
 			<Formik
@@ -279,7 +264,7 @@ export default function AnimationSection() {
 					<Form noValidate onSubmit={handleSubmit}>
 						<Row>
 							<FormSelect
-								label={t('AnimationPage:profile-label')}
+								label={t('Leds:profile-label')}
 								name="baseProfileIndex"
 								className="form-select-sm"
 								groupClassName="col-sm-4 mb-3"
@@ -295,7 +280,7 @@ export default function AnimationSection() {
 										key={`profile-select-${profileIndex}`}
 										value={profileIndex}
 									>
-										{t('AnimationPage:profile-number', {
+										{t('Leds:profile-number', {
 											profileNumber: profileIndex + 1,
 										})}
 									</option>
@@ -317,7 +302,7 @@ export default function AnimationSection() {
 							/>
 						</Row>
 						<FormGroup>
-							<Form.Label>{t('AnimationPage:custom-color-label')}</Form.Label>
+							<Form.Label>{t('Leds:custom-color-label')}</Form.Label>
 							<FieldArray
 								name="customColors"
 								render={(arrayHelpers) => (
@@ -352,7 +337,7 @@ export default function AnimationSection() {
 										<Tab
 											key={`profile-${profileIndex}`}
 											eventKey={`profile-${profileIndex}`}
-											title={t('AnimationPage:profile-number', {
+											title={t('Leds:profile-number', {
 												profileNumber: profileIndex + 1,
 											})}
 										>
@@ -363,7 +348,7 @@ export default function AnimationSection() {
 													<OverlayTrigger
 														overlay={
 															<Tooltip>
-																{t('AnimationPage:switch-enabled-description')}
+																{t('Leds:switch-enabled-description')}
 															</Tooltip>
 														}
 													>
@@ -385,7 +370,7 @@ export default function AnimationSection() {
 											/>
 											<Row>
 												<FormSelect
-													label={t('AnimationPage:case-animation-label')}
+													label={t('Leds:case-animation-label')}
 													name={`profiles.${profileIndex}.baseCaseEffect`}
 													className="form-select-sm"
 													groupClassName="col-sm-4 mb-3"
@@ -403,13 +388,13 @@ export default function AnimationSection() {
 																key={`baseCaseEffect-${key}`}
 																value={value}
 															>
-																{t(`AnimationPage:animations.${key}`)}
+																{t(`Leds:animations.${key}`)}
 															</option>
 														),
 													)}
 												</FormSelect>
 												<FormSelect
-													label={t('AnimationPage:pressed-animation-label')}
+													label={t('Leds:pressed-animation-label')}
 													name={`profiles.${profileIndex}.basePressedEffect`}
 													className="form-select-sm"
 													groupClassName="col-sm-4 mb-3"
@@ -427,13 +412,13 @@ export default function AnimationSection() {
 																key={`basePressedEffect-${key}`}
 																value={value}
 															>
-																{t(`AnimationPage:animations.${key}`)}
+																{t(`Leds:animations.${key}`)}
 															</option>
 														),
 													)}
 												</FormSelect>
 												<FormSelect
-													label={t('AnimationPage:idle-animation-label')}
+													label={t('Leds:idle-animation-label')}
 													name={`profiles.${profileIndex}.baseNonPressedEffect`}
 													className="form-select-sm"
 													groupClassName="col-sm-4 mb-3"
@@ -451,7 +436,7 @@ export default function AnimationSection() {
 																key={`baseNonPressedEffect-${key}`}
 																value={value}
 															>
-																{t(`AnimationPage:animations.${key}`)}
+																{t(`Leds:animations.${key}`)}
 															</option>
 														),
 													)}
@@ -460,7 +445,7 @@ export default function AnimationSection() {
 											<Row>
 												<FormControl
 													type="number"
-													label={t(`AnimationPage:pressed-fade-out-time-label`)}
+													label={t(`Leds:pressed-fade-out-time-label`)}
 													name={`profiles.${profileIndex}.buttonPressFadeOutTimeInMs`}
 													className="form-control-sm"
 													groupClassName="col-sm-4 mb-3"
@@ -469,7 +454,7 @@ export default function AnimationSection() {
 												/>
 												<FormControl
 													type="number"
-													label={t('AnimationPage:pressed-hold-time-label')}
+													label={t('Leds:pressed-hold-time-label')}
 													name={`profiles.${profileIndex}.buttonPressHoldTimeInMs`}
 													className="form-control-sm"
 													groupClassName="col-sm-4 mb-3"
@@ -479,7 +464,7 @@ export default function AnimationSection() {
 											</Row>
 											<FormControl
 												type="color"
-												label={t(`AnimationPage:pressed-special-color-label`)}
+												label={t(`Leds:pressed-special-color-label`)}
 												name={`profiles.${profileIndex}.pressedSpecialColour`}
 												className="form-control-sm p-0 border-0 mb-3"
 												value={convertToHex(profile.pressedSpecialColour)}
@@ -494,7 +479,7 @@ export default function AnimationSection() {
 											/>
 											<FormControl
 												type="color"
-												label={t(`AnimationPage:idle-special-color-label`)}
+												label={t(`Leds:idle-special-color-label`)}
 												name={`profiles.${profileIndex}.nonPressedSpecialColour`}
 												className="form-control-sm p-0 border-0 mb-3"
 												value={convertToHex(profile.nonPressedSpecialColour)}
@@ -508,9 +493,7 @@ export default function AnimationSection() {
 												}
 											/>
 											<FormGroup className="mb-3">
-												<Form.Label>
-													{t(`AnimationPage:case-colors-label`)}
-												</Form.Label>
+												<Form.Label>{t(`Leds:case-colors-label`)}</Form.Label>
 												<FieldArray
 													name={`profiles.${profileIndex}.caseStaticColors`}
 													render={(arrayHelpers) => (
@@ -531,7 +514,7 @@ export default function AnimationSection() {
 											>
 												<Tab
 													eventKey="pressed"
-													title={t(`AnimationPage:pressed-colors-label`)}
+													title={t(`Leds:pressed-colors-label`)}
 												>
 													<FormGroup className="mb-3">
 														<FieldArray
@@ -547,7 +530,7 @@ export default function AnimationSection() {
 												</Tab>
 												<Tab
 													eventKey="nonpressed"
-													title={t(`AnimationPage:idle-colors-label`)}
+													title={t(`Leds:idle-colors-label`)}
 												>
 													<FormGroup className="mb-3">
 														<FieldArray

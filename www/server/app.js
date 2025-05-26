@@ -611,6 +611,143 @@ app.get('/api/getAddonsOptions', (req, res) => {
 	});
 });
 
+app.get('/api/getLightsDataOptions', (req, res) => {
+	return res.send({
+		LightData: {
+			Lights: [
+				{
+					firstLedIndex: 0,
+					numLedsOnLight: 1,
+					xCoord: 0,
+					yCoord: 2,
+					GPIOPinorCaseChainIndex: 5,
+					lightType: 0,
+				},
+				{
+					firstLedIndex: 1,
+					numLedsOnLight: 1,
+					xCoord: 2,
+					yCoord: 2,
+					GPIOPinorCaseChainIndex: 3,
+					lightType: 0,
+				},
+				{
+					firstLedIndex: 2,
+					numLedsOnLight: 1,
+					xCoord: 4,
+					yCoord: 3,
+					GPIOPinorCaseChainIndex: 4,
+					lightType: 0,
+				},
+				{
+					firstLedIndex: 3,
+					numLedsOnLight: 1,
+					xCoord: 6,
+					yCoord: 7,
+					GPIOPinorCaseChainIndex: 2,
+					lightType: 0,
+				},
+				{
+					firstLedIndex: 4,
+					numLedsOnLight: 1,
+					xCoord: 6,
+					yCoord: 2,
+					GPIOPinorCaseChainIndex: 10,
+					lightType: 0,
+				},
+				{
+					firstLedIndex: 5,
+					numLedsOnLight: 1,
+					xCoord: 8,
+					yCoord: 1,
+					GPIOPinorCaseChainIndex: 11,
+					lightType: 0,
+				},
+				{
+					firstLedIndex: 6,
+					numLedsOnLight: 1,
+					xCoord: 10,
+					yCoord: 1,
+					GPIOPinorCaseChainIndex: 12,
+					lightType: 0,
+				},
+				{
+					firstLedIndex: 7,
+					numLedsOnLight: 1,
+					xCoord: 12,
+					yCoord: 1,
+					GPIOPinorCaseChainIndex: 13,
+					lightType: 0,
+				},
+				{
+					firstLedIndex: 8,
+					numLedsOnLight: 1,
+					xCoord: 6,
+					yCoord: 4,
+					GPIOPinorCaseChainIndex: 6,
+					lightType: 0,
+				},
+				{
+					firstLedIndex: 9,
+					numLedsOnLight: 1,
+					xCoord: 8,
+					yCoord: 3,
+					GPIOPinorCaseChainIndex: 7,
+					lightType: 0,
+				},
+				{
+					firstLedIndex: 10,
+					numLedsOnLight: 1,
+					xCoord: 10,
+					yCoord: 3,
+					GPIOPinorCaseChainIndex: 8,
+					lightType: 0,
+				},
+				{
+					firstLedIndex: 11,
+					numLedsOnLight: 1,
+					xCoord: 12,
+					yCoord: 3,
+					GPIOPinorCaseChainIndex: 9,
+					lightType: 0,
+				},
+				{
+					firstLedIndex: 12,
+					numLedsOnLight: 1,
+					xCoord: 3,
+					yCoord: 0,
+					GPIOPinorCaseChainIndex: 27,
+					lightType: 0,
+				},
+				{
+					firstLedIndex: 13,
+					numLedsOnLight: 1,
+					xCoord: 6,
+					yCoord: 0,
+					GPIOPinorCaseChainIndex: 18,
+					lightType: 0,
+				},
+				{
+					firstLedIndex: 14,
+					numLedsOnLight: 1,
+					xCoord: 8,
+					yCoord: 5,
+					GPIOPinorCaseChainIndex: 19,
+					lightType: 0,
+				},
+				{
+					firstLedIndex: 15,
+					numLedsOnLight: 1,
+					xCoord: 3,
+					yCoord: 6,
+					GPIOPinorCaseChainIndex: 26,
+					lightType: 0,
+				},
+			],
+		},
+	});
+});
+
 app.get('/api/getExpansionPins', (req, res) => {
 	return res.send({
 		pins: {

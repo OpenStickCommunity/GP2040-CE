@@ -1,4 +1,4 @@
-import AnimationPage from './AnimationPage';
+import Leds from './Leds';
 import Common from './Common';
 import HomePage from './HomePage';
 import Navigation from './Navigation';
@@ -7,8 +7,8 @@ import ResetSettings from './ResetSettings';
 import Components from './Components';
 import PinMapping from './PinMapping';
 import PeripheralMapping from './PeripheralMapping';
-import LedConfig from './LedConfig';
-import CustomTheme from './CustomTheme';
+// import LedConfig from './LedConfig';
+// import CustomTheme from './CustomTheme';
 import BackupPage from './BackupPage';
 import DisplayConfig from './DisplayConfig';
 import AddonsConfig from './AddonsConfig';
@@ -21,7 +21,7 @@ import InputMacroAddon from './InputMacroAddon';
 import LayoutConfig from './LayoutConfig';
 
 export default {
-	AnimationPage,
+	Leds,
 	Common,
 	HomePage,
 	Navigation,
@@ -30,8 +30,8 @@ export default {
 	Components,
 	PinMapping,
 	PeripheralMapping,
-	LedConfig,
-	CustomTheme,
+	// LedConfig,
+	// CustomTheme,
 	BackupPage,
 	DisplayConfig,
 	AddonsConfig,

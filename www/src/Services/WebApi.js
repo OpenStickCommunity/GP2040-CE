@@ -651,6 +651,18 @@ async function getExpansionPins() {
 		console.error(error);
 	}
 }
+async function setLightsDataOptions(options) {
+	return Http.post(`${baseUrl}/api/setLightsDataOptions`, options);
+}
+
+async function getLightsDataOptions() {
+	try {
+		const response = await Http.get(`${baseUrl}/api/getLightsDataOptions`);
+		return response.data;
+	} catch (error) {
+		console.error(error);
+	}
+}
 
 async function setExpansionPins(mappings) {
 	console.dir(mappings);
@@ -717,6 +729,8 @@ export default {
 	setWiiControls,
 	getPeripheralOptions,
 	setPeripheralOptions,
+	setLightsDataOptions,
+	getLightsDataOptions,
 	getExpansionPins,
 	setExpansionPins,
 	getReactiveLEDs,

@@ -12,10 +12,13 @@ import {
 	snapCenterToCursor,
 	restrictToParentElement,
 } from '@dnd-kit/modifiers';
-import { Coordinates } from '@dnd-kit/core/dist/types';
+import { Form, Formik } from 'formik';
+import * as yup from 'yup';
+
 import { LightIndicator } from '../Components/LightIndicator';
-import { Row, Col, Button } from 'react-bootstrap';
-import WebApi from '../Services/WebApi';
+import { Row, Col, Button, Alert } from 'react-bootstrap';
+import useLedStore, { Light } from '../Store/useLedStore';
+import { useTranslation } from 'react-i18next';
 
 const useGetDivDimensions = () => {
 	const [dimensions, setDimensions] = useState({ height: 0, width: 0 });
@@ -41,21 +44,30 @@ const useGetDivDimensions = () => {
 	return { dimensions, containerRef };
 };
 
-type light = {
-	id: string;
-	coords: Coordinates;
-};
-
 const GRID_SIZE = 30;
-const MIN_GRID_SIZE = 10;
-const MAX_GRID_SIZE = 30;
+
+const schema = yup.object({
+	Lights: yup.array().of(
+		yup.object({
+			GPIOPinorCaseChainIndex: yup.number().required(),
+			firstLedIndex: yup.number().required(),
+			lightType: yup.number().required(),
+			numLedsOnLight: yup.number().required(),
+			xCoord: yup.number().required(),
+			yCoord: yup.number().required(),
+		}),
+	),
+});
 
 export default function LightCoordsSection() {
 	const { dimensions, containerRef } = useGetDivDimensions();
+	const { Lights, saveLightOptions } = useLedStore();
+	const { t } = useTranslation('');
+
 	const [gridSize, setGridSize] = useState(GRID_SIZE);
 	const [cellWidth, setCellWidth] = useState(dimensions.width / gridSize);
 	const [selectedLight, setSelectedLight] = useState<string | null>(null);
-	const [lights, setLights] = useState<light[]>([]);
+	const [saveMessage, setSaveMessage] = useState('');
 
 	const mouseSensor = useSensor(MouseSensor, {
 		activationConstraint: undefined,
@@ -80,6 +92,15 @@ export default function LightCoordsSection() {
 		[cellWidth, gridSize],
 	);
 
+	const onSuccess = async ({ Lights }: { Lights: Light[] }) => {
+		try {
+			await saveLightOptions(Lights);
+			setSaveMessage(t('Common:saved-success-message'));
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
 	useEffect(() => {
 		if (dimensions.width === 0) return;
 		const newCellWidth = dimensions.width / gridSize - 1 / gridSize;
@@ -87,240 +108,304 @@ export default function LightCoordsSection() {
 		setCellWidth(newCellWidth);
 	}, [gridSize, dimensions.width]);
 
-	useEffect(() => {
-		setLights((prev) =>
-			prev.map((light) => ({
-				...light,
-				coords: {
-					x: gridPxToCoords(light.coords.x * cellWidth),
-					y: gridPxToCoords(light.coords.y * cellWidth),
-				},
-			})),
-		);
-	}, [cellWidth]);
-
-	const handleDragEnd = useCallback(
-		function handleDragEnd(event: DragEndEvent) {
-			setLights((prev) =>
-				prev.map((light) =>
-					light.id === event.active.id
-						? {
-								...light,
-								coords: {
-									x: gridPxToCoords(light.coords.x * cellWidth + event.delta.x),
-									y: gridPxToCoords(light.coords.y * cellWidth + event.delta.y),
-								},
-							}
-						: light,
-				),
-			);
-		},
-		[cellWidth],
-	);
-
-	const handleDragStart = useCallback(
-		function handleDragStart(event: DragEndEvent) {
-			setSelectedLight(String(event.active.id));
-		},
-		[lights],
-	);
-
-	const selectedLightData = lights.find((light) => light.id === selectedLight);
+	const handleDragStart = useCallback(function handleDragStart(
+		event: DragEndEvent,
+	) {
+		setSelectedLight(String(event.active.id));
+	}, []);
 
 	return (
 		<div className={`card`}>
 			<div className={`card-header`}>
-				<strong>Coordinates</strong>
+				<strong>Light Coordinates</strong>
 			</div>
 			<div className="card-body">
-				<Row className="mb-3">
-					<Col md={9}>
-						<div
-							ref={containerRef}
-							style={{
-								position: 'relative',
-								minHeight: dimensions.width,
-							}}
-						>
-							<svg
-								width={dimensions.width}
-								height={dimensions.width}
-								xmlns="http://www.w3.org/2000/svg"
-								style={{ position: 'absolute' }}
-							>
-								<defs>
-									<pattern
-										id="smallGrid"
-										width={cellWidth}
-										height={cellWidth}
-										patternUnits="userSpaceOnUse"
-									>
-										<path
-											d={`M ${cellWidth} 0 L 0 0 0 ${cellWidth}`}
-											fill="none"
-											stroke="gray"
-											strokeWidth="0.5"
-										/>
-									</pattern>
-
-									<pattern
-										id="grid"
-										width={cellWidth * 10}
-										height={cellWidth * 10}
-										patternUnits="userSpaceOnUse"
-									>
-										<rect
-											width={cellWidth * 10}
-											height={cellWidth * 10}
-											fill="url(#smallGrid)"
-										/>
-										<path
-											d={`M ${cellWidth * 10} 0 L 0 0 0 ${cellWidth * 10}`}
-											fill="none"
-											stroke="silver"
-											strokeWidth="2"
-										/>
-									</pattern>
-								</defs>
-								<rect width="100%" height="100%" fill="url(#grid)" />
-							</svg>
-							<DndContext
-								sensors={sensors}
-								modifiers={[snapCenterToCursor, restrictToParentElement]}
-								onDragStart={handleDragStart}
-								onDragEnd={handleDragEnd}
-							>
-								{lights.map((light) => (
-									<LightIndicator
-										key={light.id}
-										id={light.id}
-										x={light.coords.x}
-										y={light.coords.y}
-										cellWidth={cellWidth}
-									/>
-								))}
-							</DndContext>
-						</div>
-					</Col>
-					<Col md={3}>
-						<div className="d-flex flex-column h-100">
-							<div className="d-flex flex-grow-1">
-								{selectedLightData ? (
-									<div className="w-100">
-										<h3>Light {selectedLightData.id}</h3>
-										<div className="mb-2 ">
-											<label className="form-label">First LED Index</label>
-											<input type="number" className="form-control " min={0} />
-										</div>
-										<div className="mb-2">
-											<label className="form-label">Num LEDs On Light</label>
-											<input type="number" className="form-control" min={1} />
-										</div>
-										<div className="mb-2">
-											<label className="form-label">X Coord</label>
-											<input
-												type="number"
-												className="form-control"
-												value={selectedLightData.coords.x}
-												onChange={(e) => {
-													setLights((prev) =>
-														prev.map((light) =>
-															light.id === selectedLightData.id
-																? {
-																		...light,
-																		coords: {
-																			...light.coords,
-																			x: Number(e.target.value),
-																		},
-																	}
-																: light,
-														),
-													);
-												}}
-												min={0}
-												max={gridSize - 1}
-											/>
-										</div>
-										<div className="mb-2">
-											<label className="form-label">Y Coord</label>
-											<input
-												type="number"
-												className="form-control"
-												value={selectedLightData.coords.y}
-												onChange={(e) => {
-													setLights((prev) =>
-														prev.map((light) =>
-															light.id === selectedLightData.id
-																? {
-																		...light,
-																		coords: {
-																			...light.coords,
-																			y: Number(e.target.value),
-																		},
-																	}
-																: light,
-														),
-													);
-												}}
-												min={0}
-												max={gridSize - 1}
-											/>
-										</div>
-										<div className="mb-2">
-											<label className="form-label">
-												GPIO Pin or Case Chain Index
-											</label>
-											<input type="number" className="form-control" min={0} />
-										</div>
-										<div className="mb-2">
-											<label className="form-label">Light Type</label>
-											<select className="form-select" value={0}>
-												<option value={0}>ActionButton</option>
-												<option value={1}>Case</option>
-												<option value={2}>Turbo</option>
-												<option value={3}>PlayerLight</option>
-											</select>
-										</div>
-										<Button
-											variant="danger"
-											className="w-100 mt-3"
-											onClick={() => {
-												setLights((prev) =>
-													prev.filter(
-														(light) => light.id !== selectedLightData.id,
-													),
-												);
-												setSelectedLight(null);
-											}}
-										>
-											Delete Light
-										</Button>
-									</div>
-								) : (
-									<p>Select a light to configure</p>
-								)}
-							</div>
-							<hr className="mt-3" />
-							<div className="d-flex flex-column justify-content-between align-items-center">
-								<Button
-									className="w-100"
-									variant="secondary"
-									onClick={() => {
-										setLights((prev) => [
-											...prev,
-											{
-												id: `${lights.length + 1}`,
-												coords: { x: gridSize - 1, y: gridSize - 1 },
-											},
-										]);
-									}}
-								>
-									Add light
-								</Button>
-							</div>
-						</div>
+				<Row>
+					<Col md={12} className="mb-3">
+						<p>
+							This section allows you to visually arrange and configure the
+							position of each light. This is useful for mapping LEDs or light
+							indicators to their physical locations on your device or case.
+							Drag lights on the grid or adjust their coordinates manually to
+							match your setup.
+						</p>
 					</Col>
 				</Row>
+				<Formik
+					validationSchema={schema}
+					onSubmit={onSuccess}
+					initialValues={{ Lights }}
+					validateOnChange={false}
+				>
+					{({
+						handleSubmit,
+						handleChange,
+						values,
+						errors,
+						setFieldValue,
+						setValues,
+					}) => (
+						<Form noValidate onSubmit={handleSubmit}>
+							<Row className="mb-3">
+								<Col md={9}>
+									<div
+										ref={containerRef}
+										style={{
+											position: 'relative',
+											minHeight: dimensions.width,
+										}}
+									>
+										<svg
+											width={dimensions.width}
+											height={dimensions.width}
+											xmlns="http://www.w3.org/2000/svg"
+											style={{ position: 'absolute' }}
+										>
+											<defs>
+												<pattern
+													id="smallGrid"
+													width={cellWidth}
+													height={cellWidth}
+													patternUnits="userSpaceOnUse"
+												>
+													<path
+														d={`M ${cellWidth} 0 L 0 0 0 ${cellWidth}`}
+														fill="none"
+														stroke="gray"
+														strokeWidth="0.5"
+													/>
+												</pattern>
+
+												<pattern
+													id="grid"
+													width={cellWidth * 10}
+													height={cellWidth * 10}
+													patternUnits="userSpaceOnUse"
+												>
+													<rect
+														width={cellWidth * 10}
+														height={cellWidth * 10}
+														fill="url(#smallGrid)"
+													/>
+													<path
+														d={`M ${cellWidth * 10} 0 L 0 0 0 ${cellWidth * 10}`}
+														fill="none"
+														stroke="silver"
+														strokeWidth="2"
+													/>
+												</pattern>
+											</defs>
+											<rect width="100%" height="100%" fill="url(#grid)" />
+										</svg>
+
+										<DndContext
+											sensors={sensors}
+											modifiers={[snapCenterToCursor, restrictToParentElement]}
+											onDragStart={handleDragStart}
+											onDragEnd={(event: DragEndEvent) => {
+												const activeId = Number(event.active.id);
+												setFieldValue(`Lights[${event.active.id}]`, {
+													...values.Lights[activeId],
+													xCoord: gridPxToCoords(
+														values.Lights[activeId].xCoord * cellWidth +
+															event.delta.x,
+													),
+													yCoord: gridPxToCoords(
+														values.Lights[activeId].yCoord * cellWidth +
+															event.delta.y,
+													),
+												});
+											}}
+										>
+											{values.Lights.map((light, index) => (
+												<LightIndicator
+													key={index}
+													id={index.toString()}
+													x={light.xCoord}
+													y={light.yCoord}
+													cellWidth={cellWidth}
+													active={selectedLight === index.toString()}
+												/>
+											))}
+										</DndContext>
+									</div>
+								</Col>
+								<Col md={3}>
+									<div className="d-flex flex-column h-100">
+										<div className="d-flex flex-grow-1">
+											{selectedLight ? (
+												<div className="w-100">
+													<h3>Light {selectedLight}</h3>
+													<div className="mb-2 ">
+														<label className="form-label">
+															First LED Index
+														</label>
+														<input
+															type="number"
+															className="form-control "
+															min={0}
+															value={
+																values.Lights[Number(selectedLight)]
+																	?.firstLedIndex
+															}
+															onChange={(e) => {
+																setFieldValue(
+																	`Lights[${selectedLight}].firstLedIndex`,
+																	Number(e.target.value),
+																);
+															}}
+														/>
+													</div>
+													<div className="mb-2">
+														<label className="form-label">
+															Num LEDs On Light
+														</label>
+														<input
+															type="number"
+															className="form-control"
+															min={1}
+															value={
+																values.Lights[Number(selectedLight)]
+																	?.numLedsOnLight
+															}
+															onChange={(e) => {
+																setFieldValue(
+																	`Lights[${selectedLight}].numLedsOnLight`,
+																	Number(e.target.value),
+																);
+															}}
+														/>
+													</div>
+													<div className="mb-2">
+														<label className="form-label">X Coord</label>
+														<input
+															type="number"
+															className="form-control"
+															value={
+																values.Lights[Number(selectedLight)]?.xCoord
+															}
+															onChange={(e) => {
+																setFieldValue(
+																	`Lights[${selectedLight}].xCoord`,
+																	Number(e.target.value),
+																);
+															}}
+															min={0}
+															max={gridSize - 1}
+														/>
+													</div>
+													<div className="mb-2">
+														<label className="form-label">Y Coord</label>
+														<input
+															type="number"
+															className="form-control"
+															value={
+																values.Lights[Number(selectedLight)]?.yCoord
+															}
+															onChange={(e) => {
+																setFieldValue(
+																	`Lights[${selectedLight}].yCoord`,
+																	Number(e.target.value),
+																);
+															}}
+															min={0}
+															max={gridSize - 1}
+														/>
+													</div>
+													<div className="mb-2">
+														<label className="form-label">
+															GPIO Pin or Case Chain Index
+														</label>
+														<input
+															type="number"
+															className="form-control"
+															min={0}
+															value={
+																values.Lights[Number(selectedLight)]
+																	?.GPIOPinorCaseChainIndex
+															}
+															onChange={(e) => {
+																setFieldValue(
+																	`Lights[${selectedLight}].GPIOPinorCaseChainIndex`,
+																	Number(e.target.value),
+																);
+															}}
+														/>
+													</div>
+													<div className="mb-2">
+														<label className="form-label">Light Type</label>
+														<select
+															className="form-select"
+															value={
+																values.Lights[Number(selectedLight)]?.lightType
+															}
+															onChange={(e) => {
+																setFieldValue(
+																	`Lights[${selectedLight}].lightType`,
+																	Number(e.target.value),
+																);
+															}}
+														>
+															<option value={0}>ActionButton</option>
+															<option value={1}>Case</option>
+															<option value={2}>Turbo</option>
+															<option value={3}>PlayerLight</option>
+														</select>
+													</div>
+													<Button
+														variant="danger"
+														className="w-100 mt-3"
+														onClick={() => {
+															setValues({
+																Lights: values.Lights.filter(
+																	(_, index) =>
+																		index.toString() !== selectedLight,
+																),
+															});
+															setSelectedLight(null);
+														}}
+													>
+														Delete Light
+													</Button>
+												</div>
+											) : (
+												<p>Select a light to configure</p>
+											)}
+										</div>
+										<hr className="mt-3" />
+										<div className="d-flex flex-column justify-content-between align-items-center">
+											<Button
+												className="w-100"
+												variant="secondary"
+												onClick={() => {
+													setValues({
+														Lights: [
+															...values.Lights,
+															{
+																GPIOPinorCaseChainIndex: 0,
+																firstLedIndex: values.Lights.length,
+																lightType: 0,
+																numLedsOnLight: 1,
+																xCoord: gridSize - 1,
+																yCoord: gridSize - 1,
+															},
+														],
+													});
+												}}
+											>
+												Add light
+											</Button>
+										</div>
+									</div>
+								</Col>
+							</Row>
+							<Button className="mb-3" type="submit">
+								{t('Common:button-save-label')}
+							</Button>
+							{saveMessage && <Alert variant="info">{saveMessage}</Alert>}
+						</Form>
+					)}
+				</Formik>
 			</div>
 		</div>
 	);
