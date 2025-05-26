@@ -18,9 +18,9 @@ type Profile = {
 	buttonPressFadeOutTimeInMs: number;
 	buttonPressHoldTimeInMs: number;
 	caseStaticColors: number[];
-	nonPressedSpecialColour: number;
+	nonPressedSpecialColor: number;
 	notPressedStaticColors: number[];
-	pressedSpecialColour: number;
+	pressedSpecialColor: number;
 	pressedStaticColors: number[];
 };
 

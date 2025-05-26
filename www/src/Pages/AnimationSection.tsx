@@ -54,7 +54,7 @@ const schema = yup.object().shape({
 			buttonPressFadeOutTimeInMs: yup.number().required(),
 			buttonPressHoldTimeInMs: yup.number().required(),
 			caseStaticColors: yup.array().of(yup.number()).required(),
-			nonPressedSpecialColour: yup.number().required(),
+			nonPressedSpecialColor: yup.number().required(),
 			notPressedStaticColors: yup
 				.array()
 				.of(yup.number())
@@ -66,7 +66,7 @@ const schema = yup.object().shape({
 						return value.length === this.parent.pressedStaticColors.length;
 					},
 				),
-			pressedSpecialColour: yup.number().required(),
+			pressedSpecialColor: yup.number().required(),
 			pressedStaticColors: yup
 				.array()
 				.of(yup.number())
@@ -108,9 +108,9 @@ const emptyAnimationProfile = {
 	buttonPressFadeOutTimeInMs: 0,
 	buttonPressHoldTimeInMs: 0,
 	caseStaticColors: [],
-	nonPressedSpecialColour: 0,
+	nonPressedSpecialColor: 0,
 	notPressedStaticColors: [],
-	pressedSpecialColour: 0,
+	pressedSpecialColor: 0,
 	pressedStaticColors: [],
 };
 
@@ -465,12 +465,12 @@ export default function AnimationSection() {
 											<FormControl
 												type="color"
 												label={t(`Leds:pressed-special-color-label`)}
-												name={`profiles.${profileIndex}.pressedSpecialColour`}
+												name={`profiles.${profileIndex}.pressedSpecialColor`}
 												className="form-control-sm p-0 border-0 mb-3"
-												value={convertToHex(profile.pressedSpecialColour)}
+												value={convertToHex(profile.pressedSpecialColor)}
 												onChange={(e) =>
 													setFieldValue(
-														`profiles.${profileIndex}.pressedSpecialColour`,
+														`profiles.${profileIndex}.pressedSpecialColor`,
 														convertToDecimal(
 															(e.target as HTMLInputElement).value,
 														),
@@ -480,12 +480,12 @@ export default function AnimationSection() {
 											<FormControl
 												type="color"
 												label={t(`Leds:idle-special-color-label`)}
-												name={`profiles.${profileIndex}.nonPressedSpecialColour`}
+												name={`profiles.${profileIndex}.nonPressedSpecialColor`}
 												className="form-control-sm p-0 border-0 mb-3"
-												value={convertToHex(profile.nonPressedSpecialColour)}
+												value={convertToHex(profile.nonPressedSpecialColor)}
 												onChange={(e) =>
 													setFieldValue(
-														`profiles.${profileIndex}.nonPressedSpecialColour`,
+														`profiles.${profileIndex}.nonPressedSpecialColor`,
 														convertToDecimal(
 															(e.target as HTMLInputElement).value,
 														),
