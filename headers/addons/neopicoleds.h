@@ -190,6 +190,8 @@ public:
     virtual void reinit() {}
 	virtual std::string name() { return NeoPicoLEDName; }
 
+	static void RestartLedSystem() { bRestartLeds = true; }
+
 	uint32_t frame[FRAME_MAX];
 private:
 
@@ -224,13 +226,17 @@ private:
 	//Animation class. Handles idle animations, special move animations and pressed button effects
 	class AnimationStation AnimStation;
 
-
 	const uint32_t intervalMS = 10;
 	absolute_time_t nextRunTime;
 	uint8_t ledCount;
 	InputMode inputMode; // HACK
 	std::map<std::string, int> buttonPositions;
 	bool turnOffWhenSuspended;
+
+	bool bHasSetupNeoPico = false;
+
+	//Webconfig/testing
+	static bool bRestartLeds;
 };
 
 #endif

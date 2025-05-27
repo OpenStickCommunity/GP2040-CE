@@ -37,6 +37,8 @@ const std::string BUTTON_LABEL_A2 = "A2";
 
 static std::vector<uint8_t> EMPTY_VECTOR;
 
+bool NeoPicoLEDAddon::bRestartLeds = false;
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Player LEDs ////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -236,6 +238,13 @@ void NeoPicoLEDAddon::setup() {
 
 void NeoPicoLEDAddon::process()
 {
+	if(bRestartLeds)
+	{
+		bRestartLeds = false; 
+		decompressSettings();
+		configureLEDs();
+	}
+
 	//Check we have LEDs enabled and is it time to update
 	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
 	if (!isValidPin(ledOptions.dataPin) || !time_reached(this->nextRunTime))
@@ -591,9 +600,13 @@ void NeoPicoLEDAddon::configureLEDs()
 	if (ledOptions.pledType == PLED_TYPE_RGB && PLED_COUNT > 0)
 		ledCount += PLED_COUNT;
 
-	// Remove the old neopico (config can call this)
-	neopico.Setup(ledOptions.dataPin, ledCount, static_cast<LEDFormat>(ledOptions.ledFormat), pio0);
-	neopico.Off();
+	// Setup neo pico (once only)
+	if(!bHasSetupNeoPico)
+	{
+		bHasSetupNeoPico = true;
+		neopico.Setup(ledOptions.dataPin, ledCount, static_cast<LEDFormat>(ledOptions.ledFormat), pio0);
+		neopico.Off();
+	}
 
 	Animation::format = static_cast<LEDFormat>(ledOptions.ledFormat);
 	AnimStation.ConfigureBrightness(ledOptions.brightnessMaximum, ledOptions.brightnessSteps);

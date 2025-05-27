@@ -11,6 +11,8 @@
 #include "types.h"
 #include "version.h"
 
+#include "neopicoleds.h"
+
 #include <cstring>
 #include <string>
 #include <vector>
@@ -1018,6 +1020,8 @@ std::string setLightsDataOptions()
             break;
     }
 
+    NeoPicoLEDAddon::RestartLedSystem();
+
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
     return serialize_json(doc);
 }
@@ -1185,6 +1189,8 @@ std::string setAnimationProtoOptions()
         if (++profilesIndex >= MAX_ANIMATION_PROFILES)
             break;
     }
+
+    NeoPicoLEDAddon::RestartLedSystem();
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
     return serialize_json(doc);
