@@ -38,20 +38,33 @@ void GPLever::draw() {
     int leverRadius = (int)(((double)this->_radius * 0.75) * scaleY);
 
     // any zero-defined levers should be forced to dpad to avoid broken functionality. to be fixed.
-    if (this->_inputType == GPLever_Mode::GP_LEVER_MODE_NONE) this->_inputType = GPLever_Mode::GP_LEVER_MODE_DIGITAL;
+    if (this->_inputType == GPLever_Mode::GP_LEVER_MODE_NONE) this->_inputType = GPLever_Mode::GP_LEVER_MODE_DPAD;
 
-    bool dpadInput = ((this->_inputType & GPLever_Mode::GP_LEVER_MODE_DIGITAL) == GPLever_Mode::GP_LEVER_MODE_DIGITAL);
+    bool dpadInput = ((this->_inputType & GPLever_Mode::GP_LEVER_MODE_DPAD) == GPLever_Mode::GP_LEVER_MODE_DPAD);
+    bool digitalOutput = ((this->_inputType & GPLever_Mode::GP_LEVER_MODE_DIGITAL) == GPLever_Mode::GP_LEVER_MODE_DIGITAL);
     bool leftAnalog = ((this->_inputType & GPLever_Mode::GP_LEVER_MODE_LEFT_ANALOG) == GPLever_Mode::GP_LEVER_MODE_LEFT_ANALOG);
     bool rightAnalog = ((this->_inputType & GPLever_Mode::GP_LEVER_MODE_RIGHT_ANALOG) == GPLever_Mode::GP_LEVER_MODE_RIGHT_ANALOG);
     bool invertX = ((this->_inputType & GPLever_Mode::GP_LEVER_MODE_INVERT_X) == GPLever_Mode::GP_LEVER_MODE_INVERT_X);
     bool invertY = ((this->_inputType & GPLever_Mode::GP_LEVER_MODE_INVERT_Y) == GPLever_Mode::GP_LEVER_MODE_INVERT_Y);
 
-    if (dpadInput) {
-        // dpad
+    if (digitalOutput) {
+        // digital directions regardless of how
         bool upState    = (this->_upMask > -1 ? getProcessedGamepad()->pressedButton((uint16_t)this->_upMask) : getProcessedGamepad()->pressedUp());
         bool leftState  = (this->_leftMask > -1 ? getProcessedGamepad()->pressedButton((uint16_t)this->_leftMask) : getProcessedGamepad()->pressedLeft());
         bool downState  = (this->_downMask > -1 ? getProcessedGamepad()->pressedButton((uint16_t)this->_downMask) : getProcessedGamepad()->pressedDown());
         bool rightState = (this->_rightMask > -1 ? getProcessedGamepad()->pressedButton((uint16_t)this->_rightMask) : getProcessedGamepad()->pressedRight());
+        if (upState != downState) {
+            leverY -= upState ? (!invertY ? leverRadius : -leverRadius) : (!invertY ? -leverRadius : leverRadius);
+        }
+        if (leftState != rightState) {
+            leverX -= leftState ? (!invertX ? leverRadius : -leverRadius) : (!invertX ? -leverRadius : leverRadius);
+        }
+    } else if (dpadInput) {
+        // whatever the switchable dpad input is
+        bool upState    = getGamepad()->state.dpadOriginal & GAMEPAD_MASK_UP;
+        bool leftState  = getGamepad()->state.dpadOriginal & GAMEPAD_MASK_LEFT;
+        bool downState  = getGamepad()->state.dpadOriginal & GAMEPAD_MASK_DOWN;
+        bool rightState = getGamepad()->state.dpadOriginal & GAMEPAD_MASK_RIGHT;
         if (upState != downState) {
             leverY -= upState ? (!invertY ? leverRadius : -leverRadius) : (!invertY ? -leverRadius : leverRadius);
         }
