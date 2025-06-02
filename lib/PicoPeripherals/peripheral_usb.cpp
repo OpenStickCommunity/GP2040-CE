@@ -29,8 +29,5 @@ void PeripheralUSB::setup() {
 
         pio_cfg.pin_dp = _DP;
         pio_cfg.pinout = (_Order == 0 ? PIO_USB_PINOUT_DPDM : PIO_USB_PINOUT_DMDP);
-        pio_cfg.sm_tx = 1;  // NeoPico uses PIO0:0, move to state machine 1
-        pio_cfg.sm_rx = 2;  // state machine 2
-        pio_cfg.sm_eop = 3; // state machine 3
     }
 }
