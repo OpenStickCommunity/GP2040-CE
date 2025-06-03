@@ -12,7 +12,11 @@ if (EXISTS ${picoVscode})
     include(${picoVscode})
 endif()
 # ====================================================================================
-set(PICO_BOARD pico CACHE STRING "Board type")
+if(DEFINED ENV{PICO_BOARD})
+  set(PICO_BOARD $ENV{PICO_BOARD} CACHE STRING "Board type")
+else()
+  set(PICO_BOARD pico CACHE STRING "Board type")
+endif()
 
 cmake_minimum_required(VERSION 3.10...4.0)
 include(CMakePrintHelpers)
