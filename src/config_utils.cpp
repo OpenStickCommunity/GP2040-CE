@@ -1339,6 +1339,7 @@ void gpioMappingsMigrationProfiles(Config& config)
         for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
             config.profileOptions.gpioMappingsSets[profileNum].pins[pin].action = config.gpioMappings.pins[pin].action;
         }
+        // only check protobuf if profiles are defined
         if (profileNum < config.profileOptions.deprecatedAlternativePinMappings_count) {
             assignProfilePinIfUsed(profileNum, deprecatedAlts[profileNum].pinButtonB1,  GpioAction::BUTTON_PRESS_B1);
             assignProfilePinIfUsed(profileNum, deprecatedAlts[profileNum].pinButtonB2,  GpioAction::BUTTON_PRESS_B2);
@@ -1353,8 +1354,11 @@ void gpioMappingsMigrationProfiles(Config& config)
             assignProfilePinIfUsed(profileNum, deprecatedAlts[profileNum].pinDpadLeft,  GpioAction::BUTTON_PRESS_LEFT);
             assignProfilePinIfUsed(profileNum, deprecatedAlts[profileNum].pinDpadRight, GpioAction::BUTTON_PRESS_RIGHT);
         }
+
+        // reminder that this must be set or else nanopb won't retain anything
         config.profileOptions.gpioMappingsSets[profileNum].pins_count = NUM_BANK0_GPIOS;
     }
+    // reminder that this must be set or else nanopb won't retain anything
     config.profileOptions.gpioMappingsSets_count = 5;
 
     config.migrations.buttonProfilesMigrated = true;
