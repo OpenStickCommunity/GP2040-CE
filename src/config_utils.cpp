@@ -1335,11 +1335,10 @@ void gpioMappingsMigrationProfiles(Config& config)
         }
     };
 
-    for (uint8_t profileNum = 0; profileNum <= 2; profileNum++) {
+    for (uint8_t profileNum = 0; profileNum <= 4; profileNum++) {
         for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
             config.profileOptions.gpioMappingsSets[profileNum].pins[pin].action = config.gpioMappings.pins[pin].action;
         }
-        // only check protobuf if profiles are defined
         if (profileNum < config.profileOptions.deprecatedAlternativePinMappings_count) {
             assignProfilePinIfUsed(profileNum, deprecatedAlts[profileNum].pinButtonB1,  GpioAction::BUTTON_PRESS_B1);
             assignProfilePinIfUsed(profileNum, deprecatedAlts[profileNum].pinButtonB2,  GpioAction::BUTTON_PRESS_B2);
@@ -1354,12 +1353,9 @@ void gpioMappingsMigrationProfiles(Config& config)
             assignProfilePinIfUsed(profileNum, deprecatedAlts[profileNum].pinDpadLeft,  GpioAction::BUTTON_PRESS_LEFT);
             assignProfilePinIfUsed(profileNum, deprecatedAlts[profileNum].pinDpadRight, GpioAction::BUTTON_PRESS_RIGHT);
         }
-
-        // reminder that this must be set or else nanopb won't retain anything
         config.profileOptions.gpioMappingsSets[profileNum].pins_count = NUM_BANK0_GPIOS;
     }
-    // reminder that this must be set or else nanopb won't retain anything
-    config.profileOptions.gpioMappingsSets_count = 3;
+    config.profileOptions.gpioMappingsSets_count = 5;
 
     config.migrations.buttonProfilesMigrated = true;
 }
@@ -1373,7 +1369,7 @@ void migrateTurboPinToGpio(Config& config) {
         Pin_t pin = turboOptions.deprecatedButtonPin;
         // previous config had a value we haven't migrated yet, it can/should apply in the new config
         config.gpioMappings.pins[pin].action = GpioAction::BUTTON_PRESS_TURBO;
-        for (uint8_t profileNum = 0; profileNum <= 2; profileNum++) {
+        for (uint8_t profileNum = 0; profileNum <= 4; profileNum++) {
             config.profileOptions.gpioMappingsSets[profileNum].pins[pin].action = GpioAction::BUTTON_PRESS_TURBO;
         }
         turboOptions.deprecatedButtonPin = -1; // set our turbo options to -1 for subsequent calls
@@ -1455,7 +1451,7 @@ void migrateMacroPinsToGpio(Config& config) {
     if (macroOptions.has_deprecatedPin && isValidPin(macroOptions.deprecatedPin) ) {
         Pin_t pin = macroOptions.deprecatedPin;
         config.gpioMappings.pins[pin].action = GpioAction::BUTTON_PRESS_MACRO;
-        for (uint8_t profileNum = 0; profileNum <= 2; profileNum++) {
+        for (uint8_t profileNum = 0; profileNum <= 4; profileNum++) {
             config.profileOptions.gpioMappingsSets[profileNum].pins[pin].action = GpioAction::BUTTON_PRESS_MACRO;
         }
         macroOptions.deprecatedPin = -1; // set our turbo options to -1 for subsequent calls
@@ -1471,7 +1467,7 @@ void migrateMacroPinsToGpio(Config& config) {
                     isValidPin(macroOptions.macroList[i].deprecatedMacroTriggerPin) ) {
                 Pin_t pin = macroOptions.macroList[i].deprecatedMacroTriggerPin;
                 config.gpioMappings.pins[pin].action = actionList[i];
-                for (uint8_t profileNum = 0; profileNum <= 2; profileNum++) {
+                for (uint8_t profileNum = 0; profileNum <= 4; profileNum++) {
                     config.profileOptions.gpioMappingsSets[profileNum].pins[pin].action = actionList[i];
                 }
                 macroOptions.macroList[i].deprecatedMacroTriggerPin = -1; // set our turbo options to -1 for subsequent calls
