@@ -3,7 +3,7 @@ import WebApi from '../Services/WebApi';
 import { PinActionValues } from '../Data/Pins';
 
 // Max number of profiles that can be created, including the base profile
-export const MAX_PROFILES = 4;
+export const MAX_PROFILES = 6;
 
 type CustomMasks = {
 	customButtonMask: number;
