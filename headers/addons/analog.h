@@ -146,13 +146,6 @@ private:
     float magnitudeCalculation(int stick_num, adc_instance & adc_inst);
     void radialDeadzone(int stick_num, adc_instance & adc_inst);
     adc_instance adc_pairs[ADC_COUNT];
-    bool ema_option;
-    float ema_smoothing;
-    float error_rate;
-    float in_deadzone;
-    float out_deadzone;
-    bool auto_calibration;
-    bool forced_circularity;
 };
 
 #endif  // _Analog_H_
