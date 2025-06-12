@@ -24,7 +24,11 @@ void USBHostManager::start() {
         };
         tusb_init(BOARD_TUH_RHPORT, &host_init);
         sleep_us(10); // ensure we are ready
+        
+        // reset our port
         tuh_rhport_reset_bus(BOARD_TUH_RHPORT, true);
+        sleep_ms(500);
+
         tuh_ready = true;
     } else {
         tuh_ready = false;
