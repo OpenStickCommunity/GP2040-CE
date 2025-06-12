@@ -52,19 +52,19 @@ const FocusMode = ({
 		}
 		>
 			<div class="alert alert-info" role="alert">
-							<Trans
-								ns="AddonsConfig"
-								i18nKey='AddonsConfig:pin-config-moved-to-core-text'
-								components={[
-									<a
-										key="0"
-										href="../pin-mapping"
-										className="alert-link"
-										target="_blank"
-									/>
-								]}
-							/>
-						</div>
+				<Trans
+					ns="AddonsConfig"
+					i18nKey='AddonsConfig:pin-config-moved-to-core-text'
+					components={[
+						<a
+							key="0"
+							href="../pin-mapping"
+							className="alert-link"
+							target="_blank"
+						/>
+					]}
+				/>
+			</div>
 			<div id="FocusModeAddonOptions" hidden={!values.FocusModeAddonEnabled}>
 				<Row>
 					<FormCheck

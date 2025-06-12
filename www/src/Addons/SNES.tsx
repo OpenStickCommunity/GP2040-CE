@@ -4,6 +4,7 @@ import { FormCheck, Row } from 'react-bootstrap';
 import Section from '../Components/Section';
 
 import FormControl from '../Components/FormControl';
+import ContextualHelpOverlay from '../Components/ContextualHelpOverlay';
 
 // TODO: add scheme for validation
 export const snesScheme = {};
@@ -14,6 +15,22 @@ export const snesState = {
 	snesPadLatchPin: -1,
 	snesPadDataPin: -1,
 };
+
+const SNES_MAPPING_TABLE = [
+	{ gp: 'Up',		nes: 'Up',		snes: 'Up',		mouse: '' },
+	{ gp: 'Down',	nes: 'Down',	snes: 'Down',	mouse: '' },
+	{ gp: 'Left',	nes: 'Left',	snes: 'Left',	mouse: '' },
+	{ gp: 'Right',	nes: 'Right',	snes: 'Right',	mouse: '' },
+	{ gp: 'B1',		nes: 'B',		snes: 'B',		mouse: 'Left Click' },
+	{ gp: 'B2',		nes: 'A',		snes: 'A',		mouse: 'Right Click' },
+	{ gp: 'B3',		nes: '',		snes: 'Y',		mouse: '' },
+	{ gp: 'B4',		nes: '',		snes: 'X',		mouse: '' },
+	{ gp: 'L1',		nes: '',		snes: 'L',		mouse: '' },
+	{ gp: 'R1',		nes: '',		snes: 'R',		mouse: '' },
+	{ gp: 'S1',		nes: 'Select',	snes: 'Select',	mouse: '' },
+	{ gp: 'S2',		nes: 'Start',	snes: 'Start',	mouse: '' },
+	{ gp: 'Analog',	nes: '',		snes: '',		mouse: 'Mouse Movement' },
+];
 
 const SNES = ({ values, errors, handleChange, handleCheckbox }) => {
 	const { t } = useTranslation();
@@ -28,20 +45,38 @@ const SNES = ({ values, errors, handleChange, handleCheckbox }) => {
 			</a>
 		}
 		>
+			<div class="alert alert-info" role="alert">
+					{t('AddonsConfig:snes-extension-sub-header-text')}
+			</div>
+			<div class="alert alert-info" role="alert">
+					{t('AddonsConfig:snes-extension-desc-header')}
+					<ContextualHelpOverlay
+						title={t('AddonsConfig:snes-extension-desc-header')}
+						body={
+							<table class="caption-top table table-dark table-sm table-striped-columns table-bordered table-hover">
+								<thead>
+									<tr>
+									<th>GP2040</th>
+									<th>NES</th>
+									<th>SNES</th>
+									<th>Super NES Mouse</th>
+									</tr>
+								</thead>
+								<tbody>
+									{SNES_MAPPING_TABLE.map(({gp, nes, snes, mouse}, i) => 
+										<tr key={i}>
+											<td><code>{gp}</code></td>
+											<td>{nes}</td>
+											<td>{snes}</td>
+											<td>{mouse}</td>
+										</tr>
+									)}
+								</tbody>
+							</table>
+						}
+					/>
+			</div>
 			<div id="SNESpadAddonOptions" hidden={!values.SNESpadAddonEnabled}>
-				<Row>
-					<Trans ns="AddonsConfig" i18nKey="snes-extension-sub-header-text">
-						<p>Note: If the display is enabled at the same time, this add-on will be disabled.</p>
-						<p>Currently supported controllers:</p>
-						<p>
-							SNES pad: D-pad supported. B = B1, A = B2, Y = B3, X = B4, L = L1, R = R1, Select = S1, Start = S2
-							<br/>
-							SNES mouse: Analog stick supported. Left Click = B1, Right Click = B2
-							<br/>
-							NES: D-pad supported. B = B1, A = B2, Select = S1, Start = S2
-						</p>
-					</Trans>
-				</Row>
 				<Row className="mb-3">
 					<FormControl
 						type="number"
