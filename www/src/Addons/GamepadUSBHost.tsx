@@ -22,7 +22,16 @@ export const gamepadUSBHostState = {
 const GamepadUSBHost = ({ values, errors, handleChange, handleCheckbox }) => {
 	const { getAvailablePeripherals } = useContext(AppContext);
 	return (
-		<Section title={'Gamepad USB Host Addon'}>
+		<Section title={
+			<a
+				href="https://gp2040-ce.info/add-ons/gamepad-usb-host"
+				target="_blank"
+				className="text-reset text-decoration-none"
+			>
+				{'Gamepad USB Host Addon'}
+			</a>
+		}
+		>
 			{getAvailablePeripherals('usb') ? (
 				<FormCheck
 					label="Enabled"
@@ -39,7 +48,7 @@ const GamepadUSBHost = ({ values, errors, handleChange, handleCheckbox }) => {
 			) : (
 				<FormLabel>USB host not enabled!</FormLabel>
 			)}
-			Currently incompatible with Keyboard host addon.
+			Currently incompatible with Keyboard/Mouse Host addon.
 		</Section>
 	);
 };

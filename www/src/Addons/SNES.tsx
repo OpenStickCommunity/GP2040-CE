@@ -18,7 +18,16 @@ export const snesState = {
 const SNES = ({ values, errors, handleChange, handleCheckbox }) => {
 	const { t } = useTranslation();
 	return (
-		<Section title={t('AddonsConfig:snes-extension-header-text')}>
+		<Section title={
+			<a
+				href="https://gp2040-ce.info/add-ons/snes-input"
+				target="_blank"
+				className="text-reset text-decoration-none"
+			>
+				{t('AddonsConfig:snes-extension-header-text')}
+			</a>
+		}
+		>
 			<div id="SNESpadAddonOptions" hidden={!values.SNESpadAddonEnabled}>
 				<Row>
 					<Trans ns="AddonsConfig" i18nKey="snes-extension-sub-header-text">

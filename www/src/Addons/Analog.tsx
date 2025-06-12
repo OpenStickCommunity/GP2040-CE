@@ -133,14 +133,25 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 	);
 
 	return (
-		<Section title={t('AddonsConfig:analog-header-text')}>
+		<Section title={
+			<a
+				href="https://gp2040-ce.info/add-ons/analog"
+				target="_blank"
+				className="text-reset text-decoration-none"
+			>
+				{t('AddonsConfig:analog-header-text')}
+			</a>
+		}
+		>
 			<div id="AnalogInputOptions" hidden={!values.AnalogInputEnabled}>
-				<p>{t('AddonsConfig:analog-warning')}</p>
-				<p>
+				<div class="alert alert-info" role="alert">
+					{t('AddonsConfig:analog-warning')}
+				</div>
+				<div class="alert alert-success" role="alert">
 					{t('AddonsConfig:analog-available-pins-text', {
 						pins: availableAnalogPins.join(', '),
 					})}
-				</p>
+				</div>
 				<Row className="mb-3">
 					<FormSelect
 						label={t('AddonsConfig:analog-adc-1-pin-x-label')}

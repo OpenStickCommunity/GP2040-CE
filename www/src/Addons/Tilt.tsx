@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 import { FormCheck, Row } from 'react-bootstrap';
 import * as yup from 'yup';
 
@@ -63,7 +63,30 @@ export const tiltState = {
 const Tilt = ({ values, errors, handleChange, handleCheckbox }) => {
 	const { t } = useTranslation();
 	return (
-		<Section title={t('AddonsConfig:tilt-header-text')}>
+		<Section title={
+			<a
+				href="https://gp2040-ce.info/add-ons/tilt-input"
+				target="_blank"
+				className="text-reset text-decoration-none"
+			>
+				{t('AddonsConfig:tilt-header-text')}
+			</a>
+		}
+		>
+			<div class="alert alert-info" role="alert">
+				<Trans
+					ns="AddonsConfig"
+					i18nKey='AddonsConfig:pin-config-moved-to-core-text'
+					components={[
+						<a
+							key="0"
+							href="../pin-mapping"
+							className="alert-link"
+							target="_blank"
+						/>
+					]}
+				/>
+			</div>
 			<div id="TiltOptions" hidden={!values.TiltInputEnabled}>
 				<Row className="mb-3">
 					<FormControl

@@ -82,7 +82,19 @@ const Analog1256 = ({ values, errors, handleChange, handleCheckbox }) => {
 	}, [usedPins]);
 
 	return (
-		<Section title={t('AddonsConfig:analog1256-header-text')}>
+		<Section title={
+			<a
+				href="https://gp2040-ce.info/add-ons/i2c-analog-ads1256-spi"
+				target="_blank"
+				className="text-reset text-decoration-none"
+			>
+				{t('AddonsConfig:analog1256-header-text')}
+			</a>
+		}
+		>
+			<div class="alert alert-info" role="alert">
+				The RX, CS, SCK, and TX pins are configured in <a href="../peripheral-mapping" class="alert-link">Peripheral Mapping</a>
+			</div>
 			<div
 				id="Analog1256InputOptions"
 				hidden={!(values.Analog1256Enabled && getAvailablePeripherals('spi'))}

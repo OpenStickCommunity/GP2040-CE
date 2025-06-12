@@ -30,7 +30,19 @@ const I2CAnalog1219 = ({ values, errors, handleChange, handleCheckbox }) => {
 	};
 
 	return (
-		<Section title={t('AddonsConfig:i2c-analog-ads1219-header-text')}>
+		<Section title={
+			<a
+				href="https://gp2040-ce.info/add-ons/i2c-analog-ads1219"
+				target="_blank"
+				className="text-reset text-decoration-none"
+			>
+				{t('AddonsConfig:i2c-analog-ads1219-header-text')}
+			</a>
+		}
+		>
+			<div class="alert alert-info" role="alert">
+				The SDA and SCL pins and Speed are configured in <a href="../peripheral-mapping" class="alert-link">Peripheral Mapping</a>
+			</div>
 			<div
 				id="I2CAnalog1219InputOptions"
 				hidden={

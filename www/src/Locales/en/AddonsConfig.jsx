@@ -35,6 +35,7 @@ export default {
 	'turbo-header-text': 'Turbo',
 	'turbo-button-pin-label': 'Turbo GPIO Pin',
 	'turbo-led-pin-label': 'Turbo LED GPIO Pin',
+	'turbo-available-pins-text': 'Available ADC pins: {{pins}}',
 	'turbo-shmup-dial-pin-label': 'Turbo Dial (ADC ONLY)',
 	'turbo-shot-count-label': 'Turbo Shot Count',
 	'turbo-shmup-mode-label': 'SHMUP MODE',
@@ -137,7 +138,7 @@ export default {
 	'keyboard-host-middle-mouse': 'Middle',
 	'keyboard-host-right-mouse': 'Right',
 	'pin-config-moved-to-core-text':
-		'Note: the GPIO pins for this add-on are now configured on the GPIO Pin Mapping page.',
+		'Note: GPIO pins for this add-on are configured in <0>GPIO Pin Mapping</0>',
 	'input-history-header-text': 'Input History',
 	'input-history-length-label': 'History length (characters)',
 	'input-history-col-label': 'Column',
