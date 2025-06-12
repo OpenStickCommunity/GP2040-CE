@@ -343,7 +343,16 @@ const Wii = ({
 	};
 
 	return (
-		<Section title={t('WiiAddon:header-text')}>
+		<Section title={
+			<a
+				href="https://gp2040-ce.info/add-ons/wii-extensions"
+				target="_blank"
+				className="text-reset text-decoration-none"
+			>
+				{t('WiiAddon:header-text')}
+			</a>
+		}
+		>
 			<div
 				id="WiiExtensionAddonOptions"
 				hidden={
@@ -352,12 +361,16 @@ const Wii = ({
 			>
 				<Row>
 					<Trans ns="WiiAddon" i18nKey="sub-header-text">
-						<p>
+						<div class="alert alert-info" role="alert">
 							Note: If the display is enabled at the same time, this add-on will
 							be disabled.
-						</p>
+						</div>
 					</Trans>
+					<div class="alert alert-info" role="alert">
+						The SDA and SCL pins and Speed are configured in <a href="../peripheral-mapping" class="alert-link">Peripheral Mapping</a>
+					</div>
 				</Row>
+				
 				<Row className="mb-3">
 					<Tabs
 						defaultActiveKey={`wii${WII_EXTENSION_CONTROLS[0].id}Config`}
