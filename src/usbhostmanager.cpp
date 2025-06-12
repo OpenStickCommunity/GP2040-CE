@@ -16,8 +16,15 @@ void USBHostManager::start() {
     if (PeripheralManager::getInstance().isUSBEnabled(0) && listeners.size() > 0) {
         pio_usb_configuration_t* pio_cfg = PeripheralManager::getInstance().getUSB(0)->getController();
         tuh_configure(1, TUH_CFGID_RPI_PIO_USB_CONFIGURATION, pio_cfg);
-        tuh_init(BOARD_TUH_RHPORT);
+        //tuh_init(BOARD_TUH_RHPORT);
+	    // init host stack on configured roothub port
+        tusb_rhport_init_t host_init = {
+            .role = TUSB_ROLE_HOST,
+            .speed = TUSB_SPEED_AUTO
+        };
+        tusb_init(BOARD_TUH_RHPORT, &host_init);
         sleep_us(10); // ensure we are ready
+        tuh_rhport_reset_bus(BOARD_TUH_RHPORT, true);
         tuh_ready = true;
     } else {
         tuh_ready = false;
