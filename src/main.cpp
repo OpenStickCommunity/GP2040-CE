@@ -41,6 +41,7 @@ int main() {
 	gp2040Core0->setup();
 
 	// Create GP2040 Thread for Core1
+	multicore_reset_core1();
 	multicore_launch_core1(core1);
 
 	// Sync Core0 and Core1
