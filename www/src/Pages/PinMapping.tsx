@@ -241,7 +241,7 @@ const PinSelectList = memo(function PinSelectList({
 			// Need to fallback as some button actions are not part of button names
 			return (
 				(labelKey && buttonNames[labelKey]) ||
-				t(`PinMapping:actions.${option.label}`)
+				t(`Proto:GpioAction.${option.label}`)
 			);
 		},
 		[buttonNames],
