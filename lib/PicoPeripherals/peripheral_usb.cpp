@@ -29,7 +29,7 @@ void PeripheralUSB::setup() {
 
         pio_cfg.pin_dp = _DP;
         pio_cfg.pinout = (_Order == 0 ? PIO_USB_PINOUT_DPDM : PIO_USB_PINOUT_DMDP);
-        pio_cfg.pio_rx_num = 1;
-        pio_cfg.sm_tx = 2;
+        pio_cfg.sm_tx = 2; // Move TX to PIO0:2
+        // RX and EOP are PIO1:0, PIO1:1
     }
 }
