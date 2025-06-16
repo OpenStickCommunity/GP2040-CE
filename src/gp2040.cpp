@@ -266,14 +266,14 @@ void GP2040::run() {
     GamepadState prevState;
 
     // Start the TinyUSB Device functionality
-    //tud_init(TUD_OPT_RHPORT);
+    tud_init(TUD_OPT_RHPORT);
 	
 	// init device stack on configured roothub port
-	tusb_rhport_init_t dev_init = {
-		.role = TUSB_ROLE_DEVICE,
-		.speed = TUSB_SPEED_AUTO
-	};
-	tusb_init(BOARD_TUD_RHPORT, &dev_init);
+	//tusb_rhport_init_t dev_init = {
+	//	.role = TUSB_ROLE_DEVICE,
+	//	.speed = TUSB_SPEED_AUTO
+	//};
+	//tusb_init(BOARD_TUD_RHPORT, &dev_init);
 
 	// Initialize our USB manager
 	USBHostManager::getInstance().start();
