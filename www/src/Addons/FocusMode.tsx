@@ -69,7 +69,7 @@ const FocusMode = ({
 				<Row className="mb-3">
 					<FormCheck
 						label={t('Common:lock-macro')}
-						className="col-sm-3 ms-2"
+						className="col-sm-3 ms-3"
 						type="switch"
 						id="FocusModeAddonMacroButton"
 						isInvalid={false}
@@ -81,7 +81,7 @@ const FocusMode = ({
 					/>
 					<FormCheck
 						label={t('Common:lock-buttons')}
-						className="col-sm-3 ms-2"
+						className="col-sm-3 ms-3"
 						type="switch"
 						id="FocusModeAddonButton"
 						isInvalid={false}

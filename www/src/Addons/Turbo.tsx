@@ -291,7 +291,7 @@ const Turbo = ({
 						label={t('AddonsConfig:turbo-shmup-mode-label')}
 						type="switch"
 						id="ShmupMode"
-						className="col-sm-3 ms-2"
+						className="col-sm-3 ms-3"
 						isInvalid={false}
 						checked={Boolean(values.shmupMode)}
 						onChange={(e) => {

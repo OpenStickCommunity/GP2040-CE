@@ -73,7 +73,6 @@ const DualDirection = ({ values, errors, handleChange, handleCheckbox }) => {
 					/>
 				</div>
 				<Row className="mb-3">
-					
 					<FormSelect
 						label={t('AddonsConfig:dual-directional-input-dpad-mode-label')}
 						name="dualDirDpadMode"
@@ -120,7 +119,7 @@ const DualDirection = ({ values, errors, handleChange, handleCheckbox }) => {
 						)}
 						type="switch"
 						id="DualDirFourWayMode"
-						className="col-sm-3 ms-2"
+						className="col-sm-3 ms-3"
 						isInvalid={false}
 						checked={Boolean(values.dualDirFourWayMode)}
 						onChange={(e) => {

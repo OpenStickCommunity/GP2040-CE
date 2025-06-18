@@ -167,7 +167,7 @@ const Analog1256 = ({ values, errors, handleChange, handleCheckbox }) => {
 						label={t('AddonsConfig:analog1256-enable-triggers')}
 						type="switch"
 						id="analog1256EnableTriggers"
-						className="col-sm-3 ms-2"
+						className="col-sm-3 ms-3"
 						isInvalid={false}
 						checked={Boolean(values.analog1256EnableTriggers)}
 						onChange={(e) => {
