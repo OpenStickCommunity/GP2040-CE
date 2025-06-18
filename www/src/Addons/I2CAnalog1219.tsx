@@ -40,8 +40,8 @@ const I2CAnalog1219 = ({ values, errors, handleChange, handleCheckbox }) => {
 			</a>
 		}
 		>
-			<div class="alert alert-info" role="alert">
-				The SDA and SCL pins and Speed are configured in <a href="../peripheral-mapping" class="alert-link">Peripheral Mapping</a>
+			<div className="alert alert-info" role="alert">
+				The SDA and SCL pins and Speed are configured in <a href="../peripheral-mapping" className="alert-link">Peripheral Mapping</a>
 			</div>
 			<div
 				id="I2CAnalog1219InputOptions"

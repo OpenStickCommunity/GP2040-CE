@@ -59,7 +59,7 @@ const DualDirection = ({ values, errors, handleChange, handleCheckbox }) => {
 				hidden={!values.DualDirectionalInputEnabled}
 			>
 				<Row className="mb-3">
-					<div class="alert alert-info" role="alert">
+					<div className="alert alert-info" role="alert">
 						<Trans
 							ns="AddonsConfig"
 							i18nKey='AddonsConfig:pin-config-moved-to-core-text'

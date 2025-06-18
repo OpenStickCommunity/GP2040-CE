@@ -42,7 +42,7 @@ const Bootsel = ({ values, errors, handleChange, handleCheckbox }) => {
 				id="BootselButtonAddonOptions"
 				hidden={!values.BootselButtonAddonEnabled}
 			>
-				<div class="alert alert-info" role="alert">
+				<div className="alert alert-info" role="alert">
 					{t('AddonsConfig:bootsel-sub-header-text')}
 				</div>
 				<FormSelect

@@ -171,7 +171,7 @@ const Turbo = ({
 			</a>
 		}
 		>
-			<div class="alert alert-success" role="alert">
+			<div className="alert alert-success" role="alert">
 				{t('AddonsConfig:turbo-available-pins-text', {
 					pins: availableAnalogPins.join(', '),
 				})}

@@ -96,8 +96,8 @@ const Keyboard = ({
 			</a>
 		}
 		>
-			<div class="alert alert-info" role="alert">
-				The D+ and Enable 5V pins and GPIO Pin Order are configured in <a href="../peripheral-mapping" class="alert-link">Peripheral Mapping</a>
+			<div className="alert alert-info" role="alert">
+				The D+ and Enable 5V pins and GPIO Pin Order are configured in <a href="../peripheral-mapping" className="alert-link">Peripheral Mapping</a>
 			</div>
 			<div
 				id="KeyboardHostAddonOptions"

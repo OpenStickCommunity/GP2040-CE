@@ -39,12 +39,12 @@ const SOCD = ({ values, errors, handleChange, handleCheckbox }) => {
 		>
 			<div id="SliderSOCDInputOptions" hidden={!values.SliderSOCDInputEnabled}>
 				<Row className="mb-3">
-					<div class="alert alert-info" role="alert">
+					<div className="alert alert-info" role="alert">
 						{t(
 							'AddonsConfig:socd-cleaning-mode-selection-slider-sub-header-text',
 						)}
 					</div>
-					<div class="alert alert-info" role="alert">
+					<div className="alert alert-info" role="alert">
 						<Trans
 							ns="AddonsConfig"
 							i18nKey='AddonsConfig:pin-config-moved-to-core-text'

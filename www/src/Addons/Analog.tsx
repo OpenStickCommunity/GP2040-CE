@@ -144,10 +144,10 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 		}
 		>
 			<div id="AnalogInputOptions" hidden={!values.AnalogInputEnabled}>
-				<div class="alert alert-info" role="alert">
+				<div className="alert alert-info" role="alert">
 					{t('AddonsConfig:analog-warning')}
 				</div>
-				<div class="alert alert-success" role="alert">
+				<div className="alert alert-success" role="alert">
 					{t('AddonsConfig:analog-available-pins-text', {
 						pins: availableAnalogPins.join(', '),
 					})}

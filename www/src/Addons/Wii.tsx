@@ -361,13 +361,13 @@ const Wii = ({
 			>
 				<Row>
 					<Trans ns="WiiAddon" i18nKey="sub-header-text">
-						<div class="alert alert-info" role="alert">
+						<div className="alert alert-info" role="alert">
 							Note: If the display is enabled at the same time, this add-on will
 							be disabled.
 						</div>
 					</Trans>
-					<div class="alert alert-info" role="alert">
-						The SDA and SCL pins and Speed are configured in <a href="../peripheral-mapping" class="alert-link">Peripheral Mapping</a>
+					<div className="alert alert-info" role="alert">
+						The SDA and SCL pins and Speed are configured in <a href="../peripheral-mapping" className="alert-link">Peripheral Mapping</a>
 					</div>
 				</Row>
 				

@@ -45,10 +45,10 @@ const SNES = ({ values, errors, handleChange, handleCheckbox }) => {
 			</a>
 		}
 		>
-			<div class="alert alert-info" role="alert">
+			<div className="alert alert-info" role="alert">
 					{t('AddonsConfig:snes-extension-sub-header-text')}
 			</div>
-			<div class="alert alert-info" role="alert">
+			<div className="alert alert-info" role="alert">
 					{t('AddonsConfig:snes-extension-desc-header')}
 					<ContextualHelpOverlay
 						title={t('AddonsConfig:snes-extension-desc-header')}
