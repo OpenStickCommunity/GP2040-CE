@@ -53,7 +53,7 @@ const SNES = ({ values, errors, handleChange, handleCheckbox }) => {
 					<ContextualHelpOverlay
 						title={t('AddonsConfig:snes-extension-desc-header')}
 						body={
-							<table class="caption-top table table-dark table-sm table-striped-columns table-bordered table-hover">
+							<table className="caption-top table table-dark table-sm table-striped-columns table-bordered table-hover">
 								<thead>
 									<tr>
 									<th>GP2040</th>
