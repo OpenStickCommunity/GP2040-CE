@@ -29,6 +29,7 @@
 #include "addons/rotaryencoder.h"
 #include "addons/i2c_gpio_pcf8575.h"
 #include "addons/gamepad_usb_host.h"
+#include "addons/i2c_qmi8658.h"
 
 
 // Pico includes
@@ -70,7 +71,7 @@ void GP2040::setup() {
 
 	// Setup Gamepad
 	gamepad->setup();
-	
+
 	// now we can load the latest configured profile, which will map the
 	// new set of GPIOs to use...
     this->initializeStandardGpio();
@@ -99,6 +100,7 @@ void GP2040::setup() {
 	addons.LoadAddon(new DualDirectionalInput());
 	addons.LoadAddon(new FocusModeAddon());
 	addons.LoadAddon(new I2CAnalog1219Input());
+	addons.LoadAddon(new I2CQMI8658Input());
 	addons.LoadAddon(new SPIAnalog1256Input());
 	addons.LoadAddon(new WiiExtensionInput());
 	addons.LoadAddon(new SNESpadInput());
@@ -296,7 +298,7 @@ void GP2040::run() {
 
 		gamepad->hotkey(); 	// check for MPGS hotkeys
 		rebootHotkeys.process(gamepad, configMode);
-		
+
 		gamepad->process(); // process through MPGS
 
 		// (Post) Process for add-ons
@@ -309,7 +311,7 @@ void GP2040::run() {
 
 		// Process Input Driver
 		bool processed = inputDriver->process(gamepad);
-		
+
 		// TinyUSB Task update
 		tud_task();
 
@@ -359,13 +361,13 @@ GP2040::BootAction GP2040::getBootAction() {
 				// Determine boot action based on gamepad state during boot
 				Gamepad * gamepad = Storage::getInstance().GetGamepad();
 				Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
-				
+
 				debounceGpioGetAll();
 				gamepad->read();
 
 				// Pre-Process add-ons for MPGS
 				addons.PreprocessAddons();
-				
+
 				gamepad->process(); // process through MPGS
 
 				// Process for add-ons
@@ -389,33 +391,33 @@ GP2040::BootAction GP2040::getBootAction() {
                     if (!modeSwitchLocked) {
                         if (auto search = bootActions.find(gamepad->state.buttons); search != bootActions.end()) {
                             switch (search->second) {
-                                case INPUT_MODE_XINPUT: 
+                                case INPUT_MODE_XINPUT:
                                     return BootAction::SET_INPUT_MODE_XINPUT;
-                                case INPUT_MODE_SWITCH: 
+                                case INPUT_MODE_SWITCH:
                                     return BootAction::SET_INPUT_MODE_SWITCH;
-                                case INPUT_MODE_KEYBOARD: 
+                                case INPUT_MODE_KEYBOARD:
                                     return BootAction::SET_INPUT_MODE_KEYBOARD;
                                 case INPUT_MODE_GENERIC:
                                     return BootAction::SET_INPUT_MODE_GENERIC;
                                 case INPUT_MODE_PS3:
                                     return BootAction::SET_INPUT_MODE_PS3;
-                                case INPUT_MODE_PS4: 
+                                case INPUT_MODE_PS4:
                                     return BootAction::SET_INPUT_MODE_PS4;
-                                case INPUT_MODE_PS5: 
+                                case INPUT_MODE_PS5:
                                     return BootAction::SET_INPUT_MODE_PS5;
-                                case INPUT_MODE_NEOGEO: 
+                                case INPUT_MODE_NEOGEO:
                                     return BootAction::SET_INPUT_MODE_NEOGEO;
-                                case INPUT_MODE_MDMINI: 
+                                case INPUT_MODE_MDMINI:
                                     return BootAction::SET_INPUT_MODE_MDMINI;
-                                case INPUT_MODE_PCEMINI: 
+                                case INPUT_MODE_PCEMINI:
                                     return BootAction::SET_INPUT_MODE_PCEMINI;
-                                case INPUT_MODE_EGRET: 
+                                case INPUT_MODE_EGRET:
                                     return BootAction::SET_INPUT_MODE_EGRET;
-                                case INPUT_MODE_ASTRO: 
+                                case INPUT_MODE_ASTRO:
                                     return BootAction::SET_INPUT_MODE_ASTRO;
-                                case INPUT_MODE_PSCLASSIC: 
+                                case INPUT_MODE_PSCLASSIC:
                                     return BootAction::SET_INPUT_MODE_PSCLASSIC;
-                                case INPUT_MODE_XBOXORIGINAL: 
+                                case INPUT_MODE_XBOXORIGINAL:
                                     return BootAction::SET_INPUT_MODE_XBOXORIGINAL;
                                 case INPUT_MODE_XBONE:
                                     return BootAction::SET_INPUT_MODE_XBONE;
@@ -546,7 +548,7 @@ void GP2040::checkSaveRebootState() {
 
 void GP2040::handleStorageSave(GPEvent* e) {
     saveRequested = true;
-	forceSave = ((GPStorageSaveEvent*)e)->forceSave; 
+	forceSave = ((GPStorageSaveEvent*)e)->forceSave;
     rebootRequested = ((GPStorageSaveEvent*)e)->restartAfterSave;
 	rebootMode = System::BootMode::DEFAULT;
 }
