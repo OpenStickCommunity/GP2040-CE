@@ -281,7 +281,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 										label={t('AddonsConfig:analog-smoothing')}
 										type="switch"
 										id="Analog_smoothing"
-										className="col-sm-3 ms-2"
+										className="col-sm-3 ms-3"
 										isInvalid={false}
 										checked={Boolean(values.analog_smoothing)}
 										onChange={(e) => {
@@ -309,7 +309,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 										label={t('AddonsConfig:analog-force-circularity')}
 										type="switch"
 										id="Forced_circularity"
-										className="col-sm-3 ms-2"
+										className="col-sm-3 ms-3"
 										isInvalid={false}
 										checked={Boolean(values.forced_circularity)}
 										onChange={(e) => {
@@ -337,7 +337,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 									label={t('AddonsConfig:analog-auto-calibrate')}
 									type="switch"
 									id="Auto_calibrate"
-									className="col-sm-3 ms-2"
+									className="col-sm-3 ms-3"
 									isInvalid={false}
 									checked={Boolean(values.auto_calibrate)}
 									onChange={(e) => {
@@ -447,7 +447,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 										label={t('AddonsConfig:analog-smoothing')}
 										type="switch"
 										id="Analog_smoothing2"
-										className="col-sm-3 ms-2"
+										className="col-sm-3 ms-3"
 										isInvalid={false}
 										checked={Boolean(values.analog_smoothing2)}
 										onChange={(e) => {
@@ -475,7 +475,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 										label={t('AddonsConfig:analog-force-circularity')}
 										type="switch"
 										id="Forced_circularity2"
-										className="col-sm-3 ms-2"
+										className="col-sm-3 ms-3"
 										isInvalid={false}
 										checked={Boolean(values.forced_circularity2)}
 										onChange={(e) => {
@@ -503,7 +503,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 									label={t('AddonsConfig:analog-auto-calibrate')}
 									type="switch"
 									id="Auto_calibrate2"
-									className="col-sm-3 ms-2"
+									className="col-sm-3 ms-3"
 									isInvalid={false}
 									checked={Boolean(values.auto_calibrate2)}
 									onChange={(e) => {
