@@ -53,7 +53,7 @@ export const tiltState = {
 	factorTilt1LeftX: 0,
 	factorTilt1LeftY: 0,
 	factorTilt1RightX: 0,
-	factorTilt1ightY: 0,
+	factorTilt1RightY: 0,
 	factorTilt2LeftX: 0,
 	factorTilt2LeftY: 0,
 	factorTilt2RightX: 0,
