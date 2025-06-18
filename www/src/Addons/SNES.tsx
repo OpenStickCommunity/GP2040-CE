@@ -45,38 +45,38 @@ const SNES = ({ values, errors, handleChange, handleCheckbox }) => {
 			</a>
 		}
 		>
-			<div className="alert alert-info" role="alert">
-					{t('AddonsConfig:snes-extension-sub-header-text')}
-			</div>
-			<div className="alert alert-info" role="alert">
-					{t('AddonsConfig:snes-extension-desc-header')}
-					<ContextualHelpOverlay
-						title={t('AddonsConfig:snes-extension-desc-header')}
-						body={
-							<table className="caption-top table table-dark table-sm table-striped-columns table-bordered table-hover">
-								<thead>
-									<tr>
-									<th>GP2040</th>
-									<th>NES</th>
-									<th>SNES</th>
-									<th>Super NES Mouse</th>
-									</tr>
-								</thead>
-								<tbody>
-									{SNES_MAPPING_TABLE.map(({gp, nes, snes, mouse}, i) => 
-										<tr key={i}>
-											<td><code>{gp}</code></td>
-											<td>{nes}</td>
-											<td>{snes}</td>
-											<td>{mouse}</td>
-										</tr>
-									)}
-								</tbody>
-							</table>
-						}
-					/>
-			</div>
 			<div id="SNESpadAddonOptions" hidden={!values.SNESpadAddonEnabled}>
+				<div className="alert alert-info" role="alert">
+					{t('AddonsConfig:snes-extension-sub-header-text')}
+				</div>
+				<div className="alert alert-info" role="alert">
+					{t('AddonsConfig:snes-extension-desc-header')}
+						<ContextualHelpOverlay
+							title={t('AddonsConfig:snes-extension-desc-header')}
+							body={
+								<table className="caption-top table table-dark table-sm table-striped-columns table-bordered table-hover">
+									<thead>
+										<tr>
+										<th>GP2040</th>
+										<th>NES</th>
+										<th>SNES</th>
+										<th>Super NES Mouse</th>
+										</tr>
+									</thead>
+									<tbody>
+										{SNES_MAPPING_TABLE.map(({gp, nes, snes, mouse}, i) => 
+											<tr key={i}>
+												<td><code>{gp}</code></td>
+												<td>{nes}</td>
+												<td>{snes}</td>
+												<td>{mouse}</td>
+											</tr>
+										)}
+									</tbody>
+								</table>
+							}
+						/>
+				</div>
 				<Row className="mb-3">
 					<FormControl
 						type="number"

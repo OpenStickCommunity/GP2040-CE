@@ -96,15 +96,15 @@ const Keyboard = ({
 			</a>
 		}
 		>
-			<div className="alert alert-info" role="alert">
-				The D+ and Enable 5V pins and GPIO Pin Order are configured in <a href="../peripheral-mapping" className="alert-link">Peripheral Mapping</a>
-			</div>
 			<div
 				id="KeyboardHostAddonOptions"
 				hidden={
 					!(values.KeyboardHostAddonEnabled && getAvailablePeripherals('usb'))
 				}
 			>
+				<div className="alert alert-info" role="alert">
+					The D+ and Enable 5V pins and GPIO Pin Order are configured in <a href="../peripheral-mapping" className="alert-link">Peripheral Mapping</a>
+				</div>
 				<Row className="mb-3">
 					<p>{t('AddonsConfig:keyboard-host-sub-header-text')}</p>
 					<div className="mb-2">

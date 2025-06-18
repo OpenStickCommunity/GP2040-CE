@@ -73,21 +73,21 @@ const Tilt = ({ values, errors, handleChange, handleCheckbox }) => {
 			</a>
 		}
 		>
-			<div className="alert alert-info" role="alert">
-				<Trans
-					ns="AddonsConfig"
-					i18nKey='AddonsConfig:pin-config-moved-to-core-text'
-					components={[
-						<a
-							key="0"
-							href="../pin-mapping"
-							className="alert-link"
-							target="_blank"
-						/>
-					]}
-				/>
-			</div>
 			<div id="TiltOptions" hidden={!values.TiltInputEnabled}>
+				<div className="alert alert-info" role="alert">
+					<Trans
+						ns="AddonsConfig"
+						i18nKey='AddonsConfig:pin-config-moved-to-core-text'
+						components={[
+							<a
+								key="0"
+								href="../pin-mapping"
+								className="alert-link"
+								target="_blank"
+							/>
+						]}
+					/>
+				</div>
 				<Row className="mb-3">
 					<FormControl
 						type="number"

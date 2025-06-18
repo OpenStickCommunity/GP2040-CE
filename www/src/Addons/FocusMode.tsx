@@ -51,25 +51,25 @@ const FocusMode = ({
 			</a>
 		}
 		>
-			<div className="alert alert-info" role="alert">
-				<Trans
-					ns="AddonsConfig"
-					i18nKey='AddonsConfig:pin-config-moved-to-core-text'
-					components={[
-						<a
-							key="0"
-							href="../pin-mapping"
-							className="alert-link"
-							target="_blank"
-						/>
-					]}
-				/>
-			</div>
 			<div id="FocusModeAddonOptions" hidden={!values.FocusModeAddonEnabled}>
-				<Row>
+				<div className="alert alert-info" role="alert">
+					<Trans
+						ns="AddonsConfig"
+						i18nKey='AddonsConfig:pin-config-moved-to-core-text'
+						components={[
+							<a
+								key="0"
+								href="../pin-mapping"
+								className="alert-link"
+								target="_blank"
+							/>
+						]}
+					/>
+				</div>
+				<Row className="mb-3">
 					<FormCheck
 						label={t('Common:lock-macro')}
-						className="form-check-sm"
+						className="col-sm-3 ms-2"
 						type="switch"
 						id="FocusModeAddonMacroButton"
 						isInvalid={false}
@@ -81,7 +81,7 @@ const FocusMode = ({
 					/>
 					<FormCheck
 						label={t('Common:lock-buttons')}
-						className="form-check-sm"
+						className="col-sm-3 ms-2"
 						type="switch"
 						id="FocusModeAddonButton"
 						isInvalid={false}
@@ -92,7 +92,7 @@ const FocusMode = ({
 						}}
 					/>
 				</Row>
-				<Row>
+				<Row className="mb-3">
 					{BUTTON_MASKS_OPTIONS.map(
 						(mask) =>
 							Boolean(values.focusModeButtonLockMask & mask.value) && (

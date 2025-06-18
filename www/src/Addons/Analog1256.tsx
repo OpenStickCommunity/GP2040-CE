@@ -92,13 +92,13 @@ const Analog1256 = ({ values, errors, handleChange, handleCheckbox }) => {
 			</a>
 		}
 		>
-			<div className="alert alert-info" role="alert">
-				The RX, CS, SCK, and TX pins are configured in <a href="../peripheral-mapping" className="alert-link">Peripheral Mapping</a>
-			</div>
 			<div
 				id="Analog1256InputOptions"
 				hidden={!(values.Analog1256Enabled && getAvailablePeripherals('spi'))}
 			>
+				<div className="alert alert-info" role="alert">
+					The RX, CS, SCK, and TX pins are configured in <a href="../peripheral-mapping" className="alert-link">Peripheral Mapping</a>
+				</div>
 				<Row className="mb-3">
 					{getAvailablePeripherals('spi') ? (
 						<FormSelect

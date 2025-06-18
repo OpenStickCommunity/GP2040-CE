@@ -58,21 +58,22 @@ const DualDirection = ({ values, errors, handleChange, handleCheckbox }) => {
 				id="DualDirectionalInputOptions"
 				hidden={!values.DualDirectionalInputEnabled}
 			>
+				<div className="alert alert-info" role="alert">
+					<Trans
+						ns="AddonsConfig"
+						i18nKey='AddonsConfig:pin-config-moved-to-core-text'
+						components={[
+							<a
+								key="0"
+								href="../pin-mapping"
+								className="alert-link"
+								target="_blank"
+							/>
+						]}
+					/>
+				</div>
 				<Row className="mb-3">
-					<div className="alert alert-info" role="alert">
-						<Trans
-							ns="AddonsConfig"
-							i18nKey='AddonsConfig:pin-config-moved-to-core-text'
-							components={[
-								<a
-									key="0"
-									href="../pin-mapping"
-									className="alert-link"
-									target="_blank"
-								/>
-							]}
-						/>
-					</div>
+					
 					<FormSelect
 						label={t('AddonsConfig:dual-directional-input-dpad-mode-label')}
 						name="dualDirDpadMode"

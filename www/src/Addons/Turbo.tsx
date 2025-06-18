@@ -171,12 +171,12 @@ const Turbo = ({
 			</a>
 		}
 		>
-			<div className="alert alert-success" role="alert">
-				{t('AddonsConfig:turbo-available-pins-text', {
-					pins: availableAnalogPins.join(', '),
-				})}
-			</div>
 			<div id="TurboInputOptions" hidden={!values.TurboInputEnabled}>
+				<div className="alert alert-success" role="alert">
+					{t('AddonsConfig:turbo-available-pins-text', {
+						pins: availableAnalogPins.join(', '),
+					})}
+				</div>
 				<Row className="mb-3">
 					<FormSelect
 						label={t('AddonsConfig:turbo-led-type-label')}

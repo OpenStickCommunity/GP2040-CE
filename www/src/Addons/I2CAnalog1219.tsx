@@ -40,15 +40,16 @@ const I2CAnalog1219 = ({ values, errors, handleChange, handleCheckbox }) => {
 			</a>
 		}
 		>
-			<div className="alert alert-info" role="alert">
-				The SDA and SCL pins and Speed are configured in <a href="../peripheral-mapping" className="alert-link">Peripheral Mapping</a>
-			</div>
 			<div
 				id="I2CAnalog1219InputOptions"
 				hidden={
 					!(values.I2CAnalog1219InputEnabled && getAvailablePeripherals('i2c'))
 				}
-			></div>
+			>
+				<div className="alert alert-info" role="alert">
+					The SDA and SCL pins and Speed are configured in <a href="../peripheral-mapping" className="alert-link">Peripheral Mapping</a>
+				</div>
+			</div>
 			{getAvailablePeripherals('i2c') ? (
 				<FormCheck
 					label={t('Common:switch-enabled')}
