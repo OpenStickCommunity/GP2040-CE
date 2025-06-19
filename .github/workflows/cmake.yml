@@ -28,6 +28,7 @@ jobs:
           Blank,
           Pico,
           PicoW,
+          Pico2,
           BentoBox,
           DuelPadZen,
           FlatboxRev4,
@@ -66,6 +67,7 @@ jobs:
           RP2040MiniBreakoutBoardUSBPassthrough,
           SeeedXIAORP2040,
           SparkFunProMicro,
+          SparkFunProMicroRP2350,
           WaveshareZero,
           Stress,
           SGFDevices,
@@ -102,13 +104,18 @@ jobs:
 
     - name: Pico Build Configure CMake
       shell: bash
-      if: ${{ matrix.GP2040_BOARDCONFIG != 'PicoW'}}
+      if: ${{ matrix.GP2040_BOARDCONFIG != 'PicoW' && matrix.GP2040_BOARDCONFIG != 'Pico2' && matrix.GP2040_BOARDCONFIG != 'SparkFunProMicroRP2350' }}
       run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=${{ matrix.GP2040_BOARDCONFIG }} SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
     - name: PicoW Build Configure CMake
       shell: bash
       if: ${{ matrix.GP2040_BOARDCONFIG == 'PicoW'}}
       run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=${{ matrix.GP2040_BOARDCONFIG }} SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico_w
+
+    - name: Pico2 Build Configure CMake
+      shell: bash
+      if: ${{ matrix.GP2040_BOARDCONFIG == 'Pico2' || matrix.GP2040_BOARDCONFIG == 'SparkFunProMicroRP2350' }}
+      run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=${{ matrix.GP2040_BOARDCONFIG }} SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico2 -DPICO_PLATFORM=rp2350-arm-s
 
     - name: Pico Build
       shell: bash
