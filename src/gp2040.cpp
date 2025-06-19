@@ -166,6 +166,9 @@ void GP2040::setup() {
 		case BootAction::SET_INPUT_MODE_XBOXORIGINAL: // Xbox OG Driver
 			inputMode = INPUT_MODE_XBOXORIGINAL;
 			break;
+		case BootAction::SET_INPUT_MODE_SWITCH_PRO:
+			inputMode = INPUT_MODE_SWITCH_PRO;
+			break;
 		case BootAction::NONE:
 		default:
 			break;
@@ -419,6 +422,8 @@ GP2040::BootAction GP2040::getBootAction() {
                                     return BootAction::SET_INPUT_MODE_XBOXORIGINAL;
                                 case INPUT_MODE_XBONE:
                                     return BootAction::SET_INPUT_MODE_XBONE;
+                                case INPUT_MODE_SWITCH_PRO: 
+                                    return BootAction::SET_INPUT_MODE_SWITCH_PRO;
                                 default:
                                     return BootAction::NONE;
                             }
