@@ -25,10 +25,6 @@ GP2040Aux::~GP2040Aux() {
 // GP2040Aux will always come after GP2040 setup(), so we can rely on the
 // GP2040 setup function for certain setup functions.
 void GP2040Aux::setup() {
-	//PeripheralManager::getInstance().initI2C();
-	//PeripheralManager::getInstance().initSPI();
-	//PeripheralManager::getInstance().initUSB();
-
 	// Initialize our input driver's auxilliary functions
 	inputDriver = DriverManager::getInstance().getDriver();
 	if ( inputDriver != nullptr ) {
