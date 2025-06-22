@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 import { FormCheck, Row } from 'react-bootstrap';
 import * as yup from 'yup';
 
@@ -27,17 +27,37 @@ const SOCD = ({ values, errors, handleChange, handleCheckbox }) => {
 	const { t } = useTranslation();
 	return (
 		<Section
-			title={t('AddonsConfig:socd-cleaning-mode-selection-slider-header-text')}
+			title={
+			<a
+				href="https://gp2040-ce.info/add-ons/socd-selection-slider"
+				target="_blank"
+				className="text-reset text-decoration-none"
+			>
+				{t('AddonsConfig:socd-cleaning-mode-selection-slider-header-text')}
+			</a>
+		}
 		>
 			<div id="SliderSOCDInputOptions" hidden={!values.SliderSOCDInputEnabled}>
+				<div className="alert alert-info" role="alert">
+					{t(
+						'AddonsConfig:socd-cleaning-mode-selection-slider-sub-header-text',
+					)}
+				</div>
+				<div className="alert alert-info" role="alert">
+					<Trans
+						ns="AddonsConfig"
+						i18nKey='AddonsConfig:pin-config-moved-to-core-text'
+						components={[
+							<a
+								key="0"
+								href="../pin-mapping"
+								className="alert-link"
+								target="_blank"
+							/>
+						]}
+					/>
+				</div>
 				<Row className="mb-3">
-					<p>
-						{t(
-							'AddonsConfig:socd-cleaning-mode-selection-slider-sub-header-text',
-						)}
-						<br />
-						{t('AddonsConfig:pin-config-moved-to-core-text')}
-					</p>
 					<FormSelect
 						label={t(
 							'AddonsConfig:socd-cleaning-mode-selection-slider-mode-default-label',
