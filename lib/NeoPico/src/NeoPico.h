@@ -16,7 +16,7 @@ class NeoPico
 {
 public:
   NeoPico();
-  void Setup(int ledPin, int inNumPixels, LEDFormat inFormat, PIO inPio);
+  void Setup(int ledPin, int inNumPixels, LEDFormat inFormat, PIO inPio, int inState);
   void Show();
   void Clear();
   void Off();
