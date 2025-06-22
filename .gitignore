@@ -19,3 +19,4 @@ env.ini
 *Dockerfile
 *docker-compose.yml
 www/src_gen/enums.ts
+/lib/NeoPico/src/generated/ws2812.pio.h
