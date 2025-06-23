@@ -72,6 +72,16 @@ jobs:
           Stress,
           SGFDevices,
           ZeroRhythm]
+        include:
+          - platform: pico
+          - platform: pico2
+            GP2040_BOARDCONFIG: Pico2
+          - platform: pico2
+            GP2040_BOARDCONFIG: SparkFunProMicroRP2350
+          - platform: pico2
+            GP2040_BOARDCONFIG: FlatboxRev8
+          - platform: pico_w
+            GP2040_BOARDCONFIG: PicoW
 
     steps:
     - name: Setup cmake
@@ -104,17 +114,17 @@ jobs:
 
     - name: Pico Build Configure CMake
       shell: bash
-      if: ${{ matrix.GP2040_BOARDCONFIG != 'PicoW' && matrix.GP2040_BOARDCONFIG != 'Pico2' && matrix.GP2040_BOARDCONFIG != 'SparkFunProMicroRP2350' }}
+      if: ${{ matrix.platform == 'pico' }}
       run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=${{ matrix.GP2040_BOARDCONFIG }} SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
     - name: PicoW Build Configure CMake
       shell: bash
-      if: ${{ matrix.GP2040_BOARDCONFIG == 'PicoW'}}
+      if: ${{ matrix.platform == 'pico_w' }}
       run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=${{ matrix.GP2040_BOARDCONFIG }} SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico_w
 
     - name: Pico2 Build Configure CMake
       shell: bash
-      if: ${{ matrix.GP2040_BOARDCONFIG == 'Pico2' || matrix.GP2040_BOARDCONFIG == 'SparkFunProMicroRP2350' }}
+      if: ${{ matrix.platform == 'pico2' }}
       run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=${{ matrix.GP2040_BOARDCONFIG }} SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico2 -DPICO_PLATFORM=rp2350-arm-s
 
     - name: Pico Build
