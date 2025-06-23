@@ -279,7 +279,7 @@ void NeoPicoLEDAddon::setup() {
     }
 
 	// Setup NeoPico ws2812 PIO
-	neopico.Setup(ledOptions.dataPin, ledCount, static_cast<LEDFormat>(ledOptions.ledFormat), pio0);
+	neopico.Setup(ledOptions.dataPin, ledCount, static_cast<LEDFormat>(ledOptions.ledFormat), pio0, 0);
 	neopico.Off(); // turn off everything
 
 	// Rewrite this

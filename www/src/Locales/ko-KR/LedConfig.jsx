@@ -20,6 +20,17 @@ export default {
 		'pled-type-rgb': 'RGB',
 		'pled-color-label': 'RGB PLED 색상',
 	},
+	case: {
+		'header-text': '케이스 RGB LED',
+		'sub-header-text':
+			'케이스용 RGB LED 조명의 경우 케이스 RGB의 시작 인덱스 번호와 RGB 개수를 설정해주세요. 인덱스는 반드시 정의된 LED 버튼 이후로 설정하되 플레이어 LED 및 터보 LED 이전 이후로 지정 가능합니다.',
+		'case-index-label': 'RGB LED 인덱스',
+		'case-count-label': 'RGB LED 개수',
+		'case-type-label': '컬러 타입',
+		'case-type-off': '끄기',
+		'case-type-static': '정적',
+		'case-color-label': '케이스 RGB 색상',
+	},
 	'pled-pin-label': 'PLED #{{pin}} GPIO 핀',
 	'pled-index-label': 'PLED #{{index}} 인덱스',
 	'rgb-order': {
