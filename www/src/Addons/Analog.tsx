@@ -185,7 +185,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 					{t('AddonsConfig:analog-available-pins-text', {
 						pins: availableAnalogPins.join(', '),
 					})}
-				</p>
+				</div>
 					<Tabs
 						defaultActiveKey="analog1Config"
 						id="analogConfigTabs"
