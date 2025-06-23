@@ -71,6 +71,8 @@ export default {
 		'load-profile-2': 'Carregar Perfil #2',
 		'load-profile-3': 'Carregar Perfil #3',
 		'load-profile-4': 'Carregar Perfil #4',
+		'load-profile-5': 'Carregar Perfil #5',
+		'load-profile-6': 'Carregar Perfil #6',
 		'next-profile': 'Próximo Perfil',
 		'reboot-default': 'Reiniciar GP2040-CE',
 	},
