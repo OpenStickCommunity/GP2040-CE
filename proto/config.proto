@@ -411,6 +411,13 @@ message AnalogOptions
     optional bool analog_smoothing = 14;
     optional float smoothing_factor = 15;
     optional uint32 analog_error = 16;
+    optional bool analog_smoothing2 = 17;
+    optional float smoothing_factor2 = 18;
+    optional uint32 analog_error2 = 19;
+    optional uint32 inner_deadzone2 = 20;
+    optional uint32 outer_deadzone2 = 21;
+    optional bool auto_calibrate2 = 22;
+    optional bool forced_circularity2 = 23;
 }
 
 message TurboOptions
