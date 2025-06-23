@@ -2192,6 +2192,9 @@ std::string getFirmwareVersion()
     const size_t capacity = JSON_OBJECT_SIZE(10);
     DynamicJsonDocument doc(capacity);
     writeDoc(doc, "version", GP2040VERSION);
+    writeDoc(doc, "boardArchitecture", GP2040PLATFORM);
+    writeDoc(doc, "boardBuild", GP2040BUILD);
+    writeDoc(doc, "boardBuildType", GP2040CONFIG);
     writeDoc(doc, "boardConfigLabel", BOARD_CONFIG_LABEL);
     writeDoc(doc, "boardConfigFileName", BOARD_CONFIG_FILE_NAME);
     writeDoc(doc, "boardConfig", GP2040_BOARDCONFIG);
