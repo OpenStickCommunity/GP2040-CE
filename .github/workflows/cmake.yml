@@ -36,6 +36,7 @@ jobs:
           FlatboxRev5RGB,
           FlatboxRev5USBPassthrough,
           FlatboxRev5Southpaw,
+          FlatboxRev8,
           Granola,
           KB2040,
           KeyboardConverter,
