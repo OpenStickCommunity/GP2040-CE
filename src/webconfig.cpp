@@ -1508,12 +1508,19 @@ std::string setAddonOptions()
     docToValue(analogOptions.analogAdc2Mode, doc, "analogAdc2Mode");
     docToValue(analogOptions.analogAdc2Invert, doc, "analogAdc2Invert");
     docToValue(analogOptions.forced_circularity, doc, "forced_circularity");
+    docToValue(analogOptions.forced_circularity2, doc, "forced_circularity2");
     docToValue(analogOptions.inner_deadzone, doc, "inner_deadzone");
+    docToValue(analogOptions.inner_deadzone2, doc, "inner_deadzone2");
     docToValue(analogOptions.outer_deadzone, doc, "outer_deadzone");
+    docToValue(analogOptions.outer_deadzone2, doc, "outer_deadzone2");
     docToValue(analogOptions.auto_calibrate, doc, "auto_calibrate");
+    docToValue(analogOptions.auto_calibrate2, doc, "auto_calibrate2");
     docToValue(analogOptions.analog_smoothing, doc, "analog_smoothing");
+    docToValue(analogOptions.analog_smoothing2, doc, "analog_smoothing2");
     docToValue(analogOptions.smoothing_factor, doc, "smoothing_factor");
+    docToValue(analogOptions.smoothing_factor2, doc, "smoothing_factor2");
     docToValue(analogOptions.analog_error, doc, "analog_error");
+    docToValue(analogOptions.analog_error2, doc, "analog_error2");
     docToValue(analogOptions.enabled, doc, "AnalogInputEnabled");
 
     BootselButtonOptions& bootselButtonOptions = Storage::getInstance().getAddonOptions().bootselButtonOptions;
@@ -1930,12 +1937,19 @@ std::string getAddonOptions()
     writeDoc(doc, "analogAdc2Mode", analogOptions.analogAdc2Mode);
     writeDoc(doc, "analogAdc2Invert", analogOptions.analogAdc2Invert);
     writeDoc(doc, "forced_circularity", analogOptions.forced_circularity);
+    writeDoc(doc, "forced_circularity2", analogOptions.forced_circularity2);
     writeDoc(doc, "inner_deadzone", analogOptions.inner_deadzone);
+    writeDoc(doc, "inner_deadzone2", analogOptions.inner_deadzone2);
     writeDoc(doc, "outer_deadzone", analogOptions.outer_deadzone);
+    writeDoc(doc, "outer_deadzone2", analogOptions.outer_deadzone2);
     writeDoc(doc, "auto_calibrate", analogOptions.auto_calibrate);
+    writeDoc(doc, "auto_calibrate2", analogOptions.auto_calibrate2);
     writeDoc(doc, "analog_smoothing", analogOptions.analog_smoothing);
+    writeDoc(doc, "analog_smoothing2", analogOptions.analog_smoothing2);
     writeDoc(doc, "smoothing_factor", analogOptions.smoothing_factor);
+    writeDoc(doc, "smoothing_factor2", analogOptions.smoothing_factor2);
     writeDoc(doc, "analog_error", analogOptions.analog_error);
+    writeDoc(doc, "analog_error2", analogOptions.analog_error2);
     writeDoc(doc, "AnalogInputEnabled", analogOptions.enabled);
 
     const BootselButtonOptions& bootselButtonOptions = Storage::getInstance().getAddonOptions().bootselButtonOptions;
@@ -2178,6 +2192,9 @@ std::string getFirmwareVersion()
     const size_t capacity = JSON_OBJECT_SIZE(10);
     DynamicJsonDocument doc(capacity);
     writeDoc(doc, "version", GP2040VERSION);
+    writeDoc(doc, "boardArchitecture", GP2040PLATFORM);
+    writeDoc(doc, "boardBuild", GP2040BUILD);
+    writeDoc(doc, "boardBuildType", GP2040CONFIG);
     writeDoc(doc, "boardConfigLabel", BOARD_CONFIG_LABEL);
     writeDoc(doc, "boardConfigFileName", BOARD_CONFIG_FILE_NAME);
     writeDoc(doc, "boardConfig", GP2040_BOARDCONFIG);
