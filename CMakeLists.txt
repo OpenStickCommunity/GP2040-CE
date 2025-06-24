@@ -141,6 +141,9 @@ add_compile_options(-Wall
 include(compile_proto.cmake)
 compile_proto()
 
+include(patch_board_config.cmake)
+patch_board_config()
+
 #pull in tinyUSB
 set(PICO_TINYUSB_PATH "${CMAKE_CURRENT_LIST_DIR}/lib/tinyusb")
 
@@ -228,7 +231,6 @@ src/storagemanager.cpp
 src/system.cpp
 src/usbdriver.cpp
 src/usbhostmanager.cpp
-src/config_legacy.cpp
 src/config_utils.cpp
 src/webconfig.cpp
 src/addons/analog.cpp
