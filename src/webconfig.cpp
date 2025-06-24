@@ -1265,7 +1265,7 @@ std::string getKeyMappings()
     writeDoc(doc, "E10", keyboardMapping.keyButtonE10);
     writeDoc(doc, "E11", keyboardMapping.keyButtonE11);
     writeDoc(doc, "E12", keyboardMapping.keyButtonE12);
-    
+		
     return serialize_json(doc);
 }
 
@@ -1678,6 +1678,9 @@ std::string setAddonOptions()
     docToValue(drv8833RumbleOptions.pwmFrequency, doc, "drv8833RumblePWMFrequency");
     docToValue(drv8833RumbleOptions.dutyMin, doc, "drv8833RumbleDutyMin");
     docToValue(drv8833RumbleOptions.dutyMax, doc, "drv8833RumbleDutyMax");
+
+    QMI8658Options& qmi8658Options = Storage::getInstance().getAddonOptions().qmi8658Options;
+    docToValue(qmi8658Options.enabled, doc, "I2CQMI8658InputEnabled");
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
@@ -2107,6 +2110,9 @@ std::string getAddonOptions()
     writeDoc(doc, "drv8833RumblePWMFrequency", drv8833RumbleOptions.pwmFrequency);
     writeDoc(doc, "drv8833RumbleDutyMin", drv8833RumbleOptions.dutyMin);
     writeDoc(doc, "drv8833RumbleDutyMax", drv8833RumbleOptions.dutyMax);
+
+    const QMI8658Options& qmi8658Options = Storage::getInstance().getAddonOptions().qmi8658Options;
+    writeDoc(doc, "I2CQMI8658InputEnabled", qmi8658Options.enabled);
 
     return serialize_json(doc);
 }
