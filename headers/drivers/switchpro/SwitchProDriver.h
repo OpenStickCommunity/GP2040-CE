@@ -109,16 +109,19 @@ private:
 
     SwitchDeviceInfo deviceInfo;
     uint8_t playerID = 0;
-    uint8_t inputMode = 0;
+    uint8_t inputMode = 0x30;
     bool isIMUEnabled = false;
     bool isVibrationEnabled = false;
 
     void sendIdentify();
     void sendSubCommand(uint8_t subCommand);
 
-    bool sendReport(uint8_t reportID, void const* reportData, uint16_t reportLength);
+    bool sendReport(uint8_t reportID, const void* reportData, uint16_t reportLength);
 
     void readSPIFlash(uint8_t* dest, uint32_t address, uint8_t size);
+
+    void handleConfigReport(uint8_t switchReportID, uint8_t switchReportSubID, const uint8_t *reportData, uint16_t reportLength);
+    void handleFeatureReport(uint8_t switchReportID, uint8_t switchReportSubID, const uint8_t *reportData, uint16_t reportLength);
 };
 
 #endif // _SWITCH_PRO_DRIVER_H_

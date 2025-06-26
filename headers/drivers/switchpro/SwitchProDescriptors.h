@@ -54,16 +54,17 @@
 #define SWITCH_PRO_MASK_L (1U << 6)
 
 // Switch analog sticks only report 8 bits
-#define SWITCH_PRO_JOYSTICK_MIN 0x00
-#define SWITCH_PRO_JOYSTICK_MID 0x80
-#define SWITCH_PRO_JOYSTICK_MAX 0xFF
+#define SWITCH_PRO_JOYSTICK_MIN 0x0000
+#define SWITCH_PRO_JOYSTICK_MID 0x07FF
+#define SWITCH_PRO_JOYSTICK_MAX 0x0FFF
 
 typedef enum {
-    REPORT_OUTPUT_01 = 0x01,
+    REPORT_OUTPUT_00 = 0x00,
+    REPORT_FEATURE = 0x01,
     REPORT_OUTPUT_10 = 0x10,
     REPORT_OUTPUT_21 = 0x21,
     REPORT_OUTPUT_30 = 0x30,
-    REPORT_USB_OUTPUT_80 = 0x80,
+    REPORT_CONFIGURATION = 0x80,
     REPORT_USB_INPUT_81 = 0x81,
 } SwitchReportID;
 
@@ -96,42 +97,65 @@ typedef enum {
     GET_VOLTAGE = 0x50,
 } SwitchCommands;
 
+typedef struct {
+    uint8_t data[3];
+
+    void setX(uint16_t x) {
+        data[0] = x & 0xFF;
+        data[1] = (data[1] & 0xF0) | ((x >> 8) & 0x0F);
+    }
+
+    void setY(uint16_t y) {
+        data[1] = (data[1] & 0x0F) | ((y & 0x0F) << 4);
+        data[2] = (y >> 4) & 0xFF;
+    }
+
+    uint16_t getX() {
+        return static_cast<uint16_t>(data[0]) | ((data[1] & 0x0F) << 8);
+    }
+
+    uint16_t getY() {
+        return static_cast<uint16_t>((data[1] >> 4) & 0x0F) | (data[2] << 4);
+    }
+} SwitchAnalog;
+
 typedef struct __attribute((packed, aligned(1)))
 {
-    uint8_t connection_info : 4;
-    uint8_t battery_level : 4;
+    uint8_t connectionInfo : 4;
+    uint8_t batteryLevel : 4;
 
     // byte 00
-    uint8_t button_y : 1;
-    uint8_t button_x : 1;
-    uint8_t button_b : 1;
-    uint8_t button_a : 1;
-    uint8_t button_right_sl : 1;
-    uint8_t button_right_sr : 1;
-    uint8_t button_r : 1;
-    uint8_t button_zr : 1;
+    uint8_t buttonY : 1;
+    uint8_t buttonX : 1;
+    uint8_t buttonB : 1;
+    uint8_t buttonA : 1;
+    uint8_t buttonRightSL : 1;
+    uint8_t buttonRightSR : 1;
+    uint8_t buttonR : 1;
+    uint8_t buttonZR : 1;
 
     // byte 01
-    uint8_t button_minus : 1;
-    uint8_t button_plus : 1;
-    uint8_t button_thumb_r : 1;
-    uint8_t button_thumb_l : 1;
-    uint8_t button_home : 1;
-    uint8_t button_capture : 1;
+    uint8_t buttonMinus : 1;
+    uint8_t buttonPlus : 1;
+    uint8_t buttonThumbR : 1;
+    uint8_t buttonThumbL : 1;
+    uint8_t buttonHome : 1;
+    uint8_t buttonCapture : 1;
     uint8_t dummy : 1;
-    uint8_t charging_grip : 1;
+    uint8_t chargingGrip : 1;
 
     // byte 02
-    uint8_t dpad_down : 1;
-    uint8_t dpad_up : 1;
-    uint8_t dpad_right : 1;
-    uint8_t dpad_left : 1;
-    uint8_t button_left_sl : 1;
-    uint8_t button_left_sr : 1;
-    uint8_t button_l : 1;
-    uint8_t button_zl : 1;
+    uint8_t dpadDown : 1;
+    uint8_t dpadUp : 1;
+    uint8_t dpadRight : 1;
+    uint8_t dpadLeft : 1;
+    uint8_t buttonLeftSL : 1;
+    uint8_t buttonLeftSR : 1;
+    uint8_t buttonL : 1;
+    uint8_t buttonZL : 1;
 
-    uint8_t analog[6];
+    SwitchAnalog leftStick;
+    SwitchAnalog rightStick;
 } SwitchInputReport;
 
 typedef struct __attribute((packed, aligned(1)))
@@ -139,8 +163,8 @@ typedef struct __attribute((packed, aligned(1)))
     uint8_t reportID;
     uint8_t timestamp;
     SwitchInputReport inputs;
-    uint8_t vibrator_input_report;
-    uint8_t imu_data[36];
+    uint8_t rumbleReport;
+    uint8_t imuData[36];
     uint8_t padding[15];
 } SwitchProReport;
 
