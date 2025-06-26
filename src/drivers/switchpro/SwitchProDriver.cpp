@@ -70,6 +70,8 @@ void SwitchProDriver::initialize() {
         .padding = {0x00}
     };
 
+    last_report_timer = to_ms_since_boot(get_absolute_time());
+
 	class_driver = {
 	#if CFG_TUSB_DEBUG >= 2
 		.name = "SWITCHPRO",
@@ -84,6 +86,9 @@ void SwitchProDriver::initialize() {
 }
 
 bool SwitchProDriver::process(Gamepad * gamepad) {
+    uint32_t now = to_ms_since_boot(get_absolute_time());
+    reportSent = false;
+
     switchReport.inputs.dpadUp =    ((gamepad->state.dpad & GAMEPAD_MASK_DPAD) == GAMEPAD_MASK_UP);
     switchReport.inputs.dpadDown =  ((gamepad->state.dpad & GAMEPAD_MASK_DPAD) == GAMEPAD_MASK_DOWN);
     switchReport.inputs.dpadLeft =  ((gamepad->state.dpad & GAMEPAD_MASK_DPAD) == GAMEPAD_MASK_LEFT);
@@ -124,10 +129,13 @@ bool SwitchProDriver::process(Gamepad * gamepad) {
 		tud_remote_wakeup();
 
     if (isReportQueued) {
-        if (tud_hid_ready() && sendReport(queuedReportID, report, 64) == true ) {
+        if ((now - last_report_timer) > SWITCH_PRO_KEEPALIVE_TIMER) {
+            if (tud_hid_ready() && sendReport(queuedReportID, report, 64) == true ) {
+            }
+            isReportQueued = false;
+            last_report_timer = now;
         }
-        isReportQueued = false;
-        return true;
+        reportSent = true;
     }
 
     Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
@@ -135,15 +143,19 @@ bool SwitchProDriver::process(Gamepad * gamepad) {
     processedGamepad->auxState.playerID.ledValue = playerID;
     processedGamepad->auxState.playerID.value = playerID;
 
-    if (isReady) {
-        switchReport.timestamp = last_report_counter;
-        void * inputReport = &switchReport;
-        uint16_t report_size = sizeof(switchReport);
-        if (memcmp(last_report, inputReport, report_size) != 0) {
-            // HID ready + report sent, copy previous report
-            if (tud_hid_ready() && sendReport(0, inputReport, report_size) == true ) {
-                memcpy(last_report, inputReport, report_size);
-                return true;
+    if (isReady && !reportSent) {
+        if ((now - last_report_timer) > SWITCH_PRO_KEEPALIVE_TIMER) {
+            switchReport.timestamp = last_report_counter;
+            void * inputReport = &switchReport;
+            uint16_t report_size = sizeof(switchReport);
+            if (memcmp(last_report, inputReport, report_size) != 0) {
+                // HID ready + report sent, copy previous report
+                if (tud_hid_ready() && sendReport(0, inputReport, report_size) == true ) {
+                    memcpy(last_report, inputReport, report_size);
+                    reportSent = true;
+                }
+
+                last_report_timer = now;
             }
         }
     } else {
@@ -152,11 +164,14 @@ bool SwitchProDriver::process(Gamepad * gamepad) {
             sendIdentify();
             if (tud_hid_ready() && tud_hid_report(0, report, 64) == true) {
                 isInitialized = true;
+                reportSent = true;
             }
+
+            last_report_timer = now;
         }
     }
 
-    return false;
+    return reportSent;
 }
 
 // tud_hid_get_report_cb

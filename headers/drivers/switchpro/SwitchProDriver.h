@@ -11,6 +11,8 @@
 #include "gpdriver.h"
 #include "drivers/switchpro/SwitchProDescriptors.h"
 
+#define SWITCH_PRO_KEEPALIVE_TIMER 5
+
 class SwitchProDriver : public GPDriver {
 public:
     virtual void initialize();
@@ -36,6 +38,7 @@ private:
     bool isReady = false;
     bool isInitialized = false;
     bool isReportQueued = false;
+    bool reportSent = false;
     uint8_t queuedReportID = 0;
 
     uint8_t handshakeCounter = 0;
