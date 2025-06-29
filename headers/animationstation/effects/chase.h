@@ -23,6 +23,7 @@ typedef enum
   CHASETYPES_VERTICAL_PINGPONG,
   CHASETYPES_RANDOM,
   CHASETYPES_MAX,
+  CHASETYPES_TESTLAYOUT,
 } ChaseTypes;
 
 typedef enum
@@ -66,6 +67,8 @@ protected:
   SingleChaseTypes RandomChaseType;
   
   absolute_time_t NextRunTime = nil_time;
+
+  bool TestLayoutFlipFlop = false;
 };
 
 #endif

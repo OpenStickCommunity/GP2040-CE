@@ -13,8 +13,20 @@
 #include "animation.h"
 #include "specialmovesystem.h"
 
+#include "config.pb.h"
+
 #define MAX_ANIMATION_PROFILES 4
+#define MAX_ANIMATION_PROFILES_INCLUDING_TEST (MAX_ANIMATION_PROFILES+1)
 #define MAX_CASE_LIGHTS 40          //this should be divisible by 4 as we pack 4 indexes into one config int32
+
+typedef enum
+{
+  AnimationStation_TestModeInvalid,
+  AnimationStation_TestModeOff,
+	AnimationStation_TestModeButtons,
+	AnimationStation_TestModeLayout,
+	AnimationStation_TestModeProfilePreview,
+} AnimationStationTestMode;
 
 struct __attribute__ ((__packed__)) AnimationProfile_Unpacked
 {
@@ -45,7 +57,7 @@ struct __attribute__ ((__packed__)) AnimationOptions_Unpacked
 {
   uint32_t checksum;
   uint8_t NumValidProfiles;
-  AnimationProfile_Unpacked profiles[MAX_ANIMATION_PROFILES];
+  AnimationProfile_Unpacked profiles[MAX_ANIMATION_PROFILES_INCLUDING_TEST];
   uint8_t brightness;
   int8_t baseProfileIndex;
 };
@@ -70,6 +82,9 @@ public:
   //What buttons (logical ones) are pressed this frame
   void HandlePressedButtons(uint32_t pressedButtons);
 
+  //webconfig test mode
+  void UpdateTestMode();
+
   int8_t GetMode();
   void SetMode(int8_t mode);
   void SetLights(Lights InRGBLights);
@@ -83,11 +98,16 @@ public:
   static void IncreaseBrightness();
   static void DimBrightnessTo0();
 
-  void decompressSettings();
-  void checkForOptionsUpdate();
+  static void DecompressProfile(int ProfileIndex, const AnimationProfile* ProfileToDecompress);
+  void DecompressSettings();
+  void CheckForOptionsUpdate();
  
   //special move anim
   void SetSpecialMoveAnimation(SpecialMoveEffects AnimationToPlay, uint32_t OptionalParams);
+
+  //Testing/webconfig
+  static void SetTestMode(AnimationStationTestMode TestType, const AnimationProfile* TestProfile);
+  static void SetTestPinState(int PinOrCaseIndex, bool IsCaseLight);
 
   SpecialMoveSystem specialMoveSystem;
 
@@ -129,6 +149,12 @@ protected:
   //options/save
   absolute_time_t timeAnimationSaveSet;
   bool bAnimConfigSaveNeeded = false;
+
+  //Testing/webconfig
+  static AnimationStationTestMode TestMode;
+  static bool bTestModeChangeRequested;
+  static int TestModePinOrCaseIndex;
+  static bool TestModeLightIsCase;
 };
 
 #endif

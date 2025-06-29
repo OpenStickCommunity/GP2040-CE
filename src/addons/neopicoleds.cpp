@@ -37,6 +37,8 @@ const std::string BUTTON_LABEL_A2 = "A2";
 
 static std::vector<uint8_t> EMPTY_VECTOR;
 
+bool NeoPicoLEDAddon::bRestartLeds = false;
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Player LEDs ////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -236,6 +238,13 @@ void NeoPicoLEDAddon::setup() {
 
 void NeoPicoLEDAddon::process()
 {
+	if(bRestartLeds)
+	{
+		bRestartLeds = false; 
+		decompressSettings();
+		configureLEDs();
+	}
+
 	//Check we have LEDs enabled and is it time to update
 	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
 	if (!isValidPin(ledOptions.dataPin) || !time_reached(this->nextRunTime))
@@ -591,9 +600,13 @@ void NeoPicoLEDAddon::configureLEDs()
 	if (ledOptions.pledType == PLED_TYPE_RGB && PLED_COUNT > 0)
 		ledCount += PLED_COUNT;
 
-	// Remove the old neopico (config can call this)
-	neopico.Setup(ledOptions.dataPin, ledCount, static_cast<LEDFormat>(ledOptions.ledFormat), pio0);
-	neopico.Off();
+	// Setup neo pico (once only)
+	if(!bHasSetupNeoPico)
+	{
+		bHasSetupNeoPico = true;
+		neopico.Setup(ledOptions.dataPin, ledCount, static_cast<LEDFormat>(ledOptions.ledFormat), pio0);
+		neopico.Off();
+	}
 
 	Animation::format = static_cast<LEDFormat>(ledOptions.ledFormat);
 	AnimStation.ConfigureBrightness(ledOptions.brightnessMaximum, ledOptions.brightnessSteps);
@@ -608,7 +621,7 @@ void NeoPicoLEDAddon::configureLEDs()
 
 void NeoPicoLEDAddon::decompressSettings()
 {
-	AnimStation.decompressSettings();
+	AnimStation.DecompressSettings();
 }
 
 ////////////////////////////////////////////
@@ -617,6 +630,9 @@ void NeoPicoLEDAddon::decompressSettings()
 
 void NeoPicoLEDAddon::GenerateLights(const LEDOptions_lightData_t& InLightData, uint32_t InLightDataSize)
 {
+	int minX = -1;
+	int minY = -1;
+
 	std::vector<Light> generatedLights;
 	for(int index = 0; index < (int)InLightDataSize; ++index)
 	{
@@ -629,7 +645,24 @@ void NeoPicoLEDAddon::GenerateLights(const LEDOptions_lightData_t& InLightData, 
 						InLightData.bytes[arrayOffset+4],
 						(LightType)InLightData.bytes[arrayOffset+5]);
 
+		//Update mins
+		if(minX == -1 || newLight.Position.XPosition < minX)
+			minX = newLight.Position.XPosition;
+		if(minY == -1 || newLight.Position.YPosition < minY)
+			minY = newLight.Position.YPosition;
+
 		generatedLights.push_back(newLight);
+	}
+
+	//check for critical error
+	if(minX < 0 || minY < 0)
+		return;
+
+	//Strip Empty rows and coloums on left and top side
+	for(int index = 0; index < (int)generatedLights.size(); ++index)
+	{
+		generatedLights[index].Position.XPosition -= minX;
+		generatedLights[index].Position.YPosition -= minY;
 	}
 
 	RGBLights.Setup(generatedLights);

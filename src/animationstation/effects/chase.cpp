@@ -62,6 +62,11 @@ Chase::Chase(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType, 
       RandomChaseType = (SingleChaseTypes)(rand() % (int)SINGLECHASETYPES_MAX);
     } break;
 
+    case ChaseTypes::CHASETYPES_TESTLAYOUT:
+    {
+      RandomChaseType = SingleChaseTypes::SINGLECHASETYPES_LEFT_TO_RIGHT;
+    } break;
+    
     case ChaseTypes::CHASETYPES_SEQUENTIAL_PINGPONG:
     {
       RandomChaseType = SingleChaseTypes::SINGLECHASETYPES_SEQUENTIAL;
@@ -345,6 +350,12 @@ void Chase::CheckForEndOfSequence()
       case ChaseTypes::CHASETYPES_RANDOM:
       {
         RandomChaseType = (SingleChaseTypes)(rand() % (int)SINGLECHASETYPES_MAX);
+      } break;
+      
+      case ChaseTypes::CHASETYPES_TESTLAYOUT:
+      {
+        TestLayoutFlipFlop = !TestLayoutFlipFlop;
+        RandomChaseType = TestLayoutFlipFlop ? SingleChaseTypes::SINGLECHASETYPES_TOP_TO_BOTTOM : SingleChaseTypes::SINGLECHASETYPES_LEFT_TO_RIGHT;
       } break;
       
       default:

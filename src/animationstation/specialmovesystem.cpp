@@ -836,7 +836,7 @@ void SpecialMoveSystem::GetComboArrayForMove(SpecialMoveInputTypes InputType, st
     }
 }
 
-void SpecialMoveSystem::checkForOptionsUpdate()
+void SpecialMoveSystem::CheckForOptionsUpdate()
 {
 /*    bool bChangeDetected = false;
     SpecialMoveOptions_Proto& optionsProto = Storage::getInstance().getSpecialMoveOptions();
