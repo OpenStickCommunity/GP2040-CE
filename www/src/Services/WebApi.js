@@ -702,6 +702,21 @@ function sanitizeRequest(request) {
 	return newRequest;
 }
 
+async function setAnimationButtonTestMode(options) {
+	try {
+		await Http.post(`${baseUrl}/api/setAnimationButtonTestMode`, options);
+	} catch (error) {
+		console.error(err);
+	}
+}
+async function setAnimationButtonTestState(options) {
+	try {
+		await Http.post(`${baseUrl}/api/setAnimationButtonTestState`, options);
+	} catch (error) {
+		console.error(err);
+	}
+}
+
 export default {
 	resetSettings,
 	getAnimationOptions,
@@ -739,6 +754,8 @@ export default {
 	getButtonLayoutDefs,
 	getSplashImage,
 	setSplashImage,
+	setAnimationButtonTestMode,
+	setAnimationButtonTestState,
 	getUsedPins,
 	getHeldPins,
 	abortGetHeldPins,
