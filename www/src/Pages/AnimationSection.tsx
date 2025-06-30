@@ -274,7 +274,7 @@ export default function AnimationSection() {
 
 						<Row className="mb-3">
 							<Col md={6} className="d-flex flex-column justify-content-end">
-								<p>Light the chosen GPIO pin</p>
+								<p>Active light tied to GPIO pin</p>
 								<FormControl
 									type="number"
 									defaultValue={0}
@@ -308,7 +308,7 @@ export default function AnimationSection() {
 								</Button>
 							</Col>
 							<Col md={6} className="d-flex flex-column justify-content-end">
-								<p>Light the case ID</p>
+								<p>Active light tied to case ID</p>
 								<FormControl
 									type="number"
 									defaultValue={0}
