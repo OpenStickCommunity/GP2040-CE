@@ -325,55 +325,6 @@ async function setLedOptions(options) {
 		});
 }
 
-async function getCustomTheme(setLoading) {
-	setLoading(true);
-
-	try {
-		const response = await Http.get(`${baseUrl}/api/getCustomTheme`);
-		setLoading(false);
-
-		let data = { hasCustomTheme: response.data.enabled, customTheme: {} };
-
-		// Transform ARGB int value to hex for easy use on frontend
-		Object.keys(response.data)
-			.filter((p) => p !== 'enabled')
-			.forEach((button) => {
-				data.customTheme[button] = {
-					normal: rgbIntToHex(response.data[button].u),
-					pressed: rgbIntToHex(response.data[button].d),
-				};
-			});
-
-		console.log(data);
-		return data;
-	} catch (error) {
-		setLoading(false);
-		console.error(error);
-	}
-}
-
-async function setCustomTheme(customThemeOptions) {
-	let options = { enabled: customThemeOptions.hasCustomTheme };
-
-	// Transform RGB hex values to ARGB int before sending back to API
-	Object.keys(customThemeOptions.customTheme).forEach((p) => {
-		options[p] = {
-			u: hexToInt(customThemeOptions.customTheme[p].normal.replace('#', '')),
-			d: hexToInt(customThemeOptions.customTheme[p].pressed.replace('#', '')),
-		};
-	});
-
-	return Http.post(`${baseUrl}/api/setCustomTheme`, sanitizeRequest(options))
-		.then((response) => {
-			console.log(response.data);
-			return true;
-		})
-		.catch((err) => {
-			console.error(err);
-			return false;
-		});
-}
-
 async function getButtonLayouts() {
 	try {
 		const response = await Http.get(`${baseUrl}/api/getButtonLayouts`);
@@ -727,8 +678,6 @@ export default {
 	setGamepadOptions,
 	getLedOptions,
 	setLedOptions,
-	getCustomTheme,
-	setCustomTheme,
 	getPinMappings,
 	setPinMappings,
 	getProfileOptions,

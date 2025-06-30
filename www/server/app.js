@@ -323,31 +323,6 @@ app.get('/api/getLedOptions', (req, res) => {
 	});
 });
 
-app.get('/api/getCustomTheme', (req, res) => {
-	console.log('/api/getCustomTheme');
-	return res.send({
-		enabled: true,
-		Up: { u: 16711680, d: 255 },
-		Down: { u: 16711680, d: 255 },
-		Left: { u: 16711680, d: 255 },
-		Right: { u: 16711680, d: 255 },
-		B1: { u: 65280, d: 16711680 },
-		B2: { u: 65280, d: 16711680 },
-		B3: { u: 255, d: 65280 },
-		B4: { u: 255, d: 65280 },
-		L1: { u: 255, d: 65280 },
-		R1: { u: 255, d: 65280 },
-		L2: { u: 65280, d: 16711680 },
-		R2: { u: 65280, d: 16711680 },
-		S1: { u: 65535, d: 16776960 },
-		S2: { u: 65535, d: 16776960 },
-		L3: { u: 65416, d: 16746496 },
-		R3: { u: 65416, d: 16746496 },
-		A1: { u: 8913151, d: 65416 },
-		A2: { u: 8913151, d: 65416 },
-	});
-});
-
 app.get('/api/getPinMappings', (req, res) => {
 	return res.send(createPinMappings({ profileLabel: 'Profile 1' }));
 });

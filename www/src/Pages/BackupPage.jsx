@@ -26,11 +26,7 @@ const API_BINDING = {
 		set: WebApi.setGamepadOptions,
 	},
 	led: { label: 'LED', get: WebApi.getLedOptions, set: WebApi.setLedOptions },
-	ledTheme: {
-		label: 'Custom LED Theme',
-		get: WebApi.getCustomTheme,
-		set: WebApi.setCustomTheme,
-	},
+
 	macros: {
 		label: 'Macro Mappings',
 		get: WebApi.getMacroAddonOptions,
