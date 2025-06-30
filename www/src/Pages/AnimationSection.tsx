@@ -261,17 +261,15 @@ export default function AnimationSection() {
 	};
 
 	return (
-		<Section title="Animation">
-			<Formik
-				validationSchema={schema}
-				onSubmit={onSuccess}
-				initialValues={AnimationOptions}
-				validateOnChange={false}
-			>
-				{({ handleSubmit, handleChange, values, errors, setFieldValue }) => (
-					<div>
-						<p className="h4">Preview helpers</p>
-
+		<Formik
+			validationSchema={schema}
+			onSubmit={onSuccess}
+			initialValues={AnimationOptions}
+			validateOnChange={false}
+		>
+			{({ handleSubmit, handleChange, values, errors, setFieldValue }) => (
+				<div>
+					<Section title="Preview helpers">
 						<Row className="mb-3">
 							<Col md={6} className="d-flex flex-column justify-content-end">
 								<p>Active light tied to GPIO pin</p>
@@ -415,7 +413,8 @@ export default function AnimationSection() {
 								</Button>
 							</Col>
 						</Row>
-						<hr />
+					</Section>
+					<Section title="Led configuration">
 						<Form noValidate onSubmit={handleSubmit}>
 							<Row>
 								<FormSelect
@@ -719,9 +718,9 @@ export default function AnimationSection() {
 							</Button>
 							{saveMessage && <Alert variant="info">{saveMessage}</Alert>}
 						</Form>
-					</div>
-				)}
-			</Formik>
-		</Section>
+					</Section>
+				</div>
+			)}
+		</Formik>
 	);
 }
