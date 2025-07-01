@@ -84,17 +84,17 @@ const Navigation = () => {
 						<NavDropdown.Item
 							as={NavLink}
 							eventKey={eventKey++}
-							to="/led-config"
+							to="/leds"
 						>
 							{t('Navigation:led-config-label')}
 						</NavDropdown.Item>
-						<NavDropdown.Item
+						{/* <NavDropdown.Item
 							as={NavLink}
 							eventKey={eventKey++}
-							to="/custom-theme"
+							to="/led-config"
 						>
-							{t('Navigation:custom-theme-label')}
-						</NavDropdown.Item>
+							{t('Navigation:led-config-label')}
+						</NavDropdown.Item>*/}
 						<NavDropdown.Item
 							as={NavLink}
 							eventKey={eventKey++}
