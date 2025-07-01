@@ -7,6 +7,7 @@ export default {
 		'de-DE': 'Deutsch (German)',
 		'ja-JP': '日本語 (Japanese)',
 		'ko-KR': '한국어 (Korean)',
+		'es-MX': 'Español (Mexican Spanish)',
 	},
 	'color-scheme': {
 		dark: 'Dark',

@@ -18,8 +18,8 @@ const { pico: picoController } = JSON.parse(
 );
 
 // Structure pin mappings to include masks and profile label
-const createPinMappings = ({ profileLabel = 'Profile' }) => {
-	let pinMappings = { profileLabel, enabled: true };
+const createPinMappings = ({ profileLabel = 'Profile', enabled = true }) => {
+	let pinMappings = { profileLabel, enabled };
 
 	for (const [key, value] of Object.entries(picoController)) {
 		pinMappings[key] = {
@@ -113,7 +113,7 @@ app.get('/api/getGamepadOptions', (req, res) => {
 		lockHotkeys: 0,
 		fourWayMode: 0,
 		fnButtonPin: -1,
-		profileNumber: 1,
+		profileNumber: 2,
 		debounceDelay: 5,
 		inputModeB1: 1,
 		inputModeB2: 0,
@@ -412,7 +412,7 @@ app.get('/api/getProfileOptions', (req, res) => {
 	return res.send({
 		alternativePinMappings: [
 			createPinMappings({ profileLabel: 'Profile 2' }),
-			createPinMappings({ profileLabel: 'Profile 3' }),
+			createPinMappings({ profileLabel: 'Profile 3', enabled: false }),
 		],
 	});
 });
@@ -460,12 +460,19 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		analogAdc2Mode: 2,
 		analogAdc2Invert: 0,
 		forced_circularity: 0,
+		forced_circularity2: 0,
 		inner_deadzone: 5,
+		inner_deadzone2: 5,
 		outer_deadzone: 95,
+		outer_deadzone2: 95,
 		auto_calibrate: 0,
+		auto_calibrate2: 0,
 		analog_smoothing: 0,
+		analog_smoothing2: 0,
 		smoothing_factor: 5,
+		smoothing_factor2: 5,
 		analog_error: 1000,
+		analog_error2: 1000,
 		bootselButtonMap: 0,
 		buzzerPin: -1,
 		buzzerEnablePin: -1,

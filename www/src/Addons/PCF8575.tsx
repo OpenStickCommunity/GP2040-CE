@@ -202,7 +202,16 @@ const PCF8575 = ({ values, errors, handleChange, handleCheckbox }) => {
 	}, [savePins]);
 
 	return (
-		<Section title={t('PCF8575:header-text')}>
+		<Section title={
+			<a
+				href="https://gp2040-ce.info/add-ons/pcf8575-io-expander"
+				target="_blank"
+				className="text-reset text-decoration-none"
+			>
+				{t('PCF8575:header-text')}
+			</a>
+		}
+		>
 			<div
 				id="PCF8575AddonOptions"
 				hidden={!(values.PCF8575AddonEnabled && getAvailablePeripherals('i2c'))}

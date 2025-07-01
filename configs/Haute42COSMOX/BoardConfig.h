@@ -263,6 +263,35 @@
      {GP_ELEMENT_PIN_BUTTON, {89, 37, 4, 4, 1, 1, 9,     GP_SHAPE_ELLIPSE}}\
 }
 
+// Stickless 16 Southpaw
+// E16
+#define DEFAULT_BOARD_LAYOUT_A_ALT5 {\
+     {GP_ELEMENT_PIN_BUTTON, {84, 17, 4, 4, 1, 1, 27,    GP_SHAPE_ELLIPSE}},\
+     {GP_ELEMENT_PIN_BUTTON, {96, 27, 4, 4, 1, 1, 4,     GP_SHAPE_ELLIPSE}},\
+     {GP_ELEMENT_PIN_BUTTON, {86, 27, 4, 4, 1, 1, 3,     GP_SHAPE_ELLIPSE}},\
+     {GP_ELEMENT_PIN_BUTTON, {78, 32, 4, 4, 1, 1, 5,     GP_SHAPE_ELLIPSE}},\
+     {GP_ELEMENT_PIN_BUTTON, {87, 47, 4, 4, 1, 1, 19,    GP_SHAPE_ELLIPSE}},\
+     {GP_ELEMENT_PIN_BUTTON, {66, 17, 4, 4, 1, 1, 26,    GP_SHAPE_ELLIPSE}},\
+     {GP_ELEMENT_PIN_BUTTON, {75, 49, 5, 5, 1, 1, 2,     GP_SHAPE_ELLIPSE}},\
+     {GP_ELEMENT_PIN_BUTTON, {63, 47, 4, 4, 1, 1, 18,    GP_SHAPE_ELLIPSE}},\
+     {GP_ELEMENT_PIN_BUTTON, {54, 15, 2, 2, 1, 1, 17,    GP_SHAPE_ELLIPSE}},\
+     {GP_ELEMENT_PIN_BUTTON, {48, 15, 2, 2, 1, 1, 16,    GP_SHAPE_ELLIPSE}},\
+     {GP_ELEMENT_PIN_BUTTON, {42, 15, 2, 2, 1, 1, 20,    GP_SHAPE_ELLIPSE}},\
+     {GP_ELEMENT_PIN_BUTTON, {36, 15, 2, 2, 1, 1, 21,    GP_SHAPE_ELLIPSE}},\
+     {GP_ELEMENT_PIN_BUTTON, {30, 15, 2, 2, 1, 1, 14,    GP_SHAPE_ELLIPSE}}\
+}
+
+#define DEFAULT_BOARD_LAYOUT_B_ALT5 {\
+     {GP_ELEMENT_PIN_BUTTON, {69, 27, 4, 4, 1, 1, 10,    GP_SHAPE_ELLIPSE}},\
+     {GP_ELEMENT_PIN_BUTTON, {59, 25, 4, 4, 1, 1, 11,    GP_SHAPE_ELLIPSE}},\
+     {GP_ELEMENT_PIN_BUTTON, {49, 25, 4, 4, 1, 1, 12,    GP_SHAPE_ELLIPSE}},\
+     {GP_ELEMENT_PIN_BUTTON, {39, 27, 4, 4, 1, 1, 13,    GP_SHAPE_ELLIPSE}},\
+     {GP_ELEMENT_PIN_BUTTON, {69, 37, 4, 4, 1, 1, 6,     GP_SHAPE_ELLIPSE}},\
+     {GP_ELEMENT_PIN_BUTTON, {59, 35, 4, 4, 1, 1, 7,     GP_SHAPE_ELLIPSE}},\
+     {GP_ELEMENT_PIN_BUTTON, {49, 35, 4, 4, 1, 1, 8,     GP_SHAPE_ELLIPSE}},\
+     {GP_ELEMENT_PIN_BUTTON, {39, 37, 4, 4, 1, 1, 9,     GP_SHAPE_ELLIPSE}}\
+}
+ 
 //Data format = {first led index, leds on this light, xcoord, ycoord, GPIO pin/case light Index, Type}
 //Eg,  your first light would be "first led index" = 0 and "leds on this light" = 2. 
 //      your second light would be "first led index" = 2 (as 0 and 1 were just taken by the first light)
@@ -305,14 +334,14 @@
 13, 1, 6, 0, 18, LightType::LightType_ActionButton, \
 14, 1, 8, 5, 19, LightType::LightType_ActionButton, \
 15, 1, 3, 6, 26, LightType::LightType_ActionButton
+
+// Keyboard Host enabled by default
+#define KEYBOARD_HOST_ENABLED 1
  
- // Keyboard Host enabled by default
- #define KEYBOARD_HOST_ENABLED 1
+#define BOARD_LED_ENABLED 1
+#define BOARD_LED_TYPE ON_BOARD_LED_MODE_MODE_INDICATOR
  
- #define BOARD_LED_ENABLED 1
- #define BOARD_LED_TYPE ON_BOARD_LED_MODE_MODE_INDICATOR
- 
- #define DEFAULT_SPLASH \
+#define DEFAULT_SPLASH \
  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \

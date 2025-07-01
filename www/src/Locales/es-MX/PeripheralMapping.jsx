@@ -1,0 +1,35 @@
+export default {
+	'header-text': 'Mapeo de Periféricos',
+	'sub-header-text': '',
+	'pins-label': 'Pines',
+	'pin-in-use': 'en uso',
+	'i2c-label': 'I\u00B2C',
+	'i2c-desc-header': 'Información de I\u00B2C',
+	'i2c-description':
+		'I\u00B2C es una interfaz de dos cables utilizada para dispositivos accesorios, como pantallas, expansión GPIO y sensores a través de las líneas SDA y SCL. El RP2040 admite dos bloques controladores I\u00B2C: I2C0 e I2C1. Los siguientes son los pines GPIO compatibles para cada bloque:',
+	'spi-label': 'SPI',
+	'spi-desc-header': 'Información de SPI',
+	'spi-description':
+		'SPI es una interfaz de cuatro cables utilizada para dispositivos accesorios, como pantallas, expansión GPIO y sensores a través de una línea de datos RX y TX, así como una línea de reloj SCK y una línea CS de selección de chip/sincronización. El RP2040 admite dos bloques controladores SPI: SPI0 y SPI1. Los siguientes son los pines GPIO compatibles para cada bloque:',
+	'usb-label': 'Host USB',
+	'usb-desc-header': 'Información de Host USB',
+	'usb-description':
+		'El Host USB permite utilizar dispositivos cliente USB compatibles, como teclados, controles de juego u otros dispositivos.',
+	'peripheral-toggle-unavailable':
+		'No se puede habilitar. Periférico "{{name}}" no disponible. Habilítelo en la sección <0>Mapeo de Periféricos</0>.',
+	'pin-sda-label': 'SDA',
+	'pin-scl-label': 'SCL',
+	'option-speed-label': 'Velocidad',
+	'option-speed-choice-100000-label': 'Normal',
+	'option-speed-choice-400000-label': 'Rápida',
+	'option-speed-choice-1000000-label': 'Rápida Plus',
+	'pin-rx-label': 'RX',
+	'pin-cs-label': 'CS',
+	'pin-sck-label': 'SCK',
+	'pin-tx-label': 'TX',
+	'pin-dp-label': 'D+',
+	'pin-enable5v-label': 'Habilitar 5V',
+	'option-order-label': 'Orden de Pines GPIO',
+	'option-order-choice-0-label': 'D+/D-',
+	'option-order-choice-1-label': 'D-/D+',
+};

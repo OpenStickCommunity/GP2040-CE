@@ -275,13 +275,13 @@ void Gamepad::process()
 	}
 
 	// hold current dpad state regardless of input
-	uint8_t dpadOriginal = state.dpad;
+	state.dpadOriginal = state.dpad;
 
 	// stash digital-only dpad state for later
-	uint8_t dpadOnlyMask = ((dpadOriginal & 0xF0) >> 4);
+	uint8_t dpadOnlyMask = ((state.dpadOriginal & 0xF0) >> 4);
 
 	// and mask out the mode-specific mask
-	uint8_t dpadModeMask = (dpadOriginal & 0x0F);
+	uint8_t dpadModeMask = (state.dpadOriginal & 0x0F);
 
 	// set dpad back to dpad mode-specific state
 	state.dpad = dpadModeMask;

@@ -137,6 +137,7 @@ const uint32_t buttonMasks[] =
 struct GamepadState
 {
 	uint8_t dpad {0};
+	uint8_t dpadOriginal {0};
 	uint32_t buttons {0};
 	uint16_t aux {0};
 	uint16_t lx {GAMEPAD_JOYSTICK_MID};

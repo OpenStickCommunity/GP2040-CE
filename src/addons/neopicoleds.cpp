@@ -604,7 +604,7 @@ void NeoPicoLEDAddon::configureLEDs()
 	if(!bHasSetupNeoPico)
 	{
 		bHasSetupNeoPico = true;
-		neopico.Setup(ledOptions.dataPin, ledCount, static_cast<LEDFormat>(ledOptions.ledFormat), pio0);
+		neopico.Setup(ledOptions.dataPin, ledCount, static_cast<LEDFormat>(ledOptions.ledFormat), pio0,0);
 		neopico.Off();
 	}
 
