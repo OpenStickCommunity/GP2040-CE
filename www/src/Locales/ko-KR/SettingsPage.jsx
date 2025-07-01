@@ -1,6 +1,6 @@
 export default {
 	'auth-settings-label': '인증 설정',
-	'no-mode-settings-text': '{{mode}} 모드에 관한 설정항목은 없습니다..',
+	'no-mode-settings-text': '{{mode}} 모드에 관한 설정항목은 없습니다.',
 	'settings-header-text': '입력 모드 설정',
 	'gamepad-settings-header-text': '게임패드 설정',
 	'input-mode-label': '입력 모드',
@@ -10,9 +10,9 @@ export default {
 		none: '선택된 모드 없음',
 		xinput: 'XInput',
 		'nintendo-switch': '닌텐도 스위치',
-		ps3: 'PS3/DirectInput',
-		keyboard: '키보드',
+		ps3: 'PS3',
 		generic: '일반 HID 입력',
+		keyboard: '키보드',
 		ps4: 'PS4',
 		ps5: 'PS5',
 		neogeo: 'NEOGEO 미니',
@@ -36,7 +36,7 @@ export default {
 	'input-mode-authentication': {
 		none: '없음',
 		key: '인증키 업로드',
-		usb: 'USB호스트',
+		usb: 'USB 호스트',
 		i2c: 'I2C 연결',
 	},
 	'd-pad-mode-label': 'D-패드 모드',
@@ -57,6 +57,7 @@ export default {
 	},
 	'profile-label': '프로필',
 	'debounce-delay-label': '디바운스 지연(ms)',
+	'mini-menu-gamepad-input': '미니 메뉴에 게임패드 입력 사용',
 	'ps4-mode-explanation-text':
 		'PS4 모드는 GP2040-CE를 인증된 PS4 컨트롤러로 실행합니다.',
 	'ps4-mode-warning-text':
@@ -127,8 +128,16 @@ export default {
 		'load-profile-3': '프로필 불러오기 #3',
 		'load-profile-4': '프로필 불러오기 #4',
 		'reboot-default': 'GP2040-CE 재시작',
+		'save-config': '설정 저장',
 		'next-profile': '다음 프로필',
 		'previous-profile': '이전 프로필',
+		'menu-nav-up': '메뉴 위',
+		'menu-nav-down': '메뉴 아래',
+		'menu-nav-left': '메뉴 왼쪽',
+		'menu-nav-right': '메뉴 오른쪽',
+		'menu-nav-select': '메뉴 선택',
+		'menu-nav-back': '메뉴 이전',
+		'menu-nav-toggle': '메뉴 토글',
 	},
 	'forced-setup-mode-label': '강제 설정 모드',
 	'forced-setup-mode-options': {
@@ -145,4 +154,15 @@ export default {
 	'keyboard-mapping-header-text': '키보드 매핑',
 	'keyboard-mapping-sub-header-text':
 		'아래에서 버튼-키보드 매핑을 설정해 주세요.',
+	'usb-override': {
+		'advanced-override': '⚠️ 고급 USB 우선설정',
+		'invalid-warning-danger':
+			'위험: 잘못된 USB 매개변수 사용시 입력장치가 작동하지 않을 수 있습니다!',
+		'product-name': '제품명',
+		manufacturer: '제조사',
+		version: '버전',
+		'physical-warning-danger': '⚡ 물리적 ID 값 변경 ⚡ ',
+		'product-id': '제품 ID',
+		'vendor-id': '벤더 ID',
+	},
 };

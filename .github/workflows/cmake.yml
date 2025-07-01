@@ -28,6 +28,7 @@ jobs:
           Blank,
           Pico,
           PicoW,
+          Pico2,
           BentoBox,
           DuelPadZen,
           FlatboxRev4,
@@ -47,6 +48,7 @@ jobs:
           MavercadeRev2,
           MiSTercadeV2,
           OpenCore0,
+          OpenCore0MIXUP,
           OpenCore0WASD,
           OSUMGP-RP2040,
           PicoAnn,
@@ -65,6 +67,7 @@ jobs:
           RP2040MiniBreakoutBoardUSBPassthrough,
           SeeedXIAORP2040,
           SparkFunProMicro,
+          SparkFunProMicroRP2350,
           WaveshareZero,
           Stress,
           SGFDevices,
@@ -74,7 +77,7 @@ jobs:
     - name: Setup cmake
       uses: jwlawson/actions-setup-cmake@v2
       with:
-        cmake-version: '3.16.x'
+        cmake-version: '3.17.x'
     - name: Verify cmake
       run: cmake --version
 
@@ -86,7 +89,7 @@ jobs:
         fetch-tags: true
 
     - name: Setup SDK pipeline
-      uses: Fortinbra/RaspberryPiPicoBuild@v3
+      uses: Fortinbra/RaspberryPiPicoBuild@v7
 
     - name: Download a Build Artifact
       uses: actions/download-artifact@v4.1.2
@@ -101,13 +104,18 @@ jobs:
 
     - name: Pico Build Configure CMake
       shell: bash
-      if: ${{ matrix.GP2040_BOARDCONFIG != 'PicoW'}}
+      if: ${{ matrix.GP2040_BOARDCONFIG != 'PicoW' && matrix.GP2040_BOARDCONFIG != 'Pico2' && matrix.GP2040_BOARDCONFIG != 'SparkFunProMicroRP2350' }}
       run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=${{ matrix.GP2040_BOARDCONFIG }} SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
     - name: PicoW Build Configure CMake
       shell: bash
       if: ${{ matrix.GP2040_BOARDCONFIG == 'PicoW'}}
       run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=${{ matrix.GP2040_BOARDCONFIG }} SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico_w
+
+    - name: Pico2 Build Configure CMake
+      shell: bash
+      if: ${{ matrix.GP2040_BOARDCONFIG == 'Pico2' || matrix.GP2040_BOARDCONFIG == 'SparkFunProMicroRP2350' }}
+      run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=${{ matrix.GP2040_BOARDCONFIG }} SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico2 -DPICO_PLATFORM=rp2350-arm-s
 
     - name: Pico Build
       shell: bash

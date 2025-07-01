@@ -113,7 +113,7 @@ export default {
 	'ps4-mode-signature-label': '签名 (256 字节的二进制文件)',
 	'snes-extension-header-text': 'SNES 扩展配置',
 	'snes-extension-sub-header-text':
-		'<0>注意： 如果同时启用了显示屏功能, 此插件将会被禁用。</0> <1>当前已支持的控制器</1> <0>SNES pad：支持十字键。 B = B1, A = B2, Y = B3, X = B4, L = L1, R = R1, Select = S1, Start = S2</0> <0>SNES mouse：支持模拟摇杆。 Left Click = B1, Right Click = B2</0> <0>NES：支持十字键。 B = B1, A = B2, Select = S1, Start = S2</0>',
+		'<0>注意： 如果同时启用了显示屏功能, 此插件将会被禁用。</0> <1>当前已支持的控制器</1> <2>SNES pad：支持十字键。 B = B1, A = B2, Y = B3, X = B4, L = L1, R = R1, Select = S1, Start = S2<br/>SNES mouse：支持模拟摇杆。 Left Click = B1, Right Click = B2<br/>NES：支持十字键。 B = B1, A = B2, Select = S1, Start = S2</2>',
 	'snes-extension-clock-pin-label': 'Clock 引脚',
 	'snes-extension-latch-pin-label': 'Latch 引脚',
 	'snes-extension-data-pin-label': 'Data 引脚',

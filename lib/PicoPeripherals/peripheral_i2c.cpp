@@ -89,7 +89,11 @@ int16_t PeripheralI2C::write(uint8_t address, uint8_t *data, uint16_t len, bool 
 
 uint8_t PeripheralI2C::test(uint8_t address) {
     uint8_t data;
-    int16_t ret = i2c_read_blocking(_I2C, address, &data, 1, false);
+    
+    // TODO: Revert to i2c_read_blocking when we have I2C resolved
+    // int16_t ret = i2c_read_blocking(_I2C, address, &data, 1, false);
+    absolute_time_t test_timeout = make_timeout_time_ms(100);
+    int16_t ret = i2c_read_blocking_until(_I2C, address, &data, 1, false, test_timeout);
     return (ret >= 0);
 }
 

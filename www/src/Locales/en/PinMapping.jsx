@@ -13,6 +13,8 @@ export default {
 	'profile-disabled': ' - (Disabled)',
 	'profile-enabled-tooltip':
 		'Disabled profiles will not be available when using hotkeys to change profile.',
+	'profile-enabled-active-tooltip':
+		'Cannot disable active profile, change under Settings > Gamepad Settings',
 	'profile-pins-warning':
 		'Try to avoid changing the buttons and/or directions used for the switch profile hotkeys. Otherwise, it will be difficult to understand what profile is being selected!',
 	'profile-copy-base': 'Copy base profile',
