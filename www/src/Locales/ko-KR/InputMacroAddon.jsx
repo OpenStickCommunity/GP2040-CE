@@ -1,12 +1,17 @@
 export default {
+	'input-macro-editor-tab': '편집기',
+	'input-macro-advanced-tab': '고급',
 	'input-macro-board-led-enabled': '매크로 상태 표시에 보드 LED 사용',
-	'input-macro-macro-enabled': '활성화',
-	'input-macro-macro-enabled-badge': '활성화',
+	'input-macro-macro-enabled': '활성',
+	'input-macro-macro-enabled-badge': '활성',
 	'input-macro-macro-disabled-badge': '비활성',
-	'input-macro-macro-exclusive': '독점모드 (다른 매크로로 전환 불가)',
-	'input-macro-macro-interruptible': '중단가능 (사용자 입력으로 매크로 취소)',
+	'input-macro-macro-exclusive':
+		'독점모드 (다른 매크로로 전환 불가)',
+	'input-macro-macro-interruptible':
+		'중단가능 (사용자 입력으로 매크로 취소)',
 	'input-macro-macro-show-frames': '프레임 표시 (1 프레임 = 16.666 ms)',
-	'input-macro-macro-uses-buttons': '매크로 버튼 + 패드 버튼 조합으로 실행',
+	'input-macro-macro-uses-buttons':
+		'매크로 버튼 + 패드 버튼 조합으로 실행',
 	'input-macro-macro-button-pin-plus': '버튼 할당:',
 	'input-macro-header-text': '매크로 개요',
 	'input-macro-macro-list-txt': '매크로 {{macroNumber}}',

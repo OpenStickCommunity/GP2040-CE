@@ -3,13 +3,18 @@
 ;
 ; SPDX-License-Identifier: BSD-3-Clause
 ;
+.pio_version 0 // only requires PIO version 0
 
 .program ws2812
 .side_set 1
 
-.define public T1 2
-.define public T2 5
-.define public T3 3
+; The following constants are selected for broad compatibility with WS2812,
+; WS2812B, and SK6812 LEDs. Other constants may support higher bandwidths for
+; specific LEDs, such as (7,10,8) for WS2812B LEDs.
+
+.define public T1 3
+.define public T2 3
+.define public T3 4
 
 .lang_opt python sideset_init = pico.PIO.OUT_HIGH
 .lang_opt python out_init     = pico.PIO.OUT_HIGH
@@ -49,9 +54,9 @@ static inline void ws2812_program_init(PIO pio, uint sm, uint offset, uint pin, 
 
 .program ws2812_parallel
 
-.define public T1 2
-.define public T2 5
-.define public T3 3
+.define public T1 3
+.define public T2 3
+.define public T3 4
 
 .wrap_target
     out x, 32
@@ -72,7 +77,6 @@ static inline void ws2812_parallel_program_init(PIO pio, uint sm, uint offset, u
     pio_sm_config c = ws2812_parallel_program_get_default_config(offset);
     sm_config_set_out_shift(&c, true, true, 32);
     sm_config_set_out_pins(&c, pin_base, pin_count);
-    sm_config_set_set_pins(&c, pin_base, pin_count);
     sm_config_set_fifo_join(&c, PIO_FIFO_JOIN_TX);
 
     int cycles_per_bit = ws2812_parallel_T1 + ws2812_parallel_T2 + ws2812_parallel_T3;

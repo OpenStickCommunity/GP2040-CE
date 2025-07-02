@@ -1,0 +1,42 @@
+export default {
+	'input-macro-editor-tab': 'Editor',
+	'input-macro-advanced-tab': 'Avanzado',
+	'input-macro-board-led-enabled': 'Usar LED de la Placa para Mostrar Estado de Macro',
+	'input-macro-macro-enabled': 'Habilitado',
+	'input-macro-macro-enabled-badge': 'Habilitado',
+	'input-macro-macro-disabled-badge': 'Deshabilitado',
+	'input-macro-macro-exclusive': 
+		'Exclusivo (No Se Puede Cambiar a Otro Macro)',
+	'input-macro-macro-interruptible': 
+		'Interrumpible (La Entrada del Usuario Cancela el Macro)',
+	'input-macro-macro-show-frames': 'Mostrar Frames (1 Frame = 16.666 ms)',
+	'input-macro-macro-uses-buttons': 
+		'Usar Botón de Macro + Botón de Control para Activar',
+	'input-macro-macro-button-pin-plus': 'Asignación de Botón:',
+	'input-macro-header-text': 'Resumen de Macros',
+	'input-macro-macro-list-txt': 'Macro {{macroNumber}}',
+	'input-macro-duration-label': 'Duración',
+	'input-macro-wait-duration-label': 'Duración de Espera',
+	'input-macro-time-label-ms': 'ms',
+	'input-macro-time-label-frames': 'frame(s)',
+	'input-macro-release-and-wait-label': 'soltar y esperar ',
+	'input-macro-sub-header': 
+		'Nota: Para los macros mapeados a pines, consulte la página de Mapeo de Pines en Configuración. Los macros también pueden asignarse a un botón del control manteniendo presionado el botón de Macro correspondiente.',
+	'input-macro-macro-label-label': 'Etiqueta',
+	'input-macro-add-input-label': 'Añadir Entrada +',
+	'input-macro-type': {
+		press: 'Presionar',
+		'hold-repeat': 'Mantener Repetir',
+		toggle: 'Alternar',
+	},
+	'macro-name': 'Nombre del Macro',
+	'macro-activation-type': 'Tipo de Activación del Macro',
+	'table-thread-label': 'Etiqueta',
+	'table-thread-type': 'Tipo',
+	'table-thread-assigned-to': 'Asignado A',
+	'table-thread-button': 'Botón',
+	'table-thread-actions': 'Acciones',
+	'table-thread-status': 'Estado',
+	'input-macro-macro-trigger-type-button': 'Botón',
+	'input-macro-macro-trigger-type-pin': 'Pin',
+};

@@ -12,10 +12,10 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    - uses: actions/checkout@v4.1.1
+    - uses: actions/checkout@v4.2.2
 
     - name: Use Node.js
-      uses: actions/setup-node@v4.0.2
+      uses: actions/setup-node@v4.4.0
       with:
         node-version: '20.x'
         cache: 'npm'
@@ -30,7 +30,7 @@ jobs:
       run: CI=false npm run build --if-present
 
     - name: Upload www Artifact
-      uses: actions/upload-artifact@v4.3.1
+      uses: actions/upload-artifact@v4.6.2
       with:
         name: fsData
         path: ${{github.workspace}}/lib/httpd/fsdata.c

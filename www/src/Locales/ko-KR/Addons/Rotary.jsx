@@ -18,4 +18,5 @@ export default {
 	'encoder-mode-right-trigger': '오른쪽 트리거',
 	'encoder-mode-dpad-x': 'D-패드 좌/우',
 	'encoder-mode-dpad-y': 'D-패드 상/하',
+	'encoder-mode-volume': '볼륨 (키보드 전용)',
 };
