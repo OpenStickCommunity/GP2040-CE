@@ -1019,7 +1019,9 @@ export default function SettingsPage() {
 							checked={Boolean(values.usbDescOverride)}
 							onChange={(e) => {
 								setFieldValue('usbDescOverride', e.target.checked ? 1 : 0);
-							}}
+								setFieldValue('usbOverrideID', e.target.checked ? values.usbOverrideID : 0);
+								}
+							}
 						/>
 					</Col>
 				</Row>

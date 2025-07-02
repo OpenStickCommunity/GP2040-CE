@@ -36,7 +36,16 @@ const Reverse = ({ values, errors, handleChange, handleCheckbox }) => {
 		label: t(`AddonsConfig:reverse-action-${option.label.toLowerCase()}-label`),
 	}));
 	return (
-		<Section title={t('AddonsConfig:input-reverse-header-text')}>
+		<Section title={
+			<a
+				href="https://gp2040-ce.info/add-ons/input-reverse"
+				target="_blank"
+				className="text-reset text-decoration-none"
+			>
+				{t('AddonsConfig:input-reverse-header-text')}
+			</a>
+		}
+		>
 			<div id="ReverseInputOptions" hidden={!values.ReverseInputEnabled}>
 				<Row className="mb-3">
 					<FormControl
