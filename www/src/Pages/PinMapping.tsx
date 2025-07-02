@@ -81,8 +81,8 @@ const options = Object.entries(BUTTON_ACTIONS)
 			type: buttonMask
 				? 'customButtonMask'
 				: dpadMask
-				? 'customDpadMask'
-				: 'action',
+					? 'customDpadMask'
+					: 'action',
 			customButtonMask: buttonMask?.value || 0,
 			customDpadMask: dpadMask?.value || 0,
 		};
@@ -121,7 +121,7 @@ const getMultiValue = (pinData: MaskPayload) => {
 						type === 'customButtonMask') ||
 					(pinData.customDpadMask & customDpadMask &&
 						type === 'customDpadMask'),
-		  )
+			)
 		: options.filter((option) => option.value === pinData.action);
 };
 
@@ -235,6 +235,28 @@ const PinSelectList = memo(function PinSelectList({
 		[],
 	);
 
+	const activateLedOnIndex = useCallback(async (index: number) => {
+		await WebApi.setAnimationButtonTestMode({
+			TestData: {
+				testMode: 2,
+			},
+		});
+		await WebApi.setAnimationButtonTestState({
+			TestLight: {
+				testID: index,
+				testIsCaseLight: 0,
+			},
+		});
+	}, []);
+
+	const turnOffLeds = useCallback(() => {
+		WebApi.setAnimationButtonTestMode({
+			TestData: {
+				testMode: 1,
+			},
+		});
+	}, []);
+
 	const getOptionLabel = useCallback(
 		(option: OptionType) => {
 			const labelKey = option.label?.split('BUTTON_PRESS_')?.pop();
@@ -246,6 +268,7 @@ const PinSelectList = memo(function PinSelectList({
 		},
 		[buttonNames],
 	);
+
 	return (
 		<div className="pin-grid gap-3 mt-2">
 			{Object.entries(pins).map(([pin, pinData], index) => (
@@ -261,6 +284,8 @@ const PinSelectList = memo(function PinSelectList({
 						getOptionLabel={getOptionLabel}
 						onChange={onChange(pin)}
 						value={getMultiValue(pinData)}
+						onFocus={() => activateLedOnIndex(index)}
+						onBlur={turnOffLeds}
 					/>
 				</div>
 			))}
