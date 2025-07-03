@@ -116,10 +116,10 @@ bool SwitchProDriver::process(Gamepad * gamepad) {
     switchReport.inputs.buttonZL = gamepad->pressedL2();
 
     // analog
-    switchReport.inputs.leftStick.setX(gamepad->state.lx);
-    switchReport.inputs.leftStick.setY(gamepad->state.ly);
-    switchReport.inputs.rightStick.setX(gamepad->state.rx);
-    switchReport.inputs.rightStick.setY(gamepad->state.ry);
+    switchReport.inputs.leftStick.setX(scale12To16(gamepad->state.lx));
+    switchReport.inputs.leftStick.setY(-scale12To16(gamepad->state.ly));
+    switchReport.inputs.rightStick.setX(scale12To16(gamepad->state.rx));
+    switchReport.inputs.rightStick.setY(-scale12To16(gamepad->state.ry));
 
     switchReport.rumbleReport = 0x09;
     //switchReport.reportID = inputMode;
@@ -534,5 +534,5 @@ const uint8_t * SwitchProDriver::get_descriptor_device_qualifier_cb() {
 }
 
 uint16_t SwitchProDriver::GetJoystickMidValue() {
-	return SWITCH_PRO_JOYSTICK_MID << 8;
+    return SWITCH_PRO_JOYSTICK_MID;
 }

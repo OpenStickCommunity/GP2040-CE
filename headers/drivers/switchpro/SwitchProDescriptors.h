@@ -20,22 +20,6 @@
 #define SWITCH_PRO_HAT_UPLEFT    0x07
 #define SWITCH_PRO_HAT_NOTHING   0x08
 
-// Button report (16 bits)
-//#define SWITCH_PRO_MASK_Y       (1U <<  0)
-//#define SWITCH_PRO_MASK_B       (1U <<  1)
-//#define SWITCH_PRO_MASK_A       (1U <<  2)
-//#define SWITCH_PRO_MASK_X       (1U <<  3)
-//#define SWITCH_PRO_MASK_L       (1U <<  4)
-//#define SWITCH_PRO_MASK_R       (1U <<  5)
-//#define SWITCH_PRO_MASK_ZL      (1U <<  6)
-//#define SWITCH_PRO_MASK_ZR      (1U <<  7)
-//#define SWITCH_PRO_MASK_MINUS   (1U <<  8)
-//#define SWITCH_PRO_MASK_PLUS    (1U <<  9)
-//#define SWITCH_PRO_MASK_L3      (1U << 10)
-//#define SWITCH_PRO_MASK_R3      (1U << 11)
-//#define SWITCH_PRO_MASK_HOME    (1U << 12)
-//#define SWITCH_PRO_MASK_CAPTURE (1U << 13)
-
 #define SWITCH_PRO_MASK_ZR (1U << 7)
 #define SWITCH_PRO_MASK_R (1U << 6)
 #define SWITCH_PRO_MASK_A (1U << 3)
@@ -115,7 +99,7 @@ typedef struct {
     }
 
     uint16_t getY() {
-        return static_cast<uint16_t>((data[1] >> 4) & 0x0F) | (data[2] << 4);
+        return static_cast<uint16_t>((data[1] >> 4)) | (data[2] << 4);
     }
 } SwitchAnalog;
 
@@ -176,7 +160,8 @@ typedef enum {
     SWITCH_TYPE_FAMICOM_RIGHT_JOYCON = 0x08,
     SWITCH_TYPE_NES_LEFT_JOYCON = 0x09,
     SWITCH_TYPE_NES_RIGHT_JOYCON = 0x0A,
-    SWITCH_TYPE_SNES_RIGHT_JOYCON = 0x0B,
+    SWITCH_TYPE_SNES = 0x0B,
+    SWITCH_TYPE_N64 = 0x0C,
 } SwitchControllerType;
 
 typedef struct {
