@@ -36,6 +36,7 @@ import useLedStore, {
 } from '../Store/useLedStore';
 import boards from '../Data/Boards.json';
 import WebApi from '../Services/WebApi';
+import useLedsPreview from '../Hooks/useLedsPreview';
 
 const GPIO_PIN_LENGTH = boards[import.meta.env.VITE_GP2040_BOARD].maxPin + 1;
 const GPIO_PIN_ARRAY = Array.from({ length: GPIO_PIN_LENGTH });
@@ -238,6 +239,13 @@ const ColorSelectorList = memo(function ColorSelectorList({
 });
 export default function AnimationSection() {
 	const { AnimationOptions, saveAnimationOptions } = useLedStore();
+	const {
+		activateLedsOnId,
+		activateLedsProfile,
+		activateLedsChase,
+		turnOffLeds,
+	} = useLedsPreview();
+
 	const [key, setKey] = useState(
 		`profile-${AnimationOptions.baseProfileIndex}`,
 	);
@@ -277,7 +285,7 @@ export default function AnimationSection() {
 									type="number"
 									defaultValue={0}
 									className="form-control-sm"
-									groupClassName=" mb-3"
+									groupClassName="mb-3"
 									min={0}
 									value={previewGpioPin}
 									onChange={(e) => {
@@ -288,18 +296,8 @@ export default function AnimationSection() {
 
 								<Button
 									variant="secondary"
-									onClick={async () => {
-										await WebApi.setAnimationButtonTestMode({
-											TestData: {
-												testMode: 2,
-											},
-										});
-										await WebApi.setAnimationButtonTestState({
-											TestLight: {
-												testID: previewGpioPin,
-												testIsCaseLight: 0,
-											},
-										});
+									onClick={() => {
+										activateLedsOnId(previewGpioPin);
 									}}
 								>
 									GPIO Pin Test
@@ -324,18 +322,8 @@ export default function AnimationSection() {
 
 								<Button
 									variant="secondary"
-									onClick={async () => {
-										await WebApi.setAnimationButtonTestMode({
-											TestData: {
-												testMode: 2,
-											},
-										});
-										await WebApi.setAnimationButtonTestState({
-											TestLight: {
-												testID: previewCaseId,
-												testIsCaseLight: 1,
-											},
-										});
+									onClick={() => {
+										activateLedsOnId(previewCaseId, true);
 									}}
 								>
 									Case ID Test
@@ -351,11 +339,7 @@ export default function AnimationSection() {
 								<Button
 									variant="secondary"
 									onClick={() => {
-										WebApi.setAnimationButtonTestMode({
-											TestData: {
-												testMode: 3,
-											},
-										});
+										activateLedsChase();
 									}}
 								>
 									Layout Test
@@ -386,12 +370,7 @@ export default function AnimationSection() {
 								<Button
 									variant="secondary"
 									onClick={() => {
-										WebApi.setAnimationButtonTestMode({
-											TestData: {
-												testMode: 4,
-												testProfile: values.profiles[previewProfileIndex],
-											},
-										});
+										activateLedsProfile(values.profiles[previewProfileIndex]);
 									}}
 								>
 									Profile Test
@@ -402,11 +381,7 @@ export default function AnimationSection() {
 								<Button
 									variant="secondary"
 									onClick={() => {
-										WebApi.setAnimationButtonTestMode({
-											TestData: {
-												testMode: 1,
-											},
-										});
+										turnOffLeds();
 									}}
 								>
 									Lights Off

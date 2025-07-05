@@ -40,6 +40,7 @@ import './PinMapping.scss';
 import { MultiValue, SingleValue } from 'react-select';
 import InfoCircle from '../Icons/InfoCircle';
 import WebApi from '../Services/WebApi';
+import useLedsPreview from '../Hooks/useLedsPreview';
 
 type OptionType = {
 	label: string;
@@ -169,7 +170,7 @@ const PinSelectList = memo(function PinSelectList({
 	profileIndex: number;
 }) {
 	const setProfilePin = useProfilesStore((state) => state.setProfilePin);
-
+	const { activateLedsOnId, turnOffLeds } = useLedsPreview();
 	const pins = useProfilesStore(
 		useShallow((state) =>
 			omit(state.profiles[profileIndex], ['profileLabel', 'enabled']),
@@ -235,28 +236,6 @@ const PinSelectList = memo(function PinSelectList({
 		[],
 	);
 
-	const activateLedOnIndex = useCallback(async (index: number) => {
-		await WebApi.setAnimationButtonTestMode({
-			TestData: {
-				testMode: 2,
-			},
-		});
-		await WebApi.setAnimationButtonTestState({
-			TestLight: {
-				testID: index,
-				testIsCaseLight: 0,
-			},
-		});
-	}, []);
-
-	const turnOffLeds = useCallback(() => {
-		WebApi.setAnimationButtonTestMode({
-			TestData: {
-				testMode: 1,
-			},
-		});
-	}, []);
-
 	const getOptionLabel = useCallback(
 		(option: OptionType) => {
 			const labelKey = option.label?.split('BUTTON_PRESS_')?.pop();
@@ -284,7 +263,7 @@ const PinSelectList = memo(function PinSelectList({
 						getOptionLabel={getOptionLabel}
 						onChange={onChange(pin)}
 						value={getMultiValue(pinData)}
-						onFocus={() => activateLedOnIndex(index)}
+						onFocus={() => activateLedsOnId(index)}
 						onBlur={turnOffLeds}
 					/>
 				</div>
