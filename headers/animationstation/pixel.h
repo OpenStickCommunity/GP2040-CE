@@ -20,38 +20,6 @@ struct Pixel {
 
 inline const Pixel NO_PIXEL(-1);
 
-struct PixelMatrix {
-  PixelMatrix() { }
-
-  std::vector<std::vector<Pixel>> pixels;
-  uint8_t ledsPerPixel;
-  void setup(std::vector<std::vector<Pixel>> pixels, int ledsPerPixel = -1) {
-    this->pixels = pixels;
-    this->ledsPerPixel = ledsPerPixel;
-  }
-
-  inline int getLedCount() {
-    int count = 0;
-    for (auto &col : pixels)
-      for (auto &pixel : col)
-        if (pixel.index == NO_PIXEL.index)
-          continue;
-        else
-          count += pixel.positions.size();
-
-    return count;
-  }
-
-  inline uint16_t getPixelCount() const {
-    uint16_t count = 0;
-    for (auto &col : pixels)
-      count += col.size();
-
-    return count;
-  }
-
-};
-
 inline bool operator==(const Pixel &lhs, const Pixel &rhs) {
   return lhs.index == rhs.index;
 }
@@ -121,17 +89,19 @@ public:
 
   void Setup(std::vector<Light> InLights)
   {
+    AllLights.clear();
     AllLights = InLights;
   }
 
   inline uint8_t GetLedCount() const
   {
-    int count = 0;
+    int highestLedSoFar = 0;
     for(const Light& thisLight : AllLights )
     {
-      count += thisLight.LedsPerLight;
+      if(thisLight.FirstLedIndex + thisLight.LedsPerLight > highestLedSoFar)
+        highestLedSoFar = thisLight.FirstLedIndex + thisLight.LedsPerLight;
     }
-    return count;
+    return highestLedSoFar;
   }
 
   inline uint16_t GetLightsCount() const
