@@ -295,33 +295,6 @@ async function setGamepadOptions(options) {
 		});
 }
 
-async function getLedOptions(setLoading) {
-	setLoading(true);
-
-	try {
-		const response = await Http.get(`${baseUrl}/api/getLedOptions`);
-		setLoading(false);
-
-		response.data.pledColor = rgbIntToHex(response.data.pledColor) || '#ffffff';
-
-		return response.data;
-	} catch (error) {
-		setLoading(false);
-		console.error(error);
-	}
-}
-
-async function setLedOptions(options) {
-	return Http.post(`${baseUrl}/api/setLedOptions`, sanitizeRequest(options))
-		.then((response) => {
-			return true;
-		})
-		.catch((err) => {
-			console.error(err);
-			return false;
-		});
-}
-
 async function getButtonLayouts() {
 	try {
 		const response = await Http.get(`${baseUrl}/api/getButtonLayouts`);
@@ -667,8 +640,6 @@ export default {
 	setDisplayOptions,
 	getGamepadOptions,
 	setGamepadOptions,
-	getLedOptions,
-	setLedOptions,
 	getPinMappings,
 	setPinMappings,
 	getProfileOptions,

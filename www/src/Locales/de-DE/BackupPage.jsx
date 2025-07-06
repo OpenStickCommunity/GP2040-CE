@@ -9,7 +9,7 @@ export default {
 	'load-export-option-label': 'Importiere {{api}} Optionen',
 	'api-display-text': 'Display',
 	'api-gamepad-text': 'Gamepad',
-	'api-led-text': 'LED',
+	'api-leds-text': 'LED',
 	'api-ledTheme-text': 'Benutzerdefiniertes LED-Thema',
 	'api-pins-text': 'Pin Zuweisungen',
 	'api-profiles-text': 'Profile Zuweisungen',
