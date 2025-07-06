@@ -1,45 +1,51 @@
 import { useDraggable } from '@dnd-kit/core';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Light } from '../Store/useLedStore';
 
 type LightIndicatorProps = {
-	id: string;
-	x: number;
-	y: number;
+	id: number;
 	cellWidth: number;
 	active: boolean;
-};
+} & Light;
 
-const LightbulbFill = (
-	<svg
-		xmlns="http://www.w3.org/2000/svg"
-		width="32"
-		height="32"
-		fill="currentColor"
-		viewBox="0 0 16 16"
-		style={{ filter: 'drop-shadow(0 4px 16px rgba(255, 255, 200, 0.7))' }}
-	>
-		<path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a2 2 0 0 0-.453-.618A5.98 5.98 0 0 1 2 6m3 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5" />
-	</svg>
-);
-
-const Lightbulb = (
-	<svg
-		xmlns="http://www.w3.org/2000/svg"
-		width="32"
-		height="32"
-		fill="currentColor"
-		viewBox="0 0 16 16"
-		style={{ filter: 'drop-shadow(0 4px 16px rgba(255, 255, 200, 0.7))' }}
-	>
-		<path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13a.5.5 0 0 1 0 1 .5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1 0-1 .5.5 0 0 1 0-1 .5.5 0 0 1-.46-.302l-.761-1.77a2 2 0 0 0-.453-.618A5.98 5.98 0 0 1 2 6m6-5a5 5 0 0 0-3.479 8.592c.263.254.514.564.676.941L5.83 12h4.342l.632-1.467c.162-.377.413-.687.676-.941A5 5 0 0 0 8 1" />
-	</svg>
+const LightIcon = ({ size, active }: { size: number; active: boolean }) => (
+	<div>
+		{active ? (
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width={size}
+				height={size}
+				fill="currentColor"
+				viewBox="0 0 16 16"
+				style={{ filter: 'drop-shadow(0 4px 16px rgba(255, 255, 200, 0.7))' }}
+			>
+				<path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a2 2 0 0 0-.453-.618A5.98 5.98 0 0 1 2 6m3 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5" />
+			</svg>
+		) : (
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width={size}
+				height={size}
+				fill="currentColor"
+				viewBox="0 0 16 16"
+				style={{ filter: 'drop-shadow(0 4px 16px rgba(255, 255, 200, 0.7))' }}
+			>
+				<path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13a.5.5 0 0 1 0 1 .5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1 0-1 .5.5 0 0 1 0-1 .5.5 0 0 1-.46-.302l-.761-1.77a2 2 0 0 0-.453-.618A5.98 5.98 0 0 1 2 6m6-5a5 5 0 0 0-3.479 8.592c.263.254.514.564.676.941L5.83 12h4.342l.632-1.467c.162-.377.413-.687.676-.941A5 5 0 0 0 8 1" />
+			</svg>
+		)}
+	</div>
 );
 
 export function LightIndicator({
 	id,
-	cellWidth,
-	y,
-	x,
 	active = false,
+	cellWidth,
+	yCoord,
+	xCoord,
+	numLedsOnLight,
+	firstLedIndex,
+	lightType,
+	GPIOPinorCaseChainIndex,
 }: LightIndicatorProps) {
 	const { attributes, isDragging, listeners, setNodeRef, transform } =
 		useDraggable({ id });
@@ -58,8 +64,8 @@ export function LightIndicator({
 				justifyContent: 'center',
 				alignItems: 'center',
 				display: 'flex',
-				left: x * cellWidth,
-				top: y * cellWidth,
+				left: xCoord * cellWidth,
+				top: yCoord * cellWidth,
 				position: 'absolute',
 				appearance: 'none',
 				background: 'none',
@@ -68,7 +74,53 @@ export function LightIndicator({
 				clear: 'both',
 			}}
 		>
-			{active ? LightbulbFill : Lightbulb}
+			{isDragging ? (
+				<LightIcon size={cellWidth} active={active} />
+			) : (
+				<OverlayTrigger
+					placement="top"
+					// trigger={['hover', 'focus']}
+					overlay={
+						<Tooltip>
+							<div className="d-flex flex-column align-items-start min-w-110 p-1">
+								<div className="fw-semibold mb-1">Light {id + 1}</div>
+								<hr className="m-1 w-100" style={{ margin: '1px 0' }} />
+								<div className="d-flex w-100 justify-content-between">
+									<span className="text-secondary">GPIO/Case:</span>
+									<span>{GPIOPinorCaseChainIndex}</span>
+								</div>
+								<div className="d-flex w-100 justify-content-between">
+									<span className="text-secondary">Type:</span>
+									<span>
+										{lightType === 0 && 'ActionButton'}
+										{lightType === 1 && 'Case'}
+										{lightType === 2 && 'Turbo'}
+										{lightType === 3 && 'PlayerLight'}
+									</span>
+								</div>
+								<div className="d-flex w-100 justify-content-between">
+									<span className="text-secondary">LEDs:</span>
+									<span>{numLedsOnLight}</span>
+								</div>
+								<div className="d-flex w-100 justify-content-between">
+									<span className="text-secondary">Coords:</span>
+									<span>
+										({xCoord}, {yCoord})
+									</span>
+								</div>
+								<div className="d-flex w-100 justify-content-between">
+									<span className="text-secondary">First LED:</span>
+									<span>{firstLedIndex}</span>
+								</div>
+							</div>
+						</Tooltip>
+					}
+				>
+					<div>
+						<LightIcon size={cellWidth} active={active} />
+					</div>
+				</OverlayTrigger>
+			)}
 		</div>
 	);
 }

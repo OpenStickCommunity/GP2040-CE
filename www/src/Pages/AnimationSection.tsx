@@ -35,8 +35,8 @@ import useLedStore, {
 	MAX_CUSTOM_COLORS,
 } from '../Store/useLedStore';
 import boards from '../Data/Boards.json';
-import WebApi from '../Services/WebApi';
 import useLedsPreview from '../Hooks/useLedsPreview';
+import './AnimationSection.scss';
 
 const GPIO_PIN_LENGTH = boards[import.meta.env.VITE_GP2040_BOARD].maxPin + 1;
 const GPIO_PIN_ARRAY = Array.from({ length: GPIO_PIN_LENGTH });
@@ -58,29 +58,9 @@ const schema = yup.object().shape({
 			buttonPressHoldTimeInMs: yup.number().required(),
 			caseStaticColors: yup.array().of(yup.number()).required(),
 			nonPressedSpecialColor: yup.number().required(),
-			notPressedStaticColors: yup
-				.array()
-				.of(yup.number())
-				.required()
-				.test(
-					'same-length',
-					'Not Pressed Static Colors and Pressed Static Colors must be the same length',
-					function (value) {
-						return value.length === this.parent.pressedStaticColors.length;
-					},
-				),
+			notPressedStaticColors: yup.array().of(yup.number()).required(),
 			pressedSpecialColor: yup.number().required(),
-			pressedStaticColors: yup
-				.array()
-				.of(yup.number())
-				.required()
-				.test(
-					'same-length',
-					'Pressed Static Colors and Not Pressed Static Colors must be the same length',
-					function (value) {
-						return value.length === this.parent.notPressedStaticColors.length;
-					},
-				),
+			pressedStaticColors: yup.array().of(yup.number()),
 		}),
 	),
 });
@@ -110,11 +90,11 @@ const emptyAnimationProfile = {
 	basePressedEffect: 0,
 	buttonPressFadeOutTimeInMs: 0,
 	buttonPressHoldTimeInMs: 0,
-	caseStaticColors: [],
+	caseStaticColors: Array.from({ length: MAX_CASE_LIGHTS }, () => 1),
 	nonPressedSpecialColor: 0,
-	notPressedStaticColors: [],
 	pressedSpecialColor: 0,
-	pressedStaticColors: [],
+	notPressedStaticColors: Array.from({ length: GPIO_PIN_LENGTH }, () => 0),
+	pressedStaticColors: Array.from({ length: GPIO_PIN_LENGTH }, () => 1),
 };
 
 const convertToHex = (color: number) =>
@@ -142,7 +122,10 @@ const colorStyles: StylesConfig<(typeof colorOptions)[number]> = {
 	option: (styles, { data }) => ({ ...styles, ...colorDot(data.color) }),
 	input: (styles) => ({ ...styles }),
 	placeholder: (styles) => ({ ...styles, ...colorDot('#ccc') }),
-	singleValue: (styles, { data }) => ({ ...styles, ...colorDot(data.color) }),
+	singleValue: (styles, { data }) => ({
+		...styles,
+		...colorDot(data.color),
+	}),
 };
 
 const GpioColorSelectorList = memo(function GpioColorSelectorList({
@@ -174,8 +157,42 @@ const GpioColorSelectorList = memo(function GpioColorSelectorList({
 							colors[gpioPinIndex]
 								? colorOptions.find(
 										({ value }) => value === colors[gpioPinIndex],
-										// eslint-disable-next-line no-mixed-spaces-and-tabs
 									)
+								: colorOptions[0]
+						}
+					/>
+				</div>
+			))}
+		</div>
+	);
+});
+const CaseColorSelectorList = memo(function GpioColorSelectorList({
+	colors,
+	replace,
+}: {
+	colors: number[];
+	replace: FieldArrayRenderProps['replace'];
+}) {
+	return (
+		<div className="case-grid gap-2">
+			{Array.from({ length: MAX_CASE_LIGHTS }).map((_, caseIndex) => (
+				<div
+					key={`select-${caseIndex}`}
+					className="d-flex col align-items-center"
+				>
+					<div className="d-flex flex-shrink-0" style={{ width: '2rem' }}>
+						<label>{caseIndex + 1}</label>
+					</div>
+					<CustomSelect
+						options={colorOptions}
+						styles={colorStyles}
+						isMulti={false}
+						onChange={(selected) => {
+							replace(caseIndex, selected?.value || 0);
+						}}
+						value={
+							colors[caseIndex]
+								? colorOptions.find(({ value }) => value === colors[caseIndex])
 								: colorOptions[0]
 						}
 					/>
@@ -208,8 +225,8 @@ const ColorSelectorList = memo(function ColorSelectorList({
 						type="color"
 						name={`customColors.${index}`}
 						className="form-control-sm p-0 border-0"
-						value={convertToHex(color)}
-						onChange={(e) =>
+						defaultValue={convertToHex(color)}
+						onBlur={(e) =>
 							replace(
 								index,
 								convertToDecimal((e.target as HTMLInputElement).value),
@@ -237,6 +254,7 @@ const ColorSelectorList = memo(function ColorSelectorList({
 		</div>
 	);
 });
+
 export default function AnimationSection() {
 	const { AnimationOptions, saveAnimationOptions } = useLedStore();
 	const {
@@ -283,7 +301,6 @@ export default function AnimationSection() {
 								<p>Active light tied to GPIO pin</p>
 								<FormControl
 									type="number"
-									defaultValue={0}
 									className="form-control-sm"
 									groupClassName="mb-3"
 									min={0}
@@ -307,7 +324,6 @@ export default function AnimationSection() {
 								<p>Active light tied to case ID</p>
 								<FormControl
 									type="number"
-									defaultValue={0}
 									className="form-control-sm"
 									groupClassName=" mb-3"
 									min={0}
@@ -612,6 +628,14 @@ export default function AnimationSection() {
 													name={`profiles.${profileIndex}.nonPressedSpecialColor`}
 													className="form-control-sm p-0 border-0 mb-3"
 													value={convertToHex(profile.nonPressedSpecialColor)}
+													error={
+														(errors.profiles?.[profileIndex] as any)
+															?.nonPressedSpecialColor
+													}
+													isInvalid={Boolean(
+														(errors.profiles?.[profileIndex] as any)
+															?.nonPressedSpecialColor,
+													)}
 													onChange={(e) =>
 														setFieldValue(
 															`profiles.${profileIndex}.nonPressedSpecialColor`,
@@ -621,17 +645,14 @@ export default function AnimationSection() {
 														)
 													}
 												/>
-												<FormGroup className="mb-3">
+												<FormGroup className="mb-4">
 													<Form.Label>{t(`Leds:case-colors-label`)}</Form.Label>
 													<FieldArray
 														name={`profiles.${profileIndex}.caseStaticColors`}
-														render={(arrayHelpers) => (
-															<ColorSelectorList
+														render={({ replace }) => (
+															<CaseColorSelectorList
 																colors={profile.caseStaticColors}
-																maxLength={MAX_CASE_LIGHTS}
-																replace={arrayHelpers.replace}
-																remove={arrayHelpers.remove}
-																push={arrayHelpers.push}
+																replace={replace}
 															/>
 														)}
 													/>
@@ -645,7 +666,7 @@ export default function AnimationSection() {
 														eventKey="pressed"
 														title={t(`Leds:pressed-colors-label`)}
 													>
-														<FormGroup className="mb-3">
+														<FormGroup className="mb-4">
 															<FieldArray
 																name={`profiles.${profileIndex}.pressedStaticColors`}
 																render={({ replace }) => (
@@ -661,7 +682,7 @@ export default function AnimationSection() {
 														eventKey="nonpressed"
 														title={t(`Leds:idle-colors-label`)}
 													>
-														<FormGroup className="mb-3">
+														<FormGroup className="mb-4">
 															<FieldArray
 																name={`profiles.${profileIndex}.notPressedStaticColors`}
 																render={({ replace }) => (

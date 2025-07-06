@@ -126,7 +126,6 @@ export default function BackupPage() {
 			const values = options[key];
 			if (values) {
 				const result = await func.set(values);
-				console.log(result);
 			}
 		}
 	};
