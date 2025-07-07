@@ -238,6 +238,8 @@ void NeoPicoLEDAddon::setup() {
 
 void NeoPicoLEDAddon::process()
 {
+	AnimationStation::printfs[1] = "Time = " + std::to_string(absolute_time_diff_us(this->lastRunTime, get_absolute_time()) / 1000);
+
 	if(bRestartLeds)
 	{
 		bRestartLeds = false; 
@@ -335,6 +337,7 @@ void NeoPicoLEDAddon::process()
 	neopico.Show();
 
 	//queue up next frame time
+	this->lastRunTime = get_absolute_time();
 	this->nextRunTime = make_timeout_time_ms(NeoPicoLEDAddon::intervalMS);
 }
 

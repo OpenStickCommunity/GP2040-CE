@@ -421,6 +421,8 @@ void AnimationStation::SetMode(int8_t mode)
   }
   
   //set new profile pressed animation
+  //for effects that can alter multiple lights, tell them if they should also effect case lights
+  EButtonCaseEffectType buttonCaseEffectType = this->options.profiles[this->options.baseProfileIndex].bUseCaseLightsInPressedAnimations ? EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE : EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_ONLY;
   switch (this->options.profiles[this->options.baseProfileIndex].basePressedEffect) 
   {
   case AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_RANDOM:
@@ -438,16 +440,16 @@ void AnimationStation::SetMode(int8_t mode)
     break;
 
   case AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_BURST:
-    this->buttonAnimation = new BurstColor(RGBLights, false, false, lastPressed);
+    this->buttonAnimation = new BurstColor(RGBLights, false, false, lastPressed, buttonCaseEffectType);
     break;
   case AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_BURST_RANDOM:
-    this->buttonAnimation = new BurstColor(RGBLights, true, false, lastPressed);
+    this->buttonAnimation = new BurstColor(RGBLights, true, false, lastPressed, buttonCaseEffectType);
     break;
   case AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_BURST_SMALL:
-    this->buttonAnimation = new BurstColor(RGBLights, false, true, lastPressed);
+    this->buttonAnimation = new BurstColor(RGBLights, false, true, lastPressed, buttonCaseEffectType);
     break;
   case AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_BURST_SMALL_RANDOM:
-    this->buttonAnimation = new BurstColor(RGBLights, true, true, lastPressed);
+    this->buttonAnimation = new BurstColor(RGBLights, true, true, lastPressed, buttonCaseEffectType);
     break;
 
   default:
@@ -565,6 +567,7 @@ void AnimationStation::DecompressProfile(int ProfileIndex, const AnimationProfil
 		options.profiles[ProfileIndex].nonPressedSpecialColor = ProfileToDecompress->nonPressedSpecialColor;
 		options.profiles[ProfileIndex].pressedSpecialColor = ProfileToDecompress->pressedSpecialColor;
 		options.profiles[ProfileIndex].bUseCaseLightsInSpecialMoves = ProfileToDecompress->bUseCaseLightsInSpecialMoves;
+		options.profiles[ProfileIndex].bUseCaseLightsInPressedAnimations = ProfileToDecompress->bUseCaseLightsInPressedAnimations;
 }
 
 void AnimationStation::DecompressSettings()

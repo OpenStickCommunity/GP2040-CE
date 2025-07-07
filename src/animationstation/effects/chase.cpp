@@ -25,7 +25,7 @@ Chase::Chase(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType, 
   //Get max x and y coords
   for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
   {
-    if(LightTypeIsForNonPressedAnimation(RGBLights->AllLights[lightIndex].Type) == false)
+    if(LightTypeIsForAnimation(RGBLights->AllLights[lightIndex].Type) == false)
       continue;
 
     if(RGBLights->AllLights[lightIndex].Position.XPosition > MaxXCoord)
@@ -46,7 +46,7 @@ Chase::Chase(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType, 
     {
       for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
       {
-        if(LightTypeIsForNonPressedAnimation(RGBLights->AllLights[lightIndex].Type) && 
+        if(LightTypeIsForAnimation(RGBLights->AllLights[lightIndex].Type) && 
             RGBLights->AllLights[lightIndex].Position.XPosition == xCoord && 
             RGBLights->AllLights[lightIndex].Position.YPosition == yCoord)
           OrderedLights.push_back(lightIndex);

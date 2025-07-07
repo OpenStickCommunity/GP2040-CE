@@ -30,7 +30,7 @@ Rain::Rain(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType, ER
     //Get max x and y coords
     for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
     {
-        if(LightTypeIsForNonPressedAnimation(RGBLights->AllLights[lightIndex].Type) == false)
+        if(LightTypeIsForAnimation(RGBLights->AllLights[lightIndex].Type) == false)
             continue;
 
         if(RGBLights->AllLights[lightIndex].Position.XPosition > MaxXCoord)
@@ -94,7 +94,7 @@ int Rain::FindLightForCoord(int xCoord, int yCoord)
 
     for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
     {
-        if(LightTypeIsForNonPressedAnimation(RGBLights->AllLights[lightIndex].Type) == false)
+        if(LightTypeIsForAnimation(RGBLights->AllLights[lightIndex].Type) == false)
             continue;
 
         if(RGBLights->AllLights[lightIndex].Position.YPosition == yCoord)
@@ -122,7 +122,7 @@ void Rain::Animate(RGB (&frame)[100])
     //reset all lights first to ensure that if pressed lights are unpressed they can blend back to correct color
     for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
     {
-        if(LightTypeIsForNonPressedAnimation(RGBLights->AllLights[lightIndex].Type) == false)
+        if(LightTypeIsForAnimation(RGBLights->AllLights[lightIndex].Type) == false)
             continue;
 
         RGB lightCol = GetNonPressedColorForLight(lightIndex);

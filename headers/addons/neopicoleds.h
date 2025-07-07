@@ -226,8 +226,9 @@ private:
 	//Animation class. Handles idle animations, special move animations and pressed button effects
 	class AnimationStation AnimStation;
 
-	const uint32_t intervalMS = 10;
+	const uint32_t intervalMS = 25;
 	absolute_time_t nextRunTime;
+	absolute_time_t lastRunTime;
 	uint8_t ledCount;
 	InputMode inputMode; // HACK
 	std::map<std::string, int> buttonPositions;

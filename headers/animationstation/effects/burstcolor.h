@@ -35,7 +35,7 @@ class BurstColor : public Animation {
 
 public:
     BurstColor(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType);
-    BurstColor(Lights& InRGBLights, bool bInRandomColor, bool bInSmallBurst, std::vector<int32_t> &InPressedPins);
+    BurstColor(Lights& InRGBLights, bool bInRandomColor, bool bInSmallBurst, std::vector<int32_t> &InPressedPins, EButtonCaseEffectType InButtonCaseEffectType);
     ~BurstColor() { };
 
     virtual void Animate(RGB (&frame)[FRAME_MAX]) override;

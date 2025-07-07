@@ -560,6 +560,8 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         config.animationOptions.profiles[0].baseNonPressedEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_ROTATE;
         config.animationOptions.profiles[0].basePressedEffect = AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_STATIC_COLOR;
         config.animationOptions.profiles[0].baseCaseEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_ROTATE;
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bUseCaseLightsInPressedAnimations, 1);   
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bUseCaseLightsInSpecialMoves, 1);   
     }
 
     //Since we force a profile 0 on new settings we only need to now force disable profiles 1 to max
@@ -568,6 +570,8 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], bEnabled, 0);
         INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], basePressedCycleTime, 0);
         INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], baseCycleTime, 0);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], bUseCaseLightsInPressedAnimations, 0);   
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], bUseCaseLightsInSpecialMoves, 0);   
     }
      
     //TESTING
@@ -592,6 +596,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         config.animationOptions.profiles[0].buttonPressFadeOutTimeInMs = 500;
         config.animationOptions.profiles[0].nonPressedSpecialColor = (128 << 16) + 255; //MAGENTA
         config.animationOptions.profiles[0].bUseCaseLightsInSpecialMoves = false;
+        config.animationOptions.profiles[0].bUseCaseLightsInPressedAnimations = false;
         config.animationOptions.profiles[0].caseStaticColors_count = MAX_CASE_LIGHTS/4;
         for (unsigned int caseLightIndex = 0; caseLightIndex < MAX_CASE_LIGHTS/4; ++caseLightIndex) 
         {
@@ -620,6 +625,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         config.animationOptions.profiles[1].nonPressedSpecialColor = 255; //BLUE
         config.animationOptions.profiles[1].pressedSpecialColor = (255 << 16) + (50 << 8); //reddy YELLOW
         config.animationOptions.profiles[1].bUseCaseLightsInSpecialMoves = true;
+        config.animationOptions.profiles[1].bUseCaseLightsInPressedAnimations = true;
     }
 
     // addonOptions.bootselButtonOptions
