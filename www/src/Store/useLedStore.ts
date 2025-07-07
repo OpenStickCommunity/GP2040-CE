@@ -44,6 +44,7 @@ type State = {
 	AnimationOptions: AnimationOptions;
 	Lights: Light[];
 	loading: boolean;
+	initialized: boolean;
 };
 
 type Actions = {
@@ -61,6 +62,7 @@ const INITIAL_STATE: State = {
 	},
 	Lights: [],
 	loading: false,
+	initialized: false,
 };
 
 const useLedStore = create<State & Actions>()((set, get) => ({
@@ -76,8 +78,10 @@ const useLedStore = create<State & Actions>()((set, get) => ({
 			AnimationOptions,
 			Lights: LightData?.Lights || [],
 			loading: false,
+			initialized: true,
 		}));
 	},
+
 	saveAnimationOptions: async (AnimationOptions: AnimationOptions) => {
 		return WebApi.setAnimationOptions({ AnimationOptions });
 	},
