@@ -14,11 +14,14 @@ import {
 } from '@dnd-kit/modifiers';
 import { Form, Formik } from 'formik';
 import * as yup from 'yup';
+import { Row, Col, Button, Alert } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 import { LightIndicator } from '../Components/LightIndicator';
-import { Row, Col, Button, Alert } from 'react-bootstrap';
-import useLedStore, { Light } from '../Store/useLedStore';
-import { useTranslation } from 'react-i18next';
+import useLedStore, { Light, MAX_CASE_LIGHTS } from '../Store/useLedStore';
+import boards from '../Data/Boards.json';
+
+const GPIO_PIN_LENGTH = boards[import.meta.env.VITE_GP2040_BOARD].maxPin + 1;
 
 const useGetDivDimensions = () => {
 	const [dimensions, setDimensions] = useState({ height: 0, width: 0 });
@@ -208,19 +211,43 @@ export default function LightCoordsSection() {
 												</div>
 												<div className="mb-2">
 													<label className="form-label">
-														GPIO Pin or Case Chain Index
+														{values.Lights[Number(selectedLight)]?.lightType ===
+														1
+															? ' Case Color'
+															: ' GPIO Pin'}
 													</label>
-													<input
-														type="number"
-														className="form-control"
+													<select
+														className="form-select"
 														name={`Lights[${selectedLight}].GPIOPinorCaseChainIndex`}
-														min={0}
 														value={
 															values.Lights[Number(selectedLight)]
 																?.GPIOPinorCaseChainIndex
 														}
 														onChange={handleChange}
-													/>
+													>
+														{values.Lights[Number(selectedLight)]?.lightType ===
+														1 ? (
+															<>
+																{Array.from({ length: MAX_CASE_LIGHTS }).map(
+																	(_, caseIndex) => (
+																		<option key={caseIndex} value={caseIndex}>
+																			Case color {caseIndex + 1}
+																		</option>
+																	),
+																)}
+															</>
+														) : (
+															<>
+																{Array.from({ length: GPIO_PIN_LENGTH }).map(
+																	(_, pinIndex) => (
+																		<option key={pinIndex} value={pinIndex}>
+																			GPIO Pin {pinIndex}
+																		</option>
+																	),
+																)}
+															</>
+														)}
+													</select>
 												</div>
 												<div className="mb-2">
 													<label className="form-label">Light Type</label>

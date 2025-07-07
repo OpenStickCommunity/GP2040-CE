@@ -12,6 +12,7 @@ export const MAX_ANIMATION_PROFILES = 4;
 
 export type AnimationProfile = {
 	bEnabled: 0 | 1;
+	bUseCaseLightsInPressedAnimations: 0 | 1;
 	baseCaseEffect: typeof ANIMATION_NON_PRESSED_EFFECTS;
 	baseNonPressedEffect: typeof ANIMATION_NON_PRESSED_EFFECTS;
 	basePressedEffect: typeof ANIMATION_PRESSED_EFFECTS;

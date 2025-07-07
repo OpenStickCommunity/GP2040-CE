@@ -15,6 +15,8 @@ export default {
 	'idle-colors-label': 'Idle colors',
 	'switch-enabled-description':
 		'A disabled profile will not be available when using hotkeys to change profile.',
+	'switch-case-light-pressed-label':
+		'Include case lights in pressed animations',
 
 	animations: {
 		NONPRESSED_EFFECT_STATIC_COLOR: 'Static Color',

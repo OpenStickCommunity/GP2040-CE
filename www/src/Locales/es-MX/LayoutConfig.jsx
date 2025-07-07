@@ -1,7 +1,4 @@
 export default {
-	'header-text': 'Configuración de Diseño',
-	'layout-left-header-text': 'Diseño Izquierdo',
-	'layout-right-header-text': 'Diseño Derecho',
 	layouts: {
 		left: {
 			BUTTON_LAYOUT_STICK: 'Stick',
@@ -38,7 +35,8 @@ export default {
 			BUTTON_LAYOUT_BANDHERO_STRUM_A: 'GH/RB Rasgueo',
 			BUTTON_LAYOUT_6GAWD_A: '6GAWD Izquierdo',
 			BUTTON_LAYOUT_6GAWD_ALLBUTTON_A: '6GAWD Todo Botones Izquierdo',
-			BUTTON_LAYOUT_6GAWD_ALLBUTTONPLUS_A: '6GAWD Todo Botones Meñique Izquierdo',
+			BUTTON_LAYOUT_6GAWD_ALLBUTTONPLUS_A:
+				'6GAWD Todo Botones Meñique Izquierdo',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT0_A: 'Definido por Placa Alternativo 0',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT1_A: 'Definido por Placa Alternativo 1',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT2_A: 'Definido por Placa Alternativo 2',

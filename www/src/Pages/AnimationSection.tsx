@@ -51,6 +51,7 @@ const schema = yup.object().shape({
 	profiles: yup.array().of(
 		yup.object().shape({
 			bEnabled: yup.number().required(),
+			bUseCaseLightsInPressedAnimations: yup.number().required(),
 			baseCaseEffect: yup.number().required(),
 			baseNonPressedEffect: yup.number().required(),
 			basePressedEffect: yup.number().required(),
@@ -562,6 +563,7 @@ export default function AnimationSection() {
 															),
 														)}
 													</FormSelect>
+
 													<FormSelect
 														label={t('Leds:idle-animation-label')}
 														name={`profiles.${profileIndex}.baseNonPressedEffect`}
@@ -588,6 +590,29 @@ export default function AnimationSection() {
 													</FormSelect>
 												</Row>
 												<Row>
+													<div className="d-flex align-items-center col-sm-4 mb-3">
+														<FormCheck
+															type="switch"
+															name={`profiles.${profileIndex}.bUseCaseLightsInPressedAnimations`}
+															label={
+																<label>
+																	{t(`Leds:switch-case-light-pressed-label`)}
+																</label>
+															}
+															checked={Boolean(
+																profile.bUseCaseLightsInPressedAnimations,
+															)}
+															onChange={() =>
+																setFieldValue(
+																	`profiles.${profileIndex}.bUseCaseLightsInPressedAnimations`,
+																	Number(
+																		!profile.bUseCaseLightsInPressedAnimations,
+																	),
+																)
+															}
+														/>
+													</div>
+
 													<FormControl
 														type="number"
 														label={t(`Leds:pressed-fade-out-time-label`)}
