@@ -66,7 +66,7 @@ export default function LightCoordsSection() {
 
 	const [gridSize, setGridSize] = useState(GRID_SIZE);
 	const [cellWidth, setCellWidth] = useState(dimensions.width / gridSize);
-	const [selectedLight, setSelectedLight] = useState<string | null>(null);
+	const [selectedLight, setSelectedLight] = useState<number | null>(null);
 	const [saveMessage, setSaveMessage] = useState('');
 
 	const mouseSensor = useSensor(MouseSensor, {
@@ -111,7 +111,7 @@ export default function LightCoordsSection() {
 	const handleDragStart = useCallback(function handleDragStart(
 		event: DragEndEvent,
 	) {
-		setSelectedLight(String(event.active.id));
+		setSelectedLight(Number(event.active.id));
 	}, []);
 
 	return (
@@ -149,9 +149,9 @@ export default function LightCoordsSection() {
 							<Row className="mb-3">
 								<Col md={3}>
 									<div className="d-flex flex-grow-1">
-										{selectedLight ? (
-											<div className="w-100">
-												<h3>Light {selectedLight}</h3>
+										{selectedLight !== null ? (
+											<div className="w-100 mb-3">
+												<h3>Light {selectedLight + 1}</h3>
 												<div className="mb-2 ">
 													<label className="form-label">First LED Index</label>
 													<input
@@ -230,7 +230,12 @@ export default function LightCoordsSection() {
 														value={
 															values.Lights[Number(selectedLight)]?.lightType
 														}
-														onChange={handleChange}
+														onChange={(e) => {
+															setFieldValue(
+																`Lights[${selectedLight}].lightType`,
+																parseInt(e.target.value),
+															);
+														}}
 													>
 														<option value={0}>ActionButton</option>
 														<option value={1}>Case</option>
@@ -244,8 +249,7 @@ export default function LightCoordsSection() {
 													onClick={() => {
 														setValues({
 															Lights: values.Lights.filter(
-																(_, index) =>
-																	index.toString() !== selectedLight,
+																(_, index) => index !== selectedLight,
 															),
 														});
 														setSelectedLight(null);
@@ -264,7 +268,6 @@ export default function LightCoordsSection() {
 											</div>
 										)}
 									</div>
-									<hr className="mt-3" />
 									<div className="d-flex flex-column justify-content-between align-items-center">
 										<Button
 											className="w-100"
@@ -288,6 +291,11 @@ export default function LightCoordsSection() {
 											Add light
 										</Button>
 									</div>
+									<hr className="mt-3" />
+									<Button className="w-100 mb-3" type="submit">
+										{t('Common:button-save-label')}
+									</Button>
+									{saveMessage && <Alert variant="info">{saveMessage}</Alert>}
 								</Col>
 								<Col md={9} className="mt-3 mt-md-0">
 									<div
@@ -362,21 +370,16 @@ export default function LightCoordsSection() {
 											{values.Lights.map((light, index) => (
 												<LightIndicator
 													key={index}
-													id={index.toString()}
-													x={light.xCoord}
-													y={light.yCoord}
+													id={index}
 													cellWidth={cellWidth}
-													active={selectedLight === index.toString()}
+													active={selectedLight === index}
+													{...light}
 												/>
 											))}
 										</DndContext>
 									</div>
 								</Col>
 							</Row>
-							<Button className="mb-3" type="submit">
-								{t('Common:button-save-label')}
-							</Button>
-							{saveMessage && <Alert variant="info">{saveMessage}</Alert>}
 						</Form>
 					)}
 				</Formik>

@@ -11,8 +11,7 @@ export default function ResetSettingsPage() {
 		e.stopPropagation();
 
 		if (window.confirm(t('ResetSettings:confirm-text'))) {
-			const result = await WebApi.resetSettings();
-			console.log(result);
+			await WebApi.resetSettings();
 			setTimeout(() => {
 				window.location.reload();
 			}, 2000);

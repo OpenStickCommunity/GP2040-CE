@@ -226,34 +226,30 @@ export default function AddonsConfigPage() {
 			onSubmit={onSuccess}
 			initialValues={defaultValues}
 		>
-			{({ handleSubmit, handleChange, values, errors, setFieldValue }) =>
-				console.log('errors', errors) || (
-					<Form noValidate onSubmit={handleSubmit}>
-						<h1>{t('AddonsConfig:header-text')}</h1>
-						<p>{t('AddonsConfig:sub-header-text')}</p>
-						{ADDONS.map((Addon, index) => (
-							<Addon
-								key={`addon-${index}`}
-								values={values}
-								errors={errors}
-								handleChange={handleChange}
-								handleCheckbox={handleCheckbox}
-								setFieldValue={setFieldValue}
-							/>
-						))}
+			{({ handleSubmit, handleChange, values, errors, setFieldValue }) => (
+				<Form noValidate onSubmit={handleSubmit}>
+					<h1>{t('AddonsConfig:header-text')}</h1>
+					<p>{t('AddonsConfig:sub-header-text')}</p>
+					{ADDONS.map((Addon, index) => (
+						<Addon
+							key={`addon-${index}`}
+							values={values}
+							errors={errors}
+							handleChange={handleChange}
+							handleCheckbox={handleCheckbox}
+							setFieldValue={setFieldValue}
+						/>
+					))}
 
-						<div className="mt-3">
-							<Button type="submit" id="save">
-								{t('Common:button-save-label')}
-							</Button>
-							{saveMessage ? (
-								<span className="alert">{saveMessage}</span>
-							) : null}
-						</div>
-						<FormContext setStoredData={setStoredData} />
-					</Form>
-				)
-			}
+					<div className="mt-3">
+						<Button type="submit" id="save">
+							{t('Common:button-save-label')}
+						</Button>
+						{saveMessage ? <span className="alert">{saveMessage}</span> : null}
+					</div>
+					<FormContext setStoredData={setStoredData} />
+				</Form>
+			)}
 		</Formik>
 	);
 }

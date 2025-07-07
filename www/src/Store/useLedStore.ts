@@ -10,7 +10,7 @@ export const MAX_CASE_LIGHTS = 40;
 export const MAX_PRESSED_COLORS = 30;
 export const MAX_ANIMATION_PROFILES = 4;
 
-type Profile = {
+export type AnimationProfile = {
 	bEnabled: 0 | 1;
 	baseCaseEffect: typeof ANIMATION_NON_PRESSED_EFFECTS;
 	baseNonPressedEffect: typeof ANIMATION_NON_PRESSED_EFFECTS;
@@ -37,7 +37,7 @@ export type AnimationOptions = {
 	brightness: number;
 	baseProfileIndex: number;
 	customColors: number[];
-	profiles: Profile[];
+	profiles: AnimationProfile[];
 };
 
 type State = {

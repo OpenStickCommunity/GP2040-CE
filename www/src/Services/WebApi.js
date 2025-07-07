@@ -242,7 +242,6 @@ async function setDisplayOptions(options, isPreview) {
 		: `${baseUrl}/api/setPreviewDisplayOptions`;
 	return Http.post(url, newOptions)
 		.then((response) => {
-			console.log(response.data);
 			return true;
 		})
 		.catch((err) => {
@@ -288,35 +287,6 @@ async function getGamepadOptions(setLoading) {
 async function setGamepadOptions(options) {
 	return Http.post(`${baseUrl}/api/setGamepadOptions`, sanitizeRequest(options))
 		.then((response) => {
-			console.log(response.data);
-			return true;
-		})
-		.catch((err) => {
-			console.error(err);
-			return false;
-		});
-}
-
-async function getLedOptions(setLoading) {
-	setLoading(true);
-
-	try {
-		const response = await Http.get(`${baseUrl}/api/getLedOptions`);
-		setLoading(false);
-
-		response.data.pledColor = rgbIntToHex(response.data.pledColor) || '#ffffff';
-
-		return response.data;
-	} catch (error) {
-		setLoading(false);
-		console.error(error);
-	}
-}
-
-async function setLedOptions(options) {
-	return Http.post(`${baseUrl}/api/setLedOptions`, sanitizeRequest(options))
-		.then((response) => {
-			console.log(response.data);
 			return true;
 		})
 		.catch((err) => {
@@ -410,7 +380,6 @@ async function setKeyMappings(mappings) {
 
 	return Http.post(`${baseUrl}/api/setKeyMappings`, sanitizeRequest(data))
 		.then((response) => {
-			console.log(response.data);
 			return true;
 		})
 		.catch((err) => {
@@ -454,7 +423,6 @@ async function setAddonsOptions(options) {
 
 	return Http.post(`${baseUrl}/api/setAddonsOptions`, sanitizeRequest(options))
 		.then((response) => {
-			console.log(response.data);
 			return true;
 		})
 		.catch((err) => {
@@ -484,7 +452,6 @@ async function setMacroAddonOptions(options) {
 		sanitizeRequest(options),
 	)
 		.then((response) => {
-			console.log(response.data);
 			return true;
 		})
 		.catch((err) => {
@@ -496,7 +463,6 @@ async function setMacroAddonOptions(options) {
 async function setPS4Options(options) {
 	return Http.post(`${baseUrl}/api/setPS4Options`, options)
 		.then((response) => {
-			console.log(response.data);
 			return true;
 		})
 		.catch((err) => {
@@ -525,7 +491,6 @@ async function setWiiControls(mappings) {
 
 	return Http.post(`${baseUrl}/api/setWiiControls`, sanitizeRequest(mappings))
 		.then((response) => {
-			console.log(response.data);
 			return true;
 		})
 		.catch((err) => {
@@ -572,7 +537,6 @@ async function setPeripheralOptions(mappings) {
 		sanitizeRequest(mappings),
 	)
 		.then((response) => {
-			console.log(response.data);
 			return true;
 		})
 		.catch((err) => {
@@ -676,8 +640,6 @@ export default {
 	setDisplayOptions,
 	getGamepadOptions,
 	setGamepadOptions,
-	getLedOptions,
-	setLedOptions,
 	getPinMappings,
 	setPinMappings,
 	getProfileOptions,
