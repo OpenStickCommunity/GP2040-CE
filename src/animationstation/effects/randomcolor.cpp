@@ -35,7 +35,7 @@ void RandomColor::Animate(RGB (&frame)[100])
     for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
     {
       //Non pressed simply sets the RGB color
-      if (LightTypeIsForPressedAnimation(RGBLights->AllLights[lightIndex].Type))
+      if (LightTypeIsForAnimation(RGBLights->AllLights[lightIndex].Type))
       {
         frame[ledIndex] = FadeColor(savedPressedColor[lightIndex],
                                         frame[ledIndex],

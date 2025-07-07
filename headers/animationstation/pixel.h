@@ -98,8 +98,9 @@ public:
     int highestLedSoFar = 0;
     for(const Light& thisLight : AllLights )
     {
-      if(thisLight.FirstLedIndex + thisLight.LedsPerLight > highestLedSoFar)
-        highestLedSoFar = thisLight.FirstLedIndex + thisLight.LedsPerLight;
+      int ledIndexValue = (int)thisLight.FirstLedIndex + (int)thisLight.LedsPerLight;
+      if(ledIndexValue > highestLedSoFar)
+        highestLedSoFar = ledIndexValue;
     }
     return highestLedSoFar;
   }

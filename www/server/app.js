@@ -118,6 +118,7 @@ app.get('/api/getAnimationProtoOptions', (req, res) => {
 					buttonPressFadeOutTimeInMs: 500,
 					nonPressedSpecialColor: 0xffff00,
 					bUseCaseLightsInSpecialMoves: 0,
+					bUseCaseLightsInPressedAnimations: 0,
 					baseCaseEffect: 0,
 					pressedSpecialColor: 0,
 					notPressedStaticColors: [
@@ -141,6 +142,7 @@ app.get('/api/getAnimationProtoOptions', (req, res) => {
 					buttonPressFadeOutTimeInMs: 500,
 					nonPressedSpecialColor: 255,
 					bUseCaseLightsInSpecialMoves: 1,
+					bUseCaseLightsInPressedAnimations: 1,
 					baseCaseEffect: 0,
 					pressedSpecialColor: 0x80ff00,
 					notPressedStaticColors: [

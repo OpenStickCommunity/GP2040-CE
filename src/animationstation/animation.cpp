@@ -158,18 +158,10 @@ RGB Animation::FadeColor(RGB start, RGB end, uint32_t timeRemainingInMs)
 }
 
 //Type helpers
-bool Animation::LightTypeIsForNonPressedAnimation(LightType Type)
+bool Animation::LightTypeIsForAnimation(LightType Type)
 {
   if((Type == LightType::LightType_ActionButton && (ButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_ONLY || ButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE) ) || 
     (Type == LightType::LightType_Case && (ButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_CASE_ONLY || ButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE) ) )
-    return true;
-
-  return false;
-}
-
-bool Animation::LightTypeIsForPressedAnimation(LightType Type)
-{
-  if(Type == LightType::LightType_ActionButton)
     return true;
 
   return false;

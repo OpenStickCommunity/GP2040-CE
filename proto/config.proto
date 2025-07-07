@@ -384,6 +384,8 @@ message AnimationProfile
     optional bool bUseCaseLightsInSpecialMoves = 13;
 
     optional int32 basePressedCycleTime = 14; 
+
+    optional bool bUseCaseLightsInPressedAnimations = 15;
 };
 
 // This has to be kept in sync with AnimationOptions_Unpacked in animationstation.hpp

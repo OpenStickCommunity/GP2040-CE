@@ -157,8 +157,7 @@ protected:
   virtual int32_t GetFadeTime();
 
   //Type Helpers
-  bool LightTypeIsForNonPressedAnimation(LightType Type);
-  bool LightTypeIsForPressedAnimation(LightType Type);
+  bool LightTypeIsForAnimation(LightType Type);
 
   //Get color helpers
   RGB GetNonPressedColorForLight(uint32_t LightIndex);
