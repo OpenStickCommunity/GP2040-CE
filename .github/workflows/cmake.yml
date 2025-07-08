@@ -27,6 +27,7 @@ on:
           - FlatboxRev5RGB
           - FlatboxRev5USBPassthrough
           - FlatboxRev5Southpaw
+          - FlatboxRev8
           - Granola
           - KB2040
           - KeyboardConverter
@@ -78,8 +79,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        GP2040_BOARDCONFIG: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.board_config != '' && fromJSON(format('["{0}"]', github.event.inputs.board_config)) || fromJSON('["ARCController", "Blank", "Pico", "PicoW", "Pico2", "BentoBox", "DuelPadZen", "FlatboxRev4", "FlatboxRev5", "FlatboxRev5RGB", "FlatboxRev5USBPassthrough", "FlatboxRev5Southpaw", "Granola", "KB2040", "KeyboardConverter", "Haute42COSMOX", "Haute42COSMOXMLite", "Haute42COSMOXMUltra", "Haute42COSMOXXAnalog", "Liatris", "MavercadeRev1", "MavercadeRev2", "MiSTercadeV2", "OpenCore0", "OpenCore0MIXUP", "OpenCore0WASD", "OSUMGP-RP2040", "PicoAnn", "PicoFightingBoard", "PXPGamepad", "ReflexCtrlGenesis6", "ReflexCtrlNES", "ReflexCtrlSaturn", "ReflexCtrlSNES", "ReflexCtrlVB", "ReflexEncodeV1.2", "ReflexEncodeV2.0", "RP2040AdvancedBreakoutBoard", "RP2040AdvancedBreakoutBoardUSBPassthrough", "RP2040MiniBreakoutBoard", "RP2040MiniBreakoutBoardUSBPassthrough", "SeeedXIAORP2040", "SparkFunProMicro", "SparkFunProMicroRP2350", "WaveshareZero", "Stress", "SGFDevices", "ZeroRhythm"]') }}
-
+        GP2040_BOARDCONFIG: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.board_config != '' && fromJSON(format('["{0}"]', github.event.inputs.board_config)) || fromJSON('["ARCController", "Blank", "Pico", "PicoW", "Pico2", "BentoBox", "DuelPadZen", "FlatboxRev4", "FlatboxRev5", "FlatboxRev5RGB", "FlatboxRev5USBPassthrough", "FlatboxRev5Southpaw", "FlatboxRev8", "Granola", "KB2040", "KeyboardConverter", "Haute42COSMOX", "Haute42COSMOXMLite", "Haute42COSMOXMUltra", "Haute42COSMOXXAnalog", "Liatris", "MavercadeRev1", "MavercadeRev2", "MiSTercadeV2", "OpenCore0", "OpenCore0MIXUP", "OpenCore0WASD", "OSUMGP-RP2040", "PicoAnn", "PicoFightingBoard", "PXPGamepad", "ReflexCtrlGenesis6", "ReflexCtrlNES", "ReflexCtrlSaturn", "ReflexCtrlSNES", "ReflexCtrlVB", "ReflexEncodeV1.2", "ReflexEncodeV2.0", "RP2040AdvancedBreakoutBoard", "RP2040AdvancedBreakoutBoardUSBPassthrough", "RP2040MiniBreakoutBoard", "RP2040MiniBreakoutBoardUSBPassthrough", "SeeedXIAORP2040", "SparkFunProMicro", "SparkFunProMicroRP2350", "WaveshareZero", "Stress", "SGFDevices", "ZeroRhythm"]') }}
     steps:
       - name: Setup cmake
         uses: jwlawson/actions-setup-cmake@v2
@@ -111,7 +111,7 @@ jobs:
 
       - name: Pico Build Configure CMake
         shell: bash
-        if: ${{ matrix.GP2040_BOARDCONFIG != 'PicoW' && matrix.GP2040_BOARDCONFIG != 'Pico2' && matrix.GP2040_BOARDCONFIG != 'SparkFunProMicroRP2350' }}
+        if: ${{ matrix.GP2040_BOARDCONFIG != 'PicoW' && matrix.GP2040_BOARDCONFIG != 'Pico2' && matrix.GP2040_BOARDCONFIG != 'SparkFunProMicroRP2350' && matrix.GP2040_BOARDCONFIG != 'FlatboxRev8' }}
         run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=${{ matrix.GP2040_BOARDCONFIG }} SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
       - name: PicoW Build Configure CMake
@@ -121,7 +121,7 @@ jobs:
 
       - name: Pico2 Build Configure CMake
         shell: bash
-        if: ${{ matrix.GP2040_BOARDCONFIG == 'Pico2' || matrix.GP2040_BOARDCONFIG == 'SparkFunProMicroRP2350' }}
+        if: ${{ matrix.GP2040_BOARDCONFIG == 'Pico2' || matrix.GP2040_BOARDCONFIG == 'SparkFunProMicroRP2350' || matrix.GP2040_BOARDCONFIG == 'FlatboxRev8' }}
         run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=${{ matrix.GP2040_BOARDCONFIG }} SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico2 -DPICO_PLATFORM=rp2350-arm-s
 
       - name: Pico Build
