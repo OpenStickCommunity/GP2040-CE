@@ -5,7 +5,9 @@ import { AnimationProfile } from '../Store/useLedStore';
 
 const useLedsPreview = () => {
 	// Turn off LEDs when the hook unmounts
-	useEffect(() => turnOffLeds(), []);
+	useEffect(() => {
+		return () => turnOffLeds();
+	}, []);
 
 	const activateLedsOnId = useCallback(
 		async (pin: number, isCase: boolean = false) => {
@@ -48,6 +50,7 @@ const useLedsPreview = () => {
 			},
 		});
 	}, []);
+
 	return {
 		activateLedsOnId,
 		activateLedsProfile,

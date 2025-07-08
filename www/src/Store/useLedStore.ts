@@ -12,6 +12,7 @@ export const MAX_ANIMATION_PROFILES = 4;
 
 export type AnimationProfile = {
 	bEnabled: 0 | 1;
+	bUseCaseLightsInPressedAnimations: 0 | 1;
 	baseCaseEffect: typeof ANIMATION_NON_PRESSED_EFFECTS;
 	baseNonPressedEffect: typeof ANIMATION_NON_PRESSED_EFFECTS;
 	basePressedEffect: typeof ANIMATION_PRESSED_EFFECTS;
@@ -44,6 +45,7 @@ type State = {
 	AnimationOptions: AnimationOptions;
 	Lights: Light[];
 	loading: boolean;
+	initialized: boolean;
 };
 
 type Actions = {
@@ -61,6 +63,7 @@ const INITIAL_STATE: State = {
 	},
 	Lights: [],
 	loading: false,
+	initialized: false,
 };
 
 const useLedStore = create<State & Actions>()((set, get) => ({
@@ -76,8 +79,10 @@ const useLedStore = create<State & Actions>()((set, get) => ({
 			AnimationOptions,
 			Lights: LightData?.Lights || [],
 			loading: false,
+			initialized: true,
 		}));
 	},
+
 	saveAnimationOptions: async (AnimationOptions: AnimationOptions) => {
 		return WebApi.setAnimationOptions({ AnimationOptions });
 	},
