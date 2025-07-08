@@ -213,8 +213,9 @@ void tud_network_init_cb(void)
 
 int rndis_init(void)
 {
-  /* initialize TinyUSB */
-  tusb_init();
+  // Removed as rndis defect 07-08-2025 as we need to setup TinyUSB to non-default values
+  ///* initialize TinyUSB */
+  //tusb_init();
 
   /* initialize lwip, dhcp-server, dns-server, and http */
   init_lwip();
