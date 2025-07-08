@@ -9,7 +9,6 @@ export default {
 	'api-display-text': '디스플레이',
 	'api-gamepad-text': '게임패드',
 	'api-leds-text': 'LED',
-	'api-ledTheme-text': '커스텀 LED 테마',
 	'api-macros-text': '매크로 매핑',
 	'api-pins-text': '핀 매핑',
 	'api-profiles-text': '프로필 매핑',
