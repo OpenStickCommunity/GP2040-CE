@@ -238,8 +238,6 @@ void NeoPicoLEDAddon::setup() {
 
 void NeoPicoLEDAddon::process()
 {
-	AnimationStation::printfs[1] = "Time = " + std::to_string(absolute_time_diff_us(this->lastRunTime, get_absolute_time()) / 1000);
-
 	if(bRestartLeds)
 	{
 		bRestartLeds = false; 
