@@ -37,9 +37,9 @@ import useLedStore, {
 import boards from '../Data/Boards.json';
 import useLedsPreview from '../Hooks/useLedsPreview';
 import './AnimationSection.scss';
+import LEDColors from '../Data/LEDColors';
 
 const GPIO_PIN_LENGTH = boards[import.meta.env.VITE_GP2040_BOARD].maxPin + 1;
-const GPIO_PIN_ARRAY = Array.from({ length: GPIO_PIN_LENGTH });
 
 const schema = yup.object().shape({
 	baseProfileIndex: yup.number().required('Selecting a profile is required'),
@@ -65,24 +65,6 @@ const schema = yup.object().shape({
 		}),
 	),
 });
-
-// Values are indexes of color array in Animation.hpp
-const colorOptions = [
-	{ value: 0, label: 'Black', color: 'black' },
-	{ value: 1, label: 'White', color: 'white' },
-	{ value: 2, label: 'Red', color: 'red' },
-	{ value: 3, label: 'Orange', color: 'orange' },
-	{ value: 4, label: 'Yellow', color: 'yellow' },
-	{ value: 5, label: 'Lime Green', color: 'limegreen' },
-	{ value: 6, label: 'Green', color: 'green' },
-	{ value: 7, label: 'Seafoam', color: 'seagreen' },
-	{ value: 8, label: 'Aqua', color: 'aqua' },
-	{ value: 9, label: 'Sky Blue', color: 'skyblue' },
-	{ value: 10, label: 'Blue', color: 'blue' },
-	{ value: 11, label: 'Purple', color: 'purple' },
-	{ value: 12, label: 'Pink', color: 'pink' },
-	{ value: 13, label: 'Magenta', color: 'magenta' },
-];
 
 const emptyAnimationProfile = {
 	bEnabled: 1,
@@ -112,13 +94,14 @@ const colorDot = (color = 'transparent') => ({
 		borderRadius: 15,
 		content: '" "',
 		display: 'block',
+		flexShrink: 0,
 		marginRight: 8,
 		height: 15,
 		width: 15,
 	},
 });
 
-const colorStyles: StylesConfig<(typeof colorOptions)[number]> = {
+const colorStyles: StylesConfig<(typeof LEDColors)[number]> = {
 	control: (styles) => ({ ...styles, backgroundColor: 'white' }),
 	option: (styles, { data }) => ({ ...styles, ...colorDot(data.color) }),
 	input: (styles) => ({ ...styles }),
@@ -129,72 +112,38 @@ const colorStyles: StylesConfig<(typeof colorOptions)[number]> = {
 	}),
 };
 
-const GpioColorSelectorList = memo(function GpioColorSelectorList({
+const ColorSelectorList = memo(function ColorSelectorList({
+	length,
 	colors,
+	LabelComponent,
+	containerClassName = '',
+	isClearable = false,
 	replace,
 }: {
+	length: number;
 	colors: number[];
+	LabelComponent: ({ index }: { index: number }) => JSX.Element;
+	containerClassName?: string;
+	isClearable?: boolean;
 	replace: FieldArrayRenderProps['replace'];
 }) {
 	return (
-		<div className="pin-grid gap-3 mt-3">
-			{GPIO_PIN_ARRAY.map((_, gpioPinIndex) => (
-				<div
-					key={`select-${gpioPinIndex}`}
-					className="d-flex col align-items-center"
-				>
-					<div className="d-flex flex-shrink-0" style={{ width: '3.5rem' }}>
-						<label>GP{gpioPinIndex}</label>
-					</div>
+		<div className={containerClassName}>
+			{Array.from({ length }).map((_, index) => (
+				<div key={`select-${index}`} className="d-flex col align-items-center">
+					{<LabelComponent index={index} />}
 					<CustomSelect
-						isClearable
-						options={colorOptions}
+						isClearable={isClearable}
+						options={LEDColors}
 						styles={colorStyles}
 						isMulti={false}
 						onChange={(selected) => {
-							replace(gpioPinIndex, selected?.value || 0);
+							replace(index, selected?.value || 0);
 						}}
 						value={
-							colors[gpioPinIndex]
-								? colorOptions.find(
-										({ value }) => value === colors[gpioPinIndex],
-									)
-								: colorOptions[0]
-						}
-					/>
-				</div>
-			))}
-		</div>
-	);
-});
-const CaseColorSelectorList = memo(function GpioColorSelectorList({
-	colors,
-	replace,
-}: {
-	colors: number[];
-	replace: FieldArrayRenderProps['replace'];
-}) {
-	return (
-		<div className="case-grid gap-2">
-			{Array.from({ length: MAX_CASE_LIGHTS }).map((_, caseIndex) => (
-				<div
-					key={`select-${caseIndex}`}
-					className="d-flex col align-items-center"
-				>
-					<div className="d-flex flex-shrink-0" style={{ width: '2rem' }}>
-						<label>{caseIndex + 1}</label>
-					</div>
-					<CustomSelect
-						options={colorOptions}
-						styles={colorStyles}
-						isMulti={false}
-						onChange={(selected) => {
-							replace(caseIndex, selected?.value || 0);
-						}}
-						value={
-							colors[caseIndex]
-								? colorOptions.find(({ value }) => value === colors[caseIndex])
-								: colorOptions[0]
+							colors[index]
+								? LEDColors.find(({ value }) => value === colors[index])
+								: LEDColors[0]
 						}
 					/>
 				</div>
@@ -203,7 +152,7 @@ const CaseColorSelectorList = memo(function GpioColorSelectorList({
 	);
 });
 
-const ColorSelectorList = memo(function ColorSelectorList({
+const ColorPickerList = memo(function ColorPickerList({
 	colors,
 	maxLength,
 	replace,
@@ -452,7 +401,7 @@ export default function AnimationSection() {
 								<FieldArray
 									name="customColors"
 									render={(arrayHelpers) => (
-										<ColorSelectorList
+										<ColorPickerList
 											colors={values.customColors}
 											maxLength={MAX_CUSTOM_COLORS}
 											replace={arrayHelpers.replace}
@@ -637,8 +586,10 @@ export default function AnimationSection() {
 													label={t(`Leds:pressed-special-color-label`)}
 													name={`profiles.${profileIndex}.pressedSpecialColor`}
 													className="form-control-sm p-0 border-0 mb-3"
-													value={convertToHex(profile.pressedSpecialColor)}
-													onChange={(e) =>
+													defaultValue={convertToHex(
+														profile.pressedSpecialColor,
+													)}
+													onBlur={(e) =>
 														setFieldValue(
 															`profiles.${profileIndex}.pressedSpecialColor`,
 															convertToDecimal(
@@ -652,7 +603,9 @@ export default function AnimationSection() {
 													label={t(`Leds:idle-special-color-label`)}
 													name={`profiles.${profileIndex}.nonPressedSpecialColor`}
 													className="form-control-sm p-0 border-0 mb-3"
-													value={convertToHex(profile.nonPressedSpecialColor)}
+													defaultValue={convertToHex(
+														profile.nonPressedSpecialColor,
+													)}
 													error={
 														(errors.profiles?.[profileIndex] as any)
 															?.nonPressedSpecialColor
@@ -661,7 +614,7 @@ export default function AnimationSection() {
 														(errors.profiles?.[profileIndex] as any)
 															?.nonPressedSpecialColor,
 													)}
-													onChange={(e) =>
+													onBlur={(e) =>
 														setFieldValue(
 															`profiles.${profileIndex}.nonPressedSpecialColor`,
 															convertToDecimal(
@@ -675,7 +628,17 @@ export default function AnimationSection() {
 													<FieldArray
 														name={`profiles.${profileIndex}.caseStaticColors`}
 														render={({ replace }) => (
-															<CaseColorSelectorList
+															<ColorSelectorList
+																length={MAX_CASE_LIGHTS}
+																LabelComponent={({ index }) => (
+																	<div
+																		className="d-flex flex-shrink-0"
+																		style={{ width: '2rem' }}
+																	>
+																		<label>{index + 1}</label>
+																	</div>
+																)}
+																containerClassName="case-grid gap-2"
 																colors={profile.caseStaticColors}
 																replace={replace}
 															/>
@@ -695,7 +658,17 @@ export default function AnimationSection() {
 															<FieldArray
 																name={`profiles.${profileIndex}.pressedStaticColors`}
 																render={({ replace }) => (
-																	<GpioColorSelectorList
+																	<ColorSelectorList
+																		length={GPIO_PIN_LENGTH}
+																		LabelComponent={({ index }) => (
+																			<div
+																				className="d-flex flex-shrink-0"
+																				style={{ width: '3.5rem' }}
+																			>
+																				<label>GP{index}</label>
+																			</div>
+																		)}
+																		containerClassName="pin-grid gap-3 mt-3"
 																		colors={profile.pressedStaticColors}
 																		replace={replace}
 																	/>
@@ -711,7 +684,17 @@ export default function AnimationSection() {
 															<FieldArray
 																name={`profiles.${profileIndex}.notPressedStaticColors`}
 																render={({ replace }) => (
-																	<GpioColorSelectorList
+																	<ColorSelectorList
+																		length={GPIO_PIN_LENGTH}
+																		LabelComponent={({ index }) => (
+																			<div
+																				className="d-flex flex-shrink-0"
+																				style={{ width: '3.5rem' }}
+																			>
+																				<label>GP{index}</label>
+																			</div>
+																		)}
+																		containerClassName="pin-grid gap-3 mt-3"
 																		colors={profile.notPressedStaticColors}
 																		replace={replace}
 																	/>

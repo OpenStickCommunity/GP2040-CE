@@ -6,7 +6,6 @@ import ResetSettings from './ResetSettings';
 import Components from './Components';
 import PinMapping from './PinMapping';
 import PeripheralMapping from './PeripheralMapping';
-import CustomTheme from './CustomTheme';
 import BackupPage from './BackupPage';
 import DisplayConfig from './DisplayConfig';
 import AddonsConfig from './AddonsConfig';
@@ -27,7 +26,6 @@ export default {
 	Components,
 	PinMapping,
 	PeripheralMapping,
-	CustomTheme,
 	BackupPage,
 	DisplayConfig,
 	AddonsConfig,

@@ -1,18 +1,15 @@
-import { useState } from 'react';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FormCheck, Row } from 'react-bootstrap';
 import * as yup from 'yup';
 
 import { AppContext } from '../Contexts/AppContext';
-import ColorPicker from '../Components/ColorPicker';
 import Section from '../Components/Section';
 import FormSelect from '../Components/FormSelect';
 import FormControl from '../Components/FormControl';
 import AnalogPinOptions from '../Components/AnalogPinOptions';
 import { BUTTON_MASKS_OPTIONS } from '../Data/Buttons';
 import { DUAL_STICK_MODES } from '../Data/Addons';
-import LEDColors from '../Data/LEDColors';
 import { ANALOG_PINS } from '../Data/Buttons';
 
 const SHMUP_MIXED_MODES = [
@@ -146,30 +143,22 @@ const Turbo = ({
 }) => {
 	const { t } = useTranslation();
 
-	const [colorPickerTarget, setColorPickerTarget] = useState(null);
-	const [showPicker, setShowPicker] = useState(false);
-
-	const toggleRgbPledPicker = (e) => {
-		e.stopPropagation();
-		setColorPickerTarget(e.target);
-		setShowPicker(!showPicker);
-	};
-
 	const { usedPins } = useContext(AppContext);
 	const availableAnalogPins = ANALOG_PINS.filter(
-			(pin) => !usedPins?.includes(pin),
-		);
+		(pin) => !usedPins?.includes(pin),
+	);
 
 	return (
-		<Section title={
-			<a
-				href="https://gp2040-ce.info/add-ons/turbo"
-				target="_blank"
-				className="text-reset text-decoration-none"
-			>
-				{t('AddonsConfig:turbo-header-text')}
-			</a>
-		}
+		<Section
+			title={
+				<a
+					href="https://gp2040-ce.info/add-ons/turbo"
+					target="_blank"
+					className="text-reset text-decoration-none"
+				>
+					{t('AddonsConfig:turbo-header-text')}
+				</a>
+			}
 		>
 			<div id="TurboInputOptions" hidden={!values.TurboInputEnabled}>
 				<div className="alert alert-success" role="alert">
@@ -230,34 +219,17 @@ const Turbo = ({
 						min={0}
 					/>
 					<FormControl
+						type="color"
 						label={t('AddonsConfig:turbo-led-color-label')}
 						hidden={parseInt(values.turboLedType) !== 1}
-						name="turboLedColor"
-						className="form-control-sm"
+						name={`turboLedColor`}
+						className="form-control-sm p-0 border-0"
 						groupClassName="col-sm-2 mb-3"
-						value={values.turboLedColor}
+						defaultValue={values.turboLedColor}
 						error={errors.turboLedColor}
 						isInvalid={errors.turboLedColor}
-						onBlur={handleBlur}
-						onClick={toggleRgbPledPicker}
-						onChange={(e) => {
-							handleChange(e);
-							setShowPicker(false);
-						}}
+						onBlur={(c) => setFieldValue('turboLedColor', c.target.value)}
 					/>
-					<ColorPicker
-						name="turboLedColor"
-						types={[{ value: values.turboLedColor }]}
-						onChange={(c) => setFieldValue('turboLedColor', c)}
-						onDismiss={() => setShowPicker(false)}
-						placement="top"
-						presetColors={LEDColors.map((c) => ({
-							title: c.name,
-							color: c.value,
-						}))}
-						show={showPicker}
-						target={colorPickerTarget}
-					></ColorPicker>
 				</Row>
 				<Row className="mb-3">
 					<FormControl

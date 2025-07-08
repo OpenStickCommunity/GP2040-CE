@@ -78,7 +78,7 @@ export default function LightCoordsSection() {
 	const touchSensor = useSensor(TouchSensor, {
 		activationConstraint: undefined,
 	});
-	// Make keyboard sensor handle dynamic cell width with getNextCoordinates
+
 	const keyboardSensor = useSensor(KeyboardSensor, {});
 	const sensors = useSensors(
 		// useSensor(PointerSensor, {
