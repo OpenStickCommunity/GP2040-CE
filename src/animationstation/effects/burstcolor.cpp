@@ -8,7 +8,7 @@ BurstColor::BurstColor(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEf
 {
 }
 
-BurstColor::BurstColor(Lights& InRGBLights, bool bInRandomColor, bool bInSmallBurst, std::vector<int32_t> &InPressedPins) : Animation(InRGBLights, EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_ONLY) 
+BurstColor::BurstColor(Lights& InRGBLights, bool bInRandomColor, bool bInSmallBurst, std::vector<int32_t> &InPressedPins, EButtonCaseEffectType InButtonCaseEffectType) : Animation(InRGBLights, InButtonCaseEffectType) 
 {
     isButtonAnimation = true;
     pressedPins = InPressedPins;
@@ -81,7 +81,6 @@ void BurstColor::Animate(RGB (&frame)[100])
     {
         if(RunningBursts[burstIndex].RunningTime < 0.0f)
             continue;
-
     
         RunningBursts[burstIndex].RunningTime += (((float)AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].basePressedCycleTime) / 1000.0f);
         float travelledDist = RunningBursts[burstIndex].RunningTime * BURST_DISTANCE_PER_SEC;
@@ -154,6 +153,9 @@ void BurstColor::Animate(RGB (&frame)[100])
     //now apply those values to lights
     for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
     {
+        if(LightTypeIsForAnimation(RGBLights->AllLights[lightIndex].Type) == false)
+            continue;
+
         uint8_t firstLightIndex = RGBLights->AllLights[lightIndex].FirstLedIndex;
         uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[lightIndex].LedsPerLight;
 

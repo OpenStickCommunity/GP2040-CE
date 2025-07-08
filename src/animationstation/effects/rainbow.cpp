@@ -52,7 +52,7 @@ void RainbowSynced::Animate(RGB (&frame)[100])
   RGB color = RGB::wheel(this->currentFrame);
   for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
   {
-    if(LightTypeIsForNonPressedAnimation(RGBLights->AllLights[lightIndex].Type))
+    if(LightTypeIsForAnimation(RGBLights->AllLights[lightIndex].Type))
     {
       uint8_t firstLightIndex = RGBLights->AllLights[lightIndex].FirstLedIndex;
       uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[lightIndex].LedsPerLight;
@@ -121,7 +121,7 @@ void RainbowRotate::Animate(RGB (&frame)[100])
   int thisFrame = this->currentFrame;
   for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
   {
-    if(LightTypeIsForNonPressedAnimation(RGBLights->AllLights[lightIndex].Type))
+    if(LightTypeIsForAnimation(RGBLights->AllLights[lightIndex].Type))
     {
       int gridOffset = RGBLights->AllLights[lightIndex].Position.XPosition + RGBLights->AllLights[lightIndex].Position.YPosition;
       int thisLightFrame = (thisFrame + (gridOffset * RAINBOW_GRID_OFFSET_ADJUST)) % RAINBOW_COLORWHEEL_FRAME_MAX;

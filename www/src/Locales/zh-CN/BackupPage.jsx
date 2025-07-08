@@ -7,7 +7,7 @@ export default {
 	'load-export-option-label': '导入 {{api}} 选项',
 	'api-display-text': '显示屏',
 	'api-gamepad-text': '游戏控制器',
-	'api-led-text': 'LED',
+	'api-leds-text': 'LED',
 	'api-ledTheme-text': '自定义 LED 主题',
 	'api-macros-text': '宏映射',
 	'api-pins-text': '引脚映射',
