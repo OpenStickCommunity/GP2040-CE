@@ -115,6 +115,7 @@ const colorStyles: StylesConfig<(typeof LEDColors)[number]> = {
 const ColorSelectorList = memo(function ColorSelectorList({
 	length,
 	colors,
+	customColors,
 	LabelComponent,
 	containerClassName = '',
 	isClearable = false,
@@ -122,33 +123,64 @@ const ColorSelectorList = memo(function ColorSelectorList({
 }: {
 	length: number;
 	colors: number[];
+	customColors: number[];
 	LabelComponent: ({ index }: { index: number }) => JSX.Element;
 	containerClassName?: string;
 	isClearable?: boolean;
 	replace: FieldArrayRenderProps['replace'];
 }) {
+	const customColorOptions = customColors.map((color, index) => ({
+		value: color,
+		label: `Custom ${index + 1}`,
+		color: convertToHex(color),
+	}));
+	const colorOptions = [...LEDColors, ...customColorOptions];
+
 	return (
-		<div className={containerClassName}>
-			{Array.from({ length }).map((_, index) => (
-				<div key={`select-${index}`} className="d-flex col align-items-center">
-					{<LabelComponent index={index} />}
-					<CustomSelect
-						isClearable={isClearable}
-						options={LEDColors}
-						styles={colorStyles}
-						isMulti={false}
-						onChange={(selected) => {
-							replace(index, selected?.value || 0);
-						}}
-						value={
-							colors[index]
-								? LEDColors.find(({ value }) => value === colors[index])
-								: LEDColors[0]
+		<>
+			<div className={containerClassName}>
+				{Array.from({ length }).map((_, index) => (
+					<div
+						key={`select-${index}-${colorOptions.find(({ value }) => value === colors[index])?.label}`}
+						className="d-flex col align-items-center"
+					>
+						{<LabelComponent index={index} />}
+						<CustomSelect
+							isClearable={isClearable}
+							options={colorOptions}
+							styles={colorStyles}
+							isMulti={false}
+							onChange={(selected) => {
+								replace(index, selected?.value || 0);
+							}}
+							value={
+								colors[index]
+									? colorOptions.find(({ value }) => value === colors[index]) ||
+										colorOptions[0]
+									: colorOptions[0]
+							}
+						/>
+					</div>
+				))}
+			</div>
+			<div className="col-md-4 mt-3">
+				<CustomSelect
+					placeholder="Set all colors"
+					options={colorOptions}
+					styles={colorStyles}
+					value={null}
+					isMulti={false}
+					isClearable
+					onChange={(selected) => {
+						if (selected?.value !== undefined) {
+							Array.from({ length }).forEach((_, i) => {
+								replace(i, selected.value);
+							});
 						}
-					/>
-				</div>
-			))}
-		</div>
+					}}
+				/>
+			</div>
+		</>
 	);
 });
 
@@ -170,7 +202,10 @@ const ColorPickerList = memo(function ColorPickerList({
 	return (
 		<div className="d-flex col gap-2 flex-wrap">
 			{colors.map((color, index) => (
-				<div key={`color-${index}`} className="d-flex gap-1 flex-wrap">
+				<div
+					key={`customColors-${index}-${color}`}
+					className="d-flex gap-1 flex-wrap"
+				>
 					<FormControl
 						type="color"
 						name={`customColors.${index}`}
@@ -275,7 +310,7 @@ export default function AnimationSection() {
 								<FormControl
 									type="number"
 									className="form-control-sm"
-									groupClassName=" mb-3"
+									groupClassName="mb-3"
 									min={0}
 									value={previewCaseId}
 									onChange={(e) => {
@@ -638,8 +673,9 @@ export default function AnimationSection() {
 																		<label>{index + 1}</label>
 																	</div>
 																)}
-																containerClassName="case-grid gap-2"
+																containerClassName="case-grid gap-3"
 																colors={profile.caseStaticColors}
+																customColors={values.customColors}
 																replace={replace}
 															/>
 														)}
@@ -670,6 +706,7 @@ export default function AnimationSection() {
 																		)}
 																		containerClassName="pin-grid gap-3 mt-3"
 																		colors={profile.pressedStaticColors}
+																		customColors={values.customColors}
 																		replace={replace}
 																	/>
 																)}
@@ -696,6 +733,7 @@ export default function AnimationSection() {
 																		)}
 																		containerClassName="pin-grid gap-3 mt-3"
 																		colors={profile.notPressedStaticColors}
+																		customColors={values.customColors}
 																		replace={replace}
 																	/>
 																)}

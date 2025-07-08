@@ -13,3 +13,10 @@
 		grid-template-columns: repeat(2, 1fr);
 	}
 }
+
+@media only screen and (max-width: 500px) {
+	.case-grid {
+		display: flex;
+		flex-direction: column;
+	}
+}
