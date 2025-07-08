@@ -213,8 +213,8 @@ void tud_network_init_cb(void)
 
 int rndis_init(void)
 {
-  /* initialize TinyUSB */
-  tusb_init();
+  ///* initialize TinyUSB */
+  //tusb_init();
 
   /* initialize lwip, dhcp-server, dns-server, and http */
   init_lwip();

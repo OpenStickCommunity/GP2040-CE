@@ -55,7 +55,7 @@ void NetDriver::initialize() {
         .sof              = NULL,
     };
 
-    rndis_init();
+    //rndis_init();
 }
 
 // Run RNDIS task from web config
