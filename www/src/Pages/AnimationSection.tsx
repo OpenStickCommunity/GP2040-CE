@@ -130,7 +130,7 @@ const ColorSelectorList = memo(function ColorSelectorList({
 	replace: FieldArrayRenderProps['replace'];
 }) {
 	const customColorOptions = customColors.map((color, index) => ({
-		value: color,
+		value: LEDColors.length + index,
 		label: `Custom ${index + 1}`,
 		color: convertToHex(color),
 	}));
@@ -283,18 +283,25 @@ export default function AnimationSection() {
 					<Section title="Preview helpers">
 						<Row className="mb-3">
 							<Col md={6} className="d-flex flex-column justify-content-end">
-								<p>Active light tied to GPIO pin</p>
-								<FormControl
-									type="number"
-									className="form-control-sm"
+								<FormSelect
+									label={'Active light tied to GPIO pin'}
+									className="form-select-sm"
 									groupClassName="mb-3"
-									min={0}
 									value={previewGpioPin}
 									onChange={(e) => {
-										const pin = parseInt((e.target as HTMLInputElement).value);
-										setPreviewGpioPin(pin);
+										setPreviewGpioPin(
+											parseInt((e.target as HTMLSelectElement).value),
+										);
 									}}
-								/>
+								>
+									{Array.from({ length: GPIO_PIN_LENGTH }).map(
+										(_, pinIndex) => (
+											<option key={pinIndex} value={pinIndex}>
+												GPIO Pin {pinIndex}
+											</option>
+										),
+									)}
+								</FormSelect>
 
 								<Button
 									variant="secondary"
@@ -306,20 +313,25 @@ export default function AnimationSection() {
 								</Button>
 							</Col>
 							<Col md={6} className="d-flex flex-column justify-content-end">
-								<p>Active light tied to case ID</p>
-								<FormControl
-									type="number"
-									className="form-control-sm"
+								<FormSelect
+									label={'Active light tied to case ID'}
+									className="form-select-sm"
 									groupClassName="mb-3"
-									min={0}
 									value={previewCaseId}
 									onChange={(e) => {
-										const caseId = parseInt(
-											(e.target as HTMLInputElement).value,
+										setPreviewCaseId(
+											parseInt((e.target as HTMLSelectElement).value),
 										);
-										setPreviewCaseId(caseId);
 									}}
-								/>
+								>
+									{Array.from({ length: MAX_CASE_LIGHTS }).map(
+										(_, caseIndex) => (
+											<option key={caseIndex} value={caseIndex}>
+												Case ID {caseIndex + 1}
+											</option>
+										),
+									)}
+								</FormSelect>
 
 								<Button
 									variant="secondary"
@@ -660,6 +672,7 @@ export default function AnimationSection() {
 												/>
 												<FormGroup className="mb-4">
 													<Form.Label>{t(`Leds:case-colors-label`)}</Form.Label>
+
 													<FieldArray
 														name={`profiles.${profileIndex}.caseStaticColors`}
 														render={({ replace }) => (

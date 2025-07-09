@@ -79,7 +79,6 @@ export function LightIndicator({
 			) : (
 				<OverlayTrigger
 					placement="top"
-					// trigger={['hover', 'focus']}
 					overlay={
 						<Tooltip>
 							<div className="d-flex flex-column align-items-start min-w-110 p-1">
