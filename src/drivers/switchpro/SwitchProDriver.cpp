@@ -116,10 +116,10 @@ bool SwitchProDriver::process(Gamepad * gamepad) {
     switchReport.inputs.buttonZL = gamepad->pressedL2();
 
     // analog
-    switchReport.inputs.leftStick.setX(scale12To16(gamepad->state.lx));
-    switchReport.inputs.leftStick.setY(-scale12To16(gamepad->state.ly));
-    switchReport.inputs.rightStick.setX(scale12To16(gamepad->state.rx));
-    switchReport.inputs.rightStick.setY(-scale12To16(gamepad->state.ry));
+    switchReport.inputs.leftStick.setX(scale16To12(gamepad->state.lx));
+    switchReport.inputs.leftStick.setY(-scale16To12(gamepad->state.ly));
+    switchReport.inputs.rightStick.setX(scale16To12(gamepad->state.rx));
+    switchReport.inputs.rightStick.setY(-scale16To12(gamepad->state.ry));
 
     switchReport.rumbleReport = 0x09;
     //switchReport.reportID = inputMode;

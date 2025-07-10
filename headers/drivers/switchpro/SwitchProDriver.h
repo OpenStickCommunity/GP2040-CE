@@ -142,8 +142,8 @@ private:
     void handleConfigReport(uint8_t switchReportID, uint8_t switchReportSubID, const uint8_t *reportData, uint16_t reportLength);
     void handleFeatureReport(uint8_t switchReportID, uint8_t switchReportSubID, const uint8_t *reportData, uint16_t reportLength);
 
-    uint16_t scale12To16(uint16_t pos) { return (pos * SWITCH_PRO_JOYSTICK_MAX + GAMEPAD_JOYSTICK_MID) / GAMEPAD_JOYSTICK_MAX; }
-    uint16_t scale16To12(uint16_t pos) { return (pos * GAMEPAD_JOYSTICK_MAX + SWITCH_PRO_JOYSTICK_MID) / SWITCH_PRO_JOYSTICK_MAX; }
+    uint16_t scale12To16(uint16_t pos) { return pos << 4; }
+    uint16_t scale16To12(uint16_t pos) { return pos >> 4; }
 };
 
 #endif // _SWITCH_PRO_DRIVER_H_
