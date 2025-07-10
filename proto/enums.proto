@@ -526,6 +526,7 @@ enum GPLever_Mode
     GP_LEVER_MODE_RIGHT_ANALOG = 4;
     GP_LEVER_MODE_INVERT_X = 8;
     GP_LEVER_MODE_INVERT_Y = 16;
+    GP_LEVER_MODE_DPAD = 32;
 };
 
 enum RotaryEncoderPinMode

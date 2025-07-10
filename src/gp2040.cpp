@@ -36,6 +36,8 @@
 #include "pico/time.h"
 #include "hardware/adc.h"
 
+#include "rndis.h"
+
 // TinyUSB
 #include "tusb.h"
 
@@ -51,14 +53,15 @@ static absolute_time_t rebootDelayTimeout = nil_time;
 void GP2040::setup() {
 	Storage::getInstance().init();
 
-	PeripheralManager::getInstance().initI2C();
-	PeripheralManager::getInstance().initSPI();
-	PeripheralManager::getInstance().initUSB();
-
 	// Reduce CPU if USB host is enabled
+	PeripheralManager::getInstance().initUSB();
 	if ( PeripheralManager::getInstance().isUSBEnabled(0) ) {
 		set_sys_clock_khz(120000, true); // Set Clock to 120MHz to avoid potential USB timing issues
 	}
+
+	// I2C & SPI rely on the system clock
+	PeripheralManager::getInstance().initSPI();
+	PeripheralManager::getInstance().initI2C();
 
 	Gamepad * gamepad = new Gamepad();
 	Gamepad * processedGamepad = new Gamepad();
@@ -268,6 +271,13 @@ void GP2040::run() {
     // Start the TinyUSB Device functionality
     tud_init(TUD_OPT_RHPORT);
 
+	// Initialize our USB manager
+	USBHostManager::getInstance().start();
+
+	if (configMode == true ) {
+		rndis_init();
+	}
+
 	while (1) { // LOOP
 		this->getReinitGamepad(gamepad);
 
@@ -280,6 +290,9 @@ void GP2040::run() {
 
 		checkRawState(prevState, gamepad->state);
 
+		// Process USB Host on Core0
+		USBHostManager::getInstance().process();
+
 		// Config Loop (Web-Config skips Core0 add-ons)
 		if (configMode == true) {
 			inputDriver->process(gamepad);
@@ -287,9 +300,6 @@ void GP2040::run() {
 			checkSaveRebootState();
 			continue;
 		}
-
-		// Process USB Host on Core0
-		USBHostManager::getInstance().process();
 
 		// Pre-Process add-ons for MPGS
 		addons.PreprocessAddons();

@@ -32,7 +32,16 @@ const OnBoardLed = ({ values, errors, handleChange, handleCheckbox }) => {
 	const { t } = useTranslation();
 
 	return (
-		<Section title={t('AddonsConfig:on-board-led-configuration-label')}>
+		<Section title={
+			<a
+				href="https://gp2040-ce.info/add-ons/on-board-led"
+				target="_blank"
+				className="text-reset text-decoration-none"
+			>
+				{t('AddonsConfig:on-board-led-configuration-label')}
+			</a>
+		}
+		>
 			<div
 				id="BoardLedAddonEnabledOptions"
 				hidden={!values.BoardLedAddonEnabled}
