@@ -127,6 +127,8 @@ export default {
 		'load-profile-2': '프로필 불러오기 #2',
 		'load-profile-3': '프로필 불러오기 #3',
 		'load-profile-4': '프로필 불러오기 #4',
+		'load-profile-5': '프로필 불러오기 #5',
+		'load-profile-6': '프로필 불러오기 #6',
 		'reboot-default': 'GP2040-CE 재시작',
 		'save-config': '설정 저장',
 		'next-profile': '다음 프로필',
