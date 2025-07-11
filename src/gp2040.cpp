@@ -1,3 +1,5 @@
+#include <optional>
+
 // GP2040 includes
 #include "gp2040.h"
 #include "helper.h"
@@ -414,16 +416,16 @@ GP2040::BootAction GP2040::getBootAction() {
 
 				const GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
 
-				int32_t inputMode = -1;
+				std::optional<int32_t> inputMode = std::nullopt;
 				if (gamepadOptions.useGpioInputModeSelect) {
 					// mask for just the pins configured as input mode selectors
-					int mask = 0;
-					for (int i = 0; i < gamepadOptions.gpioInputModeMappings_count; i++) {
+					uint32_t mask = 0;
+					for (size_t i = 0; i < gamepadOptions.gpioInputModeMappings_count; i++) {
 						auto mapping = gamepadOptions.gpioInputModeMappings[i];
 						mask |= 1 << mapping.pin;
 						bootActions.insert({1 << mapping.pin, mapping.inputMode});
 					}
-					auto masked_gpio = gamepad->debouncedGpio & mask;
+					uint32_t masked_gpio = gamepad->debouncedGpio & mask;
 					// This search ensures that exactly one of the configured pins is set.
 					if (auto search = bootActions.find(masked_gpio); search != bootActions.end()) {
 						inputMode = search->second;
@@ -442,7 +444,10 @@ GP2040::BootAction GP2040::getBootAction() {
 						inputMode = search->second;
 					}
 				}
-				switch (inputMode) {
+				if (!inputMode.has_value()) {
+					return BootAction::NONE;
+				}
+				switch (inputMode.value()) {
 					case INPUT_MODE_XINPUT:
 						return BootAction::SET_INPUT_MODE_XINPUT;
 					case INPUT_MODE_SWITCH:
