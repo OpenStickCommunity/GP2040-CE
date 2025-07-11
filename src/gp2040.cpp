@@ -85,20 +85,7 @@ void GP2040::setup() {
 
 	// now we can load the latest configured profile, which will map the
 	// new set of GPIOs to use...
-	this->initializeStandardGpio();
-
-	const GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
-
-	// check setup options and add modes to the list
-	// user modes
-	bootActions.insert({GAMEPAD_MASK_B1, gamepadOptions.inputModeB1});
-	bootActions.insert({GAMEPAD_MASK_B2, gamepadOptions.inputModeB2});
-	bootActions.insert({GAMEPAD_MASK_B3, gamepadOptions.inputModeB3});
-	bootActions.insert({GAMEPAD_MASK_B4, gamepadOptions.inputModeB4});
-	bootActions.insert({GAMEPAD_MASK_L1, gamepadOptions.inputModeL1});
-	bootActions.insert({GAMEPAD_MASK_L2, gamepadOptions.inputModeL2});
-	bootActions.insert({GAMEPAD_MASK_R1, gamepadOptions.inputModeR1});
-	bootActions.insert({GAMEPAD_MASK_R2, gamepadOptions.inputModeR2});
+  this->initializeStandardGpio();
 
 	// Initialize our ADC (various add-ons)
 	adc_init();
@@ -414,57 +401,84 @@ GP2040::BootAction GP2040::getBootAction() {
                 bool webConfigLocked  = forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_WEB_CONFIG ||
                                         forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_BOTH;
 
+
 				if (gamepad->pressedS1() && gamepad->pressedS2() && gamepad->pressedUp()) {
 					return BootAction::ENTER_USB_MODE;
-				} else if (!webConfigLocked && gamepad->pressedS2()) {
+				}
+				if (!webConfigLocked && gamepad->pressedS2()) {
 					return BootAction::ENTER_WEBCONFIG_MODE;
-                } else {
-                    if (!modeSwitchLocked) {
-                        if (auto search = bootActions.find(gamepad->state.buttons); search != bootActions.end()) {
-                            switch (search->second) {
-                                case INPUT_MODE_XINPUT:
-                                    return BootAction::SET_INPUT_MODE_XINPUT;
-                                case INPUT_MODE_SWITCH:
-                                    return BootAction::SET_INPUT_MODE_SWITCH;
-                                case INPUT_MODE_KEYBOARD:
-                                    return BootAction::SET_INPUT_MODE_KEYBOARD;
-                                case INPUT_MODE_GENERIC:
-                                    return BootAction::SET_INPUT_MODE_GENERIC;
-                                case INPUT_MODE_PS3:
-                                    return BootAction::SET_INPUT_MODE_PS3;
-                                case INPUT_MODE_PS4:
-                                    return BootAction::SET_INPUT_MODE_PS4;
-                                case INPUT_MODE_PS5:
-                                    return BootAction::SET_INPUT_MODE_PS5;
-                                case INPUT_MODE_NEOGEO:
-                                    return BootAction::SET_INPUT_MODE_NEOGEO;
-                                case INPUT_MODE_MDMINI:
-                                    return BootAction::SET_INPUT_MODE_MDMINI;
-                                case INPUT_MODE_PCEMINI:
-                                    return BootAction::SET_INPUT_MODE_PCEMINI;
-                                case INPUT_MODE_EGRET:
-                                    return BootAction::SET_INPUT_MODE_EGRET;
-                                case INPUT_MODE_ASTRO:
-                                    return BootAction::SET_INPUT_MODE_ASTRO;
-                                case INPUT_MODE_PSCLASSIC:
-                                    return BootAction::SET_INPUT_MODE_PSCLASSIC;
-                                case INPUT_MODE_XBOXORIGINAL:
-                                    return BootAction::SET_INPUT_MODE_XBOXORIGINAL;
-                                case INPUT_MODE_XBONE:
-                                    return BootAction::SET_INPUT_MODE_XBONE;
-                                case INPUT_MODE_SWITCH_PRO:
-                                    return BootAction::SET_INPUT_MODE_SWITCH_PRO;
-                                default:
-                                    return BootAction::NONE;
-                            }
-                        }
-                    }
-                }
+				}
+				if (modeSwitchLocked) {
+					return BootAction::NONE;
+				}
 
-				break;
+				const GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
+
+				int32_t inputMode = -1;
+				if (gamepadOptions.useGpioInputModeSelect) {
+					// mask for just the pins configured as input mode selectors
+					int mask = 0;
+					for (int i = 0; i < gamepadOptions.gpioInputModeMappings_count; i++) {
+						auto mapping = gamepadOptions.gpioInputModeMappings[i];
+						mask |= 1 << mapping.pin;
+						bootActions.insert({1 << mapping.pin, mapping.inputMode});
+					}
+					auto masked_gpio = gamepad->debouncedGpio & mask;
+					// This search ensures that exactly one of the configured pins is set.
+					if (auto search = bootActions.find(masked_gpio); search != bootActions.end()) {
+						inputMode = search->second;
+					}
+				else {
+					// Use the mapped buttons to select input mode instead
+					bootActions.insert({GAMEPAD_MASK_B1, gamepadOptions.inputModeB1});
+					bootActions.insert({GAMEPAD_MASK_B2, gamepadOptions.inputModeB2});
+					bootActions.insert({GAMEPAD_MASK_B3, gamepadOptions.inputModeB3});
+					bootActions.insert({GAMEPAD_MASK_B4, gamepadOptions.inputModeB4});
+					bootActions.insert({GAMEPAD_MASK_L1, gamepadOptions.inputModeL1});
+					bootActions.insert({GAMEPAD_MASK_L2, gamepadOptions.inputModeL2});
+					bootActions.insert({GAMEPAD_MASK_R1, gamepadOptions.inputModeR1});
+					bootActions.insert({GAMEPAD_MASK_R2, gamepadOptions.inputModeR2});
+					if (auto search = bootActions.find(gamepad->state.buttons); search != bootActions.end()) {
+						inputMode = search->second;
+					}
+				}
+				switch (inputMode) {
+					case INPUT_MODE_XINPUT:
+						return BootAction::SET_INPUT_MODE_XINPUT;
+					case INPUT_MODE_SWITCH:
+						return BootAction::SET_INPUT_MODE_SWITCH;
+					case INPUT_MODE_KEYBOARD:
+						return BootAction::SET_INPUT_MODE_KEYBOARD;
+					case INPUT_MODE_GENERIC:
+						return BootAction::SET_INPUT_MODE_GENERIC;
+					case INPUT_MODE_PS3:
+						return BootAction::SET_INPUT_MODE_PS3;
+					case INPUT_MODE_PS4:
+						return BootAction::SET_INPUT_MODE_PS4;
+					case INPUT_MODE_PS5:
+						return BootAction::SET_INPUT_MODE_PS5;
+					case INPUT_MODE_NEOGEO:
+						return BootAction::SET_INPUT_MODE_NEOGEO;
+					case INPUT_MODE_MDMINI:
+						return BootAction::SET_INPUT_MODE_MDMINI;
+					case INPUT_MODE_PCEMINI:
+						return BootAction::SET_INPUT_MODE_PCEMINI;
+					case INPUT_MODE_EGRET:
+						return BootAction::SET_INPUT_MODE_EGRET;
+					case INPUT_MODE_ASTRO:
+						return BootAction::SET_INPUT_MODE_ASTRO;
+					case INPUT_MODE_PSCLASSIC:
+						return BootAction::SET_INPUT_MODE_PSCLASSIC;
+					case INPUT_MODE_XBOXORIGINAL:
+						return BootAction::SET_INPUT_MODE_XBOXORIGINAL;
+					case INPUT_MODE_XBONE:
+						return BootAction::SET_INPUT_MODE_XBONE;
+					default:
+						return BootAction::NONE;
+				}
 			}
+		}
 	}
-
 	return BootAction::NONE;
 }
 
