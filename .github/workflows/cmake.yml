@@ -2,12 +2,67 @@ name: CMake
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
-#  pull_request_target:
-#    branches: [ "main" ]
+    branches: ["main"]
+  #  pull_request_target:
+  #    branches: [ "main" ]
   workflow_dispatch:
+    inputs:
+      board_config:
+        description: "Board configuration to build (leave empty to build all)"
+        required: false
+        type: choice
+        options:
+          - ""
+          - ARCController
+          - Blank
+          - Pico
+          - PicoW
+          - Pico2
+          - BentoBox
+          - DuelPadZen
+          - FlatboxRev4
+          - FlatboxRev5
+          - FlatboxRev5RGB
+          - FlatboxRev5USBPassthrough
+          - FlatboxRev5Southpaw
+          - Granola
+          - KB2040
+          - KeyboardConverter
+          - Haute42COSMOX
+          - Haute42COSMOXMLite
+          - Haute42COSMOXMUltra
+          - Haute42COSMOXXAnalog
+          - Liatris
+          - MavercadeRev1
+          - MavercadeRev2
+          - MiSTercadeV2
+          - OpenCore0
+          - OpenCore0MIXUP
+          - OpenCore0WASD
+          - OSUMGP-RP2040
+          - PicoAnn
+          - PicoFightingBoard
+          - PXPGamepad
+          - ReflexCtrlGenesis6
+          - ReflexCtrlNES
+          - ReflexCtrlSaturn
+          - ReflexCtrlSNES
+          - ReflexCtrlVB
+          - ReflexEncodeV1.2
+          - ReflexEncodeV2.0
+          - RP2040AdvancedBreakoutBoard
+          - RP2040AdvancedBreakoutBoardUSBPassthrough
+          - RP2040MiniBreakoutBoard
+          - RP2040MiniBreakoutBoardUSBPassthrough
+          - SeeedXIAORP2040
+          - SparkFunProMicro
+          - SparkFunProMicroRP2350
+          - WaveshareZero
+          - Stress
+          - SGFDevices
+          - ZeroRhythm
 
 env:
   BUILD_TYPE: Release
@@ -23,115 +78,67 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        GP2040_BOARDCONFIG: 
-          [ARCController,
-          Blank,
-          Pico,
-          PicoW,
-          Pico2,
-          BentoBox,
-          DuelPadZen,
-          FlatboxRev4,
-          FlatboxRev5,
-          FlatboxRev5RGB,
-          FlatboxRev5USBPassthrough,
-          FlatboxRev5Southpaw,
-          Granola,
-          KB2040,
-          KeyboardConverter,
-          Haute42COSMOX,
-          Haute42COSMOXMLite,
-          Haute42COSMOXMUltra,
-          Haute42COSMOXXAnalog,
-          Liatris,
-          MavercadeRev1,
-          MavercadeRev2,
-          MiSTercadeV2,
-          OpenCore0,
-          OpenCore0MIXUP,
-          OpenCore0WASD,
-          OSUMGP-RP2040,
-          PicoAnn,
-          PicoFightingBoard,
-          PXPGamepad,
-          ReflexCtrlGenesis6,
-          ReflexCtrlNES,
-          ReflexCtrlSaturn,
-          ReflexCtrlSNES,
-          ReflexCtrlVB,
-          ReflexEncodeV1.2,
-          ReflexEncodeV2.0,
-          RP2040AdvancedBreakoutBoard,
-          RP2040AdvancedBreakoutBoardUSBPassthrough,
-          RP2040MiniBreakoutBoard,
-          RP2040MiniBreakoutBoardUSBPassthrough,
-          SeeedXIAORP2040,
-          SparkFunProMicro,
-          SparkFunProMicroRP2350,
-          WaveshareZero,
-          Stress,
-          SGFDevices,
-          ZeroRhythm]
+        GP2040_BOARDCONFIG: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.board_config != '' && fromJSON(format('["{0}"]', github.event.inputs.board_config)) || fromJSON('["ARCController", "Blank", "Pico", "PicoW", "Pico2", "BentoBox", "DuelPadZen", "FlatboxRev4", "FlatboxRev5", "FlatboxRev5RGB", "FlatboxRev5USBPassthrough", "FlatboxRev5Southpaw", "Granola", "KB2040", "KeyboardConverter", "Haute42COSMOX", "Haute42COSMOXMLite", "Haute42COSMOXMUltra", "Haute42COSMOXXAnalog", "Liatris", "MavercadeRev1", "MavercadeRev2", "MiSTercadeV2", "OpenCore0", "OpenCore0MIXUP", "OpenCore0WASD", "OSUMGP-RP2040", "PicoAnn", "PicoFightingBoard", "PXPGamepad", "ReflexCtrlGenesis6", "ReflexCtrlNES", "ReflexCtrlSaturn", "ReflexCtrlSNES", "ReflexCtrlVB", "ReflexEncodeV1.2", "ReflexEncodeV2.0", "RP2040AdvancedBreakoutBoard", "RP2040AdvancedBreakoutBoardUSBPassthrough", "RP2040MiniBreakoutBoard", "RP2040MiniBreakoutBoardUSBPassthrough", "SeeedXIAORP2040", "SparkFunProMicro", "SparkFunProMicroRP2350", "WaveshareZero", "Stress", "SGFDevices", "ZeroRhythm"]') }}
 
     steps:
-    - name: Setup cmake
-      uses: jwlawson/actions-setup-cmake@v2
-      with:
-        cmake-version: '3.17.x'
-    - name: Verify cmake
-      run: cmake --version
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v2
+        with:
+          cmake-version: "3.17.x"
+      - name: Verify cmake
+        run: cmake --version
 
-    #Global Setup
-    - name: Checkout GP2040-CE
-      uses: actions/checkout@v4.1.1
-      with:
-        fetch-depth: 0
-        fetch-tags: true
+      #Global Setup
+      - name: Checkout GP2040-CE
+        uses: actions/checkout@v4.1.1
+        with:
+          fetch-depth: 0
+          fetch-tags: true
 
-    - name: Setup SDK pipeline
-      uses: Fortinbra/RaspberryPiPicoBuild@v7
+      - name: Setup SDK pipeline
+        uses: Fortinbra/RaspberryPiPicoBuild@v7
 
-    - name: Download a Build Artifact
-      uses: actions/download-artifact@v4.1.2
-      with:
-        name: fsData
-        path: ${{github.workspace}}/lib/httpd/
+      - name: Download a Build Artifact
+        uses: actions/download-artifact@v4.1.2
+        with:
+          name: fsData
+          path: ${{github.workspace}}/lib/httpd/
 
-    - name: Get core count
-      id: core_count
-      run : cat /proc/cpuinfo  | grep processor | wc -l
-      #End Global Setup
+      - name: Get core count
+        id: core_count
+        run: cat /proc/cpuinfo  | grep processor | wc -l
+        #End Global Setup
 
-    - name: Pico Build Configure CMake
-      shell: bash
-      if: ${{ matrix.GP2040_BOARDCONFIG != 'PicoW' && matrix.GP2040_BOARDCONFIG != 'Pico2' && matrix.GP2040_BOARDCONFIG != 'SparkFunProMicroRP2350' }}
-      run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=${{ matrix.GP2040_BOARDCONFIG }} SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      - name: Pico Build Configure CMake
+        shell: bash
+        if: ${{ matrix.GP2040_BOARDCONFIG != 'PicoW' && matrix.GP2040_BOARDCONFIG != 'Pico2' && matrix.GP2040_BOARDCONFIG != 'SparkFunProMicroRP2350' }}
+        run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=${{ matrix.GP2040_BOARDCONFIG }} SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
-    - name: PicoW Build Configure CMake
-      shell: bash
-      if: ${{ matrix.GP2040_BOARDCONFIG == 'PicoW'}}
-      run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=${{ matrix.GP2040_BOARDCONFIG }} SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico_w
+      - name: PicoW Build Configure CMake
+        shell: bash
+        if: ${{ matrix.GP2040_BOARDCONFIG == 'PicoW'}}
+        run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=${{ matrix.GP2040_BOARDCONFIG }} SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico_w
 
-    - name: Pico2 Build Configure CMake
-      shell: bash
-      if: ${{ matrix.GP2040_BOARDCONFIG == 'Pico2' || matrix.GP2040_BOARDCONFIG == 'SparkFunProMicroRP2350' }}
-      run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=${{ matrix.GP2040_BOARDCONFIG }} SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico2 -DPICO_PLATFORM=rp2350-arm-s
+      - name: Pico2 Build Configure CMake
+        shell: bash
+        if: ${{ matrix.GP2040_BOARDCONFIG == 'Pico2' || matrix.GP2040_BOARDCONFIG == 'SparkFunProMicroRP2350' }}
+        run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=${{ matrix.GP2040_BOARDCONFIG }} SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico2 -DPICO_PLATFORM=rp2350-arm-s
 
-    - name: Pico Build
-      shell: bash
-      run: GP2040_BOARDCONFIG=${{ matrix.GP2040_BOARDCONFIG }} cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
+      - name: Pico Build
+        shell: bash
+        run: GP2040_BOARDCONFIG=${{ matrix.GP2040_BOARDCONFIG }} cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
 
-    - name: Upload Pico Artifact
-      uses: actions/upload-artifact@v4.3.1
-      with:
-        name: GP2040-CE - ${{ matrix.GP2040_BOARDCONFIG }}
-        path: ${{github.workspace}}/build/GP2040-CE_*_${{ matrix.GP2040_BOARDCONFIG }}.uf2
-        if-no-files-found: error
+      - name: Upload Pico Artifact
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          name: GP2040-CE - ${{ matrix.GP2040_BOARDCONFIG }}
+          path: ${{github.workspace}}/build/GP2040-CE_*_${{ matrix.GP2040_BOARDCONFIG }}.uf2
+          if-no-files-found: error
 
-    - name: Upload .elf Artifact
-      if: ${{ matrix.GP2040_BOARDCONFIG == 'Pico'}}
-      uses: actions/upload-artifact@v4.3.1
-      with:
-        name: elf
-        path: ${{github.workspace}}/build/GP2040-CE_*_${{ matrix.GP2040_BOARDCONFIG }}.elf
-        if-no-files-found: error
+      - name: Upload .elf Artifact
+        if: ${{ matrix.GP2040_BOARDCONFIG == 'Pico'}}
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          name: elf
+          path: ${{github.workspace}}/build/GP2040-CE_*_${{ matrix.GP2040_BOARDCONFIG }}.elf
+          if-no-files-found: error

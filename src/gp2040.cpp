@@ -36,6 +36,8 @@
 #include "pico/time.h"
 #include "hardware/adc.h"
 
+#include "rndis.h"
+
 // TinyUSB
 #include "tusb.h"
 
@@ -271,6 +273,10 @@ void GP2040::run() {
 
 	// Initialize our USB manager
 	USBHostManager::getInstance().start();
+
+	if (configMode == true ) {
+		rndis_init();
+	}
 
 	while (1) { // LOOP
 		this->getReinitGamepad(gamepad);
