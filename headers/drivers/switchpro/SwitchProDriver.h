@@ -166,6 +166,7 @@ private:
 
     uint16_t scale12To16(uint16_t pos) { return pos << 4; }
     uint16_t scale16To12(uint16_t pos) { return pos >> 4; }
+    uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max) { return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min; }
 };
 
 #endif // _SWITCH_PRO_DRIVER_H_
