@@ -125,6 +125,8 @@ export default {
 		'load-profile-2': '加载 档案 #2',
 		'load-profile-3': '加载 档案 #3',
 		'load-profile-4': '加载 档案 #4',
+		'load-profile-5': '加载 档案 #5',
+		'load-profile-6': '加载 档案 #6',
 		'reboot-default': '重启 GP2040-CE',
 		'next-profile': '下一个档案',
 		'previous-profile': '上一个档案',
