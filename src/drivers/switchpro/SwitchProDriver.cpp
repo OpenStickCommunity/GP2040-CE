@@ -493,7 +493,7 @@ void SwitchProDriver::set_report(uint8_t report_id, hid_report_type_t report_typ
 void SwitchProDriver::readSPIFlash(uint8_t* dest, uint32_t address, uint8_t size) {
     uint32_t addressBank = address & 0xFFFFFF00;
     uint32_t addressOffset = address & 0x000000FF;
-    //printf("Address: %08x, Bank: %04x, Offset: %04x\n", address, addressBank, addressOffset);
+    //printf("Address: %08x, Bank: %04x, Offset: %04x, Size: %d\n", address, addressBank, addressOffset, size);
     std::map<uint32_t, std::vector<uint8_t>>::iterator it = spiFlashData.find(addressBank);
 
     if (it != spiFlashData.end()) {
