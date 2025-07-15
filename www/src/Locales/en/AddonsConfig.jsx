@@ -175,4 +175,13 @@ export default {
 	'drv8833-rumble-pwm-frequency-label': 'PWM Frequency',
 	'drv8833-rumble-duty-min-label': 'Minimum Duty Cycle',
 	'drv8833-rumble-duty-max-label': 'Maximum Duty Cycle',
+	'tg16-extension-header-text': 'TG16 Extension Configuration',
+	'tg16-extension-sub-header-text': 'Note: If the display is enabled at the same time, this add-on will be disabled.',
+	'tg16-extension-oe-pin-label': 'OE GPIO Pin',
+	'tg16-extension-select-pin-label': 'Select GPIO Pin',
+	'tg16-extension-data-pin0-label': 'Data GPIO Pin 0',
+	'tg16-extension-data-pin1-label': 'Data GPIO Pin 1',
+	'tg16-extension-data-pin2-label': 'Data GPIO Pin 2',
+	'tg16-extension-data-pin3-label': 'Data GPIO Pin 3',
+	'tg16-extension-desc-header': 'TG16 Extension Mapping',
 };
