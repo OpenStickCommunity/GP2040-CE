@@ -561,7 +561,7 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		tg16PadDataPin1: -1,
 		tg16PadDataPin2: -1,
 		tg16PadDataPin3: -1,
-		TG16padAddonEnabled: 0,
+		TG16padAddonEnabled: 1,
 		usedPins: Object.values(picoController),
 	});
 });
