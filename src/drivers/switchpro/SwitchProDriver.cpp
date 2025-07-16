@@ -22,7 +22,7 @@ void SwitchProDriver::initialize() {
         // MAC address in reverse
         .macAddress = {0x7c, 0xbb, 0x8a, (uint8_t)(get_rand_32() % 0xff), (uint8_t)(get_rand_32() % 0xff), (uint8_t)(get_rand_32() % 0xff)},
         .unknown01 = 0x01,
-        .storedColors = 0x01,
+        .storedColors = 0x02,
     };
 
 	switchReport = {
@@ -38,8 +38,8 @@ void SwitchProDriver::initialize() {
             .buttonX = 0,
             .buttonB = 0,
             .buttonA = 0,
-            .buttonRightSL = 0,
             .buttonRightSR = 0,
+            .buttonRightSL = 0,
             .buttonR = 0,
             .buttonZR = 0,
 
@@ -89,10 +89,10 @@ bool SwitchProDriver::process(Gamepad * gamepad) {
     uint32_t now = to_ms_since_boot(get_absolute_time());
     reportSent = false;
 
-    switchReport.inputs.dpadUp =    ((gamepad->state.dpad & GAMEPAD_MASK_DPAD) == GAMEPAD_MASK_UP);
-    switchReport.inputs.dpadDown =  ((gamepad->state.dpad & GAMEPAD_MASK_DPAD) == GAMEPAD_MASK_DOWN);
-    switchReport.inputs.dpadLeft =  ((gamepad->state.dpad & GAMEPAD_MASK_DPAD) == GAMEPAD_MASK_LEFT);
-    switchReport.inputs.dpadRight = ((gamepad->state.dpad & GAMEPAD_MASK_DPAD) == GAMEPAD_MASK_RIGHT);
+    switchReport.inputs.dpadUp =    ((gamepad->state.dpad & GAMEPAD_MASK_UP) == GAMEPAD_MASK_UP);
+    switchReport.inputs.dpadDown =  ((gamepad->state.dpad & GAMEPAD_MASK_DOWN) == GAMEPAD_MASK_DOWN);
+    switchReport.inputs.dpadLeft =  ((gamepad->state.dpad & GAMEPAD_MASK_LEFT) == GAMEPAD_MASK_LEFT);
+    switchReport.inputs.dpadRight = ((gamepad->state.dpad & GAMEPAD_MASK_RIGHT) == GAMEPAD_MASK_RIGHT);
 
     switchReport.inputs.chargingGrip = 1;
 
@@ -503,12 +503,14 @@ void SwitchProDriver::readSPIFlash(uint8_t* dest, uint32_t address, uint8_t size
 
     if (it != spiFlashData.end()) {
         // address found
-        for (it = spiFlashData.begin(); it != spiFlashData.end(); ++it) {
-            std::vector<uint8_t>& data = it->second;
-            memcpy(dest, data.data()+addressOffset, size);
-        }
+        std::vector<uint8_t>& data = it->second;
+        memcpy(dest, data.data()+addressOffset, size);
+        //for (uint8_t i = 0; i < size; i++) printf("%02x ", dest[i]);
+        //printf("\n---\n");
     } else {
         // could not find defined address
+        //printf("Not Found\n");
+        memset(dest, 0xFF, size);
     }
 }
 

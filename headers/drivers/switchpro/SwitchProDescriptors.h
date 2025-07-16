@@ -103,6 +103,33 @@ typedef struct {
     }
 } SwitchAnalog;
 
+// left and right calibration are stored differently for some reason, so two structs
+typedef struct {
+    uint8_t data[9];
+
+    void getMin(uint16_t& x, uint16_t& y) { packCalib(6, x, y); }
+    void getCenter(uint16_t& x, uint16_t& y) { packCalib(3, x, y); }
+    void getMax(uint16_t& x, uint16_t& y) { packCalib(0, x, y); }
+
+    void packCalib(uint8_t offset, uint16_t& x, uint16_t& y) {
+        x = static_cast<uint16_t>(data[offset]) | ((data[offset + 1] & 0x0F) << 8);
+        y = static_cast<uint16_t>(data[offset + 2] << 4) | (data[offset + 1] >> 4);
+    }
+} SwitchLeftCalibration;
+
+typedef struct {
+    uint8_t data[9];
+
+    void getMin(uint16_t& x, uint16_t& y) { packCalib(3, x, y); }
+    void getCenter(uint16_t& x, uint16_t& y) { packCalib(0, x, y); }
+    void getMax(uint16_t& x, uint16_t& y) { packCalib(6, x, y); }
+
+    void packCalib(uint8_t offset, uint16_t& x, uint16_t& y) {
+        x = static_cast<uint16_t>(data[offset]) | ((data[offset + 1] & 0x0F) << 8);
+        y = static_cast<uint16_t>(data[offset + 2] << 4) | (data[offset + 1] >> 4);
+    }
+} SwitchRightCalibration;
+
 typedef struct __attribute((packed, aligned(1)))
 {
     uint8_t connectionInfo : 4;
@@ -113,8 +140,8 @@ typedef struct __attribute((packed, aligned(1)))
     uint8_t buttonX : 1;
     uint8_t buttonB : 1;
     uint8_t buttonA : 1;
-    uint8_t buttonRightSL : 1;
     uint8_t buttonRightSR : 1;
+    uint8_t buttonRightSL : 1;
     uint8_t buttonR : 1;
     uint8_t buttonZR : 1;
 
@@ -185,8 +212,8 @@ typedef struct
 } SwitchProOutReport;
 
 static const uint8_t switch_pro_string_language[]     = { 0x09, 0x04 };
-static const uint8_t switch_pro_string_manufacturer[] = "Nintendo Co., Ltd.";
-static const uint8_t switch_pro_string_product[]      = "Pro Controller";
+static const uint8_t switch_pro_string_manufacturer[] = "Open Stick Community";
+static const uint8_t switch_pro_string_product[]      = "GP2040-CE (Pro Controller)";
 static const uint8_t switch_pro_string_version[]      = "000000000001";
 
 static const uint8_t *switch_pro_string_descriptors[] __attribute__((unused)) =
