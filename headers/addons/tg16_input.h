@@ -23,8 +23,17 @@
 #define TG16_PAD_SELECT_PIN -1
 #endif
 
-#ifndef TG16_PAD_DATA_PINS
-#define TG16_PAD_DATA_PINS {-1, -1, -1, -1}
+#ifndef TG16_PAD_DATA_PIN0
+#define TG16_PAD_DATA_PIN0 -1
+#endif
+#ifndef TG16_PAD_DATA_PIN1
+#define TG16_PAD_DATA_PIN1 -1
+#endif
+#ifndef TG16_PAD_DATA_PIN2
+#define TG16_PAD_DATA_PIN2 -1
+#endif
+#ifndef TG16_PAD_DATA_PIN3
+#define TG16_PAD_DATA_PIN3 -1
 #endif
 
 class TG16padInput : public GPAddon {

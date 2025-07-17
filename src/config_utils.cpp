@@ -860,10 +860,10 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.tg16Options, enabled, !!TG16_PAD_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.tg16Options, oePin, TG16_PAD_OE_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.tg16Options, selectPin, TG16_PAD_SELECT_PIN);
-    INIT_UNSET_PROPERTY(config.addonOptions.tg16Options, dataPin0, TG16_PAD_DATA_PINS[0]);
-    INIT_UNSET_PROPERTY(config.addonOptions.tg16Options, dataPin1, TG16_PAD_DATA_PINS[1]);
-    INIT_UNSET_PROPERTY(config.addonOptions.tg16Options, dataPin2, TG16_PAD_DATA_PINS[2]);
-    INIT_UNSET_PROPERTY(config.addonOptions.tg16Options, dataPin3, TG16_PAD_DATA_PINS[3]);
+    INIT_UNSET_PROPERTY(config.addonOptions.tg16Options, dataPin0, TG16_PAD_DATA_PIN0);
+    INIT_UNSET_PROPERTY(config.addonOptions.tg16Options, dataPin1, TG16_PAD_DATA_PIN1);
+    INIT_UNSET_PROPERTY(config.addonOptions.tg16Options, dataPin2, TG16_PAD_DATA_PIN2);
+    INIT_UNSET_PROPERTY(config.addonOptions.tg16Options, dataPin3, TG16_PAD_DATA_PIN3);
 }
 
 
