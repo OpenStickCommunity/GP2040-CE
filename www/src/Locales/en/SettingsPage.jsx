@@ -80,7 +80,7 @@ export default {
 	'xbone-mode-text':
 		'<span>INFO:</span> Xbox One requires a USB host connection and USB dongle to properly authenticate in Xbox One mode.',
 	'xinput-mode-text':
-		'<span>INFO:</span> Xinput will work on a PC without any authentication.  If you would like to on a Xbox 360 please choose USB authentication and attach an appropriate dongle.',
+		'<span>INFO:</span> XInput mode will work on a retail Xbox 360 console without a dongle. Only select USB if you would like to use an external dongle for authentication.',
 	'hotkey-settings-label': 'Hotkey Settings',
 	'hotkey-settings-sub-header':
 		'The <strong>Fn</strong> slider provides a mappable Function button in the <link_pinmap>Pin Mapping</link_pinmap> page. By selecting the <strong>Fn</strong> slider option, the Function button must be held along with the selected hotkey settings. <br /> Additionally, select <strong>None</strong> from the dropdown to unassign any button.',
@@ -127,6 +127,8 @@ export default {
 		'load-profile-2': 'Load Profile #2',
 		'load-profile-3': 'Load Profile #3',
 		'load-profile-4': 'Load Profile #4',
+		'load-profile-5': 'Load Profile #5',
+		'load-profile-6': 'Load Profile #6',
 		'reboot-default': 'Reboot GP2040-CE',
 		'save-config': 'Save Config',
 		'next-profile': 'Next Profile',

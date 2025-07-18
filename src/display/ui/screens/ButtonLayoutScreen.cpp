@@ -197,7 +197,7 @@ void ButtonLayoutScreen::generateHeader() {
                 break;
             case INPUT_MODE_XINPUT:
                 statusBar += "X";
-                if(((XInputDriver*)DriverManager::getInstance().getDriver())->getAuthEnabled() == true )
+                if(((XInputDriver*)DriverManager::getInstance().getDriver())->getAuthSent() == true )
                     statusBar += "B360";
                 else
                     statusBar += "INPUT";

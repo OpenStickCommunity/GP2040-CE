@@ -578,7 +578,7 @@ std::string setProfileOptions()
         profileOptions.gpioMappingsSets[altsIndex].enabled = alt["enabled"];
 
         profileOptions.gpioMappingsSets_count = ++altsIndex;
-        if (altsIndex > 2) break;
+        if (altsIndex > 4) break;
     }
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
