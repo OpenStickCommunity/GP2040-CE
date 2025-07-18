@@ -250,7 +250,8 @@ void NeoPicoLEDAddon::setup() {
     }
 
 	// Setup NeoPico ws2812 PIO
-	neopico.Setup(ledOptions.dataPin, ledCount, static_cast<LEDFormat>(ledOptions.ledFormat), pio0, 0);
+	neopico.Setup(ledOptions.dataPin, ledCount, static_cast<LEDFormat>(ledOptions.ledFormat), pio1, 3);
+    // USB Host is on pio0 and SM1 & SM2
 	neopico.Off(); // turn off everything
 
 	// Rewrite this
