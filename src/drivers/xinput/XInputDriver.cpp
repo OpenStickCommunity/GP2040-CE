@@ -151,18 +151,17 @@ void XInputDriver::initialize() {
     };
 
     xAuthDriver = nullptr;
+    xAuthSent = false;
 }
 
 void XInputDriver::initializeAux() {
     xAuthDriver = nullptr;
     // AUTH DRIVER NON-FUNCTIONAL FOR NOW
     GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();
-    if ( gamepadOptions.xinputAuthType == InputModeAuthType::INPUT_MODE_AUTH_TYPE_USB )  {
-        xAuthDriver = new XInputAuth();
-        if ( xAuthDriver->available() ) {
-            xAuthDriver->initialize();
-            xinputAuthData = xAuthDriver->getAuthData();
-        }
+    xAuthDriver = new XInputAuth(gamepadOptions.xinputAuthType);
+    if ( xAuthDriver->available() ) {
+        xAuthDriver->initialize();
+        xinputAuthData = xAuthDriver->getAuthData();
     }
 }
 
@@ -173,8 +172,8 @@ USBListener * XInputDriver::get_usb_auth_listener() {
     return nullptr;
 }
 
-bool XInputDriver::getAuthEnabled() {
-    return (xAuthDriver != nullptr);
+bool XInputDriver::getAuthSent() {
+    return xAuthSent;
 }
 
 bool XInputDriver::process(Gamepad * gamepad) {
@@ -315,6 +314,7 @@ bool XInputDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_co
                         }
                         len = X360_AUTHLEN_DONGLE_SERIAL;
                         memcpy(tud_buffer, xinputAuthData->dongleSerial, len);
+                        xAuthSent = true; // triggers on serial request but this is only for visual flair
                         break;
                     case XSM360_RESPOND_CHALLENGE:
                         if ( xinputAuthData->xinputState == GPAuthState::send_auth_dongle_to_console ) {
