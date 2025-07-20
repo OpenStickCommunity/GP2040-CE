@@ -30,13 +30,14 @@ public:
     virtual const uint8_t * get_descriptor_device_qualifier_cb();
     virtual uint16_t GetJoystickMidValue();
     virtual USBListener * get_usb_auth_listener();
-    bool getAuthEnabled();
+    bool getAuthSent();
 private:
     uint8_t last_report[CFG_TUD_ENDPOINT0_SIZE] = { };
     XInputReport xinputReport;
     XInputAuth * xAuthDriver;
     uint8_t featureBuffer[XINPUT_OUT_SIZE];
     uint8_t tud_buffer[64];
+    bool xAuthSent;
 };
 
 #endif
