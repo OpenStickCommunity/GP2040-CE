@@ -172,6 +172,11 @@ src/addonmanager.cpp
 src/playerleds.cpp
 src/drivers/shared/xinput_host.cpp
 src/drivers/shared/xgip_protocol.cpp
+src/drivers/shared/xsm3/excrypt_des.c
+src/drivers/shared/xsm3/excrypt_parve.c
+src/drivers/shared/xsm3/excrypt_sha.c
+src/drivers/shared/xsm3/usbdsec.c
+src/drivers/shared/xsm3/xsm3.c
 src/drivers/astro/AstroDriver.cpp
 src/drivers/egret/EgretDriver.cpp
 src/drivers/hid/HIDDriver.cpp
@@ -301,6 +306,7 @@ headers
 headers/addons
 headers/configs
 headers/drivers
+headers/drivers/shared
 headers/events
 headers/interfaces
 headers/interfaces/i2c
