@@ -111,6 +111,28 @@ typedef struct {
     void getCenter(uint16_t& x, uint16_t& y) { packCalib(3, x, y); }
     void getMax(uint16_t& x, uint16_t& y) { packCalib(0, x, y); }
 
+    void getRealMin(uint16_t& x, uint16_t& y) {
+        uint16_t minX, minY;
+        uint16_t cenX, cenY;
+
+        getMin(minX, minY);
+        getCenter(cenX, cenY);
+
+        x = cenX - minX;
+        y = cenY - minY;
+    }
+
+    void getRealMax(uint16_t& x, uint16_t& y) {
+        uint16_t maxX, maxY;
+        uint16_t cenX, cenY;
+
+        getMax(maxX, maxY);
+        getCenter(cenX, cenY);
+
+        x = cenX + maxX;
+        y = cenY + maxY;
+    }
+
     void packCalib(uint8_t offset, uint16_t& x, uint16_t& y) {
         x = static_cast<uint16_t>(data[offset]) | ((data[offset + 1] & 0x0F) << 8);
         y = static_cast<uint16_t>(data[offset + 2] << 4) | (data[offset + 1] >> 4);
@@ -124,11 +146,99 @@ typedef struct {
     void getCenter(uint16_t& x, uint16_t& y) { packCalib(0, x, y); }
     void getMax(uint16_t& x, uint16_t& y) { packCalib(6, x, y); }
 
+    void getRealMin(uint16_t& x, uint16_t& y) {
+        uint16_t minX, minY;
+        uint16_t cenX, cenY;
+
+        getMin(minX, minY);
+        getCenter(cenX, cenY);
+
+        x = cenX - minX;
+        y = cenY - minY;
+    }
+
+    void getRealMax(uint16_t& x, uint16_t& y) {
+        uint16_t maxX, maxY;
+        uint16_t cenX, cenY;
+
+        getMax(maxX, maxY);
+        getCenter(cenX, cenY);
+
+        x = cenX + maxX;
+        y = cenY + maxY;
+    }
+
     void packCalib(uint8_t offset, uint16_t& x, uint16_t& y) {
         x = static_cast<uint16_t>(data[offset]) | ((data[offset + 1] & 0x0F) << 8);
         y = static_cast<uint16_t>(data[offset + 2] << 4) | (data[offset + 1] >> 4);
     }
 } SwitchRightCalibration;
+
+typedef struct
+{
+    uint8_t red;
+    uint8_t green;
+    uint8_t blue;
+} SwitchColorDefinition;
+
+typedef struct __attribute((packed, aligned(1)))
+{
+    uint8_t serialNumber[16];
+
+    uint8_t unknown00[2];
+
+    uint8_t deviceType;
+
+    uint8_t unknown01; // usually 0xA0
+
+    uint8_t unknown02[7];
+
+    uint8_t colorInfo; // 0 = default colors
+
+    uint8_t unknown03[4];
+
+    uint8_t motionCalibration[24];
+
+    uint8_t unknown04[5];
+
+    SwitchLeftCalibration leftStickCalibration;
+
+    SwitchRightCalibration rightStickCalibration;
+
+    uint8_t unknown08;
+
+    SwitchColorDefinition bodyColor;
+
+    SwitchColorDefinition buttonColor;
+
+    SwitchColorDefinition leftGripColor;
+
+    SwitchColorDefinition rightGripColor;
+
+    uint8_t unknown06[37];
+
+    uint8_t motionHorizontalOffsets[6];
+
+    uint8_t stickParams1[17];
+
+    uint8_t stickParams2[17];
+
+    uint8_t unknown07[0xE57];
+} SwitchFactoryConfig;
+
+typedef struct __attribute((packed, aligned(1)))
+{
+    uint8_t unknown00[16];
+
+    uint8_t leftCalibrationMagic[2];
+    SwitchLeftCalibration leftCalibration;
+
+    uint8_t rightCalibrationMagic[2];
+    SwitchRightCalibration rightCalibration;
+
+    uint8_t motionCalibrationMagic[2];
+    uint8_t motionCalibration[24];
+} SwitchUserCalibration;
 
 typedef struct __attribute((packed, aligned(1)))
 {

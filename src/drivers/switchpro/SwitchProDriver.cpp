@@ -72,6 +72,13 @@ void SwitchProDriver::initialize() {
 
     last_report_timer = to_ms_since_boot(get_absolute_time());
 
+    factoryConfig->leftStickCalibration.getRealMin(leftMinX, leftMinY);
+    factoryConfig->leftStickCalibration.getCenter(leftCenX, leftCenY);
+    factoryConfig->leftStickCalibration.getRealMax(leftMaxX, leftMaxY);
+    factoryConfig->rightStickCalibration.getRealMin(rightMinX, rightMinY);
+    factoryConfig->rightStickCalibration.getCenter(rightCenX, rightCenY);
+    factoryConfig->rightStickCalibration.getRealMax(rightMaxX, rightMaxY);
+
 	class_driver = {
 	#if CFG_TUSB_DEBUG >= 2
 		.name = "SWITCHPRO",
@@ -120,11 +127,11 @@ bool SwitchProDriver::process(Gamepad * gamepad) {
     uint16_t scaleLeftStickY = scale16To12(gamepad->state.ly);
     uint16_t scaleRightStickX = scale16To12(gamepad->state.rx);
     uint16_t scaleRightStickY = scale16To12(gamepad->state.ry);
-    if ((scaleLeftStickX >= 350) && (scaleLeftStickX < 3750)) switchReport.inputs.leftStick.setX(scaleLeftStickX);
-    if ((scaleLeftStickY >= 350) && (scaleLeftStickY < 3750)) switchReport.inputs.leftStick.setY(-scaleLeftStickY);
+    if ((scaleLeftStickX >= leftMinX) && (scaleLeftStickX < leftMaxX)) switchReport.inputs.leftStick.setX(scaleLeftStickX);
+    if ((scaleLeftStickY >= leftMinY) && (scaleLeftStickY < leftMaxY)) switchReport.inputs.leftStick.setY(-scaleLeftStickY);
 
-    if ((scaleRightStickX >= 350) && (scaleRightStickX < 3750)) switchReport.inputs.rightStick.setX(scaleRightStickX);
-    if ((scaleRightStickY >= 350) && (scaleRightStickY < 3750)) switchReport.inputs.rightStick.setY(-scaleRightStickY);
+    if ((scaleRightStickX >= rightMinX) && (scaleRightStickX < rightMaxX)) switchReport.inputs.rightStick.setX(scaleRightStickX);
+    if ((scaleRightStickY >= rightMinY) && (scaleRightStickY < rightMaxY)) switchReport.inputs.rightStick.setY(-scaleRightStickY);
 
     switchReport.rumbleReport = 0x09;
     //switchReport.reportID = inputMode;
@@ -271,12 +278,12 @@ void SwitchProDriver::handleFeatureReport(uint8_t switchReportID, uint8_t switch
     uint8_t spiReadSize = 0;
     bool canSend = false;
 
-    uint8_t inputReportSize = sizeof(SwitchInputReport);
+    //uint8_t inputReportSize = sizeof(SwitchInputReport);
+    //printf("inputReportSize: %d\n", inputReportSize);
 
     report[0] = SwitchReportID::REPORT_OUTPUT_21;
     report[1] = last_report_counter;
     memcpy(report+2,&switchReport.inputs,sizeof(SwitchInputReport));
-    //printf("inputReportSize: %d\n", inputReportSize);
 
     switch (commandID) {
         case SwitchCommands::GET_CONTROLLER_STATE:
@@ -368,6 +375,7 @@ void SwitchProDriver::handleFeatureReport(uint8_t switchReportID, uint8_t switch
             report[16] = reportData[12];
             report[17] = reportData[13];
             report[18] = reportData[14];
+            report[19] = reportData[15];
             readSPIFlash(&report[20], spiReadAddress, spiReadSize);
             canSend = true;
             //printf("----------------------------------------------\n");
@@ -499,12 +507,12 @@ void SwitchProDriver::readSPIFlash(uint8_t* dest, uint32_t address, uint8_t size
     uint32_t addressBank = address & 0xFFFFFF00;
     uint32_t addressOffset = address & 0x000000FF;
     //printf("Address: %08x, Bank: %04x, Offset: %04x, Size: %d\n", address, addressBank, addressOffset, size);
-    std::map<uint32_t, std::vector<uint8_t>>::iterator it = spiFlashData.find(addressBank);
+    std::map<uint32_t, const uint8_t*>::iterator it = spiFlashData.find(addressBank);
 
     if (it != spiFlashData.end()) {
         // address found
-        std::vector<uint8_t>& data = it->second;
-        memcpy(dest, data.data()+addressOffset, size);
+        const uint8_t* data = it->second;
+        memcpy(dest, data+addressOffset, size);
         //for (uint8_t i = 0; i < size; i++) printf("%02x ", dest[i]);
         //printf("\n---\n");
     } else {

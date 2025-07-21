@@ -71,6 +71,11 @@ void GP2040::setup() {
 	// Set pin mappings for all GPIO functions
 	Storage::getInstance().setFunctionalPinMappings();
 
+	// power up... 
+	gamepad->auxState.power.pluggedIn = true;
+	gamepad->auxState.power.charging = false;
+	gamepad->auxState.power.level = GAMEPAD_AUX_MAX_POWER;
+
 	// Setup Gamepad
 	gamepad->setup();
 	
