@@ -1364,6 +1364,38 @@ export default function SettingsPage() {
 		}
 	};
 
+	const InputModeSelect = (props) => {
+		return (
+			<Form.Select {...props}>
+				{translatedInputModeGroups.map((o, i) => (
+					<optgroup
+						label={o.label}
+						key={`optgroup-${o.label}-${i}`}
+					>
+						{translatedInputBootModes
+							.filter(
+								({ group }) => group == o.group,
+							)
+							.map((o, i) => (
+								<option
+									key={`button-${props.name
+										.toString()
+										.toLowerCase()}-option-${i}`}
+									value={o.value}
+									disabled={o.disabled}
+								>
+									{o.label}
+									{o.disabled && o.reason != ''
+										? ' (' + o.reason + ')'
+										: ''}
+								</option>
+							))}
+					</optgroup>
+				))}
+			</Form.Select>
+		)
+	}
+
 	const bootModeSpecifics = (values, errors, handleChange) => {
 		if (values.useGpioInputModeSelect) {
 			return (
@@ -1399,39 +1431,13 @@ export default function SettingsPage() {
 								: mode.value}
 						</Form.Label>
 						<Col sm={10}>
-							<Form.Select
+							<InputModeSelect 
 								name={`inputMode${mode.value}`}
 								className="form-select-sm"
 								value={values[`inputMode${mode.value}`]}
 								onChange={handleChange}
 								isInvalid={errors[`inputMode${mode.value}`]}
-							>
-								{translatedInputModeGroups.map((o, i) => (
-									<optgroup
-										label={o.label}
-										key={`optgroup-${o.label}-${i}`}
-									>
-										{translatedInputBootModes
-											.filter(
-												({ group }) => group == o.group,
-											)
-											.map((o, i) => (
-												<option
-													key={`button-inputMode-${mode.value
-														.toString()
-														.toLowerCase()}-option-${i}`}
-													value={o.value}
-													disabled={o.disabled}
-												>
-													{o.label}
-													{o.disabled && o.reason != ''
-														? ' (' + o.reason + ')'
-														: ''}
-												</option>
-											))}
-									</optgroup>
-								))}
-							</Form.Select>
+							/>
 							<Form.Control.Feedback type="invalid">
 								{errors[`inputMode${mode.value}`]}
 							</Form.Control.Feedback>
