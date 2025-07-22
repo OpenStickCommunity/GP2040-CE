@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { Button, Form, Modal, Nav, Row, Col, Tab } from 'react-bootstrap';
-import { Formik, useFormikContext } from 'formik';
+import { FieldArray, Formik, useFormikContext } from 'formik';
 import { NavLink } from 'react-router-dom';
 import * as yup from 'yup';
 import { Trans, useTranslation } from 'react-i18next';
@@ -101,7 +101,7 @@ const SHA256 = (ascii) => {
 								(rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3)) + // s0
 								w[i - 7] +
 								(rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10))) | // s1
-						  0);
+							0);
 			// This is only used once, so *could* be moved below, but it only saves 4 bytes and makes things unreadble
 			const temp2 =
 				(rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22)) + // S0
@@ -501,6 +501,16 @@ const schema = yup.object().shape({
 	usbDescVersion: yup.string().label('USB Description: Version'),
 	usbVendorID: yup.string().label('USB Vendor ID').validateUSBHexID(),
 	usbProductID: yup.string().label('USB Product ID').validateUSBHexID(),
+	useGpioInputModeSelect: yup.bool().required().label("Use GPIO Pin Mapping"),
+	gpioInputModeMappings: yup.array().min(1).max(8).of(
+		yup.object({
+			pin: yup.number().required().label('GPIO Pin'),
+			inputMode: yup
+				.number()
+				.required()
+				.oneOf(INPUT_BOOT_MODES.map((o) => o.value))
+				.label('Input Mode')
+		}))
 });
 
 const FormContext = ({ setButtonLabels, setKeyMappings }) => {
@@ -1354,6 +1364,84 @@ export default function SettingsPage() {
 		}
 	};
 
+	const bootModeSpecifics = (values, errors, handleChange) => {
+		if (values.useGpioInputModeSelect) {
+			return (
+				<FieldArray
+					name="gpioInputModeMappings"
+					render={arrayHelpers=>(
+						<div>
+							{values.gpioInputModeMappings.map((mapping, index) => (
+								<Row>
+									<Form.Label>{"Some text"}</Form.Label>
+								</Row>
+							))}
+							<Button
+								onClick={()=>arrayHelpers.push({"pin": 0, "inputMode": 0})}
+							>
+								{"Add input mode"}
+							</Button>
+						</div>	
+					)}
+				/>
+			)
+		}
+		return (
+			<Row sm={3}>
+				{INPUT_MODES_BINDS.map((mode, index) => (
+					<Form.Group
+						className="mb-3 col-sm-6"
+						key={`input-mode-${index}`}
+					>
+						<Form.Label>
+							{mode.value in currentButtonLabels
+								? currentButtonLabels[mode.value]
+								: mode.value}
+						</Form.Label>
+						<Col sm={10}>
+							<Form.Select
+								name={`inputMode${mode.value}`}
+								className="form-select-sm"
+								value={values[`inputMode${mode.value}`]}
+								onChange={handleChange}
+								isInvalid={errors[`inputMode${mode.value}`]}
+							>
+								{translatedInputModeGroups.map((o, i) => (
+									<optgroup
+										label={o.label}
+										key={`optgroup-${o.label}-${i}`}
+									>
+										{translatedInputBootModes
+											.filter(
+												({ group }) => group == o.group,
+											)
+											.map((o, i) => (
+												<option
+													key={`button-inputMode-${mode.value
+														.toString()
+														.toLowerCase()}-option-${i}`}
+													value={o.value}
+													disabled={o.disabled}
+												>
+													{o.label}
+													{o.disabled && o.reason != ''
+														? ' (' + o.reason + ')'
+														: ''}
+												</option>
+											))}
+									</optgroup>
+								))}
+							</Form.Select>
+							<Form.Control.Feedback type="invalid">
+								{errors[`inputMode${mode.value}`]}
+							</Form.Control.Feedback>
+						</Col>
+					</Form.Group>
+				))}
+			</Row>
+		)
+	}
+
 	const handleWarningClose = async (accepted, values, setFieldValue) => {
 		setWarning({ show: false, acceptText: '' });
 		if (accepted) await saveSettings(values);
@@ -1737,58 +1825,23 @@ export default function SettingsPage() {
 												<Section
 													title={t('SettingsPage:boot-input-mode-label')}
 												>
-													<Row sm={3}>
-														{INPUT_MODES_BINDS.map((mode, index) => (
-															<Form.Group
-																className="mb-3 col-sm-6"
-																key={`input-mode-${index}`}
-															>
-																<Form.Label>
-																	{mode.value in currentButtonLabels
-																		? currentButtonLabels[mode.value]
-																		: mode.value}
-																</Form.Label>
-																<Col sm={10}>
-																	<Form.Select
-																		name={`inputMode${mode.value}`}
-																		className="form-select-sm"
-																		value={values[`inputMode${mode.value}`]}
-																		onChange={handleChange}
-																		isInvalid={errors[`inputMode${mode.value}`]}
-																	>
-																		{translatedInputModeGroups.map((o, i) => (
-																			<optgroup
-																				label={o.label}
-																				key={`optgroup-${o.label}-${i}`}
-																			>
-																				{translatedInputBootModes
-																					.filter(
-																						({ group }) => group == o.group,
-																					)
-																					.map((o, i) => (
-																						<option
-																							key={`button-inputMode-${mode.value
-																								.toString()
-																								.toLowerCase()}-option-${i}`}
-																							value={o.value}
-																							disabled={o.disabled}
-																						>
-																							{o.label}
-																							{o.disabled && o.reason != ''
-																								? ' (' + o.reason + ')'
-																								: ''}
-																						</option>
-																					))}
-																			</optgroup>
-																		))}
-																	</Form.Select>
-																	<Form.Control.Feedback type="invalid">
-																		{errors[`inputMode${mode.value}`]}
-																	</Form.Control.Feedback>
-																</Col>
-															</Form.Group>
-														))}
+													<Row className="mb-3">
+														<Col>
+															<Form.Check
+																type="switch"
+																id="useGpioInputModeSelect"
+																name="useGpioInputModeSelect"
+																label="Use GPIO pins"
+																value={values.useGpioInputModeSelect}
+																onChange={handleChange}
+															/>
+														</Col>
 													</Row>
+													{bootModeSpecifics(
+														values,
+														errors,
+														handleChange
+													)}
 													<Button type="submit">
 														{t('Common:button-save-label')}
 													</Button>
