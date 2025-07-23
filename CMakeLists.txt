@@ -12,10 +12,39 @@ if (EXISTS ${picoVscode})
     include(${picoVscode})
 endif()
 # ====================================================================================
-if(DEFINED ENV{PICO_BOARD})
-  set(PICO_BOARD $ENV{PICO_BOARD} CACHE STRING "Board type")
+
+# Unified board configuration system - use SDK board names directly as config directory names
+if(DEFINED ENV{GP2040_BOARDCONFIG})
+    set(GP2040_BOARDCONFIG $ENV{GP2040_BOARDCONFIG})
+elseif(DEFINED ENV{PICO_BOARD})
+    # If only PICO_BOARD is set, use it directly as GP2040_BOARDCONFIG if the config directory exists
+    if(EXISTS ${CMAKE_SOURCE_DIR}/configs/$ENV{PICO_BOARD})
+        set(GP2040_BOARDCONFIG $ENV{PICO_BOARD})
+    else()
+        # Fallback to default if the board config doesn't exist
+        set(GP2040_BOARDCONFIG "pico")
+    endif()
+elseif(NOT DEFINED GP2040_BOARDCONFIG)
+    set(GP2040_BOARDCONFIG "pico")
+endif()
+
+# Validate that the board config directory exists
+if(NOT EXISTS ${CMAKE_SOURCE_DIR}/configs/${GP2040_BOARDCONFIG})
+    message(FATAL_ERROR "Board configuration directory 'configs/${GP2040_BOARDCONFIG}' does not exist!")
+endif()
+
+# For SDK boards, use the config name directly as PICO_BOARD
+# For custom boards, default to 'pico'
+if(EXISTS ${CMAKE_SOURCE_DIR}/configs/${GP2040_BOARDCONFIG})
+    # Check if this appears to be an SDK board name (lowercase, contains underscores, known prefixes)
+    if(${GP2040_BOARDCONFIG} MATCHES "^(pico|adafruit_|seeed_|sparkfun_|waveshare_|pimoroni_)" AND NOT ${GP2040_BOARDCONFIG} MATCHES "[A-Z]")
+        set(PICO_BOARD ${GP2040_BOARDCONFIG} CACHE STRING "Board type" FORCE)
+    else()
+        # Custom board, use pico as fallback
+        set(PICO_BOARD "pico" CACHE STRING "Board type" FORCE)
+    endif()
 else()
-  set(PICO_BOARD pico CACHE STRING "Board type")
+    set(PICO_BOARD "pico" CACHE STRING "Board type" FORCE)
 endif()
 
 cmake_minimum_required(VERSION 3.10...4.0)
@@ -56,11 +85,9 @@ project(GP2040-CE LANGUAGES C CXX ASM VERSION ${CMAKE_GIT_REPO_VERSION})
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
-if(DEFINED ENV{GP2040_BOARDCONFIG})
-  set(GP2040_BOARDCONFIG $ENV{GP2040_BOARDCONFIG})
-elseif(NOT DEFINED GP2040_BOARDCONFIG)
-  set(GP2040_BOARDCONFIG Pico)
-endif()
+# Display the board configuration being used
+message(STATUS "Building for GP2040_BOARDCONFIG: ${GP2040_BOARDCONFIG}")
+message(STATUS "Using Pico SDK PICO_BOARD: ${PICO_BOARD}")
 
 if(DEFINED ENV{SKIP_SUBMODULES})
   set(SKIP_SUBMODULES $ENV{SKIP_SUBMODULES})
