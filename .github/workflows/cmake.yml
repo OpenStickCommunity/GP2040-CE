@@ -72,15 +72,34 @@ env:
 jobs:
   call-node-workflow:
     uses: ./.github/workflows/node.js.yml
+  
+  determine-matrix:
+    runs-on: ubuntu-22.04
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Determine build matrix
+        id: set-matrix
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ github.event.inputs.board_config }}" != "" ]]; then
+            # Single board selected
+            echo "matrix=[\"${{ github.event.inputs.board_config }}\"]" >> $GITHUB_OUTPUT
+            echo "Building single board: ${{ github.event.inputs.board_config }}"
+          else
+            # Build all boards
+            ALL_BOARDS='["ARCController", "Blank", "pico", "pico_w", "pico2", "pico2_w", "BentoBox", "DuelPadZen", "FlatboxRev4", "FlatboxRev5", "FlatboxRev5RGB", "FlatboxRev5USBPassthrough", "FlatboxRev5Southpaw", "FlatboxRev8", "Granola", "adafruit_kb2040", "KeyboardConverter", "Haute42COSMOX", "Haute42COSMOXMLite", "Haute42COSMOXMUltra", "Haute42COSMOXXAnalog", "Liatris", "MavercadeRev1", "MavercadeRev2", "MiSTercadeV2", "OpenCore0", "OpenCore0MIXUP", "OpenCore0WASD", "OSUMGP-RP2040", "PicoAnn", "PicoFightingBoard", "PXPGamepad", "ReflexCtrlGenesis6", "ReflexCtrlNES", "ReflexCtrlSaturn", "ReflexCtrlSNES", "ReflexCtrlVB", "ReflexEncodeV1.2", "ReflexEncodeV2.0", "RP2040AdvancedBreakoutBoard", "RP2040AdvancedBreakoutBoardUSBPassthrough", "RP2040MiniBreakoutBoard", "RP2040MiniBreakoutBoardUSBPassthrough", "seeed_xiao_rp2040", "sparkfun_promicro", "sparkfun_promicro_rp2350", "waveshare_rp2040_zero", "Stress", "SGFDevices", "ZeroRhythm"]'
+            echo "matrix=$ALL_BOARDS" >> $GITHUB_OUTPUT
+            echo "Building all boards"
+          fi
+
   build:
-    needs: call-node-workflow
-    # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
-    # You can convert this to a matrix build if you need cross-platform coverage.
-    # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
+    needs: [call-node-workflow, determine-matrix]
+    # Dynamic matrix strategy: build single board if selected via workflow_dispatch,
+    # otherwise build all boards for push/PR events
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        GP2040_BOARDCONFIG: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.board_config != '' && fromJSON(format('["{0}"]', github.event.inputs.board_config)) || fromJSON('["ARCController", "Blank", "pico", "pico_w", "pico2", "pico2_w", "BentoBox", "DuelPadZen", "FlatboxRev4", "FlatboxRev5", "FlatboxRev5RGB", "FlatboxRev5USBPassthrough", "FlatboxRev5Southpaw", "FlatboxRev8", "Granola", "adafruit_kb2040", "KeyboardConverter", "Haute42COSMOX", "Haute42COSMOXMLite", "Haute42COSMOXMUltra", "Haute42COSMOXXAnalog", "Liatris", "MavercadeRev1", "MavercadeRev2", "MiSTercadeV2", "OpenCore0", "OpenCore0MIXUP", "OpenCore0WASD", "OSUMGP-RP2040", "PicoAnn", "PicoFightingBoard", "PXPGamepad", "ReflexCtrlGenesis6", "ReflexCtrlNES", "ReflexCtrlSaturn", "ReflexCtrlSNES", "ReflexCtrlVB", "ReflexEncodeV1.2", "ReflexEncodeV2.0", "RP2040AdvancedBreakoutBoard", "RP2040AdvancedBreakoutBoardUSBPassthrough", "RP2040MiniBreakoutBoard", "RP2040MiniBreakoutBoardUSBPassthrough", "seeed_xiao_rp2040", "sparkfun_promicro", "sparkfun_promicro_rp2350", "waveshare_rp2040_zero", "Stress", "SGFDevices", "ZeroRhythm"]') }}
+        GP2040_BOARDCONFIG: ${{ fromJSON(needs.determine-matrix.outputs.matrix) }}
     steps:
       - name: Setup cmake
         uses: jwlawson/actions-setup-cmake@v2
