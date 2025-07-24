@@ -374,7 +374,7 @@ void ButtonLayoutScreen::processInputHistory() {
 		getProcessedGamepad()->pressedA2(),
 	};
 
-	uint8_t mode = ((displayModeLookup.count(getGamepad()->getOptions().inputMode) > 0) ? displayModeLookup.at(getGamepad()->getOptions().inputMode) : 0);
+	uint8_t mode = ((displayModeLookup.count(inputMode) > 0) ? displayModeLookup.at(inputMode) : 0);
 
 	// Check if any new keys have been pressed
 	if (lastInput != currentInput) {
