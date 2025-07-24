@@ -191,6 +191,7 @@ src/drivers/ps4/PS4AuthUSBListener.cpp
 src/drivers/ps4/PS4Driver.cpp
 src/drivers/psclassic/PSClassicDriver.cpp
 src/drivers/switch/SwitchDriver.cpp
+src/drivers/switchpro/SwitchProDriver.cpp
 src/drivers/xbone/XBOneAuth.cpp
 src/drivers/xbone/XBOneAuthUSBListener.cpp
 src/drivers/xbone/XBOneDriver.cpp
