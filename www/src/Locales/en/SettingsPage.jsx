@@ -167,4 +167,5 @@ export default {
 		'product-id': 'Product ID',
 		'vendor-id': 'Vendor ID',
 	},
+	'input-mode-device-type-label': 'Input Mode Controller Type',
 };
