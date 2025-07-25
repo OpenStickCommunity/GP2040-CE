@@ -1319,6 +1319,12 @@ void gpioMappingsMigrationCore(Config& config)
     markAddonPinIfUsed(config.addonOptions.snesOptions.clockPin);
     markAddonPinIfUsed(config.addonOptions.snesOptions.latchPin);
     markAddonPinIfUsed(config.addonOptions.snesOptions.dataPin);
+    markAddonPinIfUsed(config.addonOptions.tg16Options.oePin);
+    markAddonPinIfUsed(config.addonOptions.tg16Options.selectPin);
+    markAddonPinIfUsed(config.addonOptions.tg16Options.dataPin0);
+    markAddonPinIfUsed(config.addonOptions.tg16Options.dataPin1);
+    markAddonPinIfUsed(config.addonOptions.tg16Options.dataPin2);
+    markAddonPinIfUsed(config.addonOptions.tg16Options.dataPin3);
 
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
         config.gpioMappings.pins[pin].action = actions[pin];

@@ -4,6 +4,10 @@
 #include "hardware/gpio.h"
 #include "helper.h"
 
+#if TG16_PAD_DEBUG==true
+#include <iostream>
+#endif
+
 // Helper macros for pin access
 #define SET_PIN(pin) gpio_put(pin, 1)
 #define CLR_PIN(pin) gpio_put(pin, 0)
@@ -103,6 +107,19 @@ void TG16padInput::process()
 		updateButtons(data);
 		nextTimer = getMillis() + uIntervalMS;
 	}
+
+#if TG16_PAD_DEBUG==true
+    stdio_init_all();
+	printf("TG16padInput::process()\n");
+	printf("data: %d\n", data);
+	printf("buttonI: %d\n", buttonI);
+	printf("buttonII: %d\n", buttonII);
+	printf("buttonSelect: %d\n", buttonSelect);
+	printf("buttonRun: %d\n", buttonRun);
+	printf("dpadUp: %d\n", dpadUp);
+	printf("dpadRight: %d\n", dpadRight);
+	printf("dpadDown: %d\n", dpadDown);
+#endif
 
 	Gamepad *gamepad = Storage::getInstance().GetGamepad();
 
