@@ -503,7 +503,7 @@ const schema = yup.object().shape({
 	usbProductID: yup.string().label('USB Product ID').validateUSBHexID(),
 	useGpioInputModeSelect: yup.bool().required().label("Use GPIO Pin Mapping"),
 	gpioInputModeMappings: yup.array().min(1).max(8).of(
-		yup.object({
+		yup.object().shape({
 			pin: yup.number().required().label('GPIO Pin'),
 			inputMode: yup
 				.number()
@@ -1399,53 +1399,89 @@ export default function SettingsPage() {
 	const bootModeSpecifics = (values, errors, handleChange) => {
 		if (values.useGpioInputModeSelect) {
 			return (
-				<FieldArray
-					name="gpioInputModeMappings"
-					render={arrayHelpers=>(
-						<div>
-							{values.gpioInputModeMappings.map((mapping, index) => (
-								<Row>
-									<Form.Label>{"Some text"}</Form.Label>
-								</Row>
-							))}
-							<Button
-								onClick={()=>arrayHelpers.push({"pin": 0, "inputMode": 0})}
-							>
-								{"Add input mode"}
-							</Button>
-						</div>	
-					)}
-				/>
+				<div>
+					<FieldArray
+						name="gpioInputModeMappings"
+						render={arrayHelpers=>(
+								<Form.Group
+										className="mb-3 col-sm-6 w-100"
+										key={`gpio-input-mode`}
+								>
+									<Row>
+										<Col>
+											<Form.Label>Input Mode</Form.Label>
+										</Col>
+										<Col>
+											<Form.Label>GPIO Pin</Form.Label>
+										</Col>
+									</Row>
+									{values.gpioInputModeMappings?.map((mapping, index) => (
+										<Row>
+											<Col>
+											<InputModeSelect
+												name={`gpioInputModeMappings[${index}].inputMode`}
+												className="mb-3"
+												value={mapping.inputMode}
+												onChange={handleChange}
+												isInvalid={errors.gpioInputModeMappings?.[index]?.inputMode}
+											/>
+											</Col>
+											<Col>
+											<Form.Control
+												type="number"
+												name={`gpioInputModeMappings[${index}].pin`}
+												className="mb-3"
+												value={mapping.pin}
+												isInvalid={errors.gpioInputModeMappings?.[index]?.pin}
+												onChange={handleChange}
+											/>
+											</Col>
+										</Row>
+									))}
+									<Row>
+										<Form.Label
+											onClick={()=>arrayHelpers.push({"pin": 0, "inputMode": -1})}
+										>
+											+ Add Mode
+										</Form.Label>
+									</Row>
+								</Form.Group>
+							
+						)}
+					/>
+				</div>
 			)
 		}
-		return (
-			<Row sm={3}>
-				{INPUT_MODES_BINDS.map((mode, index) => (
-					<Form.Group
-						className="mb-3 col-sm-6"
-						key={`input-mode-${index}`}
-					>
-						<Form.Label>
-							{mode.value in currentButtonLabels
-								? currentButtonLabels[mode.value]
-								: mode.value}
-						</Form.Label>
-						<Col sm={10}>
-							<InputModeSelect 
-								name={`inputMode${mode.value}`}
-								className="form-select-sm"
-								value={values[`inputMode${mode.value}`]}
-								onChange={handleChange}
-								isInvalid={errors[`inputMode${mode.value}`]}
-							/>
-							<Form.Control.Feedback type="invalid">
-								{errors[`inputMode${mode.value}`]}
-							</Form.Control.Feedback>
-						</Col>
-					</Form.Group>
-				))}
-			</Row>
-		)
+		else {
+			return (
+				<Row sm={3}>
+					{INPUT_MODES_BINDS.map((mode, index) => (
+						<Form.Group
+							className="mb-3 col-sm-6"
+							key={`input-mode-${index}`}
+						>
+							<Form.Label>
+								{mode.value in currentButtonLabels
+									? currentButtonLabels[mode.value]
+									: mode.value}
+							</Form.Label>
+							<Col sm={10}>
+								<InputModeSelect 
+									name={`inputMode${mode.value}`}
+									className="form-select-sm"
+									value={values[`inputMode${mode.value}`]}
+									onChange={handleChange}
+									isInvalid={errors[`inputMode${mode.value}`]}
+								/>
+								<Form.Control.Feedback type="invalid">
+									{errors[`inputMode${mode.value}`]}
+								</Form.Control.Feedback>
+							</Col>
+						</Form.Group>
+					))}
+				</Row>
+			)
+		}
 	}
 
 	const handleWarningClose = async (accepted, values, setFieldValue) => {
