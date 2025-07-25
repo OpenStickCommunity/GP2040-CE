@@ -216,6 +216,13 @@ app.get('/api/getGamepadOptions', (req, res) => {
 			buttonsMask: 0,
 			action: 0,
 		},
+		"useGpioInputModeSelect": false,
+		"gpioInputModeMappings": [
+			{
+				"pin": 10,
+				"inputMode": 1
+			}
+		]
 	});
 });
 
