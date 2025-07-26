@@ -48,7 +48,7 @@ void TG16padInput::setup()
 uint8_t TG16padInput::readController()
 {
 	const TG16Options &tg16Options = Storage::getInstance().getAddonOptions().tg16Options;
-	int dataPins[4] = {tg16Options.dataPin0, tg16Options.dataPin1, tg16Options.dataPin2, tg16Options.dataPin3};
+	int dataPins[4] = {tg16Options.dataPin3, tg16Options.dataPin2, tg16Options.dataPin1, tg16Options.dataPin0};
 	uint8_t a = 0, b = 0;
 	// Set OE active (active low)
 	CLR_PIN(tg16Options.oePin);
@@ -109,17 +109,10 @@ void TG16padInput::process()
 #if TG16_PAD_DEBUG==true
     stdio_init_all();
     const TG16Options &tg16Options = Storage::getInstance().getAddonOptions().tg16Options;
-    int pinStates[4] = {
-        gpio_get(tg16Options.dataPin0),
-        gpio_get(tg16Options.dataPin1),
-        gpio_get(tg16Options.dataPin2),
-        gpio_get(tg16Options.dataPin3)
-    };
     int oeState = gpio_get(tg16Options.oePin);
     int selectState = gpio_get(tg16Options.selectPin);
     printf(
-        "Pins: %d %d %d %d | OE: %d SELECT: %d | I=%1d II=%1d Select=%1d Run=%1d Up=%1d Down=%1d Left=%1d Right=%1d\n",
-        pinStates[0], pinStates[1], pinStates[2], pinStates[3],
+        "OE: %d SELECT: %d | I=%1d II=%1d Select=%1d Run=%1d Up=%1d Down=%1d Left=%1d Right=%1d\n",
         oeState, selectState,
         buttonI, buttonII, buttonSelect, buttonRun, dpadUp, dpadDown, dpadLeft, dpadRight
     );
