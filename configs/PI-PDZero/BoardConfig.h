@@ -16,12 +16,12 @@
 
 #define TG16_PAD_OE_PIN 8
 #define TG16_PAD_SELECT_PIN 9
-#define TG16_PAD_DATA_PIN0 10
-#define TG16_PAD_DATA_PIN1 11
-#define TG16_PAD_DATA_PIN2 12
-#define TG16_PAD_DATA_PIN3 13
+#define TG16_PAD_DATA_PIN0 10 // U_I
+#define TG16_PAD_DATA_PIN1 11 // R_II
+#define TG16_PAD_DATA_PIN2 12 // D_SELECT
+#define TG16_PAD_DATA_PIN3 13 // L_RUN
 
-#define TG16_PAD_DEBUG true
+#define TG16_PAD_DEBUG false
 
 // Main pin mapping Configuration
 //                                                  // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |

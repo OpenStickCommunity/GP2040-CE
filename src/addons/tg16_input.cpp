@@ -102,23 +102,27 @@ void TG16padInput::process()
 	if (nextTimer < getMillis())
 	{
 		uint8_t data = readController();
-		// Invert because buttons are active low
-		data ^= 0xFF;
 		updateButtons(data);
 		nextTimer = getMillis() + uIntervalMS;
 	}
 
 #if TG16_PAD_DEBUG==true
     stdio_init_all();
-	printf("TG16padInput::process()\n");
-	printf("data: %d\n", data);
-	printf("buttonI: %d\n", buttonI);
-	printf("buttonII: %d\n", buttonII);
-	printf("buttonSelect: %d\n", buttonSelect);
-	printf("buttonRun: %d\n", buttonRun);
-	printf("dpadUp: %d\n", dpadUp);
-	printf("dpadRight: %d\n", dpadRight);
-	printf("dpadDown: %d\n", dpadDown);
+    const TG16Options &tg16Options = Storage::getInstance().getAddonOptions().tg16Options;
+    int pinStates[4] = {
+        gpio_get(tg16Options.dataPin0),
+        gpio_get(tg16Options.dataPin1),
+        gpio_get(tg16Options.dataPin2),
+        gpio_get(tg16Options.dataPin3)
+    };
+    int oeState = gpio_get(tg16Options.oePin);
+    int selectState = gpio_get(tg16Options.selectPin);
+    printf(
+        "Pins: %d %d %d %d | OE: %d SELECT: %d | I=%1d II=%1d Select=%1d Run=%1d Up=%1d Down=%1d Left=%1d Right=%1d\n",
+        pinStates[0], pinStates[1], pinStates[2], pinStates[3],
+        oeState, selectState,
+        buttonI, buttonII, buttonSelect, buttonRun, dpadUp, dpadDown, dpadLeft, dpadRight
+    );
 #endif
 
 	Gamepad *gamepad = Storage::getInstance().GetGamepad();
