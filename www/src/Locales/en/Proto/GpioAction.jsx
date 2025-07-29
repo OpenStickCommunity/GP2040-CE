@@ -100,6 +100,8 @@ export default {
 	'MODE_DRUM_YELLOW_CYMBAL': 'Cymbal Yellow',
 	'MODE_DRUM_BLUE_CYMBAL': 'Cymbal Blue',
 	'MODE_DRUM_GREEN_CYMBAL': 'Cymbal Green',
+	'MODE_DRUM_KICK_PEDAL_LEFT': 'Kick Pedal Left',
+	'MODE_DRUM_KICK_PEDAL_RIGHT': 'Kick Pedal Right',
 	'MODE_HOTAS_RUDDER_LEFT': 'Rudder Left',
 	'MODE_HOTAS_RUDDER_RIGHT': 'Rudder Right',
 	'MODE_HOTAS_THROTTLE_FORWARD': 'Throttle Forward',
