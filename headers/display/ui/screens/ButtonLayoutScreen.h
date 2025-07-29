@@ -17,6 +17,86 @@
 #define INPUT_HISTORY_MAX_INPUTS 22
 #define INPUT_HISTORY_MAX_MODES 12
 
+// Static to ensure memory is never doubled
+static const char * displayNames[INPUT_HISTORY_MAX_MODES][INPUT_HISTORY_MAX_INPUTS] = {
+    {		// HID / DINPUT
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            CHAR_CROSS, CHAR_CIRCLE, CHAR_SQUARE, CHAR_TRIANGLE,
+            "L1", "R1", "L2", "R2",
+            "SL", "ST", "L3", "R3", "PS", "A2"
+    },
+    {		// Switch
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "B", "A", "Y", "X",
+            "L", "R", "ZL", "ZR",
+            "-", "+", "LS", "RS", CHAR_HOME_S, CHAR_CAP_S
+    },
+    {		// XInput
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "A", "B", "X", "Y",
+            "LB", "RB", "LT", "RT",
+            CHAR_VIEW_X, CHAR_MENU_X, "LS", "RS", CHAR_HOME_X, "A2"
+    },
+    {		// Keyboard / HID-KB
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "B1", "B2", "B3", "B4",
+            "L1", "R1", "L2", "R2",
+            "S1", "S2", "L3", "R3", "A1", "A2"
+    },
+    {		// PS4
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            CHAR_CROSS, CHAR_CIRCLE, CHAR_SQUARE, CHAR_TRIANGLE,
+            "L1", "R1", "L2", "R2",
+            CHAR_SHARE_P, "OP", "L3", "R3", CHAR_HOME_P, CHAR_TPAD_P
+    },
+    {		// GEN/MD Mini
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "A", "B", "X", "Y",
+            "", "Z", "", "C",
+            "M", "S", "", "", "", ""
+    },
+    {		// Neo Geo Mini
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "B", "D", "A", "C",
+            "", "", "", "",
+            "SE", "ST", "", "", "", ""
+    },
+    {		// PC Engine/TG16 Mini
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "I", "II", "", "",
+            "", "", "", "",
+            "SE", "RUN", "", "", "", ""
+    },
+    {		// Egret II Mini
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "A", "B", "C", "D",
+            "", "E", "", "F",
+            "CRD", "ST", "", "", "MN", ""
+    },
+    {		// Astro City Mini
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "A", "B", "D", "E",
+            "", "C", "", "F",
+            "CRD", "ST", "", "", "", ""
+    },
+    {		// Original Xbox
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "A", "B", "X", "Y",
+            "BL", "WH", "L", "R",
+            "BK", "ST", "LS", "RS", "", ""
+    }
+};
 
 class ButtonLayoutScreen : public GPScreen {
     public:
