@@ -518,11 +518,20 @@ bool PS4Driver::process(Gamepad * gamepad) {
         ps4Report.wheel.buttonDialUp = 0;
         ps4Report.wheel.buttonDialEnter = 0;
 
-        if (values & buttonShiftUp->pinMask) {
-            if (shifterPosition < sizeof(shifterValues)) shifterPosition++;
+        if ((values & buttonShiftUp->pinMask) && idleShifter) {
+            if (shifterPosition < sizeof(shifterValues)-1) {
+                shifterPosition++;
+                idleShifter = false;
+            }
         }
-        if (values & buttonShiftDown->pinMask) {
-            if (shifterPosition > 0) shifterPosition--;
+        if ((values & buttonShiftDown->pinMask) && idleShifter) {
+            if (shifterPosition > 0) {
+                shifterPosition--;
+                idleShifter = false;
+            }
+        }
+        if (!(values & buttonShiftUp->pinMask) && !(values & buttonShiftDown->pinMask) && !idleShifter) {
+            idleShifter = true;
         }
         if (values & buttonShiftN->pinMask) shifterPosition = 0;
         if (values & buttonShift1->pinMask) shifterPosition = 1;
@@ -546,7 +555,6 @@ bool PS4Driver::process(Gamepad * gamepad) {
         if (values & buttonDialDown->pinMask) ps4Report.wheel.buttonDialDown = 1;
         if (values & buttonDialUp->pinMask) ps4Report.wheel.buttonDialUp = 1;
         if (values & buttonDialEnter->pinMask) ps4Report.wheel.buttonDialEnter = 1;
-
     } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_HOTAS) {
         ps4Report.hotas.joystickX = PS4_NAV_JOYSTICK_MID;
         ps4Report.hotas.joystickY = PS4_NAV_JOYSTICK_MID;

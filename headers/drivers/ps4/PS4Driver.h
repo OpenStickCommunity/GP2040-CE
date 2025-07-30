@@ -91,6 +91,7 @@ private:
     // controller type bindings
     uint8_t shifterPosition = 0;
     const uint8_t shifterValues[PS4_MAX_GEARS] = {0,1,2,4,8,16,32,128};
+    bool idleShifter = true;
     GamepadButtonMapping *buttonShiftUp;
     GamepadButtonMapping *buttonShiftDown;
     GamepadButtonMapping *buttonShift1;
