@@ -93,6 +93,8 @@
 
 #define PS4_TP_MAX_COUNT 128
 
+#define PS4_MAX_GEARS 8
+
 #define PS4_ACCEL_RES 8192
 #define PS4_ACCEL_RANGE (PS4_ACCEL_RES * 4)
 #define PS4_GYRO_RES 1024
