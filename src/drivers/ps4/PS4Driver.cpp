@@ -263,6 +263,8 @@ void PS4Driver::initialize() {
     buttonShift4 = new GamepadButtonMapping(0);
     buttonShift5 = new GamepadButtonMapping(0);
     buttonShift6 = new GamepadButtonMapping(0);
+    buttonShiftR = new GamepadButtonMapping(0);
+    buttonShiftN = new GamepadButtonMapping(0);
     buttonGas = new GamepadButtonMapping(0);
     buttonBrake = new GamepadButtonMapping(0);
     buttonClutch = new GamepadButtonMapping(0);
@@ -354,6 +356,7 @@ void PS4Driver::initialize() {
             case GpioAction::MODE_WHEEL_SHIFTER_GEAR_5: buttonShift5->pinMask |= 1 << pin; break;
             case GpioAction::MODE_WHEEL_SHIFTER_GEAR_6: buttonShift6->pinMask |= 1 << pin; break;
             case GpioAction::MODE_WHEEL_SHIFTER_GEAR_R: buttonShiftR->pinMask |= 1 << pin; break;
+            case GpioAction::MODE_WHEEL_SHIFTER_GEAR_N: buttonShiftN->pinMask |= 1 << pin; break;
             case GpioAction::MODE_WHEEL_SHIFTER_GEAR_UP: buttonShiftUp->pinMask |= 1 << pin; break;
             case GpioAction::MODE_WHEEL_SHIFTER_GEAR_DOWN: buttonShiftDown->pinMask |= 1 << pin; break;
             case GpioAction::MODE_WHEEL_STEERING_LEFT: buttonSteerLeft->pinMask |= 1 << pin; break;
@@ -515,17 +518,22 @@ bool PS4Driver::process(Gamepad * gamepad) {
         ps4Report.wheel.buttonDialUp = 0;
         ps4Report.wheel.buttonDialEnter = 0;
 
-        if (values & buttonShiftUp->pinMask) if (shifterPosition < 5) shifterPosition++;
-        if (values & buttonShiftDown->pinMask) if (shifterPosition > 0) shifterPosition--;
-        if (values & buttonShift1->pinMask) shifterPosition=1;
-        if (values & buttonShift2->pinMask) shifterPosition=2;
-        if (values & buttonShift3->pinMask) shifterPosition=4;
-        if (values & buttonShift4->pinMask) shifterPosition=8;
-        if (values & buttonShift5->pinMask) shifterPosition=16;
-        if (values & buttonShift6->pinMask) shifterPosition=32;
-        if (values & buttonShiftR->pinMask) shifterPosition=128;
+        if (values & buttonShiftUp->pinMask) {
+            if (shifterPosition < sizeof(shifterValues)) shifterPosition++;
+        }
+        if (values & buttonShiftDown->pinMask) {
+            if (shifterPosition > 0) shifterPosition--;
+        }
+        if (values & buttonShiftN->pinMask) shifterPosition = 0;
+        if (values & buttonShift1->pinMask) shifterPosition = 1;
+        if (values & buttonShift2->pinMask) shifterPosition = 2;
+        if (values & buttonShift3->pinMask) shifterPosition = 3;
+        if (values & buttonShift4->pinMask) shifterPosition = 4;
+        if (values & buttonShift5->pinMask) shifterPosition = 5;
+        if (values & buttonShift6->pinMask) shifterPosition = 6;
+        if (values & buttonShiftR->pinMask) shifterPosition = 7;
 
-        ps4Report.wheel.shifterValue = shifterPosition;
+        ps4Report.wheel.shifterValue = shifterValues[shifterPosition];
 
         if (values & buttonSteerLeft->pinMask) ps4Report.wheel.steeringWheel = PS4_NAV_JOYSTICK_MIN;
         if (values & buttonSteerRight->pinMask) ps4Report.wheel.steeringWheel = PS4_NAV_JOYSTICK_MAX;

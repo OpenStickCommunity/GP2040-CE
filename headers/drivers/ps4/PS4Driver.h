@@ -90,6 +90,7 @@ private:
 
     // controller type bindings
     uint8_t shifterPosition = 0;
+    const uint8_t shifterValues[] = {0,1,2,4,8,16,32,128};
     GamepadButtonMapping *buttonShiftUp;
     GamepadButtonMapping *buttonShiftDown;
     GamepadButtonMapping *buttonShift1;
@@ -99,6 +100,7 @@ private:
     GamepadButtonMapping *buttonShift5;
     GamepadButtonMapping *buttonShift6;
     GamepadButtonMapping *buttonShiftR;
+    GamepadButtonMapping *buttonShiftN;
     GamepadButtonMapping *buttonGas;
     GamepadButtonMapping *buttonBrake;
     GamepadButtonMapping *buttonClutch;

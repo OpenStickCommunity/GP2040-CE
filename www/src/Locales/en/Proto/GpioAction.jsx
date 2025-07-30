@@ -121,6 +121,7 @@ export default {
 	'MODE_WHEEL_SHIFTER_GEAR_5': 'Shifter Fifth Gear',
 	'MODE_WHEEL_SHIFTER_GEAR_6': 'Shifter Sixth Gear',
 	'MODE_WHEEL_SHIFTER_GEAR_R': 'Shifter Reverse Gear',
+	'MODE_WHEEL_SHIFTER_GEAR_N': 'Shifter Neutral Gear',
 	'MODE_WHEEL_SHIFTER_GEAR_UP': 'Shift Up',
 	'MODE_WHEEL_SHIFTER_GEAR_DOWN': 'Shift Down',
 	'MODE_WHEEL_BUTTON_PLUS': 'Wheel Plus Button',
