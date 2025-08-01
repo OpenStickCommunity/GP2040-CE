@@ -17,7 +17,7 @@
 #define PS3_ALT_PRODUCT_ID    0x82C0
 
 #define PS3_WHEEL_VENDOR_ID   0x046D
-#define PS3_WHEEL_PRODUCT_ID  0xC29A
+#define PS3_WHEEL_PRODUCT_ID  0xC294
 
 #define PS3_GUITAR_VENDOR_ID  0x12BA
 #define PS3_GUITAR_PRODUCT_ID 0x0200
@@ -73,9 +73,9 @@
 #define PS3_JOYSTICK_MID 0x7F
 #define PS3_JOYSTICK_MAX 0xFF
 
-#define PS3_WHEEL_MIN 0x0000
-#define PS3_WHEEL_MID 0x1FFF
-#define PS3_WHEEL_MAX 0x3FFF
+#define PS3_WHEEL_MIN 0x00
+#define PS3_WHEEL_MID 0x7F
+#define PS3_WHEEL_MAX 0xFF
 
 #define PS3_CENTER_SIXAXIS 0xFF01
 
@@ -353,39 +353,33 @@ typedef struct __attribute((packed, aligned(1)))
         } drums;
 
         struct  __attribute((packed, aligned(1))) {
-            uint8_t dpadDirection : 4;
+            uint8_t buttonNorth : 1;
+            uint8_t buttonEast : 1;
             uint8_t buttonSouth : 1;
             uint8_t buttonWest : 1;
-            uint8_t buttonEast : 1;
-            uint8_t buttonNorth : 1;
 
-            uint8_t buttonR1 : 1;
-            uint8_t buttonL1 : 1;
-            uint8_t buttonR2 : 1;
             uint8_t buttonL2 : 1;
-            uint8_t buttonSelect : 1;
-            uint8_t buttonStart : 1;
-            uint8_t buttonR3 : 1;
-            uint8_t buttonL3 : 1;
+            uint8_t buttonR2 : 1;
+            uint8_t buttonL1 : 1;
+            uint8_t buttonR1 : 1;
 
-            uint8_t shiftUp : 1;
-            uint8_t shiftDown : 1;
-            uint8_t buttonDialEnter : 1;
-            uint8_t buttonPlus : 1;
-            uint8_t buttonDialUp : 1;
-            uint8_t buttonDialDown : 1;
-            uint8_t buttonMinus : 1;
-            uint8_t buttonHorn : 1;
+            uint8_t buttonStart : 1;
+            uint8_t buttonSelect : 1;
+            uint8_t buttonL3 : 1;
+            uint8_t buttonR3 : 1;
 
             uint8_t buttonPS : 1;
-            uint8_t pedalConnected : 1;
-            uint8_t powerConnected : 1;
-            uint8_t calibrated : 1;
-            uint8_t unknown : 4;
+            uint8_t buttonTP : 1;
+            uint8_t : 2;
 
-            uint16_t steeringWheel;
-            uint8_t gasPedal;
+            uint8_t dpadDirection : 4;
+
+            uint8_t steeringWheel;
             uint8_t brakePedal;
+            uint8_t gasPedal;
+            uint8_t clutchPedal;
+
+            uint8_t padding[20];
         } wheel;
     };
 } PS3ReportAlt;

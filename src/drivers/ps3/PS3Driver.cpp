@@ -413,8 +413,8 @@ bool PS3Driver::process(Gamepad * gamepad) {
             }
         } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_WHEEL) {
             ps3ReportAlt.wheel.steeringWheel = PS3_WHEEL_MID;
-            ps3ReportAlt.wheel.gasPedal      = PS3_JOYSTICK_MAX;
-            ps3ReportAlt.wheel.brakePedal    = PS3_JOYSTICK_MAX;
+            ps3ReportAlt.wheel.gasPedal      = PS3_JOYSTICK_MID;
+            ps3ReportAlt.wheel.brakePedal    = PS3_JOYSTICK_MID;
 
             switch (gamepad->state.dpad & GAMEPAD_MASK_DPAD)
             {
@@ -441,25 +441,12 @@ bool PS3Driver::process(Gamepad * gamepad) {
             ps3ReportAlt.wheel.buttonStart  = gamepad->pressedS2();
             ps3ReportAlt.wheel.buttonL3     = gamepad->pressedL3();
             ps3ReportAlt.wheel.buttonR3     = gamepad->pressedR3();
-            
             ps3ReportAlt.wheel.buttonPS     = gamepad->pressedA1();
-
-            ps3ReportAlt.wheel.unknown = 5;
-            ps3ReportAlt.wheel.pedalConnected = 1;
-            ps3ReportAlt.wheel.powerConnected = 1;
-            ps3ReportAlt.wheel.calibrated = 1;
 
             if (values & buttonSteerLeft->pinMask)  { ps3ReportAlt.wheel.steeringWheel   = PS3_WHEEL_MIN; }
             if (values & buttonSteerRight->pinMask) { ps3ReportAlt.wheel.steeringWheel   = PS3_WHEEL_MAX; }
             if (values & buttonGas->pinMask)        { ps3ReportAlt.wheel.gasPedal        = PS3_JOYSTICK_MIN; }
             if (values & buttonBrake->pinMask)      { ps3ReportAlt.wheel.brakePedal      = PS3_JOYSTICK_MIN; }
-            if (values & buttonShiftUp->pinMask)    { ps3ReportAlt.wheel.shiftUp         = true; }
-            if (values & buttonShiftDown->pinMask)  { ps3ReportAlt.wheel.shiftDown       = true; }
-            if (values & buttonPlus->pinMask)       { ps3ReportAlt.wheel.buttonPlus      = true; }
-            if (values & buttonMinus->pinMask)      { ps3ReportAlt.wheel.buttonMinus     = true; }
-            if (values & buttonDialDown->pinMask)   { ps3ReportAlt.wheel.buttonDialDown  = true; }
-            if (values & buttonDialUp->pinMask)     { ps3ReportAlt.wheel.buttonDialUp    = true; }
-            if (values & buttonDialEnter->pinMask)  { ps3ReportAlt.wheel.buttonDialEnter = true; }
         } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_HOTAS) {
 
         }
