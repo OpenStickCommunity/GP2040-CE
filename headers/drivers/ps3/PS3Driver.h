@@ -28,6 +28,7 @@ public:
 private:
     uint8_t last_report[CFG_TUD_ENDPOINT0_SIZE] = { };
     PS3Report ps3Report;
+    PS3ReportAlt ps3ReportAlt;
     PS3Features ps3Features;
     uint8_t lastFeatures[PS3_FEATURES_SIZE] = { };
     PS3BTInfo ps3BTInfo;
@@ -35,6 +36,38 @@ private:
     // this is an identification byte from the H2D 0xEF feature report that needs to be the same 
     // in multiple D2H reports for the controller to function
     uint8_t efByte;
+
+    InputModeDeviceType deviceType;
+    uint8_t deviceDescriptor[sizeof(ps3_device_descriptor)];
+
+    GamepadButtonMapping *buttonFretGreen;
+    GamepadButtonMapping *buttonFretRed;
+    GamepadButtonMapping *buttonFretYellow;
+    GamepadButtonMapping *buttonFretBlue;
+    GamepadButtonMapping *buttonFretOrange;
+    GamepadButtonMapping *buttonWhammy;
+    GamepadButtonMapping *buttonPickup;
+    GamepadButtonMapping *buttonTilt;
+
+    GamepadButtonMapping *buttonDrumPadRed;
+    GamepadButtonMapping *buttonDrumPadBlue;
+    GamepadButtonMapping *buttonDrumPadYellow;
+    GamepadButtonMapping *buttonDrumPadGreen;
+    GamepadButtonMapping *buttonCymbalYellow;
+    GamepadButtonMapping *buttonCymbalBlue;
+    GamepadButtonMapping *buttonCymbalGreen;
+
+    GamepadButtonMapping *buttonShiftUp;
+    GamepadButtonMapping *buttonShiftDown;
+    GamepadButtonMapping *buttonGas;
+    GamepadButtonMapping *buttonBrake;
+    GamepadButtonMapping *buttonSteerLeft;
+    GamepadButtonMapping *buttonSteerRight;
+    GamepadButtonMapping *buttonPlus;
+    GamepadButtonMapping *buttonMinus;
+    GamepadButtonMapping *buttonDialDown;
+    GamepadButtonMapping *buttonDialUp;
+    GamepadButtonMapping *buttonDialEnter;
 };
 
 #endif // _PS3_DRIVER_H_

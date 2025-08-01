@@ -66,7 +66,6 @@ private:
     PS4AuthData * ps4AuthData;      // PS4 Authentication Data
     uint8_t cur_nonce_chunk;            // PS4 Encryption Nonce Chunk (Max 19)
     uint8_t cur_nonce_id;
-    uint32_t controllerType;        // PS4 DS4 / PS5 Third-Party
     bool pointOneTouched = false;
     bool pointTwoTouched = false;
     uint8_t touchCounter;
@@ -74,6 +73,80 @@ private:
     uint8_t lastFeatures[PS4_FEATURES_SIZE] = { };
     uint8_t deviceDescriptor[sizeof(ps4_device_descriptor)];
     bool authsent;
+    PS4ControllerConfig controllerConfig;
+
+    InputModeDeviceType deviceType;
+
+    // settings for controllerConfig
+    uint32_t controllerType;        // PS4 DS4 / PS5 Third-Party
+    bool enableController = true;
+    bool enableMotion = true;
+    bool enableLED = true;
+    bool enableRumble = true;
+    bool enableAnalog = false;
+    bool enableUnknown0 = true;
+    bool enableTouchpad = true;
+    bool enableUnknown1 = true;
+
+    // controller type bindings
+    uint8_t shifterPosition = 0;
+    const uint8_t shifterValues[PS4_MAX_GEARS] = {0,1,2,4,8,16,32,128};
+    bool idleShifter = true;
+    GamepadButtonMapping *buttonShiftUp;
+    GamepadButtonMapping *buttonShiftDown;
+    GamepadButtonMapping *buttonShift1;
+    GamepadButtonMapping *buttonShift2;
+    GamepadButtonMapping *buttonShift3;
+    GamepadButtonMapping *buttonShift4;
+    GamepadButtonMapping *buttonShift5;
+    GamepadButtonMapping *buttonShift6;
+    GamepadButtonMapping *buttonShiftR;
+    GamepadButtonMapping *buttonShiftN;
+    GamepadButtonMapping *buttonGas;
+    GamepadButtonMapping *buttonBrake;
+    GamepadButtonMapping *buttonClutch;
+    GamepadButtonMapping *buttonSteerLeft;
+    GamepadButtonMapping *buttonSteerRight;
+    GamepadButtonMapping *buttonPlus;
+    GamepadButtonMapping *buttonMinus;
+    GamepadButtonMapping *buttonDialDown;
+    GamepadButtonMapping *buttonDialUp;
+    GamepadButtonMapping *buttonDialEnter;
+
+    GamepadButtonMapping *buttonRudderLeft;
+    GamepadButtonMapping *buttonRudderRight;
+    GamepadButtonMapping *buttonThrottleForward;
+    GamepadButtonMapping *buttonThrottleReverse;
+    GamepadButtonMapping *buttonRockerLeft;
+    GamepadButtonMapping *buttonRockerRight;
+    GamepadButtonMapping *buttonPedalLeft;
+    GamepadButtonMapping *buttonPedalRight;
+    GamepadButtonMapping *buttonPedalRudderLeft;
+    GamepadButtonMapping *buttonPedalRudderRight;
+
+    GamepadButtonMapping *buttonFretGreen;
+    GamepadButtonMapping *buttonFretRed;
+    GamepadButtonMapping *buttonFretYellow;
+    GamepadButtonMapping *buttonFretBlue;
+    GamepadButtonMapping *buttonFretOrange;
+    GamepadButtonMapping *buttonFretSoloGreen;
+    GamepadButtonMapping *buttonFretSoloRed;
+    GamepadButtonMapping *buttonFretSoloYellow;
+    GamepadButtonMapping *buttonFretSoloBlue;
+    GamepadButtonMapping *buttonFretSoloOrange;
+    GamepadButtonMapping *buttonWhammy;
+    GamepadButtonMapping *buttonPickup;
+    GamepadButtonMapping *buttonTilt;
+
+    GamepadButtonMapping *buttonDrumPadRed;
+    GamepadButtonMapping *buttonDrumPadBlue;
+    GamepadButtonMapping *buttonDrumPadYellow;
+    GamepadButtonMapping *buttonDrumPadGreen;
+    GamepadButtonMapping *buttonCymbalYellow;
+    GamepadButtonMapping *buttonCymbalBlue;
+    GamepadButtonMapping *buttonCymbalGreen;
+    GamepadButtonMapping *buttonKickPedalLeft;
+    GamepadButtonMapping *buttonKickPedalRight;
 };
 
 #endif // _PS4_DRIVER_H_
