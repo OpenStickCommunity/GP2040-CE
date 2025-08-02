@@ -257,6 +257,8 @@ const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.invert-x', value: 9 },
 	{ labelKey: 'hotkey-actions.invert-y', value: 10 },
 	{ labelKey: 'hotkey-actions.toggle-4way-joystick-mode', value: 13 },
+	{ labelKey: 'hotkey-actions.enable-4way-joystick-mode', value: 73 },
+	{ labelKey: 'hotkey-actions.disable-4way-joystick-mode', value: 74 },
 	{ labelKey: 'hotkey-actions.toggle-ddi-4way-joystick-mode', value: 14 },
 	{ labelKey: 'hotkey-actions.load-profile-1', value: 15 },
 	{ labelKey: 'hotkey-actions.load-profile-2', value: 16 },
