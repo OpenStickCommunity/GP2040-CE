@@ -30,8 +30,7 @@ bool TurboInput::available() {
     {
         if ( pinMappings[pin].action == GpioAction::BUTTON_PRESS_TURBO ) {
             hasTurboAssigned = true;
-            turboPinMask = 1 << pin;
-            break;
+            turboPinMask |= 1 << pin;
         }
     }
     return Storage::getInstance().getAddonOptions().turboOptions.enabled && (hasTurboAssigned == true);
@@ -119,8 +118,7 @@ void TurboInput::reinit()
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
     {
         if ( pinMappings[pin].action == GpioAction::BUTTON_PRESS_TURBO ) {
-            turboPinMask = 1 << pin;
-            break;
+            turboPinMask |= 1 << pin;
         }
     }
 }
