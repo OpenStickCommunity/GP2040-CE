@@ -4,6 +4,7 @@
 #include "drivers/ps4/PS4Driver.h"
 #include "drivers/xbone/XBOneDriver.h"
 #include "drivers/xinput/XInputDriver.h"
+#include "usbdriver.h"
 
 void ButtonLayoutScreen::init() {
     isInputHistoryEnabled = Storage::getInstance().getDisplayOptions().inputHistoryEnabled;
@@ -160,7 +161,15 @@ void ButtonLayoutScreen::generateHeader() {
 		}
 	}
 
-    if (showInputMode) {
+    // Check USB status first
+    if (!get_usb_mounted()) {
+        statusBar = "WARNING: NO USB DATA";
+        return;
+    }
+
+    if (!get_usb_mounted()) {
+        statusBar += "NO DATA";
+    } else if (showInputMode) {
         // Display standard header
         switch (inputMode)
         {
@@ -548,10 +557,11 @@ void ButtonLayoutScreen::handleUSB(GPEvent* e) {
 
     if (e->eventType() == GP_EVENT_USBHOST_MOUNT) {
         bannerMessage = "    USB Connected";
+        bannerDisplay = true;
     } else if (e->eventType() == GP_EVENT_USBHOST_UNMOUNT) {
         bannerMessage = "  USB Disconnnected";
+        bannerDisplay = true;
     }
-    bannerDisplay = true;
 }
 
 void ButtonLayoutScreen::trim(std::string &s) {
