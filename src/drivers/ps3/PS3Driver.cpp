@@ -25,18 +25,47 @@ void PS3Driver::initialize() {
         deviceDescriptor[9] = MSB(PS3_WHEEL_VENDOR_ID);
         deviceDescriptor[10] = LSB(PS3_WHEEL_PRODUCT_ID);
         deviceDescriptor[11] = MSB(PS3_WHEEL_PRODUCT_ID);
+
+        buttonShiftUp = new GamepadButtonMapping(0);
+        buttonShiftDown = new GamepadButtonMapping(0);
+        buttonGas = new GamepadButtonMapping(0);
+        buttonBrake = new GamepadButtonMapping(0);
+        buttonSteerLeft = new GamepadButtonMapping(0);
+        buttonSteerRight = new GamepadButtonMapping(0);
+        buttonPlus = new GamepadButtonMapping(0);
+        buttonMinus = new GamepadButtonMapping(0);
+        buttonDialDown = new GamepadButtonMapping(0);
+        buttonDialUp = new GamepadButtonMapping(0);
+        buttonDialEnter = new GamepadButtonMapping(0);
     } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GUITAR) {
         // guitar
         deviceDescriptor[8] = LSB(PS3_GUITAR_VENDOR_ID);
         deviceDescriptor[9] = MSB(PS3_GUITAR_VENDOR_ID);
         deviceDescriptor[10] = LSB(PS3_GUITAR_PRODUCT_ID);
         deviceDescriptor[11] = MSB(PS3_GUITAR_PRODUCT_ID);
+
+        buttonFretGreen = new GamepadButtonMapping(0);
+        buttonFretRed = new GamepadButtonMapping(0);
+        buttonFretYellow = new GamepadButtonMapping(0);
+        buttonFretBlue = new GamepadButtonMapping(0);
+        buttonFretOrange = new GamepadButtonMapping(0);
+        buttonWhammy = new GamepadButtonMapping(0);
+        buttonPickup = new GamepadButtonMapping(0);
+        buttonTilt = new GamepadButtonMapping(0);
     } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_DRUM) {
         // drum
         deviceDescriptor[8] = LSB(PS3_DRUM_VENDOR_ID);
         deviceDescriptor[9] = MSB(PS3_DRUM_VENDOR_ID);
         deviceDescriptor[10] = LSB(PS3_DRUM_PRODUCT_ID);
         deviceDescriptor[11] = MSB(PS3_DRUM_PRODUCT_ID);
+
+        buttonDrumPadRed = new GamepadButtonMapping(0);
+        buttonDrumPadBlue = new GamepadButtonMapping(0);
+        buttonDrumPadYellow = new GamepadButtonMapping(0);
+        buttonDrumPadGreen = new GamepadButtonMapping(0);
+        buttonCymbalYellow = new GamepadButtonMapping(0);
+        buttonCymbalBlue = new GamepadButtonMapping(0);
+        buttonCymbalGreen = new GamepadButtonMapping(0);
     } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GAMEPAD_ALT) {
         deviceDescriptor[8] = LSB(PS3_ALT_VENDOR_ID);
         deviceDescriptor[9] = MSB(PS3_ALT_VENDOR_ID);
@@ -90,35 +119,6 @@ void PS3Driver::initialize() {
     for (uint8_t addr = 0; addr < 6; addr++) {
         ps3BTInfo.hostAddress[1+addr] = (uint8_t)(get_rand_32() % 0xff);
     }
-
-    buttonFretGreen = new GamepadButtonMapping(0);
-    buttonFretRed = new GamepadButtonMapping(0);
-    buttonFretYellow = new GamepadButtonMapping(0);
-    buttonFretBlue = new GamepadButtonMapping(0);
-    buttonFretOrange = new GamepadButtonMapping(0);
-    buttonWhammy = new GamepadButtonMapping(0);
-    buttonPickup = new GamepadButtonMapping(0);
-    buttonTilt = new GamepadButtonMapping(0);
-
-    buttonDrumPadRed = new GamepadButtonMapping(0);
-    buttonDrumPadBlue = new GamepadButtonMapping(0);
-    buttonDrumPadYellow = new GamepadButtonMapping(0);
-    buttonDrumPadGreen = new GamepadButtonMapping(0);
-    buttonCymbalYellow = new GamepadButtonMapping(0);
-    buttonCymbalBlue = new GamepadButtonMapping(0);
-    buttonCymbalGreen = new GamepadButtonMapping(0);
-
-    buttonShiftUp = new GamepadButtonMapping(0);
-    buttonShiftDown = new GamepadButtonMapping(0);
-    buttonGas = new GamepadButtonMapping(0);
-    buttonBrake = new GamepadButtonMapping(0);
-    buttonSteerLeft = new GamepadButtonMapping(0);
-    buttonSteerRight = new GamepadButtonMapping(0);
-    buttonPlus = new GamepadButtonMapping(0);
-    buttonMinus = new GamepadButtonMapping(0);
-    buttonDialDown = new GamepadButtonMapping(0);
-    buttonDialUp = new GamepadButtonMapping(0);
-    buttonDialEnter = new GamepadButtonMapping(0);
 
     GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {

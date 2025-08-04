@@ -132,6 +132,12 @@ const INPUT_MODES = [
 		group: 'primary',
 		optional: ['usb'],
 		authentication: ['none', 'usb'],
+		deviceTypes: [
+			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_GAMEPAD,
+			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_WHEEL,
+			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_GUITAR,
+			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_DRUM,
+		],
 	},
 	{
 		labelKey: 'input-mode-options.nintendo-switch',

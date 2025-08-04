@@ -122,6 +122,27 @@ void PS4Driver::initialize() {
             shifterPosition = 0;
 
             controllerType = PS4ControllerType::PS4_WHEEL;
+
+            buttonShiftUp = new GamepadButtonMapping(0);
+            buttonShiftDown = new GamepadButtonMapping(0);
+            buttonShift1 = new GamepadButtonMapping(0);
+            buttonShift2 = new GamepadButtonMapping(0);
+            buttonShift3 = new GamepadButtonMapping(0);
+            buttonShift4 = new GamepadButtonMapping(0);
+            buttonShift5 = new GamepadButtonMapping(0);
+            buttonShift6 = new GamepadButtonMapping(0);
+            buttonShiftR = new GamepadButtonMapping(0);
+            buttonShiftN = new GamepadButtonMapping(0);
+            buttonGas = new GamepadButtonMapping(0);
+            buttonBrake = new GamepadButtonMapping(0);
+            buttonClutch = new GamepadButtonMapping(0);
+            buttonSteerLeft = new GamepadButtonMapping(0);
+            buttonSteerRight = new GamepadButtonMapping(0);
+            buttonPlus = new GamepadButtonMapping(0);
+            buttonMinus = new GamepadButtonMapping(0);
+            buttonDialDown = new GamepadButtonMapping(0);
+            buttonDialUp = new GamepadButtonMapping(0);
+            buttonDialEnter = new GamepadButtonMapping(0);
             break;
         case InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_HOTAS:
             enableController = false;
@@ -134,6 +155,17 @@ void PS4Driver::initialize() {
             enableUnknown1 = false;
 
             controllerType = PS4ControllerType::PS4_HOTAS;
+
+            buttonRudderLeft = new GamepadButtonMapping(0);
+            buttonRudderRight = new GamepadButtonMapping(0);
+            buttonThrottleForward = new GamepadButtonMapping(0);
+            buttonThrottleReverse = new GamepadButtonMapping(0);
+            buttonRockerLeft = new GamepadButtonMapping(0);
+            buttonRockerRight = new GamepadButtonMapping(0);
+            buttonPedalLeft = new GamepadButtonMapping(0);
+            buttonPedalRight = new GamepadButtonMapping(0);
+            buttonPedalRudderLeft = new GamepadButtonMapping(0);
+            buttonPedalRudderRight = new GamepadButtonMapping(0);
             break;
         case InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GUITAR:
             enableController = true;
@@ -146,6 +178,20 @@ void PS4Driver::initialize() {
             enableUnknown1 = true;
 
             controllerType = PS4ControllerType::PS4_GUITAR;
+
+            buttonFretGreen = new GamepadButtonMapping(0);
+            buttonFretRed = new GamepadButtonMapping(0);
+            buttonFretYellow = new GamepadButtonMapping(0);
+            buttonFretBlue = new GamepadButtonMapping(0);
+            buttonFretOrange = new GamepadButtonMapping(0);
+            buttonFretSoloGreen = new GamepadButtonMapping(0);
+            buttonFretSoloRed = new GamepadButtonMapping(0);
+            buttonFretSoloYellow = new GamepadButtonMapping(0);
+            buttonFretSoloBlue = new GamepadButtonMapping(0);
+            buttonFretSoloOrange = new GamepadButtonMapping(0);
+            buttonWhammy = new GamepadButtonMapping(0);
+            buttonPickup = new GamepadButtonMapping(0);
+            buttonTilt = new GamepadButtonMapping(0);
             break;
         case InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_DRUM:
             enableController = true;
@@ -158,6 +204,16 @@ void PS4Driver::initialize() {
             enableUnknown1 = true;
 
             controllerType = PS4ControllerType::PS4_DRUMS;
+
+            buttonDrumPadRed = new GamepadButtonMapping(0);
+            buttonDrumPadBlue = new GamepadButtonMapping(0);
+            buttonDrumPadYellow = new GamepadButtonMapping(0);
+            buttonDrumPadGreen = new GamepadButtonMapping(0);
+            buttonCymbalYellow = new GamepadButtonMapping(0);
+            buttonCymbalBlue = new GamepadButtonMapping(0);
+            buttonCymbalGreen = new GamepadButtonMapping(0);
+            buttonKickPedalLeft = new GamepadButtonMapping(0);
+            buttonKickPedalRight = new GamepadButtonMapping(0);
             break;
         case InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GAMEPAD:
         default:
@@ -253,63 +309,6 @@ void PS4Driver::initialize() {
         .wheelParam = {0x0D, 0x84, 0x03},
         .mystery2 = {0x00}
     };
-
-    // controller type bindings
-    buttonShiftUp = new GamepadButtonMapping(0);
-    buttonShiftDown = new GamepadButtonMapping(0);
-    buttonShift1 = new GamepadButtonMapping(0);
-    buttonShift2 = new GamepadButtonMapping(0);
-    buttonShift3 = new GamepadButtonMapping(0);
-    buttonShift4 = new GamepadButtonMapping(0);
-    buttonShift5 = new GamepadButtonMapping(0);
-    buttonShift6 = new GamepadButtonMapping(0);
-    buttonShiftR = new GamepadButtonMapping(0);
-    buttonShiftN = new GamepadButtonMapping(0);
-    buttonGas = new GamepadButtonMapping(0);
-    buttonBrake = new GamepadButtonMapping(0);
-    buttonClutch = new GamepadButtonMapping(0);
-    buttonSteerLeft = new GamepadButtonMapping(0);
-    buttonSteerRight = new GamepadButtonMapping(0);
-    buttonPlus = new GamepadButtonMapping(0);
-    buttonMinus = new GamepadButtonMapping(0);
-    buttonDialDown = new GamepadButtonMapping(0);
-    buttonDialUp = new GamepadButtonMapping(0);
-    buttonDialEnter = new GamepadButtonMapping(0);
-
-    buttonRudderLeft = new GamepadButtonMapping(0);
-    buttonRudderRight = new GamepadButtonMapping(0);
-    buttonThrottleForward = new GamepadButtonMapping(0);
-    buttonThrottleReverse = new GamepadButtonMapping(0);
-    buttonRockerLeft = new GamepadButtonMapping(0);
-    buttonRockerRight = new GamepadButtonMapping(0);
-    buttonPedalLeft = new GamepadButtonMapping(0);
-    buttonPedalRight = new GamepadButtonMapping(0);
-    buttonPedalRudderLeft = new GamepadButtonMapping(0);
-    buttonPedalRudderRight = new GamepadButtonMapping(0);
-
-    buttonFretGreen = new GamepadButtonMapping(0);
-    buttonFretRed = new GamepadButtonMapping(0);
-    buttonFretYellow = new GamepadButtonMapping(0);
-    buttonFretBlue = new GamepadButtonMapping(0);
-    buttonFretOrange = new GamepadButtonMapping(0);
-    buttonFretSoloGreen = new GamepadButtonMapping(0);
-    buttonFretSoloRed = new GamepadButtonMapping(0);
-    buttonFretSoloYellow = new GamepadButtonMapping(0);
-    buttonFretSoloBlue = new GamepadButtonMapping(0);
-    buttonFretSoloOrange = new GamepadButtonMapping(0);
-    buttonWhammy = new GamepadButtonMapping(0);
-    buttonPickup = new GamepadButtonMapping(0);
-    buttonTilt = new GamepadButtonMapping(0);
-
-    buttonDrumPadRed = new GamepadButtonMapping(0);
-    buttonDrumPadBlue = new GamepadButtonMapping(0);
-    buttonDrumPadYellow = new GamepadButtonMapping(0);
-    buttonDrumPadGreen = new GamepadButtonMapping(0);
-    buttonCymbalYellow = new GamepadButtonMapping(0);
-    buttonCymbalBlue = new GamepadButtonMapping(0);
-    buttonCymbalGreen = new GamepadButtonMapping(0);
-    buttonKickPedalLeft = new GamepadButtonMapping(0);
-    buttonKickPedalRight = new GamepadButtonMapping(0);
 
     GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
