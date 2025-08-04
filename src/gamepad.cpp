@@ -684,6 +684,18 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 				reqSave = true;
 			}
 			break;
+		case HOTKEY_TURBO_COUNT_UP:
+			if (action != lastAction) {
+				TurboOptions &turboOptions = Storage::getInstance().getAddonOptions().turboOptions;
+				turboOptions.shotCount++;
+			}
+			break;
+		case HOTKEY_TURBO_COUNT_DOWN:
+			if (action != lastAction) {
+				TurboOptions &turboOptions = Storage::getInstance().getAddonOptions().turboOptions;
+				turboOptions.shotCount--;
+			}
+			break;
 		case HOTKEY_MENU_NAV_UP:
 			if (action != lastAction) {
                 EventManager::getInstance().triggerEvent(new GPMenuNavigateEvent(GpioAction::MENU_NAVIGATION_UP));

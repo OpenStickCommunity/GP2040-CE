@@ -374,6 +374,8 @@ enum GamepadHotkey
     HOTKEY_LOAD_PROFILE_6        = 72;
     HOTKEY_ENABLE_4_WAY_MODE     = 73;
     HOTKEY_DISABLE_4_WAY_MODE    = 74;
+    HOTKEY_TURBO_COUNT_UP        = 75;
+    HOTKEY_TURBO_COUNT_DOWN      = 76;
 }
 
 enum AnimationEffects

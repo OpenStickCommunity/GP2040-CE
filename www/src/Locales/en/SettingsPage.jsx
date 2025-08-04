@@ -142,6 +142,8 @@ export default {
 		'menu-nav-select': 'Menu Select',
 		'menu-nav-back': 'Menu Back',
 		'menu-nav-toggle': 'Menu Toggle',
+		'turbo-count-up': 'Turbo Count Up',
+		'turbo-count-down': 'Turbo Count Down',
 	},
 	'forced-setup-mode-label': 'Forced Setup Mode',
 	'forced-setup-mode-options': {
