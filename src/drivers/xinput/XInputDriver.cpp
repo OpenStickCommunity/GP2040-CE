@@ -138,6 +138,9 @@ void XInputDriver::initialize() {
         ._reserved = { },
     };
 
+    GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();
+    deviceType = gamepadOptions.inputDeviceType;
+
     // controller type bindings
     if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_WHEEL) {
         // wheel
