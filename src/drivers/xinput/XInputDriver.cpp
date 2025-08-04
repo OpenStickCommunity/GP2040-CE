@@ -302,15 +302,15 @@ bool XInputDriver::process(Gamepad * gamepad) {
         // guitar
         if (values & buttonFretGreen->pinMask)      { xinputReport.buttons2 |= XBOX_MASK_A; }
         if (values & buttonFretRed->pinMask)        { xinputReport.buttons2 |= XBOX_MASK_B; }
-        if (values & buttonFretYellow->pinMask)     { xinputReport.buttons2 |= XBOX_MASK_X; }
-        if (values & buttonFretBlue->pinMask)       { xinputReport.buttons2 |= XBOX_MASK_Y; }
+        if (values & buttonFretYellow->pinMask)     { xinputReport.buttons2 |= XBOX_MASK_Y; }
+        if (values & buttonFretBlue->pinMask)       { xinputReport.buttons2 |= XBOX_MASK_X; }
         if (values & buttonFretOrange->pinMask)     { xinputReport.buttons2 |= XBOX_MASK_LB; }
         
-        if (values & buttonFretSoloGreen->pinMask)  { xinputReport.buttons2 |= XBOX_MASK_A; }
-        if (values & buttonFretSoloRed->pinMask)    { xinputReport.buttons2 |= XBOX_MASK_B; }
-        if (values & buttonFretSoloYellow->pinMask) { xinputReport.buttons2 |= XBOX_MASK_X; }
-        if (values & buttonFretSoloBlue->pinMask)   { xinputReport.buttons2 |= XBOX_MASK_Y; }
-        if (values & buttonFretSoloOrange->pinMask) { xinputReport.buttons2 |= XBOX_MASK_LB; }
+        if (values & buttonFretSoloGreen->pinMask)  { xinputReport.buttons2 |= XBOX_MASK_A|XBOX_MASK_LS; }
+        if (values & buttonFretSoloRed->pinMask)    { xinputReport.buttons2 |= XBOX_MASK_B|XBOX_MASK_LS; }
+        if (values & buttonFretSoloYellow->pinMask) { xinputReport.buttons2 |= XBOX_MASK_Y|XBOX_MASK_LS; }
+        if (values & buttonFretSoloBlue->pinMask)   { xinputReport.buttons2 |= XBOX_MASK_X|XBOX_MASK_LS; }
+        if (values & buttonFretSoloOrange->pinMask) { xinputReport.buttons2 |= XBOX_MASK_LB|XBOX_MASK_LS; }
         
         if (values & buttonWhammy->pinMask)         { xinputReport.rx = GAMEPAD_JOYSTICK_MAX; }
         if (values & buttonTilt->pinMask)           { xinputReport.ry = GAMEPAD_JOYSTICK_MAX; }
