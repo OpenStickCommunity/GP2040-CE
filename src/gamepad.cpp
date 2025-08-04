@@ -603,6 +603,18 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 				reqSave = true;
 			}
 			break;
+		case HOTKEY_ENABLE_4_WAY_MODE:
+			if (action != lastAction) {
+				options.fourWayMode = true;
+				reqSave = true;
+			}
+			break;
+		case HOTKEY_DISABLE_4_WAY_MODE:
+			if (action != lastAction) {
+				options.fourWayMode = false;
+				reqSave = true;
+			}
+			break;
 		case HOTKEY_TOGGLE_DDI_4_WAY_MODE:
 			if (action != lastAction) {
 				DualDirectionalOptions& ddiOpt = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
