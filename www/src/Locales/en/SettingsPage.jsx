@@ -101,6 +101,8 @@ export default {
 		'invert-x': 'Invert X Axis',
 		'invert-y': 'Invert Y Axis',
 		'toggle-4way-joystick-mode': 'Toggle 4-Way Joystick Mode',
+		'enable-4way-joystick-mode': 'Enable 4-Way Joystick Mode',
+		'disable-4way-joystick-mode': 'Disable 4-Way Joystick Mode',
 		'toggle-ddi-4way-joystick-mode': 'Toggle DDI 4-Way Joystick Mode',
 		'b1-button': 'B1 Button',
 		'b2-button': 'B2 Button',
@@ -140,6 +142,8 @@ export default {
 		'menu-nav-select': 'Menu Select',
 		'menu-nav-back': 'Menu Back',
 		'menu-nav-toggle': 'Menu Toggle',
+		'turbo-count-up': 'Turbo Count Up',
+		'turbo-count-down': 'Turbo Count Down',
 	},
 	'forced-setup-mode-label': 'Forced Setup Mode',
 	'forced-setup-mode-options': {
