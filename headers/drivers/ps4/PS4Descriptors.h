@@ -22,8 +22,12 @@
 //#define PS4_PRODUCT_ID      0x8180
 
 // DS4
-#define DS4_VENDOR_ID       0x054C
-#define DS4_PRODUCT_ID      0x09CC
+#define DS4_VENDOR_ID         0x054C
+#define DS4_PRODUCT_ID        0x09CC
+
+// G29
+#define PS4_WHEEL_VENDOR_ID   0x046D
+#define PS4_WHEEL_PRODUCT_ID  0xC260
 
 #define DS4_ORG_PRODUCT_ID  0x05C4
 
@@ -76,6 +80,11 @@
 #define PS4_JOYSTICK_MID 0x80
 #define PS4_JOYSTICK_MAX 0xFF
 
+// PS4 navigation (HOTAS/flight/wheel) analog inputs report 16 bits
+#define PS4_NAV_JOYSTICK_MIN 0x0000
+#define PS4_NAV_JOYSTICK_MID 0x8000
+#define PS4_NAV_JOYSTICK_MAX 0xFFFF
+
 // touchpad resolution = 1920x943
 #define PS4_TP_X_MIN 0
 #define PS4_TP_X_MAX 1920
@@ -84,163 +93,329 @@
 
 #define PS4_TP_MAX_COUNT 128
 
+#define PS4_MAX_GEARS 8
+
 #define PS4_ACCEL_RES 8192
 #define PS4_ACCEL_RANGE (PS4_ACCEL_RES * 4)
 #define PS4_GYRO_RES 1024
 #define PS4_GYRO_RANGE (PS4_GYRO_RES * 2048)
 
 struct TouchpadXY {
-  uint8_t counter : 7;
-  uint8_t unpressed : 1;
+    uint8_t counter : 7;
+    uint8_t unpressed : 1;
 
-  // 12 bit X, followed by 12 bit Y
-  uint8_t data[3];
+    // 12 bit X, followed by 12 bit Y
+    uint8_t data[3];
 
-  void set_x(uint16_t x) {
-    data[0] = x & 0xff;
-    data[1] = (data[1] & 0xf0) | ((x >> 8) & 0xf);
-  }
+    void set_x(uint16_t x) {
+        data[0] = x & 0xff;
+        data[1] = (data[1] & 0xf0) | ((x >> 8) & 0xf);
+    }
 
-  void set_y(uint16_t y) {
-    data[1] = (data[1] & 0x0f) | ((y & 0xf) << 4);
-    data[2] = y >> 4;
-    return;
-  }
+    void set_y(uint16_t y) {
+        data[1] = (data[1] & 0x0f) | ((y & 0xf) << 4);
+        data[2] = y >> 4;
+        return;
+    }
 };
 
 struct TouchpadData {
-  TouchpadXY p1;
-  TouchpadXY p2;
+    TouchpadXY p1;
+    TouchpadXY p2;
 };
 
 struct PSSensor {
-  int16_t x;
-  int16_t y;
-  int16_t z;
+    int16_t x;
+    int16_t y;
+    int16_t z;
 };
 
 struct PSSensorData {
-  uint16_t battery;
-  PSSensor gyroscope;
-  PSSensor accelerometer;
-  uint8_t misc[4];
-  uint8_t powerLevel : 4;
-  uint8_t charging : 1;
-  uint8_t headphones : 1;
-  uint8_t microphone : 1;
-  uint8_t extension : 1;
-  uint8_t extData0 : 1;
-  uint8_t extData1 : 1;
-  uint8_t notConnected : 1;
-  uint8_t extData3 : 5;
-  uint8_t misc2;
+    uint16_t battery;
+    PSSensor gyroscope;
+    PSSensor accelerometer;
+    uint8_t misc[4];
+    uint8_t powerLevel : 4;
+    uint8_t charging : 1;
+    uint8_t headphones : 1;
+    uint8_t microphone : 1;
+    uint8_t extension : 1;
+    uint8_t extData0 : 1;
+    uint8_t extData1 : 1;
+    uint8_t notConnected : 1;
+    uint8_t extData3 : 5;
+    uint8_t misc2;
 } __attribute__((packed));
 
 typedef struct __attribute__((packed)) {
-  // 0
-  uint8_t reportID;
+    // 0
+    uint8_t reportID;
 
-  // 1
-  uint8_t enableUpdateRumble : 1;
-  uint8_t enableUpdateLED : 1;
-  uint8_t enableUpdateLEDBlink : 1;
-  uint8_t enableUpdateExtData : 1;
-  uint8_t enableUpdateVolLeft : 1;
-  uint8_t enableUpdateVolRight : 1;
-  uint8_t enableUpdateVolMic : 1;
-  uint8_t enableUpdateVolSpeaker : 1;
+    // 1
+    uint8_t enableUpdateRumble : 1;
+    uint8_t enableUpdateLED : 1;
+    uint8_t enableUpdateLEDBlink : 1;
+    uint8_t enableUpdateExtData : 1;
+    uint8_t enableUpdateVolLeft : 1;
+    uint8_t enableUpdateVolRight : 1;
+    uint8_t enableUpdateVolMic : 1;
+    uint8_t enableUpdateVolSpeaker : 1;
 
-  // 2
-  uint8_t : 8;
+    // 2
+    uint8_t : 8;
 
-  // 3 
-  uint8_t unknown0;
+    // 3 
+    uint8_t unknown0;
 
-  // 4
-  uint8_t rumbleRight;
+    // 4
+    uint8_t rumbleRight;
 
-  // 5
-  uint8_t rumbleLeft;
+    // 5
+    uint8_t rumbleLeft;
 
-  // 6
-  uint8_t ledRed;
+    // 6
+    uint8_t ledRed;
 
-  // 7
-  uint8_t ledGreen;
+    // 7
+    uint8_t ledGreen;
 
-  // 8
-  uint8_t ledBlue;
+    // 8
+    uint8_t ledBlue;
 
-  // 9
-  uint8_t ledBlinkOn;
+    // 9
+    uint8_t ledBlinkOn;
 
-  // 10
-  uint8_t ledBlinkOff;
+    // 10
+    uint8_t ledBlinkOff;
 
-  // 11
-  uint8_t extData[8];
+    // 11
+    uint8_t extData[8];
 
-  // 19
-  uint8_t volumeLeft; // 0x00-0x4F
+    // 19
+    uint8_t volumeLeft; // 0x00-0x4F
 
-  // 20
-  uint8_t volumeRight; // 0x00-0x4F
+    // 20
+    uint8_t volumeRight; // 0x00-0x4F
 
-  // 21
-  uint8_t volumeMic; // 0x01-0x4F, 0x00 is special state
+    // 21
+    uint8_t volumeMic; // 0x01-0x4F, 0x00 is special state
 
-  // 22
-  uint8_t volumeSpeaker; // 0x00-0x4F
+    // 22
+    uint8_t volumeSpeaker; // 0x00-0x4F
 
-  // 23
-  uint8_t unknownAudio;
+    // 23
+    uint8_t unknownAudio;
 
-  // 24
-  uint8_t padding[8];
+    // 24
+    uint8_t padding[8];
 } PS4FeatureOutputReport;
 
 typedef struct __attribute__((packed)) {
-  uint8_t report_id;
-  uint8_t left_stick_x;
-  uint8_t left_stick_y;
-  uint8_t right_stick_x;
-  uint8_t right_stick_y;
+    uint16_t gyroRange = 0;
+    uint16_t gyroResPerDegDenom = 0;
+    uint16_t gyroResPerDegNumer = 0;
+    uint16_t accelRange = 0;
+    uint16_t accelResPerG = 0;
+} PS4IMUConfig;
 
-  // 4 bits for the d-pad.
-  uint32_t dpad : 4;
+typedef struct __attribute__((packed)) {
+    uint16_t hidUsage = 0x2127;
+    uint8_t mystery0 = 0x04;
 
-  // 14 bits for buttons.
-  uint32_t button_west : 1;
-  uint32_t button_south : 1;
-  uint32_t button_east : 1;
-  uint32_t button_north : 1;
-  uint32_t button_l1 : 1;
-  uint32_t button_r1 : 1;
-  uint32_t button_l2 : 1;
-  uint32_t button_r2 : 1;
-  uint32_t button_select : 1;
-  uint32_t button_start : 1;
-  uint32_t button_l3 : 1;
-  uint32_t button_r3 : 1;
-  uint32_t button_home : 1;
-  uint32_t button_touchpad : 1;
+    // features
+    union {
+        uint8_t featureValue = 0xEF;
 
-  // 6 bit report counter.
-  uint32_t report_counter : 6;
+        struct __attribute__((packed)) {
+            uint8_t enableController : 1;
+            uint8_t enableMotion : 1;
+            uint8_t enableLED : 1;
+            uint8_t enableRumble : 1;
+            uint8_t enableAnalog : 1;
+            uint8_t enableUnknown0: 1;
+            uint8_t enableTouchpad : 1;
+            uint8_t enableUnknown1: 1;
+        } features;
+    };
 
-  uint32_t left_trigger : 8;
-  uint32_t right_trigger : 8;
+    uint8_t controllerType = 0; // use PS4ControllerType
 
-  // 16 bit timing counter
-  uint16_t axis_timing;
+    uint8_t touchpadParam[2] = {0x00,0x00};
+    PS4IMUConfig imuConfig;
+    uint16_t magicID = 0x0d0d;
+    uint8_t mystery1[4] = {0x00,0x00,0x00,0x00};
+    uint8_t wheelParam[3] = {0x00,0x00,0x00};
+    uint8_t mystery2[21] = {0x00};
+} PS4ControllerConfig;
 
-  PSSensorData sensor_data;
+typedef struct __attribute__((packed)) {
+    uint8_t reportID;
+    uint8_t leftStickX;
+    uint8_t leftStickY;
+    uint8_t rightStickX;
+    uint8_t rightStickY;
 
-  uint8_t touchpad_active : 2;
-  uint8_t padding : 6;
-  uint8_t tpad_increment;
-  TouchpadData touchpad_data;
-  uint8_t mystery_2[21];
+    // 4 bits for the d-pad.
+    uint8_t dpad : 4;
+
+    // 14 bits for buttons.
+    uint16_t buttonWest : 1;
+    uint16_t buttonSouth : 1;
+    uint16_t buttonEast : 1;
+    uint16_t buttonNorth : 1;
+    uint16_t buttonL1 : 1;
+    uint16_t buttonR1 : 1;
+    uint16_t buttonL2 : 1;
+    uint16_t buttonR2 : 1;
+    uint16_t buttonSelect : 1;
+    uint16_t buttonStart : 1;
+    uint16_t buttonL3 : 1;
+    uint16_t buttonR3 : 1;
+    uint16_t buttonHome : 1;
+    uint16_t buttonTouchpad : 1;
+
+    // 6 bit report counter.
+    uint8_t reportCounter : 6;
+
+    uint8_t leftTrigger : 8;
+    uint8_t rightTrigger : 8;
+
+    // vendor specific
+    // ---------------
+    union {
+        uint8_t miscData[54];
+        
+        struct __attribute__((packed)) {
+            // 16 bit timing counter
+            uint16_t axisTiming;
+
+            PSSensorData sensorData;
+
+            uint8_t touchpadActive : 2;
+            uint8_t padding : 6;
+            uint8_t tpadIncrement;
+            TouchpadData touchpadData;
+    
+            uint8_t mystery2[21];
+        } gamepad;
+        struct __attribute__((packed)) {
+            uint8_t mystery0[22];
+            
+            uint8_t powerLevel : 4;
+            uint8_t : 4;
+            
+            uint8_t mystery1[10];
+            
+            uint8_t pickup;
+            uint8_t whammy;
+            uint8_t tilt;
+
+            union {
+                uint8_t fretValue;
+
+                struct __attribute__((packed)) {
+                    uint8_t green : 1;
+                    uint8_t red : 1;
+                    uint8_t yellow : 1;
+                    uint8_t blue : 1;
+                    uint8_t orange : 1;
+                    uint8_t : 3;
+                } frets;
+            };
+
+            union {
+                uint8_t soloFretValue;
+
+                struct __attribute__((packed)) {
+                    uint8_t green : 1;
+                    uint8_t red : 1;
+                    uint8_t yellow : 1;
+                    uint8_t blue : 1;
+                    uint8_t orange : 1;
+                    uint8_t : 3;
+                } soloFrets;
+            };
+            
+            uint8_t mystery2[14];
+        } guitar;
+        struct __attribute__((packed)) {
+            uint8_t mystery0[22];
+        
+            uint8_t powerLevel : 4;
+            uint8_t : 4;
+        
+            uint8_t mystery1[10];
+        
+            uint8_t velocityDrumRed;
+            uint8_t velocityDrumBlue;
+            uint8_t velocityDrumYellow;
+            uint8_t velocityDrumGreen;
+        
+            uint8_t velocityCymbalYellow;
+            uint8_t velocityCymbalBlue;
+            uint8_t velocityCymbalGreen;
+        
+            uint8_t mystery2[12];
+        } drums;
+        struct __attribute__((packed)) {
+            uint8_t mystery0[22];
+        
+            uint8_t powerLevel : 4;
+            uint8_t : 4;
+        
+            uint8_t mystery1[10];
+
+            uint16_t joystickX;
+            uint16_t joystickY;
+            uint8_t twistRudder;
+            uint8_t throttle;
+            uint8_t rockerSwitch;
+
+            uint8_t pedalRudder;
+            uint8_t pedalLeft;
+            uint8_t pedalRight;
+        } hotas;
+        struct __attribute__((packed)) {
+            uint8_t mystery0[22];
+            
+            uint8_t powerLevel : 4;
+            uint8_t : 4;
+            
+            uint8_t mystery1[10];
+            
+            uint16_t steeringWheel;
+            uint16_t gasPedal;
+            uint16_t brakePedal;
+            uint16_t clutchPedal; // ?
+
+            union {
+                uint8_t shifterValue;
+
+                struct __attribute__((packed)) {
+                    uint8_t shifterGear1 : 1;
+                    uint8_t shifterGear2 : 1;
+                    uint8_t shifterGear3 : 1;
+                    uint8_t shifterGear4 : 1;
+                    uint8_t shifterGear5 : 1;
+                    uint8_t shifterGear6 : 1;
+                    uint8_t shifterGearR : 1;
+                    uint8_t : 1;
+                } shifter;
+            };
+
+            uint16_t unknownVal;
+
+            uint8_t buttonDialEnter : 1;
+            uint8_t buttonDialDown : 1;
+            uint8_t buttonDialUp : 1;
+            uint8_t buttonMinus : 1;
+            uint8_t buttonPlus : 1;
+            
+            uint8_t : 3;
+            
+            uint8_t mystery2[7];
+        } wheel;
+    };
 } PS4Report;
 
 static const uint8_t ps4_string_language[]     = { 0x09, 0x04 };
@@ -250,10 +425,10 @@ static const uint8_t ps4_string_version[]      = "1.0";
 
 static const uint8_t *ps4_string_descriptors[] __attribute__((unused)) =
 {
-	ps4_string_language,
-	ps4_string_manufacturer,
-	ps4_string_product,
-	ps4_string_version
+    ps4_string_language,
+    ps4_string_manufacturer,
+    ps4_string_product,
+    ps4_string_version
 };
 
 static const uint8_t ps4_device_descriptor[] =
@@ -340,165 +515,165 @@ static const uint8_t ps4_report_descriptor[] =
 	0x95, 0x2F,        //   Report Count (47)
 	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
 
-    0x85, 0x02,        //   Report ID (2)
-    0x09, 0x24,        //   Usage (0x24)
-    0x95, 0x24,        //   Report Count (36)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0x08,        //   Report ID (8)
-    0x09, 0x25,        //   Usage (0x25)
-    0x95, 0x03,        //   Report Count (3)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0x10,        //   Report ID (16)
-    0x09, 0x26,        //   Usage (0x26)
-    0x95, 0x04,        //   Report Count (4)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0x11,        //   Report ID (17)
-    0x09, 0x27,        //   Usage (0x27)
-    0x95, 0x02,        //   Report Count (2)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0x12,        //   Report ID (18)
-    0x06, 0x02, 0xFF,  //   Usage Page (Vendor Defined 0xFF02)
-    0x09, 0x21,        //   Usage (0x21)
-    0x95, 0x0F,        //   Report Count (15)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0x13,        //   Report ID (19)
-    0x09, 0x22,        //   Usage (0x22)
-    0x95, 0x16,        //   Report Count (22)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0x14,        //   Report ID (20)
-    0x06, 0x05, 0xFF,  //   Usage Page (Vendor Defined 0xFF05)
-    0x09, 0x20,        //   Usage (0x20)
-    0x95, 0x10,        //   Report Count (16)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0x15,        //   Report ID (21)
-    0x09, 0x21,        //   Usage (0x21)
-    0x95, 0x2C,        //   Report Count (44)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x06, 0x80, 0xFF,  //   Usage Page (Vendor Defined 0xFF80)
-    0x85, 0x80,        //   Report ID (128)
-    0x09, 0x20,        //   Usage (0x20)
-    0x95, 0x06,        //   Report Count (6)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0x81,        //   Report ID (129)
-    0x09, 0x21,        //   Usage (0x21)
-    0x95, 0x06,        //   Report Count (6)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0x82,        //   Report ID (130)
-    0x09, 0x22,        //   Usage (0x22)
-    0x95, 0x05,        //   Report Count (5)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0x83,        //   Report ID (131)
-    0x09, 0x23,        //   Usage (0x23)
-    0x95, 0x01,        //   Report Count (1)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0x84,        //   Report ID (132)
-    0x09, 0x24,        //   Usage (0x24)
-    0x95, 0x04,        //   Report Count (4)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0x85,        //   Report ID (133)
-    0x09, 0x25,        //   Usage (0x25)
-    0x95, 0x06,        //   Report Count (6)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0x86,        //   Report ID (134)
-    0x09, 0x26,        //   Usage (0x26)
-    0x95, 0x06,        //   Report Count (6)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0x87,        //   Report ID (135)
-    0x09, 0x27,        //   Usage (0x27)
-    0x95, 0x23,        //   Report Count (35)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0x88,        //   Report ID (136)
-    0x09, 0x28,        //   Usage (0x28)
-    0x95, 0x22,        //   Report Count (34)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0x89,        //   Report ID (137)
-    0x09, 0x29,        //   Usage (0x29)
-    0x95, 0x02,        //   Report Count (2)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0x90,        //   Report ID (144)
-    0x09, 0x30,        //   Usage (0x30)
-    0x95, 0x05,        //   Report Count (5)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0x91,        //   Report ID (145)
-    0x09, 0x31,        //   Usage (0x31)
-    0x95, 0x03,        //   Report Count (3)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0x92,        //   Report ID (146)
-    0x09, 0x32,        //   Usage (0x32)
-    0x95, 0x03,        //   Report Count (3)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0x93,        //   Report ID (147)
-    0x09, 0x33,        //   Usage (0x33)
-    0x95, 0x0C,        //   Report Count (12)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0xA0,        //   Report ID (160)
-    0x09, 0x40,        //   Usage (0x40)
-    0x95, 0x06,        //   Report Count (6)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0xA1,        //   Report ID (161)
-    0x09, 0x41,        //   Usage (0x41)
-    0x95, 0x01,        //   Report Count (1)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0xA2,        //   Report ID (162)
-    0x09, 0x42,        //   Usage (0x42)
-    0x95, 0x01,        //   Report Count (1)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0xA3,        //   Report ID (163)
-    0x09, 0x43,        //   Usage (0x43)
-    0x95, 0x30,        //   Report Count (48)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0xA4,        //   Report ID (164)
-    0x09, 0x44,        //   Usage (0x44)
-    0x95, 0x0D,        //   Report Count (13)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0xA5,        //   Report ID (165)
-    0x09, 0x45,        //   Usage (0x45)
-    0x95, 0x15,        //   Report Count (21)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0xA6,        //   Report ID (166)
-    0x09, 0x46,        //   Usage (0x46)
-    0x95, 0x15,        //   Report Count (21)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0xA7,        //   Report ID (247)
-    0x09, 0x4A,        //   Usage (0x4A)
-    0x95, 0x01,        //   Report Count (1)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0xA8,        //   Report ID (250)
-    0x09, 0x4B,        //   Usage (0x4B)
-    0x95, 0x01,        //   Report Count (1)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0xA9,        //   Report ID (251)
-    0x09, 0x4C,        //   Usage (0x4C)
-    0x95, 0x08,        //   Report Count (8)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0xAA,        //   Report ID (252)
-    0x09, 0x4E,        //   Usage (0x4E)
-    0x95, 0x01,        //   Report Count (1)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0xAB,        //   Report ID (253)
-    0x09, 0x4F,        //   Usage (0x4F)
-    0x95, 0x39,        //   Report Count (57)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0xAC,        //   Report ID (254)
-    0x09, 0x50,        //   Usage (0x50)
-    0x95, 0x39,        //   Report Count (57)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0xAD,        //   Report ID (255)
-    0x09, 0x51,        //   Usage (0x51)
-    0x95, 0x0B,        //   Report Count (11)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0xAE,        //   Report ID (256)
-    0x09, 0x52,        //   Usage (0x52)
-    0x95, 0x01,        //   Report Count (1)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0xAF,        //   Report ID (175)
-    0x09, 0x53,        //   Usage (0x53)
-    0x95, 0x02,        //   Report Count (2)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0xB0,        //   Report ID (176)
-    0x09, 0x54,        //   Usage (0x54)
-    0x95, 0x3F,        //   Report Count (63)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0x02,        //   Report ID (2)
+	0x09, 0x24,        //   Usage (0x24)
+	0x95, 0x24,        //   Report Count (36)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0x08,        //   Report ID (8)
+	0x09, 0x25,        //   Usage (0x25)
+	0x95, 0x03,        //   Report Count (3)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0x10,        //   Report ID (16)
+	0x09, 0x26,        //   Usage (0x26)
+	0x95, 0x04,        //   Report Count (4)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0x11,        //   Report ID (17)
+	0x09, 0x27,        //   Usage (0x27)
+	0x95, 0x02,        //   Report Count (2)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0x12,        //   Report ID (18)
+	0x06, 0x02, 0xFF,  //   Usage Page (Vendor Defined 0xFF02)
+	0x09, 0x21,        //   Usage (0x21)
+	0x95, 0x0F,        //   Report Count (15)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0x13,        //   Report ID (19)
+	0x09, 0x22,        //   Usage (0x22)
+	0x95, 0x16,        //   Report Count (22)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0x14,        //   Report ID (20)
+	0x06, 0x05, 0xFF,  //   Usage Page (Vendor Defined 0xFF05)
+	0x09, 0x20,        //   Usage (0x20)
+	0x95, 0x10,        //   Report Count (16)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0x15,        //   Report ID (21)
+	0x09, 0x21,        //   Usage (0x21)
+	0x95, 0x2C,        //   Report Count (44)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x06, 0x80, 0xFF,  //   Usage Page (Vendor Defined 0xFF80)
+	0x85, 0x80,        //   Report ID (128)
+	0x09, 0x20,        //   Usage (0x20)
+	0x95, 0x06,        //   Report Count (6)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0x81,        //   Report ID (129)
+	0x09, 0x21,        //   Usage (0x21)
+	0x95, 0x06,        //   Report Count (6)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0x82,        //   Report ID (130)
+	0x09, 0x22,        //   Usage (0x22)
+	0x95, 0x05,        //   Report Count (5)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0x83,        //   Report ID (131)
+	0x09, 0x23,        //   Usage (0x23)
+	0x95, 0x01,        //   Report Count (1)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0x84,        //   Report ID (132)
+	0x09, 0x24,        //   Usage (0x24)
+	0x95, 0x04,        //   Report Count (4)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0x85,        //   Report ID (133)
+	0x09, 0x25,        //   Usage (0x25)
+	0x95, 0x06,        //   Report Count (6)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0x86,        //   Report ID (134)
+	0x09, 0x26,        //   Usage (0x26)
+	0x95, 0x06,        //   Report Count (6)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0x87,        //   Report ID (135)
+	0x09, 0x27,        //   Usage (0x27)
+	0x95, 0x23,        //   Report Count (35)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0x88,        //   Report ID (136)
+	0x09, 0x28,        //   Usage (0x28)
+	0x95, 0x22,        //   Report Count (34)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0x89,        //   Report ID (137)
+	0x09, 0x29,        //   Usage (0x29)
+	0x95, 0x02,        //   Report Count (2)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0x90,        //   Report ID (144)
+	0x09, 0x30,        //   Usage (0x30)
+	0x95, 0x05,        //   Report Count (5)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0x91,        //   Report ID (145)
+	0x09, 0x31,        //   Usage (0x31)
+	0x95, 0x03,        //   Report Count (3)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0x92,        //   Report ID (146)
+	0x09, 0x32,        //   Usage (0x32)
+	0x95, 0x03,        //   Report Count (3)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0x93,        //   Report ID (147)
+	0x09, 0x33,        //   Usage (0x33)
+	0x95, 0x0C,        //   Report Count (12)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0xA0,        //   Report ID (160)
+	0x09, 0x40,        //   Usage (0x40)
+	0x95, 0x06,        //   Report Count (6)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0xA1,        //   Report ID (161)
+	0x09, 0x41,        //   Usage (0x41)
+	0x95, 0x01,        //   Report Count (1)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0xA2,        //   Report ID (162)
+	0x09, 0x42,        //   Usage (0x42)
+	0x95, 0x01,        //   Report Count (1)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0xA3,        //   Report ID (163)
+	0x09, 0x43,        //   Usage (0x43)
+	0x95, 0x30,        //   Report Count (48)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0xA4,        //   Report ID (164)
+	0x09, 0x44,        //   Usage (0x44)
+	0x95, 0x0D,        //   Report Count (13)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0xA5,        //   Report ID (165)
+	0x09, 0x45,        //   Usage (0x45)
+	0x95, 0x15,        //   Report Count (21)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0xA6,        //   Report ID (166)
+	0x09, 0x46,        //   Usage (0x46)
+	0x95, 0x15,        //   Report Count (21)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0xA7,        //   Report ID (247)
+	0x09, 0x4A,        //   Usage (0x4A)
+	0x95, 0x01,        //   Report Count (1)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0xA8,        //   Report ID (250)
+	0x09, 0x4B,        //   Usage (0x4B)
+	0x95, 0x01,        //   Report Count (1)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0xA9,        //   Report ID (251)
+	0x09, 0x4C,        //   Usage (0x4C)
+	0x95, 0x08,        //   Report Count (8)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0xAA,        //   Report ID (252)
+	0x09, 0x4E,        //   Usage (0x4E)
+	0x95, 0x01,        //   Report Count (1)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0xAB,        //   Report ID (253)
+	0x09, 0x4F,        //   Usage (0x4F)
+	0x95, 0x39,        //   Report Count (57)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0xAC,        //   Report ID (254)
+	0x09, 0x50,        //   Usage (0x50)
+	0x95, 0x39,        //   Report Count (57)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0xAD,        //   Report ID (255)
+	0x09, 0x51,        //   Usage (0x51)
+	0x95, 0x0B,        //   Report Count (11)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0xAE,        //   Report ID (256)
+	0x09, 0x52,        //   Usage (0x52)
+	0x95, 0x01,        //   Report Count (1)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0xAF,        //   Report ID (175)
+	0x09, 0x53,        //   Usage (0x53)
+	0x95, 0x02,        //   Report Count (2)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+	0x85, 0xB0,        //   Report ID (176)
+	0x09, 0x54,        //   Usage (0x54)
+	0x95, 0x3F,        //   Report Count (63)
+	0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
 	0xC0,              // End Collection
 
 	0x06, 0xF0, 0xFF,  // Usage Page (Vendor Defined 0xFFF0)
@@ -531,8 +706,7 @@ static const uint8_t ps4_hid_descriptor[] =
 	0x00,								 // bCountryCode
 	0x01,								 // bNumDescriptors
 	0x22,								 // bDescriptorType[0] (HID)
-	//sizeof(ps4_report_descriptor), 0x00, // wDescriptorLength[0] 90
-    LSB(sizeof(ps4_report_descriptor)), MSB(sizeof(ps4_report_descriptor))
+	LSB(sizeof(ps4_report_descriptor)), MSB(sizeof(ps4_report_descriptor))
 };
 
 #define PS4_CONFIG1_DESC_SIZE		(9+9+9+7+7)
@@ -574,5 +748,10 @@ static const uint8_t ps4_configuration_descriptor[] =
 	0x03,					       // bmAttributes (0x03=intr)
 	GAMEPAD_SIZE, 0,		       // wMaxPacketSize
 	1,						       // bInterval (1 ms)
-    0x07, 0x05, 0x03, 0x03, 0x40, 0x00, 0x01
+	0x07,                          // bLength
+	0x05,                          // bDescriptorType (Endpoint)
+	0x03,                          // bEndpointAddress (OUT/H2D)
+	0x03,                          // bmAttributes (Interrupt)
+	0x40, 0x00,                    // wMaxPacketSize 64
+	0x01,                          // bInterval 1 (unit depends on device speed)
 };

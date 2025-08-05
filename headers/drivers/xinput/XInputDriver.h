@@ -38,6 +38,37 @@ private:
     uint8_t featureBuffer[XINPUT_OUT_SIZE];
     uint8_t tud_buffer[64];
     bool xAuthSent;
+
+    InputModeDeviceType deviceType;
+    uint8_t configDescriptor[sizeof(xinput_configuration_descriptor)];
+
+    GamepadButtonMapping *buttonGas;
+    GamepadButtonMapping *buttonBrake;
+    GamepadButtonMapping *buttonSteerLeft;
+    GamepadButtonMapping *buttonSteerRight;
+
+    GamepadButtonMapping *buttonFretGreen;
+    GamepadButtonMapping *buttonFretRed;
+    GamepadButtonMapping *buttonFretYellow;
+    GamepadButtonMapping *buttonFretBlue;
+    GamepadButtonMapping *buttonFretOrange;
+    GamepadButtonMapping *buttonFretSoloGreen;
+    GamepadButtonMapping *buttonFretSoloRed;
+    GamepadButtonMapping *buttonFretSoloYellow;
+    GamepadButtonMapping *buttonFretSoloBlue;
+    GamepadButtonMapping *buttonFretSoloOrange;
+    GamepadButtonMapping *buttonWhammy;
+    GamepadButtonMapping *buttonTilt;
+
+    GamepadButtonMapping *buttonDrumPadRed;
+    GamepadButtonMapping *buttonDrumPadBlue;
+    GamepadButtonMapping *buttonDrumPadYellow;
+    GamepadButtonMapping *buttonDrumPadGreen;
+    GamepadButtonMapping *buttonCymbalYellow;
+    GamepadButtonMapping *buttonCymbalBlue;
+    GamepadButtonMapping *buttonCymbalGreen;
+    GamepadButtonMapping *buttonKickPedalLeft;
+    GamepadButtonMapping *buttonKickPedalRight;
 };
 
 #endif
