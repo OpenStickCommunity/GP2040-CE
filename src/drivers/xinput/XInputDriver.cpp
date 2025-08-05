@@ -296,8 +296,8 @@ bool XInputDriver::process(Gamepad * gamepad) {
         // wheel
         if (values & buttonSteerLeft->pinMask)      { xinputReport.lx = GAMEPAD_JOYSTICK_MIN; }
         if (values & buttonSteerRight->pinMask)     { xinputReport.lx = GAMEPAD_JOYSTICK_MAX; }
-        if (values & buttonBrake->pinMask)          { xinputReport.lt = GAMEPAD_JOYSTICK_MAX; }
-        if (values & buttonGas->pinMask)            { xinputReport.rt = GAMEPAD_JOYSTICK_MAX; }
+        if (values & buttonBrake->pinMask)          { xinputReport.lt = INT8_MAX; }
+        if (values & buttonGas->pinMask)            { xinputReport.rt = INT8_MAX; }
     } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GUITAR) {
         // guitar
         if (values & buttonFretGreen->pinMask)      { xinputReport.buttons2 |= XBOX_MASK_A; }

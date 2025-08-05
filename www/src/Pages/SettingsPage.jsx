@@ -203,11 +203,6 @@ const INPUT_MODES = [
 		labelKey: 'input-mode-options.xboxoriginal', 
 		value: 12, 
 		group: 'primary',
-		deviceTypes: [
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_GAMEPAD,
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_WHEEL,
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_MECHA,
-		],
 	},
 ];
 
