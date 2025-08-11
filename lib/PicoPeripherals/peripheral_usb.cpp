@@ -29,7 +29,6 @@ void PeripheralUSB::setup() {
 
         pio_cfg.pin_dp = _DP;
         pio_cfg.pinout = (_Order == 0 ? PIO_USB_PINOUT_DPDM : PIO_USB_PINOUT_DMDP);
-        pio_cfg.sm_tx = 1; // Move TX to PIO0:1, NeoPico is in PIO0:0
-        // RX and EOP are PIO1:0, PIO1:1
+        // USB Host is on pio0 and SM1 & SM2 by default
     }
 }
