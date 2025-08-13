@@ -1,9 +1,9 @@
 export default {
-	'sub-header-text': `Use GPIO Pin Viewer to see button to GPIO pin connection.`,
+	'sub-header-text': `Use GPIO Pin Viewer to see button to GPIO Pin connection.`,
 	'alert-text':
 		"Mapping buttons to pins that aren't connected or available can leave the device in non-functional state. To clear the invalid configuration go to the <2>Reset Settings</2> page.",
 	'pin-viewer': 'GPIO Pin viewer',
-	'pin-pressed': 'Pressed pin: {{pressedPin}}',
+	'pin-pressed': 'Pressed GPIO Pin: {{pressedPin}}',
 	'profile-label-title': 'Profile name',
 	'profile-label-description':
 		'Max 16 characters. Letters, numbers, and spaces allowed.',
