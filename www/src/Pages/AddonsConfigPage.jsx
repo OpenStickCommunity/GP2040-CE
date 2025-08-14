@@ -56,6 +56,7 @@ import ReactiveLED, {
 	reactiveLEDScheme,
 	reactiveLEDState,
 } from '../Addons/ReactiveLED';
+import TG16, { tg16State } from '../Addons/TG16';
 
 const schema = yup.object().shape({
 	...analogScheme,
@@ -93,6 +94,7 @@ const defaultValues = {
 	...socdState,
 	...wiiState,
 	...snesState,
+	...tg16State,
 	...focusModeState,
 	...keyboardState,
 	...rotaryState,
@@ -116,6 +118,7 @@ const ADDONS = [
 	SOCD,
 	Wii,
 	SNES,
+	TG16,
 	FocusMode,
 	Keyboard,
 	GamepadUSBHost,

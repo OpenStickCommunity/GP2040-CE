@@ -29,7 +29,7 @@
 #include "addons/rotaryencoder.h"
 #include "addons/i2c_gpio_pcf8575.h"
 #include "addons/gamepad_usb_host.h"
-
+#include "addons/tg16_input.h"
 
 // Pico includes
 #include "pico/bootrom.h"
@@ -109,6 +109,7 @@ void GP2040::setup() {
 	addons.LoadAddon(new TiltInput());
 	addons.LoadAddon(new RotaryEncoderInput());
 	addons.LoadAddon(new PCF8575Addon());
+	addons.LoadAddon(new TG16padInput());
 
 	// Input override addons
 	addons.LoadAddon(new ReverseInput());

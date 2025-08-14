@@ -1679,6 +1679,15 @@ std::string setAddonOptions()
     docToValue(drv8833RumbleOptions.dutyMin, doc, "drv8833RumbleDutyMin");
     docToValue(drv8833RumbleOptions.dutyMax, doc, "drv8833RumbleDutyMax");
 
+    TG16Options& tg16Options = Storage::getInstance().getAddonOptions().tg16Options;
+    docToValue(tg16Options.enabled, doc, "TG16padAddonEnabled");
+    docToPin(tg16Options.oePin, doc, "tg16PadOePin");
+    docToPin(tg16Options.selectPin, doc, "tg16PadSelectPin");
+    docToPin(tg16Options.dataPin0, doc, "tg16PadDataPin0");
+    docToPin(tg16Options.dataPin1, doc, "tg16PadDataPin1");
+    docToPin(tg16Options.dataPin2, doc, "tg16PadDataPin2");
+    docToPin(tg16Options.dataPin3, doc, "tg16PadDataPin3");
+
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
     return serialize_json(doc);
@@ -2107,6 +2116,15 @@ std::string getAddonOptions()
     writeDoc(doc, "drv8833RumblePWMFrequency", drv8833RumbleOptions.pwmFrequency);
     writeDoc(doc, "drv8833RumbleDutyMin", drv8833RumbleOptions.dutyMin);
     writeDoc(doc, "drv8833RumbleDutyMax", drv8833RumbleOptions.dutyMax);
+
+    TG16Options& tg16Options = Storage::getInstance().getAddonOptions().tg16Options;
+    writeDoc(doc, "TG16padAddonEnabled", tg16Options.enabled);
+    writeDoc(doc, "tg16PadOePin", cleanPin(tg16Options.oePin));
+    writeDoc(doc, "tg16PadSelectPin", cleanPin(tg16Options.selectPin));
+    writeDoc(doc, "tg16PadDataPin0", cleanPin(tg16Options.dataPin0));
+    writeDoc(doc, "tg16PadDataPin1", cleanPin(tg16Options.dataPin1));
+    writeDoc(doc, "tg16PadDataPin2", cleanPin(tg16Options.dataPin2));
+    writeDoc(doc, "tg16PadDataPin3", cleanPin(tg16Options.dataPin3));
 
     return serialize_json(doc);
 }

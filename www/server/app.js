@@ -555,6 +555,13 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		DRV8833RumbleAddonEnabled: 1,
 		ReactiveLEDAddonEnabled: 1,
 		GamepadUSBHostAddonEnabled: 1,
+		tg16PadOePin: -1,
+		tg16PadSelectPin: -1,
+		tg16PadDataPin0: -1,
+		tg16PadDataPin1: -1,
+		tg16PadDataPin2: -1,
+		tg16PadDataPin3: -1,
+		TG16padAddonEnabled: 1,
 		usedPins: Object.values(picoController),
 	});
 });
