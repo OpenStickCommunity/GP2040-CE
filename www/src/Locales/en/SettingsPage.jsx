@@ -10,6 +10,7 @@ export default {
 		none: 'No Mode Selected',
 		xinput: 'XInput',
 		'nintendo-switch': 'Nintendo Switch',
+		'nintendo-switch-pro': 'Nintendo Switch Pro',
 		ps3: 'PS3',
 		generic: 'Generic HID',
 		keyboard: 'Keyboard',
