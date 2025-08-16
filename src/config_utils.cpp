@@ -34,6 +34,7 @@
 #include "addons/i2c_gpio_pcf8575.h"
 #include "addons/drv8833_rumble.h"
 #include "addons/gamepad_usb_host.h"
+#include "addons/i2c_qmi8658.h"
 
 #include "CRC32.h"
 #include "FlashPROM.h"
@@ -742,6 +743,9 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     // addonOptions.pcf8575Options
     INIT_UNSET_PROPERTY(config.addonOptions.pcf8575Options, enabled, I2C_PCF8575_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.pcf8575Options, deprecatedI2cBlock, (I2C_PCF8575_BLOCK == i2c0) ? 0 : 1);
+
+    // addonOptions.QMI8658Options
+    INIT_UNSET_PROPERTY(config.addonOptions.qmi8658Options, enabled, !!I2C_QMI8658_ENABLED);
 
     GpioAction pcf8575Actions[PCF8575_PIN_COUNT] = {
         PCF8575_PIN00_ACTION,PCF8575_PIN01_ACTION,PCF8575_PIN02_ACTION,PCF8575_PIN03_ACTION,

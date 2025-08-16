@@ -56,6 +56,10 @@ import ReactiveLED, {
 	reactiveLEDScheme,
 	reactiveLEDState,
 } from '../Addons/ReactiveLED';
+import I2CQMI8658, {
+	i2cQMI8658Scheme,
+	i2cQMI8658State,
+} from '../Addons/I2CQMI8658';
 
 const schema = yup.object().shape({
 	...analogScheme,
@@ -77,6 +81,7 @@ const schema = yup.object().shape({
 	...drv8833RumbleScheme,
 	...reactiveLEDScheme,
 	...gamepadUSBHostScheme,
+	...i2cQMI8658Scheme,
 });
 
 const defaultValues = {
@@ -100,6 +105,7 @@ const defaultValues = {
 	...drv8833RumbleState,
 	...reactiveLEDState,
 	...gamepadUSBHostState,
+	...i2cQMI8658State,
 };
 
 const ADDONS = [
@@ -123,6 +129,7 @@ const ADDONS = [
 	PCF8575,
 	DRV8833Rumble,
 	ReactiveLED,
+	I2CQMI8658,
 ];
 
 const FormContext = ({ setStoredData }) => {
