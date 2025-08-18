@@ -14,6 +14,14 @@ class StatsScreen : public GPScreen {
     protected:
         virtual void drawScreen();
         uint16_t prevButtonState = 0;
+
+        GPLabel* header;
+        GPLabel* version;
+        GPLabel* build;
+        GPLabel* board;
+        GPLabel* boardType;
+        GPLabel* arch;
+        GPLabel* exit;
 };
 
 #endif

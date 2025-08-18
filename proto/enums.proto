@@ -518,6 +518,7 @@ enum GPShape_Type
     GP_SHAPE_LINE = 2;
     GP_SHAPE_POLYGON = 3;
     GP_SHAPE_ARC = 4;
+    GP_SHAPE_PILL = 5;
 };
 
 enum GPLever_Mode
