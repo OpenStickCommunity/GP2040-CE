@@ -2,6 +2,7 @@
 #include "drivermanager.h"
 #include "storagemanager.h"
 #include "class/hid/hid_host.h"
+#include <algorithm>
 
 #define DEV_ADDR_NONE 0xFF
 
@@ -51,11 +52,20 @@ void KeyboardHostListener::setup() {
   mouseLeftMapping = keyboardHostOptions.mouseLeft;
   mouseMiddleMapping = keyboardHostOptions.mouseMiddle;
   mouseRightMapping = keyboardHostOptions.mouseRight;
+  mouseSensitivity = keyboardHostOptions.mouseSensitivity;
+  mouseMovementMode = keyboardHostOptions.movementMode;
+  mouseSensitivityScale = mouseSensitivity / 10.0f;
+  mouseScaleFactor = GAMEPAD_JOYSTICK_MID / 127;
+  mouseResetMS = 16;
+  mouseResetNextTimer = 0;
+
+  joystickMid = DriverManager::getInstance().getDriver() != nullptr ?
+      DriverManager::getInstance().getDriver()->GetJoystickMidValue() : GAMEPAD_JOYSTICK_MID;
 
   _keyboard_host_mounted = false;
   _keyboard_dev_addr = DEV_ADDR_NONE;
   _keyboard_instance = 0;
-  
+
   _mouse_host_mounted = false;
   _mouse_dev_addr = DEV_ADDR_NONE;
   _mouse_instance = 0;
@@ -71,10 +81,10 @@ void KeyboardHostListener::process() {
   if (_keyboard_host_mounted == true || _mouse_host_mounted == true) {
     gamepad->state.dpad     |= _keyboard_host_state.dpad;
     gamepad->state.buttons  |= _keyboard_host_state.buttons;
-    gamepad->state.lx       |= _keyboard_host_state.lx;
-    gamepad->state.ly       |= _keyboard_host_state.ly;
-    gamepad->state.rx       |= _keyboard_host_state.rx;
-    gamepad->state.ry       |= _keyboard_host_state.ry;
+    gamepad->state.lx       = _keyboard_host_state.lx;
+    gamepad->state.ly       = _keyboard_host_state.ly;
+    gamepad->state.rx       = _keyboard_host_state.rx;
+    gamepad->state.ry       = _keyboard_host_state.ry;
     if (!gamepad->hasAnalogTriggers) {
         gamepad->state.lt       |= _keyboard_host_state.lt;
         gamepad->state.rt       |= _keyboard_host_state.rt;
@@ -83,12 +93,19 @@ void KeyboardHostListener::process() {
 
   if ( _mouse_host_mounted == true ) {
     gamepad->auxState.sensors.mouse.active = mouseActive;
+
     if ( mouseActive == true ) {
         gamepad->auxState.sensors.mouse.active = true;
         gamepad->auxState.sensors.mouse.x = mouseX;
         gamepad->auxState.sensors.mouse.y = mouseY;
         gamepad->auxState.sensors.mouse.z = mouseZ;
         mouseActive = false;
+    } else if(mouseResetNextTimer < getMillis()) {
+        // Since mouse position reports only happen when the mouse is moved, we need to reset the position manually
+       _keyboard_host_state.lx = joystickMid;
+       _keyboard_host_state.ly = joystickMid;
+       _keyboard_host_state.rx = joystickMid;
+       _keyboard_host_state.ry = joystickMid;
     }
   }
 }
@@ -155,10 +172,6 @@ uint8_t KeyboardHostListener::getKeycodeFromModifier(uint8_t modifier) {
 
 void KeyboardHostListener::preprocess_report()
 {
-  uint16_t joystickMid = GAMEPAD_JOYSTICK_MID;
-  if ( DriverManager::getInstance().getDriver() != nullptr ) {
-    joystickMid = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
-  }
 
   _keyboard_host_state.dpad = 0;
   _keyboard_host_state.buttons = 0;
@@ -235,4 +248,26 @@ void KeyboardHostListener::process_mouse_report(uint8_t dev_addr, hid_mouse_repo
   mouseY = report->y;
   mouseZ = report->wheel;
   mouseActive = true;
+
+  if (mouseMovementMode == MOUSE_MOVEMENT_NONE) {
+    return;
+  }
+
+  mouseResetNextTimer = getMillis() + mouseResetMS;
+
+  auto scaleMouseToJoystick = [this](int8_t mouseVal) -> uint16_t {
+    if (mouseVal == 0) return joystickMid;
+    return std::clamp(static_cast<int32_t>(joystickMid + mouseVal * mouseSensitivityScale * mouseScaleFactor),
+                      static_cast<int32_t>(GAMEPAD_JOYSTICK_MIN),
+                      static_cast<int32_t>(GAMEPAD_JOYSTICK_MAX));
+  };
+
+  if (mouseMovementMode == MOUSE_MOVEMENT_LEFT_ANALOG) {
+    _keyboard_host_state.lx = scaleMouseToJoystick(report->x);
+    _keyboard_host_state.ly = scaleMouseToJoystick(report->y);
+  } else if (mouseMovementMode == MOUSE_MOVEMENT_RIGHT_ANALOG) {
+    _keyboard_host_state.rx = scaleMouseToJoystick(report->x);
+    _keyboard_host_state.ry = scaleMouseToJoystick(report->y);
+  }
+
 }

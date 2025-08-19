@@ -607,3 +607,12 @@ enum GPEventType
     GP_EVENT_SYSTEM_REBOOT = 13;
     GP_EVENT_MENU_NAVIGATE = 14;
 };
+
+enum MouseMovementMode
+{
+    option (nanopb_enumopt).long_names = false;
+
+    MOUSE_MOVEMENT_NONE = 0;
+    MOUSE_MOVEMENT_LEFT_ANALOG = 1;
+    MOUSE_MOVEMENT_RIGHT_ANALOG = 2;
+};

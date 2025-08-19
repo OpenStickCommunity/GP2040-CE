@@ -736,6 +736,8 @@ message KeyboardHostOptions
     optional uint32 mouseLeft = 5;
     optional uint32 mouseMiddle = 6;
     optional uint32 mouseRight = 7;
+    optional uint32 mouseSensitivity = 8;
+    optional MouseMovementMode movementMode = 9;
 }
 
 message GamepadUSBHostOptions

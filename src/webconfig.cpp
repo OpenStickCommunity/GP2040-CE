@@ -1265,7 +1265,7 @@ std::string getKeyMappings()
     writeDoc(doc, "E10", keyboardMapping.keyButtonE10);
     writeDoc(doc, "E11", keyboardMapping.keyButtonE11);
     writeDoc(doc, "E12", keyboardMapping.keyButtonE12);
-    
+
     return serialize_json(doc);
 }
 
@@ -1596,7 +1596,7 @@ std::string setAddonOptions()
     docToPin(turboOptions.shmupDialPin, doc, "pinShmupDial");
     docToValue(turboOptions.turboLedType, doc, "turboLedType");
     docToValue(turboOptions.turboLedIndex, doc, "turboLedIndex");
-    docToValue(turboOptions.turboLedColor, doc, "turboLedColor");    
+    docToValue(turboOptions.turboLedColor, doc, "turboLedColor");
     docToValue(turboOptions.enabled, doc, "TurboInputEnabled");
 
     WiiOptions& wiiOptions = Storage::getInstance().getAddonOptions().wiiOptions;
@@ -1633,6 +1633,8 @@ std::string setAddonOptions()
     docToValue(keyboardHostOptions.mouseLeft, doc, "keyboardHostMouseLeft");
     docToValue(keyboardHostOptions.mouseMiddle, doc, "keyboardHostMouseMiddle");
     docToValue(keyboardHostOptions.mouseRight, doc, "keyboardHostMouseRight");
+    docToValue(keyboardHostOptions.mouseSensitivity, doc, "keyboardHostMouseSensitivity");
+    docToValue(keyboardHostOptions.movementMode, doc, "keyboardHostMouseMovement");
 
     GamepadUSBHostOptions& gamepadUSBHostOptions = Storage::getInstance().getAddonOptions().gamepadUSBHostOptions;
     docToValue(gamepadUSBHostOptions.enabled, doc, "GamepadUSBHostAddonEnabled");
@@ -2056,6 +2058,8 @@ std::string getAddonOptions()
     writeDoc(doc, "keyboardHostMouseLeft", keyboardHostOptions.mouseLeft);
     writeDoc(doc, "keyboardHostMouseMiddle", keyboardHostOptions.mouseMiddle);
     writeDoc(doc, "keyboardHostMouseRight", keyboardHostOptions.mouseRight);
+    writeDoc(doc, "keyboardHostMouseSensitivity", keyboardHostOptions.mouseSensitivity);
+    writeDoc(doc, "keyboardHostMouseMovement", keyboardHostOptions.movementMode);
 
     const GamepadUSBHostOptions& gamepadUSBHostOptions = Storage::getInstance().getAddonOptions().gamepadUSBHostOptions;
     writeDoc(doc, "GamepadUSBHostAddonEnabled", gamepadUSBHostOptions.enabled);
