@@ -2,9 +2,9 @@
 #include "drivermanager.h"
 #include "storagemanager.h"
 #include "class/hid/hid_host.h"
-#include <algorithm>
 
 #define DEV_ADDR_NONE 0xFF
+#define MOUSE_SCALE_FACTOR (GAMEPAD_JOYSTICK_MID / 127)
 
 void KeyboardHostListener::setup() {
   const KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;
@@ -55,7 +55,6 @@ void KeyboardHostListener::setup() {
   mouseSensitivity = keyboardHostOptions.mouseSensitivity;
   mouseMovementMode = keyboardHostOptions.movementMode;
   mouseSensitivityScale = mouseSensitivity / 10.0f;
-  mouseScaleFactor = GAMEPAD_JOYSTICK_MID / 127;
   mouseResetMS = 16;
   mouseResetNextTimer = 0;
 
@@ -232,6 +231,12 @@ void KeyboardHostListener::process_kbd_report(uint8_t dev_addr, hid_keyboard_rep
   }
 }
 
+uint16_t KeyboardHostListener::scaleMouseToJoystick(int8_t mouseVal) {
+  int32_t result = joystickMid + (int32_t)mouseVal * mouseSensitivityScale * MOUSE_SCALE_FACTOR;
+  return result < GAMEPAD_JOYSTICK_MIN ? GAMEPAD_JOYSTICK_MIN :
+          (result > GAMEPAD_JOYSTICK_MAX ? GAMEPAD_JOYSTICK_MAX : result);
+}
+
 void KeyboardHostListener::process_mouse_report(uint8_t dev_addr, hid_mouse_report_t const * report)
 {
   preprocess_report();
@@ -254,13 +259,6 @@ void KeyboardHostListener::process_mouse_report(uint8_t dev_addr, hid_mouse_repo
   }
 
   mouseResetNextTimer = getMillis() + mouseResetMS;
-
-  auto scaleMouseToJoystick = [this](int8_t mouseVal) -> uint16_t {
-    if (mouseVal == 0) return joystickMid;
-    return std::clamp(static_cast<int32_t>(joystickMid + mouseVal * mouseSensitivityScale * mouseScaleFactor),
-                      static_cast<int32_t>(GAMEPAD_JOYSTICK_MIN),
-                      static_cast<int32_t>(GAMEPAD_JOYSTICK_MAX));
-  };
 
   if (mouseMovementMode == MOUSE_MOVEMENT_LEFT_ANALOG) {
     _keyboard_host_state.lx = scaleMouseToJoystick(report->x);
