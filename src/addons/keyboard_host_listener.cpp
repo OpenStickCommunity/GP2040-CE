@@ -2,9 +2,12 @@
 #include "drivermanager.h"
 #include "storagemanager.h"
 #include "class/hid/hid_host.h"
+#include <algorithm>
 
 #define DEV_ADDR_NONE 0xFF
 #define MOUSE_SCALE_FACTOR (GAMEPAD_JOYSTICK_MID / 127)
+#define GAMEPAD_JOYSTICK_MIN_I32 static_cast<int32_t>(GAMEPAD_JOYSTICK_MIN)
+#define GAMEPAD_JOYSTICK_MAX_I32 static_cast<int32_t>(GAMEPAD_JOYSTICK_MAX)
 
 void KeyboardHostListener::setup() {
   const KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;
@@ -233,8 +236,7 @@ void KeyboardHostListener::process_kbd_report(uint8_t dev_addr, hid_keyboard_rep
 
 uint16_t KeyboardHostListener::scaleMouseToJoystick(int8_t mouseVal) {
   int32_t result = joystickMid + (int32_t)mouseVal * mouseSensitivityScale * MOUSE_SCALE_FACTOR;
-  return result < GAMEPAD_JOYSTICK_MIN ? GAMEPAD_JOYSTICK_MIN :
-          (result > GAMEPAD_JOYSTICK_MAX ? GAMEPAD_JOYSTICK_MAX : result);
+  return std::clamp(result, GAMEPAD_JOYSTICK_MIN_I32, GAMEPAD_JOYSTICK_MAX_I32);
 }
 
 void KeyboardHostListener::process_mouse_report(uint8_t dev_addr, hid_mouse_report_t const * report)
