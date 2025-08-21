@@ -645,6 +645,26 @@ async function setExpansionPins(mappings) {
 	return Http.post(`${baseUrl}/api/setExpansionPins`, mappings);
 }
 
+// POST function to set our current HE trigger, channels, select, and ADC pin
+async function getHETriggerCalibration(settings) {
+	return Http.post(`${baseUrl}/api/getHETriggerCalibration`, settings);
+}
+
+async function getHETriggerOptions() {
+	try {
+		const response = await Http.get(`${baseUrl}/api/getHETriggerOptions`);
+		return response.data;
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+async function setHETriggerOptions(mappings) {
+	console.dir(mappings);
+
+	return Http.post(`${baseUrl}/api/setHETriggerOptions`, mappings);
+}
+
 async function getHeldPins(abortSignal) {
 	try {
 		const response = await Http.get(`${baseUrl}/api/getHeldPins`, {
@@ -704,6 +724,9 @@ export default {
 	setPeripheralOptions,
 	getExpansionPins,
 	setExpansionPins,
+	getHETriggerCalibration,
+	getHETriggerOptions,
+	setHETriggerOptions,
 	getReactiveLEDs,
 	setReactiveLEDs,
 	getButtonLayouts,

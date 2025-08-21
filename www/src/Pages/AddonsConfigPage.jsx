@@ -56,6 +56,10 @@ import ReactiveLED, {
 	reactiveLEDScheme,
 	reactiveLEDState,
 } from '../Addons/ReactiveLED';
+import HETrigger, {
+	HETriggerScheme,
+	HETriggerState,
+} from '../Addons/HETrigger';
 
 const schema = yup.object().shape({
 	...analogScheme,
@@ -77,6 +81,7 @@ const schema = yup.object().shape({
 	...drv8833RumbleScheme,
 	...reactiveLEDScheme,
 	...gamepadUSBHostScheme,
+	...HETriggerScheme,
 });
 
 const defaultValues = {
@@ -100,6 +105,7 @@ const defaultValues = {
 	...drv8833RumbleState,
 	...reactiveLEDState,
 	...gamepadUSBHostState,
+	...HETriggerState,
 };
 
 const ADDONS = [
@@ -123,6 +129,7 @@ const ADDONS = [
 	PCF8575,
 	DRV8833Rumble,
 	ReactiveLED,
+	HETrigger,
 ];
 
 const FormContext = ({ setStoredData }) => {

@@ -1,0 +1,17 @@
+export default {
+	'header-text': 'Hall-Effect Trigger',
+	'available-pins-text': 'Available ADC pins: {{pins}}',
+	'idle-all-text': 'Reset All Hall Effect Idle Voltages To:',
+	'trigger-all-text': 'Reset All Hall Effect Trigger Voltages To:',
+	'polarity-all-text': 'Flip All Hall Effect Polarities',
+	'calibration-header-text': 'Hall-Effect Calibration',
+	'calibration-idle-text': 'Idle Voltage',
+	'calibration-trigger-text': 'Trigger Voltage',
+	'calibration-flip-polarity': 'Flip Polarity',
+	'calibration-all-text': 'Calibrate All Hall-Effects',
+	'calibration-all-warning-text': 'Do you have all hall-effect channels configured?',
+	'calibration-idle-button': 'Set Idle',
+	'calibration-trigger-button': 'Set Trigger',
+	'calibration-next-button': 'Next',
+	'voltage-table-header-text': 'Voltage Table (Advanced)',
+};

@@ -819,14 +819,14 @@ message PCF8575Options
 
 message DRV8833RumbleOptions
 {
-		optional bool enabled = 1;
+    optional bool enabled = 1;
 
-		optional int32 leftMotorPin = 2;
-		optional int32 rightMotorPin = 3;
-		optional int32 motorSleepPin = 4;
-		optional uint32 pwmFrequency = 5;
-		optional float dutyMin = 6;
-		optional float dutyMax = 7;
+    optional int32 leftMotorPin = 2;
+    optional int32 rightMotorPin = 3;
+    optional int32 motorSleepPin = 4;
+    optional uint32 pwmFrequency = 5;
+    optional float dutyMin = 6;
+    optional float dutyMax = 7;
 }
 
 message ReactiveLEDInfo
@@ -841,6 +841,30 @@ message ReactiveLEDOptions
 {
     optional bool enabled = 1;
     repeated ReactiveLEDInfo leds = 2 [(nanopb).max_count = 10];
+}
+
+message HETriggerInfo
+{
+    optional GpioAction action = 1;
+    optional int32 active = 2;
+    optional int32 idle = 3;
+    optional int32 max = 4;
+    optional int32 polarity = 5;
+}
+
+message HETriggerOptions
+{
+    optional bool enabled = 1;
+    optional int32 selectPin0 = 2;
+    optional int32 selectPin1 = 3;
+    optional int32 selectPin2 = 4;
+    optional int32 selectPin3 = 5;
+    optional int32 muxADCPin0 = 6;
+    optional int32 muxADCPin1 = 7;
+    optional int32 muxADCPin2 = 8;
+    optional int32 muxADCPin3 = 9;
+    optional int32 muxChannels = 10;
+    repeated HETriggerInfo triggers = 11 [(nanopb).max_count = 32];
 }
 
 message AddonOptions
@@ -873,6 +897,7 @@ message AddonOptions
     optional DRV8833RumbleOptions drv8833RumbleOptions = 26;
     optional ReactiveLEDOptions reactiveLEDOptions = 27;
     optional GamepadUSBHostOptions gamepadUSBHostOptions = 28;
+    optional HETriggerOptions heTriggerOptions = 29;
 }
 
 message MigrationHistory

@@ -16,6 +16,7 @@ import WiiAddon from './Addons/WiiAddon';
 import Rotary from './Addons/Rotary';
 import PCF8575 from './Addons/PCF8575';
 import ReactiveLED from './Addons/ReactiveLED';
+import HETrigger from './Addons/HETrigger';
 import InputMacroAddon from './InputMacroAddon';
 import LayoutConfig from './LayoutConfig';
 
@@ -40,4 +41,5 @@ export default {
 	LayoutConfig,
 	PCF8575,
 	ReactiveLED,
+	HETrigger,
 };

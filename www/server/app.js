@@ -550,11 +550,21 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		encoderTwoResetAfter: 0,
 		encoderTwoAllowWrapAround: false,
 		encoderTwoMultiplier: 1,
+        muxChannels: 8,
+		muxADCPin0: 26,
+		muxADCPin1: 27,
+		muxADCPin2: 28,
+		muxADCPin3: -1,
+		muxSelectPin0: 0,
+		muxSelectPin1: 1,
+		muxSelectPin2: 2,
+		muxSelectPin3: -1,
 		RotaryAddonEnabled: 1,
 		PCF8575AddonEnabled: 1,
 		DRV8833RumbleAddonEnabled: 1,
 		ReactiveLEDAddonEnabled: 1,
 		GamepadUSBHostAddonEnabled: 1,
+		HETriggerEnabled: 1,
 		usedPins: Object.values(picoController),
 	});
 });
@@ -584,6 +594,21 @@ app.get('/api/getExpansionPins', (req, res) => {
 			],
 		},
 	});
+});
+
+app.get('/api/getHETriggerOptions', (req, res) => {
+	var triggers = {};
+	triggers["he0"] = { action: 2, idle: 120, max: 3500, active: 1500, polarity: 0 };
+	for(var i = 1; i < 32; i++) {
+		triggers[`he${i}`] = {
+			action: -10,
+			idle: 100,
+			active: 2000,
+			max: 3500,
+			polarity: 0
+		};
+	}
+	return res.send({triggers});
 });
 
 app.get('/api/getMacroAddonOptions', (req, res) => {
@@ -818,6 +843,13 @@ app.get('/api/getHeldPins', async (req, res) => {
 
 app.get('/api/abortGetHeldPins', async (req, res) => {
 	return res.send();
+});
+
+app.post('/api/getHETriggerCalibration', (req, res) => {
+	return res.send({
+		voltage: 0.0,
+		debug: true
+	});
 });
 
 app.post('/api/*', (req, res) => {

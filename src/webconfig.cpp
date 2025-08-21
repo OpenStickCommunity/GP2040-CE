@@ -20,6 +20,9 @@
 
 #include <pico/types.h>
 
+// for hall-effect calibration
+#include "hardware/adc.h"
+
 // HTTPD Includes
 #include <ArduinoJson.h>
 #include "rndis.h"
@@ -1311,7 +1314,6 @@ std::string getI2CPeripheralMap() {
 
     PeripheralOptions& peripheralOptions = Storage::getInstance().getPeripheralOptions();
 
-
     if (peripheralOptions.blockI2C0.enabled && PeripheralManager::getInstance().isI2CEnabled(0)) {
         std::map<uint8_t,bool> result = PeripheralManager::getInstance().getI2C(0)->scan();
         for (std::map<uint8_t,bool>::iterator it = result.begin(); it != result.end(); ++it) {
@@ -1395,40 +1397,12 @@ std::string getExpansionPins()
     const size_t capacity = JSON_OBJECT_SIZE(100);
     DynamicJsonDocument doc(capacity);
     GpioMappingInfo* gpioMappings = Storage::getInstance().getAddonOptions().pcf8575Options.pins;
-
-    writeDoc(doc, "pins", "pcf8575", 0, "pin00", "option", gpioMappings[0].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin00", "direction", gpioMappings[0].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin01", "option", gpioMappings[1].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin01", "direction", gpioMappings[1].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin02", "option", gpioMappings[2].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin02", "direction", gpioMappings[2].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin03", "option", gpioMappings[3].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin03", "direction", gpioMappings[3].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin04", "option", gpioMappings[4].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin04", "direction", gpioMappings[4].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin05", "option", gpioMappings[5].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin05", "direction", gpioMappings[5].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin06", "option", gpioMappings[6].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin06", "direction", gpioMappings[6].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin07", "option", gpioMappings[7].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin07", "direction", gpioMappings[7].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin08", "option", gpioMappings[8].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin08", "direction", gpioMappings[8].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin09", "option", gpioMappings[9].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin09", "direction", gpioMappings[9].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin10", "option", gpioMappings[10].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin10", "direction", gpioMappings[10].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin11", "option", gpioMappings[11].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin11", "direction", gpioMappings[11].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin12", "option", gpioMappings[12].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin12", "direction", gpioMappings[12].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin13", "option", gpioMappings[13].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin13", "direction", gpioMappings[13].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin14", "option", gpioMappings[14].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin14", "direction", gpioMappings[14].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin15", "option", gpioMappings[15].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin15", "direction", gpioMappings[15].direction);
-
+    char pinName[6];
+    for (uint16_t pin = 0; pin < 16; pin++) {
+        snprintf(pinName, 6, "pin%0*d", 2, pin);
+        writeDoc(doc, "pins", "pcf8575", 0, pinName, "option", gpioMappings[pin].action);
+        writeDoc(doc, "pins", "pcf8575", 0, pinName, "direction", gpioMappings[pin].direction);
+    }
     return serialize_json(doc);
 }
 
@@ -1456,6 +1430,190 @@ std::string setExpansionPins()
 
     return serialize_json(doc);
 }
+
+// Get the HE Trigger Calibration using our manual GPIO input and everything
+std::string getHETriggerCalibration()
+{
+    DynamicJsonDocument doc = get_post_data();
+
+    std::string targetId = doc["target"];
+    uint32_t muxChannels = doc["muxChannels"];
+    uint32_t selectPins[] = {   doc['muxSelectPin0'],
+                                doc['muxSelectPin1'],
+                                doc['muxSelectPin2'],
+                                doc['muxSelectPin3']
+                            };
+    uint32_t adcPins[] = {  doc['muxADCPin0'],
+                            doc['muxADCPin1'],
+                            doc['muxADCPin2'],
+                            doc['muxADCPin3']
+                        };
+
+    if (targetId.substr(0,2).compare("he") != 0) {
+        doc["error"] = "bad target id";
+        return serialize_json(doc);
+    }
+    int id = stoi(targetId.substr(2));
+
+    // Mux Channels determines how many select pins we use
+    if (muxChannels == 1) {
+        if ( id > 3 ) {
+            doc["error"] = "id out of range";
+            return serialize_json(doc);
+        }
+
+        if ( adcPins[id] < 26 || adcPins[id] > 29) {
+            doc["error"] = "adc pin out of range";
+        }
+        adc_gpio_init(adcPins[id]);
+        adc_select_input(adcPins[id]);
+        sleep_us(5);
+        adc_read();
+        sleep_us(2);
+        uint16_t value = adc_read();
+        doc["voltage"] = value;
+    } else if ( muxChannels == 4) {
+        uint32_t adcNum = id / 4;
+        uint32_t channel = (id / 4) + (id % 4);
+        if ( adcNum > 3 ) {
+            doc["error"] = "id out of 4-channel mux range";
+            return serialize_json(doc);
+        }
+        Pin_t adcPin = adcPins[adcNum];
+        if ( adcPin < 26 || adcPin > 29) {
+            doc["error"] = "adc pin out of range";
+            return serialize_json(doc);
+        }
+        gpio_init(selectPins[0]); gpio_set_dir(selectPins[0], GPIO_OUT);
+        gpio_init(selectPins[1]); gpio_set_dir(selectPins[1], GPIO_OUT);
+        gpio_put(selectPins[0], channel & 0x01);
+        gpio_put(selectPins[1], (channel >> 1) & 0x01);
+        adc_gpio_init(adcPin);
+        adc_select_input(adcPin);
+        sleep_us(5);
+        adc_read();
+        sleep_us(2);
+        uint16_t value = adc_read();
+        gpio_deinit(selectPins[1]);
+        gpio_deinit(selectPins[0]);
+        doc["voltage"] = value;
+    } else if (muxChannels == 8) {
+        uint32_t adcNum = id / 8;
+        uint32_t channel = (id / 8) + (id % 8);
+        if ( adcNum > 2 ) {
+            doc["error"] = "id out of 8-channel mux range";
+            return serialize_json(doc);
+        }
+        Pin_t adcPin = adcPins[adcNum];
+        if ( adcPin < 26 || adcPin > 29) {
+            doc["error"] = "adc pin out of range";
+            return serialize_json(doc);
+        }
+        adcPin = adcPins[adcNum];
+        gpio_init(selectPins[0]); gpio_set_dir(selectPins[0], GPIO_OUT);
+        gpio_init(selectPins[1]); gpio_set_dir(selectPins[1], GPIO_OUT);
+        gpio_init(selectPins[2]); gpio_set_dir(selectPins[2], GPIO_OUT);
+        gpio_put(selectPins[0], channel & 0x01);
+        gpio_put(selectPins[1], (channel >> 1) & 0x01);
+        gpio_put(selectPins[2], (channel >> 2) & 0x01);
+        adc_gpio_init(adcPin);
+        adc_select_input(adcPin);
+        sleep_us(5);
+        adc_read();
+        sleep_us(2);
+        uint16_t value = adc_read();
+        gpio_deinit(selectPins[2]);
+        gpio_deinit(selectPins[1]);
+        gpio_deinit(selectPins[0]);
+        doc["voltage"] = value;
+    } else if (muxChannels == 16) {
+        uint32_t adcNum = id / 16;
+        uint32_t channel = (id / 16) + (id % 16);
+        if ( adcNum > 1 ) {
+            doc["error"] = "id out of 16-channel mux range";
+            return serialize_json(doc);
+        }
+        Pin_t adcPin = adcPins[adcNum];
+        if ( adcPin < 26 || adcPin > 29) {
+            doc["error"] = "adc pin out of range";
+            return serialize_json(doc);
+        }
+        gpio_init(selectPins[0]); gpio_set_dir(selectPins[0], GPIO_OUT);
+        gpio_init(selectPins[1]); gpio_set_dir(selectPins[1], GPIO_OUT);
+        gpio_init(selectPins[2]); gpio_set_dir(selectPins[2], GPIO_OUT);
+        gpio_init(selectPins[3]); gpio_set_dir(selectPins[3], GPIO_OUT);
+        gpio_put(selectPins[0], channel & 0x01);
+        gpio_put(selectPins[1], (channel >> 1) & 0x01);
+        gpio_put(selectPins[2], (channel >> 2) & 0x01);
+        gpio_put(selectPins[3], (channel >> 3) & 0x01);
+        adc_gpio_init(adcPin);
+        adc_select_input(adcPin);
+        sleep_us(5);
+        adc_read();
+        sleep_us(2);
+        uint16_t value = adc_read();
+        gpio_deinit(selectPins[3]);
+        gpio_deinit(selectPins[2]);
+        gpio_deinit(selectPins[1]);
+        gpio_deinit(selectPins[0]);
+        doc["voltage"] = value;
+    }
+    return serialize_json(doc);
+}
+
+std::string getHETriggerOptions()
+{
+    const size_t capacity = JSON_OBJECT_SIZE(100);
+    DynamicJsonDocument doc(capacity);
+
+    HETriggerInfo * heTriggers = Storage::getInstance().getAddonOptions().heTriggerOptions.triggers;
+
+    char triggerName[6];
+    for(int i = 0; i < 32; i++) {
+        snprintf(triggerName, 6, "he%0d", i);
+        writeDoc(doc, "triggers", triggerName, "action", heTriggers[i].action);
+        writeDoc(doc, "triggers", triggerName, "idle", heTriggers[i].idle);
+        writeDoc(doc, "triggers", triggerName, "trigger", heTriggers[i].active);
+        writeDoc(doc, "triggers", triggerName, "max", heTriggers[i].max);
+        writeDoc(doc, "triggers", triggerName, "polarity", heTriggers[i].polarity);
+    }
+
+    return serialize_json(doc);
+}
+
+// Set Hall Effect Trigger Options
+std::string setHETriggerOptions()
+{
+    DynamicJsonDocument doc = get_post_data();
+    /*
+    GpioMappingInfo* triggerMappings = Storage::getInstance().getAddonOptions().HETriggerOptions.mappings;
+    uint32_t channels = Storage::getInstance().getAddonOptions().HETriggerOptions.muxChannels;
+    uint32_t muxCount = 32/channels;
+    if (muxCount > 4) muxCount = 4; // simple Min(4, muxCount)
+    bool muxAvailable[muxCount];
+    for(int i = 0; i < muxCount; i++) {
+        muxAvailable[i] = (Storage::getInstance().getAddonOptions().HETriggerOptions.muxADCPins[i] == -1 ? false : true);
+    }
+    uint32_t muxIdx;
+    for(uint32_t trigger = 0; trigger < 32; trigger++) {  // total triggers is 32
+        uint32_t muxIdx = (uint32_t)(trigger / channels); // Index = Trigger Index / Channel Count
+        if (muxAvailable[muxIdx] == true ) {
+            char muxName[5];
+            snprintf(muxName, 5, "mux%0d", 1, muxIdx);
+            if ( doc["triggers"][muxName][muxIdx % channels]["action"] != GpioAction::RESERVED &&
+                 doc["triggers"][muxName][muxIdx % channels]["action"] != GpioAction::ASSIGNED_TO_ADDON ) {
+                triggerMappings[trigger].action = doc["triggers"][muxName][muxIdx % channels]["action"];
+                triggerMappings[trigger].direction = doc["triggers"][muxName][muxIdx % channels]["direction"];
+            }
+        }
+    }
+    Storage::getInstance().getAddonOptions().HETriggerOptions.triggerMappings_count = 32;
+
+    EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
+    */
+    return serialize_json(doc);
+}
+
 
 std::string getReactiveLEDs()
 {
@@ -2378,6 +2536,9 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/getI2CPeripheralMap", getI2CPeripheralMap },
     { "/api/setExpansionPins", setExpansionPins },
     { "/api/getExpansionPins", getExpansionPins },
+    { "/api/setHETriggerOptions", setHETriggerOptions },
+    { "/api/getHETriggerOptions", getHETriggerOptions },
+    { "/api/getHETriggerCalibration", getHETriggerCalibration },
     { "/api/setReactiveLEDs", setReactiveLEDs },
     { "/api/getReactiveLEDs", getReactiveLEDs },
     { "/api/setKeyMappings", setKeyMappings },
