@@ -1265,7 +1265,7 @@ std::string getKeyMappings()
     writeDoc(doc, "E10", keyboardMapping.keyButtonE10);
     writeDoc(doc, "E11", keyboardMapping.keyButtonE11);
     writeDoc(doc, "E12", keyboardMapping.keyButtonE12);
-    
+
     return serialize_json(doc);
 }
 
@@ -1596,7 +1596,7 @@ std::string setAddonOptions()
     docToPin(turboOptions.shmupDialPin, doc, "pinShmupDial");
     docToValue(turboOptions.turboLedType, doc, "turboLedType");
     docToValue(turboOptions.turboLedIndex, doc, "turboLedIndex");
-    docToValue(turboOptions.turboLedColor, doc, "turboLedColor");    
+    docToValue(turboOptions.turboLedColor, doc, "turboLedColor");
     docToValue(turboOptions.enabled, doc, "TurboInputEnabled");
 
     WiiOptions& wiiOptions = Storage::getInstance().getAddonOptions().wiiOptions;
@@ -2218,51 +2218,42 @@ static bool _abortGetHeldPins = false;
 
 std::string getHeldPins()
 {
-    const size_t capacity = JSON_OBJECT_SIZE(100);
-    DynamicJsonDocument doc(capacity);
+    DynamicJsonDocument doc(JSON_OBJECT_SIZE(100));
 
-    // Initialize unassigned pins so that they can be read from
+    // Initialize unassigned pins for reading
     std::vector<uint> uninitPins;
     for (uint32_t pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
-        switch (pin) {
-            case 23:
-            case 24:
-            case 25:
-            case 29:
-                continue;
-        }
         if (gpio_get_function(pin) == GPIO_FUNC_NULL) {
             uninitPins.push_back(pin);
-            gpio_init(pin);             // Initialize pin
-            gpio_set_dir(pin, GPIO_IN); // Set as INPUT
-            gpio_pull_up(pin);          // Set as PULLUP
+            gpio_init(pin);
+            gpio_set_dir(pin, GPIO_IN);
+            gpio_pull_up(pin);
         }
     }
 
-    uint32_t timePinWait = getMillis();
-    uint32_t oldState = ~gpio_get_all();
-    uint32_t newState = 0;
-    uint32_t debounceStartTime = 0;
     std::set<uint> heldPinsSet;
+    uint32_t startTime = getMillis();
+    uint32_t oldState = ~gpio_get_all();
+    uint32_t debounceTime = 0;
     bool isAnyPinHeld = false;
 
-    uint32_t currentMillis = 0;
-    while ((isAnyPinHeld || (((currentMillis = getMillis()) - timePinWait) < 5000))) { // 5 seconds of idle time
-        // rndis http server requires inline functions (non-class)
+    // Monitor pins for 5 seconds or until released
+    while (!_abortGetHeldPins && (isAnyPinHeld || (getMillis() - startTime) < 5000)) {
         rndis_task();
 
-        if (_abortGetHeldPins)
-            break;
-        if (isAnyPinHeld && newState == oldState) // Should match old state when pins are released
-            break;
+        uint32_t newState = ~gpio_get_all();
+        if (isAnyPinHeld && newState == oldState) break; // Pins released
 
-        newState = ~gpio_get_all();
-        uint32_t newPin = newState ^ oldState;
+        uint32_t changedPins = newState ^ oldState;
+        uint32_t currentTime = getMillis();
+
         for (uint32_t pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
-            if (gpio_get_function(pin) == GPIO_FUNC_SIO &&
-               !gpio_is_dir_out(pin) && (newPin & (1 << pin))) {
-                if (debounceStartTime == 0) debounceStartTime = currentMillis;
-                if ((currentMillis - debounceStartTime) > 5) { // wait 5ms
+            if ((changedPins & (1 << pin)) &&
+                gpio_get_function(pin) == GPIO_FUNC_SIO &&
+                !gpio_is_dir_out(pin)) {
+
+                if (debounceTime == 0) debounceTime = currentTime;
+                if ((currentTime - debounceTime) > 5) { // 5ms debounce
                     heldPinsSet.insert(pin);
                     isAnyPinHeld = true;
                 }
@@ -2270,20 +2261,17 @@ std::string getHeldPins()
         }
     }
 
-    auto heldPins = doc.createNestedArray("heldPins");
-    for (uint32_t pin : heldPinsSet) {
-        heldPins.add(pin);
-    }
-    for (uint32_t pin: uninitPins) {
-        gpio_deinit(pin);
-    }
+    for (uint32_t pin : uninitPins) gpio_deinit(pin);
 
     if (_abortGetHeldPins) {
         _abortGetHeldPins = false;
         return {};
-    } else {
-        return serialize_json(doc);
     }
+
+    auto heldPins = doc.createNestedArray("heldPins");
+    for (uint32_t pin : heldPinsSet) heldPins.add(pin);
+
+    return serialize_json(doc);
 }
 
 std::string abortGetHeldPins()
