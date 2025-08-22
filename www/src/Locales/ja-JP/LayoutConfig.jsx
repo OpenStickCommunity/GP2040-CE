@@ -39,7 +39,7 @@ export default {
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT2_A: 'ボード専用設定２',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT3_A: 'ボード専用設定３',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT4_A: 'ボード専用設定４',
-			BUTTON_LAYOUT_BOARD_DEFINED_ALT5_A: 'ボード専用設定5',
+			BUTTON_LAYOUT_BOARD_DEFINED_ALT5_A: 'ボード専用設定５',
 		},
 		right: {
 			BUTTON_LAYOUT_ARCADE: 'アーケード',
@@ -82,7 +82,7 @@ export default {
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT2_B: 'ボード専用設定２',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT3_B: 'ボード専用設定３',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT4_B: 'ボード専用設定４',
-			BUTTON_LAYOUT_BOARD_DEFINED_ALT5_B: 'ボード専用設定5',
+			BUTTON_LAYOUT_BOARD_DEFINED_ALT5_B: 'ボード専用設定５',
 		},
 	},
 };

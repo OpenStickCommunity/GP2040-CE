@@ -1,4 +1,6 @@
 export default {
+	'input-macro-editor-tab': 'マクロエディタ',
+	'input-macro-advanced-tab': '詳細設定',
 	'input-macro-board-led-enabled':
 		'コントローラのLEDを利用してマクロの状態を表示',
 	'input-macro-macro-enabled': '有効化',
