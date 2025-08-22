@@ -72,19 +72,11 @@ const options = Object.entries(BUTTON_ACTIONS)
 
 type TriggerActionsFormTypes = {
 	saveHETriggers: () => void;
-	triggers: {
-		[key: string]: {
-			action: PinActionValues;
-			idle: number;
-			active: number;
-			max: number,
-			polarity: number;
-		};
-	};
+	triggers: [object];
 	values: {};
 	muxChannels: number;
 	setHETrigger: (
-		key: string,
+		id: number,
 		action: PinActionValues,
 		idle: number,
 		active: number,
@@ -108,7 +100,7 @@ const TriggerActionsForm = ({
 	const [saveMessage, setSaveMessage] = useState('');
 	const [showModal, setShowModal] = useState(false);
 	const [modalTitle, setModalTitle] = useState('');
-	const [calibrationTarget, setCalibrationTarget] = useState('');
+	const [calibrationTarget, setCalibrationTarget] = useState(0);
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
 	const [showVoltTable, setShowVoltTable] = useState(false);
 	const CURRENT_BUTTONS = getButtonLabels(buttonLabelType, swapTpShareLabels);
@@ -157,7 +149,6 @@ const TriggerActionsForm = ({
 											isSearchable
 											options={options}
 											value={getOption(triggers[key], triggers[key].action)}
-											isDisabled={isNonSelectable(triggers[key].action)}
 											getOptionLabel={(option) => {
 												const labelKey = option.label.split('BUTTON_PRESS_').pop();
 												// Need to fallback as some button actions are not part of button names
@@ -167,7 +158,7 @@ const TriggerActionsForm = ({
 												);
 											}}
 											onChange={(change) =>
-												setHETrigger( key,
+												setHETrigger( parseInt(key),
 													change?.value === undefined ? -10 : change.value,
 													triggers[key].idle,
 													triggers[key].active,
@@ -180,7 +171,7 @@ const TriggerActionsForm = ({
 											key={`select-button-he-${index}`}
 											onClick={(e) => {
 												setShowModal(true);
-												setCalibrationTarget(key);
+												setCalibrationTarget(parseInt(key));
 												if (muxChannels > 1)
 													setModalTitle(`Mux ${i} - Channel ${index}`);
 												else 

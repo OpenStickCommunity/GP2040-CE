@@ -553,8 +553,9 @@ private:
     void selectChannel(uint8_t channel);
     int muxTotal;
     int selectPins;
-    int muxPinArray[4];
-    int selectPinArray[4];
+    Pin_t muxPinArray[4];
+    Pin_t selectPinArray[4];
+    Pin_t lastADCSelected;
 };
 
 #endif  // _HE_Trigger_H

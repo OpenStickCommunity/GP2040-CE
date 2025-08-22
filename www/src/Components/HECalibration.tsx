@@ -1,5 +1,5 @@
 import { useContext, useRef, useEffect, useState } from 'react';
-import { Button, Modal, Row, Col, ProgressBar, FormLabel, Form } from 'react-bootstrap';
+import { Button, Modal, Row, Col, ProgressBar, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import FormControl from '../Components/FormControl';
 import FormCheck from '../Components/FormCheck';
@@ -7,7 +7,6 @@ import WebApi from '../Services/WebApi';
 import Spinner from 'react-bootstrap/Spinner';
 
 import './HECalibration.scss';
-import { useAsyncValue } from 'react-router-dom';
 
 const HECalibration = ({
 	values,
@@ -51,8 +50,21 @@ const HECalibration = ({
 	};
 
 	// 
-	const startReadingCalibrationLoop = (showModal, step) => {
-		if (showModal) {	
+	const startReadingCalibrationLoop = async (showModal, step) => {
+		if (showModal) {
+			// Set the Hall Effect calibration pins
+			await WebApi.setHETriggerCalibration({
+				muxChannels: values['muxChannels'],
+				muxSelectPin0: values['muxSelectPin0'],
+				muxSelectPin1: values['muxSelectPin1'],
+				muxSelectPin2: values['muxSelectPin2'],
+				muxSelectPin3: values['muxSelectPin3'],
+				muxADCPin0: values['muxADCPin0'],
+				muxADCPin1: values['muxADCPin1'],
+				muxADCPin2: values['muxADCPin2'],
+				muxADCPin3: values['muxADCPin3'],
+			});
+			// Begin reading
 			if (timerId)
 				clearInterval(timerId);
 			const intervalId = setInterval(() => {readHallEffect(step)}, 50);
@@ -80,16 +92,7 @@ const HECalibration = ({
 	const readHallEffect = async (step) => {
 		// read hall effect trigger if we're not at opening
 		var result = await WebApi.getHETriggerCalibration({
-			targetId: target,
-			muxChannels: values['muxChanels'],
-			muxSelectPin0: values['muxSelectPin0'],
-			muxSelectPin1: values['muxSelectPin1'],
-			muxSelectPin2: values['muxSelectPin2'],
-			muxSelectPin3: values['muxSelectPin3'],
-			muxADCPin0: values['muxADCPin0'],
-			muxADCPin1: values['muxADCPin1'],
-			muxADCPin2: values['muxADCPin2'],
-			muxADCPin3: values['muxADCPin3'],
+			targetId: target
 		});
 
 		if ( !result || !result.data ) {
@@ -146,7 +149,7 @@ const HECalibration = ({
 						</Col>
 						<Col xs={12} className="mb-3 text-center">
 							<ProgressBar>
-								<ProgressBar variant="info" now={voltage/40} key={1} />
+								<ProgressBar variant="info" now={voltage/(4096/100.0)} key={1} />
 							</ProgressBar>
 						</Col>
 						<Col xs={12} className="mb-3">
@@ -164,8 +167,7 @@ const HECalibration = ({
 						</Col>
 						<Col xs={12} className="mb-3 text-center">
 							<ProgressBar>
-								<ProgressBar striped variant="info" now={voltageIdle/40} key={1} />
-								<ProgressBar variant="warning" now={voltage/40} key={2} />
+								<ProgressBar variant="info" now={(voltage-voltageIdle)/((4096-voltageIdle)/100.0)} key={1} />
 							</ProgressBar>
 						</Col>
 						<Col xs={12} className="mb-3">
@@ -183,8 +185,7 @@ const HECalibration = ({
 						</Col>
 						<Col xs={12} className="mb-3 text-center">
 							<ProgressBar>
-								<ProgressBar striped variant="info" now={voltageIdle/40} key={1} />
-								<ProgressBar variant={voltage>voltageActive?"success":"warning"} now={voltage/40} key={2} />
+								<ProgressBar variant={voltage>voltageActive?"success":"warning"} now={(Math.min(voltageMax,voltage)-voltageIdle)/((voltageMax-voltageIdle)/100.0)} key={2} />
 							</ProgressBar>
 						</Col>
 						<Col xs={12} className="mb-3">
@@ -197,10 +198,10 @@ const HECalibration = ({
 							<Form.Range
 								min={voltageIdle}
 								max={voltageMax}
-								step={50}
+								step={1}
 								value={voltageActive}
 								onChange={(e) => {
-									setVoltageActive(e.target.value);
+									setVoltageActive(parseInt(e.target.value));
 								}}
 							></Form.Range>
 						</Col>
@@ -212,10 +213,10 @@ const HECalibration = ({
 								className="form-select-sm"
 								value={voltageActive}
 								onChange={(e) => {
-									setVoltageActive(e.target.value);
+									setVoltageActive(parseInt(e.target.value));
 								}}
-								min={0}
-								max={4096}
+								min={voltageIdle}
+								max={voltageMax}
 							/>
 						</Col>
 					</Row>
@@ -261,7 +262,7 @@ const HECalibration = ({
 								className="form-select-sm"
 								value={voltageActive}
 								onChange={(e) => {
-									setVoltageActive(e.target.value);
+									setVoltageActive(parseInt(e.target.value));
 								}}
 								min={0}
 								max={4096}
@@ -318,7 +319,7 @@ const HECalibration = ({
 					</Button>
 					<Button onClick={() => {
 						setVoltageMax(voltage);
-						setVoltageActive(Math.floor(voltage*0.7));
+						setVoltageActive(Math.floor(voltageIdle+(voltageMax-voltageIdle)*0.8));
 						setCalibrationStep(2);
 					}} hidden={calibrationStep !== 1}>
 						<Spinner
