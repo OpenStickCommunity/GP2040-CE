@@ -22,6 +22,7 @@ const HECalibration = ({
 	const { t } = useTranslation('');
 	const [timerId, setTimerId] = useState<NodeJS.Timeout>();
 	const [calibrationStep, setCalibrationStep] = useState(0);
+	const [previousStep, setPreviousStep] = useState(0);
 	const [voltage, setVoltage] = useState(0);
 	const [voltageIdle, setVoltageIdle] = useState(20);
 	const [voltageMax, setVoltageMax] = useState(3500);
@@ -131,21 +132,16 @@ const HECalibration = ({
 				onShow={() => startCalibration()}
 			>
 				<Modal.Header closeButton>
-					<Modal.Title className="me-auto">Hall-Effect Calibration - {title}</Modal.Title>
+					<Modal.Title className="me-auto">{t(`HETrigger:calibration-header-text`)} - {title}</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
 					<Row className="mb-3" hidden={calibrationStep !== 0}>
 						<Col xs={12} className="mb-3">
-							We need to calibrate the idle voltage and full press voltage of the hall-effect switch.
-							After calibration, we can adjust the trigger-activation point to our desired depth.
+							{t(`HETrigger:calibration-first-step`)}
 						</Col>
 						<Col xs={12} className="mb-3"></Col>
 						<Col xs={12} className="mb-3">
-							First, let's calibrate the idle voltage. Leave the hall-effect button untouched and click the "Calibrate Idle" button.
-						</Col>
-						<Col xs={12} className="mb-3"></Col>
-						<Col xs={12} className="mb-3">
-							Idle Voltage Reading:
+							{t(`HETrigger:calibration-idle-text`)}
 						</Col>
 						<Col xs={12} className="mb-3 text-center">
 							<ProgressBar>
@@ -158,12 +154,11 @@ const HECalibration = ({
 					</Row>
 					<Row className="mb-3" hidden={calibrationStep !== 1}>
 						<span className="col-sm-12">
-							Next, <b>press</b> the button fully to reach our maximum depth. Activation position can be
-							adjusted after calibration.
+							{t(`HETrigger:calibration-second-step`)}
 						</span>
 						<Col xs={12} className="mb-3"></Col>
 						<Col xs={12} className="mb-3">
-							Maximum Voltage Reading:
+							{t(`HETrigger:calibration-pressed-text`)}
 						</Col>
 						<Col xs={12} className="mb-3 text-center">
 							<ProgressBar>
@@ -173,15 +168,22 @@ const HECalibration = ({
 						<Col xs={12} className="mb-3">
 							<h3>{voltage}</h3>
 						</Col>
+						<Col xs={3} className="mb-3">
+							<Button onClick={() => {
+								setCalibrationStep(0);
+								setPreviousStep(0);
+							}} variant="danger">
+								{t(`HETrigger:restart-text`)}
+							</Button>
+						</Col>
 					</Row>
 					<Row className="mb-3" hidden={calibrationStep !== 2}>
 						<span className="col-sm-12">
-							Finally, let's adjust our current activation point and set the desired trigger point.
-							Once adjusted, press the button and verify it activates at the desired position.
+							{t(`HETrigger:calibration-third-step`)}
 						</span>
 						<Col xs={12} className="mb-3"></Col>
 						<Col xs={12} className="mb-3">
-							Activation Point Reading:
+							{t(`HETrigger:activation-reading-text`)}
 						</Col>
 						<Col xs={12} className="mb-3 text-center">
 							<ProgressBar>
@@ -189,10 +191,10 @@ const HECalibration = ({
 							</ProgressBar>
 						</Col>
 						<Col xs={12} className="mb-3">
-							{voltage} {voltage>voltageActive?"Pressed!":""}
+							{voltage} {voltage>voltageActive?t('HETrigger:pressed-text'):""}
 						</Col>
 						<Col xs={12} className="mb-3">
-							Activation Set-Point:
+							{t(`HETrigger:activation-set-text`)}
 						</Col>
 						<Col xs={12} className="mb-3">
 							<Form.Range
@@ -208,7 +210,7 @@ const HECalibration = ({
 						<Col xs={12} className="mb-3">
 							<FormControl
 								type="number"
-								label='Activation Trigger Voltage'
+								label={t(`HETrigger:activation-input-text`)}
 								name="voltageActive"
 								className="form-select-sm"
 								value={voltageActive}
@@ -219,17 +221,20 @@ const HECalibration = ({
 								max={voltageMax}
 							/>
 						</Col>
+						<Col xs={3} className="mb-3">
+							<Button onClick={() => setCalibrationStep(0)} variant="danger">
+								{t(`HETrigger:restart-text`)}
+							</Button>
+						</Col>
 					</Row>
 					<Row className="mb-3" hidden={calibrationStep !== 3}>
 						<Col xs={12} className="mb-3">
-							Please adjust the following attributes of the hall effect button to the desired amounts.
-							Once the desired values have been found, you can copy these values and set all triggers
-							on the device.
+							{t(`HETrigger:calibration-manual-step`)}
 						</Col>
 						<Col xs={4} className="mb-3">
 							<FormControl
 								type="number"
-								label='Current Idle Voltage'
+								label={t(`HETrigger:idle-input-text`)}
 								name="voltageIdle"
 								className="form-select-sm"
 								value={voltageIdle}
@@ -243,21 +248,7 @@ const HECalibration = ({
 						<Col xs={4} className="mb-3">
 							<FormControl
 								type="number"
-								label='Current Max Voltage'
-								name="voltageMax"
-								className="form-select-sm"
-								value={voltageMax}
-								onChange={(e) => {
-									setVoltageMax(e.target.value);
-								}}
-								min={0}
-								max={4096}
-							/>
-						</Col>
-						<Col xs={4} className="mb-3">
-							<FormControl
-								type="number"
-								label='Current Activation Voltage'
+								label={t(`HETrigger:activation-input-text`)}
 								name="voltageActive"
 								className="form-select-sm"
 								value={voltageActive}
@@ -268,12 +259,27 @@ const HECalibration = ({
 								max={4096}
 							/>
 						</Col>
+						<Col xs={4} className="mb-3">
+							<FormControl
+								type="number"
+								label={t(`HETrigger:pressed-input-text`)}
+								name="voltageMax"
+								className="form-select-sm"
+								value={voltageMax}
+								onChange={(e) => {
+									setVoltageMax(e.target.value);
+								}}
+								min={0}
+								max={4096}
+							/>
+						</Col>
 						<Col xs={12} className="mb-3">
 							<FormCheck
-								label='Flip Polarization'
+								label={t('HETrigger:calibration-flip-polarity')}
 								type="switch"
 								name="polarity"
 								id="HETriggerPolarize"
+								disabled
 								isInvalid={false}
 								checked={polarity}
 								onChange={(e) => {
@@ -282,7 +288,7 @@ const HECalibration = ({
 							/>
 						</Col>
 						<Col xs={12} className="mb-3">
-							Activation Point Reading:
+							{t(`HETrigger:activation-reading-text`)}
 						</Col>
 						<Col xs={12} className="mb-3 text-center">
 							<ProgressBar>
@@ -291,15 +297,30 @@ const HECalibration = ({
 							</ProgressBar>
 						</Col>
 						<Col xs={12} className="mb-3">
-							{voltage} {voltage>voltageActive?"Pressed!":""}
+							<Form.Range
+								min={voltageIdle}
+								max={voltageMax}
+								step={1}
+								value={voltageActive}
+								onChange={(e) => {
+									setVoltageActive(parseInt(e.target.value));
+								}}
+							></Form.Range>
+						</Col>
+						<Col xs={12} className="mb-3">
+							{voltage} {voltage>voltageActive?t('HETrigger:pressed-text'):""}
 						</Col>
 						<Col xs={12} className="mb-3" />
 						<Col xs={12} className="mb-3 text-center">
 							<Button 
 								variant="danger"
-								onClick={() => overwriteAllCalibration()}
+								onClick={() => {
+									if (window.confirm(t(`HETrigger:overwrite-confirm`))) {
+										overwriteAllCalibration();
+									}
+								}}
 								className="col-sm-4"
-							>Overwrite All Triggers
+							>{t(`HETrigger:overwrite-all-warning`)}
 							</Button>
 						</Col>
 					</Row>
@@ -315,7 +336,7 @@ const HECalibration = ({
 							size="sm"
 							role="status"
 							aria-hidden="true"
-						/> Calibrate Idle
+						/> {t(`HETrigger:calibrate-idle-button`)}
 					</Button>
 					<Button onClick={() => {
 						setVoltageMax(voltage);
@@ -329,22 +350,27 @@ const HECalibration = ({
 							role="status"
 							aria-hidden="true"
 							variant="success"
-						/> Calibrate Press
+						/> {t(`HETrigger:calibrate-pressed-button`)}
 					</Button>
 					<Button 
 						variant="success"
 						onClick={() => saveCalibration()}
 						hidden={calibrationStep < 2}
 					>
-						Finish Calibration
+						{t(`HETrigger:finish-calibration-${calibrationStep}-text`)}
 					</Button>
-					<Button onClick={() => setCalibrationStep(3)}>
-						Manual Adjustments
+					<Button onClick={() => {
+							setCalibrationStep(previousStep);
+						}}
+						hidden={calibrationStep !== 3}>
+						{t(`HETrigger:calibration-back-button`)}
 					</Button>
-					<Button onClick={() => setCalibrationStep(0)}
-						variant="danger"
-						hidden={calibrationStep === 0}>
-						Restart
+					<Button onClick={() => {
+							setPreviousStep(calibrationStep);
+							setCalibrationStep(3);
+						}}
+						hidden={calibrationStep === 3}>
+						{t(`HETrigger:manual-text`)}
 					</Button>
 				</Modal.Footer>
 			</Modal>

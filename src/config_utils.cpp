@@ -1486,6 +1486,19 @@ void gpioMappingsMigrationCore(Config& config)
     markAddonPinIfUsed(config.addonOptions.snesOptions.latchPin);
     markAddonPinIfUsed(config.addonOptions.snesOptions.dataPin);
 
+    // Set our HE trigger options
+    if (config.addonOptions.heTriggerOptions.enabled) {
+        markAddonPinIfUsed(config.addonOptions.heTriggerOptions.muxADCPin0);
+        markAddonPinIfUsed(config.addonOptions.heTriggerOptions.muxADCPin1);
+        markAddonPinIfUsed(config.addonOptions.heTriggerOptions.muxADCPin2);
+        markAddonPinIfUsed(config.addonOptions.heTriggerOptions.muxADCPin3);
+        markAddonPinIfUsed(config.addonOptions.heTriggerOptions.selectPin0);
+        markAddonPinIfUsed(config.addonOptions.heTriggerOptions.selectPin1);
+        markAddonPinIfUsed(config.addonOptions.heTriggerOptions.selectPin2);
+        markAddonPinIfUsed(config.addonOptions.heTriggerOptions.selectPin3);
+    }
+
+
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
         config.gpioMappings.pins[pin].action = actions[pin];
     }

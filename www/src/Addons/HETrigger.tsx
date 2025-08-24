@@ -30,12 +30,15 @@ import {
 	PinActionValues,
 } from '../Data/Pins';
 
-// currently using only the gamepad values here
-const NON_SELECTABLE_BUTTON_ACTIONS = [
-	-5, 0, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36,
-	37, 38, 39,
+// Only provide gamepad inputs for now
+const SELECTABLE_BUTTON_ACTIONS = [
+	-10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+	41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 59, 60, 61, 62,
+	63, 64, 65, 66, 72, 73, 74, 75, 76, 77, 78
 ];
 
+const isSelectable = (value) =>
+	SELECTABLE_BUTTON_ACTIONS.includes(value);
 
 export const HETriggerScheme = {
 	HETriggerEnabled: yup.number().required().label('Hall Effect Triggers Enabled')
@@ -59,12 +62,8 @@ const getOption = (e, actionId) => {
 	};
 };
 
-
-const isNonSelectable = (value) =>
-	NON_SELECTABLE_BUTTON_ACTIONS.includes(value);
-
 const options = Object.entries(BUTTON_ACTIONS)
-	.filter(([, value]) => !isNonSelectable(value))
+	.filter(([, value]) => isSelectable(value))
 	.map(([key, value]) => ({
 		label: key,
 		value,
@@ -144,6 +143,7 @@ const TriggerActionsForm = ({
 											<label htmlFor={key}>Channel {index}</label>
 										</div>
 										<CustomSelect
+											key={`select-option-he-${index}`}
 											inputId={key}
 											isClearable
 											isSearchable
@@ -172,10 +172,13 @@ const TriggerActionsForm = ({
 											onClick={(e) => {
 												setShowModal(true);
 												setCalibrationTarget(parseInt(key));
-												if (muxChannels > 1)
-													setModalTitle(`Mux ${i} - Channel ${index}`);
-												else 
-													setModalTitle(`Direct - ADC ${values[`muxADCPin${i}`]}`);
+												const option = getOption(triggers[key], triggers[key].action);
+												const actionTitle = t(`PinMapping:actions.${option.label}`);
+												if (muxChannels > 1) {
+													setModalTitle(`${actionTitle} - Mux ${i} - Channel ${index}`);
+												} else {
+													setModalTitle(`${actionTitle} - Direct - ADC ${values[`muxADCPin${i}`]}`);
+												}
 											}}
 											disabled={triggers[key].action === -10}
 											className="d-flex flex-shrink-0">
@@ -232,7 +235,7 @@ const TriggerActionsForm = ({
 												<td>{triggers[key].idle}</td>
 												<td>{triggers[key].active}</td>
 												<td>{triggers[key].max}</td>
-												<td>{triggers[key].polarity}</td>
+												<td>{triggers[key].polarity == 1 ? 'S' : 'N'}</td>
 											</tr>
 										))}
 										</tbody>
@@ -244,7 +247,7 @@ const TriggerActionsForm = ({
 				</div>
 			</div>
 			<Button type="button" onClick={handleSave} className="my-4">
-				{t('Common:button-save-label')}
+				{t('HETrigger:save-button')}
 			</Button>
 			{saveMessage && <Alert variant="secondary">{saveMessage}</Alert>}
 		</div>
