@@ -1,26 +1,35 @@
-import { useContext, useRef, useEffect, useState } from 'react';
-import { Button, Modal, Row, Col, ProgressBar, Form } from 'react-bootstrap';
+import { useEffect, useState } from 'react';
+import { Button, Modal, Row, Col, ProgressBar, Form, Spinner } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+
 import FormControl from '../Components/FormControl';
 import FormCheck from '../Components/FormCheck';
 import WebApi from '../Services/WebApi';
-import Spinner from 'react-bootstrap/Spinner';
+import useHETriggerStore, { Trigger } from '../Store/useHETriggerStore';
 
 import './HECalibration.scss';
+
+interface HECalibrationProps {
+	values: any;
+	showModal: boolean;
+	setShowModal: (show: boolean) => void;
+	triggers: Trigger[];
+	target: number;
+	title: string;
+}
 
 const HECalibration = ({
 	values,
 	showModal,
 	setShowModal,
 	triggers,
-	setHETrigger,
 	target,
 	title,
-	handleChange,
-	...props
-}) => {
+}: HECalibrationProps) => {
 	const { t } = useTranslation('');
-	const [timerId, setTimerId] = useState<NodeJS.Timeout>();
+	const setHETrigger = useHETriggerStore((state) => state.setHETrigger);
+	const setAllHETriggers = useHETriggerStore((state) => state.setAllHETriggers);
+	const [timerId, setTimerId] = useState<number>();
 	const [calibrationStep, setCalibrationStep] = useState(0);
 	const [previousStep, setPreviousStep] = useState(0);
 	const [voltage, setVoltage] = useState(0);
@@ -31,14 +40,24 @@ const HECalibration = ({
 
 	const saveCalibration = () => {
 		// Set to Trigger Store
-		setHETrigger(target, triggers[target].action, voltageIdle, voltageActive, voltageMax, polarity);
+		setHETrigger({
+			id: target,
+			action: triggers[target].action,
+			idle: voltageIdle,
+			active: voltageActive,
+			max: voltageMax,
+			polarity
+		})
 		stopCalibration();
 	};
 
 	const overwriteAllCalibration = () => {
-		Object.keys(triggers).map((key, index) => {
-			setHETrigger(key, triggers[key].action, voltageIdle, voltageActive, voltageMax, polarity);
-		});
+			setAllHETriggers({
+				idle: voltageIdle,
+				active: voltageActive,
+				max: voltageMax,
+				polarity
+			});
 		stopCalibration();
 	};
 
@@ -50,8 +69,7 @@ const HECalibration = ({
 			clearInterval(timerId);
 	};
 
-	// 
-	const startReadingCalibrationLoop = async (showModal, step) => {
+	const startReadingCalibrationLoop = async (showModal: boolean, step: number) => {
 		if (showModal) {
 			// Set the Hall Effect calibration pins
 			await WebApi.setHETriggerCalibration({
@@ -68,6 +86,7 @@ const HECalibration = ({
 			// Begin reading
 			if (timerId)
 				clearInterval(timerId);
+
 			const intervalId = setInterval(() => {readHallEffect(step)}, 50);
 			setTimerId(intervalId);
 		}
@@ -90,13 +109,13 @@ const HECalibration = ({
 		setPolarity(triggers[target].polarity);
 	};
 
-	const readHallEffect = async (step) => {
+	const readHallEffect = async (step:number) => {
 		// read hall effect trigger if we're not at opening
-		var result = await WebApi.getHETriggerCalibration({
+		const result = await WebApi.getHETriggerCalibration({
 			targetId: target
 		});
 
-		if ( !result || !result.data ) {
+		if (!result || !result.data) {
 			console.error("Could not get hall-effect trigger calibration!");
 			return;
 		}
@@ -203,9 +222,9 @@ const HECalibration = ({
 								step={1}
 								value={voltageActive}
 								onChange={(e) => {
-									setVoltageActive(parseInt(e.target.value));
+									setVoltageActive(parseInt((e.target as HTMLInputElement).value));
 								}}
-							></Form.Range>
+								></Form.Range>
 						</Col>
 						<Col xs={12} className="mb-3">
 							<FormControl
@@ -215,7 +234,7 @@ const HECalibration = ({
 								className="form-select-sm"
 								value={voltageActive}
 								onChange={(e) => {
-									setVoltageActive(parseInt(e.target.value));
+									setVoltageActive(parseInt((e.target as HTMLInputElement).value));
 								}}
 								min={voltageIdle}
 								max={voltageMax}
@@ -239,7 +258,7 @@ const HECalibration = ({
 								className="form-select-sm"
 								value={voltageIdle}
 								onChange={(e) => {
-									setVoltageIdle(e.target.value);
+									setVoltageIdle(parseInt((e.target as HTMLInputElement).value));
 								}}
 								min={0}
 								max={4096}
@@ -253,7 +272,7 @@ const HECalibration = ({
 								className="form-select-sm"
 								value={voltageActive}
 								onChange={(e) => {
-									setVoltageActive(parseInt(e.target.value));
+									setVoltageActive(parseInt((e.target as HTMLInputElement).value));
 								}}
 								min={0}
 								max={4096}
@@ -267,7 +286,7 @@ const HECalibration = ({
 								className="form-select-sm"
 								value={voltageMax}
 								onChange={(e) => {
-									setVoltageMax(e.target.value);
+									setVoltageMax(parseInt((e.target as HTMLInputElement).value));
 								}}
 								min={0}
 								max={4096}
@@ -312,7 +331,7 @@ const HECalibration = ({
 						</Col>
 						<Col xs={12} className="mb-3" />
 						<Col xs={12} className="mb-3 text-center">
-							<Button 
+							<Button
 								variant="danger"
 								onClick={() => {
 									if (window.confirm(t(`HETrigger:overwrite-confirm`))) {
@@ -352,7 +371,7 @@ const HECalibration = ({
 							variant="success"
 						/> {t(`HETrigger:calibrate-pressed-button`)}
 					</Button>
-					<Button 
+					<Button
 						variant="success"
 						onClick={() => saveCalibration()}
 						hidden={calibrationStep < 2}

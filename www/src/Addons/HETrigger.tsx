@@ -5,14 +5,13 @@ import * as yup from 'yup';
 
 import HECalibration from '../Components/HECalibration';
 
-import useHETriggerStore from '../Store/useHETriggerStore';
+import useHETriggerStore, { Trigger } from '../Store/useHETriggerStore';
 
 import { Alert, Button, FormCheck, Row, Table } from 'react-bootstrap';
 import { AppContext } from '../Contexts/AppContext';
 import Section from '../Components/Section';
 import FormSelect from '../Components/FormSelect';
 import FormControl from '../Components/FormControl';
-import { BUTTON_MASKS_OPTIONS } from '../Data/Buttons';
 import { ANALOG_PINS } from '../Data/Buttons';
 import invert from 'lodash/invert';
 import omit from 'lodash/omit';
@@ -70,18 +69,9 @@ const options = Object.entries(BUTTON_ACTIONS)
 	}));
 
 type TriggerActionsFormTypes = {
-	saveHETriggers: () => void;
-	triggers: [object];
+	triggers: Trigger[];
 	values: {};
 	muxChannels: number;
-	setHETrigger: (
-		id: number,
-		action: PinActionValues,
-		idle: number,
-		active: number,
-		max: number,
-		polarity: number
-	) => void;
 	handleChange: (
 		e: Event,
 	) => void;
@@ -92,9 +82,10 @@ const TriggerActionsForm = ({
 	values,
 	muxChannels,
 	handleChange,
-	saveHETriggers,
-	setHETrigger
 }: TriggerActionsFormTypes) => {
+	const setHETrigger = useHETriggerStore((state) => state.setHETrigger);
+	const saveHETriggers = useHETriggerStore((state) => state.saveHETriggers);
+
 	const { buttonLabels } = useContext(AppContext);
 	const [saveMessage, setSaveMessage] = useState('');
 	const [showModal, setShowModal] = useState(false);
@@ -126,7 +117,7 @@ const TriggerActionsForm = ({
 					</div>
 					{Array.from({ length: Math.min(4,Math.floor(32/muxChannels)) }, (_, i) => (
 						<div className="mt-3 mb-3" hidden={values[`muxADCPin${i}`] === -1}>
-							
+
 							<div className="d-flex flex-shrink-0">
 								<label htmlFor={i}>
 									{muxChannels > 1 ? `Multiplexer ${i}` : 'Direct'} (ADC {values[`muxADCPin${i}`]})
@@ -158,12 +149,15 @@ const TriggerActionsForm = ({
 												);
 											}}
 											onChange={(change) =>
-												setHETrigger( parseInt(key),
-													change?.value === undefined ? -10 : change.value,
-													triggers[key].idle,
-													triggers[key].active,
-													triggers[key].max,
-													triggers[key].polarity
+												setHETrigger(
+													{
+														id: parseInt(key),
+														action: change?.value === undefined ? -10 : change.value,
+														idle: triggers[key].idle,
+														active: triggers[key].active,
+														max: triggers[key].max,
+														polarity: triggers[key].polarity
+													}
 												)
 											}
 										/>
@@ -195,7 +189,6 @@ const TriggerActionsForm = ({
 						showModal={showModal}
 						setShowModal={setShowModal}
 						triggers={triggers}
-						setHETrigger={setHETrigger}
 						target={calibrationTarget}
 						title={modalTitle}
 						handleChange={handleChange}
@@ -255,8 +248,7 @@ const TriggerActionsForm = ({
 };
 
 const HETrigger = ({ values, errors, handleChange, handleCheckbox }) => {
-	const { fetchHETriggers, triggers, saveHETriggers, setHETrigger} =
-		useHETriggerStore();
+	const { fetchHETriggers, triggers, saveHETriggers} = useHETriggerStore();
 	const { t } = useTranslation();
 
 	const { usedPins } = useContext(AppContext);
@@ -429,8 +421,6 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }) => {
 						triggers={triggers}
 						handleChange={handleChange}
 						muxChannels={values.muxChannels}
-						saveHETriggers={saveAll}
-						setHETrigger={setHETrigger}
 					/>
 				</Row>
 			</div>
