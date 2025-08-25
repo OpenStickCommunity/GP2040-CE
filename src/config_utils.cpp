@@ -35,6 +35,7 @@
 #include "addons/drv8833_rumble.h"
 #include "addons/gamepad_usb_host.h"
 #include "addons/he_trigger.h"
+#include "addons/tg16_input.h"
 
 #include "CRC32.h"
 #include "FlashPROM.h"
@@ -1030,6 +1031,15 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         INIT_UNSET_PROPERTY_STR(config.addonOptions.macroOptions.macroList[i], macroLabel, "");
         INIT_UNSET_PROPERTY(config.addonOptions.macroOptions.macroList[i], deprecatedMacroTriggerPin, -1);
     }
+
+    // addonOptions.tg16Options
+    INIT_UNSET_PROPERTY(config.addonOptions.tg16Options, enabled, !!TG16_PAD_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.tg16Options, oePin, TG16_PAD_OE_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.tg16Options, selectPin, TG16_PAD_SELECT_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.tg16Options, dataPin0, TG16_PAD_DATA_PIN0);
+    INIT_UNSET_PROPERTY(config.addonOptions.tg16Options, dataPin1, TG16_PAD_DATA_PIN1);
+    INIT_UNSET_PROPERTY(config.addonOptions.tg16Options, dataPin2, TG16_PAD_DATA_PIN2);
+    INIT_UNSET_PROPERTY(config.addonOptions.tg16Options, dataPin3, TG16_PAD_DATA_PIN3);
 }
 
 
@@ -1485,6 +1495,12 @@ void gpioMappingsMigrationCore(Config& config)
     markAddonPinIfUsed(config.addonOptions.snesOptions.clockPin);
     markAddonPinIfUsed(config.addonOptions.snesOptions.latchPin);
     markAddonPinIfUsed(config.addonOptions.snesOptions.dataPin);
+    markAddonPinIfUsed(config.addonOptions.tg16Options.oePin);
+    markAddonPinIfUsed(config.addonOptions.tg16Options.selectPin);
+    markAddonPinIfUsed(config.addonOptions.tg16Options.dataPin0);
+    markAddonPinIfUsed(config.addonOptions.tg16Options.dataPin1);
+    markAddonPinIfUsed(config.addonOptions.tg16Options.dataPin2);
+    markAddonPinIfUsed(config.addonOptions.tg16Options.dataPin3);
 
     // Set our HE trigger options
     if (config.addonOptions.heTriggerOptions.enabled) {

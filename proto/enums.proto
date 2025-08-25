@@ -151,6 +151,7 @@ enum InputMode
     INPUT_MODE_XBOXORIGINAL = 12;
     INPUT_MODE_PS5 = 13;
     INPUT_MODE_GENERIC = 14;
+    INPUT_MODE_SWITCH_PRO = 15;
     INPUT_MODE_CONFIG = 255;
 }
 
@@ -277,7 +278,7 @@ enum GpioAction
     SUSTAIN_FOCUS_MODE           = 70;
 
     SUSTAIN_4_8_WAY_MODE         = 71;
-    
+
     MENU_NAVIGATION_UP           = 72;
     MENU_NAVIGATION_DOWN         = 73;
     MENU_NAVIGATION_LEFT         = 74;
@@ -361,8 +362,8 @@ enum GamepadHotkey
     HOTKEY_LEDS_BRIGHTNESS_DOWN                   = 59;
     HOTKEY_LEDS_FADETIME_UP                       = 60;
     HOTKEY_LEDS_FADETIME_DOWN                     = 61;
-    HOTKEY_AMBIENT_LIGHT_EFFECTS_CHANGE           = 62; 
-    HOTKEY_AMBIENT_LIGHT_EFFECTS_ON_OFF           = 63; 
+    HOTKEY_AMBIENT_LIGHT_EFFECTS_CHANGE           = 62;
+    HOTKEY_AMBIENT_LIGHT_EFFECTS_ON_OFF           = 63;
     HOTKEY_AMBIENT_LIGHT_EFFECTS_BRIGHTNESS_UP    = 64;
     HOTKEY_AMBIENT_LIGHT_EFFECTS_BRIGHTNESS_DOWN  = 65;
     HOTKEY_AMBIENT_LIGHT_EFFECTS_PARAMETER_UP     = 66;
@@ -372,12 +373,17 @@ enum GamepadHotkey
     HOTKEY_AMBIENT_LIGHT_EFFECTS_CUSTOM_LINKAGE   = 70;
     HOTKEY_LOAD_PROFILE_5        = 71;
     HOTKEY_LOAD_PROFILE_6        = 72;
+    HOTKEY_ENABLE_4_WAY_MODE     = 73;
+    HOTKEY_DISABLE_4_WAY_MODE    = 74;
+    HOTKEY_TURBO_COUNT_UP        = 75;
+    HOTKEY_TURBO_COUNT_DOWN      = 76;
+    HOTKEY_FOCUS_MODE_TOGGLE     = 77;
 }
 
 enum AnimationEffects
 {
     option (nanopb_enumopt).long_names = false;
-    
+
     EFFECT_STATIC_COLOR = 0;
     EFFECT_RAINBOW = 1;
     EFFECT_CHASE = 2;
@@ -422,7 +428,7 @@ enum CaseRGBType
 
 enum AmbientEffectType
 {
-    option (nanopb_enumopt).long_names = false; 
+    option (nanopb_enumopt).long_names = false;
 
     AL_CUSTOM_EFFECT_STATIC_COLOR = 0;	// Static
     AL_CUSTOM_EFFECT_GRADIENT = 1;	    // Gradient Color
@@ -433,7 +439,7 @@ enum AmbientEffectType
 
 enum AnimationColor // Sync with Animation.h
 {
-    option (nanopb_enumopt).long_names = false; 
+    option (nanopb_enumopt).long_names = false;
 
     ANIMATION_COLOR_BLACK = 0;
     ANIMATION_COLOR_WHITE = 1;
