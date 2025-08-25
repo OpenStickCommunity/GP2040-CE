@@ -19,7 +19,8 @@
 
 		"paths": {
 			"@proto/*": ["src_gen/*"]
-		}
+		},
+		"types": []
 	},
 	"include": ["src"],
 	"exclude": ["node_modules"]
