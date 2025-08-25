@@ -1635,6 +1635,8 @@ std::string setAddonOptions()
     docToValue(keyboardHostOptions.mouseLeft, doc, "keyboardHostMouseLeft");
     docToValue(keyboardHostOptions.mouseMiddle, doc, "keyboardHostMouseMiddle");
     docToValue(keyboardHostOptions.mouseRight, doc, "keyboardHostMouseRight");
+    docToValue(keyboardHostOptions.mouseSensitivity, doc, "keyboardHostMouseSensitivity");
+    docToValue(keyboardHostOptions.movementMode, doc, "keyboardHostMouseMovement");
 
     GamepadUSBHostOptions& gamepadUSBHostOptions = Storage::getInstance().getAddonOptions().gamepadUSBHostOptions;
     docToValue(gamepadUSBHostOptions.enabled, doc, "GamepadUSBHostAddonEnabled");
@@ -2067,6 +2069,8 @@ std::string getAddonOptions()
     writeDoc(doc, "keyboardHostMouseLeft", keyboardHostOptions.mouseLeft);
     writeDoc(doc, "keyboardHostMouseMiddle", keyboardHostOptions.mouseMiddle);
     writeDoc(doc, "keyboardHostMouseRight", keyboardHostOptions.mouseRight);
+    writeDoc(doc, "keyboardHostMouseSensitivity", keyboardHostOptions.mouseSensitivity);
+    writeDoc(doc, "keyboardHostMouseMovement", keyboardHostOptions.movementMode);
 
     const GamepadUSBHostOptions& gamepadUSBHostOptions = Storage::getInstance().getAddonOptions().gamepadUSBHostOptions;
     writeDoc(doc, "GamepadUSBHostAddonEnabled", gamepadUSBHostOptions.enabled);
