@@ -727,6 +727,17 @@ message SNESOptions
     optional int32 dataPin = 4;
 }
 
+message TG16Options
+{
+    optional bool enabled = 1;
+    optional int32 oePin = 2;
+    optional int32 selectPin = 3;
+    optional int32 dataPin0 = 4;
+    optional int32 dataPin1 = 5;
+    optional int32 dataPin2 = 6;
+    optional int32 dataPin3 = 7;
+}
+
 message KeyboardHostOptions
 {
     optional bool enabled = 1;
@@ -874,6 +885,7 @@ message AddonOptions
     optional DRV8833RumbleOptions drv8833RumbleOptions = 26;
     optional ReactiveLEDOptions reactiveLEDOptions = 27;
     optional GamepadUSBHostOptions gamepadUSBHostOptions = 28;
+    optional TG16Options tg16Options = 29;
 }
 
 message MigrationHistory
