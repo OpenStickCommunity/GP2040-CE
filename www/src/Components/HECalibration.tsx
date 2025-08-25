@@ -9,7 +9,7 @@ import useHETriggerStore, { Trigger } from '../Store/useHETriggerStore';
 
 import './HECalibration.scss';
 
-interface HECalibrationProps {
+type HECalibrationProps = {
 	values: any;
 	showModal: boolean;
 	setShowModal: (show: boolean) => void;
