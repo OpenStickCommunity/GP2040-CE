@@ -112,7 +112,16 @@ export const rotaryState = {
 const Rotary = ({ values, errors, handleChange, handleCheckbox }) => {
 	const { t } = useTranslation();
 	return (
-		<Section title={t('Rotary:header-text')}>
+		<Section title={
+			<a
+				href="https://gp2040-ce.info/add-ons/rotary-encoders"
+				target="_blank"
+				className="text-reset text-decoration-none"
+			>
+				{t('Rotary:header-text')}
+			</a>
+		}
+		>
 			<div id="RotaryAddonEnabledOptions" hidden={!values.RotaryAddonEnabled}>
 				<Row className="mb-3">
 					<div className="col-3">

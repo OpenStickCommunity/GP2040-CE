@@ -22,24 +22,37 @@ export const gamepadUSBHostState = {
 const GamepadUSBHost = ({ values, errors, handleChange, handleCheckbox }) => {
 	const { getAvailablePeripherals } = useContext(AppContext);
 	return (
-		<Section title={'Gamepad USB Host Addon'}>
+		<Section title={
+			<a
+				href="https://gp2040-ce.info/add-ons/gamepad-usb-host"
+				target="_blank"
+				className="text-reset text-decoration-none"
+			>
+				{'Gamepad USB Host Addon'}
+			</a>
+		}
+		>
+			<div id="GamepadUSBHostOptions" hidden={!values.GamepadUSBHostAddonEnabled}>
+				<div className="alert alert-info" role="alert">
+					Currently incompatible with Keyboard/Mouse Host addon.
+				</div>
+			</div>
 			{getAvailablePeripherals('usb') ? (
-				<FormCheck
-					label="Enabled"
-					type="switch"
-					id="GamepadUSBHostAddonButton"
-					reverse
-					isInvalid={false}
-					checked={Boolean(values.GamepadUSBHostAddonEnabled)}
-					onChange={(e) => {
-						handleCheckbox('GamepadUSBHostAddonEnabled', values);
-						handleChange(e);
-					}}
-				/>
-			) : (
-				<FormLabel>USB host not enabled!</FormLabel>
-			)}
-			Currently incompatible with Keyboard host addon.
+					<FormCheck
+						label="Enabled"
+						type="switch"
+						id="GamepadUSBHostAddonButton"
+						reverse
+						isInvalid={false}
+						checked={Boolean(values.GamepadUSBHostAddonEnabled)}
+						onChange={(e) => {
+							handleCheckbox('GamepadUSBHostAddonEnabled', values);
+							handleChange(e);
+						}}
+					/>
+				) : (
+					<FormLabel>USB host not enabled!</FormLabel>
+				)}
 		</Section>
 	);
 };

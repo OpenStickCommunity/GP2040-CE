@@ -91,9 +91,9 @@ bool GamepadUSBHostListener::diff_report(dualshock4_t const* rpt1, dualshock4_t 
     bool result;
 
     // x, y, z, rz must different than 2 to be counted
-    result = diff_than_2(rpt1->GD_GamePadPointerX, rpt2->GD_GamePadPointerX) || 
+    result = diff_than_2(rpt1->GD_GamePadPointerX, rpt2->GD_GamePadPointerX) ||
             diff_than_2(rpt1->GD_GamePadPointerY , rpt2->GD_GamePadPointerY ) ||
-            diff_than_2(rpt1->GD_GamePadPointerZ, rpt2->GD_GamePadPointerZ) || 
+            diff_than_2(rpt1->GD_GamePadPointerZ, rpt2->GD_GamePadPointerZ) ||
             diff_than_2(rpt1->GD_GamePadPointerRz, rpt2->GD_GamePadPointerRz);
 
     // check the rest with mem compare
@@ -165,6 +165,7 @@ void GamepadUSBHostListener::process_stadia(uint8_t const* report) {
     _controller_host_state.rt = controller_report.SIM_GamePadAccelerator;
 
     if (controller_report.BTN_GamePadButton18 == 1) _controller_host_state.buttons |= GAMEPAD_MASK_A2;
+    if (controller_report.BTN_GamePadButton17 == 1) _controller_host_state.buttons |= GAMEPAD_MASK_A3;
     if (controller_report.BTN_GamePadButton11 == 1) _controller_host_state.buttons |= GAMEPAD_MASK_S1;
     if (controller_report.BTN_GamePadButton15 == 1) _controller_host_state.buttons |= GAMEPAD_MASK_R3;
     if (controller_report.BTN_GamePadButton14 == 1) _controller_host_state.buttons |= GAMEPAD_MASK_L3;

@@ -86,13 +86,25 @@ const Keyboard = ({
 	};
 
 	return (
-		<Section title={t('AddonsConfig:keyboard-host-header-text')}>
+		<Section title={
+			<a
+				href="https://gp2040-ce.info/add-ons/keyboard-host"
+				target="_blank"
+				className="text-reset text-decoration-none"
+			>
+				{t('AddonsConfig:keyboard-host-header-text')}
+			</a>
+		}
+		>
 			<div
 				id="KeyboardHostAddonOptions"
 				hidden={
 					!(values.KeyboardHostAddonEnabled && getAvailablePeripherals('usb'))
 				}
 			>
+				<div className="alert alert-info" role="alert">
+					The D+ and Enable 5V pins and GPIO Pin Order are configured in <a href="../peripheral-mapping" className="alert-link">Peripheral Mapping</a>
+				</div>
 				<Row className="mb-3">
 					<p>{t('AddonsConfig:keyboard-host-sub-header-text')}</p>
 					<div className="mb-2">

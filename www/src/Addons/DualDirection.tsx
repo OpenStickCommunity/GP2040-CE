@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 import { FormCheck, Row } from 'react-bootstrap';
 import * as yup from 'yup';
 
@@ -7,6 +7,7 @@ import FormSelect from '../Components/FormSelect';
 
 import FormControl from '../Components/FormControl';
 import { DUAL_COMBINE_MODES, DUAL_STICK_MODES } from '../Data/Addons';
+import { link } from 'fs';
 
 export const dualDirectionScheme = {
 	DualDirectionalInputEnabled: yup
@@ -43,13 +44,35 @@ export const dualDirectionState = {
 const DualDirection = ({ values, errors, handleChange, handleCheckbox }) => {
 	const { t } = useTranslation();
 	return (
-		<Section title={t('AddonsConfig:dual-directional-input-header-text')}>
+		<Section title={
+			<a
+				href="https://gp2040-ce.info/add-ons/dual-direction-input"
+				target="_blank"
+				className="text-reset text-decoration-none"
+			>
+				{t('AddonsConfig:dual-directional-input-header-text')}
+			</a>
+		}
+		>
 			<div
 				id="DualDirectionalInputOptions"
 				hidden={!values.DualDirectionalInputEnabled}
 			>
+				<div className="alert alert-info" role="alert">
+					<Trans
+						ns="AddonsConfig"
+						i18nKey='AddonsConfig:pin-config-moved-to-core-text'
+						components={[
+							<a
+								key="0"
+								href="../pin-mapping"
+								className="alert-link"
+								target="_blank"
+							/>
+						]}
+					/>
+				</div>
 				<Row className="mb-3">
-					<p>{t('AddonsConfig:pin-config-moved-to-core-text')}</p>
 					<FormSelect
 						label={t('AddonsConfig:dual-directional-input-dpad-mode-label')}
 						name="dualDirDpadMode"
@@ -69,7 +92,6 @@ const DualDirection = ({ values, errors, handleChange, handleCheckbox }) => {
 							</option>
 						))}
 					</FormSelect>
-
 					<FormSelect
 						label={t('AddonsConfig:dual-directional-input-combine-mode-label')}
 						name="dualDirCombineMode"
@@ -89,13 +111,15 @@ const DualDirection = ({ values, errors, handleChange, handleCheckbox }) => {
 							</option>
 						))}
 					</FormSelect>
+				</Row>
+				<Row className="mb-3">
 					<FormCheck
 						label={t(
 							'AddonsConfig:dual-directional-input-four-way-joystick-mode-label',
 						)}
 						type="switch"
 						id="DualDirFourWayMode"
-						className="col-sm-3 ms-2"
+						className="col-sm-3 ms-3"
 						isInvalid={false}
 						checked={Boolean(values.dualDirFourWayMode)}
 						onChange={(e) => {

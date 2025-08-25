@@ -15,11 +15,11 @@
 #include "GPGFX_UI_layouts.h"
 
 #define INPUT_HISTORY_MAX_INPUTS 22
-#define INPUT_HISTORY_MAX_MODES 11
+#define INPUT_HISTORY_MAX_MODES 12
 
 // Static to ensure memory is never doubled
 static const char * displayNames[INPUT_HISTORY_MAX_MODES][INPUT_HISTORY_MAX_INPUTS] = {
-    {		// HID / DINPUT
+    {		// PS3
             CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
             CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
             CHAR_CROSS, CHAR_CIRCLE, CHAR_SQUARE, CHAR_TRIANGLE,
@@ -47,7 +47,7 @@ static const char * displayNames[INPUT_HISTORY_MAX_MODES][INPUT_HISTORY_MAX_INPU
             "L1", "R1", "L2", "R2",
             "S1", "S2", "L3", "R3", "A1", "A2"
     },
-    {		// PS4
+    {		// PS4/PS5
             CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
             CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
             CHAR_CROSS, CHAR_CIRCLE, CHAR_SQUARE, CHAR_TRIANGLE,
@@ -95,6 +95,13 @@ static const char * displayNames[INPUT_HISTORY_MAX_MODES][INPUT_HISTORY_MAX_INPU
             "A", "B", "X", "Y",
             "BL", "WH", "L", "R",
             "BK", "ST", "LS", "RS", "", ""
+    },
+    {		// HID / DINPUT
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "2", "3", "1", "4",
+            "5", "6", "7", "8",
+            "9", "10", "11", "12", "13", "14"
     }
 };
 
@@ -122,13 +129,13 @@ class ButtonLayoutScreen : public GPScreen {
 
         const std::map<uint16_t, uint16_t> displayModeLookup = {
             {INPUT_MODE_PS3, 0},
-            {INPUT_MODE_GENERIC, 0},
             {INPUT_MODE_SWITCH, 1},
             {INPUT_MODE_XINPUT, 2},
             {INPUT_MODE_XBONE, 2},
             {INPUT_MODE_KEYBOARD, 3},
             {INPUT_MODE_CONFIG, 3}, 
             {INPUT_MODE_PS4, 4},
+            {INPUT_MODE_PS5, 4},
             {INPUT_MODE_PSCLASSIC, 4},
             {INPUT_MODE_MDMINI, 5},
             {INPUT_MODE_NEOGEO, 6},
@@ -136,6 +143,7 @@ class ButtonLayoutScreen : public GPScreen {
             {INPUT_MODE_EGRET, 8},
             {INPUT_MODE_ASTRO, 9},
             {INPUT_MODE_XBOXORIGINAL, 10},
+            {INPUT_MODE_GENERIC, 11},
         };
 
         Gamepad* gamepad;

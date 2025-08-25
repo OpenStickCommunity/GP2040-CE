@@ -225,13 +225,13 @@ message AlternativePinMappings
 message ProfileOptions
 {
     repeated AlternativePinMappings deprecatedAlternativePinMappings = 1 [(nanopb).max_count = 3, deprecated = true];
-    repeated GpioMappings gpioMappingsSets = 2 [(nanopb).max_count = 3];
+    repeated GpioMappings gpioMappingsSets = 2 [(nanopb).max_count = 5];
 }
 
 message DisplayOptions
 {
     optional bool enabled = 1;
-    
+
     optional int32 deprecatedI2cBlock = 2 [deprecated = true];
     optional int32 deprecatedI2cSDAPin = 3 [deprecated = true];
     optional int32 deprecatedI2cSCLPin = 4 [deprecated = true];
@@ -411,6 +411,13 @@ message AnalogOptions
     optional bool analog_smoothing = 14;
     optional float smoothing_factor = 15;
     optional uint32 analog_error = 16;
+    optional bool analog_smoothing2 = 17;
+    optional float smoothing_factor2 = 18;
+    optional uint32 analog_error2 = 19;
+    optional uint32 inner_deadzone2 = 20;
+    optional uint32 outer_deadzone2 = 21;
+    optional bool auto_calibrate2 = 22;
+    optional bool forced_circularity2 = 23;
 }
 
 message TurboOptions
@@ -481,7 +488,7 @@ message ReverseOptions
 message AnalogADS1219Options
 {
     optional bool enabled = 1;
-    
+
     optional int32 deprecatedI2cBlock = 2 [deprecated = true];
     optional int32 deprecatedI2cSDAPin = 3 [deprecated = true];
     optional int32 deprecatedI2cSCLPin = 4 [deprecated = true];

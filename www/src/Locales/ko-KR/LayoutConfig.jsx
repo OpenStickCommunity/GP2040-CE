@@ -44,6 +44,7 @@ export default {
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT2_A: '보드 설정값 대체 2',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT3_A: '보드 설정값 대체 3',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT4_A: '보드 설정값 대체 4',
+			BUTTON_LAYOUT_BOARD_DEFINED_ALT5_A: '보드 설정값 대체 5',
 		},
 		right: {
 			BUTTON_LAYOUT_ARCADE: '아케이드',
@@ -92,6 +93,7 @@ export default {
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT2_B: '보드 설정값 대체 2',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT3_B: '보드 설정값 대체 3',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT4_B: '보드 설정값 대체 4',
+			BUTTON_LAYOUT_BOARD_DEFINED_ALT5_B: '보드 설정값 대체 5',
 		},
 	},
 };

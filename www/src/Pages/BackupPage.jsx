@@ -91,9 +91,14 @@ export default function BackupPage() {
 	}, []);
 
 	const validateValues = (data, nextData) => {
-		if (typeof data != 'object' || typeof nextData != 'object') {
+		if (typeof data !== 'object' || typeof nextData !== 'object') {
 			// invalid data types
 			return {};
+		}
+
+		// Only used for array payload such as profiles
+		if (Array.isArray(data) && data.length === 0) {
+			return Array.isArray(nextData) ? nextData : [];
 		}
 
 		let validated = Array.isArray(data) ? [] : {};
@@ -107,9 +112,9 @@ export default function BackupPage() {
 			if (
 				nextDataValue !== null &&
 				typeof nextDataValue !== 'undefined' &&
-				typeof value == typeof nextDataValue
+				typeof value === typeof nextDataValue
 			) {
-				if (typeof nextDataValue == 'object') {
+				if (typeof nextDataValue === 'object') {
 					addValidated(validateValues(value, nextDataValue), key);
 				} else {
 					addValidated(nextDataValue, key);
@@ -198,6 +203,7 @@ export default function BackupPage() {
 				setNoticeMessage(`No file data found for ${fileName}`);
 				return;
 			}
+
 			// validate parsed data
 			let newData = {};
 			for (const [key, value] of Object.entries(fileData)) {

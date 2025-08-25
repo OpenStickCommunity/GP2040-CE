@@ -132,12 +132,13 @@ const INPUT_MODES = [
 		authentication: ['none', 'usb'],
 	},
 	{
-		labelKey: 'input-mode-options.nintendo-switch',
-		value: 1,
+		labelKey: 'input-mode-options.xbone',
+		value: 5,
 		group: 'primary',
+		required: ['usb'],
 	},
+	{ labelKey: 'input-mode-options.xboxoriginal', value: 12, group: 'primary' },
 	{ labelKey: 'input-mode-options.ps3', value: 2, group: 'primary' },
-	{ labelKey: 'input-mode-options.keyboard', value: 3, group: 'primary' },
 	{
 		labelKey: 'input-mode-options.ps4',
 		value: 4,
@@ -153,11 +154,12 @@ const INPUT_MODES = [
 		authentication: ['none', 'usb'],
 	},
 	{
-		labelKey: 'input-mode-options.xbone',
-		value: 5,
+		labelKey: 'input-mode-options.nintendo-switch',
+		value: 1,
 		group: 'primary',
-		required: ['usb'],
 	},
+	{ labelKey: 'input-mode-options.nintendo-switch-pro', value: 15, group: 'primary' },
+	{ labelKey: 'input-mode-options.keyboard', value: 3, group: 'primary' },
 	{ labelKey: 'input-mode-options.generic', value: 14, group: 'primary' },
 	{ labelKey: 'input-mode-options.mdmini', value: 6, group: 'mini' },
 	{ labelKey: 'input-mode-options.neogeo', value: 7, group: 'mini' },
@@ -165,19 +167,19 @@ const INPUT_MODES = [
 	{ labelKey: 'input-mode-options.egret', value: 9, group: 'mini' },
 	{ labelKey: 'input-mode-options.astro', value: 10, group: 'mini' },
 	{ labelKey: 'input-mode-options.psclassic', value: 11, group: 'mini' },
-	{ labelKey: 'input-mode-options.xboxoriginal', value: 12, group: 'primary' },
 ];
 
 const INPUT_BOOT_MODES = [
 	{ labelKey: 'input-mode-options.none', value: -1, group: 'primary' },
 	{ labelKey: 'input-mode-options.xinput', value: 0, group: 'primary' },
 	{
-		labelKey: 'input-mode-options.nintendo-switch',
-		value: 1,
+		labelKey: 'input-mode-options.xbone',
+		value: 5,
 		group: 'primary',
+		required: ['usb'],
 	},
+	{ labelKey: 'input-mode-options.xboxoriginal', value: 12, group: 'primary' },
 	{ labelKey: 'input-mode-options.ps3', value: 2, group: 'primary' },
-	{ labelKey: 'input-mode-options.keyboard', value: 3, group: 'primary' },
 	{
 		labelKey: 'input-mode-options.ps4',
 		value: 4,
@@ -191,11 +193,12 @@ const INPUT_BOOT_MODES = [
 		optional: ['usb'],
 	},
 	{
-		labelKey: 'input-mode-options.xbone',
-		value: 5,
+		labelKey: 'input-mode-options.nintendo-switch',
+		value: 1,
 		group: 'primary',
-		required: ['usb'],
 	},
+	{ labelKey: 'input-mode-options.nintendo-switch-pro', value: 15, group: 'primary' },
+	{ labelKey: 'input-mode-options.keyboard', value: 3, group: 'primary' },
 	{ labelKey: 'input-mode-options.generic', value: 14, group: 'primary' },
 	{ labelKey: 'input-mode-options.mdmini', value: 6, group: 'mini' },
 	{ labelKey: 'input-mode-options.neogeo', value: 7, group: 'mini' },
@@ -203,7 +206,6 @@ const INPUT_BOOT_MODES = [
 	{ labelKey: 'input-mode-options.egret', value: 9, group: 'mini' },
 	{ labelKey: 'input-mode-options.astro', value: 10, group: 'mini' },
 	{ labelKey: 'input-mode-options.psclassic', value: 11, group: 'mini' },
-	{ labelKey: 'input-mode-options.xboxoriginal', value: 12, group: 'primary' },
 ];
 
 const INPUT_MODE_GROUPS = [
@@ -257,11 +259,15 @@ const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.invert-x', value: 9 },
 	{ labelKey: 'hotkey-actions.invert-y', value: 10 },
 	{ labelKey: 'hotkey-actions.toggle-4way-joystick-mode', value: 13 },
+	{ labelKey: 'hotkey-actions.enable-4way-joystick-mode', value: 73 },
+	{ labelKey: 'hotkey-actions.disable-4way-joystick-mode', value: 74 },
 	{ labelKey: 'hotkey-actions.toggle-ddi-4way-joystick-mode', value: 14 },
 	{ labelKey: 'hotkey-actions.load-profile-1', value: 15 },
 	{ labelKey: 'hotkey-actions.load-profile-2', value: 16 },
 	{ labelKey: 'hotkey-actions.load-profile-3', value: 17 },
 	{ labelKey: 'hotkey-actions.load-profile-4', value: 18 },
+	{ labelKey: 'hotkey-actions.load-profile-5', value: 71 },
+	{ labelKey: 'hotkey-actions.load-profile-6', value: 72 },
 	{ labelKey: 'hotkey-actions.next-profile', value: 35 },
 	{ labelKey: 'hotkey-actions.previous-profile', value: 42 },
 	{ labelKey: 'hotkey-actions.l3-button', value: 19 },
@@ -287,6 +293,8 @@ const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.dpad-down', value: 39 },
 	{ labelKey: 'hotkey-actions.dpad-left', value: 40 },
 	{ labelKey: 'hotkey-actions.dpad-right', value: 41 },
+	{ labelKey: 'hotkey-actions.turbo-count-up', value: 73 },
+	{ labelKey: 'hotkey-actions.turbo-count-down', value: 74 },
 	{ labelKey: 'hotkey-actions.menu-nav-up', value: 44 },
 	{ labelKey: 'hotkey-actions.menu-nav-down', value: 45 },
 	{ labelKey: 'hotkey-actions.menu-nav-left', value: 46 },
@@ -1020,7 +1028,9 @@ export default function SettingsPage() {
 							checked={Boolean(values.usbDescOverride)}
 							onChange={(e) => {
 								setFieldValue('usbDescOverride', e.target.checked ? 1 : 0);
-							}}
+								setFieldValue('usbOverrideID', e.target.checked ? values.usbOverrideID : 0);
+								}
+							}
 						/>
 					</Col>
 				</Row>

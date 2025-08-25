@@ -86,7 +86,16 @@ const ReactiveLED = ({ values, errors, handleChange, handleCheckbox }) => {
 	};
 
 	return (
-		<Section title={t('ReactiveLED:header-text')}>
+		<Section title={
+			<a
+				href="https://gp2040-ce.info/add-ons/reactive-led"
+				target="_blank"
+				className="text-reset text-decoration-none"
+			>
+				{t('ReactiveLED:header-text')}
+			</a>
+		}
+		>
 			<div
 				id="ReactiveLEDEnabledOptions"
 				hidden={!values.ReactiveLEDAddonEnabled}
