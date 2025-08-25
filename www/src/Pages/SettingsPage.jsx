@@ -140,8 +140,14 @@ const INPUT_MODES = [
 		],
 	},
 	{
-		labelKey: 'input-mode-options.nintendo-switch',
-		value: 1,
+		labelKey: 'input-mode-options.xbone',
+		value: 5,
+		group: 'primary',
+		required: ['usb'],
+	},
+	{
+		labelKey: 'input-mode-options.xboxoriginal', 
+		value: 12, 
 		group: 'primary',
 	},
 	{ 
@@ -156,7 +162,6 @@ const INPUT_MODES = [
 			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_DRUM,
 		],
 	},
-	{ labelKey: 'input-mode-options.keyboard', value: 3, group: 'primary' },
 	{
 		labelKey: 'input-mode-options.ps4',
 		value: 4,
@@ -186,12 +191,9 @@ const INPUT_MODES = [
 			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_DRUM,
 		],
 	},
-	{
-		labelKey: 'input-mode-options.xbone',
-		value: 5,
-		group: 'primary',
-		required: ['usb'],
-	},
+	{ labelKey: 'input-mode-options.nintendo-switch', value: 1, group: 'primary', },
+	{ labelKey: 'input-mode-options.nintendo-switch-pro', value: 15, group: 'primary' },
+	{ labelKey: 'input-mode-options.keyboard', value: 3, group: 'primary' },
 	{ labelKey: 'input-mode-options.generic', value: 14, group: 'primary' },
 	{ labelKey: 'input-mode-options.mdmini', value: 6, group: 'mini' },
 	{ labelKey: 'input-mode-options.neogeo', value: 7, group: 'mini' },
@@ -199,23 +201,19 @@ const INPUT_MODES = [
 	{ labelKey: 'input-mode-options.egret', value: 9, group: 'mini' },
 	{ labelKey: 'input-mode-options.astro', value: 10, group: 'mini' },
 	{ labelKey: 'input-mode-options.psclassic', value: 11, group: 'mini' },
-	{
-		labelKey: 'input-mode-options.xboxoriginal', 
-		value: 12, 
-		group: 'primary',
-	},
 ];
 
 const INPUT_BOOT_MODES = [
 	{ labelKey: 'input-mode-options.none', value: -1, group: 'primary' },
 	{ labelKey: 'input-mode-options.xinput', value: 0, group: 'primary' },
 	{
-		labelKey: 'input-mode-options.nintendo-switch',
-		value: 1,
+		labelKey: 'input-mode-options.xbone',
+		value: 5,
 		group: 'primary',
+		required: ['usb'],
 	},
+	{ labelKey: 'input-mode-options.xboxoriginal', value: 12, group: 'primary' },
 	{ labelKey: 'input-mode-options.ps3', value: 2, group: 'primary' },
-	{ labelKey: 'input-mode-options.keyboard', value: 3, group: 'primary' },
 	{
 		labelKey: 'input-mode-options.ps4',
 		value: 4,
@@ -229,11 +227,12 @@ const INPUT_BOOT_MODES = [
 		optional: ['usb'],
 	},
 	{
-		labelKey: 'input-mode-options.xbone',
-		value: 5,
+		labelKey: 'input-mode-options.nintendo-switch',
+		value: 1,
 		group: 'primary',
-		required: ['usb'],
 	},
+	{ labelKey: 'input-mode-options.nintendo-switch-pro', value: 15, group: 'primary' },
+	{ labelKey: 'input-mode-options.keyboard', value: 3, group: 'primary' },
 	{ labelKey: 'input-mode-options.generic', value: 14, group: 'primary' },
 	{ labelKey: 'input-mode-options.mdmini', value: 6, group: 'mini' },
 	{ labelKey: 'input-mode-options.neogeo', value: 7, group: 'mini' },
@@ -241,7 +240,6 @@ const INPUT_BOOT_MODES = [
 	{ labelKey: 'input-mode-options.egret', value: 9, group: 'mini' },
 	{ labelKey: 'input-mode-options.astro', value: 10, group: 'mini' },
 	{ labelKey: 'input-mode-options.psclassic', value: 11, group: 'mini' },
-	{ labelKey: 'input-mode-options.xboxoriginal', value: 12, group: 'primary' },
 ];
 
 const INPUT_MODE_GROUPS = [
@@ -338,6 +336,7 @@ const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.menu-nav-select', value: 48 },
 	{ labelKey: 'hotkey-actions.menu-nav-back', value: 49 },
 	{ labelKey: 'hotkey-actions.menu-nav-toggle', value: 50 },
+	{ labelKey: 'hotkey-actions.focus-mode-toggle', value: 71 },
 ];
 
 const FORCED_SETUP_MODES = [

@@ -191,6 +191,7 @@ src/drivers/ps4/PS4AuthUSBListener.cpp
 src/drivers/ps4/PS4Driver.cpp
 src/drivers/psclassic/PSClassicDriver.cpp
 src/drivers/switch/SwitchDriver.cpp
+src/drivers/switchpro/SwitchProDriver.cpp
 src/drivers/xbone/XBOneAuth.cpp
 src/drivers/xbone/XBOneAuthUSBListener.cpp
 src/drivers/xbone/XBOneDriver.cpp
@@ -262,6 +263,7 @@ src/addons/tilt.cpp
 src/addons/spi_analog_ads1256.cpp
 src/addons/gamepad_usb_host.cpp
 src/addons/gamepad_usb_host_listener.cpp
+src/addons/tg16_input.cpp
 src/animationstation/animation.cpp
 src/animationstation/animationstation.cpp
 src/animationstation/effects/chase.cpp

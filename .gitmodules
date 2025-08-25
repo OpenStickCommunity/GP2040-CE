@@ -1,6 +1,7 @@
 [submodule "lib/tinyusb"]
 	path = lib/tinyusb
-	url = https://github.com/jfedor2/tinyusb.git
+	url = https://github.com/OpenStickCommunity/tinyusb.git
 [submodule "lib/pico_pio_usb"]
 	path = lib/pico_pio_usb
-	url = https://github.com/jfedor2/Pico-PIO-USB.git
+	url = https://github.com/OpenStickCommunity/Pico-PIO-USB.git
+	branch = dev

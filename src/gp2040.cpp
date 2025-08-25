@@ -29,7 +29,7 @@
 #include "addons/rotaryencoder.h"
 #include "addons/i2c_gpio_pcf8575.h"
 #include "addons/gamepad_usb_host.h"
-
+#include "addons/tg16_input.h"
 
 // Pico includes
 #include "pico/bootrom.h"
@@ -71,6 +71,11 @@ void GP2040::setup() {
 	// Set pin mappings for all GPIO functions
 	Storage::getInstance().setFunctionalPinMappings();
 
+	// power up... 
+	gamepad->auxState.power.pluggedIn = true;
+	gamepad->auxState.power.charging = false;
+	gamepad->auxState.power.level = GAMEPAD_AUX_MAX_POWER;
+
 	// Setup Gamepad
 	gamepad->setup();
 	
@@ -109,6 +114,7 @@ void GP2040::setup() {
 	addons.LoadAddon(new TiltInput());
 	addons.LoadAddon(new RotaryEncoderInput());
 	addons.LoadAddon(new PCF8575Addon());
+	addons.LoadAddon(new TG16padInput());
 
 	// Input override addons
 	addons.LoadAddon(new ReverseInput());
@@ -168,6 +174,9 @@ void GP2040::setup() {
 			break;
 		case BootAction::SET_INPUT_MODE_XBOXORIGINAL: // Xbox OG Driver
 			inputMode = INPUT_MODE_XBOXORIGINAL;
+			break;
+		case BootAction::SET_INPUT_MODE_SWITCH_PRO:
+			inputMode = INPUT_MODE_SWITCH_PRO;
 			break;
 		case BootAction::NONE:
 		default:
@@ -429,6 +438,8 @@ GP2040::BootAction GP2040::getBootAction() {
                                     return BootAction::SET_INPUT_MODE_XBOXORIGINAL;
                                 case INPUT_MODE_XBONE:
                                     return BootAction::SET_INPUT_MODE_XBONE;
+                                case INPUT_MODE_SWITCH_PRO: 
+                                    return BootAction::SET_INPUT_MODE_SWITCH_PRO;
                                 default:
                                     return BootAction::NONE;
                             }
