@@ -377,6 +377,7 @@ enum GamepadHotkey
     HOTKEY_DISABLE_4_WAY_MODE    = 74;
     HOTKEY_TURBO_COUNT_UP        = 75;
     HOTKEY_TURBO_COUNT_DOWN      = 76;
+    HOTKEY_FOCUS_MODE_TOGGLE     = 77;
 }
 
 enum AnimationEffects
