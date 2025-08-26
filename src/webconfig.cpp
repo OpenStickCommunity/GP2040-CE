@@ -20,6 +20,9 @@
 
 #include <pico/types.h>
 
+// for hall-effect calibration
+#include "hardware/adc.h"
+
 // HTTPD Includes
 #include <ArduinoJson.h>
 #include "rndis.h"
@@ -1313,7 +1316,6 @@ std::string getI2CPeripheralMap() {
 
     PeripheralOptions& peripheralOptions = Storage::getInstance().getPeripheralOptions();
 
-
     if (peripheralOptions.blockI2C0.enabled && PeripheralManager::getInstance().isI2CEnabled(0)) {
         std::map<uint8_t,bool> result = PeripheralManager::getInstance().getI2C(0)->scan();
         for (std::map<uint8_t,bool>::iterator it = result.begin(); it != result.end(); ++it) {
@@ -1397,40 +1399,12 @@ std::string getExpansionPins()
     const size_t capacity = JSON_OBJECT_SIZE(100);
     DynamicJsonDocument doc(capacity);
     GpioMappingInfo* gpioMappings = Storage::getInstance().getAddonOptions().pcf8575Options.pins;
-
-    writeDoc(doc, "pins", "pcf8575", 0, "pin00", "option", gpioMappings[0].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin00", "direction", gpioMappings[0].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin01", "option", gpioMappings[1].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin01", "direction", gpioMappings[1].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin02", "option", gpioMappings[2].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin02", "direction", gpioMappings[2].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin03", "option", gpioMappings[3].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin03", "direction", gpioMappings[3].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin04", "option", gpioMappings[4].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin04", "direction", gpioMappings[4].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin05", "option", gpioMappings[5].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin05", "direction", gpioMappings[5].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin06", "option", gpioMappings[6].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin06", "direction", gpioMappings[6].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin07", "option", gpioMappings[7].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin07", "direction", gpioMappings[7].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin08", "option", gpioMappings[8].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin08", "direction", gpioMappings[8].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin09", "option", gpioMappings[9].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin09", "direction", gpioMappings[9].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin10", "option", gpioMappings[10].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin10", "direction", gpioMappings[10].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin11", "option", gpioMappings[11].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin11", "direction", gpioMappings[11].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin12", "option", gpioMappings[12].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin12", "direction", gpioMappings[12].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin13", "option", gpioMappings[13].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin13", "direction", gpioMappings[13].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin14", "option", gpioMappings[14].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin14", "direction", gpioMappings[14].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin15", "option", gpioMappings[15].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin15", "direction", gpioMappings[15].direction);
-
+    char pinName[6];
+    for (uint16_t pin = 0; pin < 16; pin++) {
+        snprintf(pinName, 6, "pin%0*d", 2, pin);
+        writeDoc(doc, "pins", "pcf8575", 0, pinName, "option", gpioMappings[pin].action);
+        writeDoc(doc, "pins", "pcf8575", 0, pinName, "direction", gpioMappings[pin].direction);
+    }
     return serialize_json(doc);
 }
 
@@ -1458,6 +1432,152 @@ std::string setExpansionPins()
 
     return serialize_json(doc);
 }
+
+static uint32_t calibrationMuxChannels = 0;
+static Pin_t calibrationSelectPins[4];
+static Pin_t calibrationADCPins[4];
+
+// Get the HE Trigger Calibration using our manual GPIO input and everything
+std::string setHETriggerCalibration()
+{
+    DynamicJsonDocument doc = get_post_data();
+    calibrationMuxChannels = doc["muxChannels"];
+    calibrationSelectPins[0] = doc["muxSelectPin0"];
+    calibrationSelectPins[1] = doc["muxSelectPin1"];
+    calibrationSelectPins[2] = doc["muxSelectPin2"];
+    calibrationSelectPins[3] = doc["muxSelectPin3"];
+    
+    calibrationADCPins[0] = doc["muxADCPin0"];
+    calibrationADCPins[1] = doc["muxADCPin1"];
+    calibrationADCPins[2] = doc["muxADCPin2"];
+    calibrationADCPins[3] = doc["muxADCPin3"];
+
+    for (int i = 0; i < 4; i++) {
+        if ( calibrationSelectPins[i] != -1 && 
+                calibrationSelectPins[i] >= 0 && 
+                calibrationSelectPins[i] <= 29 ) {
+            gpio_init(calibrationSelectPins[i]);
+            gpio_set_dir(calibrationSelectPins[i], GPIO_OUT);
+            gpio_put(calibrationSelectPins[i], 0);
+        }
+        if ( calibrationADCPins[i] != -1 && 
+                calibrationADCPins[i] >= 26 && 
+                calibrationADCPins[i] <= 29 ) {
+            adc_gpio_init(calibrationADCPins[i]);
+        }
+    }
+
+    return serialize_json(doc);
+}
+
+// Get the HE Trigger Calibration using our manual GPIO input and everything
+std::string getHETriggerCalibration()
+{
+    DynamicJsonDocument postDoc = get_post_data();
+    uint32_t id = postDoc["targetId"];
+    const size_t capacity = JSON_OBJECT_SIZE(20);
+    DynamicJsonDocument doc(capacity);
+
+    uint32_t adcSelectPin = 0;
+
+    // Mux Channels determines how many select pins we use
+    if (calibrationMuxChannels == 1) {
+        if ( id > 3 ) {
+            doc["error"] = "id out of range";
+            return serialize_json(doc);
+        }
+        adcSelectPin = calibrationADCPins[id];
+    } else if ( calibrationMuxChannels == 4) {
+        uint32_t adcNum = id / 4;
+        uint32_t channel = (id % 4);
+        if ( adcNum > 3 ) {
+            doc["error"] = "id out of 4-channel mux range";
+            return serialize_json(doc);
+        }
+        adcSelectPin = calibrationADCPins[adcNum];
+        gpio_put(calibrationSelectPins[0], channel & 0x01);
+        gpio_put(calibrationSelectPins[1], (channel >> 1) & 0x01);
+    } else if (calibrationMuxChannels == 8) {
+        uint32_t adcNum = id / 8;
+        uint32_t channel = (id % 8);
+        if ( adcNum > 2 ) {
+            doc["error"] = "id out of 8-channel mux range";
+            return serialize_json(doc);
+        }
+        adcSelectPin = calibrationADCPins[adcNum];
+        gpio_put(calibrationSelectPins[0], channel & 0x01);
+        gpio_put(calibrationSelectPins[1], (channel >> 1) & 0x01);
+        gpio_put(calibrationSelectPins[2], (channel >> 2) & 0x01);
+    } else if (calibrationMuxChannels == 16) {
+        uint32_t adcNum = id / 16;
+        uint32_t channel = (id % 16);
+        if ( adcNum > 1 ) {
+            doc["error"] = "id out of 16-channel mux range";
+            return serialize_json(doc);
+        }
+        adcSelectPin = calibrationADCPins[adcNum];
+        gpio_put(calibrationSelectPins[0], channel & 0x01);
+        gpio_put(calibrationSelectPins[1], (channel >> 1) & 0x01);
+        gpio_put(calibrationSelectPins[2], (channel >> 2) & 0x01);
+        gpio_put(calibrationSelectPins[3], (channel >> 3) & 0x01);
+    } else {
+        doc["error"] = "mux channels incorrect";
+        return serialize_json(doc);
+    }
+
+    if ( adcSelectPin < 26 || adcSelectPin > 29) {
+        doc["error"] = "adc pin out of range";
+        return serialize_json(doc);
+    }
+    adc_select_input(adcSelectPin-26);
+    sleep_us(5);
+    adc_read();
+    sleep_us(2);
+    doc["voltage"] = adc_read();
+    return serialize_json(doc);
+}
+
+std::string getHETriggerOptions()
+{
+    const size_t capacity = JSON_OBJECT_SIZE(500);
+    DynamicJsonDocument doc(capacity);
+    
+    HETriggerInfo * heTriggers = Storage::getInstance().getAddonOptions().heTriggerOptions.triggers;
+    
+    JsonArray triggerList = doc.createNestedArray("triggers");
+    for(int i = 0; i < 32; i++) {
+        JsonObject trigger = triggerList.createNestedObject();
+        trigger["action"] = heTriggers[i].action;
+        trigger["idle"] = heTriggers[i].idle;
+        trigger["active"] = heTriggers[i].active;
+        trigger["max"] = heTriggers[i].max;
+        trigger["polarity"] = heTriggers[i].polarity;
+    }
+
+    return serialize_json(doc);
+}
+
+// Set Hall Effect Trigger Options
+std::string setHETriggerOptions()
+{
+    const size_t capacity = JSON_OBJECT_SIZE(100);
+    DynamicJsonDocument doc = get_post_data();
+    HETriggerInfo * heTriggers = Storage::getInstance().getAddonOptions().heTriggerOptions.triggers;
+
+    for(int i = 0; i < 32; i++) {
+        heTriggers[i].action = doc["triggers"][i]["action"];
+        heTriggers[i].idle = doc["triggers"][i]["idle"];
+        heTriggers[i].active = doc["triggers"][i]["active"];
+        heTriggers[i].max = doc["triggers"][i]["max"];
+        heTriggers[i].polarity = doc["triggers"][i]["polarity"];
+    }
+    
+    Storage::getInstance().getAddonOptions().heTriggerOptions.triggers_count = 32;
+    EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
+
+    return serialize_json(doc);
+}
+
 
 std::string getReactiveLEDs()
 {
@@ -1691,6 +1811,18 @@ std::string setAddonOptions()
     docToPin(tg16Options.dataPin1, doc, "tg16PadDataPin1");
     docToPin(tg16Options.dataPin2, doc, "tg16PadDataPin2");
     docToPin(tg16Options.dataPin3, doc, "tg16PadDataPin3");
+
+    HETriggerOptions& heTriggerOptions = Storage::getInstance().getAddonOptions().heTriggerOptions;
+    docToValue(heTriggerOptions.enabled, doc, "HETriggerEnabled");
+    docToValue(heTriggerOptions.muxChannels, doc, "muxChannels");
+    docToPin(heTriggerOptions.selectPin0, doc, "muxSelectPin0");
+    docToPin(heTriggerOptions.selectPin1, doc, "muxSelectPin1");
+    docToPin(heTriggerOptions.selectPin2, doc, "muxSelectPin2");
+    docToPin(heTriggerOptions.selectPin3, doc, "muxSelectPin3");
+    docToPin(heTriggerOptions.muxADCPin0, doc, "muxADCPin0");
+    docToPin(heTriggerOptions.muxADCPin1, doc, "muxADCPin1");
+    docToPin(heTriggerOptions.muxADCPin2, doc, "muxADCPin2");
+    docToPin(heTriggerOptions.muxADCPin3, doc, "muxADCPin3");
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
@@ -2132,6 +2264,18 @@ std::string getAddonOptions()
     writeDoc(doc, "tg16PadDataPin2", cleanPin(tg16Options.dataPin2));
     writeDoc(doc, "tg16PadDataPin3", cleanPin(tg16Options.dataPin3));
 
+    const HETriggerOptions& heTriggerOptions = Storage::getInstance().getAddonOptions().heTriggerOptions;
+    writeDoc(doc, "HETriggerEnabled", heTriggerOptions.enabled);
+    writeDoc(doc, "muxChannels", heTriggerOptions.muxChannels);
+    writeDoc(doc, "muxSelectPin0", cleanPin(heTriggerOptions.selectPin0));
+    writeDoc(doc, "muxSelectPin1", cleanPin(heTriggerOptions.selectPin1));
+    writeDoc(doc, "muxSelectPin2", cleanPin(heTriggerOptions.selectPin2));
+    writeDoc(doc, "muxSelectPin3", cleanPin(heTriggerOptions.selectPin3));
+    writeDoc(doc, "muxADCPin0", cleanPin(heTriggerOptions.muxADCPin0));
+    writeDoc(doc, "muxADCPin1", cleanPin(heTriggerOptions.muxADCPin1));
+    writeDoc(doc, "muxADCPin2", cleanPin(heTriggerOptions.muxADCPin2));
+    writeDoc(doc, "muxADCPin3", cleanPin(heTriggerOptions.muxADCPin3));
+
     return serialize_json(doc);
 }
 
@@ -2390,6 +2534,10 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/getI2CPeripheralMap", getI2CPeripheralMap },
     { "/api/setExpansionPins", setExpansionPins },
     { "/api/getExpansionPins", getExpansionPins },
+    { "/api/setHETriggerOptions", setHETriggerOptions },
+    { "/api/getHETriggerOptions", getHETriggerOptions },
+    { "/api/getHETriggerCalibration", getHETriggerCalibration },
+    { "/api/setHETriggerCalibration", setHETriggerCalibration },
     { "/api/setReactiveLEDs", setReactiveLEDs },
     { "/api/getReactiveLEDs", getReactiveLEDs },
     { "/api/setKeyMappings", setKeyMappings },
