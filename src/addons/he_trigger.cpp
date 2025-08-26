@@ -64,7 +64,7 @@ void HETriggerAddon::selectChannel(uint8_t channel) {
     }
 }
 
-void HETriggerAddon::process() {
+void HETriggerAddon::preprocess() {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     HETriggerOptions & options = Storage::getInstance().getAddonOptions().heTriggerOptions;
     uint32_t mux;
