@@ -138,6 +138,11 @@ export default {
 	'keyboard-host-left-mouse': 'Left',
 	'keyboard-host-middle-mouse': 'Middle',
 	'keyboard-host-right-mouse': 'Right',
+	'keyboard-host-mouse-sensitivity': 'Mouse Sensitivity',
+	'keyboard-host-mouse-movement': 'Mouse Movement',
+	'keyboard-host-mouse-movement-none': 'None',
+	'keyboard-host-mouse-movement-left-analog': 'Left Analog',
+	'keyboard-host-mouse-movement-right-analog': 'Right Analog',
 	'pin-config-moved-to-core-text':
 		'Note: GPIO pins for this add-on are configured in <0>GPIO Pin Mapping</0>',
 	'input-history-header-text': 'Input History',

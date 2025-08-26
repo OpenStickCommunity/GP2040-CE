@@ -37,6 +37,7 @@ message GamepadOptions
     optional uint32 usbProductID = 30;
     optional uint32 usbVendorID = 31;
     optional uint32 miniMenuGamepadInput = 32;
+    optional InputModeDeviceType inputDeviceType = 33;
 }
 
 message KeyboardMapping
@@ -747,6 +748,8 @@ message KeyboardHostOptions
     optional uint32 mouseLeft = 5;
     optional uint32 mouseMiddle = 6;
     optional uint32 mouseRight = 7;
+    optional uint32 mouseSensitivity = 8;
+    optional MouseMovementMode movementMode = 9;
 }
 
 message GamepadUSBHostOptions

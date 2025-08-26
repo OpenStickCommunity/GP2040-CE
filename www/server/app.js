@@ -107,6 +107,7 @@ app.get('/api/getGamepadOptions', (req, res) => {
 	return res.send({
 		dpadMode: 0,
 		inputMode: 4,
+		inputDeviceType: 0,
 		socdMode: 2,
 		switchTpShareForDs4: 0,
 		forcedSetupMode: 0,
@@ -512,6 +513,8 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		keyboardHostMouseLeft: 0,
 		keyboardHostMouseMiddle: 0,
 		keyboardHostMouseRight: 0,
+		keyboardHostMouseSensitivity: 50,
+		keyboardHostMouseMovement: 0,
 		AnalogInputEnabled: 1,
 		BoardLedAddonEnabled: 1,
 		FocusModeAddonEnabled: 1,

@@ -39,6 +39,7 @@ private:
     void preprocess_report();
     void process_kbd_report(uint8_t dev_addr, hid_keyboard_report_t const *report);
     void process_mouse_report(uint8_t dev_addr, hid_mouse_report_t const *report);
+    uint16_t scaleMouseToJoystick(int8_t mouseVal);
     KeyboardButtonMapping _keyboard_host_mapDpadUp;
     KeyboardButtonMapping _keyboard_host_mapDpadDown;
     KeyboardButtonMapping _keyboard_host_mapDpadLeft;
@@ -69,6 +70,12 @@ private:
     uint16_t mouseLeftMapping;
     uint16_t mouseMiddleMapping;
     uint16_t mouseRightMapping;
+    uint32_t mouseSensitivity;
+    uint8_t mouseMovementMode;
+    float mouseSensitivityScale;
+    uint32_t mouseResetMS;
+    uint32_t mouseResetNextTimer;
+    int16_t joystickMid;
     int16_t mouseX;
     int16_t mouseY;
     int16_t mouseZ;

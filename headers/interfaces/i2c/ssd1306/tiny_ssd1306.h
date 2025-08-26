@@ -32,6 +32,8 @@ class GPGFX_TinySSD1306 : public GPGFX_DisplayBase {
 
         void drawPolygon(uint16_t x, uint16_t y, uint16_t radius, uint16_t sides, uint32_t color, uint8_t filled, double rotation = 0);
 
+        void drawPill(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint32_t color, uint8_t filled, double rotationAngle = 0);
+
         void drawSprite(uint8_t* spriteData, uint16_t width, uint16_t height, uint16_t pitch, uint16_t x, uint16_t y, uint8_t priority, double scale = 1.0);
 
         void drawBuffer(uint8_t *pBuffer);
@@ -98,6 +100,8 @@ class GPGFX_TinySSD1306 : public GPGFX_DisplayBase {
         uint8_t screenType;
         bool _isSPI = false;
         bool _isI2C = true;
+
+        void rotatePoint(double cx, double cy, double &x, double &y, double angle);
 };
 
 #endif

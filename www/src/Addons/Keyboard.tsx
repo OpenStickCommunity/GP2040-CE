@@ -1,12 +1,13 @@
 import { useContext } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { FormCheck, Row, FormLabel } from 'react-bootstrap';
+import { FormCheck, Row, FormLabel, Form } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import * as yup from 'yup';
 
 import Section from '../Components/Section';
 
 import FormSelect from '../Components/FormSelect';
+import FormControl from '../Components/FormControl';
 import KeyboardMapper from '../Components/KeyboardMapper';
 import { baseButtonMappings } from '../Services/WebApi';
 import { AppContext } from '../Contexts/AppContext';
@@ -40,6 +41,8 @@ export const keyboardScheme = {
 			'KeyboardHostAddonEnabled',
 			BUTTON_MASKS_OPTIONS,
 		),
+	keyboardHostMouseSensitivity: yup.number().required().min(1).max(100),
+	keyboardHostMouseMovement: yup.string().required().oneOf(['0', '1', '2']),
 };
 
 export const keyboardState = {
@@ -48,6 +51,8 @@ export const keyboardState = {
 	keyboardHostMouseMiddle: 0,
 	keyboardHostMouseRight: 0,
 	KeyboardHostAddonEnabled: 0,
+	keyboardHostMouseSensitivity: 0,
+	keyboardHostMouseMovement: 0,
 };
 
 const excludedButtons = [
@@ -86,15 +91,16 @@ const Keyboard = ({
 	};
 
 	return (
-		<Section title={
-			<a
-				href="https://gp2040-ce.info/add-ons/keyboard-host"
-				target="_blank"
-				className="text-reset text-decoration-none"
-			>
-				{t('AddonsConfig:keyboard-host-header-text')}
-			</a>
-		}
+		<Section
+			title={
+				<a
+					href="https://gp2040-ce.info/add-ons/keyboard-host"
+					target="_blank"
+					className="text-reset text-decoration-none"
+				>
+					{t('AddonsConfig:keyboard-host-header-text')}
+				</a>
+			}
 		>
 			<div
 				id="KeyboardHostAddonOptions"
@@ -103,7 +109,10 @@ const Keyboard = ({
 				}
 			>
 				<div className="alert alert-info" role="alert">
-					The D+ and Enable 5V pins and GPIO Pin Order are configured in <a href="../peripheral-mapping" className="alert-link">Peripheral Mapping</a>
+					The D+ and Enable 5V pins and GPIO Pin Order are configured in{' '}
+					<a href="../peripheral-mapping" className="alert-link">
+						Peripheral Mapping
+					</a>
 				</div>
 				<Row className="mb-3">
 					<p>{t('AddonsConfig:keyboard-host-sub-header-text')}</p>
@@ -168,6 +177,71 @@ const Keyboard = ({
 								</option>
 							))}
 						</FormSelect>
+					</div>
+					<div className="col-sm-12 mb-2">
+						<Form.Label>{`${t('AddonsConfig:keyboard-host-mouse-sensitivity')}: ${values.keyboardHostMouseSensitivity}%`}</Form.Label>
+						<Form.Range
+							name="keyboardHostMouseSensitivity"
+							id={`keyboardHostMouseSensitivity`}
+							min={1}
+							max={100}
+							step={1}
+							value={values.keyboardHostMouseSensitivity}
+							onChange={handleChange}
+						/>
+					</div>
+					<div className="col-sm-12 mb-2">
+						<Form.Label>
+							{t('AddonsConfig:keyboard-host-mouse-movement')}
+						</Form.Label>
+						<div className="d-flex gap-3">
+							<FormCheck
+								type="radio"
+								id="mouseMovementNone"
+								label={t('AddonsConfig:keyboard-host-mouse-movement-none')}
+								name="keyboardHostMouseMovement"
+								value={0}
+								checked={values.keyboardHostMouseMovement === 0}
+								onChange={(e) => {
+									setFieldValue(
+										'keyboardHostMouseMovement',
+										parseInt(e.target.value),
+									);
+								}}
+							/>
+							<FormCheck
+								type="radio"
+								id="mouseMovementLeftAnalog"
+								label={t(
+									'AddonsConfig:keyboard-host-mouse-movement-left-analog',
+								)}
+								name="keyboardHostMouseMovement"
+								value={1}
+								checked={values.keyboardHostMouseMovement === 1}
+								onChange={(e) => {
+									setFieldValue(
+										'keyboardHostMouseMovement',
+										parseInt(e.target.value),
+									);
+								}}
+							/>
+							<FormCheck
+								type="radio"
+								id="mouseMovementRightAnalog"
+								label={t(
+									'AddonsConfig:keyboard-host-mouse-movement-right-analog',
+								)}
+								name="keyboardHostMouseMovement"
+								value={2}
+								checked={values.keyboardHostMouseMovement === 2}
+								onChange={(e) => {
+									setFieldValue(
+										'keyboardHostMouseMovement',
+										parseInt(e.target.value),
+									);
+								}}
+							/>
+						</div>
 					</div>
 				</Row>
 			</div>
