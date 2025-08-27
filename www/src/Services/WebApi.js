@@ -658,8 +658,6 @@ async function setHETriggerCalibration(settings) {
 async function getHETriggerOptions() {
 	try {
 		const response = await Http.get(`${baseUrl}/api/getHETriggerOptions`);
-		console.log("Trigger Data:");
-		console.log(response.data);
 		return response.data;
 	} catch (error) {
 		console.error(error);
