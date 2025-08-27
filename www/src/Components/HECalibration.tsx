@@ -109,6 +109,27 @@ const HECalibration = ({
 		setPolarity(triggers[target].polarity);
 	};
 
+	const restartCalibration = () => {
+		setCalibrationStep(0);
+		setPreviousStep(0);
+	};
+
+	const calculateVoltIdle = () => {
+		return (voltage/(4096/100.0));
+	};
+
+	const calculateVoltMax = () => {
+		return ((voltage-voltageIdle)/((4096-voltageIdle)/100.0));
+	};
+
+	const calculateVoltPressed = () => {
+		return (Math.min(voltageMax,voltage)-voltageIdle)/((voltageMax-voltageIdle)/100.0);
+	};
+
+	const calculateVoltActiveDefault = () => {
+		return (Math.floor(voltageMax*0.8));
+	};
+
 	const readHallEffect = async (step:number) => {
 		// read hall effect trigger if we're not at opening
 		const result = await WebApi.getHETriggerCalibration({
@@ -139,6 +160,208 @@ const HECalibration = ({
 		}
 	};
 
+	const firstStep = () => {
+		return (
+			<Row className="mb-3" hidden={calibrationStep !== 0}>
+				<Col xs={12} className="mb-3">
+					{t(`HETrigger:calibration-first-step`)}
+				</Col>
+				<Col xs={12} className="mb-3"></Col>
+				<Col xs={12} className="mb-3">
+					{t(`HETrigger:calibration-idle-text`)}
+				</Col>
+				<Col xs={12} className="mb-3 text-center">
+					<ProgressBar>
+						<ProgressBar variant="info" now={calculateVoltIdle()} key={1} />
+					</ProgressBar>
+				</Col>
+				<Col xs={12} className="mb-3">
+					<h3>{voltage}</h3>
+				</Col>
+			</Row>
+		);
+	};
+
+	const secondStep = () => {
+		return (
+			<Row className="mb-3" hidden={calibrationStep !== 1}>
+				<span className="col-sm-12">
+					{t(`HETrigger:calibration-second-step`)}
+				</span>
+				<Col xs={12} className="mb-3"></Col>
+				<Col xs={12} className="mb-3">
+					{t(`HETrigger:calibration-pressed-text`)}
+				</Col>
+				<Col xs={12} className="mb-3 text-center">
+					<ProgressBar>
+						<ProgressBar variant="info" now={calculateVoltMax()} key={1} />
+					</ProgressBar>
+				</Col>
+				<Col xs={12} className="mb-3">
+					<h3>{voltage}</h3>
+				</Col>
+				<Col xs={3} className="mb-3">
+					<Button onClick={() => { restartCalibration(); }} variant="danger">
+						{t(`HETrigger:restart-text`)}
+					</Button>
+				</Col>
+			</Row>
+		);
+	};
+
+	const thirdStep = () => {
+		return (
+			<Row className="mb-3" hidden={calibrationStep !== 2}>
+				<span className="col-sm-12">
+					{t(`HETrigger:calibration-third-step`)}
+				</span>
+				<Col xs={12} className="mb-3"></Col>
+				<Col xs={12} className="mb-3">
+					<FormControl
+						type="number"
+						label={t(`HETrigger:activation-input-text`)}
+						name="voltageActive"
+						className="form-select-sm"
+						value={voltageActive}
+						onChange={(e) => {
+							setVoltageActive(parseInt((e.target as HTMLInputElement).value));
+						}}
+						min={voltageIdle}
+						max={voltageMax}
+					/>
+				</Col>
+				<Col xs={12} className="mb-3">
+					{t(`HETrigger:activation-reading-text`)}
+				</Col>
+				<Col xs={12} className="mb-3 text-center">
+					<ProgressBar>
+						<ProgressBar variant={voltage>voltageActive?"success":"warning"} now={calculateVoltPressed()} key={1} />
+					</ProgressBar>
+				</Col>
+				<Col xs={12} className="mb-3">
+					<Form.Range
+						min={voltageIdle}
+						max={voltageMax}
+						step={1}
+						value={voltageActive}
+						onChange={(e) => {
+							setVoltageActive(parseInt((e.target as HTMLInputElement).value));
+						}}
+						></Form.Range>
+				</Col>
+				<Col xs={12} className="mb-3">
+					{voltage} {voltage>voltageActive?t('HETrigger:pressed-text'):""}
+				</Col>
+				<Col xs={3} className="mb-3">
+					<Button onClick={() => restartCalibration()} variant="danger">
+						{t(`HETrigger:restart-text`)}
+					</Button>
+				</Col>
+			</Row>
+		);
+	};
+
+	const manulAdjustments = () => {
+		return (
+			<Row className="mb-3" hidden={calibrationStep !== 3}>
+				<Col xs={12} className="mb-3">
+					{t(`HETrigger:calibration-manual-step`)}
+				</Col>
+				<Col xs={4} className="mb-3">
+					<FormControl
+						type="number"
+						label={t(`HETrigger:idle-input-text`)}
+						name="voltageIdle"
+						className="form-select-sm"
+						value={voltageIdle}
+						onChange={(e) => {
+							setVoltageIdle(parseInt((e.target as HTMLInputElement).value));
+						}}
+						min={0}
+						max={4096}
+					/>
+				</Col>
+				<Col xs={4} className="mb-3">
+					<FormControl
+						type="number"
+						label={t(`HETrigger:activation-input-text`)}
+						name="voltageActive"
+						className="form-select-sm"
+						value={voltageActive}
+						onChange={(e) => {
+							setVoltageActive(parseInt((e.target as HTMLInputElement).value));
+						}}
+						min={0}
+						max={4096}
+					/>
+				</Col>
+				<Col xs={4} className="mb-3">
+					<FormControl
+						type="number"
+						label={t(`HETrigger:pressed-input-text`)}
+						name="voltageMax"
+						className="form-select-sm"
+						value={voltageMax}
+						onChange={(e) => {
+							setVoltageMax(parseInt((e.target as HTMLInputElement).value));
+						}}
+						min={0}
+						max={4096}
+					/>
+				</Col>
+				<Col xs={12} className="mb-3">
+					<FormCheck
+						label={t('HETrigger:calibration-flip-polarity')}
+						type="switch"
+						name="polarity"
+						id="HETriggerPolarize"
+						disabled
+						isInvalid={false}
+						checked={polarity}
+						onChange={(e) => {
+							setPolarity(polarity == 0 ? 1 : 0);
+						}}
+					/>
+				</Col>
+				<Col xs={12} className="mb-3">
+					{t(`HETrigger:activation-reading-text`)}
+				</Col>
+				<Col xs={12} className="mb-3 text-center">
+					<ProgressBar>
+						<ProgressBar variant={voltage>voltageActive?"success":"warning"} now={calculateVoltPressed()} key={1} />
+					</ProgressBar>
+				</Col>
+				<Col xs={12} className="mb-3">
+					<Form.Range
+						min={voltageIdle}
+						max={voltageMax}
+						step={1}
+						value={voltageActive}
+						onChange={(e) => {
+							setVoltageActive(parseInt(e.target.value));
+						}}
+					></Form.Range>
+				</Col>
+				<Col xs={12} className="mb-3">
+					{voltage} {voltage>voltageActive?t('HETrigger:pressed-text'):""}
+				</Col>
+				<Col xs={12} className="mb-3" />
+				<Col xs={12} className="mb-3 text-center">
+					<Button
+						variant="danger"
+						onClick={() => {
+							if (window.confirm(t(`HETrigger:overwrite-confirm`))) {
+								overwriteAllCalibration();
+							}
+						}}
+						className="col-sm-4"
+					>{t(`HETrigger:overwrite-all-warning`)}
+					</Button>
+				</Col>
+			</Row>
+		);
+	};
+
 	useEffect(() => {
 		startReadingCalibrationLoop(showModal, calibrationStep);
 	}, [calibrationStep]);
@@ -154,195 +377,10 @@ const HECalibration = ({
 					<Modal.Title className="me-auto">{t(`HETrigger:calibration-header-text`)} - {title}</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<Row className="mb-3" hidden={calibrationStep !== 0}>
-						<Col xs={12} className="mb-3">
-							{t(`HETrigger:calibration-first-step`)}
-						</Col>
-						<Col xs={12} className="mb-3"></Col>
-						<Col xs={12} className="mb-3">
-							{t(`HETrigger:calibration-idle-text`)}
-						</Col>
-						<Col xs={12} className="mb-3 text-center">
-							<ProgressBar>
-								<ProgressBar variant="info" now={voltage/(4096/100.0)} key={1} />
-							</ProgressBar>
-						</Col>
-						<Col xs={12} className="mb-3">
-							<h3>{voltage}</h3>
-						</Col>
-					</Row>
-					<Row className="mb-3" hidden={calibrationStep !== 1}>
-						<span className="col-sm-12">
-							{t(`HETrigger:calibration-second-step`)}
-						</span>
-						<Col xs={12} className="mb-3"></Col>
-						<Col xs={12} className="mb-3">
-							{t(`HETrigger:calibration-pressed-text`)}
-						</Col>
-						<Col xs={12} className="mb-3 text-center">
-							<ProgressBar>
-								<ProgressBar variant="info" now={(voltage-voltageIdle)/((4096-voltageIdle)/100.0)} key={1} />
-							</ProgressBar>
-						</Col>
-						<Col xs={12} className="mb-3">
-							<h3>{voltage}</h3>
-						</Col>
-						<Col xs={3} className="mb-3">
-							<Button onClick={() => {
-								setCalibrationStep(0);
-								setPreviousStep(0);
-							}} variant="danger">
-								{t(`HETrigger:restart-text`)}
-							</Button>
-						</Col>
-					</Row>
-					<Row className="mb-3" hidden={calibrationStep !== 2}>
-						<span className="col-sm-12">
-							{t(`HETrigger:calibration-third-step`)}
-						</span>
-						<Col xs={12} className="mb-3"></Col>
-						<Col xs={12} className="mb-3">
-							{t(`HETrigger:activation-reading-text`)}
-						</Col>
-						<Col xs={12} className="mb-3 text-center">
-							<ProgressBar>
-								<ProgressBar variant={voltage>voltageActive?"success":"warning"} now={(Math.min(voltageMax,voltage)-voltageIdle)/((voltageMax-voltageIdle)/100.0)} key={2} />
-							</ProgressBar>
-						</Col>
-						<Col xs={12} className="mb-3">
-							{voltage} {voltage>voltageActive?t('HETrigger:pressed-text'):""}
-						</Col>
-						<Col xs={12} className="mb-3">
-							{t(`HETrigger:activation-set-text`)}
-						</Col>
-						<Col xs={12} className="mb-3">
-							<Form.Range
-								min={voltageIdle}
-								max={voltageMax}
-								step={1}
-								value={voltageActive}
-								onChange={(e) => {
-									setVoltageActive(parseInt((e.target as HTMLInputElement).value));
-								}}
-								></Form.Range>
-						</Col>
-						<Col xs={12} className="mb-3">
-							<FormControl
-								type="number"
-								label={t(`HETrigger:activation-input-text`)}
-								name="voltageActive"
-								className="form-select-sm"
-								value={voltageActive}
-								onChange={(e) => {
-									setVoltageActive(parseInt((e.target as HTMLInputElement).value));
-								}}
-								min={voltageIdle}
-								max={voltageMax}
-							/>
-						</Col>
-						<Col xs={3} className="mb-3">
-							<Button onClick={() => setCalibrationStep(0)} variant="danger">
-								{t(`HETrigger:restart-text`)}
-							</Button>
-						</Col>
-					</Row>
-					<Row className="mb-3" hidden={calibrationStep !== 3}>
-						<Col xs={12} className="mb-3">
-							{t(`HETrigger:calibration-manual-step`)}
-						</Col>
-						<Col xs={4} className="mb-3">
-							<FormControl
-								type="number"
-								label={t(`HETrigger:idle-input-text`)}
-								name="voltageIdle"
-								className="form-select-sm"
-								value={voltageIdle}
-								onChange={(e) => {
-									setVoltageIdle(parseInt((e.target as HTMLInputElement).value));
-								}}
-								min={0}
-								max={4096}
-							/>
-						</Col>
-						<Col xs={4} className="mb-3">
-							<FormControl
-								type="number"
-								label={t(`HETrigger:activation-input-text`)}
-								name="voltageActive"
-								className="form-select-sm"
-								value={voltageActive}
-								onChange={(e) => {
-									setVoltageActive(parseInt((e.target as HTMLInputElement).value));
-								}}
-								min={0}
-								max={4096}
-							/>
-						</Col>
-						<Col xs={4} className="mb-3">
-							<FormControl
-								type="number"
-								label={t(`HETrigger:pressed-input-text`)}
-								name="voltageMax"
-								className="form-select-sm"
-								value={voltageMax}
-								onChange={(e) => {
-									setVoltageMax(parseInt((e.target as HTMLInputElement).value));
-								}}
-								min={0}
-								max={4096}
-							/>
-						</Col>
-						<Col xs={12} className="mb-3">
-							<FormCheck
-								label={t('HETrigger:calibration-flip-polarity')}
-								type="switch"
-								name="polarity"
-								id="HETriggerPolarize"
-								disabled
-								isInvalid={false}
-								checked={polarity}
-								onChange={(e) => {
-									setPolarity(polarity == 0 ? 1 : 0);
-								}}
-							/>
-						</Col>
-						<Col xs={12} className="mb-3">
-							{t(`HETrigger:activation-reading-text`)}
-						</Col>
-						<Col xs={12} className="mb-3 text-center">
-							<ProgressBar>
-								<ProgressBar striped variant="info" now={voltageIdle/40} key={1} />
-								<ProgressBar variant={voltage>voltageActive?"success":"warning"} now={voltage/40} key={2} />
-							</ProgressBar>
-						</Col>
-						<Col xs={12} className="mb-3">
-							<Form.Range
-								min={voltageIdle}
-								max={voltageMax}
-								step={1}
-								value={voltageActive}
-								onChange={(e) => {
-									setVoltageActive(parseInt(e.target.value));
-								}}
-							></Form.Range>
-						</Col>
-						<Col xs={12} className="mb-3">
-							{voltage} {voltage>voltageActive?t('HETrigger:pressed-text'):""}
-						</Col>
-						<Col xs={12} className="mb-3" />
-						<Col xs={12} className="mb-3 text-center">
-							<Button
-								variant="danger"
-								onClick={() => {
-									if (window.confirm(t(`HETrigger:overwrite-confirm`))) {
-										overwriteAllCalibration();
-									}
-								}}
-								className="col-sm-4"
-							>{t(`HETrigger:overwrite-all-warning`)}
-							</Button>
-						</Col>
-					</Row>
+					{firstStep()}
+					{secondStep()}
+					{thirdStep()}
+					{manulAdjustments()}
 				</Modal.Body>
 				<Modal.Footer>
 					<Button onClick={() => {
@@ -359,7 +397,7 @@ const HECalibration = ({
 					</Button>
 					<Button onClick={() => {
 						setVoltageMax(voltage);
-						setVoltageActive(Math.floor(voltageIdle+(voltageMax-voltageIdle)*0.8));
+						setVoltageActive(calculateVoltActiveDefault());
 						setCalibrationStep(2);
 					}} hidden={calibrationStep !== 1}>
 						<Spinner
