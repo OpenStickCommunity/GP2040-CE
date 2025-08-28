@@ -181,7 +181,7 @@ export default {
 	'drv8833-rumble-duty-min-label': '最低デューティー比',
 	'drv8833-rumble-duty-max-label': '最大デューティー比',
 	'tg16-extension-header-text': 'PC Engine/TurboGrafx-16 拡張設定',
-	'tg16-extension-sub-header-text': '注：Display機能が有効無場合、こちらのAdd-onは自動的に無効化されます。'
+	'tg16-extension-sub-header-text': '注：Display機能が有効無場合、こちらのAdd-onは自動的に無効化されます。',
 	'tg16-extension-oe-pin-label': 'OE GPIO 端子',
 	'tg16-extension-select-pin-label': 'セレクト GPIO 端子',
 	'tg16-extension-data-pin0-label': 'データ GPIO 端子 0 (U_I)',
