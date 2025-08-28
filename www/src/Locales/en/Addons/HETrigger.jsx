@@ -19,7 +19,7 @@ export default {
 	'calibration-idle-text': 'Idle Voltage Reading:',
 	'calibration-pressed-text': 'Pressed Voltage Reading:',
 	'calibration-trigger-text': 'Trigger Voltage',
-	'calibration-flip-polarity': 'Flip Polarity (Not Working Yet)',
+	'calibration-flip-polarity': 'Flip Polarity (Not Supported)',
 	'calibration-back-button': 'Back',
 	'voltage-table-header-text': 'Voltage Table (Advanced)',
 	'calibration-first-step': 'We need to calibrate the idle voltage and full press voltage of the hall-effect switch. ' +
