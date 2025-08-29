@@ -39,6 +39,7 @@ export type AnimationOptions = {
 	baseProfileIndex: number;
 	customColors: number[];
 	profiles: AnimationProfile[];
+	idletimeout: number;
 };
 
 type State = {
@@ -57,6 +58,7 @@ type Actions = {
 const INITIAL_STATE: State = {
 	AnimationOptions: {
 		brightness: 0,
+		idletimeout: 0,
 		baseProfileIndex: 0,
 		customColors: [],
 		profiles: [],

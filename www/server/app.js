@@ -107,6 +107,7 @@ app.get('/api/getAnimationProtoOptions', (req, res) => {
 	return res.send({
 		AnimationOptions: {
 			brightness: 5,
+			idletimeout: 0,
 			baseProfileIndex: 0,
 			customColors: [255],
 			profiles: [

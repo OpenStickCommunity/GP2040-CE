@@ -48,6 +48,11 @@ const schema = yup.object().shape({
 		.min(0, 'Brightness must be at least 0')
 		.max(100, 'Brightness cannot be more than 100')
 		.required('Brightness is required'),
+	idletimeout: yup
+		.number()
+		.min(0, 'Idle timout value must be at least 0')
+		.max(300, 'Idle timout value cannot be more than 300 seconds')
+		.required('Idle timout value is required'),
 	profiles: yup.array().of(
 		yup.object().shape({
 			bEnabled: yup.number().required(),
@@ -445,6 +450,20 @@ export default function AnimationSection() {
 									onChange={handleChange}
 									min={0}
 									max={100}
+								/>
+								
+								<FormControl
+									type="number"
+									label={t('Leds:idle-timout-label')}
+									name="idletimeout"
+									className="form-control-sm"
+									groupClassName="col-sm-4 mb-3"
+									value={values.idletimeout}
+									error={errors.idletimeout}
+									isInvalid={Boolean(errors.idletimeout)}
+									onChange={handleChange}
+									min={0}
+									max={300}
 								/>
 							</Row>
 							<FormGroup>

@@ -541,6 +541,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         INIT_UNSET_PROPERTY(config.animationOptions, brightness, config.ledOptions.brightnessSteps);
     }
     INIT_UNSET_PROPERTY(config.animationOptions, baseProfileIndex, 0);
+    INIT_UNSET_PROPERTY(config.animationOptions, autoDisableTime, 5000);
 
     //Default to rainbow rotate if a fresh settings
     if(config.animationOptions.profiles[0].has_bEnabled == false)

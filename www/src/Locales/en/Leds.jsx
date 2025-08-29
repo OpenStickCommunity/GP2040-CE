@@ -1,6 +1,7 @@
 export default {
 	'add-color': '+ Add color',
 	'profile-label': 'Active profile',
+	'idle-timout-label': 'No input time to switch off lights (0 means disabled)',
 	'profile-number': 'Profile {{profileNumber}}',
 	'case-animation-label': 'Case animation',
 	'custom-color-label': 'Custom color',
