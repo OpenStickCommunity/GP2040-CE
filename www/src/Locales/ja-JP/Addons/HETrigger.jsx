@@ -1,0 +1,36 @@
+export default {
+  'header-text': 'ホールセンサーボタン',
+  'available-pins-text': '利用可能ADC端子: {{pins}}',
+	'overwrite-all-warning': '全ボタンに反映',
+	'overwrite-confirm': '全ボタン設定反映確認',
+	'finish-calibration-2-text': '調整完了',
+	'finish-calibration-3-text': '調整結果保存',
+	'calibrate-idle-button': '未押下状態調整',
+	'calibrate-pressed-button': '最大押下状態調整',
+	'save-button': '押下判定値保存',
+	'manual-text': '手動調整',
+	'restart-text': '再開',
+	'pressed-text': '押下！',
+	'idle-input-text': '未押下電圧',
+	'activation-input-text': '押下判定電圧',
+	'pressed-input-text': '最大押下電圧',
+	'activation-reading-text': '押下判定電圧値:',
+	'calibration-header-text': 'ホールセンサ調整',
+	'calibration-idle-text': '未押下電圧値:',
+	'calibration-pressed-text': '最大押下電圧値:',
+	'calibration-trigger-text': '押下判定電圧値',
+	'calibration-flip-polarity': '極性反転 (未実装)',
+	'calibration-back-button': '戻る',
+	'voltage-table-header-text': '電圧テーブル (Advanced)',
+	'calibration-first-step':
+		'まずはホールセンサスイッチの未押下状態と完全押下状態の電圧を調整します。' +
+		'調整後、トリガーの判定位置を好みのストローク量に調整します。' +
+		'まずは未押下状態での電圧を調整しましょう。ホールセンサ対応ボタンを触っていない状態で「未押下状態調整」ボタンを押して下さい。',
+	'calibration-second-step':
+		'次に、ホールセンサ対応ボタンを一番下まで押し込んだ状態でボタンを押して下さい。ボタン反応位置は後ほど調整します。',
+	'calibration-third-step':
+	  '最後に、ボタン押下判定電圧を設定して、好みのストロークでボタン押下判定するよう設定しましょう。' +
+		'調整が完了したら、「調整完了」ボタンを押して設定を保存し、動作確認してください。',
+	'calibration-manual-step':
+	  '以下の設定値を好みの値に設定してください。設定後、全ボタンに設定を反映できます。',
+};
