@@ -160,9 +160,9 @@ protected:
   bool LightTypeIsForAnimation(LightType Type);
 
   //Get color helpers
-  RGB GetNonPressedColorForLight(uint32_t LightIndex);
-  RGB GetPressedColorForLight(uint32_t LightIndex);
-  RGB GetColorForIndex(uint32_t ColorIndex);
+  virtual RGB GetNonPressedColorForLight(uint32_t LightIndex);
+  virtual RGB GetPressedColorForLight(uint32_t LightIndex);
+  virtual RGB GetColorForIndex(uint32_t ColorIndex);
 
   //Light data
   Lights* RGBLights;

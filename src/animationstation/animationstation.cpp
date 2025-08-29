@@ -11,6 +11,7 @@
 #include "effects/staticcolor.h"
 #include "effects/jigglestaticcolor.h"
 #include "effects/burstcolor.h"
+#include "effects/idletimeout.h"
 #include "effects/jiggletwostaticcolor.h"
 #include "effects/randomcolor.h"
 #include "effects/smpulsecolor.h"
@@ -40,6 +41,8 @@ bool AnimationStation::TestModeLightIsCase = false;
 AnimationStation::AnimationStation()
 {
   AnimationStation::SetBrightness(1);
+
+  timeLastButtonPressed = get_absolute_time();
 
   //ensure valid profile set
   ChangeProfile(0);
@@ -126,6 +129,8 @@ void AnimationStation::HandleEvent(GamepadHotkey action)
 
 void AnimationStation::ChangeProfile(int changeSize) 
 {
+  timeLastButtonPressed = get_absolute_time();
+
   this->SetMode(this->AdjustIndex(changeSize));
 }
 
@@ -185,6 +190,7 @@ void AnimationStation::HandlePressedPins(std::vector<int32_t> pressedPins)
 {
   if(pressedPins.size())
   {
+    timeLastButtonPressed = get_absolute_time();
     this->lastPressed = pressedPins;
     if(this->buttonAnimation)
       this->buttonAnimation->UpdatePressed(pressedPins);
@@ -231,6 +237,9 @@ void AnimationStation::Animate()
   //Test mode checks
   UpdateTestMode();
 
+  //timeout checks
+  UpdateTimeout();
+
   //If no profiles running
   if (baseAnimation == nullptr || buttonAnimation == nullptr) 
   {
@@ -264,6 +273,37 @@ void AnimationStation::Clear()
 { 
   //sets all lights to black (off)
   memset(frame, 0, sizeof(frame)); 
+}
+
+void AnimationStation::UpdateTimeout()
+{
+  if(TestMode == AnimationStationTestMode::AnimationStation_TestModeInvalid)
+  {
+    if(bIsInIdleTimeout == false)
+    {
+      if((absolute_time_diff_us(timeLastButtonPressed, get_absolute_time()) / 1000) > options.autoDisableTime)
+      {
+        //turn off all lights (but leave pressed effects running so the first press on restart isnt lost)
+        bIsInIdleTimeout = true;
+        delete this->baseAnimation;
+        this->baseAnimation = new IdleTimeout(RGBLights, EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE);
+      }
+    }
+    else if((absolute_time_diff_us(timeLastButtonPressed, get_absolute_time()) / 1000) < options.autoDisableTime)
+    {
+      bIsInIdleTimeout = false;
+      delete this->baseAnimation;
+      bool bCaseLightsUsingButtonNonPressedAnim = this->options.profiles[this->options.baseProfileIndex].baseNonPressedEffect == this->options.profiles[this->options.baseProfileIndex].baseCaseEffect;
+      
+      //set new profile nonpressed animation
+      this->baseAnimation = GetNonPressedEffectForEffectType(this->options.profiles[this->options.baseProfileIndex].baseNonPressedEffect, bCaseLightsUsingButtonNonPressedAnim ? EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE : EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_ONLY);
+      //Set case animation if required
+      if(!bCaseLightsUsingButtonNonPressedAnim)
+      {
+        this->caseAnimation = GetNonPressedEffectForEffectType(this->options.profiles[this->options.baseProfileIndex].baseCaseEffect, EButtonCaseEffectType::BUTTONCASELIGHTTYPE_CASE_ONLY);
+      }
+    }
+  }
 }
 
 void AnimationStation::SetSpecialMoveAnimation(SpecialMoveEffects AnimationToPlay, uint32_t OptionalParams)
@@ -582,7 +622,8 @@ void AnimationStation::DecompressSettings()
 	}
 
 	options.brightness				= std::min<uint32_t>(optionsProto.brightness, 255);
-	options.baseProfileIndex		= optionsProto.baseProfileIndex;
+	options.baseProfileIndex	= optionsProto.baseProfileIndex;
+  options.autoDisableTime   = optionsProto.autoDisableTime;
 
 	customColors.clear();
 	for(unsigned int customColIndex = 0; customColIndex < MAX_CUSTOM_COLORS; ++customColIndex)

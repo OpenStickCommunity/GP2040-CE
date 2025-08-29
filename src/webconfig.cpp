@@ -1169,6 +1169,7 @@ std::string setAnimationProtoOptions()
     JsonObject AnimOptions = docJson["AnimationOptions"];
 
     options.brightness = AnimOptions["brightness"].as<uint32_t>();
+    options.autoDisableTime = AnimOptions["idletimeout"].as<uint32_t>() * 1000;
     options.baseProfileIndex = AnimOptions["baseProfileIndex"].as<uint32_t>();
     JsonArray customColorsList = AnimOptions["customColors"];
     options.customColors_count = 0;
@@ -1208,6 +1209,7 @@ std::string getAnimationProtoOptions()
     JsonObject AnimOptions = doc.createNestedObject("AnimationOptions");
     AnimOptions["brightness"] = checkedBrightness;
     AnimOptions["baseProfileIndex"] = options.baseProfileIndex;
+    AnimOptions["idletimeout"] = (options.autoDisableTime / 1000);
     JsonArray customColorsList = AnimOptions.createNestedArray("customColors");
     for (int customColorsIndex = 0; customColorsIndex < options.customColors_count; ++customColorsIndex)
     {

@@ -399,6 +399,8 @@ message AnimationOptions
     optional int32 baseProfileIndex = 58;
     
     repeated uint32 customColors = 59 [(nanopb).max_count = 16]; //MAX_CUSTOM_COLORS from Animation.hpp
+
+    optional uint32 autoDisableTime = 60;
 }
 
 message BootselButtonOptions
