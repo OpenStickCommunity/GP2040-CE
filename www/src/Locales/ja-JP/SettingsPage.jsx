@@ -9,6 +9,7 @@ export default {
 	'input-mode-options': {
 		none: 'モード未選択',
 		'nintendo-switch': '任天堂Switch',
+		'nintendo-switch-pro': '任天堂Switch Pro',
 		generic: '標準HID',
 		keyboard: 'キーボード',
 		mdmini: 'Sega Genesis/メガドライブ Mini',
@@ -134,7 +135,8 @@ export default {
 		'menu-nav-right': 'メニュー 右',
 		'menu-nav-select': 'メニュー 選択',
 		'menu-nav-back': 'メニュー 戻る',
-		'menu-nav-toggle': 'メニュー トグル',
+		'menu-nav-toggle': 'メニュー 切替え',
+		'focus-mode-toggle': 'フォーカスモード切替え',
 		'turbo-count-up': 'ターボカウントUP',
 		'turbo-count-down': 'ターボカウントDOWN',
 	},
@@ -164,4 +166,5 @@ export default {
 		'product-id': 'プロダクトID',
 		'vendor-id': 'ベンダーID',
 	},
+	'input-mode-device-type-label': '入力モードコントローラ種別',
 };
