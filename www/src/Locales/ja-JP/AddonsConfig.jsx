@@ -180,7 +180,7 @@ export default {
 	'drv8833-rumble-pwm-frequency-label': 'PWM 周波数',
 	'drv8833-rumble-duty-min-label': '最低デューティー比',
 	'drv8833-rumble-duty-max-label': '最大デューティー比',
-	'tg16-extension-header-text': 'PC Engine/TurboGrafx-16 拡張設定',
+	'tg16-extension-header-text': 'PCエンジン/TurboGrafx-16 拡張設定',
 	'tg16-extension-sub-header-text': '注：Display機能が有効無場合、こちらのAdd-onは自動的に無効化されます。',
 	'tg16-extension-oe-pin-label': 'OE GPIO 端子',
 	'tg16-extension-select-pin-label': 'セレクト GPIO 端子',
@@ -188,5 +188,5 @@ export default {
 	'tg16-extension-data-pin1-label': 'データ GPIO 端子 1 (R_II)',
 	'tg16-extension-data-pin2-label': 'データ GPIO 端子 2 (D_SELECT)',
 	'tg16-extension-data-pin3-label': 'データ GPIO 端子 3 (L_RUN)',
-	'tg16-extension-desc-header': 'PC Engine/TurboGrafx-16 拡張マッピング',
+	'tg16-extension-desc-header': 'PCエンジン/TurboGrafx-16 拡張マッピング',
 };
