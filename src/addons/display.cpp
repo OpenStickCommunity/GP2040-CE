@@ -110,6 +110,9 @@ bool DisplayAddon::updateDisplayScreen() {
         case STATS:
             gpScreen = new StatsScreen(gpDisplay);
             break;
+        case NO_USB_DETECTED:
+            gpScreen = new NoUSBDetectedScreen(gpDisplay);
+            break;
         case RESTART:
             gpScreen = new RestartScreen(gpDisplay, bootMode);
             break;
@@ -176,6 +179,18 @@ void DisplayAddon::process() {
     if (gpDisplay->getDriver() == nullptr ||
         (!configMode && isDisplayPowerOff())) {
         return;
+    }
+
+    if (currDisplayMode != SPLASH) {
+        if (!tud_ready()) {
+            if (currDisplayMode != NO_USB_DETECTED) {
+                currDisplayMode = NO_USB_DETECTED;
+                updateDisplayScreen();
+            }
+        } else if (currDisplayMode == NO_USB_DETECTED) {
+            currDisplayMode = BUTTONS;
+            updateDisplayScreen();
+        }
     }
 
     // Core0 requested a new display mode

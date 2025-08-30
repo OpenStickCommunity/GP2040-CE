@@ -34,6 +34,8 @@
 #include "addons/i2c_gpio_pcf8575.h"
 #include "addons/drv8833_rumble.h"
 #include "addons/gamepad_usb_host.h"
+#include "addons/he_trigger.h"
+#include "addons/tg16_input.h"
 
 #include "CRC32.h"
 #include "FlashPROM.h"
@@ -803,6 +805,181 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     // reminder that this must be set or else nanopb won't retain anything
     config.addonOptions.reactiveLEDOptions.leds_count = REACTIVE_LED_COUNT;
 
+    // addonOptions.heTriggerOptions
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, enabled, !!HETRIGGER_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, selectPin0, HETRIGGER_S0_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, selectPin1, HETRIGGER_S1_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, selectPin2, HETRIGGER_S2_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, selectPin3, HETRIGGER_S3_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, muxADCPin0, HETRIGGER_ADC0);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, muxADCPin1, HETRIGGER_ADC1);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, muxADCPin2, HETRIGGER_ADC2);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, muxADCPin3, HETRIGGER_ADC3);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, muxChannels, HETRIGGER_MUX_CHANNELS);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[0], action, HETRIGGER_HE0_ACTION);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[0], active, HETRIGGER_HE0_ACTIVE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[0], idle, HETRIGGER_HE0_IDLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[0], max, HETRIGGER_HE0_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[0], polarity, HETRIGGER_HE0_POLARITY);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[1], action, HETRIGGER_HE1_ACTION);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[1], active, HETRIGGER_HE1_ACTIVE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[1], idle, HETRIGGER_HE1_IDLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[1], max, HETRIGGER_HE1_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[1], polarity, HETRIGGER_HE1_POLARITY);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[2], action, HETRIGGER_HE2_ACTION);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[2], active, HETRIGGER_HE2_ACTIVE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[2], idle, HETRIGGER_HE2_IDLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[2], max, HETRIGGER_HE2_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[2], polarity, HETRIGGER_HE2_POLARITY);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[3], action, HETRIGGER_HE3_ACTION);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[3], active, HETRIGGER_HE3_ACTIVE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[3], idle, HETRIGGER_HE3_IDLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[3], max, HETRIGGER_HE3_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[3], polarity, HETRIGGER_HE3_POLARITY);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[4], action, HETRIGGER_HE4_ACTION);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[4], active, HETRIGGER_HE4_ACTIVE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[4], idle, HETRIGGER_HE4_IDLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[4], max, HETRIGGER_HE4_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[4], polarity, HETRIGGER_HE4_POLARITY);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[5], action, HETRIGGER_HE5_ACTION);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[5], active, HETRIGGER_HE5_ACTIVE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[5], idle, HETRIGGER_HE5_IDLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[5], max, HETRIGGER_HE5_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[5], polarity, HETRIGGER_HE5_POLARITY);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[6], action, HETRIGGER_HE6_ACTION);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[6], active, HETRIGGER_HE6_ACTIVE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[6], idle, HETRIGGER_HE6_IDLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[6], max, HETRIGGER_HE6_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[6], polarity, HETRIGGER_HE6_POLARITY);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[7], action, HETRIGGER_HE7_ACTION);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[7], active, HETRIGGER_HE7_ACTIVE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[7], idle, HETRIGGER_HE7_IDLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[7], max, HETRIGGER_HE7_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[7], polarity, HETRIGGER_HE7_POLARITY);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[8], action, HETRIGGER_HE8_ACTION);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[8], active, HETRIGGER_HE8_ACTIVE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[8], idle, HETRIGGER_HE8_IDLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[8], max, HETRIGGER_HE8_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[8], polarity, HETRIGGER_HE8_POLARITY);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[9], action, HETRIGGER_HE9_ACTION);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[9], active, HETRIGGER_HE9_ACTIVE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[9], idle, HETRIGGER_HE9_IDLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[9], max, HETRIGGER_HE9_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[9], polarity, HETRIGGER_HE9_POLARITY);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[10], action, HETRIGGER_HE10_ACTION);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[10], active, HETRIGGER_HE10_ACTIVE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[10], idle, HETRIGGER_HE10_IDLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[10], max, HETRIGGER_HE10_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[10], polarity, HETRIGGER_HE10_POLARITY);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[11], action, HETRIGGER_HE11_ACTION);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[11], active, HETRIGGER_HE11_ACTIVE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[11], idle, HETRIGGER_HE11_IDLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[11], max, HETRIGGER_HE11_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[11], polarity, HETRIGGER_HE11_POLARITY);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[12], action, HETRIGGER_HE12_ACTION);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[12], active, HETRIGGER_HE12_ACTIVE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[12], idle, HETRIGGER_HE12_IDLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[12], max, HETRIGGER_HE12_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[12], polarity, HETRIGGER_HE12_POLARITY);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[13], action, HETRIGGER_HE13_ACTION);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[13], active, HETRIGGER_HE13_ACTIVE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[13], idle, HETRIGGER_HE13_IDLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[13], max, HETRIGGER_HE13_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[13], polarity, HETRIGGER_HE13_POLARITY);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[14], action, HETRIGGER_HE14_ACTION);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[14], active, HETRIGGER_HE14_ACTIVE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[14], idle, HETRIGGER_HE14_IDLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[14], max, HETRIGGER_HE14_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[14], polarity, HETRIGGER_HE14_POLARITY);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[15], action, HETRIGGER_HE15_ACTION);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[15], active, HETRIGGER_HE15_ACTIVE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[15], idle, HETRIGGER_HE15_IDLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[15], max, HETRIGGER_HE15_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[15], polarity, HETRIGGER_HE15_POLARITY);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[16], action, HETRIGGER_HE16_ACTION);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[16], active, HETRIGGER_HE16_ACTIVE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[16], idle, HETRIGGER_HE16_IDLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[16], max, HETRIGGER_HE16_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[16], polarity, HETRIGGER_HE16_POLARITY);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[17], action, HETRIGGER_HE17_ACTION);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[17], active, HETRIGGER_HE17_ACTIVE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[17], idle, HETRIGGER_HE17_IDLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[17], max, HETRIGGER_HE17_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[17], polarity, HETRIGGER_HE17_POLARITY);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[18], action, HETRIGGER_HE18_ACTION);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[18], active, HETRIGGER_HE18_ACTIVE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[18], idle, HETRIGGER_HE18_IDLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[18], max, HETRIGGER_HE18_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[18], polarity, HETRIGGER_HE18_POLARITY);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[19], action, HETRIGGER_HE19_ACTION);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[19], active, HETRIGGER_HE19_ACTIVE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[19], idle, HETRIGGER_HE19_IDLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[19], max, HETRIGGER_HE19_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[19], polarity, HETRIGGER_HE19_POLARITY);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[20], action, HETRIGGER_HE20_ACTION);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[20], active, HETRIGGER_HE20_ACTIVE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[20], idle, HETRIGGER_HE20_IDLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[20], max, HETRIGGER_HE20_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[20], polarity, HETRIGGER_HE20_POLARITY);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[21], action, HETRIGGER_HE21_ACTION);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[21], active, HETRIGGER_HE21_ACTIVE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[21], idle, HETRIGGER_HE21_IDLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[21], max, HETRIGGER_HE21_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[21], polarity, HETRIGGER_HE21_POLARITY);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[22], action, HETRIGGER_HE22_ACTION);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[22], active, HETRIGGER_HE22_ACTIVE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[22], idle, HETRIGGER_HE22_IDLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[22], max, HETRIGGER_HE22_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[22], polarity, HETRIGGER_HE22_POLARITY);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[23], action, HETRIGGER_HE23_ACTION);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[23], active, HETRIGGER_HE23_ACTIVE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[23], idle, HETRIGGER_HE23_IDLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[23], max, HETRIGGER_HE23_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[23], polarity, HETRIGGER_HE23_POLARITY);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[24], action, HETRIGGER_HE24_ACTION);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[24], active, HETRIGGER_HE24_ACTIVE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[24], idle, HETRIGGER_HE24_IDLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[24], max, HETRIGGER_HE24_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[24], polarity, HETRIGGER_HE24_POLARITY);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[25], action, HETRIGGER_HE25_ACTION);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[25], active, HETRIGGER_HE25_ACTIVE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[25], idle, HETRIGGER_HE25_IDLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[25], max, HETRIGGER_HE25_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[25], polarity, HETRIGGER_HE25_POLARITY);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[26], action, HETRIGGER_HE26_ACTION);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[26], active, HETRIGGER_HE26_ACTIVE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[26], idle, HETRIGGER_HE26_IDLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[26], max, HETRIGGER_HE26_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[26], polarity, HETRIGGER_HE26_POLARITY);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[27], action, HETRIGGER_HE27_ACTION);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[27], active, HETRIGGER_HE27_ACTIVE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[27], idle, HETRIGGER_HE27_IDLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[27], max, HETRIGGER_HE27_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[27], polarity, HETRIGGER_HE27_POLARITY);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[28], action, HETRIGGER_HE28_ACTION);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[28], active, HETRIGGER_HE28_ACTIVE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[28], idle, HETRIGGER_HE28_IDLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[28], max, HETRIGGER_HE28_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[28], polarity, HETRIGGER_HE28_POLARITY);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[29], action, HETRIGGER_HE29_ACTION);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[29], active, HETRIGGER_HE29_ACTIVE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[29], idle, HETRIGGER_HE29_IDLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[29], max, HETRIGGER_HE29_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[29], polarity, HETRIGGER_HE29_POLARITY);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[30], action, HETRIGGER_HE30_ACTION);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[30], active, HETRIGGER_HE30_ACTIVE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[30], idle, HETRIGGER_HE30_IDLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[30], max, HETRIGGER_HE30_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[30], polarity, HETRIGGER_HE30_POLARITY);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[31], action, HETRIGGER_HE31_ACTION);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[31], active, HETRIGGER_HE31_ACTIVE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[31], idle, HETRIGGER_HE31_IDLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[31], max, HETRIGGER_HE31_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[31], polarity, HETRIGGER_HE31_POLARITY);
+    
+    // reminder that this must be set or else nanopb won't retain anything
+    config.addonOptions.heTriggerOptions.triggers_count = HETRIGGER_COUNT;
+
     // keyboardMapping
     INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions, enabled, KEYBOARD_HOST_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions, deprecatedPinDplus, KEYBOARD_HOST_PIN_DPLUS);
@@ -825,6 +1002,10 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions.mapping, keyButtonR3, KEY_BUTTON_R3);
     INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions.mapping, keyButtonA1, KEY_BUTTON_A1);
     INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions.mapping, keyButtonA2, KEY_BUTTON_A2);
+    INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions, mouseLeft, 0);
+    INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions, mouseMiddle, 0);
+    INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions, mouseRight, 0);
+    INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions, mouseSensitivity, KEYBOARD_HOST_MOUSE_SENSITIVITY);
 
     // addonOptions.focusModeOptions
     INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, enabled, !!FOCUS_MODE_ENABLED);
@@ -854,6 +1035,15 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         INIT_UNSET_PROPERTY_STR(config.addonOptions.macroOptions.macroList[i], macroLabel, "");
         INIT_UNSET_PROPERTY(config.addonOptions.macroOptions.macroList[i], deprecatedMacroTriggerPin, -1);
     }
+
+    // addonOptions.tg16Options
+    INIT_UNSET_PROPERTY(config.addonOptions.tg16Options, enabled, !!TG16_PAD_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.tg16Options, oePin, TG16_PAD_OE_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.tg16Options, selectPin, TG16_PAD_SELECT_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.tg16Options, dataPin0, TG16_PAD_DATA_PIN0);
+    INIT_UNSET_PROPERTY(config.addonOptions.tg16Options, dataPin1, TG16_PAD_DATA_PIN1);
+    INIT_UNSET_PROPERTY(config.addonOptions.tg16Options, dataPin2, TG16_PAD_DATA_PIN2);
+    INIT_UNSET_PROPERTY(config.addonOptions.tg16Options, dataPin3, TG16_PAD_DATA_PIN3);
 }
 
 
@@ -1309,6 +1499,25 @@ void gpioMappingsMigrationCore(Config& config)
     markAddonPinIfUsed(config.addonOptions.snesOptions.clockPin);
     markAddonPinIfUsed(config.addonOptions.snesOptions.latchPin);
     markAddonPinIfUsed(config.addonOptions.snesOptions.dataPin);
+    markAddonPinIfUsed(config.addonOptions.tg16Options.oePin);
+    markAddonPinIfUsed(config.addonOptions.tg16Options.selectPin);
+    markAddonPinIfUsed(config.addonOptions.tg16Options.dataPin0);
+    markAddonPinIfUsed(config.addonOptions.tg16Options.dataPin1);
+    markAddonPinIfUsed(config.addonOptions.tg16Options.dataPin2);
+    markAddonPinIfUsed(config.addonOptions.tg16Options.dataPin3);
+
+    // Set our HE trigger options
+    if (config.addonOptions.heTriggerOptions.enabled) {
+        markAddonPinIfUsed(config.addonOptions.heTriggerOptions.muxADCPin0);
+        markAddonPinIfUsed(config.addonOptions.heTriggerOptions.muxADCPin1);
+        markAddonPinIfUsed(config.addonOptions.heTriggerOptions.muxADCPin2);
+        markAddonPinIfUsed(config.addonOptions.heTriggerOptions.muxADCPin3);
+        markAddonPinIfUsed(config.addonOptions.heTriggerOptions.selectPin0);
+        markAddonPinIfUsed(config.addonOptions.heTriggerOptions.selectPin1);
+        markAddonPinIfUsed(config.addonOptions.heTriggerOptions.selectPin2);
+        markAddonPinIfUsed(config.addonOptions.heTriggerOptions.selectPin3);
+    }
+
 
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
         config.gpioMappings.pins[pin].action = actions[pin];
@@ -1387,7 +1596,7 @@ void migrateTurboPinToGpio(Config& config) {
         }
         turboOptions.deprecatedButtonPin = -1; // set our turbo options to -1 for subsequent calls
     }
-    
+
     // Make sure we set PWM mode if we are using led pin
     if ( turboOptions.turboLedType == PLED_TYPE_NONE && isValidPin(turboOptions.ledPin) ) {
         turboOptions.turboLedType = PLED_TYPE_PWM;

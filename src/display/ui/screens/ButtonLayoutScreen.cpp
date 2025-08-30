@@ -174,6 +174,7 @@ void ButtonLayoutScreen::generateHeader() {
             case INPUT_MODE_ASTRO: statusBar += "ASTRO"; break;
             case INPUT_MODE_PSCLASSIC: statusBar += "PSC"; break;
             case INPUT_MODE_XBOXORIGINAL: statusBar += "OGXBOX"; break;
+            case INPUT_MODE_SWITCH_PRO: statusBar += "SWPRO"; break;
             case INPUT_MODE_PS4:
                 statusBar += "PS4";
                 if(((PS4Driver*)DriverManager::getInstance().getDriver())->getAuthSent() == true )
@@ -374,7 +375,7 @@ void ButtonLayoutScreen::processInputHistory() {
 		getProcessedGamepad()->pressedA2(),
 	};
 
-	uint8_t mode = ((displayModeLookup.count(getGamepad()->getOptions().inputMode) > 0) ? displayModeLookup.at(getGamepad()->getOptions().inputMode) : 0);
+	uint8_t mode = ((displayModeLookup.count(inputMode) > 0) ? displayModeLookup.at(inputMode) : 0);
 
 	// Check if any new keys have been pressed
 	if (lastInput != currentInput) {

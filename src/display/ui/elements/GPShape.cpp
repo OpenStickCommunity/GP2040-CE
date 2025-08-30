@@ -51,5 +51,12 @@ void GPShape::draw() {
         uint16_t baseRadius = (uint16_t)scaledSize;
 
         getRenderer()->drawArc(baseX, baseY, baseRadius, baseRadius, this->strokeColor, this->fillColor, this->_angle, this->_angleEnd, this->_closed);
+    } else if (this->_shape == GP_SHAPE_PILL) {
+        uint16_t sizeX = (this->_sizeX) * scaleX + this->getViewport().left;
+        uint16_t sizeY = (this->_sizeY) * scaleY + this->getViewport().top;
+        uint16_t width = this->_sizeX - baseX;
+        uint16_t height = this->_sizeY - baseY;
+
+        getRenderer()->drawPill(baseX, baseY, sizeX+offsetX, sizeY, this->strokeColor, this->fillColor, this->_angle);
     }
 }

@@ -189,6 +189,8 @@ export const AppContextProvider = ({ children, ...props }) => {
 	);
 	const [expansionPins, setExpansionPins] = useState({});
 
+	const [HETriggerOptions, setHETriggerOptions] = useState({});
+
 	const updateUsedPins = async () => {
 		const data = await WebApi.getUsedPins(setLoading);
 		setUsedPins(data.usedPins);
@@ -203,6 +205,13 @@ export const AppContextProvider = ({ children, ...props }) => {
 		return data;
 	};
 
+	const updateHETriggerOptions = async () => {
+		const data = await WebApi.getHETriggerOptions(setLoading);
+		setHETriggerOptions(data);
+		console.log('HETrigger Options updated:', data);
+		return data;
+	};
+
 	const updatePeripherals = async () => {
 		const peripherals = await WebApi.getPeripheralOptions(setLoading);
 		setAvailablePeripherals(peripherals);
@@ -212,6 +221,7 @@ export const AppContextProvider = ({ children, ...props }) => {
 	useEffect(() => {
 		updateUsedPins();
 		updateExpansionPins();
+		updateHETriggerOptions();
 		updatePeripherals();
 	}, []);
 
@@ -228,7 +238,7 @@ export const AppContextProvider = ({ children, ...props }) => {
 
 	console.log('usedPins:', usedPins);
 
-	useEffect(() => {}, [expansionPins, setExpansionPins]);
+	useEffect(() => {}, [expansionPins, setExpansionPins, HETriggerOptions, setHETriggerOptions]);
 
 	const getAvailablePeripherals = (device) => {
 		// gymnastics to make sure the device is defined before trusting config value
@@ -305,6 +315,7 @@ export const AppContextProvider = ({ children, ...props }) => {
 				availablePeripherals,
 				getAvailablePeripherals,
 				expansionPins,
+				HETriggerOptions,
 				getSelectedPeripheral,
 				setButtonLabels,
 				setGradientNormalColor1,
@@ -314,6 +325,8 @@ export const AppContextProvider = ({ children, ...props }) => {
 				setSavedColors,
 				setUsedPins,
 				setExpansionPins,
+				setHETriggerOptions,
+				updateHETriggerOptions,
 				setAvailablePeripherals,
 				updatePeripherals,
 				updateUsedPins,

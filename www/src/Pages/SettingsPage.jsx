@@ -18,6 +18,8 @@ import { BUTTON_MASKS_OPTIONS, getButtonLabels } from '../Data/Buttons';
 
 import { hexToInt } from '../Services/Utilities';
 
+import { InputModeDeviceType, PS4ControllerType } from '@proto/enums';
+
 import './SettingsPage.scss';
 
 const SHA256 = (ascii) => {
@@ -130,20 +132,49 @@ const INPUT_MODES = [
 		group: 'primary',
 		optional: ['usb'],
 		authentication: ['none', 'usb'],
+		deviceTypes: [
+			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_GAMEPAD,
+			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_WHEEL,
+			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_GUITAR,
+			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_DRUM,
+		],
 	},
 	{
-		labelKey: 'input-mode-options.nintendo-switch',
-		value: 1,
+		labelKey: 'input-mode-options.xbone',
+		value: 5,
+		group: 'primary',
+		required: ['usb'],
+	},
+	{
+		labelKey: 'input-mode-options.xboxoriginal', 
+		value: 12, 
 		group: 'primary',
 	},
-	{ labelKey: 'input-mode-options.ps3', value: 2, group: 'primary' },
-	{ labelKey: 'input-mode-options.keyboard', value: 3, group: 'primary' },
+	{ 
+		labelKey: 'input-mode-options.ps3', 
+		value: 2, 
+		group: 'primary',
+		deviceTypes: [
+			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_GAMEPAD,
+			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_GAMEPAD_ALT,
+			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_WHEEL,
+			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_GUITAR,
+			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_DRUM,
+		],
+	},
 	{
 		labelKey: 'input-mode-options.ps4',
 		value: 4,
 		group: 'primary',
 		optional: ['usb'],
 		authentication: ['none', 'key', 'usb'],
+		deviceTypes: [
+			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_GAMEPAD,
+			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_WHEEL,
+			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_HOTAS,
+			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_GUITAR,
+			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_DRUM,
+		],
 	},
 	{
 		labelKey: 'input-mode-options.ps5',
@@ -151,13 +182,18 @@ const INPUT_MODES = [
 		group: 'primary',
 		optional: ['usb'],
 		authentication: ['none', 'usb'],
+		deviceTypes: [
+			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_GAMEPAD,
+			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_ARCADE_STICK,
+			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_WHEEL,
+			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_HOTAS,
+			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_GUITAR,
+			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_DRUM,
+		],
 	},
-	{
-		labelKey: 'input-mode-options.xbone',
-		value: 5,
-		group: 'primary',
-		required: ['usb'],
-	},
+	{ labelKey: 'input-mode-options.nintendo-switch', value: 1, group: 'primary', },
+	{ labelKey: 'input-mode-options.nintendo-switch-pro', value: 15, group: 'primary' },
+	{ labelKey: 'input-mode-options.keyboard', value: 3, group: 'primary' },
 	{ labelKey: 'input-mode-options.generic', value: 14, group: 'primary' },
 	{ labelKey: 'input-mode-options.mdmini', value: 6, group: 'mini' },
 	{ labelKey: 'input-mode-options.neogeo', value: 7, group: 'mini' },
@@ -165,19 +201,19 @@ const INPUT_MODES = [
 	{ labelKey: 'input-mode-options.egret', value: 9, group: 'mini' },
 	{ labelKey: 'input-mode-options.astro', value: 10, group: 'mini' },
 	{ labelKey: 'input-mode-options.psclassic', value: 11, group: 'mini' },
-	{ labelKey: 'input-mode-options.xboxoriginal', value: 12, group: 'primary' },
 ];
 
 const INPUT_BOOT_MODES = [
 	{ labelKey: 'input-mode-options.none', value: -1, group: 'primary' },
 	{ labelKey: 'input-mode-options.xinput', value: 0, group: 'primary' },
 	{
-		labelKey: 'input-mode-options.nintendo-switch',
-		value: 1,
+		labelKey: 'input-mode-options.xbone',
+		value: 5,
 		group: 'primary',
+		required: ['usb'],
 	},
+	{ labelKey: 'input-mode-options.xboxoriginal', value: 12, group: 'primary' },
 	{ labelKey: 'input-mode-options.ps3', value: 2, group: 'primary' },
-	{ labelKey: 'input-mode-options.keyboard', value: 3, group: 'primary' },
 	{
 		labelKey: 'input-mode-options.ps4',
 		value: 4,
@@ -191,11 +227,12 @@ const INPUT_BOOT_MODES = [
 		optional: ['usb'],
 	},
 	{
-		labelKey: 'input-mode-options.xbone',
-		value: 5,
+		labelKey: 'input-mode-options.nintendo-switch',
+		value: 1,
 		group: 'primary',
-		required: ['usb'],
 	},
+	{ labelKey: 'input-mode-options.nintendo-switch-pro', value: 15, group: 'primary' },
+	{ labelKey: 'input-mode-options.keyboard', value: 3, group: 'primary' },
 	{ labelKey: 'input-mode-options.generic', value: 14, group: 'primary' },
 	{ labelKey: 'input-mode-options.mdmini', value: 6, group: 'mini' },
 	{ labelKey: 'input-mode-options.neogeo', value: 7, group: 'mini' },
@@ -203,7 +240,6 @@ const INPUT_BOOT_MODES = [
 	{ labelKey: 'input-mode-options.egret', value: 9, group: 'mini' },
 	{ labelKey: 'input-mode-options.astro', value: 10, group: 'mini' },
 	{ labelKey: 'input-mode-options.psclassic', value: 11, group: 'mini' },
-	{ labelKey: 'input-mode-options.xboxoriginal', value: 12, group: 'primary' },
 ];
 
 const INPUT_MODE_GROUPS = [
@@ -257,6 +293,8 @@ const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.invert-x', value: 9 },
 	{ labelKey: 'hotkey-actions.invert-y', value: 10 },
 	{ labelKey: 'hotkey-actions.toggle-4way-joystick-mode', value: 13 },
+	{ labelKey: 'hotkey-actions.enable-4way-joystick-mode', value: 73 },
+	{ labelKey: 'hotkey-actions.disable-4way-joystick-mode', value: 74 },
 	{ labelKey: 'hotkey-actions.toggle-ddi-4way-joystick-mode', value: 14 },
 	{ labelKey: 'hotkey-actions.load-profile-1', value: 15 },
 	{ labelKey: 'hotkey-actions.load-profile-2', value: 16 },
@@ -289,6 +327,8 @@ const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.dpad-down', value: 39 },
 	{ labelKey: 'hotkey-actions.dpad-left', value: 40 },
 	{ labelKey: 'hotkey-actions.dpad-right', value: 41 },
+	{ labelKey: 'hotkey-actions.turbo-count-up', value: 73 },
+	{ labelKey: 'hotkey-actions.turbo-count-down', value: 74 },
 	{ labelKey: 'hotkey-actions.menu-nav-up', value: 44 },
 	{ labelKey: 'hotkey-actions.menu-nav-down', value: 45 },
 	{ labelKey: 'hotkey-actions.menu-nav-left', value: 46 },
@@ -296,6 +336,7 @@ const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.menu-nav-select', value: 48 },
 	{ labelKey: 'hotkey-actions.menu-nav-back', value: 49 },
 	{ labelKey: 'hotkey-actions.menu-nav-toggle', value: 50 },
+	{ labelKey: 'hotkey-actions.focus-mode-toggle', value: 71 },
 ];
 
 const FORCED_SETUP_MODES = [
@@ -371,6 +412,11 @@ const schema = yup.object().shape({
 		.required()
 		.oneOf(INPUT_MODES.map((o) => o.value))
 		.label('Input Mode'),
+	inputDeviceType: yup
+		.number()
+		.required()
+		.oneOf(Object.keys(InputModeDeviceType).filter(key => isNaN(Number(key))).map((o) => InputModeDeviceType[o]))
+		.label('Input Mode Device Type'),
 	socdMode: yup
 		.number()
 		.required()
@@ -492,6 +538,7 @@ const FormContext = ({ setButtonLabels, setKeyMappings }) => {
 			values.xinputAuthType = parseInt(values.xinputAuthType);
 		if (!!values.ps4ControllerIDMode)
 			values.ps4ControllerIDMode = parseInt(values.ps4ControllerIDMode);
+		if (!!values.inputDeviceType) values.inputDeviceType = parseInt(values.inputDeviceType);
 
 		setButtonLabels({
 			swapTpShareLabels:
@@ -683,6 +730,44 @@ export default function SettingsPage() {
 		const newMappings = { ...keyMappings };
 		newMappings[button].key = value;
 		setKeyMappings(newMappings);
+	};
+
+	const generateDeviceTypeSelection = (values, errors, setFieldValue, handleChange) => {
+		let mode = INPUT_MODES.find((i) => i.value == values.inputMode);
+		let options = Object.keys(InputModeDeviceType).filter(key => isNaN(Number(key))).map((o) => ({
+			key: o,
+			value: Number(InputModeDeviceType[o]),
+		}));
+
+		if (mode) {
+			options = options.filter((o) => mode.deviceTypes?.indexOf(o.value) !== -1).sort((a,b) => mode.deviceTypes?.findIndex(o => o === a.value) - mode.deviceTypes?.findIndex(o => o === b.value))
+		} else {
+			options = []
+		}
+
+		return (mode && mode.deviceTypes?.length > 1 ? 
+			<Row className="mb-3">
+				<Col sm={4}>
+					<Form.Label>{t('SettingsPage:input-mode-device-type-label')}</Form.Label>
+					<Form.Select
+						name="inputDeviceType"
+						className="form-select-sm"
+						value={values.inputDeviceType}
+						onChange={handleChange}
+						isInvalid={errors.inputDeviceType}
+					>
+						{options?.map((o) => (
+							<option
+								key={`button-inputDeviceType-option-${o.key}`}
+								value={o.value}
+							>
+								{t(`Proto:InputModeDeviceType.${o.key}`)}
+							</option>
+						))}
+					</Form.Select>
+				</Col>
+			</Row>
+		: '');
 	};
 
 	const generateAuthSelection = (
@@ -1446,6 +1531,12 @@ export default function SettingsPage() {
 																</Form.Control.Feedback>
 															</Col>
 														</Row>
+														{generateDeviceTypeSelection(
+															values,
+															errors,
+															setFieldValue,
+															handleChange,
+														)}
 														{inputModeSpecifics(
 															values,
 															errors,
