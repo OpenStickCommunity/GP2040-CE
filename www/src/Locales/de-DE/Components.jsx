@@ -1,13 +1,12 @@
 export default {
 	'language-selector': {
 		en: 'English (US)',
-		nl: 'Nederlands (Niederländisch)',
-		'pt-BR': 'Português Brasil (Brasilianisches Portugiesisch)',
-		'zh-CN': '简体中文 (Vereinfachtes Chinesisch)',
-		'de-DE': 'Deutsch',
-		'ja-JP': '日本語 (Japanisch)',
+		nl: 'Nederlands (Dutch)',
+		'pt-BR': 'Português Brasil (Brazilian Portuguese)',
+		'zh-CN': '简体中文 (Simplified Chinese)',
+		'de-DE': 'Deutsch (German)',
+		'ja-JP': '日本語 (Japaanische)',
 		'ko-KR': '한국어 (Koreanisch)',
-		'es-MX': 'Español (Mexikanisches Spanisch)',
 	},
 	'color-scheme': {
 		dark: 'Dunkel',

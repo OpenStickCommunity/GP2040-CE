@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FormCheck, Row } from 'react-bootstrap';
 import * as yup from 'yup';
@@ -13,7 +12,6 @@ import AnalogPinOptions from '../Components/AnalogPinOptions';
 import { BUTTON_MASKS_OPTIONS } from '../Data/Buttons';
 import { DUAL_STICK_MODES } from '../Data/Addons';
 import LEDColors from '../Data/LEDColors';
-import { ANALOG_PINS } from '../Data/Buttons';
 
 const SHMUP_MIXED_MODES = [
 	{ label: 'Turbo Priority', value: 0 },
@@ -155,28 +153,9 @@ const Turbo = ({
 		setShowPicker(!showPicker);
 	};
 
-	const { usedPins } = useContext(AppContext);
-	const availableAnalogPins = ANALOG_PINS.filter(
-			(pin) => !usedPins?.includes(pin),
-		);
-
 	return (
-		<Section title={
-			<a
-				href="https://gp2040-ce.info/add-ons/turbo"
-				target="_blank"
-				className="text-reset text-decoration-none"
-			>
-				{t('AddonsConfig:turbo-header-text')}
-			</a>
-		}
-		>
+		<Section title={t('AddonsConfig:turbo-header-text')}>
 			<div id="TurboInputOptions" hidden={!values.TurboInputEnabled}>
-				<div className="alert alert-success" role="alert">
-					{t('AddonsConfig:turbo-available-pins-text', {
-						pins: availableAnalogPins.join(', '),
-					})}
-				</div>
 				<Row className="mb-3">
 					<FormSelect
 						label={t('AddonsConfig:turbo-led-type-label')}
@@ -291,7 +270,7 @@ const Turbo = ({
 						label={t('AddonsConfig:turbo-shmup-mode-label')}
 						type="switch"
 						id="ShmupMode"
-						className="col-sm-3 ms-3"
+						className="col-sm-3 ms-2"
 						isInvalid={false}
 						checked={Boolean(values.shmupMode)}
 						onChange={(e) => {

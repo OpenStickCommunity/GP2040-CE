@@ -82,23 +82,11 @@ const Analog1256 = ({ values, errors, handleChange, handleCheckbox }) => {
 	}, [usedPins]);
 
 	return (
-		<Section title={
-			<a
-				href="https://gp2040-ce.info/add-ons/i2c-analog-ads1256-spi"
-				target="_blank"
-				className="text-reset text-decoration-none"
-			>
-				{t('AddonsConfig:analog1256-header-text')}
-			</a>
-		}
-		>
+		<Section title={t('AddonsConfig:analog1256-header-text')}>
 			<div
 				id="Analog1256InputOptions"
 				hidden={!(values.Analog1256Enabled && getAvailablePeripherals('spi'))}
 			>
-				<div className="alert alert-info" role="alert">
-					The RX, CS, SCK, and TX pins are configured in <a href="../peripheral-mapping" className="alert-link">Peripheral Mapping</a>
-				</div>
 				<Row className="mb-3">
 					{getAvailablePeripherals('spi') ? (
 						<FormSelect
@@ -167,7 +155,7 @@ const Analog1256 = ({ values, errors, handleChange, handleCheckbox }) => {
 						label={t('AddonsConfig:analog1256-enable-triggers')}
 						type="switch"
 						id="analog1256EnableTriggers"
-						className="col-sm-3 ms-3"
+						className="col-sm-3 ms-2"
 						isInvalid={false}
 						checked={Boolean(values.analog1256EnableTriggers)}
 						onChange={(e) => {

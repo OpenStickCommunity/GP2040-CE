@@ -149,8 +149,6 @@ LayoutManager::LayoutList LayoutManager::getLeftLayout(uint16_t index) {
             return drawBoardDefinedAlt3A();
         case BUTTON_LAYOUT_BOARD_DEFINED_ALT4_A:
             return drawBoardDefinedAlt4A();
-        case BUTTON_LAYOUT_BOARD_DEFINED_ALT5_A:
-            return drawBoardDefinedAlt5A();       
         default:
             break;
     }
@@ -253,8 +251,6 @@ LayoutManager::LayoutList LayoutManager::getRightLayout(uint16_t index) {
             return this->drawBoardDefinedAlt3B();
         case BUTTON_LAYOUT_BOARD_DEFINED_ALT4_B:
             return this->drawBoardDefinedAlt4B();
-        case BUTTON_LAYOUT_BOARD_DEFINED_ALT5_B:
-            return this->drawBoardDefinedAlt5B();
         default:
             break;
     }
@@ -749,14 +745,6 @@ LayoutManager::LayoutList LayoutManager::drawBoardDefinedAlt4A() {
 #endif
 }
 
-LayoutManager::LayoutList LayoutManager::drawBoardDefinedAlt5A() {
-#ifdef DEFAULT_BOARD_LAYOUT_A_ALT5
-    return DEFAULT_BOARD_LAYOUT_A_ALT5;
-#else
-    return {};
-#endif
-}
-
 LayoutManager::LayoutList LayoutManager::drawBoardDefinedB() {
 #ifdef DEFAULT_BOARD_LAYOUT_B
     return DEFAULT_BOARD_LAYOUT_B;
@@ -766,7 +754,7 @@ LayoutManager::LayoutList LayoutManager::drawBoardDefinedB() {
 }
 
 LayoutManager::LayoutList LayoutManager::drawBoardDefinedAlt0B() {
-#ifdef DEFAULT_BOARD_LAYOUT_B_ALT0
+#ifdef DEFAULT_BOARD_LAYOUT_B_ALT1
     return DEFAULT_BOARD_LAYOUT_B_ALT0;
 #else
     return {};
@@ -800,14 +788,6 @@ LayoutManager::LayoutList LayoutManager::drawBoardDefinedAlt3B() {
 LayoutManager::LayoutList LayoutManager::drawBoardDefinedAlt4B() {
 #ifdef DEFAULT_BOARD_LAYOUT_B_ALT4
     return DEFAULT_BOARD_LAYOUT_B_ALT4;
-#else
-    return {};
-#endif
-}
-
-LayoutManager::LayoutList LayoutManager::drawBoardDefinedAlt5B() {
-#ifdef DEFAULT_BOARD_LAYOUT_B_ALT5
-    return DEFAULT_BOARD_LAYOUT_B_ALT5;
 #else
     return {};
 #endif

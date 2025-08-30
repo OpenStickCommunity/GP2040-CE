@@ -54,6 +54,7 @@ private:
         SET_INPUT_MODE_PS3,
         SET_INPUT_MODE_PS4,
         SET_INPUT_MODE_PS5,
+        SET_INPUT_MODE_P5GENERAL,
         SET_INPUT_MODE_XBONE,
         SET_INPUT_MODE_NEOGEO,
         SET_INPUT_MODE_MDMINI,
@@ -61,8 +62,7 @@ private:
         SET_INPUT_MODE_EGRET,
         SET_INPUT_MODE_ASTRO,
         SET_INPUT_MODE_PSCLASSIC,
-        SET_INPUT_MODE_XBOXORIGINAL,
-        SET_INPUT_MODE_SWITCH_PRO,
+        SET_INPUT_MODE_XBOXORIGINAL
     };
     BootAction getBootAction();
     void getReinitGamepad(Gamepad * gamepad);

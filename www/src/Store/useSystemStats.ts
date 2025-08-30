@@ -23,11 +23,6 @@ type State = {
 		usedFlash: number;
 		usedHeap: number;
 	};
-	stats: {
-		architecture: string;
-		build: string;
-		buildType: string;
-	};
 	loading: boolean;
 	error: boolean;
 };
@@ -53,11 +48,6 @@ const INITIAL_STATE: State = {
 		totalHeap: 0,
 		usedFlash: 0,
 		usedHeap: 0,
-	},
-	stats: {
-		architecture: '',
-		build: '',
-		buildType: '',
 	},
 	loading: false,
 	error: false,
@@ -109,11 +99,6 @@ const useSystemStats = create<State & Actions>()((set) => ({
 						memoryReport.usedHeap,
 						memoryReport.totalHeap,
 					),
-				},
-				stats: {
-					architecture: firmwareVersion.boardArchitecture,
-					build: firmwareVersion.boardBuild,
-					buildType: firmwareVersion.boardBuildType,
 				},
 				loading: false,
 			});

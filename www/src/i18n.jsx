@@ -7,7 +7,6 @@ import ptBR from './Locales/pt-BR/Index';
 import deDE from './Locales/de-DE/Index';
 import jaJP from './Locales/ja-JP/Index';
 import koKR from './Locales/ko-KR/Index';
-import esMX from './Locales/es-MX/Index';
 
 i18n
 	.use(LanguageDetector)
@@ -15,7 +14,6 @@ i18n
 	.init({
 		debug: true,
 		fallbackLng: 'en',
-		returnEmptyString: false,
 		interpolation: {
 			escapeValue: true,
 		},
@@ -29,7 +27,6 @@ i18n
 			'de-DE': deDE,
 			'ja-JP': jaJP,
 			'ko-KR': koKR,
-			'es-MX': esMX,
 		},
 	});
 

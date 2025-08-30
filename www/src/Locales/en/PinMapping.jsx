@@ -1,9 +1,9 @@
 export default {
-	'sub-header-text': `Use GPIO Pin Viewer to see button to GPIO Pin connection.`,
+	'sub-header-text': `Use GPIO Pin Viewer to see button to GPIO pin connection.`,
 	'alert-text':
 		"Mapping buttons to pins that aren't connected or available can leave the device in non-functional state. To clear the invalid configuration go to the <2>Reset Settings</2> page.",
 	'pin-viewer': 'GPIO Pin viewer',
-	'pin-pressed': 'Pressed GPIO Pin: {{pressedPin}}',
+	'pin-pressed': 'Pressed pin: {{pressedPin}}',
 	'profile-label-title': 'Profile name',
 	'profile-label-description':
 		'Max 16 characters. Letters, numbers, and spaces allowed.',
@@ -13,8 +13,6 @@ export default {
 	'profile-disabled': ' - (Disabled)',
 	'profile-enabled-tooltip':
 		'Disabled profiles will not be available when using hotkeys to change profile.',
-	'profile-enabled-active-tooltip':
-		'Cannot disable active profile, change under Settings > Gamepad Settings',
 	'profile-pins-warning':
 		'Try to avoid changing the buttons and/or directions used for the switch profile hotkeys. Otherwise, it will be difficult to understand what profile is being selected!',
 	'profile-copy-base': 'Copy base profile',
@@ -80,14 +78,14 @@ export default {
 		DIGITAL_DIRECTION_DOWN: 'Digital/D-Pad Down',
 		DIGITAL_DIRECTION_LEFT: 'Digital/D-Pad Left',
 		DIGITAL_DIRECTION_RIGHT: 'Digital/D-Pad Right',
-		ANALOG_DIRECTION_LS_X_NEG: 'Left Analog Stick X- (Left)',
-		ANALOG_DIRECTION_LS_X_POS: 'Left Analog Stick X+ (Right)',
-		ANALOG_DIRECTION_LS_Y_NEG: 'Left Analog Stick Y- (Up)',
-		ANALOG_DIRECTION_LS_Y_POS: 'Left Analog Stick Y+ (Down)',
-		ANALOG_DIRECTION_RS_X_NEG: 'Right Analog Stick X- (Left)',
-		ANALOG_DIRECTION_RS_X_POS: 'Right Analog Stick X+ (Right)',
-		ANALOG_DIRECTION_RS_Y_NEG: 'Right Analog Stick Y- (Up)',
-		ANALOG_DIRECTION_RS_Y_POS: 'Right Analog Stick Y+ (Down)',
+		ANALOG_DIRECTION_LS_X_NEG: 'Left Analog Stick X-',
+		ANALOG_DIRECTION_LS_X_POS: 'Left Analog Stick X+',
+		ANALOG_DIRECTION_LS_Y_NEG: 'Left Analog Stick Y-',
+		ANALOG_DIRECTION_LS_Y_POS: 'Left Analog Stick Y+',
+		ANALOG_DIRECTION_RS_X_NEG: 'Right Analog Stick X-',
+		ANALOG_DIRECTION_RS_X_POS: 'Right Analog Stick X+',
+		ANALOG_DIRECTION_RS_Y_NEG: 'Right Analog Stick Y-',
+		ANALOG_DIRECTION_RS_Y_POS: 'Right Analog Stick Y+',
 		ANALOG_DIRECTION_MOD_LOW: 'Analog Stick Tilt 1',
 		ANALOG_DIRECTION_MOD_HIGH: 'Analog Stick Tilt 2',
 		BUTTON_PRESS_INPUT_REVERSE: 'Reverse Input',

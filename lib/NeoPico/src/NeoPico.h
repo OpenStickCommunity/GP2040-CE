@@ -16,7 +16,7 @@ class NeoPico
 {
 public:
   NeoPico();
-  void Setup(int ledPin, int inNumPixels, LEDFormat inFormat, PIO inPio, int inState);
+  void Setup(int ledPin, int inNumPixels, LEDFormat inFormat, PIO inPio);
   void Show();
   void Clear();
   void Off();
@@ -25,8 +25,7 @@ public:
 private:
   void PutPixel(uint32_t pixel_grb);
   LEDFormat format;
-  PIO pio = pio1;
-  int stateMachine = 0;
+  PIO pio = pio0;
   int numPixels = 0;
   uint32_t frame[100];
 };

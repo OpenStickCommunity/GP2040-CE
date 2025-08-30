@@ -56,7 +56,6 @@ typedef struct {
 
 class XInputAuth : public GPAuthDriver {
 public:
-    XInputAuth(InputModeAuthType inType) { authType = inType; }
     virtual void initialize();
     virtual bool available();
     void process();

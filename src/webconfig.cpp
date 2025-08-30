@@ -20,9 +20,6 @@
 
 #include <pico/types.h>
 
-// for hall-effect calibration
-#include "hardware/adc.h"
-
 // HTTPD Includes
 #include <ArduinoJson.h>
 #include "rndis.h"
@@ -581,7 +578,7 @@ std::string setProfileOptions()
         profileOptions.gpioMappingsSets[altsIndex].enabled = alt["enabled"];
 
         profileOptions.gpioMappingsSets_count = ++altsIndex;
-        if (altsIndex > 4) break;
+        if (altsIndex > 2) break;
     }
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
@@ -656,7 +653,6 @@ std::string setGamepadOptions()
 
     readDoc(gamepadOptions.dpadMode, doc, "dpadMode");
     readDoc(gamepadOptions.inputMode, doc, "inputMode");
-    readDoc(gamepadOptions.inputDeviceType, doc, "inputDeviceType");
     readDoc(gamepadOptions.socdMode, doc, "socdMode");
     readDoc(gamepadOptions.switchTpShareForDs4, doc, "switchTpShareForDs4");
     readDoc(gamepadOptions.lockHotkeys, doc, "lockHotkeys");
@@ -726,7 +722,6 @@ std::string getGamepadOptions()
     GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
     writeDoc(doc, "dpadMode", gamepadOptions.dpadMode);
     writeDoc(doc, "inputMode", gamepadOptions.inputMode);
-    writeDoc(doc, "inputDeviceType", gamepadOptions.inputDeviceType);
     writeDoc(doc, "socdMode", gamepadOptions.socdMode);
     writeDoc(doc, "switchTpShareForDs4", gamepadOptions.switchTpShareForDs4 ? 1 : 0);
     writeDoc(doc, "lockHotkeys", gamepadOptions.lockHotkeys ? 1 : 0);
@@ -1270,7 +1265,7 @@ std::string getKeyMappings()
     writeDoc(doc, "E10", keyboardMapping.keyButtonE10);
     writeDoc(doc, "E11", keyboardMapping.keyButtonE11);
     writeDoc(doc, "E12", keyboardMapping.keyButtonE12);
-
+    
     return serialize_json(doc);
 }
 
@@ -1315,6 +1310,7 @@ std::string getI2CPeripheralMap() {
     DynamicJsonDocument doc(capacity);
 
     PeripheralOptions& peripheralOptions = Storage::getInstance().getPeripheralOptions();
+
 
     if (peripheralOptions.blockI2C0.enabled && PeripheralManager::getInstance().isI2CEnabled(0)) {
         std::map<uint8_t,bool> result = PeripheralManager::getInstance().getI2C(0)->scan();
@@ -1399,12 +1395,40 @@ std::string getExpansionPins()
     const size_t capacity = JSON_OBJECT_SIZE(100);
     DynamicJsonDocument doc(capacity);
     GpioMappingInfo* gpioMappings = Storage::getInstance().getAddonOptions().pcf8575Options.pins;
-    char pinName[6];
-    for (uint16_t pin = 0; pin < 16; pin++) {
-        snprintf(pinName, 6, "pin%0*d", 2, pin);
-        writeDoc(doc, "pins", "pcf8575", 0, pinName, "option", gpioMappings[pin].action);
-        writeDoc(doc, "pins", "pcf8575", 0, pinName, "direction", gpioMappings[pin].direction);
-    }
+
+    writeDoc(doc, "pins", "pcf8575", 0, "pin00", "option", gpioMappings[0].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin00", "direction", gpioMappings[0].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin01", "option", gpioMappings[1].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin01", "direction", gpioMappings[1].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin02", "option", gpioMappings[2].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin02", "direction", gpioMappings[2].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin03", "option", gpioMappings[3].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin03", "direction", gpioMappings[3].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin04", "option", gpioMappings[4].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin04", "direction", gpioMappings[4].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin05", "option", gpioMappings[5].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin05", "direction", gpioMappings[5].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin06", "option", gpioMappings[6].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin06", "direction", gpioMappings[6].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin07", "option", gpioMappings[7].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin07", "direction", gpioMappings[7].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin08", "option", gpioMappings[8].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin08", "direction", gpioMappings[8].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin09", "option", gpioMappings[9].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin09", "direction", gpioMappings[9].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin10", "option", gpioMappings[10].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin10", "direction", gpioMappings[10].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin11", "option", gpioMappings[11].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin11", "direction", gpioMappings[11].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin12", "option", gpioMappings[12].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin12", "direction", gpioMappings[12].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin13", "option", gpioMappings[13].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin13", "direction", gpioMappings[13].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin14", "option", gpioMappings[14].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin14", "direction", gpioMappings[14].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin15", "option", gpioMappings[15].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin15", "direction", gpioMappings[15].direction);
+
     return serialize_json(doc);
 }
 
@@ -1432,152 +1456,6 @@ std::string setExpansionPins()
 
     return serialize_json(doc);
 }
-
-static uint32_t calibrationMuxChannels = 0;
-static Pin_t calibrationSelectPins[4];
-static Pin_t calibrationADCPins[4];
-
-// Get the HE Trigger Calibration using our manual GPIO input and everything
-std::string setHETriggerCalibration()
-{
-    DynamicJsonDocument doc = get_post_data();
-    calibrationMuxChannels = doc["muxChannels"];
-    calibrationSelectPins[0] = doc["muxSelectPin0"];
-    calibrationSelectPins[1] = doc["muxSelectPin1"];
-    calibrationSelectPins[2] = doc["muxSelectPin2"];
-    calibrationSelectPins[3] = doc["muxSelectPin3"];
-    
-    calibrationADCPins[0] = doc["muxADCPin0"];
-    calibrationADCPins[1] = doc["muxADCPin1"];
-    calibrationADCPins[2] = doc["muxADCPin2"];
-    calibrationADCPins[3] = doc["muxADCPin3"];
-
-    for (int i = 0; i < 4; i++) {
-        if ( calibrationSelectPins[i] != -1 && 
-                calibrationSelectPins[i] >= 0 && 
-                calibrationSelectPins[i] <= 29 ) {
-            gpio_init(calibrationSelectPins[i]);
-            gpio_set_dir(calibrationSelectPins[i], GPIO_OUT);
-            gpio_put(calibrationSelectPins[i], 0);
-        }
-        if ( calibrationADCPins[i] != -1 && 
-                calibrationADCPins[i] >= 26 && 
-                calibrationADCPins[i] <= 29 ) {
-            adc_gpio_init(calibrationADCPins[i]);
-        }
-    }
-
-    return serialize_json(doc);
-}
-
-// Get the HE Trigger Calibration using our manual GPIO input and everything
-std::string getHETriggerCalibration()
-{
-    DynamicJsonDocument postDoc = get_post_data();
-    uint32_t id = postDoc["targetId"];
-    const size_t capacity = JSON_OBJECT_SIZE(20);
-    DynamicJsonDocument doc(capacity);
-
-    uint32_t adcSelectPin = 0;
-
-    // Mux Channels determines how many select pins we use
-    if (calibrationMuxChannels == 1) {
-        if ( id > 3 ) {
-            doc["error"] = "id out of range";
-            return serialize_json(doc);
-        }
-        adcSelectPin = calibrationADCPins[id];
-    } else if ( calibrationMuxChannels == 4) {
-        uint32_t adcNum = id / 4;
-        uint32_t channel = (id % 4);
-        if ( adcNum > 3 ) {
-            doc["error"] = "id out of 4-channel mux range";
-            return serialize_json(doc);
-        }
-        adcSelectPin = calibrationADCPins[adcNum];
-        gpio_put(calibrationSelectPins[0], channel & 0x01);
-        gpio_put(calibrationSelectPins[1], (channel >> 1) & 0x01);
-    } else if (calibrationMuxChannels == 8) {
-        uint32_t adcNum = id / 8;
-        uint32_t channel = (id % 8);
-        if ( adcNum > 2 ) {
-            doc["error"] = "id out of 8-channel mux range";
-            return serialize_json(doc);
-        }
-        adcSelectPin = calibrationADCPins[adcNum];
-        gpio_put(calibrationSelectPins[0], channel & 0x01);
-        gpio_put(calibrationSelectPins[1], (channel >> 1) & 0x01);
-        gpio_put(calibrationSelectPins[2], (channel >> 2) & 0x01);
-    } else if (calibrationMuxChannels == 16) {
-        uint32_t adcNum = id / 16;
-        uint32_t channel = (id % 16);
-        if ( adcNum > 1 ) {
-            doc["error"] = "id out of 16-channel mux range";
-            return serialize_json(doc);
-        }
-        adcSelectPin = calibrationADCPins[adcNum];
-        gpio_put(calibrationSelectPins[0], channel & 0x01);
-        gpio_put(calibrationSelectPins[1], (channel >> 1) & 0x01);
-        gpio_put(calibrationSelectPins[2], (channel >> 2) & 0x01);
-        gpio_put(calibrationSelectPins[3], (channel >> 3) & 0x01);
-    } else {
-        doc["error"] = "mux channels incorrect";
-        return serialize_json(doc);
-    }
-
-    if ( adcSelectPin < 26 || adcSelectPin > 29) {
-        doc["error"] = "adc pin out of range";
-        return serialize_json(doc);
-    }
-    adc_select_input(adcSelectPin-26);
-    sleep_us(5);
-    adc_read();
-    sleep_us(2);
-    doc["voltage"] = adc_read();
-    return serialize_json(doc);
-}
-
-std::string getHETriggerOptions()
-{
-    const size_t capacity = JSON_OBJECT_SIZE(500);
-    DynamicJsonDocument doc(capacity);
-    
-    HETriggerInfo * heTriggers = Storage::getInstance().getAddonOptions().heTriggerOptions.triggers;
-    
-    JsonArray triggerList = doc.createNestedArray("triggers");
-    for(int i = 0; i < 32; i++) {
-        JsonObject trigger = triggerList.createNestedObject();
-        trigger["action"] = heTriggers[i].action;
-        trigger["idle"] = heTriggers[i].idle;
-        trigger["active"] = heTriggers[i].active;
-        trigger["max"] = heTriggers[i].max;
-        trigger["polarity"] = heTriggers[i].polarity;
-    }
-
-    return serialize_json(doc);
-}
-
-// Set Hall Effect Trigger Options
-std::string setHETriggerOptions()
-{
-    const size_t capacity = JSON_OBJECT_SIZE(100);
-    DynamicJsonDocument doc = get_post_data();
-    HETriggerInfo * heTriggers = Storage::getInstance().getAddonOptions().heTriggerOptions.triggers;
-
-    for(int i = 0; i < 32; i++) {
-        heTriggers[i].action = doc["triggers"][i]["action"];
-        heTriggers[i].idle = doc["triggers"][i]["idle"];
-        heTriggers[i].active = doc["triggers"][i]["active"];
-        heTriggers[i].max = doc["triggers"][i]["max"];
-        heTriggers[i].polarity = doc["triggers"][i]["polarity"];
-    }
-    
-    Storage::getInstance().getAddonOptions().heTriggerOptions.triggers_count = 32;
-    EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
-
-    return serialize_json(doc);
-}
-
 
 std::string getReactiveLEDs()
 {
@@ -1630,19 +1508,12 @@ std::string setAddonOptions()
     docToValue(analogOptions.analogAdc2Mode, doc, "analogAdc2Mode");
     docToValue(analogOptions.analogAdc2Invert, doc, "analogAdc2Invert");
     docToValue(analogOptions.forced_circularity, doc, "forced_circularity");
-    docToValue(analogOptions.forced_circularity2, doc, "forced_circularity2");
     docToValue(analogOptions.inner_deadzone, doc, "inner_deadzone");
-    docToValue(analogOptions.inner_deadzone2, doc, "inner_deadzone2");
     docToValue(analogOptions.outer_deadzone, doc, "outer_deadzone");
-    docToValue(analogOptions.outer_deadzone2, doc, "outer_deadzone2");
     docToValue(analogOptions.auto_calibrate, doc, "auto_calibrate");
-    docToValue(analogOptions.auto_calibrate2, doc, "auto_calibrate2");
     docToValue(analogOptions.analog_smoothing, doc, "analog_smoothing");
-    docToValue(analogOptions.analog_smoothing2, doc, "analog_smoothing2");
     docToValue(analogOptions.smoothing_factor, doc, "smoothing_factor");
-    docToValue(analogOptions.smoothing_factor2, doc, "smoothing_factor2");
     docToValue(analogOptions.analog_error, doc, "analog_error");
-    docToValue(analogOptions.analog_error2, doc, "analog_error2");
     docToValue(analogOptions.enabled, doc, "AnalogInputEnabled");
 
     BootselButtonOptions& bootselButtonOptions = Storage::getInstance().getAddonOptions().bootselButtonOptions;
@@ -1718,7 +1589,7 @@ std::string setAddonOptions()
     docToPin(turboOptions.shmupDialPin, doc, "pinShmupDial");
     docToValue(turboOptions.turboLedType, doc, "turboLedType");
     docToValue(turboOptions.turboLedIndex, doc, "turboLedIndex");
-    docToValue(turboOptions.turboLedColor, doc, "turboLedColor");
+    docToValue(turboOptions.turboLedColor, doc, "turboLedColor");    
     docToValue(turboOptions.enabled, doc, "TurboInputEnabled");
 
     WiiOptions& wiiOptions = Storage::getInstance().getAddonOptions().wiiOptions;
@@ -1755,8 +1626,6 @@ std::string setAddonOptions()
     docToValue(keyboardHostOptions.mouseLeft, doc, "keyboardHostMouseLeft");
     docToValue(keyboardHostOptions.mouseMiddle, doc, "keyboardHostMouseMiddle");
     docToValue(keyboardHostOptions.mouseRight, doc, "keyboardHostMouseRight");
-    docToValue(keyboardHostOptions.mouseSensitivity, doc, "keyboardHostMouseSensitivity");
-    docToValue(keyboardHostOptions.movementMode, doc, "keyboardHostMouseMovement");
 
     GamepadUSBHostOptions& gamepadUSBHostOptions = Storage::getInstance().getAddonOptions().gamepadUSBHostOptions;
     docToValue(gamepadUSBHostOptions.enabled, doc, "GamepadUSBHostAddonEnabled");
@@ -1802,27 +1671,6 @@ std::string setAddonOptions()
     docToValue(drv8833RumbleOptions.pwmFrequency, doc, "drv8833RumblePWMFrequency");
     docToValue(drv8833RumbleOptions.dutyMin, doc, "drv8833RumbleDutyMin");
     docToValue(drv8833RumbleOptions.dutyMax, doc, "drv8833RumbleDutyMax");
-
-    TG16Options& tg16Options = Storage::getInstance().getAddonOptions().tg16Options;
-    docToValue(tg16Options.enabled, doc, "TG16padAddonEnabled");
-    docToPin(tg16Options.oePin, doc, "tg16PadOePin");
-    docToPin(tg16Options.selectPin, doc, "tg16PadSelectPin");
-    docToPin(tg16Options.dataPin0, doc, "tg16PadDataPin0");
-    docToPin(tg16Options.dataPin1, doc, "tg16PadDataPin1");
-    docToPin(tg16Options.dataPin2, doc, "tg16PadDataPin2");
-    docToPin(tg16Options.dataPin3, doc, "tg16PadDataPin3");
-
-    HETriggerOptions& heTriggerOptions = Storage::getInstance().getAddonOptions().heTriggerOptions;
-    docToValue(heTriggerOptions.enabled, doc, "HETriggerEnabled");
-    docToValue(heTriggerOptions.muxChannels, doc, "muxChannels");
-    docToPin(heTriggerOptions.selectPin0, doc, "muxSelectPin0");
-    docToPin(heTriggerOptions.selectPin1, doc, "muxSelectPin1");
-    docToPin(heTriggerOptions.selectPin2, doc, "muxSelectPin2");
-    docToPin(heTriggerOptions.selectPin3, doc, "muxSelectPin3");
-    docToPin(heTriggerOptions.muxADCPin0, doc, "muxADCPin0");
-    docToPin(heTriggerOptions.muxADCPin1, doc, "muxADCPin1");
-    docToPin(heTriggerOptions.muxADCPin2, doc, "muxADCPin2");
-    docToPin(heTriggerOptions.muxADCPin3, doc, "muxADCPin3");
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
@@ -2082,19 +1930,12 @@ std::string getAddonOptions()
     writeDoc(doc, "analogAdc2Mode", analogOptions.analogAdc2Mode);
     writeDoc(doc, "analogAdc2Invert", analogOptions.analogAdc2Invert);
     writeDoc(doc, "forced_circularity", analogOptions.forced_circularity);
-    writeDoc(doc, "forced_circularity2", analogOptions.forced_circularity2);
     writeDoc(doc, "inner_deadzone", analogOptions.inner_deadzone);
-    writeDoc(doc, "inner_deadzone2", analogOptions.inner_deadzone2);
     writeDoc(doc, "outer_deadzone", analogOptions.outer_deadzone);
-    writeDoc(doc, "outer_deadzone2", analogOptions.outer_deadzone2);
     writeDoc(doc, "auto_calibrate", analogOptions.auto_calibrate);
-    writeDoc(doc, "auto_calibrate2", analogOptions.auto_calibrate2);
     writeDoc(doc, "analog_smoothing", analogOptions.analog_smoothing);
-    writeDoc(doc, "analog_smoothing2", analogOptions.analog_smoothing2);
     writeDoc(doc, "smoothing_factor", analogOptions.smoothing_factor);
-    writeDoc(doc, "smoothing_factor2", analogOptions.smoothing_factor2);
     writeDoc(doc, "analog_error", analogOptions.analog_error);
-    writeDoc(doc, "analog_error2", analogOptions.analog_error2);
     writeDoc(doc, "AnalogInputEnabled", analogOptions.enabled);
 
     const BootselButtonOptions& bootselButtonOptions = Storage::getInstance().getAddonOptions().bootselButtonOptions;
@@ -2201,8 +2042,6 @@ std::string getAddonOptions()
     writeDoc(doc, "keyboardHostMouseLeft", keyboardHostOptions.mouseLeft);
     writeDoc(doc, "keyboardHostMouseMiddle", keyboardHostOptions.mouseMiddle);
     writeDoc(doc, "keyboardHostMouseRight", keyboardHostOptions.mouseRight);
-    writeDoc(doc, "keyboardHostMouseSensitivity", keyboardHostOptions.mouseSensitivity);
-    writeDoc(doc, "keyboardHostMouseMovement", keyboardHostOptions.movementMode);
 
     const GamepadUSBHostOptions& gamepadUSBHostOptions = Storage::getInstance().getAddonOptions().gamepadUSBHostOptions;
     writeDoc(doc, "GamepadUSBHostAddonEnabled", gamepadUSBHostOptions.enabled);
@@ -2254,27 +2093,6 @@ std::string getAddonOptions()
     writeDoc(doc, "drv8833RumblePWMFrequency", drv8833RumbleOptions.pwmFrequency);
     writeDoc(doc, "drv8833RumbleDutyMin", drv8833RumbleOptions.dutyMin);
     writeDoc(doc, "drv8833RumbleDutyMax", drv8833RumbleOptions.dutyMax);
-
-    TG16Options& tg16Options = Storage::getInstance().getAddonOptions().tg16Options;
-    writeDoc(doc, "TG16padAddonEnabled", tg16Options.enabled);
-    writeDoc(doc, "tg16PadOePin", cleanPin(tg16Options.oePin));
-    writeDoc(doc, "tg16PadSelectPin", cleanPin(tg16Options.selectPin));
-    writeDoc(doc, "tg16PadDataPin0", cleanPin(tg16Options.dataPin0));
-    writeDoc(doc, "tg16PadDataPin1", cleanPin(tg16Options.dataPin1));
-    writeDoc(doc, "tg16PadDataPin2", cleanPin(tg16Options.dataPin2));
-    writeDoc(doc, "tg16PadDataPin3", cleanPin(tg16Options.dataPin3));
-
-    const HETriggerOptions& heTriggerOptions = Storage::getInstance().getAddonOptions().heTriggerOptions;
-    writeDoc(doc, "HETriggerEnabled", heTriggerOptions.enabled);
-    writeDoc(doc, "muxChannels", heTriggerOptions.muxChannels);
-    writeDoc(doc, "muxSelectPin0", cleanPin(heTriggerOptions.selectPin0));
-    writeDoc(doc, "muxSelectPin1", cleanPin(heTriggerOptions.selectPin1));
-    writeDoc(doc, "muxSelectPin2", cleanPin(heTriggerOptions.selectPin2));
-    writeDoc(doc, "muxSelectPin3", cleanPin(heTriggerOptions.selectPin3));
-    writeDoc(doc, "muxADCPin0", cleanPin(heTriggerOptions.muxADCPin0));
-    writeDoc(doc, "muxADCPin1", cleanPin(heTriggerOptions.muxADCPin1));
-    writeDoc(doc, "muxADCPin2", cleanPin(heTriggerOptions.muxADCPin2));
-    writeDoc(doc, "muxADCPin3", cleanPin(heTriggerOptions.muxADCPin3));
 
     return serialize_json(doc);
 }
@@ -2360,9 +2178,6 @@ std::string getFirmwareVersion()
     const size_t capacity = JSON_OBJECT_SIZE(10);
     DynamicJsonDocument doc(capacity);
     writeDoc(doc, "version", GP2040VERSION);
-    writeDoc(doc, "boardArchitecture", GP2040PLATFORM);
-    writeDoc(doc, "boardBuild", GP2040BUILD);
-    writeDoc(doc, "boardBuildType", GP2040CONFIG);
     writeDoc(doc, "boardConfigLabel", BOARD_CONFIG_LABEL);
     writeDoc(doc, "boardConfigFileName", BOARD_CONFIG_FILE_NAME);
     writeDoc(doc, "boardConfig", GP2040_BOARDCONFIG);
@@ -2386,42 +2201,51 @@ static bool _abortGetHeldPins = false;
 
 std::string getHeldPins()
 {
-    DynamicJsonDocument doc(JSON_OBJECT_SIZE(100));
+    const size_t capacity = JSON_OBJECT_SIZE(100);
+    DynamicJsonDocument doc(capacity);
 
-    // Initialize unassigned pins for reading
+    // Initialize unassigned pins so that they can be read from
     std::vector<uint> uninitPins;
     for (uint32_t pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
+        switch (pin) {
+            case 23:
+            case 24:
+            case 25:
+            case 29:
+                continue;
+        }
         if (gpio_get_function(pin) == GPIO_FUNC_NULL) {
             uninitPins.push_back(pin);
-            gpio_init(pin);
-            gpio_set_dir(pin, GPIO_IN);
-            gpio_pull_up(pin);
+            gpio_init(pin);             // Initialize pin
+            gpio_set_dir(pin, GPIO_IN); // Set as INPUT
+            gpio_pull_up(pin);          // Set as PULLUP
         }
     }
 
-    std::set<uint> heldPinsSet;
-    uint32_t startTime = getMillis();
+    uint32_t timePinWait = getMillis();
     uint32_t oldState = ~gpio_get_all();
-    uint32_t debounceTime = 0;
+    uint32_t newState = 0;
+    uint32_t debounceStartTime = 0;
+    std::set<uint> heldPinsSet;
     bool isAnyPinHeld = false;
 
-    // Monitor pins for 5 seconds or until released
-    while (!_abortGetHeldPins && (isAnyPinHeld || (getMillis() - startTime) < 5000)) {
+    uint32_t currentMillis = 0;
+    while ((isAnyPinHeld || (((currentMillis = getMillis()) - timePinWait) < 5000))) { // 5 seconds of idle time
+        // rndis http server requires inline functions (non-class)
         rndis_task();
 
-        uint32_t newState = ~gpio_get_all();
-        if (isAnyPinHeld && newState == oldState) break; // Pins released
+        if (_abortGetHeldPins)
+            break;
+        if (isAnyPinHeld && newState == oldState) // Should match old state when pins are released
+            break;
 
-        uint32_t changedPins = newState ^ oldState;
-        uint32_t currentTime = getMillis();
-
+        newState = ~gpio_get_all();
+        uint32_t newPin = newState ^ oldState;
         for (uint32_t pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
-            if ((changedPins & (1 << pin)) &&
-                gpio_get_function(pin) == GPIO_FUNC_SIO &&
-                !gpio_is_dir_out(pin)) {
-
-                if (debounceTime == 0) debounceTime = currentTime;
-                if ((currentTime - debounceTime) > 5) { // 5ms debounce
+            if (gpio_get_function(pin) == GPIO_FUNC_SIO &&
+               !gpio_is_dir_out(pin) && (newPin & (1 << pin))) {
+                if (debounceStartTime == 0) debounceStartTime = currentMillis;
+                if ((currentMillis - debounceStartTime) > 5) { // wait 5ms
                     heldPinsSet.insert(pin);
                     isAnyPinHeld = true;
                 }
@@ -2429,17 +2253,20 @@ std::string getHeldPins()
         }
     }
 
-    for (uint32_t pin : uninitPins) gpio_deinit(pin);
+    auto heldPins = doc.createNestedArray("heldPins");
+    for (uint32_t pin : heldPinsSet) {
+        heldPins.add(pin);
+    }
+    for (uint32_t pin: uninitPins) {
+        gpio_deinit(pin);
+    }
 
     if (_abortGetHeldPins) {
         _abortGetHeldPins = false;
         return {};
+    } else {
+        return serialize_json(doc);
     }
-
-    auto heldPins = doc.createNestedArray("heldPins");
-    for (uint32_t pin : heldPinsSet) heldPins.add(pin);
-
-    return serialize_json(doc);
 }
 
 std::string abortGetHeldPins()
@@ -2534,10 +2361,6 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/getI2CPeripheralMap", getI2CPeripheralMap },
     { "/api/setExpansionPins", setExpansionPins },
     { "/api/getExpansionPins", getExpansionPins },
-    { "/api/setHETriggerOptions", setHETriggerOptions },
-    { "/api/getHETriggerOptions", getHETriggerOptions },
-    { "/api/getHETriggerCalibration", getHETriggerCalibration },
-    { "/api/setHETriggerCalibration", setHETriggerCalibration },
     { "/api/setReactiveLEDs", setReactiveLEDs },
     { "/api/getReactiveLEDs", getReactiveLEDs },
     { "/api/setKeyMappings", setKeyMappings },

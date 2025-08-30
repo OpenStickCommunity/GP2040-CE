@@ -86,16 +86,7 @@ const ReactiveLED = ({ values, errors, handleChange, handleCheckbox }) => {
 	};
 
 	return (
-		<Section title={
-			<a
-				href="https://gp2040-ce.info/add-ons/reactive-led"
-				target="_blank"
-				className="text-reset text-decoration-none"
-			>
-				{t('ReactiveLED:header-text')}
-			</a>
-		}
-		>
+		<Section title={t('ReactiveLED:header-text')}>
 			<div
 				id="ReactiveLEDEnabledOptions"
 				hidden={!values.ReactiveLEDAddonEnabled}
@@ -140,7 +131,7 @@ const ReactiveLED = ({ values, errors, handleChange, handleCheckbox }) => {
 											return (
 												<option key={`led${i}Action-option-${mi}`} value={mo}>
 													{(labelKey && buttonNames[labelKey]) ||
-														t(`Proto:GpioAction.${opt.label}`)}
+														t(`PinMapping:actions.${opt.label}`)}
 												</option>
 											);
 										})}

@@ -29,15 +29,12 @@
 #include "addons/rotaryencoder.h"
 #include "addons/i2c_gpio_pcf8575.h"
 #include "addons/gamepad_usb_host.h"
-#include "addons/he_trigger.h"
-#include "addons/tg16_input.h"
+
 
 // Pico includes
 #include "pico/bootrom.h"
 #include "pico/time.h"
 #include "hardware/adc.h"
-
-#include "rndis.h"
 
 // TinyUSB
 #include "tusb.h"
@@ -54,15 +51,14 @@ static absolute_time_t rebootDelayTimeout = nil_time;
 void GP2040::setup() {
 	Storage::getInstance().init();
 
-	// Reduce CPU if USB host is enabled
+	PeripheralManager::getInstance().initI2C();
+	PeripheralManager::getInstance().initSPI();
 	PeripheralManager::getInstance().initUSB();
+
+	// Reduce CPU if USB host is enabled
 	if ( PeripheralManager::getInstance().isUSBEnabled(0) ) {
 		set_sys_clock_khz(120000, true); // Set Clock to 120MHz to avoid potential USB timing issues
 	}
-
-	// I2C & SPI rely on the system clock
-	PeripheralManager::getInstance().initSPI();
-	PeripheralManager::getInstance().initI2C();
 
 	Gamepad * gamepad = new Gamepad();
 	Gamepad * processedGamepad = new Gamepad();
@@ -71,11 +67,6 @@ void GP2040::setup() {
 
 	// Set pin mappings for all GPIO functions
 	Storage::getInstance().setFunctionalPinMappings();
-
-	// power up... 
-	gamepad->auxState.power.pluggedIn = true;
-	gamepad->auxState.power.charging = false;
-	gamepad->auxState.power.level = GAMEPAD_AUX_MAX_POWER;
 
 	// Setup Gamepad
 	gamepad->setup();
@@ -104,7 +95,6 @@ void GP2040::setup() {
 	addons.LoadUSBAddon(new KeyboardHostAddon());
 	addons.LoadUSBAddon(new GamepadUSBHostAddon());
 	addons.LoadAddon(new AnalogInput());
-	addons.LoadAddon(new HETriggerAddon());
 	addons.LoadAddon(new BootselButtonAddon());
 	addons.LoadAddon(new DualDirectionalInput());
 	addons.LoadAddon(new FocusModeAddon());
@@ -116,7 +106,6 @@ void GP2040::setup() {
 	addons.LoadAddon(new TiltInput());
 	addons.LoadAddon(new RotaryEncoderInput());
 	addons.LoadAddon(new PCF8575Addon());
-	addons.LoadAddon(new TG16padInput());
 
 	// Input override addons
 	addons.LoadAddon(new ReverseInput());
@@ -171,14 +160,14 @@ void GP2040::setup() {
 		case BootAction::SET_INPUT_MODE_PS5: // PS4 / PS5 Driver
 			inputMode = INPUT_MODE_PS5;
 			break;
+		case BootAction::SET_INPUT_MODE_P5GENERAL:
+			inputMode = INPUT_MODE_P5GENERAL;
+			break;
 		case BootAction::SET_INPUT_MODE_XBONE: // Xbox One Driver
 			inputMode = INPUT_MODE_XBONE;
 			break;
 		case BootAction::SET_INPUT_MODE_XBOXORIGINAL: // Xbox OG Driver
 			inputMode = INPUT_MODE_XBOXORIGINAL;
-			break;
-		case BootAction::SET_INPUT_MODE_SWITCH_PRO:
-			inputMode = INPUT_MODE_SWITCH_PRO;
 			break;
 		case BootAction::NONE:
 		default:
@@ -282,13 +271,6 @@ void GP2040::run() {
     // Start the TinyUSB Device functionality
     tud_init(TUD_OPT_RHPORT);
 
-	// Initialize our USB manager
-	USBHostManager::getInstance().start();
-
-	if (configMode == true ) {
-		rndis_init();
-	}
-
 	while (1) { // LOOP
 		this->getReinitGamepad(gamepad);
 
@@ -301,9 +283,6 @@ void GP2040::run() {
 
 		checkRawState(prevState, gamepad->state);
 
-		// Process USB Host on Core0
-		USBHostManager::getInstance().process();
-
 		// Config Loop (Web-Config skips Core0 add-ons)
 		if (configMode == true) {
 			inputDriver->process(gamepad);
@@ -311,6 +290,9 @@ void GP2040::run() {
 			checkSaveRebootState();
 			continue;
 		}
+
+		// Process USB Host on Core0
+		USBHostManager::getInstance().process();
 
 		// Pre-Process add-ons for MPGS
 		addons.PreprocessAddons();
@@ -424,6 +406,8 @@ GP2040::BootAction GP2040::getBootAction() {
                                     return BootAction::SET_INPUT_MODE_PS4;
                                 case INPUT_MODE_PS5: 
                                     return BootAction::SET_INPUT_MODE_PS5;
+                                case INPUT_MODE_P5GENERAL: 
+                                    return BootAction::SET_INPUT_MODE_P5GENERAL;
                                 case INPUT_MODE_NEOGEO: 
                                     return BootAction::SET_INPUT_MODE_NEOGEO;
                                 case INPUT_MODE_MDMINI: 
@@ -440,8 +424,6 @@ GP2040::BootAction GP2040::getBootAction() {
                                     return BootAction::SET_INPUT_MODE_XBOXORIGINAL;
                                 case INPUT_MODE_XBONE:
                                     return BootAction::SET_INPUT_MODE_XBONE;
-                                case INPUT_MODE_SWITCH_PRO: 
-                                    return BootAction::SET_INPUT_MODE_SWITCH_PRO;
                                 default:
                                     return BootAction::NONE;
                             }

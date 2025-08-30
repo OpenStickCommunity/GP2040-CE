@@ -28,23 +28,12 @@ export const bootselState = {
 const Bootsel = ({ values, errors, handleChange, handleCheckbox }) => {
 	const { t } = useTranslation();
 	return (
-		<Section title={
-			<a
-				href="https://gp2040-ce.info/add-ons/bootsel-button"
-				target="_blank"
-				className="text-reset text-decoration-none"
-			>
-				{t('AddonsConfig:bootsel-header-text')}
-			</a>
-		}
-		>
+		<Section title={t('AddonsConfig:bootsel-header-text')}>
 			<div
 				id="BootselButtonAddonOptions"
 				hidden={!values.BootselButtonAddonEnabled}
 			>
-				<div className="alert alert-info" role="alert">
-					{t('AddonsConfig:bootsel-sub-header-text')}
-				</div>
+				<p>{t('AddonsConfig:bootsel-sub-header-text')}</p>
 				<FormSelect
 					label={t('AddonsConfig:bootsel-button-pin-label')}
 					name="bootselButtonMap"

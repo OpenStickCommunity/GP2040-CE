@@ -39,7 +39,6 @@ import { BUTTON_ACTIONS, PinActionKeys, PinActionValues } from '../Data/Pins';
 import './PinMapping.scss';
 import { MultiValue, SingleValue } from 'react-select';
 import InfoCircle from '../Icons/InfoCircle';
-import WebApi from '../Services/WebApi';
 
 type OptionType = {
 	label: string;
@@ -81,8 +80,8 @@ const options = Object.entries(BUTTON_ACTIONS)
 			type: buttonMask
 				? 'customButtonMask'
 				: dpadMask
-				? 'customDpadMask'
-				: 'action',
+					? 'customDpadMask'
+					: 'action',
 			customButtonMask: buttonMask?.value || 0,
 			customDpadMask: dpadMask?.value || 0,
 		};
@@ -121,7 +120,7 @@ const getMultiValue = (pinData: MaskPayload) => {
 						type === 'customButtonMask') ||
 					(pinData.customDpadMask & customDpadMask &&
 						type === 'customDpadMask'),
-		  )
+			)
 		: options.filter((option) => option.value === pinData.action);
 };
 
@@ -241,7 +240,7 @@ const PinSelectList = memo(function PinSelectList({
 			// Need to fallback as some button actions are not part of button names
 			return (
 				(labelKey && buttonNames[labelKey]) ||
-				t(`Proto:GpioAction.${option.label}`)
+				t(`PinMapping:actions.${option.label}`)
 			);
 		},
 		[buttonNames],
@@ -289,9 +288,7 @@ const PinSection = memo(function PinSection({
 			profileNumber: profileIndex + 1,
 		});
 
-	const [activeProfile, setActiveProfile] = useState(0);
-
-	const { updateUsedPins, buttonLabels, setLoading } = useContext(AppContext);
+	const { updateUsedPins, buttonLabels } = useContext(AppContext);
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
 	const CURRENT_BUTTONS = getButtonLabels(buttonLabelType, swapTpShareLabels);
 	const buttonNames = omit(CURRENT_BUTTONS, ['label', 'value']);
@@ -308,14 +305,6 @@ const PinSection = memo(function PinSection({
 		} catch (error) {
 			setSaveMessage(t('Common:saved-error-message'));
 		}
-	}, []);
-
-	useEffect(() => {
-		async function getActiveProfile() {
-			const { profileNumber } = await WebApi.getGamepadOptions(setLoading);
-			setActiveProfile(profileNumber - 1);
-		}
-		getActiveProfile();
 	}, []);
 
 	return (
@@ -342,15 +331,12 @@ const PinSection = memo(function PinSection({
 						{profileIndex > 0 && (
 							<div className="d-flex">
 								<FormCheck
-									disabled={profileIndex === activeProfile}
 									size={3}
 									label={
 										<OverlayTrigger
 											overlay={
 												<Tooltip>
-													{profileIndex === activeProfile
-														? t('PinMapping:profile-enabled-active-tooltip')
-														: t('PinMapping:profile-enabled-tooltip')}
+													{t('PinMapping:profile-enabled-tooltip')}
 												</Tooltip>
 											}
 										>

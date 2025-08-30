@@ -56,11 +56,6 @@ import ReactiveLED, {
 	reactiveLEDScheme,
 	reactiveLEDState,
 } from '../Addons/ReactiveLED';
-import TG16, { tg16State } from '../Addons/TG16';
-import HETrigger, {
-	HETriggerScheme,
-	HETriggerState,
-} from '../Addons/HETrigger';
 
 const schema = yup.object().shape({
 	...analogScheme,
@@ -82,7 +77,6 @@ const schema = yup.object().shape({
 	...drv8833RumbleScheme,
 	...reactiveLEDScheme,
 	...gamepadUSBHostScheme,
-	...HETriggerScheme,
 });
 
 const defaultValues = {
@@ -99,7 +93,6 @@ const defaultValues = {
 	...socdState,
 	...wiiState,
 	...snesState,
-	...tg16State,
 	...focusModeState,
 	...keyboardState,
 	...rotaryState,
@@ -107,7 +100,6 @@ const defaultValues = {
 	...drv8833RumbleState,
 	...reactiveLEDState,
 	...gamepadUSBHostState,
-	...HETriggerState,
 };
 
 const ADDONS = [
@@ -124,7 +116,6 @@ const ADDONS = [
 	SOCD,
 	Wii,
 	SNES,
-	TG16,
 	FocusMode,
 	Keyboard,
 	GamepadUSBHost,
@@ -132,7 +123,6 @@ const ADDONS = [
 	PCF8575,
 	DRV8833Rumble,
 	ReactiveLED,
-	HETrigger,
 ];
 
 const FormContext = ({ setStoredData }) => {

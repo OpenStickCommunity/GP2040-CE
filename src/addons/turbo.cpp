@@ -30,7 +30,8 @@ bool TurboInput::available() {
     {
         if ( pinMappings[pin].action == GpioAction::BUTTON_PRESS_TURBO ) {
             hasTurboAssigned = true;
-            turboPinMask |= 1 << pin;
+            turboPinMask = 1 << pin;
+            break;
         }
     }
     return Storage::getInstance().getAddonOptions().turboOptions.enabled && (hasTurboAssigned == true);
@@ -62,7 +63,7 @@ void TurboInput::setup(){
     }
 
     Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
-	  gamepad->auxState.turbo.enabled = true;
+	gamepad->auxState.turbo.enabled = true;
     gamepad->auxState.turbo.active = 1;
 
     // SHMUP Mode
@@ -103,9 +104,9 @@ void TurboInput::setup(){
     lastPressed = 0;
     lastDpad = 0;
     bTurboFlicker = false;
+    updateInterval(shotCount);
     nextTimer = getMicro();
     encoderValue = shotCount;
-    updateTurboShotCount(shotCount, false);
 }
 
 /**
@@ -118,7 +119,8 @@ void TurboInput::reinit()
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
     {
         if ( pinMappings[pin].action == GpioAction::BUTTON_PRESS_TURBO ) {
-            turboPinMask |= 1 << pin;
+            turboPinMask = 1 << pin;
+            break;
         }
     }
 }
@@ -131,11 +133,6 @@ void TurboInput::process()
     uint8_t dpadPressed = gamepad->state.dpad & GAMEPAD_MASK_DPAD;
 
     if (!options.enabled && (!hasTurboAssigned == true)) return;
-
-    // Check if shotCount changed externally (e.g., via hotkey)
-    if (options.shotCount != lastShotCount){
-      updateTurboShotCount(options.shotCount, false);
-    }
 
     // Check for TURBO pin enabled
     if (gamepad->debouncedGpio & turboPinMask) {
@@ -153,12 +150,12 @@ void TurboInput::process()
 
         if (dpadPressed & GAMEPAD_MASK_DOWN && (lastDpad != dpadPressed)) {
             if (options.shotCount > TURBO_SHOT_MIN) { // can't go lower than 2-shots per second
-                updateTurboShotCount(options.shotCount - 1, true);
+                updateTurboShotCount(options.shotCount - 1);
             }
         }
         else if (dpadPressed & GAMEPAD_MASK_UP && (lastDpad != dpadPressed)) {
             if (options.shotCount < TURBO_SHOT_MAX) { // can't go higher than 30-shots per second
-                updateTurboShotCount(options.shotCount + 1, true);
+                updateTurboShotCount(options.shotCount + 1);
             }
         }
         lastPressed = buttonsPressed; // save last pressed
@@ -186,7 +183,7 @@ void TurboInput::process()
         dialValue = adc_read();
         uint8_t shotCount = (dialValue / TURBO_DIAL_INCREMENTS) + TURBO_SHOT_MIN;
         if (shotCount != options.shotCount) {
-            updateTurboShotCount(shotCount, false);
+            updateInterval(shotCount);
         }
         nextAdcRead = now + 100000; // Sample every 100ms
     }
@@ -238,16 +235,16 @@ void TurboInput::process()
     }
 }
 
-void TurboInput::updateTurboShotCount(uint8_t shotCount, bool save) {
-  TurboOptions &options = Storage::getInstance().getAddonOptions().turboOptions;
-  shotCount = std::clamp<uint8_t>(shotCount, TURBO_SHOT_MIN, TURBO_SHOT_MAX);
+void TurboInput::updateInterval(uint8_t shotCount) {
+    uIntervalUS = (uint32_t)std::floor(1000000.0 / (shotCount * 2));
+}
 
-  options.shotCount = shotCount;
-  lastShotCount = shotCount;
-
-  if (save) {
+void TurboInput::updateTurboShotCount(uint8_t shotCount) {
+    TurboOptions& options = Storage::getInstance().getAddonOptions().turboOptions;
+    shotCount = std::clamp<uint8_t>(shotCount, TURBO_SHOT_MIN, TURBO_SHOT_MAX);
+    if (shotCount != options.shotCount) {
+        options.shotCount = shotCount;
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(false));
-  }
-
-  uIntervalUS = (uint32_t)std::floor(1000000.0 / (shotCount * 2));
+    }
+    updateInterval(shotCount);
 }

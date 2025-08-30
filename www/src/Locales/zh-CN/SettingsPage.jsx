@@ -78,6 +78,8 @@ export default {
 		'<span>补充信息：</span>请确保已启用 USB 外围设备，并已插入兼容 PS5 的 USB 设备。',
 	'xbone-mode-text':
 		'<span>补充信息：</span>Xbox One 模式需要 USB 主机(USB Host)连接和 USB 加密狗才能正确认证。',
+	'p5general-mode-text':
+		'<span>信息：</span>PS5通用模式需要 USB 主机连接和 <span>P5General</span> 才能正确验证。',
 	'xinput-mode-text':
 		'<span>补充信息：</span>Xinput 可以在没有认证的情况下在PC上运行。如果您想在 Xbox 360 上使用它，请选择USB验证并连接合适的加密狗。',
 	'hotkey-settings-label': '快捷键设置',
@@ -125,8 +127,6 @@ export default {
 		'load-profile-2': '加载 档案 #2',
 		'load-profile-3': '加载 档案 #3',
 		'load-profile-4': '加载 档案 #4',
-		'load-profile-5': '加载 档案 #5',
-		'load-profile-6': '加载 档案 #6',
 		'reboot-default': '重启 GP2040-CE',
 		'next-profile': '下一个档案',
 		'previous-profile': '上一个档案',

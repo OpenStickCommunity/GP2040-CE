@@ -22,17 +22,16 @@ void FocusModeAddon::setup() {
 			default:    break;
 		}
 	}
+
 }
 
 void FocusModeAddon::process() {
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
-	Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
+    Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
 
-	const FocusModeOptions& options = Storage::getInstance().getAddonOptions().focusModeOptions;
+    if (!Storage::getInstance().getAddonOptions().focusModeOptions.enabled) return;
 
-	if (!options.enabled) return;
-
-	if ( options.overrideEnabled || values & mapFocusMode->pinMask ) {
+	if (values & mapFocusMode->pinMask) {
 			if (buttonLockMask & GAMEPAD_MASK_DU) {
 				gamepad->state.dpad &= ~GAMEPAD_MASK_UP;
 			}

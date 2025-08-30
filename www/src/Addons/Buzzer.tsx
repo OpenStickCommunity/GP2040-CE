@@ -35,16 +35,7 @@ export const buzzerState = {
 const Buzzer = ({ values, errors, handleChange, handleCheckbox }) => {
 	const { t } = useTranslation();
 	return (
-		<Section title={
-			<a
-				href="https://gp2040-ce.info/add-ons/buzzer-speaker"
-				target="_blank"
-				className="text-reset text-decoration-none"
-			>
-				{t('AddonsConfig:buzzer-speaker-header-text')}
-			</a>
-		}
-		>
+		<Section title={t('AddonsConfig:buzzer-speaker-header-text')}>
 			<div
 				id="BuzzerSpeakerAddonOptions"
 				hidden={!values.BuzzerSpeakerAddonEnabled}

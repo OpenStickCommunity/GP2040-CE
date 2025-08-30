@@ -4,14 +4,12 @@ import { Trans, useTranslation } from 'react-i18next';
 import { Button, Row, FormCheck, Tab, Tabs, FormLabel } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import * as yup from 'yup';
-import invert from 'lodash/invert';
-import omit from 'lodash/omit';
 
 import Section from '../Components/Section';
 
 import FormSelect from '../Components/FormSelect';
 import { I2C_BLOCKS } from '../Data/Peripherals';
-import { BUTTON_MASKS_OPTIONS, getButtonLabels } from '../Data/Buttons';
+import { BUTTON_MASKS_OPTIONS } from '../Data/Buttons';
 
 import WebApi, { baseWiiControls } from '../Services/WebApi';
 
@@ -202,11 +200,6 @@ const Wii = ({
 	const { setLoading, getAvailablePeripherals, getSelectedPeripheral } =
 		useContext(AppContext);
 
-	const { buttonLabels } = useContext(AppContext);
-	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
-	const CURRENT_BUTTONS = getButtonLabels(buttonLabelType, swapTpShareLabels);
-	const buttonNames = omit(CURRENT_BUTTONS, ['label', 'value']);        
-
 	useEffect(() => {
 		async function fetchData() {
 			const wc = await WebApi.getWiiControls(setLoading);
@@ -350,31 +343,21 @@ const Wii = ({
 	};
 
 	return (
-		<Section title={
-			<a
-				href="https://gp2040-ce.info/add-ons/wii-extensions"
-				target="_blank"
-				className="text-reset text-decoration-none"
-			>
-				{t('WiiAddon:header-text')}
-			</a>
-		}
-		>
+		<Section title={t('WiiAddon:header-text')}>
 			<div
 				id="WiiExtensionAddonOptions"
 				hidden={
 					!(values.WiiExtensionAddonEnabled && getAvailablePeripherals('i2c'))
 				}
 			>
-				<Trans ns="WiiAddon" i18nKey="sub-header-text">
-					<div className="alert alert-info" role="alert">
-						Note: If the display is enabled at the same time, this add-on will
-						be disabled.
-					</div>
-				</Trans>
-				<div className="alert alert-info" role="alert">
-					The SDA and SCL pins and Speed are configured in <a href="../peripheral-mapping" className="alert-link">Peripheral Mapping</a>
-				</div>			
+				<Row>
+					<Trans ns="WiiAddon" i18nKey="sub-header-text">
+						<p>
+							Note: If the Display is enabled at the same time, this Addon will
+							be disabled.
+						</p>
+					</Trans>
+				</Row>
 				<Row className="mb-3">
 					<Tabs
 						defaultActiveKey={`wii${WII_EXTENSION_CONTROLS[0].id}Config`}
@@ -433,7 +416,7 @@ const Wii = ({
 														key={`wiiExtensionController${controlObj.id}Button${buttonObj.id}-option-${i}`}
 														value={o.value}
 													>
-														{CURRENT_BUTTONS[o.label]}
+														{o.label}
 													</option>
 												))}
 											</select>

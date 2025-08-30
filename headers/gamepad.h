@@ -218,8 +218,6 @@ private:
 
 	HotkeyEntry hotkeys[16];
 	GamepadHotkey lastAction = HOTKEY_NONE;
-
-	absolute_time_t disableFocusModeTimeout = nil_time;
 };
 
 #endif
