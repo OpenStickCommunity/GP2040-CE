@@ -61,6 +61,7 @@ struct __attribute__ ((__packed__)) AnimationOptions_Unpacked
   AnimationProfile_Unpacked profiles[MAX_ANIMATION_PROFILES_INCLUDING_TEST];
   uint8_t brightness;
   int8_t baseProfileIndex;
+  uint32_t autoDisableTime;
 };
 
 class AnimationStation
@@ -82,9 +83,6 @@ public:
 
   //What buttons (logical ones) are pressed this frame
   void HandlePressedButtons(uint32_t pressedButtons);
-
-  //webconfig test mode
-  void UpdateTestMode();
 
   int8_t GetMode();
   void SetMode(int8_t mode);
@@ -144,12 +142,21 @@ protected:
 
   Animation* GetNonPressedEffectForEffectType(AnimationNonPressedEffects EffectType, EButtonCaseEffectType InButtonCaseEffectType);
 
+  //webconfig test mode
+  void UpdateTestMode();
+
+  void UpdateTimeout();
+
   //Light data
   Lights RGBLights;
 
   //options/save
   absolute_time_t timeAnimationSaveSet;
   bool bAnimConfigSaveNeeded = false;
+
+  //idletimeout
+  absolute_time_t timeLastButtonPressed;
+  bool bIsInIdleTimeout = false;
 
   //Testing/webconfig
   static AnimationStationTestMode TestMode;
