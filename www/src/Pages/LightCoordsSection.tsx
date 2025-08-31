@@ -19,10 +19,15 @@ import { useTranslation } from 'react-i18next';
 
 import FormSelect from '../Components/FormSelect';
 import { LightIndicator } from '../Components/LightIndicator';
-import useLedStore, { Light, MAX_CASE_LIGHTS } from '../Store/useLedStore';
+import useLedStore, {
+	Light,
+	MAX_CASE_LIGHTS,
+	MAX_LIGHTS,
+} from '../Store/useLedStore';
 import boards from '../Data/Boards.json';
 import useLedsPreview from '../Hooks/useLedsPreview';
 
+const GRID_SIZE = 30;
 const GPIO_PIN_LENGTH = boards[import.meta.env.VITE_GP2040_BOARD].maxPin + 1;
 
 const useGetDivDimensions = () => {
@@ -49,8 +54,6 @@ const useGetDivDimensions = () => {
 	return { dimensions, containerRef };
 };
 
-const GRID_SIZE = 30;
-
 const schema = yup.object({
 	Lights: yup.array().of(
 		yup.object({
@@ -64,16 +67,27 @@ const schema = yup.object({
 	),
 });
 
+const getFirstEmptyLightCoord = (lights: Light[]) => {
+	const existingCoords = lights.map(
+		(light) => `${light.xCoord},${light.yCoord}`,
+	);
+	const total = GRID_SIZE * GRID_SIZE;
+
+	for (let i = 0; i < total; i++) {
+		const x = i % GRID_SIZE;
+		const y = Math.floor(i / GRID_SIZE);
+		if (!existingCoords.includes(`${x},${y}`)) {
+			return { xCoord: x, yCoord: y };
+		}
+	}
+	return null;
+};
+
 export default function LightCoordsSection() {
 	const { dimensions, containerRef } = useGetDivDimensions();
 	const { Lights, saveLightOptions } = useLedStore();
 	const { t } = useTranslation('');
-	const {
-		activateLedsOnId,
-		activateLedsProfile,
-		activateLedsChase,
-		turnOffLeds,
-	} = useLedsPreview();
+	const { activateLedsOnId, activateLedsChase, turnOffLeds } = useLedsPreview();
 	const [previewGpioPin, setPreviewGpioPin] = useState(0);
 	const [previewCaseId, setPreviewCaseId] = useState(0);
 
@@ -144,7 +158,7 @@ export default function LightCoordsSection() {
 						</p>
 					</Col>
 				</Row>
-				<hr/>
+				<hr />
 				<Row className="mb-3">
 					<Col md={6} className="d-flex flex-column justify-content-end">
 						<FormSelect
@@ -397,7 +411,13 @@ export default function LightCoordsSection() {
 										<Button
 											className="w-100"
 											variant="secondary"
+											disabled={values.Lights.length >= MAX_LIGHTS}
 											onClick={() => {
+												const emptyCoord = getFirstEmptyLightCoord(
+													values.Lights,
+												);
+												if (!emptyCoord) return;
+
 												setValues({
 													Lights: [
 														...values.Lights,
@@ -406,8 +426,8 @@ export default function LightCoordsSection() {
 															firstLedIndex: values.Lights.length,
 															lightType: 0,
 															numLedsOnLight: 1,
-															xCoord: 0,
-															yCoord: 0,
+															xCoord: emptyCoord.xCoord,
+															yCoord: emptyCoord.yCoord,
 														},
 													],
 												});
