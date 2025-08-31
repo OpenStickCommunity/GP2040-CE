@@ -12,9 +12,9 @@ import {
 	snapCenterToCursor,
 	restrictToParentElement,
 } from '@dnd-kit/modifiers';
-import { Form, Formik } from 'formik';
+import { Formik } from 'formik';
 import * as yup from 'yup';
-import { Row, Col, Button, Alert } from 'react-bootstrap';
+import { Row, Col, Button, Alert, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 import FormSelect from '../Components/FormSelect';
@@ -55,16 +55,33 @@ const useGetDivDimensions = () => {
 };
 
 const schema = yup.object({
-	Lights: yup.array().of(
-		yup.object({
-			GPIOPinorCaseChainIndex: yup.number().required(),
-			firstLedIndex: yup.number().required(),
-			lightType: yup.number().required(),
-			numLedsOnLight: yup.number().required(),
-			xCoord: yup.number().required(),
-			yCoord: yup.number().required(),
+	Lights: yup
+		.array()
+		.of(
+			yup.object({
+				GPIOPinorCaseChainIndex: yup.number().required(),
+				firstLedIndex: yup.number().required(),
+				lightType: yup.number().required(),
+				numLedsOnLight: yup.number().required(),
+				xCoord: yup.number().required(),
+				yCoord: yup.number().required(),
+			}),
+		)
+		.test('no-duplicate-coords', 'Overlapping light', function (lights) {
+			if (!lights) return true;
+			const overlappingCoords = new Map();
+			for (let i = 0; i < lights.length; i++) {
+				const key = `${lights[i].xCoord},${lights[i].yCoord}`;
+				if (overlappingCoords.has(key)) {
+					return this.createError({
+						path: `Lights[${i}]`,
+						message: `Overlapping light`,
+					});
+				}
+				overlappingCoords.set(key, i);
+			}
+			return true;
 		}),
-	),
 });
 
 const getFirstEmptyLightCoord = (lights: Light[]) => {
@@ -139,6 +156,7 @@ export default function LightCoordsSection() {
 		event: DragEndEvent,
 	) {
 		setSelectedLight(Number(event.active.id));
+		setSaveMessage('');
 	}, []);
 
 	return (
@@ -250,7 +268,7 @@ export default function LightCoordsSection() {
 					validationSchema={schema}
 					onSubmit={onSuccess}
 					initialValues={{ Lights }}
-					validateOnChange={false}
+					validateOnChange={true}
 				>
 					{({
 						handleSubmit,
@@ -295,30 +313,6 @@ export default function LightCoordsSection() {
 																?.numLedsOnLight
 														}
 														onChange={handleChange}
-													/>
-												</div>
-												<div className="mb-2">
-													<label className="form-label">X Coord</label>
-													<input
-														type="number"
-														className="form-control"
-														name={`Lights[${selectedLight}].xCoord`}
-														value={values.Lights[Number(selectedLight)]?.xCoord}
-														onChange={handleChange}
-														min={0}
-														max={gridSize - 1}
-													/>
-												</div>
-												<div className="mb-2">
-													<label className="form-label">Y Coord</label>
-													<input
-														type="number"
-														className="form-control"
-														name={`Lights[${selectedLight}].yCoord`}
-														value={values.Lights[Number(selectedLight)]?.yCoord}
-														onChange={handleChange}
-														min={0}
-														max={gridSize - 1}
 													/>
 												</div>
 												<div className="mb-2">
@@ -382,6 +376,36 @@ export default function LightCoordsSection() {
 														<option value={3}>PlayerLight</option>
 													</select>
 												</div>
+												<div className="d-flex flex-row gap-2 mb-2">
+													<div className="flex-grow-1">
+														<label className="form-label">X Coord</label>
+														<input
+															type="number"
+															className="form-control"
+															name={`Lights[${selectedLight}].xCoord`}
+															value={
+																values.Lights[Number(selectedLight)]?.xCoord
+															}
+															onChange={handleChange}
+															min={0}
+															max={gridSize - 1}
+														/>
+													</div>
+													<div className="flex-grow-1">
+														<label className="form-label">Y Coord</label>
+														<input
+															type="number"
+															className="form-control"
+															name={`Lights[${selectedLight}].yCoord`}
+															value={
+																values.Lights[Number(selectedLight)]?.yCoord
+															}
+															onChange={handleChange}
+															min={0}
+															max={gridSize - 1}
+														/>
+													</div>
+												</div>
 												<Button
 													variant="danger"
 													className="w-100 mt-3"
@@ -438,10 +462,19 @@ export default function LightCoordsSection() {
 										</Button>
 									</div>
 									<hr className="mt-3" />
-									<Button className="w-100 mb-3" type="submit">
+									<Button
+										className="w-100 mb-3"
+										type="submit"
+										disabled={!!errors.Lights}
+									>
 										{t('Common:button-save-label')}
 									</Button>
 									{saveMessage && <Alert variant="info">{saveMessage}</Alert>}
+
+									{Array.isArray(errors.Lights) &&
+										errors.Lights.some(Boolean) && (
+											<Alert variant="danger">Verify light settings</Alert>
+										)}
 								</Col>
 								<Col md={9} className="mt-3 mt-md-0">
 									<div
@@ -519,6 +552,7 @@ export default function LightCoordsSection() {
 													id={index}
 													cellWidth={cellWidth}
 													active={selectedLight === index}
+													error={errors?.Lights?.[index]?.toString()}
 													{...light}
 												/>
 											))}

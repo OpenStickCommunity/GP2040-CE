@@ -6,6 +6,7 @@ type LightIndicatorProps = {
 	id: number;
 	cellWidth: number;
 	active: boolean;
+	error?: string;
 } & Light;
 
 const LightIcon = ({ size, active }: { size: number; active: boolean }) => (
@@ -46,6 +47,7 @@ export function LightIndicator({
 	firstLedIndex,
 	lightType,
 	GPIOPinorCaseChainIndex,
+	error,
 }: LightIndicatorProps) {
 	const { attributes, isDragging, listeners, setNodeRef, transform } =
 		useDraggable({ id });
@@ -79,39 +81,44 @@ export function LightIndicator({
 			) : (
 				<OverlayTrigger
 					placement="top"
+					{...(error ? { show: true } : {})}
 					overlay={
 						<Tooltip>
-							<div className="d-flex flex-column align-items-start min-w-110 p-1">
-								<div className="fw-semibold mb-1">Light {id + 1}</div>
-								<hr className="m-1 w-100" style={{ margin: '1px 0' }} />
-								<div className="d-flex w-100 justify-content-between">
-									<span className="text-secondary">GPIO/Case:</span>
-									<span>{GPIOPinorCaseChainIndex}</span>
+							{error ? (
+								<div>{error}</div>
+							) : (
+								<div className="d-flex flex-column align-items-start min-w-110 p-1">
+									<div className="fw-semibold mb-1">Light {id + 1}</div>
+									<hr className="m-1 w-100" style={{ margin: '1px 0' }} />
+									<div className="d-flex w-100 justify-content-between">
+										<span className="text-secondary">GPIO/Case:</span>
+										<span>{GPIOPinorCaseChainIndex}</span>
+									</div>
+									<div className="d-flex w-100 justify-content-between">
+										<span className="text-secondary">Type:</span>
+										<span>
+											{lightType === 0 && 'ActionButton'}
+											{lightType === 1 && 'Case'}
+											{lightType === 2 && 'Turbo'}
+											{lightType === 3 && 'PlayerLight'}
+										</span>
+									</div>
+									<div className="d-flex w-100 justify-content-between">
+										<span className="text-secondary">LEDs:</span>
+										<span>{numLedsOnLight}</span>
+									</div>
+									<div className="d-flex w-100 justify-content-between">
+										<span className="text-secondary">Coords:</span>
+										<span>
+											({xCoord}, {yCoord})
+										</span>
+									</div>
+									<div className="d-flex w-100 justify-content-between">
+										<span className="text-secondary">First LED:</span>
+										<span>{firstLedIndex}</span>
+									</div>
 								</div>
-								<div className="d-flex w-100 justify-content-between">
-									<span className="text-secondary">Type:</span>
-									<span>
-										{lightType === 0 && 'ActionButton'}
-										{lightType === 1 && 'Case'}
-										{lightType === 2 && 'Turbo'}
-										{lightType === 3 && 'PlayerLight'}
-									</span>
-								</div>
-								<div className="d-flex w-100 justify-content-between">
-									<span className="text-secondary">LEDs:</span>
-									<span>{numLedsOnLight}</span>
-								</div>
-								<div className="d-flex w-100 justify-content-between">
-									<span className="text-secondary">Coords:</span>
-									<span>
-										({xCoord}, {yCoord})
-									</span>
-								</div>
-								<div className="d-flex w-100 justify-content-between">
-									<span className="text-secondary">First LED:</span>
-									<span>{firstLedIndex}</span>
-								</div>
-							</div>
+							)}
 						</Tooltip>
 					}
 				>
