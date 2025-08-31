@@ -36,7 +36,7 @@ import useLedStore, {
 } from '../Store/useLedStore';
 import boards from '../Data/Boards.json';
 import useLedsPreview from '../Hooks/useLedsPreview';
-import './AnimationSection.scss';
+import './LedsSections.scss';
 import LEDColors from '../Data/LEDColors';
 
 const GPIO_PIN_LENGTH = boards[import.meta.env.VITE_GP2040_BOARD].maxPin + 1;
@@ -245,26 +245,17 @@ const ColorPickerList = memo(function ColorPickerList({
 	);
 });
 
-export default function AnimationSection() {
+export default function LedsSections() {
+	const { t } = useTranslation('');
 	const { AnimationOptions, saveAnimationOptions } = useLedStore();
-	const {
-		activateLedsOnId,
-		activateLedsProfile,
-		activateLedsChase,
-		turnOffLeds,
-	} = useLedsPreview();
+	const { activateLedsProfile, turnOffLeds } = useLedsPreview();
 
 	const [key, setKey] = useState(
 		`profile-${AnimationOptions.baseProfileIndex}`,
 	);
-
-	const [previewGpioPin, setPreviewGpioPin] = useState(0);
-	const [previewCaseId, setPreviewCaseId] = useState(0);
 	const [previewProfileIndex, setPreviewProfileIndex] = useState(
 		AnimationOptions.baseProfileIndex,
 	);
-	const { t } = useTranslation('');
-
 	const [saveMessage, setSaveMessage] = useState('');
 
 	const onSuccess = async (values: AnimationOptions) => {
@@ -285,130 +276,53 @@ export default function AnimationSection() {
 		>
 			{({ handleSubmit, handleChange, values, errors, setFieldValue }) => (
 				<div>
-					<Section title="Preview helpers">
-						<Row className="mb-3">
-							<Col md={6} className="d-flex flex-column justify-content-end">
-								<FormSelect
-									label={'Active light tied to GPIO pin'}
-									className="form-select-sm"
-									groupClassName="mb-3"
-									value={previewGpioPin}
-									onChange={(e) => {
-										setPreviewGpioPin(
-											parseInt((e.target as HTMLSelectElement).value),
-										);
-									}}
-								>
-									{Array.from({ length: GPIO_PIN_LENGTH }).map(
-										(_, pinIndex) => (
-											<option key={pinIndex} value={pinIndex}>
-												GPIO Pin {pinIndex}
-											</option>
-										),
-									)}
-								</FormSelect>
-
-								<Button
-									variant="secondary"
-									onClick={() => {
-										activateLedsOnId(previewGpioPin);
-									}}
-								>
-									GPIO Pin Test
-								</Button>
-							</Col>
-							<Col md={6} className="d-flex flex-column justify-content-end">
-								<FormSelect
-									label={'Active light tied to case ID'}
-									className="form-select-sm"
-									groupClassName="mb-3"
-									value={previewCaseId}
-									onChange={(e) => {
-										setPreviewCaseId(
-											parseInt((e.target as HTMLSelectElement).value),
-										);
-									}}
-								>
-									{Array.from({ length: MAX_CASE_LIGHTS }).map(
-										(_, caseIndex) => (
-											<option key={caseIndex} value={caseIndex}>
-												Case ID {caseIndex + 1}
-											</option>
-										),
-									)}
-								</FormSelect>
-
-								<Button
-									variant="secondary"
-									onClick={() => {
-										activateLedsOnId(previewCaseId, true);
-									}}
-								>
-									Case ID Test
-								</Button>
-							</Col>
-						</Row>
-						<Row className="mb-3">
-							<Col md={4} className="d-flex flex-column justify-content-end">
-								<p>
-									Run a chase animation from left to right and then top to
-									bottom to help verify correct grid positioning of the lights
-								</p>
-								<Button
-									variant="secondary"
-									onClick={() => {
-										activateLedsChase();
-									}}
-								>
-									Layout Test
-								</Button>
-							</Col>
-							<Col md={4} className="d-flex flex-column justify-content-end">
-								<FormSelect
-									label={'Preview configured profile'}
-									className="form-select-sm"
-									groupClassName="mb-3"
-									value={previewProfileIndex}
-									onChange={(e) => {
-										const profileIndex = parseInt(e.target.value);
-										setPreviewProfileIndex(profileIndex);
-									}}
-								>
-									{values.profiles.map((_, profileIndex) => (
-										<option
-											key={`profile-select-${profileIndex}`}
-											value={profileIndex}
-										>
-											{t('Leds:profile-number', {
-												profileNumber: profileIndex + 1,
-											})}
-										</option>
-									))}
-								</FormSelect>
-								<Button
-									variant="secondary"
-									onClick={() => {
-										activateLedsProfile(values.profiles[previewProfileIndex]);
-									}}
-								>
-									Profile Test
-								</Button>
-							</Col>
-							<Col md={4} className="d-flex flex-column justify-content-end">
-								<p>Turns off all the lights</p>
-								<Button
-									variant="secondary"
-									onClick={() => {
-										turnOffLeds();
-									}}
-								>
-									Lights Off
-								</Button>
-							</Col>
-						</Row>
-					</Section>
 					<Section title="Led configuration">
 						<Form noValidate onSubmit={handleSubmit}>
+							<Row className="mb-3">
+								<Col md={6} className="d-flex flex-column justify-content-end">
+									<FormSelect
+										label={'Preview configured profile'}
+										className="form-select-sm"
+										groupClassName="mb-3"
+										value={previewProfileIndex}
+										onChange={(e) => {
+											const profileIndex = parseInt(e.target.value);
+											setPreviewProfileIndex(profileIndex);
+										}}
+									>
+										{values.profiles.map((_, profileIndex) => (
+											<option
+												key={`profile-select-${profileIndex}`}
+												value={profileIndex}
+											>
+												{t('Leds:profile-number', {
+													profileNumber: profileIndex + 1,
+												})}
+											</option>
+										))}
+									</FormSelect>
+									<Button
+										variant="secondary"
+										onClick={() => {
+											activateLedsProfile(values.profiles[previewProfileIndex]);
+										}}
+									>
+										Profile Test
+									</Button>
+								</Col>
+								<Col md={6} className="d-flex flex-column justify-content-end">
+									<p>Turns off all the lights</p>
+									<Button
+										variant="danger"
+										onClick={() => {
+											turnOffLeds();
+										}}
+									>
+										Lights Off
+									</Button>
+								</Col>
+							</Row>
+							<hr />
 							<Row>
 								<FormSelect
 									label={t('Leds:profile-label')}
@@ -447,7 +361,7 @@ export default function AnimationSection() {
 									min={0}
 									max={100}
 								/>
-								
+
 								<FormControl
 									type="number"
 									label={t('Leds:idle-timout-label')}
@@ -689,30 +603,7 @@ export default function AnimationSection() {
 														)
 													}
 												/>
-												<FormGroup className="mb-4">
-													<Form.Label>{t(`Leds:case-colors-label`)}</Form.Label>
 
-													<FieldArray
-														name={`profiles.${profileIndex}.caseStaticColors`}
-														render={({ replace }) => (
-															<ColorSelectorList
-																length={MAX_CASE_LIGHTS}
-																LabelComponent={({ index }) => (
-																	<div
-																		className="d-flex flex-shrink-0"
-																		style={{ width: '2rem' }}
-																	>
-																		<label>{index + 1}</label>
-																	</div>
-																)}
-																containerClassName="case-grid gap-3"
-																colors={profile.caseStaticColors}
-																customColors={values.customColors}
-																replace={replace}
-															/>
-														)}
-													/>
-												</FormGroup>
 												<Tabs
 													defaultActiveKey="pressed"
 													className="mb-3 pb-0"
@@ -773,6 +664,31 @@ export default function AnimationSection() {
 														</FormGroup>
 													</Tab>
 												</Tabs>
+												<hr />
+												<FormGroup className="mb-4">
+													<Form.Label>{t(`Leds:case-colors-label`)}</Form.Label>
+
+													<FieldArray
+														name={`profiles.${profileIndex}.caseStaticColors`}
+														render={({ replace }) => (
+															<ColorSelectorList
+																length={MAX_CASE_LIGHTS}
+																LabelComponent={({ index }) => (
+																	<div
+																		className="d-flex flex-shrink-0"
+																		style={{ width: '2rem' }}
+																	>
+																		<label>{index + 1}</label>
+																	</div>
+																)}
+																containerClassName="case-grid gap-3"
+																colors={profile.caseStaticColors}
+																customColors={values.customColors}
+																replace={replace}
+															/>
+														)}
+													/>
+												</FormGroup>
 											</Tab>
 										))}
 

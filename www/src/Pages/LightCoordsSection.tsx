@@ -17,9 +17,11 @@ import * as yup from 'yup';
 import { Row, Col, Button, Alert } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
+import FormSelect from '../Components/FormSelect';
 import { LightIndicator } from '../Components/LightIndicator';
 import useLedStore, { Light, MAX_CASE_LIGHTS } from '../Store/useLedStore';
 import boards from '../Data/Boards.json';
+import useLedsPreview from '../Hooks/useLedsPreview';
 
 const GPIO_PIN_LENGTH = boards[import.meta.env.VITE_GP2040_BOARD].maxPin + 1;
 
@@ -66,6 +68,14 @@ export default function LightCoordsSection() {
 	const { dimensions, containerRef } = useGetDivDimensions();
 	const { Lights, saveLightOptions } = useLedStore();
 	const { t } = useTranslation('');
+	const {
+		activateLedsOnId,
+		activateLedsProfile,
+		activateLedsChase,
+		turnOffLeds,
+	} = useLedsPreview();
+	const [previewGpioPin, setPreviewGpioPin] = useState(0);
+	const [previewCaseId, setPreviewCaseId] = useState(0);
 
 	const [gridSize, setGridSize] = useState(GRID_SIZE);
 	const [cellWidth, setCellWidth] = useState(dimensions.width / gridSize);
@@ -124,7 +134,7 @@ export default function LightCoordsSection() {
 			</div>
 			<div className="card-body">
 				<Row>
-					<Col md={12} className="mb-3">
+					<Col md={12}>
 						<p>
 							This section allows you to visually arrange and configure the
 							position of each light. This is useful for mapping LEDs or light
@@ -134,6 +144,94 @@ export default function LightCoordsSection() {
 						</p>
 					</Col>
 				</Row>
+				<hr/>
+				<Row className="mb-3">
+					<Col md={6} className="d-flex flex-column justify-content-end">
+						<FormSelect
+							label={'Active light tied to GPIO pin'}
+							className="form-select-sm"
+							groupClassName="mb-3"
+							value={previewGpioPin}
+							onChange={(e) => {
+								setPreviewGpioPin(
+									parseInt((e.target as HTMLSelectElement).value),
+								);
+							}}
+						>
+							{Array.from({ length: GPIO_PIN_LENGTH }).map((_, pinIndex) => (
+								<option key={pinIndex} value={pinIndex}>
+									GPIO Pin {pinIndex}
+								</option>
+							))}
+						</FormSelect>
+
+						<Button
+							variant="secondary"
+							onClick={() => {
+								activateLedsOnId(previewGpioPin);
+							}}
+						>
+							GPIO Pin Test
+						</Button>
+					</Col>
+					<Col md={6} className="d-flex flex-column justify-content-end">
+						<FormSelect
+							label={'Active light tied to case ID'}
+							className="form-select-sm"
+							groupClassName="mb-3"
+							value={previewCaseId}
+							onChange={(e) => {
+								setPreviewCaseId(
+									parseInt((e.target as HTMLSelectElement).value),
+								);
+							}}
+						>
+							{Array.from({ length: MAX_CASE_LIGHTS }).map((_, caseIndex) => (
+								<option key={caseIndex} value={caseIndex}>
+									Case ID {caseIndex + 1}
+								</option>
+							))}
+						</FormSelect>
+
+						<Button
+							variant="secondary"
+							onClick={() => {
+								activateLedsOnId(previewCaseId, true);
+							}}
+						>
+							Case ID Test
+						</Button>
+					</Col>
+				</Row>
+				<Row className="mb-3">
+					<Col md={6} className="d-flex flex-column justify-content-end">
+						<p>
+							Run a chase animation from left to right and then top to bottom to
+							help verify correct grid positioning of the lights
+						</p>
+						<Button
+							variant="secondary"
+							onClick={() => {
+								activateLedsChase();
+							}}
+						>
+							Layout Test
+						</Button>
+					</Col>
+
+					<Col md={6} className="d-flex flex-column justify-content-end">
+						<p>Turns off all the lights</p>
+						<Button
+							variant="danger"
+							onClick={() => {
+								turnOffLeds();
+							}}
+						>
+							Lights Off
+						</Button>
+					</Col>
+				</Row>
+				<hr />
 				<Formik
 					validationSchema={schema}
 					onSubmit={onSuccess}
@@ -313,6 +411,7 @@ export default function LightCoordsSection() {
 														},
 													],
 												});
+												setSelectedLight(values.Lights.length);
 											}}
 										>
 											Add light

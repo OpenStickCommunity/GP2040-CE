@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import LightCoordsSection from './LightCoordsSection';
-import AnimationSection from './AnimationSection';
+import LedsSections from './LedsSections';
 import useLedStore from '../Store/useLedStore';
 
 export default function Leds() {
@@ -21,7 +21,7 @@ export default function Leds() {
 
 	return (
 		<>
-			<AnimationSection />
+			<LedsSections />
 			<LightCoordsSection />
 		</>
 	);
