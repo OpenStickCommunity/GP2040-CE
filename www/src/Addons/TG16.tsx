@@ -1,9 +1,9 @@
-import { Trans, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { FormCheck, Row } from 'react-bootstrap';
 
 import Section from '../Components/Section';
 import FormControl from '../Components/FormControl';
-import ContextualHelpOverlay from '../Components/ContextualHelpOverlay';
+import { AddonPropTypes } from '../Pages/AddonsConfigPage';
 
 export const tg16Scheme = {};
 
@@ -17,7 +17,7 @@ export const tg16State = {
 	tg16PadDataPin3: -1,
 };
 
-const TG16 = ({ values, errors, handleChange, handleCheckbox }) => {
+const TG16 = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) => {
 	const { t } = useTranslation();
 	return (
 		<Section title={
@@ -46,7 +46,7 @@ const TG16 = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.tg16PadOePin}
 						error={errors.tg16PadOePin}
-						isInvalid={errors.tg16PadOePin}
+						isInvalid={Boolean(errors.tg16PadOePin)}
 						onChange={handleChange}
 						min={-1}
 						max={29}
@@ -59,7 +59,7 @@ const TG16 = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.tg16PadSelectPin}
 						error={errors.tg16PadSelectPin}
-						isInvalid={errors.tg16PadSelectPin}
+						isInvalid={Boolean(errors.tg16PadSelectPin)}
 						onChange={handleChange}
 						min={-1}
 						max={29}
@@ -72,7 +72,7 @@ const TG16 = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.tg16PadDataPin0}
 						error={errors.tg16PadDataPin0}
-						isInvalid={errors.tg16PadDataPin0}
+						isInvalid={Boolean(errors.tg16PadDataPin0)}
 						onChange={handleChange}
 						min={-1}
 						max={29}
@@ -85,7 +85,7 @@ const TG16 = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.tg16PadDataPin1}
 						error={errors.tg16PadDataPin1}
-						isInvalid={errors.tg16PadDataPin1}
+						isInvalid={Boolean(errors.tg16PadDataPin1)}
 						onChange={handleChange}
 						min={-1}
 						max={29}
@@ -98,7 +98,7 @@ const TG16 = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.tg16PadDataPin2}
 						error={errors.tg16PadDataPin2}
-						isInvalid={errors.tg16PadDataPin2}
+						isInvalid={Boolean(errors.tg16PadDataPin2)}
 						onChange={handleChange}
 						min={-1}
 						max={29}
@@ -111,7 +111,7 @@ const TG16 = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.tg16PadDataPin3}
 						error={errors.tg16PadDataPin3}
-						isInvalid={errors.tg16PadDataPin3}
+						isInvalid={Boolean(errors.tg16PadDataPin3)}
 						onChange={handleChange}
 						min={-1}
 						max={29}
@@ -126,7 +126,7 @@ const TG16 = ({ values, errors, handleChange, handleCheckbox }) => {
 				isInvalid={false}
 				checked={Boolean(values.TG16padAddonEnabled)}
 				onChange={(e) => {
-					handleCheckbox('TG16padAddonEnabled', values);
+					handleCheckbox('TG16padAddonEnabled');
 					handleChange(e);
 				}}
 			/>
@@ -134,4 +134,4 @@ const TG16 = ({ values, errors, handleChange, handleCheckbox }) => {
 	);
 };
 
-export default TG16; 
+export default TG16;
