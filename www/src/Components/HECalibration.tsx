@@ -66,14 +66,18 @@ const HECalibration = ({
 		})
 		stopCalibration();
 		if ( calibrateAllLoop ) {
-			if ( nextTarget!== -1 ) {
-				target.current = nextTarget;
-				setNextTarget(getNextTarget());
-				updateTitle();
-				restartCalibration();
-			} else {
-				setShowModal(false);
-			}
+			checkNextTarget();
+		} else {
+			setShowModal(false);
+		}
+	};
+
+	const checkNextTarget = () => {
+		if ( nextTarget!== -1 ) {
+			target.current = nextTarget;
+			setNextTarget(getNextTarget());
+			updateTitle();
+			restartCalibration();
 		} else {
 			setShowModal(false);
 		}
@@ -105,21 +109,25 @@ const HECalibration = ({
 	}
 
 	const overwriteAllCalibration = () => {
-			setAllHETriggers({
-				idle: voltageIdle,
-				active: voltageActive,
-				max: voltageMax,
-				polarity
-			});
-		stopCalibration();
+		setAllHETriggers({
+			idle: voltageIdle,
+			active: voltageActive,
+			max: voltageMax,
+			polarity
+		});
+		closeModal();
 	};
 
 	const stopCalibration = async () => {
-		console.log("Closing modal");
 		setCalibrationStep(0);
 		target.current = -1;
 		if (timerId)
 			clearInterval(timerId.current);
+	};
+
+	const closeModal = async () => {
+		stopCalibration();
+		setShowModal(false);
 	};
 
 	const startReadingCalibrationLoop = async () => {
@@ -136,14 +144,20 @@ const HECalibration = ({
 				muxADCPin2: values['muxADCPin2'],
 				muxADCPin3: values['muxADCPin3'],
 			});
-			// Begin reading
-			if (timerId.current)
-				clearInterval(timerId.current);
-
-			const intervalId = setInterval(() => {readHallEffect(calibrationStep)}, 50);
-			timerId.current = intervalId;
+			updateCalibrationRead(0);
 		}
 	}
+
+	const updateCalibrationRead = (step:number) => {
+		setCalibrationStep(step);
+		// Begin reading
+		if (timerId.current)
+			clearInterval(timerId.current);
+		const intervalId = setInterval(() => {
+			readHallEffect(step);
+		}, 50);
+		timerId.current = intervalId;
+	};
 
 	// Start Capturing on Modal Show
 	const startCalibration = async() => {
@@ -160,8 +174,8 @@ const HECalibration = ({
 	};
 
 	const restartCalibration = () => {
-		setCalibrationStep(0);
 		previousStep.current = 0;
+		updateCalibrationRead(0);
 	};
 
 	const calculateVoltIdle = () => {
@@ -174,10 +188,6 @@ const HECalibration = ({
 
 	const calculateVoltPressed = () => {
 		return (Math.min(voltageMax,voltage)-voltageIdle)/((voltageMax-voltageIdle)/100.0);
-	};
-
-	const calculateVoltActiveDefault = () => {
-		return (Math.floor(voltageMax*0.8));
 	};
 
 	const readHallEffect = async (calibrationStep:number) => {
@@ -423,8 +433,8 @@ const HECalibration = ({
 	return (
 		<>
 			<Modal className="modal-lg" contentClassName="he-modal" centered show={showModal}
-				onClose={() => stopCalibration()}
-				onHide={() => stopCalibration()}
+				onClose={() => closeModal()}
+				onHide={() => closeModal()}
 			>
 				<Modal.Header closeButton>
 					<Modal.Title className="me-auto">{t(`HETrigger:calibration-header-text`)} - {title}</Modal.Title>
@@ -438,7 +448,7 @@ const HECalibration = ({
 				<Modal.Footer>
 					<Button onClick={() => {
 						setVoltageIdle(voltage);
-						setCalibrationStep(1);
+						updateCalibrationRead(1);
 					}} hidden={calibrationStep !== 0}>
 						<Spinner
 							as="span"
@@ -450,8 +460,8 @@ const HECalibration = ({
 					</Button>
 					<Button onClick={() => {
 						setVoltageMax(voltage);
-						setVoltageActive(calculateVoltActiveDefault());
-						setCalibrationStep(2);
+						setVoltageActive(voltageIdle + Math.floor((voltage-voltageIdle)*0.625));
+						updateCalibrationRead(2);
 					}} hidden={calibrationStep !== 1}>
 						<Spinner
 							as="span"
@@ -467,19 +477,19 @@ const HECalibration = ({
 						onClick={() => saveCalibration()}
 						hidden={calibrationStep < 2}
 					>
-						{nextTarget !== -1 ? t(`HETrigger:next-calibration-text`): t(`HETrigger:finish-calibration-${calibrationStep}-text`)}
+						{nextTarget !== -1 ? t(`HETrigger:next-calibration-text`): t(`HETrigger:finish-calibration-text`)}
 					</Button>
 					<Button onClick={() => {
-							setCalibrationStep(previousStep.current);
+							updateCalibrationRead(previousStep.current);
 						}}
 						hidden={calibrationStep !== 3}>
 						{t(`HETrigger:calibration-back-button`)}
 					</Button>
 					<Button onClick={() => {
 							previousStep.current = calibrationStep;
-							setCalibrationStep(3);
+							updateCalibrationRead(3);
 						}}
-						hidden={calibrationStep === 3 || calibrateAllLoop === true}>
+						hidden={calibrationStep === 3}>
 						{t(`HETrigger:manual-text`)}
 					</Button>
 				</Modal.Footer>
