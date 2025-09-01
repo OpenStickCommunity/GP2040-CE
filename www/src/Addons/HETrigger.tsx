@@ -131,14 +131,14 @@ const TriggerActionsForm = ({
 					<div
 						key={`he-trigger-item-${i}`} 
 						className="mt-3 mb-3"
-						hidden={values[`muxADCPin${i}`] === -1}
+						hidden={values[`muxADCPin${i}` as keyof typeof values] === -1}
 					>
 						<div className="d-flex flex-shrink-0">
 							<label htmlFor={i}>
-								{muxChannels > 1 ? `${t('HETrigger:multiplexer-label')} ${i}` : 'Direct'} (ADC {values[`muxADCPin${i}`]})
+								{muxChannels > 1 ? `${t('HETrigger:multiplexer-label')} ${i}` : 'Direct'} (ADC {values[`muxADCPin${i}` as keyof typeof values]})
 							</label>
 						</div>
-						{ (values['muxADCPin${i}'] !== -1) ?
+						{ (values[`muxADCPin${i}` as keyof typeof values] !== -1) ?
 						<div className={`action-grid-HE-trigger-${muxChannels} gap-3 mt-2 mb-3`}>
 							{Object.keys(triggers).splice(i*muxChannels,muxChannels).map((key, index) => (
 								<div
@@ -216,14 +216,14 @@ const TriggerActionsForm = ({
 						<div
 							key={`voltage-table-header-${i}`} 
 							className="mt-3 mb-3"
-							hidden={values[`muxADCPin${i}`] === -1}
+							hidden={values[`muxADCPin${i}` as keyof typeof values] === -1}
 						>
 							<div className="d-flex flex-shrink-0">
 								<label>
 									{muxChannels > 1 ? `${t('HETrigger:multiplexer-label')} ${i}` : 'Direct'} (ADC {String(values[`muxADCPin${i}` as keyof typeof values])})
 								</label>
 							</div>
-							{ (values['muxADCPin${i}'] !== -1) ?
+							{ (values[`muxADCPin${i}` as keyof typeof values] !== -1) ?
 							<div className={`action-grid-HE-trigger-${muxChannels} gap-0 mt-0 mb-0`}>
 								<Table bordered className="mb-0 mt-0">
 									<thead>
