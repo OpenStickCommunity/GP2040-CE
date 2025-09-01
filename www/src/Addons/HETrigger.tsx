@@ -120,14 +120,14 @@ const TriggerActionsForm = ({
 			<div className="mt-2">
 				<div>
 					<div className="mt-2">
-						<h1>Hall-Effect Action Assignment</h1>
+						<h1>{t('HETrigger:action-assignment-sub-header')}</h1>
 					</div>
 					{Array.from({ length: Math.min(4,Math.floor(32/muxChannels)) }, (_, i) => (
 						<div key={`mux-adc-${i}`} className="mt-3 mb-3" hidden={values[`muxADCPin${i}` as keyof typeof values] === -1}>
 
 							<div className="d-flex flex-shrink-0">
 								<label>
-									{muxChannels > 1 ? `Multiplexer ${i}` : 'Direct'} (ADC {String(values[`muxADCPin${i}` as keyof typeof values])})
+									{muxChannels > 1 ? `${t('HETrigger:multiplexer-label')} ${i}` : 'Direct'} (ADC {String(values[`muxADCPin${i}` as keyof typeof values])})
 								</label>
 							</div>
 							{ (values[`muxADCPin${i}` as keyof typeof values] !== -1) &&
@@ -143,7 +143,7 @@ const TriggerActionsForm = ({
 												className="d-flex flex-shrink-0"
 												style={{ width: '5rem' }}
 											>
-												<label htmlFor={key}>Channel {index}</label>
+												<label htmlFor={key}>{t('HETrigger:channel-label')} {index}</label>
 											</div>
 											<CustomSelect
 												key={`select-option-he-${index}`}
@@ -218,18 +218,18 @@ const TriggerActionsForm = ({
 					></HECalibration>
 				</div>
 				<Button type="button" onClick={() => {setShowVoltTable(!showVoltTable)}} className="my-4">
-				    {!showVoltTable ? "Show" : "Hide"} Voltage Table⚡
+				    {!showVoltTable ? t('HETrigger:voltage-table-show-label') : t('HETrigger:voltage-table-hide-label')} ⚡
 			    </Button>
 				<div hidden={!showVoltTable}>
 					<div className="mt-2">
-						<h1>Hall-Effect Voltage Table</h1>
+						<h1>{t('HETrigger:voltage-table-header-text')}</h1>
 					</div>
 					<div className="mt-2">
 						{Array.from({ length: Math.min(4,Math.floor(32/muxChannels)) }, (_, i) => (
-							<div className="mt-3 mb-3" hidden={values[`muxADCPin${i}` as keyof typeof values] === -1}>
+							<div key={`mux-adc-${i}-2`} className="mt-3 mb-3" hidden={values[`muxADCPin${i}` as keyof typeof values] === -1}>
 								<div className="d-flex flex-shrink-0">
 									<label>
-										{muxChannels > 1 ? `Multiplexer ${i}` : 'Direct'} (ADC {String(values[`muxADCPin${i}` as keyof typeof values])})
+										{muxChannels > 1 ? `${t('HETrigger:multiplexer-label')} ${i}` : 'Direct'} (ADC {String(values[`muxADCPin${i}` as keyof typeof values])})
 									</label>
 								</div>
 								{ (values[`muxADCPin${i}` as keyof typeof values] !== -1) &&
@@ -237,11 +237,11 @@ const TriggerActionsForm = ({
 									<Table bordered className="mb-0 mt-0">
 										<thead>
 											<tr>
-												<th>Channel</th>
-												<th>Idle</th>
-												<th>Trigger</th>
-												<th>Max</th>
-												<th>Polarity</th>
+												<th>{t('HETrigger:channel-label')}</th>
+												<th>{t('HETrigger:voltage-table-idle-text')}</th>
+												<th>{t('HETrigger:voltage-table-trigger-text')}</th>
+												<th>{t('HETrigger:voltage-table-max-text')}</th>
+												<th>{t('HETrigger:voltage-table-polarity-text')}</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -249,7 +249,7 @@ const TriggerActionsForm = ({
 											const trigger = triggers[parseInt(key)];
 											return (
 											<tr key={`trigger-row-${key}`}>
-												<td>{index} {trigger.action===-10?'(Disabled)':''}</td>
+												<td>{index} {trigger.action===-10?t('HETrigger:voltage-table-disabled-label'):''}</td>
 												<td>{trigger.idle}</td>
 												<td>{trigger.active}</td>
 												<td>{trigger.max}</td>
@@ -302,7 +302,7 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }: AddonPropTy
 				hidden={!(values.HETriggerEnabled)}
 			>
 				<div className="alert alert-info" role="alert">
-					Hall Effect Trigger Supports 4-Channel, 8-Channel, and 16-Channel Multiplexers.
+					{t('HETrigger:desc-header-text')}
 				</div>
 				<div className="alert alert-success" role="alert">
 					{t('HETrigger:available-pins-text', {
@@ -311,7 +311,7 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }: AddonPropTy
 				</div>
 				<div className="mt-2">
 					<FormSelect
-						label="Channels Per Multiplexer"
+						label={t('HETrigger:multiplexer-channel-select')}
 						name="muxChannels"
 						className="form-select-sm"
 						groupClassName="col-sm-3 mb-3"
@@ -330,7 +330,7 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }: AddonPropTy
 				<div className="mb-3 row">
 					<FormControl
 						type="number"
-						label='Select Pin 0'
+						label={t('HETrigger:select-pin-0')}
 						name="muxSelectPin0"
 						hidden={values.muxChannels < 4}
 						className="form-select-sm"
@@ -344,7 +344,7 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }: AddonPropTy
 					/>
 					<FormControl
 						type="number"
-						label='Select Pin 1'
+						label={t('HETrigger:select-pin-1')}
 						name="muxSelectPin1"
 						hidden={values.muxChannels < 4}
 						className="form-select-sm"
@@ -358,7 +358,7 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }: AddonPropTy
 					/>
 					<FormControl
 						type="number"
-						label='Select Pin 2'
+						label={t('HETrigger:select-pin-2')}
 						name="muxSelectPin2"
 						hidden={values.muxChannels < 8}
 						className="form-select-sm"
@@ -372,7 +372,7 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }: AddonPropTy
 					/>
 					<FormControl
 						type="number"
-						label='Select Pin 3'
+						label={t('HETrigger:select-pin-3')}
 						name="muxSelectPin3"
 						hidden={values.muxChannels < 16}
 						className="form-select-sm"
@@ -387,7 +387,7 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }: AddonPropTy
 				</div>
 				<div className="mb-3 row">
 					<FormSelect
-						label={`ADC Pin 0`}
+						label={t('HETrigger:adc-pin-0')}
 						name='muxADCPin0'
 						className="form-select-sm"
 						groupClassName="col-sm-2 mb-3"
@@ -399,7 +399,7 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }: AddonPropTy
 						<AnalogPinOptions />
 					</FormSelect>
 					<FormSelect
-						label={`ADC Pin 1`}
+						label={t('HETrigger:adc-pin-1')}
 						name='muxADCPin1'
 						className="form-select-sm"
 						groupClassName="col-sm-2 mb-3"
@@ -411,7 +411,7 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }: AddonPropTy
 						<AnalogPinOptions />
 					</FormSelect>
 					<FormSelect
-						label={`ADC Pin 2`}
+						label={t('HETrigger:adc-pin-2')}
 						name='muxADCPin2'
 						hidden={values.muxChannels >= 16}
 						className="form-select-sm"
@@ -424,7 +424,7 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }: AddonPropTy
 						<AnalogPinOptions />
 					</FormSelect>
 					<FormSelect
-						label={`ADC Pin 3`}
+						label={t('HETrigger:adc-pin-3')}
 						name='muxADCPin3'
 						hidden={values.muxChannels >= 8}
 						className="form-select-sm"
