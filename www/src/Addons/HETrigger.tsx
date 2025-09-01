@@ -36,6 +36,13 @@ const SELECTABLE_BUTTON_ACTIONS = [
 	63, 64, 65, 66, 72, 73, 74, 75, 76, 77, 78
 ];
 
+const getOption = (e, actionId) => {
+	return {
+		label: invert(BUTTON_ACTIONS)[actionId],
+		value: actionId,
+	};
+};
+
 const isSelectable = (value) =>
 	SELECTABLE_BUTTON_ACTIONS.includes(value);
 
@@ -52,13 +59,6 @@ const CHANNEL_SELECT = {
 	"4-Channels": 4,
 	"8-Channels": 8,
 	"16-Channels": 16
-};
-
-const getOption = (e, actionId) => {
-	return {
-		label: invert(BUTTON_ACTIONS)[actionId],
-		value: actionId,
-	};
 };
 
 const options = Object.entries(BUTTON_ACTIONS)
@@ -91,6 +91,7 @@ const TriggerActionsForm = ({
 	const [showModal, setShowModal] = useState(false);
 	const [modalTitle, setModalTitle] = useState('');
 	const [calibrationTarget, setCalibrationTarget] = useState(0);
+	const [calibrateAllLoop, setCalibrateAllLoop] = useState(false);
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
 	const [showVoltTable, setShowVoltTable] = useState(false);
 	const CURRENT_BUTTONS = getButtonLabels(buttonLabelType, swapTpShareLabels);
@@ -115,9 +116,21 @@ const TriggerActionsForm = ({
 					<div className="mt-2">
 						<h1>Hall-Effect Action Assignment</h1>
 					</div>
+					<div className="mt-2">
+						<Button type="button"
+							key={`calibrate-all-he`}
+							onClick={(e) => {
+								setShowModal(true);
+								setCalibrationTarget(0);
+								setCalibrateAllLoop(true);
+							}}
+							disabled={triggers.filter((e)=>{ return e.action !== -10; }).length === 0}
+							className="my-2">
+							Calibrate All 🧲
+						</Button>
+					</div>
 					{Array.from({ length: Math.min(4,Math.floor(32/muxChannels)) }, (_, i) => (
 						<div className="mt-3 mb-3" hidden={values[`muxADCPin${i}`] === -1}>
-
 							<div className="d-flex flex-shrink-0">
 								<label htmlFor={i}>
 									{muxChannels > 1 ? `Multiplexer ${i}` : 'Direct'} (ADC {values[`muxADCPin${i}`]})
@@ -166,6 +179,7 @@ const TriggerActionsForm = ({
 											onClick={(e) => {
 												setShowModal(true);
 												setCalibrationTarget(parseInt(key));
+												setCalibrateAllLoop(false);
 												const option = getOption(triggers[key], triggers[key].action);
 												const actionTitle = t(`PinMapping:actions.${option.label}`);
 												if (muxChannels > 1) {
@@ -184,24 +198,25 @@ const TriggerActionsForm = ({
 						</div>
 					))}
 					<HECalibration
-						name="hallEffectCalibration"
 						values={values}
 						showModal={showModal}
 						setShowModal={setShowModal}
 						triggers={triggers}
-						target={calibrationTarget}
-						title={modalTitle}
-						handleChange={handleChange}
+						calibrationTarget={calibrationTarget}
+						calibrateAllLoop={calibrateAllLoop}
+						muxChannels={muxChannels}
 					></HECalibration>
 				</div>
-				<Button type="button" onClick={() => {setShowVoltTable(!showVoltTable)}} className="my-4">
-				    {!showVoltTable ? "Show" : "Hide"} Voltage Table⚡
-			    </Button>
-				<div hidden={!showVoltTable}>
-					<div className="mt-2">
+				<div className="mt-2">
+					<Button type="button" onClick={() => {setShowVoltTable(!showVoltTable)}} className="my-2">
+						{!showVoltTable ? "Show" : "Hide"} Voltage Table⚡
+					</Button>
+				</div>
+				<div hidden={!showVoltTable} className="mt-2">
+					<div>
 						<h1>Hall-Effect Voltage Table</h1>
 					</div>
-					<div className="mt-2">
+					<div>
 						{Array.from({ length: Math.min(4,Math.floor(32/muxChannels)) }, (_, i) => (
 							<div className="mt-3 mb-3" hidden={values[`muxADCPin${i}`] === -1}>
 								<div className="d-flex flex-shrink-0">
@@ -238,11 +253,13 @@ const TriggerActionsForm = ({
 						))}
 					</div>
 				</div>
+				<div className="mt-2">
+					<Button type="button" onClick={handleSave} className="my-2">
+						{t('HETrigger:save-button')}
+					</Button>
+					{saveMessage && <Alert variant="secondary">{saveMessage}</Alert>}
+				</div>
 			</div>
-			<Button type="button" onClick={handleSave} className="my-4">
-				{t('HETrigger:save-button')}
-			</Button>
-			{saveMessage && <Alert variant="secondary">{saveMessage}</Alert>}
 		</div>
 	);
 };
