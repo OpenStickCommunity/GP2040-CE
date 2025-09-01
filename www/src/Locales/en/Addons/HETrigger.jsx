@@ -25,6 +25,7 @@ export default {
 	'voltage-table-disabled-label': '(Disabled)',
 	'overwrite-all-warning': 'Overwrite All Triggers',
 	'overwrite-confirm': 'Confirm Overwrite All Triggers',
+	'next-calibration-text': 'Next Calibration',
 	'finish-calibration-2-text': 'Finish Calibration',
 	'finish-calibration-3-text': 'Save Calibration',
 	'calibrate-idle-button': 'Calibrate Idle',
