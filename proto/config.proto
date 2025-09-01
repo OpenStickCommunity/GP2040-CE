@@ -37,6 +37,7 @@ message GamepadOptions
     optional uint32 usbProductID = 30;
     optional uint32 usbVendorID = 31;
     optional uint32 miniMenuGamepadInput = 32;
+    optional InputModeDeviceType inputDeviceType = 33;
 }
 
 message KeyboardMapping
@@ -727,6 +728,17 @@ message SNESOptions
     optional int32 dataPin = 4;
 }
 
+message TG16Options
+{
+    optional bool enabled = 1;
+    optional int32 oePin = 2;
+    optional int32 selectPin = 3;
+    optional int32 dataPin0 = 4;
+    optional int32 dataPin1 = 5;
+    optional int32 dataPin2 = 6;
+    optional int32 dataPin3 = 7;
+}
+
 message KeyboardHostOptions
 {
     optional bool enabled = 1;
@@ -736,6 +748,8 @@ message KeyboardHostOptions
     optional uint32 mouseLeft = 5;
     optional uint32 mouseMiddle = 6;
     optional uint32 mouseRight = 7;
+    optional uint32 mouseSensitivity = 8;
+    optional MouseMovementMode movementMode = 9;
 }
 
 message GamepadUSBHostOptions
@@ -752,6 +766,7 @@ message FocusModeOptions
     optional bool rgbLockEnabled = 5;
     optional bool buttonLockEnabled = 6;
     optional bool macroLockEnabled = 7;
+    optional bool overrideEnabled = 8;
 }
 
 message MacroInput
@@ -819,14 +834,14 @@ message PCF8575Options
 
 message DRV8833RumbleOptions
 {
-		optional bool enabled = 1;
+    optional bool enabled = 1;
 
-		optional int32 leftMotorPin = 2;
-		optional int32 rightMotorPin = 3;
-		optional int32 motorSleepPin = 4;
-		optional uint32 pwmFrequency = 5;
-		optional float dutyMin = 6;
-		optional float dutyMax = 7;
+    optional int32 leftMotorPin = 2;
+    optional int32 rightMotorPin = 3;
+    optional int32 motorSleepPin = 4;
+    optional uint32 pwmFrequency = 5;
+    optional float dutyMin = 6;
+    optional float dutyMax = 7;
 }
 
 message ReactiveLEDInfo
@@ -841,6 +856,30 @@ message ReactiveLEDOptions
 {
     optional bool enabled = 1;
     repeated ReactiveLEDInfo leds = 2 [(nanopb).max_count = 10];
+}
+
+message HETriggerInfo
+{
+    optional GpioAction action = 1;
+    optional int32 active = 2;
+    optional int32 idle = 3;
+    optional int32 max = 4;
+    optional int32 polarity = 5;
+}
+
+message HETriggerOptions
+{
+    optional bool enabled = 1;
+    optional int32 selectPin0 = 2;
+    optional int32 selectPin1 = 3;
+    optional int32 selectPin2 = 4;
+    optional int32 selectPin3 = 5;
+    optional int32 muxADCPin0 = 6;
+    optional int32 muxADCPin1 = 7;
+    optional int32 muxADCPin2 = 8;
+    optional int32 muxADCPin3 = 9;
+    optional int32 muxChannels = 10;
+    repeated HETriggerInfo triggers = 11 [(nanopb).max_count = 32];
 }
 
 message AddonOptions
@@ -873,6 +912,8 @@ message AddonOptions
     optional DRV8833RumbleOptions drv8833RumbleOptions = 26;
     optional ReactiveLEDOptions reactiveLEDOptions = 27;
     optional GamepadUSBHostOptions gamepadUSBHostOptions = 28;
+    optional TG16Options tg16Options = 29;
+    optional HETriggerOptions heTriggerOptions = 30;
 }
 
 message MigrationHistory

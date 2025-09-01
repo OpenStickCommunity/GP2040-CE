@@ -210,6 +210,35 @@ PLEDAnimationState getPS4AnimationNEOPICO(uint32_t flashOn, uint32_t flashOff)
     return animationState;
 }
 
+PLEDAnimationState getSwitchProAnimationNEOPICO(uint16_t ledState)
+{
+    PLEDAnimationState animationState =
+    {
+        .state = 0,
+        .animation = PLED_ANIM_NONE,
+        .speed = PLED_SPEED_OFF,
+    };
+
+    if (ledState != 0) {
+        uint8_t ledNumber = ledState & 0x0F;
+        if (ledNumber & 0x01) animationState.state |= PLED_STATE_LED1;
+        if (ledNumber & 0x02) animationState.state |= PLED_STATE_LED2;
+        if (ledNumber & 0x04) animationState.state |= PLED_STATE_LED3;
+        if (ledNumber & 0x08) animationState.state |= PLED_STATE_LED4;
+    }
+
+    if (animationState.state != 0) {
+        animationState.animation = PLED_ANIM_SOLID;
+        animationState.speed = PLED_SPEED_OFF;
+    } else {
+        animationState.state = 0;
+        animationState.animation = PLED_ANIM_OFF;
+        animationState.speed = PLED_SPEED_OFF;
+    }
+
+    return animationState;
+}
+
 bool NeoPicoLEDAddon::available() {
     const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
     return isValidPin(ledOptions.dataPin);
@@ -498,6 +527,9 @@ void NeoPicoLEDAddon::process() {
                     break;
                 case INPUT_MODE_XBONE:
                     animationState = getXBoneAnimationNEOPICO(gamepad);
+                    break;
+                case INPUT_MODE_SWITCH_PRO:
+                    animationState = getSwitchProAnimationNEOPICO(gamepad->auxState.playerID.ledValue);
                     break;
                 default:
                     break;

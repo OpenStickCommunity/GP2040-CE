@@ -4,12 +4,14 @@ import { Trans, useTranslation } from 'react-i18next';
 import { Button, Row, FormCheck, Tab, Tabs, FormLabel } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import * as yup from 'yup';
+import invert from 'lodash/invert';
+import omit from 'lodash/omit';
 
 import Section from '../Components/Section';
 
 import FormSelect from '../Components/FormSelect';
 import { I2C_BLOCKS } from '../Data/Peripherals';
-import { BUTTON_MASKS_OPTIONS } from '../Data/Buttons';
+import { BUTTON_MASKS_OPTIONS, getButtonLabels } from '../Data/Buttons';
 
 import WebApi, { baseWiiControls } from '../Services/WebApi';
 
@@ -199,6 +201,11 @@ const Wii = ({
 	const [selectedControls] = useState(baseWiiControls);
 	const { setLoading, getAvailablePeripherals, getSelectedPeripheral } =
 		useContext(AppContext);
+
+	const { buttonLabels } = useContext(AppContext);
+	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
+	const CURRENT_BUTTONS = getButtonLabels(buttonLabelType, swapTpShareLabels);
+	const buttonNames = omit(CURRENT_BUTTONS, ['label', 'value']);        
 
 	useEffect(() => {
 		async function fetchData() {
@@ -426,7 +433,7 @@ const Wii = ({
 														key={`wiiExtensionController${controlObj.id}Button${buttonObj.id}-option-${i}`}
 														value={o.value}
 													>
-														{o.label}
+														{CURRENT_BUTTONS[o.label]}
 													</option>
 												))}
 											</select>

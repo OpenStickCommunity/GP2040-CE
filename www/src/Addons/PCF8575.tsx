@@ -18,15 +18,17 @@ import './PCF8575.scss';
 import {
 	BUTTON_ACTIONS,
 	PIN_DIRECTIONS,
-	//	NON_SELECTABLE_BUTTON_ACTIONS,
 	PinActionValues,
 	PinDirectionValues,
 } from '../Data/Pins';
-// currently using only the gamepad values here
-const NON_SELECTABLE_BUTTON_ACTIONS = [
-	-5, 0, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36,
-	37, 38, 39,
+
+// Only provide gamepad inputs for now
+const SELECTABLE_BUTTON_ACTIONS = [
+	-10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
 ];
+
+const isSelectable = (value) =>
+	SELECTABLE_BUTTON_ACTIONS.includes(value);
 
 export const pcf8575Scheme = {
 	PCF8575AddonEnabled: yup
@@ -51,16 +53,13 @@ const getPinDirection = (dir) => ({
 	value: dir,
 });
 
-const isNonSelectable = (value) =>
-	NON_SELECTABLE_BUTTON_ACTIONS.includes(value);
-
 const pinDirections = Object.entries(PIN_DIRECTIONS).map(([key, value]) => ({
 	label: key,
 	value,
 }));
 
 const options = Object.entries(BUTTON_ACTIONS)
-	.filter(([, value]) => !isNonSelectable(value))
+	.filter(([, value]) => isSelectable(value))
 	.map(([key, value]) => ({
 		label: key,
 		value,
@@ -156,13 +155,13 @@ const ExpansionPinsForm = ({
 							isSearchable
 							options={options}
 							value={getOption(pinData, pinData.option)}
-							isDisabled={isNonSelectable(pinData.option)}
+							isDisabled={!isSelectable(pinData.option)}
 							getOptionLabel={(option) => {
 								const labelKey = option.label.split('BUTTON_PRESS_').pop();
 								// Need to fallback as some button actions are not part of button names
 								return (
 									(labelKey && buttonNames[labelKey]) ||
-									t(`PinMapping:actions.${option.label}`)
+									t(`Proto:GpioAction.${option.label}`)
 								);
 							}}
 							onChange={(change) =>

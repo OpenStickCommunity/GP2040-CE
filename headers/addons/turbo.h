@@ -111,8 +111,7 @@ public:
 
     void handleEncoder(GPEvent* e);
 private:
-    void updateInterval(uint8_t shotCount);
-    void updateTurboShotCount(uint8_t turboShotCount);
+    void updateTurboShotCount(uint8_t turboShotCount, bool save = true);
     Mask_t turboPinMask;        // Pin mask for Turbo pin
     bool bDebState;             // Debounce TURBO Button State
     uint32_t uDebTime;          // Debounce TURBO Button Time
@@ -136,7 +135,8 @@ private:
     uint16_t shmupBtnMask[4];   // Turbo SHMUP Non-Turbo Button Masks
     uint16_t lastButtons;       // Last buttons (for Turbo Reset on Release)
     bool hasLedPin;             // Flag for LED pin presence
-    uint8_t encoderValue;       // Rotary encoder value 
+    uint8_t encoderValue;       // Rotary encoder value
     bool hasTurboAssigned;      // Turbo enabled on a pin.
+    uint8_t lastShotCount;      // Last shot count for comparison
 };
 #endif  // TURBO_H_

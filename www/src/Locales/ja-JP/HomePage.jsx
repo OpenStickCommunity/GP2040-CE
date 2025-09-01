@@ -1,4 +1,7 @@
 export default {
+	'architecture-text': 'アーキテクチャ: {{architecture}}',
+	'build-type-text': 'ビルド種別: {{build}}',
+	'build-text': 'ビルド: {{build}}',
 	'current-text': '利用バージョン: {{version}}',
 	'get-update-text': '最新バージョンをダウンロード',
 	'header-text': 'GP2040-CE Web Configurator へようこそ!',

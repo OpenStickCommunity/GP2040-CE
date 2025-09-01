@@ -15,6 +15,14 @@
 #define KEYBOARD_HOST_PIN_5V -1
 #endif
 
+#ifndef KEYBOARD_HOST_MOUSE_SENSITIVITY
+#define KEYBOARD_HOST_MOUSE_SENSITIVITY 50
+#endif
+
+#ifndef KEYBOARD_HOST_MOUSE_MOVEMENT
+#define KEYBOARD_HOST_MOUSE_MOVEMENT 0
+#endif
+
 // KeyboardHost Module Name
 #define KeyboardHostName "KeyboardHost"
 
