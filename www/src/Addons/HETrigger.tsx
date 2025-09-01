@@ -127,7 +127,7 @@ const TriggerActionsForm = ({
 
 							<div className="d-flex flex-shrink-0">
 								<label>
-									{muxChannels > 1 ? `Multiplexer ${i}` : 'Direct'} (ADC {values[`muxADCPin${i}`]})
+									{muxChannels > 1 ? `Multiplexer ${i}` : 'Direct'} (ADC {String(values[`muxADCPin${i}` as keyof typeof values])})
 								</label>
 							</div>
 							{ (values[`muxADCPin${i}` as keyof typeof values] !== -1) &&
