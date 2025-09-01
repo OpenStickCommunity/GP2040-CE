@@ -1,25 +1,24 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { Alert, Button, FormCheck, Row, Table } from 'react-bootstrap';
 
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
+import invert from 'lodash/invert';
+import omit from 'lodash/omit';
 
 import HECalibration from '../Components/HECalibration';
 
 import useHETriggerStore, { Trigger } from '../Store/useHETriggerStore';
 
-import { Alert, Button, FormCheck, Row, Table } from 'react-bootstrap';
 import { AppContext } from '../Contexts/AppContext';
 import Section from '../Components/Section';
 import FormSelect from '../Components/FormSelect';
 import FormControl from '../Components/FormControl';
 import { ANALOG_PINS } from '../Data/Buttons';
-import invert from 'lodash/invert';
-import omit from 'lodash/omit';
 import CustomSelect from '../Components/CustomSelect';
-
 import AnalogPinOptions from '../Components/AnalogPinOptions';
-
 import { getButtonLabels } from '../Data/Buttons';
+import { AddonPropTypes, DEFAULT_VALUES } from '../Pages/AddonsConfigPage';
 
 import './HETrigger.scss';
 
@@ -52,6 +51,15 @@ export const HETriggerScheme = {
 
 export const HETriggerState = {
 	HETriggerEnabled: 0,
+	muxChannels: 1,
+	muxADCPin0: 26,
+	muxADCPin1: 27,
+	muxADCPin2: 28,
+	muxADCPin3: -1,
+	muxSelectPin0: 0,
+	muxSelectPin1: 1,
+	muxSelectPin2: 2,
+	muxSelectPin3: -1,
 };
 
 const options = Object.entries(BUTTON_ACTIONS)
@@ -63,7 +71,7 @@ const options = Object.entries(BUTTON_ACTIONS)
 
 type TriggerActionsFormTypes = {
 	triggers: Trigger[];
-	values: {};
+	values: typeof DEFAULT_VALUES;
 	muxChannels: number;
 	handleChange: (
 		e: Event,
@@ -74,7 +82,6 @@ const TriggerActionsForm = ({
 	triggers,
 	values,
 	muxChannels,
-	handleChange,
 }: TriggerActionsFormTypes) => {
 	const setHETrigger = useHETriggerStore((state) => state.setHETrigger);
 	const saveHETriggers = useHETriggerStore((state) => state.saveHETriggers);
@@ -212,8 +219,8 @@ const TriggerActionsForm = ({
 							hidden={values[`muxADCPin${i}`] === -1}
 						>
 							<div className="d-flex flex-shrink-0">
-								<label htmlFor={i}>
-									{muxChannels > 1 ? `${t('HETrigger:multiplexer-label')} ${i}` : 'Direct'} (ADC {values[`muxADCPin${i}`]})
+								<label>
+									{muxChannels > 1 ? `${t('HETrigger:multiplexer-label')} ${i}` : 'Direct'} (ADC {String(values[`muxADCPin${i}` as keyof typeof values])})
 								</label>
 							</div>
 							{ (values['muxADCPin${i}'] !== -1) ?
@@ -257,8 +264,8 @@ const TriggerActionsForm = ({
 	);
 };
 
-const HETrigger = ({ values, errors, handleChange, handleCheckbox }) => {
-	const { fetchHETriggers, triggers, saveHETriggers} = useHETriggerStore();
+const HETrigger = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) => {
+	const { fetchHETriggers, triggers } = useHETriggerStore();
 	const { t } = useTranslation();
 
 	const CHANNEL_SELECT = {
@@ -308,7 +315,7 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.muxChannels}
 						error={errors.muxChannels}
-						isInvalid={errors.muxChannels}
+						isInvalid={Boolean(errors.muxChannels)}
 						onChange={handleChange}
 					>
 						{Object.entries(CHANNEL_SELECT).map(([num, label], i) => (
@@ -323,12 +330,12 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }) => {
 						type="number"
 						label={t('HETrigger:select-pin-0')}
 						name="muxSelectPin0"
-						hidden = {values.muxChannels < 4}
+						hidden={values.muxChannels < 4}
 						className="form-select-sm"
 						groupClassName="col-sm-2 mb-3"
 						value={values.muxSelectPin0}
 						error={errors.muxSelectPin0}
-						isInvalid={errors.muxSelectPin0}
+						isInvalid={Boolean(errors.muxSelectPin0)}
 						onChange={handleChange}
 						min={-1}
 						max={29}
@@ -337,12 +344,12 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }) => {
 						type="number"
 						label={t('HETrigger:select-pin-1')}
 						name="muxSelectPin1"
-						hidden = {values.muxChannels < 4}
+						hidden={values.muxChannels < 4}
 						className="form-select-sm"
 						groupClassName="col-sm-2 mb-3"
 						value={values.muxSelectPin1}
 						error={errors.muxSelectPin1}
-						isInvalid={errors.muxSelectPin1}
+						isInvalid={Boolean(errors.muxSelectPin1)}
 						onChange={handleChange}
 						min={-1}
 						max={29}
@@ -351,12 +358,12 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }) => {
 						type="number"
 						label={t('HETrigger:select-pin-2')}
 						name="muxSelectPin2"
-						hidden = {values.muxChannels < 8}
+						hidden={values.muxChannels < 8}
 						className="form-select-sm"
 						groupClassName="col-sm-2 mb-3"
 						value={values.muxSelectPin2}
 						error={errors.muxSelectPin2}
-						isInvalid={errors.muxSelectPin2}
+						isInvalid={Boolean(errors.muxSelectPin2)}
 						onChange={handleChange}
 						min={-1}
 						max={29}
@@ -365,12 +372,12 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }) => {
 						type="number"
 						label={t('HETrigger:select-pin-3')}
 						name="muxSelectPin3"
-						hidden = {values.muxChannels < 16}
+						hidden={values.muxChannels < 16}
 						className="form-select-sm"
 						groupClassName="col-sm-2 mb-3"
 						value={values.muxSelectPin3}
 						error={errors.muxSelectPin3}
-						isInvalid={errors.muxSelectPin3}
+						isInvalid={Boolean(errors.muxSelectPin3)}
 						onChange={handleChange}
 						min={-1}
 						max={29}
@@ -382,9 +389,9 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }) => {
 						name='muxADCPin0'
 						className="form-select-sm"
 						groupClassName="col-sm-2 mb-3"
-						value={values['muxADCPin0']}
-						error={errors['muxADCPin0']}
-						isInvalid={errors['muxADCPin0']}
+						value={values.muxADCPin0}
+						error={errors.muxADCPin0}
+						isInvalid={Boolean(errors.muxADCPin0)}
 						onChange={handleChange}
 					>
 						<AnalogPinOptions />
@@ -394,9 +401,9 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }) => {
 						name='muxADCPin1'
 						className="form-select-sm"
 						groupClassName="col-sm-2 mb-3"
-						value={values['muxADCPin1']}
-						error={errors['muxADCPin1']}
-						isInvalid={errors['muxADCPin1']}
+						value={values.muxADCPin1}
+						error={errors.muxADCPin1}
+						isInvalid={Boolean(errors.muxADCPin1)}
 						onChange={handleChange}
 					>
 						<AnalogPinOptions />
@@ -404,12 +411,12 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }) => {
 					<FormSelect
 						label={t('HETrigger:adc-pin-2')}
 						name='muxADCPin2'
-						hidden = {values.muxChannels >= 16}
+						hidden={values.muxChannels >= 16}
 						className="form-select-sm"
 						groupClassName="col-sm-2 mb-3"
-						value={values['muxADCPin2']}
-						error={errors['muxADCPin2']}
-						isInvalid={errors['muxADCPin2']}
+						value={values.muxADCPin2}
+						error={errors.muxADCPin2}
+						isInvalid={Boolean(errors.muxADCPin2)}
 						onChange={handleChange}
 					>
 						<AnalogPinOptions />
@@ -417,12 +424,12 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }) => {
 					<FormSelect
 						label={t('HETrigger:adc-pin-3')}
 						name='muxADCPin3'
-						hidden = {values.muxChannels >= 8}
+						hidden={values.muxChannels >= 8}
 						className="form-select-sm"
 						groupClassName="col-sm-2 mb-3"
-						value={values['muxADCPin3']}
-						error={errors['muxADCPin3']}
-						isInvalid={errors['muxADCPin3']}
+						value={values.muxADCPin3}
+						error={errors.muxADCPin3}
+						isInvalid={Boolean(errors.muxADCPin3)}
 						onChange={handleChange}
 					>
 						<AnalogPinOptions />
@@ -446,7 +453,7 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }) => {
 				isInvalid={false}
 				checked={Boolean(values.HETriggerEnabled)}
 				onChange={(e) => {
-					handleCheckbox('HETriggerEnabled', values);
+					handleCheckbox('HETriggerEnabled');
 					handleChange(e);
 				}}
 			/>

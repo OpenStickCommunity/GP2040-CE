@@ -553,7 +553,7 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		encoderTwoResetAfter: 0,
 		encoderTwoAllowWrapAround: false,
 		encoderTwoMultiplier: 1,
-        muxChannels: 8,
+		muxChannels: 8,
 		muxADCPin0: 26,
 		muxADCPin1: 27,
 		muxADCPin2: 28,

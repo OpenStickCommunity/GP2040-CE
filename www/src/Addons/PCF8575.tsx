@@ -21,6 +21,7 @@ import {
 	PinActionValues,
 	PinDirectionValues,
 } from '../Data/Pins';
+import { AddonPropTypes } from '../Pages/AddonsConfigPage';
 
 // Only provide gamepad inputs for now
 const SELECTABLE_BUTTON_ACTIONS = [
@@ -184,7 +185,7 @@ const ExpansionPinsForm = ({
 	);
 };
 
-const PCF8575 = ({ values, errors, handleChange, handleCheckbox }) => {
+const PCF8575 = ({ values, handleChange, handleCheckbox }: AddonPropTypes) => {
 	const { getAvailablePeripherals } = useContext(AppContext);
 	const { fetchPins, pins, savePins, setPinAction, setPinDirection } =
 		useExpansionPinStore();
@@ -233,7 +234,7 @@ const PCF8575 = ({ values, errors, handleChange, handleCheckbox }) => {
 				isInvalid={false}
 				checked={Boolean(values.PCF8575AddonEnabled)}
 				onChange={(e) => {
-					handleCheckbox('PCF8575AddonEnabled', values);
+					handleCheckbox('PCF8575AddonEnabled');
 					handleChange(e);
 				}}
 			/>

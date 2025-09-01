@@ -4,6 +4,7 @@ import * as yup from 'yup';
 import Section from '../Components/Section';
 import FormSelect from '../Components/FormSelect';
 import { FormCheck } from 'react-bootstrap';
+import { AddonPropTypes } from '../Pages/AddonsConfigPage';
 
 const ON_BOARD_LED_MODES = [
 	{ label: 'Off', value: 0 },
@@ -28,7 +29,7 @@ export const onBoardLedState = {
 	BoardLedAddonEnabled: 0,
 };
 
-const OnBoardLed = ({ values, errors, handleChange, handleCheckbox }) => {
+const OnBoardLed = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) => {
 	const { t } = useTranslation();
 
 	return (
@@ -53,7 +54,7 @@ const OnBoardLed = ({ values, errors, handleChange, handleCheckbox }) => {
 					groupClassName="col-sm-4 mb-3"
 					value={values.onBoardLedMode}
 					error={errors.onBoardLedMode}
-					isInvalid={errors.onBoardLedMode}
+					isInvalid={Boolean(errors.onBoardLedMode)}
 					onChange={handleChange}
 				>
 					{ON_BOARD_LED_MODES.map((o, i) => (
@@ -71,7 +72,7 @@ const OnBoardLed = ({ values, errors, handleChange, handleCheckbox }) => {
 				isInvalid={false}
 				checked={Boolean(values.BoardLedAddonEnabled)}
 				onChange={(e) => {
-					handleCheckbox('BoardLedAddonEnabled', values);
+					handleCheckbox('BoardLedAddonEnabled');
 					handleChange(e);
 				}}
 			/>
