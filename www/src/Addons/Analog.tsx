@@ -197,7 +197,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes
 						<Tab
 							key="analog1Config"
 							eventKey="analog1Config"
-							title={t('Analog Stick 1')}
+							title={t('AddonsConfig:analog-adc-1')}
 						>
 							<Row className="mb-3">
 								<FormSelect
@@ -363,7 +363,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes
 						<Tab
 							key="analog2Config"
 							eventKey="analog2Config"
-							title={t('Analog Stick 2')}
+							title={t('AddonsConfig:analog-adc-2')}
 						>
 							<Row className="mb-3">
 								<FormSelect
