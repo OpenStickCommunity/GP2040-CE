@@ -1,9 +1,10 @@
 export default {
-  'header-text': 'ホールセンサーボタン',
-	'desc-header-text': 'ホールセンサーボタンでは４チャンネル、８チャンネル及び１６チャンネルマルチプレクサに対応しています。',
+  'header-text': 'ホールセンサボタン',
+	'desc-header-text': 'ホールセンサボタンでは４チャンネル、８チャンネル及び１６チャンネルマルチプレクサに対応しています。',
     'available-pins-text': '利用可能ADC端子: {{pins}}',
 	'multiplexer-channel-select': 'マルチプレクサチャンネル数',
-	'4-channels': '４チャンネル',
+	'direct-no-mux': '直接接続（MUX無し）',
+	'4-channels': '4チャンネル',
 	'8-channels': '8チャンネル',
 	'16-channels': '16チャンネル',
 	'select-pin-0': 'セレクト端子 0',
@@ -14,12 +15,12 @@ export default {
 	'adc-pin-1': 'ADC端子 1',
 	'adc-pin-2': 'ADC端子 2',
 	'adc-pin-3': 'ADC端子 3',
-	'action-assignment-sub-header': 'ホールセンサーボタン割当',
+	'action-assignment-sub-header': 'ホールセンサボタン割当',
 	'multiplexer-label': 'マルチプレクサ',
 	'channel-label': 'チャンネル',
 	'voltage-table-show-label': '電圧設定表を表示',
 	'voltage-table-hide-label': '電圧設定表を隠す',
-	'voltage-table-header-text': 'ホールセンサー電圧設定表',
+	'voltage-table-header-text': 'ホールセンサ電圧設定表',
 	'voltage-table-idle-text': '未押下',
 	'voltage-table-trigger-text': '押下判定値',
 	'voltage-table-max-text': '最大値',
@@ -27,6 +28,7 @@ export default {
 	'voltage-table-disabled-label': '(無効)',
 	'overwrite-all-warning': '全ボタンに反映',
 	'overwrite-confirm': '全ボタン設定反映確認',
+	'next-calibration-text': '次へ',
 	'finish-calibration-text': '調整完了',
 	'calibrate-idle-button': '未押下状態調整',
 	'calibrate-pressed-button': '最大押下状態調整',
@@ -38,6 +40,7 @@ export default {
 	'activation-input-text': '押下判定電圧',
 	'pressed-input-text': '最大押下電圧',
 	'activation-reading-text': '押下判定電圧値:',
+	'calibrate-all-button': '全センサの調整 🧲',
 	'calibration-header-text': 'ホールセンサ調整',
 	'calibration-idle-text': '未押下電圧値:',
 	'calibration-pressed-text': '最大押下電圧値:',
@@ -52,7 +55,7 @@ export default {
 		'次に、ホールセンサ対応ボタンを一番下まで押し込んだ状態でボタンを押して下さい。ボタン反応位置は後ほど調整します。',
 	'calibration-third-step':
 	  '最後に、ボタン押下判定電圧を設定して、好みのストロークでボタン押下判定するよう設定しましょう。' +
-		'調整が完了したら、「調整完了」ボタンを押して設定を保存し、動作確認してください。',
+		'調整が完了したら、「調整完了」または「次へ」ボタンを押して設定を保存し、動作確認してください。',
 	'calibration-manual-step':
 	  '以下の設定値を好みの値に設定してください。設定後、全ボタンに設定を反映できます。',
 };
