@@ -312,6 +312,10 @@ void GP2040::run() {
 			continue;
 		}
 
+		if (!tud_ready()) {
+			EventManager::getInstance().triggerEvent(new GPSystemErrorEvent("No USB Data Detected"));
+		}
+
 		// Pre-Process add-ons for MPGS
 		addons.PreprocessAddons();
 

@@ -224,7 +224,7 @@ src/display/ui/screens/RestartScreen.cpp
 src/display/ui/screens/StatsScreen.cpp
 src/display/ui/screens/SplashScreen.cpp
 src/display/ui/screens/DisplaySaverScreen.cpp
-src/display/ui/screens/NoUSBDetectedScreen.cpp
+src/display/ui/screens/SystemErrorScreen.cpp
 src/display/GPGFX.cpp
 src/display/GPGFX_UI.cpp
 src/drivermanager.cpp

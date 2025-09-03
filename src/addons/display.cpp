@@ -80,6 +80,7 @@ void DisplayAddon::setup() {
 
     EventManager::getInstance().registerEventHandler(GP_EVENT_RESTART, GPEVENT_CALLBACK(this->handleSystemRestart(event)));
     EventManager::getInstance().registerEventHandler(GP_EVENT_MENU_NAVIGATE, GPEVENT_CALLBACK(this->handleMenuNavigation(event)));
+    EventManager::getInstance().registerEventHandler(GP_EVENT_SYSTEM_ERROR, GPEVENT_CALLBACK(this->handleSystemError(event)));
 }
 
 bool DisplayAddon::updateDisplayScreen() {
@@ -110,8 +111,8 @@ bool DisplayAddon::updateDisplayScreen() {
         case STATS:
             gpScreen = new StatsScreen(gpDisplay);
             break;
-        case NO_USB_DETECTED:
-            gpScreen = new NoUSBDetectedScreen(gpDisplay);
+        case SYSTEM_ERROR:
+            gpScreen = new SystemErrorScreen(gpDisplay, errorMessage);
             break;
         case RESTART:
             gpScreen = new RestartScreen(gpDisplay, bootMode);
@@ -181,18 +182,6 @@ void DisplayAddon::process() {
         return;
     }
 
-    if (currDisplayMode != SPLASH) {
-        if (!tud_ready()) {
-            if (currDisplayMode != NO_USB_DETECTED) {
-                currDisplayMode = NO_USB_DETECTED;
-                updateDisplayScreen();
-            }
-        } else if (currDisplayMode == NO_USB_DETECTED) {
-            currDisplayMode = BUTTONS;
-            updateDisplayScreen();
-        }
-    }
-
     // Core0 requested a new display mode
     if (nextDisplayMode != currDisplayMode ) {
         currDisplayMode = nextDisplayMode;
@@ -245,4 +234,9 @@ void DisplayAddon::handleMenuNavigation(GPEvent* e) {
     } else if (currDisplayMode == MAIN_MENU) {
         ((MainMenuScreen*)gpScreen)->updateEventMenuNavigation(((GPMenuNavigateEvent*)e)->menuAction);
     }
+}
+
+void DisplayAddon::handleSystemError(GPEvent* e) {
+    currDisplayMode = SYSTEM_ERROR;
+    errorMessage = ((GPSystemErrorEvent*) e)->errorMessage;
 }
