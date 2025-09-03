@@ -4,9 +4,9 @@ import * as yup from 'yup';
 
 import Section from '../Components/Section';
 
-import FormControl from '../Components/FormControl';
 import FormSelect from '../Components/FormSelect';
 import { BUTTON_MASKS_OPTIONS } from '../Data/Buttons';
+import { AddonPropTypes } from '../Pages/AddonsConfigPage';
 
 export const focusModeScheme = {
 	FocusModeAddonEnabled: yup
@@ -29,7 +29,9 @@ export const focusModeScheme = {
 
 export const focusModeState = {
 	FocusModeAddonEnabled: 0,
+	focusModeButtonLockEnabled: 0,
 	focusModeMacroLockEnabled: 0,
+	focusModeButtonLockMask: 0,
 };
 
 const FocusMode = ({
@@ -38,7 +40,7 @@ const FocusMode = ({
 	handleChange,
 	handleCheckbox,
 	setFieldValue,
-}) => {
+}: AddonPropTypes) => {
 	const { t } = useTranslation();
 	return (
 		<Section title={
@@ -75,7 +77,7 @@ const FocusMode = ({
 						isInvalid={false}
 						checked={Boolean(values.focusModeMacroLockEnabled)}
 						onChange={(e) => {
-							handleCheckbox('focusModeMacroLockEnabled', values);
+							handleCheckbox('focusModeMacroLockEnabled');
 							handleChange(e);
 						}}
 					/>
@@ -87,7 +89,7 @@ const FocusMode = ({
 						isInvalid={false}
 						checked={Boolean(values.focusModeButtonLockEnabled)}
 						onChange={(e) => {
-							handleCheckbox('focusModeButtonLockEnabled', values);
+							handleCheckbox('focusModeButtonLockEnabled');
 							handleChange(e);
 						}}
 					/>
@@ -103,12 +105,12 @@ const FocusMode = ({
 									groupClassName="col-sm-3 mb-3"
 									value={values.focusModeButtonLockMask & mask.value}
 									error={errors.focusModeButtonLockMask}
-									isInvalid={errors.focusModeButtonLockMask}
+									isInvalid={Boolean(errors.focusModeButtonLockMask)}
 									onChange={(e) => {
 										setFieldValue(
 											'focusModeButtonLockMask',
 											(values.focusModeButtonLockMask ^ mask.value) |
-												e.target.value,
+												Number(e.target.value),
 										);
 									}}
 								>
@@ -129,11 +131,11 @@ const FocusMode = ({
 						groupClassName="col-sm-3 mb-3"
 						value={0}
 						error={errors.focusModeButtonLockMask}
-						isInvalid={errors.focusModeButtonLockMask}
+						isInvalid={Boolean(errors.focusModeButtonLockMask)}
 						onChange={(e) => {
 							setFieldValue(
 								'focusModeButtonLockMask',
-								values.focusModeButtonLockMask | e.target.value,
+								values.focusModeButtonLockMask | Number(e.target.value),
 							);
 						}}
 					>
@@ -156,7 +158,7 @@ const FocusMode = ({
 				isInvalid={false}
 				checked={Boolean(values.FocusModeAddonEnabled)}
 				onChange={(e) => {
-					handleCheckbox('FocusModeAddonEnabled', values);
+					handleCheckbox('FocusModeAddonEnabled');
 					handleChange(e);
 				}}
 			/>

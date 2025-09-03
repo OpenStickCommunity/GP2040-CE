@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { Formik, useFormikContext } from 'formik';
+import { Formik, FormikErrors, FormikHandlers, FormikHelpers, useFormikContext } from 'formik';
 import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
 
@@ -62,6 +62,14 @@ import HETrigger, {
 	HETriggerState,
 } from '../Addons/HETrigger';
 
+export type AddonPropTypes = {
+	values: typeof DEFAULT_VALUES;
+	errors: FormikErrors<typeof DEFAULT_VALUES>;
+	handleChange: FormikHandlers['handleChange'];
+	handleCheckbox: (name: keyof typeof DEFAULT_VALUES) => void;
+	setFieldValue: FormikHelpers<typeof DEFAULT_VALUES>['setFieldValue'];
+};
+
 const schema = yup.object().shape({
 	...analogScheme,
 	...analog1256Scheme,
@@ -85,7 +93,7 @@ const schema = yup.object().shape({
 	...HETriggerScheme,
 });
 
-const defaultValues = {
+export const DEFAULT_VALUES = {
 	...analogState,
 	...analog1256State,
 	...bootselState,
@@ -108,7 +116,7 @@ const defaultValues = {
 	...reactiveLEDState,
 	...gamepadUSBHostState,
 	...HETriggerState,
-};
+} as const;
 
 const ADDONS = [
 	Bootsel,
@@ -195,7 +203,7 @@ export default function AddonsConfigPage() {
 		updatePeripherals();
 	}, []);
 
-	const onSuccess = async (values) => {
+	const onSuccess = async (values: typeof DEFAULT_VALUES) => {
 		const flattened = flattenObject(storedData);
 
 		// Convert turbo LED color if available
@@ -225,45 +233,39 @@ export default function AddonsConfigPage() {
 		if (success) updateUsedPins();
 	};
 
-	const handleCheckbox = async (name, values) => {
-		values[name] = values[name] === 1 ? 0 : 1;
-	};
-
 	return (
 		<Formik
 			enableReinitialize={true}
 			validationSchema={schema}
 			onSubmit={onSuccess}
-			initialValues={defaultValues}
+			initialValues={DEFAULT_VALUES}
 		>
-			{({ handleSubmit, handleChange, values, errors, setFieldValue }) =>
-				console.log('errors', errors) || (
-					<Form noValidate onSubmit={handleSubmit}>
-						<h1>{t('AddonsConfig:header-text')}</h1>
-						<p>{t('AddonsConfig:sub-header-text')}</p>
-						{ADDONS.map((Addon, index) => (
-							<Addon
-								key={`addon-${index}`}
-								values={values}
-								errors={errors}
-								handleChange={handleChange}
-								handleCheckbox={handleCheckbox}
-								setFieldValue={setFieldValue}
-							/>
-						))}
+			{({ handleSubmit, handleChange, values, errors, setFieldValue }) => (
+				<Form noValidate onSubmit={handleSubmit}>
+					<h1>{t('AddonsConfig:header-text')}</h1>
+					<p>{t('AddonsConfig:sub-header-text')}</p>
+					{ADDONS.map((Addon, index) => (
+						<Addon
+							key={`addon-${index}`}
+							values={values}
+							errors={errors}
+							handleChange={handleChange}
+							handleCheckbox={(name: keyof typeof DEFAULT_VALUES) => {
+								setFieldValue(name, values[name] === 1 ? 0 : 1);
+							}}
+							setFieldValue={setFieldValue}
+						/>
+					))}
 
-						<div className="mt-3">
-							<Button type="submit" id="save">
-								{t('Common:button-save-label')}
-							</Button>
-							{saveMessage ? (
-								<span className="alert">{saveMessage}</span>
-							) : null}
-						</div>
-						<FormContext setStoredData={setStoredData} />
-					</Form>
-				)
-			}
+					<div className="mt-3">
+						<Button type="submit" id="save">
+							{t('Common:button-save-label')}
+						</Button>
+						{saveMessage ? <span className="alert">{saveMessage}</span> : null}
+					</div>
+					<FormContext setStoredData={setStoredData} />
+				</Form>
+			)}
 		</Formik>
 	);
 }

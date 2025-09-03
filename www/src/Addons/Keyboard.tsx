@@ -7,13 +7,12 @@ import * as yup from 'yup';
 import Section from '../Components/Section';
 
 import FormSelect from '../Components/FormSelect';
-import FormControl from '../Components/FormControl';
 import KeyboardMapper from '../Components/KeyboardMapper';
 import { baseButtonMappings } from '../Services/WebApi';
 import { AppContext } from '../Contexts/AppContext';
 
-import { BUTTON_ACTIONS } from '../Data/Pins';
 import { BUTTON_MASKS_OPTIONS } from '../Data/Buttons';
+import { AddonPropTypes } from '../Pages/AddonsConfigPage';
 
 export const keyboardScheme = {
 	KeyboardHostAddonEnabled: yup
@@ -76,7 +75,7 @@ const Keyboard = ({
 	handleChange,
 	handleCheckbox,
 	setFieldValue,
-}) => {
+}: AddonPropTypes) => {
 	const { buttonLabels, getAvailablePeripherals } = useContext(AppContext);
 	const { t } = useTranslation();
 
@@ -254,7 +253,7 @@ const Keyboard = ({
 					isInvalid={false}
 					checked={Boolean(values.KeyboardHostAddonEnabled)}
 					onChange={(e) => {
-						handleCheckbox('KeyboardHostAddonEnabled', values);
+						handleCheckbox('KeyboardHostAddonEnabled');
 						handleChange(e);
 					}}
 				/>

@@ -4,8 +4,8 @@ import * as yup from 'yup';
 
 import Section from '../Components/Section';
 import FormSelect from '../Components/FormSelect';
-import FormControl from '../Components/FormControl';
 import { SOCD_MODES } from '../Data/Addons';
+import { AddonPropTypes } from '../Pages/AddonsConfigPage';
 
 export const socdScheme = {
 	SliderSOCDInputEnabled: yup
@@ -23,7 +23,7 @@ export const socdState = {
 	sliderSOCDModeDefault: 1,
 };
 
-const SOCD = ({ values, errors, handleChange, handleCheckbox }) => {
+const SOCD = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) => {
 	const { t } = useTranslation();
 	return (
 		<Section
@@ -67,7 +67,7 @@ const SOCD = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.sliderSOCDModeDefault}
 						error={errors.sliderSOCDModeDefault}
-						isInvalid={errors.sliderSOCDModeDefault}
+						isInvalid={Boolean(errors.sliderSOCDModeDefault)}
 						onChange={handleChange}
 					>
 						{SOCD_MODES.map((o, i) => (
@@ -86,7 +86,7 @@ const SOCD = ({ values, errors, handleChange, handleCheckbox }) => {
 				isInvalid={false}
 				checked={Boolean(values.SliderSOCDInputEnabled)}
 				onChange={(e) => {
-					handleCheckbox('SliderSOCDInputEnabled', values);
+					handleCheckbox('SliderSOCDInputEnabled');
 					handleChange(e);
 				}}
 			/>

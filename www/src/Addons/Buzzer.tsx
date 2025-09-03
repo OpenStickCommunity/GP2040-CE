@@ -5,6 +5,7 @@ import * as yup from 'yup';
 import Section from '../Components/Section';
 
 import FormControl from '../Components/FormControl';
+import { AddonPropTypes } from '../Pages/AddonsConfigPage';
 
 export const buzzerScheme = {
 	BuzzerSpeakerAddonEnabled: yup
@@ -32,7 +33,7 @@ export const buzzerState = {
 	buzzerVolume: 100,
 };
 
-const Buzzer = ({ values, errors, handleChange, handleCheckbox }) => {
+const Buzzer = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) => {
 	const { t } = useTranslation();
 	return (
 		<Section title={
@@ -58,7 +59,7 @@ const Buzzer = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.buzzerPin}
 						error={errors.buzzerPin}
-						isInvalid={errors.buzzerPin}
+						isInvalid={Boolean(errors.buzzerPin)}
 						onChange={handleChange}
 						min={-1}
 						max={29}
@@ -71,7 +72,7 @@ const Buzzer = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.buzzerEnablePin}
 						error={errors.buzzerEnablePin}
-						isInvalid={errors.buzzerEnablePin}
+						isInvalid={Boolean(errors.buzzerEnablePin)}
 						onChange={handleChange}
 						min={-1}
 						max={29}
@@ -84,7 +85,7 @@ const Buzzer = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.buzzerVolume}
 						error={errors.buzzerVolume}
-						isInvalid={errors.buzzerVolume}
+						isInvalid={Boolean(errors.buzzerVolume)}
 						onChange={handleChange}
 						min={0}
 						max={100}
@@ -99,7 +100,7 @@ const Buzzer = ({ values, errors, handleChange, handleCheckbox }) => {
 				isInvalid={false}
 				checked={Boolean(values.BuzzerSpeakerAddonEnabled)}
 				onChange={(e) => {
-					handleCheckbox('BuzzerSpeakerAddonEnabled', values);
+					handleCheckbox('BuzzerSpeakerAddonEnabled');
 					handleChange(e);
 				}}
 			/>
