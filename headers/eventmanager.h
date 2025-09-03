@@ -18,6 +18,7 @@
 #include "GPProfileEvent.h"
 #include "GPRestartEvent.h"
 #include "GPStorageSaveEvent.h"
+#include "GPSystemErrorEvent.h"
 #include "GPSystemRebootEvent.h"
 #include "GPUSBHostEvent.h"
 
