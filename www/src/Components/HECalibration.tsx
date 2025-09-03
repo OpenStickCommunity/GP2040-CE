@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Button, Modal, Row, Col, ProgressBar, Form, Spinner } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
@@ -9,29 +9,45 @@ import useHETriggerStore, { Trigger } from '../Store/useHETriggerStore';
 
 import './HECalibration.scss';
 
+import { BUTTON_ACTIONS } from '../Data/Pins';
+import invert from 'lodash/invert';
+import { toInteger } from 'lodash';
+
 type HECalibrationProps = {
-	values: any;
-	showModal: boolean;
+	calibrateAllLoop: boolean;
+	calibrationTarget: number;	
+	muxChannels: number;
 	setShowModal: (show: boolean) => void;
+	showModal: boolean;
 	triggers: Trigger[];
-	target: number;
-	title: string;
+	values: any;
 }
 
+const getOption = (e, actionId) => {
+	return {
+		label: invert(BUTTON_ACTIONS)[actionId],
+		value: actionId,
+	};
+};
+
 const HECalibration = ({
-	values,
-	showModal,
+	calibrationTarget,
+	calibrateAllLoop,
+	muxChannels,
 	setShowModal,
+	showModal,
 	triggers,
-	target,
-	title,
+	values,
 }: HECalibrationProps) => {
 	const { t } = useTranslation('');
 	const setHETrigger = useHETriggerStore((state) => state.setHETrigger);
 	const setAllHETriggers = useHETriggerStore((state) => state.setAllHETriggers);
-	const [timerId, setTimerId] = useState<number>();
+	const timerId = useRef<number>();
+	const [title, setTitle] = useState('');
+	const target = useRef(-1);
+	const [nextTarget, setNextTarget] = useState(-1);
+	const previousStep = useRef(0);
 	const [calibrationStep, setCalibrationStep] = useState(0);
-	const [previousStep, setPreviousStep] = useState(0);
 	const [voltage, setVoltage] = useState(0);
 	const [voltageIdle, setVoltageIdle] = useState(20);
 	const [voltageMax, setVoltageMax] = useState(3500);
@@ -41,35 +57,80 @@ const HECalibration = ({
 	const saveCalibration = () => {
 		// Set to Trigger Store
 		setHETrigger({
-			id: target,
-			action: triggers[target].action,
+			id: target.current,
+			action: triggers[target.current].action,
 			idle: voltageIdle,
 			active: voltageActive,
 			max: voltageMax,
 			polarity
 		})
 		stopCalibration();
+		if ( calibrateAllLoop ) {
+			checkNextTarget();
+		} else {
+			setShowModal(false);
+		}
 	};
 
+	const checkNextTarget = () => {
+		if ( nextTarget!== -1 ) {
+			target.current = nextTarget;
+			setNextTarget(getNextTarget());
+			updateTitle();
+			restartCalibration();
+		} else {
+			setShowModal(false);
+		}
+	};
+
+	const updateTitle = () => {
+		if ( target.current !== -1 ) {
+			// set title
+			const option = getOption(triggers[target.current], triggers[target.current].action);
+			const actionTitle = t(`PinMapping:actions.${option.label}`);
+			if ( muxChannels > 1 ) {
+				const muxNum = Math.floor(target.current/muxChannels);
+				const channelNum = muxNum + Math.floor(target.current%muxChannels);
+				setTitle(`${actionTitle} - Mux ${muxNum} - Channel ${channelNum}`);
+			} else {
+				setTitle(`${actionTitle} - Direct - ADC ${values[`muxADCPins${target.current}`]}`);
+			}
+		}
+	};
+
+	const getNextTarget = () => {
+		// Find our next
+		for(var i = target.current+1; i < 32; i++) {
+			if (triggers[i].action !== -10) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
 	const overwriteAllCalibration = () => {
-			setAllHETriggers({
-				idle: voltageIdle,
-				active: voltageActive,
-				max: voltageMax,
-				polarity
-			});
-		stopCalibration();
+		setAllHETriggers({
+			idle: voltageIdle,
+			active: voltageActive,
+			max: voltageMax,
+			polarity
+		});
+		closeModal();
 	};
 
 	const stopCalibration = async () => {
-		console.log("Closing modal");
-		setShowModal(false);
 		setCalibrationStep(0);
+		target.current = -1;
 		if (timerId)
-			clearInterval(timerId);
+			clearInterval(timerId.current);
 	};
 
-	const startReadingCalibrationLoop = async (showModal: boolean, step: number) => {
+	const closeModal = async () => {
+		stopCalibration();
+		setShowModal(false);
+	};
+
+	const startReadingCalibrationLoop = async () => {
 		if (showModal) {
 			// Set the Hall Effect calibration pins
 			await WebApi.setHETriggerCalibration({
@@ -83,35 +144,38 @@ const HECalibration = ({
 				muxADCPin2: values['muxADCPin2'],
 				muxADCPin3: values['muxADCPin3'],
 			});
-			// Begin reading
-			if (timerId)
-				clearInterval(timerId);
-
-			const intervalId = setInterval(() => {readHallEffect(step)}, 50);
-			setTimerId(intervalId);
+			updateCalibrationRead(0);
 		}
 	}
 
+	const updateCalibrationRead = (step:number) => {
+		setCalibrationStep(step);
+		// Begin reading
+		if (timerId.current)
+			clearInterval(timerId.current);
+		const intervalId = setInterval(() => {
+			readHallEffect(step);
+		}, 50);
+		timerId.current = intervalId;
+	};
+
 	// Start Capturing on Modal Show
 	const startCalibration = async() => {
-		startReadingCalibrationLoop(showModal, calibrationStep);
-		console.log("Trigger Target: ", triggers[target]);
-		console.log("Channels: ", values['muxChannels']);
-		{Array.from({ length: 4 }, (_, i) => (
-			console.log(`Select ${i} Pin: `, values[`muxSelectPin${i}`])
-		))}
-		{Array.from({ length: 4 }, (_, i) => (
-			console.log(`Mux ${i} ADC Pin: `, values[`muxADCPin${i}`])
-		))}
-		setVoltageIdle(triggers[target].idle);
-		setVoltageActive(triggers[target].active);
-		setVoltageMax(triggers[target].max);
-		setPolarity(triggers[target].polarity);
+		if ( calibrateAllLoop ) {
+			target.current = getNextTarget();
+			setNextTarget(getNextTarget());
+		} else {
+			target.current = calibrationTarget;
+		}
+		setVoltageIdle(triggers[target.current].idle);
+		setVoltageActive(triggers[target.current].active);
+		setVoltageMax(triggers[target.current].max);
+		setPolarity(triggers[target.current].polarity);
 	};
 
 	const restartCalibration = () => {
-		setCalibrationStep(0);
-		setPreviousStep(0);
+		previousStep.current = 0;
+		updateCalibrationRead(0);
 	};
 
 	const calculateVoltIdle = () => {
@@ -126,14 +190,10 @@ const HECalibration = ({
 		return (Math.min(voltageMax,voltage)-voltageIdle)/((voltageMax-voltageIdle)/100.0);
 	};
 
-	const calculateVoltActiveDefault = () => {
-		return (Math.floor(voltageMax*0.8));
-	};
-
-	const readHallEffect = async (step:number) => {
+	const readHallEffect = async (calibrationStep:number) => {
 		// read hall effect trigger if we're not at opening
 		const result = await WebApi.getHETriggerCalibration({
-			targetId: target
+			targetId: target.current
 		});
 
 		if (!result || !result.data) {
@@ -145,11 +205,11 @@ const HECalibration = ({
 
 		// For Web-Testing Debug Only
 		if (data.debug && data.debug === true) {
-			if ( step === 0 ) {
+			if ( calibrationStep === 0 ) {
 				setVoltage(150); // min we'll set to 20
-			} else if ( step === 1 ) {
+			} else if ( calibrationStep === 1 ) {
 				setVoltage(3500); // max we'll set to 3500
-			} else if ( step === 2 || step === 3 ) {
+			} else if ( calibrationStep === 2 || calibrationStep === 3 ) {
 				let time = (new Date()).getTime();
 				const V = 150+Math.floor((Math.cos((( time/10 ) % 365) * Math.PI / 180)+1.0)*1500);
 				setVoltage(V);
@@ -363,15 +423,18 @@ const HECalibration = ({
 	};
 
 	useEffect(() => {
-		startReadingCalibrationLoop(showModal, calibrationStep);
-	}, [calibrationStep]);
+		if ( showModal === true ) {
+			startCalibration();
+			startReadingCalibrationLoop();
+			updateTitle();
+		}
+	}, [showModal]);
 
 	return (
 		<>
 			<Modal className="modal-lg" contentClassName="he-modal" centered show={showModal}
-				onClose={() => stopCalibration()}
-				onHide={() => stopCalibration()}
-				onShow={() => startCalibration()}
+				onClose={() => closeModal()}
+				onHide={() => closeModal()}
 			>
 				<Modal.Header closeButton>
 					<Modal.Title className="me-auto">{t(`HETrigger:calibration-header-text`)} - {title}</Modal.Title>
@@ -385,7 +448,7 @@ const HECalibration = ({
 				<Modal.Footer>
 					<Button onClick={() => {
 						setVoltageIdle(voltage);
-						setCalibrationStep(1);
+						updateCalibrationRead(1);
 					}} hidden={calibrationStep !== 0}>
 						<Spinner
 							as="span"
@@ -397,8 +460,8 @@ const HECalibration = ({
 					</Button>
 					<Button onClick={() => {
 						setVoltageMax(voltage);
-						setVoltageActive(calculateVoltActiveDefault());
-						setCalibrationStep(2);
+						setVoltageActive(voltageIdle + Math.floor((voltage-voltageIdle)*0.625));
+						updateCalibrationRead(2);
 					}} hidden={calibrationStep !== 1}>
 						<Spinner
 							as="span"
@@ -414,17 +477,17 @@ const HECalibration = ({
 						onClick={() => saveCalibration()}
 						hidden={calibrationStep < 2}
 					>
-						{t(`HETrigger:finish-calibration-${calibrationStep}-text`)}
+						{nextTarget !== -1 ? t(`HETrigger:next-calibration-text`): t(`HETrigger:finish-calibration-text`)}
 					</Button>
 					<Button onClick={() => {
-							setCalibrationStep(previousStep);
+							updateCalibrationRead(previousStep.current);
 						}}
 						hidden={calibrationStep !== 3}>
 						{t(`HETrigger:calibration-back-button`)}
 					</Button>
 					<Button onClick={() => {
-							setPreviousStep(calibrationStep);
-							setCalibrationStep(3);
+							previousStep.current = calibrationStep;
+							updateCalibrationRead(3);
 						}}
 						hidden={calibrationStep === 3}>
 						{t(`HETrigger:manual-text`)}

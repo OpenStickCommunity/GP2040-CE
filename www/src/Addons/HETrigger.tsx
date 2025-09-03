@@ -35,6 +35,13 @@ const SELECTABLE_BUTTON_ACTIONS = [
 	63, 64, 65, 66, 72, 73, 74, 75, 76, 77, 78
 ];
 
+const getOption = (e, actionId) => {
+	return {
+		label: invert(BUTTON_ACTIONS)[actionId],
+		value: actionId,
+	};
+};
+
 const isSelectable = (value) =>
 	SELECTABLE_BUTTON_ACTIONS.includes(value);
 
@@ -53,20 +60,6 @@ export const HETriggerState = {
 	muxSelectPin1: 1,
 	muxSelectPin2: 2,
 	muxSelectPin3: -1,
-};
-
-const CHANNEL_SELECT = {
-	"Direct (No Mux)": 1,
-	"4-Channels": 4,
-	"8-Channels": 8,
-	"16-Channels": 16
-};
-
-const getOption = (e, actionId) => {
-	return {
-		label: invert(BUTTON_ACTIONS)[actionId],
-		value: actionId,
-	};
 };
 
 const options = Object.entries(BUTTON_ACTIONS)
@@ -96,8 +89,8 @@ const TriggerActionsForm = ({
 	const { buttonLabels } = useContext(AppContext);
 	const [saveMessage, setSaveMessage] = useState('');
 	const [showModal, setShowModal] = useState(false);
-	const [modalTitle, setModalTitle] = useState('');
 	const [calibrationTarget, setCalibrationTarget] = useState(0);
+	const [calibrateAllLoop, setCalibrateAllLoop] = useState(false);
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
 	const [showVoltTable, setShowVoltTable] = useState(false);
 	const CURRENT_BUTTONS = getButtonLabels(buttonLabelType, swapTpShareLabels);
@@ -116,159 +109,157 @@ const TriggerActionsForm = ({
 	};
 
 	return (
-		<div className="mb-3">
+		<div>
 			<div className="mt-2">
-				<div>
-					<div className="mt-2">
-						<h1>{t('HETrigger:action-assignment-sub-header')}</h1>
+				<div className="mt-2">
+					<h1>{t('HETrigger:action-assignment-sub-header')}</h1>
+				</div>
+				<div className="mt-2">
+					<Button type="button"
+						key={`calibrate-all-he`}
+						onClick={(e) => {
+							setShowModal(true);
+							setCalibrationTarget(0);
+							setCalibrateAllLoop(true);
+						}}
+						disabled={triggers.filter((e)=>{ return e.action !== -10; }).length === 0}
+						className="my-2">
+						{t('HETrigger:calibrate-all-button')}
+					</Button>
+				</div>
+				{Array.from({ length: Math.min(4,Math.floor(32/muxChannels)) }, (_, i) => (
+					<div
+						key={`he-trigger-item-${i}`} 
+						className="mt-3 mb-3"
+						hidden={values[`muxADCPin${i}` as keyof typeof values] === -1}
+					>
+						<div className="d-flex flex-shrink-0">
+							<label htmlFor={i}>
+								{muxChannels > 1 ? `${t('HETrigger:multiplexer-label')} ${i}` : 'Direct'} (ADC {values[`muxADCPin${i}` as keyof typeof values]})
+							</label>
+						</div>
+						{ (values[`muxADCPin${i}` as keyof typeof values] !== -1) ?
+						<div className={`action-grid-HE-trigger-${muxChannels} gap-3 mt-2 mb-3`}>
+							{Object.keys(triggers).splice(i*muxChannels,muxChannels).map((key, index) => (
+								<div
+									key={`select-he-${index}`}
+									className="d-flex align-items-center gap-2"
+								>
+									<div className="d-flex flex-shrink-0" style={{ width: '6rem' }}>
+										<label htmlFor={key}>{t('HETrigger:channel-label')} {index}</label>
+									</div>
+									<CustomSelect
+										key={`select-option-he-${index}`}
+										inputId={key}
+										isClearable
+										isSearchable
+										options={options}
+										value={getOption(triggers[key], triggers[key].action)}
+										getOptionLabel={(option) => {
+											const labelKey = option.label.split('BUTTON_PRESS_').pop();
+											// Need to fallback as some button actions are not part of button names
+											return (
+												(labelKey && buttonNames[labelKey]) ||
+												t(`PinMapping:actions.${option.label}`)
+											);
+										}}
+										onChange={(change) =>
+											setHETrigger(
+												{
+													id: parseInt(key),
+													action: change?.value === undefined ? -10 : change.value,
+													idle: triggers[key].idle,
+													active: triggers[key].active,
+													max: triggers[key].max,
+													polarity: triggers[key].polarity
+												}
+											)
+										}
+									/>
+									<Button type="button"
+										key={`select-button-he-${index}`}
+										onClick={(e) => {
+											setShowModal(true);
+											setCalibrationTarget(parseInt(key));
+											setCalibrateAllLoop(false);
+										}}
+										disabled={triggers[key].action === -10}
+										className="d-flex flex-shrink-0">
+										🧲
+									</Button>
+								</div>
+							))}
+						</div> : '' }
 					</div>
+				))}
+				<HECalibration
+					values={values}
+					showModal={showModal}
+					setShowModal={setShowModal}
+					triggers={triggers}
+					calibrationTarget={calibrationTarget}
+					calibrateAllLoop={calibrateAllLoop}
+					muxChannels={muxChannels}
+				></HECalibration>
+			</div>
+			<div className="mt-2">
+				<Button type="button" onClick={() => {setShowVoltTable(!showVoltTable)}} className="my-4">
+					{!showVoltTable ? t('HETrigger:voltage-table-show-label') : t('HETrigger:voltage-table-hide-label')} ⚡
+				</Button>
+			</div>
+			<div hidden={!showVoltTable} className="mt-2">
+				<div>
+					<h1>{t('HETrigger:voltage-table-header-text')}</h1>
+				</div>
+				<div>
 					{Array.from({ length: Math.min(4,Math.floor(32/muxChannels)) }, (_, i) => (
-						<div key={`mux-adc-${i}`} className="mt-3 mb-3" hidden={values[`muxADCPin${i}` as keyof typeof values] === -1}>
-
+						<div
+							key={`voltage-table-header-${i}`} 
+							className="mt-3 mb-3"
+							hidden={values[`muxADCPin${i}` as keyof typeof values] === -1}
+						>
 							<div className="d-flex flex-shrink-0">
 								<label>
 									{muxChannels > 1 ? `${t('HETrigger:multiplexer-label')} ${i}` : 'Direct'} (ADC {String(values[`muxADCPin${i}` as keyof typeof values])})
 								</label>
 							</div>
-							{ (values[`muxADCPin${i}` as keyof typeof values] !== -1) &&
-							<div className={`action-grid-HE-trigger-${muxChannels} gap-3 mt-2 mb-3`}>
-								{Object.keys(triggers).splice(i*muxChannels,muxChannels).map((key, index) => {
-									const trigger = triggers[parseInt(key)];
-									return (
-										<div
-											key={`select-he-${index}`}
-											className="d-flex align-items-center gap-2"
+							{ (values[`muxADCPin${i}` as keyof typeof values] !== -1) ?
+							<div className={`action-grid-HE-trigger-${muxChannels} gap-0 mt-0 mb-0`}>
+								<Table bordered className="mb-0 mt-0">
+									<thead>
+										<tr>
+											<th>{t('HETrigger:channel-label')}</th>
+											<th>{t('HETrigger:voltage-table-idle-text')}</th>
+											<th>{t('HETrigger:voltage-table-trigger-text')}</th>
+											<th>{t('HETrigger:voltage-table-max-text')}</th>
+											<th>{t('HETrigger:voltage-table-polarity-text')}</th>
+										</tr>
+									</thead>
+									<tbody>
+									{Object.keys(triggers).splice(i*muxChannels,muxChannels).map((key, index) => (
+										<tr
+											key={`table-tr-triggers-${index}`}
 										>
-											<div
-												className="d-flex flex-shrink-0"
-												style={{ width: '5rem' }}
-											>
-												<label htmlFor={key}>{t('HETrigger:channel-label')} {index}</label>
-											</div>
-											<CustomSelect
-												key={`select-option-he-${index}`}
-												inputId={key}
-												isClearable
-												isSearchable
-												options={options}
-												value={getOption(trigger, trigger.action)}
-												getOptionLabel={(option) => {
-													const labelKey = option.label
-														.split('BUTTON_PRESS_')
-														.pop();
-													// Need to fallback as some button actions are not part of button names
-													return (
-														(labelKey && buttonNames[labelKey]) ||
-														t(`PinMapping:actions.${option.label}`)
-													);
-												}}
-												onChange={(change) =>
-													setHETrigger({
-														id: parseInt(key),
-														action:
-															change?.value === undefined ? -10 : change.value,
-														idle: trigger.idle,
-														active: trigger.active,
-														max: trigger.max,
-														polarity: trigger.polarity,
-													})
-												}
-											/>
-											<Button
-												type="button"
-												key={`select-button-he-${index}`}
-												onClick={(e) => {
-													setShowModal(true);
-													setCalibrationTarget(parseInt(key));
-													const option = getOption(
-														trigger,
-														trigger.action,
-													);
-													const actionTitle = t(
-														`PinMapping:actions.${option.label}`,
-													);
-													if (muxChannels > 1) {
-														setModalTitle(
-															`${actionTitle} - Mux ${i} - Channel ${index}`,
-														);
-													} else {
-														setModalTitle(
-															`${actionTitle} - Direct - ADC ${values[`muxADCPin${i}` as keyof typeof values]}`,
-														);
-													}
-												}}
-												disabled={trigger.action === -10}
-												className="d-flex flex-shrink-0"
-											>
-												🧲
-											</Button>
-										</div>
-									);
-								})}
-							</div> }
+											<td>{index} {triggers[key].action===-10?t('HETrigger:voltage-table-disabled-label'):''}</td>
+											<td>{triggers[key].idle}</td>
+											<td>{triggers[key].active}</td>
+											<td>{triggers[key].max}</td>
+											<td>{triggers[key].polarity == 1 ? 'S' : 'N'}</td>
+										</tr>
+									))}
+									</tbody>
+								</Table>
+							</div> : '' }
 						</div>
 					))}
-					<HECalibration
-						values={values}
-						showModal={showModal}
-						setShowModal={setShowModal}
-						triggers={triggers}
-						target={calibrationTarget}
-						title={modalTitle}
-					></HECalibration>
-				</div>
-				<Button type="button" onClick={() => {setShowVoltTable(!showVoltTable)}} className="my-4">
-				    {!showVoltTable ? t('HETrigger:voltage-table-show-label') : t('HETrigger:voltage-table-hide-label')} ⚡
-			    </Button>
-				<div hidden={!showVoltTable}>
-					<div className="mt-2">
-						<h1>{t('HETrigger:voltage-table-header-text')}</h1>
-					</div>
-					<div className="mt-2">
-						{Array.from({ length: Math.min(4,Math.floor(32/muxChannels)) }, (_, i) => (
-							<div key={`mux-adc-${i}-2`} className="mt-3 mb-3" hidden={values[`muxADCPin${i}` as keyof typeof values] === -1}>
-								<div className="d-flex flex-shrink-0">
-									<label>
-										{muxChannels > 1 ? `${t('HETrigger:multiplexer-label')} ${i}` : 'Direct'} (ADC {String(values[`muxADCPin${i}` as keyof typeof values])})
-									</label>
-								</div>
-								{ (values[`muxADCPin${i}` as keyof typeof values] !== -1) &&
-								<div className={`action-grid-HE-trigger-${muxChannels} gap-0 mt-0 mb-0`}>
-									<Table bordered className="mb-0 mt-0">
-										<thead>
-											<tr>
-												<th>{t('HETrigger:channel-label')}</th>
-												<th>{t('HETrigger:voltage-table-idle-text')}</th>
-												<th>{t('HETrigger:voltage-table-trigger-text')}</th>
-												<th>{t('HETrigger:voltage-table-max-text')}</th>
-												<th>{t('HETrigger:voltage-table-polarity-text')}</th>
-											</tr>
-										</thead>
-										<tbody>
-										{Object.keys(triggers).splice(i*muxChannels,muxChannels).map((key, index) => {
-											const trigger = triggers[parseInt(key)];
-											return (
-											<tr key={`trigger-row-${key}`}>
-												<td>{index} {trigger.action===-10?t('HETrigger:voltage-table-disabled-label'):''}</td>
-												<td>{trigger.idle}</td>
-												<td>{trigger.active}</td>
-												<td>{trigger.max}</td>
-												<td>{trigger.polarity == 1 ? 'S' : 'N'}</td>
-											</tr>
-											);
-										})}
-										</tbody>
-									</Table>
-								</div>}
-							</div>
-						))}
-					</div>
 				</div>
 			</div>
-			<Button type="button" onClick={handleSave} className="my-4">
-				{t('HETrigger:save-button')}
-			</Button>
-			{saveMessage && <Alert variant="secondary">{saveMessage}</Alert>}
+			<div className="mt-2">
+				<Button type="button" onClick={handleSave} className="my-2">
+					{t('HETrigger:save-button')}
+				</Button>
+				{saveMessage && <Alert variant="secondary">{saveMessage}</Alert>}
+			</div>
 		</div>
 	);
 };
@@ -276,6 +267,13 @@ const TriggerActionsForm = ({
 const HETrigger = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) => {
 	const { fetchHETriggers, triggers } = useHETriggerStore();
 	const { t } = useTranslation();
+
+	const CHANNEL_SELECT = {
+		1: t('HETrigger:direct-no-mux'),
+		4: t('HETrigger:4-channels'),
+		8: t('HETrigger:8-channels'),
+		16: t('HETrigger:16-channels'),
+	};
 
 	const { usedPins } = useContext(AppContext);
 	const availableAnalogPins = ANALOG_PINS.filter(
@@ -320,7 +318,7 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }: AddonPropTy
 						isInvalid={Boolean(errors.muxChannels)}
 						onChange={handleChange}
 					>
-						{Object.entries(CHANNEL_SELECT).map(([label, num], i) => (
+						{Object.entries(CHANNEL_SELECT).map(([num, label], i) => (
 							<option key={`channels-per-mux-option-${i}`} value={num}>
 								{label}
 							</option>
@@ -439,6 +437,7 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }: AddonPropTy
 				</div>
 				<Row className="mb-2">
 					<TriggerActionsForm
+						key="triggers-actions-form"
 						values={values}
 						triggers={triggers}
 						handleChange={handleChange}
