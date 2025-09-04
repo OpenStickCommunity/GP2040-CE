@@ -16,6 +16,8 @@ on:
         options:
           - ""
           - ARCController
+          - ASiLVLABC
+          - ASiLVLWASD
           - Blank
           - Pico
           - PicoW
