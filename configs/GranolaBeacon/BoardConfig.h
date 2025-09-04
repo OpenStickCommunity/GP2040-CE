@@ -39,14 +39,14 @@
 #define HETRIGGER_HE15_ACTION GpioAction::BUTTON_PRESS_R2
 
 // Multiplexer 3 mappings
-//#define HETRIGGER_HE16_ACTION GpioAction::BUTTON_PRESS_B4
 #define HETRIGGER_HE17_ACTION GpioAction::BUTTON_PRESS_R1
 #define HETRIGGER_HE18_ACTION GpioAction::BUTTON_PRESS_L1
-//#define HETRIGGER_HE19_ACTION GpioAction::BUTTON_PRESS_B3
-//#define HETRIGGER_HE20_ACTION GpioAction::BUTTON_PRESS_E1
-//#define HETRIGGER_HE21_ACTION GpioAction::BUTTON_PRESS_B1
-//#define HETRIGGER_HE22_ACTION GpioAction::BUTTON_PRESS_E2
-//#define HETRIGGER_HE23_ACTION GpioAction::BUTTON_PRESS_B2
+
+// Additional accessibility inputs
+#define GPIO_PIN_22 GpioAction::BUTTON_PRESS_R1
+#define GPIO_PIN_23 GpioAction::BUTTON_PRESS_L1
+#define GPIO_PIN_24 GpioAction::BUTTON_PRESS_R2
+#define GPIO_PIN_25 GpioAction::BUTTON_PRESS_L2
 
 // Threshold for Trigger Active (12-bit ADC values)
 #define HETRIGGER_DEFAULT_ACTIVE 2000
