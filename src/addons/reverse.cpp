@@ -39,10 +39,10 @@ void ReverseInput::setup()
     actionRight = options.actionRight;
 
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
-	mapDpadUp    = gamepad->mapDpadUp;
-	mapDpadDown  = gamepad->mapDpadDown;
-	mapDpadLeft  = gamepad->mapDpadLeft;
-	mapDpadRight = gamepad->mapDpadRight;
+    mapDpadUp    = gamepad->mapDpadUp;
+    mapDpadDown  = gamepad->mapDpadDown;
+    mapDpadLeft  = gamepad->mapDpadLeft;
+    mapDpadRight = gamepad->mapDpadRight;
 
     invertXAxis = gamepad->getOptions().invertXAxis;
     invertYAxis = gamepad->getOptions().invertYAxis;
@@ -54,6 +54,10 @@ void ReverseInput::update() {
     Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
 
     state = (values & mapInputReverse->pinMask);
+}
+void ReverseInput::reinit() {
+    delete mapInputReverse;
+    setup();
 }
 
 uint8_t ReverseInput::input(uint32_t valueMask, uint16_t buttonMask, uint16_t buttonMaskReverse, uint8_t action, bool invertAxis) {

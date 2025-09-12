@@ -2,7 +2,7 @@
 
 ![Granola Arcade Logo](assets/granola-logo.png)
 
-Configuration for [Granola Arcade](https://granola.games) controllers. This configuration is compatible with all Granola controllers including:
+Configuration for [Granola Arcade](https://granola.games) controllers. This configuration is compatible with the following Granola controllers:
 
 * [Summit](https://github.com/michaelswitzer/granola-summit)![Granola Summit](assets/granola-summit.png)
 * [Raindrop](https://github.com/michaelswitzer/granola-raindrop)![Granola Raindrop](assets/granola-raindrop.png)
