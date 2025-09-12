@@ -3,6 +3,8 @@
 
 #include "hardware/adc.h"
 
+#define ADC_MAX ((1 << 12) - 1) // 4095
+
 bool HETriggerAddon::available() {
     return Storage::getInstance().getAddonOptions().heTriggerOptions.enabled;
 }
@@ -54,6 +56,13 @@ void HETriggerAddon::setup() {
     }
 
     lastADCSelected = -1;
+
+    if ( options.emaSmoothing == 1 ) {
+        for(int i = 0; i < 32; i++) {
+            emaSmoothingReads[i] = 0;
+        }
+        emaSmoothingFactor = options.smoothingFactor / 1000.f;
+    }
 }
 
 void HETriggerAddon::selectChannel(uint8_t channel) {
@@ -62,6 +71,12 @@ void HETriggerAddon::selectChannel(uint8_t channel) {
             gpio_put(selectPinArray[i], (channel >> i) & 0x01);
         }   
     }
+}
+
+uint16_t HETriggerAddon::emaSmoothing(uint16_t value, uint16_t previous) {
+    float ema_value = (float)value / ADC_MAX;
+    float ema_previous = (float)previous / ADC_MAX;
+    return ((emaSmoothingFactor*value) + ((1.0f*emaSmoothingFactor) - previous) * ADC_MAX;
 }
 
 void HETriggerAddon::preprocess() {
@@ -83,6 +98,13 @@ void HETriggerAddon::preprocess() {
             lastADCSelected = muxPinArray[mux];
         }
         value = adc_read();
+
+        // EMA Smoothing
+        if ( options.emaSmoothing == 1 ) {
+            value = emaSmoothing(value, emaSmoothingReads[he]);
+            emaSmoothingReads[he] = value;
+        }
+
         if (value >= options.triggers[he].active) {
             switch (options.triggers[he].action) {
                 case GpioAction::BUTTON_PRESS_UP: gamepad->state.dpad |= GAMEPAD_MASK_UP; break;

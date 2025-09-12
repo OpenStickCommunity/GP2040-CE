@@ -143,6 +143,8 @@ const HECalibration = ({
 				muxADCPin1: values['muxADCPin1'],
 				muxADCPin2: values['muxADCPin2'],
 				muxADCPin3: values['muxADCPin3'],
+				heTriggerSmoothing: values['heTriggerSmoothing'],
+				heTriggerSmoothingFactor: values['heTriggerSmoothingFactor'],
 			});
 			updateCalibrationRead(0);
 		}

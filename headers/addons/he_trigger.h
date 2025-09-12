@@ -551,11 +551,15 @@ public:
     virtual std::string name() { return HETriggerAddonName; }
 private:
     void selectChannel(uint8_t channel);
+    uint16_t emaSmoothing(float factor, uint16_t value, uint16_t previous);
     int muxTotal;
     int selectPins;
     Pin_t muxPinArray[4];
     Pin_t selectPinArray[4];
     Pin_t lastADCSelected;
+
+    uint16_t emaSmoothingReads[32];
+    float emaSmoothingFactor;
 };
 
 #endif  // _HE_Trigger_H

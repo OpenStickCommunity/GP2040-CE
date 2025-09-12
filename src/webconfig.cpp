@@ -1436,6 +1436,9 @@ std::string setExpansionPins()
 static uint32_t calibrationMuxChannels = 0;
 static Pin_t calibrationSelectPins[4];
 static Pin_t calibrationADCPins[4];
+static bool calibrationSmoothing = false;
+static float calibrationSmoothingFactor = 0.0;
+static uint32_t smoothingRead = 0;
 
 // Get the HE Trigger Calibration using our manual GPIO input and everything
 std::string setHETriggerCalibration()
@@ -1451,6 +1454,9 @@ std::string setHETriggerCalibration()
     calibrationADCPins[1] = doc["muxADCPin1"];
     calibrationADCPins[2] = doc["muxADCPin2"];
     calibrationADCPins[3] = doc["muxADCPin3"];
+
+    calibrationSmoothing = doc["heTriggerSmoothing"];
+    calibrationSmoothingFactor = doc["heTriggerSmoothingFactor"];
 
     for (int i = 0; i < 4; i++) {
         if ( calibrationSelectPins[i] != -1 && 
@@ -1470,6 +1476,13 @@ std::string setHETriggerCalibration()
     return serialize_json(doc);
 }
 
+#define ADC_MAX ((1 << 12) - 1) // 4095
+uint16_t emaCalculation(uint16_t value, uint16_t previous) {
+    float ema_value = (float)value / ADC_MAX;
+    float ema_previous = (float)previous / ADC_MAX;
+    return ((calibrationSmoothingFactor*value) + ((1.0f*calibrationSmoothingFactor) - previous)) * ADC_MAX;
+}
+
 // Get the HE Trigger Calibration using our manual GPIO input and everything
 std::string getHETriggerCalibration()
 {
@@ -1477,7 +1490,6 @@ std::string getHETriggerCalibration()
     uint32_t id = postDoc["targetId"];
     const size_t capacity = JSON_OBJECT_SIZE(20);
     DynamicJsonDocument doc(capacity);
-
     uint32_t adcSelectPin = 0;
 
     // Mux Channels determines how many select pins we use
@@ -1533,7 +1545,17 @@ std::string getHETriggerCalibration()
     sleep_us(5);
     adc_read();
     sleep_us(2);
-    doc["voltage"] = adc_read();
+
+    calibrationSmoothing = doc["heTriggerSmoothing"];
+    calibrationSmoothingFactor = doc["heTriggerSmoothingFactor"]/1000.f;
+    if ( calibrationSmoothing ) {
+        uint16_t read = adc_read();
+        read = emaCalculation(read, smoothingRead);
+        smoothingRead = read;
+        doc["voltage"] = read;
+    } else {
+        doc["voltage"] = adc_read();
+    }
     return serialize_json(doc);
 }
 
@@ -1823,6 +1845,8 @@ std::string setAddonOptions()
     docToPin(heTriggerOptions.muxADCPin1, doc, "muxADCPin1");
     docToPin(heTriggerOptions.muxADCPin2, doc, "muxADCPin2");
     docToPin(heTriggerOptions.muxADCPin3, doc, "muxADCPin3");
+    docToValue(heTriggerOptions.emaSmoothing, doc, "heTriggerSmoothing");
+    docToValue(heTriggerOptions.smoothingFactor, doc, "heTriggerSmoothingFactor");
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
