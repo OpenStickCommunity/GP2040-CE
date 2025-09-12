@@ -249,7 +249,7 @@ export default function BackupPage() {
 			<Section title={t('BackupPage:save-header-text')}>
 				<Col>
 					<Form.Group className={'row mb-3'}>
-						<div className={'col-sm-4'}>
+						<div className={'col'}>
 							{Object.entries(API_BINDING).map((api) => (
 								<Form.Check
 									id={`export_${api[0]}`}
@@ -293,7 +293,7 @@ export default function BackupPage() {
 				</div>
 				<Col>
 					<Form.Group className={'row mb-3'}>
-						<div className={'col-sm-4'}>
+						<div className={'col'}>
 							{Object.entries(API_BINDING).map((api) => (
 								<Form.Check
 									id={`import_${api[0]}`}
