@@ -5,9 +5,8 @@ import * as yup from 'yup';
 import Section from '../Components/Section';
 import FormSelect from '../Components/FormSelect';
 
-import FormControl from '../Components/FormControl';
 import { DUAL_COMBINE_MODES, DUAL_STICK_MODES } from '../Data/Addons';
-import { link } from 'fs';
+import { AddonPropTypes } from '../Pages/AddonsConfigPage';
 
 export const dualDirectionScheme = {
 	DualDirectionalInputEnabled: yup
@@ -41,7 +40,7 @@ export const dualDirectionState = {
 	dualDirFourWayMode: 0,
 };
 
-const DualDirection = ({ values, errors, handleChange, handleCheckbox }) => {
+const DualDirection = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) => {
 	const { t } = useTranslation();
 	return (
 		<Section title={
@@ -80,7 +79,7 @@ const DualDirection = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.dualDirDpadMode}
 						error={errors.dualDirDpadMode}
-						isInvalid={errors.dualDirDpadMode}
+						isInvalid={Boolean(errors.dualDirDpadMode)}
 						onChange={handleChange}
 					>
 						{DUAL_STICK_MODES.map((o, i) => (
@@ -99,7 +98,7 @@ const DualDirection = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.dualDirCombineMode}
 						error={errors.dualDirCombineMode}
-						isInvalid={errors.dualDirCombineMode}
+						isInvalid={Boolean(errors.dualDirCombineMode)}
 						onChange={handleChange}
 					>
 						{DUAL_COMBINE_MODES.map((o, i) => (
@@ -123,7 +122,7 @@ const DualDirection = ({ values, errors, handleChange, handleCheckbox }) => {
 						isInvalid={false}
 						checked={Boolean(values.dualDirFourWayMode)}
 						onChange={(e) => {
-							handleCheckbox('dualDirFourWayMode', values);
+							handleCheckbox('dualDirFourWayMode');
 							handleChange(e);
 						}}
 					/>
@@ -137,7 +136,7 @@ const DualDirection = ({ values, errors, handleChange, handleCheckbox }) => {
 				isInvalid={false}
 				checked={Boolean(values.DualDirectionalInputEnabled)}
 				onChange={(e) => {
-					handleCheckbox('DualDirectionalInputEnabled', values);
+					handleCheckbox('DualDirectionalInputEnabled');
 					handleChange(e);
 				}}
 			/>

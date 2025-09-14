@@ -199,6 +199,7 @@ public:
 
     void handleSystemRestart(GPEvent* e);
     void handleMenuNavigation(GPEvent* e);
+    void handleSystemError(GPEvent* e);
 private:
     bool updateDisplayScreen();
     void drawStatusBar(Gamepad*);
@@ -228,6 +229,7 @@ private:
     GPGFX_DisplayTypeOptions gpOptions;
     GamepadButtonMapping *mapMenuToggle;
     GamepadButtonMapping *mapMenuSelect;
+    std::string errorMessage;
 };
 
 #endif

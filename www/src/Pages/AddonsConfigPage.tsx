@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { Formik, useFormikContext } from 'formik';
+import { Formik, FormikErrors, FormikHandlers, FormikHelpers, useFormikContext } from 'formik';
 import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
 
@@ -56,6 +56,19 @@ import ReactiveLED, {
 	reactiveLEDScheme,
 	reactiveLEDState,
 } from '../Addons/ReactiveLED';
+import TG16, { tg16State } from '../Addons/TG16';
+import HETrigger, {
+	HETriggerScheme,
+	HETriggerState,
+} from '../Addons/HETrigger';
+
+export type AddonPropTypes = {
+	values: typeof DEFAULT_VALUES;
+	errors: FormikErrors<typeof DEFAULT_VALUES>;
+	handleChange: FormikHandlers['handleChange'];
+	handleCheckbox: (name: keyof typeof DEFAULT_VALUES) => void;
+	setFieldValue: FormikHelpers<typeof DEFAULT_VALUES>['setFieldValue'];
+};
 
 const schema = yup.object().shape({
 	...analogScheme,
@@ -77,9 +90,10 @@ const schema = yup.object().shape({
 	...drv8833RumbleScheme,
 	...reactiveLEDScheme,
 	...gamepadUSBHostScheme,
+	...HETriggerScheme,
 });
 
-const defaultValues = {
+export const DEFAULT_VALUES = {
 	...analogState,
 	...analog1256State,
 	...bootselState,
@@ -93,6 +107,7 @@ const defaultValues = {
 	...socdState,
 	...wiiState,
 	...snesState,
+	...tg16State,
 	...focusModeState,
 	...keyboardState,
 	...rotaryState,
@@ -100,7 +115,8 @@ const defaultValues = {
 	...drv8833RumbleState,
 	...reactiveLEDState,
 	...gamepadUSBHostState,
-};
+	...HETriggerState,
+} as const;
 
 const ADDONS = [
 	Bootsel,
@@ -116,6 +132,7 @@ const ADDONS = [
 	SOCD,
 	Wii,
 	SNES,
+	TG16,
 	FocusMode,
 	Keyboard,
 	GamepadUSBHost,
@@ -123,6 +140,7 @@ const ADDONS = [
 	PCF8575,
 	DRV8833Rumble,
 	ReactiveLED,
+	HETrigger,
 ];
 
 const FormContext = ({ setStoredData }) => {
@@ -185,7 +203,7 @@ export default function AddonsConfigPage() {
 		updatePeripherals();
 	}, []);
 
-	const onSuccess = async (values) => {
+	const onSuccess = async (values: typeof DEFAULT_VALUES) => {
 		const flattened = flattenObject(storedData);
 
 		// Convert turbo LED color if available
@@ -215,16 +233,12 @@ export default function AddonsConfigPage() {
 		if (success) updateUsedPins();
 	};
 
-	const handleCheckbox = async (name, values) => {
-		values[name] = values[name] === 1 ? 0 : 1;
-	};
-
 	return (
 		<Formik
 			enableReinitialize={true}
 			validationSchema={schema}
 			onSubmit={onSuccess}
-			initialValues={defaultValues}
+			initialValues={DEFAULT_VALUES}
 		>
 			{({ handleSubmit, handleChange, values, errors, setFieldValue }) => (
 				<Form noValidate onSubmit={handleSubmit}>
@@ -236,7 +250,9 @@ export default function AddonsConfigPage() {
 							values={values}
 							errors={errors}
 							handleChange={handleChange}
-							handleCheckbox={handleCheckbox}
+							handleCheckbox={(name: keyof typeof DEFAULT_VALUES) => {
+								setFieldValue(name, values[name] === 1 ? 0 : 1);
+							}}
 							setFieldValue={setFieldValue}
 						/>
 					))}

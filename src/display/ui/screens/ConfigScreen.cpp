@@ -40,8 +40,8 @@ void ConfigScreen::drawScreen() {
     getRenderer()->drawText(0, 1, version);
     getRenderer()->drawText(0, 2, "[http://192.168.7.1]");
     getRenderer()->drawText(0, 3, "Preview:");
-    getRenderer()->drawText(3, 4, "  B1 > Button");
-    getRenderer()->drawText(3, 5, "  B2 > Splash");
-    getRenderer()->drawText(3, 6, "  R2 > Pin Viewer");
-    getRenderer()->drawText(3, 7, "  L2 > Stats");
+    getRenderer()->drawText(0, 4, " B1 > Button");
+    getRenderer()->drawText(0, 5, " B2 > Splash");
+    getRenderer()->drawText(0, 6, " R2 > GPIO Pin Viewer");
+    getRenderer()->drawText(0, 7, " L2 > Stats");
 }

@@ -197,6 +197,35 @@ PLEDAnimationState getPS4AnimationNEOPICO(uint32_t flashOn, uint32_t flashOff)
     return animationState;
 }
 
+PLEDAnimationState getSwitchProAnimationNEOPICO(uint16_t ledState)
+{
+    PLEDAnimationState animationState =
+    {
+        .state = 0,
+        .animation = PLED_ANIM_NONE,
+        .speed = PLED_SPEED_OFF,
+    };
+
+    if (ledState != 0) {
+        uint8_t ledNumber = ledState & 0x0F;
+        if (ledNumber & 0x01) animationState.state |= PLED_STATE_LED1;
+        if (ledNumber & 0x02) animationState.state |= PLED_STATE_LED2;
+        if (ledNumber & 0x04) animationState.state |= PLED_STATE_LED3;
+        if (ledNumber & 0x08) animationState.state |= PLED_STATE_LED4;
+    }
+
+    if (animationState.state != 0) {
+        animationState.animation = PLED_ANIM_SOLID;
+        animationState.speed = PLED_SPEED_OFF;
+    } else {
+        animationState.state = 0;
+        animationState.animation = PLED_ANIM_OFF;
+        animationState.speed = PLED_SPEED_OFF;
+    }
+
+    return animationState;
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 //END Player LEDs ////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -250,29 +279,31 @@ void NeoPicoLEDAddon::process()
 	if (!isValidPin(ledOptions.dataPin) || !time_reached(this->nextRunTime))
 		return;
 
-	//Process hotkeys and action any requests
-	Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
-	if (ledOptions.pledType == PLED_TYPE_RGB) {
-		inputMode = gamepad->getOptions().inputMode; // HACK
-		if (gamepad->auxState.playerID.enabled && gamepad->auxState.playerID.active) {
-			switch (inputMode) {
-				case INPUT_MODE_XINPUT:
-					animationState = getXInputAnimationNEOPICO(gamepad->auxState.playerID.ledValue);
-					break;
-				case INPUT_MODE_PS3:
-					animationState = getPS3AnimationNEOPICO(gamepad->auxState.playerID.ledValue);
-					break;
-				case INPUT_MODE_PS4:
-				case INPUT_MODE_PS5:
-					animationState = getPS4AnimationNEOPICO(gamepad->auxState.playerID.ledBlinkOn, gamepad->auxState.playerID.ledBlinkOff);
-					break;
-				case INPUT_MODE_XBONE:
-					animationState = getXBoneAnimationNEOPICO(gamepad);
-					break;
-				default:
-					break;
-			}
-		}
+	//Handle player leds (player id lights)
+    Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
+   if (ledOptions.pledType == PLED_TYPE_RGB) {
+        if (gamepad->auxState.playerID.enabled && gamepad->auxState.playerID.active) {
+            switch (gamepad->getOptions().inputMode) {
+                case INPUT_MODE_XINPUT:
+                    animationState = getXInputAnimationNEOPICO(gamepad->auxState.playerID.ledValue);
+                    break;
+                case INPUT_MODE_PS3:
+                    animationState = getPS3AnimationNEOPICO(gamepad->auxState.playerID.ledValue);
+                    break;
+                case INPUT_MODE_PS4:
+                case INPUT_MODE_PS5:
+                    animationState = getPS4AnimationNEOPICO(gamepad->auxState.playerID.ledBlinkOn, gamepad->auxState.playerID.ledBlinkOff);
+                    break;
+                case INPUT_MODE_XBONE:
+                    animationState = getXBoneAnimationNEOPICO(gamepad);
+                    break;
+                case INPUT_MODE_SWITCH_PRO:
+                    animationState = getSwitchProAnimationNEOPICO(gamepad->auxState.playerID.ledValue);
+                    break;
+                default:
+                    break;
+            }
+        }
 
         if (neoPLEDs != nullptr && animationState.animation != PLED_ANIM_NONE) {
             neoPLEDs->animate(animationState);
@@ -327,6 +358,18 @@ void NeoPicoLEDAddon::process()
                 rgbPLEDValues[i] = ((RGB)ledOptions.pledColor).value(neopico.GetFormat(), brightness);
             }
             frame[pledIndexes[i]] = rgbPLEDValues[i];
+        }
+    }
+
+	// Get turbo options (turbo RGB led)
+    const TurboOptions& turboOptions = Storage::getInstance().getAddonOptions().turboOptions;
+    // Turbo LED is a separate RGB that is on if turbo is on, and off if its off
+    if ( turboOptions.turboLedType == PLED_TYPE_RGB ) { // RGB or PWM?
+        if ( gamepad->auxState.turbo.activity == 1) { // Turbo is on (active sensor)
+            if (turboOptions.turboLedIndex >= 0 && turboOptions.turboLedIndex < 100) { // Double check index value
+                float brightness = as.GetBrightnessX();
+                frame[turboOptions.turboLedIndex] = ((RGB)turboOptions.turboLedColor).value(neopico.GetFormat(), brightness);
+            }
         }
     }
 

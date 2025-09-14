@@ -1,10 +1,11 @@
-import { Trans, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { FormCheck, Row } from 'react-bootstrap';
 
 import Section from '../Components/Section';
 
 import FormControl from '../Components/FormControl';
 import ContextualHelpOverlay from '../Components/ContextualHelpOverlay';
+import { AddonPropTypes } from '../Pages/AddonsConfigPage';
 
 // TODO: add scheme for validation
 export const snesScheme = {};
@@ -32,7 +33,7 @@ const SNES_MAPPING_TABLE = [
 	{ gp: 'Analog',	nes: '',		snes: '',		mouse: 'Mouse Movement' },
 ];
 
-const SNES = ({ values, errors, handleChange, handleCheckbox }) => {
+const SNES = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) => {
 	const { t } = useTranslation();
 	return (
 		<Section title={
@@ -64,7 +65,7 @@ const SNES = ({ values, errors, handleChange, handleCheckbox }) => {
 										</tr>
 									</thead>
 									<tbody>
-										{SNES_MAPPING_TABLE.map(({gp, nes, snes, mouse}, i) => 
+										{SNES_MAPPING_TABLE.map(({gp, nes, snes, mouse}, i) =>
 											<tr key={i}>
 												<td><code>{gp}</code></td>
 												<td>{nes}</td>
@@ -86,7 +87,7 @@ const SNES = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.snesPadClockPin}
 						error={errors.snesPadClockPin}
-						isInvalid={errors.snesPadClockPin}
+						isInvalid={Boolean(errors.snesPadClockPin)}
 						onChange={handleChange}
 						min={-1}
 						max={29}
@@ -99,7 +100,7 @@ const SNES = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.snesPadLatchPin}
 						error={errors.snesPadLatchPin}
-						isInvalid={errors.snesPadLatchPin}
+						isInvalid={Boolean(errors.snesPadLatchPin)}
 						onChange={handleChange}
 						min={-1}
 						max={29}
@@ -112,7 +113,7 @@ const SNES = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.snesPadDataPin}
 						error={errors.snesPadDataPin}
-						isInvalid={errors.snesPadDataPin}
+						isInvalid={Boolean(errors.snesPadDataPin)}
 						onChange={handleChange}
 						min={-1}
 						max={29}
@@ -127,7 +128,7 @@ const SNES = ({ values, errors, handleChange, handleCheckbox }) => {
 				isInvalid={false}
 				checked={Boolean(values.SNESpadAddonEnabled)}
 				onChange={(e) => {
-					handleCheckbox('SNESpadAddonEnabled', values);
+					handleCheckbox('SNESpadAddonEnabled');
 					handleChange(e);
 				}}
 			/>

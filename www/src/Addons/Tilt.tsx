@@ -7,6 +7,7 @@ import FormSelect from '../Components/FormSelect';
 
 import FormControl from '../Components/FormControl';
 import { SOCD_MODES, TILT_SOCD_MODES } from '../Data/Addons';
+import { AddonPropTypes } from '../Pages/AddonsConfigPage';
 
 export const tiltScheme = {
 	TiltInputEnabled: yup.number().required().label('Tilt Input Enabled'),
@@ -50,6 +51,7 @@ export const tiltScheme = {
 
 export const tiltState = {
 	TiltInputEnabled: 0,
+	tiltSOCDMode: 0,
 	factorTilt1LeftX: 0,
 	factorTilt1LeftY: 0,
 	factorTilt1RightX: 0,
@@ -60,7 +62,7 @@ export const tiltState = {
 	factorTilt2RightY: 0,
 };
 
-const Tilt = ({ values, errors, handleChange, handleCheckbox }) => {
+const Tilt = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) => {
 	const { t } = useTranslation();
 	return (
 		<Section title={
@@ -97,7 +99,7 @@ const Tilt = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.factorTilt1LeftX}
 						error={errors.factorTilt1LeftX}
-						isInvalid={errors.factorTilt1LeftX}
+						isInvalid={Boolean(errors.factorTilt1LeftX)}
 						onChange={handleChange}
 						min={-1}
 						max={200}
@@ -110,7 +112,7 @@ const Tilt = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.factorTilt1LeftY}
 						error={errors.factorTilt1LeftY}
-						isInvalid={errors.factorTilt1LeftY}
+						isInvalid={Boolean(errors.factorTilt1LeftY)}
 						onChange={handleChange}
 						min={-1}
 						max={200}
@@ -123,7 +125,7 @@ const Tilt = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.factorTilt1RightX}
 						error={errors.factorTilt1RightX}
-						isInvalid={errors.factorTilt1RightX}
+						isInvalid={Boolean(errors.factorTilt1RightX)}
 						onChange={handleChange}
 						min={-1}
 						max={200}
@@ -136,7 +138,7 @@ const Tilt = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.factorTilt1RightY}
 						error={errors.factorTilt1RightY}
-						isInvalid={errors.factorTilt1RightY}
+						isInvalid={Boolean(errors.factorTilt1RightY)}
 						onChange={handleChange}
 						min={-1}
 						max={200}
@@ -151,7 +153,7 @@ const Tilt = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.factorTilt2LeftX}
 						error={errors.factorTilt2LeftX}
-						isInvalid={errors.factorTilt2LeftX}
+						isInvalid={Boolean(errors.factorTilt2LeftX)}
 						onChange={handleChange}
 						min={-1}
 						max={200}
@@ -164,7 +166,7 @@ const Tilt = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.factorTilt2LeftY}
 						error={errors.factorTilt2LeftY}
-						isInvalid={errors.factorTilt2LeftY}
+						isInvalid={Boolean(errors.factorTilt2LeftY)}
 						onChange={handleChange}
 						min={-1}
 						max={200}
@@ -177,7 +179,7 @@ const Tilt = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.factorTilt2RightX}
 						error={errors.factorTilt2RightX}
-						isInvalid={errors.factorTilt2RightX}
+						isInvalid={Boolean(errors.factorTilt2RightX)}
 						onChange={handleChange}
 						min={-1}
 						max={200}
@@ -190,7 +192,7 @@ const Tilt = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.factorTilt2RightY}
 						error={errors.factorTilt2RightY}
-						isInvalid={errors.factorTilt2RightY}
+						isInvalid={Boolean(errors.factorTilt2RightY)}
 						onChange={handleChange}
 						min={-1}
 						max={200}
@@ -204,7 +206,7 @@ const Tilt = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.tiltSOCDMode}
 						error={errors.tiltSOCDMode}
-						isInvalid={errors.tiltSOCDMode}
+						isInvalid={Boolean(errors.tiltSOCDMode)}
 						onChange={handleChange}
 					>
 						{TILT_SOCD_MODES.map((o, i) => (
@@ -223,7 +225,7 @@ const Tilt = ({ values, errors, handleChange, handleCheckbox }) => {
 				isInvalid={false}
 				checked={Boolean(values.TiltInputEnabled)}
 				onChange={(e) => {
-					handleCheckbox('TiltInputEnabled', values);
+					handleCheckbox('TiltInputEnabled');
 					handleChange(e);
 				}}
 			/>
