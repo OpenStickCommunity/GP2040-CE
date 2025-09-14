@@ -29,12 +29,15 @@
 #include "addons/rotaryencoder.h"
 #include "addons/i2c_gpio_pcf8575.h"
 #include "addons/gamepad_usb_host.h"
-
+#include "addons/he_trigger.h"
+#include "addons/tg16_input.h"
 
 // Pico includes
 #include "pico/bootrom.h"
 #include "pico/time.h"
 #include "hardware/adc.h"
+
+#include "rndis.h"
 
 // TinyUSB
 #include "tusb.h"
@@ -69,6 +72,11 @@ void GP2040::setup() {
 	// Set pin mappings for all GPIO functions
 	Storage::getInstance().setFunctionalPinMappings();
 
+	// power up... 
+	gamepad->auxState.power.pluggedIn = true;
+	gamepad->auxState.power.charging = false;
+	gamepad->auxState.power.level = GAMEPAD_AUX_MAX_POWER;
+
 	// Setup Gamepad
 	gamepad->setup();
 	
@@ -96,6 +104,7 @@ void GP2040::setup() {
 	addons.LoadUSBAddon(new KeyboardHostAddon());
 	addons.LoadUSBAddon(new GamepadUSBHostAddon());
 	addons.LoadAddon(new AnalogInput());
+	addons.LoadAddon(new HETriggerAddon());
 	addons.LoadAddon(new BootselButtonAddon());
 	addons.LoadAddon(new DualDirectionalInput());
 	addons.LoadAddon(new FocusModeAddon());
@@ -107,6 +116,7 @@ void GP2040::setup() {
 	addons.LoadAddon(new TiltInput());
 	addons.LoadAddon(new RotaryEncoderInput());
 	addons.LoadAddon(new PCF8575Addon());
+	addons.LoadAddon(new TG16padInput());
 
 	// Input override addons
 	addons.LoadAddon(new ReverseInput());
@@ -166,6 +176,9 @@ void GP2040::setup() {
 			break;
 		case BootAction::SET_INPUT_MODE_XBOXORIGINAL: // Xbox OG Driver
 			inputMode = INPUT_MODE_XBOXORIGINAL;
+			break;
+		case BootAction::SET_INPUT_MODE_SWITCH_PRO:
+			inputMode = INPUT_MODE_SWITCH_PRO;
 			break;
 		case BootAction::NONE:
 		default:
@@ -271,6 +284,10 @@ void GP2040::run() {
 
 	// Initialize our USB manager
 	USBHostManager::getInstance().start();
+
+	if (configMode == true ) {
+		rndis_init();
+	}
 
 	while (1) { // LOOP
 		this->getReinitGamepad(gamepad);
@@ -423,6 +440,8 @@ GP2040::BootAction GP2040::getBootAction() {
                                     return BootAction::SET_INPUT_MODE_XBOXORIGINAL;
                                 case INPUT_MODE_XBONE:
                                     return BootAction::SET_INPUT_MODE_XBONE;
+                                case INPUT_MODE_SWITCH_PRO: 
+                                    return BootAction::SET_INPUT_MODE_SWITCH_PRO;
                                 default:
                                     return BootAction::NONE;
                             }

@@ -151,6 +151,7 @@ enum InputMode
     INPUT_MODE_XBOXORIGINAL = 12;
     INPUT_MODE_PS5 = 13;
     INPUT_MODE_GENERIC = 14;
+    INPUT_MODE_SWITCH_PRO = 15;
     INPUT_MODE_CONFIG = 255;
 }
 
@@ -162,6 +163,20 @@ enum InputModeAuthType
     INPUT_MODE_AUTH_TYPE_KEYS = 1;
     INPUT_MODE_AUTH_TYPE_USB = 2;
     INPUT_MODE_AUTH_TYPE_I2C = 3;
+}
+
+enum InputModeDeviceType
+{
+    option (nanopb_enumopt).long_names = false;
+
+    INPUT_MODE_DEVICE_TYPE_GAMEPAD = 0;
+    INPUT_MODE_DEVICE_TYPE_WHEEL = 1;
+    INPUT_MODE_DEVICE_TYPE_HOTAS = 2;
+    INPUT_MODE_DEVICE_TYPE_GUITAR = 3;
+    INPUT_MODE_DEVICE_TYPE_DRUM = 4;
+    INPUT_MODE_DEVICE_TYPE_MECHA = 5;
+    INPUT_MODE_DEVICE_TYPE_ARCADE_STICK = 6;
+    INPUT_MODE_DEVICE_TYPE_GAMEPAD_ALT = 7;
 }
 
 enum DpadMode
@@ -277,7 +292,7 @@ enum GpioAction
     SUSTAIN_FOCUS_MODE           = 70;
 
     SUSTAIN_4_8_WAY_MODE         = 71;
-    
+
     MENU_NAVIGATION_UP           = 72;
     MENU_NAVIGATION_DOWN         = 73;
     MENU_NAVIGATION_LEFT         = 74;
@@ -285,6 +300,62 @@ enum GpioAction
     MENU_NAVIGATION_SELECT       = 76;
     MENU_NAVIGATION_BACK         = 77;
     MENU_NAVIGATION_TOGGLE       = 78;
+
+    MODE_GUITAR_FRET_GREEN       = 79;
+    MODE_GUITAR_FRET_RED         = 80;
+    MODE_GUITAR_FRET_YELLOW      = 81;
+    MODE_GUITAR_FRET_BLUE        = 82;
+    MODE_GUITAR_FRET_ORANGE      = 83;
+    MODE_GUITAR_FRET_SOLO_GREEN  = 84;
+    MODE_GUITAR_FRET_SOLO_RED    = 85;
+    MODE_GUITAR_FRET_SOLO_YELLOW = 86;
+    MODE_GUITAR_FRET_SOLO_BLUE   = 87;
+    MODE_GUITAR_FRET_SOLO_ORANGE = 88;
+    MODE_GUITAR_WHAMMY           = 89;
+    MODE_GUITAR_PICKUP           = 90;
+    MODE_GUITAR_TILT             = 91;
+
+    MODE_DRUM_RED_DRUMPAD        = 92;
+    MODE_DRUM_BLUE_DRUMPAD       = 93;
+    MODE_DRUM_YELLOW_DRUMPAD     = 94;
+    MODE_DRUM_GREEN_DRUMPAD      = 95;
+    MODE_DRUM_YELLOW_CYMBAL      = 96;
+    MODE_DRUM_BLUE_CYMBAL        = 97;
+    MODE_DRUM_GREEN_CYMBAL       = 98;
+    MODE_DRUM_KICK_PEDAL_LEFT    = 99;
+    MODE_DRUM_KICK_PEDAL_RIGHT   = 100;
+
+    MODE_HOTAS_RUDDER_LEFT       = 101;
+    MODE_HOTAS_RUDDER_RIGHT      = 102;
+    MODE_HOTAS_THROTTLE_FORWARD  = 103;
+    MODE_HOTAS_THROTTLE_REVERSE  = 104;
+    MODE_HOTAS_ROCKER_LEFT       = 105;
+    MODE_HOTAS_ROCKER_RIGHT      = 106;
+    MODE_HOTAS_PEDAL_LEFT        = 107;
+    MODE_HOTAS_PEDAL_RIGHT       = 108;
+    MODE_HOTAS_PEDAL_RUDDER_LEFT = 109;
+    MODE_HOTAS_PEDAL_RUDDER_RIGHT= 110;
+
+    MODE_WHEEL_STEERING_LEFT     = 111;
+    MODE_WHEEL_STEERING_RIGHT    = 112;
+    MODE_WHEEL_SHIFTER_GEAR_1    = 113;
+    MODE_WHEEL_SHIFTER_GEAR_2    = 114;
+    MODE_WHEEL_SHIFTER_GEAR_3    = 115;
+    MODE_WHEEL_SHIFTER_GEAR_4    = 116;
+    MODE_WHEEL_SHIFTER_GEAR_5    = 117;
+    MODE_WHEEL_SHIFTER_GEAR_6    = 118;
+    MODE_WHEEL_SHIFTER_GEAR_R    = 119;
+    MODE_WHEEL_SHIFTER_GEAR_N    = 120;
+    MODE_WHEEL_SHIFTER_GEAR_UP   = 121;
+    MODE_WHEEL_SHIFTER_GEAR_DOWN = 122;
+    MODE_WHEEL_BUTTON_PLUS       = 123;
+    MODE_WHEEL_BUTTON_MINUS      = 124;
+    MODE_WHEEL_DIAL_UP           = 125;
+    MODE_WHEEL_DIAL_DOWN         = 126;
+    MODE_WHEEL_DIAL_ENTER        = 127;
+    MODE_WHEEL_PEDAL_GAS         = 128;
+    MODE_WHEEL_PEDAL_BRAKE       = 129;
+    MODE_WHEEL_PEDAL_CLUTCH      = 130;
 }
 
 enum GpioDirection
@@ -361,6 +432,13 @@ enum GamepadHotkey
 	HOTKEY_LEDS_BRIGHTNESS_DOWN  = 59;
     HOTKEY_LEDS_SPECIALMOVE_PROFILE_UP = 60;
 	HOTKEY_LEDS_SPECIALMOVE_PROFILE_DOWN = 61;
+    HOTKEY_LOAD_PROFILE_5        = 62;
+    HOTKEY_LOAD_PROFILE_6        = 63;
+    HOTKEY_ENABLE_4_WAY_MODE     = 64;
+    HOTKEY_DISABLE_4_WAY_MODE    = 65;
+    HOTKEY_TURBO_COUNT_UP        = 66;
+    HOTKEY_TURBO_COUNT_DOWN      = 67;
+    HOTKEY_FOCUS_MODE_TOGGLE     = 68;
 }
 
 // This has to be kept in sync with LEDFormat in NeoPico.h
@@ -478,7 +556,7 @@ enum CaseRGBType
 
 enum AmbientEffectType
 {
-    option (nanopb_enumopt).long_names = false; 
+    option (nanopb_enumopt).long_names = false;
 
     AL_CUSTOM_EFFECT_STATIC_COLOR = 0;	// Static
     AL_CUSTOM_EFFECT_GRADIENT = 1;	    // Gradient Color
@@ -489,7 +567,7 @@ enum AmbientEffectType
 
 enum AnimationColor // Sync with Animation.h
 {
-    option (nanopb_enumopt).long_names = false; 
+    option (nanopb_enumopt).long_names = false;
 
     ANIMATION_COLOR_BLACK = 0;
     ANIMATION_COLOR_WHITE = 1;
@@ -534,7 +612,11 @@ enum PS4ControllerType
     option (nanopb_enumopt).long_names = false;
 
     PS4_CONTROLLER = 0;
+    PS4_GUITAR = 1;
+    PS4_DRUMS = 2;
+    PS4_WHEEL = 6;
     PS4_ARCADESTICK = 7;
+    PS4_HOTAS = 8;
 }
 
 enum MacroType
@@ -570,6 +652,7 @@ enum GPShape_Type
     GP_SHAPE_LINE = 2;
     GP_SHAPE_POLYGON = 3;
     GP_SHAPE_ARC = 4;
+    GP_SHAPE_PILL = 5;
 };
 
 enum GPLever_Mode
@@ -658,4 +741,14 @@ enum GPEventType
     GP_EVENT_STORAGE_SAVE = 12;
     GP_EVENT_SYSTEM_REBOOT = 13;
     GP_EVENT_MENU_NAVIGATE = 14;
+    GP_EVENT_SYSTEM_ERROR = 15;
+};
+
+enum MouseMovementMode
+{
+    option (nanopb_enumopt).long_names = false;
+
+    MOUSE_MOVEMENT_NONE = 0;
+    MOUSE_MOVEMENT_LEFT_ANALOG = 1;
+    MOUSE_MOVEMENT_RIGHT_ANALOG = 2;
 };

@@ -9,7 +9,8 @@ enum DisplayMode {
     DISPLAY_SAVER,
     STATS,
     MAIN_MENU,
-    RESTART
+    RESTART,
+    SYSTEM_ERROR
 };
 
 #include "ui/screens/ButtonLayoutScreen.h"
@@ -20,5 +21,6 @@ enum DisplayMode {
 #include "ui/screens/RestartScreen.h"
 #include "ui/screens/SplashScreen.h"
 #include "ui/screens/StatsScreen.h"
+#include "ui/screens/SystemErrorScreen.h"
 
 #endif

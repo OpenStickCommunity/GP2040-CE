@@ -1,12 +1,11 @@
-import React, { useContext } from 'react';
-import { useTranslation } from 'react-i18next';
-import { FormCheck, FormLabel, Row } from 'react-bootstrap';
+import { useContext } from 'react';
+import { FormCheck, FormLabel } from 'react-bootstrap';
 import * as yup from 'yup';
 
 import Section from '../Components/Section';
 
-import FormControl from '../Components/FormControl';
 import { AppContext } from '../Contexts/AppContext';
+import { AddonPropTypes } from '../Pages/AddonsConfigPage';
 
 export const gamepadUSBHostScheme = {
 	GamepadUSBHostAddonEnabled: yup
@@ -19,7 +18,7 @@ export const gamepadUSBHostState = {
 	GamepadUSBHostAddonEnabled: 0,
 };
 
-const GamepadUSBHost = ({ values, errors, handleChange, handleCheckbox }) => {
+const GamepadUSBHost = ({ values, handleChange, handleCheckbox }: AddonPropTypes) => {
 	const { getAvailablePeripherals } = useContext(AppContext);
 	return (
 		<Section title={
@@ -46,7 +45,7 @@ const GamepadUSBHost = ({ values, errors, handleChange, handleCheckbox }) => {
 						isInvalid={false}
 						checked={Boolean(values.GamepadUSBHostAddonEnabled)}
 						onChange={(e) => {
-							handleCheckbox('GamepadUSBHostAddonEnabled', values);
+							handleCheckbox('GamepadUSBHostAddonEnabled');
 							handleChange(e);
 						}}
 					/>

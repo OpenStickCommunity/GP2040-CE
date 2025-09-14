@@ -5,6 +5,7 @@ import * as yup from 'yup';
 import Section from '../Components/Section';
 import FormSelect from '../Components/FormSelect';
 import FormControl from '../Components/FormControl';
+import { AddonPropTypes } from '../Pages/AddonsConfigPage';
 
 const REVERSE_ACTION = [
 	{ label: 'Disable', value: 0 },
@@ -29,7 +30,7 @@ export const reverseState = {
 	reverseActionRight: 0,
 };
 
-const Reverse = ({ values, errors, handleChange, handleCheckbox }) => {
+const Reverse = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) => {
 	const { t } = useTranslation();
 	const translatedReverseAction = REVERSE_ACTION.map((option) => ({
 		...option,
@@ -56,7 +57,7 @@ const Reverse = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.reversePinLED}
 						error={errors.reversePinLED}
-						isInvalid={errors.reversePinLED}
+						isInvalid={Boolean(errors.reversePinLED)}
 						onChange={handleChange}
 						min={-1}
 						max={29}
@@ -70,7 +71,7 @@ const Reverse = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.reverseActionUp}
 						error={errors.reverseActionUp}
-						isInvalid={errors.reverseActionUp}
+						isInvalid={Boolean(errors.reverseActionUp)}
 						onChange={handleChange}
 					>
 						{translatedReverseAction.map((o, i) => (
@@ -86,7 +87,7 @@ const Reverse = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.reverseActionDown}
 						error={errors.reverseActionDown}
-						isInvalid={errors.reverseActionDown}
+						isInvalid={Boolean(errors.reverseActionDown)}
 						onChange={handleChange}
 					>
 						{translatedReverseAction.map((o, i) => (
@@ -102,7 +103,7 @@ const Reverse = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.reverseActionLeft}
 						error={errors.reverseActionLeft}
-						isInvalid={errors.reverseActionLeft}
+						isInvalid={Boolean(errors.reverseActionLeft)}
 						onChange={handleChange}
 					>
 						{translatedReverseAction.map((o, i) => (
@@ -118,7 +119,7 @@ const Reverse = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.reverseActionRight}
 						error={errors.reverseActionRight}
-						isInvalid={errors.reverseActionRight}
+						isInvalid={Boolean(errors.reverseActionRight)}
 						onChange={handleChange}
 					>
 						{translatedReverseAction.map((o, i) => (
@@ -137,7 +138,7 @@ const Reverse = ({ values, errors, handleChange, handleCheckbox }) => {
 				isInvalid={false}
 				checked={Boolean(values.ReverseInputEnabled)}
 				onChange={(e) => {
-					handleCheckbox('ReverseInputEnabled', values);
+					handleCheckbox('ReverseInputEnabled');
 					handleChange(e);
 				}}
 			/>

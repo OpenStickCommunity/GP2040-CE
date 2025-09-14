@@ -54,6 +54,10 @@ class DisplaySaverScreen : public GPScreen {
         uint16_t toasterSpriteHeight = 35;
         void initToasters();
         void drawToasterScene();
+
+        void delay_us(uint32_t us);
+
+        const uint32_t SCREEN_DELAY_PIPES = 30;
 };
 
 #endif

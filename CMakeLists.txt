@@ -172,6 +172,11 @@ src/addonmanager.cpp
 src/playerleds.cpp
 src/drivers/shared/xinput_host.cpp
 src/drivers/shared/xgip_protocol.cpp
+src/drivers/shared/xsm3/excrypt_des.c
+src/drivers/shared/xsm3/excrypt_parve.c
+src/drivers/shared/xsm3/excrypt_sha.c
+src/drivers/shared/xsm3/usbdsec.c
+src/drivers/shared/xsm3/xsm3.c
 src/drivers/astro/AstroDriver.cpp
 src/drivers/egret/EgretDriver.cpp
 src/drivers/hid/HIDDriver.cpp
@@ -186,6 +191,7 @@ src/drivers/ps4/PS4AuthUSBListener.cpp
 src/drivers/ps4/PS4Driver.cpp
 src/drivers/psclassic/PSClassicDriver.cpp
 src/drivers/switch/SwitchDriver.cpp
+src/drivers/switchpro/SwitchProDriver.cpp
 src/drivers/xbone/XBOneAuth.cpp
 src/drivers/xbone/XBOneAuthUSBListener.cpp
 src/drivers/xbone/XBOneDriver.cpp
@@ -218,6 +224,7 @@ src/display/ui/screens/RestartScreen.cpp
 src/display/ui/screens/StatsScreen.cpp
 src/display/ui/screens/SplashScreen.cpp
 src/display/ui/screens/DisplaySaverScreen.cpp
+src/display/ui/screens/SystemErrorScreen.cpp
 src/display/GPGFX.cpp
 src/display/GPGFX_UI.cpp
 src/drivermanager.cpp
@@ -235,6 +242,7 @@ src/addons/analog.cpp
 src/addons/board_led.cpp
 src/addons/bootsel_button.cpp
 src/addons/focus_mode.cpp
+src/addons/he_trigger.cpp
 src/addons/buzzerspeaker.cpp
 src/addons/dualdirectional.cpp
 src/addons/keyboard_host.cpp
@@ -257,6 +265,7 @@ src/addons/tilt.cpp
 src/addons/spi_analog_ads1256.cpp
 src/addons/gamepad_usb_host.cpp
 src/addons/gamepad_usb_host_listener.cpp
+src/addons/tg16_input.cpp
 src/animationstation/animation.cpp
 src/animationstation/animationstation.cpp
 src/animationstation/specialmovesystem.cpp
@@ -309,6 +318,7 @@ headers
 headers/addons
 headers/configs
 headers/drivers
+headers/drivers/shared
 headers/events
 headers/interfaces
 headers/interfaces/i2c

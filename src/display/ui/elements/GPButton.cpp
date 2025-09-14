@@ -164,5 +164,17 @@ void GPButton::draw() {
 
         getRenderer()->drawArc(baseX, baseY, baseRadius, baseRadius, this->strokeColor, state, this->_angle, this->_angleEnd, this->_closed);
         if (turboState) getRenderer()->drawArc(baseX, baseY, turboRadius, turboRadius, 1, 0, this->_angle, this->_angleEnd, this->_closed);
+    } else if (this->_shape == GP_SHAPE_PILL) {
+        uint16_t sizeX = (this->_sizeX) * scaleX + this->getViewport().left;
+        uint16_t sizeY = (this->_sizeY) * scaleY + this->getViewport().top;
+        uint16_t width = sizeX - baseX;
+        uint16_t height = sizeY - baseY;
+        uint16_t turboW = (uint16_t)round(width * GP_BUTTON_TURBO_SCALE);
+        uint16_t turboH = (uint16_t)round(height * GP_BUTTON_TURBO_SCALE);
+        uint16_t turboX = baseX + (width - turboW) / 2;
+        uint16_t turboY = baseY + (height - turboH) / 2;
+
+        getRenderer()->drawPill(baseX, baseY, sizeX+offsetX, sizeY, this->strokeColor, state, this->_angle);
+        if (turboState) getRenderer()->drawPill(turboX, turboY, turboX+turboW, turboY+turboH, 1, 0, this->_angle);
     }
 }

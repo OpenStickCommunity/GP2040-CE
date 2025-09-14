@@ -80,6 +80,7 @@ void DisplayAddon::setup() {
 
     EventManager::getInstance().registerEventHandler(GP_EVENT_RESTART, GPEVENT_CALLBACK(this->handleSystemRestart(event)));
     EventManager::getInstance().registerEventHandler(GP_EVENT_MENU_NAVIGATE, GPEVENT_CALLBACK(this->handleMenuNavigation(event)));
+    EventManager::getInstance().registerEventHandler(GP_EVENT_SYSTEM_ERROR, GPEVENT_CALLBACK(this->handleSystemError(event)));
 }
 
 bool DisplayAddon::updateDisplayScreen() {
@@ -109,6 +110,9 @@ bool DisplayAddon::updateDisplayScreen() {
             break;
         case STATS:
             gpScreen = new StatsScreen(gpDisplay);
+            break;
+        case SYSTEM_ERROR:
+            gpScreen = new SystemErrorScreen(gpDisplay, errorMessage);
             break;
         case RESTART:
             gpScreen = new RestartScreen(gpDisplay, bootMode);
@@ -230,4 +234,9 @@ void DisplayAddon::handleMenuNavigation(GPEvent* e) {
     } else if (currDisplayMode == MAIN_MENU) {
         ((MainMenuScreen*)gpScreen)->updateEventMenuNavigation(((GPMenuNavigateEvent*)e)->menuAction);
     }
+}
+
+void DisplayAddon::handleSystemError(GPEvent* e) {
+    currDisplayMode = SYSTEM_ERROR;
+    errorMessage = ((GPSystemErrorEvent*) e)->errorMessage;
 }

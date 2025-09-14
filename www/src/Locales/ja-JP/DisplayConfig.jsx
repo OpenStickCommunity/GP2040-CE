@@ -39,7 +39,7 @@ export default {
 		'button-layout-custom-button-padding-label': 'ボタンパディング',
 		'splash-mode-label': 'スプラッシュモード',
 		'splash-duration-label': 'スプラッシュ表示時間 (秒, 0=常時)',
-		'display-saver-timeout-label': 'スクリーンセーバータイムアウト時間 (分)',
+		'display-saver-timeout-label': 'スクリーンセーバータイムアウト時間 (分, 0=無効)',
 		'screen-saver-mode-label': 'スクリーンセーバーモード',
 		'inverted-label': '白黒反転',
 		'power-management-header': '電源管理',

@@ -157,9 +157,7 @@ void DisplaySaverScreen::drawPipeScene() {
             currentY += PIPE_WIDTH;
         }
 
-        for (volatile uint32_t delay = 0; delay < 10000; ++delay) {
-            // Do nothing, just burn some CPU cycles
-        }
+        delay_us(SCREEN_DELAY_PIPES);
     }
 }
 
@@ -198,5 +196,12 @@ void DisplaySaverScreen::drawToasterScene() {
         if (sprite.y > SCREEN_HEIGHT) {
             sprite.y = 0;
         }
+    }
+}
+
+void DisplaySaverScreen::delay_us(uint32_t us) {
+    uint32_t start = time_us_32();
+    while ((time_us_32() - start) < us) {
+        tight_loop_contents(); // hint for low-power/no-op
     }
 }

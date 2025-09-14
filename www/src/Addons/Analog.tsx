@@ -9,6 +9,7 @@ import { ANALOG_PINS } from '../Data/Buttons';
 import AnalogPinOptions from '../Components/AnalogPinOptions';
 import { AppContext } from '../Contexts/AppContext';
 import FormControl from '../Components/FormControl';
+import { AddonPropTypes } from '../Pages/AddonsConfigPage';
 
 const ANALOG_STICK_MODES = [
 	{ label: 'Left Analog', value: 1 },
@@ -145,6 +146,7 @@ export const analogState = {
 	analogAdc2Mode: 2,
 	analogAdc2Invert: 0,
 	forced_circularity: 0,
+	forced_circularity2: 0,
 	inner_deadzone: 5,
 	inner_deadzone2: 5,
 	outer_deadzone: 95,
@@ -159,7 +161,7 @@ export const analogState = {
 	analog_error2: 1,
 };
 
-const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
+const Analog = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) => {
 	const { usedPins } = useContext(AppContext);
 	const { t } = useTranslation();
 	const availableAnalogPins = ANALOG_PINS.filter(
@@ -195,7 +197,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 						<Tab
 							key="analog1Config"
 							eventKey="analog1Config"
-							title={t('Analog Stick 1')}
+							title={t('AddonsConfig:analog-adc-1')}
 						>
 							<Row className="mb-3">
 								<FormSelect
@@ -205,7 +207,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 									groupClassName="col-sm-3 mb-3"
 									value={values.analogAdc1PinX}
 									error={errors.analogAdc1PinX}
-									isInvalid={errors.analogAdc1PinX}
+									isInvalid={Boolean(errors.analogAdc1PinX)}
 									onChange={handleChange}
 								>
 									<AnalogPinOptions />
@@ -217,7 +219,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 									groupClassName="col-sm-3 mb-3"
 									value={values.analogAdc1PinY}
 									error={errors.analogAdc1PinY}
-									isInvalid={errors.analogAdc1PinY}
+									isInvalid={Boolean(errors.analogAdc1PinY)}
 									onChange={handleChange}
 								>
 									<AnalogPinOptions />
@@ -230,7 +232,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 										groupClassName="col-sm-3 mb-3"
 										value={values.analogAdc1Mode}
 										error={errors.analogAdc1Mode}
-										isInvalid={errors.analogAdc1Mode}
+										isInvalid={Boolean(errors.analogAdc1Mode)}
 										onChange={handleChange}
 									>
 										{ANALOG_STICK_MODES.map((o, i) => (
@@ -246,7 +248,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 										groupClassName="col-sm-3 mb-3"
 										value={values.analogAdc1Invert}
 										error={errors.analogAdc1Invert}
-										isInvalid={errors.analogAdc1Invert}
+										isInvalid={Boolean(errors.analogAdc1Invert)}
 										onChange={handleChange}
 									>
 										{INVERT_MODES.map((o, i) => (
@@ -268,7 +270,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 										groupClassName="col-sm-3 mb-3"
 										value={values.inner_deadzone}
 										error={errors.inner_deadzone}
-										isInvalid={errors.inner_deadzone}
+										isInvalid={Boolean(errors.inner_deadzone)}
 										onChange={handleChange}
 										min={0}
 										max={100}
@@ -281,7 +283,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 										groupClassName="col-sm-3 mb-3"
 										value={values.outer_deadzone}
 										error={errors.outer_deadzone}
-										isInvalid={errors.outer_deadzone}
+										isInvalid={Boolean(errors.outer_deadzone)}
 										onChange={handleChange}
 										min={0}
 										max={100}
@@ -296,7 +298,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 										isInvalid={false}
 										checked={Boolean(values.analog_smoothing)}
 										onChange={(e) => {
-											handleCheckbox('analog_smoothing', values);
+											handleCheckbox('analog_smoothing');
 											handleChange(e);
 										}}
 									/>
@@ -309,7 +311,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 										groupClassName="col-sm-3 mb-3"
 										value={values.smoothing_factor}
 										error={errors.smoothing_factor}
-										isInvalid={errors.smoothing_factor}
+										isInvalid={Boolean(errors.smoothing_factor)}
 										onChange={handleChange}
 										min={0}
 										max={100}
@@ -324,7 +326,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 										isInvalid={false}
 										checked={Boolean(values.forced_circularity)}
 										onChange={(e) => {
-											handleCheckbox('forced_circularity', values);
+											handleCheckbox('forced_circularity');
 											handleChange(e);
 										}}
 									/>
@@ -352,7 +354,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 									isInvalid={false}
 									checked={Boolean(values.auto_calibrate)}
 									onChange={(e) => {
-										handleCheckbox('auto_calibrate', values);
+										handleCheckbox('auto_calibrate');
 										handleChange(e);
 									}}
 								/>
@@ -361,7 +363,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 						<Tab
 							key="analog2Config"
 							eventKey="analog2Config"
-							title={t('Analog Stick 2')}
+							title={t('AddonsConfig:analog-adc-2')}
 						>
 							<Row className="mb-3">
 								<FormSelect
@@ -371,7 +373,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 									groupClassName="col-sm-3 mb-3"
 									value={values.analogAdc2PinX}
 									error={errors.analogAdc2PinX}
-									isInvalid={errors.analogAdc2PinX}
+									isInvalid={Boolean(errors.analogAdc2PinX)}
 									onChange={handleChange}
 								>
 									<AnalogPinOptions />
@@ -383,7 +385,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 									groupClassName="col-sm-3 mb-3"
 									value={values.analogAdc2PinY}
 									error={errors.analogAdc2PinY}
-									isInvalid={errors.analogAdc2PinY}
+									isInvalid={Boolean(errors.analogAdc2PinY)}
 									onChange={handleChange}
 								>
 									<AnalogPinOptions />
@@ -396,7 +398,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 										groupClassName="col-sm-3 mb-3"
 										value={values.analogAdc2Mode}
 										error={errors.analogAdc2Mode}
-										isInvalid={errors.analogAdc2Mode}
+										isInvalid={Boolean(errors.analogAdc2Mode)}
 										onChange={handleChange}
 									>
 										{ANALOG_STICK_MODES.map((o, i) => (
@@ -412,7 +414,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 										groupClassName="col-sm-3 mb-3"
 										value={values.analogAdc2Invert}
 										error={errors.analogAdc2Invert}
-										isInvalid={errors.analogAdc2Invert}
+										isInvalid={Boolean(errors.analogAdc2Invert)}
 										onChange={handleChange}
 									>
 										{INVERT_MODES.map((o, i) => (
@@ -434,7 +436,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 										groupClassName="col-sm-3 mb-3"
 										value={values.inner_deadzone2}
 										error={errors.inner_deadzone2}
-										isInvalid={errors.inner_deadzone2}
+										isInvalid={Boolean(errors.inner_deadzone2)}
 										onChange={handleChange}
 										min={0}
 										max={100}
@@ -447,7 +449,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 										groupClassName="col-sm-3 mb-3"
 										value={values.outer_deadzone2}
 										error={errors.outer_deadzone2}
-										isInvalid={errors.outer_deadzone2}
+										isInvalid={Boolean(errors.outer_deadzone2)}
 										onChange={handleChange}
 										min={0}
 										max={100}
@@ -462,7 +464,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 										isInvalid={false}
 										checked={Boolean(values.analog_smoothing2)}
 										onChange={(e) => {
-											handleCheckbox('analog_smoothing2', values);
+											handleCheckbox('analog_smoothing2');
 											handleChange(e);
 										}}
 									/>
@@ -475,7 +477,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 										groupClassName="col-sm-3 mb-3"
 										value={values.smoothing_factor2}
 										error={errors.smoothing_factor2}
-										isInvalid={errors.smoothing_factor2}
+										isInvalid={Boolean(errors.smoothing_factor2)}
 										onChange={handleChange}
 										min={0}
 										max={100}
@@ -490,7 +492,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 										isInvalid={false}
 										checked={Boolean(values.forced_circularity2)}
 										onChange={(e) => {
-											handleCheckbox('forced_circularity2', values);
+											handleCheckbox('forced_circularity2');
 											handleChange(e);
 										}}
 									/>
@@ -518,7 +520,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 									isInvalid={false}
 									checked={Boolean(values.auto_calibrate2)}
 									onChange={(e) => {
-										handleCheckbox('auto_calibrate2', values);
+										handleCheckbox('auto_calibrate2');
 										handleChange(e);
 									}}
 								/>
@@ -534,7 +536,7 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 				isInvalid={false}
 				checked={Boolean(values.AnalogInputEnabled)}
 				onChange={(e) => {
-					handleCheckbox('AnalogInputEnabled', values);
+					handleCheckbox('AnalogInputEnabled');
 					handleChange(e);
 				}}
 			/>

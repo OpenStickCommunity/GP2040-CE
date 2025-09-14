@@ -5,6 +5,7 @@ import * as yup from 'yup';
 import Section from '../Components/Section';
 
 import FormControl from '../Components/FormControl';
+import { AddonPropTypes } from '../Pages/AddonsConfigPage';
 
 export const drv8833RumbleScheme = {
 	DRV8833RumbleAddonEnabled: yup
@@ -51,7 +52,7 @@ export const drv8833RumbleState = {
 	drv8833RumbleDutyMax: 100,
 };
 
-const DRV8833Rumble = ({ values, errors, handleChange, handleCheckbox }) => {
+const DRV8833Rumble = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) => {
 	const { t } = useTranslation();
 	return (
 		<Section title={
@@ -77,7 +78,7 @@ const DRV8833Rumble = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.drv8833RumbleLeftMotorPin}
 						error={errors.drv8833RumbleLeftMotorPin}
-						isInvalid={errors.drv8833RumbleLeftMotorPin}
+						isInvalid={Boolean(errors.drv8833RumbleLeftMotorPin)}
 						onChange={handleChange}
 						min={-1}
 						max={29}
@@ -90,7 +91,7 @@ const DRV8833Rumble = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.drv8833RumbleRightMotorPin}
 						error={errors.drv8833RumbleRightMotorPin}
-						isInvalid={errors.drv8833RumbleRightMotorPin}
+						isInvalid={Boolean(errors.drv8833RumbleRightMotorPin)}
 						onChange={handleChange}
 						min={-1}
 						max={29}
@@ -103,7 +104,7 @@ const DRV8833Rumble = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.drv8833RumbleMotorSleepPin}
 						error={errors.drv8833RumbleMotorSleepPin}
-						isInvalid={errors.drv8833RumbleMotorSleepPin}
+						isInvalid={Boolean(errors.drv8833RumbleMotorSleepPin)}
 						onChange={handleChange}
 						min={-1}
 						max={29}
@@ -116,7 +117,7 @@ const DRV8833Rumble = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.drv8833RumblePWMFrequency}
 						error={errors.drv8833RumblePWMFrequency}
-						isInvalid={errors.drv8833RumblePWMFrequency}
+						isInvalid={Boolean(errors.drv8833RumblePWMFrequency)}
 						onChange={handleChange}
 						min={1}
 						max={50000}
@@ -129,7 +130,7 @@ const DRV8833Rumble = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.drv8833RumbleDutyMin}
 						error={errors.drv8833RumbleDutyMin}
-						isInvalid={errors.drv8833RumbleDutyMin}
+						isInvalid={Boolean(errors.drv8833RumbleDutyMin)}
 						onChange={handleChange}
 						min={0}
 						max={100}
@@ -142,7 +143,7 @@ const DRV8833Rumble = ({ values, errors, handleChange, handleCheckbox }) => {
 						groupClassName="col-sm-3 mb-3"
 						value={values.drv8833RumbleDutyMax}
 						error={errors.drv8833RumbleDutyMax}
-						isInvalid={errors.drv8833RumbleDutyMax}
+						isInvalid={Boolean(errors.drv8833RumbleDutyMax)}
 						onChange={handleChange}
 						min={0}
 						max={100}
@@ -157,7 +158,7 @@ const DRV8833Rumble = ({ values, errors, handleChange, handleCheckbox }) => {
 				isInvalid={false}
 				checked={Boolean(values.DRV8833RumbleAddonEnabled)}
 				onChange={(e) => {
-					handleCheckbox('DRV8833RumbleAddonEnabled', values);
+					handleCheckbox('DRV8833RumbleAddonEnabled');
 					handleChange(e);
 				}}
 			/>
