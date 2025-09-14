@@ -281,8 +281,7 @@ void NeoPicoLEDAddon::process()
 
 	//Handle player leds (player id lights)
     Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
-    GamepadHotkey action = animationHotkeys(gamepad);
-    if (ledOptions.pledType == PLED_TYPE_RGB) {
+   if (ledOptions.pledType == PLED_TYPE_RGB) {
         if (gamepad->auxState.playerID.enabled && gamepad->auxState.playerID.active) {
             switch (gamepad->getOptions().inputMode) {
                 case INPUT_MODE_XINPUT:
