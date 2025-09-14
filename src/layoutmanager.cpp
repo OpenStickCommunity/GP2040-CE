@@ -766,7 +766,7 @@ LayoutManager::LayoutList LayoutManager::drawBoardDefinedB() {
 }
 
 LayoutManager::LayoutList LayoutManager::drawBoardDefinedAlt0B() {
-#ifdef DEFAULT_BOARD_LAYOUT_B_ALT1
+#ifdef DEFAULT_BOARD_LAYOUT_B_ALT0
     return DEFAULT_BOARD_LAYOUT_B_ALT0;
 #else
     return {};

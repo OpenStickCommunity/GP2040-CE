@@ -43,7 +43,7 @@ public:
     virtual void preprocess() {}
     virtual void process();     // Reverse process
     virtual void postprocess(bool sent) {}
-    virtual void reinit() {}
+    virtual void reinit();
     virtual std::string name() { return ReverseName; }
 private:
     void update();

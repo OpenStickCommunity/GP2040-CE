@@ -6,6 +6,48 @@
 
 void StatsScreen::init() {
     getRenderer()->clearScreen();
+
+    header = new GPLabel();
+    header->setRenderer(getRenderer());
+    header->setText("[GP2040-CE Stats]");
+    header->setPosition(2, 0);
+    addElement(header);
+
+    version = new GPLabel();
+    version->setRenderer(getRenderer());
+    version->setText("Version: " GP2040VERSIONID);
+    version->setPosition(0, 1);
+    addElement(version);
+
+    build = new GPLabel();
+    build->setRenderer(getRenderer());
+    build->setText("Build: " GP2040BUILD);
+    build->setPosition(0, 2); 
+    addElement(build);
+
+    board = new GPLabel();
+    board->setRenderer(getRenderer());
+    board->setText("Board: " GP2040_BOARDCONFIG);
+    board->setPosition(0, 3);
+    addElement(board);
+
+    boardType = new GPLabel();
+    boardType->setRenderer(getRenderer());
+    boardType->setText("Type: " GP2040CONFIG);
+    boardType->setPosition(0, 4); 
+    addElement(boardType);
+
+    arch = new GPLabel();
+    arch->setRenderer(getRenderer());
+    arch->setText("Arch: " GP2040PLATFORM);
+    arch->setPosition(0, 5); 
+    addElement(arch);
+
+    exit = new GPLabel();
+    exit->setRenderer(getRenderer());
+    exit->setText("B2 to Return");
+    exit->setPosition(5, 7); 
+    addElement(exit);
 }
 
 void StatsScreen::shutdown() {
@@ -13,14 +55,6 @@ void StatsScreen::shutdown() {
 }
 
 void StatsScreen::drawScreen() {
-    getRenderer()->drawText(2, 0, "[GP2040-CE Stats]");
-    getRenderer()->drawText(0, 1, "Version: " GP2040VERSIONID);
-    getRenderer()->drawText(0, 2, "Build: " GP2040BUILD);
-    getRenderer()->drawText(0, 3, "Board: " GP2040_BOARDCONFIG);
-    getRenderer()->drawText(0, 4, "Type: " GP2040CONFIG);
-    getRenderer()->drawText(0, 5, "Arch: " GP2040PLATFORM);
-
-    getRenderer()->drawText(5, 7, "B2 to Return");
 }
 
 int8_t StatsScreen::update() {

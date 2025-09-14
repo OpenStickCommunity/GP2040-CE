@@ -20,8 +20,6 @@
 #include "eventmanager.h"
 #include "GPStorageSaveEvent.h"
 
-#define SI Storage::getInstance()
-
 // Storage manager for board, LED options, and thread-safe settings
 class Storage {
 public:

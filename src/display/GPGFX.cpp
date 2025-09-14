@@ -123,6 +123,10 @@ void GPGFX::drawPolygon(uint16_t x, uint16_t y, uint16_t radius, uint16_t sides,
     this->displayDriver->drawPolygon(x, y, radius, sides, color, filled, rotation);
 }
 
+void GPGFX::drawPill(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint32_t color, uint8_t filled, double rotationAngle) {
+    this->displayDriver->drawPill(x, y, width, height, color, filled, rotationAngle);
+}
+
 void GPGFX::drawSprite(uint8_t* spriteData, uint16_t width, uint16_t height, uint16_t pitch, uint16_t x, uint16_t y, uint8_t priority, double scale) {
     this->displayDriver->drawSprite(spriteData, width, height, pitch, x, y, priority, scale);
 }

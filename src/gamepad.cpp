@@ -603,6 +603,18 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 				reqSave = true;
 			}
 			break;
+		case HOTKEY_ENABLE_4_WAY_MODE:
+			if (action != lastAction) {
+				options.fourWayMode = true;
+				reqSave = true;
+			}
+			break;
+		case HOTKEY_DISABLE_4_WAY_MODE:
+			if (action != lastAction) {
+				options.fourWayMode = false;
+				reqSave = true;
+			}
+			break;
 		case HOTKEY_TOGGLE_DDI_4_WAY_MODE:
 			if (action != lastAction) {
 				DualDirectionalOptions& ddiOpt = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
@@ -642,6 +654,22 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 				}
 			}
 			break;
+		case HOTKEY_LOAD_PROFILE_5:
+			if (action != lastAction) {
+				if (Storage::getInstance().setProfile(5)) {
+					userRequestedReinit = true;
+					reqSave = true;
+				}
+			}
+			break;
+		case HOTKEY_LOAD_PROFILE_6:
+			if (action != lastAction) {
+				if (Storage::getInstance().setProfile(6)) {
+					userRequestedReinit = true;
+					reqSave = true;
+				}
+			}
+			break;
 		case HOTKEY_NEXT_PROFILE:
 			if (action != lastAction) {
 				Storage::getInstance().nextProfile();
@@ -654,6 +682,18 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 				Storage::getInstance().previousProfile();
 				userRequestedReinit = true;
 				reqSave = true;
+			}
+			break;
+		case HOTKEY_TURBO_COUNT_UP:
+			if (action != lastAction) {
+				TurboOptions &turboOptions = Storage::getInstance().getAddonOptions().turboOptions;
+				turboOptions.shotCount++;
+			}
+			break;
+		case HOTKEY_TURBO_COUNT_DOWN:
+			if (action != lastAction) {
+				TurboOptions &turboOptions = Storage::getInstance().getAddonOptions().turboOptions;
+				turboOptions.shotCount--;
 			}
 			break;
 		case HOTKEY_MENU_NAV_UP:
@@ -690,6 +730,37 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 			if (action != lastAction) {
 				EventManager::getInstance().triggerEvent(new GPMenuNavigateEvent(GpioAction::MENU_NAVIGATION_TOGGLE));
 			}
+			break;
+		case HOTKEY_FOCUS_MODE_TOGGLE:
+		{
+			auto &focusModeOptions = Storage::getInstance().getAddonOptions().focusModeOptions;
+
+			if( !focusModeOptions.overrideEnabled )
+			{
+				if (action != lastAction)
+				{
+					focusModeOptions.overrideEnabled = true;
+					reqSave = true;
+				}
+			}
+			else // override is already enabled, hold action to disable
+			{
+				//start timer if last action was not HOTKEY_FOCUS_MODE_TOGGLE (i.e.. it has not been held), or
+				//if the timer has not yet been started
+				if( lastAction != action || is_nil_time(disableFocusModeTimeout))
+				{
+					constexpr uint32_t focusModeToggleHoldMs = 2000;
+					disableFocusModeTimeout = make_timeout_time_ms(focusModeToggleHoldMs);
+				}
+
+				if( time_reached( disableFocusModeTimeout ) )
+				{
+					disableFocusModeTimeout = nil_time;
+					focusModeOptions.overrideEnabled = false;
+					reqSave = true;
+				}
+			}
+		}
 			break;
 		default: // Unknown action
 			break;
