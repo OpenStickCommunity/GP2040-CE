@@ -79,7 +79,13 @@ const useLedStore = create<State & Actions>()((set, get) => ({
 
 		set((state) => ({
 			...state,
-			AnimationOptions,
+			AnimationOptions: {
+				...AnimationOptions,
+				customColors: [
+					...AnimationOptions.customColors,
+					...Array(Math.max(0, MAX_CUSTOM_COLORS - AnimationOptions.customColors.length)).fill(0)
+				]
+			},
 			Lights: LightData?.Lights || [],
 			loading: false,
 			initialized: true,

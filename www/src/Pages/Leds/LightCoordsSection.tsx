@@ -17,15 +17,15 @@ import * as yup from 'yup';
 import { Row, Col, Button, Alert, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
-import FormSelect from '../Components/FormSelect';
-import { LightIndicator } from '../Components/LightIndicator';
+import FormSelect from '../../Components/FormSelect';
+import { LightIndicator } from '../../Components/LightIndicator';
 import useLedStore, {
 	Light,
 	MAX_CASE_LIGHTS,
 	MAX_LIGHTS,
-} from '../Store/useLedStore';
-import boards from '../Data/Boards.json';
-import useLedsPreview from '../Hooks/useLedsPreview';
+} from '../../Store/useLedStore';
+import boards from '../../Data/Boards.json';
+import useLedsPreview from '../../Hooks/useLedsPreview';
 
 const GRID_SIZE = 30;
 const GPIO_PIN_LENGTH = boards[import.meta.env.VITE_GP2040_BOARD].maxPin + 1;

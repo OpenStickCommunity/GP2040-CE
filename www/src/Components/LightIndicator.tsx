@@ -9,7 +9,7 @@ type LightIndicatorProps = {
 	error?: string;
 } & Light;
 
-const LightIcon = ({ size, active }: { size: number; active: boolean }) => (
+export const LightIcon = ({ size, active }: { size: number; active: boolean }) => (
 	<div>
 		{active ? (
 			<svg

@@ -18,26 +18,26 @@ import * as yup from 'yup';
 import { StylesConfig } from 'react-select';
 import { parseInt } from 'lodash';
 
-import Section from '../Components/Section';
-import CustomSelect from '../Components/CustomSelect';
+import Section from '../../Components/Section';
+import CustomSelect from '../../Components/CustomSelect';
 
-import FormControl from '../Components/FormControl';
-import FormSelect from '../Components/FormSelect';
-import InfoCircle from '../Icons/InfoCircle';
+import FormControl from '../../Components/FormControl';
+import FormSelect from '../../Components/FormSelect';
+import InfoCircle from '../../Icons/InfoCircle';
 import {
 	ANIMATION_NON_PRESSED_EFFECTS,
 	ANIMATION_PRESSED_EFFECTS,
-} from '../Data/Animations';
+} from '../../Data/Animations';
 import useLedStore, {
 	AnimationOptions,
 	MAX_ANIMATION_PROFILES,
 	MAX_CASE_LIGHTS,
-	MAX_CUSTOM_COLORS,
-} from '../Store/useLedStore';
-import boards from '../Data/Boards.json';
-import useLedsPreview from '../Hooks/useLedsPreview';
-import './LedsSections.scss';
-import LEDColors from '../Data/LEDColors';
+} from '../../Store/useLedStore';
+import boards from '../../Data/Boards.json';
+import useLedsPreview from '../../Hooks/useLedsPreview';
+import './AnimationSection.scss';
+import LEDColors from '../../Data/LEDColors';
+import { hexToInt, rgbIntToHex } from '../../Services/Utilities';
 
 const GPIO_PIN_LENGTH = boards[import.meta.env.VITE_GP2040_BOARD].maxPin + 1;
 
@@ -84,11 +84,6 @@ const emptyAnimationProfile = {
 	notPressedStaticColors: Array.from({ length: GPIO_PIN_LENGTH }, () => 0),
 	pressedStaticColors: Array.from({ length: GPIO_PIN_LENGTH }, () => 1),
 };
-
-const convertToHex = (color: number) =>
-	`#${color.toString(16).padStart(6, '0')}`;
-
-const convertToDecimal = (hex: string) => parseInt(hex.replace('#', ''), 16);
 
 const colorDot = (color = 'transparent') => ({
 	alignItems: 'center',
@@ -137,7 +132,7 @@ const ColorSelectorList = memo(function ColorSelectorList({
 	const customColorOptions = customColors.map((color, index) => ({
 		value: LEDColors.length + index,
 		label: `Custom ${index + 1}`,
-		color: convertToHex(color),
+		color: rgbIntToHex(color),
 	}));
 	const colorOptions = [...LEDColors, ...customColorOptions];
 
@@ -191,61 +186,91 @@ const ColorSelectorList = memo(function ColorSelectorList({
 
 const ColorPickerList = memo(function ColorPickerList({
 	colors,
-	maxLength,
 	replace,
-	remove,
-	push,
 }: {
 	colors: number[];
-	maxLength: number;
 	replace: FieldArrayRenderProps['replace'];
-	remove: FieldArrayRenderProps['remove'];
-	push: FieldArrayRenderProps['push'];
 }) {
-	const { t } = useTranslation('');
-
 	return (
 		<div className="d-flex col gap-2 flex-wrap">
 			{colors.map((color, index) => (
 				<div
-					key={`customColors-${index}-${color}`}
+					key={`customColors-${index}}-${color}`}
 					className="d-flex gap-1 flex-wrap"
 				>
 					<FormControl
 						type="color"
 						name={`customColors.${index}`}
 						className="form-control-sm p-0 border-0"
-						defaultValue={convertToHex(color)}
+						defaultValue={rgbIntToHex(color)}
 						onBlur={(e) =>
-							replace(
-								index,
-								convertToDecimal((e.target as HTMLInputElement).value),
-							)
+							replace(index, hexToInt((e.target as HTMLInputElement).value))
 						}
 					/>
-					<Button
-						size="sm"
-						onClick={() => {
-							remove(index);
-						}}
-					>
-						{'✕'}
-					</Button>
 				</div>
 			))}
-			{colors.length !== maxLength && (
-				<>
-					<div className="vr"></div>
-					<Button size="sm" onClick={() => push(0)}>
-						{t('Leds:add-color')}
-					</Button>
-				</>
-			)}
 		</div>
 	);
 });
 
-export default function LedsSections() {
+const getViewBox = (lights: { xCoord: number; yCoord: number }[]) =>
+	lights.reduce(
+		(acc, light) => ({
+			minX: Math.min(acc.minX, light.xCoord),
+			minY: Math.min(acc.minY, light.yCoord),
+			maxX: Math.max(acc.maxX, light.xCoord),
+			maxY: Math.max(acc.maxY, light.yCoord),
+		}),
+		{ minX: Infinity, minY: Infinity, maxX: -Infinity, maxY: -Infinity },
+	);
+
+const LedLayoutPreview = memo(function LedLayoutPreview({
+	colors,
+	onPress,
+}: {
+	colors: number[];
+	onPress: (pin: number) => void;
+}) {
+	const { t } = useTranslation('');
+	const { Lights } = useLedStore();
+	const { minX, minY, maxX, maxY } = getViewBox(Lights);
+	const lightSize = 0.8;
+	const strokeWidth = 0.05;
+
+	return (
+		<div className="mb-3 p-4">
+			<svg
+				width="100%"
+				viewBox={`${minX - lightSize} ${minY - lightSize} ${maxX + lightSize * 2 - minX} ${maxY + lightSize * 2 - minY}`}
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				{Lights.map((light, index) => (
+					<circle
+						onClick={() => onPress(light.GPIOPinorCaseChainIndex)}
+						key={`light-${index}`}
+						cx={light.xCoord}
+						cy={light.yCoord}
+						r={lightSize}
+						fill={
+							light.lightType === 0
+								? LEDColors[colors[light.GPIOPinorCaseChainIndex]]?.color ||
+									'black'
+								: 'black'
+						}
+						stroke="currentColor"
+						strokeWidth={strokeWidth}
+					/>
+				))}
+			</svg>
+		</div>
+	);
+});
+
+export default function AnimationSection({
+	advanced = false,
+}: {
+	advanced?: boolean;
+}) {
 	const { t } = useTranslation('');
 	const { AnimationOptions, saveAnimationOptions } = useLedStore();
 	const { activateLedsProfile, turnOffLeds } = useLedsPreview();
@@ -278,51 +303,63 @@ export default function LedsSections() {
 				<div>
 					<Section title="Led configuration">
 						<Form noValidate onSubmit={handleSubmit}>
-							<Row className="mb-3">
-								<Col md={6} className="d-flex flex-column justify-content-end">
-									<FormSelect
-										label={'Preview configured profile'}
-										className="form-select-sm"
-										groupClassName="mb-3"
-										value={previewProfileIndex}
-										onChange={(e) => {
-											const profileIndex = parseInt(e.target.value);
-											setPreviewProfileIndex(profileIndex);
-										}}
-									>
-										{values.profiles.map((_, profileIndex) => (
-											<option
-												key={`profile-select-${profileIndex}`}
-												value={profileIndex}
+							{advanced && (
+								<>
+									<Row className="mb-3">
+										<Col
+											md={6}
+											className="d-flex flex-column justify-content-end"
+										>
+											<FormSelect
+												label={'Preview configured profile'}
+												className="form-select-sm"
+												groupClassName="mb-3"
+												value={previewProfileIndex}
+												onChange={(e) => {
+													const profileIndex = parseInt(e.target.value);
+													setPreviewProfileIndex(profileIndex);
+												}}
 											>
-												{t('Leds:profile-number', {
-													profileNumber: profileIndex + 1,
-												})}
-											</option>
-										))}
-									</FormSelect>
-									<Button
-										variant="secondary"
-										onClick={() => {
-											activateLedsProfile(values.profiles[previewProfileIndex]);
-										}}
-									>
-										Profile Test
-									</Button>
-								</Col>
-								<Col md={6} className="d-flex flex-column justify-content-end">
-									<p>Turns off all the lights</p>
-									<Button
-										variant="danger"
-										onClick={() => {
-											turnOffLeds();
-										}}
-									>
-										Lights Off
-									</Button>
-								</Col>
-							</Row>
-							<hr />
+												{values.profiles.map((_, profileIndex) => (
+													<option
+														key={`profile-select-${profileIndex}`}
+														value={profileIndex}
+													>
+														{t('Leds:profile-number', {
+															profileNumber: profileIndex + 1,
+														})}
+													</option>
+												))}
+											</FormSelect>
+											<Button
+												variant="secondary"
+												onClick={() => {
+													activateLedsProfile(
+														values.profiles[previewProfileIndex],
+													);
+												}}
+											>
+												Profile Test
+											</Button>
+										</Col>
+										<Col
+											md={6}
+											className="d-flex flex-column justify-content-end"
+										>
+											<p>Turns off all the lights</p>
+											<Button
+												variant="danger"
+												onClick={() => {
+													turnOffLeds();
+												}}
+											>
+												Lights Off
+											</Button>
+										</Col>
+									</Row>
+									<hr />
+								</>
+							)}
 							<Row>
 								<FormSelect
 									label={t('Leds:profile-label')}
@@ -383,10 +420,7 @@ export default function LedsSections() {
 									render={(arrayHelpers) => (
 										<ColorPickerList
 											colors={values.customColors}
-											maxLength={MAX_CUSTOM_COLORS}
 											replace={arrayHelpers.replace}
-											remove={arrayHelpers.remove}
-											push={arrayHelpers.push}
 										/>
 									)}
 								/>
@@ -561,49 +595,48 @@ export default function LedsSections() {
 														onChange={handleChange}
 													/>
 												</Row>
-												<FormControl
-													type="color"
-													label={t(`Leds:pressed-special-color-label`)}
-													name={`profiles.${profileIndex}.pressedSpecialColor`}
-													className="form-control-sm p-0 border-0 mb-3"
-													defaultValue={convertToHex(
-														profile.pressedSpecialColor,
-													)}
-													onBlur={(e) =>
-														setFieldValue(
-															`profiles.${profileIndex}.pressedSpecialColor`,
-															convertToDecimal(
-																(e.target as HTMLInputElement).value,
-															),
-														)
-													}
-												/>
-												<FormControl
-													type="color"
-													label={t(`Leds:idle-special-color-label`)}
-													name={`profiles.${profileIndex}.nonPressedSpecialColor`}
-													className="form-control-sm p-0 border-0 mb-3"
-													defaultValue={convertToHex(
-														profile.nonPressedSpecialColor,
-													)}
-													error={
-														(errors.profiles?.[profileIndex] as any)
-															?.nonPressedSpecialColor
-													}
-													isInvalid={Boolean(
-														(errors.profiles?.[profileIndex] as any)
-															?.nonPressedSpecialColor,
-													)}
-													onBlur={(e) =>
-														setFieldValue(
-															`profiles.${profileIndex}.nonPressedSpecialColor`,
-															convertToDecimal(
-																(e.target as HTMLInputElement).value,
-															),
-														)
-													}
-												/>
-
+												<Row>
+													<FormControl
+														type="color"
+														label={t(`Leds:pressed-special-color-label`)}
+														name={`profiles.${profileIndex}.pressedSpecialColor`}
+														groupClassName="col-sm-4 mb-3"
+														className="form-control-sm p-0 border-0 mb-3"
+														defaultValue={rgbIntToHex(
+															profile.pressedSpecialColor,
+														)}
+														onBlur={(e) =>
+															setFieldValue(
+																`profiles.${profileIndex}.pressedSpecialColor`,
+																hexToInt((e.target as HTMLInputElement).value),
+															)
+														}
+													/>
+													<FormControl
+														type="color"
+														label={t(`Leds:idle-special-color-label`)}
+														name={`profiles.${profileIndex}.nonPressedSpecialColor`}
+														groupClassName="col-sm-4 mb-3"
+														className="form-control-sm p-0 border-0 mb-3"
+														defaultValue={rgbIntToHex(
+															profile.nonPressedSpecialColor,
+														)}
+														error={
+															(errors.profiles?.[profileIndex] as any)
+																?.nonPressedSpecialColor
+														}
+														isInvalid={Boolean(
+															(errors.profiles?.[profileIndex] as any)
+																?.nonPressedSpecialColor,
+														)}
+														onBlur={(e) =>
+															setFieldValue(
+																`profiles.${profileIndex}.nonPressedSpecialColor`,
+																hexToInt((e.target as HTMLInputElement).value),
+															)
+														}
+													/>
+												</Row>
 												<Tabs
 													defaultActiveKey="pressed"
 													className="mb-3 pb-0"
@@ -613,82 +646,107 @@ export default function LedsSections() {
 														eventKey="pressed"
 														title={t(`Leds:pressed-colors-label`)}
 													>
-														<FormGroup className="mb-4">
-															<FieldArray
-																name={`profiles.${profileIndex}.pressedStaticColors`}
-																render={({ replace }) => (
-																	<ColorSelectorList
-																		length={GPIO_PIN_LENGTH}
-																		LabelComponent={({ index }) => (
-																			<div
-																				className="d-flex flex-shrink-0"
-																				style={{ width: '3.5rem' }}
-																			>
-																				<label>GP{index}</label>
-																			</div>
-																		)}
-																		containerClassName="pin-grid gap-3 mt-3"
-																		colors={profile.pressedStaticColors}
-																		customColors={values.customColors}
-																		replace={replace}
-																	/>
-																)}
+														{advanced ? (
+															<FormGroup className="mb-4">
+																<FieldArray
+																	name={`profiles.${profileIndex}.pressedStaticColors`}
+																	render={({ replace }) => (
+																		<ColorSelectorList
+																			length={GPIO_PIN_LENGTH}
+																			LabelComponent={({ index }) => (
+																				<div
+																					className="d-flex flex-shrink-0"
+																					style={{ width: '3.5rem' }}
+																				>
+																					<label>GP{index}</label>
+																				</div>
+																			)}
+																			containerClassName="pin-grid gap-3 mt-3"
+																			colors={profile.pressedStaticColors}
+																			customColors={values.customColors}
+																			replace={replace}
+																		/>
+																	)}
+																/>
+															</FormGroup>
+														) : (
+															<LedLayoutPreview
+																colors={profile.pressedStaticColors}
+																onPress={(pin) => {
+																	// trigger dialog to select color
+																}}
 															/>
-														</FormGroup>
+														)}
 													</Tab>
 													<Tab
 														eventKey="nonpressed"
 														title={t(`Leds:idle-colors-label`)}
 													>
+														{advanced ? (
+															<FormGroup className="mb-4">
+																<FieldArray
+																	name={`profiles.${profileIndex}.notPressedStaticColors`}
+																	render={({ replace }) => (
+																		<ColorSelectorList
+																			length={GPIO_PIN_LENGTH}
+																			LabelComponent={({ index }) => (
+																				<div
+																					className="d-flex flex-shrink-0"
+																					style={{ width: '3.5rem' }}
+																				>
+																					<label>GP{index}</label>
+																				</div>
+																			)}
+																			containerClassName="pin-grid gap-3 mt-3"
+																			colors={profile.notPressedStaticColors}
+																			customColors={values.customColors}
+																			replace={replace}
+																		/>
+																	)}
+																/>
+															</FormGroup>
+														) : (
+															<LedLayoutPreview
+																colors={profile.notPressedStaticColors}
+																onPress={(pin) => {
+																	// trigger dialog to select color
+																}}
+															/>
+														)}
+													</Tab>
+												</Tabs>
+
+												{advanced && (
+													<>
+														<hr />
 														<FormGroup className="mb-4">
+															<Form.Label>
+																{t(`Leds:case-colors-label`)}
+															</Form.Label>
+
 															<FieldArray
-																name={`profiles.${profileIndex}.notPressedStaticColors`}
+																name={`profiles.${profileIndex}.caseStaticColors`}
 																render={({ replace }) => (
 																	<ColorSelectorList
-																		length={GPIO_PIN_LENGTH}
+																		length={MAX_CASE_LIGHTS}
 																		LabelComponent={({ index }) => (
 																			<div
 																				className="d-flex flex-shrink-0"
-																				style={{ width: '3.5rem' }}
+																				style={{ width: '2rem' }}
 																			>
-																				<label>GP{index}</label>
+																				<label>{index + 1}</label>
 																			</div>
 																		)}
-																		containerClassName="pin-grid gap-3 mt-3"
-																		colors={profile.notPressedStaticColors}
+																		containerClassName="case-grid gap-3"
+																		colors={profile.caseStaticColors}
 																		customColors={values.customColors}
 																		replace={replace}
 																	/>
 																)}
 															/>
 														</FormGroup>
-													</Tab>
-												</Tabs>
-												<hr />
-												<FormGroup className="mb-4">
-													<Form.Label>{t(`Leds:case-colors-label`)}</Form.Label>
-
-													<FieldArray
-														name={`profiles.${profileIndex}.caseStaticColors`}
-														render={({ replace }) => (
-															<ColorSelectorList
-																length={MAX_CASE_LIGHTS}
-																LabelComponent={({ index }) => (
-																	<div
-																		className="d-flex flex-shrink-0"
-																		style={{ width: '2rem' }}
-																	>
-																		<label>{index + 1}</label>
-																	</div>
-																)}
-																containerClassName="case-grid gap-3"
-																colors={profile.caseStaticColors}
-																customColors={values.customColors}
-																replace={replace}
-															/>
-														)}
-													/>
-												</FormGroup>
+													</>
+												)}
 											</Tab>
 										))}
 
