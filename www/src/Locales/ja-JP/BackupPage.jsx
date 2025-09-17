@@ -13,5 +13,6 @@ export default {
 	'api-pins-text': '端子割り当て',
 	'api-profiles-text': 'プロファイルボタン割り当て',
 	'api-addons-text': 'アドオン',
+	'api-heTrigger-text': 'ホールセンサボタン',
 	'api-splash-text': 'スプラッシュ画像',
 };
