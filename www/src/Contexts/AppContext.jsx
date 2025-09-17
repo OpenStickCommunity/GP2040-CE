@@ -236,8 +236,6 @@ export const AppContextProvider = ({ children, ...props }) => {
 		};
 	}, [usedPins, setUsedPins]);
 
-	console.log('usedPins:', usedPins);
-
 	useEffect(() => {}, [expansionPins, setExpansionPins, HETriggerOptions, setHETriggerOptions]);
 
 	const getAvailablePeripherals = (device) => {
