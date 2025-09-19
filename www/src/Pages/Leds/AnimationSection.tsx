@@ -30,6 +30,7 @@ import {
 } from '../../Data/Animations';
 import useLedStore, {
 	AnimationOptions,
+	Light,
 	MAX_ANIMATION_PROFILES,
 	MAX_CASE_LIGHTS,
 } from '../../Store/useLedStore';
@@ -41,34 +42,63 @@ import { hexToInt, rgbIntToHex } from '../../Services/Utilities';
 
 const GPIO_PIN_LENGTH = boards[import.meta.env.VITE_GP2040_BOARD].maxPin + 1;
 
-const schema = yup.object().shape({
-	baseProfileIndex: yup.number().required('Selecting a profile is required'),
-	brightness: yup
-		.number()
-		.min(0, 'Brightness must be at least 0')
-		.max(100, 'Brightness cannot be more than 100')
-		.required('Brightness is required'),
-	idletimeout: yup
-		.number()
-		.min(0, 'Idle timout value must be at least 0')
-		.max(300, 'Idle timout value cannot be more than 300 seconds')
-		.required('Idle timout value is required'),
-	profiles: yup.array().of(
-		yup.object().shape({
-			bEnabled: yup.number().required(),
-			bUseCaseLightsInPressedAnimations: yup.number().required(),
-			baseCaseEffect: yup.number().required(),
-			baseNonPressedEffect: yup.number().required(),
-			basePressedEffect: yup.number().required(),
-			buttonPressFadeOutTimeInMs: yup.number().required(),
-			buttonPressHoldTimeInMs: yup.number().required(),
-			caseStaticColors: yup.array().of(yup.number()).required(),
-			nonPressedSpecialColor: yup.number().required(),
-			notPressedStaticColors: yup.array().of(yup.number()).required(),
-			pressedSpecialColor: yup.number().required(),
-			pressedStaticColors: yup.array().of(yup.number()),
+const schema = yup.object({
+	AnimationOptions: yup.object().shape({
+		baseProfileIndex: yup.number().required('Selecting a profile is required'),
+		brightness: yup
+			.number()
+			.min(0, 'Brightness must be at least 0')
+			.max(100, 'Brightness cannot be more than 100')
+			.required('Brightness is required'),
+		idletimeout: yup
+			.number()
+			.min(0, 'Idle timout value must be at least 0')
+			.max(300, 'Idle timout value cannot be more than 300 seconds')
+			.required('Idle timout value is required'),
+		profiles: yup.array().of(
+			yup.object().shape({
+				bEnabled: yup.number().required(),
+				bUseCaseLightsInPressedAnimations: yup.number().required(),
+				baseCaseEffect: yup.number().required(),
+				baseNonPressedEffect: yup.number().required(),
+				basePressedEffect: yup.number().required(),
+				buttonPressFadeOutTimeInMs: yup.number().required(),
+				buttonPressHoldTimeInMs: yup.number().required(),
+				caseStaticColors: yup.array().of(yup.number()).required(),
+				nonPressedSpecialColor: yup.number().required(),
+				notPressedStaticColors: yup.array().of(yup.number()).required(),
+				pressedSpecialColor: yup.number().required(),
+				pressedStaticColors: yup.array().of(yup.number()),
+			}),
+		),
+	}),
+	Lights: yup
+		.array()
+		.of(
+			yup.object({
+				GPIOPinorCaseChainIndex: yup.number().required(),
+				firstLedIndex: yup.number().required(),
+				lightType: yup.number().required(),
+				numLedsOnLight: yup.number().required(),
+				xCoord: yup.number().required(),
+				yCoord: yup.number().required(),
+			}),
+		)
+		.test('no-duplicate-coords', 'Overlapping light', function (lights) {
+			if (!lights) return true;
+			const overlappingCoords = new Map();
+			for (let i = 0; i < lights.length; i++) {
+				const key = `${lights[i].xCoord},${lights[i].yCoord}`;
+				if (overlappingCoords.has(key)) {
+					return this.createError({
+						path: `Lights[${i}]`,
+						message: `Overlapping light`,
+					});
+				}
+				overlappingCoords.set(key, i);
+			}
+			return true;
 		}),
-	),
 });
 
 const emptyAnimationProfile = {
@@ -224,47 +254,7 @@ const getViewBox = (lights: { xCoord: number; yCoord: number }[]) =>
 		{ minX: Infinity, minY: Infinity, maxX: -Infinity, maxY: -Infinity },
 	);
 
-const LedLayoutPreview = memo(function LedLayoutPreview({
-	colors,
-	onPress,
-}: {
-	colors: number[];
-	onPress: (pin: number) => void;
-}) {
-	const { t } = useTranslation('');
-	const { Lights } = useLedStore();
-	const { minX, minY, maxX, maxY } = getViewBox(Lights);
-	const lightSize = 0.8;
-	const strokeWidth = 0.05;
 
-	return (
-		<div className="mb-3 p-4">
-			<svg
-				width="100%"
-				viewBox={`${minX - lightSize} ${minY - lightSize} ${maxX + lightSize * 2 - minX} ${maxY + lightSize * 2 - minY}`}
-				xmlns="http://www.w3.org/2000/svg"
-			>
-				{Lights.map((light, index) => (
-					<circle
-						onClick={() => onPress(light.GPIOPinorCaseChainIndex)}
-						key={`light-${index}`}
-						cx={light.xCoord}
-						cy={light.yCoord}
-						r={lightSize}
-						fill={
-							light.lightType === 0
-								? LEDColors[colors[light.GPIOPinorCaseChainIndex]]?.color ||
-									'black'
-								: 'black'
-						}
-						stroke="currentColor"
-						strokeWidth={strokeWidth}
-					/>
-				))}
-			</svg>
-		</div>
-	);
-});
 
 export default function AnimationSection({
 	advanced = false,
@@ -272,7 +262,8 @@ export default function AnimationSection({
 	advanced?: boolean;
 }) {
 	const { t } = useTranslation('');
-	const { AnimationOptions, saveAnimationOptions } = useLedStore();
+	const { AnimationOptions, Lights, saveAnimationOptions, saveLightOptions } =
+		useLedStore();
 	const { activateLedsProfile, turnOffLeds } = useLedsPreview();
 
 	const [key, setKey] = useState(
@@ -283,9 +274,16 @@ export default function AnimationSection({
 	);
 	const [saveMessage, setSaveMessage] = useState('');
 
-	const onSuccess = async (values: AnimationOptions) => {
+	const onSuccess = async ({
+		AnimationOptions,
+		Lights,
+	}: {
+		AnimationOptions: AnimationOptions;
+		Lights: Light[];
+	}) => {
 		try {
-			await saveAnimationOptions(values);
+			await saveAnimationOptions(AnimationOptions);
+			await saveLightOptions(Lights);
 			setSaveMessage(t('Common:saved-success-message'));
 		} catch (error) {
 			console.error(error);
@@ -296,70 +294,59 @@ export default function AnimationSection({
 		<Formik
 			validationSchema={schema}
 			onSubmit={onSuccess}
-			initialValues={AnimationOptions}
+			initialValues={{ AnimationOptions, Lights }}
 			validateOnChange={false}
 		>
 			{({ handleSubmit, handleChange, values, errors, setFieldValue }) => (
 				<div>
 					<Section title="Led configuration">
 						<Form noValidate onSubmit={handleSubmit}>
-							{advanced && (
-								<>
-									<Row className="mb-3">
-										<Col
-											md={6}
-											className="d-flex flex-column justify-content-end"
-										>
-											<FormSelect
-												label={'Preview configured profile'}
-												className="form-select-sm"
-												groupClassName="mb-3"
-												value={previewProfileIndex}
-												onChange={(e) => {
-													const profileIndex = parseInt(e.target.value);
-													setPreviewProfileIndex(profileIndex);
-												}}
+							<Row className="mb-3">
+								<Col md={6} className="d-flex flex-column justify-content-end">
+									<FormSelect
+										label={'Preview configured profile'}
+										className="form-select-sm"
+										groupClassName="mb-3"
+										value={previewProfileIndex}
+										onChange={(e) => {
+											const profileIndex = parseInt(e.target.value);
+											setPreviewProfileIndex(profileIndex);
+										}}
+									>
+										{values.profiles.map((_, profileIndex) => (
+											<option
+												key={`profile-select-${profileIndex}`}
+												value={profileIndex}
 											>
-												{values.profiles.map((_, profileIndex) => (
-													<option
-														key={`profile-select-${profileIndex}`}
-														value={profileIndex}
-													>
-														{t('Leds:profile-number', {
-															profileNumber: profileIndex + 1,
-														})}
-													</option>
-												))}
-											</FormSelect>
-											<Button
-												variant="secondary"
-												onClick={() => {
-													activateLedsProfile(
-														values.profiles[previewProfileIndex],
-													);
-												}}
-											>
-												Profile Test
-											</Button>
-										</Col>
-										<Col
-											md={6}
-											className="d-flex flex-column justify-content-end"
-										>
-											<p>Turns off all the lights</p>
-											<Button
-												variant="danger"
-												onClick={() => {
-													turnOffLeds();
-												}}
-											>
-												Lights Off
-											</Button>
-										</Col>
-									</Row>
-									<hr />
-								</>
-							)}
+												{t('Leds:profile-number', {
+													profileNumber: profileIndex + 1,
+												})}
+											</option>
+										))}
+									</FormSelect>
+									<Button
+										variant="secondary"
+										onClick={() => {
+											activateLedsProfile(values.profiles[previewProfileIndex]);
+										}}
+									>
+										Profile Test
+									</Button>
+								</Col>
+								<Col md={6} className="d-flex flex-column justify-content-end">
+									<p>Turns off all the lights</p>
+									<Button
+										variant="danger"
+										onClick={() => {
+											turnOffLeds();
+										}}
+									>
+										Lights Off
+									</Button>
+								</Col>
+							</Row>
+							<hr />
+
 							<Row>
 								<FormSelect
 									label={t('Leds:profile-label')}
@@ -637,116 +624,6 @@ export default function AnimationSection({
 														}
 													/>
 												</Row>
-												<Tabs
-													defaultActiveKey="pressed"
-													className="mb-3 pb-0"
-													fill
-												>
-													<Tab
-														eventKey="pressed"
-														title={t(`Leds:pressed-colors-label`)}
-													>
-														{advanced ? (
-															<FormGroup className="mb-4">
-																<FieldArray
-																	name={`profiles.${profileIndex}.pressedStaticColors`}
-																	render={({ replace }) => (
-																		<ColorSelectorList
-																			length={GPIO_PIN_LENGTH}
-																			LabelComponent={({ index }) => (
-																				<div
-																					className="d-flex flex-shrink-0"
-																					style={{ width: '3.5rem' }}
-																				>
-																					<label>GP{index}</label>
-																				</div>
-																			)}
-																			containerClassName="pin-grid gap-3 mt-3"
-																			colors={profile.pressedStaticColors}
-																			customColors={values.customColors}
-																			replace={replace}
-																		/>
-																	)}
-																/>
-															</FormGroup>
-														) : (
-															<LedLayoutPreview
-																colors={profile.pressedStaticColors}
-																onPress={(pin) => {
-																	// trigger dialog to select color
-																}}
-															/>
-														)}
-													</Tab>
-													<Tab
-														eventKey="nonpressed"
-														title={t(`Leds:idle-colors-label`)}
-													>
-														{advanced ? (
-															<FormGroup className="mb-4">
-																<FieldArray
-																	name={`profiles.${profileIndex}.notPressedStaticColors`}
-																	render={({ replace }) => (
-																		<ColorSelectorList
-																			length={GPIO_PIN_LENGTH}
-																			LabelComponent={({ index }) => (
-																				<div
-																					className="d-flex flex-shrink-0"
-																					style={{ width: '3.5rem' }}
-																				>
-																					<label>GP{index}</label>
-																				</div>
-																			)}
-																			containerClassName="pin-grid gap-3 mt-3"
-																			colors={profile.notPressedStaticColors}
-																			customColors={values.customColors}
-																			replace={replace}
-																		/>
-																	)}
-																/>
-															</FormGroup>
-														) : (
-															<LedLayoutPreview
-																colors={profile.notPressedStaticColors}
-																onPress={(pin) => {
-																	// trigger dialog to select color
-																}}
-															/>
-														)}
-													</Tab>
-												</Tabs>
-
-												{advanced && (
-													<>
-														<hr />
-														<FormGroup className="mb-4">
-															<Form.Label>
-																{t(`Leds:case-colors-label`)}
-															</Form.Label>
-
-															<FieldArray
-																name={`profiles.${profileIndex}.caseStaticColors`}
-																render={({ replace }) => (
-																	<ColorSelectorList
-																		length={MAX_CASE_LIGHTS}
-																		LabelComponent={({ index }) => (
-																			<div
-																				className="d-flex flex-shrink-0"
-																				style={{ width: '2rem' }}
-																			>
-																				<label>{index + 1}</label>
-																			</div>
-																		)}
-																		containerClassName="case-grid gap-3"
-																		colors={profile.caseStaticColors}
-																		customColors={values.customColors}
-																		replace={replace}
-																	/>
-																)}
-															/>
-														</FormGroup>
-													</>
-												)}
 											</Tab>
 										))}
 

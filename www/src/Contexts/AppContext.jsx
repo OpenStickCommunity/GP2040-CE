@@ -169,7 +169,6 @@ export const AppContextProvider = ({ children, ...props }) => {
 	const updateHETriggerOptions = async () => {
 		const data = await WebApi.getHETriggerOptions(setLoading);
 		setHETriggerOptions(data);
-		console.log('HETrigger Options updated:', data);
 		return data;
 	};
 
@@ -196,7 +195,6 @@ export const AppContextProvider = ({ children, ...props }) => {
 		};
 	}, [usedPins, setUsedPins]);
 
-	console.log('usedPins:', usedPins);
 
 	useEffect(() => {}, [expansionPins, setExpansionPins, HETriggerOptions, setHETriggerOptions]);
 
