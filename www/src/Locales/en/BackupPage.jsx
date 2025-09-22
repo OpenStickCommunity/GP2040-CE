@@ -14,5 +14,6 @@ export default {
 	'api-pins-text': 'Pin Mappings',
 	'api-profiles-text': 'Profile Mappings',
 	'api-addons-text': 'Add-Ons',
+	'api-heTrigger-text': 'Hall Effect Trigger',
 	'api-splash-text': 'Splash Image',
 };

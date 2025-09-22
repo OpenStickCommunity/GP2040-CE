@@ -11,11 +11,10 @@ import './HECalibration.scss';
 
 import { BUTTON_ACTIONS } from '../Data/Pins';
 import invert from 'lodash/invert';
-import { toInteger } from 'lodash';
 
 type HECalibrationProps = {
 	calibrateAllLoop: boolean;
-	calibrationTarget: number;	
+	calibrationTarget: number;
 	muxChannels: number;
 	setShowModal: (show: boolean) => void;
 	showModal: boolean;

@@ -2,6 +2,8 @@ import { useEffect, useState, useRef, useContext } from 'react';
 import { AppContext } from '../Contexts/AppContext';
 import { Button, Form, Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import merge from 'lodash/merge';
+import cloneDeep from 'lodash/cloneDeep';
 
 import Section from '../Components/Section';
 import WebApi from '../Services/WebApi';
@@ -11,55 +13,52 @@ const FILENAME = 'gp2040ce_backup_{DATE}' + FILE_EXTENSION;
 
 const API_BINDING = {
 	display: {
-		label: 'Display',
 		get: WebApi.getDisplayOptions,
 		set: WebApi.setDisplayOptions,
 	},
 	splash: {
-		label: 'Splash Image',
 		get: WebApi.getSplashImage,
 		set: WebApi.setSplashImage,
 	},
 	gamepad: {
-		label: 'Gamepad',
 		get: WebApi.getGamepadOptions,
 		set: WebApi.setGamepadOptions,
 	},
-	led: { label: 'LED', get: WebApi.getLedOptions, set: WebApi.setLedOptions },
+	led: { get: WebApi.getLedOptions, set: WebApi.setLedOptions },
 	ledTheme: {
-		label: 'Custom LED Theme',
 		get: WebApi.getCustomTheme,
 		set: WebApi.setCustomTheme,
 	},
 	macros: {
-		label: 'Macro Mappings',
 		get: WebApi.getMacroAddonOptions,
 		set: WebApi.setMacroAddonOptions,
 	},
 	pins: {
-		label: 'Pin Mappings',
 		get: WebApi.getPinMappings,
 		set: WebApi.setPinMappings,
 	},
 	profiles: {
-		label: 'Profile Mappings',
 		get: WebApi.getProfileOptions,
 		set: WebApi.setProfileOptions,
 	},
+	heTrigger: {
+		get: WebApi.getHETriggerOptions,
+		set: WebApi.setHETriggerOptions,
+	},
 	addons: {
-		label: 'Add-Ons',
 		get: WebApi.getAddonsOptions,
 		set: WebApi.setAddonsOptions,
 	},
 	// new api, add it here
-	// "example":	{label: "Example",		get: WebApi.getNewAPI,			set: WebApi.setNewAPI},
+	// "example":	{get: WebApi.getNewAPI,			set: WebApi.setNewAPI},
 };
 
 export default function BackupPage() {
 	const inputFileSelect = useRef();
 
 	const [optionState, setOptionStateData] = useState({});
-	const [checkValues, setCheckValues] = useState({}); // lazy approach
+	const [importOptions, setImportOptions] = useState({});
+	const [exportOptions, setExportOptions] = useState({});
 
 	const [noticeMessage, setNoticeMessage] = useState('');
 	const [saveMessage, setSaveMessage] = useState('');
@@ -78,78 +77,41 @@ export default function BackupPage() {
 		}
 		fetchData();
 
-		// setup defaults
-		function getDefaultValues() {
-			let defaults = {};
-			for (const [key] of Object.entries(API_BINDING)) {
-				defaults[`export_${key}`] = true;
-				defaults[`import_${key}`] = true;
-			}
-			return defaults;
+		let defaults = {};
+		for (const [key] of Object.entries(API_BINDING)) {
+			defaults[key] = true;
 		}
-		setCheckValues(getDefaultValues());
+		setImportOptions(defaults);
+		setExportOptions(defaults);
 	}, []);
 
 	const validateValues = (data, nextData) => {
-		if (typeof data !== 'object' || typeof nextData !== 'object') {
-			// invalid data types
-			return {};
+		// Handle array cases - always use backup data for arrays to allow clearing
+		if (Array.isArray(nextData)) {
+			return nextData;
 		}
 
-		// Only used for array payload such as profiles
-		if (Array.isArray(data) && data.length === 0) {
-			return Array.isArray(nextData) ? nextData : [];
-		}
-
-		let validated = Array.isArray(data) ? [] : {};
-		const addValidated = (value, key) =>
-			Array.isArray(validated)
-				? validated.push(value)
-				: (validated[key] = value);
-
-		for (const [key, value] of Object.entries(data)) {
-			const nextDataValue = nextData[key];
-			if (
-				nextDataValue !== null &&
-				typeof nextDataValue !== 'undefined' &&
-				typeof value === typeof nextDataValue
-			) {
-				if (typeof nextDataValue === 'object') {
-					addValidated(validateValues(value, nextDataValue), key);
-				} else {
-					addValidated(nextDataValue, key);
-				}
-			}
-		}
-
-		return validated;
+		return merge(cloneDeep(data), nextData);
 	};
 
 	const setOptionsToAPIStorage = async (options) => {
 		for (const [key, func] of Object.entries(API_BINDING)) {
 			const values = options[key];
 			if (values) {
-				const result = await func.set(values);
-				console.log(result);
+				try {
+					await func.set(values);
+				} catch (error) {
+					setNoticeMessage(`Failed to set ${key} options: ${error.message}`);
+				}
 			}
 		}
 	};
 
-	const handleChange = (ev) => {
-		const id = ev.nativeEvent.target.id;
-		let nextCheckValue = {};
-		nextCheckValue[id] = !checkValues[id];
-		setCheckValues((checkValues) => ({ ...checkValues, ...nextCheckValue }));
-	};
-
 	const handleSave = async () => {
 		let exportData = {};
-		for (const [key, value] of Object.entries(checkValues)) {
-			if (key.match('export_') && (value != null || value !== undefined)) {
-				let skey = key.slice(7, key.length);
-				if (optionState[skey] !== undefined || optionState[skey] != null) {
-					exportData[skey] = optionState[skey];
-				}
+		for (const [key, value] of Object.entries(exportOptions)) {
+			if (value && optionState[key] !== undefined) {
+				exportData[key] = optionState[key];
 			}
 		}
 
@@ -204,31 +166,20 @@ export default function BackupPage() {
 				return;
 			}
 
-			// validate parsed data
-			let newData = {};
-			for (const [key, value] of Object.entries(fileData)) {
-				if (optionState[key]) {
-					const result = validateValues(optionState[key], value);
-					newData[key] = result;
+			let filteredData = {};
+			for (const [key, value] of Object.entries(importOptions)) {
+				if (value && fileData[key] !== undefined) {
+					const validData = validateValues(optionState[key], fileData[key]);
+					filteredData[key] = validData;
 				}
 			}
 
-			if (Object.entries(newData).length > 0) {
-				// filter by known values
-				let filteredData = {};
-				for (const [key, value] of Object.entries(checkValues)) {
-					if (key.match('import_') && (value != null || value !== undefined)) {
-						let skey = key.slice(7, key.length);
-						if (newData[skey] !== undefined || newData[skey] != null) {
-							filteredData[skey] = newData[skey];
-						}
-					}
-				}
+			if (Object.keys(filteredData).length > 0) {
 				const nextOptions = { ...optionState, ...filteredData };
 				setOptionStateData(nextOptions);
 
 				// write to internal storage
-				setOptionsToAPIStorage(nextOptions);
+				setOptionsToAPIStorage(filteredData); // Only send the filtered data, not the entire state
 
 				setLoadMessage(`Loaded ${fileName}`);
 				setNoticeMessage('');
@@ -249,17 +200,22 @@ export default function BackupPage() {
 			<Section title={t('BackupPage:save-header-text')}>
 				<Col>
 					<Form.Group className={'row mb-3'}>
-						<div className={'col-sm-4'}>
-							{Object.entries(API_BINDING).map((api) => (
+						<div className={'col'}>
+							{Object.entries(API_BINDING).map(([key]) => (
 								<Form.Check
-									id={`export_${api[0]}`}
-									key={`export_${api[0]}`}
+									id={`export_${key}`}
+									key={`export_${key}`}
 									label={t('BackupPage:save-export-option-label', {
-										api: t(`BackupPage:api-${api[0]}-text`),
+										api: t(`BackupPage:api-${key}-text`),
 									})}
 									type={'checkbox'}
-									checked={checkValues[`export_${api[0]}`] ?? false}
-									onChange={handleChange}
+									checked={exportOptions[key] ?? false}
+									onChange={() => {
+										setExportOptions((prev) => ({
+											...prev,
+											[key]: !prev[key],
+										}));
+									}}
 								/>
 							))}
 						</div>
@@ -293,17 +249,22 @@ export default function BackupPage() {
 				</div>
 				<Col>
 					<Form.Group className={'row mb-3'}>
-						<div className={'col-sm-4'}>
-							{Object.entries(API_BINDING).map((api) => (
+						<div className={'col'}>
+							{Object.entries(API_BINDING).map(([key]) => (
 								<Form.Check
-									id={`import_${api[0]}`}
-									key={`import_${api[0]}`}
+									id={`import_${key}`}
+									key={`import_${key}`}
 									label={t('BackupPage:load-export-option-label', {
-										api: t(`BackupPage:api-${api[0]}-text`),
+										api: t(`BackupPage:api-${key}-text`),
 									})}
 									type={'checkbox'}
-									checked={checkValues[`import_${api[0]}`] ?? false}
-									onChange={handleChange}
+									checked={importOptions[key] ?? false}
+									onChange={() => {
+										setImportOptions((prev) => ({
+											...prev,
+											[key]: !prev[key],
+										}));
+									}}
 								/>
 							))}
 						</div>
