@@ -1,4 +1,7 @@
 export default {
+	'architecture-text': '아키텍쳐: {{architecture}}',
+	'build-type-text': '빌드 타입: {{build}}',
+	'build-text': '빌드: {{build}}',
 	'current-text': '현재: {{version}}',
 	'get-update-text': '최신 버전 다운로드',
 	'header-text': 'GP2040-CE 웹 설정에 오신걸 환영합니다!',

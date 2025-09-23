@@ -1,6 +1,6 @@
 export default {
 	'header-text': '주변기기 매핑',
-	'sub-header-text': '',
+	'sub-header-text': '주변기기의 단자 할당 및 동작에 관한 설정을 할 수 있습니다',
 	'pins-label': '핀',
 	'pin-in-use': '사용 중',
 	'i2c-label': 'I\u00B2C',
