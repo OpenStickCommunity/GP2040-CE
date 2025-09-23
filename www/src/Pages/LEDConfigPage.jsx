@@ -200,13 +200,16 @@ const FormContext = ({
 }) => {
 	const { setValues } = useFormikContext();
 	const { setLoading } = useContext(AppContext);
-	const [buttonMap, setButtonMap] = useState(ledButtonMap);
 
 	useEffect(() => {
 		async function fetchData() {
 			const data = await WebApi.getLedOptions(setLoading);
-
-			setButtonMap(data.ledButtonMap);
+			const dataSources = createDataSource(
+				data.ledButtonMap,
+				buttonLabelType,
+				swapTpShareLabels,
+			);
+			setDataSources(dataSources);
 			setValues(data);
 		}
 		fetchData();
@@ -214,12 +217,12 @@ const FormContext = ({
 
 	useEffect(() => {
 		const dataSources = createDataSource(
-			buttonMap,
+			ledButtonMap,
 			buttonLabelType,
 			swapTpShareLabels,
 		);
 		setDataSources(dataSources);
-	}, [buttonMap, buttonLabelType, swapTpShareLabels]);
+	}, [buttonLabelType, swapTpShareLabels]);
 
 	return null;
 };
