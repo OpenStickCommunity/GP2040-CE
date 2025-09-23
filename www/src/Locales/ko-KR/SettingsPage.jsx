@@ -10,6 +10,7 @@ export default {
 		none: '선택된 모드 없음',
 		xinput: 'XInput',
 		'nintendo-switch': '닌텐도 스위치',
+		'nintendo-switch-pro': '닌텐도 스위치 프로',
 		ps3: 'PS3',
 		generic: '일반 HID 입력',
 		keyboard: '키보드',
@@ -101,6 +102,8 @@ export default {
 		'invert-x': 'X축 반전',
 		'invert-y': 'Y축 반전',
 		'toggle-4way-joystick-mode': '4방향 조이스틱 모드 전환',
+		'enable-4way-joystick-mode': '4방향 조이스틱 모드 사용',
+		'disable-4way-joystick-mode': '4방향 조이스틱 모드 사용안함',
 		'toggle-ddi-4way-joystick-mode': 'DDI 4방향 조이스틱 모드 전환',
 		'b1-button': 'B1 버튼',
 		'b2-button': 'B2 버튼',
@@ -140,6 +143,9 @@ export default {
 		'menu-nav-select': '메뉴 선택',
 		'menu-nav-back': '메뉴 이전',
 		'menu-nav-toggle': '메뉴 토글',
+		'focus-mode-toggle': '포커스 모드 전환',
+		'turbo-count-up': '터보 카운트 증가',
+		'turbo-count-down': '터보 카운트 감소',
 	},
 	'forced-setup-mode-label': '강제 설정 모드',
 	'forced-setup-mode-options': {
@@ -167,4 +173,5 @@ export default {
 		'product-id': '제품 ID',
 		'vendor-id': '벤더 ID',
 	},
+	'input-mode-device-type-label': '입력 모드 컨트롤러 형식',
 };
