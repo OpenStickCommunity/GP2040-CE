@@ -37,9 +37,9 @@ const PLED_LABELS = [
 ];
 
 const CASE_TYPE = [
-	{ value: -1, label: 'Off'},
-	{ value: 0, label: 'Ambient'},
-	{ value: 1, label: 'Linked'}
+	{ value: -1, label: 'Off' },
+	{ value: 0, label: 'Ambient' },
+	{ value: 1, label: 'Linked' },
 ];
 
 const defaultValue = {
@@ -184,21 +184,12 @@ const getLedButtons = (buttonLabels, map, excludeNulls, swapTpShareLabels) => {
 	);
 };
 
-const getLedMap = (buttonLabels, ledButtons, excludeNulls) => {
+const createLedMap = (ledButtons, clear) => {
 	if (!ledButtons) return;
-
-	const buttons = getButtonLabels(buttonLabels, false);
-	const map = Object.keys(buttons)
-		.filter((p) => p !== 'label' && p !== 'value')
-		.filter((p) => (excludeNulls ? ledButtons[p].value > -1 : true))
-		.reduce((p, n) => {
-			p[n] = null;
-			return p;
-		}, {});
-
-	for (let i = 0; i < ledButtons.length; i++) map[ledButtons[i].id] = i;
-
-	return map;
+	return ledButtons.reduce(
+		(acc, btn) => ({ ...acc, [btn.id]: clear ? null : btn.value }),
+		{},
+	);
 };
 
 const FormContext = ({
@@ -209,30 +200,26 @@ const FormContext = ({
 }) => {
 	const { setValues } = useFormikContext();
 	const { setLoading } = useContext(AppContext);
+	const [buttonMap, setButtonMap] = useState(ledButtonMap);
 
 	useEffect(() => {
 		async function fetchData() {
 			const data = await WebApi.getLedOptions(setLoading);
-			const dataSources = createDataSource(
-				data.ledButtonMap,
-				buttonLabelType,
-				swapTpShareLabels,
-			);
-			setDataSources(dataSources);
+
+			setButtonMap(data.ledButtonMap);
 			setValues(data);
 		}
-
 		fetchData();
 	}, []);
 
 	useEffect(() => {
 		const dataSources = createDataSource(
-			ledButtonMap,
+			buttonMap,
 			buttonLabelType,
 			swapTpShareLabels,
 		);
 		setDataSources(dataSources);
-	}, [buttonLabelType, swapTpShareLabels]);
+	}, [buttonMap, buttonLabelType, swapTpShareLabels]);
 
 	return null;
 };
@@ -262,15 +249,10 @@ export default function LEDConfigPage() {
 	const ledOrderChanged = (setFieldValue, ledOrderArrays, ledsPerButton) => {
 		if (ledOrderArrays.length === 2) {
 			setRgbLedStartIndex(ledOrderArrays[1].length * (ledsPerButton || 0));
-			setFieldValue(
-				'ledButtonMap',
-				getLedMap(buttonLabelType, ledOrderArrays[1]),
-			);
-			console.log(
-				'new start index: ',
-				ledOrderArrays[1].length * (ledsPerButton || 0),
-				ledOrderArrays,
-			);
+			setFieldValue('ledButtonMap', {
+				...createLedMap(ledOrderArrays[0], true),
+				...createLedMap(ledOrderArrays[1], false),
+			});
 		}
 	};
 
