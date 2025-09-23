@@ -264,7 +264,6 @@ const AUX_BUTTONS = ['S1', 'S2', 'L3', 'R3', 'A1', 'A2'];
 const AUX_BUTTONS_STICKLESS_13 = ['S1', 'S2', 'L3', 'R3', 'A2'];
 const AUX_BUTTONS_STICKLESS_14 = ['S1', 'S2', 'A1', 'A2'];
 const AUX_BUTTONS_STICKLESS_16 = ['S1', 'S2'];
-const AUX_BUTTONS_STICKLESS_16_A = ['S1', 'S2'];
 const MAIN_BUTTONS = [
 	'Up',
 	'Down',
@@ -311,24 +310,6 @@ const MAIN_BUTTONS_STICKLESS_14 = [
 	'R3',
 ];
 const MAIN_BUTTONS_STICKLESS_16 = [
-	'Up',
-	'A1',
-	'Down',
-	'Left',
-	'Right',
-	'B1',
-	'B2',
-	'B3',
-	'B4',
-	'L1',
-	'R1',
-	'L2',
-	'R2',
-	'R3',
-	'L3',
-	'A2',
-];
-const MAIN_BUTTONS_STICKLESS_16_A = [
 	'Up',
 	'A1',
 	'Down',
@@ -395,17 +376,6 @@ const STICKLESS_16_LAYOUT = [
 	[null, 'Left', null, null],
 	['A1', 'Down', null, null],
 	[null, 'Right', null, 'L3'],
-	['A2', 'B3', 'B1', 'Up'],
-	[null, 'B4', 'B2', 'R3'],
-	[null, 'R1', 'R2', null],
-	[null, 'L1', 'L2', null],
-];
-
-const STICKLESS_16_A_LAYOUT = [
-	['L3', null, null, null],
-	[null, 'Left', null, null],
-	['A1', 'Down', null, null],
-	[null, 'Right', null, null],
 	['A2', 'B3', 'B1', 'Up'],
 	[null, 'B4', 'B2', 'R3'],
 	[null, 'R1', 'R2', null],
@@ -590,7 +560,7 @@ export const BUTTON_LAYOUTS = [
 		mainButtons: MAIN_BUTTONS,
 	},
 	{
-		label: 'Pop\'n Music',
+		label: "Pop'n Music",
 		value: 20,
 		stickLayout: 'standard',
 		matrix: STICK_LAYOUT,
@@ -740,7 +710,7 @@ export const BUTTON_LAYOUTS = [
 		matrix: STICK_LAYOUT,
 		auxButtons: AUX_BUTTONS,
 		mainButtons: MAIN_BUTTONS,
-	}
+	},
 ];
 
 export const BUTTON_MASKS = [

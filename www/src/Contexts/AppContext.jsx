@@ -108,7 +108,6 @@ export const AppContextProvider = ({ children, ...props }) => {
 		buttonLabelType: newType,
 		swapTpShareLabels: newSwap,
 	}) => {
-		console.log('buttonLabelType is', newType);
 		newType && localStorage.setItem('buttonLabelType', newType);
 		newSwap !== undefined &&
 			localStorage.setItem('swapTpShareLabels', parseBoolean(newSwap));
@@ -194,28 +193,24 @@ export const AppContextProvider = ({ children, ...props }) => {
 	const updateUsedPins = async () => {
 		const data = await WebApi.getUsedPins(setLoading);
 		setUsedPins(data.usedPins);
-		console.log('usedPins updated:', data.usedPins);
 		return data;
 	};
 
 	const updateExpansionPins = async () => {
 		const data = await WebApi.getExpansionPins(setLoading);
 		setExpansionPins(data);
-		console.log('expansionPins updated:', data);
 		return data;
 	};
 
 	const updateHETriggerOptions = async () => {
 		const data = await WebApi.getHETriggerOptions(setLoading);
 		setHETriggerOptions(data);
-		console.log('HETrigger Options updated:', data);
 		return data;
 	};
 
 	const updatePeripherals = async () => {
 		const peripherals = await WebApi.getPeripheralOptions(setLoading);
 		setAvailablePeripherals(peripherals);
-		console.log('availablePeripherals updated:', peripherals);
 	};
 
 	useEffect(() => {
