@@ -16,6 +16,6 @@ export default {
 	'encoder-mode-right-analog-y': '右模拟摇杆 Y 轴',
 	'encoder-mode-left-trigger': '左扳机键',
 	'encoder-mode-right-trigger': '右扳机键',
-	'encoder-mode-dpad-x': '十字键 左/右',
-	'encoder-mode-dpad-y': '十字键 上/下',
+	'encoder-mode-dpad-x': '方向键 左/右',
+	'encoder-mode-dpad-y': '方向键 上/下',
 };
