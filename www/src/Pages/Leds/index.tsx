@@ -11,14 +11,11 @@ import {
 	Tab,
 	Tabs,
 	Tooltip,
-	Popover,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { FieldArray, FieldArrayRenderProps, Formik } from 'formik';
 import * as yup from 'yup';
 
-// import LightCoordsSection from './LightCoordsSection';
-// import AnimationSection from './AnimationSection';
 import useLedsPreview from '../../Hooks/useLedsPreview';
 import useLedStore, {
 	AnimationOptions,
@@ -29,7 +26,6 @@ import useLedStore, {
 import Section from '../../Components/Section';
 import FormControl from '../../Components/FormControl';
 import FormSelect from '../../Components/FormSelect';
-// import FormCheck from '../../Components/FormCheck';
 import InfoCircle from '../../Icons/InfoCircle';
 import { hexToInt, rgbIntToHex } from '../../Services/Utilities';
 import {
@@ -37,10 +33,9 @@ import {
 	ANIMATION_PRESSED_EFFECTS,
 } from '../../Data/Animations';
 import boards from '../../Data/Boards.json';
-import LEDColors from '../../Data/LEDColors';
-import CustomSelect from '../../Components/CustomSelect';
-import { StylesConfig } from 'react-select';
+
 import LightCoordsSection from './LightCoordsSection';
+import ButtonLayoutPreview from './ButtonLayoutPreview';
 
 const GPIO_PIN_LENGTH =
 	boards[import.meta.env.VITE_GP2040_BOARD as keyof typeof boards].maxPin + 1;
@@ -104,33 +99,6 @@ const schema = yup.object({
 		}),
 });
 
-const colorDot = (color = 'transparent') => ({
-	alignItems: 'center',
-	display: 'flex',
-
-	':before': {
-		backgroundColor: color,
-		borderRadius: 15,
-		content: '" "',
-		display: 'block',
-		flexShrink: 0,
-		marginRight: 8,
-		height: 15,
-		width: 15,
-	},
-});
-
-const colorStyles: StylesConfig<(typeof LEDColors)[number]> = {
-	control: (styles) => ({ ...styles, backgroundColor: 'white' }),
-	option: (styles, { data }) => ({ ...styles, ...colorDot(data.color) }),
-	input: (styles) => ({ ...styles }),
-	placeholder: (styles) => ({ ...styles, ...colorDot('#ccc') }),
-	singleValue: (styles, { data }) => ({
-		...styles,
-		...colorDot(data.color),
-	}),
-};
-
 const emptyAnimationProfile = {
 	bEnabled: 1,
 	baseCaseEffect: 0,
@@ -145,137 +113,6 @@ const emptyAnimationProfile = {
 	notPressedStaticColors: Array.from({ length: GPIO_PIN_LENGTH }, () => 0),
 	pressedStaticColors: Array.from({ length: GPIO_PIN_LENGTH }, () => 1),
 };
-
-const getViewBox = (lights: { xCoord: number; yCoord: number }[]) =>
-	lights.reduce(
-		(acc, light) => ({
-			minX: Math.min(acc.minX, light.xCoord),
-			minY: Math.min(acc.minY, light.yCoord),
-			maxX: Math.max(acc.maxX, light.xCoord),
-			maxY: Math.max(acc.maxY, light.yCoord),
-		}),
-		{ minX: Infinity, minY: Infinity, maxX: -Infinity, maxY: -Infinity },
-	);
-
-const LedLayoutPreview = memo(function LedLayoutPreview({
-	pressedStaticColors,
-	notPressedStaticColors,
-	profileIndex,
-	setFieldValue,
-	customColors = [],
-	Lights,
-}: {
-	pressedStaticColors: number[];
-	notPressedStaticColors: number[];
-	profileIndex: number;
-	customColors?: number[];
-	setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
-	Lights: Light[];
-}) {
-	const { t } = useTranslation('');
-	const { minX, minY, maxX, maxY } = getViewBox(Lights);
-
-	const lightSize = 0.8;
-	const strokeWidth = 0.05;
-	const padding = lightSize + strokeWidth;
-	const viewBoxX = minX - padding;
-	const viewBoxY = minY - padding;
-	const viewBoxWidth = maxX - minX + padding * 2;
-	const viewBoxHeight = maxY - minY + padding * 2;
-
-	const customColorOptions = customColors.map((color, index) => ({
-		value: LEDColors.length + index,
-		label: `Custom ${index + 1}`,
-		color: rgbIntToHex(color),
-	}));
-	const colorOptions = [...LEDColors, ...customColorOptions];
-
-	return (
-		<Row className="justify-content-center">
-			<Col lg={8}>
-				<div className="p-3 ">
-					<svg
-						width="100%"
-						viewBox={`${viewBoxX} ${viewBoxY} ${viewBoxWidth} ${viewBoxHeight}`}
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						{Lights.filter((light) => light.lightType !== 1).map(
-							(light, index) => (
-								<OverlayTrigger
-									key={`light-${index}`}
-									trigger="click"
-									placement="auto"
-									rootClose
-									overlay={
-										<Popover>
-											<Popover.Header as="h3">Light {index + 1}</Popover.Header>
-											<Popover.Body>
-												<div style={{ minWidth: 200 }}>
-													<p>Idle color</p>
-													<CustomSelect
-														options={colorOptions}
-														styles={colorStyles}
-														isMulti={false}
-														onChange={(selected) => {
-															setFieldValue(
-																`AnimationOptions.profiles.${profileIndex}.notPressedStaticColors.${light.GPIOPinorCaseChainIndex}`,
-																selected?.value || 0,
-															);
-														}}
-														value={
-															colorOptions[
-																notPressedStaticColors[
-																	light.GPIOPinorCaseChainIndex
-																]
-															] || null
-														}
-													/>
-													<p className="mt-3">Pressed color</p>
-													<CustomSelect
-														options={colorOptions}
-														styles={colorStyles}
-														isMulti={false}
-														onChange={(selected) => {
-															setFieldValue(
-																`AnimationOptions.profiles.${profileIndex}.pressedStaticColors.${light.GPIOPinorCaseChainIndex}`,
-																selected?.value || 0,
-															);
-														}}
-														value={
-															colorOptions[
-																pressedStaticColors[
-																	light.GPIOPinorCaseChainIndex
-																]
-															] || null
-														}
-													/>
-												</div>
-											</Popover.Body>
-										</Popover>
-									}
-								>
-									<circle
-										key={`light-${index}`}
-										cx={light.xCoord}
-										cy={light.yCoord}
-										r={lightSize}
-										fill={
-											colorOptions[
-												notPressedStaticColors[light.GPIOPinorCaseChainIndex]
-											]?.color || 'black'
-										}
-										stroke="currentColor"
-										strokeWidth={strokeWidth}
-									/>
-								</OverlayTrigger>
-							),
-						)}
-					</svg>
-				</div>
-			</Col>
-		</Row>
-	);
-});
 
 const ColorPickerList = memo(function ColorPickerList({
 	colors,
@@ -310,12 +147,7 @@ export default function Leds() {
 	const { t } = useTranslation('');
 	const { fetchLedOptions, saveAnimationOptions, saveLightOptions } =
 		useLedStore();
-	const {
-		activateLedsOnId,
-		activateLedsChase,
-		activateLedsProfile,
-		turnOffLeds,
-	} = useLedsPreview();
+	const { activateLedsProfile, turnOffLeds } = useLedsPreview();
 
 	const AnimationOptions = useLedStore((state) => state.AnimationOptions);
 	const Lights = useLedStore((state) => state.Lights);
@@ -366,74 +198,28 @@ export default function Leds() {
 			validationSchema={schema}
 			onSubmit={onSuccess}
 			initialValues={{ AnimationOptions, Lights }}
-			validateOnChange={false}
+			validateOnChange={true}
 		>
-			{({ handleSubmit, handleChange, values, errors, setFieldValue, setValues }) =>
-				console.log(values, errors) || (
-					<Form onSubmit={handleSubmit}>
-						<Section title="Led configuration">
-							<Row className="mb-3">
-								<Col md={6} className="d-flex flex-column justify-content-end">
-									<FormSelect
-										label={'Preview configured profile'}
-										className="form-select-sm"
-										groupClassName="mb-3"
-										value={previewProfileIndex}
-										onChange={(e) => {
-											setPreviewProfileIndex(parseInt(e.target.value));
-										}}
-									>
-										{values.AnimationOptions.profiles.map((_, profileIndex) => (
-											<option
-												key={`profile-select-${profileIndex}`}
-												value={profileIndex}
-											>
-												{t('Leds:profile-number', {
-													profileNumber: profileIndex + 1,
-												})}
-											</option>
-										))}
-									</FormSelect>
-									<Button
-										variant="secondary"
-										onClick={() => {
-											activateLedsProfile(
-												values.AnimationOptions.profiles[previewProfileIndex],
-											);
-										}}
-									>
-										Profile Test
-									</Button>
-								</Col>
-								<Col md={6} className="d-flex flex-column justify-content-end">
-									<p>Turns off all the lights</p>
-									<Button
-										variant="danger"
-										onClick={() => {
-											turnOffLeds();
-										}}
-									>
-										Lights Off
-									</Button>
-								</Col>
-							</Row>
-							<hr />
-
-							<Row>
+			{({
+				handleSubmit,
+				handleChange,
+				values,
+				errors,
+				setFieldValue,
+				setValues,
+			}) => (
+				<Form onSubmit={handleSubmit}>
+					<Section title="Led configuration">
+						<Row className="mb-3">
+							<Col md={6} className="d-flex flex-column justify-content-end">
 								<FormSelect
-									label={t('Leds:profile-label')}
-									name="AnimationOptions.baseProfileIndex"
+									label={'Preview configured profile'}
 									className="form-select-sm"
-									groupClassName="col-sm-4 mb-3"
-									value={values.AnimationOptions.baseProfileIndex}
-									error={errors.AnimationOptions?.baseProfileIndex}
-									isInvalid={Boolean(errors.AnimationOptions?.baseProfileIndex)}
-									onChange={(e) =>
-										setFieldValue(
-											'AnimationOptions.baseProfileIndex',
-											parseInt(e.target.value),
-										)
-									}
+									groupClassName="mb-3"
+									value={previewProfileIndex}
+									onChange={(e) => {
+										setPreviewProfileIndex(parseInt(e.target.value));
+									}}
 								>
 									{values.AnimationOptions.profiles.map((_, profileIndex) => (
 										<option
@@ -446,350 +232,373 @@ export default function Leds() {
 										</option>
 									))}
 								</FormSelect>
+								<Button
+									variant="secondary"
+									onClick={() => {
+										activateLedsProfile(
+											values.AnimationOptions.profiles[previewProfileIndex],
+										);
+									}}
+								>
+									Profile Test
+								</Button>
+							</Col>
+							<Col md={6} className="d-flex flex-column justify-content-end">
+								<p>Turns off all the lights</p>
+								<Button
+									variant="danger"
+									onClick={() => {
+										turnOffLeds();
+									}}
+								>
+									Lights Off
+								</Button>
+							</Col>
+						</Row>
+						<hr />
 
-								<FormControl
-									type="number"
-									label={'Brightness'}
-									name="AnimationOptions.brightness"
-									className="form-control-sm"
-									groupClassName="col-sm-4 mb-3"
-									value={values.AnimationOptions.brightness}
-									error={errors.AnimationOptions?.brightness}
-									isInvalid={Boolean(errors.AnimationOptions?.brightness)}
-									onChange={handleChange}
-									min={0}
-									max={100}
-								/>
-
-								<FormControl
-									type="number"
-									label={t('Leds:idle-timout-label')}
-									name="AnimationOptions.idletimeout"
-									className="form-control-sm"
-									groupClassName="col-sm-4 mb-3"
-									value={values.AnimationOptions.idletimeout}
-									error={errors.AnimationOptions?.idletimeout}
-									isInvalid={Boolean(errors.AnimationOptions?.idletimeout)}
-									onChange={handleChange}
-									min={0}
-									max={300}
-								/>
-							</Row>
-							<FormGroup>
-								<Form.Label>{t('Leds:custom-color-label')}</Form.Label>
-								<FieldArray
-									name="AnimationOptions.customColors"
-									render={(arrayHelpers) => (
-										<ColorPickerList
-											colors={values.AnimationOptions.customColors}
-											replace={arrayHelpers.replace}
-										/>
-									)}
-								/>
-							</FormGroup>
-
-							<FieldArray
-								name="AnimationOptions.profiles"
-								render={(arrayHelpers) => (
-									<Tabs
-										activeKey={activeTab}
-										onSelect={(eventKey) => {
-											if (!eventKey) return;
-											if ('profile-add' === eventKey) {
-												arrayHelpers.push(emptyAnimationProfile);
-												setActiveTab(
-													`profile-${values.AnimationOptions.profiles.length}`,
-												);
-											} else {
-												setActiveTab(eventKey);
-											}
-										}}
-										className="my-3 pb-0"
+						<Row>
+							<FormSelect
+								label={t('Leds:profile-label')}
+								name="AnimationOptions.baseProfileIndex"
+								className="form-select-sm"
+								groupClassName="col-sm-4 mb-3"
+								value={values.AnimationOptions.baseProfileIndex}
+								error={errors.AnimationOptions?.baseProfileIndex}
+								isInvalid={Boolean(errors.AnimationOptions?.baseProfileIndex)}
+								onChange={(e) =>
+									setFieldValue(
+										'AnimationOptions.baseProfileIndex',
+										parseInt(e.target.value),
+									)
+								}
+							>
+								{values.AnimationOptions.profiles.map((_, profileIndex) => (
+									<option
+										key={`profile-select-${profileIndex}`}
+										value={profileIndex}
 									>
-										{values.AnimationOptions.profiles.map(
-											(profile, profileIndex) => (
-												<Tab
-													key={`profile-${profileIndex}`}
-													eventKey={`profile-${profileIndex}`}
-													title={t('Leds:profile-number', {
-														profileNumber: profileIndex + 1,
-													})}
-												>
-													<FormCheck
-														size={3}
-														name={`AnimationOptions.profiles.${profileIndex}.bEnabled`}
-														label={
-															<OverlayTrigger
-																overlay={
-																	<Tooltip>
-																		{t('Leds:switch-enabled-description')}
-																	</Tooltip>
-																}
-															>
-																<div className="d-flex gap-1">
-																	<label>{t('Common:switch-enabled')}</label>
-																	<InfoCircle />
-																</div>
-															</OverlayTrigger>
-														}
-														type="switch"
-														reverse
-														checked={Boolean(profile.bEnabled)}
-														onChange={() =>
-															setFieldValue(
-																`AnimationOptions.profiles.${profileIndex}.bEnabled`,
-																Number(!profile.bEnabled),
-															)
-														}
-													/>
-													<Row>
-														<FormSelect
-															label={t('Leds:case-animation-label')}
-															name={`AnimationOptions.profiles.${profileIndex}.baseCaseEffect`}
-															className="form-select-sm"
-															groupClassName="col-sm-4 mb-3"
-															value={Number(profile.baseCaseEffect)}
-															onChange={(e) =>
-																setFieldValue(
-																	`AnimationOptions.profiles.${profileIndex}.baseCaseEffect`,
-																	parseInt(e.target.value),
-																)
+										{t('Leds:profile-number', {
+											profileNumber: profileIndex + 1,
+										})}
+									</option>
+								))}
+							</FormSelect>
+
+							<FormControl
+								type="number"
+								label={'Brightness'}
+								name="AnimationOptions.brightness"
+								className="form-control-sm"
+								groupClassName="col-sm-4 mb-3"
+								value={values.AnimationOptions.brightness}
+								error={errors.AnimationOptions?.brightness}
+								isInvalid={Boolean(errors.AnimationOptions?.brightness)}
+								onChange={handleChange}
+								min={0}
+								max={100}
+							/>
+
+							<FormControl
+								type="number"
+								label={t('Leds:idle-timout-label')}
+								name="AnimationOptions.idletimeout"
+								className="form-control-sm"
+								groupClassName="col-sm-4 mb-3"
+								value={values.AnimationOptions.idletimeout}
+								error={errors.AnimationOptions?.idletimeout}
+								isInvalid={Boolean(errors.AnimationOptions?.idletimeout)}
+								onChange={handleChange}
+								min={0}
+								max={300}
+							/>
+						</Row>
+						<FormGroup>
+							<Form.Label>{t('Leds:custom-color-label')}</Form.Label>
+							<FieldArray
+								name="AnimationOptions.customColors"
+								render={(arrayHelpers) => (
+									<ColorPickerList
+										colors={values.AnimationOptions.customColors}
+										replace={arrayHelpers.replace}
+									/>
+								)}
+							/>
+						</FormGroup>
+
+						<FieldArray
+							name="AnimationOptions.profiles"
+							render={(arrayHelpers) => (
+								<Tabs
+									activeKey={activeTab}
+									onSelect={(eventKey) => {
+										if (!eventKey) return;
+										if ('profile-add' === eventKey) {
+											arrayHelpers.push(emptyAnimationProfile);
+											setActiveTab(
+												`profile-${values.AnimationOptions.profiles.length}`,
+											);
+										} else {
+											setActiveTab(eventKey);
+										}
+									}}
+									className="my-3 pb-0"
+								>
+									{values.AnimationOptions.profiles.map(
+										(profile, profileIndex) => (
+											<Tab
+												key={`profile-${profileIndex}`}
+												eventKey={`profile-${profileIndex}`}
+												title={t('Leds:profile-number', {
+													profileNumber: profileIndex + 1,
+												})}
+											>
+												<FormCheck
+													size={3}
+													name={`AnimationOptions.profiles.${profileIndex}.bEnabled`}
+													label={
+														<OverlayTrigger
+															overlay={
+																<Tooltip>
+																	{t('Leds:switch-enabled-description')}
+																</Tooltip>
 															}
 														>
-															{Object.entries(
-																ANIMATION_NON_PRESSED_EFFECTS,
-															).map(([key, value]) => (
+															<div className="d-flex gap-1">
+																<label>{t('Common:switch-enabled')}</label>
+																<InfoCircle />
+															</div>
+														</OverlayTrigger>
+													}
+													type="switch"
+													reverse
+													checked={Boolean(profile.bEnabled)}
+													onChange={() =>
+														setFieldValue(
+															`AnimationOptions.profiles.${profileIndex}.bEnabled`,
+															Number(!profile.bEnabled),
+														)
+													}
+												/>
+												<Row>
+													<FormSelect
+														label={t('Leds:case-animation-label')}
+														name={`AnimationOptions.profiles.${profileIndex}.baseCaseEffect`}
+														className="form-select-sm"
+														groupClassName="col-sm-4 mb-3"
+														value={Number(profile.baseCaseEffect)}
+														onChange={(e) =>
+															setFieldValue(
+																`AnimationOptions.profiles.${profileIndex}.baseCaseEffect`,
+																parseInt(e.target.value),
+															)
+														}
+													>
+														{Object.entries(ANIMATION_NON_PRESSED_EFFECTS).map(
+															([key, value]) => (
 																<option
 																	key={`baseCaseEffect-${key}`}
 																	value={value}
 																>
 																	{t(`Leds:animations.${key}`)}
 																</option>
-															))}
-														</FormSelect>
-														<FormSelect
-															label={t('Leds:pressed-animation-label')}
-															name={`AnimationOptions.profiles.${profileIndex}.basePressedEffect`}
-															className="form-select-sm"
-															groupClassName="col-sm-4 mb-3"
-															value={Number(profile.basePressedEffect)}
-															onChange={(e) =>
-																setFieldValue(
-																	`AnimationOptions.profiles.${profileIndex}.basePressedEffect`,
-																	parseInt(e.target.value),
-																)
-															}
-														>
-															{Object.entries(ANIMATION_PRESSED_EFFECTS).map(
-																([key, value]) => (
-																	<option
-																		key={`basePressedEffect-${key}`}
-																		value={value}
-																	>
-																		{t(`Leds:animations.${key}`)}
-																	</option>
-																),
-															)}
-														</FormSelect>
+															),
+														)}
+													</FormSelect>
+													<FormSelect
+														label={t('Leds:pressed-animation-label')}
+														name={`AnimationOptions.profiles.${profileIndex}.basePressedEffect`}
+														className="form-select-sm"
+														groupClassName="col-sm-4 mb-3"
+														value={Number(profile.basePressedEffect)}
+														onChange={(e) =>
+															setFieldValue(
+																`AnimationOptions.profiles.${profileIndex}.basePressedEffect`,
+																parseInt(e.target.value),
+															)
+														}
+													>
+														{Object.entries(ANIMATION_PRESSED_EFFECTS).map(
+															([key, value]) => (
+																<option
+																	key={`basePressedEffect-${key}`}
+																	value={value}
+																>
+																	{t(`Leds:animations.${key}`)}
+																</option>
+															),
+														)}
+													</FormSelect>
 
-														<FormSelect
-															label={t('Leds:idle-animation-label')}
-															name={`AnimationOptions.profiles.${profileIndex}.baseNonPressedEffect`}
-															className="form-select-sm"
-															groupClassName="col-sm-4 mb-3"
-															value={Number(profile.baseNonPressedEffect)}
-															onChange={(e) =>
-																setFieldValue(
-																	`AnimationOptions.profiles.${profileIndex}.baseNonPressedEffect`,
-																	parseInt(e.target.value),
-																)
-															}
-														>
-															{Object.entries(
-																ANIMATION_NON_PRESSED_EFFECTS,
-															).map(([key, value]) => (
+													<FormSelect
+														label={t('Leds:idle-animation-label')}
+														name={`AnimationOptions.profiles.${profileIndex}.baseNonPressedEffect`}
+														className="form-select-sm"
+														groupClassName="col-sm-4 mb-3"
+														value={Number(profile.baseNonPressedEffect)}
+														onChange={(e) =>
+															setFieldValue(
+																`AnimationOptions.profiles.${profileIndex}.baseNonPressedEffect`,
+																parseInt(e.target.value),
+															)
+														}
+													>
+														{Object.entries(ANIMATION_NON_PRESSED_EFFECTS).map(
+															([key, value]) => (
 																<option
 																	key={`baseNonPressedEffect-${key}`}
 																	value={value}
 																>
 																	{t(`Leds:animations.${key}`)}
 																</option>
-															))}
-														</FormSelect>
-													</Row>
-													<Row>
-														<div className="d-flex align-items-center col-sm-4 mb-3">
-															<FormCheck
-																type="switch"
-																name={`AnimationOptions.profiles.${profileIndex}.bUseCaseLightsInPressedAnimations`}
-																label={
-																	<label>
-																		{t(`Leds:switch-case-light-pressed-label`)}
-																	</label>
-																}
-																checked={Boolean(
-																	profile.bUseCaseLightsInPressedAnimations,
-																)}
-																onChange={() =>
-																	setFieldValue(
-																		`AnimationOptions.profiles.${profileIndex}.bUseCaseLightsInPressedAnimations`,
-																		Number(
-																			!profile.bUseCaseLightsInPressedAnimations,
-																		),
-																	)
-																}
-															/>
-														</div>
-
-														<FormControl
-															type="number"
-															label={t(`Leds:pressed-fade-out-time-label`)}
-															name={`AnimationOptions.profiles.${profileIndex}.buttonPressFadeOutTimeInMs`}
-															className="form-control-sm"
-															groupClassName="col-sm-4 mb-3"
-															value={profile.buttonPressFadeOutTimeInMs}
-															onChange={handleChange}
-														/>
-														<FormControl
-															type="number"
-															label={t('Leds:pressed-hold-time-label')}
-															name={`AnimationOptions.profiles.${profileIndex}.buttonPressHoldTimeInMs`}
-															className="form-control-sm"
-															groupClassName="col-sm-4 mb-3"
-															value={profile.buttonPressHoldTimeInMs}
-															onChange={handleChange}
-														/>
-													</Row>
-													<Row>
-														<FormControl
-															type="color"
-															label={t(`Leds:pressed-special-color-label`)}
-															name={`AnimationOptions.profiles.${profileIndex}.pressedSpecialColor`}
-															groupClassName="col-sm-4 mb-3"
-															className="form-control-sm p-0 border-0 mb-3"
-															defaultValue={rgbIntToHex(
-																profile.pressedSpecialColor,
+															),
+														)}
+													</FormSelect>
+												</Row>
+												<Row>
+													<div className="d-flex align-items-center col-sm-4 mb-3">
+														<FormCheck
+															type="switch"
+															name={`AnimationOptions.profiles.${profileIndex}.bUseCaseLightsInPressedAnimations`}
+															label={
+																<label>
+																	{t(`Leds:switch-case-light-pressed-label`)}
+																</label>
+															}
+															checked={Boolean(
+																profile.bUseCaseLightsInPressedAnimations,
 															)}
-															onBlur={(e) =>
+															onChange={() =>
 																setFieldValue(
-																	`AnimationOptions.profiles.${profileIndex}.pressedSpecialColor`,
-																	hexToInt(
-																		(e.target as HTMLInputElement).value,
+																	`AnimationOptions.profiles.${profileIndex}.bUseCaseLightsInPressedAnimations`,
+																	Number(
+																		!profile.bUseCaseLightsInPressedAnimations,
 																	),
 																)
 															}
 														/>
-														<FormControl
-															type="color"
-															label={t(`Leds:idle-special-color-label`)}
-															name={`AnimationOptions.profiles.${profileIndex}.nonPressedSpecialColor`}
-															groupClassName="col-sm-4 mb-3"
-															className="form-control-sm p-0 border-0 mb-3"
-															defaultValue={rgbIntToHex(
-																profile.nonPressedSpecialColor,
-															)}
-															error={
-																(
-																	errors.AnimationOptions?.profiles?.[
-																		profileIndex
-																	] as any
-																)?.nonPressedSpecialColor
-															}
-															isInvalid={Boolean(
-																(
-																	errors.AnimationOptions?.profiles?.[
-																		profileIndex
-																	] as any
-																)?.nonPressedSpecialColor,
-															)}
-															onBlur={(e) =>
-																setFieldValue(
-																	`AnimationOptions.profiles.${profileIndex}.nonPressedSpecialColor`,
-																	hexToInt(
-																		(e.target as HTMLInputElement).value,
-																	),
-																)
-															}
-														/>
-													</Row>
-													<hr />
+													</div>
 
-													<Form.Check
-														type="switch"
-														label="Advanced mode"
-														className='mb-3'
-														checked={advancedMode}
-														disabled={!hasLights}
-														onChange={(e) => setAdvancedMode(e.target.checked)}
+													<FormControl
+														type="number"
+														label={t(`Leds:pressed-fade-out-time-label`)}
+														name={`AnimationOptions.profiles.${profileIndex}.buttonPressFadeOutTimeInMs`}
+														className="form-control-sm"
+														groupClassName="col-sm-4 mb-3"
+														value={profile.buttonPressFadeOutTimeInMs}
+														onChange={handleChange}
 													/>
+													<FormControl
+														type="number"
+														label={t('Leds:pressed-hold-time-label')}
+														name={`AnimationOptions.profiles.${profileIndex}.buttonPressHoldTimeInMs`}
+														className="form-control-sm"
+														groupClassName="col-sm-4 mb-3"
+														value={profile.buttonPressHoldTimeInMs}
+														onChange={handleChange}
+													/>
+												</Row>
+												<Row>
+													<FormControl
+														type="color"
+														label={t(`Leds:pressed-special-color-label`)}
+														name={`AnimationOptions.profiles.${profileIndex}.pressedSpecialColor`}
+														groupClassName="col-sm-4 mb-3"
+														className="form-control-sm p-0 border-0 mb-3"
+														defaultValue={rgbIntToHex(
+															profile.pressedSpecialColor,
+														)}
+														onBlur={(e) =>
+															setFieldValue(
+																`AnimationOptions.profiles.${profileIndex}.pressedSpecialColor`,
+																hexToInt((e.target as HTMLInputElement).value),
+															)
+														}
+													/>
+													<FormControl
+														type="color"
+														label={t(`Leds:idle-special-color-label`)}
+														name={`AnimationOptions.profiles.${profileIndex}.nonPressedSpecialColor`}
+														groupClassName="col-sm-4 mb-3"
+														className="form-control-sm p-0 border-0 mb-3"
+														defaultValue={rgbIntToHex(
+															profile.nonPressedSpecialColor,
+														)}
+														error={
+															(
+																errors.AnimationOptions?.profiles?.[
+																	profileIndex
+																] as any
+															)?.nonPressedSpecialColor
+														}
+														isInvalid={Boolean(
+															(
+																errors.AnimationOptions?.profiles?.[
+																	profileIndex
+																] as any
+															)?.nonPressedSpecialColor,
+														)}
+														onBlur={(e) =>
+															setFieldValue(
+																`AnimationOptions.profiles.${profileIndex}.nonPressedSpecialColor`,
+																hexToInt((e.target as HTMLInputElement).value),
+															)
+														}
+													/>
+												</Row>
+												<hr />
 
-													{advancedMode ? (
-														<>
-															<Alert variant="warning">
-																Changing advanced configuration options can
-																break your LED setup. Proceed with caution.
-															</Alert>
-															<LightCoordsSection
-																errors={errors}
-																values={values}
-																handleChange={handleChange}
-																setFieldValue={setFieldValue}
-																setValues={setValues}
-															/>
-														</>
-													) : (
-														<LedLayoutPreview
-															pressedStaticColors={profile.pressedStaticColors}
-															notPressedStaticColors={
-																profile.notPressedStaticColors
-															}
-															customColors={
-																values.AnimationOptions.customColors
-															}
-															profileIndex={profileIndex}
-															setFieldValue={setFieldValue}
-															Lights={values.Lights}
-														/>
-													)}
-												</Tab>
-											),
-										)}
+												<Form.Check
+													type="switch"
+													label="Advanced mode"
+													className="mb-3"
+													checked={advancedMode}
+													disabled={!hasLights}
+													onChange={(e) => setAdvancedMode(e.target.checked)}
+												/>
 
-										{values.AnimationOptions.profiles.length !==
-											MAX_ANIMATION_PROFILES && (
-											<Tab
-												key={`add-profile`}
-												eventKey={`profile-add`}
-												title={`+ Add Profile`}
-											/>
-										)}
-									</Tabs>
-								)}
-							/>
-						</Section>
-						<Button className="mb-3" type="submit">
-							{t('Common:button-save-label')}
-						</Button>
-						{saveMessage && <Alert variant="info">{saveMessage}</Alert>}
-					</Form>
-				)
-			}
+												{advancedMode ? (
+													<LightCoordsSection
+														errors={errors}
+														values={values}
+														handleChange={handleChange}
+														setFieldValue={setFieldValue}
+														setValues={setValues}
+													/>
+												) : (
+													<ButtonLayoutPreview
+														pressedStaticColors={profile.pressedStaticColors}
+														notPressedStaticColors={
+															profile.notPressedStaticColors
+														}
+														customColors={values.AnimationOptions.customColors}
+														profileIndex={profileIndex}
+														setFieldValue={setFieldValue}
+														Lights={values.Lights}
+													/>
+												)}
+											</Tab>
+										),
+									)}
+
+									{values.AnimationOptions.profiles.length !==
+										MAX_ANIMATION_PROFILES && (
+										<Tab
+											key={`add-profile`}
+											eventKey={`profile-add`}
+											title={`+ Add Profile`}
+										/>
+									)}
+								</Tabs>
+							)}
+						/>
+					</Section>
+					<Button className="mb-3" type="submit">
+						{t('Common:button-save-label')}
+					</Button>
+					{saveMessage && <Alert variant="info">{saveMessage}</Alert>}
+				</Form>
+			)}
 		</Formik>
-		/* <Form.Check
-				type="switch"
-				label="Advanced mode"
-				checked={advancedMode}
-				disabled={!hasLights}
-				onChange={(e) => setAdvancedMode(e.target.checked)}
-			/>
-			<hr />
-
-			<Alert variant="warning">
-				Changing advanced configuration options can break your LED setup.
-				Proceed with caution.
-			</Alert> */
-		// 	<AnimationSection advanced />
-		// 	<LightCoordsSection />
-		// </>
 	);
 }

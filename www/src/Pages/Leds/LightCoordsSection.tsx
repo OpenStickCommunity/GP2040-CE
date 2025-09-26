@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import {
 	useSensor,
 	MouseSensor,
@@ -12,14 +12,13 @@ import {
 	snapCenterToCursor,
 	restrictToParentElement,
 } from '@dnd-kit/modifiers';
-import { Formik, FormikErrors } from 'formik';
-import * as yup from 'yup';
-import { Row, Col, Button, Alert, Form } from 'react-bootstrap';
+import { FormikErrors } from 'formik';
+import { Row, Col, Button, Alert } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 import FormSelect from '../../Components/FormSelect';
-import { LightIndicator } from '../../Components/LightIndicator';
-import useLedStore, {
+import { LightIndicator } from './LightIndicator';
+import  {
 	AnimationOptions,
 	Light,
 	MAX_CASE_LIGHTS,
@@ -117,6 +116,10 @@ export default function LightCoordsSection({
 
 	return (
 		<div>
+			<Alert variant="warning">
+				Changing advanced configuration options can break your LED setup.
+				Proceed with caution.
+			</Alert>
 			<Row>
 				<Col md={12}>
 					<p>
@@ -382,7 +385,9 @@ export default function LightCoordsSection({
 					<hr className="mt-3" />
 
 					{Array.isArray(errors.Lights) && errors.Lights.some(Boolean) && (
-						<Alert variant="danger">Verify light settings</Alert>
+						<Alert variant="danger">
+							{errors.Lights.filter(Boolean).join(', ')}
+						</Alert>
 					)}
 				</Col>
 				<Col md={9} className="mt-3 mt-md-0">
