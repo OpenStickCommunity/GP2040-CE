@@ -1,0 +1,21 @@
+export default {
+	'language-selector': {
+		en: 'English (US)',
+		nl: 'Nederlands (Dutch)',
+		'pt-BR': 'Português Brasil (Brazilian Portuguese)',
+		'zh-CN': '简体中文 (Simplified Chinese)',
+		'de-DE': 'Deutsch (German)',
+		'ja-JP': '日本語 (Japanese)',
+		'ko-KR': '한국어 (Korean)',
+		'es-MX': 'Español (Mexican Spanish)',
+		'tr-TR': 'Türkçe (Türkiye)',
+	},
+	'color-scheme': {
+		dark: 'Koyu',
+		light: 'Açık',
+		auto: 'Otomatik',
+	},
+	'keyboard-mapper': {
+		'key-header': 'Tuş',
+	},
+};
