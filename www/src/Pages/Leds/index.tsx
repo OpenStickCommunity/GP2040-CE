@@ -556,7 +556,6 @@ export default function Leds() {
 													disabled={!hasLights}
 													onChange={(e) => setAdvancedMode(e.target.checked)}
 												/>
-
 												{advancedMode ? (
 													<LightCoordsSection
 														errors={errors}

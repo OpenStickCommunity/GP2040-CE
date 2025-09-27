@@ -1,12 +1,13 @@
+import { ReactElement, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { components, ControlProps, Props, StylesConfig } from 'react-select';
+import { StylesConfig } from 'react-select';
 import {
+	Alert,
+	Button,
 	Col,
-	ContainerProps,
 	OverlayTrigger,
 	Popover,
 	Row,
-	Tooltip,
 } from 'react-bootstrap';
 
 import LEDColors from '../../Data/LEDColors';
@@ -29,9 +30,6 @@ const colorDot = (color = 'transparent') => ({
 		width: 15,
 	},
 });
-
-import type { GroupBase } from 'react-select';
-
 
 const colorStyles: StylesConfig<(typeof LEDColors)[number]> = {
 	control: (styles) => ({ ...styles, backgroundColor: 'white' }),
@@ -59,9 +57,34 @@ const hasNeighbors = (light: Light, lights: Light[]) =>
 	lights.some(
 		(other) =>
 			other !== light &&
+			other.lightType === light.lightType &&
 			Math.abs(other.xCoord - light.xCoord) <= 1 &&
 			Math.abs(other.yCoord - light.yCoord) <= 1,
 	);
+
+const ColorSelectOverlay = ({
+	title,
+	content,
+	children,
+}: {
+	title: string;
+	content: React.ReactNode;
+	children: ReactElement;
+}) => (
+	<OverlayTrigger
+		trigger="click"
+		placement="auto"
+		rootClose
+		overlay={
+			<Popover>
+				<Popover.Header as="h3">{title}</Popover.Header>
+				<Popover.Body>{content}</Popover.Body>
+			</Popover>
+		}
+	>
+		{children}
+	</OverlayTrigger>
+);
 
 function ButtonLayoutPreview({
 	pressedStaticColors,
@@ -80,9 +103,10 @@ function ButtonLayoutPreview({
 }) {
 	const { t } = useTranslation('');
 	const { minX, minY, maxX, maxY } = getViewBox(Lights);
+	const [pressed, setPressed] = useState(false);
 
-	const lightSize = 0.8;
-	const strokeWidth = 0.05;
+	const lightSize = 0.83;
+	const strokeWidth = 0.03;
 	const padding = 1;
 	const viewBoxX = minX - padding;
 	const viewBoxY = minY - padding;
@@ -96,115 +120,163 @@ function ButtonLayoutPreview({
 	}));
 	const colorOptions = [...LEDColors, ...customColorOptions];
 
+	const handlePressedShow = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+		if (e.button === 2) setPressed(true);
+	};
+
+	const handlePressedHide = () => {
+		setPressed(false);
+	};
+
 	return (
-		<>
-			<Row className="justify-content-center">
+		<div>
+			<p>
+				Here you can see a preview of your button layout and the colors assigned
+				to each GPIO pin.
+				<br />
+				If you have buttons assigned to the same GPIO they will share
+				color.
+			</p>
+			<ul>
+				<li>Click a button to change its idle and pressed color.</li>
+				<li>Right-click on the layout to preview the pressed colors.</li>
+			</ul>
+			<Row
+				className="justify-content-center "
+				onMouseDown={(e) => handlePressedShow(e)}
+				onMouseUp={() => handlePressedHide()}
+				onMouseLeave={() => handlePressedHide()}
+				onContextMenu={(e) => e.preventDefault()}
+			>
 				<Col lg={8}>
-					<div className="p-3">
-						<svg
-							width="100%"
-							viewBox={`${viewBoxX} ${viewBoxY} ${viewBoxWidth} ${viewBoxHeight}`}
-							xmlns="http://www.w3.org/2000/svg"
-						>
-							{Lights.filter((light) => light.lightType !== 1).map(
-								(light, index) => (
-									<OverlayTrigger
-										key={`light-${index}`}
-										trigger="click"
-										placement="auto"
-										rootClose
-										overlay={
-											<Popover>
-												<Popover.Header as="h3">{`GPIO ${light.GPIOPinorCaseChainIndex}`}</Popover.Header>
-												<Popover.Body>
-													<div style={{ minWidth: 200 }}>
-														<p>Idle color</p>
-														<CustomSelect
-															options={colorOptions}
-															styles={colorStyles}
-															isMulti={false}
-															onChange={(selected) => {
-																setFieldValue(
-																	`AnimationOptions.profiles.${profileIndex}.notPressedStaticColors.${light.GPIOPinorCaseChainIndex}`,
-																	selected?.value || 0,
-																);
-															}}
-															value={
-																colorOptions[
-																	notPressedStaticColors[
-																		light.GPIOPinorCaseChainIndex
-																	]
-																] || null
-															}
-														/>
-														<p className="mt-3">Pressed color</p>
-														<CustomSelect
-															options={colorOptions}
-															styles={colorStyles}
-															isMulti={false}
-															onChange={(selected) => {
-																setFieldValue(
-																	`AnimationOptions.profiles.${profileIndex}.pressedStaticColors.${light.GPIOPinorCaseChainIndex}`,
-																	selected?.value || 0,
-																);
-															}}
-															value={
-																colorOptions[
-																	pressedStaticColors[
-																		light.GPIOPinorCaseChainIndex
-																	]
-																] || null
-															}
-														/>
-													</div>
-												</Popover.Body>
-											</Popover>
-										}
-									>
-										<g style={{ cursor: 'pointer' }}>
-											<circle
-												key={`light-${index}`}
-												cx={light.xCoord}
-												cy={light.yCoord}
-												r={
-													hasNeighbors(light, Lights)
-														? lightSize / 1.8
-														: lightSize
-												}
-												fill={
+					<svg
+						width="100%"
+						viewBox={`${viewBoxX} ${viewBoxY} ${viewBoxWidth} ${viewBoxHeight}`}
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						{Lights.filter((light) => light.lightType !== 1).map(
+							(light, index) => (
+								<ColorSelectOverlay
+									title={`GPIO ${light.GPIOPinorCaseChainIndex}`}
+									content={
+										<div style={{ minWidth: 200 }}>
+											<p>Idle color</p>
+											<CustomSelect
+												options={colorOptions}
+												styles={colorStyles}
+												isMulti={false}
+												onChange={(selected) => {
+													setFieldValue(
+														`AnimationOptions.profiles.${profileIndex}.notPressedStaticColors.${light.GPIOPinorCaseChainIndex}`,
+														selected?.value || 0,
+													);
+												}}
+												value={
 													colorOptions[
 														notPressedStaticColors[
 															light.GPIOPinorCaseChainIndex
 														]
-													]?.color || 'black'
+													] || null
 												}
-												stroke="currentColor"
-												strokeWidth={strokeWidth}
 											/>
-											<text
-												x={light.xCoord}
-												y={light.yCoord}
-												textAnchor="middle"
-												fill="white"
-												dominantBaseline="central"
-												style={{
-													fontSize: 0.3,
-													fontWeight: 'bold',
-													textShadow: '0 0 3px black',
+											<p className="mt-3">Pressed color</p>
+											<CustomSelect
+												options={colorOptions}
+												styles={colorStyles}
+												isMulti={false}
+												onChange={(selected) => {
+													setFieldValue(
+														`AnimationOptions.profiles.${profileIndex}.pressedStaticColors.${light.GPIOPinorCaseChainIndex}`,
+														selected?.value || 0,
+													);
 												}}
-											>
-												{`GP${light.GPIOPinorCaseChainIndex}`}
-											</text>
-										</g>
-									</OverlayTrigger>
-								),
-							)}
-						</svg>
-					</div>
+												value={
+													colorOptions[
+														pressedStaticColors[light.GPIOPinorCaseChainIndex]
+													] || null
+												}
+											/>
+										</div>
+									}
+								>
+									<g style={{ cursor: 'pointer' }}>
+										<circle
+											key={`light-${index}`}
+											cx={light.xCoord}
+											cy={light.yCoord}
+											r={
+												hasNeighbors(light, Lights)
+													? lightSize / 1.8
+													: lightSize
+											}
+											fill={
+												colorOptions[
+													pressed
+														? pressedStaticColors[light.GPIOPinorCaseChainIndex]
+														: notPressedStaticColors[
+																light.GPIOPinorCaseChainIndex
+															]
+												].color
+											}
+											stroke="currentColor"
+											strokeWidth={strokeWidth}
+										/>
+										<text
+											x={light.xCoord}
+											y={light.yCoord}
+											textAnchor="middle"
+											fill="white"
+											dominantBaseline="central"
+											style={{
+												fontSize: 0.3,
+												fontWeight: 'bold',
+												textShadow: '0 0 3px black',
+											}}
+										>
+											{`GP${light.GPIOPinorCaseChainIndex}`}
+										</text>
+									</g>
+								</ColorSelectOverlay>
+							),
+						)}
+					</svg>
 				</Col>
 			</Row>
 
-		</>
+			<ColorSelectOverlay
+				title={'Set all colors'}
+				content={
+					<div style={{ minWidth: 200 }}>
+						<p>Idle color</p>
+						<CustomSelect
+							options={colorOptions}
+							styles={colorStyles}
+							isMulti={false}
+							onChange={(selected) => {
+								setFieldValue(
+									`AnimationOptions.profiles.${profileIndex}.notPressedStaticColors`,
+									notPressedStaticColors.map(() => selected?.value || 0),
+								);
+							}}
+						/>
+						<p className="mt-3">Pressed color</p>
+						<CustomSelect
+							options={colorOptions}
+							styles={colorStyles}
+							isMulti={false}
+							onChange={(selected) => {
+								setFieldValue(
+									`AnimationOptions.profiles.${profileIndex}.pressedStaticColors`,
+									pressedStaticColors.map(() => selected?.value || 0),
+								);
+							}}
+						/>
+					</div>
+				}
+			>
+				<Button variant="secondary">Set all colors</Button>
+			</ColorSelectOverlay>
+		</div>
 	);
 }
 
