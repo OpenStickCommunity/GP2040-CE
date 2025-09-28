@@ -1,8 +1,6 @@
 import { ReactElement, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StylesConfig } from 'react-select';
 import {
-	Alert,
 	Button,
 	Col,
 	OverlayTrigger,
@@ -11,7 +9,6 @@ import {
 } from 'react-bootstrap';
 
 import LEDColors from '../../Data/LEDColors';
-import CustomSelect from '../../Components/CustomSelect';
 import { Light } from '../../Store/useLedStore';
 import { rgbIntToHex } from '../../Services/Utilities';
 import ColorSelector from './ColorSlector';

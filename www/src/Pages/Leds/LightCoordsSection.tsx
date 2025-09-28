@@ -241,34 +241,6 @@ export default function LightCoordsSection({
 					</Button>
 				</Col>
 			</Row>
-			{/* <Row className="mb-3">
-				<Col md={6} className="d-flex flex-column justify-content-end">
-					<p>
-						Run a chase animation from left to right and then top to bottom to
-						help verify correct grid positioning of the lights
-					</p>
-					<Button
-						variant="secondary"
-						onClick={() => {
-							activateLedsChase();
-						}}
-					>
-						Layout Test
-					</Button>
-				</Col>
-
-				<Col md={6} className="d-flex flex-column justify-content-end">
-					<p>Turns off all the lights</p>
-					<Button
-						variant="danger"
-						onClick={() => {
-							turnOffLeds();
-						}}
-					>
-						Lights Off
-					</Button>
-				</Col>
-			</Row> */}
 			<hr />
 			<Row className="mb-3">
 				<Col md={3}>
