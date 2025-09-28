@@ -8,7 +8,7 @@ export default {
 		'ja-JP': '日本語 (Japonca)',
 		'ko-KR': '한국어 (Korece)',
 		'es-MX': 'Español (Meksika İspanyolcası)',
-		'tr-TR': 'Türkçe (Türkiye)',
+		'tr-TR': 'Türkçe',
 	},
 	'color-scheme': {
 		dark: 'Koyu',
