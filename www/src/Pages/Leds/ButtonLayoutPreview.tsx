@@ -14,33 +14,7 @@ import LEDColors from '../../Data/LEDColors';
 import CustomSelect from '../../Components/CustomSelect';
 import { Light } from '../../Store/useLedStore';
 import { rgbIntToHex } from '../../Services/Utilities';
-
-const colorDot = (color = 'transparent') => ({
-	alignItems: 'center',
-	display: 'flex',
-
-	':before': {
-		backgroundColor: color,
-		borderRadius: 15,
-		content: '" "',
-		display: 'block',
-		flexShrink: 0,
-		marginRight: 8,
-		height: 15,
-		width: 15,
-	},
-});
-
-const colorStyles: StylesConfig<(typeof LEDColors)[number]> = {
-	control: (styles) => ({ ...styles, backgroundColor: 'white' }),
-	option: (styles, { data }) => ({ ...styles, ...colorDot(data.color) }),
-	input: (styles) => ({ ...styles }),
-	placeholder: (styles) => ({ ...styles, ...colorDot('#ccc') }),
-	singleValue: (styles, { data }) => ({
-		...styles,
-		...colorDot(data.color),
-	}),
-};
+import ColorSelector from './ColorSlector';
 
 const getViewBox = (lights: { xCoord: number; yCoord: number }[]) =>
 	lights.reduce(
@@ -134,8 +108,7 @@ function ButtonLayoutPreview({
 				Here you can see a preview of your button layout and the colors assigned
 				to each GPIO pin.
 				<br />
-				If you have buttons assigned to the same GPIO they will share
-				color.
+				If you have buttons assigned to the same GPIO they will share color.
 			</p>
 			<ul>
 				<li>Click a button to change its idle and pressed color.</li>
@@ -157,20 +130,13 @@ function ButtonLayoutPreview({
 						{Lights.filter((light) => light.lightType !== 1).map(
 							(light, index) => (
 								<ColorSelectOverlay
+									key={`button-light-${index}`}
 									title={`GPIO ${light.GPIOPinorCaseChainIndex}`}
 									content={
 										<div style={{ minWidth: 200 }}>
 											<p>Idle color</p>
-											<CustomSelect
+											<ColorSelector
 												options={colorOptions}
-												styles={colorStyles}
-												isMulti={false}
-												onChange={(selected) => {
-													setFieldValue(
-														`AnimationOptions.profiles.${profileIndex}.notPressedStaticColors.${light.GPIOPinorCaseChainIndex}`,
-														selected?.value || 0,
-													);
-												}}
 												value={
 													colorOptions[
 														notPressedStaticColors[
@@ -178,23 +144,28 @@ function ButtonLayoutPreview({
 														]
 													] || null
 												}
+												onChange={(selected) => {
+													setFieldValue(
+														`AnimationOptions.profiles.${profileIndex}.notPressedStaticColors.${light.GPIOPinorCaseChainIndex}`,
+														selected?.value || 0,
+													);
+												}}
 											/>
+
 											<p className="mt-3">Pressed color</p>
-											<CustomSelect
+											<ColorSelector
 												options={colorOptions}
-												styles={colorStyles}
-												isMulti={false}
+												value={
+													colorOptions[
+														pressedStaticColors[light.GPIOPinorCaseChainIndex]
+													] || null
+												}
 												onChange={(selected) => {
 													setFieldValue(
 														`AnimationOptions.profiles.${profileIndex}.pressedStaticColors.${light.GPIOPinorCaseChainIndex}`,
 														selected?.value || 0,
 													);
 												}}
-												value={
-													colorOptions[
-														pressedStaticColors[light.GPIOPinorCaseChainIndex]
-													] || null
-												}
 											/>
 										</div>
 									}
@@ -248,10 +219,8 @@ function ButtonLayoutPreview({
 				content={
 					<div style={{ minWidth: 200 }}>
 						<p>Idle color</p>
-						<CustomSelect
+						<ColorSelector
 							options={colorOptions}
-							styles={colorStyles}
-							isMulti={false}
 							onChange={(selected) => {
 								setFieldValue(
 									`AnimationOptions.profiles.${profileIndex}.notPressedStaticColors`,
@@ -260,10 +229,8 @@ function ButtonLayoutPreview({
 							}}
 						/>
 						<p className="mt-3">Pressed color</p>
-						<CustomSelect
+						<ColorSelector
 							options={colorOptions}
-							styles={colorStyles}
-							isMulti={false}
 							onChange={(selected) => {
 								setFieldValue(
 									`AnimationOptions.profiles.${profileIndex}.pressedStaticColors`,

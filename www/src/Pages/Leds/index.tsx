@@ -75,25 +75,51 @@ const schema = yup.object({
 		.of(
 			yup.object({
 				GPIOPinorCaseChainIndex: yup.number().required(),
-				firstLedIndex: yup.number().required(),
+				firstLedIndex: yup
+					.number()
+					.min(0, 'First LED index must be at least 0')
+					.required('First LED index is required'),
 				lightType: yup.number().required(),
-				numLedsOnLight: yup.number().required(),
+				numLedsOnLight: yup
+					.number()
+					.min(1, 'Number of LEDs on Light must be at least 1')
+					.required('Number of LEDs on Light is required'),
 				xCoord: yup.number().required(),
 				yCoord: yup.number().required(),
 			}),
 		)
+		// TODO: lookup how to make this better with yup
 		.test('no-duplicate-coords', 'Overlapping light', function (lights) {
 			if (!lights) return true;
-			const overlappingCoords = new Map();
+			const coordMap = new Map();
+			const overlaps = [];
+
 			for (let i = 0; i < lights.length; i++) {
 				const key = `${lights[i].xCoord},${lights[i].yCoord}`;
-				if (overlappingCoords.has(key)) {
-					return this.createError({
-						path: `Lights[${i}]`,
-						message: `Overlapping light`,
-					});
+				if (coordMap.has(key)) {
+					overlaps.push(coordMap.get(key), i);
+				} else {
+					coordMap.set(key, i);
 				}
-				overlappingCoords.set(key, i);
+			}
+			if (overlaps.length) {
+				const errors = Array.from(new Set(overlaps)).reduce(
+					(acc, i) => [
+						...acc,
+						new yup.ValidationError(
+							'Overlapping light',
+							null,
+							`Lights.${i}.xCoord`,
+						),
+						new yup.ValidationError(
+							'Overlapping light',
+							null,
+							`Lights.${i}.yCoord`,
+						),
+					],
+					[] as yup.ValidationError[],
+				);
+				throw new yup.ValidationError(errors);
 			}
 			return true;
 		}),
@@ -160,7 +186,6 @@ export default function Leds() {
 		`profile-${AnimationOptions.baseProfileIndex}`,
 	);
 
-	const hasLights = useLedStore((state) => state.Lights.length > 0);
 	const [advancedMode, setAdvancedMode] = useState(false);
 
 	const [saveMessage, setSaveMessage] = useState('');
@@ -553,13 +578,19 @@ export default function Leds() {
 													label="Advanced mode"
 													className="mb-3"
 													checked={advancedMode}
-													disabled={!hasLights}
+													disabled={!values.Lights.length}
 													onChange={(e) => setAdvancedMode(e.target.checked)}
 												/>
 												{advancedMode ? (
 													<LightCoordsSection
 														errors={errors}
 														values={values}
+														pressedStaticColors={profile.pressedStaticColors}
+														notPressedStaticColors={
+															profile.notPressedStaticColors
+														}
+														caseStaticColors={profile.caseStaticColors}
+														profileIndex={profileIndex}
 														handleChange={handleChange}
 														setFieldValue={setFieldValue}
 														setValues={setValues}
@@ -570,8 +601,8 @@ export default function Leds() {
 														notPressedStaticColors={
 															profile.notPressedStaticColors
 														}
-														customColors={values.AnimationOptions.customColors}
 														profileIndex={profileIndex}
+														customColors={values.AnimationOptions.customColors}
 														setFieldValue={setFieldValue}
 														Lights={values.Lights}
 													/>
