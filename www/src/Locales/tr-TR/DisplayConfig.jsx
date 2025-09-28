@@ -42,7 +42,7 @@ export default {
 		'display-saver-timeout-label': 'Ekran Tasarrufu Zaman Aşımı (dakika, Kapalı için 0)',
 		'screen-saver-mode-label': 'Ekran Tasarruf Modu',
 		'inverted-label': 'Ters çevrilmiş',
-		'power-management-header': 'Power Management',
+		'power-management-header': 'Güç Yönetimi',
 		'turn-off-when-suspended': 'Askıya Alındığında Kapat',
 		'input-history-label': 'Tuş Geçmişi',
 		'display-state': {
@@ -66,7 +66,7 @@ export default {
 			snow: 'Kar',
 			bounce: 'Logo Sıçrayışı',
 			pipes: 'Borular',
-			toast: 'Toast',
+			toast: 'Karışık',
 		},
 		'layout-modes': {
 			standard: 'Varsayılan',
@@ -78,7 +78,7 @@ export default {
 			'turbo-mode': 'Turbo',
 			'dpad-mode': 'D-Pad Modu',
 			'socd-mode': 'SOCD Modu',
-			'macro-mode': 'Macro',
+			'macro-mode': 'Makro',
 			'profile-mode': 'Profil',
 		},
 	},

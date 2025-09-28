@@ -9,7 +9,7 @@ export default {
 	'has-custom-theme-label': 'Etkinleştir',
 	'modal-title': 'Özel Temayı Temizleyi Onayla',
 	'modal-body':
-		'AMevcut özel LED temanızı temizlemek istediğinizden emin misiniz?',
+		'Mevcut özel LED temanızı temizlemek istediğinizden emin misiniz?',
 	'modal-no': 'Hayır',
 	'modal-yes': 'Evet',
 };

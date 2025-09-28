@@ -2,7 +2,7 @@ export default {
 	'architecture-text': 'Mimari: {{architecture}}',
 	'build-type-text': 'Mimari türü: {{build}}',
 	'build-text': 'Sürüm: {{build}}',
-	'current-text': 'Mevcut Sürün: {{version}}',
+	'current-text': 'Mevcut Sürüm: {{version}}',
 	'get-update-text': 'Son sürüme yükselt',
 	'header-text': 'GP2040-CE Web Konfigüratörüne Hoş Geldiniz!',
 	'latest-text': 'Güncel sürüm: {{version}}',

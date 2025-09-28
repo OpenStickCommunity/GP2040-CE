@@ -12,7 +12,7 @@ export default {
 	'button-set-pressed-gradient-label': 'Basılı Gradyan Ayarla',
 	'button-verify-save-label': 'Doğrula ve Kaydet',
 	'saved-success-message': 'Kaydedildi! Lütfen Cihazınızı Yeniden Başlatın',
-	'saved-error-message': 'Unable to Save',
+	'saved-error-message': 'Kaydedilemiyor',
 	errors: {
 		required: 'gerekli',
 		conflict: 'çakışma',

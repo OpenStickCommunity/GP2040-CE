@@ -11,10 +11,10 @@ export default {
 	'spi-desc-header': 'SPI Bilgileri',
 	'spi-description':
 		'SPI, ekranlar, GPIO genişletme ve sensörler gibi aksesuar cihazlar için RX ve TX veri hattı, SCK saat hattı ve CS senkronizasyon/çip seçim hattı üzerinden kullanılan dört telli bir arayüzdür. RP2040, iki SPI denetleyici bloğunu destekler: SPI0 ve SPI1. Her blok için desteklenen GPIO pinleri şunlardır:',
-	'usb-label': 'USB Host',
-	'usb-desc-header': 'USB Host Bilgileri',
+	'usb-label': 'USB Bağlantı Noktası',
+	'usb-desc-header': 'USB Bağlantı Noktası Bilgileri',
 	'usb-description':
-		'USB Host, klavyeler, oyun kumandaları veya diğer cihazlar gibi desteklenen USB istemci cihazlarının kullanılmasına olanak tanır.',
+		'USB Bağlantı Noktası, klavyeler, oyun kumandaları veya diğer cihazlar gibi desteklenen USB istemci cihazlarının kullanılmasına olanak tanır.',
 	'peripheral-toggle-unavailable':
 		'Etkinleştirilemiyor. "{{name}}" çevre birimi kullanılamıyor. <0>Çevre Birimi Eşleme</0> bölümünden etkinleştirin.',
 	'pin-sda-label': 'SDA',
