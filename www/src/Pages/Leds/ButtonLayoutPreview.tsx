@@ -1,17 +1,15 @@
 import { ReactElement, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-	Button,
-	Col,
-	OverlayTrigger,
-	Popover,
-	Row,
-} from 'react-bootstrap';
+import { Button, Col, OverlayTrigger, Popover, Row } from 'react-bootstrap';
 
 import LEDColors from '../../Data/LEDColors';
 import { Light } from '../../Store/useLedStore';
 import { rgbIntToHex } from '../../Services/Utilities';
 import ColorSelector from './ColorSlector';
+import boards from '../../Data/Boards.json';
+
+const GPIO_PIN_LENGTH =
+	boards[import.meta.env.VITE_GP2040_BOARD as keyof typeof boards].maxPin + 1;
 
 const getViewBox = (lights: { xCoord: number; yCoord: number }[]) =>
 	lights.reduce(
@@ -184,7 +182,7 @@ function ButtonLayoutPreview({
 														: notPressedStaticColors[
 																light.GPIOPinorCaseChainIndex
 															]
-												].color
+												]?.color || 'black'
 											}
 											stroke="currentColor"
 											strokeWidth={strokeWidth}
@@ -221,7 +219,7 @@ function ButtonLayoutPreview({
 							onChange={(selected) => {
 								setFieldValue(
 									`AnimationOptions.profiles.${profileIndex}.notPressedStaticColors`,
-									notPressedStaticColors.map(() => selected?.value || 0),
+									Array(GPIO_PIN_LENGTH).fill(selected?.value || 0),
 								);
 							}}
 						/>
@@ -231,7 +229,7 @@ function ButtonLayoutPreview({
 							onChange={(selected) => {
 								setFieldValue(
 									`AnimationOptions.profiles.${profileIndex}.pressedStaticColors`,
-									pressedStaticColors.map(() => selected?.value || 0),
+									Array(GPIO_PIN_LENGTH).fill(selected?.value || 0),
 								);
 							}}
 						/>

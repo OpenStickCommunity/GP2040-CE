@@ -13,7 +13,12 @@ import {
 	Tooltip,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { FieldArray, FieldArrayRenderProps, Formik } from 'formik';
+import {
+	FieldArray,
+	FieldArrayRenderProps,
+	Formik,
+	useFormikContext,
+} from 'formik';
 import * as yup from 'yup';
 
 import useLedsPreview from '../../Hooks/useLedsPreview';
@@ -169,19 +174,37 @@ const ColorPickerList = memo(function ColorPickerList({
 	);
 });
 
+const PreviewLedChanges = ({ advancedMode }: { advancedMode: boolean }) => {
+	const { values } = useFormikContext<{
+		AnimationOptions: AnimationOptions;
+		Lights: Light[];
+	}>();
+	const { activateLedsProfile } = useLedsPreview();
+
+	useEffect(() => {
+		if (advancedMode) return;
+		activateLedsProfile(
+			values.AnimationOptions.profiles[
+				values.AnimationOptions.baseProfileIndex
+			],
+		);
+	}, [values, advancedMode]);
+	return null;
+};
+
 export default function Leds() {
 	const { t } = useTranslation('');
 	const { fetchLedOptions, saveAnimationOptions, saveLightOptions } =
 		useLedStore();
-	const { activateLedsProfile, turnOffLeds } = useLedsPreview();
+	// const { activateLedsProfile, turnOffLeds } = useLedsPreview();
 
 	const AnimationOptions = useLedStore((state) => state.AnimationOptions);
 	const Lights = useLedStore((state) => state.Lights);
 	const loading = useLedStore((state) => state.loading);
 	const initialized = useLedStore((state) => state.initialized);
-	const [previewProfileIndex, setPreviewProfileIndex] = useState(
-		AnimationOptions.baseProfileIndex,
-	);
+	// const [previewProfileIndex, setPreviewProfileIndex] = useState(
+	// 	AnimationOptions.baseProfileIndex,
+	// );
 	const [activeTab, setActiveTab] = useState(
 		`profile-${AnimationOptions.baseProfileIndex}`,
 	);
@@ -235,7 +258,7 @@ export default function Leds() {
 			}) => (
 				<Form onSubmit={handleSubmit}>
 					<Section title="Led configuration">
-						<Row className="mb-3">
+						{/* <Row className="mb-3">
 							<Col md={6} className="d-flex flex-column justify-content-end">
 								<FormSelect
 									label={'Preview configured profile'}
@@ -280,8 +303,7 @@ export default function Leds() {
 								</Button>
 							</Col>
 						</Row>
-						<hr />
-
+						<hr /> */}
 						<Row>
 							<FormSelect
 								label={t('Leds:profile-label')}
@@ -627,6 +649,7 @@ export default function Leds() {
 						{t('Common:button-save-label')}
 					</Button>
 					{saveMessage && <Alert variant="info">{saveMessage}</Alert>}
+					<PreviewLedChanges advancedMode={advancedMode} />
 				</Form>
 			)}
 		</Formik>

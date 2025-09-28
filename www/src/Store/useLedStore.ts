@@ -8,7 +8,6 @@ import {
 export const MAX_CUSTOM_COLORS = 8;
 export const MAX_CASE_LIGHTS = 40;
 export const MAX_LIGHTS = 100;
-export const MAX_PRESSED_COLORS = 30;
 export const MAX_ANIMATION_PROFILES = 4;
 
 export type AnimationProfile = {
