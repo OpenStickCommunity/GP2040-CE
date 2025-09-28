@@ -195,8 +195,12 @@ export const AppContextProvider = ({ children, ...props }) => {
 		};
 	}, [usedPins, setUsedPins]);
 
-
-	useEffect(() => {}, [expansionPins, setExpansionPins, HETriggerOptions, setHETriggerOptions]);
+	useEffect(() => {}, [
+		expansionPins,
+		setExpansionPins,
+		HETriggerOptions,
+		setHETriggerOptions,
+	]);
 
 	const getAvailablePeripherals = (device) => {
 		// gymnastics to make sure the device is defined before trusting config value
