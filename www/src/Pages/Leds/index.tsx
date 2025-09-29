@@ -233,6 +233,13 @@ export default function Leds() {
 		fetchLedOptions();
 	}, []);
 
+	useEffect(() => {
+		if (!initialized) return;
+		if (Lights.length === 0) {
+			setAdvancedMode(true);
+		}
+	}, [Lights, initialized]);
+
 	if (loading || !initialized) {
 		return (
 			<div className="d-flex justify-content-center">
