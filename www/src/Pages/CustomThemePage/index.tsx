@@ -183,11 +183,13 @@ const PreviewLedChanges = ({ advancedMode }: { advancedMode: boolean }) => {
 
 	useEffect(() => {
 		if (advancedMode) return;
-		activateLedsProfile(
+
+		const profile =
 			values.AnimationOptions.profiles[
 				values.AnimationOptions.baseProfileIndex
-			],
-		);
+			];
+		if (!profile) return;
+		activateLedsProfile(profile);
 	}, [values, advancedMode]);
 	return null;
 };
