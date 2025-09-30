@@ -264,7 +264,7 @@ export default function CustomThemePage() {
 				setValues,
 			}) => (
 				<Form onSubmit={handleSubmit}>
-					<Section title="Led configuration">
+					<Section title="Custom LED Theme">
 						{/* <Row className="mb-3">
 							<Col md={6} className="d-flex flex-column justify-content-end">
 								<FormSelect

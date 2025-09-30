@@ -7,6 +7,7 @@ export default {
 	'github-label': 'GitHub',
 	'home-label': '主页',
 	'led-config-label': 'LED 配置',
+	'custom-theme-label': '自定义 LED 主题',
 	'links-label': '链接',
 	'macro-label': '宏配置',
 	'pin-mapping-label': 'GPIO 引脚映射',
