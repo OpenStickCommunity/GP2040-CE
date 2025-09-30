@@ -22,14 +22,24 @@ const getViewBox = (lights: { xCoord: number; yCoord: number }[]) =>
 		{ minX: Infinity, minY: Infinity, maxX: -Infinity, maxY: -Infinity },
 	);
 
-const hasNeighbors = (light: Light, lights: Light[]) =>
+const hasNeighbor = (light: Light, lights: Light[], range: number) =>
 	lights.some(
 		(other) =>
 			other !== light &&
 			other.lightType === light.lightType &&
-			Math.abs(other.xCoord - light.xCoord) <= 1 &&
-			Math.abs(other.yCoord - light.yCoord) <= 1,
+			Math.abs(other.xCoord - light.xCoord) <= range &&
+			Math.abs(other.yCoord - light.yCoord) <= range,
 	);
+
+// Calculate the size of the light based on its neighbors,
+// Three sizes: big(no neighbors within 2 cells), normal(has neighbors within 2 cells), small(has neighbors within 1 cell)
+const calculateLightSize = (light: Light, lights: Light[]) => {
+	const lightSize = 1.3; // Base size
+	if (hasNeighbor(light, lights, 2)) {
+		return hasNeighbor(light, lights, 1) ? lightSize / 2.8 : lightSize / 1.5;
+	}
+	return lightSize;
+};
 
 const ColorSelectOverlay = ({
 	title,
@@ -74,9 +84,8 @@ function ButtonLayoutPreview({
 	const { minX, minY, maxX, maxY } = getViewBox(Lights);
 	const [pressed, setPressed] = useState(false);
 
-	const lightSize = 0.83;
 	const strokeWidth = 0.03;
-	const padding = 1;
+	const padding = 1.4;
 	const viewBoxX = minX - padding;
 	const viewBoxY = minY - padding;
 	const viewBoxWidth = maxX - minX + padding * 2;
@@ -110,13 +119,13 @@ function ButtonLayoutPreview({
 				<li>Right-click on the layout to preview the pressed colors.</li>
 			</ul>
 			<Row
-				className="justify-content-center "
+				className="justify-content-center py-3"
 				onMouseDown={(e) => handlePressedShow(e)}
 				onMouseUp={() => handlePressedHide()}
 				onMouseLeave={() => handlePressedHide()}
 				onContextMenu={(e) => e.preventDefault()}
 			>
-				<Col lg={8}>
+				<Col lg={10}>
 					<svg
 						width="100%"
 						viewBox={`${viewBoxX} ${viewBoxY} ${viewBoxWidth} ${viewBoxHeight}`}
@@ -170,11 +179,7 @@ function ButtonLayoutPreview({
 											key={`light-${index}`}
 											cx={light.xCoord}
 											cy={light.yCoord}
-											r={
-												hasNeighbors(light, Lights)
-													? lightSize / 1.8
-													: lightSize
-											}
+											r={calculateLightSize(light, Lights)}
 											fill={
 												colorOptions[
 													pressed

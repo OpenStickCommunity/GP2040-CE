@@ -51,7 +51,7 @@ const schema = yup.object({
 		brightness: yup
 			.number()
 			.min(0, 'Brightness must be at least 0')
-			.max(100, 'Brightness cannot be more than 100')
+			.max(10, 'Brightness cannot be more than 10')
 			.required('Brightness is required'),
 		idletimeout: yup
 			.number()
@@ -350,7 +350,7 @@ export default function Leds() {
 								isInvalid={Boolean(errors.AnimationOptions?.brightness)}
 								onChange={handleChange}
 								min={0}
-								max={100}
+								max={10}
 							/>
 
 							<FormControl
