@@ -4,7 +4,7 @@ export default {
 	'idle-timout-label': 'No input time to switch off lights (0 means disabled)',
 	'profile-number': 'Profile {{profileNumber}}',
 	'case-animation-label': 'Case animation',
-	'custom-color-label': 'Custom color',
+	'custom-color-label': 'Custom colors',
 	'case-colors-label': 'Case colors',
 	'idle-animation-label': 'Idle animation',
 	'pressed-fade-out-time-label': 'Pressed fade out time (ms)',

@@ -9,10 +9,11 @@ export default {
 	'api-display-text': 'Display',
 	'api-gamepad-text': 'Gamepad',
 	'api-leds-text': 'LED',
-	'api-ledTheme-text': 'Custom LED Theme',
+	'api-lightData-text': 'Light Data',
 	'api-macros-text': 'Macro Mappings',
 	'api-pins-text': 'Pin Mappings',
 	'api-profiles-text': 'Profile Mappings',
 	'api-addons-text': 'Add-Ons',
+	'api-heTrigger-text': 'Hall Effect Trigger',
 	'api-splash-text': 'Splash Image',
 };
