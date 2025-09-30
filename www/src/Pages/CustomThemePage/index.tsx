@@ -50,7 +50,7 @@ const schema = yup.object({
 		baseProfileIndex: yup.number().required('Selecting a profile is required'),
 		brightness: yup
 			.number()
-			.min(0, 'Brightness must be at least 0')
+			.min(1, 'Brightness must be at least 1')
 			.max(10, 'Brightness cannot be more than 10')
 			.required('Brightness is required'),
 		idletimeout: yup
@@ -351,7 +351,7 @@ export default function CustomThemePage() {
 								error={errors.AnimationOptions?.brightness}
 								isInvalid={Boolean(errors.AnimationOptions?.brightness)}
 								onChange={handleChange}
-								min={0}
+								min={1}
 								max={10}
 							/>
 
