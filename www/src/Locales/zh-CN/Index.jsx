@@ -14,8 +14,10 @@ import WiiAddon from './Addons/WiiAddon';
 import Rotary from './Addons/Rotary';
 import InputMacroAddon from './InputMacroAddon';
 import LayoutConfig from './LayoutConfig';
+import LedConfig from './LedConfig';
 
 export default {
+	LedConfig,
 	Common,
 	HomePage,
 	Navigation,

@@ -192,7 +192,7 @@ const PreviewLedChanges = ({ advancedMode }: { advancedMode: boolean }) => {
 	return null;
 };
 
-export default function Leds() {
+export default function CustomThemePage() {
 	const { t } = useTranslation('');
 	const { fetchLedOptions, saveAnimationOptions, saveLightOptions } =
 		useLedStore();
@@ -240,7 +240,7 @@ export default function Leds() {
 		}
 	}, [Lights, initialized]);
 
-	if (loading || !initialized) {
+	if (loading && !initialized) {
 		return (
 			<div className="d-flex justify-content-center">
 				<span className="spinner-border"></span>

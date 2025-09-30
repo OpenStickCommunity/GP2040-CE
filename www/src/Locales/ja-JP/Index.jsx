@@ -18,8 +18,10 @@ import HETrigger from './Addons/HETrigger';
 import InputMacroAddon from './InputMacroAddon';
 import LayoutConfig from './LayoutConfig';
 import Proto from './Proto/Index';
+import LedConfig from './LedConfig';
 
 export default {
+	LedConfig,
 	Common,
 	HomePage,
 	Navigation,
