@@ -39,43 +39,6 @@ const schema = yup.object().shape({
 	turnOffWhenSuspended: yup.number().label('Turn Off When Suspended'),
 });
 
-// const FormContext = ({
-// 	buttonLabelType,
-// 	ledButtonMap,
-// 	swapTpShareLabels,
-// 	setDataSources,
-// }) => {
-// 	const { setValues } = useFormikContext();
-// 	const { setLoading } = useContext(AppContext);
-
-// 	useEffect(() => {
-// 		async function fetchData() {
-// 			const data = await WebApi.getLedOptions(setLoading);
-// 			const dataSources = createDataSource(
-// 				data.ledButtonMap,
-// 				buttonLabelType,
-// 				swapTpShareLabels,
-// 			);
-// 			setDataSources(dataSources);
-// 			setValues(data);
-// 		}
-
-// 		fetchData();
-// 	}, []);
-
-// 	useEffect(() => {
-// 		const dataSources = createDataSource(
-// 			ledButtonMap,
-// 			buttonLabelType,
-// 			swapTpShareLabels,
-// 		);
-// 		setDataSources(dataSources);
-// 	}, [buttonLabelType, swapTpShareLabels]);
-
-// 	return null;
-// };
-
-
 const FormContext = () => {
 	const { setValues } = useFormikContext();
 
