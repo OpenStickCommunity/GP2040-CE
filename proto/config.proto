@@ -278,7 +278,7 @@ message LEDOptions
     optional ButtonLayout ledLayout = 3;
     optional uint32 ledsPerButton = 4;
     optional uint32 brightnessMaximum = 5;
-    optional uint32 brightnessSteps = 6;
+    optional uint32 brightnessSteps = 6 [deprecated = true];
 
     optional int32 indexUp = 7;
     optional int32 indexDown = 8;
