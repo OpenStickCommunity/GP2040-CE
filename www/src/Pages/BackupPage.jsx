@@ -32,10 +32,6 @@ const API_BINDING = {
 		get: WebApi.getLightsDataOptions,
 		set: WebApi.setLightsDataOptions,
 	},
-	ledTheme: {
-		get: WebApi.getCustomTheme,
-		set: WebApi.setCustomTheme,
-	},
 	macros: {
 		get: WebApi.getMacroAddonOptions,
 		set: WebApi.setMacroAddonOptions,
