@@ -19,7 +19,7 @@ export default {
 	'input-macro-wait-duration-label': 'Bekleme Süresi',
 	'input-macro-time-label-ms': 'ms',
 	'input-macro-time-label-frames': 'Kare(ler)',
-	'input-macro-release-and-wait-label': 'bırak ve bekle ',
+	'input-macro-release-and-wait-label': 'bırak ve bekle',
 	'input-macro-sub-header':
 		'Not: Pin eşlemeli makrolar için lütfen Yapılandırma altındaki Pin Eşleme sayfasına bakın. Makrolar, basılı tutulan tek Makro düğmesiyle bir gamepad düğmesine de atanabilir.',
 	'input-macro-macro-label-label': 'Etiket',
