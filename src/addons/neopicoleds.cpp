@@ -366,7 +366,7 @@ void NeoPicoLEDAddon::process()
     // Turbo LED is a separate RGB that is on if turbo is on, and off if its off
     if ( turboOptions.turboLedType == PLED_TYPE_RGB ) { // RGB or PWM?
         if ( gamepad->auxState.turbo.activity == 1) { // Turbo is on (active sensor)
-            if (turboOptions.turboLedIndex >= 0 && turboOptions.turboLedIndex < 100) { // Double check index value
+            if (turboOptions.turboLedIndex >= 0 && turboOptions.turboLedIndex < FRAME_MAX) { // Double check index value
                 float brightness = as.GetNormalisedBrightness();
                 frame[turboOptions.turboLedIndex] = ((RGB)turboOptions.turboLedColor).value(neopico.GetFormat(), brightness);
             }

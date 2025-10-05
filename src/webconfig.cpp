@@ -964,7 +964,7 @@ std::string setLightsDataOptions()
         options.lightDataSize++;
         options.lightData.size = options.lightDataSize * 6;
 
-        if(options.lightDataSize >= 100) //600 bytes total, 6 elements per light. 100 max lights
+        if(options.lightDataSize >= FRAME_MAX) //600 bytes total, 6 elements per light. FRAME_MAX(100) max lights
             break;
     }
 
