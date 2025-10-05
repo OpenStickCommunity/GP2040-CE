@@ -87,7 +87,7 @@ bool SMWave::IsFinished()
     return CurrentState == SMWaveState::SM_WAVE_STATE_FINISHED;
 }
 
-void SMWave::Animate(RGB (&frame)[100]) 
+void SMWave::Animate(RGB (&frame)[FRAME_MAX]) 
 {
     UpdateTime();
 
@@ -132,7 +132,7 @@ void SMWave::Animate(RGB (&frame)[100])
     }
 }
 
-bool SMWave::UpdateWave(RGB (&frame)[100])
+bool SMWave::UpdateWave(RGB (&frame)[FRAME_MAX])
 {
     bool bFinished = true;
 

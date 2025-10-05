@@ -115,7 +115,7 @@ int Rain::FindLightForCoord(int xCoord, int yCoord)
     return backupRightIndex;
 }
 
-void Rain::Animate(RGB (&frame)[100]) 
+void Rain::Animate(RGB (&frame)[FRAME_MAX]) 
 {
     UpdateTime();
 

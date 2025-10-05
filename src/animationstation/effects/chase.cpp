@@ -108,7 +108,7 @@ Chase::Chase(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType, 
   }
 }
 
-void Chase::Animate(RGB (&frame)[100]) 
+void Chase::Animate(RGB (&frame)[FRAME_MAX]) 
 {
   UpdateTime();
 
