@@ -103,7 +103,7 @@ bool SMPulseColor::IsFinished()
     return CurrentState == SMPulseColorState::SM_PULSE_COLOR_STATE_FINISHED;
 }
 
-void SMPulseColor::Animate(RGB (&frame)[100]) 
+void SMPulseColor::Animate(RGB (&frame)[FRAME_MAX]) 
 {
     UpdateTime();
 

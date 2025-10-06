@@ -25,7 +25,7 @@ void SMKnightRider::SetOptionalParams(uint32_t OptionalParams)
     CurrentState = SMWaveState::SM_WAVE_STATE_PREFRAMES;
 }
 
-void SMKnightRider::Animate(RGB (&frame)[100]) 
+void SMKnightRider::Animate(RGB (&frame)[FRAME_MAX]) 
 {
     switch(CurrentState)
     {
