@@ -281,7 +281,7 @@ void AnimationStation::Clear()
 
 void AnimationStation::UpdateTimeout()
 {
-  if(TestMode == AnimationStationTestMode::AnimationStation_TestModeInvalid)
+  if(TestMode == AnimationStationTestMode::AnimationStation_TestModeInvalid && options.autoDisableTime > 0)
   {
     if(bIsInIdleTimeout == false)
     {

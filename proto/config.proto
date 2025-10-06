@@ -378,7 +378,7 @@ message AnimationProfile
 
  	optional AnimationNonPressedEffects baseCaseEffect = 10;
 
-    repeated uint32 caseStaticColors = 11 [(nanopb).max_count = 10]; //(MAX_CASE_LIGHTS/4) from AnimationStation.hpp
+    repeated uint32 caseStaticColors = 11 [(nanopb).max_count = 20]; //(MAX_CASE_LIGHTS/4) from AnimationStation.hpp
 
     optional uint32 pressedSpecialColor = 12;
 

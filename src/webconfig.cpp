@@ -1055,7 +1055,7 @@ void helperGetProfileFromJsonObject(AnimationProfile* Profile, JsonObject* JsonD
 
     JsonArray caseStaticColorsList = (*JsonData)["caseStaticColors"];
     Profile->caseStaticColors_count = 0;
-    for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS/4)+1; ++packedPinIndex)
+    for(unsigned int packedPinIndex = 0; packedPinIndex < (MAX_CASE_LIGHTS/4)+1; ++packedPinIndex)
     {
         unsigned int pinIndex = packedPinIndex * 4;
         if(pinIndex < caseStaticColorsList.size())
