@@ -318,7 +318,7 @@ message LEDOptions
     optional uint32 caseRGBColor = 38 [deprecated = true];
     optional uint32 caseRGBCount = 39 [deprecated = true];
 
-    optional bytes lightData = 40 [(nanopb).max_size = 1200]; //FRAME_MAX (200) * numElementsPerDataEntry (6)
+    optional bytes lightData = 40 [(nanopb).max_size = 600]; //FRAME_MAX (100) * numElementsPerDataEntry (6)
     optional int32 lightDataSize = 41;
 };
 
@@ -378,7 +378,7 @@ message AnimationProfile
 
  	optional AnimationNonPressedEffects baseCaseEffect = 10;
 
-    repeated uint32 caseStaticColors = 11 [(nanopb).max_count = 20]; //(MAX_CASE_LIGHTS/4) from AnimationStation.hpp
+    repeated uint32 caseStaticColors = 11 [(nanopb).max_count = 10]; //(MAX_CASE_LIGHTS/4) from AnimationStation.hpp
 
     optional uint32 pressedSpecialColor = 12;
 

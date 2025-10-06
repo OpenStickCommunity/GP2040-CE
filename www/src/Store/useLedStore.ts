@@ -6,8 +6,8 @@ import {
 } from '../Data/Animations';
 
 export const MAX_CUSTOM_COLORS = 8;
-export const MAX_CASE_LIGHTS = 80;
-export const MAX_LIGHTS = 200;
+export const MAX_CASE_LIGHTS = 40;
+export const MAX_LIGHTS = 100;
 export const MAX_ANIMATION_PROFILES = 4;
 
 export type AnimationProfile = {

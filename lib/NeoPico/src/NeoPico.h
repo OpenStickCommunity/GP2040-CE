@@ -12,7 +12,7 @@ typedef enum
   LED_FORMAT_RGBW = 3,
 } LEDFormat;
 
-#define FRAME_MAX 200
+#define FRAME_MAX 100
 
 class NeoPico
 {
