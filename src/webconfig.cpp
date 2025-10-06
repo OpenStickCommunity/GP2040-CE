@@ -793,56 +793,23 @@ std::string getGamepadOptions()
 std::string setLedOptions()
 {
     DynamicJsonDocument doc = get_post_data();
-
-    // const auto readIndex = [&](int32_t& var, const char* key0, const char* key1)
-    // {
-    //     var = -1;
-    //     if (hasValue(doc, key0, key1))
-    //     {
-    //         readDoc(var, doc, key0, key1);
-    //     }
-    // };
-
     LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
+
     docToPin(ledOptions.dataPin, doc, "dataPin");
     readDoc(ledOptions.ledFormat, doc, "ledFormat");
+    readDoc(ledOptions.brightnessMaximum, doc, "brightnessMaximum");
     readDoc(ledOptions.turnOffWhenSuspended, doc, "turnOffWhenSuspended");
 
-    // readDoc(ledOptions.ledLayout, doc, "ledLayout");
-    // readDoc(ledOptions.ledsPerButton, doc, "ledsPerButton");
-    // readDoc(ledOptions.brightnessMaximum, doc, "brightnessMaximum");
-    // readDoc(ledOptions.brightnessSteps, doc, "brightnessSteps");
-    // readIndex(ledOptions.indexUp, "ledButtonMap", "Up");
-    // readIndex(ledOptions.indexDown, "ledButtonMap", "Down");
-    // readIndex(ledOptions.indexLeft, "ledButtonMap", "Left");
-    // readIndex(ledOptions.indexRight, "ledButtonMap", "Right");
-    // readIndex(ledOptions.indexB1, "ledButtonMap", "B1");
-    // readIndex(ledOptions.indexB2, "ledButtonMap", "B2");
-    // readIndex(ledOptions.indexB3, "ledButtonMap", "B3");
-    // readIndex(ledOptions.indexB4, "ledButtonMap", "B4");
-    // readIndex(ledOptions.indexL1, "ledButtonMap", "L1");
-    // readIndex(ledOptions.indexR1, "ledButtonMap", "R1");
-    // readIndex(ledOptions.indexL2, "ledButtonMap", "L2");
-    // readIndex(ledOptions.indexR2, "ledButtonMap", "R2");
-    // readIndex(ledOptions.indexS1, "ledButtonMap", "S1");
-    // readIndex(ledOptions.indexS2, "ledButtonMap", "S2");
-    // readIndex(ledOptions.indexL3, "ledButtonMap", "L3");
-    // readIndex(ledOptions.indexR3, "ledButtonMap", "R3");
-    // readIndex(ledOptions.indexA1, "ledButtonMap", "A1");
-    // readIndex(ledOptions.indexA2, "ledButtonMap", "A2");
-    // readDoc(ledOptions.pledType, doc, "pledType");
-    // docToPin(ledOptions.pledPin1, doc, "pledPin1");
-    // docToPin(ledOptions.pledPin2, doc, "pledPin2");
-    // docToPin(ledOptions.pledPin3, doc, "pledPin3");
-    // docToPin(ledOptions.pledPin4, doc, "pledPin4");
-    // readDoc(ledOptions.pledIndex1, doc, "pledIndex1");
-    // readDoc(ledOptions.pledIndex2, doc, "pledIndex2");
-    // readDoc(ledOptions.pledIndex3, doc, "pledIndex3");
-    // readDoc(ledOptions.pledIndex4, doc, "pledIndex4");
-    // readDoc(ledOptions.pledColor, doc, "pledColor");
-    // readDoc(ledOptions.caseRGBType, doc, "caseRGBType");
-    // readDoc(ledOptions.caseRGBIndex, doc, "caseRGBIndex");
-    // readDoc(ledOptions.caseRGBCount, doc, "caseRGBCount");
+    readDoc(ledOptions.pledType, doc, "pledType");
+    docToPin(ledOptions.pledPin1, doc, "pledPin1");
+    docToPin(ledOptions.pledPin2, doc, "pledPin2");
+    docToPin(ledOptions.pledPin3, doc, "pledPin3");
+    docToPin(ledOptions.pledPin4, doc, "pledPin4");
+    readDoc(ledOptions.pledIndex1, doc, "pledIndex1");
+    readDoc(ledOptions.pledIndex2, doc, "pledIndex2");
+    readDoc(ledOptions.pledIndex3, doc, "pledIndex3");
+    readDoc(ledOptions.pledIndex4, doc, "pledIndex4");
+    readDoc(ledOptions.pledColor, doc, "pledColor");
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
     return serialize_json(doc);
@@ -855,51 +822,19 @@ std::string getLedOptions()
     const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
     writeDoc(doc, "dataPin", cleanPin(ledOptions.dataPin));
     writeDoc(doc, "ledFormat", ledOptions.ledFormat);
+    writeDoc(doc, "brightnessMaximum", ledOptions.brightnessMaximum);
     writeDoc(doc, "turnOffWhenSuspended", ledOptions.turnOffWhenSuspended);
-    // writeDoc(doc, "ledLayout", ledOptions.ledLayout);
-    // writeDoc(doc, "ledsPerButton", ledOptions.ledsPerButton);
-    // writeDoc(doc, "brightnessMaximum", ledOptions.brightnessMaximum);
-    // writeDoc(doc, "brightnessSteps", ledOptions.brightnessSteps);
 
-    // const auto writeIndex = [&](const char* key0, const char* key1, int var)
-    // {
-    //     if (var < 0)
-    //     {
-    //         writeDoc(doc, key0, key1, nullptr);
-    //     }
-    //     else
-    //     {
-    //         writeDoc(doc, key0, key1, var);
-    //     }
-    // };
-    // writeIndex("ledButtonMap", "Up", ledOptions.indexUp);
-    // writeIndex("ledButtonMap", "Down", ledOptions.indexDown);
-    // writeIndex("ledButtonMap", "Left", ledOptions.indexLeft);
-    // writeIndex("ledButtonMap", "Right", ledOptions.indexRight);
-    // writeIndex("ledButtonMap", "B1", ledOptions.indexB1);
-    // writeIndex("ledButtonMap", "B2", ledOptions.indexB2);
-    // writeIndex("ledButtonMap", "B3", ledOptions.indexB3);
-    // writeIndex("ledButtonMap", "B4", ledOptions.indexB4);
-    // writeIndex("ledButtonMap", "L1", ledOptions.indexL1);
-    // writeIndex("ledButtonMap", "R1", ledOptions.indexR1);
-    // writeIndex("ledButtonMap", "L2", ledOptions.indexL2);
-    // writeIndex("ledButtonMap", "R2", ledOptions.indexR2);
-    // writeIndex("ledButtonMap", "S1", ledOptions.indexS1);
-    // writeIndex("ledButtonMap", "S2", ledOptions.indexS2);
-    // writeIndex("ledButtonMap", "L3", ledOptions.indexL3);
-    // writeIndex("ledButtonMap", "R3", ledOptions.indexR3);
-    // writeIndex("ledButtonMap", "A1", ledOptions.indexA1);
-    // writeIndex("ledButtonMap", "A2", ledOptions.indexA2);
-    // writeDoc(doc, "pledType", ledOptions.pledType);
-    // writeDoc(doc, "pledPin1", ledOptions.pledPin1);
-    // writeDoc(doc, "pledPin2", ledOptions.pledPin2);
-    // writeDoc(doc, "pledPin3", ledOptions.pledPin3);
-    // writeDoc(doc, "pledPin4", ledOptions.pledPin4);
-    // writeDoc(doc, "pledIndex1", ledOptions.pledIndex1);
-    // writeDoc(doc, "pledIndex2", ledOptions.pledIndex2);
-    // writeDoc(doc, "pledIndex3", ledOptions.pledIndex3);
-    // writeDoc(doc, "pledIndex4", ledOptions.pledIndex4);
-    // writeDoc(doc, "pledColor", ((RGB)ledOptions.pledColor).value(LED_FORMAT_RGB));
+    writeDoc(doc, "pledType", ledOptions.pledType);
+    writeDoc(doc, "pledPin1", ledOptions.pledPin1);
+    writeDoc(doc, "pledPin2", ledOptions.pledPin2);
+    writeDoc(doc, "pledPin3", ledOptions.pledPin3);
+    writeDoc(doc, "pledPin4", ledOptions.pledPin4);
+    writeDoc(doc, "pledIndex1", ledOptions.pledIndex1);
+    writeDoc(doc, "pledIndex2", ledOptions.pledIndex2);
+    writeDoc(doc, "pledIndex3", ledOptions.pledIndex3);
+    writeDoc(doc, "pledIndex4", ledOptions.pledIndex4);
+    writeDoc(doc, "pledColor", ((RGB)ledOptions.pledColor).value(LED_FORMAT_RGB));
 
     return serialize_json(doc);
 }
@@ -1020,7 +955,7 @@ std::string setLightsDataOptions()
         options.lightDataSize++;
         options.lightData.size = options.lightDataSize * 6;
 
-        if(options.lightDataSize >= 100) //600 bytes total, 6 elements per light. 100 max lights
+        if(options.lightDataSize >= FRAME_MAX) //600 bytes total, 6 elements per light. FRAME_MAX(100) max lights
             break;
     }
 
@@ -1206,9 +1141,8 @@ std::string getAnimationProtoOptions()
 {
     DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
     const AnimationOptions& options = Storage::getInstance().getAnimationOptions();
-    const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
 
-    uint32_t checkedBrightness = std::clamp<uint32_t>(options.brightness, 0, ledOptions.brightnessSteps);
+    uint32_t checkedBrightness = std::clamp<uint32_t>(options.brightness, 0, AnimationStation::brightnessSteps);
 
     JsonObject AnimOptions = doc.createNestedObject("AnimationOptions");
     AnimOptions["brightness"] = checkedBrightness;

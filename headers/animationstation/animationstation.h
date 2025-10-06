@@ -89,12 +89,12 @@ public:
   void SetLights(Lights InRGBLights);
 
   //Brightness settings
-  static void ConfigureBrightness(uint8_t max, uint8_t steps);
-  static float GetBrightnessX();
-  static uint8_t GetBrightness();
-  static void SetBrightness(uint8_t brightness);
-  static void DecreaseBrightness();
-  static void IncreaseBrightness();
+  static void SetMaxBrightness(uint8_t max);
+  static float GetNormalisedBrightness();
+  static uint8_t GetBrightnessStepValue();
+  static void SetBrightnessStepValue(uint8_t brightness);
+  static void DecreaseBrightnessByStep();
+  static void IncreaseBrightnessByStep();
   static void DimBrightnessTo0();
 
   static void DecompressProfile(int ProfileIndex, const AnimationProfile* ProfileToDecompress);
@@ -134,11 +134,11 @@ public:
 
   static std::string printfs[4];
 
+  static uint8_t brightnessSteps; 
 protected:
   inline static uint8_t getBrightnessStepSize() { return (brightnessMax / brightnessSteps); }
-  static uint8_t brightnessMax;
-  static uint8_t brightnessSteps;
-  static float brightnessX;
+  static uint8_t brightnessMax; //0-255
+  static float normalisedBrightness; //0-1
 
   Animation* GetNonPressedEffectForEffectType(AnimationNonPressedEffects EffectType, EButtonCaseEffectType InButtonCaseEffectType);
 

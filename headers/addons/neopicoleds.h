@@ -86,10 +86,6 @@
 #define LED_BRIGHTNESS_MAXIMUM 128
 #endif
 
-#ifndef LED_BRIGHTNESS_STEPS
-#define LED_BRIGHTNESS_STEPS 5
-#endif
-
 #ifndef LEDS_DPAD_LEFT
 #define LEDS_DPAD_LEFT  -1
 #endif

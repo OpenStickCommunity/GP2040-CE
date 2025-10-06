@@ -278,7 +278,7 @@ message LEDOptions
     optional ButtonLayout ledLayout = 3;
     optional uint32 ledsPerButton = 4;
     optional uint32 brightnessMaximum = 5;
-    optional uint32 brightnessSteps = 6;
+    optional uint32 brightnessSteps = 6 [deprecated = true];
 
     optional int32 indexUp = 7;
     optional int32 indexDown = 8;
@@ -318,7 +318,7 @@ message LEDOptions
     optional uint32 caseRGBColor = 38 [deprecated = true];
     optional uint32 caseRGBCount = 39 [deprecated = true];
 
-    optional bytes lightData = 40 [(nanopb).max_size = 600];
+    optional bytes lightData = 40 [(nanopb).max_size = 600]; //FRAME_MAX (100) * numElementsPerDataEntry (6)
     optional int32 lightDataSize = 41;
 };
 
