@@ -183,16 +183,18 @@ const PreviewLedChanges = ({ advancedMode }: { advancedMode: boolean }) => {
 
 	useEffect(() => {
 		if (advancedMode) return;
-		activateLedsProfile(
+
+		const profile =
 			values.AnimationOptions.profiles[
 				values.AnimationOptions.baseProfileIndex
-			],
-		);
+			];
+		if (!profile) return;
+		activateLedsProfile(profile);
 	}, [values, advancedMode]);
 	return null;
 };
 
-export default function Leds() {
+export default function CustomThemePage() {
 	const { t } = useTranslation('');
 	const { fetchLedOptions, saveAnimationOptions, saveLightOptions } =
 		useLedStore();
@@ -240,7 +242,7 @@ export default function Leds() {
 		}
 	}, [Lights, initialized]);
 
-	if (loading || !initialized) {
+	if (loading && !initialized) {
 		return (
 			<div className="d-flex justify-content-center">
 				<span className="spinner-border"></span>
@@ -264,7 +266,7 @@ export default function Leds() {
 				setValues,
 			}) => (
 				<Form onSubmit={handleSubmit}>
-					<Section title="Led configuration">
+					<Section title="Custom LED Theme">
 						{/* <Row className="mb-3">
 							<Col md={6} className="d-flex flex-column justify-content-end">
 								<FormSelect

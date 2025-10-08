@@ -12,8 +12,10 @@ import AddonsConfig from './AddonsConfig';
 import CaptureButton from './CaptureButton';
 import WiiAddon from './Addons/WiiAddon';
 import InputMacroAddon from './InputMacroAddon';
+import LedConfig from './LedConfig';
 
 export default {
+	LedConfig,
 	Common,
 	HomePage,
 	Navigation,

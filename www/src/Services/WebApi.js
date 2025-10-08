@@ -1,3 +1,4 @@
+import { set } from 'lodash';
 import Http from './Http';
 import { hexToInt, rgbIntToHex } from './Utilities';
 
@@ -286,6 +287,27 @@ async function getGamepadOptions(setLoading) {
 
 async function setGamepadOptions(options) {
 	return Http.post(`${baseUrl}/api/setGamepadOptions`, sanitizeRequest(options))
+		.then((response) => {
+			return true;
+		})
+		.catch((err) => {
+			console.error(err);
+			return false;
+		});
+}
+
+async function getLedOptions() {
+	try {
+		const response = await Http.get(`${baseUrl}/api/getLedOptions`);
+
+		return response.data;
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+async function setLedOptions(options) {
+	return Http.post(`${baseUrl}/api/setLedOptions`, sanitizeRequest(options))
 		.then((response) => {
 			return true;
 		})
@@ -663,6 +685,8 @@ export default {
 	setAnimationOptions,
 	getDisplayOptions,
 	setDisplayOptions,
+	getLedOptions,
+	setLedOptions,
 	getGamepadOptions,
 	setGamepadOptions,
 	getPinMappings,

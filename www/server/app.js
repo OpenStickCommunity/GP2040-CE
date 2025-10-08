@@ -282,47 +282,10 @@ app.get('/api/getGamepadOptions', (req, res) => {
 
 app.get('/api/getLedOptions', (req, res) => {
 	return res.send({
-		brightnessMaximum: 255,
-		brightnessSteps: 5,
 		dataPin: 22,
 		ledFormat: 0,
-		ledLayout: 1,
-		ledsPerButton: 2,
-		ledButtonMap: {
-			Up: 3,
-			Down: 1,
-			Left: 0,
-			Right: 2,
-			B1: 8,
-			B2: 9,
-			B3: 4,
-			B4: 5,
-			L1: 7,
-			R1: 6,
-			L2: 11,
-			R2: 10,
-			S1: null,
-			S2: null,
-			L3: null,
-			R3: null,
-			A1: null,
-			A2: null,
-		},
-		usedPins: Object.values(picoController),
-		pledType: 1,
-		pledPin1: 12,
-		pledPin2: 13,
-		pledPin3: 14,
-		pledPin4: 15,
-		pledIndex1: 12,
-		pledIndex2: 13,
-		pledIndex3: 14,
-		pledIndex4: 15,
-		pledColor: 65280,
-		caseRGBType: 0,
-		caseRGBIndex: -1,
-		caseRGBCount: 0,
 		turnOffWhenSuspended: 0,
+		brightnessMaximum: 50,
 	});
 });
 
@@ -887,27 +850,6 @@ app.get('/api/getFirmwareVersion', (req, res) => {
 
 app.get('/api/getButtonLayouts', (req, res) => {
 	return res.send({
-		ledLayout: {
-			id: 27,
-			indexUp: 3,
-			indexDown: 1,
-			indexLeft: 0,
-			indexRight: 2,
-			indexB1: 8,
-			indexB2: 9,
-			indexB3: 4,
-			indexB4: 5,
-			indexL1: 7,
-			indexR1: 6,
-			indexL2: 11,
-			indexR2: 10,
-			indexS1: -1,
-			indexS2: -1,
-			indexL3: 13,
-			indexR3: 14,
-			indexA1: 12,
-			indexA2: 15,
-		},
 		displayLayouts: {
 			buttonLayoutId: 27,
 			buttonLayout: {
