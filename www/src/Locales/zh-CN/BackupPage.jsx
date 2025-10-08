@@ -10,7 +10,8 @@ export default {
 	'api-leds-text': 'LED',
 	'api-macros-text': '宏映射',
 	'api-pins-text': '引脚映射',
-	'api-profiles-text': '档案映射',
+	'api-profiles-text': '配置文件映射',
 	'api-addons-text': '插件',
+	'api-heTrigger-text': '霍尔效应触发器',
 	'api-splash-text': '启动图像',
 };

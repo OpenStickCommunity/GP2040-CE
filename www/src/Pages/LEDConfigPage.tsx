@@ -12,6 +12,7 @@ import Section from '../Components/Section';
 import FormControl from '../Components/FormControl';
 import FormSelect from '../Components/FormSelect';
 import WebApi from '../Services/WebApi';
+import { FormCheck } from 'react-bootstrap';
 
 const LED_FORMATS = [
 	{ label: 'GRB', value: 0 },
@@ -24,6 +25,7 @@ const defaultValue = {
 	dataPin: -1,
 	ledFormat: 0,
 	turnOffWhenSuspended: 0,
+	brightnessMaximum: 0,
 };
 
 const schema = yup.object().shape({
@@ -36,6 +38,14 @@ const schema = yup.object().shape({
 		.min(0)
 		.max(3)
 		.label('LED Format'),
+	brightnessMaximum: yup
+		.number()
+		.required()
+		.positive()
+		.integer()
+		.min(0)
+		.max(100)
+		.label('Max Brightness'),
 	turnOffWhenSuspended: yup.number().label('Turn Off When Suspended'),
 });
 
@@ -111,20 +121,36 @@ export default function LEDConfigPage() {
 									</option>
 								))}
 							</FormSelect>
-							<Form.Check
-								label={t('LedConfig:turn-off-when-suspended')}
-								type="switch"
-								name="turnOffWhenSuspended"
-								className="col-sm-4 mb-3 align-content-end"
-								isInvalid={false}
-								checked={Boolean(values.turnOffWhenSuspended)}
-								onChange={(e) => {
-									setFieldValue(
-										'turnOffWhenSuspended',
-										e.target.checked ? 1 : 0,
-									);
-								}}
+							<FormControl
+								type="number"
+								label={t('LedConfig:rgb.led-brightness-maximum-label')}
+								name="brightnessMaximum"
+								className="form-control-sm"
+								groupClassName="col-sm-4 mb-3"
+								value={values.brightnessMaximum}
+								error={errors.brightnessMaximum}
+								isInvalid={Boolean(errors.brightnessMaximum)}
+								onChange={handleChange}
+								min={0}
+								max={100}
 							/>
+						</Row>
+						<Row>
+							<div className="col-sm-4 mb-3">
+								<FormCheck
+									label={t('LedConfig:turn-off-when-suspended')}
+									type="switch"
+									id="turnOffWhenSuspended"
+									isInvalid={false}
+									checked={Boolean(values.turnOffWhenSuspended)}
+									onChange={(e) => {
+										setFieldValue(
+											'turnOffWhenSuspended',
+											e.target.checked ? 1 : 0,
+										);
+									}}
+								/>
+							</div>
 						</Row>
 					</Section>
 					<Button type="submit">{t('Common:button-save-label')}</Button>

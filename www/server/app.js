@@ -285,14 +285,7 @@ app.get('/api/getLedOptions', (req, res) => {
 		dataPin: 22,
 		ledFormat: 0,
 		turnOffWhenSuspended: 0,
-	});
-});
-
-app.get('/api/getLedOptions', (req, res) => {
-	return res.send({
-		dataPin: 22,
-		ledFormat: 0,
-		turnOffWhenSuspended: 0,
+		brightnessMaximum: 50,
 	});
 });
 
