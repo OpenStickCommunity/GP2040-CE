@@ -174,7 +174,13 @@ const ColorPickerList = memo(function ColorPickerList({
 	);
 });
 
-const PreviewLedChanges = ({ advancedMode }: { advancedMode: boolean }) => {
+const PreviewLedChanges = ({
+	advancedMode,
+	selectedProfile,
+}: {
+	advancedMode: boolean;
+	selectedProfile: number;
+}) => {
 	const { values } = useFormikContext<{
 		AnimationOptions: AnimationOptions;
 		Lights: Light[];
@@ -183,14 +189,11 @@ const PreviewLedChanges = ({ advancedMode }: { advancedMode: boolean }) => {
 
 	useEffect(() => {
 		if (advancedMode) return;
-
-		const profile =
-			values.AnimationOptions.profiles[
-				values.AnimationOptions.baseProfileIndex
-			];
+		console.log('selectedProfile', selectedProfile);
+		const profile = values.AnimationOptions.profiles[selectedProfile];
 		if (!profile) return;
 		activateLedsProfile(profile);
-	}, [values, advancedMode]);
+	}, [values, advancedMode, selectedProfile]);
 	return null;
 };
 
@@ -198,21 +201,14 @@ export default function CustomThemePage() {
 	const { t } = useTranslation('');
 	const { fetchLedOptions, saveAnimationOptions, saveLightOptions } =
 		useLedStore();
-	// const { activateLedsProfile, turnOffLeds } = useLedsPreview();
-
 	const AnimationOptions = useLedStore((state) => state.AnimationOptions);
 	const Lights = useLedStore((state) => state.Lights);
 	const loading = useLedStore((state) => state.loading);
 	const initialized = useLedStore((state) => state.initialized);
-	// const [previewProfileIndex, setPreviewProfileIndex] = useState(
-	// 	AnimationOptions.baseProfileIndex,
-	// );
-	const [activeTab, setActiveTab] = useState(
-		`profile-${AnimationOptions.baseProfileIndex}`,
+	const [selectedProfile, setSelectedProfile] = useState(
+		AnimationOptions.baseProfileIndex,
 	);
-
 	const [advancedMode, setAdvancedMode] = useState(false);
-
 	const [saveMessage, setSaveMessage] = useState('');
 
 	const onSuccess = async ({
@@ -267,52 +263,6 @@ export default function CustomThemePage() {
 			}) => (
 				<Form onSubmit={handleSubmit}>
 					<Section title="Custom LED Theme">
-						{/* <Row className="mb-3">
-							<Col md={6} className="d-flex flex-column justify-content-end">
-								<FormSelect
-									label={'Preview configured profile'}
-									className="form-select-sm"
-									groupClassName="mb-3"
-									value={previewProfileIndex}
-									onChange={(e) => {
-										setPreviewProfileIndex(parseInt(e.target.value));
-									}}
-								>
-									{values.AnimationOptions.profiles.map((_, profileIndex) => (
-										<option
-											key={`profile-select-${profileIndex}`}
-											value={profileIndex}
-										>
-											{t('Leds:profile-number', {
-												profileNumber: profileIndex + 1,
-											})}
-										</option>
-									))}
-								</FormSelect>
-								<Button
-									variant="secondary"
-									onClick={() => {
-										activateLedsProfile(
-											values.AnimationOptions.profiles[previewProfileIndex],
-										);
-									}}
-								>
-									Profile Test
-								</Button>
-							</Col>
-							<Col md={6} className="d-flex flex-column justify-content-end">
-								<p>Turns off all the lights</p>
-								<Button
-									variant="danger"
-									onClick={() => {
-										turnOffLeds();
-									}}
-								>
-									Lights Off
-								</Button>
-							</Col>
-						</Row>
-						<hr /> */}
 						<Row>
 							<FormSelect
 								label={t('Leds:profile-label')}
@@ -386,16 +336,18 @@ export default function CustomThemePage() {
 							name="AnimationOptions.profiles"
 							render={(arrayHelpers) => (
 								<Tabs
-									activeKey={activeTab}
+									activeKey={`profile-${selectedProfile}`}
 									onSelect={(eventKey) => {
 										if (!eventKey) return;
 										if ('profile-add' === eventKey) {
 											arrayHelpers.push(emptyAnimationProfile);
-											setActiveTab(
-												`profile-${values.AnimationOptions.profiles.length}`,
+											setSelectedProfile(
+												values.AnimationOptions.profiles.length,
 											);
 										} else {
-											setActiveTab(eventKey);
+											setSelectedProfile(
+												parseInt(eventKey.replace('profile-', '')),
+											);
 										}
 									}}
 									className="my-3 pb-0"
@@ -658,7 +610,10 @@ export default function CustomThemePage() {
 						{t('Common:button-save-label')}
 					</Button>
 					{saveMessage && <Alert variant="info">{saveMessage}</Alert>}
-					<PreviewLedChanges advancedMode={advancedMode} />
+					<PreviewLedChanges
+						advancedMode={advancedMode}
+						selectedProfile={selectedProfile}
+					/>
 				</Form>
 			)}
 		</Formik>
