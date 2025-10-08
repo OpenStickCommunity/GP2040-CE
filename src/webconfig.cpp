@@ -806,9 +806,13 @@ std::string setLedOptions()
     LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
     docToPin(ledOptions.dataPin, doc, "dataPin");
     readDoc(ledOptions.ledFormat, doc, "ledFormat");
-    readDoc(ledOptions.brightnessMaximum, doc, "brightnessMaximum");
     readDoc(ledOptions.turnOffWhenSuspended, doc, "turnOffWhenSuspended");
-    
+
+    readDoc(ledOptions.brightnessMaximum, doc, "brightnessMaximum");
+    uint32_t checkedBrightnessMax = std::clamp<uint32_t>(ledOptions.brightnessMaximum, 0, 100);
+    ledOptions.brightnessMaximum = int((float)checkedBrightnessMax * 2.55f);
+    ledOptions.brightnessMaximum = std::clamp<uint32_t>(ledOptions.brightnessMaximum, 0, 255);
+
     readDoc(ledOptions.pledType, doc, "pledType");
     docToPin(ledOptions.pledPin1, doc, "pledPin1");
     docToPin(ledOptions.pledPin2, doc, "pledPin2");
@@ -831,8 +835,11 @@ std::string getLedOptions()
     const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
     writeDoc(doc, "dataPin", cleanPin(ledOptions.dataPin));
     writeDoc(doc, "ledFormat", ledOptions.ledFormat);
-    writeDoc(doc, "brightnessMaximum", ledOptions.brightnessMaximum);
     writeDoc(doc, "turnOffWhenSuspended", ledOptions.turnOffWhenSuspended);
+
+    uint32_t adjustedbrightnessMax = (uint32_t)((float)ledOptions.brightnessMaximum / 2.55f);
+    adjustedbrightnessMax = std::clamp<uint32_t>(adjustedbrightnessMax, 0, 100);
+    writeDoc(doc, "brightnessMaximum", adjustedbrightnessMax);
 
     writeDoc(doc, "pledType", ledOptions.pledType);
     writeDoc(doc, "pledPin1", ledOptions.pledPin1);
@@ -1117,6 +1124,7 @@ std::string setAnimationProtoOptions()
     JsonObject AnimOptions = docJson["AnimationOptions"];
 
     options.brightness = AnimOptions["brightness"].as<uint32_t>();
+    options.brightness = std::clamp<uint32_t>(options.brightness, 0, 10);
     options.autoDisableTime = AnimOptions["idletimeout"].as<uint32_t>() * 1000;
     options.baseProfileIndex = AnimOptions["baseProfileIndex"].as<uint32_t>();
     JsonArray customColorsList = AnimOptions["customColors"];
