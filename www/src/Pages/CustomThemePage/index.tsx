@@ -189,7 +189,6 @@ const PreviewLedChanges = ({
 
 	useEffect(() => {
 		if (advancedMode) return;
-		console.log('selectedProfile', selectedProfile);
 		const profile = values.AnimationOptions.profiles[selectedProfile];
 		if (!profile) return;
 		activateLedsProfile(profile);
