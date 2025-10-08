@@ -43,7 +43,7 @@ const schema = yup.object().shape({
 		.required()
 		.positive()
 		.integer()
-		.min(0)
+		.min(1)
 		.max(100)
 		.label('Max Brightness'),
 	turnOffWhenSuspended: yup.number().label('Turn Off When Suspended'),
@@ -131,7 +131,7 @@ export default function LEDConfigPage() {
 								error={errors.brightnessMaximum}
 								isInvalid={Boolean(errors.brightnessMaximum)}
 								onChange={handleChange}
-								min={0}
+								min={1}
 								max={100}
 							/>
 						</Row>
