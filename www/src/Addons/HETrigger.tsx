@@ -106,7 +106,7 @@ export const HETriggerState = {
 	muxSelectPin1: 1,
 	muxSelectPin2: 2,
 	muxSelectPin3: -1,
-	heTriggerSmoothing: 1,
+	heTriggerSmoothing: 0,
 	heTriggerSmoothingFactor: 5,
 };
 
@@ -494,7 +494,7 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }: AddonPropTy
 					<FormCheck
 						label={t('AddonsConfig:analog-smoothing')}
 						type="switch"
-						id="heTriggerSmoothing"
+						id="TriggerSmoothingAddonButton"
 						className="col-sm-3 mt-auto mb-auto ms-3"
 						isInvalid={false}
 						checked={Boolean(values.heTriggerSmoothing)}

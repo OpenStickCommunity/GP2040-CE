@@ -1437,7 +1437,7 @@ static uint32_t calibrationMuxChannels = 0;
 static Pin_t calibrationSelectPins[4];
 static Pin_t calibrationADCPins[4];
 static bool calibrationSmoothing = false;
-static float calibrationSmoothingFactor = 0.0;
+static uint32_t calibrationSmoothingFactor = 0;
 static uint32_t smoothingRead = 0;
 
 // Get the HE Trigger Calibration using our manual GPIO input and everything
@@ -1480,7 +1480,8 @@ std::string setHETriggerCalibration()
 uint16_t emaCalculation(uint16_t value, uint16_t previous) {
     float ema_value = (float)value / ADC_MAX;
     float ema_previous = (float)previous / ADC_MAX;
-    return ((calibrationSmoothingFactor*value) + ((1.0f*calibrationSmoothingFactor) - previous)) * ADC_MAX;
+    float ema_smoothing = (float)calibrationSmoothingFactor / 1000.f;
+    return ((ema_smoothing*ema_value) + ((1.0f*ema_smoothing) - ema_previous)) * ADC_MAX;
 }
 
 // Get the HE Trigger Calibration using our manual GPIO input and everything
@@ -1547,7 +1548,7 @@ std::string getHETriggerCalibration()
     sleep_us(2);
 
     calibrationSmoothing = doc["heTriggerSmoothing"];
-    calibrationSmoothingFactor = doc["heTriggerSmoothingFactor"]/1000.f;
+    calibrationSmoothingFactor = doc["heTriggerSmoothingFactor"];
     if ( calibrationSmoothing ) {
         uint16_t read = adc_read();
         read = emaCalculation(read, smoothingRead);
@@ -2299,6 +2300,8 @@ std::string getAddonOptions()
     writeDoc(doc, "muxADCPin1", cleanPin(heTriggerOptions.muxADCPin1));
     writeDoc(doc, "muxADCPin2", cleanPin(heTriggerOptions.muxADCPin2));
     writeDoc(doc, "muxADCPin3", cleanPin(heTriggerOptions.muxADCPin3));
+    writeDoc(doc, "heTriggerSmoothing", heTriggerOptions.emaSmoothing);
+    writeDoc(doc, "heTriggerSmoothingFactor", heTriggerOptions.smoothingFactor);
 
     return serialize_json(doc);
 }

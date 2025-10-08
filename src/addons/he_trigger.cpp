@@ -76,7 +76,7 @@ void HETriggerAddon::selectChannel(uint8_t channel) {
 uint16_t HETriggerAddon::emaSmoothing(uint16_t value, uint16_t previous) {
     float ema_value = (float)value / ADC_MAX;
     float ema_previous = (float)previous / ADC_MAX;
-    return ((emaSmoothingFactor*value) + ((1.0f*emaSmoothingFactor) - previous) * ADC_MAX;
+    return ((emaSmoothingFactor*ema_value) + ((1.0f*emaSmoothingFactor) - ema_previous) * ADC_MAX);
 }
 
 void HETriggerAddon::preprocess() {

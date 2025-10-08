@@ -39,6 +39,14 @@
 #define HETRIGGER_ADC3 -1
 #endif
 
+#ifndef HETRIGGER_SMOOTHING_ENABLED
+#define HETRIGGER_SMOOTHING_ENABLED 1
+#endif
+
+#ifndef HETRIGGER_SMOOTHING_FACTOR
+#define HETRIGGER_SMOOTHING_FACTOR 5
+#endif
+
 #ifndef HETRIGGER_DEFAULT_IDLE
 #define HETRIGGER_DEFAULT_IDLE 150
 #endif
@@ -551,7 +559,7 @@ public:
     virtual std::string name() { return HETriggerAddonName; }
 private:
     void selectChannel(uint8_t channel);
-    uint16_t emaSmoothing(float factor, uint16_t value, uint16_t previous);
+    uint16_t emaSmoothing(uint16_t value, uint16_t previous);
     int muxTotal;
     int selectPins;
     Pin_t muxPinArray[4];

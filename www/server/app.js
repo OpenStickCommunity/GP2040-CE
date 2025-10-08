@@ -562,7 +562,7 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		muxSelectPin1: 1,
 		muxSelectPin2: 2,
 		muxSelectPin3: -1,
-		heTriggerSmoothing: true,
+		heTriggerSmoothing: 0,
 		heTriggerSmoothingFactor: 5,
 		RotaryAddonEnabled: 1,
 		PCF8575AddonEnabled: 1,

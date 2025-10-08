@@ -881,7 +881,7 @@ message HETriggerOptions
     optional int32 muxChannels = 10;
     repeated HETriggerInfo triggers = 11 [(nanopb).max_count = 32];
     optional bool emaSmoothing = 12;
-    optional float smoothingFactor = 13;
+    optional int32 smoothingFactor = 13;
 }
 
 message AddonOptions
