@@ -56,6 +56,8 @@ void AnimationStation::SetLights(Lights InRGBLights)
 void AnimationStation::SetMaxBrightness(uint8_t max)
 {
   brightnessMax = max;
+  if(brightnessMax < brightnessSteps)
+    brightnessMax = brightnessSteps;
 }
 
 void AnimationStation::HandleEvent(GamepadHotkey action)

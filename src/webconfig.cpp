@@ -801,7 +801,7 @@ std::string setLedOptions()
 
     readDoc(ledOptions.brightnessMaximum, doc, "brightnessMaximum");
     uint32_t checkedBrightnessMax = std::clamp<uint32_t>(ledOptions.brightnessMaximum, 0, 100);
-    ledOptions.brightnessMaximum = int((float)checkedBrightnessMax * 2.55f);
+    ledOptions.brightnessMaximum = int(((float)checkedBrightnessMax * 2.55f) +  + 0.5f); //+0.5 to cause it to round to nearest number
     ledOptions.brightnessMaximum = std::clamp<uint32_t>(ledOptions.brightnessMaximum, 0, 255);
 
     readDoc(ledOptions.pledType, doc, "pledType");
@@ -828,7 +828,7 @@ std::string getLedOptions()
     writeDoc(doc, "ledFormat", ledOptions.ledFormat);
     writeDoc(doc, "turnOffWhenSuspended", ledOptions.turnOffWhenSuspended);
 
-    uint32_t adjustedbrightnessMax = (uint32_t)((float)ledOptions.brightnessMaximum / 2.55f);
+    uint32_t adjustedbrightnessMax = (uint32_t)(((float)ledOptions.brightnessMaximum / 2.55f) + 0.5f); //+0.5 to cause it to round to nearest number
     adjustedbrightnessMax = std::clamp<uint32_t>(adjustedbrightnessMax, 0, 100);
     writeDoc(doc, "brightnessMaximum", adjustedbrightnessMax);
 
