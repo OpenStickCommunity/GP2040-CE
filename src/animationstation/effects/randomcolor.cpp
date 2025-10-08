@@ -22,7 +22,7 @@ void RandomColor::NewPressForPin(int lightIndex)
   savedPressedColor[lightIndex] = colors[(rand() % (colors.size()-1)) + 1];
 }
 
-void RandomColor::Animate(RGB (&frame)[100]) 
+void RandomColor::Animate(RGB (&frame)[FRAME_MAX]) 
 {
   UpdateTime();
   UpdatePresses();

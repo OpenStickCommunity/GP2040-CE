@@ -21,7 +21,7 @@ RainbowSynced::RainbowSynced(Lights& InRGBLights, EButtonCaseEffectType InButton
     AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = RAINBOW_CYCLE_MIN;
 }
 
-void RainbowSynced::Animate(RGB (&frame)[100]) 
+void RainbowSynced::Animate(RGB (&frame)[FRAME_MAX]) 
 {
   if (time_reached(this->nextRunTime)) 
   {
@@ -103,7 +103,7 @@ RainbowRotate::RainbowRotate(Lights& InRGBLights, EButtonCaseEffectType InButton
   if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime < RAINBOW_CYCLE_MIN)
     AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = RAINBOW_CYCLE_MIN;}
 
-void RainbowRotate::Animate(RGB (&frame)[100]) 
+void RainbowRotate::Animate(RGB (&frame)[FRAME_MAX]) 
 {
   if (time_reached(this->nextRunTime)) 
   {

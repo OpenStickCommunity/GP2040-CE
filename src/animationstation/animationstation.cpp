@@ -28,8 +28,8 @@
 #include "config.pb.h"
 
 uint8_t AnimationStation::brightnessMax = 100;
-uint8_t AnimationStation::brightnessSteps = 5;
-float AnimationStation::brightnessX = 0;
+uint8_t AnimationStation::brightnessSteps = 10;
+float AnimationStation::normalisedBrightness = 0;
 absolute_time_t AnimationStation::nextChange = nil_time;
 AnimationOptions_Unpacked AnimationStation::options = {};
 std::string AnimationStation::printfs[4];
@@ -40,7 +40,7 @@ bool AnimationStation::TestModeLightIsCase = false;
 
 AnimationStation::AnimationStation()
 {
-  AnimationStation::SetBrightness(1);
+  AnimationStation::SetBrightnessStepValue(1);
 
   timeLastButtonPressed = get_absolute_time();
 
@@ -53,10 +53,9 @@ void AnimationStation::SetLights(Lights InRGBLights)
   RGBLights = InRGBLights;
 }
 
-void AnimationStation::ConfigureBrightness(uint8_t max, uint8_t steps)
+void AnimationStation::SetMaxBrightness(uint8_t max)
 {
   brightnessMax = max;
-  brightnessSteps = steps;
 }
 
 void AnimationStation::HandleEvent(GamepadHotkey action)
@@ -76,11 +75,11 @@ void AnimationStation::HandleEvent(GamepadHotkey action)
   //Adjust brigness
   if (action == HOTKEY_LEDS_BRIGHTNESS_UP) 
   {
-    AnimationStation::IncreaseBrightness();
+    AnimationStation::IncreaseBrightnessByStep();
   }
   if (action == HOTKEY_LEDS_BRIGHTNESS_DOWN) 
   {
-    AnimationStation::DecreaseBrightness();
+    AnimationStation::DecreaseBrightnessByStep();
   }
 
   //Switch to new profile
@@ -137,6 +136,10 @@ void AnimationStation::ChangeProfile(int changeSize)
 uint16_t AnimationStation::AdjustIndex(int changeSize)
 {
   std::vector<int> validIndexes;
+
+  //when initalising then changesize will be 0. If current profile is -1 then we saved in the off state. So just resume in off state
+  if(changeSize == 0 && this->options.baseProfileIndex == -1)
+    return -1;
 
   //if no profiles defined then return -1 to turn everything off
   if(options.NumValidProfiles == 0)
@@ -240,6 +243,10 @@ void AnimationStation::Animate()
   //timeout checks
   UpdateTimeout();
 
+  //Check for options changing and need saving
+  CheckForOptionsUpdate();
+  specialMoveSystem.CheckForOptionsUpdate();
+
   //If no profiles running
   if (baseAnimation == nullptr || buttonAnimation == nullptr) 
   {
@@ -264,9 +271,6 @@ void AnimationStation::Animate()
       specialMoveSystem.SetSpecialMoveAnimationOver();
     }
   }
-
-  CheckForOptionsUpdate();
-  specialMoveSystem.CheckForOptionsUpdate();
 }
 
 void AnimationStation::Clear() 
@@ -277,7 +281,7 @@ void AnimationStation::Clear()
 
 void AnimationStation::UpdateTimeout()
 {
-  if(TestMode == AnimationStationTestMode::AnimationStation_TestModeInvalid)
+  if(TestMode == AnimationStationTestMode::AnimationStation_TestModeInvalid && options.autoDisableTime > 0)
   {
     if(bIsInIdleTimeout == false)
     {
@@ -503,39 +507,39 @@ void AnimationStation::SetMode(int8_t mode)
 
 void AnimationStation::ApplyBrightness(uint32_t *frameValue) 
 {
-  for (int i = 0; i < 100; i++)
-    frameValue[i] = this->frame[i].value(Animation::format, brightnessX);
+  for (int i = 0; i < FRAME_MAX; i++)
+    frameValue[i] = this->frame[i].value(Animation::format, normalisedBrightness);
 }
 
-void AnimationStation::SetBrightness(uint8_t brightness) 
+void AnimationStation::SetBrightnessStepValue(uint8_t brightness) 
 {
   AnimationStation::options.brightness = std::clamp<uint32_t>(options.brightness, 0, brightnessSteps);
 
-  AnimationStation::brightnessX = (AnimationStation::options.brightness * getBrightnessStepSize()) / 255.0F;
-  AnimationStation::brightnessX = std::clamp<float>(AnimationStation::brightnessX, 0.0f, 1.0f);
+  AnimationStation::normalisedBrightness = (AnimationStation::options.brightness * getBrightnessStepSize()) / 255.0F;
+  AnimationStation::normalisedBrightness = std::clamp<float>(AnimationStation::normalisedBrightness, 0.0f, 1.0f);
 }
 
-void AnimationStation::DecreaseBrightness() 
+void AnimationStation::DecreaseBrightnessByStep() 
 {
   AnimationStation::options.brightness = std::clamp<int32_t>(((int32_t)options.brightness)-1, 0, brightnessSteps);
 }
 
-void AnimationStation::IncreaseBrightness()
+void AnimationStation::IncreaseBrightnessByStep()
 {
   AnimationStation::options.brightness = std::clamp<int32_t>(options.brightness+1, 0, brightnessSteps);
 }
 
 void AnimationStation::DimBrightnessTo0() 
 {
-  AnimationStation::brightnessX = 0;
+  AnimationStation::normalisedBrightness = 0;
 }
 
-float AnimationStation::GetBrightnessX() 
+float AnimationStation::GetNormalisedBrightness() 
 {
-  return AnimationStation::brightnessX;
+  return AnimationStation::normalisedBrightness;
 }
 
-uint8_t AnimationStation::GetBrightness() 
+uint8_t AnimationStation::GetBrightnessStepValue() 
 {
   return AnimationStation::options.brightness;
 }
@@ -621,7 +625,7 @@ void AnimationStation::DecompressSettings()
     DecompressProfile(index, &(optionsProto.profiles[index]));
 	}
 
-	options.brightness				= std::min<uint32_t>(optionsProto.brightness, 255);
+	options.brightness				= std::min<uint32_t>(optionsProto.brightness, brightnessSteps);
 	options.baseProfileIndex	= optionsProto.baseProfileIndex;
   options.autoDisableTime   = optionsProto.autoDisableTime;
 

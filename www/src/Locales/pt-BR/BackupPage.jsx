@@ -7,7 +7,6 @@ export default {
 	'api-display-text': 'Tela',
 	'api-gamepad-text': 'Gamepad',
 	'api-leds-text': 'LED',
-	'api-ledTheme-text': 'Tema de LED Personalizado',
 	'api-pins-text': 'Mapeamento de Pinos',
 	'api-profiles-text': 'Perfil de Pinos',
 	'api-addons-text': 'Add-Ons',

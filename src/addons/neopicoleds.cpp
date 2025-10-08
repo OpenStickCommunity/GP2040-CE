@@ -337,7 +337,7 @@ void NeoPicoLEDAddon::process()
 	if (turnOffWhenSuspended && get_usb_suspended()) {
 		AnimStation.DimBrightnessTo0();
 	} else {
-		AnimStation.SetBrightness(AnimationStation::GetBrightness());
+		AnimStation.SetBrightnessStepValue(AnimationStation::GetBrightnessStepValue());
 	}
 
 	//Grab led values this frame
@@ -351,7 +351,7 @@ void NeoPicoLEDAddon::process()
                 continue;
 
             float level = (static_cast<float>(PLED_MAX_LEVEL - neoPLEDs->getLedLevels()[i]) / static_cast<float>(PLED_MAX_LEVEL));
-            float brightness = as.GetBrightnessX() * level;
+            float brightness = as.GetNormalisedBrightness() * level;
             if (gamepad->auxState.sensors.statusLight.enabled && gamepad->auxState.sensors.statusLight.active) {
                 rgbPLEDValues[i] = (RGB(gamepad->auxState.sensors.statusLight.color.red, gamepad->auxState.sensors.statusLight.color.green, gamepad->auxState.sensors.statusLight.color.blue)).value(neopico.GetFormat(), brightness);
             } else {
@@ -366,8 +366,8 @@ void NeoPicoLEDAddon::process()
     // Turbo LED is a separate RGB that is on if turbo is on, and off if its off
     if ( turboOptions.turboLedType == PLED_TYPE_RGB ) { // RGB or PWM?
         if ( gamepad->auxState.turbo.activity == 1) { // Turbo is on (active sensor)
-            if (turboOptions.turboLedIndex >= 0 && turboOptions.turboLedIndex < 100) { // Double check index value
-                float brightness = as.GetBrightnessX();
+            if (turboOptions.turboLedIndex >= 0 && turboOptions.turboLedIndex < FRAME_MAX) { // Double check index value
+                float brightness = as.GetNormalisedBrightness();
                 frame[turboOptions.turboLedIndex] = ((RGB)turboOptions.turboLedColor).value(neopico.GetFormat(), brightness);
             }
         }
@@ -680,8 +680,8 @@ void NeoPicoLEDAddon::configureLEDs()
 	}
 
 	Animation::format = static_cast<LEDFormat>(ledOptions.ledFormat);
-	AnimStation.ConfigureBrightness(ledOptions.brightnessMaximum, ledOptions.brightnessSteps);
-	AnimStation.SetBrightness(AnimStation.options.brightness);
+	AnimStation.SetMaxBrightness(ledOptions.brightnessMaximum);
+	AnimStation.SetBrightnessStepValue(AnimStation.options.brightness);
 	AnimStation.specialMoveSystem.SetParentAnimationStation(&AnimStation);
 	AnimStation.specialMoveSystem.SetDirectionMasks(GAMEPAD_MASK_DU, GAMEPAD_MASK_DD, GAMEPAD_MASK_DL, GAMEPAD_MASK_DR);
 	AnimStation.specialMoveSystem.SetButtonMasks(GAMEPAD_MASK_B3);

@@ -1,21 +1,30 @@
 import { useDraggable } from '@dnd-kit/core';
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { Light } from '../Store/useLedStore';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
+import { Light } from '../../Store/useLedStore';
 
 type LightIndicatorProps = {
 	id: number;
 	cellWidth: number;
 	active: boolean;
+	error?: string;
 } & Light;
 
-const LightIcon = ({ size, active }: { size: number; active: boolean }) => (
+export const LightIcon = ({
+	size,
+	active,
+	error,
+}: {
+	size: number;
+	active: boolean;
+	error?: string;
+}) => (
 	<div>
 		{active ? (
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				width={size}
 				height={size}
-				fill="currentColor"
+				fill={error ? 'red' : 'currentColor'}
 				viewBox="0 0 16 16"
 				style={{ filter: 'drop-shadow(0 4px 16px rgba(255, 255, 200, 0.7))' }}
 			>
@@ -26,7 +35,7 @@ const LightIcon = ({ size, active }: { size: number; active: boolean }) => (
 				xmlns="http://www.w3.org/2000/svg"
 				width={size}
 				height={size}
-				fill="currentColor"
+				fill={error ? 'red' : 'currentColor'}
 				viewBox="0 0 16 16"
 				style={{ filter: 'drop-shadow(0 4px 16px rgba(255, 255, 200, 0.7))' }}
 			>
@@ -46,6 +55,7 @@ export function LightIndicator({
 	firstLedIndex,
 	lightType,
 	GPIOPinorCaseChainIndex,
+	error,
 }: LightIndicatorProps) {
 	const { attributes, isDragging, listeners, setNodeRef, transform } =
 		useDraggable({ id });
@@ -75,49 +85,51 @@ export function LightIndicator({
 			}}
 		>
 			{isDragging ? (
-				<LightIcon size={cellWidth} active={active} />
+				<LightIcon size={cellWidth} active={active} error={error} />
 			) : (
 				<OverlayTrigger
-					placement="top"
-					// trigger={['hover', 'focus']}
+					key={`light-${id}`}
+					placement="auto"
+					rootClose
 					overlay={
-						<Tooltip>
-							<div className="d-flex flex-column align-items-start min-w-110 p-1">
-								<div className="fw-semibold mb-1">Light {id + 1}</div>
-								<hr className="m-1 w-100" style={{ margin: '1px 0' }} />
-								<div className="d-flex w-100 justify-content-between">
-									<span className="text-secondary">GPIO/Case:</span>
-									<span>{GPIOPinorCaseChainIndex}</span>
+						<Popover>
+							<Popover.Header as="h3">Light {id + 1}</Popover.Header>
+							<Popover.Body>
+								<div style={{ minWidth: 200 }}>
+									<div className="d-flex w-100 justify-content-between">
+										<span className="text-secondary">GPIO/Case:</span>
+										<span>{GPIOPinorCaseChainIndex}</span>
+									</div>
+									<div className="d-flex w-100 justify-content-between">
+										<span className="text-secondary">Type:</span>
+										<span>
+											{lightType === 0 && 'ActionButton'}
+											{lightType === 1 && 'Case'}
+											{lightType === 2 && 'Turbo'}
+											{lightType === 3 && 'PlayerLight'}
+										</span>
+									</div>
+									<div className="d-flex w-100 justify-content-between">
+										<span className="text-secondary">LEDs:</span>
+										<span>{numLedsOnLight}</span>
+									</div>
+									<div className="d-flex w-100 justify-content-between">
+										<span className="text-secondary">Coords:</span>
+										<span>
+											({xCoord}, {yCoord})
+										</span>
+									</div>
+									<div className="d-flex w-100 justify-content-between">
+										<span className="text-secondary">First LED:</span>
+										<span>{firstLedIndex}</span>
+									</div>
 								</div>
-								<div className="d-flex w-100 justify-content-between">
-									<span className="text-secondary">Type:</span>
-									<span>
-										{lightType === 0 && 'ActionButton'}
-										{lightType === 1 && 'Case'}
-										{lightType === 2 && 'Turbo'}
-										{lightType === 3 && 'PlayerLight'}
-									</span>
-								</div>
-								<div className="d-flex w-100 justify-content-between">
-									<span className="text-secondary">LEDs:</span>
-									<span>{numLedsOnLight}</span>
-								</div>
-								<div className="d-flex w-100 justify-content-between">
-									<span className="text-secondary">Coords:</span>
-									<span>
-										({xCoord}, {yCoord})
-									</span>
-								</div>
-								<div className="d-flex w-100 justify-content-between">
-									<span className="text-secondary">First LED:</span>
-									<span>{firstLedIndex}</span>
-								</div>
-							</div>
-						</Tooltip>
+							</Popover.Body>
+						</Popover>
 					}
 				>
 					<div>
-						<LightIcon size={cellWidth} active={active} />
+						<LightIcon size={cellWidth} active={active} error={error} />
 					</div>
 				</OverlayTrigger>
 			)}

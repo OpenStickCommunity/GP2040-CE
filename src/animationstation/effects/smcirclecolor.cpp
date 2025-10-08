@@ -87,7 +87,7 @@ bool SMCircleColor::IsFinished()
     return CurrentState == SMCircleColorState::SM_CIRCLE_STATE_FINISHED;
 }
 
-void SMCircleColor::Animate(RGB (&frame)[100]) 
+void SMCircleColor::Animate(RGB (&frame)[FRAME_MAX]) 
 {
     UpdateTime();
 
@@ -132,7 +132,7 @@ void SMCircleColor::Animate(RGB (&frame)[100])
     }
 }
 
-bool SMCircleColor::UpdateCircle(RGB (&frame)[100])
+bool SMCircleColor::UpdateCircle(RGB (&frame)[FRAME_MAX])
 {
     if(CurrentState == SMCircleColorState::SM_CIRCLE_STATE_RUNNING)
         CurrentAngle += GetCircleSpeedFromEnum();

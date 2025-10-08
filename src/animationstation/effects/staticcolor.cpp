@@ -11,7 +11,7 @@ StaticColor::StaticColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPin
   pressedPins = InPressedPins;
 }
 
-void StaticColor::Animate(RGB (&frame)[100]) 
+void StaticColor::Animate(RGB (&frame)[FRAME_MAX]) 
 {
   UpdateTime();
   UpdatePresses();

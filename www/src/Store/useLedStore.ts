@@ -7,7 +7,7 @@ import {
 
 export const MAX_CUSTOM_COLORS = 8;
 export const MAX_CASE_LIGHTS = 40;
-export const MAX_PRESSED_COLORS = 30;
+export const MAX_LIGHTS = 100;
 export const MAX_ANIMATION_PROFILES = 4;
 
 export type AnimationProfile = {
@@ -78,7 +78,13 @@ const useLedStore = create<State & Actions>()((set, get) => ({
 
 		set((state) => ({
 			...state,
-			AnimationOptions,
+			AnimationOptions: {
+				...AnimationOptions,
+				customColors: [
+					...AnimationOptions.customColors,
+					...Array(Math.max(0, MAX_CUSTOM_COLORS - AnimationOptions.customColors.length)).fill(0)
+				]
+			},
 			Lights: LightData?.Lights || [],
 			loading: false,
 			initialized: true,

@@ -9,7 +9,6 @@ export default {
 	'api-display-text': 'Pantalla',
 	'api-gamepad-text': 'Control',
 	'api-leds-text': 'LED',
-	'api-ledTheme-text': 'Tema LED Personalizado',
 	'api-macros-text': 'Mapeo de Macros',
 	'api-pins-text': 'Mapeo de Pines',
 	'api-profiles-text': 'Mapeo de Perfiles',

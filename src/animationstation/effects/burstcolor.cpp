@@ -66,7 +66,7 @@ void BurstColor::NewPressForPin(int lightIndex)
     }
 }
 
-void BurstColor::Animate(RGB (&frame)[100]) 
+void BurstColor::Animate(RGB (&frame)[FRAME_MAX]) 
 {
     UpdateTime();
     UpdatePresses();
