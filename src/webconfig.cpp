@@ -1438,6 +1438,7 @@ static Pin_t calibrationSelectPins[4];
 static Pin_t calibrationADCPins[4];
 static bool calibrationSmoothing = false;
 static uint32_t calibrationSmoothingFactor = 0;
+static float ema_smoothing;
 static uint32_t smoothingRead = 0;
 
 // Get the HE Trigger Calibration using our manual GPIO input and everything
@@ -1457,6 +1458,7 @@ std::string setHETriggerCalibration()
 
     calibrationSmoothing = doc["heTriggerSmoothing"];
     calibrationSmoothingFactor = doc["heTriggerSmoothingFactor"];
+    ema_smoothing = (float)calibrationSmoothingFactor / 100.f; // 99 = max smoothing factor
 
     for (int i = 0; i < 4; i++) {
         if ( calibrationSelectPins[i] != -1 && 
@@ -1480,8 +1482,7 @@ std::string setHETriggerCalibration()
 uint16_t emaCalculation(uint16_t value, uint16_t previous) {
     float ema_value = (float)value / ADC_MAX;
     float ema_previous = (float)previous / ADC_MAX;
-    float ema_smoothing = (float)calibrationSmoothingFactor / 1000.f;
-    return ((ema_smoothing*ema_value) + ((1.0f*ema_smoothing) - ema_previous)) * ADC_MAX;
+    return ((ema_smoothing*ema_value) + ((1.0f-ema_smoothing) * ema_previous)) * ADC_MAX;
 }
 
 // Get the HE Trigger Calibration using our manual GPIO input and everything
@@ -1543,16 +1544,14 @@ std::string getHETriggerCalibration()
         return serialize_json(doc);
     }
     adc_select_input(adcSelectPin-26);
-    sleep_us(5);
-    adc_read();
-    sleep_us(2);
-
-    calibrationSmoothing = doc["heTriggerSmoothing"];
-    calibrationSmoothingFactor = doc["heTriggerSmoothingFactor"];
+    // Web-Config triggers getHECalibration every 50ms, game controller triggers <1ms
     if ( calibrationSmoothing ) {
-        uint16_t read = adc_read();
-        read = emaCalculation(read, smoothingRead);
-        smoothingRead = read;
+        uint16_t read;
+        for(int i = 0; i < 50; i++) {
+            read = adc_read();
+            read = emaCalculation(read, smoothingRead);
+            smoothingRead = read;
+        }
         doc["voltage"] = read;
     } else {
         doc["voltage"] = adc_read();
@@ -1583,7 +1582,6 @@ std::string getHETriggerOptions()
 // Set Hall Effect Trigger Options
 std::string setHETriggerOptions()
 {
-    const size_t capacity = JSON_OBJECT_SIZE(100);
     DynamicJsonDocument doc = get_post_data();
     HETriggerInfo * heTriggers = Storage::getInstance().getAddonOptions().heTriggerOptions.triggers;
 

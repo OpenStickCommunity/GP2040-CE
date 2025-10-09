@@ -568,6 +568,11 @@ private:
 
     uint16_t emaSmoothingReads[32];
     float emaSmoothingFactor;
+
+    // Used during processing
+    uint32_t mux;
+    uint32_t channel;
+    uint16_t value;
 };
 
 #endif  // _HE_Trigger_H

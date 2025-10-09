@@ -58,10 +58,22 @@ void HETriggerAddon::setup() {
     lastADCSelected = -1;
 
     if ( options.emaSmoothing == 1 ) {
+        // Read all ADC values once
         for(int i = 0; i < 32; i++) {
-            emaSmoothingReads[i] = 0;
+            // Ignore triggers with no actions
+            if (options.triggers[i].action == -10 )
+                continue;
+            mux = (i / options.muxChannels);
+            channel = (i % options.muxChannels);
+            selectChannel(channel);
+            // Only Switch ADC if we are not currently on the mux ADC
+            if ( lastADCSelected != muxPinArray[mux]) {
+                adc_select_input(muxPinArray[mux]-26);
+                lastADCSelected = muxPinArray[mux];
+            }
+            emaSmoothingReads[i] = adc_read();
         }
-        emaSmoothingFactor = options.smoothingFactor / 1000.f;
+        emaSmoothingFactor = (float)options.smoothingFactor / 100.f; // 99 = max smoothing factor
     }
 }
 
@@ -76,15 +88,12 @@ void HETriggerAddon::selectChannel(uint8_t channel) {
 uint16_t HETriggerAddon::emaSmoothing(uint16_t value, uint16_t previous) {
     float ema_value = (float)value / ADC_MAX;
     float ema_previous = (float)previous / ADC_MAX;
-    return ((emaSmoothingFactor*ema_value) + ((1.0f*emaSmoothingFactor) - ema_previous) * ADC_MAX);
+    return ((emaSmoothingFactor*ema_value) + ((1.0f-emaSmoothingFactor) * ema_previous)) * ADC_MAX;
 }
 
 void HETriggerAddon::preprocess() {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     HETriggerOptions & options = Storage::getInstance().getAddonOptions().heTriggerOptions;
-    uint32_t mux;
-    uint32_t channel;
-    uint16_t value;
     for (uint8_t he = 0; he < 32; he++) {
         // Ignore triggers with no actions
         if (options.triggers[he].action == -10 )
