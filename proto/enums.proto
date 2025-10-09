@@ -430,7 +430,7 @@ enum GamepadHotkey
     HOTKEY_LEDS_PARAMETER_DOWN   = 57;
     HOTKEY_LEDS_BRIGHTNESS_UP    = 58;
     HOTKEY_LEDS_BRIGHTNESS_DOWN  = 59;
-		// 60 - 10 have previously been LED hotkeys
+		// 60 - 70 have previously been LED hotkeys
 		// They can be reused as they where never saved in storage
     HOTKEY_LOAD_PROFILE_5        = 71;
     HOTKEY_LOAD_PROFILE_6        = 72;
