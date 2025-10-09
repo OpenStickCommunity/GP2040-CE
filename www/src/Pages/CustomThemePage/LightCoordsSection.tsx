@@ -450,7 +450,7 @@ export default function LightCoordsSection({
 							</div>
 						)}
 					</div>
-					<div className="d-flex flex-column justify-content-between align-items-center">
+					{/* <div className="d-flex flex-column justify-content-between align-items-center">
 						<Button
 							className="w-100"
 							variant="secondary"
@@ -478,7 +478,7 @@ export default function LightCoordsSection({
 						>
 							Add light
 						</Button>
-					</div>
+					</div> */}
 				</Col>
 				<Col md={9} className="pt-2 mt-md-0">
 					<div
@@ -493,6 +493,30 @@ export default function LightCoordsSection({
 							height={dimensions.width}
 							xmlns="http://www.w3.org/2000/svg"
 							style={{ position: 'absolute' }}
+							onClick={(e) => {
+								const rect = e.currentTarget.getBoundingClientRect();
+
+								const gridX = Math.floor((e.clientX - rect.left) / cellWidth);
+								const gridY = Math.floor((e.clientY - rect.top) / cellWidth);
+								const clampedX = Math.max(0, Math.min(gridX, gridSize - 1));
+								const clampedY = Math.max(0, Math.min(gridY, gridSize - 1));
+
+								setValues({
+									AnimationOptions: values.AnimationOptions,
+									Lights: [
+										...values.Lights,
+										{
+											GPIOPinorCaseChainIndex: 0,
+											firstLedIndex: values.Lights.length,
+											lightType: 0,
+											numLedsOnLight: 1,
+											xCoord: clampedX,
+											yCoord: clampedY,
+										},
+									],
+								});
+								setSelectedLight(values.Lights.length);
+							}}
 						>
 							<defs>
 								<pattern
