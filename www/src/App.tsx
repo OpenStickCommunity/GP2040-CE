@@ -14,7 +14,9 @@ import AddonsConfigPage from './Pages/AddonsConfigPage';
 import BackupPage from './Pages/BackupPage';
 import PlaygroundPage from './Pages/PlaygroundPage';
 import InputMacroAddonPage from './Pages/InputMacroAddonPage';
-import Leds from './Pages/Leds';
+import LEDConfigPage from './Pages/LEDConfigPage';
+import CustomThemePage from './Pages/CustomThemePage';
+
 
 import './App.scss';
 
@@ -33,7 +35,8 @@ const App = () => {
 							element={<PeripheralMappingPage />}
 						/>
 						<Route path="/reset-settings" element={<ResetSettingsPage />} />
-						<Route path="/leds" element={<Leds />} />
+						<Route path="/led-config" element={<LEDConfigPage />} />
+						<Route path="/custom-theme" element={<CustomThemePage />} />
 						<Route path="/display-config" element={<DisplayConfigPage />} />
 						<Route path="/add-ons" element={<AddonsConfigPage />} />
 						<Route path="/backup" element={<BackupPage />} />

@@ -41,7 +41,7 @@
 
 extern struct fsdata_file file__index_html[];
 
-const static char* spaPaths[] = { "/animation", "/backup", "/display-config", "/leds", "/pin-mapping", "/settings", "/reset-settings", "/add-ons", "/macro", "/peripheral-mapping" };
+const static char* spaPaths[] = { "/animation", "/backup", "/custom-theme", "/display-config", "/led-config", "/pin-mapping", "/settings", "/reset-settings", "/add-ons", "/macro", "/peripheral-mapping" };
 const static char* excludePaths[] = { "/css", "/images", "/js", "/static" };
 const static uint32_t rebootDelayMs = 500;
 static string http_post_uri;
@@ -793,24 +793,15 @@ std::string getGamepadOptions()
 std::string setLedOptions()
 {
     DynamicJsonDocument doc = get_post_data();
-
-    const auto readIndex = [&](int32_t& var, const char* key0, const char* key1)
-    {
-        var = -1;
-        if (hasValue(doc, key0, key1))
-        {
-            readDoc(var, doc, key0, key1);
-        }
-    };
-
     LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
+
     docToPin(ledOptions.dataPin, doc, "dataPin");
     readDoc(ledOptions.ledFormat, doc, "ledFormat");
     readDoc(ledOptions.turnOffWhenSuspended, doc, "turnOffWhenSuspended");
 
     readDoc(ledOptions.brightnessMaximum, doc, "brightnessMaximum");
     uint32_t checkedBrightnessMax = std::clamp<uint32_t>(ledOptions.brightnessMaximum, 0, 100);
-    ledOptions.brightnessMaximum = int((float)checkedBrightnessMax * 2.55f);
+    ledOptions.brightnessMaximum = int(((float)checkedBrightnessMax * 2.55f) +  + 0.5f); //+0.5 to cause it to round to nearest number
     ledOptions.brightnessMaximum = std::clamp<uint32_t>(ledOptions.brightnessMaximum, 0, 255);
 
     readDoc(ledOptions.pledType, doc, "pledType");
@@ -837,7 +828,7 @@ std::string getLedOptions()
     writeDoc(doc, "ledFormat", ledOptions.ledFormat);
     writeDoc(doc, "turnOffWhenSuspended", ledOptions.turnOffWhenSuspended);
 
-    uint32_t adjustedbrightnessMax = (uint32_t)((float)ledOptions.brightnessMaximum / 2.55f);
+    uint32_t adjustedbrightnessMax = (uint32_t)(((float)ledOptions.brightnessMaximum / 2.55f) + 0.5f); //+0.5 to cause it to round to nearest number
     adjustedbrightnessMax = std::clamp<uint32_t>(adjustedbrightnessMax, 0, 100);
     writeDoc(doc, "brightnessMaximum", adjustedbrightnessMax);
 
@@ -878,32 +869,11 @@ std::string getButtonLayouts()
 {
     const size_t capacity = JSON_OBJECT_SIZE(500);
     DynamicJsonDocument doc(capacity);
-    const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
     const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
     uint16_t elementCtr = 0;
 
     LayoutManager::LayoutList layoutA = LayoutManager::getInstance().getLayoutA();
     LayoutManager::LayoutList layoutB = LayoutManager::getInstance().getLayoutB();
-
-    writeDoc(doc, "ledLayout", "id", ledOptions.ledLayout);
-    writeDoc(doc, "ledLayout", "indexUp", ledOptions.indexUp);
-    writeDoc(doc, "ledLayout", "indexDown", ledOptions.indexDown);
-    writeDoc(doc, "ledLayout", "indexLeft", ledOptions.indexLeft);
-    writeDoc(doc, "ledLayout", "indexRight", ledOptions.indexRight);
-    writeDoc(doc, "ledLayout", "indexB1", ledOptions.indexB1);
-    writeDoc(doc, "ledLayout", "indexB2", ledOptions.indexB2);
-    writeDoc(doc, "ledLayout", "indexB3", ledOptions.indexB3);
-    writeDoc(doc, "ledLayout", "indexB4", ledOptions.indexB4);
-    writeDoc(doc, "ledLayout", "indexL1", ledOptions.indexL1);
-    writeDoc(doc, "ledLayout", "indexR1", ledOptions.indexR1);
-    writeDoc(doc, "ledLayout", "indexL2", ledOptions.indexL2);
-    writeDoc(doc, "ledLayout", "indexR2", ledOptions.indexR2);
-    writeDoc(doc, "ledLayout", "indexS1", ledOptions.indexS1);
-    writeDoc(doc, "ledLayout", "indexS2", ledOptions.indexS2);
-    writeDoc(doc, "ledLayout", "indexL3", ledOptions.indexL3);
-    writeDoc(doc, "ledLayout", "indexR3", ledOptions.indexR3);
-    writeDoc(doc, "ledLayout", "indexA1", ledOptions.indexA1);
-    writeDoc(doc, "ledLayout", "indexA2", ledOptions.indexA2);
 
     writeDoc(doc, "displayLayouts", "buttonLayoutId", displayOptions.buttonLayout);
     for (elementCtr = 0; elementCtr < layoutA.size(); elementCtr++) {
@@ -1108,7 +1078,7 @@ std::string setAnimationButtonTestState()
     JsonObject testOptions = docJson["TestLight"];
     int testButton = testOptions["testID"].as<uint32_t>();
     bool testIsCaseLight = testOptions["testIsCaseLight"].as<bool>();
-    
+
     AnimationStation::SetTestPinState(testButton, testIsCaseLight);
 
     return serialize_json(doc);
@@ -1209,7 +1179,7 @@ std::string getAnimationProtoOptions()
             caseStaticColorsList.add((options.profiles[profilesIndex].caseStaticColors[caseStaticColorsIndex] >> 8) & 0xFF);
             caseStaticColorsList.add((options.profiles[profilesIndex].caseStaticColors[caseStaticColorsIndex] >> 16) & 0xFF);
             caseStaticColorsList.add((options.profiles[profilesIndex].caseStaticColors[caseStaticColorsIndex] >> 24) & 0xFF);
-        }        
+        }
     }
 
     return serialize_json(doc);
@@ -1553,22 +1523,22 @@ std::string setHETriggerCalibration()
     calibrationSelectPins[1] = doc["muxSelectPin1"];
     calibrationSelectPins[2] = doc["muxSelectPin2"];
     calibrationSelectPins[3] = doc["muxSelectPin3"];
-    
+
     calibrationADCPins[0] = doc["muxADCPin0"];
     calibrationADCPins[1] = doc["muxADCPin1"];
     calibrationADCPins[2] = doc["muxADCPin2"];
     calibrationADCPins[3] = doc["muxADCPin3"];
 
     for (int i = 0; i < 4; i++) {
-        if ( calibrationSelectPins[i] != -1 && 
-                calibrationSelectPins[i] >= 0 && 
+        if ( calibrationSelectPins[i] != -1 &&
+                calibrationSelectPins[i] >= 0 &&
                 calibrationSelectPins[i] <= 29 ) {
             gpio_init(calibrationSelectPins[i]);
             gpio_set_dir(calibrationSelectPins[i], GPIO_OUT);
             gpio_put(calibrationSelectPins[i], 0);
         }
-        if ( calibrationADCPins[i] != -1 && 
-                calibrationADCPins[i] >= 26 && 
+        if ( calibrationADCPins[i] != -1 &&
+                calibrationADCPins[i] >= 26 &&
                 calibrationADCPins[i] <= 29 ) {
             adc_gpio_init(calibrationADCPins[i]);
         }
@@ -1648,9 +1618,9 @@ std::string getHETriggerOptions()
 {
     const size_t capacity = JSON_OBJECT_SIZE(500);
     DynamicJsonDocument doc(capacity);
-    
+
     HETriggerInfo * heTriggers = Storage::getInstance().getAddonOptions().heTriggerOptions.triggers;
-    
+
     JsonArray triggerList = doc.createNestedArray("triggers");
     for(int i = 0; i < 32; i++) {
         JsonObject trigger = triggerList.createNestedObject();
@@ -1678,7 +1648,7 @@ std::string setHETriggerOptions()
         heTriggers[i].max = doc["triggers"][i]["max"];
         heTriggers[i].polarity = doc["triggers"][i]["polarity"];
     }
-    
+
     Storage::getInstance().getAddonOptions().heTriggerOptions.triggers_count = 32;
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 

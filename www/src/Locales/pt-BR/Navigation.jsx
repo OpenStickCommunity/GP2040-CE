@@ -8,6 +8,7 @@ export default {
 	'home-label': 'Página Inicial',
 	'keyboard-mapping-label': 'Mapeamento de Teclado',
 	'led-config-label': 'Configuração de LED',
+	'custom-theme-label': 'Tema de LED Personalizado',
 	'links-label': 'Links',
 	'pin-mapping-label': 'Mapeamento de GPIO Pinos',
 	'profile-settings-label': 'Configurações de Perfil',

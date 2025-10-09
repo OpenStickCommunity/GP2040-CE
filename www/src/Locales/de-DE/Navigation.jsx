@@ -8,6 +8,7 @@ export default {
 	'home-label': 'Hauptmenü',
 	'keyboard-mapping-label': 'Tastatur Zuweisung',
 	'led-config-label': 'LED Konfiguration',
+	'custom-theme-label': 'Benutzerdefinierte LED Thema',
 	'links-label': 'Hyperlinks',
 	'macro-label': 'Makro',
 	'pin-mapping-label': 'Pin Zuweisung',
