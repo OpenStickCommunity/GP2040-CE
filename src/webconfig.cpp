@@ -1399,12 +1399,38 @@ std::string getExpansionPins()
     const size_t capacity = JSON_OBJECT_SIZE(100);
     DynamicJsonDocument doc(capacity);
     GpioMappingInfo* gpioMappings = Storage::getInstance().getAddonOptions().pcf8575Options.pins;
-    char pinName[6];
-    for (uint16_t pin = 0; pin < 16; pin++) {
-        snprintf(pinName, 6, "pin%0*d", 2, pin);
-        writeDoc(doc, "pins", "pcf8575", 0, pinName, "option", gpioMappings[pin].action);
-        writeDoc(doc, "pins", "pcf8575", 0, pinName, "direction", gpioMappings[pin].direction);
-    }
+    writeDoc(doc, "pins", "pcf8575", 0, "pin00", "option", gpioMappings[0].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin00", "direction", gpioMappings[0].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin01", "option", gpioMappings[1].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin01", "direction", gpioMappings[1].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin02", "option", gpioMappings[2].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin02", "direction", gpioMappings[2].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin03", "option", gpioMappings[3].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin03", "direction", gpioMappings[3].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin04", "option", gpioMappings[4].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin04", "direction", gpioMappings[4].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin05", "option", gpioMappings[5].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin05", "direction", gpioMappings[5].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin06", "option", gpioMappings[6].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin06", "direction", gpioMappings[6].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin07", "option", gpioMappings[7].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin07", "direction", gpioMappings[7].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin08", "option", gpioMappings[8].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin08", "direction", gpioMappings[8].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin09", "option", gpioMappings[9].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin09", "direction", gpioMappings[9].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin10", "option", gpioMappings[10].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin10", "direction", gpioMappings[10].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin11", "option", gpioMappings[11].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin11", "direction", gpioMappings[11].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin12", "option", gpioMappings[12].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin12", "direction", gpioMappings[12].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin13", "option", gpioMappings[13].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin13", "direction", gpioMappings[13].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin14", "option", gpioMappings[14].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin14", "direction", gpioMappings[14].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin15", "option", gpioMappings[15].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin15", "direction", gpioMappings[15].direction);
     return serialize_json(doc);
 }
 
