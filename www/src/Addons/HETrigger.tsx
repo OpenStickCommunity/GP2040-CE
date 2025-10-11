@@ -92,7 +92,7 @@ export const HETriggerScheme = {
 	heTriggerSmoothingFactor: yup
 		.number()
 		.label('EMA Smoothing Factor')
-		.validateRangeWhenValue('HETriggerEnabled', 0, 99),
+		.validateRangeWhenValue('HETriggerEnabled', 1, 99),
 };
 
 export const HETriggerState = {
@@ -514,7 +514,7 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }: AddonPropTy
 						error={errors.heTriggerSmoothingFactor}
 						isInvalid={Boolean(errors.heTriggerSmoothingFactor)}
 						onChange={handleChange}
-						min={0}
+						min={1}
 						max={99}
 					/>
 				</Row>
