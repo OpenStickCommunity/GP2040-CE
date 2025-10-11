@@ -1462,6 +1462,10 @@ std::string setExpansionPins()
 static uint32_t calibrationMuxChannels = 0;
 static Pin_t calibrationSelectPins[4];
 static Pin_t calibrationADCPins[4];
+static bool calibrationSmoothing = false;
+static uint32_t calibrationSmoothingFactor = 0;
+static float ema_smoothing;
+static uint32_t smoothingRead = 0;
 
 // Get the HE Trigger Calibration using our manual GPIO input and everything
 std::string setHETriggerCalibration()
@@ -1477,6 +1481,10 @@ std::string setHETriggerCalibration()
     calibrationADCPins[1] = doc["muxADCPin1"];
     calibrationADCPins[2] = doc["muxADCPin2"];
     calibrationADCPins[3] = doc["muxADCPin3"];
+
+    calibrationSmoothing = doc["heTriggerSmoothing"];
+    calibrationSmoothingFactor = doc["heTriggerSmoothingFactor"];
+    ema_smoothing = (float)calibrationSmoothingFactor / 100.f; // 99 = max smoothing factor
 
     for (int i = 0; i < 4; i++) {
         if ( calibrationSelectPins[i] != -1 && 
@@ -1496,6 +1504,13 @@ std::string setHETriggerCalibration()
     return serialize_json(doc);
 }
 
+#define ADC_MAX ((1 << 12) - 1) // 4095
+uint16_t emaCalculation(uint16_t value, uint16_t previous) {
+    float ema_value = (float)value / ADC_MAX;
+    float ema_previous = (float)previous / ADC_MAX;
+    return ((ema_smoothing*ema_value) + ((1.0f-ema_smoothing) * ema_previous)) * ADC_MAX;
+}
+
 // Get the HE Trigger Calibration using our manual GPIO input and everything
 std::string getHETriggerCalibration()
 {
@@ -1503,7 +1518,6 @@ std::string getHETriggerCalibration()
     uint32_t id = postDoc["targetId"];
     const size_t capacity = JSON_OBJECT_SIZE(20);
     DynamicJsonDocument doc(capacity);
-
     uint32_t adcSelectPin = 0;
 
     // Mux Channels determines how many select pins we use
@@ -1556,10 +1570,18 @@ std::string getHETriggerCalibration()
         return serialize_json(doc);
     }
     adc_select_input(adcSelectPin-26);
-    sleep_us(5);
-    adc_read();
-    sleep_us(2);
-    doc["voltage"] = adc_read();
+    // Web-Config triggers getHECalibration every 50ms, game controller triggers <1ms
+    if ( calibrationSmoothing ) {
+        uint16_t read;
+        for(int i = 0; i < 50; i++) {
+            read = adc_read();
+            read = emaCalculation(read, smoothingRead);
+            smoothingRead = read;
+        }
+        doc["voltage"] = read;
+    } else {
+        doc["voltage"] = adc_read();
+    }
     return serialize_json(doc);
 }
 
@@ -1586,7 +1608,6 @@ std::string getHETriggerOptions()
 // Set Hall Effect Trigger Options
 std::string setHETriggerOptions()
 {
-    const size_t capacity = JSON_OBJECT_SIZE(100);
     DynamicJsonDocument doc = get_post_data();
     HETriggerInfo * heTriggers = Storage::getInstance().getAddonOptions().heTriggerOptions.triggers;
 
@@ -1849,6 +1870,8 @@ std::string setAddonOptions()
     docToPin(heTriggerOptions.muxADCPin1, doc, "muxADCPin1");
     docToPin(heTriggerOptions.muxADCPin2, doc, "muxADCPin2");
     docToPin(heTriggerOptions.muxADCPin3, doc, "muxADCPin3");
+    docToValue(heTriggerOptions.emaSmoothing, doc, "heTriggerSmoothing");
+    docToValue(heTriggerOptions.smoothingFactor, doc, "heTriggerSmoothingFactor");
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
@@ -2301,6 +2324,8 @@ std::string getAddonOptions()
     writeDoc(doc, "muxADCPin1", cleanPin(heTriggerOptions.muxADCPin1));
     writeDoc(doc, "muxADCPin2", cleanPin(heTriggerOptions.muxADCPin2));
     writeDoc(doc, "muxADCPin3", cleanPin(heTriggerOptions.muxADCPin3));
+    writeDoc(doc, "heTriggerSmoothing", heTriggerOptions.emaSmoothing);
+    writeDoc(doc, "heTriggerSmoothingFactor", heTriggerOptions.smoothingFactor);
 
     return serialize_json(doc);
 }

@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from 'react';
 import { Alert, Button, FormCheck, Row, Table } from 'react-bootstrap';
 
+import { FormikErrors } from 'formik';
+
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import invert from 'lodash/invert';
@@ -46,7 +48,51 @@ const isSelectable = (value) =>
 	SELECTABLE_BUTTON_ACTIONS.includes(value);
 
 export const HETriggerScheme = {
-	HETriggerEnabled: yup.number().required().label('Hall Effect Triggers Enabled')
+	HETriggerEnabled: yup.number().required().label('Hall Effect Triggers Enabled'),
+	muxChannels: yup
+		.number()
+		.label('Multiplexer Channels')
+		.validateRangeWhenValue('HETriggerEnabled', 0, 16),
+	muxADCPin0: yup
+		.number()
+		.label('Multiplexer ADC 0 Pin')
+		.validatePinWhenValue('HETriggerEnabled'),
+	muxADCPin1: yup
+		.number()
+		.label('Multiplexer ADC 1 Pin')
+		.validatePinWhenValue('HETriggerEnabled'),
+	muxADCPin2: yup
+		.number()
+		.label('Multiplexer ADC 2 Pin')
+		.validatePinWhenValue('HETriggerEnabled'),
+	muxADCPin3: yup
+		.number()
+		.label('Multiplexer ADC 3 Pin')
+		.validatePinWhenValue('HETriggerEnabled'),
+	muxSelectPin0: yup
+		.number()
+		.label('Multiplexer Select 0 Pin')
+		.validatePinWhenValue('HETriggerEnabled'),
+	muxSelectPin1: yup
+		.number()
+		.label('Multiplexer Select 1 Pin')
+		.validatePinWhenValue('HETriggerEnabled'),
+	muxSelectPin2: yup
+		.number()
+		.label('Multiplexer Select 2 Pin')
+		.validatePinWhenValue('HETriggerEnabled'),
+	muxSelectPin3: yup
+		.number()
+		.label('Multiplexer Select 3 Pin')
+		.validatePinWhenValue('HETriggerEnabled'),
+	heTriggerSmoothing: yup
+		.number()
+		.label('EMA Smoothing')
+		.validateRangeWhenValue('HETriggerEnabled', 0, 1),
+	heTriggerSmoothingFactor: yup
+		.number()
+		.label('EMA Smoothing Factor')
+		.validateRangeWhenValue('HETriggerEnabled', 1, 99),
 };
 
 export const HETriggerState = {
@@ -60,6 +106,8 @@ export const HETriggerState = {
 	muxSelectPin1: 1,
 	muxSelectPin2: 2,
 	muxSelectPin3: -1,
+	heTriggerSmoothing: 0,
+	heTriggerSmoothingFactor: 5,
 };
 
 const options = Object.entries(BUTTON_ACTIONS)
@@ -72,8 +120,12 @@ const options = Object.entries(BUTTON_ACTIONS)
 type TriggerActionsFormTypes = {
 	triggers: Trigger[];
 	values: typeof DEFAULT_VALUES;
+	errors: FormikErrors<typeof DEFAULT_VALUES>;
 	muxChannels: number;
 	handleChange: (
+		e: Event,
+	) => void;
+	handleCheckbox: (
 		e: Event,
 	) => void;
 };
@@ -81,7 +133,10 @@ type TriggerActionsFormTypes = {
 const TriggerActionsForm = ({
 	triggers,
 	values,
+	errors,
 	muxChannels,
+	handleChange,
+	handleCheckbox
 }: TriggerActionsFormTypes) => {
 	const setHETrigger = useHETriggerStore((state) => state.setHETrigger);
 	const saveHETriggers = useHETriggerStore((state) => state.saveHETriggers);
@@ -307,7 +362,7 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }: AddonPropTy
 						pins: availableAnalogPins.join(', '),
 					})}
 				</div>
-				<div className="mt-2">
+				<Row className="mt-2">
 					<FormSelect
 						label={t('HETrigger:multiplexer-channel-select')}
 						name="muxChannels"
@@ -324,8 +379,8 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }: AddonPropTy
 							</option>
 						))}
 					</FormSelect>
-				</div>
-				<div className="mb-3 row">
+				</Row>
+				<Row className="mb-3">
 					<FormControl
 						type="number"
 						label={t('HETrigger:select-pin-0')}
@@ -382,8 +437,8 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }: AddonPropTy
 						min={-1}
 						max={29}
 					/>
-				</div>
-				<div className="mb-3 row">
+				</Row>
+				<Row className="mb-3">
 					<FormSelect
 						label={t('HETrigger:adc-pin-0')}
 						name='muxADCPin0'
@@ -434,13 +489,43 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }: AddonPropTy
 					>
 						<AnalogPinOptions />
 					</FormSelect>
-				</div>
+				</Row>
+				<Row className="mb-3">
+					<FormCheck
+						label={t('AddonsConfig:analog-smoothing')}
+						type="switch"
+						id="TriggerSmoothingAddonButton"
+						className="col-sm-3 mt-auto mb-auto ms-3"
+						isInvalid={false}
+						checked={Boolean(values.heTriggerSmoothing)}
+						onChange={(e) => {
+							handleCheckbox('heTriggerSmoothing');
+							handleChange(e);
+						}}
+					/>
+					<FormControl
+						hidden={!values.heTriggerSmoothing}
+						type="number"
+						label={t('AddonsConfig:smoothing-factor')}
+						name="heTriggerSmoothingFactor"
+						className="form-control-sm"
+						groupClassName="col-sm-2 mb-3"
+						value={values.heTriggerSmoothingFactor}
+						error={errors.heTriggerSmoothingFactor}
+						isInvalid={Boolean(errors.heTriggerSmoothingFactor)}
+						onChange={handleChange}
+						min={1}
+						max={99}
+					/>
+				</Row>
 				<Row className="mb-2">
 					<TriggerActionsForm
 						key="triggers-actions-form"
 						values={values}
+						errors={errors}
 						triggers={triggers}
 						handleChange={handleChange}
+						handleCheckbox={handleCheckbox}
 						muxChannels={values.muxChannels}
 					/>
 				</Row>
