@@ -92,7 +92,7 @@ const HECalibration = ({
 				const channelNum = muxNum + Math.floor(target.current%muxChannels);
 				setTitle(`${actionTitle} - Mux ${muxNum} - Channel ${channelNum}`);
 			} else {
-				setTitle(`${actionTitle} - Direct - ADC ${values[`muxADCPins${target.current}`]}`);
+				setTitle(`${actionTitle} - Direct - ADC ${values[`muxADCPin${target.current}` as keyof typeof values]}`);
 			}
 		}
 	};
