@@ -118,6 +118,7 @@ class ButtonLayoutScreen : public GPScreen {
         void handleUSB(GPEvent* e);
     protected:
         virtual void drawScreen();
+        virtual void drawDebug();
     private:
         // new layout methods
         GPLever* addLever(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, uint16_t inputType);
@@ -126,6 +127,9 @@ class ButtonLayoutScreen : public GPScreen {
         GPShape* addShape(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor);
         GPWidget* pushElement(GPButtonLayout element);
         void generateHeader();
+
+        void updateCustomHeaders();
+        void addCustomHeader(std::string newStr, std::string identifier);
 
         const std::map<uint16_t, uint16_t> displayModeLookup = {
             {INPUT_MODE_PS3, 0},
@@ -159,15 +163,22 @@ class ButtonLayoutScreen : public GPScreen {
         std::deque<std::string> inputHistory;
         std::array<bool, INPUT_HISTORY_MAX_INPUTS> lastInput;
 
-        bool bannerDisplay;
         uint8_t bannerDelay = 2;
+        float inbetweenBannerDelay = 0.3f;
         int bannerDelayStart = 0;
-        std::string bannerMessage;
+        bool inbetweenBanners = false;
+        std::deque<std::string> bannerString;
+        std::deque<std::string> bannerIdentifier;
+
+        int8_t gamePadProfileNumber = -2;
+        int8_t prevGamepadProfileNumber = -2;
+        
+        int8_t prevLEDAnimationProfileNumber = -2;
+        int8_t prevSpecialMoveProfileNumber = -2;
+ 
         uint16_t prevButtonState = 0;
         uint8_t prevLayoutLeft = 0;
         uint8_t prevLayoutRight = 0;
-        uint8_t profileNumber = 0;
-        uint8_t prevProfileNumber = 0;
         ButtonLayoutParamsLeft prevLeftOptions;
         ButtonLayoutParamsRight prevRightOptions;
         ButtonLayoutOrientation prevOrientation;

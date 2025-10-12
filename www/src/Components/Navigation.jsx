@@ -81,6 +81,7 @@ const Navigation = () => {
 						>
 							{t('Navigation:peripheral-mapping-label')}
 						</NavDropdown.Item>
+
 						<NavDropdown.Item
 							as={NavLink}
 							eventKey={eventKey++}
@@ -95,6 +96,7 @@ const Navigation = () => {
 						>
 							{t('Navigation:custom-theme-label')}
 						</NavDropdown.Item>
+
 						<NavDropdown.Item
 							as={NavLink}
 							eventKey={eventKey++}

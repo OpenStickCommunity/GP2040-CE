@@ -491,7 +491,6 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.ledOptions, ledLayout, BUTTON_LAYOUT);
     INIT_UNSET_PROPERTY(config.ledOptions, ledsPerButton, LEDS_PER_PIXEL);
     INIT_UNSET_PROPERTY(config.ledOptions, brightnessMaximum, LED_BRIGHTNESS_MAXIMUM);
-    INIT_UNSET_PROPERTY(config.ledOptions, brightnessSteps, LED_BRIGHTNESS_STEPS);
     INIT_UNSET_PROPERTY(config.ledOptions, turnOffWhenSuspended, LEDS_TURN_OFF_WHEN_SUSPENDED);
 
     INIT_UNSET_PROPERTY(config.ledOptions, indexUp, LEDS_DPAD_UP);
@@ -526,67 +525,112 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.ledOptions, pledIndex2, PLED2_PIN);
     INIT_UNSET_PROPERTY(config.ledOptions, pledIndex3, PLED3_PIN);
     INIT_UNSET_PROPERTY(config.ledOptions, pledIndex4, PLED4_PIN);
+    // lightEntries
+    INIT_UNSET_PROPERTY(config.ledOptions, lightDataSize, LIGHT_DATA_SIZE);
+    const unsigned char lightData[] = { LIGHT_DATA };
+    INIT_UNSET_PROPERTY_BYTES(config.ledOptions, lightData, lightData);
 
-    INIT_UNSET_PROPERTY(config.ledOptions, caseRGBType, CASE_RGB_TYPE);
-    INIT_UNSET_PROPERTY(config.ledOptions, caseRGBIndex, CASE_RGB_INDEX);
-    INIT_UNSET_PROPERTY(config.ledOptions, caseRGBCount, CASE_RGB_COUNT);
-
+    //SpecialMoveOptions
+    //INIT_UNSET_PROPERTY(config.specialMoveOptions, ChargeTimeInMs, 750);
+    //INIT_UNSET_PROPERTY(config.specialMoveOptions, CurrentProfileIndex, 0);
+ 
     // animationOptions
-    INIT_UNSET_PROPERTY(config.animationOptions, baseAnimationIndex, LEDS_BASE_ANIMATION_INDEX);
-    INIT_UNSET_PROPERTY(config.animationOptions, brightness, LEDS_BRIGHTNESS);
-    INIT_UNSET_PROPERTY(config.animationOptions, staticColorIndex, LEDS_STATIC_COLOR_INDEX);
-    INIT_UNSET_PROPERTY(config.animationOptions, buttonColorIndex, LEDS_BUTTON_COLOR_INDEX);
-    INIT_UNSET_PROPERTY(config.animationOptions, chaseCycleTime, LEDS_CHASE_CYCLE_TIME);
-    INIT_UNSET_PROPERTY(config.animationOptions, rainbowCycleTime, LEDS_RAINBOW_CYCLE_TIME);
-    INIT_UNSET_PROPERTY(config.animationOptions, themeIndex, LEDS_THEME_INDEX);
-    INIT_UNSET_PROPERTY(config.animationOptions, hasCustomTheme, false);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeUp, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeDown, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeLeft, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeRight, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeB1, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeB2, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeB3, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeB4, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeL1, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeR1, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeL2, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeR2, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeS1, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeS2, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeL3, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeR3, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeA1, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeA2, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeUpPressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeDownPressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeLeftPressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeRightPressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeB1Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeB2Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeB3Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeB4Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeL1Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeR1Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeL2Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeR2Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeS1Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeS2Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeL3Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeR3Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeA1Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeA2Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, buttonPressColorCooldownTimeInMs, LEDS_PRESS_COLOR_COOLDOWN_TIME);
-    INIT_UNSET_PROPERTY(config.animationOptions, ambientLightEffectsCountIndex, AMBIENT_LIGHT_EFFECT);
-    INIT_UNSET_PROPERTY(config.animationOptions, alStaticColorBrightnessCustomX, AMBIENT_STATIC_COLOR_BRIGHTNESS);
-    INIT_UNSET_PROPERTY(config.animationOptions, alGradientBrightnessCustomX, AMBIENT_GRADIENT_COLOR_BRIGHTNESS);
-    INIT_UNSET_PROPERTY(config.animationOptions, alChaseBrightnessCustomX, AMBIENT_CHASE_COLOR_BRIGHTNESS);
-    INIT_UNSET_PROPERTY(config.animationOptions, alStaticBrightnessCustomThemeX, AMBIENT_CUSTOM_THEME_BRIGHTNESS);
-    INIT_UNSET_PROPERTY(config.animationOptions, ambientLightGradientSpeed, AMBIENT_GRADIENT_SPEED);
-    INIT_UNSET_PROPERTY(config.animationOptions, ambientLightChaseSpeed, AMBIENT_CHASE_SPEED);
-    INIT_UNSET_PROPERTY(config.animationOptions, ambientLightBreathSpeed, AMBIENT_BREATH_SPEED);
-    INIT_UNSET_PROPERTY(config.animationOptions, alCustomStaticThemeIndex, AMBIENT_CUSTOM_THEME);
-    INIT_UNSET_PROPERTY(config.animationOptions, alCustomStaticColorIndex, AMBIENT_STATIC_COLOR);
+    if(LEDS_BRIGHTNESS >= 0 && LEDS_BRIGHTNESS <= config.ledOptions.brightnessSteps)
+    {
+        INIT_UNSET_PROPERTY(config.animationOptions, brightness, LEDS_BRIGHTNESS);
+    }
+    else
+    {
+        INIT_UNSET_PROPERTY(config.animationOptions, brightness, config.ledOptions.brightnessSteps);
+    }
+    INIT_UNSET_PROPERTY(config.animationOptions, baseProfileIndex, 0);
+    INIT_UNSET_PROPERTY(config.animationOptions, autoDisableTime, 5000);
+
+    //Default to rainbow rotate if a fresh settings
+    if(config.animationOptions.profiles[0].has_bEnabled == false)
+    {
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bEnabled, 1);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], basePressedCycleTime, 100);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], baseCycleTime, 100);
+        config.animationOptions.profiles_count = 1;
+        config.animationOptions.profiles[0].notPressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
+        config.animationOptions.profiles[0].pressedStaticColors_count = 0;
+        for (unsigned int lightIndex = 0; lightIndex < (NUM_BANK0_GPIOS/4)+1; ++lightIndex) 
+        {
+            config.animationOptions.profiles[0].notPressedStaticColors[lightIndex] = 0; //Black
+            config.animationOptions.profiles[0].pressedStaticColors[lightIndex] = 0; //Black
+        }
+        config.animationOptions.profiles[0].caseStaticColors_count = 0;
+        config.animationOptions.profiles[0].baseNonPressedEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_ROTATE;
+        config.animationOptions.profiles[0].basePressedEffect = AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_STATIC_COLOR;
+        config.animationOptions.profiles[0].baseCaseEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_ROTATE;
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bUseCaseLightsInPressedAnimations, 1);   
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bUseCaseLightsInSpecialMoves, 1);   
+    }
+
+    //Since we force a profile 0 on new settings we only need to now force disable profiles 1 to max
+    for (unsigned int profileIndex = 1; profileIndex < MAX_ANIMATION_PROFILES; ++profileIndex) 
+    {
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], bEnabled, 0);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], basePressedCycleTime, 0);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], baseCycleTime, 0);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], bUseCaseLightsInPressedAnimations, 0);   
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], bUseCaseLightsInSpecialMoves, 0);   
+    }
+     
+    //TESTING
+    if(false)
+    { 
+        config.animationOptions.customColors_count = 1;
+        config.animationOptions.customColors[0] = 255;
+        config.animationOptions.profiles_count = 2;
+
+        config.animationOptions.profiles[0].bEnabled = true;
+        config.animationOptions.profiles[0].notPressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
+        config.animationOptions.profiles[0].pressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
+        for (unsigned int lightIndex = 0; lightIndex < (NUM_BANK0_GPIOS/4)+1; ++lightIndex) 
+        {
+            config.animationOptions.profiles[0].notPressedStaticColors[lightIndex] = 2 + (2<<8) + (2<<16) + (2<<24); //Red
+            config.animationOptions.profiles[0].pressedStaticColors[lightIndex] = 4 + (6<<8) + (10<<16) + (12<<24); //Black
+        }
+        config.animationOptions.profiles[0].baseNonPressedEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_STATIC_COLOR;
+        config.animationOptions.profiles[0].basePressedEffect = AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_BURST_SMALL;
+        config.animationOptions.profiles[0].baseCaseEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_STATIC_COLOR;
+        config.animationOptions.profiles[0].buttonPressHoldTimeInMs = 500;
+        config.animationOptions.profiles[0].buttonPressFadeOutTimeInMs = 500;
+        config.animationOptions.profiles[0].nonPressedSpecialColor = (128 << 16) + 255; //MAGENTA
+        config.animationOptions.profiles[0].bUseCaseLightsInSpecialMoves = false;
+        config.animationOptions.profiles[0].bUseCaseLightsInPressedAnimations = false;
+        config.animationOptions.profiles[0].caseStaticColors_count = MAX_CASE_LIGHTS/4;
+        for (unsigned int caseLightIndex = 0; caseLightIndex < MAX_CASE_LIGHTS/4; ++caseLightIndex) 
+        {
+            config.animationOptions.profiles[0].caseStaticColors[caseLightIndex] = 2 + (2<<8) + (2<<16) + (2<<24); //Red
+        }
+
+        config.animationOptions.profiles[1].bEnabled = true;
+        config.animationOptions.profiles[1].notPressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
+        config.animationOptions.profiles[1].pressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
+        for (unsigned int lightIndex = 0; lightIndex < (NUM_BANK0_GPIOS/4)+1; ++lightIndex) 
+        {
+            config.animationOptions.profiles[1].notPressedStaticColors[lightIndex] = 6 + (6<<8) + (6<<16) + (6<<24); //Green
+            config.animationOptions.profiles[1].pressedStaticColors[lightIndex] = 2 + (2<<8) + (2<<16) + (2<<24); //Black
+        }
+        config.animationOptions.profiles[1].caseStaticColors_count = MAX_CASE_LIGHTS/4;
+        for (unsigned int caseLightIndex = 0; caseLightIndex < MAX_CASE_LIGHTS/4; ++caseLightIndex) 
+        {
+            config.animationOptions.profiles[1].caseStaticColors[caseLightIndex] = 14 + (1<<8) + (1<<16) + (1<<24); //custom 1, white, white, white
+        }
+
+        config.animationOptions.profiles[1].baseNonPressedEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_LEFT_TO_RIGHT;
+        config.animationOptions.profiles[1].basePressedEffect = AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_BURST;
+        config.animationOptions.profiles[1].baseCaseEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_LEFT_TO_RIGHT;
+        config.animationOptions.profiles[1].buttonPressHoldTimeInMs = 500;
+        config.animationOptions.profiles[1].buttonPressFadeOutTimeInMs = 500;
+        config.animationOptions.profiles[1].nonPressedSpecialColor = 255; //BLUE
+        config.animationOptions.profiles[1].pressedSpecialColor = (255 << 16) + (50 << 8); //reddy YELLOW
+        config.animationOptions.profiles[1].bUseCaseLightsInSpecialMoves = true;
+        config.animationOptions.profiles[1].bUseCaseLightsInPressedAnimations = true;
+    }
 
     // addonOptions.bootselButtonOptions
     INIT_UNSET_PROPERTY(config.addonOptions.bootselButtonOptions, enabled, !!BOOTSEL_BUTTON_ENABLED);
