@@ -880,6 +880,8 @@ message HETriggerOptions
     optional int32 muxADCPin3 = 9;
     optional int32 muxChannels = 10;
     repeated HETriggerInfo triggers = 11 [(nanopb).max_count = 32];
+    optional bool emaSmoothing = 12;
+    optional int32 smoothingFactor = 13;
 }
 
 message AddonOptions
