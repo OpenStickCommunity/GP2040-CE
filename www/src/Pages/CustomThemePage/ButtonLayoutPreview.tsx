@@ -34,9 +34,9 @@ const hasNeighbor = (light: Light, lights: Light[], range: number) =>
 // Calculate the size of the light based on its neighbors,
 // Three sizes: big(no neighbors within 2 cells), normal(has neighbors within 2 cells), small(has neighbors within 1 cell)
 const calculateLightSize = (light: Light, lights: Light[]) => {
-	const lightSize = 1.3; // Base size
+	const lightSize = 1.05; // Base size
 	if (hasNeighbor(light, lights, 2)) {
-		return hasNeighbor(light, lights, 1) ? lightSize / 2.8 : lightSize / 1.5;
+		return hasNeighbor(light, lights, 1) ? lightSize / 2.4 : lightSize / 1.2;
 	}
 	return lightSize;
 };
