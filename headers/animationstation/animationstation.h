@@ -107,7 +107,7 @@ public:
   //Testing/webconfig
   static void SetTestMode(AnimationStationTestMode TestType, const AnimationProfile* TestProfile);
   static void SetTestPinState(int PinOrCaseIndex, bool IsCaseLight);
-
+  
   SpecialMoveSystem specialMoveSystem;
 
   //Running non-pressed animation

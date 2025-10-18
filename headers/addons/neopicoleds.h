@@ -39,11 +39,77 @@
 #define LED_FORMAT LED_FORMAT_GRB
 #endif
 
-#ifndef LIGHT_DATA_SIZE
-#define LIGHT_DATA_SIZE 0
+#ifndef LIGHT_DATA_SIZE_DEFAULT
+#define LIGHT_DATA_SIZE_DEFAULT 0
 #endif
-#ifndef LIGHT_DATA
-#define LIGHT_DATA 0,0,0,0,0,LightType::LightType_ActionButton
+#ifndef LIGHT_DATA_DEFAULT
+#define LIGHT_DATA_DEFAULT 0,0,0,0,0,LightType::LightType_ActionButton
+#endif
+#ifndef LIGHT_DATA_NAME_DEFAULT
+#define LIGHT_DATA_NAME_DEFAULT ""
+#endif
+#ifndef LIGHT_DATA_SIZE_1
+#define LIGHT_DATA_SIZE_1 0
+#endif
+#ifndef LIGHT_DATA_1
+#define LIGHT_DATA_1 0,0,0,0,0,LightType::LightType_ActionButton
+#endif
+#ifndef LIGHT_DATA_NAME_1
+#define LIGHT_DATA_NAME_1 ""
+#endif
+#ifndef LIGHT_DATA_SIZE_2
+#define LIGHT_DATA_SIZE_2 0
+#endif
+#ifndef LIGHT_DATA_2
+#define LIGHT_DATA_2 0,0,0,0,0,LightType::LightType_ActionButton
+#endif
+#ifndef LIGHT_DATA_NAME_2
+#define LIGHT_DATA_NAME_2 ""
+#endif
+#ifndef LIGHT_DATA_SIZE_3
+#define LIGHT_DATA_SIZE_3 0
+#endif
+#ifndef LIGHT_DATA_3
+#define LIGHT_DATA_3 0,0,0,0,0,LightType::LightType_ActionButton
+#endif
+#ifndef LIGHT_DATA_NAME_3
+#define LIGHT_DATA_NAME_3 ""
+#endif
+#ifndef LIGHT_DATA_SIZE_4
+#define LIGHT_DATA_SIZE_4 0
+#endif
+#ifndef LIGHT_DATA_4
+#define LIGHT_DATA_4 0,0,0,0,0,LightType::LightType_ActionButton
+#endif
+#ifndef LIGHT_DATA_NAME_4
+#define LIGHT_DATA_NAME_4 ""
+#endif
+#ifndef LIGHT_DATA_SIZE_5
+#define LIGHT_DATA_SIZE_5 0
+#endif
+#ifndef LIGHT_DATA_5
+#define LIGHT_DATA_5 0,0,0,0,0,LightType::LightType_ActionButton
+#endif
+#ifndef LIGHT_DATA_NAME_5
+#define LIGHT_DATA_NAME_5 ""
+#endif
+#ifndef LIGHT_DATA_SIZE_6
+#define LIGHT_DATA_SIZE_6 0
+#endif
+#ifndef LIGHT_DATA_6
+#define LIGHT_DATA_6 0,0,0,0,0,LightType::LightType_ActionButton
+#endif
+#ifndef LIGHT_DATA_NAME_6
+#define LIGHT_DATA_NAME_6 ""
+#endif
+#ifndef LIGHT_DATA_SIZE_7
+#define LIGHT_DATA_SIZE_7 0
+#endif
+#ifndef LIGHT_DATA_7
+#define LIGHT_DATA_7 0,0,0,0,0,LightType::LightType_ActionButton
+#endif
+#ifndef LIGHT_DATA_NAME_7
+#define LIGHT_DATA_NAME_7 ""
 #endif
 
 #ifndef LEDS_PER_PIXEL

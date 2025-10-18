@@ -970,6 +970,89 @@ std::string getLightsDataOptions()
         light["lightType"] = options.lightData.bytes[thisEntryIndex+5];
     }
 
+    JsonArray boardDefaultSetupNamesList = LedOptions.createNestedArray("boardDefaultSetupNames");
+    if(strcmp(LIGHT_DATA_NAME_DEFAULT, "") != 0)
+        boardDefaultSetupNamesList.add(LIGHT_DATA_NAME_DEFAULT);
+    if(strcmp(LIGHT_DATA_NAME_1, "") != 0)
+        boardDefaultSetupNamesList.add(LIGHT_DATA_NAME_1);
+    if(strcmp(LIGHT_DATA_NAME_2, "") != 0)
+        boardDefaultSetupNamesList.add(LIGHT_DATA_NAME_2);
+    if(strcmp(LIGHT_DATA_NAME_3, "") != 0)
+        boardDefaultSetupNamesList.add(LIGHT_DATA_NAME_3);
+    if(strcmp(LIGHT_DATA_NAME_4, "") != 0)
+        boardDefaultSetupNamesList.add(LIGHT_DATA_NAME_4);
+    if(strcmp(LIGHT_DATA_NAME_5, "") != 0)
+        boardDefaultSetupNamesList.add(LIGHT_DATA_NAME_5);
+    if(strcmp(LIGHT_DATA_NAME_6, "") != 0)
+        boardDefaultSetupNamesList.add(LIGHT_DATA_NAME_6);
+    if(strcmp(LIGHT_DATA_NAME_7, "") != 0)
+        boardDefaultSetupNamesList.add(LIGHT_DATA_NAME_7);
+
+    return serialize_json(doc);
+}
+
+std::string setLightsToDefault()
+{
+    LEDOptions& options = Storage::getInstance().getLedOptions();
+
+    DynamicJsonDocument doc = get_post_data();
+
+    JsonObject docJson = doc.as<JsonObject>();
+    const char*  resetName = docJson["ResetName"];
+
+    if(strcmp(resetName, LIGHT_DATA_NAME_DEFAULT) == 0)
+    {
+        options.lightDataSize = LIGHT_DATA_SIZE_DEFAULT;
+        const unsigned char lightData[] = { LIGHT_DATA_DEFAULT };
+        memcpy(options.lightData.bytes, lightData, std::min(sizeof(lightData), sizeof(options.lightData.bytes)));
+    }
+    else if(strcmp(resetName, LIGHT_DATA_NAME_1) == 0)
+    {
+        options.lightDataSize = LIGHT_DATA_SIZE_1;
+        const unsigned char lightData[] = { LIGHT_DATA_1 };
+        memcpy(options.lightData.bytes, lightData, std::min(sizeof(lightData), sizeof(options.lightData.bytes)));
+    }
+    else if(strcmp(resetName, LIGHT_DATA_NAME_2) == 0)
+    {
+        options.lightDataSize = LIGHT_DATA_SIZE_2;
+        const unsigned char lightData[] = { LIGHT_DATA_2 };
+        memcpy(options.lightData.bytes, lightData, std::min(sizeof(lightData), sizeof(options.lightData.bytes)));
+    }
+    else if(strcmp(resetName, LIGHT_DATA_NAME_3) == 0)
+    {
+        options.lightDataSize = LIGHT_DATA_SIZE_3;
+        const unsigned char lightData[] = { LIGHT_DATA_3 };
+        memcpy(options.lightData.bytes, lightData, std::min(sizeof(lightData), sizeof(options.lightData.bytes)));
+    }
+    else if(strcmp(resetName, LIGHT_DATA_NAME_4) == 0)
+    {
+        options.lightDataSize = LIGHT_DATA_SIZE_4;
+        const unsigned char lightData[] = { LIGHT_DATA_4 };
+        memcpy(options.lightData.bytes, lightData, std::min(sizeof(lightData), sizeof(options.lightData.bytes)));
+    }
+    else if(strcmp(resetName, LIGHT_DATA_NAME_5) == 0)
+    {
+        options.lightDataSize = LIGHT_DATA_SIZE_5;
+        const unsigned char lightData[] = { LIGHT_DATA_5 };
+        memcpy(options.lightData.bytes, lightData, std::min(sizeof(lightData), sizeof(options.lightData.bytes)));
+    }
+    else if(strcmp(resetName, LIGHT_DATA_NAME_6) == 0)
+    {
+        options.lightDataSize = LIGHT_DATA_SIZE_6;
+        const unsigned char lightData[] = { LIGHT_DATA_6 };
+        memcpy(options.lightData.bytes, lightData, std::min(sizeof(lightData), sizeof(options.lightData.bytes)));
+    }
+    else if(strcmp(resetName, LIGHT_DATA_NAME_7) == 0)
+    {
+        options.lightDataSize = LIGHT_DATA_SIZE_7;
+        const unsigned char lightData[] = { LIGHT_DATA_7 };
+        memcpy(options.lightData.bytes, lightData, std::min(sizeof(lightData), sizeof(options.lightData.bytes)));
+    }
+
+    NeoPicoLEDAddon::RestartLedSystem();
+
+    EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
+    
     return serialize_json(doc);
 }
 
@@ -2608,6 +2691,7 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/getAnimationProtoOptions", getAnimationProtoOptions },
     { "/api/setLightsDataOptions", setLightsDataOptions },
     { "/api/getLightsDataOptions", getLightsDataOptions },
+    { "/api/setLightsToDefault", setLightsToDefault },
     { "/api/setPinMappings", setPinMappings },
     { "/api/setProfileOptions", setProfileOptions },
     { "/api/setPeripheralOptions", setPeripheralOptions },
