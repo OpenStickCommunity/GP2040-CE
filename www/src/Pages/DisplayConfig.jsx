@@ -195,7 +195,7 @@ export default function DisplayConfigPage() {
 		useContext(AppContext);
 	const [saveMessage, setSaveMessage] = useState('');
 
-	const { t } = useTranslation('');
+	const { t, i18n } = useTranslation('');
 
 	useEffect(() => {
 		async function fetchData() {
@@ -386,7 +386,9 @@ export default function DisplayConfigPage() {
 															key={`buttonLayout-option-${i}`}
 															value={buttonLayoutDefinitions.buttonLayout[o]}
 														>
-															{t(`LayoutConfig:layouts.left.${o}`)}
+															{i18n.exists(`LayoutConfig:layouts.left.${o}`)
+																? t(`LayoutConfig:layouts.left.${o}`)
+																: o}
 														</option>
 													),
 												)}
@@ -396,7 +398,7 @@ export default function DisplayConfigPage() {
 													'DisplayConfig:form.button-layout-right-label',
 												)}
 												name="buttonLayoutRight"
-												className="form-select-sm"
+											className="form-select-sm"
 												groupClassName="col-sm-3 mb-3"
 												value={values.buttonLayoutRight}
 												error={errors.buttonLayoutRight}
@@ -412,7 +414,9 @@ export default function DisplayConfigPage() {
 															buttonLayoutDefinitions.buttonLayoutRight[o]
 														}
 													>
-														{t(`LayoutConfig:layouts.right.${o}`)}
+														{i18n.exists(`LayoutConfig:layouts.right.${o}`)
+															? t(`LayoutConfig:layouts.right.${o}`)
+															: o}
 													</option>
 												))}
 											</FormSelect>
@@ -468,7 +472,9 @@ export default function DisplayConfigPage() {
 																		buttonLayoutDefinitions.buttonLayout[o]
 																	}
 																>
-																	{t(`LayoutConfig:layouts.left.${o}`)}
+																	{i18n.exists(`LayoutConfig:layouts.left.${o}`)
+																		? t(`LayoutConfig:layouts.left.${o}`)
+																		: o}
 																</option>
 															))}
 														</FormSelect>
@@ -564,7 +570,9 @@ export default function DisplayConfigPage() {
 																		buttonLayoutDefinitions.buttonLayoutRight[o]
 																	}
 																>
-																	{t(`LayoutConfig:layouts.right.${o}`)}
+																	{i18n.exists(`LayoutConfig:layouts.right.${o}`)
+																		? t(`LayoutConfig:layouts.right.${o}`)
+																		: o}
 																</option>
 															))}
 														</FormSelect>
@@ -927,7 +935,7 @@ const Canvas = ({ value: bitsArray, onChange }) => {
 	const [inverted, setInverted] = useState(false);
 	const canvasRef = useRef();
 
-	const { t } = useTranslation('');
+	const { t, i18n } = useTranslation('');
 
 	useEffect(() => {
 		setCanvasContext(canvasRef.current.getContext('2d'));
