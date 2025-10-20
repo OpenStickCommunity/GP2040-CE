@@ -408,7 +408,9 @@ export default function DisplayConfigPage() {
 												).map((o, i) => (
 													<option
 														key={`buttonLayoutRight-option-${i}`}
-														value={buttonLayoutDefinitions.buttonLayoutRight[o]}
+														value={
+															buttonLayoutDefinitions.buttonLayoutRight[o]
+														}
 													>
 														{t(`LayoutConfig:layouts.right.${o}`)}
 													</option>

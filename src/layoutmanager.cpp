@@ -46,21 +46,111 @@ std::string LayoutManager::getLayoutBName() {
 }
 
 std::string LayoutManager::getButtonLayoutName(ButtonLayout layout) {
-    #define ENUM_CASE(name, value) case name: return #name;
     switch (layout) {
-        ButtonLayout_VALUELIST(ENUM_CASE)
-        default: return "BUTTON_LAYOUT_UNKNOWN";
+        case BUTTON_LAYOUT_BOARD_DEFINED_A:
+            #ifdef DEFAULT_BOARD_LAYOUT_A_NAME
+                return DEFAULT_BOARD_LAYOUT_A_NAME;
+            #else
+                return "Board Defined A";
+            #endif
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT0_A:
+            #ifdef DEFAULT_BOARD_LAYOUT_A_ALT0_NAME
+                return DEFAULT_BOARD_LAYOUT_A_ALT0_NAME;
+            #else
+                return "Board Defined Alt 0";
+            #endif
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT1_A:
+            #ifdef DEFAULT_BOARD_LAYOUT_A_ALT1_NAME
+                return DEFAULT_BOARD_LAYOUT_A_ALT1_NAME;
+            #else
+                return "Board Defined Alt 1";
+            #endif
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT2_A:
+            #ifdef DEFAULT_BOARD_LAYOUT_A_ALT2_NAME
+                return DEFAULT_BOARD_LAYOUT_A_ALT2_NAME;
+            #else
+                return "Board Defined Alt 2";
+            #endif
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT3_A:
+            #ifdef DEFAULT_BOARD_LAYOUT_A_ALT3_NAME
+                return DEFAULT_BOARD_LAYOUT_A_ALT3_NAME;
+            #else
+                return "Board Defined Alt 3";
+            #endif
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT4_A:
+            #ifdef DEFAULT_BOARD_LAYOUT_A_ALT4_NAME
+                return DEFAULT_BOARD_LAYOUT_A_ALT4_NAME;
+            #else
+                return "Board Defined Alt 4";
+            #endif
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT5_A:
+            #ifdef DEFAULT_BOARD_LAYOUT_A_ALT5_NAME
+                return DEFAULT_BOARD_LAYOUT_A_ALT5_NAME;
+            #else
+                return "Board Defined Alt 5";
+            #endif
+        default:
+            #define ENUM_CASE(name, value) case name: return #name;
+            switch (layout) {
+                ButtonLayout_VALUELIST(ENUM_CASE)
+                default: return "BUTTON_LAYOUT_UNKNOWN";
+            }
+            #undef ENUM_CASE
     }
-    #undef ENUM_CASE
 }
 
 std::string LayoutManager::getButtonLayoutRightName(ButtonLayoutRight layout) {
-    #define ENUM_CASE(name, value) case name: return #name;
     switch (layout) {
-        ButtonLayoutRight_VALUELIST(ENUM_CASE)
-        default: return "BUTTON_LAYOUT_UNKNOWN";
+        case BUTTON_LAYOUT_BOARD_DEFINED_B:
+            #ifdef DEFAULT_BOARD_LAYOUT_B_NAME
+                return DEFAULT_BOARD_LAYOUT_B_NAME;
+            #else
+                return "Board Defined B";
+            #endif
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT0_B:
+            #ifdef DEFAULT_BOARD_LAYOUT_B_ALT0_NAME
+                return DEFAULT_BOARD_LAYOUT_B_ALT0_NAME;
+            #else
+                return "Board Defined Alt 0";
+            #endif
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT1_B:
+            #ifdef DEFAULT_BOARD_LAYOUT_B_ALT1_NAME
+                return DEFAULT_BOARD_LAYOUT_B_ALT1_NAME;
+            #else
+                return "Board Defined Alt 1";
+            #endif
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT2_B:
+            #ifdef DEFAULT_BOARD_LAYOUT_B_ALT2_NAME
+                return DEFAULT_BOARD_LAYOUT_B_ALT2_NAME;
+            #else
+                return "Board Defined Alt 2";
+            #endif
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT3_B:
+            #ifdef DEFAULT_BOARD_LAYOUT_B_ALT3_NAME
+                return DEFAULT_BOARD_LAYOUT_B_ALT3_NAME;
+            #else
+                return "Board Defined Alt 3";
+            #endif
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT4_B:
+            #ifdef DEFAULT_BOARD_LAYOUT_B_ALT4_NAME
+                return DEFAULT_BOARD_LAYOUT_B_ALT4_NAME;
+            #else
+                return "Board Defined Alt 4";
+            #endif
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT5_B:
+            #ifdef DEFAULT_BOARD_LAYOUT_B_ALT5_NAME
+                return DEFAULT_BOARD_LAYOUT_B_ALT5_NAME;
+            #else
+                return "Board Defined Alt 5";
+            #endif
+        default:
+            #define ENUM_CASE(name, value) case name: return #name;
+            switch (layout) {
+                ButtonLayoutRight_VALUELIST(ENUM_CASE)
+                default: return "BUTTON_LAYOUT_UNKNOWN";
+            }
+            #undef ENUM_CASE
     }
-    #undef ENUM_CASE
 }
 
 LayoutManager::LayoutList LayoutManager::getLeftLayout(uint16_t index) {
