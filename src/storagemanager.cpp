@@ -67,7 +67,7 @@ bool Storage::setProfile(const uint32_t profileNum)
 		// is this profile enabled?
 		// profile 1 (core) is always enabled, others we must check
 		if (profileNum == 1 || config.profileOptions.gpioMappingsSets[profileNum-2].enabled) {
-			EventManager::getInstance().triggerEvent(new GPProfileChangeEvent(this->config.gamepadOptions.profileNumber, profileNum));
+			// Update the profile number - reinit will be triggered automatically in gp2040.cpp
 			this->config.gamepadOptions.profileNumber = profileNum;
 			return true;
 		}
