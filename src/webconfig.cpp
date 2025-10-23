@@ -1,5 +1,7 @@
 #include "config.pb.h"
 #include "base64.h"
+#include "hardware/adc.h"
+#include "helper.h"
 
 #include "drivermanager.h"
 #include "storagemanager.h"
@@ -1684,6 +1686,10 @@ std::string setAddonOptions()
     docToValue(analogOptions.outer_deadzone2, doc, "outer_deadzone2");
     docToValue(analogOptions.auto_calibrate, doc, "auto_calibrate");
     docToValue(analogOptions.auto_calibrate2, doc, "auto_calibrate2");
+    docToValue(analogOptions.joystick_center_x, doc, "joystickCenterX");
+    docToValue(analogOptions.joystick_center_y, doc, "joystickCenterY");
+    docToValue(analogOptions.joystick_center_x2, doc, "joystickCenterX2");
+    docToValue(analogOptions.joystick_center_y2, doc, "joystickCenterY2");
     docToValue(analogOptions.analog_smoothing, doc, "analog_smoothing");
     docToValue(analogOptions.analog_smoothing2, doc, "analog_smoothing2");
     docToValue(analogOptions.smoothing_factor, doc, "smoothing_factor");
@@ -2138,6 +2144,10 @@ std::string getAddonOptions()
     writeDoc(doc, "outer_deadzone2", analogOptions.outer_deadzone2);
     writeDoc(doc, "auto_calibrate", analogOptions.auto_calibrate);
     writeDoc(doc, "auto_calibrate2", analogOptions.auto_calibrate2);
+    writeDoc(doc, "joystickCenterX", analogOptions.joystick_center_x);
+    writeDoc(doc, "joystickCenterY", analogOptions.joystick_center_y);
+    writeDoc(doc, "joystickCenterX2", analogOptions.joystick_center_x2);
+    writeDoc(doc, "joystickCenterY2", analogOptions.joystick_center_y2);
     writeDoc(doc, "analog_smoothing", analogOptions.analog_smoothing);
     writeDoc(doc, "analog_smoothing2", analogOptions.analog_smoothing2);
     writeDoc(doc, "smoothing_factor", analogOptions.smoothing_factor);
@@ -2569,6 +2579,94 @@ std::string reboot() {
     return serialize_json(doc);
 }
 
+// NEW API: return current raw ADC reading for the configured analog pins
+std:: string getJoystickCenter() {
+    const size_t capacity = JSON_OBJECT_SIZE(10);
+    DynamicJsonDocument doc(capacity);
+    const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
+    
+    uint16_t x = 0, y = 0;
+    bool success = true;
+    std::string error_msg = "";
+    
+    // Check if analog input is enabled
+    if (!analogOptions.enabled) {
+        success = false;
+        error_msg = "Analog input is not enabled";
+    } else {
+        // Initialize ADC if not already initialized
+        adc_init();
+        
+        // Check if specific stick is requested via query parameter
+        // For now, we'll read both sticks and return the appropriate one
+        // In a more sophisticated implementation, we could parse query parameters
+        
+        // Read first stick X/Y
+        if (isValidPin(analogOptions.analogAdc1PinX)) {
+            adc_gpio_init(analogOptions.analogAdc1PinX);
+            adc_select_input(analogOptions.analogAdc1PinX - 26);
+            x = adc_read();
+        }
+        if (isValidPin(analogOptions.analogAdc1PinY)) {
+            adc_gpio_init(analogOptions.analogAdc1PinY);
+            adc_select_input(analogOptions.analogAdc1PinY - 26);
+            y = adc_read();
+        }
+    }
+    
+    JsonObject o = doc.to<JsonObject>();
+    o["success"] = success;
+    if (!success) {
+        o["error"] = error_msg;
+    } else {
+        o["x"] = x;
+        o["y"] = y;
+    }
+    return serialize_json(doc);
+}
+
+// NEW API: return current raw ADC reading for stick 2
+std:: string getJoystickCenter2() {
+    const size_t capacity = JSON_OBJECT_SIZE(10);
+    DynamicJsonDocument doc(capacity);
+    const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
+    
+    uint16_t x = 0, y = 0;
+    bool success = true;
+    std::string error_msg = "";
+    
+    // Check if analog input is enabled
+    if (!analogOptions.enabled) {
+        success = false;
+        error_msg = "Analog input is not enabled";
+    } else {
+        // Initialize ADC if not already initialized
+        adc_init();
+        
+        // Read second stick X/Y
+        if (isValidPin(analogOptions.analogAdc2PinX)) {
+            adc_gpio_init(analogOptions.analogAdc2PinX);
+            adc_select_input(analogOptions.analogAdc2PinX - 26);
+            x = adc_read();
+        }
+        if (isValidPin(analogOptions.analogAdc2PinY)) {
+            adc_gpio_init(analogOptions.analogAdc2PinY);
+            adc_select_input(analogOptions.analogAdc2PinY - 26);
+            y = adc_read();
+        }
+    }
+    
+    JsonObject o = doc.to<JsonObject>();
+    o["success"] = success;
+    if (!success) {
+        o["error"] = error_msg;
+    } else {
+        o["x"] = x;
+        o["y"] = y;
+    }
+    return serialize_json(doc);
+}
+
 typedef std::string (*HandlerFuncPtr)();
 static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
 {
@@ -2617,6 +2715,8 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/abortGetHeldPins", abortGetHeldPins },
     { "/api/getUsedPins", getUsedPins },
     { "/api/getConfig", getConfig },
+    { "/api/getJoystickCenter", getJoystickCenter },
+    { "/api/getJoystickCenter2", getJoystickCenter2 },
 #if !defined(NDEBUG)
     { "/api/echo", echo },
 #endif
