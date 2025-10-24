@@ -419,6 +419,10 @@ message AnalogOptions
     optional uint32 outer_deadzone2 = 21;
     optional bool auto_calibrate2 = 22;
     optional bool forced_circularity2 = 23;
+    optional uint32 joystick_center_x = 24;
+    optional uint32 joystick_center_y = 25;
+    optional uint32 joystick_center_x2 = 26;
+    optional uint32 joystick_center_y2 = 27;
 }
 
 message TurboOptions
