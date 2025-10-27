@@ -1,0 +1,17 @@
+export default {
+	'architecture-text': 'Mimari: {{architecture}}',
+	'build-type-text': 'Mimari türü: {{build}}',
+	'build-text': 'Sürüm: {{build}}',
+	'current-text': 'Mevcut Sürüm: {{version}}',
+	'get-update-text': 'Son sürüme yükselt',
+	'header-text': 'GP2040-CE Web Konfigüratörüne Hoş Geldiniz!',
+	'latest-text': 'Güncel sürüm: {{version}}',
+	'memory-flash-text': 'Hafıza',
+	'memory-board-text': 'Kart Hafızası',
+	'memory-header-text': 'Hafıza (KB)',
+	'memory-heap-text': 'Yığın',
+	'memory-static-allocations-text': 'Sabit sisteme ayrılmış',
+	'sub-header-text': 'Devam etmek için lütfen bir menü seçeneği seçin.',
+	'system-stats-header-text': 'Sistem Durumu',
+	'version-text': 'Sürüm',
+};
