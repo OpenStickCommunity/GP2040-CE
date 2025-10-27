@@ -33,6 +33,8 @@ void AnalogInput::setup() {
     adc_pairs[0].out_deadzone = analogOptions.outer_deadzone / 100.0f;
     adc_pairs[0].auto_calibration = analogOptions.auto_calibrate;
     adc_pairs[0].forced_circularity = analogOptions.forced_circularity;
+    adc_pairs[0].joystick_center_x = analogOptions.joystick_center_x;
+    adc_pairs[0].joystick_center_y = analogOptions.joystick_center_y;
     adc_pairs[1].x_pin = analogOptions.analogAdc2PinX;
     adc_pairs[1].y_pin = analogOptions.analogAdc2PinY;
     adc_pairs[1].analog_invert = analogOptions.analogAdc2Invert;
@@ -44,6 +46,8 @@ void AnalogInput::setup() {
     adc_pairs[1].out_deadzone = analogOptions.outer_deadzone2 / 100.0f;
     adc_pairs[1].auto_calibration = analogOptions.auto_calibrate2;
     adc_pairs[1].forced_circularity = analogOptions.forced_circularity2;
+    adc_pairs[1].joystick_center_x = analogOptions.joystick_center_x2;
+    adc_pairs[1].joystick_center_y = analogOptions.joystick_center_y2;
     
 
     // Setup defaults and helpers
@@ -66,6 +70,9 @@ void AnalogInput::setup() {
             if (adc_pairs[i].auto_calibration) {
                 adc_select_input(adc_pairs[i].x_pin - ADC_PIN_OFFSET);
                 adc_pairs[i].x_center = adc_read();
+            } else {
+                // if auto calibration is disabled, attempt to use stored manual calibration value
+                adc_pairs[i].x_center = adc_pairs[i].joystick_center_x;
             }
         }
         if(isValidPin(adc_pairs[i].y_pin)) {
@@ -73,6 +80,9 @@ void AnalogInput::setup() {
             if (adc_pairs[i].auto_calibration) {
                 adc_select_input(adc_pairs[i].y_pin - ADC_PIN_OFFSET);
                 adc_pairs[i].y_center = adc_read();
+            } else {
+                // if auto calibration is disabled, attempt to use stored manual calibration value
+                adc_pairs[i].y_center = adc_pairs[i].joystick_center_y;
             }
         }
     }
@@ -143,7 +153,9 @@ void AnalogInput::process() {
 float AnalogInput::readPin(int stick_num, Pin_t pin_adc, uint16_t center) {
     adc_select_input(pin_adc);
     uint16_t adc_value = adc_read();
-    if (adc_pairs[stick_num].auto_calibration) {
+    // Apply calibration only if auto calibration is enabled or manual calibration has been performed
+    // Manual calibration is considered performed if the center value is not 0 (default)
+    if (adc_pairs[stick_num].auto_calibration || center != 0) {
         if (adc_value > center) {
             adc_value = map(adc_value, center, ADC_MAX, ADC_MAX / 2, ADC_MAX);
         } else if (adc_value == center) {
