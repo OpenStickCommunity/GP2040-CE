@@ -245,7 +245,7 @@ void ButtonLayoutScreen::generateHeader() {
     if (showMacroMode && macroEnabled) statusBar += " M";
 
     if (showProfileMode) {
-        statusBar += " Pr:";
+        statusBar += " ";
 
         std::string profile;
         profile.assign(storage.currentProfileLabel(), strlen(storage.currentProfileLabel()));
