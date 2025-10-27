@@ -1,0 +1,35 @@
+export default {
+	'header-text': 'Mappage des périphériques',
+	'sub-header-text': '',
+	'pins-label': 'Broches',
+	'pin-in-use': 'en utilisation',
+	'i2c-label': 'I²C',
+	'i2c-desc-header': 'Informations I²C',
+	'i2c-description':
+		'I²C est une interface à deux fils utilisée pour les dispositifs accessoires, tels que les écrans, l\'extension GPIO et les capteurs via les lignes SDA et SCL. Le RP2040 supporte deux blocs de contrôleur I²C : I2C0 et I2C1. Voici les broches GPIO supportées pour chaque bloc :',
+	'spi-label': 'SPI',
+	'spi-desc-header': 'Informations SPI',
+	'spi-description':
+		'SPI est une interface à quatre fils utilisée pour les dispositifs accessoires, tels que les écrans, l\'extension GPIO et les capteurs via une ligne de données RX et TX, ainsi qu\'une ligne d\'horloge SCK et une ligne de synchronisation/sélection de puce CS. Le RP2040 supporte deux blocs de contrôleur SPI : SPI0 et SPI1. Voici les broches GPIO supportées pour chaque bloc :',
+	'usb-label': 'Hôte USB',
+	'usb-desc-header': 'Informations sur l\'hôte USB',
+	'usb-description':
+		'L\'hôte USB permet l\'utilisation de dispositifs clients USB supportés, tels que les claviers, les manettes de jeu ou d\'autres dispositifs.',
+	'peripheral-toggle-unavailable':
+		'Impossible d\'activer. Le périphérique "{{name}}" n\'est pas disponible. Activez-le dans la section <0>Mappage des périphériques</0>.',
+	'pin-sda-label': 'SDA',
+	'pin-scl-label': 'SCL',
+	'option-speed-label': 'Vitesse',
+	'option-speed-choice-100000-label': 'Normale',
+	'option-speed-choice-400000-label': 'Rapide',
+	'option-speed-choice-1000000-label': 'Très rapide',
+	'pin-rx-label': 'RX',
+	'pin-cs-label': 'CS',
+	'pin-sck-label': 'SCK',
+	'pin-tx-label': 'TX',
+	'pin-dp-label': 'D+',
+	'pin-enable5v-label': 'Activer 5V',
+	'option-order-label': 'Ordre des broches GPIO',
+	'option-order-choice-0-label': 'D+/D-',
+	'option-order-choice-1-label': 'D-/D+',
+};
