@@ -18,12 +18,28 @@
 bool DisplayAddon::available() {
     const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
     bool result = false;
-    if (options.enabled) {
-        // create the gfx interface
-        gpDisplay = new GPGFX();
-        gpOptions = gpDisplay->getAvailableDisplay(GPGFX_DisplayType::DISPLAY_TYPE_NONE);
-        result = (gpOptions.displayType != GPGFX_DisplayType::DISPLAY_TYPE_NONE);
-        if (!result) delete gpDisplay;
+
+    // create the gfx interface
+    gpDisplay = new GPGFX();
+    gpOptions = gpDisplay->getAvailableDisplay(GPGFX_DisplayType::DISPLAY_TYPE_NONE);
+    if ( gpOptions.displayType != GPGFX_DisplayType::DISPLAY_TYPE_NONE ) {
+        if ( options.enabled ) {
+            result = true;
+        } else {
+            // Power off our display if its available but disabled in config
+            gpOptions.size = options.size;
+            gpOptions.orientation = options.flip;
+            gpOptions.inverted = options.invert;
+            gpOptions.font.fontData = GP_Font_Standard;
+            gpOptions.font.width = 6;
+            gpOptions.font.height = 8;
+            gpDisplay->init(gpOptions);
+            setDisplayPower(0);
+            delete gpDisplay;
+            result = false;
+        }
+    } else { // No display, delete our GPGFX
+        delete gpDisplay;
     }
     return result;
 }
