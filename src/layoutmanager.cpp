@@ -89,6 +89,18 @@ std::string LayoutManager::getButtonLayoutName(ButtonLayout layout) {
             #else
                 return "Board Defined Alt 5";
             #endif
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT6_A:
+            #ifdef DEFAULT_BOARD_LAYOUT_A_ALT6_NAME
+                return DEFAULT_BOARD_LAYOUT_A_ALT6_NAME;
+            #else
+                return "Board Defined Alt 6";
+            #endif
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT7_A:
+            #ifdef DEFAULT_BOARD_LAYOUT_A_ALT7_NAME
+                return DEFAULT_BOARD_LAYOUT_A_ALT7_NAME;
+            #else
+                return "Board Defined Alt 7";
+            #endif
         default:
             #define ENUM_CASE(name, value) case name: return #name;
             switch (layout) {
@@ -142,6 +154,18 @@ std::string LayoutManager::getButtonLayoutRightName(ButtonLayoutRight layout) {
                 return DEFAULT_BOARD_LAYOUT_B_ALT5_NAME;
             #else
                 return "Board Defined Alt 5";
+            #endif
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT6_B:
+            #ifdef DEFAULT_BOARD_LAYOUT_B_ALT6_NAME
+                return DEFAULT_BOARD_LAYOUT_B_ALT6_NAME;
+            #else
+                return "Board Defined Alt 6";
+            #endif
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT7_B:
+            #ifdef DEFAULT_BOARD_LAYOUT_B_ALT7_NAME
+                return DEFAULT_BOARD_LAYOUT_B_ALT7_NAME;
+            #else
+                return "Board Defined Alt 7";
             #endif
         default:
             #define ENUM_CASE(name, value) case name: return #name;
@@ -240,7 +264,11 @@ LayoutManager::LayoutList LayoutManager::getLeftLayout(uint16_t index) {
         case BUTTON_LAYOUT_BOARD_DEFINED_ALT4_A:
             return drawBoardDefinedAlt4A();
         case BUTTON_LAYOUT_BOARD_DEFINED_ALT5_A:
-            return drawBoardDefinedAlt5A();       
+            return drawBoardDefinedAlt5A(); 
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT6_A:
+            return drawBoardDefinedAlt6A();   
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT7_A:
+            return drawBoardDefinedAlt7A();         
         default:
             break;
     }
@@ -345,6 +373,10 @@ LayoutManager::LayoutList LayoutManager::getRightLayout(uint16_t index) {
             return this->drawBoardDefinedAlt4B();
         case BUTTON_LAYOUT_BOARD_DEFINED_ALT5_B:
             return this->drawBoardDefinedAlt5B();
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT6_B:
+            return this->drawBoardDefinedAlt6B();
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT7_B:
+            return this->drawBoardDefinedAlt7B();
         default:
             break;
     }
@@ -847,6 +879,22 @@ LayoutManager::LayoutList LayoutManager::drawBoardDefinedAlt5A() {
 #endif
 }
 
+LayoutManager::LayoutList LayoutManager::drawBoardDefinedAlt6A() {
+#ifdef DEFAULT_BOARD_LAYOUT_A_ALT6
+    return DEFAULT_BOARD_LAYOUT_A_ALT6;
+#else
+    return {};
+#endif
+}
+
+LayoutManager::LayoutList LayoutManager::drawBoardDefinedAlt7A() {
+#ifdef DEFAULT_BOARD_LAYOUT_A_ALT7
+    return DEFAULT_BOARD_LAYOUT_A_ALT7;
+#else
+    return {};
+#endif
+}
+
 LayoutManager::LayoutList LayoutManager::drawBoardDefinedB() {
 #ifdef DEFAULT_BOARD_LAYOUT_B
     return DEFAULT_BOARD_LAYOUT_B;
@@ -898,6 +946,22 @@ LayoutManager::LayoutList LayoutManager::drawBoardDefinedAlt4B() {
 LayoutManager::LayoutList LayoutManager::drawBoardDefinedAlt5B() {
 #ifdef DEFAULT_BOARD_LAYOUT_B_ALT5
     return DEFAULT_BOARD_LAYOUT_B_ALT5;
+#else
+    return {};
+#endif
+}
+
+LayoutManager::LayoutList LayoutManager::drawBoardDefinedAlt6B() {
+#ifdef DEFAULT_BOARD_LAYOUT_B_ALT6
+    return DEFAULT_BOARD_LAYOUT_B_ALT6;
+#else
+    return {};
+#endif
+}
+
+LayoutManager::LayoutList LayoutManager::drawBoardDefinedAlt7B() {
+#ifdef DEFAULT_BOARD_LAYOUT_B_ALT7
+    return DEFAULT_BOARD_LAYOUT_B_ALT7;
 #else
     return {};
 #endif
