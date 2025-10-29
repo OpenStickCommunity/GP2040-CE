@@ -386,7 +386,7 @@ export default function DisplayConfigPage() {
 															key={`buttonLayout-option-${i}`}
 															value={buttonLayoutDefinitions.buttonLayout[o]}
 														>
-															{t(`LayoutConfig:layouts.left.${o}`)}
+															{t(`LayoutConfig:layouts.left.${o}`, { defaultValue: o })}
 														</option>
 													),
 												)}
@@ -410,7 +410,7 @@ export default function DisplayConfigPage() {
 														key={`buttonLayoutRight-option-${i}`}
 														value={buttonLayoutDefinitions.buttonLayoutRight[o]}
 													>
-														{t(`LayoutConfig:layouts.right.${o}`)}
+														{t(`LayoutConfig:layouts.right.${o}`, { defaultValue: o })}
 													</option>
 												))}
 											</FormSelect>
@@ -466,7 +466,7 @@ export default function DisplayConfigPage() {
 																		buttonLayoutDefinitions.buttonLayout[o]
 																	}
 																>
-																	{t(`LayoutConfig:layouts.left.${o}`)}
+																	{t(`LayoutConfig:layouts.left.${o}`, { defaultValue: o })}
 																</option>
 															))}
 														</FormSelect>
@@ -562,7 +562,7 @@ export default function DisplayConfigPage() {
 																		buttonLayoutDefinitions.buttonLayoutRight[o]
 																	}
 																>
-																	{t(`LayoutConfig:layouts.right.${o}`)}
+																	{t(`LayoutConfig:layouts.right.${o}`, { defaultValue: o })}
 																</option>
 															))}
 														</FormSelect>
