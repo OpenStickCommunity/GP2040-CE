@@ -44,7 +44,10 @@ export const rotaryScheme = {
 		.number()
 		.required()
 		.label('Rotary Encoder Add-On Enabled'),
-	encoderOneEnabled: yup.boolean().required().label('Encoder One Enabled'),
+	encoderOneEnabled: yup
+		.number()
+		.required()
+		.label('Encoder One Enabled'),
 	encoderOnePinA: yup
 		.number()
 		.label('Encoder One Pin A')
@@ -66,7 +69,10 @@ export const rotaryScheme = {
 		.required()
 		.label('Encoder One Allow Wrap Around'),
 	encoderOneMultiplier: yup.number().label('Encoder One Multiplier').required(),
-	encoderTwoEnabled: yup.boolean().required().label('Encoder Two Enabled'),
+	encoderTwoEnabled: yup
+		.number()
+		.required()
+		.label('Encoder Two Enabled'),
 	encoderTwoPinA: yup
 		.number()
 		.label('Encoder Two Pin A')
@@ -130,7 +136,7 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes
 						<FormCheck
 							label={t('Common:switch-enabled')}
 							type="switch"
-							id="encoderOneEnabled"
+							id="EncoderOneEnabledButton"
 							isInvalid={false}
 							checked={Boolean(values.encoderOneEnabled)}
 							onChange={(e) => {
@@ -238,7 +244,7 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes
 						<FormCheck
 							label={t('Common:switch-enabled')}
 							type="switch"
-							id="encoderTwoEnabled"
+							id="EncoderTwoEnabledButton"
 							isInvalid={false}
 							checked={Boolean(values.encoderTwoEnabled)}
 							onChange={(e) => {
