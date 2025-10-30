@@ -601,6 +601,17 @@ async function getLightsDataOptions() {
 	}
 }
 
+async function getLightsDataFromPreset(presetName) {
+	try {
+		const response = await Http.post(`${baseUrl}/api/getLightsDataFromPreset`, {
+			ResetName: presetName,
+		});
+		return response.data;
+	} catch (error) {
+		console.error(error);
+	}
+}
+
 async function setExpansionPins(mappings) {
 	console.dir(mappings);
 
@@ -706,6 +717,7 @@ export default {
 	setPeripheralOptions,
 	setLightsDataOptions,
 	getLightsDataOptions,
+	getLightsDataFromPreset,
 	getExpansionPins,
 	setExpansionPins,
 	getHETriggerCalibration,
