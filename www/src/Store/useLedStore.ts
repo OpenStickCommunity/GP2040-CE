@@ -47,7 +47,6 @@ type State = {
 	Lights: Light[];
 	loading: boolean;
 	initialized: boolean;
-	boardDefaultSetupNames: string[];
 };
 
 type Actions = {
@@ -67,7 +66,6 @@ const INITIAL_STATE: State = {
 	Lights: [],
 	loading: false,
 	initialized: false,
-	boardDefaultSetupNames: [],
 };
 
 const useLedStore = create<State & Actions>()((set, get) => ({
@@ -88,7 +86,6 @@ const useLedStore = create<State & Actions>()((set, get) => ({
 				]
 			},
 			Lights: LightData?.Lights || [],
-			boardDefaultSetupNames: LightData?.boardDefaultSetupNames || [],
 			loading: false,
 			initialized: true,
 		}));

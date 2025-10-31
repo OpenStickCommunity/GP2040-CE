@@ -970,99 +970,67 @@ std::string getLightsDataOptions()
         light["lightType"] = options.lightData.bytes[thisEntryIndex+5];
     }
 
-    JsonArray boardDefaultSetupNamesList = LedOptions.createNestedArray("boardDefaultSetupNames");
-    if(strcmp(LIGHT_DATA_NAME_DEFAULT, "") != 0)
-        boardDefaultSetupNamesList.add(LIGHT_DATA_NAME_DEFAULT);
-    if(strcmp(LIGHT_DATA_NAME_1, "") != 0)
-        boardDefaultSetupNamesList.add(LIGHT_DATA_NAME_1);
-    if(strcmp(LIGHT_DATA_NAME_2, "") != 0)
-        boardDefaultSetupNamesList.add(LIGHT_DATA_NAME_2);
-    if(strcmp(LIGHT_DATA_NAME_3, "") != 0)
-        boardDefaultSetupNamesList.add(LIGHT_DATA_NAME_3);
-    if(strcmp(LIGHT_DATA_NAME_4, "") != 0)
-        boardDefaultSetupNamesList.add(LIGHT_DATA_NAME_4);
-    if(strcmp(LIGHT_DATA_NAME_5, "") != 0)
-        boardDefaultSetupNamesList.add(LIGHT_DATA_NAME_5);
-    if(strcmp(LIGHT_DATA_NAME_6, "") != 0)
-        boardDefaultSetupNamesList.add(LIGHT_DATA_NAME_6);
-    if(strcmp(LIGHT_DATA_NAME_7, "") != 0)
-        boardDefaultSetupNamesList.add(LIGHT_DATA_NAME_7);
-
     return serialize_json(doc);
 }
 
-std::string getLightsDataFromPreset()
-{ 
-    const LEDOptions& options = Storage::getInstance().getLedOptions();
-    LEDOptions_lightData_t lightData;
-    int32_t lightDataSize = 0;
-    DynamicJsonDocument inDoc = get_post_data();
-
-    JsonObject docJson = inDoc.as<JsonObject>();
-    const char*  resetName = docJson["ResetName"];
-
-    if(strcmp(resetName, LIGHT_DATA_NAME_DEFAULT) == 0)
-    {
-        lightDataSize = LIGHT_DATA_SIZE_DEFAULT;
-        const unsigned char thislightData[] = { LIGHT_DATA_DEFAULT };
-        memcpy(lightData.bytes, thislightData, std::min(sizeof(thislightData), sizeof(lightData.bytes)));
-    }
-    else if(strcmp(resetName, LIGHT_DATA_NAME_1) == 0)
-    {
-        lightDataSize = LIGHT_DATA_SIZE_1;
-        const unsigned char thislightData[] = { LIGHT_DATA_1 };
-        memcpy(lightData.bytes, thislightData, std::min(sizeof(thislightData), sizeof(lightData.bytes)));
-    }
-    else if(strcmp(resetName, LIGHT_DATA_NAME_2) == 0)
-    {
-        lightDataSize = LIGHT_DATA_SIZE_2;
-        const unsigned char thislightData[] = { LIGHT_DATA_2 };
-        memcpy(lightData.bytes, thislightData, std::min(sizeof(thislightData), sizeof(lightData.bytes)));
-    }
-    else if(strcmp(resetName, LIGHT_DATA_NAME_3) == 0)
-    {
-        lightDataSize = LIGHT_DATA_SIZE_3;
-        const unsigned char thislightData[] = { LIGHT_DATA_3 };
-        memcpy(lightData.bytes, thislightData, std::min(sizeof(thislightData), sizeof(lightData.bytes)));
-    }
-    else if(strcmp(resetName, LIGHT_DATA_NAME_4) == 0)
-    {
-        lightDataSize = LIGHT_DATA_SIZE_4;
-        const unsigned char thislightData[] = { LIGHT_DATA_4 };
-        memcpy(lightData.bytes, thislightData, std::min(sizeof(thislightData), sizeof(lightData.bytes)));
-    }
-    else if(strcmp(resetName, LIGHT_DATA_NAME_5) == 0)
-    {
-        lightDataSize = LIGHT_DATA_SIZE_5;
-        const unsigned char thislightData[] = { LIGHT_DATA_5 };
-        memcpy(lightData.bytes, thislightData, std::min(sizeof(thislightData), sizeof(lightData.bytes)));
-    }
-    else if(strcmp(resetName, LIGHT_DATA_NAME_6) == 0)
-    {
-        lightDataSize = LIGHT_DATA_SIZE_6;
-        const unsigned char thislightData[] = { LIGHT_DATA_6 };
-        memcpy(lightData.bytes, thislightData, std::min(sizeof(thislightData), sizeof(lightData.bytes)));
-    }
-    else if(strcmp(resetName, LIGHT_DATA_NAME_7) == 0)
-    {
-        lightDataSize = LIGHT_DATA_SIZE_7;
-        const unsigned char thislightData[] = { LIGHT_DATA_7 };
-        memcpy(lightData.bytes, thislightData, std::min(sizeof(thislightData), sizeof(lightData.bytes)));
-    }
-    
+std::string getLightsDataPresets()
+{
     DynamicJsonDocument outDoc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-    JsonObject LedOptions = outDoc.createNestedObject("LightData");
-    JsonArray lightsList = LedOptions.createNestedArray("Lights");
-    for (int lightsIndex = 0; lightsIndex < lightDataSize; ++lightsIndex)
-    {
-        int thisEntryIndex = lightsIndex * 6;
-        JsonObject light = lightsList.createNestedObject();
-        light["firstLedIndex"] = lightData.bytes[thisEntryIndex];
-        light["numLedsOnLight"] = lightData.bytes[thisEntryIndex+1];
-        light["xCoord"] = lightData.bytes[thisEntryIndex+2];
-        light["yCoord"] = lightData.bytes[thisEntryIndex+3];
-        light["GPIOPinorCaseChainIndex"] = lightData.bytes[thisEntryIndex+4];
-        light["lightType"] = lightData.bytes[thisEntryIndex+5];
+    JsonArray presetsArray = outDoc.to<JsonArray>();
+
+    auto addPreset = [&](const char* name, const unsigned char* data, int32_t dataSize) {
+        if (strcmp(name, "") != 0) {
+            JsonObject preset = presetsArray.createNestedObject();
+            preset["name"] = name;
+
+            JsonObject lightDataObj = preset.createNestedObject("lightData");
+            JsonArray lightsList = lightDataObj.createNestedArray("Lights");
+
+            for (int lightsIndex = 0; lightsIndex < dataSize; ++lightsIndex)
+            {
+                int thisEntryIndex = lightsIndex * 6;
+                JsonObject light = lightsList.createNestedObject();
+                light["firstLedIndex"] = data[thisEntryIndex];
+                light["numLedsOnLight"] = data[thisEntryIndex+1];
+                light["xCoord"] = data[thisEntryIndex+2];
+                light["yCoord"] = data[thisEntryIndex+3];
+                light["GPIOPinorCaseChainIndex"] = data[thisEntryIndex+4];
+                light["lightType"] = data[thisEntryIndex+5];
+            }
+        }
+    };
+
+    if(strcmp(LIGHT_DATA_NAME_DEFAULT, "") != 0) {
+        const unsigned char lightData[] = { LIGHT_DATA_DEFAULT };
+        addPreset(LIGHT_DATA_NAME_DEFAULT, lightData, LIGHT_DATA_SIZE_DEFAULT);
+    }
+    if(strcmp(LIGHT_DATA_NAME_1, "") != 0) {
+        const unsigned char lightData[] = { LIGHT_DATA_1 };
+        addPreset(LIGHT_DATA_NAME_1, lightData, LIGHT_DATA_SIZE_1);
+    }
+    if(strcmp(LIGHT_DATA_NAME_2, "") != 0) {
+        const unsigned char lightData[] = { LIGHT_DATA_2 };
+        addPreset(LIGHT_DATA_NAME_2, lightData, LIGHT_DATA_SIZE_2);
+    }
+    if(strcmp(LIGHT_DATA_NAME_3, "") != 0) {
+        const unsigned char lightData[] = { LIGHT_DATA_3 };
+        addPreset(LIGHT_DATA_NAME_3, lightData, LIGHT_DATA_SIZE_3);
+    }
+    if(strcmp(LIGHT_DATA_NAME_4, "") != 0) {
+        const unsigned char lightData[] = { LIGHT_DATA_4 };
+        addPreset(LIGHT_DATA_NAME_4, lightData, LIGHT_DATA_SIZE_4);
+    }
+    if(strcmp(LIGHT_DATA_NAME_5, "") != 0) {
+        const unsigned char lightData[] = { LIGHT_DATA_5 };
+        addPreset(LIGHT_DATA_NAME_5, lightData, LIGHT_DATA_SIZE_5);
+    }
+    if(strcmp(LIGHT_DATA_NAME_6, "") != 0) {
+        const unsigned char lightData[] = { LIGHT_DATA_6 };
+        addPreset(LIGHT_DATA_NAME_6, lightData, LIGHT_DATA_SIZE_6);
+    }
+    if(strcmp(LIGHT_DATA_NAME_7, "") != 0) {
+        const unsigned char lightData[] = { LIGHT_DATA_7 };
+        addPreset(LIGHT_DATA_NAME_7, lightData, LIGHT_DATA_SIZE_7);
     }
 
     return serialize_json(outDoc);
@@ -1129,7 +1097,7 @@ std::string setLightsToDefault()
     NeoPicoLEDAddon::RestartLedSystem();
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
-    
+
     return serialize_json(doc);
 }
 
@@ -2768,7 +2736,7 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/getAnimationProtoOptions", getAnimationProtoOptions },
     { "/api/setLightsDataOptions", setLightsDataOptions },
     { "/api/getLightsDataOptions", getLightsDataOptions },
-    { "/api/getLightsDataFromPreset", getLightsDataFromPreset },
+    { "/api/getLightsDataPresets", getLightsDataPresets },
     { "/api/setLightsToDefault", setLightsToDefault },
     { "/api/setPinMappings", setPinMappings },
     { "/api/setProfileOptions", setProfileOptions },
