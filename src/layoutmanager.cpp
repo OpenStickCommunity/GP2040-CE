@@ -241,8 +241,6 @@ LayoutManager::LayoutList LayoutManager::getLeftLayout(uint16_t index) {
             return drawGitadoraFretA();
         case BUTTON_LAYOUT_GITADORA_STRUM_A:
             return drawGitadoraStrumA();
-        case BUTTON_LAYOUT_BOARD_DEFINED_A:
-            return drawBoardDefinedA();
         case BUTTON_LAYOUT_BANDHERO_FRET_A:
             return drawBandHeroFretA();
         case BUTTON_LAYOUT_BANDHERO_STRUM_A:
@@ -253,6 +251,8 @@ LayoutManager::LayoutList LayoutManager::getLeftLayout(uint16_t index) {
             return draw6GAWDAllButtonLeft();
         case BUTTON_LAYOUT_6GAWD_ALLBUTTONPLUS_A:
             return draw6GAWDAllButtonPlusLeft();
+        case BUTTON_LAYOUT_BOARD_DEFINED_A:
+            return drawBoardDefinedA();
         case BUTTON_LAYOUT_BOARD_DEFINED_ALT0_A:
             return drawBoardDefinedAlt0A();
         case BUTTON_LAYOUT_BOARD_DEFINED_ALT1_A:
@@ -349,8 +349,6 @@ LayoutManager::LayoutList LayoutManager::getRightLayout(uint16_t index) {
             return this->drawGitadoraFretB();
         case BUTTON_LAYOUT_GITADORA_STRUM_B:
             return this->drawGitadoraStrumB();
-        case BUTTON_LAYOUT_BOARD_DEFINED_B:
-            return this->drawBoardDefinedB();
         case BUTTON_LAYOUT_BANDHERO_FRET_B:
             return drawBandHeroFretB();
         case BUTTON_LAYOUT_BANDHERO_STRUM_B:
@@ -361,6 +359,8 @@ LayoutManager::LayoutList LayoutManager::getRightLayout(uint16_t index) {
             return draw6GAWDAllButtonRight();
         case BUTTON_LAYOUT_6GAWD_ALLBUTTONPLUS_B:
             return draw6GAWDAllButtonPlusRight();
+        case BUTTON_LAYOUT_BOARD_DEFINED_B:
+            return this->drawBoardDefinedB();
         case BUTTON_LAYOUT_BOARD_DEFINED_ALT0_B:
             return this->drawBoardDefinedAlt0B();
         case BUTTON_LAYOUT_BOARD_DEFINED_ALT1_B:
