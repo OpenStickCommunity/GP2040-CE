@@ -41,6 +41,7 @@ import boards from '../../Data/Boards.json';
 
 import LightCoordsSection from './LightCoordsSection';
 import ButtonLayoutPreview from './ButtonLayoutPreview';
+import ImportLayout from './ImportLayout';
 
 const GPIO_PIN_LENGTH =
 	boards[import.meta.env.VITE_GP2040_BOARD as keyof typeof boards].maxPin + 1;
@@ -175,10 +176,10 @@ const ColorPickerList = memo(function ColorPickerList({
 });
 
 const PreviewLedChanges = ({
-	advancedMode,
+	layouteMode,
 	selectedProfile,
 }: {
-	advancedMode: boolean;
+	layouteMode: boolean;
 	selectedProfile: number;
 }) => {
 	const { values } = useFormikContext<{
@@ -188,11 +189,11 @@ const PreviewLedChanges = ({
 	const { activateLedsProfile } = useLedsPreview();
 
 	useEffect(() => {
-		if (advancedMode) return;
+		if (layouteMode) return;
 		const profile = values.AnimationOptions.profiles[selectedProfile];
 		if (!profile) return;
 		activateLedsProfile(profile);
-	}, [values, advancedMode, selectedProfile]);
+	}, [values, layouteMode, selectedProfile]);
 	return null;
 };
 
@@ -207,7 +208,7 @@ export default function CustomThemePage() {
 	const [selectedProfile, setSelectedProfile] = useState(
 		AnimationOptions.baseProfileIndex,
 	);
-	const [advancedMode, setAdvancedMode] = useState(false);
+	const [layouteMode, setLayouteMode] = useState(false);
 	const [saveMessage, setSaveMessage] = useState('');
 
 	const onSuccess = async ({
@@ -233,7 +234,7 @@ export default function CustomThemePage() {
 	useEffect(() => {
 		if (!initialized) return;
 		if (Lights.length === 0) {
-			setAdvancedMode(true);
+			setLayouteMode(true);
 		}
 	}, [Lights, initialized]);
 
@@ -555,15 +556,27 @@ export default function CustomThemePage() {
 												</Row>
 												<hr />
 
-												<Form.Check
-													type="switch"
-													label="Advanced mode"
-													className="mb-3"
-													checked={advancedMode}
-													disabled={!values.Lights.length}
-													onChange={(e) => setAdvancedMode(e.target.checked)}
-												/>
-												{advancedMode ? (
+												<Row>
+													<Col md={6}>
+														<p>
+															Layout mode allows for manual configuration of LED
+															positions and GPIO pins.
+														</p>
+														<Form.Check
+															type="switch"
+															label="Layout mode"
+															className="mb-3"
+															checked={layouteMode}
+															disabled={!values.Lights.length}
+															onChange={(e) => setLayouteMode(e.target.checked)}
+														/>
+													</Col>
+													<Col md={6}>
+														<ImportLayout setFieldValue={setFieldValue} />
+													</Col>
+												</Row>
+												<hr />
+												{layouteMode ? (
 													<LightCoordsSection
 														errors={errors}
 														values={values}
@@ -610,7 +623,7 @@ export default function CustomThemePage() {
 					</Button>
 					{saveMessage && <Alert variant="info">{saveMessage}</Alert>}
 					<PreviewLedChanges
-						advancedMode={advancedMode}
+						layouteMode={layouteMode}
 						selectedProfile={selectedProfile}
 					/>
 				</Form>

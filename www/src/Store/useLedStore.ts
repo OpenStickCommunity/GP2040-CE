@@ -90,7 +90,6 @@ const useLedStore = create<State & Actions>()((set, get) => ({
 			initialized: true,
 		}));
 	},
-
 	saveAnimationOptions: async (AnimationOptions: AnimationOptions) => {
 		return WebApi.setAnimationOptions({ AnimationOptions });
 	},
