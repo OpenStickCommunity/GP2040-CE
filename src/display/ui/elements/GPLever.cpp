@@ -1,5 +1,7 @@
 #include "GPLever.h"
 
+#include "drivermanager.h"
+
 void GPLever::draw() {
     // new style lever:
     // radius defines the base of the lever
@@ -72,9 +74,32 @@ void GPLever::draw() {
             leverX -= leftState ? (!invertX ? leverRadius : -leverRadius) : (!invertX ? -leverRadius : leverRadius);
         }
     } else if (leftAnalog || rightAnalog) {
+        uint16_t middleX;
+        uint16_t middleY;
+        if (leftAnalog) {
+            middleX = getProcessedGamepad()->state.lx;
+            middleY = getProcessedGamepad()->state.ly;
+        } else {
+            middleX = getProcessedGamepad()->state.rx;
+            middleY = getProcessedGamepad()->state.ry;
+        }
+
+        // Different analogs have different middles
+        // Get the midpoint value for the current mode
+        uint16_t joystickMid = GAMEPAD_JOYSTICK_MID;
+        if ( DriverManager::getInstance().getDriver() != nullptr ) {
+            joystickMid = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
+        }
+
+        // Accomodate for our offset by 1 for mapping if the driver input uses 0x7FFF instead of 0x8000
+        if ( joystickMid < 0x8000 ) {
+            middleX += (0x8000 - joystickMid);
+            middleY += (0x8000 - joystickMid);
+        }
+
         // analog
-        uint16_t analogX = map((leftAnalog ? getProcessedGamepad()->state.lx : getProcessedGamepad()->state.rx), (!invertX ? 0 : 0xFFFF), (!invertX ? 0xFFFF : 0), 0, 100);
-        uint16_t analogY = map((leftAnalog ? getProcessedGamepad()->state.ly : getProcessedGamepad()->state.ry), (!invertY ? 0 : 0xFFFF), (!invertY ? 0xFFFF : 0), 0, 100);
+        uint16_t analogX = map(middleX, (!invertX ? 0 : 0xFFFF), (!invertX ? 0xFFFF : 0), 0, 100);
+        uint16_t analogY = map(middleY, (!invertY ? 0 : 0xFFFF), (!invertY ? 0xFFFF : 0), 0, 100);
 
         uint16_t minX = std::max(0,(baseX - baseRadius));
         uint16_t maxX = std::min((baseX + baseRadius),128);
