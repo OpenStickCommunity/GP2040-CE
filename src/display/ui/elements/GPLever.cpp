@@ -92,9 +92,9 @@ void GPLever::draw() {
         }
 
         // Accomodate for our offset by 1 for mapping if the driver input uses 0x7FFF instead of 0x8000
-        if ( joystickMid != 0x8000 ) {
-            middleX++;
-            middleY++;
+        if ( joystickMid < 0x8000 ) {
+            middleX += (0x8000 - joystickMid);
+            middleY += (0x8000 - joystickMid);
         }
 
         // analog
