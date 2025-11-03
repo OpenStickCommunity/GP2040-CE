@@ -611,16 +611,16 @@ app.get('/api/getExpansionPins', (req, res) => {
 app.get('/api/getHETriggerOptions', (req, res) => {
 	var triggers = [];
 	triggers.push({ action: 2, idle: 120, max: 3500, active: 1500, polarity: 0 });
-	for(var i = 1; i < 32; i++) {
+	for (var i = 1; i < 32; i++) {
 		triggers.push({
 			action: -10,
 			idle: 100,
 			active: 2000,
 			max: 3500,
-			polarity: 0
+			polarity: 0,
 		});
 	}
-	return res.send({triggers});
+	return res.send({ triggers });
 });
 
 app.get('/api/getMacroAddonOptions', (req, res) => {
@@ -736,6 +736,14 @@ app.get('/api/getButtonLayoutCustomOptions', (req, res) => {
 app.get('/api/getButtonLayoutDefs', (req, res) => {
 	return res.send({
 		buttonLayout: {
+			BUTTON_LAYOUT_BOARD_DEFINED_ALT0_A: 34,
+			BUTTON_LAYOUT_BOARD_DEFINED_ALT1_A: 35,
+			BUTTON_LAYOUT_BOARD_DEFINED_ALT2_A: 36,
+			BUTTON_LAYOUT_BOARD_DEFINED_ALT3_A: 37,
+			BUTTON_LAYOUT_BOARD_DEFINED_ALT4_A: 38,
+			BUTTON_LAYOUT_BOARD_DEFINED_ALT5_A: 39,
+			BUTTON_LAYOUT_BOARD_DEFINED_ALT6_A: 40,
+			BUTTON_LAYOUT_BOARD_DEFINED_ALT7_A: 41,
 			BUTTON_LAYOUT_STICK: 0,
 			BUTTON_LAYOUT_STICKLESS: 1,
 			BUTTON_LAYOUT_BUTTONS_ANGLED: 2,
@@ -772,6 +780,14 @@ app.get('/api/getButtonLayoutDefs', (req, res) => {
 			BUTTON_LAYOUT_STICKLESS_R16: 33,
 		},
 		buttonLayoutRight: {
+			BUTTON_LAYOUT_BOARD_DEFINED_ALT0_B: 40,
+			BUTTON_LAYOUT_BOARD_DEFINED_ALT1_B: 41,
+			BUTTON_LAYOUT_BOARD_DEFINED_ALT2_B: 42,
+			BUTTON_LAYOUT_BOARD_DEFINED_ALT3_B: 43,
+			BUTTON_LAYOUT_BOARD_DEFINED_ALT4_B: 44,
+			BUTTON_LAYOUT_BOARD_DEFINED_ALT5_B: 45,
+			BUTTON_LAYOUT_BOARD_DEFINED_ALT6_B: 46,
+			BUTTON_LAYOUT_BOARD_DEFINED_ALT7_B: 47,
 			BUTTON_LAYOUT_ARCADE: 0,
 			BUTTON_LAYOUT_STICKLESSB: 1,
 			BUTTON_LAYOUT_BUTTONS_ANGLEDB: 2,
@@ -810,6 +826,8 @@ app.get('/api/getButtonLayoutDefs', (req, res) => {
 			BUTTON_LAYOUT_6GAWD_ALLBUTTON_B: 35,
 			BUTTON_LAYOUT_6GAWD_ALLBUTTONPLUS_B: 36,
 			BUTTON_LAYOUT_STICKLESS_R16B: 37,
+			BUTTON_LAYOUT_VLXB_6B: 38,
+			BUTTON_LAYOUT_SEGA2P_6B: 39,
 		},
 	});
 });
@@ -860,7 +878,7 @@ app.get('/api/abortGetHeldPins', async (req, res) => {
 app.post('/api/getHETriggerCalibration', (req, res) => {
 	return res.send({
 		voltage: 0.0,
-		debug: true
+		debug: true,
 	});
 });
 

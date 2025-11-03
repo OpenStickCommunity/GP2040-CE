@@ -264,11 +264,11 @@ LayoutManager::LayoutList LayoutManager::getLeftLayout(uint16_t index) {
         case BUTTON_LAYOUT_BOARD_DEFINED_ALT4_A:
             return drawBoardDefinedAlt4A();
         case BUTTON_LAYOUT_BOARD_DEFINED_ALT5_A:
-            return drawBoardDefinedAlt5A(); 
+            return drawBoardDefinedAlt5A();
         case BUTTON_LAYOUT_BOARD_DEFINED_ALT6_A:
-            return drawBoardDefinedAlt6A();   
+            return drawBoardDefinedAlt6A();
         case BUTTON_LAYOUT_BOARD_DEFINED_ALT7_A:
-            return drawBoardDefinedAlt7A();         
+            return drawBoardDefinedAlt7A();
         default:
             break;
     }
@@ -728,17 +728,17 @@ LayoutManager::LayoutList LayoutManager::drawBandHeroStrumA()
     return BUTTON_GROUP_BANDHERO_STRUM_A;
 }
 
-LayoutManager::LayoutList LayoutManager::draw6GAWDLeft() 
+LayoutManager::LayoutList LayoutManager::draw6GAWDLeft()
 {
     return BUTTON_GROUP_6GAWD_A;
 }
 
-LayoutManager::LayoutList LayoutManager::draw6GAWDAllButtonLeft() 
+LayoutManager::LayoutList LayoutManager::draw6GAWDAllButtonLeft()
 {
     return BUTTON_GROUP_6GAWD_ALLBUTTON_A;
 }
 
-LayoutManager::LayoutList LayoutManager::draw6GAWDAllButtonPlusLeft() 
+LayoutManager::LayoutList LayoutManager::draw6GAWDAllButtonPlusLeft()
 {
     return BUTTON_GROUP_6GAWD_ALLBUTTONPLUS_A;
 }
