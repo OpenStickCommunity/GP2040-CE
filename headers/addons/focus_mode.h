@@ -46,7 +46,6 @@ public:
     virtual std::string name() { return FocusModeName; }
 private:
     uint32_t buttonLockMask;
-    GamepadButtonMapping *mapFocusMode;
 };
 
 #endif  // _FocusMode_H_
