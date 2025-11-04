@@ -85,7 +85,7 @@ void Gamepad::setup()
 	mapAnalogRSYNeg = new GamepadButtonMapping(ANALOG_DIRECTION_RS_Y_NEG);
 	mapAnalogRSYPos = new GamepadButtonMapping(ANALOG_DIRECTION_RS_Y_POS);
 	map48WayMode    = new GamepadButtonMapping(SUSTAIN_4_8_WAY_MODE);
-	mapFocusMode    = new GamepadButtonMapping(0);
+	mapFocusMode    = new GamepadButtonMapping(SUSTAIN_FOCUS_MODE);
 
 	const auto assignCustomMappingToMaps = [&](GpioMappingInfo mapInfo, Pin_t pin) -> void {
 		if (mapDpadUp->buttonMask & mapInfo.customDpadMask)	mapDpadUp->pinMask |= 1 << pin;

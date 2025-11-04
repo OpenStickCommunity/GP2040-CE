@@ -246,12 +246,10 @@ void InputMacro::preprocess()
     FocusModeOptions * focusModeOptions = &Storage::getInstance().getAddonOptions().focusModeOptions;
     if (focusModeOptions->enabled && focusModeOptions->macroLockEnabled) {
         Gamepad * gamepad = Storage::getInstance().GetGamepad();
-        if (gamepad->mapFocusMode->pinMask > 0) {
-            if (gamepad->debouncedGpio & gamepad->mapFocusMode->pinMask)
-                return;
-        } else {
-            if (focusModeOptions->overrideEnabled)
-                return;
+        // Override Toggle Pressed OR focus mode pin is set
+        if (focusModeOptions->overrideEnabled ||
+            (gamepad->mapFocusMode->pinMask && (gamepad->debouncedGpio & gamepad->mapFocusMode->pinMask))) {
+            return;
         }
     }
 
