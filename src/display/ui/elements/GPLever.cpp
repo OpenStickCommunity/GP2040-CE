@@ -79,20 +79,21 @@ void GPLever::draw() {
         }
     } else if (leftAnalog || rightAnalog) {
         // Get the X/Y of each raw analog
-        uint16_t middleX = leftAnalog ? getProcessedGamepad()->state.lx : getProcessedGamepad()->state.rx;
-        uint16_t middleY = leftAnalog ? getProcessedGamepad()->state.ly : getProcessedGamepad()->state.ry;
+        uint16_t analogX = leftAnalog ? getProcessedGamepad()->state.lx : getProcessedGamepad()->state.rx;
+        uint16_t analogY = leftAnalog ? getProcessedGamepad()->state.ly : getProcessedGamepad()->state.ry;
 
-        // Different analogs have different middles
         // Get the midpoint value for the current mode
         GPDriver * gpDriver = DriverManager::getInstance().getDriver();
         uint16_t joystickMid = gpDriver != nullptr ? gpDriver->GetJoystickMidValue() : GAMEPAD_JOYSTICK_MID;
+        uint16_t joystickMax = gpDriver != nullptr ? joystickMid * 2 : GAMEPAD_JOYSTICK_MAX;
 
-        // analog
-        float analogX = mapAnalogToPixels(middleX, (!invertX ? GAMEPAD_JOYSTICK_MIN : GAMEPAD_JOYSTICK_MAX),
-            (!invertX ? GAMEPAD_JOYSTICK_MAX : GAMEPAD_JOYSTICK_MIN), GAMEPAD_JOYSTICK_MIN, GAMEPAD_JOYSTICK_MAX);
-        float analogY = mapAnalogToPixels(middleY, (!invertY ? GAMEPAD_JOYSTICK_MIN : GAMEPAD_JOYSTICK_MAX),
-            (!invertY ? GAMEPAD_JOYSTICK_MAX : GAMEPAD_JOYSTICK_MIN), GAMEPAD_JOYSTICK_MIN, GAMEPAD_JOYSTICK_MAX);
+        // Check for inversion
+        if ( invertX )
+            analogX = joystickMax - analogX;
+        if ( invertY )
+            analogY = joystickMax - analogY;
 
+        // Calculate location based off our driver mid
         leverX = (baseX-baseRadius) + baseRadius * (analogX / (float)joystickMid);
         leverY = (baseY-baseRadius) + baseRadius * (analogY / (float)joystickMid);
     }

@@ -82,8 +82,10 @@ void AnalogInput::process() {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     
     uint16_t joystickMid = GAMEPAD_JOYSTICK_MID;
+    uint16_t joystickMax = GAMEPAD_JOYSTICK_MAX;
     if ( DriverManager::getInstance().getDriver() != nullptr ) {
         joystickMid = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
+        joystickMax = joystickMid * 2;
     }
 
     for(int i = 0; i < ADC_COUNT; i++) {
@@ -121,21 +123,11 @@ void AnalogInput::process() {
         }
 
         if (adc_pairs[i].analog_dpad == DpadMode::DPAD_MODE_LEFT_ANALOG) {
-            if ( joystickMid == 0x8000 ) {
-                gamepad->state.lx = static_cast<uint16_t>(std::ceil(65535.0f * adc_pairs[i].x_value));
-                gamepad->state.ly = static_cast<uint16_t>(std::ceil(65535.0f * adc_pairs[i].y_value));
-            } else { // 0x7FFF
-                gamepad->state.lx = static_cast<uint16_t>(65535.0f * adc_pairs[i].x_value);
-                gamepad->state.ly = static_cast<uint16_t>(65535.0f * adc_pairs[i].y_value);
-            }
+            gamepad->state.lx = (uint16_t)(joystickMax * std::min(adc_pairs[i].x_value, 1.0f));
+            gamepad->state.ly = (uint16_t)(joystickMax * std::min(adc_pairs[i].y_value, 1.0f));
         } else if (adc_pairs[i].analog_dpad == DpadMode::DPAD_MODE_RIGHT_ANALOG) {
-            if ( joystickMid == 0x8000 ) {
-                gamepad->state.rx = static_cast<uint16_t>(std::ceil(65535.0f * adc_pairs[i].x_value));
-                gamepad->state.ry = static_cast<uint16_t>(std::ceil(65535.0f * adc_pairs[i].y_value));
-            } else { // 0x7FFF
-                gamepad->state.rx = static_cast<uint16_t>(65535.0f * adc_pairs[i].x_value);
-                gamepad->state.ry = static_cast<uint16_t>(65535.0f * adc_pairs[i].y_value);
-            }
+            gamepad->state.rx = (uint16_t)(joystickMax * std::min(adc_pairs[i].x_value, 1.0f));
+            gamepad->state.ry = (uint16_t)(joystickMax * std::min(adc_pairs[i].y_value, 1.0f));
         }
     }
 }
