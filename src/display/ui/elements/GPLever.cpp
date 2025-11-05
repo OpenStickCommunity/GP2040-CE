@@ -2,10 +2,6 @@
 
 #include "drivermanager.h"
 
-float GPLever::mapAnalogToPixels(uint16_t val, uint16_t min, uint16_t max, uint16_t newMin, uint16_t newMax) {
-    return ((x - min) * (newMax - newMin)) / (max - min) + newMin;
-}
-
 void GPLever::draw() {
     // new style lever:
     // radius defines the base of the lever

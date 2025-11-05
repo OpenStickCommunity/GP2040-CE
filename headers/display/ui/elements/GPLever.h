@@ -12,7 +12,6 @@ class GPLever : public GPWidget {
         void setShowOrdinal(bool show) { this->_showOrdinal = show; }
         void setDirectionMasks(int32_t upMask, int32_t downMask, int32_t leftMask, int32_t rightMask);
     private:
-        float mapAnalogToPixels(uint16_t val, uint16_t min, uint16_t max, uint16_t newMin, uint16_t newMax);
         uint16_t _radius = 0;
         uint16_t _inputType = 0;
         bool _showCardinal = false;
