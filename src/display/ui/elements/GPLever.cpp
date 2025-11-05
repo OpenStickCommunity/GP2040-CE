@@ -2,6 +2,10 @@
 
 #include "drivermanager.h"
 
+float GPLever::mapAnalogToPixels(uint16_t val, uint16_t min, uint16_t max, uint16_t newMin, uint16_t newMax) {
+    return ((x - min) * (newMax - newMin)) / (max - min) + newMin;
+}
+
 void GPLever::draw() {
     // new style lever:
     // radius defines the base of the lever
@@ -74,43 +78,23 @@ void GPLever::draw() {
             leverX -= leftState ? (!invertX ? leverRadius : -leverRadius) : (!invertX ? -leverRadius : leverRadius);
         }
     } else if (leftAnalog || rightAnalog) {
-        uint16_t middleX;
-        uint16_t middleY;
-        if (leftAnalog) {
-            middleX = getProcessedGamepad()->state.lx;
-            middleY = getProcessedGamepad()->state.ly;
-        } else {
-            middleX = getProcessedGamepad()->state.rx;
-            middleY = getProcessedGamepad()->state.ry;
-        }
+        // Get the X/Y of each raw analog
+        uint16_t middleX = leftAnalog ? getProcessedGamepad()->state.lx : getProcessedGamepad()->state.rx;
+        uint16_t middleY = leftAnalog ? getProcessedGamepad()->state.ly : getProcessedGamepad()->state.ry;
 
         // Different analogs have different middles
         // Get the midpoint value for the current mode
-        uint16_t joystickMid = GAMEPAD_JOYSTICK_MID;
-        if ( DriverManager::getInstance().getDriver() != nullptr ) {
-            joystickMid = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
-        }
-
-        // Accomodate for our offset by 1 for mapping if the driver input uses 0x7FFF instead of 0x8000
-        if ( joystickMid < 0x8000 ) {
-            middleX += (0x8000 - joystickMid);
-            middleY += (0x8000 - joystickMid);
-        }
+        GPDriver * gpDriver = DriverManager::getInstance().getDriver();
+        uint16_t joystickMid = gpDriver != nullptr ? gpDriver->GetJoystickMidValue() : GAMEPAD_JOYSTICK_MID;
 
         // analog
-        uint16_t analogX = map(middleX, (!invertX ? 0 : 0xFFFF), (!invertX ? 0xFFFF : 0), 0, 100);
-        uint16_t analogY = map(middleY, (!invertY ? 0 : 0xFFFF), (!invertY ? 0xFFFF : 0), 0, 100);
+        float analogX = mapAnalogToPixels(middleX, (!invertX ? GAMEPAD_JOYSTICK_MIN : GAMEPAD_JOYSTICK_MAX),
+            (!invertX ? GAMEPAD_JOYSTICK_MAX : GAMEPAD_JOYSTICK_MIN), GAMEPAD_JOYSTICK_MIN, GAMEPAD_JOYSTICK_MAX);
+        float analogY = mapAnalogToPixels(middleY, (!invertY ? GAMEPAD_JOYSTICK_MIN : GAMEPAD_JOYSTICK_MAX),
+            (!invertY ? GAMEPAD_JOYSTICK_MAX : GAMEPAD_JOYSTICK_MIN), GAMEPAD_JOYSTICK_MIN, GAMEPAD_JOYSTICK_MAX);
 
-        uint16_t minX = std::max(0,(baseX - baseRadius));
-        uint16_t maxX = std::min((baseX + baseRadius),128);
-        uint16_t offsetX = (analogX * 0.01) * (maxX - minX);
-        uint16_t minY = std::max(0,(baseY - baseRadius));
-        uint16_t maxY = std::min((baseY + baseRadius),64);
-        uint16_t offsetY = (analogY * 0.01) * (maxY - minY);
-
-        // move lever around
-        leverX = minX + offsetX;
-        leverY = minY + offsetY;
+        leverX = (baseX-baseRadius) + baseRadius * (analogX / (float)joystickMid);
+        leverY = (baseY-baseRadius) + baseRadius * (analogY / (float)joystickMid);
     }
 
     // base
