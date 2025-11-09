@@ -191,6 +191,13 @@ const INPUT_MODES = [
 			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_DRUM,
 		],
 	},
+	{
+		labelKey: 'input-mode-options.p5general',
+		value: 16,
+		group: 'primary',
+		optional: ['usb'],
+		authentication: ['usb'],
+	},
 	{ labelKey: 'input-mode-options.nintendo-switch', value: 1, group: 'primary', },
 	{ labelKey: 'input-mode-options.nintendo-switch-pro', value: 15, group: 'primary' },
 	{ labelKey: 'input-mode-options.keyboard', value: 3, group: 'primary' },
@@ -225,6 +232,13 @@ const INPUT_BOOT_MODES = [
 		value: 13,
 		group: 'primary',
 		optional: ['usb'],
+	},
+	{
+		labelKey: 'input-mode-options.p5general',
+		value: 16,
+		group: 'primary',
+		optional: ['usb'],
+		authentication: ['usb'],
 	},
 	{
 		labelKey: 'input-mode-options.nintendo-switch',
@@ -1278,6 +1292,22 @@ export default function SettingsPage() {
 		);
 	};
 
+	const p5generalModeSpecifics = (values, errors, setFieldValue, handleChange) => {
+		return (
+			<div className="row mb-3">
+				<Row className="mb-3">
+					<Col sm={10}>
+						<Trans
+							ns="SettingsPage"
+							i18nKey="p5general-mode-text"
+							components={{ span: <span className="text-success" /> }}
+						/>
+					</Col>
+				</Row>
+			</div>
+		);
+	};
+
 	const genericHidModeSpecifics = (
 		values,
 		errors,
@@ -1322,6 +1352,13 @@ export default function SettingsPage() {
 					setFieldValue,
 					handleChange,
 					inputMode,
+				);
+			case 'input-mode-options.p5general':
+				return p5generalModeSpecifics(
+					values,
+					errors,
+					setFieldValue,
+					handleChange
 				);
 			case 'input-mode-options.generic':
 				return genericHidModeSpecifics(
