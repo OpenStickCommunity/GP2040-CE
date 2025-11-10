@@ -127,11 +127,11 @@ bool SwitchProDriver::process(Gamepad * gamepad) {
     uint16_t scaleLeftStickY = scale16To12(gamepad->state.ly);
     uint16_t scaleRightStickX = scale16To12(gamepad->state.rx);
     uint16_t scaleRightStickY = scale16To12(gamepad->state.ry);
-    if ((scaleLeftStickX >= leftMinX) && (scaleLeftStickX < leftMaxX)) switchReport.inputs.leftStick.setX(scaleLeftStickX);
-    if ((scaleLeftStickY >= leftMinY) && (scaleLeftStickY < leftMaxY)) switchReport.inputs.leftStick.setY(-scaleLeftStickY);
-
-    if ((scaleRightStickX >= rightMinX) && (scaleRightStickX < rightMaxX)) switchReport.inputs.rightStick.setX(scaleRightStickX);
-    if ((scaleRightStickY >= rightMinY) && (scaleRightStickY < rightMaxY)) switchReport.inputs.rightStick.setY(-scaleRightStickY);
+    
+    switchReport.inputs.leftStick.setX(std::min(std::max(scaleLeftStickX,leftMinX), leftMaxX));
+    switchReport.inputs.leftStick.setY(-std::min(std::max(scaleLeftStickY,leftMinY), leftMaxY));
+    switchReport.inputs.rightStick.setX(std::min(std::max(scaleRightStickX,rightMinX), rightMaxX));
+    switchReport.inputs.rightStick.setY(-std::min(std::max(scaleRightStickY,rightMinY), rightMaxY));
 
     switchReport.rumbleReport = 0x09;
     //switchReport.reportID = inputMode;

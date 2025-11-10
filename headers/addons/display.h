@@ -197,17 +197,13 @@ public:
     virtual void reinit() {}
     virtual std::string name() { return DisplayName; }
 
+    void handleProfileChange(GPEvent* e);
     void handleSystemRestart(GPEvent* e);
     void handleMenuNavigation(GPEvent* e);
     void handleSystemError(GPEvent* e);
 private:
     bool updateDisplayScreen();
-    void drawStatusBar(Gamepad*);
-    void initMenu(char**);
-    bool pressedUp();
-    bool pressedDown();
-    bool pressedLeft();
-    bool pressedRight();
+    void setMenuMappings();
     const DisplayOptions& getDisplayOptions();
     bool isDisplayPowerOff();
     void setDisplayPower(uint8_t status);
