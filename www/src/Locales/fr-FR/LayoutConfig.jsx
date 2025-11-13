@@ -47,8 +47,6 @@ export default {
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT5_A: 'Défini par la carte - Alternative 5',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT6_A: 'Défini par la carte - Alternative 6',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT7_A: 'Défini par la carte - Alternative 7',
-			BUTTON_LAYOUT_BOARD_DEFINED_ALT8_A: 'Défini par la carte - Alternative 8',
-			BUTTON_LAYOUT_BOARD_DEFINED_ALT9_A: 'Défini par la carte - Alternative 9',
 		},
 		right: {
 			BUTTON_LAYOUT_ARCADE: 'Arcade',
@@ -98,10 +96,8 @@ export default {
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT3_B: 'Défini par la carte - Alternative 3',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT4_B: 'Défini par la carte - Alternative 4',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT5_B: 'Défini par la carte - Alternative 5',
-			BUTTON_LAYOUT_BOARD_DEFINED_ALT2_B: 'Défini par la carte - Alternative 6',
-			BUTTON_LAYOUT_BOARD_DEFINED_ALT3_B: 'Défini par la carte - Alternative 7',
-			BUTTON_LAYOUT_BOARD_DEFINED_ALT4_B: 'Défini par la carte - Alternative 8',
-			BUTTON_LAYOUT_BOARD_DEFINED_ALT5_B: 'Défini par la carte - Alternative 9',
+			BUTTON_LAYOUT_BOARD_DEFINED_ALT6_B: 'Défini par la carte - Alternative 6',
+			BUTTON_LAYOUT_BOARD_DEFINED_ALT7_B: 'Défini par la carte - Alternative 7',
 		},
 	},
 };

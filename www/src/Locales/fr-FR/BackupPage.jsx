@@ -14,6 +14,6 @@ export default {
 	'api-pins-text': 'Mappages de broches',
 	'api-profiles-text': 'Mappages de profils',
 	'api-addons-text': 'Modules complémentaires',
-	'api-heTrigger-text': 'Déclencheur à effet Hall',
+	'api-heTrigger-text': 'Déclenchement à effet Hall',
 	'api-splash-text': 'Image de démarrage',
 };
