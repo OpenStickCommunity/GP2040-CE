@@ -12,6 +12,7 @@ function printUsage() {
 			'    ja ja-JP  Check changes in en from last change in ja-JP\n' +
 			'    ko ko-KR  Check changes in en from last change in ko-KR\n' +
 			'    pt pt-BR  Check changes in en from last change in pt-BR\n' +
+			'    tr tr-TR  Check changes in en from last change in tr-TR\n' +
 			'    zh zh-CN  Check changes in en from last change in zh-CN\n' +
 			'  -f|--from <history> go back <history> commits in <locale> (default: 1)\n' +
 			'  -t|--to <history> which commit to diff against (default: 0 = HEAD)\n' +
@@ -21,6 +22,7 @@ function printUsage() {
 			'    ja ja-JP  Get diffs in ja-JP Locale directory\n' +
 			'    ko ko-KR  Get diffs in ko-KR Locale directory\n' +
 			'    pt pt-BR  Get diffs in pt-BR Locale directory\n' +
+			'    tr tr-TR  Get diffs in tr-TR Locale directory\n' +
 			'    zh zh-CN  Get diffs in zh-CN Locale directory\n' +
 			'Example 1: check changes in en locale from last change in de-DE\n' +
 			'  npm run check-locale -- -l de\n' +
@@ -47,6 +49,9 @@ function getLocaleDir(locale) {
 		case 'pt':
 		case 'pt-BR':
 			return './src/Locales/pt-BR/';
+		case 'tr':
+		case 'tr-TR':
+			return './src/Locales/tr-TR/';
 		case 'zh':
 		case 'zh-CN':
 			return './src/Locales/zh-CN/';
