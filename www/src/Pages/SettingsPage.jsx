@@ -327,8 +327,8 @@ const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.dpad-down', value: 39 },
 	{ labelKey: 'hotkey-actions.dpad-left', value: 40 },
 	{ labelKey: 'hotkey-actions.dpad-right', value: 41 },
-	{ labelKey: 'hotkey-actions.turbo-count-up', value: 73 },
-	{ labelKey: 'hotkey-actions.turbo-count-down', value: 74 },
+	{ labelKey: 'hotkey-actions.turbo-count-up', value: 75 },
+	{ labelKey: 'hotkey-actions.turbo-count-down', value: 76 },
 	{ labelKey: 'hotkey-actions.menu-nav-up', value: 44 },
 	{ labelKey: 'hotkey-actions.menu-nav-down', value: 45 },
 	{ labelKey: 'hotkey-actions.menu-nav-left', value: 46 },
@@ -336,7 +336,7 @@ const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.menu-nav-select', value: 48 },
 	{ labelKey: 'hotkey-actions.menu-nav-back', value: 49 },
 	{ labelKey: 'hotkey-actions.menu-nav-toggle', value: 50 },
-	{ labelKey: 'hotkey-actions.focus-mode-toggle', value: 71 },
+	{ labelKey: 'hotkey-actions.focus-mode-toggle', value: 77 },
 ];
 
 const FORCED_SETUP_MODES = [

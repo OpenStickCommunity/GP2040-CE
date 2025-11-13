@@ -10,7 +10,6 @@ class GPLever : public GPWidget {
         void setInputType(uint16_t inputType) { this->_inputType = inputType; }
         void setShowCardinal(bool show) { this->_showCardinal = show; }
         void setShowOrdinal(bool show) { this->_showOrdinal = show; }
-
         void setDirectionMasks(int32_t upMask, int32_t downMask, int32_t leftMask, int32_t rightMask);
     private:
         uint16_t _radius = 0;

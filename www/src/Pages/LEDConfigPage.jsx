@@ -187,7 +187,7 @@ const getLedButtons = (buttonLabels, map, excludeNulls, swapTpShareLabels) => {
 const createLedMap = (ledButtons, clear) => {
 	if (!ledButtons) return;
 	return ledButtons.reduce(
-		(acc, btn) => ({ ...acc, [btn.id]: clear ? null : btn.value }),
+		(acc, btn, index) => ({ ...acc, [btn.id]: clear ? null : index }),
 		{},
 	);
 };
