@@ -9,6 +9,7 @@ export default {
 		'ko-KR': '한국어 (Koreanisch)',
 		'es-MX': 'Español (Mexikanisches Spanisch)',
 		'fr-FR': 'Français (Französisch)',
+		'tr-TR': 'Türkçe (Türkisch)',
 	},
 	'color-scheme': {
 		dark: 'Dunkel',

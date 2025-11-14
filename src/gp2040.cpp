@@ -174,6 +174,9 @@ void GP2040::setup() {
 		case BootAction::SET_INPUT_MODE_PS5: // PS4 / PS5 Driver
 			inputMode = INPUT_MODE_PS5;
 			break;
+		case BootAction::SET_INPUT_MODE_P5GENERAL:
+			inputMode = INPUT_MODE_P5GENERAL;
+			break;
 		case BootAction::SET_INPUT_MODE_XBONE: // Xbox One Driver
 			inputMode = INPUT_MODE_XBONE;
 			break;
@@ -436,6 +439,8 @@ GP2040::BootAction GP2040::getBootAction() {
                                     return BootAction::SET_INPUT_MODE_PS4;
                                 case INPUT_MODE_PS5:
                                     return BootAction::SET_INPUT_MODE_PS5;
+                                case INPUT_MODE_P5GENERAL: 
+                                    return BootAction::SET_INPUT_MODE_P5GENERAL;
                                 case INPUT_MODE_NEOGEO:
                                     return BootAction::SET_INPUT_MODE_NEOGEO;
                                 case INPUT_MODE_MDMINI:
