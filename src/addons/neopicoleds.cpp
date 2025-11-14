@@ -270,6 +270,9 @@ void NeoPicoLEDAddon::process()
 	if(bRestartLeds)
 	{
 		bRestartLeds = false;
+		AnimStation.Clear();
+		neopico.Clear();
+		neopico.Show();
 		decompressSettings();
 		configureLEDs();
 	}

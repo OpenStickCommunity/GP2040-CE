@@ -98,7 +98,11 @@ export function LightIndicator({
 								<div style={{ minWidth: 200 }}>
 									<div className="d-flex w-100 justify-content-between">
 										<span className="text-secondary">GPIO/Case:</span>
-										<span>{GPIOPinorCaseChainIndex}</span>
+										<span>
+											{lightType === 1
+												? GPIOPinorCaseChainIndex + 1
+												: GPIOPinorCaseChainIndex}
+										</span>
 									</div>
 									<div className="d-flex w-100 justify-content-between">
 										<span className="text-secondary">Type:</span>

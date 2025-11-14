@@ -156,7 +156,7 @@ export default function LightCoordsSection({
 				or adjust their coordinates manually to match your setup.
 			</p>
 			<Alert variant="warning">
-				Changing advanced configuration options can break your LED setup.
+				Changing layout configuration options can break your LED setup.
 				Proceed with caution.
 			</Alert>
 			<hr />

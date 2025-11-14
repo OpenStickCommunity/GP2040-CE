@@ -296,7 +296,7 @@
 //      your second light would be "first led index" = 2 (as 0 and 1 were just taken by the first light)
 //T16 
 
-//LED order list on haute 42
+//LED order list on haute 42 t16
 //left
 //down
 //right
@@ -315,8 +315,8 @@
 //m2 (extra button 2)
 
 //Defines for T16
-/*#define LIGHT_DATA_SIZE 16 //number of sets in the below data
-#define LIGHT_DATA \
+#define LIGHT_DATA_SIZE_DEFAULT 16 //number of sets in the below data
+#define LIGHT_DATA_DEFAULT \
 0, 1, 0, 2, 5, LightType::LightType_ActionButton, \
 1, 1, 2, 2, 3, LightType::LightType_ActionButton, \
 2, 1, 4, 3, 4, LightType::LightType_ActionButton, \
@@ -332,7 +332,26 @@
 12, 1, 3, 0, 27, LightType::LightType_ActionButton, \
 13, 1, 6, 0, 18, LightType::LightType_ActionButton, \
 14, 1, 8, 5, 19, LightType::LightType_ActionButton, \
-15, 1, 3, 6, 26, LightType::LightType_ActionButton*/
+15, 1, 3, 6, 26, LightType::LightType_ActionButton
+#define LIGHT_DATA_NAME_DEFAULT "Haute/Cosmox T16" 
+
+//Defines for T12
+#define LIGHT_DATA_SIZE_1 12 //number of sets in the below data
+#define LIGHT_DATA_1 \
+0, 1, 0, 2, 5, LightType::LightType_ActionButton, \
+1, 1, 2, 2, 3, LightType::LightType_ActionButton, \
+2, 1, 4, 3, 4, LightType::LightType_ActionButton, \
+3, 1, 6, 7, 2, LightType::LightType_ActionButton, \
+4, 1, 6, 2, 10, LightType::LightType_ActionButton, \
+5, 1, 8, 1, 11, LightType::LightType_ActionButton, \
+6, 1, 10, 1, 12, LightType::LightType_ActionButton, \
+7, 1, 12, 1, 13, LightType::LightType_ActionButton, \
+8, 1, 6, 4, 6, LightType::LightType_ActionButton, \
+9, 1, 8, 3, 7, LightType::LightType_ActionButton, \
+10, 1, 10, 3, 8, LightType::LightType_ActionButton, \
+11, 1, 12, 3, 9, LightType::LightType_ActionButton
+#define LIGHT_DATA_NAME_1 "Haute/Cosmox T12" 
+
 
 // Keyboard Host enabled by default
 #define KEYBOARD_HOST_ENABLED 1
