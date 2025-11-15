@@ -1,2 +1,2 @@
-set(PICO_BOARD pico2)
-set(PICO_PLATFORM rp2350-arm-s)
+set(PICO_BOARD pico_w)
+set(PICO_PLATFORM rp2040)
