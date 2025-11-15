@@ -42,10 +42,6 @@ if (GP2040_BOARDCONFIG)
 
     set(PICO_BOARD_HEADER_DIRS "${CMAKE_CURRENT_LIST_DIR}/configs/${GP2040_BOARDCONFIG}")
 
-    #target_include_directories(${PROJECT_NAME} BEFORE PUBLIC
-    #    ${CMAKE_CURRENT_LIST_DIR}/configs/${GP2040_BOARDCONFIG}
-    #)
-
     include("${GP2040_BOARD_CONFIG_FILE}")
   else()
     # skip the config and fall back to defaults
