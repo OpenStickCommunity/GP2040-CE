@@ -10,8 +10,8 @@ import deDEFlag from '../Icons/Flags/De';
 import jaJPFlag from '../Icons/Flags/jaJP';
 import krKOFlag from '../Icons/Flags/koKR';
 import esMXFlag from '../Icons/Flags/esMX';
-import frFRFlag from '../Icons/Flags/fr';
 import trTRFlag from '../Icons/Flags/trTR';
+import frFRFlag from '../Icons/Flags/fr';
 
 const dropdownOptions = [
 	{ code: 'en', icon: UsFlag },
@@ -21,8 +21,8 @@ const dropdownOptions = [
 	{ code: 'ja-JP', icon: jaJPFlag },
 	{ code: 'ko-KR', icon: krKOFlag },
 	{ code: 'es-MX', icon: esMXFlag },
-	{ code: 'fr-FR', icon: frFRFlag },
 	{ code: 'tr-TR', icon: trTRFlag },
+	{ code: 'fr-FR', icon: frFRFlag },
 ];
 
 const LanguageSelector = () => {
