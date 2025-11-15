@@ -1,9 +1,9 @@
 export default {
-	'header-text': 'Déclenchement à effet Hall',
-	'desc-header-text': 'Le déclenchement à effet Hall prend en charge les multiplexeurs 4 canaux, 8 canaux et 16 canaux.',
+	'header-text': 'Déclencheurs à Effet Hall',
+	'desc-header-text': 'Le déclenchement à effet Hall prend en charge les multiplexeurs 4, 8 et 16 canaux.',
 	'available-pins-text': 'Broches ADC disponibles : {{pins}}',
 	'multiplexer-channel-select': 'Canaux par multiplexeur',
-	'direct-no-mux': 'Direct (pas de Mux)',
+	'direct-no-mux': 'Direct (sans multiplexeur)',
 	'4-channels': '4 canaux',
 	'8-channels': '8 canaux',
 	'16-channels': '16 canaux',
@@ -23,11 +23,11 @@ export default {
 	'voltage-table-header-text': 'Tableau des tensions à effet Hall',
 	'voltage-table-idle-text': 'Repos',
 	'voltage-table-trigger-text': 'Déclenchement',
-	'voltage-table-max-text': 'Max',
+	'voltage-table-max-text': 'Maximum',
 	'voltage-table-polarity-text': 'Polarité',
 	'voltage-table-disabled-label': '(Désactivé)',
-	'overwrite-all-warning': 'Écraser tous les déclenchements',
-	'overwrite-confirm': 'Confirmer l’écrasement de tous les déclenchements',
+	'overwrite-all-warning': 'Écraser tous les déclenchemeurs',
+	'overwrite-confirm': 'Confirmer l’écrasement de tous les déclenchemeurs',
 	'next-calibration-text': 'Calibration suivante',
 	'finish-calibration-text': 'Terminer la calibration',
 	'calibrate-idle-button': 'Calibrer le repos',
@@ -41,19 +41,19 @@ export default {
 	'pressed-input-text': 'Tension enfoncée',
 	'activation-reading-text': 'Lecture du point de déclenchement :',
 	'calibrate-all-button': 'Tout calibrer 🧲',
-	'calibration-header-text': 'Calibration à effet Hall',
+	'calibration-header-text': 'Calibration - Effet Hall',
 	'calibration-idle-text': 'Lecture de la tension au repos :',
 	'calibration-pressed-text': 'Lecture de la tension enfoncée :',
 	'calibration-trigger-text': 'Tension de déclenchement',
 	'calibration-flip-polarity': 'Inverser la polarité (non pris en charge)',
 	'calibration-back-button': 'Retour',
-	'calibration-first-step': 'Nous devons calibrer la tension au repos et la tension d’appui complet du capteur à effet Hall. ' +
-								'Après la calibration, nous pourrons ajuster le point d’activation du déclenchement à la profondeur souhaitée. ' +
-								'D’abord, calibrons la tension au repos. Laissez le capteur à effet Hall relâché et cliquez sur « Calibrer le repos ».',
-	'calibration-second-step': 'Ensuite, appuyez complètement sur le capteur pour atteindre la profondeur maximale. La position d’activation pourra être ajustée après la calibration.',
-	'calibration-third-step': 'Enfin, ajustons notre point de déclenchement actuel et définissons la valeur souhaitée. '+
-								'Une fois ajusté, appuyez sur le capteur et vérifiez qu’il s’active à la position désirée.',
-	'calibration-manual-step': 'Veuillez ajuster les paramètres suivants du capteur à effet Hall selon vos besoins. '+
-							    'Une fois les valeurs souhaitées trouvées, vous pouvez les copier et les appliquer à tous les déclenchements '+
-							    'du périphérique.',
+	'calibration-first-step': 'Nous devons calibrer la tension de repos et la tension maximale en appui du switch à effet Hall. ' +
+								'Une fois cela fait, nous pourrons régler le point d’activation à la profondeur souhaitée. ' +
+								'Commencez par calibrer la tension au repos. Ne touchez pas au switch et cliquez sur « Calibrer le repos ».',
+	'calibration-second-step': 'Ensuite, appuyez complètement sur le switch pour atteindre la profondeur maximale. La position d’activation pourra être ajustée après la calibration.',
+	'calibration-third-step': 'Enfin, ajustez le point d’activation afin de fixer la profondeur de déclenchement souhaitée. '+
+								'Une fois réglé, appuyez sur le switch pour vérifier qu’il s’active à la profondeur voulue.',
+	'calibration-manual-step': 'Veuillez ajuster manuellement les paramètres suivants du switch à effet Hall.'+
+							    'Une fois les valeurs souhaitées déterminées, vous pouvez les copier et les appliquer à tous les déclencheurs '+
+							    'du périphérique',
 };
