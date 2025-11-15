@@ -927,21 +927,21 @@ std::string setLightsDataOptions()
     JsonObject docJson = doc.as<JsonObject>();
     JsonObject AnimOptions = docJson["LightData"];
     JsonArray lightsList = AnimOptions["Lights"];
-    options.lightDataSize = 0;
+    options.lightClusterData_count = 0;
+    options.lightClusterDataInitialised = true;
     for (JsonObject light : lightsList)
     {
-        int thisEntryIndex = options.lightDataSize * 6;
-        options.lightData.bytes[thisEntryIndex] = light["firstLedIndex"].as<uint8_t>();
-        options.lightData.bytes[thisEntryIndex+1] = light["numLedsOnLight"].as<uint8_t>();
-        options.lightData.bytes[thisEntryIndex+2] = light["xCoord"].as<uint8_t>();
-        options.lightData.bytes[thisEntryIndex+3] = light["yCoord"].as<uint8_t>();
-        options.lightData.bytes[thisEntryIndex+4] = light["GPIOPinorCaseChainIndex"].as<uint8_t>();
-        options.lightData.bytes[thisEntryIndex+5] = (LightType)(light["lightType"].as<uint8_t>());
+        int thisEntryIndex = options.lightClusterData_count;
+        options.lightClusterData[thisEntryIndex].lightLocationData = light["firstLedIndex"].as<uint8_t>();
+        options.lightClusterData[thisEntryIndex].lightLocationData += ((int)light["numLedsOnLight"].as<uint8_t>()) << 8;
+        options.lightClusterData[thisEntryIndex].lightLocationData += ((int)light["xCoord"].as<uint8_t>()) << 16;
+        options.lightClusterData[thisEntryIndex].lightLocationData += ((int)light["yCoord"].as<uint8_t>()) << 24;
+        options.lightClusterData[thisEntryIndex].lightTypeData = light["GPIOPinorCaseChainIndex"].as<uint8_t>();
+        options.lightClusterData[thisEntryIndex].lightTypeData += ((int)light["lightType"].as<uint8_t>()) << 8;
 
-        options.lightDataSize++;
-        options.lightData.size = options.lightDataSize * 6;
+        options.lightClusterData_count++;
 
-        if(options.lightDataSize >= FRAME_MAX) //600 bytes total, 6 elements per light. FRAME_MAX(100) max lights
+        if(options.lightClusterData_count >= FRAME_MAX) //100 entries total
             break;
     }
 
@@ -958,16 +958,15 @@ std::string getLightsDataOptions()
 
     JsonObject LedOptions = doc.createNestedObject("LightData");
     JsonArray lightsList = LedOptions.createNestedArray("Lights");
-    for (int lightsIndex = 0; lightsIndex < options.lightDataSize; ++lightsIndex)
+    for (int lightsIndex = 0; lightsIndex < options.lightClusterData_count; ++lightsIndex)
     {
-        int thisEntryIndex = lightsIndex * 6;
         JsonObject light = lightsList.createNestedObject();
-        light["firstLedIndex"] = options.lightData.bytes[thisEntryIndex];
-        light["numLedsOnLight"] = options.lightData.bytes[thisEntryIndex+1];
-        light["xCoord"] = options.lightData.bytes[thisEntryIndex+2];
-        light["yCoord"] = options.lightData.bytes[thisEntryIndex+3];
-        light["GPIOPinorCaseChainIndex"] = options.lightData.bytes[thisEntryIndex+4];
-        light["lightType"] = options.lightData.bytes[thisEntryIndex+5];
+        light["firstLedIndex"] = options.lightClusterData[lightsIndex].lightLocationData & 0xFF;
+        light["numLedsOnLight"] = (options.lightClusterData[lightsIndex].lightLocationData >> 8) & 0xFF;
+        light["xCoord"] = (options.lightClusterData[lightsIndex].lightLocationData >> 16) & 0xFF;
+        light["yCoord"] = (options.lightClusterData[lightsIndex].lightLocationData >> 24) & 0xFF;
+        light["GPIOPinorCaseChainIndex"] = options.lightClusterData[lightsIndex].lightTypeData;
+        light["lightType"] = (options.lightClusterData[lightsIndex].lightTypeData >> 8) & 0xFF;
     }
 
     return serialize_json(doc);
@@ -978,7 +977,8 @@ std::string getLightsDataPresets()
     DynamicJsonDocument outDoc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
     JsonArray presetsArray = outDoc.to<JsonArray>();
 
-    auto addPreset = [&](const char* name, const unsigned char* data, int32_t dataSize) {
+    auto addPreset = [&](const char* name, const unsigned char* data, int32_t dataSize)
+    {
         if (strcmp(name, "") != 0) {
             JsonObject preset = presetsArray.createNestedObject();
             preset["name"] = name;
@@ -1038,8 +1038,6 @@ std::string getLightsDataPresets()
 
 std::string setLightsToDefault()
 {
-    LEDOptions& options = Storage::getInstance().getLedOptions();
-
     DynamicJsonDocument doc = get_post_data();
 
     JsonObject docJson = doc.as<JsonObject>();
@@ -1047,51 +1045,43 @@ std::string setLightsToDefault()
 
     if(strcmp(resetName, LIGHT_DATA_NAME_DEFAULT) == 0)
     {
-        options.lightDataSize = LIGHT_DATA_SIZE_DEFAULT;
         const unsigned char lightData[] = { LIGHT_DATA_DEFAULT };
-        memcpy(options.lightData.bytes, lightData, std::min(sizeof(lightData), sizeof(options.lightData.bytes)));
+        NeoPicoLEDAddon::AssignLedPreset(lightData, sizeof(lightData));
     }
     else if(strcmp(resetName, LIGHT_DATA_NAME_1) == 0)
     {
-        options.lightDataSize = LIGHT_DATA_SIZE_1;
         const unsigned char lightData[] = { LIGHT_DATA_1 };
-        memcpy(options.lightData.bytes, lightData, std::min(sizeof(lightData), sizeof(options.lightData.bytes)));
+        NeoPicoLEDAddon::AssignLedPreset(lightData, sizeof(lightData));
     }
     else if(strcmp(resetName, LIGHT_DATA_NAME_2) == 0)
     {
-        options.lightDataSize = LIGHT_DATA_SIZE_2;
         const unsigned char lightData[] = { LIGHT_DATA_2 };
-        memcpy(options.lightData.bytes, lightData, std::min(sizeof(lightData), sizeof(options.lightData.bytes)));
+        NeoPicoLEDAddon::AssignLedPreset(lightData, sizeof(lightData));
     }
     else if(strcmp(resetName, LIGHT_DATA_NAME_3) == 0)
     {
-        options.lightDataSize = LIGHT_DATA_SIZE_3;
         const unsigned char lightData[] = { LIGHT_DATA_3 };
-        memcpy(options.lightData.bytes, lightData, std::min(sizeof(lightData), sizeof(options.lightData.bytes)));
+        NeoPicoLEDAddon::AssignLedPreset(lightData, sizeof(lightData));
     }
     else if(strcmp(resetName, LIGHT_DATA_NAME_4) == 0)
     {
-        options.lightDataSize = LIGHT_DATA_SIZE_4;
         const unsigned char lightData[] = { LIGHT_DATA_4 };
-        memcpy(options.lightData.bytes, lightData, std::min(sizeof(lightData), sizeof(options.lightData.bytes)));
+        NeoPicoLEDAddon::AssignLedPreset(lightData, sizeof(lightData));
     }
     else if(strcmp(resetName, LIGHT_DATA_NAME_5) == 0)
     {
-        options.lightDataSize = LIGHT_DATA_SIZE_5;
         const unsigned char lightData[] = { LIGHT_DATA_5 };
-        memcpy(options.lightData.bytes, lightData, std::min(sizeof(lightData), sizeof(options.lightData.bytes)));
+        NeoPicoLEDAddon::AssignLedPreset(lightData, sizeof(lightData));
     }
     else if(strcmp(resetName, LIGHT_DATA_NAME_6) == 0)
     {
-        options.lightDataSize = LIGHT_DATA_SIZE_6;
         const unsigned char lightData[] = { LIGHT_DATA_6 };
-        memcpy(options.lightData.bytes, lightData, std::min(sizeof(lightData), sizeof(options.lightData.bytes)));
+        NeoPicoLEDAddon::AssignLedPreset(lightData, sizeof(lightData));
     }
     else if(strcmp(resetName, LIGHT_DATA_NAME_7) == 0)
     {
-        options.lightDataSize = LIGHT_DATA_SIZE_7;
         const unsigned char lightData[] = { LIGHT_DATA_7 };
-        memcpy(options.lightData.bytes, lightData, std::min(sizeof(lightData), sizeof(options.lightData.bytes)));
+        NeoPicoLEDAddon::AssignLedPreset(lightData, sizeof(lightData));
     }
 
     NeoPicoLEDAddon::RestartLedSystem();

@@ -320,7 +320,7 @@
 0, 1, 0, 2, 5, LightType::LightType_ActionButton, \
 1, 1, 2, 2, 3, LightType::LightType_ActionButton, \
 2, 1, 4, 3, 4, LightType::LightType_ActionButton, \
-3, 1, 6, 7, 2, LightType::LightType_ActionButton, \
+3, 1, 5, 7, 2, LightType::LightType_ActionButton, \
 4, 1, 6, 2, 10, LightType::LightType_ActionButton, \
 5, 1, 8, 1, 11, LightType::LightType_ActionButton, \
 6, 1, 10, 1, 12, LightType::LightType_ActionButton, \
@@ -341,7 +341,7 @@
 0, 1, 0, 2, 5, LightType::LightType_ActionButton, \
 1, 1, 2, 2, 3, LightType::LightType_ActionButton, \
 2, 1, 4, 3, 4, LightType::LightType_ActionButton, \
-3, 1, 6, 7, 2, LightType::LightType_ActionButton, \
+3, 1, 5, 7, 2, LightType::LightType_ActionButton, \
 4, 1, 6, 2, 10, LightType::LightType_ActionButton, \
 5, 1, 8, 1, 11, LightType::LightType_ActionButton, \
 6, 1, 10, 1, 12, LightType::LightType_ActionButton, \

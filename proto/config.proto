@@ -271,6 +271,12 @@ message DisplayOptions
     optional uint32 inputHistoryRow = 30;
 }
 
+message LightCluster
+{
+    optional uint32 lightLocationData = 1; // [ledIndex, ledCount, xCoord, yCoord]
+    optional uint32 lightTypeData = 2; // [gpioPin, type, unused, unused]
+};
+
 message LEDOptions
 {
     optional int32 dataPin = 1;
@@ -318,8 +324,11 @@ message LEDOptions
     optional uint32 caseRGBColor = 38 [deprecated = true];
     optional uint32 caseRGBCount = 39 [deprecated = true];
 
-    optional bytes lightData = 40 [(nanopb).max_size = 600]; //FRAME_MAX (100) * numElementsPerDataEntry (6)
-    optional int32 lightDataSize = 41;
+//    optional bytes lightData = 40 [(nanopb).max_size = 600]; //FRAME_MAX (100) * numElementsPerDataEntry (6)
+//    optional int32 lightDataSize = 41;
+
+    repeated LightCluster lightClusterData = 40 [(nanopb).max_count = 100]; //FRAME_MAX (100)
+    optional bool lightClusterDataInitialised = 41;
 };
 
 //message SpecialMoveInputTriggers 

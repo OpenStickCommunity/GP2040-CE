@@ -252,6 +252,7 @@ public:
     virtual void reinit() {}
 	virtual std::string name() { return NeoPicoLEDName; }
 
+	static void AssignLedPreset(const unsigned char* data, int32_t dataSize);
 	static void RestartLedSystem() { bRestartLeds = true; }
 
 	uint32_t frame[FRAME_MAX];
@@ -264,16 +265,16 @@ private:
 	GamepadHotkey ProcessAnimationHotkeys(Gamepad *gamepad);
 
 	//Legacy setup functions
-	void generateLegacyIndividualLight(int& lightIndex, int firstLedIndex, int xCoord, int yCoord, uint8_t ledsPerPixel, LEDOptions_lightData_t& out_lightData, GpioAction actionButton);
-	void generatedLEDButtons(std::vector<std::vector<uint8_t>> *positions, uint8_t ledsPerPixel, LEDOptions_lightData_t& out_lightData, int32_t& out_lightDataSize);
-	void generatedLEDStickless(std::vector<std::vector<uint8_t>> *positions, uint8_t ledsPerPixel, LEDOptions_lightData_t& out_lightData, int32_t& out_lightDataSize);
-	void generatedLEDWasd(std::vector<std::vector<uint8_t>> *positions, uint8_t ledsPerPixel, LEDOptions_lightData_t& out_lightData, int32_t& out_lightDataSize);
-	void generatedLEDWasdFBM(std::vector<std::vector<uint8_t>> *positions, uint8_t ledsPerPixel, LEDOptions_lightData_t& out_lightData, int32_t& out_lightDataSize);
-	void createLEDLayout(ButtonLayout layout, uint8_t ledsPerPixel, uint8_t ledButtonCount, LEDOptions_lightData_t& out_lightData, int32_t& out_lightDataSize);
+	void generateLegacyIndividualLight(int firstLedIndex, int xCoord, int yCoord, uint8_t ledsPerPixel, GpioAction actionButton);
+	void generatedLEDButtons(std::vector<std::vector<uint8_t>> *positions, uint8_t ledsPerPixel);
+	void generatedLEDStickless(std::vector<std::vector<uint8_t>> *positions, uint8_t ledsPerPixel);
+	void generatedLEDWasd(std::vector<std::vector<uint8_t>> *positions, uint8_t ledsPerPixel);
+	void generatedLEDWasdFBM(std::vector<std::vector<uint8_t>> *positions, uint8_t ledsPerPixel);
+	void createLEDLayout(ButtonLayout layout, uint8_t ledsPerPixel, uint8_t ledButtonCount);
 	uint8_t setupButtonPositions();
 
 	//New co-ordinated setup
-	void GenerateLights(const LEDOptions_lightData_t& InLightData, uint32_t InLightDataSize);
+	void GenerateLights();
 
 	//Controls the actual lights on the board. Writes out state each frame
 	NeoPico neopico;

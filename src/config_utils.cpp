@@ -526,25 +526,23 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.ledOptions, pledIndex3, PLED3_PIN);
     INIT_UNSET_PROPERTY(config.ledOptions, pledIndex4, PLED4_PIN);
     // lightEntries
-    INIT_UNSET_PROPERTY(config.ledOptions, lightDataSize, LIGHT_DATA_SIZE_DEFAULT);
-    const unsigned char lightData[] = { LIGHT_DATA_DEFAULT };
-    INIT_UNSET_PROPERTY_BYTES(config.ledOptions, lightData, lightData);
+    INIT_UNSET_PROPERTY(config.ledOptions, lightClusterDataInitialised, false);
 
     //SpecialMoveOptions
     //INIT_UNSET_PROPERTY(config.specialMoveOptions, ChargeTimeInMs, 750);
     //INIT_UNSET_PROPERTY(config.specialMoveOptions, CurrentProfileIndex, 0);
  
     // animationOptions
-    if(LEDS_BRIGHTNESS >= 0 && LEDS_BRIGHTNESS <= config.ledOptions.brightnessSteps)
+    if(LEDS_BRIGHTNESS >= 0 && LEDS_BRIGHTNESS <= AnimationStation::brightnessSteps)
     {
         INIT_UNSET_PROPERTY(config.animationOptions, brightness, LEDS_BRIGHTNESS);
     }
     else
     {
-        INIT_UNSET_PROPERTY(config.animationOptions, brightness, config.ledOptions.brightnessSteps);
+        INIT_UNSET_PROPERTY(config.animationOptions, brightness, AnimationStation::brightnessSteps);
     }
     INIT_UNSET_PROPERTY(config.animationOptions, baseProfileIndex, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, autoDisableTime, 5000);
+    INIT_UNSET_PROPERTY(config.animationOptions, autoDisableTime, 15000);
 
     //Default to rainbow rotate if a fresh settings
     if(config.animationOptions.profiles[0].has_bEnabled == false)
