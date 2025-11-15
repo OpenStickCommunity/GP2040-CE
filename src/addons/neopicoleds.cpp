@@ -390,7 +390,7 @@ void NeoPicoLEDAddon::process()
 // Left here for legacy setup until all configs are converted
 ///////////////////////////////////
 
-void NeoPicoLEDAddon::generateLegacyIndividualLight(int& lightIndex, int firstLedIndex, int xCoord, int yCoord, uint8_t ledsPerPixel, LEDOptions_lightData_t& out_lightData, GpioAction actionButton)
+void NeoPicoLEDAddon::generateLegacyIndividualLight(int firstLedIndex, int xCoord, int yCoord, uint8_t ledsPerPixel, GpioAction actionButton)
 {
 	//If button doesnt have a light then return
 	if(firstLedIndex < 0)
@@ -398,8 +398,8 @@ void NeoPicoLEDAddon::generateLegacyIndividualLight(int& lightIndex, int firstLe
 
 	firstLedIndex = firstLedIndex * ledsPerPixel;
 
-	int arrayOffset = lightIndex * 6;
-	if(arrayOffset + 5 >= 600) //Max data array size (defined in config proto)
+    LEDOptions& options = Storage::getInstance().getLedOptions();
+	if(options.lightClusterData_count >= FRAME_MAX) //Max data array size (defined in config proto)
 		return;
 
 	const GpioMappings& pinMappings = Storage::getInstance().getGpioMappings();
@@ -415,160 +415,144 @@ void NeoPicoLEDAddon::generateLegacyIndividualLight(int& lightIndex, int firstLe
 		}
 	}
 
-	out_lightData.bytes[arrayOffset] = firstLedIndex; //first led index
-	out_lightData.bytes[arrayOffset+1] = ledsPerPixel; //leds on this light
-	out_lightData.bytes[arrayOffset+2] = xCoord; //xcoord
-	out_lightData.bytes[arrayOffset+3] = yCoord; //ycoord
-	out_lightData.bytes[arrayOffset+4] = gpioPin; //GPIO pin
-	out_lightData.bytes[arrayOffset+5] = LightType::LightType_ActionButton; //Type
-
-	lightIndex++;
+	int thisEntryIndex = options.lightClusterData_count;
+	options.lightClusterData[thisEntryIndex].lightLocationData = firstLedIndex;
+	options.lightClusterData[thisEntryIndex].lightLocationData += ledsPerPixel << 8;
+	options.lightClusterData[thisEntryIndex].lightLocationData += xCoord << 16;
+	options.lightClusterData[thisEntryIndex].lightLocationData += yCoord << 24;
+	options.lightClusterData[thisEntryIndex].lightTypeData = gpioPin;
+	options.lightClusterData[thisEntryIndex].lightTypeData += LightType::LightType_ActionButton << 8;
+	options.lightClusterData_count++;
 }
 
 /**
  * @brief Create an LED layout using a 2x4 matrix.
  */
-void NeoPicoLEDAddon::generatedLEDButtons(std::vector<std::vector<uint8_t>> *positions, uint8_t ledsPerPixel, LEDOptions_lightData_t& out_lightData, int32_t& out_lightDataSize)
+void NeoPicoLEDAddon::generatedLEDButtons(std::vector<std::vector<uint8_t>> *positions, uint8_t ledsPerPixel)
 {
-	int currentLight = 0;
-
 	//8 action buttons in 2x4 array
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_B3], 4, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_B3);
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_B1], 4, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_B1);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_B3], 4, 0, ledsPerPixel, BUTTON_PRESS_B3);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_B1], 4, 1, ledsPerPixel, BUTTON_PRESS_B1);
 
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_B4], 5, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_B4);
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_B2], 5, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_B2);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_B4], 5, 0, ledsPerPixel, BUTTON_PRESS_B4);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_B2], 5, 1, ledsPerPixel, BUTTON_PRESS_B2);
 
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_R1], 6, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_R1);
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_R2], 6, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_R2);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_R1], 6, 0, ledsPerPixel, BUTTON_PRESS_R1);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_R2], 6, 1, ledsPerPixel, BUTTON_PRESS_R2);
 
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_L1], 7, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_L1);
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_L2], 7, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_L2);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_L1], 7, 0, ledsPerPixel, BUTTON_PRESS_L1);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_L2], 7, 1, ledsPerPixel, BUTTON_PRESS_L2);
 
 	//extras
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_LEFT], 0, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_LEFT);
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_DOWN], 1, 2, ledsPerPixel, out_lightData, BUTTON_PRESS_DOWN);
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_RIGHT], 2, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_RIGHT);
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_UP], 1, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_UP);
-
-	out_lightDataSize = currentLight;
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_LEFT], 0, 1, ledsPerPixel, BUTTON_PRESS_LEFT);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_DOWN], 1, 2, ledsPerPixel, BUTTON_PRESS_DOWN);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_RIGHT], 2, 1, ledsPerPixel, BUTTON_PRESS_RIGHT);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_UP], 1, 0, ledsPerPixel, BUTTON_PRESS_UP);
 }
 
 /**
  * @brief Create an LED layout using a 3x8 matrix.
  */
-void NeoPicoLEDAddon::generatedLEDStickless(vector<vector<uint8_t>> *positions, uint8_t ledsPerPixel, LEDOptions_lightData_t& out_lightData, int32_t& out_lightDataSize)
+void NeoPicoLEDAddon::generatedLEDStickless(vector<vector<uint8_t>> *positions, uint8_t ledsPerPixel)
 {
-	int currentLight = 0;
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_LEFT], 0, 2, ledsPerPixel, BUTTON_PRESS_LEFT);
 
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_LEFT], 0, 2, ledsPerPixel, out_lightData, BUTTON_PRESS_LEFT);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_DOWN], 2, 2, ledsPerPixel, BUTTON_PRESS_DOWN);
 
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_DOWN], 2, 2, ledsPerPixel, out_lightData, BUTTON_PRESS_DOWN);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_RIGHT], 4, 3, ledsPerPixel, BUTTON_PRESS_RIGHT);
 
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_RIGHT], 4, 3, ledsPerPixel, out_lightData, BUTTON_PRESS_RIGHT);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_UP], 5, 6, ledsPerPixel, BUTTON_PRESS_UP);
 
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_UP], 5, 6, ledsPerPixel, out_lightData, BUTTON_PRESS_UP);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_B3], 6, 2, ledsPerPixel, BUTTON_PRESS_B3);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_B1], 6, 4, ledsPerPixel, BUTTON_PRESS_B1);
 
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_B3], 6, 2, ledsPerPixel, out_lightData, BUTTON_PRESS_B3);
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_B1], 6, 4, ledsPerPixel, out_lightData, BUTTON_PRESS_B1);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_B4], 8, 1, ledsPerPixel, BUTTON_PRESS_B4);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_B2], 8, 3, ledsPerPixel, BUTTON_PRESS_B2);
 
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_B4], 8, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_B4);
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_B2], 8, 3, ledsPerPixel, out_lightData, BUTTON_PRESS_B2);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_R1], 10, 1, ledsPerPixel, BUTTON_PRESS_R1);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_R2], 10, 3, ledsPerPixel, BUTTON_PRESS_R2);
 
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_R1], 10, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_R1);
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_R2], 10, 3, ledsPerPixel, out_lightData, BUTTON_PRESS_R2);
-
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_L1], 12, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_L1);
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_L2], 12, 3, ledsPerPixel, out_lightData, BUTTON_PRESS_L2);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_L1], 12, 1, ledsPerPixel, BUTTON_PRESS_L1);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_L2], 12, 3, ledsPerPixel, BUTTON_PRESS_L2);
 
 	//extras
-	//generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_S1], 13, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_S1);
-	//generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_S2], 14, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_S2);
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_L3], 7, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_L3);
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_R3], 7, 5, ledsPerPixel, out_lightData, BUTTON_PRESS_R3);
-	//generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_A1], 12, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_A1);
-	//generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_A2], 11, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_A2);
-
-	out_lightDataSize = currentLight;
+	//generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_S1], 13, 0, ledsPerPixel, BUTTON_PRESS_S1);
+	//generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_S2], 14, 0, ledsPerPixel, BUTTON_PRESS_S2);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_L3], 7, 0, ledsPerPixel, BUTTON_PRESS_L3);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_R3], 7, 5, ledsPerPixel, BUTTON_PRESS_R3);
+	//generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_A1], 12, 0, ledsPerPixel, BUTTON_PRESS_A1);
+	//generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_A2], 11, 0, ledsPerPixel, BUTTON_PRESS_A2);
 }
 
 /**
  * @brief Create an LED layout using a 2x7 matrix.
  */
-void NeoPicoLEDAddon::generatedLEDWasd(std::vector<std::vector<uint8_t>> *positions, uint8_t ledsPerPixel, LEDOptions_lightData_t& out_lightData, int32_t& out_lightDataSize)
+void NeoPicoLEDAddon::generatedLEDWasd(std::vector<std::vector<uint8_t>> *positions, uint8_t ledsPerPixel)
 {
-	int currentLight = 0;
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_LEFT], 0, 2, ledsPerPixel, BUTTON_PRESS_LEFT);
 
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_LEFT], 0, 2, ledsPerPixel, out_lightData, BUTTON_PRESS_LEFT);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_DOWN], 2, 2, ledsPerPixel, BUTTON_PRESS_DOWN);
 
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_DOWN], 2, 2, ledsPerPixel, out_lightData, BUTTON_PRESS_DOWN);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_RIGHT], 4, 3, ledsPerPixel, BUTTON_PRESS_RIGHT);
 
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_RIGHT], 4, 3, ledsPerPixel, out_lightData, BUTTON_PRESS_RIGHT);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_UP], 2, 1, ledsPerPixel, BUTTON_PRESS_UP);
 
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_UP], 2, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_UP);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_B3], 6, 2, ledsPerPixel, BUTTON_PRESS_B3);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_B1], 6, 4, ledsPerPixel, BUTTON_PRESS_B1);
 
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_B3], 6, 2, ledsPerPixel, out_lightData, BUTTON_PRESS_B3);
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_B1], 6, 4, ledsPerPixel, out_lightData, BUTTON_PRESS_B1);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_B4], 8, 1, ledsPerPixel, BUTTON_PRESS_B4);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_B2], 8, 3, ledsPerPixel, BUTTON_PRESS_B2);
 
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_B4], 8, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_B4);
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_B2], 8, 3, ledsPerPixel, out_lightData, BUTTON_PRESS_B2);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_R1], 10, 1, ledsPerPixel, BUTTON_PRESS_R1);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_R2], 10, 3, ledsPerPixel, BUTTON_PRESS_R2);
 
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_R1], 10, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_R1);
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_R2], 10, 3, ledsPerPixel, out_lightData, BUTTON_PRESS_R2);
-
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_L1], 12, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_L1);
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_L2], 12, 3, ledsPerPixel, out_lightData, BUTTON_PRESS_L2);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_L1], 12, 1, ledsPerPixel, BUTTON_PRESS_L1);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_L2], 12, 3, ledsPerPixel, BUTTON_PRESS_L2);
 
 	//extras
-	//generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_S1], 13, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_S1);
-	//generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_S2], 14, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_S2);
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_L3], 7, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_L3);
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_R3], 7, 5, ledsPerPixel, out_lightData, BUTTON_PRESS_R3);
-	//generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_A1], 12, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_A1);
-	//generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_A2], 11, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_A2);
-
-	out_lightDataSize = currentLight;
+	//generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_S1], 13, 0, ledsPerPixel, BUTTON_PRESS_S1);
+	//generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_S2], 14, 0, ledsPerPixel, BUTTON_PRESS_S2);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_L3], 7, 0, ledsPerPixel, BUTTON_PRESS_L3);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_R3], 7, 5, ledsPerPixel, BUTTON_PRESS_R3);
+	//generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_A1], 12, 0, ledsPerPixel, BUTTON_PRESS_A1);
+	//generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_A2], 11, 0, ledsPerPixel, BUTTON_PRESS_A2);
 }
 
 /**
  * @brief Create an LED layout using a 2x7 matrix for the mirrored Fightboard.
  */
-void NeoPicoLEDAddon::generatedLEDWasdFBM(std::vector<std::vector<uint8_t>> *positions, uint8_t ledsPerPixel, LEDOptions_lightData_t& out_lightData, int32_t& out_lightDataSize)
+void NeoPicoLEDAddon::generatedLEDWasdFBM(std::vector<std::vector<uint8_t>> *positions, uint8_t ledsPerPixel)
 {
-	int currentLight = 0;
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_LEFT], 8, 2, ledsPerPixel, BUTTON_PRESS_LEFT);
 
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_LEFT], 8, 2, ledsPerPixel, out_lightData, BUTTON_PRESS_LEFT);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_DOWN], 10, 2, ledsPerPixel, BUTTON_PRESS_DOWN);
 
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_DOWN], 10, 2, ledsPerPixel, out_lightData, BUTTON_PRESS_DOWN);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_RIGHT], 12, 3, ledsPerPixel, BUTTON_PRESS_RIGHT);
 
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_RIGHT], 12, 3, ledsPerPixel, out_lightData, BUTTON_PRESS_RIGHT);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_UP], 10, 1, ledsPerPixel, BUTTON_PRESS_UP);
 
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_UP], 10, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_UP);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_B3], 0, 2, ledsPerPixel, BUTTON_PRESS_B3);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_B1], 0, 4, ledsPerPixel, BUTTON_PRESS_B1);
 
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_B3], 0, 2, ledsPerPixel, out_lightData, BUTTON_PRESS_B3);
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_B1], 0, 4, ledsPerPixel, out_lightData, BUTTON_PRESS_B1);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_B4], 2, 1, ledsPerPixel, BUTTON_PRESS_B4);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_B2], 2, 3, ledsPerPixel, BUTTON_PRESS_B2);
 
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_B4], 2, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_B4);
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_B2], 2, 3, ledsPerPixel, out_lightData, BUTTON_PRESS_B2);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_R1], 4, 1, ledsPerPixel, BUTTON_PRESS_R1);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_R2], 4, 3, ledsPerPixel, BUTTON_PRESS_R2);
 
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_R1], 4, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_R1);
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_R2], 4, 3, ledsPerPixel, out_lightData, BUTTON_PRESS_R2);
-
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_L1], 6, 1, ledsPerPixel, out_lightData, BUTTON_PRESS_L1);
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_L2], 6, 3, ledsPerPixel, out_lightData, BUTTON_PRESS_L2);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_L1], 6, 1, ledsPerPixel, BUTTON_PRESS_L1);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_L2], 6, 3, ledsPerPixel, BUTTON_PRESS_L2);
 
 	//extras
-	//generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_S1], 13, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_S1);
-	//generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_S2], 14, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_S2);
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_L3], 1, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_L3);
-	generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_R3], 1, 5, ledsPerPixel, out_lightData, BUTTON_PRESS_R3);
-	//generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_A1], 12, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_A1);
-	//generateLegacyIndividualLight(currentLight, buttonPositions[BUTTON_LABEL_A2], 11, 0, ledsPerPixel, out_lightData, BUTTON_PRESS_A2);
-
-	out_lightDataSize = currentLight;
+	//generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_S1], 13, 0, ledsPerPixel, BUTTON_PRESS_S1);
+	//generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_S2], 14, 0, ledsPerPixel, BUTTON_PRESS_S2);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_L3], 1, 0, ledsPerPixel, BUTTON_PRESS_L3);
+	generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_R3], 1, 5, ledsPerPixel, BUTTON_PRESS_R3);
+	//generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_A1], 12, 0, ledsPerPixel, BUTTON_PRESS_A1);
+	//generateLegacyIndividualLight(buttonPositions[BUTTON_LABEL_A2], 11, 0, ledsPerPixel, BUTTON_PRESS_A2);
 }
 
-void NeoPicoLEDAddon::createLEDLayout(ButtonLayout layout, uint8_t ledsPerPixel, uint8_t ledButtonCount, LEDOptions_lightData_t& out_lightData, int32_t& out_lightDataSize)
+void NeoPicoLEDAddon::createLEDLayout(ButtonLayout layout, uint8_t ledsPerPixel, uint8_t ledButtonCount)
 {
     vector<vector<uint8_t>> positions(ledButtonCount);
     for (int i = 0; i != ledButtonCount; i++)
@@ -587,14 +571,14 @@ void NeoPicoLEDAddon::createLEDLayout(ButtonLayout layout, uint8_t ledsPerPixel,
 		case BUTTON_LAYOUT_STICKLESS_16:
 		case BUTTON_LAYOUT_STICKLESS_R16:
 		case BUTTON_LAYOUT_BOARD_DEFINED_A:
-			generatedLEDStickless(&positions, ledsPerPixel, out_lightData, out_lightDataSize);
+			generatedLEDStickless(&positions, ledsPerPixel);
 			break;
 		case BUTTON_LAYOUT_FIGHTBOARD_MIRRORED:
-			generatedLEDWasdFBM(&positions, ledsPerPixel, out_lightData, out_lightDataSize);
+			generatedLEDWasdFBM(&positions, ledsPerPixel);
 			break;
 		case BUTTON_LAYOUT_BUTTONS_ANGLED:
 		case BUTTON_LAYOUT_FIGHTBOARD_STICK:
-			generatedLEDWasd(&positions, ledsPerPixel, out_lightData, out_lightDataSize);
+			generatedLEDWasd(&positions, ledsPerPixel);
 			break;
 		case BUTTON_LAYOUT_BLANKA:
 		case BUTTON_LAYOUT_BUTTONS_BASIC:
@@ -605,7 +589,7 @@ void NeoPicoLEDAddon::createLEDLayout(ButtonLayout layout, uint8_t ledsPerPixel,
 		case BUTTON_LAYOUT_ARCADE:
 		case BUTTON_LAYOUT_VLXA:
 		default:
-			generatedLEDButtons(&positions, ledsPerPixel, out_lightData, out_lightDataSize);
+			generatedLEDButtons(&positions, ledsPerPixel);
 			break;
 	}
 }
@@ -642,22 +626,54 @@ uint8_t NeoPicoLEDAddon::setupButtonPositions()
     return buttonCount;
 }
 
+void NeoPicoLEDAddon::AssignLedPreset(const unsigned char* data, int32_t dataSize) 
+{
+	LEDOptions& options = Storage::getInstance().getLedOptions();
+	options.lightClusterData_count = 0;
+	options.lightClusterDataInitialised = true;
+	for (int thisEntryIndex = 0; (thisEntryIndex * 6) + 5 < dataSize; ++thisEntryIndex) //each data entry has 6 elements
+	{
+		int thisDataIndex = thisEntryIndex * 6;
+		options.lightClusterData[thisEntryIndex].lightLocationData = data[thisDataIndex];
+		options.lightClusterData[thisEntryIndex].lightLocationData += ((int)data[thisDataIndex+1]) << 8;
+		options.lightClusterData[thisEntryIndex].lightLocationData += ((int)data[thisDataIndex+2]) << 16;
+		options.lightClusterData[thisEntryIndex].lightLocationData += ((int)data[thisDataIndex+3]) << 24;
+		options.lightClusterData[thisEntryIndex].lightTypeData = ((int)data[thisDataIndex+4]);
+		options.lightClusterData[thisEntryIndex].lightTypeData += ((int)data[thisDataIndex+5]) << 8;
+
+		options.lightClusterData_count = thisEntryIndex + 1;
+
+		if(options.lightClusterData_count >= FRAME_MAX) //100 entries total
+			return;
+	}
+}
+
 void NeoPicoLEDAddon::configureLEDs()
 {
 	LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
 
 	//New grid based setup
-	LEDOptions_lightData_t& lightData = ledOptions.lightData; //todo make this const ref if we remove the legacy version
-	int32_t& lightDataSize = ledOptions.lightDataSize;
-	if(lightDataSize == 0)
+	if(ledOptions.lightClusterDataInitialised == false)
 	{
-		//fall back to old matrix setup which will now approximate a grid and return the same data struct ready for light creation
-		uint8_t buttonCount = setupButtonPositions();
-		createLEDLayout(static_cast<ButtonLayout>(ledOptions.ledLayout), ledOptions.ledsPerButton, buttonCount, lightData, lightDataSize);
-		ledOptions.lightData.size = lightDataSize*6; //6 entries per data
+		ledOptions.lightClusterDataInitialised = true;
+
+		//do we have any presets defined?
+		if(strcmp("", LIGHT_DATA_NAME_DEFAULT) != 0)
+		{
+			const unsigned char lightData[] = { LIGHT_DATA_DEFAULT };
+			AssignLedPreset(lightData, sizeof(lightData));
+		}
+		else
+		{
+			//fall back to old matrix setup which will now approximate a grid and return the same data struct ready for light creation
+			uint8_t buttonCount = setupButtonPositions();
+			createLEDLayout(static_cast<ButtonLayout>(ledOptions.ledLayout), ledOptions.ledsPerButton, buttonCount);
+		}
+
+		EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 	}
 
-	GenerateLights(lightData, lightDataSize);
+	GenerateLights();
 	ledCount = RGBLights.GetLedCount();
 
 	if (ledOptions.pledType == PLED_TYPE_RGB && PLED_COUNT > 0)
@@ -702,22 +718,29 @@ void NeoPicoLEDAddon::decompressSettings()
 //New RGBLight setups
 ////////////////////////////////////////////
 
-void NeoPicoLEDAddon::GenerateLights(const LEDOptions_lightData_t& InLightData, uint32_t InLightDataSize)
+void NeoPicoLEDAddon::GenerateLights()
 {
 	int minX = -1;
 	int minY = -1;
 
+	LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
+
 	std::vector<Light> generatedLights;
-	for(int index = 0; index < (int)InLightDataSize; ++index)
+	for(int index = 0; index < (int)ledOptions.lightClusterData_count; ++index)
 	{
-		int arrayOffset = index*6;
+		int ledIndex = (ledOptions.lightClusterData[index].lightLocationData) & 0xFF;
+		int ledCount = (ledOptions.lightClusterData[index].lightLocationData >> 8) & 0xFF;
+		int posX = (ledOptions.lightClusterData[index].lightLocationData >> 16) & 0xFF;
+		int posY = (ledOptions.lightClusterData[index].lightLocationData >> 24) & 0xFF;
+		int gpioPin = (ledOptions.lightClusterData[index].lightTypeData) & 0xFF;
+		int ledType = (ledOptions.lightClusterData[index].lightTypeData >> 8) & 0xFF;
 		//Data format = {first led index, leds on this light, xcoord, ycoord, GPIO pin, Type}
-		LightPosition newLightPos (InLightData.bytes[arrayOffset+2], InLightData.bytes[arrayOffset+3]);
-		Light newLight (InLightData.bytes[arrayOffset],
-						InLightData.bytes[arrayOffset+1],
+		LightPosition newLightPos (posX, posY);
+		Light newLight (ledIndex,
+						ledCount,
 						newLightPos,
-						InLightData.bytes[arrayOffset+4],
-						(LightType)InLightData.bytes[arrayOffset+5]);
+						gpioPin,
+						(LightType)ledType);
 
 		//Update mins
 		if(minX == -1 || newLight.Position.XPosition < minX)
