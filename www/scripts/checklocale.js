@@ -9,6 +9,7 @@ function printUsage() {
 			'options:\n' +
 			'  -l|--locale <locale> Check changes in baselocale from last change in <locale>\n' +
 			'    de de-DE  Check changes in en from last change in de-DE\n' +
+			'    fr fr-FR  Check changes in en from last change in fr-FR\n' +
 			'    ja ja-JP  Check changes in en from last change in ja-JP\n' +
 			'    ko ko-KR  Check changes in en from last change in ko-KR\n' +
 			'    pt pt-BR  Check changes in en from last change in pt-BR\n' +
@@ -19,6 +20,7 @@ function printUsage() {
 			'  -b|--baselocale <locale> Locale folder to get the diffs in (default: en)\n' +
 			'    en        Get diffs in en Locale directory (default)\n' +
 			'    de de-DE  Get diffs in de-DE Locale directory\n' +
+			'    fr fr-FR  Get diffs in fr-FR Locale directory\n' +
 			'    ja ja-JP  Get diffs in ja-JP Locale directory\n' +
 			'    ko ko-KR  Get diffs in ko-KR Locale directory\n' +
 			'    pt pt-BR  Get diffs in pt-BR Locale directory\n' +
@@ -40,6 +42,9 @@ function getLocaleDir(locale) {
 			return './src/Locales/de-DE/';
 		case 'en':
 			return './src/Locales/en/';
+		case 'fr':
+		case 'fr-FR':
+			return './src/Locales/fr-FR/';
 		case 'ja':
 		case 'ja-JP':
 			return './src/Locales/ja-JP/';
