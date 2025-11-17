@@ -6,6 +6,10 @@
 #include "eventmanager.h"
 #include "enums.pb.h"
 
+#ifdef TURBO_I2C_SWITCHES_ENABLED
+#include "mcp23017.h"
+#endif
+
 #ifndef TURBO_ENABLED
 #define TURBO_ENABLED 0
 #endif
@@ -138,5 +142,8 @@ private:
     uint8_t encoderValue;       // Rotary encoder value
     bool hasTurboAssigned;      // Turbo enabled on a pin.
     uint8_t lastShotCount;      // Last shot count for comparison
+#ifdef TURBO_I2C_SWITCHES_ENABLED
+    MCP23017* mcp_;             // I2C expander instance
+#endif
 };
 #endif  // TURBO_H_

@@ -106,6 +106,18 @@ void TurboInput::setup(){
     nextTimer = getMicro();
     encoderValue = shotCount;
     updateTurboShotCount(shotCount, false);
+
+#ifdef TURBO_I2C_SWITCHES_ENABLED
+    // Initialize MCP23017 on shared I2C bus
+    // Note: I2C should already be initialized by display addon or another service
+    mcp_ = new MCP23017(TURBO_I2C_BLOCK, TURBO_I2C_ADDR);
+    
+    if (!mcp_->init()) {
+        // Handle initialization error
+        delete mcp_;
+        mcp_ = nullptr;
+    }
+#endif
 }
 
 /**
@@ -131,6 +143,31 @@ void TurboInput::process()
     uint8_t dpadPressed = gamepad->state.dpad & GAMEPAD_MASK_DPAD;
 
     if (!options.enabled && (!hasTurboAssigned == true)) return;
+
+#ifdef TURBO_I2C_SWITCHES_ENABLED
+    // Read hardware turbo switches from MCP23017
+    if (mcp_) {
+        // Read all 8 switches from MCP23017 Port A (active-low)
+        uint8_t switchStates = mcp_->readRegister(MCP23017_GPIOA);
+        
+        // Build turbo mask from switch states
+        uint16_t hardwareTurboMask = 0;
+        
+        // Map MCP23017 pins to button masks (active-low)
+        if (!(switchStates & 0x01)) hardwareTurboMask |= GAMEPAD_MASK_B1;  // GPA0
+        if (!(switchStates & 0x02)) hardwareTurboMask |= GAMEPAD_MASK_B2;  // GPA1
+        if (!(switchStates & 0x04)) hardwareTurboMask |= GAMEPAD_MASK_B3;  // GPA2
+        if (!(switchStates & 0x08)) hardwareTurboMask |= GAMEPAD_MASK_B4;  // GPA3
+        if (!(switchStates & 0x10)) hardwareTurboMask |= GAMEPAD_MASK_L1;  // GPA4
+        if (!(switchStates & 0x20)) hardwareTurboMask |= GAMEPAD_MASK_R1;  // GPA5
+        if (!(switchStates & 0x40)) hardwareTurboMask |= GAMEPAD_MASK_L2;  // GPA6
+        if (!(switchStates & 0x80)) hardwareTurboMask |= GAMEPAD_MASK_R2;  // GPA7
+        
+        // Hardware switches override software turbo settings
+        turboButtonsMask = hardwareTurboMask;
+        gamepad->turboState.buttons = turboButtonsMask;
+    }
+#endif
 
     // Check if shotCount changed externally (e.g., via hotkey)
     if (options.shotCount != lastShotCount){

@@ -65,6 +65,19 @@
 #define GPIO_PIN_14 GpioAction::BUTTON_PRESS_TURBO
 #define TURBO_LED_PIN 15
 
+// Turbo I2C Switches Configuration
+// Uncomment to enable hardware turbo switches via MCP23017 I2C GPIO expander
+#define TURBO_I2C_SWITCHES_ENABLED 1
+#define TURBO_I2C_SDA_PIN 0
+#define TURBO_I2C_SCL_PIN 1
+#define TURBO_I2C_BLOCK i2c0
+#define TURBO_I2C_SPEED 400000
+#define TURBO_I2C_ADDR 0x27
+
+// Turbo Speed Dial (Potentiometer)
+// Uncomment and set to a valid ADC pin (26, 27, or 28) to enable
+// #define PIN_SHMUP_DIAL 26
+
 #define BOARD_LEDS_PIN 28
 #define LED_BRIGHTNESS_MAXIMUM 100
 #define LED_BRIGHTNESS_STEPS 5

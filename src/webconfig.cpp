@@ -23,6 +23,13 @@
 // for hall-effect calibration
 #include "hardware/adc.h"
 
+// for I2C turbo switches
+#ifdef TURBO_I2C_SWITCHES_ENABLED
+#include "hardware/i2c.h"
+#include "hardware/gpio.h"
+#include "mcp23017.h"
+#endif
+
 // HTTPD Includes
 #include <ArduinoJson.h>
 #include "rndis.h"
@@ -791,7 +798,7 @@ std::string getGamepadOptions()
 
 std::string getTurboDiagnostics()
 {
-    const size_t capacity = JSON_OBJECT_SIZE(10);
+    const size_t capacity = JSON_OBJECT_SIZE(20);
     DynamicJsonDocument doc(capacity);
     
     TurboOptions& options = Storage::getInstance().getAddonOptions().turboOptions;
@@ -810,6 +817,63 @@ std::string getTurboDiagnostics()
         writeDoc(doc, "dialRawValue", 0);
         writeDoc(doc, "dialPercentage", 0);
     }
+    
+#ifdef TURBO_I2C_SWITCHES_ENABLED
+    // Ensure I2C is initialized (it should be from display, but check anyway)
+    // Note: i2c_init is safe to call multiple times
+    i2c_init(TURBO_I2C_BLOCK, TURBO_I2C_SPEED);
+    gpio_set_function(TURBO_I2C_SDA_PIN, GPIO_FUNC_I2C);
+    gpio_set_function(TURBO_I2C_SCL_PIN, GPIO_FUNC_I2C);
+    gpio_pull_up(TURBO_I2C_SDA_PIN);
+    gpio_pull_up(TURBO_I2C_SCL_PIN);
+    
+    // Scan I2C bus for MCP23017 (addresses 0x20-0x27)
+    int foundAddress = -1;
+    for (uint8_t addr = 0x20; addr <= 0x27; addr++) {
+        uint8_t dummy;
+        int result = i2c_read_blocking(TURBO_I2C_BLOCK, addr, &dummy, 1, false);
+        if (result >= 0) {
+            foundAddress = addr;
+            break;
+        }
+    }
+    
+    // Read I2C switch states from MCP23017
+    uint8_t actualAddr = (foundAddress >= 0) ? foundAddress : TURBO_I2C_ADDR;
+    MCP23017 mcp(TURBO_I2C_BLOCK, actualAddr);
+    
+    // Initialize MCP23017 for reading
+    if (mcp.init()) {
+        // DEBUG: Read all configuration registers
+        uint8_t iocon = mcp.readRegister(MCP23017_IOCON);
+        uint8_t iodira = mcp.readRegister(MCP23017_IODIRA);
+        uint8_t gppua = mcp.readRegister(MCP23017_GPPUA);
+        uint8_t gpioa = mcp.readRegister(MCP23017_GPIOA);
+        
+        writeDoc(doc, "i2cSwitchesConfigured", true);
+        writeDoc(doc, "i2cFoundAddress", foundAddress);  // -1 if not found, or actual address
+        writeDoc(doc, "i2cConfiguredAddress", (int)TURBO_I2C_ADDR);  // What we expected
+        writeDoc(doc, "debugIOCON", iocon);      // Should be 0x00
+        writeDoc(doc, "debugIODIRA", iodira);    // Should be 0xFF (all inputs)
+        writeDoc(doc, "debugGPPUA", gppua);      // Should be 0xFF (all pull-ups)
+        writeDoc(doc, "rawSwitchValue", gpioa);  // Current GPIO state
+        
+        // Active-low switches: Pin HIGH (1) = switch OPEN = OFF
+        //                     Pin LOW (0) = switch CLOSED = ON
+        writeDoc(doc, "switchB1", !(gpioa & 0x01));  // GPA0
+        writeDoc(doc, "switchB2", !(gpioa & 0x02));  // GPA1
+        writeDoc(doc, "switchB3", !(gpioa & 0x04));  // GPA2
+        writeDoc(doc, "switchB4", !(gpioa & 0x08));  // GPA3
+        writeDoc(doc, "switchL1", !(gpioa & 0x10));  // GPA4
+        writeDoc(doc, "switchR1", !(gpioa & 0x20));  // GPA5
+        writeDoc(doc, "switchL2", !(gpioa & 0x40));  // GPA6
+        writeDoc(doc, "switchR2", !(gpioa & 0x80));  // GPA7
+    } else {
+        writeDoc(doc, "i2cSwitchesConfigured", false);
+    }
+#else
+    writeDoc(doc, "i2cSwitchesConfigured", false);
+#endif
     
     return serialize_json(doc);
 }

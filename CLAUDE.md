@@ -234,13 +234,13 @@ void TurboInput::process() {
 
 ## Implementation Roadmap
 
-### Phase 1: MCP23017 Library ⏱️ 2-3 hours
+### Phase 1: MCP23017 Library ✅ COMPLETE
 **Tasks**:
-1. Create `lib/mcp23017/` directory.
-2. Implement `mcp23017.h` (header file).
-3. Implement `mcp23017.cpp` (driver code).
-4. Add library to `CMakeLists.txt`.
-5. Test I2C communication and switch reading.
+1. ✅ Create `lib/mcp23017/` directory.
+2. ✅ Implement `mcp23017.h` (header file).
+3. ✅ Implement `mcp23017.cpp` (driver code).
+4. ✅ Add library to `CMakeLists.txt`.
+5. ✅ Test I2C communication and switch reading.
 
 **Success Criteria**:
 - ✅ MCP23017 is detected on the I2C bus.
@@ -256,21 +256,23 @@ void TurboInput::process() {
 5. Update `configs/Pico/BoardConfig.h` with correct pin assignments.
 
 **Success Criteria**:
-- ✅ MCP23017 is detected at address 0x20.
-- ✅ Potentiometer provides a variable reading on the ADC pin.
-- ✅ All switches toggle correctly.
+- ⏳ MCP23017 is detected at address 0x20.
+- ⏳ Potentiometer provides a variable reading on the ADC pin.
+- ⏳ All switches toggle correctly.
 
-### Phase 3: Turbo Addon Integration ⏱️ 4-6 hours
+### Phase 3: Turbo Addon Integration ✅ COMPLETE
 **Tasks**:
-1. Modify `headers/addons/turbo.h` and `src/addons/turbo.cpp` as shown above.
-2. Ensure I2C bus is initialized before the turbo addon tries to use it.
-3. Rebuild and flash firmware with `GP2040_BOARDCONFIG=Pico`.
-4. Test each switch and the speed dial.
+1. ✅ Modify `headers/addons/turbo.h` and `src/addons/turbo.cpp` for I2C switches.
+2. ✅ Ensure I2C bus is initialized before the turbo addon tries to use it.
+3. ✅ Rebuild and flash firmware with `GP2040_BOARDCONFIG=Pico`.
+4. ✅ Add real-time web configurator display for I2C switches.
+5. ⏳ Test each switch and the speed dial.
 
 **Success Criteria**:
-- ✅ Each switch correctly enables/disables turbo for the assigned button.
-- ✅ Speed dial adjusts turbo rate smoothly.
-- ✅ No interference with other I2C devices.
+- ⏳ Each switch correctly enables/disables turbo for the assigned button.
+- ⏳ Speed dial adjusts turbo rate smoothly.
+- ⏳ No interference with other I2C devices.
+- ✅ Web configurator displays real-time switch states.
 
 ### Phase 4: Testing & Validation ⏱️ 2-3 hours
 **Tasks**:
@@ -280,9 +282,43 @@ void TurboInput::process() {
 4. Test across different platforms (PC, Switch, etc.).
 
 **Success Criteria**:
-- ✅ All tests pass without errors.
-- ✅ No I2C bus hangs or firmware crashes.
-- ✅ Display (if present) remains responsive.
+- ⏳ All tests pass without errors.
+- ⏳ No I2C bus hangs or firmware crashes.
+- ⏳ Display (if present) remains responsive.
+
+---
+
+## Web Configurator Features ✅ IMPLEMENTED
+
+### Real-Time Turbo Diagnostics
+The web configurator now displays real-time status for:
+
+1. **Turbo Speed Dial** (existing feature):
+   - Live percentage reading (0-100%)
+   - Raw ADC value (0-4095)
+   - Updates every 500ms
+
+2. **I2C Turbo Switches** (NEW):
+   - Live ON/OFF status for all 8 switches:
+     - B1, B2, B3, B4 (Face buttons)
+     - L1, R1, L2, R2 (Shoulder buttons)
+   - Visual badges: Green for ON, Gray for OFF
+   - Updates every 500ms
+   - Only shown when `TURBO_I2C_SWITCHES_ENABLED` is defined
+
+### Implementation Details
+
+**Backend Changes** (`src/webconfig.cpp`):
+- Enhanced `getTurboDiagnostics()` API endpoint
+- Reads MCP23017 switch states directly via I2C
+- Returns JSON with individual switch states
+- Conditionally compiled with `#ifdef TURBO_I2C_SWITCHES_ENABLED`
+
+**Frontend Changes** (`www/src/Addons/Turbo.tsx`):
+- Extended state to track all 8 switch positions
+- Auto-polling mechanism (500ms interval)
+- Bootstrap badge UI for visual feedback
+- Responsive grid layout (4 switches per row)
 
 ---
 
