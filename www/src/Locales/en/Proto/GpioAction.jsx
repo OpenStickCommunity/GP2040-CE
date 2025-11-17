@@ -132,4 +132,12 @@ export default {
 	'MODE_WHEEL_PEDAL_GAS': 'Gas Pedal',
 	'MODE_WHEEL_PEDAL_BRAKE': 'Brake Pedal',
 	'MODE_WHEEL_PEDAL_CLUTCH': 'Clutch Pedal',
+	'SUSTAIN_PROFILE_SLIDER_POSITION_1': 'Profile Slider Position 1',
+	'SUSTAIN_PROFILE_SLIDER_POSITION_2': 'Profile Slider Position 2',
+	'SUSTAIN_PROFILE_SLIDER_POSITION_3': 'Profile Slider Position 3',
+	'SUSTAIN_PROFILE_SLIDER_POSITION_4': 'Profile Slider Position 4',
+	'SUSTAIN_PROFILE_SLIDER_POSITION_5': 'Profile Slider Position 5',
+	'SUSTAIN_PROFILE_SLIDER_POSITION_6': 'Profile Slider Position 6',
+	'SUSTAIN_PROFILE_SLIDER_POSITION_7': 'Profile Slider Position 7',
+	'SUSTAIN_PROFILE_SLIDER_POSITION_8': 'Profile Slider Position 8',
 };
