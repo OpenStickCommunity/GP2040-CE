@@ -2658,6 +2658,32 @@ std::string reboot() {
     return serialize_json(doc);
 }
 
+std::string scanI2CDevices()
+{
+    const size_t capacity = JSON_OBJECT_SIZE(50);
+    DynamicJsonDocument doc(capacity);
+    
+    // Scan both I2C blocks if enabled
+    for (uint8_t block = 0; block < NUM_I2CS; block++) {
+        if (PeripheralManager::getInstance().isI2CEnabled(block)) {
+            PeripheralI2C* i2c = PeripheralManager::getInstance().getI2C(block);
+            std::map<uint8_t, bool> scanResults = i2c->scan();
+            
+            char blockKey[10];
+            sprintf(blockKey, "i2c%d", block);
+            
+            auto devices = doc.createNestedArray(blockKey);
+            for (const auto& result : scanResults) {
+                char addrStr[6];
+                sprintf(addrStr, "0x%02X", result.first);
+                devices.add(addrStr);
+            }
+        }
+    }
+    
+    return serialize_json(doc);
+}
+
 typedef std::string (*HandlerFuncPtr)();
 static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
 {
@@ -2707,6 +2733,7 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/abortGetHeldPins", abortGetHeldPins },
     { "/api/getUsedPins", getUsedPins },
     { "/api/getConfig", getConfig },
+    { "/api/scanI2CDevices", scanI2CDevices },
 #if !defined(NDEBUG)
     { "/api/echo", echo },
 #endif

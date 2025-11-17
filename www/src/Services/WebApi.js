@@ -630,6 +630,16 @@ async function getUsedPins(setLoading) {
 	}
 }
 
+async function scanI2CDevices() {
+	try {
+		const response = await Http.get(`${baseUrl}/api/scanI2CDevices`);
+		return response.data;
+	} catch (error) {
+		console.error(error);
+		return null;
+	}
+}
+
 async function getExpansionPins() {
 	try {
 		const response = await Http.get(`${baseUrl}/api/getExpansionPins`);
@@ -753,5 +763,6 @@ export default {
 	getHeldPins,
 	abortGetHeldPins,
 	getTurboDiagnostics,
+	scanI2CDevices,
 	reboot,
 };

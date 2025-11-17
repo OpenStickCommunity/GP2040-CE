@@ -418,7 +418,7 @@ The build process involves manually downloading the correct Pico SDK version bef
     mkdir build && \
     cd build && \
     export SDKROOT=$(xcrun --sdk macosx --show-sdk-path) && \
-    PICO_SDK_PATH=$(pwd)/../pico-sdk-2.1.1 GP2040_BOARDCONFIG=Pico cmake -DPICO_SDK_FETCH_FROM_GIT=OFF .. && \
+    PICO_SDK_PATH=$(pwd)/../pico-sdk-2.1.1 GP2040_BOARDCONFIG=Pico cmake -DPICO_SDK_FETCH_FROM_GIT=OFF -DSKIP_SUBMODULES=TRUE .. && \
     make -j$(sysctl -n hw.ncpu)
     ```
 

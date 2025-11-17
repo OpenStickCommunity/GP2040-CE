@@ -194,8 +194,17 @@ export default function DisplayConfigPage() {
 	const { updateUsedPins, getAvailablePeripherals, updatePeripherals } =
 		useContext(AppContext);
 	const [saveMessage, setSaveMessage] = useState('');
+	const [scanResults, setScanResults] = useState(null);
+	const [isScanning, setIsScanning] = useState(false);
 
 	const { t } = useTranslation('');
+
+	const handleScanI2C = async () => {
+		setIsScanning(true);
+		const results = await WebApi.scanI2CDevices();
+		setScanResults(results);
+		setIsScanning(false);
+	};
 
 	useEffect(() => {
 		async function fetchData() {
@@ -294,6 +303,67 @@ export default function DisplayConfigPage() {
 													</option>
 												))}
 											</FormSelect>
+										</Row>
+										<Row className="mb-4">
+											<Col sm={12}>
+												<div className="border rounded p-3 bg-dark">
+													<h5 className="mb-3">I2C Device Scanner</h5>
+													<p className="small text-muted">
+														Scan the I2C bus to detect connected devices and their addresses.
+														This helps identify if your display is properly connected.
+													</p>
+													<Button 
+														onClick={handleScanI2C} 
+														disabled={isScanning}
+														variant="primary"
+														size="sm"
+													>
+														{isScanning ? 'Scanning...' : 'Scan I2C Bus'}
+													</Button>
+													{scanResults && (
+														<div className="mt-3">
+															<strong>Scan Results:</strong>
+															{(scanResults.i2c0 && scanResults.i2c0.length > 0) || 
+															 (scanResults.i2c1 && scanResults.i2c1.length > 0) ? (
+																<div>
+																	{scanResults.i2c0 && scanResults.i2c0.length > 0 && (
+																		<div className="mt-2">
+																			<span className="badge bg-success me-2">I2C0</span>
+																			<span className="text-info">
+																				{scanResults.i2c0.join(', ')}
+																			</span>
+																			{scanResults.i2c0.includes('0x3C') && (
+																				<small className="text-success ms-2">(Common OLED address)</small>
+																			)}
+																			{scanResults.i2c0.includes('0x3D') && (
+																				<small className="text-success ms-2">(Common OLED address)</small>
+																			)}
+																		</div>
+																	)}
+																	{scanResults.i2c1 && scanResults.i2c1.length > 0 && (
+																		<div className="mt-2">
+																			<span className="badge bg-success me-2">I2C1</span>
+																			<span className="text-info">
+																				{scanResults.i2c1.join(', ')}
+																			</span>
+																			{scanResults.i2c1.includes('0x3C') && (
+																				<small className="text-success ms-2">(Common OLED address)</small>
+																			)}
+																			{scanResults.i2c1.includes('0x3D') && (
+																				<small className="text-success ms-2">(Common OLED address)</small>
+																			)}
+																		</div>
+																	)}
+																</div>
+															) : (
+																<div className="mt-2 text-warning">
+																	No I2C devices found. Please check your connections.
+																</div>
+															)}
+														</div>
+													)}
+												</div>
+											</Col>
 										</Row>
 									</Tab>
 									<Tab
