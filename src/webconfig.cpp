@@ -789,6 +789,31 @@ std::string getGamepadOptions()
     return serialize_json(doc);
 }
 
+std::string getTurboDiagnostics()
+{
+    const size_t capacity = JSON_OBJECT_SIZE(10);
+    DynamicJsonDocument doc(capacity);
+    
+    TurboOptions& options = Storage::getInstance().getAddonOptions().turboOptions;
+    
+    if (options.shmupDialPin != -1) {
+        // Read ADC directly - works in config mode without addon process loop
+        adc_select_input(options.shmupDialPin - 26);
+        uint16_t rawValue = adc_read();
+        
+        writeDoc(doc, "dialConfigured", true);
+        writeDoc(doc, "dialPin", options.shmupDialPin);
+        writeDoc(doc, "dialRawValue", rawValue);
+        writeDoc(doc, "dialPercentage", (rawValue * 100) / 4095);
+    } else {
+        writeDoc(doc, "dialConfigured", false);
+        writeDoc(doc, "dialRawValue", 0);
+        writeDoc(doc, "dialPercentage", 0);
+    }
+    
+    return serialize_json(doc);
+}
+
 std::string setLedOptions()
 {
     DynamicJsonDocument doc = get_post_data();
@@ -2600,6 +2625,7 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/reboot", reboot },
     { "/api/getDisplayOptions", getDisplayOptions },
     { "/api/getGamepadOptions", getGamepadOptions },
+    { "/api/getTurboDiagnostics", getTurboDiagnostics },
     { "/api/getButtonLayoutDefs", getButtonLayoutDefs },
     { "/api/getButtonLayouts", getButtonLayouts },
     { "/api/getLedOptions", getLedOptions },

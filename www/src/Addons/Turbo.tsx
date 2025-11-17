@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FormCheck, Row } from 'react-bootstrap';
 import * as yup from 'yup';
@@ -15,6 +15,7 @@ import { DUAL_STICK_MODES } from '../Data/Addons';
 import LEDColors from '../Data/LEDColors';
 import { ANALOG_PINS } from '../Data/Buttons';
 import { AddonPropTypes } from '../Pages/AddonsConfigPage';
+import WebApi from '../Services/WebApi';
 
 const SHMUP_MIXED_MODES = [
 	{ label: 'Turbo Priority', value: 0 },
@@ -148,6 +149,35 @@ const Turbo = ({
 
 	const [colorPickerTarget, setColorPickerTarget] = useState(null);
 	const [showPicker, setShowPicker] = useState(false);
+	const [turboState, setTurboState] = useState({
+		dialRawValue: 0,
+		dialPercentage: 0,
+	});
+
+	// Poll for turbo state when dial pin is configured
+	useEffect(() => {
+		if (!values.TurboInputEnabled || values.pinShmupDial === -1) {
+			return;
+		}
+
+		const pollTurboState = async () => {
+			const diagnostics = await WebApi.getTurboDiagnostics();
+			if (diagnostics && diagnostics.dialConfigured) {
+				setTurboState({
+					dialRawValue: diagnostics.dialRawValue || 0,
+					dialPercentage: diagnostics.dialPercentage || 0,
+				});
+			}
+		};
+
+		// Initial poll
+		pollTurboState();
+
+		// Poll every 500ms
+		const interval = setInterval(pollTurboState, 500);
+
+		return () => clearInterval(interval);
+	}, [values.TurboInputEnabled, values.pinShmupDial]);
 
 	const toggleRgbPledPicker = (e) => {
 		e.stopPropagation();
@@ -285,6 +315,18 @@ const Turbo = ({
 						<AnalogPinOptions />
 					</FormSelect>
 				</Row>
+				{values.pinShmupDial !== -1 && (
+				<Row className="mb-3">
+					<div className="col-sm-6">
+						<div className="alert alert-info" role="alert">
+							<strong>Live Turbo Dial Position:</strong>
+							<div className="mt-2">
+								<strong>{turboState.dialPercentage}%</strong> ({turboState.dialRawValue} / 4095)
+							</div>
+						</div>
+					</div>
+				</Row>
+				)}
 				<Row className="mb-3">
 					<FormCheck
 						label={t('AddonsConfig:turbo-shmup-mode-label')}
@@ -298,7 +340,8 @@ const Turbo = ({
 							handleChange(e);
 						}}
 					/>
-					<div id="ShmupOptions" hidden={!values.shmupMode}>
+				</Row>
+				<div id="ShmupOptions" hidden={!values.shmupMode}>
 						<Row className="mb-3">
 							<FormSelect
 								label={t('AddonsConfig:turbo-shmup-always-on-1-label')}
@@ -502,10 +545,9 @@ const Turbo = ({
 								>
 									{o.label}
 								</option>
-							))}
-						</FormSelect>
-					</div>
-				</Row>
+						))}
+					</FormSelect>
+				</div>
 			</div>
 			<FormCheck
 				label={t('Common:switch-enabled')}

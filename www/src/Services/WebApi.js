@@ -696,6 +696,16 @@ async function reboot(bootMode) {
 		.catch(console.error);
 }
 
+async function getTurboDiagnostics() {
+	try {
+		const response = await Http.get(`${baseUrl}/api/getTurboDiagnostics`);
+		return response.data;
+	} catch (error) {
+		console.error(error);
+		return null;
+	}
+}
+
 function sanitizeRequest(request) {
 	const newRequest = { ...request };
 	delete newRequest.usedPins;
@@ -742,5 +752,6 @@ export default {
 	getUsedPins,
 	getHeldPins,
 	abortGetHeldPins,
+	getTurboDiagnostics,
 	reboot,
 };
