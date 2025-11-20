@@ -112,6 +112,10 @@ void Chase::Animate(RGB (&frame)[FRAME_MAX])
 {
   UpdateTime();
 
+  //dont do anything if there aren't enough lights
+  if(OrderedLights.size() < 2)
+    return;
+
   //update times and move to the next light(s) if required
   ChaseTimes[0] -= (((float)AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime) / 1000.0f);
   ChaseTimes[1] -= (((float)AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime) / 1000.0f);
@@ -157,7 +161,7 @@ void Chase::Animate(RGB (&frame)[FRAME_MAX])
     case SingleChaseTypes::SINGLECHASETYPES_SEQUENTIAL:
     {
       //if we're on the way back then invert the index
-     if(Reversed)
+      if(Reversed)
       {
         currentLightReverseAdjusted = (OrderedLights.size()-1) - CurrentLight;
         nextLightReverseAdjusted = currentLightReverseAdjusted - 1;
