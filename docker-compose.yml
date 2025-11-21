@@ -1,0 +1,22 @@
+services:
+  gp2040-ce-build:
+    image: gp2040-ce-build-image
+    container_name: gp2040-ce-build-container
+    build:
+      context: .
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    environment:
+      - GP2040_BOARDCONFIG=${GP2040_BOARDCONFIG:-Pico}
+      - PICO_BOARD=${PICO_BOARD:-pico}
+      - SKIP_WEBBUILD=${SKIP_WEBBUILD:-FALSE}
+      - SKIP_SUBMODULES=${SKIP_SUBMODULES:-FALSE}
+    command: >
+      bash -c "rm -rf build &&
+        mkdir build &&
+        cd build &&
+        cmake .. &&
+        make"
+
+    

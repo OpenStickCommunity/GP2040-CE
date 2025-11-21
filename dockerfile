@@ -35,7 +35,3 @@ RUN apt-get update && apt-get install -y \
 RUN git config --global --add safe.directory /workspace
 RUN git config --global --add safe.directory /workspace/lib/pico_pio_usb
 RUN git config --global --add safe.directory /workspace/lib/tinyusb
-
-WORKDIR /workspace
-
-CMD ["/workspace/docker/build.sh"]
