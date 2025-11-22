@@ -141,24 +141,6 @@ void ButtonLayoutScreen::updateCustomHeaders()
 
         addCustomHeader(profileStr, "led");
     }
-    
-    // Check to see if special move profile has changed
-    /*int8_t profileNumber = SpecialMoveSystem::Options.CurrentProfileIndex;
-    if (prevSpecialMoveProfileNumber != profileNumber) {
-        prevSpecialMoveProfileNumber = profileNumber;
-
-        const SpecialMoveOptions_Proto& optionsProto = storage.getSpecialMoveOptions();
-        std::string profileStr;
-        profileStr.assign(optionsProto.profiles[profileNumber].Label, strlen(optionsProto.profiles[profileNumber].Label));
-        if (profileStr.empty()) {
-            profileStr = "Special Profile #";
-            profileStr +=  std::to_string(profileNumber);
-        } else {
-            profileStr.insert(profileStr.begin(), (21-profileStr.length())/2, ' ');
-        }
-
-        addCustomHeader(profileStr, "special");
-    }*/
 }
 
 int8_t ButtonLayoutScreen::update() {
@@ -324,14 +306,6 @@ void ButtonLayoutScreen::generateHeader() {
     trim(statusBar);
 }
 
-void ButtonLayoutScreen::drawDebug() {
- 	//LED debug
-   	getRenderer()->drawText(0, 0, AnimationStation::printfs[0]);
-    getRenderer()->drawText(0, 1, AnimationStation::printfs[1]);
-    getRenderer()->drawText(0, 2, AnimationStation::printfs[2]);
-    getRenderer()->drawText(0, 3, AnimationStation::printfs[3]);
-}
-
 void ButtonLayoutScreen::drawScreen() {
     if (bannerString.size() > 0) {
         getRenderer()->drawRectangle(0, 0, 128, 7, true, true);
@@ -340,8 +314,6 @@ void ButtonLayoutScreen::drawScreen() {
 		getRenderer()->drawText(0, 0, statusBar);
 	}
     getRenderer()->drawText(0, 7, footer);
-
-    drawDebug();
 }
 
 GPLever* ButtonLayoutScreen::addLever(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, uint16_t inputType) {

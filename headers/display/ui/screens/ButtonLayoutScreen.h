@@ -118,7 +118,6 @@ class ButtonLayoutScreen : public GPScreen {
         void handleUSB(GPEvent* e);
     protected:
         virtual void drawScreen();
-        virtual void drawDebug();
     private:
         // new layout methods
         GPLever* addLever(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, uint16_t inputType);
@@ -174,7 +173,6 @@ class ButtonLayoutScreen : public GPScreen {
         int8_t prevGamepadProfileNumber = -2;
         
         int8_t prevLEDAnimationProfileNumber = -2;
-        int8_t prevSpecialMoveProfileNumber = -2;
  
         uint16_t prevButtonState = 0;
         uint8_t prevLayoutLeft = 0;

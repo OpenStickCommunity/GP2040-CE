@@ -8,7 +8,6 @@
 #include "NeoPico.h"
 #include "pixel.h"
 #include "playerleds.h"
-#include "specialmovesystem.h"
 #include "gp2040.h"
 #include "addons/neopicoleds.h"
 #include "addons/pleds.h"
@@ -329,11 +328,11 @@ void NeoPicoLEDAddon::process()
 	}
 	AnimStation.HandlePressedPins(pressedPins);
 
-	//Still need to check logical buttons so that we can trigger special moves
+	//Still need to check logical buttons so that we can trigger special moves (coming later)
 	uint32_t buttonState = gamepad->state.dpad << 16 | gamepad->state.buttons;
 	AnimStation.HandlePressedButtons(buttonState);
 
-	//Update idle, button and special move animations etc
+	//Update idle and button animations
 	AnimStation.Animate();
 
 	//check if need to turn off due to usb suspension
@@ -701,10 +700,6 @@ void NeoPicoLEDAddon::configureLEDs()
 	Animation::format = static_cast<LEDFormat>(ledOptions.ledFormat);
 	AnimStation.SetMaxBrightness(ledOptions.brightnessMaximum);
 	AnimStation.SetBrightnessStepValue(AnimStation.options.brightness);
-	AnimStation.specialMoveSystem.SetParentAnimationStation(&AnimStation);
-	AnimStation.specialMoveSystem.SetDirectionMasks(GAMEPAD_MASK_DU, GAMEPAD_MASK_DD, GAMEPAD_MASK_DL, GAMEPAD_MASK_DR);
-	AnimStation.specialMoveSystem.SetButtonMasks(GAMEPAD_MASK_B3);
-	AnimStation.specialMoveSystem.Init();
 	AnimStation.SetLights(RGBLights);
 	AnimStation.SetMode(as.options.baseProfileIndex);
 }
@@ -815,16 +810,6 @@ GamepadHotkey NeoPicoLEDAddon::ProcessAnimationHotkeys(Gamepad *gamepad)
 			action = HOTKEY_LEDS_PRESS_PARAMETER_DOWN;
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_L2 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
 		}
-		// else if (gamepad->pressedL3())
-		// {
-		// 	action = HOTKEY_LEDS_SPECIALMOVE_PROFILE_UP;
-		// 	gamepad->state.buttons &= ~(GAMEPAD_MASK_L3 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
-		// }
-		// else if (gamepad->pressedR3())
-		// {
-		// 	action = HOTKEY_LEDS_SPECIALMOVE_PROFILE_DOWN;
-		// 	gamepad->state.buttons &= ~(GAMEPAD_MASK_R3 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
-		// }
 	}
 
 	return action;

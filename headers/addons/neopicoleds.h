@@ -20,7 +20,6 @@
 // MPGS
 #include "BoardConfig.h"
 #include "animationstation.h"
-#include "specialmovesystem.h"
 #include "NeoPico.h"
 
 #include "playerleds.h"

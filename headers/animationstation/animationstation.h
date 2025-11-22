@@ -11,7 +11,6 @@
 
 #include "NeoPico.h"
 #include "animation.h"
-#include "specialmovesystem.h"
 
 #include "config.pb.h"
 
@@ -50,7 +49,6 @@ struct __attribute__ ((__packed__)) AnimationProfile_Unpacked
     uint32_t nonPressedSpecialColor;
     uint32_t pressedSpecialColor;
 
-    bool bUseCaseLightsInSpecialMoves;
     bool bUseCaseLightsInPressedAnimations;
 };
 
@@ -101,14 +99,9 @@ public:
   void DecompressSettings();
   void CheckForOptionsUpdate();
  
-  //special move anim
-  void SetSpecialMoveAnimation(SpecialMoveEffects AnimationToPlay, uint32_t OptionalParams);
-
   //Testing/webconfig
   static void SetTestMode(AnimationStationTestMode TestType, const AnimationProfile* TestProfile);
   static void SetTestPinState(int PinOrCaseIndex, bool IsCaseLight);
-  
-  SpecialMoveSystem specialMoveSystem;
 
   //Running non-pressed animation
   Animation* baseAnimation;
@@ -119,9 +112,6 @@ public:
   //Running pressed animation
   Animation* buttonAnimation;
 
-  //Running special move animation
-  Animation* specialMoveAnimation;
-
   //Buttons pressed (physical gipo pins) last frame, used when changing button theme so starts initialised
   std::vector<int32_t> lastPressed;
 
@@ -131,8 +121,6 @@ public:
 
   //Color of all lights this frame
   RGB frame[FRAME_MAX];
-
-  static std::string printfs[4];
 
   static uint8_t brightnessSteps; 
 protected:
