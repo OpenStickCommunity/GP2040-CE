@@ -710,16 +710,14 @@ $button-keycap: 19px;
 }
 
 .led-preview-stickless-16-split {
-	/******** LEFT ********/
-
-	/* Left Pill */
+	/* Left pinky pill button */
 	.L3 {
 		@include arcade-button($button-24mm, true);
 		left: calc(50% - #{$button-24mm * 12.75});
 		top: $button-24mm * 2.5;
 	}
 
-	/* First left row */
+	/* Left top row */
 	.Left {
 		@include arcade-button($button-24mm, true);
 		left: calc(50% - #{$button-24mm * 9.75});
@@ -736,7 +734,7 @@ $button-keycap: 19px;
 		top: $button-24mm * 2.5;
 	}
 
-	/* Thumb buttons */
+	/* Left thumb buttons */
 	.L1 {
 		@include arcade-button($button-24mm, true);
 		left: calc(50% - #{$button-24mm * 5.25});
@@ -748,19 +746,15 @@ $button-keycap: 19px;
 		top: calc(50% + #{$button-24mm * 2});
 	}
 
-	/******** CENTER ********/
+	/* Center button */
 	.A2 {
-		/*@include arcade-button($button-24mm, true);*/
 		@include arcade-button($button-30mm, true);
 		left: 50%;
 		right: 50%;
-		/*top: calc(50% - #{$button-24mm * 4.0});*/
 		top: calc(50% - #{$button-30mm * 2.5});
 	}
-
-	/******** CENTER ********/
-
-	/* Top row */
+	
+	/* Right top row */
 	.B3 {
 		@include arcade-button($button-24mm, true);
 		left: calc(50% + #{$button-24mm * 3.75});
@@ -777,7 +771,7 @@ $button-keycap: 19px;
 		top: 0;
 	}
 
-	/* Bottom row */
+	/* Right second row */
 	.B1 {
 		@include arcade-button($button-24mm, true);
 		left: calc(50% + #{$button-24mm * 3.75});
@@ -794,14 +788,14 @@ $button-keycap: 19px;
 		top: $button-24mm * 3.25;
 	}
 
-	/* Right Pill */
+	/* Right pinky pill button */
 	.R3 {
 		@include arcade-button($button-24mm, true);
 		left: calc(50% + #{$button-24mm * 13.25});
 		top: calc(25% - #{$button-24mm * 1.75});
 	}
 
-	/* Thumb buttons */
+	/* Right thumb buttons */
 	.A1 {
 		@include arcade-button($button-24mm, true);
 		left: calc(50% + #{$button-24mm * 2});
