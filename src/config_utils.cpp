@@ -548,26 +548,43 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], baseCycleTime, 100);
         config.animationOptions.profiles_count = 1;
         config.animationOptions.profiles[0].notPressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
-        config.animationOptions.profiles[0].pressedStaticColors_count = 0;
+        config.animationOptions.profiles[0].pressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
         for (unsigned int lightIndex = 0; lightIndex < (NUM_BANK0_GPIOS/4)+1; ++lightIndex) 
         {
             config.animationOptions.profiles[0].notPressedStaticColors[lightIndex] = 0; //Black
             config.animationOptions.profiles[0].pressedStaticColors[lightIndex] = 0; //Black
         }
-        config.animationOptions.profiles[0].caseStaticColors_count = 0;
+        config.animationOptions.profiles[0].caseStaticColors_count = (MAX_CASE_LIGHTS/4);
+        for (unsigned int lightIndex = 0; lightIndex < (MAX_CASE_LIGHTS/4); ++lightIndex) 
+        {
+            config.animationOptions.profiles[0].caseStaticColors[lightIndex] = 0; //Black
+        }
         config.animationOptions.profiles[0].baseNonPressedEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_ROTATE;
         config.animationOptions.profiles[0].basePressedEffect = AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_STATIC_COLOR;
         config.animationOptions.profiles[0].baseCaseEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_ROTATE;
         INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bUseCaseLightsInPressedAnimations, 1);   
-    }
 
-    //Since we force a profile 0 on new settings we only need to now force disable profiles 1 to max
-    for (unsigned int profileIndex = 1; profileIndex < MAX_ANIMATION_PROFILES; ++profileIndex) 
-    {
-        INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], bEnabled, 0);
-        INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], basePressedCycleTime, 0);
-        INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], baseCycleTime, 0);
-        INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], bUseCaseLightsInPressedAnimations, 0);   
+        //Since we force a profile 0 on new settings we only need to now force disable profiles 1 to max
+        for (unsigned int profileIndex = 1; profileIndex < MAX_ANIMATION_PROFILES; ++profileIndex) 
+        {
+            INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], bEnabled, 0);
+            INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], basePressedCycleTime, 0);
+            INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], baseCycleTime, 0);
+            INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], bUseCaseLightsInPressedAnimations, 0);   
+
+            config.animationOptions.profiles[profileIndex].notPressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
+            config.animationOptions.profiles[profileIndex].pressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
+            for (unsigned int lightIndex = 0; lightIndex < (NUM_BANK0_GPIOS/4)+1; ++lightIndex) 
+            {
+                config.animationOptions.profiles[profileIndex].notPressedStaticColors[lightIndex] = 0; //Black
+                config.animationOptions.profiles[profileIndex].pressedStaticColors[lightIndex] = 0; //Black
+            }
+            config.animationOptions.profiles[profileIndex].caseStaticColors_count = (MAX_CASE_LIGHTS/4);
+            for (unsigned int lightIndex = 0; lightIndex < (MAX_CASE_LIGHTS/4); ++lightIndex) 
+            {
+                config.animationOptions.profiles[profileIndex].caseStaticColors[lightIndex] = 0; //Black
+            }
+        }
     }
 
     // addonOptions.bootselButtonOptions
