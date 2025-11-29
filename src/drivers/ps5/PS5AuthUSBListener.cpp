@@ -28,6 +28,10 @@ static constexpr uint8_t batteryReport[] = {
     0x28, 0x18
 };
 
+static constexpr uint8_t touchpadFake[] = {
+    0x80, 0x00, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00
+};
+
 void PS5AuthUSBListener::setup() {
     P5LRPINTF_INIT();
     P5LRPINTF("P5L:setup\n");
@@ -63,7 +67,8 @@ void PS5AuthUSBListener::process() {
         ps5AuthData->auth_buffer[3] = 0x18; // 24 bytes
         memcpy(&(ps5AuthData->auth_buffer[4]), (&ps5Report->report_id), 12);    // 12-byte keys
         memcpy(&(ps5AuthData->auth_buffer[16]), batteryReport, 2);              // 2-byte battery report (1-padding)
-        memcpy(&(ps5AuthData->auth_buffer[19]), &ps5Report->touchpad_data, sizeof(TouchpadData));
+        //memcpy(&(ps5AuthData->auth_buffer[19]), &ps5Report->touchpad_data, sizeof(TouchpadData));
+        memcpy(&(ps5AuthData->auth_buffer[19]), touchpadFake, sizeof(TouchpadData));
         tuh_hid_send_report(ps_dev_addr, ps_instance, 0, ps5AuthData->auth_buffer, 48);
         ps5AuthData->hash_pending = false;
     }
@@ -171,8 +176,20 @@ void PS5AuthUSBListener::report_received(uint8_t dev_addr, uint8_t instance, uin
     }
 
     if (!ps5AuthData->hash_ready) {
-        memcpy(ps5AuthData->hash_finish_buffer, report, sizeof(ps5AuthData->hash_finish_buffer));
-        ps5AuthData->hash_ready = true;
+        if ( dongle_type == MAYFLASH_S5 ) {
+            memset(ps5AuthData->hash_finish_buffer, 0, 64);
+            memcpy(&(ps5AuthData->hash_finish_buffer[0x00]), &report[0x0D], 16); // 12-byte key data, 4-bytes of incount
+            memcpy(&(ps5AuthData->hash_finish_buffer[0x1C]), &report[0x25], 5); // move 5-bytes to the front
+            memcpy(&(ps5AuthData->hash_finish_buffer[0x21]), touchpadFake, sizeof(TouchpadData)); // fake our touchpad data for now
+            memcpy(&(ps5AuthData->hash_finish_buffer[0x2A]), &report[0x2A], 2); // ??
+            memcpy(&(ps5AuthData->hash_finish_buffer[0x31]), &report[0x31], 4); // ??
+            memcpy(&(ps5AuthData->hash_finish_buffer[0x35]), &batteryReport, 2); // 2-byte battery
+            memcpy(&(ps5AuthData->hash_finish_buffer[0x38]), &report[0x1D], 8); // 8-Byte AES CMAC
+            ps5AuthData->hash_ready = true;
+        } else if ( dongle_type == P5General ) {
+            memcpy(ps5AuthData->hash_finish_buffer, report, sizeof(ps5AuthData->hash_finish_buffer));
+            ps5AuthData->hash_ready = true;
+        }
     }
 }
 
