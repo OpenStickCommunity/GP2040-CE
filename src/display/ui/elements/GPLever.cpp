@@ -1,5 +1,7 @@
 #include "GPLever.h"
 
+#include "drivermanager.h"
+
 void GPLever::draw() {
     // new style lever:
     // radius defines the base of the lever
@@ -72,20 +74,28 @@ void GPLever::draw() {
             leverX -= leftState ? (!invertX ? leverRadius : -leverRadius) : (!invertX ? -leverRadius : leverRadius);
         }
     } else if (leftAnalog || rightAnalog) {
-        // analog
-        uint16_t analogX = map((leftAnalog ? getProcessedGamepad()->state.lx : getProcessedGamepad()->state.rx), (!invertX ? 0 : 0xFFFF), (!invertX ? 0xFFFF : 0), 0, 100);
-        uint16_t analogY = map((leftAnalog ? getProcessedGamepad()->state.ly : getProcessedGamepad()->state.ry), (!invertY ? 0 : 0xFFFF), (!invertY ? 0xFFFF : 0), 0, 100);
+        // Get the X/Y of each raw analog
+        uint32_t analogX = leftAnalog ? getProcessedGamepad()->state.lx : getProcessedGamepad()->state.rx;
+        uint32_t analogY = leftAnalog ? getProcessedGamepad()->state.ly : getProcessedGamepad()->state.ry;
 
-        uint16_t minX = std::max(0,(baseX - baseRadius));
-        uint16_t maxX = std::min((baseX + baseRadius),128);
-        uint16_t offsetX = (analogX * 0.01) * (maxX - minX);
-        uint16_t minY = std::max(0,(baseY - baseRadius));
-        uint16_t maxY = std::min((baseY + baseRadius),64);
-        uint16_t offsetY = (analogY * 0.01) * (maxY - minY);
+        // Get the midpoint value for the current mode
+        GPDriver * gpDriver = DriverManager::getInstance().getDriver();
+        uint32_t joystickMid = GAMEPAD_JOYSTICK_MID;
+        uint32_t joystickMax = GAMEPAD_JOYSTICK_MAX;
+        if ( DriverManager::getInstance().getDriver() != nullptr ) {
+            joystickMid = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
+            joystickMax = joystickMid * 2; // 0x8000 mid must be 0x10000 max, but we reduce by 1 if we're maxed out
+        }
 
-        // move lever around
-        leverX = minX + offsetX;
-        leverY = minY + offsetY;
+        // Check for inversion, flip with a clamp on 0x10000
+        if ( invertX )
+            analogX = std::min(joystickMax - analogX, (uint32_t)0xFFFF);
+        if ( invertY )
+            analogY = std::min(joystickMax - analogY, (uint32_t)0xFFFF);
+
+        // Calculate location based off our driver mid
+        leverX = (baseX-baseRadius) + baseRadius * (analogX / (float)joystickMid);
+        leverY = (baseY-baseRadius) + baseRadius * (analogY / (float)joystickMid);
     }
 
     // base

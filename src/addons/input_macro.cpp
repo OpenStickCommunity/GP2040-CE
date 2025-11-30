@@ -244,8 +244,14 @@ void InputMacro::runCurrentMacro() {
 void InputMacro::preprocess()
 {
     FocusModeOptions * focusModeOptions = &Storage::getInstance().getAddonOptions().focusModeOptions;
-    if (focusModeOptions->enabled && focusModeOptions->macroLockEnabled)
-        return;
+    if (focusModeOptions->enabled && focusModeOptions->macroLockEnabled) {
+        Gamepad * gamepad = Storage::getInstance().GetGamepad();
+        // Override Toggle Pressed OR focus mode pin is set
+        if (focusModeOptions->overrideEnabled ||
+            (gamepad->mapFocusMode->pinMask && (gamepad->debouncedGpio & gamepad->mapFocusMode->pinMask))) {
+            return;
+        }
+    }
 
     checkMacroPress();
     checkMacroAction();
