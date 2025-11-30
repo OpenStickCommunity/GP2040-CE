@@ -19,15 +19,12 @@ typedef struct {
     uint8_t hash_finish_buffer[64];
     uint8_t auth_buffer[64];
     uint64_t auth_recv_f2_us;
-    bool dongle_ready = false;
-    bool hash_pending = false;
-    bool hash_ready = false;
+    bool dongle_ready;
+    bool hash_pending;
+    bool hash_ready;
     PS5AuthState ps5_passthrough_state;
-
-    // Encrypted key data from Mayflash S5 device
-	uint8_t encrypted_keys[12]; // 12-byte encrypted keys
-	uint8_t incount[4];			// 4-byte incount
-	uint8_t aes_cmac[8];		// 8-byte AES CMAC
+    uint8_t MAC_pair_report[16];  // 16-byte pair information for BT MAC Address
+    bool pair_ready;
 	bool keys_ready;			// Flag indicating encrypted keys are ready
 } PS5AuthData;
 

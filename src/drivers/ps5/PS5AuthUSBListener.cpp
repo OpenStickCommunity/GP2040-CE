@@ -9,7 +9,7 @@
 
 #include <iostream>
 
-#define PS5_LISTENER_PRINTF_ENABLE                1       // GP0 as UART0_TX
+#define PS5_LISTENER_PRINTF_ENABLE                0       // GP0 as UART0_TX
 #if PS5_LISTENER_PRINTF_ENABLE
 #   define P5LRPINTF_INIT(...)                          stdio_init_all(__VA_ARGS__)
 #   define P5LRPINTF(...)                               printf(__VA_ARGS__)
@@ -24,12 +24,39 @@ static constexpr uint8_t S5_DES_SECRET_KEY[16] = {
     0x9E, 0x5D, 0x19, 0xC3, 0x25, 0x40, 0x5B, 0x9D
 };
 
+/*enum PowerState : uint8_t {
+    Discharging         = 0x00, // Use PowerPercent
+    Charging            = 0x01, // Use PowerPercent
+    Complete            = 0x02, // PowerPercent not valid? assume 100%?
+    AbnormalVoltage     = 0x0A, // PowerPercent not valid?
+    AbnormalTemperature = 0x0B, // PowerPercent not valid?
+    ChargingError       = 0x0F  // PowerPercent not valid?
+}*/
+//uint8_t PowerPercent : 4; // 0x00-0x0A
+//PowerState PowerState : 4;
+
+//uint8_t PluggedHeadphones : 1;
+// uint8_t PluggedMic : 1;
+// uint8_t MicMuted: 1; // Mic muted by powersave/mute command
+//uint8_t PluggedUsbData : 1;
+//uint8_t PluggedUsbPower : 1; // appears that this cannot be 1 if PluggedUsbData is 1
+//uint8_t UsbPowerOnBT : 1; // appears this is only 1 if BT connected and USB powered
+//uint8_t DockDetect : 1;
+// uint8_t PluggedUnk : 1;
+
+//uint8_t PluggedExternalMic : 1; // Is external mic active (automatic in mic auto mode)
+//uint8_t HapticLowPassFilter : 1; // Is the Haptic Low-Pass-Filter active?
+//uint8_t PluggedUnk3 : 6;
+
+// 0x2A - Complete + 100% Power
+// 0x18 - Plugged in USB Data and Power
 static constexpr uint8_t batteryReport[] = {
-    0x28, 0x18
+    0x2A, 0x18, 0x00
 };
 
+// Touchpad X + Y + Timestamp
 static constexpr uint8_t touchpadFake[] = {
-    0x80, 0x00, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00
+    0x80, 0x00, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00, 0x00
 };
 
 void PS5AuthUSBListener::setup() {
@@ -58,17 +85,15 @@ void PS5AuthUSBListener::process() {
         ps5AuthData->hash_pending = false;
     } else if ( dongle_type == MAYFLASH_S5 && ps5AuthData->keys_ready == true) {
         // manipulate into our S5 format
-        P5LRPINTF("P5L: Sending a report to the interrupt!!\n");
         PS5Report * ps5Report = (PS5Report*)ps5AuthData->hash_pending_buffer;
         memset(ps5AuthData->auth_buffer, 0, 28);
         ps5AuthData->auth_buffer[0] = 0x02; // To-Mayflash-Device code (0x01 is from)
         ps5AuthData->auth_buffer[1] = 0x04; // key encryption data
-        ps5AuthData->auth_buffer[2] = 0x00; // padding
         ps5AuthData->auth_buffer[3] = 0x18; // 24 bytes
         memcpy(&(ps5AuthData->auth_buffer[4]), (&ps5Report->report_id), 12);    // 12-byte keys
-        memcpy(&(ps5AuthData->auth_buffer[16]), batteryReport, 2);              // 2-byte battery report (1-padding)
+        memcpy(&(ps5AuthData->auth_buffer[16]), &batteryReport, 3);              // 2-byte battery report (1-padding)
         //memcpy(&(ps5AuthData->auth_buffer[19]), &ps5Report->touchpad_data, sizeof(TouchpadData));
-        memcpy(&(ps5AuthData->auth_buffer[19]), touchpadFake, sizeof(TouchpadData));
+        memcpy(&(ps5AuthData->auth_buffer[19]), &touchpadFake, sizeof(TouchpadData));
         tuh_hid_send_report(ps_dev_addr, ps_instance, 0, ps5AuthData->auth_buffer, 48);
         ps5AuthData->hash_pending = false;
     }
@@ -172,18 +197,18 @@ void PS5AuthUSBListener::report_received(uint8_t dev_addr, uint8_t instance, uin
 
     if ( dongle_type == MAYFLASH_S5 ) {
         // Always log to see if interrupt endpoint is working at all
-        P5LRPINTF("P5L: Report Received INT:%d st:%d", len, (int)mfs5AuthState);
+        P5LRPINTF("P5L: Report Received REPORT_ID:%d\n", report[0]);
     }
 
     if (!ps5AuthData->hash_ready) {
         if ( dongle_type == MAYFLASH_S5 ) {
             memset(ps5AuthData->hash_finish_buffer, 0, 64);
             memcpy(&(ps5AuthData->hash_finish_buffer[0x00]), &report[0x0D], 16); // 12-byte key data, 4-bytes of incount
-            memcpy(&(ps5AuthData->hash_finish_buffer[0x1C]), &report[0x25], 5); // move 5-bytes to the front
-            memcpy(&(ps5AuthData->hash_finish_buffer[0x21]), touchpadFake, sizeof(TouchpadData)); // fake our touchpad data for now
-            memcpy(&(ps5AuthData->hash_finish_buffer[0x2A]), &report[0x2A], 2); // ??
-            memcpy(&(ps5AuthData->hash_finish_buffer[0x31]), &report[0x31], 4); // ??
-            memcpy(&(ps5AuthData->hash_finish_buffer[0x35]), &batteryReport, 2); // 2-byte battery
+            memcpy(&(ps5AuthData->hash_finish_buffer[0x1C]), &report[0x25], 5); // Sensor Timestamp + Temperature
+            memcpy(&(ps5AuthData->hash_finish_buffer[0x21]), &touchpadFake, sizeof(TouchpadData)); // fake our touchpad data for now
+            memcpy(&(ps5AuthData->hash_finish_buffer[0x2A]), &report[0x2A], 2); // Triggers for 4-bit + 4-bit L and R (https://controllers.fandom.com/wiki/Sony_DualSense)
+            memcpy(&(ps5AuthData->hash_finish_buffer[0x31]), &report[0x31], 4); // Device Timestamp (Host timestamp is left blank)
+            memcpy(&(ps5AuthData->hash_finish_buffer[0x35]), &batteryReport, 3); // Power Percent + Mic Info (https://controllers.fandom.com/wiki/Sony_DualSense)
             memcpy(&(ps5AuthData->hash_finish_buffer[0x38]), &report[0x1D], 8); // 8-Byte AES CMAC
             ps5AuthData->hash_ready = true;
         } else if ( dongle_type == P5General ) {
@@ -236,9 +261,10 @@ void PS5AuthUSBListener::set_report_complete(uint8_t dev_addr, uint8_t instance,
         if ( mfs5AuthState == MFS5AuthState::mfs5_auth_complete &&
             ps5AuthData->keys_ready == false) {
             // Authentication data sent
-            P5LRPINTF("P5L: Mayflash S5 All Done and Ready, Lets Get Some Descriptions\n");
+            awaiting_cb = true;
             ps5AuthData->keys_ready = true;
-            awaiting_cb = false;
+            P5LRPINTF("P5L: Mayflash S5 All Done and Ready, Let's pull our MAC address\n");
+            host_get_report(PS5AuthReport::PS5_GET_PAIRINFO, report_buffer, 16);
         }
     }
 }
@@ -300,6 +326,18 @@ void PS5AuthUSBListener::get_report_complete(uint8_t dev_addr, uint8_t instance,
     } 
 
     switch(report_id) {
+        case PS5AuthReport::PS5_GET_PAIRINFO:
+            if ( len == 16 ) {
+                memcpy(ps5AuthData->MAC_pair_report, report_buffer, len);
+                for(int i = 0; i < len; i++ ) {
+                    P5LRPINTF("%02x ", report_buffer[i]);
+                }
+                P5LRPINTF("\n");
+                ps5AuthData->pair_ready = true;
+            } else {
+                // P5LRPINTF("P5L: INVALID GET PAIR INFO %02x", len);
+            }
+            break;
         case PS5AuthReport::PS5_GET_SIGNATURE_NONCE:
             if (ps5AuthData->ps5_passthrough_state == PS5AuthState::ps5_auth_recv_f1_wait) {
                 memcpy(ps5AuthData->auth_buffer, report_buffer, len);

@@ -53,7 +53,7 @@ private:
     //PSSensor gyroscope;
     //PSSensor accelerometer;
     uint64_t last_report_us;
-    PS5Auth * p5GeneralAuthDriver;
+    PS5Auth * ps5AuthDriver;
     PS5AuthData * ps5AuthData;
     bool pointOneTouched = false;
     bool pointTwoTouched = false;

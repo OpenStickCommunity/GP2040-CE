@@ -59,6 +59,15 @@
 #define PS5_GYRO_RES 1024
 #define PS5_GYRO_RANGE (PS5_GYRO_RES * 2048)
 
+enum PowerState : uint8_t {
+    Discharging         = 0x00, // Use PowerPercent
+    Charging            = 0x01, // Use PowerPercent
+    Complete            = 0x02, // PowerPercent not valid? assume 100%?
+    AbnormalVoltage     = 0x0A, // PowerPercent not valid?
+    AbnormalTemperature = 0x0B, // PowerPercent not valid?
+    ChargingError       = 0x0F  // PowerPercent not valid?
+};
+
 typedef struct __attribute__((packed)) {
   uint8_t report_id;
   uint8_t left_stick_x;
@@ -69,7 +78,7 @@ typedef struct __attribute__((packed)) {
   uint8_t left_trigger;
   uint8_t right_trigger;
 
-  uint8_t data_7;
+  uint8_t SeqNo;
 
   uint8_t dpad : 4;
   uint8_t button_west : 1;
@@ -88,32 +97,62 @@ typedef struct __attribute__((packed)) {
 
   uint8_t button_home : 1;
   uint8_t button_touchpad : 1;
-  uint8_t : 6;
 
-  uint8_t data_11;
+  uint8_t button_mute : 1;
+  uint8_t unk1 : 1;
+  
+  uint8_t button_left_function : 1;  // DualSense Edge
+  uint8_t button_right_function : 1; // DualSense Edge
+  uint8_t button_left_paddle : 1;    // DualSense Edge
+  uint8_t button_right_paddle : 1;   // DualSense Edge
+  
+  uint8_t unk2;
 
   uint32_t auth_seq_number;
 
   PSSensor gyroscope;
   PSSensor accelerometer;
 
-  uint16_t data_28_29;
-
-  uint16_t data_30_31_0x001a;
+  uint32_t sensor_timestamp;
+  int8_t temperature;
 
   TouchpadData touchpad_data;
 
-  uint8_t data_40_55[16];
+  uint8_t trigger_right_stop_location: 4; // trigger stop can be a range from 0 to 9 (F/9.0 for Apple interface)
+  uint8_t trigger_right_status: 4;
+  uint8_t trigger_left_stop_location: 4;
+  uint8_t trigger_left_status: 4;
 
-  uint8_t hash[8];
+  uint32_t host_timestamp;
+  uint8_t trigger_right_effect: 4;
+  uint8_t trigger_left_effect: 4;
+
+  uint32_t device_timestamp;
+
+  uint8_t power_percent : 4;    // 0x00-0x0A
+  PowerState power_state : 4;
+
+  uint8_t plugged_headphones : 1;
+  uint8_t pluggedMic : 1;
+  uint8_t micMuted: 1; // Mic muted by powersave/mute command
+  uint8_t pluggedUsbData : 1;
+  uint8_t pluggedUsbPower : 1; // appears that this cannot be 1 if PluggedUsbData is 1
+  uint8_t usbPowerOnBT : 1; // appears this is only 1 if BT connected and USB powered
+  uint8_t dockDetect : 1;
+  uint8_t pluggedUnk : 1;
+  uint8_t pluggedExternalMic : 1; // Is external mic active (automatic in mic auto mode)
+  uint8_t hapticLowPassFilter : 1; // Is the Haptic Low-Pass-Filter active?
+  uint8_t pluggedUnk3 : 6;
+
+  uint8_t AesCmac[8];
 } PS5Report;
 
 // Try GP2040-CE Manufacturer & Product
 
 // P5General String Descriptors
 static const uint8_t p5g_string_language[]        = { 0x09, 0x04 };
-static const uint8_t p5g_string_manufacturer[]    = "Activtor";
-static const uint8_t p5g_string_product[]         = "PS5";
+static const uint8_t p5g_string_manufacturer[]    = "Open Stick Community";
+static const uint8_t p5g_string_product[]         = "GP2040-CE (PS5)";
 static const uint8_t p5g_string_version[]         = "0.1";
 
 // Mayflash S5 String Descriptors

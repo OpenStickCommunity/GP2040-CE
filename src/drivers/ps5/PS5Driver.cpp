@@ -7,7 +7,7 @@
 
 #define PS5_KEEPALIVE_US                          5000
 
-#define PS5_DRIVER_PRINTF_ENABLE                  1       // GP0 as UART0_TX
+#define PS5_DRIVER_PRINTF_ENABLE                  0       // GP0 as UART0_TX
 #if PS5_DRIVER_PRINTF_ENABLE
 #   define P5DRPINTF_INIT(...)                          stdio_init_all(__VA_ARGS__)
 #   define P5DRPINTF(...)                               printf(__VA_ARGS__)
@@ -90,7 +90,7 @@ void PS5Driver::initialize() {
         .button_l1 = 0, .button_r1 = 0, .button_l2 = 0, .button_r2 = 0,
         .button_select = 0, .button_start = 0, .button_l3 = 0, .button_r3 = 0,
         .button_home = 0, .button_touchpad = 0,
-        .data_30_31_0x001a = 0x001a,
+        .sensor_timestamp = 0x001a0000,
         .touchpad_data = touchpadData,
     };
 
@@ -113,10 +113,10 @@ void PS5Driver::initializeAux() {
     P5DRPINTF_INIT();
     P5DRPINTF("P5D:initializeAux\n");
 
-    p5GeneralAuthDriver = new PS5Auth();
-    if ( p5GeneralAuthDriver != nullptr && p5GeneralAuthDriver->available() ) {
-        p5GeneralAuthDriver->initialize();
-        ps5AuthData = p5GeneralAuthDriver->getAuthData();
+    ps5AuthDriver = new PS5Auth();
+    if ( ps5AuthDriver != nullptr && ps5AuthDriver->available() ) {
+        ps5AuthDriver->initialize();
+        ps5AuthData = ps5AuthDriver->getAuthData();
     }
 
     if (ps5AuthData) {
@@ -273,15 +273,15 @@ bool PS5Driver::process(Gamepad * gamepad) {
 }
 
 void PS5Driver::processAux() {
-    if ( p5GeneralAuthDriver != nullptr && p5GeneralAuthDriver->available() ) {
-        p5GeneralAuthDriver->process();
+    if ( ps5AuthDriver != nullptr && ps5AuthDriver->available() ) {
+        ps5AuthDriver->process();
     }
 }
 
 USBListener * PS5Driver::get_usb_auth_listener() {
-    if ( p5GeneralAuthDriver != nullptr ) {
+    if ( ps5AuthDriver != nullptr ) {
         P5DRPINTF("P5D:get_usb_auth_listener Call getListener\n");
-        return p5GeneralAuthDriver->getListener();
+        return ps5AuthDriver->getListener();
     }
     P5DRPINTF("P5D:get_usb_auth_listener NULL\n");
     return nullptr;
@@ -311,11 +311,12 @@ uint16_t PS5Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
         memcpy(buffer, output_0x05, responseLen);
         return responseLen;
     case PS5AuthReport::PS5_GET_PAIRINFO:
-        if (reqlen < sizeof(output_0x09)) {
+        if ( ps5AuthData->pair_ready == false ||
+            (reqlen < sizeof(ps5AuthData->MAC_pair_report))) {
             return -1;
         }
-        responseLen = MAX(reqlen, sizeof(output_0x09));
-        memcpy(buffer, output_0x09, responseLen);
+        responseLen = MAX(reqlen, sizeof(ps5AuthData->MAC_pair_report));
+        memcpy(buffer, ps5AuthData->MAC_pair_report, responseLen);
         return responseLen;
     case PS5AuthReport::PS5_GET_FIRWMARE:
         if (reqlen < sizeof(output_0x20)) {
