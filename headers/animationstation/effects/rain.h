@@ -27,8 +27,7 @@ public:
 
     virtual void Animate(RGB (&frame)[FRAME_MAX]) override;
 
-    virtual void ParameterUp() override;
-    virtual void ParameterDown() override;
+    virtual void CycleParameterChange() override;
 
 protected:
     float GetTimeTillNextDrop();

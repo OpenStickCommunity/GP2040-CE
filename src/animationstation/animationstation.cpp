@@ -110,21 +110,28 @@ void AnimationStation::HandleEvent(GamepadHotkey action)
     return;
   }
 
-  if (action == HOTKEY_LEDS_PARAMETER_UP)
+  if (action == HOTKEY_LEDS_PARAMETER_CYCLE)
   {
-    this->baseAnimation->ParameterUp();
+    options.profiles[options.baseProfileIndex].baseCycleTime++;
+    if(options.profiles[options.baseProfileIndex].baseCycleTime >= CYCLE_STEPS)
+      options.profiles[options.baseProfileIndex].baseCycleTime = 0;
+    this->baseAnimation->CycleParameterChange();
   }
-  if (action == HOTKEY_LEDS_PARAMETER_DOWN)
+  else if (this->caseAnimation && action == HOTKEY_LEDS_CASE_PARAMETER_CYCLE)
   {
-    this->baseAnimation->ParameterDown();
+    options.profiles[options.baseProfileIndex].baseCaseCycleTime++;
+    if(options.profiles[options.baseProfileIndex].baseCaseCycleTime >= CYCLE_STEPS)
+      options.profiles[options.baseProfileIndex].baseCaseCycleTime = 0;
+
+    this->caseAnimation->CycleParameterChange();
   }
-  if (action == HOTKEY_LEDS_PRESS_PARAMETER_UP)
+  else if (action == HOTKEY_LEDS_PRESS_PARAMETER_CYCLE)
   {
-    this->buttonAnimation->PressParameterUp();
-  }
-  if (action == HOTKEY_LEDS_PRESS_PARAMETER_DOWN)
-  {
-    this->buttonAnimation->PressParameterDown();
+    options.profiles[options.baseProfileIndex].basePressedCycleTime++;
+    if(options.profiles[options.baseProfileIndex].basePressedCycleTime >= CYCLE_STEPS)
+      options.profiles[options.baseProfileIndex].basePressedCycleTime = 0;
+
+      this->buttonAnimation->CycleParameterChange();
   }
 }
 
@@ -554,6 +561,7 @@ void AnimationStation::DecompressProfile(int ProfileIndex, const AnimationProfil
 		options.profiles[ProfileIndex].baseCaseEffect = (AnimationNonPressedEffects)((int)ProfileToDecompress->baseCaseEffect);
 		options.profiles[ProfileIndex].baseCycleTime = ProfileToDecompress->baseCycleTime;
 		options.profiles[ProfileIndex].basePressedCycleTime = ProfileToDecompress->basePressedCycleTime;
+    options.profiles[ProfileIndex].baseCaseCycleTime = ProfileToDecompress->baseCaseCycleTime;
 		for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS/4)+1; ++packedPinIndex)
 		{
 			int pinIndex = packedPinIndex * 4;
@@ -654,6 +662,8 @@ void AnimationStation::CheckForOptionsUpdate()
       bChangeDetected = true;
 		else if(optionsProto.profiles[index].basePressedCycleTime != options.profiles[index].basePressedCycleTime)
       bChangeDetected = true;
+		else if(optionsProto.profiles[index].baseCaseCycleTime != options.profiles[index].baseCaseCycleTime)
+      bChangeDetected = true;
 	}
 	if(optionsProto.brightness != options.brightness)
       bChangeDetected = true;
@@ -676,6 +686,7 @@ void AnimationStation::CheckForOptionsUpdate()
       {
         optionsProto.profiles[index].baseCycleTime = options.profiles[index].baseCycleTime;
         optionsProto.profiles[index].basePressedCycleTime = options.profiles[index].basePressedCycleTime;
+        optionsProto.profiles[index].baseCaseCycleTime = options.profiles[index].baseCaseCycleTime;
       }
       optionsProto.brightness					= options.brightness;
       optionsProto.baseProfileIndex			= options.baseProfileIndex;
@@ -727,7 +738,9 @@ void AnimationStation::SetTestMode(AnimationStationTestMode TestType, const Anim
 		}
 
     options.profiles[testProfileIndex].nonPressedSpecialColor = 0xFFFFFF; //White
-    options.profiles[testProfileIndex].baseCycleTime = 50;
+    options.profiles[testProfileIndex].baseCycleTime = 2;
+    options.profiles[testProfileIndex].basePressedCycleTime = 2;
+    options.profiles[testProfileIndex].baseCaseCycleTime = 2;
   }
   else if(TestMode == AnimationStationTestMode::AnimationStation_TestModeButtons)
   {

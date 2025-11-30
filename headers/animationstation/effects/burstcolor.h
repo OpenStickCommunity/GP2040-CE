@@ -40,8 +40,7 @@ public:
 
     virtual void Animate(RGB (&frame)[FRAME_MAX]) override;
  
-  virtual void PressParameterUp() override;
-  virtual void PressParameterDown() override;
+  virtual void CycleParameterChange() override;
 
 protected:
 

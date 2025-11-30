@@ -141,7 +141,7 @@ void ButtonLayoutScreen::updateCustomHeaders()
 
         addCustomHeader(profileStr, "led");
     }
-    
+
     // Check to see if special move profile has changed
     /*int8_t profileNumber = SpecialMoveSystem::Options.CurrentProfileIndex;
     if (prevSpecialMoveProfileNumber != profileNumber) {
@@ -159,6 +159,56 @@ void ButtonLayoutScreen::updateCustomHeaders()
 
         addCustomHeader(profileStr, "special");
     }*/
+
+    checkLEDCycleParams();
+}
+
+void ButtonLayoutScreen::checkLEDCycleParams()
+{
+    int8_t baseCycleNumber = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime;
+    if(prevLEDBaseCycleNumber == -1)
+        prevLEDBaseCycleNumber = baseCycleNumber;
+    if (prevLEDBaseCycleNumber != baseCycleNumber) {
+        prevLEDBaseCycleNumber = baseCycleNumber;
+
+        std::string cycleStr;
+        cycleStr = "LED Idle Rate =";
+        cycleStr +=  std::to_string(baseCycleNumber+1); //add 1 so its from 1-x not from 0-x
+        cycleStr += " / ";
+        cycleStr +=  std::to_string(CYCLE_STEPS); //add 1 so its from 1-x not from 0-x
+
+        addCustomHeader(cycleStr, "ledBaseCycle");
+    }
+        
+    int8_t baseCaseCycleNumber = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCaseCycleTime;
+    if(prevLEDBaseCaseCycleNumber == -1)
+        prevLEDBaseCaseCycleNumber = baseCaseCycleNumber;
+    if (prevLEDBaseCaseCycleNumber != baseCaseCycleNumber) {
+        prevLEDBaseCaseCycleNumber = baseCaseCycleNumber;
+
+        std::string cycleStr;
+        cycleStr = "LED Case Rate =";
+        cycleStr +=  std::to_string(baseCaseCycleNumber+1); //add 1 so its from 1-x not from 0-x
+        cycleStr += " / ";
+        cycleStr +=  std::to_string(CYCLE_STEPS); //add 1 so its from 1-x not from 0-x
+
+        addCustomHeader(cycleStr, "ledBaseCaseCycle");
+    }
+    
+    int8_t basePressedCycleNumber = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].basePressedCycleTime;
+    if(prevLEDBasePressedCycleNumber == -1)
+        prevLEDBasePressedCycleNumber = basePressedCycleNumber;
+    if (prevLEDBasePressedCycleNumber != basePressedCycleNumber) {
+        prevLEDBasePressedCycleNumber = basePressedCycleNumber;
+
+        std::string cycleStr;
+        cycleStr = "LED Press Rate =";
+        cycleStr +=  std::to_string(basePressedCycleNumber+1); //add 1 so its from 1-x not from 0-x
+        cycleStr += " / ";
+        cycleStr +=  std::to_string(CYCLE_STEPS); //add 1 so its from 1-x not from 0-x
+
+        addCustomHeader(cycleStr, "ledBasePressedCycle");
+    }
 }
 
 int8_t ButtonLayoutScreen::update() {
