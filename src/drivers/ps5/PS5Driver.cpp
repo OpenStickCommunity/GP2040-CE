@@ -9,11 +9,11 @@
 
 #define PS5_DRIVER_PRINTF_ENABLE                  0       // GP0 as UART0_TX
 #if PS5_DRIVER_PRINTF_ENABLE
-#   define P5DRPINTF_INIT(...)                          stdio_init_all(__VA_ARGS__)
-#   define P5DRPINTF(...)                               printf(__VA_ARGS__)
+#   define P5DPRINTF_INIT(...)                          stdio_init_all(__VA_ARGS__)
+#   define P5DPRINTF(...)                               printf(__VA_ARGS__)
 #else
-#   define P5DRPINTF_INIT(...)
-#   define P5DRPINTF(...)
+#   define P5DPRINTF_INIT(...)
+#   define P5DPRINTF(...)
 #endif
 
 // 0x03 (Feature Info)
@@ -36,12 +36,6 @@ static constexpr uint8_t output_0x05[] = {
     0x00
 };
 
-// 0x09 (Get Pair Information)
-static constexpr uint8_t output_0x09[] = {
-    0x09, 0xbe, 0xd4, 0x03, 0x38, 0xc1, 0xa4, 0x08,
-    0x25, 0x00, 0x45, 0x4d, 0xfb, 0x2a, 0x66, 0x70
-};
-
 // 0x20 (Firmware Controller Revision Jun 24 2024 11:16:21)
 static constexpr uint8_t output_0x20[] = {
     0x20, 0x4a, 0x75, 0x6e, 0x20, 0x32, 0x34, 0x20,
@@ -55,8 +49,8 @@ static constexpr uint8_t output_0x20[] = {
 };
 
 void PS5Driver::initialize() {
-    P5DRPINTF_INIT();
-    P5DRPINTF("P5D:initialize\n");
+    P5DPRINTF_INIT();
+    P5DPRINTF("P5D:initialize\n");
 
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
 
@@ -110,8 +104,8 @@ void PS5Driver::initialize() {
 }
 
 void PS5Driver::initializeAux() {
-    P5DRPINTF_INIT();
-    P5DRPINTF("P5D:initializeAux\n");
+    P5DPRINTF_INIT();
+    P5DPRINTF("P5D:initializeAux\n");
 
     ps5AuthDriver = new PS5Auth();
     if ( ps5AuthDriver != nullptr && ps5AuthDriver->available() ) {
@@ -120,14 +114,14 @@ void PS5Driver::initializeAux() {
     }
 
     if (ps5AuthData) {
-        P5DRPINTF("P5D:ps5AuthData Get\n");
+        P5DPRINTF("P5D:ps5AuthData Get\n");
     } else {
-        P5DRPINTF("P5D:ps5AuthData Null\n");
+        P5DPRINTF("P5D:ps5AuthData Null\n");
     }
 }
 
 bool PS5Driver::getDongleAuthRequired() {
-    P5DRPINTF("P5D:getDongleAuthRequired\n");
+    P5DPRINTF("P5D:getDongleAuthRequired\n");
     return true;
 }
 
@@ -280,15 +274,15 @@ void PS5Driver::processAux() {
 
 USBListener * PS5Driver::get_usb_auth_listener() {
     if ( ps5AuthDriver != nullptr ) {
-        P5DRPINTF("P5D:get_usb_auth_listener Call getListener\n");
+        P5DPRINTF("P5D:get_usb_auth_listener Call getListener\n");
         return ps5AuthDriver->getListener();
     }
-    P5DRPINTF("P5D:get_usb_auth_listener NULL\n");
+    P5DPRINTF("P5D:get_usb_auth_listener NULL\n");
     return nullptr;
 }
 
 uint16_t PS5Driver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
-    P5DRPINTF("P5D:get_report %d\n", report_type);
+    P5DPRINTF("P5D:get_report %d\n", report_type);
 
     if ( report_type != HID_REPORT_TYPE_FEATURE ) {
         return -1;
@@ -342,7 +336,7 @@ uint16_t PS5Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
 }
 
 void PS5Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize) {
-    P5DRPINTF("P5D:set_report %d size %d\n", report_type, bufsize);
+    P5DPRINTF("P5D:set_report %d size %d\n", report_type, bufsize);
 
     if ( report_type != HID_REPORT_TYPE_FEATURE ) {
         return;
@@ -362,22 +356,22 @@ void PS5Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uin
 
 const uint16_t * PS5Driver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
     const char *value = (const char *)p5g_string_descriptors[index];
-    P5DRPINTF("P5D:get_descriptor_string_cb Index %d. langid %d, value %x\n", index, langid, (uint32_t)value);
+    P5DPRINTF("P5D:get_descriptor_string_cb Index %d. langid %d, value %x\n", index, langid, (uint32_t)value);
     return getStringDescriptor(value, index); // getStringDescriptor returns a static array
 }
 
 const uint8_t * PS5Driver::get_descriptor_device_cb() {
-    P5DRPINTF("P5D:p5general_device_descriptor\n");
+    P5DPRINTF("P5D:p5general_device_descriptor\n");
     return p5g_device_descriptor;
 }
 
 const uint8_t * PS5Driver::get_hid_descriptor_report_cb(uint8_t itf) {
-    P5DRPINTF("P5D:p5general_report_descriptor\n");
+    P5DPRINTF("P5D:p5general_report_descriptor\n");
     return p5g_report_descriptor;
 }
 
 const uint8_t * PS5Driver::get_descriptor_configuration_cb(uint8_t index) {
-    P5DRPINTF("P5D:get_descriptor_configuration_cb\n");
+    P5DPRINTF("P5D:get_descriptor_configuration_cb\n");
     return p5g_configuration_descriptor;
 }
 
