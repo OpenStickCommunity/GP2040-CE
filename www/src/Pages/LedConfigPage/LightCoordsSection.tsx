@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, ChangeEventHandler, FormEventHandler } from 'react';
 import {
 	useSensor,
 	MouseSensor,
@@ -12,7 +12,7 @@ import {
 	snapCenterToCursor,
 	restrictToParentElement,
 } from '@dnd-kit/modifiers';
-import { FormikErrors } from 'formik';
+import { FormikErrors, FormikHandlers } from 'formik';
 import { Row, Col, Button, Alert } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
@@ -20,14 +20,16 @@ import {
 	AnimationOptions,
 	Light,
 	MAX_CASE_LIGHTS,
-	MAX_LIGHTS,
 } from '../../Store/useLedStore';
 import useLedsPreview from '../../Hooks/useLedsPreview';
 import { useGetContainerDimensions } from '../../Hooks/useGetContainerDimensions';
+
 import FormControl from '../../Components/FormControl';
 import FormSelect from '../../Components/FormSelect';
-import LEDColors from '../../Data/LEDColors';
+
+import { LED_COLORS } from '../../Data/Leds';
 import boards from '../../Data/Boards.json';
+
 import { rgbIntToHex } from '../../Services/Utilities';
 import ColorSelector from './ColorSlector';
 import { LightIndicator } from './LightIndicator';
@@ -77,7 +79,7 @@ export default function LightCoordsSection({
 		values: { Lights: Light[]; AnimationOptions: AnimationOptions },
 		shouldValidate?: boolean,
 	) => void;
-	handleChange: (e: React.ChangeEvent<any>) => void;
+	handleChange: FormikHandlers['handleChange'];
 }) {
 	const { dimensions, containerRef } = useGetContainerDimensions();
 	const { t } = useTranslation('');
@@ -140,12 +142,12 @@ export default function LightCoordsSection({
 
 	const customColorOptions = values.AnimationOptions.customColors.map(
 		(color, index) => ({
-			value: LEDColors.length + index,
+			value: LED_COLORS.length + index,
 			label: `Custom ${index + 1}`,
 			color: rgbIntToHex(color),
 		}),
 	);
-	const colorOptions = [...LEDColors, ...customColorOptions];
+	const colorOptions = [...LED_COLORS, ...customColorOptions];
 
 	return (
 		<div>
@@ -156,8 +158,8 @@ export default function LightCoordsSection({
 				or adjust their coordinates manually to match your setup.
 			</p>
 			<Alert variant="warning">
-				Changing layout configuration options can break your LED setup.
-				Proceed with caution.
+				Changing layout configuration options can break your LED setup. Proceed
+				with caution.
 			</Alert>
 			<hr />
 			<Row className="mb-3">

@@ -2,10 +2,13 @@ import CustomSelect from '../../Components/CustomSelect';
 import { Light } from '../../Store/useLedStore';
 import WebApi from '../../Services/WebApi';
 import { useEffect, useState } from 'react';
+import isEqual from 'lodash/isEqual';
 
 function ImportLayout({
+	lights,
 	setFieldValue,
 }: {
+	lights: Light[],
 	setFieldValue: (field: string, value: any) => void;
 }) {
 	const [presets, setPresets] = useState<
@@ -27,16 +30,24 @@ function ImportLayout({
 		}
 	};
 
+	const options = presets.map((preset) => ({
+		value: preset.name,
+		label: preset.name,
+	}));
+
+	const selectedPreset = presets.find(preset => isEqual(preset.lightData.Lights, lights));
+
 	return (
 		<>
 			<hr className="d-md-none" />
 			<p>Choose from predefined installed layouts</p>
 			<CustomSelect
 				placeholder="Select Layout..."
-				options={presets.map((preset) => ({
-					value: preset.name,
-					label: preset.name,
-				}))}
+				options={options}
+				value={selectedPreset?.name ? {
+					value: selectedPreset!.name,
+					label: selectedPreset!.name,
+				} : null	}
 				isMulti={false}
 				onChange={handleImport}
 			/>

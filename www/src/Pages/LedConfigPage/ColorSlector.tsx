@@ -1,6 +1,6 @@
 import { StylesConfig } from 'react-select';
 import CustomSelect from '../../Components/CustomSelect';
-import LEDColors from '../../Data/LEDColors';
+import LED_COLORS from '../../Data/Leds';
 
 type ColorOption = {
 	value: number;
@@ -24,7 +24,7 @@ const colorDot = (color = 'transparent') => ({
 	},
 });
 
-const colorStyles: StylesConfig<(typeof LEDColors)[number]> = {
+const colorStyles: StylesConfig<(typeof LED_COLORS)[number]> = {
 	control: (styles) => ({ ...styles, backgroundColor: 'white' }),
 	option: (styles, { data }) => ({ ...styles, ...colorDot(data.color) }),
 	input: (styles) => ({ ...styles }),

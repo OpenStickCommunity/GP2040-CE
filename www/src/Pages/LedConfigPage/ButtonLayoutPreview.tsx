@@ -2,7 +2,7 @@ import { ReactElement, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Col, OverlayTrigger, Popover, Row } from 'react-bootstrap';
 
-import LEDColors from '../../Data/LEDColors';
+import { LED_COLORS } from '../../Data/Leds';
 import { Light } from '../../Store/useLedStore';
 import { rgbIntToHex } from '../../Services/Utilities';
 import ColorSelector from './ColorSlector';
@@ -92,11 +92,11 @@ function ButtonLayoutPreview({
 	const viewBoxHeight = maxY - minY + padding * 2;
 
 	const customColorOptions = customColors.map((color, index) => ({
-		value: LEDColors.length + index,
+		value: LED_COLORS.length + index,
 		label: `Custom ${index + 1}`,
 		color: rgbIntToHex(color),
 	}));
-	const colorOptions = [...LEDColors, ...customColorOptions];
+	const colorOptions = [...LED_COLORS, ...customColorOptions];
 
 	const handlePressedShow = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
 		if (e.button === 2) setPressed(true);

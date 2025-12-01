@@ -17,6 +17,7 @@ import {
 	FieldArray,
 	FieldArrayRenderProps,
 	Formik,
+	FormikErrors,
 	useFormikContext,
 } from 'formik';
 import * as yup from 'yup';
@@ -24,6 +25,8 @@ import * as yup from 'yup';
 import useLedsPreview from '../../Hooks/useLedsPreview';
 import useLedStore, {
 	AnimationOptions,
+	AnimationProfile,
+	LedOptions,
 	Light,
 	MAX_ANIMATION_PROFILES,
 	MAX_CASE_LIGHTS,
@@ -38,6 +41,7 @@ import {
 	ANIMATION_PRESSED_EFFECTS,
 } from '../../Data/Animations';
 import boards from '../../Data/Boards.json';
+import { LED_FORMATS } from '../../Data/Leds';
 
 import LightCoordsSection from './LightCoordsSection';
 import ButtonLayoutPreview from './ButtonLayoutPreview';
@@ -47,6 +51,26 @@ const GPIO_PIN_LENGTH =
 	boards[import.meta.env.VITE_GP2040_BOARD as keyof typeof boards].maxPin + 1;
 
 const schema = yup.object({
+	ledOptions: yup.object().shape({
+		dataPin: yup.number().required().checkUsedPins(),
+		ledFormat: yup
+			.number()
+			.required()
+			.positive()
+			.integer()
+			.min(0)
+			.max(3)
+			.label('LED Format'),
+		brightnessMaximum: yup
+			.number()
+			.required()
+			.positive()
+			.integer()
+			.min(1)
+			.max(100)
+			.label('Max Brightness'),
+		turnOffWhenSuspended: yup.number().label('Turn Off When Suspended'),
+	}),
 	AnimationOptions: yup.object().shape({
 		baseProfileIndex: yup.number().required('Selecting a profile is required'),
 		brightness: yup
@@ -176,10 +200,8 @@ const ColorPickerList = memo(function ColorPickerList({
 });
 
 const PreviewLedChanges = ({
-	layouteMode,
 	selectedProfile,
 }: {
-	layouteMode: boolean;
 	selectedProfile: number;
 }) => {
 	const { values } = useFormikContext<{
@@ -189,18 +211,23 @@ const PreviewLedChanges = ({
 	const { activateLedsProfile } = useLedsPreview();
 
 	useEffect(() => {
-		if (layouteMode) return;
 		const profile = values.AnimationOptions.profiles[selectedProfile];
 		if (!profile) return;
 		activateLedsProfile(profile);
-	}, [values, layouteMode, selectedProfile]);
+	}, [values, selectedProfile]);
+
 	return null;
 };
 
-export default function CustomThemePage() {
+export default function LedConfigPage() {
 	const { t } = useTranslation('');
-	const { fetchLedOptions, saveAnimationOptions, saveLightOptions } =
-		useLedStore();
+	const {
+		fetchLedOptions,
+		saveAnimationOptions,
+		saveLightOptions,
+		saveLedOptions,
+	} = useLedStore();
+	const ledOptions = useLedStore((state) => state.ledOptions);
 	const AnimationOptions = useLedStore((state) => state.AnimationOptions);
 	const Lights = useLedStore((state) => state.Lights);
 	const loading = useLedStore((state) => state.loading);
@@ -212,15 +239,18 @@ export default function CustomThemePage() {
 	const [saveMessage, setSaveMessage] = useState('');
 
 	const onSuccess = async ({
+		ledOptions,
 		AnimationOptions,
 		Lights,
 	}: {
+		ledOptions: LedOptions;
 		AnimationOptions: AnimationOptions;
 		Lights: Light[];
 	}) => {
 		try {
 			await saveAnimationOptions(AnimationOptions);
 			await saveLightOptions(Lights);
+			await saveLedOptions(ledOptions);
 			setSaveMessage(t('Common:saved-success-message'));
 		} catch (error) {
 			console.error(error);
@@ -250,7 +280,7 @@ export default function CustomThemePage() {
 		<Formik
 			validationSchema={schema}
 			onSubmit={onSuccess}
-			initialValues={{ AnimationOptions, Lights }}
+			initialValues={{ AnimationOptions, Lights, ledOptions }}
 			validateOnChange={true}
 		>
 			{({
@@ -262,6 +292,74 @@ export default function CustomThemePage() {
 				setValues,
 			}) => (
 				<Form onSubmit={handleSubmit}>
+					<Section title={t('LedConfig:rgb.header-text')}>
+						<Row>
+							<FormControl
+								type="number"
+								label={t('LedConfig:rgb.data-pin-label')}
+								name="ledOptions.dataPin"
+								className="form-control-sm"
+								groupClassName="col-sm-4 mb-3"
+								value={values.ledOptions.dataPin}
+								error={errors.ledOptions?.dataPin}
+								isInvalid={Boolean(errors.ledOptions?.dataPin)}
+								onChange={handleChange}
+								min={-1}
+								max={29}
+							/>
+							<FormSelect
+								label={t('LedConfig:rgb.led-format-label')}
+								name="ledOptions.ledFormat"
+								className="form-select-sm"
+								groupClassName="col-sm-4 mb-3"
+								value={values.ledOptions.ledFormat}
+								error={errors.ledOptions?.ledFormat}
+								isInvalid={Boolean(errors.ledOptions?.ledFormat)}
+								onChange={(e) =>
+									setFieldValue(
+										'ledOptions.ledFormat',
+										parseInt(e.target.value),
+									)
+								}
+							>
+								{LED_FORMATS.map((o, i) => (
+									<option key={`ledFormat-option-${i}`} value={o.value}>
+										{o.label}
+									</option>
+								))}
+							</FormSelect>
+							<FormControl
+								type="number"
+								label={t('LedConfig:rgb.led-brightness-maximum-label')}
+								name="ledOptions.brightnessMaximum"
+								className="form-control-sm"
+								groupClassName="col-sm-4 mb-3"
+								value={values.ledOptions.brightnessMaximum}
+								error={errors.ledOptions?.brightnessMaximum}
+								isInvalid={Boolean(errors.ledOptions?.brightnessMaximum)}
+								onChange={handleChange}
+								min={1}
+								max={100}
+							/>
+						</Row>
+						<Row>
+							<div className="col-sm-4 mb-3">
+								<FormCheck
+									id="turnOffWhenSuspended"
+									label={t('LedConfig:turn-off-when-suspended')}
+									type="switch"
+									isInvalid={false}
+									checked={Boolean(values.ledOptions.turnOffWhenSuspended)}
+									onChange={(e) => {
+										setFieldValue(
+											'ledOptions.turnOffWhenSuspended',
+											e.target.checked ? 1 : 0,
+										);
+									}}
+								/>
+							</div>
+						</Row>
+					</Section>
 					<Section title="Custom LED Theme">
 						<Row>
 							<FormSelect
@@ -536,14 +634,14 @@ export default function CustomThemePage() {
 															(
 																errors.AnimationOptions?.profiles?.[
 																	profileIndex
-																] as any
+																] as FormikErrors<AnimationProfile>
 															)?.nonPressedSpecialColor
 														}
 														isInvalid={Boolean(
 															(
 																errors.AnimationOptions?.profiles?.[
 																	profileIndex
-																] as any
+																] as FormikErrors<AnimationProfile>
 															)?.nonPressedSpecialColor,
 														)}
 														onBlur={(e) =>
@@ -572,7 +670,7 @@ export default function CustomThemePage() {
 														/>
 													</Col>
 													<Col md={6}>
-														<ImportLayout setFieldValue={setFieldValue} />
+														<ImportLayout setFieldValue={setFieldValue} lights={values.Lights}/>
 													</Col>
 												</Row>
 												<hr />
@@ -622,10 +720,7 @@ export default function CustomThemePage() {
 						{t('Common:button-save-label')}
 					</Button>
 					{saveMessage && <Alert variant="info">{saveMessage}</Alert>}
-					<PreviewLedChanges
-						layouteMode={layouteMode}
-						selectedProfile={selectedProfile}
-					/>
+					<PreviewLedChanges selectedProfile={selectedProfile} />
 				</Form>
 			)}
 		</Formik>

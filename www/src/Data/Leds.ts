@@ -1,6 +1,6 @@
-// Definitions in this file should match those in /AnimationStation/animation.h
 
-const LEDColors = [
+// Definitions should match those in /AnimationStation/animation.h
+export const LED_COLORS = [
 	{ value: 0, label: 'Black', color: '#000000' },
 	{ value: 1, label: 'White', color: '#ffffff' },
 	{ value: 2, label: 'Red', color: '#ff0000' },
@@ -17,4 +17,10 @@ const LEDColors = [
 	{ value: 13, label: 'Magenta', color: '#ff0080' },
 ];
 
-export default LEDColors;
+export const LED_FORMATS = [
+	{ label: 'GRB', value: 0 },
+	{ label: 'RGB', value: 1 },
+	{ label: 'GRBW', value: 2 },
+	{ label: 'RGBW', value: 3 },
+];
+
