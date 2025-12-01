@@ -129,11 +129,7 @@ public:
   virtual void Animate(RGB (&frame)[FRAME_MAX]) = 0;
   
   //param adjustment
-  virtual void ParameterUp() {};
-  virtual void ParameterDown() {};
-
-  virtual void PressParameterUp() {};
-  virtual void PressParameterDown() {};
+  virtual void CycleParameterChange() {};
 
   virtual void SetOptionalParams(uint32_t OptionalParams) {};
 
@@ -184,6 +180,8 @@ protected:
   int64_t updateTimeInMs = 20;
 
   EButtonCaseEffectType ButtonCaseEffectType = EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE;
+
+  int16_t cycleTime = -1;
 };
 
 #endif

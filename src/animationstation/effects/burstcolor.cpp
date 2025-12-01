@@ -33,20 +33,7 @@ BurstColor::BurstColor(Lights& InRGBLights, bool bInRandomColor, bool bInSmallBu
             MinYCoord = RGBLights->AllLights[lightIndex].Position.YPosition; 
     }
 
-    int16_t cycleTime = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].basePressedCycleTime;
-    if (cycleTime == 0)
-    {
-        cycleTime = ((BURST_CYCLE_MAX - BURST_CYCLE_MIN) / 2) + BURST_CYCLE_MIN;
-    }
-    if (cycleTime < BURST_CYCLE_MIN) 
-    {
-        cycleTime = BURST_CYCLE_MIN;
-    }
-    else if (cycleTime > BURST_CYCLE_MAX) 
-    {
-        cycleTime = BURST_CYCLE_MAX;
-    }
-    AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].basePressedCycleTime = cycleTime;
+    CycleParameterChange();
 }
 
 void BurstColor::NewPressForPin(int lightIndex)
@@ -82,7 +69,7 @@ void BurstColor::Animate(RGB (&frame)[FRAME_MAX])
         if(RunningBursts[burstIndex].RunningTime < 0.0f)
             continue;
     
-        RunningBursts[burstIndex].RunningTime += (((float)AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].basePressedCycleTime) / 1000.0f);
+        RunningBursts[burstIndex].RunningTime += (((float)cycleTime) / 1000.0f);
         float travelledDist = RunningBursts[burstIndex].RunningTime * BURST_DISTANCE_PER_SEC;
 
         //is this the last frame?
@@ -171,28 +158,8 @@ void BurstColor::Animate(RGB (&frame)[FRAME_MAX])
     DecrementFadeCounters();
 }
 
-void BurstColor::PressParameterUp() 
+void BurstColor::CycleParameterChange() 
 {
-    int32_t cycleTime = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].basePressedCycleTime;
-    cycleTime = cycleTime + BURST_CYCLE_INCREMENT;
-
-    if (cycleTime > BURST_CYCLE_MAX) 
-    {
-        cycleTime = BURST_CYCLE_MAX;
-    }
-
-    AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].basePressedCycleTime = cycleTime;
-}
-
-void BurstColor::PressParameterDown() 
-{
-    int16_t cycleTime = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].basePressedCycleTime;
-    cycleTime = cycleTime - BURST_CYCLE_INCREMENT;
-
-    if (cycleTime < BURST_CYCLE_MIN) 
-    {
-        cycleTime = BURST_CYCLE_MIN;
-    }
-
-    AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].basePressedCycleTime = cycleTime;
+    int16_t cycleStep = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].basePressedCycleTime;
+    cycleTime = BURST_CYCLE_MIN + (((BURST_CYCLE_MAX - BURST_CYCLE_MIN) / CYCLE_STEPS) * cycleStep);
 }

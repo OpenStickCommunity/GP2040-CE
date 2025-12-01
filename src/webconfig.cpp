@@ -1097,19 +1097,23 @@ void helperGetProfileFromJsonObject(AnimationProfile* Profile, JsonObject* JsonD
     if(Profile->baseNonPressedEffect != (AnimationNonPressedEffects)((*JsonData)["baseNonPressedEffect"].as<uint32_t>()))
     {
         Profile->baseNonPressedEffect = (AnimationNonPressedEffects)((*JsonData)["baseNonPressedEffect"].as<uint32_t>());
-        Profile->baseCycleTime = 0;
+        Profile->baseCycleTime = 2;
     }
     if(Profile->basePressedEffect != (AnimationPressedEffects)((*JsonData)["basePressedEffect"].as<uint32_t>()))
     {
         Profile->basePressedEffect = (AnimationPressedEffects)((*JsonData)["basePressedEffect"].as<uint32_t>());
-        Profile->basePressedCycleTime = 0;
+        Profile->basePressedCycleTime = 2;
+    }
+    if(Profile->baseCaseEffect != (AnimationNonPressedEffects)((*JsonData)["baseCaseEffect"].as<uint32_t>()))
+    {
+        Profile->baseCaseEffect = (AnimationNonPressedEffects)((*JsonData)["baseCaseEffect"].as<uint32_t>());
+        Profile->baseCaseCycleTime = 2;
     }
     Profile->buttonPressHoldTimeInMs = (*JsonData)["buttonPressHoldTimeInMs"].as<uint32_t>();
     Profile->buttonPressFadeOutTimeInMs = (*JsonData)["buttonPressFadeOutTimeInMs"].as<uint32_t>();
     Profile->nonPressedSpecialColor = (*JsonData)["nonPressedSpecialColor"].as<uint32_t>();
     Profile->bUseCaseLightsInSpecialMoves = (*JsonData)["bUseCaseLightsInSpecialMoves"].as<bool>();
     Profile->bUseCaseLightsInPressedAnimations = (*JsonData)["bUseCaseLightsInPressedAnimations"].as<bool>();
-    Profile->baseCaseEffect = (AnimationNonPressedEffects)((*JsonData)["baseCaseEffect"].as<uint32_t>());
     Profile->pressedSpecialColor = (*JsonData)["pressedSpecialColor"].as<uint32_t>();
 
     JsonArray notPressedStaticColorsList = (*JsonData)["notPressedStaticColors"];

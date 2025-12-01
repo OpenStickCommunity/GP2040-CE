@@ -17,8 +17,7 @@ public:
   virtual void Animate(RGB (&frame)[FRAME_MAX]) override;
 
   //These change the speed of the rainbow changing color
-  virtual void ParameterUp() override;
-  virtual void ParameterDown() override;
+  virtual void CycleParameterChange() override;
 
 protected:
   int currentFrame = 0;
@@ -35,8 +34,7 @@ public:
   virtual void Animate(RGB (&frame)[FRAME_MAX]) override;
 
   //These change the speed of the rainbow changing color
-  virtual void ParameterUp() override;
-  virtual void ParameterDown() override;
+  virtual void CycleParameterChange() override;
 
 protected:
   int currentFrame = 0;
