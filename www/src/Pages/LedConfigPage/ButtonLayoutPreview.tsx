@@ -30,15 +30,11 @@ const hasNeighbor = (light: Light, lights: Light[], range: number) =>
 			Math.abs(other.yCoord - light.yCoord) <= range,
 	);
 
-// Calculate the size of the light based on its neighbors,
-// Three sizes: big(no neighbors within 2 cells), normal(has neighbors within 2 cells), small(has neighbors within 1 cell)
-const calculateLightSize = (light: Light, lights: Light[]) => {
-	const lightSize = 1.05; // Base size
-	if (hasNeighbor(light, lights, 2)) {
-		return hasNeighbor(light, lights, 1) ? lightSize / 2.4 : lightSize / 1.2;
-	}
-	return lightSize;
-};
+const BASE_LIGHT_SIZE = 0.9; // Base size
+const SMALL_LIGHT_SIZE = BASE_LIGHT_SIZE / 2; // Size when has neighbor within 1 cell
+
+const calculateLightSize = (light: Light, lights: Light[]) =>
+	hasNeighbor(light, lights, 1) ? SMALL_LIGHT_SIZE : BASE_LIGHT_SIZE;
 
 const ColorSelectOverlay = ({
 	title,
@@ -218,7 +214,6 @@ function ButtonLayoutPreview({
 									);
 								}
 								case LIGHT_TYPES.Case: {
-									const lightSize = calculateLightSize(light, Lights);
 									return (
 										<ColorSelectOverlay
 											key={`case-light-${index}`}
@@ -246,10 +241,10 @@ function ButtonLayoutPreview({
 											<g style={{ cursor: 'pointer' }}>
 												<rect
 													key={`case-el-light-${index}`}
-													x={light.xCoord - lightSize}
-													y={light.yCoord - lightSize}
-													width={lightSize * 2}
-													height={lightSize * 2}
+													x={light.xCoord - SMALL_LIGHT_SIZE}
+													y={light.yCoord - SMALL_LIGHT_SIZE}
+													width={SMALL_LIGHT_SIZE * 2}
+													height={SMALL_LIGHT_SIZE * 2}
 													fill={
 														colorOptions[
 															caseStaticColors[light.GPIOPinorCaseChainIndex]
