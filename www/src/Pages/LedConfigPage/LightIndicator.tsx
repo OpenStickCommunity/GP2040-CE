@@ -1,6 +1,7 @@
 import { useDraggable } from '@dnd-kit/core';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { Light } from '../../Store/useLedStore';
+import { LIGHT_TYPES } from '../../Data/Leds';
 
 type LightIndicatorProps = {
 	id: number;
@@ -99,7 +100,7 @@ export function LightIndicator({
 									<div className="d-flex w-100 justify-content-between">
 										<span className="text-secondary">GPIO/Case:</span>
 										<span>
-											{lightType === 1
+											{lightType === LIGHT_TYPES.Case
 												? GPIOPinorCaseChainIndex + 1
 												: GPIOPinorCaseChainIndex}
 										</span>
@@ -107,10 +108,10 @@ export function LightIndicator({
 									<div className="d-flex w-100 justify-content-between">
 										<span className="text-secondary">Type:</span>
 										<span>
-											{lightType === 0 && 'ActionButton'}
-											{lightType === 1 && 'Case'}
-											{lightType === 2 && 'Turbo'}
-											{lightType === 3 && 'PlayerLight'}
+											{lightType == LIGHT_TYPES.ActionButton && 'ActionButton'}
+											{lightType === LIGHT_TYPES.Case && 'Case'}
+											{lightType === LIGHT_TYPES.Turbo && 'Turbo'}
+											{lightType === LIGHT_TYPES.PlayerLight && 'PlayerLight'}
 										</span>
 									</div>
 									<div className="d-flex w-100 justify-content-between">

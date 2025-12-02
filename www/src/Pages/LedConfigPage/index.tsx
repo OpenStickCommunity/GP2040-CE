@@ -694,6 +694,7 @@ export default function LedConfigPage() {
 														notPressedStaticColors={
 															profile.notPressedStaticColors
 														}
+														caseStaticColors={profile.caseStaticColors}
 														profileIndex={profileIndex}
 														customColors={values.AnimationOptions.customColors}
 														setFieldValue={setFieldValue}

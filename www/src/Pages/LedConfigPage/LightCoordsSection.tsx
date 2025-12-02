@@ -28,7 +28,7 @@ import { useGetContainerDimensions } from '../../Hooks/useGetContainerDimensions
 import FormControl from '../../Components/FormControl';
 import FormSelect from '../../Components/FormSelect';
 
-import { LED_COLORS } from '../../Data/Leds';
+import { LED_COLORS, LIGHT_TYPES } from '../../Data/Leds';
 import boards from '../../Data/Boards.json';
 
 import { rgbIntToHex } from '../../Services/Utilities';
@@ -293,7 +293,7 @@ export default function LightCoordsSection({
 								/>
 								<FormSelect
 									label={
-										values.Lights[selectedLight]?.lightType == 1
+										values.Lights[selectedLight]?.lightType == LIGHT_TYPES.Case
 											? ' Case Id'
 											: ' GPIO Pin'
 									}
@@ -303,7 +303,7 @@ export default function LightCoordsSection({
 									onChange={handleChange}
 									name={`Lights[${selectedLight}].GPIOPinorCaseChainIndex`}
 								>
-									{values.Lights[selectedLight]?.lightType == 1 ? (
+									{values.Lights[selectedLight]?.lightType == LIGHT_TYPES.Case ? (
 										<>
 											{Array.from({ length: MAX_CASE_LIGHTS }).map(
 												(_, caseIndex) => (
@@ -325,7 +325,7 @@ export default function LightCoordsSection({
 										</>
 									)}
 								</FormSelect>
-								{values.Lights[selectedLight]?.lightType == 1 ? (
+								{values.Lights[selectedLight]?.lightType == LIGHT_TYPES.Case ? (
 									<div className="mb-3">
 										<label className="form-label">Case Color</label>
 										<ColorSelector
@@ -402,10 +402,10 @@ export default function LightCoordsSection({
 									}}
 									name={`Lights[${selectedLight}].lightType`}
 								>
-									<option value={0}>ActionButton</option>
-									<option value={1}>Case</option>
-									<option value={2}>Turbo</option>
-									<option value={3}>PlayerLight</option>
+									<option value={LIGHT_TYPES.ActionButton}>ActionButton</option>
+									<option value={LIGHT_TYPES.Case}>Case</option>
+									<option value={LIGHT_TYPES.Turbo}>Turbo</option>
+									<option value={LIGHT_TYPES.PlayerLight}>PlayerLight</option>
 								</FormSelect>
 
 								<div className="d-flex flex-row gap-2 mb-3">
@@ -519,7 +519,7 @@ export default function LightCoordsSection({
 										{
 											GPIOPinorCaseChainIndex: 0,
 											firstLedIndex: values.Lights.length,
-											lightType: 0,
+											lightType: LIGHT_TYPES.ActionButton,
 											numLedsOnLight: 1,
 											xCoord: clampedX,
 											yCoord: clampedY,

@@ -24,3 +24,9 @@ export const LED_FORMATS = [
 	{ label: 'RGBW', value: 3 },
 ];
 
+export const LIGHT_TYPES = {
+	ActionButton: 0,
+	Case: 1,
+	Turbo: 2,
+	PlayerLight: 3,
+}
