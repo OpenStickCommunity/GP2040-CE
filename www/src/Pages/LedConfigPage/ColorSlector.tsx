@@ -1,6 +1,6 @@
 import { StylesConfig } from 'react-select';
 import CustomSelect from '../../Components/CustomSelect';
-import LED_COLORS from '../../Data/Leds';
+import { LED_COLORS } from '../../Data/Leds';
 
 type ColorOption = {
 	value: number;

@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, ChangeEventHandler, FormEventHandler } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import {
 	useSensor,
 	MouseSensor,
@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 
 import {
 	AnimationOptions,
+	LedOptions,
 	Light,
 	MAX_CASE_LIGHTS,
 } from '../../Store/useLedStore';
@@ -69,14 +70,22 @@ export default function LightCoordsSection({
 	notPressedStaticColors: number[];
 	caseStaticColors: number[];
 	profileIndex: number;
-	values: { Lights: Light[]; AnimationOptions: AnimationOptions };
+	values: {
+		ledOptions: LedOptions;
+		Lights: Light[];
+		AnimationOptions: AnimationOptions;
+	};
 	errors: FormikErrors<{
 		AnimationOptions: AnimationOptions;
 		Lights: Light[];
 	}>;
 	setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
 	setValues: (
-		values: { Lights: Light[]; AnimationOptions: AnimationOptions },
+		values: {
+			ledOptions: LedOptions;
+			Lights: Light[];
+			AnimationOptions: AnimationOptions;
+		},
 		shouldValidate?: boolean,
 	) => void;
 	handleChange: FormikHandlers['handleChange'];
@@ -130,7 +139,7 @@ export default function LightCoordsSection({
 	const handleDeleteLight = useCallback(
 		(index: number) => {
 			setValues({
-				AnimationOptions: values.AnimationOptions,
+				...values,
 				Lights: values.Lights.filter((_, i) => i !== index),
 			});
 			if (selectedLight === index) {
@@ -504,7 +513,7 @@ export default function LightCoordsSection({
 								const clampedY = Math.max(0, Math.min(gridY, gridSize - 1));
 
 								setValues({
-									AnimationOptions: values.AnimationOptions,
+									...values,
 									Lights: [
 										...values.Lights,
 										{
