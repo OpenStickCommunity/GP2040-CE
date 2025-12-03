@@ -203,6 +203,7 @@ void PS5AuthUSBListener::report_received(uint8_t dev_addr, uint8_t instance, uin
         // Always log to see if interrupt endpoint is working at all
         P5LPRINTF("P5L: Report Received REPORT_ID:%d\n", report[0]);
         if ( dongle_type == MAYFLASH_S5 ) {
+            mutex_enter_timeout_us(&ps5AuthData->hash_mutex, 500);
             memset(ps5AuthData->hash_finish_buffer, 0, 64);
             memcpy(&(ps5AuthData->hash_finish_buffer[0x00]), &report[0x0D], 16); // 12-byte key data, 4-bytes of incount
             memcpy(&(ps5AuthData->hash_finish_buffer[0x1C]), &report[0x25], 5); // Sensor Timestamp + Temperature
@@ -211,9 +212,12 @@ void PS5AuthUSBListener::report_received(uint8_t dev_addr, uint8_t instance, uin
             memcpy(&(ps5AuthData->hash_finish_buffer[0x31]), &report[0x31], 4); // Device Timestamp (Host timestamp is left blank)
             memcpy(&(ps5AuthData->hash_finish_buffer[0x35]), &batteryReport[0], 3); // Power Percent + Mic Info (https://controllers.fandom.com/wiki/Sony_DualSense)
             memcpy(&(ps5AuthData->hash_finish_buffer[0x38]), &report[0x1D], 8); // 8-Byte AES CMAC
+            mutex_exit(&ps5AuthData->hash_mutex);
             ps5AuthData->hash_ready = true;
         } else if ( dongle_type == P5General ) {
+            mutex_enter_timeout_us(&ps5AuthData->hash_mutex, 500);
             memcpy(ps5AuthData->hash_finish_buffer, report, sizeof(ps5AuthData->hash_finish_buffer));
+            mutex_exit(&ps5AuthData->hash_mutex);
             ps5AuthData->hash_ready = true;
         }
     }

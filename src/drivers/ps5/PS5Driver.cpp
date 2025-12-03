@@ -136,11 +136,15 @@ bool PS5Driver::process(Gamepad * gamepad) {
 
     // P5General uses hash_ready, can we use for Mayflash S5?
     if (ps5AuthData->hash_ready) {
-        if (tud_hid_ready() && tud_hid_report(0, ps5AuthData->hash_finish_buffer, sizeof(ps5AuthData->hash_finish_buffer)) == true ) {
-            last_report_us = to_us_since_boot(get_absolute_time());
-            ps5AuthData->hash_ready = false;
-        } else {
-            return false;
+        if ( mutex_enter_timeout_us(&ps5AuthData->hash_mutex, 500) ) {
+            if (tud_hid_ready() && tud_hid_report(0, ps5AuthData->hash_finish_buffer, sizeof(ps5AuthData->hash_finish_buffer)) == true ) {
+                mutex_exit(&ps5AuthData->hash_mutex);
+                last_report_us = to_us_since_boot(get_absolute_time());
+                ps5AuthData->hash_ready = false;
+            } else {
+                mutex_exit(&ps5AuthData->hash_mutex);
+                return false;
+            }
         }
     }
 
@@ -250,7 +254,8 @@ bool PS5Driver::process(Gamepad * gamepad) {
     }
     ps5Report.touchpad_data = touchpadData;
 
-    if (memcmp(&ps5Report_last, &ps5Report, sizeof(ps5Report))) {
+    if (memcmp(&ps5Report_last, &ps5Report, sizeof(ps5Report)) ||
+            last_report_us != to_us_since_boot(get_absolute_time())) {
         memcpy(&ps5Report_last, &ps5Report, sizeof(ps5Report));
         memcpy(ps5AuthData->hash_pending_buffer, &ps5Report, sizeof(ps5Report));
         ps5AuthData->hash_pending = true;

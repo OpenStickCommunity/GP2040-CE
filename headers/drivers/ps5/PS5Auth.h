@@ -2,6 +2,7 @@
 #define _PS5AUTH_H_
 
 #include "drivers/shared/gpauthdriver.h"
+#include "pico/mutex.h"
 
 typedef enum {
     ps5_auth_idle = 0,
@@ -22,6 +23,7 @@ typedef struct {
     bool dongle_ready;
     bool hash_pending;
     bool hash_ready;
+    mutex_t hash_mutex;
     PS5AuthState ps5_passthrough_state;
     uint8_t MAC_pair_report[16];  // 16-byte pair information for BT MAC Address
     bool pair_ready;
