@@ -254,8 +254,23 @@ bool PS5Driver::process(Gamepad * gamepad) {
     }
     ps5Report.touchpad_data = touchpadData;
 
-    if (memcmp(&ps5Report_last, &ps5Report, sizeof(ps5Report)) ||
-            last_report_us != to_us_since_boot(get_absolute_time())) {
+    // Always copy our data for PS5 dongles
+    memcpy(ps5AuthData->hash_pending_buffer, &ps5Report, sizeof(ps5Report));
+    ps5AuthData->hash_pending = true;
+    
+    if (memcmp(&ps5Report_last, &ps5Report, sizeof(ps5Report))) {
+        memcpy(&ps5Report_last, &ps5Report, sizeof(ps5Report));
+        diff_report_repeat = 4;
+        return true;
+    } else if (diff_report_repeat) {
+        diff_report_repeat--;
+        return true;
+    } else {
+        return false;
+    }
+
+    /*
+    if (memcmp(&ps5Report_last, &ps5Report, sizeof(ps5Report))) {
         memcpy(&ps5Report_last, &ps5Report, sizeof(ps5Report));
         memcpy(ps5AuthData->hash_pending_buffer, &ps5Report, sizeof(ps5Report));
         ps5AuthData->hash_pending = true;
@@ -269,6 +284,7 @@ bool PS5Driver::process(Gamepad * gamepad) {
     } else {
         return false;
     }
+    */
 }
 
 void PS5Driver::processAux() {
