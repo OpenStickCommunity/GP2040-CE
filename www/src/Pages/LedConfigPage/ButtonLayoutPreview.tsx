@@ -115,6 +115,61 @@ function ButtonLayoutPreview({
 				<li>Click a button to change its idle and pressed color.</li>
 				<li>Right-click on the layout to preview the pressed colors.</li>
 			</ul>
+			<hr />
+			<div className="mb-3">
+				<svg
+					width="20"
+					height="20"
+					className="d-inline-block mx-2 align-middle"
+				>
+					<circle
+						cx="10"
+						cy="10"
+						r="8"
+						fill="currentColor"
+						stroke="black"
+						strokeWidth="1"
+					/>
+				</svg>
+				Circle - Action Button
+				<svg
+					width="20"
+					height="20"
+					className="d-inline-block mx-2 align-middle"
+				>
+					<rect
+						x="2"
+						y="2"
+						width="16"
+						height="16"
+						fill="currentColor"
+						stroke="black"
+						strokeWidth="1"
+					/>
+				</svg>
+				Square - Case Light
+				<svg
+					width="20"
+					height="20"
+					className="d-inline-block mx-2 align-middle"
+				>
+					<polygon
+						points={[0, 1, 2, 3, 4, 5]
+							.map((i) => {
+								const angle = (Math.PI / 3) * i - Math.PI / 2;
+								const x = 10 + 8 * Math.cos(angle);
+								const y = 10 + 8 * Math.sin(angle);
+								return `${x},${y}`;
+							})
+							.join(' ')}
+						fill="currentColor"
+						stroke="black"
+						strokeWidth="1"
+					/>
+				</svg>
+				Hexagon - Turbo / Player Light
+			</div>
+
 			<Row
 				className="justify-content-center py-3"
 				onMouseDown={(e) => handlePressedShow(e)}
