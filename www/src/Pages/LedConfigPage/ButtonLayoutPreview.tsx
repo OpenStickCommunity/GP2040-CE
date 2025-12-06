@@ -271,6 +271,94 @@ function ButtonLayoutPreview({
 										</ColorSelectOverlay>
 									);
 								}
+								case LIGHT_TYPES.Turbo:
+								case LIGHT_TYPES.PlayerLight:
+									return (
+										<ColorSelectOverlay
+											key={`misc-light-${index}`}
+											title={`GPIO ${light.GPIOPinorCaseChainIndex}`}
+											content={
+												<div style={{ minWidth: 200 }}>
+													<p>Idle color</p>
+													<ColorSelector
+														options={colorOptions}
+														value={
+															colorOptions[
+																notPressedStaticColors[
+																	light.GPIOPinorCaseChainIndex
+																]
+															] || null
+														}
+														onChange={(selected) => {
+															setFieldValue(
+																`AnimationOptions.profiles.${profileIndex}.notPressedStaticColors.${light.GPIOPinorCaseChainIndex}`,
+																selected?.value || 0,
+															);
+														}}
+													/>
+
+													<p className="mt-3">Active color</p>
+													<ColorSelector
+														options={colorOptions}
+														value={
+															colorOptions[
+																pressedStaticColors[
+																	light.GPIOPinorCaseChainIndex
+																]
+															] || null
+														}
+														onChange={(selected) => {
+															setFieldValue(
+																`AnimationOptions.profiles.${profileIndex}.pressedStaticColors.${light.GPIOPinorCaseChainIndex}`,
+																selected?.value || 0,
+															);
+														}}
+													/>
+												</div>
+											}
+										>
+											<g key={`${light.lightType}-light-${index}`}>
+												<polygon
+													points={[0, 1, 2, 3, 4, 5]
+														.map((i) => {
+															const angle = (Math.PI / 3) * i - Math.PI / 2;
+															const size = SMALL_LIGHT_SIZE;
+															const x = light.xCoord + size * Math.cos(angle);
+															const y = light.yCoord + size * Math.sin(angle);
+															return `${x},${y}`;
+														})
+														.join(' ')}
+													fill={
+														colorOptions[
+															pressed
+																? pressedStaticColors[
+																		light.GPIOPinorCaseChainIndex
+																	]
+																: notPressedStaticColors[
+																		light.GPIOPinorCaseChainIndex
+																	]
+														]?.color || 'black'
+													}
+													stroke="currentColor"
+													strokeWidth={strokeWidth}
+												/>
+												<text
+													x={light.xCoord}
+													y={light.yCoord}
+													textAnchor="middle"
+													fill="white"
+													dominantBaseline="central"
+													style={{
+														fontSize: 0.3,
+														fontWeight: 'bold',
+														textShadow: '0 0 3px black',
+													}}
+												>
+													{`GP${light.GPIOPinorCaseChainIndex}`}
+												</text>
+											</g>
+										</ColorSelectOverlay>
+									);
 								default:
 									return null;
 							}
