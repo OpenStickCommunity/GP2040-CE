@@ -121,6 +121,7 @@ function ButtonLayoutPreview({
 					width="20"
 					height="20"
 					className="d-inline-block mx-2 align-middle"
+					aria-label='circle'
 				>
 					<circle
 						cx="10"
@@ -131,11 +132,12 @@ function ButtonLayoutPreview({
 						strokeWidth="1"
 					/>
 				</svg>
-				Circle - Action Button
+				Action Button
 				<svg
 					width="20"
 					height="20"
 					className="d-inline-block mx-2 align-middle"
+					aria-label='square'
 				>
 					<rect
 						x="2"
@@ -147,11 +149,12 @@ function ButtonLayoutPreview({
 						strokeWidth="1"
 					/>
 				</svg>
-				Square - Case Light
+				Case Light
 				<svg
 					width="20"
 					height="20"
 					className="d-inline-block mx-2 align-middle"
+					aria-label='hexagon'
 				>
 					<polygon
 						points={[0, 1, 2, 3, 4, 5]
@@ -167,7 +170,7 @@ function ButtonLayoutPreview({
 						strokeWidth="1"
 					/>
 				</svg>
-				Hexagon - Turbo / Player Light
+				Turbo / Player Light
 			</div>
 
 			<Row
