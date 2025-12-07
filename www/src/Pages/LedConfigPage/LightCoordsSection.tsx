@@ -21,6 +21,7 @@ import {
 	LedOptions,
 	Light,
 	MAX_CASE_LIGHTS,
+	MAX_LIGHTS,
 } from '../../Store/useLedStore';
 import useLedsPreview from '../../Hooks/useLedsPreview';
 import { useGetContainerDimensions } from '../../Hooks/useGetContainerDimensions';
@@ -149,6 +150,31 @@ export default function LightCoordsSection({
 		[setValues, values, selectedLight],
 	);
 
+	const handleNewLight = useCallback(
+		(lightType) => {
+			const emptyCoord = getFirstEmptyLightCoord(values.Lights);
+			if (!emptyCoord) return;
+
+			setValues({
+				...values,
+				AnimationOptions: values.AnimationOptions,
+				Lights: [
+					...values.Lights,
+					{
+						GPIOPinorCaseChainIndex: 0,
+						firstLedIndex: values.Lights.length,
+						lightType,
+						numLedsOnLight: 1,
+						xCoord: emptyCoord.xCoord,
+						yCoord: emptyCoord.yCoord,
+					},
+				],
+			});
+			setSelectedLight(values.Lights.length);
+		},
+		[setValues, values],
+	);
+
 	const customColorOptions = values.AnimationOptions.customColors.map(
 		(color, index) => ({
 			value: LED_COLORS.length + index,
@@ -171,7 +197,7 @@ export default function LightCoordsSection({
 				with caution.
 			</Alert>
 			<hr />
-			<Row className="mb-3">
+			{/* <Row className="mb-3">
 				<Col md={3} className="d-flex flex-column justify-content-end mb-2">
 					<FormSelect
 						label={'Active light tied to GPIO pin'}
@@ -252,28 +278,82 @@ export default function LightCoordsSection({
 					</Button>
 				</Col>
 			</Row>
-			<hr />
+			<hr /> */}
+
+			<Row className="mb-3">
+				<Col md={3}>
+					<Button
+						className="w-100"
+						variant="secondary"
+						disabled={values.Lights.length >= MAX_LIGHTS}
+						onClick={() => {
+							handleNewLight(LIGHT_TYPES.ActionButton);
+						}}
+					>
+						Add button light
+					</Button>
+				</Col>
+				<Col md={3}>
+					<Button
+						className="w-100"
+						variant="secondary"
+						disabled={values.Lights.length >= MAX_LIGHTS}
+						onClick={() => {
+							handleNewLight(LIGHT_TYPES.Case);
+						}}
+					>
+						Add case light
+					</Button>
+				</Col>
+				<Col md={3}>
+					<Button
+						className="w-100"
+						variant="secondary"
+						disabled={values.Lights.length >= MAX_LIGHTS}
+						onClick={() => {
+							handleNewLight(LIGHT_TYPES.Turbo);
+						}}
+					>
+						Add turbo light
+					</Button>
+				</Col>
+				<Col md={3}>
+					<Button
+						className="w-100"
+						variant="secondary"
+						disabled={values.Lights.length >= MAX_LIGHTS}
+						onClick={() => {
+							handleNewLight(LIGHT_TYPES.PlayerLight);
+						}}
+					>
+						Add player light
+					</Button>
+				</Col>
+			</Row>
 			<Row className="mb-3">
 				<Col md={3}>
 					<div className="d-flex flex-grow-1">
 						{selectedLight !== null ? (
 							<div className="w-100 mb-3">
 								<h3>Light {selectedLight + 1}</h3>
-								<FormControl
-									type="number"
-									label={'First LED Index'}
-									name={`Lights[${selectedLight}].firstLedIndex`}
-									className="form-control"
+								<FormSelect
+									label="Light Type"
+									className="form-select"
 									groupClassName="mb-3"
-									value={values.Lights[selectedLight]?.firstLedIndex}
-									// TODO: Fix error typing
-									error={(errors.Lights?.[selectedLight] as any)?.firstLedIndex}
-									isInvalid={Boolean(
-										(errors.Lights?.[selectedLight] as any)?.firstLedIndex,
-									)}
-									onChange={handleChange}
-									min={0}
-								/>
+									value={values.Lights[selectedLight]?.lightType}
+									onChange={(e) => {
+										setFieldValue(
+											`Lights[${selectedLight}].lightType`,
+											parseInt(e.target.value),
+										);
+									}}
+									name={`Lights[${selectedLight}].lightType`}
+								>
+									<option value={LIGHT_TYPES.ActionButton}>ActionButton</option>
+									<option value={LIGHT_TYPES.Case}>Case</option>
+									<option value={LIGHT_TYPES.Turbo}>Turbo</option>
+									<option value={LIGHT_TYPES.PlayerLight}>PlayerLight</option>
+								</FormSelect>
 								<FormControl
 									type="number"
 									label={'Number of LEDs on Light'}
@@ -291,11 +371,26 @@ export default function LightCoordsSection({
 									onChange={handleChange}
 									min={1}
 								/>
+								<FormControl
+									type="number"
+									label={'Index of the first LED'}
+									name={`Lights[${selectedLight}].firstLedIndex`}
+									className="form-control"
+									groupClassName="mb-3"
+									value={values.Lights[selectedLight]?.firstLedIndex}
+									// TODO: Fix error typing
+									error={(errors.Lights?.[selectedLight] as any)?.firstLedIndex}
+									isInvalid={Boolean(
+										(errors.Lights?.[selectedLight] as any)?.firstLedIndex,
+									)}
+									onChange={handleChange}
+									min={0}
+								/>
 								<FormSelect
 									label={
 										values.Lights[selectedLight]?.lightType == LIGHT_TYPES.Case
-											? ' Case Id'
-											: ' GPIO Pin'
+											? 'Case Id tied to Light'
+											: 'GPIO Pin tied to Light'
 									}
 									className="form-select"
 									groupClassName="mb-3"
@@ -303,7 +398,8 @@ export default function LightCoordsSection({
 									onChange={handleChange}
 									name={`Lights[${selectedLight}].GPIOPinorCaseChainIndex`}
 								>
-									{values.Lights[selectedLight]?.lightType == LIGHT_TYPES.Case ? (
+									{values.Lights[selectedLight]?.lightType ==
+									LIGHT_TYPES.Case ? (
 										<>
 											{Array.from({ length: MAX_CASE_LIGHTS }).map(
 												(_, caseIndex) => (
@@ -325,6 +421,7 @@ export default function LightCoordsSection({
 										</>
 									)}
 								</FormSelect>
+
 								{values.Lights[selectedLight]?.lightType == LIGHT_TYPES.Case ? (
 									<div className="mb-3">
 										<label className="form-label">Case Color</label>
@@ -348,7 +445,7 @@ export default function LightCoordsSection({
 								) : (
 									<>
 										<div className="mb-3">
-											<label className="form-label">GPIO Idle Color</label>
+											<label className="form-label">Idle Color</label>
 											<ColorSelector
 												options={colorOptions}
 												value={
@@ -389,24 +486,6 @@ export default function LightCoordsSection({
 										</div>
 									</>
 								)}
-								<FormSelect
-									label="Light Type"
-									className="form-select"
-									groupClassName="mb-3"
-									value={values.Lights[selectedLight]?.lightType}
-									onChange={(e) => {
-										setFieldValue(
-											`Lights[${selectedLight}].lightType`,
-											parseInt(e.target.value),
-										);
-									}}
-									name={`Lights[${selectedLight}].lightType`}
-								>
-									<option value={LIGHT_TYPES.ActionButton}>ActionButton</option>
-									<option value={LIGHT_TYPES.Case}>Case</option>
-									<option value={LIGHT_TYPES.Turbo}>Turbo</option>
-									<option value={LIGHT_TYPES.PlayerLight}>PlayerLight</option>
-								</FormSelect>
 
 								<div className="d-flex flex-row gap-2 mb-3">
 									<div className="flex-grow-1">
@@ -461,35 +540,6 @@ export default function LightCoordsSection({
 							</div>
 						)}
 					</div>
-					{/* <div className="d-flex flex-column justify-content-between align-items-center">
-						<Button
-							className="w-100"
-							variant="secondary"
-							disabled={values.Lights.length >= MAX_LIGHTS}
-							onClick={() => {
-								const emptyCoord = getFirstEmptyLightCoord(values.Lights);
-								if (!emptyCoord) return;
-
-								setValues({
-									AnimationOptions: values.AnimationOptions,
-									Lights: [
-										...values.Lights,
-										{
-											GPIOPinorCaseChainIndex: 0,
-											firstLedIndex: values.Lights.length,
-											lightType: 0,
-											numLedsOnLight: 1,
-											xCoord: emptyCoord.xCoord,
-											yCoord: emptyCoord.yCoord,
-										},
-									],
-								});
-								setSelectedLight(values.Lights.length);
-							}}
-						>
-							Add light
-						</Button>
-					</div> */}
 				</Col>
 				<Col md={9} className="pt-2 mt-md-0">
 					<div
@@ -504,30 +554,31 @@ export default function LightCoordsSection({
 							height={dimensions.width}
 							xmlns="http://www.w3.org/2000/svg"
 							style={{ position: 'absolute' }}
-							onClick={(e) => {
-								const rect = e.currentTarget.getBoundingClientRect();
+							// Adding lights by clicking on the grid
+							// onClick={(e) => {
+							// 	const rect = e.currentTarget.getBoundingClientRect();
 
-								const gridX = Math.floor((e.clientX - rect.left) / cellWidth);
-								const gridY = Math.floor((e.clientY - rect.top) / cellWidth);
-								const clampedX = Math.max(0, Math.min(gridX, gridSize - 1));
-								const clampedY = Math.max(0, Math.min(gridY, gridSize - 1));
+							// 	const gridX = Math.floor((e.clientX - rect.left) / cellWidth);
+							// 	const gridY = Math.floor((e.clientY - rect.top) / cellWidth);
+							// 	const clampedX = Math.max(0, Math.min(gridX, gridSize - 1));
+							// 	const clampedY = Math.max(0, Math.min(gridY, gridSize - 1));
 
-								setValues({
-									...values,
-									Lights: [
-										...values.Lights,
-										{
-											GPIOPinorCaseChainIndex: 0,
-											firstLedIndex: values.Lights.length,
-											lightType: LIGHT_TYPES.ActionButton,
-											numLedsOnLight: 1,
-											xCoord: clampedX,
-											yCoord: clampedY,
-										},
-									],
-								});
-								setSelectedLight(values.Lights.length);
-							}}
+							// 	setValues({
+							// 		...values,
+							// 		Lights: [
+							// 			...values.Lights,
+							// 			{
+							// 				GPIOPinorCaseChainIndex: 0,
+							// 				firstLedIndex: values.Lights.length,
+							// 				lightType: LIGHT_TYPES.ActionButton,
+							// 				numLedsOnLight: 1,
+							// 				xCoord: clampedX,
+							// 				yCoord: clampedY,
+							// 			},
+							// 		],
+							// 	});
+							// 	setSelectedLight(values.Lights.length);
+							// }}
 						>
 							<defs>
 								<pattern
