@@ -93,16 +93,27 @@ jobs:
 
       #Global Setup
       - name: Checkout GP2040-CE
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v6.0.1
         with:
           fetch-depth: 0
           fetch-tags: true
 
-      - name: Setup SDK pipeline
-        uses: Fortinbra/RaspberryPiPicoBuild@v7
+      - name: arm-none-eabi-gcc GNU Arm Embedded Toolchain
+        uses: carlosperate/arm-none-eabi-gcc-action@v1.11.1
+
+      - name: Checkout pico-sdk/2.1.1
+        uses: actions/checkout@v6.0.1
+        with:
+          repository: raspberrypi/pico-sdk
+          ref: 2.1.1
+          path: pico-sdk
+
+      - name: Checkout pico-sdk submodules
+        working-directory: ${{github.workspace}}/pico-sdk
+        run: git submodule update --init
 
       - name: Download a Build Artifact
-        uses: actions/download-artifact@v4.1.2
+        uses: actions/download-artifact@v7.0.0
         with:
           name: fsData
           path: ${{github.workspace}}/lib/httpd/
@@ -121,7 +132,7 @@ jobs:
         run: GP2040_BOARDCONFIG=${{ matrix.GP2040_BOARDCONFIG }} cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
 
       - name: Upload Pico Artifact
-        uses: actions/upload-artifact@v4.3.1
+        uses: actions/upload-artifact@v6.0.0
         with:
           name: GP2040-CE - ${{ matrix.GP2040_BOARDCONFIG }}
           path: ${{github.workspace}}/build/GP2040-CE_*_${{ matrix.GP2040_BOARDCONFIG }}.uf2
@@ -129,7 +140,7 @@ jobs:
 
       - name: Upload .elf Artifact
         if: ${{ matrix.GP2040_BOARDCONFIG == 'Pico'}}
-        uses: actions/upload-artifact@v4.3.1
+        uses: actions/upload-artifact@v6.0.0
         with:
           name: elf
           path: ${{github.workspace}}/build/GP2040-CE_*_${{ matrix.GP2040_BOARDCONFIG }}.elf
