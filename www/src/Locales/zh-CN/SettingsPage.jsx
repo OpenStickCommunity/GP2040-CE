@@ -149,6 +149,7 @@ export default {
 	'4-way-joystick-mode-label': '4向摇杆模式',
 	'lock-hotkeys-label': '锁定热键',
 	'keyboard-mapping-header-text': '键盘映射',
+	'keyboard-profile-label': '键盘档案',
 	'keyboard-mapping-sub-header-text': '使用下面的表单重新配置按钮到按键的映射。',
 	'usb-override': {
 		'advanced-override': '⚠️ 高级 USB 覆盖',

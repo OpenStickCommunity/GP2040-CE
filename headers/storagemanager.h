@@ -37,7 +37,8 @@ public:
 	ForcedSetupOptions& getForcedSetupOptions() { return config.forcedSetupOptions; }
 	PinMappings& getDeprecatedPinMappings() { return config.deprecatedPinMappings; }
 	GpioMappings& getGpioMappings() { return config.gpioMappings; }
-	KeyboardMapping& getKeyboardMapping() { return config.keyboardMapping; }
+	KeyboardMapping& getKeyboardMapping();  // Profile-aware keyboard mapping
+	KeyboardMapping& getBaseKeyboardMapping() { return config.keyboardMapping; }  // Always returns base profile mapping
 	DisplayOptions& getDisplayOptions() { return config.displayOptions; }
 	LEDOptions& getLedOptions() { return config.ledOptions; }
 	AddonOptions& getAddonOptions() { return config.addonOptions; }

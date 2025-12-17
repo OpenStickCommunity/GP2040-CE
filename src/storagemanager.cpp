@@ -134,6 +134,20 @@ void Storage::setFunctionalPinMappings()
 	}
 }
 
+KeyboardMapping& Storage::getKeyboardMapping()
+{
+	uint32_t profileNum = config.gamepadOptions.profileNumber;
+	// Profile 2 and above use alternative profiles (index = profileNum - 2)
+	if (profileNum >= 2 && profileNum <= config.profileOptions.gpioMappingsSets_count + 1) {
+		GpioMappings& profile = config.profileOptions.gpioMappingsSets[profileNum - 2];
+		if (profile.enabled && profile.has_keyboardMapping) {
+			return profile.keyboardMapping;
+		}
+	}
+	// Fall back to base keyboard mapping (profile 1 or if profile has no keyboard mapping)
+	return config.keyboardMapping;
+}
+
 void Storage::SetGamepad(Gamepad * newpad)
 {
 	gamepad = newpad;

@@ -163,6 +163,7 @@ export default {
 	'4-way-joystick-mode-label': '4-Way Joystick Mode',
 	'lock-hotkeys-label': 'Lock Hotkeys',
 	'keyboard-mapping-header-text': 'Keyboard Mapping',
+	'keyboard-profile-label': 'Keyboard Profile',
 	'keyboard-mapping-sub-header-text':
 		'Use the form below to reconfigure your button-to-key mapping.',
 	'usb-override': {
