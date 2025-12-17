@@ -13,6 +13,7 @@
 #include "enums.h"
 #include "helper.h"
 #include "gamepad.h"
+#include "types.h"
 
 #include "config.pb.h"
 #include <atomic>
@@ -45,6 +46,7 @@ public:
 	AnimationOptions& getAnimationOptions() { return config.animationOptions; }
 	ProfileOptions& getProfileOptions() { return config.profileOptions; }
 	GpioMappingInfo* getProfilePinMappings() { return functionalPinMappings; }
+	Mask_t getInversionMask();
 	PeripheralOptions& getPeripheralOptions() { return config.peripheralOptions; }
 
 	void init();

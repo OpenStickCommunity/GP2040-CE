@@ -469,6 +469,7 @@ const schema = yup.object().shape({
 		.oneOf(AUTHENTICATION_TYPES.map((o) => o.value))
 		.label('X-Input Authentication Type'),
 	debounceDelay: yup.number().required().label('Debounce Delay'),
+	enablePinInversion: yup.number().label('Enable Per-Pin Inversion'),
 	miniMenuGamepadInput: yup.number().required().label('Mini Menu'),
 	inputModeB1: yup
 		.number()
@@ -1843,6 +1844,28 @@ export default function SettingsPage() {
 																min={0}
 																max={5000}
 															/>
+														</Col>
+													</Form.Group>
+													<Form.Group className="row mb-3">
+														<Col sm={5}>
+															<Form.Check
+																label={t(
+																	'SettingsPage:enable-pin-inversion-label',
+																)}
+																type="switch"
+																id="enablePinInversion"
+																isInvalid={false}
+																checked={Boolean(values.enablePinInversion)}
+																onChange={(e) => {
+																	setFieldValue(
+																		'enablePinInversion',
+																		e.target.checked ? 1 : 0,
+																	);
+																}}
+															/>
+															<Form.Text muted>
+																{t('SettingsPage:enable-pin-inversion-tooltip')}
+															</Form.Text>
 														</Col>
 													</Form.Group>
 													<Form.Group className="row mb-5">

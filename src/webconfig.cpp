@@ -766,6 +766,7 @@ std::string setGamepadOptions()
     readDoc(gamepadOptions.usbOverrideID, doc, "usbOverrideID");
     readDoc(gamepadOptions.usbVendorID, doc, "usbVendorID");
     readDoc(gamepadOptions.usbProductID, doc, "usbProductID");
+    readDoc(gamepadOptions.enablePinInversion, doc, "enablePinInversion");
 
 
     HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
@@ -834,6 +835,7 @@ std::string getGamepadOptions()
     char usbProductStr[5];
     snprintf(usbProductStr, 5, "%04X", gamepadOptions.usbProductID);
     writeDoc(doc, "usbProductID", usbProductStr);
+    writeDoc(doc, "enablePinInversion", gamepadOptions.enablePinInversion ? 1 : 0);
     writeDoc(doc, "fnButtonPin", -1);
     GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
     for (unsigned int pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
@@ -1201,6 +1203,7 @@ std::string setPinMappings()
             gpioMappings.pins[pin].action = (GpioAction)doc[pinName]["action"];
             gpioMappings.pins[pin].customButtonMask = (uint32_t)doc[pinName]["customButtonMask"];
             gpioMappings.pins[pin].customDpadMask = (uint32_t)doc[pinName]["customDpadMask"];
+            gpioMappings.pins[pin].invertPolarity = doc[pinName]["invertPolarity"] | true;  // Default to true if not present
         }
     }
     size_t profileLabelSize = sizeof(gpioMappings.profileLabel);
@@ -1225,6 +1228,7 @@ std::string getPinMappings()
         writeDoc(doc, key, "action", value.action);
         writeDoc(doc, key, "customButtonMask", value.customButtonMask);
         writeDoc(doc, key, "customDpadMask", value.customDpadMask);
+        writeDoc(doc, key, "invertPolarity", value.invertPolarity);
     };
 
     writePinDoc("pin00", gpioMappings.pins[0]);

@@ -58,6 +58,8 @@ export default {
 	},
 	'profile-label': '配置文件',
 	'debounce-delay-label': '去抖延迟（毫秒）',
+	'enable-pin-inversion-label': '启用单独引脚反相',
+	'enable-pin-inversion-tooltip': '启用后，每个引脚使用其在引脚映射中的单独极性设置。禁用时，所有引脚使用默认的低电平有效行为。',
 	'mini-menu-gamepad-input': '使用游戏手柄输入控制显示屏迷你菜单',
 	'ps4-mode-explanation-text': 'PS4 模式允许 GP2040-CE 作为经过认证的 PS4 控制器运行。',
 	'ps4-mode-warning-text': '<span>⏳ 警告 ⏳:</span> PS4 在没有认证的情况下会在 8 分钟后超时。',

@@ -251,7 +251,9 @@ void GP2040::deinitializeStandardGpio() {
  * instead, if you don't want debounced data.
  */
 void GP2040::debounceGpioGetAll() {
-	Mask_t raw_gpio = ~gpio_get_all();
+	Mask_t raw_gpio = gpio_get_all();
+	Mask_t inversionMask = Storage::getInstance().getInversionMask();
+	raw_gpio ^= inversionMask;  // XOR: invert bits where mask is 1
 	Gamepad* gamepad = Storage::getInstance().GetGamepad();
 	// return if state isn't different than the actual
 	if (gamepad->debouncedGpio == (raw_gpio & buttonGpios)) return;

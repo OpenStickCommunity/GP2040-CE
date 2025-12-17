@@ -12,6 +12,7 @@ type CustomMasks = {
 
 export type MaskPayload = {
 	action: PinActionValues;
+	invertPolarity: boolean;
 } & CustomMasks;
 
 // Keyboard mapping type for each profile
@@ -94,7 +95,7 @@ type State = {
 export type SetProfilePinType = (
 	profileIndex: number,
 	pin: string,
-	{ action, customButtonMask, customDpadMask }: MaskPayload,
+	{ action, customButtonMask, customDpadMask, invertPolarity }: MaskPayload,
 ) => void;
 
 type Actions = {
@@ -158,7 +159,7 @@ const useProfilesStore = create<State & Actions>()((set, get) => ({
 	setProfilePin: (
 		profileIndex,
 		pin,
-		{ action, customButtonMask = 0, customDpadMask = 0 },
+		{ action, customButtonMask = 0, customDpadMask = 0, invertPolarity = true },
 	) =>
 		set((state) => {
 			const profiles = [...state.profiles];
@@ -168,6 +169,7 @@ const useProfilesStore = create<State & Actions>()((set, get) => ({
 					action,
 					customButtonMask,
 					customDpadMask,
+					invertPolarity,
 				},
 			};
 			return { profiles };

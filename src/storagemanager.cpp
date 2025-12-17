@@ -148,6 +148,23 @@ KeyboardMapping& Storage::getKeyboardMapping()
 	return config.keyboardMapping;
 }
 
+Mask_t Storage::getInversionMask()
+{
+	// If per-pin inversion is disabled, return all-ones (invert all = current default behavior)
+	if (!config.gamepadOptions.enablePinInversion) {
+		return ~((Mask_t)0);
+	}
+	// Build mask from individual pin settings
+	Mask_t mask = 0;
+	GpioMappingInfo* pins = config.gpioMappings.pins;
+	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
+		if (pins[pin].invertPolarity) {
+			mask |= ((Mask_t)1 << pin);
+		}
+	}
+	return mask;
+}
+
 void Storage::SetGamepad(Gamepad * newpad)
 {
 	gamepad = newpad;
