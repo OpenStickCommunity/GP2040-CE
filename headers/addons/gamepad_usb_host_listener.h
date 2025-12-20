@@ -7,6 +7,7 @@
 #include "drivers/ps3/PS3Descriptors.h"
 #include "drivers/ps4/PS4Descriptors.h"
 #include "drivers/ps4/PS4Driver.h"
+#include "drivers/switchpro/SwitchProDescriptors.h"
 
 #define GAMEPAD_HOST_DEBUG false
 #define GAMEPAD_HOST_USE_FEATURES true
@@ -110,6 +111,17 @@ typedef struct __attribute__((packed)) {
     uint8_t miscData[54];
 } DSReport;
 
+typedef struct __attribute__((packed)) {
+    uint8_t command;
+    uint8_t counter;
+    uint8_t rumble_l[4];
+    uint8_t rumble_r[4];
+    uint8_t subcommand;
+    uint8_t subcommand_args[3];
+} SwitchProHostReport;
+
+const uint8_t SWITCH_INIT_REPORT[10] = {SwitchReportID::REPORT_CONFIGURATION, SwitchOutputSubtypes::IDENTIFY};
+
 // Add other controller structs here
 class GamepadUSBHostListener : public USBListener {
     public:// USB Listener Features
@@ -128,6 +140,7 @@ class GamepadUSBHostListener : public USBListener {
         bool host_set_report(uint8_t report_id, void* report, uint16_t len);
 
         GamepadState _controller_host_state;
+        bool _controller_host_analog = true;
         bool _controller_host_enabled;
         uint8_t _controller_dev_addr = 0;
         uint8_t _controller_instance = 0;
@@ -149,13 +162,23 @@ class GamepadUSBHostListener : public USBListener {
 
         void process_ds(uint8_t const* report, uint16_t len);
 
+        // switch pro
+        bool switchProFinished = false;
+        uint8_t switchProState = SwitchOutputSubtypes::IDENTIFY;
+        uint8_t switchReportCounter = 0;
+        uint8_t lastSwitchLed = 0;
+        void setup_switch_pro(uint8_t const *report, uint16_t len);
+        void update_switch_pro();
+        void process_switch_pro(uint8_t const* report, uint16_t len);
+        uint8_t get_next_switch_counter();
+
         void process_stadia(uint8_t const* report, uint16_t len);
 
         void process_ultrastik360(uint8_t const* report, uint16_t len);
 
         uint16_t controller_pid, controller_vid;
 
-        uint16_t map(uint8_t x, uint8_t in_min, uint8_t in_max, uint16_t out_min, uint16_t out_max);
+        uint32_t map(uint32_t x, uint32_t in_min, uint32_t in_max, uint32_t out_min, uint32_t out_max);
 
         // check if different than 2
         bool diff_than_2(uint8_t x, uint8_t y);
