@@ -421,12 +421,12 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.displayOptions, buttonLayout, BUTTON_LAYOUT);
     INIT_UNSET_PROPERTY(config.displayOptions, buttonLayoutRight, BUTTON_LAYOUT_RIGHT);
     INIT_UNSET_PROPERTY(config.displayOptions, turnOffWhenSuspended, DISPLAY_TURN_OFF_WHEN_SUSPENDED);
-    INIT_UNSET_PROPERTY(config.displayOptions, inputMode, 1);
-    INIT_UNSET_PROPERTY(config.displayOptions, turboMode, 1);
-    INIT_UNSET_PROPERTY(config.displayOptions, dpadMode, 1);
-    INIT_UNSET_PROPERTY(config.displayOptions, socdMode, 1);
-    INIT_UNSET_PROPERTY(config.displayOptions, macroMode, 1);
-    INIT_UNSET_PROPERTY(config.displayOptions, profileMode, 0);
+    INIT_UNSET_PROPERTY(config.displayOptions, inputMode, DISPLAY_INPUT_MODE);
+    INIT_UNSET_PROPERTY(config.displayOptions, turboMode, DISPLAY_TURBO_MODE);
+    INIT_UNSET_PROPERTY(config.displayOptions, dpadMode, DISPLAY_DPAD_MODE);
+    INIT_UNSET_PROPERTY(config.displayOptions, socdMode, DISPLAY_SOCD_MODE);
+    INIT_UNSET_PROPERTY(config.displayOptions, macroMode, DISPLAY_MACRO_MODE);
+    INIT_UNSET_PROPERTY(config.displayOptions, profileMode, DISPLAY_PROFILE_MODE);
     INIT_UNSET_PROPERTY(config.displayOptions, inputHistoryEnabled, !!INPUT_HISTORY_ENABLED);
     INIT_UNSET_PROPERTY(config.displayOptions, inputHistoryLength, INPUT_HISTORY_LENGTH);
     INIT_UNSET_PROPERTY(config.displayOptions, inputHistoryCol, INPUT_HISTORY_COL);
