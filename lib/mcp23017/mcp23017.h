@@ -1,3 +1,22 @@
+/**
+ * @file mcp23017.h
+ * @brief Driver for MCP23017 I2C GPIO Expander
+ *
+ * Provides simple interface for reading switches connected to MCP23017.
+ * Used by turbo add-on for hardware per-button turbo controls.
+ *
+ * Hardware: MCP23017 16-bit I/O expander
+ * I2C Address: Configurable via A0-A2 pins (default 0x20)
+ * Pins Used: Port A (GPA0-GPA7) for 8 switches
+ *
+ * Configuration:
+ * - Port A configured as inputs with pull-up resistors enabled
+ * - Switches should be wired active-low (closed = LOW, open = HIGH)
+ * - Port B unused (configured as inputs, no pull-ups)
+ *
+ * Register Mode: IOCON.BANK = 0 (sequential addressing mode)
+ */
+
 #ifndef MCP23017_H
 #define MCP23017_H
 
@@ -29,13 +48,55 @@
 
 class MCP23017 {
 public:
+    /**
+     * @brief Construct a new MCP23017 driver instance
+     * @param i2c Pointer to I2C hardware instance (i2c0 or i2c1)
+     * @param addr I2C device address (default 0x20)
+     */
     MCP23017(i2c_inst_t* i2c, uint8_t addr);
-    
-    bool init();                    // Initialize chip
+
+    /**
+     * @brief Initialize the MCP23017 chip
+     *
+     * Configures Port A as inputs with pull-ups enabled.
+     * Port B is configured as inputs with no pull-ups (unused).
+     *
+     * @return true if initialization successful, false otherwise
+     */
+    bool init();
+
+    /**
+     * @brief Set pin direction (input/output)
+     * @param pin Pin number (0-15)
+     * @param input true for input, false for output
+     */
     void setPinMode(uint8_t pin, bool input);
+
+    /**
+     * @brief Enable/disable pull-up resistor on a pin
+     * @param pin Pin number (0-15)
+     * @param enable true to enable pull-up, false to disable
+     */
     void setPullup(uint8_t pin, bool enable);
+
+    /**
+     * @brief Read state of a single pin
+     * @param pin Pin number (0-15)
+     * @return true if pin is HIGH, false if LOW
+     */
     bool readPin(uint8_t pin);
-    uint16_t readAll();             // Read all 16 pins
+
+    /**
+     * @brief Read all 16 pins at once
+     * @return 16-bit value with pin states (bit 0 = GPA0, bit 15 = GPB7)
+     */
+    uint16_t readAll();
+
+    /**
+     * @brief Read a MCP23017 register directly
+     * @param reg Register address
+     * @return Register value
+     */
     uint8_t readRegister(uint8_t reg);
     
 private:

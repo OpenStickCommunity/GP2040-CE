@@ -26,3 +26,40 @@ Basic pin setup for a stock Raspberry Pi Pico. Combine with a simple GPIO breako
 | GPIO_PIN_19| GpioAction::BUTTON_PRESS_R3   | R3     | RS     | RS     | R3       | 12     | RS     |
 | GPIO_PIN_20| GpioAction::BUTTON_PRESS_A1   | A1     | Guide  | Home   | PS       | 13     | ~      |
 | GPIO_PIN_21| GpioAction::BUTTON_PRESS_A2   | A2     | ~      | Capture| ~        | 14     | ~      |
+
+## Hardware Turbo Controls (Optional)
+
+This board supports optional hardware turbo controls via I2C GPIO expander:
+
+### Pin Assignments
+| RP2040 Pin | Function | Notes |
+|------------|----------|-------|
+| GPIO 0 | I2C SDA | Shared with display |
+| GPIO 1 | I2C SCL | Shared with display |
+| GPIO 26 | Speed Dial (ADC0) | Optional 10kΩ potentiometer |
+
+### Required Hardware
+- MCP23017 I2C GPIO Expander breakout board (I2C address 0x20)
+- 8× SPST toggle switches (or DIP-8 switch array)
+- 10kΩ linear potentiometer (optional, for adjustable turbo speed)
+
+### Switch Mapping
+The MCP23017's Port A pins map to the following buttons:
+- GPA0 → B1 (Face button 1)
+- GPA1 → B2 (Face button 2)
+- GPA2 → B3 (Face button 3)
+- GPA3 → B4 (Face button 4)
+- GPA4 → L1 (Left shoulder 1)
+- GPA5 → R1 (Right shoulder 1)
+- GPA6 → L2 (Left shoulder 2)
+- GPA7 → R2 (Right shoulder 2)
+
+### Configuration
+Enable in `BoardConfig.h`:
+```cpp
+#define TURBO_I2C_SWITCHES_ENABLED 1
+#define TURBO_I2C_ADDR 0x20           // MCP23017 I2C address
+#define PIN_SHMUP_DIAL 26             // Optional speed dial
+```
+
+See external documentation for complete wiring guide and troubleshooting.
