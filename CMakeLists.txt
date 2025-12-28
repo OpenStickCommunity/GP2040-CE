@@ -333,6 +333,25 @@ pico_mbedtls
 nanopb
 )
 
+# Add BTstack for Pico W Bluetooth Switch support
+if(GP2040_BOARDCONFIG STREQUAL "PicoW")
+  target_sources(${PROJECT_NAME} PRIVATE
+    src/drivers/switchbt/SwitchBluetoothDriver.cpp
+  )
+  target_link_libraries(${PROJECT_NAME}
+    pico_rand
+    pico_btstack_cyw43
+    pico_btstack_classic
+    pico_cyw43_arch_none
+  )
+  target_compile_definitions(${PROJECT_NAME} PUBLIC
+    GP2040_BLUETOOTH_ENABLED=1
+  )
+  target_include_directories(${PROJECT_NAME} PUBLIC
+    headers/drivers/switchbt
+  )
+endif()
+
 target_include_directories(${PROJECT_NAME} PUBLIC
 headers
 headers/addons

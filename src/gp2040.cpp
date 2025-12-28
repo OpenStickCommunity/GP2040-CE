@@ -11,6 +11,11 @@
 #include "types.h"
 #include "usbhostmanager.h"
 
+// Switch Bluetooth for Pico W
+#ifdef GP2040_BLUETOOTH_ENABLED
+#include "drivers/switchbt/SwitchBluetoothDriver.h"
+#endif
+
 // Inputs for Core0
 #include "addons/analog.h"
 #include "addons/bootsel_button.h"
@@ -279,6 +284,41 @@ void GP2040::debounceGpioGetAll() {
 }
 
 void GP2040::run() {
+#ifdef GP2040_BLUETOOTH_ENABLED
+	// ========================================
+	// SWITCH BLUETOOTH MODE (Pico W)
+	// ========================================
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+
+	// Initialize Switch Bluetooth
+	switchbt_init();
+
+	while (1) {
+		// Debounce and read gamepad
+		debounceGpioGetAll();
+		gamepad->read();
+
+		// Process add-ons
+		addons.PreprocessAddons();
+		gamepad->process();
+		addons.ProcessAddons();
+
+		// Convert Gamepad to SwitchBTInput
+		SwitchBTInput btInput;
+		btInput.buttons = gamepad->state.buttons;
+		btInput.dpad = gamepad->state.dpad;
+		btInput.lx = gamepad->state.lx;
+		btInput.ly = gamepad->state.ly;
+		btInput.rx = gamepad->state.rx;
+		btInput.ry = gamepad->state.ry;
+
+		// Process Bluetooth (sends reports when connected)
+		switchbt_process(&btInput);
+	}
+#else
+	// ========================================
+	// NORMAL USB MODE
+	// ========================================
 	bool configMode = DriverManager::getInstance().isConfigMode();
 	GPDriver * inputDriver = DriverManager::getInstance().getDriver();
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
@@ -346,6 +386,7 @@ void GP2040::run() {
 		// Check if we have a pending save
 		checkSaveRebootState();
 	}
+#endif
 }
 
 void GP2040::getReinitGamepad(Gamepad * gamepad) {
@@ -439,7 +480,7 @@ GP2040::BootAction GP2040::getBootAction() {
                                     return BootAction::SET_INPUT_MODE_PS4;
                                 case INPUT_MODE_PS5:
                                     return BootAction::SET_INPUT_MODE_PS5;
-                                case INPUT_MODE_P5GENERAL: 
+                                case INPUT_MODE_P5GENERAL:
                                     return BootAction::SET_INPUT_MODE_P5GENERAL;
                                 case INPUT_MODE_NEOGEO:
                                     return BootAction::SET_INPUT_MODE_NEOGEO;
