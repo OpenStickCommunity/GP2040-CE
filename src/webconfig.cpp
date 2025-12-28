@@ -23,6 +23,25 @@
 // for hall-effect calibration
 #include "hardware/adc.h"
 
+// for Bluetooth pairing status
+#ifdef GP2040_BLUETOOTH_ENABLED
+#include "hardware/flash.h"
+#include "hardware/sync.h"
+#include "pico/multicore.h"
+
+// Bluetooth pairing flash locations (must match driver definitions)
+#define SWBT_PAIRING_FLASH_OFFSET (0x1F8000 - FLASH_SECTOR_SIZE)  // 0x1F7000
+#define SWBT_PAIRING_MAGIC 0x53574254  // "SWBT"
+#define HIDBT_PAIRING_FLASH_OFFSET (0x1F6000 - FLASH_SECTOR_SIZE)  // 0x1F5000
+#define HIDBT_PAIRING_MAGIC 0x48494442  // "HIDB"
+
+typedef struct {
+    uint32_t magic;
+    uint8_t host_mac[6];
+    uint8_t padding[2];
+} __attribute__((packed)) BTPairingData;
+#endif
+
 // HTTPD Includes
 #include <ArduinoJson.h>
 #include "rndis.h"
@@ -40,7 +59,7 @@
 
 extern struct fsdata_file file__index_html[];
 
-const static char* spaPaths[] = { "/backup", "/display-config", "/led-config", "/pin-mapping", "/settings", "/reset-settings", "/add-ons", "/custom-theme", "/macro", "/peripheral-mapping" };
+const static char* spaPaths[] = { "/backup", "/display-config", "/led-config", "/pin-mapping", "/settings", "/reset-settings", "/add-ons", "/custom-theme", "/macro", "/peripheral-mapping", "/bluetooth-settings" };
 const static char* excludePaths[] = { "/css", "/images", "/js", "/static" };
 const static uint32_t rebootDelayMs = 500;
 static string http_post_uri;
@@ -2541,6 +2560,120 @@ std::string resetSettings()
     return serialize_json(doc);
 }
 
+#ifdef GP2040_BLUETOOTH_ENABLED
+// Get Bluetooth pairing status for both Switch and PC modes
+std::string getBluetoothSettings()
+{
+    const size_t capacity = JSON_OBJECT_SIZE(10);
+    DynamicJsonDocument doc(capacity);
+
+    // Check Switch Bluetooth pairing
+    const BTPairingData* swData = (const BTPairingData*)(XIP_BASE + SWBT_PAIRING_FLASH_OFFSET);
+    bool switchPaired = false;
+    char switchMac[18] = "";
+    if (swData->magic == SWBT_PAIRING_MAGIC) {
+        bool all_zero = true, all_ff = true;
+        for (int i = 0; i < 6; i++) {
+            if (swData->host_mac[i] != 0x00) all_zero = false;
+            if (swData->host_mac[i] != 0xFF) all_ff = false;
+        }
+        if (!all_zero && !all_ff) {
+            switchPaired = true;
+            snprintf(switchMac, sizeof(switchMac), "%02X:%02X:%02X:%02X:%02X:%02X",
+                     swData->host_mac[0], swData->host_mac[1], swData->host_mac[2],
+                     swData->host_mac[3], swData->host_mac[4], swData->host_mac[5]);
+        }
+    }
+    doc["switchBtPaired"] = switchPaired;
+    doc["switchBtMac"] = switchMac;
+
+    // Check HID Bluetooth pairing
+    const BTPairingData* hidbtData = (const BTPairingData*)(XIP_BASE + HIDBT_PAIRING_FLASH_OFFSET);
+    bool hidbtPaired = false;
+    char hidbtMac[18] = "";
+    if (hidbtData->magic == HIDBT_PAIRING_MAGIC) {
+        bool all_zero = true, all_ff = true;
+        for (int i = 0; i < 6; i++) {
+            if (hidbtData->host_mac[i] != 0x00) all_zero = false;
+            if (hidbtData->host_mac[i] != 0xFF) all_ff = false;
+        }
+        if (!all_zero && !all_ff) {
+            hidbtPaired = true;
+            snprintf(hidbtMac, sizeof(hidbtMac), "%02X:%02X:%02X:%02X:%02X:%02X",
+                     hidbtData->host_mac[0], hidbtData->host_mac[1], hidbtData->host_mac[2],
+                     hidbtData->host_mac[3], hidbtData->host_mac[4], hidbtData->host_mac[5]);
+        }
+    }
+    doc["hidBtPaired"] = hidbtPaired;
+    doc["hidBtMac"] = hidbtMac;
+
+    doc["bluetoothEnabled"] = true;
+
+    return serialize_json(doc);
+}
+
+std::string clearSwitchBtPairing()
+{
+    const size_t capacity = JSON_OBJECT_SIZE(5);
+    DynamicJsonDocument doc(capacity);
+
+    multicore_lockout_start_blocking();
+    uint32_t ints = save_and_disable_interrupts();
+    flash_range_erase(SWBT_PAIRING_FLASH_OFFSET, FLASH_SECTOR_SIZE);
+    restore_interrupts(ints);
+    multicore_lockout_end_blocking();
+
+    doc["success"] = true;
+    return serialize_json(doc);
+}
+
+std::string clearHidBtPairing()
+{
+    const size_t capacity = JSON_OBJECT_SIZE(5);
+    DynamicJsonDocument doc(capacity);
+
+    multicore_lockout_start_blocking();
+    uint32_t ints = save_and_disable_interrupts();
+    flash_range_erase(HIDBT_PAIRING_FLASH_OFFSET, FLASH_SECTOR_SIZE);
+    restore_interrupts(ints);
+    multicore_lockout_end_blocking();
+
+    doc["success"] = true;
+    return serialize_json(doc);
+}
+#else
+// Non-Bluetooth builds - return disabled status
+std::string getBluetoothSettings()
+{
+    const size_t capacity = JSON_OBJECT_SIZE(5);
+    DynamicJsonDocument doc(capacity);
+    doc["bluetoothEnabled"] = false;
+    doc["switchBtPaired"] = false;
+    doc["switchBtMac"] = "";
+    doc["hidBtPaired"] = false;
+    doc["hidBtMac"] = "";
+    return serialize_json(doc);
+}
+
+std::string clearSwitchBtPairing()
+{
+    const size_t capacity = JSON_OBJECT_SIZE(5);
+    DynamicJsonDocument doc(capacity);
+    doc["success"] = false;
+    doc["error"] = "Bluetooth not enabled";
+    return serialize_json(doc);
+}
+
+std::string clearHidBtPairing()
+{
+    const size_t capacity = JSON_OBJECT_SIZE(5);
+    DynamicJsonDocument doc(capacity);
+    doc["success"] = false;
+    doc["error"] = "Bluetooth not enabled";
+    return serialize_json(doc);
+}
+#endif
+
 #if !defined(NDEBUG)
 std::string echo()
 {
@@ -2620,6 +2753,9 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/abortGetHeldPins", abortGetHeldPins },
     { "/api/getUsedPins", getUsedPins },
     { "/api/getConfig", getConfig },
+    { "/api/getBluetoothSettings", getBluetoothSettings },
+    { "/api/clearSwitchBtPairing", clearSwitchBtPairing },
+    { "/api/clearHidBtPairing", clearHidBtPairing },
 #if !defined(NDEBUG)
     { "/api/echo", echo },
 #endif

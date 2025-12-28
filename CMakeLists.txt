@@ -337,6 +337,7 @@ nanopb
 if(GP2040_BOARDCONFIG STREQUAL "PicoW")
   target_sources(${PROJECT_NAME} PRIVATE
     src/drivers/switchbt/SwitchBluetoothDriver.cpp
+    src/drivers/hidbt/HIDBTDriver.cpp
   )
   target_link_libraries(${PROJECT_NAME}
     pico_rand
@@ -352,6 +353,7 @@ if(GP2040_BOARDCONFIG STREQUAL "PicoW")
   )
   target_include_directories(${PROJECT_NAME} PUBLIC
     headers/drivers/switchbt
+    headers/drivers/hidbt
   )
 endif()
 

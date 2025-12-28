@@ -26,6 +26,7 @@ export default {
 		xboxoriginal: 'Original Xbox',
 		xbone: 'Xbox One',
 		'switch-bluetooth': 'Nintendo Switch Bluetooth',
+		'hid-bluetooth': 'Generic HID Bluetooth',
 	},
 	'input-mode-group': {
 		primary: 'Primary Input Modes',
@@ -178,4 +179,14 @@ export default {
 		'vendor-id': 'Vendor ID',
 	},
 	'input-mode-device-type-label': 'Input Mode Controller Type',
+	'bluetooth-settings-label': 'Bluetooth Settings',
+	'bluetooth-settings-sub-header': 'View and manage Bluetooth pairing status for each mode.',
+	'bluetooth-not-enabled': 'Bluetooth is not enabled on this firmware build. This feature requires a Pico W build.',
+	'switch-bt-title': 'Nintendo Switch Bluetooth',
+	'hid-bt-title': 'Generic HID Bluetooth',
+	'paired-to': 'Paired to:',
+	'not-paired': 'Not paired',
+	'clear-pairing': 'Clear Pairing',
+	'confirm-clear-switch': 'Are you sure you want to clear the Nintendo Switch Bluetooth pairing? You will need to pair again.',
+	'confirm-clear-hid': 'Are you sure you want to clear the Generic HID Bluetooth pairing? You will need to pair again.',
 };

@@ -3,6 +3,7 @@ import HomePage from './HomePage';
 import Navigation from './Navigation';
 import SettingsPage from './SettingsPage';
 import ResetSettings from './ResetSettings';
+import BluetoothSettings from './BluetoothSettings';
 import Components from './Components';
 import PinMapping from './PinMapping';
 import PeripheralMapping from './PeripheralMapping';
@@ -27,6 +28,7 @@ export default {
 	Navigation,
 	SettingsPage,
 	ResetSettings,
+	BluetoothSettings,
 	Components,
 	PinMapping,
 	PeripheralMapping,

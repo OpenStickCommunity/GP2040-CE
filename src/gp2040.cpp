@@ -11,14 +11,18 @@
 #include "types.h"
 #include "usbhostmanager.h"
 
-// Switch Bluetooth for Pico W
+// Bluetooth drivers for Pico W
 #ifdef GP2040_BLUETOOTH_ENABLED
 #include "drivers/switchbt/SwitchBluetoothDriver.h"
+#include "drivers/hidbt/HIDBTDriver.h"
 #else
 // Stubs for non-Pico W builds
 struct SwitchBTInput { uint32_t buttons; uint8_t dpad; uint16_t lx, ly, rx, ry; };
+struct HIDBTInput { uint32_t buttons; uint8_t dpad; uint16_t lx, ly, rx, ry; };
 static inline void switchbt_init(void) {}
 static inline void switchbt_process(SwitchBTInput*) {}
+static inline void hidbt_init(void) {}
+static inline void hidbt_process(HIDBTInput*) {}
 #endif
 
 // Inputs for Core0
@@ -203,6 +207,9 @@ void GP2040::setup() {
 		case BootAction::SET_INPUT_MODE_SWITCH_BT:
 			inputMode = INPUT_MODE_SWITCH_BT;
 			break;
+		case BootAction::SET_INPUT_MODE_HID_BT:
+			inputMode = INPUT_MODE_HID_BT;
+			break;
 		case BootAction::NONE:
 		default:
 			break;
@@ -301,8 +308,10 @@ void GP2040::run() {
 	// Read input mode from storage
 	InputMode inputMode = Storage::getInstance().GetGamepad()->getOptions().inputMode;
 
-	// Use Bluetooth if configured for Switch BT mode and not in config mode
-	bool useBluetooth = (inputMode == INPUT_MODE_SWITCH_BT) && !configMode;
+	// Use Bluetooth if configured for a Bluetooth mode and not in config mode
+	bool useSwitchBT = (inputMode == INPUT_MODE_SWITCH_BT) && !configMode;
+	bool useHIDBT = (inputMode == INPUT_MODE_HID_BT) && !configMode;
+	bool useBluetooth = useSwitchBT || useHIDBT;
 
 	GPDriver * inputDriver = DriverManager::getInstance().getDriver();
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
@@ -317,8 +326,10 @@ void GP2040::run() {
 	}
 
 	// Initialize based on mode
-	if (useBluetooth) {
+	if (useSwitchBT) {
 		switchbt_init();
+	} else if (useHIDBT) {
+		hidbt_init();
 	} else {
 		// USB initialization
 		tud_init(TUD_OPT_RHPORT);
@@ -368,16 +379,28 @@ void GP2040::run() {
 		addons.ProcessAddons();
 
 		// --- Driver Output (branched) ---
-		if (useBluetooth) {
-			// Convert and send via Bluetooth
+		if (useSwitchBT) {
+			// Convert and send via Switch Bluetooth
 			SwitchBTInput btInput;
 			btInput.buttons = gamepad->state.buttons;
 			btInput.dpad = gamepad->state.dpad;
+			btInput.dpadMode = gamepad->getOptions().dpadMode;
 			btInput.lx = gamepad->state.lx;
 			btInput.ly = gamepad->state.ly;
 			btInput.rx = gamepad->state.rx;
 			btInput.ry = gamepad->state.ry;
 			switchbt_process(&btInput);
+		} else if (useHIDBT) {
+			// Convert and send via HID Bluetooth
+			HIDBTInput btInput;
+			btInput.buttons = gamepad->state.buttons;
+			btInput.dpad = gamepad->state.dpad;
+			btInput.dpadMode = gamepad->getOptions().dpadMode;
+			btInput.lx = gamepad->state.lx;
+			btInput.ly = gamepad->state.ly;
+			btInput.rx = gamepad->state.rx;
+			btInput.ry = gamepad->state.ry;
+			hidbt_process(&btInput);
 		} else {
 			// USB output path
 			checkProcessedState(processedGamepad->state, gamepad->state);
@@ -505,6 +528,8 @@ GP2040::BootAction GP2040::getBootAction() {
                                     return BootAction::SET_INPUT_MODE_SWITCH_PRO;
                                 case INPUT_MODE_SWITCH_BT:
                                     return BootAction::SET_INPUT_MODE_SWITCH_BT;
+                                case INPUT_MODE_HID_BT:
+                                    return BootAction::SET_INPUT_MODE_HID_BT;
                                 default:
                                     return BootAction::NONE;
                             }

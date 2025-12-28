@@ -9,10 +9,16 @@
 
 #include <stdint.h>
 
+// D-pad mode enum (matches GP2040 config)
+#define SWBT_DPAD_MODE_DIGITAL      0
+#define SWBT_DPAD_MODE_LEFT_ANALOG  1
+#define SWBT_DPAD_MODE_RIGHT_ANALOG 2
+
 // Simple input struct that doesn't conflict with TinyUSB
 typedef struct {
     uint16_t buttons;  // Button bitmask (GP2040 format)
     uint8_t dpad;      // D-pad (GP2040 format)
+    uint8_t dpadMode;  // D-pad mode from config
     uint16_t lx, ly;   // Left stick (0-65535)
     uint16_t rx, ry;   // Right stick (0-65535)
 } SwitchBTInput;

@@ -215,30 +215,39 @@ static void set_standard_input_report() {
     if (currentInput.buttons & SWBT_GAMEPAD_MASK_A1) report[5] |= SWITCH_MASK_HOME;
     if (currentInput.buttons & SWBT_GAMEPAD_MASK_A2) report[5] |= SWITCH_MASK_CAPTURE;
 
-    // Button byte 2: L, ZL (upper nibble) - D-pad mapped to left analog instead
+    // Button byte 2: L, ZL, and D-pad (based on dpadMode setting)
     report[6] = 0;
-    // D-pad is NOT mapped to HAT - it goes to left analog stick below
     if (currentInput.buttons & SWBT_GAMEPAD_MASK_L1) report[6] |= SWITCH_MASK_L;
     if (currentInput.buttons & SWBT_GAMEPAD_MASK_L2) report[6] |= SWITCH_MASK_ZL;
 
-    // Left stick (12-bit, packed into 3 bytes)
-    // Convert from 16-bit (0-65535) to 12-bit (0-4095)
-    // D-pad overrides left analog stick when pressed
-    uint16_t lx = 2048;  // Center (0x800)
-    uint16_t ly = 2048;  // Center
+    // Get D-pad mode from input struct
+    uint8_t dpadMode = currentInput.dpadMode;
 
-    // Check if D-pad is pressed - if so, use D-pad as left analog
-    if (currentInput.dpad & (SWBT_GAMEPAD_MASK_UP | SWBT_GAMEPAD_MASK_DOWN |
-                              SWBT_GAMEPAD_MASK_LEFT | SWBT_GAMEPAD_MASK_RIGHT)) {
-        if (currentInput.dpad & SWBT_GAMEPAD_MASK_LEFT)  lx = 0;
-        if (currentInput.dpad & SWBT_GAMEPAD_MASK_RIGHT) lx = 4095;
-        if (currentInput.dpad & SWBT_GAMEPAD_MASK_UP)    ly = 4095;  // Inverted (like analog stick)
-        if (currentInput.dpad & SWBT_GAMEPAD_MASK_DOWN)  ly = 0;
-    } else {
-        // No D-pad pressed, use actual analog stick values
-        lx = currentInput.lx >> 4;
-        ly = (65535 - currentInput.ly) >> 4;  // Invert Y
+    // Digital D-pad mode - map to HAT switch in button byte 2
+    if (dpadMode == SWBT_DPAD_MODE_DIGITAL) {
+        if (currentInput.dpad & SWBT_GAMEPAD_MASK_DOWN)  report[6] |= SWITCH_HAT_DOWN;
+        if (currentInput.dpad & SWBT_GAMEPAD_MASK_UP)    report[6] |= SWITCH_HAT_UP;
+        if (currentInput.dpad & SWBT_GAMEPAD_MASK_RIGHT) report[6] |= SWITCH_HAT_RIGHT;
+        if (currentInput.dpad & SWBT_GAMEPAD_MASK_LEFT)  report[6] |= SWITCH_HAT_LEFT;
     }
+
+    // Left stick (12-bit, packed into 3 bytes)
+    uint16_t lx = currentInput.lx >> 4;
+    uint16_t ly = (65535 - currentInput.ly) >> 4;  // Invert Y
+
+    // D-pad as Left Analog mode - override left stick with D-pad
+    if (dpadMode == SWBT_DPAD_MODE_LEFT_ANALOG) {
+        if (currentInput.dpad & (SWBT_GAMEPAD_MASK_UP | SWBT_GAMEPAD_MASK_DOWN |
+                                  SWBT_GAMEPAD_MASK_LEFT | SWBT_GAMEPAD_MASK_RIGHT)) {
+            lx = 2048;  // Start at center
+            ly = 2048;
+            if (currentInput.dpad & SWBT_GAMEPAD_MASK_LEFT)  lx = 0;
+            if (currentInput.dpad & SWBT_GAMEPAD_MASK_RIGHT) lx = 4095;
+            if (currentInput.dpad & SWBT_GAMEPAD_MASK_UP)    ly = 4095;
+            if (currentInput.dpad & SWBT_GAMEPAD_MASK_DOWN)  ly = 0;
+        }
+    }
+
     report[7] = lx & 0xFF;
     report[8] = ((lx >> 8) & 0x0F) | ((ly & 0x0F) << 4);
     report[9] = ly >> 4;
@@ -246,6 +255,20 @@ static void set_standard_input_report() {
     // Right stick
     uint16_t rx = currentInput.rx >> 4;
     uint16_t ry = (65535 - currentInput.ry) >> 4;  // Invert Y
+
+    // D-pad as Right Analog mode - override right stick with D-pad
+    if (dpadMode == SWBT_DPAD_MODE_RIGHT_ANALOG) {
+        if (currentInput.dpad & (SWBT_GAMEPAD_MASK_UP | SWBT_GAMEPAD_MASK_DOWN |
+                                  SWBT_GAMEPAD_MASK_LEFT | SWBT_GAMEPAD_MASK_RIGHT)) {
+            rx = 2048;  // Start at center
+            ry = 2048;
+            if (currentInput.dpad & SWBT_GAMEPAD_MASK_LEFT)  rx = 0;
+            if (currentInput.dpad & SWBT_GAMEPAD_MASK_RIGHT) rx = 4095;
+            if (currentInput.dpad & SWBT_GAMEPAD_MASK_UP)    ry = 4095;
+            if (currentInput.dpad & SWBT_GAMEPAD_MASK_DOWN)  ry = 0;
+        }
+    }
+
     report[10] = rx & 0xFF;
     report[11] = ((rx >> 8) & 0x0F) | ((ry & 0x0F) << 4);
     report[12] = ry >> 4;
