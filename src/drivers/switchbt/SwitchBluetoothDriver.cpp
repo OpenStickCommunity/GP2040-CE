@@ -21,6 +21,12 @@
 #include <cstring>
 
 // ============================================================================
+// External LED Configuration
+// ============================================================================
+
+#define EXTERNAL_LED_PIN 22  // GP22 for external status LED
+
+// ============================================================================
 // Module State
 // ============================================================================
 
@@ -46,7 +52,9 @@ static bool deep_sleep_active = false;  // True when CYW43 is deinitialized
 #include "hardware/timer.h"
 #include "pico/multicore.h"
 
-#define BT_PAIRING_FLASH_OFFSET (PICO_FLASH_SIZE_BYTES - FLASH_SECTOR_SIZE)
+// GP2040-CE uses flash from 0x1F8000 to end (32KB EEPROM area)
+// So we use the sector just BEFORE that: 0x1F7000
+#define BT_PAIRING_FLASH_OFFSET (0x1F8000 - FLASH_SECTOR_SIZE)
 #define BT_PAIRING_MAGIC 0x53574254  // "SWBT"
 #define BT_FLASH_WRITE_DELAY_MS 500  // Delay before writing to flash
 
@@ -516,13 +524,13 @@ static void packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packe
                         schedule_flash_save(connected_addr);  // Delayed write
                     }
 
-                    cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 1);
+                    gpio_put(EXTERNAL_LED_PIN, 1);
                     hid_device_request_can_send_now_event(hid_cid);
                     break;
                 }
                 case HID_SUBEVENT_CONNECTION_CLOSED:
                     hid_cid = 0;
-                    cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 0);
+                    gpio_put(EXTERNAL_LED_PIN, 0);
 
                     // Schedule reconnection in main loop (with timeout)
                     if (has_host_addr) {
@@ -638,6 +646,11 @@ static void setup_btstack(void) {
 void switchbt_init(void) {
     connectionState = SwitchBTState::INITIALIZING;
 
+    // Initialize external LED GPIO
+    gpio_init(EXTERNAL_LED_PIN);
+    gpio_set_dir(EXTERNAL_LED_PIN, GPIO_OUT);
+    gpio_put(EXTERNAL_LED_PIN, 0);
+
     // Try to load saved host from flash
     load_paired_host();
 
@@ -652,11 +665,11 @@ void switchbt_init(void) {
 
     // Initialize CYW43
     if (cyw43_arch_init()) {
-        // Rapid blink to indicate error
+        // Rapid blink on external LED to indicate error (CYW43 failed)
         while (1) {
-            cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 1);
+            gpio_put(EXTERNAL_LED_PIN, 1);
             sleep_ms(100);
-            cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 0);
+            gpio_put(EXTERNAL_LED_PIN, 0);
             sleep_ms(100);
         }
     }
@@ -674,13 +687,13 @@ void switchbt_init(void) {
     }
 
     // Double blink = init complete
-    cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 1);
+    gpio_put(EXTERNAL_LED_PIN, 1);
     sleep_ms(100);
-    cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 0);
+    gpio_put(EXTERNAL_LED_PIN, 0);
     sleep_ms(100);
-    cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 1);
+    gpio_put(EXTERNAL_LED_PIN, 1);
     sleep_ms(100);
-    cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 0);
+    gpio_put(EXTERNAL_LED_PIN, 0);
 }
 
 // Reinitialize Bluetooth after deep sleep (uses same MAC address from initial pairing)
@@ -696,9 +709,9 @@ static void reinit_bluetooth(void) {
     hid_cid = 0;  // Reset connection ID
 
     // Single blink = reinit complete
-    cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 1);
+    gpio_put(EXTERNAL_LED_PIN, 1);
     sleep_ms(100);
-    cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 0);
+    gpio_put(EXTERNAL_LED_PIN, 0);
 }
 
 bool switchbt_process(const SwitchBTInput* input) {
@@ -714,11 +727,20 @@ bool switchbt_process(const SwitchBTInput* input) {
 
     // Handle SLEEPING state (deep sleep) - wait for button press
     if (connectionState == SwitchBTState::SLEEPING) {
-        // CYW43 is deinitialized in deep sleep, so no LED control
-        // Just poll for button press
+        // CYW43 is deinitialized in deep sleep, but external LED still works
+        // Brief flash every 10 seconds to show it's alive but sleeping (saves battery)
+        static uint32_t lastSleepFlash = 0;
+        if (now - lastSleepFlash > 10000) {
+            // Quick 50ms flash
+            gpio_put(EXTERNAL_LED_PIN, 1);
+            sleep_ms(50);
+            gpio_put(EXTERNAL_LED_PIN, 0);
+            lastSleepFlash = now;
+        }
 
         if (anyButtonPressed && has_host_addr) {
             // Wake from deep sleep and reinitialize Bluetooth
+            gpio_put(EXTERNAL_LED_PIN, 1);  // Turn on LED immediately on wake
             wake_from_deep_sleep();
             connectionState = SwitchBTState::RECONNECTING;
             reconnect_pending = true;
@@ -764,7 +786,7 @@ bool switchbt_process(const SwitchBTInput* input) {
         // Fast blink when reconnecting
         if (now - lastBlink > 150) {
             ledOn = !ledOn;
-            cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, ledOn);
+            gpio_put(EXTERNAL_LED_PIN, ledOn);
             lastBlink = now;
         }
         return false;
@@ -774,7 +796,7 @@ bool switchbt_process(const SwitchBTInput* input) {
         // Slow blink when waiting for pairing
         if (now - lastBlink > 500) {
             ledOn = !ledOn;
-            cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, ledOn);
+            gpio_put(EXTERNAL_LED_PIN, ledOn);
             lastBlink = now;
         }
         return false;
@@ -782,7 +804,7 @@ bool switchbt_process(const SwitchBTInput* input) {
 
     if (connectionState == SwitchBTState::CONNECTED) {
         // Solid LED when connected
-        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 1);
+        gpio_put(EXTERNAL_LED_PIN, 1);
         return true;
     }
 

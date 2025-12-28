@@ -346,6 +346,9 @@ if(GP2040_BOARDCONFIG STREQUAL "PicoW")
   )
   target_compile_definitions(${PROJECT_NAME} PUBLIC
     GP2040_BLUETOOTH_ENABLED=1
+    # Move BTstack flash bank BEFORE GP2040-CE EEPROM (which starts at 0x1F8000)
+    # Default is at end of flash which overlaps with EEPROM and corrupts config!
+    PICO_FLASH_BANK_STORAGE_OFFSET=0x1F6000
   )
   target_include_directories(${PROJECT_NAME} PUBLIC
     headers/drivers/switchbt

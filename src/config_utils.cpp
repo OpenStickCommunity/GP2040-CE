@@ -1838,6 +1838,10 @@ void ConfigUtils::load(Config& config)
     if (!config.migrations.hotkeysMigrated)
         hotkeysMigration(config);
 
+    // WORKAROUND: Force has_inputMode = true to prevent reset to XInput
+    // This fixes an issue where INPUT_MODE_SWITCH_BT (17) was getting reset
+    config.gamepadOptions.has_inputMode = true;
+
     // Make sure that fields that were not deserialized are properly initialized.
     // They were probably added with a newer version of the firmware.
     initUnsetPropertiesWithDefaults(config);

@@ -655,8 +655,11 @@ std::string setGamepadOptions()
     GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
 
     readDoc(gamepadOptions.dpadMode, doc, "dpadMode");
+    gamepadOptions.has_dpadMode = true;
     readDoc(gamepadOptions.inputMode, doc, "inputMode");
+    gamepadOptions.has_inputMode = true;
     readDoc(gamepadOptions.inputDeviceType, doc, "inputDeviceType");
+    gamepadOptions.has_inputDeviceType = true;
     readDoc(gamepadOptions.socdMode, doc, "socdMode");
     readDoc(gamepadOptions.switchTpShareForDs4, doc, "switchTpShareForDs4");
     readDoc(gamepadOptions.lockHotkeys, doc, "lockHotkeys");

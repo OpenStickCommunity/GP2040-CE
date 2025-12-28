@@ -25,6 +25,7 @@ export default {
 		psclassic: 'Playstation Classic',
 		xboxoriginal: 'Original Xbox',
 		xbone: 'Xbox One',
+		'switch-bluetooth': 'Nintendo Switch Bluetooth',
 	},
 	'input-mode-group': {
 		primary: 'Primary Input Modes',
