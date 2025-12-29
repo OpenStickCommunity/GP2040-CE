@@ -12,6 +12,8 @@
 #define GAMEPAD_HOST_DEBUG false
 #define GAMEPAD_HOST_USE_FEATURES true
 
+const uint32_t GAMEPAD_HOST_POLL_INTERVAL_MS = 3;
+
 // Google Stadia controller report struct
 typedef struct TU_ATTR_PACKED
 {
@@ -122,12 +124,18 @@ typedef struct __attribute__((packed)) {
 
 const uint8_t SWITCH_INIT_REPORT[10] = {SwitchReportID::REPORT_CONFIGURATION, SwitchOutputSubtypes::IDENTIFY};
 
+// Wired 360 commands
+const uint8_t XBOX360_WIRED_RUMBLE[] = {0x00, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+const uint8_t XBOX360_WIRED_LED[] = {0x01, 0x03, 0x00};
+// XBox One commands
+const uint8_t XBOXONE_RUMBLE[] = {0x09, 0x00, 0x00, 0x09, 0x00, 0x0F, 0x00, 0x00, 0x00, 0x00, 0xFF, 0x00, 0xFF};
+
 // Add other controller structs here
 class GamepadUSBHostListener : public USBListener {
     public:// USB Listener Features
         virtual void setup();
         virtual void mount(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len);
-        virtual void xmount(uint8_t dev_addr, uint8_t instance, uint8_t controllerType, uint8_t subtype) {}
+        virtual void xmount(uint8_t dev_addr, uint8_t instance, uint8_t controllerType, uint8_t subtype);
         virtual void unmount(uint8_t dev_addr);
         virtual void report_received(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len);
         virtual void report_sent(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len) {}
@@ -144,6 +152,10 @@ class GamepadUSBHostListener : public USBListener {
         bool _controller_host_enabled;
         uint8_t _controller_dev_addr = 0;
         uint8_t _controller_instance = 0;
+        uint8_t _controller_type = 0; // 0 = HID, 1 = Xbox 360, 2 = Xbox One (see xinput_type_t)
+        uint32_t _next_update = 0;
+        // reliable update (e.g for rumble) called every GAMEPAD_HOST_POLL_INTERVAL_MS ms
+        void update_ctrlr();
         void process_ctrlr_report(uint8_t dev_addr, uint8_t const* report, uint16_t len);
 
         // Controller report processor functions
@@ -175,6 +187,15 @@ class GamepadUSBHostListener : public USBListener {
         void process_stadia(uint8_t const* report, uint16_t len);
 
         void process_ultrastik360(uint8_t const* report, uint16_t len);
+
+        void xbox360_set_led(uint8_t dev_addr, uint8_t instance, uint8_t quadrant);
+        // universal xinput rumble packet
+        void xinput_set_rumble(uint8_t dev_addr, uint8_t instance, uint8_t left, uint8_t right);
+        // universal xinput setup (xbox one init not included)
+        void setup_xinput(uint8_t dev_addr, uint8_t instance);
+        // sync controller rumble and LED states
+        void update_xinput(uint8_t dev_addr, uint8_t instance);
+        void process_xbox360(uint8_t const* report, uint16_t len);
 
         uint16_t controller_pid, controller_vid;
 
