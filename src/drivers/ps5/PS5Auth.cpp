@@ -15,7 +15,6 @@ void PS5Auth::initialize() {
     ps5AuthData.ps5_passthrough_state = PS5AuthState::ps5_auth_idle;
     memset(ps5AuthData.auth_buffer, 0, sizeof(ps5AuthData.auth_buffer));
     memset(ps5AuthData.MAC_pair_report, 0, sizeof(ps5AuthData.MAC_pair_report));
-    mutex_init(&ps5AuthData.hash_mutex);
     listener = new PS5AuthUSBListener();
     ((PS5AuthUSBListener*)listener)->setup();
     ((PS5AuthUSBListener*)listener)->setAuthData(&ps5AuthData);

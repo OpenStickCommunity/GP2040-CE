@@ -7,6 +7,8 @@
 
 #define PS5_KEEPALIVE_US                          5000
 
+#define PS5_PACKET_SIZE 64
+
 #define PS5_DRIVER_PRINTF_ENABLE                  0       // GP0 as UART0_TX
 #if PS5_DRIVER_PRINTF_ENABLE
 #   define P5DPRINTF_INIT(...)                          stdio_init_all(__VA_ARGS__)
@@ -136,15 +138,14 @@ bool PS5Driver::process(Gamepad * gamepad) {
 
     // P5General uses hash_ready, can we use for Mayflash S5?
     if (ps5AuthData->hash_ready) {
-        if ( mutex_enter_timeout_us(&ps5AuthData->hash_mutex, 500) ) {
-            if (tud_hid_ready() && tud_hid_report(0, ps5AuthData->hash_finish_buffer, sizeof(ps5AuthData->hash_finish_buffer)) == true ) {
-                mutex_exit(&ps5AuthData->hash_mutex);
-                last_report_us = to_us_since_boot(get_absolute_time());
-                ps5AuthData->hash_ready = false;
-            } else {
-                mutex_exit(&ps5AuthData->hash_mutex);
-                return false;
-            }
+        memcpy(ps5AuthData->send_hid_buffer, ps5AuthData->hash_finish_buffer, 64);
+        void * report = ps5AuthData->send_hid_buffer;
+        uint16_t report_size = PS5_PACKET_SIZE;
+        if (tud_hid_ready() && tud_hid_report(0, report, report_size) == true ) {
+            last_report_us = to_us_since_boot(get_absolute_time());
+            ps5AuthData->hash_ready = false;
+        } else {
+            return false;
         }
     }
 

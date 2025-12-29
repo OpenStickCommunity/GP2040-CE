@@ -19,11 +19,11 @@ typedef struct {
     uint8_t hash_pending_buffer[64];
     uint8_t hash_finish_buffer[64];
     uint8_t auth_buffer[64];
+    uint8_t send_hid_buffer[64];
     uint64_t auth_recv_f2_us;
     bool dongle_ready;
     bool hash_pending;
     bool hash_ready;
-    mutex_t hash_mutex;
     PS5AuthState ps5_passthrough_state;
     uint8_t MAC_pair_report[16];  // 16-byte pair information for BT MAC Address
     bool pair_ready;
