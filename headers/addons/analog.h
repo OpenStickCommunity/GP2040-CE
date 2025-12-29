@@ -128,6 +128,8 @@ typedef struct
     float out_deadzone;
     bool auto_calibration;
     bool forced_circularity;
+    uint32_t joystick_center_x;
+    uint32_t joystick_center_y;
 } adc_instance;
 
 class AnalogInput : public GPAddon {

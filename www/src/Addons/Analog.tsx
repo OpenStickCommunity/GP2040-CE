@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FormCheck, Row, Tab, Tabs } from 'react-bootstrap';
 import * as yup from 'yup';
@@ -133,6 +133,22 @@ export const analogScheme = {
 		.number()
 		.label('Error Rate 2')
 		.validateSelectionWhenValue('AnalogInputEnabled', ANALOG_ERROR_RATES),
+	joystickCenterX: yup
+		.number()
+		.label('Joystick Center X')
+		.validateRangeWhenValue('AnalogInputEnabled', 0, 4095),
+	joystickCenterY: yup
+		.number()
+		.label('Joystick Center Y')
+		.validateRangeWhenValue('AnalogInputEnabled', 0, 4095),
+	joystickCenterX2: yup
+		.number()
+		.label('Joystick Center X2')
+		.validateRangeWhenValue('AnalogInputEnabled', 0, 4095),
+	joystickCenterY2: yup
+		.number()
+		.label('Joystick Center Y2')
+		.validateRangeWhenValue('AnalogInputEnabled', 0, 4095),
 };
 
 export const analogState = {
@@ -153,6 +169,10 @@ export const analogState = {
 	outer_deadzone2: 95,
 	auto_calibrate: 0,
 	auto_calibrate2: 0,
+	joystickCenterX: 0,
+	joystickCenterY: 0,
+	joystickCenterX2: 0,
+	joystickCenterY2: 0,
 	analog_smoothing: 0,
 	analog_smoothing2: 0,
 	smoothing_factor: 5,
@@ -161,7 +181,7 @@ export const analogState = {
 	analog_error2: 1,
 };
 
-const Analog = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) => {
+const Analog = ({ values, errors, handleChange, handleCheckbox, setFieldValue }: AddonPropTypes) => {
 	const { usedPins } = useContext(AppContext);
 	const { t } = useTranslation();
 	const availableAnalogPins = ANALOG_PINS.filter(
@@ -346,18 +366,137 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes
 										))}
 									</FormSelect>
 								</Row>
-								<FormCheck
-									label={t('AddonsConfig:analog-auto-calibrate')}
-									type="switch"
-									id="Auto_calibrate"
-									className="col-sm-3 ms-3"
-									isInvalid={false}
-									checked={Boolean(values.auto_calibrate)}
-									onChange={(e) => {
-										handleCheckbox('auto_calibrate');
-										handleChange(e);
-									}}
-								/>
+								<div className="d-flex align-items-center">
+									<FormCheck
+										label={t('AddonsConfig:analog-auto-calibrate')}
+										type="switch"
+										id="Auto_calibrate"
+										className="col-sm-3 ms-3"
+										isInvalid={false}
+										checked={Boolean(values.auto_calibrate)}
+										onChange={(e) => {
+											handleCheckbox('auto_calibrate');
+											handleChange(e);
+										}}
+									/>
+									<button
+										type="button"
+										className="btn btn-sm btn-outline-secondary ms-2"
+										disabled={Boolean(values.auto_calibrate)}
+										onClick={async () => {
+											try {
+												// Multi-step calibration process
+												const steps = [
+													{ direction: t('AddonsConfig:analog-calibration-direction-top-left'), position: 'top-left' },
+													{ direction: t('AddonsConfig:analog-calibration-direction-top-right'), position: 'top-right' },
+													{ direction: t('AddonsConfig:analog-calibration-direction-bottom-left'), position: 'bottom-left' },
+													{ direction: t('AddonsConfig:analog-calibration-direction-bottom-right'), position: 'bottom-right' }
+												];
+												
+												const calibrationValues = [];
+												
+												for (let i = 0; i < steps.length; i++) {
+													const step = steps[i];
+													const stepNumber = i + 1;
+													
+													
+													// Show confirmation dialog
+													const userConfirmed = confirm(
+														t('AddonsConfig:analog-calibration-step-title', { step: stepNumber }) + '\n\n' +
+														t('AddonsConfig:analog-calibration-step-instruction', { stick: '1', direction: step.direction }) + '\n\n' +
+														t('AddonsConfig:analog-calibration-step-confirm', { stick: '1', step: stepNumber })
+													);
+													
+													if (!userConfirmed) {
+														alert(t('AddonsConfig:analog-calibration-cancelled'));
+														return;
+													}
+													
+													
+													// Read current center value
+													console.log(`Fetching joystick 1 center for step ${stepNumber}...`);
+													const res = await fetch('/api/getJoystickCenter');
+													console.log('Response status:', res.status);
+													
+													if (!res.ok) {
+														throw new Error(`HTTP error! status: ${res.status}`);
+													}
+													
+													const data = await res.json();
+													console.log('Response data:', data);
+													
+													if (!data.success || data.error) {
+														alert(t('AddonsConfig:analog-calibration-failed', { error: data.error || 'Unknown error' }));
+														console.error('API Error:', data.error);
+														return;
+													}
+													
+													calibrationValues.push({
+														step: stepNumber,
+														direction: step.direction,
+														x: data.x || 0,
+														y: data.y || 0
+													});
+													
+													console.log(`Step ${stepNumber} completed:`, calibrationValues[i]);
+												}
+												
+
+												// Calculate center value from four points
+												const avgX = Math.round(calibrationValues.reduce((sum, val) => sum + val.x, 0) / 4);
+												const avgY = Math.round(calibrationValues.reduce((sum, val) => sum + val.y, 0) / 4);
+												
+												// Update joystick 1 center values
+												setFieldValue('joystickCenterX', avgX);
+												setFieldValue('joystickCenterY', avgY);
+												
+												console.log('Calibration completed:', {
+													values: calibrationValues,
+													finalCenter: { x: avgX, y: avgY }
+												});
+												
+												
+												// Show success message
+												alert(
+													t('AddonsConfig:analog-calibration-success-stick-1') + '\n\n' +
+													t('AddonsConfig:analog-calibration-data') + '\n' +
+													`• ${t('AddonsConfig:analog-calibration-direction-top-left')}: X=${calibrationValues[0].x}, Y=${calibrationValues[0].y}\n` +
+													`• ${t('AddonsConfig:analog-calibration-direction-top-right')}: X=${calibrationValues[1].x}, Y=${calibrationValues[1].y}\n` +
+													`• ${t('AddonsConfig:analog-calibration-direction-bottom-left')}: X=${calibrationValues[2].x}, Y=${calibrationValues[2].y}\n` +
+													`• ${t('AddonsConfig:analog-calibration-direction-bottom-right')}: X=${calibrationValues[3].x}, Y=${calibrationValues[3].y}\n\n` +
+													t('AddonsConfig:analog-calibration-final-center', { x: avgX, y: avgY }) + '\n\n' +
+													t('AddonsConfig:analog-calibration-save-notice')
+												);
+											} catch (err) {
+												console.error('Failed to calibrate joystick 1', err);
+												alert(t('AddonsConfig:analog-calibration-failed', { error: err instanceof Error ? err.message : String(err) }));
+											}
+										}}
+									>
+										{t('AddonsConfig:analog-calibrate-stick-1-button')}
+									</button>
+									<div className="ms-3 small text-muted">
+										{`Center: X=${values.joystickCenterX}, Y=${values.joystickCenterY}`}
+									</div>
+								</div>
+								{Boolean(values.auto_calibrate) && (
+									<div className="alert alert-info mt-2 mb-3">
+										<small>
+											<strong>{t('AddonsConfig:analog-auto-calibration-enabled-stick-1')}：</strong> {t('AddonsConfig:analog-calibration-auto-mode-instruction', { stick: '1' })}
+										</small>
+									</div>
+								)}
+								{!Boolean(values.auto_calibrate) && (
+									<div className="alert alert-warning mt-2 mb-3">
+										<small>
+											<strong>{t('AddonsConfig:analog-manual-calibration-mode-stick-1')}：</strong> 
+											<br />• {t('AddonsConfig:analog-calibration-manual-mode-instruction-1')}
+											<br />• {t('AddonsConfig:analog-calibration-manual-mode-instruction-2')}
+											<br />• {t('AddonsConfig:analog-calibration-manual-mode-instruction-3')}
+											<br />• {t('AddonsConfig:analog-calibration-manual-mode-instruction-4')}
+										</small>
+									</div>
+								)}
 							</Row>
 						</Tab>
 						<Tab
@@ -512,18 +651,137 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes
 										))}
 									</FormSelect>
 								</Row>
-								<FormCheck
-									label={t('AddonsConfig:analog-auto-calibrate')}
-									type="switch"
-									id="Auto_calibrate2"
-									className="col-sm-3 ms-3"
-									isInvalid={false}
-									checked={Boolean(values.auto_calibrate2)}
-									onChange={(e) => {
-										handleCheckbox('auto_calibrate2');
-										handleChange(e);
-									}}
-								/>
+								<div className="d-flex align-items-center">
+									<FormCheck
+										label={t('AddonsConfig:analog-auto-calibrate')}
+										type="switch"
+										id="Auto_calibrate2"
+										className="col-sm-3 ms-3"
+										isInvalid={false}
+										checked={Boolean(values.auto_calibrate2)}
+										onChange={(e) => {
+											handleCheckbox('auto_calibrate2');
+											handleChange(e);
+										}}
+									/>
+									<button
+										type="button"
+										className="btn btn-sm btn-outline-secondary ms-2"
+										disabled={Boolean(values.auto_calibrate2)}
+										onClick={async () => {
+											try {
+												// Multi-step calibration process
+												const steps = [
+													{ direction: t('AddonsConfig:analog-calibration-direction-top-left'), position: 'top-left' },
+													{ direction: t('AddonsConfig:analog-calibration-direction-top-right'), position: 'top-right' },
+													{ direction: t('AddonsConfig:analog-calibration-direction-bottom-left'), position: 'bottom-left' },
+													{ direction: t('AddonsConfig:analog-calibration-direction-bottom-right'), position: 'bottom-right' }
+												];
+												
+												const calibrationValues = [];
+												
+												for (let i = 0; i < steps.length; i++) {
+													const step = steps[i];
+													const stepNumber = i + 1;
+													
+													
+													// Show confirmation dialog
+													const userConfirmed = confirm(
+														t('AddonsConfig:analog-calibration-step-title', { step: stepNumber }) + '\n\n' +
+														t('AddonsConfig:analog-calibration-step-instruction', { stick: '2', direction: step.direction }) + '\n\n' +
+														t('AddonsConfig:analog-calibration-step-confirm', { stick: '2', step: stepNumber })
+													);
+													
+													if (!userConfirmed) {
+														alert(t('AddonsConfig:analog-calibration-cancelled'));
+														return;
+													}
+													
+													
+													// Read current center value
+													console.log(`Fetching joystick 2 center for step ${stepNumber}...`);
+													const res = await fetch('/api/getJoystickCenter2');
+													console.log('Response status:', res.status);
+													
+													if (!res.ok) {
+														throw new Error(`HTTP error! status: ${res.status}`);
+													}
+													
+													const data = await res.json();
+													console.log('Response data:', data);
+													
+													if (!data.success || data.error) {
+														alert(t('AddonsConfig:analog-calibration-failed', { error: data.error || 'Unknown error' }));
+														console.error('API Error:', data.error);
+														return;
+													}
+													
+													calibrationValues.push({
+														step: stepNumber,
+														direction: step.direction,
+														x: data.x || 0,
+														y: data.y || 0
+													});
+													
+													console.log(`Step ${stepNumber} completed:`, calibrationValues[i]);
+												}
+												
+
+												// Calculate center value from four points
+												const avgX = Math.round(calibrationValues.reduce((sum, val) => sum + val.x, 0) / 4);
+												const avgY = Math.round(calibrationValues.reduce((sum, val) => sum + val.y, 0) / 4);
+												
+												// Update joystick 2 center values
+												setFieldValue('joystickCenterX2', avgX);
+												setFieldValue('joystickCenterY2', avgY);
+												
+												console.log('Calibration completed:', {
+													values: calibrationValues,
+													finalCenter: { x: avgX, y: avgY }
+												});
+												
+												
+												// Show success message
+												alert(
+													t('AddonsConfig:analog-calibration-success-stick-2') + '\n\n' +
+													t('AddonsConfig:analog-calibration-data') + '\n' +
+													`• ${t('AddonsConfig:analog-calibration-direction-top-left')}: X=${calibrationValues[0].x}, Y=${calibrationValues[0].y}\n` +
+													`• ${t('AddonsConfig:analog-calibration-direction-top-right')}: X=${calibrationValues[1].x}, Y=${calibrationValues[1].y}\n` +
+													`• ${t('AddonsConfig:analog-calibration-direction-bottom-left')}: X=${calibrationValues[2].x}, Y=${calibrationValues[2].y}\n` +
+													`• ${t('AddonsConfig:analog-calibration-direction-bottom-right')}: X=${calibrationValues[3].x}, Y=${calibrationValues[3].y}\n\n` +
+													t('AddonsConfig:analog-calibration-final-center', { x: avgX, y: avgY }) + '\n\n' +
+													t('AddonsConfig:analog-calibration-save-notice')
+												);
+											} catch (err) {
+												console.error('Failed to calibrate joystick 2', err);
+												alert(t('AddonsConfig:analog-calibration-failed', { error: err instanceof Error ? err.message : String(err) }));
+											}
+										}}
+									>
+										{t('AddonsConfig:analog-calibrate-stick-2-button')}
+									</button>
+									<div className="ms-3 small text-muted">
+										{`Center: X=${values.joystickCenterX2}, Y=${values.joystickCenterY2}`}
+									</div>
+								</div>
+								{Boolean(values.auto_calibrate2) && (
+									<div className="alert alert-info mt-2 mb-3">
+										<small>
+											<strong>{t('AddonsConfig:analog-auto-calibration-enabled-stick-2')}：</strong> {t('AddonsConfig:analog-calibration-auto-mode-instruction', { stick: '2' })}
+										</small>
+									</div>
+								)}
+								{!Boolean(values.auto_calibrate2) && (
+									<div className="alert alert-warning mt-2 mb-3">
+										<small>
+											<strong>{t('AddonsConfig:analog-manual-calibration-mode-stick-2')}：</strong> 
+											<br />• {t('AddonsConfig:analog-calibration-manual-mode-instruction-1')}
+											<br />• {t('AddonsConfig:analog-calibration-manual-mode-instruction-2')}
+											<br />• {t('AddonsConfig:analog-calibration-manual-mode-instruction-3')}
+											<br />• {t('AddonsConfig:analog-calibration-manual-mode-instruction-4')}
+										</small>
+									</div>
+								)}
 							</Row>
 						</Tab>
 					</Tabs>
