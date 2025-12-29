@@ -11,6 +11,20 @@
 #include "types.h"
 #include "usbhostmanager.h"
 
+// Bluetooth drivers for Pico W
+#ifdef GP2040_BLUETOOTH_ENABLED
+#include "drivers/switchbt/SwitchBluetoothDriver.h"
+#include "drivers/hidbt/HIDBTDriver.h"
+#else
+// Stubs for non-Pico W builds
+struct SwitchBTInput { uint32_t buttons; uint8_t dpad; uint16_t lx, ly, rx, ry; };
+struct HIDBTInput { uint32_t buttons; uint8_t dpad; uint16_t lx, ly, rx, ry; };
+static inline void switchbt_init(void) {}
+static inline void switchbt_process(SwitchBTInput*) {}
+static inline void hidbt_init(void) {}
+static inline void hidbt_process(HIDBTInput*) {}
+#endif
+
 // Inputs for Core0
 #include "addons/analog.h"
 #include "addons/bootsel_button.h"
@@ -36,6 +50,10 @@
 #include "pico/bootrom.h"
 #include "pico/time.h"
 #include "hardware/adc.h"
+#include "hardware/gpio.h"
+
+// External status LED (GP22)
+#define STATUS_LED_PIN 22
 
 #include "rndis.h"
 
@@ -186,6 +204,12 @@ void GP2040::setup() {
 		case BootAction::SET_INPUT_MODE_SWITCH_PRO:
 			inputMode = INPUT_MODE_SWITCH_PRO;
 			break;
+		case BootAction::SET_INPUT_MODE_SWITCH_BT:
+			inputMode = INPUT_MODE_SWITCH_BT;
+			break;
+		case BootAction::SET_INPUT_MODE_HID_BT:
+			inputMode = INPUT_MODE_HID_BT;
+			break;
 		case BootAction::NONE:
 		default:
 			break;
@@ -280,71 +304,114 @@ void GP2040::debounceGpioGetAll() {
 
 void GP2040::run() {
 	bool configMode = DriverManager::getInstance().isConfigMode();
+
+	// Read input mode from storage
+	InputMode inputMode = Storage::getInstance().GetGamepad()->getOptions().inputMode;
+
+	// Use Bluetooth if configured for a Bluetooth mode and not in config mode
+	bool useSwitchBT = (inputMode == INPUT_MODE_SWITCH_BT) && !configMode;
+	bool useHIDBT = (inputMode == INPUT_MODE_HID_BT) && !configMode;
+	bool useBluetooth = useSwitchBT || useHIDBT;
+
 	GPDriver * inputDriver = DriverManager::getInstance().getDriver();
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
 	GamepadState prevState;
 
-	// Start the TinyUSB Device functionality
-	tud_init(TUD_OPT_RHPORT);
-
-	// Initialize our USB manager
-	USBHostManager::getInstance().start();
-
-	if (configMode == true ) {
-		rndis_init();
+	// Initialize status LED (GP22) - Bluetooth driver handles its own init
+	if (!useBluetooth) {
+		gpio_init(STATUS_LED_PIN);
+		gpio_set_dir(STATUS_LED_PIN, GPIO_OUT);
+		gpio_put(STATUS_LED_PIN, 1);  // Solid on for USB modes
 	}
 
-	while (1) { // LOOP
-		this->getReinitGamepad(gamepad);
+	// Initialize based on mode
+	if (useSwitchBT) {
+		switchbt_init();
+	} else if (useHIDBT) {
+		hidbt_init();
+	} else {
+		// USB initialization
+		tud_init(TUD_OPT_RHPORT);
+		USBHostManager::getInstance().start();
+		if (configMode) {
+			rndis_init();
+		}
+	}
 
-		memcpy(&prevState, &gamepad->state, sizeof(GamepadState));
+	// ========================================
+	// UNIFIED MAIN LOOP
+	// ========================================
+	while (1) {
+		// --- Input Reading (shared) ---
+		if (!useBluetooth) {
+			this->getReinitGamepad(gamepad);
+			memcpy(&prevState, &gamepad->state, sizeof(GamepadState));
+		}
 
-		// Debounce
 		debounceGpioGetAll();
-		// Read Gamepad
 		gamepad->read();
 
-		checkRawState(prevState, gamepad->state);
+		if (!useBluetooth) {
+			checkRawState(prevState, gamepad->state);
+			USBHostManager::getInstance().process();
+		}
 
-		// Process USB Host on Core0
-		USBHostManager::getInstance().process();
-
-		// Config Loop (Web-Config skips Core0 add-ons)
-		if (configMode == true) {
+		// --- Config Mode: minimal processing ---
+		if (configMode) {
 			inputDriver->process(gamepad);
 			rebootHotkeys.process(gamepad, configMode);
 			checkSaveRebootState();
 			continue;
 		}
 
-		// Pre-Process add-ons for MPGS
+		// --- Add-on Pre-processing (shared) ---
 		addons.PreprocessAddons();
 
-		gamepad->hotkey(); 	// check for MPGS hotkeys
-		rebootHotkeys.process(gamepad, configMode);
+		if (!useBluetooth) {
+			gamepad->hotkey();
+			rebootHotkeys.process(gamepad, configMode);
+		}
 
-		gamepad->process(); // process through MPGS
+		gamepad->process();
 
-		// (Post) Process for add-ons
+		// --- Add-on Post-processing (shared) ---
 		addons.ProcessAddons();
 
-		checkProcessedState(processedGamepad->state, gamepad->state);
+		// --- Driver Output (branched) ---
+		if (useSwitchBT) {
+			// Convert and send via Switch Bluetooth
+			SwitchBTInput btInput;
+			btInput.buttons = gamepad->state.buttons;
+			btInput.dpad = gamepad->state.dpad;
+			btInput.dpadMode = gamepad->getOptions().dpadMode;
+			btInput.lx = gamepad->state.lx;
+			btInput.ly = gamepad->state.ly;
+			btInput.rx = gamepad->state.rx;
+			btInput.ry = gamepad->state.ry;
+			switchbt_process(&btInput);
+		} else if (useHIDBT) {
+			// Convert and send via HID Bluetooth
+			HIDBTInput btInput;
+			btInput.buttons = gamepad->state.buttons;
+			btInput.dpad = gamepad->state.dpad;
+			btInput.dpadMode = gamepad->getOptions().dpadMode;
+			btInput.lx = gamepad->state.lx;
+			btInput.ly = gamepad->state.ly;
+			btInput.rx = gamepad->state.rx;
+			btInput.ry = gamepad->state.ry;
+			hidbt_process(&btInput);
+		} else {
+			// USB output path
+			checkProcessedState(processedGamepad->state, gamepad->state);
+			memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
 
-		// Copy Processed Gamepad for Core1 (race condition otherwise)
-		memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
+			bool processed = inputDriver->process(gamepad);
+			tud_task();
 
-		// Process Input Driver
-		bool processed = inputDriver->process(gamepad);
-
-		// TinyUSB Task update
-		tud_task();
-
-		// Post-Process Add-ons with USB Report Processed Sent
-		addons.PostprocessAddons(processed);
-
-		// Check if we have a pending save
-		checkSaveRebootState();
+			addons.PostprocessAddons(processed);
+			checkSaveRebootState();
+		}
 	}
 }
 
@@ -439,7 +506,7 @@ GP2040::BootAction GP2040::getBootAction() {
                                     return BootAction::SET_INPUT_MODE_PS4;
                                 case INPUT_MODE_PS5:
                                     return BootAction::SET_INPUT_MODE_PS5;
-                                case INPUT_MODE_P5GENERAL: 
+                                case INPUT_MODE_P5GENERAL:
                                     return BootAction::SET_INPUT_MODE_P5GENERAL;
                                 case INPUT_MODE_NEOGEO:
                                     return BootAction::SET_INPUT_MODE_NEOGEO;
@@ -459,6 +526,10 @@ GP2040::BootAction GP2040::getBootAction() {
                                     return BootAction::SET_INPUT_MODE_XBONE;
                                 case INPUT_MODE_SWITCH_PRO:
                                     return BootAction::SET_INPUT_MODE_SWITCH_PRO;
+                                case INPUT_MODE_SWITCH_BT:
+                                    return BootAction::SET_INPUT_MODE_SWITCH_BT;
+                                case INPUT_MODE_HID_BT:
+                                    return BootAction::SET_INPUT_MODE_HID_BT;
                                 default:
                                     return BootAction::NONE;
                             }

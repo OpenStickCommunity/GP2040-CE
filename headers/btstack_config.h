@@ -1,0 +1,48 @@
+/*
+ * BTstack configuration for Switch Pro Controller Bluetooth
+ * Classic Bluetooth only, no BLE
+ */
+
+#ifndef _PICO_BTSTACK_BTSTACK_CONFIG_H
+#define _PICO_BTSTACK_BTSTACK_CONFIG_H
+
+// Classic Bluetooth only
+#define ENABLE_CLASSIC
+#define ENABLE_LOG_INFO
+#define ENABLE_LOG_ERROR
+#define ENABLE_PRINTF_HEXDUMP
+
+// BTstack configuration
+#define HCI_OUTGOING_PRE_BUFFER_SIZE 4
+#define HCI_ACL_PAYLOAD_SIZE (158 + 4)
+#define HCI_ACL_CHUNK_SIZE_ALIGNMENT 4
+
+#define MAX_NR_BTSTACK_LINK_KEY_DB_MEMORY_ENTRIES 3
+#define MAX_NR_HCI_CONNECTIONS 3
+#define MAX_NR_L2CAP_CHANNELS 4
+#define MAX_NR_L2CAP_SERVICES 3
+#define MAX_NR_SERVICE_RECORD_ITEMS 4
+
+// Limit ACL/SCO buffers
+#define MAX_NR_CONTROLLER_ACL_BUFFERS 3
+#define MAX_NR_CONTROLLER_SCO_PACKETS 3
+
+// HCI Controller to Host Flow Control
+#define ENABLE_HCI_CONTROLLER_TO_HOST_FLOW_CONTROL
+#define HCI_HOST_ACL_PACKET_LEN 1024
+#define HCI_HOST_ACL_PACKET_NUM 3
+#define HCI_HOST_SCO_PACKET_LEN 120
+#define HCI_HOST_SCO_PACKET_NUM 3
+
+// Link Key DB
+#define NVM_NUM_LINK_KEYS 16
+
+// BTstack HAL configuration
+#define HAVE_EMBEDDED_TIME_MS
+#define HAVE_ASSERT
+#define HCI_RESET_RESEND_TIMEOUT_MS 1000
+
+#define ENABLE_SOFTWARE_AES128
+#define ENABLE_L2CAP_ENHANCED_RETRANSMISSION_MODE
+
+#endif // _PICO_BTSTACK_BTSTACK_CONFIG_H

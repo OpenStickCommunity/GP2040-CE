@@ -200,6 +200,8 @@ const INPUT_MODES = [
 	},
 	{ labelKey: 'input-mode-options.nintendo-switch', value: 1, group: 'primary', },
 	{ labelKey: 'input-mode-options.nintendo-switch-pro', value: 15, group: 'primary' },
+	{ labelKey: 'input-mode-options.switch-bluetooth', value: 17, group: 'primary' },
+	{ labelKey: 'input-mode-options.hid-bluetooth', value: 18, group: 'primary' },
 	{ labelKey: 'input-mode-options.keyboard', value: 3, group: 'primary' },
 	{ labelKey: 'input-mode-options.generic', value: 14, group: 'primary' },
 	{ labelKey: 'input-mode-options.mdmini', value: 6, group: 'mini' },
@@ -246,6 +248,8 @@ const INPUT_BOOT_MODES = [
 		group: 'primary',
 	},
 	{ labelKey: 'input-mode-options.nintendo-switch-pro', value: 15, group: 'primary' },
+	{ labelKey: 'input-mode-options.switch-bluetooth', value: 17, group: 'primary' },
+	{ labelKey: 'input-mode-options.hid-bluetooth', value: 18, group: 'primary' },
 	{ labelKey: 'input-mode-options.keyboard', value: 3, group: 'primary' },
 	{ labelKey: 'input-mode-options.generic', value: 14, group: 'primary' },
 	{ labelKey: 'input-mode-options.mdmini', value: 6, group: 'mini' },
@@ -599,6 +603,39 @@ export default function SettingsPage() {
 	const [PS4Key, setPS4Key] = useState();
 	const [PS4Serial, setPS4Serial] = useState();
 	const [PS4Signature, setPS4Signature] = useState();
+
+	// Bluetooth settings state
+	const [bluetoothData, setBluetoothData] = useState({
+		bluetoothEnabled: false,
+		switchBtPaired: false,
+		switchBtMac: '',
+		hidBtPaired: false,
+		hidBtMac: '',
+	});
+
+	useEffect(() => {
+		async function fetchBluetoothData() {
+			const data = await WebApi.getBluetoothSettings();
+			setBluetoothData(data);
+		}
+		fetchBluetoothData();
+	}, []);
+
+	const handleClearSwitchPairing = async () => {
+		if (window.confirm(t('SettingsPage:confirm-clear-switch'))) {
+			await WebApi.clearSwitchBtPairing();
+			const data = await WebApi.getBluetoothSettings();
+			setBluetoothData(data);
+		}
+	};
+
+	const handleClearHidPairing = async () => {
+		if (window.confirm(t('SettingsPage:confirm-clear-hid'))) {
+			await WebApi.clearHidBtPairing();
+			const data = await WebApi.getBluetoothSettings();
+			setBluetoothData(data);
+		}
+	};
 
 	const handlePS4Key = (event) => {
 		setPS4Key(event.target.files[0]);
@@ -1522,6 +1559,11 @@ export default function SettingsPage() {
 													{t('SettingsPage:hotkey-settings-label')}
 												</Nav.Link>
 											</Nav.Item>
+											<Nav.Item>
+												<Nav.Link eventKey="bluetooth">
+													{t('SettingsPage:bluetooth-settings-label')}
+												</Nav.Link>
+											</Nav.Item>
 										</Nav>
 									</Col>
 									<Col md={9}>
@@ -2022,6 +2064,85 @@ export default function SettingsPage() {
 													{saveMessage ? (
 														<span className="alert">{saveMessage}</span>
 													) : null}
+												</Section>
+											</Tab.Pane>
+											<Tab.Pane eventKey="bluetooth">
+												<Section
+													title={t('SettingsPage:bluetooth-settings-label')}
+												>
+													<p className="card-text mb-4">
+														{t('SettingsPage:bluetooth-settings-sub-header')}
+													</p>
+
+													{!bluetoothData.bluetoothEnabled ? (
+														<div className="alert alert-info">
+															{t('SettingsPage:bluetooth-not-enabled')}
+														</div>
+													) : (
+														<>
+															{/* Nintendo Switch Bluetooth */}
+															<div className="mb-4 p-3 border rounded">
+																<h5>{t('SettingsPage:switch-bt-title')}</h5>
+																<Row className="align-items-center">
+																	<Col md={8}>
+																		{bluetoothData.switchBtPaired ? (
+																			<>
+																				<span className="text-success me-2">●</span>
+																				{t('SettingsPage:paired-to')} <code>{bluetoothData.switchBtMac}</code>
+																			</>
+																		) : (
+																			<>
+																				<span className="text-muted me-2">○</span>
+																				{t('SettingsPage:not-paired')}
+																			</>
+																		)}
+																	</Col>
+																	<Col md={4} className="text-end">
+																		{bluetoothData.switchBtPaired && (
+																			<Button
+																				variant="outline-danger"
+																				size="sm"
+																				onClick={handleClearSwitchPairing}
+																			>
+																				{t('SettingsPage:clear-pairing')}
+																			</Button>
+																		)}
+																	</Col>
+																</Row>
+															</div>
+
+															{/* HID Bluetooth */}
+															<div className="p-3 border rounded">
+																<h5>{t('SettingsPage:hid-bt-title')}</h5>
+																<Row className="align-items-center">
+																	<Col md={8}>
+																		{bluetoothData.hidBtPaired ? (
+																			<>
+																				<span className="text-success me-2">●</span>
+																				{t('SettingsPage:paired-to')} <code>{bluetoothData.hidBtMac}</code>
+																			</>
+																		) : (
+																			<>
+																				<span className="text-muted me-2">○</span>
+																				{t('SettingsPage:not-paired')}
+																			</>
+																		)}
+																	</Col>
+																	<Col md={4} className="text-end">
+																		{bluetoothData.hidBtPaired && (
+																			<Button
+																				variant="outline-danger"
+																				size="sm"
+																				onClick={handleClearHidPairing}
+																			>
+																				{t('SettingsPage:clear-pairing')}
+																			</Button>
+																		)}
+																	</Col>
+																</Row>
+															</div>
+														</>
+													)}
 												</Section>
 											</Tab.Pane>
 										</Tab.Content>

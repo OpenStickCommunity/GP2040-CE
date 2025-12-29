@@ -333,6 +333,30 @@ pico_mbedtls
 nanopb
 )
 
+# Add BTstack for Pico W Bluetooth Switch support
+if(GP2040_BOARDCONFIG STREQUAL "PicoW")
+  target_sources(${PROJECT_NAME} PRIVATE
+    src/drivers/switchbt/SwitchBluetoothDriver.cpp
+    src/drivers/hidbt/HIDBTDriver.cpp
+  )
+  target_link_libraries(${PROJECT_NAME}
+    pico_rand
+    pico_btstack_cyw43
+    pico_btstack_classic
+    pico_cyw43_arch_none
+  )
+  target_compile_definitions(${PROJECT_NAME} PUBLIC
+    GP2040_BLUETOOTH_ENABLED=1
+    # Move BTstack flash bank BEFORE GP2040-CE EEPROM (which starts at 0x1F8000)
+    # Default is at end of flash which overlaps with EEPROM and corrupts config!
+    PICO_FLASH_BANK_STORAGE_OFFSET=0x1F6000
+  )
+  target_include_directories(${PROJECT_NAME} PUBLIC
+    headers/drivers/switchbt
+    headers/drivers/hidbt
+  )
+endif()
+
 target_include_directories(${PROJECT_NAME} PUBLIC
 headers
 headers/addons

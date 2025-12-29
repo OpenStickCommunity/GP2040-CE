@@ -64,6 +64,8 @@ private:
         SET_INPUT_MODE_PSCLASSIC,
         SET_INPUT_MODE_XBOXORIGINAL,
         SET_INPUT_MODE_SWITCH_PRO,
+        SET_INPUT_MODE_SWITCH_BT,
+        SET_INPUT_MODE_HID_BT,
     };
     BootAction getBootAction();
     void getReinitGamepad(Gamepad * gamepad);
