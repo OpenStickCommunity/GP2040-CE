@@ -152,7 +152,6 @@ export default {
 	'forced-setup-mode-modal-body':
 		'Si reinicia al modo Controlador después de guardar, ya no tendrá acceso a la configuración web. Por favor escriba "<strong>{{warningCheckText}}</strong>" a continuación para desbloquear el botón Guardar si reconoce completamente esto y es su intención. Hacer clic en Descartar revertirá esta configuración que luego se guardará.',
 	'4-way-joystick-mode-label': 'Modo Joystick 4 Vías',
-	'lock-hotkeys-label': 'Bloquear Teclas Rápidas',
 	'keyboard-mapping-header-text': 'Mapeo de Teclado',
 	'keyboard-mapping-sub-header-text':
 		'Use el formulario a continuación para reconfigurar su mapeo de botones a teclas.',

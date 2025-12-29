@@ -158,7 +158,6 @@ export default {
 	'forced-setup-mode-modal-body':
 		'저장 후 컨트롤러 모드로 재시작하면 더 이상 웹 설정모드에 접속하지 못하게 됩니다. 현재 작업을 이해하고 있고 의도한 바라면 다음을 입력해 저장 버튼을 활성화해 주세요. "<strong>{{warningCheckText}}</strong>" 해제를 클릭하면 설정이 복원된 후 저장됩니다.',
 	'4-way-joystick-mode-label': '4방향 조이스틱 모드',
-	'lock-hotkeys-label': '핫키 잠금',
 	'keyboard-mapping-header-text': '키보드 매핑',
 	'keyboard-mapping-sub-header-text':
 		'아래에서 버튼-키보드 매핑을 설정해 주세요.',

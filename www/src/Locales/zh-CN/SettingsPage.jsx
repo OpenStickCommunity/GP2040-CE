@@ -147,7 +147,6 @@ export default {
 	'forced-setup-mode-modal-title': '强制设置模式警告',
 	'forced-setup-mode-modal-body': '如果您在保存后重启到控制器模式，将无法再访问网页配置。如果您完全了解并有意这样做，请在下方输入"<strong>{{warningCheckText}}</strong>"以解锁保存按钮。点击关闭将恢复此设置，然后需要保存。',
 	'4-way-joystick-mode-label': '4向摇杆模式',
-	'lock-hotkeys-label': '锁定热键',
 	'keyboard-mapping-header-text': '键盘映射',
 	'keyboard-mapping-sub-header-text': '使用下面的表单重新配置按钮到按键的映射。',
 	'usb-override': {

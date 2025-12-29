@@ -158,7 +158,6 @@ export default {
 	'forced-setup-mode-modal-body':
 		'Kaydettikten sonra Denetleyici moduna yeniden başlatırsanız, web yapılandırmasına artık erişemezsiniz. Bunu tamamen kabul ediyor ve istiyorsanız, Kaydet düğmesinin kilidini açmak için lütfen aşağıya "<strong>{{warningCheckText}}</strong>" yazın. Kapata tıklamak, bu ayarı geri döndürecek ve ardından kaydedilecektir.',
 	'4-way-joystick-mode-label': '4 Yönlü Joystick Modu',
-	'lock-hotkeys-label': 'Kısayol Tuşlarını Kilitle',
 	'keyboard-mapping-header-text': 'Klavye Ataması',
 	'keyboard-mapping-sub-header-text':
 		'UDüğme-tuş eşlemenizi yeniden yapılandırmak için aşağıdaki formu kullanın.',
