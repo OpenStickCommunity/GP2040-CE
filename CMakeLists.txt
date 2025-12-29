@@ -320,6 +320,7 @@ CRC32
 FlashPROM
 ADS1219
 ADS1256
+mcp23017
 NeoPico
 OneBitDisplay
 ArduinoJson

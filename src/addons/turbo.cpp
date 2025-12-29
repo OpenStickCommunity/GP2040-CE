@@ -106,6 +106,21 @@ void TurboInput::setup(){
     nextTimer = getMicro();
     encoderValue = shotCount;
     updateTurboShotCount(shotCount, false);
+
+#ifdef TURBO_I2C_SWITCHES_ENABLED
+    // Initialize MCP23017 I2C GPIO expander for hardware turbo switches
+    // Note: I2C bus should already be initialized by display addon or I2C0_ENABLED config
+    // The MCP23017 shares the I2C bus with other devices (e.g., OLED displays)
+    // Initialization failure is graceful - turbo will still work via software controls
+    mcp_ = new MCP23017(TURBO_I2C_BLOCK, TURBO_I2C_ADDR);
+
+    if (!mcp_->init()) {
+        // MCP23017 not detected or initialization failed
+        // This is non-fatal - hardware turbo switches simply won't be available
+        delete mcp_;
+        mcp_ = nullptr;
+    }
+#endif
 }
 
 /**
@@ -131,6 +146,37 @@ void TurboInput::process()
     uint8_t dpadPressed = gamepad->state.dpad & GAMEPAD_MASK_DPAD;
 
     if (!options.enabled && (!hasTurboAssigned == true)) return;
+
+#ifdef TURBO_I2C_SWITCHES_ENABLED
+    // Hardware Turbo Switches: Read physical switch states from MCP23017 I2C GPIO expander
+    // This provides per-button turbo control via 8 physical toggle switches
+    if (mcp_) {
+        // Read all 8 switches from MCP23017 Port A
+        // Switches are active-low: bit=0 means switch is closed (turbo enabled)
+        //                          bit=1 means switch is open (turbo disabled)
+        uint8_t switchStates = mcp_->readRegister(MCP23017_GPIOA);
+
+        // Build turbo mask from switch states
+        // Only buttons with closed switches will have turbo enabled
+        uint16_t hardwareTurboMask = 0;
+
+        // Map MCP23017 pins to button masks (active-low logic)
+        // Each GPA pin corresponds to one button's turbo control
+        if (!(switchStates & 0x01)) hardwareTurboMask |= GAMEPAD_MASK_B1;  // GPA0 → B1 (Face button 1)
+        if (!(switchStates & 0x02)) hardwareTurboMask |= GAMEPAD_MASK_B2;  // GPA1 → B2 (Face button 2)
+        if (!(switchStates & 0x04)) hardwareTurboMask |= GAMEPAD_MASK_B3;  // GPA2 → B3 (Face button 3)
+        if (!(switchStates & 0x08)) hardwareTurboMask |= GAMEPAD_MASK_B4;  // GPA3 → B4 (Face button 4)
+        if (!(switchStates & 0x10)) hardwareTurboMask |= GAMEPAD_MASK_L1;  // GPA4 → L1 (Left shoulder 1)
+        if (!(switchStates & 0x20)) hardwareTurboMask |= GAMEPAD_MASK_R1;  // GPA5 → R1 (Right shoulder 1)
+        if (!(switchStates & 0x40)) hardwareTurboMask |= GAMEPAD_MASK_L2;  // GPA6 → L2 (Left shoulder 2)
+        if (!(switchStates & 0x80)) hardwareTurboMask |= GAMEPAD_MASK_R2;  // GPA7 → R2 (Right shoulder 2)
+
+        // Hardware switches have priority: they override software/web configurator turbo settings
+        // This ensures physical switches always have immediate, reliable control
+        turboButtonsMask = hardwareTurboMask;
+        gamepad->turboState.buttons = turboButtonsMask;
+    }
+#endif
 
     // Check if shotCount changed externally (e.g., via hotkey)
     if (options.shotCount != lastShotCount){

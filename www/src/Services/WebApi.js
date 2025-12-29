@@ -630,6 +630,16 @@ async function getUsedPins(setLoading) {
 	}
 }
 
+async function scanI2CDevices() {
+	try {
+		const response = await Http.get(`${baseUrl}/api/scanI2CDevices`);
+		return response.data;
+	} catch (error) {
+		console.error(error);
+		return null;
+	}
+}
+
 async function getExpansionPins() {
 	try {
 		const response = await Http.get(`${baseUrl}/api/getExpansionPins`);
@@ -696,6 +706,16 @@ async function reboot(bootMode) {
 		.catch(console.error);
 }
 
+async function getTurboDiagnostics() {
+	try {
+		const response = await Http.get(`${baseUrl}/api/getTurboDiagnostics`);
+		return response.data;
+	} catch (error) {
+		console.error(error);
+		return null;
+	}
+}
+
 function sanitizeRequest(request) {
 	const newRequest = { ...request };
 	delete newRequest.usedPins;
@@ -742,5 +762,7 @@ export default {
 	getUsedPins,
 	getHeldPins,
 	abortGetHeldPins,
+	getTurboDiagnostics,
+	scanI2CDevices,
 	reboot,
 };

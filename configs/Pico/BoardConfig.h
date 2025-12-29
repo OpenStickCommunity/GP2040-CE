@@ -65,6 +65,42 @@
 #define GPIO_PIN_14 GpioAction::BUTTON_PRESS_TURBO
 #define TURBO_LED_PIN 15
 
+// --------------------- HARDWARE TURBO CONFIGURATION ---------------------
+// Hardware turbo controls via I2C GPIO expander (MCP23017)
+// Provides 8 physical toggle switches for per-button turbo control
+// and optional analog speed dial for adjustable turbo rate.
+//
+// Requirements:
+//   - MCP23017 I2C GPIO expander breakout board
+//   - 8× SPST toggle switches (or DIP-8 switch array)
+//   - 10kΩ linear potentiometer (optional, for speed dial)
+//
+// Hardware connections:
+//   - I2C bus is shared with display (if present)
+//   - MCP23017 Port A pins (GPA0-GPA7) connect to switches
+//   - Switches should be wired active-low (pull to GND when closed)
+//   - MCP23017 has built-in pull-up resistors
+//
+// Switch mapping (GPA0-GPA7):
+//   GPA0 → B1, GPA1 → B2, GPA2 → B3, GPA3 → B4
+//   GPA4 → L1, GPA5 → R1, GPA6 → L2, GPA7 → R2
+
+// I2C GPIO expander for per-button turbo switches
+// Enables 8 physical switches (B1-B4, L1-L2, R1-R2)
+// Uncomment to enable hardware turbo switches
+#define TURBO_I2C_SWITCHES_ENABLED 1
+#define TURBO_I2C_SDA_PIN 0          // Must match display I2C pins (if display enabled)
+#define TURBO_I2C_SCL_PIN 1          // Must match display I2C pins (if display enabled)
+#define TURBO_I2C_BLOCK i2c0         // I2C block instance (i2c0 or i2c1)
+#define TURBO_I2C_SPEED 400000       // 400kHz (safe speed for most I2C devices)
+#define TURBO_I2C_ADDR 0x27          // MCP23017 I2C address (default: 0x20, avoid display at 0x3C)
+
+// Turbo Speed Dial (Potentiometer)
+// Analog input for adjustable turbo speed (2-30 shots/second)
+// Set to a valid ADC pin (26, 27, or 28) to enable
+// Set to -1 to disable
+// #define PIN_SHMUP_DIAL 26
+
 #define BOARD_LEDS_PIN 28
 #define LED_BRIGHTNESS_MAXIMUM 100
 #define LED_BRIGHTNESS_STEPS 5

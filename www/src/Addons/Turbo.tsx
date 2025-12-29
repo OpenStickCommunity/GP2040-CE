@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FormCheck, Row } from 'react-bootstrap';
 import * as yup from 'yup';
@@ -15,6 +15,7 @@ import { DUAL_STICK_MODES } from '../Data/Addons';
 import LEDColors from '../Data/LEDColors';
 import { ANALOG_PINS } from '../Data/Buttons';
 import { AddonPropTypes } from '../Pages/AddonsConfigPage';
+import WebApi from '../Services/WebApi';
 
 const SHMUP_MIXED_MODES = [
 	{ label: 'Turbo Priority', value: 0 },
@@ -148,6 +149,65 @@ const Turbo = ({
 
 	const [colorPickerTarget, setColorPickerTarget] = useState(null);
 	const [showPicker, setShowPicker] = useState(false);
+	const [turboState, setTurboState] = useState({
+		dialRawValue: 0,
+		dialPercentage: 0,
+		i2cSwitchesConfigured: false,
+		i2cFoundAddress: -1,
+		i2cConfiguredAddress: 0,
+		rawSwitchValue: 0,
+		debugIOCON: 0,
+		debugIODIRA: 0,
+		debugGPPUA: 0,
+		switchB1: false,
+		switchB2: false,
+		switchB3: false,
+		switchB4: false,
+		switchL1: false,
+		switchR1: false,
+		switchL2: false,
+		switchR2: false,
+	});
+
+	// Poll for turbo state when dial pin is configured or I2C switches enabled
+	useEffect(() => {
+		if (!values.TurboInputEnabled) {
+			return;
+		}
+
+		const pollTurboState = async () => {
+			const diagnostics = await WebApi.getTurboDiagnostics();
+			if (diagnostics) {
+				setTurboState({
+					dialRawValue: diagnostics.dialRawValue || 0,
+					dialPercentage: diagnostics.dialPercentage || 0,
+					i2cSwitchesConfigured: diagnostics.i2cSwitchesConfigured || false,
+					i2cFoundAddress: diagnostics.i2cFoundAddress !== undefined ? diagnostics.i2cFoundAddress : -1,
+					i2cConfiguredAddress: diagnostics.i2cConfiguredAddress || 0,
+					rawSwitchValue: diagnostics.rawSwitchValue || 0,
+					debugIOCON: diagnostics.debugIOCON || 0,
+					debugIODIRA: diagnostics.debugIODIRA || 0,
+					debugGPPUA: diagnostics.debugGPPUA || 0,
+					switchB1: diagnostics.switchB1 || false,
+					switchB2: diagnostics.switchB2 || false,
+					switchB3: diagnostics.switchB3 || false,
+					switchB4: diagnostics.switchB4 || false,
+					switchL1: diagnostics.switchL1 || false,
+					switchR1: diagnostics.switchR1 || false,
+					switchL2: diagnostics.switchL2 || false,
+					switchR2: diagnostics.switchR2 || false,
+				});
+			}
+		};
+
+		// Initial poll
+		pollTurboState();
+
+		// Poll every 500ms
+		const interval = setInterval(pollTurboState, 500);
+
+		return () => clearInterval(interval);
+	}, [values.TurboInputEnabled]);
 
 	const toggleRgbPledPicker = (e) => {
 		e.stopPropagation();
@@ -285,6 +345,93 @@ const Turbo = ({
 						<AnalogPinOptions />
 					</FormSelect>
 				</Row>
+				{values.pinShmupDial !== -1 && (
+				<Row className="mb-3">
+					<div className="col-sm-6">
+						<div className="alert alert-info" role="alert">
+							<strong>Live Turbo Dial Position:</strong>
+							<div className="mt-2">
+								<strong>{turboState.dialPercentage}%</strong> ({turboState.dialRawValue} / 4095)
+							</div>
+						</div>
+					</div>
+				</Row>
+				)}
+				{turboState.i2cSwitchesConfigured && (
+				<Row className="mb-3">
+					<div className="col-sm-12">
+						<div className="alert alert-success" role="alert">
+							<strong>Live I2C Turbo Switch Status:</strong>
+							<div className="mt-2">
+								<div className="mb-2">
+									<strong>I2C Address Scan:</strong> 
+									{turboState.i2cFoundAddress >= 0 ? (
+										<span className="text-success"> Found MCP23017 at 0x{turboState.i2cFoundAddress.toString(16).toUpperCase().padStart(2, '0')}</span>
+									) : (
+										<span className="text-danger"> Not found (scanning 0x20-0x27)</span>
+									)}
+									{' - '}Configured: 0x{turboState.i2cConfiguredAddress.toString(16).toUpperCase().padStart(2, '0')}
+								</div>
+								<div className="mb-2">
+									<strong>Raw GPIOA Value:</strong> 0x{(turboState.rawSwitchValue || 0).toString(16).toUpperCase().padStart(2, '0')} ({turboState.rawSwitchValue || 0})
+								</div>
+								<div className="mb-2">
+									<small className="text-muted">
+										<strong>MCP23017 Registers:</strong> 
+										IOCON=0x{(turboState.debugIOCON || 0).toString(16).toUpperCase().padStart(2, '0')} (expect 0x00), 
+										IODIRA=0x{(turboState.debugIODIRA || 0).toString(16).toUpperCase().padStart(2, '0')} (expect 0xFF), 
+										GPPUA=0x{(turboState.debugGPPUA || 0).toString(16).toUpperCase().padStart(2, '0')} (expect 0xFF)
+									</small>
+								</div>
+								<div className="row">
+									<div className="col-sm-3">
+										<span className={turboState.switchB1 ? "badge bg-success" : "badge bg-secondary"}>
+											B1: {turboState.switchB1 ? "ON" : "OFF"}
+										</span>
+									</div>
+									<div className="col-sm-3">
+										<span className={turboState.switchB2 ? "badge bg-success" : "badge bg-secondary"}>
+											B2: {turboState.switchB2 ? "ON" : "OFF"}
+										</span>
+									</div>
+									<div className="col-sm-3">
+										<span className={turboState.switchB3 ? "badge bg-success" : "badge bg-secondary"}>
+											B3: {turboState.switchB3 ? "ON" : "OFF"}
+										</span>
+									</div>
+									<div className="col-sm-3">
+										<span className={turboState.switchB4 ? "badge bg-success" : "badge bg-secondary"}>
+											B4: {turboState.switchB4 ? "ON" : "OFF"}
+										</span>
+									</div>
+								</div>
+								<div className="row mt-2">
+									<div className="col-sm-3">
+										<span className={turboState.switchL1 ? "badge bg-success" : "badge bg-secondary"}>
+											L1: {turboState.switchL1 ? "ON" : "OFF"}
+										</span>
+									</div>
+									<div className="col-sm-3">
+										<span className={turboState.switchR1 ? "badge bg-success" : "badge bg-secondary"}>
+											R1: {turboState.switchR1 ? "ON" : "OFF"}
+										</span>
+									</div>
+									<div className="col-sm-3">
+										<span className={turboState.switchL2 ? "badge bg-success" : "badge bg-secondary"}>
+											L2: {turboState.switchL2 ? "ON" : "OFF"}
+										</span>
+									</div>
+									<div className="col-sm-3">
+										<span className={turboState.switchR2 ? "badge bg-success" : "badge bg-secondary"}>
+											R2: {turboState.switchR2 ? "ON" : "OFF"}
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</Row>
+				)}
 				<Row className="mb-3">
 					<FormCheck
 						label={t('AddonsConfig:turbo-shmup-mode-label')}
@@ -298,7 +445,8 @@ const Turbo = ({
 							handleChange(e);
 						}}
 					/>
-					<div id="ShmupOptions" hidden={!values.shmupMode}>
+				</Row>
+				<div id="ShmupOptions" hidden={!values.shmupMode}>
 						<Row className="mb-3">
 							<FormSelect
 								label={t('AddonsConfig:turbo-shmup-always-on-1-label')}
@@ -502,10 +650,9 @@ const Turbo = ({
 								>
 									{o.label}
 								</option>
-							))}
-						</FormSelect>
-					</div>
-				</Row>
+						))}
+					</FormSelect>
+				</div>
 			</div>
 			<FormCheck
 				label={t('Common:switch-enabled')}

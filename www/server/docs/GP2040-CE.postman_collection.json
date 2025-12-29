@@ -100,6 +100,44 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "/api/getTurboDiagnostics",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/getTurboDiagnostics",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "getTurboDiagnostics"]
+				},
+				"description": "Get real-time diagnostics for hardware turbo controls. Returns current state of I2C switches and turbo speed dial."
+			},
+			"response": [
+				{
+					"name": "Successful Response",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/getTurboDiagnostics",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "getTurboDiagnostics"]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"dialRawValue\": 2048,\n  \"dialPercentage\": 50,\n  \"i2cSwitchesConfigured\": true,\n  \"i2cFoundAddress\": 32,\n  \"i2cConfiguredAddress\": 32,\n  \"rawSwitchValue\": 170,\n  \"debugIOCON\": 0,\n  \"debugIODIRA\": 255,\n  \"debugGPPUA\": 255,\n  \"switchB1\": false,\n  \"switchB2\": true,\n  \"switchB3\": false,\n  \"switchB4\": true,\n  \"switchL1\": false,\n  \"switchR1\": true,\n  \"switchL2\": false,\n  \"switchR2\": true\n}"
+				}
+			]
 		}
 	],
 	"event": [
