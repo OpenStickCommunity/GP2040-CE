@@ -473,6 +473,14 @@ message SOCDSliderOptions
     optional SOCDMode deprecatedModeTwo = 6 [deprecated = true];
 }
 
+message ProfileSliderOptions
+{
+    optional bool enabled = 1;
+    optional uint32 numPositions = 2;
+    optional uint32 defaultProfile = 3;
+    repeated uint32 profileAssignments = 4 [(nanopb).max_count = 8];
+}
+
 message ReverseOptions
 {
     optional bool enabled = 1;
@@ -916,6 +924,7 @@ message AddonOptions
     optional GamepadUSBHostOptions gamepadUSBHostOptions = 28;
     optional TG16Options tg16Options = 29;
     optional HETriggerOptions heTriggerOptions = 30;
+    optional ProfileSliderOptions profileSliderOptions = 31;
 }
 
 message MigrationHistory

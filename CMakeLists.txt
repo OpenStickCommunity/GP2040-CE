@@ -27,7 +27,7 @@ endif()
 if(DEFINED ENV{GP2040_BOARDCONFIG})
   set(GP2040_BOARDCONFIG $ENV{GP2040_BOARDCONFIG})
 elseif(NOT DEFINED GP2040_BOARDCONFIG)
-  set(GP2040_BOARDCONFIG Pico)
+  set(GP2040_BOARDCONFIG Haute42COSMOX)
 endif()
 
 # check for existing cmake files in the event of changing PICO_BOARD or PICO_PLATFORM
@@ -286,6 +286,7 @@ src/addons/reverse.cpp
 src/addons/drv8833_rumble.cpp
 src/addons/turbo.cpp
 src/addons/slider_socd.cpp
+src/addons/slider_profile.cpp
 src/addons/wiiext.cpp
 src/addons/input_macro.cpp
 src/addons/snes_input.cpp

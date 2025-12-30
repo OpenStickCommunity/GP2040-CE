@@ -1741,6 +1741,19 @@ std::string setAddonOptions()
     docToValue(socdSliderOptions.enabled, doc, "SliderSOCDInputEnabled");
     docToValue(socdSliderOptions.modeDefault, doc, "sliderSOCDModeDefault");
 
+    ProfileSliderOptions& profileSliderOptions = Storage::getInstance().getAddonOptions().profileSliderOptions;
+    docToValue(profileSliderOptions.enabled, doc, "SliderProfileInputEnabled");
+    docToValue(profileSliderOptions.numPositions, doc, "sliderProfileNumPositions");
+    docToValue(profileSliderOptions.defaultProfile, doc, "sliderProfileDefaultProfile");
+    // Handle profile assignments array
+    if (doc.containsKey("sliderProfileAssignments")) {
+        JsonArray profileArray = doc["sliderProfileAssignments"];
+        profileSliderOptions.profileAssignments_count = std::min(static_cast<size_t>(8), profileArray.size());
+        for (size_t i = 0; i < profileSliderOptions.profileAssignments_count; i++) {
+            profileSliderOptions.profileAssignments[i] = profileArray[i];
+        }
+    }
+
     OnBoardLedOptions& onBoardLedOptions = Storage::getInstance().getAddonOptions().onBoardLedOptions;
     docToValue(onBoardLedOptions.mode, doc, "onBoardLedMode");
     docToValue(onBoardLedOptions.enabled, doc, "BoardLedAddonEnabled");
@@ -2188,6 +2201,15 @@ std::string getAddonOptions()
     const SOCDSliderOptions& socdSliderOptions = Storage::getInstance().getAddonOptions().socdSliderOptions;
     writeDoc(doc, "sliderSOCDModeDefault", socdSliderOptions.modeDefault);
     writeDoc(doc, "SliderSOCDInputEnabled", socdSliderOptions.enabled);
+
+    const ProfileSliderOptions& profileSliderOptions = Storage::getInstance().getAddonOptions().profileSliderOptions;
+    writeDoc(doc, "SliderProfileInputEnabled", profileSliderOptions.enabled);
+    writeDoc(doc, "sliderProfileNumPositions", profileSliderOptions.numPositions);
+    writeDoc(doc, "sliderProfileDefaultProfile", profileSliderOptions.defaultProfile);
+    JsonArray profileAssignmentsArray = doc.createNestedArray("sliderProfileAssignments");
+    for (size_t i = 0; i < profileSliderOptions.profileAssignments_count; i++) {
+        profileAssignmentsArray.add(profileSliderOptions.profileAssignments[i]);
+    }
 
     const OnBoardLedOptions& onBoardLedOptions = Storage::getInstance().getAddonOptions().onBoardLedOptions;
     writeDoc(doc, "onBoardLedMode", onBoardLedOptions.mode);
