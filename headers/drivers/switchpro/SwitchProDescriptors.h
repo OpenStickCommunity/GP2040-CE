@@ -91,6 +91,8 @@ typedef enum {
     GET_VOLTAGE = 0x50,
 } SwitchCommands;
 
+static const uint8_t SWITCH_INIT_REPORT[10] = {SwitchReportID::REPORT_CONFIGURATION, SwitchOutputSubtypes::IDENTIFY};
+
 typedef struct {
     uint8_t data[3];
 
@@ -350,8 +352,8 @@ static const uint8_t switch_pro_device_descriptor[] =
     0x01,        // bDescriptorType (Device)
     0x00, 0x02,  // bcdUSB 2.00
     0x00,        // bDeviceClass (Use class information in the Interface Descriptors)
-    0x00,        // bDeviceSubClass 
-    0x00,        // bDeviceProtocol 
+    0x00,        // bDeviceSubClass
+    0x00,        // bDeviceProtocol
     0x40,        // bMaxPacketSize0 64
     LSB(SWITCH_PRO_VENDOR_ID), MSB(SWITCH_PRO_VENDOR_ID),   // idVendor 0x057E
     LSB(SWITCH_PRO_PRODUCT_ID), MSB(SWITCH_PRO_PRODUCT_ID), // idProduct 0x2009

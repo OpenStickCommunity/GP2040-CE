@@ -1,12 +1,15 @@
 #include "addons/gamepad_usb_host_listener.h"
-#include "drivermanager.h"
 #include "storagemanager.h"
 #include "class/hid/hid.h"
 #include "class/hid/hid_host.h"
-#include "host/usbh.h"
-#include "host/usbh_pvt.h"
-#include "drivers/shared/xinput_host.h"
+
+#include "drivers/ps3/PS3Descriptors.h"
+#include "drivers/ps4/PS4Descriptors.h"
+#include "drivers/ps4/PS4Driver.h"
 #include "drivers/xinput/XInputDescriptors.h"
+#include "drivers/xbone/XBOneDescriptors.h"
+#include "drivers/switchpro/SwitchProDescriptors.h"
+#include "drivers/shared/xinput_host.h"
 
 void GamepadUSBHostListener::setup() {
     _controller_host_enabled = false;
@@ -141,6 +144,8 @@ void GamepadUSBHostListener::xmount(uint8_t dev_addr, uint8_t instance, uint8_t 
                 break; // no init needed
             case xinput_type_t::XBOXONE:
                 // init not implemented
+                break;
+            default:
                 break;
         }
         setup_xinput(dev_addr, instance);

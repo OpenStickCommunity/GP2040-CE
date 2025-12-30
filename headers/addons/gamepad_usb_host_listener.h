@@ -3,10 +3,7 @@
 
 #include "usblistener.h"
 #include "gamepad.h"
-#include "class/hid/hid.h"
-#include "drivers/ps3/PS3Descriptors.h"
 #include "drivers/ps4/PS4Descriptors.h"
-#include "drivers/ps4/PS4Driver.h"
 #include "drivers/switchpro/SwitchProDescriptors.h"
 
 #define GAMEPAD_HOST_DEBUG false
@@ -121,14 +118,6 @@ typedef struct __attribute__((packed)) {
     uint8_t subcommand;
     uint8_t subcommand_args[3];
 } SwitchProHostReport;
-
-const uint8_t SWITCH_INIT_REPORT[10] = {SwitchReportID::REPORT_CONFIGURATION, SwitchOutputSubtypes::IDENTIFY};
-
-// Wired 360 commands
-const uint8_t XBOX360_WIRED_RUMBLE[] = {0x00, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-const uint8_t XBOX360_WIRED_LED[] = {0x01, 0x03, 0x00};
-// XBox One commands
-const uint8_t XBOXONE_RUMBLE[] = {0x09, 0x00, 0x00, 0x09, 0x00, 0x0F, 0x00, 0x00, 0x00, 0x00, 0xFF, 0x00, 0xFF};
 
 // Add other controller structs here
 class GamepadUSBHostListener : public USBListener {
