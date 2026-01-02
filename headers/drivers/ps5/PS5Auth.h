@@ -2,7 +2,6 @@
 #define _PS5AUTH_H_
 
 #include "drivers/shared/gpauthdriver.h"
-#include "pico/mutex.h"
 
 typedef enum {
     ps5_auth_idle = 0,
@@ -20,6 +19,7 @@ typedef struct {
     uint8_t hash_finish_buffer[64];
     uint8_t auth_buffer[64];
     uint8_t send_hid_buffer[64];
+    uint8_t mayflash_buffer[64];
     uint64_t auth_recv_f2_us;
     bool dongle_ready;
     bool hash_pending;

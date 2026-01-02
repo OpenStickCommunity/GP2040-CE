@@ -9,7 +9,7 @@
 
 #define PS5_PACKET_SIZE 64
 
-#define PS5_DRIVER_PRINTF_ENABLE                  0       // GP0 as UART0_TX
+#define PS5_DRIVER_PRINTF_ENABLE                  1       // GP0 as UART0_TX
 #if PS5_DRIVER_PRINTF_ENABLE
 #   define P5DPRINTF_INIT(...)                          stdio_init_all(__VA_ARGS__)
 #   define P5DPRINTF(...)                               printf(__VA_ARGS__)
@@ -255,16 +255,16 @@ bool PS5Driver::process(Gamepad * gamepad) {
     }
     ps5Report.touchpad_data = touchpadData;
 
-    // Always copy our data for PS5 dongles
-    memcpy(ps5AuthData->hash_pending_buffer, &ps5Report, sizeof(ps5Report));
-    ps5AuthData->hash_pending = true;
-    
     if (memcmp(&ps5Report_last, &ps5Report, sizeof(ps5Report))) {
         memcpy(&ps5Report_last, &ps5Report, sizeof(ps5Report));
+        memcpy(ps5AuthData->hash_pending_buffer, &ps5Report, sizeof(ps5Report));
+        ps5AuthData->hash_pending = true;
         diff_report_repeat = 4;
         return true;
     } else if (diff_report_repeat) {
-        diff_report_repeat--;
+        diff_report_repeat--;\
+        memcpy(ps5AuthData->hash_pending_buffer, &ps5Report, sizeof(ps5Report));
+        ps5AuthData->hash_pending = true;
         return true;
     } else {
         return false;
@@ -304,7 +304,7 @@ USBListener * PS5Driver::get_usb_auth_listener() {
 }
 
 uint16_t PS5Driver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
-    P5DPRINTF("P5D:get_report %d\n", report_type);
+    P5DPRINTF("P5D:get_report id:%02x type:%d\n", report_id, report_type);
 
     if ( report_type != HID_REPORT_TYPE_FEATURE ) {
         return -1;
@@ -342,12 +342,14 @@ uint16_t PS5Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
         memcpy(buffer, output_0x20, responseLen);
         return responseLen;
     case PS5AuthReport::PS5_GET_SIGNATURE_NONCE:
+        P5DPRINTF("P5D: Getting the signature nonce\n");
         memcpy(buffer, ps5AuthData->auth_buffer + 1, 63);
         if (ps5AuthData->ps5_passthrough_state == ps5_auth_idle) {
             ps5AuthData->ps5_passthrough_state = PS5AuthState::ps5_auth_recv_f1;
         }
         return 63;
     case PS5AuthReport::PS5_GET_SIGNING_STATE:
+        P5DPRINTF("P5D: copying auth buffer to PS5\n");
         memcpy(buffer, ps5AuthData->auth_buffer + 1, 15);
         if (ps5AuthData->ps5_passthrough_state == ps5_auth_idle) {
             ps5AuthData->ps5_passthrough_state = PS5AuthState::ps5_auth_recv_f1;

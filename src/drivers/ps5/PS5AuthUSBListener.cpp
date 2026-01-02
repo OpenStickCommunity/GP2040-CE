@@ -9,7 +9,7 @@
 
 #include <iostream>
 
-#define PS5_LISTENER_PRINTF_ENABLE                0       // GP0 as UART0_TX
+#define PS5_LISTENER_PRINTF_ENABLE                1       // GP0 as UART0_TX
 #if PS5_LISTENER_PRINTF_ENABLE
 #   define P5LPRINTF_INIT(...)                          stdio_init_all(__VA_ARGS__)
 #   define P5LPRINTF(...)                               printf(__VA_ARGS__)
@@ -48,10 +48,10 @@ static constexpr uint8_t S5_DES_SECRET_KEY[16] = {
 //uint8_t HapticLowPassFilter : 1; // Is the Haptic Low-Pass-Filter active?
 //uint8_t PluggedUnk3 : 6;
 
-// 0x2A - Complete + 100% Power
+// 0x28 - Charging + 100% Power
 // 0x18 - Plugged in USB Data and Power
 static constexpr uint8_t batteryReport[] = {
-    0x2A, 0x18, 0x00
+    0x28, 0x18, 0x00
 };
 
 // Touchpad X + Y + Timestamp
@@ -87,29 +87,29 @@ void PS5AuthUSBListener::process() {
         ps5AuthData->hash_pending && tuh_hid_send_ready(ps_dev_addr, ps_instance)) {
         // manipulate into our S5 format
         PS5Report * ps5Report = (PS5Report*)ps5AuthData->hash_pending_buffer;
-        memset(ps5AuthData->auth_buffer, 0, 28);
-        ps5AuthData->auth_buffer[0] = 0x02; // To-Mayflash-Device code (0x01 is from)
-        ps5AuthData->auth_buffer[1] = 0x04; // key encryption data
-        ps5AuthData->auth_buffer[3] = 0x18; // 24 bytes
-        memcpy(&(ps5AuthData->auth_buffer[4]), (&ps5Report->report_id), 12);    // 12-byte keys
-        memcpy(&(ps5AuthData->auth_buffer[16]), &batteryReport[0], 3);              // 2-byte battery report (1-padding)
-        //memcpy(&(ps5AuthData->auth_buffer[19]), &ps5Report->touchpad_data, sizeof(TouchpadData));
-        memcpy(&(ps5AuthData->auth_buffer[19]), &touchpadFake[0], sizeof(touchpadFake));
-        if ( tuh_hid_send_report(ps_dev_addr, ps_instance, 0, ps5AuthData->auth_buffer, 48) == true ) {
+        memset(ps5AuthData->mayflash_buffer, 0, 28);
+        ps5AuthData->mayflash_buffer[0] = 0x02; // To-Mayflash-Device code (0x01 is from)
+        ps5AuthData->mayflash_buffer[1] = 0x04; // key encryption data
+        ps5AuthData->mayflash_buffer[3] = 0x18; // 24 bytes
+        memcpy(&(ps5AuthData->mayflash_buffer[4]), (&ps5Report->report_id), 12);    // 12-byte keys
+        memcpy(&(ps5AuthData->mayflash_buffer[16]), &batteryReport[0], 3);              // 2-byte battery report (1-padding)
+        //memcpy(&(ps5AuthData->mayflash_buffer[19]), &ps5Report->touchpad_data, sizeof(TouchpadData));
+        memcpy(&(ps5AuthData->mayflash_buffer[19]), &touchpadFake[0], sizeof(touchpadFake));
+        if ( tuh_hid_send_report(ps_dev_addr, ps_instance, 0, ps5AuthData->mayflash_buffer, 48) == true ) {
             ps5AuthData->hash_pending = false;
-            P5LPRINTF("P5L: Setting Hash Pending to False in PS5AuthUSBListener::Process()\n");
+            //P5LPRINTF("P5L: Setting Hash Pending to False in PS5AuthUSBListener::Process()\n");
         }
     }
 
     switch ( ps5AuthData->ps5_passthrough_state ) {
         case PS5AuthState::ps5_auth_send_f0:
             memcpy(report_buffer, ps5AuthData->auth_buffer, 64);
-            P5LPRINTF("P5L:ps5_auth_send_f0 %d %d %d %d\n", report_buffer[0], report_buffer[1], report_buffer[2], report_buffer[3]);
+            P5LPRINTF("P5L:ps5_auth_send_f0 %02x %02x %02x %02x\n", report_buffer[0], report_buffer[1], report_buffer[2], report_buffer[3]);
             host_set_report(PS5AuthReport::PS5_SET_AUTH_PAYLOAD, report_buffer, 64);
             ps5AuthData->ps5_passthrough_state = PS5AuthState::ps5_auth_send_f0_wait;
             break;
         case PS5AuthState::ps5_auth_recv_f1:
-            P5LPRINTF("P5L:ps5_auth_recv_f1\n");
+            P5LPRINTF("P5L:ps5_auth_recv_f1 %02x\n", f1_num);
             if (f1_num) {
                 host_get_report(PS5AuthReport::PS5_GET_SIGNATURE_NONCE, report_buffer, 64);
                 ps5AuthData->ps5_passthrough_state = PS5AuthState::ps5_auth_recv_f1_wait;
@@ -156,7 +156,7 @@ void PS5AuthUSBListener::mount(uint8_t dev_addr, uint8_t instance, uint8_t const
     tuh_vid_pid_get(dev_addr, &controller_vid, &controller_pid);
     P5LPRINTF("P5L:controller_vid %d, controller_pid %d\n", controller_vid, controller_pid);
     if ((controller_vid == 0x2B81) && (controller_pid == 0x0101)) {
-        P5LPRINTF("P5L:Match for PS5. dongle_ready\n");
+        P5LPRINTF("P5L:Match for P5General. dongle_ready\n");
         ps_dev_addr = dev_addr;
         ps_instance = instance;
         dongle_type = P5General;
@@ -170,7 +170,7 @@ void PS5AuthUSBListener::mount(uint8_t dev_addr, uint8_t instance, uint8_t const
         // get challenge from dongle (DES Key)
         // Get the authentication data
         P5LPRINTF("P5L:GET AUTH\n");
-        if (!tuh_hid_get_report(ps_dev_addr, ps_instance, 0x01, HID_REPORT_TYPE_INPUT, ps5AuthData->auth_buffer, 64))
+        if (!tuh_hid_get_report(ps_dev_addr, ps_instance, 0x01, HID_REPORT_TYPE_INPUT, ps5AuthData->mayflash_buffer, 64))
         {
             P5LPRINTF("P5L:GET fail");
             return;
@@ -201,7 +201,7 @@ void PS5AuthUSBListener::report_received(uint8_t dev_addr, uint8_t instance, uin
     // Do we ignore it if we're in the middle of processing an input hash
     if (!ps5AuthData->hash_ready) {
         // Always log to see if interrupt endpoint is working at all
-        P5LPRINTF("P5L: Report Received REPORT_ID:%d\n", report[0]);
+        //P5LPRINTF("P5L: Report Received REPORT_ID:%d\n", report[0]);
         if ( dongle_type == MAYFLASH_S5 ) {
             memset(ps5AuthData->hash_finish_buffer, 0, 64);
             memcpy(&(ps5AuthData->hash_finish_buffer[0x00]), &report[0x0D], 16); // 12-byte key data, 4-bytes of incount
@@ -229,6 +229,9 @@ void PS5AuthUSBListener::set_report_complete(uint8_t dev_addr, uint8_t instance,
     switch(report_id) {
         case PS5AuthReport::PS5_SET_AUTH_PAYLOAD:
             if (ps5AuthData->ps5_passthrough_state == PS5AuthState::ps5_auth_send_f0_wait) {
+                P5LPRINTF("P5L:auth_buffer: %02x %02x %02x %02x\n", ps5AuthData->auth_buffer[0], 
+                    ps5AuthData->auth_buffer[1], ps5AuthData->auth_buffer[2], ps5AuthData->auth_buffer[3]);
+
                 switch (ps5AuthData->auth_buffer[1]) {
                     case 0x01:
                         f1_num = 4;
@@ -248,7 +251,7 @@ void PS5AuthUSBListener::set_report_complete(uint8_t dev_addr, uint8_t instance,
                     ps5AuthData->auth_recv_f2_us = getMicro() + 500 * 1000;
                     ps5AuthData->ps5_passthrough_state = PS5AuthState::ps5_auth_recv_f2_delay_500mS;
                 } else {
-                    P5LPRINTF("P5L:Back Idel, Wait F0\n");
+                    P5LPRINTF("P5L:Back Idle, Wait F0\n");
                     ps5AuthData->ps5_passthrough_state = PS5AuthState::ps5_auth_idle;
                 }
             } else {
@@ -258,20 +261,19 @@ void PS5AuthUSBListener::set_report_complete(uint8_t dev_addr, uint8_t instance,
         default:
             break;
     };
-    if ( dongle_type == MAYFLASH_S5) {
-        if ( mfs5AuthState == MFS5AuthState::mfs5_auth_complete &&
+    if ( dongle_type == MAYFLASH_S5 &&
+         mfs5AuthState == MFS5AuthState::mfs5_auth_complete &&
             ps5AuthData->keys_ready == false) {
-            // Authentication data sent
-            awaiting_cb = true;
-            ps5AuthData->keys_ready = true;
-            P5LPRINTF("P5L: Mayflash S5 All Done and Ready, Let's pull our MAC address\n");
-            host_get_report(PS5AuthReport::PS5_GET_PAIRINFO, report_buffer, 16);
-        }
+        // Authentication data sent
+        awaiting_cb = true;
+        ps5AuthData->keys_ready = true;
+        P5LPRINTF("P5L: Mayflash S5 All Done and Ready, Let's pull our MAC address\n");
+        host_get_report(PS5AuthReport::PS5_GET_PAIRINFO, report_buffer, 16);
     }
 }
 
 void PS5AuthUSBListener::get_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
-    P5LPRINTF("P5L:get_report_complete report_id %d len %d\n", report_id, len);
+    P5LPRINTF("P5L:get_report_complete report_id %02x len %d\n", report_id, len);
     if ( ps5AuthData->dongle_ready == false || 
         (dev_addr != ps_dev_addr) || (instance != ps_instance) ) {
         return;
@@ -280,21 +282,21 @@ void PS5AuthUSBListener::get_report_complete(uint8_t dev_addr, uint8_t instance,
     if ( dongle_type == MAYFLASH_S5 ) {
         switch(report_id) {
             case MFS5AuthReport::PS5_MAYFLASH_GET_AUTH:
-                P5LPRINTF("P5L: Checking auth data[7]: %02x  data[12]: %02x\n", ps5AuthData->auth_buffer[7], ps5AuthData->auth_buffer[12]);
-                // First GET - check for authentication data: auth_buffer[7] = 0x08, auth_buffer[12] = 0x10
+                P5LPRINTF("P5L: Checking auth data[7]: %02x  data[12]: %02x\n", ps5AuthData->mayflash_buffer[7], ps5AuthData->mayflash_buffer[12]);
+                // First GET - check for authentication data: mayflash_buffer[7] = 0x08, mayflash_buffer[12] = 0x10
                 if (len == 64 && 
-                    ps5AuthData->auth_buffer[7] == 0x08 && ps5AuthData->auth_buffer[12] == 0x10)
+                    ps5AuthData->mayflash_buffer[7] == 0x08 && ps5AuthData->mayflash_buffer[12] == 0x10)
                 {
                     P5LPRINTF("P5L: Auth Data OK\n");
-                    memcpy(ps5AuthData->hash_pending_buffer, &ps5AuthData->auth_buffer[13], 16);
+                    memcpy(ps5AuthData->hash_pending_buffer, &ps5AuthData->mayflash_buffer[13], 16);
                     performS5Encryption(ps5AuthData->hash_pending_buffer, ps5AuthData->hash_finish_buffer);
-                    ps5AuthData->auth_buffer[0] = 0x02;
-                    ps5AuthData->auth_buffer[1] = 0x08;
-                    ps5AuthData->auth_buffer[2] = 0x00;
-                    ps5AuthData->auth_buffer[3] = 0x10;
-                    memcpy((uint8_t*)&ps5AuthData->auth_buffer[4], ps5AuthData->hash_finish_buffer, 16);
+                    ps5AuthData->mayflash_buffer[0] = 0x02;
+                    ps5AuthData->mayflash_buffer[1] = 0x08;
+                    ps5AuthData->mayflash_buffer[2] = 0x00;
+                    ps5AuthData->mayflash_buffer[3] = 0x10;
+                    memcpy((uint8_t*)&ps5AuthData->mayflash_buffer[4], ps5AuthData->hash_finish_buffer, 16);
                     P5LPRINTF("P5L: Auth enc\n");
-                    if (!tuh_hid_set_report(ps_dev_addr, ps_instance, 0x02, HID_REPORT_TYPE_OUTPUT, ps5AuthData->auth_buffer, 48))
+                    if (!tuh_hid_set_report(ps_dev_addr, ps_instance, 0x02, HID_REPORT_TYPE_OUTPUT, ps5AuthData->mayflash_buffer, 48))
                     {
                         P5LPRINTF("P5L: Auth enc SET fail\n");
                         return;
@@ -303,7 +305,7 @@ void PS5AuthUSBListener::get_report_complete(uint8_t dev_addr, uint8_t instance,
                     mfs5AuthState = MFS5AuthState::mfs5_auth_complete;
                 }
                 else if (len == 64 && 
-                    ps5AuthData->auth_buffer[7] == 0x04 && ps5AuthData->auth_buffer[12] == 0x28)
+                    ps5AuthData->mayflash_buffer[7] == 0x04 && ps5AuthData->mayflash_buffer[12] == 0x28)
                 {
                     P5LPRINTF("P5L: Key Encryption Data RECEIVED!!! WORKING!!1\n");
                 }
@@ -311,7 +313,7 @@ void PS5AuthUSBListener::get_report_complete(uint8_t dev_addr, uint8_t instance,
                 {
                     P5LPRINTF("P5L: Not regular data?");
                     for(int i = 0; i < len; i++) {
-                        P5LPRINTF("%02x ", ps5AuthData->auth_buffer[i]);
+                        P5LPRINTF("%02x ", ps5AuthData->mayflash_buffer[i]);
 
                     }
                     P5LPRINTF("\n");
@@ -341,6 +343,7 @@ void PS5AuthUSBListener::get_report_complete(uint8_t dev_addr, uint8_t instance,
             break;
         case PS5AuthReport::PS5_GET_SIGNATURE_NONCE:
             if (ps5AuthData->ps5_passthrough_state == PS5AuthState::ps5_auth_recv_f1_wait) {
+                P5LPRINTF("P5L: Get the signature nonce, copying to our auth buffer\n");
                 memcpy(ps5AuthData->auth_buffer, report_buffer, len);
                 ps5AuthData->ps5_passthrough_state = PS5AuthState::ps5_auth_idle;
             } else {
@@ -349,6 +352,7 @@ void PS5AuthUSBListener::get_report_complete(uint8_t dev_addr, uint8_t instance,
             break;
         case PS5AuthReport::PS5_GET_SIGNING_STATE:
             if (ps5AuthData->ps5_passthrough_state == PS5AuthState::ps5_auth_recv_f2_wait) {
+                P5LPRINTF("P5L: Get signing state completed, copying to our auth buffer\n");
                 memcpy(ps5AuthData->auth_buffer, report_buffer, len);
                 ps5AuthData->ps5_passthrough_state = PS5AuthState::ps5_auth_idle;
             } else {
