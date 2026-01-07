@@ -7,7 +7,6 @@ export default {
 	'github-label': 'GitHub',
 	'home-label': '홈',
 	'led-config-label': 'LED 구성',
-	'custom-theme-label': '커스텀 LED 테마',
 	'links-label': '링크',
 	'macro-label': '매크로',
 	'pin-mapping-label': 'GPIO 핀 매핑',

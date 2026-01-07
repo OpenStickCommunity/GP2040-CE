@@ -544,8 +544,9 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     if(config.animationOptions.profiles[0].has_bEnabled == false)
     {
         INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bEnabled, 1);
-        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], basePressedCycleTime, 100);
-        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], baseCycleTime, 100);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], basePressedCycleTime, 2);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], baseCycleTime, 2);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], baseCaseCycleTime, 2);
         config.animationOptions.profiles_count = 1;
         config.animationOptions.profiles[0].notPressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
         config.animationOptions.profiles[0].pressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
@@ -559,6 +560,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         {
             config.animationOptions.profiles[0].caseStaticColors[lightIndex] = 0; //Black
         }
+        config.animationOptions.profiles[0].caseStaticColors_count = 0;
         config.animationOptions.profiles[0].baseNonPressedEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_ROTATE;
         config.animationOptions.profiles[0].basePressedEffect = AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_STATIC_COLOR;
         config.animationOptions.profiles[0].baseCaseEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_ROTATE;
@@ -815,6 +817,8 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, muxADCPin2, HETRIGGER_ADC2);
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, muxADCPin3, HETRIGGER_ADC3);
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, muxChannels, HETRIGGER_MUX_CHANNELS);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, emaSmoothing, HETRIGGER_SMOOTHING_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, smoothingFactor, HETRIGGER_SMOOTHING_FACTOR);
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[0], action, HETRIGGER_HE0_ACTION);
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[0], active, HETRIGGER_HE0_ACTIVE);
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[0], idle, HETRIGGER_HE0_IDLE);
@@ -975,7 +979,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[31], idle, HETRIGGER_HE31_IDLE);
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[31], max, HETRIGGER_HE31_MAX);
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[31], polarity, HETRIGGER_HE31_POLARITY);
-    
+
     // reminder that this must be set or else nanopb won't retain anything
     config.addonOptions.heTriggerOptions.triggers_count = HETRIGGER_COUNT;
 

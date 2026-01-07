@@ -7,7 +7,7 @@ Configuration for the [Haute42|COSMOX X Series Analog](assets/Haute42COSMOX_X.jp
 ## Main Pin Mapping Configuration
 
  // Main pin mapping Configuration
-                                                        GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
+ //                                                  // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
  #define GPIO_PIN_02 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
  #define GPIO_PIN_03 GpioAction::BUTTON_PRESS_DOWN   // DOWN   | DOWN   | DOWN    | DOWN     | DOWN   | DOWN   |
  #define GPIO_PIN_04 GpioAction::BUTTON_PRESS_RIGHT  // RIGHT  | RIGHT  | RIGHT   | RIGHT    | RIGHT  | RIGHT  |

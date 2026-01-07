@@ -294,6 +294,7 @@ void NeoPicoLEDAddon::process()
                     break;
                 case INPUT_MODE_PS4:
                 case INPUT_MODE_PS5:
+                case INPUT_MODE_P5GENERAL:
                     animationState = getPS4AnimationNEOPICO(gamepad->auxState.playerID.ledBlinkOn, gamepad->auxState.playerID.ledBlinkOff);
                     break;
                 case INPUT_MODE_XBONE:
@@ -792,22 +793,22 @@ GamepadHotkey NeoPicoLEDAddon::ProcessAnimationHotkeys(Gamepad *gamepad)
 		}
 		else if (gamepad->pressedR1())
 		{
-			action = HOTKEY_LEDS_PARAMETER_UP;
+			action = HOTKEY_LEDS_PARAMETER_CYCLE;
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_R1 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
 		}
 		else if (gamepad->pressedR2())
 		{
-			action = HOTKEY_LEDS_PARAMETER_DOWN;
+			action = HOTKEY_LEDS_CASE_PARAMETER_CYCLE;
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_R2 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
 		}
 		else if (gamepad->pressedL1())
 		{
-			action = HOTKEY_LEDS_PRESS_PARAMETER_UP;
+			action = HOTKEY_LEDS_PRESS_PARAMETER_CYCLE;
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_L1 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
 		}
 		else if (gamepad->pressedL2())
 		{
-			action = HOTKEY_LEDS_PRESS_PARAMETER_DOWN;
+			action = HOTKEY_LEDS_PARAMETER_UNUSED;
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_L2 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
 		}
 	}

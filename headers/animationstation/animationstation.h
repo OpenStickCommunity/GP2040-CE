@@ -18,6 +18,8 @@
 #define MAX_ANIMATION_PROFILES_INCLUDING_TEST (MAX_ANIMATION_PROFILES+1)
 #define MAX_CASE_LIGHTS 40          //this should be divisible by 4 as we pack 4 indexes into one config int32
 
+#define CYCLE_STEPS 5
+
 typedef enum
 {
   AnimationStation_TestModeInvalid,
@@ -37,6 +39,7 @@ struct __attribute__ ((__packed__)) AnimationProfile_Unpacked
 
     int16_t baseCycleTime;
     int16_t basePressedCycleTime;
+    int16_t baseCaseCycleTime;
 
     uint32_t notPressedStaticColors[NUM_BANK0_GPIOS + 3]; //since we pack 4 into each. Adding 3 ensures we have space for extra pading
     uint32_t pressedStaticColors[NUM_BANK0_GPIOS + 3]; //since we pack 4 into each. Adding 3 ensures we have space for extra pading

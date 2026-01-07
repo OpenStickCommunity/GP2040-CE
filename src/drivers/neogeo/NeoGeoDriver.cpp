@@ -120,5 +120,5 @@ const uint8_t * NeoGeoDriver::get_descriptor_device_qualifier_cb() {
 }
 
 uint16_t NeoGeoDriver::GetJoystickMidValue() {
-	return NEOGEO_JOYSTICK_MID << 8;
+	return NEOGEO_JOYSTICK_MID;
 }
