@@ -4,6 +4,7 @@
 #include "drivers/ps4/PS4Driver.h"
 #include "drivers/xbone/XBOneDriver.h"
 #include "drivers/xinput/XInputDriver.h"
+#include "drivers/p5general/P5GeneralDriver.h"
 
 void ButtonLayoutScreen::init() {
     isInputHistoryEnabled = Storage::getInstance().getDisplayOptions().inputHistoryEnabled;
@@ -306,6 +307,13 @@ void ButtonLayoutScreen::generateHeader() {
                 else
                     statusBar += "   ";
                 break;
+            case INPUT_MODE_P5GENERAL:
+                statusBar += "P5G";
+                if(((P5GeneralDriver*)DriverManager::getInstance().getDriver())->getAuthSent() == true )
+                    statusBar += ":AS";
+                else
+                    statusBar += "   ";
+                break;
             case INPUT_MODE_XBONE:
                 statusBar += "XBON";
                 if(((XBOneDriver*)DriverManager::getInstance().getDriver())->getAuthSent() == true )
@@ -360,7 +368,7 @@ void ButtonLayoutScreen::generateHeader() {
     if (showMacroMode && macroEnabled) statusBar += " M";
 
     if (showProfileMode) {
-        statusBar += " Pr:";
+        statusBar += " ";
 
         std::string profile;
         profile.assign(storage.currentProfileLabel(), strlen(storage.currentProfileLabel()));

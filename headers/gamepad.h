@@ -188,12 +188,13 @@ public:
 	GamepadButtonMapping *mapAnalogRSYNeg;
 	GamepadButtonMapping *mapAnalogRSYPos;
 	GamepadButtonMapping *map48WayMode;
+	GamepadButtonMapping *mapFocusMode;
 
 	// gamepad specific proxy of debounced buttons --- 1 = active (inverse of the raw GPIO)
 	// see GP2040::debounceGpioGetAll for details
 	Mask_t debouncedGpio;
 
-	bool userRequestedReinit = false;
+	uint32_t lastReinitProfileNumber = 0;
 
 	// These are special to SOCD
 	inline static const SOCDMode resolveSOCDMode(const GamepadOptions& options) {
@@ -206,9 +207,6 @@ public:
 	};
 
 private:
-
-	uint8_t getModifier(uint8_t code);
-	uint8_t getMultimedia(uint8_t code);
 	void processHotkeyAction(GamepadHotkey action);
 
 	GamepadOptions & options;

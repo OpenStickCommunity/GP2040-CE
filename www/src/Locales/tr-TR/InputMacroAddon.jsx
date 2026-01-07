@@ -1,0 +1,42 @@
+export default {
+	'input-macro-editor-tab': 'Düzenleyici',
+	'input-macro-advanced-tab': 'Gelişmiş',
+	'input-macro-board-led-enabled': 'Makro Durumunu Görüntülemek İçin Kart Ledi Kullanın',
+	'input-macro-macro-enabled': 'Etkin',
+	'input-macro-macro-enabled-badge': 'Etkin',
+	'input-macro-macro-disabled-badge': 'Devre dışı',
+	'input-macro-macro-exclusive':
+		'Özel (Başka Bir Makroya Geçilemez)',
+	'input-macro-macro-interruptible':
+		'Kesintiye Uğrayabilir (Kullanıcı Girişi Makroyu İptal Eder)',
+	'input-macro-macro-show-frames': 'Kareleri Göster (1 Kare = 16,666 ms)',
+	'input-macro-macro-uses-buttons':
+		'Tetiklemek için Makro Düğmesi + Gamepad Düğmesini kullanın',
+	'input-macro-macro-button-pin-plus': 'Tuş Ataması:',
+	'input-macro-header-text': 'Makrolara Genel Bakış',
+	'input-macro-macro-list-txt': 'Makro {{macroNumber}}',
+	'input-macro-duration-label': 'Süre',
+	'input-macro-wait-duration-label': 'Bekleme Süresi',
+	'input-macro-time-label-ms': 'ms',
+	'input-macro-time-label-frames': 'Kare(ler)',
+	'input-macro-release-and-wait-label': 'bırak ve bekle',
+	'input-macro-sub-header':
+		'Not: Pin eşlemeli makrolar için lütfen Yapılandırma altındaki Pin Eşleme sayfasına bakın. Makrolar, basılı tutulan tek Makro düğmesiyle bir gamepad düğmesine de atanabilir.',
+	'input-macro-macro-label-label': 'Etiket',
+	'input-macro-add-input-label': 'Tuş ekle +',
+	'input-macro-type': {
+		press: 'Bas',
+		'hold-repeat': 'Basılı tut',
+		toggle: 'Değiştir',
+	},
+	'macro-name': 'Makro Adı',
+	'macro-activation-type': 'Makro Aktivasyon Türü',
+	'table-thread-label': 'Etiket',
+	'table-thread-type': 'Tip',
+	'table-thread-assigned-to': 'Atanan Kişi',
+	'table-thread-button': 'Tuş',
+	'table-thread-actions': 'Eylemler',
+	'table-thread-status': 'Durum',
+	'input-macro-macro-trigger-type-button': 'Tuş',
+	'input-macro-macro-trigger-type-pin': 'Pin',
+};

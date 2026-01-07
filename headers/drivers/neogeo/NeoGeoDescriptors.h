@@ -32,7 +32,7 @@
 #define NEOGEO_MASK_OPTIONS (1U <<  9)
 #define NEOGEO_MASK_SELECT  (1U <<  10)
 #define NEOGEO_MASK_START   (1U <<  11)
-#define NEOGEO_JOYSTICK_MID  0x7f
+#define NEOGEO_JOYSTICK_MID  0x7FFF
 
 typedef struct __attribute((packed, aligned(1)))
 {

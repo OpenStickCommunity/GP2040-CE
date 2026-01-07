@@ -18,12 +18,28 @@
 bool DisplayAddon::available() {
     const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
     bool result = false;
-    if (options.enabled) {
-        // create the gfx interface
-        gpDisplay = new GPGFX();
-        gpOptions = gpDisplay->getAvailableDisplay(GPGFX_DisplayType::DISPLAY_TYPE_NONE);
-        result = (gpOptions.displayType != GPGFX_DisplayType::DISPLAY_TYPE_NONE);
-        if (!result) delete gpDisplay;
+
+    // create the gfx interface
+    gpDisplay = new GPGFX();
+    gpOptions = gpDisplay->getAvailableDisplay(GPGFX_DisplayType::DISPLAY_TYPE_NONE);
+    if ( gpOptions.displayType != GPGFX_DisplayType::DISPLAY_TYPE_NONE ) {
+        if ( options.enabled ) {
+            result = true;
+        } else {
+            // Power off our display if its available but disabled in config
+            gpOptions.size = options.size;
+            gpOptions.orientation = options.flip;
+            gpOptions.inverted = options.invert;
+            gpOptions.font.fontData = GP_Font_Standard;
+            gpOptions.font.width = 6;
+            gpOptions.font.height = 8;
+            gpDisplay->init(gpOptions);
+            setDisplayPower(0);
+            delete gpDisplay;
+            result = false;
+        }
+    } else { // No display, delete our GPGFX
+        delete gpDisplay;
     }
     return result;
 }
@@ -52,17 +68,6 @@ void DisplayAddon::setup() {
     turnOffWhenSuspended = options.turnOffWhenSuspended;
     displaySaverMode = options.displaySaverMode;
 
-    mapMenuToggle = new GamepadButtonMapping(0);
-    mapMenuSelect = new GamepadButtonMapping(0);
-    GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
-    for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
-        switch (pinMappings[pin].action) {
-            case GpioAction::MENU_NAVIGATION_TOGGLE: mapMenuToggle->pinMask |= 1 << pin; break;
-            case GpioAction::MENU_NAVIGATION_SELECT: mapMenuSelect->pinMask |= 1 << pin; break;
-            default:    break;
-        }
-    }
-
     prevValues = Storage::getInstance().GetGamepad()->debouncedGpio;
 
     // set current display mode
@@ -77,7 +82,9 @@ void DisplayAddon::setup() {
     }
     gpScreen = nullptr;
     updateDisplayScreen();
+    setMenuMappings();
 
+    EventManager::getInstance().registerEventHandler(GP_EVENT_PROFILE_CHANGE, GPEVENT_CALLBACK(this->handleProfileChange(event)));
     EventManager::getInstance().registerEventHandler(GP_EVENT_RESTART, GPEVENT_CALLBACK(this->handleSystemRestart(event)));
     EventManager::getInstance().registerEventHandler(GP_EVENT_MENU_NAVIGATE, GPEVENT_CALLBACK(this->handleMenuNavigation(event)));
     EventManager::getInstance().registerEventHandler(GP_EVENT_SYSTEM_ERROR, GPEVENT_CALLBACK(this->handleSystemError(event)));
@@ -175,6 +182,20 @@ void DisplayAddon::setDisplayPower(uint8_t status)
     }
 }
 
+void DisplayAddon::setMenuMappings()
+{
+    mapMenuToggle = new GamepadButtonMapping(0);
+    mapMenuSelect = new GamepadButtonMapping(0);
+    GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
+    for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
+        switch (pinMappings[pin].action) {
+            case GpioAction::MENU_NAVIGATION_TOGGLE: mapMenuToggle->pinMask |= 1 << pin; break;
+            case GpioAction::MENU_NAVIGATION_SELECT: mapMenuSelect->pinMask |= 1 << pin; break;
+            default:    break;
+        }
+    }
+}
+
 void DisplayAddon::process() {
     // If GPDisplay is not loaded or we're in standard mode with display power off enabled
     if (gpDisplay->getDriver() == nullptr ||
@@ -217,6 +238,14 @@ const DisplayOptions& DisplayAddon::getDisplayOptions() {
     return Storage::getInstance().getDisplayOptions();
 }
 
+void DisplayAddon::handleProfileChange(GPEvent* e)
+{
+	delete mapMenuToggle;
+	delete mapMenuSelect;
+	mapMenuToggle = nullptr;
+	mapMenuSelect = nullptr;
+	setMenuMappings();
+}
 
 void DisplayAddon::handleSystemRestart(GPEvent* e) {
     nextDisplayMode = DisplayMode::RESTART;

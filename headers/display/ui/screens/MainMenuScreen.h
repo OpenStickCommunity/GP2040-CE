@@ -22,6 +22,7 @@
 #define INPUT_MODE_XBOXORIGINAL_NAME "Original Xbox"
 #define INPUT_MODE_PS5_NAME "PS5"
 #define INPUT_MODE_GENERIC_NAME "Generic HID"
+#define INPUT_MODE_P5GENERAL_NAME "P5 General"
 #define INPUT_MODE_SWITCH_PRO_NAME "Nintendo Switch Pro"
 #define INPUT_MODE_CONFIG_NAME "Web Config"
 
@@ -155,7 +156,7 @@ class MainMenuScreen : public GPScreen {
             {"D-Pad Mode", NULL, &dpadModeMenu,  std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::testMenu, this)},
             {"SOCD Mode",  NULL, &socdModeMenu,  std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::testMenu, this)},
             {"Profile",    NULL, &profilesMenu,  std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::testMenu, this)},
-            {"Focus Mode", NULL, &focusModeMenu, std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::testMenu, this)},
+            /*{"Focus Mode", NULL, &focusModeMenu, std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::testMenu, this)},*/
             {"Turbo",      NULL, &turboModeMenu, std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::testMenu, this)},
             {"Exit",       NULL, &saveMenu,      std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::testMenu, this)},
         };

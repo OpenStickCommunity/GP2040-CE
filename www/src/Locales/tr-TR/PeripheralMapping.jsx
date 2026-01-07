@@ -1,0 +1,35 @@
+export default {
+	'header-text': 'Çevresel Atamalar',
+	'sub-header-text': '',
+	'pins-label': 'Pinler',
+	'pin-in-use': 'kullanımda',
+	'i2c-label': 'I\u00B2C',
+	'i2c-desc-header': 'I\u00B2C Bilgileri',
+	'i2c-description':
+		'I\u00B2C, ekranlar, GPIO genişletme ve SDA ve SCL hatları üzerinden sensörler gibi aksesuar cihazlar için kullanılan iki kablolu bir arayüzdür. RP2040, iki I\u00B2C denetleyici bloğunu destekler: I2C0 ve I2C1. Her blok için desteklenen GPIO pinleri şunlardır:',
+	'spi-label': 'SPI',
+	'spi-desc-header': 'SPI Bilgileri',
+	'spi-description':
+		'SPI, ekranlar, GPIO genişletme ve sensörler gibi aksesuar cihazlar için RX ve TX veri hattı, SCK saat hattı ve CS senkronizasyon/çip seçim hattı üzerinden kullanılan dört telli bir arayüzdür. RP2040, iki SPI denetleyici bloğunu destekler: SPI0 ve SPI1. Her blok için desteklenen GPIO pinleri şunlardır:',
+	'usb-label': 'USB Bağlantı Noktası',
+	'usb-desc-header': 'USB Bağlantı Noktası Bilgileri',
+	'usb-description':
+		'USB Bağlantı Noktası, klavyeler, oyun kumandaları veya diğer cihazlar gibi desteklenen USB istemci cihazlarının kullanılmasına olanak tanır.',
+	'peripheral-toggle-unavailable':
+		'Etkinleştirilemiyor. "{{name}}" çevre birimi kullanılamıyor. <0>Çevre Birimi Eşleme</0> bölümünden etkinleştirin.',
+	'pin-sda-label': 'SDA',
+	'pin-scl-label': 'SCL',
+	'option-speed-label': 'Hız',
+	'option-speed-choice-100000-label': 'Normal',
+	'option-speed-choice-400000-label': 'Hızlı',
+	'option-speed-choice-1000000-label': 'Aşırı Hızlı',
+	'pin-rx-label': 'RX',
+	'pin-cs-label': 'CS',
+	'pin-sck-label': 'SCK',
+	'pin-tx-label': 'TX',
+	'pin-dp-label': 'D+',
+	'pin-enable5v-label': '5V Etkin',
+	'option-order-label': 'GPIO Pin Sırası',
+	'option-order-choice-0-label': 'D+/D-',
+	'option-order-choice-1-label': 'D-/D+',
+};
