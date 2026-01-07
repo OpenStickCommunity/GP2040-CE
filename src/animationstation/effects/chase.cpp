@@ -1,6 +1,7 @@
 #include "chase.h"
 #include <algorithm>
 
+#define CHASE_CYCLE_INCREMENT   50
 #define CHASE_CYCLE_MAX         500
 #define CHASE_CYCLE_MIN         10
 #define CHASE_SECOND_LIGHT_OFFSET 0.5f
@@ -9,7 +10,12 @@ Chase::Chase(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType, 
 {
   ChaseTypeInUse = InChaseType;
 
-  CycleParameterChange();
+  if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime == 0)
+    AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = ((CHASE_CYCLE_MAX - CHASE_CYCLE_MIN) / 2) + CHASE_CYCLE_MIN;
+  if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime > CHASE_CYCLE_MAX)
+    AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = CHASE_CYCLE_MAX;
+  if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime < CHASE_CYCLE_MIN)
+    AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = CHASE_CYCLE_MIN;
 
   ChaseTimes[0] = 1.0f;
   ChaseTimes[1] = 1.0f + CHASE_SECOND_LIGHT_OFFSET;
@@ -111,8 +117,8 @@ void Chase::Animate(RGB (&frame)[FRAME_MAX])
     return;
 
   //update times and move to the next light(s) if required
-  ChaseTimes[0] -= (((float)cycleTime) / 1000.0f);
-  ChaseTimes[1] -= (((float)cycleTime) / 1000.0f);
+  ChaseTimes[0] -= (((float)AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime) / 1000.0f);
+  ChaseTimes[1] -= (((float)AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime) / 1000.0f);
   if(ChaseTimes[0] < 0.0f)
   {
     ChaseTimes[0] = 0.0f;
@@ -362,13 +368,28 @@ void Chase::CheckForEndOfSequence()
   }
 }
 
-void Chase::CycleParameterChange() 
+void Chase::ParameterUp() 
 {
-    int16_t cycleStep = 2;
-    if(ButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_CASE_ONLY)
-      cycleStep = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCaseCycleTime;
-    else
-      cycleStep = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime;
+  int32_t cycleTime = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime;
+  cycleTime = cycleTime + CHASE_CYCLE_INCREMENT;
 
-    cycleTime = CHASE_CYCLE_MIN + (((CHASE_CYCLE_MAX - CHASE_CYCLE_MIN) / CYCLE_STEPS) * cycleStep);
+  if (cycleTime > CHASE_CYCLE_MAX) 
+  {
+    cycleTime = CHASE_CYCLE_MAX;
+  }
+
+  AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = cycleTime;
+}
+
+void Chase::ParameterDown() 
+{
+  int16_t cycleTime = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime;
+  cycleTime = cycleTime - CHASE_CYCLE_INCREMENT;
+
+  if (cycleTime < CHASE_CYCLE_MIN) 
+  {
+    cycleTime = CHASE_CYCLE_MIN;
+  }
+
+  AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = cycleTime;
 }

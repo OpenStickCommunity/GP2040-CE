@@ -2,6 +2,7 @@ export default {
 	'add-ons-label': 'Configuración de Complementos',
 	'backup-label': 'Respaldo y Restauración de Datos',
 	'config-label': 'Configuración',
+	'custom-theme-label': 'Tema LED Personalizado',
 	'display-config-label': 'Configuración de Pantalla',
 	'docs-label': 'Documentación',
 	'github-label': 'GitHub',

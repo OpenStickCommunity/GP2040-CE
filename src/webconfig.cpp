@@ -1097,22 +1097,18 @@ void helperGetProfileFromJsonObject(AnimationProfile* Profile, JsonObject* JsonD
     if(Profile->baseNonPressedEffect != (AnimationNonPressedEffects)((*JsonData)["baseNonPressedEffect"].as<uint32_t>()))
     {
         Profile->baseNonPressedEffect = (AnimationNonPressedEffects)((*JsonData)["baseNonPressedEffect"].as<uint32_t>());
-        Profile->baseCycleTime = 2;
+        Profile->baseCycleTime = 0;
     }
     if(Profile->basePressedEffect != (AnimationPressedEffects)((*JsonData)["basePressedEffect"].as<uint32_t>()))
     {
         Profile->basePressedEffect = (AnimationPressedEffects)((*JsonData)["basePressedEffect"].as<uint32_t>());
-        Profile->basePressedCycleTime = 2;
-    }
-    if(Profile->baseCaseEffect != (AnimationNonPressedEffects)((*JsonData)["baseCaseEffect"].as<uint32_t>()))
-    {
-        Profile->baseCaseEffect = (AnimationNonPressedEffects)((*JsonData)["baseCaseEffect"].as<uint32_t>());
-        Profile->baseCaseCycleTime = 2;
+        Profile->basePressedCycleTime = 0;
     }
     Profile->buttonPressHoldTimeInMs = (*JsonData)["buttonPressHoldTimeInMs"].as<uint32_t>();
     Profile->buttonPressFadeOutTimeInMs = (*JsonData)["buttonPressFadeOutTimeInMs"].as<uint32_t>();
     Profile->nonPressedSpecialColor = (*JsonData)["nonPressedSpecialColor"].as<uint32_t>();
     Profile->bUseCaseLightsInPressedAnimations = (*JsonData)["bUseCaseLightsInPressedAnimations"].as<bool>();
+    Profile->baseCaseEffect = (AnimationNonPressedEffects)((*JsonData)["baseCaseEffect"].as<uint32_t>());
     Profile->pressedSpecialColor = (*JsonData)["pressedSpecialColor"].as<uint32_t>();
 
     JsonArray notPressedStaticColorsList = (*JsonData)["notPressedStaticColors"];
@@ -1596,38 +1592,12 @@ std::string getExpansionPins()
     const size_t capacity = JSON_OBJECT_SIZE(100);
     DynamicJsonDocument doc(capacity);
     GpioMappingInfo* gpioMappings = Storage::getInstance().getAddonOptions().pcf8575Options.pins;
-    writeDoc(doc, "pins", "pcf8575", 0, "pin00", "option", gpioMappings[0].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin00", "direction", gpioMappings[0].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin01", "option", gpioMappings[1].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin01", "direction", gpioMappings[1].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin02", "option", gpioMappings[2].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin02", "direction", gpioMappings[2].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin03", "option", gpioMappings[3].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin03", "direction", gpioMappings[3].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin04", "option", gpioMappings[4].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin04", "direction", gpioMappings[4].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin05", "option", gpioMappings[5].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin05", "direction", gpioMappings[5].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin06", "option", gpioMappings[6].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin06", "direction", gpioMappings[6].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin07", "option", gpioMappings[7].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin07", "direction", gpioMappings[7].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin08", "option", gpioMappings[8].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin08", "direction", gpioMappings[8].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin09", "option", gpioMappings[9].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin09", "direction", gpioMappings[9].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin10", "option", gpioMappings[10].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin10", "direction", gpioMappings[10].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin11", "option", gpioMappings[11].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin11", "direction", gpioMappings[11].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin12", "option", gpioMappings[12].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin12", "direction", gpioMappings[12].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin13", "option", gpioMappings[13].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin13", "direction", gpioMappings[13].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin14", "option", gpioMappings[14].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin14", "direction", gpioMappings[14].direction);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin15", "option", gpioMappings[15].action);
-    writeDoc(doc, "pins", "pcf8575", 0, "pin15", "direction", gpioMappings[15].direction);
+    char pinName[6];
+    for (uint16_t pin = 0; pin < 16; pin++) {
+        snprintf(pinName, 6, "pin%0*d", 2, pin);
+        writeDoc(doc, "pins", "pcf8575", 0, pinName, "option", gpioMappings[pin].action);
+        writeDoc(doc, "pins", "pcf8575", 0, pinName, "direction", gpioMappings[pin].direction);
+    }
     return serialize_json(doc);
 }
 
@@ -1659,10 +1629,6 @@ std::string setExpansionPins()
 static uint32_t calibrationMuxChannels = 0;
 static Pin_t calibrationSelectPins[4];
 static Pin_t calibrationADCPins[4];
-static bool calibrationSmoothing = false;
-static uint32_t calibrationSmoothingFactor = 0;
-static float ema_smoothing;
-static uint32_t smoothingRead = 0;
 
 // Get the HE Trigger Calibration using our manual GPIO input and everything
 std::string setHETriggerCalibration()
@@ -1678,10 +1644,6 @@ std::string setHETriggerCalibration()
     calibrationADCPins[1] = doc["muxADCPin1"];
     calibrationADCPins[2] = doc["muxADCPin2"];
     calibrationADCPins[3] = doc["muxADCPin3"];
-
-    calibrationSmoothing = doc["heTriggerSmoothing"];
-    calibrationSmoothingFactor = doc["heTriggerSmoothingFactor"];
-    ema_smoothing = (float)calibrationSmoothingFactor / 100.f; // 99 = max smoothing factor
 
     for (int i = 0; i < 4; i++) {
         if ( calibrationSelectPins[i] != -1 &&
@@ -1701,13 +1663,6 @@ std::string setHETriggerCalibration()
     return serialize_json(doc);
 }
 
-#define ADC_MAX ((1 << 12) - 1) // 4095
-uint16_t emaCalculation(uint16_t value, uint16_t previous) {
-    float ema_value = (float)value / ADC_MAX;
-    float ema_previous = (float)previous / ADC_MAX;
-    return ((ema_smoothing*ema_value) + ((1.0f-ema_smoothing) * ema_previous)) * ADC_MAX;
-}
-
 // Get the HE Trigger Calibration using our manual GPIO input and everything
 std::string getHETriggerCalibration()
 {
@@ -1715,6 +1670,7 @@ std::string getHETriggerCalibration()
     uint32_t id = postDoc["targetId"];
     const size_t capacity = JSON_OBJECT_SIZE(20);
     DynamicJsonDocument doc(capacity);
+
     uint32_t adcSelectPin = 0;
 
     // Mux Channels determines how many select pins we use
@@ -1767,18 +1723,10 @@ std::string getHETriggerCalibration()
         return serialize_json(doc);
     }
     adc_select_input(adcSelectPin-26);
-    // Web-Config triggers getHECalibration every 50ms, game controller triggers <1ms
-    if ( calibrationSmoothing ) {
-        uint16_t read;
-        for(int i = 0; i < 50; i++) {
-            read = adc_read();
-            read = emaCalculation(read, smoothingRead);
-            smoothingRead = read;
-        }
-        doc["voltage"] = read;
-    } else {
-        doc["voltage"] = adc_read();
-    }
+    sleep_us(5);
+    adc_read();
+    sleep_us(2);
+    doc["voltage"] = adc_read();
     return serialize_json(doc);
 }
 
@@ -1805,6 +1753,7 @@ std::string getHETriggerOptions()
 // Set Hall Effect Trigger Options
 std::string setHETriggerOptions()
 {
+    const size_t capacity = JSON_OBJECT_SIZE(100);
     DynamicJsonDocument doc = get_post_data();
     HETriggerInfo * heTriggers = Storage::getInstance().getAddonOptions().heTriggerOptions.triggers;
 
@@ -2067,8 +2016,6 @@ std::string setAddonOptions()
     docToPin(heTriggerOptions.muxADCPin1, doc, "muxADCPin1");
     docToPin(heTriggerOptions.muxADCPin2, doc, "muxADCPin2");
     docToPin(heTriggerOptions.muxADCPin3, doc, "muxADCPin3");
-    docToValue(heTriggerOptions.emaSmoothing, doc, "heTriggerSmoothing");
-    docToValue(heTriggerOptions.smoothingFactor, doc, "heTriggerSmoothingFactor");
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
@@ -2521,8 +2468,6 @@ std::string getAddonOptions()
     writeDoc(doc, "muxADCPin1", cleanPin(heTriggerOptions.muxADCPin1));
     writeDoc(doc, "muxADCPin2", cleanPin(heTriggerOptions.muxADCPin2));
     writeDoc(doc, "muxADCPin3", cleanPin(heTriggerOptions.muxADCPin3));
-    writeDoc(doc, "heTriggerSmoothing", heTriggerOptions.emaSmoothing);
-    writeDoc(doc, "heTriggerSmoothingFactor", heTriggerOptions.smoothingFactor);
 
     return serialize_json(doc);
 }

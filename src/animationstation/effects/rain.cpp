@@ -1,6 +1,7 @@
 #include "rain.h"
 #include <algorithm>
 
+#define RAIN_CYCLE_INCREMENT   50
 #define RAIN_CYCLE_MAX         500
 #define RAIN_CYCLE_MIN         10
 
@@ -8,7 +9,12 @@ Rain::Rain(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType, ER
 {
     RainFrequency = InRainFrequency;
 
-    CycleParameterChange();
+    if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime == 0)
+        AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = ((RAIN_CYCLE_MAX - RAIN_CYCLE_MIN) / 2) + RAIN_CYCLE_MIN;
+    if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime > RAIN_CYCLE_MAX)
+        AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = RAIN_CYCLE_MAX;
+    if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime < RAIN_CYCLE_MIN)
+        AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = RAIN_CYCLE_MIN;
 
     for(int index = 0; index < MAX_RAIN_DROPS; ++index)
     {
@@ -133,7 +139,7 @@ void Rain::Animate(RGB (&frame)[FRAME_MAX])
         return;
 
     //update times and spawn next drop if required
-    TimeTillNextRain -= (((float)cycleTime) / 1000.0f);
+    TimeTillNextRain -= (((float)AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime) / 1000.0f);
     if(TimeTillNextRain < 0.0f)
     {
         //reduce history by 1
@@ -178,7 +184,7 @@ void Rain::Animate(RGB (&frame)[FRAME_MAX])
             continue;
 
         //advance rain drop vertical
-        RainYCoords[rainIndex] += (DefaultRainSpeed * (((float)cycleTime) / 1000.0f));
+        RainYCoords[rainIndex] += (DefaultRainSpeed * (((float)AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime) / 1000.0f));
 
         //is it finished (off the bottom)
         if(RainYCoords[rainIndex] > (float)(MaxYCoord + 1))
@@ -225,13 +231,28 @@ void Rain::Animate(RGB (&frame)[FRAME_MAX])
     }
 }
 
-void Rain::CycleParameterChange() 
+void Rain::ParameterUp() 
 {
-    int16_t cycleStep = 2;
-    if(ButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_CASE_ONLY)
-      cycleStep = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCaseCycleTime;
-    else
-      cycleStep = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime;
+  int32_t cycleTime = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime;
+  cycleTime = cycleTime + RAIN_CYCLE_INCREMENT;
 
-    cycleTime = RAIN_CYCLE_MIN + (((RAIN_CYCLE_MAX - RAIN_CYCLE_MIN) / CYCLE_STEPS) * cycleStep);
+  if (cycleTime > RAIN_CYCLE_MAX) 
+  {
+    cycleTime = RAIN_CYCLE_MAX;
+  }
+
+  AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = cycleTime;
+}
+
+void Rain::ParameterDown() 
+{
+  int16_t cycleTime = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime;
+  cycleTime = cycleTime - RAIN_CYCLE_INCREMENT;
+
+  if (cycleTime < RAIN_CYCLE_MIN) 
+  {
+    cycleTime = RAIN_CYCLE_MIN;
+  }
+
+  AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = cycleTime;
 }

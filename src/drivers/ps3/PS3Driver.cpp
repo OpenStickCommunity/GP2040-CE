@@ -670,5 +670,5 @@ const uint8_t * PS3Driver::get_descriptor_device_qualifier_cb() {
 }
 
 uint16_t PS3Driver::GetJoystickMidValue() {
-    return GAMEPAD_JOYSTICK_MID;
+    return PS3_JOYSTICK_MID << 8;
 }

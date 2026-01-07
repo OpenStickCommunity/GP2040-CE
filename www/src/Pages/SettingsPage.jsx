@@ -191,13 +191,6 @@ const INPUT_MODES = [
 			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_DRUM,
 		],
 	},
-	{
-		labelKey: 'input-mode-options.p5general',
-		value: 16,
-		group: 'primary',
-		optional: ['usb'],
-		authentication: ['usb'],
-	},
 	{ labelKey: 'input-mode-options.nintendo-switch', value: 1, group: 'primary', },
 	{ labelKey: 'input-mode-options.nintendo-switch-pro', value: 15, group: 'primary' },
 	{ labelKey: 'input-mode-options.keyboard', value: 3, group: 'primary' },
@@ -232,13 +225,6 @@ const INPUT_BOOT_MODES = [
 		value: 13,
 		group: 'primary',
 		optional: ['usb'],
-	},
-	{
-		labelKey: 'input-mode-options.p5general',
-		value: 16,
-		group: 'primary',
-		optional: ['usb'],
-		authentication: ['usb'],
 	},
 	{
 		labelKey: 'input-mode-options.nintendo-switch',
@@ -341,8 +327,8 @@ const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.dpad-down', value: 39 },
 	{ labelKey: 'hotkey-actions.dpad-left', value: 40 },
 	{ labelKey: 'hotkey-actions.dpad-right', value: 41 },
-	{ labelKey: 'hotkey-actions.turbo-count-up', value: 75 },
-	{ labelKey: 'hotkey-actions.turbo-count-down', value: 76 },
+	{ labelKey: 'hotkey-actions.turbo-count-up', value: 73 },
+	{ labelKey: 'hotkey-actions.turbo-count-down', value: 74 },
 	{ labelKey: 'hotkey-actions.menu-nav-up', value: 44 },
 	{ labelKey: 'hotkey-actions.menu-nav-down', value: 45 },
 	{ labelKey: 'hotkey-actions.menu-nav-left', value: 46 },
@@ -350,7 +336,7 @@ const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.menu-nav-select', value: 48 },
 	{ labelKey: 'hotkey-actions.menu-nav-back', value: 49 },
 	{ labelKey: 'hotkey-actions.menu-nav-toggle', value: 50 },
-	{ labelKey: 'hotkey-actions.focus-mode-toggle', value: 77 },
+	{ labelKey: 'hotkey-actions.focus-mode-toggle', value: 71 },
 ];
 
 const FORCED_SETUP_MODES = [
@@ -1292,22 +1278,6 @@ export default function SettingsPage() {
 		);
 	};
 
-	const p5generalModeSpecifics = (values, errors, setFieldValue, handleChange) => {
-		return (
-			<div className="row mb-3">
-				<Row className="mb-3">
-					<Col sm={10}>
-						<Trans
-							ns="SettingsPage"
-							i18nKey="p5general-mode-text"
-							components={{ span: <span className="text-success" /> }}
-						/>
-					</Col>
-				</Row>
-			</div>
-		);
-	};
-
 	const genericHidModeSpecifics = (
 		values,
 		errors,
@@ -1352,13 +1322,6 @@ export default function SettingsPage() {
 					setFieldValue,
 					handleChange,
 					inputMode,
-				);
-			case 'input-mode-options.p5general':
-				return p5generalModeSpecifics(
-					values,
-					errors,
-					setFieldValue,
-					handleChange
 				);
 			case 'input-mode-options.generic':
 				return genericHidModeSpecifics(

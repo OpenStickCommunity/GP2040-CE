@@ -8,8 +8,6 @@ import deDE from './Locales/de-DE/Index';
 import jaJP from './Locales/ja-JP/Index';
 import koKR from './Locales/ko-KR/Index';
 import esMX from './Locales/es-MX/Index';
-import trTR from './Locales/tr-TR/Index';
-import frFR from './Locales/fr-FR/Index';
 
 i18n
 	.use(LanguageDetector)
@@ -32,8 +30,6 @@ i18n
 			'ja-JP': jaJP,
 			'ko-KR': koKR,
 			'es-MX': esMX,
-			'tr-TR': trTR,
-			'fr-FR': frFR,			
 		},
 	});
 

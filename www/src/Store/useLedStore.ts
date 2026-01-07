@@ -42,15 +42,7 @@ export type AnimationOptions = {
 	idletimeout: number;
 };
 
-export type LedOptions = {
-	dataPin: number;
-	ledFormat: number;
-	turnOffWhenSuspended: number;
-	brightnessMaximum: number;
-};
-
 type State = {
-	ledOptions: LedOptions;
 	AnimationOptions: AnimationOptions;
 	Lights: Light[];
 	loading: boolean;
@@ -61,16 +53,9 @@ type Actions = {
 	fetchLedOptions: () => void;
 	saveAnimationOptions: (AnimationOptions: AnimationOptions) => Promise<object>;
 	saveLightOptions: (Lights: Light[]) => Promise<object>;
-	saveLedOptions: (ledOptions: LedOptions) => Promise<boolean>;
 };
 
 const INITIAL_STATE: State = {
-	ledOptions: {
-		dataPin: -1,
-		ledFormat: 0,
-		turnOffWhenSuspended: 0,
-		brightnessMaximum: 0,
-	},
 	AnimationOptions: {
 		brightness: 0,
 		idletimeout: 0,
@@ -83,18 +68,16 @@ const INITIAL_STATE: State = {
 	initialized: false,
 };
 
-const useLedStore = create<State & Actions>()((set) => ({
+const useLedStore = create<State & Actions>()((set, get) => ({
 	...INITIAL_STATE,
 	fetchLedOptions: async () => {
 		set({ loading: true });
 
 		const { AnimationOptions } = await WebApi.getAnimationOptions();
 		const { LightData } = await WebApi.getLightsDataOptions();
-		const ledOptions = await WebApi.getLedOptions();
 
 		set((state) => ({
 			...state,
-			ledOptions,
 			AnimationOptions: {
 				...AnimationOptions,
 				customColors: [
@@ -112,9 +95,6 @@ const useLedStore = create<State & Actions>()((set) => ({
 	},
 	saveLightOptions: async (Lights: Light[]) => {
 		return WebApi.setLightsDataOptions({ LightData: { Lights } });
-	},
-	saveLedOptions: async (ledOptions: LedOptions) => {
-		return WebApi.setLedOptions(ledOptions);
 	},
 }));
 

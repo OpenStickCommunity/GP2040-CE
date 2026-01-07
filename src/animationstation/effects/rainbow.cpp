@@ -3,6 +3,8 @@
 
 #define RAINBOW_COLORWHEEL_FRAME_MAX 255
 
+// clamp rainbowCycleTime to [1 ... INT16_MAX]
+#define RAINBOW_CYCLE_INCREMENT   5
 #define RAINBOW_CYCLE_MAX         60
 #define RAINBOW_CYCLE_MIN         2
 
@@ -11,7 +13,12 @@
 
 RainbowSynced::RainbowSynced(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType) : Animation(InRGBLights, InButtonCaseEffectType) 
 {
-  CycleParameterChange();
+  if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime == 0)
+    AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = ((RAINBOW_CYCLE_MAX - RAINBOW_CYCLE_MIN) / 2) + RAINBOW_CYCLE_MIN;
+  if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime > RAINBOW_CYCLE_MAX)
+    AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = RAINBOW_CYCLE_MAX;
+  if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime < RAINBOW_CYCLE_MIN )
+    AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = RAINBOW_CYCLE_MIN;
 }
 
 void RainbowSynced::Animate(RGB (&frame)[FRAME_MAX]) 
@@ -39,7 +46,7 @@ void RainbowSynced::Animate(RGB (&frame)[FRAME_MAX])
       }
     }
 
-    this->nextRunTime = make_timeout_time_ms(RAINBOW_CYCLE_MAX - cycleTime);
+    this->nextRunTime = make_timeout_time_ms(RAINBOW_CYCLE_MAX - AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime);
   }
 
   RGB color = RGB::wheel(this->currentFrame);
@@ -58,21 +65,43 @@ void RainbowSynced::Animate(RGB (&frame)[FRAME_MAX])
   }
 }
 
-void RainbowSynced::CycleParameterChange() 
+void RainbowSynced::ParameterUp() 
 {
-    int16_t cycleStep = 2;
-    if(ButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_CASE_ONLY)
-      cycleStep = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCaseCycleTime;
-    else
-      cycleStep = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime;
+  int16_t cycleTime = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime;
 
-    cycleTime = RAINBOW_CYCLE_MIN + (((RAINBOW_CYCLE_MAX - RAINBOW_CYCLE_MIN) / CYCLE_STEPS) * cycleStep);
+  cycleTime = cycleTime + RAINBOW_CYCLE_INCREMENT;
+  
+  if (cycleTime > RAINBOW_CYCLE_MAX) 
+  {
+    cycleTime = RAINBOW_CYCLE_MAX;
+  } 
+
+  AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = cycleTime;
 }
+
+void RainbowSynced::ParameterDown() 
+{
+  int16_t cycleTime = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime;
+
+  cycleTime = cycleTime - RAINBOW_CYCLE_INCREMENT;
+
+  if (cycleTime < RAINBOW_CYCLE_MIN) 
+  {
+    cycleTime = RAINBOW_CYCLE_MIN;
+  } 
+
+  AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = cycleTime;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 RainbowRotate::RainbowRotate(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType) : Animation(InRGBLights, InButtonCaseEffectType) 
 {
-  CycleParameterChange();
-}
+  if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime == 0)
+    AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = ((RAINBOW_CYCLE_MAX - RAINBOW_CYCLE_MIN) / 2) + RAINBOW_CYCLE_MIN;
+  if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime > RAINBOW_CYCLE_MAX)
+    AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = RAINBOW_CYCLE_MAX;
+  if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime < RAINBOW_CYCLE_MIN)
+    AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = RAINBOW_CYCLE_MIN;}
 
 void RainbowRotate::Animate(RGB (&frame)[FRAME_MAX]) 
 {
@@ -85,7 +114,7 @@ void RainbowRotate::Animate(RGB (&frame)[FRAME_MAX])
       currentFrame = 0;
     }
 
-    this->nextRunTime = make_timeout_time_ms(RAINBOW_CYCLE_MAX - cycleTime);
+    this->nextRunTime = make_timeout_time_ms(RAINBOW_CYCLE_MAX - AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime);
   }
 
   //the way this works is we offset the current frame by the distance from the top left of the grid
@@ -109,13 +138,30 @@ void RainbowRotate::Animate(RGB (&frame)[FRAME_MAX])
   }
 }
 
-void RainbowRotate::CycleParameterChange() 
+void RainbowRotate::ParameterUp() 
 {
-    int16_t cycleStep = 2;
-    if(ButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_CASE_ONLY)
-      cycleStep = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCaseCycleTime;
-    else
-      cycleStep = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime;
+  int16_t cycleTime = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime;
 
-    cycleTime = RAINBOW_CYCLE_MIN + (((RAINBOW_CYCLE_MAX - RAINBOW_CYCLE_MIN) / CYCLE_STEPS) * cycleStep);
+  cycleTime = cycleTime + RAINBOW_CYCLE_INCREMENT;
+  
+  if (cycleTime > RAINBOW_CYCLE_MAX) 
+  {
+    cycleTime = RAINBOW_CYCLE_MAX;
+  } 
+
+  AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = cycleTime;
+}
+
+void RainbowRotate::ParameterDown() 
+{
+  int16_t cycleTime = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime;
+
+  cycleTime = cycleTime - RAINBOW_CYCLE_INCREMENT;
+
+  if (cycleTime < RAINBOW_CYCLE_MIN) 
+  {
+    cycleTime = RAINBOW_CYCLE_MIN;
+  } 
+
+  AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime = cycleTime;
 }

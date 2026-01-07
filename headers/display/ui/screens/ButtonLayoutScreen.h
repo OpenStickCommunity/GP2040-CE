@@ -128,7 +128,6 @@ class ButtonLayoutScreen : public GPScreen {
         void generateHeader();
 
         void updateCustomHeaders();
-        void checkLEDCycleParams();
         void addCustomHeader(std::string newStr, std::string identifier);
 
         const std::map<uint16_t, uint16_t> displayModeLookup = {
@@ -174,10 +173,6 @@ class ButtonLayoutScreen : public GPScreen {
         int8_t prevGamepadProfileNumber = -2;
         
         int8_t prevLEDAnimationProfileNumber = -2;
- 
-        int8_t prevLEDBaseCycleNumber = -1;
-        int8_t prevLEDBaseCaseCycleNumber = -1;
-        int8_t prevLEDBasePressedCycleNumber = -1;
  
         uint16_t prevButtonState = 0;
         uint8_t prevLayoutLeft = 0;

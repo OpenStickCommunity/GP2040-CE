@@ -7,6 +7,7 @@ export default {
 
 	'home-label': 'ホーム',
 	'led-config-label': 'LED 設定',
+	'custom-theme-label': 'カスタムLEDテーマ',
 	'links-label': 'リンク',
 	'macro-label': 'マクロ設定',
 	'pin-mapping-label': 'GPIO 端子割り当て設定',

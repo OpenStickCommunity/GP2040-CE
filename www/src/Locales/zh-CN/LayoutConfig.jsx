@@ -45,8 +45,6 @@ export default {
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT3_A: 'Board Defined Alternate 3',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT4_A: 'Board Defined Alternate 4',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT5_A: 'Board Defined Alternate 5',
-			BUTTON_LAYOUT_BOARD_DEFINED_ALT6_A: 'Board Defined Alternate 6',
-			BUTTON_LAYOUT_BOARD_DEFINED_ALT7_A: 'Board Defined Alternate 7',
 		},
 		right: {
 			BUTTON_LAYOUT_ARCADE: 'Arcade',
@@ -96,8 +94,6 @@ export default {
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT3_B: 'Board Defined Alternate 3',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT4_B: 'Board Defined Alternate 4',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT5_B: 'Board Defined Alternate 5',
-			BUTTON_LAYOUT_BOARD_DEFINED_ALT6_B: 'Board Defined Alternate 6',
-			BUTTON_LAYOUT_BOARD_DEFINED_ALT7_B: 'Board Defined Alternate 7',
 		},
 	},
 };

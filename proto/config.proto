@@ -355,8 +355,6 @@ message AnimationProfile
     optional int32 basePressedCycleTime = 13; 
 
     optional bool bUseCaseLightsInPressedAnimations = 14;
-
-    optional int32 baseCaseCycleTime = 15; 
 };
 
 // This has to be kept in sync with AnimationOptions_Unpacked in animationstation.hpp
@@ -873,8 +871,6 @@ message HETriggerOptions
     optional int32 muxADCPin3 = 9;
     optional int32 muxChannels = 10;
     repeated HETriggerInfo triggers = 11 [(nanopb).max_count = 32];
-    optional bool emaSmoothing = 12;
-    optional int32 smoothingFactor = 13;
 }
 
 message AddonOptions
