@@ -527,10 +527,6 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.ledOptions, pledIndex4, PLED4_PIN);
     // lightEntries
     INIT_UNSET_PROPERTY(config.ledOptions, lightClusterDataInitialised, false);
-
-    //SpecialMoveOptions
-    //INIT_UNSET_PROPERTY(config.specialMoveOptions, ChargeTimeInMs, 750);
-    //INIT_UNSET_PROPERTY(config.specialMoveOptions, CurrentProfileIndex, 0);
  
     // animationOptions
     if(LEDS_BRIGHTNESS >= 0 && LEDS_BRIGHTNESS <= AnimationStation::brightnessSteps)
@@ -569,84 +565,28 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         config.animationOptions.profiles[0].basePressedEffect = AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_STATIC_COLOR;
         config.animationOptions.profiles[0].baseCaseEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_ROTATE;
         INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bUseCaseLightsInPressedAnimations, 1);   
-        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bUseCaseLightsInSpecialMoves, 1);   
-    }
 
-    //Since we force a profile 0 on new settings we only need to now force disable profiles 1 to max
-    for (unsigned int profileIndex = 1; profileIndex < MAX_ANIMATION_PROFILES; ++profileIndex) 
-    {
-        INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], bEnabled, 0);
-        INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], basePressedCycleTime, 2);
-        INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], baseCycleTime, 2);
-        INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], baseCycleTime, 2);
-        INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], bUseCaseLightsInPressedAnimations, 0);   
-        INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], bUseCaseLightsInSpecialMoves, 0);   
-        config.animationOptions.profiles[profileIndex].notPressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
-        config.animationOptions.profiles[profileIndex].pressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
-        for (unsigned int lightIndex = 0; lightIndex < (NUM_BANK0_GPIOS/4)+1; ++lightIndex) 
+        //Since we force a profile 0 on new settings we only need to now force disable profiles 1 to max
+        for (unsigned int profileIndex = 1; profileIndex < MAX_ANIMATION_PROFILES; ++profileIndex) 
         {
-            config.animationOptions.profiles[profileIndex].notPressedStaticColors[lightIndex] = 0; //Black
-            config.animationOptions.profiles[profileIndex].pressedStaticColors[lightIndex] = 0; //Black
-        }
-        config.animationOptions.profiles[profileIndex].caseStaticColors_count = (MAX_CASE_LIGHTS/4);
-        for (unsigned int lightIndex = 0; lightIndex < (MAX_CASE_LIGHTS/4); ++lightIndex) 
-        {
-            config.animationOptions.profiles[profileIndex].caseStaticColors[lightIndex] = 0; //Black
-        }
-    }
-     
-    //TESTING
-    if(false)
-    { 
-        config.animationOptions.customColors_count = 1;
-        config.animationOptions.customColors[0] = 255;
-        config.animationOptions.profiles_count = 2;
+            INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], bEnabled, 0);
+            INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], basePressedCycleTime, 0);
+            INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], baseCycleTime, 0);
+            INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], bUseCaseLightsInPressedAnimations, 0);   
 
-        config.animationOptions.profiles[0].bEnabled = true;
-        config.animationOptions.profiles[0].notPressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
-        config.animationOptions.profiles[0].pressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
-        for (unsigned int lightIndex = 0; lightIndex < (NUM_BANK0_GPIOS/4)+1; ++lightIndex) 
-        {
-            config.animationOptions.profiles[0].notPressedStaticColors[lightIndex] = 2 + (2<<8) + (2<<16) + (2<<24); //Red
-            config.animationOptions.profiles[0].pressedStaticColors[lightIndex] = 4 + (6<<8) + (10<<16) + (12<<24); //Black
+            config.animationOptions.profiles[profileIndex].notPressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
+            config.animationOptions.profiles[profileIndex].pressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
+            for (unsigned int lightIndex = 0; lightIndex < (NUM_BANK0_GPIOS/4)+1; ++lightIndex) 
+            {
+                config.animationOptions.profiles[profileIndex].notPressedStaticColors[lightIndex] = 0; //Black
+                config.animationOptions.profiles[profileIndex].pressedStaticColors[lightIndex] = 0; //Black
+            }
+            config.animationOptions.profiles[profileIndex].caseStaticColors_count = (MAX_CASE_LIGHTS/4);
+            for (unsigned int lightIndex = 0; lightIndex < (MAX_CASE_LIGHTS/4); ++lightIndex) 
+            {
+                config.animationOptions.profiles[profileIndex].caseStaticColors[lightIndex] = 0; //Black
+            }
         }
-        config.animationOptions.profiles[0].baseNonPressedEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_STATIC_COLOR;
-        config.animationOptions.profiles[0].basePressedEffect = AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_BURST_SMALL;
-        config.animationOptions.profiles[0].baseCaseEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_STATIC_COLOR;
-        config.animationOptions.profiles[0].buttonPressHoldTimeInMs = 500;
-        config.animationOptions.profiles[0].buttonPressFadeOutTimeInMs = 500;
-        config.animationOptions.profiles[0].nonPressedSpecialColor = (128 << 16) + 255; //MAGENTA
-        config.animationOptions.profiles[0].bUseCaseLightsInSpecialMoves = false;
-        config.animationOptions.profiles[0].bUseCaseLightsInPressedAnimations = false;
-        config.animationOptions.profiles[0].caseStaticColors_count = MAX_CASE_LIGHTS/4;
-        for (unsigned int caseLightIndex = 0; caseLightIndex < MAX_CASE_LIGHTS/4; ++caseLightIndex) 
-        {
-            config.animationOptions.profiles[0].caseStaticColors[caseLightIndex] = 2 + (2<<8) + (2<<16) + (2<<24); //Red
-        }
-
-        config.animationOptions.profiles[1].bEnabled = true;
-        config.animationOptions.profiles[1].notPressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
-        config.animationOptions.profiles[1].pressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
-        for (unsigned int lightIndex = 0; lightIndex < (NUM_BANK0_GPIOS/4)+1; ++lightIndex) 
-        {
-            config.animationOptions.profiles[1].notPressedStaticColors[lightIndex] = 6 + (6<<8) + (6<<16) + (6<<24); //Green
-            config.animationOptions.profiles[1].pressedStaticColors[lightIndex] = 2 + (2<<8) + (2<<16) + (2<<24); //Black
-        }
-        config.animationOptions.profiles[1].caseStaticColors_count = MAX_CASE_LIGHTS/4;
-        for (unsigned int caseLightIndex = 0; caseLightIndex < MAX_CASE_LIGHTS/4; ++caseLightIndex) 
-        {
-            config.animationOptions.profiles[1].caseStaticColors[caseLightIndex] = 14 + (1<<8) + (1<<16) + (1<<24); //custom 1, white, white, white
-        }
-
-        config.animationOptions.profiles[1].baseNonPressedEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_LEFT_TO_RIGHT;
-        config.animationOptions.profiles[1].basePressedEffect = AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_BURST;
-        config.animationOptions.profiles[1].baseCaseEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_LEFT_TO_RIGHT;
-        config.animationOptions.profiles[1].buttonPressHoldTimeInMs = 500;
-        config.animationOptions.profiles[1].buttonPressFadeOutTimeInMs = 500;
-        config.animationOptions.profiles[1].nonPressedSpecialColor = 255; //BLUE
-        config.animationOptions.profiles[1].pressedSpecialColor = (255 << 16) + (50 << 8); //reddy YELLOW
-        config.animationOptions.profiles[1].bUseCaseLightsInSpecialMoves = true;
-        config.animationOptions.profiles[1].bUseCaseLightsInPressedAnimations = true;
     }
 
     // addonOptions.bootselButtonOptions

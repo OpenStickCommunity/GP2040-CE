@@ -352,7 +352,6 @@
 11, 1, 12, 3, 9, LightType::LightType_ActionButton
 #define LIGHT_DATA_NAME_1 "Haute/Cosmox T12" 
 
-
 // Keyboard Host enabled by default
 #define KEYBOARD_HOST_ENABLED 1
  

@@ -328,42 +328,6 @@ message LEDOptions
     optional bool lightClusterDataInitialised = 41;
 };
 
-//message SpecialMoveInputTriggers 
-//{
-//    optional uint32 OptionalParams = 1; //8 uint4's packed in here (assigned to custom enums later)
-//    optional uint32 RequiredTriggers = 2; //buttonmasks
-//
-//    optional SpecialMoveEffects ChainedAnimation = 3;
-//    optional uint32 ChainedOptionalParams = 4; 
-//    optional SpecialMoveEffects ChainedAnimationTwo = 5;
-//    optional uint32 ChainedOptionalParamsTwo = 6; 
-//};
-
-//message SpecialMoveDescription 
-//{
-//    repeated SpecialMoveInputTypes RequiredInputCombos = 1 [(nanopb).max_count = 4]; //MAX_SPECIALMOVE_INPUTTYPES_PER_MOVE from SpecialMoveSystem.hpp
-//    repeated SpecialMoveInputTriggers RequiredTriggerCombos = 2 [(nanopb).max_count = 3]; //MAX_SPECIALMOVE_TRIGGERCOMBOS from SpecialMoveSystem.hpp
-//
-//    optional SpecialMoveEffects Animation = 3;
-//    optional bool bIsChargeMove = 4;
-//
-//    optional int32 Priority = 5;
-//};
-
-//message SpecialMoveProfile
-//{
-//    optional bool bEnabled = 1;
-//    repeated SpecialMoveDescription AllSpecialMoves = 2 [(nanopb).max_count = 20]; //MAX_SPECIALMOVES from SpecialMoveSystem.hpp
-//    optional string Label = 3 [(nanopb).max_length = 12];
-//};
-
-//message SpecialMoveOptions
-//{
-//    repeated SpecialMoveProfile profiles = 1 [(nanopb).max_count = 4]; //MAX_SPECIALMOVE_PROFILES from SpecialMoveSystem.hpp
-//    optional uint32 ChargeTimeInMs = 2;
-//    optional uint32 CurrentProfileIndex = 3;
-//};
-
 // This has to be kept in sync with AnimationProfile_Unpacked in AnimationStation.hpp
 message AnimationProfile
 {
@@ -388,13 +352,11 @@ message AnimationProfile
 
     optional uint32 pressedSpecialColor = 12;
 
-    optional bool bUseCaseLightsInSpecialMoves = 13;
+    optional int32 basePressedCycleTime = 13; 
 
-    optional int32 basePressedCycleTime = 14; 
+    optional bool bUseCaseLightsInPressedAnimations = 14;
 
-    optional bool bUseCaseLightsInPressedAnimations = 15;
-
-    optional int32 baseCaseCycleTime = 16; 
+    optional int32 baseCaseCycleTime = 15; 
 };
 
 // This has to be kept in sync with AnimationOptions_Unpacked in animationstation.hpp
@@ -976,6 +938,4 @@ message Config
     optional GpioMappings gpioMappings = 13;
     optional MigrationHistory migrations = 14;
     optional PeripheralOptions peripheralOptions = 15;
-
-    //optional SpecialMoveOptions_Proto specialMoveOptions = 16;
 }

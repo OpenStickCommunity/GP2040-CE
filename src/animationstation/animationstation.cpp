@@ -14,11 +14,6 @@
 #include "effects/idletimeout.h"
 #include "effects/jiggletwostaticcolor.h"
 #include "effects/randomcolor.h"
-#include "effects/smpulsecolor.h"
-#include "effects/smcirclecolor.h"
-#include "effects/smwave.h"
-#include "effects/smknightrider.h"
-#include "specialmovesystem.h"
 
 #include "animationstation.h"
 
@@ -32,7 +27,6 @@ uint8_t AnimationStation::brightnessSteps = 10;
 float AnimationStation::normalisedBrightness = 0;
 absolute_time_t AnimationStation::nextChange = nil_time;
 AnimationOptions_Unpacked AnimationStation::options = {};
-std::string AnimationStation::printfs[4];
 AnimationStationTestMode AnimationStation::TestMode = AnimationStationTestMode::AnimationStation_TestModeInvalid;
 bool AnimationStation::bTestModeChangeRequested = false;
 int AnimationStation::TestModePinOrCaseIndex = -1;
@@ -93,16 +87,6 @@ void AnimationStation::HandleEvent(GamepadHotkey action)
   {
     ChangeProfile(-1);
   }
-
-  //Switch to new profile
-  // if (action == HOTKEY_LEDS_SPECIALMOVE_PROFILE_UP)
-  // {
-  //   specialMoveSystem.ChangeSpecialMoveProfile(1);
-  // }
-  // if (action == HOTKEY_LEDS_SPECIALMOVE_PROFILE_DOWN)
-  // {
-  //   specialMoveSystem.ChangeSpecialMoveProfile(-1);
-  // }
 
   //Adjust existing profile hotkeys
   if (this->baseAnimation == nullptr || this->buttonAnimation == nullptr)
@@ -217,7 +201,6 @@ void AnimationStation::HandlePressedPins(std::vector<int32_t> pressedPins)
 
 void AnimationStation::HandlePressedButtons(uint32_t pressedButtons)
 {
-  specialMoveSystem.HandlePressedButtons(pressedButtons);
 }
 
 void AnimationStation::UpdateTestMode()
@@ -254,7 +237,6 @@ void AnimationStation::Animate()
 
   //Check for options changing and need saving
   CheckForOptionsUpdate();
-  specialMoveSystem.CheckForOptionsUpdate();
 
   //If no profiles running
   if (baseAnimation == nullptr || buttonAnimation == nullptr)
@@ -263,23 +245,10 @@ void AnimationStation::Animate()
     return;
   }
 
-  specialMoveSystem.Update();
-
   baseAnimation->Animate(this->frame);
   if(caseAnimation != nullptr)
     caseAnimation->Animate(this->frame);
   buttonAnimation->Animate(this->frame);
-  if(specialMoveAnimation)
-  {
-    specialMoveAnimation->Animate(this->frame);
-    //Special moves can end once their animation is over. Clean up if its finished
-    if(specialMoveAnimation->IsFinished())
-    {
-      delete specialMoveAnimation;
-      specialMoveAnimation = nullptr;
-      specialMoveSystem.SetSpecialMoveAnimationOver();
-    }
-  }
 }
 
 void AnimationStation::Clear()
@@ -316,44 +285,6 @@ void AnimationStation::UpdateTimeout()
         this->caseAnimation = GetNonPressedEffectForEffectType(this->options.profiles[this->options.baseProfileIndex].baseCaseEffect, EButtonCaseEffectType::BUTTONCASELIGHTTYPE_CASE_ONLY);
       }
     }
-  }
-}
-
-void AnimationStation::SetSpecialMoveAnimation(SpecialMoveEffects AnimationToPlay, uint32_t OptionalParams)
-{
-  EButtonCaseEffectType buttonCaseEffect = EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_ONLY;
-  if(this->options.profiles[this->options.baseProfileIndex].bUseCaseLightsInSpecialMoves)
-    buttonCaseEffect = EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE;
-
-  switch(AnimationToPlay)
-  {
-  case SpecialMoveEffects::SpecialMoveEffects_SMEFFECT_WAVE:
-    this->specialMoveAnimation = new SMWave(RGBLights, buttonCaseEffect);
-    break;
-
-  case SpecialMoveEffects::SpecialMoveEffects_SMEFFECT_PULSECOLOR:
-    this->specialMoveAnimation = new SMPulseColor(RGBLights, buttonCaseEffect);
-    break;
-
-  case SpecialMoveEffects::SpecialMoveEffects_SMEFFECT_CIRCLECOLOR:
-    this->specialMoveAnimation = new SMCircleColor(RGBLights, buttonCaseEffect);
-    break;
-
-  case SpecialMoveEffects::SpecialMoveEffects_SMEFFECT_KNIGHTRIDER:
-    this->specialMoveAnimation = new SMKnightRider(RGBLights, buttonCaseEffect);
-    break;
-
-  case SpecialMoveEffects::SpecialMoveEffects_SMEFFECT_RANDOMFLASH:
-    //this->specialMoveAnimation = new SMRandomFlash(RGBLights, buttonCaseEffect);
-    break;
-
-  default:
-      break;
-  }
-
-  if(this->specialMoveAnimation)
-  {
-      this->specialMoveAnimation->SetOptionalParams(OptionalParams);
   }
 }
 
@@ -620,7 +551,6 @@ void AnimationStation::DecompressProfile(int ProfileIndex, const AnimationProfil
 		options.profiles[ProfileIndex].buttonPressFadeOutTimeInMs = ProfileToDecompress->buttonPressFadeOutTimeInMs;
 		options.profiles[ProfileIndex].nonPressedSpecialColor = ProfileToDecompress->nonPressedSpecialColor;
 		options.profiles[ProfileIndex].pressedSpecialColor = ProfileToDecompress->pressedSpecialColor;
-		options.profiles[ProfileIndex].bUseCaseLightsInSpecialMoves = ProfileToDecompress->bUseCaseLightsInSpecialMoves;
 		options.profiles[ProfileIndex].bUseCaseLightsInPressedAnimations = ProfileToDecompress->bUseCaseLightsInPressedAnimations;
 }
 

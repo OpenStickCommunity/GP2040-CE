@@ -296,7 +296,6 @@ src/addons/gamepad_usb_host_listener.cpp
 src/addons/tg16_input.cpp
 src/animationstation/animation.cpp
 src/animationstation/animationstation.cpp
-src/animationstation/specialmovesystem.cpp
 src/animationstation/effects/burstcolor.cpp
 src/animationstation/effects/chase.cpp
 src/animationstation/effects/idletimeout.cpp
@@ -305,10 +304,6 @@ src/animationstation/effects/jiggletwostaticcolor.cpp
 src/animationstation/effects/rain.cpp
 src/animationstation/effects/rainbow.cpp
 src/animationstation/effects/randomcolor.cpp
-src/animationstation/effects/smcirclecolor.cpp
-src/animationstation/effects/smknightrider.cpp
-src/animationstation/effects/smpulsecolor.cpp
-src/animationstation/effects/smwave.cpp
 src/animationstation/effects/staticcolor.cpp
 ${PROTO_OUTPUT_DIR}/enums.pb.c
 ${PROTO_OUTPUT_DIR}/config.pb.c
