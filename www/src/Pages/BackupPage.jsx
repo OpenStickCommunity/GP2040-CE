@@ -40,7 +40,6 @@ const API_BINDING = {
 		get: WebApi.getKeyMappings,
 		set: WebApi.setKeyMappings,
 	},
-	led: { get: WebApi.getLedOptions, set: WebApi.setLedOptions },
 	macros: {
 		get: WebApi.getMacroAddonOptions,
 		set: WebApi.setMacroAddonOptions,
