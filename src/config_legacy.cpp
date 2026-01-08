@@ -901,59 +901,6 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         SET_PROPERTY(ledOptions, pledColor, legacyLEDOptions.pledColor.value(LED_FORMAT_RGB));
     }
 
-    const ConfigLegacy::AnimationOptions& legacyAnimationOptions = *reinterpret_cast<ConfigLegacy::AnimationOptions*>(EEPROM_ADDRESS_START + ANIMATION_STORAGE_INDEX);
-    if (legacyAnimationOptions.checksum == computeChecksum(reinterpret_cast<const char*>(&legacyAnimationOptions), sizeof(ConfigLegacy::AnimationOptions), offsetof(ConfigLegacy::AnimationOptions, checksum)))
-    {
-        legacyConfigFound = true;
-
-        AnimationOptions& animationOptions = config.animationOptions;
-        config.has_animationOptions = true;
-        SET_PROPERTY(animationOptions, baseAnimationIndex, legacyAnimationOptions.baseAnimationIndex);
-        SET_PROPERTY(animationOptions, brightness, legacyAnimationOptions.brightness);
-        SET_PROPERTY(animationOptions, staticColorIndex, legacyAnimationOptions.staticColorIndex);
-        SET_PROPERTY(animationOptions, buttonColorIndex, legacyAnimationOptions.buttonColorIndex);
-        SET_PROPERTY(animationOptions, chaseCycleTime, legacyAnimationOptions.chaseCycleTime);
-        SET_PROPERTY(animationOptions, rainbowCycleTime, legacyAnimationOptions.rainbowCycleTime);
-        SET_PROPERTY(animationOptions, themeIndex, legacyAnimationOptions.themeIndex);
-        SET_PROPERTY(animationOptions, hasCustomTheme, legacyAnimationOptions.hasCustomTheme);
-        SET_PROPERTY(animationOptions, customThemeUp, legacyAnimationOptions.customThemeUp);
-        SET_PROPERTY(animationOptions, customThemeDown, legacyAnimationOptions.customThemeDown);
-        SET_PROPERTY(animationOptions, customThemeLeft, legacyAnimationOptions.customThemeLeft);
-        SET_PROPERTY(animationOptions, customThemeRight, legacyAnimationOptions.customThemeRight);
-        SET_PROPERTY(animationOptions, customThemeB1, legacyAnimationOptions.customThemeB1);
-        SET_PROPERTY(animationOptions, customThemeB2, legacyAnimationOptions.customThemeB2);
-        SET_PROPERTY(animationOptions, customThemeB3, legacyAnimationOptions.customThemeB3);
-        SET_PROPERTY(animationOptions, customThemeB4, legacyAnimationOptions.customThemeB4);
-        SET_PROPERTY(animationOptions, customThemeL1, legacyAnimationOptions.customThemeL1);
-        SET_PROPERTY(animationOptions, customThemeR1, legacyAnimationOptions.customThemeR1);
-        SET_PROPERTY(animationOptions, customThemeL2, legacyAnimationOptions.customThemeL2);
-        SET_PROPERTY(animationOptions, customThemeR2, legacyAnimationOptions.customThemeR2);
-        SET_PROPERTY(animationOptions, customThemeS1, legacyAnimationOptions.customThemeS1);
-        SET_PROPERTY(animationOptions, customThemeS2, legacyAnimationOptions.customThemeS2);
-        SET_PROPERTY(animationOptions, customThemeL3, legacyAnimationOptions.customThemeL3);
-        SET_PROPERTY(animationOptions, customThemeR3, legacyAnimationOptions.customThemeR3);
-        SET_PROPERTY(animationOptions, customThemeA1, legacyAnimationOptions.customThemeA1);
-        SET_PROPERTY(animationOptions, customThemeA2, legacyAnimationOptions.customThemeA2);
-        SET_PROPERTY(animationOptions, customThemeUpPressed, legacyAnimationOptions.customThemeUpPressed);
-        SET_PROPERTY(animationOptions, customThemeDownPressed, legacyAnimationOptions.customThemeDownPressed);
-        SET_PROPERTY(animationOptions, customThemeLeftPressed, legacyAnimationOptions.customThemeLeftPressed);
-        SET_PROPERTY(animationOptions, customThemeRightPressed, legacyAnimationOptions.customThemeRightPressed);
-        SET_PROPERTY(animationOptions, customThemeB1Pressed, legacyAnimationOptions.customThemeB1Pressed);
-        SET_PROPERTY(animationOptions, customThemeB2Pressed, legacyAnimationOptions.customThemeB2Pressed);
-        SET_PROPERTY(animationOptions, customThemeB3Pressed, legacyAnimationOptions.customThemeB3Pressed);
-        SET_PROPERTY(animationOptions, customThemeB4Pressed, legacyAnimationOptions.customThemeB4Pressed);
-        SET_PROPERTY(animationOptions, customThemeL1Pressed, legacyAnimationOptions.customThemeL1Pressed);
-        SET_PROPERTY(animationOptions, customThemeR1Pressed, legacyAnimationOptions.customThemeR1Pressed);
-        SET_PROPERTY(animationOptions, customThemeL2Pressed, legacyAnimationOptions.customThemeL2Pressed);
-        SET_PROPERTY(animationOptions, customThemeR2Pressed, legacyAnimationOptions.customThemeR2Pressed);
-        SET_PROPERTY(animationOptions, customThemeS1Pressed, legacyAnimationOptions.customThemeS1Pressed);
-        SET_PROPERTY(animationOptions, customThemeS2Pressed, legacyAnimationOptions.customThemeS2Pressed);
-        SET_PROPERTY(animationOptions, customThemeL3Pressed, legacyAnimationOptions.customThemeL3Pressed);
-        SET_PROPERTY(animationOptions, customThemeR3Pressed, legacyAnimationOptions.customThemeR3Pressed);
-        SET_PROPERTY(animationOptions, customThemeA1Pressed, legacyAnimationOptions.customThemeA1Pressed);
-        SET_PROPERTY(animationOptions, customThemeA2Pressed, legacyAnimationOptions.customThemeA2Pressed);
-    }
-
     const ConfigLegacy::AddonOptions& legacyAddonOptions = *reinterpret_cast<ConfigLegacy::AddonOptions*>(EEPROM_ADDRESS_START + ADDON_STORAGE_INDEX);
     if (legacyAddonOptions.checksum == computeChecksum(reinterpret_cast<const char*>(&legacyAddonOptions), sizeof(ConfigLegacy::AddonOptions), offsetof(ConfigLegacy::AddonOptions, checksum)))
     {

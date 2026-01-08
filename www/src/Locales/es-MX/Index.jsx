@@ -6,8 +6,6 @@ import ResetSettings from './ResetSettings';
 import Components from './Components';
 import PinMapping from './PinMapping';
 import PeripheralMapping from './PeripheralMapping';
-import LedConfig from './LedConfig';
-import CustomTheme from './CustomTheme';
 import BackupPage from './BackupPage';
 import DisplayConfig from './DisplayConfig';
 import AddonsConfig from './AddonsConfig';
@@ -18,8 +16,10 @@ import PCF8575 from './Addons/PCF8575';
 import ReactiveLED from './Addons/ReactiveLED';
 import InputMacroAddon from './InputMacroAddon';
 import LayoutConfig from './LayoutConfig';
+import LedConfig from './LedConfig';
 
 export default {
+	LedConfig,
 	Common,
 	HomePage,
 	Navigation,
@@ -28,8 +28,6 @@ export default {
 	Components,
 	PinMapping,
 	PeripheralMapping,
-	LedConfig,
-	CustomTheme,
 	BackupPage,
 	DisplayConfig,
 	AddonsConfig,
