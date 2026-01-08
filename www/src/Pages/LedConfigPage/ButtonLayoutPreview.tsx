@@ -121,7 +121,7 @@ function ButtonLayoutPreview({
 					width="20"
 					height="20"
 					className="d-inline-block mx-2 align-middle"
-					aria-label='circle'
+					aria-label="circle"
 				>
 					<circle
 						cx="10"
@@ -137,7 +137,7 @@ function ButtonLayoutPreview({
 					width="20"
 					height="20"
 					className="d-inline-block mx-2 align-middle"
-					aria-label='square'
+					aria-label="square"
 				>
 					<rect
 						x="2"
@@ -154,17 +154,10 @@ function ButtonLayoutPreview({
 					width="20"
 					height="20"
 					className="d-inline-block mx-2 align-middle"
-					aria-label='hexagon'
+					aria-label="hexagon"
 				>
 					<polygon
-						points={[0, 1, 2, 3, 4, 5]
-							.map((i) => {
-								const angle = (Math.PI / 3) * i - Math.PI / 2;
-								const x = 10 + 8 * Math.cos(angle);
-								const y = 10 + 8 * Math.sin(angle);
-								return `${x},${y}`;
-							})
-							.join(' ')}
+						points="10,2 16.928,6 16.928,14 10,18 3.072,14 3.072,6"
 						fill="currentColor"
 						stroke="black"
 						strokeWidth="1"
@@ -301,6 +294,8 @@ function ButtonLayoutPreview({
 													key={`case-el-light-${index}`}
 													x={light.xCoord - SMALL_LIGHT_SIZE}
 													y={light.yCoord - SMALL_LIGHT_SIZE}
+													ry={0.1}
+													rx={0.1}
 													width={SMALL_LIGHT_SIZE * 2}
 													height={SMALL_LIGHT_SIZE * 2}
 													fill={
@@ -377,15 +372,7 @@ function ButtonLayoutPreview({
 										>
 											<g key={`${light.lightType}-light-${index}`}>
 												<polygon
-													points={[0, 1, 2, 3, 4, 5]
-														.map((i) => {
-															const angle = (Math.PI / 3) * i - Math.PI / 2;
-															const size = SMALL_LIGHT_SIZE;
-															const x = light.xCoord + size * Math.cos(angle);
-															const y = light.yCoord + size * Math.sin(angle);
-															return `${x},${y}`;
-														})
-														.join(' ')}
+													points={`${light.xCoord},${light.yCoord - SMALL_LIGHT_SIZE} ${light.xCoord + SMALL_LIGHT_SIZE * 0.866},${light.yCoord - SMALL_LIGHT_SIZE * 0.5} ${light.xCoord + SMALL_LIGHT_SIZE * 0.866},${light.yCoord + SMALL_LIGHT_SIZE * 0.5} ${light.xCoord},${light.yCoord + SMALL_LIGHT_SIZE} ${light.xCoord - SMALL_LIGHT_SIZE * 0.866},${light.yCoord + SMALL_LIGHT_SIZE * 0.5} ${light.xCoord - SMALL_LIGHT_SIZE * 0.866},${light.yCoord - SMALL_LIGHT_SIZE * 0.5}`}
 													fill={
 														colorOptions[
 															pressed

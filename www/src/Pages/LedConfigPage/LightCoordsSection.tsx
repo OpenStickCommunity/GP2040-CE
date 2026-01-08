@@ -151,7 +151,7 @@ export default function LightCoordsSection({
 	);
 
 	const handleNewLight = useCallback(
-		(lightType) => {
+		(lightType: number) => {
 			const emptyCoord = getFirstEmptyLightCoord(values.Lights);
 			if (!emptyCoord) return;
 
