@@ -35,7 +35,7 @@ const API_BINDING = {
 	ledLayout: {
 		get: WebApi.getLightsDataOptions,
 		set: WebApi.setLightsDataOptions,
-	}
+	},
 	keyboard: {
 		get: WebApi.getKeyMappings,
 		set: WebApi.setKeyMappings,
