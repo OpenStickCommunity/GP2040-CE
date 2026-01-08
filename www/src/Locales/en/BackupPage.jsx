@@ -11,6 +11,8 @@ export default {
 	'api-ledOptions-text': 'LED',
 	'api-ledAnimations-text': 'LED Animations',
 	'api-ledLayout-text': 'LED Layout',
+	'api-keyboard-text': 'Keyboard Mappings',
+	'api-led-text': 'LED',
 	'api-macros-text': 'Macro Mappings',
 	'api-pins-text': 'Pin Mappings',
 	'api-profiles-text': 'Profile Mappings',
