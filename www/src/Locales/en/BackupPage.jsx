@@ -8,6 +8,7 @@ export default {
 	'load-export-option-label': 'Import {{api}} Options',
 	'api-display-text': 'Display',
 	'api-gamepad-text': 'Gamepad',
+	'api-keyboard-text': 'Keyboard Mappings',
 	'api-ledOptions-text': 'LED',
 	'api-ledAnimations-text': 'LED Animations',
 	'api-ledLayout-text': 'LED Layout',
