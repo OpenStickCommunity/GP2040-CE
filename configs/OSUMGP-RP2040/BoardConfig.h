@@ -31,6 +31,7 @@
 #define GPIO_PIN_10 GpioAction::BUTTON_PRESS_R3     // R3     | RS     | RS      | R3       | 12     | RS     |
 #define GPIO_PIN_15 GpioAction::BUTTON_PRESS_A1     // A1     | Guide  | Home    | PS       | 13     | ~      |
 #define GPIO_PIN_20 GpioAction::BUTTON_PRESS_A2     // A2     | ~      | Capture | ~        | 14     | ~      |
+#define GPIO_PIN_04 GpioAction::BUTTON_PRESS_FN     // FN   
 
 
 // Setting GPIO pins to assigned by add-on
