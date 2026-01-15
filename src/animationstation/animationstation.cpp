@@ -267,14 +267,20 @@ void AnimationStation::UpdateTimeout()
       {
         //turn off all lights (but leave pressed effects running so the first press on restart isnt lost)
         bIsInIdleTimeout = true;
-        delete this->baseAnimation;
+        if(this->baseAnimation != nullptr)
+          delete this->baseAnimation;
+        if(this->caseAnimation != nullptr)
+          delete this->caseAnimation;
+        
+        this->caseAnimation = nullptr;
         this->baseAnimation = new IdleTimeout(RGBLights, EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE);
       }
     }
     else if((absolute_time_diff_us(timeLastButtonPressed, get_absolute_time()) / 1000) < options.autoDisableTime)
     {
       bIsInIdleTimeout = false;
-      delete this->baseAnimation;
+      if(this->baseAnimation != nullptr)
+        delete this->baseAnimation;
       bool bCaseLightsUsingButtonNonPressedAnim = this->options.profiles[this->options.baseProfileIndex].baseNonPressedEffect == this->options.profiles[this->options.baseProfileIndex].baseCaseEffect;
 
       //set new profile nonpressed animation

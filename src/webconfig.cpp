@@ -974,7 +974,8 @@ std::string getLightsDataOptions()
 
 std::string getLightsDataPresets()
 {
-    DynamicJsonDocument outDoc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    //DynamicJsonDocument outDoc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    DynamicJsonDocument outDoc((1024 * 50)); //Set a bigger value here as the preset data is quite large but it should be fine for a get call
     JsonArray presetsArray = outDoc.to<JsonArray>();
 
     auto addPreset = [&](const char* name, const unsigned char* data, int32_t dataSize)
