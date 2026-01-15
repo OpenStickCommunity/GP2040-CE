@@ -66,7 +66,7 @@ const schema = yup.object({
 			.required()
 			.positive()
 			.integer()
-			.min(1)
+			.min(0)
 			.max(100)
 			.label('Max Brightness'),
 		turnOffWhenSuspended: yup.number().label('Turn Off When Suspended'),
@@ -328,19 +328,18 @@ export default function LedConfigPage() {
 									</option>
 								))}
 							</FormSelect>
-							<FormControl
-								type="number"
-								label={t('LedConfig:rgb.led-brightness-maximum-label')}
-								name="ledOptions.brightnessMaximum"
-								className="form-control-sm"
-								groupClassName="col-sm-4 mb-3"
-								value={values.ledOptions.brightnessMaximum}
-								error={errors.ledOptions?.brightnessMaximum}
-								isInvalid={Boolean(errors.ledOptions?.brightnessMaximum)}
-								onChange={handleChange}
-								min={1}
-								max={100}
-							/>
+							<div className="form-control-sm col-sm-4 mb-3">
+								<Form.Label>{`${t('LedConfig:rgb.led-brightness-maximum-label')}: ${values.ledOptions.brightnessMaximum}%`}</Form.Label>
+								<Form.Range
+									name="ledOptions.brightnessMaximum"
+									id={`ledOptions.brightnessMaximum`}
+									min={0}
+									max={100}
+									step={1}
+									value={values.ledOptions.brightnessMaximum}
+									onChange={handleChange}
+								/>
+							</div>
 						</Row>
 						<Row>
 							<div className="col-sm-4 mb-3">
@@ -388,21 +387,6 @@ export default function LedConfigPage() {
 									</option>
 								))}
 							</FormSelect>
-
-							<FormControl
-								type="number"
-								label={'Brightness'}
-								name="AnimationOptions.brightness"
-								className="form-control-sm"
-								groupClassName="col-sm-4 mb-3"
-								value={values.AnimationOptions.brightness}
-								error={errors.AnimationOptions?.brightness}
-								isInvalid={Boolean(errors.AnimationOptions?.brightness)}
-								onChange={handleChange}
-								min={0}
-								max={10}
-							/>
-
 							<FormControl
 								type="number"
 								label={t('Leds:idle-timout-label')}
@@ -416,6 +400,18 @@ export default function LedConfigPage() {
 								min={0}
 								max={300}
 							/>
+							<div className="form-control-sm col-sm-4 mb-3">
+								<Form.Label>{`Current Brightness: ${values.AnimationOptions.brightness * 10}% of max`}</Form.Label>
+								<Form.Range
+									name="AnimationOptions.brightness"
+									id={`AnimationOptions.brightness`}
+									min={0}
+									max={10}
+									step={1}
+									value={values.AnimationOptions.brightness}
+									onChange={handleChange}
+								/>
+							</div>
 						</Row>
 						<FormGroup>
 							<Form.Label>{t('Leds:custom-color-label')}</Form.Label>
@@ -670,7 +666,10 @@ export default function LedConfigPage() {
 														/>
 													</Col>
 													<Col md={6}>
-														<ImportLayout setFieldValue={setFieldValue} lights={values.Lights}/>
+														<ImportLayout
+															setFieldValue={setFieldValue}
+															lights={values.Lights}
+														/>
 													</Col>
 												</Row>
 												<hr />
