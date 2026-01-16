@@ -27,7 +27,7 @@ endif()
 if(DEFINED ENV{GP2040_BOARDCONFIG})
   set(GP2040_BOARDCONFIG $ENV{GP2040_BOARDCONFIG})
 elseif(NOT DEFINED GP2040_BOARDCONFIG)
-  set(GP2040_BOARDCONFIG Haute42COSMOX)
+  set(GP2040_BOARDCONFIG Pico)
 endif()
 
 # check for existing cmake files in the event of changing PICO_BOARD or PICO_PLATFORM

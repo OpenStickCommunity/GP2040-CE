@@ -24,10 +24,10 @@
 class SliderProfileInput : public GPAddon {
 public:
     virtual bool available();
-    virtual void setup();       // SliderProfile Button Setup
+    virtual void setup();
     virtual void reinit();
     virtual void preprocess() {}
-    virtual void process();     // SliderProfile process
+    virtual void process();
     virtual void postprocess(bool sent) {}
     virtual std::string name() { return SliderProfileName; }
 private:
