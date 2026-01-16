@@ -106,6 +106,11 @@ export default {
 		'Observação: os modos PS4, PS3 e Nintendo Switch não suportam a configuração SOCD Cleaning como Desligada e usarão o modo SOCD Cleaning Neutro por padrão.',
 	'socd-cleaning-mode-selection-slider-mode-default-label':
 		'Modo de Controle Deslizante SOCD Padrão',
+	'profile-slider-header-text': 'Controle Deslizante de Seleção de Perfil',
+	'profile-slider-sub-header-text': 'Observação: os pinos GPIO para as posições do controle deslizante de perfil são configurados na página de Mapeamento de Pinos.',
+	'profile-slider-num-positions-label': 'Número de Posições do Controle Deslizante',
+	'profile-slider-default-profile-label': 'Perfil Padrão',
+	'profile-slider-position-label': 'Perfil para Posição {{position}}',
 	'ps4-mode-sub-header-text':
 		'<0>!!!! AVISO: O GP2040-CE NUNCA FORNECERÁ ESSES ARQUIVOS !!!!</0> <1>Carregue os 3 arquivos necessários e clique no botão "Verificar e Salvar" para usar o Modo PS4.</1>',
 	'ps4-mode-private-key-label': 'Chave Privada (PEM)',
