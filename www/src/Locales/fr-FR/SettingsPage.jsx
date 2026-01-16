@@ -158,7 +158,6 @@ export default {
 	'forced-setup-mode-modal-body':
 		'Si vous redémarrez en mode Contrôleur après avoir sauvegardé, vous n\'aurez plus accès à la configuration web. Veuillez taper "<strong>{{warningCheckText}}</strong>" ci-dessous pour déverrouiller le bouton Sauvegarder si vous comprenez et acceptez cela. Cliquer sur Ignorer rétablira ce paramètre, qu’il faudra ensuite sauvegarder.',
 	'4-way-joystick-mode-label': 'Mode Joystick 4 voies',
-	'lock-hotkeys-label': 'Verrouiller les raccourcis',
 	'keyboard-mapping-header-text': 'Mappage du clavier',
 	'keyboard-mapping-sub-header-text':
 		'Utilisez le formulaire ci-dessous pour reconfigurer votre mappage bouton-touche.',
