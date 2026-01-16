@@ -28,10 +28,21 @@ const API_BINDING = {
 		get: WebApi.getKeyMappings,
 		set: WebApi.setKeyMappings,
 	},
-	led: { get: WebApi.getLedOptions, set: WebApi.setLedOptions },
-	ledTheme: {
-		get: WebApi.getCustomTheme,
-		set: WebApi.setCustomTheme,
+	ledOptions: {
+		get: WebApi.getLedOptions,
+		set: WebApi.setLedOptions,
+	},
+	ledAnimations: {
+		get: WebApi.getAnimationOptions,
+		set: WebApi.setAnimationOptions,
+	},
+	ledLayout: {
+		get: WebApi.getLightsDataOptions,
+		set: WebApi.setLightsDataOptions,
+	},
+	keyboard: {
+		get: WebApi.getKeyMappings,
+		set: WebApi.setKeyMappings,
 	},
 	macros: {
 		get: WebApi.getMacroAddonOptions,

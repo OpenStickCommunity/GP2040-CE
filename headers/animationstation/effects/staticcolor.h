@@ -9,16 +9,14 @@
 
 class StaticColor : public Animation {
 public:
-  StaticColor(PixelMatrix &matrix);
-  StaticColor(PixelMatrix &matrix, std::vector<Pixel> &pixels);
+  StaticColor(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType);
+  StaticColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPins);
   ~StaticColor() { };
 
-  bool Animate(RGB (&frame)[100]);
-  void SaveIndexOptions(uint8_t colorIndex);
-  uint8_t GetColor();
-  void ParameterUp();
-  void ParameterDown();
+  virtual void Animate(RGB (&frame)[FRAME_MAX]) override;
 protected:
+
+  virtual RGB AdjustColor(RGB InColor) { return InColor; }
 };
 
 #endif

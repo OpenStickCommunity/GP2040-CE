@@ -1,7 +1,4 @@
 export default {
-	'header-text': 'Layout Configuration',
-	'layout-left-header-text': 'Left Layout',
-	'layout-right-header-text': 'Right Layout',
 	layouts: {
 		left: {
 			BUTTON_LAYOUT_STICK: 'Stick',

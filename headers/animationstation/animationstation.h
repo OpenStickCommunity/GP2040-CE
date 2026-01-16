@@ -6,72 +6,154 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
+#include <string>
 #include "hardware/clocks.h"
 
 #include "NeoPico.h"
 #include "animation.h"
-#include "effects/chase.h"
-#include "effects/customtheme.h"
-#include "effects/customthemepressed.h"
-#include "effects/rainbow.h"
-#include "effects/staticcolor.h"
-#include "effects/statictheme.h"
 
 #include "config.pb.h"
-#include "enums.pb.h"
 
-const int TOTAL_EFFECTS = 4; // Exclude custom theme until verified present
+#define MAX_ANIMATION_PROFILES 4
+#define MAX_ANIMATION_PROFILES_INCLUDING_TEST (MAX_ANIMATION_PROFILES+1)
+#define MAX_CASE_LIGHTS 40          //this should be divisible by 4 as we pack 4 indexes into one config int32
+
+#define CYCLE_STEPS 5
+
+typedef enum
+{
+  AnimationStation_TestModeInvalid,
+  AnimationStation_TestModeOff,
+	AnimationStation_TestModeButtons,
+	AnimationStation_TestModeLayout,
+	AnimationStation_TestModeProfilePreview,
+} AnimationStationTestMode;
+
+struct __attribute__ ((__packed__)) AnimationProfile_Unpacked
+{
+    bool bEnabled = false;
+
+  	AnimationNonPressedEffects baseNonPressedEffect;
+  	AnimationPressedEffects basePressedEffect;
+    AnimationNonPressedEffects baseCaseEffect;
+
+    int16_t baseCycleTime;
+    int16_t basePressedCycleTime;
+    int16_t baseCaseCycleTime;
+
+    uint32_t notPressedStaticColors[NUM_BANK0_GPIOS + 3]; //since we pack 4 into each. Adding 3 ensures we have space for extra pading
+    uint32_t pressedStaticColors[NUM_BANK0_GPIOS + 3]; //since we pack 4 into each. Adding 3 ensures we have space for extra pading
+
+    uint32_t caseStaticColors[MAX_CASE_LIGHTS];
+
+    uint32_t buttonPressHoldTimeInMs;
+    uint32_t buttonPressFadeOutTimeInMs;
+
+    uint32_t nonPressedSpecialColor;
+    uint32_t pressedSpecialColor;
+
+    bool bUseCaseLightsInPressedAnimations;
+};
+
+struct __attribute__ ((__packed__)) AnimationOptions_Unpacked
+{
+  uint32_t checksum;
+  uint8_t NumValidProfiles;
+  AnimationProfile_Unpacked profiles[MAX_ANIMATION_PROFILES_INCLUDING_TEST];
+  uint8_t brightness;
+  int8_t baseProfileIndex;
+  uint32_t autoDisableTime;
+};
 
 class AnimationStation
 {
 public:
-    AnimationStation();
-    void Animate();
-    void HandleEvent(GamepadHotkey action);
-    void Clear();
-    void ChangeAnimation(int changeSize);
-    void ApplyBrightness(uint32_t *frameValue);
-    uint16_t AdjustIndex(int changeSize);
-    void HandlePressed(std::vector<Pixel> pressed);
-    void ClearPressed();
-    void SetMode(uint8_t mode);
-    void SetMatrix(PixelMatrix matrix);
-    void ConfigureBrightness(uint8_t max, uint8_t steps);
-    float GetBrightnessX();
-    float GetLinkageModeOfBrightnessX();
-    uint8_t GetBrightness();
-    void SetBrightness(uint8_t brightness);
-    void DecreaseBrightness();
-    void IncreaseBrightness();
-    void DimBrightnessTo0();
-    uint8_t GetBrightnessSteps(){ return this->brightnessSteps; };
-    uint8_t GetCustomBrightnessStepsSize(){ return (brightnessMax / brightnessSteps); };
-    RGB linkageFrame[100]; // copy baseAnimation frame exclude buttonAnimation frame
+  AnimationStation();
 
-private:
-    Animation* baseAnimation;
-    Animation* buttonAnimation;
-    std::vector<Pixel> lastPressed;
-    absolute_time_t nextChange;
-    uint8_t effectCount;
-    RGB frame[100];
-    bool ambientLightEffectsChangeFlag = false; 
-    bool ambientLightOnOffFlag = false;
-    bool ambientLightLinkageOnOffFlag = false;
-    bool aleLedsBrightnessCustomXupFlag = false;
-    bool aleLedsBrightnessCustomXDownFlag = false;
-    bool aleLedsParameterCustomUpFlag = false;
-    bool aleLedsParameterCustomDownFlag = false;
-    bool alGradientChaseBreathSpeedUpFlag = false;
-    bool alGradientChaseBreathSpeedDownFlag = false;
-    bool alCustomLinkageModeFlag = false;
-    uint8_t getBrightnessStepSize() { return (brightnessMax / brightnessSteps); }
-    uint8_t getLinkageModeOfBrightnessStepSize() { return (255 / brightnessSteps); }
-    float linkageModeOfBrightnessX;
-    uint8_t brightnessMax;
-    uint8_t brightnessSteps;
-    float brightnessX;
-    PixelMatrix matrix;
+  void Animate();
+  void HandleEvent(GamepadHotkey action);
+  void Clear();
+  void ApplyBrightness(uint32_t *frameValue);
+
+  //Change profiles
+  void ChangeProfile(int changeSize);
+  uint16_t AdjustIndex(int changeSize);
+
+  //What buttons (physical gpio pins) are pressed this frame
+  void HandlePressedPins(std::vector<int32_t> pressedPins);
+
+  //What buttons (logical ones) are pressed this frame
+  void HandlePressedButtons(uint32_t pressedButtons);
+
+  int8_t GetMode();
+  void SetMode(int8_t mode);
+  void SetLights(Lights InRGBLights);
+
+  //Brightness settings
+  static void SetMaxBrightness(uint8_t max);
+  static float GetNormalisedBrightness();
+  static uint8_t GetBrightnessStepValue();
+  static void SetBrightnessStepValue(uint8_t brightness);
+  static void DecreaseBrightnessByStep();
+  static void IncreaseBrightnessByStep();
+  static void DimBrightnessTo0();
+
+  static void DecompressProfile(int ProfileIndex, const AnimationProfile* ProfileToDecompress);
+  void DecompressSettings();
+  void CheckForOptionsUpdate();
+ 
+  //Testing/webconfig
+  static void SetTestMode(AnimationStationTestMode TestType, const AnimationProfile* TestProfile);
+  static void SetTestPinState(int PinOrCaseIndex, bool IsCaseLight);
+
+  //Running non-pressed animation
+  Animation* baseAnimation;
+
+  //Running case animation
+  Animation* caseAnimation;
+
+  //Running pressed animation
+  Animation* buttonAnimation;
+
+  //Buttons pressed (physical gipo pins) last frame, used when changing button theme so starts initialised
+  std::vector<int32_t> lastPressed;
+
+  static AnimationOptions_Unpacked options;
+
+  static absolute_time_t nextChange;
+
+  //Color of all lights this frame
+  RGB frame[FRAME_MAX];
+
+  static uint8_t brightnessSteps; 
+protected:
+  inline static uint8_t getBrightnessStepSize() { return (brightnessMax / brightnessSteps); }
+  static uint8_t brightnessMax; //0-255
+  static float normalisedBrightness; //0-1
+
+  Animation* GetNonPressedEffectForEffectType(AnimationNonPressedEffects EffectType, EButtonCaseEffectType InButtonCaseEffectType);
+
+  //webconfig test mode
+  void UpdateTestMode();
+
+  void UpdateTimeout();
+
+  //Light data
+  Lights RGBLights;
+
+  //options/save
+  absolute_time_t timeAnimationSaveSet;
+  bool bAnimConfigSaveNeeded = false;
+
+  //idletimeout
+  absolute_time_t timeLastButtonPressed;
+  bool bIsInIdleTimeout = false;
+
+  //Testing/webconfig
+  static AnimationStationTestMode TestMode;
+  static bool bTestModeChangeRequested;
+  static int TestModePinOrCaseIndex;
+  static bool TestModeLightIsCase;
 };
 
 #endif
