@@ -31,6 +31,7 @@
 #include "addons/gamepad_usb_host.h"
 #include "addons/he_trigger.h"
 #include "addons/tg16_input.h"
+#include "addons/dual_uart_host.h"
 
 // Pico includes
 #include "pico/bootrom.h"
@@ -120,6 +121,8 @@ void GP2040::setup() {
 	addons.LoadAddon(new RotaryEncoderInput());
 	addons.LoadAddon(new PCF8575Addon());
 	addons.LoadAddon(new TG16padInput());
+
+	addons.LoadAddon(new DualUartHostAddon());
 
 	// Input override addons
 	addons.LoadAddon(new ReverseInput());

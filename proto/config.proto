@@ -888,6 +888,11 @@ message HETriggerOptions
     optional int32 smoothingFactor = 13;
 }
 
+message DualUartHostOptions
+{
+    optional bool enabled = 1;
+}
+
 message AddonOptions
 {
     optional BootselButtonOptions bootselButtonOptions = 1;
@@ -920,6 +925,7 @@ message AddonOptions
     optional GamepadUSBHostOptions gamepadUSBHostOptions = 28;
     optional TG16Options tg16Options = 29;
     optional HETriggerOptions heTriggerOptions = 30;
+    optional DualUartHostOptions dualUartHostOptions = 31;
 }
 
 message MigrationHistory
