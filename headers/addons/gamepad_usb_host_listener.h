@@ -3,6 +3,7 @@
 
 #include "usblistener.h"
 #include "gamepad.h"
+#include "host/usbh.h"
 #include "drivers/ps4/PS4Descriptors.h"
 #include "drivers/switchpro/SwitchProDescriptors.h"
 
