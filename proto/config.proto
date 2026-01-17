@@ -38,6 +38,7 @@ message GamepadOptions
     optional uint32 usbVendorID = 31;
     optional uint32 miniMenuGamepadInput = 32;
     optional InputModeDeviceType inputDeviceType = 33;
+    optional bool enablePinInversion = 34 [default = false];
 }
 
 message KeyboardMapping
@@ -196,6 +197,7 @@ message GpioMappingInfo
     optional GpioDirection direction = 2;
     optional uint32 customDpadMask = 3;
     optional uint32 customButtonMask = 4;
+    optional bool invertPolarity = 5 [default = true];
 }
 
 message GpioMappings
@@ -203,6 +205,7 @@ message GpioMappings
     repeated GpioMappingInfo pins = 1 [(nanopb).max_count = 30];
     optional string profileLabel = 2 [(nanopb).max_length = 16];
     optional bool enabled = 3 [default = false];
+    optional KeyboardMapping keyboardMapping = 4;
 }
 
 
