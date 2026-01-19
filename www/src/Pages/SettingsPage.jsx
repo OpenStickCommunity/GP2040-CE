@@ -146,13 +146,13 @@ const INPUT_MODES = [
 		required: ['usb'],
 	},
 	{
-		labelKey: 'input-mode-options.xboxoriginal', 
-		value: 12, 
+		labelKey: 'input-mode-options.xboxoriginal',
+		value: 12,
 		group: 'primary',
 	},
-	{ 
-		labelKey: 'input-mode-options.ps3', 
-		value: 2, 
+	{
+		labelKey: 'input-mode-options.ps3',
+		value: 2,
 		group: 'primary',
 		deviceTypes: [
 			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_GAMEPAD,
@@ -759,7 +759,7 @@ export default function SettingsPage() {
 			options = []
 		}
 
-		return (mode && mode.deviceTypes?.length > 1 ? 
+		return (mode && mode.deviceTypes?.length > 1 ?
 			<Row className="mb-3">
 				<Col sm={4}>
 					<Form.Label>{t('SettingsPage:input-mode-device-type-label')}</Form.Label>
@@ -1838,181 +1838,193 @@ export default function SettingsPage() {
 												<Section
 													title={t('SettingsPage:hotkey-settings-label')}
 												>
-													<div className="mb-3">
-														<Trans
-															ns="SettingsPage"
-															i18nKey="hotkey-settings-sub-header"
-															components={{
-																link_pinmap: <NavLink to="/pin-mapping" />,
-															}}
-														/>
-													</div>
-													{values.fnButtonPin === -1 && (
-														<div className="alert alert-warning">
-															{t('SettingsPage:hotkey-settings-warning')}
+													<div hidden={Boolean(values.lockHotkeys)}>
+														<div className="mb-3">
+															<Trans
+																ns="SettingsPage"
+																i18nKey="hotkey-settings-sub-header"
+																components={{
+																	link_pinmap: <NavLink to="/pin-mapping" />,
+																}}
+															/>
 														</div>
-													)}
-													<div
-														id="Hotkeys"
-														hidden={values.lockHotkeys}
-														className="d-grid gap-2"
-													>
-														{Object.keys(hotkeyFields).map((o, i) => (
-															<Form.Group
-																key={`hotkey-${i}-base`}
-																className={`row row-gap-2 align-items-center gx-2`}
-															>
-																<Col
-																	sm="auto"
-																	className="d-flex align-items-center"
+														{values.fnButtonPin === -1 && (
+															<div className="alert alert-warning">
+																{t('SettingsPage:hotkey-settings-warning')}
+															</div>
+														)}
+														<div id="Hotkeys" className={`d-grid gap-2`}>
+															{Object.keys(hotkeyFields).map((o, i) => (
+																<Form.Group
+																	key={`hotkey-${i}-base`}
+																	className={`row row-gap-2 align-items-center gx-2`}
 																>
-																	<Form.Check
-																		name={`${o}.auxMask`}
-																		label="Fn"
-																		type="switch"
-																		className="text my-auto"
-																		disabled={values.fnButtonPin === -1}
-																		checked={values[o] && !!values[o]?.auxMask}
-																		onChange={(e) => {
-																			setFieldValue(
-																				`${o}.auxMask`,
-																				e.target.checked ? 32768 : 0,
-																			);
-																		}}
-																		isInvalid={errors[o] || errors[o]?.auxMask}
-																	/>
-																	<Form.Control.Feedback type="invalid">
-																		{errors[o] && errors[o]?.action}
-																	</Form.Control.Feedback>
-																</Col>
-																<Col sm="auto">+</Col>
-																{BUTTON_MASKS_OPTIONS.map((mask) =>
-																	values[o] &&
-																	values[o]?.buttonsMask & mask.value ? (
-																		<>
-																			<Col sm="auto">
-																				<Form.Select
-																					name={`${o}.buttonsMask`}
-																					className="form-select-sm sm-1"
-																					value={
-																						values[o] &&
-																						values[o]?.buttonsMask & mask.value
-																					}
-																					error={
-																						errors[o] || errors[o]?.buttonsMask
-																					}
-																					isInvalid={
-																						errors[o] || errors[o]?.buttonsMask
-																					}
-																					onChange={(e) => {
-																						setFieldValue(
-																							`${o}.buttonsMask`,
-																							(values[o] &&
-																								values[o]?.buttonsMask ^
-																									mask.value) | e.target.value,
-																						);
-																					}}
-																				>
-																					{BUTTON_MASKS_OPTIONS.map((o, i2) => (
-																						<option
-																							key={`hotkey-${i}-button${i2}`}
-																							value={o.value}
-																						>
-																							{o.label in currentButtonLabels
-																								? currentButtonLabels[o.label]
-																								: o.label}
-																						</option>
-																					))}
-																				</Form.Select>
-																			</Col>
-																			<Col sm="auto">+</Col>
-																		</>
-																	) : (
-																		<></>
-																	),
-																)}
-																<Col sm="auto">
-																	<Form.Select
-																		name={`${o}.buttonsMask`}
-																		className="form-select-sm sm-1"
-																		value={0}
-																		onChange={(e) => {
-																			setFieldValue(
-																				`${o}.buttonsMask`,
-																				(values[o] && values[o]?.buttonsMask) |
-																					e.target.value,
-																			);
-																		}}
+																	<Col
+																		sm="auto"
+																		className="d-flex align-items-center"
 																	>
-																		{BUTTON_MASKS_OPTIONS.map((o, i2) => (
-																			<option
-																				key={`hotkey-${i}-buttonZero-${i2}`}
-																				value={o.value}
-																			>
-																				{o.label in currentButtonLabels
-																					? currentButtonLabels[o.label]
-																					: o.label}
-																			</option>
-																		))}
-																	</Form.Select>
-																</Col>
-																<Col sm="auto">=</Col>
-																<Col sm="auto">
-																	<Form.Select
-																		name={`${o}.action`}
-																		className="form-select-sm"
-																		value={values[o] && values[o]?.action}
-																		onChange={handleChange}
-																		isInvalid={errors[o] && errors[o]?.action}
-																	>
-																		{translatedHotkeyActions.map((o, i) => (
-																			<option
-																				key={`hotkey-action-${i}`}
-																				value={o.value}
-																			>
-																				{o.label}
-																			</option>
-																		))}
-																	</Form.Select>
-																	<Form.Control.Feedback type="invalid">
-																		{errors[o] && errors[o]?.action}
-																	</Form.Control.Feedback>
-																</Col>
-																{Boolean(
-																	values[o]?.buttonsMask || values[o]?.action,
-																) && (
-																	<Col>
-																		<Button
-																			size="sm"
-																			onClick={() => {
-																				setFieldValue(`${o}.action`, 0);
-																				setFieldValue(`${o}.buttonsMask`, 0);
+																		<Form.Check
+																			name={`${o}.auxMask`}
+																			label="Fn"
+																			type="switch"
+																			className="text my-auto"
+																			disabled={values.fnButtonPin === -1}
+																			checked={
+																				values[o] && !!values[o]?.auxMask
+																			}
+																			onChange={(e) => {
+																				setFieldValue(
+																					`${o}.auxMask`,
+																					e.target.checked ? 32768 : 0,
+																				);
+																			}}
+																			isInvalid={
+																				errors[o] || errors[o]?.auxMask
+																			}
+																		/>
+																		<Form.Control.Feedback type="invalid">
+																			{errors[o] && errors[o]?.action}
+																		</Form.Control.Feedback>
+																	</Col>
+																	<Col sm="auto">+</Col>
+																	{BUTTON_MASKS_OPTIONS.map((mask) =>
+																		values[o] &&
+																		values[o]?.buttonsMask & mask.value ? (
+																			<>
+																				<Col sm="auto">
+																					<Form.Select
+																						name={`${o}.buttonsMask`}
+																						className="form-select-sm sm-1"
+																						value={
+																							values[o] &&
+																							values[o]?.buttonsMask &
+																								mask.value
+																						}
+																						error={
+																							errors[o] ||
+																							errors[o]?.buttonsMask
+																						}
+																						isInvalid={
+																							errors[o] ||
+																							errors[o]?.buttonsMask
+																						}
+																						onChange={(e) => {
+																							setFieldValue(
+																								`${o}.buttonsMask`,
+																								(values[o] &&
+																									values[o]?.buttonsMask ^
+																										mask.value) |
+																									e.target.value,
+																							);
+																						}}
+																					>
+																						{BUTTON_MASKS_OPTIONS.map(
+																							(o, i2) => (
+																								<option
+																									key={`hotkey-${i}-button${i2}`}
+																									value={o.value}
+																								>
+																									{o.label in
+																									currentButtonLabels
+																										? currentButtonLabels[
+																												o.label
+																											]
+																										: o.label}
+																								</option>
+																							),
+																						)}
+																					</Form.Select>
+																				</Col>
+																				<Col sm="auto">+</Col>
+																			</>
+																		) : (
+																			<></>
+																		),
+																	)}
+																	<Col sm="auto">
+																		<Form.Select
+																			name={`${o}.buttonsMask`}
+																			className="form-select-sm sm-1"
+																			value={0}
+																			onChange={(e) => {
+																				setFieldValue(
+																					`${o}.buttonsMask`,
+																					(values[o] &&
+																						values[o]?.buttonsMask) |
+																						e.target.value,
+																				);
 																			}}
 																		>
-																			{'✕'}
-																		</Button>
+																			{BUTTON_MASKS_OPTIONS.map((o, i2) => (
+																				<option
+																					key={`hotkey-${i}-buttonZero-${i2}`}
+																					value={o.value}
+																				>
+																					{o.label in currentButtonLabels
+																						? currentButtonLabels[o.label]
+																						: o.label}
+																				</option>
+																			))}
+																		</Form.Select>
 																	</Col>
-																)}
-																<Form.Control.Feedback
-																	type="invalid"
-																	className={errors[o] ? 'd-block' : ''}
-																>
-																	{errors[o]}
-																</Form.Control.Feedback>
-															</Form.Group>
-														))}
+																	<Col sm="auto">=</Col>
+																	<Col sm="auto">
+																		<Form.Select
+																			name={`${o}.action`}
+																			className="form-select-sm"
+																			value={values[o] && values[o]?.action}
+																			onChange={handleChange}
+																			isInvalid={errors[o] && errors[o]?.action}
+																		>
+																			{translatedHotkeyActions.map((o, i) => (
+																				<option
+																					key={`hotkey-action-${i}`}
+																					value={o.value}
+																				>
+																					{o.label}
+																				</option>
+																			))}
+																		</Form.Select>
+																		<Form.Control.Feedback type="invalid">
+																			{errors[o] && errors[o]?.action}
+																		</Form.Control.Feedback>
+																	</Col>
+																	{Boolean(
+																		values[o]?.buttonsMask || values[o]?.action,
+																	) && (
+																		<Col>
+																			<Button
+																				size="sm"
+																				onClick={() => {
+																					setFieldValue(`${o}.action`, 0);
+																					setFieldValue(`${o}.buttonsMask`, 0);
+																				}}
+																			>
+																				{'✕'}
+																			</Button>
+																		</Col>
+																	)}
+																	<Form.Control.Feedback
+																		type="invalid"
+																		className={errors[o] ? 'd-block' : ''}
+																	>
+																		{errors[o]}
+																	</Form.Control.Feedback>
+																</Form.Group>
+															))}
+														</div>
 													</div>
 													<Form.Check
-														label={t('SettingsPage:lock-hotkeys-label')}
+														label={t('Common:switch-enabled')}
 														type="switch"
 														id="LockHotkeys"
 														reverse
 														isInvalid={false}
-														checked={Boolean(values.lockHotkeys)}
+														checked={!values.lockHotkeys}
 														onChange={(e) => {
 															setFieldValue(
 																'lockHotkeys',
-																e.target.checked ? 1 : 0,
+																e.target.checked ? 0 : 1,
 															);
 														}}
 													/>

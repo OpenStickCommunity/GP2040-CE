@@ -10,15 +10,9 @@
 #include "drivers/shared/xgip_protocol.h"
 #include "drivers/shared/xinput_host.h"
 
-// power-on states and rumble-on with everything disabled
-static uint8_t xb1_power_on[] = {0x06, 0x62, 0x45, 0xb8, 0x77, 0x26, 0x2c, 0x55,
-                                 0x53, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1f};
-static uint8_t xb1_power_on_single[] = {0x00};
-static uint8_t xb1_rumble_on[] = {0x00, 0x0f, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0xeb};
-static uint8_t xb1_led_on[] = {0x00, 0x01, 0x14}; // 0x01 - LED on, 0x14 - Brightness
-
 // Report Queue for big report sizes from dongle
 #include <queue>
+
 typedef struct {
 	uint8_t report[XBONE_ENDPOINT_SIZE];
 	uint16_t len;
@@ -40,7 +34,7 @@ void XBOneAuthUSBListener::setAuthData(XboxOneAuthData * authData ) {
 }
 
 void XBOneAuthUSBListener::process() {
-    // Do nothing if auth data or dongle are not ready 
+    // Do nothing if auth data or dongle are not ready
     if ( mounted == false || xboxOneAuthData == nullptr) // do nothing if we have not mounted an xbox one dongle
         return;
 
@@ -117,22 +111,22 @@ void XBOneAuthUSBListener::report_received(uint8_t dev_addr, uint8_t instance, u
             if ( incomingXGIP.endOfChunk() == true && xboxOneAuthData->dongle_ready != true) {
                 outgoingXGIP.reset();  // Power-on full string
                 outgoingXGIP.setAttributes(GIP_POWER_MODE_DEVICE_CONFIG, 2, 1, false, 0);
-                outgoingXGIP.setData(xb1_power_on, sizeof(xb1_power_on));
+                outgoingXGIP.setData(XBOXONE_POWER_ON, sizeof(XBOXONE_POWER_ON));
                 queue_host_report((uint8_t*)outgoingXGIP.generatePacket(), outgoingXGIP.getPacketLength());
 
                 outgoingXGIP.reset();  // Power-on with 0x00
                 outgoingXGIP.setAttributes(GIP_POWER_MODE_DEVICE_CONFIG, 3, 1, false, 0);
-                outgoingXGIP.setData(xb1_power_on_single, sizeof(xb1_power_on_single));
+                outgoingXGIP.setData(XBOXONE_POWER_ON_SINGLE, sizeof(XBOXONE_POWER_ON_SINGLE));
                 queue_host_report((uint8_t*)outgoingXGIP.generatePacket(), outgoingXGIP.getPacketLength());
 
                 outgoingXGIP.reset();  // LED On
                 outgoingXGIP.setAttributes(GIP_CMD_LED_ON, 1, 0, false, 0); // not internal function
-                outgoingXGIP.setData(xb1_led_on, sizeof(xb1_led_on));
+                outgoingXGIP.setData(XBOXONE_LED_ON, sizeof(XBOXONE_LED_ON));
                 queue_host_report((uint8_t*)outgoingXGIP.generatePacket(), outgoingXGIP.getPacketLength());
 
                 outgoingXGIP.reset();  // Rumble Support to enable dongle
                 outgoingXGIP.setAttributes(GIP_CMD_RUMBLE, 1, 0, false, 0); // not internal function
-                outgoingXGIP.setData(xb1_rumble_on, sizeof(xb1_rumble_on));
+                outgoingXGIP.setData(XBOXONE_RUMBLE_ON, sizeof(XBOXONE_RUMBLE_ON));
                 queue_host_report((uint8_t*)outgoingXGIP.generatePacket(), outgoingXGIP.getPacketLength());
 
                 // Dongle is ready!
@@ -141,7 +135,7 @@ void XBOneAuthUSBListener::report_received(uint8_t dev_addr, uint8_t instance, u
             break;
         case GIP_AUTH:
         case GIP_FINAL_AUTH:
-            if ( incomingXGIP.getChunked() == false || 
+            if ( incomingXGIP.getChunked() == false ||
                 (incomingXGIP.getChunked() == true && incomingXGIP.endOfChunk() == true )) {
                 xboxOneAuthData->dongleBuffer.setBuffer(incomingXGIP.getData(), incomingXGIP.getDataLength(),
                     incomingXGIP.getSequence(), incomingXGIP.getCommand());
