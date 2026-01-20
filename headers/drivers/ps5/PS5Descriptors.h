@@ -177,10 +177,10 @@ static const uint8_t mfs5_device_descriptor[] =
     0x00,        // bDeviceClass (Use class information in the Interface Descriptors)
     0x00,        // bDeviceSubClass 
     0x00,        // bDeviceProtocol 
-    0x08,        // bMaxPacketSize0 64
+    0x40,        // bMaxPacketSize0 64
     0x4C, 0x05,  // idVendor 0x054C
     0xE6, 0x0C,  // idProduct 0x0CE6
-    0x00, 0x01,  // bcdDevice 1.00
+    0x01, 0x00,  // bcdDevice 1.00
     0x01,        // iManufacturer (String Index)
     0x02,        // iProduct (String Index)
     0x00,        // iSerialNumber (String Index)

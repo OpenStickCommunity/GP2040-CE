@@ -7,11 +7,11 @@ void PS5Auth::initialize() {
         return;
     }
 
-    ps5AuthData.dongle_ready = false; // Dongle is connected!
+    ps5AuthData.dongle_ready = false;   // Dongle is ready! (S5 key auth'd, P5G works right away)
+    ps5AuthData.dongle_mounted = false; // Dongle is mounted
     ps5AuthData.hash_pending = false; // AES-CMAC Hash Pending (sent to Dongle)
     ps5AuthData.hash_ready = false; // AES-CMAC Hash Ready
     ps5AuthData.pair_ready = false; // BT MAC Pairing ready
-    ps5AuthData.keys_ready = false; // Mayflash S5 keys ready
     ps5AuthData.ps5_passthrough_state = PS5AuthState::ps5_auth_idle;
     memset(ps5AuthData.auth_buffer, 0, sizeof(ps5AuthData.auth_buffer));
     memset(ps5AuthData.MAC_pair_report, 0, sizeof(ps5AuthData.MAC_pair_report));

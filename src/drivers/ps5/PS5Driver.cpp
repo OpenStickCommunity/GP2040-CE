@@ -30,24 +30,27 @@ static constexpr uint8_t output_0x03[] = {
 
 // 0x05 (Sensor Calibration)
 static constexpr uint8_t output_0x05[] = {
-    0x05, 0xff, 0xff, 0xf4, 0xff, 0xfb, 0xff, 0x92,
-    0x22, 0x6a, 0xdd, 0x8d, 0x22, 0x5d, 0xdd, 0x9b,
-    0x22, 0x65, 0xdd, 0x1c, 0x02, 0x1c, 0x02, 0xd2,
-    0x1f, 0xf2, 0xdf, 0xd0, 0x1f, 0xb7, 0xdf, 0x04,
-    0x20, 0xfc, 0xdf, 0x05, 0x00, 0x00, 0x00, 0x00,
-    0x00
+    0xff, 0xff, 0xf4, 0xff, 0xfb, 0xff, 0x92, 0x22, 
+    0x6a, 0xdd, 0x8d, 0x22, 0x5d, 0xdd, 0x9b, 0x22,
+    0x65, 0xdd, 0x1c, 0x02, 0x1c, 0x02, 0xd2, 0x1f,
+    0xf2, 0xdf, 0xd0, 0x1f, 0xb7, 0xdf, 0x04, 0x20,
+    0xfc, 0xdf, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
 // 0x20 (Firmware Controller Revision Jun 24 2024 11:16:21)
 static constexpr uint8_t output_0x20[] = {
-    0x20, 0x4a, 0x75, 0x6e, 0x20, 0x32, 0x34, 0x20,
-    0x32, 0x30, 0x32, 0x34, 0x31, 0x31, 0x3a, 0x31,
-    0x36, 0x3a, 0x32, 0x31, 0x03, 0x00, 0x04, 0x00,
-    0x13, 0x03, 0x00, 0x00, 0x00, 0x00, 0x0f, 0x01,
-    0x41, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x20, 0x05, 0x00, 0x00,
-    0x2a, 0x00, 0x01, 0x00, 0x0a, 0x00, 0x02, 0x00,
-    0x06, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+    0x4a, 0x75, 0x6e, 0x20, 0x32, 0x34, 0x20, 0x32,
+    0x30, 0x32, 0x34, 0x31, 0x31, 0x3a, 0x31, 0x36,
+    0x3a, 0x32, 0x31, 0x03, 0x00, 0x04, 0x00, 0x13,
+    0x03, 0x00, 0x00, 0x00, 0x00, 0x0f, 0x01, 0x41,
+    0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x20, 0x05, 0x00, 0x00, 0x2a,
+    0x00, 0x01, 0x00, 0x0a, 0x00, 0x02, 0x00, 0x06,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+};
+
+static constexpr uint8_t output_0x80[] = {
+
 };
 
 void PS5Driver::initialize() {
@@ -262,7 +265,7 @@ bool PS5Driver::process(Gamepad * gamepad) {
         diff_report_repeat = 4;
         return true;
     } else if (diff_report_repeat) {
-        diff_report_repeat--;\
+        diff_report_repeat--;
         memcpy(ps5AuthData->hash_pending_buffer, &ps5Report, sizeof(ps5Report));
         ps5AuthData->hash_pending = true;
         return true;
@@ -304,7 +307,7 @@ USBListener * PS5Driver::get_usb_auth_listener() {
 }
 
 uint16_t PS5Driver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
-    P5DPRINTF("P5D:get_report id:%02x type:%d\n", report_id, report_type);
+    P5DPRINTF("P5D:get_report id:%02x type:%d reqlen:%d\n", report_id, report_type, reqlen);
 
     if ( report_type != HID_REPORT_TYPE_FEATURE ) {
         return -1;
@@ -312,90 +315,112 @@ uint16_t PS5Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
 
     uint16_t responseLen = 0;
     switch(report_id) {
-    case PS5AuthReport::PS5_DEFINITION:
-        if (reqlen < sizeof(output_0x03)) {
-            return -1;
-        }
-        responseLen = MAX(reqlen, sizeof(output_0x03));
-        memcpy(buffer, output_0x03, responseLen);
-        return responseLen;
-    case PS5AuthReport::PS5_GET_CALIBRATION:
-        if (reqlen < sizeof(output_0x05)) {
-            return -1;
-        }
-        responseLen = MAX(reqlen, sizeof(output_0x05));
-        memcpy(buffer, output_0x05, responseLen);
-        return responseLen;
-    case PS5AuthReport::PS5_GET_PAIRINFO:
-        if ( ps5AuthData->pair_ready == false ||
-            (reqlen < sizeof(ps5AuthData->MAC_pair_report))) {
-            return -1;
-        }
-        responseLen = MAX(reqlen, sizeof(ps5AuthData->MAC_pair_report));
-        memcpy(buffer, ps5AuthData->MAC_pair_report, responseLen);
-        return responseLen;
-    case PS5AuthReport::PS5_GET_FIRWMARE:
-        if (reqlen < sizeof(output_0x20)) {
-            return -1;
-        }
-        responseLen = MAX(reqlen, sizeof(output_0x20));
-        memcpy(buffer, output_0x20, responseLen);
-        return responseLen;
-    case PS5AuthReport::PS5_GET_SIGNATURE_NONCE:
-        P5DPRINTF("P5D: Getting the signature nonce\n");
-        memcpy(buffer, ps5AuthData->auth_buffer + 1, 63);
-        if (ps5AuthData->ps5_passthrough_state == ps5_auth_idle) {
-            ps5AuthData->ps5_passthrough_state = PS5AuthState::ps5_auth_recv_f1;
-        }
-        return 63;
-    case PS5AuthReport::PS5_GET_SIGNING_STATE:
-        P5DPRINTF("P5D: copying auth buffer to PS5\n");
-        memcpy(buffer, ps5AuthData->auth_buffer + 1, 15);
-        if (ps5AuthData->ps5_passthrough_state == ps5_auth_idle) {
-            ps5AuthData->ps5_passthrough_state = PS5AuthState::ps5_auth_recv_f1;
-        }
-        return 15;
+        case PS5AuthReport::PS5_DEFINITION:
+            if (reqlen < sizeof(output_0x03)) {
+                return -1;
+            }
+            responseLen = MAX(reqlen, sizeof(output_0x03));
+            memcpy(buffer, output_0x03, responseLen);
+
+            // Lets look at the differences
+            P5DPRINTF("P5D: PS5_DEFINITION Get definition\n");
+            return responseLen;
+        case PS5AuthReport::PS5_GET_CALIBRATION:
+            if (reqlen < sizeof(output_0x05)) {
+                return -1;
+            }
+            responseLen = MAX(reqlen, sizeof(output_0x05));
+            memcpy(buffer, output_0x05, responseLen);
+
+            // Lets look at the differences
+            P5DPRINTF("P5D: PS5_GET_CALIBRATION Get calibration\n");
+            return responseLen;
+        case PS5AuthReport::PS5_GET_PAIRINFO:
+            if ( ps5AuthData->pair_ready == false ||
+                (reqlen < sizeof(ps5AuthData->MAC_pair_report))) {
+                return -1;
+            }
+            responseLen = MAX(reqlen, sizeof(ps5AuthData->MAC_pair_report));
+            memcpy(buffer, ps5AuthData->MAC_pair_report, responseLen);
+            return responseLen;
+        case PS5AuthReport::PS5_GET_FIRWMARE:
+            if (reqlen < sizeof(output_0x20)) {
+                return -1;
+            }
+            responseLen = MAX(reqlen, sizeof(output_0x20));
+            memcpy(buffer, output_0x20, responseLen);
+            
+            // Lets look at the differences
+            P5DPRINTF("P5D: PS5_GET_FIRWMARE Get the firmware\n");
+
+            return responseLen;
+        case PS5AuthReport::PS5_GET_TEST_PARAM:
+            // https://controllers.fandom.com/wiki/Sony_DualSense
+            P5DPRINTF("P5D:DualSense Get test command <STALL>\n");
+            return 0;
+        case PS5AuthReport::PS5_GET_SIGNATURE_NONCE:
+            P5DPRINTF("P5D: PS5_GET_SIGNATURE_NONCE Getting the signature nonce\n");
+            memcpy(buffer, ps5AuthData->auth_buffer + 1, 63);
+            if (ps5AuthData->ps5_passthrough_state == ps5_auth_idle) {
+                ps5AuthData->ps5_passthrough_state = PS5AuthState::ps5_auth_recv_f1;
+            }
+            return 63;
+        case PS5AuthReport::PS5_GET_SIGNING_STATE:
+            P5DPRINTF("P5D: PS5_GET_SIGNING_STATE copying auth buffer to PS5\n");
+            memcpy(buffer, ps5AuthData->auth_buffer + 1, 15);
+            if (ps5AuthData->ps5_passthrough_state == ps5_auth_idle) {
+                ps5AuthData->ps5_passthrough_state = PS5AuthState::ps5_auth_recv_f1;
+            }
+            return 15;
     }
     return -1;
 }
 
 void PS5Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize) {
-    P5DPRINTF("P5D:set_report %d size %d\n", report_type, bufsize);
+    P5DPRINTF("P5D:set_report id:%02x type:%d reqlen:%d\n", report_id, report_type, bufsize);
 
     if ( report_type != HID_REPORT_TYPE_FEATURE ) {
         return;
     }
-
-    if (report_id == PS5AuthReport::PS5_SET_AUTH_PAYLOAD) {
+    if ( report_id == PS5AuthReport::PS5_SET_TEST_PARAM ) {
+        if ( bufsize != 63) {
+            return;
+        }
+        // https://controllers.fandom.com/wiki/Sony_DualSense
+        P5DPRINTF("P5D:DualSense Set test command\n");
+    } else if (report_id == PS5AuthReport::PS5_SET_AUTH_PAYLOAD) {
         if (bufsize != 63) {
             return;
         }
         if (ps5AuthData->ps5_passthrough_state == ps5_auth_idle) {
             ps5AuthData->auth_buffer[0] = report_id;
             memcpy(ps5AuthData->auth_buffer + 1, buffer, bufsize);
+            P5DPRINTF("P5D:sending buffer along to USB device %02x %02x %02x %02x\n", report_id, buffer[0], buffer[1], buffer[2]);
             ps5AuthData->ps5_passthrough_state = PS5AuthState::ps5_auth_send_f0;
         }
     }
 }
 
 const uint16_t * PS5Driver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
-    const char *value = (const char *)p5g_string_descriptors[index];
-    P5DPRINTF("P5D:get_descriptor_string_cb Index %d. langid %d, value %x\n", index, langid, (uint32_t)value);
+    //const char *value = (const char *)p5g_string_descriptors[index];
+    const char *value = (const char*)mfs5_string_descriptors[index];
+    //P5DPRINTF("P5D:get_descriptor_string_cb Index %d. langid %d, value %x\n", index, langid, (uint32_t)value);
     return getStringDescriptor(value, index); // getStringDescriptor returns a static array
 }
 
 const uint8_t * PS5Driver::get_descriptor_device_cb() {
-    P5DPRINTF("P5D:p5general_device_descriptor\n");
-    return p5g_device_descriptor;
+    //P5DPRINTF("P5D:p5general_device_descriptor\n");
+    //return p5g_device_descriptor;
+    return mfs5_device_descriptor;
 }
 
 const uint8_t * PS5Driver::get_hid_descriptor_report_cb(uint8_t itf) {
-    P5DPRINTF("P5D:p5general_report_descriptor\n");
+    //P5DPRINTF("P5D:p5general_report_descriptor\n");
     return p5g_report_descriptor;
 }
 
 const uint8_t * PS5Driver::get_descriptor_configuration_cb(uint8_t index) {
-    P5DPRINTF("P5D:get_descriptor_configuration_cb\n");
+    //P5DPRINTF("P5D:get_descriptor_configuration_cb\n");
     return p5g_configuration_descriptor;
 }
 

@@ -11,14 +11,6 @@ typedef enum _PS5_DONGLE_TYPE {
     MAYFLASH_S5 = 2,    // Mayflash S5
 } PS5_DONGLE_TYPE;
 
-// Only for Mayflash S5
-typedef enum {
-	mfs5_no_auth = 0,
-	mfs5_auth_requested = 1,
-	mfs5_auth_complete = 2,
-	mfs5_key_encryption_ready = 3,
-} MFS5AuthState; // Mayflash S5 Auth State
-
 class PS5AuthUSBListener : public USBListener {
 public:
     virtual void setup();
@@ -39,7 +31,6 @@ private:
     uint8_t ps_dev_addr;
     uint8_t ps_instance;
     PS5AuthData * ps5AuthData;
-    MFS5AuthState mfs5AuthState;
     uint8_t f1_num;
     uint8_t report_buffer[PS5_ENDPOINT_SIZE];   // Report buffer
     PS5_DONGLE_TYPE dongle_type; // which dongle are we using?

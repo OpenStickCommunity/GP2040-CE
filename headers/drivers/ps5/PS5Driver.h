@@ -16,6 +16,8 @@ typedef enum
     PS5_GET_CALIBRATION      = 0x05,    // Calibration
     PS5_GET_PAIRINFO         = 0x09,    // Pair Information
     PS5_GET_FIRWMARE         = 0x20,    // Firmware Version
+    PS5_SET_TEST_PARAM       = 0x80,    // Dual Sense (SET TEST)
+    PS5_GET_TEST_PARAM       = 0x81,    // Dual Sense (GET TEST)
     PS5_SET_AUTH_PAYLOAD     = 0xF0,    // Set Auth Payload
     PS5_GET_SIGNATURE_NONCE  = 0xF1,    // Get Signature Nonce
     PS5_GET_SIGNING_STATE    = 0xF2,    // Get Signing State

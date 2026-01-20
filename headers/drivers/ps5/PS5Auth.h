@@ -21,13 +21,13 @@ typedef struct {
     uint8_t send_hid_buffer[64];
     uint8_t mayflash_buffer[64];
     uint64_t auth_recv_f2_us;
+    bool dongle_mounted;
     bool dongle_ready;
     bool hash_pending;
     bool hash_ready;
     PS5AuthState ps5_passthrough_state;
     uint8_t MAC_pair_report[16];  // 16-byte pair information for BT MAC Address
     bool pair_ready;
-	bool keys_ready;			// Flag indicating encrypted keys are ready
 } PS5AuthData;
 
 class PS5Auth : public GPAuthDriver {
