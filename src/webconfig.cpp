@@ -972,10 +972,78 @@ std::string getLightsDataOptions()
     return serialize_json(doc);
 }
 
+std::string getLightsIndividualDataPreset()
+{
+    DynamicJsonDocument inDoc = get_post_data();
+    DynamicJsonDocument outDoc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    JsonArray presetsArray = outDoc.to<JsonArray>();
+
+    JsonObject docJson = inDoc.as<JsonObject>();
+    int presetIdx = docJson["ProfileIndex"].as<uint32_t>();
+
+    auto addPreset = [&](const char* name, const unsigned char* data, int32_t dataSize)
+    {
+        if (strcmp(name, "") != 0) {
+            JsonObject preset = outDoc.to<JsonObject>();
+            preset["name"] = name;
+
+            JsonObject lightDataObj = preset.createNestedObject("lightData");
+            JsonArray lightsList = lightDataObj.createNestedArray("Lights");
+
+            for (int lightsIndex = 0; lightsIndex < dataSize; ++lightsIndex)
+            {
+                int thisEntryIndex = lightsIndex * 6;
+                JsonObject light = lightsList.createNestedObject();
+                light["firstLedIndex"] = data[thisEntryIndex];
+                light["numLedsOnLight"] = data[thisEntryIndex+1];
+                light["xCoord"] = data[thisEntryIndex+2];
+                light["yCoord"] = data[thisEntryIndex+3];
+                light["GPIOPinorCaseChainIndex"] = data[thisEntryIndex+4];
+                light["lightType"] = data[thisEntryIndex+5];
+            }
+        }
+    };
+
+    if(presetIdx == 0 && strcmp(LIGHT_DATA_NAME_DEFAULT, "") != 0) {
+        const unsigned char lightData[] = { LIGHT_DATA_DEFAULT };
+        addPreset(LIGHT_DATA_NAME_DEFAULT, lightData, LIGHT_DATA_SIZE_DEFAULT);
+    }
+    else if(presetIdx == 1 && strcmp(LIGHT_DATA_NAME_1, "") != 0) {
+        const unsigned char lightData[] = { LIGHT_DATA_1 };
+        addPreset(LIGHT_DATA_NAME_1, lightData, LIGHT_DATA_SIZE_1);
+    }
+    else if(presetIdx == 2 && strcmp(LIGHT_DATA_NAME_2, "") != 0) {
+        const unsigned char lightData[] = { LIGHT_DATA_2 };
+        addPreset(LIGHT_DATA_NAME_2, lightData, LIGHT_DATA_SIZE_2);
+    }
+    else if(presetIdx == 3 && strcmp(LIGHT_DATA_NAME_3, "") != 0) {
+        const unsigned char lightData[] = { LIGHT_DATA_3 };
+        addPreset(LIGHT_DATA_NAME_3, lightData, LIGHT_DATA_SIZE_3);
+    }
+    else if(presetIdx == 4 && strcmp(LIGHT_DATA_NAME_4, "") != 0) {
+        const unsigned char lightData[] = { LIGHT_DATA_4 };
+        addPreset(LIGHT_DATA_NAME_4, lightData, LIGHT_DATA_SIZE_4);
+    }
+    else if(presetIdx == 5 && strcmp(LIGHT_DATA_NAME_5, "") != 0) {
+        const unsigned char lightData[] = { LIGHT_DATA_5 };
+        addPreset(LIGHT_DATA_NAME_5, lightData, LIGHT_DATA_SIZE_5);
+    }
+    else if(presetIdx == 6 && strcmp(LIGHT_DATA_NAME_6, "") != 0) {
+        const unsigned char lightData[] = { LIGHT_DATA_6 };
+        addPreset(LIGHT_DATA_NAME_6, lightData, LIGHT_DATA_SIZE_6);
+    }
+    else if(presetIdx == 7 && strcmp(LIGHT_DATA_NAME_7, "") != 0) {
+        const unsigned char lightData[] = { LIGHT_DATA_7 };
+        addPreset(LIGHT_DATA_NAME_7, lightData, LIGHT_DATA_SIZE_7);
+    }
+
+    return serialize_json(outDoc);
+}
+
 std::string getLightsDataPresets()
 {
     //DynamicJsonDocument outDoc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-    DynamicJsonDocument outDoc((1024 * 50)); //Set a bigger value here as the preset data is quite large but it should be fine for a get call
+    DynamicJsonDocument outDoc((1024 * 32)); //Set a bigger value here as the preset data is quite large but it should be fine for a get call
     JsonArray presetsArray = outDoc.to<JsonArray>();
 
     auto addPreset = [&](const char* name, const unsigned char* data, int32_t dataSize)
@@ -2780,6 +2848,7 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/getAnimationProtoOptions", getAnimationProtoOptions },
     { "/api/setLightsDataOptions", setLightsDataOptions },
     { "/api/getLightsDataOptions", getLightsDataOptions },
+    { "/api/getLightsIndividualDataPreset", getLightsIndividualDataPreset },
     { "/api/getLightsDataPresets", getLightsDataPresets },
     { "/api/setLightsToDefault", setLightsToDefault },
     { "/api/setPinMappings", setPinMappings },
