@@ -55,6 +55,7 @@ private:
     //PSSensor gyroscope;
     //PSSensor accelerometer;
     uint64_t last_report_us;
+    uint64_t timeout_report_us;
     PS5Auth * ps5AuthDriver;
     PS5AuthData * ps5AuthData;
     bool pointOneTouched = false;

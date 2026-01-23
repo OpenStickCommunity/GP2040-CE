@@ -31,7 +31,7 @@ private:
     uint8_t ps_dev_addr;
     uint8_t ps_instance;
     PS5AuthData * ps5AuthData;
-    uint8_t f1_num;
+    //uint8_t f1_num;
     uint8_t report_buffer[PS5_ENDPOINT_SIZE];   // Report buffer
     PS5_DONGLE_TYPE dongle_type; // which dongle are we using?
     bool awaiting_cb; // Waiting for callback
