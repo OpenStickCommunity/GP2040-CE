@@ -59,8 +59,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # note: this must happen before project()
 include(pico_sdk_import.cmake)
 
-if (PICO_SDK_VERSION_STRING VERSION_LESS "2.1.1")
-  message(FATAL_ERROR "Raspberry Pi Pico SDK version 2.1.1 (or later) required. Your version is ${PICO_SDK_VERSION_STRING}")
+if (PICO_SDK_VERSION_STRING VERSION_LESS "2.2.0")
+  message(FATAL_ERROR "Raspberry Pi Pico SDK version 2.2.0 (or later) required. Your version is ${PICO_SDK_VERSION_STRING}")
 endif()
 
 # set the version for webconfig, etc. based on git
