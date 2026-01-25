@@ -16,7 +16,7 @@
 
 #define NEW_CONFIG_MPI(name, buf, size) \
     mbedtls_mpi_uint *bytes ## name = new mbedtls_mpi_uint[size / sizeof(mbedtls_mpi_uint)]; \
-    mbedtls_mpi name = { .s=1, .n=size / sizeof(mbedtls_mpi_uint), .p=bytes ## name }; \
+    mbedtls_mpi name = { .p=bytes ## name, .s=1, .n=size / sizeof(mbedtls_mpi_uint) }; \
     memcpy(bytes ## name, buf, size);
 
 #define DELETE_CONFIG_MPI(name) delete bytes ## name;
@@ -78,7 +78,8 @@ void PS4Auth::keyModeInitialize() {
     NEW_CONFIG_MPI(E, options.rsaE.bytes, options.rsaE.size)
     NEW_CONFIG_MPI(P, options.rsaP.bytes, options.rsaP.size)
     NEW_CONFIG_MPI(Q, options.rsaQ.bytes, options.rsaQ.size)
-    mbedtls_rsa_init(&ps4AuthData.rsa_context, MBEDTLS_RSA_PKCS_V21, MBEDTLS_MD_SHA256);
+    mbedtls_rsa_init(&ps4AuthData.rsa_context);
+    mbedtls_rsa_set_padding(&ps4AuthData.rsa_context, MBEDTLS_RSA_PKCS_V21, MBEDTLS_MD_SHA256);
     if (mbedtls_rsa_import(&ps4AuthData.rsa_context, &N, &P, &Q, nullptr, &E) == 0 &&
             mbedtls_rsa_complete(&ps4AuthData.rsa_context) == 0) {
         ps4AuthData.valid_rsa = true;
@@ -105,11 +106,11 @@ void PS4Auth::keyModeProcess() {
         int rss_error = 0;
         uint8_t hashed_nonce[32];
         // Sign our nonce into hashed_nonce
-        if ( mbedtls_sha256_ret(ps4AuthData.ps4_auth_buffer, 256, hashed_nonce, 0) < 0 ) {
+        if ( mbedtls_sha256(ps4AuthData.ps4_auth_buffer, 256, hashed_nonce, 0) < 0 ) {
             return;
         }
         rss_error = mbedtls_rsa_rsassa_pss_sign(&ps4AuthData.rsa_context, rng, nullptr,
-                MBEDTLS_RSA_PRIVATE, MBEDTLS_MD_SHA256,
+                MBEDTLS_MD_SHA256,
                 32, hashed_nonce,
                 ps4AuthData.ps4_auth_buffer);
         if ( rss_error < 0 ) {
