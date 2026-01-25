@@ -6,11 +6,19 @@
 typedef enum {
     ps5_auth_idle = 0,
     ps5_auth_send_f0_from_console,
-    ps5_auth_send_f0_final_from_console,
+    //ps5_auth_send_f0_final_from_console,
     ps5_auth_recv_f1_from_dongle,
     ps5_auth_recv_f2_delay_500mS,
     ps5_auth_recv_f2_signing_state,
 } PS5AuthState; // PS5 Auth State for F0/F1/F2 auth
+
+typedef enum PS5AuthResponse {
+    PS5_AUTH_NOT_READY = 0x11,
+    PS5_AUTH_READY = 0x12,
+    PS5_AUTH_DONE = 0x40,
+    PS5_AUTH_REFRESH_NOT_READY = 0x02,
+    PS5_AUTH_REFRESH_READY = 0x52,
+};
 
 typedef struct {
     uint8_t hash_pending_buffer[64];
