@@ -10,7 +10,7 @@
 #define PS5_KEEPALIVE_US                          5000ll*1000ll
 #define PS5_PACKET_SIZE 64
 
-#define PS5_DRIVER_PRINTF_ENABLE                  1       // GP0 as UART0_TX
+//#define PS5_DRIVER_PRINTF_ENABLE                  1       // GP0 as UART0_TX
 #if PS5_DRIVER_PRINTF_ENABLE
 #   define P5DPRINTF_INIT(...)                          stdio_init_all(__VA_ARGS__)
 #   define P5DPRINTF(...)                               printf(__VA_ARGS__)
@@ -48,10 +48,6 @@ static constexpr uint8_t output_0x20[] = {
     0x00, 0x00, 0x00, 0x20, 0x05, 0x00, 0x00, 0x2a,
     0x00, 0x01, 0x00, 0x0a, 0x00, 0x02, 0x00, 0x06,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-};
-
-static constexpr uint8_t output_0x80[] = {
-
 };
 
 void PS5Driver::initialize() {
