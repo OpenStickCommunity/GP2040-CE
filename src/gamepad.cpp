@@ -757,6 +757,31 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 			}
 		}
 			break;
+		case HOTKEY_LS_UP:
+			state.ly = GAMEPAD_JOYSTICK_MIN;
+			break;
+		case HOTKEY_LS_DOWN:
+			state.ly = GAMEPAD_JOYSTICK_MAX;
+			break;
+		case HOTKEY_LS_LEFT:
+			state.lx = GAMEPAD_JOYSTICK_MIN;
+			break;
+		case HOTKEY_LS_RIGHT:
+			state.lx = GAMEPAD_JOYSTICK_MAX;
+			break;
+		case HOTKEY_RS_UP:
+			state.ry = GAMEPAD_JOYSTICK_MIN;
+			break;
+		case HOTKEY_RS_DOWN:
+			state.ry = GAMEPAD_JOYSTICK_MAX;
+			break;
+		case HOTKEY_RS_LEFT:
+			state.rx = GAMEPAD_JOYSTICK_MIN;
+			break;
+		case HOTKEY_RS_RIGHT:
+			state.rx = GAMEPAD_JOYSTICK_MAX;
+			break;
+       
 		default: // Unknown action
 			break;
 	}

@@ -207,11 +207,11 @@ enum SOCDMode
 {
     option (nanopb_enumopt).long_names = false;
 
-    SOCD_MODE_UP_PRIORITY = 0;				// U+D=U, L+R=N
-    SOCD_MODE_NEUTRAL = 1;					// U+D=N, L+R=N
-    SOCD_MODE_SECOND_INPUT_PRIORITY = 2;	// U>D=D, L>R=R (Last Input Priority, aka Last Win)
-    SOCD_MODE_FIRST_INPUT_PRIORITY = 3;		// U>D=U, L>R=L (First Input Priority, aka First Win)
-    SOCD_MODE_BYPASS = 4;					// U+D=UD, L+R=LR (No cleaning applied)
+    SOCD_MODE_UP_PRIORITY = 0; // U+D=U, L+R=N
+    SOCD_MODE_NEUTRAL = 1; // U+D=N, L+R=N
+    SOCD_MODE_SECOND_INPUT_PRIORITY = 2; // U>D=D, L>R=R (Last Input Priority, aka Last Win)
+    SOCD_MODE_FIRST_INPUT_PRIORITY = 3; // U>D=U, L>R=L (First Input Priority, aka First Win)
+    SOCD_MODE_BYPASS = 4; // U+D=UD, L+R=LR (No cleaning applied)
 }
 
 enum GpioAction
@@ -453,6 +453,14 @@ enum GamepadHotkey
     HOTKEY_TURBO_COUNT_UP        = 75;
     HOTKEY_TURBO_COUNT_DOWN      = 76;
     HOTKEY_FOCUS_MODE_TOGGLE     = 77;
+    HOTKEY_LS_UP                 = 78;
+    HOTKEY_LS_DOWN               = 79;
+    HOTKEY_LS_LEFT               = 80;
+    HOTKEY_LS_RIGHT              = 81;
+    HOTKEY_RS_UP                 = 82;
+    HOTKEY_RS_DOWN               = 83;
+    HOTKEY_RS_LEFT               = 84;
+    HOTKEY_RS_RIGHT              = 85;
 }
 
 enum AnimationEffects
@@ -505,11 +513,11 @@ enum AmbientEffectType
 {
     option (nanopb_enumopt).long_names = false;
 
-    AL_CUSTOM_EFFECT_STATIC_COLOR = 0;	// Static
-    AL_CUSTOM_EFFECT_GRADIENT = 1;	    // Gradient Color
-    AL_CUSTOM_EFFECT_CHASE = 2;		    // Chase
-    AL_CUSTOM_EFFECT_BREATH = 3;		// Breathing
-    AL_CUSTOM_EFFECT_STATIC_THEME = 4;	// Custom Static
+    AL_CUSTOM_EFFECT_STATIC_COLOR = 0; // Static
+    AL_CUSTOM_EFFECT_GRADIENT = 1; // Gradient Color
+    AL_CUSTOM_EFFECT_CHASE = 2; // Chase
+    AL_CUSTOM_EFFECT_BREATH = 3; // Breathing
+    AL_CUSTOM_EFFECT_STATIC_THEME = 4; // Custom Static
 };
 
 enum AnimationColor // Sync with Animation.h

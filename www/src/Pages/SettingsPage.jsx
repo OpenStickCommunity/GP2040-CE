@@ -351,6 +351,14 @@ const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.menu-nav-back', value: 49 },
 	{ labelKey: 'hotkey-actions.menu-nav-toggle', value: 50 },
 	{ labelKey: 'hotkey-actions.focus-mode-toggle', value: 77 },
+	{ labelKey: 'hotkey-actions.ls-up', value: 78 },
+	{ labelKey: 'hotkey-actions.ls-down', value: 79 },
+	{ labelKey: 'hotkey-actions.ls-left', value: 80 },
+	{ labelKey: 'hotkey-actions.ls-right', value: 81 },
+	{ labelKey: 'hotkey-actions.rs-up', value: 82 },
+	{ labelKey: 'hotkey-actions.rs-down', value: 83 },
+	{ labelKey: 'hotkey-actions.rs-left', value: 84 },
+	{ labelKey: 'hotkey-actions.rs-right', value: 85 },
 ];
 
 const FORCED_SETUP_MODES = [
