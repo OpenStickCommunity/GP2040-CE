@@ -972,14 +972,10 @@ std::string getLightsDataOptions()
     return serialize_json(doc);
 }
 
-std::string getLightsIndividualDataPreset()
+std::string getLightsPresetsByIndex(int presetIdx)
 {
-    DynamicJsonDocument inDoc = get_post_data();
     DynamicJsonDocument outDoc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
     JsonArray presetsArray = outDoc.to<JsonArray>();
-
-    JsonObject docJson = inDoc.as<JsonObject>();
-    int presetIdx = docJson["ProfileIndex"].as<uint32_t>();
 
     auto addPreset = [&](const char* name, const unsigned char* data, int32_t dataSize)
     {
@@ -1039,6 +1035,15 @@ std::string getLightsIndividualDataPreset()
 
     return serialize_json(outDoc);
 }
+
+std::string getLightsPresets0() { return getLightsPresetsByIndex(0); }
+std::string getLightsPresets1() { return getLightsPresetsByIndex(1); }
+std::string getLightsPresets2() { return getLightsPresetsByIndex(2); }
+std::string getLightsPresets3() { return getLightsPresetsByIndex(3); }
+std::string getLightsPresets4() { return getLightsPresetsByIndex(4); }
+std::string getLightsPresets5() { return getLightsPresetsByIndex(5); }
+std::string getLightsPresets6() { return getLightsPresetsByIndex(6); }
+std::string getLightsPresets7() { return getLightsPresetsByIndex(7); }
 
 std::string getLightsDataPresets()
 {
@@ -2850,7 +2855,14 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/getAnimationProtoOptions", getAnimationProtoOptions },
     { "/api/setLightsDataOptions", setLightsDataOptions },
     { "/api/getLightsDataOptions", getLightsDataOptions },
-    { "/api/getLightsIndividualDataPreset", getLightsIndividualDataPreset },
+    { "/api/getLightsPresets/0", getLightsPresets0 },
+    { "/api/getLightsPresets/1", getLightsPresets1 },
+    { "/api/getLightsPresets/2", getLightsPresets2 },
+    { "/api/getLightsPresets/3", getLightsPresets3 },
+    { "/api/getLightsPresets/4", getLightsPresets4 },
+    { "/api/getLightsPresets/5", getLightsPresets5 },
+    { "/api/getLightsPresets/6", getLightsPresets6 },
+    { "/api/getLightsPresets/7", getLightsPresets7 },
     { "/api/getLightsDataPresets", getLightsDataPresets },
     { "/api/setLightsToDefault", setLightsToDefault },
     { "/api/setPinMappings", setPinMappings },
