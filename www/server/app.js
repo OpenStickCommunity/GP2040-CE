@@ -831,6 +831,14 @@ app.get('/api/getLightsDataPresets', (req, res) => {
 	return res.send(BoardLights);
 });
 
+// Hardcode presets for testing
+app.get('/api/getLightsPresets/0', (req, res) => {
+	return res.send(BoardLights[0]);
+});
+app.get('/api/getLightsPresets/1', (req, res) => {
+	return res.send(BoardLights[1]);
+});
+
 app.get('/api/getExpansionPins', (req, res) => {
 	return res.send({
 		pins: {

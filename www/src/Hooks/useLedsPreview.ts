@@ -1,6 +1,5 @@
 import { useCallback } from 'react';
 import WebApi from '../Services/WebApi';
-import { useEffect } from 'react';
 import { AnimationProfile } from '../Store/useLedStore';
 
 const useLedsPreview = () => {

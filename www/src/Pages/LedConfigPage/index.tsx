@@ -31,6 +31,7 @@ import useLedStore, {
 	MAX_ANIMATION_PROFILES,
 	MAX_CASE_LIGHTS,
 } from '../../Store/useLedStore';
+import useLightsPresetsStore from '../../Store/useLightsPresetsStore';
 import Section from '../../Components/Section';
 import FormControl from '../../Components/FormControl';
 import FormSelect from '../../Components/FormSelect';
@@ -227,6 +228,8 @@ export default function LedConfigPage() {
 		saveLightOptions,
 		saveLedOptions,
 	} = useLedStore();
+
+	const { fetchPresets } = useLightsPresetsStore();
 	const ledOptions = useLedStore((state) => state.ledOptions);
 	const AnimationOptions = useLedStore((state) => state.AnimationOptions);
 	const Lights = useLedStore((state) => state.Lights);
@@ -259,6 +262,7 @@ export default function LedConfigPage() {
 
 	useEffect(() => {
 		fetchLedOptions();
+		fetchPresets();
 	}, []);
 
 	useEffect(() => {

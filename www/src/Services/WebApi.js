@@ -609,6 +609,16 @@ async function getLightsDataPresets() {
 		console.error(error);
 	}
 }
+async function getLightsPresets(profileIndex) {
+	try {
+		const response = await Http.get(
+			`${baseUrl}/api/getLightsPresets/${profileIndex}`,
+		);
+		return response.data;
+	} catch (error) {
+		console.error(error);
+	}
+}
 
 async function setExpansionPins(mappings) {
 	console.dir(mappings);
@@ -716,6 +726,7 @@ export default {
 	setLightsDataOptions,
 	getLightsDataOptions,
 	getLightsDataPresets,
+	getLightsPresets,
 	getExpansionPins,
 	setExpansionPins,
 	getHETriggerCalibration,
