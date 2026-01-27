@@ -90,6 +90,7 @@ app.get('/api/getDisplayOptions', (req, res) => {
 		inputHistoryLength: 21,
 		inputHistoryCol: 0,
 		inputHistoryRow: 7,
+		displayBrightness: 255,
 	};
 	console.log('data', data);
 	return res.send(data);

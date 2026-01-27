@@ -9,6 +9,7 @@ void GPGFX_TinySSD1306::init(GPGFX_DisplayTypeOptions options) {
     _options.orientation = options.orientation;
     _options.inverted = options.inverted;
     _options.font = options.font;
+    _options.brightness = options.brightness;
 
     _options.i2c->readRegister(_options.address, 0x00, &this->screenType, 1);
     this->screenType &= 0x0F;
@@ -27,8 +28,7 @@ void GPGFX_TinySSD1306::init(GPGFX_DisplayTypeOptions options) {
 		CommandOps::MEMORY_MODE,
 		0x00,
 
-		CommandOps::SET_CONTRAST,
-		0xFF,
+        CommandOps::SET_CONTRAST, (_options.brightness == 0 ? 0xFF : _options.brightness),
 
 		(!_options.inverted ? CommandOps::NORMAL_DISPLAY : CommandOps::INVERT_DISPLAY),
 
