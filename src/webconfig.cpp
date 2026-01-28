@@ -965,7 +965,7 @@ std::string getLightsDataOptions()
         light["numLedsOnLight"] = (options.lightClusterData[lightsIndex].lightLocationData >> 8) & 0xFF;
         light["xCoord"] = (options.lightClusterData[lightsIndex].lightLocationData >> 16) & 0xFF;
         light["yCoord"] = (options.lightClusterData[lightsIndex].lightLocationData >> 24) & 0xFF;
-        light["GPIOPinorCaseChainIndex"] = options.lightClusterData[lightsIndex].lightTypeData;
+        light["GPIOPinorCaseChainIndex"] = options.lightClusterData[lightsIndex].lightTypeData & 0xFF;
         light["lightType"] = (options.lightClusterData[lightsIndex].lightTypeData >> 8) & 0xFF;
     }
 
