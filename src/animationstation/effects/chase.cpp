@@ -1,122 +1,374 @@
 #include "chase.h"
-#include "storagemanager.h"
+#include <algorithm>
 
-#define CHASE_CYCLE_INCREMENT   10
-#define CHASE_CYCLE_MAX         INT16_MAX/2
+#define CHASE_CYCLE_MAX         500
 #define CHASE_CYCLE_MIN         10
+#define CHASE_SECOND_LIGHT_OFFSET 0.5f
 
-Chase::Chase(PixelMatrix &matrix) : Animation(matrix) {
-}
+Chase::Chase(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType, ChaseTypes InChaseType) : Animation(InRGBLights, InButtonCaseEffectType) 
+{
+  ChaseTypeInUse = InChaseType;
 
-bool Chase::Animate(RGB (&frame)[100]) {
-  if (!time_reached(this->nextRunTime)) {
-    return false;
+  CycleParameterChange();
+
+  ChaseTimes[0] = 1.0f;
+  ChaseTimes[1] = 1.0f + CHASE_SECOND_LIGHT_OFFSET;
+
+  OrderedLights.clear();
+
+  //Get max x and y coords
+  for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
+  {
+    if(LightTypeIsForAnimation(RGBLights->AllLights[lightIndex].Type) == false)
+      continue;
+
+    if(RGBLights->AllLights[lightIndex].Position.XPosition > MaxXCoord)
+      MaxXCoord = RGBLights->AllLights[lightIndex].Position.XPosition;
+    if(RGBLights->AllLights[lightIndex].Position.YPosition > MaxYCoord)
+      MaxYCoord = RGBLights->AllLights[lightIndex].Position.YPosition;
+
+    if(lightIndex == 0 || RGBLights->AllLights[lightIndex].Position.XPosition < MinXCoord)
+      MinXCoord = RGBLights->AllLights[lightIndex].Position.XPosition;
+    if(lightIndex == 0 || RGBLights->AllLights[lightIndex].Position.YPosition < MinYCoord)
+      MinYCoord = RGBLights->AllLights[lightIndex].Position.YPosition;   
   }
 
+  //store off all lights in sequential order used on this animation
+  for(int yCoord = 0; yCoord <= MaxYCoord; ++yCoord)
+  {
+    for(int xCoord = 0; xCoord <= MaxXCoord; ++xCoord)
+    {
+      for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
+      {
+        if(LightTypeIsForAnimation(RGBLights->AllLights[lightIndex].Type) && 
+            RGBLights->AllLights[lightIndex].Position.XPosition == xCoord && 
+            RGBLights->AllLights[lightIndex].Position.YPosition == yCoord)
+          OrderedLights.push_back(lightIndex);
+      }    
+    }
+  }
+
+  //pick starting type if using one of the multi types
+  switch(ChaseTypeInUse)
+  {
+    case ChaseTypes::CHASETYPES_RANDOM:
+    {
+      RandomChaseType = (SingleChaseTypes)(rand() % (int)SINGLECHASETYPES_MAX);
+    } break;
+
+    case ChaseTypes::CHASETYPES_TESTLAYOUT:
+    {
+      RandomChaseType = SingleChaseTypes::SINGLECHASETYPES_LEFT_TO_RIGHT;
+    } break;
+    
+    case ChaseTypes::CHASETYPES_SEQUENTIAL_PINGPONG:
+    {
+      RandomChaseType = SingleChaseTypes::SINGLECHASETYPES_SEQUENTIAL;
+    } break;
+
+    case ChaseTypes::CHASETYPES_HORIZONTAL_PINGPONG:
+    {
+      RandomChaseType = SingleChaseTypes::SINGLECHASETYPES_LEFT_TO_RIGHT;
+    } break;
+  
+    case ChaseTypes::CHASETYPES_VERTICAL_PINGPONG:
+    {
+      RandomChaseType = SingleChaseTypes::SINGLECHASETYPES_TOP_TO_BOTTOM;
+    } break;
+
+    case ChaseTypes::CHASETYPES_TOP_TO_BOTTOM:
+    {
+      RandomChaseType = SingleChaseTypes::SINGLECHASETYPES_TOP_TO_BOTTOM;
+    } break;    
+    
+    case ChaseTypes::CHASETYPES_BOTTOM_TO_TOP:
+    {
+      RandomChaseType = SingleChaseTypes::SINGLECHASETYPES_BOTTOM_TO_TOP;
+    } break;    
+    
+    case ChaseTypes::CHASETYPES_LEFT_TO_RIGHT:
+    {
+      RandomChaseType = SingleChaseTypes::SINGLECHASETYPES_LEFT_TO_RIGHT;
+    } break;
+    
+    case ChaseTypes::CHASETYPES_RIGHT_TO_LEFT:
+    {
+      RandomChaseType = SingleChaseTypes::SINGLECHASETYPES_RIGHT_TO_LEFT;
+    } break;
+    
+    default:
+      RandomChaseType = SingleChaseTypes::SINGLECHASETYPES_SEQUENTIAL;
+      break;
+  }
+}
+
+void Chase::Animate(RGB (&frame)[FRAME_MAX]) 
+{
   UpdateTime();
-  UpdatePresses(frame);
 
-  for (auto &col : matrix->pixels) {
-    for (auto &pixel : col) {
-      if (pixel.index == NO_PIXEL.index)
-        continue;
+  //dont do anything if there aren't enough lights
+  if(OrderedLights.size() < 2)
+    return;
 
-      // Count down the timer
-      DecrementFadeCounter(pixel.index);
+  //update times and move to the next light(s) if required
+  ChaseTimes[0] -= (((float)cycleTime) / 1000.0f);
+  ChaseTimes[1] -= (((float)cycleTime) / 1000.0f);
+  if(ChaseTimes[0] < 0.0f)
+  {
+    ChaseTimes[0] = 0.0f;
+  }
 
-      if (this->IsChasePixel(pixel.index)) {
-        RGB color = RGB::wheel(this->WheelFrame(pixel.index));
-        for (auto &pos : pixel.positions)
-          frame[pos] = BlendColor(hitColor[pixel.index], color, times[pixel.index]);
-      } else {
-        for (auto &pos : pixel.positions)
-          frame[pos] = BlendColor(hitColor[pixel.index], ColorBlack, times[pixel.index]);
+  //reset all lights first to ensure that if pressed lights are unpressed they can blend back to correct color
+  for(unsigned int lightIndex = 0; lightIndex < OrderedLights.size(); ++lightIndex)
+  {
+      uint8_t firstLightIndex = RGBLights->AllLights[OrderedLights[lightIndex]].FirstLedIndex;
+      uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[OrderedLights[lightIndex]].LedsPerLight;
+      for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
+      {
+        frame[ledIndex] = GetNonPressedColorForLight(OrderedLights[lightIndex]);
       }
-    }
   }
 
-  currentPixel++;
+  //caclulate fade times here as these are used for all cases below
+  float fadeTimeOne = 0.0f;
+  if(ChaseTimes[0] < 1.0f && ChaseTimes[0] >= 0.8f)
+    fadeTimeOne = 1.0f - ((ChaseTimes[0] - 0.8f) / 0.2f);
+  else if(ChaseTimes[0] >= 0.2f && ChaseTimes[0] < 0.8f)
+    fadeTimeOne = 1.0f;
+  else if(ChaseTimes[0] < 0.2f && ChaseTimes[0] >= 0.0f)
+    fadeTimeOne = (ChaseTimes[0] / 0.2f);
+  float fadeTimeTwo = 0.0f;
+  if(ChaseTimes[1] < 1.0f && ChaseTimes[1] >= 0.8f)
+    fadeTimeTwo = 1.0f - ((ChaseTimes[1] - 0.8f) / 0.2f);
+  else if(ChaseTimes[1] >= 0.2f && ChaseTimes[1] < 0.8f)
+    fadeTimeTwo = 1.0f;
+  else if(ChaseTimes[1] < 0.2f && ChaseTimes[1] >= 0.0f)
+    fadeTimeTwo = (ChaseTimes[1] / 0.2f);
 
-  if (currentPixel > matrix->getPixelCount() - 1) {
-    currentPixel = 0;
+  //get this and next light
+  int currentLightReverseAdjusted = CurrentLight;
+  int nextLightReverseAdjusted = currentLightReverseAdjusted + 1;
+ 
+  //now light the correct lights
+  switch(RandomChaseType)
+  {
+    case SingleChaseTypes::SINGLECHASETYPES_SEQUENTIAL:
+    {
+      //if we're on the way back then invert the index
+      if(Reversed)
+      {
+        currentLightReverseAdjusted = (OrderedLights.size()-1) - CurrentLight;
+        nextLightReverseAdjusted = currentLightReverseAdjusted - 1;
+      } 
+
+      uint8_t firstLightIndex = RGBLights->AllLights[OrderedLights[currentLightReverseAdjusted]].FirstLedIndex;
+      uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[OrderedLights[currentLightReverseAdjusted]].LedsPerLight;
+      for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
+      {
+        frame[ledIndex] = BlendColor(GetNonPressedColorForLight(OrderedLights[currentLightReverseAdjusted]),
+                                      AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor, 
+                                      fadeTimeOne);
+      }      
+
+      if((unsigned int)(nextLightReverseAdjusted) < OrderedLights.size())
+      {         
+        uint8_t firstLightIndex = RGBLights->AllLights[OrderedLights[nextLightReverseAdjusted]].FirstLedIndex;
+        uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[OrderedLights[nextLightReverseAdjusted]].LedsPerLight;
+        for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
+        {
+          frame[ledIndex] = BlendColor(GetNonPressedColorForLight(OrderedLights[nextLightReverseAdjusted]),
+                                        AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor, 
+                                        fadeTimeTwo);
+        }          
+      } 
+    } break;
+
+    case SingleChaseTypes::SINGLECHASETYPES_RIGHT_TO_LEFT:
+      //reverse the order and fall through
+      currentLightReverseAdjusted = (MaxXCoord) - (CurrentLight - MinXCoord);
+      nextLightReverseAdjusted = currentLightReverseAdjusted - 1;
+      //Fall through (no break)
+
+    case SingleChaseTypes::SINGLECHASETYPES_LEFT_TO_RIGHT:
+    { 
+      for(unsigned int lightIndex = 0; lightIndex < OrderedLights.size(); ++lightIndex)
+      {
+        if(RGBLights->AllLights[OrderedLights[lightIndex]].Position.XPosition == currentLightReverseAdjusted)
+        {
+          uint8_t firstLightIndex = RGBLights->AllLights[OrderedLights[lightIndex]].FirstLedIndex;
+          uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[OrderedLights[lightIndex]].LedsPerLight;
+          for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
+          {
+            frame[ledIndex] = BlendColor(GetNonPressedColorForLight(OrderedLights[lightIndex]),
+                                          AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor, 
+                                          fadeTimeOne);
+          }      
+        }
+
+        if((CurrentLight+1) <= MaxXCoord)
+        {      
+          if(RGBLights->AllLights[OrderedLights[lightIndex]].Position.XPosition == nextLightReverseAdjusted)
+          {   
+            uint8_t firstLightIndex = RGBLights->AllLights[OrderedLights[lightIndex]].FirstLedIndex;
+            uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[OrderedLights[lightIndex]].LedsPerLight;
+            for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
+            {
+              frame[ledIndex] = BlendColor(GetNonPressedColorForLight(OrderedLights[lightIndex]),
+                                            AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor, 
+                                            fadeTimeTwo);
+            }          
+          }
+        } 
+      }
+    } break;
+
+    case SingleChaseTypes::SINGLECHASETYPES_BOTTOM_TO_TOP:
+      //reverse the order and fall through
+      currentLightReverseAdjusted = (MaxYCoord) - (CurrentLight - MinYCoord);
+      nextLightReverseAdjusted = currentLightReverseAdjusted - 1;
+      //Fall through (no break)
+
+    case SingleChaseTypes::SINGLECHASETYPES_TOP_TO_BOTTOM:
+    { 
+      for(unsigned int lightIndex = 0; lightIndex < OrderedLights.size(); ++lightIndex)
+      {
+        if(RGBLights->AllLights[OrderedLights[lightIndex]].Position.YPosition == currentLightReverseAdjusted)
+        {
+          uint8_t firstLightIndex = RGBLights->AllLights[OrderedLights[lightIndex]].FirstLedIndex;
+          uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[OrderedLights[lightIndex]].LedsPerLight;
+          for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
+          {
+            frame[ledIndex] = BlendColor(GetNonPressedColorForLight(OrderedLights[lightIndex]),
+                                          AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor, 
+                                          fadeTimeOne);
+          }      
+        }
+
+        if((CurrentLight+1) <= MaxYCoord)
+        {      
+          if(RGBLights->AllLights[OrderedLights[lightIndex]].Position.YPosition == nextLightReverseAdjusted)
+          {   
+            uint8_t firstLightIndex = RGBLights->AllLights[OrderedLights[lightIndex]].FirstLedIndex;
+            uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[OrderedLights[lightIndex]].LedsPerLight;
+            for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
+            {
+              frame[ledIndex] = BlendColor(GetNonPressedColorForLight(OrderedLights[lightIndex]),
+                                            AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor, 
+                                            fadeTimeTwo);
+            }          
+          }
+        } 
+      }
+    } break;
+
+    default:
+      break;
   }
 
-  if (reverse) {
-    currentFrame--;
-
-    if (currentFrame < 0) {
-      currentFrame = 1;
-      reverse = false;
-    }
-  } else {
-    currentFrame++;
-
-    if (currentFrame > 255) {
-      currentFrame = 254;
-      reverse = true;
-    }
+  if(ChaseTimes[0] <= 0.0f)
+  {
+    CurrentLight++;
+    ChaseTimes[0] = ChaseTimes[1];
+    ChaseTimes[1] += CHASE_SECOND_LIGHT_OFFSET;
+    CheckForEndOfSequence();
   }
-
-  // this really shouldn't be nessecary, but something outside the param down might be changing this
-  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
-  if (animationOptions.chaseCycleTime < CHASE_CYCLE_MIN) {
-    animationOptions.chaseCycleTime = CHASE_CYCLE_MIN;
-  } else if (animationOptions.chaseCycleTime > CHASE_CYCLE_MAX) {
-    animationOptions.chaseCycleTime = CHASE_CYCLE_MAX;
-  }
-
-  this->nextRunTime = make_timeout_time_ms(animationOptions.chaseCycleTime);
-
-  return true;
 }
 
-bool Chase::IsChasePixel(int i) {
-  if (i == this->currentPixel || i == (this->currentPixel - 1) ||
-      i == (this->currentPixel - 2)) {
-    return true;
+void Chase::CheckForEndOfSequence()
+{
+  bool hasEnded = false;
+
+  switch(RandomChaseType)
+  {
+    case SingleChaseTypes::SINGLECHASETYPES_SEQUENTIAL:
+    {
+      if((unsigned int)CurrentLight >= OrderedLights.size())
+      {
+        hasEnded = true;
+        CurrentLight = 0;
+        ChaseTimes[0] = 1.0f;
+        ChaseTimes[1] = 1.0f + CHASE_SECOND_LIGHT_OFFSET;
+      }
+    } break;
+ 
+    case SingleChaseTypes::SINGLECHASETYPES_LEFT_TO_RIGHT:
+    case SingleChaseTypes::SINGLECHASETYPES_RIGHT_TO_LEFT:
+    {
+      if(CurrentLight > MaxXCoord)
+      {
+        hasEnded = true;
+        CurrentLight = MinXCoord;
+        ChaseTimes[0] = 1.0f;
+        ChaseTimes[1] = 1.0f + CHASE_SECOND_LIGHT_OFFSET;
+      }
+    } break;
+
+    case SingleChaseTypes::SINGLECHASETYPES_TOP_TO_BOTTOM:
+    case SingleChaseTypes::SINGLECHASETYPES_BOTTOM_TO_TOP:
+    {
+      if(CurrentLight > MaxYCoord)
+      {
+        hasEnded = true;
+        CurrentLight = MinYCoord;
+        ChaseTimes[0] = 1.0f;
+        ChaseTimes[1] = 1.0f + CHASE_SECOND_LIGHT_OFFSET;
+      }
+    } break;
+
+    default:
+      break;
   }
 
-  return false;
-}
+  if(hasEnded)
+  {
+    //if a multi type then decide next type
+    switch(ChaseTypeInUse)
+    {
+      case ChaseTypes::CHASETYPES_SEQUENTIAL_PINGPONG:
+      {
+        Reversed = !Reversed;
+      } break;
+  
+      case ChaseTypes::CHASETYPES_HORIZONTAL_PINGPONG:
+      {
+        if(RandomChaseType == SingleChaseTypes::SINGLECHASETYPES_LEFT_TO_RIGHT)
+          RandomChaseType = SingleChaseTypes::SINGLECHASETYPES_RIGHT_TO_LEFT;
+        else
+          RandomChaseType = SingleChaseTypes::SINGLECHASETYPES_LEFT_TO_RIGHT;
+      } break;
 
-int Chase::WheelFrame(int i) {
-  int frame = this->currentFrame;
-  int pixelCount = matrix->getPixelCount();
-  if (i == (this->currentPixel - 1) % pixelCount) {
-    if (this->reverse) {
-      frame = frame + 16;
-    } else {
-      frame = frame - 16;
+      case ChaseTypes::CHASETYPES_VERTICAL_PINGPONG:
+      {
+        if(RandomChaseType == SingleChaseTypes::SINGLECHASETYPES_TOP_TO_BOTTOM)
+          RandomChaseType = SingleChaseTypes::SINGLECHASETYPES_BOTTOM_TO_TOP;
+        else
+          RandomChaseType = SingleChaseTypes::SINGLECHASETYPES_TOP_TO_BOTTOM;
+      } break;
+
+      case ChaseTypes::CHASETYPES_RANDOM:
+      {
+        RandomChaseType = (SingleChaseTypes)(rand() % (int)SINGLECHASETYPES_MAX);
+      } break;
+      
+      case ChaseTypes::CHASETYPES_TESTLAYOUT:
+      {
+        TestLayoutFlipFlop = !TestLayoutFlipFlop;
+        RandomChaseType = TestLayoutFlipFlop ? SingleChaseTypes::SINGLECHASETYPES_TOP_TO_BOTTOM : SingleChaseTypes::SINGLECHASETYPES_LEFT_TO_RIGHT;
+      } break;
+      
+      default:
+        break;
     }
   }
-
-  if (i == (this->currentPixel - 2) % pixelCount) {
-    if (this->reverse) {
-      frame = frame + 32;
-    } else {
-      frame = frame - 32;
-    }
-  }
-
-  if (frame < 0) {
-    return 0;
-  }
-
-  return frame;
 }
 
-void Chase::ParameterUp() {
-  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
-  animationOptions.chaseCycleTime = animationOptions.chaseCycleTime + CHASE_CYCLE_INCREMENT;
-  if (animationOptions.chaseCycleTime > CHASE_CYCLE_MAX) {
-    animationOptions.chaseCycleTime = CHASE_CYCLE_MAX;
-  }
-}
+void Chase::CycleParameterChange() 
+{
+    int16_t cycleStep = 2;
+    if(ButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_CASE_ONLY)
+      cycleStep = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCaseCycleTime;
+    else
+      cycleStep = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime;
 
-void Chase::ParameterDown() {
-  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
-  animationOptions.chaseCycleTime =animationOptions.chaseCycleTime - CHASE_CYCLE_INCREMENT;
-  if (animationOptions.chaseCycleTime < CHASE_CYCLE_MIN) {
-    animationOptions.chaseCycleTime = CHASE_CYCLE_MIN;
-  }
+    cycleTime = CHASE_CYCLE_MIN + (((CHASE_CYCLE_MAX - CHASE_CYCLE_MIN) / CYCLE_STEPS) * cycleStep);
 }

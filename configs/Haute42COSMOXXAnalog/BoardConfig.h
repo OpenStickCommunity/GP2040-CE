@@ -6,9 +6,6 @@
 #ifndef PICO_BOARD_CONFIG_H_
 #define PICO_BOARD_CONFIG_H_
 
-#include "enums.pb.h"
-#include "class/hid/hid.h"
-
 #define BOARD_CONFIG_LABEL "Haute42 COSMOX X Series Analog"
 
 // Main pin mapping Configuration
@@ -140,7 +137,7 @@
      {GP_ELEMENT_PIN_BUTTON, {96, 15, 2, 2, 1, 1, 17,  GP_SHAPE_ELLIPSE}},\
      {GP_ELEMENT_LEVER,      {40, 50, 5, 5, 1, 0,      GP_LEVER_MODE_LEFT_ANALOG}}\
 }
- 
+
 #define DEFAULT_BOARD_LAYOUT_B {\
      {GP_ELEMENT_PIN_BUTTON, {69, 17, 4, 4, 1, 1, 15,  GP_SHAPE_ELLIPSE}},\
      {GP_ELEMENT_PIN_BUTTON, {64, 27, 4, 4, 1, 1, 10,  GP_SHAPE_ELLIPSE}},\
@@ -298,7 +295,7 @@
      {GP_ELEMENT_PIN_BUTTON, {89, 15, 2, 2, 1, 1, 16,  GP_SHAPE_ELLIPSE}},\
      {GP_ELEMENT_PIN_BUTTON, {96, 15, 2, 2, 1, 1, 17,  GP_SHAPE_ELLIPSE}},\
 }
- 
+
 #define DEFAULT_BOARD_LAYOUT_B_ALT5 {\
      {GP_ELEMENT_PIN_BUTTON, {69, 17, 4, 4, 1, 1, 15,  GP_SHAPE_ELLIPSE}},\
      {GP_ELEMENT_PIN_BUTTON, {64, 27, 4, 4, 1, 1, 10,  GP_SHAPE_ELLIPSE}},\
