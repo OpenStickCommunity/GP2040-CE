@@ -321,13 +321,17 @@ void GP2040::run() {
 		// Pre-Process add-ons for MPGS
 		addons.PreprocessAddons();
 
-		gamepad->hotkey(); 	// check for MPGS hotkeys
-		rebootHotkeys.process(gamepad, configMode);
+		
 
 		gamepad->process(); // process through MPGS
 
+		
+
 		// (Post) Process for add-ons
 		addons.ProcessAddons();
+
+		gamepad->hotkey(); 	// check for MPGS hotkeys
+		rebootHotkeys.process(gamepad, configMode);
 
 		checkProcessedState(processedGamepad->state, gamepad->state);
 
