@@ -19,7 +19,7 @@
     mbedtls_mpi name = { .p=bytes ## name, .s=1, .n=size / sizeof(mbedtls_mpi_uint) }; \
     memcpy(bytes ## name, buf, size);
 
-#define DELETE_CONFIG_MPI(name) delete bytes ## name;
+#define DELETE_CONFIG_MPI(name) delete[] bytes ## name;
 
 static inline int rng(void*p_rng, unsigned char* p, size_t len) {
     (void) p_rng;
