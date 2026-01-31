@@ -28,7 +28,7 @@ void GPGFX_TinySSD1306::init(GPGFX_DisplayTypeOptions options) {
 		CommandOps::MEMORY_MODE,
 		0x00,
 
-        CommandOps::SET_CONTRAST, (_options.brightness == 0 ? 0xFF : _options.brightness),
+        CommandOps::SET_CONTRAST, static_cast<uint8_t>(_options.brightness == 0 ? 0xFF : _options.brightness),
 
 		(!_options.inverted ? CommandOps::NORMAL_DISPLAY : CommandOps::INVERT_DISPLAY),
 
