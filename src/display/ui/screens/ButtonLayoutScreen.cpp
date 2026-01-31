@@ -240,7 +240,7 @@ void ButtonLayoutScreen::generateHeader() {
     }
 
     if (showSocdMode) {
-        switch (Gamepad::resolveSOCDMode(gamepad->getOptions()))
+        switch (Gamepad::resolveSOCDMode(options))
         {
             case SOCD_MODE_NEUTRAL:               statusBar += " SOCD-N"; break;
             case SOCD_MODE_UP_PRIORITY:           statusBar += " SOCD-U"; break;
@@ -258,7 +258,7 @@ void ButtonLayoutScreen::generateHeader() {
         std::string profile;
         profile.assign(storage.currentProfileLabel(), strlen(storage.currentProfileLabel()));
         if (profile.empty()) {
-            statusBar += std::to_string(getGamepad()->getOptions().profileNumber);
+            statusBar += std::to_string(options.profileNumber);
         } else {
             statusBar += profile;
         }
@@ -551,7 +551,6 @@ void ButtonLayoutScreen::handleProfileChange(GPEvent* e) {
 }
 
 void ButtonLayoutScreen::handleUSB(GPEvent* e) {
-    GPUSBHostEvent* event = (GPUSBHostEvent*)e;
     bannerDelayStart = getMillis();
     prevProfileNumber = profileNumber;
 
@@ -565,5 +564,5 @@ void ButtonLayoutScreen::handleUSB(GPEvent* e) {
 
 void ButtonLayoutScreen::trim(std::string &s) {
     s.erase(s.begin(), std::find_if(s.begin(), s.end(),
-            std::not1(std::ptr_fun<int, int>(std::isspace))));
+            [](unsigned char c) { return !std::isspace(c); }));
 }

@@ -224,7 +224,7 @@ typedef struct __attribute__((packed)) {
 
     // features
     union {
-        uint8_t featureValue = 0xEF;
+        //uint8_t featureValue = 0xEF;
 
         struct __attribute__((packed)) {
             uint8_t enableController : 1;

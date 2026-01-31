@@ -9,7 +9,7 @@
 class I2CDeviceBase : public DeviceBase {
     public:
         I2CDeviceBase() {}
-        ~I2CDeviceBase() {}
+        virtual ~I2CDeviceBase() {}
 
         virtual std::vector<uint8_t> getDeviceAddresses() const = 0;
 };

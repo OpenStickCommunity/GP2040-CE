@@ -4,7 +4,6 @@
 #include "config.pb.h"
 
 bool PCF8575Addon::available() {
-    const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
     const PCF8575Options& options = Storage::getInstance().getAddonOptions().pcf8575Options;
     if (options.enabled) {
         pcf = new PCF8575();

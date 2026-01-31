@@ -258,7 +258,8 @@ void GPGFX_TinySSD1306::drawEllipse(uint16_t x, uint16_t y, uint32_t radiusX, ui
 	long x1 = -radiusX, y1 = 0;
 	long e2 = radiusY, dx = (1 + 2 * x1) * e2 * e2;
 	long dy = x1 * x1, err = dx + dy;
-	long diff = 0;
+    long rx = static_cast<long>(radiusX);
+    long ry = static_cast<long>(radiusY);
 
 	while (x1 <= 0) {
 		drawPixel(x - x1, y + y1, color);
@@ -280,16 +281,16 @@ void GPGFX_TinySSD1306::drawEllipse(uint16_t x, uint16_t y, uint32_t radiusX, ui
 
 		if (e2 >= dx) {
 			x1++;
-			err += dx += 2 * (long)radiusY * radiusY;
+			err += dx += 2 * ry * ry;
 		}
 
 		if (e2 <= dy) {
 			y1++;
-			err += dy += 2 * (long)radiusX * radiusX;
+			err += dy += 2 * rx * rx;
 		}
 	};
 
-	while (y1++ < radiusY) {
+	while (y1++ < ry) {
 		drawPixel(x, y + y1, color);
 		drawPixel(x, y - y1, color);
 	}
@@ -544,9 +545,7 @@ void GPGFX_TinySSD1306::drawBuffer(uint8_t* pBuffer) {
 	uint16_t bufferSize = MAX_SCREEN_SIZE;
 	uint8_t buffer[bufferSize+1] = {SET_START_LINE};
 
-	int result = -1;
-	
-    if (this->screenType == ScreenAlternatives::SCREEN_132x64) {
+	if (this->screenType == ScreenAlternatives::SCREEN_132x64) {
         uint16_t x = 0;
         uint16_t y = 0;
         for (y = 0; y < (MAX_SCREEN_HEIGHT/8); y++) {
@@ -560,7 +559,7 @@ void GPGFX_TinySSD1306::drawBuffer(uint8_t* pBuffer) {
                 memcpy(&buffer[1],&pBuffer[y*MAX_SCREEN_WIDTH],MAX_SCREEN_WIDTH);
             }
         
-            result = _options.i2c->write(_options.address, buffer, MAX_SCREEN_WIDTH+3, false);
+            _options.i2c->write(_options.address, buffer, MAX_SCREEN_WIDTH+3, false);
         }
     } else {
         sendCommand(CommandOps::PAGE_ADDRESS);
@@ -575,7 +574,7 @@ void GPGFX_TinySSD1306::drawBuffer(uint8_t* pBuffer) {
         } else {
             memcpy(&buffer[1],pBuffer,bufferSize);
         }
-        result = _options.i2c->write(_options.address, buffer, sizeof(buffer), false);
+        _options.i2c->write(_options.address, buffer, sizeof(buffer), false);
     }
 
 	if (framePage < MAX_SCREEN_HEIGHT/8) {
@@ -598,5 +597,5 @@ void GPGFX_TinySSD1306::sendCommand(uint8_t command){
 }
 
 void GPGFX_TinySSD1306::sendCommands(uint8_t* commands, uint16_t length){ 
-	int result = _options.i2c->write(_options.address, commands, length, false);
+	_options.i2c->write(_options.address, commands, length, false);
 }

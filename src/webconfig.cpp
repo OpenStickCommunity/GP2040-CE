@@ -1667,8 +1667,6 @@ std::string setAddonOptions()
 {
     DynamicJsonDocument doc = get_post_data();
 
-    GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
-
     AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
     docToPin(analogOptions.analogAdc1PinX, doc, "analogAdc1PinX");
     docToPin(analogOptions.analogAdc1PinY, doc, "analogAdc1PinY");
