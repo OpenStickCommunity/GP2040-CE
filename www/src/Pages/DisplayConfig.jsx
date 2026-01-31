@@ -43,19 +43,6 @@ const LAYOUT_ORIENTATION = [
 	{ label: 'form.layout-modes.switched', value: 2 },
 ];
 
-const DISPLAY_BRIGHTNESS_LEVELS = [
-    { label: '10%', value: 0x19 },   // 25
-    { label: '20%', value: 0x33 },   // 51
-    { label: '30%', value: 0x4C },   // 76
-    { label: '40%', value: 0x66 },   // 102
-    { label: '50%', value: 0x80 },   // 128
-    { label: '60%', value: 0x99 },   // 153
-    { label: '70%', value: 0xB3 },   // 179
-    { label: '80%', value: 0xCC },   // 204
-    { label: '90%', value: 0xE6 },   // 230
-    { label: '100%', value: 0xFF },  // 255
-];
-
 const defaultValues = {
 	enabled: 0,
 	flipDisplay: 0,
@@ -120,10 +107,7 @@ const schema = yup.object().shape({
 		.number()
 		.oneOf(ON_OFF_OPTIONS.map((o) => o.value))
 		.label('Invert Display'),
-	displayBrightness: yup
-		.number()
-		.oneOf(DISPLAY_BRIGHTNESS_LEVELS.map((o) => o.value))
-		.label('Display Brightness'),
+	displayBrightness: yup.number().min(0).max(255).label('Display Brightness'),
 	turnOffWhenSuspended: yup.number().label('Turn Off When Suspended'),
 	buttonLayout: buttonLayoutSchema,
 	buttonLayoutRight: buttonLayoutRightSchema,
@@ -358,25 +342,18 @@ export default function DisplayConfigPage() {
 													</option>
 												))}
 											</FormSelect>
-											<FormSelect
-												label={t('DisplayConfig:form.display-brightness-label')}
-												name="displayBrightness"
-												className="form-select-sm"
-												groupClassName="col-sm-3 mb-3"
-												value={values.displayBrightness}
-												error={errors.displayBrightness}
-												isInvalid={errors.displayBrightness}
-												onChange={handleChange}
-											>
-												{DISPLAY_BRIGHTNESS_LEVELS.map((o, i) => (
-													<option
-														key={`displayBrightness-option-${i}`}
-														value={o.value}
-													>
-														{t(`DisplayConfig:${o.label}`)}
-													</option>
-												))}
-											</FormSelect>
+											<div className="col-sm-3 mb-3">
+												<Form.Label>{`${t('DisplayConfig:form.display-brightness-label')}: ${Math.round((values.displayBrightness / 255) * 100)}%`}</Form.Label>
+												<Form.Range
+													name="displayBrightness"
+													id="displayBrightness"
+													min={0}
+													max={255}
+													step={1}
+													value={values.displayBrightness}
+													onChange={handleChange}
+												/>
+											</div>
 											<div className="col-sm-3 mb-3">
 												<label className="form-label">
 													{t('DisplayConfig:form.power-management-header')}
