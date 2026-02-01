@@ -170,7 +170,7 @@ export default {
 			'DANGER: Invalid USB parameters will cause your input modes to not function!',
 		'product-name': 'Product Name',
 		manufacturer: 'Manufacturer',
-		version: 'Version',
+		version: 'Serial',
 		'physical-warning-danger': '⚡ Override Physical IDs ⚡ ',
 		'product-id': 'Product ID',
 		'vendor-id': 'Vendor ID',
