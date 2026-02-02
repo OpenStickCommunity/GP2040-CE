@@ -50,7 +50,7 @@ class GPGFX_DisplayBase : public I2CDeviceBase {
         virtual bool isSPI() { return false; }
         virtual bool isI2C() { return false; }
     private:
-        GPGFX_DisplayMetrics* _metrics;
+        GPGFX_DisplayMetrics* _metrics = nullptr;
 };
 
 #endif

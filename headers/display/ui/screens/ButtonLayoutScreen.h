@@ -146,35 +146,35 @@ class ButtonLayoutScreen : public GPScreen {
             {INPUT_MODE_GENERIC, 11},
         };
 
-        Gamepad* gamepad;
-        InputMode inputMode;
-        std::string statusBar;
-        std::string footer;
+        Gamepad* gamepad = nullptr;
+        InputMode inputMode = INPUT_MODE_XINPUT;
+        std::string statusBar{};
+        std::string footer{};
 
         bool isInputHistoryEnabled = false;
         uint16_t inputHistoryX = 0;
         uint16_t inputHistoryY = 0;
         size_t inputHistoryLength = 0;
-        std::string historyString;
-        std::deque<std::string> inputHistory;
-        std::array<bool, INPUT_HISTORY_MAX_INPUTS> lastInput;
+        std::string historyString{};
+        std::deque<std::string> inputHistory{};
+        std::array<bool, INPUT_HISTORY_MAX_INPUTS> lastInput{};
 
-        bool bannerDisplay;
+        bool bannerDisplay = false;
         uint8_t bannerDelay = 2;
         int bannerDelayStart = 0;
-        std::string bannerMessage;
+        std::string bannerMessage{};
         uint16_t prevButtonState = 0;
         uint8_t prevLayoutLeft = 0;
         uint8_t prevLayoutRight = 0;
         uint8_t profileNumber = 0;
         uint8_t prevProfileNumber = 0;
-        ButtonLayoutParamsLeft prevLeftOptions;
-        ButtonLayoutParamsRight prevRightOptions;
-        ButtonLayoutOrientation prevOrientation;
+        ButtonLayoutParamsLeft prevLeftOptions{};
+        ButtonLayoutParamsRight prevRightOptions{};
+        ButtonLayoutOrientation prevOrientation{};
 
         bool hasTurboAssigned = false;
 
-        bool macroEnabled;
+        bool macroEnabled = false;
 
         bool showInputMode = true;
         bool showTurboMode = true;

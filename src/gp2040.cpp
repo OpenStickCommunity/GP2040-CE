@@ -91,14 +91,14 @@ void GP2040::setup() {
 
 	// check setup options and add modes to the list
 	// user modes
-	bootActions.insert({GAMEPAD_MASK_B1, gamepadOptions.inputModeB1});
-	bootActions.insert({GAMEPAD_MASK_B2, gamepadOptions.inputModeB2});
-	bootActions.insert({GAMEPAD_MASK_B3, gamepadOptions.inputModeB3});
-	bootActions.insert({GAMEPAD_MASK_B4, gamepadOptions.inputModeB4});
-	bootActions.insert({GAMEPAD_MASK_L1, gamepadOptions.inputModeL1});
-	bootActions.insert({GAMEPAD_MASK_L2, gamepadOptions.inputModeL2});
-	bootActions.insert({GAMEPAD_MASK_R1, gamepadOptions.inputModeR1});
-	bootActions.insert({GAMEPAD_MASK_R2, gamepadOptions.inputModeR2});
+	bootActions.emplace(GAMEPAD_MASK_B1, gamepadOptions.inputModeB1);
+	bootActions.emplace(GAMEPAD_MASK_B2, gamepadOptions.inputModeB2);
+	bootActions.emplace(GAMEPAD_MASK_B3, gamepadOptions.inputModeB3);
+	bootActions.emplace(GAMEPAD_MASK_B4, gamepadOptions.inputModeB4);
+	bootActions.emplace(GAMEPAD_MASK_L1, gamepadOptions.inputModeL1);
+	bootActions.emplace(GAMEPAD_MASK_L2, gamepadOptions.inputModeL2);
+	bootActions.emplace(GAMEPAD_MASK_R1, gamepadOptions.inputModeR1);
+	bootActions.emplace(GAMEPAD_MASK_R2, gamepadOptions.inputModeR2);
 
 	// Initialize our ADC (various add-ons)
 	adc_init();
@@ -517,7 +517,7 @@ void GP2040::RebootHotkeys::process(Gamepad* gamepad, bool configMode) {
 	}
 }
 
-void GP2040::checkRawState(GamepadState prevState, GamepadState currState) {
+void GP2040::checkRawState(const GamepadState& prevState, const GamepadState& currState) {
     // buttons pressed
     if (
         ((currState.aux & ~prevState.aux) != 0) ||
@@ -537,7 +537,7 @@ void GP2040::checkRawState(GamepadState prevState, GamepadState currState) {
     }
 }
 
-void GP2040::checkProcessedState(GamepadState prevState, GamepadState currState) {
+void GP2040::checkProcessedState(const GamepadState& prevState, const GamepadState& currState) {
     // buttons pressed
     if (
         ((currState.aux & ~prevState.aux) != 0) ||

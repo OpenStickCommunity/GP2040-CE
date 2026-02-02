@@ -73,8 +73,8 @@ private:
     void deinitializeStandardGpio();
 
     // event handling checking
-    void checkRawState(GamepadState prevState, GamepadState currState);
-    void checkProcessedState(GamepadState prevState, GamepadState currState);
+    void checkRawState(const GamepadState& prevState, const GamepadState& currState);
+    void checkProcessedState(const GamepadState& prevState, const GamepadState& currState);
 
     // input mask, action
     std::map<uint32_t, int32_t> bootActions;
