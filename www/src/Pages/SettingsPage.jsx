@@ -1107,7 +1107,31 @@ export default function SettingsPage() {
 		);
 	};
 
-	const usbOverride = (values, errors, setFieldValue, handleChange) => {
+	const usbOverride = (values, errors, setFieldValue, handleChange, mode) => {
+		// Determine which set of USB override fields to use based on mode
+		// mode can be 'xinput', 'hid', or undefined (for legacy backward compatibility)
+		const overrideToggle = mode === 'xinput' ? 'xinputDescOverride' : 
+		                        mode === 'hid' ? 'hidDescOverride' : 
+		                        'usbDescOverride';
+		const manuField = mode === 'xinput' ? 'xinputDescManufacturer' : 
+		                  mode === 'hid' ? 'hidDescManufacturer' : 
+		                  'usbDescManufacturer';
+		const prodField = mode === 'xinput' ? 'xinputDescProduct' : 
+		                  mode === 'hid' ? 'hidDescProduct' : 
+		                  'usbDescProduct';
+		const verField = mode === 'xinput' ? 'xinputDescVersion' : 
+		                 mode === 'hid' ? 'hidDescVersion' : 
+		                 'usbDescVersion';
+		const idOverrideToggle = mode === 'xinput' ? 'xinputOverrideID' : 
+		                         mode === 'hid' ? 'hidOverrideID' : 
+		                         'usbOverrideID';
+		const vendorField = mode === 'xinput' ? 'xinputVendorID' : 
+		                    mode === 'hid' ? 'hidVendorID' : 
+		                    'usbVendorID';
+		const productField = mode === 'xinput' ? 'xinputProductID' : 
+		                     mode === 'hid' ? 'hidProductID' : 
+		                     'usbProductID';
+
 		return (
 			<div>
 				<Row className="mb-3">
@@ -1115,18 +1139,18 @@ export default function SettingsPage() {
 						<Form.Check
 							label={t('SettingsPage:usb-override.advanced-override')}
 							type="switch"
-							id="usbDescOverride"
+							id={overrideToggle}
 							isInvalid={false}
-							checked={Boolean(values.usbDescOverride)}
+							checked={Boolean(values[overrideToggle])}
 							onChange={(e) => {
-								setFieldValue('usbDescOverride', e.target.checked ? 1 : 0);
-								setFieldValue('usbOverrideID', e.target.checked ? values.usbOverrideID : 0);
+								setFieldValue(overrideToggle, e.target.checked ? 1 : 0);
+								setFieldValue(idOverrideToggle, e.target.checked ? values[idOverrideToggle] : 0);
 								}
 							}
 						/>
 					</Col>
 				</Row>
-				{values.usbDescOverride === 1 && (
+				{values[overrideToggle] === 1 && (
 					<>
 						<Row className="mb-4 mt-4">
 							<Col>
@@ -1144,10 +1168,10 @@ export default function SettingsPage() {
 									size="sm"
 									type="text"
 									placeholder={'test'}
-									name="usbDescProduct"
-									value={values.usbDescProduct}
-									error={errors?.usbDescProduct}
-									isInvalid={errors?.usbDescProduct}
+									name={prodField}
+									value={values[prodField]}
+									error={errors?.[prodField]}
+									isInvalid={errors?.[prodField]}
 									onChange={handleChange}
 									maxLength={32}
 								/>
@@ -1159,10 +1183,10 @@ export default function SettingsPage() {
 								<Form.Control
 									size="sm"
 									type="text"
-									name="usbDescManufacturer"
-									value={values.usbDescManufacturer}
-									error={errors?.usbDescManufacturer}
-									isInvalid={errors?.usbDescManufacturer}
+									name={manuField}
+									value={values[manuField]}
+									error={errors?.[manuField]}
+									isInvalid={errors?.[manuField]}
 									onChange={handleChange}
 									maxLength={32}
 								/>
@@ -1174,10 +1198,10 @@ export default function SettingsPage() {
 								<Form.Control
 									size="sm"
 									type="text"
-									name="usbDescVersion"
-									value={values.usbDescVersion}
-									error={errors?.usbDescVersion}
-									isInvalid={errors?.usbDescVersion}
+									name={verField}
+									value={values[verField]}
+									error={errors?.[verField]}
+									isInvalid={errors?.[verField]}
 									onChange={handleChange}
 									maxLength={8}
 								/>
@@ -1188,16 +1212,28 @@ export default function SettingsPage() {
 								<Form.Check
 									label={t('SettingsPage:usb-override.physical-warning-danger')}
 									type="switch"
-									id="usbOverrideID"
+									id={idOverrideToggle}
 									isInvalid={false}
-									checked={Boolean(values.usbOverrideID)}
+									checked={Boolean(values[idOverrideToggle])}
 									onChange={(e) => {
-										setFieldValue('usbOverrideID', e.target.checked ? 1 : 0);
+										setFieldValue(idOverrideToggle, e.target.checked ? 1 : 0);
+										// Populate default VID/PID based on mode when enabling override
+										if (e.target.checked) {
+											if (mode === 'xinput') {
+												// XInput defaults: Microsoft Xbox 360
+												setFieldValue(vendorField, '045E');
+												setFieldValue(productField, '028E');
+											} else if (mode === 'hid') {
+												// USB-HID defaults: Silicon Labs
+												setFieldValue(vendorField, '10C4');
+												setFieldValue(productField, '82C0');
+											}
+										}
 									}}
 								/>
 							</Col>
 						</Row>
-						<Row className="mb-3" hidden={values.usbOverrideID !== 1}>
+						<Row className="mb-3" hidden={values[idOverrideToggle] !== 1}>
 							<Col sm={2}>
 								<Form.Label>
 									{t('SettingsPage:usb-override.vendor-id')}
@@ -1205,10 +1241,10 @@ export default function SettingsPage() {
 								<Form.Control
 									size="sm"
 									type="text"
-									name="usbVendorID"
-									value={values.usbVendorID}
-									error={errors.usbVendorID}
-									isInvalid={errors?.usbVendorID}
+									name={vendorField}
+									value={values[vendorField]}
+									error={errors[vendorField]}
+									isInvalid={errors?.[vendorField]}
 									onChange={handleChange}
 									onBlur={(e) => {
 										e.target.value = e.target.value.padStart(4, '0');
@@ -1225,10 +1261,10 @@ export default function SettingsPage() {
 								<Form.Control
 									size="sm"
 									type="text"
-									name="usbProductID"
-									value={values.usbProductID}
-									error={errors?.usbProductID}
-									isInvalid={errors?.usbProductID}
+									name={productField}
+									value={values[productField]}
+									error={errors?.[productField]}
+									isInvalid={errors?.[productField]}
 									onChange={handleChange}
 									onBlur={(e) => {
 										e.target.value = e.target.value.padStart(4, '0');
@@ -1271,7 +1307,7 @@ export default function SettingsPage() {
 						/>
 					</Col>
 				</Row>
-				{usbOverride(values, errors, setFieldValue, handleChange)}
+				{usbOverride(values, errors, setFieldValue, handleChange, 'xinput')}
 			</div>
 		);
 	};
@@ -1317,7 +1353,7 @@ export default function SettingsPage() {
 	) => {
 		return (
 			<div className="row mb-3">
-				{usbOverride(values, errors, setFieldValue, handleChange)}
+				{usbOverride(values, errors, setFieldValue, handleChange, 'hid')}
 			</div>
 		);
 	};

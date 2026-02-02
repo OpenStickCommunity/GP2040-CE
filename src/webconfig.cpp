@@ -679,7 +679,7 @@ std::string setGamepadOptions()
     readDoc(gamepadOptions.ps4ControllerIDMode, doc, "ps4ControllerIDMode");
     readDoc(gamepadOptions.usbDescOverride, doc, "usbDescOverride");
     readDoc(gamepadOptions.miniMenuGamepadInput, doc, "miniMenuGamepadInput");
-    // Copy USB descriptor strings
+    // Copy USB descriptor strings (legacy shared settings for backward compatibility)
     size_t strSize = sizeof(gamepadOptions.usbDescManufacturer);
     strncpy(gamepadOptions.usbDescManufacturer, doc["usbDescManufacturer"], strSize - 1);
     gamepadOptions.usbDescManufacturer[strSize - 1] = '\0';
@@ -690,8 +690,53 @@ std::string setGamepadOptions()
     strncpy(gamepadOptions.usbDescVersion, doc["usbDescVersion"], strSize - 1);
     gamepadOptions.usbDescVersion[strSize - 1] = '\0';
     readDoc(gamepadOptions.usbOverrideID, doc, "usbOverrideID");
-    readDoc(gamepadOptions.usbVendorID, doc, "usbVendorID");
-    readDoc(gamepadOptions.usbProductID, doc, "usbProductID");
+    // Parse USB VID/PID as hex strings
+    if (doc.containsKey("usbVendorID")) {
+        gamepadOptions.usbVendorID = strtoul(doc["usbVendorID"], nullptr, 16);
+    }
+    if (doc.containsKey("usbProductID")) {
+        gamepadOptions.usbProductID = strtoul(doc["usbProductID"], nullptr, 16);
+    }
+
+    // HID (USB-HID) specific overrides
+    readDoc(gamepadOptions.hidDescOverride, doc, "hidDescOverride");
+    strSize = sizeof(gamepadOptions.hidDescManufacturer);
+    strncpy(gamepadOptions.hidDescManufacturer, doc["hidDescManufacturer"], strSize - 1);
+    gamepadOptions.hidDescManufacturer[strSize - 1] = '\0';
+    strSize = sizeof(gamepadOptions.hidDescProduct);
+    strncpy(gamepadOptions.hidDescProduct, doc["hidDescProduct"], strSize - 1);
+    gamepadOptions.hidDescProduct[strSize - 1] = '\0';
+    strSize = sizeof(gamepadOptions.hidDescVersion);
+    strncpy(gamepadOptions.hidDescVersion, doc["hidDescVersion"], strSize - 1);
+    gamepadOptions.hidDescVersion[strSize - 1] = '\0';
+    readDoc(gamepadOptions.hidOverrideID, doc, "hidOverrideID");
+    // Parse HID VID/PID as hex strings
+    if (doc.containsKey("hidVendorID")) {
+        gamepadOptions.hidVendorID = strtoul(doc["hidVendorID"], nullptr, 16);
+    }
+    if (doc.containsKey("hidProductID")) {
+        gamepadOptions.hidProductID = strtoul(doc["hidProductID"], nullptr, 16);
+    }
+
+    // XInput specific overrides
+    readDoc(gamepadOptions.xinputDescOverride, doc, "xinputDescOverride");
+    strSize = sizeof(gamepadOptions.xinputDescManufacturer);
+    strncpy(gamepadOptions.xinputDescManufacturer, doc["xinputDescManufacturer"], strSize - 1);
+    gamepadOptions.xinputDescManufacturer[strSize - 1] = '\0';
+    strSize = sizeof(gamepadOptions.xinputDescProduct);
+    strncpy(gamepadOptions.xinputDescProduct, doc["xinputDescProduct"], strSize - 1);
+    gamepadOptions.xinputDescProduct[strSize - 1] = '\0';
+    strSize = sizeof(gamepadOptions.xinputDescVersion);
+    strncpy(gamepadOptions.xinputDescVersion, doc["xinputDescVersion"], strSize - 1);
+    gamepadOptions.xinputDescVersion[strSize - 1] = '\0';
+    readDoc(gamepadOptions.xinputOverrideID, doc, "xinputOverrideID");
+    // Parse XInput VID/PID as hex strings
+    if (doc.containsKey("xinputVendorID")) {
+        gamepadOptions.xinputVendorID = strtoul(doc["xinputVendorID"], nullptr, 16);
+    }
+    if (doc.containsKey("xinputProductID")) {
+        gamepadOptions.xinputProductID = strtoul(doc["xinputProductID"], nullptr, 16);
+    }
 
 
     HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
@@ -753,13 +798,40 @@ std::string getGamepadOptions()
     writeDoc(doc, "usbDescVersion", gamepadOptions.usbDescVersion);
     writeDoc(doc, "usbOverrideID", gamepadOptions.usbOverrideID);
     writeDoc(doc, "miniMenuGamepadInput", gamepadOptions.miniMenuGamepadInput);
-    // Write USB Vendor ID and Product ID as 4 character hex strings with 0 padding
+    // Write USB Vendor ID and Product ID as 4 character hex strings with 0 padding (legacy)
     char usbVendorStr[5];
     snprintf(usbVendorStr, 5, "%04X", gamepadOptions.usbVendorID);
     writeDoc(doc, "usbVendorID", usbVendorStr);
     char usbProductStr[5];
     snprintf(usbProductStr, 5, "%04X", gamepadOptions.usbProductID);
     writeDoc(doc, "usbProductID", usbProductStr);
+
+    // HID (USB-HID) specific overrides
+    writeDoc(doc, "hidDescOverride", gamepadOptions.hidDescOverride);
+    writeDoc(doc, "hidDescManufacturer", gamepadOptions.hidDescManufacturer);
+    writeDoc(doc, "hidDescProduct", gamepadOptions.hidDescProduct);
+    writeDoc(doc, "hidDescVersion", gamepadOptions.hidDescVersion);
+    writeDoc(doc, "hidOverrideID", gamepadOptions.hidOverrideID);
+    char hidVendorStr[5];
+    snprintf(hidVendorStr, 5, "%04X", gamepadOptions.hidVendorID);
+    writeDoc(doc, "hidVendorID", hidVendorStr);
+    char hidProductStr[5];
+    snprintf(hidProductStr, 5, "%04X", gamepadOptions.hidProductID);
+    writeDoc(doc, "hidProductID", hidProductStr);
+
+    // XInput specific overrides
+    writeDoc(doc, "xinputDescOverride", gamepadOptions.xinputDescOverride);
+    writeDoc(doc, "xinputDescManufacturer", gamepadOptions.xinputDescManufacturer);
+    writeDoc(doc, "xinputDescProduct", gamepadOptions.xinputDescProduct);
+    writeDoc(doc, "xinputDescVersion", gamepadOptions.xinputDescVersion);
+    writeDoc(doc, "xinputOverrideID", gamepadOptions.xinputOverrideID);
+    char xinputVendorStr[5];
+    snprintf(xinputVendorStr, 5, "%04X", gamepadOptions.xinputVendorID);
+    writeDoc(doc, "xinputVendorID", xinputVendorStr);
+    char xinputProductStr[5];
+    snprintf(xinputProductStr, 5, "%04X", gamepadOptions.xinputProductID);
+    writeDoc(doc, "xinputProductID", xinputProductStr);
+
     writeDoc(doc, "fnButtonPin", -1);
     GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
     for (unsigned int pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
