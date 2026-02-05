@@ -49,7 +49,7 @@ private:
     float values[ADS1256_CHANNEL_COUNT]; // Cache for latest read values
     bool enableTriggers;
     uint8_t readChannelCount; // Number of channels to read from the ADC
-    float analogMax = ADS1256_MAX_3V;
+    float analogMax = ADS1256_MAX_3V * 10;
 };
 
 #endif  // SPI_ANALOG_ADS1256_H_
