@@ -378,6 +378,10 @@ void GP2040::run() {
 		// --- Add-on Post-processing (shared) ---
 		addons.ProcessAddons();
 
+		// --- Update processedGamepad for display (always, regardless of mode) ---
+		checkProcessedState(processedGamepad->state, gamepad->state);
+		memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
+
 		// --- Driver Output (branched) ---
 		if (useSwitchBT) {
 			// Convert and send via Switch Bluetooth
@@ -403,9 +407,6 @@ void GP2040::run() {
 			hidbt_process(&btInput);
 		} else {
 			// USB output path
-			checkProcessedState(processedGamepad->state, gamepad->state);
-			memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
-
 			bool processed = inputDriver->process(gamepad);
 			tud_task();
 
