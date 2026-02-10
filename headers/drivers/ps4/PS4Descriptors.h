@@ -45,8 +45,12 @@
 #define GAMEPAD_ENDPOINT	1
 #define GAMEPAD_SIZE		64
 
+#ifndef LSB
 #define LSB(n) ((n) & 255)
+#endif
+#ifndef MSB
 #define MSB(n) (((n) >> 8) & 255)
+#endif
 
 // HAT report (4 bits)
 #define PS4_HAT_UP        0x00
