@@ -24,7 +24,7 @@ void PS4AuthUSBListener::process() {
             // Once Console is ready with the nonce, begin!
             if ( ps4AuthData->passthrough_state == GPAuthState::send_auth_console_to_dongle ) {
                 memcpy(report_buffer, output_0xf3, sizeof(output_0xf3));
-                host_get_report(PS4AuthReport::PS4_RESET_AUTH, report_buffer, sizeof(output_0xf3));
+                host_get_report(PS4AuthReport::PS4_RESET_AUTH, report_buffer, sizeof(output_0xf3) + 1);
             }
             break;
         case PS4State::receiving_nonce:
