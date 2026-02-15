@@ -457,6 +457,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.displayOptions, displaySaverTimeout, DISPLAY_SAVER_TIMEOUT);
     INIT_UNSET_PROPERTY(config.displayOptions, displaySaverMode, DISPLAY_SAVER_MODE);
     INIT_UNSET_PROPERTY(config.displayOptions, buttonLayoutOrientation, DISPLAY_LAYOUT_ORIENTATION);
+    INIT_UNSET_PROPERTY(config.displayOptions, contrast, DISPLAY_CONTRAST);
 
     // peripheralOptions
     PeripheralOptions& peripheralOptions = config.peripheralOptions;
