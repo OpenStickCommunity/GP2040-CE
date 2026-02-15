@@ -11,7 +11,7 @@ void SPIAnalog1256Input::setup() {
     PeripheralSPI* spi = PeripheralManager::getInstance().getSPI(options.spiBlock);
     enableTriggers = options.enableTriggers;
     readChannelCount = 4 + (enableTriggers ? 2 : 0);
-    analogMax = options.avdd / 10;
+    analogMax = options.avdd / 10.0f;
 
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     gamepad->hasAnalogTriggers = enableTriggers;
