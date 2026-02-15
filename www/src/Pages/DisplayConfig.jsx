@@ -43,12 +43,6 @@ const LAYOUT_ORIENTATION = [
 	{ label: 'form.layout-modes.switched', value: 2 },
 ];
 
-const DISPLAY_VCOMH = [
-    { label: '~0.65 x Vcc', value: 0x00 },
-    { label: '~0.77 x Vcc', value: 0x20 },
-    { label: '~0.83 x Vcc', value: 0x30 },
-];
-
 const defaultValues = {
 	enabled: 0,
 	flipDisplay: 0,
@@ -89,7 +83,6 @@ const defaultValues = {
 	inputHistoryRow: 7,
 	turnOffWhenSuspended: 0,
 	displayContrast: 255,
-	displayVCOMH: 48,
 };
 
 let buttonLayoutDefinitions = { buttonLayout: {}, buttonLayoutRight: {} };
@@ -114,11 +107,7 @@ const schema = yup.object().shape({
 		.number()
 		.oneOf(ON_OFF_OPTIONS.map((o) => o.value))
 		.label('Invert Display'),
-	displayContrast: yup.number().min(0).max(255).label('Display Contrast'),
-	displayVCOMH: yup
-		.number()
-		.oneOf(DISPLAY_VCOMH.map((o) => o.value))
-		.label('Common Deselect (VCOMH)'),
+	displayContrast: yup.number().min(38).max(255).label('Display Contrast'),
 	turnOffWhenSuspended: yup.number().label('Turn Off When Suspended'),
 	buttonLayout: buttonLayoutSchema,
 	buttonLayoutRight: buttonLayoutRightSchema,
@@ -358,32 +347,13 @@ export default function DisplayConfigPage() {
 												<Form.Range
 													name="displayContrast"
 													id="displayContrast"
-													min={0}
+													min={38}
 													max={255}
 													step={1}
 													value={values.displayContrast}
 													onChange={handleChange}
 												/>
 											</div>
-											<FormSelect
-												label={t('DisplayConfig:form.display-vcomh-label')}
-												name="displayVCOMH"
-												className="form-select-sm"
-												groupClassName="col-sm-3 mb-3"
-												value={values.displayVCOMH}
-												error={errors.displayVCOMH}
-												isInvalid={errors.displayVCOMH}
-												onChange={handleChange}
-											>
-												{DISPLAY_VCOMH.map((o, i) => (
-													<option
-														key={`displayVCOMH-option-${i}`}
-														value={o.value}
-													>
-														{t(`DisplayConfig:${o.label}`)}
-													</option>
-												))}
-											</FormSelect>
 											<div className="col-sm-3 mb-3">
 												<label className="form-label">
 													{t('DisplayConfig:form.power-management-header')}

@@ -44,7 +44,6 @@ typedef struct {
     bool inverted;
     GPGFX_DisplayFont font;
     uint8_t contrast;
-    uint8_t vcomh;
 } GPGFX_DisplayTypeOptions;
 
 #endif

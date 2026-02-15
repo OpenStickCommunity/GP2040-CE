@@ -10,7 +10,6 @@ void GPGFX_TinySSD1306::init(GPGFX_DisplayTypeOptions options) {
     _options.inverted = options.inverted;
     _options.font = options.font;
     _options.contrast = options.contrast;
-    _options.vcomh = options.vcomh;
 
     _options.i2c->readRegister(_options.address, 0x00, &this->screenType, 1);
     this->screenType &= 0x0F;
@@ -50,7 +49,7 @@ void GPGFX_TinySSD1306::init(GPGFX_DisplayTypeOptions options) {
 		0x12,
 
 		CommandOps::SET_VCOM_DETECT,
-		_options.vcomh,
+		0x40,
 
 		CommandOps::CHARGE_PUMP,
 		0x14,

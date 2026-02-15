@@ -91,7 +91,6 @@ app.get('/api/getDisplayOptions', (req, res) => {
 		inputHistoryCol: 0,
 		inputHistoryRow: 7,
 		displayContrast: 255,
-		displayVCOMH: 48,
 	};
 	console.log('data', data);
 	return res.send(data);

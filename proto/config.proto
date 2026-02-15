@@ -271,7 +271,6 @@ message DisplayOptions
     optional uint32 inputHistoryRow = 30;
     
     optional uint32 contrast = 31;
-    optional uint32 vcomh = 32;
 }
 
 message LEDOptions

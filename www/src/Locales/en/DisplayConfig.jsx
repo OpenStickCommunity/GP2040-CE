@@ -46,7 +46,6 @@ export default {
 		'turn-off-when-suspended': 'Turn Off When Suspended',
 		'input-history-label': 'Input History',
 		'display-contrast-label': 'Display Contrast',
-		'display-vcomh-label': 'Common Deselect (VCOMH)',
 		'display-state': {
 			disabled: 'Disabled',
 			enabled: 'Enabled',

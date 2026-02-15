@@ -34,7 +34,6 @@ bool DisplayAddon::available() {
             gpOptions.font.width = 6;
             gpOptions.font.height = 8;
             gpOptions.contrast = options.contrast;
-            gpOptions.vcomh = options.vcomh;
             gpDisplay->init(gpOptions);
             setDisplayPower(0);
             delete gpDisplay;
@@ -58,7 +57,6 @@ void DisplayAddon::setup() {
         gpOptions.font.width = 6;
         gpOptions.font.height = 8;
         gpOptions.contrast = options.contrast;
-        gpOptions.vcomh = options.vcomh;
     } else {
         return;
     }
