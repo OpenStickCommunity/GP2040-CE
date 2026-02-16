@@ -1602,7 +1602,7 @@ std::string getHETriggerOptions()
         trigger["action"] = heTriggers[i].action;
         trigger["idle"] = heTriggers[i].idle;
         trigger["active"] = heTriggers[i].active;
-        trigger["max"] = heTriggers[i].max;
+        trigger["pressed"] = heTriggers[i].pressed;
         trigger["polarity"] = heTriggers[i].polarity;
     }
 
@@ -1619,7 +1619,7 @@ std::string setHETriggerOptions()
         heTriggers[i].action = doc["triggers"][i]["action"];
         heTriggers[i].idle = doc["triggers"][i]["idle"];
         heTriggers[i].active = doc["triggers"][i]["active"];
-        heTriggers[i].max = doc["triggers"][i]["max"];
+        heTriggers[i].pressed = doc["triggers"][i]["pressed"];
         heTriggers[i].polarity = doc["triggers"][i]["polarity"];
     }
     

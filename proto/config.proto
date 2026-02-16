@@ -869,7 +869,7 @@ message HETriggerInfo
     optional GpioAction action = 1;
     optional int32 active = 2;
     optional int32 idle = 3;
-    optional int32 max = 4;
+    optional int32 pressed = 4;
     optional int32 polarity = 5;
 }
 
