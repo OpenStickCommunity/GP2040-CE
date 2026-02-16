@@ -114,8 +114,8 @@ void HETriggerAddon::preprocess() {
             emaSmoothingReads[he] = value;
         }
 
-        if (!options.triggers[he].polarity && value >= options.triggers[he].active 
-            || options.triggers[he].polarity && value == options.triggers[he].active) {
+        if ((!options.triggers[he].polarity && value >= options.triggers[he].active) 
+            || (options.triggers[he].polarity && value <= options.triggers[he].active)) {
             switch (options.triggers[he].action) {
                 case GpioAction::BUTTON_PRESS_UP: gamepad->state.dpad |= GAMEPAD_MASK_UP; break;
                 case GpioAction::BUTTON_PRESS_DOWN: gamepad->state.dpad |= GAMEPAD_MASK_DOWN; break;
