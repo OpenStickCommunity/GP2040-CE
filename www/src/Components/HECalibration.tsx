@@ -376,7 +376,6 @@ const HECalibration = ({
 						type="switch"
 						name="polarity"
 						id="HETriggerPolarize"
-						disabled
 						isInvalid={false}
 						checked={polarity}
 						onChange={(e) => {
