@@ -49,7 +49,7 @@ const HECalibration = ({
 	const [calibrationStep, setCalibrationStep] = useState(0);
 	const [voltage, setVoltage] = useState(0);
 	const [voltageIdle, setVoltageIdle] = useState(20);
-	const [voltageMax, setVoltageMax] = useState(3500);
+	const [voltagePressed, setVoltagePressed] = useState(3500);
 	const [voltageActive, setVoltageActive] = useState(2000);
 	const [polarity, setPolarity] = useState(0);
 
@@ -60,7 +60,7 @@ const HECalibration = ({
 			action: triggers[target.current].action,
 			idle: voltageIdle,
 			active: voltageActive,
-			max: voltageMax,
+			pressed: voltagePressed,
 			polarity
 		})
 		stopCalibration();
@@ -111,7 +111,7 @@ const HECalibration = ({
 		setAllHETriggers({
 			idle: voltageIdle,
 			active: voltageActive,
-			max: voltageMax,
+			pressed: voltagePressed,
 			polarity
 		});
 		closeModal();
@@ -170,7 +170,7 @@ const HECalibration = ({
 		}
 		setVoltageIdle(triggers[target.current].idle);
 		setVoltageActive(triggers[target.current].active);
-		setVoltageMax(triggers[target.current].max);
+		setVoltagePressed(triggers[target.current].pressed);
 		setPolarity(triggers[target.current].polarity);
 	};
 
@@ -188,7 +188,7 @@ const HECalibration = ({
 	};
 
 	const calculateVoltPressed = () => {
-		return (Math.min(voltageMax,voltage)-voltageIdle)/((voltageMax-voltageIdle)/100.0);
+		return (voltage-voltageIdle)/((voltagePressed-voltageIdle)/100.0);
 	};
 
 	const readHallEffect = async (calibrationStep:number) => {
@@ -287,8 +287,8 @@ const HECalibration = ({
 						onChange={(e) => {
 							setVoltageActive(parseInt((e.target as HTMLInputElement).value));
 						}}
-						min={voltageIdle}
-						max={voltageMax}
+						min={Math.min(voltageIdle, voltagePressed)}
+						max={Math.max(voltageIdle, voltagePressed)}
 					/>
 				</Col>
 				<Col xs={12} className="mb-3">
@@ -301,8 +301,8 @@ const HECalibration = ({
 				</Col>
 				<Col xs={12} className="mb-3">
 					<Form.Range
-						min={voltageIdle}
-						max={voltageMax}
+						min={Math.min(voltageIdle, voltagePressed)}
+						max={Math.max(voltageIdle, voltagePressed)}
 						step={1}
 						value={voltageActive}
 						onChange={(e) => {
@@ -360,11 +360,11 @@ const HECalibration = ({
 					<FormControl
 						type="number"
 						label={t(`HETrigger:pressed-input-text`)}
-						name="voltageMax"
+						name="voltagePressed"
 						className="form-select-sm"
-						value={voltageMax}
+						value={voltagePressed}
 						onChange={(e) => {
-							setVoltageMax(parseInt((e.target as HTMLInputElement).value));
+							setVoltagePressed(parseInt((e.target as HTMLInputElement).value));
 						}}
 						min={0}
 						max={4096}
@@ -380,6 +380,8 @@ const HECalibration = ({
 						checked={polarity}
 						onChange={(e) => {
 							setPolarity(polarity == 0 ? 1 : 0);
+							setVoltageIdle(voltagePressed)
+							setVoltagePressed(voltageIdle)
 						}}
 					/>
 				</Col>
@@ -393,17 +395,17 @@ const HECalibration = ({
 				</Col>
 				<Col xs={12} className="mb-3">
 					<Form.Range
-						min={voltageIdle}
-						max={voltageMax}
+						min={0}
+						max={(voltagePressed - voltageIdle) * (-polarity || 1)}
 						step={1}
-						value={voltageActive}
+						value={(voltageActive - voltageIdle) * (-polarity || 1)}
 						onChange={(e) => {
-							setVoltageActive(parseInt(e.target.value));
+							setVoltageActive(parseInt(e.target.value) * (-polarity || 1) + voltageIdle);
 						}}
 					></Form.Range>
 				</Col>
 				<Col xs={12} className="mb-3">
-					{voltage} {voltage>voltageActive?t('HETrigger:pressed-text'):""}
+					{voltage} {(!!!polarity && voltage>=voltageActive || !!polarity && voltage <= voltageActive) ?t('HETrigger:pressed-text'):""}
 				</Col>
 				<Col xs={12} className="mb-3" />
 				<Col xs={12} className="mb-3 text-center">
@@ -459,7 +461,7 @@ const HECalibration = ({
 						/> {t(`HETrigger:calibrate-idle-button`)}
 					</Button>
 					<Button onClick={() => {
-						setVoltageMax(voltage);
+						setVoltagePressed(voltage);
 						setVoltageActive(voltageIdle + Math.floor((voltage-voltageIdle)*0.625));
 						updateCalibrationRead(2);
 					}} hidden={calibrationStep !== 1}>
