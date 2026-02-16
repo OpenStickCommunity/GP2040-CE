@@ -225,7 +225,7 @@ const TriggerActionsForm = ({
 													action: change?.value === undefined ? -10 : change.value,
 													idle: triggers[key].idle,
 													active: triggers[key].active,
-													max: triggers[key].max,
+													pressed: triggers[key].max,
 													polarity: triggers[key].polarity
 												}
 											)

@@ -7,7 +7,7 @@ export type Trigger = {
 	action: PinActionValues;
 	idle: number;
 	active: number;
-	max: number;
+	pressed: number;
 	polarity: number;
 };
 
@@ -25,38 +25,38 @@ type Actions = {
 
 const INITIAL_STATE: State = {
     triggers: [
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
+		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
+		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
+		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
+		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
+		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
+		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
+		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
+		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
+		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
+		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
+		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
+		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
+		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
+		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
+		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
+		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
+		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
+		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
+		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
+		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
+		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
+		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
+		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
+		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
+		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
+		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
+		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
+		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
+		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
+		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
+		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
+		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
 	],
 	loadingTriggers: false,
 };
@@ -72,11 +72,11 @@ const useHETriggerStore = create<State & Actions>()((set, get) => ({
 			loadingTriggers: false,
 		}));
 	},
-	setHETrigger: ({ id, action, idle, active, max, polarity }) => {
+	setHETrigger: ({ id, action, idle, active, pressed: max, polarity }) => {
 		set((state) => {
 			const newTriggers = [...state.triggers];
 			if (newTriggers[id]) {
-				newTriggers[id] = { action, idle, active, max, polarity };
+				newTriggers[id] = { action, idle, active, pressed: max, polarity };
 			}
 
 			return {

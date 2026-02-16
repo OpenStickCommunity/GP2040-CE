@@ -611,13 +611,13 @@ app.get('/api/getExpansionPins', (req, res) => {
 
 app.get('/api/getHETriggerOptions', (req, res) => {
 	var triggers = [];
-	triggers.push({ action: 2, idle: 120, max: 3500, active: 1500, polarity: 0 });
+	triggers.push({ action: 2, idle: 120, pressed: 3500, active: 1500, polarity: 0 });
 	for(var i = 1; i < 32; i++) {
 		triggers.push({
 			action: -10,
 			idle: 100,
 			active: 2000,
-			max: 3500,
+			pressed: 3500,
 			polarity: 0
 		});
 	}
