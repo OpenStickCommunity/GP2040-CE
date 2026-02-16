@@ -10,7 +10,11 @@
 int main()
 {
     int status = 0;
+    main_message_t defaultMessage = MAIN_MESSAGE_INIT_DEFAULT;
     main_message_t message = MAIN_MESSAGE_INIT_ZERO;
+
+    /* Verify the default value was initialized */
+    TEST(defaultMessage.my_enum5 == MY_ENUM1_ENTRY_SECOND);
 
     /* Verify that all members have the expected names */
     message.lucky_number = 13;
@@ -49,6 +53,8 @@ int main()
     message.test_message5.test_value = 5;
 
     TEST(strcmp("ENTRY_FIRST", my_enum1_name(MY_ENUM1_ENTRY_FIRST)) == 0);
+    TEST(my_enum1_valid(MY_ENUM1_ENTRY_FIRST) == true);
+    TEST(my_enum2_valid(MY_ENUM2_ENUM2_ENTRY) == true);
 
     /* Verify that the descriptor structure is at least mostly correct
      * by doing a round-trip encoding test.

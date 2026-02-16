@@ -2,16 +2,52 @@ import sys
 import subprocess
 import os.path
 
-def has_grpcio_protoc():
+import traceback
+
+def has_grpcio_protoc(verbose = False):
     # type: () -> bool
     """ checks if grpcio-tools protoc is installed"""
 
     try:
         import grpc_tools.protoc
     except ImportError:
+        if verbose:
+            sys.stderr.write("Failed to import grpc_tools: %s\n" % traceback.format_exc())
         return False
+
     return True
 
+def get_grpc_tools_proto_path():
+    if sys.hexversion > 0x03090000:
+        import importlib.resources as ir
+        with ir.as_file(ir.files('grpc_tools') / '_proto') as path:
+            return str(path)
+    else:
+        import pkg_resources
+        return pkg_resources.resource_filename('grpc_tools', '_proto')
+
+def get_proto_builtin_include_path():
+    """Find include path for standard google/protobuf includes and for
+    nanopb.proto.
+    """
+
+    if getattr(sys, 'frozen', False):
+        # Pyinstaller package
+        paths = [
+            os.path.join(os.path.dirname(os.path.abspath(sys.executable)), 'proto'),
+            os.path.join(os.path.dirname(os.path.abspath(sys.executable)), 'grpc_tools', '_proto')
+        ]
+
+    else:
+        # Stand-alone script
+        paths = [
+            os.path.dirname(os.path.abspath(__file__))
+        ]
+
+        if has_grpcio_protoc():
+            paths.append(get_grpc_tools_proto_path())
+
+    return paths
 
 def invoke_protoc(argv):
     # type: (list) -> typing.Any
@@ -30,22 +66,18 @@ def invoke_protoc(argv):
         argv.append("-I.")
 
     # Add default protoc include paths
-    nanopb_include = os.path.dirname(os.path.abspath(__file__))
-    argv.append('-I' + nanopb_include)
+    for incpath in get_proto_builtin_include_path():
+        argv.append('-I' + incpath)
 
     if has_grpcio_protoc():
         import grpc_tools.protoc as protoc
-        import pkg_resources
-        proto_include = pkg_resources.resource_filename('grpc_tools', '_proto')
-        argv.append('-I' + proto_include)
-
         return protoc.main(argv)
     else:
         return subprocess.call(argv)
 
 def print_versions():
     try:
-        if has_grpcio_protoc():
+        if has_grpcio_protoc(verbose = True):
             import grpc_tools.protoc
             sys.stderr.write("Using grpcio-tools protoc from " + grpc_tools.protoc.__file__ + "\n")
         else:
@@ -54,6 +86,11 @@ def print_versions():
         invoke_protoc(['protoc', '--version'])
     except Exception as e:
         sys.stderr.write("Failed to determine protoc version: " + str(e) + "\n")
+
+    try:
+        sys.stderr.write("protoc builtin include path: " + str(get_proto_builtin_include_path()) + "\n")
+    except Exception as e:
+        sys.stderr.write("Failed to construct protoc include path: " + str(e) + "\n")
 
     try:
         import google.protobuf

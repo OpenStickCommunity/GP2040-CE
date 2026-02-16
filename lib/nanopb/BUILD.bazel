@@ -1,10 +1,13 @@
-load("@rules_proto//proto:defs.bzl", "proto_library")
-load("@rules_python//python:defs.bzl", "py_binary")
-load("@nanopb_pypi//:requirements.bzl", "requirement")
-load("@rules_proto_grpc//:defs.bzl", "proto_plugin")
 load("@bazel_skylib//rules:copy_file.bzl", "copy_file")
-load("//extra/bazel:nanopb_cc_proto_library.bzl", "cc_nanopb_proto_library")
+
+# Note: if you are still using WORKSPACE, you will need to patch this file to use the following instead
+# load("@python_3_11//:defs.bzl", "py_binary")
+load("@python_versions//3.11:defs.bzl", "py_binary")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+load("@rules_proto_grpc//:defs.bzl", "proto_plugin")
+load("@rules_python//python:proto.bzl", "py_proto_library")
 load("@rules_python//python/pip_install:requirements.bzl", "compile_pip_requirements")
+load("//extra/bazel:nanopb_cc_proto_library.bzl", "cc_nanopb_proto_library")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -37,19 +40,32 @@ copy_file(
 
 py_binary(
     name = "protoc-gen-nanopb",
-    srcs = [
-        "generator/nanopb_generator.py",
+    srcs = glob([
+        "generator/**/*.py",
+    ]) + [
         ":protoc-gen-nanopb.py",
     ],
+    data = glob([
+        "generator/**/*.proto",
+    ]),
+    env = {
+        "NANOPB_PB2_NO_REBUILD": "1",
+    },
+    imports = [
+        "generator",
+    ],
     deps = [
-        requirement("grpcio-tools"),
+        ":nanopb_py_proto",
     ],
 )
 
 proto_plugin(
     name = "nanopb_plugin",
+    env = {
+        "NANOPB_PB2_NO_REBUILD": "1",
+    },
     options = [
-        '--library-include-format=quote',
+        "--library-include-format=quote",
     ],
     outputs = [
         "{protopath}.pb.h",
@@ -57,15 +73,8 @@ proto_plugin(
     ],
     separate_options_flag = True,
     tool = ":protoc-gen-nanopb",
+    use_built_in_shell_environment = False,
     visibility = ["//visibility:public"],
-)
-
-proto_library(
-    name = "descriptor",
-    srcs = [
-        "generator/proto/google/protobuf/descriptor.proto",
-    ],
-    strip_import_prefix = "generator/proto/",
 )
 
 proto_library(
@@ -74,13 +83,36 @@ proto_library(
         "generator/proto/nanopb.proto",
     ],
     strip_import_prefix = "generator/proto/",
-    deps = [":descriptor"],
+    deps = ["@protobuf//:descriptor_proto"],
+)
+
+py_proto_library(
+    name = "nanopb_py_proto",
+    deps = [":nanopb_proto"],
 )
 
 cc_nanopb_proto_library(
     name = "test_compilation",
-    protos = [":descriptor"],
+    protos = ["@protobuf//:descriptor_proto"],
     visibility = ["//visibility:private"],
+)
+
+proto_library(
+    name = "all_types_proto",
+    srcs = ["tests/alltypes/alltypes.proto"],
+)
+
+cc_nanopb_proto_library(
+    name = "all_types_nanopb",
+    nanopb_options_files = ["tests/alltypes/alltypes.options"],
+    protos = [":all_types_proto"],
+    visibility = ["//visibility:private"],
+)
+
+cc_test(
+    name = "bazel_options_support",
+    srcs = ["tests/bazel_options_support/bazel_options_support.cc"],
+    deps = [":all_types_nanopb"],
 )
 
 # Run `bazel run //:requirements.update` if you want to update the requirements.

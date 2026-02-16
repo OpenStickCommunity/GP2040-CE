@@ -6,8 +6,117 @@ required modifications of user applications are explained. Also any
 error indications are included, in order to make it easier to find this
 document.
 
-Nanopb-0.4.7 (2022-xx-xx)
+Nanopb-0.4.9 (2024-09-19)
 -------------------------
+
+### CMake rules now default to grpcio_tools protoc
+
+**Rationale:** Previously CMake rules primarily looked for `protoc` in system
+path. This was often an outdated version installed from package manager, and
+not necessarily compatible with `python-protobuf` version installed from `pip`.
+
+**Changes:** CMake rules now default to using `generator/protoc`, which in
+turn uses `grpc_tools` Python package if available. If it is not available,
+system path is searched for `protoc`.
+
+**Required actions:** For most users, no actions are needed. In case of
+version incompatibilities, `pip install --user --upgrade grpcio-tools protobuf`
+is recommended. If needed, `PROTOBUF_PROTOC_EXECUTABLE` can be set to override
+the default.
+
+**Error indications:** `Failed to import generator/proto/nanopb_pb2.py` if
+versions of `protoc` selected by CMake is different than installed `python-protobuf`.
+
+### Use uint8_t for pb_byte_t when UINT8_MAX is defined
+
+**Rationale:** Previously `pb_byte_t` was always defined as `uint8_least_t`.
+This could be annoying on some platforms without this define, or when some
+compiles might warn on conversion from `uint8_t`. However not all platforms
+support `uint8_t` sized access.
+
+**Changes:** The `stdint.h` header will define `UINT8_MAX` exactly if `uint8_t`
+is available. Use it to select which type to typedef.
+
+**Required actions:** Usually none. If any compiler warnings are generated,
+they can either be fixed or `PB_BYTE_T_OVERRIDE` can be defined to `uint_least8_t`
+to restore old behavior.
+
+**Error indications:** Implicit conversion from `uint_least8_t` to `uint8_t`.
+
+### Migrate to bzlmod
+
+**Rationale:** Due to the [shortcomings of the WORKSPACE system](https://bazel.build/external/overview#workspace-shortcomings),
+Bzlmod is going to replace the legacy WORKSPACE system in future Bazel releases.
+Therefore, nanopb has been migrated to use bzlmod to better support newer bazel versions.
+
+**Changes**
+* upgrade bazel deps
+  * bazel_skylib: 1.7.1
+  * rules_python: 0.34.0
+  * rules_proto: 6.0.2
+  * protobuf: 24.4
+  * rules_proto_grpc: 5.0.0
+* Start using bzlmod (MODULE.bazel)
+
+**Required actions:** bazel build using WORKSPACE has been deprecated. To use bzlmod, adding below content to your MODULE.bazel
+```py
+bazel_dep(name = "nanopb", version = "0.4.9")
+git_override(
+    module_name = "nanopb",
+    remote = "https://github.com/nanopb/nanopb.git",
+    commit = "<commit>",
+)
+```
+noted that the name of the module has been changed to `nanopb`, to better fit the convention of bzlmod.
+If the old name `com_github_nanopb_nanopb` is preferred, can add `repo_name` parameter to indicate the repo name.
+```py
+bazel_dep(name = "nanopb", version = "0.4.9", repo_name="com_github_nanopb_nanopb")
+```
+
+### Separate enum_intsize setting
+
+**Rationale:** Nanopb-0.4.7 extended `int_size` option to affect enums.
+This is only supported by C++11 and C23 compilers.
+The generation used `#ifdef` to limit size option to use on C++ compilers.
+This caused binary incompatibility when project mixed C and C++ files.
+
+**Changes**: `enum_intsize` is now a separate option, and does not use `#ifdef`.
+If compiler does not support the setting, compilation will fail.
+
+**Required actions:** If using the recently introduced `int_size` option on enums, update to use `enum_intsize` instead.
+
+**Error indications:** Enum integer sizes use defaults as the old setting is ignored.
+
+Nanopb-0.4.8 (2023-11-11)
+-------------------------
+
+### Fix naming conflicts with CMake installation
+
+**Rationale:** Previously `CMakeLists.txt` installed nanopb Python module under name `proto` and include file directly as `/usr/include/pb.h`. These names have potential to conflict with other libraries.
+
+**Changes:** Python module is installed as `nanopb` and include files under `/usr/include/nanopb`.
+
+**Required actions:** Only affects users who install nanopb using the `cmake` build system.
+Does not affect use of `FindNanopb.cmake`.
+Calling nanopb generator should work as before.
+Include path may need adjustment if not using `nanopb-targets.cmake` to determine it.
+
+**Error indications:** Include file `pb.h` not found when compiling against a system-wide installation done with CMake.
+
+Nanopb-0.4.7 (2022-12-11)
+-------------------------
+
+### Add int_size option to enum fields
+
+**This option was separated to `enum_intsize` in nanopb-0.4.9. This migration notice has been updated to match.**
+
+**Rationale:** The `packed_enum` option does not work with MSVC due to `#pragma pack` not supporting enums with MSVC. To workaround this, enum sizes can be specified with the new `int_size` option. Note that this is only supported when generating C++.
+
+**Changes:** The ~~`int_size`~~ `enum_intsize` option can be specified for enums.
+
+**Required actions:** ~~Any users concerned about the size of the generated C++ enums and are setting the int_size of enums via a wildcard (e.g. `MyMessage.*  int_size=IS_8`) will need to instead set the `int_size` option for individual fields.~~
+
+**Error indications:** ~~The size of generated C++ enums has changed.~~
 
 ### Updated include path order in FindNanopb.cmake
 

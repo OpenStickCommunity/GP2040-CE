@@ -4,7 +4,7 @@
 from __future__ import unicode_literals
 
 '''Generate header file for nanopb from a ProtoBuf FileDescriptorSet.'''
-nanopb_version = "nanopb-0.4.8-dev"
+nanopb_version = "nanopb-0.4.9.1"
 
 import sys
 import re
@@ -34,8 +34,8 @@ try:
     import google.protobuf.text_format as text_format
     import google.protobuf.descriptor_pb2 as descriptor
     import google.protobuf.compiler.plugin_pb2 as plugin_pb2
-    import google.protobuf.reflection as reflection
     import google.protobuf.descriptor
+    import google.protobuf.message_factory as message_factory
 except:
     sys.stderr.write('''
          **********************************************************************
@@ -46,6 +46,15 @@ except:
          **********************************************************************
     ''' + '\n')
     raise
+
+# GetMessageClass() is used by modern python-protobuf (around 5.x onwards)
+# Retain compatibility with older python-protobuf versions.
+try:
+    import google.protobuf.message_factory as message_factory
+    GetMessageClass = message_factory.GetMessageClass
+except AttributeError:
+    import google.protobuf.reflection as reflection
+    GetMessageClass = reflection.MakeClass
 
 # Depending on how this script is run, we may or may not have PEP366 package name
 # available for relative imports.
@@ -62,15 +71,14 @@ if getattr(sys, 'frozen', False):
     # Binary package, just import the file
     from proto import nanopb_pb2
 else:
-    # Try to rebuild nanopb_pb2.py if necessary
+    # Import nanopb_pb2.py, rebuilds if necessary and not disabled
+    # by env variable NANOPB_PB2_NO_REBUILD
     nanopb_pb2 = proto.load_nanopb_pb2()
 
 try:
     # Add some dummy imports to keep packaging tools happy.
     import google # bbfreeze seems to need these
-    import pkg_resources # pyinstaller / protobuf 2.5 seem to need these
     from proto import nanopb_pb2 # pyinstaller seems to need this
-    import pkg_resources.py2_warn
 except:
     # Don't care, we will error out later if it is actually important.
     pass
@@ -99,7 +107,11 @@ datatypes = {
     FieldD.TYPE_UINT32:     ('uint32_t', 'UINT32',      5,  4),
     FieldD.TYPE_UINT64:     ('uint64_t', 'UINT64',     10,  8),
 
-    # Integer size override options
+    # Integer size override option
+    (FieldD.TYPE_ENUM,    nanopb_pb2.IS_8):   ('uint8_t', 'ENUM',  4,  1),
+    (FieldD.TYPE_ENUM,   nanopb_pb2.IS_16):   ('uint16_t', 'ENUM',  4,  2),
+    (FieldD.TYPE_ENUM,   nanopb_pb2.IS_32):   ('uint32_t', 'ENUM',  4,  4),
+    (FieldD.TYPE_ENUM,   nanopb_pb2.IS_64):   ('uint64_t', 'ENUM',  4,  8),
     (FieldD.TYPE_INT32,   nanopb_pb2.IS_8):   ('int8_t',   'INT32', 10,  1),
     (FieldD.TYPE_INT32,  nanopb_pb2.IS_16):   ('int16_t',  'INT32', 10,  2),
     (FieldD.TYPE_INT32,  nanopb_pb2.IS_32):   ('int32_t',  'INT32', 10,  4),
@@ -431,7 +443,15 @@ class Enum(ProtoElement):
         if leading_comment:
             result = '%s\n' % leading_comment
 
-        result += 'typedef enum %s {' % Globals.naming_style.enum_name(self.names)
+        result += 'typedef enum %s' % Globals.naming_style.enum_name(self.names)
+
+        # Override the enum size if user wants to use smaller integers
+        if (FieldD.TYPE_ENUM, self.options.enum_intsize) in datatypes:
+            self.ctype, self.pbtype, self.enc_size, self.data_item_size = datatypes[(FieldD.TYPE_ENUM, self.options.enum_intsize)]
+            result += ': ' + self.ctype
+
+        result += ' {'
+
         if trailing_comment:
             result += " " + trailing_comment
 
@@ -468,34 +488,49 @@ class Enum(ProtoElement):
     def auxiliary_defines(self):
         # sort the enum by value
         sorted_values = sorted(self.values, key = lambda x: (x[1], x[0]))
-        result  = '#define %s %s\n' % (
-            Globals.naming_style.define_name('_%s_MIN' % self.names),
+
+        unmangledName = self.protofile.manglenames.unmangle(self.names)
+        identifier = Globals.naming_style.define_name('_%s_MIN' % self.names)
+        result = '#define %s %s\n' % (
+            identifier,
             Globals.naming_style.enum_entry(sorted_values[0][0]))
+        if unmangledName:
+            unmangledIdentifier = Globals.naming_style.define_name('_%s_MIN' % unmangledName)
+            self.protofile.manglenames.reverse_name_mapping[identifier] = unmangledIdentifier
+
+        identifier = Globals.naming_style.define_name('_%s_MAX' % self.names)
         result += '#define %s %s\n' % (
-            Globals.naming_style.define_name('_%s_MAX' % self.names),
+            identifier,
             Globals.naming_style.enum_entry(sorted_values[-1][0]))
+        if unmangledName:
+            unmangledIdentifier = Globals.naming_style.define_name('_%s_MAX' % unmangledName)
+            self.protofile.manglenames.reverse_name_mapping[identifier] = unmangledIdentifier
+
+        identifier = Globals.naming_style.define_name('_%s_ARRAYSIZE' % self.names)
         result += '#define %s ((%s)(%s+1))\n' % (
-            Globals.naming_style.define_name('_%s_ARRAYSIZE' % self.names),
+            identifier,
             Globals.naming_style.type_name(self.names),
             Globals.naming_style.enum_entry(sorted_values[-1][0]))
+        if unmangledName:
+            unmangledIdentifier = Globals.naming_style.define_name('_%s_ARRAYSIZE' % unmangledName)
+            self.protofile.manglenames.reverse_name_mapping[identifier] = unmangledIdentifier
 
         if not self.options.long_names:
             # Define the long names always so that enum value references
             # from other files work properly.
             for i, x in enumerate(self.values):
-                result += '#define %s %s\n' % (self.value_longnames[i], x[0])
+                result += '#define %s %s\n' % (Globals.naming_style.define_name(self.value_longnames[i]), Globals.naming_style.enum_entry(x[0]))
 
         if self.options.enum_to_string:
             result += 'const char *%s(%s v);\n' % (
                 Globals.naming_style.func_name('%s_name' % self.names),
                 Globals.naming_style.type_name(self.names))
 
-        return result
+        if self.options.enum_validate:
+            result += 'bool %s(%s v);\n' % (
+                Globals.naming_style.func_name('%s_valid' % self.names),
+                Globals.naming_style.type_name(self.names))
 
-    def valuelist(self):
-        result = '#define %s_VALUELIST(X) \\\n' % (Globals.naming_style.define_name(self.names))
-        result += ' \\\n'.join('X(%s, %d)' % (x[0], x[1]) for x in self.values)
-        result += '\n'
         return result
 
     def enum_to_string_definition(self):
@@ -520,6 +555,28 @@ class Enum(ProtoElement):
         result += '}\n'
 
         return result
+
+    def enum_validate(self):
+        if not self.options.enum_validate:
+            return ""
+
+        result = 'bool %s(%s v) {\n' % (
+            Globals.naming_style.func_name('%s_valid' % self.names),
+            Globals.naming_style.type_name(self.names))
+
+        result += '    switch (v) {\n'
+
+        for (enumname, _) in self.values:
+            result += '        case %s: return true;\n' % (
+                Globals.naming_style.enum_entry(enumname)
+                )
+
+        result += '    }\n'
+        result += '    return false;\n'
+        result += '}\n'
+
+        return result
+
 
 class FieldMaxSize:
     def __init__(self, worst = 0, checks = [], field_name = 'undefined'):
@@ -562,7 +619,7 @@ class Field(ProtoElement):
         self.math_include_required = False
         self.sort_by_tag = field_options.sort_by_tag
         self.disallow_export = False
-        
+
         if field_options.type == nanopb_pb2.FT_INLINE:
             # Before nanopb-0.3.8, fixed length bytes arrays were specified
             # by setting type to FT_INLINE. But to handle pointer typed fields,
@@ -573,6 +630,11 @@ class Field(ProtoElement):
         # Parse field options
         if field_options.HasField("max_size"):
             self.max_size = field_options.max_size
+
+        if field_options.HasField("initializer"):
+            self.initializer = field_options.initializer
+        else:
+            self.initializer = None
 
         self.default_has = field_options.default_has
 
@@ -590,6 +652,9 @@ class Field(ProtoElement):
             self.default = desc.default_value
 
         # Check field rules, i.e. required/optional/repeated.
+        if field_options.HasField("label_override"):
+            desc.label = field_options.label_override
+
         can_be_static = True
         if desc.label == FieldD.LABEL_REPEATED:
             self.rules = 'REPEATED'
@@ -600,6 +665,9 @@ class Field(ProtoElement):
                 if field_options.fixed_count:
                   self.rules = 'FIXARRAY'
 
+        elif desc.label == FieldD.LABEL_REQUIRED:
+            # We allow LABEL_REQUIRED using label_override even for proto3 (see #962)
+            self.rules = 'REQUIRED'
         elif field_options.proto3:
             if desc.type == FieldD.TYPE_MESSAGE and not field_options.proto3_singular_msgs:
                 # In most other protobuf libraries proto3 submessages have
@@ -611,8 +679,6 @@ class Field(ProtoElement):
             else:
                 # Proto3 singular fields (without has_field)
                 self.rules = 'SINGULAR'
-        elif desc.label == FieldD.LABEL_REQUIRED:
-            self.rules = 'REQUIRED'
         elif desc.label == FieldD.LABEL_OPTIONAL:
             self.rules = 'OPTIONAL'
         else:
@@ -782,7 +848,9 @@ class Field(ProtoElement):
         '''
 
         inner_init = None
-        if self.pbtype in ['MESSAGE', 'MSG_W_CB']:
+        if self.initializer is not None:
+            inner_init = self.initializer
+        elif self.pbtype in ['MESSAGE', 'MSG_W_CB']:
             if null_init:
                 inner_init = Globals.naming_style.define_name('%s_init_zero' % self.ctype)
             else:
@@ -832,6 +900,8 @@ class Field(ProtoElement):
                     inner_init += '.0f'
                 elif self.pbtype == 'FLOAT':
                     inner_init += 'f'
+            elif self.pbtype in ('ENUM', 'UENUM'):
+                inner_init = Globals.naming_style.enum_entry(self.default)
             else:
                 inner_init = str(self.default)
 
@@ -859,8 +929,14 @@ class Field(ProtoElement):
         elif self.allocation == 'CALLBACK':
             if self.pbtype == 'EXTENSION':
                 outer_init = 'NULL'
-            else:
+            elif self.callback_datatype == 'pb_callback_t':
                 outer_init = '{{NULL}, NULL}'
+            elif self.initializer is not None:
+                outer_init = inner_init
+            elif self.callback_datatype.strip().endswith('*'):
+                outer_init = 'NULL'
+            else:
+                outer_init = '{0}'
 
         if self.pbtype == 'MSG_W_CB' and self.rules in ['REPEATED', 'OPTIONAL']:
             outer_init = '{{NULL}, NULL}, ' + outer_init
@@ -874,7 +950,7 @@ class Field(ProtoElement):
 
     def fieldlist(self):
         '''Return the FIELDLIST macro entry for this field.
-        Format is: X(a, ATYPE, HTYPE, LTYPE, field_name, tag, disallow_export)
+        Format is: X(a, ATYPE, HTYPE, LTYPE, field_name, tag)
         '''
         name = Globals.naming_style.var_name(self.name)
 
@@ -893,14 +969,13 @@ class Field(ProtoElement):
                 Globals.naming_style.var_name(self.name),
                 Globals.naming_style.var_name(self.name))
 
-        return '%s(%s, %-9s %-9s %-9s %-32s %3s %d)' % (self.macro_x_param,
+        return '%s(%s, %-9s %-9s %-9s %-16s %3d)' % (self.macro_x_param,
                                                      self.macro_a_param,
                                                      self.allocation + ',',
                                                      self.rules + ',',
                                                      self.pbtype + ',',
                                                      name + ',',
-                                                     str(self.tag) + ',',
-                                                     1 if self.disallow_export else 0)
+                                                     self.tag)
 
     def data_size(self, dependencies):
         '''Return estimated size of this field in the C struct.
@@ -1052,6 +1127,7 @@ class ExtensionRange(Field):
         self.data_item_size = 0
         self.fixed_count = False
         self.callback_datatype = 'pb_extension_t*'
+        self.initializer = None
 
     def requires_custom_field_callback(self):
         return False
@@ -1281,7 +1357,11 @@ class Message(ProtoElement):
 
         for index, f in enumerate(desc.field):
             field_options = get_nanopb_suboptions(f, message_options, self.name + f.name)
+
             if field_options.type == nanopb_pb2.FT_IGNORE:
+                continue
+
+            if field_options.discard_deprecated and f.options.deprecated:
                 continue
 
             if field_options.descriptorsize > self.descriptorsize:
@@ -1465,9 +1545,6 @@ class Message(ProtoElement):
 
         return result
 
-    def has_enum_field(self):
-        return any([field.pbtype in ['ENUM', "UENUM"] for field in self.all_fields()])
-
     def enumtype_defines(self):
         '''Defines to allow user code to refer to enum type of a specific field'''
         result = ''
@@ -1489,12 +1566,23 @@ class Message(ProtoElement):
 
         return result
 
-    def fields_declaration_cpp_lookup(self):
+    def fields_declaration_cpp_lookup(self, local_defines):
         result = 'template <>\n'
         result += 'struct MessageDescriptor<%s> {\n' % (self.name)
         result += '    static PB_INLINE_CONSTEXPR const pb_size_t fields_array_length = %d;\n' % (self.count_all_fields())
+
+        size_define = "%s_size" % (self.name)
+        if size_define in local_defines:
+            result += '    static PB_INLINE_CONSTEXPR const pb_size_t size = %s;\n' % (size_define)
+
         result += '    static inline const pb_msgdesc_t* fields() {\n'
         result += '        return &%s_msg;\n' % (self.name)
+        result += '    }\n'
+        result += '    static inline bool has_msgid() {\n'
+        result += '        return %s;\n' % ("true" if hasattr(self, "msgid") else "false", )
+        result += '    }\n'
+        result += '    static inline uint32_t msgid() {\n'
+        result += '        return %d;\n' % (getattr(self, "msgid", 0), )
         result += '    }\n'
         result += '};'
         return result
@@ -1616,7 +1704,7 @@ class Message(ProtoElement):
         optional_only.name += str(id(self))
 
         desc = google.protobuf.descriptor.MakeDescriptor(optional_only)
-        msg = reflection.MakeClass(desc)()
+        msg = GetMessageClass(desc)()
 
         for field in optional_only.field:
             if field.type == FieldD.TYPE_STRING:
@@ -1667,6 +1755,24 @@ def iterate_extensions(desc, flatten = False, names = Names()):
     for subname, subdesc, comment_path in iterate_messages(desc, flatten, names):
         for extension in subdesc.extension:
             yield subname, extension
+
+def check_recursive_dependencies(message, all_messages, root = None):
+    '''Returns True if message has a recursive dependency on root (or itself if root is None).'''
+
+    if not isinstance(all_messages, dict):
+        all_messages = dict((str(m.name), m) for m in all_messages)
+
+    if not root:
+        root = message
+
+    for dep in message.get_dependencies():
+        if dep == str(root.name):
+            return True
+        elif dep in all_messages:
+            if check_recursive_dependencies(all_messages[dep], all_messages, root):
+                return True
+
+    return False
 
 def sort_dependencies(messages):
     '''Sort a list of Messages based on dependencies.'''
@@ -1770,6 +1876,10 @@ class MangleNames:
         if self.mangle_names == nanopb_pb2.M_FLATTEN:
             return "." + typename.split(".")[-1]
 
+        canonical_mangled_typename = str(Names(typename.strip(".").split(".")))
+        if not canonical_mangled_typename.startswith(str(self.canonical_base) + "_"):
+            return typename
+
         if self.strip_prefix is not None and typename.startswith(self.strip_prefix):
             if self.replacement_prefix is not None:
                 return "." + self.replacement_prefix + typename[len(self.strip_prefix):]
@@ -1792,6 +1902,7 @@ class ProtoFile:
         self.dependencies = {}
         self.math_include_required = False
         self.parse()
+        self.discard_unused_automatic_types()
         for message in self.messages:
             if message.math_include_required:
                 self.math_include_required = True
@@ -1828,12 +1939,25 @@ class ProtoFile:
             if message_options.skip_message:
                 continue
 
+            if message_options.discard_deprecated and message.options.deprecated:
+                continue
+
+            # Apply any configured typename mangling options
             message = copy.deepcopy(message)
             for field in message.field:
                 if field.type in (FieldD.TYPE_MESSAGE, FieldD.TYPE_ENUM):
                     field.type_name = self.manglenames.mangle_field_typename(field.type_name)
 
-            self.messages.append(Message(name, message, message_options, comment_path, self.comment_locations))
+            # Check for circular dependencies
+            msgobject = Message(name, message, message_options, comment_path, self.comment_locations)
+            if check_recursive_dependencies(msgobject, self.messages):
+                message_options.type = message_options.fallback_type
+                sys.stderr.write('Breaking circular dependency at message %s by converting to %s\n'
+                                 % (msgobject.name, nanopb_pb2.FieldType.Name(message_options.type)))
+                msgobject = Message(name, message, message_options, comment_path, self.comment_locations)
+            self.messages.append(msgobject)
+
+            # Process any nested enums
             for index, enum in enumerate(message.enum_type):
                 name = self.manglenames.create_name(names + enum.name)
                 enum_options = get_nanopb_suboptions(enum, message_options, name)
@@ -1851,6 +1975,28 @@ class ProtoFile:
             if field_options.type != nanopb_pb2.FT_IGNORE:
                 self.extensions.append(ExtensionField(name, extension, field_options))
 
+    def discard_unused_automatic_types(self):
+        '''Discard unused types that are automatically generated by protoc if they are not actually
+        needed. Currently this applies to map< > types when the field is ignored by options.
+        '''
+
+        if not self.file_options.discard_unused_automatic_types:
+            return
+
+        map_entries = {}
+        types_used = set()
+        for msg in self.messages:
+            if msg.desc.options.map_entry:
+                map_entries[str(msg.name)] = msg
+
+            for field in msg.all_fields():
+                if field.pbtype == 'MESSAGE':
+                    types_used.add(str(field.submsgname))
+
+        for name, msg in map_entries.items():
+            if name not in types_used:
+                self.messages.remove(msg)
+
     def add_dependency(self, other):
         for enum in other.enums:
             self.dependencies[str(enum.names)] = enum
@@ -1858,9 +2004,16 @@ class ProtoFile:
             enum.protofile = other
 
         for msg in other.messages:
+            canonical_mangled_typename = str(other.manglenames.unmangle(msg.name))
             self.dependencies[str(msg.name)] = msg
-            self.dependencies[str(other.manglenames.unmangle(msg.name))] = msg
+            self.dependencies[canonical_mangled_typename] = msg
             msg.protofile = other
+
+            # Fix references to submessages with different mangling rules
+            for message in self.messages:
+                for field in message.all_fields():
+                    if field.ctype == canonical_mangled_typename:
+                        field.ctype = msg.name
 
         # Fix field default values where enum short names are used.
         for enum in other.enums:
@@ -1951,32 +2104,30 @@ class ProtoFile:
         yield '#endif\n\n'
 
         if self.enums:
-            yield '/* Helper constants for enums */\n'
-            for enum in self.enums:
-                yield enum.auxiliary_defines() + '\n'
-            yield '\n'
+                yield '/* Helper constants for enums */\n'
+                for enum in self.enums:
+                    yield enum.auxiliary_defines() + '\n'
 
-        if self.enums:
-            yield '/* Enum values (GP2040-CE extension) */\n'
-            for enum in self.enums:
-                yield enum.valuelist() + '\n'
-            yield '\n'
-
-        if any(msg.has_enum_field() for msg in self.messages):
-            yield '/* Defines to allow user code to refer to enum type of a specific field */\n'
-            for msg in self.messages:
-                if msg.has_enum_field():
-                    yield msg.enumtype_defines()
-            yield '\n'
+                for msg in self.messages:
+                    yield msg.enumtype_defines() + '\n'
+                yield '\n'
 
         if self.messages:
             yield '/* Initializer values for message structs */\n'
             for msg in self.messages:
                 identifier = Globals.naming_style.define_name('%s_init_default' % msg.name)
                 yield '#define %-40s %s\n' % (identifier, msg.get_initializer(False))
+                unmangledName = self.manglenames.unmangle(msg.name)
+                if unmangledName:
+                    unmangledIdentifier = Globals.naming_style.define_name('%s_init_default' % unmangledName)
+                    self.manglenames.reverse_name_mapping[identifier] = unmangledIdentifier
             for msg in self.messages:
                 identifier = Globals.naming_style.define_name('%s_init_zero' % msg.name)
                 yield '#define %-40s %s\n' % (identifier, msg.get_initializer(True))
+                unmangledName = self.manglenames.unmangle(msg.name)
+                if unmangledName:
+                    unmangledIdentifier = Globals.naming_style.define_name('%s_init_zero' % unmangledName)
+                    self.manglenames.reverse_name_mapping[identifier] = unmangledIdentifier
             yield '\n'
 
             yield '/* Field tags (for use in manual encoding/decoding) */\n'
@@ -2028,6 +2179,8 @@ class ProtoFile:
                     yield '#endif\n'
 
             guards = {}
+            # Provide a #define of the maximum message size, which faciliates setting the size of static arrays to be the largest possible encoded message size
+            max_messagesize = max(messagesizes, key=lambda messagesize: messagesize[1].value if messagesize[1] else 0)
             for identifier, msize in messagesizes:
                 if msize is not None:
                     cpp_guard = msize.get_cpp_guard(local_defines)
@@ -2035,6 +2188,11 @@ class ProtoFile:
                         guards[cpp_guard] = set()
                     guards[cpp_guard].add('#define %-40s %s' % (
                         Globals.naming_style.define_name(identifier), msize))
+
+                    if identifier == max_messagesize[0]:
+                        guards[cpp_guard].add('#define %-40s %s' % (
+                            Globals.naming_style.define_name(symbol + "_MAX_SIZE"), Globals.naming_style.define_name(identifier)))
+
                 else:
                     yield '/* %s depends on runtime parameters */\n' % identifier
             for guard, values in guards.items():
@@ -2071,20 +2229,6 @@ class ProtoFile:
                       yield '#define %s_msgid %d\n' % (msg.name, msg.msgid)
               yield '\n'
 
-            yield '/* List of all messages (GP2040-CE extension) */\n'
-            yield '#define %s_MESSAGES_GP2040(X) \\\n' % make_identifier(headername.split('.')[0])
-
-            for msg in self.messages:
-                yield 'X(%s) \\\n' % msg.name
-            yield '\n'
-
-        if self.enums:
-            yield '/* List of all enums (GP2040-CE extension) */\n'
-            yield '#define %s_ENUMS_GP2040(X) \\\n' % make_identifier(headername.split('.')[0])
-            for enum in self.enums:
-                yield 'X(%s) \\\n' % enum.names
-            yield '\n'
-
         # Check if there is any name mangling active
         pairs = [x for x in self.manglenames.reverse_name_mapping.items() if str(x[0]) != str(x[1])]
         if pairs:
@@ -2103,7 +2247,7 @@ class ProtoFile:
             yield '/* Message descriptors for nanopb */\n'
             yield 'namespace nanopb {\n'
             for msg in self.messages:
-                yield msg.fields_declaration_cpp_lookup() + '\n'
+                yield msg.fields_declaration_cpp_lookup(local_defines) + '\n'
             yield '}  // namespace nanopb\n'
             yield '\n'
             yield '#endif  /* __cplusplus */\n'
@@ -2159,6 +2303,10 @@ class ProtoFile:
         # Generate enum_name function if enum_to_string option is defined
         for enum in self.enums:
             yield enum.enum_to_string_definition() + '\n'
+
+        # Generate enum_valid function if enum_valid option is defined
+        for enum in self.enums:
+            yield enum.enum_validate() + '\n'
 
         # Add checks for numeric limits
         if self.messages:
@@ -2284,8 +2432,8 @@ optparser = OptionParser(
     usage = "Usage: nanopb_generator.py [options] file.pb ...",
     epilog = "Compile file.pb from file.proto by: 'protoc -ofile.pb file.proto'. " +
              "Output will be written to file.pb.h and file.pb.c.")
-optparser.add_option("--version", dest="version", action="store_true",
-    help="Show version info and exit")
+optparser.add_option("-V", "--version", dest="version", action="store_true",
+    help="Show version info and exit (add -v for protoc version info)")
 optparser.add_option("-x", dest="exclude", metavar="FILE", action="append", default=[],
     help="Exclude file from generated #include list.")
 optparser.add_option("-e", "--extension", dest="extension", metavar="EXTENSION", default=".pb",
@@ -2345,6 +2493,10 @@ def process_cmdline(args, is_plugin):
             sys.stderr.write('%s\n' % (nanopb_version))
         else:
             print(nanopb_version)
+
+        if options.verbose:
+            proto.print_versions()
+
         sys.exit(0)
 
     if not filenames and not is_plugin:
@@ -2537,7 +2689,7 @@ def main_cli():
             if dirname and not os.path.exists(dirname):
                 os.makedirs(dirname)
 
-            with open(path, 'w') as f:
+            with open(path, 'w', encoding='utf-8') as f:
                 f.write(data)
 
 def main_plugin():

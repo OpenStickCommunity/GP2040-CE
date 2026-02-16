@@ -10,8 +10,10 @@ function (compile_proto)
 	endif()
 
 	add_custom_command(
+		DEPENDS ${CMAKE_SOURCE_DIR}/lib/nanopb/requirements.txt
 		DEPENDS ${CMAKE_SOURCE_DIR}/lib/nanopb/extra/requirements.txt
 		COMMAND ${Python3_EXECUTABLE} -m venv ${VENV}
+		COMMAND ${VENV_BIN_DIR}/pip --disable-pip-version-check install -r ${CMAKE_SOURCE_DIR}/lib/nanopb/requirements.txt
 		COMMAND ${VENV_BIN_DIR}/pip --disable-pip-version-check install -r ${CMAKE_SOURCE_DIR}/lib/nanopb/extra/requirements.txt
 		COMMAND ${VENV_BIN_DIR}/pip freeze > ${VENV_FILE}
 		OUTPUT ${VENV_FILE}
