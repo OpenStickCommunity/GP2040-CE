@@ -631,7 +631,7 @@ void GamepadUSBHostListener::update_switch_pro()
                 .rumble_l = {0x00, 0x01, 0x40, 0x40},
                 .rumble_r = {0x00, 0x01, 0x40, 0x40},
                 .subcommand = SwitchCommands::SET_PLAYER_LIGHTS,
-                .subcommand_args = shifted,
+                .subcommand_args = {shifted, 0x00, 0x00},
             };
             uint8_t report_size = 12; // 10 + 2 for subcommand
 
