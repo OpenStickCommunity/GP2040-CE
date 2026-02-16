@@ -89,7 +89,7 @@ const HECalibration = ({
 			const actionTitle = t(`PinMapping:actions.${option.label}`);
 			if ( muxChannels > 1 ) {
 				const muxNum = Math.floor(target.current/muxChannels);
-				const channelNum = muxNum + Math.floor(target.current%muxChannels);
+				const channelNum = target.current%muxChannels;
 				setTitle(`${actionTitle} - Mux ${muxNum} - Channel ${channelNum}`);
 			} else {
 				setTitle(`${actionTitle} - Direct - ADC ${values[`muxADCPin${target.current}` as keyof typeof values]}`);
