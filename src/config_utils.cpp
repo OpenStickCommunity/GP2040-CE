@@ -1622,7 +1622,7 @@ void migrateAuthenticationMethods(Config& config) {
         gamepadOptions.ps5AuthType = InputModeAuthType::INPUT_MODE_AUTH_TYPE_USB;
         // If current mode is PS4, update to PS5
         if ( gamepadOptions.inputMode == INPUT_MODE_PS4 ) {
-            gamepadOptions.inputMode = INPUT_MODE_PS5;
+            gamepadOptions.inputMode = INPUT_MODE_PS5A;
         }
         // Also update our boot mode from PS4 to PS5 if set
         int32_t * bootModes[8] = { &config.gamepadOptions.inputModeB1, &config.gamepadOptions.inputModeB2,
@@ -1631,7 +1631,7 @@ void migrateAuthenticationMethods(Config& config) {
             &config.gamepadOptions.inputModeR1, &config.gamepadOptions.inputModeR2};
         for(int32_t i = 0; i < 8; i++ ) {
             if ( *bootModes[i] == INPUT_MODE_PS4 ) {
-                *bootModes[i] = INPUT_MODE_PS5; // modify ps4 -> ps5
+                *bootModes[i] = INPUT_MODE_PS5A; // modify ps4 -> ps5 (ps4 arcade stick)
             }
         }
         psPassthroughOptions.enabled = false; // disable PS-Passthrough add-on permanently

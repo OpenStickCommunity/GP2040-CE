@@ -107,6 +107,7 @@ jobs:
         with:
           repository: raspberrypi/pico-sdk
           ref: 2.2.0
+
           path: pico-sdk
 
       - name: Checkout pico-sdk submodules

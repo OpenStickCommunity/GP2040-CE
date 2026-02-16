@@ -3,22 +3,34 @@
  * SPDX-FileCopyrightText: Copyright (c) 2024 OpenStickCommunity (gp2040-ce.info)
  */
 
-#ifndef _P5GENERAL_DRIVER_H_
-#define _P5GENERAL_DRIVER_H_
+#ifndef _PS5_DRIVER_H_
+#define _PS5_DRIVER_H_
 
 #include "gpdriver.h"
-#include "drivers/p5general/P5GeneralDescriptors.h"
-#include "drivers/p5general/P5GeneralAuth.h"
+#include "drivers/ps5/PS5Descriptors.h"
+#include "drivers/ps5/PS5Auth.h"
 
 typedef enum
 {
-    P5GENERAL_DEFINITION           = 0x03,
-    P5GENERAL_SET_AUTH_PAYLOAD     = 0xF0,    // Set Auth Payload
-    P5GENERAL_GET_SIGNATURE_NONCE  = 0xF1,    // Get Signature Nonce
-    P5GENERAL_GET_SIGNING_STATE    = 0xF2,    // Get Signing State
-} P5GeneralAuthReport;
+    PS5_DEFINITION           = 0x03,
+    PS5_GET_CALIBRATION      = 0x05,    // Calibration
+    PS5_GET_PAIRINFO         = 0x09,    // Pair Information
+    PS5_GET_FIRWMARE         = 0x20,    // Firmware Version
+    PS5_SET_TEST_PARAM       = 0x80,    // Dual Sense (SET TEST)
+    PS5_GET_TEST_PARAM       = 0x81,    // Dual Sense (GET TEST)
+    PS5_SET_AUTH_PAYLOAD     = 0xF0,    // Set Auth Payload
+    PS5_GET_SIGNATURE_NONCE  = 0xF1,    // Get Signature Nonce
+    PS5_GET_SIGNING_STATE    = 0xF2,    // Get Signing State
+} PS5AuthReport;
 
-class P5GeneralDriver : public GPDriver {
+typedef enum
+{
+    PS5_MAYFLASH_GET_AUTH         = 0x01,    // Mayflash S5 - Get Auth
+    PS5_MAYFLASH_AUTH_COMPLETE    = 0x02,    // Mayflash S5 - Auth Complete
+    PS5_MAYFLASH_ENC_READY        = 0x03,    // Mayflash S5 - Encryption Ready
+} MFS5AuthReport;
+
+class PS5Driver : public GPDriver {
 public:
     virtual void initialize();
     virtual bool process(Gamepad * gamepad);
@@ -37,18 +49,19 @@ public:
     bool getAuthSent() { return false;}
     bool getDongleAuthRequired();
 private:
-    P5GenerorReport p5GeneralReport;
-    P5GenerorReport p5GeneralReport_last;
+    PS5Report ps5Report;
+    PS5Report ps5Report_last;
     TouchpadData touchpadData;
     //PSSensor gyroscope;
     //PSSensor accelerometer;
     uint64_t last_report_us;
-    P5GeneralAuth * p5GeneralAuthDriver;
-    P5GeneralAuthData * p5GeneralAuthData;
+    uint64_t timeout_report_us;
+    PS5Auth * ps5AuthDriver;
+    PS5AuthData * ps5AuthData;
     bool pointOneTouched = false;
     bool pointTwoTouched = false;
     uint8_t diff_report_repeat;
     uint8_t touchCounter;
 };
 
-#endif // _P5GENERAL_DRIVER_H_
+#endif // _PS5_DRIVER_H_
