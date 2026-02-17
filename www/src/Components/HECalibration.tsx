@@ -135,8 +135,8 @@ const HECalibration = ({
 
 	const startReadingCalibrationLoop = async () => {
 		if (showModal) {
-			// Set the Hall Effect calibration pins
-			await WebApi.setHETriggerCalibration({
+			// Set the Hall Effect configuration pins
+			await WebApi.setHETriggerOptions({
 				muxChannels: values['muxChannels'],
 				muxSelectPin0: values['muxSelectPin0'],
 				muxSelectPin1: values['muxSelectPin1'],
@@ -196,8 +196,7 @@ const HECalibration = ({
 	};
 
 	const readHallEffect = async (calibrationStep:number) => {
-		// read hall effect trigger if we're not at opening
-		const result = await WebApi.getHETriggerCalibration({
+		const result = await WebApi.getHETriggerVoltage({
 			targetId: target.current
 		});
 

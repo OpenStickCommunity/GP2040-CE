@@ -42,8 +42,8 @@ const API_BINDING = {
 		set: WebApi.setProfileOptions,
 	},
 	heTrigger: {
-		get: WebApi.getHETriggerOptions,
-		set: WebApi.setHETriggerOptions,
+		get: WebApi.getHETriggerCalibrations,
+		set: WebApi.setHETriggerCalibrations,
 	},
 	addons: {
 		get: WebApi.getAddonsOptions,
