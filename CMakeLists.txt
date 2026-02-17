@@ -218,6 +218,7 @@ src/drivers/p5general/P5GeneralAuth.cpp
 src/drivers/p5general/P5GeneralAuthUSBListener.cpp
 src/drivers/p5general/P5GeneralDriver.cpp
 src/drivers/psclassic/PSClassicDriver.cpp
+src/drivers/sinput/SInputDriver.cpp
 src/drivers/switch/SwitchDriver.cpp
 src/drivers/switchpro/SwitchProDriver.cpp
 src/drivers/xbone/XBOneAuth.cpp

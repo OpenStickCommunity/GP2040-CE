@@ -24,6 +24,7 @@
 #define INPUT_MODE_GENERIC_NAME "Generic HID"
 #define INPUT_MODE_P5GENERAL_NAME "P5 General"
 #define INPUT_MODE_SWITCH_PRO_NAME "Nintendo Switch Pro"
+#define INPUT_MODE_SINPUT_NAME "SInput"
 #define INPUT_MODE_CONFIG_NAME "Web Config"
 
 #define SOCD_MODE_UP_PRIORITY_NAME "Up Priority"

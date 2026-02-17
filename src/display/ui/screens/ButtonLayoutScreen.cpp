@@ -176,6 +176,7 @@ void ButtonLayoutScreen::generateHeader() {
             case INPUT_MODE_PSCLASSIC: statusBar += "PSC"; break;
             case INPUT_MODE_XBOXORIGINAL: statusBar += "OGXBOX"; break;
             case INPUT_MODE_SWITCH_PRO: statusBar += "SWPRO"; break;
+            case INPUT_MODE_SINPUT: statusBar += "SINPUT"; break;
             case INPUT_MODE_PS4:
                 statusBar += "PS4";
                 if(((PS4Driver*)DriverManager::getInstance().getDriver())->getAuthSent() == true )
