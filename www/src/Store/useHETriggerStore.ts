@@ -65,7 +65,7 @@ const useHETriggerStore = create<State & Actions>()((set, get) => ({
 	...INITIAL_STATE,
 	fetchHETriggers: async () => {
 		set({ loadingTriggers: true });
-		const triggers = await WebApi.getHETriggerOptions();
+		const triggers = await WebApi.getHETriggerCalibrations();
 		set((state) => ({
 			...state,
 			...triggers,
@@ -95,7 +95,7 @@ const useHETriggerStore = create<State & Actions>()((set, get) => ({
 		}));
 	},
 
-	saveHETriggers: async () => WebApi.setHETriggerOptions(get()),
+	saveHETriggers: async () => WebApi.setHETriggerCalibrations(get()),
 }));
 
 export default useHETriggerStore;

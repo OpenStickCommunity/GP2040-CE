@@ -609,7 +609,7 @@ app.get('/api/getExpansionPins', (req, res) => {
 	});
 });
 
-app.get('/api/getHETriggerOptions', (req, res) => {
+app.get('/api/getHETriggerCalibrations', (req, res) => {
 	var triggers = [];
 	triggers.push({ action: 2, idle: 120, pressed: 3500, active: 1500, polarity: 0 });
 	for(var i = 1; i < 32; i++) {
@@ -876,7 +876,7 @@ app.get('/api/abortGetHeldPins', async (req, res) => {
 	return res.send();
 });
 
-app.post('/api/getHETriggerCalibration', (req, res) => {
+app.post('/api/getHETriggerVoltage', (req, res) => {
 	return res.send({
 		voltage: 0.0,
 		debug: true
