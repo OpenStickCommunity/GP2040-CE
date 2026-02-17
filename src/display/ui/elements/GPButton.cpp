@@ -29,104 +29,21 @@ void GPButton::draw() {
         baseY = ((this->y) * scaleY + this->getViewport().top);
     }
 
-    bool pinState = false;
     bool buttonState = false;
     bool turboState = false;
     uint16_t state = 0;
-    int16_t setPin = -1;
     int32_t maskedPins = 0;
-    bool useMask = false;
-    GamepadButtonMapping *mapMask = NULL;
-    GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
 
     if (_inputType == GP_ELEMENT_BTN_BUTTON) {
         // button mask
         buttonState = getProcessedGamepad()->pressedButton(this->_inputMask);
-        useMask = true;
-
-        if ((this->_inputMask & GAMEPAD_MASK_B1) == GAMEPAD_MASK_B1) {
-            mapMask = getGamepad()->mapButtonB1;
-        } else if ((this->_inputMask & GAMEPAD_MASK_B2) == GAMEPAD_MASK_B2) {
-            mapMask = getGamepad()->mapButtonB2;
-        } else if ((this->_inputMask & GAMEPAD_MASK_B3) == GAMEPAD_MASK_B3) {
-            mapMask = getGamepad()->mapButtonB3;
-        } else if ((this->_inputMask & GAMEPAD_MASK_B4) == GAMEPAD_MASK_B4) {
-            mapMask = getGamepad()->mapButtonB4;
-        } else if ((this->_inputMask & GAMEPAD_MASK_L1) == GAMEPAD_MASK_L1) {
-            mapMask = getGamepad()->mapButtonL1;
-        } else if ((this->_inputMask & GAMEPAD_MASK_R1) == GAMEPAD_MASK_R1) {
-            mapMask = getGamepad()->mapButtonR1;
-        } else if ((this->_inputMask & GAMEPAD_MASK_L2) == GAMEPAD_MASK_L2) {
-            mapMask = getGamepad()->mapButtonL2;
-        } else if ((this->_inputMask & GAMEPAD_MASK_R2) == GAMEPAD_MASK_R2) {
-            mapMask = getGamepad()->mapButtonR2;
-        } else if ((this->_inputMask & GAMEPAD_MASK_S1) == GAMEPAD_MASK_S1) {
-            mapMask = getGamepad()->mapButtonS1;
-        } else if ((this->_inputMask & GAMEPAD_MASK_S2) == GAMEPAD_MASK_S2) {
-            mapMask = getGamepad()->mapButtonS2;
-        } else if ((this->_inputMask & GAMEPAD_MASK_L3) == GAMEPAD_MASK_L3) {
-            mapMask = getGamepad()->mapButtonL3;
-        } else if ((this->_inputMask & GAMEPAD_MASK_R3) == GAMEPAD_MASK_R3) {
-            mapMask = getGamepad()->mapButtonR3;
-        } else if ((this->_inputMask & GAMEPAD_MASK_A1) == GAMEPAD_MASK_A1) {
-            mapMask = getGamepad()->mapButtonA1;
-        } else if ((this->_inputMask & GAMEPAD_MASK_A2) == GAMEPAD_MASK_A2) {
-            mapMask = getGamepad()->mapButtonA2;
-        }
         turboState = (getGamepad()->turboState.buttons & this->_inputMask);
     } else if (_inputType == GP_ELEMENT_DIR_BUTTON) {
         // direction button mask
         buttonState = getProcessedGamepad()->pressedDpad(this->_inputMask);
-        useMask = true;
-
-        if ((this->_inputMask & GAMEPAD_MASK_UP) == GAMEPAD_MASK_UP) {
-            mapMask = getGamepad()->mapDpadUp;
-        } else if ((this->_inputMask & GAMEPAD_MASK_DOWN) == GAMEPAD_MASK_DOWN) {
-            mapMask = getGamepad()->mapDpadDown;
-        } else if ((this->_inputMask & GAMEPAD_MASK_LEFT) == GAMEPAD_MASK_LEFT) {
-            mapMask = getGamepad()->mapDpadLeft;
-        } else if ((this->_inputMask & GAMEPAD_MASK_RIGHT) == GAMEPAD_MASK_RIGHT) {
-            mapMask = getGamepad()->mapDpadRight;
-        }
-    } else if (_inputType == GP_ELEMENT_PIN_BUTTON) {
-        // physical pin
-        pinState = ((pinValues >> this->_inputMask) & 0x01);
-        buttonState = true;
-
-        switch (pinMappings[this->_inputMask].action) {
-            case GpioAction::BUTTON_PRESS_B1: turboState |= (getGamepad()->turboState.buttons & GAMEPAD_MASK_B1); break;
-            case GpioAction::BUTTON_PRESS_B2: turboState |= (getGamepad()->turboState.buttons & GAMEPAD_MASK_B2); break;
-            case GpioAction::BUTTON_PRESS_B3: turboState |= (getGamepad()->turboState.buttons & GAMEPAD_MASK_B3); break;
-            case GpioAction::BUTTON_PRESS_B4: turboState |= (getGamepad()->turboState.buttons & GAMEPAD_MASK_B4); break;
-            case GpioAction::BUTTON_PRESS_L1: turboState |= (getGamepad()->turboState.buttons & GAMEPAD_MASK_L1); break;
-            case GpioAction::BUTTON_PRESS_R1: turboState |= (getGamepad()->turboState.buttons & GAMEPAD_MASK_R1); break;
-            case GpioAction::BUTTON_PRESS_L2: turboState |= (getGamepad()->turboState.buttons & GAMEPAD_MASK_L2); break;
-            case GpioAction::BUTTON_PRESS_R2: turboState |= (getGamepad()->turboState.buttons & GAMEPAD_MASK_R2); break;
-            case GpioAction::BUTTON_PRESS_S1: turboState |= (getGamepad()->turboState.buttons & GAMEPAD_MASK_S1); break;
-            case GpioAction::BUTTON_PRESS_S2: turboState |= (getGamepad()->turboState.buttons & GAMEPAD_MASK_S2); break;
-            case GpioAction::BUTTON_PRESS_A1: turboState |= (getGamepad()->turboState.buttons & GAMEPAD_MASK_A1); break;
-            case GpioAction::BUTTON_PRESS_A2: turboState |= (getGamepad()->turboState.buttons & GAMEPAD_MASK_A2); break;
-            case GpioAction::BUTTON_PRESS_L3: turboState |= (getGamepad()->turboState.buttons & GAMEPAD_MASK_L3); break;
-            case GpioAction::BUTTON_PRESS_R3: turboState |= (getGamepad()->turboState.buttons & GAMEPAD_MASK_R3); break;
-            default: break;
-        }
     }
 
-    if (useMask && mapMask != NULL) {
-        maskedPins = (pinValues & mapMask->pinMask);
-        for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
-            if ((maskedPins & (1 << pin)) == (1 << pin)) {
-                setPin = pin;
-                break;
-            }
-        }
-
-        if (setPin > -1) {
-            pinState = ((pinValues >> setPin) & 0x01);
-        }
-    }
-
-    state = (buttonState ? pinState : 0);
+    state = buttonState
 
     // base
     if (this->_shape == GP_SHAPE_ELLIPSE) {
