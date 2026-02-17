@@ -49,6 +49,8 @@
 
 #include "pico/platform.h"
 
+#define BOARD_CONFIG_EEPROM_ADDRESS_START	EEPROM_ADDRESS_START - EEPROM_SIZE_BYTES
+
 // -----------------------------------------------------
 // Default values
 // -----------------------------------------------------
@@ -105,12 +107,6 @@
 #endif
 #ifndef DEFAULT_INPUT_MODE_R2
     #define DEFAULT_INPUT_MODE_R2 INPUT_MODE_KEYBOARD
-#endif
-#ifndef DEFAULT_DPAD_MODE
-    #define DEFAULT_DPAD_MODE DPAD_MODE_DIGITAL
-#endif
-#ifndef DEFAULT_SOCD_MODE
-    #define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
 #endif
 #ifndef DEFAULT_FORCED_SETUP_MODE
     #define DEFAULT_FORCED_SETUP_MODE FORCED_SETUP_MODE_OFF
@@ -291,8 +287,6 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
     // gamepadOptions
     INIT_UNSET_PROPERTY(config.gamepadOptions, inputMode, DEFAULT_INPUT_MODE);
-    INIT_UNSET_PROPERTY(config.gamepadOptions, dpadMode, DEFAULT_DPAD_MODE);
-    INIT_UNSET_PROPERTY(config.gamepadOptions, socdMode, DEFAULT_SOCD_MODE);
     INIT_UNSET_PROPERTY(config.gamepadOptions, invertXAxis, false);
     INIT_UNSET_PROPERTY(config.gamepadOptions, switchTpShareForDs4, false);
     INIT_UNSET_PROPERTY(config.gamepadOptions, lockHotkeys, DEFAULT_LOCK_HOTKEYS);
@@ -541,42 +535,6 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.animationOptions, rainbowCycleTime, LEDS_RAINBOW_CYCLE_TIME);
     INIT_UNSET_PROPERTY(config.animationOptions, themeIndex, LEDS_THEME_INDEX);
     INIT_UNSET_PROPERTY(config.animationOptions, hasCustomTheme, false);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeUp, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeDown, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeLeft, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeRight, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeB1, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeB2, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeB3, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeB4, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeL1, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeR1, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeL2, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeR2, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeS1, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeS2, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeL3, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeR3, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeA1, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeA2, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeUpPressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeDownPressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeLeftPressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeRightPressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeB1Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeB2Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeB3Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeB4Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeL1Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeR1Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeL2Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeR2Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeS1Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeS2Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeL3Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeR3Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeA1Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeA2Pressed, 0);
     INIT_UNSET_PROPERTY(config.animationOptions, buttonPressColorCooldownTimeInMs, LEDS_PRESS_COLOR_COOLDOWN_TIME);
     INIT_UNSET_PROPERTY(config.animationOptions, ambientLightEffectsCountIndex, AMBIENT_LIGHT_EFFECT);
     INIT_UNSET_PROPERTY(config.animationOptions, alStaticColorBrightnessCustomX, AMBIENT_STATIC_COLOR_BRIGHTNESS);
@@ -1786,16 +1744,14 @@ static const uint32_t FOOTER_MAGIC = 0xd2f1e365;
 
 // Verify that the maximum size of the serialized Config object fits into the allocated flash block
 #if defined(Config_size)
-    static_assert(Config_size + sizeof(ConfigFooter) <= EEPROM_SIZE_BYTES, "Maximum size of Config exceeds the maximum size allocated for FlashPROM");
+    static_assert(Config_size + sizeof(ConfigFooter) <= EEPROM_SIZE_BYTES * 2, "Maximum size of Config exceeds the maximum size allocated for FlashPROM");
 #else
     #error "Maximum size of Config cannot be determined statically, make sure that you do not use any dynamically sized arrays or strings"
 #endif
 
-static bool loadConfigInner(Config& config)
+static bool loadConfig(Config& config, uint32_t start)
 {
-    config = Config Config_init_zero;
-
-    const uint8_t* flashEnd = reinterpret_cast<const uint8_t*>(EEPROM_ADDRESS_START) + EEPROM_SIZE_BYTES;
+    const uint8_t* flashEnd = reinterpret_cast<const uint8_t*>(start) + EEPROM_SIZE_BYTES;
     const ConfigFooter& footer = *reinterpret_cast<const ConfigFooter*>(flashEnd - sizeof(ConfigFooter));
 
     // Check for presence of magic value
@@ -1820,20 +1776,33 @@ static bool loadConfigInner(Config& config)
 
     // We are now sufficiently confident that the data is valid so we run the deserialization
     pb_istream_t inputStream = pb_istream_from_buffer(dataPtr, footer.dataSize);
-    return pb_decode(&inputStream, Config_fields, &config);
+    // PB_DECODE_NOINIT: "Do not initialize structure before decoding. This can be used to combine
+    // multiple messages, or if you have already initialized the message structure yourself."
+    return pb_decode_ex(&inputStream, Config_fields, &config, PB_DECODE_NOINIT);
+}
+
+/**
+ * @brief load user config (user settings and overrides)
+ */
+static bool loadUserConfig(Config& config)
+{
+    return loadConfig(config, EEPROM_ADDRESS_START);
+}
+
+/**
+ * @brief - load board config (customizations specific to a board/device model)
+ */
+static bool loadBoardConfig(Config& config)
+{
+    return loadConfig(config, BOARD_CONFIG_EEPROM_ADDRESS_START);
 }
 
 void ConfigUtils::load(Config& config)
 {
-    // First try to load from Protobuf storage, if that fails fall back to legacy storage.
-    const bool loaded = loadConfigInner(config) | fromLegacyStorage(config);
-
-    if (!loaded)
-    {
-        // We could neither deserialize Protobuf config data nor legacy config data.
-        // We are probably dealing with a new device and therefore initialize the config to default values.
-        config = Config Config_init_default;
-    }
+    // load the config with defaults, and then overlay board and user configs on top
+    config = Config Config_init_default;
+    loadBoardConfig(config);
+    loadUserConfig(config);
 
     // run migrations
     if (!config.migrations.hotkeysMigrated)
@@ -1862,7 +1831,7 @@ void ConfigUtils::load(Config& config)
     // Migrate old JS slider add-on to core
     migrateJSliderToCore(config);
 
-    // Update boardVersion, in case we migrated from an older version
+    // Update boardVersion
     strncpy(config.boardVersion, GP2040VERSION, sizeof(config.boardVersion));
     config.boardVersion[sizeof(config.boardVersion) - 1] = '\0';
     config.has_boardVersion = true;
