@@ -183,15 +183,11 @@ const HECalibration = ({
 		updateCalibrationRead(0);
 	};
 
-	const calculateVoltIdle = () => {
+	const calvulateVoltagePercentage = () => {
 		return (voltage/(4096/100.0));
 	};
 
-	const calculateVoltMax = () => {
-		return ((voltage-voltageIdle)/((4096-voltageIdle)/100.0));
-	};
-
-	const calculateVoltPressed = () => {
+	const calculateVoltPressedPercentage = () => {
 		return (voltage-voltageIdle)/((voltagePressed-voltageIdle)/100.0);
 	};
 
@@ -236,7 +232,7 @@ const HECalibration = ({
 				</Col>
 				<Col xs={12} className="mb-3 text-center">
 					<ProgressBar>
-						<ProgressBar variant="info" now={calculateVoltIdle()} key={1} />
+						<ProgressBar variant="info" now={calvulateVoltagePercentage()} key={1} />
 					</ProgressBar>
 				</Col>
 				<Col xs={12} className="mb-3">
@@ -258,7 +254,7 @@ const HECalibration = ({
 				</Col>
 				<Col xs={12} className="mb-3 text-center">
 					<ProgressBar>
-						<ProgressBar variant="info" now={calculateVoltMax()} key={1} />
+						<ProgressBar variant="info" now={calvulateVoltagePercentage()} key={1} />
 					</ProgressBar>
 				</Col>
 				<Col xs={12} className="mb-3">
@@ -299,7 +295,7 @@ const HECalibration = ({
 				</Col>
 				<Col xs={12} className="mb-3 text-center">
 					<ProgressBar>
-						<ProgressBar variant={isActive()?"success":"warning"} now={calculateVoltPressed()} key={1} />
+						<ProgressBar variant={isActive()?"success":"warning"} now={calculateVoltPressedPercentage()} key={1} />
 					</ProgressBar>
 				</Col>
 				<Col xs={12} className="mb-3">
@@ -393,7 +389,7 @@ const HECalibration = ({
 				</Col>
 				<Col xs={12} className="mb-3 text-center">
 					<ProgressBar>
-						<ProgressBar variant={isActive()?"success":"warning"} now={calculateVoltPressed()} key={1} />
+						<ProgressBar variant={isActive()?"success":"warning"} now={calculateVoltPressedPercentage()} key={1} />
 					</ProgressBar>
 				</Col>
 				<Col xs={12} className="mb-3">
