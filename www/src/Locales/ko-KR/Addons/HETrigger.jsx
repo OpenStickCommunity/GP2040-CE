@@ -45,7 +45,7 @@ export default {
 	'calibration-idle-text': '유휴 전압 값:',
 	'calibration-pressed-text': '눌림 전압 값:',
 	'calibration-trigger-text': '트리거 전압',
-	'calibration-flip-polarity': '극성 반전 (지원 안됨)',
+	'calibration-flip-polarity': '극성 반전',
 	'calibration-back-button': '이전',
 	'calibration-first-step': '홀 이펙트 스위치의 유휴 전압과 눌렸을 때 전압을 보정해야 합니다. ' +
 								'교정 후, 원하는 깊이에 맞춰 트리거 작동 지점을 조정할 수 있습니다. ' +

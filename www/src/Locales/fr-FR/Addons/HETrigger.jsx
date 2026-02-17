@@ -45,7 +45,7 @@ export default {
 	'calibration-idle-text': 'Lecture de la tension au repos :',
 	'calibration-pressed-text': 'Lecture de la tension enfoncée :',
 	'calibration-trigger-text': 'Tension de déclenchement',
-	'calibration-flip-polarity': 'Inverser la polarité (non pris en charge)',
+	'calibration-flip-polarity': 'Inverser la polarité',
 	'calibration-back-button': 'Retour',
 	'calibration-first-step': 'Nous devons calibrer la tension de repos et la tension maximale en appui du switch à effet Hall. ' +
 								'Une fois cela fait, nous pourrons régler le point d’activation à la profondeur souhaitée. ' +

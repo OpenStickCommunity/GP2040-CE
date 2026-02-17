@@ -45,7 +45,7 @@ export default {
 	'calibration-idle-text': '空闲电压读数：',
 	'calibration-pressed-text': '按下电压读数：',
 	'calibration-trigger-text': '触发电压',
-	'calibration-flip-polarity': '翻转极性（不支持）',
+	'calibration-flip-polarity': '翻转极性',
 	'calibration-back-button': '返回',
 	'calibration-first-step': '我们需要校准霍尔效应开关的空闲电压和全按电压。校准后，我们可以将触发点调整到期望的按动深度。首先，请保持霍尔效应按钮未被触动，点击"校准空闲状态"按钮。',
 	'calibration-second-step': '接下来，完全按下按钮以达到最大按动深度。触发位置可在校准后进行调整。',
