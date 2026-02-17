@@ -53,6 +53,10 @@ const HECalibration = ({
 	const [voltageActive, setVoltageActive] = useState(2000);
 	const [polarity, setPolarity] = useState(0);
 
+	const isActive = () => {
+		return !!!polarity && voltage>=voltageActive || !!polarity && voltage <= voltageActive;
+	}
+
 	const saveCalibration = () => {
 		// Set to Trigger Store
 		setHETrigger({
@@ -296,22 +300,22 @@ const HECalibration = ({
 				</Col>
 				<Col xs={12} className="mb-3 text-center">
 					<ProgressBar>
-						<ProgressBar variant={voltage>voltageActive?"success":"warning"} now={calculateVoltPressed()} key={1} />
+						<ProgressBar variant={isActive()?"success":"warning"} now={calculateVoltPressed()} key={1} />
 					</ProgressBar>
 				</Col>
 				<Col xs={12} className="mb-3">
 					<Form.Range
-						min={Math.min(voltageIdle, voltagePressed)}
-						max={Math.max(voltageIdle, voltagePressed)}
+						min={0}
+						max={(voltagePressed - voltageIdle) * (-polarity || 1)}
 						step={1}
-						value={voltageActive}
+						value={(voltageActive - voltageIdle) * (-polarity || 1)}
 						onChange={(e) => {
-							setVoltageActive(parseInt((e.target as HTMLInputElement).value));
-						}}
-						></Form.Range>
+							setVoltageActive(parseInt(e.target.value) * (-polarity || 1) + voltageIdle);
+						}}>
+					</Form.Range>
 				</Col>
 				<Col xs={12} className="mb-3">
-					{voltage} {voltage>voltageActive?t('HETrigger:pressed-text'):""}
+					{voltage} {isActive()?t('HETrigger:pressed-text'):""}
 				</Col>
 				<Col xs={3} className="mb-3">
 					<Button onClick={() => restartCalibration()} variant="danger">
@@ -322,7 +326,7 @@ const HECalibration = ({
 		);
 	};
 
-	const manulAdjustments = () => {
+	const manualAdjustments = () => {
 		return (
 			<Row className="mb-3" hidden={calibrationStep !== 3}>
 				<Col xs={12} className="mb-3">
@@ -390,7 +394,7 @@ const HECalibration = ({
 				</Col>
 				<Col xs={12} className="mb-3 text-center">
 					<ProgressBar>
-						<ProgressBar variant={voltage>voltageActive?"success":"warning"} now={calculateVoltPressed()} key={1} />
+						<ProgressBar variant={isActive()?"success":"warning"} now={calculateVoltPressed()} key={1} />
 					</ProgressBar>
 				</Col>
 				<Col xs={12} className="mb-3">
@@ -405,7 +409,7 @@ const HECalibration = ({
 					></Form.Range>
 				</Col>
 				<Col xs={12} className="mb-3">
-					{voltage} {(!!!polarity && voltage>=voltageActive || !!polarity && voltage <= voltageActive) ?t('HETrigger:pressed-text'):""}
+					{voltage} {isActive()?t('HETrigger:pressed-text'):""}
 				</Col>
 				<Col xs={12} className="mb-3" />
 				<Col xs={12} className="mb-3 text-center">
@@ -445,7 +449,7 @@ const HECalibration = ({
 					{firstStep()}
 					{secondStep()}
 					{thirdStep()}
-					{manulAdjustments()}
+					{manualAdjustments()}
 				</Modal.Body>
 				<Modal.Footer>
 					<Button onClick={() => {
@@ -462,6 +466,7 @@ const HECalibration = ({
 					</Button>
 					<Button onClick={() => {
 						setVoltagePressed(voltage);
+						setPolarity(voltage < voltageIdle ? 1 : 0)
 						setVoltageActive(voltageIdle + Math.floor((voltage-voltageIdle)*0.625));
 						updateCalibrationRead(2);
 					}} hidden={calibrationStep !== 1}>
