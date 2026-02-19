@@ -23,7 +23,6 @@ export default {
 	'voltage-table-header-text': 'Tableau des tensions à effet Hall',
 	'voltage-table-idle-text': 'Repos',
 	'voltage-table-trigger-text': 'Déclenchement',
-	'voltage-table-max-text': 'Maximum',
 	'voltage-table-polarity-text': 'Polarité',
 	'voltage-table-disabled-label': '(Désactivé)',
 	'overwrite-all-warning': 'Écraser tous les déclenchemeurs',

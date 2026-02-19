@@ -459,7 +459,7 @@ const HECalibration = ({
 				<Col xs={4} className="mb-3">
 						<FormControl
 							type="number"
-							label={t(`HETrigger:release-input-text`)}
+							label={t(`HETrigger:rapid-trigger-threshold-input-text`)}
 							name="release"
 							className="form-select-sm"
 							value={voltageRelease}
@@ -473,7 +473,7 @@ const HECalibration = ({
 				<Col xs={4} className="mb-3">
 						<FormControl
 							type="number"
-							label={t(`HETrigger:sensitivity-input-text`)}
+							label={t(`HETrigger:rapid-trigger-sensitivity-input-text`)}
 							name="sensitivity"
 							className="form-select-sm"
 							value={sensitivity}

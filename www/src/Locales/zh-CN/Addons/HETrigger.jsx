@@ -23,7 +23,6 @@ export default {
 	'voltage-table-header-text': '霍尔效应电压表',
 	'voltage-table-idle-text': '空闲',
 	'voltage-table-trigger-text': '触发',
-	'voltage-table-max-text': '最大值',
 	'voltage-table-polarity-text': '极性',
 	'voltage-table-disabled-label': '（已禁用）',
 	'overwrite-all-warning': '覆盖所有触发器',

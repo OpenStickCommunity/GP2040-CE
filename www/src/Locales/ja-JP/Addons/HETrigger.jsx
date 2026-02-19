@@ -23,7 +23,6 @@ export default {
 	'voltage-table-header-text': 'ホールセンサ電圧設定表',
 	'voltage-table-idle-text': '未押下',
 	'voltage-table-trigger-text': '押下判定値',
-	'voltage-table-max-text': '最大値',
 	'voltage-table-polarity-text': '極性',
 	'voltage-table-disabled-label': '(無効)',
 	'overwrite-all-warning': '全ボタンに反映',

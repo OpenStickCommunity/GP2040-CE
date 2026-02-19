@@ -23,7 +23,6 @@ export default {
 	'voltage-table-header-text': '홀 이펙트 볼트 테이블',
 	'voltage-table-idle-text': '유휴',
 	'voltage-table-trigger-text': '트리거',
-	'voltage-table-max-text': '최대',
 	'voltage-table-polarity-text': '극성',
 	'voltage-table-disabled-label': '(사용안함)',
 	'overwrite-all-warning': '전체 트리거 덮어씌움',

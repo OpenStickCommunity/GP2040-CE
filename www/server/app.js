@@ -638,7 +638,7 @@ app.get('/api/getHETriggerCalibrations', (req, res) => {
 			pressed: 3500,
 			active: 1500,
 			polarity: false,
-			release: 1000,
+			release: 2000,
 			sensitivity: 50, 
 			rapidTrigger: true
 		},
@@ -646,9 +646,9 @@ app.get('/api/getHETriggerCalibrations', (req, res) => {
 			action: 5, 
 			idle: 3500,
 			pressed: 120,
-			active: 1500,
+			active: 2000,
 			polarity: true,
-			release: 2000,
+			release: 1500,
 			sensitivity: 50, 
 			rapidTrigger: true
 		},
