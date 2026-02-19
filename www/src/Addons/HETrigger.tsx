@@ -222,11 +222,8 @@ const TriggerActionsForm = ({
 											setHETrigger(
 												{
 													id: parseInt(key),
+													...triggers[key],
 													action: change?.value === undefined ? -10 : change.value,
-													idle: triggers[key].idle,
-													active: triggers[key].active,
-													pressed: triggers[key].max,
-													polarity: triggers[key].polarity
 												}
 											)
 										}

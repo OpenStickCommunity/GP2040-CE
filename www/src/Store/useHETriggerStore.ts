@@ -8,7 +8,10 @@ export type Trigger = {
 	idle: number;
 	active: number;
 	pressed: number;
-	polarity: number;
+	polarity: boolean;
+	release: number;
+	sensitivity: number;
+	rapidTrigger: boolean;
 };
 
 type State = {
@@ -24,40 +27,16 @@ type Actions = {
 };
 
 const INITIAL_STATE: State = {
-    triggers: [
-		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,pressed:3500,polarity:0},
-	],
+    triggers: Array(32).map(()=>({ 
+		action:-10,
+		idle:100,
+		active:2000,
+		pressed:3500,
+		polarity:false,
+		release:2000,
+		sensitivity:50,
+		rapidTrigger:false
+	})),
 	loadingTriggers: false,
 };
 
@@ -72,11 +51,11 @@ const useHETriggerStore = create<State & Actions>()((set, get) => ({
 			loadingTriggers: false,
 		}));
 	},
-	setHETrigger: ({ id, action, idle, active, pressed: max, polarity }) => {
+	setHETrigger: ({ id, ...trigger}) => {
 		set((state) => {
 			const newTriggers = [...state.triggers];
 			if (newTriggers[id]) {
-				newTriggers[id] = { action, idle, active, pressed: max, polarity };
+				newTriggers[id] = trigger;
 			}
 
 			return {

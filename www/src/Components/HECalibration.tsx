@@ -12,6 +12,8 @@ import './HECalibration.scss';
 import { BUTTON_ACTIONS } from '../Data/Pins';
 import invert from 'lodash/invert';
 
+const ADC_MAX = 4096;
+
 type HECalibrationProps = {
 	calibrateAllLoop: boolean;
 	calibrationTarget: number;
@@ -48,14 +50,55 @@ const HECalibration = ({
 	const previousStep = useRef(0);
 	const [calibrationStep, setCalibrationStep] = useState(0);
 	const [voltage, setVoltage] = useState(0);
+	const [lastVoltage, setLastVoltage] = useState(0);
+	const [activationState, setActivationState] = useState(false);
 	const [voltageIdle, setVoltageIdle] = useState(20);
 	const [voltagePressed, setVoltagePressed] = useState(3500);
 	const [voltageActive, setVoltageActive] = useState(2000);
-	const [polarity, setPolarity] = useState(0);
+	const [polarity, setPolarity] = useState(false);
+	const [voltageRelease, setVoltageRelease] = useState(2000);
+	const [sensitivity, setSensitivity] = useState(50);
+	const [rapidTrigger, setRapidTrigger] = useState(false);
 
-	const isActive = () => {
-		return !!!polarity && voltage>=voltageActive || !!polarity && voltage <= voltageActive;
-	}
+	useEffect(() => {
+
+		let polarizedVoltage = voltage;
+		let polarizedRelease = voltageRelease;
+		let polarizedActiveVoltage = voltageActive;
+		let polarizedLastVoltage = lastVoltage;
+
+		if (polarity) {
+			polarizedVoltage = ADC_MAX - voltage;
+			polarizedRelease = ADC_MAX - voltageRelease;
+			polarizedActiveVoltage = ADC_MAX - voltageActive;
+			polarizedLastVoltage = ADC_MAX - lastVoltage;
+		}
+		
+		if (!rapidTrigger) {
+			setActivationState(polarizedVoltage > polarizedActiveVoltage)
+			return
+		}
+
+		if (Math.abs(voltage - lastVoltage) > sensitivity) {
+			setLastVoltage(voltage);
+		}
+
+		let pressing = false;
+		let releasing = false;
+		
+		if(polarizedVoltage > polarizedLastVoltage + sensitivity) {
+			pressing = true;
+		} else if (polarizedVoltage < polarizedLastVoltage - sensitivity) {
+			releasing = true;
+		}
+
+		if (!activationState && pressing && polarizedVoltage > polarizedActiveVoltage) {
+			setActivationState(true)
+		} else if (activationState && releasing && polarizedVoltage < polarizedRelease) {
+			setActivationState(false)
+		}
+		
+  	}, [voltage]);
 
 	const saveCalibration = () => {
 		// Set to Trigger Store
@@ -65,7 +108,10 @@ const HECalibration = ({
 			idle: voltageIdle,
 			active: voltageActive,
 			pressed: voltagePressed,
-			polarity
+			polarity,
+			release: voltageRelease,
+			sensitivity,
+			rapidTrigger,
 		})
 		stopCalibration();
 		if ( calibrateAllLoop ) {
@@ -175,6 +221,9 @@ const HECalibration = ({
 		setVoltageIdle(triggers[target.current].idle);
 		setVoltageActive(triggers[target.current].active);
 		setVoltagePressed(triggers[target.current].pressed);
+		setVoltageRelease(triggers[target.current].release);
+		setSensitivity(triggers[target.current].sensitivity);
+		setRapidTrigger(triggers[target.current].rapidTrigger);
 		setPolarity(triggers[target.current].polarity);
 	};
 
@@ -183,8 +232,8 @@ const HECalibration = ({
 		updateCalibrationRead(0);
 	};
 
-	const calvulateVoltagePercentage = () => {
-		return (voltage/(4096/100.0));
+	const calculateVoltagePercentage = () => {
+		return (voltage/(ADC_MAX/100.0));
 	};
 
 	const calculateVoltPressedPercentage = () => {
@@ -211,7 +260,7 @@ const HECalibration = ({
 				setVoltage(3500); // max we'll set to 3500
 			} else if ( calibrationStep === 2 || calibrationStep === 3 ) {
 				let time = (new Date()).getTime();
-				const V = 150+Math.floor((Math.cos((( time/10 ) % 365) * Math.PI / 180)+1.0)*1500);
+				const V = (150)+Math.floor((Math.cos((( time/10 ) % 365) * Math.PI / 180)+1.0)*1500);
 				setVoltage(V);
 			}
 		} else {
@@ -232,7 +281,7 @@ const HECalibration = ({
 				</Col>
 				<Col xs={12} className="mb-3 text-center">
 					<ProgressBar>
-						<ProgressBar variant="info" now={calvulateVoltagePercentage()} key={1} />
+						<ProgressBar variant="info" now={calculateVoltagePercentage()} key={1} />
 					</ProgressBar>
 				</Col>
 				<Col xs={12} className="mb-3">
@@ -254,7 +303,7 @@ const HECalibration = ({
 				</Col>
 				<Col xs={12} className="mb-3 text-center">
 					<ProgressBar>
-						<ProgressBar variant="info" now={calvulateVoltagePercentage()} key={1} />
+						<ProgressBar variant="info" now={calculateVoltagePercentage()} key={1} />
 					</ProgressBar>
 				</Col>
 				<Col xs={12} className="mb-3">
@@ -295,7 +344,7 @@ const HECalibration = ({
 				</Col>
 				<Col xs={12} className="mb-3 text-center">
 					<ProgressBar>
-						<ProgressBar variant={isActive()?"success":"warning"} now={calculateVoltPressedPercentage()} key={1} />
+						<ProgressBar variant={activationState?"success":"warning"} now={calculateVoltPressedPercentage()} key={1} />
 					</ProgressBar>
 				</Col>
 				<Col xs={12} className="mb-3">
@@ -310,7 +359,7 @@ const HECalibration = ({
 					</Form.Range>
 				</Col>
 				<Col xs={12} className="mb-3">
-					{voltage} {isActive()?t('HETrigger:pressed-text'):""}
+					{voltage} {activationState?t('HETrigger:pressed-text'):""}
 				</Col>
 				<Col xs={3} className="mb-3">
 					<Button onClick={() => restartCalibration()} variant="danger">
@@ -338,7 +387,7 @@ const HECalibration = ({
 							setVoltageIdle(parseInt((e.target as HTMLInputElement).value));
 						}}
 						min={0}
-						max={4096}
+						max={ADC_MAX}
 					/>
 				</Col>
 				<Col xs={4} className="mb-3">
@@ -352,7 +401,7 @@ const HECalibration = ({
 							setVoltageActive(parseInt((e.target as HTMLInputElement).value));
 						}}
 						min={0}
-						max={4096}
+						max={ADC_MAX}
 					/>
 				</Col>
 				<Col xs={4} className="mb-3">
@@ -366,7 +415,7 @@ const HECalibration = ({
 							setVoltagePressed(parseInt((e.target as HTMLInputElement).value));
 						}}
 						min={0}
-						max={4096}
+						max={ADC_MAX}
 					/>
 				</Col>
 				<Col xs={12} className="mb-3">
@@ -378,18 +427,69 @@ const HECalibration = ({
 						isInvalid={false}
 						checked={polarity}
 						onChange={(e) => {
-							setPolarity(polarity == 0 ? 1 : 0);
-							setVoltageIdle(voltagePressed)
-							setVoltagePressed(voltageIdle)
+							setPolarity(e.target.checked);
+							if (e.target.checked) {
+								setVoltageIdle(Math.max(voltageIdle, voltagePressed));
+								setVoltagePressed(Math.min(voltageIdle, voltagePressed));
+								setVoltageActive(Math.max(voltageRelease, voltageActive));
+								setVoltageRelease(Math.min(voltageRelease, voltageActive));
+							} else {
+								setVoltageIdle(Math.min(voltageIdle, voltagePressed));
+								setVoltagePressed(Math.max(voltageIdle, voltagePressed));
+								setVoltageActive(Math.min(voltageRelease, voltageActive));
+								setVoltageRelease(Math.max(voltageRelease, voltageActive));
+							}
 						}}
 					/>
 				</Col>
+				<Col xs={4} className="mb-3">
+					<FormCheck
+						label={t('HETrigger:calibration-flip-rapid-trigger')}
+						type="switch"
+						name="rapidTrigger"
+						id="HETriggerRapidTrigger"
+						isInvalid={false}
+						checked={rapidTrigger}
+						onChange={(e) => {
+							setRapidTrigger(e.target.checked);
+						}}
+					/></Col>
+					{rapidTrigger && <>
+					
+				<Col xs={4} className="mb-3">
+						<FormControl
+							type="number"
+							label={t(`HETrigger:release-input-text`)}
+							name="release"
+							className="form-select-sm"
+							value={voltageRelease}
+							onChange={(e) => {
+								setVoltageRelease(parseInt((e.target as HTMLInputElement).value));
+							}}
+							min={0}
+							max={ADC_MAX}
+						/>
+						</Col>
+				<Col xs={4} className="mb-3">
+						<FormControl
+							type="number"
+							label={t(`HETrigger:sensitivity-input-text`)}
+							name="sensitivity"
+							className="form-select-sm"
+							value={sensitivity}
+							onChange={(e) => {
+								setSensitivity(parseInt((e.target as HTMLInputElement).value));
+							}}
+							min={0}
+							max={ADC_MAX}
+						/></Col>
+					</>}
 				<Col xs={12} className="mb-3">
 					{t(`HETrigger:activation-reading-text`)}
 				</Col>
 				<Col xs={12} className="mb-3 text-center">
 					<ProgressBar>
-						<ProgressBar variant={isActive()?"success":"warning"} now={calculateVoltPressedPercentage()} key={1} />
+						<ProgressBar variant={activationState?"success":"warning"} now={calculateVoltPressedPercentage()} key={1} />
 					</ProgressBar>
 				</Col>
 				<Col xs={12} className="mb-3">
@@ -403,8 +503,19 @@ const HECalibration = ({
 						}}
 					></Form.Range>
 				</Col>
+				{rapidTrigger && <Col xs={12} className="mb-3">
+					<Form.Range
+						min={0}
+						max={(voltagePressed - voltageIdle) * (-polarity || 1)}
+						step={1}
+						value={(voltageRelease - voltageIdle) * (-polarity || 1)}
+						onChange={(e) => {
+							setVoltageRelease(parseInt(e.target.value) * (-polarity || 1) + voltageIdle);
+						}}
+					></Form.Range>
+				</Col>}
 				<Col xs={12} className="mb-3">
-					{voltage} {isActive()?t('HETrigger:pressed-text'):""}
+					{voltage} {activationState?t('HETrigger:pressed-text'):""}
 				</Col>
 				<Col xs={12} className="mb-3" />
 				<Col xs={12} className="mb-3 text-center">
@@ -461,8 +572,11 @@ const HECalibration = ({
 					</Button>
 					<Button onClick={() => {
 						setVoltagePressed(voltage);
-						setPolarity(voltage < voltageIdle ? 1 : 0)
+						setPolarity(voltage < voltageIdle)
 						setVoltageActive(voltageIdle + Math.floor((voltage-voltageIdle)*0.625));
+						setVoltageRelease(voltageIdle + Math.floor((voltage-voltageIdle)*0.625));
+						setSensitivity(50);
+						setRapidTrigger(false);
 						updateCalibrationRead(2);
 					}} hidden={calibrationStep !== 1}>
 						<Spinner

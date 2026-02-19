@@ -1604,6 +1604,9 @@ std::string getHETriggerCalibrations()
         trigger["active"] = heTriggers[i].active;
         trigger["pressed"] = heTriggers[i].pressed;
         trigger["polarity"] = heTriggers[i].polarity;
+        trigger["release"] = heTriggers[i].release;
+        trigger["sensitivity"] = heTriggers[i].sensitivity;
+        trigger["rapidTrigger"] = heTriggers[i].rapidTrigger;
     }
 
     return serialize_json(doc);
@@ -1621,6 +1624,9 @@ std::string setHETriggerCalibrations()
         heTriggers[i].active = doc["triggers"][i]["active"];
         heTriggers[i].pressed = doc["triggers"][i]["pressed"];
         heTriggers[i].polarity = doc["triggers"][i]["polarity"];
+        heTriggers[i].release = doc["triggers"][i]["release"];
+        heTriggers[i].sensitivity = doc["triggers"][i]["sensitivity"];
+        heTriggers[i].rapidTrigger = doc["triggers"][i]["rapidTrigger"];
     }
     
     Storage::getInstance().getAddonOptions().heTriggerOptions.triggers_count = 32;

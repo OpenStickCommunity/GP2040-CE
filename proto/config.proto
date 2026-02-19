@@ -870,7 +870,10 @@ message HETriggerInfo
     optional int32 active = 2;
     optional int32 idle = 3;
     optional int32 pressed = 4;
-    optional int32 polarity = 5;
+    optional bool polarity = 5;
+    optional int32 release = 6;
+    optional int32 sensitivity = 7;
+    optional bool rapidTrigger = 8; 
 }
 
 message HETriggerOptions

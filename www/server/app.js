@@ -611,14 +611,58 @@ app.get('/api/getExpansionPins', (req, res) => {
 
 app.get('/api/getHETriggerCalibrations', (req, res) => {
 	var triggers = [];
-	triggers.push({ action: 2, idle: 120, pressed: 3500, active: 1500, polarity: 0 });
-	for(var i = 1; i < 32; i++) {
+	triggers.push(
+		{
+			action: 2, 
+			idle: 120,
+			pressed: 3500,
+			active: 1500,
+			polarity: false,
+			release: 1500,
+			sensitivity: 50, 
+			rapidTrigger: false
+		},
+		{
+			action: 3, 
+			idle: 3500,
+			pressed: 120,
+			active: 1500,
+			polarity: true,
+			release: 1500,
+			sensitivity: 50, 
+			rapidTrigger: false
+		},
+		{
+			action: 4, 
+			idle: 120,
+			pressed: 3500,
+			active: 1500,
+			polarity: false,
+			release: 1000,
+			sensitivity: 50, 
+			rapidTrigger: true
+		},
+		{
+			action: 5, 
+			idle: 3500,
+			pressed: 120,
+			active: 1500,
+			polarity: true,
+			release: 2000,
+			sensitivity: 50, 
+			rapidTrigger: true
+		},
+	);
+	for(var i = 4; i < 32; i++) {
 		triggers.push({
 			action: -10,
 			idle: 100,
 			active: 2000,
 			pressed: 3500,
-			polarity: 0
+			polarity: false,
+			release: 1500,
+			sensitivity: 50,
+			rapidTrigger: false,
 		});
 	}
 	return res.send({triggers});
