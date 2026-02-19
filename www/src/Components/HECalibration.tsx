@@ -56,20 +56,20 @@ const HECalibration = ({
 	const [voltagePressed, setVoltagePressed] = useState(3500);
 	const [voltageActive, setVoltageActive] = useState(2000);
 	const [polarity, setPolarity] = useState(false);
-	const [voltageRelease, setVoltageRelease] = useState(2000);
+	const [release, setRelease] = useState(2000);
 	const [sensitivity, setSensitivity] = useState(50);
 	const [rapidTrigger, setRapidTrigger] = useState(false);
 
 	useEffect(() => {
 
 		let polarizedVoltage = voltage;
-		let polarizedRelease = voltageRelease;
+		let polarizedRelease = release;
 		let polarizedActiveVoltage = voltageActive;
 		let polarizedLastVoltage = lastVoltage;
 
 		if (polarity) {
 			polarizedVoltage = ADC_MAX - voltage;
-			polarizedRelease = ADC_MAX - voltageRelease;
+			polarizedRelease = ADC_MAX - release;
 			polarizedActiveVoltage = ADC_MAX - voltageActive;
 			polarizedLastVoltage = ADC_MAX - lastVoltage;
 		}
@@ -109,7 +109,7 @@ const HECalibration = ({
 			active: voltageActive,
 			pressed: voltagePressed,
 			polarity,
-			release: voltageRelease,
+			release,
 			sensitivity,
 			rapidTrigger,
 		})
@@ -162,7 +162,10 @@ const HECalibration = ({
 			idle: voltageIdle,
 			active: voltageActive,
 			pressed: voltagePressed,
-			polarity
+			polarity,
+			release,
+			sensitivity,
+			rapidTrigger,
 		});
 		closeModal();
 	};
@@ -221,7 +224,7 @@ const HECalibration = ({
 		setVoltageIdle(triggers[target.current].idle);
 		setVoltageActive(triggers[target.current].active);
 		setVoltagePressed(triggers[target.current].pressed);
-		setVoltageRelease(triggers[target.current].release);
+		setRelease(triggers[target.current].release);
 		setSensitivity(triggers[target.current].sensitivity);
 		setRapidTrigger(triggers[target.current].rapidTrigger);
 		setPolarity(triggers[target.current].polarity);
@@ -431,13 +434,13 @@ const HECalibration = ({
 							if (e.target.checked) {
 								setVoltageIdle(Math.max(voltageIdle, voltagePressed));
 								setVoltagePressed(Math.min(voltageIdle, voltagePressed));
-								setVoltageActive(Math.max(voltageRelease, voltageActive));
-								setVoltageRelease(Math.min(voltageRelease, voltageActive));
+								setVoltageActive(Math.max(release, voltageActive));
+								setRelease(Math.min(release, voltageActive));
 							} else {
 								setVoltageIdle(Math.min(voltageIdle, voltagePressed));
 								setVoltagePressed(Math.max(voltageIdle, voltagePressed));
-								setVoltageActive(Math.min(voltageRelease, voltageActive));
-								setVoltageRelease(Math.max(voltageRelease, voltageActive));
+								setVoltageActive(Math.min(release, voltageActive));
+								setRelease(Math.max(release, voltageActive));
 							}
 						}}
 					/>
@@ -462,9 +465,9 @@ const HECalibration = ({
 							label={t(`HETrigger:rapid-trigger-threshold-input-text`)}
 							name="release"
 							className="form-select-sm"
-							value={voltageRelease}
+							value={release}
 							onChange={(e) => {
-								setVoltageRelease(parseInt((e.target as HTMLInputElement).value));
+								setRelease(parseInt((e.target as HTMLInputElement).value));
 							}}
 							min={0}
 							max={ADC_MAX}
@@ -508,9 +511,9 @@ const HECalibration = ({
 						min={0}
 						max={(voltagePressed - voltageIdle) * (-polarity || 1)}
 						step={1}
-						value={(voltageRelease - voltageIdle) * (-polarity || 1)}
+						value={(release - voltageIdle) * (-polarity || 1)}
 						onChange={(e) => {
-							setVoltageRelease(parseInt(e.target.value) * (-polarity || 1) + voltageIdle);
+							setRelease(parseInt(e.target.value) * (-polarity || 1) + voltageIdle);
 						}}
 					></Form.Range>
 				</Col>}
@@ -574,7 +577,7 @@ const HECalibration = ({
 						setVoltagePressed(voltage);
 						setPolarity(voltage < voltageIdle)
 						setVoltageActive(voltageIdle + Math.floor((voltage-voltageIdle)*0.625));
-						setVoltageRelease(voltageIdle + Math.floor((voltage-voltageIdle)*0.625));
+						setRelease(voltageIdle + Math.floor((voltage-voltageIdle)*0.625));
 						setSensitivity(50);
 						setRapidTrigger(false);
 						updateCalibrationRead(2);
