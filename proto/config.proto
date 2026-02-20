@@ -269,6 +269,8 @@ message DisplayOptions
     optional uint32 inputHistoryLength = 28;
     optional uint32 inputHistoryCol = 29;
     optional uint32 inputHistoryRow = 30;
+    
+    optional uint32 contrast = 31;
 }
 
 message LightCluster
@@ -450,6 +452,10 @@ message AnalogOptions
     optional uint32 outer_deadzone2 = 21;
     optional bool auto_calibrate2 = 22;
     optional bool forced_circularity2 = 23;
+    optional uint32 joystick_center_x = 24;
+    optional uint32 joystick_center_y = 25;
+    optional uint32 joystick_center_x2 = 26;
+    optional uint32 joystick_center_y2 = 27;
 }
 
 message TurboOptions

@@ -192,6 +192,17 @@ bool tuh_xinput_ready(uint8_t dev_addr, uint8_t instance) {
     return !usbh_edpt_busy(dev_addr, hid_itf->ep_in);
 }
 
+void tuh_xinput_wait_for_tx(uint8_t dev_addr, uint8_t instance) {
+    if (!tuh_xinput_mounted(dev_addr, instance)) {
+        return;
+    }
+
+    xinputh_interface_t *hid_itf = get_instance(dev_addr, instance);
+    while (usbh_edpt_busy(dev_addr, hid_itf->ep_out)) {
+        tuh_task();
+    }
+}
+
 //--------------------------------------------------------------------+
 // USBH API
 //--------------------------------------------------------------------+
@@ -201,11 +212,15 @@ bool xinputh_init(void) {
 }
 
 bool xinputh_xfer_cb(uint8_t dev_addr, uint8_t ep_addr, xfer_result_t result, uint32_t xferred_bytes) {
-    (void)result;
-
     uint8_t const dir = tu_edpt_dir(ep_addr);
     uint8_t const instance = get_instance_id_by_epaddr(dev_addr, ep_addr);
     xinputh_interface_t *xinput_itf = get_instance(dev_addr, instance);
+
+    if (result != XFER_RESULT_SUCCESS) {
+        // receive next report on failure
+        usbh_edpt_xfer(dev_addr, xinput_itf->ep_in, xinput_itf->epin_buf, xinput_itf->epin_size);
+        return false;
+    }
 
     if (dir == TUSB_DIR_IN) {
         tuh_xinput_report_received_cb(dev_addr, instance, xinput_itf->epin_buf, (uint16_t)xferred_bytes);
@@ -232,7 +247,6 @@ void xinputh_close(uint8_t dev_addr) {
 
 bool xinputh_open(uint8_t rhport, uint8_t dev_addr, tusb_desc_interface_t const *desc_itf, uint16_t max_len) {
     (void)rhport;
-    (void)max_len;
     TU_VERIFY(TUSB_CLASS_VENDOR_SPECIFIC == desc_itf->bInterfaceClass || TUSB_CLASS_HID == desc_itf->bInterfaceClass, 0);
     xinputh_interface_t *p_xinput = NULL;
     for (uint8_t i = 0; i < CFG_TUH_XINPUT; i++) {
@@ -244,59 +258,65 @@ bool xinputh_open(uint8_t rhport, uint8_t dev_addr, tusb_desc_interface_t const 
     }
     TU_VERIFY(p_xinput, 0);
     uint8_t const *p_desc = (uint8_t const *)desc_itf;
+    uint16_t pos = 0;
     // add instance for Xbox 360 dongle
     if (desc_itf->bInterfaceSubClass == 0x5D &&
         (desc_itf->bInterfaceProtocol == 0x01 ||
          desc_itf->bInterfaceProtocol == 0x03 ||
          desc_itf->bInterfaceProtocol == 0x02)) {
-
-        //-------------- Xinput Descriptor --------------//
-        p_desc = tu_desc_next(p_desc);
-        XBOX_ID_DESCRIPTOR *x_desc =
-            (XBOX_ID_DESCRIPTOR *)p_desc;
-
-        TU_ASSERT(XINPUT_DESC_TYPE_RESERVED == x_desc->bDescriptorType, 0);
-        //drv_len += x_desc->bLength;
-        uint8_t endpoints = desc_itf->bNumEndpoints;
-        while (endpoints--) {
-            p_desc = tu_desc_next(p_desc);
-            tusb_desc_endpoint_t const *desc_ep =
-                (tusb_desc_endpoint_t const *)p_desc;
-            TU_ASSERT(TUSB_DESC_ENDPOINT == desc_ep->bDescriptorType);
-            if (desc_ep->bEndpointAddress & 0x80) {
-                p_xinput->ep_in = desc_ep->bEndpointAddress;
-                TU_ASSERT(tuh_edpt_open(dev_addr, desc_ep));
-            } else {
-                p_xinput->ep_out = desc_ep->bEndpointAddress;
-                TU_ASSERT(tuh_edpt_open(dev_addr, desc_ep));
+        uint8_t ep = 0;
+        XBOX_ID_DESCRIPTOR const *x_desc = nullptr;
+        while (ep < desc_itf->bNumEndpoints && pos < max_len) {
+            uint8_t desc_type = tu_desc_type(p_desc);
+            if (desc_type == TUSB_DESC_ENDPOINT) {
+                tusb_desc_endpoint_t const *ep_desc = (tusb_desc_endpoint_t const*) p_desc;
+                TU_ASSERT(tuh_edpt_open(dev_addr, ep_desc));
+                if (tu_edpt_dir(ep_desc->bEndpointAddress) == TUSB_DIR_OUT) {
+                    p_xinput->ep_out = ep_desc->bEndpointAddress;
+                    p_xinput->epout_size = tu_edpt_packet_size(ep_desc);
+                } else {
+                    p_xinput->ep_in = ep_desc->bEndpointAddress;
+                    p_xinput->epin_size = tu_edpt_packet_size(ep_desc);
+                }
+                ep++;
+            } else if (desc_type == XINPUT_DESC_TYPE_RESERVED) {
+                TU_ASSERT(ep == 0, 0); // assert this is the first descriptor
+                x_desc = (XBOX_ID_DESCRIPTOR const *)p_desc;
             }
+            pos += tu_desc_len(p_desc);
+            p_desc = tu_desc_next(p_desc);
         }
+        TU_ASSERT(x_desc, 0);
+
         p_xinput->itf_num = desc_itf->bInterfaceNumber;
         p_xinput->type = XBOX360;
-        if (desc_itf->bInterfaceProtocol == 0x01) {
+        if (desc_itf->bInterfaceProtocol == TUSB_DESC_DEVICE) {
             p_xinput->subtype = x_desc->subtype;
             usbh_edpt_xfer(dev_addr, p_xinput->ep_in, p_xinput->epin_buf, p_xinput->epin_size);
         }
-        _xinputh_dev->inst_count++;
         return true;
     // Xbox One instance == 0x47 0xD0
     } else if (desc_itf->bInterfaceSubClass == 0x47 &&
                desc_itf->bInterfaceProtocol == 0xD0 && desc_itf->bNumEndpoints) {
-        uint8_t endpoints = desc_itf->bNumEndpoints;
-        while (endpoints--) {
-            p_desc = tu_desc_next(p_desc);
-            tusb_desc_endpoint_t const *desc_ep =
-                (tusb_desc_endpoint_t const *)p_desc;
-            TU_ASSERT(TUSB_DESC_ENDPOINT == desc_ep->bDescriptorType);
-            if (desc_ep->bEndpointAddress & 0x80) {
-                p_xinput->ep_in = desc_ep->bEndpointAddress;
-                p_xinput->epin_size = tu_edpt_packet_size(desc_ep);
-                TU_ASSERT(tuh_edpt_open(dev_addr, desc_ep));
-            } else {
-                p_xinput->ep_out = desc_ep->bEndpointAddress;
-                p_xinput->epout_size = tu_edpt_packet_size(desc_ep);
-                TU_ASSERT(tuh_edpt_open(dev_addr, desc_ep));
+        uint8_t ep = 0;
+        while (ep < desc_itf->bNumEndpoints && pos < max_len) {
+            uint8_t desc_type = tu_desc_type(p_desc);
+            if (desc_type == TUSB_DESC_ENDPOINT) {
+                tusb_desc_endpoint_t const *ep_desc =
+                    (tusb_desc_endpoint_t const *)p_desc;
+                TU_ASSERT(tuh_edpt_open(dev_addr, ep_desc));
+                if (ep_desc->bEndpointAddress & 0x80) {
+                    p_xinput->ep_in = ep_desc->bEndpointAddress;
+                    p_xinput->epin_size = tu_edpt_packet_size(ep_desc);
+                } else {
+                    p_xinput->ep_out = ep_desc->bEndpointAddress;
+                    p_xinput->epout_size = tu_edpt_packet_size(ep_desc);
+                }
+                ep++;
             }
+
+            pos += tu_desc_len(p_desc);
+            p_desc = tu_desc_next(p_desc);
         }
         p_xinput->itf_num = desc_itf->bInterfaceNumber;
         p_xinput->type = XBOXONE;

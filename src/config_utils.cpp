@@ -457,6 +457,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.displayOptions, displaySaverTimeout, DISPLAY_SAVER_TIMEOUT);
     INIT_UNSET_PROPERTY(config.displayOptions, displaySaverMode, DISPLAY_SAVER_MODE);
     INIT_UNSET_PROPERTY(config.displayOptions, buttonLayoutOrientation, DISPLAY_LAYOUT_ORIENTATION);
+    INIT_UNSET_PROPERTY(config.displayOptions, contrast, DISPLAY_CONTRAST);
 
     // peripheralOptions
     PeripheralOptions& peripheralOptions = config.peripheralOptions;
@@ -736,7 +737,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.analogADS1256Options, spiBlock, (SPI_ANALOG1256_BLOCK == spi0) ? 0 : 1)
     INIT_UNSET_PROPERTY(config.addonOptions.analogADS1256Options, csPin, SPI_ANALOG1256_CS_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.analogADS1256Options, drdyPin, SPI_ANALOG1256_DRDY_PIN);
-    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1256Options, avdd, ADS1256_MAX_3V);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1256Options, avdd, (ADS1256_MAX_3V * 10));
     INIT_UNSET_PROPERTY(config.addonOptions.analogADS1256Options, enableTriggers, false);
 
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, enabled, !!DUAL_DIRECTIONAL_ENABLED);

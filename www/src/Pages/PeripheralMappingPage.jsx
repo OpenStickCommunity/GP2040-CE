@@ -146,63 +146,48 @@ export default function PeripheralMappingPage() {
 			validationSchema={schema}
 			initialValues={basePeripheralMapping}
 		>
-			{({ errors, handleSubmit, setFieldValue, values }) => (
-				<div>
-					<Form noValidate onSubmit={handleSubmit}>
-						<Section title={t('PeripheralMapping:header-text')}>
-							<p>{t('PeripheralMapping:sub-header-text')}</p>
-							{PERIPHERAL_DEVICES.map((peripheral, i) => (
-								<Form.Group
-									key={`peripheral-${peripheral.value}`}
-									className="row mb-3"
-								>
-									<Form.Label>
-										{t(`PeripheralMapping:${peripheral.label}-label`)}
-										<ContextualHelpOverlay
-											title={t(
-												`PeripheralMapping:${peripheral.label}-desc-header`,
-											)}
-											body={generatePeripheralDetails(
-												t(`PeripheralMapping:${peripheral.label}-description`),
-												peripheral,
-											)}
-										></ContextualHelpOverlay>
-									</Form.Label>
-									{peripheral.blocks.map((block, i) => (
-										<div
-											key={`peripheral${peripheral.value}block${block.value}`}
-											className="row mb-3"
-										>
-											<div className="col-sm-auto">
-												<FormCheck
-													key={`peripheral.${block.label}.enabled`}
-													name={`peripheral.${block.label}.enabled`}
-													label={`${block.label.toUpperCase()}`}
-													id={`peripheral.${block.label}.enabled`}
-													type="switch"
-													reverse={true}
-													isInvalid={false}
-													className="form-select-sm"
-													value={values.peripheral[`${block.label}`].enabled}
-													checked={Boolean(
-														values.peripheral[`${block.label}`].enabled,
-													)}
-													onChange={(e) => {
-														setFieldValue(
-															`peripheral.${block.label}.enabled`,
-															e.target.checked ? 1 : 0,
-														);
-													}}
-												/>
-											</div>
-											{Object.keys(block.pins).map((pin, i) => (
-												<div
-													key={`${block.label}.${pin}`}
-													className="col-sm-auto"
-												>
-													<Form.Label>
-														{t(
-															`PeripheralMapping:pin-${pin.toLowerCase()}-label`,
+			{({ errors, handleSubmit, setFieldValue, values }) =>
+				console.log('errors', errors) || (
+					<div>
+						<Form noValidate onSubmit={handleSubmit}>
+							<Section title={t('PeripheralMapping:header-text')}>
+								{PERIPHERAL_DEVICES.map((peripheral, i) => (
+									<Form.Group
+										key={`peripheral-${peripheral.value}`}
+										className="row mb-3"
+									>
+										<Form.Label>
+											{t(`PeripheralMapping:${peripheral.label}-label`)}
+											<ContextualHelpOverlay
+												title={t(
+													`PeripheralMapping:${peripheral.label}-desc-header`,
+												)}
+												body={generatePeripheralDetails(
+													t(
+														`PeripheralMapping:${peripheral.label}-description`,
+													),
+													peripheral,
+												)}
+											></ContextualHelpOverlay>
+										</Form.Label>
+										{peripheral.blocks.map((block, i) => (
+											<div
+												key={`peripheral${peripheral.value}block${block.value}`}
+												className="row mb-3"
+											>
+												<div className="col-sm-auto">
+													<FormCheck
+														key={`peripheral.${block.label}.enabled`}
+														name={`peripheral.${block.label}.enabled`}
+														label={`${block.label.toUpperCase()}`}
+														id={`peripheral.${block.label}.enabled`}
+														type="switch"
+														reverse={true}
+														isInvalid={false}
+														className="form-select-sm"
+														value={values.peripheral[`${block.label}`].enabled}
+														checked={Boolean(
+															values.peripheral[`${block.label}`].enabled,
 														)}
 													</Form.Label>
 													<FormSelect
