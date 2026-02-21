@@ -28,7 +28,7 @@ struct FGridEntry
 
 #define MAX_BURSTS 32
 #define BURST_DISTANCE 6
-#define MIN_TIME_BETWEEN_BURSTS_ON_BUTTON_IN_MS 100
+#define MIN_TIME_BETWEEN_BURSTS_ON_BUTTON_IN_MS 50
 #define BURST_DISTANCE_PER_SEC 10.0f
 
 class BurstColor : public Animation {
