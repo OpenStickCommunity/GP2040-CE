@@ -47,6 +47,10 @@ typedef struct __attribute((packed, aligned(1)))
     uint8_t _reserved[6];
 } XInputReport;
 
+// XInput protocol command packets
+static const uint8_t XBOX360_WIRED_RUMBLE[] = {0x00, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+static const uint8_t XBOX360_WIRED_LED[] = {0x01, 0x03, 0x00};
+
 typedef enum {
     XINPUT_SUBTYPE_NONE = 0x00,
     XINPUT_SUBTYPE_GAMEPAD = 0x01,
@@ -176,7 +180,7 @@ static const uint8_t xinput_configuration_descriptor[] =
     // Audio Descriptor
     0x1B,        // bLength
     0x21,
-    0x00,        
+    0x00,
     0x01,
     0x01,
     0x01,
@@ -280,7 +284,7 @@ static const uint8_t xinput_configuration_descriptor[] =
     0x00,
     0x01,
     0x01,
-    0x03,  
+    0x03,
 };
 
 typedef enum
@@ -292,5 +296,4 @@ typedef enum
     XSM360_AUTH_KEEPALIVE             = 0x84,    // Xbox 360 Keep Authentication Alive
     XSM360_REQUEST_STATE              = 0x86,    // Xbox 360 Request Authentication State
     XSM360_VERIFY_AUTH                = 0x87,    // Xbox 360 Verify Authentication
-    
 } XSM360AuthRequest;

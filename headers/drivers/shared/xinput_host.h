@@ -88,6 +88,9 @@ void tuh_xinput_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t type, uint8
 bool tuh_xinput_ready(uint8_t dev_addr, uint8_t instance);
 bool tuh_xinput_send_report(uint8_t dev_addr, uint8_t instance, uint8_t const *report, uint16_t len);
 
+// Block until report is sent off completely
+void tuh_xinput_wait_for_tx(uint8_t dev_addr, uint8_t instance);
+
 // Invoked when device with XINPUT interface is un-mounted
 TU_ATTR_WEAK void tuh_xinput_umount_cb(uint8_t dev_addr, uint8_t instance);
 

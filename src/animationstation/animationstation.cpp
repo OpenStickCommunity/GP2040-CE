@@ -115,7 +115,7 @@ void AnimationStation::HandleEvent(GamepadHotkey action)
     if(options.profiles[options.baseProfileIndex].basePressedCycleTime >= CYCLE_STEPS)
       options.profiles[options.baseProfileIndex].basePressedCycleTime = 0;
 
-      this->buttonAnimation->CycleParameterChange();
+    this->buttonAnimation->CycleParameterChange();
   }
 }
 

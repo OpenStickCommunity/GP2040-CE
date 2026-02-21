@@ -659,9 +659,9 @@ export default function MacrosPage() {
 												<Row>
 													<Col>
 														<Form.Label>
-															<em>
+															<div className="alert alert-info" role="alert">
 																{t('InputMacroAddon:input-macro-sub-header')}
-															</em>
+															</div>
 														</Form.Label>
 													</Col>
 												</Row>

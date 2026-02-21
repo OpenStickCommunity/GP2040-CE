@@ -9,7 +9,7 @@
 #include "enums.pb.h"
 #include "class/hid/hid.h"
 
-#define BOARD_CONFIG_LABEL "Haute42 COSMOX M Ultra"
+#define BOARD_CONFIG_LABEL "Haute42 COSMOX C-AT"
 
 // Main pin mapping Configuration
 //                          // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
@@ -31,6 +31,10 @@
 #define GPIO_PIN_19 GpioAction::BUTTON_PRESS_R3     // R3     | RS     | RS      | R3       | 12     | RS     |
 #define GPIO_PIN_20 GpioAction::BUTTON_PRESS_A1     // A1     | Guide  | Home    | PS       | 13     | ~      |
 #define GPIO_PIN_21 GpioAction::BUTTON_PRESS_A2     // A2     | ~      | Capture | ~        | 14     | ~      |
+#define GPIO_PIN_27 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
+#define GPIO_PIN_26 GpioAction::BUTTON_PRESS_L3     // L3     | LS     | LS      | L3       | 11     | LS     |
+#define GPIO_PIN_25 GpioAction::BUTTON_PRESS_R3     // R3     | RS     | RS      | R3       | 12     | RS     |
+#define GPIO_PIN_29 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
 
 // Setting GPIO pins to assigned by add-on
 //
@@ -76,7 +80,8 @@
 
 #define BOARD_LEDS_PIN 28
 #define LED_BRIGHTNESS_MAXIMUM 200
-#define LEDS_BRIGHTNESS 5
+#define LEDS_BRIGHTNESS 200
+#define LED_BRIGHTNESS_STEPS 5
 #define LED_FORMAT LED_FORMAT_GRB
 #define LEDS_PER_PIXEL 1
 #define LEDS_BASE_ANIMATION_INDEX AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_SYNCED
@@ -96,11 +101,13 @@
 #define LEDS_BUTTON_L3   13
 #define LEDS_BUTTON_R3   14
 #define LEDS_BUTTON_A2   15
+#define LEDS_BUTTON_S2   16
+#define LEDS_BUTTON_S1   17
 
 // Set our default ambient light
 #define CASE_RGB_TYPE CASE_RGB_TYPE_AMBIENT
-#define CASE_RGB_INDEX 16
-#define CASE_RGB_COUNT 20
+#define CASE_RGB_INDEX 18
+#define CASE_RGB_COUNT 30
 #define AMBIENT_LIGHT_EFFECT AL_CUSTOM_EFFECT_GRADIENT
 #define AMBIENT_STATIC_COLOR ANIMATION_COLOR_PURPLE
 
@@ -114,41 +121,88 @@
 #define SPLASH_DURATION 3000
 
 #define DEFAULT_BOARD_LAYOUT_A {\
-    {GP_ELEMENT_PIN_BUTTON, {47,  19, 4, 4, 1, 1, 27,   GP_SHAPE_ELLIPSE}},\
-    {GP_ELEMENT_PIN_BUTTON, {32,  27, 4, 4, 1, 1, 5,    GP_SHAPE_ELLIPSE}},\
-    {GP_ELEMENT_PIN_BUTTON, {42,  27, 4, 4, 1, 1, 3,    GP_SHAPE_ELLIPSE}},\
-    {GP_ELEMENT_PIN_BUTTON, {50,  32, 4, 4, 1, 1, 4,    GP_SHAPE_ELLIPSE}},\
-    {GP_ELEMENT_PIN_BUTTON, {64,  17, 4, 4, 1, 1, 18,   GP_SHAPE_ELLIPSE}},\
-    {GP_ELEMENT_PIN_BUTTON, {54,  49, 5, 5, 1, 1, 2,    GP_SHAPE_ELLIPSE}},\
-    {GP_ELEMENT_PIN_BUTTON, {42,  46, 4, 4, 1, 1, 26,   GP_SHAPE_ELLIPSE}},\
-    {GP_ELEMENT_PIN_BUTTON, {77,  15, 2, 2, 1, 1, 14,   GP_SHAPE_ELLIPSE}},\
-    {GP_ELEMENT_PIN_BUTTON, {84,  15, 2, 2, 1, 1, 21,   GP_SHAPE_ELLIPSE}},\
-    {GP_ELEMENT_PIN_BUTTON, {91,  15, 2, 2, 1, 1, 20,   GP_SHAPE_ELLIPSE}},\
-    {GP_ELEMENT_PIN_BUTTON, {98,  15, 2, 2, 1, 1, 16,   GP_SHAPE_ELLIPSE}},\
-    {GP_ELEMENT_PIN_BUTTON, {105, 15, 2, 2, 1, 1, 17,   GP_SHAPE_ELLIPSE}}\
+    {GP_ELEMENT_PIN_BUTTON, {43, 17, 4, 4, 1, 1, 29, GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {31, 27, 4, 4, 1, 1, 5, GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {41, 27, 4, 4, 1, 1, 3, GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {49, 32, 4, 4, 1, 1, 4, GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {21, 29, 4, 4, 1, 1, 26, GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {52, 50, 5, 5, 1, 1, 2, GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {41, 47, 4, 4, 1, 1, 18, GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {80, 10, 84, 14, 1, 1, 16, GP_SHAPE_SQUARE}},\
+    {GP_ELEMENT_PIN_BUTTON, {87, 10, 91, 14, 1, 1, 17, GP_SHAPE_SQUARE}},\
+    {GP_ELEMENT_PIN_BUTTON, {94, 10, 98, 14, 1, 1, 20, GP_SHAPE_SQUARE}},\
+    {GP_ELEMENT_PIN_BUTTON, {101, 10, 105, 14, 1, 1, 21, GP_SHAPE_SQUARE}},\
+    {GP_ELEMENT_PIN_BUTTON, {108, 10, 112, 14, 1, 1, 14, GP_SHAPE_SQUARE}},\
 }
 
 #define DEFAULT_BOARD_LAYOUT_B {\
-    {GP_ELEMENT_PIN_BUTTON, {59, 27, 4, 4, 1, 1, 10,    GP_SHAPE_ELLIPSE}},\
-    {GP_ELEMENT_PIN_BUTTON, {69, 25, 4, 4, 1, 1, 11,    GP_SHAPE_ELLIPSE}},\
-    {GP_ELEMENT_PIN_BUTTON, {79, 25, 4, 4, 1, 1, 12,    GP_SHAPE_ELLIPSE}},\
-    {GP_ELEMENT_PIN_BUTTON, {89, 27, 4, 4, 1, 1, 13,    GP_SHAPE_ELLIPSE}},\
-    {GP_ELEMENT_PIN_BUTTON, {59, 37, 4, 4, 1, 1, 6,     GP_SHAPE_ELLIPSE}},\
-    {GP_ELEMENT_PIN_BUTTON, {69, 35, 4, 4, 1, 1, 7,     GP_SHAPE_ELLIPSE}},\
-    {GP_ELEMENT_PIN_BUTTON, {79, 35, 4, 4, 1, 1, 8,     GP_SHAPE_ELLIPSE}},\
-    {GP_ELEMENT_PIN_BUTTON, {89, 37, 4, 4, 1, 1, 9,     GP_SHAPE_ELLIPSE}},\
-    {GP_ELEMENT_PIN_BUTTON, {66, 45, 4, 4, 1, 1, 19,    GP_SHAPE_ELLIPSE}}\
+    {GP_ELEMENT_PIN_BUTTON, {71, 27, 4, 4, 1, 1, 10, GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {81, 25, 4, 4, 1, 1, 11, GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {91, 25, 4, 4, 1, 1, 12, GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {101, 27, 4, 4, 1, 1, 13, GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {70, 37, 4, 4, 1, 1, 6, GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {80, 35, 4, 4, 1, 1, 7, GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {90, 35, 4, 4, 1, 1, 8, GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {100, 37, 4, 4, 1, 1, 9, GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {76, 47, 4, 4, 1, 1, 19, GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {65, 50, 5, 5, 1, 1, 27, GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {72, 17, 4, 4, 1, 1, 25, GP_SHAPE_ELLIPSE}},\
 }
 
-// Additional Button Support
-#define GPIO_PIN_27 GpioAction::BUTTON_PRESS_UP
-#define GPIO_PIN_26 GpioAction::BUTTON_PRESS_L3
+#define LIGHT_DATA_NAME_DEFAULT "Haute42|Cosmox CAT" 
+#define LIGHT_DATA_SIZE_DEFAULT 48 //number of sets in the below data
+#define LIGHT_DATA_DEFAULT \
+0,  1,  4,  4,  5, LightType::LightType_ActionButton, \
+1,  1,  6,  4,  3, LightType::LightType_ActionButton, \
+2,  1,  8,  5,  4, LightType::LightType_ActionButton, \
+3,  1,  9,  9,  2, LightType::LightType_ActionButton, \
+4,  1, 10,  4, 10, LightType::LightType_ActionButton, \
+5,  1, 12,  3, 11, LightType::LightType_ActionButton, \
+6,  1, 14,  3, 12, LightType::LightType_ActionButton, \
+7,  1, 16,  4, 13, LightType::LightType_ActionButton, \
+8,  1, 10,  6,  6, LightType::LightType_ActionButton, \
+9,  1, 12,  5,  7, LightType::LightType_ActionButton, \
+10, 1, 14,  5,  8, LightType::LightType_ActionButton, \
+11, 1, 16,  6,  9, LightType::LightType_ActionButton, \
+12, 1,  7,  2, 27, LightType::LightType_ActionButton, \
+13, 1,  7,  8, 18, LightType::LightType_ActionButton, \
+14, 1, 11,  8, 19, LightType::LightType_ActionButton, \
+15, 1,  2,  5, 26, LightType::LightType_ActionButton, \
+16, 1,  3,  5, 25, LightType::LightType_ActionButton, \
+17, 1,  4,  7, 29, LightType::LightType_ActionButton, \
+18, 1,  8,  0,  0, LightType::LightType_Case, \
+19, 1,  6,  0,  1, LightType::LightType_Case, \
+20, 1,  4,  0,  2, LightType::LightType_Case, \
+21, 1,  2,  0,  3, LightType::LightType_Case, \
+22, 1,  0,  0,  4, LightType::LightType_Case, \
+23, 1,  0,  2,  5, LightType::LightType_Case, \
+24, 1,  0,  4,  6, LightType::LightType_Case, \
+25, 1,  0,  6,  7, LightType::LightType_Case, \
+26, 1,  0,  8,  8, LightType::LightType_Case, \
+27, 1,  0, 10,  9, LightType::LightType_Case, \
+28, 1,  0, 12, 10, LightType::LightType_Case, \
+29, 1,  2, 12, 11, LightType::LightType_Case, \
+30, 1,  4, 12, 12, LightType::LightType_Case, \
+31, 1,  6, 12, 13, LightType::LightType_Case, \
+32, 1,  8, 12, 14, LightType::LightType_Case, \
+33, 1, 10, 12, 15, LightType::LightType_Case, \
+34, 1, 12, 12, 16, LightType::LightType_Case, \
+35, 1, 14, 12, 17, LightType::LightType_Case, \
+36, 1, 16, 12, 18, LightType::LightType_Case, \
+37, 1, 18, 12, 19, LightType::LightType_Case, \
+38, 1, 18, 10, 20, LightType::LightType_Case, \
+39, 1, 18,  8, 21, LightType::LightType_Case, \
+40, 1, 18,  6, 22, LightType::LightType_Case, \
+41, 1, 18,  4, 23, LightType::LightType_Case, \
+42, 1, 18,  2, 24, LightType::LightType_Case, \
+43, 1, 18,  0, 25, LightType::LightType_Case, \
+44, 1, 16,  0, 26, LightType::LightType_Case, \
+45, 1, 14,  0, 27, LightType::LightType_Case, \
+46, 1, 12,  0, 28, LightType::LightType_Case, \
+47, 1, 10,  0, 29, LightType::LightType_Case
 
 // Keyboard Host enabled by default
 #define KEYBOARD_HOST_ENABLED 1
-
-#define BOARD_LED_ENABLED 1
-#define BOARD_LED_TYPE ON_BOARD_LED_MODE_MODE_INDICATOR
 
 #define DEFAULT_SPLASH \
 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
