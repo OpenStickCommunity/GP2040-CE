@@ -121,31 +121,31 @@
 #endif
 
 #ifndef LEDS_BASE_ANIMATION_INDEX
-#define LEDS_BASE_ANIMATION_INDEX 2//1
+#define LEDS_BASE_ANIMATION_INDEX AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_SYNCED
 #endif
 
-#ifndef LEDS_STATIC_COLOR_INDEX
-#define LEDS_STATIC_COLOR_INDEX 2
+#ifndef LEDS_PRESSED_ANIMATION_INDEX
+#define LEDS_PRESSED_ANIMATION_INDEX AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_STATIC_COLOR
 #endif
 
-#ifndef LEDS_BUTTON_COLOR_INDEX
-#define LEDS_BUTTON_COLOR_INDEX 1
+#ifndef LEDS_CASE_ANIMATION_INDEX
+#define LEDS_CASE_ANIMATION_INDEX AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_SYNCED
 #endif
 
-#ifndef LEDS_THEME_INDEX
-#define LEDS_THEME_INDEX 0
+#ifndef LEDS_STATIC_COLOR_UNPRESSED
+#define LEDS_STATIC_COLOR_UNPRESSED 2 // Red - animation.h colors array index
 #endif
 
-#ifndef LEDS_RAINBOW_CYCLE_TIME
-#define LEDS_RAINBOW_CYCLE_TIME 40
+#ifndef LEDS_STATIC_COLOR_PRESSED
+#define LEDS_STATIC_COLOR_PRESSED 1 // White - animation.h colors array index
 #endif
 
-#ifndef LEDS_CHASE_CYCLE_TIME
-#define LEDS_CHASE_CYCLE_TIME 85
+#ifndef LEDS_STATIC_COLOR_CASE
+#define LEDS_STATIC_COLOR_CASE 1 // White - animation.h colors array index
 #endif
 
-#ifndef LEDS_PRESS_COLOR_COOLDOWN_TIME
-#define LEDS_PRESS_COLOR_COOLDOWN_TIME 0
+#ifndef LEDS_AUTO_DISABLE_TIME
+#define LEDS_AUTO_DISABLE_TIME 15000 // in ms
 #endif
 
 #ifndef LED_BRIGHTNESS_MAXIMUM

@@ -543,7 +543,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         INIT_UNSET_PROPERTY(config.animationOptions, brightness, AnimationStation::brightnessSteps);
     }
     INIT_UNSET_PROPERTY(config.animationOptions, baseProfileIndex, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, autoDisableTime, 15000);
+    INIT_UNSET_PROPERTY(config.animationOptions, autoDisableTime, LEDS_AUTO_DISABLE_TIME);
 
     //Default to rainbow rotate if a fresh settings
     if(config.animationOptions.profiles[0].has_bEnabled == false)
@@ -557,18 +557,26 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         config.animationOptions.profiles[0].pressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
         for (unsigned int lightIndex = 0; lightIndex < (NUM_BANK0_GPIOS/4)+1; ++lightIndex) 
         {
-            config.animationOptions.profiles[0].notPressedStaticColors[lightIndex] = 0; //Black
-            config.animationOptions.profiles[0].pressedStaticColors[lightIndex] = 0; //Black
+            config.animationOptions.profiles[0].notPressedStaticColors[lightIndex] = LEDS_STATIC_COLOR_UNPRESSED;
+            config.animationOptions.profiles[0].notPressedStaticColors[lightIndex] += LEDS_STATIC_COLOR_UNPRESSED<<8;
+            config.animationOptions.profiles[0].notPressedStaticColors[lightIndex] += LEDS_STATIC_COLOR_UNPRESSED<<16;
+            config.animationOptions.profiles[0].notPressedStaticColors[lightIndex] += LEDS_STATIC_COLOR_UNPRESSED<<24;
+            config.animationOptions.profiles[0].pressedStaticColors[lightIndex] = LEDS_STATIC_COLOR_PRESSED;
+            config.animationOptions.profiles[0].pressedStaticColors[lightIndex] += LEDS_STATIC_COLOR_PRESSED<<8; 
+            config.animationOptions.profiles[0].pressedStaticColors[lightIndex] += LEDS_STATIC_COLOR_PRESSED<<16; 
+            config.animationOptions.profiles[0].pressedStaticColors[lightIndex] += LEDS_STATIC_COLOR_PRESSED<<24;
         }
         config.animationOptions.profiles[0].caseStaticColors_count = (MAX_CASE_LIGHTS/4);
         for (unsigned int lightIndex = 0; lightIndex < (MAX_CASE_LIGHTS/4); ++lightIndex) 
         {
-            config.animationOptions.profiles[0].caseStaticColors[lightIndex] = 0; //Black
+            config.animationOptions.profiles[0].caseStaticColors[lightIndex] = LEDS_STATIC_COLOR_CASE; 
+            config.animationOptions.profiles[0].caseStaticColors[lightIndex] += LEDS_STATIC_COLOR_CASE<<8; 
+            config.animationOptions.profiles[0].caseStaticColors[lightIndex] += LEDS_STATIC_COLOR_CASE<<16;
+            config.animationOptions.profiles[0].caseStaticColors[lightIndex] += LEDS_STATIC_COLOR_CASE<<24; 
         }
-        config.animationOptions.profiles[0].caseStaticColors_count = 0;
-        config.animationOptions.profiles[0].baseNonPressedEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_ROTATE;
-        config.animationOptions.profiles[0].basePressedEffect = AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_STATIC_COLOR;
-        config.animationOptions.profiles[0].baseCaseEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_ROTATE;
+        config.animationOptions.profiles[0].baseNonPressedEffect = LEDS_BASE_ANIMATION_INDEX;
+        config.animationOptions.profiles[0].basePressedEffect = LEDS_PRESSED_ANIMATION_INDEX;
+        config.animationOptions.profiles[0].baseCaseEffect = LEDS_CASE_ANIMATION_INDEX;
         INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bUseCaseLightsInPressedAnimations, 1);   
         INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bUseCaseLightsInSpecialMoves, 1);   
     }

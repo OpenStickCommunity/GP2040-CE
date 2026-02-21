@@ -85,7 +85,7 @@
 
 #define BOARD_LEDS_PIN 8
 #define LED_BRIGHTNESS_MAXIMUM 50
-#define LEDS_BASE_ANIMATION_INDEX 1
+#define LEDS_BASE_ANIMATION_INDEX AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_SYNCED
 
 #define LEDS_DPAD_UP     0
 #define LEDS_DPAD_LEFT   1

@@ -979,7 +979,6 @@ std::string getLightsDataOptions()
 std::string getLightsPresetsByIndex(int presetIdx)
 {
     DynamicJsonDocument outDoc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-    JsonArray presetsArray = outDoc.to<JsonArray>();
 
     auto addPreset = [&](const char* name, const unsigned char* data, int32_t dataSize)
     {
@@ -1941,8 +1940,6 @@ std::string setReactiveLEDs()
 std::string setAddonOptions()
 {
     DynamicJsonDocument doc = get_post_data();
-
-    GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
 
     AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
     docToPin(analogOptions.analogAdc1PinX, doc, "analogAdc1PinX");

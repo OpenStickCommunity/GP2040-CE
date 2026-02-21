@@ -77,7 +77,7 @@
 
 #define LED_BRIGHTNESS_MAXIMUM 50
 #define LEDS_PER_PIXEL 2
-#define LEDS_BASE_ANIMATION_INDEX 1
+#define LEDS_BASE_ANIMATION_INDEX AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_SYNCED
 #define LEDS_BUTTON_A2   0
 #define LEDS_BUTTON_L3   1
 #define LEDS_DPAD_LEFT   2

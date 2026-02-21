@@ -189,6 +189,23 @@ export default function PeripheralMappingPage() {
 														checked={Boolean(
 															values.peripheral[`${block.label}`].enabled,
 														)}
+														onChange={(e) => {
+															setFieldValue(
+																`peripheral.${block.label}.enabled`,
+																e.target.checked ? 1 : 0,
+															);
+														}}
+													/>
+												</div>
+												{Object.keys(block.pins).map((pin, i) => (
+													<div
+														key={`${block.label}.${pin}`}
+														className="col-sm-auto"
+													>
+													<Form.Label>
+														{t(
+																`PeripheralMapping:pin-${pin.toLowerCase()}-label`,
+														)}
 													</Form.Label>
 													<FormSelect
 														key={`peripheral.${block.label}.${pin}`}
