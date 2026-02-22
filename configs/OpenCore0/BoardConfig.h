@@ -107,6 +107,44 @@
 #define PLED4_PIN 27
 #define PLED_COLOR ColorGreen
 
+#define LEDS_AUTO_DISABLE_TIME 0
+#define LIGHT_DATA_NAME_DEFAULT "OpenCore0" 
+#define LIGHT_DATA_SIZE_DEFAULT 48 //number of sets in the below data
+#define LIGHT_DATA_DEFAULT \
+0,  1, 5,  4, 5,  LightType::LightType_ActionButton, \
+0,  2, 2,  3, 9,  LightType::LightType_ActionButton, \
+2,  2, 4,  3, 10, LightType::LightType_ActionButton, \
+4,  2, 6,  4, 11, LightType::LightType_ActionButton, \
+6,  2, 8,  3, 17, LightType::LightType_ActionButton, \
+8,  2, 10, 2, 18, LightType::LightType_ActionButton, \
+10, 2, 12, 2, 19, LightType::LightType_ActionButton, \
+12, 2, 14, 2, 20, LightType::LightType_ActionButton, \
+14, 2, 14, 4, 16, LightType::LightType_ActionButton, \
+16, 2, 12, 4, 15, LightType::LightType_ActionButton, \
+18, 2, 10, 4, 14, LightType::LightType_ActionButton, \
+20, 2, 8,  5, 13, LightType::LightType_ActionButton, \
+22, 2, 6,  7, 12, LightType::LightType_ActionButton, \
+29, 1, 16, 0, 0,  LightType::LightType_Case, \
+30, 1, 16, 1, 1,  LightType::LightType_Case, \
+31, 1, 16, 2, 2,  LightType::LightType_Case, \
+32, 1, 16, 3, 3,  LightType::LightType_Case, \
+33, 1, 16, 4, 4,  LightType::LightType_Case, \
+34, 1, 16, 5, 5,  LightType::LightType_Case, \
+35, 1, 16, 6, 6,  LightType::LightType_Case, \
+36, 1, 16, 7, 7,  LightType::LightType_Case, \
+37, 1, 16, 8, 8,  LightType::LightType_Case, \
+38, 1, 16, 9, 9,  LightType::LightType_Case, \
+39, 1, 0,  9, 10, LightType::LightType_Case, \
+40, 1, 0,  8, 11, LightType::LightType_Case, \
+41, 1, 0,  7, 12, LightType::LightType_Case, \
+42, 1, 0,  6, 13 ,LightType::LightType_Case, \
+43, 1, 0,  5, 14 ,LightType::LightType_Case, \
+44, 1, 0,  4, 15 ,LightType::LightType_Case, \
+45, 1, 0,  3, 16 ,LightType::LightType_Case, \
+46, 1, 0,  2, 17 ,LightType::LightType_Case, \
+47, 1, 0,  1, 18 ,LightType::LightType_Case, \
+48, 1, 0,  0, 19 ,LightType::LightType_Case
+
 #define TURBO_LED_INDEX 28
 #define TURBO_LED_TYPE PLED_TYPE_RGB
 #define TURBO_LED_COLOR ColorRed
