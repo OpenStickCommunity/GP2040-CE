@@ -264,8 +264,12 @@ private:
 
 	GamepadHotkey ProcessAnimationHotkeys(Gamepad *gamepad);
 
+	//Light non button/case lights if they are in RGB mode
+	void UpdateTurboLED();
+	void UpdatePlayerLEDs();
+
 	//Legacy setup functions
-	void generateLegacyIndividualLight(int firstLedIndex, int xCoord, int yCoord, uint8_t ledsPerPixel, GpioAction actionButton);
+	void generateLegacyIndividualLight(int firstLedIndex, int xCoord, int yCoord, uint8_t ledsPerPixel, int customDataIndex, LightType lightType = LightType::LightType_ActionButton);
 	void generatedLEDButtons(std::vector<std::vector<uint8_t>> *positions, uint8_t ledsPerPixel);
 	void generatedLEDStickless(std::vector<std::vector<uint8_t>> *positions, uint8_t ledsPerPixel);
 	void generatedLEDWasd(std::vector<std::vector<uint8_t>> *positions, uint8_t ledsPerPixel);

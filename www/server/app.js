@@ -744,7 +744,6 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		shmupBtnMask4: 0,
 		pinShmupDial: -1,
 		turboLedType: 1,
-		turboLedIndex: 16,
 		turboLedColor: 16711680,
 		sliderSOCDModeDefault: 1,
 		snesPadClockPin: -1,

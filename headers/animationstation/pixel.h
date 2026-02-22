@@ -53,10 +53,12 @@ struct Light
     Type = InType;
     LedsPerLight = InNumLedsPerLight;
     //GamePadMask = GamePadMask;
-    if(InType != LightType::LightType_Case)
-      GIPOPin = InGIPOPin;
-    else
+    if(InType == LightType::LightType_Case)
       CaseLightIndex = InGIPOPin;
+    else if(InType == LightType::LightType_PlayerLight)
+      PlayerLightIndex = InGIPOPin;
+    else if(InType == LightType::LightType_ActionButton || InType == LightType::LightType_Turbo)
+      GIPOPin = InGIPOPin;
   }
 
   // index of first LED
@@ -79,6 +81,9 @@ struct Light
 
   //Sequential index of this case light
   int32_t CaseLightIndex = -1;
+
+  //Player ID
+  int32_t PlayerLightIndex = -1;
 };
 
 //All RGB lights on the device. Replaced PixelMatrix

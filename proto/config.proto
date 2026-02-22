@@ -316,10 +316,10 @@ message LEDOptions
 
     optional bool turnOffWhenSuspended = 31;
 
-    optional int32 pledIndex1 = 32;
-    optional int32 pledIndex2 = 33;
-    optional int32 pledIndex3 = 34;
-    optional int32 pledIndex4 = 35;
+    optional int32 pledIndex1 = 32 [deprecated = true];
+    optional int32 pledIndex2 = 33 [deprecated = true];
+    optional int32 pledIndex3 = 34 [deprecated = true];
+    optional int32 pledIndex4 = 35 [deprecated = true];
 
     optional CaseRGBType caseRGBType = 36 [deprecated = true];
     optional int32 caseRGBIndex = 37 [deprecated = true];
@@ -483,7 +483,7 @@ message TurboOptions
     optional ShmupMixMode shmupMixMode = 19;
 
     optional PLEDType turboLedType = 20;
-    optional int32 turboLedIndex = 21;
+    optional int32 turboLedIndex = 21  [deprecated = true];
     optional uint32 turboLedColor = 22;
 }
 

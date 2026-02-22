@@ -813,10 +813,6 @@ std::string setLedOptions()
     docToPin(ledOptions.pledPin2, doc, "pledPin2");
     docToPin(ledOptions.pledPin3, doc, "pledPin3");
     docToPin(ledOptions.pledPin4, doc, "pledPin4");
-    readDoc(ledOptions.pledIndex1, doc, "pledIndex1");
-    readDoc(ledOptions.pledIndex2, doc, "pledIndex2");
-    readDoc(ledOptions.pledIndex3, doc, "pledIndex3");
-    readDoc(ledOptions.pledIndex4, doc, "pledIndex4");
     readDoc(ledOptions.pledColor, doc, "pledColor");
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
@@ -841,10 +837,6 @@ std::string getLedOptions()
     writeDoc(doc, "pledPin2", ledOptions.pledPin2);
     writeDoc(doc, "pledPin3", ledOptions.pledPin3);
     writeDoc(doc, "pledPin4", ledOptions.pledPin4);
-    writeDoc(doc, "pledIndex1", ledOptions.pledIndex1);
-    writeDoc(doc, "pledIndex2", ledOptions.pledIndex2);
-    writeDoc(doc, "pledIndex3", ledOptions.pledIndex3);
-    writeDoc(doc, "pledIndex4", ledOptions.pledIndex4);
     writeDoc(doc, "pledColor", ((RGB)ledOptions.pledColor).value(LED_FORMAT_RGB));
 
     return serialize_json(doc);
@@ -959,6 +951,7 @@ std::string getLightsDataOptions()
 {
     DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
     const LEDOptions& options = Storage::getInstance().getLedOptions();
+    const TurboOptions& turboOptions = Storage::getInstance().getAddonOptions().turboOptions;
 
     JsonObject LedOptions = doc.createNestedObject("LightData");
     JsonArray lightsList = LedOptions.createNestedArray("Lights");
@@ -972,6 +965,9 @@ std::string getLightsDataOptions()
         light["GPIOPinorCaseChainIndex"] = options.lightClusterData[lightsIndex].lightTypeData & 0xFF;
         light["lightType"] = (options.lightClusterData[lightsIndex].lightTypeData >> 8) & 0xFF;
     }
+
+    LedOptions["TurboIsRGB"] = turboOptions.turboLedType == PLED_TYPE_RGB ? 1 : 0;
+    LedOptions["PLedIsRGB"] = options.pledType == PLED_TYPE_RGB ? 1 : 0;
 
     return serialize_json(doc);
 }
@@ -2042,7 +2038,6 @@ std::string setAddonOptions()
     docToValue(turboOptions.shmupBtnMask4, doc, "shmupBtnMask4");
     docToPin(turboOptions.shmupDialPin, doc, "pinShmupDial");
     docToValue(turboOptions.turboLedType, doc, "turboLedType");
-    docToValue(turboOptions.turboLedIndex, doc, "turboLedIndex");
     docToValue(turboOptions.turboLedColor, doc, "turboLedColor");
     docToValue(turboOptions.enabled, doc, "TurboInputEnabled");
 
@@ -2494,7 +2489,6 @@ std::string getAddonOptions()
     writeDoc(doc, "shmupBtnMask4", turboOptions.shmupBtnMask4);
     writeDoc(doc, "pinShmupDial", cleanPin(turboOptions.shmupDialPin));
     writeDoc(doc, "turboLedType", turboOptions.turboLedType);
-    writeDoc(doc, "turboLedIndex", turboOptions.turboLedIndex);
     writeDoc(doc, "turboLedColor",  ((RGB)turboOptions.turboLedColor).value(LED_FORMAT_RGB));
     writeDoc(doc, "TurboInputEnabled", turboOptions.enabled);
 
