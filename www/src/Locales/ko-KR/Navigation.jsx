@@ -2,7 +2,6 @@ export default {
 	'add-ons-label': '애드-온 구성',
 	'backup-label': '데이터 백업 및 복구',
 	'config-label': '구성',
-	'custom-theme-label': '커스텀 LED 테마',
 	'display-config-label': '디스플레이 구성',
 	'docs-label': '공식 사이트',
 	'github-label': 'GitHub',

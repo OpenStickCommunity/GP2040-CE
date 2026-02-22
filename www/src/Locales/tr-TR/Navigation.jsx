@@ -2,7 +2,6 @@ export default {
 	'add-ons-label': 'Eklenti Yapılandırması',
 	'backup-label': 'Veri Yedekleme ve Geri Yükleme',
 	'config-label': 'Yapılandırma',
-	'custom-theme-label': 'Özel LED Teması',
 	'display-config-label': 'Ekran Yapılandırması',
 	'docs-label': 'Dokümantasyon',
 	'github-label': 'GitHub',

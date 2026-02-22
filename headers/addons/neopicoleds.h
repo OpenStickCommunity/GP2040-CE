@@ -22,6 +22,8 @@
 #include "animationstation.h"
 #include "NeoPico.h"
 
+#include "playerleds.h"
+
 #include "enums.pb.h"
 
 #ifndef BOARD_LEDS_PIN
@@ -36,48 +38,117 @@
 #define LED_FORMAT LED_FORMAT_GRB
 #endif
 
+#ifndef LIGHT_DATA_SIZE_DEFAULT
+#define LIGHT_DATA_SIZE_DEFAULT 0
+#endif
+#ifndef LIGHT_DATA_DEFAULT
+#define LIGHT_DATA_DEFAULT 0,0,0,0,0,LightType::LightType_ActionButton
+#endif
+#ifndef LIGHT_DATA_NAME_DEFAULT
+#define LIGHT_DATA_NAME_DEFAULT ""
+#endif
+#ifndef LIGHT_DATA_SIZE_1
+#define LIGHT_DATA_SIZE_1 0
+#endif
+#ifndef LIGHT_DATA_1
+#define LIGHT_DATA_1 0,0,0,0,0,LightType::LightType_ActionButton
+#endif
+#ifndef LIGHT_DATA_NAME_1
+#define LIGHT_DATA_NAME_1 ""
+#endif
+#ifndef LIGHT_DATA_SIZE_2
+#define LIGHT_DATA_SIZE_2 0
+#endif
+#ifndef LIGHT_DATA_2
+#define LIGHT_DATA_2 0,0,0,0,0,LightType::LightType_ActionButton
+#endif
+#ifndef LIGHT_DATA_NAME_2
+#define LIGHT_DATA_NAME_2 ""
+#endif
+#ifndef LIGHT_DATA_SIZE_3
+#define LIGHT_DATA_SIZE_3 0
+#endif
+#ifndef LIGHT_DATA_3
+#define LIGHT_DATA_3 0,0,0,0,0,LightType::LightType_ActionButton
+#endif
+#ifndef LIGHT_DATA_NAME_3
+#define LIGHT_DATA_NAME_3 ""
+#endif
+#ifndef LIGHT_DATA_SIZE_4
+#define LIGHT_DATA_SIZE_4 0
+#endif
+#ifndef LIGHT_DATA_4
+#define LIGHT_DATA_4 0,0,0,0,0,LightType::LightType_ActionButton
+#endif
+#ifndef LIGHT_DATA_NAME_4
+#define LIGHT_DATA_NAME_4 ""
+#endif
+#ifndef LIGHT_DATA_SIZE_5
+#define LIGHT_DATA_SIZE_5 0
+#endif
+#ifndef LIGHT_DATA_5
+#define LIGHT_DATA_5 0,0,0,0,0,LightType::LightType_ActionButton
+#endif
+#ifndef LIGHT_DATA_NAME_5
+#define LIGHT_DATA_NAME_5 ""
+#endif
+#ifndef LIGHT_DATA_SIZE_6
+#define LIGHT_DATA_SIZE_6 0
+#endif
+#ifndef LIGHT_DATA_6
+#define LIGHT_DATA_6 0,0,0,0,0,LightType::LightType_ActionButton
+#endif
+#ifndef LIGHT_DATA_NAME_6
+#define LIGHT_DATA_NAME_6 ""
+#endif
+#ifndef LIGHT_DATA_SIZE_7
+#define LIGHT_DATA_SIZE_7 0
+#endif
+#ifndef LIGHT_DATA_7
+#define LIGHT_DATA_7 0,0,0,0,0,LightType::LightType_ActionButton
+#endif
+#ifndef LIGHT_DATA_NAME_7
+#define LIGHT_DATA_NAME_7 ""
+#endif
+
 #ifndef LEDS_PER_PIXEL
 #define LEDS_PER_PIXEL 1
 #endif
 
 #ifndef LEDS_BRIGHTNESS
-#define LEDS_BRIGHTNESS 75
+#define LEDS_BRIGHTNESS -1
 #endif
 
 #ifndef LEDS_BASE_ANIMATION_INDEX
-#define LEDS_BASE_ANIMATION_INDEX 2//1
+#define LEDS_BASE_ANIMATION_INDEX AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_SYNCED
 #endif
 
-#ifndef LEDS_STATIC_COLOR_INDEX
-#define LEDS_STATIC_COLOR_INDEX 2
+#ifndef LEDS_PRESSED_ANIMATION_INDEX
+#define LEDS_PRESSED_ANIMATION_INDEX AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_STATIC_COLOR
 #endif
 
-#ifndef LEDS_BUTTON_COLOR_INDEX
-#define LEDS_BUTTON_COLOR_INDEX 1
+#ifndef LEDS_CASE_ANIMATION_INDEX
+#define LEDS_CASE_ANIMATION_INDEX AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_SYNCED
 #endif
 
-#ifndef LEDS_THEME_INDEX
-#define LEDS_THEME_INDEX 0
+#ifndef LEDS_STATIC_COLOR_UNPRESSED
+#define LEDS_STATIC_COLOR_UNPRESSED 2 // Red - animation.h colors array index
 #endif
 
-#ifndef LEDS_RAINBOW_CYCLE_TIME
-#define LEDS_RAINBOW_CYCLE_TIME 40
+#ifndef LEDS_STATIC_COLOR_PRESSED
+#define LEDS_STATIC_COLOR_PRESSED 1 // White - animation.h colors array index
 #endif
 
-#ifndef LEDS_CHASE_CYCLE_TIME
-#define LEDS_CHASE_CYCLE_TIME 85
+#ifndef LEDS_STATIC_COLOR_CASE
+#define LEDS_STATIC_COLOR_CASE 1 // White - animation.h colors array index
 #endif
 
-#ifndef LEDS_PRESS_COLOR_COOLDOWN_TIME
-#define LEDS_PRESS_COLOR_COOLDOWN_TIME 0
+#ifndef LEDS_AUTO_DISABLE_TIME
+#define LEDS_AUTO_DISABLE_TIME 15000 // in ms
 #endif
 
 #ifndef LED_BRIGHTNESS_MAXIMUM
 #define LED_BRIGHTNESS_MAXIMUM 128
-#endif
-
-#ifndef LED_BRIGHTNESS_STEPS
-#define LED_BRIGHTNESS_STEPS 5
 #endif
 
 #ifndef LEDS_DPAD_LEFT
@@ -156,58 +227,6 @@
 #define LEDS_TURN_OFF_WHEN_SUSPENDED 0
 #endif
 
-#ifndef CASE_RGB_TYPE
-#define CASE_RGB_TYPE CASE_RGB_TYPE_NONE
-#endif
-
-#ifndef CASE_RGB_INDEX
-#define CASE_RGB_INDEX -1
-#endif
-
-#ifndef CASE_RGB_COUNT
-#define CASE_RGB_COUNT 0
-#endif
-
-#ifndef AMBIENT_LIGHT_EFFECT
-#define AMBIENT_LIGHT_EFFECT AL_CUSTOM_EFFECT_STATIC_COLOR
-#endif
-
-#ifndef AMBIENT_STATIC_COLOR_BRIGHTNESS
-#define AMBIENT_STATIC_COLOR_BRIGHTNESS 1.00f
-#endif
-
-#ifndef AMBIENT_GRADIENT_COLOR_BRIGHTNESS
-#define AMBIENT_GRADIENT_COLOR_BRIGHTNESS 1.00f
-#endif
-
-#ifndef AMBIENT_CHASE_COLOR_BRIGHTNESS
-#define AMBIENT_CHASE_COLOR_BRIGHTNESS 1.00f
-#endif
-
-#ifndef AMBIENT_CUSTOM_THEME_BRIGHTNESS
-#define AMBIENT_CUSTOM_THEME_BRIGHTNESS 1.00f
-#endif
-
-#ifndef AMBIENT_GRADIENT_SPEED
-#define AMBIENT_GRADIENT_SPEED 2
-#endif
-
-#ifndef AMBIENT_CHASE_SPEED
-#define AMBIENT_CHASE_SPEED 100
-#endif
-
-#ifndef AMBIENT_BREATH_SPEED
-#define AMBIENT_BREATH_SPEED 0.01f
-#endif
-
-#ifndef AMBIENT_CUSTOM_THEME
-#define AMBIENT_CUSTOM_THEME 0
-#endif
-
-#ifndef AMBIENT_STATIC_COLOR
-#define AMBIENT_STATIC_COLOR ANIMATION_COLOR_PURPLE
-#endif
-
 // Neo Pixel needs to tie into PlayerLEDS led Levels
 class NeoPicoPlayerLEDs : public PlayerLEDs
 {
@@ -222,56 +241,65 @@ public:
 // NeoPico LED Addon
 class NeoPicoLEDAddon : public GPAddon {
 public:
-    virtual bool available();
-    virtual void setup();
-    virtual void preprocess() {}
-    virtual void process();
-    virtual void postprocess(bool sent) {}
+
+	//GP Addon functions
+	virtual bool available();
+	virtual void setup();
+	virtual void preprocess() {}
+	virtual void process();
+   	virtual void postprocess(bool sent) {}
     virtual void reinit() {}
-    virtual std::string name() { return NeoPicoLEDName; }    
-	void ambientLightLinkage(); 
-    
+	virtual std::string name() { return NeoPicoLEDName; }
+
+	static void AssignLedPreset(const unsigned char* data, int32_t dataSize);
+	static void RestartLedSystem() { bRestartLeds = true; }
+
+	uint32_t frame[FRAME_MAX];
 private:
-    std::vector<uint8_t> * getLEDPositions(std::string button, std::vector<std::vector<uint8_t>> *positions);
-    std::vector<std::vector<Pixel>> generatedLEDButtons(std::vector<std::vector<uint8_t>> *positions);
-    std::vector<std::vector<Pixel>> generatedLEDStickless(std::vector<std::vector<uint8_t>> *positions);
-    std::vector<std::vector<Pixel>> generatedLEDWasd(std::vector<std::vector<uint8_t>> *positions);
-    std::vector<std::vector<Pixel>> generatedLEDWasdFBM(std::vector<std::vector<uint8_t>> *positions);
-    std::vector<std::vector<Pixel>> createLEDLayout(ButtonLayout layout, uint8_t ledsPerPixel, uint8_t ledButtonCount);
-    uint8_t setupButtonPositions();
-    GamepadHotkey animationHotkeys(Gamepad *gamepad);
-    void ambientHotkeys(Gamepad *gamepad);
-    void ambientLightCustom();
-    const uint32_t intervalMS = 10;
-    absolute_time_t nextRunTime;
-    int ledCount;
-    int buttonLedCount;
-    PixelMatrix matrix;
-    NeoPico neopico;
-    PLEDAnimationState animationState; // NeoPico can control the player LEDs
-    NeoPicoPlayerLEDs * neoPLEDs = nullptr;
-    AnimationStation as;
-    std::map<std::string, int> buttonPositions;
-    PLEDType ledType;
-    GamepadHotkey lastAmbientAction;
-    uint32_t frame[100];
 
-    // Ambient neopico leds
-	float alBrightnessBreathX;
-	uint8_t breathLedEffectCycle;
-	bool alReverse;
-	int alCurrentFrame;
-	int alFrameToRGB;
-	int alFrameSpeed;
-    RGB ambientLight;
-	absolute_time_t nextRunTimeAmbientLight;
-    uint8_t chaseLightIndex;
-    uint8_t chaseLightMaxIndexPos;
+	void decompressSettings();
 
-    uint8_t multipleOfButtonLedsCount;
-    uint8_t remainderOfButtonLedsCount;
+	void configureLEDs();
 
-    uint8_t alLinkageStartIndex;
+	GamepadHotkey ProcessAnimationHotkeys(Gamepad *gamepad);
+
+	//Legacy setup functions
+	void generateLegacyIndividualLight(int firstLedIndex, int xCoord, int yCoord, uint8_t ledsPerPixel, GpioAction actionButton);
+	void generatedLEDButtons(std::vector<std::vector<uint8_t>> *positions, uint8_t ledsPerPixel);
+	void generatedLEDStickless(std::vector<std::vector<uint8_t>> *positions, uint8_t ledsPerPixel);
+	void generatedLEDWasd(std::vector<std::vector<uint8_t>> *positions, uint8_t ledsPerPixel);
+	void generatedLEDWasdFBM(std::vector<std::vector<uint8_t>> *positions, uint8_t ledsPerPixel);
+	void createLEDLayout(ButtonLayout layout, uint8_t ledsPerPixel, uint8_t ledButtonCount);
+	uint8_t setupButtonPositions();
+
+	//New co-ordinated setup
+	void GenerateLights();
+
+	//Controls the actual lights on the board. Writes out state each frame
+	NeoPico neopico;
+
+	//Classes to control the player LEDS
+	PLEDAnimationState animationState; // NeoPico can control the player LEDs
+	NeoPicoPlayerLEDs * neoPLEDs = nullptr;
+
+	//Data representation of the lights
+	Lights RGBLights;
+
+	//Animation class. Handles idle animations, special move animations and pressed button effects
+	class AnimationStation AnimStation;
+
+	const uint32_t intervalMS = 25;
+	absolute_time_t nextRunTime;
+	absolute_time_t lastRunTime;
+	uint8_t ledCount;
+	InputMode inputMode; // HACK
+	std::map<std::string, int> buttonPositions;
+	bool turnOffWhenSuspended;
+
+	bool bHasSetupNeoPico = false;
+
+	//Webconfig/testing
+	static bool bRestartLeds;
 };
 
 #endif

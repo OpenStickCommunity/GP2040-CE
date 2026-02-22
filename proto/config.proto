@@ -273,6 +273,12 @@ message DisplayOptions
     optional uint32 contrast = 31;
 }
 
+message LightCluster
+{
+    optional uint32 lightLocationData = 1; // [ledIndex, ledCount, xCoord, yCoord]
+    optional uint32 lightTypeData = 2; // [gpioPin, type, unused, unused]
+};
+
 message LEDOptions
 {
     optional int32 dataPin = 1;
@@ -280,7 +286,7 @@ message LEDOptions
     optional ButtonLayout ledLayout = 3;
     optional uint32 ledsPerButton = 4;
     optional uint32 brightnessMaximum = 5;
-    optional uint32 brightnessSteps = 6;
+    optional uint32 brightnessSteps = 6 [deprecated = true];
 
     optional int32 indexUp = 7;
     optional int32 indexDown = 8;
@@ -315,72 +321,59 @@ message LEDOptions
     optional int32 pledIndex3 = 34;
     optional int32 pledIndex4 = 35;
 
-    optional CaseRGBType caseRGBType = 36;
-    optional int32 caseRGBIndex = 37;
+    optional CaseRGBType caseRGBType = 36 [deprecated = true];
+    optional int32 caseRGBIndex = 37 [deprecated = true];
     optional uint32 caseRGBColor = 38 [deprecated = true];
-    optional uint32 caseRGBCount = 39;
+    optional uint32 caseRGBCount = 39 [deprecated = true];
+
+    repeated LightCluster lightClusterData = 40 [(nanopb).max_count = 100]; //FRAME_MAX (100)
+    optional bool lightClusterDataInitialised = 41;
 };
 
-// This has to be kept in sync with AnimationOptions in animationstation.hpp
+// This has to be kept in sync with AnimationProfile_Unpacked in AnimationStation.hpp
+message AnimationProfile
+{
+    optional bool bEnabled = 1;
+
+ 	optional AnimationNonPressedEffects baseNonPressedEffect = 2;
+  	optional AnimationPressedEffects basePressedEffect = 3;
+
+    optional int32 baseCycleTime = 4;
+
+    repeated uint32 notPressedStaticColors = 5 [(nanopb).max_count = 8]; //NUM_BANK0_GPIOS/4 from platform_defs.h
+    repeated uint32 pressedStaticColors = 6 [(nanopb).max_count = 8]; //NUM_BANK0_GPIOS/4 from platform_defs.h
+
+    optional uint32 buttonPressHoldTimeInMs = 7;
+    optional uint32 buttonPressFadeOutTimeInMs = 8;
+
+    optional uint32 nonPressedSpecialColor = 9;
+
+ 	optional AnimationNonPressedEffects baseCaseEffect = 10;
+
+    repeated uint32 caseStaticColors = 11 [(nanopb).max_count = 10]; //(MAX_CASE_LIGHTS/4) from AnimationStation.hpp
+
+    optional uint32 pressedSpecialColor = 12;
+
+    optional int32 basePressedCycleTime = 13; 
+
+    optional bool bUseCaseLightsInPressedAnimations = 14;
+
+    optional int32 baseCaseCycleTime = 15; 
+};
+
+// This has to be kept in sync with AnimationOptions_Unpacked in animationstation.hpp
 message AnimationOptions
 {
-    optional uint32 baseAnimationIndex = 1;
+    reserved 1, 3 to 56;
+    
     optional uint32 brightness = 2;
-    optional uint32 staticColorIndex = 3;
-    optional uint32 buttonColorIndex = 4;
-    optional int32 chaseCycleTime = 5;
-    optional int32 rainbowCycleTime = 6;
-    optional uint32 themeIndex = 7;
+    
+    repeated AnimationProfile profiles = 57 [(nanopb).max_count = 4]; //MAX_ANIMATION_PROFILES from AnimationStation.hpp
+    optional int32 baseProfileIndex = 58;
+    
+    repeated uint32 customColors = 59 [(nanopb).max_count = 16]; //MAX_CUSTOM_COLORS from Animation.hpp
 
-    optional bool hasCustomTheme = 8;
-    optional uint32 customThemeUp = 9;
-    optional uint32 customThemeDown = 10;
-    optional uint32 customThemeLeft = 11;
-    optional uint32 customThemeRight = 12;
-    optional uint32 customThemeB1 = 13;
-    optional uint32 customThemeB2 = 14;
-    optional uint32 customThemeB3 = 15;
-    optional uint32 customThemeB4 = 16;
-    optional uint32 customThemeL1 = 17;
-    optional uint32 customThemeR1 = 18;
-    optional uint32 customThemeL2 = 19;
-    optional uint32 customThemeR2 = 20;
-    optional uint32 customThemeS1 = 21;
-    optional uint32 customThemeS2 = 22;
-    optional uint32 customThemeL3 = 23;
-    optional uint32 customThemeR3 = 24;
-    optional uint32 customThemeA1 = 25;
-    optional uint32 customThemeA2 = 26;
-    optional uint32 customThemeUpPressed = 27;
-    optional uint32 customThemeDownPressed = 28;
-    optional uint32 customThemeLeftPressed = 29;
-    optional uint32 customThemeRightPressed = 30;
-    optional uint32 customThemeB1Pressed = 31;
-    optional uint32 customThemeB2Pressed = 32;
-    optional uint32 customThemeB3Pressed = 33;
-    optional uint32 customThemeB4Pressed = 34;
-    optional uint32 customThemeL1Pressed = 35;
-    optional uint32 customThemeR1Pressed = 36;
-    optional uint32 customThemeL2Pressed = 37;
-    optional uint32 customThemeR2Pressed = 38;
-    optional uint32 customThemeS1Pressed = 39;
-    optional uint32 customThemeS2Pressed = 40;
-    optional uint32 customThemeL3Pressed = 41;
-    optional uint32 customThemeR3Pressed = 42;
-    optional uint32 customThemeA1Pressed = 43;
-    optional uint32 customThemeA2Pressed = 44;
-    optional uint32 buttonPressColorCooldownTimeInMs = 45;
-    optional uint32 ambientLightEffectsCountIndex = 46;     // ambient count
-    optional bool ambientLightCustomLinkageModeFlag = 47 [deprecated = true];
-    optional uint32 ambientLightGradientSpeed = 48;         // gradient speed
-    optional int32 ambientLightChaseSpeed = 49;             // chase speed
-    optional float ambientLightBreathSpeed = 50;            // breath speed
-    optional float alGradientBrightnessCustomX = 51;        // gradient brightness
-    optional float alChaseBrightnessCustomX = 52;           // chase brightness
-    optional float alStaticColorBrightnessCustomX = 53;     // static brightness
-    optional float alStaticBrightnessCustomThemeX = 54;     // static custom theme brightness
-    optional uint32 alCustomStaticThemeIndex = 55;          // custom theme index
-    optional uint32 alCustomStaticColorIndex = 56;          // static color index
+    optional uint32 autoDisableTime = 60;
 }
 
 message BootselButtonOptions

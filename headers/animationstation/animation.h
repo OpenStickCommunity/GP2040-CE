@@ -10,6 +10,8 @@
 #include "NeoPico.h"
 #include <map>
 
+#include "enums.pb.h"
+
 struct RGB {
   // defaults allows trivial constructor, avoiding compiler complaints and avoiding unnessecary initialization
   // animation always memsets the frame before use, to this is safe.
@@ -83,7 +85,6 @@ struct RGB {
   }
 };
 
-// Also defined in Enums.proto
 constexpr RGB ColorBlack(0, 0, 0);
 constexpr RGB ColorWhite(255, 255, 255);
 constexpr RGB ColorRed(255, 0, 0);
@@ -98,55 +99,89 @@ constexpr RGB ColorBlue(0, 0, 255);
 constexpr RGB ColorPurple(128, 0, 255);
 constexpr RGB ColorPink(255, 0, 255);
 constexpr RGB ColorMagenta(255, 0, 128);
-constexpr RGB ColorIndigo(75, 0, 130);
-constexpr RGB ColorViolet(238, 130, 238);
 
 inline const std::vector<RGB> colors {
     ColorBlack,     ColorWhite,  ColorRed,     ColorOrange, ColorYellow,
     ColorLimeGreen, ColorGreen,  ColorSeafoam, ColorAqua,   ColorSkyBlue,
-    ColorBlue,      ColorPurple, ColorPink,    ColorMagenta, ColorIndigo,
-    ColorViolet
-};
+    ColorBlue,      ColorPurple, ColorPink,    ColorMagenta };
+
+#define MAX_CUSTOM_COLORS 16
+inline std::vector<RGB> customColors { };
+
+typedef enum
+{
+  BUTTONCASELIGHTTYPE_BUTTON_ONLY,
+  BUTTONCASELIGHTTYPE_CASE_ONLY,
+  BUTTONCASELIGHTTYPE_BUTTON_AND_CASE,
+} EButtonCaseEffectType;
 
 class Animation {
 public:
-  Animation(PixelMatrix &matrix);
-  virtual void UpdatePixels(std::vector<Pixel> pixels);
-  void ClearPixels();
+  Animation(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType);
   virtual ~Animation(){};
+
+  //Which buttons are held at the moment
+  virtual void UpdatePressed(std::vector<int32_t> InPressedPins);
+  void ClearPressed();
 
   static LEDFormat format;
 
-  bool notInFilter(Pixel pixel);
-  virtual bool Animate(RGB (&frame)[100]) = 0;
-  void UpdateTime();
-  void UpdatePresses(RGB (&frame)[100]);
-  void DecrementFadeCounter(int32_t index);
+  virtual void Animate(RGB (&frame)[FRAME_MAX]) = 0;
+  
+  //param adjustment
+  virtual void CycleParameterChange() {};
 
-  virtual void ParameterUp() = 0;
-  virtual void ParameterDown() = 0;
+  virtual void SetOptionalParams(uint32_t OptionalParams) {};
 
-  virtual void FadeTimeUp();
-  virtual void FadeTimeDown();
-
-  RGB BlendColor(RGB start, RGB end, uint32_t frame);
+  virtual bool IsFinished() { return false; } //ready for delete? Only applicable to special move anims really
 
 protected:
-/* We track both the full matrix as well as individual pixels here to support
-button press changes. Rather than adjusting the matrix to represent a subset of pixels,
-we provide a subset of pixels to use as a filter. */
-  PixelMatrix *matrix;
-  std::vector<Pixel> pixels;
-  bool filtered = false;
+
+  //gets current frame time
+  void UpdateTime();
+
+  //Update timers for pressed buttons this frame
+  void UpdatePresses();
+  void DecrementFadeCounters();
+
+  //notifies
+  virtual void NewPressForPin(int lightIndex) {};
+
+  RGB BlendColor(RGB start, RGB end, float alpha);
+  RGB FadeColor(RGB start, RGB end, uint32_t TimeLeft);
+
+  virtual int32_t GetFadeTime();
+
+  //Type Helpers
+  bool LightTypeIsForAnimation(LightType Type);
+
+  //Get color helpers
+  virtual RGB GetNonPressedColorForLight(uint32_t LightIndex);
+  virtual RGB GetPressedColorForLight(uint32_t LightIndex);
+  virtual RGB GetColorForIndex(uint32_t ColorIndex);
+
+  //Light data
+  Lights* RGBLights;
+
+  //Is this running as a button pressed animation
+  bool isButtonAnimation = false;
+
+  //Pins currently pressed
+  std::vector<int32_t> pressedPins;
 
   // Color fade 
-  RGB defaultColor = ColorBlack;  
-  static std::map<uint32_t, int32_t> times;
-  static std::map<uint32_t, RGB> hitColor;    
+  std::vector<int32_t> fadeTimes;
+
   absolute_time_t lastUpdateTime = nil_time;
-  uint32_t coolDownTimeInMs = 1000;
+
+  uint32_t holdTimeInMs = 1000;
+  uint32_t fadeoutTimeInMs = 1000;
+
   int64_t updateTimeInMs = 20;
 
+  EButtonCaseEffectType ButtonCaseEffectType = EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE;
+
+  int16_t cycleTime = -1;
 };
 
 #endif

@@ -40,6 +40,7 @@ import './PinMapping.scss';
 import { MultiValue, SingleValue } from 'react-select';
 import InfoCircle from '../Icons/InfoCircle';
 import WebApi from '../Services/WebApi';
+import useLedsPreview from '../Hooks/useLedsPreview';
 
 type OptionType = {
 	label: string;
@@ -169,7 +170,7 @@ const PinSelectList = memo(function PinSelectList({
 	profileIndex: number;
 }) {
 	const setProfilePin = useProfilesStore((state) => state.setProfilePin);
-
+	const { activateLedsOnId, turnOffLeds } = useLedsPreview();
 	const pins = useProfilesStore(
 		useShallow((state) =>
 			omit(state.profiles[profileIndex], ['profileLabel', 'enabled']),
@@ -246,6 +247,7 @@ const PinSelectList = memo(function PinSelectList({
 		},
 		[buttonNames],
 	);
+
 	return (
 		<div className="pin-grid gap-3 mt-2">
 			{Object.entries(pins).map(([pin, pinData], index) => (
@@ -261,6 +263,8 @@ const PinSelectList = memo(function PinSelectList({
 						getOptionLabel={getOptionLabel}
 						onChange={onChange(pin)}
 						value={getMultiValue(pinData)}
+						onFocus={() => activateLedsOnId(index)}
+						onBlur={turnOffLeds}
 					/>
 				</div>
 			))}
@@ -430,7 +434,7 @@ export default function PinMapping() {
 				<Col md={3}>
 					{loadingProfiles && (
 						<div className="d-flex justify-content-center">
-							<span className="spinner-border" />
+							<span className="spinner-border"></span>
 						</div>
 					)}
 					<Nav variant="pills" className="flex-column">
