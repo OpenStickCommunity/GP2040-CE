@@ -123,7 +123,7 @@ void HETriggerAddon::preprocess() {
             emaSmoothingReads[he] = value;
         }
 
-        if (options.triggers[he].polarity) {
+        if (options.triggers[he].is_polarized) {
             // effectively inverting value and thresholds
             value = ADC_MAX - value;
             activationThreshold = ADC_MAX - activationThreshold;
@@ -135,8 +135,8 @@ void HETriggerAddon::preprocess() {
             triggerActive[he] = value > activationThreshold;
         } else {
             // chad rapid trigger
-            bool pressing = (value > lastIncrement[he]) && (value - lastIncrement[he]) > options.triggers[he].sensitivity;
-            bool releasing = (lastIncrement[he] > value) && (lastIncrement[he] - value) > options.triggers[he].sensitivity;
+            bool pressing = (value > lastIncrement[he]) && (value - lastIncrement[he]) > options.triggers[he].noise;
+            bool releasing = (lastIncrement[he] > value) && (lastIncrement[he] - value) > options.triggers[he].noise;
             if (pressing || releasing) {
                 lastIncrement[he] = value;
             }

@@ -8,9 +8,9 @@ export type Trigger = {
 	idle: number;
 	active: number;
 	pressed: number;
-	polarity: boolean;
+	is_polarized: boolean;
 	release: number;
-	sensitivity: number;
+	noise: number;
 	rapidTrigger: boolean;
 };
 
@@ -32,9 +32,9 @@ const INITIAL_STATE: State = {
 		idle:100,
 		active:2000,
 		pressed:3500,
-		polarity:false,
+		is_polarized: false,
 		release:2000,
-		sensitivity:50,
+		noise:50,
 		rapidTrigger:false
 	})),
 	loadingTriggers: false,

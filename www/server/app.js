@@ -617,9 +617,9 @@ app.get('/api/getHETriggerCalibrations', (req, res) => {
 			idle: 120,
 			pressed: 3500,
 			active: 1500,
-			polarity: false,
+			is_polarized: false,
 			release: 1500,
-			sensitivity: 50, 
+			noise: 50, 
 			rapidTrigger: false
 		},
 		{
@@ -627,9 +627,9 @@ app.get('/api/getHETriggerCalibrations', (req, res) => {
 			idle: 3500,
 			pressed: 120,
 			active: 1500,
-			polarity: true,
+			is_polarized: true,
 			release: 1500,
-			sensitivity: 50, 
+			noise: 50, 
 			rapidTrigger: false
 		},
 		{
@@ -637,9 +637,9 @@ app.get('/api/getHETriggerCalibrations', (req, res) => {
 			idle: 120,
 			pressed: 3500,
 			active: 1500,
-			polarity: false,
+			is_polarized: false,
 			release: 2000,
-			sensitivity: 50, 
+			noise: 50, 
 			rapidTrigger: true
 		},
 		{
@@ -647,9 +647,9 @@ app.get('/api/getHETriggerCalibrations', (req, res) => {
 			idle: 3500,
 			pressed: 120,
 			active: 2000,
-			polarity: true,
+			is_polarized: true,
 			release: 1500,
-			sensitivity: 50, 
+			noise: 50, 
 			rapidTrigger: true
 		},
 	);
@@ -659,9 +659,9 @@ app.get('/api/getHETriggerCalibrations', (req, res) => {
 			idle: 100,
 			active: 2000,
 			pressed: 3500,
-			polarity: false,
+			is_polarized: false,
 			release: 1500,
-			sensitivity: 50,
+			noise: 50,
 			rapidTrigger: false,
 		});
 	}

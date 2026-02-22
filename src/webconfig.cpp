@@ -1603,9 +1603,9 @@ std::string getHETriggerCalibrations()
         trigger["idle"] = heTriggers[i].idle;
         trigger["active"] = heTriggers[i].active;
         trigger["pressed"] = heTriggers[i].pressed;
-        trigger["polarity"] = heTriggers[i].polarity;
+        trigger["is_polarized"] = heTriggers[i].is_polarized;
         trigger["release"] = heTriggers[i].release;
-        trigger["sensitivity"] = heTriggers[i].sensitivity;
+        trigger["noise"] = heTriggers[i].noise;
         trigger["rapidTrigger"] = heTriggers[i].rapidTrigger;
     }
 
@@ -1623,9 +1623,9 @@ std::string setHETriggerCalibrations()
         heTriggers[i].idle = doc["triggers"][i]["idle"];
         heTriggers[i].active = doc["triggers"][i]["active"];
         heTriggers[i].pressed = doc["triggers"][i]["pressed"];
-        heTriggers[i].polarity = doc["triggers"][i]["polarity"];
+        heTriggers[i].is_polarized = doc["triggers"][i]["is_polarized"];
         heTriggers[i].release = doc["triggers"][i]["release"];
-        heTriggers[i].sensitivity = doc["triggers"][i]["sensitivity"];
+        heTriggers[i].noise = doc["triggers"][i]["noise"];
         heTriggers[i].rapidTrigger = doc["triggers"][i]["rapidTrigger"];
     }
     

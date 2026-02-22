@@ -57,7 +57,7 @@ const HECalibration = ({
 	const [voltageActive, setVoltageActive] = useState(2000);
 	const [polarity, setPolarity] = useState(false);
 	const [release, setRelease] = useState(2000);
-	const [sensitivity, setSensitivity] = useState(50);
+	const [noise, setNoise] = useState(50);
 	const [rapidTrigger, setRapidTrigger] = useState(false);
 
 	useEffect(() => {
@@ -79,16 +79,16 @@ const HECalibration = ({
 			return
 		}
 
-		if (Math.abs(voltage - lastVoltage) > sensitivity) {
+		if (Math.abs(voltage - lastVoltage) > noise) {
 			setLastVoltage(voltage);
 		}
 
 		let pressing = false;
 		let releasing = false;
 		
-		if(polarizedVoltage > polarizedLastVoltage + sensitivity) {
+		if(polarizedVoltage > polarizedLastVoltage + noise) {
 			pressing = true;
-		} else if (polarizedVoltage < polarizedLastVoltage - sensitivity) {
+		} else if (polarizedVoltage < polarizedLastVoltage - noise) {
 			releasing = true;
 		}
 
@@ -108,9 +108,9 @@ const HECalibration = ({
 			idle: voltageIdle,
 			active: voltageActive,
 			pressed: voltagePressed,
-			polarity,
+			is_polarized: polarity,
 			release,
-			sensitivity,
+			noise,
 			rapidTrigger,
 		})
 		stopCalibration();
@@ -162,9 +162,9 @@ const HECalibration = ({
 			idle: voltageIdle,
 			active: voltageActive,
 			pressed: voltagePressed,
-			polarity,
+			is_polarized: polarity,
 			release,
-			sensitivity,
+			noise,
 			rapidTrigger,
 		});
 		closeModal();
@@ -225,9 +225,9 @@ const HECalibration = ({
 		setVoltageActive(triggers[target.current].active);
 		setVoltagePressed(triggers[target.current].pressed);
 		setRelease(triggers[target.current].release);
-		setSensitivity(triggers[target.current].sensitivity);
+		setNoise(triggers[target.current].noise);
 		setRapidTrigger(triggers[target.current].rapidTrigger);
-		setPolarity(triggers[target.current].polarity);
+		setPolarity(triggers[target.current].is_polarized);
 	};
 
 	const restartCalibration = () => {
@@ -425,7 +425,7 @@ const HECalibration = ({
 					<FormCheck
 						label={t('HETrigger:calibration-flip-polarity')}
 						type="switch"
-						name="polarity"
+						name="is_polarized"
 						id="HETriggerPolarize"
 						isInvalid={false}
 						checked={polarity}
@@ -476,12 +476,12 @@ const HECalibration = ({
 				<Col xs={4} className="mb-3">
 						<FormControl
 							type="number"
-							label={t(`HETrigger:rapid-trigger-sensitivity-input-text`)}
-							name="sensitivity"
+							label={t(`HETrigger:rapid-trigger-noise-input-text`)}
+							name="noise"
 							className="form-select-sm"
-							value={sensitivity}
+							value={noise}
 							onChange={(e) => {
-								setSensitivity(parseInt((e.target as HTMLInputElement).value));
+								setNoise(parseInt((e.target as HTMLInputElement).value));
 							}}
 							min={0}
 							max={ADC_MAX}
@@ -578,7 +578,7 @@ const HECalibration = ({
 						setPolarity(voltage < voltageIdle)
 						setVoltageActive(voltageIdle + Math.floor((voltage-voltageIdle)*0.625));
 						setRelease(voltageIdle + Math.floor((voltage-voltageIdle)*0.625));
-						setSensitivity(50);
+						setNoise(50);
 						setRapidTrigger(false);
 						updateCalibrationRead(2);
 					}} hidden={calibrationStep !== 1}>

@@ -287,7 +287,7 @@ const TriggerActionsForm = ({
 											<th>{t('HETrigger:voltage-table-polarity-text')}</th>
 											<th>{t('HETrigger:voltage-table-rapid-trigger-text')}</th>
 											<th>{t('HETrigger:voltage-table-release-text')}</th>
-											<th>{t('HETrigger:voltage-table-sensitivity-text')}</th>
+											<th>{t('HETrigger:voltage-table-noise-text')}</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -299,10 +299,10 @@ const TriggerActionsForm = ({
 											<td>{triggers[key].idle}</td>
 											<td>{triggers[key].active}</td>
 											<td>{triggers[key].pressed}</td>
-											<td>{triggers[key].polarity ? 'S' : 'N'}</td>
+											<td>{triggers[key].is_polarized ? 'S' : 'N'}</td>
 											<td>{triggers[key].rapidTrigger ? 'Enabled' : 'Disabled'}</td>
 											<td>{triggers[key].rapidTrigger ? triggers[key].release : 'N/A'}</td>
-											<td>{triggers[key].rapidTrigger ? triggers[key].sensitivity : 'N/A'}</td>
+											<td>{triggers[key].rapidTrigger ? triggers[key].noise : 'N/A'}</td>
 										</tr>
 									))}
 									</tbody>
