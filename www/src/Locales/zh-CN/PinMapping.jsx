@@ -13,6 +13,8 @@ export default {
 	'profile-enabled-active-tooltip': '无法禁用当前激活的配置文件，请在设置 > 游戏手柄设置中更改',
 	'profile-pins-warning': '尽量避免更改用于切换配置文件的按键和/或方向键。否则将难以识别当前选择的配置文件！',
 	'profile-copy-base': '复制基础配置文件',
+	'pin-invert-label': '反相',
+	'pin-invert-tooltip': '勾选 = 低电平有效（默认，用于普通按键）。取消勾选 = 高电平有效（用于带上拉电阻的光轴）。',
 	actions: {
 		NONE: '无',
 		RESERVED: '预留引脚',

@@ -172,7 +172,7 @@ const PinSelectList = memo(function PinSelectList({
 
 	const pins = useProfilesStore(
 		useShallow((state) =>
-			omit(state.profiles[profileIndex], ['profileLabel', 'enabled']),
+			omit(state.profiles[profileIndex], ['profileLabel', 'enabled', 'keyboardMapping']),
 		),
 	);
 	const { t } = useTranslation('');
@@ -182,7 +182,7 @@ const PinSelectList = memo(function PinSelectList({
 	const buttonNames = omit(CURRENT_BUTTONS, ['label', 'value']);
 
 	const onChange = useCallback(
-		(pin: string) =>
+		(pin: string, currentInvertPolarity: boolean) =>
 			(selected: MultiValue<OptionType> | SingleValue<OptionType>) => {
 				// Handle clearing
 				if (!selected || (Array.isArray(selected) && !selected.length)) {
@@ -190,6 +190,7 @@ const PinSelectList = memo(function PinSelectList({
 						action: BUTTON_ACTIONS.NONE,
 						customButtonMask: 0,
 						customDpadMask: 0,
+						invertPolarity: currentInvertPolarity,
 					});
 				} else if (Array.isArray(selected) && selected.length > 1) {
 					const lastSelected = selected[selected.length - 1];
@@ -199,6 +200,7 @@ const PinSelectList = memo(function PinSelectList({
 							action: lastSelected.value,
 							customButtonMask: 0,
 							customDpadMask: 0,
+							invertPolarity: currentInvertPolarity,
 						});
 					} else {
 						setProfilePin(
@@ -220,6 +222,7 @@ const PinSelectList = memo(function PinSelectList({
 									action: BUTTON_ACTIONS.CUSTOM_BUTTON_COMBO,
 									customButtonMask: 0,
 									customDpadMask: 0,
+									invertPolarity: currentInvertPolarity,
 								},
 							),
 						);
@@ -229,9 +232,20 @@ const PinSelectList = memo(function PinSelectList({
 						action: selected[0].value,
 						customButtonMask: 0,
 						customDpadMask: 0,
+						invertPolarity: currentInvertPolarity,
 					});
 				}
 			},
+		[],
+	);
+
+	const onInvertChange = useCallback(
+		(pin: string, pinData: MaskPayload) => (e: React.ChangeEvent<HTMLInputElement>) => {
+			setProfilePin(profileIndex, pin, {
+				...pinData,
+				invertPolarity: e.target.checked,
+			});
+		},
 		[],
 	);
 
@@ -259,9 +273,24 @@ const PinSelectList = memo(function PinSelectList({
 						options={groupedOptions}
 						isDisabled={isDisabled(pinData.action)}
 						getOptionLabel={getOptionLabel}
-						onChange={onChange(pin)}
+						onChange={onChange(pin, pinData.invertPolarity ?? true)}
 						value={getMultiValue(pinData)}
 					/>
+					<OverlayTrigger
+						placement="top"
+						overlay={<Tooltip>{t('PinMapping:pin-invert-tooltip')}</Tooltip>}
+					>
+						<div className="ms-2">
+							<FormCheck
+								type="checkbox"
+								id={`invert-${pin}`}
+								label={t('PinMapping:pin-invert-label')}
+								checked={pinData.invertPolarity ?? true}
+								onChange={onInvertChange(pin, pinData)}
+								disabled={isDisabled(pinData.action)}
+							/>
+						</div>
+					</OverlayTrigger>
 				</div>
 			))}
 		</div>

@@ -477,6 +477,7 @@ const schema = yup.object().shape({
 		.oneOf(AUTHENTICATION_TYPES.map((o) => o.value))
 		.label('X-Input Authentication Type'),
 	debounceDelay: yup.number().required().label('Debounce Delay'),
+	enablePinInversion: yup.number().label('Enable Per-Pin Inversion'),
 	miniMenuGamepadInput: yup.number().required().label('Mini Menu'),
 	inputModeB1: yup
 		.number()
@@ -602,6 +603,9 @@ export default function SettingsPage() {
 	const [warning, setWarning] = useState({ show: false, acceptText: '' });
 	const [validated, setValidated] = useState(false);
 	const [keyMappings, setKeyMappings] = useState(baseButtonMappings);
+	const [selectedKeyboardProfile, setSelectedKeyboardProfile] = useState(1);
+
+	const saveProfiles = useProfilesStore((state) => state.saveProfiles);
 
 	const [message, setMessage] = useState(null);
 	const [PS4Key, setPS4Key] = useState();
@@ -752,6 +756,61 @@ export default function SettingsPage() {
 		const newMappings = { ...keyMappings };
 		newMappings[button].key = value;
 		setKeyMappings(newMappings);
+
+		// If editing a profile (2-6), also update the profile store
+		if (selectedKeyboardProfile > 1) {
+			const profileIndex = selectedKeyboardProfile - 1;
+			const profile = profiles[profileIndex];
+			if (profile) {
+				const updatedKeyboardMapping = {
+					...profile.keyboardMapping,
+					[button]: value,
+				};
+				// Update the profile's keyboard mapping in the store
+				const updatedProfiles = [...profiles];
+				updatedProfiles[profileIndex] = {
+					...profile,
+					keyboardMapping: updatedKeyboardMapping,
+				};
+				// We'll save through the profile system
+			}
+		}
+	};
+
+	// Get keyboard mapping for a specific profile
+	const getKeyboardMappingForProfile = (profileIndex) => {
+		if (profileIndex === 0) {
+			// Profile 1 uses base keyboard mapping (already loaded)
+			return keyMappings;
+		}
+		// Profiles 2-6 use profile store's keyboard mapping
+		const profile = profiles[profileIndex];
+		if (profile && profile.keyboardMapping) {
+			const mappings = { ...baseButtonMappings };
+			Object.keys(profile.keyboardMapping).forEach((key) => {
+				if (mappings[key]) {
+					mappings[key] = { ...mappings[key], key: profile.keyboardMapping[key] || 0 };
+				}
+			});
+			return mappings;
+		}
+		return baseButtonMappings;
+	};
+
+	// Handle keyboard profile selection change
+	const handleKeyboardProfileChange = async (profileNum) => {
+		const newProfile = parseInt(profileNum);
+		setSelectedKeyboardProfile(newProfile);
+
+		if (newProfile === 1) {
+			// Load base keyboard mapping
+			const baseMappings = await WebApi.getKeyMappings(() => {});
+			setKeyMappings(baseMappings || baseButtonMappings);
+		} else {
+			// Load profile-specific keyboard mapping
+			const mappings = getKeyboardMappingForProfile(newProfile - 1);
+			setKeyMappings(mappings);
+		}
 	};
 
 	const generateDeviceTypeSelection = (values, errors, setFieldValue, handleChange) => {
@@ -847,6 +906,27 @@ export default function SettingsPage() {
 						<div className="fs-3 fw-bold">
 							{t('SettingsPage:keyboard-mapping-header-text')}
 						</div>
+					</Col>
+				</Row>
+				<Row className="mb-3">
+					<Col sm={4}>
+						<Form.Label>{t('SettingsPage:keyboard-profile-label')}</Form.Label>
+						<Form.Select
+							className="form-select-sm"
+							value={selectedKeyboardProfile}
+							onChange={(e) => handleKeyboardProfileChange(e.target.value)}
+						>
+							{profiles.map((profile, index) => (
+								<option
+									key={`keyboard-profile-option-${index + 1}`}
+									value={index + 1}
+									disabled={index > 0 && !profile.enabled}
+								>
+									{profile.profileLabel || t('PinMapping:profile-label-default', { profileNumber: index + 1 })}
+									{index > 0 && !profile.enabled ? t('PinMapping:profile-disabled') : ''}
+								</option>
+							))}
+						</Form.Select>
 					</Col>
 				</Row>
 				<Row className="mb-3">
@@ -1431,7 +1511,30 @@ export default function SettingsPage() {
 			setWarning({ show: true, acceptText: '' });
 		} else {
 			if (isKeyboardMode) {
-				await WebApi.setKeyMappings(keyMappings);
+				if (selectedKeyboardProfile === 1) {
+					// Save to base keyboard mapping
+					await WebApi.setKeyMappings(keyMappings);
+				} else {
+					// Save to profile keyboard mapping
+					const profileIndex = selectedKeyboardProfile - 1;
+					const updatedProfiles = profiles.slice(1).map((profile, index) => {
+						if (index === profileIndex - 1) {
+							// Convert keyMappings format to profile keyboard mapping format
+							const keyboardMapping = {};
+							Object.keys(keyMappings).forEach((key) => {
+								keyboardMapping[key] = keyMappings[key].key;
+							});
+							return {
+								...profile,
+								keyboardMapping,
+							};
+						}
+						return profile;
+					});
+					await WebApi.setProfileOptions(updatedProfiles);
+					// Refresh profiles from server
+					await fetchProfiles();
+				}
 			}
 			await saveSettings(data);
 		}
@@ -1749,6 +1852,28 @@ export default function SettingsPage() {
 																min={0}
 																max={5000}
 															/>
+														</Col>
+													</Form.Group>
+													<Form.Group className="row mb-3">
+														<Col sm={5}>
+															<Form.Check
+																label={t(
+																	'SettingsPage:enable-pin-inversion-label',
+																)}
+																type="switch"
+																id="enablePinInversion"
+																isInvalid={false}
+																checked={Boolean(values.enablePinInversion)}
+																onChange={(e) => {
+																	setFieldValue(
+																		'enablePinInversion',
+																		e.target.checked ? 1 : 0,
+																	);
+																}}
+															/>
+															<Form.Text muted>
+																{t('SettingsPage:enable-pin-inversion-tooltip')}
+															</Form.Text>
 														</Col>
 													</Form.Group>
 													<Form.Group className="row mb-5">

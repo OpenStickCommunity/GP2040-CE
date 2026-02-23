@@ -584,6 +584,45 @@ std::string setProfileOptions()
         profileOptions.gpioMappingsSets[altsIndex].profileLabel[profileLabelSize - 1] = '\0';
         profileOptions.gpioMappingsSets[altsIndex].enabled = alt["enabled"];
 
+        // Read keyboard mapping for this profile
+        if (alt.containsKey("keyboardMapping")) {
+            JsonObject kbMap = alt["keyboardMapping"];
+            KeyboardMapping& km = profileOptions.gpioMappingsSets[altsIndex].keyboardMapping;
+            readDoc(km.keyDpadUp, kbMap, "Up");
+            readDoc(km.keyDpadDown, kbMap, "Down");
+            readDoc(km.keyDpadLeft, kbMap, "Left");
+            readDoc(km.keyDpadRight, kbMap, "Right");
+            readDoc(km.keyButtonB1, kbMap, "B1");
+            readDoc(km.keyButtonB2, kbMap, "B2");
+            readDoc(km.keyButtonB3, kbMap, "B3");
+            readDoc(km.keyButtonB4, kbMap, "B4");
+            readDoc(km.keyButtonL1, kbMap, "L1");
+            readDoc(km.keyButtonR1, kbMap, "R1");
+            readDoc(km.keyButtonL2, kbMap, "L2");
+            readDoc(km.keyButtonR2, kbMap, "R2");
+            readDoc(km.keyButtonS1, kbMap, "S1");
+            readDoc(km.keyButtonS2, kbMap, "S2");
+            readDoc(km.keyButtonL3, kbMap, "L3");
+            readDoc(km.keyButtonR3, kbMap, "R3");
+            readDoc(km.keyButtonA1, kbMap, "A1");
+            readDoc(km.keyButtonA2, kbMap, "A2");
+            readDoc(km.keyButtonA3, kbMap, "A3");
+            readDoc(km.keyButtonA4, kbMap, "A4");
+            readDoc(km.keyButtonE1, kbMap, "E1");
+            readDoc(km.keyButtonE2, kbMap, "E2");
+            readDoc(km.keyButtonE3, kbMap, "E3");
+            readDoc(km.keyButtonE4, kbMap, "E4");
+            readDoc(km.keyButtonE5, kbMap, "E5");
+            readDoc(km.keyButtonE6, kbMap, "E6");
+            readDoc(km.keyButtonE7, kbMap, "E7");
+            readDoc(km.keyButtonE8, kbMap, "E8");
+            readDoc(km.keyButtonE9, kbMap, "E9");
+            readDoc(km.keyButtonE10, kbMap, "E10");
+            readDoc(km.keyButtonE11, kbMap, "E11");
+            readDoc(km.keyButtonE12, kbMap, "E12");
+            profileOptions.gpioMappingsSets[altsIndex].has_keyboardMapping = true;
+        }
+
         profileOptions.gpioMappingsSets_count = ++altsIndex;
         if (altsIndex > 4) break;
     }
@@ -647,6 +686,43 @@ std::string getProfileOptions()
         writePinDoc(i, "pin29", profileOptions.gpioMappingsSets[i].pins[29]);
         writeDoc(doc, "alternativePinMappings", i, "profileLabel", profileOptions.gpioMappingsSets[i].profileLabel);
         doc["alternativePinMappings"][i]["enabled"] = profileOptions.gpioMappingsSets[i].enabled;
+
+        // Write keyboard mapping for this profile
+        if (profileOptions.gpioMappingsSets[i].has_keyboardMapping) {
+            const KeyboardMapping& km = profileOptions.gpioMappingsSets[i].keyboardMapping;
+            writeDoc(doc, "alternativePinMappings", i, "keyboardMapping", "Up", km.keyDpadUp);
+            writeDoc(doc, "alternativePinMappings", i, "keyboardMapping", "Down", km.keyDpadDown);
+            writeDoc(doc, "alternativePinMappings", i, "keyboardMapping", "Left", km.keyDpadLeft);
+            writeDoc(doc, "alternativePinMappings", i, "keyboardMapping", "Right", km.keyDpadRight);
+            writeDoc(doc, "alternativePinMappings", i, "keyboardMapping", "B1", km.keyButtonB1);
+            writeDoc(doc, "alternativePinMappings", i, "keyboardMapping", "B2", km.keyButtonB2);
+            writeDoc(doc, "alternativePinMappings", i, "keyboardMapping", "B3", km.keyButtonB3);
+            writeDoc(doc, "alternativePinMappings", i, "keyboardMapping", "B4", km.keyButtonB4);
+            writeDoc(doc, "alternativePinMappings", i, "keyboardMapping", "L1", km.keyButtonL1);
+            writeDoc(doc, "alternativePinMappings", i, "keyboardMapping", "R1", km.keyButtonR1);
+            writeDoc(doc, "alternativePinMappings", i, "keyboardMapping", "L2", km.keyButtonL2);
+            writeDoc(doc, "alternativePinMappings", i, "keyboardMapping", "R2", km.keyButtonR2);
+            writeDoc(doc, "alternativePinMappings", i, "keyboardMapping", "S1", km.keyButtonS1);
+            writeDoc(doc, "alternativePinMappings", i, "keyboardMapping", "S2", km.keyButtonS2);
+            writeDoc(doc, "alternativePinMappings", i, "keyboardMapping", "L3", km.keyButtonL3);
+            writeDoc(doc, "alternativePinMappings", i, "keyboardMapping", "R3", km.keyButtonR3);
+            writeDoc(doc, "alternativePinMappings", i, "keyboardMapping", "A1", km.keyButtonA1);
+            writeDoc(doc, "alternativePinMappings", i, "keyboardMapping", "A2", km.keyButtonA2);
+            writeDoc(doc, "alternativePinMappings", i, "keyboardMapping", "A3", km.keyButtonA3);
+            writeDoc(doc, "alternativePinMappings", i, "keyboardMapping", "A4", km.keyButtonA4);
+            writeDoc(doc, "alternativePinMappings", i, "keyboardMapping", "E1", km.keyButtonE1);
+            writeDoc(doc, "alternativePinMappings", i, "keyboardMapping", "E2", km.keyButtonE2);
+            writeDoc(doc, "alternativePinMappings", i, "keyboardMapping", "E3", km.keyButtonE3);
+            writeDoc(doc, "alternativePinMappings", i, "keyboardMapping", "E4", km.keyButtonE4);
+            writeDoc(doc, "alternativePinMappings", i, "keyboardMapping", "E5", km.keyButtonE5);
+            writeDoc(doc, "alternativePinMappings", i, "keyboardMapping", "E6", km.keyButtonE6);
+            writeDoc(doc, "alternativePinMappings", i, "keyboardMapping", "E7", km.keyButtonE7);
+            writeDoc(doc, "alternativePinMappings", i, "keyboardMapping", "E8", km.keyButtonE8);
+            writeDoc(doc, "alternativePinMappings", i, "keyboardMapping", "E9", km.keyButtonE9);
+            writeDoc(doc, "alternativePinMappings", i, "keyboardMapping", "E10", km.keyButtonE10);
+            writeDoc(doc, "alternativePinMappings", i, "keyboardMapping", "E11", km.keyButtonE11);
+            writeDoc(doc, "alternativePinMappings", i, "keyboardMapping", "E12", km.keyButtonE12);
+        }
     }
 
     return serialize_json(doc);
@@ -694,6 +770,7 @@ std::string setGamepadOptions()
     readDoc(gamepadOptions.usbOverrideID, doc, "usbOverrideID");
     readDoc(gamepadOptions.usbVendorID, doc, "usbVendorID");
     readDoc(gamepadOptions.usbProductID, doc, "usbProductID");
+    readDoc(gamepadOptions.enablePinInversion, doc, "enablePinInversion");
 
 
     HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
@@ -762,6 +839,7 @@ std::string getGamepadOptions()
     char usbProductStr[5];
     snprintf(usbProductStr, 5, "%04X", gamepadOptions.usbProductID);
     writeDoc(doc, "usbProductID", usbProductStr);
+    writeDoc(doc, "enablePinInversion", gamepadOptions.enablePinInversion ? 1 : 0);
     writeDoc(doc, "fnButtonPin", -1);
     GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
     for (unsigned int pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
@@ -1129,6 +1207,7 @@ std::string setPinMappings()
             gpioMappings.pins[pin].action = (GpioAction)doc[pinName]["action"];
             gpioMappings.pins[pin].customButtonMask = (uint32_t)doc[pinName]["customButtonMask"];
             gpioMappings.pins[pin].customDpadMask = (uint32_t)doc[pinName]["customDpadMask"];
+            gpioMappings.pins[pin].invertPolarity = doc[pinName]["invertPolarity"] | true;  // Default to true if not present
         }
     }
     size_t profileLabelSize = sizeof(gpioMappings.profileLabel);
@@ -1153,6 +1232,7 @@ std::string getPinMappings()
         writeDoc(doc, key, "action", value.action);
         writeDoc(doc, key, "customButtonMask", value.customButtonMask);
         writeDoc(doc, key, "customDpadMask", value.customDpadMask);
+        writeDoc(doc, key, "invertPolarity", value.invertPolarity);
     };
 
     writePinDoc("pin00", gpioMappings.pins[0]);
