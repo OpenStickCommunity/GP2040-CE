@@ -145,7 +145,7 @@
 #endif
 
 #ifndef LEDS_AUTO_DISABLE_TIME
-#define LEDS_AUTO_DISABLE_TIME 15000 // in ms
+#define LEDS_AUTO_DISABLE_TIME 0 // in ms
 #endif
 
 #ifndef LED_BRIGHTNESS_MAXIMUM
