@@ -25,6 +25,7 @@
 #include "addons/reactiveleds.h"
 #include "addons/reverse.h"
 #include "addons/slider_socd.h"
+#include "addons/slider_profile.h"
 #include "addons/spi_analog_ads1256.h"
 #include "addons/turbo.h"
 #include "addons/wiiext.h"
@@ -662,6 +663,11 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, modeDefault, SLIDER_SOCD_SLOT_DEFAULT);
     INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, deprecatedModeOne, SLIDER_SOCD_SLOT_ONE);
     INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, deprecatedModeTwo, SLIDER_SOCD_SLOT_TWO);
+
+    // addonOptions.profileSliderOptions
+    INIT_UNSET_PROPERTY(config.addonOptions.profileSliderOptions, enabled, !!SLIDER_PROFILE_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.profileSliderOptions, numPositions, SLIDER_PROFILE_NUM_POSITIONS);
+    INIT_UNSET_PROPERTY(config.addonOptions.profileSliderOptions, defaultProfile, SLIDER_PROFILE_DEFAULT_PROFILE);
 
     // addonOptions.analogADS1219Options
     INIT_UNSET_PROPERTY(config.addonOptions.analogADS1219Options, enabled, !!I2C_ANALOG1219_ENABLED);
