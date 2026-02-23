@@ -60,6 +60,8 @@ const HECalibration = ({
 	const [noise, setNoise] = useState(50);
 	const [rapidTrigger, setRapidTrigger] = useState(false);
 
+
+
 	useEffect(() => {
 
 		let polarizedVoltage = voltage;
@@ -233,6 +235,13 @@ const HECalibration = ({
 	const restartCalibration = () => {
 		previousStep.current = 0;
 		updateCalibrationRead(0);
+		setVoltageIdle(triggers[target.current].idle);
+		setVoltageActive(triggers[target.current].active);
+		setVoltagePressed(triggers[target.current].pressed);
+		setRelease(triggers[target.current].release);
+		setNoise(triggers[target.current].noise);
+		setRapidTrigger(triggers[target.current].rapidTrigger);
+		setPolarity(triggers[target.current].is_polarized);
 	};
 
 	const calculateVoltagePercentage = () => {
