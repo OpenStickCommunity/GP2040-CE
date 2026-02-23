@@ -269,6 +269,8 @@ message DisplayOptions
     optional uint32 inputHistoryLength = 28;
     optional uint32 inputHistoryCol = 29;
     optional uint32 inputHistoryRow = 30;
+    
+    optional uint32 contrast = 31;
 }
 
 message LEDOptions
@@ -867,8 +869,12 @@ message HETriggerInfo
     optional GpioAction action = 1;
     optional int32 active = 2;
     optional int32 idle = 3;
-    optional int32 max = 4;
-    optional int32 polarity = 5;
+    optional int32 pressed = 4;
+    optional int32 polarity = 5 [deprecated = true];
+    optional int32 release = 6;
+    optional int32 noise = 7;
+    optional bool rapidTrigger = 8; 
+    optional bool is_polarized = 9;
 }
 
 message HETriggerOptions

@@ -222,11 +222,8 @@ const TriggerActionsForm = ({
 											setHETrigger(
 												{
 													id: parseInt(key),
+													...triggers[key],
 													action: change?.value === undefined ? -10 : change.value,
-													idle: triggers[key].idle,
-													active: triggers[key].active,
-													max: triggers[key].max,
-													polarity: triggers[key].polarity
 												}
 											)
 										}
@@ -286,8 +283,11 @@ const TriggerActionsForm = ({
 											<th>{t('HETrigger:channel-label')}</th>
 											<th>{t('HETrigger:voltage-table-idle-text')}</th>
 											<th>{t('HETrigger:voltage-table-trigger-text')}</th>
-											<th>{t('HETrigger:voltage-table-max-text')}</th>
+											<th>{t('HETrigger:voltage-table-pressed-text')}</th>
 											<th>{t('HETrigger:voltage-table-polarity-text')}</th>
+											<th>{t('HETrigger:voltage-table-rapid-trigger-text')}</th>
+											<th>{t('HETrigger:voltage-table-release-text')}</th>
+											<th>{t('HETrigger:voltage-table-noise-text')}</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -298,8 +298,11 @@ const TriggerActionsForm = ({
 											<td>{index} {triggers[key].action===-10?t('HETrigger:voltage-table-disabled-label'):''}</td>
 											<td>{triggers[key].idle}</td>
 											<td>{triggers[key].active}</td>
-											<td>{triggers[key].max}</td>
-											<td>{triggers[key].polarity == 1 ? 'S' : 'N'}</td>
+											<td>{triggers[key].pressed}</td>
+											<td>{triggers[key].is_polarized ? 'S' : 'N'}</td>
+											<td>{triggers[key].rapidTrigger ? 'Enabled' : 'Disabled'}</td>
+											<td>{triggers[key].rapidTrigger ? triggers[key].release : 'N/A'}</td>
+											<td>{triggers[key].rapidTrigger ? triggers[key].noise : 'N/A'}</td>
 										</tr>
 									))}
 									</tbody>

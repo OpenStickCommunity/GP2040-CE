@@ -45,6 +45,7 @@ export default {
 		'power-management-header': 'Power Management',
 		'turn-off-when-suspended': 'Turn Off When Suspended',
 		'input-history-label': 'Input History',
+		'display-contrast-label': 'Display Contrast',
 		'display-state': {
 			disabled: 'Disabled',
 			enabled: 'Enabled',

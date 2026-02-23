@@ -90,6 +90,7 @@ app.get('/api/getDisplayOptions', (req, res) => {
 		inputHistoryLength: 21,
 		inputHistoryCol: 0,
 		inputHistoryRow: 7,
+		displayContrast: 255,
 	};
 	console.log('data', data);
 	return res.send(data);
@@ -535,15 +536,15 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		analog1256Block: 0,
 		analog1256CsPin: -1,
 		analog1256DrdyPin: -1,
-		analog1256AnalogMax: 3.3,
-		analog1256EnableTriggers: false,
+		analog1256AnalogMax: 33,
+		analog1256EnableTriggers: 0,
 		encoderOneEnabled: 0,
 		encoderOnePinA: -1,
 		encoderOnePinB: -1,
 		encoderOneMode: 0,
 		encoderOnePPR: 24,
 		encoderOneResetAfter: 0,
-		encoderOneAllowWrapAround: false,
+		encoderOneAllowWrapAround: 0,
 		encoderOneMultiplier: 1,
 		encoderTwoEnabled: 0,
 		encoderTwoPinA: -1,
@@ -551,7 +552,7 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		encoderTwoMode: 0,
 		encoderTwoPPR: 24,
 		encoderTwoResetAfter: 0,
-		encoderTwoAllowWrapAround: false,
+		encoderTwoAllowWrapAround: 0,
 		encoderTwoMultiplier: 1,
 		muxChannels: 8,
 		muxADCPin0: 26,
@@ -608,16 +609,60 @@ app.get('/api/getExpansionPins', (req, res) => {
 	});
 });
 
-app.get('/api/getHETriggerOptions', (req, res) => {
+app.get('/api/getHETriggerCalibrations', (req, res) => {
 	var triggers = [];
-	triggers.push({ action: 2, idle: 120, max: 3500, active: 1500, polarity: 0 });
-	for(var i = 1; i < 32; i++) {
+	triggers.push(
+		{
+			action: 2, 
+			idle: 120,
+			pressed: 3500,
+			active: 1500,
+			is_polarized: false,
+			release: 1500,
+			noise: 50, 
+			rapidTrigger: false
+		},
+		{
+			action: 3, 
+			idle: 3500,
+			pressed: 120,
+			active: 1500,
+			is_polarized: true,
+			release: 1500,
+			noise: 50, 
+			rapidTrigger: false
+		},
+		{
+			action: 4, 
+			idle: 120,
+			pressed: 3500,
+			active: 1500,
+			is_polarized: false,
+			release: 2000,
+			noise: 50, 
+			rapidTrigger: true
+		},
+		{
+			action: 5, 
+			idle: 3500,
+			pressed: 120,
+			active: 2000,
+			is_polarized: true,
+			release: 1500,
+			noise: 50, 
+			rapidTrigger: true
+		},
+	);
+	for(var i = 4; i < 32; i++) {
 		triggers.push({
 			action: -10,
 			idle: 100,
 			active: 2000,
-			max: 3500,
-			polarity: 0
+			pressed: 3500,
+			is_polarized: false,
+			release: 1500,
+			noise: 50,
+			rapidTrigger: false,
 		});
 	}
 	return res.send({triggers});
@@ -875,7 +920,7 @@ app.get('/api/abortGetHeldPins', async (req, res) => {
 	return res.send();
 });
 
-app.post('/api/getHETriggerCalibration', (req, res) => {
+app.post('/api/getHETriggerVoltage', (req, res) => {
 	return res.send({
 		voltage: 0.0,
 		debug: true

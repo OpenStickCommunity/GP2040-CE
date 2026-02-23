@@ -445,6 +445,7 @@ std::string setDisplayOptions(DisplayOptions& displayOptions)
     readDoc(displayOptions.inputHistoryLength, doc, "inputHistoryLength");
     readDoc(displayOptions.inputHistoryCol, doc, "inputHistoryCol");
     readDoc(displayOptions.inputHistoryRow, doc, "inputHistoryRow");
+    readDoc(displayOptions.contrast, doc, "displayContrast");
 
     readDoc(displayOptions.buttonLayoutCustomOptions.paramsLeft.layout, doc, "buttonLayoutCustomOptions", "params", "layout");
     readDoc(displayOptions.buttonLayoutCustomOptions.paramsLeft.common.startX, doc, "buttonLayoutCustomOptions", "params", "startX");
@@ -501,6 +502,7 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
     writeDoc(doc, "inputHistoryLength", displayOptions.inputHistoryLength);
     writeDoc(doc, "inputHistoryCol", displayOptions.inputHistoryCol);
     writeDoc(doc, "inputHistoryRow", displayOptions.inputHistoryRow);
+    writeDoc(doc, "displayContrast", displayOptions.contrast);
 
     writeDoc(doc, "buttonLayoutCustomOptions", "params", "layout", displayOptions.buttonLayoutCustomOptions.paramsLeft.layout);
     writeDoc(doc, "buttonLayoutCustomOptions", "params", "startX", displayOptions.buttonLayoutCustomOptions.paramsLeft.common.startX);
@@ -1469,8 +1471,8 @@ static uint32_t calibrationSmoothingFactor = 0;
 static float ema_smoothing;
 static uint32_t smoothingRead = 0;
 
-// Get the HE Trigger Calibration using our manual GPIO input and everything
-std::string setHETriggerCalibration()
+// Get the HE Trigger Options using our manual GPIO input and everything
+std::string setHETriggerOptions()
 {
     DynamicJsonDocument doc = get_post_data();
     calibrationMuxChannels = doc["muxChannels"];
@@ -1514,7 +1516,7 @@ uint16_t emaCalculation(uint16_t value, uint16_t previous) {
 }
 
 // Get the HE Trigger Calibration using our manual GPIO input and everything
-std::string getHETriggerCalibration()
+std::string getHETriggerVoltage()
 {
     DynamicJsonDocument postDoc = get_post_data();
     uint32_t id = postDoc["targetId"];
@@ -1587,7 +1589,7 @@ std::string getHETriggerCalibration()
     return serialize_json(doc);
 }
 
-std::string getHETriggerOptions()
+std::string getHETriggerCalibrations()
 {
     const size_t capacity = JSON_OBJECT_SIZE(500);
     DynamicJsonDocument doc(capacity);
@@ -1600,15 +1602,18 @@ std::string getHETriggerOptions()
         trigger["action"] = heTriggers[i].action;
         trigger["idle"] = heTriggers[i].idle;
         trigger["active"] = heTriggers[i].active;
-        trigger["max"] = heTriggers[i].max;
-        trigger["polarity"] = heTriggers[i].polarity;
+        trigger["pressed"] = heTriggers[i].pressed;
+        trigger["is_polarized"] = heTriggers[i].is_polarized;
+        trigger["release"] = heTriggers[i].release;
+        trigger["noise"] = heTriggers[i].noise;
+        trigger["rapidTrigger"] = heTriggers[i].rapidTrigger;
     }
 
     return serialize_json(doc);
 }
 
-// Set Hall Effect Trigger Options
-std::string setHETriggerOptions()
+// Set Hall Effect Trigger Calibrations
+std::string setHETriggerCalibrations()
 {
     DynamicJsonDocument doc = get_post_data();
     HETriggerInfo * heTriggers = Storage::getInstance().getAddonOptions().heTriggerOptions.triggers;
@@ -1617,8 +1622,11 @@ std::string setHETriggerOptions()
         heTriggers[i].action = doc["triggers"][i]["action"];
         heTriggers[i].idle = doc["triggers"][i]["idle"];
         heTriggers[i].active = doc["triggers"][i]["active"];
-        heTriggers[i].max = doc["triggers"][i]["max"];
-        heTriggers[i].polarity = doc["triggers"][i]["polarity"];
+        heTriggers[i].pressed = doc["triggers"][i]["pressed"];
+        heTriggers[i].is_polarized = doc["triggers"][i]["is_polarized"];
+        heTriggers[i].release = doc["triggers"][i]["release"];
+        heTriggers[i].noise = doc["triggers"][i]["noise"];
+        heTriggers[i].rapidTrigger = doc["triggers"][i]["rapidTrigger"];
     }
     
     Storage::getInstance().getAddonOptions().heTriggerOptions.triggers_count = 32;
@@ -1815,24 +1823,24 @@ std::string setAddonOptions()
     AnalogADS1256Options& ads1256Options = Storage::getInstance().getAddonOptions().analogADS1256Options;
     docToValue(ads1256Options.enabled, doc, "Analog1256Enabled");
     docToValue(ads1256Options.spiBlock, doc, "analog1256Block");
-    docToValue(ads1256Options.csPin, doc, "analog1256CsPin");
-    docToValue(ads1256Options.drdyPin, doc, "analog1256DrdyPin");
+    docToPin(ads1256Options.csPin, doc, "analog1256CsPin");
+    docToPin(ads1256Options.drdyPin, doc, "analog1256DrdyPin");
     docToValue(ads1256Options.avdd, doc, "analog1256AnalogMax");
     docToValue(ads1256Options.enableTriggers, doc, "analog1256EnableTriggers");
 
     RotaryOptions& rotaryOptions = Storage::getInstance().getAddonOptions().rotaryOptions;
     docToValue(rotaryOptions.enabled, doc, "RotaryAddonEnabled");
     docToValue(rotaryOptions.encoderOne.enabled, doc, "encoderOneEnabled");
-    docToValue(rotaryOptions.encoderOne.pinA, doc, "encoderOnePinA");
-    docToValue(rotaryOptions.encoderOne.pinB, doc, "encoderOnePinB");
+    docToPin(rotaryOptions.encoderOne.pinA, doc, "encoderOnePinA");
+    docToPin(rotaryOptions.encoderOne.pinB, doc, "encoderOnePinB");
     docToValue(rotaryOptions.encoderOne.mode, doc, "encoderOneMode");
     docToValue(rotaryOptions.encoderOne.pulsesPerRevolution, doc, "encoderOnePPR");
     docToValue(rotaryOptions.encoderOne.resetAfter, doc, "encoderOneResetAfter");
     docToValue(rotaryOptions.encoderOne.allowWrapAround, doc, "encoderOneAllowWrapAround");
     docToValue(rotaryOptions.encoderOne.multiplier, doc, "encoderOneMultiplier");
     docToValue(rotaryOptions.encoderTwo.enabled, doc, "encoderTwoEnabled");
-    docToValue(rotaryOptions.encoderTwo.pinA, doc, "encoderTwoPinA");
-    docToValue(rotaryOptions.encoderTwo.pinB, doc, "encoderTwoPinB");
+    docToPin(rotaryOptions.encoderTwo.pinA, doc, "encoderTwoPinA");
+    docToPin(rotaryOptions.encoderTwo.pinB, doc, "encoderTwoPinB");
     docToValue(rotaryOptions.encoderTwo.mode, doc, "encoderTwoMode");
     docToValue(rotaryOptions.encoderTwo.pulsesPerRevolution, doc, "encoderTwoPPR");
     docToValue(rotaryOptions.encoderTwo.resetAfter, doc, "encoderTwoResetAfter");
@@ -2267,8 +2275,8 @@ std::string getAddonOptions()
     AnalogADS1256Options& ads1256Options = Storage::getInstance().getAddonOptions().analogADS1256Options;
     writeDoc(doc, "Analog1256Enabled", ads1256Options.enabled);
     writeDoc(doc, "analog1256Block", ads1256Options.spiBlock);
-    writeDoc(doc, "analog1256CsPin", ads1256Options.csPin);
-    writeDoc(doc, "analog1256DrdyPin", ads1256Options.drdyPin);
+    writeDoc(doc, "analog1256CsPin", cleanPin(ads1256Options.csPin));
+    writeDoc(doc, "analog1256DrdyPin", cleanPin(ads1256Options.drdyPin));
     writeDoc(doc, "analog1256AnalogMax", ads1256Options.avdd);
     writeDoc(doc, "analog1256EnableTriggers", ads1256Options.enableTriggers);
 
@@ -2281,16 +2289,16 @@ std::string getAddonOptions()
     RotaryOptions& rotaryOptions = Storage::getInstance().getAddonOptions().rotaryOptions;
     writeDoc(doc, "RotaryAddonEnabled", rotaryOptions.enabled);
     writeDoc(doc, "encoderOneEnabled", rotaryOptions.encoderOne.enabled);
-    writeDoc(doc, "encoderOnePinA", rotaryOptions.encoderOne.pinA);
-    writeDoc(doc, "encoderOnePinB", rotaryOptions.encoderOne.pinB);
+    writeDoc(doc, "encoderOnePinA", cleanPin(rotaryOptions.encoderOne.pinA));
+    writeDoc(doc, "encoderOnePinB", cleanPin(rotaryOptions.encoderOne.pinB));
     writeDoc(doc, "encoderOneMode", rotaryOptions.encoderOne.mode);
     writeDoc(doc, "encoderOnePPR", rotaryOptions.encoderOne.pulsesPerRevolution);
     writeDoc(doc, "encoderOneResetAfter", rotaryOptions.encoderOne.resetAfter);
     writeDoc(doc, "encoderOneAllowWrapAround", rotaryOptions.encoderOne.allowWrapAround);
     writeDoc(doc, "encoderOneMultiplier", rotaryOptions.encoderOne.multiplier);
     writeDoc(doc, "encoderTwoEnabled", rotaryOptions.encoderTwo.enabled);
-    writeDoc(doc, "encoderTwoPinA", rotaryOptions.encoderTwo.pinA);
-    writeDoc(doc, "encoderTwoPinB", rotaryOptions.encoderTwo.pinB);
+    writeDoc(doc, "encoderTwoPinA", cleanPin(rotaryOptions.encoderTwo.pinA));
+    writeDoc(doc, "encoderTwoPinB", cleanPin(rotaryOptions.encoderTwo.pinB));
     writeDoc(doc, "encoderTwoMode", rotaryOptions.encoderTwo.mode);
     writeDoc(doc, "encoderTwoPPR", rotaryOptions.encoderTwo.pulsesPerRevolution);
     writeDoc(doc, "encoderTwoResetAfter", rotaryOptions.encoderTwo.resetAfter);
@@ -2681,10 +2689,10 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/getI2CPeripheralMap", getI2CPeripheralMap },
     { "/api/setExpansionPins", setExpansionPins },
     { "/api/getExpansionPins", getExpansionPins },
+    { "/api/setHETriggerCalibrations", setHETriggerCalibrations },
+    { "/api/getHETriggerCalibrations", getHETriggerCalibrations },
+    { "/api/getHETriggerVoltage", getHETriggerVoltage },
     { "/api/setHETriggerOptions", setHETriggerOptions },
-    { "/api/getHETriggerOptions", getHETriggerOptions },
-    { "/api/getHETriggerCalibration", getHETriggerCalibration },
-    { "/api/setHETriggerCalibration", setHETriggerCalibration },
     { "/api/setReactiveLEDs", setReactiveLEDs },
     { "/api/getReactiveLEDs", getReactiveLEDs },
     { "/api/setKeyMappings", setKeyMappings },
