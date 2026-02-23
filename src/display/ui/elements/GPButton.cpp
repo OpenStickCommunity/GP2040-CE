@@ -26,7 +26,7 @@ void GPButton::draw() {
     }
 
     if (scaleY > 0.0f) {
-        baseY = ((this->y) * scaleY + this->getViewport().top);
+        baseY = ((this->y) * scaleY + this->getViewport().top) + offsetY;
     }
 
     bool pinState = false;

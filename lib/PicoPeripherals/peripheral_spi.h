@@ -8,6 +8,10 @@
 #include <hardware/sync.h>
 #include <hardware/platform_defs.h>
 
+#if __has_include("BoardConfig.h")
+#include "BoardConfig.h"
+#endif
+
 #define DMA_BUFFER_SIZE 2048 // Each direction gets a 2k buffer
 
 typedef enum {

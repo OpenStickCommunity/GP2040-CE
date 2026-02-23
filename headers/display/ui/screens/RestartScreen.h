@@ -15,7 +15,7 @@ class RestartScreen : public GPScreen {
         void setBootMode(uint32_t mode);
     protected:
         virtual void drawScreen();
-        uint32_t bootMode;
+        uint32_t bootMode = 0;
 };
 
 #endif

@@ -38,7 +38,7 @@ class GPWidget : public GPGFX_UI {
 
         uint16_t strokeColor = 0;
         uint16_t fillColor = 0;
-        uint16_t _ID;
+        uint16_t _ID = 0;
         uint16_t _priority = 0;
         bool _visibility = true;
 
