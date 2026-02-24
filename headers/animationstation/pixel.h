@@ -55,8 +55,26 @@ struct Light
     //GamePadMask = GamePadMask;
     if(InType == LightType::LightType_Case)
       CaseLightIndex = InGIPOPin;
-    else if(InType == LightType::LightType_PlayerLight)
-      PlayerLightIndex = InGIPOPin;
+    else if(InType == LightType::LightType_Player1Light)
+    {
+      CaseLightIndex = InGIPOPin;
+      PlayerLightIndex = 0;
+    }
+    else if(InType == LightType::LightType_Player2Light)
+    {
+      CaseLightIndex = InGIPOPin;
+      PlayerLightIndex = 1;
+    }
+    else if(InType == LightType::LightType_Player3Light)
+    {
+      CaseLightIndex = InGIPOPin;
+      PlayerLightIndex = 2;
+    }
+    else if(InType == LightType::LightType_Player4Light)
+    {
+      CaseLightIndex = InGIPOPin;
+      PlayerLightIndex = 3;
+    }
     else if(InType == LightType::LightType_ActionButton || InType == LightType::LightType_Turbo)
       GIPOPin = InGIPOPin;
   }

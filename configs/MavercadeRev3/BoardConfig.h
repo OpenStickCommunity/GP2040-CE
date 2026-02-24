@@ -100,7 +100,7 @@
 #define PLED2_PIN 33
 #define PLED3_PIN 34
 #define PLED4_PIN 35
-#define PLED_COLOR ColorPurple
+#define PLED_COLOR 11 // ColorPurple index from Animation.h
 
 #define CASE_RGB_TYPE CASE_RGB_TYPE_AMBIENT
 #define CASE_RGB_INDEX 36

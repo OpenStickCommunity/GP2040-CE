@@ -83,7 +83,7 @@
 #define PLED2_PIN 25
 #define PLED3_PIN 26
 #define PLED4_PIN 27
-#define PLED_COLOR ColorGreen
+#define PLED_COLOR 6 // ColorGreen index from Animation.h
 
 #define HAS_I2C_DISPLAY 0 //This needs to be defined or the LEDs will not work
 

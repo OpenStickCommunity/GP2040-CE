@@ -809,10 +809,26 @@ std::string setLedOptions()
     ledOptions.brightnessMaximum = std::clamp<uint32_t>(ledOptions.brightnessMaximum, 0, 255);
 
     readDoc(ledOptions.pledType, doc, "pledType");
-    docToPin(ledOptions.pledPin1, doc, "pledPin1");
-    docToPin(ledOptions.pledPin2, doc, "pledPin2");
-    docToPin(ledOptions.pledPin3, doc, "pledPin3");
-    docToPin(ledOptions.pledPin4, doc, "pledPin4");
+    if(ledOptions.pledType == PLEDType::PLED_TYPE_PWM)
+    {
+        docToPin(ledOptions.pledPin1, doc, "pledPin1");
+        docToPin(ledOptions.pledPin2, doc, "pledPin2");
+        docToPin(ledOptions.pledPin3, doc, "pledPin3");
+        docToPin(ledOptions.pledPin4, doc, "pledPin4");
+    }
+    else
+    {
+        int32_t resetVal = -1;
+        cleanAddonGpioMappings(resetVal, ledOptions.pledPin1);
+        cleanAddonGpioMappings(resetVal, ledOptions.pledPin2);
+        cleanAddonGpioMappings(resetVal, ledOptions.pledPin3);
+        cleanAddonGpioMappings(resetVal, ledOptions.pledPin4);
+
+        ledOptions.pledPin1 = resetVal;
+        ledOptions.pledPin2 = resetVal;
+        ledOptions.pledPin3 = resetVal;
+        ledOptions.pledPin4 = resetVal;
+    }
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
     return serialize_json(doc);

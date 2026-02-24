@@ -106,11 +106,10 @@
 #define PLED2_PIN 14
 #define PLED3_PIN 15
 #define PLED4_PIN 16
-#define PLED_COLOR ColorGreen
+#define PLED_COLOR 6 // ColorGreen index from Animation.h
 
 #define TURBO_LED_INDEX 17
 #define TURBO_LED_TYPE PLED_TYPE_RGB
-#define TURBO_LED_COLOR ColorRed
 
 #define CASE_RGB_TYPE CASE_RGB_TYPE_AMBIENT
 #define CASE_RGB_INDEX 18

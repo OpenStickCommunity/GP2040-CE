@@ -144,6 +144,14 @@
 #define LEDS_STATIC_COLOR_CASE 1 // White - animation.h colors array index
 #endif
 
+#ifndef LEDS_IDLE_SPECIAL_COLOR
+#define LEDS_IDLE_SPECIAL_COLOR ColorYellow 
+#endif
+
+#ifndef LEDS_PRESSED_SPECIAL_COLOR
+#define LEDS_PRESSED_SPECIAL_COLOR ColorGreen 
+#endif
+
 #ifndef LEDS_AUTO_DISABLE_TIME
 #define LEDS_AUTO_DISABLE_TIME 0 // in ms
 #endif

@@ -472,7 +472,10 @@ export enum LightType {
     ActionButton = 0,
     Case = 1,
     Turbo = 2,
-    PlayerLight = 3
+    Player1Light = 3,
+    Player2Light = 4,
+    Player3Light = 5,
+    Player4Light = 6
 }
 
 export enum ShmupMixMode {

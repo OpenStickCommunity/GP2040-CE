@@ -373,7 +373,7 @@ void NeoPicoLEDAddon::UpdatePlayerLEDs()
 	{
   		for(unsigned int lightIndex = 0; lightIndex < RGBLights.AllLights.size(); ++lightIndex)
 		{
-			if(RGBLights.AllLights[lightIndex].Type == LightType::LightType_PlayerLight)
+			if(RGBLights.AllLights[lightIndex].Type >= LightType::LightType_Player1Light && RGBLights.AllLights[lightIndex].Type <= LightType::LightType_Player4Light)
 			{
 				//Get player Id
 				int playerId = RGBLights.AllLights[lightIndex].PlayerLightIndex;
@@ -662,10 +662,10 @@ void NeoPicoLEDAddon::createLEDLayout(ButtonLayout layout, uint8_t ledsPerPixel,
 	{
 		if(PLED1_PIN != -1 && PLED2_PIN != -1 && PLED3_PIN != -1 && PLED4_PIN != -1)
 		{
-			generateLegacyIndividualLight(PLED1_PIN, 0, 11, 1, 0, LightType::LightType_PlayerLight);
-			generateLegacyIndividualLight(PLED2_PIN, 1, 11, 1, 1, LightType::LightType_PlayerLight);
-			generateLegacyIndividualLight(PLED3_PIN, 2, 11, 1, 2, LightType::LightType_PlayerLight);
-			generateLegacyIndividualLight(PLED4_PIN, 3, 11, 1, 3, LightType::LightType_PlayerLight);		
+			generateLegacyIndividualLight(PLED1_PIN, 0, 11, 1, MAX_CASE_LIGHTS-1, LightType::LightType_Player1Light);
+			generateLegacyIndividualLight(PLED2_PIN, 1, 11, 1, MAX_CASE_LIGHTS-1, LightType::LightType_Player2Light);
+			generateLegacyIndividualLight(PLED3_PIN, 2, 11, 1, MAX_CASE_LIGHTS-1, LightType::LightType_Player3Light);
+			generateLegacyIndividualLight(PLED4_PIN, 3, 11, 1, MAX_CASE_LIGHTS-1, LightType::LightType_Player4Light);		
 		}
 	}
 }

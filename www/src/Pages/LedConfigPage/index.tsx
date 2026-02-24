@@ -383,7 +383,7 @@ export default function LedConfigPage() {
 						<Row className="mb-3">
 							<FormSelect
 								label={t('LedConfig:player.pled-type-label')}
-								name="pledType"
+								name="ledOptions.pledType"
 								className="form-select-sm"
 								groupClassName="col-sm-2 mb-3"
 								value={values.ledOptions.pledType}

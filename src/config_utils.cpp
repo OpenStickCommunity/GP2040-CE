@@ -526,7 +526,8 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     //INIT_UNSET_PROPERTY(config.specialMoveOptions, CurrentProfileIndex, 0);
  
     // animationOptions
-    if(LEDS_BRIGHTNESS >= 0 && LEDS_BRIGHTNESS <= AnimationStation::brightnessSteps)
+    int brightSteps = AnimationStation::brightnessSteps; //cache locally to avoid false positive compiler warning
+    if(LEDS_BRIGHTNESS >= 0 && LEDS_BRIGHTNESS <= brightSteps)
     {
         INIT_UNSET_PROPERTY(config.animationOptions, brightness, LEDS_BRIGHTNESS);
     }
@@ -544,6 +545,8 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], basePressedCycleTime, 2);
         INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], baseCycleTime, 2);
         INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], baseCaseCycleTime, 2);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], nonPressedSpecialColor, LEDS_IDLE_SPECIAL_COLOR.value(LED_FORMAT_RGB, 1.0f));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], pressedSpecialColor, LEDS_PRESSED_SPECIAL_COLOR.value(LED_FORMAT_RGB, 1.0f));
         config.animationOptions.profiles_count = 1;
         config.animationOptions.profiles[0].notPressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
         config.animationOptions.profiles[0].pressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
@@ -566,6 +569,23 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
             config.animationOptions.profiles[0].caseStaticColors[lightIndex] += LEDS_STATIC_COLOR_CASE<<16;
             config.animationOptions.profiles[0].caseStaticColors[lightIndex] += LEDS_STATIC_COLOR_CASE<<24; 
         }
+
+        //if there is a turbo LED color then insert this into the correct place
+        if(TURBO_LED_PIN != -1)
+        {
+            int baseIndex = TURBO_LED_PIN / 4;
+            int offsetIndex = TURBO_LED_PIN % 4;
+
+            config.animationOptions.profiles[0].notPressedStaticColors[baseIndex] &= (0xFFFFFFFF - (0xFF << (8 * offsetIndex)));
+            config.animationOptions.profiles[0].notPressedStaticColors[baseIndex] = TURBO_LED_COLOR << (8 * offsetIndex);
+        }
+        //if there is a player LED color then make this the last case colour so it can be used
+        if(PLED_TYPE == PLED_TYPE_RGB)
+        {
+            config.animationOptions.profiles[0].caseStaticColors[(MAX_CASE_LIGHTS/4) - 1] &= 0x00FFFFFF;
+            config.animationOptions.profiles[0].caseStaticColors[(MAX_CASE_LIGHTS/4) - 1] = PLED_COLOR << 24;
+        }
+
         config.animationOptions.profiles[0].baseNonPressedEffect = LEDS_BASE_ANIMATION_INDEX;
         config.animationOptions.profiles[0].basePressedEffect = LEDS_PRESSED_ANIMATION_INDEX;
         config.animationOptions.profiles[0].baseCaseEffect = LEDS_CASE_ANIMATION_INDEX;
@@ -578,7 +598,6 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     {
         INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], bEnabled, 0);
         INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], basePressedCycleTime, 2);
-        INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], baseCycleTime, 2);
         INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], baseCycleTime, 2);
         INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], bUseCaseLightsInPressedAnimations, 0);   
         INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], bUseCaseLightsInSpecialMoves, 0);   
@@ -1129,7 +1148,6 @@ void gpioMappingsMigrationCore(Config& config)
     PeripheralOptions& peripheralOptions = config.peripheralOptions;
     KeyboardHostOptions& keyboardHostOptions = config.addonOptions.keyboardHostOptions;
     PSPassthroughOptions& psPassthroughOptions = config.addonOptions.psPassthroughOptions;
-    TurboOptions& turboOptions = config.addonOptions.turboOptions;
     TiltOptions& tiltOptions = config.addonOptions.tiltOptions;
     FocusModeOptions& focusModeOptions = config.addonOptions.focusModeOptions;
     ReverseOptions& reverseOptions = config.addonOptions.reverseOptions;
@@ -1532,18 +1550,13 @@ void gpioMappingsMigrationCore(Config& config)
     // check if PLED PINs are actually GPIOs or not
     // pledPin used to be used for RGB indexes, so we should only mark the GPIO
     // as assigned to addon if in PWM mode
-    if (config.ledOptions.pledType == PLEDType::PLED_TYPE_PWM) {
+    if (config.ledOptions.pledType == PLEDType::PLED_TYPE_PWM) 
+    {
         // fields are being used for PWM, so they are GPIOs; reserve them
         markAddonPinIfUsed(config.ledOptions.pledPin1);
         markAddonPinIfUsed(config.ledOptions.pledPin2);
         markAddonPinIfUsed(config.ledOptions.pledPin3);
         markAddonPinIfUsed(config.ledOptions.pledPin4);
-    } else {
-        // default init copied the values into the new fields, pledIndex1-4, so unset these
-        config.ledOptions.pledPin1 = -1;
-        config.ledOptions.pledPin2 = -1;
-        config.ledOptions.pledPin3 = -1;
-        config.ledOptions.pledPin4 = -1;
     }
     markAddonPinIfUsed(config.addonOptions.analogOptions.analogAdc1PinX);
     markAddonPinIfUsed(config.addonOptions.analogOptions.analogAdc1PinY);

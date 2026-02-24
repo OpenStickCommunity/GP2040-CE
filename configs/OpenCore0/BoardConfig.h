@@ -105,7 +105,7 @@
 #define PLED2_PIN 25
 #define PLED3_PIN 26
 #define PLED4_PIN 27
-#define PLED_COLOR ColorGreen
+#define PLED_COLOR 6 // ColorGreen index from Animation.h
 
 #define LIGHT_DATA_NAME_DEFAULT "OpenCore0" 
 #define LIGHT_DATA_SIZE_DEFAULT 48 //number of sets in the below data
@@ -146,7 +146,6 @@
 
 #define TURBO_LED_INDEX 28
 #define TURBO_LED_TYPE PLED_TYPE_RGB
-#define TURBO_LED_COLOR ColorRed
 
 #define CASE_RGB_TYPE CASE_RGB_TYPE_AMBIENT
 #define CASE_RGB_INDEX 29
