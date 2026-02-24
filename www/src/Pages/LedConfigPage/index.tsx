@@ -51,12 +51,6 @@ import ImportLayout from './ImportLayout';
 const GPIO_PIN_LENGTH =
 	boards[import.meta.env.VITE_GP2040_BOARD as keyof typeof boards].maxPin + 1;
 
-const PLED_LABELS = [
-	{ 0: 'PLED #1 Pin'},
-	{ 0: 'PLED #2 Pin'},
-	{ 0: 'PLED #3 Pin'},
-	{ 0: 'PLED #4 Pin'},
-];
 const schema = yup.object({
 	ledOptions: yup.object().shape({
 		dataPin: yup.number().required().checkUsedPins(),
@@ -81,19 +75,19 @@ const schema = yup.object({
 		pledPin1: yup
 			.number()
 			.label('PLED 1')
-			.validatePinWhenEqualTo('pledPins1', 'pledType', 0),
+			.validatePinWhenEqualTo('pledPin1', 'pledType', 0),
 		pledPin2: yup
 			.number()
 			.label('PLED 2')
-			.validatePinWhenEqualTo('pledPins2', 'pledType', 0),
+			.validatePinWhenEqualTo('pledPin2', 'pledType', 0),
 		pledPin3: yup
 			.number()
 			.label('PLED 3')
-			.validatePinWhenEqualTo('pledPins3', 'pledType', 0),
+			.validatePinWhenEqualTo('pledPin3', 'pledType', 0),
 		pledPin4: yup
 			.number()
 			.label('PLED 4')
-			.validatePinWhenEqualTo('pledPins4', 'pledType', 0),
+			.validatePinWhenEqualTo('pledPin4', 'pledType', 0),
 	}),
 	AnimationOptions: yup.object().shape({
 		baseProfileIndex: yup.number().required('Selecting a profile is required'),
@@ -264,11 +258,6 @@ export default function LedConfigPage() {
 	const [layouteMode, setLayouteMode] = useState(false);
 	const [saveMessage, setSaveMessage] = useState('');
 
-	// Translate PLED labels
-	PLED_LABELS.map((p, n) => {
-		p[0] = t(`LedConfig:pled-pin-label`, { pin: ++n });
-	});
-
 	const onSuccess = async ({
 		ledOptions,
 		AnimationOptions,
@@ -416,69 +405,65 @@ export default function LedConfigPage() {
 							</FormSelect>
 							<FormControl
 								type="number"
-								name="pledPin1"
-								hidden={parseInt(values.ledOptions.pledType) !== 0}
-								label={PLED_LABELS[0][values.ledOptions.pledType]}
+								name="ledOptions.pledPin1"
+								hidden={values.ledOptions.pledType !== 0}
+								label={t('LedConfig:pled-pin-label', { pin: 1 })}
 								className="form-control-sm"
 								groupClassName="col-sm-2 mb-3"
 								value={values.ledOptions.pledPin1}
 								error={errors.ledOptions?.pledPin1}
-								isInvalid={errors.ledOptions?.pledPin1}
-								onChange={(e) =>
-									setFieldValue('ledOptions.pledPin1', parseInt(e.target.value))
-								}
-								min={0}
+								isInvalid={Boolean(errors.ledOptions?.pledPin1)}
+								onChange={handleChange}
+ 								min={-1}
+								max={29}
 							/>
 							<FormControl
 								type="number"
-								name="pledPin2"
-								hidden={parseInt(values.ledOptions.pledType) !== 0}
-								label={PLED_LABELS[1][values.ledOptions.pledType]}
+								name="ledOptions.pledPin2"
+								hidden={values.ledOptions.pledType !== 0}
+								label={t('LedConfig:pled-pin-label', { pin: 2 })}
 								className="form-control-sm"
 								groupClassName="col-sm-2 mb-3"
 								value={values.ledOptions.pledPin2}
 								error={errors.ledOptions?.pledPin2}
-								isInvalid={errors.ledOptions?.pledPin2}
-								onChange={(e) =>
-									setFieldValue('ledOptions.pledPin2', parseInt(e.target.value))
-								}
-								min={0}
+								isInvalid={Boolean(errors.ledOptions?.pledPin2)}
+								onChange={handleChange}
+ 								min={-1}
+								max={29}
 							/>
 							<FormControl
 								type="number"
-								name="pledPin3"
-								hidden={parseInt(values.ledOptions.pledType) !== 0}
-								label={PLED_LABELS[2][values.ledOptions.pledType]}
+								name="ledOptions.pledPin3"
+								hidden={values.ledOptions.pledType !== 0}
+								label={t('LedConfig:pled-pin-label', { pin: 3 })}
 								className="form-control-sm"
 								groupClassName="col-sm-2 mb-3"
 								value={values.ledOptions.pledPin3}
 								error={errors.ledOptions?.pledPin3}
-								isInvalid={errors.ledOptions?.pledPin3}
-								onChange={(e) =>
-									setFieldValue('ledOptions.pledPin3', parseInt(e.target.value))
-								}
-								min={0}
+								isInvalid={Boolean(errors.ledOptions?.pledPin3)}
+								onChange={handleChange}
+ 								min={-1}
+								max={29}
 							/>
 							<FormControl
 								type="number"
-								name="pledPin4"
-								hidden={parseInt(values.ledOptions.pledType) !== 0}
-								label={PLED_LABELS[3][values.ledOptions.pledType]}
+								name="ledOptions.pledPin4"
+								hidden={values.ledOptions.pledType !== 0}
+								label={t('LedConfig:pled-pin-label', { pin: 4 })}
 								className="form-control-sm"
 								groupClassName="col-sm-2 mb-3"
 								value={values.ledOptions.pledPin4}
 								error={errors.ledOptions?.pledPin4}
-								isInvalid={errors.ledOptions?.pledPin4}
-								onChange={(e) =>
-									setFieldValue('ledOptions.pledPin4', parseInt(e.target.value))
-								}
-								min={0}
+								isInvalid={Boolean(errors.ledOptions?.pledPin4)}
+								onChange={handleChange}
+ 								min={-1}
+								max={29}
 							/>
 						</Row>
-						<p hidden={parseInt(values.ledOptions.pledType) !== 0}>
+						<p hidden={values.ledOptions.pledType !== 0}>
 								{t('LedConfig:player.pwm-sub-header-text')}
 						</p>
-						<p hidden={parseInt(values.ledOptions.pledType) !== 1}>
+						<p hidden={values.ledOptions.pledType !== 1}>
 							<Trans
 								ns="LedConfig"
 								i18nKey="player.rgb-sub-header-text"
