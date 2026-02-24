@@ -168,11 +168,11 @@ bool Animation::LightTypeIsForAnimation(LightType Type)
 }
 
 //Get correct color for light index
-RGB Animation::GetNonPressedColorForLight(uint32_t LightIndex)
+RGB Animation::StaticGetNonPressedColorForLight(Lights* AllLights, uint32_t LightIndex)
 {
   int colIndex = 0;
-  Light* thisLight = &(RGBLights->AllLights[LightIndex]);
-  if(thisLight->Type == LightType::LightType_ActionButton)
+  Light* thisLight = &(AllLights->AllLights[LightIndex]);
+  if(thisLight->Type == LightType::LightType_ActionButton || thisLight->Type == LightType::LightType_Turbo)
   {
     //button
     colIndex = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].notPressedStaticColors[thisLight->GIPOPin];
@@ -184,6 +184,11 @@ RGB Animation::GetNonPressedColorForLight(uint32_t LightIndex)
   }
 
   return GetColorForIndex(colIndex);
+}
+
+RGB Animation::GetNonPressedColorForLight(uint32_t LightIndex)
+{
+  return StaticGetNonPressedColorForLight(RGBLights, LightIndex);
 }
 
 RGB Animation::GetPressedColorForLight(uint32_t LightIndex)

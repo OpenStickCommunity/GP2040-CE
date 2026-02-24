@@ -813,7 +813,6 @@ std::string setLedOptions()
     docToPin(ledOptions.pledPin2, doc, "pledPin2");
     docToPin(ledOptions.pledPin3, doc, "pledPin3");
     docToPin(ledOptions.pledPin4, doc, "pledPin4");
-    readDoc(ledOptions.pledColor, doc, "pledColor");
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
     return serialize_json(doc);
@@ -837,7 +836,6 @@ std::string getLedOptions()
     writeDoc(doc, "pledPin2", ledOptions.pledPin2);
     writeDoc(doc, "pledPin3", ledOptions.pledPin3);
     writeDoc(doc, "pledPin4", ledOptions.pledPin4);
-    writeDoc(doc, "pledColor", ((RGB)ledOptions.pledColor).value(LED_FORMAT_RGB));
 
     return serialize_json(doc);
 }
@@ -2038,7 +2036,6 @@ std::string setAddonOptions()
     docToValue(turboOptions.shmupBtnMask4, doc, "shmupBtnMask4");
     docToPin(turboOptions.shmupDialPin, doc, "pinShmupDial");
     docToValue(turboOptions.turboLedType, doc, "turboLedType");
-    docToValue(turboOptions.turboLedColor, doc, "turboLedColor");
     docToValue(turboOptions.enabled, doc, "TurboInputEnabled");
 
     WiiOptions& wiiOptions = Storage::getInstance().getAddonOptions().wiiOptions;
@@ -2489,7 +2486,6 @@ std::string getAddonOptions()
     writeDoc(doc, "shmupBtnMask4", turboOptions.shmupBtnMask4);
     writeDoc(doc, "pinShmupDial", cleanPin(turboOptions.shmupDialPin));
     writeDoc(doc, "turboLedType", turboOptions.turboLedType);
-    writeDoc(doc, "turboLedColor",  ((RGB)turboOptions.turboLedColor).value(LED_FORMAT_RGB));
     writeDoc(doc, "TurboInputEnabled", turboOptions.enabled);
 
     const WiiOptions& wiiOptions = Storage::getInstance().getAddonOptions().wiiOptions;

@@ -16,6 +16,7 @@
 #include "usbdriver.h"
 #include "enums.h"
 #include "helper.h"
+#include "animation.h"
 
 const std::string BUTTON_LABEL_UP = "Up";
 const std::string BUTTON_LABEL_DOWN = "Down";
@@ -370,24 +371,29 @@ void NeoPicoLEDAddon::UpdatePlayerLEDs()
 	// Apply the player LEDs to our first 4 leds if we're in NEOPIXEL mode
     if (ledOptions.pledType == PLED_TYPE_RGB)
 	{
-		for(auto thisLight : RGBLights.AllLights)
+  		for(unsigned int lightIndex = 0; lightIndex < RGBLights.AllLights.size(); ++lightIndex)
 		{
-			if(thisLight.Type == LightType::LightType_PlayerLight)
+			if(RGBLights.AllLights[lightIndex].Type == LightType::LightType_PlayerLight)
 			{
 				//Get player Id
-				int playerId = thisLight.PlayerLightIndex;
+				int playerId = RGBLights.AllLights[lightIndex].PlayerLightIndex;
 				if(playerId >= 0 && playerId < 4)
 				{
 					float level = (static_cast<float>(PLED_MAX_LEVEL - neoPLEDs->getLedLevels()[playerId]) / static_cast<float>(PLED_MAX_LEVEL));
 					float brightness = as.GetNormalisedBrightness() * level;
 					uint32_t valueToApply;
-					if (gamepad->auxState.sensors.statusLight.enabled && gamepad->auxState.sensors.statusLight.active) {
+
+					if (gamepad->auxState.sensors.statusLight.enabled && gamepad->auxState.sensors.statusLight.active) 
+					{
 						valueToApply = (RGB(gamepad->auxState.sensors.statusLight.color.red, gamepad->auxState.sensors.statusLight.color.green, gamepad->auxState.sensors.statusLight.color.blue)).value(neopico.GetFormat(), brightness);
-					} else {
-						valueToApply = ((RGB)ledOptions.pledColor).value(neopico.GetFormat(), brightness);
+					} 
+					else 
+					{
+						RGB pledCol = Animation::StaticGetNonPressedColorForLight(&RGBLights, lightIndex);
+						valueToApply = pledCol.value(neopico.GetFormat(), brightness);
 					}
 					
-					for(uint8_t index = thisLight.FirstLedIndex; index < (thisLight.FirstLedIndex + thisLight.LedsPerLight); ++index)
+					for(uint8_t index = RGBLights.AllLights[lightIndex].FirstLedIndex; index < (RGBLights.AllLights[lightIndex].FirstLedIndex + RGBLights.AllLights[lightIndex].LedsPerLight); ++index)
 					{
             		    frame[index] = valueToApply;
 					}
@@ -414,13 +420,14 @@ void NeoPicoLEDAddon::UpdateTurboLED()
 		{
             float brightness = AnimStation.GetNormalisedBrightness();
 
-			for(auto thisLight : RGBLights.AllLights)
+  			for(unsigned int lightIndex = 0; lightIndex < RGBLights.AllLights.size(); ++lightIndex)
 			{
-				if(thisLight.Type == LightType::LightType_Turbo)
+				if(RGBLights.AllLights[lightIndex].Type == LightType::LightType_Turbo)
 				{
-					for(uint8_t index = thisLight.FirstLedIndex; index < (thisLight.FirstLedIndex + thisLight.LedsPerLight); ++index)
+					for(uint8_t index = RGBLights.AllLights[lightIndex].FirstLedIndex; index < (RGBLights.AllLights[lightIndex].FirstLedIndex + RGBLights.AllLights[lightIndex].LedsPerLight); ++index)
 					{
-            		    frame[index] = ((RGB)turboOptions.turboLedColor).value(neopico.GetFormat(), brightness);
+						RGB turboCol = Animation::StaticGetNonPressedColorForLight(&RGBLights, lightIndex);
+            		    frame[index] = turboCol.value(neopico.GetFormat(), brightness);
 					}
 				}
 			}

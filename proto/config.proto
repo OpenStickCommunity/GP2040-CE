@@ -312,7 +312,7 @@ message LEDOptions
     optional int32 pledPin2 = 27;
     optional int32 pledPin3 = 28;
     optional int32 pledPin4 = 29;
-    optional uint32 pledColor = 30;
+    optional uint32 pledColor = 30 [deprecated = true];
 
     optional bool turnOffWhenSuspended = 31;
 
@@ -484,7 +484,7 @@ message TurboOptions
 
     optional PLEDType turboLedType = 20;
     optional int32 turboLedIndex = 21  [deprecated = true];
-    optional uint32 turboLedColor = 22;
+    optional uint32 turboLedColor = 22 [deprecated = true];
 }
 
 message SliderOptions

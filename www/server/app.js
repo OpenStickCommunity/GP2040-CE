@@ -528,6 +528,11 @@ app.get('/api/getLedOptions', (req, res) => {
 		ledFormat: 0,
 		turnOffWhenSuspended: 0,
 		brightnessMaximum: 50,
+		pledType: 1,
+		pledPin1: 12,
+		pledPin2: 13,
+		pledPin3: 14,
+		pledPin4: 15,
 	});
 });
 
@@ -744,7 +749,6 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		shmupBtnMask4: 0,
 		pinShmupDial: -1,
 		turboLedType: 1,
-		turboLedColor: 16711680,
 		sliderSOCDModeDefault: 1,
 		snesPadClockPin: -1,
 		snesPadLatchPin: -1,

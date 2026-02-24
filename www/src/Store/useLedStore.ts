@@ -47,6 +47,11 @@ export type LedOptions = {
 	ledFormat: number;
 	turnOffWhenSuspended: number;
 	brightnessMaximum: number;
+	pledType: number;
+	pledPin1: number;
+	pledPin2: number;
+	pledPin3: number;
+	pledPin4: number;
 };
 
 type State = {
@@ -70,6 +75,11 @@ const INITIAL_STATE: State = {
 		ledFormat: 0,
 		turnOffWhenSuspended: 0,
 		brightnessMaximum: 0,
+		pledType: -1,
+		pledPin1: -1,
+		pledPin2: -1,
+		pledPin3: -1,
+		pledPin4: -1,
 	},
 	AnimationOptions: {
 		brightness: 0,

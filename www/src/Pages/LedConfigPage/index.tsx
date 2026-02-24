@@ -12,7 +12,7 @@ import {
 	Tabs,
 	Tooltip,
 } from 'react-bootstrap';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import {
 	FieldArray,
 	FieldArrayRenderProps,
@@ -51,6 +51,12 @@ import ImportLayout from './ImportLayout';
 const GPIO_PIN_LENGTH =
 	boards[import.meta.env.VITE_GP2040_BOARD as keyof typeof boards].maxPin + 1;
 
+const PLED_LABELS = [
+	{ 0: 'PLED #1 Pin'},
+	{ 0: 'PLED #2 Pin'},
+	{ 0: 'PLED #3 Pin'},
+	{ 0: 'PLED #4 Pin'},
+];
 const schema = yup.object({
 	ledOptions: yup.object().shape({
 		dataPin: yup.number().required().checkUsedPins(),
@@ -71,6 +77,23 @@ const schema = yup.object({
 			.max(100)
 			.label('Max Brightness'),
 		turnOffWhenSuspended: yup.number().label('Turn Off When Suspended'),
+		pledType: yup.number().required().label('Player LED Type'),
+		pledPin1: yup
+			.number()
+			.label('PLED 1')
+			.validatePinWhenEqualTo('pledPins1', 'pledType', 0),
+		pledPin2: yup
+			.number()
+			.label('PLED 2')
+			.validatePinWhenEqualTo('pledPins2', 'pledType', 0),
+		pledPin3: yup
+			.number()
+			.label('PLED 3')
+			.validatePinWhenEqualTo('pledPins3', 'pledType', 0),
+		pledPin4: yup
+			.number()
+			.label('PLED 4')
+			.validatePinWhenEqualTo('pledPins4', 'pledType', 0),
 	}),
 	AnimationOptions: yup.object().shape({
 		baseProfileIndex: yup.number().required('Selecting a profile is required'),
@@ -241,6 +264,11 @@ export default function LedConfigPage() {
 	const [layouteMode, setLayouteMode] = useState(false);
 	const [saveMessage, setSaveMessage] = useState('');
 
+	// Translate PLED labels
+	PLED_LABELS.map((p, n) => {
+		p[0] = t(`LedConfig:pled-pin-label`, { pin: ++n });
+	});
+
 	const onSuccess = async ({
 		ledOptions,
 		AnimationOptions,
@@ -290,6 +318,7 @@ export default function LedConfigPage() {
 			{({
 				handleSubmit,
 				handleChange,
+				handleBlur,
 				values,
 				errors,
 				setFieldValue,
@@ -362,6 +391,100 @@ export default function LedConfigPage() {
 								/>
 							</div>
 						</Row>
+						<Row className="mb-3">
+							<FormSelect
+								label={t('LedConfig:player.pled-type-label')}
+								name="pledType"
+								className="form-select-sm"
+								groupClassName="col-sm-2 mb-3"
+								value={values.ledOptions.pledType}
+								error={errors.ledOptions?.pledType}
+								isInvalid={Boolean(errors.ledOptions?.pledType)}
+								onChange={(e) =>
+									setFieldValue('ledOptions.pledType', parseInt(e.target.value))
+								}
+							>
+								<option value="-1">
+									{t('LedConfig:player.pled-type-off')}
+								</option>
+								<option value="0">
+									{t('LedConfig:player.pled-type-pwm')}
+								</option>
+								<option value="1">
+									{t('LedConfig:player.pled-type-rgb')}
+								</option>
+							</FormSelect>
+							<FormControl
+								type="number"
+								name="pledPin1"
+								hidden={parseInt(values.ledOptions.pledType) !== 0}
+								label={PLED_LABELS[0][values.ledOptions.pledType]}
+								className="form-control-sm"
+								groupClassName="col-sm-2 mb-3"
+								value={values.ledOptions.pledPin1}
+								error={errors.ledOptions?.pledPin1}
+								isInvalid={errors.ledOptions?.pledPin1}
+								onChange={(e) =>
+									setFieldValue('ledOptions.pledPin1', parseInt(e.target.value))
+								}
+								min={0}
+							/>
+							<FormControl
+								type="number"
+								name="pledPin2"
+								hidden={parseInt(values.ledOptions.pledType) !== 0}
+								label={PLED_LABELS[1][values.ledOptions.pledType]}
+								className="form-control-sm"
+								groupClassName="col-sm-2 mb-3"
+								value={values.ledOptions.pledPin2}
+								error={errors.ledOptions?.pledPin2}
+								isInvalid={errors.ledOptions?.pledPin2}
+								onChange={(e) =>
+									setFieldValue('ledOptions.pledPin2', parseInt(e.target.value))
+								}
+								min={0}
+							/>
+							<FormControl
+								type="number"
+								name="pledPin3"
+								hidden={parseInt(values.ledOptions.pledType) !== 0}
+								label={PLED_LABELS[2][values.ledOptions.pledType]}
+								className="form-control-sm"
+								groupClassName="col-sm-2 mb-3"
+								value={values.ledOptions.pledPin3}
+								error={errors.ledOptions?.pledPin3}
+								isInvalid={errors.ledOptions?.pledPin3}
+								onChange={(e) =>
+									setFieldValue('ledOptions.pledPin3', parseInt(e.target.value))
+								}
+								min={0}
+							/>
+							<FormControl
+								type="number"
+								name="pledPin4"
+								hidden={parseInt(values.ledOptions.pledType) !== 0}
+								label={PLED_LABELS[3][values.ledOptions.pledType]}
+								className="form-control-sm"
+								groupClassName="col-sm-2 mb-3"
+								value={values.ledOptions.pledPin4}
+								error={errors.ledOptions?.pledPin4}
+								isInvalid={errors.ledOptions?.pledPin4}
+								onChange={(e) =>
+									setFieldValue('ledOptions.pledPin4', parseInt(e.target.value))
+								}
+								min={0}
+							/>
+						</Row>
+						<p hidden={parseInt(values.ledOptions.pledType) !== 0}>
+								{t('LedConfig:player.pwm-sub-header-text')}
+						</p>
+						<p hidden={parseInt(values.ledOptions.pledType) !== 1}>
+							<Trans
+								ns="LedConfig"
+								i18nKey="player.rgb-sub-header-text"
+							>
+							</Trans>
+						</p>
 					</Section>
 					<Section title="Custom LED Theme">
 						<Row>
@@ -488,14 +611,14 @@ export default function LedConfigPage() {
 												/>
 												<Row>
 													<FormSelect
-														label={t('Leds:case-animation-label')}
-														name={`AnimationOptions.profiles.${profileIndex}.baseCaseEffect`}
+														label={t('Leds:idle-animation-label')}
+														name={`AnimationOptions.profiles.${profileIndex}.baseNonPressedEffect`}
 														className="form-select-sm"
 														groupClassName="col-sm-4 mb-3"
-														value={Number(profile.baseCaseEffect)}
+														value={Number(profile.baseNonPressedEffect)}
 														onChange={(e) =>
 															setFieldValue(
-																`AnimationOptions.profiles.${profileIndex}.baseCaseEffect`,
+																`AnimationOptions.profiles.${profileIndex}.baseNonPressedEffect`,
 																parseInt(e.target.value),
 															)
 														}
@@ -503,7 +626,7 @@ export default function LedConfigPage() {
 														{Object.entries(ANIMATION_NON_PRESSED_EFFECTS).map(
 															([key, value]) => (
 																<option
-																	key={`baseCaseEffect-${key}`}
+																	key={`baseNonPressedEffect-${key}`}
 																	value={value}
 																>
 																	{t(`Leds:animations.${key}`)}
@@ -511,6 +634,7 @@ export default function LedConfigPage() {
 															),
 														)}
 													</FormSelect>
+
 													<FormSelect
 														label={t('Leds:pressed-animation-label')}
 														name={`AnimationOptions.profiles.${profileIndex}.basePressedEffect`}
@@ -537,14 +661,14 @@ export default function LedConfigPage() {
 													</FormSelect>
 
 													<FormSelect
-														label={t('Leds:idle-animation-label')}
-														name={`AnimationOptions.profiles.${profileIndex}.baseNonPressedEffect`}
+														label={t('Leds:case-animation-label')}
+														name={`AnimationOptions.profiles.${profileIndex}.baseCaseEffect`}
 														className="form-select-sm"
 														groupClassName="col-sm-4 mb-3"
-														value={Number(profile.baseNonPressedEffect)}
+														value={Number(profile.baseCaseEffect)}
 														onChange={(e) =>
 															setFieldValue(
-																`AnimationOptions.profiles.${profileIndex}.baseNonPressedEffect`,
+																`AnimationOptions.profiles.${profileIndex}.baseCaseEffect`,
 																parseInt(e.target.value),
 															)
 														}
@@ -552,7 +676,7 @@ export default function LedConfigPage() {
 														{Object.entries(ANIMATION_NON_PRESSED_EFFECTS).map(
 															([key, value]) => (
 																<option
-																	key={`baseNonPressedEffect-${key}`}
+																	key={`baseCaseEffect-${key}`}
 																	value={value}
 																>
 																	{t(`Leds:animations.${key}`)}
@@ -607,22 +731,6 @@ export default function LedConfigPage() {
 												<Row>
 													<FormControl
 														type="color"
-														label={t(`Leds:pressed-special-color-label`)}
-														name={`AnimationOptions.profiles.${profileIndex}.pressedSpecialColor`}
-														groupClassName="col-sm-4 mb-3"
-														className="form-control-sm p-0 border-0 mb-3"
-														defaultValue={rgbIntToHex(
-															profile.pressedSpecialColor,
-														)}
-														onBlur={(e) =>
-															setFieldValue(
-																`AnimationOptions.profiles.${profileIndex}.pressedSpecialColor`,
-																hexToInt((e.target as HTMLInputElement).value),
-															)
-														}
-													/>
-													<FormControl
-														type="color"
 														label={t(`Leds:idle-special-color-label`)}
 														name={`AnimationOptions.profiles.${profileIndex}.nonPressedSpecialColor`}
 														groupClassName="col-sm-4 mb-3"
@@ -647,6 +755,22 @@ export default function LedConfigPage() {
 														onBlur={(e) =>
 															setFieldValue(
 																`AnimationOptions.profiles.${profileIndex}.nonPressedSpecialColor`,
+																hexToInt((e.target as HTMLInputElement).value),
+															)
+														}
+													/>
+													<FormControl
+														type="color"
+														label={t(`Leds:pressed-special-color-label`)}
+														name={`AnimationOptions.profiles.${profileIndex}.pressedSpecialColor`}
+														groupClassName="col-sm-4 mb-3"
+														className="form-control-sm p-0 border-0 mb-3"
+														defaultValue={rgbIntToHex(
+															profile.pressedSpecialColor,
+														)}
+														onBlur={(e) =>
+															setFieldValue(
+																`AnimationOptions.profiles.${profileIndex}.pressedSpecialColor`,
 																hexToInt((e.target as HTMLInputElement).value),
 															)
 														}

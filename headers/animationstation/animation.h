@@ -135,6 +135,9 @@ public:
 
   virtual bool IsFinished() { return false; } //ready for delete? Only applicable to special move anims really
 
+  //Get color helpers
+  static RGB StaticGetNonPressedColorForLight(Lights* AllLights, uint32_t LightIndex);
+
 protected:
 
   //gets current frame time
@@ -158,7 +161,7 @@ protected:
   //Get color helpers
   virtual RGB GetNonPressedColorForLight(uint32_t LightIndex);
   virtual RGB GetPressedColorForLight(uint32_t LightIndex);
-  virtual RGB GetColorForIndex(uint32_t ColorIndex);
+  static RGB GetColorForIndex(uint32_t ColorIndex);
 
   //Light data
   Lights* RGBLights;
