@@ -946,7 +946,7 @@ std::string setLightsDataOptions()
         options.lightClusterData[thisEntryIndex].lightLocationData += ((int)light["numLedsOnLight"].as<uint8_t>()) << 8;
         options.lightClusterData[thisEntryIndex].lightLocationData += ((int)light["xCoord"].as<uint8_t>()) << 16;
         options.lightClusterData[thisEntryIndex].lightLocationData += ((int)light["yCoord"].as<uint8_t>()) << 24;
-        options.lightClusterData[thisEntryIndex].lightTypeData = light["GPIOPinorCaseChainIndex"].as<uint8_t>();
+        options.lightClusterData[thisEntryIndex].lightTypeData = light["GPIOPinOrColorIndex"].as<uint8_t>();
         options.lightClusterData[thisEntryIndex].lightTypeData += ((int)light["lightType"].as<uint8_t>()) << 8;
 
         options.lightClusterData_count++;
@@ -976,7 +976,7 @@ std::string getLightsDataOptions()
         light["numLedsOnLight"] = (options.lightClusterData[lightsIndex].lightLocationData >> 8) & 0xFF;
         light["xCoord"] = (options.lightClusterData[lightsIndex].lightLocationData >> 16) & 0xFF;
         light["yCoord"] = (options.lightClusterData[lightsIndex].lightLocationData >> 24) & 0xFF;
-        light["GPIOPinorCaseChainIndex"] = options.lightClusterData[lightsIndex].lightTypeData & 0xFF;
+        light["GPIOPinOrColorIndex"] = options.lightClusterData[lightsIndex].lightTypeData & 0xFF;
         light["lightType"] = (options.lightClusterData[lightsIndex].lightTypeData >> 8) & 0xFF;
     }
 
@@ -1007,7 +1007,7 @@ std::string getLightsPresetsByIndex(int presetIdx)
                 light["numLedsOnLight"] = data[thisEntryIndex+1];
                 light["xCoord"] = data[thisEntryIndex+2];
                 light["yCoord"] = data[thisEntryIndex+3];
-                light["GPIOPinorCaseChainIndex"] = data[thisEntryIndex+4];
+                light["GPIOPinOrColorIndex"] = data[thisEntryIndex+4];
                 light["lightType"] = data[thisEntryIndex+5];
             }
         }
@@ -1081,7 +1081,7 @@ std::string getLightsDataPresets()
                 light["numLedsOnLight"] = data[thisEntryIndex+1];
                 light["xCoord"] = data[thisEntryIndex+2];
                 light["yCoord"] = data[thisEntryIndex+3];
-                light["GPIOPinorCaseChainIndex"] = data[thisEntryIndex+4];
+                light["GPIOPinOrColorIndex"] = data[thisEntryIndex+4];
                 light["lightType"] = data[thisEntryIndex+5];
             }
         }
@@ -1238,24 +1238,6 @@ void helperGetProfileFromJsonObject(AnimationProfile* Profile, JsonObject* JsonD
             Profile->pressedStaticColors[packedPinIndex] += ((pressedStaticColorsList[pinIndex+3].as<uint32_t>() & 0xFF) << 24);
         Profile->pressedStaticColors_count = packedPinIndex+1;
     }
-
-    JsonArray caseStaticColorsList = (*JsonData)["caseStaticColors"];
-    Profile->caseStaticColors_count = 0;
-    for(unsigned int packedPinIndex = 0; packedPinIndex < (MAX_CASE_LIGHTS/4)+1; ++packedPinIndex)
-    {
-        unsigned int pinIndex = packedPinIndex * 4;
-        if(pinIndex < caseStaticColorsList.size())
-            Profile->caseStaticColors[packedPinIndex] = caseStaticColorsList[pinIndex].as<uint32_t>() & 0xFF;
-        else
-            break;
-        if(pinIndex+1 < caseStaticColorsList.size())
-            Profile->caseStaticColors[packedPinIndex] += ((caseStaticColorsList[pinIndex+1].as<uint32_t>() & 0xFF) << 8);
-        if(pinIndex+2 < caseStaticColorsList.size())
-            Profile->caseStaticColors[packedPinIndex] += ((caseStaticColorsList[pinIndex+2].as<uint32_t>() & 0xFF) << 16);
-        if(pinIndex+3 < caseStaticColorsList.size())
-            Profile->caseStaticColors[packedPinIndex] += ((caseStaticColorsList[pinIndex+3].as<uint32_t>() & 0xFF) << 24);
-        Profile->caseStaticColors_count = packedPinIndex+1;
-    }
 }
 
 std::string setAnimationButtonTestMode()
@@ -1380,14 +1362,6 @@ std::string getAnimationProtoOptions()
             pressedStaticColorsList.add((options.profiles[profilesIndex].pressedStaticColors[pressedStaticColorsIndex] >> 8) & 0xFF);
             pressedStaticColorsList.add((options.profiles[profilesIndex].pressedStaticColors[pressedStaticColorsIndex] >> 16) & 0xFF);
             pressedStaticColorsList.add((options.profiles[profilesIndex].pressedStaticColors[pressedStaticColorsIndex] >> 24) & 0xFF);
-        }
-        JsonArray caseStaticColorsList = profile.createNestedArray("caseStaticColors");
-        for (int caseStaticColorsIndex = 0; caseStaticColorsIndex < options.profiles[profilesIndex].caseStaticColors_count; ++caseStaticColorsIndex)
-        {
-            caseStaticColorsList.add(options.profiles[profilesIndex].caseStaticColors[caseStaticColorsIndex] & 0xFF);
-            caseStaticColorsList.add((options.profiles[profilesIndex].caseStaticColors[caseStaticColorsIndex] >> 8) & 0xFF);
-            caseStaticColorsList.add((options.profiles[profilesIndex].caseStaticColors[caseStaticColorsIndex] >> 16) & 0xFF);
-            caseStaticColorsList.add((options.profiles[profilesIndex].caseStaticColors[caseStaticColorsIndex] >> 24) & 0xFF);
         }
     }
 

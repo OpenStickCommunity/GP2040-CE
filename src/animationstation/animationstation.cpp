@@ -603,25 +603,7 @@ void AnimationStation::DecompressProfile(int ProfileIndex, const AnimationProfil
 				options.profiles[ProfileIndex].pressedStaticColors[pinIndex + 3] = 0;
       }
 		}
-		for(unsigned int packedCaseIndex = 0; packedCaseIndex < (MAX_CASE_LIGHTS / 4); ++packedCaseIndex)
-		{
-			int caseIndex = packedCaseIndex * 4;
-      if(packedCaseIndex < ProfileToDecompress->caseStaticColors_count)
-      {
-        options.profiles[ProfileIndex].caseStaticColors[caseIndex + 0] = ProfileToDecompress->caseStaticColors[packedCaseIndex] & 0xFF;
-        options.profiles[ProfileIndex].caseStaticColors[caseIndex + 1] = (ProfileToDecompress->caseStaticColors[packedCaseIndex] >> 8) & 0xFF;
-        options.profiles[ProfileIndex].caseStaticColors[caseIndex + 2] = (ProfileToDecompress->caseStaticColors[packedCaseIndex] >> 16) & 0xFF;
-        options.profiles[ProfileIndex].caseStaticColors[caseIndex + 3] = (ProfileToDecompress->caseStaticColors[packedCaseIndex] >> 24) & 0xFF;
-      }
-      else
-      {
-        //Set all black
-				options.profiles[ProfileIndex].caseStaticColors[caseIndex + 0] = 0;
-				options.profiles[ProfileIndex].caseStaticColors[caseIndex + 1] = 0;
-				options.profiles[ProfileIndex].caseStaticColors[caseIndex + 2] = 0;
-				options.profiles[ProfileIndex].caseStaticColors[caseIndex + 3] = 0;
-      }
-		}
+
 		options.profiles[ProfileIndex].buttonPressHoldTimeInMs = ProfileToDecompress->buttonPressHoldTimeInMs;
 		options.profiles[ProfileIndex].buttonPressFadeOutTimeInMs = ProfileToDecompress->buttonPressFadeOutTimeInMs;
 		options.profiles[ProfileIndex].nonPressedSpecialColor = ProfileToDecompress->nonPressedSpecialColor;
@@ -734,15 +716,6 @@ void AnimationStation::SetTestMode(AnimationStationTestMode TestType, const Anim
       options.profiles[testProfileIndex].pressedStaticColors[pinIndex + 3] = 0;
 		}
 
-		for(unsigned int packedCaseIndex = 0; packedCaseIndex < (MAX_CASE_LIGHTS / 4); ++packedCaseIndex)
-		{
-			int caseIndex = packedCaseIndex * 4;
-      options.profiles[testProfileIndex].caseStaticColors[caseIndex + 0] = 0;
-      options.profiles[testProfileIndex].caseStaticColors[caseIndex + 1] = 0;
-      options.profiles[testProfileIndex].caseStaticColors[caseIndex + 2] = 0;
-      options.profiles[testProfileIndex].caseStaticColors[caseIndex + 3] = 0;
-		}
-
     options.profiles[testProfileIndex].nonPressedSpecialColor = 0xFFFFFF; //White
     options.profiles[testProfileIndex].baseCycleTime = 2;
     options.profiles[testProfileIndex].basePressedCycleTime = 2;
@@ -768,15 +741,6 @@ void AnimationStation::SetTestMode(AnimationStationTestMode TestType, const Anim
       options.profiles[testProfileIndex].pressedStaticColors[pinIndex + 2] = 0;
       options.profiles[testProfileIndex].pressedStaticColors[pinIndex + 3] = 0;
 		}
-
-		for(unsigned int packedCaseIndex = 0; packedCaseIndex < (MAX_CASE_LIGHTS / 4); ++packedCaseIndex)
-		{
-			int caseIndex = packedCaseIndex * 4;
-      options.profiles[testProfileIndex].caseStaticColors[caseIndex + 0] = 0;
-      options.profiles[testProfileIndex].caseStaticColors[caseIndex + 1] = 0;
-      options.profiles[testProfileIndex].caseStaticColors[caseIndex + 2] = 0;
-      options.profiles[testProfileIndex].caseStaticColors[caseIndex + 3] = 0;
-		}
   }
 }
 
@@ -787,11 +751,7 @@ void AnimationStation::SetTestPinState(int PinOrCaseIndex, bool IsCaseLight)
   //reset old test light
   if(TestModePinOrCaseIndex != -1)
   {
-    if(TestModeLightIsCase)
-    {
-      options.profiles[testProfileIndex].caseStaticColors[TestModePinOrCaseIndex] = 0x00; //Black/off
-    }
-    else
+    if(!TestModeLightIsCase)
     {
       options.profiles[testProfileIndex].notPressedStaticColors[TestModePinOrCaseIndex] = 0x00; //Black/off
     }
@@ -803,11 +763,7 @@ void AnimationStation::SetTestPinState(int PinOrCaseIndex, bool IsCaseLight)
 
   if(TestModePinOrCaseIndex != -1)
   {
-    if(IsCaseLight)
-    {
-      options.profiles[testProfileIndex].caseStaticColors[PinOrCaseIndex] = 0x01; //White
-    }
-    else
+    if(!IsCaseLight)
     {
       options.profiles[testProfileIndex].notPressedStaticColors[PinOrCaseIndex] = 0x01; //White
     }

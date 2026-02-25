@@ -386,17 +386,15 @@ message AnimationProfile
 
  	optional AnimationNonPressedEffects baseCaseEffect = 10;
 
-    repeated uint32 caseStaticColors = 11 [(nanopb).max_count = 10]; //(MAX_CASE_LIGHTS/4) from AnimationStation.hpp
+    optional uint32 pressedSpecialColor = 11;
 
-    optional uint32 pressedSpecialColor = 12;
+    optional bool bUseCaseLightsInSpecialMoves = 12;
 
-    optional bool bUseCaseLightsInSpecialMoves = 13;
+    optional int32 basePressedCycleTime = 13; 
 
-    optional int32 basePressedCycleTime = 14; 
+    optional bool bUseCaseLightsInPressedAnimations = 14;
 
-    optional bool bUseCaseLightsInPressedAnimations = 15;
-
-    optional int32 baseCaseCycleTime = 16; 
+    optional int32 baseCaseCycleTime = 15; 
 };
 
 // This has to be kept in sync with AnimationOptions_Unpacked in animationstation.hpp

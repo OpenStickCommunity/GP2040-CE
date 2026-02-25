@@ -122,7 +122,7 @@ const schema = yup.object({
 		.array()
 		.of(
 			yup.object({
-				GPIOPinorCaseChainIndex: yup.number().required(),
+				GPIOPinOrColorIndex: yup.number().required(),
 				firstLedIndex: yup
 					.number()
 					.min(0, 'First LED index must be at least 0')

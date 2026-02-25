@@ -561,14 +561,6 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
             config.animationOptions.profiles[0].pressedStaticColors[lightIndex] += LEDS_STATIC_COLOR_PRESSED<<16; 
             config.animationOptions.profiles[0].pressedStaticColors[lightIndex] += LEDS_STATIC_COLOR_PRESSED<<24;
         }
-        config.animationOptions.profiles[0].caseStaticColors_count = (MAX_CASE_LIGHTS/4);
-        for (unsigned int lightIndex = 0; lightIndex < (MAX_CASE_LIGHTS/4); ++lightIndex) 
-        {
-            config.animationOptions.profiles[0].caseStaticColors[lightIndex] = LEDS_STATIC_COLOR_CASE; 
-            config.animationOptions.profiles[0].caseStaticColors[lightIndex] += LEDS_STATIC_COLOR_CASE<<8; 
-            config.animationOptions.profiles[0].caseStaticColors[lightIndex] += LEDS_STATIC_COLOR_CASE<<16;
-            config.animationOptions.profiles[0].caseStaticColors[lightIndex] += LEDS_STATIC_COLOR_CASE<<24; 
-        }
 
         //if there is a turbo LED color then insert this into the correct place
         if(TURBO_LED_PIN != -1)
@@ -578,12 +570,6 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
             config.animationOptions.profiles[0].notPressedStaticColors[baseIndex] &= (0xFFFFFFFF - (0xFF << (8 * offsetIndex)));
             config.animationOptions.profiles[0].notPressedStaticColors[baseIndex] = TURBO_LED_COLOR << (8 * offsetIndex);
-        }
-        //if there is a player LED color then make this the last case colour so it can be used
-        if(PLED_TYPE == PLED_TYPE_RGB)
-        {
-            config.animationOptions.profiles[0].caseStaticColors[(MAX_CASE_LIGHTS/4) - 1] &= 0x00FFFFFF;
-            config.animationOptions.profiles[0].caseStaticColors[(MAX_CASE_LIGHTS/4) - 1] = PLED_COLOR << 24;
         }
 
         config.animationOptions.profiles[0].baseNonPressedEffect = LEDS_BASE_ANIMATION_INDEX;
@@ -607,11 +593,6 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         {
             config.animationOptions.profiles[profileIndex].notPressedStaticColors[lightIndex] = 0; //Black
             config.animationOptions.profiles[profileIndex].pressedStaticColors[lightIndex] = 0; //Black
-        }
-        config.animationOptions.profiles[profileIndex].caseStaticColors_count = (MAX_CASE_LIGHTS/4);
-        for (unsigned int lightIndex = 0; lightIndex < (MAX_CASE_LIGHTS/4); ++lightIndex) 
-        {
-            config.animationOptions.profiles[profileIndex].caseStaticColors[lightIndex] = 0; //Black
         }
     }
      
@@ -638,11 +619,6 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         config.animationOptions.profiles[0].nonPressedSpecialColor = (128 << 16) + 255; //MAGENTA
         config.animationOptions.profiles[0].bUseCaseLightsInSpecialMoves = false;
         config.animationOptions.profiles[0].bUseCaseLightsInPressedAnimations = false;
-        config.animationOptions.profiles[0].caseStaticColors_count = MAX_CASE_LIGHTS/4;
-        for (unsigned int caseLightIndex = 0; caseLightIndex < MAX_CASE_LIGHTS/4; ++caseLightIndex) 
-        {
-            config.animationOptions.profiles[0].caseStaticColors[caseLightIndex] = 2 + (2<<8) + (2<<16) + (2<<24); //Red
-        }
 
         config.animationOptions.profiles[1].bEnabled = true;
         config.animationOptions.profiles[1].notPressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
@@ -651,11 +627,6 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         {
             config.animationOptions.profiles[1].notPressedStaticColors[lightIndex] = 6 + (6<<8) + (6<<16) + (6<<24); //Green
             config.animationOptions.profiles[1].pressedStaticColors[lightIndex] = 2 + (2<<8) + (2<<16) + (2<<24); //Black
-        }
-        config.animationOptions.profiles[1].caseStaticColors_count = MAX_CASE_LIGHTS/4;
-        for (unsigned int caseLightIndex = 0; caseLightIndex < MAX_CASE_LIGHTS/4; ++caseLightIndex) 
-        {
-            config.animationOptions.profiles[1].caseStaticColors[caseLightIndex] = 14 + (1<<8) + (1<<16) + (1<<24); //custom 1, white, white, white
         }
 
         config.animationOptions.profiles[1].baseNonPressedEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_LEFT_TO_RIGHT;

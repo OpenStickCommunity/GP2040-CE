@@ -179,8 +179,18 @@ RGB Animation::StaticGetNonPressedColorForLight(Lights* AllLights, uint32_t Ligh
   }
   else
   {
-    //case light
-    colIndex = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].caseStaticColors[thisLight->CaseLightIndex];
+    //If we're in test mode for case lights then turn all lights black and return white for the requested case Light
+    if(AnimationStation::TestModeLightIsCase && AnimationStation::TestModePinOrCaseIndex != -1)
+    {
+      colIndex = 0;
+      if(thisLight->Type == LightType::LightType_Turbo && thisLight->FirstLedIndex == AnimationStation::TestModePinOrCaseIndex)
+      colIndex = 1;
+    }
+    else
+    {
+      //case light or player led
+      colIndex = thisLight->ColorIndex;
+    }
   }
 
   return GetColorForIndex(colIndex);

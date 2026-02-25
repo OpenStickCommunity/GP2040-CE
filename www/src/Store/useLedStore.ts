@@ -26,7 +26,7 @@ export type AnimationProfile = {
 };
 
 export type Light = {
-	GPIOPinorCaseChainIndex: number;
+	GPIOPinOrColorIndex: number;
 	firstLedIndex: number;
 	lightType: number;
 	numLedsOnLight: number;

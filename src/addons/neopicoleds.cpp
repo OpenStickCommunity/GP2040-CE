@@ -454,7 +454,7 @@ void NeoPicoLEDAddon::generateLegacyIndividualLight(int firstLedIndex, int xCoor
 
 	const GpioMappings& pinMappings = Storage::getInstance().getGpioMappings();
 
-	if(lightType == LightType::LightType_ActionButton || lightType == LightType::LightType_Turbo)
+	if(lightType == LightType::LightType_ActionButton)
 	{
 		GpioAction actionButton = (GpioAction)customDataIndex;
 		customDataIndex = -1;
@@ -653,7 +653,7 @@ void NeoPicoLEDAddon::createLEDLayout(ButtonLayout layout, uint8_t ledsPerPixel,
 	{
 		if(TURBO_LED_INDEX != -1)
 		{
-			generateLegacyIndividualLight(TURBO_LED_INDEX, 0, 10, 1, GpioAction::BUTTON_PRESS_TURBO, LightType::LightType_Turbo);
+			generateLegacyIndividualLight(TURBO_LED_INDEX, 0, 10, 1, turboOptions.ledPin, LightType::LightType_Turbo);
 		}
 	}
 
@@ -662,10 +662,10 @@ void NeoPicoLEDAddon::createLEDLayout(ButtonLayout layout, uint8_t ledsPerPixel,
 	{
 		if(PLED1_PIN != -1 && PLED2_PIN != -1 && PLED3_PIN != -1 && PLED4_PIN != -1)
 		{
-			generateLegacyIndividualLight(PLED1_PIN, 0, 11, 1, MAX_CASE_LIGHTS-1, LightType::LightType_Player1Light);
-			generateLegacyIndividualLight(PLED2_PIN, 1, 11, 1, MAX_CASE_LIGHTS-1, LightType::LightType_Player2Light);
-			generateLegacyIndividualLight(PLED3_PIN, 2, 11, 1, MAX_CASE_LIGHTS-1, LightType::LightType_Player3Light);
-			generateLegacyIndividualLight(PLED4_PIN, 3, 11, 1, MAX_CASE_LIGHTS-1, LightType::LightType_Player4Light);		
+			generateLegacyIndividualLight(PLED1_PIN, 0, 11, 1, PLED_COLOR, LightType::LightType_Player1Light);
+			generateLegacyIndividualLight(PLED2_PIN, 1, 11, 1, PLED_COLOR, LightType::LightType_Player2Light);
+			generateLegacyIndividualLight(PLED3_PIN, 2, 11, 1, PLED_COLOR, LightType::LightType_Player3Light);
+			generateLegacyIndividualLight(PLED4_PIN, 3, 11, 1, PLED_COLOR, LightType::LightType_Player4Light);		
 		}
 	}
 }

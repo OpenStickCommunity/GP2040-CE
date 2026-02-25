@@ -161,7 +161,7 @@ export default function LightCoordsSection({
 				Lights: [
 					...values.Lights,
 					{
-						GPIOPinorCaseChainIndex: 0,
+						GPIOPinOrColorIndex: 0,
 						firstLedIndex: values.Lights.length,
 						lightType,
 						numLedsOnLight: 1,
@@ -394,9 +394,9 @@ export default function LightCoordsSection({
 									}
 									className="form-select"
 									groupClassName="mb-3"
-									value={values.Lights[selectedLight]?.GPIOPinorCaseChainIndex}
+									value={values.Lights[selectedLight]?.GPIOPinOrColorIndex}
 									onChange={handleChange}
-									name={`Lights[${selectedLight}].GPIOPinorCaseChainIndex`}
+									name={`Lights[${selectedLight}].GPIOPinOrColorIndex`}
 								>
 									{values.Lights[selectedLight]?.lightType ==
 									LIGHT_TYPES.Case ? (
@@ -430,13 +430,13 @@ export default function LightCoordsSection({
 											value={
 												colorOptions[
 													caseStaticColors[
-														values.Lights[selectedLight].GPIOPinorCaseChainIndex
+														values.Lights[selectedLight].GPIOPinOrColorIndex
 													]
 												]
 											}
 											onChange={(selected) => {
 												setFieldValue(
-													`AnimationOptions.profiles.${profileIndex}.caseStaticColors.${values.Lights[selectedLight].GPIOPinorCaseChainIndex}`,
+													`AnimationOptions.profiles.${profileIndex}.caseStaticColors.${values.Lights[selectedLight].GPIOPinOrColorIndex}`,
 													selected?.value || 0,
 												);
 											}}
@@ -452,13 +452,13 @@ export default function LightCoordsSection({
 													colorOptions[
 														notPressedStaticColors[
 															values.Lights[selectedLight]
-																.GPIOPinorCaseChainIndex
+																.GPIOPinOrColorIndex
 														]
 													]
 												}
 												onChange={(selected) => {
 													setFieldValue(
-														`AnimationOptions.profiles.${profileIndex}.notPressedStaticColors.${values.Lights[selectedLight].GPIOPinorCaseChainIndex}`,
+														`AnimationOptions.profiles.${profileIndex}.notPressedStaticColors.${values.Lights[selectedLight].GPIOPinOrColorIndex}`,
 														selected?.value || 0,
 													);
 												}}
@@ -472,13 +472,13 @@ export default function LightCoordsSection({
 													colorOptions[
 														pressedStaticColors[
 															values.Lights[selectedLight]
-																.GPIOPinorCaseChainIndex
+																.GPIOPinOrColorIndex
 														]
 													]
 												}
 												onChange={(selected) => {
 													setFieldValue(
-														`AnimationOptions.profiles.${profileIndex}.pressedStaticColors.${values.Lights[selectedLight].GPIOPinorCaseChainIndex}`,
+														`AnimationOptions.profiles.${profileIndex}.pressedStaticColors.${values.Lights[selectedLight].GPIOPinOrColorIndex}`,
 														selected?.value || 0,
 													);
 												}}
@@ -568,7 +568,7 @@ export default function LightCoordsSection({
 							// 		Lights: [
 							// 			...values.Lights,
 							// 			{
-							// 				GPIOPinorCaseChainIndex: 0,
+							// 				GPIOPinOrColorIndex: 0,
 							// 				firstLedIndex: values.Lights.length,
 							// 				lightType: LIGHT_TYPES.ActionButton,
 							// 				numLedsOnLight: 1,

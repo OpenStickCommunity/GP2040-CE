@@ -185,7 +185,7 @@ function ButtonLayoutPreview({
 									return (
 										<ColorSelectOverlay
 											key={`button-light-${index}`}
-											title={`GPIO ${light.GPIOPinorCaseChainIndex}`}
+											title={`GPIO ${light.GPIOPinOrColorIndex}`}
 											content={
 												<div style={{ minWidth: 200 }}>
 													<p>Idle color</p>
@@ -194,13 +194,13 @@ function ButtonLayoutPreview({
 														value={
 															colorOptions[
 																notPressedStaticColors[
-																	light.GPIOPinorCaseChainIndex
+																	light.GPIOPinOrColorIndex
 																]
 															] || null
 														}
 														onChange={(selected) => {
 															setFieldValue(
-																`AnimationOptions.profiles.${profileIndex}.notPressedStaticColors.${light.GPIOPinorCaseChainIndex}`,
+																`AnimationOptions.profiles.${profileIndex}.notPressedStaticColors.${light.GPIOPinOrColorIndex}`,
 																selected?.value || 0,
 															);
 														}}
@@ -212,13 +212,13 @@ function ButtonLayoutPreview({
 														value={
 															colorOptions[
 																pressedStaticColors[
-																	light.GPIOPinorCaseChainIndex
+																	light.GPIOPinOrColorIndex
 																]
 															] || null
 														}
 														onChange={(selected) => {
 															setFieldValue(
-																`AnimationOptions.profiles.${profileIndex}.pressedStaticColors.${light.GPIOPinorCaseChainIndex}`,
+																`AnimationOptions.profiles.${profileIndex}.pressedStaticColors.${light.GPIOPinOrColorIndex}`,
 																selected?.value || 0,
 															);
 														}}
@@ -236,10 +236,10 @@ function ButtonLayoutPreview({
 														colorOptions[
 															pressed
 																? pressedStaticColors[
-																		light.GPIOPinorCaseChainIndex
+																		light.GPIOPinOrColorIndex
 																	]
 																: notPressedStaticColors[
-																		light.GPIOPinorCaseChainIndex
+																		light.GPIOPinOrColorIndex
 																	]
 														]?.color || 'black'
 													}
@@ -258,7 +258,7 @@ function ButtonLayoutPreview({
 														textShadow: '0 0 3px black',
 													}}
 												>
-													{`GP${light.GPIOPinorCaseChainIndex}`}
+													{`GP${light.GPIOPinOrColorIndex}`}
 												</text>
 											</g>
 										</ColorSelectOverlay>
@@ -268,7 +268,7 @@ function ButtonLayoutPreview({
 									return (
 										<ColorSelectOverlay
 											key={`case-light-${index}`}
-											title={`Case ${light.GPIOPinorCaseChainIndex}`}
+											title={`Case ${light.GPIOPinOrColorIndex}`}
 											content={
 												<div style={{ minWidth: 200 }}>
 													<p>Case color</p>
@@ -276,12 +276,12 @@ function ButtonLayoutPreview({
 														options={colorOptions}
 														value={
 															colorOptions[
-																caseStaticColors[light.GPIOPinorCaseChainIndex]
+																caseStaticColors[light.GPIOPinOrColorIndex]
 															] || null
 														}
 														onChange={(selected) => {
 															setFieldValue(
-																`AnimationOptions.profiles.${profileIndex}.caseStaticColors.${light.GPIOPinorCaseChainIndex}`,
+																`AnimationOptions.profiles.${profileIndex}.caseStaticColors.${light.GPIOPinOrColorIndex}`,
 																selected?.value || 0,
 															);
 														}}
@@ -300,7 +300,7 @@ function ButtonLayoutPreview({
 													height={SMALL_LIGHT_SIZE * 2}
 													fill={
 														colorOptions[
-															caseStaticColors[light.GPIOPinorCaseChainIndex]
+															caseStaticColors[light.GPIOPinOrColorIndex]
 														]?.color || 'black'
 													}
 													stroke="currentColor"
@@ -318,7 +318,7 @@ function ButtonLayoutPreview({
 														textShadow: '0 0 3px black',
 													}}
 												>
-													{`C${light.GPIOPinorCaseChainIndex}`}
+													{`C${light.GPIOPinOrColorIndex}`}
 												</text>
 											</g>
 										</ColorSelectOverlay>
@@ -329,7 +329,7 @@ function ButtonLayoutPreview({
 									return (
 										<ColorSelectOverlay
 											key={`misc-light-${index}`}
-											title={`GPIO ${light.GPIOPinorCaseChainIndex}`}
+											title={`GPIO ${light.GPIOPinOrColorIndex}`}
 											content={
 												<div style={{ minWidth: 200 }}>
 													<p>Idle color</p>
@@ -338,13 +338,13 @@ function ButtonLayoutPreview({
 														value={
 															colorOptions[
 																notPressedStaticColors[
-																	light.GPIOPinorCaseChainIndex
+																	light.GPIOPinOrColorIndex
 																]
 															] || null
 														}
 														onChange={(selected) => {
 															setFieldValue(
-																`AnimationOptions.profiles.${profileIndex}.notPressedStaticColors.${light.GPIOPinorCaseChainIndex}`,
+																`AnimationOptions.profiles.${profileIndex}.notPressedStaticColors.${light.GPIOPinOrColorIndex}`,
 																selected?.value || 0,
 															);
 														}}
@@ -356,13 +356,13 @@ function ButtonLayoutPreview({
 														value={
 															colorOptions[
 																pressedStaticColors[
-																	light.GPIOPinorCaseChainIndex
+																	light.GPIOPinOrColorIndex
 																]
 															] || null
 														}
 														onChange={(selected) => {
 															setFieldValue(
-																`AnimationOptions.profiles.${profileIndex}.pressedStaticColors.${light.GPIOPinorCaseChainIndex}`,
+																`AnimationOptions.profiles.${profileIndex}.pressedStaticColors.${light.GPIOPinOrColorIndex}`,
 																selected?.value || 0,
 															);
 														}}
@@ -377,10 +377,10 @@ function ButtonLayoutPreview({
 														colorOptions[
 															pressed
 																? pressedStaticColors[
-																		light.GPIOPinorCaseChainIndex
+																		light.GPIOPinOrColorIndex
 																	]
 																: notPressedStaticColors[
-																		light.GPIOPinorCaseChainIndex
+																		light.GPIOPinOrColorIndex
 																	]
 														]?.color || 'black'
 													}
@@ -399,7 +399,7 @@ function ButtonLayoutPreview({
 														textShadow: '0 0 3px black',
 													}}
 												>
-													{`GP${light.GPIOPinorCaseChainIndex}`}
+													{`GP${light.GPIOPinOrColorIndex}`}
 												</text>
 											</g>
 										</ColorSelectOverlay>
