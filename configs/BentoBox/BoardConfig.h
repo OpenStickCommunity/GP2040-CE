@@ -61,22 +61,23 @@
 #define KEY_BUTTON_FN   -1                    // Hotkey Function                                        |
 
 #define BOARD_LEDS_PIN 15
-
-#define LED_BRIGHTNESS_MAXIMUM 255
-#define LEDS_PER_PIXEL 2
-
-#define LEDS_DPAD_LEFT   0
-#define LEDS_DPAD_DOWN   1
-#define LEDS_DPAD_RIGHT  2
-#define LEDS_BUTTON_B3   3
-#define LEDS_BUTTON_B4   4
-#define LEDS_BUTTON_R1   5
-#define LEDS_BUTTON_L1   6
-#define LEDS_BUTTON_L2   7
-#define LEDS_BUTTON_R2   8
-#define LEDS_BUTTON_B2   9
-#define LEDS_BUTTON_B1   10
-#define LEDS_DPAD_UP     11
+#define LEDS_AUTO_DISABLE_TIME 0
+#define LIGHT_DATA_NAME_DEFAULT "BentoBox" 
+#define LIGHT_DATA_SIZE_DEFAULT 12 //number of sets in the below data
+#define LEDS_BASE_ANIMATION_INDEX AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_ROTATE
+#define LIGHT_DATA_DEFAULT \
+0,  2, 0,  2, 13, LightType::LightType_ActionButton, \
+2,  2, 2,  2, 12, LightType::LightType_ActionButton, \
+4,  2, 4,  3, 11, LightType::LightType_ActionButton, \
+6,  2, 6,  2, 10, LightType::LightType_ActionButton, \
+8,  2, 8,  1, 9,  LightType::LightType_ActionButton, \
+10, 2, 10, 1, 8,  LightType::LightType_ActionButton, \
+12, 2, 12, 2, 7,  LightType::LightType_ActionButton, \
+14, 2, 12, 4, 6,  LightType::LightType_ActionButton, \
+16, 2, 10, 3, 5,  LightType::LightType_ActionButton, \
+18, 2, 8,  3, 4,  LightType::LightType_ActionButton, \
+20, 2, 6,  4, 3,  LightType::LightType_ActionButton, \
+22, 2, 5,  6, 2,  LightType::LightType_ActionButton, 
 
 #define HAS_I2C_DISPLAY 1
 #define I2C1_ENABLED 1
