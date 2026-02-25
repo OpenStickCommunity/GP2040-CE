@@ -585,7 +585,7 @@ std::string setProfileOptions()
         profileOptions.gpioMappingsSets[altsIndex].enabled = alt["enabled"];
 
         profileOptions.gpioMappingsSets_count = ++altsIndex;
-        if (altsIndex > 4) break;
+        if (altsIndex > 5) break;
     }
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
@@ -594,7 +594,7 @@ std::string setProfileOptions()
 
 std::string getProfileOptions()
 {
-    const size_t capacity = JSON_OBJECT_SIZE(500);
+    const size_t capacity = JSON_OBJECT_SIZE(900);
     DynamicJsonDocument doc(capacity);
 
     const auto writePinDoc = [&](const int item, const char* key, const GpioMappingInfo& value) -> void

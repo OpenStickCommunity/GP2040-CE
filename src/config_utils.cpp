@@ -1652,7 +1652,7 @@ void gpioMappingsMigrationProfiles(Config& config)
         }
     };
 
-    for (uint8_t profileNum = 0; profileNum <= MAX_PROFILES-2; profileNum++) {
+    for (uint8_t profileNum = 0; profileNum <= MAX_PROFILES-1; profileNum++) {
         for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
             config.profileOptions.gpioMappingsSets[profileNum].pins[pin].action = config.gpioMappings.pins[pin].action;
         }
@@ -1676,7 +1676,7 @@ void gpioMappingsMigrationProfiles(Config& config)
         config.profileOptions.gpioMappingsSets[profileNum].pins_count = NUM_BANK0_GPIOS;
     }
     // reminder that this must be set or else nanopb won't retain anything
-    config.profileOptions.gpioMappingsSets_count = 5;
+    config.profileOptions.gpioMappingsSets_count = MAX_PROFILES-1;
 
     config.migrations.buttonProfilesMigrated = true;
 }
@@ -1749,6 +1749,13 @@ void profileEnabledFlagsMigration(Config& config) {
             config.profileOptions.gpioMappingsSets[profileNum].enabled = false;
             continue;
         }
+        // If the profile is already marked as enabled (by user), keep it enabled
+        // regardless of whether pins differ from base profile
+        bool profileAlreadyEnabled = config.profileOptions.gpioMappingsSets[profileNum].enabled;
+        if (profileAlreadyEnabled) {
+            continue;
+        }
+        // For uninitialized enabled state, check if pins differ from base profile
         for (uint8_t pinNum = 0; pinNum < config.gpioMappings.pins_count; pinNum++) {
             // check each pin: if the alt. mapping pin is different than the base (profile 1)
             // mapping, enable the profile and check the next one
