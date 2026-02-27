@@ -417,11 +417,11 @@ GP2040::BootAction GP2040::getBootAction() {
 				const GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
 
 				std::optional<int32_t> inputMode = std::nullopt;
-				if (gamepadOptions.useGpioInputModeSelect) {
+				if (gamepadOptions.useGpioBootModeSelect) {
 					// mask for just the pins configured as input mode selectors
 					uint32_t mask = 0;
-					for (size_t i = 0; i < gamepadOptions.gpioInputModeMappings_count; i++) {
-						auto mapping = gamepadOptions.gpioInputModeMappings[i];
+					for (size_t i = 0; i < gamepadOptions.bootModeMappings_count; i++) {
+						auto mapping = gamepadOptions.bootModeMappings[i];
 						mask |= 1 << mapping.pin;
 						bootActions.insert({1 << mapping.pin, mapping.inputMode});
 					}

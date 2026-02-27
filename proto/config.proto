@@ -3,9 +3,10 @@ syntax = "proto2";
 import "nanopb.proto";
 import "enums.proto";
 
-message GpioInputModeMapping {
+message BootModeMapping {
     optional int32 pin = 1;
-    optional int32 inputMode = 2;
+    optional InputMode inputMode = 2;
+    optional int32 profileIndex = 3;
 }
 
 message GamepadOptions
@@ -43,8 +44,10 @@ message GamepadOptions
     optional uint32 usbVendorID = 31;
     optional uint32 miniMenuGamepadInput = 32;
     optional InputModeDeviceType inputDeviceType = 33;
-    optional bool useGpioInputModeSelect = 33 [default=false];
-    repeated GpioInputModeMapping gpioInputModeMappings = 34 [(nanopb).max_count = 8];
+    optional bool useGpioInputModeSelect = 34 [default=false];
+    repeated GpioInputModeMapping gpioInputModeMappings = 35 [(nanopb).max_count = 8];
+    optional bool useGpioBootModeSelect = 36 [default=false];
+    repeated BootModeMapping bootModeMappings = 37 [(nanopb).max_count = 8];
 }
 
 message KeyboardMapping
