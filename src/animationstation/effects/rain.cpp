@@ -1,8 +1,10 @@
 #include "rain.h"
 #include <algorithm>
 
-#define RAIN_CYCLE_MAX         500
+#define RAIN_CYCLE_MAX         300
 #define RAIN_CYCLE_MIN         10
+
+#define RAIN_RAINBOW_FRAME_CHANGE_PER_TICK 10
 
 Rain::Rain(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType, ERainFrequency InRainFrequency) : Animation(InRGBLights, InButtonCaseEffectType) 
 {
@@ -163,6 +165,8 @@ void Rain::Animate(RGB (&frame)[FRAME_MAX])
                     RainXCoords[rainIndex] = newRainXCoord;
                     previousRainDropXCoords[RAIN_DROP_NO_REPEAT_X_NUM - 1] = newRainXCoord;
                     RainYCoords[rainIndex] = ((float)MinYCoord) - 1.0f;
+                    RainbowWheelFrame[rainIndex] = 1 + rand() % 253;
+                    RainbowWheelReversed[rainIndex] = (rand() % 100) > 50.0f;
                     break;
                 }
             }
@@ -195,8 +199,25 @@ void Rain::Animate(RGB (&frame)[FRAME_MAX])
         float firstLightAlpha = 1.0f - (RainYCoords[rainIndex] - (float)firstYIndex);
         float secondLightAlpha = 1.0f - firstLightAlpha;
 
+        //store off special color and update rainbow if required
         RGB specialLightCol = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor;
-        
+        if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].bNonPressedSpecialColorIsRainbow)
+        {
+            if(!RainbowWheelReversed[rainIndex])
+            {
+                RainbowWheelFrame[rainIndex] += RAIN_RAINBOW_FRAME_CHANGE_PER_TICK;
+                if(RainbowWheelFrame[rainIndex] == 255)
+                    RainbowWheelReversed[rainIndex] = true;
+            }
+            else
+            {
+                RainbowWheelFrame[rainIndex] -= RAIN_RAINBOW_FRAME_CHANGE_PER_TICK;
+                if(RainbowWheelFrame[rainIndex] == 0)
+                    RainbowWheelReversed[rainIndex] = false;
+            }
+            specialLightCol = RGB::wheel(RainbowWheelFrame[rainIndex]);
+        }
+
         if(firstLightIndex >= 0)
         {
             RGB firstLightCol = GetNonPressedColorForLight(firstLightIndex);

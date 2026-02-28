@@ -1,6 +1,8 @@
 #include "jiggletwostaticcolor.h"
 #include "staticcolor.h"
 
+#define JIGGLE_RAINBOW_FRAME_CHANGE_PER_TICK 1
+
 JiggleTwoStaticColor::JiggleTwoStaticColor(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType) : StaticColor(InRGBLights, InButtonCaseEffectType) 
 {
 }
@@ -13,10 +15,35 @@ RGB JiggleTwoStaticColor::AdjustColor(RGB InColor)
 {
     RGB otherColor;
     
+    //calculate other color and advance rainbow effect if required
+    bool bUseRainbow = false;
     if(isButtonAnimation)
+    {
         otherColor = RGB(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].pressedSpecialColor);
+        bUseRainbow = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].bPressedSpecialColorIsRainbow;
+    }
     else
+    {
         otherColor = RGB(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor);
+        bUseRainbow = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].bNonPressedSpecialColorIsRainbow;
+    }
+    if(bUseRainbow)
+    {
+        if(!RainbowWheelReversed)
+        {
+        RainbowWheelFrame += JIGGLE_RAINBOW_FRAME_CHANGE_PER_TICK;
+        if(RainbowWheelFrame == 255)
+            RainbowWheelReversed = true;
+        }
+        else
+        {
+        RainbowWheelFrame -= JIGGLE_RAINBOW_FRAME_CHANGE_PER_TICK;
+        if(RainbowWheelFrame == 0)
+            RainbowWheelReversed = false;
+        }
+
+        otherColor = RGB::wheel(RainbowWheelFrame);
+    }
 
     RGB outColor;
     float rDiff = (float)otherColor.r - (float)InColor.r;

@@ -18,6 +18,10 @@ export default {
 		'A disabled profile will not be available when using hotkeys to change profile.',
 	'switch-case-light-pressed-label':
 		'Include case lights in pressed animations',
+	'switch-specialpressed-rainbow-label':
+		'Pressed Special Color is Rainbow Effect',
+	'switch-specialnonpressed-rainbow-label':
+		'Idle Special Color is Rainbow Effect',
 
 	animations: {
 		NONPRESSED_EFFECT_STATIC_COLOR: 'Static Color',

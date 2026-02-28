@@ -395,6 +395,9 @@ message AnimationProfile
     optional bool bUseCaseLightsInPressedAnimations = 14;
 
     optional int32 baseCaseCycleTime = 15; 
+
+    optional bool bNonPressedSpecialColorIsRainbow = 16;
+    optional bool bPressedSpecialColorIsRainbow = 17;
 };
 
 // This has to be kept in sync with AnimationOptions_Unpacked in animationstation.hpp

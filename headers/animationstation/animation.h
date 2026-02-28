@@ -108,6 +108,21 @@ inline const std::vector<RGB> colors {
 #define MAX_CUSTOM_COLORS 16
 inline std::vector<RGB> customColors { };
 
+constexpr int ColorIndexBlack = 0;
+constexpr int ColorIndexWhite = 1;
+constexpr int ColorIndexRed = 2;
+constexpr int ColorIndexOrange = 3;
+constexpr int ColorIndexYellow = 4;
+constexpr int ColorIndexLimeGreen = 5;
+constexpr int ColorIndexGreen = 6;
+constexpr int ColorIndexSeafoam = 7;
+constexpr int ColorIndexAqua = 8;
+constexpr int ColorIndexSkyBlue = 9;
+constexpr int ColorIndexBlue = 10;
+constexpr int ColorIndexPurple = 11;
+constexpr int ColorIndexPink = 12;
+constexpr int ColorIndexMagenta = 13;
+
 typedef enum
 {
   BUTTONCASELIGHTTYPE_BUTTON_ONLY,

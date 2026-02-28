@@ -61,6 +61,9 @@ protected:
 
   int CurrentLight = 0;
 
+  int RainbowWheelFrame = 0;
+  bool RainbowWheelReversed = false;
+
   bool Reversed = false;
 
   SingleChaseTypes RandomChaseType;

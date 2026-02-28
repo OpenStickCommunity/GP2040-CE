@@ -50,6 +50,9 @@ struct __attribute__ ((__packed__)) AnimationProfile_Unpacked
     uint32_t nonPressedSpecialColor;
     uint32_t pressedSpecialColor;
 
+    bool bNonPressedSpecialColorIsRainbow;
+    bool bPressedSpecialColorIsRainbow;
+
     bool bUseCaseLightsInSpecialMoves;
     bool bUseCaseLightsInPressedAnimations;
 };

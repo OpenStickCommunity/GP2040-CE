@@ -3,7 +3,7 @@
 
 #define RAINBOW_COLORWHEEL_FRAME_MAX 255
 
-#define RAINBOW_CYCLE_MAX         60
+#define RAINBOW_CYCLE_MAX         100
 #define RAINBOW_CYCLE_MIN         2
 
 //grid distance to frame offset value

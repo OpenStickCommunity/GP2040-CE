@@ -110,11 +110,13 @@ const schema = yup.object({
 				basePressedEffect: yup.number().required(),
 				buttonPressFadeOutTimeInMs: yup.number().required(),
 				buttonPressHoldTimeInMs: yup.number().required(),
-				caseStaticColors: yup.array().of(yup.number()).required(),
 				nonPressedSpecialColor: yup.number().required(),
 				notPressedStaticColors: yup.array().of(yup.number()).required(),
 				pressedSpecialColor: yup.number().required(),
 				pressedStaticColors: yup.array().of(yup.number()),
+				bNonPressedSpecialColorIsRainbow: yup.number().required(),
+				bPressedSpecialColorIsRainbow: yup.number().required(),
+
 			}),
 		),
 	}),
@@ -181,9 +183,10 @@ const emptyAnimationProfile = {
 	buttonPressFadeOutTimeInMs: 0,
 	buttonPressHoldTimeInMs: 0,
 	bUseCaseLightsInPressedAnimations: 0,
-	caseStaticColors: Array.from({ length: MAX_CASE_LIGHTS }, () => 1),
 	nonPressedSpecialColor: 0,
 	pressedSpecialColor: 0,
+	bNonPressedSpecialColorIsRainbow: 0,
+	bPressedSpecialColorIsRainbow: 0,
 	notPressedStaticColors: Array.from({ length: GPIO_PIN_LENGTH }, () => 0),
 	pressedStaticColors: Array.from({ length: GPIO_PIN_LENGTH }, () => 1),
 };
@@ -744,6 +747,30 @@ export default function LedConfigPage() {
 															)
 														}
 													/>
+													<div className="d-flex align-items-center col-sm-4 mb-3">
+														<FormCheck
+															type="switch"
+															name={`AnimationOptions.profiles.${profileIndex}.bNonPressedSpecialColorIsRainbow`}
+															label={
+																<label>
+																	{t(`Leds:switch-specialnonpressed-rainbow-label`)}
+																</label>
+															}
+															checked={Boolean(
+																profile.bNonPressedSpecialColorIsRainbow,
+															)}
+															onChange={() =>
+																setFieldValue(
+																	`AnimationOptions.profiles.${profileIndex}.bNonPressedSpecialColorIsRainbow`,
+																	Number(
+																		!profile.bNonPressedSpecialColorIsRainbow,
+																	),
+																)
+															}
+														/>
+													</div>
+												</Row>
+												<Row>
 													<FormControl
 														type="color"
 														label={t(`Leds:pressed-special-color-label`)}
@@ -760,6 +787,28 @@ export default function LedConfigPage() {
 															)
 														}
 													/>
+													<div className="d-flex align-items-center col-sm-4 mb-3">
+														<FormCheck
+															type="switch"
+															name={`AnimationOptions.profiles.${profileIndex}.bPressedSpecialColorIsRainbow`}
+															label={
+																<label>
+																	{t(`Leds:switch-specialpressed-rainbow-label`)}
+																</label>
+															}
+															checked={Boolean(
+																profile.bPressedSpecialColorIsRainbow,
+															)}
+															onChange={() =>
+																setFieldValue(
+																	`AnimationOptions.profiles.${profileIndex}.bPressedSpecialColorIsRainbow`,
+																	Number(
+																		!profile.bPressedSpecialColorIsRainbow,
+																	),
+																)
+															}
+														/>
+													</div>
 												</Row>
 												<hr />
 
@@ -794,7 +843,6 @@ export default function LedConfigPage() {
 														notPressedStaticColors={
 															profile.notPressedStaticColors
 														}
-														caseStaticColors={profile.caseStaticColors}
 														profileIndex={profileIndex}
 														handleChange={handleChange}
 														setFieldValue={setFieldValue}
@@ -806,7 +854,6 @@ export default function LedConfigPage() {
 														notPressedStaticColors={
 															profile.notPressedStaticColors
 														}
-														caseStaticColors={profile.caseStaticColors}
 														profileIndex={profileIndex}
 														customColors={values.AnimationOptions.customColors}
 														setFieldValue={setFieldValue}

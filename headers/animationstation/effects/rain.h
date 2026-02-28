@@ -37,6 +37,9 @@ protected:
     float RainYCoords[MAX_RAIN_DROPS];
     int RainXCoords[MAX_RAIN_DROPS];
 
+    int RainbowWheelFrame[MAX_RAIN_DROPS];
+    bool RainbowWheelReversed[MAX_RAIN_DROPS];
+
     int previousRainDropXCoords[RAIN_DROP_NO_REPEAT_X_NUM];
 
     float TimeTillNextRain = 0.0f;

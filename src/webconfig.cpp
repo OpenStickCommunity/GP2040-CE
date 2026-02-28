@@ -1203,6 +1203,9 @@ void helperGetProfileFromJsonObject(AnimationProfile* Profile, JsonObject* JsonD
     Profile->bUseCaseLightsInPressedAnimations = (*JsonData)["bUseCaseLightsInPressedAnimations"].as<bool>();
     Profile->pressedSpecialColor = (*JsonData)["pressedSpecialColor"].as<uint32_t>();
 
+    Profile->bNonPressedSpecialColorIsRainbow = (*JsonData)["bNonPressedSpecialColorIsRainbow"].as<bool>();
+    Profile->bPressedSpecialColorIsRainbow = (*JsonData)["bPressedSpecialColorIsRainbow"].as<bool>();
+
     JsonArray notPressedStaticColorsList = (*JsonData)["notPressedStaticColors"];
     Profile->notPressedStaticColors_count = 0;
     for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS/4)+1; ++packedPinIndex)
@@ -1346,6 +1349,9 @@ std::string getAnimationProtoOptions()
         profile["bUseCaseLightsInPressedAnimations"] = options.profiles[profilesIndex].bUseCaseLightsInPressedAnimations ? 1 : 0;
         profile["baseCaseEffect"] = options.profiles[profilesIndex].baseCaseEffect;
         profile["pressedSpecialColor"] = options.profiles[profilesIndex].pressedSpecialColor;
+
+        profile["bNonPressedSpecialColorIsRainbow"] = options.profiles[profilesIndex].bNonPressedSpecialColorIsRainbow ? 1 : 0;
+        profile["bPressedSpecialColorIsRainbow"] = options.profiles[profilesIndex].bPressedSpecialColorIsRainbow ? 1 : 0;
 
         JsonArray notPressedStaticColorsList = profile.createNestedArray("notPressedStaticColors");
         for (int notPressedStaticColorsIndex = 0; notPressedStaticColorsIndex < options.profiles[profilesIndex].notPressedStaticColors_count; ++notPressedStaticColorsIndex)

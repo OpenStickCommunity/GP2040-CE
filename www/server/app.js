@@ -364,6 +364,8 @@ app.get('/api/getAnimationProtoOptions', (req, res) => {
 					bUseCaseLightsInPressedAnimations: 0,
 					baseCaseEffect: 0,
 					pressedSpecialColor: 0,
+					bNonPressedSpecialColorIsRainbow: 0,
+					bPressedSpecialColorIsRainbow: 0,
 					notPressedStaticColors: [
 						2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
 						2, 2, 2, 2, 2, 2, 2, 2, 2,
@@ -371,10 +373,6 @@ app.get('/api/getAnimationProtoOptions', (req, res) => {
 					pressedStaticColors: [
 						4, 6, 10, 12, 4, 6, 10, 12, 4, 6, 10, 12, 4, 6, 10, 12, 4, 6, 10,
 						12, 4, 6, 10, 12, 4, 6, 10, 12, 4, 6, 10, 12,
-					],
-					caseStaticColors: [
-						1, 5, 2, 1, 2, 9, 2, 2, 2, 2, 3, 2, 3, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2,
-						2, 9, 2, 5, 3, 2, 2, 7, 2, 2, 2, 11, 10, 4, 2, 2, 2,
 					],
 				},
 				{
@@ -388,6 +386,8 @@ app.get('/api/getAnimationProtoOptions', (req, res) => {
 					bUseCaseLightsInPressedAnimations: 1,
 					baseCaseEffect: 0,
 					pressedSpecialColor: 0x80ff00,
+					bNonPressedSpecialColorIsRainbow: 0,
+					bPressedSpecialColorIsRainbow: 0,
 					notPressedStaticColors: [
 						6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
 						6, 6, 6, 6, 6, 6, 6, 6, 6,
@@ -395,10 +395,6 @@ app.get('/api/getAnimationProtoOptions', (req, res) => {
 					pressedStaticColors: [
 						2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
 						2, 2, 2, 2, 2, 2, 2, 2, 2,
-					],
-					caseStaticColors: [
-						13, 1, 1, 1, 13, 1, 1, 1, 13, 1, 1, 1, 13, 1, 1, 1, 13, 1, 1, 1, 13,
-						1, 1, 1, 13, 1, 1, 1, 13, 1, 1, 1, 13, 1, 1, 1, 13, 1, 1, 1,
 					],
 				},
 			],

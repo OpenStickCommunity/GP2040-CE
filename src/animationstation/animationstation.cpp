@@ -608,6 +608,8 @@ void AnimationStation::DecompressProfile(int ProfileIndex, const AnimationProfil
 		options.profiles[ProfileIndex].buttonPressFadeOutTimeInMs = ProfileToDecompress->buttonPressFadeOutTimeInMs;
 		options.profiles[ProfileIndex].nonPressedSpecialColor = ProfileToDecompress->nonPressedSpecialColor;
 		options.profiles[ProfileIndex].pressedSpecialColor = ProfileToDecompress->pressedSpecialColor;
+		options.profiles[ProfileIndex].bNonPressedSpecialColorIsRainbow = ProfileToDecompress->bNonPressedSpecialColorIsRainbow;
+		options.profiles[ProfileIndex].bPressedSpecialColorIsRainbow = ProfileToDecompress->bPressedSpecialColorIsRainbow;
 		options.profiles[ProfileIndex].bUseCaseLightsInSpecialMoves = ProfileToDecompress->bUseCaseLightsInSpecialMoves;
 		options.profiles[ProfileIndex].bUseCaseLightsInPressedAnimations = ProfileToDecompress->bUseCaseLightsInPressedAnimations;
 }

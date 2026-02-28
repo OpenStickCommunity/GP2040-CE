@@ -133,15 +133,11 @@
 #endif
 
 #ifndef LEDS_STATIC_COLOR_UNPRESSED
-#define LEDS_STATIC_COLOR_UNPRESSED 2 // Red - animation.h colors array index
+#define LEDS_STATIC_COLOR_UNPRESSED ColorIndexRed 
 #endif
 
 #ifndef LEDS_STATIC_COLOR_PRESSED
-#define LEDS_STATIC_COLOR_PRESSED 1 // White - animation.h colors array index
-#endif
-
-#ifndef LEDS_STATIC_COLOR_CASE
-#define LEDS_STATIC_COLOR_CASE 1 // White - animation.h colors array index
+#define LEDS_STATIC_COLOR_PRESSED ColorIndexWhite 
 #endif
 
 #ifndef LEDS_IDLE_SPECIAL_COLOR
@@ -152,6 +148,13 @@
 #define LEDS_PRESSED_SPECIAL_COLOR ColorGreen 
 #endif
 
+#ifndef LEDS_IDLE_SPECIAL_COLOR_IS_RAINDOW
+#define LEDS_IDLE_SPECIAL_COLOR_IS_RAINDOW false 
+#endif
+
+#ifndef LEDS_PRESSED_SPECIAL_COLOR_IS_RAINDOW
+#define LEDS_PRESSED_SPECIAL_COLOR_IS_RAINDOW false
+#endif
 #ifndef LEDS_AUTO_DISABLE_TIME
 #define LEDS_AUTO_DISABLE_TIME 0 // in ms
 #endif

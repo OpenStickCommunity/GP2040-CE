@@ -17,6 +17,9 @@ public:
   virtual RGB AdjustColor(RGB InColor) override;
  
 protected:
+
+    int RainbowWheelFrame;
+    bool RainbowWheelReversed;
 };
 
 #endif
