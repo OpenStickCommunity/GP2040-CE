@@ -158,14 +158,20 @@ void Chase::Animate(RGB (&frame)[FRAME_MAX])
     if(!RainbowWheelReversed)
     {
       RainbowWheelFrame += CHASE_RAINBOW_FRAME_CHANGE_PER_TICK;
-      if(RainbowWheelFrame == 255)
+      if(RainbowWheelFrame >= 255)
+      {
         RainbowWheelReversed = true;
+        RainbowWheelFrame = 255;
+      }
     }
     else
     {
       RainbowWheelFrame -= CHASE_RAINBOW_FRAME_CHANGE_PER_TICK;
-      if(RainbowWheelFrame == 0)
+      if(RainbowWheelFrame <= 0)
+      {
         RainbowWheelReversed = false;
+        RainbowWheelFrame = 0;
+      }
     }
 
     chaseCol = RGB::wheel(RainbowWheelFrame);
@@ -386,7 +392,7 @@ void Chase::CheckForEndOfSequence()
 
 void Chase::CycleParameterChange() 
 {
-    int16_t cycleStep = 2;
+    int16_t cycleStep;
     if(ButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_CASE_ONLY)
       cycleStep = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCaseCycleTime;
     else

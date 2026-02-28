@@ -579,25 +579,25 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         config.animationOptions.profiles[0].baseCaseEffect = LEDS_CASE_ANIMATION_INDEX;
         INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bUseCaseLightsInPressedAnimations, 1);   
         INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bUseCaseLightsInSpecialMoves, 1);   
-    }
 
-    //Since we force a profile 0 on new settings we only need to now force disable profiles 1 to max
-    for (unsigned int profileIndex = 1; profileIndex < MAX_ANIMATION_PROFILES; ++profileIndex) 
-    {
-        INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], bEnabled, 0);
-        INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], basePressedCycleTime, 2);
-        INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], baseCycleTime, 2);
-        INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], bUseCaseLightsInPressedAnimations, 0);   
-        INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], bUseCaseLightsInSpecialMoves, 0);   
-        config.animationOptions.profiles[profileIndex].notPressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
-        config.animationOptions.profiles[profileIndex].pressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
-        for (unsigned int lightIndex = 0; lightIndex < (NUM_BANK0_GPIOS/4)+1; ++lightIndex) 
+        //Since we force a profile 0 on new settings we only need to now force disable profiles 1 to max
+        for (unsigned int profileIndex = 1; profileIndex < MAX_ANIMATION_PROFILES; ++profileIndex) 
         {
-            config.animationOptions.profiles[profileIndex].notPressedStaticColors[lightIndex] = 0; //Black
-            config.animationOptions.profiles[profileIndex].pressedStaticColors[lightIndex] = 0; //Black
+            INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], bEnabled, 0);
+            INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], basePressedCycleTime, 2);
+            INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], baseCycleTime, 2);
+            INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], bUseCaseLightsInPressedAnimations, 0);   
+            INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], bUseCaseLightsInSpecialMoves, 0);   
+            config.animationOptions.profiles[profileIndex].notPressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
+            config.animationOptions.profiles[profileIndex].pressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
+            for (unsigned int lightIndex = 0; lightIndex < (NUM_BANK0_GPIOS/4)+1; ++lightIndex) 
+            {
+                config.animationOptions.profiles[profileIndex].notPressedStaticColors[lightIndex] = 0; //Black
+                config.animationOptions.profiles[profileIndex].pressedStaticColors[lightIndex] = 0; //Black
+            }
         }
     }
-     
+   
     //TESTING
     if(false)
     { 

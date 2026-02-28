@@ -206,14 +206,20 @@ void Rain::Animate(RGB (&frame)[FRAME_MAX])
             if(!RainbowWheelReversed[rainIndex])
             {
                 RainbowWheelFrame[rainIndex] += RAIN_RAINBOW_FRAME_CHANGE_PER_TICK;
-                if(RainbowWheelFrame[rainIndex] == 255)
+                if(RainbowWheelFrame[rainIndex] >= 255)
+                {
                     RainbowWheelReversed[rainIndex] = true;
+                    RainbowWheelFrame[rainIndex] = 255;
+                }
             }
             else
             {
                 RainbowWheelFrame[rainIndex] -= RAIN_RAINBOW_FRAME_CHANGE_PER_TICK;
-                if(RainbowWheelFrame[rainIndex] == 0)
+                if(RainbowWheelFrame[rainIndex] <= 0)
+                {
                     RainbowWheelReversed[rainIndex] = false;
+                    RainbowWheelFrame[rainIndex] = 0;
+                }
             }
             specialLightCol = RGB::wheel(RainbowWheelFrame[rainIndex]);
         }

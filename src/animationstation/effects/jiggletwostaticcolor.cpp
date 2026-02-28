@@ -1,17 +1,27 @@
 #include "jiggletwostaticcolor.h"
-#include "staticcolor.h"
+#include "jigglestaticcolor.h"
 
 #define JIGGLE_RAINBOW_FRAME_CHANGE_PER_TICK 1
 
-JiggleTwoStaticColor::JiggleTwoStaticColor(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType) : StaticColor(InRGBLights, InButtonCaseEffectType) 
+JiggleTwoStaticColor::JiggleTwoStaticColor(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType) : JiggleStaticColor(InRGBLights, InButtonCaseEffectType) 
 {
+    for(int index = 0; index < MAX_JITTER_VALUES; ++index)
+    {
+        RainbowWheelFrame[index] = rand() % 255;
+        RainbowWheelReversed[index] = (rand() % 100) > 50;
+    }
 }
 
-JiggleTwoStaticColor::JiggleTwoStaticColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPins) : StaticColor(InRGBLights, InPressedPins) 
+JiggleTwoStaticColor::JiggleTwoStaticColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPins) : JiggleStaticColor(InRGBLights, InPressedPins) 
 {
+    for(int index = 0; index < MAX_JITTER_VALUES; ++index)
+    {
+        RainbowWheelFrame[index] = rand() % 255;
+        RainbowWheelReversed[index] = (rand() % 100) > 50;
+    }
 }
 
-RGB JiggleTwoStaticColor::AdjustColor(RGB InColor)
+RGB JiggleTwoStaticColor::AdjustColor(int ledIndex, RGB InColor)
 {
     RGB otherColor;
     
@@ -29,47 +39,28 @@ RGB JiggleTwoStaticColor::AdjustColor(RGB InColor)
     }
     if(bUseRainbow)
     {
-        if(!RainbowWheelReversed)
+        if(!RainbowWheelReversed[ledIndex])
         {
-        RainbowWheelFrame += JIGGLE_RAINBOW_FRAME_CHANGE_PER_TICK;
-        if(RainbowWheelFrame == 255)
-            RainbowWheelReversed = true;
+            RainbowWheelFrame[ledIndex] += JIGGLE_RAINBOW_FRAME_CHANGE_PER_TICK;
+            if(RainbowWheelFrame[ledIndex] >= 255)
+            {
+                RainbowWheelReversed[ledIndex] = true;
+                RainbowWheelFrame[ledIndex] = 255;
+            }
         }
         else
         {
-        RainbowWheelFrame -= JIGGLE_RAINBOW_FRAME_CHANGE_PER_TICK;
-        if(RainbowWheelFrame == 0)
-            RainbowWheelReversed = false;
+            RainbowWheelFrame[ledIndex] -= JIGGLE_RAINBOW_FRAME_CHANGE_PER_TICK;
+            if(RainbowWheelFrame[ledIndex] <= 0)
+            {
+                RainbowWheelReversed[ledIndex] = false;
+                RainbowWheelFrame[ledIndex] = 0;
+            }
         }
 
-        otherColor = RGB::wheel(RainbowWheelFrame);
+        otherColor = RGB::wheel(RainbowWheelFrame[ledIndex]);
     }
 
-    RGB outColor;
-    float rDiff = (float)otherColor.r - (float)InColor.r;
-    float newR = (float)InColor.r + (rDiff * (((float)(rand() % 100) / 100.0f)));
-    if(newR > 255.0f)
-        newR = 255;
-    if(newR < 0)
-        newR = 0;
-    outColor.r = (int)newR;
-
-    float gDiff = (float)otherColor.g - (float)InColor.g;
-    float newG = (float)InColor.g + (gDiff * (((float)(rand() % 100) / 100.0f)));
-    if(newG > 255.0f)
-        newG = 255;
-    if(newG < 0)
-        newG = 0;
-    outColor.g = (int)newG;
-
-    float bDiff = (float)otherColor.b - (float)InColor.b;
-    float newB = (float)InColor.b + (bDiff * (((float)(rand() % 100) / 100.0f)));
-    if(newB > 255.0f)
-        newB = 255;
-    if(newB < 0)
-        newB = 0;
-    outColor.b = (int)newB;
-
-    return outColor;
+    return AdvanceColor(ledIndex, InColor, otherColor);
 }
  

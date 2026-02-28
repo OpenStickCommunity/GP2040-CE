@@ -28,11 +28,11 @@ void StaticColor::Animate(RGB (&frame)[FRAME_MAX])
       {
         if(!isButtonAnimation)
         {
-          frame[ledIndex] = AdjustColor(GetNonPressedColorForLight(lightIndex));
+          frame[ledIndex] = AdjustColor(ledIndex, GetNonPressedColorForLight(lightIndex));
         }
         else if (isButtonAnimation)
         {
-          frame[ledIndex] = FadeColor(AdjustColor(GetPressedColorForLight(lightIndex)),
+          frame[ledIndex] = FadeColor(AdjustColor(ledIndex, GetPressedColorForLight(lightIndex)),
                                           frame[ledIndex],
                                           fadeTimes[ledIndex]);    
         }
