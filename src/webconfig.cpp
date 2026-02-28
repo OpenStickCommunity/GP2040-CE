@@ -38,7 +38,7 @@
 
 #define PATH_CGI_ACTION "/cgi/action"
 
-#define LWIP_HTTPD_POST_MAX_PAYLOAD_LEN (1024 * 16)
+#define LWIP_HTTPD_POST_MAX_PAYLOAD_LEN (1024 * 24)
 
 extern struct fsdata_file file__index_html[];
 
@@ -1591,7 +1591,7 @@ std::string getHETriggerVoltage()
 
 std::string getHETriggerCalibrations()
 {
-    const size_t capacity = JSON_OBJECT_SIZE(500);
+    const size_t capacity = JSON_OBJECT_SIZE(800);
     DynamicJsonDocument doc(capacity);
     
     HETriggerInfo * heTriggers = Storage::getInstance().getAddonOptions().heTriggerOptions.triggers;
