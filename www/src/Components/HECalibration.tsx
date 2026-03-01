@@ -352,6 +352,30 @@ const HECalibration = ({
 					/>
 				</Col>
 				<Col xs={12} className="mb-3">
+					<FormCheck
+						label={t('HETrigger:calibration-flip-polarity')}
+						type="switch"
+						name="is_polarized"
+						id="HETriggerPolarize"
+						isInvalid={false}
+						checked={polarity}
+						onChange={(e) => {
+							setPolarity(e.target.checked);
+							if (e.target.checked) {
+								setVoltageIdle(Math.max(voltageIdle, voltagePressed));
+								setVoltagePressed(Math.min(voltageIdle, voltagePressed));
+								setVoltageActive(Math.max(release, voltageActive));
+								setRelease(Math.min(release, voltageActive));
+							} else {
+								setVoltageIdle(Math.min(voltageIdle, voltagePressed));
+								setVoltagePressed(Math.max(voltageIdle, voltagePressed));
+								setVoltageActive(Math.min(release, voltageActive));
+								setRelease(Math.max(release, voltageActive));
+							}
+						}}
+					/>
+				</Col>
+				<Col xs={12} className="mb-3">
 					{t(`HETrigger:activation-reading-text`)}
 				</Col>
 				<Col xs={12} className="mb-3 text-center">
