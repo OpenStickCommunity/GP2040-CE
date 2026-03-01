@@ -233,16 +233,31 @@ void PCF8575Addon::preprocess() {
     if (inputButtonEXT11) gamepad->state.buttons |= GAMEPAD_MASK_E11;
     if (inputButtonEXT12) gamepad->state.buttons |= GAMEPAD_MASK_E12;
     
-	// --- 修正案：マクロエンジンが確実に拾える場所にビットを立てる ---
-    // あなたの Gamepad.h の定義に基づき、debouncedGpio (32bit) 内に収めます
-    
-    // 一旦クリアしてからセットすることで、Core 1 から Core 0 へ変化を伝えます
-    gamepad->debouncedGpio |= (inputButtonMacro1 ? GAMEPAD_MASK_E7 : 0);
-    gamepad->debouncedGpio |= (inputButtonMacro2 ? GAMEPAD_MASK_E8 : 0);
-	  gamepad->debouncedGpio |= (inputButtonMacro3 ? GAMEPAD_MASK_E9 : 0);
-    gamepad->debouncedGpio |= (inputButtonMacro4 ? GAMEPAD_MASK_E10 : 0);
-	  gamepad->debouncedGpio |= (inputButtonMacro5 ? GAMEPAD_MASK_E11 : 0);
-    gamepad->debouncedGpio |= (inputButtonMacro6 ? GAMEPAD_MASK_E12 : 0);
+	  // --- 修正案：Core 間のメモリ同期を確実にするための書き方 ---  
+	  if (inputButtonMacro1) {
+        gamepad->debouncedGpio |= GAMEPAD_MASK_E7;
+        gamepad->state.buttons |= GAMEPAD_MASK_E7;
+    }
+    if (inputButtonMacro2) {
+        gamepad->debouncedGpio |= GAMEPAD_MASK_E8;
+        gamepad->state.buttons |= GAMEPAD_MASK_E8;
+    }
+	  if (inputButtonMacro3) {
+        gamepad->debouncedGpio |= GAMEPAD_MASK_E9;
+        gamepad->state.buttons |= GAMEPAD_MASK_E9;
+    }
+    if (inputButtonMacro4) {
+        gamepad->debouncedGpio |= GAMEPAD_MASK_E10;
+        gamepad->state.buttons |= GAMEPAD_MASK_E10;
+    }	
+	  if (inputButtonMacro5) {
+        gamepad->debouncedGpio |= GAMEPAD_MASK_E11;
+        gamepad->state.buttons |= GAMEPAD_MASK_E11;
+    }
+    if (inputButtonMacro6) {
+        gamepad->debouncedGpio |= GAMEPAD_MASK_E12;
+        gamepad->state.buttons |= GAMEPAD_MASK_E12;
+    }	
 	
     // 3. 起動時スキップカウント
     if (bootSkipCount < 100) {
