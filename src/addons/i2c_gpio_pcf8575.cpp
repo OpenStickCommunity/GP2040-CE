@@ -56,64 +56,71 @@ void PCF8575Addon::preprocess() {
     inputButtonL3 = inputButtonR3 = inputButtonA3 = inputButtonA4 = false;
     inputButtonEXT1 = inputButtonEXT2 = inputButtonEXT3 = false;
     inputButtonEXT4 = inputButtonEXT5 = inputButtonEXT6 = false;
+	  inputButtonEXT7 = inputButtonEXT8 = inputButtonEXT9 = false;    
+	  inputButtonEXT10 = inputButtonEXT11 = inputButtonEXT12 = false;
+	
 	  // -------------------------------------
+
+       // --- 1. 全ポートの状態を一括取得 (ループの外で1回だけ行う) ---
+    uint16_t allPins = pcf->read(); 
 
     for (std::map<uint8_t, GpioMappingInfo>::iterator pin = pinRef.begin(); pin != pinRef.end(); ++pin) {
         if (pin->second.direction == GpioDirection::GPIO_DIRECTION_INPUT) {
-            uint8_t pinRaw = pcf->getPin(pin->first);
-            bool pinValue = (bool)(!(pinRaw == 1));
+            
+            // --- 2. ビット演算で特定のピンの状態を抽出 (0なら押されている) ---
+            bool pinValue = !(allPins & (1 << pin->first));
              
-					   // --- 修正：起動から100フレーム（約1.6秒）は入力を強制OFFにする ---
-             // 50で足りない場合を想定して、より確実な100（約1.6秒）に設定します
-               if (bootSkipCount < 100) {
-               pinValue = false;
+            // 起動直後のガード
+            if (bootSkipCount < 100) {
+                pinValue = false;
             }
-             // -------------------------------
-				     switch (pin->second.action) {
-                case GpioAction::BUTTON_PRESS_UP:    inputButtonUp = pinValue; break;
-                case GpioAction::BUTTON_PRESS_DOWN:  inputButtonDown = pinValue; break;
-                case GpioAction::BUTTON_PRESS_LEFT:  inputButtonLeft = pinValue; break;
-                case GpioAction::BUTTON_PRESS_RIGHT: inputButtonRight = pinValue; break;
-                case GpioAction::BUTTON_PRESS_B1:    inputButtonB1 = pinValue; break;
-                case GpioAction::BUTTON_PRESS_B2:    inputButtonB2 = pinValue; break;
-                case GpioAction::BUTTON_PRESS_B3:    inputButtonB3 = pinValue; break;
-                case GpioAction::BUTTON_PRESS_B4:    inputButtonB4 = pinValue; break;
-                case GpioAction::BUTTON_PRESS_L1:    inputButtonL1 = pinValue; break;
-                case GpioAction::BUTTON_PRESS_R1:    inputButtonR1 = pinValue; break;
-                case GpioAction::BUTTON_PRESS_L2:    inputButtonL2 = pinValue; break;
-                case GpioAction::BUTTON_PRESS_R2:    inputButtonR2 = pinValue; break;
-                case GpioAction::BUTTON_PRESS_S1:    inputButtonS1 = pinValue; break;
-                case GpioAction::BUTTON_PRESS_S2:    inputButtonS2 = pinValue; break;
-                case GpioAction::BUTTON_PRESS_L3:    inputButtonL3 = pinValue; break;
-                case GpioAction::BUTTON_PRESS_R3:    inputButtonR3 = pinValue; break;
-                case GpioAction::BUTTON_PRESS_A1:    inputButtonA1 = pinValue; break;
-                case GpioAction::BUTTON_PRESS_A2:    inputButtonA2 = pinValue; break;
-                case GpioAction::BUTTON_PRESS_FN:    inputButtonFN = pinValue; break;
+            // --- 3. 押されている(true)の時だけ、各変数に反映させる ---
+            if (pinValue) {
+                switch (pin->second.action) {
+								case GpioAction::BUTTON_PRESS_UP:    inputButtonUp = true; break;
+                case GpioAction::BUTTON_PRESS_DOWN:  inputButtonDown = true; break;
+                case GpioAction::BUTTON_PRESS_LEFT:  inputButtonLeft = true; break;
+                case GpioAction::BUTTON_PRESS_RIGHT: inputButtonRight = true; break;
+                case GpioAction::BUTTON_PRESS_B1:    inputButtonB1 = true; break;
+                case GpioAction::BUTTON_PRESS_B2:    inputButtonB2 = true; break;
+                case GpioAction::BUTTON_PRESS_B3:    inputButtonB3 = true; break;
+                case GpioAction::BUTTON_PRESS_B4:    inputButtonB4 = true; break;
+                case GpioAction::BUTTON_PRESS_L1:    inputButtonL1 = true; break;
+                case GpioAction::BUTTON_PRESS_R1:    inputButtonR1 = true; break;
+                case GpioAction::BUTTON_PRESS_L2:    inputButtonL2 = true; break;
+                case GpioAction::BUTTON_PRESS_R2:    inputButtonR2 = true; break;
+                case GpioAction::BUTTON_PRESS_S1:    inputButtonS1 = true; break;
+                case GpioAction::BUTTON_PRESS_S2:    inputButtonS2 = true; break;
+                case GpioAction::BUTTON_PRESS_L3:    inputButtonL3 = true; break;
+                case GpioAction::BUTTON_PRESS_R3:    inputButtonR3 = true; break;
+                case GpioAction::BUTTON_PRESS_A1:    inputButtonA1 = true; break;
+                case GpioAction::BUTTON_PRESS_A2:    inputButtonA2 = true; break;
+                case GpioAction::BUTTON_PRESS_FN:    inputButtonFN = true; break;
                 // ... (既存のケース) ...
                 // --- 追加分 ---
                 // i2c_gpio_pcf8575.cpp の switch文の中身をこれに差し替え
-								case GpioAction::BUTTON_PRESS_A3:    inputButtonA3 = pinValue; break;
-								case GpioAction::BUTTON_PRESS_A4:    inputButtonA4 = pinValue; break;
-								case GpioAction::BUTTON_PRESS_E1:    inputButtonEXT1 = pinValue; break; 
-								case GpioAction::BUTTON_PRESS_E2:    inputButtonEXT2 = pinValue; break; 
-								case GpioAction::BUTTON_PRESS_E3:    inputButtonEXT3 = pinValue; break;
-								case GpioAction::BUTTON_PRESS_E4:    inputButtonEXT4 = pinValue; break;
-								case GpioAction::BUTTON_PRESS_E5:    inputButtonEXT5 = pinValue; break;
-								case GpioAction::BUTTON_PRESS_E6:    inputButtonEXT6 = pinValue; break;
-							  case GpioAction::BUTTON_PRESS_E7:    inputButtonEXT7 = pinValue; break;
-								case GpioAction::BUTTON_PRESS_E8:    inputButtonEXT8 = pinValue; break;
-								case GpioAction::BUTTON_PRESS_E9:    inputButtonEXT9 = pinValue; break; 
-								case GpioAction::BUTTON_PRESS_E10:    inputButtonEXT10 = pinValue; break; 
-								case GpioAction::BUTTON_PRESS_E11:    inputButtonEXT11 = pinValue; break;
-								case GpioAction::BUTTON_PRESS_E12:    inputButtonEXT12 = pinValue; break;
+								case GpioAction::BUTTON_PRESS_A3:    inputButtonA3 = true; break;
+								case GpioAction::BUTTON_PRESS_A4:    inputButtonA4 = true; break;
+								case GpioAction::BUTTON_PRESS_E1:    inputButtonEXT1 = true; break; 
+								case GpioAction::BUTTON_PRESS_E2:    inputButtonEXT2 = true; break; 
+								case GpioAction::BUTTON_PRESS_E3:    inputButtonEXT3 = true; break;
+								case GpioAction::BUTTON_PRESS_E4:    inputButtonEXT4 = true; break;
+								case GpioAction::BUTTON_PRESS_E5:    inputButtonEXT5 = true; break;
+								case GpioAction::BUTTON_PRESS_E6:    inputButtonEXT6 = true; break;
+							  case GpioAction::BUTTON_PRESS_E7:    inputButtonEXT7 = true; break;
+								case GpioAction::BUTTON_PRESS_E8:    inputButtonEXT8 = true; break;
+								case GpioAction::BUTTON_PRESS_E9:    inputButtonEXT9 = true; break; 
+								case GpioAction::BUTTON_PRESS_E10:    inputButtonEXT10 = true; break; 
+								case GpioAction::BUTTON_PRESS_E11:    inputButtonEXT11 = true; break;
+								case GpioAction::BUTTON_PRESS_E12:    inputButtonEXT12 = true; break;
 							  // --- 必ずここ（pinValueが生きているスコープ）に追加してください ---
-                case GpioAction::BUTTON_PRESS_MACRO:   inputButtonMacro = pinValue; break;
-                case GpioAction::BUTTON_PRESS_MACRO_1: inputButtonMacro1 = pinValue; break;
-                case GpioAction::BUTTON_PRESS_MACRO_2: inputButtonMacro2 = pinValue; break;
-                case GpioAction::BUTTON_PRESS_MACRO_3: inputButtonMacro3 = pinValue; break;
-                case GpioAction::BUTTON_PRESS_MACRO_4: inputButtonMacro4 = pinValue; break;
-                case GpioAction::BUTTON_PRESS_MACRO_5: inputButtonMacro5 = pinValue; break;
-                case GpioAction::BUTTON_PRESS_MACRO_6: inputButtonMacro6 = pinValue; break;
+                case GpioAction::BUTTON_PRESS_MACRO:   inputButtonMacro = true; break;
+                case GpioAction::BUTTON_PRESS_MACRO_1: inputButtonMacro1 = true; break;
+                case GpioAction::BUTTON_PRESS_MACRO_2: inputButtonMacro2 = true; break;
+                case GpioAction::BUTTON_PRESS_MACRO_3: inputButtonMacro3 = true; break;
+                case GpioAction::BUTTON_PRESS_MACRO_4: inputButtonMacro4 = true; break;
+                case GpioAction::BUTTON_PRESS_MACRO_5: inputButtonMacro5 = true; break;
+                case GpioAction::BUTTON_PRESS_MACRO_6: inputButtonMacro6 = true; break;
                 // ------------------------------------------------------------
 							default:                             break;
 }
@@ -141,20 +148,20 @@ void PCF8575Addon::preprocess() {
                 // --- 追加分 ---
                 // i2c_gpio_pcf8575.cpp の switch文の中身をこれに差し替え
 								// --- 出力(OUTPUT)側の追加分 ---
-                case GpioAction::BUTTON_PRESS_A3:    pcf->setPin(pin->first, !((gamepad->state.buttons & GAMEPAD_MASK_A3) == GAMEPAD_MASK_A3)); break;
-                case GpioAction::BUTTON_PRESS_A4:    pcf->setPin(pin->first, !((gamepad->state.buttons & GAMEPAD_MASK_A4) == GAMEPAD_MASK_A4)); break;
-                case GpioAction::BUTTON_PRESS_E1:    pcf->setPin(pin->first, !((gamepad->state.aux & (1 << 0)) == (1 << 0))); break;
-                case GpioAction::BUTTON_PRESS_E2:    pcf->setPin(pin->first, !((gamepad->state.aux & (1 << 1)) == (1 << 1))); break;
-                case GpioAction::BUTTON_PRESS_E3:    pcf->setPin(pin->first, !((gamepad->state.aux & (1 << 2)) == (1 << 2))); break;
-                case GpioAction::BUTTON_PRESS_E4:    pcf->setPin(pin->first, !((gamepad->state.aux & (1 << 3)) == (1 << 3))); break;
-                case GpioAction::BUTTON_PRESS_E5:    pcf->setPin(pin->first, !((gamepad->state.aux & (1 << 4)) == (1 << 4))); break;
-                case GpioAction::BUTTON_PRESS_E6:    pcf->setPin(pin->first, !((gamepad->state.aux & (1 << 5)) == (1 << 5))); break;
-                case GpioAction::BUTTON_PRESS_E7:    pcf->setPin(pin->first, !((gamepad->state.aux & (1 << 6)) == (1 << 6))); break;
-                case GpioAction::BUTTON_PRESS_E8:    pcf->setPin(pin->first, !((gamepad->state.aux & (1 << 7)) == (1 << 7))); break;
-                case GpioAction::BUTTON_PRESS_E9:    pcf->setPin(pin->first, !((gamepad->state.aux & (1 << 8)) == (1 << 8))); break;
-                case GpioAction::BUTTON_PRESS_E10:    pcf->setPin(pin->first, !((gamepad->state.aux & (1 << 9)) == (1 << 9))); break;
-                case GpioAction::BUTTON_PRESS_E11:    pcf->setPin(pin->first, !((gamepad->state.aux & (1 << 10)) == (1 << 10))); break;
-                case GpioAction::BUTTON_PRESS_E12:    pcf->setPin(pin->first, !((gamepad->state.aux & (1 << 11)) == (1 << 11))); break;
+               case GpioAction::BUTTON_PRESS_A3:    pcf->setPin(pin->first, !((gamepad->state.buttons & GAMEPAD_MASK_A3) == GAMEPAD_MASK_A3)); break;
+							 case GpioAction::BUTTON_PRESS_A4:    pcf->setPin(pin->first, !((gamepad->state.buttons & GAMEPAD_MASK_A4) == GAMEPAD_MASK_A4)); break;
+               case GpioAction::BUTTON_PRESS_E1:    pcf->setPin(pin->first, !((gamepad->state.buttons & GAMEPAD_MASK_E1) == GAMEPAD_MASK_E1)); break;
+               case GpioAction::BUTTON_PRESS_E2:    pcf->setPin(pin->first, !((gamepad->state.buttons & GAMEPAD_MASK_E2) == GAMEPAD_MASK_E2)); break;
+               case GpioAction::BUTTON_PRESS_E3:    pcf->setPin(pin->first, !((gamepad->state.buttons & GAMEPAD_MASK_E3) == GAMEPAD_MASK_E3)); break;
+               case GpioAction::BUTTON_PRESS_E4:    pcf->setPin(pin->first, !((gamepad->state.buttons & GAMEPAD_MASK_E4) == GAMEPAD_MASK_E4)); break;
+               case GpioAction::BUTTON_PRESS_E5:    pcf->setPin(pin->first, !((gamepad->state.buttons & GAMEPAD_MASK_E5) == GAMEPAD_MASK_E5)); break;
+               case GpioAction::BUTTON_PRESS_E6:    pcf->setPin(pin->first, !((gamepad->state.buttons & GAMEPAD_MASK_E6) == GAMEPAD_MASK_E6)); break;
+               case GpioAction::BUTTON_PRESS_E7:    pcf->setPin(pin->first, !((gamepad->state.buttons & GAMEPAD_MASK_E7) == GAMEPAD_MASK_E7)); break;
+               case GpioAction::BUTTON_PRESS_E8:    pcf->setPin(pin->first, !((gamepad->state.buttons & GAMEPAD_MASK_E8) == GAMEPAD_MASK_E8)); break;
+               case GpioAction::BUTTON_PRESS_E9:    pcf->setPin(pin->first, !((gamepad->state.buttons & GAMEPAD_MASK_E9) == GAMEPAD_MASK_E9)); break;
+               case GpioAction::BUTTON_PRESS_E10:   pcf->setPin(pin->first, !((gamepad->state.buttons & GAMEPAD_MASK_E10) == GAMEPAD_MASK_E10)); break;
+               case GpioAction::BUTTON_PRESS_E11:   pcf->setPin(pin->first, !((gamepad->state.buttons & GAMEPAD_MASK_E11) == GAMEPAD_MASK_E11)); break;
+               case GpioAction::BUTTON_PRESS_E12:   pcf->setPin(pin->first, !((gamepad->state.buttons & GAMEPAD_MASK_E12) == GAMEPAD_MASK_E12)); break;
 							default:                             break;
             }
 
