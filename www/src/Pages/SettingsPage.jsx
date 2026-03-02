@@ -208,6 +208,7 @@ const INPUT_MODES = [
 	{ labelKey: 'input-mode-options.egret', value: 9, group: 'mini' },
 	{ labelKey: 'input-mode-options.astro', value: 10, group: 'mini' },
 	{ labelKey: 'input-mode-options.psclassic', value: 11, group: 'mini' },
+	{ labelKey: 'input-mode-options.sinput', value: 17, group: 'primary' },
 ];
 
 const INPUT_BOOT_MODES = [
@@ -254,6 +255,7 @@ const INPUT_BOOT_MODES = [
 	{ labelKey: 'input-mode-options.egret', value: 9, group: 'mini' },
 	{ labelKey: 'input-mode-options.astro', value: 10, group: 'mini' },
 	{ labelKey: 'input-mode-options.psclassic', value: 11, group: 'mini' },
+	{ labelKey: 'input-mode-options.sinput', value: 17, group: 'primary' },
 ];
 
 const INPUT_MODE_GROUPS = [

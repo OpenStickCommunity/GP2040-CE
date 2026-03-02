@@ -144,6 +144,7 @@ class ButtonLayoutScreen : public GPScreen {
             {INPUT_MODE_ASTRO, 9},
             {INPUT_MODE_XBOXORIGINAL, 10},
             {INPUT_MODE_GENERIC, 11},
+            {INPUT_MODE_SINPUT, 12},
         };
 
         Gamepad* gamepad;
