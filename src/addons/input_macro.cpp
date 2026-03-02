@@ -4,25 +4,11 @@
 
 #include "hardware/gpio.h"
 
+// --- 修正後 ---
 bool InputMacro::available() {
-    // Macro Button initialized by void Gamepad::setup()
-    GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
-    for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
-    {
-        switch( pinMappings[pin].action ) {
-            case GpioAction::BUTTON_PRESS_MACRO:
-            case GpioAction::BUTTON_PRESS_MACRO_1:
-            case GpioAction::BUTTON_PRESS_MACRO_2:
-            case GpioAction::BUTTON_PRESS_MACRO_3:
-            case GpioAction::BUTTON_PRESS_MACRO_4:
-            case GpioAction::BUTTON_PRESS_MACRO_5:
-            case GpioAction::BUTTON_PRESS_MACRO_6:
-                return true;
-            default:
-                break;
-        }
-    }
-    return false;
+    // 物理ピン(RP2040本体)にマクロボタンが割り当てられていなくても、
+    // PCF8575などのアドオンからマクロ機能を使えるように、常に「有効(true)」として報告する。
+    return true; 
 }
 
 void InputMacro::setup() {
@@ -93,32 +79,38 @@ void InputMacro::restart(Macro& macro) {
     macroInputHoldTime = newMacroInputDuration <= 0 ? INPUT_HOLD_US : newMacroInputDuration;
 }
 
+// src/addons/input_macro.cpp 内
+
 void InputMacro::checkMacroPress() {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
-    Mask_t allPins = gamepad->debouncedGpio;
+    
+    // 【重要】物理ピンマスク(debouncedGpio)ではなく、論理ボタン状態(state.buttons)を使用する
+    uint32_t buttons = gamepad->state.buttons;
+    uint32_t dpad = gamepad->state.dpad;
 
-    // Go through our macro list
     pressedMacro = -1;
     for(int i = 0; i < MAX_MACRO_LIMIT; i++) {
-        if ( inputMacroOptions->macroList[i].enabled == false ) // Skip disabled macros
-            continue;
+        if ( inputMacroOptions->macroList[i].enabled == false ) continue;
         Macro * macro = &inputMacroOptions->macroList[i];
+
         if ( macro->useMacroTriggerButton ) {
-            // Use Gamepad Button for Macro Trigger
-            if ((allPins & macroButtonMask) &&
-                ((gamepad->state.buttons & macro->macroTriggerButton) ||
-                    (gamepad->state.dpad & (macro->macroTriggerButton >> 16))) ) {
+            // Web設定で「E7」などをトリガーに指定している場合
+            if ((buttons & macro->macroTriggerButton) || (dpad & (macro->macroTriggerButton >> 16))) {
                 pressedMacro = i;
                 break;
             }
-        } else if ( allPins & macroPinMasks[i] ) {
-            // Use Pin Manager for Macro Trigger
-            pressedMacro = i;
-            break;
+        } else {
+            // 【重要】ここが物理ピン判定(macroPinMasks)になっているため、PCF8575では反応しません。
+            // 代わりに PCF8575 側で立てた「仮想的な Macro ピン」のビットをここで判定させます。
+            // (例: E7~E12 を Macro 1~6 に対応させている場合)
+            uint32_t virtualMacroMask = (GAMEPAD_MASK_E7 << i); 
+            if (buttons & virtualMacroMask) {
+                pressedMacro = i;
+                break;
+            }
         }
     }
 }
-
 void InputMacro::checkMacroAction() {
     bool macroInputPressed = (pressedMacro != -1); // Was any macro input pressed?
 
