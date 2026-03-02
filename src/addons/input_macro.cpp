@@ -81,10 +81,11 @@ void InputMacro::restart(Macro& macro) {
 
 // src/addons/input_macro.cpp 内
 
+// 2. トリガー判定ロジックの差し替え
 void InputMacro::checkMacroPress() {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     
-    // 【重要】物理ピンマスク(debouncedGpio)ではなく、論理ボタン状態(state.buttons)を使用する
+    // 【重要】物理ピン(debouncedGpio)ではなく、論理ボタン状態(state.buttons)を使用
     uint32_t buttons = gamepad->state.buttons;
     uint32_t dpad = gamepad->state.dpad;
 
@@ -94,15 +95,15 @@ void InputMacro::checkMacroPress() {
         Macro * macro = &inputMacroOptions->macroList[i];
 
         if ( macro->useMacroTriggerButton ) {
-            // Web設定で「E7」などをトリガーに指定している場合
-            if ((buttons & macro->macroTriggerButton) || (dpad & (macro->macroTriggerButton >> 16))) {
+            // Web設定の「Macro Trigger Button」で選んだボタン(B1, E7等)を判定
+            if ((buttons & macro->macroTriggerButton) || 
+                (dpad & (macro->macroTriggerButton >> 16))) {
                 pressedMacro = i;
                 break;
             }
         } else {
-            // 【重要】ここが物理ピン判定(macroPinMasks)になっているため、PCF8575では反応しません。
-            // 代わりに PCF8575 側で立てた「仮想的な Macro ピン」のビットをここで判定させます。
-            // (例: E7~E12 を Macro 1~6 に対応させている場合)
+            // Web設定で「Macro 1〜6」の物理ピンを指定している場合
+            // PCF8575側で立てた仮想ビット(E7〜E12)をMacro 1〜6として判定
             uint32_t virtualMacroMask = (GAMEPAD_MASK_E7 << i); 
             if (buttons & virtualMacroMask) {
                 pressedMacro = i;
