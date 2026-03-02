@@ -68,8 +68,8 @@ const PLEDAnimationSpeed ANIMATION_SPEEDS[] =
 struct PLEDAnimationState
 {
 	uint8_t state = 0;
-	PLEDAnimationType animation;
-	PLEDAnimationSpeed speed;
+	PLEDAnimationType animation = PLEDAnimationType::PLED_ANIM_NONE;
+	PLEDAnimationSpeed speed = PLEDAnimationSpeed::PLED_SPEED_OFF;
 	uint32_t speedOn = 0;
 	uint32_t speedOff = 0;
 };
@@ -171,7 +171,7 @@ class PlayerLEDs
 		}
 
 		uint16_t ledLevels[PLED_COUNT] = {PLED_MAX_LEVEL, PLED_MAX_LEVEL, PLED_MAX_LEVEL, PLED_MAX_LEVEL};
-		absolute_time_t nextAnimationTime;
+		absolute_time_t nextAnimationTime = 0;
 		PLEDAnimationType selectedAnimation = PLED_ANIM_NONE;
 		bool lastPledState[PLED_COUNT] = { };
 		bool currentPledState[PLED_COUNT] = { };

@@ -48,7 +48,7 @@ static const uint8_t * xbone_get_string_descriptor(int index) {
 		pico_unique_board_id_t id;
 		pico_get_unique_board_id(&id);
         for(int i = 0; i < PICO_UNIQUE_BOARD_ID_SIZE_BYTES; i++) {
-            uniqueSerial[i] = 'A' + (id.id[i]%25); // some alphanumeric from 'A' to 'Z'
+            uniqueSerial[i] = 'A' + (id.id[i]%26); // some alphanumeric from 'A' to 'Z'
         }
         return uniqueSerial;
 	} else if ( index == 4 ) { // security method used

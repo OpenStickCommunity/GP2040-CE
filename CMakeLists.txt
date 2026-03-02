@@ -180,7 +180,7 @@ add_subdirectory(lib)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
   # Activate some compiler / linker options to aid us with diagnosing stack space issues in Debug builds
-  add_compile_options(-fstack-usage -Wstack-usage=500)
+  add_compile_options(-fstack-usage -Wstack-usage=500 -Wnull-dereference -Wcast-align -Wimplicit-fallthrough)
   add_compile_definitions(PICO_USE_STACK_GUARDS=1)
 endif()
 

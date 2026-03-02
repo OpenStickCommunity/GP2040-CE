@@ -500,6 +500,7 @@ const uint16_t * XInputDriver::get_descriptor_string_cb(uint8_t index, uint16_t 
                 break;
             case 3:
                 value = gamepadOptions.usbDescVersion;
+                break;
             default:
                 value = (char *)xinput_get_string_descriptor(index);
                 break;

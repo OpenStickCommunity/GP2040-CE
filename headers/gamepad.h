@@ -82,7 +82,7 @@ public:
 	/**
 	 * @brief Check for a hotkey combination press. Checks aux, buttons, and dpad.
 	 */
-	inline bool __attribute__((always_inline)) pressedHotkey(const HotkeyEntry hotkey) {
+	inline bool __attribute__((always_inline)) pressedHotkey(const HotkeyEntry &hotkey) {
 		return (hotkey.action != 0 && pressedButton(hotkey.buttonsMask) &&
 				pressedDpad(hotkey.dpadMask) && pressedAux(hotkey.auxMask));
 	}
