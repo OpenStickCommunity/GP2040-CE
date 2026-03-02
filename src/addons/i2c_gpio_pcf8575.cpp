@@ -201,13 +201,15 @@ void PCF8575Addon::preprocess() {
   	if (inputButtonEXT10) gamepad->state.buttons |= GAMEPAD_MASK_E10;
     if (inputButtonEXT11) gamepad->state.buttons |= GAMEPAD_MASK_E11;
     if (inputButtonEXT12) gamepad->state.buttons |= GAMEPAD_MASK_E12;
-    if (inputButtonMacro1) gamepad->state.buttons |= GAMEPAD_MASK_E7;
-    if (inputButtonMacro2) gamepad->state.buttons |= GAMEPAD_MASK_E8;
-    if (inputButtonMacro3) gamepad->state.buttons |= GAMEPAD_MASK_E9;
-	  if (inputButtonMacro4) gamepad->state.buttons |= GAMEPAD_MASK_E10;
-    if (inputButtonMacro5) gamepad->state.buttons |= GAMEPAD_MASK_E11;
-    if (inputButtonMacro6) gamepad->state.buttons |= GAMEPAD_MASK_E12;
-
+    
+	  // --- 修正版：Macro 1〜6 を安全な空きビットに割り当て ---
+    if (inputButtonMacro1) gamepad->state.buttons |= (1ULL << 26); 
+    if (inputButtonMacro2) gamepad->state.buttons |= (1ULL << 27); 
+    if (inputButtonMacro3) gamepad->state.buttons |= (1ULL << 28); 
+    if (inputButtonMacro4) gamepad->state.buttons |= (1ULL << 29); 
+    if (inputButtonMacro5) gamepad->state.buttons |= (1ULL << 30); 
+    if (inputButtonMacro6) gamepad->state.buttons |= (1ULL << 31); 
+	
     if (bootSkipCount < 100) {
         bootSkipCount++;
     }
