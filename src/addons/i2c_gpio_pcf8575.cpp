@@ -202,15 +202,17 @@ void PCF8575Addon::preprocess() {
     if (inputButtonEXT11) gamepad->state.buttons |= GAMEPAD_MASK_E11;
     if (inputButtonEXT12) gamepad->state.buttons |= GAMEPAD_MASK_E12;
     
-	  // --- 修正版：Macro 1〜6 を安全な空きビットに割り当て ---
-    if (inputButtonMacro1) gamepad->state.buttons |= (1ULL << 26); 
-    if (inputButtonMacro2) gamepad->state.buttons |= (1ULL << 27); 
-    if (inputButtonMacro3) gamepad->state.buttons |= (1ULL << 28); 
-    if (inputButtonMacro4) gamepad->state.buttons |= (1ULL << 29); 
-    if (inputButtonMacro5) gamepad->state.buttons |= (1ULL << 30); 
-    if (inputButtonMacro6) gamepad->state.buttons |= (1ULL << 31); 
-	
-    if (bootSkipCount < 100) {
+    // --- 修正版：Macro 1〜6 を安全な空きビットに割り当て ---
+    // state.buttons と debouncedGpio の両方にビットを立てることで、
+    // マクロエンジンが確実に「押し下げイベント」を検知できるようになります。
+    if (inputButtonMacro1) { gamepad->state.buttons |= (1ULL << 26); gamepad->debouncedGpio |= (1ULL << 26); }
+    if (inputButtonMacro2) { gamepad->state.buttons |= (1ULL << 27); gamepad->debouncedGpio |= (1ULL << 27); }
+    if (inputButtonMacro3) { gamepad->state.buttons |= (1ULL << 28); gamepad->debouncedGpio |= (1ULL << 28); }
+    if (inputButtonMacro4) { gamepad->state.buttons |= (1ULL << 29); gamepad->debouncedGpio |= (1ULL << 29); }
+    if (inputButtonMacro5) { gamepad->state.buttons |= (1ULL << 30); gamepad->debouncedGpio |= (1ULL << 30); }
+    if (inputButtonMacro6) { gamepad->state.buttons |= (1ULL << 31); gamepad->debouncedGpio |= (1ULL << 31); }	
+    
+	  if (bootSkipCount < 100) {
         bootSkipCount++;
     }
 }
