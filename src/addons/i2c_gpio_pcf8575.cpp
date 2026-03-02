@@ -43,35 +43,26 @@ void PCF8575Addon::setup() {
 void PCF8575Addon::preprocess() {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
 
-    // 1. 全ての入力ボタンフラグを false にリセット
+    inputButtonMacro1 = inputButtonMacro2 = false;
+    inputButtonMacro3 = inputButtonMacro4 = inputButtonMacro5 = inputButtonMacro6 = false;
     inputButtonUp = inputButtonDown = inputButtonLeft = inputButtonRight = false;
     inputButtonB1 = inputButtonB2 = inputButtonB3 = inputButtonB4 = false;
     inputButtonL1 = inputButtonR1 = inputButtonL2 = inputButtonR2 = false;
     inputButtonS1 = inputButtonS2 = inputButtonA1 = inputButtonA2 = false;
     inputButtonL3 = inputButtonR3 = inputButtonA3 = inputButtonA4 = false;
-    inputButtonEXT1 = inputButtonEXT2 = inputButtonEXT3 = inputButtonEXT4 = false;
-    inputButtonEXT5 = inputButtonEXT6 = inputButtonEXT7 = inputButtonEXT8 = false;
-    inputButtonEXT9 = inputButtonEXT10 = inputButtonEXT11 = inputButtonEXT12 = false;
-    inputButtonMacro1 = inputButtonMacro2 = inputButtonMacro3 = false;
-    inputButtonMacro4 = inputButtonMacro5 = inputButtonMacro6 = false;
+    inputButtonEXT1 = inputButtonEXT2 = inputButtonEXT3 = false;
+    inputButtonEXT4 = inputButtonEXT5 = inputButtonEXT6 = false;
+    inputButtonEXT7 = inputButtonEXT8 = inputButtonEXT9 = false;    
+    inputButtonEXT10 = inputButtonEXT11 = inputButtonEXT12 = false;
 
-    // 2. PCF8575から16ビット分（全ポート）の状態を一括取得
-    // ※ read ではなく receive を使用します
     uint16_t allPins = pcf->receive(); 
 
-    // 3. 各ピンの役割（INPUT/OUTPUT）に応じた処理ループ
     for (std::map<uint8_t, GpioMappingInfo>::iterator pin = pinRef.begin(); pin != pinRef.end(); ++pin) {
         if (pin->second.direction == GpioDirection::GPIO_DIRECTION_INPUT) {
-            
-            // ビット演算でピン状態を確認（0なら押されている）
             bool pinValue = !(allPins & (1 << pin->first));
-             
-            // 起動直後の誤作動防止
             if (bootSkipCount < 100) {
                 pinValue = false;
             }
-
-            // 押されている(true)の時だけ、各フラグを true にセットする
             if (pinValue) {
                 switch (pin->second.action) {
                     case GpioAction::BUTTON_PRESS_UP:    inputButtonUp = true; break;
@@ -86,7 +77,7 @@ void PCF8575Addon::preprocess() {
                     case GpioAction::BUTTON_PRESS_R1:    inputButtonR1 = true; break;
                     case GpioAction::BUTTON_PRESS_L2:    inputButtonL2 = true; break;
                     case GpioAction::BUTTON_PRESS_R2:    inputButtonR2 = true; break;
-                    case GpioAction::BUTTON_PRESS_S1:    inputButtonS1 = true; break;
+		                case GpioAction::BUTTON_PRESS_S1:    inputButtonS1 = true; break;
                     case GpioAction::BUTTON_PRESS_S2:    inputButtonS2 = true; break;
                     case GpioAction::BUTTON_PRESS_L3:    inputButtonL3 = true; break;
                     case GpioAction::BUTTON_PRESS_R3:    inputButtonR3 = true; break;
@@ -94,16 +85,16 @@ void PCF8575Addon::preprocess() {
                     case GpioAction::BUTTON_PRESS_A2:    inputButtonA2 = true; break;
                     case GpioAction::BUTTON_PRESS_A3:    inputButtonA3 = true; break;
                     case GpioAction::BUTTON_PRESS_A4:    inputButtonA4 = true; break;
-                    case GpioAction::BUTTON_PRESS_E1:    inputButtonEXT1 = true; break; 
-                    case GpioAction::BUTTON_PRESS_E2:    inputButtonEXT2 = true; break; 
+                    case GpioAction::BUTTON_PRESS_E1:    inputButtonEXT1 = true; break;
+                    case GpioAction::BUTTON_PRESS_E2:    inputButtonEXT2 = true; break;
                     case GpioAction::BUTTON_PRESS_E3:    inputButtonEXT3 = true; break;
                     case GpioAction::BUTTON_PRESS_E4:    inputButtonEXT4 = true; break;
                     case GpioAction::BUTTON_PRESS_E5:    inputButtonEXT5 = true; break;
                     case GpioAction::BUTTON_PRESS_E6:    inputButtonEXT6 = true; break;
                     case GpioAction::BUTTON_PRESS_E7:    inputButtonEXT7 = true; break;
                     case GpioAction::BUTTON_PRESS_E8:    inputButtonEXT8 = true; break;
-                    case GpioAction::BUTTON_PRESS_E9:    inputButtonEXT9 = true; break; 
-                    case GpioAction::BUTTON_PRESS_E10:   inputButtonEXT10 = true; break; 
+                    case GpioAction::BUTTON_PRESS_E9:    inputButtonEXT9 = true; break;
+                    case GpioAction::BUTTON_PRESS_E10:   inputButtonEXT10 = true; break;
                     case GpioAction::BUTTON_PRESS_E11:   inputButtonEXT11 = true; break;
                     case GpioAction::BUTTON_PRESS_E12:   inputButtonEXT12 = true; break;
                     case GpioAction::BUTTON_PRESS_MACRO_1: inputButtonMacro1 = true; break;
@@ -115,12 +106,8 @@ void PCF8575Addon::preprocess() {
                     default: break;
                 }
             }
-              // --- 入力スイッチの終了 ---
-                default: break;
-            } // switchの閉じ
-        } else if (pin->second.direction == GpioDirection::GPIO_DIRECTION_OUTPUT) {
-            // 出力処理（LEDなど）：ボタンの状態に合わせてピンをHigh/Lowにする
-            bool outState = true; // デフォルトは消灯(High)
+				} else if (pin->second.direction == GpioDirection::GPIO_DIRECTION_OUTPUT) {
+            bool outState = true;
             switch (pin->second.action) {
                 case GpioAction::BUTTON_PRESS_UP:    outState = !((gamepad->state.dpad & GAMEPAD_MASK_UP) == GAMEPAD_MASK_UP); break;
                 case GpioAction::BUTTON_PRESS_DOWN:  outState = !((gamepad->state.dpad & GAMEPAD_MASK_DOWN) == GAMEPAD_MASK_DOWN); break;
@@ -155,31 +142,53 @@ void PCF8575Addon::preprocess() {
                 case GpioAction::BUTTON_PRESS_E11:   outState = !((gamepad->state.buttons & GAMEPAD_MASK_E11) == GAMEPAD_MASK_E11); break;
                 case GpioAction::BUTTON_PRESS_E12:   outState = !((gamepad->state.buttons & GAMEPAD_MASK_E12) == GAMEPAD_MASK_E12); break;
                 default: break;
-            } // switchの閉じ
+            }
             pcf->setPin(pin->first, outState);
-        } // if (direction == OUTPUT) の閉じ
-    } // for ループの閉じ
-
- 		if (inputButtonUp)    gamepad->state.dpad |= GAMEPAD_MASK_UP;
+        }
+    }
+// D-Pad とボタン入力の反映
+    if (inputButtonUp)    gamepad->state.dpad |= GAMEPAD_MASK_UP;
     if (inputButtonDown)  gamepad->state.dpad |= GAMEPAD_MASK_DOWN;
     if (inputButtonLeft)  gamepad->state.dpad |= GAMEPAD_MASK_LEFT;
     if (inputButtonRight) gamepad->state.dpad |= GAMEPAD_MASK_RIGHT;
+    
+    // 通常ボタン
     if (inputButtonB1)    gamepad->state.buttons |= GAMEPAD_MASK_B1;
     if (inputButtonB2)    gamepad->state.buttons |= GAMEPAD_MASK_B2;
     if (inputButtonB3)    gamepad->state.buttons |= GAMEPAD_MASK_B3;
     if (inputButtonB4)    gamepad->state.buttons |= GAMEPAD_MASK_B4;
-		if (inputButtonL1)    gamepad->state.buttons |= GAMEPAD_MASK_L1;
+    if (inputButtonL1)    gamepad->state.buttons |= GAMEPAD_MASK_L1;
     if (inputButtonR1)    gamepad->state.buttons |= GAMEPAD_MASK_R1;
     if (inputButtonL2)    gamepad->state.buttons |= GAMEPAD_MASK_L2;
     if (inputButtonR2)    gamepad->state.buttons |= GAMEPAD_MASK_R2;
     if (inputButtonS1)    gamepad->state.buttons |= GAMEPAD_MASK_S1;
-    if (inputButtonS2)    gamepad->state.buttons |= GAMEPAD_MASK_S2;
+  	if (inputButtonS2)    gamepad->state.buttons |= GAMEPAD_MASK_S2;
     if (inputButtonL3)    gamepad->state.buttons |= GAMEPAD_MASK_L3;
     if (inputButtonR3)    gamepad->state.buttons |= GAMEPAD_MASK_R3;
     if (inputButtonA1)    gamepad->state.buttons |= GAMEPAD_MASK_A1;
     if (inputButtonA2)    gamepad->state.buttons |= GAMEPAD_MASK_A2;
     if (inputButtonA3)    gamepad->state.buttons |= GAMEPAD_MASK_A3;
     if (inputButtonA4)    gamepad->state.buttons |= GAMEPAD_MASK_A4;
+    if (inputButtonEXT1)  gamepad->state.buttons |= GAMEPAD_MASK_E1;
+  	if (inputButtonEXT2)  gamepad->state.buttons |= GAMEPAD_MASK_E2;
+    if (inputButtonEXT3)  gamepad->state.buttons |= GAMEPAD_MASK_E3;
+    if (inputButtonEXT4)  gamepad->state.buttons |= GAMEPAD_MASK_E4;
+    if (inputButtonEXT5)  gamepad->state.buttons |= GAMEPAD_MASK_E5;
+    if (inputButtonEXT6)  gamepad->state.buttons |= GAMEPAD_MASK_E6;
+    if (inputButtonEXT7)  gamepad->state.buttons |= GAMEPAD_MASK_E7;
+    if (inputButtonEXT8)  gamepad->state.buttons |= GAMEPAD_MASK_E8;
+    if (inputButtonEXT9)  gamepad->state.buttons |= GAMEPAD_MASK_E9;
+	  if (inputButtonEXT10) gamepad->state.buttons |= GAMEPAD_MASK_E10;
+    if (inputButtonEXT11) gamepad->state.buttons |= GAMEPAD_MASK_E11;
+    if (inputButtonEXT12) gamepad->state.buttons |= GAMEPAD_MASK_E12;
+    if (inputButtonMacro1) gamepad->state.buttons |= GAMEPAD_MASK_E7;
+    if (inputButtonMacro2) gamepad->state.buttons |= GAMEPAD_MASK_E8;
+    if (inputButtonMacro3) gamepad->state.buttons |= GAMEPAD_MASK_E9;
+    if (inputButtonMacro4) gamepad->state.buttons |= GAMEPAD_MASK_E10;
+    if (inputButtonMacro5) gamepad->state.buttons |= GAMEPAD_MASK_E11;
+  	if (inputButtonMacro6) gamepad->state.buttons |= GAMEPAD_MASK_E12;
+    
+    // 拡張ボタン/マクロ処理
     if (inputButtonEXT1)  gamepad->state.buttons |= GAMEPAD_MASK_E1;
     if (inputButtonEXT2)  gamepad->state.buttons |= GAMEPAD_MASK_E2;
     if (inputButtonEXT3)  gamepad->state.buttons |= GAMEPAD_MASK_E3;
@@ -189,17 +198,17 @@ void PCF8575Addon::preprocess() {
     if (inputButtonEXT7)  gamepad->state.buttons |= GAMEPAD_MASK_E7;
     if (inputButtonEXT8)  gamepad->state.buttons |= GAMEPAD_MASK_E8;
     if (inputButtonEXT9)  gamepad->state.buttons |= GAMEPAD_MASK_E9;
-    if (inputButtonEXT10) gamepad->state.buttons |= GAMEPAD_MASK_E10;
+  	if (inputButtonEXT10) gamepad->state.buttons |= GAMEPAD_MASK_E10;
     if (inputButtonEXT11) gamepad->state.buttons |= GAMEPAD_MASK_E11;
     if (inputButtonEXT12) gamepad->state.buttons |= GAMEPAD_MASK_E12;
     if (inputButtonMacro1) gamepad->state.buttons |= GAMEPAD_MASK_E7;
     if (inputButtonMacro2) gamepad->state.buttons |= GAMEPAD_MASK_E8;
     if (inputButtonMacro3) gamepad->state.buttons |= GAMEPAD_MASK_E9;
-    if (inputButtonMacro4) gamepad->state.buttons |= GAMEPAD_MASK_E10;
+	  if (inputButtonMacro4) gamepad->state.buttons |= GAMEPAD_MASK_E10;
     if (inputButtonMacro5) gamepad->state.buttons |= GAMEPAD_MASK_E11;
     if (inputButtonMacro6) gamepad->state.buttons |= GAMEPAD_MASK_E12;
-    
-		if (bootSkipCount < 100) {
+
+    if (bootSkipCount < 100) {
         bootSkipCount++;
     }
 }
