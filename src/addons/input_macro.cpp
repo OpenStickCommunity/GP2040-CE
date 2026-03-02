@@ -161,24 +161,29 @@ void InputMacro::runCurrentMacro() {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     currentMicros = getMicro();
 
+    // --- 修正後の判定ブロック ---
     if (!macro.interruptible && macro.exclusive) {
-        // Prevent any other inputs from modifying our input (Exclusive)
-        gamepad->state.dpad = 0;
-        gamepad->state.buttons = 0;
+        // Exclusiveモードでも物理ボタンを殺さないようにコメントアウト
+        // gamepad->state.dpad = 0;
+        // gamepad->state.buttons = 0;
     } else {
+        // マクロのトリガーボタンが通常ボタン(B1等)の場合の除外処理
         if (macro.useMacroTriggerButton) {
-            // Remove the trigger button from the input state
             gamepad->state.dpad &= ~(macro.macroTriggerButton >> 16);
             gamepad->state.buttons &= ~macro.macroTriggerButton;
         }
-        if (macro.interruptible &&
-            (gamepad->state.buttons != 0 || gamepad->state.dpad != 0)) {
-            // Macro is interruptible and a user pressed something
+
+        // PCF8575の仮想ビット(26-31)を除外した状態を作る
+        uint32_t buttonsWithoutTrigger = gamepad->state.buttons & ~(1ULL << (26 + macroPosition));
+
+        // 中断設定(interruptible)が有効な場合、他のボタンが押されたらリセット
+        if (macro.interruptible && (buttonsWithoutTrigger != 0 || gamepad->state.dpad != 0)) {
             reset();
             return;
         }
     }
-
+    // --- 判定ブロック終了 ---
+	
     // Have we elapsed the input hold time?
     if ((currentMicros - macroStartTime) >= macroInputHoldTime) {
         macroStartTime = currentMicros;
