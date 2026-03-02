@@ -135,18 +135,20 @@ bool HIDDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_contr
 
 const uint16_t * HIDDriver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
     char *value;
-    // Check for override settings
+    // Check for override settings - use HID-specific overrides if available
     GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();
-    if ( gamepadOptions.usbDescOverride == true ) {
+    // Check for HID-specific overrides first, fall back to legacy shared settings
+    bool useOverride = gamepadOptions.hidDescOverride;
+    if ( useOverride == true ) {
         switch(index) {
             case 1:
-                value = gamepadOptions.usbDescManufacturer;
+                value = gamepadOptions.hidDescManufacturer;
                 break;
             case 2:
-                value = gamepadOptions.usbDescProduct;
+                value = gamepadOptions.hidDescProduct;
                 break;
             case 3:
-                value = gamepadOptions.usbDescVersion;
+                value = gamepadOptions.hidDescVersion;
             default:
                 value = (char *)hid_string_descriptors[index];
                 break;
@@ -159,13 +161,15 @@ const uint16_t * HIDDriver::get_descriptor_string_cb(uint8_t index, uint16_t lan
 }
 
 const uint8_t * HIDDriver::get_descriptor_device_cb() {
-    // Check for override settings
+    // Check for override settings - use HID-specific overrides if available
     GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();
-    if ( gamepadOptions.usbOverrideID == true ) {
+    // Check for HID-specific overrides first, fall back to legacy shared settings
+    bool useOverride = gamepadOptions.hidOverrideID;
+    if ( useOverride == true ) {
         static uint8_t modified_device_descriptor[18];
         memcpy(modified_device_descriptor, hid_device_descriptor, sizeof(hid_device_descriptor));
-        memcpy(&modified_device_descriptor[8], (uint8_t*)&gamepadOptions.usbVendorID, sizeof(uint16_t)); // Vendor ID
-        memcpy(&modified_device_descriptor[10], (uint8_t*)&gamepadOptions.usbProductID, sizeof(uint16_t)); // Product ID
+        memcpy(&modified_device_descriptor[8], (uint8_t*)&gamepadOptions.hidVendorID, sizeof(uint16_t)); // Vendor ID
+        memcpy(&modified_device_descriptor[10], (uint8_t*)&gamepadOptions.hidProductID, sizeof(uint16_t)); // Product ID
         return (const uint8_t*)modified_device_descriptor;
     }
 

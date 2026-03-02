@@ -488,18 +488,20 @@ bool XInputDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_co
 
 const uint16_t * XInputDriver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
     char *value;
-    // Check for override settings
+    // Check for override settings - use XInput-specific overrides if available
     GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();
-    if ( gamepadOptions.usbDescOverride == true ) {
+    // Check for XInput-specific overrides first, fall back to legacy shared settings
+    bool useOverride = gamepadOptions.xinputDescOverride;
+    if ( useOverride == true ) {
         switch(index) {
             case 1:
-                value = gamepadOptions.usbDescManufacturer;
+                value = gamepadOptions.xinputDescManufacturer;
                 break;
             case 2:
-                value = gamepadOptions.usbDescProduct;
+                value = gamepadOptions.xinputDescProduct;
                 break;
             case 3:
-                value = gamepadOptions.usbDescVersion;
+                value = gamepadOptions.xinputDescVersion;
             default:
                 value = (char *)xinput_get_string_descriptor(index);
                 break;
@@ -511,13 +513,15 @@ const uint16_t * XInputDriver::get_descriptor_string_cb(uint8_t index, uint16_t 
 }
 
 const uint8_t * XInputDriver::get_descriptor_device_cb() {
-    // Check for override settings
+    // Check for override settings - use XInput-specific overrides if available
     GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();
-    if ( gamepadOptions.usbOverrideID == true ) {
+    // Check for XInput-specific overrides first, fall back to legacy shared settings
+    bool useOverride = gamepadOptions.xinputOverrideID;
+    if ( useOverride == true ) {
         static uint8_t modified_device_descriptor[18];
         memcpy(modified_device_descriptor, xinput_device_descriptor, sizeof(xinput_device_descriptor));
-        memcpy(&modified_device_descriptor[8], (uint8_t*)&gamepadOptions.usbVendorID, sizeof(uint16_t)); // Vendor ID
-        memcpy(&modified_device_descriptor[10], (uint8_t*)&gamepadOptions.usbProductID, sizeof(uint16_t)); // Product ID
+        memcpy(&modified_device_descriptor[8], (uint8_t*)&gamepadOptions.xinputVendorID, sizeof(uint16_t)); // Vendor ID
+        memcpy(&modified_device_descriptor[10], (uint8_t*)&gamepadOptions.xinputProductID, sizeof(uint16_t)); // Product ID
         return (const uint8_t*)modified_device_descriptor;
     }
     return xinput_device_descriptor;
