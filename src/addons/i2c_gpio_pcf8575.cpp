@@ -62,7 +62,7 @@ void PCF8575Addon::preprocess() {
 	  // -------------------------------------
 
        // --- 1. 全ポートの状態を一括取得 (ループの外で1回だけ行う) ---
-    uint16_t allPins = pcf->read(); 
+    uint16_t allPins = pcf->receive(); 
 
     for (std::map<uint8_t, GpioMappingInfo>::iterator pin = pinRef.begin(); pin != pinRef.end(); ++pin) {
         if (pin->second.direction == GpioDirection::GPIO_DIRECTION_INPUT) {
