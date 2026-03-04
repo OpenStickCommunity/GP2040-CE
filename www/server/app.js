@@ -216,13 +216,6 @@ app.get('/api/getGamepadOptions', (req, res) => {
 			buttonsMask: 0,
 			action: 0,
 		},
-		"useGpioInputModeSelect": false,
-		"gpioInputModeMappings": [
-			{
-				"pin": 10,
-				"inputMode": 1
-			}
-		]
 	});
 });
 
@@ -889,6 +882,14 @@ app.post('/api/getHETriggerCalibration', (req, res) => {
 	});
 });
 
+app.get('/api/getBootModeMappings', (req, res) => {
+	return res.send({
+		webConfigPinMask: 1,
+		usbModePinMask: 2,
+		bootModeMappings: [],
+	});
+});
+
 app.post('/api/*', (req, res) => {
 	console.log(req.body);
 	return res.send(req.body);
@@ -897,3 +898,5 @@ app.post('/api/*', (req, res) => {
 app.listen(port, () => {
 	console.log(`Dev app listening at http://localhost:${port}`);
 });
+
+
