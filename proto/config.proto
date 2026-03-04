@@ -4,9 +4,16 @@ import "nanopb.proto";
 import "enums.proto";
 
 message BootModeMapping {
-    optional int32 pin = 1;
+    optional int32 pinMask = 1;
     optional InputMode inputMode = 2;
     optional int32 profileIndex = 3;
+}
+
+message BootModeOptions {
+    optional bool enabled = 1;
+    optional int32 webConfigPinMask = 2;
+    optional int32 usbModePinMask = 3;
+    repeated BootModeMapping bootModeMappings = 4 [(nanopb).max_count = 8];
 }
 
 message GamepadOptions
