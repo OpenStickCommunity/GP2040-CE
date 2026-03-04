@@ -1,106 +1,149 @@
-import { create } from "zustand";
-import { INPUT_BOOT_MODE, InputBootModeValues } from "../Data/InputBootModes";
-import WebApi from "src/Services/WebApi";
+import { create } from 'zustand';
+import { INPUT_MODE_OPTIONS } from '../Data/InputBootModes';
+import WebApi from '../Services/WebApi';
+import { InputMode } from '@proto/enums';
+
+// Should this come from config somewhere?
+export const NUM_PINS = 30;
 
 type BootModeMapping = {
-    gpioPin: number,
-    inputMode?: InputBootModeValues;
-    defaultProfileIndex?: number;
+	pins: Set<number>;
+	inputMode?: InputMode;
+	profileIndex?: number;
 };
 
 type State = {
-    bootModes: BootModeMapping[];
-    loadingBootModes: boolean;
+	webConfigPins: Set<number>;
+	usbModePins: Set<number>;
+	bootModes: BootModeMapping[];
+	loadingBootModes: boolean;
 };
 
 type Actions = {
-    addMapping: () => void;
-    removeMapping: (bootModeIndex: number) => void;
-    fetchMappings: () => void;
-    saveMappings: () => Promise<object>;
-    setPin: (bootModeIndex: number, gpioPin: number) => void;
-    setInputMode: (bootModeIndex: number, inputMode: InputBootModeValues) => void;
-    setDefaultProfileIndex: (bootModeIndex: number, defaultProfileIndex?: number) => void;
-
+	addBootMode: () => void;
+	removeBootMode: (bootModeIndex: number) => void;
+	fetchBootModes: () => void;
+	saveBootModes: () => Promise<object>;
+	addWebConfigPin: (gpioPin: number) => void;
+	removeWebConfigPin: (gpioPin: number) => void;
+	addUsbModePin: (gpioPin: number) => void;
+	removeUsbModePin: (gpioPin: number) => void;
+	setPin: (bootModeIndex: number, gpioPin: number) => void;
+	clearPin: (bootModeIndex: number, gpioPinIndex: number) => void;
+	setInputMode: (bootModeIndex: number, inputMode?: InputMode) => void;
+	setProfileIndex: (bootModeIndex: number, defaultProfileIndex?: number) => void;
 };
+
+function mask_to_set(pins: number) {
+	let s = new Set<number>();
+	for (let i = 0; i < NUM_PINS; i++) {
+		if ((1 << i) & pins) {
+			s.add(i);
+		}
+	}
+	return s;
+}
 
 const INITIAL_STATE = {
-    bootModes: [],
-    loadingBootModes: false,
+	webConfigPins: new Set<number>(),
+	usbModePins: new Set<number>(),
+	bootModes: [],
+	loadingBootModes: false,
 };
 
-const useBootModesStore = create<State & Actions>()((set, get) => ({
-    ...INITIAL_STATE,
+export const useBootModesStore = create<State & Actions>()((set, get) => ({
+	...INITIAL_STATE,
 
-    addMapping: () => {
-        set((state) => ({
-            ...state,
-            bootModes: [
-                ...state.bootModes,
-                {
-                    gpioPin: state.bootModes.reduce((max, m) => Math.max(max, m.gpioPin) + 1, 0),
-                    inputMode: undefined,
-                    defaultProfileIndex: undefined
-                }
-            ]
-        }))
-    },
+	addBootMode: () => {
+		set((state) => ({
+			...state,
+			bootModes: [
+				...state.bootModes,
+				{
+					pins: new Set(),
+					inputMode: undefined,
+					profileIndex: undefined,
+				},
+			],
+		}));
+	},
 
-    removeMapping: (bootModeIndex: number) => {
-        // TODO how do you validate stuff like this?
-        set((state) => ({
-            ...state,
-            bootModes: state.bootModes.splice(bootModeIndex, 1)
-        }));
-    },
+	removeBootMode: (bootModeIndex: number) => {
+		set((state) => ({
+			...state,
+			bootModes: [
+				...state.bootModes.slice(0, bootModeIndex),
+				...state.bootModes.slice(bootModeIndex + 1),
+			],
+		}));
+	},
 
-    fetchMappings: async () => {
-        set({ loadingBootModes: true });
-        const bootModeMappings = await WebApi.getBootModeMappings();
+	fetchBootModes: async () => {
+		set({ loadingBootModes: true });
+		const { webConfigPinMask, usbModePinMask, bootModeMappings } =
+			await WebApi.getBootModeMappings();
 
-        set((state) => ({
-            ...state,
-            loadingBootModes: false,
-            bootModes: bootModeMappings.map((m: any) => ({
-                ...m,
-                inputMode: m.inputMode == -1
-                    ? undefined : m.inputMode,
-                defaultProfileIndex: m.defaultProfileIndex == -1
-                    ? undefined : m.defaultProfileIndex,
-            })),
-        }));
-    },
+		set((state) => ({
+			...state,
+			loadingBootModes: false,
+			webConfigPins: mask_to_set(webConfigPinMask),
+			usbModePins: mask_to_set(usbModePinMask),
+			bootModes: bootModeMappings.map((m: any) => ({
+				pins: mask_to_set(m.pinMask),
+				inputMode: m.inputMode == -1 ? undefined : m.inputMode,
+				profileIndex: m.defaultProfileIndex == -1 ? undefined : m.defaultProfileIndex,
+			})),
+		}));
+	},
 
-    saveMappings: async () => {
-        const bootModes = get().bootModes;
-        return WebApi.setBootModeMappings(bootModes.map((m) => ({
-            ...m,
-            inputMode: m.inputMode ?? -1,
-            defaultProfileIndex: m.defaultProfileIndex ?? -1,
-        })));
-    },
+	saveBootModes: async () => {
+		const bootModes = get().bootModes;
+		return WebApi.setBootModeMappings(
+			bootModes.map((m) => ({
+				...m,
+				inputMode: m.inputMode ?? -1,
+				defaultProfileIndex: m.profileIndex ?? -1,
+			})),
+		);
+	},
 
-    setPin: (bootModeIndex: number, gpioPin: number) => {
-        set((state) => {
-            let bootModes = state.bootModes;
-            bootModes[bootModeIndex].gpioPin = gpioPin;
-            return { ...state, bootModes: bootModes };
-        });
-    },
+	addWebConfigPin: (gpioPin: number) => {},
 
-    setInputMode: (bootModeIndex: number, inputMode: InputBootModeValues) => { 
-        set((state) => {
-            let bootModes = state.bootModes;
-            bootModes[bootModeIndex].inputMode = inputMode;
-            return { ...state, bootModes: bootModes };
-        });
-    },
+	removeWebConfigPin: (gpioPin: number) => {},
 
-    setDefaultProfileIndex: (bootModeIndex: number, defaultProfileIndex?: number) => { 
-        set((state) => {
-            let bootModes = state.bootModes;
-            bootModes[bootModeIndex].defaultProfileIndex = defaultProfileIndex;
-            return { ...state, bootModes: bootModes };
-        });
-    },
+	addUsbModePin: (gpioPin: number) => {},
+
+	removeUsbModePin: (gpioPin: number) => {},
+
+	setPin: (bootModeIndex: number, gpioPin: number) => {
+		set((state) => {
+			let bootModes = state.bootModes;
+			bootModes[bootModeIndex].pins.add(gpioPin);
+			return { ...state, bootModes: bootModes };
+		});
+	},
+
+	clearPin: (bootModeIndex: number, gpioPin: number) => {
+		set((state) => {
+			let bootModes = state.bootModes;
+			bootModes[bootModeIndex].pins.delete(gpioPin);
+			return { ...state, bootModes: bootModes };
+		});
+	},
+
+	setInputMode: (bootModeIndex: number, inputMode?: InputMode) => {
+		set((state) => {
+			let bootModes = state.bootModes;
+			bootModes[bootModeIndex].inputMode = inputMode;
+			return { ...state, bootModes: bootModes };
+		});
+	},
+
+	setProfileIndex: (bootModeIndex: number, defaultProfileIndex?: number) => {
+		set((state) => {
+			let bootModes = state.bootModes;
+			bootModes[bootModeIndex].profileIndex = defaultProfileIndex;
+			return { ...state, bootModes: bootModes };
+		});
+	},
 }));
