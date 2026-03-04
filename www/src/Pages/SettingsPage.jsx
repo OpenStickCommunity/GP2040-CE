@@ -21,6 +21,8 @@ import { hexToInt } from '../Services/Utilities';
 import { InputModeDeviceType, PS4ControllerType } from '@proto/enums';
 
 import './SettingsPage.scss';
+import BootModeMappingPage from '../Components/BootModeMapping';
+import { INPUT_MODE_OPTIONS as INPUT_MODES } from '../Data/InputBootModes'
 
 const SHA256 = (ascii) => {
 	function rightRotate(value, amount) {
@@ -124,84 +126,6 @@ const SHA256 = (ascii) => {
 	}
 	return result;
 };
-
-const INPUT_MODES = [
-	{
-		labelKey: 'input-mode-options.xinput',
-		value: 0,
-		group: 'primary',
-		optional: ['usb'],
-		authentication: ['none', 'usb'],
-		deviceTypes: [
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_GAMEPAD,
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_WHEEL,
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_GUITAR,
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_DRUM,
-		],
-	},
-	{
-		labelKey: 'input-mode-options.xbone',
-		value: 5,
-		group: 'primary',
-		required: ['usb'],
-	},
-	{
-		labelKey: 'input-mode-options.xboxoriginal', 
-		value: 12, 
-		group: 'primary',
-	},
-	{ 
-		labelKey: 'input-mode-options.ps3', 
-		value: 2, 
-		group: 'primary',
-		deviceTypes: [
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_GAMEPAD,
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_GAMEPAD_ALT,
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_WHEEL,
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_GUITAR,
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_DRUM,
-		],
-	},
-	{
-		labelKey: 'input-mode-options.ps4',
-		value: 4,
-		group: 'primary',
-		optional: ['usb'],
-		authentication: ['none', 'key', 'usb'],
-		deviceTypes: [
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_GAMEPAD,
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_WHEEL,
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_HOTAS,
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_GUITAR,
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_DRUM,
-		],
-	},
-	{
-		labelKey: 'input-mode-options.ps5',
-		value: 13,
-		group: 'primary',
-		optional: ['usb'],
-		authentication: ['none', 'usb'],
-		deviceTypes: [
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_GAMEPAD,
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_ARCADE_STICK,
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_WHEEL,
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_HOTAS,
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_GUITAR,
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_DRUM,
-		],
-	},
-	{ labelKey: 'input-mode-options.nintendo-switch', value: 1, group: 'primary', },
-	{ labelKey: 'input-mode-options.nintendo-switch-pro', value: 15, group: 'primary' },
-	{ labelKey: 'input-mode-options.keyboard', value: 3, group: 'primary' },
-	{ labelKey: 'input-mode-options.generic', value: 14, group: 'primary' },
-	{ labelKey: 'input-mode-options.mdmini', value: 6, group: 'mini' },
-	{ labelKey: 'input-mode-options.neogeo', value: 7, group: 'mini' },
-	{ labelKey: 'input-mode-options.pcemini', value: 8, group: 'mini' },
-	{ labelKey: 'input-mode-options.egret', value: 9, group: 'mini' },
-	{ labelKey: 'input-mode-options.astro', value: 10, group: 'mini' },
-	{ labelKey: 'input-mode-options.psclassic', value: 11, group: 'mini' },
-];
 
 const INPUT_BOOT_MODES = [
 	{ labelKey: 'input-mode-options.none', value: -1, group: 'primary' },
@@ -745,7 +669,7 @@ export default function SettingsPage() {
 			options = []
 		}
 
-		return (mode && mode.deviceTypes?.length > 1 ? 
+		return (mode && mode.deviceTypes?.length > 1 ?
 			<Row className="mb-3">
 				<Col sm={4}>
 					<Form.Label>{t('SettingsPage:input-mode-device-type-label')}</Form.Label>
@@ -1737,64 +1661,7 @@ export default function SettingsPage() {
 												<Section
 													title={t('SettingsPage:boot-input-mode-label')}
 												>
-													<Row sm={3}>
-														{INPUT_MODES_BINDS.map((mode, index) => (
-															<Form.Group
-																className="mb-3 col-sm-6"
-																key={`input-mode-${index}`}
-															>
-																<Form.Label>
-																	{mode.value in currentButtonLabels
-																		? currentButtonLabels[mode.value]
-																		: mode.value}
-																</Form.Label>
-																<Col sm={10}>
-																	<Form.Select
-																		name={`inputMode${mode.value}`}
-																		className="form-select-sm"
-																		value={values[`inputMode${mode.value}`]}
-																		onChange={handleChange}
-																		isInvalid={errors[`inputMode${mode.value}`]}
-																	>
-																		{translatedInputModeGroups.map((o, i) => (
-																			<optgroup
-																				label={o.label}
-																				key={`optgroup-${o.label}-${i}`}
-																			>
-																				{translatedInputBootModes
-																					.filter(
-																						({ group }) => group == o.group,
-																					)
-																					.map((o, i) => (
-																						<option
-																							key={`button-inputMode-${mode.value
-																								.toString()
-																								.toLowerCase()}-option-${i}`}
-																							value={o.value}
-																							disabled={o.disabled}
-																						>
-																							{o.label}
-																							{o.disabled && o.reason != ''
-																								? ' (' + o.reason + ')'
-																								: ''}
-																						</option>
-																					))}
-																			</optgroup>
-																		))}
-																	</Form.Select>
-																	<Form.Control.Feedback type="invalid">
-																		{errors[`inputMode${mode.value}`]}
-																	</Form.Control.Feedback>
-																</Col>
-															</Form.Group>
-														))}
-													</Row>
-													<Button type="submit">
-														{t('Common:button-save-label')}
-													</Button>
-													{saveMessage ? (
-														<span className="alert">{saveMessage}</span>
-													) : null}
+													<BootModeMappingPage/>
 												</Section>
 											</Tab.Pane>
 											<Tab.Pane eventKey="hotkey">
