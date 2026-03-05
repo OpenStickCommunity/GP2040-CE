@@ -92,7 +92,7 @@ type ProfileOption = {
 };
 
 function ProfileSelect() {
-	const profiles = useProfilesStore((state) =>
+	const profiles: ProfileOption[] = useProfilesStore((state) =>
 		state.profiles.map((p, i) => ({
 			label: p.profileLabel,
 			value: i,
@@ -115,6 +115,7 @@ function ProfileSelect() {
 			getOptionLabel={getLabel}
 			isOptionDisabled={(option) => option.disabled}
 			onChange={onChange}
+			placeholder="Last Used"
 		/>
 	);
 }
@@ -135,15 +136,13 @@ function BootModeRow({
 			<Col sm={3}>{col0}</Col>
 			<Col>{col1}</Col>
 			<Col sm={3}>{col2}</Col>
-			<Col sm={1}>{col3}</Col>
+			<Col md="auto">{col3}</Col>
 		</Row>
 	);
 }
 
 export default function BootModeMappingPage() {
-	const fetchBootModes = useBootModesStore((state) => state.fetchBootModes);
 	const loadingBootModes = useBootModesStore((state) => state.loadingBootModes);
-	const fetchProfiles = useProfilesStore((state) => state.fetchProfiles);
 	const loadingProfiles = useProfilesStore((state) => state.loadingProfiles);
 
 	const addBootMode = useBootModesStore((state) => state.addBootMode);
@@ -154,15 +153,8 @@ export default function BootModeMappingPage() {
 	const removeWebConfigPin = useBootModesStore((state) => state.removeWebConfigPin);
 	const addUsbModePin = useBootModesStore((state) => state.addUsbModePin);
 	const removeUsbModePin = useBootModesStore((state) => state.removeUsbModePin);
-	const setPin = useBootModesStore((state) => state.setPin);
-	const clearPin = useBootModesStore((state) => state.clearPin);
-
-	useEffect(() => {
-		const fetch = async () => {
-			await Promise.all([fetchBootModes(), fetchProfiles()]);
-		};
-		fetch();
-	}, []);
+	const addPin = useBootModesStore((state) => state.addPin);
+	const clearPin = useBootModesStore((state) => state.removePin);
 
 	return (
 		<div id="BootModeSelect">
@@ -171,76 +163,59 @@ export default function BootModeMappingPage() {
 					<span className="spinner-border" />
 				</div>
 			) : (
-				<Form>
-					<Container>
-						<BootModeRow
-							col0={<Form.Text className="muted ms-2">MODE</Form.Text>}
-							col1={<Form.Text className="muted ms-2">GPIO PINS</Form.Text>}
-							col2={<Form.Text className="muted ms-2">PROFILE</Form.Text>}
-							col3={undefined}
-						/>
-						<hr />
-						<BootModeRow
-							col0={<label className="ms-2">Web-Config</label>}
-							col1={
-								<PinSelect onSelect={addWebConfigPin} onRemove={removeWebConfigPin} />
-							}
-							col2={undefined}
-							col3={undefined}
-						/>
-						<BootModeRow
-							col0={<label className="ms-2">USB (BOOTSEL)</label>}
-							col1={<PinSelect onSelect={addUsbModePin} onRemove={removeUsbModePin} />}
-							col2={undefined}
-							col3={undefined}
-						/>
-						<hr />
-						{bootModes.map((_, index) => (
-							<div key={`boot-mode-${index}`}>
-								<BootModeRow
-									col0={<BootModeSelect mappingIndex={index} />}
-									col1={
-										<PinSelect
-											onSelect={(pin: number) => setPin(index, pin)}
-											onRemove={(pin: number) => clearPin(index, pin)}
-										/>
-									}
-									col2={<ProfileSelect />}
-									col3={
-										<Button
-											onClick={() => {
-												removeBootMode(index);
-											}}
-										>
-											{'✕'}
-										</Button>
-									}
-								/>
-							</div>
-						))}
-						{bootModes.length < 8 && (
+				<Container fluid className="p-0">
+					<BootModeRow
+						col0={<Form.Text className="muted ms-2">MODE</Form.Text>}
+						col1={<Form.Text className="muted ms-2">GPIO PINS</Form.Text>}
+						col2={<Form.Text className="muted ms-2">PROFILE</Form.Text>}
+						col3={<Button className="invisible">{'✕'}</Button>}
+					/>
+					<hr />
+					<BootModeRow
+						col0={<label className="ms-2">Web-Config</label>}
+						col1={<PinSelect onSelect={addWebConfigPin} onRemove={removeWebConfigPin} />}
+						col2={<CustomSelect isDisabled={true} placeholder="N/A" />}
+						col3={<Button disabled={true}>{'✕'}</Button>}
+					/>
+					<BootModeRow
+						col0={<label className="ms-2">USB (BOOTSEL)</label>}
+						col1={<PinSelect onSelect={addUsbModePin} onRemove={removeUsbModePin} />}
+						col2={<CustomSelect isDisabled={true} placeholder="N/A" />}
+						col3={<Button disabled={true}>{'✕'}</Button>}
+					/>
+					{bootModes.map((_, index) => (
+						<div key={`boot-mode-${index}`}>
 							<BootModeRow
-								col0={undefined}
+								col0={<BootModeSelect mappingIndex={index} />}
 								col1={
-									<div className="d-flex flex-row gap-2 justify-content-end">
-										<div className="d-flex flex-grow-1 justify-content-center">
-											<Button className="mt-1" variant="outline" onClick={addBootMode}>
-												+ Add Mode
-											</Button>
-										</div>
-										{/* Here purely for alignment purposes */}
-										<div className="invisible">
-											<Button>{'🎮'}</Button>
-										</div>
-									</div>
+									<PinSelect
+										onSelect={(pin: number) => addPin(index, pin)}
+										onRemove={(pin: number) => clearPin(index, pin)}
+									/>
 								}
-								col2={undefined}
-								col3={undefined}
+								col2={<ProfileSelect />}
+								col3={
+									<Button
+										onClick={() => {
+											removeBootMode(index);
+										}}
+									>
+										{'✕'}
+									</Button>
+								}
 							/>
-						)}
-						<Button>Save</Button>
-					</Container>
-				</Form>
+						</div>
+					))}
+					{bootModes.length < 8 && (
+						<div className="d-flex flex-row gap-2 justify-content-end">
+							<div className="d-flex flex-grow-1 justify-content-center">
+								<Button className="mt-1" variant="outline" onClick={addBootMode}>
+									+ Add Mode
+								</Button>
+							</div>
+						</div>
+					)}
+				</Container>
 			)}
 		</div>
 	);
