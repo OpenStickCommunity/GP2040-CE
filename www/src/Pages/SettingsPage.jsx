@@ -23,6 +23,7 @@ import { InputModeDeviceType, PS4ControllerType } from '@proto/enums';
 import './SettingsPage.scss';
 import BootModeMappingPage from '../Components/BootModeMapping';
 import { INPUT_MODE_OPTIONS as INPUT_MODES } from '../Data/InputBootModes'
+import { useBootModesStore } from '../Store/useBootModesStore';
 
 const SHA256 = (ascii) => {
 	function rightRotate(value, amount) {
@@ -495,9 +496,14 @@ export default function SettingsPage() {
 	const fetchProfiles = useProfilesStore((state) => state.fetchProfiles);
 	const profiles = useProfilesStore((state) => state.profiles);
 
+	const fetchBootModes = useBootModesStore((state) => state.fetchBootModeOptions);
+	const newBootModeMappingEnabled = useBootModesStore((state) => state.enabled);
+	const setBootModeMappingEnabled = useBootModesStore((state) => state.setEnabled);
+
 	useEffect(() => {
 		fetchProfiles();
 		updatePeripherals();
+		fetchBootModes();
 	}, []);
 
 	const [saveMessage, setSaveMessage] = useState('');
@@ -1658,10 +1664,81 @@ export default function SettingsPage() {
 												</Section>
 											</Tab.Pane>
 											<Tab.Pane eventKey="bootmode">
+												{}
 												<Section
 													title={t('SettingsPage:boot-input-mode-label')}
 												>
-													<BootModeMappingPage/>
+													<Form.Check
+														label="Use GPIO Pins"
+														type="switch"
+														className="text my-auto mb-4"
+														checked={newBootModeMappingEnabled}
+														onChange={(e) => {
+															setBootModeMappingEnabled(e.target.checked);
+														}}
+													/>											
+													{newBootModeMappingEnabled ? (<BootModeMappingPage/>) : (
+														<div>
+															<Row sm={3}>
+																{INPUT_MODES_BINDS.map((mode, index) => (
+																	<Form.Group
+																		className="mb-3 col-sm-6"
+																		key={`input-mode-${index}`}
+																	>
+																		<Form.Label>
+																			{mode.value in currentButtonLabels
+																				? currentButtonLabels[mode.value]
+																				: mode.value}
+																		</Form.Label>
+																		<Col sm={10}>
+																			<Form.Select
+																				name={`inputMode${mode.value}`}
+																				className="form-select-sm"
+																				value={values[`inputMode${mode.value}`]}
+																				onChange={handleChange}
+																				isInvalid={errors[`inputMode${mode.value}`]}
+																			>
+																				{translatedInputModeGroups.map((o, i) => (
+																					<optgroup
+																						label={o.label}
+																						key={`optgroup-${o.label}-${i}`}
+																					>
+																						{translatedInputBootModes
+																							.filter(
+																								({ group }) => group == o.group,
+																							)
+																							.map((o, i) => (
+																								<option
+																									key={`button-inputMode-${mode.value
+																										.toString()
+																										.toLowerCase()}-option-${i}`}
+																									value={o.value}
+																									disabled={o.disabled}
+																								>
+																									{o.label}
+																									{o.disabled && o.reason != ''
+																										? ' (' + o.reason + ')'
+																										: ''}
+																								</option>
+																							))}
+																					</optgroup>
+																				))}
+																			</Form.Select>
+																			<Form.Control.Feedback type="invalid">
+																				{errors[`inputMode${mode.value}`]}
+																			</Form.Control.Feedback>
+																		</Col>
+																	</Form.Group>
+																))}
+															</Row>
+															<Button type="submit">
+																{t('Common:button-save-label')}
+															</Button>
+														</div>
+													)}
+													{saveMessage ? (
+														<span className="alert">{saveMessage}</span>
+													) : null}
 												</Section>
 											</Tab.Pane>
 											<Tab.Pane eventKey="hotkey">
