@@ -25,17 +25,15 @@ type State = {
 	enabled: boolean;
 };
 
+export type PinsKey = 'webConfigPins' | 'usbModePins' | number;
+
 type Actions = {
 	addBootMode: () => void;
 	removeBootMode: (bootModeIndex: number) => void;
 	fetchBootModeOptions: () => void;
 	saveBootModeOptions: () => Promise<object>;
-	addWebConfigPin: (gpioPin: number) => void;
-	removeWebConfigPin: (gpioPin: number) => void;
-	addUsbModePin: (gpioPin: number) => void;
-	removeUsbModePin: (gpioPin: number) => void;
-	addPin: (bootModeIndex: number, gpioPin: number) => void;
-	removePin: (bootModeIndex: number, gpioPinIndex: number) => void;
+	addPin: (key: PinsKey, gpioPin: number) => void;
+	removePin: (key: PinsKey, gpioPinIndex: number) => void;
 	setInputMode: (bootModeIndex: number, inputMode?: InputMode) => void;
 	setProfileIndex: (bootModeIndex: number, defaultProfileIndex?: number) => void;
 	setEnabled: (value: boolean) => void;
@@ -118,67 +116,47 @@ export const useBootModesStore = create<State & Actions>()((set, get) => ({
 		);
 	},
 
-	addWebConfigPin: (gpioPin: number) => {
+	addPin: (key: PinsKey, pin: number) => {
 		set((state) => {
-			let pins = state.webConfigPins;
-			pins.add(gpioPin);
-			return { ...state, webConfigPins: pins };
+			if (key == 'usbModePins' || key == 'webConfigPins') {
+				let newPins = new Set([...state[key], pin]);
+				return { ...state, [key]: newPins };
+			}
+			let newModes = [...state.bootModes];
+			let newPins = new Set([...newModes[key].pins, pin]);
+			newModes[key].pins = newPins;
+			return { ...state, bootModes: newModes };
 		});
 	},
 
-	removeWebConfigPin: (gpioPin: number) => {
+	removePin: (key: PinsKey, pin: number) => {
 		set((state) => {
-			let pins = state.webConfigPins;
-			pins.delete(gpioPin);
-			return { ...state, webConfigPins: pins };
-		});
-	},
-
-	addUsbModePin: (gpioPin: number) => {
-		set((state) => {
-			let pins = state.usbModePins;
-			pins.add(gpioPin);
-			return { ...state, usbModePins: pins };
-		});
-	},
-
-	removeUsbModePin: (gpioPin: number) => {
-		set((state) => {
-			let pins = state.usbModePins;
-			pins.delete(gpioPin);
-			return { ...state, usbModePins: pins };
-		});
-	},
-
-	addPin: (bootModeIndex: number, gpioPin: number) => {
-		set((state) => {
-			let bootModes = state.bootModes;
-			bootModes[bootModeIndex].pins.add(gpioPin);
-			return { ...state, bootModes: bootModes };
-		});
-	},
-
-	removePin: (bootModeIndex: number, gpioPin: number) => {
-		set((state) => {
-			let bootModes = state.bootModes;
-			bootModes[bootModeIndex].pins.delete(gpioPin);
-			return { ...state, bootModes: bootModes };
+			if (key == 'usbModePins' || key == 'webConfigPins') {
+				let newPins = new Set([...state[key], pin]);
+				newPins.delete(pin);
+				return { ...state, key: newPins };
+			}
+			let newModes = [...state.bootModes];
+			let newPins = new Set([...newModes[key].pins]);
+			newPins.delete(pin);
+			newModes[key].pins = newPins;
+			return { ...state, bootModes: newModes };
 		});
 	},
 
 	setInputMode: (bootModeIndex: number, inputMode?: InputMode) => {
 		set((state) => {
-			let bootModes = state.bootModes;
-			bootModes[bootModeIndex].inputMode = inputMode;
-			return { ...state, bootModes: bootModes };
+			let newModes = [...state.bootModes];
+			newModes[bootModeIndex].inputMode = inputMode;
+			return { ...state, bootModes: newModes };
 		});
 	},
 
 	setProfileIndex: (bootModeIndex: number, defaultProfileIndex?: number) => {
 		set((state) => {
-			let bootModes = state.bootModes;
-			bootModes[bootModeIndex].profileIndex = defaultProfileIndex;
-			return { ...state, bootModes: bootModes };
+			let newModes = [...state.bootModes];
+			newModes[bootModeIndex].profileIndex = defaultProfileIndex;
+			return { ...state, bootModes: newModes };
 		});
 	},
 
