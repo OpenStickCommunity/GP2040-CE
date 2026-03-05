@@ -183,8 +183,8 @@ export default function BootModeMappingPage() {
 						col2={<CustomSelect isDisabled={true} placeholder="N/A" />}
 						col3={<Button disabled={true}>{'✕'}</Button>}
 					/>
-					{bootModes.map((_, index) => (
-						<div key={`boot-mode-${index}`}>
+					{bootModes.map((mode, index) => (
+						<div key={`boot-mode-${mode.key}`}>
 							<BootModeRow
 								col0={<BootModeSelect mappingIndex={index} />}
 								col1={

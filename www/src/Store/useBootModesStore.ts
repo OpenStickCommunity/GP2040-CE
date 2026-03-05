@@ -2,36 +2,43 @@ import { create } from 'zustand';
 import { INPUT_MODE_OPTIONS } from '../Data/InputBootModes';
 import WebApi from '../Services/WebApi';
 import { InputMode } from '@proto/enums';
+import { nanoid } from 'nanoid';
 
 // Should this come from config somewhere?
 export const NUM_PINS = 30;
 
 type BootModeMapping = {
+	key: string;
 	pins: Set<number>;
 	inputMode?: InputMode;
 	profileIndex?: number;
 };
 
 type State = {
+	// Required mappings. Profile doesn't apply
 	webConfigPins: Set<number>;
 	usbModePins: Set<number>;
+	// Up to 8 additional mappings
 	bootModes: BootModeMapping[];
 	loadingBootModes: boolean;
+	// If false, use old method of mapping
+	enabled: boolean;
 };
 
 type Actions = {
 	addBootMode: () => void;
 	removeBootMode: (bootModeIndex: number) => void;
-	fetchBootModes: () => void;
-	saveBootModes: () => Promise<object>;
+	fetchBootModeOptions: () => void;
+	saveBootModeOptions: () => Promise<object>;
 	addWebConfigPin: (gpioPin: number) => void;
 	removeWebConfigPin: (gpioPin: number) => void;
 	addUsbModePin: (gpioPin: number) => void;
 	removeUsbModePin: (gpioPin: number) => void;
-	setPin: (bootModeIndex: number, gpioPin: number) => void;
-	clearPin: (bootModeIndex: number, gpioPinIndex: number) => void;
+	addPin: (bootModeIndex: number, gpioPin: number) => void;
+	removePin: (bootModeIndex: number, gpioPinIndex: number) => void;
 	setInputMode: (bootModeIndex: number, inputMode?: InputMode) => void;
 	setProfileIndex: (bootModeIndex: number, defaultProfileIndex?: number) => void;
+	setEnabled: (value: boolean) => void;
 };
 
 function mask_to_set(pins: number) {
@@ -49,6 +56,7 @@ const INITIAL_STATE = {
 	usbModePins: new Set<number>(),
 	bootModes: [],
 	loadingBootModes: false,
+	enabled: false,
 };
 
 export const useBootModesStore = create<State & Actions>()((set, get) => ({
@@ -60,6 +68,7 @@ export const useBootModesStore = create<State & Actions>()((set, get) => ({
 			bootModes: [
 				...state.bootModes,
 				{
+					key: nanoid(),
 					pins: new Set(),
 					inputMode: undefined,
 					profileIndex: undefined,
@@ -78,10 +87,12 @@ export const useBootModesStore = create<State & Actions>()((set, get) => ({
 		}));
 	},
 
-	fetchBootModes: async () => {
+	fetchBootModeOptions: async () => {
 		set({ loadingBootModes: true });
 		const { webConfigPinMask, usbModePinMask, bootModeMappings } =
 			await WebApi.getBootModeMappings();
+
+		await new Promise((resolve) => setTimeout(resolve, 500));
 
 		set((state) => ({
 			...state,
@@ -96,7 +107,7 @@ export const useBootModesStore = create<State & Actions>()((set, get) => ({
 		}));
 	},
 
-	saveBootModes: async () => {
+	saveBootModeOptions: async () => {
 		const bootModes = get().bootModes;
 		return WebApi.setBootModeMappings(
 			bootModes.map((m) => ({
@@ -107,15 +118,39 @@ export const useBootModesStore = create<State & Actions>()((set, get) => ({
 		);
 	},
 
-	addWebConfigPin: (gpioPin: number) => {},
+	addWebConfigPin: (gpioPin: number) => {
+		set((state) => {
+			let pins = state.webConfigPins;
+			pins.add(gpioPin);
+			return { ...state, webConfigPins: pins };
+		});
+	},
 
-	removeWebConfigPin: (gpioPin: number) => {},
+	removeWebConfigPin: (gpioPin: number) => {
+		set((state) => {
+			let pins = state.webConfigPins;
+			pins.delete(gpioPin);
+			return { ...state, webConfigPins: pins };
+		});
+	},
 
-	addUsbModePin: (gpioPin: number) => {},
+	addUsbModePin: (gpioPin: number) => {
+		set((state) => {
+			let pins = state.usbModePins;
+			pins.add(gpioPin);
+			return { ...state, usbModePins: pins };
+		});
+	},
 
-	removeUsbModePin: (gpioPin: number) => {},
+	removeUsbModePin: (gpioPin: number) => {
+		set((state) => {
+			let pins = state.usbModePins;
+			pins.delete(gpioPin);
+			return { ...state, usbModePins: pins };
+		});
+	},
 
-	setPin: (bootModeIndex: number, gpioPin: number) => {
+	addPin: (bootModeIndex: number, gpioPin: number) => {
 		set((state) => {
 			let bootModes = state.bootModes;
 			bootModes[bootModeIndex].pins.add(gpioPin);
@@ -123,7 +158,7 @@ export const useBootModesStore = create<State & Actions>()((set, get) => ({
 		});
 	},
 
-	clearPin: (bootModeIndex: number, gpioPin: number) => {
+	removePin: (bootModeIndex: number, gpioPin: number) => {
 		set((state) => {
 			let bootModes = state.bootModes;
 			bootModes[bootModeIndex].pins.delete(gpioPin);
@@ -145,5 +180,12 @@ export const useBootModesStore = create<State & Actions>()((set, get) => ({
 			bootModes[bootModeIndex].profileIndex = defaultProfileIndex;
 			return { ...state, bootModes: bootModes };
 		});
+	},
+
+	setEnabled: (value: boolean) => {
+		set((state) => ({
+			...state,
+			enabled: value,
+		}));
 	},
 }));
