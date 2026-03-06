@@ -57,27 +57,35 @@ void BuzzerSpeakerAddon::playIntro() {
 }
 
 void BuzzerSpeakerAddon::processBuzzer() {
-	if (currentSong == NULL) {
-		return;
-	}
+    if (currentSong == NULL) {
+        return;
+    }
 
-	uint32_t currentTimeSong = getMillis() - startedSongMils;
-	uint32_t totalTimeSong = currentSong->song.size() * currentSong->toneDuration;
-	uint16_t currentTonePosition = floor((currentTimeSong * currentSong->song.size()) / totalTimeSong);
-	Tone currentTone = currentSong->song[currentTonePosition];
+    uint32_t currentTimeSong = getMillis() - startedSongMils;
+    uint32_t songSize = currentSong->song.size();
+    uint32_t totalTimeSong = songSize * currentSong->toneDuration;
 
-	if (currentTonePosition >= currentSong->song.size()) {
-		stop();
-		return;
-	}
+    if (currentTimeSong >= totalTimeSong) {
+        stop();
+        return;
+    }
 
-	if (currentTone == PAUSE) {
-		pwm_set_enabled (buzzerPinSlice, false);
-		return;
-	}
+    uint16_t currentTonePosition = currentTimeSong / currentSong->toneDuration;
+    Tone currentTone = currentSong->song[currentTonePosition];
 
-	pwmSetFreqDuty(buzzerPinSlice, buzzerPinChannel, currentTone, 0.03 * ((float) buzzerVolume));
-	pwm_set_enabled (buzzerPinSlice, true);
+    static Tone lastTone = PAUSE; // 前の音を記憶
+
+    if (currentTone == PAUSE) {
+        pwm_set_enabled(buzzerPinSlice, false);
+    } else {
+        // 同じ音が続く場合は再設定せず鳴らし続ける（ブツブツ音防止）
+        if (currentTone != lastTone) {
+            // 音量係数を 0.15 にアップ
+            pwmSetFreqDuty(buzzerPinSlice, buzzerPinChannel, currentTone, 0.15 * ((float) buzzerVolume));
+            pwm_set_enabled(buzzerPinSlice, true);
+        }
+    }
+    lastTone = currentTone;
 }
 
 void BuzzerSpeakerAddon::play(Song *song) {

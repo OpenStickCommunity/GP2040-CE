@@ -295,22 +295,26 @@ void GP2040::run() {
 		rndis_init();
 	}
 
-	while (1) { // LOOP
+		while (1) { // LOOP
 		this->getReinitGamepad(gamepad);
 
 		memcpy(&prevState, &gamepad->state, sizeof(GamepadState));
 
-		// Debounce
+		// 1. 物理ピンの読み取り
 		debounceGpioGetAll();
-		// Read Gamepad
 		gamepad->read();
 
+		// 【修正ポイント】ここにあった checkRawState を下に移動し、
+		// 代わりに PreprocessAddons をここに持ってきます
+		addons.PreprocessAddons(); // PCF8575の入力を state に反映
+
+		// 2. アドオンの入力が反映された「後」でイベント判定を行う
 		checkRawState(prevState, gamepad->state);
 
 		// Process USB Host on Core0
 		USBHostManager::getInstance().process();
 
-		// Config Loop (Web-Config skips Core0 add-ons)
+		// Config Loop
 		if (configMode == true) {
 			inputDriver->process(gamepad);
 			rebootHotkeys.process(gamepad, configMode);
@@ -318,12 +322,10 @@ void GP2040::run() {
 			continue;
 		}
 
-		// Pre-Process add-ons for MPGS
-		addons.PreprocessAddons();
+		// 【注意】PreprocessAddons は上で呼んだので、ここは削除またはコメントアウトします
+		// addons.PreprocessAddons(); // ←ここは消す
 
-		
-
-		gamepad->process(); // process through MPGS
+		gamepad->process(); // マクロエンジン(InputMacro)の実行
 
 		
 

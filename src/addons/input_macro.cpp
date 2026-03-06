@@ -4,25 +4,11 @@
 
 #include "hardware/gpio.h"
 
+// --- 修正後 ---
 bool InputMacro::available() {
-    // Macro Button initialized by void Gamepad::setup()
-    GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
-    for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
-    {
-        switch( pinMappings[pin].action ) {
-            case GpioAction::BUTTON_PRESS_MACRO:
-            case GpioAction::BUTTON_PRESS_MACRO_1:
-            case GpioAction::BUTTON_PRESS_MACRO_2:
-            case GpioAction::BUTTON_PRESS_MACRO_3:
-            case GpioAction::BUTTON_PRESS_MACRO_4:
-            case GpioAction::BUTTON_PRESS_MACRO_5:
-            case GpioAction::BUTTON_PRESS_MACRO_6:
-                return true;
-            default:
-                break;
-        }
-    }
-    return false;
+    // 物理ピン(RP2040本体)にマクロボタンが割り当てられていなくても、
+    // PCF8575などのアドオンからマクロ機能を使えるように、常に「有効(true)」として報告する。
+    return true; 
 }
 
 void InputMacro::setup() {
@@ -93,32 +79,26 @@ void InputMacro::restart(Macro& macro) {
     macroInputHoldTime = newMacroInputDuration <= 0 ? INPUT_HOLD_US : newMacroInputDuration;
 }
 
+// src/addons/input_macro.cpp 内
+
+// 2. トリガー判定ロジックの差し替え
 void InputMacro::checkMacroPress() {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
-    Mask_t allPins = gamepad->debouncedGpio;
+    uint32_t buttons = gamepad->state.buttons;
 
-    // Go through our macro list
     pressedMacro = -1;
     for(int i = 0; i < MAX_MACRO_LIMIT; i++) {
-        if ( inputMacroOptions->macroList[i].enabled == false ) // Skip disabled macros
-            continue;
-        Macro * macro = &inputMacroOptions->macroList[i];
-        if ( macro->useMacroTriggerButton ) {
-            // Use Gamepad Button for Macro Trigger
-            if ((allPins & macroButtonMask) &&
-                ((gamepad->state.buttons & macro->macroTriggerButton) ||
-                    (gamepad->state.dpad & (macro->macroTriggerButton >> 16))) ) {
-                pressedMacro = i;
-                break;
-            }
-        } else if ( allPins & macroPinMasks[i] ) {
-            // Use Pin Manager for Macro Trigger
+        if ( inputMacroOptions->macroList[i].enabled == false ) continue;
+        
+        // 26番ビットから順番にチェックする
+        uint32_t virtualTrigger = (1ULL << (26 + i)); 
+        
+        if (buttons & virtualTrigger) {
             pressedMacro = i;
             break;
         }
     }
 }
-
 void InputMacro::checkMacroAction() {
     bool macroInputPressed = (pressedMacro != -1); // Was any macro input pressed?
 
@@ -181,24 +161,29 @@ void InputMacro::runCurrentMacro() {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     currentMicros = getMicro();
 
+    // --- 修正後の判定ブロック ---
     if (!macro.interruptible && macro.exclusive) {
-        // Prevent any other inputs from modifying our input (Exclusive)
-        gamepad->state.dpad = 0;
-        gamepad->state.buttons = 0;
+        // Exclusiveモードでも物理ボタンを殺さないようにコメントアウト
+        // gamepad->state.dpad = 0;
+        // gamepad->state.buttons = 0;
     } else {
+        // マクロのトリガーボタンが通常ボタン(B1等)の場合の除外処理
         if (macro.useMacroTriggerButton) {
-            // Remove the trigger button from the input state
             gamepad->state.dpad &= ~(macro.macroTriggerButton >> 16);
             gamepad->state.buttons &= ~macro.macroTriggerButton;
         }
-        if (macro.interruptible &&
-            (gamepad->state.buttons != 0 || gamepad->state.dpad != 0)) {
-            // Macro is interruptible and a user pressed something
+
+        // PCF8575の仮想ビット(26-31)を除外した状態を作る
+        uint32_t buttonsWithoutTrigger = gamepad->state.buttons & ~(1ULL << (26 + macroPosition));
+
+        // 中断設定(interruptible)が有効な場合、他のボタンが押されたらリセット
+        if (macro.interruptible && (buttonsWithoutTrigger != 0 || gamepad->state.dpad != 0)) {
             reset();
             return;
         }
     }
-
+    // --- 判定ブロック終了 ---
+	
     // Have we elapsed the input hold time?
     if ((currentMicros - macroStartTime) >= macroInputHoldTime) {
         macroStartTime = currentMicros;
