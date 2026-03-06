@@ -58,26 +58,19 @@ const pinOptions: PinOption[] = Array.from({ length: NUM_PINS }, (_, i) => ({
 	value: i,
 }));
 
-function PinSelect({ pinsKey }: { pinsKey: PinsKey }) {
+function PinSelect({ pinsKey, pins }: { pinsKey: PinsKey; pins: Set<number> }) {
 	const addPin = useBootModesStore((state) => state.addPin);
 	const removePin = useBootModesStore((state) => state.removePin);
-	const pins = useBootModesStore((state) => {
-		if (pinsKey == 'usbModePins' || pinsKey == 'webConfigPins') {
-			return state[pinsKey];
-		}
-		return state.bootModes[pinsKey].pins;
-	});
-
 	const values = pinOptions.filter(({ value }) => pins.has(value));
 
 	const onChange = (_: MultiValue<PinOption>, action: ActionMeta<PinOption>) => {
-		if (!action.option?.value) {
-			return;
-		}
 		if (action.action === 'select-option') {
-			addPin(pinsKey, action.option.value);
+			if (!action.option?.value) {
+				return;
+			}
+			addPin(pinsKey, action.option?.value);
 		} else if (action.action === 'remove-value') {
-			removePin(pinsKey, action.option.value);
+			removePin(pinsKey, action.removedValue.value);
 		}
 	};
 
@@ -98,6 +91,16 @@ function PinSelect({ pinsKey }: { pinsKey: PinsKey }) {
 			/>
 		</div>
 	);
+}
+
+function RequiredPinSelect({ pinsKey }: { pinsKey: 'usbModePins' | 'webConfigPins' }) {
+	const pins = useBootModesStore((state) => state[pinsKey]);
+	return <PinSelect pinsKey={pinsKey} pins={pins} />;
+}
+
+function OptionalPinSelect({ mappingIndex }: { mappingIndex: number }) {
+	const pins = useBootModesStore((state) => state.bootModes[mappingIndex].pins);
+	return <PinSelect pinsKey={mappingIndex} pins={pins} />;
 }
 
 type ProfileOption = {
@@ -172,7 +175,7 @@ function BootModeRow({ mappingIndex }: { mappingIndex: number }) {
 	return (
 		<FormRow
 			col0={<BootModeSelect mappingIndex={mappingIndex} />}
-			col1={<PinSelect pinsKey={mappingIndex} />}
+			col1={<OptionalPinSelect mappingIndex={mappingIndex} />}
 			col2={<ProfileSelect mappingIndex={mappingIndex} />}
 			col3={
 				<Button
@@ -211,13 +214,13 @@ export default function BootModeMapping() {
 					<hr />
 					<FormRow
 						col0={<label className="ms-2">Web-Config</label>}
-						col1={<PinSelect pinsKey="webConfigPins" />}
+						col1={<RequiredPinSelect pinsKey="webConfigPins" />}
 						col2={<CustomSelect isDisabled={true} placeholder="N/A" />}
 						col3={<Button disabled={true}>{'✕'}</Button>}
 					/>
 					<FormRow
 						col0={<label className="ms-2">USB (BOOTSEL)</label>}
-						col1={<PinSelect pinsKey="usbModePins" />}
+						col1={<RequiredPinSelect pinsKey="usbModePins" />}
 						col2={<CustomSelect isDisabled={true} placeholder="N/A" />}
 						col3={<Button disabled={true}>{'✕'}</Button>}
 					/>

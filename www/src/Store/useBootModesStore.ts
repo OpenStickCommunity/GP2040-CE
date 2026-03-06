@@ -98,6 +98,7 @@ export const useBootModesStore = create<State & Actions>()((set, get) => ({
 			webConfigPins: mask_to_set(webConfigPinMask),
 			usbModePins: mask_to_set(usbModePinMask),
 			bootModes: bootModeMappings.map((m: any) => ({
+				key: nanoid(),
 				pins: mask_to_set(m.pinMask),
 				inputMode: m.inputMode == -1 ? undefined : m.inputMode,
 				profileIndex: m.defaultProfileIndex == -1 ? undefined : m.defaultProfileIndex,
@@ -131,15 +132,16 @@ export const useBootModesStore = create<State & Actions>()((set, get) => ({
 
 	removePin: (key: PinsKey, pin: number) => {
 		set((state) => {
-			if (key == 'usbModePins' || key == 'webConfigPins') {
-				let newPins = new Set([...state[key], pin]);
+			if (key === 'usbModePins' || key === 'webConfigPins') {
+				let newPins = new Set([...state[key]]);
 				newPins.delete(pin);
-				return { ...state, key: newPins };
+				return { ...state, [key]: newPins };
 			}
 			let newModes = [...state.bootModes];
 			let newPins = new Set([...newModes[key].pins]);
 			newPins.delete(pin);
 			newModes[key].pins = newPins;
+			console.log(newModes);
 			return { ...state, bootModes: newModes };
 		});
 	},
