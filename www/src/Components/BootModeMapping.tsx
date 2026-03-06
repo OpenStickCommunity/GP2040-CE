@@ -1,7 +1,7 @@
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { memo, ReactNode, useContext, useEffect } from 'react';
 import Section from './Section';
-import { useBootModesStore, NUM_PINS, PinsKey } from '../Store/useBootModesStore';
+import { useBootModesStore, NUM_PINS } from '../Store/useBootModesStore';
 import { INPUT_MODE_OPTIONS, InputModeOptions } from '../Data/InputBootModes';
 import { AppContext } from '../Contexts/AppContext';
 import CustomSelect from './CustomSelect';
@@ -21,6 +21,8 @@ type ProfileOption = {
 	disabled: boolean;
 };
 
+const MAX_INPUT_MODES = 8;
+
 const GROUPED_OPTIONS = [
 	{
 		label: 'Primary',
@@ -37,14 +39,14 @@ const PIN_OPTIONS: PinOption[] = Array.from({ length: NUM_PINS }, (_, i) => ({
 	value: i,
 }));
 
-function BootModeSelect({ mappingIndex }: { mappingIndex: number }) {
+function BootModeSelect({ mappingKey }: { mappingKey: string }) {
 	const setInputMode = useBootModesStore((state) => state.setInputMode);
-	const inputMode = useBootModesStore((state) => state.bootModes[mappingIndex].inputMode);
+	const inputMode = useBootModesStore((state) => state.bootModes[mappingKey].inputMode);
 	const { getAvailablePeripherals } = useContext(AppContext);
 	const { t } = useTranslation('');
 
-	const usb_available: boolean = getAvailablePeripherals('usb');
 	const value = INPUT_MODE_OPTIONS.filter(({ value }) => value === inputMode);
+	const usb_available: boolean = getAvailablePeripherals('usb');
 
 	const isOptionDisabled = (option: InputModeOptions) => {
 		return option.required.includes('usb') && !usb_available;
@@ -58,7 +60,7 @@ function BootModeSelect({ mappingIndex }: { mappingIndex: number }) {
 	};
 
 	const onChange = (option: SingleValue<InputModeOptions>) => {
-		setInputMode(mappingIndex, option?.value);
+		setInputMode(mappingKey, option?.value);
 	};
 
 	return (
@@ -75,7 +77,8 @@ function BootModeSelect({ mappingIndex }: { mappingIndex: number }) {
 	);
 }
 
-function PinSelect({ pinsKey, pins }: { pinsKey: PinsKey; pins: Set<number> }) {
+function PinSelect({ mappingKey }: { mappingKey: string }) {
+	const pins = useBootModesStore((state) => state.bootModes[mappingKey].pins);
 	const addPin = useBootModesStore((state) => state.addPin);
 	const removePin = useBootModesStore((state) => state.removePin);
 	const values = PIN_OPTIONS.filter(({ value }) => pins.has(value));
@@ -85,9 +88,9 @@ function PinSelect({ pinsKey, pins }: { pinsKey: PinsKey; pins: Set<number> }) {
 			if (action.option === undefined) {
 				return;
 			}
-			addPin(pinsKey, action.option.value);
+			addPin(mappingKey, action.option.value);
 		} else if (action.action === 'remove-value') {
-			removePin(pinsKey, action.removedValue.value);
+			removePin(mappingKey, action.removedValue.value);
 		}
 	};
 
@@ -103,45 +106,35 @@ function PinSelect({ pinsKey, pins }: { pinsKey: PinsKey; pins: Set<number> }) {
 			/>
 			<CaptureButton
 				labels={['']}
-				onChange={(_, pin) => addPin(pinsKey, pin)}
+				onChange={(_, pin) => addPin(mappingKey, pin)}
 				small={true}
 			/>
 		</div>
 	);
 }
 
-function RequiredPinSelect({ pinsKey }: { pinsKey: 'usbModePins' | 'webConfigPins' }) {
-	const pins = useBootModesStore((state) => state[pinsKey]);
-	return <PinSelect pinsKey={pinsKey} pins={pins} />;
-}
+function ProfileSelect({ mappingKey }: { mappingKey: string }) {
+	const profiles = useProfilesStore((state) => state.profiles);
+	const profileOptions = profiles.map(({ profileLabel, enabled }, i) => ({
+		label: profileLabel,
+		value: i,
+		disabled: !enabled,
+	}));
 
-function OptionalPinSelect({ mappingIndex }: { mappingIndex: number }) {
-	const pins = useBootModesStore((state) => state.bootModes[mappingIndex].pins);
-	return <PinSelect pinsKey={mappingIndex} pins={pins} />;
-}
-
-function ProfileSelect({ mappingIndex }: { mappingIndex: number }) {
-	const profiles: ProfileOption[] = useProfilesStore((state) =>
-		state.profiles.map((p, i) => ({
-			label: p.profileLabel,
-			value: i,
-			disabled: !p.enabled,
-		})),
-	);
 	const profileIndex = useBootModesStore(
-		(state) => state.bootModes[mappingIndex].profileIndex,
+		(state) => state.bootModes[mappingKey].profileIndex,
 	);
 	const setProfileIndex = useBootModesStore((state) => state.setProfileIndex);
-	const value = profiles.find(({ value }) => value === profileIndex);
+	const value = profileOptions.find(({ value }) => value === profileIndex);
 
 	const getLabel = (option: ProfileOption) =>
 		option.label + (option.disabled ? ' (Disabled)' : '');
 
 	const onChange = (_selected: any, action: ActionMeta<ProfileOption>) => {
 		if (action.action == 'clear') {
-			setProfileIndex(mappingIndex, undefined);
+			setProfileIndex(mappingKey, undefined);
 		} else if (action.action == 'select-option') {
-			setProfileIndex(mappingIndex, action.option?.value);
+			setProfileIndex(mappingKey, action.option?.value);
 		}
 	};
 
@@ -149,7 +142,7 @@ function ProfileSelect({ mappingIndex }: { mappingIndex: number }) {
 		<CustomSelect
 			isClearable={true}
 			isMulti={false}
-			options={profiles}
+			options={profileOptions}
 			getOptionLabel={getLabel}
 			isOptionDisabled={(option) => option.disabled}
 			onChange={onChange}
@@ -180,21 +173,17 @@ function FormRow({
 	);
 }
 
-const BootModeRow = memo(function BootModeRow({
-	mappingIndex,
-}: {
-	mappingIndex: number;
-}) {
+const BootModeRow = memo(function BootModeRow({ mappingKey }: { mappingKey: string }) {
 	const removeBootMode = useBootModesStore((state) => state.removeBootMode);
 	return (
 		<FormRow
-			col0={<BootModeSelect mappingIndex={mappingIndex} />}
-			col1={<OptionalPinSelect mappingIndex={mappingIndex} />}
-			col2={<ProfileSelect mappingIndex={mappingIndex} />}
+			col0={<BootModeSelect mappingKey={mappingKey} />}
+			col1={<PinSelect mappingKey={mappingKey} />}
+			col2={<ProfileSelect mappingKey={mappingKey} />}
 			col3={
 				<Button
 					onClick={() => {
-						removeBootMode(mappingIndex);
+						removeBootMode(mappingKey);
 					}}
 				>
 					{'✕'}
@@ -206,15 +195,15 @@ const BootModeRow = memo(function BootModeRow({
 
 const FixedBootModeRow = memo(function FixedBootModeRow({
 	label,
-	pinsKey,
+	mappingKey,
 }: {
 	label: string;
-	pinsKey: 'usbModePins' | 'webConfigPins';
+	mappingKey: 'usbMode' | 'webConfig';
 }) {
 	return (
 		<FormRow
 			col0={<label className="ms-2">{label}</label>}
-			col1={<RequiredPinSelect pinsKey={pinsKey} />}
+			col1={<PinSelect mappingKey={mappingKey} />}
 			col2={<CustomSelect isDisabled={true} placeholder="N/A" />}
 			col3={<Button disabled={true}>{'✕'}</Button>}
 		/>
@@ -227,6 +216,9 @@ export default function BootModeMapping() {
 
 	const addBootMode = useBootModesStore((state) => state.addBootMode);
 	const bootModes = useBootModesStore((state) => state.bootModes);
+
+	// The non-fixed input mode keys (i.e. not web-config or usb mode)
+	const inputModeKeys = Object.keys(bootModes).filter((k) => k.startsWith('inputMode-'));
 
 	return (
 		<div id="BootModeSelect">
@@ -243,13 +235,13 @@ export default function BootModeMapping() {
 						col3={<Button className="invisible">{'✕'}</Button>}
 					/>
 					<hr />
-					<FixedBootModeRow label="Web-Config" pinsKey="webConfigPins" />
-					<FixedBootModeRow label="USB (BOOTSEL)" pinsKey="usbModePins" />
-					{bootModes.map((mode, index) => (
-						<BootModeRow mappingIndex={index} key={mode.key} />
+					<FixedBootModeRow label="Web-Config" mappingKey="webConfig" />
+					<FixedBootModeRow label="USB (BOOTSEL)" mappingKey="usbMode" />
+					{inputModeKeys.map((k, _) => (
+						<BootModeRow mappingKey={k} key={k} />
 					))}
 
-					{bootModes.length < 8 && (
+					{inputModeKeys.length < MAX_INPUT_MODES && (
 						<div className="d-flex justify-content-center">
 							<Button className="mt-1" variant="outline" onClick={addBootMode}>
 								+ Add Mode
