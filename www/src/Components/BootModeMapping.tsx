@@ -40,12 +40,22 @@ const PIN_OPTIONS: PinOption[] = Array.from({ length: NUM_PINS }, (_, i) => ({
 function BootModeSelect({ mappingIndex }: { mappingIndex: number }) {
 	const setInputMode = useBootModesStore((state) => state.setInputMode);
 	const inputMode = useBootModesStore((state) => state.bootModes[mappingIndex].inputMode);
+	const { getAvailablePeripherals } = useContext(AppContext);
 	const { t } = useTranslation('');
 
+	const usb_available: boolean = getAvailablePeripherals('usb');
 	const value = INPUT_MODE_OPTIONS.filter(({ value }) => value === inputMode);
 
-	const getOptionLabel = (option: InputModeOptions) =>
-		t(`SettingsPage:${option.labelKey}`);
+	const isOptionDisabled = (option: InputModeOptions) => {
+		return option.required.includes('usb') && !usb_available;
+	};
+
+	const getOptionLabel = (option: InputModeOptions) => {
+		return (
+			t(`SettingsPage:${option.labelKey}`) +
+			(isOptionDisabled(option) ? ' (USB peripheral not enabled)' : '')
+		);
+	};
 
 	const onChange = (option: SingleValue<InputModeOptions>) => {
 		setInputMode(mappingIndex, option?.value);
@@ -56,6 +66,7 @@ function BootModeSelect({ mappingIndex }: { mappingIndex: number }) {
 			isClearable={false}
 			isMulti={false}
 			options={GROUPED_OPTIONS}
+			isOptionDisabled={isOptionDisabled}
 			isDisabled={false}
 			getOptionLabel={getOptionLabel}
 			onChange={onChange}
