@@ -214,10 +214,12 @@ export default function BootModeMapping() {
 	const loadingBootModes = useBootModesStore((state) => state.loadingBootModes);
 	const loadingProfiles = useProfilesStore((state) => state.loadingProfiles);
 
+	const { t } = useTranslation('');
+
 	const addBootMode = useBootModesStore((state) => state.addBootMode);
 	const bootModes = useBootModesStore((state) => state.bootModes);
 
-	// The non-fixed input mode keys (i.e. not web-config or usb mode)
+	// The delete-able input mode keys (i.e. not web-config or usb mode)
 	const inputModeKeys = Object.keys(bootModes).filter((k) => k.startsWith('inputMode-'));
 
 	return (
@@ -235,8 +237,14 @@ export default function BootModeMapping() {
 						col3={<Button className="invisible">{'✕'}</Button>}
 					/>
 					<hr />
-					<FixedBootModeRow label="Web-Config" mappingKey="webConfig" />
-					<FixedBootModeRow label="USB (BOOTSEL)" mappingKey="usbMode" />
+					<FixedBootModeRow
+						label={t('Navigation:reboot-modal-button-web-config-label')}
+						mappingKey="webConfig"
+					/>
+					<FixedBootModeRow
+						label={t('Navigation:reboot-modal-button-bootsel-label')}
+						mappingKey="usbMode"
+					/>
 					{inputModeKeys.map((k, _) => (
 						<BootModeRow mappingKey={k} key={k} />
 					))}
