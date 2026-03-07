@@ -20,6 +20,9 @@
 		&--is-focused {
 			box-shadow: none;
 		}
+		&--is-invalid {
+			border: var(--bs-border-width) solid var(--bs-form-invalid-border-color);
+		}
 		&:hover {
 			border: var(--bs-border-width) solid var(--bs-border-color);
 		}
@@ -40,7 +43,7 @@
 }
 
 .react-select__option {
-	&.react-select__option {		
+	&.react-select__option {
 		&--is-disabled {
 			color: var(--bs-tertiary-color);
 			cursor: not-allowed;
@@ -52,7 +55,7 @@
 		&:active {
 			background-color: var(--bs-primary);
 			color: white;
-		}		
+		}
 	}
 }
 

@@ -94,7 +94,7 @@ function PinSelect({ mappingKey }: { mappingKey: string }) {
 			removePin(mappingKey, action.removedValue.value);
 		}
 	};
-	const isInvalid = mappingKey in modesWithDuplicates;
+	const isInvalid = modesWithDuplicates.includes(mappingKey);
 
 	return (
 		<div className="d-flex gap-2">
@@ -105,7 +105,7 @@ function PinSelect({ mappingKey }: { mappingKey: string }) {
 				isDisabled={false}
 				onChange={onChange}
 				value={values}
-				aria-invalid={isInvalid}
+				isInvalid={isInvalid}
 			/>
 			<CaptureButton
 				labels={['']}
@@ -220,10 +220,17 @@ export default function BootModeMappingPage() {
 	const errorMessage = useBootModesStore((state) => state.errorMessage);
 
 	const addBootMode = useBootModesStore((state) => state.addBootMode);
+	const fetchBootModeOptions = useBootModesStore((state) => state.fetchBootModeOptions);
 	const saveBootModeOptions = useBootModesStore((state) => state.saveBootModeOptions);
 
 	const loadingProfiles = useProfilesStore((state) => state.loadingProfiles);
+	const fetchProfiles = useProfilesStore((state) => state.fetchProfiles);
 	const { t } = useTranslation('');
+
+	useEffect(() => {
+		fetchBootModeOptions();
+		fetchProfiles();
+	}, []);
 
 	// The delete-able input mode keys (i.e. not web-config or usb mode)
 	const inputModeKeys = Object.keys(bootModes).filter((k) => k.startsWith('inputMode-'));
