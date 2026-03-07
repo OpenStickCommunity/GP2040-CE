@@ -21,7 +21,7 @@ import { hexToInt } from '../Services/Utilities';
 import { InputModeDeviceType, PS4ControllerType } from '@proto/enums';
 
 import './SettingsPage.scss';
-import BootModeMappingPage from '../Components/BootModeMapping';
+import BootModeMapping from '../Components/BootModeMapping';
 import { INPUT_MODE_OPTIONS as INPUT_MODES } from '../Data/InputBootModes'
 import { useBootModesStore } from '../Store/useBootModesStore';
 
@@ -1676,8 +1676,11 @@ export default function SettingsPage() {
 														onChange={(e) => {
 															setBootModeMappingEnabled(e.target.checked);
 														}}
-													/>											
-													{newBootModeMappingEnabled ? (<BootModeMappingPage/>) : (
+													/>
+													{newBootModeMappingEnabled ? (
+														<BootModeMapping/>
+
+													) : (
 														<div>
 															<Row sm={3}>
 																{INPUT_MODES_BINDS.map((mode, index) => (
