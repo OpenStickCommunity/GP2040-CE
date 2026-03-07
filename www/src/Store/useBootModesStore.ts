@@ -184,16 +184,16 @@ export const useBootModeStore = create<State & { actions: Actions }>()((set, get
 		},
 
 		saveBootModeOptions: async () => {
-			set({ saveAttempted: true });
 			const { validatePins, validateRequired } = get().actions;
-			if (!(validatePins() && validateRequired())) {
-				return;
+			const valid = validatePins() && validateRequired();
+			if (valid) {
+				try {
+					await WebApi.setBootModeOptions();
+				} catch (error) {
+					set({ saveAttempted: true, errorMessage: 'Save Failed' });
+				}
 			}
-			try {
-				await WebApi.setBootModeOptions();
-			} catch (error) {
-				set({ errorMessage: 'Save Failed' });
-			}
+			set({ saveAttempted: true });
 		},
 
 		addPin: (key: string, pin: number) => {

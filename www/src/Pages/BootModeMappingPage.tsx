@@ -1,4 +1,5 @@
-import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { Alert, Button, Col, Container, Form, NavItem, Row } from 'react-bootstrap';
+import { NavLink } from 'react-router-dom';
 import { memo, ReactNode, useContext, useEffect } from 'react';
 import Section from '../Components/Section';
 import {
@@ -228,6 +229,7 @@ function FixedBootModeRow({
 }
 
 export default function BootModeMappingPage() {
+	const enabled = useBootModeStore((state) => state.enabled);
 	const loadingBootModes = useBootModeStore((state) => state.loadingBootModes);
 	const bootModes = useBootModeStore((state) => state.bootModes);
 	const saveAttempted = useBootModeStore((state) => state.saveAttempted);
@@ -250,7 +252,12 @@ export default function BootModeMappingPage() {
 
 	return (
 		<Section title={t('SettingsPage:boot-input-mode-label')}>
-			{loadingBootModes || loadingProfiles ? (
+			{!enabled ? (
+				<p>
+					To use the new GPIO-based mapping, you must first enable it on the{' '}
+					<NavLink to="/settings">Settings</NavLink> page.
+				</p>
+			) : loadingBootModes || loadingProfiles ? (
 				<div className="d-flex justify-content-center">
 					<span className="spinner-border" />
 				</div>
