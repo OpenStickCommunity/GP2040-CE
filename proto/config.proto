@@ -3,7 +3,7 @@ syntax = "proto2";
 import "nanopb.proto";
 import "enums.proto";
 
-message BootModeMapping {
+message InputModeMapping {
     optional int32 pinMask = 1;
     optional InputMode inputMode = 2;
     optional int32 profileIndex = 3;
@@ -13,7 +13,7 @@ message BootModeOptions {
     optional bool enabled = 1;
     optional int32 webConfigPinMask = 2;
     optional int32 usbModePinMask = 3;
-    repeated BootModeMapping bootModeMappings = 4 [(nanopb).max_count = 8];
+    repeated InputModeMapping inputModeMappings = 4 [(nanopb).max_count = 8];
 }
 
 message GamepadOptions
@@ -286,6 +286,8 @@ message DisplayOptions
     optional uint32 inputHistoryLength = 28;
     optional uint32 inputHistoryCol = 29;
     optional uint32 inputHistoryRow = 30;
+
+    optional uint32 contrast = 31;
 }
 
 message LEDOptions
@@ -880,8 +882,12 @@ message HETriggerInfo
     optional GpioAction action = 1;
     optional int32 active = 2;
     optional int32 idle = 3;
-    optional int32 max = 4;
-    optional int32 polarity = 5;
+    optional int32 pressed = 4;
+    optional int32 polarity = 5 [deprecated = true];
+    optional int32 release = 6;
+    optional int32 noise = 7;
+    optional bool rapidTrigger = 8;
+    optional bool is_polarized = 9;
 }
 
 message HETriggerOptions
