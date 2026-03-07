@@ -35,6 +35,8 @@ type Actions = {
 	setInputMode: (key: string, inputMode?: InputMode) => void;
 	setProfileIndex: (key: string, defaultProfileIndex?: number) => void;
 	setEnabled: (value: boolean) => void;
+	validatePins: () => boolean;
+	validateRequired: () => boolean;
 };
 
 type APIResponseData = {
@@ -69,14 +71,17 @@ function setToMask(pins: Set<number>) {
 
 function findDuplicates(bootModes: { [key: string]: BootModeMapping }) {
 	let seen: { [key: number]: string[] } = {};
-	Object.entries(bootModes).forEach(([key, mapping], _) => {
+	for (const [key, mapping] of Object.entries(bootModes)) {
 		let mask = setToMask(mapping.pins);
+		if (mask == -1) {
+			continue;
+		}
 		if (!(mask in seen)) {
 			seen[mask] = [key];
 		} else {
 			seen[mask].push(key);
 		}
-	});
+	}
 	return Object.values(seen)
 		.filter((a) => a.length > 1)
 		.flat();
@@ -129,6 +134,7 @@ export const useBootModesStore = create<State & Actions>()((set, get) => ({
 				bootModes: newModes,
 			};
 		});
+		get().validatePins();
 	},
 
 	fetchBootModeOptions: async () => {
@@ -180,15 +186,9 @@ export const useBootModesStore = create<State & Actions>()((set, get) => ({
 	},
 
 	saveBootModeOptions: async () => {
-		set({ saveAttempted: true, saveSucceeded: undefined, errorMessage: undefined });
-		const bootModes = get().bootModes;
-		const duplicates = findDuplicates(bootModes);
-		if (duplicates.length > 0) {
-			set({
-				saveSucceeded: false,
-				errorMessage: 'Mapped GPIO pins cannot contain duplicates.',
-				modesWithDuplicates: duplicates,
-			});
+		set({ saveAttempted: true });
+		const isValid = get().validateRequired();
+		if (!isValid) {
 			return;
 		}
 		try {
@@ -206,6 +206,7 @@ export const useBootModesStore = create<State & Actions>()((set, get) => ({
 			newModes[key].pins = newPins;
 			return { ...state, bootModes: newModes };
 		});
+		get().validatePins();
 	},
 
 	removePin: (key: string, pin: number) => {
@@ -216,6 +217,7 @@ export const useBootModesStore = create<State & Actions>()((set, get) => ({
 			newModes[key].pins = newPins;
 			return { ...state, bootModes: newModes };
 		});
+		get().validatePins();
 	},
 
 	setInputMode: (key: string, inputMode?: InputMode) => {
@@ -239,5 +241,41 @@ export const useBootModesStore = create<State & Actions>()((set, get) => ({
 			...state,
 			enabled: value,
 		}));
+	},
+
+	validatePins: () => {
+		const { bootModes } = get();
+		const duplicates = findDuplicates(bootModes);
+		if (duplicates.length > 0) {
+			set({
+				errorMessage: 'Mapped GPIO pins cannot contain duplicates',
+				modesWithDuplicates: duplicates,
+			});
+			return false;
+		} else {
+			set({
+				errorMessage: undefined,
+				modesWithDuplicates: [],
+			});
+			return true;
+		}
+	},
+
+	validateRequired: () => {
+		const { bootModes } = get();
+		for (const [key, mode] of Object.entries(bootModes)) {
+			let valid = true;
+			if (key.startsWith('inputMode-')) {
+				valid = !(mode.inputMode === undefined || mode.pins.size == 0);
+			} else {
+				valid = mode.pins.size > 0;
+			}
+			if (!valid) {
+				set({ errorMessage: 'Required fields are missing' });
+				return false;
+			}
+		}
+		set({ errorMessage: undefined });
+		return true;
 	},
 }));

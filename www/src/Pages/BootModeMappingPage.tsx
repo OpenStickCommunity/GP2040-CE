@@ -42,10 +42,11 @@ const PIN_OPTIONS: PinOption[] = Array.from({ length: NUM_PINS }, (_, i) => ({
 function BootModeSelect({ mappingKey }: { mappingKey: string }) {
 	const setInputMode = useBootModesStore((state) => state.setInputMode);
 	const inputMode = useBootModesStore((state) => state.bootModes[mappingKey].inputMode);
+	const saveAttempted = useBootModesStore((state) => state.saveAttempted);
 	const { getAvailablePeripherals } = useContext(AppContext);
 	const { t } = useTranslation('');
 
-	const value = INPUT_MODE_OPTIONS.filter(({ value }) => value === inputMode);
+	const value = INPUT_MODE_OPTIONS.find(({ value }) => value === inputMode);
 	const usb_available: boolean = getAvailablePeripherals('usb');
 
 	const isOptionDisabled = (option: InputModeOptions) => {
@@ -63,6 +64,8 @@ function BootModeSelect({ mappingKey }: { mappingKey: string }) {
 		setInputMode(mappingKey, option?.value);
 	};
 
+	const isInvalid = saveAttempted && !value;
+
 	return (
 		<CustomSelect
 			isClearable={false}
@@ -73,6 +76,7 @@ function BootModeSelect({ mappingKey }: { mappingKey: string }) {
 			getOptionLabel={getOptionLabel}
 			onChange={onChange}
 			value={value}
+			isInvalid={isInvalid}
 		/>
 	);
 }
@@ -80,8 +84,10 @@ function BootModeSelect({ mappingKey }: { mappingKey: string }) {
 function PinSelect({ mappingKey }: { mappingKey: string }) {
 	const pins = useBootModesStore((state) => state.bootModes[mappingKey].pins);
 	const modesWithDuplicates = useBootModesStore((state) => state.modesWithDuplicates);
+	const saveAttempted = useBootModesStore((state) => state.saveAttempted);
 	const addPin = useBootModesStore((state) => state.addPin);
 	const removePin = useBootModesStore((state) => state.removePin);
+
 	const values = PIN_OPTIONS.filter(({ value }) => pins.has(value));
 
 	const onChange = (_: MultiValue<PinOption>, action: ActionMeta<PinOption>) => {
@@ -94,7 +100,8 @@ function PinSelect({ mappingKey }: { mappingKey: string }) {
 			removePin(mappingKey, action.removedValue.value);
 		}
 	};
-	const isInvalid = modesWithDuplicates.includes(mappingKey);
+	const isInvalid =
+		modesWithDuplicates.includes(mappingKey) || (saveAttempted && values.length == 0);
 
 	return (
 		<div className="d-flex gap-2">
@@ -269,15 +276,19 @@ export default function BootModeMappingPage() {
 							</Button>
 						</div>
 					)}
-					<Button onClick={saveBootModeOptions}>{t('Common:button-save-label')}</Button>
+					<div className="d-flex align-items-center gap-2">
+						<Button onClick={saveBootModeOptions} disabled={errorMessage !== undefined}>
+							{t('Common:button-save-label')}
+						</Button>
+						{errorMessage && (
+							<div className="invalid-feedback d-block">
+								{errorMessage ? errorMessage : t('Common:saved-error-message')}
+							</div>
+						)}
+					</div>
 					{saveSucceeded && (
 						<Alert className="mt-2" variant="info">
 							{t('Common:saved-success-message')}
-						</Alert>
-					)}
-					{saveSucceeded === false && (
-						<Alert className="mt-2" variant="danger">
-							{errorMessage ? errorMessage : t('Common:saved-error-message')}
 						</Alert>
 					)}
 				</Container>
