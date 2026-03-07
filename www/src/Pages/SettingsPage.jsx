@@ -21,7 +21,6 @@ import { hexToInt } from '../Services/Utilities';
 import { InputModeDeviceType, PS4ControllerType } from '@proto/enums';
 
 import './SettingsPage.scss';
-import BootModeMapping from '../Components/BootModeMapping';
 import { INPUT_MODE_OPTIONS as INPUT_MODES } from '../Data/InputBootModes'
 import { useBootModesStore } from '../Store/useBootModesStore';
 
@@ -1678,8 +1677,11 @@ export default function SettingsPage() {
 														}}
 													/>
 													{newBootModeMappingEnabled ? (
-														<BootModeMapping/>
-
+														<p>
+															To use the new GPIO-based mapping, go to the{' '}
+															<NavLink to="/boot-mode-mapping">Boot Mode Configuration</NavLink>
+															{' '}page.
+														</p>
 													) : (
 														<div>
 															<Row sm={3}>

@@ -187,6 +187,7 @@ export const useBootModesStore = create<State & Actions>()((set, get) => ({
 			set({
 				saveSucceeded: false,
 				errorMessage: 'Mapped GPIO pins cannot contain duplicates.',
+				modesWithDuplicates: duplicates,
 			});
 			return;
 		}
