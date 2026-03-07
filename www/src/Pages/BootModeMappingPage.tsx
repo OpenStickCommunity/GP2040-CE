@@ -1,13 +1,13 @@
 import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { memo, ReactNode, useContext, useEffect } from 'react';
-import Section from './Section';
+import Section from '../Components/Section';
 import { useBootModesStore, NUM_PINS } from '../Store/useBootModesStore';
 import { INPUT_MODE_OPTIONS, InputModeOptions } from '../Data/InputBootModes';
 import { AppContext } from '../Contexts/AppContext';
-import CustomSelect from './CustomSelect';
+import CustomSelect from '../Components/CustomSelect';
 import { useTranslation } from 'react-i18next';
 import { ActionMeta, MultiValue, SingleValue } from 'react-select';
-import CaptureButton from './CaptureButton';
+import CaptureButton from '../Components/CaptureButton';
 import useProfilesStore, { PinsType } from '../Store/useProfilesStore';
 
 type PinOption = {
@@ -213,7 +213,7 @@ function FixedBootModeRow({
 	);
 }
 
-export default function BootModeMapping() {
+export default function BootModeMappingPage() {
 	const loadingBootModes = useBootModesStore((state) => state.loadingBootModes);
 	const bootModes = useBootModesStore((state) => state.bootModes);
 	const saveSucceeded = useBootModesStore((state) => state.saveSucceeded);
@@ -226,12 +226,10 @@ export default function BootModeMapping() {
 	const { t } = useTranslation('');
 
 	// The delete-able input mode keys (i.e. not web-config or usb mode)
-	const inputModeKeys = Object.keys(bootModes).filter((k) =>
-		k.startsWith('inputMode-'),
-	);
+	const inputModeKeys = Object.keys(bootModes).filter((k) => k.startsWith('inputMode-'));
 
 	return (
-		<div id="BootModeSelect">
+		<Section title={t('SettingsPage:boot-input-mode-label')}>
 			{loadingBootModes || loadingProfiles ? (
 				<div className="d-flex justify-content-center">
 					<span className="spinner-border" />
@@ -259,18 +257,12 @@ export default function BootModeMapping() {
 
 					{inputModeKeys.length < MAX_INPUT_MODES && (
 						<div className="d-flex justify-content-center">
-							<Button
-								className="mt-1"
-								variant="outline"
-								onClick={addBootMode}
-							>
+							<Button className="mt-1" variant="outline" onClick={addBootMode}>
 								+ Add Mode
 							</Button>
 						</div>
 					)}
-					<Button onClick={saveBootModeOptions}>
-						{t('Common:button-save-label')}
-					</Button>
+					<Button onClick={saveBootModeOptions}>{t('Common:button-save-label')}</Button>
 					{saveSucceeded && (
 						<Alert className="mt-2" variant="info">
 							{t('Common:saved-success-message')}
@@ -278,13 +270,11 @@ export default function BootModeMapping() {
 					)}
 					{saveSucceeded === false && (
 						<Alert className="mt-2" variant="danger">
-							{errorMessage
-								? errorMessage
-								: t('Common:saved-error-message')}
+							{errorMessage ? errorMessage : t('Common:saved-error-message')}
 						</Alert>
 					)}
 				</Container>
 			)}
-		</div>
+		</Section>
 	);
 }
