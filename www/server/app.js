@@ -328,7 +328,7 @@ app.get('/api/getPeripheralOptions', (req, res) => {
 				tx: -1,
 			},
 			usb0: {
-				enabled: 1,
+				enabled: 0,
 				dp: 28,
 				enable5v: -1,
 				order: 0,
@@ -882,11 +882,22 @@ app.post('/api/getHETriggerCalibration', (req, res) => {
 	});
 });
 
-app.get('/api/getBootModeMappings', (req, res) => {
+app.get('/api/getBootModeOptions', (req, res) => {
 	return res.send({
 		webConfigPinMask: 1,
-		usbModePinMask: 2,
-		bootModeMappings: [],
+		usbModePinMask: 14,
+		inputModeMappings: [
+			{
+				pinMask: 2,
+				inputMode: 4,
+				profileIndex: 1,
+			},
+			{
+				pinMask: 8,
+				inputMode: 3,
+				profileIndex: -1,
+			}
+		],
 	});
 });
 

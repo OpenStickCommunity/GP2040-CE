@@ -422,19 +422,12 @@ async function setProfileOptions(mappings) {
 	});
 }
 
-async function getBootModeMappings() {
-	try {
-		const { data } = await Http.get(`${baseUrl}/api/getBootModeMappings`);
-		return data;
-	} catch (error) {
-		console.log(error);
-	}
+async function getBootModeOptions() {
+	return Http.get(`${baseUrl}/api/getBootModeOptions`);
 }
 
-async function setBootModeMappings(mappings) {
-	return Http.post(`${baseUrl}/api/setBootModeOptions`, {
-		bootModeMappings: mappings,
-	});
+async function setBootModeOptions(options) {
+	return Http.post(`${baseUrl}/api/setBootModeOptions`, options);
 }
 
 async function getKeyMappings(setLoading) {
@@ -717,7 +710,6 @@ function sanitizeRequest(request) {
 	return newRequest;
 }
 
-
 export default {
 	resetSettings,
 	getDisplayOptions,
@@ -730,6 +722,8 @@ export default {
 	setCustomTheme,
 	getPinMappings,
 	setPinMappings,
+	getBootModeOptions,
+	setBootModeOptions,
 	getProfileOptions,
 	setProfileOptions,
 	getKeyMappings,
@@ -759,6 +753,4 @@ export default {
 	getHeldPins,
 	abortGetHeldPins,
 	reboot,
-	getBootModeMappings,
-	setBootModeMappings,
 };
