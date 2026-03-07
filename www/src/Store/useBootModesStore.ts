@@ -18,13 +18,18 @@ type State = {
 	loadingBootModes: boolean;
 	// If false, use old method of mapping
 	enabled: boolean;
+	// validation fields
+	saveAttempted: boolean;
+	modesWithDuplicates: string[];
+	errorMessage?: string;
+	saveSucceeded?: boolean;
 };
 
 type Actions = {
 	addBootMode: () => void;
 	removeBootMode: (key: string) => void;
 	fetchBootModeOptions: () => void;
-	saveBootModeOptions: () => Promise<object>;
+	saveBootModeOptions: () => void;
 	addPin: (key: string, gpioPin: number) => void;
 	removePin: (key: string, gpioPinIndex: number) => void;
 	setInputMode: (key: string, inputMode?: InputMode) => void;
@@ -32,14 +37,49 @@ type Actions = {
 	setEnabled: (value: boolean) => void;
 };
 
-function mask_to_set(pins: number) {
+type APIResponseData = {
+	webConfigPinMask: number;
+	usbModePinMask: number;
+	inputModeMappings: {
+		pinMask: number;
+		inputMode: number;
+		profileIndex: number;
+	}[];
+};
+
+function maskToSet(mask: number) {
 	let s = new Set<number>();
+	if (mask === -1) {
+		return s;
+	}
 	for (let i = 0; i < NUM_PINS; i++) {
-		if ((1 << i) & pins) {
+		if ((1 << i) & mask) {
 			s.add(i);
 		}
 	}
 	return s;
+}
+
+function setToMask(pins: Set<number>) {
+	if (pins.size == 0) {
+		return -1;
+	}
+	return [...pins].reduce((mask, v) => mask | (1 << v), 0);
+}
+
+function findDuplicates(bootModes: { [key: string]: BootModeMapping }) {
+	let seen: { [key: number]: string[] } = {};
+	Object.entries(bootModes).forEach(([key, mapping], _) => {
+		let mask = setToMask(mapping.pins);
+		if (!(mask in seen)) {
+			seen[mask] = [key];
+		} else {
+			seen[mask].push(key);
+		}
+	});
+	return Object.values(seen)
+		.filter((a) => a.length > 1)
+		.flat();
 }
 
 const INITIAL_STATE = {
@@ -57,6 +97,10 @@ const INITIAL_STATE = {
 	},
 	loadingBootModes: false,
 	enabled: false,
+	saveAttempted: false,
+	modesWithDuplicates: [],
+	errorMessage: undefined,
+	saveSuceeded: undefined,
 };
 
 export const useBootModesStore = create<State & Actions>()((set, get) => ({
@@ -89,19 +133,69 @@ export const useBootModesStore = create<State & Actions>()((set, get) => ({
 
 	fetchBootModeOptions: async () => {
 		set({ loadingBootModes: true });
-		const { webConfigPinMask, usbModePinMask, bootModeMappings } =
-			await WebApi.getBootModeMappings();
+		let response: APIResponseData;
+		try {
+			let { data } = await WebApi.getBootModeOptions();
+			response = data;
+		} catch (error) {
+			console.error(error);
+			set({
+				errorMessage: 'Failed to load boot mode options',
+				loadingBootModes: false,
+			});
+			return;
+		}
 
-		await new Promise((resolve) => setTimeout(resolve, 500));
-		set({ loadingBootModes: false });
-		//TODO
+		let { webConfigPinMask, usbModePinMask, inputModeMappings } = response;
+
+		let inputModes: { [key: string]: BootModeMapping } = {};
+		for (const m of inputModeMappings) {
+			if (m.inputMode == -1) {
+				continue;
+			}
+			inputModes[`inputMode-${nanoid()}`] = {
+				pins: maskToSet(m.pinMask),
+				inputMode: m.inputMode as InputMode,
+				profileIndex: m.profileIndex == -1 ? undefined : m.profileIndex,
+			};
+		}
+
+		set((state) => ({
+			...state,
+			loadingBootModes: false,
+			bootModes: {
+				webConfig: {
+					pins: maskToSet(webConfigPinMask),
+					inputMode: undefined,
+					profileIndex: undefined,
+				},
+				usbMode: {
+					pins: maskToSet(usbModePinMask),
+					inputMode: undefined,
+					profileIndex: undefined,
+				},
+				...inputModes,
+			},
+		}));
 	},
 
 	saveBootModeOptions: async () => {
+		set({ saveAttempted: true, saveSucceeded: undefined, errorMessage: undefined });
 		const bootModes = get().bootModes;
-		return WebApi.setBootModeMappings();
-
-		// TODO
+		const duplicates = findDuplicates(bootModes);
+		if (duplicates.length > 0) {
+			set({
+				saveSucceeded: false,
+				errorMessage: 'Mapped GPIO pins cannot contain duplicates.',
+			});
+			return;
+		}
+		try {
+			await WebApi.setBootModeOptions();
+			set({ saveSucceeded: true });
+		} catch (error) {
+			set({ saveSucceeded: false });
+		}
 	},
 
 	addPin: (key: string, pin: number) => {

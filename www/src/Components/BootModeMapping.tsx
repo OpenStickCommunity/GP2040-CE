@@ -1,4 +1,4 @@
-import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { memo, ReactNode, useContext, useEffect } from 'react';
 import Section from './Section';
 import { useBootModesStore, NUM_PINS } from '../Store/useBootModesStore';
@@ -79,6 +79,7 @@ function BootModeSelect({ mappingKey }: { mappingKey: string }) {
 
 function PinSelect({ mappingKey }: { mappingKey: string }) {
 	const pins = useBootModesStore((state) => state.bootModes[mappingKey].pins);
+	const modesWithDuplicates = useBootModesStore((state) => state.modesWithDuplicates);
 	const addPin = useBootModesStore((state) => state.addPin);
 	const removePin = useBootModesStore((state) => state.removePin);
 	const values = PIN_OPTIONS.filter(({ value }) => pins.has(value));
@@ -93,6 +94,7 @@ function PinSelect({ mappingKey }: { mappingKey: string }) {
 			removePin(mappingKey, action.removedValue.value);
 		}
 	};
+	const isInvalid = mappingKey in modesWithDuplicates;
 
 	return (
 		<div className="d-flex gap-2">
@@ -103,6 +105,7 @@ function PinSelect({ mappingKey }: { mappingKey: string }) {
 				isDisabled={false}
 				onChange={onChange}
 				value={values}
+				aria-invalid={isInvalid}
 			/>
 			<CaptureButton
 				labels={['']}
@@ -173,7 +176,7 @@ function FormRow({
 	);
 }
 
-const BootModeRow = memo(function BootModeRow({ mappingKey }: { mappingKey: string }) {
+function BootModeRow({ mappingKey }: { mappingKey: string }) {
 	const removeBootMode = useBootModesStore((state) => state.removeBootMode);
 	return (
 		<FormRow
@@ -191,9 +194,9 @@ const BootModeRow = memo(function BootModeRow({ mappingKey }: { mappingKey: stri
 			}
 		/>
 	);
-});
+}
 
-const FixedBootModeRow = memo(function FixedBootModeRow({
+function FixedBootModeRow({
 	label,
 	mappingKey,
 }: {
@@ -208,19 +211,24 @@ const FixedBootModeRow = memo(function FixedBootModeRow({
 			col3={<Button disabled={true}>{'✕'}</Button>}
 		/>
 	);
-});
+}
 
 export default function BootModeMapping() {
 	const loadingBootModes = useBootModesStore((state) => state.loadingBootModes);
-	const loadingProfiles = useProfilesStore((state) => state.loadingProfiles);
-
-	const { t } = useTranslation('');
+	const bootModes = useBootModesStore((state) => state.bootModes);
+	const saveSucceeded = useBootModesStore((state) => state.saveSucceeded);
+	const errorMessage = useBootModesStore((state) => state.errorMessage);
 
 	const addBootMode = useBootModesStore((state) => state.addBootMode);
-	const bootModes = useBootModesStore((state) => state.bootModes);
+	const saveBootModeOptions = useBootModesStore((state) => state.saveBootModeOptions);
+
+	const loadingProfiles = useProfilesStore((state) => state.loadingProfiles);
+	const { t } = useTranslation('');
 
 	// The delete-able input mode keys (i.e. not web-config or usb mode)
-	const inputModeKeys = Object.keys(bootModes).filter((k) => k.startsWith('inputMode-'));
+	const inputModeKeys = Object.keys(bootModes).filter((k) =>
+		k.startsWith('inputMode-'),
+	);
 
 	return (
 		<div id="BootModeSelect">
@@ -251,10 +259,29 @@ export default function BootModeMapping() {
 
 					{inputModeKeys.length < MAX_INPUT_MODES && (
 						<div className="d-flex justify-content-center">
-							<Button className="mt-1" variant="outline" onClick={addBootMode}>
+							<Button
+								className="mt-1"
+								variant="outline"
+								onClick={addBootMode}
+							>
 								+ Add Mode
 							</Button>
 						</div>
+					)}
+					<Button onClick={saveBootModeOptions}>
+						{t('Common:button-save-label')}
+					</Button>
+					{saveSucceeded && (
+						<Alert className="mt-2" variant="info">
+							{t('Common:saved-success-message')}
+						</Alert>
+					)}
+					{saveSucceeded === false && (
+						<Alert className="mt-2" variant="danger">
+							{errorMessage
+								? errorMessage
+								: t('Common:saved-error-message')}
+						</Alert>
 					)}
 				</Container>
 			)}
