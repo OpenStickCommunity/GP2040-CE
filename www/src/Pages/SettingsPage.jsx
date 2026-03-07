@@ -22,7 +22,7 @@ import { InputModeDeviceType, PS4ControllerType } from '@proto/enums';
 
 import './SettingsPage.scss';
 import { INPUT_MODE_OPTIONS as INPUT_MODES } from '../Data/InputBootModes'
-import { useBootModesStore } from '../Store/useBootModesStore';
+import { useBootModeStore } from '../Store/useBootModesStore';
 
 const SHA256 = (ascii) => {
 	function rightRotate(value, amount) {
@@ -495,9 +495,9 @@ export default function SettingsPage() {
 	const fetchProfiles = useProfilesStore((state) => state.fetchProfiles);
 	const profiles = useProfilesStore((state) => state.profiles);
 
-	const fetchBootModes = useBootModesStore((state) => state.fetchBootModeOptions);
-	const newBootModeMappingEnabled = useBootModesStore((state) => state.enabled);
-	const setBootModeMappingEnabled = useBootModesStore((state) => state.setEnabled);
+	const fetchBootModes = useBootModeStore((state) => state.fetchBootModeOptions);
+	const newBootModeMappingEnabled = useBootModeStore((state) => state.enabled);
+	const setBootModeMappingEnabled = useBootModeStore((state) => state.setEnabled);
 
 	useEffect(() => {
 		fetchProfiles();

@@ -22,7 +22,6 @@ type State = {
 	saveAttempted: boolean;
 	modesWithDuplicates: string[];
 	errorMessage?: string;
-	saveSucceeded?: boolean;
 };
 
 type Actions = {
@@ -35,6 +34,7 @@ type Actions = {
 	setInputMode: (key: string, inputMode?: InputMode) => void;
 	setProfileIndex: (key: string, defaultProfileIndex?: number) => void;
 	setEnabled: (value: boolean) => void;
+	clearErrors: () => void;
 	validatePins: () => boolean;
 	validateRequired: () => boolean;
 };
@@ -105,177 +105,179 @@ const INITIAL_STATE = {
 	saveAttempted: false,
 	modesWithDuplicates: [],
 	errorMessage: undefined,
-	saveSuceeded: undefined,
 };
 
-export const useBootModesStore = create<State & Actions>()((set, get) => ({
+export const useBootModeStore = create<State & { actions: Actions }>()((set, get) => ({
 	...INITIAL_STATE,
-
-	addBootMode: () => {
-		set((state) => ({
-			...state,
-			bootModes: {
-				...state.bootModes,
-				[`inputMode-${nanoid()}`]: {
-					pins: new Set(),
-					inputMode: undefined,
-					profileIndex: undefined,
-				},
-			},
-		}));
-	},
-
-	removeBootMode: (key: string) => {
-		set((state) => {
-			let newModes = { ...state.bootModes };
-			delete newModes[key];
-			return {
+	actions: {
+		addBootMode: () => {
+			set((state) => ({
 				...state,
-				bootModes: newModes,
-			};
-		});
-		get().validatePins();
-	},
+				bootModes: {
+					...state.bootModes,
+					[`inputMode-${nanoid()}`]: {
+						pins: new Set(),
+						inputMode: undefined,
+						profileIndex: undefined,
+					},
+				},
+			}));
+		},
 
-	fetchBootModeOptions: async () => {
-		set({ loadingBootModes: true });
-		let response: APIResponseData;
-		try {
-			let { data } = await WebApi.getBootModeOptions();
-			response = data;
-		} catch (error) {
-			console.error(error);
-			set({
-				errorMessage: 'Failed to load boot mode options',
+		removeBootMode: (key: string) => {
+			set((state) => {
+				let newModes = { ...state.bootModes };
+				delete newModes[key];
+				return {
+					...state,
+					bootModes: newModes,
+				};
+			});
+		},
+
+		fetchBootModeOptions: async () => {
+			set({ loadingBootModes: true });
+			let response: APIResponseData;
+			try {
+				let { data } = await WebApi.getBootModeOptions();
+				response = data;
+			} catch (error) {
+				console.error(error);
+				set({
+					errorMessage: 'Failed to load boot mode options',
+					loadingBootModes: false,
+				});
+				return;
+			}
+
+			let { webConfigPinMask, usbModePinMask, inputModeMappings } = response;
+
+			let inputModes: { [key: string]: BootModeMapping } = {};
+			for (const m of inputModeMappings) {
+				if (m.inputMode == -1) {
+					continue;
+				}
+				inputModes[`inputMode-${nanoid()}`] = {
+					pins: maskToSet(m.pinMask),
+					inputMode: m.inputMode as InputMode,
+					profileIndex: m.profileIndex == -1 ? undefined : m.profileIndex,
+				};
+			}
+
+			set((state) => ({
+				...state,
 				loadingBootModes: false,
-			});
-			return;
-		}
-
-		let { webConfigPinMask, usbModePinMask, inputModeMappings } = response;
-
-		let inputModes: { [key: string]: BootModeMapping } = {};
-		for (const m of inputModeMappings) {
-			if (m.inputMode == -1) {
-				continue;
-			}
-			inputModes[`inputMode-${nanoid()}`] = {
-				pins: maskToSet(m.pinMask),
-				inputMode: m.inputMode as InputMode,
-				profileIndex: m.profileIndex == -1 ? undefined : m.profileIndex,
-			};
-		}
-
-		set((state) => ({
-			...state,
-			loadingBootModes: false,
-			bootModes: {
-				webConfig: {
-					pins: maskToSet(webConfigPinMask),
-					inputMode: undefined,
-					profileIndex: undefined,
+				bootModes: {
+					webConfig: {
+						pins: maskToSet(webConfigPinMask),
+						inputMode: undefined,
+						profileIndex: undefined,
+					},
+					usbMode: {
+						pins: maskToSet(usbModePinMask),
+						inputMode: undefined,
+						profileIndex: undefined,
+					},
+					...inputModes,
 				},
-				usbMode: {
-					pins: maskToSet(usbModePinMask),
-					inputMode: undefined,
-					profileIndex: undefined,
-				},
-				...inputModes,
-			},
-		}));
-	},
+			}));
+		},
 
-	saveBootModeOptions: async () => {
-		set({ saveAttempted: true });
-		const isValid = get().validateRequired();
-		if (!isValid) {
-			return;
-		}
-		try {
-			await WebApi.setBootModeOptions();
-			set({ saveSucceeded: true });
-		} catch (error) {
-			set({ saveSucceeded: false });
-		}
-	},
-
-	addPin: (key: string, pin: number) => {
-		set((state) => {
-			let newModes = { ...state.bootModes };
-			let newPins = new Set([...newModes[key].pins, pin]);
-			newModes[key].pins = newPins;
-			return { ...state, bootModes: newModes };
-		});
-		get().validatePins();
-	},
-
-	removePin: (key: string, pin: number) => {
-		set((state) => {
-			let newModes = { ...state.bootModes };
-			let newPins = new Set([...newModes[key].pins]);
-			newPins.delete(pin);
-			newModes[key].pins = newPins;
-			return { ...state, bootModes: newModes };
-		});
-		get().validatePins();
-	},
-
-	setInputMode: (key: string, inputMode?: InputMode) => {
-		set((state) => {
-			let newModes = { ...state.bootModes };
-			newModes[key].inputMode = inputMode;
-			return { ...state, bootModes: newModes };
-		});
-	},
-
-	setProfileIndex: (key: string, defaultProfileIndex?: number) => {
-		set((state) => {
-			let newModes = { ...state.bootModes };
-			newModes[key].profileIndex = defaultProfileIndex;
-			return { ...state, bootModes: newModes };
-		});
-	},
-
-	setEnabled: (value: boolean) => {
-		set((state) => ({
-			...state,
-			enabled: value,
-		}));
-	},
-
-	validatePins: () => {
-		const { bootModes } = get();
-		const duplicates = findDuplicates(bootModes);
-		if (duplicates.length > 0) {
-			set({
-				errorMessage: 'Mapped GPIO pins cannot contain duplicates',
-				modesWithDuplicates: duplicates,
-			});
-			return false;
-		} else {
-			set({
-				errorMessage: undefined,
-				modesWithDuplicates: [],
-			});
-			return true;
-		}
-	},
-
-	validateRequired: () => {
-		const { bootModes } = get();
-		for (const [key, mode] of Object.entries(bootModes)) {
-			let valid = true;
-			if (key.startsWith('inputMode-')) {
-				valid = !(mode.inputMode === undefined || mode.pins.size == 0);
-			} else {
-				valid = mode.pins.size > 0;
+		saveBootModeOptions: async () => {
+			set({ saveAttempted: true });
+			const { validatePins, validateRequired } = get().actions;
+			if (!(validatePins() && validateRequired())) {
+				return;
 			}
-			if (!valid) {
-				set({ errorMessage: 'Required fields are missing' });
+			try {
+				await WebApi.setBootModeOptions();
+			} catch (error) {
+				set({ errorMessage: 'Save Failed' });
+			}
+		},
+
+		addPin: (key: string, pin: number) => {
+			set((state) => {
+				let newModes = { ...state.bootModes };
+				let newPins = new Set([...newModes[key].pins, pin]);
+				newModes[key].pins = newPins;
+				return { ...state, bootModes: newModes };
+			});
+		},
+
+		removePin: (key: string, pin: number) => {
+			set((state) => {
+				let newModes = { ...state.bootModes };
+				let newPins = new Set([...newModes[key].pins]);
+				newPins.delete(pin);
+				newModes[key].pins = newPins;
+				return { ...state, bootModes: newModes };
+			});
+		},
+
+		setInputMode: (key: string, inputMode?: InputMode) => {
+			set((state) => {
+				let newModes = { ...state.bootModes };
+				newModes[key].inputMode = inputMode;
+				return { ...state, bootModes: newModes };
+			});
+		},
+
+		setProfileIndex: (key: string, defaultProfileIndex?: number) => {
+			set((state) => {
+				let newModes = { ...state.bootModes };
+				newModes[key].profileIndex = defaultProfileIndex;
+				return { ...state, bootModes: newModes };
+			});
+		},
+
+		setEnabled: (value: boolean) => {
+			set((state) => ({
+				...state,
+				enabled: value,
+			}));
+		},
+
+		clearErrors: () => {
+			set({ saveAttempted: false, errorMessage: undefined });
+		},
+
+		validatePins: () => {
+			const { bootModes } = get();
+			const duplicates = findDuplicates(bootModes);
+			if (duplicates.length > 0) {
+				set({
+					errorMessage: 'Mapped GPIO pins cannot contain duplicates',
+					modesWithDuplicates: duplicates,
+				});
 				return false;
+			} else {
+				set({
+					errorMessage: undefined,
+					modesWithDuplicates: [],
+				});
+				return true;
 			}
-		}
-		set({ errorMessage: undefined });
-		return true;
+		},
+
+		validateRequired: () => {
+			const { bootModes } = get();
+			for (const [key, mode] of Object.entries(bootModes)) {
+				let valid = true;
+				if (key.startsWith('inputMode-')) {
+					valid = !(mode.inputMode === undefined || mode.pins.size == 0);
+				} else {
+					valid = mode.pins.size > 0;
+				}
+				if (!valid) {
+					set({ errorMessage: 'Required fields are missing' });
+					return false;
+				}
+			}
+			set({ errorMessage: undefined });
+			return true;
+		},
 	},
 }));
+
+export const useBootModeStoreActions = () => useBootModeStore((state) => state.actions);

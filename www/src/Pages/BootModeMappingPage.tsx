@@ -1,14 +1,18 @@
 import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { memo, ReactNode, useContext, useEffect } from 'react';
 import Section from '../Components/Section';
-import { useBootModesStore, NUM_PINS } from '../Store/useBootModesStore';
+import {
+	useBootModeStore,
+	useBootModeStoreActions,
+	NUM_PINS,
+} from '../Store/useBootModesStore';
 import { INPUT_MODE_OPTIONS, InputModeOptions } from '../Data/InputBootModes';
 import { AppContext } from '../Contexts/AppContext';
 import CustomSelect from '../Components/CustomSelect';
 import { useTranslation } from 'react-i18next';
 import { ActionMeta, MultiValue, SingleValue } from 'react-select';
 import CaptureButton from '../Components/CaptureButton';
-import useProfilesStore, { PinsType } from '../Store/useProfilesStore';
+import useProfilesStore from '../Store/useProfilesStore';
 
 type PinOption = {
 	label: string;
@@ -40,9 +44,10 @@ const PIN_OPTIONS: PinOption[] = Array.from({ length: NUM_PINS }, (_, i) => ({
 }));
 
 function BootModeSelect({ mappingKey }: { mappingKey: string }) {
-	const setInputMode = useBootModesStore((state) => state.setInputMode);
-	const inputMode = useBootModesStore((state) => state.bootModes[mappingKey].inputMode);
-	const saveAttempted = useBootModesStore((state) => state.saveAttempted);
+	const inputMode = useBootModeStore((state) => state.bootModes[mappingKey].inputMode);
+	const saveAttempted = useBootModeStore((state) => state.saveAttempted);
+	const { setInputMode, clearErrors } = useBootModeStoreActions();
+
 	const { getAvailablePeripherals } = useContext(AppContext);
 	const { t } = useTranslation('');
 
@@ -61,6 +66,7 @@ function BootModeSelect({ mappingKey }: { mappingKey: string }) {
 	};
 
 	const onChange = (option: SingleValue<InputModeOptions>) => {
+		clearErrors();
 		setInputMode(mappingKey, option?.value);
 	};
 
@@ -82,23 +88,22 @@ function BootModeSelect({ mappingKey }: { mappingKey: string }) {
 }
 
 function PinSelect({ mappingKey }: { mappingKey: string }) {
-	const pins = useBootModesStore((state) => state.bootModes[mappingKey].pins);
-	const modesWithDuplicates = useBootModesStore((state) => state.modesWithDuplicates);
-	const saveAttempted = useBootModesStore((state) => state.saveAttempted);
-	const addPin = useBootModesStore((state) => state.addPin);
-	const removePin = useBootModesStore((state) => state.removePin);
+	const pins = useBootModeStore((state) => state.bootModes[mappingKey].pins);
+	const modesWithDuplicates = useBootModeStore((state) => state.modesWithDuplicates);
+	const saveAttempted = useBootModeStore((state) => state.saveAttempted);
+
+	const { addPin, removePin, validatePins, clearErrors } = useBootModeStoreActions();
 
 	const values = PIN_OPTIONS.filter(({ value }) => pins.has(value));
 
 	const onChange = (_: MultiValue<PinOption>, action: ActionMeta<PinOption>) => {
-		if (action.action === 'select-option') {
-			if (action.option === undefined) {
-				return;
-			}
+		if (action.action === 'select-option' && action.option !== undefined) {
 			addPin(mappingKey, action.option.value);
 		} else if (action.action === 'remove-value') {
 			removePin(mappingKey, action.removedValue.value);
 		}
+		clearErrors();
+		validatePins();
 	};
 	const isInvalid =
 		modesWithDuplicates.includes(mappingKey) || (saveAttempted && values.length == 0);
@@ -131,10 +136,10 @@ function ProfileSelect({ mappingKey }: { mappingKey: string }) {
 		disabled: !enabled,
 	}));
 
-	const profileIndex = useBootModesStore(
+	const profileIndex = useBootModeStore(
 		(state) => state.bootModes[mappingKey].profileIndex,
 	);
-	const setProfileIndex = useBootModesStore((state) => state.setProfileIndex);
+	const { setProfileIndex } = useBootModeStoreActions();
 	const value = profileOptions.find(({ value }) => value === profileIndex);
 
 	const getLabel = (option: ProfileOption) =>
@@ -184,7 +189,8 @@ function FormRow({
 }
 
 function BootModeRow({ mappingKey }: { mappingKey: string }) {
-	const removeBootMode = useBootModesStore((state) => state.removeBootMode);
+	const { removeBootMode, clearErrors } = useBootModeStoreActions();
+
 	return (
 		<FormRow
 			col0={<BootModeSelect mappingKey={mappingKey} />}
@@ -194,6 +200,7 @@ function BootModeRow({ mappingKey }: { mappingKey: string }) {
 				<Button
 					onClick={() => {
 						removeBootMode(mappingKey);
+						clearErrors();
 					}}
 				>
 					{'✕'}
@@ -221,14 +228,13 @@ function FixedBootModeRow({
 }
 
 export default function BootModeMappingPage() {
-	const loadingBootModes = useBootModesStore((state) => state.loadingBootModes);
-	const bootModes = useBootModesStore((state) => state.bootModes);
-	const saveSucceeded = useBootModesStore((state) => state.saveSucceeded);
-	const errorMessage = useBootModesStore((state) => state.errorMessage);
+	const loadingBootModes = useBootModeStore((state) => state.loadingBootModes);
+	const bootModes = useBootModeStore((state) => state.bootModes);
+	const saveAttempted = useBootModeStore((state) => state.saveAttempted);
+	const errorMessage = useBootModeStore((state) => state.errorMessage);
 
-	const addBootMode = useBootModesStore((state) => state.addBootMode);
-	const fetchBootModeOptions = useBootModesStore((state) => state.fetchBootModeOptions);
-	const saveBootModeOptions = useBootModesStore((state) => state.saveBootModeOptions);
+	const { addBootMode, fetchBootModeOptions, saveBootModeOptions, clearErrors } =
+		useBootModeStoreActions();
 
 	const loadingProfiles = useProfilesStore((state) => state.loadingProfiles);
 	const fetchProfiles = useProfilesStore((state) => state.fetchProfiles);
@@ -271,7 +277,14 @@ export default function BootModeMappingPage() {
 
 					{inputModeKeys.length < MAX_INPUT_MODES && (
 						<div className="d-flex justify-content-center">
-							<Button className="mt-1" variant="outline" onClick={addBootMode}>
+							<Button
+								className="mt-1"
+								variant="outline"
+								onClick={() => {
+									addBootMode();
+									clearErrors();
+								}}
+							>
 								+ Add Mode
 							</Button>
 						</div>
@@ -286,7 +299,7 @@ export default function BootModeMappingPage() {
 							</div>
 						)}
 					</div>
-					{saveSucceeded && (
+					{saveAttempted && errorMessage === undefined && (
 						<Alert className="mt-2" variant="info">
 							{t('Common:saved-success-message')}
 						</Alert>
