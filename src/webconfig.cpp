@@ -38,6 +38,8 @@
 
 #define LWIP_HTTPD_POST_MAX_PAYLOAD_LEN (1024 * 16)
 
+#define MAX_MAPPED_INPUT_MODES 8
+
 extern struct fsdata_file file__index_html[];
 
 const static char* spaPaths[] = { "/backup", "/display-config", "/led-config", "/pin-mapping", "/settings", "/reset-settings", "/add-ons", "/custom-theme", "/macro", "/peripheral-mapping" };
@@ -256,8 +258,12 @@ int set_file_data(fs_file* file, const DataAndStatusCode& dataAndStatusCode)
     returnData.append("\r\n\r\n");
     returnData.append(dataAndStatusCode.data);
 
-    file->data = returnData.c_str();
-    file->len = returnData.size();
+    returnData->append(std::to_string(dataAndStatusCode.data.length()));
+    returnData->append("\r\n\r\n");
+    returnData->append(dataAndStatusCode.data);
+
+    file->data = returnData->c_str();
+    file->len = returnData->size();
     file->index = file->len;
     file->http_header_included = file->http_header_included;
     file->pextension = NULL;
@@ -1188,6 +1194,56 @@ std::string getPinMappings()
     return serialize_json(doc);
 }
 
+std::string getBootModeOptions() {
+	const size_t capacity = JSON_OBJECT_SIZE(100);
+	DynamicJsonDocument doc(capacity);
+
+	BootModeOptions& bootModeOptions = Storage::getInstance().getBootModeOptions();
+	auto &mappings = bootModeOptions.inputModeMappings;
+
+	writeDoc(doc, "enabled", bootModeOptions.enabled);
+	writeDoc(doc, "webConfigMask", bootModeOptions.webConfigPinMask);
+	writeDoc(doc, "usbModeMask", bootModeOptions.usbModePinMask);
+
+	if (bootModeOptions.inputModeMappings_count == 0) {
+        doc.createNestedArray("inputModeMappings");
+    }
+	for (int i = 0; i < bootModeOptions.inputModeMappings_count; i++) {
+		writeDoc(doc, "inputModeMappings", i, "pinMask", mappings[i].pinMask);
+		writeDoc(doc, "inputModeMappings", i, "inputMode", mappings[i].inputMode);
+		writeDoc(doc, "inputModeMappings", i, "profileIndex", mappings[i].profileIndex);
+	}
+
+	return serialize_json(doc);
+}
+
+std::string setBootModeOptions() {
+	BootModeOptions& bootModeOptions = Storage::getInstance().getBootModeOptions();
+
+	DynamicJsonDocument doc = get_post_data();
+    JsonObject options = doc.as<JsonObject>();
+
+	bootModeOptions.enabled = options["enabled"].as<bool>();
+	bootModeOptions.webConfigPinMask = options["webConfigMask"].as<int32_t>();
+	bootModeOptions.usbModePinMask = options["usbModeMask"].as<int32_t>();
+
+    JsonArray mappings = options["inputModeMappings"];
+
+    size_t i = 0;
+    for (JsonObject mapping : mappings) {
+		bootModeOptions.inputModeMappings[i].pinMask = mapping["pinMask"].as<int32_t>();
+		bootModeOptions.inputModeMappings[i].inputMode = (InputMode)mapping["inputMode"].as<uint32_t>();
+		bootModeOptions.inputModeMappings[i].profileIndex = mapping["profileIndex"].as<uint32_t>();
+		if (++i >= MAX_MAPPED_INPUT_MODES) {
+			break;
+		}
+	}
+	bootModeOptions.inputModeMappings_count = i;
+
+	EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
+	return serialize_json(doc);
+}
+
 std::string setKeyMappings()
 {
     DynamicJsonDocument doc = get_post_data();
@@ -1476,7 +1532,7 @@ std::string setHETriggerCalibration()
     calibrationSelectPins[1] = doc["muxSelectPin1"];
     calibrationSelectPins[2] = doc["muxSelectPin2"];
     calibrationSelectPins[3] = doc["muxSelectPin3"];
-    
+
     calibrationADCPins[0] = doc["muxADCPin0"];
     calibrationADCPins[1] = doc["muxADCPin1"];
     calibrationADCPins[2] = doc["muxADCPin2"];
@@ -1487,15 +1543,15 @@ std::string setHETriggerCalibration()
     ema_smoothing = (float)calibrationSmoothingFactor / 100.f; // 99 = max smoothing factor
 
     for (int i = 0; i < 4; i++) {
-        if ( calibrationSelectPins[i] != -1 && 
-                calibrationSelectPins[i] >= 0 && 
+        if ( calibrationSelectPins[i] != -1 &&
+                calibrationSelectPins[i] >= 0 &&
                 calibrationSelectPins[i] <= 29 ) {
             gpio_init(calibrationSelectPins[i]);
             gpio_set_dir(calibrationSelectPins[i], GPIO_OUT);
             gpio_put(calibrationSelectPins[i], 0);
         }
-        if ( calibrationADCPins[i] != -1 && 
-                calibrationADCPins[i] >= 26 && 
+        if ( calibrationADCPins[i] != -1 &&
+                calibrationADCPins[i] >= 26 &&
                 calibrationADCPins[i] <= 29 ) {
             adc_gpio_init(calibrationADCPins[i]);
         }
@@ -1589,9 +1645,9 @@ std::string getHETriggerOptions()
 {
     const size_t capacity = JSON_OBJECT_SIZE(500);
     DynamicJsonDocument doc(capacity);
-    
+
     HETriggerInfo * heTriggers = Storage::getInstance().getAddonOptions().heTriggerOptions.triggers;
-    
+
     JsonArray triggerList = doc.createNestedArray("triggers");
     for(int i = 0; i < 32; i++) {
         JsonObject trigger = triggerList.createNestedObject();
@@ -1618,7 +1674,7 @@ std::string setHETriggerOptions()
         heTriggers[i].max = doc["triggers"][i]["max"];
         heTriggers[i].polarity = doc["triggers"][i]["polarity"];
     }
-    
+
     Storage::getInstance().getAddonOptions().heTriggerOptions.triggers_count = 32;
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
@@ -2569,6 +2625,94 @@ std::string reboot() {
     return serialize_json(doc);
 }
 
+// NEW API: return current raw ADC reading for the configured analog pins
+std:: string getJoystickCenter() {
+    const size_t capacity = JSON_OBJECT_SIZE(10);
+    DynamicJsonDocument doc(capacity);
+    const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
+
+    uint16_t x = 0, y = 0;
+    bool success = true;
+    std::string error_msg = "";
+
+    // Check if analog input is enabled
+    if (!analogOptions.enabled) {
+        success = false;
+        error_msg = "Analog input is not enabled";
+    } else {
+        // Initialize ADC if not already initialized
+        adc_init();
+
+        // Check if specific stick is requested via query parameter
+        // For now, we'll read both sticks and return the appropriate one
+        // In a more sophisticated implementation, we could parse query parameters
+
+        // Read first stick X/Y
+        if (isValidPin(analogOptions.analogAdc1PinX)) {
+            adc_gpio_init(analogOptions.analogAdc1PinX);
+            adc_select_input(analogOptions.analogAdc1PinX - 26);
+            x = adc_read();
+        }
+        if (isValidPin(analogOptions.analogAdc1PinY)) {
+            adc_gpio_init(analogOptions.analogAdc1PinY);
+            adc_select_input(analogOptions.analogAdc1PinY - 26);
+            y = adc_read();
+        }
+    }
+
+    JsonObject o = doc.to<JsonObject>();
+    o["success"] = success;
+    if (!success) {
+        o["error"] = error_msg;
+    } else {
+        o["x"] = x;
+        o["y"] = y;
+    }
+    return serialize_json(doc);
+}
+
+// NEW API: return current raw ADC reading for stick 2
+std:: string getJoystickCenter2() {
+    const size_t capacity = JSON_OBJECT_SIZE(10);
+    DynamicJsonDocument doc(capacity);
+    const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
+
+    uint16_t x = 0, y = 0;
+    bool success = true;
+    std::string error_msg = "";
+
+    // Check if analog input is enabled
+    if (!analogOptions.enabled) {
+        success = false;
+        error_msg = "Analog input is not enabled";
+    } else {
+        // Initialize ADC if not already initialized
+        adc_init();
+
+        // Read second stick X/Y
+        if (isValidPin(analogOptions.analogAdc2PinX)) {
+            adc_gpio_init(analogOptions.analogAdc2PinX);
+            adc_select_input(analogOptions.analogAdc2PinX - 26);
+            x = adc_read();
+        }
+        if (isValidPin(analogOptions.analogAdc2PinY)) {
+            adc_gpio_init(analogOptions.analogAdc2PinY);
+            adc_select_input(analogOptions.analogAdc2PinY - 26);
+            y = adc_read();
+        }
+    }
+
+    JsonObject o = doc.to<JsonObject>();
+    o["success"] = success;
+    if (!success) {
+        o["error"] = error_msg;
+    } else {
+        o["x"] = x;
+        o["y"] = y;
+    }
+    return serialize_json(doc);
+}
+
 typedef std::string (*HandlerFuncPtr)();
 static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
 {
@@ -2617,6 +2761,10 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/abortGetHeldPins", abortGetHeldPins },
     { "/api/getUsedPins", getUsedPins },
     { "/api/getConfig", getConfig },
+    { "/api/getJoystickCenter", getJoystickCenter },
+    { "/api/getJoystickCenter2", getJoystickCenter2 },
+	{ "/api/getBootModeOptions", getBootModeOptions },
+	{ "/api/setBootModeOptions", setBootModeOptions },
 #if !defined(NDEBUG)
     { "/api/echo", echo },
 #endif
