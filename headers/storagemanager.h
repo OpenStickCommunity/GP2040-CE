@@ -45,6 +45,7 @@ public:
 	ProfileOptions& getProfileOptions() { return config.profileOptions; }
 	GpioMappingInfo* getProfilePinMappings() { return functionalPinMappings; }
 	PeripheralOptions& getPeripheralOptions() { return config.peripheralOptions; }
+	BootModeOptions& getBootModeOptions() { return config.bootModeOptions; }
 
 	void init();
 	bool save();
