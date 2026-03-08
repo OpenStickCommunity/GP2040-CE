@@ -404,33 +404,46 @@ GP2040::BootAction GP2040::getBootAction() {
                                         forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_BOTH;
 
 
-				if (gamepad->pressedS1() && gamepad->pressedS2() && gamepad->pressedUp()) {
-					return BootAction::ENTER_USB_MODE;
-				}
-				if (!webConfigLocked && gamepad->pressedS2()) {
-					return BootAction::ENTER_WEBCONFIG_MODE;
-				}
-				if (modeSwitchLocked) {
-					return BootAction::NONE;
-				}
-
-				const GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
 
 				std::optional<InputMode> inputMode = std::nullopt;
-				if (gamepadOptions.useGpioBootModeSelect) {
+				const BootModeOptions& bootModeOptions = Storage::getInstance().getBootModeOptions();
+
+				if (bootModeOptions.enabled) {
 					// mask for just the pins configured as input mode selectors
 					uint32_t mask = 0;
-					for (size_t i = 0; i < gamepadOptions.bootModeMappings_count; i++) {
-						auto mapping = gamepadOptions.bootModeMappings[i];
-						mask |= 1 << mapping.pin;
-						bootActions.insert({1 << mapping.pin, mapping.inputMode});
+					for (size_t i = 0; i < bootModeOptions.inputModeMappings_count; i++) {
+						auto mapping = bootModeOptions.inputModeMappings[i];
+						if (mapping.pinMask == -1) {
+							continue;
+						}
+						mask |= mapping.pinMask;
+						bootActions.insert({mapping.pinMask, mapping.inputMode});
 					}
-					uint32_t masked_gpio = gamepad->debouncedGpio & mask;
-					// This search ensures that exactly one of the configured pins is set.
+					int32_t masked_gpio = gamepad->debouncedGpio & mask;
+
+					if (masked_gpio == bootModeOptions.webConfigPinMask) {
+						return BootAction::ENTER_WEBCONFIG_MODE;
+					}
+					if (masked_gpio == bootModeOptions.usbModePinMask) {
+						return BootAction::ENTER_USB_MODE;
+					}
+
 					if (auto search = bootActions.find(masked_gpio); search != bootActions.end()) {
-						inputMode = search->second;
+						inputMode = static_cast<InputMode>(search->second);
 					}
+				}
 				else {
+					if (gamepad->pressedS1() && gamepad->pressedS2() && gamepad->pressedUp()) {
+						return BootAction::ENTER_USB_MODE;
+					}
+					if (!webConfigLocked && gamepad->pressedS2()) {
+						return BootAction::ENTER_WEBCONFIG_MODE;
+					}
+					if (modeSwitchLocked) {
+						return BootAction::NONE;
+					}
+
+					const GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
 					// Use the mapped buttons to select input mode instead
 					bootActions.insert({GAMEPAD_MASK_B1, gamepadOptions.inputModeB1});
 					bootActions.insert({GAMEPAD_MASK_B2, gamepadOptions.inputModeB2});
@@ -441,9 +454,10 @@ GP2040::BootAction GP2040::getBootAction() {
 					bootActions.insert({GAMEPAD_MASK_R1, gamepadOptions.inputModeR1});
 					bootActions.insert({GAMEPAD_MASK_R2, gamepadOptions.inputModeR2});
 					if (auto search = bootActions.find(gamepad->state.buttons); search != bootActions.end()) {
-						inputMode = search->second;
+						inputMode = static_cast<InputMode>(search->second);
 					}
 				}
+
 				if (!inputMode.has_value()) {
 					return BootAction::NONE;
 				}
@@ -482,7 +496,6 @@ GP2040::BootAction GP2040::getBootAction() {
 						return BootAction::NONE;
 				}
 			}
-		}
 	}
 	return BootAction::NONE;
 }
