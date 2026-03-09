@@ -408,7 +408,8 @@ GP2040::BootAction GP2040::getBootAction() {
 				std::optional<InputMode> inputMode = std::nullopt;
 				const BootModeOptions& bootModeOptions = Storage::getInstance().getBootModeOptions();
 
-				if (bootModeOptions.enabled) {
+				// if (bootModeOptions.enabled) {
+				if (false) {
 					// mask for just the pins configured as input mode selectors
 					uint32_t mask = 0;
 					for (size_t i = 0; i < bootModeOptions.inputModeMappings_count; i++) {
