@@ -1224,8 +1224,8 @@ std::string setBootModeOptions() {
     JsonObject options = doc.as<JsonObject>();
 
 	bootModeOptions.enabled = options["enabled"].as<bool>();
-	bootModeOptions.webConfigPinMask = options["webConfigMask"].as<int32_t>();
-	bootModeOptions.usbModePinMask = options["usbModeMask"].as<int32_t>();
+	bootModeOptions.webConfigPinMask = options["webConfigPinMask"].as<int32_t>();
+	bootModeOptions.usbModePinMask = options["usbModePinMask"].as<int32_t>();
 
     JsonArray mappings = options["inputModeMappings"];
 
