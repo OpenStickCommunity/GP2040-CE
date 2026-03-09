@@ -122,7 +122,11 @@ function PinSelect({ mappingKey }: { mappingKey: string }) {
 			/>
 			<CaptureButton
 				labels={['']}
-				onChange={(_, pin) => addPin(mappingKey, pin)}
+				onChange={(_, pin) => {
+					addPin(mappingKey, pin);
+					clearErrors();
+					validatePins();
+				}}
 				small={true}
 			/>
 		</div>
@@ -235,8 +239,13 @@ export default function BootModeMappingPage() {
 	const saveAttempted = useBootModeStore((state) => state.saveAttempted);
 	const errorMessage = useBootModeStore((state) => state.errorMessage);
 
-	const { addBootMode, fetchBootModeOptions, saveBootModeOptions, clearErrors } =
-		useBootModeStoreActions();
+	const {
+		addBootMode,
+		fetchBootModeOptions,
+		saveBootModeOptions,
+		clearErrors,
+		setEnabled,
+	} = useBootModeStoreActions();
 
 	const loadingProfiles = useProfilesStore((state) => state.loadingProfiles);
 	const fetchProfiles = useProfilesStore((state) => state.fetchProfiles);
@@ -248,71 +257,83 @@ export default function BootModeMappingPage() {
 	}, []);
 
 	// The delete-able input mode keys (i.e. not web-config or usb mode)
-	const inputModeKeys = Object.keys(bootModes).filter((k) => k.startsWith('inputMode-'));
+	const inputModeKeys = Object.keys(bootModes).filter((k) =>
+		k.startsWith('inputMode-'),
+	);
 
 	return (
 		<Section title={t('SettingsPage:boot-input-mode-label')}>
-			{!enabled ? (
-				<p>
-					To use the new GPIO-based mapping, you must first enable it on the{' '}
-					<NavLink to="/settings">Settings</NavLink> page.
-				</p>
-			) : loadingBootModes || loadingProfiles ? (
-				<div className="d-flex justify-content-center">
-					<span className="spinner-border" />
-				</div>
-			) : (
-				<Container fluid className="p-0">
-					<FormRow
-						col0={<Form.Text className="muted ms-2">MODE</Form.Text>}
-						col1={<Form.Text className="muted ms-2">GPIO PINS</Form.Text>}
-						col2={<Form.Text className="muted ms-2">PROFILE</Form.Text>}
-						col3={<Button className="invisible">{'✕'}</Button>}
-					/>
-					<hr />
-					<FixedBootModeRow
-						label={t('Navigation:reboot-modal-button-web-config-label')}
-						mappingKey="webConfig"
-					/>
-					<FixedBootModeRow
-						label={t('Navigation:reboot-modal-button-bootsel-label')}
-						mappingKey="usbMode"
-					/>
-					{inputModeKeys.map((k, _) => (
-						<BootModeRow mappingKey={k} key={k} />
-					))}
+			<Form.Check
+				label="Use GPIO Pins"
+				type="switch"
+				className="text my-auto mb-4"
+				checked={enabled}
+				onChange={(e) => {
+					setEnabled(e.target.checked);
+				}}
+			/>
+			{enabled &&
+				(loadingBootModes || loadingProfiles ? (
+					<div className="d-flex justify-content-center">
+						<span className="spinner-border" />
+					</div>
+				) : (
+					<Container fluid className="p-0">
+						<FormRow
+							col0={<Form.Text className="muted ms-2">MODE</Form.Text>}
+							col1={<Form.Text className="muted ms-2">GPIO PINS</Form.Text>}
+							col2={<Form.Text className="muted ms-2">PROFILE</Form.Text>}
+							col3={<Button className="invisible">{'✕'}</Button>}
+						/>
+						<hr />
+						<FixedBootModeRow
+							label={t('Navigation:reboot-modal-button-web-config-label')}
+							mappingKey="webConfig"
+						/>
+						<FixedBootModeRow
+							label={t('Navigation:reboot-modal-button-bootsel-label')}
+							mappingKey="usbMode"
+						/>
+						{inputModeKeys.map((k, _) => (
+							<BootModeRow mappingKey={k} key={k} />
+						))}
 
-					{inputModeKeys.length < MAX_INPUT_MODES && (
-						<div className="d-flex justify-content-center">
-							<Button
-								className="mt-1"
-								variant="outline"
-								onClick={() => {
-									addBootMode();
-									clearErrors();
-								}}
-							>
-								+ Add Mode
-							</Button>
-						</div>
-					)}
-					<div className="d-flex align-items-center gap-2">
-						<Button onClick={saveBootModeOptions} disabled={errorMessage !== undefined}>
-							{t('Common:button-save-label')}
-						</Button>
-						{errorMessage && (
-							<div className="invalid-feedback d-block">
-								{errorMessage ? errorMessage : t('Common:saved-error-message')}
+						{inputModeKeys.length < MAX_INPUT_MODES && (
+							<div className="d-flex justify-content-center">
+								<Button
+									className="mt-1"
+									variant="outline"
+									onClick={() => {
+										addBootMode();
+										clearErrors();
+									}}
+								>
+									+ Add Mode
+								</Button>
 							</div>
 						)}
-					</div>
-					{saveAttempted && errorMessage === undefined && (
-						<Alert className="mt-2" variant="info">
-							{t('Common:saved-success-message')}
-						</Alert>
-					)}
-				</Container>
-			)}
+						<div className="d-flex align-items-center gap-2">
+							<Button
+								onClick={saveBootModeOptions}
+								disabled={errorMessage !== undefined}
+							>
+								{t('Common:button-save-label')}
+							</Button>
+							{errorMessage && (
+								<div className="invalid-feedback d-block">
+									{errorMessage
+										? errorMessage
+										: t('Common:saved-error-message')}
+								</div>
+							)}
+						</div>
+						{saveAttempted && errorMessage === undefined && (
+							<Alert className="mt-2" variant="info">
+								{t('Common:saved-success-message')}
+							</Alert>
+						)}
+					</Container>
+				))}
 		</Section>
 	);
 }
