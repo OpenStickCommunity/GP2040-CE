@@ -42,6 +42,7 @@ type Actions = {
 type APIResponseData = {
 	webConfigPinMask: number;
 	usbModePinMask: number;
+	enabled: boolean;
 	inputModeMappings: {
 		pinMask: number;
 		inputMode: number;
@@ -150,7 +151,8 @@ export const useBootModeStore = create<State & { actions: Actions }>()((set, get
 				return;
 			}
 
-			let { webConfigPinMask, usbModePinMask, inputModeMappings } = response;
+			let { enabled, webConfigPinMask, usbModePinMask, inputModeMappings } =
+				response;
 
 			let inputModes: { [key: string]: BootModeMapping } = {};
 			for (const m of inputModeMappings) {
@@ -167,6 +169,7 @@ export const useBootModeStore = create<State & { actions: Actions }>()((set, get
 			set((state) => ({
 				...state,
 				loadingBootModes: false,
+				enabled: enabled,
 				bootModes: {
 					webConfig: {
 						pins: maskToSet(webConfigPinMask),
@@ -184,11 +187,27 @@ export const useBootModeStore = create<State & { actions: Actions }>()((set, get
 		},
 
 		saveBootModeOptions: async () => {
-			const { validatePins, validateRequired } = get().actions;
+			const {
+				bootModes,
+				enabled,
+				actions: { validatePins, validateRequired },
+			} = get();
 			const valid = validatePins() && validateRequired();
+			const postData: APIResponseData = {
+				webConfigPinMask: setToMask(bootModes['webConfig'].pins),
+				usbModePinMask: setToMask(bootModes['usbMode'].pins),
+				enabled: enabled,
+				inputModeMappings: Object.entries(bootModes)
+					.filter(([k, _v], _i) => k.startsWith('inputMode-'))
+					.map(([_, m], _i) => ({
+						pinMask: setToMask(m.pins),
+						inputMode: m.inputMode === undefined ? 0 : m.inputMode,
+						profileIndex: m.profileIndex === undefined ? 0 : m.profileIndex,
+					})),
+			};
 			if (valid) {
 				try {
-					await WebApi.setBootModeOptions();
+					await WebApi.setBootModeOptions(postData);
 				} catch (error) {
 					set({ saveAttempted: true, errorMessage: 'Save Failed' });
 				}
