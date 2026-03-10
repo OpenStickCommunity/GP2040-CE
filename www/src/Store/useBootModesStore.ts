@@ -242,10 +242,10 @@ export const useBootModeStore = create<State & { actions: Actions }>()((set, get
 			});
 		},
 
-		setProfileIndex: (key: string, defaultProfileIndex?: number) => {
+		setProfileIndex: (key: string, profileIndex?: number) => {
 			set((state) => {
 				let newModes = { ...state.bootModes };
-				newModes[key].profileIndex = defaultProfileIndex;
+				newModes[key].profileIndex = profileIndex;
 				return { ...state, bootModes: newModes };
 			});
 		},

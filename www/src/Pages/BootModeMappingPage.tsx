@@ -146,15 +146,18 @@ function ProfileSelect({ mappingKey }: { mappingKey: string }) {
 	);
 	const { setProfileIndex } = useBootModeStoreActions();
 	const value = profileOptions.find(({ value }) => value === profileIndex);
+	console.log(`${mappingKey} value:`, value);
 
-	const getLabel = (option: ProfileOption) =>
-		option.label + (option.disabled ? ' (Disabled)' : '');
+	const getLabel = (option: ProfileOption) => {
+		const label = option.label ? option.label : `Profile ${option.value + 1}`;
+		return label + (option.disabled ? ' (Disabled)' : '');
+	};
 
-	const onChange = (_selected: any, action: ActionMeta<ProfileOption>) => {
-		if (action.action == 'clear') {
+	const onChange = (selected: any, action: ActionMeta<ProfileOption>) => {
+		if (action.action === 'clear') {
 			setProfileIndex(mappingKey, undefined);
-		} else if (action.action == 'select-option') {
-			setProfileIndex(mappingKey, action.option?.value);
+		} else if (action.action === 'select-option') {
+			setProfileIndex(mappingKey, selected.value);
 		}
 	};
 
