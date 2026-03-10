@@ -1202,8 +1202,8 @@ std::string getBootModeOptions() {
 	auto &mappings = bootModeOptions.inputModeMappings;
 
 	writeDoc(doc, "enabled", bootModeOptions.enabled);
-	writeDoc(doc, "webConfigMask", bootModeOptions.webConfigPinMask);
-	writeDoc(doc, "usbModeMask", bootModeOptions.usbModePinMask);
+	writeDoc(doc, "webConfigPinMask", bootModeOptions.webConfigPinMask);
+	writeDoc(doc, "usbModePinMask", bootModeOptions.usbModePinMask);
 
 	if (bootModeOptions.inputModeMappings_count == 0) {
         doc.createNestedArray("inputModeMappings");
