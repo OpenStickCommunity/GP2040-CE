@@ -28,15 +28,15 @@ type Actions = {
 	addBootMode: () => void;
 	removeBootMode: (key: string) => void;
 	fetchBootModeOptions: () => void;
-	saveBootModeOptions: () => void;
+	saveBootModeOptions: (errorMessage: string) => void;
 	addPin: (key: string, gpioPin: number) => void;
 	removePin: (key: string, gpioPinIndex: number) => void;
 	setInputMode: (key: string, inputMode?: InputMode) => void;
 	setProfileIndex: (key: string, defaultProfileIndex?: number) => void;
 	setEnabled: (value: boolean) => void;
 	clearErrors: () => void;
-	validatePins: () => boolean;
-	validateRequired: () => boolean;
+	validatePins: (errorMessage: string) => boolean;
+	validateRequired: (errorMessage: string) => boolean;
 };
 
 type APIResponseData = {
@@ -46,7 +46,8 @@ type APIResponseData = {
 	inputModeMappings: {
 		pinMask: number;
 		inputMode: number;
-		profileIndex: number;
+		// Profiles are 1-indexed. 0 = no mapped profile
+		profileNumber: number;
 	}[];
 };
 
@@ -162,7 +163,7 @@ export const useBootModeStore = create<State & { actions: Actions }>()((set, get
 				inputModes[`inputMode-${nanoid()}`] = {
 					pins: maskToSet(m.pinMask),
 					inputMode: m.inputMode as InputMode,
-					profileIndex: m.profileIndex == -1 ? undefined : m.profileIndex,
+					profileIndex: m.profileNumber == 0 ? undefined : m.profileNumber - 1,
 				};
 			}
 
@@ -186,13 +187,9 @@ export const useBootModeStore = create<State & { actions: Actions }>()((set, get
 			}));
 		},
 
-		saveBootModeOptions: async () => {
-			const {
-				bootModes,
-				enabled,
-				actions: { validatePins, validateRequired },
-			} = get();
-			const valid = validatePins() && validateRequired();
+		saveBootModeOptions: async (errorMessage: string) => {
+			const { bootModes, enabled } = get();
+			set({ saveAttempted: true });
 			const postData: APIResponseData = {
 				webConfigPinMask: setToMask(bootModes['webConfig'].pins),
 				usbModePinMask: setToMask(bootModes['usbMode'].pins),
@@ -202,17 +199,15 @@ export const useBootModeStore = create<State & { actions: Actions }>()((set, get
 					.map(([_, m], _i) => ({
 						pinMask: setToMask(m.pins),
 						inputMode: m.inputMode === undefined ? 0 : m.inputMode,
-						profileIndex: m.profileIndex === undefined ? 0 : m.profileIndex,
+						profileNumber:
+							m.profileIndex === undefined ? 0 : m.profileIndex + 1,
 					})),
 			};
-			if (valid) {
-				try {
-					await WebApi.setBootModeOptions(postData);
-				} catch (error) {
-					set({ saveAttempted: true, errorMessage: 'Save Failed' });
-				}
+			try {
+				await WebApi.setBootModeOptions(postData);
+			} catch (error) {
+				set({ saveAttempted: true, errorMessage: errorMessage });
 			}
-			set({ saveAttempted: true });
 		},
 
 		addPin: (key: string, pin: number) => {
@@ -261,12 +256,12 @@ export const useBootModeStore = create<State & { actions: Actions }>()((set, get
 			set({ saveAttempted: false, errorMessage: undefined });
 		},
 
-		validatePins: () => {
+		validatePins: (errorMessage: string) => {
 			const { bootModes } = get();
 			const duplicates = findDuplicates(bootModes);
 			if (duplicates.length > 0) {
 				set({
-					errorMessage: 'Mapped GPIO pins cannot contain duplicates',
+					errorMessage: errorMessage,
 					modesWithDuplicates: duplicates,
 				});
 				return false;
@@ -279,7 +274,7 @@ export const useBootModeStore = create<State & { actions: Actions }>()((set, get
 			}
 		},
 
-		validateRequired: () => {
+		validateRequired: (errorMessage: string) => {
 			const { bootModes } = get();
 			for (const [key, mode] of Object.entries(bootModes)) {
 				let valid = true;
@@ -289,7 +284,7 @@ export const useBootModeStore = create<State & { actions: Actions }>()((set, get
 					valid = mode.pins.size > 0;
 				}
 				if (!valid) {
-					set({ errorMessage: 'Required fields are missing' });
+					set({ errorMessage: errorMessage });
 					return false;
 				}
 			}

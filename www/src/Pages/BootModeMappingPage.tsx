@@ -1,6 +1,6 @@
 import { Alert, Button, Col, Container, Form, NavItem, Row } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
-import { memo, ReactNode, useContext, useEffect } from 'react';
+import { memo, ReactNode, useCallback, useContext, useEffect } from 'react';
 import Section from '../Components/Section';
 import {
 	useBootModeStore,
@@ -96,6 +96,7 @@ function PinSelect({ mappingKey }: { mappingKey: string }) {
 	const { addPin, removePin, validatePins, clearErrors } = useBootModeStoreActions();
 
 	const values = PIN_OPTIONS.filter(({ value }) => pins.has(value));
+	let errorMessage = 'Mapped GPIO pins cannot contain duplicates';
 
 	const onChange = (_: MultiValue<PinOption>, action: ActionMeta<PinOption>) => {
 		if (action.action === 'select-option' && action.option !== undefined) {
@@ -104,7 +105,7 @@ function PinSelect({ mappingKey }: { mappingKey: string }) {
 			removePin(mappingKey, action.removedValue.value);
 		}
 		clearErrors();
-		validatePins();
+		validatePins(errorMessage);
 	};
 	const isInvalid =
 		modesWithDuplicates.includes(mappingKey) || (saveAttempted && values.length == 0);
@@ -125,7 +126,7 @@ function PinSelect({ mappingKey }: { mappingKey: string }) {
 				onChange={(_, pin) => {
 					addPin(mappingKey, pin);
 					clearErrors();
-					validatePins();
+					validatePins(errorMessage);
 				}}
 				small={true}
 			/>
@@ -146,7 +147,6 @@ function ProfileSelect({ mappingKey }: { mappingKey: string }) {
 	);
 	const { setProfileIndex } = useBootModeStoreActions();
 	const value = profileOptions.find(({ value }) => value === profileIndex);
-	console.log(`${mappingKey} value:`, value);
 
 	const getLabel = (option: ProfileOption) => {
 		const label = option.label ? option.label : `Profile ${option.value + 1}`;
@@ -248,6 +248,7 @@ export default function BootModeMappingPage() {
 		saveBootModeOptions,
 		clearErrors,
 		setEnabled,
+		validateRequired,
 	} = useBootModeStoreActions();
 
 	const loadingProfiles = useProfilesStore((state) => state.loadingProfiles);
@@ -263,6 +264,11 @@ export default function BootModeMappingPage() {
 	const inputModeKeys = Object.keys(bootModes).filter((k) =>
 		k.startsWith('inputMode-'),
 	);
+
+	const handleSubmit = () => {
+		validateRequired('Required fields are missing');
+		saveBootModeOptions('Save Failed');
+	};
 
 	return (
 		<Section title={t('SettingsPage:boot-input-mode-label')}>
@@ -317,7 +323,7 @@ export default function BootModeMappingPage() {
 						)}
 						<div className="d-flex align-items-center gap-2">
 							<Button
-								onClick={saveBootModeOptions}
+								onClick={handleSubmit}
 								disabled={errorMessage !== undefined}
 							>
 								{t('Common:button-save-label')}
