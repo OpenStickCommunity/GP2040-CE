@@ -42,7 +42,7 @@
 
 extern struct fsdata_file file__index_html[];
 
-const static char* spaPaths[] = { "/backup", "/display-config", "/led-config", "/pin-mapping", "/settings", "/reset-settings", "/add-ons", "/custom-theme", "/macro", "/peripheral-mapping" };
+const static char* spaPaths[] = { "/backup", "/display-config", "/led-config", "/pin-mapping", "/settings", "/reset-settings", "/add-ons", "/custom-theme", "/macro", "/peripheral-mapping", "/boot-mode-mapping" };
 const static char* excludePaths[] = { "/css", "/images", "/js", "/static" };
 const static uint32_t rebootDelayMs = 500;
 static string http_post_uri;
@@ -1211,7 +1211,7 @@ std::string getBootModeOptions() {
 	for (int i = 0; i < bootModeOptions.inputModeMappings_count; i++) {
 		writeDoc(doc, "inputModeMappings", i, "pinMask", mappings[i].pinMask);
 		writeDoc(doc, "inputModeMappings", i, "inputMode", mappings[i].inputMode);
-		writeDoc(doc, "inputModeMappings", i, "profileIndex", mappings[i].profileIndex);
+		writeDoc(doc, "inputModeMappings", i, "profileNumber", mappings[i].profileNumber);
 	}
 
 	return serialize_json(doc);
@@ -1232,8 +1232,8 @@ std::string setBootModeOptions() {
     size_t i = 0;
     for (JsonObject mapping : mappings) {
 		bootModeOptions.inputModeMappings[i].pinMask = mapping["pinMask"].as<int32_t>();
-		bootModeOptions.inputModeMappings[i].inputMode = (InputMode)mapping["inputMode"].as<uint32_t>();
-		bootModeOptions.inputModeMappings[i].profileIndex = mapping["profileIndex"].as<uint32_t>();
+		bootModeOptions.inputModeMappings[i].inputMode = mapping["inputMode"].as<InputMode>();
+		bootModeOptions.inputModeMappings[i].profileNumber = mapping["profileNumber"].as<uint32_t>();
 		if (++i >= MAX_MAPPED_INPUT_MODES) {
 			break;
 		}
