@@ -53,6 +53,7 @@ static const uint32_t REBOOT_HOTKEY_HOLD_TIME_MS = 4000;
 const static uint32_t rebootDelayMs = 500;
 static absolute_time_t rebootDelayTimeout = nil_time;
 
+
 void GP2040::setup() {
 	Storage::getInstance().init();
 
@@ -82,8 +83,11 @@ void GP2040::setup() {
 	// Setup Gamepad
 	gamepad->setup();
 
-	// Initialize last reinit profile to current so we don't reinit on first loop
-	gamepad->lastReinitProfileNumber = Storage::getInstance().getGamepadOptions().profileNumber;
+	uint32_t currentProfile = Storage::getInstance().getGamepadOptions().profileNumber;
+
+	// Initialize last reinit profile to current. May reinit on first loop if boot action has an
+	// associated profile different that current
+	gamepad->lastReinitProfileNumber = currentProfile;
 
 	// now we can load the latest configured profile, which will map the
 	// new set of GPIOs to use...
@@ -116,7 +120,10 @@ void GP2040::setup() {
 	addons.LoadAddon(new InputMacro());
 
 	InputMode inputMode = gamepad->getOptions().inputMode;
-	const BootAction bootAction = getBootAction();
+
+	// Boot action may have a default profile associated, so check this before initializing GPIO
+	auto [bootAction, profile] = getBootAction(currentProfile);
+
 	switch (bootAction) {
 		case BootAction::ENTER_WEBCONFIG_MODE:
 			inputMode = INPUT_MODE_CONFIG;
@@ -180,11 +187,16 @@ void GP2040::setup() {
 	// Setup USB Driver
 	DriverManager::getInstance().setup(inputMode);
 
-	// save to match user expectations on choosing mode at boot, and this is
-	// before USB host will be used so we can force it to ignore the check
-	if (inputMode != INPUT_MODE_CONFIG && inputMode != gamepad->getOptions().inputMode) {
-		gamepad->setInputMode(inputMode);
-		Storage::getInstance().save(true);
+	if (inputMode != INPUT_MODE_CONFIG) {
+		bool inputModeChanged = inputMode != gamepad->getOptions().inputMode;
+		if (inputModeChanged) gamepad->setInputMode(inputMode);
+
+		bool profileChanged = profile != currentProfile;
+		if (profileChanged) Storage::getInstance().getGamepadOptions().profileNumber = profile;
+
+		// save to match user expectations on choosing mode at boot, and this is
+		// before USB host will be used so we can force it to ignore the check
+		if (inputModeChanged || profileChanged) Storage::getInstance().save(true);
 	}
 
 	// register system event handlers
@@ -371,11 +383,11 @@ void GP2040::getReinitGamepad(Gamepad * gamepad) {
 	}
 }
 
-GP2040::BootAction GP2040::getBootAction() {
+std::pair<GP2040::BootAction, uint32_t> GP2040::getBootAction(uint32_t currentProfile) {
 	switch (System::takeBootMode()) {
-		case System::BootMode::GAMEPAD: return BootAction::NONE;
-		case System::BootMode::WEBCONFIG: return BootAction::ENTER_WEBCONFIG_MODE;
-		case System::BootMode::USB: return BootAction::ENTER_USB_MODE;
+		case System::BootMode::GAMEPAD: return { BootAction::NONE, currentProfile };
+		case System::BootMode::WEBCONFIG: return { BootAction::ENTER_WEBCONFIG_MODE, currentProfile };
+		case System::BootMode::USB: return { BootAction::ENTER_USB_MODE, currentProfile };
 		case System::BootMode::DEFAULT:
 			{
 				// Determine boot action based on gamepad state during boot
@@ -403,45 +415,54 @@ GP2040::BootAction GP2040::getBootAction() {
                 bool webConfigLocked  = forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_WEB_CONFIG ||
                                         forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_BOTH;
 
-
-
-				std::optional<InputMode> inputMode = std::nullopt;
 				const BootModeOptions& bootModeOptions = Storage::getInstance().getBootModeOptions();
+				std::optional<InputMode> inputMode = std::nullopt;
+				uint32_t profile = currentProfile;
 
-				// if (bootModeOptions.enabled) {
-				if (false) {
-					// mask for just the pins configured as input mode selectors
-					uint32_t mask = 0;
+				if (bootModeOptions.enabled) {
+					// mask for just the pins configured as input mode selectors. Others have no
+					// effect
+					int32_t mask = bootModeOptions.webConfigPinMask
+						| bootModeOptions.usbModePinMask;
+
+					std::map<int32_t, size_t> maskIndexMap;
+
 					for (size_t i = 0; i < bootModeOptions.inputModeMappings_count; i++) {
 						auto mapping = bootModeOptions.inputModeMappings[i];
 						if (mapping.pinMask == -1) {
 							continue;
 						}
 						mask |= mapping.pinMask;
-						bootActions.insert({mapping.pinMask, mapping.inputMode});
+						maskIndexMap.insert({mapping.pinMask, i});
 					}
 					int32_t masked_gpio = gamepad->debouncedGpio & mask;
 
 					if (masked_gpio == bootModeOptions.webConfigPinMask) {
-						return BootAction::ENTER_WEBCONFIG_MODE;
+						return { BootAction::ENTER_WEBCONFIG_MODE, currentProfile };
 					}
 					if (masked_gpio == bootModeOptions.usbModePinMask) {
-						return BootAction::ENTER_USB_MODE;
+						return { BootAction::ENTER_USB_MODE, currentProfile };
 					}
 
-					if (auto search = bootActions.find(masked_gpio); search != bootActions.end()) {
-						inputMode = static_cast<InputMode>(search->second);
+					if (auto search = maskIndexMap.find(masked_gpio); search != maskIndexMap.end()) {
+						auto mapping = bootModeOptions.inputModeMappings[search->second];
+
+						inputMode = static_cast<InputMode>(mapping.inputMode);
+
+						if (mapping.profileNumber > 0) {
+							profile = mapping.profileNumber;
+						}
 					}
 				}
 				else {
 					if (gamepad->pressedS1() && gamepad->pressedS2() && gamepad->pressedUp()) {
-						return BootAction::ENTER_USB_MODE;
+						return{ BootAction::ENTER_USB_MODE, profile };
 					}
 					if (!webConfigLocked && gamepad->pressedS2()) {
-						return BootAction::ENTER_WEBCONFIG_MODE;
+						return { BootAction::ENTER_WEBCONFIG_MODE, profile };
 					}
 					if (modeSwitchLocked) {
-						return BootAction::NONE;
+						return { BootAction::NONE, profile };
 					}
 
 					const GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
@@ -460,45 +481,45 @@ GP2040::BootAction GP2040::getBootAction() {
 				}
 
 				if (!inputMode.has_value()) {
-					return BootAction::NONE;
+					return { BootAction::NONE, profile };
 				}
 				switch (inputMode.value()) {
 					case INPUT_MODE_XINPUT:
-						return BootAction::SET_INPUT_MODE_XINPUT;
+						return { BootAction::SET_INPUT_MODE_XINPUT, profile };
 					case INPUT_MODE_SWITCH:
-						return BootAction::SET_INPUT_MODE_SWITCH;
+						return { BootAction::SET_INPUT_MODE_SWITCH, profile };
 					case INPUT_MODE_KEYBOARD:
-						return BootAction::SET_INPUT_MODE_KEYBOARD;
+						return { BootAction::SET_INPUT_MODE_KEYBOARD, profile };
 					case INPUT_MODE_GENERIC:
-						return BootAction::SET_INPUT_MODE_GENERIC;
+						return { BootAction::SET_INPUT_MODE_GENERIC, profile };
 					case INPUT_MODE_PS3:
-						return BootAction::SET_INPUT_MODE_PS3;
+						return { BootAction::SET_INPUT_MODE_PS3, profile };
 					case INPUT_MODE_PS4:
-						return BootAction::SET_INPUT_MODE_PS4;
+						return { BootAction::SET_INPUT_MODE_PS4, profile };
 					case INPUT_MODE_PS5:
-						return BootAction::SET_INPUT_MODE_PS5;
+						return { BootAction::SET_INPUT_MODE_PS5, profile };
 					case INPUT_MODE_NEOGEO:
-						return BootAction::SET_INPUT_MODE_NEOGEO;
+						return { BootAction::SET_INPUT_MODE_NEOGEO, profile };
 					case INPUT_MODE_MDMINI:
-						return BootAction::SET_INPUT_MODE_MDMINI;
+						return { BootAction::SET_INPUT_MODE_MDMINI, profile };
 					case INPUT_MODE_PCEMINI:
-						return BootAction::SET_INPUT_MODE_PCEMINI;
+						return { BootAction::SET_INPUT_MODE_PCEMINI, profile };
 					case INPUT_MODE_EGRET:
-						return BootAction::SET_INPUT_MODE_EGRET;
+						return { BootAction::SET_INPUT_MODE_EGRET, profile };
 					case INPUT_MODE_ASTRO:
-						return BootAction::SET_INPUT_MODE_ASTRO;
+						return { BootAction::SET_INPUT_MODE_ASTRO, profile };
 					case INPUT_MODE_PSCLASSIC:
-						return BootAction::SET_INPUT_MODE_PSCLASSIC;
+						return { BootAction::SET_INPUT_MODE_PSCLASSIC, profile };
 					case INPUT_MODE_XBOXORIGINAL:
-						return BootAction::SET_INPUT_MODE_XBOXORIGINAL;
+						return { BootAction::SET_INPUT_MODE_XBOXORIGINAL, profile };
 					case INPUT_MODE_XBONE:
-						return BootAction::SET_INPUT_MODE_XBONE;
+						return { BootAction::SET_INPUT_MODE_XBONE, profile };
 					default:
-						return BootAction::NONE;
+						return { BootAction::NONE, profile };
 				}
 			}
 	}
-	return BootAction::NONE;
+	return { BootAction::NONE, currentProfile };
 }
 
 GP2040::RebootHotkeys::RebootHotkeys() :
