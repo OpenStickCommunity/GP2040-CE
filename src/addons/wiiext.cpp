@@ -48,25 +48,36 @@ void WiiExtensionInput::setup() {
 
 void WiiExtensionInput::process() {
     if (nextTimer < getMillis()) {
-        // デバイスが未認識(NONE)の場合、2秒おきに再接続を試行
+        // 1. デバイスの状態を確認
         if (wii->extensionType == WII_EXTENSION_NONE) {
+            // 未接続（NONE）の場合、2秒おきに再初期化を試みる
             static uint32_t lastRetry = 0;
             if (getMillis() - lastRetry > 2000) {
-                wii->begin(); // 初期化コマンド送信
+                wii->begin(); // I2C初期化・暗号化解除
                 wii->start(); // 通信開始
                 lastRetry = getMillis();
             }
         } else {
             // 接続中の場合、ポーリングを実行
-            // 通信に失敗（コントローラーが抜かれた等）したら、タイプをNONEに戻す
-            if (wii->poll() == false) {
-                wii->extensionType = WII_EXTENSION_NONE;
+            // ※ poll()はvoid型なので、比較せずに単独で呼び出す
+            wii->poll();
+
+            // ライブラリ内部で通信失敗時に extensionType が NONE に書き換わる前提
+            // もし書き換わらない場合は、ここでデータの変化を見て NONE に落とす処理が必要
+            if (wii->extensionType == WII_EXTENSION_NONE) {
+                // 抜去を検知した場合、設定をリセット
+                currentConfig = NULL;
             }
         }
 
+        // 2. 内部状態の更新（NONEなら入力リセット、接続中ならデータ反映）
         update();
+        
         nextTimer = getMillis() + uIntervalMS;
     }
+
+    // 3. ボタン・アナログのマッピング処理
+    // currentConfig が NULL（未認識状態）のときは一切の入力を無視する
     if (currentConfig != NULL) {
         queueAnalogChange(WiiAnalogs::WII_ANALOG_LEFT_X, leftX, lastLeftX);
         queueAnalogChange(WiiAnalogs::WII_ANALOG_LEFT_Y, leftY, lastLeftY);
