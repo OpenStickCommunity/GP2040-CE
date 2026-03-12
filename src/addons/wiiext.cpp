@@ -8,18 +8,20 @@
 bool WiiExtensionInput::available() {
     const WiiOptions& options = Storage::getInstance().getAddonOptions().wiiOptions;
     if (options.enabled) {
-        wii = new WiiExtensionDevice();
-        
-        // 明示的に i2c1 をセットしてからスキャンを実行
+        // 明示的に i2c1 (index 1) を取得
         auto i2c1_inst = PeripheralManager::getInstance().getI2C(1);
+        
         if (i2c1_inst != nullptr) {
+            wii = new WiiExtensionDevice();
             wii->setI2C(i2c1_inst);
             
-            // i2c1 のバス上でWiiデバイスを探す
+            // i2c1 のバス上でWiiデバイス(0x52)を直接叩く
+            // スキャン結果が良ければ wii->setAddress(0x52) 等が内部で行われる
             PeripheralI2CScanResult result = PeripheralManager::getInstance().scanForI2CDevice(wii->getDeviceAddresses());
+            
             if (result.address > -1) {
                 wii->setAddress(result.address);
-                return true;
+                return true; // これで update() メソッドが走り出します
             }
         }
         delete wii;
