@@ -8,20 +8,22 @@
 bool WiiExtensionInput::available() {
     const WiiOptions& options = Storage::getInstance().getAddonOptions().wiiOptions;
     if (options.enabled) {
-        // addon is enabled. let's scan available blocks.
         wii = new WiiExtensionDevice();
-        // PeripheralI2CScanResult result = PeripheralManager::getInstance().scanForI2CDevice(wii->getDeviceAddresses());
-        // if (result.address > -1) {
-           // wii->setAddress(result.address);
-            // wii->setI2C(PeripheralManager::getInstance().getI2C(result.block));
-           // return true;
-		   	// スキャン結果を無視し、i2c1 (block番号 1) を強制指定する
-        // 0x52はWiiエクステンションの標準アドレス
+        
+        // 自動スキャンをスキップし、強制的に i2c1 (block番号 1) を割り当てる
+        // Wiiエクステンションの標準アドレスは 0x52 です
         wii->setAddress(0x52); 
-        wii->setI2C(PeripheralManager::getInstance().getI2C(1)); // 1 = i2c1
-        return true;
+        
+        // PeripheralManagerからi2c1のインスタンスを取得 (1 = i2c1)
+        auto i2c1_inst = PeripheralManager::getInstance().getI2C(1);
+        
+        if (i2c1_inst != nullptr) {
+            wii->setI2C(i2c1_inst);
+            return true;
         } else {
+            // i2c1がPeripheral Mappingで設定されていない場合は失敗させる
             delete wii;
+            return false;
         }
     }
     return false;
