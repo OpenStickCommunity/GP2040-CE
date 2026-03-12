@@ -5,7 +5,7 @@
 #include "helper.h"
 #include "config.pb.h"
 
-ool WiiExtensionInput::available() {
+bool WiiExtensionInput::available() {
     const WiiOptions& options = Storage::getInstance().getAddonOptions().wiiOptions;
     if (options.enabled) {
         auto i2c1_inst = PeripheralManager::getInstance().getI2C(1); // I2C1を指定
