@@ -291,6 +291,19 @@ void WiiExtensionInput::update() {
             accelerometerZ = wii->getController()->motionState[WiiMotions::WII_ACCELEROMETER_Z];
             isAccelerometer = true;
         }
+     // --- 共通デッドゾーン処理を追加 ---
+        uint16_t dz = 1000; // LEDが消えない場合はこの値を大きく（例: 2000）してください
+        uint16_t mid = joystickMid;
+
+        if (abs((int)leftX - (int)mid) < dz) leftX = mid;
+        if (abs((int)leftY - (int)mid) < dz) leftY = mid;
+        if (abs((int)rightX - (int)mid) < dz) rightX = mid;
+        if (abs((int)rightY - (int)mid) < dz) rightY = mid;
+
+        // トリガーの微小な誤反応もカット
+        if (triggerLeft < 10) triggerLeft = 0;
+        if (triggerRight < 10) triggerRight = 0;
+        // ---------------------------------
     } else {
         currentConfig = NULL;
     }
