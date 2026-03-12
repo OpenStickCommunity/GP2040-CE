@@ -10,21 +10,19 @@ bool WiiExtensionInput::available() {
     if (options.enabled) {
         wii = new WiiExtensionDevice();
         
-        // 自動スキャンをスキップし、強制的に i2c1 (block番号 1) を割り当てる
-        // Wiiエクステンションの標準アドレスは 0x52 です
-        wii->setAddress(0x52); 
-        
-        // PeripheralManagerからi2c1のインスタンスを取得 (1 = i2c1)
+        // 明示的に i2c1 をセットしてからスキャンを実行
         auto i2c1_inst = PeripheralManager::getInstance().getI2C(1);
-        
         if (i2c1_inst != nullptr) {
             wii->setI2C(i2c1_inst);
-            return true;
-        } else {
-            // i2c1がPeripheral Mappingで設定されていない場合は失敗させる
-            delete wii;
-            return false;
+            
+            // i2c1 のバス上でWiiデバイスを探す
+            PeripheralI2CScanResult result = PeripheralManager::getInstance().scanForI2CDevice(wii->getDeviceAddresses());
+            if (result.address > -1) {
+                wii->setAddress(result.address);
+                return true;
+            }
         }
+        delete wii;
     }
     return false;
 }
