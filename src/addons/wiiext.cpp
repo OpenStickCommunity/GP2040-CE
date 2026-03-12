@@ -5,26 +5,17 @@
 #include "helper.h"
 #include "config.pb.h"
 
-bool WiiExtensionInput::available() {
+ool WiiExtensionInput::available() {
     const WiiOptions& options = Storage::getInstance().getAddonOptions().wiiOptions;
     if (options.enabled) {
-        // 明示的に i2c1 (index 1) を取得
-        auto i2c1_inst = PeripheralManager::getInstance().getI2C(1);
-        
+        auto i2c1_inst = PeripheralManager::getInstance().getI2C(1); // I2C1を指定
         if (i2c1_inst != nullptr) {
             wii = new WiiExtensionDevice();
             wii->setI2C(i2c1_inst);
-            
-            // i2c1 のバス上でWiiデバイス(0x52)を直接叩く
-            // スキャン結果が良ければ wii->setAddress(0x52) 等が内部で行われる
-            PeripheralI2CScanResult result = PeripheralManager::getInstance().scanForI2CDevice(wii->getDeviceAddresses());
-            
-            if (result.address > -1) {
-                wii->setAddress(result.address);
-                return true; // これで update() メソッドが走り出します
-            }
+            wii->setAddress(0x52);
+            // 起動時に刺さっていなくてもOKにするため、常にtrueを返す
+            return true;
         }
-        delete wii;
     }
     return false;
 }
@@ -57,13 +48,25 @@ void WiiExtensionInput::setup() {
 
 void WiiExtensionInput::process() {
     if (nextTimer < getMillis()) {
-        wii->poll();
+        // デバイスが未認識(NONE)の場合、2秒おきに再接続を試行
+        if (wii->extensionType == WII_EXTENSION_NONE) {
+            static uint32_t lastRetry = 0;
+            if (getMillis() - lastRetry > 2000) {
+                wii->begin(); // 初期化コマンド送信
+                wii->start(); // 通信開始
+                lastRetry = getMillis();
+            }
+        } else {
+            // 接続中の場合、ポーリングを実行
+            // 通信に失敗（コントローラーが抜かれた等）したら、タイプをNONEに戻す
+            if (wii->poll() == false) {
+                wii->extensionType = WII_EXTENSION_NONE;
+            }
+        }
 
         update();
-              
         nextTimer = getMillis() + uIntervalMS;
     }
-
     if (currentConfig != NULL) {
         queueAnalogChange(WiiAnalogs::WII_ANALOG_LEFT_X, leftX, lastLeftX);
         queueAnalogChange(WiiAnalogs::WII_ANALOG_LEFT_Y, leftY, lastLeftY);
