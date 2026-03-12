@@ -10,11 +10,16 @@ bool WiiExtensionInput::available() {
     if (options.enabled) {
         // addon is enabled. let's scan available blocks.
         wii = new WiiExtensionDevice();
-        PeripheralI2CScanResult result = PeripheralManager::getInstance().scanForI2CDevice(wii->getDeviceAddresses());
-        if (result.address > -1) {
-            wii->setAddress(result.address);
-            wii->setI2C(PeripheralManager::getInstance().getI2C(result.block));
-            return true;
+        // PeripheralI2CScanResult result = PeripheralManager::getInstance().scanForI2CDevice(wii->getDeviceAddresses());
+        // if (result.address > -1) {
+           // wii->setAddress(result.address);
+            // wii->setI2C(PeripheralManager::getInstance().getI2C(result.block));
+           // return true;
+		   	// スキャン結果を無視し、i2c1 (block番号 1) を強制指定する
+        // 0x52はWiiエクステンションの標準アドレス
+        wii->setAddress(0x52); 
+        wii->setI2C(PeripheralManager::getInstance().getI2C(1)); // 1 = i2c1
+        return true;
         } else {
             delete wii;
         }
