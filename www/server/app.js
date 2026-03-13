@@ -884,18 +884,19 @@ app.post('/api/getHETriggerCalibration', (req, res) => {
 
 app.get('/api/getBootModeOptions', (req, res) => {
 	return res.send({
+		enabled: false,
 		webConfigPinMask: 1,
 		usbModePinMask: 14,
 		inputModeMappings: [
 			{
 				pinMask: 2,
 				inputMode: 4,
-				profileIndex: 1,
+				profileNumber: 1,
 			},
 			{
 				pinMask: 8,
 				inputMode: 3,
-				profileIndex: -1,
+				profileNumber: 0,
 			}
 		],
 	});
