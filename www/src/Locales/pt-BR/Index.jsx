@@ -8,10 +8,10 @@ import PinMapping from './PinMapping';
 import BackupPage from './BackupPage';
 import DisplayConfig from './DisplayConfig';
 import AddonsConfig from './AddonsConfig';
-import LedConfig from './LedConfig';
+import LedConfigPage from './LedConfigPage';
 
 export default {
-	LedConfig,
+	LedConfigPage,
 	Common,
 	HomePage,
 	Navigation,

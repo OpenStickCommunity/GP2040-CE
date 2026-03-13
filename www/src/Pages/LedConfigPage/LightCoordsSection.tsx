@@ -186,15 +186,9 @@ export default function LightCoordsSection({
 
 	return (
 		<div>
-			<p>
-				This section allows you to visually arrange and configure the position
-				of each light. This is useful for mapping LEDs or light indicators to
-				their physical locations on your device or case. Drag lights on the grid
-				or adjust their coordinates manually to match your setup.
-			</p>
+			<p>{t('LedConfigPage:lightCoordsSection.description')}</p>
 			<Alert variant="warning">
-				Changing layout configuration options can break your LED setup. Proceed
-				with caution.
+				{t('LedConfigPage:lightCoordsSection.warning')}
 			</Alert>
 			<hr />
 			{/* <Row className="mb-3">
@@ -290,7 +284,7 @@ export default function LightCoordsSection({
 							handleNewLight(LIGHT_TYPES.ActionButton);
 						}}
 					>
-						Add button light
+						{t('LedConfigPage:lightCoordsSection.add-button-light')}
 					</Button>
 				</Col>
 				<Col md={3}>
@@ -302,7 +296,7 @@ export default function LightCoordsSection({
 							handleNewLight(LIGHT_TYPES.Case);
 						}}
 					>
-						Add case light
+						{t('LedConfigPage:lightCoordsSection.add-case-light')}
 					</Button>
 				</Col>
 				<Col md={3}>
@@ -314,7 +308,7 @@ export default function LightCoordsSection({
 							handleNewLight(LIGHT_TYPES.Turbo);
 						}}
 					>
-						Add turbo light
+						{t('LedConfigPage:lightCoordsSection.add-turbo-light')}
 					</Button>
 				</Col>
 				<Col md={3}>
@@ -326,7 +320,7 @@ export default function LightCoordsSection({
 							handleNewLight(LIGHT_TYPES.PlayerLight);
 						}}
 					>
-						Add player light
+						{t('LedConfigPage:lightCoordsSection.add-player-light')}
 					</Button>
 				</Col>
 			</Row>
@@ -335,9 +329,9 @@ export default function LightCoordsSection({
 					<div className="d-flex flex-grow-1">
 						{selectedLight !== null ? (
 							<div className="w-100 mb-3">
-								<h3>Light {selectedLight + 1}</h3>
-								<FormSelect
-									label="Light Type"
+							<h3>{t('LedConfigPage:lightCoordsSection.light-header', { index: selectedLight + 1 })}</h3>
+							<FormSelect
+								label={t('LedConfigPage:lightCoordsSection.light-type-label')}
 									className="form-select"
 									groupClassName="mb-3"
 									value={values.Lights[selectedLight]?.lightType}
@@ -349,39 +343,43 @@ export default function LightCoordsSection({
 									}}
 									name={`Lights[${selectedLight}].lightType`}
 								>
-									<option value={LIGHT_TYPES.ActionButton}>ActionButton</option>
-									<option value={LIGHT_TYPES.Case}>Case</option>
-									<option value={LIGHT_TYPES.Turbo}>Turbo</option>
-									<option value={LIGHT_TYPES.PlayerLight}>PlayerLight</option>
+									<option value={LIGHT_TYPES.ActionButton}>{t('LedConfigPage:lightCoordsSection.light-type-action-button')}</option>
+									<option value={LIGHT_TYPES.Case}>{t('LedConfigPage:lightCoordsSection.light-type-case')}</option>
+									<option value={LIGHT_TYPES.Turbo}>{t('LedConfigPage:lightCoordsSection.light-type-turbo')}</option>
+									<option value={LIGHT_TYPES.PlayerLight}>{t('LedConfigPage:lightCoordsSection.light-type-player-light')}</option>
 								</FormSelect>
 								<FormControl
 									type="number"
-									label={'Number of LEDs on Light'}
+									label={t('LedConfigPage:lightCoordsSection.num-leds-label')}
 									name={`Lights[${selectedLight}].numLedsOnLight`}
 									className="form-control"
 									groupClassName="mb-3"
 									value={values.Lights[selectedLight]?.numLedsOnLight}
-									// TODO: Fix error typing
 									error={
-										(errors.Lights?.[selectedLight] as any)?.numLedsOnLight
+										(errors.Lights?.[selectedLight] as FormikErrors<Light>)
+											?.numLedsOnLight
 									}
 									isInvalid={Boolean(
-										(errors.Lights?.[selectedLight] as any)?.numLedsOnLight,
+										(errors.Lights?.[selectedLight] as FormikErrors<Light>)
+											?.numLedsOnLight,
 									)}
 									onChange={handleChange}
 									min={1}
 								/>
 								<FormControl
 									type="number"
-									label={'Index of the first LED'}
+									label={t('LedConfigPage:lightCoordsSection.first-led-index-label')}
 									name={`Lights[${selectedLight}].firstLedIndex`}
 									className="form-control"
 									groupClassName="mb-3"
 									value={values.Lights[selectedLight]?.firstLedIndex}
-									// TODO: Fix error typing
-									error={(errors.Lights?.[selectedLight] as any)?.firstLedIndex}
+									error={
+										(errors.Lights?.[selectedLight] as FormikErrors<Light>)
+											?.firstLedIndex
+									}
 									isInvalid={Boolean(
-										(errors.Lights?.[selectedLight] as any)?.firstLedIndex,
+										(errors.Lights?.[selectedLight] as FormikErrors<Light>)
+											?.firstLedIndex,
 									)}
 									onChange={handleChange}
 									min={0}
@@ -389,8 +387,8 @@ export default function LightCoordsSection({
 								<FormSelect
 									label={
 										values.Lights[selectedLight]?.lightType == LIGHT_TYPES.Case
-											? 'Case Id tied to Light'
-											: 'GPIO Pin tied to Light'
+										? t('LedConfigPage:lightCoordsSection.case-id-tied-label')
+										: t('LedConfigPage:lightCoordsSection.gpio-pin-tied-label')
 									}
 									className="form-select"
 									groupClassName="mb-3"
@@ -404,7 +402,7 @@ export default function LightCoordsSection({
 											{Array.from({ length: MAX_CASE_LIGHTS }).map(
 												(_, caseIndex) => (
 													<option key={caseIndex} value={caseIndex}>
-														Case ID {caseIndex + 1}
+													{t('LedConfigPage:lightCoordsSection.case-id-option', { index: caseIndex + 1 })}
 													</option>
 												),
 											)}
@@ -414,7 +412,7 @@ export default function LightCoordsSection({
 											{Array.from({ length: GPIO_PIN_LENGTH }).map(
 												(_, pinIndex) => (
 													<option key={pinIndex} value={pinIndex}>
-														GPIO Pin {pinIndex}
+													{t('LedConfigPage:lightCoordsSection.gpio-pin-option', { index: pinIndex })}
 													</option>
 												),
 											)}
@@ -424,7 +422,7 @@ export default function LightCoordsSection({
 
 								{values.Lights[selectedLight]?.lightType == LIGHT_TYPES.Case ? (
 									<div className="mb-3">
-										<label className="form-label">Case Color</label>
+										<label className="form-label">{t('LedConfigPage:lightCoordsSection.case-color-label')}</label>
 										<ColorSelector
 											options={colorOptions}
 											value={
@@ -445,14 +443,13 @@ export default function LightCoordsSection({
 								) : (
 									<>
 										<div className="mb-3">
-											<label className="form-label">Idle Color</label>
+											<label className="form-label">{t('LedConfigPage:lightCoordsSection.idle-color-label')}</label>
 											<ColorSelector
 												options={colorOptions}
 												value={
 													colorOptions[
 														notPressedStaticColors[
-															values.Lights[selectedLight]
-																.GPIOPinOrColorIndex
+															values.Lights[selectedLight].GPIOPinOrColorIndex
 														]
 													]
 												}
@@ -465,14 +462,13 @@ export default function LightCoordsSection({
 											/>
 										</div>
 										<div className="mb-3">
-											<label className="form-label">Pressed Color</label>
+											<label className="form-label">{t('LedConfigPage:lightCoordsSection.pressed-color-label')}</label>
 											<ColorSelector
 												options={colorOptions}
 												value={
 													colorOptions[
 														pressedStaticColors[
-															values.Lights[selectedLight]
-																.GPIOPinOrColorIndex
+															values.Lights[selectedLight].GPIOPinOrColorIndex
 														]
 													]
 												}
@@ -491,14 +487,18 @@ export default function LightCoordsSection({
 									<div className="flex-grow-1">
 										<FormControl
 											type="number"
-											label={'X Coord'}
+											label={t('LedConfigPage:lightCoordsSection.x-coord-label')}
 											name={`Lights[${selectedLight}].xCoord`}
 											className="form-control"
 											value={values.Lights[selectedLight]?.xCoord}
 											onChange={handleChange}
-											error={(errors.Lights?.[selectedLight] as any)?.xCoord}
+											error={
+												(errors.Lights?.[selectedLight] as FormikErrors<Light>)
+													?.xCoord
+											}
 											isInvalid={Boolean(
-												(errors.Lights?.[selectedLight] as any)?.xCoord,
+												(errors.Lights?.[selectedLight] as FormikErrors<Light>)
+													?.xCoord,
 											)}
 											min={0}
 											max={gridSize - 1}
@@ -507,14 +507,18 @@ export default function LightCoordsSection({
 									<div className="flex-grow-1">
 										<FormControl
 											type="number"
-											label={'Y Coord'}
+											label={t('LedConfigPage:lightCoordsSection.y-coord-label')}
 											name={`Lights[${selectedLight}].yCoord`}
 											className="form-control"
 											value={values.Lights[selectedLight]?.yCoord}
 											onChange={handleChange}
-											error={(errors.Lights?.[selectedLight] as any)?.yCoord}
+											error={
+												(errors.Lights?.[selectedLight] as FormikErrors<Light>)
+													?.yCoord
+											}
 											isInvalid={Boolean(
-												(errors.Lights?.[selectedLight] as any)?.yCoord,
+												(errors.Lights?.[selectedLight] as FormikErrors<Light>)
+													?.yCoord,
 											)}
 											min={0}
 											max={gridSize - 1}
@@ -528,15 +532,13 @@ export default function LightCoordsSection({
 										handleDeleteLight(selectedLight);
 									}}
 								>
-									Delete Light
+									{t('LedConfigPage:lightCoordsSection.delete-light')}
 								</Button>
 							</div>
 						) : (
 							<div className="w-100 d-flex flex-column justify-content-center">
-								<h3>Select a Light</h3>
-								<p>
-									Click on a light in the grid to view and edit its properties.
-								</p>
+								<h3>{t('LedConfigPage:lightCoordsSection.select-a-light')}</h3>
+								<p>{t('LedConfigPage:lightCoordsSection.select-a-light-description')}</p>
 							</div>
 						)}
 					</div>

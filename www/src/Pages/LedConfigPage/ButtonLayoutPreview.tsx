@@ -106,14 +106,13 @@ function ButtonLayoutPreview({
 	return (
 		<div>
 			<p>
-				Here you can see a preview of your button layout and the colors assigned
-				to each GPIO pin.
+				{t('LedConfigPage:buttonLayoutPreview.description')}
 				<br />
-				If you have buttons assigned to the same GPIO they will share color.
+				{t('LedConfigPage:buttonLayoutPreview.shared-color-note')}
 			</p>
 			<ul>
-				<li>Click a button to change its idle and pressed color.</li>
-				<li>Right-click on the layout to preview the pressed colors.</li>
+				<li>{t('LedConfigPage:buttonLayoutPreview.hint-idle')}</li>
+				<li>{t('LedConfigPage:buttonLayoutPreview.hint-right-click')}</li>
 			</ul>
 			<hr />
 			<div className="mb-3">
@@ -132,7 +131,7 @@ function ButtonLayoutPreview({
 						strokeWidth="1"
 					/>
 				</svg>
-				Action Button
+				{t('LedConfigPage:buttonLayoutPreview.legend-action-button')}
 				<svg
 					width="20"
 					height="20"
@@ -149,7 +148,7 @@ function ButtonLayoutPreview({
 						strokeWidth="1"
 					/>
 				</svg>
-				Case Light
+				{t('LedConfigPage:buttonLayoutPreview.legend-case-light')}
 				<svg
 					width="20"
 					height="20"
@@ -163,7 +162,7 @@ function ButtonLayoutPreview({
 						strokeWidth="1"
 					/>
 				</svg>
-				Turbo / Player Light
+				{t('LedConfigPage:buttonLayoutPreview.legend-turbo-player-light')}
 			</div>
 
 			<Row
@@ -185,10 +184,10 @@ function ButtonLayoutPreview({
 									return (
 										<ColorSelectOverlay
 											key={`button-light-${index}`}
-											title={`GPIO ${light.GPIOPinOrColorIndex}`}
-											content={
-												<div style={{ minWidth: 200 }}>
-													<p>Idle color</p>
+										title={t('LedConfigPage:buttonLayoutPreview.overlay-gpio-title', { pin: light.GPIOPinOrColorIndex })}
+										content={
+											<div style={{ minWidth: 200 }}>
+												<p>{t('LedConfigPage:buttonLayoutPreview.idle-color')}</p>
 													<ColorSelector
 														options={colorOptions}
 														value={
@@ -206,7 +205,7 @@ function ButtonLayoutPreview({
 														}}
 													/>
 
-													<p className="mt-3">Pressed color</p>
+													<p className="mt-3">{t('LedConfigPage:buttonLayoutPreview.pressed-color')}</p>
 													<ColorSelector
 														options={colorOptions}
 														value={
@@ -268,10 +267,10 @@ function ButtonLayoutPreview({
 									return (
 										<ColorSelectOverlay
 											key={`case-light-${index}`}
-											title={`Case ${light.GPIOPinOrColorIndex}`}
-											content={
-												<div style={{ minWidth: 200 }}>
-													<p>Case color</p>
+										title={t('LedConfigPage:buttonLayoutPreview.overlay-case-title', { id: light.GPIOPinOrColorIndex })}
+										content={
+											<div style={{ minWidth: 200 }}>
+												<p>{t('LedConfigPage:buttonLayoutPreview.case-color')}</p>
 													<ColorSelector
 														options={colorOptions}
 														value={
@@ -329,10 +328,10 @@ function ButtonLayoutPreview({
 									return (
 										<ColorSelectOverlay
 											key={`misc-light-${index}`}
-											title={`GPIO ${light.GPIOPinOrColorIndex}`}
-											content={
-												<div style={{ minWidth: 200 }}>
-													<p>Idle color</p>
+										title={t('LedConfigPage:buttonLayoutPreview.overlay-gpio-title', { pin: light.GPIOPinOrColorIndex })}
+										content={
+											<div style={{ minWidth: 200 }}>
+												<p>{t('LedConfigPage:buttonLayoutPreview.idle-color')}</p>
 													<ColorSelector
 														options={colorOptions}
 														value={
@@ -350,7 +349,7 @@ function ButtonLayoutPreview({
 														}}
 													/>
 
-													<p className="mt-3">Active color</p>
+													<p className="mt-3">{t('LedConfigPage:buttonLayoutPreview.active-color')}</p>
 													<ColorSelector
 														options={colorOptions}
 														value={
@@ -413,10 +412,10 @@ function ButtonLayoutPreview({
 			</Row>
 
 			<ColorSelectOverlay
-				title={'Set all colors'}
+				title={t('LedConfigPage:buttonLayoutPreview.set-all-colors')}
 				content={
 					<div style={{ minWidth: 200 }}>
-						<p>Idle color</p>
+						<p>{t('LedConfigPage:buttonLayoutPreview.idle-color')}</p>
 						<ColorSelector
 							options={colorOptions}
 							onChange={(selected) => {
@@ -426,7 +425,7 @@ function ButtonLayoutPreview({
 								);
 							}}
 						/>
-						<p className="mt-3">Pressed color</p>
+						<p className="mt-3">{t('LedConfigPage:buttonLayoutPreview.pressed-color')}</p>
 						<ColorSelector
 							options={colorOptions}
 							onChange={(selected) => {
@@ -436,7 +435,7 @@ function ButtonLayoutPreview({
 								);
 							}}
 						/>
-						<p className="mt-3">Case color</p>
+						<p className="mt-3">{t('LedConfigPage:buttonLayoutPreview.case-color')}</p>
 						<ColorSelector
 							options={colorOptions}
 							onChange={(selected) => {
@@ -449,7 +448,7 @@ function ButtonLayoutPreview({
 					</div>
 				}
 			>
-				<Button variant="secondary">Set all colors</Button>
+				<Button variant="secondary">{t('LedConfigPage:buttonLayoutPreview.set-all-colors')}</Button>
 			</ColorSelectOverlay>
 		</div>
 	);
