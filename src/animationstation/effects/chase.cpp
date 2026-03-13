@@ -102,6 +102,7 @@ Chase::Chase(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType, 
       RandomChaseType = SingleChaseTypes::SINGLECHASETYPES_SEQUENTIAL;
       break;
   }
+  SetStartLight();
 }
 
 void Chase::Animate(RGB (&frame)[FRAME_MAX]) 
@@ -313,7 +314,6 @@ void Chase::CheckForEndOfSequence()
       if((unsigned int)CurrentLight >= OrderedLights.size())
       {
         hasEnded = true;
-        CurrentLight = 0;
         ChaseTimes[0] = 1.0f;
         ChaseTimes[1] = 1.0f + CHASE_SECOND_LIGHT_OFFSET;
       }
@@ -325,7 +325,6 @@ void Chase::CheckForEndOfSequence()
       if(CurrentLight > MaxXCoord)
       {
         hasEnded = true;
-        CurrentLight = MinXCoord;
         ChaseTimes[0] = 1.0f;
         ChaseTimes[1] = 1.0f + CHASE_SECOND_LIGHT_OFFSET;
       }
@@ -337,7 +336,6 @@ void Chase::CheckForEndOfSequence()
       if(CurrentLight > MaxYCoord)
       {
         hasEnded = true;
-        CurrentLight = MinYCoord;
         ChaseTimes[0] = 1.0f;
         ChaseTimes[1] = 1.0f + CHASE_SECOND_LIGHT_OFFSET;
       }
@@ -387,6 +385,30 @@ void Chase::CheckForEndOfSequence()
       default:
         break;
     }
+
+    SetStartLight();
+  }
+}
+
+void Chase::SetStartLight()
+{
+  CurrentLight = 0;
+  switch(RandomChaseType)
+  {
+    case SingleChaseTypes::SINGLECHASETYPES_LEFT_TO_RIGHT:
+    case SingleChaseTypes::SINGLECHASETYPES_RIGHT_TO_LEFT:
+    {
+      CurrentLight = MinXCoord;
+    } break;
+
+    case SingleChaseTypes::SINGLECHASETYPES_TOP_TO_BOTTOM:
+    case SingleChaseTypes::SINGLECHASETYPES_BOTTOM_TO_TOP:
+    {
+      CurrentLight = MinYCoord;
+    } break;
+
+    default:
+      break;
   }
 }
 
