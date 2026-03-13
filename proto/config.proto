@@ -52,10 +52,6 @@ message GamepadOptions
     optional uint32 usbVendorID = 31;
     optional uint32 miniMenuGamepadInput = 32;
     optional InputModeDeviceType inputDeviceType = 33;
-    optional bool useGpioInputModeSelect = 34 [default=false];
-    repeated GpioInputModeMapping gpioInputModeMappings = 35 [(nanopb).max_count = 8];
-    optional bool useGpioBootModeSelect = 36 [default=false];
-    repeated BootModeMapping bootModeMappings = 37 [(nanopb).max_count = 8];
 }
 
 message KeyboardMapping
@@ -963,4 +959,5 @@ message Config
     optional GpioMappings gpioMappings = 13;
     optional MigrationHistory migrations = 14;
     optional PeripheralOptions peripheralOptions = 15;
+		optional BootModeOptions bootModeOptions = 16;
 }
