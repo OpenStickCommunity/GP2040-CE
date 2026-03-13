@@ -258,12 +258,8 @@ int set_file_data(fs_file* file, const DataAndStatusCode& dataAndStatusCode)
     returnData.append("\r\n\r\n");
     returnData.append(dataAndStatusCode.data);
 
-    returnData->append(std::to_string(dataAndStatusCode.data.length()));
-    returnData->append("\r\n\r\n");
-    returnData->append(dataAndStatusCode.data);
-
-    file->data = returnData->c_str();
-    file->len = returnData->size();
+    file->data = returnData.c_str();
+    file->len = returnData.size();
     file->index = file->len;
     file->http_header_included = file->http_header_included;
     file->pextension = NULL;
@@ -2625,94 +2621,6 @@ std::string reboot() {
     return serialize_json(doc);
 }
 
-// NEW API: return current raw ADC reading for the configured analog pins
-std:: string getJoystickCenter() {
-    const size_t capacity = JSON_OBJECT_SIZE(10);
-    DynamicJsonDocument doc(capacity);
-    const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
-
-    uint16_t x = 0, y = 0;
-    bool success = true;
-    std::string error_msg = "";
-
-    // Check if analog input is enabled
-    if (!analogOptions.enabled) {
-        success = false;
-        error_msg = "Analog input is not enabled";
-    } else {
-        // Initialize ADC if not already initialized
-        adc_init();
-
-        // Check if specific stick is requested via query parameter
-        // For now, we'll read both sticks and return the appropriate one
-        // In a more sophisticated implementation, we could parse query parameters
-
-        // Read first stick X/Y
-        if (isValidPin(analogOptions.analogAdc1PinX)) {
-            adc_gpio_init(analogOptions.analogAdc1PinX);
-            adc_select_input(analogOptions.analogAdc1PinX - 26);
-            x = adc_read();
-        }
-        if (isValidPin(analogOptions.analogAdc1PinY)) {
-            adc_gpio_init(analogOptions.analogAdc1PinY);
-            adc_select_input(analogOptions.analogAdc1PinY - 26);
-            y = adc_read();
-        }
-    }
-
-    JsonObject o = doc.to<JsonObject>();
-    o["success"] = success;
-    if (!success) {
-        o["error"] = error_msg;
-    } else {
-        o["x"] = x;
-        o["y"] = y;
-    }
-    return serialize_json(doc);
-}
-
-// NEW API: return current raw ADC reading for stick 2
-std:: string getJoystickCenter2() {
-    const size_t capacity = JSON_OBJECT_SIZE(10);
-    DynamicJsonDocument doc(capacity);
-    const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
-
-    uint16_t x = 0, y = 0;
-    bool success = true;
-    std::string error_msg = "";
-
-    // Check if analog input is enabled
-    if (!analogOptions.enabled) {
-        success = false;
-        error_msg = "Analog input is not enabled";
-    } else {
-        // Initialize ADC if not already initialized
-        adc_init();
-
-        // Read second stick X/Y
-        if (isValidPin(analogOptions.analogAdc2PinX)) {
-            adc_gpio_init(analogOptions.analogAdc2PinX);
-            adc_select_input(analogOptions.analogAdc2PinX - 26);
-            x = adc_read();
-        }
-        if (isValidPin(analogOptions.analogAdc2PinY)) {
-            adc_gpio_init(analogOptions.analogAdc2PinY);
-            adc_select_input(analogOptions.analogAdc2PinY - 26);
-            y = adc_read();
-        }
-    }
-
-    JsonObject o = doc.to<JsonObject>();
-    o["success"] = success;
-    if (!success) {
-        o["error"] = error_msg;
-    } else {
-        o["x"] = x;
-        o["y"] = y;
-    }
-    return serialize_json(doc);
-}
-
 typedef std::string (*HandlerFuncPtr)();
 static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
 {
@@ -2761,10 +2669,8 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/abortGetHeldPins", abortGetHeldPins },
     { "/api/getUsedPins", getUsedPins },
     { "/api/getConfig", getConfig },
-    { "/api/getJoystickCenter", getJoystickCenter },
-    { "/api/getJoystickCenter2", getJoystickCenter2 },
-	{ "/api/getBootModeOptions", getBootModeOptions },
-	{ "/api/setBootModeOptions", setBootModeOptions },
+		{ "/api/getBootModeOptions", getBootModeOptions },
+		{ "/api/setBootModeOptions", setBootModeOptions },
 #if !defined(NDEBUG)
     { "/api/echo", echo },
 #endif

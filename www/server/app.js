@@ -328,7 +328,7 @@ app.get('/api/getPeripheralOptions', (req, res) => {
 				tx: -1,
 			},
 			usb0: {
-				enabled: 0,
+				enabled: 1,
 				dp: 28,
 				enable5v: -1,
 				order: 0,
@@ -910,5 +910,3 @@ app.post('/api/*', (req, res) => {
 app.listen(port, () => {
 	console.log(`Dev app listening at http://localhost:${port}`);
 });
-
-

@@ -1662,7 +1662,6 @@ export default function SettingsPage() {
 												</Section>
 											</Tab.Pane>
 											<Tab.Pane eventKey="bootmode">
-												{}
 												<Section
 													title={t('SettingsPage:boot-input-mode-label')}
 												>
