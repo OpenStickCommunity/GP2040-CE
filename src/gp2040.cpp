@@ -72,6 +72,9 @@ void GP2040::setup() {
 	Storage::getInstance().SetGamepad(gamepad);
 	Storage::getInstance().SetProcessedGamepad(processedGamepad);
 
+	Storage::getInstance().setBootModeFunctionalPinMappings()
+	auto [bootAction, profile] = getGpioMappedBootActions(currentProfile);
+
 	// Set pin mappings for all GPIO functions
 	Storage::getInstance().setFunctionalPinMappings();
 
@@ -383,30 +386,14 @@ void GP2040::getReinitGamepad(Gamepad * gamepad) {
 	}
 }
 
-std::pair<GP2040::BootAction, uint32_t> GP2040::getBootAction(uint32_t currentProfile) {
+std::pair<GP2040::BootAction, uint32_t> GP2040::getGpioMappedBootActions(uint32_t currentProfile) {
 	switch (System::takeBootMode()) {
 		case System::BootMode::GAMEPAD: return { BootAction::NONE, currentProfile };
 		case System::BootMode::WEBCONFIG: return { BootAction::ENTER_WEBCONFIG_MODE, currentProfile };
 		case System::BootMode::USB: return { BootAction::ENTER_USB_MODE, currentProfile };
 		case System::BootMode::DEFAULT:
 			{
-				// Determine boot action based on gamepad state during boot
-				Gamepad * gamepad = Storage::getInstance().GetGamepad();
-				Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
-
-				debounceGpioGetAll();
-				gamepad->read();
-
-				// Pre-Process add-ons for MPGS
-				addons.PreprocessAddons();
-
-				gamepad->process(); // process through MPGS
-
-				// Process for add-ons
-				addons.ProcessAddons();
-
-				// Copy Processed Gamepad for Core1 (race condition otherwise)
-				memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
+				Mask_t raw_gpio = ~gpio_get_all();
 
                 const ForcedSetupOptions& forcedSetupOptions = Storage::getInstance().getForcedSetupOptions();
                 bool modeSwitchLocked = forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_MODE_SWITCH ||
@@ -419,69 +406,24 @@ std::pair<GP2040::BootAction, uint32_t> GP2040::getBootAction(uint32_t currentPr
 				std::optional<InputMode> inputMode = std::nullopt;
 				uint32_t profile = currentProfile;
 
-				if (bootModeOptions.enabled) {
-					// mask for just the pins configured as input mode selectors. Others have no
-					// effect
-					int32_t mask = bootModeOptions.webConfigPinMask
-						| bootModeOptions.usbModePinMask;
+				if (raw_gpio == bootModeOptions.webConfigPinMask) {
+					return { BootAction::ENTER_WEBCONFIG_MODE, currentProfile };
+				}
+				if (raw_gpio == bootModeOptions.usbModePinMask) {
+					return { BootAction::ENTER_USB_MODE, currentProfile };
+				}
 
-					std::map<int32_t, size_t> maskIndexMap;
-
-					for (size_t i = 0; i < bootModeOptions.inputModeMappings_count; i++) {
-						auto mapping = bootModeOptions.inputModeMappings[i];
-						if (mapping.pinMask == -1) {
-							continue;
-						}
-						mask |= mapping.pinMask;
-						maskIndexMap.insert({mapping.pinMask, i});
-					}
-					int32_t masked_gpio = gamepad->debouncedGpio & mask;
-
-					if (masked_gpio == bootModeOptions.webConfigPinMask) {
-						return { BootAction::ENTER_WEBCONFIG_MODE, currentProfile };
-					}
-					if (masked_gpio == bootModeOptions.usbModePinMask) {
-						return { BootAction::ENTER_USB_MODE, currentProfile };
-					}
-
-					if (auto search = maskIndexMap.find(masked_gpio); search != maskIndexMap.end()) {
-						auto mapping = bootModeOptions.inputModeMappings[search->second];
-
-						inputMode = static_cast<InputMode>(mapping.inputMode);
-
-						if (mapping.profileNumber > 0) {
-							profile = mapping.profileNumber;
+				for (size_t i = 0; i < bootModeOptions.inputModeMappings_count; i++) {
+					InputModeMapping m = bootModeOptions.inputModeMappings[i];
+					if (raw_gpio == m.pinMask) {
+						inputMode = static_cast<InputMode>(m.inputMode);
+						if (m.profileNumber > 0) {
+							profile = m.profileNumber;
 						}
 					}
 				}
-				else {
-					if (gamepad->pressedS1() && gamepad->pressedS2() && gamepad->pressedUp()) {
-						return{ BootAction::ENTER_USB_MODE, profile };
-					}
-					if (!webConfigLocked && gamepad->pressedS2()) {
-						return { BootAction::ENTER_WEBCONFIG_MODE, profile };
-					}
-					if (modeSwitchLocked) {
-						return { BootAction::NONE, profile };
-					}
-
-					const GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
-					// Use the mapped buttons to select input mode instead
-					bootActions.insert({GAMEPAD_MASK_B1, gamepadOptions.inputModeB1});
-					bootActions.insert({GAMEPAD_MASK_B2, gamepadOptions.inputModeB2});
-					bootActions.insert({GAMEPAD_MASK_B3, gamepadOptions.inputModeB3});
-					bootActions.insert({GAMEPAD_MASK_B4, gamepadOptions.inputModeB4});
-					bootActions.insert({GAMEPAD_MASK_L1, gamepadOptions.inputModeL1});
-					bootActions.insert({GAMEPAD_MASK_L2, gamepadOptions.inputModeL2});
-					bootActions.insert({GAMEPAD_MASK_R1, gamepadOptions.inputModeR1});
-					bootActions.insert({GAMEPAD_MASK_R2, gamepadOptions.inputModeR2});
-					if (auto search = bootActions.find(gamepad->state.buttons); search != bootActions.end()) {
-						inputMode = static_cast<InputMode>(search->second);
-					}
-				}
-
 				if (!inputMode.has_value()) {
-					return { BootAction::NONE, profile };
+					return { BootAction::NONE, currentProfile };
 				}
 				switch (inputMode.value()) {
 					case INPUT_MODE_XINPUT:

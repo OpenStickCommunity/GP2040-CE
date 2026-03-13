@@ -64,8 +64,8 @@ private:
         SET_INPUT_MODE_XBOXORIGINAL,
         SET_INPUT_MODE_SWITCH_PRO,
     };
-	// Get boot action and profile index to load
-    std::pair<BootAction, uint32_t> getBootAction(uint32_t currentProfile);
+
+	std::pair<BootAction, uint32_t> getGpioMappedBootActions(uint32_t currentProfile);
     void getReinitGamepad(Gamepad * gamepad);
 
     // GPIO manipulation for setup and profile reinit
