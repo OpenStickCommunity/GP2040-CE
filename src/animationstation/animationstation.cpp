@@ -499,16 +499,10 @@ void AnimationStation::SetMode(int8_t mode)
     break;
 
   case AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_BURST:
-    this->buttonAnimation = new BurstColor(RGBLights, false, false, lastPressed, buttonCaseEffectType);
-    break;
-  case AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_BURST_RANDOM:
-    this->buttonAnimation = new BurstColor(RGBLights, true, false, lastPressed, buttonCaseEffectType);
+    this->buttonAnimation = new BurstColor(RGBLights, false, lastPressed, buttonCaseEffectType);
     break;
   case AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_BURST_SMALL:
-    this->buttonAnimation = new BurstColor(RGBLights, false, true, lastPressed, buttonCaseEffectType);
-    break;
-  case AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_BURST_SMALL_RANDOM:
-    this->buttonAnimation = new BurstColor(RGBLights, true, true, lastPressed, buttonCaseEffectType);
+    this->buttonAnimation = new BurstColor(RGBLights, true, lastPressed, buttonCaseEffectType);
     break;
 
   default:
