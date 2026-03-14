@@ -46,15 +46,15 @@ private:
     enum class BootActionType {
 			ENTER_USB_MODE,
 			SET_INPUT_MODE
-	};
+		};
 
-	struct BootAction {
-		BootActionType type;
-		InputMode inputMode;
-		uint32_t profileNumber;
-	};
+		struct BootAction {
+			BootActionType type;
+			InputMode inputMode;
+			uint32_t profileNumber;
+		};
 
-	BootAction getBootAction();
+		BootAction getBootAction();
     void getReinitGamepad(Gamepad * gamepad);
 
     // GPIO manipulation for setup and profile reinit

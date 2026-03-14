@@ -72,13 +72,16 @@ void GP2040::setup() {
 	Storage::getInstance().SetGamepad(gamepad);
 	Storage::getInstance().SetProcessedGamepad(processedGamepad);
 
+	// Run the boot-mode/profile selection using pins mapped in BootModeOptions
 	Storage::getInstance().setBootModeFunctionalPinMappings();
-
-	uint32_t currentProfile = Storage::getInstance().getGamepadOptions().profileNumber;
+	initializeStandardGpio();
 	BootAction bootAction = getBootAction();
-
-	// TODO - could we just immediately move into the selected profile, before initializing GPIO?
 	deinitializeStandardGpio();
+
+	GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
+	uint32_t prevProfile = gamepadOptions.profileNumber;
+	bool profileChanged = bootAction.profileNumber != prevProfile;
+	gamepadOptions.profileNumber = bootAction.profileNumber;
 
 	// Set pin mappings for all GPIO functions
 	Storage::getInstance().setFunctionalPinMappings();
@@ -93,7 +96,7 @@ void GP2040::setup() {
 
 	// Initialize last reinit profile to current. May reinit on first loop if boot action has an
 	// associated profile different that current
-	gamepad->lastReinitProfileNumber = currentProfile;
+	gamepad->lastReinitProfileNumber = bootAction.profileNumber;
 
 	// now we can load the latest configured profile, which will map the
 	// new set of GPIOs to use...
@@ -137,11 +140,8 @@ void GP2040::setup() {
 	DriverManager::getInstance().setup(inputMode);
 
 	if (inputMode != INPUT_MODE_CONFIG) {
-		bool inputModeChanged = inputMode != gamepad->getOptions().inputMode;
+		bool inputModeChanged = inputMode != gamepadOptions.inputMode;
 		if (inputModeChanged) gamepad->setInputMode(inputMode);
-
-		bool profileChanged = profile != currentProfile;
-		if (profileChanged) Storage::getInstance().getGamepadOptions().profileNumber = profile;
 
 		// save to match user expectations on choosing mode at boot, and this is
 		// before USB host will be used so we can force it to ignore the check
@@ -346,22 +346,23 @@ GP2040::BootAction GP2040::getBootAction() {
 		default:
 			break;
 	}
-	Mask_t raw_gpio = ~gpio_get_all();
+	Mask_t gpio = ~gpio_get_all() & buttonGpios;
 
-	if (raw_gpio == bootModeOptions.usbModePinMask) {
+	if (gpio == bootModeOptions.usbModePinMask) {
 		action.type = BootActionType::ENTER_USB_MODE;
 		return action;
 	}
 
-	if (raw_gpio == bootModeOptions.webConfigPinMask) {
+	if (gpio == bootModeOptions.webConfigPinMask) {
 		action.inputMode = InputMode::INPUT_MODE_CONFIG;
 		return action;
 	}
 
 	for (size_t i = 0; i < bootModeOptions.inputModeMappings_count; i++) {
 		InputModeMapping m = bootModeOptions.inputModeMappings[i];
-		if (m.pinMask < 0) continue;
-		if (raw_gpio == static_cast<Mask_t>(m.pinMask)) {
+		if (m.pinMask < 0)
+			continue;
+		if (gpio == static_cast<Mask_t>(m.pinMask)) {
 			action.inputMode = static_cast<InputMode>(m.inputMode);
 			if (m.profileNumber > 0) {
 				action.profileNumber = m.profileNumber;
