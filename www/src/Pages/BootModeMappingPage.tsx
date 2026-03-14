@@ -47,16 +47,16 @@ const PIN_OPTIONS: PinOption[] = Array.from({ length: NUM_PINS }, (_, i) => ({
 function BootModeSelect({ mappingKey }: { mappingKey: string }) {
 	const inputMode = useBootModeStore((state) => state.bootModes[mappingKey].inputMode);
 	const saveAttempted = useBootModeStore((state) => state.saveAttempted);
-	const { setInputMode, clearErrors } = useBootModeStoreActions();
+	const { setInputMode, clearErrors, setDirty } = useBootModeStoreActions();
 
 	const { getAvailablePeripherals } = useContext(AppContext);
 	const { t } = useTranslation('');
 
 	const value = INPUT_MODE_OPTIONS.find(({ value }) => value === inputMode);
-	const usb_available: boolean = getAvailablePeripherals('usb');
+	const usbAvailable: boolean = getAvailablePeripherals('usb');
 
 	const isOptionDisabled = (option: InputModeOptions) => {
-		return option.required.includes('usb') && !usb_available;
+		return option.required.includes('usb') && !usbAvailable;
 	};
 
 	const getOptionLabel = (option: InputModeOptions) => {
@@ -69,6 +69,7 @@ function BootModeSelect({ mappingKey }: { mappingKey: string }) {
 	const onChange = (option: SingleValue<InputModeOptions>) => {
 		clearErrors();
 		setInputMode(mappingKey, option?.value);
+		setDirty();
 	};
 
 	const isInvalid = saveAttempted && !value;
@@ -93,7 +94,8 @@ function PinSelect({ mappingKey }: { mappingKey: string }) {
 	const modesWithDuplicates = useBootModeStore((state) => state.modesWithDuplicates);
 	const saveAttempted = useBootModeStore((state) => state.saveAttempted);
 
-	const { addPin, removePin, validatePins, clearErrors } = useBootModeStoreActions();
+	const { addPin, removePin, validatePins, clearErrors, setDirty } =
+		useBootModeStoreActions();
 
 	const values = PIN_OPTIONS.filter(({ value }) => pins.has(value));
 	let errorMessage = 'Mapped GPIO pins cannot contain duplicates';
@@ -106,6 +108,7 @@ function PinSelect({ mappingKey }: { mappingKey: string }) {
 		}
 		clearErrors();
 		validatePins(errorMessage);
+		setDirty();
 	};
 	const isInvalid =
 		modesWithDuplicates.includes(mappingKey) || (saveAttempted && values.length == 0);
@@ -145,7 +148,7 @@ function ProfileSelect({ mappingKey }: { mappingKey: string }) {
 	const profileIndex = useBootModeStore(
 		(state) => state.bootModes[mappingKey].profileIndex,
 	);
-	const { setProfileIndex, clearErrors } = useBootModeStoreActions();
+	const { setProfileIndex, setDirty } = useBootModeStoreActions();
 	const value = profileOptions.find(({ value }) => value === profileIndex);
 
 	const getLabel = (option: ProfileOption) => {
@@ -159,7 +162,7 @@ function ProfileSelect({ mappingKey }: { mappingKey: string }) {
 		} else if (action.action === 'select-option') {
 			setProfileIndex(mappingKey, selected.value);
 		}
-		clearErrors();
+		setDirty();
 	};
 
 	return (
@@ -198,7 +201,7 @@ function FormRow({
 }
 
 function BootModeRow({ mappingKey }: { mappingKey: string }) {
-	const { removeBootMode, clearErrors } = useBootModeStoreActions();
+	const { removeBootMode, clearErrors, setDirty } = useBootModeStoreActions();
 
 	return (
 		<FormRow
@@ -210,6 +213,7 @@ function BootModeRow({ mappingKey }: { mappingKey: string }) {
 					onClick={() => {
 						removeBootMode(mappingKey);
 						clearErrors();
+						setDirty();
 					}}
 				>
 					{'✕'}
@@ -241,6 +245,7 @@ export default function BootModeMappingPage() {
 	const loadingBootModes = useBootModeStore((state) => state.loadingBootModes);
 	const bootModes = useBootModeStore((state) => state.bootModes);
 	const saveAttempted = useBootModeStore((state) => state.saveAttempted);
+	const dirty = useBootModeStore((state) => state.dirty);
 	const errorMessage = useBootModeStore((state) => state.errorMessage);
 
 	const {
@@ -249,6 +254,7 @@ export default function BootModeMappingPage() {
 		saveBootModeOptions,
 		clearErrors,
 		setEnabled,
+		setDirty,
 		validateRequired,
 	} = useBootModeStoreActions();
 
@@ -269,6 +275,8 @@ export default function BootModeMappingPage() {
 		saveBootModeOptions('Save Failed');
 	};
 
+	const showSaveMessage = !dirty && saveAttempted && errorMessage === undefined;
+
 	return (
 		<Section title={t('SettingsPage:boot-input-mode-label')}>
 			<Form.Check
@@ -278,7 +286,7 @@ export default function BootModeMappingPage() {
 				checked={enabled}
 				onChange={(e) => {
 					setEnabled(e.target.checked);
-					clearErrors();
+					setDirty();
 				}}
 			/>
 			{enabled &&
@@ -315,6 +323,7 @@ export default function BootModeMappingPage() {
 									onClick={() => {
 										addBootMode();
 										clearErrors();
+										setDirty();
 									}}
 								>
 									+ Add Mode
@@ -324,7 +333,10 @@ export default function BootModeMappingPage() {
 					</Container>
 				))}
 			<div className="d-flex align-items-center gap-2">
-				<Button onClick={handleSubmit} disabled={errorMessage !== undefined}>
+				<Button
+					onClick={handleSubmit}
+					disabled={!dirty || errorMessage !== undefined || showSaveMessage}
+				>
 					{t('Common:button-save-label')}
 				</Button>
 				{errorMessage && (
@@ -333,7 +345,7 @@ export default function BootModeMappingPage() {
 					</div>
 				)}
 			</div>
-			{saveAttempted && errorMessage === undefined && (
+			{showSaveMessage && (
 				<Alert className="mt-2" variant="info">
 					{t('Common:saved-success-message')}
 				</Alert>

@@ -18,6 +18,7 @@ type State = {
 	loadingBootModes: boolean;
 	// If false, use old method of mapping
 	enabled: boolean;
+	dirty: boolean;
 	// validation fields
 	saveAttempted: boolean;
 	modesWithDuplicates: string[];
@@ -34,6 +35,7 @@ type Actions = {
 	setInputMode: (key: string, inputMode?: InputMode) => void;
 	setProfileIndex: (key: string, defaultProfileIndex?: number) => void;
 	setEnabled: (value: boolean) => void;
+	setDirty: () => void;
 	clearErrors: () => void;
 	validatePins: (errorMessage: string) => boolean;
 	validateRequired: (errorMessage: string) => boolean;
@@ -104,6 +106,7 @@ const INITIAL_STATE = {
 	},
 	loadingBootModes: false,
 	enabled: false,
+	dirty: false,
 	saveAttempted: false,
 	modesWithDuplicates: [],
 	errorMessage: undefined,
@@ -152,8 +155,7 @@ export const useBootModeStore = create<State & { actions: Actions }>()((set, get
 				return;
 			}
 
-			let { enabled, webConfigPinMask, usbModePinMask, inputModeMappings } =
-				response;
+			let { enabled, webConfigPinMask, usbModePinMask, inputModeMappings } = response;
 
 			let inputModes: { [key: string]: BootModeMapping } = {};
 			for (const m of inputModeMappings) {
@@ -199,12 +201,12 @@ export const useBootModeStore = create<State & { actions: Actions }>()((set, get
 					.map(([_, m], _i) => ({
 						pinMask: setToMask(m.pins),
 						inputMode: m.inputMode === undefined ? 0 : m.inputMode,
-						profileNumber:
-							m.profileIndex === undefined ? 0 : m.profileIndex + 1,
+						profileNumber: m.profileIndex === undefined ? 0 : m.profileIndex + 1,
 					})),
 			};
 			try {
 				await WebApi.setBootModeOptions(postData);
+				set({ dirty: false });
 			} catch (error) {
 				set({ saveAttempted: true, errorMessage: errorMessage });
 			}
@@ -246,10 +248,11 @@ export const useBootModeStore = create<State & { actions: Actions }>()((set, get
 		},
 
 		setEnabled: (value: boolean) => {
-			set((state) => ({
-				...state,
-				enabled: value,
-			}));
+			set({ enabled: value });
+		},
+
+		setDirty: () => {
+			set({ dirty: true });
 		},
 
 		clearErrors: () => {
