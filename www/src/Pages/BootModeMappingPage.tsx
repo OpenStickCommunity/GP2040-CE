@@ -145,7 +145,7 @@ function ProfileSelect({ mappingKey }: { mappingKey: string }) {
 	const profileIndex = useBootModeStore(
 		(state) => state.bootModes[mappingKey].profileIndex,
 	);
-	const { setProfileIndex } = useBootModeStoreActions();
+	const { setProfileIndex, clearErrors } = useBootModeStoreActions();
 	const value = profileOptions.find(({ value }) => value === profileIndex);
 
 	const getLabel = (option: ProfileOption) => {
@@ -159,6 +159,7 @@ function ProfileSelect({ mappingKey }: { mappingKey: string }) {
 		} else if (action.action === 'select-option') {
 			setProfileIndex(mappingKey, selected.value);
 		}
+		clearErrors();
 	};
 
 	return (
@@ -261,9 +262,7 @@ export default function BootModeMappingPage() {
 	}, []);
 
 	// The delete-able input mode keys (i.e. not web-config or usb mode)
-	const inputModeKeys = Object.keys(bootModes).filter((k) =>
-		k.startsWith('inputMode-'),
-	);
+	const inputModeKeys = Object.keys(bootModes).filter((k) => k.startsWith('inputMode-'));
 
 	const handleSubmit = () => {
 		validateRequired('Required fields are missing');
@@ -279,6 +278,7 @@ export default function BootModeMappingPage() {
 				checked={enabled}
 				onChange={(e) => {
 					setEnabled(e.target.checked);
+					clearErrors();
 				}}
 			/>
 			{enabled &&
@@ -321,28 +321,23 @@ export default function BootModeMappingPage() {
 								</Button>
 							</div>
 						)}
-						<div className="d-flex align-items-center gap-2">
-							<Button
-								onClick={handleSubmit}
-								disabled={errorMessage !== undefined}
-							>
-								{t('Common:button-save-label')}
-							</Button>
-							{errorMessage && (
-								<div className="invalid-feedback d-block">
-									{errorMessage
-										? errorMessage
-										: t('Common:saved-error-message')}
-								</div>
-							)}
-						</div>
-						{saveAttempted && errorMessage === undefined && (
-							<Alert className="mt-2" variant="info">
-								{t('Common:saved-success-message')}
-							</Alert>
-						)}
 					</Container>
 				))}
+			<div className="d-flex align-items-center gap-2">
+				<Button onClick={handleSubmit} disabled={errorMessage !== undefined}>
+					{t('Common:button-save-label')}
+				</Button>
+				{errorMessage && (
+					<div className="invalid-feedback d-block">
+						{errorMessage ? errorMessage : t('Common:saved-error-message')}
+					</div>
+				)}
+			</div>
+			{saveAttempted && errorMessage === undefined && (
+				<Alert className="mt-2" variant="info">
+					{t('Common:saved-success-message')}
+				</Alert>
+			)}
 		</Section>
 	);
 }
