@@ -20,7 +20,7 @@ import {
 	AnimationOptions,
 	LedOptions,
 	Light,
-	MAX_CASE_LIGHTS,
+	MAX_NON_BUTTON_LIGHT_COLOR_INDEXES,
 	MAX_LIGHTS,
 } from '../../Store/useLedStore';
 import useLedsPreview from '../../Hooks/useLedsPreview';
@@ -59,7 +59,7 @@ const getFirstEmptyLightCoord = (lights: Light[]) => {
 export default function LightCoordsSection({
 	pressedStaticColors,
 	notPressedStaticColors,
-	caseStaticColors,
+	nonButtonStaticColors,
 	profileIndex,
 	values,
 	errors,
@@ -69,7 +69,7 @@ export default function LightCoordsSection({
 }: {
 	pressedStaticColors: number[];
 	notPressedStaticColors: number[];
-	caseStaticColors: number[];
+	nonButtonStaticColors: number[];
 	profileIndex: number;
 	values: {
 		ledOptions: LedOptions;
@@ -95,7 +95,7 @@ export default function LightCoordsSection({
 	const { t } = useTranslation('');
 	const { activateLedsOnId, activateLedsChase, turnOffLeds } = useLedsPreview();
 	const [previewGpioPin, setPreviewGpioPin] = useState(0);
-	const [previewCaseId, setPreviewCaseId] = useState(0);
+	const [previewNonButtonId, setPreviewNonButtonId] = useState(0);
 
 	const [gridSize, setGridSize] = useState(GRID_SIZE);
 	const [cellWidth, setCellWidth] = useState(dimensions.width / gridSize);
@@ -161,7 +161,7 @@ export default function LightCoordsSection({
 				Lights: [
 					...values.Lights,
 					{
-						GPIOPinOrColorIndex: 0,
+						GPIOPinOrNonButtonIndex: 0,
 						firstLedIndex: values.Lights.length,
 						lightType,
 						numLedsOnLight: 1,
@@ -228,17 +228,17 @@ export default function LightCoordsSection({
 				</Col>
 				<Col md={3} className="d-flex flex-column justify-content-end mb-2">
 					<FormSelect
-						label={'Active light tied to case ID'}
+						label={'Active light tied to non Button ID'}
 						className="form-select-sm"
 						groupClassName="mb-3"
-						value={previewCaseId}
+						value={previewNonButtonId}
 						onChange={(e) => {
-							setPreviewCaseId(parseInt((e.target as HTMLSelectElement).value));
+							setPreviewNonButtonId(parseInt((e.target as HTMLSelectElement).value));
 						}}
 					>
-						{Array.from({ length: MAX_CASE_LIGHTS }).map((_, caseIndex) => (
-							<option key={caseIndex} value={caseIndex}>
-								Case ID {caseIndex + 1}
+						{Array.from({ length: MAX_NON_BUTTON_LIGHT_COLOR_INDEXES }).map((_, nonButtonIndex) => (
+							<option key={nonButtonIndex} value={nonButtonIndex}>
+								Non Button ID {nonButtonIndex + 1}
 							</option>
 						))}
 					</FormSelect>
@@ -246,10 +246,10 @@ export default function LightCoordsSection({
 					<Button
 						variant="secondary"
 						onClick={() => {
-							activateLedsOnId(previewCaseId, true);
+							activateLedsOnId(previewNonButtonId, true);
 						}}
 					>
-						Case ID Test
+						Non Button ID Test
 					</Button>
 				</Col>
 				<Col md={3} className="d-flex flex-column justify-content-end mb-2">
@@ -389,22 +389,22 @@ export default function LightCoordsSection({
 								<FormSelect
 									label={
 										values.Lights[selectedLight]?.lightType == LIGHT_TYPES.Case
-											? 'Case Id tied to Light'
+											? 'Non Button Id tied to Light'
 											: 'GPIO Pin tied to Light'
 									}
 									className="form-select"
 									groupClassName="mb-3"
-									value={values.Lights[selectedLight]?.GPIOPinOrColorIndex}
+									value={values.Lights[selectedLight]?.GPIOPinOrNonButtonIndex}
 									onChange={handleChange}
-									name={`Lights[${selectedLight}].GPIOPinOrColorIndex`}
+									name={`Lights[${selectedLight}].GPIOPinOrNonButtonIndex`}
 								>
 									{values.Lights[selectedLight]?.lightType ==
 									LIGHT_TYPES.Case ? (
 										<>
-											{Array.from({ length: MAX_CASE_LIGHTS }).map(
-												(_, caseIndex) => (
-													<option key={caseIndex} value={caseIndex}>
-														Case ID {caseIndex + 1}
+											{Array.from({ length: MAX_NON_BUTTON_LIGHT_COLOR_INDEXES }).map(
+												(_, nonButtonIndex) => (
+													<option key={nonButtonIndex} value={nonButtonIndex}>
+														Non Button ID {nonButtonIndex + 1}
 													</option>
 												),
 											)}
@@ -424,19 +424,19 @@ export default function LightCoordsSection({
 
 								{values.Lights[selectedLight]?.lightType == LIGHT_TYPES.Case ? (
 									<div className="mb-3">
-										<label className="form-label">Case Color</label>
+										<label className="form-label">Non Button Color</label>
 										<ColorSelector
 											options={colorOptions}
 											value={
 												colorOptions[
-													caseStaticColors[
-														values.Lights[selectedLight].GPIOPinOrColorIndex
+													nonButtonStaticColors[
+														values.Lights[selectedLight].GPIOPinOrNonButtonIndex
 													]
 												]
 											}
 											onChange={(selected) => {
 												setFieldValue(
-													`AnimationOptions.profiles.${profileIndex}.caseStaticColors.${values.Lights[selectedLight].GPIOPinOrColorIndex}`,
+													`AnimationOptions.profiles.${profileIndex}.nonButtonStaticColors.${values.Lights[selectedLight].GPIOPinOrNonButtonIndex}`,
 													selected?.value || 0,
 												);
 											}}
@@ -452,13 +452,13 @@ export default function LightCoordsSection({
 													colorOptions[
 														notPressedStaticColors[
 															values.Lights[selectedLight]
-																.GPIOPinOrColorIndex
+																.GPIOPinOrNonButtonIndex
 														]
 													]
 												}
 												onChange={(selected) => {
 													setFieldValue(
-														`AnimationOptions.profiles.${profileIndex}.notPressedStaticColors.${values.Lights[selectedLight].GPIOPinOrColorIndex}`,
+														`AnimationOptions.profiles.${profileIndex}.notPressedStaticColors.${values.Lights[selectedLight].GPIOPinOrNonButtonIndex}`,
 														selected?.value || 0,
 													);
 												}}
@@ -472,13 +472,13 @@ export default function LightCoordsSection({
 													colorOptions[
 														pressedStaticColors[
 															values.Lights[selectedLight]
-																.GPIOPinOrColorIndex
+																.GPIOPinOrNonButtonIndex
 														]
 													]
 												}
 												onChange={(selected) => {
 													setFieldValue(
-														`AnimationOptions.profiles.${profileIndex}.pressedStaticColors.${values.Lights[selectedLight].GPIOPinOrColorIndex}`,
+														`AnimationOptions.profiles.${profileIndex}.pressedStaticColors.${values.Lights[selectedLight].GPIOPinOrNonButtonIndex}`,
 														selected?.value || 0,
 													);
 												}}
@@ -568,7 +568,7 @@ export default function LightCoordsSection({
 							// 		Lights: [
 							// 			...values.Lights,
 							// 			{
-							// 				GPIOPinOrColorIndex: 0,
+							// 				GPIOPinOrNonButtonIndex: 0,
 							// 				firstLedIndex: values.Lights.length,
 							// 				lightType: LIGHT_TYPES.ActionButton,
 							// 				numLedsOnLight: 1,

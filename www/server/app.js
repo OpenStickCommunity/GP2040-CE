@@ -27,7 +27,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 0,
 					yCoord: 2,
-					GPIOPinOrColorIndex: 5,
+					GPIOPinOrNonButtonIndex: 5,
 					lightType: 0,
 				},
 				{
@@ -35,7 +35,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 2,
 					yCoord: 2,
-					GPIOPinOrColorIndex: 3,
+					GPIOPinOrNonButtonIndex: 3,
 					lightType: 0,
 				},
 				{
@@ -43,7 +43,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 4,
 					yCoord: 3,
-					GPIOPinOrColorIndex: 4,
+					GPIOPinOrNonButtonIndex: 4,
 					lightType: 0,
 				},
 				{
@@ -51,7 +51,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 5,
 					yCoord: 7,
-					GPIOPinOrColorIndex: 2,
+					GPIOPinOrNonButtonIndex: 2,
 					lightType: 0,
 				},
 				{
@@ -59,7 +59,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 6,
 					yCoord: 2,
-					GPIOPinOrColorIndex: 10,
+					GPIOPinOrNonButtonIndex: 10,
 					lightType: 0,
 				},
 				{
@@ -67,7 +67,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 8,
 					yCoord: 1,
-					GPIOPinOrColorIndex: 11,
+					GPIOPinOrNonButtonIndex: 11,
 					lightType: 0,
 				},
 				{
@@ -75,7 +75,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 10,
 					yCoord: 1,
-					GPIOPinOrColorIndex: 12,
+					GPIOPinOrNonButtonIndex: 12,
 					lightType: 0,
 				},
 				{
@@ -83,7 +83,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 12,
 					yCoord: 1,
-					GPIOPinOrColorIndex: 13,
+					GPIOPinOrNonButtonIndex: 13,
 					lightType: 0,
 				},
 				{
@@ -91,7 +91,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 6,
 					yCoord: 4,
-					GPIOPinOrColorIndex: 6,
+					GPIOPinOrNonButtonIndex: 6,
 					lightType: 0,
 				},
 				{
@@ -99,7 +99,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 8,
 					yCoord: 3,
-					GPIOPinOrColorIndex: 7,
+					GPIOPinOrNonButtonIndex: 7,
 					lightType: 0,
 				},
 				{
@@ -107,7 +107,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 10,
 					yCoord: 3,
-					GPIOPinOrColorIndex: 8,
+					GPIOPinOrNonButtonIndex: 8,
 					lightType: 0,
 				},
 				{
@@ -115,7 +115,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 12,
 					yCoord: 3,
-					GPIOPinOrColorIndex: 9,
+					GPIOPinOrNonButtonIndex: 9,
 					lightType: 0,
 				},
 			],
@@ -130,7 +130,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 0,
 					yCoord: 2,
-					GPIOPinOrColorIndex: 5,
+					GPIOPinOrNonButtonIndex: 5,
 					lightType: 0,
 				},
 				{
@@ -138,7 +138,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 2,
 					yCoord: 2,
-					GPIOPinOrColorIndex: 3,
+					GPIOPinOrNonButtonIndex: 3,
 					lightType: 0,
 				},
 				{
@@ -146,7 +146,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 4,
 					yCoord: 3,
-					GPIOPinOrColorIndex: 4,
+					GPIOPinOrNonButtonIndex: 4,
 					lightType: 0,
 				},
 				{
@@ -154,7 +154,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 6,
 					yCoord: 7,
-					GPIOPinOrColorIndex: 2,
+					GPIOPinOrNonButtonIndex: 2,
 					lightType: 0,
 				},
 				{
@@ -162,7 +162,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 6,
 					yCoord: 2,
-					GPIOPinOrColorIndex: 10,
+					GPIOPinOrNonButtonIndex: 10,
 					lightType: 0,
 				},
 				{
@@ -170,7 +170,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 8,
 					yCoord: 1,
-					GPIOPinOrColorIndex: 11,
+					GPIOPinOrNonButtonIndex: 11,
 					lightType: 0,
 				},
 				{
@@ -178,7 +178,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 10,
 					yCoord: 1,
-					GPIOPinOrColorIndex: 12,
+					GPIOPinOrNonButtonIndex: 12,
 					lightType: 0,
 				},
 				{
@@ -186,7 +186,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 12,
 					yCoord: 1,
-					GPIOPinOrColorIndex: 13,
+					GPIOPinOrNonButtonIndex: 13,
 					lightType: 0,
 				},
 				{
@@ -194,7 +194,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 6,
 					yCoord: 4,
-					GPIOPinOrColorIndex: 6,
+					GPIOPinOrNonButtonIndex: 6,
 					lightType: 0,
 				},
 				{
@@ -202,7 +202,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 8,
 					yCoord: 3,
-					GPIOPinOrColorIndex: 7,
+					GPIOPinOrNonButtonIndex: 7,
 					lightType: 0,
 				},
 				{
@@ -210,7 +210,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 10,
 					yCoord: 3,
-					GPIOPinOrColorIndex: 8,
+					GPIOPinOrNonButtonIndex: 8,
 					lightType: 0,
 				},
 				{
@@ -218,7 +218,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 12,
 					yCoord: 3,
-					GPIOPinOrColorIndex: 9,
+					GPIOPinOrNonButtonIndex: 9,
 					lightType: 0,
 				},
 				{
@@ -226,7 +226,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 3,
 					yCoord: 0,
-					GPIOPinOrColorIndex: 27,
+					GPIOPinOrNonButtonIndex: 27,
 					lightType: 0,
 				},
 				{
@@ -234,7 +234,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 6,
 					yCoord: 0,
-					GPIOPinOrColorIndex: 18,
+					GPIOPinOrNonButtonIndex: 18,
 					lightType: 0,
 				},
 				{
@@ -242,7 +242,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 8,
 					yCoord: 5,
-					GPIOPinOrColorIndex: 19,
+					GPIOPinOrNonButtonIndex: 19,
 					lightType: 0,
 				},
 				{
@@ -250,7 +250,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 3,
 					yCoord: 6,
-					GPIOPinOrColorIndex: 26,
+					GPIOPinOrNonButtonIndex: 26,
 					lightType: 0,
 				},
 			],

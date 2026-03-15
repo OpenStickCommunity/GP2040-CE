@@ -35,8 +35,8 @@ AnimationOptions_Unpacked AnimationStation::options = {};
 std::string AnimationStation::printfs[4];
 AnimationStationTestMode AnimationStation::TestMode = AnimationStationTestMode::AnimationStation_TestModeInvalid;
 bool AnimationStation::bTestModeChangeRequested = false;
-int AnimationStation::TestModePinOrCaseIndex = -1;
-bool AnimationStation::TestModeLightIsCase = false;
+int AnimationStation::TestModePinOrNonButtonIndex = -1;
+bool AnimationStation::TestModeLightIsNonButton = false;
 
 AnimationStation::AnimationStation()
 {
@@ -598,7 +598,27 @@ void AnimationStation::DecompressProfile(int ProfileIndex, const AnimationProfil
       }
 		}
 
-		options.profiles[ProfileIndex].buttonPressHoldTimeInMs = ProfileToDecompress->buttonPressHoldTimeInMs;
+		for(unsigned int packedNonButtonIndex = 0; packedNonButtonIndex < (MAX_NON_BUTTON_LIGHT_COLOR_INDEXES / 4); ++packedNonButtonIndex)
+		{
+			int nonButtonIndex = packedNonButtonIndex * 4;
+      if(packedNonButtonIndex < ProfileToDecompress->nonButtonStaticColors_count)
+      {
+        options.profiles[ProfileIndex].nonButtonStaticColors[nonButtonIndex + 0] = ProfileToDecompress->nonButtonStaticColors[packedNonButtonIndex] & 0xFF;
+        options.profiles[ProfileIndex].nonButtonStaticColors[nonButtonIndex + 1] = (ProfileToDecompress->nonButtonStaticColors[packedNonButtonIndex] >> 8) & 0xFF;
+        options.profiles[ProfileIndex].nonButtonStaticColors[nonButtonIndex + 2] = (ProfileToDecompress->nonButtonStaticColors[packedNonButtonIndex] >> 16) & 0xFF;
+        options.profiles[ProfileIndex].nonButtonStaticColors[nonButtonIndex + 3] = (ProfileToDecompress->nonButtonStaticColors[packedNonButtonIndex] >> 24) & 0xFF;
+      }
+      else
+      {
+        //Set all black
+				options.profiles[ProfileIndex].nonButtonStaticColors[nonButtonIndex + 0] = 0;
+				options.profiles[ProfileIndex].nonButtonStaticColors[nonButtonIndex + 1] = 0;
+				options.profiles[ProfileIndex].nonButtonStaticColors[nonButtonIndex + 2] = 0;
+				options.profiles[ProfileIndex].nonButtonStaticColors[nonButtonIndex + 3] = 0;
+      }
+		}
+    
+    options.profiles[ProfileIndex].buttonPressHoldTimeInMs = ProfileToDecompress->buttonPressHoldTimeInMs;
 		options.profiles[ProfileIndex].buttonPressFadeOutTimeInMs = ProfileToDecompress->buttonPressFadeOutTimeInMs;
 		options.profiles[ProfileIndex].nonPressedSpecialColor = ProfileToDecompress->nonPressedSpecialColor;
 		options.profiles[ProfileIndex].pressedSpecialColor = ProfileToDecompress->pressedSpecialColor;
@@ -712,6 +732,15 @@ void AnimationStation::SetTestMode(AnimationStationTestMode TestType, const Anim
       options.profiles[testProfileIndex].pressedStaticColors[pinIndex + 3] = 0;
 		}
 
+		for(unsigned int packedNonButtonIndex = 0; packedNonButtonIndex < (MAX_NON_BUTTON_LIGHT_COLOR_INDEXES / 4); ++packedNonButtonIndex)
+		{
+			int nonButtonIndex = packedNonButtonIndex * 4;
+      options.profiles[testProfileIndex].nonButtonStaticColors[nonButtonIndex + 0] = 0;
+      options.profiles[testProfileIndex].nonButtonStaticColors[nonButtonIndex + 1] = 0;
+      options.profiles[testProfileIndex].nonButtonStaticColors[nonButtonIndex + 2] = 0;
+      options.profiles[testProfileIndex].nonButtonStaticColors[nonButtonIndex + 3] = 0;
+		}
+
     options.profiles[testProfileIndex].nonPressedSpecialColor = 0xFFFFFF; //White
     options.profiles[testProfileIndex].baseCycleTime = 2;
     options.profiles[testProfileIndex].basePressedCycleTime = 2;
@@ -737,31 +766,48 @@ void AnimationStation::SetTestMode(AnimationStationTestMode TestType, const Anim
       options.profiles[testProfileIndex].pressedStaticColors[pinIndex + 2] = 0;
       options.profiles[testProfileIndex].pressedStaticColors[pinIndex + 3] = 0;
 		}
+
+    for(unsigned int packedNonButtonIndex = 0; packedNonButtonIndex < (MAX_NON_BUTTON_LIGHT_COLOR_INDEXES / 4); ++packedNonButtonIndex)
+		{
+			int nonButtonIndex = packedNonButtonIndex * 4;
+      options.profiles[testProfileIndex].nonButtonStaticColors[nonButtonIndex + 0] = 0;
+      options.profiles[testProfileIndex].nonButtonStaticColors[nonButtonIndex + 1] = 0;
+      options.profiles[testProfileIndex].nonButtonStaticColors[nonButtonIndex + 2] = 0;
+      options.profiles[testProfileIndex].nonButtonStaticColors[nonButtonIndex + 3] = 0;
+		}
   }
 }
 
-void AnimationStation::SetTestPinState(int PinOrCaseIndex, bool IsCaseLight)
+void AnimationStation::SetTestPinState(int PinOrNonButtonIndex, bool IsNonButtonLight)
 {
   int testProfileIndex = MAX_ANIMATION_PROFILES_INCLUDING_TEST - 1;
 
   //reset old test light
-  if(TestModePinOrCaseIndex != -1)
+  if(TestModePinOrNonButtonIndex != -1)
   {
-    if(!TestModeLightIsCase)
+    if(TestModeLightIsNonButton)
     {
-      options.profiles[testProfileIndex].notPressedStaticColors[TestModePinOrCaseIndex] = 0x00; //Black/off
+      options.profiles[testProfileIndex].nonButtonStaticColors[TestModePinOrNonButtonIndex] = 0x00; //Black/off
+    }
+    else
+    {
+      options.profiles[testProfileIndex].notPressedStaticColors[TestModePinOrNonButtonIndex] = 0x00; //Black/off
     }
   }
 
   //Store new test light
-  TestModePinOrCaseIndex = PinOrCaseIndex;
-  TestModeLightIsCase = IsCaseLight;
+  TestModePinOrNonButtonIndex = PinOrNonButtonIndex;
+  TestModeLightIsNonButton = IsNonButtonLight;
 
-  if(TestModePinOrCaseIndex != -1)
+  if(TestModePinOrNonButtonIndex != -1)
   {
-    if(!IsCaseLight)
+    if(IsNonButtonLight)
     {
-      options.profiles[testProfileIndex].notPressedStaticColors[PinOrCaseIndex] = 0x01; //White
+      options.profiles[testProfileIndex].notPressedStaticColors[PinOrNonButtonIndex] = 0x01; //White
+    }
+    else
+    {
+      options.profiles[testProfileIndex].notPressedStaticColors[PinOrNonButtonIndex] = 0x01; //White
     }
   }
 }

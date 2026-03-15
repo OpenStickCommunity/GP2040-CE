@@ -29,7 +29,7 @@ import useLedStore, {
 	LedOptions,
 	Light,
 	MAX_ANIMATION_PROFILES,
-	MAX_CASE_LIGHTS,
+	MAX_NON_BUTTON_LIGHT_COLOR_INDEXES,
 } from '../../Store/useLedStore';
 import useLightsPresetsStore from '../../Store/useLightsPresetsStore';
 import Section from '../../Components/Section';
@@ -110,6 +110,7 @@ const schema = yup.object({
 				basePressedEffect: yup.number().required(),
 				buttonPressFadeOutTimeInMs: yup.number().required(),
 				buttonPressHoldTimeInMs: yup.number().required(),
+				nonButtonStaticColors: yup.array().of(yup.number()).required(),
 				nonPressedSpecialColor: yup.number().required(),
 				notPressedStaticColors: yup.array().of(yup.number()).required(),
 				pressedSpecialColor: yup.number().required(),
@@ -124,7 +125,7 @@ const schema = yup.object({
 		.array()
 		.of(
 			yup.object({
-				GPIOPinOrColorIndex: yup.number().required(),
+				GPIOPinOrNonButtonIndex: yup.number().required(),
 				firstLedIndex: yup
 					.number()
 					.min(0, 'First LED index must be at least 0')
@@ -183,6 +184,7 @@ const emptyAnimationProfile = {
 	buttonPressFadeOutTimeInMs: 0,
 	buttonPressHoldTimeInMs: 0,
 	bUseCaseLightsInPressedAnimations: 0,
+	nonButtonStaticColors: Array.from({ length: MAX_NON_BUTTON_LIGHT_COLOR_INDEXES }, () => 1),
 	nonPressedSpecialColor: 0,
 	pressedSpecialColor: 0,
 	bNonPressedSpecialColorIsRainbow: 0,
@@ -843,6 +845,7 @@ export default function LedConfigPage() {
 														notPressedStaticColors={
 															profile.notPressedStaticColors
 														}
+														nonButtonStaticColors={profile.nonButtonStaticColors}
 														profileIndex={profileIndex}
 														handleChange={handleChange}
 														setFieldValue={setFieldValue}
@@ -854,6 +857,7 @@ export default function LedConfigPage() {
 														notPressedStaticColors={
 															profile.notPressedStaticColors
 														}
+														nonButtonStaticColors={profile.nonButtonStaticColors}
 														profileIndex={profileIndex}
 														customColors={values.AnimationOptions.customColors}
 														setFieldValue={setFieldValue}

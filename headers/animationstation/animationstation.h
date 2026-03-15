@@ -17,6 +17,7 @@
 
 #define MAX_ANIMATION_PROFILES 4
 #define MAX_ANIMATION_PROFILES_INCLUDING_TEST (MAX_ANIMATION_PROFILES+1)
+#define MAX_NON_BUTTON_LIGHT_COLOR_INDEXES 32          //Total of color indexs in animation.h + Max custom colours (then increased to be a multiple of 4)
 
 #define CYCLE_STEPS 5
 
@@ -43,6 +44,8 @@ struct __attribute__ ((__packed__)) AnimationProfile_Unpacked
 
     uint32_t notPressedStaticColors[NUM_BANK0_GPIOS + 3]; //since we pack 4 into each. Adding 3 ensures we have space for extra pading
     uint32_t pressedStaticColors[NUM_BANK0_GPIOS + 3]; //since we pack 4 into each. Adding 3 ensures we have space for extra pading
+
+    uint32_t nonButtonStaticColors[MAX_NON_BUTTON_LIGHT_COLOR_INDEXES];
 
     uint32_t buttonPressHoldTimeInMs;
     uint32_t buttonPressFadeOutTimeInMs;
@@ -109,7 +112,7 @@ public:
 
   //Testing/webconfig
   static void SetTestMode(AnimationStationTestMode TestType, const AnimationProfile* TestProfile);
-  static void SetTestPinState(int PinOrCaseIndex, bool IsCaseLight);
+  static void SetTestPinState(int PinOrNonButtonIndex, bool IsNonButtonLight);
   
   SpecialMoveSystem specialMoveSystem;
 
@@ -142,8 +145,8 @@ public:
   //Testing/webconfig
   static AnimationStationTestMode TestMode;
   static bool bTestModeChangeRequested;
-  static int TestModePinOrCaseIndex;
-  static bool TestModeLightIsCase;
+  static int TestModePinOrNonButtonIndex;
+  static bool TestModeLightIsNonButton;
 
 protected:
   inline static uint8_t getBrightnessStepSize() { return (brightnessMax / brightnessSteps); }
