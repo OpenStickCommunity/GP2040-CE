@@ -8,12 +8,12 @@ BurstColor::BurstColor(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEf
 {
 }
 
-BurstColor::BurstColor(Lights& InRGBLights, bool bInRandomColor, bool bInSmallBurst, std::vector<int32_t> &InPressedPins, EButtonCaseEffectType InButtonCaseEffectType) : Animation(InRGBLights, InButtonCaseEffectType) 
+BurstColor::BurstColor(Lights& InRGBLights, bool bInSmallBurst, std::vector<int32_t> &InPressedPins, EButtonCaseEffectType InButtonCaseEffectType) : Animation(InRGBLights, InButtonCaseEffectType) 
 {
     isButtonAnimation = true;
     pressedPins = InPressedPins;
 
-    bRandomColor = bInRandomColor;
+    bRandomColor = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].bPressedSpecialColorIsRainbow;
 
     bSmallBurst = bInSmallBurst;
 

@@ -51,6 +51,8 @@ protected:
  
   void CheckForEndOfSequence();
 
+  void SetStartLight();
+
   float ChaseTimes[2];
   std::vector<uint32_t> OrderedLights;
 
