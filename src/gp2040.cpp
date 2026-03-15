@@ -339,90 +339,79 @@ void GP2040::getReinitGamepad(Gamepad * gamepad) {
 	}
 }
 
-GP2040::BootAction GP2040::getBootAction() {
+GP2040::BootAction GP2040::getButtonMappedBootAction() {
+	GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
+	BootAction bootAction = {
+		BootActionType::SET_INPUT_MODE,
+		gamepadOptions.inputMode,
+		gamepadOptions.profileNumber
+	};
+
 	switch (System::takeBootMode()) {
-		case System::BootMode::GAMEPAD: return BootAction::NONE;
-		case System::BootMode::WEBCONFIG: return BootAction::ENTER_WEBCONFIG_MODE;
-		case System::BootMode::USB: return BootAction::ENTER_USB_MODE;
+		case System::BootMode::GAMEPAD:
+			return bootAction;
+		case System::BootMode::WEBCONFIG:
+			bootAction.inputMode = InputMode::INPUT_MODE_CONFIG;
+			return bootAction;
+		case System::BootMode::USB:
+			bootAction.type = BootActionType::ENTER_USB_MODE;
+			return bootAction;
 		case System::BootMode::DEFAULT:
-			{
-				// Determine boot action based on gamepad state during boot
-				Gamepad * gamepad = Storage::getInstance().GetGamepad();
-				Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
-
-				debounceGpioGetAll();
-				gamepad->read();
-
-				// Pre-Process add-ons for MPGS
-				addons.PreprocessAddons();
-
-				gamepad->process(); // process through MPGS
-
-				// Process for add-ons
-				addons.ProcessAddons();
-
-				// Copy Processed Gamepad for Core1 (race condition otherwise)
-				memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
-
-                const ForcedSetupOptions& forcedSetupOptions = Storage::getInstance().getForcedSetupOptions();
-                bool modeSwitchLocked = forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_MODE_SWITCH ||
-                                        forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_BOTH;
-
-                bool webConfigLocked  = forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_WEB_CONFIG ||
-                                        forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_BOTH;
-
-				if (gamepad->pressedS1() && gamepad->pressedS2() && gamepad->pressedUp()) {
-					return BootAction::ENTER_USB_MODE;
-				} else if (!webConfigLocked && gamepad->pressedS2()) {
-					return BootAction::ENTER_WEBCONFIG_MODE;
-                } else {
-                    if (!modeSwitchLocked) {
-                        if (auto search = bootActions.find(gamepad->state.buttons); search != bootActions.end()) {
-                            switch (search->second) {
-                                case INPUT_MODE_XINPUT:
-                                    return BootAction::SET_INPUT_MODE_XINPUT;
-                                case INPUT_MODE_SWITCH:
-                                    return BootAction::SET_INPUT_MODE_SWITCH;
-                                case INPUT_MODE_KEYBOARD:
-                                    return BootAction::SET_INPUT_MODE_KEYBOARD;
-                                case INPUT_MODE_GENERIC:
-                                    return BootAction::SET_INPUT_MODE_GENERIC;
-                                case INPUT_MODE_PS3:
-                                    return BootAction::SET_INPUT_MODE_PS3;
-                                case INPUT_MODE_PS4:
-                                    return BootAction::SET_INPUT_MODE_PS4;
-                                case INPUT_MODE_PS5:
-                                    return BootAction::SET_INPUT_MODE_PS5;
-                                case INPUT_MODE_NEOGEO:
-                                    return BootAction::SET_INPUT_MODE_NEOGEO;
-                                case INPUT_MODE_MDMINI:
-                                    return BootAction::SET_INPUT_MODE_MDMINI;
-                                case INPUT_MODE_PCEMINI:
-                                    return BootAction::SET_INPUT_MODE_PCEMINI;
-                                case INPUT_MODE_EGRET:
-                                    return BootAction::SET_INPUT_MODE_EGRET;
-                                case INPUT_MODE_ASTRO:
-                                    return BootAction::SET_INPUT_MODE_ASTRO;
-                                case INPUT_MODE_PSCLASSIC:
-                                    return BootAction::SET_INPUT_MODE_PSCLASSIC;
-                                case INPUT_MODE_XBOXORIGINAL:
-                                    return BootAction::SET_INPUT_MODE_XBOXORIGINAL;
-                                case INPUT_MODE_XBONE:
-                                    return BootAction::SET_INPUT_MODE_XBONE;
-                                case INPUT_MODE_SWITCH_PRO:
-                                    return BootAction::SET_INPUT_MODE_SWITCH_PRO;
-                                default:
-                                    return BootAction::NONE;
-                            }
-                        }
-                    }
-                }
-
-				break;
-			}
+			break;
 	}
+	// Determine boot action based on gamepad state during boot
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+	Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
 
-	return BootAction::NONE;
+	debounceGpioGetAll();
+	gamepad->read();
+
+	// Pre-Process add-ons for MPGS
+	addons.PreprocessAddons();
+
+	gamepad->process(); // process through MPGS
+
+	// Process for add-ons
+	addons.ProcessAddons();
+
+	// Copy Processed Gamepad for Core1 (race condition otherwise)
+	memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
+
+	const ForcedSetupOptions& forcedSetupOptions = Storage::getInstance().getForcedSetupOptions();
+	bool modeSwitchLocked = forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_MODE_SWITCH ||
+													forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_BOTH;
+
+	bool webConfigLocked  = forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_WEB_CONFIG ||
+													forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_BOTH;
+
+	if (gamepad->pressedS1() && gamepad->pressedS2() && gamepad->pressedUp()) {
+		bootAction.type = BootActionType::ENTER_USB_MODE;
+		return bootAction;
+	}
+	if (!webConfigLocked && gamepad->pressedS2()) {
+		bootAction.inputMode =  InputMode::INPUT_MODE_CONFIG;
+		return bootAction;
+	}
+	// input mask, action
+	std::map<uint32_t, int32_t> bootActions;
+
+	// check setup options and add modes to the list
+	bootActions.insert({GAMEPAD_MASK_B1, gamepadOptions.inputModeB1});
+	bootActions.insert({GAMEPAD_MASK_B2, gamepadOptions.inputModeB2});
+	bootActions.insert({GAMEPAD_MASK_B3, gamepadOptions.inputModeB3});
+	bootActions.insert({GAMEPAD_MASK_B4, gamepadOptions.inputModeB4});
+	bootActions.insert({GAMEPAD_MASK_L1, gamepadOptions.inputModeL1});
+	bootActions.insert({GAMEPAD_MASK_L2, gamepadOptions.inputModeL2});
+	bootActions.insert({GAMEPAD_MASK_R1, gamepadOptions.inputModeR1});
+	bootActions.insert({GAMEPAD_MASK_R2, gamepadOptions.inputModeR2});
+
+	if (!modeSwitchLocked) {
+		if (auto search = bootActions.find(gamepad->state.buttons); search != bootActions.end()) {
+			bootAction.inputMode = static_cast<InputMode>(search->second);
+			return bootAction;
+		}
+	}
+	return bootAction;
 }
 
 /**
@@ -441,6 +430,9 @@ GP2040::BootAction GP2040::getGpioMappedBootAction() {
 
 	switch (System::takeBootMode()) {
 		case System::BootMode::GAMEPAD:
+			return action;
+		case System::BootMode::WEBCONFIG:
+			action.inputMode = InputMode::INPUT_MODE_CONFIG;
 			return action;
 		case System::BootMode::USB:
 			action.type = BootActionType::ENTER_USB_MODE;
