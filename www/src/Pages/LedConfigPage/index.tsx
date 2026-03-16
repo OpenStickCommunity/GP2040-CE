@@ -183,7 +183,10 @@ const emptyAnimationProfile = {
 	buttonPressFadeOutTimeInMs: 0,
 	buttonPressHoldTimeInMs: 0,
 	bUseCaseLightsInPressedAnimations: 0,
-	nonButtonStaticColors: Array.from({ length: MAX_NON_BUTTON_LIGHT_COLOR_INDEXES }, () => 1),
+	nonButtonStaticColors: Array.from(
+		{ length: MAX_NON_BUTTON_LIGHT_COLOR_INDEXES },
+		() => 1,
+	),
 	nonPressedSpecialColor: 0,
 	pressedSpecialColor: 0,
 	bNonPressedSpecialColorIsRainbow: 0,
@@ -730,38 +733,42 @@ export default function LedConfigPage() {
 													/>
 												</Row>
 												<Row>
-													<FormControl
-														type="color"
-														label={t(
-															`LedConfigPage:theme.idle-special-color-label`,
-														)}
-														name={`AnimationOptions.profiles.${profileIndex}.nonPressedSpecialColor`}
-														groupClassName="col-sm-4 mb-3"
-														className="form-control-sm p-0 border-0 mb-3"
-														defaultValue={rgbIntToHex(
-															profile.nonPressedSpecialColor,
-														)}
-														error={
-															(
-																errors.AnimationOptions?.profiles?.[
-																	profileIndex
-																] as FormikErrors<AnimationProfile>
-															)?.nonPressedSpecialColor
-														}
-														isInvalid={Boolean(
-															(
-																errors.AnimationOptions?.profiles?.[
-																	profileIndex
-																] as FormikErrors<AnimationProfile>
-															)?.nonPressedSpecialColor,
-														)}
-														onBlur={(e) =>
-															setFieldValue(
-																`AnimationOptions.profiles.${profileIndex}.nonPressedSpecialColor`,
-																hexToInt((e.target as HTMLInputElement).value),
-															)
-														}
-													/>
+													{!profile.bNonPressedSpecialColorIsRainbow && (
+														<FormControl
+															type="color"
+															label={t(
+																`LedConfigPage:theme.idle-special-color-label`,
+															)}
+															name={`AnimationOptions.profiles.${profileIndex}.nonPressedSpecialColor`}
+															groupClassName="col-sm-4 mb-3"
+															className="form-control-sm p-0 border-0 mb-3"
+															defaultValue={rgbIntToHex(
+																profile.nonPressedSpecialColor,
+															)}
+															error={
+																(
+																	errors.AnimationOptions?.profiles?.[
+																		profileIndex
+																	] as FormikErrors<AnimationProfile>
+																)?.nonPressedSpecialColor
+															}
+															isInvalid={Boolean(
+																(
+																	errors.AnimationOptions?.profiles?.[
+																		profileIndex
+																	] as FormikErrors<AnimationProfile>
+																)?.nonPressedSpecialColor,
+															)}
+															onBlur={(e) =>
+																setFieldValue(
+																	`AnimationOptions.profiles.${profileIndex}.nonPressedSpecialColor`,
+																	hexToInt(
+																		(e.target as HTMLInputElement).value,
+																	),
+																)
+															}
+														/>
+													)}
 													<div className="d-flex align-items-center col-sm-4 mb-3">
 														<FormCheck
 															type="switch"
@@ -788,24 +795,42 @@ export default function LedConfigPage() {
 													</div>
 												</Row>
 												<Row>
-													<FormControl
-														type="color"
-														label={t(
-															`LedConfigPage:theme.pressed-special-color-label`,
-														)}
-														name={`AnimationOptions.profiles.${profileIndex}.pressedSpecialColor`}
-														groupClassName="col-sm-4 mb-3"
-														className="form-control-sm p-0 border-0 mb-3"
-														defaultValue={rgbIntToHex(
-															profile.pressedSpecialColor,
-														)}
-														onBlur={(e) =>
-															setFieldValue(
-																`AnimationOptions.profiles.${profileIndex}.pressedSpecialColor`,
-																hexToInt((e.target as HTMLInputElement).value),
-															)
-														}
-													/>
+													{!profile.bPressedSpecialColorIsRainbow && (
+														<FormControl
+															type="color"
+															label={t(
+																`LedConfigPage:theme.pressed-special-color-label`,
+															)}
+															name={`AnimationOptions.profiles.${profileIndex}.pressedSpecialColor`}
+															groupClassName="col-sm-4 mb-3"
+															className="form-control-sm p-0 border-0 mb-3"
+															defaultValue={rgbIntToHex(
+																profile.pressedSpecialColor,
+															)}
+															error={
+																(
+																	errors.AnimationOptions?.profiles?.[
+																		profileIndex
+																	] as FormikErrors<AnimationProfile>
+																)?.pressedSpecialColor
+															}
+															isInvalid={Boolean(
+																(
+																	errors.AnimationOptions?.profiles?.[
+																		profileIndex
+																	] as FormikErrors<AnimationProfile>
+																)?.pressedSpecialColor,
+															)}
+															onBlur={(e) =>
+																setFieldValue(
+																	`AnimationOptions.profiles.${profileIndex}.pressedSpecialColor`,
+																	hexToInt(
+																		(e.target as HTMLInputElement).value,
+																	),
+																)
+															}
+														/>
+													)}
 													<div className="d-flex align-items-center col-sm-4 mb-3">
 														<FormCheck
 															type="switch"
@@ -836,9 +861,7 @@ export default function LedConfigPage() {
 												<Row>
 													<Col md={6}>
 														<p>
-															{t(
-																`LedConfigPage:theme.layout-mode-description`,
-															)}
+															{t(`LedConfigPage:theme.layout-mode-description`)}
 														</p>
 														<Form.Check
 															type="switch"
@@ -865,7 +888,9 @@ export default function LedConfigPage() {
 														notPressedStaticColors={
 															profile.notPressedStaticColors
 														}
-														nonButtonStaticColors={profile.nonButtonStaticColors}
+														nonButtonStaticColors={
+															profile.nonButtonStaticColors
+														}
 														profileIndex={profileIndex}
 														handleChange={handleChange}
 														setFieldValue={setFieldValue}
@@ -877,7 +902,9 @@ export default function LedConfigPage() {
 														notPressedStaticColors={
 															profile.notPressedStaticColors
 														}
-														nonButtonStaticColors={profile.nonButtonStaticColors}
+														nonButtonStaticColors={
+															profile.nonButtonStaticColors
+														}
 														profileIndex={profileIndex}
 														customColors={values.AnimationOptions.customColors}
 														setFieldValue={setFieldValue}
