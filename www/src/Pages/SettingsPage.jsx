@@ -495,8 +495,8 @@ export default function SettingsPage() {
 	const fetchProfiles = useProfilesStore((state) => state.fetchProfiles);
 	const profiles = useProfilesStore((state) => state.profiles);
 
-	const { fetchBootModeOptions, setEnabled: setBootModeMappingEnabled } = useBootModeStoreActions();
-	const newBootModeMappingEnabled = useBootModeStore((state) => state.enabled);
+	const { fetchBootModeOptions } = useBootModeStoreActions();
+	const gpioBootModeMappingEnabled = useBootModeStore((state) => state.enabled);
 
 	useEffect(() => {
 		fetchProfiles();
@@ -1665,16 +1665,7 @@ export default function SettingsPage() {
 												<Section
 													title={t('SettingsPage:boot-input-mode-label')}
 												>
-													<Form.Check
-														label="Use GPIO Pins"
-														type="switch"
-														className="text my-auto mb-4"
-														checked={newBootModeMappingEnabled}
-														onChange={(e) => {
-															setBootModeMappingEnabled(e.target.checked);
-														}}
-													/>
-													{newBootModeMappingEnabled ? (
+													{gpioBootModeMappingEnabled ? (
 														<p>
 															To use the new GPIO-based mapping, go to the{' '}
 															<NavLink to="/boot-mode-mapping">Boot Mode Configuration</NavLink>

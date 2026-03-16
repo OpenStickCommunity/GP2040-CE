@@ -2,6 +2,7 @@ import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { ReactNode, useContext, useEffect } from 'react';
 import Section from '../Components/Section';
 import { useShallow } from 'zustand/react/shallow';
+import { NavLink } from 'react-router-dom';
 import {
 	useBootModeStore,
 	useBootModeStoreActions,
@@ -10,12 +11,13 @@ import {
 import { INPUT_MODE_OPTIONS, InputModeOptions } from '../Data/InputBootModes';
 import { AppContext } from '../Contexts/AppContext';
 import CustomSelect from '../Components/CustomSelect';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { ActionMeta, MultiValue, SingleValue } from 'react-select';
 import CaptureButton from '../Components/CaptureButton';
 import useProfilesStore, { MaskPayload } from '../Store/useProfilesStore';
 import omit from 'lodash/omit';
 import { BUTTON_ACTIONS } from '../Data/Pins';
+import ContextualHelpOverlay from '../Components/ContextualHelpOverlay';
 
 type PinOption = {
 	label: string;
@@ -106,9 +108,9 @@ function PinSelect({ mappingKey }: { mappingKey: string }) {
 	);
 
 	const pinField = (value: number) => {
-		let s = ('0' + value)
+		let s = '0' + value;
 		return 'pin' + s.substring(s.length - 2);
-	}
+	};
 
 	const values = PIN_OPTIONS.filter(({ value }) => pins.has(value));
 	let errorMessage = 'Mapped GPIO pins cannot contain duplicates';
@@ -310,78 +312,101 @@ export default function BootModeMappingPage() {
 	const showSaveMessage = !dirty && saveAttempted && errorMessage === undefined;
 
 	return (
-		<Section title={t('SettingsPage:boot-input-mode-label')}>
-			<Form.Check
-				label="Use GPIO Pins"
-				type="switch"
-				className="text my-auto mb-4"
-				checked={enabled}
-				onChange={(e) => {
-					setEnabled(e.target.checked);
-					setDirty();
-				}}
-			/>
-			{enabled &&
-				(loadingBootModes || loadingProfiles ? (
-					<div className="d-flex justify-content-center">
-						<span className="spinner-border" />
-					</div>
-				) : (
-					<Container fluid className="p-0">
-						<FormRow
-							col0={<Form.Text className="muted ms-2">MODE</Form.Text>}
-							col1={<Form.Text className="muted ms-2">GPIO PINS</Form.Text>}
-							col2={<Form.Text className="muted ms-2">PROFILE</Form.Text>}
-							col3={<Button className="invisible">{'✕'}</Button>}
-						/>
-						<hr />
-						<FixedBootModeRow
-							label={t('Navigation:reboot-modal-button-web-config-label')}
-							mappingKey="webConfig"
-						/>
-						<FixedBootModeRow
-							label={t('Navigation:reboot-modal-button-bootsel-label')}
-							mappingKey="usbMode"
-						/>
-						{inputModeKeys.map((k, _) => (
-							<BootModeRow mappingKey={k} key={k} />
-						))}
-
-						{inputModeKeys.length < MAX_INPUT_MODES && (
-							<div className="d-flex justify-content-center">
-								<Button
-									className="mt-1"
-									variant="outline"
-									onClick={() => {
-										addBootMode();
-										clearErrors();
-										setDirty();
-									}}
-								>
-									+ Add Mode
-								</Button>
-							</div>
-						)}
-					</Container>
-				))}
-			<div className="d-flex align-items-center gap-2">
-				<Button
-					onClick={handleSubmit}
-					disabled={!dirty || errorMessage !== undefined || showSaveMessage}
-				>
-					{t('Common:button-save-label')}
-				</Button>
-				{errorMessage && (
-					<div className="invalid-feedback d-block">
-						{errorMessage ? errorMessage : t('Common:saved-error-message')}
-					</div>
-				)}
-			</div>
-			{showSaveMessage && (
-				<Alert className="mt-2" variant="info">
-					{t('Common:saved-success-message')}
-				</Alert>
+		<div>
+			{enabled && (
+				<div className="alert alert-warning">
+					<Trans
+						ns="BootModeMappingPage"
+						i18nKey="alert-text"
+						components={[<NavLink to="/reset-settings" />]}
+					/>
+				</div>
 			)}
-		</Section>
+			<Section title={t('SettingsPage:boot-input-mode-label')}>
+				<div className="d-flex align-items-center mb-2">
+					<Form.Check
+						label="Use GPIO Pins"
+						type="switch"
+						className="text my-auto"
+						checked={enabled}
+						onChange={(e) => {
+							setEnabled(e.target.checked);
+							setDirty();
+						}}
+					/>
+					<ContextualHelpOverlay
+						title={t('BootModeMappingPage:gpio-input-mode-label')}
+						body={
+							<Trans
+								ns="BootModeMappingPage"
+								i18nKey="gpio-input-mode-explanation"
+								components={[<NavLink to="/settings" />]}
+							/>
+						}
+					/>
+				</div>
+				{enabled &&
+					(loadingBootModes || loadingProfiles ? (
+						<div className="d-flex justify-content-center">
+							<span className="spinner-border" />
+						</div>
+					) : (
+						<Container fluid className="p-0">
+							<FormRow
+								col0={<Form.Text className="muted ms-2">MODE</Form.Text>}
+								col1={<Form.Text className="muted ms-2">GPIO PINS</Form.Text>}
+								col2={<Form.Text className="muted ms-2">PROFILE</Form.Text>}
+								col3={<Button className="invisible">{'✕'}</Button>}
+							/>
+							<hr />
+							<FixedBootModeRow
+								label={t('Navigation:reboot-modal-button-web-config-label')}
+								mappingKey="webConfig"
+							/>
+							<FixedBootModeRow
+								label={t('Navigation:reboot-modal-button-bootsel-label')}
+								mappingKey="usbMode"
+							/>
+							{inputModeKeys.map((k, _) => (
+								<BootModeRow mappingKey={k} key={k} />
+							))}
+
+							{inputModeKeys.length < MAX_INPUT_MODES && (
+								<div className="d-flex justify-content-center">
+									<Button
+										className="mt-1"
+										variant="outline"
+										onClick={() => {
+											addBootMode();
+											clearErrors();
+											setDirty();
+										}}
+									>
+										+ Add Mode
+									</Button>
+								</div>
+							)}
+						</Container>
+					))}
+				<div className="d-flex align-items-center gap-2">
+					<Button
+						onClick={handleSubmit}
+						disabled={!dirty || errorMessage !== undefined || showSaveMessage}
+					>
+						{t('Common:button-save-label')}
+					</Button>
+					{errorMessage && (
+						<div className="invalid-feedback d-block">
+							{errorMessage ? errorMessage : t('Common:saved-error-message')}
+						</div>
+					)}
+				</div>
+				{showSaveMessage && (
+					<Alert className="mt-2" variant="info">
+						{t('Common:saved-success-message')}
+					</Alert>
+				)}
+			</Section>
+		</div>
 	);
 }
