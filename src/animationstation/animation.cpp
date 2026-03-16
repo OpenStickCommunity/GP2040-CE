@@ -180,16 +180,16 @@ RGB Animation::StaticGetNonPressedColorForLight(Lights* AllLights, uint32_t Ligh
   else
   {
     //If we're in test mode for case lights then turn all lights black and return white for the requested case Light
-    if(AnimationStation::TestModeLightIsCase && AnimationStation::TestModePinOrCaseIndex != -1)
+    if(AnimationStation::TestModeLightIsNonButton && AnimationStation::TestModePinOrNonButtonIndex != -1)
     {
       colIndex = 0;
-      if(thisLight->Type == LightType::LightType_Turbo && thisLight->FirstLedIndex == AnimationStation::TestModePinOrCaseIndex)
+      if(thisLight->Type == LightType::LightType_Turbo && ((int)thisLight->FirstLedIndex == AnimationStation::TestModePinOrNonButtonIndex))
       colIndex = 1;
     }
     else
     {
       //case light or player led
-      colIndex = thisLight->ColorIndex;
+      colIndex = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonButtonStaticColors[thisLight->NonButtonIndex];
     }
   }
 

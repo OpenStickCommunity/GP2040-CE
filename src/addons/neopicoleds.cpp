@@ -662,10 +662,11 @@ void NeoPicoLEDAddon::createLEDLayout(ButtonLayout layout, uint8_t ledsPerPixel,
 	{
 		if(PLED1_PIN != -1 && PLED2_PIN != -1 && PLED3_PIN != -1 && PLED4_PIN != -1)
 		{
-			generateLegacyIndividualLight(PLED1_PIN, 0, 11, 1, PLED_COLOR, LightType::LightType_Player1Light);
-			generateLegacyIndividualLight(PLED2_PIN, 1, 11, 1, PLED_COLOR, LightType::LightType_Player2Light);
-			generateLegacyIndividualLight(PLED3_PIN, 2, 11, 1, PLED_COLOR, LightType::LightType_Player3Light);
-			generateLegacyIndividualLight(PLED4_PIN, 3, 11, 1, PLED_COLOR, LightType::LightType_Player4Light);		
+			// config utils defaults to setting the last entry in the non button array to be the pled colour
+			generateLegacyIndividualLight(PLED1_PIN, 0, 11, 1, (MAX_NON_BUTTON_LIGHT_COLOR_INDEXES-1), LightType::LightType_Player1Light);
+			generateLegacyIndividualLight(PLED2_PIN, 1, 11, 1, (MAX_NON_BUTTON_LIGHT_COLOR_INDEXES-1), LightType::LightType_Player2Light);
+			generateLegacyIndividualLight(PLED3_PIN, 2, 11, 1, (MAX_NON_BUTTON_LIGHT_COLOR_INDEXES-1), LightType::LightType_Player3Light);
+			generateLegacyIndividualLight(PLED4_PIN, 3, 11, 1, (MAX_NON_BUTTON_LIGHT_COLOR_INDEXES-1), LightType::LightType_Player4Light);		
 		}
 	}
 }

@@ -3,7 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { Button, Col, OverlayTrigger, Popover, Row } from 'react-bootstrap';
 
 import { LED_COLORS, LIGHT_TYPES } from '../../Data/Leds';
-import { Light, MAX_CASE_LIGHTS } from '../../Store/useLedStore';
+import {
+	Light,
+	MAX_NON_BUTTON_LIGHT_COLOR_INDEXES,
+} from '../../Store/useLedStore';
 import { rgbIntToHex } from '../../Services/Utilities';
 import ColorSelector from './ColorSlector';
 import boards from '../../Data/Boards.json';
@@ -63,7 +66,7 @@ const ColorSelectOverlay = ({
 function ButtonLayoutPreview({
 	pressedStaticColors,
 	notPressedStaticColors,
-	caseStaticColors,
+	nonButtonStaticColors,
 	profileIndex,
 	setFieldValue,
 	customColors = [],
@@ -71,7 +74,7 @@ function ButtonLayoutPreview({
 }: {
 	pressedStaticColors: number[];
 	notPressedStaticColors: number[];
-	caseStaticColors: number[];
+	nonButtonStaticColors: number[];
 	profileIndex: number;
 	customColors?: number[];
 	setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
@@ -189,7 +192,7 @@ function ButtonLayoutPreview({
 											key={`button-light-${index}`}
 											title={t(
 												'LedConfigPage:buttonLayoutPreview.overlay-gpio-title',
-												{ pin: light.GPIOPinOrColorIndex },
+												{ pin: light.GPIOPinOrNonButtonIndex },
 											)}
 											content={
 												<div style={{ minWidth: 200 }}>
@@ -201,13 +204,13 @@ function ButtonLayoutPreview({
 														value={
 															colorOptions[
 																notPressedStaticColors[
-																	light.GPIOPinOrColorIndex
+																	light.GPIOPinOrNonButtonIndex
 																]
 															] || null
 														}
 														onChange={(selected) => {
 															setFieldValue(
-																`AnimationOptions.profiles.${profileIndex}.notPressedStaticColors.${light.GPIOPinOrColorIndex}`,
+																`AnimationOptions.profiles.${profileIndex}.notPressedStaticColors.${light.GPIOPinOrNonButtonIndex}`,
 																selected?.value || 0,
 															);
 														}}
@@ -222,12 +225,14 @@ function ButtonLayoutPreview({
 														options={colorOptions}
 														value={
 															colorOptions[
-																pressedStaticColors[light.GPIOPinOrColorIndex]
+																pressedStaticColors[
+																	light.GPIOPinOrNonButtonIndex
+																]
 															] || null
 														}
 														onChange={(selected) => {
 															setFieldValue(
-																`AnimationOptions.profiles.${profileIndex}.pressedStaticColors.${light.GPIOPinOrColorIndex}`,
+																`AnimationOptions.profiles.${profileIndex}.pressedStaticColors.${light.GPIOPinOrNonButtonIndex}`,
 																selected?.value || 0,
 															);
 														}}
@@ -244,9 +249,11 @@ function ButtonLayoutPreview({
 													fill={
 														colorOptions[
 															pressed
-																? pressedStaticColors[light.GPIOPinOrColorIndex]
+																? pressedStaticColors[
+																		light.GPIOPinOrNonButtonIndex
+																	]
 																: notPressedStaticColors[
-																		light.GPIOPinOrColorIndex
+																		light.GPIOPinOrNonButtonIndex
 																	]
 														]?.color || 'black'
 													}
@@ -265,7 +272,7 @@ function ButtonLayoutPreview({
 														textShadow: '0 0 3px black',
 													}}
 												>
-													{`GP${light.GPIOPinOrColorIndex}`}
+													{`GP${light.GPIOPinOrNonButtonIndex}`}
 												</text>
 											</g>
 										</ColorSelectOverlay>
@@ -277,7 +284,7 @@ function ButtonLayoutPreview({
 											key={`case-light-${index}`}
 											title={t(
 												'LedConfigPage:buttonLayoutPreview.overlay-case-title',
-												{ id: light.GPIOPinOrColorIndex },
+												{ id: light.GPIOPinOrNonButtonIndex },
 											)}
 											content={
 												<div style={{ minWidth: 200 }}>
@@ -288,12 +295,14 @@ function ButtonLayoutPreview({
 														options={colorOptions}
 														value={
 															colorOptions[
-																caseStaticColors[light.GPIOPinOrColorIndex]
+																nonButtonStaticColors[
+																	light.GPIOPinOrNonButtonIndex
+																]
 															] || null
 														}
 														onChange={(selected) => {
 															setFieldValue(
-																`AnimationOptions.profiles.${profileIndex}.caseStaticColors.${light.GPIOPinOrColorIndex}`,
+																`AnimationOptions.profiles.${profileIndex}.nonButtonStaticColors.${light.GPIOPinOrNonButtonIndex}`,
 																selected?.value || 0,
 															);
 														}}
@@ -312,7 +321,9 @@ function ButtonLayoutPreview({
 													height={SMALL_LIGHT_SIZE * 2}
 													fill={
 														colorOptions[
-															caseStaticColors[light.GPIOPinOrColorIndex]
+															nonButtonStaticColors[
+																light.GPIOPinOrNonButtonIndex
+															]
 														]?.color || 'black'
 													}
 													stroke="currentColor"
@@ -330,7 +341,7 @@ function ButtonLayoutPreview({
 														textShadow: '0 0 3px black',
 													}}
 												>
-													{`C${light.GPIOPinOrColorIndex}`}
+													{`C${light.GPIOPinOrNonButtonIndex}`}
 												</text>
 											</g>
 										</ColorSelectOverlay>
@@ -343,7 +354,7 @@ function ButtonLayoutPreview({
 											key={`misc-light-${index}`}
 											title={t(
 												'LedConfigPage:buttonLayoutPreview.overlay-gpio-title',
-												{ pin: light.GPIOPinOrColorIndex },
+												{ pin: light.GPIOPinOrNonButtonIndex },
 											)}
 											content={
 												<div style={{ minWidth: 200 }}>
@@ -355,13 +366,13 @@ function ButtonLayoutPreview({
 														value={
 															colorOptions[
 																notPressedStaticColors[
-																	light.GPIOPinOrColorIndex
+																	light.GPIOPinOrNonButtonIndex
 																]
 															] || null
 														}
 														onChange={(selected) => {
 															setFieldValue(
-																`AnimationOptions.profiles.${profileIndex}.notPressedStaticColors.${light.GPIOPinOrColorIndex}`,
+																`AnimationOptions.profiles.${profileIndex}.notPressedStaticColors.${light.GPIOPinOrNonButtonIndex}`,
 																selected?.value || 0,
 															);
 														}}
@@ -376,12 +387,14 @@ function ButtonLayoutPreview({
 														options={colorOptions}
 														value={
 															colorOptions[
-																pressedStaticColors[light.GPIOPinOrColorIndex]
+																pressedStaticColors[
+																	light.GPIOPinOrNonButtonIndex
+																]
 															] || null
 														}
 														onChange={(selected) => {
 															setFieldValue(
-																`AnimationOptions.profiles.${profileIndex}.pressedStaticColors.${light.GPIOPinOrColorIndex}`,
+																`AnimationOptions.profiles.${profileIndex}.pressedStaticColors.${light.GPIOPinOrNonButtonIndex}`,
 																selected?.value || 0,
 															);
 														}}
@@ -395,9 +408,11 @@ function ButtonLayoutPreview({
 													fill={
 														colorOptions[
 															pressed
-																? pressedStaticColors[light.GPIOPinOrColorIndex]
+																? pressedStaticColors[
+																		light.GPIOPinOrNonButtonIndex
+																	]
 																: notPressedStaticColors[
-																		light.GPIOPinOrColorIndex
+																		light.GPIOPinOrNonButtonIndex
 																	]
 														]?.color || 'black'
 													}
@@ -416,7 +431,7 @@ function ButtonLayoutPreview({
 														textShadow: '0 0 3px black',
 													}}
 												>
-													{`GP${light.GPIOPinOrColorIndex}`}
+													{`GP${light.GPIOPinOrNonButtonIndex}`}
 												</text>
 											</g>
 										</ColorSelectOverlay>
@@ -473,14 +488,18 @@ function ButtonLayoutPreview({
 						<ColorSelector
 							options={colorOptions}
 							value={
-								caseStaticColors?.every((v) => v === caseStaticColors[0])
-									? colorOptions[caseStaticColors[0]] || null
+								nonButtonStaticColors?.every(
+									(v) => v === nonButtonStaticColors[0],
+								)
+									? colorOptions[nonButtonStaticColors[0]] || null
 									: null
 							}
 							onChange={(selected) => {
 								setFieldValue(
-									`AnimationOptions.profiles.${profileIndex}.caseStaticColors`,
-									Array(MAX_CASE_LIGHTS).fill(selected?.value || 0),
+									`AnimationOptions.profiles.${profileIndex}.nonButtonStaticColors`,
+									Array(MAX_NON_BUTTON_LIGHT_COLOR_INDEXES).fill(
+										selected?.value || 0,
+									),
 								);
 							}}
 						/>

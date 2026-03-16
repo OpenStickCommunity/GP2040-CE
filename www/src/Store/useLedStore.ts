@@ -6,7 +6,7 @@ import {
 } from '../Data/Animations';
 
 export const MAX_CUSTOM_COLORS = 8;
-export const MAX_CASE_LIGHTS = 40;
+export const MAX_NON_BUTTON_LIGHT_COLOR_INDEXES = 32;
 export const MAX_LIGHTS = 100;
 export const MAX_ANIMATION_PROFILES = 4;
 
@@ -18,7 +18,7 @@ export type AnimationProfile = {
 	basePressedEffect: typeof ANIMATION_PRESSED_EFFECTS;
 	buttonPressFadeOutTimeInMs: number;
 	buttonPressHoldTimeInMs: number;
-	caseStaticColors: number[];
+	nonButtonStaticColors: number[];
 	nonPressedSpecialColor: number;
 	notPressedStaticColors: number[];
 	pressedSpecialColor: number;
@@ -28,7 +28,7 @@ export type AnimationProfile = {
 };
 
 export type Light = {
-	GPIOPinOrColorIndex: number;
+	GPIOPinOrNonButtonIndex: number;
 	firstLedIndex: number;
 	lightType: number;
 	numLedsOnLight: number;

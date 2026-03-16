@@ -140,6 +140,10 @@
 #define LEDS_STATIC_COLOR_PRESSED ColorIndexWhite 
 #endif
 
+#ifndef LEDS_STATIC_COLOR_CASE
+#define LEDS_STATIC_COLOR_CASE ColorIndexGreen 
+#endif
+
 #ifndef LEDS_IDLE_SPECIAL_COLOR
 #define LEDS_IDLE_SPECIAL_COLOR ColorYellow 
 #endif

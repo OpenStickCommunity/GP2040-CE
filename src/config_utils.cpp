@@ -563,6 +563,22 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
             config.animationOptions.profiles[0].pressedStaticColors[lightIndex] += LEDS_STATIC_COLOR_PRESSED<<16; 
             config.animationOptions.profiles[0].pressedStaticColors[lightIndex] += LEDS_STATIC_COLOR_PRESSED<<24;
         }
+        config.animationOptions.profiles[0].nonButtonStaticColors_count = (MAX_NON_BUTTON_LIGHT_COLOR_INDEXES/4);
+        for (unsigned int lightIndex = 0; lightIndex < (MAX_NON_BUTTON_LIGHT_COLOR_INDEXES/4); ++lightIndex) 
+        {
+            config.animationOptions.profiles[0].nonButtonStaticColors[lightIndex] = LEDS_STATIC_COLOR_CASE; 
+            config.animationOptions.profiles[0].nonButtonStaticColors[lightIndex] += LEDS_STATIC_COLOR_CASE<<8; 
+            config.animationOptions.profiles[0].nonButtonStaticColors[lightIndex] += LEDS_STATIC_COLOR_CASE<<16;
+
+            if(lightIndex = ((MAX_NON_BUTTON_LIGHT_COLOR_INDEXES/4) - 1))
+            {
+                config.animationOptions.profiles[0].nonButtonStaticColors[lightIndex] += PLED_COLOR<<24; 
+            }
+            else
+            {
+                config.animationOptions.profiles[0].nonButtonStaticColors[lightIndex] += LEDS_STATIC_COLOR_CASE<<24; 
+            }
+        }
 
         //if there is a turbo LED color then insert this into the correct place
         if(TURBO_LED_PIN != -1)
@@ -595,53 +611,14 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
                 config.animationOptions.profiles[profileIndex].notPressedStaticColors[lightIndex] = 0; //Black
                 config.animationOptions.profiles[profileIndex].pressedStaticColors[lightIndex] = 0; //Black
             }
+            config.animationOptions.profiles[profileIndex].nonButtonStaticColors_count = (MAX_NON_BUTTON_LIGHT_COLOR_INDEXES/4);
+            for (unsigned int lightIndex = 0; lightIndex < (MAX_NON_BUTTON_LIGHT_COLOR_INDEXES/4); ++lightIndex) 
+            {
+                config.animationOptions.profiles[profileIndex].nonButtonStaticColors[lightIndex] = 0; //Black
+            }
         }
     }
    
-    //TESTING
-    if(false)
-    { 
-        config.animationOptions.customColors_count = 1;
-        config.animationOptions.customColors[0] = 255;
-        config.animationOptions.profiles_count = 2;
-
-        config.animationOptions.profiles[0].bEnabled = true;
-        config.animationOptions.profiles[0].notPressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
-        config.animationOptions.profiles[0].pressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
-        for (unsigned int lightIndex = 0; lightIndex < (NUM_BANK0_GPIOS/4)+1; ++lightIndex) 
-        {
-            config.animationOptions.profiles[0].notPressedStaticColors[lightIndex] = 2 + (2<<8) + (2<<16) + (2<<24); //Red
-            config.animationOptions.profiles[0].pressedStaticColors[lightIndex] = 4 + (6<<8) + (10<<16) + (12<<24); //Black
-        }
-        config.animationOptions.profiles[0].baseNonPressedEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_STATIC_COLOR;
-        config.animationOptions.profiles[0].basePressedEffect = AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_BURST_SMALL;
-        config.animationOptions.profiles[0].baseCaseEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_STATIC_COLOR;
-        config.animationOptions.profiles[0].buttonPressHoldTimeInMs = 500;
-        config.animationOptions.profiles[0].buttonPressFadeOutTimeInMs = 500;
-        config.animationOptions.profiles[0].nonPressedSpecialColor = (128 << 16) + 255; //MAGENTA
-        config.animationOptions.profiles[0].bUseCaseLightsInSpecialMoves = false;
-        config.animationOptions.profiles[0].bUseCaseLightsInPressedAnimations = false;
-
-        config.animationOptions.profiles[1].bEnabled = true;
-        config.animationOptions.profiles[1].notPressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
-        config.animationOptions.profiles[1].pressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
-        for (unsigned int lightIndex = 0; lightIndex < (NUM_BANK0_GPIOS/4)+1; ++lightIndex) 
-        {
-            config.animationOptions.profiles[1].notPressedStaticColors[lightIndex] = 6 + (6<<8) + (6<<16) + (6<<24); //Green
-            config.animationOptions.profiles[1].pressedStaticColors[lightIndex] = 2 + (2<<8) + (2<<16) + (2<<24); //Black
-        }
-
-        config.animationOptions.profiles[1].baseNonPressedEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_LEFT_TO_RIGHT;
-        config.animationOptions.profiles[1].basePressedEffect = AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_BURST;
-        config.animationOptions.profiles[1].baseCaseEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_LEFT_TO_RIGHT;
-        config.animationOptions.profiles[1].buttonPressHoldTimeInMs = 500;
-        config.animationOptions.profiles[1].buttonPressFadeOutTimeInMs = 500;
-        config.animationOptions.profiles[1].nonPressedSpecialColor = 255; //BLUE
-        config.animationOptions.profiles[1].pressedSpecialColor = (255 << 16) + (50 << 8); //reddy YELLOW
-        config.animationOptions.profiles[1].bUseCaseLightsInSpecialMoves = true;
-        config.animationOptions.profiles[1].bUseCaseLightsInPressedAnimations = true;
-    }
-
     // addonOptions.bootselButtonOptions
     INIT_UNSET_PROPERTY(config.addonOptions.bootselButtonOptions, enabled, !!BOOTSEL_BUTTON_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.bootselButtonOptions, buttonMap, BOOTSEL_BUTTON_MASK);
