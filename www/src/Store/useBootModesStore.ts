@@ -172,7 +172,7 @@ export const useBootModeStore = create<State & { actions: Actions }>()((set, get
 			set((state) => ({
 				...state,
 				loadingBootModes: false,
-				enabled: enabled,
+				enabled: !!enabled,
 				bootModes: {
 					webConfig: {
 						pins: maskToSet(webConfigPinMask),
