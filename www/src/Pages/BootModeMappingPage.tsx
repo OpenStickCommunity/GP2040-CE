@@ -1,7 +1,7 @@
-import { Alert, Button, Col, Container, Form, NavItem, Row } from 'react-bootstrap';
-import { NavLink } from 'react-router-dom';
-import { memo, ReactNode, useCallback, useContext, useEffect } from 'react';
+import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { ReactNode, useContext, useEffect } from 'react';
 import Section from '../Components/Section';
+import { useShallow } from 'zustand/react/shallow';
 import {
 	useBootModeStore,
 	useBootModeStoreActions,
@@ -13,7 +13,9 @@ import CustomSelect from '../Components/CustomSelect';
 import { useTranslation } from 'react-i18next';
 import { ActionMeta, MultiValue, SingleValue } from 'react-select';
 import CaptureButton from '../Components/CaptureButton';
-import useProfilesStore from '../Store/useProfilesStore';
+import useProfilesStore, { MaskPayload } from '../Store/useProfilesStore';
+import omit from 'lodash/omit';
+import { BUTTON_ACTIONS } from '../Data/Pins';
 
 type PinOption = {
 	label: string;
@@ -97,6 +99,17 @@ function PinSelect({ mappingKey }: { mappingKey: string }) {
 	const { addPin, removePin, validatePins, clearErrors, setDirty } =
 		useBootModeStoreActions();
 
+	// Need the profile pin mapping to determine which pins are assigned to addons or reserved,
+	// relying on the assumption that these are the same across all profiles.
+	const profilePins: { [key: string]: MaskPayload } = useProfilesStore(
+		useShallow((state) => omit(state.profiles[0], ['profileLabel', 'enabled'])),
+	);
+
+	const pinField = (value: number) => {
+		let s = ('0' + value)
+		return 'pin' + s.substring(s.length - 2);
+	}
+
 	const values = PIN_OPTIONS.filter(({ value }) => pins.has(value));
 	let errorMessage = 'Mapped GPIO pins cannot contain duplicates';
 
@@ -110,8 +123,25 @@ function PinSelect({ mappingKey }: { mappingKey: string }) {
 		validatePins(errorMessage);
 		setDirty();
 	};
+
 	const isInvalid =
 		modesWithDuplicates.includes(mappingKey) || (saveAttempted && values.length == 0);
+
+	const isOptionDisabled = (option: PinOption) => {
+		return [BUTTON_ACTIONS.RESERVED, BUTTON_ACTIONS.ASSIGNED_TO_ADDON].includes(
+			profilePins[pinField(option.value)].action,
+		);
+	};
+
+	const getOptionLabel = (option: PinOption) => {
+		if (profilePins[pinField(option.value)].action == BUTTON_ACTIONS.RESERVED) {
+			return `${option.label} (Reserved)`;
+		}
+		if (profilePins[pinField(option.value)].action == BUTTON_ACTIONS.ASSIGNED_TO_ADDON) {
+			return `${option.label} (Assigned to Add-on)`;
+		}
+		return option.label;
+	};
 
 	return (
 		<div className="d-flex gap-2">
@@ -123,6 +153,8 @@ function PinSelect({ mappingKey }: { mappingKey: string }) {
 				onChange={onChange}
 				value={values}
 				isInvalid={isInvalid}
+				isOptionDisabled={isOptionDisabled}
+				getOptionLabel={getOptionLabel}
 			/>
 			<CaptureButton
 				labels={['']}
