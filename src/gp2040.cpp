@@ -80,7 +80,7 @@ void GP2040::setup() {
 	bool profileChanged = false;
 
 	if (bootModeOptions.enabled) {
-		BootAction bootAction = getGpioMappedBootAction();
+		bootAction = getGpioMappedBootAction();
 		profileChanged = bootAction.profileNumber != prevProfile;
 		gamepadOptions.profileNumber = bootAction.profileNumber;
 	}

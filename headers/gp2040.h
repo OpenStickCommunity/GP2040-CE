@@ -54,7 +54,9 @@ private:
 			uint32_t profileNumber;
 		};
 
-		BootAction getBootAction();
+		BootAction getGpioMappedBootAction();
+		BootAction getButtonMappedBootAction();
+
     void getReinitGamepad(Gamepad * gamepad);
 
     // GPIO manipulation for setup and profile reinit
