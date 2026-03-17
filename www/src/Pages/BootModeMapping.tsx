@@ -123,7 +123,7 @@ function PinSelect({ mappingKey }: { mappingKey: string }) {
 			removePin(mappingKey, action.removedValue.value);
 		}
 		clearErrors();
-		validatePins(t('BootModeMappingPage:unique-validation-err'));
+		validatePins(t('BootModeMapping:unique-validation-err'));
 		setDirty();
 	};
 
@@ -164,7 +164,7 @@ function PinSelect({ mappingKey }: { mappingKey: string }) {
 				onChange={(_, pin) => {
 					addPin(mappingKey, pin);
 					clearErrors();
-					validatePins(t('BootModeMappingPage:unique-validation-err'));
+					validatePins(t('BootModeMapping:unique-validation-err'));
 				}}
 				small={true}
 			/>
@@ -306,8 +306,8 @@ export default function BootModeMappingPage() {
 	const inputModeKeys = Object.keys(bootModes).filter((k) => k.startsWith('inputMode-'));
 
 	const handleSubmit = () => {
-		validateRequired(t('BootModeMappingPage:required-validation-err'));
-		saveBootModeOptions(t('BootModeMappingPage:generic-save-err'));
+		validateRequired(t('BootModeMapping:required-validation-err'));
+		saveBootModeOptions(t('BootModeMapping:generic-save-err'));
 	};
 
 	const showSaveMessage = !dirty && saveAttempted && errorMessage === undefined;
@@ -317,7 +317,7 @@ export default function BootModeMappingPage() {
 			{enabled && (
 				<div className="alert alert-warning">
 					<Trans
-						ns="BootModeMappingPage"
+						ns="BootModeMapping"
 						i18nKey="alert-text"
 						components={[<NavLink to="/reset-settings" />]}
 					/>
@@ -336,10 +336,10 @@ export default function BootModeMappingPage() {
 						}}
 					/>
 					<ContextualHelpOverlay
-						title={t('BootModeMappingPage:gpio-input-mode-label')}
+						title={t('BootModeMapping:gpio-input-mode-label')}
 						body={
 							<Trans
-								ns="BootModeMappingPage"
+								ns="BootModeMapping"
 								i18nKey="gpio-input-mode-explanation"
 								components={[<NavLink to="/settings" />]}
 							/>

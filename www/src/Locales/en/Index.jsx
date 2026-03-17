@@ -20,7 +20,7 @@ import HETrigger from './Addons/HETrigger';
 import InputMacroAddon from './InputMacroAddon';
 import LayoutConfig from './LayoutConfig';
 import Proto from './Proto/Index';
-import BootModeMappingPage from './BootModeMappingPage';
+import BootModeMapping from './BootModeMapping';
 
 export default {
 	Common,
@@ -45,5 +45,5 @@ export default {
 	ReactiveLED,
 	Proto,
 	HETrigger,
-	BootModeMappingPage
+	BootModeMapping
 };

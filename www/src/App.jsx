@@ -18,7 +18,7 @@ import PlaygroundPage from './Pages/PlaygroundPage';
 import InputMacroAddonPage from './Pages/InputMacroAddonPage';
 
 import './App.scss';
-import BootModeMappingPage from './Pages/BootModeMappingPage';
+import BootModeMappingPage from './Pages/BootModeMapping';
 
 const App = () => {
 	return (
