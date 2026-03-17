@@ -126,10 +126,13 @@ void GP2040::setup() {
 	addons.LoadAddon(new TurboInput()); // Turbo overrides button states and should be close to the end
 	addons.LoadAddon(new InputMacro());
 
+	// Use the old method of selecting input mode via mapped button, i.e. AFTER initializing GPIO
+	// pins with the currently active profile. Calling this even if the GPIO-mapped selection is
+	// used to make sure the same gamepad and add-on initialization steps still happen;
+	BootAction altBootAction = getButtonMappedBootAction();
+
 	if (!bootModeOptions.enabled) {
-		// Use the old method of selecting input mode via mapped button, i.e. AFTER initializing GPIO
-		// pins with the currently active profile
-		bootAction = getButtonMappedBootAction();
+		bootAction = altBootAction;
 	}
 
 	// Initialize last reinit profile to current so we don't reinit on first loop
@@ -275,11 +278,7 @@ void GP2040::run() {
 		// Pre-Process add-ons for MPGS
 		addons.PreprocessAddons();
 
-
-
 		gamepad->process(); // process through MPGS
-
-
 
 		// (Post) Process for add-ons
 		addons.ProcessAddons();
@@ -345,6 +344,7 @@ void GP2040::getReinitGamepad(Gamepad * gamepad) {
 
 GP2040::BootAction GP2040::getButtonMappedBootAction() {
 	GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
+	// Initialized to the current mode and profile
 	BootAction bootAction = {
 		BootActionType::SET_INPUT_MODE,
 		gamepadOptions.inputMode,
@@ -430,6 +430,7 @@ GP2040::BootAction GP2040::getGpioMappedBootAction() {
 
 	const GamepadOptions& gamepad = Storage::getInstance().getGamepadOptions();
 	const BootModeOptions& bootModeOptions = Storage::getInstance().getBootModeOptions();
+	// Initialized to the current mode and profile
 	BootAction action = { BootActionType::SET_INPUT_MODE, gamepad.inputMode, gamepad.profileNumber };
 
 	switch (System::takeBootMode()) {
