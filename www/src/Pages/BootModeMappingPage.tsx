@@ -107,13 +107,14 @@ function PinSelect({ mappingKey }: { mappingKey: string }) {
 		useShallow((state) => omit(state.profiles[0], ['profileLabel', 'enabled'])),
 	);
 
+	const { t } = useTranslation('');
+
 	const pinField = (value: number) => {
 		let s = '0' + value;
 		return 'pin' + s.substring(s.length - 2);
 	};
 
 	const values = PIN_OPTIONS.filter(({ value }) => pins.has(value));
-	let errorMessage = 'Mapped GPIO pins cannot contain duplicates';
 
 	const onChange = (_: MultiValue<PinOption>, action: ActionMeta<PinOption>) => {
 		if (action.action === 'select-option' && action.option !== undefined) {
@@ -122,7 +123,7 @@ function PinSelect({ mappingKey }: { mappingKey: string }) {
 			removePin(mappingKey, action.removedValue.value);
 		}
 		clearErrors();
-		validatePins(errorMessage);
+		validatePins(t('BootModeMappingPage:unique-validation-err'));
 		setDirty();
 	};
 
@@ -163,7 +164,7 @@ function PinSelect({ mappingKey }: { mappingKey: string }) {
 				onChange={(_, pin) => {
 					addPin(mappingKey, pin);
 					clearErrors();
-					validatePins(errorMessage);
+					validatePins(t('BootModeMappingPage:unique-validation-err'));
 				}}
 				small={true}
 			/>
@@ -305,8 +306,8 @@ export default function BootModeMappingPage() {
 	const inputModeKeys = Object.keys(bootModes).filter((k) => k.startsWith('inputMode-'));
 
 	const handleSubmit = () => {
-		validateRequired('Required fields are missing');
-		saveBootModeOptions('Save Failed');
+		validateRequired(t('BootModeMappingPage:required-validation-err'));
+		saveBootModeOptions(t('BootModeMappingPage:generic-save-err'));
 	};
 
 	const showSaveMessage = !dirty && saveAttempted && errorMessage === undefined;
