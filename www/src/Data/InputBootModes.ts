@@ -180,5 +180,14 @@ export const INPUT_MODE_OPTIONS: InputModeOptions[] = [
 		optional: [],
 		authentication: [],
 		deviceTypes: [],
-	}
+	},
+	{
+		labelKey: 'input-mode-options.p5general',
+		value: InputMode.INPUT_MODE_P5GENERAL,
+		group: 'primary',
+		required: [],
+		optional: ['usb'],
+		authentication: ['usb'],
+		deviceTypes: []
+	},
 ];
