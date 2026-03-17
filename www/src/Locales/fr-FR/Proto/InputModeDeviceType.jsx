@@ -1,0 +1,10 @@
+export default {
+	'INPUT_MODE_DEVICE_TYPE_DRUM': 'Batterie',
+	'INPUT_MODE_DEVICE_TYPE_GAMEPAD': 'Manette de jeu',
+	'INPUT_MODE_DEVICE_TYPE_GAMEPAD_ALT': 'Manette de jeu (alternative)',
+	'INPUT_MODE_DEVICE_TYPE_GUITAR': 'Guitare',
+	'INPUT_MODE_DEVICE_TYPE_HOTAS': 'Manche/HOTAS',
+	'INPUT_MODE_DEVICE_TYPE_WHEEL': 'Volant',
+	'INPUT_MODE_DEVICE_TYPE_MECHA': 'Mécanisé/MECHA',
+	'INPUT_MODE_DEVICE_TYPE_ARCADE_STICK': 'Stick Arcade',
+};

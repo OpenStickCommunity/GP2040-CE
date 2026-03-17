@@ -52,14 +52,11 @@ void DisplaySaverScreen::drawScreen() {
 
 int8_t DisplaySaverScreen::update() {
     if (!DriverManager::getInstance().isConfigMode()) {
-        uint16_t buttonState = getGamepad()->state.buttons;
-        if (prevButtonState && !buttonState) {
-            if (prevButtonState != 0) {
-                prevButtonState = 0;
-                return DisplayMode::BUTTONS;
-            }
+        Gamepad * gamepad = Storage::getInstance().GetGamepad();
+        
+        if (gamepad->state.buttons || gamepad->state.dpad) {
+            return DisplayMode::BUTTONS;
         }
-        prevButtonState = buttonState;
     }
 
     return -1; // -1 means no change in screen state

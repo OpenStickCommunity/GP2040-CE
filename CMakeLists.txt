@@ -4,9 +4,9 @@ if(WIN32)
 else()
     set(USERHOME $ENV{HOME})
 endif()
-set(sdkVersion 2.1.1)
+set(sdkVersion 2.2.0)
 set(toolchainVersion 14_2_Rel1)
-set(picotoolVersion 2.1.1)
+set(picotoolVersion 2.2.0-a4)
 set(picoVscode ${USERHOME}/.pico-sdk/cmake/pico-vscode.cmake)
 if (EXISTS ${picoVscode})
     include(${picoVscode})
@@ -16,6 +16,37 @@ if(DEFINED ENV{PICO_BOARD})
   set(PICO_BOARD $ENV{PICO_BOARD} CACHE STRING "Board type")
 else()
   set(PICO_BOARD pico CACHE STRING "Board type")
+endif()
+
+if(DEFINED ENV{PICO_PLATFORM})
+  set(PICO_PLATFORM $ENV{PICO_PLATFORM} CACHE STRING "Board platform")
+else()
+  set(PICO_PLATFORM rp2040 CACHE STRING "Board platform")
+endif()
+
+if(DEFINED ENV{GP2040_BOARDCONFIG})
+  set(GP2040_BOARDCONFIG $ENV{GP2040_BOARDCONFIG})
+elseif(NOT DEFINED GP2040_BOARDCONFIG)
+  set(GP2040_BOARDCONFIG Pico)
+endif()
+
+# check for existing cmake files in the event of changing PICO_BOARD or PICO_PLATFORM
+if (GP2040_BOARDCONFIG)
+  message("GP2040-CE board config is set: ${GP2040_BOARDCONFIG}")
+  set(GP2040_BOARD_CONFIG_FILE "${CMAKE_CURRENT_LIST_DIR}/configs/${GP2040_BOARDCONFIG}/${GP2040_BOARDCONFIG}.cmake")
+
+  if (EXISTS "${GP2040_BOARD_CONFIG_FILE}")
+    # include the board config file
+    message(STATUS "Using board config file: ${GP2040_BOARD_CONFIG_FILE}")
+    message(STATUS "${PICO_BOARD_HEADER_DIRS}")
+
+    set(PICO_BOARD_HEADER_DIRS "${CMAKE_CURRENT_LIST_DIR}/configs/${GP2040_BOARDCONFIG}")
+
+    include("${GP2040_BOARD_CONFIG_FILE}")
+  else()
+    # skip the config and fall back to defaults
+    # message(FATAL_ERROR "GP2040_BOARDCONFIG '${GP2040_BOARDCONFIG}' not found.\n" "Expected: ${GP2040_BOARD_CONFIG_FILE}")
+  endif()
 endif()
 
 cmake_minimum_required(VERSION 3.10...4.0)
@@ -28,8 +59,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # note: this must happen before project()
 include(pico_sdk_import.cmake)
 
-if (PICO_SDK_VERSION_STRING VERSION_LESS "2.1.1")
-  message(FATAL_ERROR "Raspberry Pi Pico SDK version 2.1.1 (or later) required. Your version is ${PICO_SDK_VERSION_STRING}")
+if (PICO_SDK_VERSION_STRING VERSION_LESS "2.2.0")
+  message(FATAL_ERROR "Raspberry Pi Pico SDK version 2.2.0 (or later) required. Your version is ${PICO_SDK_VERSION_STRING}")
 endif()
 
 # set the version for webconfig, etc. based on git
@@ -55,12 +86,6 @@ message("GIT_REPO_BUILD_ID is ${GIT_REPO_BUILD_ID}")
 project(GP2040-CE LANGUAGES C CXX ASM VERSION ${CMAKE_GIT_REPO_VERSION})
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
-
-if(DEFINED ENV{GP2040_BOARDCONFIG})
-  set(GP2040_BOARDCONFIG $ENV{GP2040_BOARDCONFIG})
-elseif(NOT DEFINED GP2040_BOARDCONFIG)
-  set(GP2040_BOARDCONFIG Pico)
-endif()
 
 if(DEFINED ENV{SKIP_SUBMODULES})
   set(SKIP_SUBMODULES $ENV{SKIP_SUBMODULES})
@@ -189,6 +214,9 @@ src/drivers/ps3/PS3Driver.cpp
 src/drivers/ps4/PS4Auth.cpp
 src/drivers/ps4/PS4AuthUSBListener.cpp
 src/drivers/ps4/PS4Driver.cpp
+src/drivers/p5general/P5GeneralAuth.cpp
+src/drivers/p5general/P5GeneralAuthUSBListener.cpp
+src/drivers/p5general/P5GeneralDriver.cpp
 src/drivers/psclassic/PSClassicDriver.cpp
 src/drivers/switch/SwitchDriver.cpp
 src/drivers/switchpro/SwitchProDriver.cpp

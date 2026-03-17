@@ -16,6 +16,7 @@ export default {
 		keyboard: '键盘',
 		ps4: 'PS4',
 		ps5: 'PS5',
+		p5general: 'P5General',
 		neogeo: 'NEOGEO mini',
 		mdmini: 'Sega Genesis/MegaDrive Mini',
 		pcemini: 'PC Engine/Turbografx 16 Mini',
@@ -71,6 +72,7 @@ export default {
 	'ps5-mode-warning-text': '<span>⏳ 警告 ⏳:</span> PS5 在没有认证的情况下会在 8 分钟后超时。',
 	'ps5-usb-host-mode-text': '<span>信息:</span> 请确保已启用 USB 外设并插入兼容 PS5 的 USB 设备。',
 	'xbone-mode-text': '<span>信息:</span> Xbox One 模式需要 USB 主机连接和 USB 适配器才能正确认证。',
+	'p5general-mode-text': '<span>信息：</span>PS5General 模式需要 USB 主机连接和 <span>P5General</span> 才能正确验证。',
 	'xinput-mode-text': '<span>信息:</span> XInput 模式可在零售版 Xbox 360 主机上无需适配器运行。仅当您希望使用外部适配器进行认证时才选择 USB。',
 	'hotkey-settings-label': '热键设置',
 	'hotkey-settings-sub-header': '<strong>Fn</strong> 滑块在<link_pinmap>引脚映射</link_pinmap>页面提供了一个可映射的功能按钮。选择 <strong>Fn</strong> 滑块选项后，必须按住功能按钮以及选定的热键设置。<br /> 此外，从下拉菜单中选择 <strong>无</strong> 可取消分配任何按钮。',
@@ -145,7 +147,6 @@ export default {
 	'forced-setup-mode-modal-title': '强制设置模式警告',
 	'forced-setup-mode-modal-body': '如果您在保存后重启到控制器模式，将无法再访问网页配置。如果您完全了解并有意这样做，请在下方输入"<strong>{{warningCheckText}}</strong>"以解锁保存按钮。点击关闭将恢复此设置，然后需要保存。',
 	'4-way-joystick-mode-label': '4向摇杆模式',
-	'lock-hotkeys-label': '锁定热键',
 	'keyboard-mapping-header-text': '键盘映射',
 	'keyboard-mapping-sub-header-text': '使用下面的表单重新配置按钮到按键的映射。',
 	'usb-override': {

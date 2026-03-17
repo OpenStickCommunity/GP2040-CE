@@ -65,7 +65,7 @@ export const rotaryScheme = {
 		.label('Encoder One Reset After')
 		.required(),
 	encoderOneAllowWrapAround: yup
-		.boolean()
+		.number()
 		.required()
 		.label('Encoder One Allow Wrap Around'),
 	encoderOneMultiplier: yup.number().label('Encoder One Multiplier').required(),
@@ -90,7 +90,7 @@ export const rotaryScheme = {
 		.label('Encoder Two Reset After')
 		.required(),
 	encoderTwoAllowWrapAround: yup
-		.boolean()
+		.number()
 		.required()
 		.label('Encoder Two Allow Wrap Around'),
 	encoderTwoMultiplier: yup.number().label('Encoder Two Multiplier').required(),
@@ -229,7 +229,7 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes
 							<FormCheck
 								label={t('Rotary:encoder-allow-wrap-around-label')}
 								type="switch"
-								id="encoderOneAllowWrapAround"
+								id="EncoderOneAllowWrapAround"
 								isInvalid={false}
 								checked={Boolean(values.encoderOneAllowWrapAround)}
 								onChange={(e) => {
@@ -337,7 +337,7 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes
 							<FormCheck
 								label={t('Rotary:encoder-allow-wrap-around-label')}
 								type="switch"
-								id="encoderTwoAllowWrapAround"
+								id="EncoderTwoAllowWrapAround"
 								isInvalid={false}
 								checked={Boolean(values.encoderTwoAllowWrapAround)}
 								onChange={(e) => {

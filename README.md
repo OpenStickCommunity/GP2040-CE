@@ -32,8 +32,8 @@ Full documentation can be found at [https://gp2040-ce.info](https://gp2040-ce.in
 
 ## Features
 
-- Select from 13 input modes including X-Input, Nintendo Switch, Playstation 4/5, Xbox One, D-Input, and Keyboard
-- Input latency average of 0.76ms in Xinput and 0.90ms for Playstation 5.
+- Select from 14 input modes including X-Input, Nintendo Switch, Playstation 4/5, Xbox One, D-Input, and Keyboard
+- Input latency average of 0.76ms in Xinput and 0.91ms for Playstation 5.
 - Multiple SOCD cleaning modes - Up Priority (a.k.a. Stickless), Neutral, and Second Input Priority.
 - Left and Right stick emulation via D-pad inputs as well as dedicated toggle switches.
 - Dual direction via D-pad + LS/RS.
@@ -55,16 +55,16 @@ Input latency is tested using the methodology outlined at [WydD's inputlag.scien
 
 | Version | Mode    | Poll Rate | Min     | Max     | Avg     | Stdev   | % on time | %1f skip | %2f skip |
 | ------- | ------- | --------- | ------- | ------- | ------- | ------- | --------- | -------- | -------- |
-| v0.7.11 | Xinput  | 1 ms      | 0.45 ms | 1.28 ms | 0.76 ms | 0.24 ms | 98.48%    | 1.52%    | 0%       |
-| v0.7.11 | Switch  | 1 ms      | 0.41 ms | 1.23 ms | 0.72 ms | 0.24 ms | 98.53%    | 1.47%    | 0%       |
-| v0.7.11 | HID USB | 1 ms      | 0.41 ms | 1.30 ms | 0.72 ms | 0.24 ms | 98.53%    | 1.47%    | 0%       |
-| v0.7.11 | PS3     | 1 ms      | 0.52 ms | 1.46 ms | 0.83 ms | 0.24 ms | 98.38%    | 1.62%    | 0%       |
-| v0.7.11 | PS4     | 1 ms      | 0.55 ms | 2.37 ms | 0.90 ms | 0.32 ms | 98.19%    | 1.81%    | 0%       |
-| v0.7.11 | PS5     | 1 ms      | 0.55 ms | 2.37 ms | 0.91 ms | 0.33 ms | 98.17%    | 1.83%    | 0%       |
+| v0.7.12 | Xinput  | 1 ms      | 0.45 ms | 1.28 ms | 0.76 ms | 0.24 ms | 98.48%    | 1.52%    | 0%       |
+| v0.7.12 | Switch  | 1 ms      | 0.41 ms | 1.22 ms | 0.72 ms | 0.24 ms | 98.53%    | 1.47%    | 0%       |
+| v0.7.12 | HID USB | 1 ms      | 0.42 ms | 1.25 ms | 0.73 ms | 0.24 ms | 98.52%    | 1.48%    | 0%       |
+| v0.7.12 | PS3     | 1 ms      | 0.52 ms | 1.46 ms | 0.83 ms | 0.24 ms | 98.37%    | 1.63%    | 0%       |
+| v0.7.12 | PS4     | 1 ms      | 0.55 ms | 2.33 ms | 0.90 ms | 0.32 ms | 98.19%    | 1.81%    | 0%       |
+| v0.7.12 | PS5     | 1 ms      | 0.55 ms | 2.38 ms | 0.91 ms | 0.32 ms | 98.18%    | 1.82%    | 0%       |
 
-Full results can be found in the [GP2040-CE v0.7.10 Firmware Latency Test Results](https://github.com/OpenStickCommunity/Site/raw/main/latency_testing/GP2040-CE_Firmware_Latency_Test_Results_v0.7.11.xlsx) .xlsx Sheet.
+Full results can be found in the [GP2040-CE v0.7.12 Firmware Latency Test Results](https://github.com/OpenStickCommunity/Site/raw/main/latency_testing/GP2040-CE_Firmware_Latency_Test_Results_v0.7.12.xlsx) .xlsx Sheet.
 
-Results from v0.7.10 can be found [HERE](https://github.com/OpenStickCommunity/Site/raw/main/latency_testing/GP2040-CE_Firmware_Latency_Test_Results_v0.7.10.xlsx). Previous results can be found in the `latency_testing` folder.
+Results from v0.7.11 can be found [HERE](https://github.com/OpenStickCommunity/Site/raw/main/latency_testing/GP2040-CE_Firmware_Latency_Test_Results_v0.7.11.xlsx). Previous results can be found in the `latency_testing` folder.
 
 ## Support
 
@@ -100,3 +100,4 @@ Please respect the coding style of the file(s) you are working in, and enforce t
 - [tamanegitaro](https://github.com/tamanegitaro/) and [alirin222](https://github.com/alirin222) for the basis of the mini/classic controller work
 - [Ryzee119](https://github.com/Ryzee119) for the wonderful [ogx360_t4](https://github.com/Ryzee119/ogx360_t4/) and xid_driver library for Original Xbox support
 - [Santroller](https://github.com/Santroller/Santroller) and [GIMX](https://github.com/matlo/GIMX) for technical examples of Xbox One authentication using pass-through
+- [Santroller](https://github.com/Santroller/Santroller) for the code necessary to have Xbox 360 run without a dongle

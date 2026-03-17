@@ -8,6 +8,8 @@ export default {
 		'ja-JP': '日本語',
 		'ko-KR': '한국어 (韓国語)',
 		'es-MX': 'Español (メキシコスペイン語)',
+		'tr-TR': 'Türkçe (トルコ語)',
+		'fr-FR': 'Français (フランス語)',
 	},
 	'color-scheme': {
 		dark: 'ダーク',

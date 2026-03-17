@@ -1,0 +1,17 @@
+export default {
+	'architecture-text': 'Architecture: {{architecture}}',
+	'build-type-text': 'Build Type: {{build}}',
+	'build-text': 'Build: {{build}}',
+	'current-text': 'Actuelle : {{version}}',
+	'get-update-text': 'Obtenir la dernière version',
+	'header-text': 'Bienvenue dans le configurateur web GP2040-CE !',
+	'latest-text': 'Dernière : {{version}}',
+	'memory-flash-text': 'Flash',
+	'memory-board-text': 'Flash de la carte',
+	'memory-header-text': 'Mémoire (Ko)',
+	'memory-heap-text': 'Pile',
+	'memory-static-allocations-text': 'Allocations statiques',
+	'sub-header-text': 'Veuillez sélectionner une option de menu pour continuer.',
+	'system-stats-header-text': 'Statistiques du système',
+	'version-text': 'Version',
+};

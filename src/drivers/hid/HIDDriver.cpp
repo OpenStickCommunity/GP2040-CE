@@ -92,6 +92,14 @@ bool HIDDriver::process(Gamepad * gamepad) {
 		| (gamepad->pressedE11()   ? GAMEPAD_MASK_E11    : 0)
 		| (gamepad->pressedE12()   ? GAMEPAD_MASK_E12    : 0)
 	;
+	if (gamepad->hasAnalogTriggers || gamepad->hasLeftAnalogStick) {
+		if (gamepad->state.lt > 0)
+			hidReport.buttons |= GAMEPAD_MASK_L2;
+	}
+	if (gamepad->hasAnalogTriggers || gamepad->hasRightAnalogStick) {
+		if (gamepad->state.rt > 0)
+			hidReport.buttons |= GAMEPAD_MASK_R2;
+	}
 
 	// Wake up TinyUSB device
 	if (tud_suspended())

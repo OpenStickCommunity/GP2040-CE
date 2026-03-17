@@ -151,7 +151,6 @@ export default function PeripheralMappingPage() {
 					<div>
 						<Form noValidate onSubmit={handleSubmit}>
 							<Section title={t('PeripheralMapping:header-text')}>
-								<p>{t('PeripheralMapping:sub-header-text')}</p>
 								{PERIPHERAL_DEVICES.map((peripheral, i) => (
 									<Form.Group
 										key={`peripheral-${peripheral.value}`}

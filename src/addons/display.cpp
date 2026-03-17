@@ -33,6 +33,7 @@ bool DisplayAddon::available() {
             gpOptions.font.fontData = GP_Font_Standard;
             gpOptions.font.width = 6;
             gpOptions.font.height = 8;
+            gpOptions.contrast = options.contrast;
             gpDisplay->init(gpOptions);
             setDisplayPower(0);
             delete gpDisplay;
@@ -55,6 +56,7 @@ void DisplayAddon::setup() {
         gpOptions.font.fontData = GP_Font_Standard;
         gpOptions.font.width = 6;
         gpOptions.font.height = 8;
+        gpOptions.contrast = options.contrast;
     } else {
         return;
     }

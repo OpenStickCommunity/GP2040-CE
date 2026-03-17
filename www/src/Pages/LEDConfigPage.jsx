@@ -640,11 +640,8 @@ export default function LEDConfigPage() {
 								<Trans
 									ns="LedConfig"
 									i18nKey="player.rgb-sub-header-text"
-									rgbLedStartIndex={rgbLedStartIndex}
+									values={{rgbLedStartIndex}}
 								>
-									For RGB LEDs, the indexes must be after the last LED button
-									defined in <em>RGB LED Button Order</em> section and likely{' '}
-									<strong>starts at index {{ rgbLedStartIndex }}</strong>.
 								</Trans>
 							</p>
 						</Form.Group>
