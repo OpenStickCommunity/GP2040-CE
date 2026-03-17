@@ -733,6 +733,30 @@ export default function LedConfigPage() {
 													/>
 												</Row>
 												<Row>
+													<div className="d-flex align-items-center col-sm-4 mb-3">
+														<FormCheck
+															type="switch"
+															name={`AnimationOptions.profiles.${profileIndex}.bNonPressedSpecialColorIsRainbow`}
+															label={
+																<label>
+																	{t(
+																		`LedConfigPage:theme.switch-specialnonpressed-rainbow-label`,
+																	)}
+																</label>
+															}
+															checked={Boolean(
+																profile.bNonPressedSpecialColorIsRainbow,
+															)}
+															onChange={() =>
+																setFieldValue(
+																	`AnimationOptions.profiles.${profileIndex}.bNonPressedSpecialColorIsRainbow`,
+																	Number(
+																		!profile.bNonPressedSpecialColorIsRainbow,
+																	),
+																)
+															}
+														/>
+													</div>
 													{!profile.bNonPressedSpecialColorIsRainbow && (
 														<FormControl
 															type="color"
@@ -769,32 +793,32 @@ export default function LedConfigPage() {
 															}
 														/>
 													)}
+												</Row>
+												<Row>
 													<div className="d-flex align-items-center col-sm-4 mb-3">
 														<FormCheck
 															type="switch"
-															name={`AnimationOptions.profiles.${profileIndex}.bNonPressedSpecialColorIsRainbow`}
+															name={`AnimationOptions.profiles.${profileIndex}.bPressedSpecialColorIsRainbow`}
 															label={
 																<label>
 																	{t(
-																		`LedConfigPage:theme.switch-specialnonpressed-rainbow-label`,
+																		`LedConfigPage:theme.switch-specialpressed-rainbow-label`,
 																	)}
 																</label>
 															}
 															checked={Boolean(
-																profile.bNonPressedSpecialColorIsRainbow,
+																profile.bPressedSpecialColorIsRainbow,
 															)}
 															onChange={() =>
 																setFieldValue(
-																	`AnimationOptions.profiles.${profileIndex}.bNonPressedSpecialColorIsRainbow`,
+																	`AnimationOptions.profiles.${profileIndex}.bPressedSpecialColorIsRainbow`,
 																	Number(
-																		!profile.bNonPressedSpecialColorIsRainbow,
+																		!profile.bPressedSpecialColorIsRainbow,
 																	),
 																)
 															}
 														/>
 													</div>
-												</Row>
-												<Row>
 													{!profile.bPressedSpecialColorIsRainbow && (
 														<FormControl
 															type="color"
@@ -831,30 +855,6 @@ export default function LedConfigPage() {
 															}
 														/>
 													)}
-													<div className="d-flex align-items-center col-sm-4 mb-3">
-														<FormCheck
-															type="switch"
-															name={`AnimationOptions.profiles.${profileIndex}.bPressedSpecialColorIsRainbow`}
-															label={
-																<label>
-																	{t(
-																		`LedConfigPage:theme.switch-specialpressed-rainbow-label`,
-																	)}
-																</label>
-															}
-															checked={Boolean(
-																profile.bPressedSpecialColorIsRainbow,
-															)}
-															onChange={() =>
-																setFieldValue(
-																	`AnimationOptions.profiles.${profileIndex}.bPressedSpecialColorIsRainbow`,
-																	Number(
-																		!profile.bPressedSpecialColorIsRainbow,
-																	),
-																)
-															}
-														/>
-													</div>
 												</Row>
 												<hr />
 
