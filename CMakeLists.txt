@@ -341,6 +341,7 @@ if(GP2040_BOARDCONFIG STREQUAL "PicoW")
   )
   target_link_libraries(${PROJECT_NAME}
     pico_rand
+    pico_unique_id
     pico_btstack_cyw43
     pico_btstack_classic
     pico_cyw43_arch_none

@@ -8,7 +8,7 @@
 
 #include "pico/stdlib.h"
 #include "pico/cyw43_arch.h"
-#include "pico/rand.h"
+#include "pico/unique_id.h"
 
 #include "btstack.h"
 #include "btstack_event.h"
@@ -24,7 +24,7 @@
 // External LED Configuration
 // ============================================================================
 
-#define EXTERNAL_LED_PIN 22  // GP22 for external status LED
+#define EXTERNAL_LED_PIN 22
 
 // ============================================================================
 // Module State
@@ -35,16 +35,17 @@ static uint16_t hid_cid = 0;
 static bool btInitialized = false;
 static bd_addr_t bt_addr;
 
-// Host (Switch) address for reconnection
 static bd_addr_t host_addr;
 static bool has_host_addr = false;
-static bool reconnect_pending = false;  // Flag to retry reconnection in main loop
-static uint32_t reconnect_start_time = 0;  // When we started trying to reconnect
-static bool deep_sleep_active = false;  // True when CYW43 is deinitialized
-#define RECONNECT_TIMEOUT_MS 5000  // Go to sleep after 5 seconds of failed reconnection
+static bool reconnect_pending = false;
+static uint32_t reconnect_start_time = 0;
+static bool deep_sleep_active = false;
+
+#define RECONNECT_TIMEOUT_MS 30000
+#define PASSIVE_PHASE_MS     10000
 
 // ============================================================================
-// Flash Storage with Delayed Write (similar to FlashPROM)
+// Flash Storage -- host MAC + link key
 // ============================================================================
 
 #include "hardware/flash.h"
@@ -52,22 +53,28 @@ static bool deep_sleep_active = false;  // True when CYW43 is deinitialized
 #include "hardware/timer.h"
 #include "pico/multicore.h"
 
-// GP2040-CE uses flash from 0x1F8000 to end (32KB EEPROM area)
-// So we use the sector just BEFORE that: 0x1F7000
-#define BT_PAIRING_FLASH_OFFSET (0x1F8000 - FLASH_SECTOR_SIZE)
+// Flash layout (no overlaps):
+//   0x1F5000          : BT pairing data -- 1 sector
+//   0x1F6000-0x1F7FFF : BTstack flash bank (link keys) -- 2 sectors
+//   0x1F8000+         : GP2040-CE EEPROM -- 32KB
+#define BT_PAIRING_FLASH_OFFSET 0x1F5000
 #define BT_PAIRING_MAGIC 0x53574254  // "SWBT"
-#define BT_FLASH_WRITE_DELAY_MS 500  // Delay before writing to flash
+#define BT_FLASH_WRITE_DELAY_MS 500
 
 typedef struct {
     uint32_t magic;
     uint8_t host_mac[6];
-    uint8_t padding[2];
+    uint8_t key_type;
+    uint8_t has_link_key;
+    uint8_t link_key[16];
 } __attribute__((packed)) BTPairingData;
 
 static volatile alarm_id_t flash_write_alarm = 0;
-static bd_addr_t pending_host_addr;  // Address to save when alarm fires
+static bd_addr_t pending_host_addr;
+static uint8_t stored_link_key[16];
+static uint8_t stored_link_key_type = 0;
+static bool has_link_key = false;
 
-// Alarm callback - runs after delay, does the actual flash write
 static int64_t flash_write_callback(alarm_id_t id, void* user_data) {
     (void)id;
     (void)user_data;
@@ -75,10 +82,10 @@ static int64_t flash_write_callback(alarm_id_t id, void* user_data) {
     BTPairingData data;
     data.magic = BT_PAIRING_MAGIC;
     memcpy(data.host_mac, pending_host_addr, 6);
-    data.padding[0] = 0;
-    data.padding[1] = 0;
+    data.key_type = stored_link_key_type;
+    data.has_link_key = has_link_key ? 1 : 0;
+    memcpy(data.link_key, stored_link_key, 16);
 
-    // Safely write to flash - use multicore lockout like FlashPROM
     multicore_lockout_start_blocking();
     uint32_t ints = save_and_disable_interrupts();
     flash_range_erase(BT_PAIRING_FLASH_OFFSET, FLASH_SECTOR_SIZE);
@@ -87,49 +94,46 @@ static int64_t flash_write_callback(alarm_id_t id, void* user_data) {
     multicore_lockout_end_blocking();
 
     flash_write_alarm = 0;
-    return 0;  // Don't reschedule
+    return 0;
 }
 
-// Schedule a delayed flash write
 static void schedule_flash_save(const bd_addr_t addr) {
     memcpy(pending_host_addr, addr, 6);
 
-    // Cancel any pending write
     if (flash_write_alarm != 0) {
         cancel_alarm(flash_write_alarm);
     }
 
-    // Schedule write for later
     flash_write_alarm = add_alarm_in_ms(BT_FLASH_WRITE_DELAY_MS, flash_write_callback, nullptr, true);
 }
 
-// Forward declaration
-static void reinit_bluetooth(void);
+// Forward declarations
+static void set_scan_mode(bool discoverable);
 
-// Enter deep sleep - deinitialize CYW43 to save power
 static void enter_deep_sleep(void) {
     if (deep_sleep_active) return;
-
-    // Deinitialize the CYW43 (Bluetooth/WiFi chip)
-    cyw43_arch_deinit();
+    hci_power_control(HCI_POWER_OFF);
     deep_sleep_active = true;
-    btInitialized = false;
 }
 
-// Wake from deep sleep - reinitialize everything
 static void wake_from_deep_sleep(void) {
     if (!deep_sleep_active) return;
-
     deep_sleep_active = false;
-    reinit_bluetooth();
+    hci_power_control(HCI_POWER_ON);
+    for (int i = 0; i < 100; i++) { cyw43_arch_poll(); sleep_ms(10); }
+
+    if (has_link_key && has_host_addr) {
+        gap_store_link_key_for_bd_addr(host_addr, stored_link_key, (link_key_type_t)stored_link_key_type);
+    }
+
+    set_scan_mode(!has_host_addr);
+    hid_cid = 0;
 }
 
-// Load saved host from flash
 static void load_paired_host(void) {
     const BTPairingData* data = (const BTPairingData*)(XIP_BASE + BT_PAIRING_FLASH_OFFSET);
 
     if (data->magic == BT_PAIRING_MAGIC) {
-        // Validate MAC - not all zeros or all 0xFF
         bool all_zero = true;
         bool all_ff = true;
         for (int i = 0; i < 6; i++) {
@@ -139,6 +143,11 @@ static void load_paired_host(void) {
         if (!all_zero && !all_ff) {
             memcpy(host_addr, data->host_mac, 6);
             has_host_addr = true;
+            if (data->has_link_key == 1) {
+                memcpy(stored_link_key, data->link_key, 16);
+                stored_link_key_type = data->key_type;
+                has_link_key = true;
+            }
         }
     }
 }
@@ -194,10 +203,8 @@ static void set_timer() {
 static void set_standard_input_report() {
     set_timer();
 
-    // Battery connection
     report[3] = 0x80;
 
-    // Button byte 0: Y, X, B, A, SR, SL, R, ZR
     report[4] = 0;
     if (currentInput.buttons & SWBT_GAMEPAD_MASK_B3) report[4] |= SWITCH_MASK_Y;
     if (currentInput.buttons & SWBT_GAMEPAD_MASK_B4) report[4] |= SWITCH_MASK_X;
@@ -206,7 +213,6 @@ static void set_standard_input_report() {
     if (currentInput.buttons & SWBT_GAMEPAD_MASK_R1) report[4] |= SWITCH_MASK_R;
     if (currentInput.buttons & SWBT_GAMEPAD_MASK_R2) report[4] |= SWITCH_MASK_ZR;
 
-    // Button byte 1: Minus, Plus, R3, L3, Home, Capture
     report[5] = 0;
     if (currentInput.buttons & SWBT_GAMEPAD_MASK_S1) report[5] |= SWITCH_MASK_MINUS;
     if (currentInput.buttons & SWBT_GAMEPAD_MASK_S2) report[5] |= SWITCH_MASK_PLUS;
@@ -215,15 +221,12 @@ static void set_standard_input_report() {
     if (currentInput.buttons & SWBT_GAMEPAD_MASK_A1) report[5] |= SWITCH_MASK_HOME;
     if (currentInput.buttons & SWBT_GAMEPAD_MASK_A2) report[5] |= SWITCH_MASK_CAPTURE;
 
-    // Button byte 2: L, ZL, and D-pad (based on dpadMode setting)
     report[6] = 0;
     if (currentInput.buttons & SWBT_GAMEPAD_MASK_L1) report[6] |= SWITCH_MASK_L;
     if (currentInput.buttons & SWBT_GAMEPAD_MASK_L2) report[6] |= SWITCH_MASK_ZL;
 
-    // Get D-pad mode from input struct
     uint8_t dpadMode = currentInput.dpadMode;
 
-    // Digital D-pad mode - map to HAT switch in button byte 2
     if (dpadMode == SWBT_DPAD_MODE_DIGITAL) {
         if (currentInput.dpad & SWBT_GAMEPAD_MASK_DOWN)  report[6] |= SWITCH_HAT_DOWN;
         if (currentInput.dpad & SWBT_GAMEPAD_MASK_UP)    report[6] |= SWITCH_HAT_UP;
@@ -231,15 +234,13 @@ static void set_standard_input_report() {
         if (currentInput.dpad & SWBT_GAMEPAD_MASK_LEFT)  report[6] |= SWITCH_HAT_LEFT;
     }
 
-    // Left stick (12-bit, packed into 3 bytes)
     uint16_t lx = currentInput.lx >> 4;
-    uint16_t ly = (65535 - currentInput.ly) >> 4;  // Invert Y
+    uint16_t ly = (65535 - currentInput.ly) >> 4;
 
-    // D-pad as Left Analog mode - override left stick with D-pad
     if (dpadMode == SWBT_DPAD_MODE_LEFT_ANALOG) {
         if (currentInput.dpad & (SWBT_GAMEPAD_MASK_UP | SWBT_GAMEPAD_MASK_DOWN |
                                   SWBT_GAMEPAD_MASK_LEFT | SWBT_GAMEPAD_MASK_RIGHT)) {
-            lx = 2048;  // Start at center
+            lx = 2048;
             ly = 2048;
             if (currentInput.dpad & SWBT_GAMEPAD_MASK_LEFT)  lx = 0;
             if (currentInput.dpad & SWBT_GAMEPAD_MASK_RIGHT) lx = 4095;
@@ -252,15 +253,13 @@ static void set_standard_input_report() {
     report[8] = ((lx >> 8) & 0x0F) | ((ly & 0x0F) << 4);
     report[9] = ly >> 4;
 
-    // Right stick
     uint16_t rx = currentInput.rx >> 4;
-    uint16_t ry = (65535 - currentInput.ry) >> 4;  // Invert Y
+    uint16_t ry = (65535 - currentInput.ry) >> 4;
 
-    // D-pad as Right Analog mode - override right stick with D-pad
     if (dpadMode == SWBT_DPAD_MODE_RIGHT_ANALOG) {
         if (currentInput.dpad & (SWBT_GAMEPAD_MASK_UP | SWBT_GAMEPAD_MASK_DOWN |
                                   SWBT_GAMEPAD_MASK_LEFT | SWBT_GAMEPAD_MASK_RIGHT)) {
-            rx = 2048;  // Start at center
+            rx = 2048;
             ry = 2048;
             if (currentInput.dpad & SWBT_GAMEPAD_MASK_LEFT)  rx = 0;
             if (currentInput.dpad & SWBT_GAMEPAD_MASK_RIGHT) rx = 4095;
@@ -273,7 +272,6 @@ static void set_standard_input_report() {
     report[11] = ((rx >> 8) & 0x0F) | ((ry & 0x0F) << 4);
     report[12] = ry >> 4;
 
-    // Vibration report
     report[13] = vibration_report;
 }
 
@@ -290,7 +288,6 @@ static void set_full_input_report() {
     report[1] = 0x30;
     set_standard_input_report();
 
-    // IMU data (if enabled)
     if (imu_enabled) {
         uint8_t imu_data[36] = {
             0x75, 0xFD, 0xFD, 0xFF, 0x09, 0x10, 0x21, 0x00, 0xD5, 0xFF, 0xE0, 0xFF,
@@ -312,15 +309,15 @@ static void set_bt() {
 }
 
 static void set_device_info() {
-    report[14] = 0x82;  // ACK
-    report[15] = 0x02;  // Subcommand
-    report[16] = 0x03;  // FW version major
-    report[17] = 0x48;  // FW version minor
-    report[18] = 0x03;  // Controller type (Pro Controller)
-    report[19] = 0x02;  // Unknown, always 2
-    memcpy(report + 20, bt_addr, 6);  // MAC address
-    report[26] = 0x01;  // Unknown, always 1
-    report[27] = 0x01;  // Colors from SPI
+    report[14] = 0x82;
+    report[15] = 0x02;
+    report[16] = 0x03;
+    report[17] = 0x48;
+    report[18] = 0x03;
+    report[19] = 0x02;
+    memcpy(report + 20, bt_addr, 6);
+    report[26] = 0x01;
+    report[27] = 0x01;
 }
 
 static void set_shipment() {
@@ -344,13 +341,12 @@ static void spi_read() {
     uint8_t addr_bottom = switchRequestReport[11];
     uint8_t read_length = switchRequestReport[15];
 
-    report[14] = 0x90;  // ACK
-    report[15] = 0x10;  // Subcommand
+    report[14] = 0x90;
+    report[15] = 0x10;
     report[16] = addr_bottom;
     report[17] = addr_top;
     report[20] = read_length;
 
-    // Stick parameters
     uint8_t params[18] = {
         0x0F, 0x30, 0x61, 0x96, 0x30, 0xF3,
         0xD4, 0x14, 0x54, 0x41, 0x15, 0x54,
@@ -358,15 +354,12 @@ static void spi_read() {
     };
 
     if (addr_top == 0x60 && addr_bottom == 0x00) {
-        // Serial number - set to 0xFF (no serial)
         memset(report + 21, 0xff, 16);
     } else if (addr_top == 0x60 && addr_bottom == 0x50) {
-        // Colors
-        memset(report + 21, 0x32, 3);   // Body gray
-        memset(report + 24, 0xff, 3);   // Buttons
-        memset(report + 27, 0xff, 7);   // Grips
+        memset(report + 21, 0x32, 3);
+        memset(report + 24, 0xff, 3);
+        memset(report + 27, 0xff, 7);
     } else if (addr_top == 0x60 && addr_bottom == 0x80) {
-        // Six-axis factory parameters
         report[21] = 0x50;
         report[22] = 0xFD;
         report[23] = 0x00;
@@ -375,22 +368,18 @@ static void spi_read() {
         report[26] = 0x0F;
         memcpy(report + 27, params, sizeof(params));
     } else if (addr_top == 0x60 && addr_bottom == 0x98) {
-        // Stick params 2
         memcpy(report + 21, params, sizeof(params));
     } else if (addr_top == 0x80 && addr_bottom == 0x10) {
-        // User calibration (none)
         memset(report + 21, 0xff, 3);
     } else if (addr_top == 0x60 && addr_bottom == 0x3D) {
-        // Factory stick calibration
         uint8_t l_cal[9] = {0xD4, 0x75, 0x61, 0xE5, 0x87, 0x7C, 0xEC, 0x55, 0x61};
         uint8_t r_cal[9] = {0x5D, 0xD8, 0x7F, 0x18, 0xE6, 0x61, 0x86, 0x65, 0x5D};
         memcpy(report + 21, l_cal, 9);
         memcpy(report + 30, r_cal, 9);
         report[39] = 0xFF;
-        memset(report + 40, 0x32, 3);  // Body
-        memset(report + 43, 0xff, 3);  // Buttons
+        memset(report + 40, 0x32, 3);
+        memset(report + 43, 0xff, 3);
     } else if (addr_top == 0x60 && addr_bottom == 0x20) {
-        // Six-axis calibration
         uint8_t sa_cal[24] = {
             0xcc, 0x00, 0x40, 0x00, 0x91, 0x01,
             0x00, 0x40, 0x00, 0x40, 0x00, 0x40,
@@ -444,9 +433,24 @@ static void set_nfc_ir_config() {
     report[49] = 0xC8;
 }
 
+static void get_page_list_state() {
+    report[14] = 0x80;
+    report[15] = GET_PAGE_LIST_STATE;
+}
+
+static void set_hci_state() {
+    report[14] = 0x80;
+    report[15] = SET_HCI_STATE;
+}
+
+static void reset_pairing_info() {
+    report[14] = 0x80;
+    report[15] = RESET_PAIRING_INFO;
+}
+
 static uint8_t* generate_report() {
     set_empty_report();
-    report[0] = 0xa1;  // HID Input report header
+    report[0] = 0xa1;
 
     switch (switchRequestReport[10]) {
         case BLUETOOTH_PAIR_REQUEST:
@@ -472,6 +476,18 @@ static uint8_t* generate_report() {
         case TRIGGER_BUTTONS:
             set_subcommand_reply();
             set_trigger_buttons();
+            break;
+        case GET_PAGE_LIST_STATE:
+            set_subcommand_reply();
+            get_page_list_state();
+            break;
+        case SET_HCI_STATE:
+            set_subcommand_reply();
+            set_hci_state();
+            break;
+        case RESET_PAIRING_INFO:
+            set_subcommand_reply();
+            reset_pairing_info();
             break;
         case TOGGLE_IMU:
             set_subcommand_reply();
@@ -512,9 +528,7 @@ static void packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packe
     (void)channel;
     (void)size;
 
-    if (packet_type != HCI_EVENT_PACKET) {
-        return;
-    }
+    if (packet_type != HCI_EVENT_PACKET) return;
 
     switch (packet[0]) {
         case HCI_EVENT_HID_META:
@@ -523,7 +537,6 @@ static void packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packe
                     uint8_t status = hid_subevent_connection_opened_get_status(packet);
                     if (status) {
                         hid_cid = 0;
-                        // Connection failed - schedule retry in main loop
                         if (has_host_addr) {
                             reconnect_pending = true;
                             connectionState = SwitchBTState::RECONNECTING;
@@ -536,15 +549,15 @@ static void packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packe
                     connectionState = SwitchBTState::CONNECTED;
                     reconnect_pending = false;
 
-                    // Get connected host address
                     bd_addr_t connected_addr;
                     hid_subevent_connection_opened_get_bd_addr(packet, connected_addr);
 
-                    // Check if this is a new host - schedule delayed save
                     if (!has_host_addr || memcmp(host_addr, connected_addr, 6) != 0) {
                         memcpy(host_addr, connected_addr, 6);
                         has_host_addr = true;
-                        schedule_flash_save(connected_addr);  // Delayed write
+                        schedule_flash_save(connected_addr);
+                    } else if (has_link_key) {
+                        schedule_flash_save(connected_addr);
                     }
 
                     gpio_put(EXTERNAL_LED_PIN, 1);
@@ -555,11 +568,11 @@ static void packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packe
                     hid_cid = 0;
                     gpio_put(EXTERNAL_LED_PIN, 0);
 
-                    // Schedule reconnection in main loop (with timeout)
                     if (has_host_addr) {
                         reconnect_pending = true;
                         reconnect_start_time = to_ms_since_boot(get_absolute_time());
                         connectionState = SwitchBTState::RECONNECTING;
+                        set_scan_mode(false);
                     } else {
                         connectionState = SwitchBTState::DISCOVERABLE;
                     }
@@ -574,6 +587,31 @@ static void packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packe
                     break;
             }
             break;
+
+        case HCI_EVENT_LINK_KEY_NOTIFICATION: {
+            bd_addr_t addr;
+            reverse_bd_addr(&packet[2], addr);
+            memcpy(stored_link_key, &packet[8], 16);
+            stored_link_key_type = packet[24];
+            has_link_key = true;
+            break;
+        }
+
+        case HCI_EVENT_LINK_KEY_REQUEST: {
+            bd_addr_t addr;
+            reverse_bd_addr(&packet[2], addr);
+            if (has_link_key && bd_addr_cmp(addr, host_addr) == 0) {
+                gap_store_link_key_for_bd_addr(addr, stored_link_key, (link_key_type_t)stored_link_key_type);
+            }
+            break;
+        }
+
+        case HCI_EVENT_USER_CONFIRMATION_REQUEST: {
+            bd_addr_t addr;
+            reverse_bd_addr(&packet[2], addr);
+            gap_ssp_confirmation_response(addr);
+            break;
+        }
     }
 }
 
@@ -583,8 +621,6 @@ static void hid_report_callback(uint16_t cid, hid_report_type_t report_type,
     (void)report_type;
 
     if (report_id == 0x01 || report_id == 0x10 || report_id == 0x11) {
-        // BTstack doesn't include report_id in report_data, but our code expects it
-        // So we shift everything by 1 and put report_id at position 0
         switchRequestReport[0] = (uint8_t)report_id;
         int copy_size = (report_size < 63) ? report_size : 63;
         memcpy(switchRequestReport + 1, report_data, copy_size);
@@ -592,35 +628,43 @@ static void hid_report_callback(uint16_t cid, hid_report_type_t report_type,
 }
 
 // ============================================================================
-// BTstack Setup (shared between init and reinit)
+// Scan mode helper
+// ============================================================================
+
+static void set_scan_mode(bool discoverable) {
+    gap_connectable_control(1);
+    gap_discoverable_control(discoverable ? 1 : 0);
+}
+
+// ============================================================================
+// BTstack Setup
 // ============================================================================
 
 static void setup_btstack(void) {
-    // Initialize L2CAP
     l2cap_init();
 
-    // Configure GAP
-    gap_discoverable_control(1);
+    gap_ssp_set_io_capability(SSP_IO_CAPABILITY_NO_INPUT_NO_OUTPUT);
+    gap_set_bondable_mode(1);
+
+    set_scan_mode(!has_host_addr);
+
     gap_set_class_of_device(0x2508);
     gap_set_local_name("Pro Controller");
     gap_set_default_link_policy_settings(LM_LINK_POLICY_ENABLE_ROLE_SWITCH | LM_LINK_POLICY_ENABLE_SNIFF_MODE);
     gap_set_allow_role_switch(true);
 
-    // Set chipset and BD address
     hci_set_chipset(btstack_chipset_cyw43_instance());
     hci_set_bd_addr(bt_addr);
 
-    // Initialize SDP
     sdp_init();
 
-    // Create HID SDP record
     hid_sdp_record_t hid_sdp_record = {
         .hid_device_subclass = 0x2508,
         .hid_country_code = 33,
         .hid_virtual_cable = 1,
         .hid_remote_wake = 1,
         .hid_reconnect_initiate = 1,
-        .hid_normally_connectable = 0,
+        .hid_normally_connectable = 1,
         .hid_boot_device = 0,
         .hid_ssr_host_max_latency = 0xFFFF,
         .hid_ssr_host_min_timeout = 0xFFFF,
@@ -634,32 +678,31 @@ static void setup_btstack(void) {
     create_sdp_hid_record(hid_service_buffer, &hid_sdp_record);
     sdp_register_service(hid_service_buffer);
 
-    // Create PnP SDP record (Nintendo Pro Controller)
     memset(pnp_service_buffer, 0, sizeof(pnp_service_buffer));
     create_sdp_pnp_record(pnp_service_buffer, DEVICE_ID_VENDOR_ID_SOURCE_USB,
                           0x057E, 0x2009, 0x0001);
     sdp_register_service(pnp_service_buffer);
 
-    // Initialize HID device
     hid_device_init(1, sizeof(switch_bt_report_descriptor), switch_bt_report_descriptor);
 
-    // Register callbacks
     static btstack_packet_callback_registration_t hci_event_callback_registration;
     hci_event_callback_registration.callback = &packet_handler;
     hci_add_event_handler(&hci_event_callback_registration);
     hid_device_register_packet_handler(&packet_handler);
     hid_device_register_report_data_callback(&hid_report_callback);
 
-    // Power on
     hci_power_control(HCI_POWER_ON);
 
-    // Poll until HCI is working (give BTstack time to initialize)
     for (int i = 0; i < 100; i++) {
         cyw43_arch_poll();
         sleep_ms(10);
     }
 
     btInitialized = true;
+
+    if (has_link_key && has_host_addr) {
+        gap_store_link_key_for_bd_addr(host_addr, stored_link_key, (link_key_type_t)stored_link_key_type);
+    }
 }
 
 // ============================================================================
@@ -669,26 +712,23 @@ static void setup_btstack(void) {
 void switchbt_init(void) {
     connectionState = SwitchBTState::INITIALIZING;
 
-    // Initialize external LED GPIO
     gpio_init(EXTERNAL_LED_PIN);
     gpio_set_dir(EXTERNAL_LED_PIN, GPIO_OUT);
     gpio_put(EXTERNAL_LED_PIN, 0);
 
-    // Try to load saved host from flash
     load_paired_host();
 
-    // Generate random MAC address starting with Nintendo prefix 7c:bb:8a
+    pico_unique_board_id_t board_id;
+    pico_get_unique_board_id(&board_id);
     bd_addr_t newAddr = {
         0x7c, 0xbb, 0x8a,
-        (uint8_t)(get_rand_32() & 0xff),
-        (uint8_t)(get_rand_32() & 0xff),
-        (uint8_t)(get_rand_32() & 0xff)
+        board_id.id[5],
+        board_id.id[6],
+        board_id.id[7]
     };
     memcpy(bt_addr, newAddr, 6);
 
-    // Initialize CYW43
     if (cyw43_arch_init()) {
-        // Rapid blink on external LED to indicate error (CYW43 failed)
         while (1) {
             gpio_put(EXTERNAL_LED_PIN, 1);
             sleep_ms(100);
@@ -697,10 +737,8 @@ void switchbt_init(void) {
         }
     }
 
-    // Setup BTstack (shared initialization)
     setup_btstack();
 
-    // If we have a saved host, try to reconnect; otherwise wait for pairing
     if (has_host_addr) {
         connectionState = SwitchBTState::RECONNECTING;
         reconnect_pending = true;
@@ -709,29 +747,10 @@ void switchbt_init(void) {
         connectionState = SwitchBTState::DISCOVERABLE;
     }
 
-    // Double blink = init complete
     gpio_put(EXTERNAL_LED_PIN, 1);
     sleep_ms(100);
     gpio_put(EXTERNAL_LED_PIN, 0);
     sleep_ms(100);
-    gpio_put(EXTERNAL_LED_PIN, 1);
-    sleep_ms(100);
-    gpio_put(EXTERNAL_LED_PIN, 0);
-}
-
-// Reinitialize Bluetooth after deep sleep (uses same MAC address from initial pairing)
-static void reinit_bluetooth(void) {
-    // Initialize CYW43
-    if (cyw43_arch_init()) {
-        btInitialized = false;
-        return;
-    }
-
-    // Setup BTstack (shared initialization)
-    setup_btstack();
-    hid_cid = 0;  // Reset connection ID
-
-    // Single blink = reinit complete
     gpio_put(EXTERNAL_LED_PIN, 1);
     sleep_ms(100);
     gpio_put(EXTERNAL_LED_PIN, 0);
@@ -740,21 +759,31 @@ static void reinit_bluetooth(void) {
 bool switchbt_process(const SwitchBTInput* input) {
     uint32_t now = to_ms_since_boot(get_absolute_time());
 
-    // Store input for report generation
     if (input) {
         memcpy(&currentInput, input, sizeof(SwitchBTInput));
     }
 
-    // Check for any button press (used to wake from sleep)
     bool anyButtonPressed = input && (input->buttons != 0 || input->dpad != 0);
 
-    // Handle SLEEPING state (deep sleep) - wait for button press
+    // Hold Start+Select for 3 seconds while disconnected to clear pairing
+    if (input && hid_cid == 0 &&
+        (input->buttons & SWBT_GAMEPAD_MASK_S1) &&
+        (input->buttons & SWBT_GAMEPAD_MASK_S2)) {
+        static uint32_t clearHoldStart = 0;
+        if (clearHoldStart == 0) clearHoldStart = now;
+        if (now - clearHoldStart > 3000) {
+            switchbt_clear_pairing();
+            clearHoldStart = 0;
+            for (int i = 0; i < 3; i++) {
+                gpio_put(EXTERNAL_LED_PIN, 1); sleep_ms(150);
+                gpio_put(EXTERNAL_LED_PIN, 0); sleep_ms(150);
+            }
+        }
+    }
+
     if (connectionState == SwitchBTState::SLEEPING) {
-        // CYW43 is deinitialized in deep sleep, but external LED still works
-        // Brief flash every 10 seconds to show it's alive but sleeping (saves battery)
         static uint32_t lastSleepFlash = 0;
         if (now - lastSleepFlash > 10000) {
-            // Quick 50ms flash
             gpio_put(EXTERNAL_LED_PIN, 1);
             sleep_ms(50);
             gpio_put(EXTERNAL_LED_PIN, 0);
@@ -762,43 +791,44 @@ bool switchbt_process(const SwitchBTInput* input) {
         }
 
         if (anyButtonPressed && has_host_addr) {
-            // Wake from deep sleep and reinitialize Bluetooth
-            gpio_put(EXTERNAL_LED_PIN, 1);  // Turn on LED immediately on wake
+            gpio_put(EXTERNAL_LED_PIN, 1);
             wake_from_deep_sleep();
             connectionState = SwitchBTState::RECONNECTING;
             reconnect_pending = true;
             reconnect_start_time = now;
         }
 
-        // Small delay to save CPU power while sleeping
         sleep_ms(10);
         return false;
     }
 
     if (!btInitialized) return false;
 
-    // Poll the async context multiple times to ensure BTstack processes events
     for (int i = 0; i < 10; i++) {
         cyw43_arch_poll();
     }
 
-    // Handle reconnection retries with timeout
+    // Two-phase reconnection:
+    //   Phase 1 (0-10s):  Passive -- connectable, wait for Switch to page us
+    //   Phase 2 (10-30s): Active -- also try hid_device_connect() outbound
+    //   After 30s: sleep
     static uint32_t lastReconnectAttempt = 0;
 
     if (connectionState == SwitchBTState::RECONNECTING && reconnect_pending && has_host_addr && hid_cid == 0) {
-        // Check if we've timed out
-        if (reconnect_start_time > 0 && (now - reconnect_start_time > RECONNECT_TIMEOUT_MS)) {
-            // Enter deep sleep after timeout (deinitializes CYW43 to save power)
+        uint32_t elapsed = now - reconnect_start_time;
+
+        if (elapsed > RECONNECT_TIMEOUT_MS) {
             reconnect_pending = false;
             connectionState = SwitchBTState::SLEEPING;
             enter_deep_sleep();
             return false;
         }
 
-        // Retry every 1 second (faster retries during the 5-second window)
-        if (now - lastReconnectAttempt > 1000) {
-            lastReconnectAttempt = now;
-            hid_device_connect(host_addr, &hid_cid);
+        if (elapsed >= PASSIVE_PHASE_MS) {
+            if (now - lastReconnectAttempt > 2000) {
+                lastReconnectAttempt = now;
+                hid_device_connect(host_addr, &hid_cid);
+            }
         }
     }
 
@@ -806,7 +836,6 @@ bool switchbt_process(const SwitchBTInput* input) {
     static bool ledOn = false;
 
     if (connectionState == SwitchBTState::RECONNECTING) {
-        // Fast blink when reconnecting
         if (now - lastBlink > 150) {
             ledOn = !ledOn;
             gpio_put(EXTERNAL_LED_PIN, ledOn);
@@ -816,7 +845,6 @@ bool switchbt_process(const SwitchBTInput* input) {
     }
 
     if (connectionState == SwitchBTState::DISCOVERABLE) {
-        // Slow blink when waiting for pairing
         if (now - lastBlink > 500) {
             ledOn = !ledOn;
             gpio_put(EXTERNAL_LED_PIN, ledOn);
@@ -826,7 +854,6 @@ bool switchbt_process(const SwitchBTInput* input) {
     }
 
     if (connectionState == SwitchBTState::CONNECTED) {
-        // Solid LED when connected
         gpio_put(EXTERNAL_LED_PIN, 1);
         return true;
     }
@@ -836,18 +863,27 @@ bool switchbt_process(const SwitchBTInput* input) {
 
 void switchbt_clear_pairing(void) {
     has_host_addr = false;
+    has_link_key = false;
     reconnect_pending = false;
     memset(host_addr, 0, 6);
+    memset(stored_link_key, 0, 16);
+    stored_link_key_type = 0;
 
-    // Cancel any pending write and erase flash
     if (flash_write_alarm != 0) {
         cancel_alarm(flash_write_alarm);
         flash_write_alarm = 0;
     }
 
+    multicore_lockout_start_blocking();
     uint32_t ints = save_and_disable_interrupts();
     flash_range_erase(BT_PAIRING_FLASH_OFFSET, FLASH_SECTOR_SIZE);
     restore_interrupts(ints);
+    multicore_lockout_end_blocking();
+
+    connectionState = SwitchBTState::DISCOVERABLE;
+    if (btInitialized) {
+        set_scan_mode(true);
+    }
 }
 
 SwitchBTState switchbt_get_state(void) {

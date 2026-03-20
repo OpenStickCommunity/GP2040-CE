@@ -14,6 +14,9 @@
 #define REQUEST_DEVICE_INFO    0x02
 #define SET_MODE               0x03
 #define TRIGGER_BUTTONS        0x04
+#define GET_PAGE_LIST_STATE    0x05
+#define SET_HCI_STATE          0x06
+#define RESET_PAIRING_INFO     0x07
 #define SET_SHIPMENT           0x08
 #define SPI_READ               0x10
 #define SET_NFC_IR_STATE       0x22
