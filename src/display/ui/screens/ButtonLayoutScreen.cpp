@@ -5,6 +5,10 @@
 #include "drivers/xbone/XBOneDriver.h"
 #include "drivers/xinput/XInputDriver.h"
 #include "drivers/p5general/P5GeneralDriver.h"
+#ifdef GP2040_BLUETOOTH_ENABLED
+#include "drivers/switchbt/SwitchBluetoothDriver.h"
+#include "drivers/hidbt/HIDBTDriver.h"
+#endif
 
 void ButtonLayoutScreen::init() {
     isInputHistoryEnabled = Storage::getInstance().getDisplayOptions().inputHistoryEnabled;
@@ -210,6 +214,28 @@ void ButtonLayoutScreen::generateHeader() {
                     statusBar += "B360";
                 else
                     statusBar += "INPUT";
+                break;
+            case INPUT_MODE_SWITCH_BT:
+                statusBar += "SW-BT";
+                #ifdef GP2040_BLUETOOTH_ENABLED
+                switch (switchbt_get_state()) {
+                    case SwitchBTState::CONNECTED:    statusBar += ":C"; break;
+                    case SwitchBTState::RECONNECTING: statusBar += ":R"; break;
+                    case SwitchBTState::SLEEPING:     statusBar += ":Z"; break;
+                    default:                          statusBar += "  "; break;
+                }
+                #endif
+                break;
+            case INPUT_MODE_HID_BT:
+                statusBar += "HIDBT";
+                #ifdef GP2040_BLUETOOTH_ENABLED
+                switch (hidbt_get_state()) {
+                    case HIDBTState::CONNECTED:    statusBar += ":C"; break;
+                    case HIDBTState::RECONNECTING: statusBar += ":R"; break;
+                    case HIDBTState::SLEEPING:     statusBar += ":Z"; break;
+                    default:                       statusBar += "  "; break;
+                }
+                #endif
                 break;
             case INPUT_MODE_KEYBOARD: statusBar += "HID-KB"; break;
             case INPUT_MODE_CONFIG: statusBar += "CONFIG"; break;

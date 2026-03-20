@@ -30,15 +30,17 @@
 #include "pico/multicore.h"
 
 // Bluetooth pairing flash locations (must match driver definitions)
-#define SWBT_PAIRING_FLASH_OFFSET (0x1F8000 - FLASH_SECTOR_SIZE)  // 0x1F7000
+#define SWBT_PAIRING_FLASH_OFFSET 0x1F5000
 #define SWBT_PAIRING_MAGIC 0x53574254  // "SWBT"
-#define HIDBT_PAIRING_FLASH_OFFSET (0x1F6000 - FLASH_SECTOR_SIZE)  // 0x1F5000
+#define HIDBT_PAIRING_FLASH_OFFSET 0x1F4000
 #define HIDBT_PAIRING_MAGIC 0x48494442  // "HIDB"
 
 typedef struct {
     uint32_t magic;
     uint8_t host_mac[6];
-    uint8_t padding[2];
+    uint8_t key_type;
+    uint8_t has_link_key;
+    uint8_t link_key[16];
 } __attribute__((packed)) BTPairingData;
 #endif
 
