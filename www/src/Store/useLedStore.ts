@@ -23,8 +23,13 @@ export type AnimationProfile = {
 	notPressedStaticColors: number[];
 	pressedSpecialColor: number;
 	pressedStaticColors: number[];
+	caseSpecialColor: number;
 	bNonPressedSpecialColorIsRainbow: 0 | 1;
 	bPressedSpecialColorIsRainbow: 0 | 1;
+	bCaseSpecialColorIsRainbow: 0 | 1;
+	nonPressedContextParam: number;
+	pressedContextParam: number;
+	caseContextParam: number;
 };
 
 export type Light = {

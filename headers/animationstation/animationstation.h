@@ -38,6 +38,10 @@ struct __attribute__ ((__packed__)) AnimationProfile_Unpacked
   	AnimationPressedEffects basePressedEffect;
     AnimationNonPressedEffects baseCaseEffect;
 
+    int32_t nonPressedEffectContextParam;
+    int32_t pressedEffectContextParam;
+    int32_t caseEffectContextParam;
+
     int16_t baseCycleTime;
     int16_t basePressedCycleTime;
     int16_t baseCaseCycleTime;
@@ -52,9 +56,11 @@ struct __attribute__ ((__packed__)) AnimationProfile_Unpacked
 
     uint32_t nonPressedSpecialColor;
     uint32_t pressedSpecialColor;
+    uint32_t caseSpecialColor;
 
     bool bNonPressedSpecialColorIsRainbow;
     bool bPressedSpecialColorIsRainbow;
+    bool bCaseSpecialColorIsRainbow;
 
     bool bUseCaseLightsInSpecialMoves;
     bool bUseCaseLightsInPressedAnimations;

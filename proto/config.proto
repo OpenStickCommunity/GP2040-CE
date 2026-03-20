@@ -400,6 +400,11 @@ message AnimationProfile
 
     optional bool bNonPressedSpecialColorIsRainbow = 17;
     optional bool bPressedSpecialColorIsRainbow = 18;
+    optional bool bCaseSpecialColorIsRainbow = 19;
+
+    optional uint32 caseSpecialColor = 20;
+
+    optional uint32 effectContextParam = 21;
 };
 
 // This has to be kept in sync with AnimationOptions_Unpacked in animationstation.hpp

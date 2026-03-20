@@ -105,6 +105,40 @@ Chase::Chase(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType, 
   SetStartLight();
 }
 
+void Chase::GetSpecialColors(RGB& chaseCol, RGB& caseChaseCol)
+{
+  chaseCol = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor;
+  caseChaseCol = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].caseSpecialColor;
+  bool buttonIsRainbow = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].bNonPressedSpecialColorIsRainbow;
+  bool caseIsRainbow = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].bCaseSpecialColorIsRainbow;
+  if(buttonIsRainbow || caseIsRainbow)
+  {
+    if(!RainbowWheelReversed)
+    {
+      RainbowWheelFrame += CHASE_RAINBOW_FRAME_CHANGE_PER_TICK;
+      if(RainbowWheelFrame >= 255)
+      {
+        RainbowWheelReversed = true;
+        RainbowWheelFrame = 255;
+      }
+    }
+    else
+    {
+      RainbowWheelFrame -= CHASE_RAINBOW_FRAME_CHANGE_PER_TICK;
+      if(RainbowWheelFrame <= 0)
+      {
+        RainbowWheelReversed = false;
+        RainbowWheelFrame = 0;
+      }
+    }
+
+    if(buttonIsRainbow)
+      chaseCol = RGB::wheel(RainbowWheelFrame);
+    else if (caseIsRainbow)
+      caseChaseCol = RGB::wheel(RainbowWheelFrame);
+  }
+}
+
 void Chase::Animate(RGB (&frame)[FRAME_MAX]) 
 {
   UpdateTime();
@@ -152,31 +186,9 @@ void Chase::Animate(RGB (&frame)[FRAME_MAX])
   int currentLightReverseAdjusted = CurrentLight;
   int nextLightReverseAdjusted = currentLightReverseAdjusted + 1;
 
-  //Get Special light color
-  RGB chaseCol = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor;
-  if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].bNonPressedSpecialColorIsRainbow)
-  {
-    if(!RainbowWheelReversed)
-    {
-      RainbowWheelFrame += CHASE_RAINBOW_FRAME_CHANGE_PER_TICK;
-      if(RainbowWheelFrame >= 255)
-      {
-        RainbowWheelReversed = true;
-        RainbowWheelFrame = 255;
-      }
-    }
-    else
-    {
-      RainbowWheelFrame -= CHASE_RAINBOW_FRAME_CHANGE_PER_TICK;
-      if(RainbowWheelFrame <= 0)
-      {
-        RainbowWheelReversed = false;
-        RainbowWheelFrame = 0;
-      }
-    }
-
-    chaseCol = RGB::wheel(RainbowWheelFrame);
-  }
+  //Get Special light colors
+  RGB chaseCol, caseChaseCol;
+  GetSpecialColors(chaseCol, caseChaseCol);
  
   //now light the correct lights
   switch(RandomChaseType)
@@ -195,7 +207,7 @@ void Chase::Animate(RGB (&frame)[FRAME_MAX])
       for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
       {
         frame[ledIndex] = BlendColor(GetNonPressedColorForLight(OrderedLights[currentLightReverseAdjusted]),
-                                      chaseCol, 
+                                      RGBLights->AllLights[OrderedLights[currentLightReverseAdjusted]].Type == LightType::LightType_ActionButton ? chaseCol : caseChaseCol, 
                                       fadeTimeOne);
       }      
 
@@ -206,7 +218,7 @@ void Chase::Animate(RGB (&frame)[FRAME_MAX])
         for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
         {
           frame[ledIndex] = BlendColor(GetNonPressedColorForLight(OrderedLights[nextLightReverseAdjusted]),
-                                        chaseCol, 
+                                        RGBLights->AllLights[OrderedLights[nextLightReverseAdjusted]].Type == LightType::LightType_ActionButton ? chaseCol : caseChaseCol, 
                                         fadeTimeTwo);
         }          
       } 
@@ -229,7 +241,7 @@ void Chase::Animate(RGB (&frame)[FRAME_MAX])
           for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
           {
             frame[ledIndex] = BlendColor(GetNonPressedColorForLight(OrderedLights[lightIndex]),
-                                          chaseCol, 
+                                          RGBLights->AllLights[OrderedLights[lightIndex]].Type == LightType::LightType_ActionButton ? chaseCol : caseChaseCol, 
                                           fadeTimeOne);
           }      
         }
@@ -243,7 +255,7 @@ void Chase::Animate(RGB (&frame)[FRAME_MAX])
             for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
             {
               frame[ledIndex] = BlendColor(GetNonPressedColorForLight(OrderedLights[lightIndex]),
-                                            chaseCol, 
+                                            RGBLights->AllLights[OrderedLights[lightIndex]].Type == LightType::LightType_ActionButton ? chaseCol : caseChaseCol,
                                             fadeTimeTwo);
             }          
           }
@@ -268,7 +280,7 @@ void Chase::Animate(RGB (&frame)[FRAME_MAX])
           for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
           {
             frame[ledIndex] = BlendColor(GetNonPressedColorForLight(OrderedLights[lightIndex]),
-                                          chaseCol, 
+                                          RGBLights->AllLights[OrderedLights[lightIndex]].Type == LightType::LightType_ActionButton ? chaseCol : caseChaseCol, 
                                           fadeTimeOne);
           }      
         }
@@ -282,7 +294,7 @@ void Chase::Animate(RGB (&frame)[FRAME_MAX])
             for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
             {
               frame[ledIndex] = BlendColor(GetNonPressedColorForLight(OrderedLights[lightIndex]),
-                                            chaseCol, 
+                                            RGBLights->AllLights[OrderedLights[lightIndex]].Type == LightType::LightType_ActionButton ? chaseCol : caseChaseCol, 
                                             fadeTimeTwo);
             }          
           }

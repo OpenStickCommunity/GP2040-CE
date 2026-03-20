@@ -13,6 +13,7 @@ export default {
 	'pressed-colors-label': 'Pressed colors',
 	'pressed-special-color-label': 'Pressed special color',
 	'idle-special-color-label': 'Idle special color',
+	'case-special-color-label': 'Case special color',
 	'idle-colors-label': 'Idle colors',
 	'switch-enabled-description':
 		'A disabled profile will not be available when using hotkeys to change profile.',
@@ -22,6 +23,8 @@ export default {
 		'Pressed Special Color is Rainbow Effect',
 	'switch-specialnonpressed-rainbow-label':
 		'Idle Special Color is Rainbow Effect',
+	'switch-specialcase-rainbow-label':
+		'Case Special Color is Rainbow Effect',
 
 	animations: {
 		NONPRESSED_EFFECT_STATIC_COLOR: 'Static Color',

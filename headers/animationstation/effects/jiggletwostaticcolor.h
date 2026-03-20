@@ -14,12 +14,12 @@ public:
   JiggleTwoStaticColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPins);
   ~JiggleTwoStaticColor() { };
 
-  virtual RGB AdjustColor(int ledIndex, RGB InColor) override;
+  virtual RGB AdjustColor(int ledIndex, RGB InColor, LightType lightType) override;
  
 protected:
 
-    int RainbowWheelFrame[MAX_JITTER_VALUES];
-    bool RainbowWheelReversed[MAX_JITTER_VALUES];
+    int RainbowWheelFrame[FRAME_MAX];
+    bool RainbowWheelReversed[FRAME_MAX];
 };
 
 #endif

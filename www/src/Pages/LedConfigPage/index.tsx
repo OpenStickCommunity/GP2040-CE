@@ -115,9 +115,13 @@ const schema = yup.object({
 				notPressedStaticColors: yup.array().of(yup.number()).required(),
 				pressedSpecialColor: yup.number().required(),
 				pressedStaticColors: yup.array().of(yup.number()),
+				caseSpecialColor: yup.number().required(),
 				bNonPressedSpecialColorIsRainbow: yup.number().required(),
 				bPressedSpecialColorIsRainbow: yup.number().required(),
-
+				bCaseSpecialColorIsRainbow: yup.number().required(),
+				nonPressedContextParam: yup.number().required(),
+				pressedContextParam: yup.number().required(),
+				caseContextParam: yup.number().required(),
 			}),
 		),
 	}),
@@ -187,8 +191,13 @@ const emptyAnimationProfile = {
 	nonButtonStaticColors: Array.from({ length: MAX_NON_BUTTON_LIGHT_COLOR_INDEXES }, () => 1),
 	nonPressedSpecialColor: 0,
 	pressedSpecialColor: 0,
+	caseSpecialColor: 0,
 	bNonPressedSpecialColorIsRainbow: 0,
 	bPressedSpecialColorIsRainbow: 0,
+	bCaseSpecialColorIsRainbow: 0,
+	nonPressedContextParam: 0,
+	pressedContextParam: 0,
+	caseContextParam: 0,
 	notPressedStaticColors: Array.from({ length: GPIO_PIN_LENGTH }, () => 0),
 	pressedStaticColors: Array.from({ length: GPIO_PIN_LENGTH }, () => 1),
 };
@@ -806,6 +815,46 @@ export default function LedConfigPage() {
 																	`AnimationOptions.profiles.${profileIndex}.bPressedSpecialColorIsRainbow`,
 																	Number(
 																		!profile.bPressedSpecialColorIsRainbow,
+																	),
+																)
+															}
+														/>
+													</div>
+												</Row>
+												<Row>
+													<FormControl
+														type="color"
+														label={t(`Leds:case-special-color-label`)}
+														name={`AnimationOptions.profiles.${profileIndex}.caseSpecialColor`}
+														groupClassName="col-sm-4 mb-3"
+														className="form-control-sm p-0 border-0 mb-3"
+														defaultValue={rgbIntToHex(
+															profile.caseSpecialColor,
+														)}
+														onBlur={(e) =>
+															setFieldValue(
+																`AnimationOptions.profiles.${profileIndex}.caseSpecialColor`,
+																hexToInt((e.target as HTMLInputElement).value),
+															)
+														}
+													/>
+													<div className="d-flex align-items-center col-sm-4 mb-3">
+														<FormCheck
+															type="switch"
+															name={`AnimationOptions.profiles.${profileIndex}.bCaseSpecialColorIsRainbow`}
+															label={
+																<label>
+																	{t(`Leds:switch-specialcase-rainbow-label`)}
+																</label>
+															}
+															checked={Boolean(
+																profile.bCaseSpecialColorIsRainbow,
+															)}
+															onChange={() =>
+																setFieldValue(
+																	`AnimationOptions.profiles.${profileIndex}.bCaseSpecialColorIsRainbow`,
+																	Number(
+																		!profile.bCaseSpecialColorIsRainbow,
 																	),
 																)
 															}

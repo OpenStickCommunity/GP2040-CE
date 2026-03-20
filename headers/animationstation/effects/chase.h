@@ -53,6 +53,8 @@ protected:
 
   void SetStartLight();
 
+  void GetSpecialColors(RGB& chaseCol, RGB& caseChaseCol);
+
   float ChaseTimes[2];
   std::vector<uint32_t> OrderedLights;
 
