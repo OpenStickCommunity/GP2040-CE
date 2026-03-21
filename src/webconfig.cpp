@@ -1206,13 +1206,9 @@ void helperGetProfileFromJsonObject(AnimationProfile* Profile, JsonObject* JsonD
     Profile->pressedSpecialColor = (*JsonData)["pressedSpecialColor"].as<uint32_t>();
     Profile->caseSpecialColor = (*JsonData)["caseSpecialColor"].as<uint32_t>();
 
-    Profile->caseSpecialColor = (*JsonData)["nonPressedContextParam"].as<uint32_t>() & 0xFF;
-    Profile->caseSpecialColor += ((*JsonData)["pressedContextParam"].as<uint32_t>() & 0xFF) << 8;
-    Profile->caseSpecialColor += ((*JsonData)["caseContextParam"].as<uint32_t>() & 0xFF) << 16;
-
     Profile->effectContextParam = (*JsonData)["nonPressedContextParam"].as<uint32_t>() & 0xFF;
-    Profile->effectContextParam += ((*JsonData)["pressedContextParam"].as<uint32_t>() >> 8) & 0xFF;
-    Profile->effectContextParam += ((*JsonData)["caseContextParam"].as<uint32_t>() >> 16) & 0xFF;
+    Profile->effectContextParam += ((*JsonData)["pressedContextParam"].as<uint32_t>() & 0xFF) << 8;
+    Profile->effectContextParam += ((*JsonData)["caseContextParam"].as<uint32_t>() & 0xFF) << 16;
 
     Profile->bNonPressedSpecialColorIsRainbow = (*JsonData)["bNonPressedSpecialColorIsRainbow"].as<bool>();
     Profile->bPressedSpecialColorIsRainbow = (*JsonData)["bPressedSpecialColorIsRainbow"].as<bool>();
