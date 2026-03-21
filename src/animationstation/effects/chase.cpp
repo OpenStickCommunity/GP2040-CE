@@ -18,21 +18,29 @@ Chase::Chase(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType, 
 
   OrderedLights.clear();
 
-  //Get max x and y coords
+  //Get max x and y coords and save off types
   for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
   {
     if(LightTypeIsForAnimation(RGBLights->AllLights[lightIndex].Type) == false)
       continue;
 
+    //max limits
     if(RGBLights->AllLights[lightIndex].Position.XPosition > MaxXCoord)
       MaxXCoord = RGBLights->AllLights[lightIndex].Position.XPosition;
     if(RGBLights->AllLights[lightIndex].Position.YPosition > MaxYCoord)
       MaxYCoord = RGBLights->AllLights[lightIndex].Position.YPosition;
 
+    //min limits
     if(lightIndex == 0 || RGBLights->AllLights[lightIndex].Position.XPosition < MinXCoord)
       MinXCoord = RGBLights->AllLights[lightIndex].Position.XPosition;
     if(lightIndex == 0 || RGBLights->AllLights[lightIndex].Position.YPosition < MinYCoord)
       MinYCoord = RGBLights->AllLights[lightIndex].Position.YPosition;   
+
+    //save types
+    int lastLed = RGBLights->AllLights[lightIndex].FirstLedIndex + RGBLights->AllLights[lightIndex].LedsPerLight;
+    for(unsigned int ledIndex = RGBLights->AllLights[lightIndex].FirstLedIndex ; ledIndex < lastLed; ++ledIndex)
+      ChaseBlendType[ledIndex] = RGBLights->AllLights[lightIndex].Type;
+
   }
 
   //store off all lights in required order used on this animation type (only for some animation types)
@@ -332,10 +340,15 @@ void Chase::CheckToAdvanceLight()
 {
   if(NextLightTimer <= 0.0f)
   {
+    float tailLengthButton = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedEffectContextParam;
+    float tailLengthCase = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].caseEffectContextParam;
+
     //Apply fade for all lights if we're moving to the next light
     for(unsigned int chaseBlendIndex = 0; chaseBlendIndex < FRAME_MAX; ++chaseBlendIndex)
     {
-      float tailLength = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedEffectContextParam;
+      //work out if its a button to get the correct context param
+      bool bIsButton = ChaseBlendType[chaseBlendIndex] == LightType::LightType_ActionButton;
+      int tailLength = bIsButton ? tailLengthButton : tailLengthCase;
       if(tailLength == 0)
         tailLength = CHASE_DEFAULT_TAIL_LENGTH;
       float fadePerLight = 1.0f / tailLength;

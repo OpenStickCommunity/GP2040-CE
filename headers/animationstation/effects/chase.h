@@ -72,6 +72,7 @@ protected:
   std::vector<uint32_t> OrderedLights;
 
   float ChaseBlendValues[FRAME_MAX];
+  LightType ChaseBlendType[FRAME_MAX];
 
   int MinXCoord = 0;
   int MinYCoord = 0;
