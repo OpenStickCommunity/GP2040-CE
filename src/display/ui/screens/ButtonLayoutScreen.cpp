@@ -4,7 +4,7 @@
 #include "drivers/ps4/PS4Driver.h"
 #include "drivers/xbone/XBOneDriver.h"
 #include "drivers/xinput/XInputDriver.h"
-#include "drivers/p5general/P5GeneralDriver.h"
+#include "drivers/ps5/PS5Driver.h"
 
 void ButtonLayoutScreen::init() {
     isInputHistoryEnabled = Storage::getInstance().getDisplayOptions().inputHistoryEnabled;
@@ -183,17 +183,17 @@ void ButtonLayoutScreen::generateHeader() {
                 else
                     statusBar += "   ";
                 break;
-            case INPUT_MODE_PS5:
-                statusBar += "PS5";
+            case INPUT_MODE_PS5A:
+                statusBar += "PS5A";
                 if(((PS4Driver*)DriverManager::getInstance().getDriver())->getAuthSent() == true )
-                    statusBar += ":AS";
+                    statusBar += ":S";
                 else
-                    statusBar += "   ";
+                    statusBar += "  ";
                 break;
-            case INPUT_MODE_P5GENERAL:
-                statusBar += "P5G";
-                if(((P5GeneralDriver*)DriverManager::getInstance().getDriver())->getAuthSent() == true )
-                    statusBar += ":AS";
+            case INPUT_MODE_PS5:
+                statusBar += "PS5 ";
+                if(((PS5Driver*)DriverManager::getInstance().getDriver())->getAuthSent() == true )
+                    statusBar += ":S ";
                 else
                     statusBar += "   ";
                 break;

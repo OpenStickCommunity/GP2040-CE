@@ -15,8 +15,8 @@ export default {
 		generic: 'Generic HID',
 		keyboard: 'Keyboard',
 		ps4: 'PS4',
-		ps5: 'PS5',
-		p5general: 'P5General',
+		ps5a: 'PS5 (PS4 Arcade Stick)',
+		ps5: 'PS5 (DualSense Controller)',
 		neogeo: 'NEOGEO mini',
 		mdmini: 'Sega Genesis/MegaDrive Mini',
 		pcemini: 'PC Engine/Turbografx 16 Mini',
@@ -82,7 +82,7 @@ export default {
 	'xbone-mode-text':
 		'<span>INFO:</span> Xbox One requires a USB host connection and USB dongle to properly authenticate in Xbox One mode.',
 	'p5general-mode-text':
-		'<span>INFO:</span> Requires a USB host connection and <span>P5General</span> to properly authenticate in PS5 general mode.',
+		'<span>INFO:</span> Requires a USB host connection and <span>Besavior P5General or Mayflash S5</span> to properly authenticate in PS5 general mode.',
 	'xinput-mode-text':
 		'<span>INFO:</span> XInput mode will work on a retail Xbox 360 console without a dongle. Only select USB if you would like to use an external dongle for authentication.',
 	'hotkey-settings-label': 'Hotkey Settings',
