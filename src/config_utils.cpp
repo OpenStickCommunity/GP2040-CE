@@ -319,6 +319,22 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.gamepadOptions, usbOverrideID, DEFAULT_USB_ID_OVERRIDE);
     INIT_UNSET_PROPERTY(config.gamepadOptions, usbVendorID, DEFAULT_USB_VENDOR_ID);
     INIT_UNSET_PROPERTY(config.gamepadOptions, usbProductID, DEFAULT_USB_PRODUCT_ID);
+    // HID specific USB descriptor overrides
+    INIT_UNSET_PROPERTY(config.gamepadOptions, hidDescOverride, DEFAULT_USB_DESC_OVERRIDE);
+    INIT_UNSET_PROPERTY_STR(config.gamepadOptions, hidDescProduct, DEFAULT_USB_DESC_PRODUCT);
+    INIT_UNSET_PROPERTY_STR(config.gamepadOptions, hidDescManufacturer, DEFAULT_USB_DESC_MANUFACTURER);
+    INIT_UNSET_PROPERTY_STR(config.gamepadOptions, hidDescVersion, DEFAULT_USB_DESC_VERSION);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, hidOverrideID, DEFAULT_USB_ID_OVERRIDE);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, hidVendorID, DEFAULT_USB_VENDOR_ID);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, hidProductID, DEFAULT_USB_PRODUCT_ID);
+    // XInput specific USB descriptor overrides
+    INIT_UNSET_PROPERTY(config.gamepadOptions, xinputDescOverride, DEFAULT_USB_DESC_OVERRIDE);
+    INIT_UNSET_PROPERTY_STR(config.gamepadOptions, xinputDescProduct, DEFAULT_USB_DESC_PRODUCT);
+    INIT_UNSET_PROPERTY_STR(config.gamepadOptions, xinputDescManufacturer, DEFAULT_USB_DESC_MANUFACTURER);
+    INIT_UNSET_PROPERTY_STR(config.gamepadOptions, xinputDescVersion, DEFAULT_USB_DESC_VERSION);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, xinputOverrideID, DEFAULT_USB_ID_OVERRIDE);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, xinputVendorID, DEFAULT_USB_VENDOR_ID);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, xinputProductID, DEFAULT_USB_PRODUCT_ID);
     INIT_UNSET_PROPERTY(config.gamepadOptions, miniMenuGamepadInput, MINI_MENU_GAMEPAD_INPUT);
 
     // hotkeyOptions

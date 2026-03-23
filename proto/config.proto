@@ -38,6 +38,22 @@ message GamepadOptions
     optional uint32 usbVendorID = 31;
     optional uint32 miniMenuGamepadInput = 32;
     optional InputModeDeviceType inputDeviceType = 33;
+    // Separate XInput USB descriptor overrides
+    optional bool hidDescOverride = 34;
+    optional string hidDescProduct = 35 [(nanopb).max_length = 32];
+    optional string hidDescManufacturer = 36 [(nanopb).max_length = 32];
+    optional string hidDescVersion = 37 [(nanopb).max_length = 8];
+    optional bool hidOverrideID = 38;
+    optional uint32 hidProductID = 39;
+    optional uint32 hidVendorID = 40;
+    // Separate USB-HID (non-XInput) USB descriptor overrides
+    optional bool xinputDescOverride = 41;
+    optional string xinputDescProduct = 42 [(nanopb).max_length = 32];
+    optional string xinputDescManufacturer = 43 [(nanopb).max_length = 32];
+    optional string xinputDescVersion = 44 [(nanopb).max_length = 8];
+    optional bool xinputOverrideID = 45;
+    optional uint32 xinputProductID = 46;
+    optional uint32 xinputVendorID = 47;
 }
 
 message KeyboardMapping
