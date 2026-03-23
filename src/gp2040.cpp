@@ -186,6 +186,9 @@ void GP2040::setup() {
 		case BootAction::SET_INPUT_MODE_SWITCH_PRO:
 			inputMode = INPUT_MODE_SWITCH_PRO;
 			break;
+		case BootAction::SET_INPUT_MODE_SINPUT:
+			inputMode = INPUT_MODE_SINPUT;
+			break;
 		case BootAction::NONE:
 		default:
 			break;
@@ -463,6 +466,8 @@ GP2040::BootAction GP2040::getBootAction() {
                                     return BootAction::SET_INPUT_MODE_XBONE;
                                 case INPUT_MODE_SWITCH_PRO:
                                     return BootAction::SET_INPUT_MODE_SWITCH_PRO;
+                                case INPUT_MODE_SINPUT:
+                                    return BootAction::SET_INPUT_MODE_SINPUT;
                                 default:
                                     return BootAction::NONE;
                             }

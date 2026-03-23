@@ -17,6 +17,7 @@
 #include "drivers/xboxog/XboxOriginalDriver.h"
 #include "drivers/xinput/XInputDriver.h"
 #include "drivers/p5general/P5GeneralDriver.h"
+#include "drivers/sinput/SInputDriver.h"
 
 #include "usbhostmanager.h"
 
@@ -75,6 +76,9 @@ void DriverManager::setup(InputMode mode) {
             break;
         case INPUT_MODE_SWITCH_PRO:
             driver = new SwitchProDriver();
+            break;
+        case INPUT_MODE_SINPUT:
+            driver = new SInputDriver();
             break;
         default:
             return;
