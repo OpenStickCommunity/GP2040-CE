@@ -17,7 +17,7 @@
 #define REVERSE_LED_PIN -1
 #endif
 
-#ifndef REVERSE_UP_DEFUALT
+#ifndef REVERSE_UP_DEFAULT
 #define REVERSE_UP_DEFAULT 0
 #endif
 

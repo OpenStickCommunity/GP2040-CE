@@ -43,29 +43,20 @@ private:
     };
     RebootHotkeys rebootHotkeys;
 
-    enum class BootAction {
-        NONE,
-        ENTER_WEBCONFIG_MODE,
-        ENTER_USB_MODE,
-        SET_INPUT_MODE_SWITCH,
-        SET_INPUT_MODE_XINPUT,
-        SET_INPUT_MODE_KEYBOARD,
-        SET_INPUT_MODE_GENERIC,
-        SET_INPUT_MODE_PS3,
-        SET_INPUT_MODE_PS4,
-        SET_INPUT_MODE_PS5,
-        SET_INPUT_MODE_P5GENERAL,
-        SET_INPUT_MODE_XBONE,
-        SET_INPUT_MODE_NEOGEO,
-        SET_INPUT_MODE_MDMINI,
-        SET_INPUT_MODE_PCEMINI,
-        SET_INPUT_MODE_EGRET,
-        SET_INPUT_MODE_ASTRO,
-        SET_INPUT_MODE_PSCLASSIC,
-        SET_INPUT_MODE_XBOXORIGINAL,
-        SET_INPUT_MODE_SWITCH_PRO,
-    };
-    BootAction getBootAction();
+    enum class BootActionType {
+			ENTER_USB_MODE,
+			SET_INPUT_MODE
+		};
+
+		struct BootAction {
+			BootActionType type;
+			InputMode inputMode;
+			uint32_t profileNumber;
+		};
+
+		BootAction getGpioMappedBootAction();
+		BootAction getButtonMappedBootAction();
+
     void getReinitGamepad(Gamepad * gamepad);
 
     // GPIO manipulation for setup and profile reinit
@@ -75,9 +66,6 @@ private:
     // event handling checking
     void checkRawState(GamepadState prevState, GamepadState currState);
     void checkProcessedState(GamepadState prevState, GamepadState currState);
-
-    // input mask, action
-    std::map<uint32_t, int32_t> bootActions;
 
     void checkSaveRebootState();
     bool saveRequested = false;
