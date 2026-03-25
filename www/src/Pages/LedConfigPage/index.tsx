@@ -477,12 +477,16 @@ export default function LedConfigPage() {
 								max={29}
 							/>
 						</Row>
-						<Alert variant="info">
-							{values.ledOptions.pledType === 0 &&
-								t('LedConfigPage:player.pwm-sub-header-text')}
-							{values.ledOptions.pledType === 1 &&
-								t('LedConfigPage:player.rgb-sub-header-text')}
-						</Alert>
+						{values.ledOptions.pledType === 0 && (
+							<Alert variant="info">
+								{t('LedConfigPage:player.pwm-sub-header-text')}
+							</Alert>
+						)}
+						{values.ledOptions.pledType === 1 && (
+							<Alert variant="info">
+								{t('LedConfigPage:player.rgb-sub-header-text')}
+							</Alert>
+						)}
 					</Section>
 					<Section title="Custom LED Theme">
 						<Row>
@@ -867,27 +871,15 @@ export default function LedConfigPage() {
 													)}
 												</Row>
 												<Row>
-													<FormControl
-														type="color"
-														label={t(`LedConfigPage:theme.case-special-color-label`)}
-														name={`AnimationOptions.profiles.${profileIndex}.caseSpecialColor`}
-														groupClassName="col-sm-4 mb-3"
-														className="form-control-sm p-0 border-0 mb-3"
-														defaultValue={rgbIntToHex(profile.caseSpecialColor)}
-														onBlur={(e) =>
-															setFieldValue(
-																`AnimationOptions.profiles.${profileIndex}.caseSpecialColor`,
-																hexToInt((e.target as HTMLInputElement).value),
-															)
-														}
-													/>
 													<div className="d-flex align-items-center col-sm-4 mb-3">
 														<FormCheck
 															type="switch"
 															name={`AnimationOptions.profiles.${profileIndex}.bCaseSpecialColorIsRainbow`}
 															label={
 																<label>
-																	{t(`LedConfigPage:theme.switch-specialcase-rainbow-label`)}
+																	{t(
+																		`LedConfigPage:theme.switch-specialcase-rainbow-label`,
+																	)}
 																</label>
 															}
 															checked={Boolean(
@@ -901,6 +893,28 @@ export default function LedConfigPage() {
 															}
 														/>
 													</div>
+													{!profile.bCaseSpecialColorIsRainbow && (
+														<FormControl
+															type="color"
+															label={t(
+																`LedConfigPage:theme.case-special-color-label`,
+															)}
+															name={`AnimationOptions.profiles.${profileIndex}.caseSpecialColor`}
+															groupClassName="col-sm-4 mb-3"
+															className="form-control-sm p-0 border-0 mb-3"
+															defaultValue={rgbIntToHex(
+																profile.caseSpecialColor,
+															)}
+															onBlur={(e) =>
+																setFieldValue(
+																	`AnimationOptions.profiles.${profileIndex}.caseSpecialColor`,
+																	hexToInt(
+																		(e.target as HTMLInputElement).value,
+																	),
+																)
+															}
+														/>
+													)}
 												</Row>
 												<hr />
 
