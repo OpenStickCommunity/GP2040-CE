@@ -19,7 +19,7 @@ const useLedsPreview = () => {
 			await WebApi.setAnimationButtonTestState({
 				TestLight: {
 					testID: pin,
-					testIsNonButtonLight: +isNonButton,
+					testIsNonButtonLight: isCase,
 				},
 			});
 		},
