@@ -33,7 +33,8 @@ protected:
     float GetTimeTillNextDrop();
     bool RainHistoryContains(int newXCoord);
     int FindLightForCoord(int xCoord, int yCoord);
-
+    void GetSpecialColors(RGB& chaseCol, RGB& caseChaseCol, int rainIndex);
+    
     float RainYCoords[MAX_RAIN_DROPS];
     int RainXCoords[MAX_RAIN_DROPS];
 

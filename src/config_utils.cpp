@@ -547,8 +547,11 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], baseCaseCycleTime, 2);
         INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], nonPressedSpecialColor, LEDS_IDLE_SPECIAL_COLOR.value(LED_FORMAT_RGB, 1.0f));
         INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], pressedSpecialColor, LEDS_PRESSED_SPECIAL_COLOR.value(LED_FORMAT_RGB, 1.0f));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], caseSpecialColor, LEDS_CASE_SPECIAL_COLOR.value(LED_FORMAT_RGB, 1.0f));
         INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bNonPressedSpecialColorIsRainbow, LEDS_IDLE_SPECIAL_COLOR_IS_RAINDOW);
         INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bPressedSpecialColorIsRainbow, LEDS_PRESSED_SPECIAL_COLOR_IS_RAINDOW);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bCaseSpecialColorIsRainbow, LEDS_CASE_SPECIAL_COLOR_IS_RAINDOW);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], effectContextParam, 0);
         config.animationOptions.profiles_count = 1;
         config.animationOptions.profiles[0].notPressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
         config.animationOptions.profiles[0].pressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
@@ -570,7 +573,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
             config.animationOptions.profiles[0].nonButtonStaticColors[lightIndex] += LEDS_STATIC_COLOR_CASE<<8; 
             config.animationOptions.profiles[0].nonButtonStaticColors[lightIndex] += LEDS_STATIC_COLOR_CASE<<16;
 
-            if(lightIndex = ((MAX_NON_BUTTON_LIGHT_COLOR_INDEXES/4) - 1))
+            if(lightIndex == ((MAX_NON_BUTTON_LIGHT_COLOR_INDEXES/4) - 1))
             {
                 config.animationOptions.profiles[0].nonButtonStaticColors[lightIndex] += PLED_COLOR<<24; 
             }
@@ -618,7 +621,10 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
             }
         }
     }
-   
+
+//    config.animationOptions.profiles[1].effectContextParam = (6 << 16) + 15;
+//    config.animationOptions.profiles[2].effectContextParam = (15 << 16) + (6);
+
     // addonOptions.bootselButtonOptions
     INIT_UNSET_PROPERTY(config.addonOptions.bootselButtonOptions, enabled, !!BOOTSEL_BUTTON_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.bootselButtonOptions, buttonMap, BOOTSEL_BUTTON_MASK);

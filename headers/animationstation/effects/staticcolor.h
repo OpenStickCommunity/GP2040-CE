@@ -16,7 +16,7 @@ public:
   virtual void Animate(RGB (&frame)[FRAME_MAX]) override;
 protected:
 
-  virtual RGB AdjustColor(int ledIndex, RGB InColor) { return InColor; }
+  virtual RGB AdjustColor(int ledIndex, RGB InColor, LightType lightType) { return InColor; }
 };
 
 #endif

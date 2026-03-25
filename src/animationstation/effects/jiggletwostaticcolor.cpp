@@ -5,7 +5,7 @@
 
 JiggleTwoStaticColor::JiggleTwoStaticColor(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType) : JiggleStaticColor(InRGBLights, InButtonCaseEffectType) 
 {
-    for(int index = 0; index < MAX_JITTER_VALUES; ++index)
+    for(int index = 0; index < FRAME_MAX; ++index)
     {
         RainbowWheelFrame[index] = rand() % 255;
         RainbowWheelReversed[index] = (rand() % 100) > 50;
@@ -14,14 +14,14 @@ JiggleTwoStaticColor::JiggleTwoStaticColor(Lights& InRGBLights, EButtonCaseEffec
 
 JiggleTwoStaticColor::JiggleTwoStaticColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPins) : JiggleStaticColor(InRGBLights, InPressedPins) 
 {
-    for(int index = 0; index < MAX_JITTER_VALUES; ++index)
+    for(int index = 0; index < FRAME_MAX; ++index)
     {
         RainbowWheelFrame[index] = rand() % 255;
         RainbowWheelReversed[index] = (rand() % 100) > 50;
     }
 }
 
-RGB JiggleTwoStaticColor::AdjustColor(int ledIndex, RGB InColor)
+RGB JiggleTwoStaticColor::AdjustColor(int ledIndex, RGB InColor, LightType lightType)
 {
     RGB otherColor;
     
@@ -32,11 +32,17 @@ RGB JiggleTwoStaticColor::AdjustColor(int ledIndex, RGB InColor)
         otherColor = RGB(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].pressedSpecialColor);
         bUseRainbow = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].bPressedSpecialColorIsRainbow;
     }
-    else
+    else if(lightType == LightType::LightType_ActionButton)
     {
         otherColor = RGB(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor);
         bUseRainbow = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].bNonPressedSpecialColorIsRainbow;
     }
+    else
+    {
+        otherColor = RGB(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].caseSpecialColor);
+        bUseRainbow = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].bCaseSpecialColorIsRainbow;
+    }
+
     if(bUseRainbow)
     {
         if(!RainbowWheelReversed[ledIndex])

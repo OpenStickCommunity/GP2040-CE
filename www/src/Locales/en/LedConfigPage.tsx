@@ -81,6 +81,7 @@ export default {
 		'case-animation-label': 'Case animation',
 		'custom-color-label': 'Custom colors',
 		'case-colors-label': 'Case colors',
+		'case-special-color-label': 'Case special color',
 		'idle-animation-label': 'Idle animation',
 		'pressed-fade-out-time-label': 'Pressed fade out time (ms)',
 		'pressed-hold-time-label': 'Pressed hold time (ms)',
@@ -100,6 +101,7 @@ export default {
 		'layout-mode-label': 'Layout mode',
 		'layout-mode-description':
 			'Layout mode allows for manual configuration of LED positions and GPIO pins.',
+		'switch-specialcase-rainbow-label': 'Case Special Color is Rainbow Effect',
 	},
 	animations: {
 		NONPRESSED_EFFECT_STATIC_COLOR: 'Static Color',
@@ -119,6 +121,9 @@ export default {
 		NONPRESSED_EFFECT_RAIN_LOW: 'Rain Low',
 		NONPRESSED_EFFECT_RAIN_MEDIUM: 'Rain Medium',
 		NONPRESSED_EFFECT_RAIN_HIGH: 'Rain High',
+		NONPRESSED_EFFECT_CHASE_CIRCLE_CLOCKWISE: 'Chase Circle Clockwise',
+		NONPRESSED_EFFECT_CHASE_CIRCLE_ANTICLOCKWISE: 'Chase Circle Anti Clockwise',
+		NONPRESSED_EFFECT_CHASE_CIRCLE_PINGPONG: 'Chase Circle Ping Pong',
 
 		PRESSED_EFFECT_STATIC_COLOR: 'Static Color',
 		PRESSED_EFFECT_RANDOM: 'Random',

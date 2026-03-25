@@ -1204,9 +1204,15 @@ void helperGetProfileFromJsonObject(AnimationProfile* Profile, JsonObject* JsonD
     Profile->bUseCaseLightsInSpecialMoves = (*JsonData)["bUseCaseLightsInSpecialMoves"].as<bool>();
     Profile->bUseCaseLightsInPressedAnimations = (*JsonData)["bUseCaseLightsInPressedAnimations"].as<bool>();
     Profile->pressedSpecialColor = (*JsonData)["pressedSpecialColor"].as<uint32_t>();
+    Profile->caseSpecialColor = (*JsonData)["caseSpecialColor"].as<uint32_t>();
+
+    Profile->effectContextParam = (*JsonData)["nonPressedContextParam"].as<uint32_t>() & 0xFF;
+    Profile->effectContextParam += ((*JsonData)["pressedContextParam"].as<uint32_t>() & 0xFF) << 8;
+    Profile->effectContextParam += ((*JsonData)["caseContextParam"].as<uint32_t>() & 0xFF) << 16;
 
     Profile->bNonPressedSpecialColorIsRainbow = (*JsonData)["bNonPressedSpecialColorIsRainbow"].as<bool>();
     Profile->bPressedSpecialColorIsRainbow = (*JsonData)["bPressedSpecialColorIsRainbow"].as<bool>();
+    Profile->bCaseSpecialColorIsRainbow = (*JsonData)["bCaseSpecialColorIsRainbow"].as<bool>();
 
     JsonArray notPressedStaticColorsList = (*JsonData)["notPressedStaticColors"];
     Profile->notPressedStaticColors_count = 0;
@@ -1369,9 +1375,15 @@ std::string getAnimationProtoOptions()
         profile["bUseCaseLightsInPressedAnimations"] = options.profiles[profilesIndex].bUseCaseLightsInPressedAnimations ? 1 : 0;
         profile["baseCaseEffect"] = options.profiles[profilesIndex].baseCaseEffect;
         profile["pressedSpecialColor"] = options.profiles[profilesIndex].pressedSpecialColor;
+        profile["caseSpecialColor"] = options.profiles[profilesIndex].caseSpecialColor;
 
         profile["bNonPressedSpecialColorIsRainbow"] = options.profiles[profilesIndex].bNonPressedSpecialColorIsRainbow ? 1 : 0;
         profile["bPressedSpecialColorIsRainbow"] = options.profiles[profilesIndex].bPressedSpecialColorIsRainbow ? 1 : 0;
+        profile["bCaseSpecialColorIsRainbow"] = options.profiles[profilesIndex].bCaseSpecialColorIsRainbow ? 1 : 0;
+
+        profile["nonPressedContextParam"] = options.profiles[profilesIndex].effectContextParam & 0xFF;
+        profile["pressedContextParam"] = (options.profiles[profilesIndex].effectContextParam >> 8) & 0xFF;
+        profile["caseContextParam"] = (options.profiles[profilesIndex].effectContextParam >> 16) & 0xFF;
 
         JsonArray notPressedStaticColorsList = profile.createNestedArray("notPressedStaticColors");
         for (int notPressedStaticColorsIndex = 0; notPressedStaticColorsIndex < options.profiles[profilesIndex].notPressedStaticColors_count; ++notPressedStaticColorsIndex)

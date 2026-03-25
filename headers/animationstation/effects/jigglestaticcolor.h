@@ -8,15 +8,13 @@
 #include "../animationstation.h"
 #include "staticcolor.h"
 
-#define MAX_JITTER_VALUES 100
-
 class JiggleStaticColor : public StaticColor {
 public:
   JiggleStaticColor(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType);
   JiggleStaticColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPins);
   ~JiggleStaticColor() { };
 
-  virtual RGB AdjustColor(int ledIndex, RGB InColor) override;
+  virtual RGB AdjustColor(int ledIndex, RGB InColor, LightType lightType) override;
 
   virtual void CycleParameterChange() override;
 
@@ -24,8 +22,8 @@ protected:
 
   RGB AdvanceColor(int ledIndex, RGB InColor, RGB DestColor);
 
-  float JitterVal[MAX_JITTER_VALUES];
-  bool JitterReverse[MAX_JITTER_VALUES];
+  float JitterVal[FRAME_MAX];
+  bool JitterReverse[FRAME_MAX];
 };
 
 #endif

@@ -111,6 +111,41 @@ int Rain::FindLightForCoord(int xCoord, int yCoord)
     return backupRightIndex;
 }
 
+void Rain::GetSpecialColors(RGB& specialLightCol, RGB& caseSpecialLightCol, int rainIndex)
+{
+    specialLightCol = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor;
+    caseSpecialLightCol = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].caseSpecialColor;
+    bool buttonIsRainbow = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].bNonPressedSpecialColorIsRainbow;
+    bool caseIsRainbow = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].bCaseSpecialColorIsRainbow;
+
+    if(buttonIsRainbow || caseIsRainbow)
+    {
+        if(!RainbowWheelReversed[rainIndex])
+        {
+            RainbowWheelFrame[rainIndex] += RAIN_RAINBOW_FRAME_CHANGE_PER_TICK;
+            if(RainbowWheelFrame[rainIndex] >= 255)
+            {
+                RainbowWheelReversed[rainIndex] = true;
+                RainbowWheelFrame[rainIndex] = 255;
+            }
+        }
+        else
+        {
+            RainbowWheelFrame[rainIndex] -= RAIN_RAINBOW_FRAME_CHANGE_PER_TICK;
+            if(RainbowWheelFrame[rainIndex] <= 0)
+            {
+                RainbowWheelReversed[rainIndex] = false;
+                RainbowWheelFrame[rainIndex] = 0;
+            }
+        }
+
+        if(buttonIsRainbow)
+            specialLightCol = RGB::wheel(RainbowWheelFrame[rainIndex]);
+        if(caseIsRainbow)
+            caseSpecialLightCol = RGB::wheel(RainbowWheelFrame[rainIndex]);
+    }
+}
+
 void Rain::Animate(RGB (&frame)[FRAME_MAX]) 
 {
     UpdateTime();
@@ -200,29 +235,8 @@ void Rain::Animate(RGB (&frame)[FRAME_MAX])
         float secondLightAlpha = 1.0f - firstLightAlpha;
 
         //store off special color and update rainbow if required
-        RGB specialLightCol = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor;
-        if(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].bNonPressedSpecialColorIsRainbow)
-        {
-            if(!RainbowWheelReversed[rainIndex])
-            {
-                RainbowWheelFrame[rainIndex] += RAIN_RAINBOW_FRAME_CHANGE_PER_TICK;
-                if(RainbowWheelFrame[rainIndex] >= 255)
-                {
-                    RainbowWheelReversed[rainIndex] = true;
-                    RainbowWheelFrame[rainIndex] = 255;
-                }
-            }
-            else
-            {
-                RainbowWheelFrame[rainIndex] -= RAIN_RAINBOW_FRAME_CHANGE_PER_TICK;
-                if(RainbowWheelFrame[rainIndex] <= 0)
-                {
-                    RainbowWheelReversed[rainIndex] = false;
-                    RainbowWheelFrame[rainIndex] = 0;
-                }
-            }
-            specialLightCol = RGB::wheel(RainbowWheelFrame[rainIndex]);
-        }
+        RGB specialLightCol, caseSpecialLightCol;
+        GetSpecialColors(specialLightCol, caseSpecialLightCol, rainIndex);
 
         if(firstLightIndex >= 0)
         {
@@ -232,7 +246,7 @@ void Rain::Animate(RGB (&frame)[FRAME_MAX])
             for(uint8_t ledIndex = firstLedIndex; ledIndex < lastLedIndex; ++ledIndex)
             {
                 frame[ledIndex] = BlendColor(firstLightCol,
-                                            specialLightCol, 
+                                            RGBLights->AllLights[OrderedLights[firstLightIndex]].Type == LightType::LightType_ActionButton ? specialLightCol : caseSpecialLightCol, 
                                             firstLightAlpha);
             }
         }
@@ -245,7 +259,7 @@ void Rain::Animate(RGB (&frame)[FRAME_MAX])
             for(uint8_t ledIndex = firstLedIndex; ledIndex < lastLedIndex; ++ledIndex)
             {
                 frame[ledIndex] = BlendColor(secondLightCol,
-                                            specialLightCol, 
+                                            RGBLights->AllLights[OrderedLights[secondLightIndex]].Type == LightType::LightType_ActionButton ? specialLightCol : caseSpecialLightCol, 
                                             secondLightAlpha);
             }
         }

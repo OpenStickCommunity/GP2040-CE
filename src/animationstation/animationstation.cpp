@@ -409,6 +409,15 @@ Animation* AnimationStation::GetNonPressedEffectForEffectType(AnimationNonPresse
   case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_VERTICAL_PINGPONG:
     newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_VERTICAL_PINGPONG);
     break;
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_CIRCLE_CLOCKWISE:
+    newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_CIRCLE_CLOCKWISE);
+    break;
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_CIRCLE_ANTICLOCKWISE:
+    newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_CIRCLE_ANTICLOCKWISE);
+    break;
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_CIRCLE_PINGPONG:
+    newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_CIRCLE_PINGPONG);
+    break;
   case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_RANDOM:
     newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_RANDOM);
     break;
@@ -559,6 +568,11 @@ void AnimationStation::DecompressProfile(int ProfileIndex, const AnimationProfil
 		options.profiles[ProfileIndex].baseNonPressedEffect = (AnimationNonPressedEffects)((int)ProfileToDecompress->baseNonPressedEffect);
 		options.profiles[ProfileIndex].basePressedEffect = (AnimationPressedEffects)((int)ProfileToDecompress->basePressedEffect);
 		options.profiles[ProfileIndex].baseCaseEffect = (AnimationNonPressedEffects)((int)ProfileToDecompress->baseCaseEffect);
+
+    options.profiles[ProfileIndex].nonPressedEffectContextParam = ProfileToDecompress->effectContextParam & 0xFF;
+    options.profiles[ProfileIndex].pressedEffectContextParam = (ProfileToDecompress->effectContextParam >> 8) & 0xFF;
+    options.profiles[ProfileIndex].caseEffectContextParam = (ProfileToDecompress->effectContextParam >> 16) & 0xFF;
+
 		options.profiles[ProfileIndex].baseCycleTime = ProfileToDecompress->baseCycleTime;
 		options.profiles[ProfileIndex].basePressedCycleTime = ProfileToDecompress->basePressedCycleTime;
     options.profiles[ProfileIndex].baseCaseCycleTime = ProfileToDecompress->baseCaseCycleTime;
@@ -622,8 +636,10 @@ void AnimationStation::DecompressProfile(int ProfileIndex, const AnimationProfil
 		options.profiles[ProfileIndex].buttonPressFadeOutTimeInMs = ProfileToDecompress->buttonPressFadeOutTimeInMs;
 		options.profiles[ProfileIndex].nonPressedSpecialColor = ProfileToDecompress->nonPressedSpecialColor;
 		options.profiles[ProfileIndex].pressedSpecialColor = ProfileToDecompress->pressedSpecialColor;
+		options.profiles[ProfileIndex].caseSpecialColor = ProfileToDecompress->caseSpecialColor;
 		options.profiles[ProfileIndex].bNonPressedSpecialColorIsRainbow = ProfileToDecompress->bNonPressedSpecialColorIsRainbow;
 		options.profiles[ProfileIndex].bPressedSpecialColorIsRainbow = ProfileToDecompress->bPressedSpecialColorIsRainbow;
+		options.profiles[ProfileIndex].bCaseSpecialColorIsRainbow = ProfileToDecompress->bCaseSpecialColorIsRainbow;
 		options.profiles[ProfileIndex].bUseCaseLightsInSpecialMoves = ProfileToDecompress->bUseCaseLightsInSpecialMoves;
 		options.profiles[ProfileIndex].bUseCaseLightsInPressedAnimations = ProfileToDecompress->bUseCaseLightsInPressedAnimations;
 }
@@ -742,6 +758,7 @@ void AnimationStation::SetTestMode(AnimationStationTestMode TestType, const Anim
 		}
 
     options.profiles[testProfileIndex].nonPressedSpecialColor = 0xFFFFFF; //White
+    options.profiles[testProfileIndex].caseSpecialColor = 0xFFFFFF; //White
     options.profiles[testProfileIndex].baseCycleTime = 2;
     options.profiles[testProfileIndex].basePressedCycleTime = 2;
     options.profiles[testProfileIndex].baseCaseCycleTime = 2;

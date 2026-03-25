@@ -6,7 +6,7 @@
 
 JiggleStaticColor::JiggleStaticColor(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType) : StaticColor(InRGBLights, InButtonCaseEffectType) 
 {
-  for(int index = 0; index < MAX_JITTER_VALUES; ++index)
+  for(int index = 0; index < FRAME_MAX; ++index)
   {
     JitterVal[index] = 0;
     JitterReverse[index] = false;
@@ -17,7 +17,7 @@ JiggleStaticColor::JiggleStaticColor(Lights& InRGBLights, EButtonCaseEffectType 
 
 JiggleStaticColor::JiggleStaticColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPins) : StaticColor(InRGBLights, InPressedPins) 
 {
-  for(int index = 0; index < MAX_JITTER_VALUES; ++index)
+  for(int index = 0; index < FRAME_MAX; ++index)
   {
     JitterVal[index] = 0;
     JitterReverse[index] = false;
@@ -26,7 +26,7 @@ JiggleStaticColor::JiggleStaticColor(Lights& InRGBLights, std::vector<int32_t> &
   CycleParameterChange();
 }
 
-RGB JiggleStaticColor::AdjustColor(int ledIndex, RGB InColor)
+RGB JiggleStaticColor::AdjustColor(int ledIndex, RGB InColor, LightType lightType)
 {
   //Generate a colour thats it 50% of the in color
   RGB outColor;
@@ -39,7 +39,7 @@ RGB JiggleStaticColor::AdjustColor(int ledIndex, RGB InColor)
  
 RGB JiggleStaticColor::AdvanceColor(int ledIndex, RGB InColor, RGB DestColor)
 {
-  int SafeLightIndex = ledIndex % MAX_JITTER_VALUES;
+  int SafeLightIndex = ledIndex % FRAME_MAX;
 
   //Advance Jitter values
   if(!JitterReverse[SafeLightIndex])
