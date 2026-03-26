@@ -6,9 +6,23 @@
 
 #define RAIN_RAINBOW_FRAME_CHANGE_PER_TICK 10
 
-Rain::Rain(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType, ERainFrequency InRainFrequency) : Animation(InRGBLights, InButtonCaseEffectType) 
+Rain::Rain(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType) : Animation(InRGBLights, InButtonCaseEffectType) 
 {
-    RainFrequency = InRainFrequency;
+    int rainFrequencyVal;
+
+    if(InButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_ONLY || InButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE)
+    {
+        rainFrequencyVal = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedEffectContextParam;
+    }
+    else
+    {
+        rainFrequencyVal = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].caseEffectContextParam;
+    }
+    if(rainFrequencyVal != 0 && rainFrequencyVal <= ERainFrequency::RAIN_MAX)
+        RainFrequency = (ERainFrequency)(rainFrequencyVal - 1);
+
+    AnimationStation::printfs[0] = std::to_string(rainFrequencyVal);
+    AnimationStation::printfs[1] = std::to_string((int)RainFrequency);
 
     CycleParameterChange();
 
@@ -246,7 +260,7 @@ void Rain::Animate(RGB (&frame)[FRAME_MAX])
             for(uint8_t ledIndex = firstLedIndex; ledIndex < lastLedIndex; ++ledIndex)
             {
                 frame[ledIndex] = BlendColor(firstLightCol,
-                                            RGBLights->AllLights[OrderedLights[firstLightIndex]].Type == LightType::LightType_ActionButton ? specialLightCol : caseSpecialLightCol, 
+                                            RGBLights->AllLights[firstLightIndex].Type == LightType::LightType_ActionButton ? specialLightCol : caseSpecialLightCol, 
                                             firstLightAlpha);
             }
         }
@@ -259,7 +273,7 @@ void Rain::Animate(RGB (&frame)[FRAME_MAX])
             for(uint8_t ledIndex = firstLedIndex; ledIndex < lastLedIndex; ++ledIndex)
             {
                 frame[ledIndex] = BlendColor(secondLightCol,
-                                            RGBLights->AllLights[OrderedLights[secondLightIndex]].Type == LightType::LightType_ActionButton ? specialLightCol : caseSpecialLightCol, 
+                                            RGBLights->AllLights[secondLightIndex].Type == LightType::LightType_ActionButton ? specialLightCol : caseSpecialLightCol, 
                                             secondLightAlpha);
             }
         }
