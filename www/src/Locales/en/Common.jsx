@@ -7,6 +7,8 @@ export default {
 	'saved-success-message': 'Saved! Please Restart Your Device',
 	'saved-error-message': 'Unable to Save',
 	'switch-enabled': 'Enabled',
+	'status-enabled': 'Enabled',
+	'status-disabled': 'Disabled',
 	'lock-macro': 'Lock Macro',
 	'lock-buttons': 'Lock Buttons',
 	'loading-text': 'Loading...',
