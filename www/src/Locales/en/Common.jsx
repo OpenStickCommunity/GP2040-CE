@@ -21,6 +21,8 @@ export default {
 		'validation-error': 'Validation errors, see above',
 	},
 	'switch-enabled': 'Enabled',
+	'status-enabled': 'Enabled',
+	'status-disabled': 'Disabled',
 	'lock-oled-screen': 'Lock OLED Screen',
 	'lock-rgb-led': 'Lock RGB LED',
 	'lock-macro': 'Lock Macro',
