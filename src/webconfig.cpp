@@ -562,7 +562,7 @@ std::string setProfileOptions()
     char pinName[6];
     for (JsonObject alt : alts) {
         for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
-            snprintf(pinName, 6, "pin%0*d", 2, pin);
+            snprintf(pinName, 6, "pin%02d", (int)pin);
             // setting a pin shouldn't change a new existing addon/reserved pin
             // but if the profile definition is new, we should still capture the addon/reserved state
             if (profileOptions.gpioMappingsSets[altsIndex].pins[pin].action != GpioAction::ASSIGNED_TO_ADDON &&
@@ -759,10 +759,10 @@ std::string getGamepadOptions()
     writeDoc(doc, "miniMenuGamepadInput", gamepadOptions.miniMenuGamepadInput);
     // Write USB Vendor ID and Product ID as 4 character hex strings with 0 padding
     char usbVendorStr[5];
-    snprintf(usbVendorStr, 5, "%04X", gamepadOptions.usbVendorID);
+    snprintf(usbVendorStr, 5, "%04X", (unsigned int)gamepadOptions.usbVendorID);
     writeDoc(doc, "usbVendorID", usbVendorStr);
     char usbProductStr[5];
-    snprintf(usbProductStr, 5, "%04X", gamepadOptions.usbProductID);
+    snprintf(usbProductStr, 5, "%04X", (unsigned int)gamepadOptions.usbProductID);
     writeDoc(doc, "usbProductID", usbProductStr);
     writeDoc(doc, "fnButtonPin", -1);
     GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
@@ -1122,7 +1122,7 @@ std::string setPinMappings()
 
     char pinName[6];
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
-        snprintf(pinName, 6, "pin%0*d", 2, pin);
+        snprintf(pinName, 6, "pin%02d", (int)pin);
         // setting a pin shouldn't change a new existing addon/reserved pin
         if (gpioMappings.pins[pin].action != GpioAction::RESERVED &&
                 gpioMappings.pins[pin].action != GpioAction::ASSIGNED_TO_ADDON &&
@@ -1676,8 +1676,6 @@ std::string setReactiveLEDs()
 std::string setAddonOptions()
 {
     DynamicJsonDocument doc = get_post_data();
-
-    GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
 
     AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
     docToPin(analogOptions.analogAdc1PinX, doc, "analogAdc1PinX");
