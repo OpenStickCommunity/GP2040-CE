@@ -21,6 +21,8 @@ export default {
 		'validation-error': '検証失敗、上記参照',
 	},
 	'switch-enabled': '有効化',
+	'status-enabled': '有効',
+	'status-disabled': '無効',
 	'lock-oled-screen': 'OLEDディスプレイをロック',
 	'lock-rgb-led': 'RGB LEDをロック',
 	'lock-macro': 'マクロをロック',

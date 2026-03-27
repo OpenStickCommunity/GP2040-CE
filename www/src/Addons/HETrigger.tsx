@@ -184,7 +184,7 @@ const TriggerActionsForm = ({
 				</div>
 				{Array.from({ length: Math.min(4,Math.floor(32/muxChannels)) }, (_, i) => (
 					<div
-						key={`he-trigger-item-${i}`} 
+						key={`he-trigger-item-${i}`}
 						className="mt-3 mb-3"
 						hidden={values[`muxADCPin${i}` as keyof typeof values] === -1}
 					>
@@ -266,7 +266,7 @@ const TriggerActionsForm = ({
 				<div>
 					{Array.from({ length: Math.min(4,Math.floor(32/muxChannels)) }, (_, i) => (
 						<div
-							key={`voltage-table-header-${i}`} 
+							key={`voltage-table-header-${i}`}
 							className="mt-3 mb-3"
 							hidden={values[`muxADCPin${i}` as keyof typeof values] === -1}
 						>
@@ -276,7 +276,7 @@ const TriggerActionsForm = ({
 								</label>
 							</div>
 							{ (values[`muxADCPin${i}` as keyof typeof values] !== -1) ?
-							<div className={`action-grid-HE-trigger-${muxChannels} gap-0 mt-0 mb-0`}>
+							<div className={`action-grid-HE-trigger-${muxChannels} gap-0 mt-0 mb-0 d-inline-flex`}>
 								<Table bordered className="mb-0 mt-0">
 									<thead>
 										<tr>
@@ -300,7 +300,7 @@ const TriggerActionsForm = ({
 											<td>{triggers[key].active}</td>
 											<td>{triggers[key].pressed}</td>
 											<td>{triggers[key].is_polarized ? 'S' : 'N'}</td>
-											<td>{triggers[key].rapidTrigger ? 'Enabled' : 'Disabled'}</td>
+											<td>{triggers[key].rapidTrigger ? t('Common:status-enabled'):t('Common:status-disabled')}</td>
 											<td>{triggers[key].rapidTrigger ? triggers[key].release : 'N/A'}</td>
 											<td>{triggers[key].rapidTrigger ? triggers[key].noise : 'N/A'}</td>
 										</tr>
