@@ -200,8 +200,8 @@
 45, 1, 18, 0,  27, LightType::LightType_Case, \
 46, 1, 16, 0,  28, LightType::LightType_Case, \
 47, 1, 14, 0,  29, LightType::LightType_Case, \
-48, 1, 12, 0,  30, LightType::LightType_Case, \
-49, 1, 10, 0,  31, LightType::LightType_Case
+48, 1, 12, 0,  29, LightType::LightType_Case, \
+49, 1, 10, 0,  29, LightType::LightType_Case
 
 // Keyboard Host enabled by default
 #define KEYBOARD_HOST_ENABLED 1

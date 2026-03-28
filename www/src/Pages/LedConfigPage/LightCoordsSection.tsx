@@ -23,7 +23,6 @@ import {
 	MAX_NON_BUTTON_LIGHT_COLOR_INDEXES,
 	MAX_LIGHTS,
 } from '../../Store/useLedStore';
-import useLedsPreview from '../../Hooks/useLedsPreview';
 import { useGetContainerDimensions } from '../../Hooks/useGetContainerDimensions';
 
 import FormControl from '../../Components/FormControl';
@@ -93,12 +92,8 @@ export default function LightCoordsSection({
 }) {
 	const { dimensions, containerRef } = useGetContainerDimensions();
 	const { t } = useTranslation('');
-	const { activateLedsOnId, activateLedsChase, turnOffLeds } = useLedsPreview();
-	const [previewGpioPin, setPreviewGpioPin] = useState(0);
-	const [previewNonButtonId, setPreviewNonButtonId] = useState(0);
 
-	const [gridSize, setGridSize] = useState(GRID_SIZE);
-	const [cellWidth, setCellWidth] = useState(dimensions.width / gridSize);
+	const [cellWidth, setCellWidth] = useState(dimensions.width / GRID_SIZE);
 	const [selectedLight, setSelectedLight] = useState<number | null>(null);
 
 	const mouseSensor = useSensor(MouseSensor, {
@@ -120,16 +115,16 @@ export default function LightCoordsSection({
 
 	const gridPxToCoords = useCallback(
 		(pixels: number) =>
-			Math.max(0, Math.min(Math.round(pixels / cellWidth), gridSize - 1)) || 0,
-		[cellWidth, gridSize],
+			Math.max(0, Math.min(Math.round(pixels / cellWidth), GRID_SIZE - 1)) || 0,
+		[cellWidth, GRID_SIZE],
 	);
 
 	useEffect(() => {
 		if (dimensions.width === 0) return;
-		const newCellWidth = dimensions.width / gridSize - 1 / gridSize;
+		const newCellWidth = dimensions.width / GRID_SIZE - 1 / GRID_SIZE;
 
 		setCellWidth(newCellWidth);
-	}, [gridSize, dimensions.width]);
+	}, [GRID_SIZE, dimensions.width]);
 
 	const handleDragStart = useCallback(function handleDragStart(
 		event: DragEndEvent,
@@ -539,7 +534,7 @@ export default function LightCoordsSection({
 													?.xCoord,
 											)}
 											min={0}
-											max={gridSize - 1}
+											max={GRID_SIZE - 1}
 										/>
 									</div>
 									<div className="flex-grow-1">
@@ -561,7 +556,7 @@ export default function LightCoordsSection({
 													?.yCoord,
 											)}
 											min={0}
-											max={gridSize - 1}
+											max={GRID_SIZE - 1}
 										/>
 									</div>
 								</div>
@@ -606,8 +601,8 @@ export default function LightCoordsSection({
 
 							// 	const gridX = Math.floor((e.clientX - rect.left) / cellWidth);
 							// 	const gridY = Math.floor((e.clientY - rect.top) / cellWidth);
-							// 	const clampedX = Math.max(0, Math.min(gridX, gridSize - 1));
-							// 	const clampedY = Math.max(0, Math.min(gridY, gridSize - 1));
+							// 	const clampedX = Math.max(0, Math.min(gridX, GRID_SIZE - 1));
+							// 	const clampedY = Math.max(0, Math.min(gridY, GRID_SIZE - 1));
 
 							// 	setValues({
 							// 		...values,

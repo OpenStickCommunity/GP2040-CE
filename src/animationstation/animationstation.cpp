@@ -432,14 +432,8 @@ Animation* AnimationStation::GetNonPressedEffectForEffectType(AnimationNonPresse
     newEffect = new JiggleTwoStaticColor(RGBLights, InButtonCaseEffectType);
     break;
 
-  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAIN_LOW:
-    newEffect = new Rain(RGBLights, InButtonCaseEffectType, ERainFrequency::RAIN_LOW);
-    break;
-  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAIN_MEDIUM:
-    newEffect = new Rain(RGBLights, InButtonCaseEffectType, ERainFrequency::RAIN_MEDIUM);
-    break;
-  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAIN_HIGH:
-    newEffect = new Rain(RGBLights, InButtonCaseEffectType, ERainFrequency::RAIN_HIGH);
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAIN:
+    newEffect = new Rain(RGBLights, InButtonCaseEffectType);
     break;
 
   default:
@@ -508,10 +502,7 @@ void AnimationStation::SetMode(int8_t mode)
     break;
 
   case AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_BURST:
-    this->buttonAnimation = new BurstColor(RGBLights, false, lastPressed, buttonCaseEffectType);
-    break;
-  case AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_BURST_SMALL:
-    this->buttonAnimation = new BurstColor(RGBLights, true, lastPressed, buttonCaseEffectType);
+    this->buttonAnimation = new BurstColor(RGBLights, lastPressed, buttonCaseEffectType);
     break;
 
   default:

@@ -340,16 +340,24 @@ void Chase::CheckToAdvanceLight()
 {
   if(NextLightTimer <= 0.0f)
   {
-    float tailLengthButton = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedEffectContextParam;
-    float tailLengthCase = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].caseEffectContextParam;
+    int tailLengthBase;
+    int tailLength;
 
+    if(ButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_ONLY || ButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE)
+    {
+      tailLengthBase = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedEffectContextParam;
+    }
+    else
+    {
+      tailLengthBase = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].caseEffectContextParam;
+    }
+    tailLength = (int)((tailLengthBase * OrderedLights.size()) / 100.0f);
+    
     //Apply fade for all lights if we're moving to the next light
     for(unsigned int chaseBlendIndex = 0; chaseBlendIndex < FRAME_MAX; ++chaseBlendIndex)
     {
       //work out if its a button to get the correct context param
-      bool bIsButton = ChaseBlendType[chaseBlendIndex] == LightType::LightType_ActionButton;
-      int tailLength = bIsButton ? tailLengthButton : tailLengthCase;
-      if(tailLength == 0)
+      if(tailLengthBase == 0)
         tailLength = CHASE_DEFAULT_TAIL_LENGTH;
       float fadePerLight = 1.0f / tailLength;
       ChaseBlendValues[chaseBlendIndex] -= fadePerLight;

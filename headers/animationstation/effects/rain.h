@@ -15,6 +15,7 @@ typedef enum
   RAIN_LOW,
   RAIN_MEDIUM,
   RAIN_HIGH,
+  RAIN_MAX
 } ERainFrequency;
 
 #define MAX_RAIN_DROPS 20
@@ -22,7 +23,7 @@ typedef enum
 
 class Rain : public Animation {
 public:
-    Rain(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType, ERainFrequency InRainFrequency = ERainFrequency::RAIN_MEDIUM);
+    Rain(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType);
     ~Rain() {};
 
     virtual void Animate(RGB (&frame)[FRAME_MAX]) override;
