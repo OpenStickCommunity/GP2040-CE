@@ -850,12 +850,12 @@ app.get('/api/getLightsPresets/0', (req, res) => {
 app.get('/api/getLightsPresets/1', (req, res) => {
 	return res.send(BoardLights[1]);
 });
-app.get('/api/getLightsPresets/2', (req, res) => res.send());
-app.get('/api/getLightsPresets/3', (req, res) => res.send());
-app.get('/api/getLightsPresets/4', (req, res) => res.send());
-app.get('/api/getLightsPresets/5', (req, res) => res.send());
-app.get('/api/getLightsPresets/6', (req, res) => res.send());
-app.get('/api/getLightsPresets/7', (req, res) => res.send());
+app.get('/api/getLightsPresets/2', (req, res) => res.send({}));
+app.get('/api/getLightsPresets/3', (req, res) => res.send({}));
+app.get('/api/getLightsPresets/4', (req, res) => res.send({}));
+app.get('/api/getLightsPresets/5', (req, res) => res.send({}));
+app.get('/api/getLightsPresets/6', (req, res) => res.send({}));
+app.get('/api/getLightsPresets/7', (req, res) => res.send({}));
 
 app.get('/api/getExpansionPins', (req, res) => {
 	return res.send({

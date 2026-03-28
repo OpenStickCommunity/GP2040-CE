@@ -21,7 +21,7 @@ async function* fetchPresetsGenerator() {
 	while (true) {
 		try {
 			const preset = await WebApi.getLightsPresets(index);
-			if (preset) {
+			if (preset && preset.name) {
 				yield preset;
 				index++;
 			} else {

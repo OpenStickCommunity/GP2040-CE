@@ -218,6 +218,7 @@ enum class HttpStatusCode
 {
     _200,
     _400,
+    _404,
     _500,
 };
 
@@ -242,6 +243,7 @@ int set_file_data(fs_file* file, const DataAndStatusCode& dataAndStatusCode)
     {
         case HttpStatusCode::_200: statusCodeStr = "200 OK"; break;
         case HttpStatusCode::_400: statusCodeStr = "400 Bad Request"; break;
+        case HttpStatusCode::_404: statusCodeStr = "404 Not Found"; break;
         case HttpStatusCode::_500: statusCodeStr = "500 Internal Server Error"; break;
     }
 
@@ -259,7 +261,7 @@ int set_file_data(fs_file* file, const DataAndStatusCode& dataAndStatusCode)
     returnData->append(std::to_string(dataAndStatusCode.data.length()));
     returnData->append("\r\n\r\n");
     returnData->append(dataAndStatusCode.data);
-    
+
     file->data = returnData->c_str();
     file->len = returnData->size();
     file->index = 0;//file->len;
@@ -991,10 +993,12 @@ std::string getLightsDataOptions()
 std::string getLightsPresetsByIndex(int presetIdx)
 {
     DynamicJsonDocument outDoc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    bool found = false;
 
     auto addPreset = [&](const char* name, const unsigned char* data, int32_t dataSize)
     {
         if (strcmp(name, "") != 0) {
+            found = true;
             JsonObject preset = outDoc.to<JsonObject>();
             preset["name"] = name;
 
@@ -1046,6 +1050,12 @@ std::string getLightsPresetsByIndex(int presetIdx)
     else if(presetIdx == 7 && strcmp(LIGHT_DATA_NAME_7, "") != 0) {
         const unsigned char lightData[] = { LIGHT_DATA_7 };
         addPreset(LIGHT_DATA_NAME_7, lightData, LIGHT_DATA_SIZE_7);
+    }
+
+    if (!found) {
+        DynamicJsonDocument emptyDoc(16);
+        emptyDoc.to<JsonObject>();
+        return serialize_json(emptyDoc);
     }
 
     return serialize_json(outDoc);
@@ -2888,11 +2898,11 @@ std:: string getJoystickCenter() {
     const size_t capacity = JSON_OBJECT_SIZE(10);
     DynamicJsonDocument doc(capacity);
     const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
-    
+
     uint16_t x = 0, y = 0;
     bool success = true;
     std::string error_msg = "";
-    
+
     // Check if analog input is enabled
     if (!analogOptions.enabled) {
         success = false;
@@ -2900,11 +2910,11 @@ std:: string getJoystickCenter() {
     } else {
         // Initialize ADC if not already initialized
         adc_init();
-        
+
         // Check if specific stick is requested via query parameter
         // For now, we'll read both sticks and return the appropriate one
         // In a more sophisticated implementation, we could parse query parameters
-        
+
         // Read first stick X/Y
         if (isValidPin(analogOptions.analogAdc1PinX)) {
             adc_gpio_init(analogOptions.analogAdc1PinX);
@@ -2917,7 +2927,7 @@ std:: string getJoystickCenter() {
             y = adc_read();
         }
     }
-    
+
     JsonObject o = doc.to<JsonObject>();
     o["success"] = success;
     if (!success) {
@@ -2934,11 +2944,11 @@ std:: string getJoystickCenter2() {
     const size_t capacity = JSON_OBJECT_SIZE(10);
     DynamicJsonDocument doc(capacity);
     const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
-    
+
     uint16_t x = 0, y = 0;
     bool success = true;
     std::string error_msg = "";
-    
+
     // Check if analog input is enabled
     if (!analogOptions.enabled) {
         success = false;
@@ -2946,7 +2956,7 @@ std:: string getJoystickCenter2() {
     } else {
         // Initialize ADC if not already initialized
         adc_init();
-        
+
         // Read second stick X/Y
         if (isValidPin(analogOptions.analogAdc2PinX)) {
             adc_gpio_init(analogOptions.analogAdc2PinX);
@@ -2959,7 +2969,7 @@ std:: string getJoystickCenter2() {
             y = adc_read();
         }
     }
-    
+
     JsonObject o = doc.to<JsonObject>();
     o["success"] = success;
     if (!success) {
