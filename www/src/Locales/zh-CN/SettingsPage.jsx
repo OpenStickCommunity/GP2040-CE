@@ -58,6 +58,8 @@ export default {
 	},
 	'profile-label': '配置文件',
 	'debounce-delay-label': '去抖延迟（毫秒）',
+	'enable-pin-inversion-label': '启用单独引脚反相',
+	'enable-pin-inversion-tooltip': '启用后，每个引脚使用其在引脚映射中的单独极性设置。禁用时，所有引脚使用默认的低电平有效行为。',
 	'mini-menu-gamepad-input': '使用游戏手柄输入控制显示屏迷你菜单',
 	'ps4-mode-explanation-text': 'PS4 模式允许 GP2040-CE 作为经过认证的 PS4 控制器运行。',
 	'ps4-mode-warning-text': '<span>⏳ 警告 ⏳:</span> PS4 在没有认证的情况下会在 8 分钟后超时。',
@@ -148,6 +150,7 @@ export default {
 	'forced-setup-mode-modal-body': '如果您在保存后重启到控制器模式，将无法再访问网页配置。如果您完全了解并有意这样做，请在下方输入"<strong>{{warningCheckText}}</strong>"以解锁保存按钮。点击关闭将恢复此设置，然后需要保存。',
 	'4-way-joystick-mode-label': '4向摇杆模式',
 	'keyboard-mapping-header-text': '键盘映射',
+	'keyboard-profile-label': '键盘档案',
 	'keyboard-mapping-sub-header-text': '使用下面的表单重新配置按钮到按键的映射。',
 	'usb-override': {
 		'advanced-override': '⚠️ 高级 USB 覆盖',
