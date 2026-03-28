@@ -528,7 +528,6 @@ enum AnimationPressedEffects
   PRESSEDEFFECT_JIGGLESTATIC = 2;
   PRESSEDEFFECT_JIGGLETWOSTATICS = 3;
   PRESSEDEFFECT_BURST = 4;
-  PRESSEDEFFECT_BURST_SMALL = 5;
 }
 
 /* This has to be kept in sync with LightType in Pixel.hpp */

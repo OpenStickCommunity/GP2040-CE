@@ -21,9 +21,6 @@ Rain::Rain(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType) : 
     if(rainFrequencyVal != 0 && rainFrequencyVal <= ERainFrequency::RAIN_MAX)
         RainFrequency = (ERainFrequency)(rainFrequencyVal - 1);
 
-    AnimationStation::printfs[0] = std::to_string(rainFrequencyVal);
-    AnimationStation::printfs[1] = std::to_string((int)RainFrequency);
-
     CycleParameterChange();
 
     for(int index = 0; index < MAX_RAIN_DROPS; ++index)

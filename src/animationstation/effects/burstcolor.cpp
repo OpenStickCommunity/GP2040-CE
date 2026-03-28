@@ -8,14 +8,12 @@ BurstColor::BurstColor(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEf
 {
 }
 
-BurstColor::BurstColor(Lights& InRGBLights, bool bInSmallBurst, std::vector<int32_t> &InPressedPins, EButtonCaseEffectType InButtonCaseEffectType) : Animation(InRGBLights, InButtonCaseEffectType) 
+BurstColor::BurstColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPins, EButtonCaseEffectType InButtonCaseEffectType) : Animation(InRGBLights, InButtonCaseEffectType) 
 {
     isButtonAnimation = true;
     pressedPins = InPressedPins;
 
     bRandomColor = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].bPressedSpecialColorIsRainbow;
-
-    bSmallBurst = bInSmallBurst;
 
     for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
     {
@@ -32,6 +30,21 @@ BurstColor::BurstColor(Lights& InRGBLights, bool bInSmallBurst, std::vector<int3
         if(lightIndex == 0 || RGBLights->AllLights[lightIndex].Position.YPosition < MinYCoord)
             MinYCoord = RGBLights->AllLights[lightIndex].Position.YPosition; 
     }
+
+    // Get burst length from the context param (1-100% of biggest X or Y dimension, 0 = default)
+    int MaxDimension = MAX(MaxXCoord - MinYCoord, MaxYCoord - MinYCoord) + 1;
+    if(InButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_ONLY || InButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE)
+    {
+        BurstLength = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedEffectContextParam;
+    }
+    else
+    {
+        BurstLength = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].caseEffectContextParam;
+    }
+    if(BurstLength == 0)
+        BurstLength = DEFAULT_BURST_DISTANCE;
+    else
+        BurstLength = MaxDimension * ((float)BurstLength / 100.0f);
 
     CycleParameterChange();
 }
@@ -74,20 +87,19 @@ void BurstColor::Animate(RGB (&frame)[FRAME_MAX])
 
         //is this the last frame?
         float largestCoord = MAX(1 + (MaxXCoord - MinXCoord), 1 + (MaxYCoord - MinYCoord));
-        float distanceToTravel = bSmallBurst ? (largestCoord / 13.0f) * (float)BURST_DISTANCE : largestCoord; //Burst_distance was designed with my setup for my T16 in mind which was 0-12 xcoord
-        if(travelledDist > (float)distanceToTravel + 4.0f)
+        if(travelledDist > (float)BurstLength + 4.0f)
             RunningBursts[burstIndex].RunningTime = -1.0f;
 
-        int xStart = RunningBursts[burstIndex].XPos - distanceToTravel;
+        int xStart = RunningBursts[burstIndex].XPos - BurstLength;
         if(xStart < MinXCoord)
             xStart = MinXCoord;
-        int yStart = RunningBursts[burstIndex].YPos - distanceToTravel;
+        int yStart = RunningBursts[burstIndex].YPos - BurstLength;
         if(yStart < MinYCoord)
             yStart = MinYCoord;
-        int xEnd = RunningBursts[burstIndex].XPos + distanceToTravel;
+        int xEnd = RunningBursts[burstIndex].XPos + BurstLength;
         if(xEnd > MaxXCoord)
             xEnd = MaxXCoord;
-        int yEnd = RunningBursts[burstIndex].YPos + distanceToTravel;
+        int yEnd = RunningBursts[burstIndex].YPos + BurstLength;
         if(yEnd > MaxYCoord)
             yEnd = MaxYCoord;
 

@@ -51,6 +51,5 @@ export default {
 		PRESSED_EFFECT_JIGGLESTATIC: 'Jiggle Static',
 		PRESSED_EFFECT_JIGGLETWOSTATIC: 'Jiggle Two Static',
 		PRESSED_EFFECT_BURST: 'Burst',
-		PRESSED_EFFECT_BURST_SMALL: 'Burst Small',
 	},
 };
