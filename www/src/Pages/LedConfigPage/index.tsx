@@ -916,6 +916,46 @@ export default function LedConfigPage() {
 														/>
 													)}
 												</Row>
+
+												<Row>
+													<div className="form-control-sm col-sm-4 mb-3">
+														<Form.Label>{`${t('LedConfigPage:theme.non-pressed-context-param-label')}: ${profile.nonPressedContextParam}`}</Form.Label>
+														<Form.Range
+															name={`AnimationOptions.profiles.${profileIndex}.nonPressedContextParam`}
+															id={`AnimationOptions.profiles.${profileIndex}.nonPressedContextParam`}
+															min={0}
+															max={100}
+															step={1}
+															value={profile.nonPressedContextParam}
+															onChange={handleChange}
+														/>
+													</div>
+													<div className="form-control-sm col-sm-4 mb-3">
+														<Form.Label>{`${t('LedConfigPage:theme.pressed-context-param-label')}: ${profile.pressedContextParam}`}</Form.Label>
+														<Form.Range
+															name={`AnimationOptions.profiles.${profileIndex}.pressedContextParam`}
+															id={`AnimationOptions.profiles.${profileIndex}.pressedContextParam`}
+															min={0}
+															max={100}
+															step={1}
+															value={profile.pressedContextParam}
+															onChange={handleChange}
+														/>
+													</div>
+													<div className="form-control-sm col-sm-4 mb-3">
+														<Form.Label>{`${t('LedConfigPage:theme.case-context-param-label')}: ${profile.caseContextParam}`}</Form.Label>
+														<Form.Range
+															name={`AnimationOptions.profiles.${profileIndex}.caseContextParam`}
+															id={`AnimationOptions.profiles.${profileIndex}.caseContextParam`}
+															min={0}
+															max={100}
+															step={1}
+															value={profile.caseContextParam}
+															onChange={handleChange}
+														/>
+													</div>
+												</Row>
+
 												<hr />
 
 												<Row>
