@@ -105,6 +105,9 @@ export default {
 		'layout-mode-description':
 			'Layout mode allows for manual configuration of LED positions and GPIO pins.',
 		'switch-specialcase-rainbow-label': 'Case Special Color is Rainbow Effect',
+		'rain-speed-low': 'Low',
+		'rain-speed-medium': 'Medium',
+		'rain-speed-high': 'High',
 	},
 	animations: {
 		NONPRESSED_EFFECT_STATIC_COLOR: 'Static Color',
