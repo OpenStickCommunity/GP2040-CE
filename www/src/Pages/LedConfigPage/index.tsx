@@ -12,7 +12,7 @@ import {
 	Tabs,
 	Tooltip,
 } from 'react-bootstrap';
-import { Trans, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import {
 	FieldArray,
 	FieldArrayRenderProps,
@@ -188,7 +188,10 @@ const emptyAnimationProfile = {
 	buttonPressFadeOutTimeInMs: 0,
 	buttonPressHoldTimeInMs: 0,
 	bUseCaseLightsInPressedAnimations: 0,
-	nonButtonStaticColors: Array.from({ length: MAX_NON_BUTTON_LIGHT_COLOR_INDEXES }, () => 1),
+	nonButtonStaticColors: Array.from(
+		{ length: MAX_NON_BUTTON_LIGHT_COLOR_INDEXES },
+		() => 1,
+	),
 	nonPressedSpecialColor: 0,
 	pressedSpecialColor: 0,
 	caseSpecialColor: 0,
@@ -321,18 +324,18 @@ export default function LedConfigPage() {
 			{({
 				handleSubmit,
 				handleChange,
-				handleBlur,
+				// handleBlur,
 				values,
 				errors,
 				setFieldValue,
 				setValues,
 			}) => (
 				<Form onSubmit={handleSubmit}>
-					<Section title={t('LedConfig:rgb.header-text')}>
+					<Section title={t('LedConfigPage:rgb.header-text')}>
 						<Row>
 							<FormControl
 								type="number"
-								label={t('LedConfig:rgb.data-pin-label')}
+								label={t('LedConfigPage:rgb.data-pin-label')}
 								name="ledOptions.dataPin"
 								className="form-control-sm"
 								groupClassName="col-sm-4 mb-3"
@@ -344,7 +347,7 @@ export default function LedConfigPage() {
 								max={29}
 							/>
 							<FormSelect
-								label={t('LedConfig:rgb.led-format-label')}
+								label={t('LedConfigPage:rgb.led-format-label')}
 								name="ledOptions.ledFormat"
 								className="form-select-sm"
 								groupClassName="col-sm-4 mb-3"
@@ -365,7 +368,7 @@ export default function LedConfigPage() {
 								))}
 							</FormSelect>
 							<div className="form-control-sm col-sm-4 mb-3">
-								<Form.Label>{`${t('LedConfig:rgb.led-brightness-maximum-label')}: ${values.ledOptions.brightnessMaximum}%`}</Form.Label>
+								<Form.Label>{`${t('LedConfigPage:rgb.led-brightness-maximum-label')}: ${values.ledOptions.brightnessMaximum}%`}</Form.Label>
 								<Form.Range
 									name="ledOptions.brightnessMaximum"
 									id={`ledOptions.brightnessMaximum`}
@@ -381,7 +384,7 @@ export default function LedConfigPage() {
 							<div className="col-sm-4 mb-3">
 								<FormCheck
 									id="turnOffWhenSuspended"
-									label={t('LedConfig:turn-off-when-suspended')}
+									label={t('LedConfigPage:rgb.turn-off-when-suspended')}
 									type="switch"
 									isInvalid={false}
 									checked={Boolean(values.ledOptions.turnOffWhenSuspended)}
@@ -396,7 +399,7 @@ export default function LedConfigPage() {
 						</Row>
 						<Row className="mb-3">
 							<FormSelect
-								label={t('LedConfig:player.pled-type-label')}
+								label={t('LedConfigPage:player.pled-type-label')}
 								name="ledOptions.pledType"
 								className="form-select-sm"
 								groupClassName="col-sm-2 mb-3"
@@ -408,87 +411,87 @@ export default function LedConfigPage() {
 								}
 							>
 								<option value="-1">
-									{t('LedConfig:player.pled-type-off')}
+									{t('LedConfigPage:player.pled-type-off')}
 								</option>
 								<option value="0">
-									{t('LedConfig:player.pled-type-pwm')}
+									{t('LedConfigPage:player.pled-type-pwm')}
 								</option>
 								<option value="1">
-									{t('LedConfig:player.pled-type-rgb')}
+									{t('LedConfigPage:player.pled-type-rgb')}
 								</option>
 							</FormSelect>
 							<FormControl
 								type="number"
 								name="ledOptions.pledPin1"
 								hidden={values.ledOptions.pledType !== 0}
-								label={t('LedConfig:pled-pin-label', { pin: 1 })}
+								label={t('LedConfigPage:player.pled-pin-label', { pin: 1 })}
 								className="form-control-sm"
 								groupClassName="col-sm-2 mb-3"
 								value={values.ledOptions.pledPin1}
 								error={errors.ledOptions?.pledPin1}
 								isInvalid={Boolean(errors.ledOptions?.pledPin1)}
 								onChange={handleChange}
- 								min={-1}
+								min={-1}
 								max={29}
 							/>
 							<FormControl
 								type="number"
 								name="ledOptions.pledPin2"
 								hidden={values.ledOptions.pledType !== 0}
-								label={t('LedConfig:pled-pin-label', { pin: 2 })}
+								label={t('LedConfigPage:player.pled-pin-label', { pin: 2 })}
 								className="form-control-sm"
 								groupClassName="col-sm-2 mb-3"
 								value={values.ledOptions.pledPin2}
 								error={errors.ledOptions?.pledPin2}
 								isInvalid={Boolean(errors.ledOptions?.pledPin2)}
 								onChange={handleChange}
- 								min={-1}
+								min={-1}
 								max={29}
 							/>
 							<FormControl
 								type="number"
 								name="ledOptions.pledPin3"
 								hidden={values.ledOptions.pledType !== 0}
-								label={t('LedConfig:pled-pin-label', { pin: 3 })}
+								label={t('LedConfigPage:player.pled-pin-label', { pin: 3 })}
 								className="form-control-sm"
 								groupClassName="col-sm-2 mb-3"
 								value={values.ledOptions.pledPin3}
 								error={errors.ledOptions?.pledPin3}
 								isInvalid={Boolean(errors.ledOptions?.pledPin3)}
 								onChange={handleChange}
- 								min={-1}
+								min={-1}
 								max={29}
 							/>
 							<FormControl
 								type="number"
 								name="ledOptions.pledPin4"
 								hidden={values.ledOptions.pledType !== 0}
-								label={t('LedConfig:pled-pin-label', { pin: 4 })}
+								label={t('LedConfigPage:player.pled-pin-label', { pin: 4 })}
 								className="form-control-sm"
 								groupClassName="col-sm-2 mb-3"
 								value={values.ledOptions.pledPin4}
 								error={errors.ledOptions?.pledPin4}
 								isInvalid={Boolean(errors.ledOptions?.pledPin4)}
 								onChange={handleChange}
- 								min={-1}
+								min={-1}
 								max={29}
 							/>
 						</Row>
-						<p hidden={values.ledOptions.pledType !== 0}>
-								{t('LedConfig:player.pwm-sub-header-text')}
-						</p>
-						<p hidden={values.ledOptions.pledType !== 1}>
-							<Trans
-								ns="LedConfig"
-								i18nKey="player.rgb-sub-header-text"
-							>
-							</Trans>
-						</p>
+						{values.ledOptions.pledType === 0 && (
+							<Alert variant="info">
+								{t('LedConfigPage:player.pwm-sub-header-text')}
+							</Alert>
+						)}
+						{values.ledOptions.pledType === 1 && (
+							<Alert variant="info">
+								{t('LedConfigPage:player.rgb-sub-header-text')}
+							</Alert>
+						)}
 					</Section>
 					<Section title="Custom LED Theme">
 						<Row>
 							<FormSelect
-								label={t('Leds:profile-label')}
+								label={t('LedConfigPage:theme.profile-label')}
 								name="AnimationOptions.baseProfileIndex"
 								className="form-select-sm"
 								groupClassName="col-sm-4 mb-3"
@@ -507,7 +510,7 @@ export default function LedConfigPage() {
 										key={`profile-select-${profileIndex}`}
 										value={profileIndex}
 									>
-										{t('Leds:profile-number', {
+										{t('LedConfigPage:theme.profile-number', {
 											profileNumber: profileIndex + 1,
 										})}
 									</option>
@@ -515,7 +518,7 @@ export default function LedConfigPage() {
 							</FormSelect>
 							<FormControl
 								type="number"
-								label={t('Leds:idle-timout-label')}
+								label={t('LedConfigPage:theme.idle-timout-label')}
 								name="AnimationOptions.idletimeout"
 								className="form-control-sm"
 								groupClassName="col-sm-4 mb-3"
@@ -527,7 +530,7 @@ export default function LedConfigPage() {
 								max={300}
 							/>
 							<div className="form-control-sm col-sm-4 mb-3">
-								<Form.Label>{`Current Brightness: ${values.AnimationOptions.brightness * 10}% of max`}</Form.Label>
+								<Form.Label>{`${t('LedConfigPage:theme.current-led-brightness-label', { percent: values.AnimationOptions.brightness * 10 })}`}</Form.Label>
 								<Form.Range
 									name="AnimationOptions.brightness"
 									id={`AnimationOptions.brightness`}
@@ -540,7 +543,9 @@ export default function LedConfigPage() {
 							</div>
 						</Row>
 						<FormGroup>
-							<Form.Label>{t('Leds:custom-color-label')}</Form.Label>
+							<Form.Label>
+								{t('LedConfigPage:theme.custom-color-label')}
+							</Form.Label>
 							<FieldArray
 								name="AnimationOptions.customColors"
 								render={(arrayHelpers) => (
@@ -577,7 +582,7 @@ export default function LedConfigPage() {
 											<Tab
 												key={`profile-${profileIndex}`}
 												eventKey={`profile-${profileIndex}`}
-												title={t('Leds:profile-number', {
+												title={t('LedConfigPage:theme.profile-number', {
 													profileNumber: profileIndex + 1,
 												})}
 											>
@@ -588,7 +593,9 @@ export default function LedConfigPage() {
 														<OverlayTrigger
 															overlay={
 																<Tooltip>
-																	{t('Leds:switch-enabled-description')}
+																	{t(
+																		'LedConfigPage:theme.switch-enabled-description',
+																	)}
 																</Tooltip>
 															}
 														>
@@ -610,7 +617,9 @@ export default function LedConfigPage() {
 												/>
 												<Row>
 													<FormSelect
-														label={t('Leds:idle-animation-label')}
+														label={t(
+															'LedConfigPage:theme.idle-animation-label',
+														)}
 														name={`AnimationOptions.profiles.${profileIndex}.baseNonPressedEffect`}
 														className="form-select-sm"
 														groupClassName="col-sm-4 mb-3"
@@ -628,14 +637,16 @@ export default function LedConfigPage() {
 																	key={`baseNonPressedEffect-${key}`}
 																	value={value}
 																>
-																	{t(`Leds:animations.${key}`)}
+																	{t(`LedConfigPage:animations.${key}`)}
 																</option>
 															),
 														)}
 													</FormSelect>
 
 													<FormSelect
-														label={t('Leds:pressed-animation-label')}
+														label={t(
+															'LedConfigPage:theme.pressed-animation-label',
+														)}
 														name={`AnimationOptions.profiles.${profileIndex}.basePressedEffect`}
 														className="form-select-sm"
 														groupClassName="col-sm-4 mb-3"
@@ -653,24 +664,36 @@ export default function LedConfigPage() {
 																	key={`basePressedEffect-${key}`}
 																	value={value}
 																>
-																	{t(`Leds:animations.${key}`)}
+																	{t(`LedConfigPage:animations.${key}`)}
 																</option>
 															),
 														)}
 													</FormSelect>
 
 													<FormSelect
-														label={t('Leds:case-animation-label')}
+														label={t(
+															'LedConfigPage:theme.case-animation-label',
+														)}
 														name={`AnimationOptions.profiles.${profileIndex}.baseCaseEffect`}
 														className="form-select-sm"
 														groupClassName="col-sm-4 mb-3"
 														value={Number(profile.baseCaseEffect)}
-														onChange={(e) =>
+														onChange={(e) => {
+															// If Rain is selected, set the case context param to 1 to be within bounds of the rain animation options
+															if (
+																parseInt(e.target.value) ===
+																ANIMATION_NON_PRESSED_EFFECTS.NONPRESSED_EFFECT_RAIN
+															) {
+																setFieldValue(
+																	`AnimationOptions.profiles.${profileIndex}.caseContextParam`,
+																	1,
+																);
+															}
 															setFieldValue(
 																`AnimationOptions.profiles.${profileIndex}.baseCaseEffect`,
 																parseInt(e.target.value),
-															)
-														}
+															);
+														}}
 													>
 														{Object.entries(ANIMATION_NON_PRESSED_EFFECTS).map(
 															([key, value]) => (
@@ -678,7 +701,7 @@ export default function LedConfigPage() {
 																	key={`baseCaseEffect-${key}`}
 																	value={value}
 																>
-																	{t(`Leds:animations.${key}`)}
+																	{t(`LedConfigPage:animations.${key}`)}
 																</option>
 															),
 														)}
@@ -691,7 +714,9 @@ export default function LedConfigPage() {
 															name={`AnimationOptions.profiles.${profileIndex}.bUseCaseLightsInPressedAnimations`}
 															label={
 																<label>
-																	{t(`Leds:switch-case-light-pressed-label`)}
+																	{t(
+																		`LedConfigPage:theme.switch-case-light-pressed-label`,
+																	)}
 																</label>
 															}
 															checked={Boolean(
@@ -710,7 +735,9 @@ export default function LedConfigPage() {
 
 													<FormControl
 														type="number"
-														label={t(`Leds:pressed-fade-out-time-label`)}
+														label={t(
+															`LedConfigPage:theme.pressed-fade-out-time-label`,
+														)}
 														name={`AnimationOptions.profiles.${profileIndex}.buttonPressFadeOutTimeInMs`}
 														className="form-control-sm"
 														groupClassName="col-sm-4 mb-3"
@@ -719,7 +746,9 @@ export default function LedConfigPage() {
 													/>
 													<FormControl
 														type="number"
-														label={t('Leds:pressed-hold-time-label')}
+														label={t(
+															'LedConfigPage:theme.pressed-hold-time-label',
+														)}
 														name={`AnimationOptions.profiles.${profileIndex}.buttonPressHoldTimeInMs`}
 														className="form-control-sm"
 														groupClassName="col-sm-4 mb-3"
@@ -728,43 +757,15 @@ export default function LedConfigPage() {
 													/>
 												</Row>
 												<Row>
-													<FormControl
-														type="color"
-														label={t(`Leds:idle-special-color-label`)}
-														name={`AnimationOptions.profiles.${profileIndex}.nonPressedSpecialColor`}
-														groupClassName="col-sm-4 mb-3"
-														className="form-control-sm p-0 border-0 mb-3"
-														defaultValue={rgbIntToHex(
-															profile.nonPressedSpecialColor,
-														)}
-														error={
-															(
-																errors.AnimationOptions?.profiles?.[
-																	profileIndex
-																] as FormikErrors<AnimationProfile>
-															)?.nonPressedSpecialColor
-														}
-														isInvalid={Boolean(
-															(
-																errors.AnimationOptions?.profiles?.[
-																	profileIndex
-																] as FormikErrors<AnimationProfile>
-															)?.nonPressedSpecialColor,
-														)}
-														onBlur={(e) =>
-															setFieldValue(
-																`AnimationOptions.profiles.${profileIndex}.nonPressedSpecialColor`,
-																hexToInt((e.target as HTMLInputElement).value),
-															)
-														}
-													/>
 													<div className="d-flex align-items-center col-sm-4 mb-3">
 														<FormCheck
 															type="switch"
 															name={`AnimationOptions.profiles.${profileIndex}.bNonPressedSpecialColorIsRainbow`}
 															label={
 																<label>
-																	{t(`Leds:switch-specialnonpressed-rainbow-label`)}
+																	{t(
+																		`LedConfigPage:theme.switch-specialnonpressed-rainbow-label`,
+																	)}
 																</label>
 															}
 															checked={Boolean(
@@ -780,31 +781,53 @@ export default function LedConfigPage() {
 															}
 														/>
 													</div>
+													{!profile.bNonPressedSpecialColorIsRainbow && (
+														<FormControl
+															type="color"
+															label={t(
+																`LedConfigPage:theme.idle-special-color-label`,
+															)}
+															name={`AnimationOptions.profiles.${profileIndex}.nonPressedSpecialColor`}
+															groupClassName="col-sm-4 mb-3"
+															className="form-control-sm p-0 border-0 mb-3"
+															defaultValue={rgbIntToHex(
+																profile.nonPressedSpecialColor,
+															)}
+															error={
+																(
+																	errors.AnimationOptions?.profiles?.[
+																		profileIndex
+																	] as FormikErrors<AnimationProfile>
+																)?.nonPressedSpecialColor
+															}
+															isInvalid={Boolean(
+																(
+																	errors.AnimationOptions?.profiles?.[
+																		profileIndex
+																	] as FormikErrors<AnimationProfile>
+																)?.nonPressedSpecialColor,
+															)}
+															onBlur={(e) =>
+																setFieldValue(
+																	`AnimationOptions.profiles.${profileIndex}.nonPressedSpecialColor`,
+																	hexToInt(
+																		(e.target as HTMLInputElement).value,
+																	),
+																)
+															}
+														/>
+													)}
 												</Row>
 												<Row>
-													<FormControl
-														type="color"
-														label={t(`Leds:pressed-special-color-label`)}
-														name={`AnimationOptions.profiles.${profileIndex}.pressedSpecialColor`}
-														groupClassName="col-sm-4 mb-3"
-														className="form-control-sm p-0 border-0 mb-3"
-														defaultValue={rgbIntToHex(
-															profile.pressedSpecialColor,
-														)}
-														onBlur={(e) =>
-															setFieldValue(
-																`AnimationOptions.profiles.${profileIndex}.pressedSpecialColor`,
-																hexToInt((e.target as HTMLInputElement).value),
-															)
-														}
-													/>
 													<div className="d-flex align-items-center col-sm-4 mb-3">
 														<FormCheck
 															type="switch"
 															name={`AnimationOptions.profiles.${profileIndex}.bPressedSpecialColorIsRainbow`}
 															label={
 																<label>
-																	{t(`Leds:switch-specialpressed-rainbow-label`)}
+																	{t(
+																		`LedConfigPage:theme.switch-specialpressed-rainbow-label`,
+																	)}
 																</label>
 															}
 															checked={Boolean(
@@ -820,31 +843,53 @@ export default function LedConfigPage() {
 															}
 														/>
 													</div>
+													{!profile.bPressedSpecialColorIsRainbow && (
+														<FormControl
+															type="color"
+															label={t(
+																`LedConfigPage:theme.pressed-special-color-label`,
+															)}
+															name={`AnimationOptions.profiles.${profileIndex}.pressedSpecialColor`}
+															groupClassName="col-sm-4 mb-3"
+															className="form-control-sm p-0 border-0 mb-3"
+															defaultValue={rgbIntToHex(
+																profile.pressedSpecialColor,
+															)}
+															error={
+																(
+																	errors.AnimationOptions?.profiles?.[
+																		profileIndex
+																	] as FormikErrors<AnimationProfile>
+																)?.pressedSpecialColor
+															}
+															isInvalid={Boolean(
+																(
+																	errors.AnimationOptions?.profiles?.[
+																		profileIndex
+																	] as FormikErrors<AnimationProfile>
+																)?.pressedSpecialColor,
+															)}
+															onBlur={(e) =>
+																setFieldValue(
+																	`AnimationOptions.profiles.${profileIndex}.pressedSpecialColor`,
+																	hexToInt(
+																		(e.target as HTMLInputElement).value,
+																	),
+																)
+															}
+														/>
+													)}
 												</Row>
 												<Row>
-													<FormControl
-														type="color"
-														label={t(`Leds:case-special-color-label`)}
-														name={`AnimationOptions.profiles.${profileIndex}.caseSpecialColor`}
-														groupClassName="col-sm-4 mb-3"
-														className="form-control-sm p-0 border-0 mb-3"
-														defaultValue={rgbIntToHex(
-															profile.caseSpecialColor,
-														)}
-														onBlur={(e) =>
-															setFieldValue(
-																`AnimationOptions.profiles.${profileIndex}.caseSpecialColor`,
-																hexToInt((e.target as HTMLInputElement).value),
-															)
-														}
-													/>
 													<div className="d-flex align-items-center col-sm-4 mb-3">
 														<FormCheck
 															type="switch"
 															name={`AnimationOptions.profiles.${profileIndex}.bCaseSpecialColorIsRainbow`}
 															label={
 																<label>
-																	{t(`Leds:switch-specialcase-rainbow-label`)}
+																	{t(
+																		`LedConfigPage:theme.switch-specialcase-rainbow-label`,
+																	)}
 																</label>
 															}
 															checked={Boolean(
@@ -853,25 +898,146 @@ export default function LedConfigPage() {
 															onChange={() =>
 																setFieldValue(
 																	`AnimationOptions.profiles.${profileIndex}.bCaseSpecialColorIsRainbow`,
-																	Number(
-																		!profile.bCaseSpecialColorIsRainbow,
-																	),
+																	Number(!profile.bCaseSpecialColorIsRainbow),
 																)
 															}
 														/>
 													</div>
+													{!profile.bCaseSpecialColorIsRainbow && (
+														<FormControl
+															type="color"
+															label={t(
+																`LedConfigPage:theme.case-special-color-label`,
+															)}
+															name={`AnimationOptions.profiles.${profileIndex}.caseSpecialColor`}
+															groupClassName="col-sm-4 mb-3"
+															className="form-control-sm p-0 border-0 mb-3"
+															defaultValue={rgbIntToHex(
+																profile.caseSpecialColor,
+															)}
+															onBlur={(e) =>
+																setFieldValue(
+																	`AnimationOptions.profiles.${profileIndex}.caseSpecialColor`,
+																	hexToInt(
+																		(e.target as HTMLInputElement).value,
+																	),
+																)
+															}
+														/>
+													)}
 												</Row>
+
+												<Row>
+													{profile.baseNonPressedEffect ===
+													ANIMATION_NON_PRESSED_EFFECTS.NONPRESSED_EFFECT_RAIN ? (
+														<FormSelect
+															label={t(
+																'LedConfigPage:theme.non-pressed-context-param-label',
+															)}
+															name={`AnimationOptions.profiles.${profileIndex}.nonPressedContextParam`}
+															className="form-select-sm"
+															groupClassName="col-sm-4 mb-3"
+															value={profile.nonPressedContextParam}
+															onChange={(e) =>
+																setFieldValue(
+																	`AnimationOptions.profiles.${profileIndex}.nonPressedContextParam`,
+																	parseInt(e.target.value),
+																)
+															}
+														>
+															<option value={1}>
+																{t('LedConfigPage:theme.rain-speed-low')}
+															</option>
+															<option value={2}>
+																{t('LedConfigPage:theme.rain-speed-medium')}
+															</option>
+															<option value={3}>
+																{t('LedConfigPage:theme.rain-speed-high')}
+															</option>
+														</FormSelect>
+													) : (
+														<div className="form-control-sm col-sm-4 mb-3">
+															<Form.Label>{`${t('LedConfigPage:theme.non-pressed-context-param-label')}: ${profile.nonPressedContextParam}`}</Form.Label>
+															<Form.Range
+																name={`AnimationOptions.profiles.${profileIndex}.nonPressedContextParam`}
+																id={`AnimationOptions.profiles.${profileIndex}.nonPressedContextParam`}
+																min={0}
+																max={100}
+																step={1}
+																value={profile.nonPressedContextParam}
+																onChange={handleChange}
+															/>
+														</div>
+													)}
+													<div className="form-control-sm col-sm-4 mb-3">
+														<Form.Label>{`${t('LedConfigPage:theme.pressed-context-param-label')}: ${profile.pressedContextParam}`}</Form.Label>
+														<Form.Range
+															name={`AnimationOptions.profiles.${profileIndex}.pressedContextParam`}
+															id={`AnimationOptions.profiles.${profileIndex}.pressedContextParam`}
+															min={0}
+															max={100}
+															step={1}
+															value={profile.pressedContextParam}
+															onChange={handleChange}
+														/>
+													</div>
+													{profile.baseNonPressedEffect !==
+														profile.baseCaseEffect &&
+														(profile.baseCaseEffect ===
+														ANIMATION_NON_PRESSED_EFFECTS.NONPRESSED_EFFECT_RAIN ? (
+															<FormSelect
+																label={t(
+																	'LedConfigPage:theme.case-context-param-label',
+																)}
+																name={`AnimationOptions.profiles.${profileIndex}.caseContextParam`}
+																className="form-select-sm"
+																groupClassName="col-sm-4 mb-3"
+																value={profile.caseContextParam}
+																onChange={(e) =>
+																	setFieldValue(
+																		`AnimationOptions.profiles.${profileIndex}.caseContextParam`,
+																		parseInt(e.target.value),
+																	)
+																}
+															>
+																<option value={1}>
+																	{t('LedConfigPage:theme.rain-speed-low')}
+																</option>
+																<option value={2}>
+																	{t('LedConfigPage:theme.rain-speed-medium')}
+																</option>
+																<option value={3}>
+																	{t('LedConfigPage:theme.rain-speed-high')}
+																</option>
+															</FormSelect>
+														) : (
+															<div className="form-control-sm col-sm-4 mb-3">
+																<Form.Label>
+																	{`${t('LedConfigPage:theme.case-context-param-label')}: ${profile.caseContextParam}`}
+																</Form.Label>
+																<Form.Range
+																	name={`AnimationOptions.profiles.${profileIndex}.caseContextParam`}
+																	id={`AnimationOptions.profiles.${profileIndex}.caseContextParam`}
+																	min={0}
+																	max={100}
+																	step={1}
+																	value={profile.caseContextParam}
+																	onChange={handleChange}
+																/>
+															</div>
+														))}
+												</Row>
+
 												<hr />
 
 												<Row>
 													<Col md={6}>
 														<p>
-															Layout mode allows for manual configuration of LED
-															positions and GPIO pins.
+															{t(`LedConfigPage:theme.layout-mode-description`)}
 														</p>
 														<Form.Check
 															type="switch"
-															label="Layout mode"
+															label={t(`LedConfigPage:theme.layout-mode-label`)}
 															className="mb-3"
 															checked={layouteMode}
 															disabled={!values.Lights.length}
@@ -894,7 +1060,9 @@ export default function LedConfigPage() {
 														notPressedStaticColors={
 															profile.notPressedStaticColors
 														}
-														nonButtonStaticColors={profile.nonButtonStaticColors}
+														nonButtonStaticColors={
+															profile.nonButtonStaticColors
+														}
 														profileIndex={profileIndex}
 														handleChange={handleChange}
 														setFieldValue={setFieldValue}
@@ -906,7 +1074,9 @@ export default function LedConfigPage() {
 														notPressedStaticColors={
 															profile.notPressedStaticColors
 														}
-														nonButtonStaticColors={profile.nonButtonStaticColors}
+														nonButtonStaticColors={
+															profile.nonButtonStaticColors
+														}
 														profileIndex={profileIndex}
 														customColors={values.AnimationOptions.customColors}
 														setFieldValue={setFieldValue}

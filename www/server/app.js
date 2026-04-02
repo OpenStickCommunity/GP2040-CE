@@ -367,6 +367,7 @@ app.get('/api/getAnimationProtoOptions', (req, res) => {
 					caseSpecialColor: 0,
 					bNonPressedSpecialColorIsRainbow: 0,
 					bPressedSpecialColorIsRainbow: 0,
+					nonButtonStaticColors: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 					bCaseSpecialColorIsRainbow: 0,
 					nonPressedContextParam: 0,
 					pressedContextParam: 0,
@@ -394,6 +395,7 @@ app.get('/api/getAnimationProtoOptions', (req, res) => {
 					caseSpecialColor: 0x80ff00,
 					bNonPressedSpecialColorIsRainbow: 0,
 					bPressedSpecialColorIsRainbow: 0,
+					nonButtonStaticColors: [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
 					bCaseSpecialColorIsRainbow: 0,
 					nonPressedContextParam: 0,
 					pressedContextParam: 0,
@@ -848,6 +850,12 @@ app.get('/api/getLightsPresets/0', (req, res) => {
 app.get('/api/getLightsPresets/1', (req, res) => {
 	return res.send(BoardLights[1]);
 });
+app.get('/api/getLightsPresets/2', (req, res) => res.send({}));
+app.get('/api/getLightsPresets/3', (req, res) => res.send({}));
+app.get('/api/getLightsPresets/4', (req, res) => res.send({}));
+app.get('/api/getLightsPresets/5', (req, res) => res.send({}));
+app.get('/api/getLightsPresets/6', (req, res) => res.send({}));
+app.get('/api/getLightsPresets/7', (req, res) => res.send({}));
 
 app.get('/api/getExpansionPins', (req, res) => {
 	return res.send({
@@ -880,43 +888,43 @@ app.get('/api/getHETriggerCalibrations', (req, res) => {
 	var triggers = [];
 	triggers.push(
 		{
-			action: 2, 
+			action: 2,
 			idle: 120,
 			pressed: 3500,
 			active: 1500,
 			is_polarized: false,
 			release: 1500,
-			noise: 50, 
+			noise: 50,
 			rapidTrigger: false
 		},
 		{
-			action: 3, 
+			action: 3,
 			idle: 3500,
 			pressed: 120,
 			active: 1500,
 			is_polarized: true,
 			release: 1500,
-			noise: 50, 
+			noise: 50,
 			rapidTrigger: false
 		},
 		{
-			action: 4, 
+			action: 4,
 			idle: 120,
 			pressed: 3500,
 			active: 1500,
 			is_polarized: false,
 			release: 2000,
-			noise: 50, 
+			noise: 50,
 			rapidTrigger: true
 		},
 		{
-			action: 5, 
+			action: 5,
 			idle: 3500,
 			pressed: 120,
 			active: 2000,
 			is_polarized: true,
 			release: 1500,
-			noise: 50, 
+			noise: 50,
 			rapidTrigger: true
 		},
 	);
