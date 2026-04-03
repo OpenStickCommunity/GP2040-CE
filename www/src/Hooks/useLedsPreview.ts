@@ -26,11 +26,13 @@ const useLedsPreview = () => {
 		[],
 	);
 
-	const activateLedsProfile = useCallback(async (profile: AnimationProfile) => {
+	const activateLedsProfile = useCallback(async (profile: AnimationProfile, bright:number, maxBright: number) => {
 		WebApi.setAnimationButtonTestMode({
 			TestData: {
 				testMode: 4,
 				testProfile: profile,
+				overrideBrightness: bright,
+				overrideMaxBrightness: maxBright,
 			},
 		});
 	}, []);
@@ -51,11 +53,19 @@ const useLedsPreview = () => {
 		});
 	}, []);
 
+	const turnOffLedTestModes = useCallback(() => {
+		WebApi.clearAnimationButtonTestMode({
+			TestData: {
+			},
+		});
+	}, []);
+
 	return {
 		activateLedsOnId,
 		activateLedsProfile,
 		activateLedsChase,
 		turnOffLeds,
+		turnOffLedTestModes,
 	};
 };
 

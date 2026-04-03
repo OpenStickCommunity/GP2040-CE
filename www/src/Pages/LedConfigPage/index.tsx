@@ -242,13 +242,14 @@ const PreviewLedChanges = ({
 	const { values } = useFormikContext<{
 		AnimationOptions: AnimationOptions;
 		Lights: Light[];
+		ledOptions: LedOptions;
 	}>();
 	const { activateLedsProfile } = useLedsPreview();
 
 	useEffect(() => {
 		const profile = values.AnimationOptions.profiles[selectedProfile];
 		if (!profile) return;
-		activateLedsProfile(profile);
+		activateLedsProfile(profile, values.AnimationOptions.brightness, values.ledOptions.brightnessMaximum);
 	}, [values, selectedProfile]);
 
 	return null;

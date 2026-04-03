@@ -695,6 +695,13 @@ async function setAnimationButtonTestState(options) {
 		console.error(err);
 	}
 }
+async function clearAnimationButtonTestMode(options) {
+	try {
+		await Http.post(`${baseUrl}/api/clearAnimationButtonTestMode`, options);
+	} catch (error) {
+		console.error(err);
+	}
+}
 
 export default {
 	resetSettings,
@@ -739,6 +746,7 @@ export default {
 	setSplashImage,
 	setAnimationButtonTestMode,
 	setAnimationButtonTestState,
+	clearAnimationButtonTestMode,
 	getUsedPins,
 	getHeldPins,
 	abortGetHeldPins,

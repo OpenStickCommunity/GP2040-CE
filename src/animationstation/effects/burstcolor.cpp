@@ -33,14 +33,8 @@ BurstColor::BurstColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPins,
 
     // Get burst length from the context param (1-100% of biggest X or Y dimension, 0 = default)
     int MaxDimension = MAX(MaxXCoord - MinYCoord, MaxYCoord - MinYCoord) + 1;
-    if(InButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_ONLY || InButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE)
-    {
-        BurstLength = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedEffectContextParam;
-    }
-    else
-    {
-        BurstLength = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].caseEffectContextParam;
-    }
+    BurstLength = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].pressedEffectContextParam;
+
     if(BurstLength == 0)
         BurstLength = DEFAULT_BURST_DISTANCE;
     else

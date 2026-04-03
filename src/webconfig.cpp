@@ -1287,15 +1287,27 @@ std::string setAnimationButtonTestMode()
     JsonObject testOptions = docJson["TestData"];
 
     AnimationStationTestMode testMode = (AnimationStationTestMode)(testOptions["testMode"].as<uint32_t>());
+    
+    //Get current max brightness
+    const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
+    uint32_t overrideMaxBrightness = ledOptions.brightnessMaximum;
+    AnimationOptions& animOptions = Storage::getInstance().getAnimationOptions();
+    uint32_t overrideBrightness = animOptions.brightness;
 
     AnimationProfile testAnimProfile;
     if(testMode == AnimationStationTestMode::AnimationStation_TestModeProfilePreview)
     {
         JsonObject testProfile = testOptions["testProfile"];
         helperGetProfileFromJsonObject(&testAnimProfile, &testProfile);
+
+        //Allow instant testing of max brightness or brightness changes without saving
+        uint32_t checkedBrightnessMax = std::clamp<uint32_t>(testOptions["overrideMaxBrightness"].as<uint8_t>(), 0, 100);
+        overrideMaxBrightness = int(((float)checkedBrightnessMax * 2.55f) +  + 0.5f); //+0.5 to cause it to round to nearest number
+        overrideMaxBrightness = std::clamp<uint32_t>(overrideMaxBrightness, 0, 255);
+        overrideBrightness = std::clamp<uint32_t>(testOptions["overrideBrightness"].as<uint8_t>(), 0, AnimationStation::brightnessSteps);
     }
 
-    AnimationStation::SetTestMode(testMode, &testAnimProfile);
+    AnimationStation::SetTestMode(testMode, &testAnimProfile, overrideBrightness, overrideMaxBrightness);
 
     return serialize_json(doc);
 }
@@ -1314,6 +1326,15 @@ std::string setAnimationButtonTestState()
     return serialize_json(doc);
 }
 
+std::string clearAnimationButtonTestMode()
+{
+    DynamicJsonDocument doc = get_post_data();
+
+    AnimationStation::ClearTestMode();
+
+    return serialize_json(doc);
+}
+
 std::string setAnimationProtoOptions()
 {
     DynamicJsonDocument doc = get_post_data();
@@ -1324,7 +1345,7 @@ std::string setAnimationProtoOptions()
     JsonObject AnimOptions = docJson["AnimationOptions"];
 
     options.brightness = AnimOptions["brightness"].as<uint32_t>();
-    options.brightness = std::clamp<uint32_t>(options.brightness, 0, 10);
+    options.brightness = std::clamp<uint32_t>(options.brightness, 0, AnimationStation::brightnessSteps);
     options.autoDisableTime = AnimOptions["idletimeout"].as<uint32_t>() * 1000;
     options.baseProfileIndex = AnimOptions["baseProfileIndex"].as<uint32_t>();
     JsonArray customColorsList = AnimOptions["customColors"];
@@ -2990,6 +3011,7 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/setLedOptions", setLedOptions },
     { "/api/setAnimationButtonTestMode", setAnimationButtonTestMode },
     { "/api/setAnimationButtonTestState", setAnimationButtonTestState },
+    { "/api/clearAnimationButtonTestMode", clearAnimationButtonTestMode },
     { "/api/setAnimationProtoOptions", setAnimationProtoOptions },
     { "/api/getAnimationProtoOptions", getAnimationProtoOptions },
     { "/api/setLightsDataOptions", setLightsDataOptions },

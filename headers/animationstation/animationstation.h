@@ -23,11 +23,11 @@
 
 typedef enum
 {
-  AnimationStation_TestModeInvalid,
+  AnimationStation_TestModeDisableTestMode,
   AnimationStation_TestModeOff,
 	AnimationStation_TestModeButtons,
 	AnimationStation_TestModeLayout,
-	AnimationStation_TestModeProfilePreview,
+	AnimationStation_TestModeProfilePreview
 } AnimationStationTestMode;
 
 struct __attribute__ ((__packed__)) AnimationProfile_Unpacked
@@ -105,6 +105,7 @@ public:
   static float GetNormalisedBrightness();
   static uint8_t GetBrightnessStepValue();
   static void SetBrightnessStepValue(uint8_t brightness);
+  static void ApplyBrightnessStepValue();
   static void DecreaseBrightnessByStep();
   static void IncreaseBrightnessByStep();
   static void DimBrightnessTo0();
@@ -117,8 +118,9 @@ public:
   void SetSpecialMoveAnimation(SpecialMoveEffects AnimationToPlay, uint32_t OptionalParams);
 
   //Testing/webconfig
-  static void SetTestMode(AnimationStationTestMode TestType, const AnimationProfile* TestProfile);
+  static void SetTestMode(AnimationStationTestMode TestType, const AnimationProfile* TestProfile, uint8_t overrideBrightness, uint8_t overrideMaxBrightness);
   static void SetTestPinState(int PinOrNonButtonIndex, bool IsNonButtonLight);
+  static void ClearTestMode();
   
   SpecialMoveSystem specialMoveSystem;
 
@@ -157,6 +159,7 @@ public:
 protected:
   inline static uint8_t getBrightnessStepSize() { return (brightnessMax / brightnessSteps); }
   static uint8_t brightnessMax; //0-255
+  static uint8_t brightnessStepValue; //0-10
   static float normalisedBrightness; //0-1
 
   Animation* GetNonPressedEffectForEffectType(AnimationNonPressedEffects EffectType, EButtonCaseEffectType InButtonCaseEffectType);

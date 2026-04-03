@@ -29,11 +29,12 @@
 
 uint8_t AnimationStation::brightnessMax = 100;
 uint8_t AnimationStation::brightnessSteps = 10;
+uint8_t AnimationStation::brightnessStepValue = 0;
 float AnimationStation::normalisedBrightness = 0;
 absolute_time_t AnimationStation::nextChange = nil_time;
 AnimationOptions_Unpacked AnimationStation::options = {};
 std::string AnimationStation::printfs[4];
-AnimationStationTestMode AnimationStation::TestMode = AnimationStationTestMode::AnimationStation_TestModeInvalid;
+AnimationStationTestMode AnimationStation::TestMode = AnimationStationTestMode::AnimationStation_TestModeDisableTestMode;
 bool AnimationStation::bTestModeChangeRequested = false;
 int AnimationStation::TestModePinOrNonButtonIndex = -1;
 bool AnimationStation::TestModeLightIsNonButton = false;
@@ -239,6 +240,11 @@ void AnimationStation::UpdateTestMode()
       SetMode(MAX_ANIMATION_PROFILES_INCLUDING_TEST - 1);
     } break;
 
+    case AnimationStationTestMode::AnimationStation_TestModeDisableTestMode:
+    {
+       SetMode(0);     
+    } break;
+
     default:
       break;
   }
@@ -290,7 +296,7 @@ void AnimationStation::Clear()
 
 void AnimationStation::UpdateTimeout()
 {
-  if(TestMode == AnimationStationTestMode::AnimationStation_TestModeInvalid && options.autoDisableTime > 0)
+  if(TestMode == AnimationStationTestMode::AnimationStation_TestModeDisableTestMode && options.autoDisableTime > 0)
   {
     if(bIsInIdleTimeout == false)
     {
@@ -522,20 +528,28 @@ void AnimationStation::ApplyBrightness(uint32_t *frameValue)
 
 void AnimationStation::SetBrightnessStepValue(uint8_t brightness)
 {
-  AnimationStation::options.brightness = std::clamp<uint32_t>(options.brightness, 0, brightnessSteps);
+  AnimationStation::brightnessStepValue = brightness;
+  ApplyBrightnessStepValue();
+}
 
-  AnimationStation::normalisedBrightness = (AnimationStation::options.brightness * getBrightnessStepSize()) / 255.0F;
+void AnimationStation::ApplyBrightnessStepValue()
+{
+  AnimationStation::brightnessStepValue = std::clamp<uint32_t>(AnimationStation::brightnessStepValue, 0, brightnessSteps);
+
+  AnimationStation::normalisedBrightness = (brightnessStepValue * getBrightnessStepSize()) / 255.0F;
   AnimationStation::normalisedBrightness = std::clamp<float>(AnimationStation::normalisedBrightness, 0.0f, 1.0f);
 }
 
 void AnimationStation::DecreaseBrightnessByStep()
 {
   AnimationStation::options.brightness = std::clamp<int32_t>(((int32_t)options.brightness)-1, 0, brightnessSteps);
+  SetBrightnessStepValue(AnimationStation::options.brightness);
 }
 
 void AnimationStation::IncreaseBrightnessByStep()
 {
   AnimationStation::options.brightness = std::clamp<int32_t>(options.brightness+1, 0, brightnessSteps);
+  SetBrightnessStepValue(AnimationStation::options.brightness);
 }
 
 void AnimationStation::DimBrightnessTo0()
@@ -550,7 +564,7 @@ float AnimationStation::GetNormalisedBrightness()
 
 uint8_t AnimationStation::GetBrightnessStepValue()
 {
-  return AnimationStation::options.brightness;
+  return AnimationStation::brightnessStepValue;
 }
 
 void AnimationStation::DecompressProfile(int ProfileIndex, const AnimationProfile* ProfileToDecompress)
@@ -660,7 +674,7 @@ void AnimationStation::DecompressSettings()
 void AnimationStation::CheckForOptionsUpdate()
 {
   //No saving in test/webconfig mode
-  if(TestMode != AnimationStationTestMode::AnimationStation_TestModeInvalid)
+  if(TestMode != AnimationStationTestMode::AnimationStation_TestModeDisableTestMode)
     return;
 
   bool bChangeDetected = false;
@@ -708,11 +722,14 @@ void AnimationStation::CheckForOptionsUpdate()
 }
 
 //Testmode functions
-void AnimationStation::SetTestMode(AnimationStationTestMode TestType, const AnimationProfile* TestProfile)
+void AnimationStation::SetTestMode(AnimationStationTestMode TestType, const AnimationProfile* TestProfile, uint8_t overrideBrightness, uint8_t overrideMaxBrightness)
 {
   bTestModeChangeRequested = true;
 
   TestMode = TestType;
+
+  SetMaxBrightness(overrideMaxBrightness);
+  SetBrightnessStepValue(overrideBrightness);
 
   //Decompress profile into the test entry
   int testProfileIndex = MAX_ANIMATION_PROFILES_INCLUDING_TEST - 1;
@@ -818,4 +835,13 @@ void AnimationStation::SetTestPinState(int PinOrNonButtonIndex, bool IsNonButton
       options.profiles[testProfileIndex].notPressedStaticColors[PinOrNonButtonIndex] = 0x01; //White
     }
   }
+}
+
+void AnimationStation::ClearTestMode()
+{
+  bTestModeChangeRequested = true;
+  TestMode = AnimationStationTestMode::AnimationStation_TestModeDisableTestMode;
+  LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
+  SetMaxBrightness(ledOptions.brightnessMaximum);
+  SetBrightnessStepValue(options.brightness);
 }

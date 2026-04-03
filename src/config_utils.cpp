@@ -622,9 +622,6 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         }
     }
 
-    config.animationOptions.profiles[1].effectContextParam = (33 << 16) + 33;
-    config.animationOptions.profiles[2].effectContextParam = (66 << 16) + (66);
-
     // addonOptions.bootselButtonOptions
     INIT_UNSET_PROPERTY(config.addonOptions.bootselButtonOptions, enabled, !!BOOTSEL_BUTTON_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.bootselButtonOptions, buttonMap, BOOTSEL_BUTTON_MASK);

@@ -270,11 +270,19 @@ void NeoPicoLEDAddon::process()
 	if(bRestartLeds)
 	{
 		bRestartLeds = false;
+
+		//Save off test mode selected profile so we can restore it after the restart
+		int8_t savedMode = AnimStation.GetMode();
+
 		AnimStation.Clear();
 		neopico.Clear();
 		neopico.Show();
 		decompressSettings();
 		configureLEDs();
+
+		//Restore saved profile if applicable
+		if(AnimStation.TestMode != AnimationStationTestMode::AnimationStation_TestModeDisableTestMode)
+			AnimStation.SetMode(savedMode);
 	}
 
 	//Check we have LEDs enabled and is it time to update
@@ -341,7 +349,7 @@ void NeoPicoLEDAddon::process()
 	if (turnOffWhenSuspended && get_usb_suspended()) {
 		AnimStation.DimBrightnessTo0();
 	} else {
-		AnimStation.SetBrightnessStepValue(AnimationStation::GetBrightnessStepValue());
+		AnimStation.ApplyBrightnessStepValue();
 	}
 
 	//Grab led values this frame
