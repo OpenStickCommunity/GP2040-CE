@@ -492,6 +492,11 @@ message ReverseOptions
     optional uint32 actionRight = 7;
 }
 
+message AnalogADS1115Options
+{
+    optional bool enabled = 1;
+}
+
 message AnalogADS1219Options
 {
     optional bool enabled = 1;
@@ -926,6 +931,7 @@ message AddonOptions
     optional GamepadUSBHostOptions gamepadUSBHostOptions = 28;
     optional TG16Options tg16Options = 29;
     optional HETriggerOptions heTriggerOptions = 30;
+    optional AnalogADS1115Options analogADS1115Options = 31;
 }
 
 message MigrationHistory

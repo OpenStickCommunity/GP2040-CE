@@ -17,6 +17,7 @@
 #include "addons/dualdirectional.h"
 #include "addons/tilt.h"
 #include "addons/focus_mode.h"
+#include "addons/i2canalog1115.h"
 #include "addons/i2canalog1219.h"
 #include "addons/display.h"
 #include "addons/keyboard_host.h"
@@ -662,6 +663,9 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, modeDefault, SLIDER_SOCD_SLOT_DEFAULT);
     INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, deprecatedModeOne, SLIDER_SOCD_SLOT_ONE);
     INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, deprecatedModeTwo, SLIDER_SOCD_SLOT_TWO);
+
+    // addonOptions.analogADS1115Options
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, enabled, !!I2C_ANALOG1115_ENABLED);
 
     // addonOptions.analogADS1219Options
     INIT_UNSET_PROPERTY(config.addonOptions.analogADS1219Options, enabled, !!I2C_ANALOG1219_ENABLED);

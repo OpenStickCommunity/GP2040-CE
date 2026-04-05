@@ -1745,6 +1745,9 @@ std::string setAddonOptions()
     AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
     docToValue(analogADS1219Options.enabled, doc, "I2CAnalog1219InputEnabled");
 
+    AnalogADS1115Options& analogADS1115Options = Storage::getInstance().getAddonOptions().analogADS1115Options;
+    docToValue(analogADS1115Options.enabled, doc, "I2CAnalog1115InputEnabled");
+
     ReverseOptions& reverseOptions = Storage::getInstance().getAddonOptions().reverseOptions;
     docToValue(reverseOptions.enabled, doc, "ReverseInputEnabled");
     docToPin(reverseOptions.ledPin, doc, "reversePinLED");
@@ -2196,6 +2199,9 @@ std::string getAddonOptions()
 
     const AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
     writeDoc(doc, "I2CAnalog1219InputEnabled", analogADS1219Options.enabled);
+
+    const AnalogADS1115Options& analogADS1115Options = Storage::getInstance().getAddonOptions().analogADS1115Options;
+    writeDoc(doc, "I2CAnalog1115InputEnabled", analogADS1115Options.enabled);
 
     const ReverseOptions& reverseOptions = Storage::getInstance().getAddonOptions().reverseOptions;
     writeDoc(doc, "reversePinLED", cleanPin(reverseOptions.ledPin));
