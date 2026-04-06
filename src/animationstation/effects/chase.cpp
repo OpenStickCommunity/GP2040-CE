@@ -64,6 +64,16 @@ Chase::Chase(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType, 
       RandomChaseType = SingleChaseTypes::SINGLECHASETYPES_SEQUENTIAL;
     } break;
 
+    case ChaseTypes::CHASETYPES_INDEX:
+    {
+      RandomChaseType = SingleChaseTypes::SINGLECHASETYPES_INDEX;
+    } break;
+    
+    case ChaseTypes::CHASETYPES_INDEX_PINGPONG:
+    {
+      RandomChaseType = SingleChaseTypes::SINGLECHASETYPES_INDEX;
+    } break;
+    
     case ChaseTypes::CHASETYPES_HORIZONTAL_PINGPONG:
     {
       RandomChaseType = SingleChaseTypes::SINGLECHASETYPES_LEFT_TO_RIGHT;
@@ -121,7 +131,15 @@ void Chase::OrderLights()
 {
   bool bIsCircleBased = ChaseTypeInUse == ChaseTypes::CHASETYPES_CIRCLE_CLOCKWISE || ChaseTypeInUse == ChaseTypes::CHASETYPES_CIRCLE_ANTICLOCKWISE || ChaseTypeInUse == ChaseTypes::CHASETYPES_CIRCLE_PINGPONG;
 
-  if(!bIsCircleBased)
+  if(ChaseTypeInUse == ChaseTypes::CHASETYPES_INDEX || ChaseTypeInUse == ChaseTypes::CHASETYPES_INDEX_PINGPONG)
+  {
+      for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
+      {
+        if(LightTypeIsForAnimation(RGBLights->AllLights[lightIndex].Type))
+          OrderedLights.push_back(lightIndex);
+      }  
+  }
+  else if(!bIsCircleBased)
   {
     for(int yCoord = 0; yCoord <= MaxYCoord; ++yCoord)
     {
@@ -137,7 +155,7 @@ void Chase::OrderLights()
       }
     }
   }
-  else if(ChaseTypeInUse == ChaseTypes::CHASETYPES_CIRCLE_CLOCKWISE || ChaseTypeInUse == ChaseTypes::CHASETYPES_CIRCLE_ANTICLOCKWISE || ChaseTypeInUse == ChaseTypes::CHASETYPES_CIRCLE_PINGPONG)
+  else //circle based
   {
     float midX = MinXCoord + (MaxXCoord - MinXCoord) / 2;
     float midY = MinYCoord + (MaxYCoord - MinYCoord) / 2;
@@ -261,6 +279,7 @@ void Chase::AssignThisFrameValues()
    //now light the correct lights
   switch(RandomChaseType)
   {
+    case SingleChaseTypes::SINGLECHASETYPES_INDEX:
     case SingleChaseTypes::SINGLECHASETYPES_SEQUENTIAL:
     {
       //if we're on the way back then invert the index
@@ -379,6 +398,7 @@ void Chase::CheckForEndOfSequence()
   switch(RandomChaseType)
   {
     case SingleChaseTypes::SINGLECHASETYPES_SEQUENTIAL:
+    case SingleChaseTypes::SINGLECHASETYPES_INDEX:
     case SingleChaseTypes::SINGLECHASETYPES_CIRCLE_ANTICLOCKWISE:
     case SingleChaseTypes::SINGLECHASETYPES_CIRCLE_CLOCKWISE:
     {
@@ -419,7 +439,12 @@ void Chase::CheckForEndOfSequence()
       {
         Reversed = !Reversed;
       } break;
-  
+
+      case ChaseTypes::CHASETYPES_INDEX_PINGPONG:
+      {
+        Reversed = !Reversed;
+      } break;
+
       case ChaseTypes::CHASETYPES_HORIZONTAL_PINGPONG:
       {
         if(RandomChaseType == SingleChaseTypes::SINGLECHASETYPES_LEFT_TO_RIGHT)

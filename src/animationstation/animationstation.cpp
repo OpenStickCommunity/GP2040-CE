@@ -424,6 +424,12 @@ Animation* AnimationStation::GetNonPressedEffectForEffectType(AnimationNonPresse
   case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_CIRCLE_PINGPONG:
     newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_CIRCLE_PINGPONG);
     break;
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_INDEX:
+    newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_INDEX);
+    break;
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_INDEX_PINGPONG:
+    newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_INDEX_PINGPONG);
+    break;
   case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_RANDOM:
     newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_RANDOM);
     break;

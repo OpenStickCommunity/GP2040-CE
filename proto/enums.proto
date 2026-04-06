@@ -518,6 +518,8 @@ enum AnimationNonPressedEffects
   EFFECT_CHASE_CIRCLE_CLOCKWISE = 15;
   EFFECT_CHASE_CIRCLE_ANTICLOCKWISE = 16;
   EFFECT_CHASE_CIRCLE_PINGPONG = 17;
+  EFFECT_CHASE_INDEX = 18;
+  EFFECT_CHASE_INDEX_PINGPONG = 19;
 }
 
 /* This has to be kept in sync with AnimationPressedEffects in AnimationStation.hpp */
