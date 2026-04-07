@@ -133,11 +133,39 @@ void Chase::OrderLights()
 
   if(ChaseTypeInUse == ChaseTypes::CHASETYPES_INDEX || ChaseTypeInUse == ChaseTypes::CHASETYPES_INDEX_PINGPONG)
   {
-      for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
+    int sortedLights[FRAME_MAX];
+    unsigned int lightsFound = 0;
+
+    for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size() && lightIndex < FRAME_MAX; ++lightIndex)
+    {
+      if(LightTypeIsForAnimation(RGBLights->AllLights[lightIndex].Type))
       {
-        if(LightTypeIsForAnimation(RGBLights->AllLights[lightIndex].Type))
-          OrderedLights.push_back(lightIndex);
+        for(unsigned int sortIndex = 0; sortIndex <= lightsFound; ++sortIndex)
+        {
+          if(sortIndex == lightsFound)
+          {
+            sortedLights[sortIndex] = lightIndex;
+            break;
+          }
+          else if(lightIndex < sortedLights[sortIndex])
+          {
+            for(unsigned int offsetIndex = lightsFound; offsetIndex > sortIndex; --offsetIndex)
+            {
+              sortedLights[offsetIndex] = sortedLights[offsetIndex - 1];
+            }
+            sortedLights[sortIndex] = lightIndex;
+            break;
+          }
+        }
+
+        lightsFound++;
       }  
+    }
+
+    for(unsigned int sortedIndex = 0; sortedIndex < lightsFound; ++sortedIndex)
+    {
+      OrderedLights.push_back(sortedLights[sortedIndex]);
+    }
   }
   else if(!bIsCircleBased)
   {
@@ -162,7 +190,7 @@ void Chase::OrderLights()
     float angleResult[FRAME_MAX];
     float resultIndex[FRAME_MAX];
     unsigned int lightsFound = 0;
-    for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
+    for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size() && lightIndex < FRAME_MAX; ++lightIndex)
     {
       if(LightTypeIsForAnimation(RGBLights->AllLights[lightIndex].Type) == false)
         continue;
