@@ -59,6 +59,8 @@
 #define KEY_BUTTON_A2   HID_KEY_F2            // A2     | ~      | Capture | ~        | 14     | ~      |
 #define KEY_BUTTON_FN   -1                    // Hotkey Function                                        |
 
+#define LED_BRIGHTNESS_MAXIMUM 50
+
 #define BOARD_LEDS_PIN 0
 #define LIGHT_DATA_NAME_DEFAULT "Flatbox Rev5 RGB" 
 #define LIGHT_DATA_SIZE_DEFAULT 12 //number of sets in the below data
