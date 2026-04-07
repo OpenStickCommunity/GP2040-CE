@@ -160,7 +160,7 @@ enum class ads1115Mode_t : uint16_t {
 
 class ADS1115 {
 protected:
-  void setConfig(uint16_t config);
+  void setConfig();
   uint8_t address;
   PeripheralI2C *i2c;
 
@@ -174,6 +174,8 @@ public:
   void reset();
   void resetConfig();
 
+  // DO NOT USE THESE. Due to the ads1115 using a multiplexer, some time would be needed 
+  // after changing channel before the device can complete a conversion
   uint16_t readSingleEnded(int channel);
   uint16_t readDifferential_0_1();
   uint16_t readDifferential_0_3();
@@ -184,14 +186,15 @@ public:
   void setDataRate(int rate);
   void setConversionMode(ads1115Mode_t mode);
   void setOperationalStatus(ads1115OperationalStatus_t os);
-
   void setChannel(int channel);
+
   void powerDown();
   void start();
   uint16_t readRegister(ads1115AddressRegister_t reg);
   uint16_t readConfigRegister();
   uint16_t readConversionResult();
 
+  uint16_t getConfig(){ return this->config; }
   void setI2C(PeripheralI2C *i2cController) { this->i2c = i2cController; }
   void setAddress(uint8_t addr) { this->address = addr; }
 

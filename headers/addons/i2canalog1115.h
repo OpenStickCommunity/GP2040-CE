@@ -46,7 +46,6 @@ public:
     virtual void reinit() {}
     virtual std::string name() { return I2CAnalog1115Name; }
 private:
-    Gamepad * gamepad;
     ADS1115Device * ads;
     float pins[4];
     int channelHop;

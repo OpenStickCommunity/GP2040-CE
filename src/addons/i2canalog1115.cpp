@@ -1,8 +1,10 @@
 #include "addons/i2canalog1115.h"
 #include "ADS1115.h"
 #include "config.pb.h"
+#include "gamepad.h"
 #include "helper.h"
 #include "storagemanager.h"
+#include <cstdint>
 #include <map>
 
 // 655535 / (((2 << 15) - 1) * 3.3V / 4.096V) // This is the only way to remap
@@ -33,7 +35,7 @@ void I2CAnalog1115Input::setup() {
       Storage::getInstance().getAddonOptions().analogADS1115Options;
 
   memset(&pins, 0, sizeof(pins));
-  gamepad = Storage::getInstance().GetGamepad();
+  Gamepad * gamepad = Storage::getInstance().GetGamepad();
   channelHop = 0;
 
   uIntervalMS = 10;
@@ -54,15 +56,16 @@ void I2CAnalog1115Input::process() {
     float result;
     uint16_t readValue;
     // NOTE Conversion-ready alert is outputted on ALERT/RDY pin. Will ignore
-    // for now. Might add option later if ( ads->readRegister16(STATUS) &
+    // for now. Might add option later 
+    // if ( ads->readRegister16(STATUS) &
     // REGISTER_STATUS_DRDY ) {
 
     // I can probably get away with trying to read the config register
     // operational status first
-    readValue = (int16_t)ads->readConversionResult();
-    result =
-        readValue * ADS1115_3_3V_REMAP_FACTOR; // gives us 0.0f to 1.0f (actual
-                                               // voltage is times voltage)
+    readValue = ads->readConversionResult();
+    result = (int16_t)readValue * ADS1115_3_3V_REMAP_FACTOR;  
+    result = (result > 0xFFFF) ? 0xFFFF : result;
+
     pins[channelHop] = result;
     channelHop = (channelHop + 1) % 4; // Loop 0-3
     ads->setChannel(channelHop);
@@ -70,7 +73,8 @@ void I2CAnalog1115Input::process() {
         getMillis() + uIntervalMS; // interval for read (we can't be too fast)
                                    // }
   }
-
+  
+  Gamepad * gamepad = Storage::getInstance().GetGamepad();
   gamepad->state.lx = (uint16_t)(pins[0]);
   gamepad->state.ly = (uint16_t)(pins[1]);
   gamepad->state.rx = (uint16_t)(pins[2]);

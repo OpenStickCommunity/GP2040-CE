@@ -46,7 +46,7 @@ void ADS1115::powerDown() {
   setOperationalStatus(ads1115OperationalStatus_t::OFF);
 }
 
-void ADS1115::setConfig(uint16_t config) {
+void ADS1115::setConfig() {
   uc[0] = ADS111X_CONFIG_REGISTER_ADDRESS;
 
   uc[1] = (config >> 8) & 0xFF;
@@ -66,7 +66,10 @@ void ADS1115::writeRegister(uint16_t reg, uint16_t data) {
 }
 
 
-void ADS1115::resetConfig() { setConfig(ADS111X_CONFIG_DEFAULT); }
+void ADS1115::resetConfig() { 
+  config = ADS111X_CONFIG_DEFAULT;
+  setConfig(); 
+}
 
 uint16_t ADS1115::readRegister(ads1115AddressRegister_t reg) {
   // uc[0] = ADS111X_CONFIG_REGISTER_ADDRESS;
@@ -118,41 +121,41 @@ uint16_t ADS1115::readSingleEnded(int channel) {
   default:
     break;
   }
-  setConfig(config);
+  setConfig();
   return readConversionResult();
 }
 
 uint16_t ADS1115::readDifferential_0_1() {
   config &= ADS111X_MUX_MASK;
   config |= ADS111X_MUX_DIFF_0_1;
-  setConfig(config);
+  setConfig();
   return readConversionResult();
 }
 
 uint16_t ADS1115::readDifferential_0_3() {
   config &= ADS111X_MUX_MASK;
   config |= ADS111X_MUX_DIFF_0_3;
-  setConfig(config);
+  setConfig();
   return readConversionResult();
 }
 
 uint16_t ADS1115::readDifferential_1_3() {
   config &= ADS111X_MUX_MASK;
   config |= ADS111X_MUX_DIFF_1_3;
-  setConfig(config);
+  setConfig();
   return readConversionResult();
 }
 
 void ADS1115::setOperationalStatus(ads1115OperationalStatus_t os) {
   config &= ADS111X_OS_MASK;
   config |= (uint16_t)os;
-  setConfig(config);
+  setConfig();
 }
 
 void ADS1115::setGain(ads1115Gain_t gain) {
   config &= ADS111X_GAIN_MASK;
   config |= (int)gain;
-  setConfig(config);
+  setConfig();
 }
 
 void ADS1115::setDataRate(int rate) {
@@ -186,13 +189,13 @@ void ADS1115::setDataRate(int rate) {
     config |= ADS1115_DATA_RATE_128;
     break;
   }
-  setConfig(config);
+  setConfig();
 }
 
 void ADS1115::setConversionMode(ads1115Mode_t mode) {
   config &= (uint16_t)ADS111X_MODE_MASK;
   config |= (uint16_t)mode;
-  setConfig(config);
+  setConfig();
   if (mode == (ads1115Mode_t)ADS111X_MODE_CONTINUOUS) {
     singleShot = false;
   } else {
@@ -218,5 +221,5 @@ void ADS1115::setChannel(int channel) {
   default:
     break;
   }
-  setConfig(config);
+  setConfig();
 }
