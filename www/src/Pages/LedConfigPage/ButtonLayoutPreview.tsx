@@ -3,7 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { Button, Col, OverlayTrigger, Popover, Row } from 'react-bootstrap';
 
 import { LED_COLORS, LIGHT_TYPES } from '../../Data/Leds';
-import { Light, MAX_CASE_LIGHTS } from '../../Store/useLedStore';
+import {
+	Light,
+	MAX_NON_BUTTON_LIGHT_COLOR_INDEXES,
+} from '../../Store/useLedStore';
 import { rgbIntToHex } from '../../Services/Utilities';
 import ColorSelector from './ColorSlector';
 import boards from '../../Data/Boards.json';
@@ -63,7 +66,7 @@ const ColorSelectOverlay = ({
 function ButtonLayoutPreview({
 	pressedStaticColors,
 	notPressedStaticColors,
-	caseStaticColors,
+	nonButtonStaticColors,
 	profileIndex,
 	setFieldValue,
 	customColors = [],
@@ -71,7 +74,7 @@ function ButtonLayoutPreview({
 }: {
 	pressedStaticColors: number[];
 	notPressedStaticColors: number[];
-	caseStaticColors: number[];
+	nonButtonStaticColors: number[];
 	profileIndex: number;
 	customColors?: number[];
 	setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
@@ -106,14 +109,13 @@ function ButtonLayoutPreview({
 	return (
 		<div>
 			<p>
-				Here you can see a preview of your button layout and the colors assigned
-				to each GPIO pin.
+				{t('LedConfigPage:buttonLayoutPreview.description')}
 				<br />
-				If you have buttons assigned to the same GPIO they will share color.
+				{t('LedConfigPage:buttonLayoutPreview.shared-color-note')}
 			</p>
 			<ul>
-				<li>Click a button to change its idle and pressed color.</li>
-				<li>Right-click on the layout to preview the pressed colors.</li>
+				<li>{t('LedConfigPage:buttonLayoutPreview.hint-idle')}</li>
+				<li>{t('LedConfigPage:buttonLayoutPreview.hint-right-click')}</li>
 			</ul>
 			<hr />
 			<div className="mb-3">
@@ -132,7 +134,7 @@ function ButtonLayoutPreview({
 						strokeWidth="1"
 					/>
 				</svg>
-				Action Button
+				{t('LedConfigPage:buttonLayoutPreview.legend-action-button')}
 				<svg
 					width="20"
 					height="20"
@@ -149,7 +151,7 @@ function ButtonLayoutPreview({
 						strokeWidth="1"
 					/>
 				</svg>
-				Case Light
+				{t('LedConfigPage:buttonLayoutPreview.legend-case-light')}
 				<svg
 					width="20"
 					height="20"
@@ -163,11 +165,14 @@ function ButtonLayoutPreview({
 						strokeWidth="1"
 					/>
 				</svg>
-				Turbo / Player Light
+				{t('LedConfigPage:buttonLayoutPreview.legend-turbo-player-light')}
 			</div>
 
 			<Row
-				className="justify-content-center py-3"
+				className="justify-content-center py-4 mb-3 rounded-3 mx-1 border border-secondary-subtle"
+				style={{
+					background: 'var(--bs-tertiary-bg)',
+				}}
 				onMouseDown={(e) => handlePressedShow(e)}
 				onMouseUp={() => handlePressedHide()}
 				onMouseLeave={() => handlePressedHide()}
@@ -185,40 +190,49 @@ function ButtonLayoutPreview({
 									return (
 										<ColorSelectOverlay
 											key={`button-light-${index}`}
-											title={`GPIO ${light.GPIOPinorCaseChainIndex}`}
+											title={t(
+												'LedConfigPage:buttonLayoutPreview.overlay-gpio-title',
+												{ pin: light.GPIOPinOrNonButtonIndex },
+											)}
 											content={
 												<div style={{ minWidth: 200 }}>
-													<p>Idle color</p>
+													<p>
+														{t('LedConfigPage:buttonLayoutPreview.idle-color')}
+													</p>
 													<ColorSelector
 														options={colorOptions}
 														value={
 															colorOptions[
 																notPressedStaticColors[
-																	light.GPIOPinorCaseChainIndex
+																	light.GPIOPinOrNonButtonIndex
 																]
 															] || null
 														}
 														onChange={(selected) => {
 															setFieldValue(
-																`AnimationOptions.profiles.${profileIndex}.notPressedStaticColors.${light.GPIOPinorCaseChainIndex}`,
+																`AnimationOptions.profiles.${profileIndex}.notPressedStaticColors.${light.GPIOPinOrNonButtonIndex}`,
 																selected?.value || 0,
 															);
 														}}
 													/>
 
-													<p className="mt-3">Pressed color</p>
+													<p className="mt-3">
+														{t(
+															'LedConfigPage:buttonLayoutPreview.pressed-color',
+														)}
+													</p>
 													<ColorSelector
 														options={colorOptions}
 														value={
 															colorOptions[
 																pressedStaticColors[
-																	light.GPIOPinorCaseChainIndex
+																	light.GPIOPinOrNonButtonIndex
 																]
 															] || null
 														}
 														onChange={(selected) => {
 															setFieldValue(
-																`AnimationOptions.profiles.${profileIndex}.pressedStaticColors.${light.GPIOPinorCaseChainIndex}`,
+																`AnimationOptions.profiles.${profileIndex}.pressedStaticColors.${light.GPIOPinOrNonButtonIndex}`,
 																selected?.value || 0,
 															);
 														}}
@@ -236,10 +250,10 @@ function ButtonLayoutPreview({
 														colorOptions[
 															pressed
 																? pressedStaticColors[
-																		light.GPIOPinorCaseChainIndex
+																		light.GPIOPinOrNonButtonIndex
 																	]
 																: notPressedStaticColors[
-																		light.GPIOPinorCaseChainIndex
+																		light.GPIOPinOrNonButtonIndex
 																	]
 														]?.color || 'black'
 													}
@@ -258,7 +272,7 @@ function ButtonLayoutPreview({
 														textShadow: '0 0 3px black',
 													}}
 												>
-													{`GP${light.GPIOPinorCaseChainIndex}`}
+													{`GP${light.GPIOPinOrNonButtonIndex}`}
 												</text>
 											</g>
 										</ColorSelectOverlay>
@@ -268,20 +282,27 @@ function ButtonLayoutPreview({
 									return (
 										<ColorSelectOverlay
 											key={`case-light-${index}`}
-											title={`Case ${light.GPIOPinorCaseChainIndex}`}
+											title={t(
+												'LedConfigPage:buttonLayoutPreview.overlay-case-title',
+												{ id: light.GPIOPinOrNonButtonIndex },
+											)}
 											content={
 												<div style={{ minWidth: 200 }}>
-													<p>Case color</p>
+													<p>
+														{t('LedConfigPage:buttonLayoutPreview.case-color')}
+													</p>
 													<ColorSelector
 														options={colorOptions}
 														value={
 															colorOptions[
-																caseStaticColors[light.GPIOPinorCaseChainIndex]
+																nonButtonStaticColors[
+																	light.GPIOPinOrNonButtonIndex
+																]
 															] || null
 														}
 														onChange={(selected) => {
 															setFieldValue(
-																`AnimationOptions.profiles.${profileIndex}.caseStaticColors.${light.GPIOPinorCaseChainIndex}`,
+																`AnimationOptions.profiles.${profileIndex}.nonButtonStaticColors.${light.GPIOPinOrNonButtonIndex}`,
 																selected?.value || 0,
 															);
 														}}
@@ -300,7 +321,9 @@ function ButtonLayoutPreview({
 													height={SMALL_LIGHT_SIZE * 2}
 													fill={
 														colorOptions[
-															caseStaticColors[light.GPIOPinorCaseChainIndex]
+															nonButtonStaticColors[
+																light.GPIOPinOrNonButtonIndex
+															]
 														]?.color || 'black'
 													}
 													stroke="currentColor"
@@ -318,7 +341,7 @@ function ButtonLayoutPreview({
 														textShadow: '0 0 3px black',
 													}}
 												>
-													{`C${light.GPIOPinorCaseChainIndex}`}
+													{`C${light.GPIOPinOrNonButtonIndex}`}
 												</text>
 											</g>
 										</ColorSelectOverlay>
@@ -329,40 +352,49 @@ function ButtonLayoutPreview({
 									return (
 										<ColorSelectOverlay
 											key={`misc-light-${index}`}
-											title={`GPIO ${light.GPIOPinorCaseChainIndex}`}
+											title={t(
+												'LedConfigPage:buttonLayoutPreview.overlay-gpio-title',
+												{ pin: light.GPIOPinOrNonButtonIndex },
+											)}
 											content={
 												<div style={{ minWidth: 200 }}>
-													<p>Idle color</p>
+													<p>
+														{t('LedConfigPage:buttonLayoutPreview.idle-color')}
+													</p>
 													<ColorSelector
 														options={colorOptions}
 														value={
 															colorOptions[
 																notPressedStaticColors[
-																	light.GPIOPinorCaseChainIndex
+																	light.GPIOPinOrNonButtonIndex
 																]
 															] || null
 														}
 														onChange={(selected) => {
 															setFieldValue(
-																`AnimationOptions.profiles.${profileIndex}.notPressedStaticColors.${light.GPIOPinorCaseChainIndex}`,
+																`AnimationOptions.profiles.${profileIndex}.notPressedStaticColors.${light.GPIOPinOrNonButtonIndex}`,
 																selected?.value || 0,
 															);
 														}}
 													/>
 
-													<p className="mt-3">Active color</p>
+													<p className="mt-3">
+														{t(
+															'LedConfigPage:buttonLayoutPreview.active-color',
+														)}
+													</p>
 													<ColorSelector
 														options={colorOptions}
 														value={
 															colorOptions[
 																pressedStaticColors[
-																	light.GPIOPinorCaseChainIndex
+																	light.GPIOPinOrNonButtonIndex
 																]
 															] || null
 														}
 														onChange={(selected) => {
 															setFieldValue(
-																`AnimationOptions.profiles.${profileIndex}.pressedStaticColors.${light.GPIOPinorCaseChainIndex}`,
+																`AnimationOptions.profiles.${profileIndex}.pressedStaticColors.${light.GPIOPinOrNonButtonIndex}`,
 																selected?.value || 0,
 															);
 														}}
@@ -377,10 +409,10 @@ function ButtonLayoutPreview({
 														colorOptions[
 															pressed
 																? pressedStaticColors[
-																		light.GPIOPinorCaseChainIndex
+																		light.GPIOPinOrNonButtonIndex
 																	]
 																: notPressedStaticColors[
-																		light.GPIOPinorCaseChainIndex
+																		light.GPIOPinOrNonButtonIndex
 																	]
 														]?.color || 'black'
 													}
@@ -399,7 +431,7 @@ function ButtonLayoutPreview({
 														textShadow: '0 0 3px black',
 													}}
 												>
-													{`GP${light.GPIOPinorCaseChainIndex}`}
+													{`GP${light.GPIOPinOrNonButtonIndex}`}
 												</text>
 											</g>
 										</ColorSelectOverlay>
@@ -413,12 +445,19 @@ function ButtonLayoutPreview({
 			</Row>
 
 			<ColorSelectOverlay
-				title={'Set all colors'}
+				title={t('LedConfigPage:buttonLayoutPreview.set-all-colors')}
 				content={
 					<div style={{ minWidth: 200 }}>
-						<p>Idle color</p>
+						<p>{t('LedConfigPage:buttonLayoutPreview.idle-color')}</p>
 						<ColorSelector
 							options={colorOptions}
+							value={
+								notPressedStaticColors?.every(
+									(v) => v === notPressedStaticColors[0],
+								)
+									? colorOptions[notPressedStaticColors[0]] || null
+									: null
+							}
 							onChange={(selected) => {
 								setFieldValue(
 									`AnimationOptions.profiles.${profileIndex}.notPressedStaticColors`,
@@ -426,9 +465,16 @@ function ButtonLayoutPreview({
 								);
 							}}
 						/>
-						<p className="mt-3">Pressed color</p>
+						<p className="mt-3">
+							{t('LedConfigPage:buttonLayoutPreview.pressed-color')}
+						</p>
 						<ColorSelector
 							options={colorOptions}
+							value={
+								pressedStaticColors?.every((v) => v === pressedStaticColors[0])
+									? colorOptions[pressedStaticColors[0]] || null
+									: null
+							}
 							onChange={(selected) => {
 								setFieldValue(
 									`AnimationOptions.profiles.${profileIndex}.pressedStaticColors`,
@@ -436,20 +482,33 @@ function ButtonLayoutPreview({
 								);
 							}}
 						/>
-						<p className="mt-3">Case color</p>
+						<p className="mt-3">
+							{t('LedConfigPage:buttonLayoutPreview.case-color')}
+						</p>
 						<ColorSelector
 							options={colorOptions}
+							value={
+								nonButtonStaticColors?.every(
+									(v) => v === nonButtonStaticColors[0],
+								)
+									? colorOptions[nonButtonStaticColors[0]] || null
+									: null
+							}
 							onChange={(selected) => {
 								setFieldValue(
-									`AnimationOptions.profiles.${profileIndex}.caseStaticColors`,
-									Array(MAX_CASE_LIGHTS).fill(selected?.value || 0),
+									`AnimationOptions.profiles.${profileIndex}.nonButtonStaticColors`,
+									Array(MAX_NON_BUTTON_LIGHT_COLOR_INDEXES).fill(
+										selected?.value || 0,
+									),
 								);
 							}}
 						/>
 					</div>
 				}
 			>
-				<Button variant="secondary">Set all colors</Button>
+				<Button variant="secondary">
+					{t('LedConfigPage:buttonLayoutPreview.set-all-colors')}
+				</Button>
 			</ColorSelectOverlay>
 		</div>
 	);

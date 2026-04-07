@@ -1,48 +1,72 @@
 #include "jiggletwostaticcolor.h"
-#include "staticcolor.h"
+#include "jigglestaticcolor.h"
 
-JiggleTwoStaticColor::JiggleTwoStaticColor(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType) : StaticColor(InRGBLights, InButtonCaseEffectType) 
+#define JIGGLE_RAINBOW_FRAME_CHANGE_PER_TICK 1
+
+JiggleTwoStaticColor::JiggleTwoStaticColor(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType) : JiggleStaticColor(InRGBLights, InButtonCaseEffectType) 
 {
+    for(int index = 0; index < FRAME_MAX; ++index)
+    {
+        RainbowWheelFrame[index] = rand() % 255;
+        RainbowWheelReversed[index] = (rand() % 100) > 50;
+    }
 }
 
-JiggleTwoStaticColor::JiggleTwoStaticColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPins) : StaticColor(InRGBLights, InPressedPins) 
+JiggleTwoStaticColor::JiggleTwoStaticColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPins) : JiggleStaticColor(InRGBLights, InPressedPins) 
 {
+    for(int index = 0; index < FRAME_MAX; ++index)
+    {
+        RainbowWheelFrame[index] = rand() % 255;
+        RainbowWheelReversed[index] = (rand() % 100) > 50;
+    }
 }
 
-RGB JiggleTwoStaticColor::AdjustColor(RGB InColor)
+RGB JiggleTwoStaticColor::AdjustColor(int ledIndex, RGB InColor, LightType lightType)
 {
     RGB otherColor;
     
+    //calculate other color and advance rainbow effect if required
+    bool bUseRainbow = false;
     if(isButtonAnimation)
+    {
         otherColor = RGB(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].pressedSpecialColor);
-    else
+        bUseRainbow = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].bPressedSpecialColorIsRainbow;
+    }
+    else if(lightType == LightType::LightType_ActionButton)
+    {
         otherColor = RGB(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor);
+        bUseRainbow = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].bNonPressedSpecialColorIsRainbow;
+    }
+    else
+    {
+        otherColor = RGB(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].caseSpecialColor);
+        bUseRainbow = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].bCaseSpecialColorIsRainbow;
+    }
 
-    RGB outColor;
-    float rDiff = (float)otherColor.r - (float)InColor.r;
-    float newR = (float)InColor.r + (rDiff * (((float)(rand() % 100) / 100.0f)));
-    if(newR > 255.0f)
-        newR = 255;
-    if(newR < 0)
-        newR = 0;
-    outColor.r = (int)newR;
+    if(bUseRainbow)
+    {
+        if(!RainbowWheelReversed[ledIndex])
+        {
+            RainbowWheelFrame[ledIndex] += JIGGLE_RAINBOW_FRAME_CHANGE_PER_TICK;
+            if(RainbowWheelFrame[ledIndex] >= 255)
+            {
+                RainbowWheelReversed[ledIndex] = true;
+                RainbowWheelFrame[ledIndex] = 255;
+            }
+        }
+        else
+        {
+            RainbowWheelFrame[ledIndex] -= JIGGLE_RAINBOW_FRAME_CHANGE_PER_TICK;
+            if(RainbowWheelFrame[ledIndex] <= 0)
+            {
+                RainbowWheelReversed[ledIndex] = false;
+                RainbowWheelFrame[ledIndex] = 0;
+            }
+        }
 
-    float gDiff = (float)otherColor.g - (float)InColor.g;
-    float newG = (float)InColor.g + (gDiff * (((float)(rand() % 100) / 100.0f)));
-    if(newG > 255.0f)
-        newG = 255;
-    if(newG < 0)
-        newG = 0;
-    outColor.g = (int)newG;
+        otherColor = RGB::wheel(RainbowWheelFrame[ledIndex]);
+    }
 
-    float bDiff = (float)otherColor.b - (float)InColor.b;
-    float newB = (float)InColor.b + (bDiff * (((float)(rand() % 100) / 100.0f)));
-    if(newB > 255.0f)
-        newB = 255;
-    if(newB < 0)
-        newB = 0;
-    outColor.b = (int)newB;
-
-    return outColor;
+    return AdvanceColor(ledIndex, InColor, otherColor);
 }
  

@@ -11,9 +11,11 @@
 #include "gp2040.h"
 #include "addons/neopicoleds.h"
 #include "addons/pleds.h"
+#include "addons/turbo.h"
 #include "usbdriver.h"
 #include "enums.h"
 #include "helper.h"
+#include "animation.h"
 
 const std::string BUTTON_LABEL_UP = "Up";
 const std::string BUTTON_LABEL_DOWN = "Down";
@@ -41,8 +43,6 @@ bool NeoPicoLEDAddon::bRestartLeds = false;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Player LEDs ////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-uint32_t rgbPLEDValues[4];
 
 // Move to Proto Enums
 typedef enum
@@ -269,11 +269,19 @@ void NeoPicoLEDAddon::process()
 	if(bRestartLeds)
 	{
 		bRestartLeds = false;
+
+		//Save off test mode selected profile so we can restore it after the restart
+		int8_t savedMode = AnimStation.GetMode();
+
 		AnimStation.Clear();
 		neopico.Clear();
 		neopico.Show();
 		decompressSettings();
 		configureLEDs();
+
+		//Restore saved profile if applicable
+		if(AnimStation.TestMode != AnimationStationTestMode::AnimationStation_TestModeDisableTestMode)
+			AnimStation.SetMode(savedMode);
 	}
 
 	//Check we have LEDs enabled and is it time to update
@@ -283,7 +291,7 @@ void NeoPicoLEDAddon::process()
 
 	//Handle player leds (player id lights)
     Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
-   if (ledOptions.pledType == PLED_TYPE_RGB) {
+	if (ledOptions.pledType == PLED_TYPE_RGB) {
         if (gamepad->auxState.playerID.enabled && gamepad->auxState.playerID.active) {
             switch (gamepad->getOptions().inputMode) {
                 case INPUT_MODE_XINPUT:
@@ -340,41 +348,14 @@ void NeoPicoLEDAddon::process()
 	if (turnOffWhenSuspended && get_usb_suspended()) {
 		AnimStation.DimBrightnessTo0();
 	} else {
-		AnimStation.SetBrightnessStepValue(AnimationStation::GetBrightnessStepValue());
+		AnimStation.ApplyBrightnessStepValue();
 	}
 
 	//Grab led values this frame
 	AnimStation.ApplyBrightness(frame);
 
-    // Apply the player LEDs to our first 4 leds if we're in NEOPIXEL mode
-    if (ledOptions.pledType == PLED_TYPE_RGB) {
-        int32_t pledIndexes[] = { ledOptions.pledIndex1, ledOptions.pledIndex2, ledOptions.pledIndex3, ledOptions.pledIndex4 };
-        for (int i = 0; i < PLED_COUNT; i++) {
-            if (pledIndexes[i] < 0 || pledIndexes[i] > 99)
-                continue;
-
-            float level = (static_cast<float>(PLED_MAX_LEVEL - neoPLEDs->getLedLevels()[i]) / static_cast<float>(PLED_MAX_LEVEL));
-            float brightness = as.GetNormalisedBrightness() * level;
-            if (gamepad->auxState.sensors.statusLight.enabled && gamepad->auxState.sensors.statusLight.active) {
-                rgbPLEDValues[i] = (RGB(gamepad->auxState.sensors.statusLight.color.red, gamepad->auxState.sensors.statusLight.color.green, gamepad->auxState.sensors.statusLight.color.blue)).value(neopico.GetFormat(), brightness);
-            } else {
-                rgbPLEDValues[i] = ((RGB)ledOptions.pledColor).value(neopico.GetFormat(), brightness);
-            }
-            frame[pledIndexes[i]] = rgbPLEDValues[i];
-        }
-    }
-
-	// Get turbo options (turbo RGB led)
-    const TurboOptions& turboOptions = Storage::getInstance().getAddonOptions().turboOptions;
-    // Turbo LED is a separate RGB that is on if turbo is on, and off if its off
-    if ( turboOptions.turboLedType == PLED_TYPE_RGB ) { // RGB or PWM?
-        if ( gamepad->auxState.turbo.activity == 1) { // Turbo is on (active sensor)
-            if (turboOptions.turboLedIndex >= 0 && turboOptions.turboLedIndex < FRAME_MAX) { // Double check index value
-                float brightness = as.GetNormalisedBrightness();
-                frame[turboOptions.turboLedIndex] = ((RGB)turboOptions.turboLedColor).value(neopico.GetFormat(), brightness);
-            }
-        }
-    }
+	UpdatePlayerLEDs();
+	UpdateTurboLED();
 
 	//Set led values out to the actual leds
 	neopico.SetFrame(frame);
@@ -386,11 +367,87 @@ void NeoPicoLEDAddon::process()
 }
 
 ///////////////////////////////////
+// Player leds if in RGB mode
+///////////////////////////////////
+
+void NeoPicoLEDAddon::UpdatePlayerLEDs()
+{
+	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
+    Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
+
+	// Apply the player LEDs to our first 4 leds if we're in NEOPIXEL mode
+    if (ledOptions.pledType == PLED_TYPE_RGB)
+	{
+  		for(unsigned int lightIndex = 0; lightIndex < RGBLights.AllLights.size(); ++lightIndex)
+		{
+			if(RGBLights.AllLights[lightIndex].Type >= LightType::LightType_Player1Light && RGBLights.AllLights[lightIndex].Type <= LightType::LightType_Player4Light)
+			{
+				//Get player Id
+				int playerId = RGBLights.AllLights[lightIndex].PlayerLightIndex;
+				if(playerId >= 0 && playerId < 4)
+				{
+					float level = (static_cast<float>(PLED_MAX_LEVEL - neoPLEDs->getLedLevels()[playerId]) / static_cast<float>(PLED_MAX_LEVEL));
+					float brightness = as.GetNormalisedBrightness() * level;
+					uint32_t valueToApply;
+
+					if (gamepad->auxState.sensors.statusLight.enabled && gamepad->auxState.sensors.statusLight.active) 
+					{
+						valueToApply = (RGB(gamepad->auxState.sensors.statusLight.color.red, gamepad->auxState.sensors.statusLight.color.green, gamepad->auxState.sensors.statusLight.color.blue)).value(neopico.GetFormat(), brightness);
+					} 
+					else 
+					{
+						RGB pledCol = Animation::StaticGetNonPressedColorForLight(&RGBLights, lightIndex);
+						valueToApply = pledCol.value(neopico.GetFormat(), brightness);
+					}
+					
+					for(uint8_t index = RGBLights.AllLights[lightIndex].FirstLedIndex; index < (RGBLights.AllLights[lightIndex].FirstLedIndex + RGBLights.AllLights[lightIndex].LedsPerLight); ++index)
+					{
+            		    frame[index] = valueToApply;
+					}
+				}
+			}
+		}
+    }
+}
+
+///////////////////////////////////
+// Turbo led if in RGB mode
+///////////////////////////////////
+
+void NeoPicoLEDAddon::UpdateTurboLED()
+{
+    Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
+	// Get turbo options (turbo RGB led)
+    const TurboOptions& turboOptions = Storage::getInstance().getAddonOptions().turboOptions;
+
+    // Turbo LED is a separate RGB that is on if turbo is on, and off if its off
+    if ( turboOptions.turboLedType == PLED_TYPE_RGB )  // RGB or PWM?
+	{
+        if ( gamepad->auxState.turbo.activity == 1)  // Turbo is on (active sensor)
+		{
+            float brightness = AnimStation.GetNormalisedBrightness();
+
+  			for(unsigned int lightIndex = 0; lightIndex < RGBLights.AllLights.size(); ++lightIndex)
+			{
+				if(RGBLights.AllLights[lightIndex].Type == LightType::LightType_Turbo)
+				{
+					for(uint8_t index = RGBLights.AllLights[lightIndex].FirstLedIndex; index < (RGBLights.AllLights[lightIndex].FirstLedIndex + RGBLights.AllLights[lightIndex].LedsPerLight); ++index)
+					{
+						RGB turboCol = Animation::StaticGetNonPressedColorForLight(&RGBLights, lightIndex);
+            		    frame[index] = turboCol.value(neopico.GetFormat(), brightness);
+					}
+				}
+			}
+        }
+    }
+}
+
+///////////////////////////////////
 // Old Pixel Setup functions
 // Left here for legacy setup until all configs are converted
 ///////////////////////////////////
 
-void NeoPicoLEDAddon::generateLegacyIndividualLight(int firstLedIndex, int xCoord, int yCoord, uint8_t ledsPerPixel, GpioAction actionButton)
+void NeoPicoLEDAddon::generateLegacyIndividualLight(int firstLedIndex, int xCoord, int yCoord, uint8_t ledsPerPixel, int customDataIndex, LightType lightType)
 {
 	//If button doesnt have a light then return
 	if(firstLedIndex < 0)
@@ -404,14 +461,18 @@ void NeoPicoLEDAddon::generateLegacyIndividualLight(int firstLedIndex, int xCoor
 
 	const GpioMappings& pinMappings = Storage::getInstance().getGpioMappings();
 
-	//NOTE : I dont like this but I'm not sure theres a better way. Since sticks often have multiple buttons bound to the same action I'm hoping the first one found is the "master"
-	int gpioPin = -1;
-	for(int configIndex = 0; configIndex < pinMappings.pins_count; ++configIndex)
+	if(lightType == LightType::LightType_ActionButton)
 	{
-		if(actionButton == pinMappings.pins[configIndex].action)
+		GpioAction actionButton = (GpioAction)customDataIndex;
+		customDataIndex = -1;
+		//NOTE : I dont like this but I'm not sure theres a better way. Since sticks often have multiple buttons bound to the same action I'm hoping the first one found is the "master"
+		for(int configIndex = 0; configIndex < pinMappings.pins_count; ++configIndex)
 		{
-			gpioPin = configIndex;
-			break;
+			if(actionButton == pinMappings.pins[configIndex].action)
+			{
+				customDataIndex = configIndex;
+				break;
+			}
 		}
 	}
 
@@ -420,8 +481,8 @@ void NeoPicoLEDAddon::generateLegacyIndividualLight(int firstLedIndex, int xCoor
 	options.lightClusterData[thisEntryIndex].lightLocationData += ledsPerPixel << 8;
 	options.lightClusterData[thisEntryIndex].lightLocationData += xCoord << 16;
 	options.lightClusterData[thisEntryIndex].lightLocationData += yCoord << 24;
-	options.lightClusterData[thisEntryIndex].lightTypeData = gpioPin;
-	options.lightClusterData[thisEntryIndex].lightTypeData += LightType::LightType_ActionButton << 8;
+	options.lightClusterData[thisEntryIndex].lightTypeData = customDataIndex;
+	options.lightClusterData[thisEntryIndex].lightTypeData += lightType << 8;
 	options.lightClusterData_count++;
 }
 
@@ -591,6 +652,29 @@ void NeoPicoLEDAddon::createLEDLayout(ButtonLayout layout, uint8_t ledsPerPixel,
 		default:
 			generatedLEDButtons(&positions, ledsPerPixel);
 			break;
+	}
+
+	//Also generate turbo and PLED's if they have boardconfig values
+    const TurboOptions& turboOptions = Storage::getInstance().getAddonOptions().turboOptions;
+    if (turboOptions.turboLedType == PLED_TYPE_RGB )
+	{
+		if(TURBO_LED_INDEX != -1)
+		{
+			generateLegacyIndividualLight(TURBO_LED_INDEX, 0, 10, 1, turboOptions.ledPin, LightType::LightType_Turbo);
+		}
+	}
+
+	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
+	if(ledOptions.pledType == PLEDType::PLED_TYPE_RGB)
+	{
+		if(PLED1_PIN != -1 && PLED2_PIN != -1 && PLED3_PIN != -1 && PLED4_PIN != -1)
+		{
+			// config utils defaults to setting the last entry in the non button array to be the pled colour
+			generateLegacyIndividualLight(PLED1_PIN, 0, 11, 1, (MAX_NON_BUTTON_LIGHT_COLOR_INDEXES-1), LightType::LightType_Player1Light);
+			generateLegacyIndividualLight(PLED2_PIN, 1, 11, 1, (MAX_NON_BUTTON_LIGHT_COLOR_INDEXES-1), LightType::LightType_Player2Light);
+			generateLegacyIndividualLight(PLED3_PIN, 2, 11, 1, (MAX_NON_BUTTON_LIGHT_COLOR_INDEXES-1), LightType::LightType_Player3Light);
+			generateLegacyIndividualLight(PLED4_PIN, 3, 11, 1, (MAX_NON_BUTTON_LIGHT_COLOR_INDEXES-1), LightType::LightType_Player4Light);		
+		}
 	}
 }
 

@@ -103,11 +103,6 @@ export const turboScheme = {
 		.label('Charge Shot Button 4 Map')
 		.validateSelectionWhenValue('TurboInputEnabled', BUTTON_MASKS_OPTIONS),
 	turboLedType: yup.number().required().label('Turbo LED Type'),
-	turboLedIndex: yup
-		.number()
-		.label('Turbo LED Index')
-		.validateMinWhenEqualTo('turboLedType', 1, 0),
-	turboLedColor: yup.string().label('RGB Turbo LED').validateColor(),
 };
 
 export const turboState = {
@@ -130,8 +125,6 @@ export const turboState = {
 	turboPinLED: -1,
 	turboShotCount: 5,
 	turboLedType: 0,
-	turboLedIndex: 0,
-	turboLedColor: '#000000',
 };
 
 const Turbo = ({
@@ -202,36 +195,6 @@ const Turbo = ({
 						onChange={handleChange}
 						min={-1}
 						max={29}
-					/>
-					<FormControl
-						type="number"
-						name="turboLedIndex"
-						hidden={values.turboLedType !== 1}
-						label={t('AddonsConfig:turbo-led-index-label')}
-						className="form-control-sm"
-						groupClassName="col-sm-2 mb-3"
-						value={values.turboLedIndex}
-						error={errors.turboLedIndex}
-						isInvalid={Boolean(errors.turboLedIndex)}
-						onChange={(e) =>
-							setFieldValue(
-								'turboLedIndex',
-								parseInt((e.target as HTMLInputElement).value),
-							)
-						}
-						min={0}
-					/>
-					<FormControl
-						type="color"
-						label={t('AddonsConfig:turbo-led-color-label')}
-						hidden={values.turboLedType !== 1}
-						name="turboLedColor"
-						className="form-control-sm"
-						groupClassName="col-sm-2 mb-3"
-						defaultValue={values.turboLedColor}
-						error={errors.turboLedColor}
-						isInvalid={Boolean(errors.turboLedColor)}
-						onBlur={(c) => setFieldValue('turboLedColor', c.target.value)}
 					/>
 				</Row>
 				<Row className="mb-3">

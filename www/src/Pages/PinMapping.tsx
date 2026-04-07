@@ -170,7 +170,7 @@ const PinSelectList = memo(function PinSelectList({
 	profileIndex: number;
 }) {
 	const setProfilePin = useProfilesStore((state) => state.setProfilePin);
-	const { activateLedsOnId, turnOffLeds } = useLedsPreview();
+	const { activateLedsOnId, turnOffLedTestModes } = useLedsPreview();
 	const pins = useProfilesStore(
 		useShallow((state) =>
 			omit(state.profiles[profileIndex], ['profileLabel', 'enabled']),
@@ -264,7 +264,7 @@ const PinSelectList = memo(function PinSelectList({
 						onChange={onChange(pin)}
 						value={getMultiValue(pinData)}
 						onFocus={() => activateLedsOnId(index)}
-						onBlur={turnOffLeds}
+						onBlur={turnOffLedTestModes}
 					/>
 				</div>
 			))}

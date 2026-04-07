@@ -60,8 +60,6 @@
 #define KEY_BUTTON_FN   -1                    // Hotkey Function                                        |
 
 #define BOARD_LEDS_PIN 0
-#define LEDS_PER_PIXEL 2
-#define LEDS_AUTO_DISABLE_TIME 0
 #define LIGHT_DATA_NAME_DEFAULT "Flatbox Rev5 RGB" 
 #define LIGHT_DATA_SIZE_DEFAULT 12 //number of sets in the below data
 #define LEDS_BASE_ANIMATION_INDEX AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_ROTATE
@@ -78,5 +76,27 @@
 18, 2, 8,  4, 4,  LightType::LightType_ActionButton, \
 20, 2, 6,  5, 3,  LightType::LightType_ActionButton, \
 22, 2, 5,  7, 2,  LightType::LightType_ActionButton, 
+
+#define LEDS_DPAD_LEFT   0
+#define LEDS_DPAD_DOWN   1
+#define LEDS_DPAD_RIGHT  2
+#define LEDS_DPAD_UP     3
+#define LEDS_BUTTON_B3   4
+#define LEDS_BUTTON_B4   5
+#define LEDS_BUTTON_R1   6
+#define LEDS_BUTTON_L1   7
+#define LEDS_BUTTON_B1   8
+#define LEDS_BUTTON_B2   9
+#define LEDS_BUTTON_R2   10
+#define LEDS_BUTTON_L2   11
+
+#define PLED_TYPE PLED_TYPE_RGB
+#define PLED1_PIN 24
+#define PLED2_PIN 25
+#define PLED3_PIN 26
+#define PLED4_PIN 27
+#define PLED_COLOR 6 // ColorGreen index from Animation.h
+
+#define HAS_I2C_DISPLAY 0 //This needs to be defined or the LEDs will not work
 
 #endif

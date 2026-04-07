@@ -168,22 +168,37 @@ bool Animation::LightTypeIsForAnimation(LightType Type)
 }
 
 //Get correct color for light index
-RGB Animation::GetNonPressedColorForLight(uint32_t LightIndex)
+RGB Animation::StaticGetNonPressedColorForLight(Lights* AllLights, uint32_t LightIndex)
 {
   int colIndex = 0;
-  Light* thisLight = &(RGBLights->AllLights[LightIndex]);
-  if(thisLight->Type == LightType::LightType_ActionButton)
+  Light* thisLight = &(AllLights->AllLights[LightIndex]);
+  if(thisLight->Type == LightType::LightType_ActionButton || thisLight->Type == LightType::LightType_Turbo)
   {
     //button
     colIndex = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].notPressedStaticColors[thisLight->GIPOPin];
   }
   else
   {
-    //case light
-    colIndex = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].caseStaticColors[thisLight->CaseLightIndex];
+    //If we're in test mode for case lights then turn all lights black and return white for the requested case Light
+    if(AnimationStation::TestModeLightIsNonButton && AnimationStation::TestModePinOrNonButtonIndex != -1)
+    {
+      colIndex = 0;
+      if(thisLight->Type == LightType::LightType_Turbo && ((int)thisLight->FirstLedIndex == AnimationStation::TestModePinOrNonButtonIndex))
+      colIndex = 1;
+    }
+    else
+    {
+      //case light or player led
+      colIndex = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonButtonStaticColors[thisLight->NonButtonIndex];
+    }
   }
 
   return GetColorForIndex(colIndex);
+}
+
+RGB Animation::GetNonPressedColorForLight(uint32_t LightIndex)
+{
+  return StaticGetNonPressedColorForLight(RGBLights, LightIndex);
 }
 
 RGB Animation::GetPressedColorForLight(uint32_t LightIndex)

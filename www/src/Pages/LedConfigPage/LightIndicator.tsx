@@ -95,7 +95,7 @@ export function LightIndicator({
 	numLedsOnLight,
 	firstLedIndex,
 	lightType,
-	GPIOPinorCaseChainIndex,
+	GPIOPinOrNonButtonIndex,
 	error,
 }: LightIndicatorProps) {
 	const { attributes, isDragging, listeners, setNodeRef, transform } =
@@ -146,8 +146,8 @@ export function LightIndicator({
 										<span className="text-secondary">GPIO/Case:</span>
 										<span>
 											{lightType === LIGHT_TYPES.Case
-												? GPIOPinorCaseChainIndex + 1
-												: GPIOPinorCaseChainIndex}
+												? GPIOPinOrNonButtonIndex + 1
+												: GPIOPinOrNonButtonIndex}
 										</span>
 									</div>
 									<div className="d-flex w-100 justify-content-between">

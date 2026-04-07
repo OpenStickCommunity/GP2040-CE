@@ -312,14 +312,14 @@ message LEDOptions
     optional int32 pledPin2 = 27;
     optional int32 pledPin3 = 28;
     optional int32 pledPin4 = 29;
-    optional uint32 pledColor = 30;
+    optional uint32 pledColor = 30 [deprecated = true];
 
     optional bool turnOffWhenSuspended = 31;
 
-    optional int32 pledIndex1 = 32;
-    optional int32 pledIndex2 = 33;
-    optional int32 pledIndex3 = 34;
-    optional int32 pledIndex4 = 35;
+    optional int32 pledIndex1 = 32 [deprecated = true];
+    optional int32 pledIndex2 = 33 [deprecated = true];
+    optional int32 pledIndex3 = 34 [deprecated = true];
+    optional int32 pledIndex4 = 35 [deprecated = true];
 
     optional CaseRGBType caseRGBType = 36 [deprecated = true];
     optional int32 caseRGBIndex = 37 [deprecated = true];
@@ -350,7 +350,7 @@ message AnimationProfile
 
  	optional AnimationNonPressedEffects baseCaseEffect = 10;
 
-    repeated uint32 caseStaticColors = 11 [(nanopb).max_count = 10]; //(MAX_CASE_LIGHTS/4) from AnimationStation.hpp
+    repeated uint32 nonButtonStaticColors = 11 [(nanopb).max_count = 8]; //(MAX_NON_BUTTON_LIGHT_COLOR_INDEXES/4) from AnimationStation.hpp
 
     optional uint32 pressedSpecialColor = 12;
 
@@ -358,7 +358,17 @@ message AnimationProfile
 
     optional bool bUseCaseLightsInPressedAnimations = 14;
 
-    optional int32 baseCaseCycleTime = 15; 
+    optional bool bUseCaseLightsInPressedAnimations = 15;
+
+    optional int32 baseCaseCycleTime = 16; 
+
+    optional bool bNonPressedSpecialColorIsRainbow = 17;
+    optional bool bPressedSpecialColorIsRainbow = 18;
+    optional bool bCaseSpecialColorIsRainbow = 19;
+
+    optional uint32 caseSpecialColor = 20;
+
+    optional uint32 effectContextParam = 21;
 };
 
 // This has to be kept in sync with AnimationOptions_Unpacked in animationstation.hpp
@@ -445,8 +455,8 @@ message TurboOptions
     optional ShmupMixMode shmupMixMode = 19;
 
     optional PLEDType turboLedType = 20;
-    optional int32 turboLedIndex = 21;
-    optional uint32 turboLedColor = 22;
+    optional int32 turboLedIndex = 21  [deprecated = true];
+    optional uint32 turboLedColor = 22 [deprecated = true];
 }
 
 message SliderOptions
@@ -862,8 +872,12 @@ message HETriggerInfo
     optional GpioAction action = 1;
     optional int32 active = 2;
     optional int32 idle = 3;
-    optional int32 max = 4;
-    optional int32 polarity = 5;
+    optional int32 pressed = 4;
+    optional int32 polarity = 5 [deprecated = true];
+    optional int32 release = 6;
+    optional int32 noise = 7;
+    optional bool rapidTrigger = 8; 
+    optional bool is_polarized = 9;
 }
 
 message HETriggerOptions

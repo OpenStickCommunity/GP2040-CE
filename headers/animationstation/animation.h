@@ -108,6 +108,21 @@ inline const std::vector<RGB> colors {
 #define MAX_CUSTOM_COLORS 16
 inline std::vector<RGB> customColors { };
 
+constexpr int ColorIndexBlack = 0;
+constexpr int ColorIndexWhite = 1;
+constexpr int ColorIndexRed = 2;
+constexpr int ColorIndexOrange = 3;
+constexpr int ColorIndexYellow = 4;
+constexpr int ColorIndexLimeGreen = 5;
+constexpr int ColorIndexGreen = 6;
+constexpr int ColorIndexSeafoam = 7;
+constexpr int ColorIndexAqua = 8;
+constexpr int ColorIndexSkyBlue = 9;
+constexpr int ColorIndexBlue = 10;
+constexpr int ColorIndexPurple = 11;
+constexpr int ColorIndexPink = 12;
+constexpr int ColorIndexMagenta = 13;
+
 typedef enum
 {
   BUTTONCASELIGHTTYPE_BUTTON_ONLY,
@@ -135,6 +150,9 @@ public:
 
   virtual bool IsFinished() { return false; } //ready for delete? Only applicable to special move anims really
 
+  //Get color helpers
+  static RGB StaticGetNonPressedColorForLight(Lights* AllLights, uint32_t LightIndex);
+
 protected:
 
   //gets current frame time
@@ -158,7 +176,7 @@ protected:
   //Get color helpers
   virtual RGB GetNonPressedColorForLight(uint32_t LightIndex);
   virtual RGB GetPressedColorForLight(uint32_t LightIndex);
-  virtual RGB GetColorForIndex(uint32_t ColorIndex);
+  static RGB GetColorForIndex(uint32_t ColorIndex);
 
   //Light data
   Lights* RGBLights;

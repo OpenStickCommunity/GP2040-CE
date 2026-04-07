@@ -15,6 +15,7 @@ typedef enum
   RAIN_LOW,
   RAIN_MEDIUM,
   RAIN_HIGH,
+  RAIN_MAX
 } ERainFrequency;
 
 #define MAX_RAIN_DROPS 20
@@ -22,7 +23,7 @@ typedef enum
 
 class Rain : public Animation {
 public:
-    Rain(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType, ERainFrequency InRainFrequency = ERainFrequency::RAIN_MEDIUM);
+    Rain(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType);
     ~Rain() {};
 
     virtual void Animate(RGB (&frame)[FRAME_MAX]) override;
@@ -33,9 +34,13 @@ protected:
     float GetTimeTillNextDrop();
     bool RainHistoryContains(int newXCoord);
     int FindLightForCoord(int xCoord, int yCoord);
-
+    void GetSpecialColors(RGB& chaseCol, RGB& caseChaseCol, int rainIndex);
+    
     float RainYCoords[MAX_RAIN_DROPS];
     int RainXCoords[MAX_RAIN_DROPS];
+
+    int RainbowWheelFrame[MAX_RAIN_DROPS];
+    bool RainbowWheelReversed[MAX_RAIN_DROPS];
 
     int previousRainDropXCoords[RAIN_DROP_NO_REPEAT_X_NUM];
 

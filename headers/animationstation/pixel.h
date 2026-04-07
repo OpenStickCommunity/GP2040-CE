@@ -46,17 +46,37 @@ struct LightPosition
 //A single RGB light on the device. Replaced Pixel
 struct Light 
 {
-  Light(uint8_t InFirstLedIndex, uint8_t InNumLedsPerLight, LightPosition InPosition, uint8_t InGIPOPin, LightType InType)
+  Light(uint8_t InFirstLedIndex, uint8_t InNumLedsPerLight, LightPosition InPosition, uint8_t InGIPOPinOrNonButtonIndex, LightType InType)
   {
     FirstLedIndex = InFirstLedIndex;
     Position = InPosition;
     Type = InType;
     LedsPerLight = InNumLedsPerLight;
     //GamePadMask = GamePadMask;
-    if(InType != LightType::LightType_Case)
-      GIPOPin = InGIPOPin;
-    else
-      CaseLightIndex = InGIPOPin;
+    if(InType == LightType::LightType_Case)
+      NonButtonIndex = InGIPOPinOrNonButtonIndex;
+    else if(InType == LightType::LightType_Player1Light)
+    {
+      NonButtonIndex = InGIPOPinOrNonButtonIndex;
+      PlayerLightIndex = 0;
+    }
+    else if(InType == LightType::LightType_Player2Light)
+    {
+      NonButtonIndex = InGIPOPinOrNonButtonIndex;
+      PlayerLightIndex = 1;
+    }
+    else if(InType == LightType::LightType_Player3Light)
+    {
+      NonButtonIndex = InGIPOPinOrNonButtonIndex;
+      PlayerLightIndex = 2;
+    }
+    else if(InType == LightType::LightType_Player4Light)
+    {
+      NonButtonIndex = InGIPOPinOrNonButtonIndex;
+      PlayerLightIndex = 3;
+    }
+    else if(InType == LightType::LightType_ActionButton || InType == LightType::LightType_Turbo)
+      GIPOPin = InGIPOPinOrNonButtonIndex;
   }
 
   // index of first LED
@@ -77,8 +97,11 @@ struct Light
   //GIPO pin this action (if applicaple) is on
   int32_t GIPOPin = -1;
 
-  //Sequential index of this case light
-  int32_t CaseLightIndex = -1;
+  //Index into NonButtonIndex array in a led profile
+  int32_t NonButtonIndex = -1;
+
+  //Player ID
+  int32_t PlayerLightIndex = -1;
 };
 
 //All RGB lights on the device. Replaced PixelMatrix

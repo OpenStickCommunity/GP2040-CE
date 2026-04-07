@@ -6,27 +6,34 @@ import {
 } from '../Data/Animations';
 
 export const MAX_CUSTOM_COLORS = 8;
-export const MAX_CASE_LIGHTS = 40;
+export const MAX_NON_BUTTON_LIGHT_COLOR_INDEXES = 32;
 export const MAX_LIGHTS = 100;
 export const MAX_ANIMATION_PROFILES = 4;
 
 export type AnimationProfile = {
 	bEnabled: 0 | 1;
 	bUseCaseLightsInPressedAnimations: 0 | 1;
-	baseCaseEffect: typeof ANIMATION_NON_PRESSED_EFFECTS;
-	baseNonPressedEffect: typeof ANIMATION_NON_PRESSED_EFFECTS;
-	basePressedEffect: typeof ANIMATION_PRESSED_EFFECTS;
+	baseCaseEffect: typeof ANIMATION_NON_PRESSED_EFFECTS[keyof typeof ANIMATION_NON_PRESSED_EFFECTS];
+	baseNonPressedEffect: typeof ANIMATION_NON_PRESSED_EFFECTS[keyof typeof ANIMATION_NON_PRESSED_EFFECTS];
+	basePressedEffect: typeof ANIMATION_PRESSED_EFFECTS[keyof typeof ANIMATION_PRESSED_EFFECTS];
 	buttonPressFadeOutTimeInMs: number;
 	buttonPressHoldTimeInMs: number;
-	caseStaticColors: number[];
+	nonButtonStaticColors: number[];
 	nonPressedSpecialColor: number;
 	notPressedStaticColors: number[];
 	pressedSpecialColor: number;
 	pressedStaticColors: number[];
+	caseSpecialColor: number;
+	bNonPressedSpecialColorIsRainbow: 0 | 1;
+	bPressedSpecialColorIsRainbow: 0 | 1;
+	bCaseSpecialColorIsRainbow: 0 | 1;
+	nonPressedContextParam: number;
+	pressedContextParam: number;
+	caseContextParam: number;
 };
 
 export type Light = {
-	GPIOPinorCaseChainIndex: number;
+	GPIOPinOrNonButtonIndex: number;
 	firstLedIndex: number;
 	lightType: number;
 	numLedsOnLight: number;
@@ -47,6 +54,11 @@ export type LedOptions = {
 	ledFormat: number;
 	turnOffWhenSuspended: number;
 	brightnessMaximum: number;
+	pledType: number;
+	pledPin1: number;
+	pledPin2: number;
+	pledPin3: number;
+	pledPin4: number;
 };
 
 type State = {
@@ -70,6 +82,11 @@ const INITIAL_STATE: State = {
 		ledFormat: 0,
 		turnOffWhenSuspended: 0,
 		brightnessMaximum: 0,
+		pledType: -1,
+		pledPin1: -1,
+		pledPin2: -1,
+		pledPin3: -1,
+		pledPin4: -1,
 	},
 	AnimationOptions: {
 		brightness: 0,

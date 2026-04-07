@@ -418,9 +418,6 @@ async function getAddonsOptions(setLoading) {
 		const data = response.data;
 		setLoading(false);
 
-		response.data.turboLedColor =
-			rgbIntToHex(response.data.turboLedColor) || '#ffffff';
-
 		// Merge saved keyMappings with defaults
 		const keyboardHostMap = Object.entries(data.keyboardHostMap).reduce(
 			(acc, [key, value]) => ({ ...acc, [key]: { ...acc[key], key: value } }),
@@ -626,29 +623,30 @@ async function setExpansionPins(mappings) {
 	return Http.post(`${baseUrl}/api/setExpansionPins`, mappings);
 }
 
-// POST function to get the ADC reading of a hall-effect trigger
-async function getHETriggerCalibration(settings) {
-	return Http.post(`${baseUrl}/api/getHETriggerCalibration`, settings);
+// POST function to get the ADC reading for one Hall Effect channel
+async function getHETriggerVoltage(settings) {
+	return Http.post(`${baseUrl}/api/getHETriggerVoltage`, settings);
 }
 
 // POST function to set our channels, select, and ADC pin
-async function setHETriggerCalibration(settings) {
-	return Http.post(`${baseUrl}/api/setHETriggerCalibration`, settings);
+async function setHETriggerOptions(settings) {
+	return Http.post(`${baseUrl}/api/setHETriggerOptions`, settings);
 }
 
-async function getHETriggerOptions() {
+async function getHETriggerCalibrations() {
 	try {
-		const response = await Http.get(`${baseUrl}/api/getHETriggerOptions`);
+		const response = await Http.get(`${baseUrl}/api/getHETriggerCalibrations`);
 		return response.data;
 	} catch (error) {
 		console.error(error);
 	}
 }
 
-async function setHETriggerOptions(triggers) {
+// POST to set all Hall Effect Trigger Calibrations
+async function setHETriggerCalibrations(triggers) {
 	console.dir(triggers);
 
-	return Http.post(`${baseUrl}/api/setHETriggerOptions`, triggers);
+	return Http.post(`${baseUrl}/api/setHETriggerCalibrations`, triggers);
 }
 
 async function getHeldPins(abortSignal) {
@@ -697,6 +695,13 @@ async function setAnimationButtonTestState(options) {
 		console.error(err);
 	}
 }
+async function clearAnimationButtonTestMode(options) {
+	try {
+		await Http.post(`${baseUrl}/api/clearAnimationButtonTestMode`, options);
+	} catch (error) {
+		console.error(err);
+	}
+}
 
 export default {
 	resetSettings,
@@ -729,9 +734,9 @@ export default {
 	getLightsPresets,
 	getExpansionPins,
 	setExpansionPins,
-	getHETriggerCalibration,
-	setHETriggerCalibration,
-	getHETriggerOptions,
+	getHETriggerVoltage,
+	setHETriggerCalibrations,
+	getHETriggerCalibrations,
 	setHETriggerOptions,
 	getReactiveLEDs,
 	setReactiveLEDs,
@@ -741,6 +746,7 @@ export default {
 	setSplashImage,
 	setAnimationButtonTestMode,
 	setAnimationButtonTestState,
+	clearAnimationButtonTestMode,
 	getUsedPins,
 	getHeldPins,
 	abortGetHeldPins,

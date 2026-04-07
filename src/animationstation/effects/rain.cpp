@@ -1,12 +1,25 @@
 #include "rain.h"
 #include <algorithm>
 
-#define RAIN_CYCLE_MAX         500
+#define RAIN_CYCLE_MAX         300
 #define RAIN_CYCLE_MIN         10
 
-Rain::Rain(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType, ERainFrequency InRainFrequency) : Animation(InRGBLights, InButtonCaseEffectType) 
+#define RAIN_RAINBOW_FRAME_CHANGE_PER_TICK 10
+
+Rain::Rain(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType) : Animation(InRGBLights, InButtonCaseEffectType) 
 {
-    RainFrequency = InRainFrequency;
+    int rainFrequencyVal;
+
+    if(InButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_ONLY || InButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE)
+    {
+        rainFrequencyVal = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedEffectContextParam;
+    }
+    else
+    {
+        rainFrequencyVal = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].caseEffectContextParam;
+    }
+    if(rainFrequencyVal != 0 && rainFrequencyVal <= ERainFrequency::RAIN_MAX)
+        RainFrequency = (ERainFrequency)(rainFrequencyVal - 1);
 
     CycleParameterChange();
 
@@ -109,6 +122,41 @@ int Rain::FindLightForCoord(int xCoord, int yCoord)
     return backupRightIndex;
 }
 
+void Rain::GetSpecialColors(RGB& specialLightCol, RGB& caseSpecialLightCol, int rainIndex)
+{
+    specialLightCol = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor;
+    caseSpecialLightCol = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].caseSpecialColor;
+    bool buttonIsRainbow = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].bNonPressedSpecialColorIsRainbow;
+    bool caseIsRainbow = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].bCaseSpecialColorIsRainbow;
+
+    if(buttonIsRainbow || caseIsRainbow)
+    {
+        if(!RainbowWheelReversed[rainIndex])
+        {
+            RainbowWheelFrame[rainIndex] += RAIN_RAINBOW_FRAME_CHANGE_PER_TICK;
+            if(RainbowWheelFrame[rainIndex] >= 255)
+            {
+                RainbowWheelReversed[rainIndex] = true;
+                RainbowWheelFrame[rainIndex] = 255;
+            }
+        }
+        else
+        {
+            RainbowWheelFrame[rainIndex] -= RAIN_RAINBOW_FRAME_CHANGE_PER_TICK;
+            if(RainbowWheelFrame[rainIndex] <= 0)
+            {
+                RainbowWheelReversed[rainIndex] = false;
+                RainbowWheelFrame[rainIndex] = 0;
+            }
+        }
+
+        if(buttonIsRainbow)
+            specialLightCol = RGB::wheel(RainbowWheelFrame[rainIndex]);
+        if(caseIsRainbow)
+            caseSpecialLightCol = RGB::wheel(RainbowWheelFrame[rainIndex]);
+    }
+}
+
 void Rain::Animate(RGB (&frame)[FRAME_MAX]) 
 {
     UpdateTime();
@@ -163,6 +211,8 @@ void Rain::Animate(RGB (&frame)[FRAME_MAX])
                     RainXCoords[rainIndex] = newRainXCoord;
                     previousRainDropXCoords[RAIN_DROP_NO_REPEAT_X_NUM - 1] = newRainXCoord;
                     RainYCoords[rainIndex] = ((float)MinYCoord) - 1.0f;
+                    RainbowWheelFrame[rainIndex] = 1 + rand() % 253;
+                    RainbowWheelReversed[rainIndex] = (rand() % 100) > 50.0f;
                     break;
                 }
             }
@@ -195,8 +245,10 @@ void Rain::Animate(RGB (&frame)[FRAME_MAX])
         float firstLightAlpha = 1.0f - (RainYCoords[rainIndex] - (float)firstYIndex);
         float secondLightAlpha = 1.0f - firstLightAlpha;
 
-        RGB specialLightCol = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor;
-        
+        //store off special color and update rainbow if required
+        RGB specialLightCol, caseSpecialLightCol;
+        GetSpecialColors(specialLightCol, caseSpecialLightCol, rainIndex);
+
         if(firstLightIndex >= 0)
         {
             RGB firstLightCol = GetNonPressedColorForLight(firstLightIndex);
@@ -205,7 +257,7 @@ void Rain::Animate(RGB (&frame)[FRAME_MAX])
             for(uint8_t ledIndex = firstLedIndex; ledIndex < lastLedIndex; ++ledIndex)
             {
                 frame[ledIndex] = BlendColor(firstLightCol,
-                                            specialLightCol, 
+                                            RGBLights->AllLights[firstLightIndex].Type == LightType::LightType_ActionButton ? specialLightCol : caseSpecialLightCol, 
                                             firstLightAlpha);
             }
         }
@@ -218,7 +270,7 @@ void Rain::Animate(RGB (&frame)[FRAME_MAX])
             for(uint8_t ledIndex = firstLedIndex; ledIndex < lastLedIndex; ++ledIndex)
             {
                 frame[ledIndex] = BlendColor(secondLightCol,
-                                            specialLightCol, 
+                                            RGBLights->AllLights[secondLightIndex].Type == LightType::LightType_ActionButton ? specialLightCol : caseSpecialLightCol, 
                                             secondLightAlpha);
             }
         }

@@ -132,19 +132,43 @@
 #endif
 
 #ifndef LEDS_STATIC_COLOR_UNPRESSED
-#define LEDS_STATIC_COLOR_UNPRESSED 2 // Red - animation.h colors array index
+#define LEDS_STATIC_COLOR_UNPRESSED ColorIndexRed 
 #endif
 
 #ifndef LEDS_STATIC_COLOR_PRESSED
-#define LEDS_STATIC_COLOR_PRESSED 1 // White - animation.h colors array index
+#define LEDS_STATIC_COLOR_PRESSED ColorIndexWhite 
 #endif
 
 #ifndef LEDS_STATIC_COLOR_CASE
-#define LEDS_STATIC_COLOR_CASE 1 // White - animation.h colors array index
+#define LEDS_STATIC_COLOR_CASE ColorIndexGreen 
+#endif
+
+#ifndef LEDS_IDLE_SPECIAL_COLOR
+#define LEDS_IDLE_SPECIAL_COLOR ColorYellow 
+#endif
+
+#ifndef LEDS_PRESSED_SPECIAL_COLOR
+#define LEDS_PRESSED_SPECIAL_COLOR ColorGreen 
+#endif
+
+#ifndef LEDS_CASE_SPECIAL_COLOR
+#define LEDS_CASE_SPECIAL_COLOR ColorBlue 
+#endif
+
+#ifndef LEDS_IDLE_SPECIAL_COLOR_IS_RAINDOW
+#define LEDS_IDLE_SPECIAL_COLOR_IS_RAINDOW false 
+#endif
+
+#ifndef LEDS_PRESSED_SPECIAL_COLOR_IS_RAINDOW
+#define LEDS_PRESSED_SPECIAL_COLOR_IS_RAINDOW false
+#endif
+
+#ifndef LEDS_CASE_SPECIAL_COLOR_IS_RAINDOW
+#define LEDS_CASE_SPECIAL_COLOR_IS_RAINDOW false
 #endif
 
 #ifndef LEDS_AUTO_DISABLE_TIME
-#define LEDS_AUTO_DISABLE_TIME 15000 // in ms
+#define LEDS_AUTO_DISABLE_TIME 0 // in ms
 #endif
 
 #ifndef LED_BRIGHTNESS_MAXIMUM
@@ -263,8 +287,12 @@ private:
 
 	GamepadHotkey ProcessAnimationHotkeys(Gamepad *gamepad);
 
+	//Light non button/case lights if they are in RGB mode
+	void UpdateTurboLED();
+	void UpdatePlayerLEDs();
+
 	//Legacy setup functions
-	void generateLegacyIndividualLight(int firstLedIndex, int xCoord, int yCoord, uint8_t ledsPerPixel, GpioAction actionButton);
+	void generateLegacyIndividualLight(int firstLedIndex, int xCoord, int yCoord, uint8_t ledsPerPixel, int customDataIndex, LightType lightType = LightType::LightType_ActionButton);
 	void generatedLEDButtons(std::vector<std::vector<uint8_t>> *positions, uint8_t ledsPerPixel);
 	void generatedLEDStickless(std::vector<std::vector<uint8_t>> *positions, uint8_t ledsPerPixel);
 	void generatedLEDWasd(std::vector<std::vector<uint8_t>> *positions, uint8_t ledsPerPixel);

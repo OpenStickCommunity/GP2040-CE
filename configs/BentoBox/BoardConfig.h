@@ -61,7 +61,6 @@
 #define KEY_BUTTON_FN   -1                    // Hotkey Function                                        |
 
 #define BOARD_LEDS_PIN 15
-#define LEDS_AUTO_DISABLE_TIME 0
 #define LIGHT_DATA_NAME_DEFAULT "BentoBox" 
 #define LIGHT_DATA_SIZE_DEFAULT 12 //number of sets in the below data
 #define LEDS_BASE_ANIMATION_INDEX AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_ROTATE

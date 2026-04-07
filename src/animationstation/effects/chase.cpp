@@ -1,9 +1,12 @@
 #include "chase.h"
 #include <algorithm>
+#include <math.h>
 
-#define CHASE_CYCLE_MAX         500
-#define CHASE_CYCLE_MIN         10
-#define CHASE_SECOND_LIGHT_OFFSET 0.5f
+#define CHASE_CYCLE_MAX         1000
+#define CHASE_CYCLE_MIN         50
+#define CHASE_LIGHT_DELAY       1.0f
+
+#define CHASE_RAINBOW_FRAME_CHANGE_PER_TICK 10
 
 Chase::Chase(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType, ChaseTypes InChaseType) : Animation(InRGBLights, InButtonCaseEffectType) 
 {
@@ -11,49 +14,44 @@ Chase::Chase(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType, 
 
   CycleParameterChange();
 
-  ChaseTimes[0] = 1.0f;
-  ChaseTimes[1] = 1.0f + CHASE_SECOND_LIGHT_OFFSET;
+  NextLightTimer = CHASE_LIGHT_DELAY;
 
   OrderedLights.clear();
 
-  //Get max x and y coords
+  //Get max x and y coords and save off types
   for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
   {
     if(LightTypeIsForAnimation(RGBLights->AllLights[lightIndex].Type) == false)
       continue;
 
+    //max limits
     if(RGBLights->AllLights[lightIndex].Position.XPosition > MaxXCoord)
       MaxXCoord = RGBLights->AllLights[lightIndex].Position.XPosition;
     if(RGBLights->AllLights[lightIndex].Position.YPosition > MaxYCoord)
       MaxYCoord = RGBLights->AllLights[lightIndex].Position.YPosition;
 
+    //min limits
     if(lightIndex == 0 || RGBLights->AllLights[lightIndex].Position.XPosition < MinXCoord)
       MinXCoord = RGBLights->AllLights[lightIndex].Position.XPosition;
     if(lightIndex == 0 || RGBLights->AllLights[lightIndex].Position.YPosition < MinYCoord)
       MinYCoord = RGBLights->AllLights[lightIndex].Position.YPosition;   
+
+    //save types
+    int lastLed = RGBLights->AllLights[lightIndex].FirstLedIndex + RGBLights->AllLights[lightIndex].LedsPerLight;
+    for(unsigned int ledIndex = RGBLights->AllLights[lightIndex].FirstLedIndex ; ledIndex < lastLed; ++ledIndex)
+      ChaseBlendType[ledIndex] = RGBLights->AllLights[lightIndex].Type;
+
   }
 
-  //store off all lights in sequential order used on this animation
-  for(int yCoord = 0; yCoord <= MaxYCoord; ++yCoord)
-  {
-    for(int xCoord = 0; xCoord <= MaxXCoord; ++xCoord)
-    {
-      for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
-      {
-        if(LightTypeIsForAnimation(RGBLights->AllLights[lightIndex].Type) && 
-            RGBLights->AllLights[lightIndex].Position.XPosition == xCoord && 
-            RGBLights->AllLights[lightIndex].Position.YPosition == yCoord)
-          OrderedLights.push_back(lightIndex);
-      }    
-    }
-  }
+  //store off all lights in required order used on this animation type (only for some animation types)
+  OrderLights();
 
   //pick starting type if using one of the multi types
   switch(ChaseTypeInUse)
   {
     case ChaseTypes::CHASETYPES_RANDOM:
     {
-      RandomChaseType = (SingleChaseTypes)(rand() % (int)SINGLECHASETYPES_MAX);
+      RandomChaseType = (SingleChaseTypes)(rand() % (int)SINGLECHASETYPES_MAX_RANDOM_TYPES);
     } break;
 
     case ChaseTypes::CHASETYPES_TESTLAYOUT:
@@ -66,6 +64,16 @@ Chase::Chase(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType, 
       RandomChaseType = SingleChaseTypes::SINGLECHASETYPES_SEQUENTIAL;
     } break;
 
+    case ChaseTypes::CHASETYPES_INDEX:
+    {
+      RandomChaseType = SingleChaseTypes::SINGLECHASETYPES_INDEX;
+    } break;
+    
+    case ChaseTypes::CHASETYPES_INDEX_PINGPONG:
+    {
+      RandomChaseType = SingleChaseTypes::SINGLECHASETYPES_INDEX;
+    } break;
+    
     case ChaseTypes::CHASETYPES_HORIZONTAL_PINGPONG:
     {
       RandomChaseType = SingleChaseTypes::SINGLECHASETYPES_LEFT_TO_RIGHT;
@@ -96,9 +104,140 @@ Chase::Chase(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType, 
       RandomChaseType = SingleChaseTypes::SINGLECHASETYPES_RIGHT_TO_LEFT;
     } break;
     
+    case ChaseTypes::CHASETYPES_CIRCLE_CLOCKWISE:
+    {
+      RandomChaseType = SingleChaseTypes::SINGLECHASETYPES_CIRCLE_CLOCKWISE;
+    } break;
+    
+    case ChaseTypes::CHASETYPES_CIRCLE_ANTICLOCKWISE:
+    {
+      RandomChaseType = SingleChaseTypes::SINGLECHASETYPES_CIRCLE_ANTICLOCKWISE;
+    } break;
+    
+    case ChaseTypes::CHASETYPES_CIRCLE_PINGPONG:
+    {
+      RandomChaseType = SingleChaseTypes::SINGLECHASETYPES_CIRCLE_ANTICLOCKWISE;
+    } break;
+    
     default:
       RandomChaseType = SingleChaseTypes::SINGLECHASETYPES_SEQUENTIAL;
       break;
+  }
+
+  SetStartLight();
+}
+
+void Chase::OrderLights()
+{
+  bool bIsCircleBased = ChaseTypeInUse == ChaseTypes::CHASETYPES_CIRCLE_CLOCKWISE || ChaseTypeInUse == ChaseTypes::CHASETYPES_CIRCLE_ANTICLOCKWISE || ChaseTypeInUse == ChaseTypes::CHASETYPES_CIRCLE_PINGPONG;
+
+  if(ChaseTypeInUse == ChaseTypes::CHASETYPES_INDEX || ChaseTypeInUse == ChaseTypes::CHASETYPES_INDEX_PINGPONG)
+  {
+      for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
+      {
+        if(LightTypeIsForAnimation(RGBLights->AllLights[lightIndex].Type))
+          OrderedLights.push_back(lightIndex);
+      }  
+  }
+  else if(!bIsCircleBased)
+  {
+    for(int yCoord = 0; yCoord <= MaxYCoord; ++yCoord)
+    {
+      for(int xCoord = 0; xCoord <= MaxXCoord; ++xCoord)
+      {
+        for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
+        {
+          if(LightTypeIsForAnimation(RGBLights->AllLights[lightIndex].Type) && 
+              RGBLights->AllLights[lightIndex].Position.XPosition == xCoord && 
+              RGBLights->AllLights[lightIndex].Position.YPosition == yCoord)
+            OrderedLights.push_back(lightIndex);
+        }    
+      }
+    }
+  }
+  else //circle based
+  {
+    float midX = MinXCoord + (MaxXCoord - MinXCoord) / 2;
+    float midY = MinYCoord + (MaxYCoord - MinYCoord) / 2;
+    float angleResult[FRAME_MAX];
+    float resultIndex[FRAME_MAX];
+    unsigned int lightsFound = 0;
+    for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
+    {
+      if(LightTypeIsForAnimation(RGBLights->AllLights[lightIndex].Type) == false)
+        continue;
+
+      //calculate rotational angle
+      float xOffset = RGBLights->AllLights[lightIndex].Position.XPosition - midX;
+      float yOffset = (RGBLights->AllLights[lightIndex].Position.YPosition - midY) * -1; //flip this so that the start point is the top of the controller
+      float thisDot = (xOffset * 0) + (yOffset * -1);
+      float thisDet = (xOffset * -1) - (yOffset * 0);
+      float angle = atan2(thisDet, thisDot);
+
+      //Slot it into array
+      for(unsigned int sortIndex = 0; sortIndex <= lightsFound; ++sortIndex)
+      {
+        if(sortIndex == lightsFound)
+        {
+          angleResult[sortIndex] = angle;
+          resultIndex[sortIndex] = lightIndex;
+          break;
+        }
+        else if(angle < angleResult[sortIndex])
+        {
+          for(unsigned int offsetIndex = lightsFound; offsetIndex > sortIndex; --offsetIndex)
+          {
+            angleResult[offsetIndex] = angleResult[offsetIndex - 1];
+            resultIndex[offsetIndex] = resultIndex[offsetIndex - 1];
+          }
+          angleResult[sortIndex] = angle;
+          resultIndex[sortIndex] = lightIndex;
+          break;
+        }
+      }
+
+      lightsFound++;
+    }
+
+    //Now build the ordered list
+    for(unsigned int sortedIndex = 0; sortedIndex < lightsFound; ++sortedIndex)
+    {
+      OrderedLights.push_back(resultIndex[sortedIndex]);
+    }
+  }
+}
+
+void Chase::GetSpecialColors(RGB& chaseCol, RGB& caseChaseCol)
+{
+  chaseCol = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor;
+  caseChaseCol = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].caseSpecialColor;
+  bool buttonIsRainbow = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].bNonPressedSpecialColorIsRainbow;
+  bool caseIsRainbow = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].bCaseSpecialColorIsRainbow;
+  if(buttonIsRainbow || caseIsRainbow)
+  {
+    if(!RainbowWheelReversed)
+    {
+      RainbowWheelFrame += CHASE_RAINBOW_FRAME_CHANGE_PER_TICK;
+      if(RainbowWheelFrame >= 255)
+      {
+        RainbowWheelReversed = true;
+        RainbowWheelFrame = 255;
+      }
+    }
+    else
+    {
+      RainbowWheelFrame -= CHASE_RAINBOW_FRAME_CHANGE_PER_TICK;
+      if(RainbowWheelFrame <= 0)
+      {
+        RainbowWheelReversed = false;
+        RainbowWheelFrame = 0;
+      }
+    }
+
+    if(buttonIsRainbow)
+      chaseCol = RGB::wheel(RainbowWheelFrame);
+    if (caseIsRainbow)
+      caseChaseCol = RGB::wheel(RainbowWheelFrame);
   }
 }
 
@@ -111,84 +250,56 @@ void Chase::Animate(RGB (&frame)[FRAME_MAX])
     return;
 
   //update times and move to the next light(s) if required
-  ChaseTimes[0] -= (((float)cycleTime) / 1000.0f);
-  ChaseTimes[1] -= (((float)cycleTime) / 1000.0f);
-  if(ChaseTimes[0] < 0.0f)
-  {
-    ChaseTimes[0] = 0.0f;
-  }
+  NextLightTimer -= (((float)cycleTime) / 1000.0f);
 
-  //reset all lights first to ensure that if pressed lights are unpressed they can blend back to correct color
+  //Get Special light colors
+  RGB chaseCol, caseChaseCol;
+  GetSpecialColors(chaseCol, caseChaseCol);
+
+  //Blend the lights
   for(unsigned int lightIndex = 0; lightIndex < OrderedLights.size(); ++lightIndex)
   {
       uint8_t firstLightIndex = RGBLights->AllLights[OrderedLights[lightIndex]].FirstLedIndex;
       uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[OrderedLights[lightIndex]].LedsPerLight;
       for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
       {
-        frame[ledIndex] = GetNonPressedColorForLight(OrderedLights[lightIndex]);
+        frame[ledIndex] = BlendColor(GetNonPressedColorForLight(OrderedLights[lightIndex]),
+                                      RGBLights->AllLights[OrderedLights[lightIndex]].Type == LightType::LightType_ActionButton ? chaseCol : caseChaseCol, 
+                                      ChaseBlendValues[ledIndex]);
       }
   }
 
-  //caclulate fade times here as these are used for all cases below
-  float fadeTimeOne = 0.0f;
-  if(ChaseTimes[0] < 1.0f && ChaseTimes[0] >= 0.8f)
-    fadeTimeOne = 1.0f - ((ChaseTimes[0] - 0.8f) / 0.2f);
-  else if(ChaseTimes[0] >= 0.2f && ChaseTimes[0] < 0.8f)
-    fadeTimeOne = 1.0f;
-  else if(ChaseTimes[0] < 0.2f && ChaseTimes[0] >= 0.0f)
-    fadeTimeOne = (ChaseTimes[0] / 0.2f);
-  float fadeTimeTwo = 0.0f;
-  if(ChaseTimes[1] < 1.0f && ChaseTimes[1] >= 0.8f)
-    fadeTimeTwo = 1.0f - ((ChaseTimes[1] - 0.8f) / 0.2f);
-  else if(ChaseTimes[1] >= 0.2f && ChaseTimes[1] < 0.8f)
-    fadeTimeTwo = 1.0f;
-  else if(ChaseTimes[1] < 0.2f && ChaseTimes[1] >= 0.0f)
-    fadeTimeTwo = (ChaseTimes[1] / 0.2f);
+  CheckToAdvanceLight();
+}
 
-  //get this and next light
+void Chase::AssignThisFrameValues()
+{
   int currentLightReverseAdjusted = CurrentLight;
-  int nextLightReverseAdjusted = currentLightReverseAdjusted + 1;
- 
-  //now light the correct lights
+
+   //now light the correct lights
   switch(RandomChaseType)
   {
+    case SingleChaseTypes::SINGLECHASETYPES_INDEX:
     case SingleChaseTypes::SINGLECHASETYPES_SEQUENTIAL:
     {
       //if we're on the way back then invert the index
       if(Reversed)
       {
         currentLightReverseAdjusted = (OrderedLights.size()-1) - CurrentLight;
-        nextLightReverseAdjusted = currentLightReverseAdjusted - 1;
       } 
 
       uint8_t firstLightIndex = RGBLights->AllLights[OrderedLights[currentLightReverseAdjusted]].FirstLedIndex;
       uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[OrderedLights[currentLightReverseAdjusted]].LedsPerLight;
       for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
       {
-        frame[ledIndex] = BlendColor(GetNonPressedColorForLight(OrderedLights[currentLightReverseAdjusted]),
-                                      AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor, 
-                                      fadeTimeOne);
+        ChaseBlendValues[ledIndex] = 1.0f;
       }      
-
-      if((unsigned int)(nextLightReverseAdjusted) < OrderedLights.size())
-      {         
-        uint8_t firstLightIndex = RGBLights->AllLights[OrderedLights[nextLightReverseAdjusted]].FirstLedIndex;
-        uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[OrderedLights[nextLightReverseAdjusted]].LedsPerLight;
-        for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
-        {
-          frame[ledIndex] = BlendColor(GetNonPressedColorForLight(OrderedLights[nextLightReverseAdjusted]),
-                                        AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor, 
-                                        fadeTimeTwo);
-        }          
-      } 
     } break;
 
     case SingleChaseTypes::SINGLECHASETYPES_RIGHT_TO_LEFT:
       //reverse the order and fall through
       currentLightReverseAdjusted = (MaxXCoord) - (CurrentLight - MinXCoord);
-      nextLightReverseAdjusted = currentLightReverseAdjusted - 1;
       //Fall through (no break)
-
     case SingleChaseTypes::SINGLECHASETYPES_LEFT_TO_RIGHT:
     { 
       for(unsigned int lightIndex = 0; lightIndex < OrderedLights.size(); ++lightIndex)
@@ -199,35 +310,16 @@ void Chase::Animate(RGB (&frame)[FRAME_MAX])
           uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[OrderedLights[lightIndex]].LedsPerLight;
           for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
           {
-            frame[ledIndex] = BlendColor(GetNonPressedColorForLight(OrderedLights[lightIndex]),
-                                          AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor, 
-                                          fadeTimeOne);
+            ChaseBlendValues[ledIndex] = 1.0f;
           }      
         }
-
-        if((CurrentLight+1) <= MaxXCoord)
-        {      
-          if(RGBLights->AllLights[OrderedLights[lightIndex]].Position.XPosition == nextLightReverseAdjusted)
-          {   
-            uint8_t firstLightIndex = RGBLights->AllLights[OrderedLights[lightIndex]].FirstLedIndex;
-            uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[OrderedLights[lightIndex]].LedsPerLight;
-            for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
-            {
-              frame[ledIndex] = BlendColor(GetNonPressedColorForLight(OrderedLights[lightIndex]),
-                                            AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor, 
-                                            fadeTimeTwo);
-            }          
-          }
-        } 
       }
     } break;
 
     case SingleChaseTypes::SINGLECHASETYPES_BOTTOM_TO_TOP:
       //reverse the order and fall through
       currentLightReverseAdjusted = (MaxYCoord) - (CurrentLight - MinYCoord);
-      nextLightReverseAdjusted = currentLightReverseAdjusted - 1;
       //Fall through (no break)
-
     case SingleChaseTypes::SINGLECHASETYPES_TOP_TO_BOTTOM:
     { 
       for(unsigned int lightIndex = 0; lightIndex < OrderedLights.size(); ++lightIndex)
@@ -238,39 +330,64 @@ void Chase::Animate(RGB (&frame)[FRAME_MAX])
           uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[OrderedLights[lightIndex]].LedsPerLight;
           for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
           {
-            frame[ledIndex] = BlendColor(GetNonPressedColorForLight(OrderedLights[lightIndex]),
-                                          AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor, 
-                                          fadeTimeOne);
+            ChaseBlendValues[ledIndex] = 1.0f;
           }      
         }
-
-        if((CurrentLight+1) <= MaxYCoord)
-        {      
-          if(RGBLights->AllLights[OrderedLights[lightIndex]].Position.YPosition == nextLightReverseAdjusted)
-          {   
-            uint8_t firstLightIndex = RGBLights->AllLights[OrderedLights[lightIndex]].FirstLedIndex;
-            uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[OrderedLights[lightIndex]].LedsPerLight;
-            for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
-            {
-              frame[ledIndex] = BlendColor(GetNonPressedColorForLight(OrderedLights[lightIndex]),
-                                            AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor, 
-                                            fadeTimeTwo);
-            }          
-          }
-        } 
       }
+    } break;
+
+    case SingleChaseTypes::SINGLECHASETYPES_CIRCLE_ANTICLOCKWISE:
+      //reverse the order and fall through
+      currentLightReverseAdjusted = (OrderedLights.size()-1) - CurrentLight;
+      //Fall through (no break)
+    case SingleChaseTypes::SINGLECHASETYPES_CIRCLE_CLOCKWISE:
+    {
+      uint8_t firstLightIndex = RGBLights->AllLights[OrderedLights[currentLightReverseAdjusted]].FirstLedIndex;
+      uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[OrderedLights[currentLightReverseAdjusted]].LedsPerLight;
+      for(uint8_t ledIndex = firstLightIndex; ledIndex < lastLightIndex; ++ledIndex)
+      {
+        ChaseBlendValues[ledIndex] = 1.0f;
+      }      
     } break;
 
     default:
       break;
-  }
+  } 
+}
 
-  if(ChaseTimes[0] <= 0.0f)
+void Chase::CheckToAdvanceLight()
+{
+  if(NextLightTimer <= 0.0f)
   {
+    int tailLengthBase;
+    int tailLength;
+
+    if(ButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_ONLY || ButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE)
+    {
+      tailLengthBase = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedEffectContextParam;
+    }
+    else
+    {
+      tailLengthBase = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].caseEffectContextParam;
+    }
+    tailLength = (int)((tailLengthBase * OrderedLights.size()) / 100.0f);
+    
+    //Apply fade for all lights if we're moving to the next light
+    for(unsigned int chaseBlendIndex = 0; chaseBlendIndex < FRAME_MAX; ++chaseBlendIndex)
+    {
+      //work out if its a button to get the correct context param
+      if(tailLengthBase == 0)
+        tailLength = CHASE_DEFAULT_TAIL_LENGTH;
+      float fadePerLight = 1.0f / tailLength;
+      ChaseBlendValues[chaseBlendIndex] -= fadePerLight;
+      if(ChaseBlendValues[chaseBlendIndex] < 0)
+        ChaseBlendValues[chaseBlendIndex] = 0;
+    }
+
     CurrentLight++;
-    ChaseTimes[0] = ChaseTimes[1];
-    ChaseTimes[1] += CHASE_SECOND_LIGHT_OFFSET;
     CheckForEndOfSequence();
+    NextLightTimer += CHASE_LIGHT_DELAY;
+    AssignThisFrameValues();
   }
 }
 
@@ -281,13 +398,13 @@ void Chase::CheckForEndOfSequence()
   switch(RandomChaseType)
   {
     case SingleChaseTypes::SINGLECHASETYPES_SEQUENTIAL:
+    case SingleChaseTypes::SINGLECHASETYPES_INDEX:
+    case SingleChaseTypes::SINGLECHASETYPES_CIRCLE_ANTICLOCKWISE:
+    case SingleChaseTypes::SINGLECHASETYPES_CIRCLE_CLOCKWISE:
     {
       if((unsigned int)CurrentLight >= OrderedLights.size())
       {
         hasEnded = true;
-        CurrentLight = 0;
-        ChaseTimes[0] = 1.0f;
-        ChaseTimes[1] = 1.0f + CHASE_SECOND_LIGHT_OFFSET;
       }
     } break;
  
@@ -297,9 +414,6 @@ void Chase::CheckForEndOfSequence()
       if(CurrentLight > MaxXCoord)
       {
         hasEnded = true;
-        CurrentLight = MinXCoord;
-        ChaseTimes[0] = 1.0f;
-        ChaseTimes[1] = 1.0f + CHASE_SECOND_LIGHT_OFFSET;
       }
     } break;
 
@@ -309,9 +423,6 @@ void Chase::CheckForEndOfSequence()
       if(CurrentLight > MaxYCoord)
       {
         hasEnded = true;
-        CurrentLight = MinYCoord;
-        ChaseTimes[0] = 1.0f;
-        ChaseTimes[1] = 1.0f + CHASE_SECOND_LIGHT_OFFSET;
       }
     } break;
 
@@ -328,7 +439,12 @@ void Chase::CheckForEndOfSequence()
       {
         Reversed = !Reversed;
       } break;
-  
+
+      case ChaseTypes::CHASETYPES_INDEX_PINGPONG:
+      {
+        Reversed = !Reversed;
+      } break;
+
       case ChaseTypes::CHASETYPES_HORIZONTAL_PINGPONG:
       {
         if(RandomChaseType == SingleChaseTypes::SINGLECHASETYPES_LEFT_TO_RIGHT)
@@ -345,9 +461,17 @@ void Chase::CheckForEndOfSequence()
           RandomChaseType = SingleChaseTypes::SINGLECHASETYPES_TOP_TO_BOTTOM;
       } break;
 
+      case ChaseTypes::CHASETYPES_CIRCLE_PINGPONG:
+      {
+        if(RandomChaseType == SingleChaseTypes::SINGLECHASETYPES_CIRCLE_ANTICLOCKWISE)
+          RandomChaseType = SingleChaseTypes::SINGLECHASETYPES_CIRCLE_CLOCKWISE;
+        else
+          RandomChaseType = SingleChaseTypes::SINGLECHASETYPES_CIRCLE_ANTICLOCKWISE;
+      } break;
+      
       case ChaseTypes::CHASETYPES_RANDOM:
       {
-        RandomChaseType = (SingleChaseTypes)(rand() % (int)SINGLECHASETYPES_MAX);
+        RandomChaseType = (SingleChaseTypes)(rand() % (int)SINGLECHASETYPES_MAX_RANDOM_TYPES);
       } break;
       
       case ChaseTypes::CHASETYPES_TESTLAYOUT:
@@ -359,12 +483,38 @@ void Chase::CheckForEndOfSequence()
       default:
         break;
     }
+
+    SetStartLight();
   }
+}
+
+void Chase::SetStartLight()
+{
+  CurrentLight = 0;
+  switch(RandomChaseType)
+  {
+    case SingleChaseTypes::SINGLECHASETYPES_LEFT_TO_RIGHT:
+    case SingleChaseTypes::SINGLECHASETYPES_RIGHT_TO_LEFT:
+    {
+      CurrentLight = MinXCoord;
+    } break;
+
+    case SingleChaseTypes::SINGLECHASETYPES_TOP_TO_BOTTOM:
+    case SingleChaseTypes::SINGLECHASETYPES_BOTTOM_TO_TOP:
+    {
+      CurrentLight = MinYCoord;
+    } break;
+
+    default:
+      break;
+  }
+
+  AssignThisFrameValues();
 }
 
 void Chase::CycleParameterChange() 
 {
-    int16_t cycleStep = 2;
+    int16_t cycleStep;
     if(ButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_CASE_ONLY)
       cycleStep = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCaseCycleTime;
     else

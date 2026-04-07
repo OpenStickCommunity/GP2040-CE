@@ -10,6 +10,8 @@
 
 //Chase lights the lights up in a specific order. 2 lights can be on at once as they overlaps on off times. There are multiple directions that can be used.
 
+#define CHASE_DEFAULT_TAIL_LENGTH 3
+
 //List of chase types
 typedef enum
 {
@@ -22,6 +24,11 @@ typedef enum
   CHASETYPES_HORIZONTAL_PINGPONG,
   CHASETYPES_VERTICAL_PINGPONG,
   CHASETYPES_RANDOM,
+  CHASETYPES_CIRCLE_CLOCKWISE, 
+  CHASETYPES_CIRCLE_ANTICLOCKWISE,
+  CHASETYPES_CIRCLE_PINGPONG,
+  CHASETYPES_INDEX,
+  CHASETYPES_INDEX_PINGPONG,
   CHASETYPES_MAX,
   CHASETYPES_TESTLAYOUT,
 } ChaseTypes;
@@ -33,7 +40,10 @@ typedef enum
   SINGLECHASETYPES_RIGHT_TO_LEFT,
   SINGLECHASETYPES_TOP_TO_BOTTOM,
   SINGLECHASETYPES_BOTTOM_TO_TOP,
-  SINGLECHASETYPES_MAX,
+  SINGLECHASETYPES_MAX_RANDOM_TYPES,
+  SINGLECHASETYPES_CIRCLE_CLOCKWISE, 
+  SINGLECHASETYPES_CIRCLE_ANTICLOCKWISE,
+  SINGLECHASETYPES_INDEX,
 } SingleChaseTypes;
 
 class Chase : public Animation {
@@ -49,10 +59,23 @@ public:
 
 protected:
  
+  void AssignThisFrameValues();
+
+  void CheckToAdvanceLight();
   void CheckForEndOfSequence();
 
-  float ChaseTimes[2];
+  void SetStartLight();
+
+  void GetSpecialColors(RGB& chaseCol, RGB& caseChaseCol);
+
+  void OrderLights();
+
+  float NextLightTimer;
+
   std::vector<uint32_t> OrderedLights;
+
+  float ChaseBlendValues[FRAME_MAX];
+  LightType ChaseBlendType[FRAME_MAX];
 
   int MinXCoord = 0;
   int MinYCoord = 0;
@@ -60,6 +83,9 @@ protected:
   int MaxYCoord = 0;
 
   int CurrentLight = 0;
+
+  int RainbowWheelFrame = 0;
+  bool RainbowWheelReversed = false;
 
   bool Reversed = false;
 

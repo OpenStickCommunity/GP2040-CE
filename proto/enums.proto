@@ -480,9 +480,12 @@ enum AnimationNonPressedEffects
   EFFECT_CHASE_RANDOM = 11;
   EFFECT_JIGGLESTATIC = 12;
   EFFECT_JIGGLETWOSTATICS = 13;
-  EFFECT_RAIN_LOW = 14;
-  EFFECT_RAIN_MEDIUM = 15;
-  EFFECT_RAIN_HIGH = 16;
+  EFFECT_RAIN = 14;
+  EFFECT_CHASE_CIRCLE_CLOCKWISE = 15;
+  EFFECT_CHASE_CIRCLE_ANTICLOCKWISE = 16;
+  EFFECT_CHASE_CIRCLE_PINGPONG = 17;
+  EFFECT_CHASE_INDEX = 18;
+  EFFECT_CHASE_INDEX_PINGPONG = 19;
 }
 
 /* This has to be kept in sync with AnimationPressedEffects in AnimationStation.hpp */
@@ -493,9 +496,6 @@ enum AnimationPressedEffects
   PRESSEDEFFECT_JIGGLESTATIC = 2;
   PRESSEDEFFECT_JIGGLETWOSTATICS = 3;
   PRESSEDEFFECT_BURST = 4;
-  PRESSEDEFFECT_BURST_RANDOM = 5;
-  PRESSEDEFFECT_BURST_SMALL = 6;
-  PRESSEDEFFECT_BURST_SMALL_RANDOM = 7;
 }
 
 /* This has to be kept in sync with LightType in Pixel.hpp */
@@ -504,7 +504,10 @@ enum LightType
     ActionButton = 0;
     Case = 1;
     Turbo = 2;
-    PlayerLight = 3;
+    Player1Light = 3;
+    Player2Light = 4;
+    Player3Light = 5;
+    Player4Light = 6;
 }
 
 enum ShmupMixMode

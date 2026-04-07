@@ -27,7 +27,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 0,
 					yCoord: 2,
-					GPIOPinorCaseChainIndex: 5,
+					GPIOPinOrNonButtonIndex: 5,
 					lightType: 0,
 				},
 				{
@@ -35,7 +35,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 2,
 					yCoord: 2,
-					GPIOPinorCaseChainIndex: 3,
+					GPIOPinOrNonButtonIndex: 3,
 					lightType: 0,
 				},
 				{
@@ -43,7 +43,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 4,
 					yCoord: 3,
-					GPIOPinorCaseChainIndex: 4,
+					GPIOPinOrNonButtonIndex: 4,
 					lightType: 0,
 				},
 				{
@@ -51,7 +51,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 5,
 					yCoord: 7,
-					GPIOPinorCaseChainIndex: 2,
+					GPIOPinOrNonButtonIndex: 2,
 					lightType: 0,
 				},
 				{
@@ -59,7 +59,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 6,
 					yCoord: 2,
-					GPIOPinorCaseChainIndex: 10,
+					GPIOPinOrNonButtonIndex: 10,
 					lightType: 0,
 				},
 				{
@@ -67,7 +67,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 8,
 					yCoord: 1,
-					GPIOPinorCaseChainIndex: 11,
+					GPIOPinOrNonButtonIndex: 11,
 					lightType: 0,
 				},
 				{
@@ -75,7 +75,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 10,
 					yCoord: 1,
-					GPIOPinorCaseChainIndex: 12,
+					GPIOPinOrNonButtonIndex: 12,
 					lightType: 0,
 				},
 				{
@@ -83,7 +83,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 12,
 					yCoord: 1,
-					GPIOPinorCaseChainIndex: 13,
+					GPIOPinOrNonButtonIndex: 13,
 					lightType: 0,
 				},
 				{
@@ -91,7 +91,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 6,
 					yCoord: 4,
-					GPIOPinorCaseChainIndex: 6,
+					GPIOPinOrNonButtonIndex: 6,
 					lightType: 0,
 				},
 				{
@@ -99,7 +99,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 8,
 					yCoord: 3,
-					GPIOPinorCaseChainIndex: 7,
+					GPIOPinOrNonButtonIndex: 7,
 					lightType: 0,
 				},
 				{
@@ -107,7 +107,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 10,
 					yCoord: 3,
-					GPIOPinorCaseChainIndex: 8,
+					GPIOPinOrNonButtonIndex: 8,
 					lightType: 0,
 				},
 				{
@@ -115,7 +115,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 12,
 					yCoord: 3,
-					GPIOPinorCaseChainIndex: 9,
+					GPIOPinOrNonButtonIndex: 9,
 					lightType: 0,
 				},
 			],
@@ -130,7 +130,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 0,
 					yCoord: 2,
-					GPIOPinorCaseChainIndex: 5,
+					GPIOPinOrNonButtonIndex: 5,
 					lightType: 0,
 				},
 				{
@@ -138,7 +138,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 2,
 					yCoord: 2,
-					GPIOPinorCaseChainIndex: 3,
+					GPIOPinOrNonButtonIndex: 3,
 					lightType: 0,
 				},
 				{
@@ -146,7 +146,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 4,
 					yCoord: 3,
-					GPIOPinorCaseChainIndex: 4,
+					GPIOPinOrNonButtonIndex: 4,
 					lightType: 0,
 				},
 				{
@@ -154,7 +154,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 6,
 					yCoord: 7,
-					GPIOPinorCaseChainIndex: 2,
+					GPIOPinOrNonButtonIndex: 2,
 					lightType: 0,
 				},
 				{
@@ -162,7 +162,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 6,
 					yCoord: 2,
-					GPIOPinorCaseChainIndex: 10,
+					GPIOPinOrNonButtonIndex: 10,
 					lightType: 0,
 				},
 				{
@@ -170,7 +170,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 8,
 					yCoord: 1,
-					GPIOPinorCaseChainIndex: 11,
+					GPIOPinOrNonButtonIndex: 11,
 					lightType: 0,
 				},
 				{
@@ -178,7 +178,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 10,
 					yCoord: 1,
-					GPIOPinorCaseChainIndex: 12,
+					GPIOPinOrNonButtonIndex: 12,
 					lightType: 0,
 				},
 				{
@@ -186,7 +186,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 12,
 					yCoord: 1,
-					GPIOPinorCaseChainIndex: 13,
+					GPIOPinOrNonButtonIndex: 13,
 					lightType: 0,
 				},
 				{
@@ -194,7 +194,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 6,
 					yCoord: 4,
-					GPIOPinorCaseChainIndex: 6,
+					GPIOPinOrNonButtonIndex: 6,
 					lightType: 0,
 				},
 				{
@@ -202,7 +202,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 8,
 					yCoord: 3,
-					GPIOPinorCaseChainIndex: 7,
+					GPIOPinOrNonButtonIndex: 7,
 					lightType: 0,
 				},
 				{
@@ -210,7 +210,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 10,
 					yCoord: 3,
-					GPIOPinorCaseChainIndex: 8,
+					GPIOPinOrNonButtonIndex: 8,
 					lightType: 0,
 				},
 				{
@@ -218,7 +218,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 12,
 					yCoord: 3,
-					GPIOPinorCaseChainIndex: 9,
+					GPIOPinOrNonButtonIndex: 9,
 					lightType: 0,
 				},
 				{
@@ -226,7 +226,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 3,
 					yCoord: 0,
-					GPIOPinorCaseChainIndex: 27,
+					GPIOPinOrNonButtonIndex: 27,
 					lightType: 0,
 				},
 				{
@@ -234,7 +234,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 6,
 					yCoord: 0,
-					GPIOPinorCaseChainIndex: 18,
+					GPIOPinOrNonButtonIndex: 18,
 					lightType: 0,
 				},
 				{
@@ -242,7 +242,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 8,
 					yCoord: 5,
-					GPIOPinorCaseChainIndex: 19,
+					GPIOPinOrNonButtonIndex: 19,
 					lightType: 0,
 				},
 				{
@@ -250,7 +250,7 @@ const BoardLights = [
 					numLedsOnLight: 1,
 					xCoord: 3,
 					yCoord: 6,
-					GPIOPinorCaseChainIndex: 26,
+					GPIOPinOrNonButtonIndex: 26,
 					lightType: 0,
 				},
 			],
@@ -364,6 +364,14 @@ app.get('/api/getAnimationProtoOptions', (req, res) => {
 					bUseCaseLightsInPressedAnimations: 0,
 					baseCaseEffect: 0,
 					pressedSpecialColor: 0,
+					caseSpecialColor: 0,
+					bNonPressedSpecialColorIsRainbow: 0,
+					bPressedSpecialColorIsRainbow: 0,
+					nonButtonStaticColors: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+					bCaseSpecialColorIsRainbow: 0,
+					nonPressedContextParam: 0,
+					pressedContextParam: 0,
+					caseContextParam: 0,
 					notPressedStaticColors: [
 						2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
 						2, 2, 2, 2, 2, 2, 2, 2, 2,
@@ -371,10 +379,6 @@ app.get('/api/getAnimationProtoOptions', (req, res) => {
 					pressedStaticColors: [
 						4, 6, 10, 12, 4, 6, 10, 12, 4, 6, 10, 12, 4, 6, 10, 12, 4, 6, 10,
 						12, 4, 6, 10, 12, 4, 6, 10, 12, 4, 6, 10, 12,
-					],
-					caseStaticColors: [
-						1, 5, 2, 1, 2, 9, 2, 2, 2, 2, 3, 2, 3, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2,
-						2, 9, 2, 5, 3, 2, 2, 7, 2, 2, 2, 11, 10, 4, 2, 2, 2,
 					],
 				},
 				{
@@ -388,6 +392,14 @@ app.get('/api/getAnimationProtoOptions', (req, res) => {
 					bUseCaseLightsInPressedAnimations: 1,
 					baseCaseEffect: 0,
 					pressedSpecialColor: 0x80ff00,
+					caseSpecialColor: 0x80ff00,
+					bNonPressedSpecialColorIsRainbow: 0,
+					bPressedSpecialColorIsRainbow: 0,
+					nonButtonStaticColors: [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+					bCaseSpecialColorIsRainbow: 0,
+					nonPressedContextParam: 0,
+					pressedContextParam: 0,
+					caseContextParam: 0,
 					notPressedStaticColors: [
 						6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
 						6, 6, 6, 6, 6, 6, 6, 6, 6,
@@ -395,10 +407,6 @@ app.get('/api/getAnimationProtoOptions', (req, res) => {
 					pressedStaticColors: [
 						2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
 						2, 2, 2, 2, 2, 2, 2, 2, 2,
-					],
-					caseStaticColors: [
-						13, 1, 1, 1, 13, 1, 1, 1, 13, 1, 1, 1, 13, 1, 1, 1, 13, 1, 1, 1, 13,
-						1, 1, 1, 13, 1, 1, 1, 13, 1, 1, 1, 13, 1, 1, 1, 13, 1, 1, 1,
 					],
 				},
 			],
@@ -528,6 +536,11 @@ app.get('/api/getLedOptions', (req, res) => {
 		ledFormat: 0,
 		turnOffWhenSuspended: 0,
 		brightnessMaximum: 50,
+		pledType: 1,
+		pledPin1: 12,
+		pledPin2: 13,
+		pledPin3: 14,
+		pledPin4: 15,
 	});
 });
 
@@ -744,8 +757,6 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		shmupBtnMask4: 0,
 		pinShmupDial: -1,
 		turboLedType: 1,
-		turboLedIndex: 16,
-		turboLedColor: 16711680,
 		sliderSOCDModeDefault: 1,
 		snesPadClockPin: -1,
 		snesPadLatchPin: -1,
@@ -839,6 +850,12 @@ app.get('/api/getLightsPresets/0', (req, res) => {
 app.get('/api/getLightsPresets/1', (req, res) => {
 	return res.send(BoardLights[1]);
 });
+app.get('/api/getLightsPresets/2', (req, res) => res.send({}));
+app.get('/api/getLightsPresets/3', (req, res) => res.send({}));
+app.get('/api/getLightsPresets/4', (req, res) => res.send({}));
+app.get('/api/getLightsPresets/5', (req, res) => res.send({}));
+app.get('/api/getLightsPresets/6', (req, res) => res.send({}));
+app.get('/api/getLightsPresets/7', (req, res) => res.send({}));
 
 app.get('/api/getExpansionPins', (req, res) => {
 	return res.send({
@@ -867,16 +884,60 @@ app.get('/api/getExpansionPins', (req, res) => {
 	});
 });
 
-app.get('/api/getHETriggerOptions', (req, res) => {
+app.get('/api/getHETriggerCalibrations', (req, res) => {
 	var triggers = [];
-	triggers.push({ action: 2, idle: 120, max: 3500, active: 1500, polarity: 0 });
-	for (var i = 1; i < 32; i++) {
+	triggers.push(
+		{
+			action: 2,
+			idle: 120,
+			pressed: 3500,
+			active: 1500,
+			is_polarized: false,
+			release: 1500,
+			noise: 50,
+			rapidTrigger: false
+		},
+		{
+			action: 3,
+			idle: 3500,
+			pressed: 120,
+			active: 1500,
+			is_polarized: true,
+			release: 1500,
+			noise: 50,
+			rapidTrigger: false
+		},
+		{
+			action: 4,
+			idle: 120,
+			pressed: 3500,
+			active: 1500,
+			is_polarized: false,
+			release: 2000,
+			noise: 50,
+			rapidTrigger: true
+		},
+		{
+			action: 5,
+			idle: 3500,
+			pressed: 120,
+			active: 2000,
+			is_polarized: true,
+			release: 1500,
+			noise: 50,
+			rapidTrigger: true
+		},
+	);
+	for(var i = 4; i < 32; i++) {
 		triggers.push({
 			action: -10,
 			idle: 100,
 			active: 2000,
-			max: 3500,
-			polarity: 0,
+			pressed: 3500,
+			is_polarized: false,
+			release: 1500,
+			noise: 50,
+			rapidTrigger: false,
 		});
 	}
 	return res.send({ triggers });
@@ -1308,7 +1369,7 @@ app.get('/api/abortGetHeldPins', async (req, res) => {
 	return res.send();
 });
 
-app.post('/api/getHETriggerCalibration', (req, res) => {
+app.post('/api/getHETriggerVoltage', (req, res) => {
 	return res.send({
 		voltage: 0.0,
 		debug: true,

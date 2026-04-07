@@ -16,17 +16,17 @@
 
 #define MAX_ANIMATION_PROFILES 4
 #define MAX_ANIMATION_PROFILES_INCLUDING_TEST (MAX_ANIMATION_PROFILES+1)
-#define MAX_CASE_LIGHTS 40          //this should be divisible by 4 as we pack 4 indexes into one config int32
+#define MAX_NON_BUTTON_LIGHT_COLOR_INDEXES 32          //Total of color indexs in animation.h + Max custom colours (then increased to be a multiple of 4)
 
 #define CYCLE_STEPS 5
 
 typedef enum
 {
-  AnimationStation_TestModeInvalid,
+  AnimationStation_TestModeDisableTestMode,
   AnimationStation_TestModeOff,
 	AnimationStation_TestModeButtons,
 	AnimationStation_TestModeLayout,
-	AnimationStation_TestModeProfilePreview,
+	AnimationStation_TestModeProfilePreview
 } AnimationStationTestMode;
 
 struct __attribute__ ((__packed__)) AnimationProfile_Unpacked
@@ -37,6 +37,10 @@ struct __attribute__ ((__packed__)) AnimationProfile_Unpacked
   	AnimationPressedEffects basePressedEffect;
     AnimationNonPressedEffects baseCaseEffect;
 
+    int32_t nonPressedEffectContextParam;
+    int32_t pressedEffectContextParam;
+    int32_t caseEffectContextParam;
+
     int16_t baseCycleTime;
     int16_t basePressedCycleTime;
     int16_t baseCaseCycleTime;
@@ -44,13 +48,18 @@ struct __attribute__ ((__packed__)) AnimationProfile_Unpacked
     uint32_t notPressedStaticColors[NUM_BANK0_GPIOS + 3]; //since we pack 4 into each. Adding 3 ensures we have space for extra pading
     uint32_t pressedStaticColors[NUM_BANK0_GPIOS + 3]; //since we pack 4 into each. Adding 3 ensures we have space for extra pading
 
-    uint32_t caseStaticColors[MAX_CASE_LIGHTS];
+    uint32_t nonButtonStaticColors[MAX_NON_BUTTON_LIGHT_COLOR_INDEXES];
 
     uint32_t buttonPressHoldTimeInMs;
     uint32_t buttonPressFadeOutTimeInMs;
 
     uint32_t nonPressedSpecialColor;
     uint32_t pressedSpecialColor;
+    uint32_t caseSpecialColor;
+
+    bool bNonPressedSpecialColorIsRainbow;
+    bool bPressedSpecialColorIsRainbow;
+    bool bCaseSpecialColorIsRainbow;
 
     bool bUseCaseLightsInPressedAnimations;
 };
@@ -94,6 +103,7 @@ public:
   static float GetNormalisedBrightness();
   static uint8_t GetBrightnessStepValue();
   static void SetBrightnessStepValue(uint8_t brightness);
+  static void ApplyBrightnessStepValue();
   static void DecreaseBrightnessByStep();
   static void IncreaseBrightnessByStep();
   static void DimBrightnessTo0();
@@ -103,8 +113,9 @@ public:
   void CheckForOptionsUpdate();
  
   //Testing/webconfig
-  static void SetTestMode(AnimationStationTestMode TestType, const AnimationProfile* TestProfile);
-  static void SetTestPinState(int PinOrCaseIndex, bool IsCaseLight);
+  static void SetTestMode(AnimationStationTestMode TestType, const AnimationProfile* TestProfile, uint8_t overrideBrightness, uint8_t overrideMaxBrightness);
+  static void SetTestPinState(int PinOrNonButtonIndex, bool IsNonButtonLight);
+  static void ClearTestMode();
 
   //Running non-pressed animation
   Animation* baseAnimation;
@@ -126,9 +137,17 @@ public:
   RGB frame[FRAME_MAX];
 
   static uint8_t brightnessSteps; 
+
+  //Testing/webconfig
+  static AnimationStationTestMode TestMode;
+  static bool bTestModeChangeRequested;
+  static int TestModePinOrNonButtonIndex;
+  static bool TestModeLightIsNonButton;
+
 protected:
   inline static uint8_t getBrightnessStepSize() { return (brightnessMax / brightnessSteps); }
   static uint8_t brightnessMax; //0-255
+  static uint8_t brightnessStepValue; //0-10
   static float normalisedBrightness; //0-1
 
   Animation* GetNonPressedEffectForEffectType(AnimationNonPressedEffects EffectType, EButtonCaseEffectType InButtonCaseEffectType);
@@ -148,12 +167,6 @@ protected:
   //idletimeout
   absolute_time_t timeLastButtonPressed;
   bool bIsInIdleTimeout = false;
-
-  //Testing/webconfig
-  static AnimationStationTestMode TestMode;
-  static bool bTestModeChangeRequested;
-  static int TestModePinOrCaseIndex;
-  static bool TestModeLightIsCase;
 };
 
 #endif

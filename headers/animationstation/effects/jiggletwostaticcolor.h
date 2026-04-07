@@ -6,17 +6,20 @@
 #include <stdlib.h>
 #include "../animation.h"
 #include "../animationstation.h"
-#include "staticcolor.h"
+#include "jigglestaticcolor.h"
 
-class JiggleTwoStaticColor : public StaticColor {
+class JiggleTwoStaticColor : public JiggleStaticColor {
 public:
   JiggleTwoStaticColor(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType);
   JiggleTwoStaticColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPins);
   ~JiggleTwoStaticColor() { };
 
-  virtual RGB AdjustColor(RGB InColor) override;
+  virtual RGB AdjustColor(int ledIndex, RGB InColor, LightType lightType) override;
  
 protected:
+
+    int RainbowWheelFrame[FRAME_MAX];
+    bool RainbowWheelReversed[FRAME_MAX];
 };
 
 #endif
