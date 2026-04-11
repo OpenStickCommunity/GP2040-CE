@@ -666,6 +666,26 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
     // addonOptions.analogADS1115Options
     INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, enabled, !!I2C_ANALOG1115_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, inner_deadzone_enabled, ANALOG1115_INNER_DEADZONE_ENABLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, outer_deadzone_enabled, ANALOG1115_OUTER_DEADZONE_ENABLE);
+    
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, channel0InnerDeadzone, DEFAULT_INNER_DEADZONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, channel1InnerDeadzone, DEFAULT_INNER_DEADZONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, channel2InnerDeadzone, DEFAULT_INNER_DEADZONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, channel3InnerDeadzone, DEFAULT_INNER_DEADZONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, channel0OuterDeadzone, DEFAULT_OUTER_DEADZONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, channel1OuterDeadzone, DEFAULT_OUTER_DEADZONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, channel2OuterDeadzone, DEFAULT_OUTER_DEADZONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, channel3OuterDeadzone, DEFAULT_OUTER_DEADZONE);
+    
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, invert, ANALOG1115_INVERT);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, autoCalibrate, ANALOG1115_AUTOCALIBRATE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, lxChannel, ANALOG1115_LX_CHANNEL);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, lyChannel, ANALOG1115_LY_CHANNEL);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, rxChannel, ANALOG1115_RX_CHANNEL);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, ryChannel, ANALOG1115_RY_CHANNEL);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, alertMode, ANALOG1115_RY_CHANNEL);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, alertPin, ANALOG1115_RY_CHANNEL);
 
     // addonOptions.analogADS1219Options
     INIT_UNSET_PROPERTY(config.addonOptions.analogADS1219Options, enabled, !!I2C_ANALOG1219_ENABLED);
