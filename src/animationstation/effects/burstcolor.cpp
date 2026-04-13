@@ -8,7 +8,7 @@ BurstColor::BurstColor(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEf
 {
 }
 
-BurstColor::BurstColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPins, EButtonCaseEffectType InButtonCaseEffectType) : Animation(InRGBLights, InButtonCaseEffectType) 
+BurstColor::BurstColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPins, EButtonCaseEffectType InButtonCaseEffectType, bool IsSmall) : Animation(InRGBLights, InButtonCaseEffectType) 
 {
     isButtonAnimation = true;
     pressedPins = InPressedPins;
@@ -33,13 +33,17 @@ BurstColor::BurstColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPins,
 
     // Get burst length from the context param (1-100% of biggest X or Y dimension, 0 = default)
     int MaxDimension = MAX(MaxXCoord - MinYCoord, MaxYCoord - MinYCoord) + 1;
-    BurstLength = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].pressedEffectContextParam;
-
-    if(BurstLength == 0)
-        BurstLength = DEFAULT_BURST_DISTANCE;
+    BurstTailLength = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].pressedEffectContextParam;
+    if(BurstTailLength == 0)
+        BurstTailLength = MaxDimension * DEFAULT_BURST_TAIL_PROP;
     else
-        BurstLength = MaxDimension * ((float)BurstLength / 100.0f);
+        BurstTailLength = MaxDimension * ((float)BurstTailLength / 100.0f);
 
+    if(IsSmall)
+        BurstLength = MaxDimension * 0.34f;
+    else
+        BurstLength = MaxDimension;
+        
     CycleParameterChange();
 }
 
@@ -70,6 +74,17 @@ void BurstColor::Animate(RGB (&frame)[FRAME_MAX])
     std::vector<std::vector<FGridEntry>> FullGrid;
     FullGrid.assign(MaxXCoord+1, OneLineGrid);
 
+    for(int xCoord = 0; xCoord <= MaxXCoord; ++xCoord)
+    {
+        for(int yCoord = 0; yCoord <= MaxYCoord; ++yCoord)
+        {
+            FullGrid[xCoord][yCoord].Strength = 0;
+            FullGrid[xCoord][yCoord].Color.r = 0;
+            FullGrid[xCoord][yCoord].Color.g = 0;
+            FullGrid[xCoord][yCoord].Color.b = 0;
+        }
+    }
+
     //get each grid positions color and strength
     for(int burstIndex = 0; burstIndex < MAX_BURSTS; ++burstIndex)
     {
@@ -80,8 +95,7 @@ void BurstColor::Animate(RGB (&frame)[FRAME_MAX])
         float travelledDist = RunningBursts[burstIndex].RunningTime * BURST_DISTANCE_PER_SEC;
 
         //is this the last frame?
-        float largestCoord = MAX(1 + (MaxXCoord - MinXCoord), 1 + (MaxYCoord - MinYCoord));
-        if(travelledDist > (float)BurstLength + 4.0f)
+        if(travelledDist > (float)(BurstLength + BurstTailLength + 1))
             RunningBursts[burstIndex].RunningTime = -1.0f;
 
         int xStart = RunningBursts[burstIndex].XPos - BurstLength;
@@ -107,35 +121,31 @@ void BurstColor::Animate(RGB (&frame)[FRAME_MAX])
                     distanceFromCenter = abs(xCoord - RunningBursts[burstIndex].XPos);
 
                 float Strength = 0.0f;
-                //2 wide here, up then down
-                if((int)travelledDist < distanceFromCenter || (int)travelledDist > distanceFromCenter + 3)
+                //remove outside range
+                if((int)travelledDist < distanceFromCenter || (int)travelledDist > (distanceFromCenter + BurstTailLength))
                     continue;
 
-                if((int)travelledDist < distanceFromCenter+1)
-                    Strength = travelledDist - (float)((int)travelledDist);
-                else if((int)travelledDist < distanceFromCenter+3)
-                    Strength = 1.0f;
-                else
-                    Strength = 1.0f - (travelledDist - (float)((int)travelledDist));
+                Strength = ((float)(BurstTailLength - ((int)travelledDist - distanceFromCenter))) / BurstTailLength;
 
                 //update grid pos
                 //strength is highest applied to this point
                 if(Strength > FullGrid[xCoord][yCoord].Strength)
                     FullGrid[xCoord][yCoord].Strength = Strength;
+                    
                 int redToApply = (float)(RunningBursts[burstIndex].StartColor.r) * Strength;
-                if((int)FullGrid[xCoord][yCoord].Color.r + redToApply > 0xFF)
+                if((((int)FullGrid[xCoord][yCoord].Color.r) + redToApply) > 0xFF)
                     FullGrid[xCoord][yCoord].Color.r = 0xFF;
                 else
                     FullGrid[xCoord][yCoord].Color.r += redToApply;
 
                 int greenToApply = (float)(RunningBursts[burstIndex].StartColor.g) * Strength;
-                if((int)FullGrid[xCoord][yCoord].Color.g + greenToApply > 0xFF)
+                if((((int)FullGrid[xCoord][yCoord].Color.g) + greenToApply) > 0xFF)
                     FullGrid[xCoord][yCoord].Color.g = 0xFF;
                 else
                     FullGrid[xCoord][yCoord].Color.g += greenToApply;
 
                 int blueToApply = (float)(RunningBursts[burstIndex].StartColor.b) * Strength;
-                if((int)FullGrid[xCoord][yCoord].Color.b + blueToApply > 0xFF)
+                if((((int)FullGrid[xCoord][yCoord].Color.b) + blueToApply) > 0xFF)
                     FullGrid[xCoord][yCoord].Color.b = 0xFF;
                 else
                     FullGrid[xCoord][yCoord].Color.b += blueToApply;
