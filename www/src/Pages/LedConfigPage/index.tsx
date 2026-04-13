@@ -40,6 +40,9 @@ import { hexToInt, rgbIntToHex } from '../../Services/Utilities';
 import {
 	ANIMATION_NON_PRESSED_EFFECTS,
 	ANIMATION_PRESSED_EFFECTS,
+	CASE_CONTEXT_PARAM_EFFECTS,
+	NON_PRESSED_CONTEXT_PARAM_EFFECTS,
+	PRESSED_CONTEXT_PARAM_EFFECTS,
 } from '../../Data/Animations';
 import boards from '../../Data/Boards.json';
 import { LED_FORMATS } from '../../Data/Leds';
@@ -249,7 +252,11 @@ const PreviewLedChanges = ({
 	useEffect(() => {
 		const profile = values.AnimationOptions.profiles[selectedProfile];
 		if (!profile) return;
-		activateLedsProfile(profile, values.AnimationOptions.brightness, values.ledOptions.brightnessMaximum);
+		activateLedsProfile(
+			profile,
+			values.AnimationOptions.brightness,
+			values.ledOptions.brightnessMaximum,
+		);
 	}, [values, selectedProfile]);
 
 	return null;
@@ -933,7 +940,7 @@ export default function LedConfigPage() {
 													ANIMATION_NON_PRESSED_EFFECTS.NONPRESSED_EFFECT_RAIN ? (
 														<FormSelect
 															label={t(
-																'LedConfigPage:theme.non-pressed-context-param-label',
+																'LedConfigPage:theme.context-param-rain-label',
 															)}
 															name={`AnimationOptions.profiles.${profileIndex}.nonPressedContextParam`}
 															className="form-select-sm"
@@ -958,7 +965,11 @@ export default function LedConfigPage() {
 														</FormSelect>
 													) : (
 														<div className="form-control-sm col-sm-4 mb-3">
-															<Form.Label>{`${t('LedConfigPage:theme.non-pressed-context-param-label')}: ${profile.nonPressedContextParam}`}</Form.Label>
+															<Form.Label
+																htmlFor={`AnimationOptions.profiles.${profileIndex}.nonPressedContextParam`}
+															>
+																{`${t('LedConfigPage:theme.context-param-label', { value: profile.nonPressedContextParam })}`}
+															</Form.Label>
 															<Form.Range
 																name={`AnimationOptions.profiles.${profileIndex}.nonPressedContextParam`}
 																id={`AnimationOptions.profiles.${profileIndex}.nonPressedContextParam`}
@@ -966,12 +977,19 @@ export default function LedConfigPage() {
 																max={100}
 																step={1}
 																value={profile.nonPressedContextParam}
+																disabled={
+																	!NON_PRESSED_CONTEXT_PARAM_EFFECTS.includes(
+																		profile.baseNonPressedEffect,
+																	)
+																}
 																onChange={handleChange}
 															/>
 														</div>
 													)}
 													<div className="form-control-sm col-sm-4 mb-3">
-														<Form.Label>{`${t('LedConfigPage:theme.pressed-context-param-label')}: ${profile.pressedContextParam}`}</Form.Label>
+														<Form.Label
+															htmlFor={`AnimationOptions.profiles.${profileIndex}.pressedContextParam`}
+														>{`${t('LedConfigPage:theme.context-param-label', { value: profile.pressedContextParam })}`}</Form.Label>
 														<Form.Range
 															name={`AnimationOptions.profiles.${profileIndex}.pressedContextParam`}
 															id={`AnimationOptions.profiles.${profileIndex}.pressedContextParam`}
@@ -979,54 +997,64 @@ export default function LedConfigPage() {
 															max={100}
 															step={1}
 															value={profile.pressedContextParam}
+															disabled={
+																!PRESSED_CONTEXT_PARAM_EFFECTS.includes(
+																	profile.basePressedEffect,
+																)
+															}
 															onChange={handleChange}
 														/>
 													</div>
-													{profile.baseNonPressedEffect !==
-														profile.baseCaseEffect &&
-														(profile.baseCaseEffect ===
-														ANIMATION_NON_PRESSED_EFFECTS.NONPRESSED_EFFECT_RAIN ? (
-															<FormSelect
-																label={t(
-																	'LedConfigPage:theme.case-context-param-label',
-																)}
+													{profile.baseCaseEffect ===
+													ANIMATION_NON_PRESSED_EFFECTS.NONPRESSED_EFFECT_RAIN ? (
+														<FormSelect
+															label={t(
+																'LedConfigPage:theme.context-param-rain-label',
+															)}
+															name={`AnimationOptions.profiles.${profileIndex}.caseContextParam`}
+															className="form-select-sm"
+															groupClassName="col-sm-4 mb-3"
+															value={profile.caseContextParam}
+															onChange={(e) =>
+																setFieldValue(
+																	`AnimationOptions.profiles.${profileIndex}.caseContextParam`,
+																	parseInt(e.target.value),
+																)
+															}
+														>
+															<option value={1}>
+																{t('LedConfigPage:theme.rain-speed-low')}
+															</option>
+															<option value={2}>
+																{t('LedConfigPage:theme.rain-speed-medium')}
+															</option>
+															<option value={3}>
+																{t('LedConfigPage:theme.rain-speed-high')}
+															</option>
+														</FormSelect>
+													) : (
+														<div className="form-control-sm col-sm-4 mb-3">
+															<Form.Label
+																htmlFor={`AnimationOptions.profiles.${profileIndex}.caseContextParam`}
+															>{`${t('LedConfigPage:theme.context-param-label', { value: profile.caseContextParam })}`}</Form.Label>
+															<Form.Range
 																name={`AnimationOptions.profiles.${profileIndex}.caseContextParam`}
-																className="form-select-sm"
-																groupClassName="col-sm-4 mb-3"
-																value={profile.caseContextParam}
-																onChange={(e) =>
-																	setFieldValue(
-																		`AnimationOptions.profiles.${profileIndex}.caseContextParam`,
-																		parseInt(e.target.value),
+																id={`AnimationOptions.profiles.${profileIndex}.caseContextParam`}
+																min={0}
+																max={100}
+																step={1}
+																disabled={
+																	profile.baseNonPressedEffect ===
+																		profile.baseCaseEffect ||
+																	!CASE_CONTEXT_PARAM_EFFECTS.includes(
+																		profile.baseCaseEffect,
 																	)
 																}
-															>
-																<option value={1}>
-																	{t('LedConfigPage:theme.rain-speed-low')}
-																</option>
-																<option value={2}>
-																	{t('LedConfigPage:theme.rain-speed-medium')}
-																</option>
-																<option value={3}>
-																	{t('LedConfigPage:theme.rain-speed-high')}
-																</option>
-															</FormSelect>
-														) : (
-															<div className="form-control-sm col-sm-4 mb-3">
-																<Form.Label>
-																	{`${t('LedConfigPage:theme.case-context-param-label')}: ${profile.caseContextParam}`}
-																</Form.Label>
-																<Form.Range
-																	name={`AnimationOptions.profiles.${profileIndex}.caseContextParam`}
-																	id={`AnimationOptions.profiles.${profileIndex}.caseContextParam`}
-																	min={0}
-																	max={100}
-																	step={1}
-																	value={profile.caseContextParam}
-																	onChange={handleChange}
-																/>
-															</div>
-														))}
+																value={profile.caseContextParam}
+																onChange={handleChange}
+															/>
+														</div>
+													)}
 												</Row>
 
 												<hr />
