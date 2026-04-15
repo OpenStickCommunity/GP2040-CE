@@ -1,3 +1,4 @@
+import { set } from 'lodash';
 import Http from './Http';
 import { hexToInt, rgbIntToHex } from './Utilities';
 
@@ -242,7 +243,6 @@ async function setDisplayOptions(options, isPreview) {
 		: `${baseUrl}/api/setPreviewDisplayOptions`;
 	return Http.post(url, newOptions)
 		.then((response) => {
-			console.log(response.data);
 			return true;
 		})
 		.catch((err) => {
@@ -288,7 +288,6 @@ async function getGamepadOptions(setLoading) {
 async function setGamepadOptions(options) {
 	return Http.post(`${baseUrl}/api/setGamepadOptions`, sanitizeRequest(options))
 		.then((response) => {
-			console.log(response.data);
 			return true;
 		})
 		.catch((err) => {
@@ -297,18 +296,12 @@ async function setGamepadOptions(options) {
 		});
 }
 
-async function getLedOptions(setLoading) {
-	setLoading(true);
-
+async function getLedOptions() {
 	try {
 		const response = await Http.get(`${baseUrl}/api/getLedOptions`);
-		setLoading(false);
-
-		response.data.pledColor = rgbIntToHex(response.data.pledColor) || '#ffffff';
 
 		return response.data;
 	} catch (error) {
-		setLoading(false);
 		console.error(error);
 	}
 }
@@ -316,56 +309,6 @@ async function getLedOptions(setLoading) {
 async function setLedOptions(options) {
 	return Http.post(`${baseUrl}/api/setLedOptions`, sanitizeRequest(options))
 		.then((response) => {
-			console.log(response.data);
-			return true;
-		})
-		.catch((err) => {
-			console.error(err);
-			return false;
-		});
-}
-
-async function getCustomTheme(setLoading) {
-	setLoading(true);
-
-	try {
-		const response = await Http.get(`${baseUrl}/api/getCustomTheme`);
-		setLoading(false);
-
-		let data = { hasCustomTheme: response.data.enabled, customTheme: {} };
-
-		// Transform ARGB int value to hex for easy use on frontend
-		Object.keys(response.data)
-			.filter((p) => p !== 'enabled')
-			.forEach((button) => {
-				data.customTheme[button] = {
-					normal: rgbIntToHex(response.data[button].u),
-					pressed: rgbIntToHex(response.data[button].d),
-				};
-			});
-
-		console.log(data);
-		return data;
-	} catch (error) {
-		setLoading(false);
-		console.error(error);
-	}
-}
-
-async function setCustomTheme(customThemeOptions) {
-	let options = { enabled: customThemeOptions.hasCustomTheme };
-
-	// Transform RGB hex values to ARGB int before sending back to API
-	Object.keys(customThemeOptions.customTheme).forEach((p) => {
-		options[p] = {
-			u: hexToInt(customThemeOptions.customTheme[p].normal.replace('#', '')),
-			d: hexToInt(customThemeOptions.customTheme[p].pressed.replace('#', '')),
-		};
-	});
-
-	return Http.post(`${baseUrl}/api/setCustomTheme`, sanitizeRequest(options))
-		.then((response) => {
-			console.log(response.data);
 			return true;
 		})
 		.catch((err) => {
@@ -392,6 +335,19 @@ async function getButtonLayoutDefs() {
 	} catch (error) {
 		console.error(error);
 	}
+}
+
+async function getAnimationOptions() {
+	try {
+		const { data } = await Http.get(`${baseUrl}/api/getAnimationProtoOptions`);
+		return data;
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+async function setAnimationOptions(options) {
+	return Http.post(`${baseUrl}/api/setAnimationProtoOptions`, options);
 }
 
 async function getPinMappings() {
@@ -446,7 +402,6 @@ async function setKeyMappings(mappings) {
 
 	return Http.post(`${baseUrl}/api/setKeyMappings`, sanitizeRequest(data))
 		.then((response) => {
-			console.log(response.data);
 			return true;
 		})
 		.catch((err) => {
@@ -462,9 +417,6 @@ async function getAddonsOptions(setLoading) {
 		const response = await Http.get(`${baseUrl}/api/getAddonsOptions`);
 		const data = response.data;
 		setLoading(false);
-
-		response.data.turboLedColor =
-			rgbIntToHex(response.data.turboLedColor) || '#ffffff';
 
 		// Merge saved keyMappings with defaults
 		const keyboardHostMap = Object.entries(data.keyboardHostMap).reduce(
@@ -490,7 +442,6 @@ async function setAddonsOptions(options) {
 
 	return Http.post(`${baseUrl}/api/setAddonsOptions`, sanitizeRequest(options))
 		.then((response) => {
-			console.log(response.data);
 			return true;
 		})
 		.catch((err) => {
@@ -520,7 +471,6 @@ async function setMacroAddonOptions(options) {
 		sanitizeRequest(options),
 	)
 		.then((response) => {
-			console.log(response.data);
 			return true;
 		})
 		.catch((err) => {
@@ -532,7 +482,6 @@ async function setMacroAddonOptions(options) {
 async function setPS4Options(options) {
 	return Http.post(`${baseUrl}/api/setPS4Options`, options)
 		.then((response) => {
-			console.log(response.data);
 			return true;
 		})
 		.catch((err) => {
@@ -561,7 +510,6 @@ async function setWiiControls(mappings) {
 
 	return Http.post(`${baseUrl}/api/setWiiControls`, sanitizeRequest(mappings))
 		.then((response) => {
-			console.log(response.data);
 			return true;
 		})
 		.catch((err) => {
@@ -608,7 +556,6 @@ async function setPeripheralOptions(mappings) {
 		sanitizeRequest(mappings),
 	)
 		.then((response) => {
-			console.log(response.data);
 			return true;
 		})
 		.catch((err) => {
@@ -633,6 +580,37 @@ async function getUsedPins(setLoading) {
 async function getExpansionPins() {
 	try {
 		const response = await Http.get(`${baseUrl}/api/getExpansionPins`);
+		return response.data;
+	} catch (error) {
+		console.error(error);
+	}
+}
+async function setLightsDataOptions(options) {
+	return Http.post(`${baseUrl}/api/setLightsDataOptions`, options);
+}
+
+async function getLightsDataOptions() {
+	try {
+		const response = await Http.get(`${baseUrl}/api/getLightsDataOptions`);
+		return response.data;
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+async function getLightsDataPresets() {
+	try {
+		const response = await Http.get(`${baseUrl}/api/getLightsDataPresets`);
+		return response.data;
+	} catch (error) {
+		console.error(error);
+	}
+}
+async function getLightsPresets(profileIndex) {
+	try {
+		const response = await Http.get(
+			`${baseUrl}/api/getLightsPresets/${profileIndex}`,
+		);
 		return response.data;
 	} catch (error) {
 		console.error(error);
@@ -703,16 +681,38 @@ function sanitizeRequest(request) {
 	return newRequest;
 }
 
+async function setAnimationButtonTestMode(options) {
+	try {
+		await Http.post(`${baseUrl}/api/setAnimationButtonTestMode`, options);
+	} catch (error) {
+		console.error(err);
+	}
+}
+async function setAnimationButtonTestState(options) {
+	try {
+		await Http.post(`${baseUrl}/api/setAnimationButtonTestState`, options);
+	} catch (error) {
+		console.error(err);
+	}
+}
+async function clearAnimationButtonTestMode(options) {
+	try {
+		await Http.post(`${baseUrl}/api/clearAnimationButtonTestMode`, options);
+	} catch (error) {
+		console.error(err);
+	}
+}
+
 export default {
 	resetSettings,
+	getAnimationOptions,
+	setAnimationOptions,
 	getDisplayOptions,
 	setDisplayOptions,
-	getGamepadOptions,
-	setGamepadOptions,
 	getLedOptions,
 	setLedOptions,
-	getCustomTheme,
-	setCustomTheme,
+	getGamepadOptions,
+	setGamepadOptions,
 	getPinMappings,
 	setPinMappings,
 	getProfileOptions,
@@ -728,6 +728,10 @@ export default {
 	setWiiControls,
 	getPeripheralOptions,
 	setPeripheralOptions,
+	setLightsDataOptions,
+	getLightsDataOptions,
+	getLightsDataPresets,
+	getLightsPresets,
 	getExpansionPins,
 	setExpansionPins,
 	getHETriggerVoltage,
@@ -740,6 +744,9 @@ export default {
 	getButtonLayoutDefs,
 	getSplashImage,
 	setSplashImage,
+	setAnimationButtonTestMode,
+	setAnimationButtonTestState,
+	clearAnimationButtonTestMode,
 	getUsedPins,
 	getHeldPins,
 	abortGetHeldPins,

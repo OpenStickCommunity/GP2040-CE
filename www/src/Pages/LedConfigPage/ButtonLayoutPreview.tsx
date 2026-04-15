@@ -1,0 +1,517 @@
+import { ReactElement, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Button, Col, OverlayTrigger, Popover, Row } from 'react-bootstrap';
+
+import { LED_COLORS, LIGHT_TYPES } from '../../Data/Leds';
+import {
+	Light,
+	MAX_NON_BUTTON_LIGHT_COLOR_INDEXES,
+} from '../../Store/useLedStore';
+import { rgbIntToHex } from '../../Services/Utilities';
+import ColorSelector from './ColorSlector';
+import boards from '../../Data/Boards.json';
+
+const GPIO_PIN_LENGTH =
+	boards[import.meta.env.VITE_GP2040_BOARD as keyof typeof boards].maxPin + 1;
+
+const getViewBox = (lights: { xCoord: number; yCoord: number }[]) =>
+	lights.reduce(
+		(acc, light) => ({
+			minX: Math.min(acc.minX, light.xCoord),
+			minY: Math.min(acc.minY, light.yCoord),
+			maxX: Math.max(acc.maxX, light.xCoord),
+			maxY: Math.max(acc.maxY, light.yCoord),
+		}),
+		{ minX: Infinity, minY: Infinity, maxX: -Infinity, maxY: -Infinity },
+	);
+
+const hasNeighbor = (light: Light, lights: Light[], range: number) =>
+	lights.some(
+		(other) =>
+			other !== light &&
+			Math.abs(other.xCoord - light.xCoord) <= range &&
+			Math.abs(other.yCoord - light.yCoord) <= range,
+	);
+
+const BASE_LIGHT_SIZE = 0.9; // Base size
+const SMALL_LIGHT_SIZE = BASE_LIGHT_SIZE / 2; // Size when has neighbor within 1 cell
+
+const calculateLightSize = (light: Light, lights: Light[]) =>
+	hasNeighbor(light, lights, 1) ? SMALL_LIGHT_SIZE : BASE_LIGHT_SIZE;
+
+const ColorSelectOverlay = ({
+	title,
+	content,
+	children,
+}: {
+	title: string;
+	content: React.ReactNode;
+	children: ReactElement;
+}) => (
+	<OverlayTrigger
+		trigger="click"
+		placement="auto"
+		rootClose
+		overlay={
+			<Popover>
+				<Popover.Header as="h3">{title}</Popover.Header>
+				<Popover.Body>{content}</Popover.Body>
+			</Popover>
+		}
+	>
+		{children}
+	</OverlayTrigger>
+);
+
+function ButtonLayoutPreview({
+	pressedStaticColors,
+	notPressedStaticColors,
+	nonButtonStaticColors,
+	profileIndex,
+	setFieldValue,
+	customColors = [],
+	Lights,
+}: {
+	pressedStaticColors: number[];
+	notPressedStaticColors: number[];
+	nonButtonStaticColors: number[];
+	profileIndex: number;
+	customColors?: number[];
+	setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
+	Lights: Light[];
+}) {
+	const { t } = useTranslation('');
+	const { minX, minY, maxX, maxY } = getViewBox(Lights);
+	const [pressed, setPressed] = useState(false);
+
+	const strokeWidth = 0.03;
+	const padding = 1.4;
+	const viewBoxX = minX - padding;
+	const viewBoxY = minY - padding;
+	const viewBoxWidth = maxX - minX + padding * 2;
+	const viewBoxHeight = maxY - minY + padding * 2;
+
+	const customColorOptions = customColors.map((color, index) => ({
+		value: LED_COLORS.length + index,
+		label: `Custom ${index + 1}`,
+		color: rgbIntToHex(color),
+	}));
+	const colorOptions = [...LED_COLORS, ...customColorOptions];
+
+	const handlePressedShow = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+		if (e.button === 2) setPressed(true);
+	};
+
+	const handlePressedHide = () => {
+		setPressed(false);
+	};
+
+	return (
+		<div>
+			<p>
+				{t('LedConfigPage:buttonLayoutPreview.description')}
+				<br />
+				{t('LedConfigPage:buttonLayoutPreview.shared-color-note')}
+			</p>
+			<ul>
+				<li>{t('LedConfigPage:buttonLayoutPreview.hint-idle')}</li>
+				<li>{t('LedConfigPage:buttonLayoutPreview.hint-right-click')}</li>
+			</ul>
+			<hr />
+			<div className="mb-3">
+				<svg
+					width="20"
+					height="20"
+					className="d-inline-block mx-2 align-middle"
+					aria-label="circle"
+				>
+					<circle
+						cx="10"
+						cy="10"
+						r="8"
+						fill="currentColor"
+						stroke="black"
+						strokeWidth="1"
+					/>
+				</svg>
+				{t('LedConfigPage:buttonLayoutPreview.legend-action-button')}
+				<svg
+					width="20"
+					height="20"
+					className="d-inline-block mx-2 align-middle"
+					aria-label="square"
+				>
+					<rect
+						x="2"
+						y="2"
+						width="16"
+						height="16"
+						fill="currentColor"
+						stroke="black"
+						strokeWidth="1"
+					/>
+				</svg>
+				{t('LedConfigPage:buttonLayoutPreview.legend-case-light')}
+				<svg
+					width="20"
+					height="20"
+					className="d-inline-block mx-2 align-middle"
+					aria-label="hexagon"
+				>
+					<polygon
+						points="10,2 16.928,6 16.928,14 10,18 3.072,14 3.072,6"
+						fill="currentColor"
+						stroke="black"
+						strokeWidth="1"
+					/>
+				</svg>
+				{t('LedConfigPage:buttonLayoutPreview.legend-turbo-player-light')}
+			</div>
+
+			<Row
+				className="justify-content-center py-4 mb-3 rounded-3 mx-1 border border-secondary-subtle"
+				style={{
+					background: 'var(--bs-tertiary-bg)',
+				}}
+				onMouseDown={(e) => handlePressedShow(e)}
+				onMouseUp={() => handlePressedHide()}
+				onMouseLeave={() => handlePressedHide()}
+				onContextMenu={(e) => e.preventDefault()}
+			>
+				<Col lg={10}>
+					<svg
+						width="100%"
+						viewBox={`${viewBoxX} ${viewBoxY} ${viewBoxWidth} ${viewBoxHeight}`}
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						{Lights.map((light, index) => {
+							switch (light.lightType) {
+								case LIGHT_TYPES.ActionButton: {
+									return (
+										<ColorSelectOverlay
+											key={`button-light-${index}`}
+											title={t(
+												'LedConfigPage:buttonLayoutPreview.overlay-gpio-title',
+												{ pin: light.GPIOPinOrNonButtonIndex },
+											)}
+											content={
+												<div style={{ minWidth: 200 }}>
+													<p>
+														{t('LedConfigPage:buttonLayoutPreview.idle-color')}
+													</p>
+													<ColorSelector
+														options={colorOptions}
+														value={
+															colorOptions[
+																notPressedStaticColors[
+																	light.GPIOPinOrNonButtonIndex
+																]
+															] || null
+														}
+														onChange={(selected) => {
+															setFieldValue(
+																`AnimationOptions.profiles.${profileIndex}.notPressedStaticColors.${light.GPIOPinOrNonButtonIndex}`,
+																selected?.value || 0,
+															);
+														}}
+													/>
+
+													<p className="mt-3">
+														{t(
+															'LedConfigPage:buttonLayoutPreview.pressed-color',
+														)}
+													</p>
+													<ColorSelector
+														options={colorOptions}
+														value={
+															colorOptions[
+																pressedStaticColors[
+																	light.GPIOPinOrNonButtonIndex
+																]
+															] || null
+														}
+														onChange={(selected) => {
+															setFieldValue(
+																`AnimationOptions.profiles.${profileIndex}.pressedStaticColors.${light.GPIOPinOrNonButtonIndex}`,
+																selected?.value || 0,
+															);
+														}}
+													/>
+												</div>
+											}
+										>
+											<g style={{ cursor: 'pointer' }}>
+												<circle
+													key={`button-el-light-${index}`}
+													cx={light.xCoord}
+													cy={light.yCoord}
+													r={calculateLightSize(light, Lights)}
+													fill={
+														colorOptions[
+															pressed
+																? pressedStaticColors[
+																		light.GPIOPinOrNonButtonIndex
+																	]
+																: notPressedStaticColors[
+																		light.GPIOPinOrNonButtonIndex
+																	]
+														]?.color || 'black'
+													}
+													stroke="currentColor"
+													strokeWidth={strokeWidth}
+												/>
+												<text
+													x={light.xCoord}
+													y={light.yCoord}
+													textAnchor="middle"
+													fill="white"
+													dominantBaseline="central"
+													style={{
+														fontSize: 0.3,
+														fontWeight: 'bold',
+														textShadow: '0 0 3px black',
+													}}
+												>
+													{`GP${light.GPIOPinOrNonButtonIndex}`}
+												</text>
+											</g>
+										</ColorSelectOverlay>
+									);
+								}
+								case LIGHT_TYPES.Case: {
+									return (
+										<ColorSelectOverlay
+											key={`case-light-${index}`}
+											title={t(
+												'LedConfigPage:buttonLayoutPreview.overlay-case-title',
+												{ id: light.GPIOPinOrNonButtonIndex },
+											)}
+											content={
+												<div style={{ minWidth: 200 }}>
+													<p>
+														{t('LedConfigPage:buttonLayoutPreview.case-color')}
+													</p>
+													<ColorSelector
+														options={colorOptions}
+														value={
+															colorOptions[
+																nonButtonStaticColors[
+																	light.GPIOPinOrNonButtonIndex
+																]
+															] || null
+														}
+														onChange={(selected) => {
+															setFieldValue(
+																`AnimationOptions.profiles.${profileIndex}.nonButtonStaticColors.${light.GPIOPinOrNonButtonIndex}`,
+																selected?.value || 0,
+															);
+														}}
+													/>
+												</div>
+											}
+										>
+											<g style={{ cursor: 'pointer' }}>
+												<rect
+													key={`case-el-light-${index}`}
+													x={light.xCoord - SMALL_LIGHT_SIZE}
+													y={light.yCoord - SMALL_LIGHT_SIZE}
+													ry={0.1}
+													rx={0.1}
+													width={SMALL_LIGHT_SIZE * 2}
+													height={SMALL_LIGHT_SIZE * 2}
+													fill={
+														colorOptions[
+															nonButtonStaticColors[
+																light.GPIOPinOrNonButtonIndex
+															]
+														]?.color || 'black'
+													}
+													stroke="currentColor"
+													strokeWidth={strokeWidth}
+												/>
+												<text
+													x={light.xCoord}
+													y={light.yCoord}
+													textAnchor="middle"
+													fill="white"
+													dominantBaseline="central"
+													style={{
+														fontSize: 0.3,
+														fontWeight: 'bold',
+														textShadow: '0 0 3px black',
+													}}
+												>
+													{`C${light.GPIOPinOrNonButtonIndex}`}
+												</text>
+											</g>
+										</ColorSelectOverlay>
+									);
+								}
+								case LIGHT_TYPES.Turbo:
+								case LIGHT_TYPES.PlayerLight:
+									return (
+										<ColorSelectOverlay
+											key={`misc-light-${index}`}
+											title={t(
+												'LedConfigPage:buttonLayoutPreview.overlay-gpio-title',
+												{ pin: light.GPIOPinOrNonButtonIndex },
+											)}
+											content={
+												<div style={{ minWidth: 200 }}>
+													<p>
+														{t('LedConfigPage:buttonLayoutPreview.idle-color')}
+													</p>
+													<ColorSelector
+														options={colorOptions}
+														value={
+															colorOptions[
+																notPressedStaticColors[
+																	light.GPIOPinOrNonButtonIndex
+																]
+															] || null
+														}
+														onChange={(selected) => {
+															setFieldValue(
+																`AnimationOptions.profiles.${profileIndex}.notPressedStaticColors.${light.GPIOPinOrNonButtonIndex}`,
+																selected?.value || 0,
+															);
+														}}
+													/>
+
+													<p className="mt-3">
+														{t(
+															'LedConfigPage:buttonLayoutPreview.active-color',
+														)}
+													</p>
+													<ColorSelector
+														options={colorOptions}
+														value={
+															colorOptions[
+																pressedStaticColors[
+																	light.GPIOPinOrNonButtonIndex
+																]
+															] || null
+														}
+														onChange={(selected) => {
+															setFieldValue(
+																`AnimationOptions.profiles.${profileIndex}.pressedStaticColors.${light.GPIOPinOrNonButtonIndex}`,
+																selected?.value || 0,
+															);
+														}}
+													/>
+												</div>
+											}
+										>
+											<g key={`${light.lightType}-light-${index}`}>
+												<polygon
+													points={`${light.xCoord},${light.yCoord - SMALL_LIGHT_SIZE} ${light.xCoord + SMALL_LIGHT_SIZE * 0.866},${light.yCoord - SMALL_LIGHT_SIZE * 0.5} ${light.xCoord + SMALL_LIGHT_SIZE * 0.866},${light.yCoord + SMALL_LIGHT_SIZE * 0.5} ${light.xCoord},${light.yCoord + SMALL_LIGHT_SIZE} ${light.xCoord - SMALL_LIGHT_SIZE * 0.866},${light.yCoord + SMALL_LIGHT_SIZE * 0.5} ${light.xCoord - SMALL_LIGHT_SIZE * 0.866},${light.yCoord - SMALL_LIGHT_SIZE * 0.5}`}
+													fill={
+														colorOptions[
+															pressed
+																? pressedStaticColors[
+																		light.GPIOPinOrNonButtonIndex
+																	]
+																: notPressedStaticColors[
+																		light.GPIOPinOrNonButtonIndex
+																	]
+														]?.color || 'black'
+													}
+													stroke="currentColor"
+													strokeWidth={strokeWidth}
+												/>
+												<text
+													x={light.xCoord}
+													y={light.yCoord}
+													textAnchor="middle"
+													fill="white"
+													dominantBaseline="central"
+													style={{
+														fontSize: 0.3,
+														fontWeight: 'bold',
+														textShadow: '0 0 3px black',
+													}}
+												>
+													{`GP${light.GPIOPinOrNonButtonIndex}`}
+												</text>
+											</g>
+										</ColorSelectOverlay>
+									);
+								default:
+									return null;
+							}
+						})}
+					</svg>
+				</Col>
+			</Row>
+
+			<ColorSelectOverlay
+				title={t('LedConfigPage:buttonLayoutPreview.set-all-colors')}
+				content={
+					<div style={{ minWidth: 200 }}>
+						<p>{t('LedConfigPage:buttonLayoutPreview.idle-color')}</p>
+						<ColorSelector
+							options={colorOptions}
+							value={
+								notPressedStaticColors?.every(
+									(v) => v === notPressedStaticColors[0],
+								)
+									? colorOptions[notPressedStaticColors[0]] || null
+									: null
+							}
+							onChange={(selected) => {
+								setFieldValue(
+									`AnimationOptions.profiles.${profileIndex}.notPressedStaticColors`,
+									Array(GPIO_PIN_LENGTH).fill(selected?.value || 0),
+								);
+							}}
+						/>
+						<p className="mt-3">
+							{t('LedConfigPage:buttonLayoutPreview.pressed-color')}
+						</p>
+						<ColorSelector
+							options={colorOptions}
+							value={
+								pressedStaticColors?.every((v) => v === pressedStaticColors[0])
+									? colorOptions[pressedStaticColors[0]] || null
+									: null
+							}
+							onChange={(selected) => {
+								setFieldValue(
+									`AnimationOptions.profiles.${profileIndex}.pressedStaticColors`,
+									Array(GPIO_PIN_LENGTH).fill(selected?.value || 0),
+								);
+							}}
+						/>
+						<p className="mt-3">
+							{t('LedConfigPage:buttonLayoutPreview.case-color')}
+						</p>
+						<ColorSelector
+							options={colorOptions}
+							value={
+								nonButtonStaticColors?.every(
+									(v) => v === nonButtonStaticColors[0],
+								)
+									? colorOptions[nonButtonStaticColors[0]] || null
+									: null
+							}
+							onChange={(selected) => {
+								setFieldValue(
+									`AnimationOptions.profiles.${profileIndex}.nonButtonStaticColors`,
+									Array(MAX_NON_BUTTON_LIGHT_COLOR_INDEXES).fill(
+										selected?.value || 0,
+									),
+								);
+							}}
+						/>
+					</div>
+				}
+			>
+				<Button variant="secondary">
+					{t('LedConfigPage:buttonLayoutPreview.set-all-colors')}
+				</Button>
+			</ColorSelectOverlay>
+		</div>
+	);
+}
+
+export default ButtonLayoutPreview;

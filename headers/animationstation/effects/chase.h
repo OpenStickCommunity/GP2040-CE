@@ -8,22 +8,92 @@
 #include <vector>
 #include "animationstation.h"
 
+//Chase lights the lights up in a specific order. 2 lights can be on at once as they overlaps on off times. There are multiple directions that can be used.
+
+#define CHASE_DEFAULT_TAIL_LENGTH 3
+
+//List of chase types
+typedef enum
+{
+  CHASETYPES_SEQUENTIAL,
+  CHASETYPES_SEQUENTIAL_PINGPONG,
+  CHASETYPES_LEFT_TO_RIGHT,
+  CHASETYPES_RIGHT_TO_LEFT,
+  CHASETYPES_TOP_TO_BOTTOM,
+  CHASETYPES_BOTTOM_TO_TOP,
+  CHASETYPES_HORIZONTAL_PINGPONG,
+  CHASETYPES_VERTICAL_PINGPONG,
+  CHASETYPES_RANDOM,
+  CHASETYPES_CIRCLE_CLOCKWISE, 
+  CHASETYPES_CIRCLE_ANTICLOCKWISE,
+  CHASETYPES_CIRCLE_PINGPONG,
+  CHASETYPES_INDEX,
+  CHASETYPES_INDEX_PINGPONG,
+  CHASETYPES_MAX,
+  CHASETYPES_TESTLAYOUT,
+} ChaseTypes;
+
+typedef enum
+{
+  SINGLECHASETYPES_SEQUENTIAL,
+  SINGLECHASETYPES_LEFT_TO_RIGHT,
+  SINGLECHASETYPES_RIGHT_TO_LEFT,
+  SINGLECHASETYPES_TOP_TO_BOTTOM,
+  SINGLECHASETYPES_BOTTOM_TO_TOP,
+  SINGLECHASETYPES_MAX_RANDOM_TYPES,
+  SINGLECHASETYPES_CIRCLE_CLOCKWISE, 
+  SINGLECHASETYPES_CIRCLE_ANTICLOCKWISE,
+  SINGLECHASETYPES_INDEX,
+} SingleChaseTypes;
+
 class Chase : public Animation {
 public:
-  Chase(PixelMatrix &matrix);
+  Chase(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType, ChaseTypes InChaseType);
   ~Chase() {};
 
-  bool Animate(RGB (&frame)[100]);
-  void ParameterUp();
-  void ParameterDown();
+  virtual void Animate(RGB (&frame)[FRAME_MAX]) override;
+  
+  virtual void CycleParameterChange() override;
+
+  ChaseTypes ChaseTypeInUse = CHASETYPES_SEQUENTIAL;
 
 protected:
-  bool IsChasePixel(int i);
-  int WheelFrame(int i);
-  int currentFrame = 0;
-  int currentPixel = 0;
-  bool reverse = false;
-  absolute_time_t nextRunTime = nil_time;
+ 
+  void AssignThisFrameValues();
+
+  void CheckToAdvanceLight();
+  void CheckForEndOfSequence();
+
+  void SetStartLight();
+
+  void GetSpecialColors(RGB& chaseCol, RGB& caseChaseCol);
+
+  void OrderLights();
+
+  float NextLightTimer;
+
+  std::vector<uint32_t> OrderedLights;
+
+  float ChaseBlendValues[FRAME_MAX];
+  LightType ChaseBlendType[FRAME_MAX];
+
+  int MinXCoord = 0;
+  int MinYCoord = 0;
+  int MaxXCoord = 0;
+  int MaxYCoord = 0;
+
+  int CurrentLight = 0;
+
+  int RainbowWheelFrame = 0;
+  bool RainbowWheelReversed = false;
+
+  bool Reversed = false;
+
+  SingleChaseTypes RandomChaseType;
+  
+  absolute_time_t NextRunTime = nil_time;
+
+  bool TestLayoutFlipFlop = false;
 };
 
 #endif

@@ -1,0 +1,695 @@
+import { useState, useCallback, useEffect } from 'react';
+import {
+	useSensor,
+	MouseSensor,
+	TouchSensor,
+	KeyboardSensor,
+	useSensors,
+	DragEndEvent,
+	DndContext,
+} from '@dnd-kit/core';
+import {
+	snapCenterToCursor,
+	restrictToParentElement,
+} from '@dnd-kit/modifiers';
+import { FormikErrors, FormikHandlers } from 'formik';
+import { Row, Col, Button, Alert } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+
+import {
+	AnimationOptions,
+	LedOptions,
+	Light,
+	MAX_NON_BUTTON_LIGHT_COLOR_INDEXES,
+	MAX_LIGHTS,
+} from '../../Store/useLedStore';
+import { useGetContainerDimensions } from '../../Hooks/useGetContainerDimensions';
+
+import FormControl from '../../Components/FormControl';
+import FormSelect from '../../Components/FormSelect';
+
+import { LED_COLORS, LIGHT_TYPES } from '../../Data/Leds';
+import boards from '../../Data/Boards.json';
+
+import { rgbIntToHex } from '../../Services/Utilities';
+import ColorSelector from './ColorSlector';
+import { LightIndicator } from './LightIndicator';
+
+const GRID_SIZE = 30;
+const GPIO_PIN_LENGTH =
+	boards[import.meta.env.VITE_GP2040_BOARD as keyof typeof boards].maxPin + 1;
+
+const getFirstEmptyLightCoord = (lights: Light[]) => {
+	const existingCoords = lights.map(
+		(light) => `${light.xCoord},${light.yCoord}`,
+	);
+	const total = GRID_SIZE * GRID_SIZE;
+
+	for (let i = 0; i < total; i++) {
+		const x = i % GRID_SIZE;
+		const y = Math.floor(i / GRID_SIZE);
+		if (!existingCoords.includes(`${x},${y}`)) {
+			return { xCoord: x, yCoord: y };
+		}
+	}
+	return null;
+};
+
+export default function LightCoordsSection({
+	pressedStaticColors,
+	notPressedStaticColors,
+	nonButtonStaticColors,
+	profileIndex,
+	values,
+	errors,
+	setFieldValue,
+	setValues,
+	handleChange,
+}: {
+	pressedStaticColors: number[];
+	notPressedStaticColors: number[];
+	nonButtonStaticColors: number[];
+	profileIndex: number;
+	values: {
+		ledOptions: LedOptions;
+		Lights: Light[];
+		AnimationOptions: AnimationOptions;
+	};
+	errors: FormikErrors<{
+		AnimationOptions: AnimationOptions;
+		Lights: Light[];
+	}>;
+	setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
+	setValues: (
+		values: {
+			ledOptions: LedOptions;
+			Lights: Light[];
+			AnimationOptions: AnimationOptions;
+		},
+		shouldValidate?: boolean,
+	) => void;
+	handleChange: FormikHandlers['handleChange'];
+}) {
+	const { dimensions, containerRef } = useGetContainerDimensions();
+	const { t } = useTranslation('');
+
+	const [cellWidth, setCellWidth] = useState(dimensions.width / GRID_SIZE);
+	const [selectedLight, setSelectedLight] = useState<number | null>(null);
+
+	const mouseSensor = useSensor(MouseSensor, {
+		activationConstraint: undefined,
+	});
+	const touchSensor = useSensor(TouchSensor, {
+		activationConstraint: undefined,
+	});
+
+	const keyboardSensor = useSensor(KeyboardSensor, {});
+	const sensors = useSensors(
+		// useSensor(PointerSensor, {
+		// 	activationConstraint: { delay: 150, tolerance: 0 },
+		// }),
+		mouseSensor,
+		touchSensor,
+		keyboardSensor,
+	);
+
+	const gridPxToCoords = useCallback(
+		(pixels: number) =>
+			Math.max(0, Math.min(Math.round(pixels / cellWidth), GRID_SIZE - 1)) || 0,
+		[cellWidth, GRID_SIZE],
+	);
+
+	useEffect(() => {
+		if (dimensions.width === 0) return;
+		const newCellWidth = dimensions.width / GRID_SIZE - 1 / GRID_SIZE;
+
+		setCellWidth(newCellWidth);
+	}, [GRID_SIZE, dimensions.width]);
+
+	const handleDragStart = useCallback(function handleDragStart(
+		event: DragEndEvent,
+	) {
+		setSelectedLight(Number(event.active.id));
+	}, []);
+
+	const handleDeleteLight = useCallback(
+		(index: number) => {
+			setValues({
+				...values,
+				Lights: values.Lights.filter((_, i) => i !== index),
+			});
+			if (selectedLight === index) {
+				setSelectedLight(null);
+			}
+		},
+		[setValues, values, selectedLight],
+	);
+
+	const handleNewLight = useCallback(
+		(lightType: number) => {
+			const emptyCoord = getFirstEmptyLightCoord(values.Lights);
+			if (!emptyCoord) return;
+
+			setValues({
+				...values,
+				AnimationOptions: values.AnimationOptions,
+				Lights: [
+					...values.Lights,
+					{
+						GPIOPinOrNonButtonIndex: 0,
+						firstLedIndex: values.Lights.length,
+						lightType,
+						numLedsOnLight: 1,
+						xCoord: emptyCoord.xCoord,
+						yCoord: emptyCoord.yCoord,
+					},
+				],
+			});
+			setSelectedLight(values.Lights.length);
+		},
+		[setValues, values],
+	);
+
+	const customColorOptions = values.AnimationOptions.customColors.map(
+		(color, index) => ({
+			value: LED_COLORS.length + index,
+			label: `Custom ${index + 1}`,
+			color: rgbIntToHex(color),
+		}),
+	);
+	const colorOptions = [...LED_COLORS, ...customColorOptions];
+
+	return (
+		<div>
+			<p>{t('LedConfigPage:lightCoordsSection.description')}</p>
+			<Alert variant="warning">
+				{t('LedConfigPage:lightCoordsSection.warning')}
+			</Alert>
+			<hr />
+			{/* <Row className="mb-3">
+				<Col md={3} className="d-flex flex-column justify-content-end mb-2">
+					<FormSelect
+						label={'Active light tied to GPIO pin'}
+						className="form-select-sm"
+						groupClassName="mb-3"
+						value={previewGpioPin}
+						onChange={(e) => {
+							setPreviewGpioPin(
+								parseInt((e.target as HTMLSelectElement).value),
+							);
+						}}
+					>
+						{Array.from({ length: GPIO_PIN_LENGTH }).map((_, pinIndex) => (
+							<option key={pinIndex} value={pinIndex}>
+								GPIO Pin {pinIndex}
+							</option>
+						))}
+					</FormSelect>
+
+					<Button
+						variant="secondary"
+						onClick={() => {
+							activateLedsOnId(previewGpioPin);
+						}}
+					>
+						GPIO Pin Test
+					</Button>
+				</Col>
+				<Col md={3} className="d-flex flex-column justify-content-end mb-2">
+					<FormSelect
+						label={'Active light tied to non Button ID'}
+						className="form-select-sm"
+						groupClassName="mb-3"
+						value={previewNonButtonId}
+						onChange={(e) => {
+							setPreviewNonButtonId(parseInt((e.target as HTMLSelectElement).value));
+						}}
+					>
+						{Array.from({ length: MAX_NON_BUTTON_LIGHT_COLOR_INDEXES }).map((_, nonButtonIndex) => (
+							<option key={nonButtonIndex} value={nonButtonIndex}>
+								Non Button ID {nonButtonIndex + 1}
+							</option>
+						))}
+					</FormSelect>
+
+					<Button
+						variant="secondary"
+						onClick={() => {
+							activateLedsOnId(previewNonButtonId, true);
+						}}
+					>
+						Non Button ID Test
+					</Button>
+				</Col>
+				<Col md={3} className="d-flex flex-column justify-content-end mb-2">
+					<p>
+						Run a chase animation from left to right and then top to bottom to
+						help verify correct grid positioning of the lights
+					</p>
+					<Button
+						variant="secondary"
+						onClick={() => {
+							activateLedsChase();
+						}}
+					>
+						Layout Test
+					</Button>
+				</Col>
+				<Col md={3} className="d-flex flex-column justify-content-end mb-2">
+					<p>Turns off all the lights</p>
+					<Button
+						variant="danger"
+						onClick={() => {
+							turnOffLeds();
+						}}
+					>
+						Lights Off
+					</Button>
+				</Col>
+			</Row>
+			<hr /> */}
+
+			<Row className="mb-3">
+				<Col md={3}>
+					<Button
+						className="w-100"
+						variant="secondary"
+						disabled={values.Lights.length >= MAX_LIGHTS}
+						onClick={() => {
+							handleNewLight(LIGHT_TYPES.ActionButton);
+						}}
+					>
+						{t('LedConfigPage:lightCoordsSection.add-button-light')}
+					</Button>
+				</Col>
+				<Col md={3}>
+					<Button
+						className="w-100"
+						variant="secondary"
+						disabled={values.Lights.length >= MAX_LIGHTS}
+						onClick={() => {
+							handleNewLight(LIGHT_TYPES.Case);
+						}}
+					>
+						{t('LedConfigPage:lightCoordsSection.add-case-light')}
+					</Button>
+				</Col>
+				<Col md={3}>
+					<Button
+						className="w-100"
+						variant="secondary"
+						disabled={values.Lights.length >= MAX_LIGHTS}
+						onClick={() => {
+							handleNewLight(LIGHT_TYPES.Turbo);
+						}}
+					>
+						{t('LedConfigPage:lightCoordsSection.add-turbo-light')}
+					</Button>
+				</Col>
+				<Col md={3}>
+					<Button
+						className="w-100"
+						variant="secondary"
+						disabled={values.Lights.length >= MAX_LIGHTS}
+						onClick={() => {
+							handleNewLight(LIGHT_TYPES.PlayerLight);
+						}}
+					>
+						{t('LedConfigPage:lightCoordsSection.add-player-light')}
+					</Button>
+				</Col>
+			</Row>
+			<Row className="mb-3">
+				<Col md={3}>
+					<div className="d-flex flex-grow-1">
+						{selectedLight !== null ? (
+							<div className="w-100 mb-3">
+								<h3>
+									{t('LedConfigPage:lightCoordsSection.light-header', {
+										index: selectedLight + 1,
+									})}
+								</h3>
+								<FormSelect
+									label={t('LedConfigPage:lightCoordsSection.light-type-label')}
+									className="form-select"
+									groupClassName="mb-3"
+									value={values.Lights[selectedLight]?.lightType}
+									onChange={(e) => {
+										setFieldValue(
+											`Lights[${selectedLight}].lightType`,
+											parseInt(e.target.value),
+										);
+									}}
+									name={`Lights[${selectedLight}].lightType`}
+								>
+									<option value={LIGHT_TYPES.ActionButton}>
+										{t(
+											'LedConfigPage:lightCoordsSection.light-type-action-button',
+										)}
+									</option>
+									<option value={LIGHT_TYPES.Case}>
+										{t('LedConfigPage:lightCoordsSection.light-type-case')}
+									</option>
+									<option value={LIGHT_TYPES.Turbo}>
+										{t('LedConfigPage:lightCoordsSection.light-type-turbo')}
+									</option>
+									<option value={LIGHT_TYPES.PlayerLight}>
+										{t(
+											'LedConfigPage:lightCoordsSection.light-type-player-light',
+										)}
+									</option>
+								</FormSelect>
+								<FormControl
+									type="number"
+									label={t('LedConfigPage:lightCoordsSection.num-leds-label')}
+									name={`Lights[${selectedLight}].numLedsOnLight`}
+									className="form-control"
+									groupClassName="mb-3"
+									value={values.Lights[selectedLight]?.numLedsOnLight}
+									error={
+										(errors.Lights?.[selectedLight] as FormikErrors<Light>)
+											?.numLedsOnLight
+									}
+									isInvalid={Boolean(
+										(errors.Lights?.[selectedLight] as FormikErrors<Light>)
+											?.numLedsOnLight,
+									)}
+									onChange={handleChange}
+									min={1}
+								/>
+								<FormControl
+									type="number"
+									label={t(
+										'LedConfigPage:lightCoordsSection.first-led-index-label',
+									)}
+									name={`Lights[${selectedLight}].firstLedIndex`}
+									className="form-control"
+									groupClassName="mb-3"
+									value={values.Lights[selectedLight]?.firstLedIndex}
+									error={
+										(errors.Lights?.[selectedLight] as FormikErrors<Light>)
+											?.firstLedIndex
+									}
+									isInvalid={Boolean(
+										(errors.Lights?.[selectedLight] as FormikErrors<Light>)
+											?.firstLedIndex,
+									)}
+									onChange={handleChange}
+									min={0}
+								/>
+								<FormSelect
+									label={
+										values.Lights[selectedLight]?.lightType == LIGHT_TYPES.Case
+											? t('LedConfigPage:lightCoordsSection.case-id-tied-label')
+											: t(
+													'LedConfigPage:lightCoordsSection.gpio-pin-tied-label',
+												)
+									}
+									className="form-select"
+									groupClassName="mb-3"
+									value={values.Lights[selectedLight]?.GPIOPinOrNonButtonIndex}
+									onChange={handleChange}
+									name={`Lights[${selectedLight}].GPIOPinOrNonButtonIndex`}
+								>
+									{values.Lights[selectedLight]?.lightType ==
+									LIGHT_TYPES.Case ? (
+										<>
+											{Array.from({
+												length: MAX_NON_BUTTON_LIGHT_COLOR_INDEXES,
+											}).map((_, nonButtonIndex) => (
+												<option key={nonButtonIndex} value={nonButtonIndex}>
+													{t(
+														'LedConfigPage:lightCoordsSection.case-id-option',
+														{ index: nonButtonIndex + 1 },
+													)}
+												</option>
+											))}
+										</>
+									) : (
+										<>
+											{Array.from({ length: GPIO_PIN_LENGTH }).map(
+												(_, pinIndex) => (
+													<option key={pinIndex} value={pinIndex}>
+														{t(
+															'LedConfigPage:lightCoordsSection.gpio-pin-option',
+															{ index: pinIndex },
+														)}
+													</option>
+												),
+											)}
+										</>
+									)}
+								</FormSelect>
+
+								{values.Lights[selectedLight]?.lightType == LIGHT_TYPES.Case ? (
+									<div className="mb-3">
+										<label className="form-label">
+											{t('LedConfigPage:lightCoordsSection.case-color-label')}
+										</label>
+										<ColorSelector
+											options={colorOptions}
+											value={
+												colorOptions[
+													nonButtonStaticColors[
+														values.Lights[selectedLight].GPIOPinOrNonButtonIndex
+													]
+												]
+											}
+											onChange={(selected) => {
+												setFieldValue(
+													`AnimationOptions.profiles.${profileIndex}.nonButtonStaticColors.${values.Lights[selectedLight].GPIOPinOrNonButtonIndex}`,
+													selected?.value || 0,
+												);
+											}}
+										/>
+									</div>
+								) : (
+									<>
+										<div className="mb-3">
+											<label className="form-label">
+												{t('LedConfigPage:lightCoordsSection.idle-color-label')}
+											</label>
+											<ColorSelector
+												options={colorOptions}
+												value={
+													colorOptions[
+														notPressedStaticColors[
+															values.Lights[selectedLight]
+																.GPIOPinOrNonButtonIndex
+														]
+													]
+												}
+												onChange={(selected) => {
+													setFieldValue(
+														`AnimationOptions.profiles.${profileIndex}.notPressedStaticColors.${values.Lights[selectedLight].GPIOPinOrNonButtonIndex}`,
+														selected?.value || 0,
+													);
+												}}
+											/>
+										</div>
+										<div className="mb-3">
+											<label className="form-label">
+											    {(values.Lights[selectedLight]?.lightType === LIGHT_TYPES.Turbo || values.Lights[selectedLight]?.lightType === LIGHT_TYPES.PlayerLight)
+													? t('LedConfigPage:lightCoordsSection.active-color-label')
+													: t('LedConfigPage:lightCoordsSection.pressed-color-label')
+												}
+											</label>
+											<ColorSelector
+												options={colorOptions}
+												value={
+													colorOptions[
+														pressedStaticColors[
+															values.Lights[selectedLight]
+																.GPIOPinOrNonButtonIndex
+														]
+													]
+												}
+												onChange={(selected) => {
+													setFieldValue(
+														`AnimationOptions.profiles.${profileIndex}.pressedStaticColors.${values.Lights[selectedLight].GPIOPinOrNonButtonIndex}`,
+														selected?.value || 0,
+													);
+												}}
+											/>
+										</div>
+									</>
+								)}
+
+								<div className="d-flex flex-row gap-2 mb-3">
+									<div className="flex-grow-1">
+										<FormControl
+											type="number"
+											label={t(
+												'LedConfigPage:lightCoordsSection.x-coord-label',
+											)}
+											name={`Lights[${selectedLight}].xCoord`}
+											className="form-control"
+											value={values.Lights[selectedLight]?.xCoord}
+											onChange={handleChange}
+											error={
+												(errors.Lights?.[selectedLight] as FormikErrors<Light>)
+													?.xCoord
+											}
+											isInvalid={Boolean(
+												(errors.Lights?.[selectedLight] as FormikErrors<Light>)
+													?.xCoord,
+											)}
+											min={0}
+											max={GRID_SIZE - 1}
+										/>
+									</div>
+									<div className="flex-grow-1">
+										<FormControl
+											type="number"
+											label={t(
+												'LedConfigPage:lightCoordsSection.y-coord-label',
+											)}
+											name={`Lights[${selectedLight}].yCoord`}
+											className="form-control"
+											value={values.Lights[selectedLight]?.yCoord}
+											onChange={handleChange}
+											error={
+												(errors.Lights?.[selectedLight] as FormikErrors<Light>)
+													?.yCoord
+											}
+											isInvalid={Boolean(
+												(errors.Lights?.[selectedLight] as FormikErrors<Light>)
+													?.yCoord,
+											)}
+											min={0}
+											max={GRID_SIZE - 1}
+										/>
+									</div>
+								</div>
+								<Button
+									variant="danger"
+									className="w-100 mt-3"
+									onClick={() => {
+										handleDeleteLight(selectedLight);
+									}}
+								>
+									{t('LedConfigPage:lightCoordsSection.delete-light')}
+								</Button>
+							</div>
+						) : (
+							<div className="w-100 d-flex flex-column justify-content-center">
+								<h3>{t('LedConfigPage:lightCoordsSection.select-a-light')}</h3>
+								<p>
+									{t(
+										'LedConfigPage:lightCoordsSection.select-a-light-description',
+									)}
+								</p>
+							</div>
+						)}
+					</div>
+				</Col>
+				<Col md={9} className="pt-2 mt-md-0">
+					<div
+						ref={containerRef}
+						style={{
+							position: 'relative',
+							minHeight: dimensions.width,
+						}}
+					>
+						<svg
+							width={dimensions.width}
+							height={dimensions.width}
+							xmlns="http://www.w3.org/2000/svg"
+							style={{ position: 'absolute' }}
+							// Adding lights by clicking on the grid
+							// onClick={(e) => {
+							// 	const rect = e.currentTarget.getBoundingClientRect();
+
+							// 	const gridX = Math.floor((e.clientX - rect.left) / cellWidth);
+							// 	const gridY = Math.floor((e.clientY - rect.top) / cellWidth);
+							// 	const clampedX = Math.max(0, Math.min(gridX, GRID_SIZE - 1));
+							// 	const clampedY = Math.max(0, Math.min(gridY, GRID_SIZE - 1));
+
+							// 	setValues({
+							// 		...values,
+							// 		Lights: [
+							// 			...values.Lights,
+							// 			{
+							// 				GPIOPinOrNonButtonIndex: 0,
+							// 				firstLedIndex: values.Lights.length,
+							// 				lightType: LIGHT_TYPES.ActionButton,
+							// 				numLedsOnLight: 1,
+							// 				xCoord: clampedX,
+							// 				yCoord: clampedY,
+							// 			},
+							// 		],
+							// 	});
+							// 	setSelectedLight(values.Lights.length);
+							// }}
+						>
+							<defs>
+								<pattern
+									id="smallGrid"
+									width={cellWidth}
+									height={cellWidth}
+									patternUnits="userSpaceOnUse"
+								>
+									<path
+										d={`M ${cellWidth} 0 L 0 0 0 ${cellWidth}`}
+										fill="none"
+										stroke="gray"
+										strokeWidth="0.5"
+									/>
+								</pattern>
+
+								<pattern
+									id="grid"
+									width={cellWidth * 10}
+									height={cellWidth * 10}
+									patternUnits="userSpaceOnUse"
+								>
+									<rect
+										width={cellWidth * 10}
+										height={cellWidth * 10}
+										fill="url(#smallGrid)"
+									/>
+									<path
+										d={`M ${cellWidth * 10} 0 L 0 0 0 ${cellWidth * 10}`}
+										fill="none"
+										stroke="silver"
+										strokeWidth="2"
+									/>
+								</pattern>
+							</defs>
+							<rect width="100%" height="100%" fill="url(#grid)" />
+						</svg>
+
+						<DndContext
+							sensors={sensors}
+							modifiers={[snapCenterToCursor, restrictToParentElement]}
+							onDragStart={handleDragStart}
+							onDragEnd={(event: DragEndEvent) => {
+								const activeId = Number(event.active.id);
+								setFieldValue(`Lights[${event.active.id}]`, {
+									...values.Lights[activeId],
+									xCoord: gridPxToCoords(
+										values.Lights[activeId].xCoord * cellWidth + event.delta.x,
+									),
+									yCoord: gridPxToCoords(
+										values.Lights[activeId].yCoord * cellWidth + event.delta.y,
+									),
+								});
+							}}
+						>
+							{values.Lights.map((light, index) => (
+								<LightIndicator
+									key={index}
+									id={index}
+									cellWidth={cellWidth}
+									active={selectedLight === index}
+									error={errors?.Lights?.[index]?.toString()}
+									{...light}
+								/>
+							))}
+						</DndContext>
+					</div>
+				</Col>
+			</Row>
+		</div>
+	);
+}

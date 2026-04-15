@@ -84,7 +84,6 @@ export default {
 	'turbo-led-type-label-off': 'Off',
 	'turbo-led-type-label-pwm': 'PWM',
 	'turbo-led-type-label-rgb': 'RGB',
-	'turbo-led-index-label': 'Turbo LED Index',
 	'turbo-led-color-label': 'Turbo LED Color',
 	'joystick-selection-slider-header-text': 'Joystick Selection Slider',
 	'joystick-selection-slider-mode-zero-label': 'Slider GPIO Pin Mode Default',
