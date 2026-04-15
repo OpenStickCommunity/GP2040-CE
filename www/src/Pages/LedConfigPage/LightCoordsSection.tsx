@@ -489,9 +489,10 @@ export default function LightCoordsSection({
 										</div>
 										<div className="mb-3">
 											<label className="form-label">
-												{t(
-													'LedConfigPage:lightCoordsSection.pressed-color-label',
-												)}
+											    {(values.Lights[selectedLight]?.lightType === LIGHT_TYPES.Turbo || values.Lights[selectedLight]?.lightType === LIGHT_TYPES.PlayerLight)
+													? t('LedConfigPage:lightCoordsSection.active-color-label')
+													: t('LedConfigPage:lightCoordsSection.pressed-color-label')
+												}
 											</label>
 											<ColorSelector
 												options={colorOptions}

@@ -42,6 +42,7 @@ export default {
 		'case-color-label': 'Case Color',
 		'idle-color-label': 'Idle Color',
 		'pressed-color-label': 'Pressed Color',
+		'active-color-label': 'Active Color',
 		'x-coord-label': 'X Coord',
 		'y-coord-label': 'Y Coord',
 		'delete-light': 'Delete Light',
