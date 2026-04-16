@@ -10,6 +10,8 @@ typedef enum {
     ps5_auth_recv_f1_from_dongle,
     ps5_auth_recv_f2_delay_500mS,
     ps5_auth_recv_f2_signing_state,
+    ps5_set_bluetooth_mode,
+    ps5_set_test_command,
 } PS5AuthState; // PS5 Auth State for F0/F1/F2 auth
 
 typedef enum PS5AuthResponse {
@@ -42,8 +44,10 @@ typedef struct {
     bool hash_pending;
     bool hash_ready;
     PS5AuthState ps5_auth_state;
-    uint8_t MAC_pair_report[16];  // 16-byte pair information for BT MAC Address
+    uint8_t MAC_pair_report[15];  // 16-byte pair information for BT MAC Address
     bool pair_ready;
+    uint8_t set_bluetooth_mode;
+    uint8_t set_testcommand[2];
 } PS5AuthData;
 
 class PS5Auth : public GPAuthDriver {

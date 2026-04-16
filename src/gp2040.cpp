@@ -285,11 +285,22 @@ void GP2040::run() {
 	Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
 	GamepadState prevState;
 
+	// Initialize our USB manager with 1 cycle
+	USBHostManager::getInstance().start();
+	
+	// PS5 specifically REQUIRES us to pull from the dongle
+	//   this could be part of the input_driver as a startupDelay function
+	if ( inputDriver->delay_on_boot() > 0ll ) {
+		uint64_t timeout = getMicro() + inputDriver->delay_on_boot();
+		while ( getMicro() < timeout ) {
+			USBHostManager::getInstance().process();
+		}
+	}
+
+	//printf("Moving forward");
+
 	// Start the TinyUSB Device functionality
 	tud_init(TUD_OPT_RHPORT);
-
-	// Initialize our USB manager
-	USBHostManager::getInstance().start();
 
 	if (configMode == true ) {
 		rndis_init();

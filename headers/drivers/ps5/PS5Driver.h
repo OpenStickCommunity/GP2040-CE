@@ -14,6 +14,7 @@ typedef enum
 {
     PS5_DEFINITION           = 0x03,
     PS5_GET_CALIBRATION      = 0x05,    // Calibration
+    PS5_SET_BLUETOOTH        = 0x08,    // Set Bluetooth Control
     PS5_GET_PAIRINFO         = 0x09,    // Pair Information
     PS5_GET_FIRWMARE         = 0x20,    // Firmware Version
     PS5_SET_TEST_PARAM       = 0x80,    // Dual Sense (SET TEST)
@@ -46,6 +47,7 @@ public:
     virtual const uint8_t * get_descriptor_device_qualifier_cb() { return nullptr; }
     virtual uint16_t GetJoystickMidValue();
     virtual USBListener * get_usb_auth_listener();
+    virtual uint64_t delay_on_boot(); // Special case
     bool getAuthSent() { return false;}
     bool getDongleAuthRequired();
 private:

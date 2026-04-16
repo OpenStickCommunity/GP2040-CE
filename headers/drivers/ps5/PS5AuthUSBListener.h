@@ -28,6 +28,8 @@ private:
     bool host_get_report(uint8_t report_id, void* report, uint16_t len);
     bool host_set_report(uint8_t report_id, void* report, uint16_t len);
     void performS5Encryption(uint8_t *inData, uint8_t *outData);
+    void generateMayflashBuffer();
+    void copyMayflashToFinish(uint8_t const* report);
     uint8_t ps_dev_addr;
     uint8_t ps_instance;
     PS5AuthData * ps5AuthData;
