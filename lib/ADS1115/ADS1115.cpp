@@ -92,8 +92,8 @@ uint16_t ADS1115::readConfigRegister() { // reg must be 0 or 1
 
 
 uint16_t ADS1115::readConversionResult() {
-  uc[0] = ADS111X_CONVERSION_REGISTER_ADDRESS; // Point to Conversion Register
-                                               // Addresss
+  // uc[0] = ADS111X_CONVERSION_REGISTER_ADDRESS; // Point to Conversion Register
+  //                                              // Addresss
   // i2c->write(address, uc, 1);
   // i2c->read(address, uc, 2);
   // or just use the one below

@@ -93,7 +93,7 @@ void I2CAnalog1115Input::process() {
     readValue = ads->readConversionResult();
     result = (int16_t)readValue * ADS1115_3_3V_REMAP_FACTOR;
     // result = (result > 0xFFFF) ? 0xFFFF : result;
-    result = (float)std::clamp((int)result, 0, 0x7FFF);
+    result = (float)std::clamp((uint32_t)result, (uint32_t)0, (uint32_t)0xFFFF);
 
     instance.pins[channelHop] = (uint16_t)result;
 
