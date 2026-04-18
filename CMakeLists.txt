@@ -169,6 +169,8 @@ compile_proto()
 #pull in tinyUSB
 set(PICO_TINYUSB_PATH "${CMAKE_CURRENT_LIST_DIR}/lib/tinyusb")
 
+set(PICO_USE_FASTEST_SUPPORTED_CLOCK 1)
+
 # initialize the Raspberry Pi Pico SDK
 pico_sdk_init()
 
