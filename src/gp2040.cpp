@@ -167,11 +167,11 @@ void GP2040::setup() {
 		case BootAction::SET_INPUT_MODE_PS4: // PS4 / PS5 Driver
 			inputMode = INPUT_MODE_PS4;
 			break;
-		case BootAction::SET_INPUT_MODE_PS5: // PS4 / PS5 Driver
-			inputMode = INPUT_MODE_PS5;
+		case BootAction::SET_INPUT_MODE_PS5A: // PS4 / PS5 Driver
+			inputMode = INPUT_MODE_PS5A;
 			break;
-		case BootAction::SET_INPUT_MODE_P5GENERAL:
-			inputMode = INPUT_MODE_P5GENERAL;
+		case BootAction::SET_INPUT_MODE_PS5:
+			inputMode = INPUT_MODE_PS5;
 			break;
 		case BootAction::SET_INPUT_MODE_XBONE: // Xbox One Driver
 			inputMode = INPUT_MODE_XBONE;
@@ -281,11 +281,22 @@ void GP2040::run() {
 	Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
 	GamepadState prevState;
 
+	// Initialize our USB manager with 1 cycle
+	USBHostManager::getInstance().start();
+	
+	// PS5 specifically REQUIRES us to pull from the dongle
+	//   this could be part of the input_driver as a startupDelay function
+	if ( inputDriver->delay_on_boot() > 0ll ) {
+		uint64_t timeout = getMicro() + inputDriver->delay_on_boot();
+		while ( getMicro() < timeout ) {
+			USBHostManager::getInstance().process();
+		}
+	}
+
+	//printf("Moving forward");
+
 	// Start the TinyUSB Device functionality
 	tud_init(TUD_OPT_RHPORT);
-
-	// Initialize our USB manager
-	USBHostManager::getInstance().start();
 
 	if (configMode == true ) {
 		rndis_init();
@@ -437,10 +448,10 @@ GP2040::BootAction GP2040::getBootAction() {
                                     return BootAction::SET_INPUT_MODE_PS3;
                                 case INPUT_MODE_PS4:
                                     return BootAction::SET_INPUT_MODE_PS4;
-                                case INPUT_MODE_PS5:
+                                case INPUT_MODE_PS5A:
+                                    return BootAction::SET_INPUT_MODE_PS5A;
+                                case INPUT_MODE_PS5: 
                                     return BootAction::SET_INPUT_MODE_PS5;
-                                case INPUT_MODE_P5GENERAL: 
-                                    return BootAction::SET_INPUT_MODE_P5GENERAL;
                                 case INPUT_MODE_NEOGEO:
                                     return BootAction::SET_INPUT_MODE_NEOGEO;
                                 case INPUT_MODE_MDMINI:

@@ -177,7 +177,7 @@ const INPUT_MODES = [
 		],
 	},
 	{
-		labelKey: 'input-mode-options.ps5',
+		labelKey: 'input-mode-options.ps5a',
 		value: 13,
 		group: 'primary',
 		optional: ['usb'],
@@ -192,7 +192,7 @@ const INPUT_MODES = [
 		],
 	},
 	{
-		labelKey: 'input-mode-options.p5general',
+		labelKey: 'input-mode-options.ps5',
 		value: 16,
 		group: 'primary',
 		optional: ['usb'],
@@ -228,13 +228,13 @@ const INPUT_BOOT_MODES = [
 		optional: ['usb'],
 	},
 	{
-		labelKey: 'input-mode-options.ps5',
+		labelKey: 'input-mode-options.ps5a',
 		value: 13,
 		group: 'primary',
 		optional: ['usb'],
 	},
 	{
-		labelKey: 'input-mode-options.p5general',
+		labelKey: 'input-mode-options.ps5',
 		value: 16,
 		group: 'primary',
 		optional: ['usb'],

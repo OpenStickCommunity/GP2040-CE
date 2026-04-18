@@ -522,8 +522,8 @@ void NeoPicoLEDAddon::process() {
                     animationState = getPS3AnimationNEOPICO(gamepad->auxState.playerID.ledValue);
                     break;
                 case INPUT_MODE_PS4:
+                case INPUT_MODE_PS5A:
                 case INPUT_MODE_PS5:
-                case INPUT_MODE_P5GENERAL:
                     animationState = getPS4AnimationNEOPICO(gamepad->auxState.playerID.ledBlinkOn, gamepad->auxState.playerID.ledBlinkOff);
                     break;
                 case INPUT_MODE_XBONE:

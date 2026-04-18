@@ -40,6 +40,7 @@ public:
     virtual uint16_t GetJoystickMidValue() = 0;
     const usbd_class_driver_t * get_class_driver() { return &class_driver; }
     virtual USBListener * get_usb_auth_listener() = 0;
+    virtual uint64_t delay_on_boot() { 0ll; } // Special case
 protected:
     usbd_class_driver_t class_driver;
 };
