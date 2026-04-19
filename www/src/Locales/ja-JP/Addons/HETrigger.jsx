@@ -1,7 +1,8 @@
 export default {
-  'header-text': 'ホールセンサボタン',
-	'desc-header-text': 'ホールセンサボタンでは４チャンネル、８チャンネル及び１６チャンネルマルチプレクサに対応しています。',
-    'available-pins-text': '利用可能ADC端子: {{pins}}',
+	'header-text': 'ホールセンサボタン',
+	'desc-header-text':
+		'ホールセンサボタンでは４チャンネル、８チャンネル及び１６チャンネルマルチプレクサに対応しています。',
+	'available-pins-text': '利用可能ADC端子: {{pins}}',
 	'multiplexer-channel-select': 'マルチプレクサチャンネル数',
 	'direct-no-mux': '直接接続（MUX無し）',
 	'4-channels': '4チャンネル',
@@ -22,8 +23,12 @@ export default {
 	'voltage-table-hide-label': '電圧設定表を隠す',
 	'voltage-table-header-text': 'ホールセンサ電圧設定表',
 	'voltage-table-idle-text': '未押下',
-	'voltage-table-trigger-text': '押下判定値',
+	'voltage-table-trigger-text': '作動点',
+	'voltage-table-pressed-text': '最大押下',
 	'voltage-table-polarity-text': '極性',
+	'voltage-table-rapid-trigger-text': 'ラピッドトリガー',
+	'voltage-table-release-text': 'ラピッドトリガー判定値',
+	'voltage-table-noise-text': 'ラピッドトリガーノイズ除去',
 	'voltage-table-disabled-label': '(無効)',
 	'overwrite-all-warning': '全ボタンに反映',
 	'overwrite-confirm': '全ボタン設定反映確認',
@@ -37,24 +42,27 @@ export default {
 	'pressed-text': '押下！',
 	'idle-input-text': '未押下電圧',
 	'activation-input-text': '押下判定電圧',
+	'rapid-trigger-threshold-input-text': 'ラピッドトリガー作動値',
+	'rapid-trigger-noise-input-text': 'ラピッドトリガーノイズ除去',
 	'pressed-input-text': '最大押下電圧',
 	'activation-reading-text': '押下判定電圧値:',
 	'calibrate-all-button': '全センサの調整 🧲',
 	'calibration-header-text': 'ホールセンサ調整',
 	'calibration-idle-text': '未押下電圧値:',
 	'calibration-pressed-text': '最大押下電圧値:',
-	'calibration-trigger-text': '押下判定電圧値',
+	'calibration-trigger-text': '作動判定電圧値',
 	'calibration-flip-polarity': '極性反転',
+	'calibration-flip-rapid-trigger': 'ラピッドトリガー有効化',
 	'calibration-back-button': '戻る',
 	'calibration-first-step':
 		'まずはホールセンサスイッチの未押下状態と完全押下状態の電圧を調整します。' +
 		'調整後、トリガーの判定位置を好みのストローク量に調整します。' +
 		'まずは未押下状態での電圧を調整しましょう。ホールセンサ対応ボタンを触っていない状態で「未押下状態調整」ボタンを押して下さい。',
 	'calibration-second-step':
-		'次に、ホールセンサ対応ボタンを一番下まで押し込んだ状態でボタンを押して下さい。ボタン反応位置は後ほど調整します。',
+		'次に、ホールセンサ対応ボタンを一番下まで押し込んだ状態でボタンを押して下さい。ボタン作動位置は後ほど調整します。',
 	'calibration-third-step':
-	  '最後に、ボタン押下判定電圧を設定して、好みのストロークでボタン押下判定するよう設定しましょう。' +
+		'最後に、ボタン作動判定電圧を設定して、好みのストロークでボタンが作動判定するよう設定しましょう。' +
 		'調整が完了したら、「調整完了」または「次へ」ボタンを押して設定を保存し、動作確認してください。',
 	'calibration-manual-step':
-	  '以下の設定値を好みの値に設定してください。設定後、全ボタンに設定を反映できます。',
+		'以下の設定値を好みの値に設定してください。設定後、全ボタンに設定を反映できます。',
 };
