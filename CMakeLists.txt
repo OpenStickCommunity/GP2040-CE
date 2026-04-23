@@ -30,8 +30,6 @@ elseif(NOT DEFINED GP2040_BOARDCONFIG)
   set(GP2040_BOARDCONFIG Pico)
 endif()
 
-set(GP2040_BOARDCONFIG Haute42COSMOXCAT)
-
 # check for existing cmake files in the event of changing PICO_BOARD or PICO_PLATFORM
 if (GP2040_BOARDCONFIG)
   message("GP2040-CE board config is set: ${GP2040_BOARDCONFIG}")
