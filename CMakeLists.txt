@@ -30,6 +30,8 @@ elseif(NOT DEFINED GP2040_BOARDCONFIG)
   set(GP2040_BOARDCONFIG Pico)
 endif()
 
+set(GP2040_BOARDCONFIG Haute42COSMOXCAT)
+
 # check for existing cmake files in the event of changing PICO_BOARD or PICO_PLATFORM
 if (GP2040_BOARDCONFIG)
   message("GP2040-CE board config is set: ${GP2040_BOARDCONFIG}")
@@ -208,6 +210,9 @@ src/drivers/astro/AstroDriver.cpp
 src/drivers/egret/EgretDriver.cpp
 src/drivers/hid/HIDDriver.cpp
 src/drivers/keyboard/KeyboardDriver.cpp
+src/drivers/mayflashs5/MayflashS5Auth.cpp
+src/drivers/mayflashs5/MayflashS5AuthUSBListener.cpp
+src/drivers/mayflashs5/MayflashS5Driver.cpp
 src/drivers/mdmini/MDMiniDriver.cpp
 src/drivers/neogeo/NeoGeoDriver.cpp
 src/drivers/net/NetDriver.cpp
