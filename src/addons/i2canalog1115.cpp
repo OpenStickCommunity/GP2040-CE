@@ -1,10 +1,12 @@
 #include "addons/i2canalog1115.h"
 #include "ADS1115.h"
+#include "GamepadState.h"
 #include "addons/analog.h"
 #include "config.pb.h"
 #include "gamepad.h"
 #include "helper.h"
 #include "storagemanager.h"
+#include <cmath>
 #include <cstdint>
 #include <map>
 #include <math.h>
@@ -15,6 +17,8 @@
 #ifndef ADS1115_3_3V_REMAP_FACTOR
 #define ADS1115_3_3V_REMAP_FACTOR 2.482462122f
 #endif
+
+#define ADS1115_CHANNEL_FLAG_START 0b1000
 
 bool I2CAnalog1115Input::available() {
   const AnalogADS1115Options &options =
@@ -55,10 +59,11 @@ void I2CAnalog1115Input::setup() {
                 //
 
   // Setup options
-  instance.inner_deadzone_enable = options.inner_deadzone_enabled;
-  instance.outer_deadzone_enable = options.outer_deadzone_enabled;
+  instance.channel_enable = options.channel_enabled;
+  instance.inner_deadzone_enable = options.channel_inner_deadzone_enabled;
+  instance.outer_deadzone_enable = options.channel_outer_deadzone_enabled;
 
-  instance.invert = options.invert;
+  instance.invert = options.invert_enabled;
   instance.autoCalibrate = options.autoCalibrate;
   instance.lxChannel = options.lxChannel;
   instance.lyChannel = options.lyChannel;
@@ -76,6 +81,15 @@ void I2CAnalog1115Input::setup() {
   instance.outer_deadzone[2] = options.channel2OuterDeadzone * (1 << 16) / 100;
   instance.inner_deadzone[3] = options.channel3InnerDeadzone * (1 << 16) / 100;
   instance.outer_deadzone[3] = options.channel3OuterDeadzone * (1 << 16) / 100;
+
+  instance.LStickDeadzoneEnable =
+      options.left_stick_deadzone_enabled;
+  instance.RStickDeadzoneEnable =
+      options.right_stick_deadzone_enabled;
+  instance.l_stick_deadzone =
+      options.leftStickDeadzone * (1 << 16) / 100;
+  instance.r_stick_deadzone =
+      options.rightStickDeadzone * (1 << 16) / 100;
 
   // initialize default
   for (int i = 0; i < ADS1115_CHANNEL_COUNT; i++) {
@@ -98,6 +112,12 @@ void I2CAnalog1115Input::process() {
     instance.pins[channelHop] = (uint16_t)result;
 
     channelHop = (channelHop + 1) % 4; // Loop 0-3
+    // Skip if disabled
+    if (!((ADS1115_CHANNEL_FLAG_START >> channelHop) &
+          instance.channel_enable)) {
+      channelHop = (channelHop + 1) % 4; // Loop 0-3
+      instance.pins[channelHop] = (uint16_t)0;
+    }
     ads->setChannel(channelHop);
     nextTimer =
         getMillis() + uIntervalMS; // interval for read (we can't be too fast)
@@ -108,16 +128,18 @@ void I2CAnalog1115Input::process() {
   // apply option modifiers
   for (int i = 0; i < ADS1115_CHANNEL_COUNT; i++) {
     // Clamp value
-    instance.pins[i] = std::clamp(instance.pins[i], (uint16_t)0, (uint16_t)0xFFFF);
+    instance.pins[i] =
+        std::clamp(instance.pins[i], (uint16_t)0, (uint16_t)0xFFFF);
 
     int32_t offsetPin = instance.pins[i] - GAMEPAD_JOYSTICK_MID;
-    // Apply Deadzone (Not circular)
-    if (instance.inner_deadzone_enable & (0b1000 >> i)) {
+
+    // Apply By-Channel Deadzone
+    if (instance.inner_deadzone_enable & (ADS1115_CHANNEL_FLAG_START >> i)) {
       if (abs(offsetPin) < instance.inner_deadzone[i]) {
         instance.pins[i] = GAMEPAD_JOYSTICK_MID;
       }
     }
-    if (instance.outer_deadzone_enable & (0b1000 >> i)) {
+    if (instance.outer_deadzone_enable & (ADS1115_CHANNEL_FLAG_START >> i)) {
       if (offsetPin > instance.outer_deadzone[i]) {
         instance.pins[i] = (uint16_t)(0xFFFF);
       } else if (offsetPin < -instance.outer_deadzone[i]) {
@@ -126,12 +148,31 @@ void I2CAnalog1115Input::process() {
     }
 
     // Apply Invert
-    if (instance.invert & (0b1000 >> i)) {
+    if (instance.invert & (ADS1115_CHANNEL_FLAG_START >> i)) {
       instance.pins[i] = GAMEPAD_JOYSTICK_MID - offsetPin;
     }
 
     // TODO apply auto calibration
-    if (instance.autoCalibrate & (0b1000 >> i)) {
+    if (instance.autoCalibrate & (ADS1115_CHANNEL_FLAG_START >> i)) {
+    }
+  }
+
+  // Apply By-Stick Deadzoning (I have no idea how to do this intelligently to
+  // be compatible with by-channel deadzones)
+  if (instance.LStickDeadzoneEnable) {
+    uint16_t magnitude = CalculateMagnitudeXY(
+        instance.pins[instance.lxChannel], instance.pins[instance.lyChannel]);
+    if (magnitude < instance.l_stick_deadzone) {
+      instance.pins[instance.lxChannel] = GAMEPAD_JOYSTICK_MID;
+      instance.pins[instance.lyChannel] = GAMEPAD_JOYSTICK_MID;
+    }
+  }
+  if (instance.RStickDeadzoneEnable) {
+    uint16_t magnitude = CalculateMagnitudeXY(
+        instance.pins[instance.rxChannel], instance.pins[instance.ryChannel]);
+    if (magnitude < instance.r_stick_deadzone) {
+      instance.pins[instance.rxChannel] = GAMEPAD_JOYSTICK_MID;
+      instance.pins[instance.ryChannel] = GAMEPAD_JOYSTICK_MID;
     }
   }
 
@@ -140,4 +181,13 @@ void I2CAnalog1115Input::process() {
   gamepad->state.ly = (uint16_t)(instance.pins[instance.lyChannel]);
   gamepad->state.rx = (uint16_t)(instance.pins[instance.rxChannel]);
   gamepad->state.ry = (uint16_t)(instance.pins[instance.ryChannel]);
+}
+
+int16_t I2CAnalog1115Input::CalculateMagnitudeXY(uint16_t &channelX,
+                                                 uint16_t &channelY) {
+  int16_t xOffset = channelX - GAMEPAD_JOYSTICK_MID;
+  int16_t yOffset = channelY - GAMEPAD_JOYSTICK_MID;
+  uint16_t magnitude =
+      (uint16_t)sqrt((xOffset * xOffset) + (yOffset * yOffset));
+  return magnitude;
 }

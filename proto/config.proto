@@ -495,30 +495,30 @@ message ReverseOptions
 message AnalogADS1115Options
 {
     optional bool enabled = 1;
-    optional uint32 inner_deadzone_enabled = 2;
-    optional uint32 outer_deadzone_enabled = 3;
-    
-    optional uint32 channel0InnerDeadzone = 4;
-    optional uint32 channel1InnerDeadzone = 5;
-    optional uint32 channel2InnerDeadzone = 6;
-    optional uint32 channel3InnerDeadzone = 7;
 
-    optional uint32 channel0OuterDeadzone = 8;
-    optional uint32 channel1OuterDeadzone = 9;
-    optional uint32 channel2OuterDeadzone = 10;
-    optional uint32 channel3OuterDeadzone = 11;
-
-    optional uint32 invert = 12;
-
-    optional uint32 autoCalibrate = 13;
-    
-    optional uint32 lxChannel = 14;
-    optional uint32 lyChannel = 15;
-    optional uint32 rxChannel = 16;
-    optional uint32 ryChannel = 17;
-    
-    optional bool alertMode = 18;
-    optional uint32 alertPin = 19;
+    optional uint32 channel_enabled = 2;
+    optional uint32 channel_inner_deadzone_enabled = 3;
+    optional uint32 channel_outer_deadzone_enabled = 4;
+    optional bool left_stick_deadzone_enabled = 5;
+    optional bool right_stick_deadzone_enabled = 6;
+    optional uint32 channel0InnerDeadzone = 7;
+    optional uint32 channel1InnerDeadzone = 8;
+    optional uint32 channel2InnerDeadzone = 9;
+    optional uint32 channel3InnerDeadzone = 10;
+    optional uint32 channel0OuterDeadzone = 11;
+    optional uint32 channel1OuterDeadzone = 12;
+    optional uint32 channel2OuterDeadzone = 13;
+    optional uint32 channel3OuterDeadzone = 14;
+    optional uint32 leftStickDeadzone = 15;
+    optional uint32 rightStickDeadzone = 16;
+    optional uint32 invert_enabled = 17;
+    optional uint32 autoCalibrate = 18;
+    optional uint32 lxChannel = 19;
+    optional uint32 lyChannel = 20;
+    optional uint32 rxChannel = 21;
+    optional uint32 ryChannel = 22;
+    optional bool alertMode = 23;
+    optional int32 alertPin = 24;
 }
 
 message AnalogADS1219Options

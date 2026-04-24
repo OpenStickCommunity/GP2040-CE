@@ -32,12 +32,42 @@
 #define I2C_ANALOG1115_SPEED 400000
 #endif
 
-#ifndef ANALOG1115_INNER_DEADZONE_ENABLE
-#define ANALOG1115_INNER_DEADZONE_ENABLE 0b1111 // channel order: 0,1,2,3
+#ifndef ANALOG1115_CHANNEL_INNER_DEADZONE
+#define ANALOG1115_CHANNEL_INNER_DEADZONE 2
 #endif
+
+#ifndef ANALOG1115_CHANNEL_OUTER_DEADZONE
+#define ANALOG1115_CHANNEL_OUTER_DEADZONE 98
+#endif
+
+
+#ifndef ANALOG1115_CHANNEL_ENABLE
+#define ANALOG1115_CHANNEL_ENABLE 0b1111 // channel order: A0,A1,A2,A3
+#endif
+
+#ifndef ANALOG1115_INNER_DEADZONE_ENABLE
+#define ANALOG1115_INNER_DEADZONE_ENABLE 0b1111 // channel order: A0,A1,A2,A3
+#endif
+
 
 #ifndef ANALOG1115_OUTER_DEADZONE_ENABLE
 #define ANALOG1115_OUTER_DEADZONE_ENABLE 0b1111
+#endif
+
+#ifndef ANALOG1115_LSTICK_DEADZONE_ENABLE
+#define ANALOG1115_LSTICK_DEADZONE_ENABLE 0
+#endif
+
+#ifndef ANALOG1115_RSTICK_DEADZONE_ENABLE
+#define ANALOG1115_RSTICK_DEADZONE_ENABLE 0
+#endif
+
+#ifndef ANALOG1115_LSTICK_DEADZONE
+#define ANALOG1115_LSTICK_DEADZONE 5
+#endif
+
+#ifndef ANALOG1115_RSTICK_DEADZONE
+#define ANALOG1115_RSTICK_DEADZONE 5
 #endif
 
 
@@ -81,7 +111,10 @@
 typedef struct {
   int32_t inner_deadzone[4];
   int32_t outer_deadzone[4];
+  int32_t l_stick_deadzone;
+  int32_t r_stick_deadzone;
   uint16_t pins[4];
+  uint8_t channel_enable;
   uint8_t inner_deadzone_enable;
   uint8_t outer_deadzone_enable;
   uint8_t lxChannel;
@@ -90,6 +123,8 @@ typedef struct {
   uint8_t ryChannel;
   uint8_t invert;
   uint8_t autoCalibrate;
+  bool LStickDeadzoneEnable;
+  bool RStickDeadzoneEnable;
   bool alertMode;
   bool alertPin;
 
@@ -112,6 +147,7 @@ private:
   uint32_t uIntervalMS; // ADS1115 Interval
   uint32_t nextTimer;   // Turbo Timer
   ADS1115_Instance instance;
+  int16_t CalculateMagnitudeXY(uint16_t &channelX, uint16_t &channelY);
 };
 
 #endif
