@@ -58,14 +58,14 @@ export const i2cAnalogState = {
 	lyChannel: 1,
 	rxChannel: 2,
 	ryChannel: 3,
-	channel0InnerDeadzone: 2,
-	channel1InnerDeadzone: 2,
-	channel2InnerDeadzone: 2,
-	channel3InnerDeadzone: 2,
-	channel0OuterDeadzone: 98,
-	channel1OuterDeadzone: 98,
-	channel2OuterDeadzone: 98,
-	channel3OuterDeadzone: 98,
+	channel0InnerDeadzone: 5,
+	channel1InnerDeadzone: 5,
+	channel2InnerDeadzone: 5,
+	channel3InnerDeadzone: 5,
+	channel0OuterDeadzone: 95,
+	channel1OuterDeadzone: 95,
+	channel2OuterDeadzone: 95,
+	channel3OuterDeadzone: 95,
 	leftStickDeadzoneEnable: 0,
 	rightStickDeadzoneEnable: 0,
 	leftStickDeadzone: 5,
@@ -113,27 +113,6 @@ const I2CAnalog1115 = ({ values, errors, handleChange, handleCheckbox, setFieldV
 				<Row className="mb-3">
 					WIP: Enable/Disable Channels
 
-					{/* {values.channelEnabled} */}
-				</Row>
-
-				<Row className="mb-3">
-					WIP: Channel-to-Analog
-					<div className="mb-3">
-						LX: Channel A{values.lxChannel}
-					</div>
-					<div className="mb-3">
-						LY: Channel A{values.lyChannel}
-					</div>
-					<div className="mb-3">
-						RX: Channel A{values.rxChannel}
-					</div>
-					<div className="mb-3">
-						RY: Channel A{values.ryChannel}
-					</div>
-				</Row>
-
-				<Row className="mb-3">
-					{/* 
 					<FormSelect
 						label="Left Stick X-axis Channel"
 						name="lxChannel"
@@ -150,7 +129,6 @@ const I2CAnalog1115 = ({ values, errors, handleChange, handleCheckbox, setFieldV
 							</option>
 						))}
 					</FormSelect>
-
 					<FormSelect
 						label="Left Stick Y-axis Channel"
 						name="lyChannel"
@@ -197,24 +175,192 @@ const I2CAnalog1115 = ({ values, errors, handleChange, handleCheckbox, setFieldV
 								Channel A{i}
 							</option>
 						))}
-					</FormSelect> */}
+					</FormSelect>
 				</Row>
 
 				<Row className="mb-3">
 					WIP: By-Analog Sticks deadzones
 					<Row>
-						LStick Deadzone Enable: {values.leftStickDeadzoneEnable}
-						<br />
-						{values.leftStickDeadzone}
-						<br />
-						LStick Deadzone Enable: {values.rightStickDeadzoneEnable}
-						<br />
-						{values.rightStickDeadzone}
+						{/* LStick Deadzone Enable: {values.leftStickDeadzoneEnable} */}
+						<FormCheck
+							label="Left Stick Deadzone Enable"
+							type="switch"
+							id="ADS1115LeftStickDeadzoneEnable"
+							className="col-sm-3 ms-3"
+							isInvalid={false}
+							checked={Boolean(values.leftStickDeadzoneEnable)}
+							onChange={(e) => {
+								handleCheckbox('leftStickDeadzoneEnable');
+								handleChange(e);
+							}}
+						/>
+
+						{/* {values.leftStickDeadzone} */}
+						<FormControl
+							type="number"
+							label="Left Stick Deadzone"
+							name="leftStickDeadzone"
+							className="form-control-sm"
+							groupClassName="col-sm-3 mb-3"
+							value={values.leftStickDeadzone}
+							error={errors.leftStickDeadzone}
+							isInvalid={Boolean(errors.leftStickDeadzone)}
+							onChange={handleChange}
+							min={0}
+							max={100}
+						/>
+					</Row>
+
+					<Row>
+						{/* RStick Deadzone Enable: {values.rightStickDeadzoneEnable} */}
+						<FormCheck
+							label="Right Stick Deadzone Enable"
+							type="switch"
+							id="ADS1115RightStickDeadzoneEnable"
+							className="col-sm-3 ms-3"
+							isInvalid={false}
+							checked={Boolean(values.rightStickDeadzoneEnable)}
+							onChange={(e) => {
+								handleCheckbox('rightStickDeadzoneEnable');
+								handleChange(e);
+							}}
+						/>
+						{/* {values.rightStickDeadzone} */}
+						<FormControl
+							type="number"
+							label="Right Stick Deadzone"
+							name="rightStickDeadzone"
+							className="form-control-sm"
+							groupClassName="col-sm-3 mb-3"
+							value={values.rightStickDeadzone}
+							error={errors.rightStickDeadzone}
+							isInvalid={Boolean(errors.rightStickDeadzone)}
+							onChange={handleChange}
+							min={0}
+							max={100}
+						/>
 					</Row>
 				</Row>
 
 				<Row className="mb-3">
 					WIP: By-Channel deadzones
+					<Row>
+						<br />
+						<FormControl
+							type="number"
+							label="Channel A0 Inner Deadzone"
+							name="channel0InnerDeadzone"
+							className="form-control-sm"
+							groupClassName="col-sm-3 mb-3"
+							value={values.channel0InnerDeadzone}
+							error={errors.channel0InnerDeadzone}
+							isInvalid={Boolean(errors.channel0InnerDeadzone)}
+							onChange={handleChange}
+							min={0}
+							max={100}
+						/>
+						<br />
+						<FormControl
+							type="number"
+							label="Channel A1 Inner Deadzone"
+							name="channel1InnerDeadzone"
+							className="form-control-sm"
+							groupClassName="col-sm-3 mb-3"
+							value={values.channel1InnerDeadzone}
+							error={errors.channel1InnerDeadzone}
+							isInvalid={Boolean(errors.channel1InnerDeadzone)}
+							onChange={handleChange}
+							min={0}
+							max={100}
+						/>
+						<br />
+						<FormControl
+							type="number"
+							label="Channel A2 Inner Deadzone"
+							name="channel2InnerDeadzone"
+							className="form-control-sm"
+							groupClassName="col-sm-3 mb-3"
+							value={values.channel2InnerDeadzone}
+							error={errors.channel2InnerDeadzone}
+							isInvalid={Boolean(errors.channel2InnerDeadzone)}
+							onChange={handleChange}
+							min={0}
+							max={100}
+						/>
+						<br />
+						<FormControl
+							type="number"
+							label="Channel A3 Inner Deadzone"
+							name="channel3InnerDeadzone"
+							className="form-control-sm"
+							groupClassName="col-sm-3 mb-3"
+							value={values.channel3InnerDeadzone}
+							error={errors.channel3InnerDeadzone}
+							isInvalid={Boolean(errors.channel3InnerDeadzone)}
+							onChange={handleChange}
+							min={0}
+							max={100}
+						/>
+					</Row>
+
+					<Row>
+						<br />
+						<FormControl
+							type="number"
+							label="Channel A0 Outer Deadzone"
+							name="channel0OuterDeadzone"
+							className="form-control-sm"
+							groupClassName="col-sm-3 mb-3"
+							value={values.channel0OuterDeadzone}
+							error={errors.channel0OuterDeadzone}
+							isInvalid={Boolean(errors.channel0OuterDeadzone)}
+							onChange={handleChange}
+							min={0}
+							max={100}
+						/>
+						<br />
+						<FormControl
+							type="number"
+							label="Channel A1 Outer Deadzone"
+							name="channel1OuterDeadzone"
+							className="form-control-sm"
+							groupClassName="col-sm-3 mb-3"
+							value={values.channel1OuterDeadzone}
+							error={errors.channel1OuterDeadzone}
+							isInvalid={Boolean(errors.channel1OuterDeadzone)}
+							onChange={handleChange}
+							min={0}
+							max={100}
+						/>
+						<br />
+						<FormControl
+							type="number"
+							label="Channel A2 Outer Deadzone"
+							name="channel2OuterDeadzone"
+							className="form-control-sm"
+							groupClassName="col-sm-3 mb-3"
+							value={values.channel2OuterDeadzone}
+							error={errors.channel2OuterDeadzone}
+							isInvalid={Boolean(errors.channel2OuterDeadzone)}
+							onChange={handleChange}
+							min={0}
+							max={100}
+						/>
+						<br />
+						<FormControl
+							type="number"
+							label="Channel A3 Outer Deadzone"
+							name="channel3OuterDeadzone"
+							className="form-control-sm"
+							groupClassName="col-sm-3 mb-3"
+							value={values.channel3OuterDeadzone}
+							error={errors.channel3OuterDeadzone}
+							isInvalid={Boolean(errors.channel3OuterDeadzone)}
+							onChange={handleChange}
+							min={0}
+							max={100}
+						/>
+					</Row>
 				</Row>
 
 			</div>
