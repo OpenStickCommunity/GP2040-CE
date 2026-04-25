@@ -41,9 +41,9 @@ class PCF8575 : public I2CDeviceBase {
         bool getPin(uint8_t pinNumber);
     private:
         const uint16_t initialValue = 0xFFFF;
-        uint8_t uc[128];
+        uint8_t uc[128] = {0};
 
-        uint16_t dataSent;
+        uint16_t dataSent = 0;
         uint16_t dataReceived = initialValue;
     protected:
         PeripheralI2C* i2c = nullptr;
