@@ -103,6 +103,10 @@
 #define I2C_ANALOG1115_ADDRESS 0x48
 #endif
 
+#ifndef ANALOG1115_MAX_DATA_RATE
+#define ANALOG1115_MAX_DATA_RATE 860
+#endif
+
 
 // Analog ADS1115 Module Name
 #define I2CAnalog1115Name "ADS1115I2CAnalog"

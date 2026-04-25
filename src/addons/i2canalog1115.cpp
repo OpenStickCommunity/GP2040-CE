@@ -54,7 +54,7 @@ void I2CAnalog1115Input::setup() {
   ads->setChannel(0);                                // Start on Channel 0
   ads->setConversionMode(ads1115Mode_t::CONTINUOUS); // Read analog continuously
   ads->setGain(ads1115Gain_t::ONE);                  // Set gain to 1
-  ads->setDataRate(860);
+  ads->setDataRate(ANALOG1115_MAX_DATA_RATE);
   ads->start(); // start command (no effect when in continuous mode)
                 //
 
@@ -82,14 +82,10 @@ void I2CAnalog1115Input::setup() {
   instance.inner_deadzone[3] = options.channel3InnerDeadzone * (1 << 16) / 100;
   instance.outer_deadzone[3] = options.channel3OuterDeadzone * (1 << 16) / 100;
 
-  instance.LStickDeadzoneEnable =
-      options.left_stick_deadzone_enabled;
-  instance.RStickDeadzoneEnable =
-      options.right_stick_deadzone_enabled;
-  instance.l_stick_deadzone =
-      options.leftStickDeadzone * (1 << 16) / 100;
-  instance.r_stick_deadzone =
-      options.rightStickDeadzone * (1 << 16) / 100;
+  instance.LStickDeadzoneEnable = options.left_stick_deadzone_enabled;
+  instance.RStickDeadzoneEnable = options.right_stick_deadzone_enabled;
+  instance.l_stick_deadzone = options.leftStickDeadzone * (1 << 16) / 100;
+  instance.r_stick_deadzone = options.rightStickDeadzone * (1 << 16) / 100;
 
   // initialize default
   for (int i = 0; i < ADS1115_CHANNEL_COUNT; i++) {
@@ -107,7 +103,7 @@ void I2CAnalog1115Input::process() {
     readValue = ads->readConversionResult();
     result = (int16_t)readValue * ADS1115_3_3V_REMAP_FACTOR;
     // result = (result > 0xFFFF) ? 0xFFFF : result;
-    result = (float)std::clamp((uint32_t)result, (uint32_t)0, (uint32_t)0xFFFF);
+    result = (float)std::clamp((uint32_t)result, (uint32_t)GAMEPAD_JOYSTICK_MIN, (uint32_t)GAMEPAD_JOYSTICK_MAX);
 
     instance.pins[channelHop] = (uint16_t)result;
 
@@ -116,7 +112,7 @@ void I2CAnalog1115Input::process() {
     if (!((ADS1115_CHANNEL_FLAG_START >> channelHop) &
           instance.channel_enable)) {
       channelHop = (channelHop + 1) % 4; // Loop 0-3
-      instance.pins[channelHop] = (uint16_t)0;
+      instance.pins[channelHop] = (uint16_t)GAMEPAD_JOYSTICK_MID;
     }
     ads->setChannel(channelHop);
     nextTimer =
@@ -129,7 +125,8 @@ void I2CAnalog1115Input::process() {
   for (int i = 0; i < ADS1115_CHANNEL_COUNT; i++) {
     // Clamp value
     instance.pins[i] =
-        std::clamp(instance.pins[i], (uint16_t)0, (uint16_t)0xFFFF);
+        std::clamp(instance.pins[i], (uint16_t)GAMEPAD_JOYSTICK_MIN,
+                   (uint16_t)GAMEPAD_JOYSTICK_MAX);
 
     int32_t offsetPin = instance.pins[i] - GAMEPAD_JOYSTICK_MID;
 
@@ -141,7 +138,7 @@ void I2CAnalog1115Input::process() {
     }
     if (instance.outer_deadzone_enable & (ADS1115_CHANNEL_FLAG_START >> i)) {
       if (offsetPin > instance.outer_deadzone[i]) {
-        instance.pins[i] = (uint16_t)(0xFFFF);
+        instance.pins[i] = (uint16_t)(GAMEPAD_JOYSTICK_MAX);
       } else if (offsetPin < -instance.outer_deadzone[i]) {
         instance.pins[i] = 0;
       }
@@ -149,7 +146,7 @@ void I2CAnalog1115Input::process() {
 
     // Apply Invert
     if (instance.invert & (ADS1115_CHANNEL_FLAG_START >> i)) {
-      instance.pins[i] = GAMEPAD_JOYSTICK_MID - offsetPin;
+      instance.pins[i] = GAMEPAD_JOYSTICK_MAX - instance.pins[i];
     }
 
     // TODO apply auto calibration
