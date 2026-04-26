@@ -624,151 +624,39 @@ export default function LedConfigPage() {
 													}
 												/>
 												<Row>
-													<FormSelect
-														label={t(
-															'LedConfigPage:theme.idle-animation-label',
-														)}
-														name={`AnimationOptions.profiles.${profileIndex}.baseNonPressedEffect`}
-														className="form-select-sm"
-														groupClassName="col-sm-4 mb-3"
-														value={Number(profile.baseNonPressedEffect)}
-														onChange={(e) =>
-															setFieldValue(
-																`AnimationOptions.profiles.${profileIndex}.baseNonPressedEffect`,
-																parseInt(e.target.value),
-															)
-														}
-													>
-														{Object.entries(ANIMATION_NON_PRESSED_EFFECTS).map(
-															([key, value]) => (
+													{/* Idle animations */}
+													<Col xs={12} md={4}>
+														<FormSelect
+															label={t(
+																'LedConfigPage:theme.idle-animation-label',
+															)}
+															name={`AnimationOptions.profiles.${profileIndex}.baseNonPressedEffect`}
+															className="form-select-sm"
+															groupClassName="mb-3"
+															value={Number(profile.baseNonPressedEffect)}
+															onChange={(e) =>
+																setFieldValue(
+																	`AnimationOptions.profiles.${profileIndex}.baseNonPressedEffect`,
+																	parseInt(e.target.value),
+																)
+															}
+														>
+															{Object.entries(
+																ANIMATION_NON_PRESSED_EFFECTS,
+															).map(([key, value]) => (
 																<option
 																	key={`baseNonPressedEffect-${key}`}
 																	value={value}
 																>
 																	{t(`LedConfigPage:animations.${key}`)}
 																</option>
-															),
-														)}
-													</FormSelect>
+															))}
+														</FormSelect>
 
-													<FormSelect
-														label={t(
-															'LedConfigPage:theme.pressed-animation-label',
-														)}
-														name={`AnimationOptions.profiles.${profileIndex}.basePressedEffect`}
-														className="form-select-sm"
-														groupClassName="col-sm-4 mb-3"
-														value={Number(profile.basePressedEffect)}
-														onChange={(e) =>
-															setFieldValue(
-																`AnimationOptions.profiles.${profileIndex}.basePressedEffect`,
-																parseInt(e.target.value),
-															)
-														}
-													>
-														{Object.entries(ANIMATION_PRESSED_EFFECTS).map(
-															([key, value]) => (
-																<option
-																	key={`basePressedEffect-${key}`}
-																	value={value}
-																>
-																	{t(`LedConfigPage:animations.${key}`)}
-																</option>
-															),
-														)}
-													</FormSelect>
-
-													<FormSelect
-														label={t(
-															'LedConfigPage:theme.case-animation-label',
-														)}
-														name={`AnimationOptions.profiles.${profileIndex}.baseCaseEffect`}
-														className="form-select-sm"
-														groupClassName="col-sm-4 mb-3"
-														value={Number(profile.baseCaseEffect)}
-														onChange={(e) => {
-															// If Rain is selected, set the case context param to 1 to be within bounds of the rain animation options
-															if (
-																parseInt(e.target.value) ===
-																ANIMATION_NON_PRESSED_EFFECTS.NONPRESSED_EFFECT_RAIN
-															) {
-																setFieldValue(
-																	`AnimationOptions.profiles.${profileIndex}.caseContextParam`,
-																	1,
-																);
-															}
-															setFieldValue(
-																`AnimationOptions.profiles.${profileIndex}.baseCaseEffect`,
-																parseInt(e.target.value),
-															);
-														}}
-													>
-														{Object.entries(ANIMATION_NON_PRESSED_EFFECTS).map(
-															([key, value]) => (
-																<option
-																	key={`baseCaseEffect-${key}`}
-																	value={value}
-																>
-																	{t(`LedConfigPage:animations.${key}`)}
-																</option>
-															),
-														)}
-													</FormSelect>
-												</Row>
-												<Row>
-													<div className="d-flex align-items-center col-sm-4 mb-3">
-														<FormCheck
-															type="switch"
-															name={`AnimationOptions.profiles.${profileIndex}.bUseCaseLightsInPressedAnimations`}
-															label={
-																<label>
-																	{t(
-																		`LedConfigPage:theme.switch-case-light-pressed-label`,
-																	)}
-																</label>
-															}
-															checked={Boolean(
-																profile.bUseCaseLightsInPressedAnimations,
-															)}
-															onChange={() =>
-																setFieldValue(
-																	`AnimationOptions.profiles.${profileIndex}.bUseCaseLightsInPressedAnimations`,
-																	Number(
-																		!profile.bUseCaseLightsInPressedAnimations,
-																	),
-																)
-															}
-														/>
-													</div>
-
-													<FormControl
-														type="number"
-														label={t(
-															`LedConfigPage:theme.pressed-fade-out-time-label`,
-														)}
-														name={`AnimationOptions.profiles.${profileIndex}.buttonPressFadeOutTimeInMs`}
-														className="form-control-sm"
-														groupClassName="col-sm-4 mb-3"
-														value={profile.buttonPressFadeOutTimeInMs}
-														onChange={handleChange}
-													/>
-													<FormControl
-														type="number"
-														label={t(
-															'LedConfigPage:theme.pressed-hold-time-label',
-														)}
-														name={`AnimationOptions.profiles.${profileIndex}.buttonPressHoldTimeInMs`}
-														className="form-control-sm"
-														groupClassName="col-sm-4 mb-3"
-														value={profile.buttonPressHoldTimeInMs}
-														onChange={handleChange}
-													/>
-												</Row>
-												<Row>
-													<div className="d-flex align-items-center col-sm-4 mb-3">
 														<FormCheck
 															type="switch"
 															name={`AnimationOptions.profiles.${profileIndex}.bNonPressedSpecialColorIsRainbow`}
+															className="mb-3"
 															label={
 																<label>
 																	{t(
@@ -788,49 +676,155 @@ export default function LedConfigPage() {
 																)
 															}
 														/>
-													</div>
-													{!profile.bNonPressedSpecialColorIsRainbow && (
-														<FormControl
-															type="color"
+														{!profile.bNonPressedSpecialColorIsRainbow && (
+															<FormControl
+																type="color"
+																label={t(
+																	`LedConfigPage:theme.idle-special-color-label`,
+																)}
+																name={`AnimationOptions.profiles.${profileIndex}.nonPressedSpecialColor`}
+																groupClassName="mb-3"
+																className="form-control-sm p-0 border-0 mb-3"
+																defaultValue={rgbIntToHex(
+																	profile.nonPressedSpecialColor,
+																)}
+																error={
+																	(
+																		errors.AnimationOptions?.profiles?.[
+																			profileIndex
+																		] as FormikErrors<AnimationProfile>
+																	)?.nonPressedSpecialColor
+																}
+																isInvalid={Boolean(
+																	(
+																		errors.AnimationOptions?.profiles?.[
+																			profileIndex
+																		] as FormikErrors<AnimationProfile>
+																	)?.nonPressedSpecialColor,
+																)}
+																onBlur={(e) =>
+																	setFieldValue(
+																		`AnimationOptions.profiles.${profileIndex}.nonPressedSpecialColor`,
+																		hexToInt(
+																			(e.target as HTMLInputElement).value,
+																		),
+																	)
+																}
+															/>
+														)}
+														{profile.baseNonPressedEffect ===
+														ANIMATION_NON_PRESSED_EFFECTS.NONPRESSED_EFFECT_RAIN ? (
+															<FormSelect
+																label={t(
+																	'LedConfigPage:theme.context-param-rain-label',
+																)}
+																name={`AnimationOptions.profiles.${profileIndex}.nonPressedContextParam`}
+																className="form-select-sm"
+																groupClassName="mb-3"
+																value={profile.nonPressedContextParam}
+																onChange={(e) =>
+																	setFieldValue(
+																		`AnimationOptions.profiles.${profileIndex}.nonPressedContextParam`,
+																		parseInt(e.target.value),
+																	)
+																}
+															>
+																<option value={1}>
+																	{t('LedConfigPage:theme.rain-speed-low')}
+																</option>
+																<option value={2}>
+																	{t('LedConfigPage:theme.rain-speed-medium')}
+																</option>
+																<option value={3}>
+																	{t('LedConfigPage:theme.rain-speed-high')}
+																</option>
+															</FormSelect>
+														) : (
+															<div className="mb-3">
+																<Form.Label
+																	htmlFor={`AnimationOptions.profiles.${profileIndex}.nonPressedContextParam`}
+																	className={
+																		!NON_PRESSED_CONTEXT_PARAM_EFFECTS.includes(
+																			profile.baseNonPressedEffect,
+																		)
+																			? 'text-muted'
+																			: ''
+																	}
+																>
+																	{`${t('LedConfigPage:theme.context-param-label', { value: profile.nonPressedContextParam })}`}
+																</Form.Label>
+																<Form.Range
+																	name={`AnimationOptions.profiles.${profileIndex}.nonPressedContextParam`}
+																	id={`AnimationOptions.profiles.${profileIndex}.nonPressedContextParam`}
+																	min={0}
+																	max={100}
+																	step={1}
+																	value={profile.nonPressedContextParam}
+																	disabled={
+																		!NON_PRESSED_CONTEXT_PARAM_EFFECTS.includes(
+																			profile.baseNonPressedEffect,
+																		)
+																	}
+																	onChange={handleChange}
+																/>
+															</div>
+														)}
+													</Col>
+													<hr className="d-block d-md-none" />
+													{/* Pressed animations */}
+													<Col xs={12} md={4}>
+														<FormSelect
 															label={t(
-																`LedConfigPage:theme.idle-special-color-label`,
+																'LedConfigPage:theme.pressed-animation-label',
 															)}
-															name={`AnimationOptions.profiles.${profileIndex}.nonPressedSpecialColor`}
-															groupClassName="col-sm-4 mb-3"
-															className="form-control-sm p-0 border-0 mb-3"
-															defaultValue={rgbIntToHex(
-																profile.nonPressedSpecialColor,
-															)}
-															error={
-																(
-																	errors.AnimationOptions?.profiles?.[
-																		profileIndex
-																	] as FormikErrors<AnimationProfile>
-																)?.nonPressedSpecialColor
-															}
-															isInvalid={Boolean(
-																(
-																	errors.AnimationOptions?.profiles?.[
-																		profileIndex
-																	] as FormikErrors<AnimationProfile>
-																)?.nonPressedSpecialColor,
-															)}
-															onBlur={(e) =>
+															name={`AnimationOptions.profiles.${profileIndex}.basePressedEffect`}
+															className="form-select-sm"
+															groupClassName="mb-3"
+															value={Number(profile.basePressedEffect)}
+															onChange={(e) =>
 																setFieldValue(
-																	`AnimationOptions.profiles.${profileIndex}.nonPressedSpecialColor`,
-																	hexToInt(
-																		(e.target as HTMLInputElement).value,
-																	),
+																	`AnimationOptions.profiles.${profileIndex}.basePressedEffect`,
+																	parseInt(e.target.value),
 																)
 															}
+														>
+															{Object.entries(ANIMATION_PRESSED_EFFECTS).map(
+																([key, value]) => (
+																	<option
+																		key={`basePressedEffect-${key}`}
+																		value={value}
+																	>
+																		{t(`LedConfigPage:animations.${key}`)}
+																	</option>
+																),
+															)}
+														</FormSelect>
+														<FormControl
+															type="number"
+															label={t(
+																`LedConfigPage:theme.pressed-fade-out-time-label`,
+															)}
+															name={`AnimationOptions.profiles.${profileIndex}.buttonPressFadeOutTimeInMs`}
+															className="form-control-sm"
+															groupClassName="mb-3"
+															value={profile.buttonPressFadeOutTimeInMs}
+															onChange={handleChange}
 														/>
-													)}
-												</Row>
-												<Row>
-													<div className="d-flex align-items-center col-sm-4 mb-3">
+														<FormControl
+															type="number"
+															label={t(
+																'LedConfigPage:theme.pressed-hold-time-label',
+															)}
+															name={`AnimationOptions.profiles.${profileIndex}.buttonPressHoldTimeInMs`}
+															className="form-control-sm"
+															groupClassName="mb-3"
+															value={profile.buttonPressHoldTimeInMs}
+															onChange={handleChange}
+														/>
 														<FormCheck
 															type="switch"
 															name={`AnimationOptions.profiles.${profileIndex}.bPressedSpecialColorIsRainbow`}
+															className="mb-3"
 															label={
 																<label>
 																	{t(
@@ -850,49 +844,136 @@ export default function LedConfigPage() {
 																)
 															}
 														/>
-													</div>
-													{!profile.bPressedSpecialColorIsRainbow && (
-														<FormControl
-															type="color"
+														{!profile.bPressedSpecialColorIsRainbow && (
+															<FormControl
+																type="color"
+																label={t(
+																	`LedConfigPage:theme.pressed-special-color-label`,
+																)}
+																name={`AnimationOptions.profiles.${profileIndex}.pressedSpecialColor`}
+																groupClassName="mb-3"
+																className="form-control-sm p-0 border-0 mb-3"
+																defaultValue={rgbIntToHex(
+																	profile.pressedSpecialColor,
+																)}
+																error={
+																	(
+																		errors.AnimationOptions?.profiles?.[
+																			profileIndex
+																		] as FormikErrors<AnimationProfile>
+																	)?.pressedSpecialColor
+																}
+																isInvalid={Boolean(
+																	(
+																		errors.AnimationOptions?.profiles?.[
+																			profileIndex
+																		] as FormikErrors<AnimationProfile>
+																	)?.pressedSpecialColor,
+																)}
+																onBlur={(e) =>
+																	setFieldValue(
+																		`AnimationOptions.profiles.${profileIndex}.pressedSpecialColor`,
+																		hexToInt(
+																			(e.target as HTMLInputElement).value,
+																		),
+																	)
+																}
+															/>
+														)}
+														<div className="mb-3">
+															<Form.Label
+																htmlFor={`AnimationOptions.profiles.${profileIndex}.pressedContextParam`}
+																className={
+																	!PRESSED_CONTEXT_PARAM_EFFECTS.includes(
+																		profile.basePressedEffect,
+																	)
+																		? 'text-muted'
+																		: ''
+																}
+															>{`${t('LedConfigPage:theme.context-param-label', { value: profile.pressedContextParam })}`}</Form.Label>
+															<Form.Range
+																name={`AnimationOptions.profiles.${profileIndex}.pressedContextParam`}
+																id={`AnimationOptions.profiles.${profileIndex}.pressedContextParam`}
+																min={0}
+																max={100}
+																step={1}
+																value={profile.pressedContextParam}
+																disabled={
+																	!PRESSED_CONTEXT_PARAM_EFFECTS.includes(
+																		profile.basePressedEffect,
+																	)
+																}
+																onChange={handleChange}
+															/>
+														</div>
+													</Col>
+													<hr className="d-block d-md-none" />
+													{/* Case animations */}
+													<Col xs={12} md={4}>
+														<FormSelect
 															label={t(
-																`LedConfigPage:theme.pressed-special-color-label`,
+																'LedConfigPage:theme.case-animation-label',
 															)}
-															name={`AnimationOptions.profiles.${profileIndex}.pressedSpecialColor`}
-															groupClassName="col-sm-4 mb-3"
-															className="form-control-sm p-0 border-0 mb-3"
-															defaultValue={rgbIntToHex(
-																profile.pressedSpecialColor,
-															)}
-															error={
-																(
-																	errors.AnimationOptions?.profiles?.[
-																		profileIndex
-																	] as FormikErrors<AnimationProfile>
-																)?.pressedSpecialColor
-															}
-															isInvalid={Boolean(
-																(
-																	errors.AnimationOptions?.profiles?.[
-																		profileIndex
-																	] as FormikErrors<AnimationProfile>
-																)?.pressedSpecialColor,
-															)}
-															onBlur={(e) =>
+															name={`AnimationOptions.profiles.${profileIndex}.baseCaseEffect`}
+															className="form-select-sm"
+															groupClassName="mb-3"
+															value={Number(profile.baseCaseEffect)}
+															onChange={(e) => {
+																// If Rain is selected, set the case context param to 1 to be within bounds of the rain animation options
+																if (
+																	parseInt(e.target.value) ===
+																	ANIMATION_NON_PRESSED_EFFECTS.NONPRESSED_EFFECT_RAIN
+																) {
+																	setFieldValue(
+																		`AnimationOptions.profiles.${profileIndex}.caseContextParam`,
+																		1,
+																	);
+																}
 																setFieldValue(
-																	`AnimationOptions.profiles.${profileIndex}.pressedSpecialColor`,
-																	hexToInt(
-																		(e.target as HTMLInputElement).value,
+																	`AnimationOptions.profiles.${profileIndex}.baseCaseEffect`,
+																	parseInt(e.target.value),
+																);
+															}}
+														>
+															{Object.entries(
+																ANIMATION_NON_PRESSED_EFFECTS,
+															).map(([key, value]) => (
+																<option
+																	key={`baseCaseEffect-${key}`}
+																	value={value}
+																>
+																	{t(`LedConfigPage:animations.${key}`)}
+																</option>
+															))}
+														</FormSelect>
+
+														<FormCheck
+															type="switch"
+															name={`AnimationOptions.profiles.${profileIndex}.bUseCaseLightsInPressedAnimations`}
+															className="mb-3"
+															label={
+																<label>
+																	{t(
+																		`LedConfigPage:theme.switch-case-light-pressed-label`,
+																	)}
+																</label>
+															}
+															checked={Boolean(
+																profile.bUseCaseLightsInPressedAnimations,
+															)}
+															onChange={() =>
+																setFieldValue(
+																	`AnimationOptions.profiles.${profileIndex}.bUseCaseLightsInPressedAnimations`,
+																	Number(
+																		!profile.bUseCaseLightsInPressedAnimations,
 																	),
 																)
 															}
 														/>
-													)}
-												</Row>
-												<Row>
-													<div className="d-flex align-items-center col-sm-4 mb-3">
 														<FormCheck
 															type="switch"
 															name={`AnimationOptions.profiles.${profileIndex}.bCaseSpecialColorIsRainbow`}
+															className="mb-3"
 															label={
 																<label>
 																	{t(
@@ -910,151 +991,88 @@ export default function LedConfigPage() {
 																)
 															}
 														/>
-													</div>
-													{!profile.bCaseSpecialColorIsRainbow && (
-														<FormControl
-															type="color"
-															label={t(
-																`LedConfigPage:theme.case-special-color-label`,
-															)}
-															name={`AnimationOptions.profiles.${profileIndex}.caseSpecialColor`}
-															groupClassName="col-sm-4 mb-3"
-															className="form-control-sm p-0 border-0 mb-3"
-															defaultValue={rgbIntToHex(
-																profile.caseSpecialColor,
-															)}
-															onBlur={(e) =>
-																setFieldValue(
-																	`AnimationOptions.profiles.${profileIndex}.caseSpecialColor`,
-																	hexToInt(
-																		(e.target as HTMLInputElement).value,
-																	),
-																)
-															}
-														/>
-													)}
-												</Row>
+														{!profile.bCaseSpecialColorIsRainbow && (
+															<FormControl
+																type="color"
+																label={t(
+																	`LedConfigPage:theme.case-special-color-label`,
+																)}
+																name={`AnimationOptions.profiles.${profileIndex}.caseSpecialColor`}
+																groupClassName="mb-3"
+																className="form-control-sm p-0 border-0 mb-3"
+																defaultValue={rgbIntToHex(
+																	profile.caseSpecialColor,
+																)}
+																onBlur={(e) =>
+																	setFieldValue(
+																		`AnimationOptions.profiles.${profileIndex}.caseSpecialColor`,
+																		hexToInt(
+																			(e.target as HTMLInputElement).value,
+																		),
+																	)
+																}
+															/>
+														)}
 
-												<Row>
-													{profile.baseNonPressedEffect ===
-													ANIMATION_NON_PRESSED_EFFECTS.NONPRESSED_EFFECT_RAIN ? (
-														<FormSelect
-															label={t(
-																'LedConfigPage:theme.context-param-rain-label',
-															)}
-															name={`AnimationOptions.profiles.${profileIndex}.nonPressedContextParam`}
-															className="form-select-sm"
-															groupClassName="col-sm-4 mb-3"
-															value={profile.nonPressedContextParam}
-															onChange={(e) =>
-																setFieldValue(
-																	`AnimationOptions.profiles.${profileIndex}.nonPressedContextParam`,
-																	parseInt(e.target.value),
-																)
-															}
-														>
-															<option value={1}>
-																{t('LedConfigPage:theme.rain-speed-low')}
-															</option>
-															<option value={2}>
-																{t('LedConfigPage:theme.rain-speed-medium')}
-															</option>
-															<option value={3}>
-																{t('LedConfigPage:theme.rain-speed-high')}
-															</option>
-														</FormSelect>
-													) : (
-														<div className="form-control-sm col-sm-4 mb-3">
-															<Form.Label
-																htmlFor={`AnimationOptions.profiles.${profileIndex}.nonPressedContextParam`}
-															>
-																{`${t('LedConfigPage:theme.context-param-label', { value: profile.nonPressedContextParam })}`}
-															</Form.Label>
-															<Form.Range
-																name={`AnimationOptions.profiles.${profileIndex}.nonPressedContextParam`}
-																id={`AnimationOptions.profiles.${profileIndex}.nonPressedContextParam`}
-																min={0}
-																max={100}
-																step={1}
-																value={profile.nonPressedContextParam}
-																disabled={
-																	!NON_PRESSED_CONTEXT_PARAM_EFFECTS.includes(
-																		profile.baseNonPressedEffect,
-																	)
-																}
-																onChange={handleChange}
-															/>
-														</div>
-													)}
-													<div className="form-control-sm col-sm-4 mb-3">
-														<Form.Label
-															htmlFor={`AnimationOptions.profiles.${profileIndex}.pressedContextParam`}
-														>{`${t('LedConfigPage:theme.context-param-label', { value: profile.pressedContextParam })}`}</Form.Label>
-														<Form.Range
-															name={`AnimationOptions.profiles.${profileIndex}.pressedContextParam`}
-															id={`AnimationOptions.profiles.${profileIndex}.pressedContextParam`}
-															min={0}
-															max={100}
-															step={1}
-															value={profile.pressedContextParam}
-															disabled={
-																!PRESSED_CONTEXT_PARAM_EFFECTS.includes(
-																	profile.basePressedEffect,
-																)
-															}
-															onChange={handleChange}
-														/>
-													</div>
-													{profile.baseCaseEffect ===
-													ANIMATION_NON_PRESSED_EFFECTS.NONPRESSED_EFFECT_RAIN ? (
-														<FormSelect
-															label={t(
-																'LedConfigPage:theme.context-param-rain-label',
-															)}
-															name={`AnimationOptions.profiles.${profileIndex}.caseContextParam`}
-															className="form-select-sm"
-															groupClassName="col-sm-4 mb-3"
-															value={profile.caseContextParam}
-															onChange={(e) =>
-																setFieldValue(
-																	`AnimationOptions.profiles.${profileIndex}.caseContextParam`,
-																	parseInt(e.target.value),
-																)
-															}
-														>
-															<option value={1}>
-																{t('LedConfigPage:theme.rain-speed-low')}
-															</option>
-															<option value={2}>
-																{t('LedConfigPage:theme.rain-speed-medium')}
-															</option>
-															<option value={3}>
-																{t('LedConfigPage:theme.rain-speed-high')}
-															</option>
-														</FormSelect>
-													) : (
-														<div className="form-control-sm col-sm-4 mb-3">
-															<Form.Label
-																htmlFor={`AnimationOptions.profiles.${profileIndex}.caseContextParam`}
-															>{`${t('LedConfigPage:theme.context-param-label', { value: profile.caseContextParam })}`}</Form.Label>
-															<Form.Range
+														{profile.baseCaseEffect ===
+														ANIMATION_NON_PRESSED_EFFECTS.NONPRESSED_EFFECT_RAIN ? (
+															<FormSelect
+																label={t(
+																	'LedConfigPage:theme.context-param-rain-label',
+																)}
 																name={`AnimationOptions.profiles.${profileIndex}.caseContextParam`}
-																id={`AnimationOptions.profiles.${profileIndex}.caseContextParam`}
-																min={0}
-																max={100}
-																step={1}
-																disabled={
-																	profile.baseNonPressedEffect ===
-																		profile.baseCaseEffect ||
-																	!CASE_CONTEXT_PARAM_EFFECTS.includes(
-																		profile.baseCaseEffect,
+																className="form-select-sm"
+																value={profile.caseContextParam}
+																onChange={(e) =>
+																	setFieldValue(
+																		`AnimationOptions.profiles.${profileIndex}.caseContextParam`,
+																		parseInt(e.target.value),
 																	)
 																}
-																value={profile.caseContextParam}
-																onChange={handleChange}
-															/>
-														</div>
-													)}
+															>
+																<option value={1}>
+																	{t('LedConfigPage:theme.rain-speed-low')}
+																</option>
+																<option value={2}>
+																	{t('LedConfigPage:theme.rain-speed-medium')}
+																</option>
+																<option value={3}>
+																	{t('LedConfigPage:theme.rain-speed-high')}
+																</option>
+															</FormSelect>
+														) : (
+															<>
+																<Form.Label
+																	htmlFor={`AnimationOptions.profiles.${profileIndex}.caseContextParam`}
+																	className={
+																		profile.baseNonPressedEffect ===
+																			profile.baseCaseEffect ||
+																		!CASE_CONTEXT_PARAM_EFFECTS.includes(
+																			profile.baseCaseEffect,
+																		)
+																			? 'text-muted'
+																			: ''
+																	}
+																>{`${t('LedConfigPage:theme.context-param-label', { value: profile.caseContextParam })}`}</Form.Label>
+																<Form.Range
+																	name={`AnimationOptions.profiles.${profileIndex}.caseContextParam`}
+																	id={`AnimationOptions.profiles.${profileIndex}.caseContextParam`}
+																	min={0}
+																	max={100}
+																	step={1}
+																	disabled={
+																		profile.baseNonPressedEffect ===
+																			profile.baseCaseEffect ||
+																		!CASE_CONTEXT_PARAM_EFFECTS.includes(
+																			profile.baseCaseEffect,
+																		)
+																	}
+																	value={profile.caseContextParam}
+																	onChange={handleChange}
+																/>
+															</>
+														)}
+													</Col>
 												</Row>
 
 												<hr />
