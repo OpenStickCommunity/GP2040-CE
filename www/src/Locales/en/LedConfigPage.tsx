@@ -98,13 +98,13 @@ export default {
 		'switch-case-light-pressed-label':
 			'Include case lights in pressed animations',
 		'switch-specialpressed-rainbow-label':
-			'Pressed Special Color is Rainbow Effect',
+			'Pressed special color is rainbow',
 		'switch-specialnonpressed-rainbow-label':
-			'Idle Special Color is Rainbow Effect',
+			'Idle special color is rainbow',
 		'layout-mode-label': 'Layout mode',
 		'layout-mode-description':
 			'Layout mode allows for manual configuration of LED positions and GPIO pins.',
-		'switch-specialcase-rainbow-label': 'Case Special Color is Rainbow Effect',
+		'switch-specialcase-rainbow-label': 'Case special color is rainbow',
 		'rain-speed-low': 'Low',
 		'rain-speed-medium': 'Medium',
 		'rain-speed-high': 'High',
