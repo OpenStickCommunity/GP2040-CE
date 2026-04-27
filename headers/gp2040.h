@@ -6,6 +6,10 @@
 #ifndef GP2040_H_
 #define GP2040_H_
 
+#ifndef WEB_CONFIG_HOSTNAME
+#define WEB_CONFIG_HOSTNAME "gp2040-ce"
+#endif
+
 #include <map>
 
 // GP2040 Classes

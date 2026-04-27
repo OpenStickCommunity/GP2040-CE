@@ -292,7 +292,7 @@ void GP2040::run() {
 	USBHostManager::getInstance().start();
 
 	if (configMode == true ) {
-		rndis_init();
+		rndis_init(WEB_CONFIG_HOSTNAME);
 	}
 
 	while (1) { // LOOP

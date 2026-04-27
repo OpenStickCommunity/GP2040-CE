@@ -2,14 +2,16 @@ add_library(lwip-port
 ${PICO_SDK_PATH}/lib/tinyusb/lib/networking/dhserver.c
 ${PICO_SDK_PATH}/lib/tinyusb/lib/networking/dnserver.c
 )
-target_include_directories(lwip-port INTERFACE 
+target_include_directories(lwip-port INTERFACE
 .
 arch
 ${PICO_SDK_PATH}/lib/tinyusb/lib/networking
 )
-target_link_libraries(lwip-port 
+target_link_libraries(lwip-port
 pico_stdlib
 pico_lwip
+pico_lwip_mdns
+pico_rand
 )
 target_include_directories(pico_lwip INTERFACE
 .
