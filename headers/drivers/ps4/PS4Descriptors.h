@@ -45,8 +45,12 @@
 #define GAMEPAD_ENDPOINT	1
 #define GAMEPAD_SIZE		64
 
-#define LSB(n) (n & 255)
-#define MSB(n) ((n >> 8) & 255)
+#ifndef LSB
+#define LSB(n) ((n) & 255)
+#endif
+#ifndef MSB
+#define MSB(n) (((n) >> 8) & 255)
+#endif
 
 // HAT report (4 bits)
 #define PS4_HAT_UP        0x00
@@ -224,7 +228,7 @@ typedef struct __attribute__((packed)) {
 
     // features
     union {
-        uint8_t featureValue = 0xEF;
+        //uint8_t featureValue = 0xEF;
 
         struct __attribute__((packed)) {
             uint8_t enableController : 1;

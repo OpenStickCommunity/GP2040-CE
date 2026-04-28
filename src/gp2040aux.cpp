@@ -16,7 +16,7 @@
 
 #include <iterator>
 
-GP2040Aux::GP2040Aux() : isReady(false), inputDriver(nullptr) {
+GP2040Aux::GP2040Aux() : inputDriver(nullptr), isReady(false) {
 }
 
 GP2040Aux::~GP2040Aux() {

@@ -37,7 +37,7 @@
 #ifndef XSM3_NO_DEBUGGING
 #define XSM3_printf printf
 #else
-#define XSM3_printf
+#define XSM3_printf(...) ((void)0)
 #endif  // XSM3_NO_DEBUGGING
 
 // constant variables
