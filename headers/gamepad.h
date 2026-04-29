@@ -69,7 +69,7 @@ public:
 	 * @brief Check for a dpad press. Used by `pressed[Dpad]` helper methods.
 	 */
 	inline bool __attribute__((always_inline)) pressedDpad(const uint8_t mask) {
-		return (state.dpad & mask) == mask;
+		return (state.dpadOriginal & mask) == mask;
 	}
 
 	/**
