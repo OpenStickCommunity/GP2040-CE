@@ -116,7 +116,7 @@ bool KeyboardDriver::process(Gamepad * gamepad) {
 
 	// If we had a keycode but now have a multimedia key OR report is different
 	if (keyboard_report_size != last_report_size || 
-			memcmp(last_report, &keyboardReport, last_report_size) != 0) {
+			memcmp(last_report, keyboard_report_payload, last_report_size) != 0) {
 		if (tud_hid_ready()) {
 			if ( tud_hid_report(keyboardReport.reportId, keyboard_report_payload, keyboard_report_size) ) {
 				memcpy(last_report, keyboard_report_payload, keyboard_report_size);

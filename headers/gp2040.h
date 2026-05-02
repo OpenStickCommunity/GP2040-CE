@@ -64,8 +64,8 @@ private:
     void deinitializeStandardGpio();
 
     // event handling checking
-    void checkRawState(GamepadState prevState, GamepadState currState);
-    void checkProcessedState(GamepadState prevState, GamepadState currState);
+    void checkRawState(const GamepadState& prevState, const GamepadState& currState);
+    void checkProcessedState(const GamepadState& prevState, const GamepadState& currState);
 
     void checkSaveRebootState();
     bool saveRequested = false;

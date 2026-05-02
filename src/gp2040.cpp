@@ -57,11 +57,7 @@ static absolute_time_t rebootDelayTimeout = nil_time;
 void GP2040::setup() {
 	Storage::getInstance().init();
 
-	// Reduce CPU if USB host is enabled
 	PeripheralManager::getInstance().initUSB();
-	if ( PeripheralManager::getInstance().isUSBEnabled(0) ) {
-		set_sys_clock_khz(120000, true); // Set Clock to 120MHz to avoid potential USB timing issues
-	}
 
 	// I2C & SPI rely on the system clock
 	PeripheralManager::getInstance().initSPI();
@@ -520,7 +516,7 @@ void GP2040::RebootHotkeys::process(Gamepad* gamepad, bool configMode) {
 	}
 }
 
-void GP2040::checkRawState(GamepadState prevState, GamepadState currState) {
+void GP2040::checkRawState(const GamepadState& prevState, const GamepadState& currState) {
     // buttons pressed
     if (
         ((currState.aux & ~prevState.aux) != 0) ||
@@ -540,7 +536,7 @@ void GP2040::checkRawState(GamepadState prevState, GamepadState currState) {
     }
 }
 
-void GP2040::checkProcessedState(GamepadState prevState, GamepadState currState) {
+void GP2040::checkProcessedState(const GamepadState& prevState, const GamepadState& currState) {
     // buttons pressed
     if (
         ((currState.aux & ~prevState.aux) != 0) ||

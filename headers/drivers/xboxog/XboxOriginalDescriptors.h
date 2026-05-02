@@ -19,6 +19,6 @@ static const uint8_t *xboxoriginal_string_descriptors[] __attribute__((unused)) 
 	xboxoriginal_string_version
 };
 
-static const uint8_t *xboxoriginal_device_descriptor = (const uint8_t*)&XID_DESC_DEVICE;
+static const uint8_t *xboxoriginal_device_descriptor __attribute__((unused)) = (const uint8_t*)&XID_DESC_DEVICE;
 
-static const uint8_t *xboxoriginal_configuration_descriptor = (const uint8_t*)&XID_DESC_CONFIGURATION;
+static const uint8_t *xboxoriginal_configuration_descriptor __attribute__((unused)) = (const uint8_t*)&XID_DESC_CONFIGURATION;
