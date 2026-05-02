@@ -3,6 +3,20 @@ syntax = "proto2";
 import "nanopb.proto";
 import "enums.proto";
 
+message InputModeMapping {
+	// negative if mapping disabled
+    optional int32 pinMask = 1;
+    optional InputMode inputMode = 2;
+    optional uint32 profileNumber = 3;
+}
+
+message BootModeOptions {
+    optional bool enabled = 1;
+    optional uint32 webConfigPinMask = 2;
+    optional uint32 usbModePinMask = 3;
+    repeated InputModeMapping inputModeMappings = 4 [(nanopb).max_count = 8];
+}
+
 message GamepadOptions
 {
     optional InputMode inputMode = 1;
@@ -955,4 +969,5 @@ message Config
     optional GpioMappings gpioMappings = 13;
     optional MigrationHistory migrations = 14;
     optional PeripheralOptions peripheralOptions = 15;
+		optional BootModeOptions bootModeOptions = 16;
 }
