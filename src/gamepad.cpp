@@ -577,6 +577,16 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 				System::reboot(System::BootMode::DEFAULT);
 			}
 			break;
+		case HOTKEY_REBOOT_WEBCONFIG:
+			if (action != lastAction) {
+				System::reboot(System::BootMode::WEBCONFIG);
+			}
+			break;
+		case HOTKEY_REBOOT_USB:
+			if (action != lastAction) {
+				System::reboot(System::BootMode::USB);
+			}
+			break;
 		case HOTKEY_SAVE_CONFIG:
 			if (action != lastAction) {
 				Storage::getInstance().save(true);

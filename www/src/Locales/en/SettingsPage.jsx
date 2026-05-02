@@ -136,6 +136,8 @@ export default {
 		'load-profile-5': 'Load Profile #5',
 		'load-profile-6': 'Load Profile #6',
 		'reboot-default': 'Reboot GP2040-CE',
+		'reboot-webconfig': 'Reboot GP2040-CE into web-config mode',
+		'reboot-usb': 'Reboot GP2040-CE into BOOTSEL/USB mode',
 		'save-config': 'Save Config',
 		'next-profile': 'Next Profile',
 		'previous-profile': 'Previous Profile',
