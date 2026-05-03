@@ -2,6 +2,7 @@
 
 #include "config.pb.h"
 #include "enums.pb.h"
+#include "layoutmanager.h"
 #include "pb_encode.h"
 #include "pb_decode.h"
 #include "pb_common.h"
@@ -420,6 +421,20 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.displayOptions, deprecatedI2cSpeed, I2C_SPEED);
     INIT_UNSET_PROPERTY(config.displayOptions, buttonLayout, BUTTON_LAYOUT);
     INIT_UNSET_PROPERTY(config.displayOptions, buttonLayoutRight, BUTTON_LAYOUT_RIGHT);
+
+    // If the stored layout is a board-defined ALT not compiled into the flashed board configuration, reset to board default
+    if (config.displayOptions.buttonLayout >= BUTTON_LAYOUT_BOARD_DEFINED_ALT0_A &&
+        config.displayOptions.buttonLayout <= BUTTON_LAYOUT_BOARD_DEFINED_ALT7_A &&
+        LayoutManager::getInstance().getLeftLayout((ButtonLayout)config.displayOptions.buttonLayout).empty()) {
+        config.displayOptions.buttonLayout = BUTTON_LAYOUT;
+        }
+
+    if (config.displayOptions.buttonLayoutRight >= BUTTON_LAYOUT_BOARD_DEFINED_ALT0_B &&
+        config.displayOptions.buttonLayoutRight <= BUTTON_LAYOUT_BOARD_DEFINED_ALT7_B &&
+        LayoutManager::getInstance().getRightLayout((ButtonLayout)config.displayOptions.buttonLayoutRight).empty()) {
+        config.displayOptions.buttonLayoutRight = BUTTON_LAYOUT_RIGHT;
+        }
+
     INIT_UNSET_PROPERTY(config.displayOptions, turnOffWhenSuspended, DISPLAY_TURN_OFF_WHEN_SUSPENDED);
     INIT_UNSET_PROPERTY(config.displayOptions, inputMode, DISPLAY_INPUT_MODE);
     INIT_UNSET_PROPERTY(config.displayOptions, turboMode, DISPLAY_TURBO_MODE);

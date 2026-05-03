@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-int rndis_init(void);
+int rndis_init(const char *hostname);
 void rndis_task(void);
 
 #ifdef __cplusplus
