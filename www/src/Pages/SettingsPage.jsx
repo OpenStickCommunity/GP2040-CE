@@ -158,6 +158,13 @@ const INPUT_BOOT_MODES = [
 		authentication: ['usb'],
 	},
 	{
+		labelKey: 'input-mode-options.mayflashs5',
+		value: 17,
+		group: 'primary',
+		optional: ['usb'],
+		authentication: ['usb'],
+	},
+	{
 		labelKey: 'input-mode-options.nintendo-switch',
 		value: 1,
 		group: 'primary',
@@ -1239,6 +1246,22 @@ export default function SettingsPage() {
 		);
 	};
 
+	const mayflashs5ModeSpecifics = (values, errors, setFieldValue, handleChange) => {
+		return (
+			<div className="row mb-3">
+				<Row className="mb-3">
+					<Col sm={10}>
+						<Trans
+							ns="SettingsPage"
+							i18nKey="mayflashs5-mode-text"
+							components={{ span: <span className="text-success" /> }}
+						/>
+					</Col>
+				</Row>
+			</div>
+		);
+	};
+
 	const genericHidModeSpecifics = (
 		values,
 		errors,
@@ -1286,6 +1309,13 @@ export default function SettingsPage() {
 				);
 			case 'input-mode-options.p5general':
 				return p5generalModeSpecifics(
+					values,
+					errors,
+					setFieldValue,
+					handleChange
+				);
+			case 'input-mode-options.mayflashs5':
+				return mayflashs5ModeSpecifics(
 					values,
 					errors,
 					setFieldValue,

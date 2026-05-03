@@ -244,6 +244,9 @@ void GP2040::run() {
 	// Initialize our USB manager
 	USBHostManager::getInstance().start();
 
+	// Some input drivers require setup before run but AFTER usb host and everything is ready
+	inputDriver->beforeRun();
+
 	if (configMode == true ) {
 		rndis_init(WEB_CONFIG_HOSTNAME);
 	}

@@ -197,6 +197,9 @@ void ButtonLayoutScreen::generateHeader() {
                 else
                     statusBar += "   ";
                 break;
+            case INPUT_MODE_MAYFLASHS5:
+                statusBar += "PS5M ";
+                break;
             case INPUT_MODE_XBONE:
                 statusBar += "XBON";
                 if(((XBOneDriver*)DriverManager::getInstance().getDriver())->getAuthSent() == true )
