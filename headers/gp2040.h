@@ -53,9 +53,9 @@ private:
 		};
 
 		struct BootAction {
-			BootActionType type;
-			InputMode inputMode;
-			uint32_t profileNumber;
+			BootActionType type = BootActionType::SET_INPUT_MODE;
+			InputMode inputMode = INPUT_MODE_XINPUT;
+			uint32_t profileNumber = 0;
 		};
 
 		BootAction getGpioMappedBootAction();
