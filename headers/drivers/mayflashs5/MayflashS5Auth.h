@@ -14,13 +14,24 @@ typedef enum {
     ps5_set_test_command,
 } PS5AuthState; // PS5 Auth State for F0/F1/F2 auth
 
-typedef enum PS5AuthResponse {
+typedef enum {
     PS5_AUTH_NOT_READY = 0x11,
     PS5_AUTH_READY = 0x12,
     PS5_AUTH_DONE = 0x40,
     PS5_AUTH_REFRESH_NOT_READY = 0x02,
     PS5_AUTH_REFRESH_READY = 0x52,
-};
+} PS5AuthResponse;
+
+#define PS5_AUTH_DATALEN 56
+
+// PS5 Auth Buffer from Console
+typedef struct {
+    const uint8_t auth_type;
+    const uint8_t frame_id;
+    const uint8_t auth_index;
+    const uint8_t auth_data[PS5_AUTH_DATALEN];
+    const uint8_t auth_crc32[4];
+} ConsolePS5AuthBuffer;
 
 typedef struct {
     uint8_t hash_pending_buffer[64];
@@ -31,6 +42,7 @@ typedef struct {
     uint8_t auth_f1_get_index; // index for getting f1
     uint8_t console_f0_buffer[224]; // 56 * 4
     uint8_t console_f0_get_index; // index for getting f0
+    uint8_t console_f0_recv_count; // index for last received f0 from buffer (stagger)
     uint8_t console_f0_type; // 0x01 or 0x02 (final chunk)
     //uint8_t status_buffer[15]; // for F2 status
     uint8_t auth_frame_id; // PS5 indicates which auth we are on

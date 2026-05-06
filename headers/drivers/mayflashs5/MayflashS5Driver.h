@@ -51,6 +51,7 @@ public:
     bool getAuthSent() { return false;}
     bool getDongleAuthRequired();
 private:
+    void setFirstConsoleF0(ConsolePS5AuthBuffer * authBuffer); // helper
     PS5Report ps5Report;
     PS5Report ps5Report_last;
     TouchpadData touchpadData;

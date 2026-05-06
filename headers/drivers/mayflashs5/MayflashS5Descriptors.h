@@ -223,7 +223,7 @@ static const uint8_t mayflashs5_custom_report_descriptor[] =
     0x81, 0x02,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
     0x06, 0x00, 0xFF,  //   Usage Page (Vendor Defined 0xFF00)
     0x09, 0x21,        //   Usage (0x21)
-    0x95, 0x0D,        //   Report Count (13)
+    0x95, 0x0D,        //   Report Count (11)
     0x81, 0x02,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
     0x06, 0x00, 0xFF,  //   Usage Page (Vendor Defined 0xFF00)
     0x09, 0x22,        //   Usage (0x22)
@@ -264,14 +264,14 @@ static const uint8_t mayflashs5_custom_report_descriptor[] =
     0x09, 0x40,        //   Usage (0x40)
     0x95, 0x3F,        //   Report Count (63)
     0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0x85, 0x80,        //   Report ID (-128)
+/*    0x85, 0x80,        //   Report ID (-128)
     0x09, 0x28,        //   Usage (0x28)
     0x95, 0x3F,        //   Report Count (63)
     0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
     0x85, 0x81,        //   Report ID (-127)
     0x09, 0x29,        //   Usage (0x29)
     0x95, 0x3F,        //   Report Count (63)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile) */
     0x85, 0x82,        //   Report ID (-126)
     0x09, 0x2A,        //   Usage (0x2A)
     0x95, 0x09,        //   Report Count (9)
@@ -347,7 +347,7 @@ static const uint8_t mayflashs5_custom_configuration_descriptor[] =
     0x00,        //   bCountryCode
     0x01,        //   bNumDescriptors
     0x22,        //   bDescriptorType[0] (HID)
-    0x11, 0x01,  //   wDescriptorLength[0] 273
+    0x01, 0x01,  //   wDescriptorLength[0] 257    //0x11, 0x01,  //   wDescriptorLength[0] 273
 
     0x07,        //   bLength
     0x05,        //   bDescriptorType (Endpoint)

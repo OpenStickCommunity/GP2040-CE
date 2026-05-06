@@ -8,8 +8,8 @@
 #include "drivers/mayflashs5/MayflashS5Auth.h"
 #include "enums.pb.h"
 
+// Keepalive every 0.5s
 #define PS5_KEEPALIVE_US                          50ll*1000ll
-//#define PS5_KEEPALIVE_US                          5000ll*1000ll
 
 #define PS5_PACKET_SIZE 64
 
@@ -130,8 +130,8 @@ bool MayflashS5Driver::getDongleAuthRequired() {
 }
 
 void MayflashS5Driver::beforeRun() {
-    uint64_t timeout = getMicro() + 10000ll; // 1 second to ensure our dongle is ready
-    while ( getMicro() < timeout ) {
+    // Do not connect as a USB device until the S5 dongle is ready!
+    while ( ps5AuthData->dongle_ready == false ) {
         USBHostManager::getInstance().process();
     }
 }
@@ -158,9 +158,9 @@ bool MayflashS5Driver::process(Gamepad * gamepad) {
     }
 
     // Don't read IO while we are still waiting to send the previous IO to the dongle
-    if (ps5AuthData->hash_pending) {
-        return false;
-    }
+    //if (ps5AuthData->hash_pending) {
+    //    return false;
+    //}
 
     // update gamepad
     const GamepadOptions & options = gamepad->getOptions();
@@ -269,6 +269,7 @@ bool MayflashS5Driver::process(Gamepad * gamepad) {
         memcpy(&ps5Report_last, &ps5Report, sizeof(ps5Report));
         memcpy(ps5AuthData->hash_pending_buffer, &ps5Report, sizeof(ps5Report));
         ps5AuthData->hash_pending = true;
+        timeout_report_us = getMicro(); // don't immediatley send a timeout
         return true; // New input, return true
     } else if (getMicro() > (timeout_report_us + PS5_KEEPALIVE_US)) { //&& // keep alive
         //ps5Report.button_home == 0 ) { // DO NOT KEEP ALIVE IF HOME IS HELD
@@ -295,7 +296,7 @@ USBListener * MayflashS5Driver::get_usb_auth_listener() {
 }
 
 uint16_t MayflashS5Driver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
-    P5DPRINTF("P5D:get_report id:%02x type:%d reqlen:%d\n", report_id, report_type, reqlen);
+    //P5DPRINTF("P5D:get_report id:%02x type:%d reqlen:%d\n", report_id, report_type, reqlen);
 
     if ( report_type != HID_REPORT_TYPE_FEATURE ) {
         return -1;
@@ -313,7 +314,7 @@ uint16_t MayflashS5Driver::get_report(uint8_t report_id, hid_report_type_t repor
             memcpy(buffer, output_0x03, responseLen);
 
             // Lets look at the differences
-            P5DPRINTF("P5D: PS5_DEFINITION Get definition\n");
+            //P5DPRINTF("P5D: PS5_DEFINITION Get definition\n");
             return responseLen;
         case PS5AuthReport::PS5_GET_CALIBRATION:
             if (reqlen < sizeof(output_0x05)) {
@@ -323,19 +324,19 @@ uint16_t MayflashS5Driver::get_report(uint8_t report_id, hid_report_type_t repor
             memcpy(buffer, output_0x05, responseLen);
 
             // Lets look at the differences
-            P5DPRINTF("P5D: PS5_GET_CALIBRATION Get calibration\n");
+            //P5DPRINTF("P5D: PS5_GET_CALIBRATION Get calibration\n");
             return responseLen;
         case PS5AuthReport::PS5_GET_PAIRINFO:
             if (reqlen != 15) {
-                P5DPRINTF("P5D: Bad MAC length\n");
+                //P5DPRINTF("P5D: Bad MAC length\n");
                 return -1;
             }
             if ( ps5AuthData->pair_ready == false ) {
-                P5DPRINTF("P5D: MAC isn't ready from the dongle?\n");
+                //P5DPRINTF("P5D: MAC isn't ready from the dongle?\n");
                 memcpy(buffer, output_0x09, reqlen);
                 return responseLen;
             }
-            P5DPRINTF("P5D: Sending MAC from dongle %02x\n", reqlen);
+            //P5DPRINTF("P5D: Sending MAC from dongle %02x\n", reqlen);
             memcpy(buffer, ps5AuthData->MAC_pair_report, reqlen);
             return 15;
         case PS5AuthReport::PS5_GET_FIRWMARE:
@@ -346,46 +347,49 @@ uint16_t MayflashS5Driver::get_report(uint8_t report_id, hid_report_type_t repor
             memcpy(buffer, output_0x20, responseLen);
             
             // Lets look at the differences
-            P5DPRINTF("P5D: PS5_GET_FIRWMARE Get the firmware\n");
+            //P5DPRINTF("P5D: PS5_GET_FIRWMARE Get the firmware\n");
 
             return responseLen;
         case PS5AuthReport::PS5_GET_TEST_PARAM:
             // https://controllers.fandom.com/wiki/Sony_DualSense
-            P5DPRINTF("P5D:DualSense Get test command <STALL>\n");
-            return -1;
+            //P5DPRINTF("P5D:DualSense Get test command <STALL>\n");
+            //return -1;
+            return 0;
         case PS5AuthReport::PS5_GET_SIGNATURE_NONCE:
             memset(buffer, 0, 63);
             buffer[0] = ps5AuthData->console_f0_type;
             buffer[1] = ps5AuthData->auth_frame_id;
             buffer[2] = ps5AuthData->auth_f1_get_index;
-            memcpy(&buffer[3], &ps5AuthData->auth_f1_buffer[56*ps5AuthData->auth_f1_get_index], 56);
+            memcpy(&buffer[3], &ps5AuthData->auth_f1_buffer[PS5_AUTH_DATALEN*ps5AuthData->auth_f1_get_index], PS5_AUTH_DATALEN);
             
             // calculate the crc32
             reportBuffer[0] = PS5AuthReport::PS5_GET_SIGNATURE_NONCE;
             memcpy(&reportBuffer[1], buffer, 59);
             crc32 = CRC32::calculate(reportBuffer, 60);
-            memcpy(&buffer[59], &crc32, sizeof(uint32_t));
+            memcpy(&buffer[60], &crc32, sizeof(uint32_t));
+
+            P5DPRINTF("GP2040->Console F0[%i]: %02x, %02x, %02x, %02x, %02x\n", ps5AuthData->auth_f1_get_index, buffer[3], buffer[4], buffer[5], buffer[6], buffer[7]);
 
             // in 4-block mode, we send 4 index blocks
             if ( ps5AuthData->console_f0_type == 0x01 ) {
-                P5DPRINTF("P5D: PS5_GET_SIGNATURE_NONCE retrieved index %02x\n", ps5AuthData->auth_f1_get_index);
+                //P5DPRINTF("P5D: PS5_GET_SIGNATURE_NONCE retrieved index %02x\n", ps5AuthData->auth_f1_get_index);
                 ps5AuthData->auth_f1_get_index++;
                 if ( ps5AuthData->auth_f1_get_index == 0x04 ) { // we sent all 4 blocks
-                    P5DPRINTF("P5D: PS5_GET_SIGNATURE_NONCE DONE! PS5 will ask for status if this is good\n");
+                    //P5DPRINTF("P5D: PS5_GET_SIGNATURE_NONCE DONE! PS5 will ask for status if this is good\n");
                     ps5AuthData->auth_f1_get_index = 0;
                 }
             } else if ( ps5AuthData->console_f0_type == 0x02 ) {
                 ps5AuthData->auth_f1_get_index++;
-                if ( ps5AuthData->auth_f1_get_index == 0x04 ) { // we sent all 4 blocks
-                    P5DPRINTF("P5D: PS5_GET_SIGNATURE_NONCE DONE! PS5 will ask for status if this is good\n");
+                if ( ps5AuthData->auth_f1_get_index == 0x04 ) { // we only send 1 block I think?
+                    //P5DPRINTF("P5D: PS5_GET_SIGNATURE_NONCE DONE! PS5 will ask for status if this is good\n");
                     ps5AuthData->auth_f1_get_index = 0;
                 }
             } else if ( ps5AuthData->console_f0_type == 0x03 ) {
-                P5DPRINTF("P5D: PS5_GET_SIGNATURE_NONCE Refresh done! PS5 will ask for status if this is good\n");
-                buffer[0] = 0x01; // we set the return type to 01
+                //P5DPRINTF("P5D: PS5_GET_SIGNATURE_NONCE Refresh done! PS5 will ask for status if this is good\n");
+                buffer[0] = 0x01; // we set the return type to 01, is this right?
                 ps5AuthData->auth_f1_get_index++;
                 if ( ps5AuthData->auth_f1_get_index == 0x04 ) { // we sent all 4 blocks
-                    P5DPRINTF("P5D: PS5_GET_SIGNATURE_NONCE DONE! PS5 will ask for status if this is good\n");
+                    //P5DPRINTF("P5D: PS5_GET_SIGNATURE_NONCE DONE! PS5 will ask for status if this is good\n");
                     ps5AuthData->auth_f1_get_index = 0;
                 }
             }
@@ -395,7 +399,7 @@ uint16_t MayflashS5Driver::get_report(uint8_t report_id, hid_report_type_t repor
         case PS5AuthReport::PS5_GET_SIGNING_STATE:
             // We need to add a signing state for "renewing / cycling to the next packet"
             if ( ps5AuthData->auth_f1_done ) {
-                P5DPRINTF("P5D: Dongle auth is all done, ready for the next auth (F2 0x40)\n");
+                //P5DPRINTF("P5D: Dongle auth is all done, ready for the next auth (F2 0x40)\n");
                 memset(buffer, 0, 15);
                 buffer[1] = ps5AuthData->auth_frame_id;
                 buffer[2] = PS5AuthResponse::PS5_AUTH_DONE;
@@ -408,11 +412,12 @@ uint16_t MayflashS5Driver::get_report(uint8_t report_id, hid_report_type_t repor
 
                 // reset everything (ready for next encryption!)
                 ps5AuthData->console_f0_get_index = 0;
+                ps5AuthData->console_f0_recv_count = 0;
                 ps5AuthData->auth_f1_get_index = 0;
                 ps5AuthData->auth_f1_ready = false;
                 ps5AuthData->auth_f1_done = false;
             } else if ( ps5AuthData->auth_f1_ready ) {
-                P5DPRINTF("P5D: Dongle auth is ready! (F2 0x12)\n");
+                //P5DPRINTF("P5D: Dongle auth is ready! (F2 0x12)\n");
                 memset(buffer, 0, 15);
                 buffer[1] = ps5AuthData->auth_frame_id;
                 if ( ps5AuthData->console_f0_type == 0x01 ) {
@@ -430,7 +435,7 @@ uint16_t MayflashS5Driver::get_report(uint8_t report_id, hid_report_type_t repor
                 // sneak this in
                 ps5AuthData->auth_f1_get_index = 0; // start at 0
             } else {
-                P5DPRINTF("P5D: Dongle auth NOT is ready! (F2 0x11)\n");
+                //P5DPRINTF("P5D: Dongle auth NOT is ready! (F2 0x11)\n");
                 memset(buffer, 0, 15);
                 buffer[1] = ps5AuthData->auth_frame_id;
                 if ( ps5AuthData->console_f0_type == 0x01 ) {
@@ -447,84 +452,89 @@ uint16_t MayflashS5Driver::get_report(uint8_t report_id, hid_report_type_t repor
             timeout_report_us = getMicro(); // don't need to keep timing out while we're doing this
             return 15;
         default:
-            P5DPRINTF("P5D: Missed get report: %02x length: %02x\n", report_id, reqlen);
+            //P5DPRINTF("P5D: Missed get report: %02x length: %02x\n", report_id, reqlen);
             return -1;
     }
     return -1;
 }
 
+void MayflashS5Driver::setFirstConsoleF0(ConsolePS5AuthBuffer * authBuffer) { // helper
+    ps5AuthData->console_f0_get_index = 0;
+    ps5AuthData->console_f0_recv_count = 1;
+    ps5AuthData->auth_frame_id = authBuffer->frame_id;
+    ps5AuthData->console_f0_type = authBuffer->auth_type; // 4-chunk block type
+    ps5AuthData->ps5_auth_state = PS5AuthState::ps5_auth_send_f0_from_console;
+}
+
 void MayflashS5Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize) {
-    P5DPRINTF("P5D:set_report id:%02x type:%d reqlen:%d\n", report_id, report_type, bufsize);
+    //P5DPRINTF("P5D:set_report id:%02x type:%d reqlen:%d\n", report_id, report_type, bufsize);
     if ( report_type != HID_REPORT_TYPE_FEATURE ) {
+        //P5DPRINTF("P5D:not a feature, nothing to do...\n");
         return;
     }
-    if ( report_id == PS5AuthReport::PS5_SET_BLUETOOTH ) {
-        if ( bufsize != 16 ) {
-            P5DPRINTF("P5D:Set bluetooth control wrong size!\n");
-            return;
-        }
-        ps5AuthData->set_bluetooth_mode = buffer[0];
-        ps5AuthData->ps5_auth_state = PS5AuthState::ps5_set_bluetooth_mode;
-    } else if ( report_id == PS5AuthReport::PS5_SET_TEST_PARAM ) {
-        if ( bufsize != 63) {
-            return;
-        }
-        // https://controllers.fandom.com/wiki/Sony_DualSense
-        P5DPRINTF("P5D:DualSense Set test command\n");
-        ps5AuthData->set_testcommand[0] = buffer[0];
-        ps5AuthData->set_testcommand[1] = buffer[1];
-        ps5AuthData->ps5_auth_state = PS5AuthState::ps5_set_test_command;
-    } else if (report_id == PS5AuthReport::PS5_SET_AUTH_PAYLOAD) {
-        if (bufsize != 63) {
-            return;
-        }
 
-        uint8_t auth_type = buffer[0];
-        uint8_t frame_id = buffer[1];
-        uint8_t auth_index = buffer[2];
-        if ( auth_type == 0x01 ) {
-            P5DPRINTF("P5D:Getting PS5 F0 with 4-blocks (frame_id %02x auth_type %02x auth_index %02x)\n", frame_id, auth_type, auth_index);
-            //P5DPRINTF("P5D:Copying buffer[3] to auth_index*3\n");
-            memcpy(&ps5AuthData->console_f0_buffer[auth_index*56], &buffer[3], 56); // dont' copy our crc32
-            if (auth_index == 0) { // beginning of 4 blocks
-                P5DPRINTF("Buffer test: \n    ");
-                for(int i = 0 ; i < 56; i++ ) {
-                    P5DPRINTF("%02x ", ps5AuthData->console_f0_buffer[(auth_index*56) + i]);
-                    if ( i % 16 == 0 ) {
-                        P5DPRINTF("\n    ");
-                    }
-                }
-                P5DPRINTF("\n");
-                ps5AuthData->auth_frame_id = frame_id;
-                P5DPRINTF("P5D:PS5_SET_AUTH_PAYLOAD Setting auth frame ID to :%02x\n", ps5AuthData->auth_frame_id);
-                ps5AuthData->auth_f1_ready = false;
-                ps5AuthData->auth_f1_done = false; // set our F1 auth to not done!
-                //timeout_report_us = getMicro() + 1000000ll*1000ll; // some huge number
-            }  else if ( auth_index == 3 ) { // end of block
-                P5DPRINTF("P5D:End of Auth F0 Block, Sending on to dongle\n");
-                ps5AuthData->console_f0_get_index = 0;
-                ps5AuthData->console_f0_type = auth_type; // 4-chunk block type
-                ps5AuthData->ps5_auth_state = PS5AuthState::ps5_auth_send_f0_from_console;
-                //timeout_report_us = getMicro() + PS5_KEEPALIVE_US; // some huge number
+    ConsolePS5AuthBuffer * authBuffer = nullptr;
+
+    switch( report_id ) {
+        case PS5AuthReport::PS5_SET_BLUETOOTH:
+            if ( bufsize != 16 ) {
+                //P5DPRINTF("P5D:Set bluetooth control wrong size!\n");
+                break;
             }
-        } else if ( auth_type == 0x02) {
-            P5DPRINTF("P5D:Getting last PS5 F0 and returning final auth complete (frame_id %02x auth_type %02x\n", frame_id, auth_type);
-            memcpy(&ps5AuthData->console_f0_buffer[0], &buffer[3], 56);
-            ps5AuthData->console_f0_get_index = 0;
-            ps5AuthData->console_f0_type = auth_type; // 1-chunk final block type
-            ps5AuthData->auth_f1_done = true; // we are sending it to the dongle but we can tell PS5 its done for timing
-            ps5AuthData->ps5_auth_state = PS5AuthState::ps5_auth_send_f0_from_console;
-        } else if ( auth_type == 0x03) {
-            P5DPRINTF("P5D:Renewing PS5 F0 with single block (frame_id %02x auth_type %02x\n", frame_id, auth_type);
-            memcpy(&ps5AuthData->console_f0_buffer[0], &buffer[3], 56);
-            ps5AuthData->auth_frame_id = frame_id;
-            ps5AuthData->console_f0_get_index = 0;
-            ps5AuthData->console_f0_type = auth_type; // 1-chunk final block type *THIS IS PROBABLY THE BUG*
-            ps5AuthData->auth_f1_ready = false;
-            ps5AuthData->auth_f1_done = false; // don't send done until we're done?
-            ps5AuthData->ps5_auth_state = PS5AuthState::ps5_auth_send_f0_from_console;
-        }
-    }
+            ps5AuthData->set_bluetooth_mode = buffer[0];
+            ps5AuthData->ps5_auth_state = PS5AuthState::ps5_set_bluetooth_mode;
+            break;
+        case PS5AuthReport::PS5_SET_TEST_PARAM:
+            if ( bufsize != 63) {
+                //P5DPRINTF("P5D:Set test param wrong size!\n");
+                break;
+            }
+            // https://controllers.fandom.com/wiki/Sony_DualSense
+            P5DPRINTF("P5D:DualSense Set test command\n");
+            ps5AuthData->set_testcommand[0] = buffer[0];
+            ps5AuthData->set_testcommand[1] = buffer[1];
+            ps5AuthData->ps5_auth_state = PS5AuthState::ps5_set_test_command;
+            break;
+        case PS5AuthReport::PS5_SET_AUTH_PAYLOAD:
+            if (bufsize != 63) {
+                //P5DPRINTF("P5D:Wrong size for PS5_SET_AUTH_PAYLOAD\n");
+                break;
+            }
+
+            authBuffer = (ConsolePS5AuthBuffer*)buffer;
+            //P5DPRINTF("P5D:Getting PS5 F0 with 4-blocks (frame_id %02x auth_type %02x auth_index %02x)\n", authBuffer->frame_id, authBuffer->auth_type, authBuffer->auth_index);
+
+            // Copy the data to our console F0 buffer
+            memcpy(&ps5AuthData->console_f0_buffer[authBuffer->auth_index*PS5_AUTH_DATALEN], authBuffer->auth_data, PS5_AUTH_DATALEN);
+
+            P5DPRINTF("Console->GP2040 F0[%i]: \n    F0 ", authBuffer->auth_index);
+            for(int i = 0 ; i < 63; i++ ) {
+                P5DPRINTF("%02x ", buffer[i]);
+            }
+            P5DPRINTF("\n");
+
+            if ( authBuffer->auth_type == 0x01 ) { // Setup initial Auth
+                if ( authBuffer->auth_index == 0 ) { // START (4 blocks incoming)
+                    ps5AuthData->auth_f1_ready = false;
+                    ps5AuthData->auth_f1_done = false; // set our F1 auth to not done!
+                    setFirstConsoleF0(authBuffer);
+                } else { // if ( authBuffer->auth_index == 3 ) { // END (4 blocks received)
+                    ps5AuthData->console_f0_recv_count++; // add 1 chunk
+                    ps5AuthData->ps5_auth_state = PS5AuthState::ps5_auth_send_f0_from_console;
+                }        
+            } else if ( authBuffer->auth_type == 0x02) {
+                ps5AuthData->auth_f1_done = true; // we are sending it to the dongle but we can tell PS5 its done for timing
+                setFirstConsoleF0(authBuffer);
+            } else if ( authBuffer->auth_type == 0x03) {
+                ps5AuthData->auth_f1_ready = false;
+                ps5AuthData->auth_f1_done = false; // don't send done until we're done?
+                setFirstConsoleF0(authBuffer);
+            }
+            break;
+        default:
+            P5DPRINTF("P5D:ERROR Got strange SET_REPORT id : %02x\n", report_id);
+            break;
+    };
 }
 
 const uint16_t * MayflashS5Driver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
@@ -541,15 +551,9 @@ const uint8_t * MayflashS5Driver::get_hid_descriptor_report_cb(uint8_t itf) {
 }
 
 const uint8_t * MayflashS5Driver::get_descriptor_configuration_cb(uint8_t index) {
-    //P5DPRINTF("P5D:get_descriptor_configuration_cb\n");
     return mayflashs5_custom_configuration_descriptor;
 }
 
 uint16_t MayflashS5Driver::GetJoystickMidValue() {
     return PS5_JOYSTICK_MID << 8;
 }
-
-/*
-uint64_t MayflashS5Driver::delay_on_boot() {
-    return 10000ll; // 1 second to ensure our dongle is ready
-}*/

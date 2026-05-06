@@ -5,12 +5,6 @@
 #include "drivers/mayflashs5/MayflashS5Driver.h"
 #include "drivers/mayflashs5/MayflashS5Auth.h"
 
-typedef enum _PS5_DONGLE_TYPE {
-    PS5_NONE = 0,       // No dongle defined
-    P5General = 1,      // Besavior P5General
-    MAYFLASH_S5 = 2,    // Mayflash S5
-} PS5_DONGLE_TYPE;
-
 class MayflashS5AuthUSBListener : public USBListener {
 public:
     virtual void setup();
@@ -35,7 +29,6 @@ private:
     PS5AuthData * ps5AuthData;
     //uint8_t f1_num;
     uint8_t report_buffer[PS5_ENDPOINT_SIZE];   // Report buffer
-    PS5_DONGLE_TYPE dongle_type; // which dongle are we using?
     bool awaiting_cb; // Waiting for callback
 };
 
