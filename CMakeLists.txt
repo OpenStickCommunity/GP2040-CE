@@ -15,7 +15,7 @@ endif()
 if(DEFINED ENV{PICO_BOARD})
   set(PICO_BOARD $ENV{PICO_BOARD} CACHE STRING "Board type")
 else()
-  set(PICO_BOARD pico CACHE STRING "Board type")
+  set(PICO_BOARD pimoroni_pga2040 CACHE STRING "Board type")
 endif()
 
 if(DEFINED ENV{PICO_PLATFORM})
