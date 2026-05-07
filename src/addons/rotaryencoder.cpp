@@ -11,6 +11,10 @@
 
 #include "hardware/gpio.h"
 #include "hardware/sync.h"
+#include "hardware/irq.h"
+#include "pico/time.h"
+
+#include <cmath>   // std::isfinite
 
 // Static members -------------------------------------------------------------
 
@@ -24,31 +28,46 @@ const int8_t RotaryEncoderInput::QDEC_LUT[16] = {
      0, +1, -1,  0,
 };
 
-// RP2040 has 30 user GPIOs (0..29); we size to 32 for safety.
-int8_t RotaryEncoderInput::pinToEncoder[32] = {
-    -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1,
-};
-
 RotaryEncoderInput* RotaryEncoderInput::instance = nullptr;
 
 // ---------------------------------------------------------------------------
 
 bool RotaryEncoderInput::available() {
     const RotaryOptions& options = Storage::getInstance().getAddonOptions().rotaryOptions;
-    return options.enabled;
+    if (!options.enabled) return false;
+    // Fast-path: require at least one sub-encoder plausibly configured. Full
+    // validation (pinA != pinB, cross-encoder collisions, etc.) still happens
+    // in setup(); this just keeps an entirely-unconfigured addon from claiming
+    // a slot in AddonManager and a no-op process() call every input tick.
+    return (options.encoderOne.enabled && isValidPin(options.encoderOne.pinA))
+        || (options.encoderTwo.enabled && isValidPin(options.encoderTwo.pinA));
 }
 
 static inline uint8_t sampleQuadState(uint8_t pinA, uint8_t pinB) {
     return (uint8_t)((gpio_get(pinA) ? 1 : 0) << 1) | (uint8_t)(gpio_get(pinB) ? 1 : 0);
 }
 
+static inline bool isAnalogStickMode(RotaryEncoderPinMode m) {
+    return m == ENCODER_MODE_LEFT_ANALOG_X  || m == ENCODER_MODE_LEFT_ANALOG_Y
+        || m == ENCODER_MODE_RIGHT_ANALOG_X || m == ENCODER_MODE_RIGHT_ANALOG_Y;
+}
+
+static inline bool isAnalogTriggerMode(RotaryEncoderPinMode m) {
+    return m == ENCODER_MODE_LEFT_TRIGGER || m == ENCODER_MODE_RIGHT_TRIGGER;
+}
+
+// Configuration clamps. Keep these tight enough that arithmetic in process()
+// (e.g. `now + pulseHoldMs`) cannot overflow and that misconfigured values
+// can't collapse stepsPerFullScale to a useless 1.
+static constexpr float    MIN_MULTIPLIER     = 0.01f;
+static constexpr float    MAX_MULTIPLIER     = 100.0f;
+static constexpr uint32_t MAX_PULSE_HOLD_MS  = 10000;   // 10 s
+static constexpr uint32_t MAX_RESET_AFTER_MS = 60000;   // 60 s
+
 void RotaryEncoderInput::setup()
 {
     const RotaryOptions& options = Storage::getInstance().getAddonOptions().rotaryOptions;
-    Gamepad * gamepad = Storage::getInstance().GetGamepad();
+    gamepad = Storage::getInstance().GetGamepad();
 
     instance = this;
 
@@ -61,26 +80,65 @@ void RotaryEncoderInput::setup()
         const RotaryPinOptions& src = *perEncoder[i];
         EncoderPinMap& dst = encoderMap[i];
 
-        dst.enabled = src.enabled && (src.pinA != -1) && (src.pinB != -1);
+        // Pin validation: must be enabled, both pins valid GPIOs on this chip,
+        // pinA != pinB, and (for encoder 1) must not collide with encoder 0's pins.
+        bool ok = src.enabled
+            && isValidPin(src.pinA)
+            && isValidPin(src.pinB)
+            && (src.pinA != src.pinB);
+        if (ok) {
+            for (uint8_t j = 0; j < i; j++) {
+                if (!encoderMap[j].enabled) continue;
+                if (src.pinA == encoderMap[j].pinA || src.pinA == encoderMap[j].pinB ||
+                    src.pinB == encoderMap[j].pinA || src.pinB == encoderMap[j].pinB) {
+                    ok = false;
+                    break;
+                }
+            }
+        }
+        dst.enabled = ok;
         if (!dst.enabled) continue;
 
         dst.pinA = src.pinA;
         dst.pinB = src.pinB;
         dst.mode = src.mode;
         dst.pulsesPerRevolution = src.pulsesPerRevolution > 0 ? src.pulsesPerRevolution : 24;
-        dst.resetAfter = src.resetAfter;
+
+        // Clamp resetAfter to a sane upper bound.
+        dst.resetAfter = src.resetAfter > MAX_RESET_AFTER_MS ? MAX_RESET_AFTER_MS : src.resetAfter;
+
         dst.allowWrapAround = src.allowWrapAround;
-        dst.multiplier = (src.multiplier > 0.0f) ? src.multiplier : 1.0f;
-        dst.countsPerDetent = (src.countsPerDetent >= 1 && src.countsPerDetent <= 4) ? (uint8_t)src.countsPerDetent : 4;
-        dst.pulseHoldMs = src.pulseHoldMs;
+
+        // Multiplier: reject NaN/inf, clamp to [MIN_MULTIPLIER, MAX_MULTIPLIER].
+        // Anything outside that range collapses or explodes stepsPerFullScale.
+        float mult = src.multiplier;
+        if (!std::isfinite(mult) || mult <= 0.0f) {
+            mult = 1.0f;
+        } else if (mult < MIN_MULTIPLIER) {
+            mult = MIN_MULTIPLIER;
+        } else if (mult > MAX_MULTIPLIER) {
+            mult = MAX_MULTIPLIER;
+        }
+        dst.multiplier = mult;
+
+        // countsPerDetent: when unset (0), fall back to the encoder type default.
+        // Mechanical detented EC11-style encoders typically emit 4 quadrature edges
+        // per detent; optical / continuous spinners want every edge to count.
+        uint32_t cpd = src.countsPerDetent;
+        if (cpd == 0) {
+            cpd = (src.encoderType == ENCODER_TYPE_OPTICAL_CONTINUOUS) ? 1 : 4;
+        }
+        dst.countsPerDetent = (cpd >= 1 && cpd <= 4) ? (uint8_t)cpd : 4;
+
+        // Clamp pulseHoldMs so `now + pulseHoldMs` cannot wrap into the past.
+        dst.pulseHoldMs = src.pulseHoldMs > MAX_PULSE_HOLD_MS ? MAX_PULSE_HOLD_MS : src.pulseHoldMs;
 
         // Default output ranges by mode.
-        if ((dst.mode == ENCODER_MODE_LEFT_TRIGGER) || (dst.mode == ENCODER_MODE_RIGHT_TRIGGER)) {
+        if (isAnalogTriggerMode(dst.mode)) {
             gamepad->hasAnalogTriggers = true;
             dst.minRange = GAMEPAD_TRIGGER_MIN;
             dst.maxRange = GAMEPAD_TRIGGER_MAX;
-        } else if ((dst.mode == ENCODER_MODE_LEFT_ANALOG_X) || (dst.mode == ENCODER_MODE_LEFT_ANALOG_Y)
-                || (dst.mode == ENCODER_MODE_RIGHT_ANALOG_X) || (dst.mode == ENCODER_MODE_RIGHT_ANALOG_Y)) {
+        } else if (isAnalogStickMode(dst.mode)) {
             dst.minRange = GAMEPAD_JOYSTICK_MIN;
             dst.maxRange = GAMEPAD_JOYSTICK_MAX;
         } else {
@@ -90,7 +148,6 @@ void RotaryEncoderInput::setup()
 
         // Logical steps spanning a full revolution = (raw edges per rev) / counts-per-detent.
         // For analog modes, multiplier scales how many revolutions cover the full output range.
-        // stepsPerFullScale = stepsPerRevolution / multiplier (rounded, min 1).
         const int32_t edgesPerRev = (int32_t)dst.pulsesPerRevolution * 4; // 4 edges per pulse
         const int32_t stepsPerRev = edgesPerRev / dst.countsPerDetent;
         int32_t span = (int32_t)((float)stepsPerRev / dst.multiplier);
@@ -98,12 +155,15 @@ void RotaryEncoderInput::setup()
         dst.stepsPerFullScale = span;
     }
 
-    // Configure GPIOs and enable per-pin quadrature edge interrupts.
-    // Use a single shared callback registered once with the SDK; dispatch is
-    // by GPIO number via pinToEncoder[].
-    bool callbackInstalled = false;
+    // Configure GPIOs and enable per-pin quadrature edge interrupts. We use
+    // gpio_add_raw_irq_handler (chained per-GPIO) instead of the legacy
+    // single-callback gpio_set_irq_enabled_with_callback so we coexist with
+    // any other GPIO IRQ consumer (e.g. the TinyUSB MAX3421 host BSP).
+    const uint32_t now = getMillis();
+    bool anyEnabled = false;
     for (uint8_t i = 0; i < MAX_ENCODERS; i++) {
         if (!encoderMap[i].enabled) continue;
+        anyEnabled = true;
 
         const uint8_t pinA = (uint8_t)encoderMap[i].pinA;
         const uint8_t pinB = (uint8_t)encoderMap[i].pinB;
@@ -116,41 +176,55 @@ void RotaryEncoderInput::setup()
         gpio_set_dir(pinB, GPIO_IN);
         gpio_pull_up(pinB);
 
-        // Allow the pull-ups time to settle before sampling the initial state.
-        // gpio_pull_up returns immediately; a few NOPs are typically enough.
-        for (volatile int n = 0; n < 1000; n++) { /* settle */ }
+        // Give pull-ups time to settle before sampling the initial Gray state.
+        busy_wait_us(50);
 
-        // Map both pins to this encoder for IRQ dispatch.
-        if (pinA < 32) pinToEncoder[pinA] = (int8_t)i;
-        if (pinB < 32) pinToEncoder[pinB] = (int8_t)i;
-
-        // Seed the previous Gray state so the first real edge produces a valid transition.
+        // Seed runtime state. Important: changeTime must be initialized to "now"
+        // so the auto-center inactivity check in process() doesn't fire on the
+        // very first tick (boot can take longer than resetAfter).
         encoderState[i].prevState = sampleQuadState(pinA, pinB);
         encoderState[i].rawCounts = 0;
         encoderState[i].accumulatedSteps = 0;
         encoderState[i].prevSteps = 0;
         encoderState[i].rawRemainder = 0;
+        encoderState[i].changeTime = now;
+        encoderState[i].pulseDir = 0;
+        encoderState[i].pulseUntil = 0;
 
         const uint32_t edgeMask = GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL;
-        if (!callbackInstalled) {
-            gpio_set_irq_enabled_with_callback(pinA, edgeMask, true, &RotaryEncoderInput::gpioIrqCallback);
-            callbackInstalled = true;
-        } else {
-            gpio_set_irq_enabled(pinA, edgeMask, true);
-        }
+        gpio_add_raw_irq_handler(pinA, &RotaryEncoderInput::gpioIrqHandler);
+        gpio_add_raw_irq_handler(pinB, &RotaryEncoderInput::gpioIrqHandler);
+        gpio_set_irq_enabled(pinA, edgeMask, true);
         gpio_set_irq_enabled(pinB, edgeMask, true);
+    }
+
+    if (anyEnabled) {
+        irq_set_enabled(IO_IRQ_BANK0, true);
     }
 }
 
-// Static IRQ thunk - called from the SDK on every enabled GPIO edge.
+// Raw GPIO IRQ handler - chained per pin via gpio_add_raw_irq_handler.
 // Keep this function tight: a vigorously spinning 360 P/R encoder generates
-// edges every ~140 us, so we must do as little as possible per edge.
-void RotaryEncoderInput::gpioIrqCallback(uint gpio, uint32_t /*events*/) {
-    if (gpio >= 32) return;
-    const int8_t idx = pinToEncoder[gpio];
-    if (idx < 0 || idx >= MAX_ENCODERS) return;
+// edges every ~140 us, so we must do as little as possible per edge. The
+// handler is invoked once per IRQ_BANK0 entry and must service every encoder
+// pin that asserted, acknowledging each so the IRQ deasserts.
+void RotaryEncoderInput::gpioIrqHandler() {
     if (instance == nullptr) return;
-    instance->handleEdge((uint8_t)idx);
+    for (uint8_t i = 0; i < MAX_ENCODERS; i++) {
+        const EncoderPinMap& m = instance->encoderMap[i];
+        if (!m.enabled) continue;
+        bool fired = false;
+
+        const uint pa = (uint)m.pinA;
+        const uint32_t evA = gpio_get_irq_event_mask(pa);
+        if (evA) { gpio_acknowledge_irq(pa, evA); fired = true; }
+
+        const uint pb = (uint)m.pinB;
+        const uint32_t evB = gpio_get_irq_event_mask(pb);
+        if (evB) { gpio_acknowledge_irq(pb, evB); fired = true; }
+
+        if (fired) instance->handleEdge(i);
+    }
 }
 
 void RotaryEncoderInput::handleEdge(uint8_t encoderIndex) {
@@ -179,11 +253,12 @@ void RotaryEncoderInput::handleEdge(uint8_t encoderIndex) {
 
 void RotaryEncoderInput::process()
 {
-    Gamepad * gamepad = Storage::getInstance().GetGamepad();
     const uint32_t now = getMillis();
 
-    // Reset per-frame DPAD intent; we set bits below based on currently latched pulses.
-    dpadUp = dpadDown = dpadLeft = dpadRight = false;
+    // Per-frame DPAD intent. Built up below based on currently latched pulses
+    // and OR'd into gamepad->state.dpad once at the end so we don't clobber
+    // any other addon's DPAD bits.
+    uint8_t dpadMask = 0;
 
     for (uint8_t i = 0; i < MAX_ENCODERS; i++) {
         EncoderPinMap& m = encoderMap[i];
@@ -224,10 +299,7 @@ void RotaryEncoderInput::process()
         // spinner that drifts back to neutral when released. Trigger / DPAD / volume
         // modes deliberately keep their last value (a stuck-throttle would feel
         // wrong, and DPAD/volume don't use the accumulator for steady-state output).
-        const bool isAutoCenterMode =
-            (m.mode == ENCODER_MODE_LEFT_ANALOG_X)  || (m.mode == ENCODER_MODE_LEFT_ANALOG_Y) ||
-            (m.mode == ENCODER_MODE_RIGHT_ANALOG_X) || (m.mode == ENCODER_MODE_RIGHT_ANALOG_Y);
-        if (isAutoCenterMode && m.resetAfter > 0 && (now - s.changeTime) >= m.resetAfter) {
+        if (isAnalogStickMode(m.mode) && m.resetAfter > 0 && (now - s.changeTime) >= m.resetAfter) {
             s.accumulatedSteps = 0;
             s.rawRemainder = 0;
         }
@@ -255,7 +327,10 @@ void RotaryEncoderInput::process()
                 break;
             case ENCODER_MODE_DPAD_X:
             case ENCODER_MODE_DPAD_Y: {
-                const int8_t pulse = mapEncoderValueDPad(i, deltaSteps);
+                // Branchless sign of deltaSteps: -1, 0, or +1. Note: if multiple
+                // logical steps land in a single tick we still emit just one
+                // press; extra steps are intentionally absorbed into the hold.
+                const int8_t pulse = (int8_t)((deltaSteps > 0) - (deltaSteps < 0));
                 if (pulse != 0) {
                     s.pulseDir = pulse;
                     // Hold for at least pulseHoldMs (default 30 ms) so a host poll
@@ -264,9 +339,9 @@ void RotaryEncoderInput::process()
                 }
                 if (s.pulseDir != 0 && now < s.pulseUntil) {
                     if (m.mode == ENCODER_MODE_DPAD_X) {
-                        if (s.pulseDir > 0) dpadRight = true; else dpadLeft = true;
+                        dpadMask |= (s.pulseDir > 0) ? GAMEPAD_MASK_RIGHT : GAMEPAD_MASK_LEFT;
                     } else {
-                        if (s.pulseDir > 0) dpadDown = true; else dpadUp = true;
+                        dpadMask |= (s.pulseDir > 0) ? GAMEPAD_MASK_DOWN  : GAMEPAD_MASK_UP;
                     }
                 } else {
                     s.pulseDir = 0;
@@ -275,11 +350,17 @@ void RotaryEncoderInput::process()
             }
             case ENCODER_MODE_VOLUME: {
                 if (deltaSteps != 0) {
-                    const uint32_t throttle = m.pulseHoldMs ? m.pulseHoldMs : 0;
-                    if (throttle == 0 || (now - s.lastVolumeEventMs) >= throttle) {
+                    // Emit one event per logical step (preserving magnitude),
+                    // capped to avoid runaway after a long stall. The downstream
+                    // KeyboardDriver accumulates these into volumeChange so a
+                    // burst of N events maps to N volume key presses.
+                    static constexpr int32_t VOLUME_BURST_CAP = 16;
+                    int32_t mag = deltaSteps > 0 ? deltaSteps : -deltaSteps;
+                    if (mag > VOLUME_BURST_CAP) mag = VOLUME_BURST_CAP;
+                    const int8_t dir = deltaSteps > 0 ? 1 : -1;
+                    for (int32_t k = 0; k < mag; k++) {
                         EventManager::getInstance().triggerEvent(
-                            new GPEncoderChangeEvent(i, deltaSteps > 0 ? 1 : -1));
-                        s.lastVolumeEventMs = now;
+                            new GPEncoderChangeEvent(i, dir));
                     }
                 }
                 break;
@@ -296,10 +377,7 @@ void RotaryEncoderInput::process()
         s.prevSteps = s.accumulatedSteps;
     }
 
-    if (dpadUp)    gamepad->state.dpad |= GAMEPAD_MASK_UP;
-    if (dpadDown)  gamepad->state.dpad |= GAMEPAD_MASK_DOWN;
-    if (dpadLeft)  gamepad->state.dpad |= GAMEPAD_MASK_LEFT;
-    if (dpadRight) gamepad->state.dpad |= GAMEPAD_MASK_RIGHT;
+    gamepad->state.dpad |= dpadMask;
 }
 
 uint16_t RotaryEncoderInput::mapEncoderValueStick(int8_t index, int32_t steps) {
@@ -335,12 +413,6 @@ uint16_t RotaryEncoderInput::mapEncoderValueTrigger(int8_t index, int32_t steps)
     if (mapped < m.minRange) mapped = m.minRange;
     if (mapped > m.maxRange) mapped = m.maxRange;
     return (uint16_t)mapped;
-}
-
-int8_t RotaryEncoderInput::mapEncoderValueDPad(int8_t /*index*/, int32_t deltaSteps) {
-    if (deltaSteps > 0) return +1;
-    if (deltaSteps < 0) return -1;
-    return 0;
 }
 
 int32_t RotaryEncoderInput::map(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max) {

@@ -149,10 +149,9 @@ public:
         int32_t rawRemainder = 0;       // raw counts not yet promoted to a full step
         uint32_t changeTime = 0;        // last time accumulatedSteps changed
 
-        // DPAD / VOLUME mode pulse latching.
+        // DPAD mode pulse latching.
         int8_t pulseDir = 0;            // -1, 0, or +1
         uint32_t pulseUntil = 0;        // millis at which the current pulse expires
-        uint32_t lastVolumeEventMs = 0; // throttle for repeated VOLUME events
     } EncoderPinState;
 
     // Quadrature transition table indexed by ((prevA<<3)|(prevB<<2)|(curA<<1)|curB).
@@ -167,12 +166,15 @@ private:
         EncoderPinMap{},
     };
 
-    // Precomputed reverse map from GPIO number to encoder index for fast ISR dispatch.
-    // -1 means the pin is not associated with an active encoder.
-    static int8_t pinToEncoder[32];
     static RotaryEncoderInput* instance;
 
-    static void gpioIrqCallback(uint gpio, uint32_t events);
+    // Raw GPIO IRQ handler. We use gpio_add_raw_irq_handler so we coexist with
+    // any other GPIO IRQ user (e.g. the TinyUSB MAX3421 host BSP) that would
+    // otherwise be clobbered by the legacy single-callback API. The handler
+    // walks encoderMap directly (MAX_ENCODERS is small) instead of using a
+    // pin->index reverse map, which keeps the dispatch table out of .data and
+    // avoids one indirection per IRQ.
+    static void gpioIrqHandler();
     void handleEdge(uint8_t encoderIndex);
 
     int32_t map(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max);
@@ -180,12 +182,10 @@ private:
 
     uint16_t mapEncoderValueStick(int8_t index, int32_t steps);
     uint16_t mapEncoderValueTrigger(int8_t index, int32_t steps);
-    int8_t mapEncoderValueDPad(int8_t index, int32_t deltaSteps);
 
-    bool dpadUp = false;
-    bool dpadDown = false;
-    bool dpadLeft = false;
-    bool dpadRight = false;
+    // Cached gamepad pointer; the Storage-owned Gamepad* doesn't change after
+    // boot, so we look it up once in setup() and avoid the per-tick indirection.
+    Gamepad* gamepad = nullptr;
 };
 
 #endif  // _ROTARYENCODER_H
