@@ -692,13 +692,19 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 		case HOTKEY_TURBO_COUNT_UP:
 			if (action != lastAction) {
 				TurboOptions &turboOptions = Storage::getInstance().getAddonOptions().turboOptions;
-				turboOptions.shotCount++;
+				// Mirror the bounds enforced inside TurboInput (TURBO_SHOT_MIN=2, TURBO_SHOT_MAX=30).
+				if (turboOptions.shotCount < 30) {
+					turboOptions.shotCount++;
+				}
 			}
 			break;
 		case HOTKEY_TURBO_COUNT_DOWN:
 			if (action != lastAction) {
 				TurboOptions &turboOptions = Storage::getInstance().getAddonOptions().turboOptions;
-				turboOptions.shotCount--;
+				// Guard against unsigned underflow wrapping shotCount to its max value.
+				if (turboOptions.shotCount > 2) {
+					turboOptions.shotCount--;
+				}
 			}
 			break;
 		case HOTKEY_MENU_NAV_UP:

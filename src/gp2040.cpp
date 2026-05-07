@@ -155,8 +155,8 @@ void GP2040::setup() {
 	}
 
 	// register system event handlers
-	EventManager::getInstance().registerEventHandler(GP_EVENT_STORAGE_SAVE, GPEVENT_CALLBACK(this->handleStorageSave(event)));
-	EventManager::getInstance().registerEventHandler(GP_EVENT_RESTART, GPEVENT_CALLBACK(this->handleSystemReboot(event)));
+	EventManager::getInstance().registerEventHandler(GP_EVENT_STORAGE_SAVE, GPEVENT_CALLBACK(this->handleStorageSave(event)), this);
+	EventManager::getInstance().registerEventHandler(GP_EVENT_RESTART, GPEVENT_CALLBACK(this->handleSystemReboot(event)), this);
 }
 
 /**
@@ -265,6 +265,10 @@ void GP2040::run() {
 
 		// Config Loop (Web-Config skips Core0 add-ons)
 		if (configMode == true) {
+			// Drain any GPIO-IRQ-collected rotary edges so they don't accumulate into a
+			// single huge burst that would be applied on the next tick after exiting
+			// config mode. Cheap when no encoder is enabled.
+			RotaryEncoderInput::DrainPendingCounts();
 			inputDriver->process(gamepad);
 			rebootHotkeys.process(gamepad, configMode);
 			checkSaveRebootState();
@@ -284,8 +288,10 @@ void GP2040::run() {
 
 		checkProcessedState(processedGamepad->state, gamepad->state);
 
-		// Copy Processed Gamepad for Core1 (race condition otherwise)
-		memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
+		// Copy Processed Gamepad for Core1 under a mutex so Core1 readers using
+		// SnapshotProcessedGamepadState see a non-torn copy (and ordinary
+		// GetProcessedGamepad()->state readers at least see a complete write).
+		Storage::getInstance().PublishProcessedGamepadState(gamepad->state);
 
 		// Process Input Driver
 		bool processed = inputDriver->process(gamepad);
@@ -361,7 +367,6 @@ GP2040::BootAction GP2040::getButtonMappedBootAction() {
 	}
 	// Determine boot action based on gamepad state during boot
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
-	Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
 
 	debounceGpioGetAll();
 	gamepad->read();
@@ -374,8 +379,8 @@ GP2040::BootAction GP2040::getButtonMappedBootAction() {
 	// Process for add-ons
 	addons.ProcessAddons();
 
-	// Copy Processed Gamepad for Core1 (race condition otherwise)
-	memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
+	// Copy Processed Gamepad for Core1 (race condition otherwise) via the mutex-protected helper.
+	Storage::getInstance().PublishProcessedGamepadState(gamepad->state);
 
 	const ForcedSetupOptions& forcedSetupOptions = Storage::getInstance().getForcedSetupOptions();
 	bool modeSwitchLocked = forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_MODE_SWITCH ||
@@ -487,7 +492,7 @@ void GP2040::RebootHotkeys::process(Gamepad* gamepad, bool configMode) {
 	if (!active) {
 		if (gamepad->state.buttons == 0) {
 			if (is_nil_time(noButtonsPressedTimeout)) {
-				noButtonsPressedTimeout = make_timeout_time_us(REBOOT_HOTKEY_ACTIVATION_TIME_MS);
+				noButtonsPressedTimeout = make_timeout_time_ms(REBOOT_HOTKEY_ACTIVATION_TIME_MS);
 			}
 
 			if (time_reached(noButtonsPressedTimeout)) {

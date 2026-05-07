@@ -42,10 +42,15 @@ void TurboInput::setup(){
 
     // Turbo Dial
     uint8_t shotCount = std::clamp<uint8_t>(options.shotCount, TURBO_SHOT_MIN, TURBO_SHOT_MAX);
-    if (isValidPin(options.shmupDialPin)) {
+    // RP2040 ADC channels 0..3 are GPIO 26..29 only. Reject any other pin -- the
+    // previous formula `26 - pin` produced negative channels for GPIO 27..29 and
+    // silently misrouted reads to whatever channel happens to share that index.
+    if (isValidPin(options.shmupDialPin)
+            && options.shmupDialPin >= 26
+            && options.shmupDialPin <= 29) {
         hasShmupDial = true;
         adc_gpio_init(options.shmupDialPin);
-        adcShmupDial = 26 - options.shmupDialPin;
+        adcShmupDial = options.shmupDialPin - 26;
         adc_select_input(adcShmupDial);
         dialValue = adc_read(); // setup initial Dial + Turbo Speed
         shotCount = (dialValue / TURBO_DIAL_INCREMENTS) + TURBO_SHOT_MIN;
@@ -130,7 +135,10 @@ void TurboInput::process()
     uint16_t buttonsPressed = gamepad->state.buttons & TURBO_BUTTON_MASK;
     uint8_t dpadPressed = gamepad->state.dpad & GAMEPAD_MASK_DPAD;
 
-    if (!options.enabled && (!hasTurboAssigned == true)) return;
+    // If turbo is globally disabled we must early-out unconditionally; the previous
+    // condition only bailed when *also* nothing was mapped, so a disabled-but-still-
+    // mapped turbo would keep auto-firing. Also bail out when nothing is mapped at all.
+    if (!options.enabled || !hasTurboAssigned) return;
 
     // Check if shotCount changed externally (e.g., via hotkey)
     if (options.shotCount != lastShotCount){

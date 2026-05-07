@@ -110,6 +110,7 @@ void DRV8833RumbleAddon::process() {
 }
 
 uint32_t DRV8833RumbleAddon::pwmSetFreqDuty(uint slice, uint channel, uint32_t frequency, float duty) {
+	if (frequency == 0) return 0; // avoid divide-by-zero from a misconfigured rumble frequency
 	uint32_t divider16 = sysClock / frequency / 4096 +
 							(sysClock % (frequency * 4096) != 0);
 	if (divider16 / 16 == 0)

@@ -19,7 +19,9 @@ public:
 private:
     GPDriver * inputDriver;
     AddonManager addons;
-    bool isReady;
+    // Written by Core1 in setup(), read by Core0 in main()'s busy-wait. Mark volatile so the
+    // compiler doesn't hoist or elide the read.
+    volatile bool isReady;
 };
 
 #endif

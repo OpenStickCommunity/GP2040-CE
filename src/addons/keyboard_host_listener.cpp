@@ -102,8 +102,10 @@ void KeyboardHostListener::process() {
         gamepad->auxState.sensors.mouse.y = mouseY;
         gamepad->auxState.sensors.mouse.z = mouseZ;
         mouseActive = false;
-    } else if(mouseResetNextTimer < getMillis()) {
-        // Since mouse position reports only happen when the mouse is moved, we need to reset the position manually
+    } else if((uint32_t)(getMillis() - mouseResetNextTimer) >= mouseResetMS) {
+        // Since mouse position reports only happen when the mouse is moved, we need to reset the position manually.
+        // Switched from `deadline < now` to elapsed-time comparison so a uint32_t millis rollover
+        // (~49.7 days) doesn't cause this branch to fire on every tick.
        _keyboard_host_state.lx = joystickMid;
        _keyboard_host_state.ly = joystickMid;
        _keyboard_host_state.rx = joystickMid;
@@ -149,10 +151,15 @@ void KeyboardHostListener::report_received(uint8_t dev_addr, uint8_t instance, u
 if ( _keyboard_host_mounted == false && _mouse_host_mounted == false )
     return;
 
-  // tuh_hid_report_received_cb() will be invoked when report is available
+  if (report == nullptr) return;
+
+  // tuh_hid_report_received_cb() will be invoked when report is available. Validate the
+  // report length matches the cast target before reinterpreting host-supplied bytes.
   if ( _keyboard_host_mounted == true && _keyboard_dev_addr == dev_addr && _keyboard_instance == instance ) {
+    if (len < sizeof(hid_keyboard_report_t)) return;
     process_kbd_report(dev_addr, (hid_keyboard_report_t const*) report );
   } else if ( _mouse_host_mounted == true && _mouse_dev_addr == dev_addr && _mouse_instance == instance) {
+    if (len < sizeof(hid_mouse_report_t)) return;
     process_mouse_report(dev_addr, (hid_mouse_report_t const*) report );
   }
 }
@@ -269,7 +276,7 @@ void KeyboardHostListener::process_mouse_report(uint8_t dev_addr, hid_mouse_repo
     return;
   }
 
-  mouseResetNextTimer = getMillis() + mouseResetMS;
+  mouseResetNextTimer = getMillis(); // store activity timestamp; elapsed time vs mouseResetMS is checked above
   //-------- report correct analog move --------// (by Pelsin)
   if (mouseMovementMode == MOUSE_MOVEMENT_LEFT_ANALOG) {
     _keyboard_host_state.lx = scaleMouseToJoystick(report->x);

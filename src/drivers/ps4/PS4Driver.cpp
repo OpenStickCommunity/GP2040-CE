@@ -775,13 +775,14 @@ USBListener * PS4Driver::get_usb_auth_listener() {
 // tud_hid_get_report_cb
 uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
     if ( report_type != HID_REPORT_TYPE_FEATURE ) {
-        memcpy(buffer, &ps4Report, sizeof(ps4Report));
-        return sizeof(ps4Report);
+        uint16_t copyLen = (reqlen < sizeof(ps4Report)) ? reqlen : sizeof(ps4Report);
+        memcpy(buffer, &ps4Report, copyLen);
+        return copyLen;
     }
 
     // Do nothing if we do not have host authentication data or a driver to run on
     if ( ps4AuthData == nullptr || ps4AuthDriver == nullptr) {
-        return sizeof(ps4Report);
+        return 0;
     }
 
     uint8_t data[64] = {};
@@ -791,36 +792,48 @@ uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
         // Controller Definition Report
         case PS4AuthReport::PS4_GET_CALIBRATION:
             if (reqlen < sizeof(output_0x02)) {
-                return -1;
+                return 0;
             }
-            responseLen = MAX(reqlen, sizeof(output_0x02));
+            responseLen = sizeof(output_0x02);
             memcpy(buffer, output_0x02, responseLen);
             return responseLen;
         case PS4AuthReport::PS4_DEFINITION:
             if (reqlen < sizeof(controllerConfig)) {
-                return -1;
+                return 0;
             }
             controllerConfig.controllerType = (uint8_t)controllerType;
-            responseLen = MAX(reqlen, sizeof(controllerConfig));
+            responseLen = sizeof(controllerConfig);
             memcpy(buffer, &controllerConfig, responseLen);
             //buffer[4] = (uint8_t)controllerType; // Change controller type in definition
             return responseLen;
         case PS4AuthReport::PS4_GET_MAC_ADDRESS:
             if (reqlen < sizeof(output_0x12)) {
-                return -1;
+                return 0;
             }
-            responseLen = MAX(reqlen, sizeof(output_0x12));
+            responseLen = sizeof(output_0x12);
             memcpy(buffer, output_0x12, responseLen);
             return responseLen;
         case PS4AuthReport::PS4_GET_VERSION_DATE:
             if (reqlen < sizeof(output_0xa3)) {
-                return -1;
+                return 0;
             }
-            responseLen = MAX(reqlen, sizeof(output_0xa3));
+            responseLen = sizeof(output_0xa3);
             memcpy(buffer, output_0xa3, responseLen);
             return responseLen;
         // Use our private RSA key to sign the nonce and return chunks
-        case PS4AuthReport::PS4_GET_SIGNATURE_NONCE:
+        case PS4AuthReport::PS4_GET_SIGNATURE_NONCE: {
+            // Refuse short reads: the trailing CRC32 is computed over the full 60-byte
+            // payload, so handing the host a prefix would deliver bytes whose CRC does
+            // not match. Critically, we must NOT advance cur_nonce_chunk for a short
+            // read either - that would silently desync the PS4 auth nonce sequence on
+            // the next valid read.
+            if (reqlen < 63) {
+                return 0;
+            }
+            if (cur_nonce_chunk >= 19) {
+                cur_nonce_chunk = 0;
+                return 0;
+            }
             // We send 56 byte chunks back to the PS4, we've already calculated these
             data[0] = 0xF1;
             data[1] = cur_nonce_id;    // nonce_id
@@ -841,7 +854,12 @@ uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
                 cur_nonce_chunk = 0;
             }
             return 63;
+        }
         case PS4AuthReport::PS4_GET_SIGNING_STATE:  // Are we ready to sign?
+            // Refuse short reads: CRC32 is computed over the full 12-byte record.
+            if (reqlen < 15) {
+                return 0;
+            }
             data[0] = 0xF2;
             data[1] = cur_nonce_id;
             data[2] = (ps4AuthData->passthrough_state == GPAuthState::send_auth_dongle_to_console) ? 0 : 16; // 0 means auth is ready, 16 means we're still signing
@@ -852,9 +870,9 @@ uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
             return 15;
         case PS4AuthReport::PS4_RESET_AUTH:         // Reset the Authentication
             if (reqlen < sizeof(output_0xf3)) {
-                return -1;
+                return 0;
             }
-            responseLen = MAX(reqlen, sizeof(output_0xf3));
+            responseLen = sizeof(output_0xf3);
             memcpy(buffer, output_0xf3, responseLen);
             ps4AuthData->passthrough_state = GPAuthState::auth_idle_state;
             ps4AuthDriver->resetAuth(); // reset our auth driver (ps4 keys or usb host)
@@ -862,17 +880,19 @@ uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
         default:
             break;
     };
-    return -1;
+    return 0;
 }
 
 // Only PS4 does anything with set report
 void PS4Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize) {
     if (( report_type != HID_REPORT_TYPE_FEATURE ) && ( report_type != HID_REPORT_TYPE_OUTPUT ))
         return;
+    if (buffer == nullptr) return;
 
     if (report_type == HID_REPORT_TYPE_OUTPUT) {
         if (report_id == 0) {
-            memcpy(&ps4Features, buffer, bufsize);
+            uint16_t copyLen = (bufsize < sizeof(ps4Features)) ? bufsize : sizeof(ps4Features);
+            memcpy(&ps4Features, buffer, copyLen);
         }
     } else if (report_type == HID_REPORT_TYPE_FEATURE) {
         if (report_id == PS4AuthReport::PS4_SET_HOST_MAC) {
@@ -887,6 +907,7 @@ void PS4Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uin
             if (bufsize != 63 ) {
                 return;
             }
+            if (ps4AuthData == nullptr) return;
             // Calculate CRC32 of buffer
             sendBuffer[0] = report_id;
             memcpy(&sendBuffer[1], buffer, bufsize);
@@ -898,6 +919,12 @@ void PS4Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uin
             // 256 byte nonce, 4 56-byte chunks, 1 32-byte chunk
             nonce_id = buffer[0];
             nonce_page = buffer[1];
+            // ps4_auth_buffer is 1064 bytes; valid nonce_page values are 0..4. Reject anything else
+            // to prevent a hostile or buggy host from writing past the buffer.
+            if (nonce_page > 4) {
+                ps4AuthData->passthrough_state = GPAuthState::auth_idle_state;
+                return;
+            }
             if ( nonce_page == 4 ) {    // Nonce page 4 : 32 bytes
                 memcpy(&ps4AuthData->ps4_auth_buffer[nonce_page*56], &sendBuffer[4], 32);
                 ps4AuthData->nonce_id = nonce_id;

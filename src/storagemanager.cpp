@@ -25,6 +25,14 @@ void Storage::init() {
 	systemFlashSize = System::getPhysicalFlash(); // System Flash Size must be called once
 	EEPROM.start();
 	ConfigUtils::load(config);
+	// Initialize the cross-core processed-gamepad mutex exactly once, before Core1
+	// is launched. Doing this lazily inside SetProcessedGamepad / Publish... races
+	// when both cores can hit the "first init" path in parallel, since the SDK does
+	// not internally serialize mutex_init on the same mutex.
+	if (!processedGamepadMutexInited) {
+		mutex_init(&processedGamepadMutex);
+		processedGamepadMutexInited = true;
+	}
 }
 
 /**
@@ -102,10 +110,18 @@ void Storage::previousProfile()
  * @brief Return the current profile label.
  */
 char* Storage::currentProfileLabel() {
-	if (this->config.gamepadOptions.profileNumber == 1)
+	uint32_t profileNumber = this->config.gamepadOptions.profileNumber;
+	uint32_t profileCeiling = this->config.profileOptions.gpioMappingsSets_count + 1;
+	// Profile 1 is the base mapping, profiles 2..profileCeiling live in gpioMappingsSets[0..]
+	// Guard against a corrupt config that could otherwise read past gpioMappingsSets[].
+	if (profileNumber == 1) {
 		return this->config.gpioMappings.profileLabel;
-	else
-		return this->config.profileOptions.gpioMappingsSets[config.gamepadOptions.profileNumber-2].profileLabel;
+	}
+	if (profileNumber >= 2 && profileNumber <= profileCeiling &&
+			this->config.profileOptions.gpioMappingsSets[profileNumber-2].enabled) {
+		return this->config.profileOptions.gpioMappingsSets[profileNumber-2].profileLabel;
+	}
+	return this->config.gpioMappings.profileLabel;
 }
 
 void Storage::setFunctionalPinMappings()
@@ -189,4 +205,19 @@ void Storage::SetProcessedGamepad(Gamepad * newpad)
 Gamepad * Storage::GetProcessedGamepad()
 {
 	return processedGamepad;
+}
+
+void Storage::PublishProcessedGamepadState(const GamepadState& src) {
+	if (processedGamepad == nullptr || !processedGamepadMutexInited) return;
+	mutex_enter_blocking(&processedGamepadMutex);
+	memcpy(&processedGamepad->state, &src, sizeof(GamepadState));
+	mutex_exit(&processedGamepadMutex);
+}
+
+bool Storage::SnapshotProcessedGamepadState(GamepadState& dest) {
+	if (processedGamepad == nullptr || !processedGamepadMutexInited) return false;
+	mutex_enter_blocking(&processedGamepadMutex);
+	memcpy(&dest, &processedGamepad->state, sizeof(GamepadState));
+	mutex_exit(&processedGamepadMutex);
+	return true;
 }

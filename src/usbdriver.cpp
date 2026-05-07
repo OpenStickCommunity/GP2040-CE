@@ -22,17 +22,26 @@ bool get_usb_suspended(void) {
 
 const usbd_class_driver_t *usbd_app_driver_get_cb(uint8_t *driver_count) {
 	*driver_count = 1;
-	return DriverManager::getInstance().getDriver()->get_class_driver();
+	GPDriver * d = DriverManager::getInstance().getDriver();
+	if (d == nullptr) {
+		*driver_count = 0;
+		return nullptr;
+	}
+	return d->get_class_driver();
 }
 
 uint16_t tud_hid_get_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
-	return DriverManager::getInstance().getDriver()->get_report(report_id, report_type, buffer, reqlen);
+	GPDriver * d = DriverManager::getInstance().getDriver();
+	if (d == nullptr) return 0;
+	return d->get_report(report_id, report_type, buffer, reqlen);
 }
 
 // Invoked when received SET_REPORT control request or
 // received data on OUT endpoint ( Report ID = 0, Type = 0 )
 void tud_hid_set_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize) {
-	DriverManager::getInstance().getDriver()->set_report(report_id, report_type, buffer, bufsize);
+	GPDriver * d = DriverManager::getInstance().getDriver();
+	if (d == nullptr) return;
+	d->set_report(report_id, report_type, buffer, bufsize);
 }
 
 // Invoked when device is mounted
@@ -65,38 +74,50 @@ void tud_resume_cb(void) {
 // Vendor Controlled XFER occured
 bool tud_vendor_control_xfer_cb(uint8_t rhport, uint8_t stage,
                                 tusb_control_request_t const *request) {
-	return DriverManager::getInstance().getDriver()->vendor_control_xfer_cb(rhport, stage, request);
+	GPDriver * d = DriverManager::getInstance().getDriver();
+	if (d == nullptr) return false;
+	return d->vendor_control_xfer_cb(rhport, stage, request);
 }
 
 
 // Invoked when received GET STRING DESCRIPTOR request
 // Application return pointer to descriptor, whose contents must exist long enough for transfer to complete
 uint16_t const *tud_descriptor_string_cb(uint8_t index, uint16_t langid) {
-	return DriverManager::getInstance().getDriver()->get_descriptor_string_cb(index, langid);
+	GPDriver * d = DriverManager::getInstance().getDriver();
+	if (d == nullptr) return nullptr;
+	return d->get_descriptor_string_cb(index, langid);
 }
 
 // Invoked when received GET DEVICE DESCRIPTOR
 // Application return pointer to descriptor
 uint8_t const *tud_descriptor_device_cb() {
-	return DriverManager::getInstance().getDriver()->get_descriptor_device_cb();
+	GPDriver * d = DriverManager::getInstance().getDriver();
+	if (d == nullptr) return nullptr;
+	return d->get_descriptor_device_cb();
 }
 
 // Invoked when received GET HID REPORT DESCRIPTOR
 // Application return pointer to descriptor
 // Descriptor contents must exist long enough for transfer to complete
 uint8_t const *tud_hid_descriptor_report_cb(uint8_t itf) {
-	return DriverManager::getInstance().getDriver()->get_hid_descriptor_report_cb(itf);
+	GPDriver * d = DriverManager::getInstance().getDriver();
+	if (d == nullptr) return nullptr;
+	return d->get_hid_descriptor_report_cb(itf);
 }
 
 // Invoked when received GET CONFIGURATION DESCRIPTOR
 // Application return pointer to descriptor
 // Descriptor contents must exist long enough for transfer to complete
 uint8_t const *tud_descriptor_configuration_cb(uint8_t index) {
-	return DriverManager::getInstance().getDriver()->get_descriptor_configuration_cb(index);
+	GPDriver * d = DriverManager::getInstance().getDriver();
+	if (d == nullptr) return nullptr;
+	return d->get_descriptor_configuration_cb(index);
 }
 
 uint8_t const* tud_descriptor_device_qualifier_cb() {
-	return DriverManager::getInstance().getDriver()->get_descriptor_device_qualifier_cb();
+	GPDriver * d = DriverManager::getInstance().getDriver();
+	if (d == nullptr) return nullptr;
+	return d->get_descriptor_device_qualifier_cb();
 }
 
 #endif

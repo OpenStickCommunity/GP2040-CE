@@ -24,7 +24,7 @@ void KeyboardDriver::initialize() {
 	};
 
     // Handle Volume for Rotary Encoder
-    EventManager::getInstance().registerEventHandler(GP_EVENT_ENCODER_CHANGE, GPEVENT_CALLBACK(this->handleEncoder(event)));
+    EventManager::getInstance().registerEventHandler(GP_EVENT_ENCODER_CHANGE, GPEVENT_CALLBACK(this->handleEncoder(event)), this);
     volumeChange = 0; // no change
 }
 
@@ -156,11 +156,13 @@ void KeyboardDriver::releaseAllKeys(void) {
 // tud_hid_get_report_cb
 uint16_t KeyboardDriver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
 	if ( report_id == KEYBOARD_KEY_REPORT_ID ) {
-		memcpy(buffer, (void*) keyboardReport.keycode, sizeof(KeyboardReport::keycode));
-		return sizeof(KeyboardReport::keycode);
+		uint16_t copyLen = (reqlen < sizeof(KeyboardReport::keycode)) ? reqlen : sizeof(KeyboardReport::keycode);
+		memcpy(buffer, (void*) keyboardReport.keycode, copyLen);
+		return copyLen;
 	} else {
-		memcpy(buffer, (void*) &keyboardReport.multimedia, sizeof(KeyboardReport::multimedia));
-		return sizeof(KeyboardReport::multimedia);
+		uint16_t copyLen = (reqlen < sizeof(KeyboardReport::multimedia)) ? reqlen : sizeof(KeyboardReport::multimedia);
+		memcpy(buffer, (void*) &keyboardReport.multimedia, copyLen);
+		return copyLen;
 	}
 }
 
@@ -199,11 +201,15 @@ uint16_t KeyboardDriver::GetJoystickMidValue() {
 
 void KeyboardDriver::handleEncoder(GPEvent* e) {
     GPEncoderChangeEvent * encoderEvent = (GPEncoderChangeEvent*)e;
+    const int32_t mag = encoderEvent->magnitude > 0 ? (int32_t)encoderEvent->magnitude : 1;
+    // Saturate against a safe upper bound so a host that never drains the queue can't push
+    // volumeChange into signed-overflow UB. INT32_MAX/2 leaves headroom for the next add.
+    static constexpr int32_t VOLUME_CAP = 32767;
     if ( encoderEvent->direction == 1 ) {
-        // volume up
-        volumeChange++;
+        if (volumeChange > VOLUME_CAP - mag) volumeChange = VOLUME_CAP;
+        else volumeChange += mag;
     } else if ( encoderEvent->direction == -1 ) {
-        // volume down
-        volumeChange--;
+        if (volumeChange < -VOLUME_CAP + mag) volumeChange = -VOLUME_CAP;
+        else volumeChange -= mag;
     }
 }

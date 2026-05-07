@@ -21,12 +21,15 @@ void BuzzerSpeakerAddon::setup() {
 	buzzerPinChannel = pwm_gpio_to_channel (buzzerPin);
 
     // enable pin is optional so not required to toggle addon
-    if (isValidPin(options.pin)) {
+    if (isValidPin(options.enablePin)) {
         isSpeakerOn = true;
         buzzerEnablePin = options.enablePin;
         gpio_init(buzzerEnablePin);
         gpio_set_dir(buzzerEnablePin, GPIO_OUT);
         gpio_put(buzzerEnablePin, isSpeakerOn);
+    } else {
+        isSpeakerOn = true;
+        buzzerEnablePin = -1;
     }
 
 	buzzerVolume = options.volume;
@@ -61,15 +64,21 @@ void BuzzerSpeakerAddon::processBuzzer() {
 		return;
 	}
 
-	uint32_t currentTimeSong = getMillis() - startedSongMils;
-	uint32_t totalTimeSong = currentSong->song.size() * currentSong->toneDuration;
-	uint16_t currentTonePosition = floor((currentTimeSong * currentSong->song.size()) / totalTimeSong);
-	Tone currentTone = currentSong->song[currentTonePosition];
-
-	if (currentTonePosition >= currentSong->song.size()) {
+	// Reject empty songs / zero tone durations to avoid divide-by-zero in totalTimeSong.
+	const size_t songSize = currentSong->song.size();
+	if (songSize == 0 || currentSong->toneDuration == 0) {
 		stop();
 		return;
 	}
+
+	uint32_t currentTimeSong = getMillis() - startedSongMils;
+	uint32_t totalTimeSong = (uint32_t)songSize * currentSong->toneDuration;
+	uint16_t currentTonePosition = (uint16_t)floor(((uint64_t)currentTimeSong * songSize) / totalTimeSong);
+	if (currentTonePosition >= songSize) {
+		stop();
+		return;
+	}
+	Tone currentTone = currentSong->song[currentTonePosition];
 
 	if (currentTone == PAUSE) {
 		pwm_set_enabled (buzzerPinSlice, false);
@@ -91,6 +100,7 @@ void BuzzerSpeakerAddon::stop() {
 }
 
 uint32_t BuzzerSpeakerAddon::pwmSetFreqDuty(uint slice, uint channel, uint32_t frequency, float duty) {
+	if (frequency == 0) return 0; // PAUSE / silent tones must never reach divisor math
 	uint32_t clock = 125000000;
 	uint32_t divider16 = clock / frequency / 4096 +
 							(clock % (frequency * 4096) != 0);

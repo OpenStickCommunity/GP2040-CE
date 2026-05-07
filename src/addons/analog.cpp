@@ -182,7 +182,16 @@ float AnalogInput::magnitudeCalculation(int stick_num, adc_instance & adc_inst) 
 }
 
 void AnalogInput::radialDeadzone(int stick_num, adc_instance & adc_inst) {
-    float scaling_factor = (adc_inst.xy_magnitude - adc_pairs[stick_num].in_deadzone) / (adc_pairs[stick_num].out_deadzone - adc_pairs[stick_num].in_deadzone);
+    // Guard against divide-by-zero on misconfigured / equal in_deadzone == out_deadzone
+    // and on a perfectly-centered stick (xy_magnitude == 0). Either case produced NaN/inf
+    // before, leaving x_value/y_value undefined for downstream consumers.
+    const float band = adc_pairs[stick_num].out_deadzone - adc_pairs[stick_num].in_deadzone;
+    if (band == 0.0f || adc_inst.xy_magnitude == 0.0f) {
+        adc_inst.x_value = ANALOG_CENTER;
+        adc_inst.y_value = ANALOG_CENTER;
+        return;
+    }
+    float scaling_factor = (adc_inst.xy_magnitude - adc_pairs[stick_num].in_deadzone) / band;
     if (adc_pairs[stick_num].forced_circularity == true) {
         scaling_factor = std::fmin(scaling_factor, ANALOG_CENTER);
     }

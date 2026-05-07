@@ -30,6 +30,19 @@
 
 Full documentation can be found at [https://gp2040-ce.info](https://gp2040-ce.info)
 
+## Release notes
+
+### 0.8.x (DIY) — Rotary encoder fixes
+
+- **Behavior change — Analog stick modes:** one full revolution at multiplier 1 now sweeps the full joystick range (previously only swept half). If you were using an analog-stick rotary encoder, expect roughly 2x the existing sensitivity; halve your `Multiplier` to keep the old feel.
+- **Behavior change — Auto-Center After (formerly "Reset After"):** now only auto-centers analog stick modes. Trigger, DPAD, and volume modes keep their last value (previously all modes reset to zero on inactivity).
+- **Bug fix — DPAD modes now respect SOCD:** rotary-driven DPAD bits are now applied before SOCD cleaning, so simultaneous physical Left + rotary Right (or any opposing-cardinals combination) is resolved by your configured SOCD mode instead of leaking onto the wire.
+- Improved quadrature decoding: legitimate "double-edge" transitions (typical when a higher-priority interrupt briefly delays the encoder ISR) are now extrapolated in the most recent direction instead of being silently dropped, reducing under-counting on fast spinners.
+- Hardened `setup()` so re-running it (future "apply without reboot" path) no longer trips the Pico SDK's duplicate-handler `hard_assert`.
+- Volume-mode burst events are now collapsed into a single event with a `magnitude` field instead of allocating one event per step.
+- DPAD pulse timing is now safe across the 49.7-day `getMillis()` rollover.
+- Various validation / clamping tightened (encoder-disabled-but-half-configured no longer claims an addon slot, `countsPerDetent` strictly clamped to {1,2,4}, web-side enums locked).
+
 ## Features
 
 - Select from 14 input modes including X-Input, Nintendo Switch, Playstation 4/5, Xbox One, D-Input, and Keyboard

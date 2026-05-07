@@ -11,6 +11,11 @@ bool HETriggerAddon::available() {
 
 void HETriggerAddon::setup() {
     HETriggerOptions & options = Storage::getInstance().getAddonOptions().heTriggerOptions;
+    // Defend against a corrupt config saying muxChannels == 0; otherwise we divide by zero
+    // here and again later in the per-tick (he / muxChannels) and (he % muxChannels) loops.
+    if (options.muxChannels == 0) {
+        options.muxChannels = 1;
+    }
     this->muxTotal = 32 / options.muxChannels;
     if ( this->muxTotal > 4 )
         this->muxTotal = 4; // Direct = 4, 4-Channel = 4, 8-Channel = 3, 16-Channel = 2
@@ -96,6 +101,7 @@ uint16_t HETriggerAddon::emaSmoothing(uint16_t value, uint16_t previous) {
 void HETriggerAddon::preprocess() {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     HETriggerOptions & options = Storage::getInstance().getAddonOptions().heTriggerOptions;
+    if (options.muxChannels == 0) return; // belt-and-braces against runtime config corruption
     for (uint8_t he = 0; he < 32; he++) {
         // Ignore triggers with no actions
         if (options.triggers[he].action == -10 )

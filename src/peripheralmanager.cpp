@@ -33,9 +33,11 @@ PeripheralSPI* PeripheralManager::getSPI(uint8_t block) {
 }
 
 PeripheralUSB* PeripheralManager::getUSB(uint8_t block) {
-    if (block < NUM_USBS) {
-        return ((block == 0) ? &blockUSB0 : &blockUSB0);
-    }
+    // Currently NUM_USBS == 1 (only blockUSB0 is wired up). Returning blockUSB0 for
+    // both branches before silently masked any future second-USB callers - turn that
+    // into an explicit "no such block" so misconfigured callers don't accidentally
+    // operate on the wrong port if NUM_USBS grows.
+    if (block == 0) return &blockUSB0;
     return nullptr;
 }
 

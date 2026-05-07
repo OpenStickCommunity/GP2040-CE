@@ -10,6 +10,8 @@
 
 #include "enums.pb.h"
 
+#include "pico/rand.h"
+
 #include "mbedtls/error.h"
 #include "mbedtls/rsa.h"
 #include "mbedtls/sha256.h"
@@ -21,9 +23,33 @@
 
 #define DELETE_CONFIG_MPI(name) delete[] bytes ## name;
 
-static inline int rng(void*p_rng, unsigned char* p, size_t len) {
+// RSA-PSS requires a real per-call source of randomness for blinding/salt. The previous
+// implementation only filled p[0] with rand() and called srand(0) at init, which made the
+// signing salt fully deterministic and zero across the rest of the buffer. Use the RP2040
+// hardware-backed entropy via get_rand_32() to fill the entire requested length.
+static inline int rng(void* p_rng, unsigned char* p, size_t len) {
     (void) p_rng;
-    p[0] = rand();
+    // mbedtls treats a 0 return from f_rng as success; a null/zero output is a
+    // failure to fill randomness and must surface as a negative error code so
+    // the surrounding RSA-PSS sign call fails loudly instead of signing with an
+    // uninitialized salt buffer.
+    if (p == nullptr || len == 0) return MBEDTLS_ERR_RSA_RNG_FAILED;
+    size_t i = 0;
+    while (i + 4 <= len) {
+        uint32_t r = get_rand_32();
+        p[i + 0] = (uint8_t)(r >>  0);
+        p[i + 1] = (uint8_t)(r >>  8);
+        p[i + 2] = (uint8_t)(r >> 16);
+        p[i + 3] = (uint8_t)(r >> 24);
+        i += 4;
+    }
+    if (i < len) {
+        uint32_t r = get_rand_32();
+        while (i < len) {
+            p[i++] = (uint8_t)(r & 0xFF);
+            r >>= 8;
+        }
+    }
     return 0;
 }
 
@@ -88,9 +114,6 @@ void PS4Auth::keyModeInitialize() {
     DELETE_CONFIG_MPI(E)
     DELETE_CONFIG_MPI(P)
     DELETE_CONFIG_MPI(Q)
-
-    // Reset our random seed
-    srand(0);
 }
 
 // Process if we are using ps4 keys

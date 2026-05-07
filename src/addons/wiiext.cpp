@@ -48,12 +48,17 @@ void WiiExtensionInput::setup() {
 }
 
 void WiiExtensionInput::process() {
-    if (nextTimer < getMillis()) {
+    // Use the wrap-tolerant `(now - last) >= interval` idiom. The previous
+    // `nextTimer < now` form fails right after a uint32_t millisecond rollover
+    // (~49.7 days of uptime) because `now + interval` can land below the now
+    // value and the < comparison fires every tick.
+    const uint32_t now = getMillis();
+    if ((uint32_t)(now - nextTimer) >= uIntervalMS) {
         wii->poll();
 
         update();
-              
-        nextTimer = getMillis() + uIntervalMS;
+
+        nextTimer = now;
     }
 
     if (currentConfig != NULL) {
@@ -386,7 +391,10 @@ void WiiExtensionInput::setButtonState(bool buttonState, uint16_t buttonMask) {
 }
 
 void WiiExtensionInput::queueAnalogChange(uint16_t analogInput, uint16_t analogValue, uint16_t lastAnalogValue) {
-    if (analogInput != lastAnalogValue) analogChanges[currentConfig->analogMap[analogInput].axisType].push_back({analogInput, analogValue});
+    // Compare the two values being passed in (current vs. last) - the previous code
+    // compared analogInput (an enum index) with lastAnalogValue, which is non-sensical
+    // and caused changes to be queued/skipped on unrelated transitions.
+    if (analogValue != lastAnalogValue) analogChanges[currentConfig->analogMap[analogInput].axisType].push_back({analogInput, analogValue});
 }
 
 void WiiExtensionInput::updateAnalogState() {
@@ -608,21 +616,18 @@ uint16_t WiiExtensionInput::getAverage(std::vector<WiiAnalogChange> const& chang
 }
 
 uint16_t WiiExtensionInput::getDelta(std::vector<uint16_t> const& changes, uint16_t baseValue) {
-    uint16_t value = baseValue;
-
     if (changes.empty()) {
         return baseValue;
     }
 
+    // Sum signed deltas in a wider type, then saturate back to uint16_t. The previous
+    // implementation accumulated into a uint16_t, which could underflow to ~0xFFFF on
+    // any below-base sample and produce huge bogus stick/trigger values.
+    int32_t value = (int32_t)baseValue;
     for (auto currVal = changes.begin(); currVal != changes.end(); ++currVal) {
-        if (*currVal != baseValue) {
-            if (*currVal < baseValue) {
-                value -= (baseValue - *currVal);
-            } else if (*currVal > baseValue) {
-                value += (*currVal - baseValue);
-            }
-        }
+        value += (int32_t)*currVal - (int32_t)baseValue;
     }
-
-    return value;
+    if (value < 0) value = 0;
+    if (value > 0xFFFF) value = 0xFFFF;
+    return (uint16_t)value;
 }

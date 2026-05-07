@@ -78,6 +78,11 @@ RGB Animation::BlendColor(RGB start, RGB end, uint32_t timeRemainingInMs) {
     return end;
   }
 
+  // No cool-down configured -> snap directly to end without dividing by zero
+  if (coolDownTimeInMs == 0) {
+    return end;
+  }
+
   float progress = 1.0f - (static_cast<float>(timeRemainingInMs) / static_cast<float>(coolDownTimeInMs));
   if (progress < 0.0f) progress = 0.0f;
   if (progress > 1.0f) progress = 1.0f;

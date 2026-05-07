@@ -107,11 +107,22 @@ class RotaryEncoderInput : public GPAddon {
 public:
     virtual bool available();
     virtual void setup();       // Rotary Setup
-    virtual void preprocess() {}
+    // preprocess() runs BEFORE Gamepad::process() so DPAD bits we OR into
+    // gamepad->state.dpad participate in SOCD cleaning. It also performs the
+    // ISR snapshot and accumulator update so process() (which runs after SOCD)
+    // can read accumulatedSteps directly when emitting analog stick / trigger
+    // / volume output.
+    virtual void preprocess();
     virtual void process();     // Rotary process
     virtual void postprocess(bool sent) {}
-    virtual void reinit() {}
+    virtual void reinit();
     virtual std::string name() { return RotaryEncoderName; }
+
+    // Drain any GPIO-IRQ-collected counts without acting on them. Intended to be called
+    // from the gp2040.cpp web-config branch (which intentionally skips
+    // PreprocessAddons) so that, on exit from web-config, we don't get a single huge
+    // accumulated burst applied as one step / dpad pulse / volume event.
+    static void DrainPendingCounts();
 
     typedef struct {
         bool enabled = false;
@@ -130,7 +141,10 @@ public:
         uint8_t countsPerDetent = 4;
         // Hold time for DPAD pulses / minimum spacing for VOLUME events, in ms.
         uint32_t pulseHoldMs = 30;
-        // Pre-computed: number of logical steps that span the configured output range.
+        // Pre-computed: number of logical steps that span the full output range.
+        // For centered modes (analog stick), [-stepsPerFullScale/2, +stepsPerFullScale/2]
+        // covers [minRange, maxRange]. For trigger / wrap modes, [0, stepsPerFullScale]
+        // covers [minRange, maxRange].
         int32_t stepsPerFullScale = 0;
     } EncoderPinMap;
 
@@ -152,9 +166,17 @@ public:
         // DPAD mode pulse latching.
         int8_t pulseDir = 0;            // -1, 0, or +1
         uint32_t pulseUntil = 0;        // millis at which the current pulse expires
+
+        // Last valid quadrature delta (-1 or +1) seen by handleEdge(). Recorded
+        // for diagnostics / future direction-aware recovery; the previous use as
+        // a double-edge extrapolation source was removed because it could inject
+        // phantom rotation when the user reversed direction during a missed edge.
+        int8_t lastValidDelta = 0;
     } EncoderPinState;
 
-    // Quadrature transition table indexed by ((prevA<<3)|(prevB<<2)|(curA<<1)|curB).
+    // Quadrature transition table indexed by (prevState << 2) | curState, where
+    // each "state" is the 2-bit value (A << 1) | B. Equivalent bit layout
+    // [prevA prevB curA curB]. See definition in rotaryencoder.cpp for entries.
     // Values: +1 valid CW edge, -1 valid CCW edge, 0 = no change or invalid (glitch).
     // Defined out-of-line in rotaryencoder.cpp.
     static const int8_t QDEC_LUT[16];
@@ -186,6 +208,14 @@ private:
     // Cached gamepad pointer; the Storage-owned Gamepad* doesn't change after
     // boot, so we look it up once in setup() and avoid the per-tick indirection.
     Gamepad* gamepad = nullptr;
+
+    // Tracks which GPIOs have currently-bound raw IRQ handlers, so a re-entrant
+    // setup() (e.g. future "apply without reboot") can cleanly tear down the
+    // previous registration before re-adding. Required: the SDK's
+    // gpio_add_raw_irq_handler_with_order_priority_masked hard_asserts when a
+    // pin is registered twice.
+    bool irqsRegistered = false;
+    uint32_t registeredPinMask = 0;
 };
 
 #endif  // _ROTARYENCODER_H

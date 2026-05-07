@@ -128,7 +128,9 @@ uint32_t GPGFX_TinySSD1306::getPixel(uint8_t x, uint8_t y) {
 		row=((y/8)*MAX_SCREEN_WIDTH)+x;
 		bitIndex=y % 8;
 
-        result = (frameBuffer[row] >> bitIndex) && 0x01;
+        // Bitwise mask, not logical-and: the original `&& 0x01` returned 1 whenever the
+        // byte had *any* set bits at or above bitIndex, not just the requested bit.
+        result = (frameBuffer[row] >> bitIndex) & 0x01;
 	}
 
     return result;
@@ -345,6 +347,7 @@ void GPGFX_TinySSD1306::drawRectangle(uint16_t x, uint16_t y, uint16_t width, ui
 	if (filled) {
         // Calculate the number of lines needed for the filling
         uint16_t numLines = (uint16_t)round(sqrt(halfWidth * halfWidth + halfHeight * halfHeight) * 2);
+        if (numLines == 0) return; // zero-area rectangle: nothing to fill, avoid 0/0
 
         for (uint16_t i = 0; i <= numLines; i++) {
             double t = (double)i / numLines;
@@ -359,12 +362,20 @@ void GPGFX_TinySSD1306::drawRectangle(uint16_t x, uint16_t y, uint16_t width, ui
 }
 
 void GPGFX_TinySSD1306::drawPolygon(uint16_t x, uint16_t y, uint16_t radius, uint16_t sides, uint32_t color, uint8_t filled, double rotation) {
+    // Reject degenerate polygons before they can divide by zero (sides == 0) or on the
+    // pathological `yVertices[next] == yVertices[i]` interpolation below.
+    if (sides < 3) return;
+
+    // Cap sides to a fixed bound so we can avoid VLAs (non-portable / stack-exhaustion
+    // hazard on RP2040). 32 sides is plenty for the OLED resolution we target.
+    constexpr uint16_t kMaxPolygonSides = 32;
+    if (sides > kMaxPolygonSides) sides = kMaxPolygonSides;
+
     // Calculate the angle increment between each vertex
     double angleIncrement = 2 * M_PI / sides;
 
-    // Calculate vertices
-    uint16_t xVertices[sides];
-    uint16_t yVertices[sides];
+    uint16_t xVertices[kMaxPolygonSides];
+    uint16_t yVertices[kMaxPolygonSides];
     for (int i = 0; i < sides; i++) {
         double angle = i * angleIncrement + rotation;
         xVertices[i] = x + round(radius * cos(angle));
@@ -388,12 +399,18 @@ void GPGFX_TinySSD1306::drawPolygon(uint16_t x, uint16_t y, uint16_t radius, uin
         // Scan horizontally and draw lines between intersections
         for (int scanY = minY + 1; scanY < maxY; scanY++) {
             int intersections = 0;
-            double intersectPoints[sides];
+            double intersectPoints[kMaxPolygonSides];
 
             for (int i = 0; i < sides; i++) {
                 int next = (i + 1) % sides;
                 if ((yVertices[i] < scanY && yVertices[next] >= scanY) || (yVertices[next] < scanY && yVertices[i] >= scanY)) {
-                    intersectPoints[intersections++] = xVertices[i] + (scanY - yVertices[i]) * (xVertices[next] - xVertices[i]) / (yVertices[next] - yVertices[i]);
+                    // Skip horizontal edges to avoid divide-by-zero. The bracketing test
+                    // above already excludes most equal-y cases, but a safety check here
+                    // protects against floating-point edge conditions on the boundary.
+                    int32_t dy = (int32_t)yVertices[next] - (int32_t)yVertices[i];
+                    if (dy == 0) continue;
+                    intersectPoints[intersections++] = xVertices[i] + (double)(scanY - yVertices[i]) * ((int32_t)xVertices[next] - (int32_t)xVertices[i]) / dy;
+                    if (intersections >= (int)kMaxPolygonSides) break;
                 }
             }
 
@@ -409,7 +426,7 @@ void GPGFX_TinySSD1306::drawPolygon(uint16_t x, uint16_t y, uint16_t radius, uin
             }
 
             // Draw lines between pairs of intersection points
-            for (int i = 0; i < intersections; i += 2) {
+            for (int i = 0; i + 1 < intersections; i += 2) {
                 drawLine(intersectPoints[i], scanY, intersectPoints[i + 1], scanY, color, false);
             }
         }
@@ -523,28 +540,41 @@ void GPGFX_TinySSD1306::drawPill(uint16_t x, uint16_t y, uint16_t width, uint16_
 }
 
 void GPGFX_TinySSD1306::drawSprite(uint8_t* image, uint16_t width, uint16_t height, uint16_t pitch, uint16_t x, uint16_t y, uint8_t priority, double scale) {
+	if (image == nullptr || width == 0 || height == 0 || scale <= 0.0) return;
+
+	// Honor the caller-supplied pitch (bytes-per-row); fall back to packed (width+7)/8 when
+	// pitch is 0. The previous implementation hard-coded the packed stride, which silently
+	// read OOB / rendered misaligned for any padded bitmap.
+	const uint16_t effectivePitch = (pitch != 0) ? pitch : (uint16_t)((width + 7) / 8);
+
 	uint8_t spriteByte;
 	uint8_t spriteBit;
-	uint8_t spriteX, spriteY;
+	uint16_t spriteX, spriteY;
 	uint8_t color;
 
 	for (uint16_t scaledY = 0; scaledY < height * scale; ++scaledY) {
 		for (uint16_t scaledX = 0; scaledX < width * scale; ++scaledX) {
-			spriteX = scaledX / scale;
-			spriteY = scaledY / scale;
-			
+			spriteX = (uint16_t)(scaledX / scale);
+			spriteY = (uint16_t)(scaledY / scale);
+
+			if (spriteX >= width || spriteY >= height) continue;
+
 			spriteBit = spriteX % 8;
-			spriteByte = image[(spriteY * ((width + 7) / 8)) + (spriteX / 8)];
+			spriteByte = image[(spriteY * effectivePitch) + (spriteX / 8)];
 			color = ((spriteByte >> (7 - spriteBit)) & 0x01);
-			
+
 			drawPixel(x + scaledX, y + scaledY, color);
 		}
 	}
 }
 
 void GPGFX_TinySSD1306::drawBuffer(uint8_t* pBuffer) {
-	uint16_t bufferSize = MAX_SCREEN_SIZE;
-	uint8_t buffer[bufferSize+1] = {SET_START_LINE};
+	// Move the >1KB I2C scratch buffer off the call stack. Stack space on Core1 is tight
+	// (especially with TinyUSB host driver active), and a per-frame VLA-sized stack
+	// allocation here was a known stack-overflow risk on long animation chains.
+	constexpr uint16_t bufferSize = MAX_SCREEN_SIZE;
+	static uint8_t buffer[bufferSize + 1];
+	buffer[0] = SET_START_LINE;
 
 	if (this->screenType == ScreenAlternatives::SCREEN_132x64) {
         uint16_t x = 0;

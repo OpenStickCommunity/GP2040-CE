@@ -560,14 +560,15 @@ uint16_t PS3Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
     //printf("[PS3Driver::get_report] (%02x, %02x, %d)\n", report_id, report_type, reqlen);
 
     if ( report_type == HID_REPORT_TYPE_INPUT ) {
-        memcpy(buffer, &ps3Report, sizeof(PS3Report));
-        return sizeof(PS3Report);
+        uint16_t copyLen = (reqlen < sizeof(PS3Report)) ? reqlen : sizeof(PS3Report);
+        memcpy(buffer, &ps3Report, copyLen);
+        return copyLen;
     } else if ( report_type == HID_REPORT_TYPE_FEATURE ) {
         uint16_t responseLen = 0;
         uint8_t ctr = 0;
         switch(report_id) {
             case PS3ReportTypes::PS3_FEATURE_01:
-                responseLen = reqlen;
+                responseLen = (reqlen < sizeof(output_ps3_0x01)) ? reqlen : sizeof(output_ps3_0x01);
                 if (deviceType != InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GAMEPAD) {
                     memcpy(buffer, output_ps3_0x01, responseLen);
                 } else {
@@ -575,33 +576,33 @@ uint16_t PS3Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
                 }
                 return responseLen;
             case PS3ReportTypes::PS3_FEATURE_EF:
-                responseLen = reqlen;
+                responseLen = (reqlen < sizeof(output_ps3_0xef)) ? reqlen : sizeof(output_ps3_0xef);
                 memcpy(buffer, output_ps3_0xef, responseLen);
-                buffer[6] = efByte;
+                if (responseLen > 6) buffer[6] = efByte;
                 return responseLen;
             case PS3ReportTypes::PS3_GET_PAIRING_INFO:
-                responseLen = reqlen;
+                responseLen = (reqlen < sizeof(ps3BTInfo)) ? reqlen : sizeof(ps3BTInfo);
                 memcpy(buffer, &ps3BTInfo, responseLen);
                 return responseLen;
             case PS3ReportTypes::PS3_FEATURE_F5:
-                responseLen = reqlen;
+                responseLen = (reqlen < sizeof(output_ps3_0xf5)) ? reqlen : sizeof(output_ps3_0xf5);
                 memcpy(buffer, output_ps3_0xf5, responseLen);
-                for (ctr = 0; ctr < 6; ctr++) {
+                for (ctr = 0; ctr < 6 && (uint16_t)(1+ctr) < responseLen; ctr++) {
                     buffer[1+ctr] = ps3BTInfo.hostAddress[ctr];
                 }
                 return responseLen;
             case PS3ReportTypes::PS3_FEATURE_F7:
-                responseLen = reqlen;
+                responseLen = (reqlen < sizeof(output_ps3_0xf7)) ? reqlen : sizeof(output_ps3_0xf7);
                 memcpy(buffer, output_ps3_0xf7, responseLen);
                 return responseLen;
             case PS3ReportTypes::PS3_FEATURE_F8:
-                responseLen = reqlen;
+                responseLen = (reqlen < sizeof(output_ps3_0xf8)) ? reqlen : sizeof(output_ps3_0xf8);
                 memcpy(buffer, output_ps3_0xf8, responseLen);
-                buffer[6] = efByte;
+                if (responseLen > 6) buffer[6] = efByte;
                 return responseLen;
         }
     }
-    return -1;
+    return 0;
 }
 
 void PS3Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize) {

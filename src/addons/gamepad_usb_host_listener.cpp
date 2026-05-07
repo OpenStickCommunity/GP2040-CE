@@ -2,6 +2,7 @@
 #include "storagemanager.h"
 #include "class/hid/hid.h"
 #include "class/hid/hid_host.h"
+#include <cstddef>
 
 #include "drivers/ps3/PS3Descriptors.h"
 #include "drivers/ps4/PS4Descriptors.h"
@@ -32,9 +33,15 @@ void GamepadUSBHostListener::process() {
     gamepad->state.rt       = _controller_host_state.rt;
     gamepad->state.lt       = _controller_host_state.lt;
 
-    if (_controller_host_enabled && getMillis() > _next_update) {
-        update_ctrlr();
-        _next_update = getMillis() + GAMEPAD_HOST_POLL_INTERVAL_MS;
+    if (_controller_host_enabled) {
+        // Wrap-tolerant interval check; storing _next_update as the last-fire timestamp
+        // and comparing elapsed time keeps the poll cadence stable across uint32_t millis
+        // rollover (~49.7 days uptime).
+        const uint32_t now = getMillis();
+        if ((uint32_t)(now - _next_update) >= GAMEPAD_HOST_POLL_INTERVAL_MS) {
+            update_ctrlr();
+            _next_update = now;
+        }
     }
 }
 
@@ -319,14 +326,23 @@ bool GamepadUSBHostListener::diff_than_2(uint8_t x, uint8_t y) {
 
 // check if 2 reports are different enough
 bool GamepadUSBHostListener::diff_report(PS4Report const* rpt1, PS4Report const* rpt2) {
+    if (rpt1 == nullptr || rpt2 == nullptr) return true;
+
     bool result;
 
     // x, y, z, rz must different than 2 to be counted
     result = diff_than_2(rpt1->leftStickX, rpt2->leftStickX) || diff_than_2(rpt1->leftStickY, rpt2->leftStickY) ||
             diff_than_2(rpt1->rightStickX, rpt2->rightStickX) || diff_than_2(rpt1->rightStickY, rpt2->rightStickY);
 
-    // check the rest with mem compare
-    result |= memcmp(&rpt1->rightStickY + 1, &rpt2->rightStickY + 1, sizeof(PS4Report)-6);
+    // Compare everything past the four sticks using a clearly-bounded offset / length pair
+    // instead of pointer arithmetic on `&rightStickY + 1` with a hand-tuned `sizeof - 6`
+    // magic number - that idiom silently breaks if the report layout grows or shrinks.
+    constexpr size_t kPostSticksOffset = offsetof(PS4Report, rightStickY) + sizeof(rpt1->rightStickY);
+    static_assert(sizeof(PS4Report) >= kPostSticksOffset, "PS4Report layout shrunk unexpectedly");
+    constexpr size_t kPostSticksLen = sizeof(PS4Report) - kPostSticksOffset;
+    result |= (memcmp(reinterpret_cast<const uint8_t*>(rpt1) + kPostSticksOffset,
+                      reinterpret_cast<const uint8_t*>(rpt2) + kPostSticksOffset,
+                      kPostSticksLen) != 0);
 
     return result;
 }
@@ -412,102 +428,100 @@ void GamepadUSBHostListener::update_ds4() {
 }
 
 void GamepadUSBHostListener::process_ds4(uint8_t const* report, uint16_t len) {
-    PS4Report controller_report;
-
     // previous report used to compare for changes
     static PS4Report prev_report = { 0 };
 
+    if (report == nullptr || len < sizeof(PS4Report)) return;
     uint8_t const report_id = report[0];
+    if (report_id != 1) return;
 
-    if (report_id == 1) {
-        memcpy(&controller_report, report, sizeof(controller_report));
+    PS4Report controller_report;
+    memcpy(&controller_report, report, sizeof(controller_report));
 
-        if ( diff_report(&prev_report, &controller_report) ) {
-            _controller_host_state.lx = map(controller_report.leftStickX, 0,255,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
-            _controller_host_state.ly = map(controller_report.leftStickY, 0,255,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
-            _controller_host_state.rx = map(controller_report.rightStickX,0,255,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
-            _controller_host_state.ry = map(controller_report.rightStickY,0,255,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
-            _controller_host_state.lt = controller_report.leftTrigger;
-            _controller_host_state.rt = controller_report.rightTrigger;
-            _controller_host_analog = true;
+    if ( diff_report(&prev_report, &controller_report) ) {
+        _controller_host_state.lx = map(controller_report.leftStickX, 0,255,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+        _controller_host_state.ly = map(controller_report.leftStickY, 0,255,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+        _controller_host_state.rx = map(controller_report.rightStickX,0,255,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+        _controller_host_state.ry = map(controller_report.rightStickY,0,255,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+        _controller_host_state.lt = controller_report.leftTrigger;
+        _controller_host_state.rt = controller_report.rightTrigger;
+        _controller_host_analog = true;
 
-            _controller_host_state.buttons = 0;
-            if (controller_report.buttonTouchpad) _controller_host_state.buttons |= GAMEPAD_MASK_A2;
-            if (controller_report.buttonSelect) _controller_host_state.buttons |= GAMEPAD_MASK_S1;
-            if (controller_report.buttonR3) _controller_host_state.buttons |= GAMEPAD_MASK_R3;
-            if (controller_report.buttonL3) _controller_host_state.buttons |= GAMEPAD_MASK_L3;
-            if (controller_report.buttonHome) _controller_host_state.buttons |= GAMEPAD_MASK_A1;
-            if (controller_report.buttonStart) _controller_host_state.buttons |= GAMEPAD_MASK_S2;
-            if (controller_report.buttonR1) _controller_host_state.buttons |= GAMEPAD_MASK_R1;
-            if (controller_report.buttonL1) _controller_host_state.buttons |= GAMEPAD_MASK_L1;
-            if (controller_report.buttonNorth) _controller_host_state.buttons |= GAMEPAD_MASK_B4;
-            if (controller_report.buttonEast) _controller_host_state.buttons |= GAMEPAD_MASK_B2;
-            if (controller_report.buttonSouth) _controller_host_state.buttons |= GAMEPAD_MASK_B1;
-            if (controller_report.buttonWest) _controller_host_state.buttons |= GAMEPAD_MASK_B3;
-            if (controller_report.buttonR2) _controller_host_state.buttons |= GAMEPAD_MASK_R2;
-            if (controller_report.buttonL2) _controller_host_state.buttons |= GAMEPAD_MASK_L2;
+        _controller_host_state.buttons = 0;
+        if (controller_report.buttonTouchpad) _controller_host_state.buttons |= GAMEPAD_MASK_A2;
+        if (controller_report.buttonSelect) _controller_host_state.buttons |= GAMEPAD_MASK_S1;
+        if (controller_report.buttonR3) _controller_host_state.buttons |= GAMEPAD_MASK_R3;
+        if (controller_report.buttonL3) _controller_host_state.buttons |= GAMEPAD_MASK_L3;
+        if (controller_report.buttonHome) _controller_host_state.buttons |= GAMEPAD_MASK_A1;
+        if (controller_report.buttonStart) _controller_host_state.buttons |= GAMEPAD_MASK_S2;
+        if (controller_report.buttonR1) _controller_host_state.buttons |= GAMEPAD_MASK_R1;
+        if (controller_report.buttonL1) _controller_host_state.buttons |= GAMEPAD_MASK_L1;
+        if (controller_report.buttonNorth) _controller_host_state.buttons |= GAMEPAD_MASK_B4;
+        if (controller_report.buttonEast) _controller_host_state.buttons |= GAMEPAD_MASK_B2;
+        if (controller_report.buttonSouth) _controller_host_state.buttons |= GAMEPAD_MASK_B1;
+        if (controller_report.buttonWest) _controller_host_state.buttons |= GAMEPAD_MASK_B3;
+        if (controller_report.buttonR2) _controller_host_state.buttons |= GAMEPAD_MASK_R2;
+        if (controller_report.buttonL2) _controller_host_state.buttons |= GAMEPAD_MASK_L2;
 
-            _controller_host_state.dpad = 0;
-            if (controller_report.dpad == PS4_HAT_UP) _controller_host_state.dpad |= GAMEPAD_MASK_UP;
-            if (controller_report.dpad == PS4_HAT_UPRIGHT) _controller_host_state.dpad |= GAMEPAD_MASK_UP | GAMEPAD_MASK_RIGHT;
-            if (controller_report.dpad == PS4_HAT_RIGHT) _controller_host_state.dpad |= GAMEPAD_MASK_RIGHT;
-            if (controller_report.dpad == PS4_HAT_DOWNRIGHT) _controller_host_state.dpad |= GAMEPAD_MASK_RIGHT | GAMEPAD_MASK_DOWN;
-            if (controller_report.dpad == PS4_HAT_DOWN) _controller_host_state.dpad |= GAMEPAD_MASK_DOWN;
-            if (controller_report.dpad == PS4_HAT_DOWNLEFT) _controller_host_state.dpad |= GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT;
-            if (controller_report.dpad == PS4_HAT_LEFT) _controller_host_state.dpad |= GAMEPAD_MASK_LEFT;
-            if (controller_report.dpad == PS4_HAT_UPLEFT) _controller_host_state.dpad |= GAMEPAD_MASK_LEFT | GAMEPAD_MASK_UP;
-        }
+        _controller_host_state.dpad = 0;
+        if (controller_report.dpad == PS4_HAT_UP) _controller_host_state.dpad |= GAMEPAD_MASK_UP;
+        if (controller_report.dpad == PS4_HAT_UPRIGHT) _controller_host_state.dpad |= GAMEPAD_MASK_UP | GAMEPAD_MASK_RIGHT;
+        if (controller_report.dpad == PS4_HAT_RIGHT) _controller_host_state.dpad |= GAMEPAD_MASK_RIGHT;
+        if (controller_report.dpad == PS4_HAT_DOWNRIGHT) _controller_host_state.dpad |= GAMEPAD_MASK_RIGHT | GAMEPAD_MASK_DOWN;
+        if (controller_report.dpad == PS4_HAT_DOWN) _controller_host_state.dpad |= GAMEPAD_MASK_DOWN;
+        if (controller_report.dpad == PS4_HAT_DOWNLEFT) _controller_host_state.dpad |= GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT;
+        if (controller_report.dpad == PS4_HAT_LEFT) _controller_host_state.dpad |= GAMEPAD_MASK_LEFT;
+        if (controller_report.dpad == PS4_HAT_UPLEFT) _controller_host_state.dpad |= GAMEPAD_MASK_LEFT | GAMEPAD_MASK_UP;
     }
 
     prev_report = controller_report;
 }
 
 void GamepadUSBHostListener::process_ds(uint8_t const* report, uint16_t len) {
-    DSReport controller_report;
-
     // previous report used to compare for changes
     static DSReport prev_ds_report = { 0 };
 
+    if (report == nullptr || len < sizeof(DSReport)) return;
     uint8_t const report_id = report[0];
+    if (report_id != 1) return;
 
-    if (report_id == 1) {
-        memcpy(&controller_report, report, sizeof(controller_report));
+    DSReport controller_report;
+    memcpy(&controller_report, report, sizeof(controller_report));
 
-        if ( prev_ds_report.reportCounter != controller_report.reportCounter ) {
-            _controller_host_state.lx = map(controller_report.leftStickX, 0,255,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
-            _controller_host_state.ly = map(controller_report.leftStickY, 0,255,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
-            _controller_host_state.rx = map(controller_report.rightStickX,0,255,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
-            _controller_host_state.ry = map(controller_report.rightStickY,0,255,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
-            _controller_host_state.lt = controller_report.leftTrigger;
-            _controller_host_state.rt = controller_report.rightTrigger;
-            _controller_host_analog = true;
+    if ( prev_ds_report.reportCounter != controller_report.reportCounter ) {
+        _controller_host_state.lx = map(controller_report.leftStickX, 0,255,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+        _controller_host_state.ly = map(controller_report.leftStickY, 0,255,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+        _controller_host_state.rx = map(controller_report.rightStickX,0,255,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+        _controller_host_state.ry = map(controller_report.rightStickY,0,255,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+        _controller_host_state.lt = controller_report.leftTrigger;
+        _controller_host_state.rt = controller_report.rightTrigger;
+        _controller_host_analog = true;
 
-            _controller_host_state.buttons = 0;
-            if (controller_report.buttonTouchpad) _controller_host_state.buttons |= GAMEPAD_MASK_A2;
-            if (controller_report.buttonSelect) _controller_host_state.buttons |= GAMEPAD_MASK_S1;
-            if (controller_report.buttonR3) _controller_host_state.buttons |= GAMEPAD_MASK_R3;
-            if (controller_report.buttonL3) _controller_host_state.buttons |= GAMEPAD_MASK_L3;
-            if (controller_report.buttonHome) _controller_host_state.buttons |= GAMEPAD_MASK_A1;
-            if (controller_report.buttonStart) _controller_host_state.buttons |= GAMEPAD_MASK_S2;
-            if (controller_report.buttonR1) _controller_host_state.buttons |= GAMEPAD_MASK_R1;
-            if (controller_report.buttonL1) _controller_host_state.buttons |= GAMEPAD_MASK_L1;
-            if (controller_report.buttonNorth) _controller_host_state.buttons |= GAMEPAD_MASK_B4;
-            if (controller_report.buttonEast) _controller_host_state.buttons |= GAMEPAD_MASK_B2;
-            if (controller_report.buttonSouth) _controller_host_state.buttons |= GAMEPAD_MASK_B1;
-            if (controller_report.buttonWest) _controller_host_state.buttons |= GAMEPAD_MASK_B3;
-            if (controller_report.buttonR2) _controller_host_state.buttons |= GAMEPAD_MASK_R2;
-            if (controller_report.buttonL2) _controller_host_state.buttons |= GAMEPAD_MASK_L2;
+        _controller_host_state.buttons = 0;
+        if (controller_report.buttonTouchpad) _controller_host_state.buttons |= GAMEPAD_MASK_A2;
+        if (controller_report.buttonSelect) _controller_host_state.buttons |= GAMEPAD_MASK_S1;
+        if (controller_report.buttonR3) _controller_host_state.buttons |= GAMEPAD_MASK_R3;
+        if (controller_report.buttonL3) _controller_host_state.buttons |= GAMEPAD_MASK_L3;
+        if (controller_report.buttonHome) _controller_host_state.buttons |= GAMEPAD_MASK_A1;
+        if (controller_report.buttonStart) _controller_host_state.buttons |= GAMEPAD_MASK_S2;
+        if (controller_report.buttonR1) _controller_host_state.buttons |= GAMEPAD_MASK_R1;
+        if (controller_report.buttonL1) _controller_host_state.buttons |= GAMEPAD_MASK_L1;
+        if (controller_report.buttonNorth) _controller_host_state.buttons |= GAMEPAD_MASK_B4;
+        if (controller_report.buttonEast) _controller_host_state.buttons |= GAMEPAD_MASK_B2;
+        if (controller_report.buttonSouth) _controller_host_state.buttons |= GAMEPAD_MASK_B1;
+        if (controller_report.buttonWest) _controller_host_state.buttons |= GAMEPAD_MASK_B3;
+        if (controller_report.buttonR2) _controller_host_state.buttons |= GAMEPAD_MASK_R2;
+        if (controller_report.buttonL2) _controller_host_state.buttons |= GAMEPAD_MASK_L2;
 
-            _controller_host_state.dpad = 0;
-            if (controller_report.dpad == PS4_HAT_UP) _controller_host_state.dpad |= GAMEPAD_MASK_UP;
-            if (controller_report.dpad == PS4_HAT_UPRIGHT) _controller_host_state.dpad |= GAMEPAD_MASK_UP | GAMEPAD_MASK_RIGHT;
-            if (controller_report.dpad == PS4_HAT_RIGHT) _controller_host_state.dpad |= GAMEPAD_MASK_RIGHT;
-            if (controller_report.dpad == PS4_HAT_DOWNRIGHT) _controller_host_state.dpad |= GAMEPAD_MASK_RIGHT | GAMEPAD_MASK_DOWN;
-            if (controller_report.dpad == PS4_HAT_DOWN) _controller_host_state.dpad |= GAMEPAD_MASK_DOWN;
-            if (controller_report.dpad == PS4_HAT_DOWNLEFT) _controller_host_state.dpad |= GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT;
-            if (controller_report.dpad == PS4_HAT_LEFT) _controller_host_state.dpad |= GAMEPAD_MASK_LEFT;
-            if (controller_report.dpad == PS4_HAT_UPLEFT) _controller_host_state.dpad |= GAMEPAD_MASK_LEFT | GAMEPAD_MASK_UP;
-        }
+        _controller_host_state.dpad = 0;
+        if (controller_report.dpad == PS4_HAT_UP) _controller_host_state.dpad |= GAMEPAD_MASK_UP;
+        if (controller_report.dpad == PS4_HAT_UPRIGHT) _controller_host_state.dpad |= GAMEPAD_MASK_UP | GAMEPAD_MASK_RIGHT;
+        if (controller_report.dpad == PS4_HAT_RIGHT) _controller_host_state.dpad |= GAMEPAD_MASK_RIGHT;
+        if (controller_report.dpad == PS4_HAT_DOWNRIGHT) _controller_host_state.dpad |= GAMEPAD_MASK_RIGHT | GAMEPAD_MASK_DOWN;
+        if (controller_report.dpad == PS4_HAT_DOWN) _controller_host_state.dpad |= GAMEPAD_MASK_DOWN;
+        if (controller_report.dpad == PS4_HAT_DOWNLEFT) _controller_host_state.dpad |= GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT;
+        if (controller_report.dpad == PS4_HAT_LEFT) _controller_host_state.dpad |= GAMEPAD_MASK_LEFT;
+        if (controller_report.dpad == PS4_HAT_UPLEFT) _controller_host_state.dpad |= GAMEPAD_MASK_LEFT | GAMEPAD_MASK_UP;
     }
 
     prev_ds_report = controller_report;
@@ -606,7 +620,7 @@ void GamepadUSBHostListener::update_switch_pro()
         out_report.rumble_l[3] = 0x61;
     }
     if (gamepad->auxState.haptics.rightActuator.active
-        && gamepad->auxState.haptics.leftActuator.intensity > 0) {
+        && gamepad->auxState.haptics.rightActuator.intensity > 0) {
         uint8_t amplitude_r = static_cast<uint8_t>(((gamepad->auxState.haptics.rightActuator.intensity / 255.0f) * 0.8f + 0.5f) * (0xC0 - 0x40) + 0x40);
 #ifdef GAMEPAD_HOST_DEBUG
         printf("Switch Pro Right Rumble Intensity: %d -> %d\n", gamepad->auxState.haptics.rightActuator.intensity, amplitude_r);
@@ -620,10 +634,13 @@ void GamepadUSBHostListener::update_switch_pro()
     // Player light indicator
     if (gamepad->auxState.playerID.active) {
         Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
-        uint8_t shifted = (1u << (gamepad->auxState.playerID.value+1u)) - 1u;
-        if (gamepad->auxState.playerID.value < 1 && gamepad->auxState.playerID.value > 4) {
-            shifted = 1;
+        // Clamp first; (value < 1 && value > 4) is never true and the previous code could
+        // shift by an unbounded amount when value was out of range.
+        uint8_t playerVal = gamepad->auxState.playerID.value;
+        if (playerVal < 1 || playerVal > 4) {
+            playerVal = 1;
         }
+        uint8_t shifted = (uint8_t)((1u << (playerVal + 1u)) - 1u);
         if (shifted != lastSwitchLed) {
             SwitchProHostReport led_out_report{
                 .command = SwitchOutputSubtypes::IDENTIFY,
@@ -726,6 +743,9 @@ void GamepadUSBHostListener::process_stadia(uint8_t const *report, uint16_t len)
 {
     google_stadia_report_t controller_report;
 
+    if (report == nullptr || len < sizeof(controller_report)) {
+        return;
+    }
     memcpy(&controller_report, report, sizeof(controller_report));
 
     _controller_host_state.lx = map(controller_report.GD_GamePadPointerX ,1,255,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
@@ -735,6 +755,11 @@ void GamepadUSBHostListener::process_stadia(uint8_t const *report, uint16_t len)
     _controller_host_state.lt = controller_report.SIM_GamePadBrake;
     _controller_host_state.rt = controller_report.SIM_GamePadAccelerator;
     _controller_host_analog = true;
+
+    // Clear button/dpad bits before |='ing them so a button held in the previous report
+    // but released in this one actually clears, instead of staying latched until disconnect.
+    _controller_host_state.buttons = 0;
+    _controller_host_state.dpad = 0;
 
     if (controller_report.BTN_GamePadButton18 == 1) _controller_host_state.buttons |= GAMEPAD_MASK_A2;
     if (controller_report.BTN_GamePadButton17 == 1) _controller_host_state.buttons |= GAMEPAD_MASK_A3;
@@ -774,7 +799,11 @@ void GamepadUSBHostListener::setup_df_wheel() {
 
 void GamepadUSBHostListener::process_dfgt(uint8_t const* report, uint16_t len) {
     PS3ReportAlt ps3Report;
-    memcpy(&ps3Report, report, len);
+    if (report == nullptr || len == 0) return;
+    // Cap to the smaller of the two so a hostile/buggy host that reports a huge len can't
+    // memcpy past the local PS3ReportAlt struct (stack overflow).
+    uint16_t copyLen = (len < sizeof(ps3Report)) ? len : (uint16_t)sizeof(ps3Report);
+    memcpy(&ps3Report, report, copyLen);
 #if GAMEPAD_HOST_DEBUG
     //printf("\033[2;0H");
     //for (uint8_t i = 0; i < len; i++) {
@@ -794,11 +823,17 @@ void GamepadUSBHostListener::process_ultrastik360(uint8_t const* report, uint16_
 
     ultrastik360_t controller_report;
 
+    if (report == nullptr || len < sizeof(controller_report)) {
+        return;
+    }
     memcpy(&controller_report, report, sizeof(controller_report));
 
     _controller_host_state.lx = map(controller_report.GD_GamePadPointerX, 0, 255, GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
     _controller_host_state.ly = map(controller_report.GD_GamePadPointerY, 0, 255, GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
     _controller_host_analog = true;
+
+    // Clear before |= so released buttons actually release.
+    _controller_host_state.buttons = 0;
 
     if (controller_report.BTN_GamePadButton1 == 1) _controller_host_state.buttons |= GAMEPAD_MASK_B1;
     if (controller_report.BTN_GamePadButton2 == 1) _controller_host_state.buttons |= GAMEPAD_MASK_B2;

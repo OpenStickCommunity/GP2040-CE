@@ -41,7 +41,15 @@ uint32_t System::getPhysicalFlash() {
     uint8_t rxbuf[FLASH_STORAGE_TOTAL_BYTES] = {0};
     txbuf[0] = FLASH_STORAGE_CMD;
     flash_do_cmd(txbuf, rxbuf, FLASH_STORAGE_TOTAL_BYTES);
-    return 1 << rxbuf[3];
+    // rxbuf[3] is the JEDEC capacity byte (log2 of bytes). Real values are typically 0x14..0x19
+    // (1 MB..32 MB). A 1<<31 shift is the largest sensible value before UB; 1<<32 is undefined.
+    // Clamp to a safe range so a bad/unresponsive flash doesn't trigger UB or wildly wrong sizing.
+    uint8_t shift = rxbuf[3];
+    if (shift > 31) {
+        // Default to 2MB on garbage response; matches the build-time fallback in getTotalFlash().
+        return 2u * 1024u * 1024u;
+    }
+    return 1u << shift;
 }
 
 uint32_t System::getStaticAllocs() {

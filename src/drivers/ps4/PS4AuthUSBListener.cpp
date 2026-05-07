@@ -161,8 +161,12 @@ void PS4AuthUSBListener::get_report_complete(uint8_t dev_addr, uint8_t instance,
                 dongle_state = PS4State::sending_nonce;
             break;
         case PS4AuthReport::PS4_GET_SIGNATURE_NONCE:
-            // probably should mutex lock
-            memcpy(&ps4AuthData->ps4_auth_buffer[(nonce_chunk-1)*56], &report_buffer[4], 56);
+            // probably should mutex lock.
+            // ps4_auth_buffer is 1064 bytes (19 * 56). Valid (nonce_chunk-1) is in [0,18].
+            // Reject nonce_chunk == 0 to avoid (uint8_t-1)->int = -1 producing a -56 byte index.
+            if (nonce_chunk >= 1 && nonce_chunk <= 19) {
+                memcpy(&ps4AuthData->ps4_auth_buffer[(nonce_chunk-1)*56], &report_buffer[4], 56);
+            }
             if (nonce_chunk == 19) {
                 nonce_chunk = 0;
                 dongle_state = PS4State::no_nonce; // something we don't support

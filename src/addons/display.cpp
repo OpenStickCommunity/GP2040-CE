@@ -70,6 +70,10 @@ void DisplayAddon::setup() {
     turnOffWhenSuspended = options.turnOffWhenSuspended;
     displaySaverMode = options.displaySaverMode;
 
+    // Initialize prevMillis here; isDisplayPowerOff()'s diffTime computation reads
+    // (now - prevMillis) on first call and would otherwise see uninitialized garbage.
+    prevMillis = getMillis();
+
     prevValues = Storage::getInstance().GetGamepad()->debouncedGpio;
 
     // set current display mode
@@ -86,10 +90,10 @@ void DisplayAddon::setup() {
     updateDisplayScreen();
     setMenuMappings();
 
-    EventManager::getInstance().registerEventHandler(GP_EVENT_PROFILE_CHANGE, GPEVENT_CALLBACK(this->handleProfileChange(event)));
-    EventManager::getInstance().registerEventHandler(GP_EVENT_RESTART, GPEVENT_CALLBACK(this->handleSystemRestart(event)));
-    EventManager::getInstance().registerEventHandler(GP_EVENT_MENU_NAVIGATE, GPEVENT_CALLBACK(this->handleMenuNavigation(event)));
-    EventManager::getInstance().registerEventHandler(GP_EVENT_SYSTEM_ERROR, GPEVENT_CALLBACK(this->handleSystemError(event)));
+    EventManager::getInstance().registerEventHandler(GP_EVENT_PROFILE_CHANGE, GPEVENT_CALLBACK(this->handleProfileChange(event)), this);
+    EventManager::getInstance().registerEventHandler(GP_EVENT_RESTART, GPEVENT_CALLBACK(this->handleSystemRestart(event)), this);
+    EventManager::getInstance().registerEventHandler(GP_EVENT_MENU_NAVIGATE, GPEVENT_CALLBACK(this->handleMenuNavigation(event)), this);
+    EventManager::getInstance().registerEventHandler(GP_EVENT_SYSTEM_ERROR, GPEVENT_CALLBACK(this->handleSystemError(event)), this);
 }
 
 bool DisplayAddon::updateDisplayScreen() {
@@ -268,6 +272,11 @@ void DisplayAddon::handleMenuNavigation(GPEvent* e) {
 }
 
 void DisplayAddon::handleSystemError(GPEvent* e) {
+    // Set BOTH currDisplayMode and nextDisplayMode. The reconciler in process()
+    // copies nextDisplayMode -> currDisplayMode whenever they differ; without setting
+    // nextDisplayMode here, the next process() iteration would overwrite SYSTEM_ERROR
+    // with the previous (stale) mode and the error screen would never appear.
     currDisplayMode = SYSTEM_ERROR;
+    nextDisplayMode = SYSTEM_ERROR;
     errorMessage = ((GPSystemErrorEvent*) e)->errorMessage;
 }

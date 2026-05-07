@@ -277,6 +277,7 @@ void SwitchProDriver::handleConfigReport(uint8_t switchReportID, uint8_t switchR
 }
 
 void SwitchProDriver::handleFeatureReport(uint8_t switchReportID, uint8_t switchReportSubID, const uint8_t *reportData, uint16_t reportLength) {
+    if (reportData == nullptr || reportLength < 16) return;
     uint8_t commandID = reportData[10];
     uint32_t spiReadAddress = 0;
     uint8_t spiReadSize = 0;
@@ -287,6 +288,7 @@ void SwitchProDriver::handleFeatureReport(uint8_t switchReportID, uint8_t switch
 
     report[0] = SwitchReportID::REPORT_OUTPUT_21;
     report[1] = last_report_counter;
+    static_assert(2 + sizeof(SwitchInputReport) <= sizeof(report), "SwitchInputReport overflows report buffer");
     memcpy(report+2,&switchReport.inputs,sizeof(SwitchInputReport));
 
     switch (commandID) {
@@ -372,6 +374,11 @@ void SwitchProDriver::handleFeatureReport(uint8_t switchReportID, uint8_t switch
             //printf("SwitchProDriver::set_report: Rpt 0x01 SPI_READ\n");
             spiReadAddress = (reportData[14] << 24) | (reportData[13] << 16) | (reportData[12] << 8) | (reportData[11]);
             spiReadSize = reportData[15];
+            // report buffer is SWITCH_PRO_ENDPOINT_SIZE (64) bytes; readSPIFlash writes into &report[20],
+            // so cap to the bytes available there (44) to avoid stack/buffer corruption from a hostile host.
+            if (spiReadSize > (sizeof(report) - 20)) {
+                spiReadSize = sizeof(report) - 20;
+            }
             //printf("Read From: 0x%08x Size %d\n", spiReadAddress, spiReadSize);
             report[13] = 0x90;
             report[14] = reportData[10];
@@ -379,6 +386,9 @@ void SwitchProDriver::handleFeatureReport(uint8_t switchReportID, uint8_t switch
             report[16] = reportData[12];
             report[17] = reportData[13];
             report[18] = reportData[14];
+            // Echo the originally requested length back to the host. Hosts compare
+            // requested vs echoed size to validate the response; reporting the
+            // clamped value would look like a protocol mismatch on legal small reads.
             report[19] = reportData[15];
             readSPIFlash(&report[20], spiReadAddress, spiReadSize);
             canSend = true;
@@ -489,8 +499,10 @@ void SwitchProDriver::handleFeatureReport(uint8_t switchReportID, uint8_t switch
 
 void SwitchProDriver::set_report(uint8_t report_id, hid_report_type_t report_type, const uint8_t *buffer, uint16_t bufsize) {
     if (report_type != HID_REPORT_TYPE_OUTPUT) return;
+    if (buffer == nullptr || bufsize < 2) return;
 
-    memset(report, 0x00, bufsize);
+    uint16_t clearLen = (bufsize < sizeof(report)) ? bufsize : sizeof(report);
+    memset(report, 0x00, clearLen);
 
     uint8_t switchReportID = buffer[0];
     uint8_t switchReportSubID = buffer[1];

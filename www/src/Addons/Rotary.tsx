@@ -4,7 +4,7 @@ import * as yup from 'yup';
 import Section from '../Components/Section';
 import FormSelect from '../Components/FormSelect';
 import FormControl from '../Components/FormControl';
-import { FormCheck, Row } from 'react-bootstrap';
+import { Form, FormCheck, Row } from 'react-bootstrap';
 import { AddonPropTypes } from '../Pages/AddonsConfigPage';
 
 const ENCODER_MODES = [
@@ -40,10 +40,13 @@ const ENCODER_MAX_MULTIPLE = 200;
 const ENCODER_MIN_PULSE_HOLD = 0;
 const ENCODER_MAX_PULSE_HOLD = 500;
 
-// Validators that only fire when the rotary addon is enabled. This prevents
-// spurious "required" / "min" failures from blocking unrelated saves when the
-// addon itself is disabled.
-const numberWhenEnabled = (label: string) =>
+// Validators only fire when (1) the rotary addon itself is enabled AND (2) the
+// specific sub-encoder is enabled. Gating per-encoder fields (pin, mode, PPR,
+// etc.) on the per-encoder flag matches the firmware's protobuf semantics in
+// src/webconfig.cpp, which reads encoderOne.enabled / encoderTwo.enabled
+// independently. Gating only on the addon flag would force the user to fill in
+// pins for the unused encoder before they could save.
+const numberWhenAddonEnabled = (label: string) =>
 	yup
 		.number()
 		.label(label)
@@ -53,12 +56,22 @@ const numberWhenEnabled = (label: string) =>
 			otherwise: (s) => s.notRequired(),
 		});
 
-const pinWhenEnabled = (label: string) =>
+const numberWhenSubEncoderEnabled = (label: string, subFlag: string) =>
 	yup
 		.number()
 		.label(label)
-		.when('RotaryAddonEnabled', {
-			is: 1,
+		.when(['RotaryAddonEnabled', subFlag], {
+			is: (addon: number, sub: number) => addon === 1 && sub === 1,
+			then: (s) => s.required(),
+			otherwise: (s) => s.notRequired(),
+		});
+
+const pinWhenSubEncoderEnabled = (label: string, subFlag: string) =>
+	yup
+		.number()
+		.label(label)
+		.when(['RotaryAddonEnabled', subFlag], {
+			is: (addon: number, sub: number) => addon === 1 && sub === 1,
 			then: (s) => s.required().validatePinWhenValue('RotaryAddonEnabled'),
 			otherwise: (s) => s.notRequired(),
 		});
@@ -68,38 +81,38 @@ export const rotaryScheme = {
 		.number()
 		.required()
 		.label('Rotary Encoder Add-On Enabled'),
-	encoderOneEnabled: numberWhenEnabled('Encoder One Enabled'),
-	encoderOnePinA: pinWhenEnabled('Encoder One Pin A'),
-	encoderOnePinB: pinWhenEnabled('Encoder One Pin B'),
-	encoderOneMode: numberWhenEnabled('Encoder One Mode'),
-	encoderOnePPR: numberWhenEnabled('Encoder One PPR')
+	encoderOneEnabled: numberWhenAddonEnabled('Encoder One Enabled'),
+	encoderOnePinA: pinWhenSubEncoderEnabled('Encoder One Pin A', 'encoderOneEnabled'),
+	encoderOnePinB: pinWhenSubEncoderEnabled('Encoder One Pin B', 'encoderOneEnabled'),
+	encoderOneMode: numberWhenSubEncoderEnabled('Encoder One Mode', 'encoderOneEnabled'),
+	encoderOnePPR: numberWhenSubEncoderEnabled('Encoder One PPR', 'encoderOneEnabled')
 		.min(ENCODER_MIN_PPR)
 		.max(ENCODER_MAX_PPR),
-	encoderOneResetAfter: numberWhenEnabled('Encoder One Reset After').min(0),
-	encoderOneAllowWrapAround: numberWhenEnabled('Encoder One Allow Wrap Around'),
-	encoderOneMultiplier: numberWhenEnabled('Encoder One Multiplier')
+	encoderOneResetAfter: numberWhenSubEncoderEnabled('Encoder One Reset After', 'encoderOneEnabled').min(0),
+	encoderOneAllowWrapAround: numberWhenSubEncoderEnabled('Encoder One Allow Wrap Around', 'encoderOneEnabled'),
+	encoderOneMultiplier: numberWhenSubEncoderEnabled('Encoder One Multiplier', 'encoderOneEnabled')
 		.min(ENCODER_MIN_MULTIPLE)
 		.max(ENCODER_MAX_MULTIPLE),
-	encoderOneCountsPerDetent: numberWhenEnabled('Encoder One Counts Per Detent'),
-	encoderOneType: numberWhenEnabled('Encoder One Type'),
-	encoderOnePulseHoldMs: numberWhenEnabled('Encoder One Pulse Hold (ms)')
+	encoderOneCountsPerDetent: numberWhenSubEncoderEnabled('Encoder One Counts Per Detent', 'encoderOneEnabled').oneOf([1, 2, 4]),
+	encoderOneType: numberWhenSubEncoderEnabled('Encoder One Type', 'encoderOneEnabled').oneOf([0, 1]),
+	encoderOnePulseHoldMs: numberWhenSubEncoderEnabled('Encoder One Pulse Hold (ms)', 'encoderOneEnabled')
 		.min(ENCODER_MIN_PULSE_HOLD)
 		.max(ENCODER_MAX_PULSE_HOLD),
-	encoderTwoEnabled: numberWhenEnabled('Encoder Two Enabled'),
-	encoderTwoPinA: pinWhenEnabled('Encoder Two Pin A'),
-	encoderTwoPinB: pinWhenEnabled('Encoder Two Pin B'),
-	encoderTwoMode: numberWhenEnabled('Encoder Two Mode'),
-	encoderTwoPPR: numberWhenEnabled('Encoder Two PPR')
+	encoderTwoEnabled: numberWhenAddonEnabled('Encoder Two Enabled'),
+	encoderTwoPinA: pinWhenSubEncoderEnabled('Encoder Two Pin A', 'encoderTwoEnabled'),
+	encoderTwoPinB: pinWhenSubEncoderEnabled('Encoder Two Pin B', 'encoderTwoEnabled'),
+	encoderTwoMode: numberWhenSubEncoderEnabled('Encoder Two Mode', 'encoderTwoEnabled'),
+	encoderTwoPPR: numberWhenSubEncoderEnabled('Encoder Two PPR', 'encoderTwoEnabled')
 		.min(ENCODER_MIN_PPR)
 		.max(ENCODER_MAX_PPR),
-	encoderTwoResetAfter: numberWhenEnabled('Encoder Two Reset After').min(0),
-	encoderTwoAllowWrapAround: numberWhenEnabled('Encoder Two Allow Wrap Around'),
-	encoderTwoMultiplier: numberWhenEnabled('Encoder Two Multiplier')
+	encoderTwoResetAfter: numberWhenSubEncoderEnabled('Encoder Two Reset After', 'encoderTwoEnabled').min(0),
+	encoderTwoAllowWrapAround: numberWhenSubEncoderEnabled('Encoder Two Allow Wrap Around', 'encoderTwoEnabled'),
+	encoderTwoMultiplier: numberWhenSubEncoderEnabled('Encoder Two Multiplier', 'encoderTwoEnabled')
 		.min(ENCODER_MIN_MULTIPLE)
 		.max(ENCODER_MAX_MULTIPLE),
-	encoderTwoCountsPerDetent: numberWhenEnabled('Encoder Two Counts Per Detent'),
-	encoderTwoType: numberWhenEnabled('Encoder Two Type'),
-	encoderTwoPulseHoldMs: numberWhenEnabled('Encoder Two Pulse Hold (ms)')
+	encoderTwoCountsPerDetent: numberWhenSubEncoderEnabled('Encoder Two Counts Per Detent', 'encoderTwoEnabled').oneOf([1, 2, 4]),
+	encoderTwoType: numberWhenSubEncoderEnabled('Encoder Two Type', 'encoderTwoEnabled').oneOf([0, 1]),
+	encoderTwoPulseHoldMs: numberWhenSubEncoderEnabled('Encoder Two Pulse Hold (ms)', 'encoderTwoEnabled')
 		.min(ENCODER_MIN_PULSE_HOLD)
 		.max(ENCODER_MAX_PULSE_HOLD),
 };
@@ -245,7 +258,7 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes
 								label={t('Rotary:encoder-reset-after-label')}
 								name="encoderOneResetAfter"
 								className="form-control-sm"
-								groupClassName="mb-3"
+								groupClassName="mb-1"
 								value={values.encoderOneResetAfter}
 								error={errors.encoderOneResetAfter}
 								isInvalid={Boolean(errors.encoderOneResetAfter)}
@@ -253,6 +266,9 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes
 								min={0}
 								max={500}
 							/>
+							<Form.Text className="text-muted d-block mb-3">
+								{t('Rotary:encoder-reset-after-help')}
+							</Form.Text>
 							<FormControl
 								type="number"
 								label={t('Rotary:encoder-pulse-hold-ms-label')}
@@ -392,7 +408,7 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes
 								label={t('Rotary:encoder-reset-after-label')}
 								name="encoderTwoResetAfter"
 								className="form-control-sm"
-								groupClassName="mb-3"
+								groupClassName="mb-1"
 								value={values.encoderTwoResetAfter}
 								error={errors.encoderTwoResetAfter}
 								isInvalid={Boolean(errors.encoderTwoResetAfter)}
@@ -400,6 +416,9 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes
 								min={0}
 								max={500}
 							/>
+							<Form.Text className="text-muted d-block mb-3">
+								{t('Rotary:encoder-reset-after-help')}
+							</Form.Text>
 							<FormControl
 								type="number"
 								label={t('Rotary:encoder-pulse-hold-ms-label')}

@@ -113,8 +113,14 @@ void P5GeneralAuthUSBListener::unmount(uint8_t dev_addr) {
 }
 
 void P5GeneralAuthUSBListener::report_received(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len) {
+    if (p5GeneralAuthData == nullptr || report == nullptr) return;
     if (!p5GeneralAuthData->hash_ready) {
-        memcpy(p5GeneralAuthData->hash_finish_buffer, report, sizeof(p5GeneralAuthData->hash_finish_buffer));
+        const size_t cap = sizeof(p5GeneralAuthData->hash_finish_buffer);
+        size_t copyLen = (len < cap) ? len : cap;
+        // Zero the destination first so any short report leaves the trailing bytes well-defined
+        // rather than carrying stale data (or worse, partial overlapping HID report content).
+        memset(p5GeneralAuthData->hash_finish_buffer, 0, cap);
+        memcpy(p5GeneralAuthData->hash_finish_buffer, report, copyLen);
         p5GeneralAuthData->hash_ready = true;
     }
 }
@@ -167,10 +173,15 @@ void P5GeneralAuthUSBListener::get_report_complete(uint8_t dev_addr, uint8_t ins
         return;
     }
     
+    const size_t cap = sizeof(p5GeneralAuthData->auth_buffer);
+    const size_t copyLen = (len < cap) ? len : cap;
     switch(report_id) {
         case P5GeneralAuthReport::P5GENERAL_GET_SIGNATURE_NONCE:
             if (p5GeneralAuthData->passthrough_state == P5GeneralGPAuthState::p5g_auth_recv_f1_wait) {
-                memcpy(p5GeneralAuthData->auth_buffer, report_buffer, len);
+                // Zero the destination so any short report leaves the trailing bytes
+                // in a known state instead of carrying stale data from a previous chunk.
+                memset(p5GeneralAuthData->auth_buffer, 0, cap);
+                memcpy(p5GeneralAuthData->auth_buffer, report_buffer, copyLen);
                 p5GeneralAuthData->passthrough_state = P5GeneralGPAuthState::p5g_auth_idle;
             } else {
                 // unexpect
@@ -178,7 +189,8 @@ void P5GeneralAuthUSBListener::get_report_complete(uint8_t dev_addr, uint8_t ins
             break;
         case P5GeneralAuthReport::P5GENERAL_GET_SIGNING_STATE:
             if (p5GeneralAuthData->passthrough_state == P5GeneralGPAuthState::p5g_auth_recv_f2_wait) {
-                memcpy(p5GeneralAuthData->auth_buffer, report_buffer, len);
+                memset(p5GeneralAuthData->auth_buffer, 0, cap);
+                memcpy(p5GeneralAuthData->auth_buffer, report_buffer, copyLen);
                 p5GeneralAuthData->passthrough_state = P5GeneralGPAuthState::p5g_auth_idle;
             } else {
                 // unexpect

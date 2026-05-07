@@ -64,6 +64,7 @@ bool GPGFX::detectDisplay(GPGFX_DisplayTypeOptions* display, GPGFX_DisplayType d
     }
 
     if (driver != nullptr) {
+        bool detected = false;
         if (driver->isI2C()) {
             PeripheralI2CScanResult result = PeripheralManager::getInstance().scanForI2CDevice(driver->getDeviceAddresses());
             if (result.address > -1) {
@@ -71,13 +72,16 @@ bool GPGFX::detectDisplay(GPGFX_DisplayTypeOptions* display, GPGFX_DisplayType d
                 display->address = result.address;
                 display->i2c = PeripheralManager::getInstance().getI2C(result.block);
                 display->i2c->setExclusiveUse(result.address);
-                return true;
+                detected = true;
             }
         }
-        if (driver->isSPI()) {
+        if (!detected && driver->isSPI()) {
             // NYI: check if SPI display exists
         }
+        // Always free the probe driver - the previous code returned early on a successful
+        // I2C detect and leaked the driver every time a display was found.
         delete driver;
+        return detected;
     }
 
     return false;

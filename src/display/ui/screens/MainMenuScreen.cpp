@@ -92,6 +92,23 @@ void MainMenuScreen::init() {
 
 void MainMenuScreen::shutdown() {
     clearElements();
+
+    // The menu navigation mappings are heap-allocated in init() and were never released
+    // before this fix. Each open/close of the main menu leaked seven GamepadButtonMapping
+    // objects which fragmented the heap on long sessions. gpMenu is owned by the parent
+    // GPScreen via addElement()/clearElements(), so we only need to clear the local
+    // pointer to avoid a dangling reference when the screen is reopened.
+    delete mapMenuUp;       mapMenuUp = nullptr;
+    delete mapMenuDown;     mapMenuDown = nullptr;
+    delete mapMenuLeft;     mapMenuLeft = nullptr;
+    delete mapMenuRight;    mapMenuRight = nullptr;
+    delete mapMenuSelect;   mapMenuSelect = nullptr;
+    delete mapMenuBack;     mapMenuBack = nullptr;
+    delete mapMenuToggle;   mapMenuToggle = nullptr;
+
+    gpMenu = nullptr;
+    profilesMenu.clear();
+
     exitToScreen = -1;
 }
 

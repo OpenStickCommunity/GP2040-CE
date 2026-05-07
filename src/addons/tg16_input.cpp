@@ -26,6 +26,8 @@ static bool buttonV = false;
 static bool buttonVI = false;
 
 // Helper to detect 6-button sequence (3 rapid reads with SELECT high/low)
+// `sixButtonTimeout` is now repurposed to store the *start time* of the most recent
+// six-button activation; the elapsed-time comparison in process() is wrap-tolerant.
 static void detectSixButtonSequence(bool selectState) {
     // Sequence: High, Low, High (SEL)
     static int lastSelect = -1;
@@ -35,7 +37,7 @@ static void detectSixButtonSequence(bool selectState) {
         lastSelect = selectState;
         if (sixButtonSequenceStep >= 3) {
             sixButtonMode = true;
-            sixButtonTimeout = getMillis() + SIX_BUTTON_TIMEOUT_MS;
+            sixButtonTimeout = getMillis(); // store start, not deadline
             sixButtonSequenceStep = 0;
         }
     }
@@ -154,14 +156,16 @@ void TG16padInput::updateButtons(uint16_t data)
 
 void TG16padInput::process()
 {
-    if (nextTimer < getMillis())
+    // Wrap-tolerant interval check; see WiiExtensionInput::process for rationale.
+    const uint32_t now = getMillis();
+    if ((uint32_t)(now - nextTimer) >= uIntervalMS)
     {
         uint16_t data = readController();
         updateButtons(data);
-        nextTimer = getMillis() + uIntervalMS;
+        nextTimer = now;
     }
-    // Timeout for 6-button mode
-    if (sixButtonMode && getMillis() > sixButtonTimeout) {
+    // Timeout for 6-button mode (compare elapsed, not deadline, to survive uint32 rollover).
+    if (sixButtonMode && (uint32_t)(now - sixButtonTimeout) >= SIX_BUTTON_TIMEOUT_MS) {
         sixButtonMode = false;
     }
 #if TG16_PAD_DEBUG==true

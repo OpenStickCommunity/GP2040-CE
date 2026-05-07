@@ -35,7 +35,11 @@ private:
     uint8_t last_report[CFG_TUD_ENDPOINT0_SIZE] = { };
     uint16_t last_report_size;
     KeyboardReport keyboardReport;
-    int8_t volumeChange;
+    // Was int8_t. Rotary-encoder volume events arrive with magnitude up to 16 per event,
+    // and the per-tick HID send only decrements this by 1. Fast spinning could drive an
+    // int8_t accumulator past +/-127, which is signed-overflow UB. Use int32_t and saturate
+    // explicitly in handleEncoder() so the driver behaviour stays well-defined.
+    int32_t volumeChange;
 };
 
 #endif // _KEYBOARD_DRIVER_H_

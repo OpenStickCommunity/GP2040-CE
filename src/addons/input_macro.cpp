@@ -66,7 +66,8 @@ void InputMacro::setup() {
     } else {
         boardLedEnabled = false;
     }
-    boardLedEnabled = false;
+    // Previously this was unconditionally reset to false, silently disabling the
+    // configured board-LED feedback. Keep whatever the configuration set above.
     prevMacroInputPressed = false;
     reset();
 }
@@ -129,28 +130,33 @@ void InputMacro::checkMacroAction() {
 
     bool newPress = macroInputPressed && (prevMacroInputPressed ^ macroInputPressed);
 
-    // Check to see if we should change the current macro (or turn off based on input)
-    if ( inputMacroOptions->macroList[macroPosition].macroType == ON_PRESS ) {
-        // START Macro: On Press or On Hold Repeat
-        if (!isMacroRunning ) {
-            isMacroTriggerHeld = newPress;
-        }
-    } else if ( inputMacroOptions->macroList[macroPosition].macroType == ON_HOLD_REPEAT ) {
-        isMacroTriggerHeld = macroInputPressed;
-    } else if ( inputMacroOptions->macroList[macroPosition].macroType == ON_TOGGLE ) {
-        //isMacroTriggerHeld = macroInputPressed;
-        if (!isMacroRunning ) {
-            isMacroTriggerHeld = newPress;
-        } else if (isMacroRunning && newPress) {
-            // STOP Macro: Toggle on new press
-            reset(); // Stop Macro: Toggle
-            prevMacroInputPressed = macroInputPressed;
-            return;
+    // macroPosition is -1 when no macro has ever been pressed; indexing
+    // inputMacroOptions->macroList[-1] is out-of-bounds UB, so skip the
+    // type-dispatch entirely until we have a valid macro selected.
+    if (macroPosition >= 0 && macroPosition < MAX_MACRO_LIMIT) {
+        // Check to see if we should change the current macro (or turn off based on input)
+        if ( inputMacroOptions->macroList[macroPosition].macroType == ON_PRESS ) {
+            // START Macro: On Press or On Hold Repeat
+            if (!isMacroRunning ) {
+                isMacroTriggerHeld = newPress;
+            }
+        } else if ( inputMacroOptions->macroList[macroPosition].macroType == ON_HOLD_REPEAT ) {
+            isMacroTriggerHeld = macroInputPressed;
+        } else if ( inputMacroOptions->macroList[macroPosition].macroType == ON_TOGGLE ) {
+            //isMacroTriggerHeld = macroInputPressed;
+            if (!isMacroRunning ) {
+                isMacroTriggerHeld = newPress;
+            } else if (isMacroRunning && newPress) {
+                // STOP Macro: Toggle on new press
+                reset(); // Stop Macro: Toggle
+                prevMacroInputPressed = macroInputPressed;
+                return;
+            }
         }
     }
 
     prevMacroInputPressed = macroInputPressed;
-    if (!isMacroRunning && isMacroTriggerHeld) {
+    if (!isMacroRunning && isMacroTriggerHeld && pressedMacro >= 0 && pressedMacro < MAX_MACRO_LIMIT) {
         // New Macro to run
         macroPosition = pressedMacro; // Set current macro
         Macro& macro = inputMacroOptions->macroList[macroPosition];
@@ -165,7 +171,8 @@ void InputMacro::checkMacroAction() {
 void InputMacro::runCurrentMacro() {
     // Do nothing if macro is not currently running
     if (!isMacroRunning ||
-            macroPosition == -1)
+            macroPosition < 0 ||
+            macroPosition >= MAX_MACRO_LIMIT)
         return;
 
     Macro& macro = inputMacroOptions->macroList[macroPosition];

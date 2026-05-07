@@ -27,7 +27,15 @@
 class EventManager {
     public:
         typedef std::function<void(GPEvent* event)> EventFunction;
-        typedef std::pair<GPEventType, std::vector<EventFunction>> EventEntry;
+        // Each handler is paired with an opaque owner token (typically `this` of the
+        // registering object) so we can reliably unregister capturing lambdas, whose
+        // std::function::target<void(*)(GPEvent*)>() is always nullptr and cannot be
+        // compared by callable target.
+        struct HandlerEntry {
+            void* owner;
+            EventFunction handler;
+        };
+        typedef std::pair<GPEventType, std::vector<HandlerEntry>> EventEntry;
 
         EventManager(EventManager const&) = delete;
         void operator=(EventManager const&)  = delete;
@@ -40,8 +48,11 @@ class EventManager {
         void init();
         void clearEventHandlers();
 
-        void registerEventHandler(GPEventType eventType, EventFunction handler);
-        void unregisterEventHandler(GPEventType eventType, EventFunction handler);
+        // Register a handler. `owner` should be a stable pointer (typically `this`)
+        // so unregisterEventHandler can match it later.
+        void registerEventHandler(GPEventType eventType, EventFunction handler, void* owner = nullptr);
+        // Remove every handler registered for `eventType` by `owner`.
+        void unregisterEventHandler(GPEventType eventType, void* owner);
         void triggerEvent(GPEvent* event);
     private:
         EventManager(){}

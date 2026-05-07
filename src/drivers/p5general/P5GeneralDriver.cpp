@@ -265,29 +265,43 @@ uint16_t P5GeneralDriver::get_report(uint8_t report_id, hid_report_type_t report
         return -1;
     }
 
+    if (p5GeneralAuthData == nullptr) {
+        return 0;
+    }
+
     uint16_t responseLen = 0;
     switch(report_id) {
     case P5GeneralAuthReport::P5GENERAL_DEFINITION:
         if (reqlen < sizeof(output_0x03)) {
-            return -1;
+            return 0;
         }
-        responseLen = MAX(reqlen, sizeof(output_0x03));
+        responseLen = sizeof(output_0x03);
         memcpy(buffer, output_0x03, responseLen);
         return responseLen;
     case P5GeneralAuthReport::P5GENERAL_GET_SIGNATURE_NONCE:
-        memcpy(buffer, p5GeneralAuthData->auth_buffer + 1, 63);
+        // Refuse short reads so we don't hand the host a prefix and at the same
+        // time advance passthrough_state as if a full chunk had been delivered.
+        if (reqlen < 63) {
+            return 0;
+        }
+        responseLen = 63;
+        memcpy(buffer, p5GeneralAuthData->auth_buffer + 1, responseLen);
         if (p5GeneralAuthData->passthrough_state == p5g_auth_idle) {
             p5GeneralAuthData->passthrough_state = P5GeneralGPAuthState::p5g_auth_recv_f1;
         }
-        return 63;
+        return responseLen;
     case P5GeneralAuthReport::P5GENERAL_GET_SIGNING_STATE:
-        memcpy(buffer, p5GeneralAuthData->auth_buffer + 1, 15);
+        if (reqlen < 15) {
+            return 0;
+        }
+        responseLen = 15;
+        memcpy(buffer, p5GeneralAuthData->auth_buffer + 1, responseLen);
         if (p5GeneralAuthData->passthrough_state == p5g_auth_idle) {
             p5GeneralAuthData->passthrough_state = P5GeneralGPAuthState::p5g_auth_recv_f1;
         }
-        return 15;
+        return responseLen;
     }
-    return -1;
+    return 0;
 }
 
 void P5GeneralDriver::set_report(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize)
@@ -295,6 +309,9 @@ void P5GeneralDriver::set_report(uint8_t report_id, hid_report_type_t report_typ
     P5DRPINTF("P5D:set_report %d size %d\n", report_type, bufsize);
 
     if ( report_type != HID_REPORT_TYPE_FEATURE ) {
+        return;
+    }
+    if (buffer == nullptr || p5GeneralAuthData == nullptr) {
         return;
     }
 

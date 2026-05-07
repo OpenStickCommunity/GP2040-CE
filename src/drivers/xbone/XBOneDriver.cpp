@@ -222,7 +222,7 @@ static void queue_xbone_report(void *report, uint16_t report_size) {
 // DevCompatIDsOne sends back XGIP10 data when requested by Windows
 bool xbone_vendor_control_xfer_cb(uint8_t rhport, uint8_t stage,
                                 tusb_control_request_t const *request) {
-	uint8_t buf[255];
+	uint8_t buf[255] = {0};
 
   	// nothing to with DATA & ACK stage
   	if (stage != CONTROL_STAGE_SETUP)
@@ -230,13 +230,17 @@ bool xbone_vendor_control_xfer_cb(uint8_t rhport, uint8_t stage,
 
 	if (request->bmRequestType_bit.direction == TUSB_DIR_IN) { // This is where we should be
 		uint16_t len = request->wLength;
+		if (len > sizeof(buf)) len = sizeof(buf);
 		if ( request->bmRequestType == (USB_SETUP_DEVICE_TO_HOST | USB_SETUP_RECIPIENT_DEVICE | USB_SETUP_TYPE_VENDOR) && request->bRequest == REQ_GET_OS_FEATURE_DESCRIPTOR &&
 			request->wIndex == DESC_EXTENDED_COMPATIBLE_ID_DESCRIPTOR) {
-			memcpy(buf, &DevCompatIDsOne, len);
+			uint16_t copyLen = (len < sizeof(DevCompatIDsOne)) ? len : sizeof(DevCompatIDsOne);
+			memcpy(buf, &DevCompatIDsOne, copyLen);
 		}
 		tud_control_xfer(rhport, request, (void*)buf, len);
 	} else {
-		tud_control_xfer(rhport, request, (void*)buf, request->wLength);
+		uint16_t outLen = request->wLength;
+		if (outLen > sizeof(buf)) outLen = sizeof(buf);
+		tud_control_xfer(rhport, request, (void*)buf, outLen);
 	}
 	return true;
 }
@@ -564,8 +568,9 @@ bool XBOneDriver::send_xbone_usb(uint8_t const *report, uint16_t report_size) {
 
 // tud_hid_get_report_cb
 uint16_t XBOneDriver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
-    memcpy(buffer, &xboneReport, sizeof(xboneReport));
-    return sizeof(xboneReport);
+    uint16_t copyLen = (reqlen < sizeof(xboneReport)) ? reqlen : sizeof(xboneReport);
+    memcpy(buffer, &xboneReport, copyLen);
+    return copyLen;
 }
 
 // Only PS4 does anything with set report
@@ -573,7 +578,7 @@ void XBOneDriver::set_report(uint8_t report_id, hid_report_type_t report_type, u
 
 // Only XboxOG and Xbox One use vendor control xfer cb
 bool XBOneDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request) {
-    uint8_t buf[255];
+    uint8_t buf[255] = {0};
 
       // nothing to with DATA & ACK stage
       if (stage != CONTROL_STAGE_SETUP)
@@ -581,13 +586,17 @@ bool XBOneDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_con
 
     if (request->bmRequestType_bit.direction == TUSB_DIR_IN) { // This is where we should be
         uint16_t len = request->wLength;
+        if (len > sizeof(buf)) len = sizeof(buf);
         if ( request->bmRequestType == (USB_SETUP_DEVICE_TO_HOST | USB_SETUP_RECIPIENT_DEVICE | USB_SETUP_TYPE_VENDOR) && request->bRequest == REQ_GET_OS_FEATURE_DESCRIPTOR &&
             request->wIndex == DESC_EXTENDED_COMPATIBLE_ID_DESCRIPTOR) {
-            memcpy(buf, &DevCompatIDsOne, len);
+            uint16_t copyLen = (len < sizeof(DevCompatIDsOne)) ? len : sizeof(DevCompatIDsOne);
+            memcpy(buf, &DevCompatIDsOne, copyLen);
         }
         tud_control_xfer(rhport, request, (void*)buf, len);
     } else {
-        tud_control_xfer(rhport, request, (void*)buf, request->wLength);
+        uint16_t outLen = request->wLength;
+        if (outLen > sizeof(buf)) outLen = sizeof(buf);
+        tud_control_xfer(rhport, request, (void*)buf, outLen);
     }
     return true;
 }

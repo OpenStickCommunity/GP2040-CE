@@ -15,9 +15,9 @@ void ButtonLayoutScreen::init() {
     gamepad = Storage::getInstance().GetGamepad();
     inputMode = DriverManager::getInstance().getInputMode();
 
-    EventManager::getInstance().registerEventHandler(GP_EVENT_PROFILE_CHANGE, GPEVENT_CALLBACK(this->handleProfileChange(event)));
-    EventManager::getInstance().registerEventHandler(GP_EVENT_USBHOST_MOUNT, GPEVENT_CALLBACK(this->handleUSB(event)));
-    EventManager::getInstance().registerEventHandler(GP_EVENT_USBHOST_UNMOUNT, GPEVENT_CALLBACK(this->handleUSB(event)));
+    EventManager::getInstance().registerEventHandler(GP_EVENT_PROFILE_CHANGE, GPEVENT_CALLBACK(this->handleProfileChange(event)), this);
+    EventManager::getInstance().registerEventHandler(GP_EVENT_USBHOST_MOUNT, GPEVENT_CALLBACK(this->handleUSB(event)), this);
+    EventManager::getInstance().registerEventHandler(GP_EVENT_USBHOST_UNMOUNT, GPEVENT_CALLBACK(this->handleUSB(event)), this);
     
     footer = "";
     historyString = "";
@@ -87,9 +87,9 @@ void ButtonLayoutScreen::init() {
 void ButtonLayoutScreen::shutdown() {
     clearElements();
 
-    EventManager::getInstance().unregisterEventHandler(GP_EVENT_PROFILE_CHANGE, GPEVENT_CALLBACK(this->handleProfileChange(event)));
-    EventManager::getInstance().unregisterEventHandler(GP_EVENT_USBHOST_MOUNT, GPEVENT_CALLBACK(this->handleUSB(event)));
-    EventManager::getInstance().unregisterEventHandler(GP_EVENT_USBHOST_UNMOUNT, GPEVENT_CALLBACK(this->handleUSB(event)));
+    EventManager::getInstance().unregisterEventHandler(GP_EVENT_PROFILE_CHANGE, this);
+    EventManager::getInstance().unregisterEventHandler(GP_EVENT_USBHOST_MOUNT, this);
+    EventManager::getInstance().unregisterEventHandler(GP_EVENT_USBHOST_UNMOUNT, this);
 }
 
 int8_t ButtonLayoutScreen::update() {

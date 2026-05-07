@@ -81,7 +81,7 @@ execute_process(COMMAND ${GIT_EXECUTABLE} describe --always --abbrev=7
 if(DEFINED ENV{GP2040_VERSION_OVERRIDE})
   set(GP2040_VERSION_OVERRIDE "$ENV{GP2040_VERSION_OVERRIDE}" CACHE STRING "Version string to use instead of git describe" FORCE)
 elseif(NOT DEFINED CACHE{GP2040_VERSION_OVERRIDE})
-  set(GP2040_VERSION_OVERRIDE "v0.8.0-DIY" CACHE STRING "Version string to use instead of git describe")
+  set(GP2040_VERSION_OVERRIDE "v0.8.2-DIY" CACHE STRING "Version string to use instead of git describe")
 endif()
 if(GP2040_VERSION_OVERRIDE)
   set(GIT_REPO_VERSION "${GP2040_VERSION_OVERRIDE}")

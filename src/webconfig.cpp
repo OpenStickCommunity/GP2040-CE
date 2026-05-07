@@ -389,6 +389,9 @@ void httpd_post_finished(void *connection, char *response_uri, uint16_t response
     LWIP_UNUSED_ARG(connection);
 
     if (http_post_payload_len != 0xffff) {
+        if (response_uri == nullptr || response_uri_len == 0) {
+            return; // nothing we can safely write to
+        }
         strncpy(response_uri, http_post_uri.c_str(), response_uri_len);
         response_uri[response_uri_len - 1] = '\0';
     }

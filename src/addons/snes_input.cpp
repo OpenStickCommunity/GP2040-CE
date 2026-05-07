@@ -81,7 +81,9 @@ void SNESpadInput::setup() {
 }
 
 void SNESpadInput::process() {
-    if (nextTimer < getMillis()) {
+    // Wrap-tolerant interval check; see WiiExtensionInput::process for rationale.
+    const uint32_t now = getMillis();
+    if ((uint32_t)(now - nextTimer) >= uIntervalMS) {
         snes->poll();
 
         uint16_t joystickMid = GAMEPAD_JOYSTICK_MID;
@@ -141,7 +143,7 @@ void SNESpadInput::process() {
 
         }
 
-        nextTimer = getMillis() + uIntervalMS;
+        nextTimer = now;
     }
 
     Gamepad * gamepad = Storage::getInstance().GetGamepad();

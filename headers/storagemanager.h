@@ -17,6 +17,7 @@
 #include "config.pb.h"
 #include <atomic>
 #include "pico/critical_section.h"
+#include "pico/mutex.h"
 #include "eventmanager.h"
 #include "GPStorageSaveEvent.h"
 
@@ -57,6 +58,14 @@ public:
 	void SetProcessedGamepad(Gamepad *); // MPGS Processed Gamepad Get/Set
 	Gamepad * GetProcessedGamepad();
 
+	// Publish the latest Core0-computed gamepad state into the cross-core "processed" copy
+	// under a mutex, with a release-style memory barrier. Use this on Core0 instead of a
+	// raw memcpy so Core1 readers can take a consistent snapshot via SnapshotProcessedGamepadState.
+	void PublishProcessedGamepadState(const GamepadState& src);
+	// Take a torn-read-free snapshot of the processed gamepad state (Core1 / consumers).
+	// Returns true on success; false if the processed gamepad has not been initialized yet.
+	bool SnapshotProcessedGamepadState(GamepadState& dest);
+
 	bool setProfile(const uint32_t);		// profile support for multiple mappings
 	void nextProfile();
 	void previousProfile();
@@ -77,6 +86,8 @@ private:
 	Config config;
 	GpioMappingInfo functionalPinMappings[NUM_BANK0_GPIOS];
 	uint32_t systemFlashSize;
+	mutex_t processedGamepadMutex;
+	bool processedGamepadMutexInited = false;
 };
 
 #endif

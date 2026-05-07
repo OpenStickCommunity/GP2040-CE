@@ -121,8 +121,9 @@ bool HIDDriver::process(Gamepad * gamepad) {
 
 // tud_hid_get_report_cb
 uint16_t HIDDriver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
-	memcpy(buffer, &hidReport, sizeof(HIDReport));
-	return sizeof(HIDReport);
+	uint16_t copyLen = (reqlen < sizeof(HIDReport)) ? reqlen : sizeof(HIDReport);
+	memcpy(buffer, &hidReport, copyLen);
+	return copyLen;
 }
 
 // Only PS4 does anything with set report

@@ -90,7 +90,13 @@ void ReactiveLEDAddon::setLEDByMode(ReactiveLEDPinState &ledState, bool pressed)
             if (ledState.currUpdate - ledState.lastUpdate >= REACTIVE_LED_DELAY) {
                 if (ledState.prevState != pressed) ledState.value = 0;
                 if (ledState.value < REACTIVE_LED_MAX_BRIGHTNESS) {
-                    ledState.value+=REACTIVE_LED_FADE_INC;
+                    // Clamp the increment so a misconfigured FADE_INC larger than the
+                    // headroom doesn't skip past MAX and wrap to a tiny duty cycle.
+                    if ((REACTIVE_LED_MAX_BRIGHTNESS - ledState.value) < REACTIVE_LED_FADE_INC) {
+                        ledState.value = REACTIVE_LED_MAX_BRIGHTNESS;
+                    } else {
+                        ledState.value += REACTIVE_LED_FADE_INC;
+                    }
                 }
 
                 ledState.lastUpdate = ledState.currUpdate;
@@ -100,7 +106,13 @@ void ReactiveLEDAddon::setLEDByMode(ReactiveLEDPinState &ledState, bool pressed)
             if (ledState.currUpdate - ledState.lastUpdate >= REACTIVE_LED_DELAY) {
                 if (ledState.prevState != pressed) ledState.value = REACTIVE_LED_MAX_BRIGHTNESS;
                 if (ledState.value > 0) {
-                    ledState.value-=REACTIVE_LED_FADE_INC;
+                    // Symmetric clamp - decrementing past 0 would underflow to 255 on
+                    // a uint8_t value and produce a sudden full-bright pulse.
+                    if (ledState.value < REACTIVE_LED_FADE_INC) {
+                        ledState.value = 0;
+                    } else {
+                        ledState.value -= REACTIVE_LED_FADE_INC;
+                    }
                 }
 
                 ledState.lastUpdate = ledState.currUpdate;
@@ -108,6 +120,7 @@ void ReactiveLEDAddon::setLEDByMode(ReactiveLEDPinState &ledState, bool pressed)
             break;
     }
 
+    if (ledState.value > REACTIVE_LED_MAX_BRIGHTNESS) ledState.value = REACTIVE_LED_MAX_BRIGHTNESS;
     pwm_set_gpio_level(ledState.pinNumber, ledState.value);
 
     ledState.prevState = pressed;
