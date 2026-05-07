@@ -23,7 +23,7 @@ void ButtonLayoutScreen::init() {
     historyString = "";
     inputHistory.clear();
 
-    setViewport((isInputHistoryEnabled ? 8 : 0), 0, (isInputHistoryEnabled ? 56 : getRenderer()->getDriver()->getMetrics()->height), getRenderer()->getDriver()->getMetrics()->width);
+    setViewport((isInputHistoryEnabled ? 8 : 0), 0, getRenderer()->getDriver()->getMetrics()->height, getRenderer()->getDriver()->getMetrics()->width);
 
 	// load layout (drawElement pushes element to the display list)
     uint16_t elementCtr = 0;
