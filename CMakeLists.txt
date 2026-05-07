@@ -73,8 +73,34 @@ execute_process(COMMAND ${GIT_EXECUTABLE} describe --always --abbrev=7
 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 	OUTPUT_VARIABLE GIT_REPO_BUILD_ID
 	OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+# DIY fork version override: replace the upstream `git describe` output with our own
+# version string so on-device displays, web UI, and project version all advertise the fork.
+# Override with -DGP2040_VERSION_OVERRIDE=... or env GP2040_VERSION_OVERRIDE; pass an empty
+# string to fall back to the upstream `git describe` value.
+if(DEFINED ENV{GP2040_VERSION_OVERRIDE})
+  set(GP2040_VERSION_OVERRIDE "$ENV{GP2040_VERSION_OVERRIDE}" CACHE STRING "Version string to use instead of git describe" FORCE)
+elseif(NOT DEFINED CACHE{GP2040_VERSION_OVERRIDE})
+  set(GP2040_VERSION_OVERRIDE "v0.8.0-DIY" CACHE STRING "Version string to use instead of git describe")
+endif()
+if(GP2040_VERSION_OVERRIDE)
+  set(GIT_REPO_VERSION "${GP2040_VERSION_OVERRIDE}")
+  set(GIT_REPO_BUILD_ID "${GP2040_VERSION_OVERRIDE}")
+endif()
+message(STATUS "GP2040_VERSION_OVERRIDE is '${GP2040_VERSION_OVERRIDE}'")
+
 string(REGEX REPLACE "v([0-9]+\\.[0-9]+\\.[0-9]+).*" "\\1" CMAKE_GIT_REPO_VERSION ${GIT_REPO_VERSION})
 string(REGEX REPLACE "^(.......-.*)|(.......)$" "0.0.0" CMAKE_GIT_REPO_VERSION ${CMAKE_GIT_REPO_VERSION}) # fix if all we have is the git SHA
+
+# Filename-only tag appended to the output binary stem (e.g. ..._Pico_DIY.uf2).
+# Override with -DGP2040_FILENAME_TAG=... or env GP2040_FILENAME_TAG; empty string disables it.
+if(DEFINED ENV{GP2040_FILENAME_TAG})
+  set(GP2040_FILENAME_TAG "$ENV{GP2040_FILENAME_TAG}" CACHE STRING "Tag appended to output filenames only" FORCE)
+elseif(NOT DEFINED CACHE{GP2040_FILENAME_TAG})
+  set(GP2040_FILENAME_TAG "DIY" CACHE STRING "Tag appended to output filenames only")
+endif()
+message(STATUS "GP2040_FILENAME_TAG is '${GP2040_FILENAME_TAG}'")
+
 configure_file("headers/version.h.in" "headers/version.h")
 message("GIT_REPO_VERSION is ${GIT_REPO_VERSION}")
 message("CMAKE_GIT_REPO_VERSION is ${CMAKE_GIT_REPO_VERSION}")
@@ -308,7 +334,12 @@ ${PROTO_OUTPUT_DIR}/enums.pb.c
 ${PROTO_OUTPUT_DIR}/config.pb.c
 )
 
-set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME ${PROJECT_NAME}_${CMAKE_PROJECT_VERSION}_${GP2040_BOARDCONFIG})
+if(GP2040_FILENAME_TAG)
+  set(GP2040_OUTPUT_SUFFIX "_${GP2040_FILENAME_TAG}")
+else()
+  set(GP2040_OUTPUT_SUFFIX "")
+endif()
+set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME ${PROJECT_NAME}_${CMAKE_PROJECT_VERSION}_${GP2040_BOARDCONFIG}${GP2040_OUTPUT_SUFFIX})
 
 pico_set_program_name(GP2040-CE "GP2040-CE")
 pico_set_program_version(GP2040-CE ${GIT_REPO_VERSION})
@@ -376,7 +407,7 @@ target_include_directories(${PROJECT_NAME}  PRIVATE
 pico_add_extra_outputs(${PROJECT_NAME})
 
 install(FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}_${CMAKE_PROJECT_VERSION}_${GP2040_BOARDCONFIG}.uf2
+    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}_${CMAKE_PROJECT_VERSION}_${GP2040_BOARDCONFIG}${GP2040_OUTPUT_SUFFIX}.uf2
     ${CMAKE_CURRENT_LIST_DIR}/README.md
     DESTINATION .
 )
