@@ -801,6 +801,9 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, resetAfter, ENCODER_ONE_RESET);
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, allowWrapAround, ENCODER_ONE_WRAP);
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, multiplier, ENCODER_ONE_MULTIPLIER);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, countsPerDetent, ENCODER_ONE_COUNTS_PER_DETENT);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, encoderType, ENCODER_ONE_TYPE);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, pulseHoldMs, ENCODER_ONE_PULSE_HOLD_MS);
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, enabled, !!ENCODER_TWO_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, pinA, (Pin_t)ENCODER_TWO_PIN_A);
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, pinB, (Pin_t)ENCODER_TWO_PIN_B);
@@ -809,6 +812,9 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, resetAfter, ENCODER_TWO_RESET);
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, allowWrapAround, ENCODER_TWO_WRAP);
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, multiplier, ENCODER_TWO_MULTIPLIER);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, countsPerDetent, ENCODER_TWO_COUNTS_PER_DETENT);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, encoderType, ENCODER_TWO_TYPE);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, pulseHoldMs, ENCODER_TWO_PULSE_HOLD_MS);
 
     // addonOptions.reactiveLEDOptions
     INIT_UNSET_PROPERTY(config.addonOptions.reactiveLEDOptions, enabled, !!REACTIVE_LED_ENABLED);

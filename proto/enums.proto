@@ -641,6 +641,16 @@ enum RotaryEncoderPinMode
     ENCODER_MODE_VOLUME = 9;
 };
 
+enum RotaryEncoderType
+{
+    option (nanopb_enumopt).long_names = false;
+
+    // Mechanical detented encoder (e.g. EC11) - one logical step per detent.
+    ENCODER_TYPE_MECHANICAL_DETENTED = 0;
+    // Optical / continuous encoder (e.g. arcade spinner) - every quadrature edge counts.
+    ENCODER_TYPE_OPTICAL_CONTINUOUS = 1;
+};
+
 enum ReactiveLEDMode
 {
     option (nanopb_enumopt).long_names = false;

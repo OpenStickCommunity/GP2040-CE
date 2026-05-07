@@ -39,7 +39,19 @@
 #endif
 
 #ifndef ENCODER_ONE_MULTIPLIER
-#define ENCODER_ONE_MULTIPLIER 1
+#define ENCODER_ONE_MULTIPLIER 1.0f
+#endif
+
+#ifndef ENCODER_ONE_COUNTS_PER_DETENT
+#define ENCODER_ONE_COUNTS_PER_DETENT 4
+#endif
+
+#ifndef ENCODER_ONE_TYPE
+#define ENCODER_ONE_TYPE ENCODER_TYPE_MECHANICAL_DETENTED
+#endif
+
+#ifndef ENCODER_ONE_PULSE_HOLD_MS
+#define ENCODER_ONE_PULSE_HOLD_MS 30
 #endif
 
 #ifndef ENCODER_TWO_ENABLED
@@ -71,12 +83,22 @@
 #endif
 
 #ifndef ENCODER_TWO_MULTIPLIER
-#define ENCODER_TWO_MULTIPLIER 1
+#define ENCODER_TWO_MULTIPLIER 1.0f
+#endif
+
+#ifndef ENCODER_TWO_COUNTS_PER_DETENT
+#define ENCODER_TWO_COUNTS_PER_DETENT 4
+#endif
+
+#ifndef ENCODER_TWO_TYPE
+#define ENCODER_TWO_TYPE ENCODER_TYPE_MECHANICAL_DETENTED
+#endif
+
+#ifndef ENCODER_TWO_PULSE_HOLD_MS
+#define ENCODER_TWO_PULSE_HOLD_MS 30
 #endif
 
 #define MAX_ENCODERS 2
-#define ENCODER_RADIUS 1440 // 4 phases * 360
-#define ENCODER_PRECISION 16
 
 // RotaryEncoderName Module Name
 #define RotaryEncoderName "Rotary"
@@ -98,39 +120,68 @@ public:
         // encoder properties
         uint16_t pulsesPerRevolution = 24;
         RotaryEncoderPinMode mode = ENCODER_MODE_NONE;
-        int32_t minRange = -1;
-        int32_t maxRange = -1;
+        int32_t minRange = 0;
+        int32_t maxRange = 0;
         uint32_t resetAfter = 0;
         bool allowWrapAround = false;
-        double multiplier = 0;
+        float multiplier = 1.0f;
+        // Number of raw quadrature edges that constitute one logical step.
+        // 4 = full quadrature (one step per detent), 2 = half, 1 = every edge.
+        uint8_t countsPerDetent = 4;
+        // Hold time for DPAD pulses / minimum spacing for VOLUME events, in ms.
+        uint32_t pulseHoldMs = 30;
+        // Pre-computed: number of logical steps that span the configured output range.
+        int32_t stepsPerFullScale = 0;
     } EncoderPinMap;
 
+    // Per-encoder runtime state. Fields touched by the ISR are marked volatile.
     typedef struct {
-        bool pinA = false;
-        bool pinB = false;
-        bool prevA = false;
-        bool prevB = false;
-        uint32_t updateTime = 0;
-        uint32_t changeTime = 0;
-        uint8_t delay = 1;
+        // ISR-owned state. prevState is the last sampled (A<<1)|B Gray-code value (0..3).
+        volatile uint8_t prevState = 0;
+        // Signed accumulator of valid quadrature transitions (+/-1 per edge).
+        // Only touched by the ISR (writer) and by the main loop under interrupt-disable
+        // when consuming, so volatility plus a brief IRQ-disable read is sufficient.
+        volatile int32_t rawCounts = 0;
+
+        // Main-loop-owned state.
+        int32_t accumulatedSteps = 0;   // total logical steps since reset
+        int32_t prevSteps = 0;          // last value seen by process(), for delta detection
+        int32_t rawRemainder = 0;       // raw counts not yet promoted to a full step
+        uint32_t changeTime = 0;        // last time accumulatedSteps changed
+
+        // DPAD / VOLUME mode pulse latching.
+        int8_t pulseDir = 0;            // -1, 0, or +1
+        uint32_t pulseUntil = 0;        // millis at which the current pulse expires
+        uint32_t lastVolumeEventMs = 0; // throttle for repeated VOLUME events
     } EncoderPinState;
+
+    // Quadrature transition table indexed by ((prevA<<3)|(prevB<<2)|(curA<<1)|curB).
+    // Values: +1 valid CW edge, -1 valid CCW edge, 0 = no change or invalid (glitch).
+    // Defined out-of-line in rotaryencoder.cpp.
+    static const int8_t QDEC_LUT[16];
+
 private:
     EncoderPinState encoderState[MAX_ENCODERS];
-    int32_t encoderValues[MAX_ENCODERS];
-    int32_t prevValues[MAX_ENCODERS];
     EncoderPinMap encoderMap[MAX_ENCODERS] = {
-        {false, -1, -1, 24, ENCODER_MODE_NONE, -1, -1},
-        {false, -1, -1, 24, ENCODER_MODE_NONE, -1, -1},
+        EncoderPinMap{},
+        EncoderPinMap{},
     };
 
-    int32_t map(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max);
-    int32_t bounds(int32_t x, int32_t out_min, int32_t out_max);
-    uint16_t mapEncoderValueStick(int8_t index, int32_t encoderValue, uint16_t ppr);
-    uint16_t mapEncoderValueTrigger(int8_t index, int32_t encoderValue, uint16_t ppr);
-    int8_t mapEncoderValueDPad(int8_t index, int32_t encoderValue, uint16_t ppr);
+    // Precomputed reverse map from GPIO number to encoder index for fast ISR dispatch.
+    // -1 means the pin is not associated with an active encoder.
+    static int8_t pinToEncoder[32];
+    static RotaryEncoderInput* instance;
 
-    int8_t getEncoderIndexByPin(uint8_t pin);
-    
+    static void gpioIrqCallback(uint gpio, uint32_t events);
+    void handleEdge(uint8_t encoderIndex);
+
+    int32_t map(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max);
+    int32_t wrapMod(int32_t value, int32_t modulus);
+
+    uint16_t mapEncoderValueStick(int8_t index, int32_t steps);
+    uint16_t mapEncoderValueTrigger(int8_t index, int32_t steps);
+    int8_t mapEncoderValueDPad(int8_t index, int32_t deltaSteps);
+
     bool dpadUp = false;
     bool dpadDown = false;
     bool dpadLeft = false;

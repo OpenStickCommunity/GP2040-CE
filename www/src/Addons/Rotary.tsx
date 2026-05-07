@@ -20,80 +20,88 @@ const ENCODER_MODES = [
 	{ label: 'encoder-mode-volume', value: 9 },
 ];
 
-const ENCODER_MULTIPLES = [
-	{ value: 0.25 },
-	{ value: 0.5 },
-	{ value: 0.75 },
-	{ value: 1, default: true },
-	{ value: 2 },
-	{ value: 4 },
-	{ value: 8 },
-	{ value: 16 },
-	{ value: 32 },
-	{ value: 64 },
+const ENCODER_TYPES = [
+	{ label: 'encoder-type-mechanical-detented', value: 0 },
+	{ label: 'encoder-type-optical-continuous', value: 1 },
 ];
 
-const ENCODER_MIN_PPR = 10;
-const ENCODER_MAX_PPR = 800;
+const ENCODER_COUNTS_PER_DETENT = [
+	{ label: 'counts-per-detent-1', value: 1 },
+	{ label: 'counts-per-detent-2', value: 2 },
+	{ label: 'counts-per-detent-4', value: 4 },
+];
+
+const ENCODER_MIN_PPR = 1;
+const ENCODER_MAX_PPR = 4096;
 
 const ENCODER_MIN_MULTIPLE = 0.1;
 const ENCODER_MAX_MULTIPLE = 200;
+
+const ENCODER_MIN_PULSE_HOLD = 0;
+const ENCODER_MAX_PULSE_HOLD = 500;
+
+// Validators that only fire when the rotary addon is enabled. This prevents
+// spurious "required" / "min" failures from blocking unrelated saves when the
+// addon itself is disabled.
+const numberWhenEnabled = (label: string) =>
+	yup
+		.number()
+		.label(label)
+		.when('RotaryAddonEnabled', {
+			is: 1,
+			then: (s) => s.required(),
+			otherwise: (s) => s.notRequired(),
+		});
+
+const pinWhenEnabled = (label: string) =>
+	yup
+		.number()
+		.label(label)
+		.when('RotaryAddonEnabled', {
+			is: 1,
+			then: (s) => s.required().validatePinWhenValue('RotaryAddonEnabled'),
+			otherwise: (s) => s.notRequired(),
+		});
 
 export const rotaryScheme = {
 	RotaryAddonEnabled: yup
 		.number()
 		.required()
 		.label('Rotary Encoder Add-On Enabled'),
-	encoderOneEnabled: yup
-		.number()
-		.required()
-		.label('Encoder One Enabled'),
-	encoderOnePinA: yup
-		.number()
-		.label('Encoder One Pin A')
-		.required()
-		.validatePinWhenValue('RotaryAddonEnabled'),
-	encoderOnePinB: yup
-		.number()
-		.label('Encoder One Pin B')
-		.required()
-		.validatePinWhenValue('RotaryAddonEnabled'),
-	encoderOneMode: yup.number().required().label('Encoder One Mode'),
-	encoderOnePPR: yup.number().label('Encoder One PPR').required(),
-	encoderOneResetAfter: yup
-		.number()
-		.label('Encoder One Reset After')
-		.required(),
-	encoderOneAllowWrapAround: yup
-		.number()
-		.required()
-		.label('Encoder One Allow Wrap Around'),
-	encoderOneMultiplier: yup.number().label('Encoder One Multiplier').required(),
-	encoderTwoEnabled: yup
-		.number()
-		.required()
-		.label('Encoder Two Enabled'),
-	encoderTwoPinA: yup
-		.number()
-		.label('Encoder Two Pin A')
-		.required()
-		.validatePinWhenValue('RotaryAddonEnabled'),
-	encoderTwoPinB: yup
-		.number()
-		.label('Encoder Two Pin B')
-		.required()
-		.validatePinWhenValue('RotaryAddonEnabled'),
-	encoderTwoMode: yup.number().required().label('Encoder Two Mode'),
-	encoderTwoPPR: yup.number().label('Encoder Two PPR').required(),
-	encoderTwoResetAfter: yup
-		.number()
-		.label('Encoder Two Reset After')
-		.required(),
-	encoderTwoAllowWrapAround: yup
-		.number()
-		.required()
-		.label('Encoder Two Allow Wrap Around'),
-	encoderTwoMultiplier: yup.number().label('Encoder Two Multiplier').required(),
+	encoderOneEnabled: numberWhenEnabled('Encoder One Enabled'),
+	encoderOnePinA: pinWhenEnabled('Encoder One Pin A'),
+	encoderOnePinB: pinWhenEnabled('Encoder One Pin B'),
+	encoderOneMode: numberWhenEnabled('Encoder One Mode'),
+	encoderOnePPR: numberWhenEnabled('Encoder One PPR')
+		.min(ENCODER_MIN_PPR)
+		.max(ENCODER_MAX_PPR),
+	encoderOneResetAfter: numberWhenEnabled('Encoder One Reset After').min(0),
+	encoderOneAllowWrapAround: numberWhenEnabled('Encoder One Allow Wrap Around'),
+	encoderOneMultiplier: numberWhenEnabled('Encoder One Multiplier')
+		.min(ENCODER_MIN_MULTIPLE)
+		.max(ENCODER_MAX_MULTIPLE),
+	encoderOneCountsPerDetent: numberWhenEnabled('Encoder One Counts Per Detent'),
+	encoderOneType: numberWhenEnabled('Encoder One Type'),
+	encoderOnePulseHoldMs: numberWhenEnabled('Encoder One Pulse Hold (ms)')
+		.min(ENCODER_MIN_PULSE_HOLD)
+		.max(ENCODER_MAX_PULSE_HOLD),
+	encoderTwoEnabled: numberWhenEnabled('Encoder Two Enabled'),
+	encoderTwoPinA: pinWhenEnabled('Encoder Two Pin A'),
+	encoderTwoPinB: pinWhenEnabled('Encoder Two Pin B'),
+	encoderTwoMode: numberWhenEnabled('Encoder Two Mode'),
+	encoderTwoPPR: numberWhenEnabled('Encoder Two PPR')
+		.min(ENCODER_MIN_PPR)
+		.max(ENCODER_MAX_PPR),
+	encoderTwoResetAfter: numberWhenEnabled('Encoder Two Reset After').min(0),
+	encoderTwoAllowWrapAround: numberWhenEnabled('Encoder Two Allow Wrap Around'),
+	encoderTwoMultiplier: numberWhenEnabled('Encoder Two Multiplier')
+		.min(ENCODER_MIN_MULTIPLE)
+		.max(ENCODER_MAX_MULTIPLE),
+	encoderTwoCountsPerDetent: numberWhenEnabled('Encoder Two Counts Per Detent'),
+	encoderTwoType: numberWhenEnabled('Encoder Two Type'),
+	encoderTwoPulseHoldMs: numberWhenEnabled('Encoder Two Pulse Hold (ms)')
+		.min(ENCODER_MIN_PULSE_HOLD)
+		.max(ENCODER_MAX_PULSE_HOLD),
 };
 
 export const rotaryState = {
@@ -104,7 +112,10 @@ export const rotaryState = {
 	encoderOnePPR: 24,
 	encoderOneResetAfter: 0,
 	encoderOneAllowWrapAround: 0,
-	encoderOneMultiplier: 0,
+	encoderOneMultiplier: 1,
+	encoderOneCountsPerDetent: 4,
+	encoderOneType: 0,
+	encoderOnePulseHoldMs: 30,
 	encoderTwoEnabled: 0,
 	encoderTwoPinA: -1,
 	encoderTwoPinB: -1,
@@ -112,7 +123,10 @@ export const rotaryState = {
 	encoderTwoPPR: 24,
 	encoderTwoResetAfter: 0,
 	encoderTwoAllowWrapAround: 0,
-	encoderTwoMultiplier: 0,
+	encoderTwoMultiplier: 1,
+	encoderTwoCountsPerDetent: 4,
+	encoderTwoType: 0,
+	encoderTwoPulseHoldMs: 30,
 	RotaryAddonEnabled: 0,
 };
 
@@ -139,10 +153,7 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes
 							id="EncoderOneEnabledButton"
 							isInvalid={false}
 							checked={Boolean(values.encoderOneEnabled)}
-							onChange={(e) => {
-								handleCheckbox('encoderOneEnabled');
-								handleChange(e);
-							}}
+							onChange={() => handleCheckbox('encoderOneEnabled')}
 						/>
 						<div id="" hidden={!values.encoderOneEnabled}>
 							<FormControl
@@ -171,6 +182,22 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes
 								min={-1}
 								max={29}
 							/>
+							<FormSelect
+								label={t('Rotary:encoder-type-label')}
+								name="encoderOneType"
+								className="form-select-sm"
+								groupClassName="mb-3"
+								value={values.encoderOneType}
+								error={errors.encoderOneType}
+								isInvalid={Boolean(errors.encoderOneType)}
+								onChange={handleChange}
+							>
+								{ENCODER_TYPES.map((o, i) => (
+									<option key={`encoderOneType-option-${i}`} value={o.value}>
+										{t(`Rotary:${o.label}`)}
+									</option>
+								))}
+							</FormSelect>
 							<FormControl
 								type="number"
 								label={t('Rotary:encoder-ppr-label')}
@@ -184,6 +211,22 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes
 								min={ENCODER_MIN_PPR}
 								max={ENCODER_MAX_PPR}
 							/>
+							<FormSelect
+								label={t('Rotary:encoder-counts-per-detent-label')}
+								name="encoderOneCountsPerDetent"
+								className="form-select-sm"
+								groupClassName="mb-3"
+								value={values.encoderOneCountsPerDetent}
+								error={errors.encoderOneCountsPerDetent}
+								isInvalid={Boolean(errors.encoderOneCountsPerDetent)}
+								onChange={handleChange}
+							>
+								{ENCODER_COUNTS_PER_DETENT.map((o, i) => (
+									<option key={`encoderOneCountsPerDetent-option-${i}`} value={o.value}>
+										{t(`Rotary:${o.label}`)}
+									</option>
+								))}
+							</FormSelect>
 							<FormControl
 								type="number"
 								label={t('Rotary:encoder-multiplier-label')}
@@ -210,6 +253,19 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes
 								min={0}
 								max={500}
 							/>
+							<FormControl
+								type="number"
+								label={t('Rotary:encoder-pulse-hold-ms-label')}
+								name="encoderOnePulseHoldMs"
+								className="form-control-sm"
+								groupClassName="mb-3"
+								value={values.encoderOnePulseHoldMs}
+								error={errors.encoderOnePulseHoldMs}
+								isInvalid={Boolean(errors.encoderOnePulseHoldMs)}
+								onChange={handleChange}
+								min={ENCODER_MIN_PULSE_HOLD}
+								max={ENCODER_MAX_PULSE_HOLD}
+							/>
 							<FormSelect
 								label={t('Rotary:encoder-mode-label')}
 								name="encoderOneMode"
@@ -232,10 +288,7 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes
 								id="EncoderOneAllowWrapAround"
 								isInvalid={false}
 								checked={Boolean(values.encoderOneAllowWrapAround)}
-								onChange={(e) => {
-									handleCheckbox('encoderOneAllowWrapAround');
-									handleChange(e);
-								}}
+								onChange={() => handleCheckbox('encoderOneAllowWrapAround')}
 							/>
 						</div>
 					</div>
@@ -247,10 +300,7 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes
 							id="EncoderTwoEnabledButton"
 							isInvalid={false}
 							checked={Boolean(values.encoderTwoEnabled)}
-							onChange={(e) => {
-								handleCheckbox('encoderTwoEnabled');
-								handleChange(e);
-							}}
+							onChange={() => handleCheckbox('encoderTwoEnabled')}
 						/>
 						<div id="" hidden={!values.encoderTwoEnabled}>
 							<FormControl
@@ -279,6 +329,22 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes
 								min={-1}
 								max={29}
 							/>
+							<FormSelect
+								label={t('Rotary:encoder-type-label')}
+								name="encoderTwoType"
+								className="form-select-sm"
+								groupClassName="mb-3"
+								value={values.encoderTwoType}
+								error={errors.encoderTwoType}
+								isInvalid={Boolean(errors.encoderTwoType)}
+								onChange={handleChange}
+							>
+								{ENCODER_TYPES.map((o, i) => (
+									<option key={`encoderTwoType-option-${i}`} value={o.value}>
+										{t(`Rotary:${o.label}`)}
+									</option>
+								))}
+							</FormSelect>
 							<FormControl
 								type="number"
 								label={t('Rotary:encoder-ppr-label')}
@@ -292,6 +358,22 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes
 								min={ENCODER_MIN_PPR}
 								max={ENCODER_MAX_PPR}
 							/>
+							<FormSelect
+								label={t('Rotary:encoder-counts-per-detent-label')}
+								name="encoderTwoCountsPerDetent"
+								className="form-select-sm"
+								groupClassName="mb-3"
+								value={values.encoderTwoCountsPerDetent}
+								error={errors.encoderTwoCountsPerDetent}
+								isInvalid={Boolean(errors.encoderTwoCountsPerDetent)}
+								onChange={handleChange}
+							>
+								{ENCODER_COUNTS_PER_DETENT.map((o, i) => (
+									<option key={`encoderTwoCountsPerDetent-option-${i}`} value={o.value}>
+										{t(`Rotary:${o.label}`)}
+									</option>
+								))}
+							</FormSelect>
 							<FormControl
 								type="number"
 								label={t('Rotary:encoder-multiplier-label')}
@@ -318,6 +400,19 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes
 								min={0}
 								max={500}
 							/>
+							<FormControl
+								type="number"
+								label={t('Rotary:encoder-pulse-hold-ms-label')}
+								name="encoderTwoPulseHoldMs"
+								className="form-control-sm"
+								groupClassName="mb-3"
+								value={values.encoderTwoPulseHoldMs}
+								error={errors.encoderTwoPulseHoldMs}
+								isInvalid={Boolean(errors.encoderTwoPulseHoldMs)}
+								onChange={handleChange}
+								min={ENCODER_MIN_PULSE_HOLD}
+								max={ENCODER_MAX_PULSE_HOLD}
+							/>
 							<FormSelect
 								label={t('Rotary:encoder-mode-label')}
 								name="encoderTwoMode"
@@ -340,10 +435,7 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes
 								id="EncoderTwoAllowWrapAround"
 								isInvalid={false}
 								checked={Boolean(values.encoderTwoAllowWrapAround)}
-								onChange={(e) => {
-									handleCheckbox('encoderTwoAllowWrapAround');
-									handleChange(e);
-								}}
+								onChange={() => handleCheckbox('encoderTwoAllowWrapAround')}
 							/>
 						</div>
 					</div>
@@ -356,10 +448,7 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes
 				reverse
 				isInvalid={false}
 				checked={Boolean(values.RotaryAddonEnabled)}
-				onChange={(e) => {
-					handleCheckbox('RotaryAddonEnabled');
-					handleChange(e);
-				}}
+				onChange={() => handleCheckbox('RotaryAddonEnabled')}
 			/>
 		</Section>
 	);

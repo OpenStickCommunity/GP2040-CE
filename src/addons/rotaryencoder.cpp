@@ -9,9 +9,40 @@
 #include "helper.h"
 #include "config.pb.h"
 
+#include "hardware/gpio.h"
+#include "hardware/sync.h"
+
+// Static members -------------------------------------------------------------
+
+// Quadrature state-transition table. Index = (prevA<<3)|(prevB<<2)|(curA<<1)|curB.
+// +1 = valid clockwise transition, -1 = valid counter-clockwise transition,
+// 0 = no change OR invalid double-edge (treated as a glitch and discarded).
+const int8_t RotaryEncoderInput::QDEC_LUT[16] = {
+     0, -1, +1,  0,
+    +1,  0,  0, -1,
+    -1,  0,  0, +1,
+     0, +1, -1,  0,
+};
+
+// RP2040 has 30 user GPIOs (0..29); we size to 32 for safety.
+int8_t RotaryEncoderInput::pinToEncoder[32] = {
+    -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1,
+};
+
+RotaryEncoderInput* RotaryEncoderInput::instance = nullptr;
+
+// ---------------------------------------------------------------------------
+
 bool RotaryEncoderInput::available() {
     const RotaryOptions& options = Storage::getInstance().getAddonOptions().rotaryOptions;
     return options.enabled;
+}
+
+static inline uint8_t sampleQuadState(uint8_t pinA, uint8_t pinB) {
+    return (uint8_t)((gpio_get(pinA) ? 1 : 0) << 1) | (uint8_t)(gpio_get(pinB) ? 1 : 0);
 }
 
 void RotaryEncoderInput::setup()
@@ -19,213 +50,307 @@ void RotaryEncoderInput::setup()
     const RotaryOptions& options = Storage::getInstance().getAddonOptions().rotaryOptions;
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
 
-    encoderMap[0].enabled = options.encoderOne.enabled && ((options.encoderOne.pinA != -1) && (options.encoderOne.pinB != -1));
-    if (encoderMap[0].enabled) {
-        encoderMap[0].pinA = options.encoderOne.pinA;
-        encoderMap[0].pinB = options.encoderOne.pinB;
-        encoderMap[0].mode = options.encoderOne.mode;
-        encoderMap[0].pulsesPerRevolution = options.encoderOne.pulsesPerRevolution;
-        encoderMap[0].resetAfter = options.encoderOne.resetAfter;
-        encoderMap[0].allowWrapAround = options.encoderOne.allowWrapAround;
-        encoderMap[0].multiplier = options.encoderOne.multiplier;
-    }
+    instance = this;
 
-    encoderMap[1].enabled = options.encoderTwo.enabled && ((options.encoderTwo.pinA != -1) && (options.encoderTwo.pinB != -1));
-    if (encoderMap[1].enabled) {
-        encoderMap[1].pinA = options.encoderTwo.pinA;
-        encoderMap[1].pinB = options.encoderTwo.pinB;
-        encoderMap[1].mode = options.encoderTwo.mode;
-        encoderMap[1].pulsesPerRevolution = options.encoderTwo.pulsesPerRevolution;
-        encoderMap[1].resetAfter = options.encoderTwo.resetAfter;
-        encoderMap[1].allowWrapAround = options.encoderTwo.allowWrapAround;
-        encoderMap[1].multiplier = options.encoderTwo.multiplier;
-    }
+    const RotaryPinOptions* perEncoder[MAX_ENCODERS] = {
+        &options.encoderOne,
+        &options.encoderTwo,
+    };
 
     for (uint8_t i = 0; i < MAX_ENCODERS; i++) {
-        encoderValues[i] = 0;
-   
-        if (encoderMap[i].enabled) {
-            gpio_init(encoderMap[i].pinA);             // Initialize pin
-            gpio_set_dir(encoderMap[i].pinA, GPIO_IN); // Set as INPUT
-            gpio_pull_up(encoderMap[i].pinA);          // Set as PULLUP
-            
-            gpio_init(encoderMap[i].pinB);             // Initialize pin
-            gpio_set_dir(encoderMap[i].pinB, GPIO_IN); // Set as INPUT
-            gpio_pull_up(encoderMap[i].pinB);          // Set as PULLUP
-        }
-    
-        if ((encoderMap[i].mode == ENCODER_MODE_LEFT_TRIGGER) || (encoderMap[i].mode == ENCODER_MODE_RIGHT_TRIGGER)) {
+        const RotaryPinOptions& src = *perEncoder[i];
+        EncoderPinMap& dst = encoderMap[i];
+
+        dst.enabled = src.enabled && (src.pinA != -1) && (src.pinB != -1);
+        if (!dst.enabled) continue;
+
+        dst.pinA = src.pinA;
+        dst.pinB = src.pinB;
+        dst.mode = src.mode;
+        dst.pulsesPerRevolution = src.pulsesPerRevolution > 0 ? src.pulsesPerRevolution : 24;
+        dst.resetAfter = src.resetAfter;
+        dst.allowWrapAround = src.allowWrapAround;
+        dst.multiplier = (src.multiplier > 0.0f) ? src.multiplier : 1.0f;
+        dst.countsPerDetent = (src.countsPerDetent >= 1 && src.countsPerDetent <= 4) ? (uint8_t)src.countsPerDetent : 4;
+        dst.pulseHoldMs = src.pulseHoldMs;
+
+        // Default output ranges by mode.
+        if ((dst.mode == ENCODER_MODE_LEFT_TRIGGER) || (dst.mode == ENCODER_MODE_RIGHT_TRIGGER)) {
             gamepad->hasAnalogTriggers = true;
-            encoderMap[i].minRange = GAMEPAD_TRIGGER_MIN;
-            encoderMap[i].maxRange = GAMEPAD_TRIGGER_MAX;
-        } else if ((encoderMap[i].mode == ENCODER_MODE_LEFT_ANALOG_X) || (encoderMap[i].mode == ENCODER_MODE_LEFT_ANALOG_Y) || (encoderMap[i].mode == ENCODER_MODE_RIGHT_ANALOG_X) || (encoderMap[i].mode == ENCODER_MODE_RIGHT_ANALOG_Y)) {
-            encoderMap[i].minRange = GAMEPAD_JOYSTICK_MIN;
-            encoderMap[i].maxRange = GAMEPAD_JOYSTICK_MAX;
+            dst.minRange = GAMEPAD_TRIGGER_MIN;
+            dst.maxRange = GAMEPAD_TRIGGER_MAX;
+        } else if ((dst.mode == ENCODER_MODE_LEFT_ANALOG_X) || (dst.mode == ENCODER_MODE_LEFT_ANALOG_Y)
+                || (dst.mode == ENCODER_MODE_RIGHT_ANALOG_X) || (dst.mode == ENCODER_MODE_RIGHT_ANALOG_Y)) {
+            dst.minRange = GAMEPAD_JOYSTICK_MIN;
+            dst.maxRange = GAMEPAD_JOYSTICK_MAX;
+        } else {
+            dst.minRange = 0;
+            dst.maxRange = 0;
         }
+
+        // Logical steps spanning a full revolution = (raw edges per rev) / counts-per-detent.
+        // For analog modes, multiplier scales how many revolutions cover the full output range.
+        // stepsPerFullScale = stepsPerRevolution / multiplier (rounded, min 1).
+        const int32_t edgesPerRev = (int32_t)dst.pulsesPerRevolution * 4; // 4 edges per pulse
+        const int32_t stepsPerRev = edgesPerRev / dst.countsPerDetent;
+        int32_t span = (int32_t)((float)stepsPerRev / dst.multiplier);
+        if (span < 1) span = 1;
+        dst.stepsPerFullScale = span;
+    }
+
+    // Configure GPIOs and enable per-pin quadrature edge interrupts.
+    // Use a single shared callback registered once with the SDK; dispatch is
+    // by GPIO number via pinToEncoder[].
+    bool callbackInstalled = false;
+    for (uint8_t i = 0; i < MAX_ENCODERS; i++) {
+        if (!encoderMap[i].enabled) continue;
+
+        const uint8_t pinA = (uint8_t)encoderMap[i].pinA;
+        const uint8_t pinB = (uint8_t)encoderMap[i].pinB;
+
+        gpio_init(pinA);
+        gpio_set_dir(pinA, GPIO_IN);
+        gpio_pull_up(pinA);
+
+        gpio_init(pinB);
+        gpio_set_dir(pinB, GPIO_IN);
+        gpio_pull_up(pinB);
+
+        // Allow the pull-ups time to settle before sampling the initial state.
+        // gpio_pull_up returns immediately; a few NOPs are typically enough.
+        for (volatile int n = 0; n < 1000; n++) { /* settle */ }
+
+        // Map both pins to this encoder for IRQ dispatch.
+        if (pinA < 32) pinToEncoder[pinA] = (int8_t)i;
+        if (pinB < 32) pinToEncoder[pinB] = (int8_t)i;
+
+        // Seed the previous Gray state so the first real edge produces a valid transition.
+        encoderState[i].prevState = sampleQuadState(pinA, pinB);
+        encoderState[i].rawCounts = 0;
+        encoderState[i].accumulatedSteps = 0;
+        encoderState[i].prevSteps = 0;
+        encoderState[i].rawRemainder = 0;
+
+        const uint32_t edgeMask = GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL;
+        if (!callbackInstalled) {
+            gpio_set_irq_enabled_with_callback(pinA, edgeMask, true, &RotaryEncoderInput::gpioIrqCallback);
+            callbackInstalled = true;
+        } else {
+            gpio_set_irq_enabled(pinA, edgeMask, true);
+        }
+        gpio_set_irq_enabled(pinB, edgeMask, true);
+    }
+}
+
+// Static IRQ thunk - called from the SDK on every enabled GPIO edge.
+// Keep this function tight: a vigorously spinning 360 P/R encoder generates
+// edges every ~140 us, so we must do as little as possible per edge.
+void RotaryEncoderInput::gpioIrqCallback(uint gpio, uint32_t /*events*/) {
+    if (gpio >= 32) return;
+    const int8_t idx = pinToEncoder[gpio];
+    if (idx < 0 || idx >= MAX_ENCODERS) return;
+    if (instance == nullptr) return;
+    instance->handleEdge((uint8_t)idx);
+}
+
+void RotaryEncoderInput::handleEdge(uint8_t encoderIndex) {
+    EncoderPinMap& m = encoderMap[encoderIndex];
+    EncoderPinState& s = encoderState[encoderIndex];
+
+    const uint8_t curState = sampleQuadState((uint8_t)m.pinA, (uint8_t)m.pinB);
+    const uint8_t prevState = s.prevState;
+
+    if (curState == prevState) {
+        // No change (spurious or already handled by another edge on the partner pin).
+        return;
+    }
+
+    const uint8_t lutIndex = (uint8_t)((prevState << 2) | curState);
+    const int8_t delta = QDEC_LUT[lutIndex & 0x0F];
+
+    // Always advance prevState even on invalid transitions, otherwise we'd get
+    // stuck reporting an error forever after a single missed edge.
+    s.prevState = curState;
+
+    if (delta != 0) {
+        s.rawCounts += delta;
     }
 }
 
 void RotaryEncoderInput::process()
 {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
+    const uint32_t now = getMillis();
 
-    uint32_t now = getMillis();
+    // Reset per-frame DPAD intent; we set bits below based on currently latched pulses.
+    dpadUp = dpadDown = dpadLeft = dpadRight = false;
 
     for (uint8_t i = 0; i < MAX_ENCODERS; i++) {
-        if (encoderMap[i].enabled) {
-            uint32_t lastUpdate = now - encoderState[i].updateTime;
+        EncoderPinMap& m = encoderMap[i];
+        EncoderPinState& s = encoderState[i];
+        if (!m.enabled) continue;
 
-            if (lastUpdate >= encoderState[i].delay) {
-                bool pinAValue = gpio_get(encoderMap[i].pinA);
-                bool pinBValue = gpio_get(encoderMap[i].pinB);
+        // Atomically snapshot rawCounts and zero it, so the ISR can keep counting
+        // freshly while we process. Brief IRQ-disable on this core.
+        uint32_t saved = save_and_disable_interrupts();
+        const int32_t raw = s.rawCounts;
+        s.rawCounts = 0;
+        restore_interrupts(saved);
 
-                uint32_t encoderIncrement = (ENCODER_RADIUS / (encoderMap[i].pulsesPerRevolution / (ENCODER_PRECISION * encoderMap[i].multiplier)));
+        if (raw != 0) {
+            // Promote raw quadrature edges into logical steps, retaining the remainder.
+            const int32_t total = s.rawRemainder + raw;
+            const int32_t cpd = m.countsPerDetent ? m.countsPerDetent : 1;
+            // Use truncated-toward-zero division so positive and negative motion
+            // both accumulate to whole steps symmetrically.
+            int32_t newSteps;
+            int32_t remainder;
+            if (total >= 0) {
+                newSteps = total / cpd;
+                remainder = total - (newSteps * cpd);
+            } else {
+                newSteps = -((-total) / cpd);
+                remainder = total - (newSteps * cpd);
+            }
+            s.rawRemainder = remainder;
+            if (newSteps != 0) {
+                s.accumulatedSteps += newSteps;
+                s.changeTime = now;
+            }
+        }
 
-                if (encoderState[i].pinA != pinAValue || encoderState[i].pinB != pinBValue) {
-                    if ((encoderState[i].pinA == encoderState[i].prevA) && (encoderState[i].pinB == encoderState[i].prevB)) {
-                        if ((encoderState[i].pinA && !encoderState[i].pinB && pinBValue) || (!encoderState[i].pinA && encoderState[i].pinB && !pinBValue)) {
-                            encoderValues[i]+=encoderIncrement;
-                        } else if ((!encoderState[i].pinA && encoderState[i].pinB && pinBValue) || (encoderState[i].pinA && !encoderState[i].pinB && !pinBValue)) {
-                            encoderValues[i]-=encoderIncrement;
-                        }
+        // Auto-center after inactivity. Only applies to analog stick modes, where
+        // accumulatedSteps == 0 maps to the joystick midpoint - giving the user a
+        // spinner that drifts back to neutral when released. Trigger / DPAD / volume
+        // modes deliberately keep their last value (a stuck-throttle would feel
+        // wrong, and DPAD/volume don't use the accumulator for steady-state output).
+        const bool isAutoCenterMode =
+            (m.mode == ENCODER_MODE_LEFT_ANALOG_X)  || (m.mode == ENCODER_MODE_LEFT_ANALOG_Y) ||
+            (m.mode == ENCODER_MODE_RIGHT_ANALOG_X) || (m.mode == ENCODER_MODE_RIGHT_ANALOG_Y);
+        if (isAutoCenterMode && m.resetAfter > 0 && (now - s.changeTime) >= m.resetAfter) {
+            s.accumulatedSteps = 0;
+            s.rawRemainder = 0;
+        }
+
+        const int32_t deltaSteps = s.accumulatedSteps - s.prevSteps;
+
+        switch (m.mode) {
+            case ENCODER_MODE_LEFT_ANALOG_X:
+                gamepad->state.lx = mapEncoderValueStick(i, s.accumulatedSteps);
+                break;
+            case ENCODER_MODE_LEFT_ANALOG_Y:
+                gamepad->state.ly = mapEncoderValueStick(i, s.accumulatedSteps);
+                break;
+            case ENCODER_MODE_RIGHT_ANALOG_X:
+                gamepad->state.rx = mapEncoderValueStick(i, s.accumulatedSteps);
+                break;
+            case ENCODER_MODE_RIGHT_ANALOG_Y:
+                gamepad->state.ry = mapEncoderValueStick(i, s.accumulatedSteps);
+                break;
+            case ENCODER_MODE_LEFT_TRIGGER:
+                gamepad->state.lt = (uint8_t)mapEncoderValueTrigger(i, s.accumulatedSteps);
+                break;
+            case ENCODER_MODE_RIGHT_TRIGGER:
+                gamepad->state.rt = (uint8_t)mapEncoderValueTrigger(i, s.accumulatedSteps);
+                break;
+            case ENCODER_MODE_DPAD_X:
+            case ENCODER_MODE_DPAD_Y: {
+                const int8_t pulse = mapEncoderValueDPad(i, deltaSteps);
+                if (pulse != 0) {
+                    s.pulseDir = pulse;
+                    // Hold for at least pulseHoldMs (default 30 ms) so a host poll
+                    // is guaranteed to see the press even at 1 ms input cadence.
+                    s.pulseUntil = now + (m.pulseHoldMs ? m.pulseHoldMs : 1);
+                }
+                if (s.pulseDir != 0 && now < s.pulseUntil) {
+                    if (m.mode == ENCODER_MODE_DPAD_X) {
+                        if (s.pulseDir > 0) dpadRight = true; else dpadLeft = true;
+                    } else {
+                        if (s.pulseDir > 0) dpadDown = true; else dpadUp = true;
+                    }
+                } else {
+                    s.pulseDir = 0;
+                }
+                break;
+            }
+            case ENCODER_MODE_VOLUME: {
+                if (deltaSteps != 0) {
+                    const uint32_t throttle = m.pulseHoldMs ? m.pulseHoldMs : 0;
+                    if (throttle == 0 || (now - s.lastVolumeEventMs) >= throttle) {
+                        EventManager::getInstance().triggerEvent(
+                            new GPEncoderChangeEvent(i, deltaSteps > 0 ? 1 : -1));
+                        s.lastVolumeEventMs = now;
                     }
                 }
-
-                encoderState[i].pinA = pinAValue;
-                encoderState[i].pinB = pinBValue;
-                encoderState[i].prevA = pinAValue;
-                encoderState[i].prevB = pinBValue;
-                encoderState[i].updateTime = now;
+                break;
             }
-        }
-    }
-
-    for (uint8_t i = 0; i < MAX_ENCODERS; i++) {
-        if (encoderMap[i].enabled && (encoderMap[i].mode != ENCODER_MODE_NONE)) {
-            uint32_t lastChange = now - encoderState[i].changeTime;
-
-            if (encoderMap[i].mode == ENCODER_MODE_LEFT_ANALOG_X) {
-                gamepad->state.lx = -mapEncoderValueStick(i, encoderValues[i], encoderMap[i].pulsesPerRevolution);
-            } else if (encoderMap[i].mode == ENCODER_MODE_LEFT_ANALOG_Y) {
-                gamepad->state.ly = -mapEncoderValueStick(i, encoderValues[i], encoderMap[i].pulsesPerRevolution);
-            } else if (encoderMap[i].mode == ENCODER_MODE_RIGHT_ANALOG_X) {
-                gamepad->state.rx = -mapEncoderValueStick(i, encoderValues[i], encoderMap[i].pulsesPerRevolution);
-            } else if (encoderMap[i].mode == ENCODER_MODE_RIGHT_ANALOG_Y) {
-                gamepad->state.ry = -mapEncoderValueStick(i, encoderValues[i], encoderMap[i].pulsesPerRevolution);
-            } else if (encoderMap[i].mode == ENCODER_MODE_LEFT_TRIGGER) {
-                gamepad->state.lt = mapEncoderValueTrigger(i, encoderValues[i], encoderMap[i].pulsesPerRevolution);
-            } else if (encoderMap[i].mode == ENCODER_MODE_RIGHT_TRIGGER) {
-                gamepad->state.rt = mapEncoderValueTrigger(i, encoderValues[i], encoderMap[i].pulsesPerRevolution);
-            } else if (encoderMap[i].mode == ENCODER_MODE_DPAD_X) {
-                int8_t axis = mapEncoderValueDPad(i, encoderValues[i], encoderMap[i].pulsesPerRevolution);
-                dpadLeft = (axis == 1);
-                dpadRight = (axis == -1);
-            } else if (encoderMap[i].mode == ENCODER_MODE_DPAD_Y) {
-                int8_t axis = mapEncoderValueDPad(i, encoderValues[i], encoderMap[i].pulsesPerRevolution);
-                dpadUp = (axis == 1);
-                dpadDown = (axis == -1);
-            } else if (encoderMap[i].mode == ENCODER_MODE_VOLUME) {
-                // Prevents NONE kick-out, do nothing for now but rely on GP events
-            }
-
-            if ((encoderValues[i] - prevValues[i]) != 0) {
-                encoderState[i].changeTime = now;
-
-                if ((encoderValues[i] - prevValues[i]) > 0) {
-                    EventManager::getInstance().triggerEvent(new GPEncoderChangeEvent(i, 1));
-                } else if ((encoderValues[i] - prevValues[i]) < 0) {
-                    EventManager::getInstance().triggerEvent(new GPEncoderChangeEvent(i, -1));
-                }
-            }
-
-            if ((encoderMap[i].resetAfter > 0) && (lastChange >= encoderMap[i].resetAfter)) {
-                encoderValues[i] = 0;
-            }
+            case ENCODER_MODE_NONE:
+            default:
+                break;
         }
 
-        prevValues[i] = encoderValues[i];
+        // The generic GPEncoderChangeEvent is used by the keyboard driver to drive
+        // host volume changes. Only fire it for VOLUME mode (handled above) to avoid
+        // accidental volume changes when the encoder is mapped to a stick / dpad / trigger.
+
+        s.prevSteps = s.accumulatedSteps;
     }
 
-    // only modify the dpad if needed to avoid flicker
-    if (dpadUp) gamepad->state.dpad |= GAMEPAD_MASK_UP;
-    if (dpadDown) gamepad->state.dpad |= GAMEPAD_MASK_DOWN;
-    if (dpadLeft) gamepad->state.dpad |= GAMEPAD_MASK_LEFT;
+    if (dpadUp)    gamepad->state.dpad |= GAMEPAD_MASK_UP;
+    if (dpadDown)  gamepad->state.dpad |= GAMEPAD_MASK_DOWN;
+    if (dpadLeft)  gamepad->state.dpad |= GAMEPAD_MASK_LEFT;
     if (dpadRight) gamepad->state.dpad |= GAMEPAD_MASK_RIGHT;
 }
 
-uint16_t RotaryEncoderInput::mapEncoderValueStick(int8_t index, int32_t encoderValue, uint16_t ppr) {
-    // Calculate total number of positions based on PPR
-    int32_t totalPositions = ENCODER_RADIUS * (int32_t)(ppr / (ENCODER_PRECISION * encoderMap[index].multiplier));
+uint16_t RotaryEncoderInput::mapEncoderValueStick(int8_t index, int32_t steps) {
+    const EncoderPinMap& m = encoderMap[index];
+    const int32_t span = m.stepsPerFullScale > 0 ? m.stepsPerFullScale : 1;
 
-    // Calculate range of encoder values corresponding to mapped range
-    int32_t minValue = -totalPositions / 2;
-    int32_t maxValue = totalPositions / 2;
-
-    if (encoderMap[index].allowWrapAround) {
-        return encoderValue;
-    } else {
-        int32_t mappedValue = map(encoderValue, minValue, maxValue, encoderMap[index].minRange+1, encoderMap[index].maxRange);
-        int32_t constrainedValue = mappedValue;
-        
-        if (constrainedValue < encoderMap[index].minRange+1) constrainedValue = encoderMap[index].minRange+1;
-        if (constrainedValue > encoderMap[index].maxRange) constrainedValue = encoderMap[index].maxRange;
-
-        return constrainedValue;
+    if (m.allowWrapAround) {
+        // Map steps into [0, span) and then linearly across the joystick range.
+        const int32_t wrapped = wrapMod(steps, span);
+        return (uint16_t)map(wrapped, 0, span - 1, m.minRange, m.maxRange);
     }
+
+    // Center the joystick at midpoint; positive steps go toward maxRange.
+    const int32_t halfSpan = span / 2;
+    const int32_t minVal = -halfSpan;
+    const int32_t maxVal =  halfSpan;
+    int32_t mapped = map(steps, minVal, maxVal, m.minRange, m.maxRange);
+    if (mapped < m.minRange) mapped = m.minRange;
+    if (mapped > m.maxRange) mapped = m.maxRange;
+    return (uint16_t)mapped;
 }
 
-uint16_t RotaryEncoderInput::mapEncoderValueTrigger(int8_t index, int32_t encoderValue, uint16_t ppr) {
-    // Calculate total number of positions based on PPR
-    int32_t totalPositions = ENCODER_RADIUS * (int32_t)(ppr / (ENCODER_PRECISION * encoderMap[index].multiplier));
+uint16_t RotaryEncoderInput::mapEncoderValueTrigger(int8_t index, int32_t steps) {
+    const EncoderPinMap& m = encoderMap[index];
+    const int32_t span = m.stepsPerFullScale > 0 ? m.stepsPerFullScale : 1;
 
-    // Calculate range of encoder values corresponding to mapped range
-    int32_t minValue = 0;
-    int32_t maxValue = totalPositions;
-
-    if (encoderMap[index].allowWrapAround) {
-        return encoderValue;
-    } else {
-        int32_t mappedValue = map(encoderValue, minValue, maxValue, encoderMap[index].minRange, encoderMap[index].maxRange);
-        int32_t constrainedValue = bounds(mappedValue, encoderMap[index].minRange, encoderMap[index].maxRange-1);
-
-        return constrainedValue;
+    if (m.allowWrapAround) {
+        const int32_t wrapped = wrapMod(steps, span);
+        return (uint16_t)map(wrapped, 0, span - 1, m.minRange, m.maxRange);
     }
+
+    int32_t mapped = map(steps, 0, span, m.minRange, m.maxRange);
+    if (mapped < m.minRange) mapped = m.minRange;
+    if (mapped > m.maxRange) mapped = m.maxRange;
+    return (uint16_t)mapped;
 }
 
-int8_t RotaryEncoderInput::mapEncoderValueDPad(int8_t index, int32_t encoderValue, uint16_t ppr) {
-    // Calculate total number of positions based on PPR
-    int32_t totalPositions = ENCODER_RADIUS * (int32_t)(ppr / (ENCODER_PRECISION * encoderMap[index].multiplier));
-
-    // Calculate range of encoder values corresponding to mapped range
-    int32_t minValue = -totalPositions / 2;
-    int32_t maxValue = totalPositions / 2;
-
-    // Calculate thresholds for left and right turns
-    int32_t leftThreshold = minValue + (maxValue - minValue) / 3;
-    int32_t rightThreshold = maxValue - (maxValue - minValue) / 3;
-
-    if (encoderValue < leftThreshold) {
-        return -1;
-    } else if (encoderValue > rightThreshold) {
-        return 1;
-    } else {
-        return 0;
-    }
+int8_t RotaryEncoderInput::mapEncoderValueDPad(int8_t /*index*/, int32_t deltaSteps) {
+    if (deltaSteps > 0) return +1;
+    if (deltaSteps < 0) return -1;
+    return 0;
 }
 
 int32_t RotaryEncoderInput::map(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max) {
-    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+    if (in_max == in_min) return out_min;
+    return (int32_t)(((int64_t)(x - in_min) * (int64_t)(out_max - out_min)) / (int64_t)(in_max - in_min)) + out_min;
 }
 
-int32_t RotaryEncoderInput::bounds(int32_t x, int32_t out_min, int32_t out_max) {
-    return (x < out_min) ? out_min : ((x > out_max) ? out_max : x);
-}
-
-int8_t RotaryEncoderInput::getEncoderIndexByPin(uint8_t pin) {
-    for (uint8_t i = 0; i < MAX_ENCODERS; i++) {
-        if (encoderMap[i].enabled && ((encoderMap[i].pinA != -1) && (encoderMap[i].pinB != -1))) {
-            if ((encoderMap[i].pinA == pin) || (encoderMap[i].pinB == pin)) return pin;
-        }
-    }
-    return -1;
+int32_t RotaryEncoderInput::wrapMod(int32_t value, int32_t modulus) {
+    if (modulus <= 0) return 0;
+    int32_t r = value % modulus;
+    if (r < 0) r += modulus;
+    return r;
 }

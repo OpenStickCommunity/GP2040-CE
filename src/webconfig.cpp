@@ -1892,6 +1892,9 @@ std::string setAddonOptions()
     docToValue(rotaryOptions.encoderOne.resetAfter, doc, "encoderOneResetAfter");
     docToValue(rotaryOptions.encoderOne.allowWrapAround, doc, "encoderOneAllowWrapAround");
     docToValue(rotaryOptions.encoderOne.multiplier, doc, "encoderOneMultiplier");
+    docToValue(rotaryOptions.encoderOne.countsPerDetent, doc, "encoderOneCountsPerDetent");
+    docToValue(rotaryOptions.encoderOne.encoderType, doc, "encoderOneType");
+    docToValue(rotaryOptions.encoderOne.pulseHoldMs, doc, "encoderOnePulseHoldMs");
     docToValue(rotaryOptions.encoderTwo.enabled, doc, "encoderTwoEnabled");
     docToPin(rotaryOptions.encoderTwo.pinA, doc, "encoderTwoPinA");
     docToPin(rotaryOptions.encoderTwo.pinB, doc, "encoderTwoPinB");
@@ -1900,6 +1903,9 @@ std::string setAddonOptions()
     docToValue(rotaryOptions.encoderTwo.resetAfter, doc, "encoderTwoResetAfter");
     docToValue(rotaryOptions.encoderTwo.allowWrapAround, doc, "encoderTwoAllowWrapAround");
     docToValue(rotaryOptions.encoderTwo.multiplier, doc, "encoderTwoMultiplier");
+    docToValue(rotaryOptions.encoderTwo.countsPerDetent, doc, "encoderTwoCountsPerDetent");
+    docToValue(rotaryOptions.encoderTwo.encoderType, doc, "encoderTwoType");
+    docToValue(rotaryOptions.encoderTwo.pulseHoldMs, doc, "encoderTwoPulseHoldMs");
 
     PCF8575Options& pcf8575Options = Storage::getInstance().getAddonOptions().pcf8575Options;
     docToValue(pcf8575Options.enabled, doc, "PCF8575AddonEnabled");
@@ -2350,6 +2356,9 @@ std::string getAddonOptions()
     writeDoc(doc, "encoderOneResetAfter", rotaryOptions.encoderOne.resetAfter);
     writeDoc(doc, "encoderOneAllowWrapAround", rotaryOptions.encoderOne.allowWrapAround);
     writeDoc(doc, "encoderOneMultiplier", rotaryOptions.encoderOne.multiplier);
+    writeDoc(doc, "encoderOneCountsPerDetent", rotaryOptions.encoderOne.countsPerDetent);
+    writeDoc(doc, "encoderOneType", rotaryOptions.encoderOne.encoderType);
+    writeDoc(doc, "encoderOnePulseHoldMs", rotaryOptions.encoderOne.pulseHoldMs);
     writeDoc(doc, "encoderTwoEnabled", rotaryOptions.encoderTwo.enabled);
     writeDoc(doc, "encoderTwoPinA", cleanPin(rotaryOptions.encoderTwo.pinA));
     writeDoc(doc, "encoderTwoPinB", cleanPin(rotaryOptions.encoderTwo.pinB));
@@ -2358,6 +2367,9 @@ std::string getAddonOptions()
     writeDoc(doc, "encoderTwoResetAfter", rotaryOptions.encoderTwo.resetAfter);
     writeDoc(doc, "encoderTwoAllowWrapAround", rotaryOptions.encoderTwo.allowWrapAround);
     writeDoc(doc, "encoderTwoMultiplier", rotaryOptions.encoderTwo.multiplier);
+    writeDoc(doc, "encoderTwoCountsPerDetent", rotaryOptions.encoderTwo.countsPerDetent);
+    writeDoc(doc, "encoderTwoType", rotaryOptions.encoderTwo.encoderType);
+    writeDoc(doc, "encoderTwoPulseHoldMs", rotaryOptions.encoderTwo.pulseHoldMs);
 
     PCF8575Options& pcf8575Options = Storage::getInstance().getAddonOptions().pcf8575Options;
     writeDoc(doc, "PCF8575AddonEnabled", pcf8575Options.enabled);

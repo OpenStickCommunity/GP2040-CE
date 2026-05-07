@@ -836,6 +836,15 @@ message RotaryPinOptions
     optional uint32 resetAfter = 6;
     optional bool allowWrapAround = 7;
     optional float multiplier = 8;
+    // Number of raw quadrature edges that make up one logical "step".
+    // 4 = full quadrature (one step per detent on a typical mechanical encoder),
+    // 2 = half quadrature, 1 = every edge (highest resolution, e.g. optical spinners).
+    optional uint32 countsPerDetent = 9;
+    // Encoder hardware type. Influences UI defaults; decoder behaviour is governed by countsPerDetent.
+    optional RotaryEncoderType encoderType = 10;
+    // Milliseconds to hold a DPAD direction after each step. Also used as the minimum
+    // separation between repeated VOLUME events. 0 disables hold (single-frame pulse).
+    optional uint32 pulseHoldMs = 11;
 }
 
 message RotaryOptions
