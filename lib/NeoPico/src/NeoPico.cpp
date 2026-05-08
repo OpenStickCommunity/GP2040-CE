@@ -31,19 +31,12 @@ void NeoPico::PutPixel(uint32_t pixelData) {
     case LED_FORMAT_RGBW:
       pio_sm_put_blocking(pio, stateMachine, pixelData);
       break;
-    default:
-      // A corrupted format value is treated as a no-op rather than falling
-      // through with undefined PIO state-machine input.
-      break;
   }
 }
 
 void NeoPico::Setup(int ledPin, int inNumPixels, LEDFormat inFormat, PIO inPio, int inState){
   format = inFormat;
   pio = inPio;
-  // Defensively cap the configured pixel count so Show() never reads past frame[].
-  if (inNumPixels < 0) inNumPixels = 0;
-  if (inNumPixels > NEOPICO_MAX_LEDS) inNumPixels = NEOPICO_MAX_LEDS;
   numPixels = inNumPixels;
   stateMachine = inState;
   uint offset = pio_add_program(pio, &ws2812_program);

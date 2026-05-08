@@ -16,9 +16,7 @@
 #include "enums.h"
 #include "helper.h"
 
-// FRAME_MAX must match NEOPICO_MAX_LEDS so this addon's frame[] and the underlying
-// NeoPico/AnimationStation buffers stay in sync. Defined via NeoPico.h.
-#define FRAME_MAX NEOPICO_MAX_LEDS
+#define FRAME_MAX 100
 #define AL_ROW	5
 #define AL_COL	8
 #define AL_STATIC_COLOR_COUNT	14
@@ -176,15 +174,10 @@ PLEDAnimationState getPS3AnimationNEOPICO(uint16_t ledState)
 
     if (ledState != 0) {
         uint8_t ledNumber = ledState & 0x0F;
-        // ps3LEDs only defines rows for ledNumber 1..10. The host can put 11..15 in
-        // (ledState & 0x0F); reading ps3LEDs[ledNumber-1] for those values would walk past
-        // the table. Bound the index here.
-        if (ledNumber >= 1 && ledNumber <= 10) {
-            if (ps3LEDs[ledNumber-1][0] == 0x01) animationState.state |= PLED_STATE_LED1;
-            if (ps3LEDs[ledNumber-1][1] == 0x01) animationState.state |= PLED_STATE_LED2;
-            if (ps3LEDs[ledNumber-1][2] == 0x01) animationState.state |= PLED_STATE_LED3;
-            if (ps3LEDs[ledNumber-1][3] == 0x01) animationState.state |= PLED_STATE_LED4;
-        }
+        if (ps3LEDs[ledNumber-1][0] == 0x01) animationState.state |= PLED_STATE_LED1;
+        if (ps3LEDs[ledNumber-1][1] == 0x01) animationState.state |= PLED_STATE_LED2;
+        if (ps3LEDs[ledNumber-1][2] == 0x01) animationState.state |= PLED_STATE_LED3;
+        if (ps3LEDs[ledNumber-1][3] == 0x01) animationState.state |= PLED_STATE_LED4;
     }
 
     if (animationState.state != 0) {
@@ -285,15 +278,6 @@ void NeoPicoLEDAddon::setup() {
         ledCount += (int)ledOptions.caseRGBCount;
     }
 
-	// Clamp to the shared NEOPICO_MAX_LEDS bound so we never overflow frame[] / linkageFrame[]
-	// in NeoPico, AnimationStation, or this addon. A bad/very large config used to silently
-	// corrupt memory across all three buffers.
-	if (ledCount < 0) {
-		ledCount = 0;
-	} else if (ledCount > NEOPICO_MAX_LEDS) {
-		ledCount = NEOPICO_MAX_LEDS;
-	}
-
 	// Setup NeoPico ws2812 PIO
 	neopico.Setup(ledOptions.dataPin, ledCount, static_cast<LEDFormat>(ledOptions.ledFormat), pio0, 0);
 	neopico.Off(); // turn off everything
@@ -328,17 +312,10 @@ void NeoPicoLEDAddon::setup() {
 
 	// Start of chase light index is case rgb index
 	chaseLightIndex = ledOptions.caseRGBIndex;
-	chaseLightMaxIndexPos = (uint16_t)ledCount;
+	chaseLightMaxIndexPos = ledCount;
 
-	// Guard against a configuration where the matrix produced no button-mapped LEDs;
-	// dividing by zero here used to be undefined behavior at boot time.
-	if (buttonLedCount > 0) {
-		multipleOfButtonLedsCount = (ledOptions.caseRGBCount) / (buttonLedCount);
-		remainderOfButtonLedsCount = (ledOptions.caseRGBCount) % (buttonLedCount);
-	} else {
-		multipleOfButtonLedsCount = 0;
-		remainderOfButtonLedsCount = (uint8_t)ledOptions.caseRGBCount;
-	}
+	multipleOfButtonLedsCount = (ledOptions.caseRGBCount) / (buttonLedCount);
+	remainderOfButtonLedsCount = (ledOptions.caseRGBCount) % (buttonLedCount);
 
     alLinkageStartIndex = ledOptions.caseRGBIndex;
 }

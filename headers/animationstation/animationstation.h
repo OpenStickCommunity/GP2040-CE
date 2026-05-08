@@ -45,8 +45,8 @@ public:
     void IncreaseBrightness();
     void DimBrightnessTo0();
     uint8_t GetBrightnessSteps(){ return this->brightnessSteps; };
-    uint8_t GetCustomBrightnessStepsSize(){ return brightnessSteps == 0 ? 0 : (brightnessMax / brightnessSteps); };
-    RGB linkageFrame[NEOPICO_MAX_LEDS]; // copy baseAnimation frame exclude buttonAnimation frame
+    uint8_t GetCustomBrightnessStepsSize(){ return (brightnessMax / brightnessSteps); };
+    RGB linkageFrame[100]; // copy baseAnimation frame exclude buttonAnimation frame
 
 private:
     Animation* baseAnimation;
@@ -54,7 +54,7 @@ private:
     std::vector<Pixel> lastPressed;
     absolute_time_t nextChange;
     uint8_t effectCount;
-    RGB frame[NEOPICO_MAX_LEDS];
+    RGB frame[100];
     bool ambientLightEffectsChangeFlag = false; 
     bool ambientLightOnOffFlag = false;
     bool ambientLightLinkageOnOffFlag = false;
@@ -65,8 +65,8 @@ private:
     bool alGradientChaseBreathSpeedUpFlag = false;
     bool alGradientChaseBreathSpeedDownFlag = false;
     bool alCustomLinkageModeFlag = false;
-    uint8_t getBrightnessStepSize() { return brightnessSteps == 0 ? 0 : (brightnessMax / brightnessSteps); }
-    uint8_t getLinkageModeOfBrightnessStepSize() { return brightnessSteps == 0 ? 0 : (255 / brightnessSteps); }
+    uint8_t getBrightnessStepSize() { return (brightnessMax / brightnessSteps); }
+    uint8_t getLinkageModeOfBrightnessStepSize() { return (255 / brightnessSteps); }
     float linkageModeOfBrightnessX;
     uint8_t brightnessMax;
     uint8_t brightnessSteps;

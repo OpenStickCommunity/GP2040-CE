@@ -254,7 +254,7 @@ private:
     std::map<std::string, int> buttonPositions;
     PLEDType ledType;
     GamepadHotkey lastAmbientAction;
-    uint32_t frame[NEOPICO_MAX_LEDS];
+    uint32_t frame[100];
 
     // Ambient neopico leds
 	float alBrightnessBreathX;
@@ -266,9 +266,7 @@ private:
     RGB ambientLight;
 	absolute_time_t nextRunTimeAmbientLight;
     uint8_t chaseLightIndex;
-    // Was uint8_t but the chain length can exceed 255 (NEOPICO_MAX_LEDS may grow); using a
-    // wider type avoids silent truncation in chase / wrap logic that compares against ledCount.
-    uint16_t chaseLightMaxIndexPos;
+    uint8_t chaseLightMaxIndexPos;
 
     uint8_t multipleOfButtonLedsCount;
     uint8_t remainderOfButtonLedsCount;

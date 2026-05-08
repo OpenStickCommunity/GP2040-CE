@@ -4,15 +4,6 @@
 #include "ws2812.pio.h"
 #include <vector>
 
-// Hard upper bound on LED chain length. All LED-related fixed-size buffers across the firmware
-// (NeoPico::frame, AnimationStation::frame/linkageFrame, NeoPicoLEDAddon::frame) MUST use this
-// value so they stay in lock-step. Any caller that computes an LED count from configuration
-// must clamp the result to NEOPICO_MAX_LEDS before passing it into NeoPico::Setup, otherwise
-// Show() / SetFrame() / button-position writes can run off the end of these arrays.
-#ifndef NEOPICO_MAX_LEDS
-#define NEOPICO_MAX_LEDS 100
-#endif
-
 typedef enum
 {
   LED_FORMAT_GRB = 0,
@@ -37,7 +28,7 @@ private:
   PIO pio = pio1;
   int stateMachine = 0;
   int numPixels = 0;
-  uint32_t frame[NEOPICO_MAX_LEDS];
+  uint32_t frame[100];
 };
 
 #endif
