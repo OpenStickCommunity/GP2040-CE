@@ -17,7 +17,7 @@ public:
 
   void AddTheme(const std::map<uint32_t, RGB>& theme) { themes.push_back(theme); }
   void ClearThemes() { themes.clear(); }
-  bool Animate(RGB (&frame)[100]);
+  bool Animate(RGB (&frame)[NEOPICO_MAX_LEDS]);
   void ParameterUp();
   void ParameterDown();
 protected:

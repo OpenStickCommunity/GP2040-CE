@@ -8,7 +8,7 @@
 Chase::Chase(PixelMatrix &matrix) : Animation(matrix) {
 }
 
-bool Chase::Animate(RGB (&frame)[100]) {
+bool Chase::Animate(RGB (&frame)[NEOPICO_MAX_LEDS]) {
   if (!time_reached(this->nextRunTime)) {
     return false;
   }

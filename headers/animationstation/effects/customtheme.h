@@ -11,7 +11,7 @@ public:
   ~CustomTheme() {  };
 
   bool HasTheme();
-  bool Animate(RGB (&frame)[100]);
+  bool Animate(RGB (&frame)[NEOPICO_MAX_LEDS]);
   void ParameterUp();
   void ParameterDown();
 protected:

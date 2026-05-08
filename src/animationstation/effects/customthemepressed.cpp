@@ -56,7 +56,7 @@ CustomThemePressed::CustomThemePressed(PixelMatrix &matrix, std::vector<Pixel> &
 	}
 }
 
-bool CustomThemePressed::Animate(RGB (&frame)[100]) {
+bool CustomThemePressed::Animate(RGB (&frame)[NEOPICO_MAX_LEDS]) {
   for (size_t r = 0; r != matrix->pixels.size(); r++) {
     for (size_t c = 0; c != matrix->pixels[r].size(); c++) {
       if (matrix->pixels[r][c].index == NO_PIXEL.index || this->notInFilter(matrix->pixels[r][c]))

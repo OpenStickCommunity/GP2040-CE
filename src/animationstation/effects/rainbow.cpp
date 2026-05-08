@@ -4,7 +4,7 @@
 Rainbow::Rainbow(PixelMatrix &matrix) : Animation(matrix) {
 }
 
-bool Rainbow::Animate(RGB (&frame)[100]) {
+bool Rainbow::Animate(RGB (&frame)[NEOPICO_MAX_LEDS]) {
   if (!time_reached(this->nextRunTime)) {
     return false;
   }

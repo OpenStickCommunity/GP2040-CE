@@ -9,7 +9,7 @@ StaticColor::StaticColor(PixelMatrix &matrix, std::vector<Pixel> &inpixels) : An
   pixels = inpixels;
 }
 
-bool StaticColor::Animate(RGB (&frame)[100]) {
+bool StaticColor::Animate(RGB (&frame)[NEOPICO_MAX_LEDS]) {
   UpdateTime();
   UpdatePresses(frame);
 

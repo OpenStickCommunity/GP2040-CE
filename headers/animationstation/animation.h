@@ -118,9 +118,9 @@ public:
   static LEDFormat format;
 
   bool notInFilter(Pixel pixel);
-  virtual bool Animate(RGB (&frame)[100]) = 0;
+  virtual bool Animate(RGB (&frame)[NEOPICO_MAX_LEDS]) = 0;
   void UpdateTime();
-  void UpdatePresses(RGB (&frame)[100]);
+  void UpdatePresses(RGB (&frame)[NEOPICO_MAX_LEDS]);
   void DecrementFadeCounter(int32_t index);
 
   virtual void ParameterUp() = 0;

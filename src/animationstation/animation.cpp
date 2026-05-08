@@ -34,7 +34,7 @@ void Animation::UpdateTime() {
   lastUpdateTime = currentTime;
 }
 
-void Animation::UpdatePresses(RGB (&frame)[100]) {
+void Animation::UpdatePresses(RGB (&frame)[NEOPICO_MAX_LEDS]) {
   // Queue up blend on hit
   for (size_t p = 0; p < pixels.size(); p++) {
     if (pixels[p].index != NO_PIXEL.index) {

@@ -119,8 +119,10 @@ uint16_t AnimationStation::AdjustIndex(int changeSize) {
 
 void AnimationStation::HandlePressed(std::vector<Pixel> pressed) {
   this->lastPressed = pressed;
-  this->baseAnimation->UpdatePixels(pressed);  
-  this->buttonAnimation->UpdatePixels(pressed);
+  if (this->baseAnimation != nullptr)
+    this->baseAnimation->UpdatePixels(pressed);
+  if (this->buttonAnimation != nullptr)
+    this->buttonAnimation->UpdatePixels(pressed);
 }
 
 void AnimationStation::ClearPressed() {
@@ -214,7 +216,7 @@ void AnimationStation::SetMatrix(PixelMatrix matrix) {
 }
 
 void AnimationStation::ApplyBrightness(uint32_t *frameValue) {
-  for (int i = 0; i < 100; i++)
+  for (int i = 0; i < NEOPICO_MAX_LEDS; i++)
     frameValue[i] = this->frame[i].value(Animation::format, brightnessX);
 }
 
@@ -244,10 +246,8 @@ void AnimationStation::DecreaseBrightness() {
 
 void AnimationStation::IncreaseBrightness() {
   AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
-  if (animationOptions.brightness < getBrightnessStepSize())
-    SetBrightness(animationOptions.brightness+1);
-  else if (animationOptions.brightness > getBrightnessStepSize())
-    SetBrightness(brightnessSteps);
+  if (animationOptions.brightness < brightnessSteps)
+    SetBrightness(animationOptions.brightness + 1);
 }
 
 void AnimationStation::DimBrightnessTo0() {

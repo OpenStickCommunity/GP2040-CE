@@ -326,9 +326,12 @@ void NeoPicoLEDAddon::setup() {
 	ambientLight.b = 0x00;
 	nextRunTimeAmbientLight = make_timeout_time_ms(0);
 
-	// Start of chase light index is case rgb index
-	chaseLightIndex = ledOptions.caseRGBIndex;
+	// Start of chase light index is case rgb index.
+	// Clamp to the valid LED range: if caseRGBIndex >= ledCount then frame[]
+	// writes in ambientLightCustom() would go out of bounds.
 	chaseLightMaxIndexPos = (uint16_t)ledCount;
+	chaseLightIndex = (chaseLightMaxIndexPos > 0 && ledOptions.caseRGBIndex >= chaseLightMaxIndexPos)
+	                  ? 0 : ledOptions.caseRGBIndex;
 
 	// Guard against a configuration where the matrix produced no button-mapped LEDs;
 	// dividing by zero here used to be undefined behavior at boot time.

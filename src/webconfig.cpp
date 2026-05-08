@@ -355,7 +355,11 @@ err_t httpd_post_receive_data(void *connection, struct pbuf *p)
 {
     LWIP_UNUSED_ARG(connection);
 
-    // Cache the received data to http_post_payload
+    // Cache the received data to http_post_payload.
+    // Save the chain head so we always free the whole chain, regardless of whether
+    // we break early (overflow path) or exhaust the chain (normal path where p
+    // becomes NULL before the loop exits).
+    struct pbuf * const head = p;
     while (p != NULL)
     {
         if (http_post_payload_len + p->len <= LWIP_HTTPD_POST_MAX_PAYLOAD_LEN)
@@ -372,8 +376,10 @@ err_t httpd_post_receive_data(void *connection, struct pbuf *p)
         p = p->next;
     }
 
-    // Need to release memory here or will leak
-    pbuf_free(p);
+    // Free from the head of the chain — pbuf_free(NULL) is a no-op and would
+    // leak the entire chain; pbuf_free on a mid-chain node (overflow break path)
+    // would leak the head and all preceding nodes.
+    pbuf_free(head);
 
     // If the buffer overflows, error out
     if (http_post_payload_len == 0xffff) {

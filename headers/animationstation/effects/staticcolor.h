@@ -13,7 +13,7 @@ public:
   StaticColor(PixelMatrix &matrix, std::vector<Pixel> &pixels);
   ~StaticColor() { };
 
-  bool Animate(RGB (&frame)[100]);
+  bool Animate(RGB (&frame)[NEOPICO_MAX_LEDS]);
   void SaveIndexOptions(uint8_t colorIndex);
   uint8_t GetColor();
   void ParameterUp();

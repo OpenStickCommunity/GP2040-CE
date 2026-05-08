@@ -304,7 +304,7 @@ StaticTheme::StaticTheme(PixelMatrix &matrix) : Animation(matrix) {
 	}
 }
 
-bool StaticTheme::Animate(RGB (&frame)[100]) {
+bool StaticTheme::Animate(RGB (&frame)[NEOPICO_MAX_LEDS]) {
   AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
   if (themes.size() > 0) {
     UpdateTime();

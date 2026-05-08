@@ -26,7 +26,7 @@ CustomTheme::CustomTheme(PixelMatrix &matrix) : Animation(matrix) {
 	}
 }
 
-bool CustomTheme::Animate(RGB (&frame)[100]) {
+bool CustomTheme::Animate(RGB (&frame)[NEOPICO_MAX_LEDS]) {
   UpdateTime();
   UpdatePresses(frame);
 
