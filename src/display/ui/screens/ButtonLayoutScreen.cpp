@@ -6,12 +6,6 @@
 #include "drivers/xinput/XInputDriver.h"
 #include "drivers/p5general/P5GeneralDriver.h"
 
-namespace {
-// When input history is on, rows 0-7 are status + footer; layouts use full-frame coordinates.
-// Shifting layout Y up compensates remaining vertical gap (~5–6px at 128×64 after viewport scale).
-constexpr uint16_t inputHistoryLayoutYShift = 6;
-}
-
 void ButtonLayoutScreen::init() {
     isInputHistoryEnabled = Storage::getInstance().getDisplayOptions().inputHistoryEnabled;
     inputHistoryX = Storage::getInstance().getDisplayOptions().inputHistoryRow;
@@ -328,15 +322,10 @@ GPSprite* ButtonLayoutScreen::addSprite(uint16_t startX, uint16_t startY, uint16
 }
 
 GPWidget* ButtonLayoutScreen::pushElement(GPButtonLayout element) {
-    const uint16_t yTrim = isInputHistoryEnabled ? inputHistoryLayoutYShift : 0;
-    auto trimY = [yTrim](uint16_t y) -> uint16_t {
-        return (y >= yTrim) ? static_cast<uint16_t>(y - yTrim) : 0;
-    };
-
     if (element.elementType == GP_ELEMENT_LEVER) {
-        return addLever(element.parameters.x1, trimY(element.parameters.y1), element.parameters.x2, element.parameters.y2, element.parameters.stroke, element.parameters.fill, element.parameters.value);
+        return addLever(element.parameters.x1, element.parameters.y1, element.parameters.x2, element.parameters.y2, element.parameters.stroke, element.parameters.fill, element.parameters.value);
     } else if ((element.elementType == GP_ELEMENT_BTN_BUTTON) || (element.elementType == GP_ELEMENT_DIR_BUTTON) || (element.elementType == GP_ELEMENT_PIN_BUTTON)) {
-        GPButton* button = addButton(element.parameters.x1, trimY(element.parameters.y1), element.parameters.x2, element.parameters.y2, element.parameters.stroke, element.parameters.fill, element.parameters.value);
+        GPButton* button = addButton(element.parameters.x1, element.parameters.y1, element.parameters.x2, element.parameters.y2, element.parameters.stroke, element.parameters.fill, element.parameters.value);
 
         // set type of button
         button->setInputType(element.elementType);
@@ -350,9 +339,9 @@ GPWidget* ButtonLayoutScreen::pushElement(GPButtonLayout element) {
 
         return (GPWidget*)button;
     } else if (element.elementType == GP_ELEMENT_SPRITE) {
-        return addSprite(element.parameters.x1, trimY(element.parameters.y1), element.parameters.x2, element.parameters.y2);
+        return addSprite(element.parameters.x1, element.parameters.y1, element.parameters.x2, element.parameters.y2);
     } else if (element.elementType == GP_ELEMENT_SHAPE) {
-        GPShape* shape = addShape(element.parameters.x1, trimY(element.parameters.y1), element.parameters.x2, element.parameters.y2, element.parameters.stroke, element.parameters.fill);
+        GPShape* shape = addShape(element.parameters.x1, element.parameters.y1, element.parameters.x2, element.parameters.y2, element.parameters.stroke, element.parameters.fill);
         shape->setShape((GPShape_Type)element.parameters.shape);
         shape->setAngle(element.parameters.angleStart);
         shape->setAngleEnd(element.parameters.angleEnd);

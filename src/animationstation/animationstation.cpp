@@ -25,7 +25,10 @@ AnimationStation::AnimationStation() {
 
 void AnimationStation::ConfigureBrightness(uint8_t max, uint8_t steps) {
   brightnessMax = max;
-  brightnessSteps = steps;
+  // Guard against a zero/corrupt config that would otherwise divide-by-zero in
+  // getBrightnessStepSize() / getLinkageModeOfBrightnessStepSize() and other places that
+  // divide by brightnessSteps.
+  brightnessSteps = (steps == 0) ? 1 : steps;
 }
 
 void AnimationStation::HandleEvent(GamepadHotkey action) {
@@ -139,8 +142,10 @@ void AnimationStation::Animate() {
 
   // Only copy our frame to linkage frame if the animation effect updated our frame[]
   if ( baseAnimation->Animate(this->frame) == true ) {
-    // Copy frame to linkage frame before button press
-    for(int i = 0; i < 100; i++){
+    // Copy frame to linkage frame before button press. Bounded by the shared
+    // NEOPICO_MAX_LEDS so this stays in lock-step with frame[] / linkageFrame[]
+    // sizing if NEOPICO_MAX_LEDS ever changes.
+    for(int i = 0; i < NEOPICO_MAX_LEDS; i++){
       linkageFrame[i] = this->frame[i];
     }
   }
