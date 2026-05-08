@@ -196,6 +196,7 @@ export default function DisplayConfigPage() {
 	const { updateUsedPins, getAvailablePeripherals, updatePeripherals } =
 		useContext(AppContext);
 	const [saveMessage, setSaveMessage] = useState('');
+	const splashImageDirty = useRef(false);
 
 	const { t } = useTranslation('');
 
@@ -204,6 +205,7 @@ export default function DisplayConfigPage() {
 			const data = await WebApi.getDisplayOptions();
 			const splashImageResponse = await WebApi.getSplashImage();
 			data.splashImage = splashImageResponse?.splashImage || [];
+			splashImageDirty.current = false;
 			buttonLayoutDefinitions = await WebApi.getButtonLayoutDefs();
 			buttonLayoutSchema = buttonLayoutSchema.oneOf(
 				Object.values(buttonLayoutDefinitions.buttonLayout),
@@ -220,8 +222,11 @@ export default function DisplayConfigPage() {
 
 	const onSuccess = async (values) => {
 		const success = await WebApi.setDisplayOptions(values, false).then(() =>
-			WebApi.setSplashImage(values),
+			splashImageDirty.current
+				? WebApi.setSplashImage(values)
+				: Promise.resolve(true),
 		);
+		splashImageDirty.current = false;
 
 		if (success) await updateUsedPins();
 
@@ -233,6 +238,7 @@ export default function DisplayConfigPage() {
 	};
 
 	const onChangeCanvas = (base64, form, field) => {
+		splashImageDirty.current = true;
 		return form.setFieldValue(field.name, base64);
 	};
 

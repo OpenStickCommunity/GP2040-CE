@@ -536,7 +536,8 @@ std::string getSplashImage()
 {
     const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
     const size_t imgSize = std::min((size_t)displayOptions.splashImage.size, sizeof(displayOptions.splashImage.bytes));
-    const size_t capacity = JSON_OBJECT_SIZE(1) + JSON_ARRAY_SIZE(imgSize);
+    // Add 1024 bytes of overhead for pool header, alignment, and VariantSlot bookkeeping
+    const size_t capacity = JSON_OBJECT_SIZE(1) + JSON_ARRAY_SIZE(imgSize) + 1024;
     DynamicJsonDocument doc(capacity);
     JsonArray splashImageArray = doc.createNestedArray("splashImage");
     copyArray(displayOptions.splashImage.bytes, imgSize, splashImageArray);
