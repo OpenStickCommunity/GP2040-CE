@@ -589,4 +589,27 @@
     {GP_ELEMENT_BTN_BUTTON, {95, 34, 6, 6, 1, 1, GAMEPAD_MASK_R2,      GP_SHAPE_ELLIPSE}}\
 }
 
+// Curvecade: left panel — L3/L2 aux buttons + joystick lever + rotary encoder
+// GP_ELEMENT_ROTARY params: x1=centerX, y1=centerY, x2=y2=ring_radius, value=encoder_index(0=Encoder1)
+#define BUTTON_GROUP_CURVECADE_A {\
+    {GP_ELEMENT_BTN_BUTTON, { 4, 22, 4, 4, 1, 1, GAMEPAD_MASK_L3,  GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_BTN_BUTTON, { 4, 38, 4, 4, 1, 1, GAMEPAD_MASK_L2,  GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_LEVER,      {22, 35, 10, 10, 1, 0, 0}},\
+    {GP_ELEMENT_ROTARY,     {39, 35,  8,  8, 1, 0, 0}}\
+}
+
+// Curvecade: right panel — 6-button arc + plunger slider + R3/R2 aux buttons
+// GP_ELEMENT_SLIDER params: x1=trackX, y1=trackTopY, x2=0(unused), y2=trackHeight, value=axis_mode
+#define BUTTON_GROUP_CURVECADE_B {\
+    {GP_ELEMENT_BTN_BUTTON, { 60, 47, 7, 7, 1, 1, GAMEPAD_MASK_B1,  GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_BTN_BUTTON, { 69, 35, 7, 7, 1, 1, GAMEPAD_MASK_B3,  GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_BTN_BUTTON, { 80, 24, 7, 7, 1, 1, GAMEPAD_MASK_B4,  GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_BTN_BUTTON, { 80, 42, 7, 7, 1, 1, GAMEPAD_MASK_B2,  GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_BTN_BUTTON, { 94, 24, 7, 7, 1, 1, GAMEPAD_MASK_L1,  GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_BTN_BUTTON, { 94, 41, 7, 7, 1, 1, GAMEPAD_MASK_R1,  GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_SLIDER,     {109, 15, 0, 40, 1, 0, GP_LEVER_MODE_RIGHT_ANALOG}},\
+    {GP_ELEMENT_BTN_BUTTON, {122, 23, 4, 4, 1, 1, GAMEPAD_MASK_R3,  GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_BTN_BUTTON, {122, 38, 4, 4, 1, 1, GAMEPAD_MASK_R2,  GP_SHAPE_ELLIPSE}}\
+}
+
 #endif

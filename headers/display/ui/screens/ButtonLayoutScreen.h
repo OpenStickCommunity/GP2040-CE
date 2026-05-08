@@ -13,6 +13,8 @@
 #include "layoutmanager.h"
 #include "GPGFX_UI_widgets.h"
 #include "GPGFX_UI_layouts.h"
+#include "display/ui/elements/GPRotaryEncoder.h"
+#include "display/ui/elements/GPSlider.h"
 
 #define INPUT_HISTORY_MAX_INPUTS 22
 #define INPUT_HISTORY_MAX_MODES 12
@@ -124,6 +126,9 @@ class ButtonLayoutScreen : public GPScreen {
         GPButton* addButton(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, int16_t inputMask = -1);
         GPSprite* addSprite(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY);
         GPShape* addShape(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor);
+        GPRotaryEncoder* addRotaryEncoder(uint16_t x, uint16_t y, uint16_t radius, uint8_t encoderIdx);
+        GPSlider* addSlider(uint16_t x, uint16_t y, uint16_t trackHeight, uint16_t axisMode);
+        void handleEncoder(GPEvent* e);
         GPWidget* pushElement(GPButtonLayout element);
         void generateHeader();
 
@@ -171,6 +176,9 @@ class ButtonLayoutScreen : public GPScreen {
         ButtonLayoutParamsLeft prevLeftOptions{};
         ButtonLayoutParamsRight prevRightOptions{};
         ButtonLayoutOrientation prevOrientation{};
+
+        float _encoderAngle[2] = {0.0f, 0.0f};
+        std::vector<GPRotaryEncoder*> _rotaryElements;
 
         bool hasTurboAssigned = false;
 
