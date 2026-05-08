@@ -167,7 +167,9 @@ LayoutManager::LayoutList LayoutManager::getLeftLayout(uint16_t index) {
         case BUTTON_LAYOUT_BOARD_DEFINED_ALT6_A:
             return drawBoardDefinedAlt6A();   
         case BUTTON_LAYOUT_BOARD_DEFINED_ALT7_A:
-            return drawBoardDefinedAlt7A();    
+            return drawBoardDefinedAlt7A();
+        case BUTTON_LAYOUT_CURVECADE_A:
+            return drawCurvecadeA();
         default:
             break;
     }
@@ -276,11 +278,21 @@ LayoutManager::LayoutList LayoutManager::getRightLayout(uint16_t index) {
             return this->drawBoardDefinedAlt6B();
         case BUTTON_LAYOUT_BOARD_DEFINED_ALT7_B:
             return this->drawBoardDefinedAlt7B();
+        case BUTTON_LAYOUT_CURVECADE_B:
+            return drawCurvecadeB();
         default:
             break;
     }
 
     return {};
+}
+
+LayoutManager::LayoutList LayoutManager::drawCurvecadeA() {
+    return BUTTON_GROUP_CURVECADE_A;
+}
+
+LayoutManager::LayoutList LayoutManager::drawCurvecadeB() {
+    return BUTTON_GROUP_CURVECADE_B;
 }
 
 LayoutManager::LayoutList LayoutManager::drawButtonLayoutLeft()

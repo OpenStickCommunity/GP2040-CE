@@ -1,5 +1,7 @@
 #include "ButtonLayoutScreen.h"
 #include "buttonlayouts.h"
+#include "events/GPEncoderEvent.h"
+#include <cmath>
 #include "drivermanager.h"
 #include "drivers/ps4/PS4Driver.h"
 #include "drivers/xbone/XBOneDriver.h"
@@ -18,6 +20,7 @@ void ButtonLayoutScreen::init() {
     EventManager::getInstance().registerEventHandler(GP_EVENT_PROFILE_CHANGE, GPEVENT_CALLBACK(this->handleProfileChange(event)), this);
     EventManager::getInstance().registerEventHandler(GP_EVENT_USBHOST_MOUNT, GPEVENT_CALLBACK(this->handleUSB(event)), this);
     EventManager::getInstance().registerEventHandler(GP_EVENT_USBHOST_UNMOUNT, GPEVENT_CALLBACK(this->handleUSB(event)), this);
+    EventManager::getInstance().registerEventHandler(GP_EVENT_ENCODER_CHANGE, GPEVENT_CALLBACK(this->handleEncoder(event)), this);
     
     footer = "";
     historyString = "";
@@ -86,10 +89,12 @@ void ButtonLayoutScreen::init() {
 
 void ButtonLayoutScreen::shutdown() {
     clearElements();
+    _rotaryElements.clear();
 
     EventManager::getInstance().unregisterEventHandler(GP_EVENT_PROFILE_CHANGE, this);
     EventManager::getInstance().unregisterEventHandler(GP_EVENT_USBHOST_MOUNT, this);
     EventManager::getInstance().unregisterEventHandler(GP_EVENT_USBHOST_UNMOUNT, this);
+    EventManager::getInstance().unregisterEventHandler(GP_EVENT_ENCODER_CHANGE, this);
 }
 
 int8_t ButtonLayoutScreen::update() {
@@ -312,6 +317,30 @@ GPShape* ButtonLayoutScreen::addShape(uint16_t startX, uint16_t startY, uint16_t
     return (GPShape*)addElement(shape);
 }
 
+GPRotaryEncoder* ButtonLayoutScreen::addRotaryEncoder(uint16_t x, uint16_t y, uint16_t radius, uint8_t encoderIdx) {
+    GPRotaryEncoder* enc = new GPRotaryEncoder();
+    enc->setRenderer(getRenderer());
+    enc->setPosition(x, y);
+    enc->setStrokeColor(1);
+    enc->setFillColor(0);
+    enc->setRadius(radius);
+    enc->setEncoderIndex(encoderIdx);
+    enc->setViewport(this->getViewport());
+    return (GPRotaryEncoder*)addElement(enc);
+}
+
+GPSlider* ButtonLayoutScreen::addSlider(uint16_t x, uint16_t y, uint16_t trackHeight, uint16_t axisMode) {
+    GPSlider* s = new GPSlider();
+    s->setRenderer(getRenderer());
+    s->setPosition(x, y);
+    s->setStrokeColor(1);
+    s->setFillColor(0);
+    s->setTrackHeight(trackHeight);
+    s->setAxisMode(axisMode);
+    s->setViewport(this->getViewport());
+    return (GPSlider*)addElement(s);
+}
+
 GPSprite* ButtonLayoutScreen::addSprite(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY) {
     GPSprite* sprite = new GPSprite();
     sprite->setRenderer(getRenderer());
@@ -338,6 +367,15 @@ GPWidget* ButtonLayoutScreen::pushElement(GPButtonLayout element) {
         if (element.elementType == GP_ELEMENT_DIR_BUTTON) button->setInputDirection(true);
 
         return (GPWidget*)button;
+    } else if (element.elementType == GP_ELEMENT_ROTARY) {
+        GPRotaryEncoder* enc = addRotaryEncoder(
+            element.parameters.x1, element.parameters.y1,
+            element.parameters.x2, (uint8_t)element.parameters.value);
+        _rotaryElements.push_back(enc);
+        return enc;
+    } else if (element.elementType == GP_ELEMENT_SLIDER) {
+        return addSlider(element.parameters.x1, element.parameters.y1,
+                         element.parameters.y2, element.parameters.value);
     } else if (element.elementType == GP_ELEMENT_SPRITE) {
         return addSprite(element.parameters.x1, element.parameters.y1, element.parameters.x2, element.parameters.y2);
     } else if (element.elementType == GP_ELEMENT_SHAPE) {
@@ -565,4 +603,18 @@ void ButtonLayoutScreen::handleUSB(GPEvent* e) {
 void ButtonLayoutScreen::trim(std::string &s) {
     s.erase(s.begin(), std::find_if(s.begin(), s.end(),
             [](unsigned char c) { return !std::isspace(c); }));
+}
+
+void ButtonLayoutScreen::handleEncoder(GPEvent* e) {
+    GPEncoderChangeEvent* ev = (GPEncoderChangeEvent*)e;
+    uint8_t idx = ev->encoder;
+    if (idx < 2) {
+        _encoderAngle[idx] = fmod(
+            _encoderAngle[idx] + ev->direction * (360.0f / 24.0f) * ev->magnitude,
+            360.0f);
+        if (_encoderAngle[idx] < 0.0f) _encoderAngle[idx] += 360.0f;
+        for (auto* r : _rotaryElements) {
+            if (r->getEncoderIndex() == idx) r->setAngle(_encoderAngle[idx]);
+        }
+    }
 }

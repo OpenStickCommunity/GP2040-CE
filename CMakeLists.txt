@@ -272,6 +272,8 @@ src/display/ui/elements/GPMenu.cpp
 src/display/ui/elements/GPScreen.cpp
 src/display/ui/elements/GPShape.cpp
 src/display/ui/elements/GPSprite.cpp
+src/display/ui/elements/GPRotaryEncoder.cpp
+src/display/ui/elements/GPSlider.cpp
 src/display/ui/screens/ButtonLayoutScreen.cpp
 src/display/ui/screens/ConfigScreen.cpp
 src/display/ui/screens/MainMenuScreen.cpp
