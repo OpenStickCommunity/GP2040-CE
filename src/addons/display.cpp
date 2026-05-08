@@ -151,10 +151,21 @@ bool DisplayAddon::isDisplayPowerOff()
     if (turnOffWhenSuspended && get_usb_suspended()) {
         if (displayIsPowerOn)
             setDisplayPower(0);
+        prevMillis = getMillis();   // keep timer advancing; prevents suspend-duration spike on resume
         return true;
     } else {
         if (!displayIsPowerOn)
             setDisplayPower(1);
+    }
+
+    // Suppress the display saver while the splash screen is running.
+    // The splash has its own timed exit (SplashScreen::update → BUTTONS); allowing
+    // the saver to fire mid-splash aborts that transition and the buttons screen
+    // never appears. Reset prevMillis so the saver countdown starts fresh once
+    // the buttons screen is shown.
+    if (currDisplayMode == DisplayMode::SPLASH) {
+        prevMillis = getMillis();
+        return false;
     }
 
     if (!displaySaverTimeout) return false;
@@ -213,7 +224,10 @@ void DisplayAddon::process() {
     if (nextDisplayMode != currDisplayMode ) {
         currDisplayMode = nextDisplayMode;
         updateDisplayScreen();
+        if (gpScreen == nullptr) return;   // unknown mode: updateDisplayScreen set gpScreen null
     }
+
+    if (gpScreen == nullptr) return;       // safety: covers failed init from setup() path
 
     int8_t screenReturn = gpScreen->update();
     gpScreen->draw();
@@ -236,6 +250,7 @@ void DisplayAddon::process() {
         if (screenReturn != currDisplayMode) {
             currDisplayMode = (DisplayMode)screenReturn;
             updateDisplayScreen();
+            if (gpScreen == nullptr) return;   // unknown mode returned by screen
         }
     }
 }
