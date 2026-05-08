@@ -274,7 +274,7 @@ int set_file_data(fs_file* file, const DataAndStatusCode& dataAndStatusCode)
 int set_file_data(fs_file *file, string&& data)
 {
     if (data.empty())
-        return 0;
+        return set_file_data(file, DataAndStatusCode("{\"error\":\"empty response\"}", HttpStatusCode::_500));
     return set_file_data(file, DataAndStatusCode(std::move(data), HttpStatusCode::_200));
 }
 
@@ -529,10 +529,11 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
 std::string getSplashImage()
 {
     const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
-    const size_t capacity = JSON_OBJECT_SIZE(1) + JSON_ARRAY_SIZE(displayOptions.splashImage.size);
+    const size_t imgSize = std::min((size_t)displayOptions.splashImage.size, sizeof(displayOptions.splashImage.bytes));
+    const size_t capacity = JSON_OBJECT_SIZE(1) + JSON_ARRAY_SIZE(imgSize);
     DynamicJsonDocument doc(capacity);
     JsonArray splashImageArray = doc.createNestedArray("splashImage");
-    copyArray(displayOptions.splashImage.bytes, displayOptions.splashImage.size, splashImageArray);
+    copyArray(displayOptions.splashImage.bytes, imgSize, splashImageArray);
     return serialize_json(doc);
 }
 
@@ -601,7 +602,7 @@ std::string setProfileOptions()
 
 std::string getProfileOptions()
 {
-    const size_t capacity = JSON_OBJECT_SIZE(500);
+    const size_t capacity = JSON_OBJECT_SIZE(2048);
     DynamicJsonDocument doc(capacity);
 
     const auto writePinDoc = [&](const int item, const char* key, const GpioMappingInfo& value) -> void
@@ -1648,7 +1649,7 @@ std::string getHETriggerVoltage()
 
 std::string getHETriggerCalibrations()
 {
-    const size_t capacity = JSON_OBJECT_SIZE(500);
+    const size_t capacity = JSON_OBJECT_SIZE(1024);
     DynamicJsonDocument doc(capacity);
 
     HETriggerInfo * heTriggers = Storage::getInstance().getAddonOptions().heTriggerOptions.triggers;

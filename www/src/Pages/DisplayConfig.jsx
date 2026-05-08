@@ -203,7 +203,7 @@ export default function DisplayConfigPage() {
 		async function fetchData() {
 			const data = await WebApi.getDisplayOptions();
 			const splashImageResponse = await WebApi.getSplashImage();
-			data.splashImage = splashImageResponse.splashImage;
+			data.splashImage = splashImageResponse?.splashImage || [];
 			buttonLayoutDefinitions = await WebApi.getButtonLayoutDefs();
 			buttonLayoutSchema = buttonLayoutSchema.oneOf(
 				Object.values(buttonLayoutDefinitions.buttonLayout),

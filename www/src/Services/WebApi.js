@@ -257,6 +257,7 @@ async function getSplashImage() {
 		return response.data;
 	} catch (error) {
 		console.error(error);
+		return { splashImage: [] };
 	}
 }
 
@@ -410,9 +411,10 @@ async function setPinMappings(mappings) {
 async function getProfileOptions() {
 	try {
 		const { data } = await Http.get(`${baseUrl}/api/getProfileOptions`);
-		return data?.alternativePinMappings;
+		return data?.alternativePinMappings || [];
 	} catch (error) {
 		console.log(error);
+		return [];
 	}
 }
 

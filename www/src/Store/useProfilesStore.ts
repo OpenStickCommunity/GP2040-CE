@@ -101,7 +101,7 @@ const useProfilesStore = create<State & Actions>()((set, get) => ({
 
 		set((state) => ({
 			...state,
-			profiles: [baseProfile, ...profiles],
+			profiles: [baseProfile, ...(profiles || [])],
 			loadingProfiles: false,
 		}));
 	},
