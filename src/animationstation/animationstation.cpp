@@ -246,8 +246,14 @@ void AnimationStation::DecreaseBrightness() {
 
 void AnimationStation::IncreaseBrightness() {
   AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
-  if (animationOptions.brightness < brightnessSteps)
+  // brightness is a step index (0..brightnessSteps); comparing it to
+  // getBrightnessStepSize() (the per-step PWM value) was confusing and only
+  // worked because SetBrightness() clamps. Compare the index to the step count.
+  if (animationOptions.brightness < brightnessSteps) {
     SetBrightness(animationOptions.brightness + 1);
+  } else if (animationOptions.brightness > brightnessSteps) {
+    SetBrightness(brightnessSteps);
+  }
 }
 
 void AnimationStation::DimBrightnessTo0() {
