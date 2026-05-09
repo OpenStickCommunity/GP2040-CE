@@ -52,10 +52,10 @@ void ReactiveLEDAddon::process() {
         if (isValidPin(ledPins[led].pinNumber) && ledPins[led].action != GpioAction::NONE) {
             ledPins[led].currUpdate = currUpdate;
             switch (ledPins[led].action) {
-                case BUTTON_PRESS_UP: setLEDByMode(ledPins[led], gamepad->pressedDpad(GAMEPAD_MASK_UP)); break;
-                case BUTTON_PRESS_DOWN: setLEDByMode(ledPins[led], gamepad->pressedDpad(GAMEPAD_MASK_DOWN)); break;
-                case BUTTON_PRESS_LEFT: setLEDByMode(ledPins[led], gamepad->pressedDpad(GAMEPAD_MASK_LEFT)); break;
-                case BUTTON_PRESS_RIGHT: setLEDByMode(ledPins[led], gamepad->pressedDpad(GAMEPAD_MASK_RIGHT)); break;
+                case BUTTON_PRESS_UP: setLEDByMode(ledPins[led], gamepad->pressedDpadPhysical(GAMEPAD_MASK_UP)); break;
+                case BUTTON_PRESS_DOWN: setLEDByMode(ledPins[led], gamepad->pressedDpadPhysical(GAMEPAD_MASK_DOWN)); break;
+                case BUTTON_PRESS_LEFT: setLEDByMode(ledPins[led], gamepad->pressedDpadPhysical(GAMEPAD_MASK_LEFT)); break;
+                case BUTTON_PRESS_RIGHT: setLEDByMode(ledPins[led], gamepad->pressedDpadPhysical(GAMEPAD_MASK_RIGHT)); break;
                 case BUTTON_PRESS_B1: setLEDByMode(ledPins[led], gamepad->pressedButton(GAMEPAD_MASK_B1)); break;
                 case BUTTON_PRESS_B2: setLEDByMode(ledPins[led], gamepad->pressedButton(GAMEPAD_MASK_B2)); break;
                 case BUTTON_PRESS_B3: setLEDByMode(ledPins[led], gamepad->pressedButton(GAMEPAD_MASK_B3)); break;
