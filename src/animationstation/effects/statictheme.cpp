@@ -310,6 +310,14 @@ bool StaticTheme::Animate(RGB (&frame)[NEOPICO_MAX_LEDS]) {
     UpdateTime();
     UpdatePresses(frame);
 
+    // Bounds-check before indexing: themes.at() throws on out-of-range, and with
+    // -fno-exceptions on the firmware build that aborts (= controller reset).
+    // Look up once outside the loop instead of per-pixel.
+    if (animationOptions.themeIndex >= themes.size()) {
+      animationOptions.themeIndex = 0;
+    }
+    const std::map<uint32_t, RGB>& theme = themes[animationOptions.themeIndex];
+
     for (size_t r = 0; r != matrix->pixels.size(); r++) {
       for (size_t c = 0; c != matrix->pixels[r].size(); c++) {
         if (matrix->pixels[r][c].index == NO_PIXEL.index)
@@ -317,8 +325,6 @@ bool StaticTheme::Animate(RGB (&frame)[NEOPICO_MAX_LEDS]) {
 
         // Count down the timer
         DecrementFadeCounter(matrix->pixels[r][c].index);
-
-        std::map<uint32_t, RGB> theme = themes.at(animationOptions.themeIndex);
 
         auto itr = theme.find(matrix->pixels[r][c].mask);
         if (itr != theme.end()) {

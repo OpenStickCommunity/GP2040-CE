@@ -36,11 +36,14 @@ bool StaticColor::Animate(RGB (&frame)[NEOPICO_MAX_LEDS]) {
 
 uint8_t StaticColor::GetColor() {
   AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
-  if (this->filtered) {
-    return animationOptions.buttonColorIndex;
-  } else {
-    return animationOptions.staticColorIndex;
-  }
+  uint32_t idx = this->filtered
+    ? animationOptions.buttonColorIndex
+    : animationOptions.staticColorIndex;
+  // colors[] has fixed size; a corrupt / stale stored index would otherwise
+  // run colors[idx] (operator[]) past its internal buffer in Animate().
+  if (colors.empty()) return 0;
+  if (idx >= colors.size()) idx = 0;
+  return static_cast<uint8_t>(idx);
 }
 
 void StaticColor::ParameterUp() {
