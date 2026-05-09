@@ -1,6 +1,5 @@
 #include "GPRotaryEncoder.h"
 #include <cmath>
-#include <algorithm>
 
 void GPRotaryEncoder::draw() {
     double scaleX = this->getScaleX();
@@ -19,16 +18,14 @@ void GPRotaryEncoder::draw() {
         ? (uint16_t)(this->y * scaleY + this->getViewport().top)
         : this->y;
 
-    uint16_t r    = (uint16_t)(_radius * scaleX);
-    uint16_t dotR = std::max((uint16_t)1, (uint16_t)(r / 4));
+    uint16_t r = (uint16_t)(_radius * scaleX);
 
     // outer ring (hollow)
     getRenderer()->drawEllipse(cx, cy, r, r, this->strokeColor, 0);
 
-    // sweeping indicator dot — 0° = 12-o'clock, positive = clockwise
+    // clock-hand line from center to ring edge — 0° = 12-o'clock, positive = clockwise
     double rad = (_angle - 90.0) * M_PI / 180.0;
-    int dotX = (int)cx + (int)std::round(r * cos(rad));
-    int dotY = (int)cy + (int)std::round(r * sin(rad));
-    getRenderer()->drawEllipse((uint16_t)dotX, (uint16_t)dotY, dotR, dotR,
-                               this->strokeColor, this->strokeColor);
+    int handX = (int)cx + (int)std::round(r * cos(rad));
+    int handY = (int)cy + (int)std::round(r * sin(rad));
+    getRenderer()->drawLine(cx, cy, (uint16_t)handX, (uint16_t)handY, this->strokeColor, 0);
 }
