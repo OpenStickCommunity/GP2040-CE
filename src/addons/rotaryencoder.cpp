@@ -412,6 +412,16 @@ void RotaryEncoderInput::preprocess()
                 // is guaranteed to see the press even at 1 ms input cadence.
                 s.pulseUntil = now + (m.pulseHoldMs ? m.pulseHoldMs : 1);
             }
+            // Fire a display-friendly event for DPAD modes too. process() won't
+            // see a delta because we advance prevSteps below, so the dispatch
+            // there is bypassed for DPAD.
+            if (deltaSteps != 0) {
+                static constexpr int32_t DPAD_BURST_CAP = 16;
+                int32_t mag = deltaSteps > 0 ? deltaSteps : -deltaSteps;
+                if (mag > DPAD_BURST_CAP) mag = DPAD_BURST_CAP;
+                EventManager::getInstance().triggerEvent(
+                    new GPEncoderChangeEvent(i, pulse, (uint8_t)mag, (uint8_t)m.mode));
+            }
             // Rollover-safe: (int32_t)(now - pulseUntil) < 0 means now is
             // still before pulseUntil, even across the 49.7-day uint32_t wrap.
             if (s.pulseDir != 0 && (int32_t)(now - s.pulseUntil) < 0) {
@@ -465,28 +475,27 @@ void RotaryEncoderInput::process()
             case ENCODER_MODE_RIGHT_TRIGGER:
                 gamepad->state.rt = (uint8_t)mapEncoderValueTrigger(i, s.accumulatedSteps);
                 break;
-            case ENCODER_MODE_VOLUME: {
-                if (deltaSteps != 0) {
-                    // Collapse a burst of N steps into a single event with magnitude N
-                    // (capped) instead of allocating N events. KeyboardDriver multiplies
-                    // its per-event volume key-press count by magnitude.
-                    static constexpr int32_t VOLUME_BURST_CAP = 16;
-                    int32_t mag = deltaSteps > 0 ? deltaSteps : -deltaSteps;
-                    if (mag > VOLUME_BURST_CAP) mag = VOLUME_BURST_CAP;
-                    const int8_t dir = deltaSteps > 0 ? 1 : -1;
-                    EventManager::getInstance().triggerEvent(
-                        new GPEncoderChangeEvent(i, dir, (uint8_t)mag));
-                }
+            case ENCODER_MODE_VOLUME:
+                // Volume events are fired through the generic dispatch below so display
+                // widgets see them too. Nothing to do here.
                 break;
-            }
             case ENCODER_MODE_NONE:
             default:
                 break;
         }
 
-        // The generic GPEncoderChangeEvent is used by the keyboard driver to drive
-        // host volume changes. Only fire it for VOLUME mode (handled above) to avoid
-        // accidental volume changes when the encoder is mapped to a stick / dpad / trigger.
+        // Fire a generic GPEncoderChangeEvent for any non-NONE mode whenever the encoder
+        // produced a delta this tick. The event carries the current mode so consumers can
+        // filter (e.g. KeyboardDriver only acts on ENCODER_MODE_VOLUME), while display
+        // widgets (rotary indicator on ButtonLayoutScreen) animate on any rotation.
+        if (m.mode != ENCODER_MODE_NONE && deltaSteps != 0) {
+            static constexpr int32_t BURST_CAP = 16;
+            int32_t mag = deltaSteps > 0 ? deltaSteps : -deltaSteps;
+            if (mag > BURST_CAP) mag = BURST_CAP;
+            const int8_t dir = deltaSteps > 0 ? 1 : -1;
+            EventManager::getInstance().triggerEvent(
+                new GPEncoderChangeEvent(i, dir, (uint8_t)mag, (uint8_t)m.mode));
+        }
 
         s.prevSteps = s.accumulatedSteps;
     }
