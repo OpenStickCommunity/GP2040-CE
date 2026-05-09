@@ -611,41 +611,46 @@ void ButtonLayoutScreen::handleEncoder(GPEvent* e) {
     GPEncoderChangeEvent* ev = (GPEncoderChangeEvent*)e;
     uint8_t idx = ev->encoder;
     if (idx < 2) {
-        // Accumulate into a target angle; the displayed angle lerps toward it
-        // each frame in updateRotaryAnimation() so motion appears smooth even
-        // when the encoder issues large discrete steps.
+        // Accumulate signed travel so the displayed needle always animates in
+        // the encoder's actual direction of rotation, even when a single event
+        // covers more than half the dial. The values are unwrapped here and
+        // only wrapped to 0-360 when handed to the widget for drawing.
         uint8_t mag = ev->magnitude > 0 ? ev->magnitude : 1;
         float step = ev->direction * (360.0f / 24.0f) * (float)mag;
-        _encoderTargetAngle[idx] = fmod(_encoderTargetAngle[idx] + step, 360.0f);
-        if (_encoderTargetAngle[idx] < 0.0f) _encoderTargetAngle[idx] += 360.0f;
+        _encoderTargetAngle[idx] += step;
     }
 }
 
 void ButtonLayoutScreen::updateRotaryAnimation() {
-    static const float kSmoothing = 0.25f;  // fraction of remaining delta closed each frame
-    static const float kSnapThreshold = 0.5f;
+    static const float kSmoothing = 0.25f;     // fraction of remaining delta closed each frame
+    static const float kSnapThreshold = 0.5f;  // degrees
     bool changed = false;
     for (uint8_t idx = 0; idx < 2; idx++) {
         float diff = _encoderTargetAngle[idx] - _encoderAngle[idx];
-        // Take the shortest path around the 0-360 dial
-        if (diff > 180.0f) diff -= 360.0f;
-        else if (diff < -180.0f) diff += 360.0f;
         if (fabsf(diff) < kSnapThreshold) {
             if (_encoderAngle[idx] != _encoderTargetAngle[idx]) {
                 _encoderAngle[idx] = _encoderTargetAngle[idx];
                 changed = true;
             }
+            // Once caught up, collapse both accumulators back into [0, 360)
+            // so they don't grow without bound across long sessions.
+            float wrapped = fmodf(_encoderAngle[idx], 360.0f);
+            if (wrapped < 0.0f) wrapped += 360.0f;
+            _encoderAngle[idx] = wrapped;
+            _encoderTargetAngle[idx] = wrapped;
         } else {
             _encoderAngle[idx] += diff * kSmoothing;
-            if (_encoderAngle[idx] >= 360.0f) _encoderAngle[idx] -= 360.0f;
-            else if (_encoderAngle[idx] < 0.0f) _encoderAngle[idx] += 360.0f;
             changed = true;
         }
     }
     if (changed) {
         for (auto* r : _rotaryElements) {
             uint8_t i = r->getEncoderIndex();
-            if (i < 2) r->setAngle(_encoderAngle[i]);
+            if (i < 2) {
+                float displayAngle = fmodf(_encoderAngle[i], 360.0f);
+                if (displayAngle < 0.0f) displayAngle += 360.0f;
+                r->setAngle(displayAngle);
+            }
         }
     }
 }
