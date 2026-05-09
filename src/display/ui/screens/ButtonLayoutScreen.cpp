@@ -125,6 +125,8 @@ int8_t ButtonLayoutScreen::update() {
     if (isInputHistoryEnabled)
 		processInputHistory();
 
+    if (!_rotaryElements.empty()) updateRotaryAnimation();
+
     // check for exit/screen change
     if (DriverManager::getInstance().isConfigMode()) {
         uint16_t buttonState = getGamepad()->state.buttons;
@@ -609,12 +611,41 @@ void ButtonLayoutScreen::handleEncoder(GPEvent* e) {
     GPEncoderChangeEvent* ev = (GPEncoderChangeEvent*)e;
     uint8_t idx = ev->encoder;
     if (idx < 2) {
-        _encoderAngle[idx] = fmod(
-            _encoderAngle[idx] + ev->direction * (360.0f / 24.0f),
-            360.0f);
-        if (_encoderAngle[idx] < 0.0f) _encoderAngle[idx] += 360.0f;
+        // Accumulate into a target angle; the displayed angle lerps toward it
+        // each frame in updateRotaryAnimation() so motion appears smooth even
+        // when the encoder issues large discrete steps.
+        uint8_t mag = ev->magnitude > 0 ? ev->magnitude : 1;
+        float step = ev->direction * (360.0f / 24.0f) * (float)mag;
+        _encoderTargetAngle[idx] = fmod(_encoderTargetAngle[idx] + step, 360.0f);
+        if (_encoderTargetAngle[idx] < 0.0f) _encoderTargetAngle[idx] += 360.0f;
+    }
+}
+
+void ButtonLayoutScreen::updateRotaryAnimation() {
+    static const float kSmoothing = 0.25f;  // fraction of remaining delta closed each frame
+    static const float kSnapThreshold = 0.5f;
+    bool changed = false;
+    for (uint8_t idx = 0; idx < 2; idx++) {
+        float diff = _encoderTargetAngle[idx] - _encoderAngle[idx];
+        // Take the shortest path around the 0-360 dial
+        if (diff > 180.0f) diff -= 360.0f;
+        else if (diff < -180.0f) diff += 360.0f;
+        if (fabsf(diff) < kSnapThreshold) {
+            if (_encoderAngle[idx] != _encoderTargetAngle[idx]) {
+                _encoderAngle[idx] = _encoderTargetAngle[idx];
+                changed = true;
+            }
+        } else {
+            _encoderAngle[idx] += diff * kSmoothing;
+            if (_encoderAngle[idx] >= 360.0f) _encoderAngle[idx] -= 360.0f;
+            else if (_encoderAngle[idx] < 0.0f) _encoderAngle[idx] += 360.0f;
+            changed = true;
+        }
+    }
+    if (changed) {
         for (auto* r : _rotaryElements) {
-            if (r->getEncoderIndex() == idx) r->setAngle(_encoderAngle[idx]);
+            uint8_t i = r->getEncoderIndex();
+            if (i < 2) r->setAngle(_encoderAngle[i]);
         }
     }
 }

@@ -19,11 +19,22 @@ void GPRotaryEncoder::draw() {
         : this->y;
 
     uint16_t r = (uint16_t)(_radius * scaleX);
+    if (r == 0) r = _radius;
 
-    // outer ring (hollow)
+    // 0-360 dial gauge: outer ring + cardinal tick marks + needle indicator.
+    // 0 = 12-o'clock, positive angles sweep clockwise.
     getRenderer()->drawEllipse(cx, cy, r, r, this->strokeColor, 0);
 
-    // clock-hand line from center to ring edge — 0° = 12-o'clock, positive = clockwise
+    // Cardinal tick marks just outside the ring (N/E/S/W) so the dial
+    // reads as a 0/90/180/270 gauge regardless of where the needle points.
+    for (int i = 0; i < 4; i++) {
+        double tickRad = (i * 90.0 - 90.0) * M_PI / 180.0;
+        int tx = (int)cx + (int)std::round((r + 1) * cos(tickRad));
+        int ty = (int)cy + (int)std::round((r + 1) * sin(tickRad));
+        getRenderer()->drawPixel((uint16_t)tx, (uint16_t)ty, this->strokeColor);
+    }
+
+    // Needle from center to ring edge representing the current dial angle.
     double rad = (_angle - 90.0) * M_PI / 180.0;
     int handX = (int)cx + (int)std::round(r * cos(rad));
     int handY = (int)cy + (int)std::round(r * sin(rad));

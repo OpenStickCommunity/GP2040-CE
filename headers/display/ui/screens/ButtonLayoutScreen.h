@@ -177,8 +177,10 @@ class ButtonLayoutScreen : public GPScreen {
         ButtonLayoutParamsRight prevRightOptions{};
         ButtonLayoutOrientation prevOrientation{};
 
-        float _encoderAngle[2] = {0.0f, 0.0f};
+        float _encoderAngle[2] = {0.0f, 0.0f};        // displayed (smoothed) angle
+        float _encoderTargetAngle[2] = {0.0f, 0.0f};  // target angle accumulated from encoder events
         std::vector<GPRotaryEncoder*> _rotaryElements;
+        void updateRotaryAnimation();
 
         bool hasTurboAssigned = false;
 
