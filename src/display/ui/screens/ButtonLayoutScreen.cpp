@@ -610,7 +610,7 @@ void ButtonLayoutScreen::handleEncoder(GPEvent* e) {
     uint8_t idx = ev->encoder;
     if (idx < 2) {
         _encoderAngle[idx] = fmod(
-            _encoderAngle[idx] + ev->direction * (360.0f / 24.0f) * ev->magnitude,
+            _encoderAngle[idx] + ev->direction * (360.0f / 24.0f),
             360.0f);
         if (_encoderAngle[idx] < 0.0f) _encoderAngle[idx] += 360.0f;
         for (auto* r : _rotaryElements) {

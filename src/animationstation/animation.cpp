@@ -106,9 +106,10 @@ void Animation::FadeTimeUp() {
 
 void Animation::FadeTimeDown() {
   AnimationOptions & anmationOptions = Storage::getInstance().getAnimationOptions();
-  anmationOptions.buttonPressColorCooldownTimeInMs = anmationOptions.buttonPressColorCooldownTimeInMs - PRESS_COOLDOWN_INCREMENT;
-
-  if (anmationOptions.buttonPressColorCooldownTimeInMs > PRESS_COOLDOWN_MAX) {
+  // buttonPressColorCooldownTimeInMs is unsigned; subtract only when it won't underflow.
+  if (anmationOptions.buttonPressColorCooldownTimeInMs >= PRESS_COOLDOWN_INCREMENT) {
+    anmationOptions.buttonPressColorCooldownTimeInMs -= PRESS_COOLDOWN_INCREMENT;
+  } else {
     anmationOptions.buttonPressColorCooldownTimeInMs = PRESS_COOLDOWN_MIN;
   }
 }
