@@ -49,8 +49,10 @@ public:
     RGB linkageFrame[NEOPICO_MAX_LEDS]; // copy baseAnimation frame exclude buttonAnimation frame
 
 private:
-    Animation* baseAnimation;
-    Animation* buttonAnimation;
+    // Default-init to nullptr so SetMode()'s `delete this->baseAnimation` and
+    // Animate()'s null guard don't read uninitialized memory on first call.
+    Animation* baseAnimation = nullptr;
+    Animation* buttonAnimation = nullptr;
     std::vector<Pixel> lastPressed;
     absolute_time_t nextChange;
     uint8_t effectCount;

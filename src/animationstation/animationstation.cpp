@@ -174,15 +174,25 @@ uint8_t AnimationStation::GetBrightness() {
 
 void AnimationStation::SetMode(uint8_t mode) {
   AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
+  // Clamp to a known effect so a corrupt / out-of-range stored index can't reach
+  // the switch's `default` and silently misrender, and so the saved value stays sane.
+  if (mode > static_cast<uint8_t>(AnimationEffects::EFFECT_CUSTOM_THEME)) {
+    mode = static_cast<uint8_t>(AnimationEffects::EFFECT_STATIC_COLOR);
+  }
   animationOptions.baseAnimationIndex = mode;
   AnimationEffects newEffect =
       static_cast<AnimationEffects>(animationOptions.baseAnimationIndex);
 
+  // Null after delete: if the `new` below were to fail, we'd otherwise be left
+  // with dangling pointers that pass the != nullptr guards in HandleEvent /
+  // HandlePressed / Animate.
   if (this->baseAnimation != nullptr) {
     delete this->baseAnimation;
+    this->baseAnimation = nullptr;
   }
   if (this->buttonAnimation != nullptr) {
     delete this->buttonAnimation;
+    this->buttonAnimation = nullptr;
   }
 
   this->Clear();
