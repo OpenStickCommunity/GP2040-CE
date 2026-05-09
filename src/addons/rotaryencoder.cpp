@@ -394,6 +394,11 @@ void RotaryEncoderInput::preprocess()
         if (isAnalogStickMode(m.mode) && m.resetAfter > 0 && (now - s.changeTime) >= m.resetAfter) {
             s.accumulatedSteps = 0;
             s.rawRemainder = 0;
+            // Also pull prevSteps to zero so process() does not see the reset
+            // as a synthetic rotation delta and fire a GPEncoderChangeEvent for
+            // it. The display dial is driven purely by user-supplied direction
+            // and magnitude; auto-centering is a position change, not rotation.
+            s.prevSteps = 0;
         }
 
         // DPAD pulse latching happens here so the bits are visible to SOCD cleaning
