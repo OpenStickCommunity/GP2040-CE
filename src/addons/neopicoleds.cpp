@@ -326,12 +326,16 @@ void NeoPicoLEDAddon::setup() {
 	ambientLight.b = 0x00;
 	nextRunTimeAmbientLight = make_timeout_time_ms(0);
 
-	// Start of chase light index is case rgb index.
-	// Clamp to the valid LED range: if caseRGBIndex >= ledCount then frame[]
-	// writes in ambientLightCustom() would go out of bounds.
+	// Start of chase light index is case rgb index. Clamp to the valid range so a
+	// misconfigured caseRGBIndex >= ledCount doesn't trap chaseLightIndex out of
+	// bounds (the reset-on-overflow check would always fire and frame[] writes
+	// would land past FRAME_MAX).
 	chaseLightMaxIndexPos = (uint16_t)ledCount;
-	chaseLightIndex = (chaseLightMaxIndexPos > 0 && ledOptions.caseRGBIndex >= chaseLightMaxIndexPos)
-	                  ? 0 : ledOptions.caseRGBIndex;
+	if (chaseLightMaxIndexPos > 0) {
+		chaseLightIndex = (uint16_t)((uint32_t)ledOptions.caseRGBIndex % (uint32_t)chaseLightMaxIndexPos);
+	} else {
+		chaseLightIndex = 0;
+	}
 
 	// Guard against a configuration where the matrix produced no button-mapped LEDs;
 	// dividing by zero here used to be undefined behavior at boot time.
@@ -515,16 +519,26 @@ void NeoPicoLEDAddon::ambientLightCustom() {
 }
 
 void NeoPicoLEDAddon::ambientLightLinkage() {
+	// Cap usable linkage area to what remains in frame[]; without this, a config
+	// where alLinkageStartIndex + caseRGBCount > FRAME_MAX overflows frame[] and
+	// corrupts adjacent NeoPicoLEDAddon members (and ultimately the heap).
+	const int maxLinkage = ((int)alLinkageStartIndex < FRAME_MAX)
+		? (FRAME_MAX - (int)alLinkageStartIndex)
+		: 0;
+	if (maxLinkage <= 0 || buttonLedCount <= 0) return;
+
 	float preLinkageBrightnessX = as.GetLinkageModeOfBrightnessX();
-	for(int i = 0; i < multipleOfButtonLedsCount; i++){ // Repeat buttons
-		for(int j = 0; j < buttonLedCount; j++){
-			frame[alLinkageStartIndex + i*buttonLedCount + j] = as.linkageFrame[j].value(Animation::format, preLinkageBrightnessX);
+	int written = 0;
+
+	for (int i = 0; i < multipleOfButtonLedsCount && written < maxLinkage; i++) { // Repeat buttons
+		for (int j = 0; j < buttonLedCount && written < maxLinkage; j++) {
+			frame[alLinkageStartIndex + written++] = as.linkageFrame[j].value(Animation::format, preLinkageBrightnessX);
 		}
 	}
-	
-	if(remainderOfButtonLedsCount != 0){ // Remainder
-		for(int k = 0; k < remainderOfButtonLedsCount; k++){
-			frame[alLinkageStartIndex + multipleOfButtonLedsCount * buttonLedCount + k] = as.linkageFrame[k].value(Animation::format, preLinkageBrightnessX);
+
+	if (remainderOfButtonLedsCount != 0) { // Remainder
+		for (int k = 0; k < remainderOfButtonLedsCount && written < maxLinkage; k++) {
+			frame[alLinkageStartIndex + written++] = as.linkageFrame[k].value(Animation::format, preLinkageBrightnessX);
 		}
 	}
 }

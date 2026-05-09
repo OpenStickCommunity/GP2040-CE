@@ -265,9 +265,9 @@ private:
 	int alFrameSpeed;
     RGB ambientLight;
 	absolute_time_t nextRunTimeAmbientLight;
-    uint8_t chaseLightIndex;
-    // Was uint8_t but the chain length can exceed 255 (NEOPICO_MAX_LEDS may grow); using a
-    // wider type avoids silent truncation in chase / wrap logic that compares against ledCount.
+    // Both widened from uint8_t. The chain length can exceed 255 (NEOPICO_MAX_LEDS may grow);
+    // a wider type avoids silent truncation in chase / wrap logic that compares against ledCount.
+    uint16_t chaseLightIndex;
     uint16_t chaseLightMaxIndexPos;
 
     uint8_t multipleOfButtonLedsCount;

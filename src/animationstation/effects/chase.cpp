@@ -70,38 +70,42 @@ bool Chase::Animate(RGB (&frame)[NEOPICO_MAX_LEDS]) {
   return true;
 }
 
-bool Chase::IsChasePixel(int i) {
-  if (i == this->currentPixel || i == (this->currentPixel - 1) ||
-      i == (this->currentPixel - 2)) {
-    return true;
-  }
+// Modulo that always returns a non-negative result. Standard `%` on negative ints
+// gives an implementation-defined / negative answer, which previously meant the
+// trailing pixels at currentPixel-1 / currentPixel-2 never matched any real pixel
+// when currentPixel was 0 or 1 (chase tail visually disappeared at the wrap).
+static inline int wrapMod(int n, int m) {
+  if (m <= 0) return 0;
+  int r = n % m;
+  return (r < 0) ? r + m : r;
+}
 
-  return false;
+bool Chase::IsChasePixel(int i) {
+  const int pixelCount = (int)matrix->getPixelCount();
+  if (pixelCount <= 0) return false;
+  return i == this->currentPixel
+      || i == wrapMod(this->currentPixel - 1, pixelCount)
+      || i == wrapMod(this->currentPixel - 2, pixelCount);
 }
 
 int Chase::WheelFrame(int i) {
   int frame = this->currentFrame;
-  int pixelCount = matrix->getPixelCount();
-  if (i == (this->currentPixel - 1) % pixelCount) {
-    if (this->reverse) {
-      frame = frame + 16;
-    } else {
-      frame = frame - 16;
-    }
+  const int pixelCount = (int)matrix->getPixelCount();
+  if (pixelCount <= 0) return frame;
+
+  if (i == wrapMod(this->currentPixel - 1, pixelCount)) {
+    frame += this->reverse ? 16 : -16;
+  }
+  if (i == wrapMod(this->currentPixel - 2, pixelCount)) {
+    frame += this->reverse ? 32 : -32;
   }
 
-  if (i == (this->currentPixel - 2) % pixelCount) {
-    if (this->reverse) {
-      frame = frame + 32;
-    } else {
-      frame = frame - 32;
-    }
-  }
-
+  // Don't clamp to 255: RGB::wheel() takes uint8_t, and letting the value wrap
+  // around the color wheel keeps the chase tail visually continuous. Only guard
+  // the negative case, which would cast to a large unsigned value.
   if (frame < 0) {
     return 0;
   }
-
   return frame;
 }
 
