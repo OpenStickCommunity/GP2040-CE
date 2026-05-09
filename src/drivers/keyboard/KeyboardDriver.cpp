@@ -201,6 +201,10 @@ uint16_t KeyboardDriver::GetJoystickMidValue() {
 
 void KeyboardDriver::handleEncoder(GPEvent* e) {
     GPEncoderChangeEvent * encoderEvent = (GPEncoderChangeEvent*)e;
+    // GPEncoderChangeEvent now fires for any non-NONE encoder mode so display
+    // widgets can animate; only adjust the host volume when the encoder is
+    // actually configured for volume control.
+    if (encoderEvent->mode != ENCODER_MODE_VOLUME) return;
     const int32_t mag = encoderEvent->magnitude > 0 ? (int32_t)encoderEvent->magnitude : 1;
     // Saturate against a safe upper bound so a host that never drains the queue can't push
     // volumeChange into signed-overflow UB. INT32_MAX/2 leaves headroom for the next add.
