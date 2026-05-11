@@ -49,7 +49,7 @@ export default {
 	},
 	'socd-cleaning-mode-label': 'SOCD Cleaning Mode',
 	'socd-cleaning-mode-note':
-		'Note: PS4, PS3, Nintendo Switch, and mini series modes do not support setting SOCD Cleaning to Off and will default to Neutral SOCD Cleaning mode.',
+		'Note: PS4, PS3, Nintendo Switch, Nintendo Switch Pro, and mini series modes do not support setting SOCD Cleaning to Off and will default to Neutral SOCD Cleaning mode.',
 	'socd-cleaning-mode-options': {
 		'up-priority': 'Up Priority',
 		neutral: 'Neutral',
