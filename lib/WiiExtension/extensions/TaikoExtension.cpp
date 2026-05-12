@@ -35,3 +35,23 @@ void TaikoExtension::process(uint8_t *inputData) {
     printf("DL=%1d RL=%1d DR=%1d RR=%1d\n", buttons[TaikoButtons::TATA_DON_LEFT], buttons[TaikoButtons::TATA_KAT_LEFT], buttons[TaikoButtons::TATA_DON_RIGHT], buttons[TaikoButtons::TATA_KAT_RIGHT]);
 #endif
 }
+
+uint8_t TaikoExtension::prepareOutput() {
+    controllerData[0x00] = 0xFF;
+    controllerData[0x01] = 0xFF;
+    controllerData[0x02] = 0xFF;
+    controllerData[0x03] = 0xFF;
+    controllerData[0x04] = 0xFF;
+    controllerData[0x05] = (
+        ((1                                                 << 0)) | 
+        ((1                                                 << 1)) | 
+        ((1                                                 << 2)) | 
+        ((!(buttons[TaikoButtons::TATA_KAT_RIGHT] & 0x01)   << 3)) | 
+        ((!(buttons[TaikoButtons::TATA_DON_RIGHT] & 0x01)   << 4)) | 
+        ((!(buttons[TaikoButtons::TATA_KAT_LEFT] & 0x01)    << 5)) | 
+        ((!(buttons[TaikoButtons::TATA_DON_LEFT] & 0x01)    << 6)) | 
+        ((1                                                 << 7))
+    );
+    return 6;
+}
+
