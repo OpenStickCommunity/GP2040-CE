@@ -21,6 +21,7 @@ class GuitarExtension : public ExtensionBase {
     public:
         void init(uint8_t dataType) override;
         void process(uint8_t *inputData) override;
+        uint8_t prepareOutput() override;
     private:
         uint8_t _guitarType   = 0;
         uint16_t whammyBar    = 0;

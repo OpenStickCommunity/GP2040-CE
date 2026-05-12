@@ -30,3 +30,113 @@ void DrumExtension::process(uint8_t *inputData) {
     //}
 #endif
 }
+
+uint8_t DrumExtension::prepareOutput() {
+    uint16_t lx = 0;
+    uint16_t ly = 0;
+    uint16_t rx = 0;
+    uint16_t ry = 0;
+    uint16_t lt = 0;
+    uint16_t rt = 0;
+    // expect all source analog sticks at 16 bit and scale down
+    // expect all source analog triggers at 8 bit and scale down
+    if (getDataType() == WII_DATA_TYPE_1) {
+        lx = (uint8_t)((analogState[WiiAnalogs::WII_ANALOG_LEFT_X] * 0x3F) / 0xFFFF);
+        ly = (uint8_t)(0x3F - ((analogState[WiiAnalogs::WII_ANALOG_LEFT_Y] * 0x3F) / 0xFFFF));
+        rx = (uint8_t)((analogState[WiiAnalogs::WII_ANALOG_RIGHT_X] * 0x1F) / 0xFFFF);
+        ry = (uint8_t)(0x1F - ((analogState[WiiAnalogs::WII_ANALOG_RIGHT_Y] * 0x1F) / 0xFFFF));
+        lt = (uint8_t)((analogState[WiiAnalogs::WII_ANALOG_LEFT_TRIGGER] * 0x1F) / 0xFF);
+        rt = (uint8_t)((analogState[WiiAnalogs::WII_ANALOG_RIGHT_TRIGGER] * 0x1F) / 0xFF);
+
+        controllerData[0x00] = 0xC0 | ((lx+1) & 0x3F);
+        controllerData[0x01] = 0xC0 | (ly & 0x3F);
+        controllerData[0x02] = 0xFF;
+        controllerData[0x03] = 0xFF;
+        controllerData[0x04] = (
+            ((1                                                 << 0)) | 
+            ((1                                                 << 1)) | 
+            ((!(buttons[WiiButtons::WII_BUTTON_PLUS] & 0x01)    << 2)) | 
+            ((1                                                 << 3)) | 
+            ((!(buttons[WiiButtons::WII_BUTTON_MINUS] & 0x01)   << 4)) | 
+            ((1                                                 << 5)) | 
+            ((1                                                 << 6)) | 
+            ((1                                                 << 7))
+        );
+        controllerData[0x05] = (
+            ((1                                                 << 0)) | 
+            ((1                                                 << 1)) | 
+            ((!(buttons[GuitarButtons::GUITAR_PEDAL] & 0x01)    << 2)) | 
+            ((!(buttons[GuitarButtons::GUITAR_YELLOW] & 0x01)   << 3)) | 
+            ((!(buttons[GuitarButtons::GUITAR_GREEN] & 0x01)    << 4)) | 
+            ((!(buttons[GuitarButtons::GUITAR_BLUE] & 0x01)     << 5)) | 
+            ((!(buttons[GuitarButtons::GUITAR_RED] & 0x01)      << 6)) | 
+            ((!(buttons[GuitarButtons::GUITAR_ORANGE] & 0x01)   << 7))
+        );
+        return 6;
+    } else if (getDataType() == WII_DATA_TYPE_2) {
+        lx = (uint8_t)((analogState[WiiAnalogs::WII_ANALOG_LEFT_X] * 0x3FF) / 0xFFFF);
+        ly = (uint8_t)(0x3F - ((analogState[WiiAnalogs::WII_ANALOG_LEFT_Y] * 0x3FF) / 0xFFFF));
+        rx = (uint8_t)((analogState[WiiAnalogs::WII_ANALOG_RIGHT_X] * 0x3FF) / 0xFFFF);
+        ry = (uint8_t)(0x1F - ((analogState[WiiAnalogs::WII_ANALOG_RIGHT_Y] * 0x3FF) / 0xFFFF));
+        lt = analogState[WiiAnalogs::WII_ANALOG_LEFT_TRIGGER];
+        rt = analogState[WiiAnalogs::WII_ANALOG_RIGHT_TRIGGER];
+
+        controllerData[0x00] = ((lx & 0x03FC) >> 2);
+        controllerData[0x01] = ((rx & 0x03FC) >> 2);
+        controllerData[0x02] = ((ly & 0x03FC) >> 2);
+        controllerData[0x03] = ((ry & 0x03FC) >> 2);
+        controllerData[0x04] = ((lx & 0x03) << 0) | ((rx & 0x03) << 2) | ((ly & 0x03) << 4) | ((ry & 0x03) << 6);
+        controllerData[0x05] = lt;
+        controllerData[0x06] = rt;
+        controllerData[0x07] = (1 |
+            ((!(buttons[WiiButtons::WII_BUTTON_R] & 0x01)     << 1)) | 
+            ((!(buttons[WiiButtons::WII_BUTTON_PLUS] & 0x01)  << 2)) | 
+            ((!(buttons[WiiButtons::WII_BUTTON_HOME] & 0x01)  << 3)) | 
+            ((!(buttons[WiiButtons::WII_BUTTON_MINUS] & 0x01) << 4)) | 
+            ((!(buttons[WiiButtons::WII_BUTTON_L] & 0x01)     << 5)) | 
+            ((!(buttons[WiiButtons::WII_BUTTON_DOWN] & 0x01)  << 6)) | 
+            ((!(buttons[WiiButtons::WII_BUTTON_RIGHT] & 0x01) << 7))
+        );
+        controllerData[0x08] = (
+            ((!(buttons[WiiButtons::WII_BUTTON_UP] & 0x01))   << 0) | 
+            ((!(buttons[WiiButtons::WII_BUTTON_LEFT] & 0x01)) << 1) | 
+            ((!(buttons[WiiButtons::WII_BUTTON_ZR] & 0x01))   << 2) | 
+            ((!(buttons[WiiButtons::WII_BUTTON_X] & 0x01))    << 3) | 
+            ((!(buttons[WiiButtons::WII_BUTTON_A] & 0x01))    << 4) | 
+            ((!(buttons[WiiButtons::WII_BUTTON_Y] & 0x01))    << 5) | 
+            ((!(buttons[WiiButtons::WII_BUTTON_B] & 0x01))    << 6) | 
+            ((!(buttons[WiiButtons::WII_BUTTON_ZL] & 0x01))   << 7)
+        );
+        return 9;
+    } else if (getDataType() == WII_DATA_TYPE_3) {
+        controllerData[0x00] = analogState[WiiAnalogs::WII_ANALOG_LEFT_X];
+        controllerData[0x01] = analogState[WiiAnalogs::WII_ANALOG_RIGHT_X];
+        controllerData[0x02] = analogState[WiiAnalogs::WII_ANALOG_LEFT_Y];
+        controllerData[0x03] = analogState[WiiAnalogs::WII_ANALOG_RIGHT_Y];
+        controllerData[0x04] = analogState[WiiAnalogs::WII_ANALOG_LEFT_TRIGGER];
+        controllerData[0x05] = analogState[WiiAnalogs::WII_ANALOG_RIGHT_TRIGGER];
+        controllerData[0x06] = (1 |
+            ((!(buttons[WiiButtons::WII_BUTTON_R] & 0x01)     << 1)) | 
+            ((!(buttons[WiiButtons::WII_BUTTON_PLUS] & 0x01)  << 2)) | 
+            ((!(buttons[WiiButtons::WII_BUTTON_HOME] & 0x01)  << 3)) | 
+            ((!(buttons[WiiButtons::WII_BUTTON_MINUS] & 0x01) << 4)) | 
+            ((!(buttons[WiiButtons::WII_BUTTON_L] & 0x01)     << 5)) | 
+            ((!(buttons[WiiButtons::WII_BUTTON_DOWN] & 0x01)  << 6)) | 
+            ((!(buttons[WiiButtons::WII_BUTTON_RIGHT] & 0x01) << 7))
+        );
+        controllerData[0x07] = (
+            ((!(buttons[WiiButtons::WII_BUTTON_UP] & 0x01))   << 0) | 
+            ((!(buttons[WiiButtons::WII_BUTTON_LEFT] & 0x01)) << 1) | 
+            ((!(buttons[WiiButtons::WII_BUTTON_ZR] & 0x01))   << 2) | 
+            ((!(buttons[WiiButtons::WII_BUTTON_X] & 0x01))    << 3) | 
+            ((!(buttons[WiiButtons::WII_BUTTON_A] & 0x01))    << 4) | 
+            ((!(buttons[WiiButtons::WII_BUTTON_Y] & 0x01))    << 5) | 
+            ((!(buttons[WiiButtons::WII_BUTTON_B] & 0x01))    << 6) | 
+            ((!(buttons[WiiButtons::WII_BUTTON_ZL] & 0x01))   << 7)
+        );
+        return 8;
+    } else {
+    }
+
+    return 0;
+}

@@ -13,6 +13,7 @@ enum TaikoButtons {
 class TaikoExtension : public ExtensionBase {
     public:
         void process(uint8_t *inputData) override;
+        uint8_t prepareOutput() override;
 };
 
 #endif
