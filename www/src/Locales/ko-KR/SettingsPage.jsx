@@ -14,6 +14,7 @@ export default {
 		ps3: 'PS3',
 		generic: '일반 HID 입력',
 		keyboard: '키보드',
+		'keyboard-plus': '키보드+',
 		ps4: 'PS4',
 		ps5: 'PS5',
 		neogeo: 'NEOGEO 미니',

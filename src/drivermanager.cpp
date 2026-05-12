@@ -17,6 +17,7 @@
 #include "drivers/xboxog/XboxOriginalDriver.h"
 #include "drivers/xinput/XInputDriver.h"
 #include "drivers/p5general/P5GeneralDriver.h"
+#include "drivers/keyboardplus/KeyboardPlusDriver.h"
 
 #include "usbhostmanager.h"
 
@@ -33,6 +34,9 @@ void DriverManager::setup(InputMode mode) {
             break;
         case INPUT_MODE_KEYBOARD:
             driver = new KeyboardDriver();
+            break;
+        case INPUT_MODE_KEYBOARDPLUS:
+            driver = new KeyboardPlusDriver();
             break;
         case INPUT_MODE_GENERIC:
             driver = new HIDDriver();
