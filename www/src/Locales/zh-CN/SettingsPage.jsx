@@ -14,6 +14,7 @@ export default {
 		ps3: 'PS3',
 		generic: '通用 HID',
 		keyboard: '键盘',
+		'keyboard-plus': '键盘+',
 		ps4: 'PS4',
 		ps5: 'PS5',
 		p5general: 'P5General',

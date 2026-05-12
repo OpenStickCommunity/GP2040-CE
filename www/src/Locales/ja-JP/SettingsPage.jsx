@@ -12,6 +12,7 @@ export default {
 		'nintendo-switch-pro': '任天堂Switch Pro',
 		generic: '標準HID',
 		keyboard: 'キーボード',
+		'keyboard-plus': 'キーボード+',
 		mdmini: 'Sega Genesis/メガドライブ Mini',
 		pcemini: 'PCエンジン/Turbografx 16 Mini',
 		astro: 'アストロシティミニ',

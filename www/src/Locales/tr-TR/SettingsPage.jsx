@@ -14,6 +14,7 @@ export default {
 		ps3: 'PS3',
 		generic: 'Genel HID',
 		keyboard: 'Klavye',
+		'keyboard-plus': 'Klavye+',
 		ps4: 'PS4',
 		ps5: 'PS5',
 		neogeo: 'NEOGEO mini',

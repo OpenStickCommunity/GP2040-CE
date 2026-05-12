@@ -8,6 +8,7 @@ export default {
 		'nintendo-switch': 'Nintendo Switch',
 		ps3: 'PS3/DirectInput',
 		keyboard: 'Tastatur',
+		'keyboard-plus': 'Tastatur+',
 		ps4: 'PS4',
 	},
 	'boot-input-mode-label': 'Eingabemodi beim Start',

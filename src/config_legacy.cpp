@@ -485,6 +485,7 @@ static bool isValidInputMode(ConfigLegacy::InputMode inputMode)
         case INPUT_MODE_SWITCH:
         case INPUT_MODE_PS3:
         case INPUT_MODE_KEYBOARD:
+        case INPUT_MODE_KEYBOARDPLUS:
         case INPUT_MODE_PS4:
             return true;
         default:

@@ -212,6 +212,7 @@ void ButtonLayoutScreen::generateHeader() {
                     statusBar += "INPUT";
                 break;
             case INPUT_MODE_KEYBOARD: statusBar += "HID-KB"; break;
+            case INPUT_MODE_KEYBOARDPLUS: statusBar += "HIDKB+"; break;
             case INPUT_MODE_CONFIG: statusBar += "CONFIG"; break;
         }
     }

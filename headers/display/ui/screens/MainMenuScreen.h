@@ -11,6 +11,7 @@
 #define INPUT_MODE_SWITCH_NAME "Nintendo Switch"
 #define INPUT_MODE_PS3_NAME "PS3"
 #define INPUT_MODE_KEYBOARD_NAME "Keyboard"
+#define INPUT_MODE_KEYBOARDPLUS_NAME "Keyboard+"
 #define INPUT_MODE_PS4_NAME "PS4"
 #define INPUT_MODE_XBONE_NAME "Xbox One"
 #define INPUT_MODE_MDMINI_NAME "Sega Genesis Mini"
