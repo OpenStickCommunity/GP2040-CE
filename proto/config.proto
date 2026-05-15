@@ -969,5 +969,5 @@ message Config
     optional GpioMappings gpioMappings = 13;
     optional MigrationHistory migrations = 14;
     optional PeripheralOptions peripheralOptions = 15;
-		optional BootModeOptions bootModeOptions = 16;
+	optional BootModeOptions bootModeOptions = 16;
 }
