@@ -57,7 +57,6 @@ private:
     TouchpadData touchpadData;
     //PSSensor gyroscope;
     //PSSensor accelerometer;
-    uint64_t last_report_us;
     uint64_t timeout_report_us;
     MayflashS5Auth * mayflashS5AuthDriver;
     PS5AuthData * ps5AuthData;

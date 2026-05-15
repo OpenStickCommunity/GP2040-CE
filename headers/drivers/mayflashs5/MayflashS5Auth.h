@@ -56,8 +56,10 @@ typedef struct {
     bool hash_pending;
     bool hash_ready;
     PS5AuthState ps5_auth_state;
-    uint8_t MAC_pair_report[15];  // 16-byte pair information for BT MAC Address
-    bool pair_ready;
+    uint8_t MAC_pair_report[15];     // 16-byte pair information for BT MAC Address
+    uint8_t calibration_report[40];  // calibration info from S5
+    uint8_t firmware_report[63];     // firmware reported by Mayflash S5 dongle
+    bool S5_reports_ready; // did we get all reports back from the S5?
     uint8_t set_bluetooth_mode;
     uint8_t set_testcommand[2];
 } PS5AuthData;

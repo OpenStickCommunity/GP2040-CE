@@ -11,7 +11,7 @@ void MayflashS5Auth::initialize() {
     ps5AuthData.dongle_mounted = false; // Dongle is mounted (not all dongles are ready immediately)
     ps5AuthData.hash_pending = false;   // AES-CMAC Hash Pending (raw IO input sent to Dongle)
     ps5AuthData.hash_ready = false;     // AES-CMAC Hash Ready (Dongle returned with signed buffer)
-    ps5AuthData.pair_ready = false;     // BT MAC Pairing ready (S5 only)
+    ps5AuthData.S5_reports_ready = false; // S5 Reports ready?
     ps5AuthData.auth_frame_id = 0;      // Which frame are we authing? (send by PS5)
     ps5AuthData.console_f0_recv_count = 0; // Last frame received (stagger receive)
     ps5AuthData.ps5_auth_state = PS5AuthState::ps5_auth_idle;
