@@ -11,6 +11,7 @@ export default {
 	'links-label': '链接',
 	'macro-label': '宏配置',
 	'pin-mapping-label': 'GPIO 引脚映射',
+	'boot-mode-mapping-label': '启动模式配置',
 	'multi-mapping-label': '多重映射',
 	'peripheral-mapping-label': '外设映射',
 	'profile-settings-label': '配置文件设置',
