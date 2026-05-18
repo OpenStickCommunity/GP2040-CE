@@ -50,6 +50,7 @@ on:
           - OSUMGP-RP2040
           - PicoAnn
           - PicoFightingBoard
+          - PimoroniPicoPlus2
           - PXPGamepad
           - ReflexCtrlGenesis6
           - ReflexCtrlNES
