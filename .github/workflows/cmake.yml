@@ -80,7 +80,7 @@ jobs:
   build-config-list:
     runs-on: ubuntu-latest
     outputs:
-      matrix: 
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - uses: actions/checkout@v6.0.1
       - id: set-matrix
