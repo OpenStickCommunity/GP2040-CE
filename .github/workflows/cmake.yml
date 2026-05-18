@@ -82,6 +82,7 @@ jobs:
     outputs:
       matrix: 
     steps:
+      - uses: actions/checkout@v6.0.1
       - id: set-matrix
         run: |
           CONFIG_DIRS=$(ls -d ./configs/*/ | cut -f3 -d'/' | jq -R -s -c 'split("\n")[:-1]')
