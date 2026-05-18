@@ -927,6 +927,26 @@ app.post('/api/getHETriggerVoltage', (req, res) => {
 	});
 });
 
+app.get('/api/getBootModeOptions', (req, res) => {
+	return res.send({
+		enabled: false,
+		webConfigPinMask: 1,
+		usbModePinMask: 14,
+		inputModeMappings: [
+			{
+				pinMask: 2,
+				inputMode: 4,
+				profileNumber: 1,
+			},
+			{
+				pinMask: 8,
+				inputMode: 3,
+				profileNumber: 0,
+			}
+		],
+	});
+});
+
 app.post('/api/*', (req, res) => {
 	console.log(req.body);
 	return res.send(req.body);

@@ -32,6 +32,8 @@
 #ifndef __LWIPOPTS_H__
 #define __LWIPOPTS_H__
 
+#include "pico/rand.h"
+
 /* Prevent having to link sys_arch.c (we don't test the API layers in unit tests) */
 #define NO_SYS                          1
 #define MEM_ALIGNMENT                   4
@@ -62,5 +64,12 @@
 #define LWIP_HTTPD_ABORT_ON_CLOSE_MEM_ERROR 1
 
 #define LWIP_SINGLE_NETIF               1
+
+#define LWIP_IGMP                       1
+#define LWIP_MDNS_RESPONDER             1
+#define MDNS_MAX_SERVICES               1
+#define LWIP_NUM_NETIF_CLIENT_DATA      1
+
+#define LWIP_RAND()                     ((uint32_t)get_rand_32())
 
 #endif /* __LWIPOPTS_H__ */
