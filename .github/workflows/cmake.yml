@@ -78,6 +78,7 @@ jobs:
   call-node-workflow:
     uses: ./.github/workflows/node.js.yml
   build-config-list:
+    runs-on: ubuntu-latest
     outputs:
       matrix: 
     steps:
