@@ -269,6 +269,60 @@
 #ifndef GPIO_PIN_29
     #define GPIO_PIN_29 GpioAction::NONE
 #endif
+#ifndef GPIO_PIN_30
+    #define GPIO_PIN_30 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_31
+    #define GPIO_PIN_31 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_32
+    #define GPIO_PIN_32 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_33
+    #define GPIO_PIN_33 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_34
+    #define GPIO_PIN_34 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_35
+    #define GPIO_PIN_35 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_36
+    #define GPIO_PIN_36 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_37
+    #define GPIO_PIN_37 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_38
+    #define GPIO_PIN_38 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_39
+    #define GPIO_PIN_39 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_40
+    #define GPIO_PIN_40 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_41
+    #define GPIO_PIN_41 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_42
+    #define GPIO_PIN_42 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_43
+    #define GPIO_PIN_43 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_44
+    #define GPIO_PIN_44 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_45
+    #define GPIO_PIN_45 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_46
+    #define GPIO_PIN_46 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_47
+    #define GPIO_PIN_47 GpioAction::NONE
+#endif
 
 #define MAX_PROFILES (uint8_t)6
 
@@ -1243,7 +1297,16 @@ void gpioMappingsMigrationCore(Config& config)
                                            GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
                                            GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
                                            GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
-                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE};
+                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
+#if NUM_BANK0_GPIOS > 32
+                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
+                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
+                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
+                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
+                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
+                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
+#endif
+                                           };
 
     // flag additional pins as being used by an addon not managed here
     const auto markAddonPinIfUsed = [&](Pin_t gpPin) -> void {
@@ -1421,7 +1484,16 @@ void gpioMappingsMigrationCore(Config& config)
                                                GPIO_PIN_18, GPIO_PIN_19, GPIO_PIN_20,
                                                GPIO_PIN_21, GPIO_PIN_22, GPIO_PIN_23,
                                                GPIO_PIN_24, GPIO_PIN_25, GPIO_PIN_26,
-                                               GPIO_PIN_27, GPIO_PIN_28, GPIO_PIN_29};
+                                               GPIO_PIN_27, GPIO_PIN_28, GPIO_PIN_29,
+#if NUM_BANK0_GPIOS > 32
+                                               GPIO_PIN_30, GPIO_PIN_31, GPIO_PIN_32,
+                                               GPIO_PIN_33, GPIO_PIN_34, GPIO_PIN_35,
+                                               GPIO_PIN_36, GPIO_PIN_37, GPIO_PIN_38,
+                                               GPIO_PIN_39, GPIO_PIN_40, GPIO_PIN_41,
+                                               GPIO_PIN_42, GPIO_PIN_43, GPIO_PIN_44,
+                                               GPIO_PIN_45, GPIO_PIN_46, GPIO_PIN_47,
+#endif
+                                               };
 
     // If we didn't import from protobuf, import from boardconfig
     for(unsigned int i = 0; i < NUM_BANK0_GPIOS; i++) {

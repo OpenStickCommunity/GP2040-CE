@@ -649,6 +649,26 @@ std::string getProfileOptions()
         writePinDoc(i, "pin27", profileOptions.gpioMappingsSets[i].pins[27]);
         writePinDoc(i, "pin28", profileOptions.gpioMappingsSets[i].pins[28]);
         writePinDoc(i, "pin29", profileOptions.gpioMappingsSets[i].pins[29]);
+#if NUM_BANK0_GPIOS > 32
+        writePinDoc(i, "pin30", profileOptions.gpioMappingsSets[i].pins[30]);
+        writePinDoc(i, "pin31", profileOptions.gpioMappingsSets[i].pins[31]);
+        writePinDoc(i, "pin32", profileOptions.gpioMappingsSets[i].pins[32]);
+        writePinDoc(i, "pin33", profileOptions.gpioMappingsSets[i].pins[33]);
+        writePinDoc(i, "pin34", profileOptions.gpioMappingsSets[i].pins[34]);
+        writePinDoc(i, "pin35", profileOptions.gpioMappingsSets[i].pins[35]);
+        writePinDoc(i, "pin36", profileOptions.gpioMappingsSets[i].pins[36]);
+        writePinDoc(i, "pin37", profileOptions.gpioMappingsSets[i].pins[37]);
+        writePinDoc(i, "pin38", profileOptions.gpioMappingsSets[i].pins[38]);
+        writePinDoc(i, "pin39", profileOptions.gpioMappingsSets[i].pins[39]);
+        writePinDoc(i, "pin40", profileOptions.gpioMappingsSets[i].pins[40]);
+        writePinDoc(i, "pin41", profileOptions.gpioMappingsSets[i].pins[41]);
+        writePinDoc(i, "pin42", profileOptions.gpioMappingsSets[i].pins[42]);
+        writePinDoc(i, "pin43", profileOptions.gpioMappingsSets[i].pins[43]);
+        writePinDoc(i, "pin44", profileOptions.gpioMappingsSets[i].pins[44]);
+        writePinDoc(i, "pin45", profileOptions.gpioMappingsSets[i].pins[45]);
+        writePinDoc(i, "pin46", profileOptions.gpioMappingsSets[i].pins[46]);
+        writePinDoc(i, "pin47", profileOptions.gpioMappingsSets[i].pins[47]);
+#endif
         writeDoc(doc, "alternativePinMappings", i, "profileLabel", profileOptions.gpioMappingsSets[i].profileLabel);
         doc["alternativePinMappings"][i]["enabled"] = profileOptions.gpioMappingsSets[i].enabled;
     }
@@ -1189,6 +1209,26 @@ std::string getPinMappings()
     writePinDoc("pin27", gpioMappings.pins[27]);
     writePinDoc("pin28", gpioMappings.pins[28]);
     writePinDoc("pin29", gpioMappings.pins[29]);
+#if NUM_BANK0_GPIOS > 32
+    writePinDoc("pin30", gpioMappings.pins[30]);
+    writePinDoc("pin31", gpioMappings.pins[31]);
+    writePinDoc("pin32", gpioMappings.pins[32]);
+    writePinDoc("pin33", gpioMappings.pins[33]);
+    writePinDoc("pin34", gpioMappings.pins[34]);
+    writePinDoc("pin35", gpioMappings.pins[35]);
+    writePinDoc("pin36", gpioMappings.pins[36]);
+    writePinDoc("pin37", gpioMappings.pins[37]);
+    writePinDoc("pin38", gpioMappings.pins[38]);
+    writePinDoc("pin39", gpioMappings.pins[39]);
+    writePinDoc("pin40", gpioMappings.pins[40]);
+    writePinDoc("pin41", gpioMappings.pins[41]);
+    writePinDoc("pin42", gpioMappings.pins[42]);
+    writePinDoc("pin43", gpioMappings.pins[43]);
+    writePinDoc("pin44", gpioMappings.pins[44]);
+    writePinDoc("pin45", gpioMappings.pins[45]);
+    writePinDoc("pin46", gpioMappings.pins[46]);
+    writePinDoc("pin47", gpioMappings.pins[47]);
+#endif
 
     writeDoc(doc, "profileLabel", gpioMappings.profileLabel);
     doc["enabled"] = gpioMappings.enabled;
@@ -1544,17 +1584,25 @@ std::string setHETriggerOptions()
     calibrationSmoothingFactor = doc["heTriggerSmoothingFactor"];
     ema_smoothing = (float)calibrationSmoothingFactor / 100.f; // 99 = max smoothing factor
 
+    uint8_t pinStart, pinEnd;
+#if NUM_BANK0_GPIOS <= 32
+    pinStart = 26;
+    pinEnd = 29;
+#elif NUM_BANK0_GPIOS > 32
+    pinStart = 40;
+    pinEnd = 47;
+#endif
     for (int i = 0; i < 4; i++) {
         if ( calibrationSelectPins[i] != -1 &&
                 calibrationSelectPins[i] >= 0 &&
-                calibrationSelectPins[i] <= 29 ) {
+                calibrationSelectPins[i] <= pinEnd ) {
             gpio_init(calibrationSelectPins[i]);
             gpio_set_dir(calibrationSelectPins[i], GPIO_OUT);
             gpio_put(calibrationSelectPins[i], 0);
         }
         if ( calibrationADCPins[i] != -1 &&
-                calibrationADCPins[i] >= 26 &&
-                calibrationADCPins[i] <= 29 ) {
+                calibrationADCPins[i] >= pinStart &&
+                calibrationADCPins[i] <= pinEnd ) {
             adc_gpio_init(calibrationADCPins[i]);
         }
     }
