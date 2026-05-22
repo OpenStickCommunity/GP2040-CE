@@ -333,8 +333,8 @@ pico_mbedtls
 nanopb
 )
 
-# Add BTstack for Pico W Bluetooth Switch support
-if(GP2040_BOARDCONFIG STREQUAL "PicoW")
+# Add BTstack for Pico W / Pico 2 W Bluetooth Switch support
+if(GP2040_BOARDCONFIG STREQUAL "PicoW" OR GP2040_BOARDCONFIG STREQUAL "Pico2W")
   target_sources(${PROJECT_NAME} PRIVATE
     src/drivers/switchbt/SwitchBluetoothDriver.cpp
     src/drivers/hidbt/HIDBTDriver.cpp

@@ -766,10 +766,10 @@ bool switchbt_process(const SwitchBTInput* input) {
     bool anyButtonPressed = input && (input->buttons != 0 || input->dpad != 0);
 
     // Hold Start+Select for 3 seconds while disconnected to clear pairing
+    static uint32_t clearHoldStart = 0;
     if (input && hid_cid == 0 &&
         (input->buttons & SWBT_GAMEPAD_MASK_S1) &&
         (input->buttons & SWBT_GAMEPAD_MASK_S2)) {
-        static uint32_t clearHoldStart = 0;
         if (clearHoldStart == 0) clearHoldStart = now;
         if (now - clearHoldStart > 3000) {
             switchbt_clear_pairing();
@@ -778,7 +778,10 @@ bool switchbt_process(const SwitchBTInput* input) {
                 gpio_put(EXTERNAL_LED_PIN, 1); sleep_ms(150);
                 gpio_put(EXTERNAL_LED_PIN, 0); sleep_ms(150);
             }
+            connectionState = SwitchBTState::DISCOVERABLE;
         }
+    } else {
+        clearHoldStart = 0;
     }
 
     if (connectionState == SwitchBTState::SLEEPING) {

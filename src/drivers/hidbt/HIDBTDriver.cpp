@@ -57,18 +57,25 @@ static bd_addr_t flash_save_addr;
 #include "pico/multicore.h"
 
 // Use a DIFFERENT flash sector than Switch BT and BTstack link keys
-// BTstack uses 0x1F6000-0x1F7FFF, Switch BT uses 0x1F7000, we use 0x1F5000
+// BTstack uses 0x1F6000-0x1F7FFF, Switch BT uses 0x1F5000, we use 0x1F4000
 #define HIDBT_PAIRING_FLASH_OFFSET 0x1F4000
-#define HIDBT_PAIRING_MAGIC 0x48494442  // "HIDB"
+// Bumped magic to invalidate old pairing data that lacks the link key fields
+#define HIDBT_PAIRING_MAGIC 0x48494443  // "HIDC"
 #define HIDBT_FLASH_WRITE_DELAY_MS 500
 
 typedef struct {
     uint32_t magic;
     uint8_t host_mac[6];      // PC's MAC address
+    uint8_t key_type;
+    uint8_t has_link_key;
+    uint8_t link_key[16];
 } __attribute__((packed)) HIDBTPairingData;
 
 static volatile alarm_id_t flash_write_alarm = 0;
 static bd_addr_t pending_host_addr;
+static uint8_t stored_link_key[16];
+static uint8_t stored_link_key_type = 0;
+static bool has_link_key = false;
 
 static int64_t flash_write_callback(alarm_id_t id, void* user_data) {
     (void)id;
@@ -77,6 +84,9 @@ static int64_t flash_write_callback(alarm_id_t id, void* user_data) {
     HIDBTPairingData data;
     data.magic = HIDBT_PAIRING_MAGIC;
     memcpy(data.host_mac, pending_host_addr, 6);
+    data.key_type = stored_link_key_type;
+    data.has_link_key = has_link_key ? 1 : 0;
+    memcpy(data.link_key, stored_link_key, 16);
 
     multicore_lockout_start_blocking();
     uint32_t ints = save_and_disable_interrupts();
@@ -93,6 +103,9 @@ static void save_pairing_to_flash(const bd_addr_t addr) {
     HIDBTPairingData data;
     data.magic = HIDBT_PAIRING_MAGIC;
     memcpy(data.host_mac, addr, 6);
+    data.key_type = stored_link_key_type;
+    data.has_link_key = has_link_key ? 1 : 0;
+    memcpy(data.link_key, stored_link_key, 16);
 
     multicore_lockout_start_blocking();
     uint32_t ints = save_and_disable_interrupts();
@@ -138,6 +151,11 @@ static void load_paired_host(void) {
         if (!all_zero && !all_ff) {
             memcpy(host_addr, data->host_mac, 6);
             has_host_addr = true;
+            if (data->has_link_key == 1) {
+                memcpy(stored_link_key, data->link_key, 16);
+                stored_link_key_type = data->key_type;
+                has_link_key = true;
+            }
         }
     }
 }
@@ -366,6 +384,31 @@ static void packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packe
                     break;
             }
             break;
+
+        case HCI_EVENT_LINK_KEY_NOTIFICATION: {
+            bd_addr_t addr;
+            reverse_bd_addr(&packet[2], addr);
+            memcpy(stored_link_key, &packet[8], 16);
+            stored_link_key_type = packet[24];
+            has_link_key = true;
+            break;
+        }
+
+        case HCI_EVENT_LINK_KEY_REQUEST: {
+            bd_addr_t addr;
+            reverse_bd_addr(&packet[2], addr);
+            if (has_link_key && bd_addr_cmp(addr, host_addr) == 0) {
+                gap_store_link_key_for_bd_addr(addr, stored_link_key, (link_key_type_t)stored_link_key_type);
+            }
+            break;
+        }
+
+        case HCI_EVENT_USER_CONFIRMATION_REQUEST: {
+            bd_addr_t addr;
+            reverse_bd_addr(&packet[2], addr);
+            gap_ssp_confirmation_response(addr);
+            break;
+        }
     }
 }
 
@@ -435,6 +478,10 @@ static void setup_btstack(void) {
     }
 
     btInitialized = true;
+
+    if (has_link_key && has_host_addr) {
+        gap_store_link_key_for_bd_addr(host_addr, stored_link_key, (link_key_type_t)stored_link_key_type);
+    }
 }
 
 // ============================================================================
@@ -523,6 +570,25 @@ bool hidbt_process(const HIDBTInput* input) {
 
     bool anyButtonPressed = input && (input->buttons != 0 || input->dpad != 0);
 
+    // Hold Start+Select for 3 seconds while disconnected to clear pairing
+    static uint32_t clearHoldStart = 0;
+    if (input && hid_cid == 0 &&
+        (input->buttons & HIDBT_GAMEPAD_MASK_S1) &&
+        (input->buttons & HIDBT_GAMEPAD_MASK_S2)) {
+        if (clearHoldStart == 0) clearHoldStart = now;
+        if (now - clearHoldStart > 3000) {
+            hidbt_clear_pairing();
+            clearHoldStart = 0;
+            for (int i = 0; i < 3; i++) {
+                gpio_put(EXTERNAL_LED_PIN, 1); sleep_ms(150);
+                gpio_put(EXTERNAL_LED_PIN, 0); sleep_ms(150);
+            }
+            connectionState = HIDBTState::DISCOVERABLE;
+        }
+    } else {
+        clearHoldStart = 0;
+    }
+
     // Handle SLEEPING state
     if (connectionState == HIDBTState::SLEEPING) {
         static uint32_t lastSleepFlash = 0;
@@ -599,17 +665,22 @@ bool hidbt_process(const HIDBTInput* input) {
 
 void hidbt_clear_pairing(void) {
     has_host_addr = false;
+    has_link_key = false;
     reconnect_pending = false;
     memset(host_addr, 0, 6);
+    memset(stored_link_key, 0, 16);
+    stored_link_key_type = 0;
 
     if (flash_write_alarm != 0) {
         cancel_alarm(flash_write_alarm);
         flash_write_alarm = 0;
     }
 
+    multicore_lockout_start_blocking();
     uint32_t ints = save_and_disable_interrupts();
     flash_range_erase(HIDBT_PAIRING_FLASH_OFFSET, FLASH_SECTOR_SIZE);
     restore_interrupts(ints);
+    multicore_lockout_end_blocking();
 }
 
 HIDBTState hidbt_get_state(void) {

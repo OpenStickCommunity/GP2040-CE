@@ -17,8 +17,8 @@
 #include "drivers/hidbt/HIDBTDriver.h"
 #else
 // Stubs for non-Pico W builds
-struct SwitchBTInput { uint32_t buttons; uint8_t dpad; uint16_t lx, ly, rx, ry; };
-struct HIDBTInput { uint32_t buttons; uint8_t dpad; uint16_t lx, ly, rx, ry; };
+struct SwitchBTInput { uint32_t buttons; uint8_t dpad; uint8_t dpadMode; uint16_t lx, ly, rx, ry; };
+struct HIDBTInput { uint32_t buttons; uint8_t dpad; uint8_t dpadMode; uint16_t lx, ly, rx, ry; };
 static inline void switchbt_init(void) {}
 static inline void switchbt_process(SwitchBTInput*) {}
 static inline void hidbt_init(void) {}
