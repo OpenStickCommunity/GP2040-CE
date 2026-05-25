@@ -339,6 +339,8 @@ void ButtonLayoutScreen::generateHeader() {
         }
     }
 
+    const GamepadOptions & options = gamepad->getOptions();
+
     if (showDpadMode) {
         switch (gamepad->getActiveDpadMode())
         {
