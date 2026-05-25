@@ -61,8 +61,10 @@ void Storage::ResetSettings()
 
 bool Storage::setProfile(const uint32_t profileNum)
 {
+	uint32_t profileCeiling = config.profileOptions.gpioMappingsSets_count + 1;
+	
 	// is this profile defined?
-	if (profileNum >= 1 && profileNum <= config.profileOptions.gpioMappingsSets_count + 1) {
+	if (profileNum >= 1 && profileNum <= profileCeiling) {
 		// is this profile enabled?
 		// profile 1 (core) is always enabled, others we must check
 		if (profileNum == 1 || config.profileOptions.gpioMappingsSets[profileNum-2].enabled) {
@@ -108,8 +110,10 @@ char* Storage::currentProfileLabel() {
 void Storage::setFunctionalPinMappings()
 {
 	GpioMappingInfo* alts = nullptr;
+	uint32_t profileCeiling = config.profileOptions.gpioMappingsSets_count + 1;
+
 	if (config.gamepadOptions.profileNumber >= 2 &&
-			config.gamepadOptions.profileNumber <= config.profileOptions.gpioMappingsSets_count + 1) {
+			config.gamepadOptions.profileNumber <= profileCeiling) {
 		if (config.profileOptions.gpioMappingsSets[config.gamepadOptions.profileNumber-2].enabled) {
 			alts = config.profileOptions.gpioMappingsSets[config.gamepadOptions.profileNumber-2].pins;
 		}
@@ -129,6 +133,39 @@ void Storage::setFunctionalPinMappings()
 			functionalPinMappings[pin] = alts[pin];
 		} else {
 			functionalPinMappings[pin] = this->config.gpioMappings.pins[pin];
+		}
+	}
+}
+
+/**
+ * @brief constructs a temporary pin-mapping in order to correctly initialize GPIO pins before
+ * selecting input mode at boot
+ */
+void Storage::setBootModeFunctionalPinMappings()
+{
+	BootModeOptions& bootModeOptions = getBootModeOptions();
+	if (!bootModeOptions.enabled) {
+		return;
+	}
+	// Relying on the assumption that all profiles share same set of RESERVED/ASSIGNED_TO_ADDON pins
+	GpioMappingInfo* pins = getGpioMappings().pins;
+
+	int32_t mask = bootModeOptions.webConfigPinMask | bootModeOptions.usbModePinMask;
+	for (size_t i = 0; i < bootModeOptions.inputModeMappings_count; i++) {
+		auto mapping = bootModeOptions.inputModeMappings[i];
+		if (mapping.pinMask == -1) {
+			continue;
+		}
+		mask |= mapping.pinMask;
+	}
+
+	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
+		if (pins[pin].action != GpioAction::RESERVED &&
+			pins[pin].action != GpioAction::ASSIGNED_TO_ADDON &&
+			(mask & (1 << pin)))
+		{
+			// Just setting an arbitrary non-zero action
+			functionalPinMappings[pin].action = GpioAction::BUTTON_PRESS_A1;
 		}
 	}
 }

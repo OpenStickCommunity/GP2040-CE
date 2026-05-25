@@ -13,7 +13,7 @@ class GPRestartEvent : public GPEvent {
 
         GPEventType eventType() { return this->_eventType; }
 
-        System::BootMode bootMode;
+        System::BootMode bootMode = System::BootMode::DEFAULT;
     private:
         GPEventType _eventType = GP_EVENT_RESTART;
 };

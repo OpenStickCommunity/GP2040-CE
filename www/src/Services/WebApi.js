@@ -378,6 +378,14 @@ async function setProfileOptions(mappings) {
 	});
 }
 
+async function getBootModeOptions() {
+	return Http.get(`${baseUrl}/api/getBootModeOptions`);
+}
+
+async function setBootModeOptions(options) {
+	return Http.post(`${baseUrl}/api/setBootModeOptions`, options);
+}
+
 async function getKeyMappings(setLoading) {
 	setLoading(true);
 
@@ -715,6 +723,8 @@ export default {
 	setGamepadOptions,
 	getPinMappings,
 	setPinMappings,
+	getBootModeOptions,
+	setBootModeOptions,
 	getProfileOptions,
 	setProfileOptions,
 	getKeyMappings,

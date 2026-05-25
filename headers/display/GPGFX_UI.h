@@ -23,8 +23,8 @@ class GPGFX_UI {
         DisplayOptions getDisplayOptions();
     private:
         GPGFX* _renderer;
-        DisplayOptions _displayOptions;
-        bool _configMode;
+        DisplayOptions _displayOptions{};
+        bool _configMode = false;
 };
 
 #endif

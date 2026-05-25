@@ -82,8 +82,8 @@ void GPLever::draw() {
         GPDriver * gpDriver = DriverManager::getInstance().getDriver();
         uint32_t joystickMid = GAMEPAD_JOYSTICK_MID;
         uint32_t joystickMax = GAMEPAD_JOYSTICK_MAX;
-        if ( DriverManager::getInstance().getDriver() != nullptr ) {
-            joystickMid = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
+        if ( gpDriver != nullptr ) {
+            joystickMid = gpDriver->GetJoystickMidValue();
             joystickMax = joystickMid * 2; // 0x8000 mid must be 0x10000 max, but we reduce by 1 if we're maxed out
         }
 

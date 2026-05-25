@@ -6,6 +6,10 @@
 #include <hardware/i2c.h>
 #include <hardware/platform_defs.h>
 
+#if __has_include("BoardConfig.h")
+#include "BoardConfig.h"
+#endif
+
 //#define DEBUG_PERIPHERALI2C
 
 #ifndef I2C0_ENABLED

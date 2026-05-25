@@ -41,9 +41,11 @@
 
 #define LWIP_HTTPD_POST_MAX_PAYLOAD_LEN (1024 * 16)
 
+#define MAX_MAPPED_INPUT_MODES 8
+
 extern struct fsdata_file file__index_html[];
 
-const static char* spaPaths[] = { "/animation", "/backup", "/custom-theme", "/display-config", "/led-config", "/pin-mapping", "/settings", "/reset-settings", "/add-ons", "/macro", "/peripheral-mapping" };
+const static char* spaPaths[] = { "/animation", "/backup", "/custom-theme", "/display-config", "/led-config", "/pin-mapping", "/settings", "/reset-settings", "/add-ons", "/macro", "/peripheral-mapping", "/boot-mode-mapping" };
 const static char* excludePaths[] = { "/css", "/images", "/js", "/static" };
 const static uint32_t rebootDelayMs = 500;
 static string http_post_uri;
@@ -565,7 +567,7 @@ std::string setProfileOptions()
     char pinName[6];
     for (JsonObject alt : alts) {
         for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
-            snprintf(pinName, 6, "pin%0*d", 2, pin);
+            snprintf(pinName, 6, "pin%02d", (int)pin);
             // setting a pin shouldn't change a new existing addon/reserved pin
             // but if the profile definition is new, we should still capture the addon/reserved state
             if (profileOptions.gpioMappingsSets[altsIndex].pins[pin].action != GpioAction::ASSIGNED_TO_ADDON &&
@@ -762,10 +764,10 @@ std::string getGamepadOptions()
     writeDoc(doc, "miniMenuGamepadInput", gamepadOptions.miniMenuGamepadInput);
     // Write USB Vendor ID and Product ID as 4 character hex strings with 0 padding
     char usbVendorStr[5];
-    snprintf(usbVendorStr, 5, "%04X", gamepadOptions.usbVendorID);
+    snprintf(usbVendorStr, 5, "%04X", (unsigned int)gamepadOptions.usbVendorID);
     writeDoc(doc, "usbVendorID", usbVendorStr);
     char usbProductStr[5];
-    snprintf(usbProductStr, 5, "%04X", gamepadOptions.usbProductID);
+    snprintf(usbProductStr, 5, "%04X", (unsigned int)gamepadOptions.usbProductID);
     writeDoc(doc, "usbProductID", usbProductStr);
     writeDoc(doc, "fnButtonPin", -1);
     GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
@@ -1459,7 +1461,7 @@ std::string setPinMappings()
 
     char pinName[6];
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
-        snprintf(pinName, 6, "pin%0*d", 2, pin);
+        snprintf(pinName, 6, "pin%02d", (int)pin);
         // setting a pin shouldn't change a new existing addon/reserved pin
         if (gpioMappings.pins[pin].action != GpioAction::RESERVED &&
                 gpioMappings.pins[pin].action != GpioAction::ASSIGNED_TO_ADDON &&
@@ -1529,6 +1531,56 @@ std::string getPinMappings()
     doc["enabled"] = gpioMappings.enabled;
 
     return serialize_json(doc);
+}
+
+std::string getBootModeOptions() {
+	const size_t capacity = JSON_OBJECT_SIZE(100);
+	DynamicJsonDocument doc(capacity);
+
+	BootModeOptions& bootModeOptions = Storage::getInstance().getBootModeOptions();
+	auto &mappings = bootModeOptions.inputModeMappings;
+
+	writeDoc(doc, "enabled", bootModeOptions.enabled);
+	writeDoc(doc, "webConfigPinMask", bootModeOptions.webConfigPinMask);
+	writeDoc(doc, "usbModePinMask", bootModeOptions.usbModePinMask);
+
+	if (bootModeOptions.inputModeMappings_count == 0) {
+        doc.createNestedArray("inputModeMappings");
+    }
+	for (int i = 0; i < bootModeOptions.inputModeMappings_count; i++) {
+		writeDoc(doc, "inputModeMappings", i, "pinMask", mappings[i].pinMask);
+		writeDoc(doc, "inputModeMappings", i, "inputMode", mappings[i].inputMode);
+		writeDoc(doc, "inputModeMappings", i, "profileNumber", mappings[i].profileNumber);
+	}
+
+	return serialize_json(doc);
+}
+
+std::string setBootModeOptions() {
+	BootModeOptions& bootModeOptions = Storage::getInstance().getBootModeOptions();
+
+	DynamicJsonDocument doc = get_post_data();
+    JsonObject options = doc.as<JsonObject>();
+
+	bootModeOptions.enabled = options["enabled"].as<bool>();
+	bootModeOptions.webConfigPinMask = options["webConfigPinMask"].as<int32_t>();
+	bootModeOptions.usbModePinMask = options["usbModePinMask"].as<int32_t>();
+
+    JsonArray mappings = options["inputModeMappings"];
+
+    size_t i = 0;
+    for (JsonObject mapping : mappings) {
+		bootModeOptions.inputModeMappings[i].pinMask = mapping["pinMask"].as<int32_t>();
+		bootModeOptions.inputModeMappings[i].inputMode = mapping["inputMode"].as<InputMode>();
+		bootModeOptions.inputModeMappings[i].profileNumber = mapping["profileNumber"].as<uint32_t>();
+		if (++i >= MAX_MAPPED_INPUT_MODES) {
+			break;
+		}
+	}
+	bootModeOptions.inputModeMappings_count = i;
+
+	EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
+	return serialize_json(doc);
 }
 
 std::string setKeyMappings()
@@ -3073,6 +3125,8 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/getConfig", getConfig },
     { "/api/getJoystickCenter", getJoystickCenter },
     { "/api/getJoystickCenter2", getJoystickCenter2 },
+		{ "/api/getBootModeOptions", getBootModeOptions },
+		{ "/api/setBootModeOptions", setBootModeOptions },
 #if !defined(NDEBUG)
     { "/api/echo", echo },
 #endif

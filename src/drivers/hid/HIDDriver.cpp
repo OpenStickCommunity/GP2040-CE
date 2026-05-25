@@ -147,6 +147,7 @@ const uint16_t * HIDDriver::get_descriptor_string_cb(uint8_t index, uint16_t lan
                 break;
             case 3:
                 value = gamepadOptions.usbDescVersion;
+                break;
             default:
                 value = (char *)hid_string_descriptors[index];
                 break;

@@ -10,7 +10,7 @@
 class GPGFX_DisplayBase : public I2CDeviceBase {
     public:
         GPGFX_DisplayBase() {}
-        ~GPGFX_DisplayBase() {}
+        virtual ~GPGFX_DisplayBase() {}
 
         virtual void init(GPGFX_DisplayTypeOptions options) {}
 
@@ -18,7 +18,7 @@ class GPGFX_DisplayBase : public I2CDeviceBase {
 
         virtual void clear() {}
 
-        virtual uint32_t getPixel(uint8_t x, uint8_t y) {}
+        virtual uint32_t getPixel(uint8_t x, uint8_t y) { return 0; }
 
         virtual void drawPixel(uint8_t x, uint8_t y, uint32_t color) {}
 
@@ -50,7 +50,7 @@ class GPGFX_DisplayBase : public I2CDeviceBase {
         virtual bool isSPI() { return false; }
         virtual bool isI2C() { return false; }
     private:
-        GPGFX_DisplayMetrics* _metrics;
+        GPGFX_DisplayMetrics* _metrics = nullptr;
 };
 
 #endif

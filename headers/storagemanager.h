@@ -46,6 +46,7 @@ public:
 	GpioMappingInfo* getProfilePinMappings() { return functionalPinMappings; }
 	PeripheralOptions& getPeripheralOptions() { return config.peripheralOptions; }
 	//SpecialMoveOptions_Proto& getSpecialMoveOptions() { return config.specialMoveOptions; }
+	BootModeOptions& getBootModeOptions() { return config.bootModeOptions; }
 
 	void init();
 	bool save();
@@ -61,6 +62,7 @@ public:
 	void nextProfile();
 	void previousProfile();
 	void setFunctionalPinMappings();
+	void setBootModeFunctionalPinMappings();
 	char* currentProfileLabel();
 
 	void ResetSettings(); 				// EEPROM Reset Feature

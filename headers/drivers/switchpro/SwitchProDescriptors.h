@@ -12,8 +12,12 @@
 #define SWITCH_PRO_VENDOR_ID     0x057E
 #define SWITCH_PRO_PRODUCT_ID    0x2009
 
-#define LSB(n) (n & 255)
-#define MSB(n) ((n >> 8) & 255)
+#ifndef LSB
+#define LSB(n) ((n) & 255)
+#endif
+#ifndef MSB
+#define MSB(n) (((n) >> 8) & 255)
+#endif
 
 // HAT report (4 bits)
 #define SWITCH_PRO_HAT_UP        0x00
