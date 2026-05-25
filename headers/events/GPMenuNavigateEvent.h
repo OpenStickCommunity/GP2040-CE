@@ -13,7 +13,7 @@ class GPMenuNavigateEvent : public GPEvent {
 
         GPEventType eventType() { return this->_eventType; }
 
-        GpioAction menuAction;
+        GpioAction menuAction = GpioAction::NONE;
     private:
         GPEventType _eventType = GP_EVENT_MENU_NAVIGATE;
 };

@@ -9,13 +9,20 @@ LayoutManager::LayoutList LayoutManager::getLayoutA() {
     if (options.buttonLayoutOrientation != BUTTON_ORIENTATION_DEFAULT) {
         uint16_t layoutRight = options.buttonLayoutRight;
         LayoutManager::LayoutList rightLayout = getRightLayout(layoutRight);
+        if (rightLayout.empty() && layoutRight >= BUTTON_LAYOUT_BOARD_DEFINED_ALT0_B && layoutRight <= BUTTON_LAYOUT_BOARD_DEFINED_ALT7_B) {
+            rightLayout = drawBoardDefinedB();
+        }
         if (options.buttonLayoutOrientation == BUTTON_ORIENTATION_SWITCHED) {
             return adjustByOffset(rightLayout, -64);
         } else {
             return adjustByOffset(flipHorizontally(rightLayout, 64, 0, 128, 0), -64);
         }
     } else {
-        return getLeftLayout(layoutLeft);
+        LayoutList layout = getLeftLayout(layoutLeft);
+        if (layout.empty() && layoutLeft >= BUTTON_LAYOUT_BOARD_DEFINED_ALT0_A && layoutLeft <= BUTTON_LAYOUT_BOARD_DEFINED_ALT7_A) {
+            return drawBoardDefinedA();
+        }
+        return layout;
     }
 }
 
@@ -25,13 +32,19 @@ LayoutManager::LayoutList LayoutManager::getLayoutB() {
     if (options.buttonLayoutOrientation != BUTTON_ORIENTATION_DEFAULT) {
         uint16_t layoutLeft = options.buttonLayout;
         LayoutManager::LayoutList leftLayout = getLeftLayout(layoutLeft);
+        if (leftLayout.empty() && layoutLeft >= BUTTON_LAYOUT_BOARD_DEFINED_ALT0_A && layoutLeft <= BUTTON_LAYOUT_BOARD_DEFINED_ALT7_A) {
+            leftLayout = drawBoardDefinedA();
+        }
         if (options.buttonLayoutOrientation == BUTTON_ORIENTATION_SWITCHED) {
             return adjustByOffset(leftLayout, 64);
         } else {
             return adjustByOffset(flipHorizontally(leftLayout, 0, 0, 64, 0), 64);
         }
     } else {
-        return getRightLayout(layoutRight);
+        LayoutList layout = getRightLayout(layoutRight);
+        if (layout.empty() && layoutRight >= BUTTON_LAYOUT_BOARD_DEFINED_ALT0_B && layoutRight <= BUTTON_LAYOUT_BOARD_DEFINED_ALT7_B)
+            return drawBoardDefinedB();
+        return layout;
     }
 }
 

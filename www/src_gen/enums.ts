@@ -395,7 +395,9 @@ export enum GamepadHotkey {
     HOTKEY_RS_UP = 82,
     HOTKEY_RS_DOWN = 83,
     HOTKEY_RS_LEFT = 84,
-    HOTKEY_RS_RIGHT = 85
+    HOTKEY_RS_RIGHT = 85,
+    HOTKEY_REBOOT_WEBCONFIG = 86,
+    HOTKEY_REBOOT_USB = 87
 }
 
 export enum LEDFormat_Proto {

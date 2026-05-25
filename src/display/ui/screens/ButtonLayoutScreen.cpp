@@ -112,16 +112,15 @@ void ButtonLayoutScreen::updateCustomHeaders()
     if (prevGamepadProfileNumber != gamePadProfileNumber) {
         prevGamepadProfileNumber = gamePadProfileNumber;
 
-        std::string profileStr;
-        profileStr.assign(storage.currentProfileLabel(), strlen(storage.currentProfileLabel()));
-        if (profileStr.empty()) {
-            profileStr = "     Profile #";
-            profileStr +=  std::to_string(gamePadProfileNumber);
+        bannerMessage.assign(storage.currentProfileLabel(), strlen(storage.currentProfileLabel()));
+        if (bannerMessage.empty()) {
+            bannerMessage = "     Profile #";
+            bannerMessage +=  std::to_string(gamePadProfileNumber);
         } else {
-            profileStr.insert(profileStr.begin(), (21-profileStr.length())/2, ' ');
+            bannerMessage.insert(bannerMessage.begin(), (21-bannerMessage.length())/2, ' ');
         }
 
-        addCustomHeader(profileStr, "profile");
+        addCustomHeader(bannerMessage, "profile");
     }
 
     // Check to see if LED animation profile has changed
@@ -129,18 +128,17 @@ void ButtonLayoutScreen::updateCustomHeaders()
     if (prevLEDAnimationProfileNumber != profileNumber) {
         prevLEDAnimationProfileNumber = profileNumber;
 
-        std::string profileStr;
         if(profileNumber != -1)
         {
-            profileStr = "    LED Profile #";
-            profileStr +=  std::to_string(profileNumber+1); //add 1 so its from 1-x not from 0-x
+            bannerMessage = "    LED Profile #";
+            bannerMessage +=  std::to_string(profileNumber+1); //add 1 so its from 1-x not from 0-x
         }
         else
         {
-            profileStr = "    LED Profile OFF";
+            bannerMessage = "    LED Profile OFF";
         }
 
-        addCustomHeader(profileStr, "led");
+        addCustomHeader(bannerMessage, "led");
     }
 
     checkLEDCycleParams();
@@ -154,13 +152,12 @@ void ButtonLayoutScreen::checkLEDCycleParams()
     if (prevLEDBaseCycleNumber != baseCycleNumber) {
         prevLEDBaseCycleNumber = baseCycleNumber;
 
-        std::string cycleStr;
-        cycleStr = "LED Idle Rate =";
-        cycleStr +=  std::to_string(baseCycleNumber+1); //add 1 so its from 1-x not from 0-x
-        cycleStr += " / ";
-        cycleStr +=  std::to_string(CYCLE_STEPS); //add 1 so its from 1-x not from 0-x
+        bannerMessage = "LED Idle Rate =";
+        bannerMessage +=  std::to_string(baseCycleNumber+1); //add 1 so its from 1-x not from 0-x
+        bannerMessage += " / ";
+        bannerMessage +=  std::to_string(CYCLE_STEPS); //add 1 so its from 1-x not from 0-x
 
-        addCustomHeader(cycleStr, "ledBaseCycle");
+        addCustomHeader(bannerMessage, "ledBaseCycle");
     }
         
     int8_t baseCaseCycleNumber = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCaseCycleTime;
@@ -169,13 +166,12 @@ void ButtonLayoutScreen::checkLEDCycleParams()
     if (prevLEDBaseCaseCycleNumber != baseCaseCycleNumber) {
         prevLEDBaseCaseCycleNumber = baseCaseCycleNumber;
 
-        std::string cycleStr;
-        cycleStr = "LED Case Rate =";
-        cycleStr +=  std::to_string(baseCaseCycleNumber+1); //add 1 so its from 1-x not from 0-x
-        cycleStr += " / ";
-        cycleStr +=  std::to_string(CYCLE_STEPS); //add 1 so its from 1-x not from 0-x
+        bannerMessage = "LED Case Rate =";
+        bannerMessage +=  std::to_string(baseCaseCycleNumber+1); //add 1 so its from 1-x not from 0-x
+        bannerMessage += " / ";
+        bannerMessage +=  std::to_string(CYCLE_STEPS); //add 1 so its from 1-x not from 0-x
 
-        addCustomHeader(cycleStr, "ledBaseCaseCycle");
+        addCustomHeader(bannerMessage, "ledBaseCaseCycle");
     }
     
     int8_t basePressedCycleNumber = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].basePressedCycleTime;
@@ -184,13 +180,12 @@ void ButtonLayoutScreen::checkLEDCycleParams()
     if (prevLEDBasePressedCycleNumber != basePressedCycleNumber) {
         prevLEDBasePressedCycleNumber = basePressedCycleNumber;
 
-        std::string cycleStr;
-        cycleStr = "LED Press Rate =";
-        cycleStr +=  std::to_string(basePressedCycleNumber+1); //add 1 so its from 1-x not from 0-x
-        cycleStr += " / ";
-        cycleStr +=  std::to_string(CYCLE_STEPS); //add 1 so its from 1-x not from 0-x
+        bannerMessage = "LED Press Rate =";
+        bannerMessage +=  std::to_string(basePressedCycleNumber+1); //add 1 so its from 1-x not from 0-x
+        bannerMessage += " / ";
+        bannerMessage +=  std::to_string(CYCLE_STEPS); //add 1 so its from 1-x not from 0-x
 
-        addCustomHeader(cycleStr, "ledBasePressedCycle");
+        addCustomHeader(bannerMessage, "ledBasePressedCycle");
     }
 }
 
@@ -327,6 +322,8 @@ void ButtonLayoutScreen::generateHeader() {
         }
     }
 
+    const GamepadOptions & options = gamepad->getOptions();
+
     if (showDpadMode) {
         switch (gamepad->getActiveDpadMode())
         {
@@ -337,7 +334,7 @@ void ButtonLayoutScreen::generateHeader() {
     }
 
     if (showSocdMode) {
-        switch (Gamepad::resolveSOCDMode(gamepad->getOptions()))
+        switch (Gamepad::resolveSOCDMode(options))
         {
             case SOCD_MODE_NEUTRAL:               statusBar += " SOCD-N"; break;
             case SOCD_MODE_UP_PRIORITY:           statusBar += " SOCD-U"; break;
@@ -355,7 +352,7 @@ void ButtonLayoutScreen::generateHeader() {
         std::string profile;
         profile.assign(storage.currentProfileLabel(), strlen(storage.currentProfileLabel()));
         if (profile.empty()) {
-            statusBar += std::to_string(getGamepad()->getOptions().profileNumber);
+            statusBar += std::to_string(options.profileNumber);
         } else {
             statusBar += profile;
         }
@@ -648,20 +645,18 @@ void ButtonLayoutScreen::handleProfileChange(GPEvent* e) {
 }
 
 void ButtonLayoutScreen::handleUSB(GPEvent* e) {
-    //GPUSBHostEvent* event = (GPUSBHostEvent*)e;
-    
-    std::string customBannerStr;
+    bannerDelayStart = getMillis();
 
     if (e->eventType() == GP_EVENT_USBHOST_MOUNT) {
-        customBannerStr = "    USB Connected";
+        bannerMessage = "    USB Connected";
     } else if (e->eventType() == GP_EVENT_USBHOST_UNMOUNT) {
-        customBannerStr = "  USB Disconnnected";
+        bannerMessage = "  USB Disconnnected";
     }
 
-    addCustomHeader(customBannerStr, "USB");
+    addCustomHeader(bannerMessage, "USB");
 }
 
 void ButtonLayoutScreen::trim(std::string &s) {
     s.erase(s.begin(), std::find_if(s.begin(), s.end(),
-            std::not1(std::ptr_fun<int, int>(std::isspace))));
+            [](unsigned char c) { return !std::isspace(c); }));
 }

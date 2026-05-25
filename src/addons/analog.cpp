@@ -136,6 +136,10 @@ void AnalogInput::process() {
         uint16_t clampedX = (uint16_t)std::min((uint32_t)(joystickMax * std::min(adc_pairs[i].x_value, 1.0f)), (uint32_t)0xFFFF);
         uint16_t clampedY = (uint16_t)std::min((uint32_t)(joystickMax * std::min(adc_pairs[i].y_value, 1.0f)), (uint32_t)0xFFFF);
 
+        if (adc_pairs[i].x_value == ANALOG_CENTER && adc_pairs[i].y_value == ANALOG_CENTER) {
+            continue;
+        }
+
         if (adc_pairs[i].analog_dpad == DpadMode::DPAD_MODE_LEFT_ANALOG) {
             gamepad->state.lx = clampedX;
             gamepad->state.ly = clampedY;

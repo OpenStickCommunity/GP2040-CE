@@ -18,7 +18,7 @@ class DisplaySaverScreen : public GPScreen {
     protected:
         virtual void drawScreen();
         uint16_t prevButtonState = 0;
-        DisplaySaverMode displaySaverMode;
+        DisplaySaverMode displaySaverMode{};
 
         // snow screen
         uint8_t snowflakeSpeeds[SCREEN_WIDTH][SCREEN_HEIGHT] = {};
