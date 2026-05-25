@@ -30,6 +30,9 @@ export type AnimationProfile = {
 	nonPressedContextParam: number;
 	pressedContextParam: number;
 	caseContextParam: number;
+	baseCycleTime: number;
+	basePressedCycleTime: number;
+	baseCaseCycleTime: number;
 };
 
 export type Light = {

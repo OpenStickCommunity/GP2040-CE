@@ -91,6 +91,9 @@ export default {
 		'pressed-animation-label': 'Pressed animation',
 		'pressed-colors-label': 'Pressed colors',
 		'pressed-special-color-label': 'Pressed special color',
+		'idle-Speed-label': 'Idle Effect Speed: {{value}} / 5',
+		'press-Speed-label': 'Pressed Effect Speed: {{value}} / 5',
+		'case-Speed-label': 'Case Effect Speed: {{value}} / 5',
 		'idle-special-color-label': 'Idle special color',
 		'idle-colors-label': 'Idle colors',
 		'switch-enabled-description':
