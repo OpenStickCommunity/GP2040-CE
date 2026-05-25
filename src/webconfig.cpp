@@ -1196,24 +1196,26 @@ void helperGetProfileFromJsonObject(AnimationProfile* Profile, JsonObject* JsonD
     if(Profile->baseNonPressedEffect != (AnimationNonPressedEffects)((*JsonData)["baseNonPressedEffect"].as<uint32_t>()))
     {
         Profile->baseNonPressedEffect = (AnimationNonPressedEffects)((*JsonData)["baseNonPressedEffect"].as<uint32_t>());
-        Profile->baseCycleTime = 2;
     }
     if(Profile->basePressedEffect != (AnimationPressedEffects)((*JsonData)["basePressedEffect"].as<uint32_t>()))
     {
         Profile->basePressedEffect = (AnimationPressedEffects)((*JsonData)["basePressedEffect"].as<uint32_t>());
-        Profile->basePressedCycleTime = 2;
     }
     if(Profile->baseCaseEffect != (AnimationNonPressedEffects)((*JsonData)["baseCaseEffect"].as<uint32_t>()))
     {
         Profile->baseCaseEffect = (AnimationNonPressedEffects)((*JsonData)["baseCaseEffect"].as<uint32_t>());
-        Profile->baseCaseCycleTime = 2;
     }
+
     Profile->buttonPressHoldTimeInMs = (*JsonData)["buttonPressHoldTimeInMs"].as<uint32_t>();
     Profile->buttonPressFadeOutTimeInMs = (*JsonData)["buttonPressFadeOutTimeInMs"].as<uint32_t>();
     Profile->nonPressedSpecialColor = (*JsonData)["nonPressedSpecialColor"].as<uint32_t>();
     Profile->bUseCaseLightsInPressedAnimations = (*JsonData)["bUseCaseLightsInPressedAnimations"].as<bool>();
     Profile->pressedSpecialColor = (*JsonData)["pressedSpecialColor"].as<uint32_t>();
     Profile->caseSpecialColor = (*JsonData)["caseSpecialColor"].as<uint32_t>();
+
+    Profile->baseCycleTime = (*JsonData)["baseCycleTime"].as<uint32_t>() - 1;
+    Profile->basePressedCycleTime = (*JsonData)["basePressedCycleTime"].as<uint32_t>() - 1;
+    Profile->baseCaseCycleTime = (*JsonData)["baseCaseCycleTime"].as<uint32_t>() - 1;
 
     Profile->effectContextParam = (*JsonData)["nonPressedContextParam"].as<uint32_t>() & 0xFF;
     Profile->effectContextParam += ((*JsonData)["pressedContextParam"].as<uint32_t>() & 0xFF) << 8;
@@ -1405,6 +1407,10 @@ std::string getAnimationProtoOptions()
         profile["baseCaseEffect"] = options.profiles[profilesIndex].baseCaseEffect;
         profile["pressedSpecialColor"] = options.profiles[profilesIndex].pressedSpecialColor;
         profile["caseSpecialColor"] = options.profiles[profilesIndex].caseSpecialColor;
+
+        profile["baseCycleTime"] = options.profiles[profilesIndex].baseCycleTime + 1;
+        profile["basePressedCycleTime"] = options.profiles[profilesIndex].basePressedCycleTime + 1;
+        profile["baseCaseCycleTime"] = options.profiles[profilesIndex].baseCaseCycleTime + 1;
 
         profile["bNonPressedSpecialColorIsRainbow"] = options.profiles[profilesIndex].bNonPressedSpecialColorIsRainbow ? 1 : 0;
         profile["bPressedSpecialColorIsRainbow"] = options.profiles[profilesIndex].bPressedSpecialColorIsRainbow ? 1 : 0;

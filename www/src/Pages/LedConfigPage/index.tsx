@@ -125,6 +125,9 @@ const schema = yup.object({
 				nonPressedContextParam: yup.number().required(),
 				pressedContextParam: yup.number().required(),
 				caseContextParam: yup.number().required(),
+				baseCycleTime: yup.number().required(),
+				basePressedCycleTime: yup.number().required(),
+				baseCaseCycleTime: yup.number().required(),
 			}),
 		),
 	}),
@@ -204,6 +207,9 @@ const emptyAnimationProfile = {
 	nonPressedContextParam: 0,
 	pressedContextParam: 0,
 	caseContextParam: 0,
+	baseCycleTime: 0,
+	basePressedCycleTime: 0,
+	baseCaseCycleTime: 0,
 	notPressedStaticColors: Array.from({ length: GPIO_PIN_LENGTH }, () => 0),
 	pressedStaticColors: Array.from({ length: GPIO_PIN_LENGTH }, () => 1),
 };
@@ -1075,6 +1081,50 @@ export default function LedConfigPage() {
 													</Col>
 												</Row>
 
+												<Row>
+													<div className="form-control-sm col-sm-4 mb-3">
+														<Form.Label
+															htmlFor={`AnimationOptions.profiles.${profileIndex}.baseCycleTime`}
+														>{`${t('LedConfigPage:theme.idle-Speed-label', { value: profile.baseCycleTime })}`}</Form.Label>
+														<Form.Range
+															name={`AnimationOptions.profiles.${profileIndex}.baseCycleTime`}
+															id={`AnimationOptions.profiles.${profileIndex}.baseCycleTime`}
+															min={1}
+															max={5}
+															step={1}
+															value={profile.baseCycleTime}
+															onChange={handleChange}
+														/>
+													</div>						
+													<div className="form-control-sm col-sm-4 mb-3">
+														<Form.Label
+															htmlFor={`AnimationOptions.profiles.${profileIndex}.basePressedCycleTime`}
+														>{`${t('LedConfigPage:theme.press-Speed-label', { value: profile.basePressedCycleTime })}`}</Form.Label>
+														<Form.Range
+															name={`AnimationOptions.profiles.${profileIndex}.basePressedCycleTime`}
+															id={`AnimationOptions.profiles.${profileIndex}.basePressedCycleTime`}
+															min={1}
+															max={5}
+															step={1}
+															value={profile.basePressedCycleTime}
+															onChange={handleChange}
+														/>
+													</div>															<div className="form-control-sm col-sm-4 mb-3">
+														<Form.Label
+															htmlFor={`AnimationOptions.profiles.${profileIndex}.baseCaseCycleTime`}
+														>{`${t('LedConfigPage:theme.case-Speed-label', { value: profile.baseCaseCycleTime })}`}</Form.Label>
+														<Form.Range
+															name={`AnimationOptions.profiles.${profileIndex}.baseCaseCycleTime`}
+															id={`AnimationOptions.profiles.${profileIndex}.baseCaseCycleTime`}
+															min={1}
+															max={5}
+															step={1}
+															value={profile.baseCaseCycleTime}
+															onChange={handleChange}
+														/>
+													</div>		
+												</Row>
+												
 												<hr />
 
 												<Row>
