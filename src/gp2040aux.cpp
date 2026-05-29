@@ -52,13 +52,21 @@ void GP2040Aux::setup() {
 
 void GP2040Aux::run() {
 	while (1) {
-		// Pre, Process, and Post
 		addons.PreprocessAddons();
-		addons.ProcessAddons();
 
-		// Run auxiliary functions for input driver on Core1
+		// Run auxiliary input driver functions (e.g. P5General auth USB
+		// listener servicing hash_pending round-trips to the dongle)
+		// BEFORE ProcessAddons() so the auth pipeline gets a turn at the
+		// start of every Core 1 iteration. Otherwise a long display I2C
+		// write inside ProcessAddons() (~10 ms at 1 MHz, ~25 ms at 400 kHz)
+		// stalls the auth listener, causing hash_pending to stay set and
+		// delaying HID reports to the PS5 by 1-2+ frames. Drivers without
+		// an auxiliary step provide a no-op processAux(), so this ordering
+		// is safe for all driver modes.
 		if ( inputDriver != nullptr ) {
 			inputDriver->processAux();
 		}
+
+		addons.ProcessAddons();
 	}
 }
