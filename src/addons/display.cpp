@@ -205,6 +205,14 @@ void DisplayAddon::process() {
         return;
     }
 
+    // Rate-limit the expensive draw path to ~30fps so Core1
+    // is free for processAux() (auth handshake) on other iterations
+    uint32_t now = getMillis();
+    if ((now - prevDrawMillis) < DISPLAY_FRAME_INTERVAL_MS) {
+        return;
+    }
+    prevDrawMillis = now;
+
     // Core0 requested a new display mode
     if (nextDisplayMode != currDisplayMode ) {
         currDisplayMode = nextDisplayMode;

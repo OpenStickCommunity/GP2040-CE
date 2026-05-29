@@ -66,6 +66,10 @@
 #define DISPLAY_SAVER_TIMEOUT 0
 #endif
 
+#ifndef DISPLAY_FRAME_INTERVAL_MS
+#define DISPLAY_FRAME_INTERVAL_MS 33 // ~30fps display update rate
+#endif
+
 #ifndef BUTTON_LAYOUT
 #define BUTTON_LAYOUT BUTTON_LAYOUT_STICK
 #endif
@@ -239,6 +243,7 @@ private:
     int32_t displaySaverTimer;
     uint8_t displayIsPowerOn = 1;
     uint32_t prevMillis;
+    uint32_t prevDrawMillis = 0;
     std::string statusBar;
     bool configMode;
     GPGFX* gpDisplay;
