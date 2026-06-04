@@ -8,7 +8,7 @@ import {
 	MAX_NON_BUTTON_LIGHT_COLOR_INDEXES,
 } from '../../Store/useLedStore';
 import { rgbIntToHex } from '../../Services/Utilities';
-import ColorSelector from './ColorSlector';
+import ColorSelector from './ColorSelector';
 import boards from '../../Data/Boards.json';
 
 const GPIO_PIN_LENGTH =

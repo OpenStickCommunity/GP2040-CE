@@ -1095,7 +1095,7 @@ export default function LedConfigPage() {
 															value={profile.baseCycleTime}
 															onChange={handleChange}
 														/>
-													</div>						
+													</div>
 													<div className="form-control-sm col-sm-4 mb-3">
 														<Form.Label
 															htmlFor={`AnimationOptions.profiles.${profileIndex}.basePressedCycleTime`}
@@ -1122,9 +1122,9 @@ export default function LedConfigPage() {
 															value={profile.baseCaseCycleTime}
 															onChange={handleChange}
 														/>
-													</div>		
+													</div>
 												</Row>
-												
+
 												<hr />
 
 												<Row>

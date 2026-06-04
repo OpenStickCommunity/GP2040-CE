@@ -32,7 +32,7 @@ import { LED_COLORS, LIGHT_TYPES } from '../../Data/Leds';
 import boards from '../../Data/Boards.json';
 
 import { rgbIntToHex } from '../../Services/Utilities';
-import ColorSelector from './ColorSlector';
+import ColorSelector from './ColorSelector';
 import { LightIndicator } from './LightIndicator';
 
 const GRID_SIZE = 30;
@@ -489,10 +489,16 @@ export default function LightCoordsSection({
 										</div>
 										<div className="mb-3">
 											<label className="form-label">
-											    {(values.Lights[selectedLight]?.lightType === LIGHT_TYPES.Turbo || values.Lights[selectedLight]?.lightType === LIGHT_TYPES.PlayerLight)
-													? t('LedConfigPage:lightCoordsSection.active-color-label')
-													: t('LedConfigPage:lightCoordsSection.pressed-color-label')
-												}
+												{values.Lights[selectedLight]?.lightType ===
+													LIGHT_TYPES.Turbo ||
+												values.Lights[selectedLight]?.lightType ===
+													LIGHT_TYPES.PlayerLight
+													? t(
+															'LedConfigPage:lightCoordsSection.active-color-label',
+														)
+													: t(
+															'LedConfigPage:lightCoordsSection.pressed-color-label',
+														)}
 											</label>
 											<ColorSelector
 												options={colorOptions}
