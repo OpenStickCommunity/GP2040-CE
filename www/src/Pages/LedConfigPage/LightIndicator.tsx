@@ -1,5 +1,6 @@
 import { useDraggable } from '@dnd-kit/core';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { Light } from '../../Store/useLedStore';
 import { LIGHT_TYPES } from '../../Data/Leds';
 
@@ -98,6 +99,7 @@ export function LightIndicator({
 	GPIOPinOrNonButtonIndex,
 	error,
 }: LightIndicatorProps) {
+	const { t } = useTranslation('');
 	const { attributes, isDragging, listeners, setNodeRef, transform } =
 		useDraggable({ id });
 
@@ -105,7 +107,7 @@ export function LightIndicator({
 		<div
 			{...listeners}
 			{...attributes}
-			aria-label="Draggable Light Indicator"
+			aria-label={t('LedConfigPage:lightIndicator.aria-label')}
 			ref={setNodeRef}
 			style={{
 				width: cellWidth,
@@ -140,11 +142,17 @@ export function LightIndicator({
 					rootClose
 					overlay={
 						<Popover>
-							<Popover.Header as="h3">Light {id + 1}</Popover.Header>
+							<Popover.Header as="h3">
+								{t('LedConfigPage:lightIndicator.popover-header', {
+									index: id + 1,
+								})}
+							</Popover.Header>
 							<Popover.Body>
 								<div style={{ minWidth: 200 }}>
 									<div className="d-flex w-100 justify-content-between">
-										<span className="text-secondary">GPIO/Case:</span>
+										<span className="text-secondary">
+											{t('LedConfigPage:lightIndicator.gpio-case-label')}
+										</span>
 										<span>
 											{lightType === LIGHT_TYPES.Case
 												? GPIOPinOrNonButtonIndex + 1
@@ -152,26 +160,38 @@ export function LightIndicator({
 										</span>
 									</div>
 									<div className="d-flex w-100 justify-content-between">
-										<span className="text-secondary">Type:</span>
+										<span className="text-secondary">
+											{t('LedConfigPage:lightIndicator.type-label')}
+										</span>
 										<span>
-											{lightType == LIGHT_TYPES.ActionButton && 'ActionButton'}
-											{lightType === LIGHT_TYPES.Case && 'Case'}
-											{lightType === LIGHT_TYPES.Turbo && 'Turbo'}
-											{lightType === LIGHT_TYPES.PlayerLight && 'PlayerLight'}
+											{lightType == LIGHT_TYPES.ActionButton &&
+												t('LedConfigPage:lightIndicator.type-action-button')}
+											{lightType === LIGHT_TYPES.Case &&
+												t('LedConfigPage:lightIndicator.type-case')}
+											{lightType === LIGHT_TYPES.Turbo &&
+												t('LedConfigPage:lightIndicator.type-turbo')}
+											{lightType === LIGHT_TYPES.PlayerLight &&
+												t('LedConfigPage:lightIndicator.type-player-light')}
 										</span>
 									</div>
 									<div className="d-flex w-100 justify-content-between">
-										<span className="text-secondary">LEDs:</span>
+										<span className="text-secondary">
+											{t('LedConfigPage:lightIndicator.leds-label')}
+										</span>
 										<span>{numLedsOnLight}</span>
 									</div>
 									<div className="d-flex w-100 justify-content-between">
-										<span className="text-secondary">Coords:</span>
+										<span className="text-secondary">
+											{t('LedConfigPage:lightIndicator.coords-label')}
+										</span>
 										<span>
 											({xCoord}, {yCoord})
 										</span>
 									</div>
 									<div className="d-flex w-100 justify-content-between">
-										<span className="text-secondary">First LED:</span>
+										<span className="text-secondary">
+											{t('LedConfigPage:lightIndicator.first-led-label')}
+										</span>
 										<span>{firstLedIndex}</span>
 									</div>
 								</div>
