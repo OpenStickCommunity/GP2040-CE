@@ -12,13 +12,11 @@ import {
 	snapCenterToCursor,
 	restrictToParentElement,
 } from '@dnd-kit/modifiers';
-import { FormikErrors, FormikHandlers } from 'formik';
+import { FormikErrors, FormikHandlers, FormikProps } from 'formik';
 import { Row, Col, Button, Alert } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 import {
-	AnimationOptions,
-	LedOptions,
 	Light,
 	MAX_NON_BUTTON_LIGHT_COLOR_INDEXES,
 	MAX_LIGHTS,
@@ -34,6 +32,7 @@ import boards from '../../Data/Boards.json';
 import { rgbIntToHex } from '../../Services/Utilities';
 import ColorSelector from './ColorSelector';
 import { LightIndicator } from './LightIndicator';
+import { getLightError, LedFormValues } from './ledFormUtils';
 
 const GRID_SIZE = 30;
 const GPIO_PIN_LENGTH =
@@ -70,24 +69,10 @@ export default function LightCoordsSection({
 	notPressedStaticColors: number[];
 	nonButtonStaticColors: number[];
 	profileIndex: number;
-	values: {
-		ledOptions: LedOptions;
-		Lights: Light[];
-		AnimationOptions: AnimationOptions;
-	};
-	errors: FormikErrors<{
-		AnimationOptions: AnimationOptions;
-		Lights: Light[];
-	}>;
-	setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
-	setValues: (
-		values: {
-			ledOptions: LedOptions;
-			Lights: Light[];
-			AnimationOptions: AnimationOptions;
-		},
-		shouldValidate?: boolean,
-	) => void;
+	values: LedFormValues;
+	errors: FormikErrors<LedFormValues>;
+	setFieldValue: FormikProps<LedFormValues>['setFieldValue'];
+	setValues: FormikProps<LedFormValues>['setValues'];
 	handleChange: FormikHandlers['handleChange'];
 }) {
 	const { dimensions, containerRef } = useGetContainerDimensions();
@@ -367,12 +352,10 @@ export default function LightCoordsSection({
 									groupClassName="mb-3"
 									value={values.Lights[selectedLight]?.numLedsOnLight}
 									error={
-										(errors.Lights?.[selectedLight] as FormikErrors<Light>)
-											?.numLedsOnLight
+										getLightError(errors, selectedLight)?.numLedsOnLight
 									}
 									isInvalid={Boolean(
-										(errors.Lights?.[selectedLight] as FormikErrors<Light>)
-											?.numLedsOnLight,
+										getLightError(errors, selectedLight)?.numLedsOnLight,
 									)}
 									onChange={handleChange}
 									min={1}
@@ -387,12 +370,10 @@ export default function LightCoordsSection({
 									groupClassName="mb-3"
 									value={values.Lights[selectedLight]?.firstLedIndex}
 									error={
-										(errors.Lights?.[selectedLight] as FormikErrors<Light>)
-											?.firstLedIndex
+										getLightError(errors, selectedLight)?.firstLedIndex
 									}
 									isInvalid={Boolean(
-										(errors.Lights?.[selectedLight] as FormikErrors<Light>)
-											?.firstLedIndex,
+										getLightError(errors, selectedLight)?.firstLedIndex,
 									)}
 									onChange={handleChange}
 									min={0}
@@ -532,13 +513,9 @@ export default function LightCoordsSection({
 											className="form-control"
 											value={values.Lights[selectedLight]?.xCoord}
 											onChange={handleChange}
-											error={
-												(errors.Lights?.[selectedLight] as FormikErrors<Light>)
-													?.xCoord
-											}
+											error={getLightError(errors, selectedLight)?.xCoord}
 											isInvalid={Boolean(
-												(errors.Lights?.[selectedLight] as FormikErrors<Light>)
-													?.xCoord,
+												getLightError(errors, selectedLight)?.xCoord,
 											)}
 											min={0}
 											max={GRID_SIZE - 1}
@@ -554,13 +531,9 @@ export default function LightCoordsSection({
 											className="form-control"
 											value={values.Lights[selectedLight]?.yCoord}
 											onChange={handleChange}
-											error={
-												(errors.Lights?.[selectedLight] as FormikErrors<Light>)
-													?.yCoord
-											}
+											error={getLightError(errors, selectedLight)?.yCoord}
 											isInvalid={Boolean(
-												(errors.Lights?.[selectedLight] as FormikErrors<Light>)
-													?.yCoord,
+												getLightError(errors, selectedLight)?.yCoord,
 											)}
 											min={0}
 											max={GRID_SIZE - 1}

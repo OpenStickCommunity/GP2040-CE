@@ -104,6 +104,7 @@ export function LightIndicator({
 	return (
 		<div
 			{...listeners}
+			{...attributes}
 			aria-label="Draggable Light Indicator"
 			ref={setNodeRef}
 			style={{
