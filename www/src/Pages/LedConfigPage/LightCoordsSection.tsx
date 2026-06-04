@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useId } from 'react';
 import {
 	useSensor,
 	MouseSensor,
@@ -77,6 +77,9 @@ export default function LightCoordsSection({
 }) {
 	const { dimensions, containerRef } = useGetContainerDimensions();
 	const { t } = useTranslation('');
+
+	const gridId = useId();
+	const smallGridId = `${gridId}-small`;
 
 	const [cellWidth, setCellWidth] = useState(dimensions.width / GRID_SIZE);
 	const [selectedLight, setSelectedLight] = useState<number | null>(null);
@@ -520,7 +523,7 @@ export default function LightCoordsSection({
 						>
 							<defs>
 								<pattern
-									id="smallGrid"
+									id={smallGridId}
 									width={cellWidth}
 									height={cellWidth}
 									patternUnits="userSpaceOnUse"
@@ -534,7 +537,7 @@ export default function LightCoordsSection({
 								</pattern>
 
 								<pattern
-									id="grid"
+									id={gridId}
 									width={cellWidth * 10}
 									height={cellWidth * 10}
 									patternUnits="userSpaceOnUse"
@@ -542,7 +545,7 @@ export default function LightCoordsSection({
 									<rect
 										width={cellWidth * 10}
 										height={cellWidth * 10}
-										fill="url(#smallGrid)"
+										fill={`url(#${smallGridId})`}
 									/>
 									<path
 										d={`M ${cellWidth * 10} 0 L 0 0 0 ${cellWidth * 10}`}
@@ -552,7 +555,7 @@ export default function LightCoordsSection({
 									/>
 								</pattern>
 							</defs>
-							<rect width="100%" height="100%" fill="url(#grid)" />
+							<rect width="100%" height="100%" fill={`url(#${gridId})`} />
 						</svg>
 
 						<DndContext
