@@ -164,6 +164,7 @@ const INPUT_BOOT_MODES = [
 	},
 	{ labelKey: 'input-mode-options.nintendo-switch-pro', value: 15, group: 'primary' },
 	{ labelKey: 'input-mode-options.keyboard', value: 3, group: 'primary' },
+	{ labelKey: 'input-mode-options.keyboard-plus', value: 17, group: 'primary' },
 	{ labelKey: 'input-mode-options.generic', value: 14, group: 'primary' },
 	{ labelKey: 'input-mode-options.mdmini', value: 6, group: 'mini' },
 	{ labelKey: 'input-mode-options.neogeo', value: 7, group: 'mini' },

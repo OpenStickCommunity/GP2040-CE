@@ -27,7 +27,7 @@ endif()
 if(DEFINED ENV{GP2040_BOARDCONFIG})
   set(GP2040_BOARDCONFIG $ENV{GP2040_BOARDCONFIG})
 elseif(NOT DEFINED GP2040_BOARDCONFIG)
-  set(GP2040_BOARDCONFIG Pico)
+  set(GP2040_BOARDCONFIG Haute42COSMOXCAS)
 endif()
 
 # check for existing cmake files in the event of changing PICO_BOARD or PICO_PLATFORM
@@ -208,6 +208,7 @@ src/drivers/astro/AstroDriver.cpp
 src/drivers/egret/EgretDriver.cpp
 src/drivers/hid/HIDDriver.cpp
 src/drivers/keyboard/KeyboardDriver.cpp
+src/drivers/keyboardplus/KeyboardPlusDriver.cpp
 src/drivers/mdmini/MDMiniDriver.cpp
 src/drivers/neogeo/NeoGeoDriver.cpp
 src/drivers/net/NetDriver.cpp

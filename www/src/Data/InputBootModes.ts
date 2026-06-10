@@ -61,6 +61,15 @@ export const INPUT_MODE_OPTIONS: InputModeOptions[] = [
 		deviceTypes: [],
 	},
 	{
+		labelKey: 'input-mode-options.keyboard-plus',
+		value: InputMode.INPUT_MODE_KEYBOARDPLUS,
+		group: 'primary',
+		required: [],
+		optional: [],
+		authentication: [],
+		deviceTypes: [],
+	},
+	{
 		labelKey: 'input-mode-options.ps4',
 		value: InputMode.INPUT_MODE_PS4,
 		group: 'primary',

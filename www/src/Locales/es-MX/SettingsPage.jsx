@@ -13,6 +13,7 @@ export default {
 		ps3: 'PS3',
 		generic: 'HID Genérico',
 		keyboard: 'Teclado',
+		'keyboard-plus': 'Teclado+',
 		ps4: 'PS4',
 		ps5: 'PS5',
 		neogeo: 'NEOGEO mini',

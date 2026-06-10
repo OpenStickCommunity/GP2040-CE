@@ -7,6 +7,7 @@ export default {
 		'nintendo-switch': 'Nintendo Switch',
 		ps3: 'PS3/DirectInput',
 		keyboard: 'Teclado',
+		'keyboard-plus': 'Teclado+',
 		ps4: 'PS4',
 		xbone: 'Xbox One',
 	},
