@@ -34,6 +34,7 @@ private:
     uint32_t read();
 
     Mask_t positionMasks[MAX_PROFILE_SLIDER_POSITIONS] = {0};
+    Mask_t anyPositionMask = 0;
     uint32_t numPositions = 0;
 };
 

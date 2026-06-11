@@ -1,3 +1,4 @@
+import { ChangeEvent } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
 import { FormCheck, Row } from 'react-bootstrap';
 import * as yup from 'yup';
@@ -7,6 +8,12 @@ import FormControl from '../Components/FormControl';
 import FormSelect from '../Components/FormSelect';
 import { AddonPropTypes } from '../Pages/AddonsConfigPage';
 
+// matches MAX_PROFILE_SLIDER_POSITIONS and the proto max_count
+const MAX_SLIDER_POSITIONS = 8;
+const MIN_SLIDER_POSITIONS = 2;
+// core profile + 5 alternate gpioMappingsSets
+const MAX_PROFILES = 6;
+
 export const profileSliderScheme = {
 	SliderProfileInputEnabled: yup
 		.number()
@@ -15,17 +22,17 @@ export const profileSliderScheme = {
 	sliderProfileNumPositions: yup
 		.number()
 		.label('Slider Profile Num Positions')
-		.min(2)
-		.max(8)
+		.min(MIN_SLIDER_POSITIONS)
+		.max(MAX_SLIDER_POSITIONS)
 		.typeError('Slider Profile Num Positions must be a number'),
 	sliderProfileDefaultProfile: yup
 		.number()
 		.label('Slider Profile Default Profile')
 		.min(1)
-		.max(6),
+		.max(MAX_PROFILES),
 	sliderProfileAssignments: yup
 		.array()
-		.of(yup.number())
+		.of(yup.number().min(1).max(MAX_PROFILES))
 		.label('Slider Profile Assignments'),
 };
 
@@ -36,12 +43,30 @@ export const profileSliderState = {
 	sliderProfileAssignments: [1, 2, 3, 4, 5, 6, 7, 8],
 };
 
-const ProfileSlider = ({ values, errors, handleChange, handleCheckbox, setFieldValue }: AddonPropTypes) => {
+const ProfileSlider = ({
+	values,
+	errors,
+	handleChange,
+	handleCheckbox,
+	setFieldValue,
+}: AddonPropTypes) => {
 	const { t } = useTranslation();
-	const numPositions = (values as any).sliderProfileNumPositions || 2;
+	const numPositions = Math.min(
+		Math.max(
+			Number(values.sliderProfileNumPositions) || MIN_SLIDER_POSITIONS,
+			MIN_SLIDER_POSITIONS,
+		),
+		MAX_SLIDER_POSITIONS,
+	);
+	const assignmentErrors = Array.isArray(errors.sliderProfileAssignments)
+		? errors.sliderProfileAssignments
+		: [];
 
-	// Generate profile options (1 through 6)
-	const profileOptions = Array.from({ length: 6 }, (_, i) => ({
+	// position i falls back to profile i + 1 when it has no assignment yet
+	const assignmentForPosition = (i: number) =>
+		values.sliderProfileAssignments?.[i] || Math.min(i + 1, MAX_PROFILES);
+
+	const profileOptions = Array.from({ length: MAX_PROFILES }, (_, i) => ({
 		label: t('PinMapping:profile-label-default', { profileNumber: i + 1 }),
 		value: i + 1,
 	}));
@@ -52,13 +77,17 @@ const ProfileSlider = ({ values, errors, handleChange, handleCheckbox, setFieldV
 				<a
 					href="https://gp2040-ce.info/add-ons/profile-selection-slider"
 					target="_blank"
+					rel="noreferrer"
 					className="text-reset text-decoration-none"
 				>
 					{t('AddonsConfig:profile-slider-header-text')}
 				</a>
 			}
 		>
-			<div id="SliderProfileInputOptions" hidden={!(values as any).SliderProfileInputEnabled}>
+			<div
+				id="SliderProfileInputOptions"
+				hidden={!values.SliderProfileInputEnabled}
+			>
 				<div className="alert alert-info" role="alert">
 					{t('AddonsConfig:profile-slider-sub-header-text')}
 				</div>
@@ -72,7 +101,7 @@ const ProfileSlider = ({ values, errors, handleChange, handleCheckbox, setFieldV
 								href="../pin-mapping"
 								className="alert-link"
 								target="_blank"
-							/>
+							/>,
 						]}
 					/>
 				</div>
@@ -84,16 +113,12 @@ const ProfileSlider = ({ values, errors, handleChange, handleCheckbox, setFieldV
 						type="number"
 						className="form-control-sm"
 						groupClassName="col-sm-3 mb-3"
-						value={numPositions}
-						error={(errors as any).sliderProfileNumPositions}
-						isInvalid={Boolean((errors as any).sliderProfileNumPositions)}
-						onChange={(e: any) => {
-							const newVal = parseInt(e.target.value, 10);
-							setFieldValue('sliderProfileNumPositions', newVal);
-							handleChange(e);
-						}}
-						min={2}
-						max={8}
+						value={values.sliderProfileNumPositions}
+						error={errors.sliderProfileNumPositions}
+						isInvalid={Boolean(errors.sliderProfileNumPositions)}
+						onChange={handleChange}
+						min={MIN_SLIDER_POSITIONS}
+						max={MAX_SLIDER_POSITIONS}
 					/>
 				</Row>
 
@@ -103,13 +128,10 @@ const ProfileSlider = ({ values, errors, handleChange, handleCheckbox, setFieldV
 						name="sliderProfileDefaultProfile"
 						className="form-select-sm"
 						groupClassName="col-sm-3 mb-3"
-						value={(values as any).sliderProfileDefaultProfile || 1}
-						error={(errors as any).sliderProfileDefaultProfile}
-						isInvalid={Boolean((errors as any).sliderProfileDefaultProfile)}
-						onChange={(e: any) => {
-							setFieldValue('sliderProfileDefaultProfile', parseInt(e.target.value, 10));
-							handleChange(e);
-						}}
+						value={values.sliderProfileDefaultProfile || 1}
+						error={errors.sliderProfileDefaultProfile}
+						isInvalid={Boolean(errors.sliderProfileDefaultProfile)}
+						onChange={handleChange}
 					>
 						{profileOptions.map((o) => (
 							<option key={`default-profile-option-${o.value}`} value={o.value}>
@@ -122,19 +144,22 @@ const ProfileSlider = ({ values, errors, handleChange, handleCheckbox, setFieldV
 				{Array.from({ length: numPositions }, (_, i) => (
 					<Row key={`profile-position-${i}`} className="mb-3">
 						<FormSelect
-							label={t('AddonsConfig:profile-slider-position-label', { position: i + 1 })}
+							label={t('AddonsConfig:profile-slider-position-label', {
+								position: i + 1,
+							})}
 							name={`sliderProfileAssignments[${i}]`}
 							className="form-select-sm"
 							groupClassName="col-sm-3 mb-3"
-							value={
-								(values as any).sliderProfileAssignments && (values as any).sliderProfileAssignments[i]
-									? (values as any).sliderProfileAssignments[i]
-									: i + 1
-							}
-							error={(errors as any).sliderProfileAssignments ? (errors as any).sliderProfileAssignments[i] : undefined}
-							isInvalid={Boolean((errors as any).sliderProfileAssignments && (errors as any).sliderProfileAssignments[i])}
-							onChange={(e: any) => {
-								const newAssignments = [...((values as any).sliderProfileAssignments || [])];
+							value={assignmentForPosition(i)}
+							error={assignmentErrors[i]}
+							isInvalid={Boolean(assignmentErrors[i])}
+							onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+								// fill every position so the array has no holes, which
+								// the firmware would otherwise read as profile 0
+								const newAssignments = Array.from(
+									{ length: MAX_SLIDER_POSITIONS },
+									(_, idx) => assignmentForPosition(idx),
+								);
 								newAssignments[i] = parseInt(e.target.value, 10);
 								setFieldValue('sliderProfileAssignments', newAssignments);
 							}}
@@ -155,8 +180,8 @@ const ProfileSlider = ({ values, errors, handleChange, handleCheckbox, setFieldV
 				id="SliderProfileInputButton"
 				reverse
 				isInvalid={false}
-				checked={Boolean((values as any).SliderProfileInputEnabled)}
-				onChange={(e: any) => {
+				checked={Boolean(values.SliderProfileInputEnabled)}
+				onChange={(e) => {
 					handleCheckbox('SliderProfileInputEnabled');
 					handleChange(e);
 				}}
