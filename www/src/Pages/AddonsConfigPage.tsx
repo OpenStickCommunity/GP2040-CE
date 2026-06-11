@@ -33,6 +33,10 @@ import OnBoardLed, {
 } from '../Addons/OnBoardLed';
 import Reverse, { reverseScheme, reverseState } from '../Addons/Reverse';
 import SOCD, { socdScheme, socdState } from '../Addons/SOCD';
+import ProfileSlider, {
+	profileSliderScheme,
+	profileSliderState,
+} from '../Addons/ProfileSlider';
 import Tilt, { tiltScheme, tiltState } from '../Addons/Tilt';
 import Turbo, { turboScheme, turboState } from '../Addons/Turbo';
 import Wii, { wiiScheme, wiiState } from '../Addons/Wii';
@@ -82,6 +86,7 @@ const schema = yup.object().shape({
 	...tiltScheme,
 	...buzzerScheme,
 	...socdScheme,
+	...profileSliderScheme,
 	...wiiScheme,
 	...focusModeScheme,
 	...keyboardScheme,
@@ -105,6 +110,7 @@ export const DEFAULT_VALUES = {
 	...tiltState,
 	...buzzerState,
 	...socdState,
+	...profileSliderState,
 	...wiiState,
 	...snesState,
 	...tg16State,
@@ -130,6 +136,7 @@ const ADDONS = [
 	Tilt,
 	Buzzer,
 	SOCD,
+	ProfileSlider,
 	Wii,
 	SNES,
 	TG16,
