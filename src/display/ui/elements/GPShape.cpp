@@ -15,8 +15,16 @@ void GPShape::draw() {
         scaleX = scaleY;
     }
 
-    uint16_t offsetX = ((getRenderer()->getDriver()->getMetrics()->width - (uint16_t)((double)(this->getViewport().right - this->getViewport().left) * scaleX)) / 2);
-    uint16_t offsetY = ((getRenderer()->getDriver()->getMetrics()->height - (uint16_t)((double)(this->getViewport().bottom - this->getViewport().top) * scaleY)) / 2);
+    // Center within the viewport band, not the full screen (see GPButton.cpp).
+    uint16_t offsetX = (((this->getViewport().right - this->getViewport().left) - (uint16_t)((double)(this->getViewport().right - this->getViewport().left) * scaleX)) / 2);
+    uint16_t offsetY = (((this->getViewport().bottom - this->getViewport().top) - (uint16_t)((double)(this->getViewport().bottom - this->getViewport().top) * scaleY)) / 2);
+
+    // Match GPButton's input-history lift so shapes move with the buttons.
+    const uint16_t INPUT_HISTORY_LAYOUT_LIFT = 6;
+    if (this->getViewport().top > 0) {
+        // Clamp so an over-large lift can never wrap the unsigned offset.
+        offsetY -= (offsetY < INPUT_HISTORY_LAYOUT_LIFT) ? offsetY : INPUT_HISTORY_LAYOUT_LIFT;
+    }
 
     if (scaleX > 0.0f) {
         baseX = ((this->x) * scaleX + this->getViewport().left) + offsetX;
