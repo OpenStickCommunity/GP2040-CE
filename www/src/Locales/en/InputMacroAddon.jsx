@@ -37,6 +37,12 @@ export default {
 	'table-thread-button': 'Button',
 	'table-thread-actions': 'Actions',
 	'table-thread-status': 'Status',
+	'table-thread-tools': 'Tools',
 	'input-macro-macro-trigger-type-button': 'Button',
 	'input-macro-macro-trigger-type-pin': 'Pin',
+	'input-macro-export-label': 'Export',
+	'input-macro-import-label': 'Import',
+	'input-macro-import-invalid': 'That file is not a valid macro.',
+	'input-macro-import-confirm':
+		'This will overwrite the macro currently in this slot. Continue?',
 };
