@@ -33,7 +33,7 @@ const MACRO_TYPES = [
 	{ label: 'InputMacroAddon:input-macro-type.toggle', value: 3 },
 ];
 const MACRO_INPUTS_MAX = 30;
-const MACRO_LIMIT = 6;
+const MACRO_LIMIT = 15;
 
 const schema = yup.object().shape({
 	macroList: yup.array().of(
@@ -591,6 +591,9 @@ export default function MacrosPage() {
 																	<th>
 																		{t('InputMacroAddon:table-thread-status')}
 																	</th>
+																	<th>
+																		{t('InputMacroAddon:table-thread-tools')}
+																	</th>
 																</tr>
 															</thead>
 															<tbody>
@@ -648,6 +651,107 @@ export default function MacrosPage() {
 																					)}
 																				</Badge>
 																			)}
+																		</td>
+																		<td>
+																			<Button
+																				size="sm"
+																				variant="secondary"
+																				className="me-1"
+																				onClick={() => {
+																					const m = values.macroList[i];
+																					const data = {
+																						macroLabel: m.macroLabel,
+																						macroType: m.macroType,
+																						macroInputs: m.macroInputs,
+																						enabled: m.enabled,
+																						exclusive: m.exclusive,
+																						interruptible: m.interruptible,
+																						showFrames: m.showFrames,
+																						useMacroTriggerButton: m.useMacroTriggerButton,
+																						macroTriggerButton: m.macroTriggerButton,
+																					};
+																					const blob = new Blob([JSON.stringify(data, null, 2)], {
+																						type: 'application/json',
+																					});
+																					const url = URL.createObjectURL(blob);
+																					const a = document.createElement('a');
+																					a.href = url;
+																					a.download =
+																						(m.macroLabel || `macro-${i + 1}`).replace(
+																							/[^a-z0-9-_ ]/gi,
+																							'_',
+																						) + '.json';
+																					document.body.appendChild(a);
+																					a.click();
+																					document.body.removeChild(a);
+																					URL.revokeObjectURL(url);
+																				}}
+																			>
+																				{t('InputMacroAddon:input-macro-export-label')}
+																			</Button>
+																			<Button
+																				size="sm"
+																				variant="secondary"
+																				onClick={() => {
+																					const input = document.createElement('input');
+																					input.type = 'file';
+																					input.accept = 'application/json,.json';
+																					input.onchange = (ev) => {
+																						const file = (ev.target as HTMLInputElement).files?.[0];
+																						if (!file) return;
+																						const reader = new FileReader();
+																						reader.onload = () => {
+																							let data;
+																							try {
+																								data = JSON.parse(reader.result as string);
+																							} catch {
+																								window.alert(t('InputMacroAddon:input-macro-import-invalid'));
+																								return;
+																							}
+																							if (
+																								!data ||
+																								typeof data !== 'object' ||
+																								!Array.isArray(data.macroInputs)
+																							) {
+																								window.alert(t('InputMacroAddon:input-macro-import-invalid'));
+																								return;
+																							}
+																							const cur = values.macroList[i];
+																							const slotHasContent =
+																								cur.macroLabel ||
+																								(cur.macroInputs && cur.macroInputs.length > 0);
+																							if (
+																								slotHasContent &&
+																								!window.confirm(
+																									t('InputMacroAddon:input-macro-import-confirm'),
+																								)
+																							) {
+																								return;
+																							}
+																							const k = `macroList[${i}]`;
+																							setFieldValue(`${k}.macroLabel`, data.macroLabel ?? '');
+																							setFieldValue(`${k}.macroType`, data.macroType ?? 1);
+																							setFieldValue(`${k}.macroInputs`, data.macroInputs);
+																							setFieldValue(`${k}.enabled`, data.enabled ?? 0);
+																							setFieldValue(`${k}.exclusive`, data.exclusive ?? 1);
+																							setFieldValue(`${k}.interruptible`, data.interruptible ?? 1);
+																							setFieldValue(`${k}.showFrames`, data.showFrames ?? 1);
+																							setFieldValue(
+																								`${k}.useMacroTriggerButton`,
+																								data.useMacroTriggerButton ?? 0,
+																							);
+																							setFieldValue(
+																								`${k}.macroTriggerButton`,
+																								data.macroTriggerButton ?? 0,
+																							);
+																						};
+																						reader.readAsText(file);
+																					};
+																					input.click();
+																				}}
+																			>
+																				{t('InputMacroAddon:input-macro-import-label')}
+																			</Button>
 																		</td>
 																	</tr>
 																))}
