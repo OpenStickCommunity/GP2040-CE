@@ -1,0 +1,82 @@
+diff --git a/headers/display/ui/screens/ButtonLayoutScreen.h b/headers/display/ui/screens/ButtonLayoutScreen.h
+index eee71ec..4347c90 100644
+--- a/headers/display/ui/screens/ButtonLayoutScreen.h
++++ b/headers/display/ui/screens/ButtonLayoutScreen.h
+@@ -151,6 +151,13 @@ class ButtonLayoutScreen : public GPScreen {
+         std::string statusBar{};
+         std::string footer{};
+ 
++        // Status bar horizontal scrolling (when content exceeds display width)
++        std::string getScrolledStatusBar();
++        uint16_t statusBarScrollOffset = 0;
++        uint32_t statusBarScrollStart = 0;
++        bool statusBarScrollInit = false;
++        std::string statusBarScrollContent{};
++
+         bool isInputHistoryEnabled = false;
+         uint16_t inputHistoryX = 0;
+         uint16_t inputHistoryY = 0;
+diff --git a/src/display/ui/screens/ButtonLayoutScreen.cpp b/src/display/ui/screens/ButtonLayoutScreen.cpp
+index 2d51554..281ddbd 100644
+--- a/src/display/ui/screens/ButtonLayoutScreen.cpp
++++ b/src/display/ui/screens/ButtonLayoutScreen.cpp
+@@ -267,12 +267,58 @@ void ButtonLayoutScreen::generateHeader() {
+     trim(statusBar);
+ }
+ 
++std::string ButtonLayoutScreen::getScrolledStatusBar() {
++    // Display is 21 chars wide at the 6x8 font. If the status bar fits,
++    // return it unchanged and reset any scroll state.
++    const size_t displayChars = 21;
++
++    if (statusBar.length() <= displayChars) {
++        statusBarScrollInit = false;
++        statusBarScrollOffset = 0;
++        statusBarScrollContent.clear();
++        return statusBar;
++    }
++
++    // Re-anchor whenever the content changes (e.g. the user toggles SOCD,
++    // turbo, or profile), so the scroll restarts cleanly from the left
++    // instead of jumping mid-stream against a different string length.
++    if (!statusBarScrollInit || statusBar != statusBarScrollContent) {
++        statusBarScrollInit = true;
++        statusBarScrollContent = statusBar;
++        statusBarScrollStart = getMillis();
++        statusBarScrollOffset = 0;
++    }
++
++    // Build a looping marquee: full string + gap, so it wraps cleanly.
++    const std::string gap = "   ";
++    std::string marquee = statusBar + gap;
++
++    // Advance one character every scrollIntervalMs, after an initial hold.
++    const uint32_t scrollIntervalMs = 350;
++    const uint32_t initialHoldMs = 1500;
++
++    uint32_t elapsed = getMillis() - statusBarScrollStart;
++    if (elapsed > initialHoldMs) {
++        statusBarScrollOffset = ((elapsed - initialHoldMs) / scrollIntervalMs) % marquee.length();
++    } else {
++        statusBarScrollOffset = 0;
++    }
++
++    // Extract a display-width window starting at the offset, wrapping around.
++    std::string window;
++    window.reserve(displayChars);
++    for (size_t i = 0; i < displayChars; i++) {
++        window += marquee[(statusBarScrollOffset + i) % marquee.length()];
++    }
++    return window;
++}
++
+ void ButtonLayoutScreen::drawScreen() {
+     if (bannerDisplay) {
+         getRenderer()->drawRectangle(0, 0, 128, 7, true, true);
+     	getRenderer()->drawText(0, 0, statusBar, true);
+     } else {
+-		getRenderer()->drawText(0, 0, statusBar);
++		getRenderer()->drawText(0, 0, getScrolledStatusBar());
+ 	}
+     getRenderer()->drawText(0, 7, footer);
+ }
