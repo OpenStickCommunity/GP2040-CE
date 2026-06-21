@@ -70,7 +70,7 @@ typedef struct __attribute__((packed)) {
   uint8_t left_trigger;
   uint8_t right_trigger;
 
-  uint8_t data_7;
+  uint8_t reportCounter;
 
   uint8_t dpad : 4;
   uint8_t button_west : 1;

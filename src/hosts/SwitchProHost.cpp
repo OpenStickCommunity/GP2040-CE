@@ -1,67 +1,44 @@
-#include "SwitchProHost.h"
+#include "hosts/SwitchProHost.h"
+#include "tusb_config.h"
+#include "tusb.h"
+#include "class/hid/hid.h"
+#include "device/usbd_pvt.h"
+#include "storagemanager.h"
 
-
-#undef GAMEPAD_HOST_DEBUG
+// Match
+bool SwitchProHost::match(uint16_t vendor_id, uint16_t product_id) {
+    // Nintendo
+    if ( vendor_id == 0x057E) {
+        switch(product_id) {
+            case 0x2009:
+                return true;
+        }
+    }
+    
+    return false;
+}
 
 // init phase
 // https://github.com/wiredopposite/OGX-Mini/blob/ccccf6651b54bcca3c94b5d4e73e8f2796fc8c05/Firmware/RP2040/src/USBHost/HostDriver/SwitchPro/SwitchPro.cpp#L23
-void SwitchProHost::initialize(uint8_t vendor_id, uint8_t product_id, uint8_t const* desc_report, uint16_t desc_len) {
-    SwitchProHostReport out_report{
-        .rumble_l = {0x00, 0x01, 0x40, 0x40}, // default rumble states
-        .rumble_r = {0x00, 0x01, 0x40, 0x40},
-    };
-    uint8_t report_size = 10; // no subcommand
+void SwitchProHost::initialize(uint8_t dev_addr, uint8_t instance, uint16_t vendor_id, uint16_t product_id, uint8_t const* desc_report, uint16_t desc_len) {
+    // Setup our vars
+    _dev_addr = dev_addr;
+    _instance = instance;
+    _vendor_id = vendor_id;
+    _product_id = product_id;
 
-#ifdef GAMEPAD_HOST_DEBUG
-    printf("Switch Pro init state: %d\n.", switchProState);
-#endif
-
-    switch (switchProState)
-    {
-    case SwitchOutputSubtypes::IDENTIFY: {
-        if (len < 10
-            || report[0] != SwitchReportID::REPORT_USB_INPUT_81
-            || report[1] != SwitchOutputSubtypes::IDENTIFY) {
-            tuh_hid_send_report(_controller_dev_addr, _controller_instance, 0, &SWITCH_INIT_REPORT, sizeof(SWITCH_INIT_REPORT));
-            break;
-        }
-
-        out_report.command = SwitchReportID::REPORT_CONFIGURATION;
-        out_report.counter = SwitchOutputSubtypes::HANDSHAKE;
-        get_next_switch_counter(); // skip counter
-        tuh_hid_send_report(_controller_dev_addr, _controller_instance, 0, &out_report, report_size);
-        // might turn up the home LED as well
-        switchProState = SwitchOutputSubtypes::DISABLE_USB_TIMEOUT;
-        break;
-    }
-    case SwitchOutputSubtypes::DISABLE_USB_TIMEOUT: {
-        if (len < 2 ||
-            (report[0] != SwitchReportID::REPORT_USB_INPUT_81
-                && report[0] != SwitchReportID::REPORT_OUTPUT_30)) {
-            // reset
-            tuh_hid_send_report(_controller_dev_addr, _controller_instance, 0, &SWITCH_INIT_REPORT, sizeof(SWITCH_INIT_REPORT));
-            switchProState = SwitchOutputSubtypes::IDENTIFY;
-            break;
-        }
-        out_report.command = SwitchReportID::REPORT_CONFIGURATION;
-        out_report.counter = SwitchOutputSubtypes::DISABLE_USB_TIMEOUT;
-        get_next_switch_counter(); // skip counter
-        tuh_hid_send_report(_controller_dev_addr, _controller_instance, 0, &out_report, report_size);
-        switchProState = SwitchOutputSubtypes::IDENTIFY; // done
-        switchProFinished = true;
-#ifdef GAMEPAD_HOST_DEBUG
-        printf("Switch Pro controller initialized\n.");
-#endif
-        Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
-        gamepad->auxState.playerID.enabled = true;
-        break;
-    }
-
-    default:
-        switchProState = SwitchOutputSubtypes::IDENTIFY; // reset
-        switchProFinished = false;
-        break;
-    }
+    _controller_host_state.buttons = 0;
+    _controller_host_state.dpad = 0;
+    _controller_host_state.lx = GAMEPAD_JOYSTICK_MID;
+    _controller_host_state.ly = GAMEPAD_JOYSTICK_MID;
+    _controller_host_state.rx = GAMEPAD_JOYSTICK_MID;
+    _controller_host_state.ry = GAMEPAD_JOYSTICK_MID;
+    
+    switchProFinished = false;
+    switchReportCounter = 0;
+    switchProState = SwitchOutputSubtypes::IDENTIFY;
+    lastSwitchLed = 0;
+    memset(&prevReport, 0, sizeof(SwitchProReport));
 }
 
 
@@ -73,7 +50,7 @@ void SwitchProHost::update()
 
     SwitchProHostReport out_report{
         .command = SwitchCommands::SPI_READ,
-        .counter = get_next_switch_counter(),
+        .counter = switchReportCounter++,
         .rumble_l = {0x00, 0x01, 0x40, 0x40}, // default rumble states
         .rumble_r = {0x00, 0x01, 0x40, 0x40},
     };
@@ -117,7 +94,7 @@ void SwitchProHost::update()
         if (shifted != lastSwitchLed) {
             SwitchProHostReport led_out_report{
                 .command = SwitchOutputSubtypes::IDENTIFY,
-                .counter = get_next_switch_counter(),
+                .counter = switchReportCounter++,
                 .rumble_l = {0x00, 0x01, 0x40, 0x40},
                 .rumble_r = {0x00, 0x01, 0x40, 0x40},
                 .subcommand = SwitchCommands::SET_PLAYER_LIGHTS,
@@ -125,28 +102,18 @@ void SwitchProHost::update()
             };
             uint8_t report_size = 12; // 10 + 2 for subcommand
 
-            tuh_hid_send_report(_controller_dev_addr, _controller_instance, 0, &led_out_report, report_size);
+            tuh_hid_send_report(_dev_addr, _instance, 0, &led_out_report, report_size);
         }
         lastSwitchLed = shifted;
     }
 
-    tuh_hid_send_report(_controller_dev_addr, _controller_instance, 0, &out_report, report_size);
+    tuh_hid_send_report(_dev_addr, _instance, 0, &out_report, report_size);
 }
-
-uint8_t SwitchProHost::get_next_switch_counter()
-{
-    if (switchReportCounter < 255) {
-    switchReportCounter++;
-    } else {
-        switchReportCounter = 0;
-    }
-    return switchReportCounter;
-}
-
 
 void SwitchProHost::process(uint8_t const* report, uint16_t len) {
-{
-    if (len == 0) return;
+    if (len == 0)
+        return;
+
     if (!switchProFinished) {
 #ifdef GAMEPAD_HOST_DEBUG
         printf("received report id %x during initialization\n", report[0]);
@@ -156,8 +123,6 @@ void SwitchProHost::process(uint8_t const* report, uint16_t len) {
     }
 
     SwitchProReport controller_report;
-
-    static SwitchProReport prev_report = { 0 };
 
     if (len < sizeof(SwitchProReport)) {
 #ifdef GAMEPAD_HOST_DEBUG
@@ -173,7 +138,7 @@ void SwitchProHost::process(uint8_t const* report, uint16_t len) {
     }
     memcpy(&controller_report, report, sizeof(controller_report));
 
-    if (memcmp(&prev_report, &controller_report, sizeof(SwitchProReport)) == 0)
+    if (memcmp(&prevReport, &controller_report, sizeof(SwitchProReport)) == 0)
         return;
 
     _controller_host_state.dpad = 0;
@@ -207,8 +172,85 @@ void SwitchProHost::process(uint8_t const* report, uint16_t len) {
     _controller_host_state.ly = map(ly12, 0, 4095, GAMEPAD_JOYSTICK_MIN, GAMEPAD_JOYSTICK_MAX);
     _controller_host_state.rx = map(rx12, 0, 4095, GAMEPAD_JOYSTICK_MIN, GAMEPAD_JOYSTICK_MAX);
     _controller_host_state.ry = map(ry12, 0, 4095, GAMEPAD_JOYSTICK_MIN, GAMEPAD_JOYSTICK_MAX);
-    _controller_host_analog = false;
 
-    prev_report = controller_report;
+    memcpy(&prevReport, &controller_report, sizeof(SwitchProReport));
+}
+
+
+// init phase
+// https://github.com/wiredopposite/OGX-Mini/blob/ccccf6651b54bcca3c94b5d4e73e8f2796fc8c05/Firmware/RP2040/src/USBHost/HostDriver/SwitchPro/SwitchPro.cpp#L23
+void SwitchProHost::setup_switch_pro(uint8_t const *report, uint16_t len) {
+    SwitchProHostReport out_report{
+        .rumble_l = {0x00, 0x01, 0x40, 0x40}, // default rumble states
+        .rumble_r = {0x00, 0x01, 0x40, 0x40},
+    };
+    uint8_t report_size = 10; // no subcommand
+
+#ifdef GAMEPAD_HOST_DEBUG
+    printf("Switch Pro init state: %d\n.", switchProState);
+#endif
+
+    switch (switchProState)
+    {
+    case SwitchOutputSubtypes::IDENTIFY: {
+        if (len < 10
+            || report[0] != SwitchReportID::REPORT_USB_INPUT_81
+            || report[1] != SwitchOutputSubtypes::IDENTIFY) {
+            tuh_hid_send_report(_dev_addr, _instance, 0, &SWITCH_INIT_REPORT, sizeof(SWITCH_INIT_REPORT));
+            break;
+        }
+
+        out_report.command = SwitchReportID::REPORT_CONFIGURATION;
+        out_report.counter = SwitchOutputSubtypes::HANDSHAKE;
+        switchReportCounter++; // skip counter
+        tuh_hid_send_report(_dev_addr, _instance, 0, &out_report, report_size);
+        // might turn up the home LED as well
+        switchProState = SwitchOutputSubtypes::DISABLE_USB_TIMEOUT;
+        break;
+    }
+    case SwitchOutputSubtypes::DISABLE_USB_TIMEOUT: {
+        if (len < 2 ||
+            (report[0] != SwitchReportID::REPORT_USB_INPUT_81
+                && report[0] != SwitchReportID::REPORT_OUTPUT_30)) {
+            // reset
+            tuh_hid_send_report(_dev_addr, _instance, 0, &SWITCH_INIT_REPORT, sizeof(SWITCH_INIT_REPORT));
+            switchProState = SwitchOutputSubtypes::IDENTIFY;
+            break;
+        }
+        out_report.command = SwitchReportID::REPORT_CONFIGURATION;
+        out_report.counter = SwitchOutputSubtypes::DISABLE_USB_TIMEOUT;
+        switchReportCounter++; // skip counter
+        tuh_hid_send_report(_dev_addr, _instance, 0, &out_report, report_size);
+        switchProState = SwitchOutputSubtypes::IDENTIFY; // done
+        switchProFinished = true;
+#ifdef GAMEPAD_HOST_DEBUG
+        printf("Switch Pro controller initialized\n.");
+#endif
+        Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
+        gamepad->auxState.playerID.enabled = true;
+        break;
+    }
+
+    default:
+        switchProState = SwitchOutputSubtypes::IDENTIFY; // reset
+        switchProFinished = false;
+        break;
+    }
+}
+
+void SwitchProHost::gamepad(Gamepad * gamepad) {
+    // Override the Gamepad
+    gamepad->hasLeftAnalogStick  = true;
+    gamepad->hasRightAnalogStick = true;
+    gamepad->state.dpad     |= _controller_host_state.dpad;
+    gamepad->state.buttons  |= _controller_host_state.buttons;
+    gamepad->state.lx       = _controller_host_state.lx;
+    gamepad->state.ly       = _controller_host_state.ly;
+    gamepad->state.rx       = _controller_host_state.rx;
+    gamepad->state.ry       = _controller_host_state.ry;
+}
+
+uint32_t SwitchProHost::map(uint32_t x, uint32_t in_min, uint32_t in_max, uint32_t out_min, uint32_t out_max) {
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 

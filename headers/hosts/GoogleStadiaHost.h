@@ -45,4 +45,22 @@ typedef struct TU_ATTR_PACKED
 
 } google_stadia_report_t;
 
+//
+// GP2040-CE USB Host Driver
+//
+class GoogleStadiaHost : public GPHost {
+public:
+    static bool match(uint16_t vendor_id, uint16_t product_id);   
+    virtual void initialize(uint8_t dev_addr, uint8_t instance, uint16_t vendor_id, uint16_t product_id, uint8_t const* desc_report, uint16_t desc_len);
+    virtual void gamepad(Gamepad * gamepad);
+    virtual void process(uint8_t const* report, uint16_t len);
+    virtual void update() {}
+    virtual void shutdown() {}
+    virtual void set_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {}
+    virtual void get_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {}
+private:
+    // Controller report processor functions
+    uint32_t map(uint32_t x, uint32_t in_min, uint32_t in_max, uint32_t out_min, uint32_t out_max);
+};
+
 #endif

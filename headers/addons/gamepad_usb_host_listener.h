@@ -30,7 +30,6 @@ class GamepadUSBHostListener : public USBListener {
         virtual void get_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len);
         void gamepadFeatureUpdate();
     private:
-        bool _controller_host_mounted;
         uint8_t _controller_dev_addr;
         uint8_t _controller_instance;
         GPHost * _controller_host;

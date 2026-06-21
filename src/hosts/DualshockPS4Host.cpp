@@ -30,6 +30,22 @@ bool DualshockPS4Host::match(uint16_t vendor_id, uint16_t product_id) {
         }
     }
 
+    // Logitech G29
+    if ( vendor_id == 0x46d) {
+        switch(product_id) {
+            case 0xC260:
+                return true;
+        }
+    }
+
+    // Thrustmaster T.Flight Racing Wheel
+    if ( vendor_id == 0x044F) {
+        switch(product_id) {
+            case 0xB67B:
+                return true;
+        }
+    }
+
     return false;
 }
 
@@ -50,7 +66,7 @@ void DualshockPS4Host::initialize(uint8_t dev_addr, uint8_t instance, uint16_t v
 
     memset(&prevReport, 0, sizeof(PS4Report));
 
-    validDS4HID = false; // check the report def
+    validPS4Definition = false; // check the report def
 
     // Find the report for PS4 definition if this controller has one
     tuh_hid_report_info_t report_info[4];
@@ -64,29 +80,14 @@ void DualshockPS4Host::initialize(uint8_t dev_addr, uint8_t instance, uint16_t v
             memset(report_buffer, 0, PS4_ENDPOINT_SIZE);
             report_buffer[0] = PS4AuthReport::PS4_DEFINITION;
             tuh_hid_get_report(dev_addr, instance, PS4AuthReport::PS4_DEFINITION, HID_REPORT_TYPE_FEATURE, report_buffer, 48);
-            memcpy(&ds4Config, report_buffer+1, sizeof(PS4ControllerConfig));
-            if ((ds4Config.hidUsage == 0x2721) || (ds4Config.hidUsage == 0x2127)) {
-                validDS4HID = true;
-                #if GAMEPAD_HOST_DEBUG
-                        //printf("PS4 controller details\n");
-                        //printf("----------------------\n");
-                        //printf("enableController: %d\n", ds4Config.features.enableController);
-                        //printf("enableMotion: %d\n", ds4Config.features.enableMotion);
-                        //printf("enableLED: %d\n", ds4Config.features.enableLED);
-                        //printf("enableRumble: %d\n", ds4Config.features.enableRumble);
-                        //printf("enableAnalog: %d\n", ds4Config.features.enableAnalog);
-                        //printf("enableUnknown0: %d\n", ds4Config.features.enableUnknown0);
-                        //printf("enableTouchpad: %d\n", ds4Config.features.enableTouchpad);
-                        //printf("enableUnknown1: %d\n", ds4Config.features.enableUnknown1);
-                #endif
-            }
-            
             break;
         }
     }
 }
 
 void DualshockPS4Host::update() {
+    if ( validPS4Definition == false ) return;
+
     Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
     PS4FeatureOutputReport controller_output; // this might have to be static
     memset(&controller_output, 0, sizeof(controller_output));
@@ -113,7 +114,6 @@ void DualshockPS4Host::update() {
 
     tuh_hid_send_report(_dev_addr, _instance, PS4AuthReport::PS4_SET_FEATURE_STATE, (uint8_t*)report+1, report_size);
 }
-
 
 void DualshockPS4Host::process(uint8_t const* report, uint16_t len) {
     PS4Report controller_report;
@@ -177,10 +177,24 @@ void DualshockPS4Host::gamepad(Gamepad * gamepad) {
     gamepad->state.lt       = _controller_host_state.lt;
 }
 
-void DualshockPS4Host::shutdown() {
+void DualshockPS4Host::get_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
+    memcpy(&ds4Config, report_buffer+1, sizeof(PS4ControllerConfig));
+    if ((ds4Config.hidUsage == 0x2721) || (ds4Config.hidUsage == 0x2127)) {
+        validPS4Definition = true;
+        #if GAMEPAD_HOST_DEBUG
+                //printf("PS4 controller details\n");
+                //printf("----------------------\n");
+                //printf("enableController: %d\n", ds4Config.features.enableController);
+                //printf("enableMotion: %d\n", ds4Config.features.enableMotion);
+                //printf("enableLED: %d\n", ds4Config.features.enableLED);
+                //printf("enableRumble: %d\n", ds4Config.features.enableRumble);
+                //printf("enableAnalog: %d\n", ds4Config.features.enableAnalog);
+                //printf("enableUnknown0: %d\n", ds4Config.features.enableUnknown0);
+                //printf("enableTouchpad: %d\n", ds4Config.features.enableTouchpad);
+                //printf("enableUnknown1: %d\n", ds4Config.features.enableUnknown1);
+        #endif
+    }
 }
-
-
 
 uint32_t DualshockPS4Host::map(uint32_t x, uint32_t in_min, uint32_t in_max, uint32_t out_min, uint32_t out_max) {
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;

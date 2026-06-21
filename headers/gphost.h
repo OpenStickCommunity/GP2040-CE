@@ -9,9 +9,7 @@
 #include <cstdint>
 
 #include "gamepad/GamepadState.h"
-
-// Forward declare gamepad
-class Gamepad;
+#include "Gamepad.h"
 
 //
 // GP2040-CE USB Device Class Driver
@@ -24,6 +22,8 @@ public:
     virtual void update() = 0;
     virtual void gamepad(Gamepad * gamepad) = 0;
     virtual void shutdown() = 0;
+    virtual void set_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) = 0;
+    virtual void get_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) = 0;
 protected:
     GamepadState _controller_host_state;
     uint8_t _dev_addr;
