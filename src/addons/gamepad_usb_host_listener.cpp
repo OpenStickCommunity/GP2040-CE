@@ -43,8 +43,6 @@ void GamepadUSBHostListener::mount(uint8_t dev_addr, uint8_t instance, uint8_t c
     uint16_t vid = 0, pid = 0;
     tuh_vid_pid_get(dev_addr, &vid, &pid);
 
-    // TODO: Make a list of static functions + pointers
-    // Match is a static function, setup and init happens after we've established something
     _controller_host = nullptr;
      if ( DualshockPS4Host::match(vid, pid) ) {
         _controller_host = (GPHost*)(new DualshockPS4Host());
