@@ -310,6 +310,7 @@ src/hosts/GoogleStadioHost.cpp
 src/hosts/DrivingForceHost.cpp
 src/hosts/Ultrastik360Host.cpp
 src/hosts/SwitchProHost.cpp
+src/hosts/Xbox360Host.cpp
 ${PROTO_OUTPUT_DIR}/enums.pb.c
 ${PROTO_OUTPUT_DIR}/config.pb.c
 )

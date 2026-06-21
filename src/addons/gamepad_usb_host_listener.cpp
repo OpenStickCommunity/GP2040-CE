@@ -9,9 +9,9 @@
 #include "hosts/DrivingForceHost.h"
 #include "hosts/UltraStik360Host.h"
 #include "hosts/SwitchProHost.h"
+#include "hosts/Xbox360Host.h"
 
 /*
-#include "hosts/Xbox360Host.h"
 #include "hosts/XboxOneHost.h"
 */
 
@@ -38,7 +38,7 @@ void GamepadUSBHostListener::gamepadFeatureUpdate() {
 
 void GamepadUSBHostListener::mount(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len) {
     // Only host one controller at a time
-    if ( _controller_host == nullptr ) return;
+    if ( _controller_host != nullptr ) return;
 
     uint16_t vid = 0, pid = 0;
     tuh_vid_pid_get(dev_addr, &vid, &pid);
@@ -82,16 +82,17 @@ void GamepadUSBHostListener::mount(uint8_t dev_addr, uint8_t instance, uint8_t c
 
 void GamepadUSBHostListener::xmount(uint8_t dev_addr, uint8_t instance, uint8_t controllerType, uint8_t subtype) {
     // Only host one controller at a time
-    if ( _controller_host == nullptr ) return;
+    if ( _controller_host != nullptr ) return;
 
     uint16_t vid, pid;
     tuh_vid_pid_get(dev_addr, &vid, &pid);
 
     // Match is a static function, setup and init happens after we've established something
     _controller_host = nullptr;
-    /*if ( Xbox360Host::match(vid, pid) && controllerType == 1 ) {
+    if ( Xbox360Host::match(vid, pid) && controllerType == 1 ) {
         _controller_host = new Xbox360Host();
-    } else if ( XboxOneHost::match(vid, pid && controllerType == 2 ) {
+    }
+    /* else if ( XboxOneHost::match(vid, pid && controllerType == 2 ) {
         _controller_host = new XboxOneHost();
     }*/
 

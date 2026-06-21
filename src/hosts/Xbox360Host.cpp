@@ -1,75 +1,52 @@
 #include "hosts/Xbox360Host.h"
+#include "drivers/shared/xinput_host.h"
+#include <storagemanager.h>
 
-
-void GamepadUSBHostListener::xbox360_set_led(uint8_t dev_addr, uint8_t instance, uint8_t quadrant) {
-    uint8_t out[32] = { 0 };
-
-    memcpy(out, XBOX360_WIRED_LED, sizeof(XBOX360_WIRED_LED));
-    out[2] = (quadrant == 0) ? 0 : (quadrant + 5);
-    bool ret = tuh_xinput_send_report(dev_addr, instance, out, sizeof(XBOX360_WIRED_LED));
-    if (ret) {
-        tuh_xinput_wait_for_tx(dev_addr, instance);
+bool Xbox360Host::match(uint16_t vendor_id, uint16_t product_id) {
+    if ( vendor_id == 0x045E ) {
+        switch(product_id) {
+            case 0x028E:
+                return true;
+        }
     }
+
+    return false;
 }
 
-void GamepadUSBHostListener::xinput_set_rumble(uint8_t dev_addr, uint8_t instance, uint8_t left, uint8_t right) {
-    uint8_t out[32] = { 0 };
-    uint16_t len = 0;
-    switch (_controller_type) {
-        case xinput_type_t::XBOX360: {
-            memcpy(out, XBOX360_WIRED_RUMBLE, sizeof(XBOX360_WIRED_RUMBLE));
-            out[3] = left;
-            out[4] = right;
-            len = sizeof(XBOX360_WIRED_RUMBLE);
-            break;
-        }
-        case xinput_type_t::XBOXONE: {
-            memcpy(out, XBOXONE_RUMBLE, sizeof(XBOXONE_RUMBLE));
-            out[8] = left >> 1; // 7-bit (0-127)
-            out[9] = right >> 1; // 7-bit (0-127)
-            len = sizeof(XBOXONE_RUMBLE);
-            break;
-        }
-        default:
-            return;
-    }
-    tuh_xinput_wait_for_tx(dev_addr, instance);
-    bool ret = tuh_xinput_send_report(dev_addr, instance, out, len);
-    if (ret) {
-        tuh_xinput_wait_for_tx(dev_addr, instance);
-    }
-}
+void Xbox360Host::initialize(uint8_t dev_addr, uint8_t instance, uint16_t vendor_id, uint16_t product_id, uint8_t const* desc_report, uint16_t desc_len) {
+    // Setup our vars
+    _dev_addr = dev_addr;
+    _instance = instance;
+    _vendor_id = vendor_id;
+    _product_id = product_id;
 
-void GamepadUSBHostListener::setup_xinput(uint8_t dev_addr, uint8_t instance) {
+    _controller_host_state.buttons = 0;
+    _controller_host_state.dpad = 0;
+    _controller_host_state.lx = GAMEPAD_JOYSTICK_MID;
+    _controller_host_state.ly = GAMEPAD_JOYSTICK_MID;
+    _controller_host_state.rx = GAMEPAD_JOYSTICK_MID;
+    _controller_host_state.ry = GAMEPAD_JOYSTICK_MID;
+
+    last_left_rumble = 0;
+    last_right_rumble = 0;
+
+    memset(&prev_report, 0, sizeof(XInputReport));
+
     Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
-
-    switch (_controller_type) {
-        case xinput_type_t::XBOX360: {
-            uint32_t quadrants = gamepad->auxState.playerID.value;
-            if (quadrants == 0)
-                quadrants = 1;
-            for (uint32_t i = 0; i < quadrants; i++) {
-                xbox360_set_led(dev_addr, instance, i);
-            }
-
-            xinput_set_rumble(dev_addr, instance, 0, 0);
-            break;
-        }
-        case xinput_type_t::XBOXONE: {
-            // implement xbox one init here... currently not supported
-            break;
-        }
-        default: // unsupported
-            break;
+    
+    uint32_t quadrants = gamepad->auxState.playerID.value;
+    if (quadrants == 0)
+        quadrants = 1;
+    for (uint32_t i = 0; i < quadrants; i++) {
+        xbox360_set_led(i);
     }
-    tuh_xinput_receive_report(dev_addr, instance);
+
+    xinput_set_rumble(0, 0);
+    tuh_xinput_receive_report(_dev_addr, _instance);
 }
 
-void GamepadUSBHostListener::update_xinput(uint8_t dev_addr, uint8_t instance) {
+void Xbox360Host::update() {
     Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
-
-    static uint8_t last_left_rumble = 0;
-    static uint8_t last_right_rumble = 0;
 
     // rumble
     gamepad->auxState.haptics.leftActuator.enabled = 1;
@@ -89,13 +66,13 @@ void GamepadUSBHostListener::update_xinput(uint8_t dev_addr, uint8_t instance) {
     last_left_rumble = leftRumble;
     last_right_rumble = rightRumble;
 
-    xinput_set_rumble(dev_addr, instance, leftRumble, rightRumble);
+    xinput_set_rumble(leftRumble, rightRumble);
 }
 
-void GamepadUSBHostListener::process_xbox360(uint8_t const* report, uint16_t len) {
+void Xbox360Host::process(uint8_t const* report, uint16_t len) {
     XInputReport controller_report;
 
-    static XInputReport prev_report = { 0 };
+   
 
     if (len < sizeof(XInputReport)) {
 #if GAMEPAD_HOST_DEBUG
@@ -135,7 +112,47 @@ void GamepadUSBHostListener::process_xbox360(uint8_t const* report, uint16_t len
 
     _controller_host_state.lt = controller_report.lt;
     _controller_host_state.rt = controller_report.rt;
-    _controller_host_analog = true;
 
-    prev_report = controller_report;
+    memcpy(&prev_report, &controller_report, sizeof(XInputReport));
+}
+
+
+void Xbox360Host::gamepad(Gamepad * gamepad) {
+    // Override the Gamepad
+    gamepad->hasAnalogTriggers   = true;
+    gamepad->hasLeftAnalogStick  = true;
+    gamepad->hasRightAnalogStick = true;
+    gamepad->state.dpad     |= _controller_host_state.dpad;
+    gamepad->state.buttons  |= _controller_host_state.buttons;
+    gamepad->state.lx       = _controller_host_state.lx;
+    gamepad->state.ly       = _controller_host_state.ly;
+    gamepad->state.rx       = _controller_host_state.rx;
+    gamepad->state.ry       = _controller_host_state.ry;
+    gamepad->state.rt       = _controller_host_state.rt;
+    gamepad->state.lt       = _controller_host_state.lt;
+}
+
+void Xbox360Host::xbox360_set_led(uint8_t quadrant) {
+    uint8_t out[32] = { 0 };
+
+    memcpy(out, XBOX360_WIRED_LED, sizeof(XBOX360_WIRED_LED));
+    out[2] = (quadrant == 0) ? 0 : (quadrant + 5);
+    bool ret = tuh_xinput_send_report(_dev_addr, _instance, out, sizeof(XBOX360_WIRED_LED));
+    if (ret) {
+        tuh_xinput_wait_for_tx(_dev_addr, _instance);
+    }
+}
+
+void Xbox360Host::xinput_set_rumble(uint8_t left, uint8_t right) {
+    uint8_t out[32];
+    memset(out, 0, 32);
+    uint16_t len = sizeof(XBOX360_WIRED_RUMBLE);
+    memcpy(out, XBOX360_WIRED_RUMBLE, sizeof(XBOX360_WIRED_RUMBLE));
+    out[3] = left;
+    out[4] = right;
+    tuh_xinput_wait_for_tx(_dev_addr, _instance);
+    bool ret = tuh_xinput_send_report(_dev_addr, _instance, out, len);
+    if (ret) {
+        tuh_xinput_wait_for_tx(_dev_addr, _instance);
+    }
 }
