@@ -1,6 +1,7 @@
 import { ReactElement, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Col, OverlayTrigger, Popover, Row } from 'react-bootstrap';
+import { FormikProps } from 'formik';
 
 import { LED_COLORS, LIGHT_TYPES } from '../../Data/Leds';
 import {
@@ -8,8 +9,9 @@ import {
 	MAX_NON_BUTTON_LIGHT_COLOR_INDEXES,
 } from '../../Store/useLedStore';
 import { rgbIntToHex } from '../../Services/Utilities';
-import ColorSelector from './ColorSlector';
+import ColorSelector from './ColorSelector';
 import boards from '../../Data/Boards.json';
+import { LedFormValues } from './ledFormUtils';
 
 const GPIO_PIN_LENGTH =
 	boards[import.meta.env.VITE_GP2040_BOARD as keyof typeof boards].maxPin + 1;
@@ -77,7 +79,7 @@ function ButtonLayoutPreview({
 	nonButtonStaticColors: number[];
 	profileIndex: number;
 	customColors?: number[];
-	setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
+	setFieldValue: FormikProps<LedFormValues>['setFieldValue'];
 	Lights: Light[];
 }) {
 	const { t } = useTranslation('');

@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useId } from 'react';
 import {
 	useSensor,
 	MouseSensor,
@@ -12,13 +12,11 @@ import {
 	snapCenterToCursor,
 	restrictToParentElement,
 } from '@dnd-kit/modifiers';
-import { FormikErrors, FormikHandlers } from 'formik';
+import { FormikErrors, FormikHandlers, FormikProps } from 'formik';
 import { Row, Col, Button, Alert } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 import {
-	AnimationOptions,
-	LedOptions,
 	Light,
 	MAX_NON_BUTTON_LIGHT_COLOR_INDEXES,
 	MAX_LIGHTS,
@@ -32,8 +30,9 @@ import { LED_COLORS, LIGHT_TYPES } from '../../Data/Leds';
 import boards from '../../Data/Boards.json';
 
 import { rgbIntToHex } from '../../Services/Utilities';
-import ColorSelector from './ColorSlector';
+import ColorSelector from './ColorSelector';
 import { LightIndicator } from './LightIndicator';
+import { getLightError, LedFormValues } from './ledFormUtils';
 
 const GRID_SIZE = 30;
 const GPIO_PIN_LENGTH =
@@ -70,28 +69,17 @@ export default function LightCoordsSection({
 	notPressedStaticColors: number[];
 	nonButtonStaticColors: number[];
 	profileIndex: number;
-	values: {
-		ledOptions: LedOptions;
-		Lights: Light[];
-		AnimationOptions: AnimationOptions;
-	};
-	errors: FormikErrors<{
-		AnimationOptions: AnimationOptions;
-		Lights: Light[];
-	}>;
-	setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
-	setValues: (
-		values: {
-			ledOptions: LedOptions;
-			Lights: Light[];
-			AnimationOptions: AnimationOptions;
-		},
-		shouldValidate?: boolean,
-	) => void;
+	values: LedFormValues;
+	errors: FormikErrors<LedFormValues>;
+	setFieldValue: FormikProps<LedFormValues>['setFieldValue'];
+	setValues: FormikProps<LedFormValues>['setValues'];
 	handleChange: FormikHandlers['handleChange'];
 }) {
 	const { dimensions, containerRef } = useGetContainerDimensions();
 	const { t } = useTranslation('');
+
+	const gridId = useId();
+	const smallGridId = `${gridId}-small`;
 
 	const [cellWidth, setCellWidth] = useState(dimensions.width / GRID_SIZE);
 	const [selectedLight, setSelectedLight] = useState<number | null>(null);
@@ -186,89 +174,6 @@ export default function LightCoordsSection({
 				{t('LedConfigPage:lightCoordsSection.warning')}
 			</Alert>
 			<hr />
-			{/* <Row className="mb-3">
-				<Col md={3} className="d-flex flex-column justify-content-end mb-2">
-					<FormSelect
-						label={'Active light tied to GPIO pin'}
-						className="form-select-sm"
-						groupClassName="mb-3"
-						value={previewGpioPin}
-						onChange={(e) => {
-							setPreviewGpioPin(
-								parseInt((e.target as HTMLSelectElement).value),
-							);
-						}}
-					>
-						{Array.from({ length: GPIO_PIN_LENGTH }).map((_, pinIndex) => (
-							<option key={pinIndex} value={pinIndex}>
-								GPIO Pin {pinIndex}
-							</option>
-						))}
-					</FormSelect>
-
-					<Button
-						variant="secondary"
-						onClick={() => {
-							activateLedsOnId(previewGpioPin);
-						}}
-					>
-						GPIO Pin Test
-					</Button>
-				</Col>
-				<Col md={3} className="d-flex flex-column justify-content-end mb-2">
-					<FormSelect
-						label={'Active light tied to non Button ID'}
-						className="form-select-sm"
-						groupClassName="mb-3"
-						value={previewNonButtonId}
-						onChange={(e) => {
-							setPreviewNonButtonId(parseInt((e.target as HTMLSelectElement).value));
-						}}
-					>
-						{Array.from({ length: MAX_NON_BUTTON_LIGHT_COLOR_INDEXES }).map((_, nonButtonIndex) => (
-							<option key={nonButtonIndex} value={nonButtonIndex}>
-								Non Button ID {nonButtonIndex + 1}
-							</option>
-						))}
-					</FormSelect>
-
-					<Button
-						variant="secondary"
-						onClick={() => {
-							activateLedsOnId(previewNonButtonId, true);
-						}}
-					>
-						Non Button ID Test
-					</Button>
-				</Col>
-				<Col md={3} className="d-flex flex-column justify-content-end mb-2">
-					<p>
-						Run a chase animation from left to right and then top to bottom to
-						help verify correct grid positioning of the lights
-					</p>
-					<Button
-						variant="secondary"
-						onClick={() => {
-							activateLedsChase();
-						}}
-					>
-						Layout Test
-					</Button>
-				</Col>
-				<Col md={3} className="d-flex flex-column justify-content-end mb-2">
-					<p>Turns off all the lights</p>
-					<Button
-						variant="danger"
-						onClick={() => {
-							turnOffLeds();
-						}}
-					>
-						Lights Off
-					</Button>
-				</Col>
-			</Row>
-			<hr /> */}
-
 			<Row className="mb-3">
 				<Col md={3}>
 					<Button
@@ -367,12 +272,10 @@ export default function LightCoordsSection({
 									groupClassName="mb-3"
 									value={values.Lights[selectedLight]?.numLedsOnLight}
 									error={
-										(errors.Lights?.[selectedLight] as FormikErrors<Light>)
-											?.numLedsOnLight
+										getLightError(errors, selectedLight)?.numLedsOnLight
 									}
 									isInvalid={Boolean(
-										(errors.Lights?.[selectedLight] as FormikErrors<Light>)
-											?.numLedsOnLight,
+										getLightError(errors, selectedLight)?.numLedsOnLight,
 									)}
 									onChange={handleChange}
 									min={1}
@@ -387,12 +290,10 @@ export default function LightCoordsSection({
 									groupClassName="mb-3"
 									value={values.Lights[selectedLight]?.firstLedIndex}
 									error={
-										(errors.Lights?.[selectedLight] as FormikErrors<Light>)
-											?.firstLedIndex
+										getLightError(errors, selectedLight)?.firstLedIndex
 									}
 									isInvalid={Boolean(
-										(errors.Lights?.[selectedLight] as FormikErrors<Light>)
-											?.firstLedIndex,
+										getLightError(errors, selectedLight)?.firstLedIndex,
 									)}
 									onChange={handleChange}
 									min={0}
@@ -489,10 +390,16 @@ export default function LightCoordsSection({
 										</div>
 										<div className="mb-3">
 											<label className="form-label">
-											    {(values.Lights[selectedLight]?.lightType === LIGHT_TYPES.Turbo || values.Lights[selectedLight]?.lightType === LIGHT_TYPES.PlayerLight)
-													? t('LedConfigPage:lightCoordsSection.active-color-label')
-													: t('LedConfigPage:lightCoordsSection.pressed-color-label')
-												}
+												{values.Lights[selectedLight]?.lightType ===
+													LIGHT_TYPES.Turbo ||
+												values.Lights[selectedLight]?.lightType ===
+													LIGHT_TYPES.PlayerLight
+													? t(
+															'LedConfigPage:lightCoordsSection.active-color-label',
+														)
+													: t(
+															'LedConfigPage:lightCoordsSection.pressed-color-label',
+														)}
 											</label>
 											<ColorSelector
 												options={colorOptions}
@@ -526,13 +433,9 @@ export default function LightCoordsSection({
 											className="form-control"
 											value={values.Lights[selectedLight]?.xCoord}
 											onChange={handleChange}
-											error={
-												(errors.Lights?.[selectedLight] as FormikErrors<Light>)
-													?.xCoord
-											}
+											error={getLightError(errors, selectedLight)?.xCoord}
 											isInvalid={Boolean(
-												(errors.Lights?.[selectedLight] as FormikErrors<Light>)
-													?.xCoord,
+												getLightError(errors, selectedLight)?.xCoord,
 											)}
 											min={0}
 											max={GRID_SIZE - 1}
@@ -548,13 +451,9 @@ export default function LightCoordsSection({
 											className="form-control"
 											value={values.Lights[selectedLight]?.yCoord}
 											onChange={handleChange}
-											error={
-												(errors.Lights?.[selectedLight] as FormikErrors<Light>)
-													?.yCoord
-											}
+											error={getLightError(errors, selectedLight)?.yCoord}
 											isInvalid={Boolean(
-												(errors.Lights?.[selectedLight] as FormikErrors<Light>)
-													?.yCoord,
+												getLightError(errors, selectedLight)?.yCoord,
 											)}
 											min={0}
 											max={GRID_SIZE - 1}
@@ -624,7 +523,7 @@ export default function LightCoordsSection({
 						>
 							<defs>
 								<pattern
-									id="smallGrid"
+									id={smallGridId}
 									width={cellWidth}
 									height={cellWidth}
 									patternUnits="userSpaceOnUse"
@@ -638,7 +537,7 @@ export default function LightCoordsSection({
 								</pattern>
 
 								<pattern
-									id="grid"
+									id={gridId}
 									width={cellWidth * 10}
 									height={cellWidth * 10}
 									patternUnits="userSpaceOnUse"
@@ -646,7 +545,7 @@ export default function LightCoordsSection({
 									<rect
 										width={cellWidth * 10}
 										height={cellWidth * 10}
-										fill="url(#smallGrid)"
+										fill={`url(#${smallGridId})`}
 									/>
 									<path
 										d={`M ${cellWidth * 10} 0 L 0 0 0 ${cellWidth * 10}`}
@@ -656,7 +555,7 @@ export default function LightCoordsSection({
 									/>
 								</pattern>
 							</defs>
-							<rect width="100%" height="100%" fill="url(#grid)" />
+							<rect width="100%" height="100%" fill={`url(#${gridId})`} />
 						</svg>
 
 						<DndContext
