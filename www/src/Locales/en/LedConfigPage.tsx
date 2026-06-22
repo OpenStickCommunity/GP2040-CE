@@ -50,6 +50,19 @@ export default {
 		'select-a-light-description':
 			'Click on a light in the grid to view and edit its properties.',
 	},
+	lightIndicator: {
+		'aria-label': 'Draggable Light Indicator',
+		'popover-header': 'Light {{index}}',
+		'gpio-case-label': 'GPIO/Case:',
+		'type-label': 'Type:',
+		'type-action-button': 'ActionButton',
+		'type-case': 'Case',
+		'type-turbo': 'Turbo',
+		'type-player-light': 'PlayerLight',
+		'leds-label': 'LEDs:',
+		'coords-label': 'Coords:',
+		'first-led-label': 'First LED:',
+	},
 	importLayout: {
 		description: 'Choose from predefined installed layouts',
 		placeholder: 'Select Layout...',

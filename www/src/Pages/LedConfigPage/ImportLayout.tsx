@@ -1,15 +1,17 @@
 import isEqual from 'lodash/isEqual';
 import { useTranslation } from 'react-i18next';
+import { FormikProps } from 'formik';
 import CustomSelect from '../../Components/CustomSelect';
 import { Light } from '../../Store/useLedStore';
 import useLightsPresetsStore from '../../Store/useLightsPresetsStore';
+import { LedFormValues } from './ledFormUtils';
 
 function ImportLayout({
 	lights,
 	setFieldValue,
 }: {
 	lights: Light[];
-	setFieldValue: (field: string, value: any) => void;
+	setFieldValue: FormikProps<LedFormValues>['setFieldValue'];
 }) {
 	const { presets, loading } = useLightsPresetsStore();
 	const { t } = useTranslation('');

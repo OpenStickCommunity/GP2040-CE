@@ -17,7 +17,6 @@ import {
 	FieldArray,
 	FieldArrayRenderProps,
 	Formik,
-	FormikErrors,
 	useFormikContext,
 } from 'formik';
 import * as yup from 'yup';
@@ -25,7 +24,6 @@ import * as yup from 'yup';
 import useLedsPreview from '../../Hooks/useLedsPreview';
 import useLedStore, {
 	AnimationOptions,
-	AnimationProfile,
 	LedOptions,
 	Light,
 	MAX_ANIMATION_PROFILES,
@@ -50,6 +48,7 @@ import { LED_FORMATS } from '../../Data/Leds';
 import LightCoordsSection from './LightCoordsSection';
 import ButtonLayoutPreview from './ButtonLayoutPreview';
 import ImportLayout from './ImportLayout';
+import { getProfileError } from './ledFormUtils';
 
 const GPIO_PIN_LENGTH =
 	boards[import.meta.env.VITE_GP2040_BOARD as keyof typeof boards].maxPin + 1;
@@ -358,7 +357,7 @@ export default function LedConfigPage() {
 								isInvalid={Boolean(errors.ledOptions?.dataPin)}
 								onChange={handleChange}
 								min={-1}
-								max={29}
+								max={GPIO_PIN_LENGTH - 1}
 							/>
 							<FormSelect
 								label={t('LedConfigPage:rgb.led-format-label')}
@@ -446,7 +445,7 @@ export default function LedConfigPage() {
 								isInvalid={Boolean(errors.ledOptions?.pledPin1)}
 								onChange={handleChange}
 								min={-1}
-								max={29}
+								max={GPIO_PIN_LENGTH - 1}
 							/>
 							<FormControl
 								type="number"
@@ -460,7 +459,7 @@ export default function LedConfigPage() {
 								isInvalid={Boolean(errors.ledOptions?.pledPin2)}
 								onChange={handleChange}
 								min={-1}
-								max={29}
+								max={GPIO_PIN_LENGTH - 1}
 							/>
 							<FormControl
 								type="number"
@@ -474,7 +473,7 @@ export default function LedConfigPage() {
 								isInvalid={Boolean(errors.ledOptions?.pledPin3)}
 								onChange={handleChange}
 								min={-1}
-								max={29}
+								max={GPIO_PIN_LENGTH - 1}
 							/>
 							<FormControl
 								type="number"
@@ -488,7 +487,7 @@ export default function LedConfigPage() {
 								isInvalid={Boolean(errors.ledOptions?.pledPin4)}
 								onChange={handleChange}
 								min={-1}
-								max={29}
+								max={GPIO_PIN_LENGTH - 1}
 							/>
 						</Row>
 						{values.ledOptions.pledType === 0 && (
@@ -695,18 +694,12 @@ export default function LedConfigPage() {
 																	profile.nonPressedSpecialColor,
 																)}
 																error={
-																	(
-																		errors.AnimationOptions?.profiles?.[
-																			profileIndex
-																		] as FormikErrors<AnimationProfile>
-																	)?.nonPressedSpecialColor
+																	getProfileError(errors, profileIndex)
+																		?.nonPressedSpecialColor
 																}
 																isInvalid={Boolean(
-																	(
-																		errors.AnimationOptions?.profiles?.[
-																			profileIndex
-																		] as FormikErrors<AnimationProfile>
-																	)?.nonPressedSpecialColor,
+																	getProfileError(errors, profileIndex)
+																		?.nonPressedSpecialColor,
 																)}
 																onBlur={(e) =>
 																	setFieldValue(
@@ -863,18 +856,12 @@ export default function LedConfigPage() {
 																	profile.pressedSpecialColor,
 																)}
 																error={
-																	(
-																		errors.AnimationOptions?.profiles?.[
-																			profileIndex
-																		] as FormikErrors<AnimationProfile>
-																	)?.pressedSpecialColor
+																	getProfileError(errors, profileIndex)
+																		?.pressedSpecialColor
 																}
 																isInvalid={Boolean(
-																	(
-																		errors.AnimationOptions?.profiles?.[
-																			profileIndex
-																		] as FormikErrors<AnimationProfile>
-																	)?.pressedSpecialColor,
+																	getProfileError(errors, profileIndex)
+																		?.pressedSpecialColor,
 																)}
 																onBlur={(e) =>
 																	setFieldValue(
@@ -1095,7 +1082,7 @@ export default function LedConfigPage() {
 															value={profile.baseCycleTime}
 															onChange={handleChange}
 														/>
-													</div>						
+													</div>
 													<div className="form-control-sm col-sm-4 mb-3">
 														<Form.Label
 															htmlFor={`AnimationOptions.profiles.${profileIndex}.basePressedCycleTime`}
@@ -1109,7 +1096,8 @@ export default function LedConfigPage() {
 															value={profile.basePressedCycleTime}
 															onChange={handleChange}
 														/>
-													</div>															<div className="form-control-sm col-sm-4 mb-3">
+													</div>{' '}
+													<div className="form-control-sm col-sm-4 mb-3">
 														<Form.Label
 															htmlFor={`AnimationOptions.profiles.${profileIndex}.baseCaseCycleTime`}
 														>{`${t('LedConfigPage:theme.case-Speed-label', { value: profile.baseCaseCycleTime })}`}</Form.Label>
@@ -1122,9 +1110,9 @@ export default function LedConfigPage() {
 															value={profile.baseCaseCycleTime}
 															onChange={handleChange}
 														/>
-													</div>		
+													</div>
 												</Row>
-												
+
 												<hr />
 
 												<Row>
