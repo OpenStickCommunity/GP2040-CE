@@ -81,7 +81,6 @@ export default {
 	'turbo-led-type-label-off': '关闭',
 	'turbo-led-type-label-pwm': 'PWM',
 	'turbo-led-type-label-rgb': 'RGB',
-	'turbo-led-index-label': '连发 LED 索引',
 	'turbo-led-color-label': '连发 LED 颜色',
 	'joystick-selection-slider-header-text': '方向模式选择滑块',
 	'joystick-selection-slider-mode-zero-label': '滑块 GPIO 引脚默认模式',

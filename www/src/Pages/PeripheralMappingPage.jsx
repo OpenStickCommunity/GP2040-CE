@@ -202,117 +202,114 @@ export default function PeripheralMappingPage() {
 														key={`${block.label}.${pin}`}
 														className="col-sm-auto"
 													>
-														<Form.Label>
-															{t(
+													<Form.Label>
+														{t(
 																`PeripheralMapping:pin-${pin.toLowerCase()}-label`,
-															)}
-														</Form.Label>
-														<FormSelect
-															key={`peripheral.${block.label}.${pin}`}
-															id={`peripheral.${block.label}.${pin}`}
-															name={`peripheral.${block.label}.${pin}`}
-															className="form-select-sm sm-1"
-															disabled={
-																!Boolean(
-																	values.peripheral[`${block.label}`].enabled,
-																)
-															}
-															error={getIn(
-																errors,
+														)}
+													</Form.Label>
+													<FormSelect
+														key={`peripheral.${block.label}.${pin}`}
+														id={`peripheral.${block.label}.${pin}`}
+														name={`peripheral.${block.label}.${pin}`}
+														className="form-select-sm sm-1"
+														disabled={
+															!Boolean(
+																values.peripheral[`${block.label}`].enabled,
+															)
+														}
+														error={getIn(
+															errors,
+															`peripheral.${block.label}.${pin}`,
+														)}
+														value={
+															values.peripheral[`${block.label}`][`${pin}`]
+														}
+														onChange={(e) => {
+															setFieldValue(
 																`peripheral.${block.label}.${pin}`,
-															)}
-															value={
-																values.peripheral[`${block.label}`][`${pin}`]
-															}
-															onChange={(e) => {
-																setFieldValue(
-																	`peripheral.${block.label}.${pin}`,
-																	e.target.value,
-																);
-															}}
-														>
-															<option
-																key={`block-${block.label}-pin-unset`}
-																value="-1"
-															>
-																Unset
-															</option>
-															{pinLookup(block.pins[pin]).map((o, i2) => (
-																<option
-																	key={`block-${block.label}-pin-${i2}`}
-																	value={o}
-																>
-																	{!usedPins.includes(o)
-																		? o
-																		: `${o} - ${t(
-																				'PeripheralMapping:pin-in-use',
-																			)}`}
-																</option>
-															))}
-														</FormSelect>
-													</div>
-												))}
-												{Object.keys(peripheral.options).map((option, i) => (
-													<div
-														key={`${block.label}.${option}`}
-														className="col-sm-auto"
+																e.target.value,
+															);
+														}}
 													>
-														<Form.Label>
-															{t(
-																`PeripheralMapping:option-${option.toLowerCase()}-label`,
-															)}
-														</Form.Label>
-														<FormSelect
-															key={`peripheral.${block.label}.${option}`}
-															id={`peripheral.${block.label}.${option}`}
-															name={`peripheral.${block.label}.${option}`}
-															className="form-select-sm sm-1"
-															disabled={
-																!Boolean(
-																	values.peripheral[`${block.label}`].enabled,
-																)
-															}
-															error={getIn(
-																errors,
-																`peripheral.${block.label}.${option}`,
-															)}
-															value={
-																values.peripheral[`${block.label}`][`${option}`]
-															}
-															onChange={(e) => {
-																setFieldValue(
-																	`peripheral.${block.label}.${option}`,
-																	e.target.value,
-																);
-															}}
+														<option
+															key={`block-${block.label}-pin-unset`}
+															value="-1"
 														>
-															{peripheral.options[option].map((o, i2) => (
-																<option
-																	key={`block-${block.label}-option-${option}-${o.value}`}
-																	value={o.value}
-																>
-																	{`${t(
-																		`PeripheralMapping:option-${option}-choice-${o.value}-label`,
-																	)} - ${o.value}`}
-																</option>
-															))}
-														</FormSelect>
-													</div>
-												))}
-											</div>
-										))}
-									</Form.Group>
-								))}
-							</Section>
-							<Button type="submit">{t('Common:button-save-label')}</Button>
-							{saveMessage ? (
-								<span className="alert">{saveMessage}</span>
-							) : null}
-							<FormContext />
-						</Form>
-					</div>
-				)
-			}
+															Unset
+														</option>
+														{pinLookup(block.pins[pin]).map((o, i2) => (
+															<option
+																key={`block-${block.label}-pin-${i2}`}
+																value={o}
+															>
+																{!usedPins.includes(o)
+																	? o
+																	: `${o} - ${t(
+																			'PeripheralMapping:pin-in-use',
+																		)}`}
+															</option>
+														))}
+													</FormSelect>
+												</div>
+											))}
+											{Object.keys(peripheral.options).map((option, i) => (
+												<div
+													key={`${block.label}.${option}`}
+													className="col-sm-auto"
+												>
+													<Form.Label>
+														{t(
+															`PeripheralMapping:option-${option.toLowerCase()}-label`,
+														)}
+													</Form.Label>
+													<FormSelect
+														key={`peripheral.${block.label}.${option}`}
+														id={`peripheral.${block.label}.${option}`}
+														name={`peripheral.${block.label}.${option}`}
+														className="form-select-sm sm-1"
+														disabled={
+															!Boolean(
+																values.peripheral[`${block.label}`].enabled,
+															)
+														}
+														error={getIn(
+															errors,
+															`peripheral.${block.label}.${option}`,
+														)}
+														value={
+															values.peripheral[`${block.label}`][`${option}`]
+														}
+														onChange={(e) => {
+															setFieldValue(
+																`peripheral.${block.label}.${option}`,
+																e.target.value,
+															);
+														}}
+													>
+														{peripheral.options[option].map((o, i2) => (
+															<option
+																key={`block-${block.label}-option-${option}-${o.value}`}
+																value={o.value}
+															>
+																{`${t(
+																	`PeripheralMapping:option-${option}-choice-${o.value}-label`,
+																)} - ${o.value}`}
+															</option>
+														))}
+													</FormSelect>
+												</div>
+											))}
+										</div>
+									))}
+								</Form.Group>
+							))}
+						</Section>
+						<Button type="submit">{t('Common:button-save-label')}</Button>
+						{saveMessage ? <span className="alert">{saveMessage}</span> : null}
+						<FormContext />
+					</Form>
+				</div>
+			)}
 		</Formik>
 	);
 }

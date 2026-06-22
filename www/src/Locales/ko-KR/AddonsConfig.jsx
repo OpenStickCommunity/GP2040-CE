@@ -58,7 +58,6 @@ export default {
 	'turbo-led-type-label-off': '끄기',
 	'turbo-led-type-label-pwm': 'PWM',
 	'turbo-led-type-label-rgb': 'RGB',
-	'turbo-led-index-label': '터보 LED 인덱스',
 	'turbo-led-color-label': '터보 LED 컬러',
 	'joystick-selection-slider-header-text': '조이스틱 선택 슬라이더',
 	'joystick-selection-slider-mode-zero-label': '슬라이더 핀 모드 기본값',

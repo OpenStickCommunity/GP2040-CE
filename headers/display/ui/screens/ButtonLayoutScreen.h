@@ -127,6 +127,10 @@ class ButtonLayoutScreen : public GPScreen {
         GPWidget* pushElement(GPButtonLayout element);
         void generateHeader();
 
+        void updateCustomHeaders();
+        void checkLEDCycleParams();
+        void addCustomHeader(std::string newStr, std::string identifier);
+
         const std::map<uint16_t, uint16_t> displayModeLookup = {
             {INPUT_MODE_PS3, 0},
             {INPUT_MODE_SWITCH, 1},
@@ -161,13 +165,31 @@ class ButtonLayoutScreen : public GPScreen {
 
         bool bannerDisplay = false;
         uint8_t bannerDelay = 2;
+        float inbetweenBannerDelay = 0.3f;
         int bannerDelayStart = 0;
+        bool inbetweenBanners = false;
+
         std::string bannerMessage{};
+
+        std::deque<std::string> bannerString;
+        std::deque<std::string> bannerIdentifier;
+
+        int8_t gamePadProfileNumber = -2;
+        int8_t prevGamepadProfileNumber = -2;
+        
+        int8_t prevLEDAnimationProfileNumber = -2;
+ 
+        int8_t prevLEDBaseCycleNumber = -1;
+        int8_t prevLEDBaseCaseCycleNumber = -1;
+        int8_t prevLEDBasePressedCycleNumber = -1;
+ 
         uint16_t prevButtonState = 0;
         uint8_t prevLayoutLeft = 0;
         uint8_t prevLayoutRight = 0;
+        
         uint8_t profileNumber = 0;
         uint8_t prevProfileNumber = 0;
+        
         ButtonLayoutParamsLeft prevLeftOptions{};
         ButtonLayoutParamsRight prevRightOptions{};
         ButtonLayoutOrientation prevOrientation{};

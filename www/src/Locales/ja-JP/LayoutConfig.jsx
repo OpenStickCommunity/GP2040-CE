@@ -1,7 +1,4 @@
 export default {
-	'header-text': 'レイアウト設定',
-	'layout-left-header-text': '左側レイアウト',
-	'layout-right-header-text': '右側レイアウト',
 	layouts: {
 		left: {
 			BUTTON_LAYOUT_STICK: 'レバー',
