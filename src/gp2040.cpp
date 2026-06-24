@@ -140,7 +140,6 @@ void GP2040::setup() {
 	}
 
 	InputMode inputMode = bootAction.inputMode;
-	uint32_t profile = bootAction.profileNumber;
 
 	// Setup USB Driver
 	DriverManager::getInstance().setup(inputMode);
