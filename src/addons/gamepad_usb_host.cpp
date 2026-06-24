@@ -17,5 +17,5 @@ void GamepadUSBHostAddon::setup() {
 }
 
 void GamepadUSBHostAddon::preprocess() {
-    ((GamepadUSBHostListener*)listener)->gamepadFeatureUpdate();
+    ((GamepadUSBHostListener*)listener)->update();
 }

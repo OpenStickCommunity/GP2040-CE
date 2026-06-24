@@ -22,7 +22,7 @@ void GamepadUSBHostListener::setup() {
     _next_update = 0;
 }
 
-void GamepadUSBHostListener::gamepadFeatureUpdate() {
+void GamepadUSBHostListener::update() {
     if ( _controller_host == nullptr ) return;
 
     // Controller host updates (rumble, LEDs, etc. outside of gamepad input reports)
@@ -45,7 +45,7 @@ void GamepadUSBHostListener::mount(uint8_t dev_addr, uint8_t instance, uint8_t c
 
     _controller_host = nullptr;
      if ( DualshockPS4Host::match(vid, pid) ) {
-        _controller_host = (GPHost*)(new DualshockPS4Host());
+        _controller_host = new DualshockPS4Host();
     }else if ( DualsensePS5Host::match(vid, pid) ) {
         _controller_host = new DualsensePS5Host();
     } else if ( GoogleStadiaHost::match(vid, pid) ) {
