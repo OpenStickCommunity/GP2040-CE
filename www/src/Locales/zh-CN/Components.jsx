@@ -7,8 +7,8 @@ export default {
 		'de-DE': 'Deutsch (德语)',
 		'ja-JP': '日本語 (日语)',
 		'ko-KR': '한국어 (韩语)',
-		'es-MX': 'Español (墨西哥)',
-		'tr-TR': 'Türkçe (土耳其)',
+		'es-MX': 'Español (墨西哥西班牙语)',
+		'tr-TR': 'Türkçe (土耳其语)',
 		'fr-FR': 'Français (法语)',
 	},
 	'color-scheme': {
