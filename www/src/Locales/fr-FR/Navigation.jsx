@@ -11,6 +11,7 @@ export default {
 	'links-label': 'Liens',
 	'macro-label': 'Configuration des macros',
 	'pin-mapping-label': 'Mappage des broches GPIO',
+	'boot-mode-mapping-label': 'Configuration du mode de démarrage',
 	'multi-mapping-label': 'Mappage multiple',
 	'peripheral-mapping-label': 'Mappage des périphériques',
 	'profile-settings-label': 'Paramètres du profil',
