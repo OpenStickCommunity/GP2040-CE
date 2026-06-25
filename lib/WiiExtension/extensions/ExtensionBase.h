@@ -87,6 +87,8 @@ class ExtensionBase {
         uint16_t analogState[WiiAnalogs::WII_MAX_ANALOGS];
         int16_t motionState[WiiMotions::WII_MAX_MOTIONS];
 
+        uint8_t controllerData[16];
+
         uint16_t initialAnalogState[WiiAnalogs::WII_MAX_ANALOGS];
         bool isFirstRead = true;
         bool skipPostProcess = false;
@@ -95,6 +97,8 @@ class ExtensionBase {
         virtual bool calibrate(uint8_t *calibrationData);
         virtual void process(uint8_t *inputData) = 0;
         virtual void postProcess();
+        
+        virtual uint8_t prepareOutput();
 
 #if WII_EXTENSION_DEBUG==true
         uint8_t _lastRead[16] = {0xFF};

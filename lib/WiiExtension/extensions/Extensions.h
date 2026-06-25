@@ -8,6 +8,7 @@
 #include "MotionPlusExtension.h"
 #include "NunchuckExtension.h"
 #include "TaikoExtension.h"
+#include "TrainExtension.h"
 #include "TurntableExtension.h"
 #include "UDrawExtension.h"
 
