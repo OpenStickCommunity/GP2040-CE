@@ -5,7 +5,7 @@
 #include "class/hid/hid.h"
 #include "device/usbd_pvt.h"
 
-bool DrivingForceHost::match(uint16_t vendor_id, uint16_t product_id) {
+bool DrivingForceHost::match(uint8_t dev_addr, uint8_t instance, uint16_t vendor_id, uint16_t product_id, uint8_t const* desc_report, uint16_t desc_len) {
     if ( vendor_id == 0x46d) {
         switch(product_id) {
             case 0xC294: // compatible mode

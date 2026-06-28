@@ -3,10 +3,16 @@
 #include "storagemanager.h"
 
 // Static match function
-bool DualshockPS4Host::match(uint16_t vendor_id, uint16_t product_id) {
+bool DualshockPS4Host::match(uint8_t dev_addr, uint8_t instance, uint16_t vendor_id, uint16_t product_id, uint8_t const* desc_report, uint16_t desc_len) {
+    // Victrix Pro FS
+    
+    // Nacon Revolution Pro 3
+    
     // Hori (PS4)
     if ( vendor_id == 0x0F0D ) {
         switch(product_id) {
+            // Horipad FPS Plus?
+            // Hori Fighting Commander
             case 0x00EE:
                 return true;
         }
@@ -44,6 +50,33 @@ bool DualshockPS4Host::match(uint16_t vendor_id, uint16_t product_id) {
             case 0xB67B:
                 return true;
         }
+    }
+
+    // Check for any other PS4 controller
+        // Find the report for PS4 definition if this controller has one
+    tuh_hid_report_info_t * report_info = nullptr;
+    uint8_t reportIDCount = 0;
+    uint8_t report_count = tuh_hid_parse_report_descriptor(report_info, 0, desc_report, desc_len);
+    report_info = new tuh_hid_report_info_t[report_count];
+    for(uint8_t i = 0; i < report_count; i++) {
+#if GAMEPAD_HOST_DEBUG
+        //printf("Report: %02x, Usage: %04x, Usage Page: %04x\n", report_info[i].report_id, report_info[i].usage_page, report_info[i].usage);
+#endif
+        if (report_info[i].report_id == PS4AuthReport::PS4_DEFINITION ||
+            report_info[i].report_id == PS4AuthReport::PS4_SET_FEATURE_STATE ||
+            report_info[i].report_id == PS4AuthReport::PS4_SET_AUTH_PAYLOAD ||
+            report_info[i].report_id == PS4AuthReport::PS4_GET_SIGNATURE_NONCE ||
+            report_info[i].report_id == PS4AuthReport::PS4_GET_SIGNING_STATE ||
+            report_info[i].report_id == PS4AuthReport::PS4_RESET_AUTH ) {
+            reportIDCount++;
+        }
+    }
+
+    delete report_info;
+
+    // Auto-detected a PS4
+    if ( reportIDCount == 6 ) {
+        return true;
     }
 
     return false;

@@ -1,6 +1,6 @@
 #include "hosts/DualsensePS5Host.h"
 
-bool DualsensePS5Host::match(uint16_t vendor_id, uint16_t product_id) {
+bool DualsensePS5Host::match(uint8_t dev_addr, uint8_t instance, uint16_t vendor_id, uint16_t product_id, uint8_t const* desc_report, uint16_t desc_len) {
     // Playstation 5 Dualsense
     if ( vendor_id == 0x054c) {
         switch(product_id) {

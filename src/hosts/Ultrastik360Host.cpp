@@ -1,6 +1,6 @@
 #include "hosts/Ultrastik360Host.h"
 
-bool Ultrastik360Host::match(uint16_t vendor_id, uint16_t product_id) {
+bool Ultrastik360Host::match(uint8_t dev_addr, uint8_t instance, uint16_t vendor_id, uint16_t product_id, uint8_t const* desc_report, uint16_t desc_len) {
     // Ultrastik 360
     // if ( vendor_id == 0x054c) { // ask community what this is
         switch(product_id) {

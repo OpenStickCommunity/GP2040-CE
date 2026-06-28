@@ -9,7 +9,7 @@
 #include <cstdint>
 
 #include "gamepad/GamepadState.h"
-#include "Gamepad.h"
+#include "gamepad.h"
 
 //
 // GP2040-CE USB Device Class Driver

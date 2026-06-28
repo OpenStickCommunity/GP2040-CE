@@ -6,7 +6,7 @@
 #include "storagemanager.h"
 
 // Match
-bool SwitchProHost::match(uint16_t vendor_id, uint16_t product_id) {
+bool SwitchProHost::match(uint8_t dev_addr, uint8_t instance, uint16_t vendor_id, uint16_t product_id, uint8_t const* desc_report, uint16_t desc_len) {
     // Nintendo
     if ( vendor_id == 0x057E) {
         switch(product_id) {

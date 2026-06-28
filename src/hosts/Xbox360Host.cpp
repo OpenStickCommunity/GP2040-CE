@@ -2,14 +2,15 @@
 #include "drivers/shared/xinput_host.h"
 #include <storagemanager.h>
 
-bool Xbox360Host::match(uint16_t vendor_id, uint16_t product_id) {
-    if ( vendor_id == 0x045E ) {
-        switch(product_id) {
-            case 0x028E:
-                return true;
+bool Xbox360Host::match(uint8_t dev_addr, uint8_t instance, uint16_t vendor_id, uint16_t product_id, uint8_t controller_type) {    
+    if ( controller_type == 1 ) {    
+        if ( vendor_id == 0x045E ) {
+            switch(product_id) {
+                case 0x028E:
+                    return true;
+            }
         }
     }
-
     return false;
 }
 

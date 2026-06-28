@@ -44,17 +44,17 @@ void GamepadUSBHostListener::mount(uint8_t dev_addr, uint8_t instance, uint8_t c
     tuh_vid_pid_get(dev_addr, &vid, &pid);
 
     _controller_host = nullptr;
-     if ( DualshockPS4Host::match(vid, pid) ) {
+     if ( DualshockPS4Host::match(dev_addr, instance, vid, pid, desc_report, desc_len) ) {
         _controller_host = new DualshockPS4Host();
-    }else if ( DualsensePS5Host::match(vid, pid) ) {
+    }else if ( DualsensePS5Host::match(dev_addr, instance, vid, pid, desc_report, desc_len) ) {
         _controller_host = new DualsensePS5Host();
-    } else if ( GoogleStadiaHost::match(vid, pid) ) {
+    } else if ( GoogleStadiaHost::match(dev_addr, instance, vid, pid, desc_report, desc_len) ) {
         _controller_host = new GoogleStadiaHost();
-    } else if ( DrivingForceHost::match(vid, pid) ) {
+    } else if ( DrivingForceHost::match(dev_addr, instance, vid, pid, desc_report, desc_len) ) {
         _controller_host = new DrivingForceHost();
-    } else if ( Ultrastik360Host::match(vid, pid) ) {
+    } else if ( Ultrastik360Host::match(dev_addr, instance, vid, pid, desc_report, desc_len) ) {
         _controller_host = new Ultrastik360Host();
-    } else if ( SwitchProHost::match(vid, pid) ) {
+    } else if ( SwitchProHost::match(dev_addr, instance, vid, pid, desc_report, desc_len) ) {
         _controller_host = new SwitchProHost();
     } else {
         // Better way to determine if its a generic HID?
@@ -87,7 +87,7 @@ void GamepadUSBHostListener::xmount(uint8_t dev_addr, uint8_t instance, uint8_t 
 
     // Match is a static function, setup and init happens after we've established something
     _controller_host = nullptr;
-    if ( Xbox360Host::match(vid, pid) && controllerType == 1 ) {
+    if ( Xbox360Host::match(dev_addr, instance, vid, pid, controllerType) ) {
         _controller_host = new Xbox360Host();
     }
     /* else if ( XboxOneHost::match(vid, pid && controllerType == 2 ) {

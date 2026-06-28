@@ -50,7 +50,7 @@ typedef struct TU_ATTR_PACKED
 //
 class GoogleStadiaHost : public GPHost {
 public:
-    static bool match(uint16_t vendor_id, uint16_t product_id);   
+    static bool match(uint8_t dev_addr, uint8_t instance, uint16_t vendor_id, uint16_t product_id, uint8_t const* desc_report, uint16_t desc_len);   
     virtual void initialize(uint8_t dev_addr, uint8_t instance, uint16_t vendor_id, uint16_t product_id, uint8_t const* desc_report, uint16_t desc_len);
     virtual void gamepad(Gamepad * gamepad);
     virtual void process(uint8_t const* report, uint16_t len);

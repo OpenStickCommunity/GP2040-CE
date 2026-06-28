@@ -1,7 +1,7 @@
 #include "hosts/GoogleStadiaHost.h"
 
 // Static match function
-bool GoogleStadiaHost::match(uint16_t vendor_id, uint16_t product_id) {
+bool GoogleStadiaHost::match(uint8_t dev_addr, uint8_t instance, uint16_t vendor_id, uint16_t product_id, uint8_t const* desc_report, uint16_t desc_len) {
     // Google Stadia
     if ( vendor_id == 0x18D1 ) {
         switch(product_id) {
