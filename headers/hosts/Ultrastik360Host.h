@@ -4,7 +4,7 @@
  */
 
 #ifndef _ULTRASTIK360HOST_H_
-#define _ULTRASTIK360PROHOST_H_
+#define _ULTRASTIK360HOST_H_
 
 #include <gphost.h>
 
