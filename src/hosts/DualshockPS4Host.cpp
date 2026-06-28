@@ -52,33 +52,6 @@ bool DualshockPS4Host::match(uint8_t dev_addr, uint8_t instance, uint16_t vendor
         }
     }
 
-    // Check for any other PS4 controller
-        // Find the report for PS4 definition if this controller has one
-    tuh_hid_report_info_t * report_info = nullptr;
-    uint8_t reportIDCount = 0;
-    uint8_t report_count = tuh_hid_parse_report_descriptor(report_info, 0, desc_report, desc_len);
-    report_info = new tuh_hid_report_info_t[report_count];
-    for(uint8_t i = 0; i < report_count; i++) {
-#if GAMEPAD_HOST_DEBUG
-        //printf("Report: %02x, Usage: %04x, Usage Page: %04x\n", report_info[i].report_id, report_info[i].usage_page, report_info[i].usage);
-#endif
-        if (report_info[i].report_id == PS4AuthReport::PS4_DEFINITION ||
-            report_info[i].report_id == PS4AuthReport::PS4_SET_FEATURE_STATE ||
-            report_info[i].report_id == PS4AuthReport::PS4_SET_AUTH_PAYLOAD ||
-            report_info[i].report_id == PS4AuthReport::PS4_GET_SIGNATURE_NONCE ||
-            report_info[i].report_id == PS4AuthReport::PS4_GET_SIGNING_STATE ||
-            report_info[i].report_id == PS4AuthReport::PS4_RESET_AUTH ) {
-            reportIDCount++;
-        }
-    }
-
-    delete report_info;
-
-    // Auto-detected a PS4
-    if ( reportIDCount == 6 ) {
-        return true;
-    }
-
     return false;
 }
 
@@ -105,7 +78,7 @@ void DualshockPS4Host::initialize(uint8_t dev_addr, uint8_t instance, uint16_t v
     tuh_hid_report_info_t report_info[4];
     uint8_t report_count = tuh_hid_parse_report_descriptor(report_info, 4, desc_report, desc_len);
     for(uint8_t i = 0; i < report_count; i++) {
-#if GAMEPAD_HOST_DEBUG
+#ifdef GAMEPAD_HOST_DEBUG
         //printf("Report: %02x, Usage: %04x, Usage Page: %04x\n", report_info[i].report_id, report_info[i].usage_page, report_info[i].usage);
 #endif
         if (report_info[i].report_id == PS4AuthReport::PS4_DEFINITION) {
@@ -214,7 +187,7 @@ void DualshockPS4Host::get_report_complete(uint8_t dev_addr, uint8_t instance, u
     memcpy(&ds4Config, report_buffer+1, sizeof(PS4ControllerConfig));
     if ((ds4Config.hidUsage == 0x2721) || (ds4Config.hidUsage == 0x2127)) {
         validPS4Definition = true;
-        #if GAMEPAD_HOST_DEBUG
+        #ifdef GAMEPAD_HOST_DEBUG
                 //printf("PS4 controller details\n");
                 //printf("----------------------\n");
                 //printf("enableController: %d\n", ds4Config.features.enableController);

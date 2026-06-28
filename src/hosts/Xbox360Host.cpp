@@ -76,7 +76,7 @@ void Xbox360Host::process(uint8_t const* report, uint16_t len) {
    
 
     if (len < sizeof(XInputReport)) {
-#if GAMEPAD_HOST_DEBUG
+#ifdef GAMEPAD_HOST_DEBUG
         printf("Xbox 360 report too small: %d bytes\n", len);
 #endif
         return;

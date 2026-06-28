@@ -41,7 +41,7 @@ void DrivingForceHost::initialize(uint8_t dev_addr, uint8_t instance, uint16_t v
 void DrivingForceHost::process(uint8_t const* report, uint16_t len) {
     PS3ReportAlt ps3Report;
     memcpy(&ps3Report, report, len);
-#if GAMEPAD_HOST_DEBUG
+#ifdef GAMEPAD_HOST_DEBUG
     //printf("\033[2;0H");
     //for (uint8_t i = 0; i < len; i++) {
     //    printf("%02x ", report[i]);
