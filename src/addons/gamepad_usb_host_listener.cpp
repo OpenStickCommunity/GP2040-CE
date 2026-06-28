@@ -7,7 +7,7 @@
 #include "hosts/DualshockPS4Host.h"
 #include "hosts/GoogleStadiaHost.h"
 #include "hosts/DrivingForceHost.h"
-#include "hosts/UltraStik360Host.h"
+#include "hosts/Ultrastik360Host.h"
 #include "hosts/SwitchProHost.h"
 #include "hosts/Xbox360Host.h"
 
