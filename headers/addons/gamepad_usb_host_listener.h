@@ -7,9 +7,6 @@
 
 #include "gphost.h"
 
-// Move to individuals
-//#define GAMEPAD_HOST_DEBUG 1
-
 const uint32_t GAMEPAD_HOST_POLL_INTERVAL_MS = 3;
 
 // Add other controller structs here

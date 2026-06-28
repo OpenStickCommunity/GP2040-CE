@@ -23,12 +23,14 @@ public:
     virtual void update();
     virtual void shutdown() {}
     virtual void set_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {}
-    virtual void get_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len);
+    virtual void get_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {}
 private:
     // Controller report processor functions
     PS4Report prevReport;
-    bool validPS4Definition;
-    PS4ControllerConfig ds4Config;
+    PS4FeatureOutputReport last_controller_output;
+    PS4FeatureOutputReport controller_output;
+    uint8_t last_rumble_left;
+    uint8_t last_rumble_right;
     uint8_t report_buffer[PS4_ENDPOINT_SIZE];
     uint32_t map(uint32_t x, uint32_t in_min, uint32_t in_max, uint32_t out_min, uint32_t out_max);
     bool diff_than_2(uint8_t x, uint8_t y);

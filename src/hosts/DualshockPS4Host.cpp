@@ -1,18 +1,35 @@
 #include "hosts/DualshockPS4Host.h"
 
+#include "drivermanager.h"
 #include "storagemanager.h"
 
 // Static match function
 bool DualshockPS4Host::match(uint8_t dev_addr, uint8_t instance, uint16_t vendor_id, uint16_t product_id, uint8_t const* desc_report, uint16_t desc_len) {
-    // Victrix Pro FS
+    // Qanba Obisidian
+    if ( vendor_id == 0x2C22 ) {
+        switch(product_id) {
+            case 0x2200: // crystal
+            case 0x2500: // dragon
+            case 0x2000: // drone
+            case 0x2302: // obsidian
+            case 0x2702: // obsidian 2
+                return true;
+        }
+    }
     
-    // Nacon Revolution Pro 3
+    // Nacon Daija
+    if ( vendor_id == 0x146B ) {
+        switch(product_id) {
+            case 0x0D09: // PS4 mode
+                return true;
+        }
+    }
     
     // Hori (PS4)
     if ( vendor_id == 0x0F0D ) {
         switch(product_id) {
-            // Horipad FPS Plus?
-            // Hori Fighting Commander
+            case 0x008A: // we need someone to confirm this, real arcade pro V hayabusa ps4 mode
+            case 0x005E:
             case 0x00EE:
                 return true;
         }
@@ -71,54 +88,46 @@ void DualshockPS4Host::initialize(uint8_t dev_addr, uint8_t instance, uint16_t v
     _controller_host_state.ry = GAMEPAD_JOYSTICK_MID;
 
     memset(&prevReport, 0, sizeof(PS4Report));
+    memset(&last_controller_output, 0, sizeof(PS4FeatureOutputReport));
 
-    validPS4Definition = false; // check the report def
-
-    // Find the report for PS4 definition if this controller has one
-    tuh_hid_report_info_t report_info[4];
-    uint8_t report_count = tuh_hid_parse_report_descriptor(report_info, 4, desc_report, desc_len);
-    for(uint8_t i = 0; i < report_count; i++) {
-#ifdef GAMEPAD_HOST_DEBUG
-        //printf("Report: %02x, Usage: %04x, Usage Page: %04x\n", report_info[i].report_id, report_info[i].usage_page, report_info[i].usage);
-#endif
-        if (report_info[i].report_id == PS4AuthReport::PS4_DEFINITION) {
-            // controller is some other type that's not a DS4, so parse the config
-            memset(report_buffer, 0, PS4_ENDPOINT_SIZE);
-            report_buffer[0] = PS4AuthReport::PS4_DEFINITION;
-            tuh_hid_get_report(dev_addr, instance, PS4AuthReport::PS4_DEFINITION, HID_REPORT_TYPE_FEATURE, report_buffer, 48);
-            break;
-        }
-    }
+    tuh_hid_send_report(_dev_addr, _instance, PS4AuthReport::PS4_DEFINITION, &report_buffer, 64);
 }
 
 void DualshockPS4Host::update() {
-    if ( validPS4Definition == false ) return;
-
     Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
     PS4FeatureOutputReport controller_output; // this might have to be static
     memset(&controller_output, 0, sizeof(controller_output));
     controller_output.reportID = PS4AuthReport::PS4_SET_FEATURE_STATE;
-    if (ds4Config.features.enableLED && gamepad->auxState.sensors.statusLight.enabled) {
+
+    InputMode inputMode = DriverManager::getInstance().getInputMode();
+    if (inputMode == INPUT_MODE_PS4 || inputMode == INPUT_MODE_PS5) {
         controller_output.enableUpdateLED = gamepad->auxState.sensors.statusLight.enabled;
         controller_output.ledRed = gamepad->auxState.sensors.statusLight.color.red;
         controller_output.ledGreen = gamepad->auxState.sensors.statusLight.color.green;
         controller_output.ledBlue = gamepad->auxState.sensors.statusLight.color.blue;
-        controller_output.ledBlinkOn = gamepad->auxState.playerID.ledBlinkOn;
-        controller_output.ledBlinkOff = gamepad->auxState.playerID.ledBlinkOff;
+        if ( controller_output.ledBlinkOn > 0 || controller_output.ledBlinkOff > 0 ) {
+            controller_output.enableUpdateLEDBlink = true;
+            controller_output.ledBlinkOn = gamepad->auxState.playerID.ledBlinkOn; // time
+            controller_output.ledBlinkOff = gamepad->auxState.playerID.ledBlinkOff; // time
+        }
+    } else if ( inputMode == INPUT_MODE_XINPUT || inputMode == INPUT_MODE_XBONE || inputMode == INPUT_MODE_XBOXORIGINAL ) {
+        controller_output.enableUpdateLED = true;
+        controller_output.ledGreen = UINT8_MAX/2;
+    } else if ( inputMode == INPUT_MODE_SWITCH || inputMode == INPUT_MODE_SWITCH_PRO ) {
+        controller_output.enableUpdateLED = true;
+        controller_output.ledRed = UINT8_MAX/2;
     }
 
-    if (ds4Config.features.enableRumble) {
-        gamepad->auxState.haptics.leftActuator.enabled = 1;
-        gamepad->auxState.haptics.rightActuator.enabled = 1;
-        controller_output.enableUpdateRumble = 1;
-        controller_output.rumbleLeft = gamepad->auxState.haptics.leftActuator.intensity;
-        controller_output.rumbleRight = gamepad->auxState.haptics.rightActuator.intensity;
+    gamepad->auxState.haptics.leftActuator.enabled = true;
+    gamepad->auxState.haptics.rightActuator.enabled = true;
+    controller_output.enableUpdateRumble = true;
+    controller_output.rumbleLeft = gamepad->auxState.haptics.leftActuator.intensity;
+    controller_output.rumbleRight = gamepad->auxState.haptics.rightActuator.intensity;
+
+    if ( memcmp(&controller_output, &last_controller_output, sizeof(PS4FeatureOutputReport)) != 0 ) {
+        tuh_hid_send_report(_dev_addr, _instance, 0, reinterpret_cast<const uint8_t*>(&controller_output), sizeof(controller_output));
+        memcpy(&last_controller_output, &controller_output, sizeof(PS4FeatureOutputReport));
     }
-
-    void * report = &controller_output;
-    uint16_t report_size = sizeof(controller_output)-1;
-
-    tuh_hid_send_report(_dev_addr, _instance, PS4AuthReport::PS4_SET_FEATURE_STATE, (uint8_t*)report+1, report_size);
 }
 
 void DualshockPS4Host::process(uint8_t const* report, uint16_t len) {
@@ -181,25 +190,6 @@ void DualshockPS4Host::gamepad(Gamepad * gamepad) {
     gamepad->state.ry       = _controller_host_state.ry;
     gamepad->state.rt       = _controller_host_state.rt;
     gamepad->state.lt       = _controller_host_state.lt;
-}
-
-void DualshockPS4Host::get_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
-    memcpy(&ds4Config, report_buffer+1, sizeof(PS4ControllerConfig));
-    if ((ds4Config.hidUsage == 0x2721) || (ds4Config.hidUsage == 0x2127)) {
-        validPS4Definition = true;
-        #ifdef GAMEPAD_HOST_DEBUG
-                //printf("PS4 controller details\n");
-                //printf("----------------------\n");
-                //printf("enableController: %d\n", ds4Config.features.enableController);
-                //printf("enableMotion: %d\n", ds4Config.features.enableMotion);
-                //printf("enableLED: %d\n", ds4Config.features.enableLED);
-                //printf("enableRumble: %d\n", ds4Config.features.enableRumble);
-                //printf("enableAnalog: %d\n", ds4Config.features.enableAnalog);
-                //printf("enableUnknown0: %d\n", ds4Config.features.enableUnknown0);
-                //printf("enableTouchpad: %d\n", ds4Config.features.enableTouchpad);
-                //printf("enableUnknown1: %d\n", ds4Config.features.enableUnknown1);
-        #endif
-    }
 }
 
 uint32_t DualshockPS4Host::map(uint32_t x, uint32_t in_min, uint32_t in_max, uint32_t out_min, uint32_t out_max) {

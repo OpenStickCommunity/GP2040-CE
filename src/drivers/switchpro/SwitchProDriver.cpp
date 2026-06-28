@@ -7,8 +7,6 @@
 #define SWITCH_PRO_KEEPALIVE_TIMER 5
 
 void SwitchProDriver::initialize() {
-    //stdio_init_all();
-
     playerID = 0;
     last_report_counter = 0;
     handshakeCounter = 0;

@@ -59,8 +59,7 @@
 #define P5GENERAL_GYRO_RES 1024
 #define P5GENERAL_GYRO_RANGE (P5GENERAL_GYRO_RES * 2048)
 
-
-typedef struct __attribute__((packed)) {
+typedef struct __attribute__((packed, aligned(1))) {
   uint8_t report_id;
   uint8_t left_stick_x;
   uint8_t left_stick_y;

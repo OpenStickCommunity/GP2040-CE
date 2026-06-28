@@ -57,8 +57,8 @@ void SwitchProHost::update()
     uint8_t report_size = 10; // no subcommand
 
     // rumble
-    gamepad->auxState.haptics.leftActuator.enabled = 1;
-    gamepad->auxState.haptics.rightActuator.enabled = 1;
+    gamepad->auxState.haptics.leftActuator.enabled = true;
+    gamepad->auxState.haptics.rightActuator.enabled = true;
     if (gamepad->auxState.haptics.leftActuator.active
         && gamepad->auxState.haptics.leftActuator.intensity > 0) {
         // personally I felt this a bit too strong on PS4 games, might need to be adjusted for personal preference
@@ -73,7 +73,7 @@ void SwitchProHost::update()
         out_report.rumble_l[3] = 0x61;
     }
     if (gamepad->auxState.haptics.rightActuator.active
-        && gamepad->auxState.haptics.leftActuator.intensity > 0) {
+        && gamepad->auxState.haptics.rightActuator.intensity > 0) {
         uint8_t amplitude_r = static_cast<uint8_t>(((gamepad->auxState.haptics.rightActuator.intensity / 255.0f) * 0.8f + 0.5f) * (0xC0 - 0x40) + 0x40);
 #ifdef GAMEPAD_HOST_DEBUG
         printf("Switch Pro Right Rumble Intensity: %d -> %d\n", gamepad->auxState.haptics.rightActuator.intensity, amplitude_r);
