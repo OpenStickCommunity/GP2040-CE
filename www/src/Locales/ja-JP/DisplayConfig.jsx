@@ -45,6 +45,7 @@ export default {
 		'power-management-header': '電源管理',
 		'turn-off-when-suspended': 'サスペンド中OFFにする',
 		'input-history-label': '入力履歴',
+		'display-contrast-label': 'コントラスト',
 		'display-state': {
 			disabled: '無効',
 			enabled: '有効',
