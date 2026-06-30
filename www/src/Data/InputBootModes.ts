@@ -190,4 +190,13 @@ export const INPUT_MODE_OPTIONS: InputModeOptions[] = [
 		authentication: ['usb'],
 		deviceTypes: []
 	},
+	{
+		labelKey: 'input-mode-options.mayflashs5',
+		value: InputMode.INPUT_MODE_MAYFLASHS5,
+		group: 'primary',
+		required: [],
+		optional: ['usb'],
+		authentication: ['usb'],
+		deviceTypes: []
+	},
 ];

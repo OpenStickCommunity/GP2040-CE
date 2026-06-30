@@ -208,6 +208,9 @@ src/drivers/astro/AstroDriver.cpp
 src/drivers/egret/EgretDriver.cpp
 src/drivers/hid/HIDDriver.cpp
 src/drivers/keyboard/KeyboardDriver.cpp
+src/drivers/mayflashs5/MayflashS5Auth.cpp
+src/drivers/mayflashs5/MayflashS5AuthUSBListener.cpp
+src/drivers/mayflashs5/MayflashS5Driver.cpp
 src/drivers/mdmini/MDMiniDriver.cpp
 src/drivers/neogeo/NeoGeoDriver.cpp
 src/drivers/net/NetDriver.cpp

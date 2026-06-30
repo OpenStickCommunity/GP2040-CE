@@ -23,6 +23,7 @@
 #define INPUT_MODE_PS5_NAME "PS5"
 #define INPUT_MODE_GENERIC_NAME "Generic HID"
 #define INPUT_MODE_P5GENERAL_NAME "P5 General"
+#define INPUT_MODE_MAYFLASHS5_NAME "Mayflash S5"
 #define INPUT_MODE_SWITCH_PRO_NAME "Nintendo Switch Pro"
 #define INPUT_MODE_CONFIG_NAME "Web Config"
 
