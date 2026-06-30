@@ -1792,8 +1792,32 @@ std::string setAddonOptions()
     docToValue(focusModeOptions.macroLockEnabled, doc, "focusModeMacroLockEnabled");
     docToValue(focusModeOptions.enabled, doc, "FocusModeAddonEnabled");
 
+    AnalogADS1115Options& analogADS1115Options = Storage::getInstance().getAddonOptions().analogADS1115Options;
+    docToValue(analogADS1115Options.enabled, doc, "I2CAnalog1115InputEnabled");
+    // docToValue(analogADS1115Options.channel_enabled, doc, "channelEnabled");
+    // docToValue(analogADS1115Options.channel_inner_deadzone_enabled, doc, "channelInnerDeadzoneEnable");
+    // docToValue(analogADS1115Options.channel_outer_deadzone_enabled, doc, "channelOuterDeadzoneEnable");
+    docToValue(analogADS1115Options.lxChannel, doc, "lxChannel");
+    docToValue(analogADS1115Options.lyChannel, doc, "lyChannel");
+    docToValue(analogADS1115Options.rxChannel, doc, "rxChannel");
+    docToValue(analogADS1115Options.ryChannel, doc, "ryChannel");
+    docToValue(analogADS1115Options.channel0InnerDeadzone, doc, "channel0InnerDeadzone");
+    docToValue(analogADS1115Options.channel1InnerDeadzone, doc, "channel1InnerDeadzone");
+    docToValue(analogADS1115Options.channel2InnerDeadzone, doc, "channel2InnerDeadzone");
+    docToValue(analogADS1115Options.channel3InnerDeadzone, doc, "channel3InnerDeadzone");
+    docToValue(analogADS1115Options.channel0OuterDeadzone, doc, "channel0OuterDeadzone");
+    docToValue(analogADS1115Options.channel1OuterDeadzone, doc, "channel1OuterDeadzone");
+    docToValue(analogADS1115Options.channel2OuterDeadzone, doc, "channel2OuterDeadzone");
+    docToValue(analogADS1115Options.channel3OuterDeadzone, doc, "channel3OuterDeadzone");
+    // docToValue(analogADS1115Options.invert_enabled, doc, "invertEnabled");
+    docToValue(analogADS1115Options.left_stick_deadzone_enabled, doc, "leftStickDeadzoneEnable");
+    docToValue(analogADS1115Options.right_stick_deadzone_enabled, doc, "rightStickDeadzoneEnable");
+    docToValue(analogADS1115Options.leftStickDeadzone, doc, "leftStickDeadzone");
+    docToValue(analogADS1115Options.rightStickDeadzone, doc, "rightStickDeadzone");
+
     AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
     docToValue(analogADS1219Options.enabled, doc, "I2CAnalog1219InputEnabled");
+
 
     ReverseOptions& reverseOptions = Storage::getInstance().getAddonOptions().reverseOptions;
     docToValue(reverseOptions.enabled, doc, "ReverseInputEnabled");
@@ -2246,6 +2270,26 @@ std::string getAddonOptions()
 
     const AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
     writeDoc(doc, "I2CAnalog1219InputEnabled", analogADS1219Options.enabled);
+
+    const AnalogADS1115Options& analogADS1115Options = Storage::getInstance().getAddonOptions().analogADS1115Options;
+    writeDoc(doc, "I2CAnalog1115InputEnabled", analogADS1115Options.enabled);
+
+    writeDoc(doc, "lxChannel", analogADS1115Options.lxChannel);
+    writeDoc(doc, "lyChannel", analogADS1115Options.lyChannel);
+    writeDoc(doc, "rxChannel", analogADS1115Options.rxChannel);
+    writeDoc(doc, "ryChannel", analogADS1115Options.ryChannel);
+    writeDoc(doc, "channel0InnerDeadzone", analogADS1115Options.channel0InnerDeadzone);
+    writeDoc(doc, "channel1InnerDeadzone", analogADS1115Options.channel1InnerDeadzone);
+    writeDoc(doc, "channel2InnerDeadzone", analogADS1115Options.channel2InnerDeadzone);
+    writeDoc(doc, "channel3InnerDeadzone", analogADS1115Options.channel3InnerDeadzone);
+    writeDoc(doc, "channel0OuterDeadzone", analogADS1115Options.channel0OuterDeadzone);
+    writeDoc(doc, "channel1OuterDeadzone", analogADS1115Options.channel1OuterDeadzone);
+    writeDoc(doc, "channel2OuterDeadzone", analogADS1115Options.channel2OuterDeadzone);
+    writeDoc(doc, "channel3OuterDeadzone", analogADS1115Options.channel3OuterDeadzone);
+    writeDoc(doc, "leftStickDeadzoneEnable", analogADS1115Options.left_stick_deadzone_enabled);
+    writeDoc(doc, "rightStickDeadzoneEnable", analogADS1115Options.right_stick_deadzone_enabled);
+    writeDoc(doc, "leftStickDeadzone", analogADS1115Options.leftStickDeadzone);
+    writeDoc(doc, "rightStickDeadzone", analogADS1115Options.rightStickDeadzone);
 
     const ReverseOptions& reverseOptions = Storage::getInstance().getAddonOptions().reverseOptions;
     writeDoc(doc, "reversePinLED", cleanPin(reverseOptions.ledPin));

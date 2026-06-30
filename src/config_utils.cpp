@@ -18,6 +18,7 @@
 #include "addons/dualdirectional.h"
 #include "addons/tilt.h"
 #include "addons/focus_mode.h"
+#include "addons/i2canalog1115.h"
 #include "addons/i2canalog1219.h"
 #include "addons/display.h"
 #include "addons/keyboard_host.h"
@@ -677,6 +678,36 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, modeDefault, SLIDER_SOCD_SLOT_DEFAULT);
     INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, deprecatedModeOne, SLIDER_SOCD_SLOT_ONE);
     INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, deprecatedModeTwo, SLIDER_SOCD_SLOT_TWO);
+
+    // addonOptions.analogADS1115Options
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, enabled, !!I2C_ANALOG1115_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, channel_enabled, ANALOG1115_CHANNEL_ENABLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, channel_inner_deadzone_enabled, ANALOG1115_INNER_DEADZONE_ENABLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, channel_outer_deadzone_enabled, ANALOG1115_OUTER_DEADZONE_ENABLE);
+
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, left_stick_deadzone_enabled, ANALOG1115_LSTICK_DEADZONE_ENABLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, right_stick_deadzone_enabled, ANALOG1115_RSTICK_DEADZONE_ENABLE);
+
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, leftStickDeadzone, ANALOG1115_LSTICK_DEADZONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, rightStickDeadzone, ANALOG1115_RSTICK_DEADZONE);
+    
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, channel0InnerDeadzone, ANALOG1115_CHANNEL_INNER_DEADZONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, channel1InnerDeadzone, ANALOG1115_CHANNEL_INNER_DEADZONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, channel2InnerDeadzone, ANALOG1115_CHANNEL_INNER_DEADZONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, channel3InnerDeadzone, ANALOG1115_CHANNEL_INNER_DEADZONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, channel0OuterDeadzone, ANALOG1115_CHANNEL_OUTER_DEADZONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, channel1OuterDeadzone, ANALOG1115_CHANNEL_OUTER_DEADZONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, channel2OuterDeadzone, ANALOG1115_CHANNEL_OUTER_DEADZONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, channel3OuterDeadzone, ANALOG1115_CHANNEL_OUTER_DEADZONE);
+    
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, invert_enabled, ANALOG1115_INVERT);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, autoCalibrate, ANALOG1115_AUTOCALIBRATE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, lxChannel, ANALOG1115_LX_CHANNEL);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, lyChannel, ANALOG1115_LY_CHANNEL);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, rxChannel, ANALOG1115_RX_CHANNEL);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, ryChannel, ANALOG1115_RY_CHANNEL);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, alertMode, ANALOG1115_ALERT_MODE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, alertPin, ANALOG1115_ALERT_PIN);
 
     // addonOptions.analogADS1219Options
     INIT_UNSET_PROPERTY(config.addonOptions.analogADS1219Options, enabled, !!I2C_ANALOG1219_ENABLED);
