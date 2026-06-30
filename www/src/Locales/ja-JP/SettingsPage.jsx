@@ -41,7 +41,7 @@ export default {
 	},
 	'socd-cleaning-mode-label': 'SOCDクリーニングモード',
 	'socd-cleaning-mode-note':
-		'注：PS4、PS3、任天堂SwitchおよびミニコンソールシリーズのモードではSOCDクリーニングモード無効設定はできないため、ニュートラルSOCDクリーニングに設定されます。',
+		'注：PS4、PS3、任天堂Switch・Switch ProおよびミニコンソールシリーズのモードではSOCDクリーニングモード無効設定はできないため、ニュートラルSOCDクリーニングに設定されます。',
 	'socd-cleaning-mode-options': {
 		'up-priority': '上優先',
 		neutral: 'ニュートラル',
@@ -128,6 +128,8 @@ export default {
 		'load-profile-5': 'プロファイル #5をロード',
 		'load-profile-6': 'プロファイル #6をロード',
 		'reboot-default': 'GP2040-CEを再起動',
+		'reboot-webconfig': 'GP2040-CEをWeb Configモードで再起動',
+		'reboot-usb': 'GP2040-CEをBOOTSEL/USBモードで再起動',
 		'save-config': '設定を保存',
 		'next-profile': '次のプロファイル',
 		'previous-profile': '前のプロファイル',
@@ -170,7 +172,7 @@ export default {
 			'危険: 無効なUSBパラメータを設定するとデバイスが動作しなくなります。',
 		'product-name': '製品名',
 		manufacturer: '製造者',
-		version: 'バージョン',
+		version: 'シリアル',
 		'physical-warning-danger': '⚡ 物理ID変更 ⚡ ',
 		'product-id': 'プロダクトID',
 		'vendor-id': 'ベンダーID',
