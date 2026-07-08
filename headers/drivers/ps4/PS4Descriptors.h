@@ -104,7 +104,7 @@
 #define PS4_GYRO_RES 1024
 #define PS4_GYRO_RANGE (PS4_GYRO_RES * 2048)
 
-struct TouchpadXY {
+typedef struct __attribute__((packed, aligned(1))){
     uint8_t counter : 7;
     uint8_t unpressed : 1;
 
@@ -121,20 +121,20 @@ struct TouchpadXY {
         data[2] = y >> 4;
         return;
     }
-};
+} TouchpadXY ;
 
-struct TouchpadData {
+typedef struct __attribute__((packed, aligned(1))) {
     TouchpadXY p1;
     TouchpadXY p2;
-};
+} TouchpadData;
 
-struct PSSensor {
+typedef struct __attribute__((packed, aligned(1))) {
     int16_t x;
     int16_t y;
     int16_t z;
-};
+} PSSensor;
 
-struct PSSensorData {
+typedef struct __attribute__((packed, aligned(1))){
     uint16_t battery;
     PSSensor gyroscope;
     PSSensor accelerometer;
@@ -149,9 +149,9 @@ struct PSSensorData {
     uint8_t notConnected : 1;
     uint8_t extData3 : 5;
     uint8_t misc2;
-} __attribute__((packed));
+} PSSensorData;
 
-typedef struct __attribute__((packed)) {
+typedef struct __attribute__((packed, aligned(1))) {
     // 0
     uint8_t reportID;
 
@@ -159,23 +159,23 @@ typedef struct __attribute__((packed)) {
     uint8_t enableUpdateRumble : 1;
     uint8_t enableUpdateLED : 1;
     uint8_t enableUpdateLEDBlink : 1;
-    uint8_t enableUpdateExtData : 1;
+    uint8_t enableUpdateExtWrite : 1;
     uint8_t enableUpdateVolLeft : 1;
     uint8_t enableUpdateVolRight : 1;
     uint8_t enableUpdateVolMic : 1;
     uint8_t enableUpdateVolSpeaker : 1;
 
     // 2
-    uint8_t : 8;
+    uint8_t empty;
 
     // 3 
     uint8_t unknown0;
 
     // 4
-    uint8_t rumbleRight;
+    uint8_t rumbleRight; // weak
 
     // 5
-    uint8_t rumbleLeft;
+    uint8_t rumbleLeft; // strong
 
     // 6
     uint8_t ledRed;
@@ -193,7 +193,7 @@ typedef struct __attribute__((packed)) {
     uint8_t ledBlinkOff;
 
     // 11
-    uint8_t extData[8];
+    uint8_t extData[8]; // sent to I2C EXT port, stored in 8x8 byte block
 
     // 19
     uint8_t volumeLeft; // 0x00-0x4F
@@ -214,7 +214,7 @@ typedef struct __attribute__((packed)) {
     uint8_t padding[8];
 } PS4FeatureOutputReport;
 
-typedef struct __attribute__((packed)) {
+typedef struct __attribute__((packed, aligned(1))) {
     uint16_t gyroRange = 0;
     uint16_t gyroResPerDegDenom = 0;
     uint16_t gyroResPerDegNumer = 0;
@@ -222,7 +222,7 @@ typedef struct __attribute__((packed)) {
     uint16_t accelResPerG = 0;
 } PS4IMUConfig;
 
-typedef struct __attribute__((packed)) {
+typedef struct __attribute__((packed, aligned(1))) {
     uint16_t hidUsage = 0x2127;
     uint8_t mystery0 = 0x04;
 
@@ -252,7 +252,7 @@ typedef struct __attribute__((packed)) {
     uint8_t mystery2[21] = {0x00};
 } PS4ControllerConfig;
 
-typedef struct __attribute__((packed)) {
+typedef struct __attribute__((packed, aligned(1))) {
     uint8_t reportID;
     uint8_t leftStickX;
     uint8_t leftStickY;
@@ -289,7 +289,7 @@ typedef struct __attribute__((packed)) {
     union {
         uint8_t miscData[54];
         
-        struct __attribute__((packed)) {
+        struct __attribute__((packed, aligned(1))) {
             // 16 bit timing counter
             uint16_t axisTiming;
 
@@ -302,7 +302,7 @@ typedef struct __attribute__((packed)) {
     
             uint8_t mystery2[21];
         } gamepad;
-        struct __attribute__((packed)) {
+        struct __attribute__((packed, aligned(1))) {
             uint8_t mystery0[22];
             
             uint8_t powerLevel : 4;
@@ -317,7 +317,7 @@ typedef struct __attribute__((packed)) {
             union {
                 uint8_t fretValue;
 
-                struct __attribute__((packed)) {
+                struct __attribute__((packed, aligned(1))) {
                     uint8_t green : 1;
                     uint8_t red : 1;
                     uint8_t yellow : 1;
@@ -330,7 +330,7 @@ typedef struct __attribute__((packed)) {
             union {
                 uint8_t soloFretValue;
 
-                struct __attribute__((packed)) {
+                struct __attribute__((packed, aligned(1))) {
                     uint8_t green : 1;
                     uint8_t red : 1;
                     uint8_t yellow : 1;
@@ -342,7 +342,7 @@ typedef struct __attribute__((packed)) {
             
             uint8_t mystery2[14];
         } guitar;
-        struct __attribute__((packed)) {
+        struct __attribute__((packed, aligned(1))) {
             uint8_t mystery0[22];
         
             uint8_t powerLevel : 4;
@@ -361,7 +361,7 @@ typedef struct __attribute__((packed)) {
         
             uint8_t mystery2[12];
         } drums;
-        struct __attribute__((packed)) {
+        struct __attribute__((packed, aligned(1))) {
             uint8_t mystery0[22];
         
             uint8_t powerLevel : 4;
@@ -379,7 +379,7 @@ typedef struct __attribute__((packed)) {
             uint8_t pedalLeft;
             uint8_t pedalRight;
         } hotas;
-        struct __attribute__((packed)) {
+        struct __attribute__((packed, aligned(1))) {
             uint8_t mystery0[22];
             
             uint8_t powerLevel : 4;
@@ -395,7 +395,7 @@ typedef struct __attribute__((packed)) {
             union {
                 uint8_t shifterValue;
 
-                struct __attribute__((packed)) {
+                struct __attribute__((packed, aligned(1))) {
                     uint8_t shifterGear1 : 1;
                     uint8_t shifterGear2 : 1;
                     uint8_t shifterGear3 : 1;
