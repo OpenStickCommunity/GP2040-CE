@@ -99,70 +99,74 @@ uint8_t filterToFourWayMode(uint8_t dpad)
  */
 uint8_t runSOCDCleaner(SOCDMode mode, uint8_t dpad)
 {
-	if (mode == SOCD_MODE_BYPASS) {
-		return dpad;
-	}
+	if (mode == SOCD_MODE_BYPASS) return dpad;
 
 	static DpadDirection lastUD = DIRECTION_NONE;
 	static DpadDirection lastLR = DIRECTION_NONE;
+	static uint8_t prevDpad = 0;
+	static bool lastOutputDiagonal = false;
+	
 	uint8_t newDpad = 0;
+	uint8_t pressed = dpad & ~prevDpad; // 检测本帧新按下的按键
+	bool lrConflict = (dpad & GAMEPAD_MASK_LEFT) && (dpad & GAMEPAD_MASK_RIGHT);
 
+	// 上下方向：后输入优先
 	switch (dpad & (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN))
 	{
 		case (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN):
-			if (mode == SOCD_MODE_UP_PRIORITY)
-			{
-				newDpad |= GAMEPAD_MASK_UP;
-				lastUD = DIRECTION_UP;
-			}
-			else if (mode == SOCD_MODE_SECOND_INPUT_PRIORITY && lastUD != DIRECTION_NONE)
+			if (lastUD != DIRECTION_NONE)
 				newDpad |= (lastUD == DIRECTION_UP) ? GAMEPAD_MASK_DOWN : GAMEPAD_MASK_UP;
-			else if (mode == SOCD_MODE_FIRST_INPUT_PRIORITY && lastUD != DIRECTION_NONE)
-				newDpad |= (lastUD == DIRECTION_UP) ? GAMEPAD_MASK_UP : GAMEPAD_MASK_DOWN;
 			else
 				lastUD = DIRECTION_NONE;
 			break;
-
 		case GAMEPAD_MASK_UP:
 			newDpad |= GAMEPAD_MASK_UP;
 			lastUD = DIRECTION_UP;
 			break;
-
 		case GAMEPAD_MASK_DOWN:
 			newDpad |= GAMEPAD_MASK_DOWN;
 			lastUD = DIRECTION_DOWN;
 			break;
-
 		default:
 			lastUD = DIRECTION_NONE;
 			break;
 	}
 
+	// 左右方向：后输入优先
 	switch (dpad & (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT))
 	{
 		case (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT):
-			if (mode == SOCD_MODE_SECOND_INPUT_PRIORITY && lastLR != DIRECTION_NONE)
+			if (lastLR != DIRECTION_NONE)
 				newDpad |= (lastLR == DIRECTION_LEFT) ? GAMEPAD_MASK_RIGHT : GAMEPAD_MASK_LEFT;
-			else if (mode == SOCD_MODE_FIRST_INPUT_PRIORITY && lastLR != DIRECTION_NONE)
-				newDpad |= (lastLR == DIRECTION_LEFT) ? GAMEPAD_MASK_LEFT : GAMEPAD_MASK_RIGHT;
 			else
 				lastLR = DIRECTION_NONE;
 			break;
-
 		case GAMEPAD_MASK_LEFT:
 			newDpad |= GAMEPAD_MASK_LEFT;
 			lastLR = DIRECTION_LEFT;
 			break;
-
 		case GAMEPAD_MASK_RIGHT:
 			newDpad |= GAMEPAD_MASK_RIGHT;
 			lastLR = DIRECTION_RIGHT;
 			break;
-
 		default:
 			lastLR = DIRECTION_NONE;
 			break;
 	}
+
+	// 核心规则：斜向切换到对侧纯横向时，清除下方向，无中间斜向过渡
+	// 仅当：左右冲突 + 新按下的是纯左右（不带下） + 上一帧输出是斜向 时触发
+	if (lrConflict 
+		&& !(pressed & GAMEPAD_MASK_DOWN) 
+		&& lastOutputDiagonal)
+	{
+		newDpad &= ~GAMEPAD_MASK_DOWN;
+	}
+
+	// 更新状态
+	prevDpad = dpad;
+	lastOutputDiagonal = (newDpad & GAMEPAD_MASK_DOWN) 
+		&& ((newDpad & GAMEPAD_MASK_LEFT) || (newDpad & GAMEPAD_MASK_RIGHT));
 
 	return newDpad;
 }
