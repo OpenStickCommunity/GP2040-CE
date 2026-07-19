@@ -174,6 +174,8 @@ export default {
 	'keyboard-mapping-header-text': 'Keyboard Mapping',
 	'keyboard-mapping-sub-header-text':
 		'Use the form below to reconfigure your button-to-key mapping.',
+	'keyboard-mapping-gpio-text':
+		'Keyboard keys are assigned directly to GPIO pins on the Keyboard Mapping page:',
 	'usb-override': {
 		'advanced-override': '⚠️ Advanced USB Override',
 		'invalid-warning-danger':

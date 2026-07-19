@@ -219,6 +219,12 @@ message GpioMappings
     optional bool enabled = 3 [default = false];
 }
 
+message KeyboardGpioMappings
+{
+    // one HID keycode per GPIO pin (0 = unassigned)
+    repeated uint32 pinKeycodes = 1 [(nanopb).max_count = 30];
+}
+
 
 message AlternativePinMappings
 {
@@ -970,4 +976,5 @@ message Config
     optional MigrationHistory migrations = 14;
     optional PeripheralOptions peripheralOptions = 15;
 		optional BootModeOptions bootModeOptions = 16;
+    optional KeyboardGpioMappings keyboardGpioMappings = 17;
 }
