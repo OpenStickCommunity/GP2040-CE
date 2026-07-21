@@ -66,42 +66,21 @@
 #define KEY_BUTTON_A2   HID_KEY_F2            // A2     | ~      | Capture | ~        | 14     | ~      |
 #define KEY_BUTTON_FN   -1                    // Hotkey Function                                        |
 
-// LED Stuff
-//
-#define BOARD_LEDS_PIN -1
-#define BUTTON_LAYOUT BUTTON_LAYOUT_STICKLESS
-#define LED_BRIGHTNESS_MAXIMUM 100
-#define LED_BRIGHTNESS_STEPS 5
-#define LED_FORMAT LED_FORMAT_GRB
-#define LEDS_PER_PIXEL 1
-#define LEDS_BASE_ANIMATION_INDEX 1
-#define LEDS_BUTTON_A2 0
-//#define CASE_RGB_TYPE CASE_RGB_TYPE_STATIC
-//#define CASE_RGB_INDEX 0
-//#define CASE_RGB_COUNT 16
-//#define CASE_RGB_COLOR ColorWhite
-
-// Display Stuff
-//
-#define HAS_I2C_DISPLAY 1
-#define I2C1_ENABLED 1
-#define DISPLAY_I2C_BLOCK i2c1
-#define I2C1_PIN_SDA 14
-#define I2C1_PIN_SCL 15
-#define DISPLAY_FLIP 0
-#define SPLASH_MODE SPLASH_MODE_STATIC
-#define SPLASH_DURATION 3000
-
 // USB Passthrough Stuff
 //
 #define USB_PERIPHERAL_ENABLED 1
 #define USB_PERIPHERAL_PIN_DPLUS 25
 #define USB_PERIPHERAL_PIN_ORDER -1
+#define USB_PERIPHERAL_PIN_5V -1
 
 // Button Stuff
 //
 #define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
 #define DEFAULT_INPUT_MODE_B4 INPUT_MODE_PS5
 #define DEFAULT_PS5AUTHENTICATION_TYPE INPUT_MODE_AUTH_TYPE_USB
+
+#define HAS_I2C_DISPLAY 0
+#define I2C0_ENABLED 0
+#define I2C1_ENABLED 0
 
 #endif
