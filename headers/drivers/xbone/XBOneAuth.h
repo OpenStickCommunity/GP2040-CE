@@ -18,7 +18,8 @@ public:
         }
     }
 
-    void setBuffer(uint8_t * inData, uint16_t inLen, uint8_t inSeq, uint8_t inType) {
+    void setBuffer(const uint8_t * inData, uint16_t inLen, uint8_t inSeq = 0, uint8_t inType = 0) {
+        reset();
         data = new uint8_t[inLen];
         length = inLen;
         sequence = inSeq;
@@ -55,6 +56,11 @@ typedef struct {
 
     // Send announce to console AFTER the dongle is established
     bool dongle_ready = false;
+
+    // Authentication packets must be relayed without parsing/reframing. Official
+    // controllers use GIP reliable-message ACKs and may coalesce messages in a
+    // single USB transfer.
+    bool auth_passthrough = false;
 } XboxOneAuthData;
 
 class XBOneAuth : public GPAuthDriver {

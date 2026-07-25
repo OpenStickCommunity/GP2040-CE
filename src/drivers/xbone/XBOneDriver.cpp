@@ -262,12 +262,33 @@ bool xbone_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result,
         // Parse incoming packet and verify its valid
         incomingXGIP->parse(p_xbone->epout_buf, xferred_bytes);
 
+        uint8_t command = incomingXGIP->getCommand();
+
+        // During authentication, preserve each USB transfer exactly as it was
+        // received. This keeps controller-generated fragmentation, ACKs, and
+        // any coalesced messages intact.
+        if ( xboxOneAuthData->auth_passthrough ) {
+            if ( (command == GIP_AUTH || command == GIP_FINAL_AUTH) &&
+                incomingXGIP->getDataLength() == sizeof(authReady) &&
+                memcmp(incomingXGIP->getData(), authReady, sizeof(authReady)) == 0 ) {
+                xboxOneAuthData->authCompleted = true;
+                xboxOneAuthData->auth_passthrough = false;
+                xboneDriverState = AUTH_DONE;
+            } else {
+                xboxOneAuthData->consoleBuffer.setBuffer(p_xbone->epout_buf, xferred_bytes);
+                xboxOneAuthData->xboneState = GPAuthState::send_auth_console_to_dongle;
+            }
+
+            TU_ASSERT(usbd_edpt_xfer(rhport, p_xbone->ep_out, p_xbone->epout_buf,
+                                    sizeof(p_xbone->epout_buf)));
+            return true;
+        }
+
         // Setup an ack before we change anything about the incoming packet
         if ( incomingXGIP->ackRequired() == true ) {
             queue_xbone_report((uint8_t*)incomingXGIP->generateAckPacket(), incomingXGIP->getPacketLength());
         }
 
-        uint8_t command = incomingXGIP->getCommand();
         if ( command == GIP_ACK_RESPONSE ) {
             waiting_ack = false;
         } else if ( command == GIP_DEVICE_DESCRIPTOR ) {
@@ -294,17 +315,9 @@ bool xbone_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result,
         } else if ( command == GIP_CMD_RUMBLE ) {
             // TO-DO
         } else if ( command == GIP_AUTH || command == GIP_FINAL_AUTH) {
-            if (incomingXGIP->getDataLength() == 2 && memcmp(incomingXGIP->getData(), authReady, sizeof(authReady))==0 ) {
-                xboxOneAuthData->authCompleted = true;
-                xboneDriverState = AUTH_DONE;
-            }
-            if ( (incomingXGIP->getChunked() == true && incomingXGIP->endOfChunk() == true) ||
-                    (incomingXGIP->getChunked() == false )) {
-                xboxOneAuthData->consoleBuffer.setBuffer(incomingXGIP->getData(), incomingXGIP->getDataLength(),
-                    incomingXGIP->getSequence(), incomingXGIP->getCommand());
-                xboxOneAuthData->xboneState = GPAuthState::send_auth_console_to_dongle;
-                incomingXGIP->reset();
-            }
+            xboxOneAuthData->auth_passthrough = true;
+            xboxOneAuthData->consoleBuffer.setBuffer(p_xbone->epout_buf, xferred_bytes);
+            xboxOneAuthData->xboneState = GPAuthState::send_auth_console_to_dongle;
         }
 
         TU_ASSERT(usbd_edpt_xfer(rhport, p_xbone->ep_out, p_xbone->epout_buf,
@@ -657,26 +670,10 @@ void XBOneDriver::update() {
             // Received packet from dongle to console / PC
             if ( xboxOneAuthData->xboneState == GPAuthState::send_auth_dongle_to_console ) {
                 uint16_t len = xboxOneAuthData->dongleBuffer.length;
-                uint8_t type = xboxOneAuthData->dongleBuffer.type;
-                uint8_t sequence = xboxOneAuthData->dongleBuffer.sequence;
                 uint8_t * buffer = xboxOneAuthData->dongleBuffer.data;
-                bool isChunked = (len > GIP_MAX_CHUNK_SIZE);
-                outgoingXGIP->reset();
-                outgoingXGIP->setAttributes(type, sequence, 1, isChunked, 1);
-                outgoingXGIP->setData(buffer, len);
-                xboxOneAuthData->xboneState = wait_auth_dongle_to_console;
+                queue_xbone_report(buffer, len);
                 xboxOneAuthData->dongleBuffer.reset();
-            }
-            
-            // Process auth dongle to console
-            if ( xboxOneAuthData->xboneState == GPAuthState::wait_auth_dongle_to_console ) {
-                queue_xbone_report(outgoingXGIP->generatePacket(), outgoingXGIP->getPacketLength());
-                if ( outgoingXGIP->getChunked() == false || outgoingXGIP->endOfChunk() == true ) {
-                    xboxOneAuthData->xboneState = GPAuthState::auth_idle_state;
-                }
-                if ( outgoingXGIP->getPacketAck() == 1 ) { // ACK can happen at different chunks
-                    set_ack_wait();
-                }
+                xboxOneAuthData->xboneState = GPAuthState::auth_idle_state;
             }
             break;
         case AUTH_DONE:
@@ -687,7 +684,9 @@ void XBOneDriver::update() {
 }
 
 void XBOneDriver::process_report_queue(uint32_t now) {
-    if ( !report_queue.empty() && (now - lastReportQueue) > REPORT_QUEUE_INTERVAL ) {
+    if ( !report_queue.empty() &&
+        ((xboxOneAuthData != nullptr && xboxOneAuthData->auth_passthrough) ||
+         (now - lastReportQueue) > REPORT_QUEUE_INTERVAL) ) {
         if ( send_xbone_usb(report_queue.front().report, report_queue.front().len) ) {
             memcpy(last_report, &report_queue.front().report, report_queue.front().len);
             report_queue.pop();
