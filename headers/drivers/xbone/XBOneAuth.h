@@ -57,9 +57,12 @@ typedef struct {
     // Send announce to console AFTER the dongle is established
     bool dongle_ready = false;
 
-    // Authentication packets must be relayed without parsing/reframing. Official
-    // controllers use GIP reliable-message ACKs and may coalesce messages in a
-    // single USB transfer.
+    // Whether the attached authentication device needs byte-for-byte relay.
+    // Microsoft controllers use this path; authentication dongles retain the
+    // original parsed/reframed path.
+    bool auth_passthrough_enabled = false;
+
+    // True only while a byte-for-byte authentication exchange is active.
     bool auth_passthrough = false;
 } XboxOneAuthData;
 

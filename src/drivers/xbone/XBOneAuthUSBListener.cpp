@@ -22,6 +22,8 @@ static std::queue<report_queue_t> report_queue;
 static uint32_t lastReportQueue = 0;
 #define REPORT_QUEUE_INTERVAL 15
 
+static constexpr uint16_t MICROSOFT_USB_VID = 0x045e;
+
 void XBOneAuthUSBListener::setup() {
     xboxOneAuthData = nullptr;
     xbone_dev_addr = 0;
@@ -40,9 +42,29 @@ void XBOneAuthUSBListener::process() {
 
     // Received a packet from the console (or Windows) to dongle
     if ( xboxOneAuthData->xboneState == GPAuthState::send_auth_console_to_dongle ) {
-        queue_host_report(xboxOneAuthData->consoleBuffer.data, xboxOneAuthData->consoleBuffer.length);
-        xboxOneAuthData->consoleBuffer.reset();
-        xboxOneAuthData->xboneState = GPAuthState::auth_idle_state;
+        if ( xboxOneAuthData->auth_passthrough ) {
+            queue_host_report(xboxOneAuthData->consoleBuffer.data, xboxOneAuthData->consoleBuffer.length);
+            xboxOneAuthData->consoleBuffer.reset();
+            xboxOneAuthData->xboneState = GPAuthState::auth_idle_state;
+        } else {
+            uint8_t isChunked = ( xboxOneAuthData->consoleBuffer.length > GIP_MAX_CHUNK_SIZE );
+            uint8_t needsAck = ( xboxOneAuthData->consoleBuffer.length > 2 );
+            outgoingXGIP.reset();
+            outgoingXGIP.setAttributes(xboxOneAuthData->consoleBuffer.type,
+                xboxOneAuthData->consoleBuffer.sequence, 1, isChunked, needsAck);
+            outgoingXGIP.setData(xboxOneAuthData->consoleBuffer.data, xboxOneAuthData->consoleBuffer.length);
+            xboxOneAuthData->consoleBuffer.reset();
+            xboxOneAuthData->xboneState = GPAuthState::wait_auth_console_to_dongle;
+        }
+    }
+
+    // Authentication dongles expect GP2040-CE to fragment and acknowledge
+    // their reconstructed security messages.
+    if ( xboxOneAuthData->xboneState == GPAuthState::wait_auth_console_to_dongle ) {
+        queue_host_report(outgoingXGIP.generatePacket(), outgoingXGIP.getPacketLength());
+        if ( outgoingXGIP.getChunked() == false || outgoingXGIP.endOfChunk() == true) {
+            xboxOneAuthData->xboneState = GPAuthState::auth_idle_state;
+        }
     }
 
     // Process the report queue
@@ -52,10 +74,16 @@ void XBOneAuthUSBListener::process() {
 
 void XBOneAuthUSBListener::xmount(uint8_t dev_addr, uint8_t instance, uint8_t controllerType, uint8_t subtype) {
     if ( controllerType == xinput_type_t::XBOXONE) {
+        uint16_t vid = 0;
+        uint16_t pid = 0;
+        tuh_vid_pid_get(dev_addr, &vid, &pid);
+
         xbone_dev_addr = dev_addr;
         xbone_instance = instance;
         incomingXGIP.reset();
         outgoingXGIP.reset();
+        xboxOneAuthData->auth_passthrough_enabled = (vid == MICROSOFT_USB_VID);
+        xboxOneAuthData->auth_passthrough = false;
         mounted = true;
     }
 }
@@ -67,6 +95,8 @@ void XBOneAuthUSBListener::unmount(uint8_t dev_addr) {
         while (!report_queue.empty()) report_queue.pop();
         incomingXGIP.reset();
         outgoingXGIP.reset();
+        xboxOneAuthData->auth_passthrough_enabled = false;
+        xboxOneAuthData->auth_passthrough = false;
         xboxOneAuthData->dongle_ready = false; // not ready for auth if we unmounted
     }
 }
