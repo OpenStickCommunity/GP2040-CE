@@ -22,7 +22,9 @@ static std::queue<report_queue_t> report_queue;
 static uint32_t lastReportQueue = 0;
 #define REPORT_QUEUE_INTERVAL 15
 
-static constexpr uint16_t MICROSOFT_USB_VID = 0x045e;
+// Mayflash authentication adapters use GP2040-CE's legacy reconstructed-message
+// flow. All other Xbox GIP devices are treated as controllers and relayed raw.
+static constexpr uint16_t MAYFLASH_USB_VID = 0x0079;
 
 void XBOneAuthUSBListener::setup() {
     xboxOneAuthData = nullptr;
@@ -82,7 +84,7 @@ void XBOneAuthUSBListener::xmount(uint8_t dev_addr, uint8_t instance, uint8_t co
         xbone_instance = instance;
         incomingXGIP.reset();
         outgoingXGIP.reset();
-        xboxOneAuthData->auth_passthrough_enabled = (vid == MICROSOFT_USB_VID);
+        xboxOneAuthData->auth_passthrough_enabled = (vid != MAYFLASH_USB_VID);
         xboxOneAuthData->auth_passthrough = false;
         mounted = true;
     }

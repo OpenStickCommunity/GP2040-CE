@@ -58,7 +58,7 @@ typedef struct {
     bool dongle_ready = false;
 
     // Whether the attached authentication device needs byte-for-byte relay.
-    // Microsoft controllers use this path; authentication dongles retain the
+    // Controllers use this path; known authentication dongles retain the
     // original parsed/reframed path.
     bool auth_passthrough_enabled = false;
 
