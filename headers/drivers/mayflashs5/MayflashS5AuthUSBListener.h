@@ -19,10 +19,20 @@ public:
     void setAuthData(PS5AuthData * authData) { ps5AuthData = authData; }
     void resetHostData();
 private:
+    enum class S5ResetState : uint8_t {
+        idle,
+        waiting_before_reset,
+        reset_asserted,
+        awaiting_remount,
+    };
+
     bool host_get_report(uint8_t report_id, void* report, uint16_t len);
     bool host_set_report(uint8_t report_id, void* report, uint16_t len);
+    uint64_t mount_probe_us = 0;
+    uint8_t probe_retries = 0;
+    uint64_t last_response_us = 0;
     void performS5Encryption(uint8_t *inData, uint8_t *outData);
-    void generateMayflashBuffer();
+    bool generateMayflashBuffer();
     void copyMayflashToFinish(uint8_t const* report);
     uint8_t ps_dev_addr;
     uint8_t ps_instance;
@@ -30,6 +40,9 @@ private:
     //uint8_t f1_num;
     uint8_t report_buffer[PS5_ENDPOINT_SIZE];   // Report buffer
     bool awaiting_cb; // Waiting for callback
+    bool local_auth_complete;
+    S5ResetState reset_state;
+    uint64_t reset_action_us;
 };
 
 #endif // _MAYFLASHS5AUTHUSBLISTENER_H_

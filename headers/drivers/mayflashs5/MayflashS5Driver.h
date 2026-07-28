@@ -40,6 +40,9 @@ public:
     virtual uint16_t get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen);
     virtual void set_report(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize);
     virtual bool vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request) { return false; }
+    bool controlXferCb(uint8_t rhport, uint8_t stage,
+        tusb_control_request_t const *request);
+    void resetAudioState();
     virtual const uint16_t * get_descriptor_string_cb(uint8_t index, uint16_t langid);
     virtual const uint8_t * get_descriptor_device_cb();
     virtual const uint8_t * get_hid_descriptor_report_cb(uint8_t itf) ;
@@ -51,19 +54,33 @@ public:
     bool getAuthSent() { return false;}
     bool getDongleAuthRequired();
 private:
+    uint16_t getReportTraced(uint8_t report_id, uint8_t *buffer, uint16_t reqlen);
+    void serviceDeferredControl();
     void setFirstConsoleF0(ConsolePS5AuthBuffer * authBuffer); // helper
+    void queueConsoleSet(uint8_t report_id, uint8_t const *buffer, uint16_t bufsize);
+    bool audioControlXferCb(uint8_t rhport, uint8_t stage,
+        tusb_control_request_t const *request);
+    int8_t audioFeatureIndex(uint8_t entity) const;
+    uint8_t audio_alt_setting[3] {};
+    uint8_t audio_current[2][2] {};
+    uint8_t audio_xfer_buffer[8] {};
+    uint8_t audio_pending_index = 0xFF;
     PS5Report ps5Report;
     PS5Report ps5Report_last;
     TouchpadData touchpadData;
     //PSSensor gyroscope;
     //PSSensor accelerometer;
     uint64_t timeout_report_us;
-    MayflashS5Auth * mayflashS5AuthDriver;
-    PS5AuthData * ps5AuthData;
+    MayflashS5Auth * mayflashS5AuthDriver = nullptr;
+    PS5AuthData * ps5AuthData = nullptr;
     bool pointOneTouched = false;
     bool pointTwoTouched = false;
     uint8_t diff_report_repeat;
     uint8_t touchCounter;
+    bool home_was_pressed = false;
+    bool deferred_control_pending = false;
+    tusb_control_request_t deferred_control_request {};
+    uint8_t deferred_control_buffer[64] {};
 };
 
 #endif // _MAYFLASHS5_DRIVER_H_

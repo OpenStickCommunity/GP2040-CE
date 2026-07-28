@@ -6,12 +6,91 @@
 #include "CRC32.h"
 
 #include "drivers/mayflashs5/MayflashS5Auth.h"
+#include "drivers/p5general/P5GeneralDescriptors.h"
 #include "enums.pb.h"
 
-// Keepalive every 0.4s
-#define PS5_KEEPALIVE_US                          4000ll*1000ll
+// The reference adapter presents a signed input report upstream every 4 ms.
+#define PS5_KEEPALIVE_US                          4ll*1000ll
 
 #define PS5_PACKET_SIZE 64
+
+static MayflashS5Driver *activeMayflashS5Driver = nullptr;
+
+static bool mayflashs5_control_xfer_cb(
+        uint8_t rhport, uint8_t stage,
+        tusb_control_request_t const *request) {
+    if (activeMayflashS5Driver == nullptr) {
+        return false;
+    }
+    return activeMayflashS5Driver->controlXferCb(rhport, stage, request);
+}
+
+
+static_assert(CFG_TUD_ENDPOINT0_SIZE == 8,
+    "The captured DualSense device descriptor advertises an 8-byte EP0; "
+    "CFG_TUD_ENDPOINT0_SIZE must match it (set by CMakeLists.txt).");
+
+// Interface numbers within the 227-byte composite configuration.
+#define S5_ITF_AUDIO_CONTROL   0
+#define S5_ITF_AUDIO_OUT       1
+#define S5_ITF_AUDIO_IN        2
+#define S5_ITF_HID             3
+
+// The DualSense configuration begins with an AudioControl interface, so
+// hidd_open() -- which only accepts TUSB_CLASS_HID -- can never claim
+// interface 0 and SET_CONFIGURATION fails before the parser ever reaches the
+// HID interface. That is why every previous exact-identity attempt enumerated
+// with no usable inputs.
+//
+// Claim each audio interface individually so that usbd's itf2drv[] entry is
+// populated for interfaces 0, 1 and 2. Claiming all three in one open() call
+// only registers interface 0, and the console's SET_INTERFACE(1,1) /
+// SET_INTERFACE(2,1) then stall against a NULL driver.
+static uint16_t mayflashs5_open(uint8_t rhport,
+        tusb_desc_interface_t const *desc_itf, uint16_t max_len) {
+    if (desc_itf->bInterfaceClass == TUSB_CLASS_HID) {
+        return hidd_open(rhport, desc_itf, max_len);
+    }
+
+    if (desc_itf->bInterfaceClass != TUSB_CLASS_AUDIO) {
+        return 0;
+    }
+
+    // Consume this interface number's whole span: its class-specific
+    // descriptors plus every alternate setting and their endpoints. The audio
+    // endpoints are deliberately left unopened -- the console only needs the
+    // interfaces to exist and answer control requests, and the RP2040 has no
+    // audio to stream.
+    uint8_t const *p_desc = (uint8_t const *)desc_itf;
+    uint16_t drv_len = tu_desc_len(p_desc);
+
+    while (drv_len < max_len) {
+        uint8_t const *p_next = p_desc + tu_desc_len(p_desc);
+        uint8_t const type = tu_desc_type(p_next);
+        if (type == TUSB_DESC_INTERFACE_ASSOCIATION) {
+            break;
+        }
+        if (type == TUSB_DESC_INTERFACE) {
+            tusb_desc_interface_t const *next_itf =
+                (tusb_desc_interface_t const *)p_next;
+            if (next_itf->bInterfaceNumber != desc_itf->bInterfaceNumber) {
+                break; // a different interface, leave it for the next open()
+            }
+        }
+        p_desc = p_next;
+        drv_len = (uint16_t)(drv_len + tu_desc_len(p_desc));
+    }
+
+    return drv_len;
+}
+
+static void mayflashs5_reset(uint8_t rhport) {
+    hidd_reset(rhport);
+    if (activeMayflashS5Driver != nullptr) {
+        activeMayflashS5Driver->resetAudioState();
+    }
+}
+
 
 #define PS5_DRIVER_PRINTF_ENABLE                  0       // GP0 as UART0_TX
 #if PS5_DRIVER_PRINTF_ENABLE
@@ -58,11 +137,45 @@ static constexpr uint8_t output_0x20[] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
+
+// A current DualSense firmware revision report (0x20).
+//
+// The console compares the reported build against the DualSense firmware
+// bundled with its own system software. It judges the S5's own build out of
+// date and offers a firmware update instead of proceeding, so a current report
+// is substituted for it. Only the version is substituted; the pairing identity
+// in report 0x09 is always the dongle's own, because the signature the S5
+// produces belongs to it.
+//
+// This will need updating as Sony ships newer controller firmware.
+static constexpr uint8_t dualsense_current_0x20[] = {
+    0x4A, 0x75, 0x6C, 0x20, 0x20, 0x34, 0x20, 0x32,  // "Jul  4 2025"
+    0x30, 0x32, 0x35,
+    0x31, 0x30, 0x3A, 0x31, 0x30, 0x3A, 0x33, 0x32,  // "10:10:32"
+    0x03, 0x00,                                       // fw_type 3
+    0x04, 0x00,                                       // sw_series 4
+    0x14, 0x05, 0x00, 0x00,                           // hw_info 0x0514
+    0x2A, 0x00, 0x10, 0x01,                           // fw_version
+    0xC1, 0x48, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,   // deviceinfo
+    0x00, 0x00, 0x00, 0x00,
+    0x30, 0x06,                                       // update_version 0x0630
+    0x00,
+    0x00, 0x38, 0x00, 0x01,
+    0x00, 0x0A, 0x00, 0x02,
+    0x00, 0x06, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00
+};
+static_assert(sizeof(dualsense_current_0x20) == 63,
+    "report 0x20 payload is 63 bytes once the report id is stripped");
+
+
 void MayflashS5Driver::initialize() {
     P5DPRINTF_INIT();
     P5DPRINTF("P5D:initialize\n");
 
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
+    activeMayflashS5Driver = this;
+    resetAudioState();
 
     // init feature data
     touchpadData.p1.unpressed = 1;
@@ -106,9 +219,9 @@ void MayflashS5Driver::initialize() {
         .name = "PS5",
 #endif
         .init = hidd_init,
-        .reset = hidd_reset,
-        .open = hidd_open,
-        .control_xfer_cb = hidd_control_xfer_cb,
+        .reset = mayflashs5_reset,
+        .open = mayflashs5_open,
+        .control_xfer_cb = mayflashs5_control_xfer_cb,
         .xfer_cb = hidd_xfer_cb,
         .sof = NULL
     };
@@ -132,17 +245,33 @@ bool MayflashS5Driver::getDongleAuthRequired() {
 }
 
 void MayflashS5Driver::beforeRun() {
-    // Do not connect as a USB device until the S5 dongle is ready!
-    while ( ps5AuthData->S5_reports_ready == false ) {
+    // Do not expose an all-zero pair identity upstream.
+    tud_disconnect();
+    const uint64_t timeout = getMicro() + 5000ll * 1000ll;
+    while ( ps5AuthData != nullptr && !ps5AuthData->S5_reports_ready &&
+            getMicro() < timeout) {
         USBHostManager::getInstance().process();
+        if (mayflashS5AuthDriver != nullptr &&
+                mayflashS5AuthDriver->available()) {
+            mayflashS5AuthDriver->process();
+        }
     }
+    tud_connect();
 }
 
 bool MayflashS5Driver::process(Gamepad * gamepad) {
+    // TinyUSB host is serviced on core 0. Keep S5 control-transfer
+    // submissions on that same core as well; issuing them from processAux()
+    // on core 1 can leave the endpoint busy after the first signed report.
+    if (mayflashS5AuthDriver != nullptr && mayflashS5AuthDriver->available()) {
+        mayflashS5AuthDriver->process();
+    }
+    serviceDeferredControl();
+
     if (!ps5AuthData || !ps5AuthData->dongle_ready) {
         return false;
     }
-    
+
     if (tud_suspended()) {
         tud_remote_wakeup();
     }
@@ -152,17 +281,40 @@ bool MayflashS5Driver::process(Gamepad * gamepad) {
         memcpy(ps5AuthData->send_hid_buffer, ps5AuthData->hash_finish_buffer, 64);
         if (tud_hid_ready() && tud_hid_report(0, ps5AuthData->send_hid_buffer, PS5_PACKET_SIZE) == true ) {
             ps5AuthData->hash_ready = false;
-            //timeout_report_us = getMicro();
-        } //else { // do we need to quit if the HID report is not ready?
-          //  return false;
-        //}
-        // I don't think so
+            if (ps5AuthData->console_report_count == 0) {
+            }
+            // Per the DualSense layout, USBGetStateData offset 9.0 is
+            // ButtonHome, which is report byte 10 bit 0 once the report id is
+            // counted. Log the transition so we can tell whether the press
+            // actually reaches the console, rather than assuming it does.
+            {
+                const bool home_now =
+                    (ps5AuthData->send_hid_buffer[10] & 0x01) != 0;
+                if (home_now != home_was_pressed) {
+                    home_was_pressed = home_now;
+                    if (home_now) {
+                    }
+                }
+            }
+            ps5AuthData->console_report_count++;
+            timeout_report_us = getMicro();
+        } else if (!tud_mounted()) {
+            // No upstream host: the board is on a charger or a port that never
+            // enumerated it. Once the dongle has paired over bluetooth it
+            // delivers reports to the console itself, so ours has nowhere to
+            // go. Discard it and keep reading the stick, otherwise this returns
+            // early forever and the dongle is never fed any input at all.
+            ps5AuthData->hash_ready = false;
+            timeout_report_us = getMicro();
+        } else {
+            return false;
+        }
     }
 
     // Don't read IO while we are still waiting to send the previous IO to the dongle
-    //if (ps5AuthData->hash_pending) {
-    //    return false;
-    //}
+    if (ps5AuthData->hash_pending) {
+        return false;
+    }
 
     // update gamepad
     const GamepadOptions & options = gamepad->getOptions();
@@ -279,10 +431,241 @@ bool MayflashS5Driver::process(Gamepad * gamepad) {
     return false;
 }
 
-void MayflashS5Driver::processAux() {
-    if ( mayflashS5AuthDriver != nullptr && mayflashS5AuthDriver->available() ) {
-        mayflashS5AuthDriver->process();
+
+// USB Audio Class 1.0 request codes used by the console on this device.
+#define S5_UAC_SET_CUR 0x01
+#define S5_UAC_GET_CUR 0x81
+#define S5_UAC_GET_MIN 0x82
+#define S5_UAC_GET_MAX 0x83
+#define S5_UAC_GET_RES 0x84
+
+// Feature-unit volume ranges, as a genuine DualSense reports them.
+// { entity, current, min, max, res }, all little-endian 1/256 dB.
+static constexpr struct {
+    uint8_t entity;
+    uint8_t cur[2];
+    uint8_t min[2];
+    uint8_t max[2];
+    uint8_t res[2];
+} s5_audio_features[] = {
+    { 0x02, { 0x47, 0xE6 }, { 0x80, 0x9C }, { 0x00, 0xFF }, { 0x00, 0x01 } },
+    { 0x05, { 0xCC, 0xFE }, { 0xC0, 0xE8 }, { 0x00, 0x18 }, { 0xC0, 0x00 } },
+};
+static constexpr uint8_t S5_AUDIO_FEATURE_COUNT =
+    sizeof(s5_audio_features) / sizeof(s5_audio_features[0]);
+
+void MayflashS5Driver::resetAudioState() {
+    for (uint8_t i = 0; i < 3; i++) {
+        audio_alt_setting[i] = 0;
     }
+    for (uint8_t i = 0; i < S5_AUDIO_FEATURE_COUNT; i++) {
+        memcpy(audio_current[i], s5_audio_features[i].cur, 2);
+    }
+    audio_pending_index = 0xFF;
+}
+
+int8_t MayflashS5Driver::audioFeatureIndex(uint8_t entity) const {
+    for (uint8_t i = 0; i < S5_AUDIO_FEATURE_COUNT; i++) {
+        if (s5_audio_features[i].entity == entity) {
+            return static_cast<int8_t>(i);
+        }
+    }
+    return -1;
+}
+
+// Interfaces 0/1/2 of the composite. The console reads the feature
+// unit ranges during enumeration and writes a speaker volume in the middle of
+// the auth exchange, so these have to answer rather than stall.
+bool MayflashS5Driver::audioControlXferCb(
+        uint8_t rhport, uint8_t stage,
+        tusb_control_request_t const *request) {
+    if (stage != CONTROL_STAGE_SETUP) {
+        if (stage == CONTROL_STAGE_ACK && audio_pending_index != 0xFF) {
+            memcpy(audio_current[audio_pending_index], audio_xfer_buffer, 2);
+            audio_pending_index = 0xFF;
+        }
+        return true;
+    }
+
+    const uint8_t itf = tu_u16_low(request->wIndex);
+
+    if (request->bmRequestType_bit.type == TUSB_REQ_TYPE_STANDARD) {
+        switch (request->bRequest) {
+            case TUSB_REQ_SET_INTERFACE:
+                // The audio streams are never started; only acknowledge the
+                // alternate setting so the console's SET_INTERFACE succeeds.
+                if (itf < 3) {
+                    audio_alt_setting[itf] =
+                        static_cast<uint8_t>(tu_u16_low(request->wValue));
+                }
+                return tud_control_status(rhport, request);
+            case TUSB_REQ_GET_INTERFACE:
+                audio_xfer_buffer[0] = (itf < 3) ? audio_alt_setting[itf] : 0;
+                return tud_control_xfer(rhport, request, audio_xfer_buffer, 1);
+            default:
+                return false;
+        }
+    }
+
+    if (request->bmRequestType_bit.type != TUSB_REQ_TYPE_CLASS) {
+        return false;
+    }
+
+    const int8_t index = audioFeatureIndex(tu_u16_high(request->wIndex));
+
+    if (request->bmRequestType_bit.direction == TUSB_DIR_IN) {
+        const uint8_t *value = nullptr;
+        if (index >= 0) {
+            switch (request->bRequest) {
+                case S5_UAC_GET_CUR: value = audio_current[index]; break;
+                case S5_UAC_GET_MIN: value = s5_audio_features[index].min; break;
+                case S5_UAC_GET_MAX: value = s5_audio_features[index].max; break;
+                case S5_UAC_GET_RES: value = s5_audio_features[index].res; break;
+                default: break;
+            }
+        }
+        if (value == nullptr) {
+            memset(audio_xfer_buffer, 0, 2);
+        } else {
+            memcpy(audio_xfer_buffer, value, 2);
+        }
+        return tud_control_xfer(rhport, request, audio_xfer_buffer,
+            tu_min16(request->wLength, 2));
+    }
+
+    // Host to device: accept the payload and remember it so a later GET_CUR
+    // returns the console's own value.
+    memset(audio_xfer_buffer, 0, sizeof(audio_xfer_buffer));
+    audio_pending_index =
+        (request->bRequest == S5_UAC_SET_CUR && index >= 0)
+            ? static_cast<uint8_t>(index) : 0xFF;
+    return tud_control_xfer(rhport, request, audio_xfer_buffer,
+        tu_min16(request->wLength, sizeof(audio_xfer_buffer)));
+}
+
+
+
+
+bool MayflashS5Driver::controlXferCb(
+        uint8_t rhport, uint8_t stage,
+        tusb_control_request_t const *request) {
+    // Requests aimed at the audio interfaces are answered by the audio
+    // handler; everything else belongs to the HID interface.
+    if (request->bmRequestType_bit.recipient == TUSB_REQ_RCPT_INTERFACE &&
+            tu_u16_low(request->wIndex) != S5_ITF_HID) {
+        return audioControlXferCb(rhport, stage, request);
+    }
+
+    // A real DualSense stalls SET_IDLE; TinyUSB's HID class would accept it.
+    if (request->bmRequestType_bit.type == TUSB_REQ_TYPE_CLASS &&
+            request->bRequest == HID_REQ_CONTROL_SET_IDLE) {
+        return false;
+    }
+
+    // Every feature report the console reads is answered by the dongle, live.
+    //
+    // The vendor documentation is explicit that the adapter processes this
+    // traffic rather than answering on its own behalf: the console transmits
+    // the data to the device, the device processes it, and the console reads
+    // the processed result back. Nothing is cached; the reference adapter
+    // forwards each request within a couple of milliseconds.
+    const bool is_feature_get =
+        request->bmRequestType_bit.type == TUSB_REQ_TYPE_CLASS &&
+        request->bRequest == HID_REQ_CONTROL_GET_REPORT &&
+        tu_u16_high(request->wValue) == HID_REPORT_TYPE_FEATURE &&
+        // Report 0x81 is answered locally with a stall rather than proxied.
+        // The dongle stalls it too, so answering locally is externally
+        // identical and avoids a needless downstream transaction. A console
+        // test proved that proxying 0x81 was not the cause of the later
+        // signing failure.
+        tu_u16_low(request->wValue) != PS5AuthReport::PS5_GET_TEST_PARAM;
+
+    if (!is_feature_get) {
+        return hidd_control_xfer_cb(rhport, stage, request);
+    }
+
+    if (stage == CONTROL_STAGE_SETUP) {
+        // Only one proxied request can be in flight at a time. Refusing here
+        // stalls the console's control request, which it retries.
+        if (ps5AuthData == nullptr ||
+                !ps5AuthData->dongle_ready ||
+                deferred_control_pending ||
+                ps5AuthData->proxy_get_pending ||
+                ps5AuthData->proxy_get_inflight) {
+            return false;
+        }
+
+        const uint8_t report_id = tu_u16_low(request->wValue);
+        deferred_control_request = *request;
+        deferred_control_pending = true;
+        ps5AuthData->proxy_get_request = report_id;
+        ps5AuthData->proxy_get_len =
+            tu_min16(request->wLength, sizeof(ps5AuthData->proxy_response));
+        ps5AuthData->proxy_get_pending = true;
+        ps5AuthData->proxy_get_stalled = false;
+        ps5AuthData->proxy_response_ready = false;
+        ps5AuthData->proxy_response_len = 0;
+
+        if (report_id == PS5AuthReport::PS5_GET_SIGNATURE_NONCE) {
+            ps5AuthData->auth_console_f1_count++;
+        } else if (report_id == PS5AuthReport::PS5_GET_SIGNING_STATE) {
+            ps5AuthData->auth_console_f2_count++;
+        }
+    }
+
+    // Leave EP0 without an IN transfer during SETUP. The controller NAKs
+    // until serviceDeferredControl() supplies the downstream S5 response.
+    return true;
+}
+
+void MayflashS5Driver::serviceDeferredControl() {
+    if (!deferred_control_pending || ps5AuthData == nullptr) {
+        return;
+    }
+
+    // The dongle refused the request. Pass the refusal on rather than leaving
+    // the console's transfer open; report 0x81 is stalled by the real device.
+    if (ps5AuthData->proxy_get_stalled) {
+        ps5AuthData->proxy_get_stalled = false;
+        deferred_control_pending = false;
+        usbd_edpt_stall(TUD_OPT_RHPORT, 0x80);
+        return;
+    }
+
+    if (!ps5AuthData->proxy_response_ready) {
+        return;
+    }
+
+    const uint16_t response_len = ps5AuthData->proxy_response_len;
+    if (response_len == 0 || response_len >
+            sizeof(deferred_control_buffer) ||
+            ps5AuthData->proxy_response[0] !=
+                ps5AuthData->proxy_get_request) {
+        return;
+    }
+
+    memcpy(deferred_control_buffer, ps5AuthData->proxy_response,
+        response_len);
+
+    // The console compares the reported DualSense firmware build against the
+    // one bundled with its own system software, and offers a firmware update
+    // instead of proceeding if it judges the controller out of date. The S5
+    // reports its own, older build, so substitute a current one. Everything
+    // else the dongle answers is passed through untouched.
+    if (ps5AuthData->proxy_get_request == PS5AuthReport::PS5_GET_FIRWMARE &&
+            response_len >= 64) {
+        memcpy(&deferred_control_buffer[1], dualsense_current_0x20, 63);
+    }
+
+    if (tud_control_xfer(TUD_OPT_RHPORT, &deferred_control_request,
+            deferred_control_buffer, response_len)) {
+        ps5AuthData->proxy_response_ready = false;
+        deferred_control_pending = false;
+    }
+}
+
+void MayflashS5Driver::processAux() {
+    // S5 USB host work is intentionally performed by process() on core 0.
 }
 
 USBListener * MayflashS5Driver::get_usb_auth_listener() {
@@ -297,6 +680,11 @@ uint16_t MayflashS5Driver::get_report(uint8_t report_id, hid_report_type_t repor
     if ( report_type != HID_REPORT_TYPE_FEATURE ) {
         return -1;
     }
+    const uint16_t traced = getReportTraced(report_id, buffer, reqlen);
+    return traced;
+}
+
+uint16_t MayflashS5Driver::getReportTraced(uint8_t report_id, uint8_t *buffer, uint16_t reqlen) {
 
     uint16_t responseLen = 0;
     uint8_t reportBuffer[60];
@@ -308,6 +696,7 @@ uint16_t MayflashS5Driver::get_report(uint8_t report_id, hid_report_type_t repor
             memcpy(buffer, output_0x03, responseLen);
             return responseLen;
         case PS5AuthReport::PS5_GET_CALIBRATION:
+        {
             if (reqlen != sizeof(output_0x05)) return -1;
             if ( ps5AuthData->S5_reports_ready == false ) {
                 memcpy(buffer, output_0x05, reqlen);
@@ -315,38 +704,36 @@ uint16_t MayflashS5Driver::get_report(uint8_t report_id, hid_report_type_t repor
                 memcpy(buffer, ps5AuthData->calibration_report, reqlen);
             }
             return 40;
+        }
         case PS5AuthReport::PS5_GET_PAIRINFO:
+        {
             if (reqlen != sizeof(output_0x09)) return -1;
             if ( ps5AuthData->S5_reports_ready == false ) {
-                memcpy(buffer, output_0x09, reqlen);
+                // Never let the console cache a zero identity. A failed
+                // request can be retried after the downstream report arrives.
+                return -1;
             } else {
                 memcpy(buffer, ps5AuthData->MAC_pair_report, reqlen);
             }
             return 15;
+        }
         case PS5AuthReport::PS5_GET_FIRWMARE:
+        {
             if (reqlen != sizeof(output_0x20)) return -1;
-            if ( ps5AuthData->S5_reports_ready == false ) {
-                memcpy(buffer, output_0x20, reqlen);
-            } else {
-                memcpy(buffer, ps5AuthData->firmware_report, reqlen);
-            }
+            // Substitute a current DualSense build; see serviceDeferredControl.
+            memcpy(buffer, dualsense_current_0x20, reqlen);
             return 63;
+        }
         case PS5AuthReport::PS5_GET_TEST_PARAM:
             // https://controllers.fandom.com/wiki/Sony_DualSense
             //P5DPRINTF("P5D:DualSense Get test command <STALL>\n");
             return -1;
         case PS5AuthReport::PS5_GET_SIGNATURE_NONCE:
-            memset(buffer, 0, 63);
-            buffer[0] = ps5AuthData->console_f0_type;
-            buffer[1] = ps5AuthData->auth_frame_id;
-            buffer[2] = ps5AuthData->auth_f1_get_index;
-            memcpy(&buffer[3], &ps5AuthData->auth_f1_buffer[PS5_AUTH_DATALEN*ps5AuthData->auth_f1_get_index], PS5_AUTH_DATALEN);
-            
-            // calculate the crc32
-            reportBuffer[0] = PS5AuthReport::PS5_GET_SIGNATURE_NONCE;
-            memcpy(&reportBuffer[1], buffer, 59);
-            crc32 = CRC32::calculate(reportBuffer, 60);
-            memcpy(&buffer[60], &crc32, sizeof(uint32_t));
+            ps5AuthData->auth_console_f1_count++;
+            // Preserve the S5's response type, frame/index fields and CRC
+            // exactly. Reconstructing this packet causes PS5 auth rejection
+            // even when all four payload chunks are present.
+            memcpy(buffer, &ps5AuthData->auth_f1_raw[ps5AuthData->auth_f1_get_index][1], 63);
 
             P5DPRINTF("GP2040->Console F0[%i]: %02x, %02x, %02x, %02x, %02x\n", ps5AuthData->auth_f1_get_index, buffer[3], buffer[4], buffer[5], buffer[6], buffer[7]);
 
@@ -366,10 +753,8 @@ uint16_t MayflashS5Driver::get_report(uint8_t report_id, hid_report_type_t repor
                 }
             } else if ( ps5AuthData->console_f0_type == 0x03 ) {
                 //P5DPRINTF("P5D: PS5_GET_SIGNATURE_NONCE Refresh done! PS5 will ask for status if this is good\n");
-                buffer[0] = 0x01; // we set the return type to 01, is this right?
                 ps5AuthData->auth_f1_get_index++;
-                if ( ps5AuthData->auth_f1_get_index == 0x04 ) { // we sent all 4 blocks
-                    //P5DPRINTF("P5D: PS5_GET_SIGNATURE_NONCE DONE! PS5 will ask for status if this is good\n");
+                if ( ps5AuthData->auth_f1_get_index == 0x04 ) {
                     ps5AuthData->auth_f1_get_index = 0;
                 }
             }
@@ -377,18 +762,15 @@ uint16_t MayflashS5Driver::get_report(uint8_t report_id, hid_report_type_t repor
             //timeout_report_us = getMicro(); // don't need to keep timing out while we're doing this
             return 63;
         case PS5AuthReport::PS5_GET_SIGNING_STATE:
+            ps5AuthData->auth_console_f2_count++;
             // We need to add a signing state for "renewing / cycling to the next packet"
             if ( ps5AuthData->auth_f1_done ) {
                 //P5DPRINTF("P5D: Dongle auth is all done, ready for the next auth (F2 0x40)\n");
-                memset(buffer, 0, 15);
-                buffer[1] = ps5AuthData->auth_frame_id;
-                buffer[2] = PS5AuthResponse::PS5_AUTH_DONE;
-
-                // calculate the correct crc32
-                reportBuffer[0] = PS5AuthReport::PS5_GET_SIGNING_STATE;
-                memcpy(&reportBuffer[1], buffer, 11);
-                crc32 = CRC32::calculate(reportBuffer, 12);
-                memcpy(&buffer[11], &crc32, sizeof(uint32_t));
+                if (ps5AuthData->auth_f2_valid) {
+                    memcpy(buffer, &ps5AuthData->auth_f2_raw[1], 15);
+                } else {
+                    return -1;
+                }
 
                 // reset everything (ready for next encryption!)
                 ps5AuthData->console_f0_get_index = 0;
@@ -396,29 +778,26 @@ uint16_t MayflashS5Driver::get_report(uint8_t report_id, hid_report_type_t repor
                 ps5AuthData->auth_f1_get_index = 0;
                 ps5AuthData->auth_f1_ready = false;
                 ps5AuthData->auth_f1_done = false;
+                ps5AuthData->auth_f2_valid = false;
             } else if ( ps5AuthData->auth_f1_ready ) {
                 //P5DPRINTF("P5D: Dongle auth is ready! (F2 0x12)\n");
-                memset(buffer, 0, 15);
-                buffer[1] = ps5AuthData->auth_frame_id;
-                if ( ps5AuthData->console_f0_type == 0x01 ) {
-                    buffer[2] = PS5AuthResponse::PS5_AUTH_READY;
-                } else if ( ps5AuthData->console_f0_type == 0x03 ) {
-                    buffer[2] = (PS5AuthResponse::PS5_AUTH_READY | 0x40);
+                if (ps5AuthData->auth_f2_valid) {
+                    memcpy(buffer, &ps5AuthData->auth_f2_raw[1], 15);
+                } else {
+                    return -1;
                 }
-
-                // calculate the correct crc32
-                reportBuffer[0] = PS5AuthReport::PS5_GET_SIGNING_STATE;
-                memcpy(&reportBuffer[1], buffer, 11);
-                crc32 = CRC32::calculate(reportBuffer, 12);
-                memcpy(&buffer[11], &crc32, sizeof(uint32_t));
 
                 // sneak this in
                 ps5AuthData->auth_f1_get_index = 0; // start at 0
             } else {
                 //P5DPRINTF("P5D: Dongle auth NOT is ready! (F2 0x11)\n");
                 memset(buffer, 0, 15);
+                buffer[0] = ps5AuthData->console_f0_type == 0x03
+                    ? 0x01 : ps5AuthData->console_f0_type;
                 buffer[1] = ps5AuthData->auth_frame_id;
                 if ( ps5AuthData->console_f0_type == 0x01 ) {
+                    buffer[2] = PS5AuthResponse::PS5_AUTH_NOT_READY;
+                } else if ( ps5AuthData->console_f0_type == 0x02 ) {
                     buffer[2] = PS5AuthResponse::PS5_AUTH_NOT_READY;
                 } else if ( ps5AuthData->console_f0_type == 0x03 ) {
                     buffer[2] = PS5AuthResponse::PS5_AUTH_REFRESH_NOT_READY; // ?? odd
@@ -438,11 +817,52 @@ uint16_t MayflashS5Driver::get_report(uint8_t report_id, hid_report_type_t repor
     return -1;
 }
 
+// Copy a console feature write verbatim, report id included, for the listener
+// to hand to the S5 unchanged.
+void MayflashS5Driver::queueConsoleSet(uint8_t report_id,
+        uint8_t const *buffer, uint16_t bufsize) {
+    if (ps5AuthData == nullptr || bufsize > 63) {
+        return;
+    }
+
+    // Only forward writes this console path is known to use. The PS5 now
+    // offers a DualSense firmware update for this device, and a blanket
+    // passthrough would carry an update payload straight to the S5. Anything
+    // unexpected is recorded and dropped rather than handed to the dongle.
+    switch (report_id) {
+        case PS5AuthReport::PS5_SET_BLUETOOTH:    // 0x08
+        case PS5AuthReport::PS5_SET_TEST_PARAM:   // 0x80
+        // Pairing data is allowed through even in wired mode. The console
+        // appears to treat pairing as mandatory: with 0x0A withheld it asks
+        // for bluetooth ON six times, never registers the controller, never
+        // challenges, and grants no input, even while receiving 2,496 valid
+        // signed reports. Letting it pair while keeping bluetooth switched off
+        // is the state a real DualSense is in when wired.
+        case 0x0A:                                // bluetooth pairing data
+            break;
+        default:
+            return;
+    }
+    const uint8_t next =
+        static_cast<uint8_t>((ps5AuthData->set_queue_head + 1) % PS5_SET_QUEUE_DEPTH);
+    if (next == ps5AuthData->set_queue_tail) {
+        ps5AuthData->set_queue_dropped++;
+        return;
+    }
+    PS5PendingSet &slot = ps5AuthData->set_queue[ps5AuthData->set_queue_head];
+    slot.report_id = report_id;
+    slot.len = static_cast<uint16_t>(bufsize + 1);
+    slot.data[0] = report_id;
+    memcpy(&slot.data[1], buffer, bufsize);
+    ps5AuthData->set_queue_head = next;
+}
+
 void MayflashS5Driver::setFirstConsoleF0(ConsolePS5AuthBuffer * authBuffer) { // helper
     ps5AuthData->console_f0_get_index = 0;
     ps5AuthData->console_f0_recv_count = 1;
     ps5AuthData->auth_frame_id = authBuffer->frame_id;
     ps5AuthData->console_f0_type = authBuffer->auth_type; // 4-chunk block type
+    ps5AuthData->auth_f2_valid = false;
     ps5AuthData->ps5_auth_state = PS5AuthState::ps5_auth_send_f0_from_console;
 }
 
@@ -453,29 +873,40 @@ void MayflashS5Driver::set_report(uint8_t report_id, hid_report_type_t report_ty
         return;
     }
 
+
     ConsolePS5AuthBuffer * authBuffer = nullptr;
 
     switch( report_id ) {
         case PS5AuthReport::PS5_SET_BLUETOOTH:
-            if ( bufsize != 16 ) {
-                //P5DPRINTF("P5D:Set bluetooth control wrong size!\n");
-                break;
-            }
-            ps5AuthData->set_bluetooth_mode = buffer[0];
-            ps5AuthData->ps5_auth_state = PS5AuthState::ps5_set_bluetooth_mode;
+            ps5AuthData->set_bluetooth_mode = bufsize > 0 ? buffer[0] : 0;
+            // Report 0x08 is a bluetooth on/off switch:
+            //
+            //     struct ReportFeatureOutBluetooth {
+            //         uint8_t ReportID;   // 0x08
+            //         uint8_t State;      // 1 = ON, 2 = OFF
+            //     };
+            //
+            // Forwarded verbatim. With the console's radio off it asks for OFF
+            // and the dongle signs over USB; with the radio on it asks for ON,
+            // the dongle pairs, and it delivers to the console over the air.
+            // Both are working modes, so the console's request is honoured
+            // rather than second-guessed.
+            queueConsoleSet(report_id, buffer, bufsize);
             break;
         case PS5AuthReport::PS5_SET_TEST_PARAM:
-            if ( bufsize != 63) {
-                //P5DPRINTF("P5D:Set test param wrong size!\n");
-                break;
+            if (bufsize >= 2) {
+                ps5AuthData->set_testcommand[0] = buffer[0];
+                ps5AuthData->set_testcommand[1] = buffer[1];
             }
-            // https://controllers.fandom.com/wiki/Sony_DualSense
-            P5DPRINTF("P5D:DualSense Set test command\n");
-            ps5AuthData->set_testcommand[0] = buffer[0];
-            ps5AuthData->set_testcommand[1] = buffer[1];
-            ps5AuthData->ps5_auth_state = PS5AuthState::ps5_set_test_command;
+            queueConsoleSet(report_id, buffer, bufsize);
             break;
         case PS5AuthReport::PS5_SET_AUTH_PAYLOAD:
+            // Count every F0 callback before validating it. This distinguishes
+            // "the console never sent completion" from "we rejected it".
+            ps5AuthData->auth_console_f0_raw_count++;
+            if (bufsize > 0) {
+                ps5AuthData->auth_console_f0_last_type = buffer[0];
+            }
             if (bufsize != 63) {
                 //P5DPRINTF("P5D:Wrong size for PS5_SET_AUTH_PAYLOAD\n");
                 break;
@@ -488,6 +919,28 @@ void MayflashS5Driver::set_report(uint8_t report_id, hid_report_type_t report_ty
             }
 
             authBuffer = (ConsolePS5AuthBuffer*)buffer;
+            if (authBuffer->auth_index >= 4 ||
+                    (authBuffer->auth_type != 0x01 &&
+                     authBuffer->auth_type != 0x02 &&
+                     authBuffer->auth_type != 0x03)) {
+                P5DPRINTF("P5D:Invalid auth type/index\n");
+                break;
+            }
+            ps5AuthData->auth_console_f0_count++;
+            ps5AuthData->auth_console_f0_accept_mask |=
+                static_cast<uint8_t>(1u << authBuffer->auth_index);
+            uint8_t f0_with_id[64];
+            f0_with_id[0] = PS5AuthReport::PS5_SET_AUTH_PAYLOAD;
+            memcpy(&f0_with_id[1], buffer, 63);
+            uint32_t received_crc;
+            memcpy(&received_crc, &f0_with_id[60], sizeof(received_crc));
+            if (CRC32::calculate(f0_with_id, 60) == received_crc) {
+                ps5AuthData->auth_console_f0_crc_valid_count++;
+            }
+            ps5AuthData->auth_f0_raw[authBuffer->auth_index][0] =
+                PS5AuthReport::PS5_SET_AUTH_PAYLOAD;
+            memcpy(&ps5AuthData->auth_f0_raw[authBuffer->auth_index][1],
+                buffer, 63);
             //P5DPRINTF("P5D:Getting PS5 F0 with 4-blocks (frame_id %02x auth_type %02x auth_index %02x)\n", authBuffer->frame_id, authBuffer->auth_type, authBuffer->auth_index);
 
             // Copy the data to our console F0 buffer
@@ -503,13 +956,26 @@ void MayflashS5Driver::set_report(uint8_t report_id, hid_report_type_t report_ty
                 if ( authBuffer->auth_index == 0 ) { // START (4 blocks incoming)
                     ps5AuthData->auth_f1_ready = false;
                     ps5AuthData->auth_f1_done = false; // set our F1 auth to not done!
-                    setFirstConsoleF0(authBuffer);
-                } else { // if ( authBuffer->auth_index == 3 ) { // END (4 blocks received)
-                    ps5AuthData->console_f0_recv_count++; // add 1 chunk
-                    ps5AuthData->ps5_auth_state = PS5AuthState::ps5_auth_send_f0_from_console;
+                    ps5AuthData->console_f0_get_index = 0;
+                    ps5AuthData->console_f0_recv_count = 1;
+                    ps5AuthData->auth_frame_id = authBuffer->frame_id;
+                    ps5AuthData->console_f0_type = authBuffer->auth_type;
+                    ps5AuthData->auth_f2_valid = false;
+                    // Each authentication block is forwarded as it arrives.
+                    ps5AuthData->ps5_auth_state =
+                        PS5AuthState::ps5_auth_send_f0_from_console;
+                } else {
+                    ps5AuthData->console_f0_recv_count =
+                        authBuffer->auth_index + 1;
+                    if (ps5AuthData->console_f0_get_index <
+                            ps5AuthData->console_f0_recv_count) {
+                        ps5AuthData->ps5_auth_state =
+                            PS5AuthState::ps5_auth_send_f0_from_console;
+                    }
                 }        
             } else if ( authBuffer->auth_type == 0x02) {
-                ps5AuthData->auth_f1_done = true; // we are sending it to the dongle but we can tell PS5 its done for timing
+                // Wait for the S5's F2 0x40 response before reporting done.
+                ps5AuthData->auth_f1_done = false;
                 setFirstConsoleF0(authBuffer);
             } else if ( authBuffer->auth_type == 0x03) {
                 ps5AuthData->auth_f1_ready = false;
@@ -518,10 +984,13 @@ void MayflashS5Driver::set_report(uint8_t report_id, hid_report_type_t report_ty
             }
             break;
         default:
-            P5DPRINTF("P5D:ERROR Got strange SET_REPORT id : %02x\n", report_id);
+            // Anything else the console writes is forwarded untouched,
+            // including report 0x0A, which carries bluetooth pairing material.
+            queueConsoleSet(report_id, buffer, bufsize);
             break;
     };
 }
+
 
 const uint16_t * MayflashS5Driver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
     const char *value = (const char*)mayflashs5_string_descriptors[index];
@@ -537,8 +1006,9 @@ const uint8_t * MayflashS5Driver::get_hid_descriptor_report_cb(uint8_t itf) {
 }
 
 const uint8_t * MayflashS5Driver::get_descriptor_configuration_cb(uint8_t index) {
-    return mayflashs5_custom_configuration_descriptor;
+    return mayflashs5_full_configuration_descriptor;
 }
+
 
 uint16_t MayflashS5Driver::GetJoystickMidValue() {
     return PS5_JOYSTICK_MID << 8;

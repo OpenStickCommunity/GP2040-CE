@@ -371,6 +371,13 @@ target_compile_definitions(${PROJECT_NAME} PUBLIC
   GP2040_BOARDCONFIG="${GP2040_BOARDCONFIG}"
 )
 
+# The Mayflash S5 pass-through presents the DualSense's captured device
+# descriptor, which advertises an 8-byte endpoint 0. The device stack has to
+# packetize EP0 to match, so the descriptor and this definition change together.
+if(GP2040_BOARDCONFIG STREQUAL "Haute42COSMOX")
+  target_compile_definitions(${PROJECT_NAME} PUBLIC CFG_TUD_ENDPOINT0_SIZE=8)
+endif()
+
 target_include_directories(${PROJECT_NAME}  PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}
     ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts or any other standard includes, if required
