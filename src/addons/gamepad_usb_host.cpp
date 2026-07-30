@@ -6,20 +6,16 @@
 #include "peripheralmanager.h"
 #include "class/hid/hid_host.h"
 
-bool GamepadUSBHostAddon::available()
-{
+bool GamepadUSBHostAddon::available() {
     const GamepadUSBHostOptions& gamepadUSBHostOptions = Storage::getInstance().getAddonOptions().gamepadUSBHostOptions;
     return gamepadUSBHostOptions.enabled && PeripheralManager::getInstance().isUSBEnabled(0);
 }
 
-void GamepadUSBHostAddon::setup()
-{
-    //stdio_init_all();
-    //printf("setup function\n");
+void GamepadUSBHostAddon::setup() {
     listener = new GamepadUSBHostListener();
-    ((GamepadUSBHostListener*)listener)->setup();
+    listener->setup();
 }
 
 void GamepadUSBHostAddon::preprocess() {
-    ((GamepadUSBHostListener*)listener)->process();
+    ((GamepadUSBHostListener*)listener)->update();
 }
