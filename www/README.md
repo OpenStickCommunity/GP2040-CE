@@ -31,7 +31,7 @@ When adding a new API endpoint to the GP2040-CE Configurator:
     * Use the naming convention `/api/{[get/set]EndpointPath}` for the path
   * Create the backing method with the same name as the API path: `string getNewEndpoint()`
   * Add handling code in `fs_open_custom` for the API path
-* Add a mock data endpoint to `src/server/app.js`
+* Add a mock data endpoint to `www/server/app.js`
 * Add the client-side API function to `www/src/Services/WebApi.js`.
 * Add the endpoint to the Postman collection at `www/server/docs/GP2040-CE.postman_collection.json`
 
