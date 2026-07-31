@@ -8,14 +8,95 @@
 #include "drivers/shared/driverhelper.h"
 #include "storagemanager.h"
 
+#include <algorithm>
+
 static bool hid_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const * request)
 {
 	return hidd_control_xfer_cb(rhport, stage, request);
 }
 
+static uint16_t * getSInputStringDescriptor(const char *value, uint8_t index)
+{
+	static uint16_t descriptorStringBuffer[128];
+	if (index == 0) {
+		descriptorStringBuffer[0] = (0x03 << 8) | 0x04;
+		descriptorStringBuffer[1] = (((uint8_t)value[1]) << 8) | (uint8_t)value[0];
+		return descriptorStringBuffer;
+	}
+
+	return getStringDescriptor(value, index);
+}
+
+static uint16_t getSInputLE16(const uint8_t *data)
+{
+	return static_cast<uint16_t>(data[0]) | (static_cast<uint16_t>(data[1]) << 8);
+}
+
+static uint8_t getSInputHapticIntensity(uint16_t amplitude)
+{
+	if (amplitude > UINT8_MAX)
+		return static_cast<uint8_t>(amplitude >> 8);
+
+	return static_cast<uint8_t>(amplitude);
+}
+
+static void setSInputRumble(uint8_t left, uint8_t right)
+{
+	Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
+
+	if (gamepad->auxState.haptics.leftActuator.enabled) {
+		gamepad->auxState.haptics.leftActuator.active = (left > 0);
+		gamepad->auxState.haptics.leftActuator.intensity = left;
+	}
+
+	if (gamepad->auxState.haptics.rightActuator.enabled) {
+		gamepad->auxState.haptics.rightActuator.active = (right > 0);
+		gamepad->auxState.haptics.rightActuator.intensity = right;
+	}
+}
+
+static void processSInputHaptics(uint8_t const *data, uint16_t len)
+{
+	if (len == 0)
+		return;
+
+	switch (data[0]) {
+		case 1:
+			if (len < 17)
+				return;
+
+			setSInputRumble(
+				getSInputHapticIntensity(std::max(getSInputLE16(&data[3]), getSInputLE16(&data[7]))),
+				getSInputHapticIntensity(std::max(getSInputLE16(&data[11]), getSInputLE16(&data[15])))
+			);
+			break;
+
+		case 2:
+			if (len < 5)
+				return;
+
+			setSInputRumble(data[1], data[3]);
+			break;
+
+		default:
+			break;
+	}
+}
+
+static void processSInputPlayerLED(uint8_t const *data, uint16_t len)
+{
+	if (len == 0)
+		return;
+
+	Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
+	gamepad->auxState.playerID.active = true;
+	gamepad->auxState.playerID.value = data[0];
+	gamepad->auxState.playerID.ledValue = data[0];
+}
+
 void SInputDriver::initialize() {
 	sinputReport = {
-		.report_id = 0x01,
+		.report_id = SINPUT_INPUT_REPORT_ID,
 		.plug_status = 0x00,
 		.charge_percent = 100,
 		.buttons = 0,
@@ -26,20 +107,22 @@ void SInputDriver::initialize() {
 		.trigger_l = -32768,
 		.trigger_r = -32768,
 		.imu_timestamp_us = 0,
-		.accel_x = 0,
-		.accel_y = 0,
-		.accel_z = 0,
-		.gyro_x = 0,
-		.gyro_y = 0,
-		.gyro_z = 0,
+		.accel_x = SINPUT_ACCEL_X_NEUTRAL,
+		.accel_y = SINPUT_ACCEL_Y_NEUTRAL,
+		.accel_z = SINPUT_ACCEL_Z_NEUTRAL,
+		.gyro_x = SINPUT_GYRO_X_NEUTRAL,
+		.gyro_y = SINPUT_GYRO_Y_NEUTRAL,
+		.gyro_z = SINPUT_GYRO_Z_NEUTRAL,
 		.touchpad_1_x = 0,
 		.touchpad_1_y = 0,
 		.touchpad_1_pressure = 0,
-        .touchpad_2_x = 0,
+		.touchpad_2_x = 0,
 		.touchpad_2_y = 0,
 		.touchpad_2_pressure = 0,
 		.reserved_bulk = {0},
 	};
+	isReportQueued = false;
+	memset(queuedReport, 0x00, sizeof(queuedReport));
 
 	class_driver = {
 	#if CFG_TUSB_DEBUG >= 2
@@ -56,7 +139,7 @@ void SInputDriver::initialize() {
 
 // Generate HID report from gamepad and send to TUSB Device
 bool SInputDriver::process(Gamepad * gamepad) {
-	sinputReport.report_id = 0x01;
+	sinputReport.report_id = SINPUT_INPUT_REPORT_ID;
 	sinputReport.imu_timestamp_us = static_cast<uint32_t>(getMicro());
 	sinputReport.left_x = static_cast<int16_t>(gamepad->state.lx - 0x8000);
 	sinputReport.left_y = static_cast<int16_t>(gamepad->state.ly - 0x8000);
@@ -114,9 +197,61 @@ bool SInputDriver::process(Gamepad * gamepad) {
 		sinputReport.trigger_r = gamepad->pressedR2() ? 32767 : -32768;
 	}
 
+	sinputReport.accel_x = SINPUT_ACCEL_X_NEUTRAL;
+	sinputReport.accel_y = SINPUT_ACCEL_Y_NEUTRAL;
+	sinputReport.accel_z = SINPUT_ACCEL_Z_NEUTRAL;
+	sinputReport.gyro_x = SINPUT_GYRO_X_NEUTRAL;
+	sinputReport.gyro_y = SINPUT_GYRO_Y_NEUTRAL;
+	sinputReport.gyro_z = SINPUT_GYRO_Z_NEUTRAL;
+	sinputReport.touchpad_1_x = 0;
+	sinputReport.touchpad_1_y = 0;
+	sinputReport.touchpad_1_pressure = 0;
+	sinputReport.touchpad_2_x = 0;
+	sinputReport.touchpad_2_y = 0;
+	sinputReport.touchpad_2_pressure = 0;
+
+	if (gamepad->auxState.sensors.accelerometer.enabled) {
+		sinputReport.accel_x = static_cast<int16_t>(gamepad->auxState.sensors.accelerometer.x);
+		sinputReport.accel_y = static_cast<int16_t>(gamepad->auxState.sensors.accelerometer.y);
+		sinputReport.accel_z = static_cast<int16_t>(gamepad->auxState.sensors.accelerometer.z);
+	}
+
+	if (gamepad->auxState.sensors.gyroscope.enabled) {
+		sinputReport.gyro_x = static_cast<int16_t>(gamepad->auxState.sensors.gyroscope.x);
+		sinputReport.gyro_y = static_cast<int16_t>(gamepad->auxState.sensors.gyroscope.y);
+		sinputReport.gyro_z = static_cast<int16_t>(gamepad->auxState.sensors.gyroscope.z);
+	}
+
+	if (gamepad->auxState.sensors.touchpad[0].enabled) {
+		sinputReport.touchpad_1_x = static_cast<int16_t>(gamepad->auxState.sensors.touchpad[0].x);
+		sinputReport.touchpad_1_y = static_cast<int16_t>(gamepad->auxState.sensors.touchpad[0].y);
+		sinputReport.touchpad_1_pressure = gamepad->auxState.sensors.touchpad[0].active ?
+			static_cast<int16_t>(gamepad->auxState.sensors.touchpad[0].z) : 0;
+		if (gamepad->auxState.sensors.touchpad[0].active)
+			sinputReport.buttons |= SINPUT_MASK_TOUCHPAD_1;
+	}
+
+	if (gamepad->auxState.sensors.touchpad[1].enabled) {
+		sinputReport.touchpad_2_x = static_cast<int16_t>(gamepad->auxState.sensors.touchpad[1].x);
+		sinputReport.touchpad_2_y = static_cast<int16_t>(gamepad->auxState.sensors.touchpad[1].y);
+		sinputReport.touchpad_2_pressure = gamepad->auxState.sensors.touchpad[1].active ?
+			static_cast<int16_t>(gamepad->auxState.sensors.touchpad[1].z) : 0;
+		if (gamepad->auxState.sensors.touchpad[1].active)
+			sinputReport.buttons |= SINPUT_MASK_TOUCHPAD_2;
+	}
+
 	// Wake up TinyUSB device
 	if (tud_suspended())
 		tud_remote_wakeup();
+
+	if (isReportQueued) {
+		if (tud_hid_ready() && tud_hid_report(0, queuedReport, sizeof(queuedReport)) == true) {
+			isReportQueued = false;
+			return true;
+		}
+
+		return false;
+	}
 
 	void * report = &sinputReport;
 	uint16_t report_size = sizeof(sinputReport);
@@ -134,20 +269,76 @@ bool SInputDriver::process(Gamepad * gamepad) {
 
 // tud_hid_get_report_cb
 uint16_t SInputDriver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
-	memcpy(buffer, &sinputReport, sizeof(sinputReport));
-	return sizeof(sinputReport);
+	if (report_id == 0 || report_id == SINPUT_INPUT_REPORT_ID) {
+		uint16_t report_size = sizeof(sinputReport);
+		if (reqlen < report_size)
+			report_size = reqlen;
+
+		memcpy(buffer, &sinputReport, report_size);
+		return report_size;
+	}
+
+	if (report_id == SINPUT_FEATURE_REPORT_ID) {
+		uint16_t report_size = sizeof(sinput_features_report);
+		if (reqlen < report_size)
+			report_size = reqlen;
+
+		memcpy(buffer, &sinput_features_report, report_size);
+		return report_size;
+	}
+
+	return 0;
 }
 
-// Only PS4 does anything with set report
-void SInputDriver::set_report(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize) {}
+void SInputDriver::set_report(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize) {
+	if (report_type != HID_REPORT_TYPE_OUTPUT)
+		return;
 
-// Only XboxOG and Xbox One use vendor control xfer cb
+	if (bufsize == 0)
+		return;
+
+	uint8_t output_report_id = report_id;
+	uint8_t command_offset = 0;
+	if (buffer[0] == SINPUT_OUTPUT_REPORT_ID) {
+		output_report_id = buffer[0];
+		command_offset = 1;
+	}
+
+	if (output_report_id != SINPUT_OUTPUT_REPORT_ID || bufsize <= command_offset)
+		return;
+
+	uint8_t command = buffer[command_offset];
+	uint8_t const *command_data = buffer + command_offset + 1;
+	uint16_t command_data_len = bufsize - command_offset - 1;
+
+	switch (command) {
+		case SINPUT_OUTPUT_CMD_HAPTIC:
+			processSInputHaptics(command_data, command_data_len);
+			break;
+
+		case SINPUT_OUTPUT_CMD_FEATURES:
+			memcpy(queuedReport, &sinput_features_report, sizeof(queuedReport));
+			isReportQueued = true;
+			break;
+
+		case SINPUT_OUTPUT_CMD_PLAYER_LED:
+			processSInputPlayerLED(command_data, command_data_len);
+			break;
+
+		default:
+			break;
+	}
+}
+
 bool SInputDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request) {
 	return false;
 }
 
 const uint16_t * SInputDriver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
-    char *value;
+	const char *value;
+	if (index >= (sizeof(sinput_string_descriptors) / sizeof(sinput_string_descriptors[0])))
+		return nullptr;
+
     // Check for override settings
     GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();
     if ( gamepadOptions.usbDescOverride == true ) {
@@ -160,15 +351,16 @@ const uint16_t * SInputDriver::get_descriptor_string_cb(uint8_t index, uint16_t 
                 break;
             case 3:
                 value = gamepadOptions.usbDescVersion;
+                break;
             default:
-                value = (char *)sinput_string_descriptors[index];
+                value = (const char *)sinput_string_descriptors[index];
                 break;
         }
     } else {
-        value = (char *)sinput_string_descriptors[index];
+        value = (const char *)sinput_string_descriptors[index];
     }
 
-	return getStringDescriptor(value, index); // getStringDescriptor returns a static array
+	return getSInputStringDescriptor(value, index);
 }
 
 const uint8_t * SInputDriver::get_descriptor_device_cb() {
