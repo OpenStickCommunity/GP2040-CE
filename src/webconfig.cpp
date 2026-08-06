@@ -45,7 +45,7 @@
 
 extern struct fsdata_file file__index_html[];
 
-const static char* spaPaths[] = { "/animation", "/backup", "/custom-theme", "/display-config", "/led-config", "/pin-mapping", "/settings", "/reset-settings", "/add-ons", "/macro", "/peripheral-mapping", "/boot-mode-mapping" };
+const static char* spaPaths[] = { "/animation", "/backup", "/display-config", "/led-config", "/pin-mapping", "/settings", "/reset-settings", "/add-ons", "/macro", "/peripheral-mapping", "/boot-mode-mapping" };
 const static char* excludePaths[] = { "/css", "/images", "/js", "/static" };
 const static uint32_t rebootDelayMs = 500;
 static string http_post_uri;
@@ -1291,7 +1291,7 @@ std::string setAnimationButtonTestMode()
     JsonObject testOptions = docJson["TestData"];
 
     AnimationStationTestMode testMode = (AnimationStationTestMode)(testOptions["testMode"].as<uint32_t>());
-    
+
     //Get current max brightness
     const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
     uint32_t overrideMaxBrightness = ledOptions.brightnessMaximum;

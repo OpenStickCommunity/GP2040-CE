@@ -8,7 +8,7 @@ export default {
 	'load-export-option-label': 'Importer les options {{api}}',
 	'api-display-text': 'Affichage',
 	'api-gamepad-text': 'Manette',
-	'api-led-text': 'LED',
+	'api-leds-text': 'LED',
 	'api-ledTheme-text': 'Thème LED personnalisé',
 	'api-macros-text': 'Mappages de macros',
 	'api-pins-text': 'Mappages de broches',
