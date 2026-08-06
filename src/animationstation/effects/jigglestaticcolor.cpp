@@ -86,7 +86,9 @@ RGB JiggleStaticColor::AdvanceColor(int ledIndex, RGB InColor, RGB DestColor)
 void JiggleStaticColor::CycleParameterChange() 
 {
     int16_t cycleStep;
-    if(ButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_CASE_ONLY)
+    if(isButtonAnimation)
+      cycleStep = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].basePressedCycleTime;
+    else if(ButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_CASE_ONLY)
       cycleStep = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCaseCycleTime;
     else
       cycleStep = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime;

@@ -553,9 +553,9 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     if(config.animationOptions.profiles[0].has_bEnabled == false)
     {
         INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bEnabled, 1);
-        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], basePressedCycleTime, 2);
-        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], baseCycleTime, 2);
-        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], baseCaseCycleTime, 2);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], basePressedCycleTime, 4);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], baseCycleTime, 4);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], baseCaseCycleTime, 4);
         INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], nonPressedSpecialColor, LEDS_IDLE_SPECIAL_COLOR.value(LED_FORMAT_RGB, 1.0f));
         INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], pressedSpecialColor, LEDS_PRESSED_SPECIAL_COLOR.value(LED_FORMAT_RGB, 1.0f));
         INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], caseSpecialColor, LEDS_CASE_SPECIAL_COLOR.value(LED_FORMAT_RGB, 1.0f));
@@ -613,8 +613,10 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         for (unsigned int profileIndex = 1; profileIndex < MAX_ANIMATION_PROFILES; ++profileIndex) 
         {
             INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], bEnabled, 0);
-            INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], basePressedCycleTime, 2);
-            INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], baseCycleTime, 2);
+            INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], basePressedCycleTime, 4);
+            INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], baseCycleTime, 4);
+            INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], baseCaseCycleTime, 4);
+
             INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], bUseCaseLightsInPressedAnimations, 0);   
             config.animationOptions.profiles[profileIndex].notPressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
             config.animationOptions.profiles[profileIndex].pressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;

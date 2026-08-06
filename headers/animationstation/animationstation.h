@@ -18,7 +18,7 @@
 #define MAX_ANIMATION_PROFILES_INCLUDING_TEST (MAX_ANIMATION_PROFILES+1)
 #define MAX_NON_BUTTON_LIGHT_COLOR_INDEXES 32          //Total of color indexs in animation.h + Max custom colours (then increased to be a multiple of 4)
 
-#define CYCLE_STEPS 5
+#define CYCLE_STEPS 10
 
 typedef enum
 {

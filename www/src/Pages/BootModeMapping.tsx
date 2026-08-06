@@ -326,7 +326,9 @@ export default function BootModeMappingPage() {
 			<Section title={t('SettingsPage:boot-input-mode-label')}>
 				<div className="d-flex align-items-center mb-2">
 					<Form.Check
-						label="Use GPIO Pins"
+						label={t(
+							'BootModeMapping:use-gpio-slider-label',
+						)}
 						type="switch"
 						className="text my-auto"
 						checked={enabled}

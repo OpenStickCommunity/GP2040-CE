@@ -206,9 +206,9 @@ const emptyAnimationProfile = {
 	nonPressedContextParam: 0,
 	pressedContextParam: 0,
 	caseContextParam: 0,
-	baseCycleTime: 0,
-	basePressedCycleTime: 0,
-	baseCaseCycleTime: 0,
+	baseCycleTime: 5,
+	basePressedCycleTime: 5,
+	baseCaseCycleTime: 5,
 	notPressedStaticColors: Array.from({ length: GPIO_PIN_LENGTH }, () => 0),
 	pressedStaticColors: Array.from({ length: GPIO_PIN_LENGTH }, () => 1),
 };
@@ -1077,7 +1077,7 @@ export default function LedConfigPage() {
 															name={`AnimationOptions.profiles.${profileIndex}.baseCycleTime`}
 															id={`AnimationOptions.profiles.${profileIndex}.baseCycleTime`}
 															min={1}
-															max={5}
+															max={10}
 															step={1}
 															value={profile.baseCycleTime}
 															onChange={handleChange}
@@ -1091,7 +1091,7 @@ export default function LedConfigPage() {
 															name={`AnimationOptions.profiles.${profileIndex}.basePressedCycleTime`}
 															id={`AnimationOptions.profiles.${profileIndex}.basePressedCycleTime`}
 															min={1}
-															max={5}
+															max={10}
 															step={1}
 															value={profile.basePressedCycleTime}
 															onChange={handleChange}
@@ -1105,7 +1105,7 @@ export default function LedConfigPage() {
 															name={`AnimationOptions.profiles.${profileIndex}.baseCaseCycleTime`}
 															id={`AnimationOptions.profiles.${profileIndex}.baseCaseCycleTime`}
 															min={1}
-															max={5}
+															max={10}
 															step={1}
 															value={profile.baseCaseCycleTime}
 															onChange={handleChange}

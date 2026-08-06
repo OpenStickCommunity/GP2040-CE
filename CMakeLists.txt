@@ -307,6 +307,13 @@ src/animationstation/effects/rain.cpp
 src/animationstation/effects/rainbow.cpp
 src/animationstation/effects/randomcolor.cpp
 src/animationstation/effects/staticcolor.cpp
+src/hosts/DualsensePS5Host.cpp
+src/hosts/DualshockPS4Host.cpp
+src/hosts/GoogleStadioHost.cpp
+src/hosts/DrivingForceHost.cpp
+src/hosts/Ultrastik360Host.cpp
+src/hosts/SwitchProHost.cpp
+src/hosts/Xbox360Host.cpp
 ${PROTO_OUTPUT_DIR}/enums.pb.c
 ${PROTO_OUTPUT_DIR}/config.pb.c
 )
@@ -360,6 +367,7 @@ headers/display/ui/elements
 headers/display/ui/screens
 headers/animationstation
 headers/animationstation/effects
+headers/hosts
 configs/${GP2040_BOARDCONFIG}
 ${PROTO_OUTPUT_DIR}
 ${CMAKE_BINARY_DIR}/headers

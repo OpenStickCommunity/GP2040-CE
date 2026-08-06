@@ -76,7 +76,7 @@ void GPButton::draw() {
         turboState = (getGamepad()->turboState.buttons & this->_inputMask);
     } else if (_inputType == GP_ELEMENT_DIR_BUTTON) {
         // direction button mask
-        buttonState = getProcessedGamepad()->pressedDpad(this->_inputMask);
+        buttonState = getProcessedGamepad()->pressedDpadPhysical(this->_inputMask);
         useMask = true;
 
         if ((this->_inputMask & GAMEPAD_MASK_UP) == GAMEPAD_MASK_UP) {
