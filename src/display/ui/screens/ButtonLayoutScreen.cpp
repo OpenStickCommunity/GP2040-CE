@@ -171,7 +171,7 @@ void ButtonLayoutScreen::checkLEDCycleParams()
 
         bannerMessage = "LED Idle Rate =";
         bannerMessage +=  std::to_string(baseCycleNumber+1); //add 1 so its from 1-x not from 0-x
-        bannerMessage += " / ";
+        bannerMessage += "/";
         bannerMessage +=  std::to_string(CYCLE_STEPS); //add 1 so its from 1-x not from 0-x
 
         addCustomHeader(bannerMessage, "ledBaseCycle");
@@ -185,7 +185,7 @@ void ButtonLayoutScreen::checkLEDCycleParams()
 
         bannerMessage = "LED Case Rate =";
         bannerMessage +=  std::to_string(baseCaseCycleNumber+1); //add 1 so its from 1-x not from 0-x
-        bannerMessage += " / ";
+        bannerMessage += "/";
         bannerMessage +=  std::to_string(CYCLE_STEPS); //add 1 so its from 1-x not from 0-x
 
         addCustomHeader(bannerMessage, "ledBaseCaseCycle");
@@ -199,7 +199,7 @@ void ButtonLayoutScreen::checkLEDCycleParams()
 
         bannerMessage = "LED Press Rate =";
         bannerMessage +=  std::to_string(basePressedCycleNumber+1); //add 1 so its from 1-x not from 0-x
-        bannerMessage += " / ";
+        bannerMessage += "/";
         bannerMessage +=  std::to_string(CYCLE_STEPS); //add 1 so its from 1-x not from 0-x
 
         addCustomHeader(bannerMessage, "ledBasePressedCycle");
