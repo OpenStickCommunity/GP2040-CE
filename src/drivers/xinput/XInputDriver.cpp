@@ -5,6 +5,7 @@
 
 #include "drivers/xinput/XInputDriver.h"
 #include "drivers/shared/driverhelper.h"
+#include "hostlighting.h"
 #include "storagemanager.h"
 
 #define USB_SETUP_DEVICE_TO_HOST 0x80
@@ -30,6 +31,10 @@ static uint8_t endpoint_in = 0;
 static uint8_t endpoint_out = 0;
 static uint8_t xinput_out_buffer[XINPUT_OUT_SIZE] = {};
 static XInputAuthData * xinputAuthData = nullptr;
+
+// Console hosts run XSM3 authentication almost immediately; its absence after
+// enumeration is the AUTO-mode signal that the host is a PC
+static bool xinputConsoleAuthSeen = false;
 
 // Move to Proto Enums
 typedef enum
@@ -393,6 +398,9 @@ bool XInputDriver::process(Gamepad * gamepad) {
         }
     }
 
+    // AUTO mode: a host that enumerates but never authenticates is a PC
+    HostLighting::xinputAutoDetectTask(xinputConsoleAuthSeen);
+
     return reportSent;
 }
 
@@ -410,6 +418,22 @@ uint16_t XInputDriver::get_report(uint8_t report_id, hid_report_type_t report_ty
 
 // Only respond to vendor control xfers if we have a mounted x360 device
 bool XInputDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request) {
+    // MS OS 1.0 feature request: hand Windows the compatible IDs that bind the
+    // XUSB driver to interface 0 of the composite layout
+    if (HostLighting::xinputCompositeActive() &&
+            (request->bmRequestType_bit.type == TUSB_REQ_TYPE_VENDOR) &&
+            (request->bRequest == REQ_GET_OS_FEATURE_DESCRIPTOR) &&
+            (request->wIndex == DESC_EXTENDED_COMPATIBLE_ID_DESCRIPTOR)) {
+        if (stage == CONTROL_STAGE_SETUP) {
+            return tud_control_xfer(rhport, request,
+                (void *)xinput_wcid_compat_id_descriptor, sizeof(xinput_wcid_compat_id_descriptor));
+        }
+        return true;
+    }
+    // Any XSM3 authentication request marks the host as a console
+    if ((request->bRequest >= XSM360_GET_SERIAL) && (request->bRequest <= XSM360_AUTH_KEEPALIVE)) {
+        xinputConsoleAuthSeen = true;
+    }
   // Do nothing if we have no auth driver
     if ( xAuthDriver == nullptr || !xAuthDriver->available() ) {
         return false;
@@ -488,6 +512,14 @@ bool XInputDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_co
 
 const uint16_t * XInputDriver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
     char *value;
+    // MS OS 1.0 string descriptor: advertises the vendor request code Windows
+    // uses to fetch the compatible ID descriptor
+    if (index == 0xEE) {
+        if (HostLighting::xinputCompositeActive()) {
+            return xinput_ms_os_string_descriptor;
+        }
+        return nullptr; // stall: stock identity has no MS OS descriptors
+    }
     // Check for override settings
     GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();
     if ( gamepadOptions.usbDescOverride == true ) {
@@ -512,16 +544,20 @@ const uint16_t * XInputDriver::get_descriptor_string_cb(uint8_t index, uint16_t 
 }
 
 const uint8_t * XInputDriver::get_descriptor_device_cb() {
+    const uint8_t * baseDescriptor = xinput_device_descriptor;
+    if (HostLighting::xinputCompositeActive()) {
+        baseDescriptor = xinput_composite_device_descriptor;
+    }
     // Check for override settings
     GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();
     if ( gamepadOptions.usbOverrideID == true ) {
         static uint8_t modified_device_descriptor[18];
-        memcpy(modified_device_descriptor, xinput_device_descriptor, sizeof(xinput_device_descriptor));
+        memcpy(modified_device_descriptor, baseDescriptor, 18);
         memcpy(&modified_device_descriptor[8], (uint8_t*)&gamepadOptions.usbVendorID, sizeof(uint16_t)); // Vendor ID
         memcpy(&modified_device_descriptor[10], (uint8_t*)&gamepadOptions.usbProductID, sizeof(uint16_t)); // Product ID
         return (const uint8_t*)modified_device_descriptor;
     }
-    return xinput_device_descriptor;
+    return baseDescriptor;
 }
 
 const uint8_t * XInputDriver::get_hid_descriptor_report_cb(uint8_t itf) {
@@ -531,6 +567,11 @@ const uint8_t * XInputDriver::get_hid_descriptor_report_cb(uint8_t itf) {
 const uint8_t * XInputDriver::get_descriptor_configuration_cb(uint8_t index) {
     uint16_t configDescriptorSize = sizeof(xinput_configuration_descriptor);
     memcpy(configDescriptor, &xinput_configuration_descriptor, configDescriptorSize);
+    // The interface 0 block is identical in both layouts, so the subtype patch
+    // below lands at the same offset either way
+    if (HostLighting::xinputCompositeActive()) {
+        memcpy(configDescriptor, &xinput_composite_configuration_descriptor, sizeof(xinput_composite_configuration_descriptor));
+    }
 
     // check subtype
     GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();
