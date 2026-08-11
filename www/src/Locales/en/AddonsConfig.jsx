@@ -160,6 +160,13 @@ export default {
 	'snes-extension-desc-header': 'SNES Extension Mapping',
 	'focus-mode-header-text': 'Focus Mode Configuration',
 	'focus-mode-pin-label': 'Focus Mode GPIO Pin',
+	'host-lighting-header-text': 'Host Lighting Configuration',
+	'host-lighting-sub-header-text':
+		'Lets host software drive the RGB LEDs over a dedicated USB interface in XInput, Generic and Keyboard modes. On-board animations resume automatically when the host goes quiet.',
+	'host-lighting-xinput-mode-label': 'XInput Lighting',
+	'host-lighting-xinput-mode-off': 'Off (stock identity, console-safe)',
+	'host-lighting-xinput-mode-on': 'Always On (PC-only identity)',
+	'host-lighting-xinput-mode-auto': 'Auto (console detected at plug-in)',
 	'keyboard-host-header-text': 'Keyboard/Mouse Host Configuration',
 	'keyboard-host-sub-header-text': 'Keyboard Buttons',
 	'keyboard-host-mouse-header-text': 'Mouse Buttons',
