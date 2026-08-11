@@ -662,15 +662,15 @@ bool PS4Driver::process(Gamepad * gamepad) {
     }
 
     if (gamepad->auxState.sensors.accelerometer.enabled) {
-        ps4Report.gamepad.sensorData.accelerometer.x = ((gamepad->auxState.sensors.accelerometer.x & 0xFF) << 8) | ((gamepad->auxState.sensors.accelerometer.x & 0xFF00) >> 8);
-        ps4Report.gamepad.sensorData.accelerometer.y = ((gamepad->auxState.sensors.accelerometer.y & 0xFF) << 8) | ((gamepad->auxState.sensors.accelerometer.y & 0xFF00) >> 8);
-        ps4Report.gamepad.sensorData.accelerometer.z = ((gamepad->auxState.sensors.accelerometer.z & 0xFF) << 8) | ((gamepad->auxState.sensors.accelerometer.z & 0xFF00) >> 8);
+        ps4Report.gamepad.sensorData.accelerometer.x = gamepad->auxState.sensors.accelerometer.x;
+        ps4Report.gamepad.sensorData.accelerometer.y = gamepad->auxState.sensors.accelerometer.y;
+        ps4Report.gamepad.sensorData.accelerometer.z = gamepad->auxState.sensors.accelerometer.z;
     }
 
     if (gamepad->auxState.sensors.gyroscope.enabled) {
-        ps4Report.gamepad.sensorData.gyroscope.x = ((gamepad->auxState.sensors.gyroscope.x & 0xFF) << 8) | ((gamepad->auxState.sensors.gyroscope.x & 0xFF00) >> 8);
-        ps4Report.gamepad.sensorData.gyroscope.y = ((gamepad->auxState.sensors.gyroscope.y & 0xFF) << 8) | ((gamepad->auxState.sensors.gyroscope.y & 0xFF00) >> 8);
-        ps4Report.gamepad.sensorData.gyroscope.z = ((gamepad->auxState.sensors.gyroscope.z & 0xFF) << 8) | ((gamepad->auxState.sensors.gyroscope.z & 0xFF00) >> 8);
+        ps4Report.gamepad.sensorData.gyroscope.x = gamepad->auxState.sensors.gyroscope.x;
+        ps4Report.gamepad.sensorData.gyroscope.y = gamepad->auxState.sensors.gyroscope.y;
+        ps4Report.gamepad.sensorData.gyroscope.z = gamepad->auxState.sensors.gyroscope.z;
     }
 
     // Wake up TinyUSB device

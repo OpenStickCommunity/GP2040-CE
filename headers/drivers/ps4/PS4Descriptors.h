@@ -135,7 +135,7 @@ typedef struct __attribute__((packed, aligned(1))) {
 } PSSensor;
 
 typedef struct __attribute__((packed, aligned(1))){
-    uint16_t battery;
+    uint8_t temperature;
     PSSensor gyroscope;
     PSSensor accelerometer;
     uint8_t misc[4];
