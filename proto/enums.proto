@@ -170,6 +170,15 @@ enum InputModeAuthType
     INPUT_MODE_AUTH_TYPE_I2C = 3;
 }
 
+enum HostLightingXInputMode
+{
+    option (nanopb_enumopt).long_names = false;
+
+    HOST_LIGHTING_XINPUT_MODE_OFF = 0;
+    HOST_LIGHTING_XINPUT_MODE_ON = 1;
+    HOST_LIGHTING_XINPUT_MODE_AUTO = 2;
+}
+
 enum InputModeDeviceType
 {
     option (nanopb_enumopt).long_names = false;
