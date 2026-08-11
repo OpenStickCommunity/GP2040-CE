@@ -260,6 +260,7 @@ src/display/GPGFX_UI.cpp
 src/drivermanager.cpp
 src/eventmanager.cpp
 src/layoutmanager.cpp
+src/hostlighting.cpp
 src/peripheralmanager.cpp
 src/storagemanager.cpp
 src/system.cpp

@@ -15,6 +15,7 @@
 #include "usbdriver.h"
 #include "enums.h"
 #include "helper.h"
+#include "hostlighting.h"
 
 #define FRAME_MAX 100
 #define AL_ROW	5
@@ -611,6 +612,15 @@ void NeoPicoLEDAddon::process() {
 			this->ambientLightLinkage(); //Custom mode
 		}
 	}
+
+    // A live host-lighting takeover replaces the whole frame; expires back to
+    // the animations above when the host goes quiet
+    HostLighting::applyToFrame(frame, (uint32_t)ledCount, as.GetBrightnessX(), neopico.GetFormat());
+
+    // Host-requested change of the on-board animation
+    int16_t requestedAnimation = HostLighting::takeLocalAnimationRequest();
+    if (requestedAnimation >= 0)
+        as.SetMode((uint8_t)requestedAnimation);
 
     neopico.SetFrame(frame);
     neopico.Show();
