@@ -178,6 +178,8 @@ const uint8_t * HIDDriver::get_hid_descriptor_report_cb(uint8_t itf) {
 }
 
 const uint8_t * HIDDriver::get_descriptor_configuration_cb(uint8_t index) {
+	if (HostLighting::enabledForMode(INPUT_MODE_GENERIC))
+		return hid_hostlighting_configuration_descriptor;
 	return hid_configuration_descriptor;
 }
 
