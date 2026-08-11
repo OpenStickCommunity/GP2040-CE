@@ -6,7 +6,7 @@ export default {
 	'pin-pressed': 'Pressed GPIO Pin: {{pressedPin}}',
 	'profile-label-title': 'Profile name',
 	'profile-label-description':
-		'Max 16 characters. Letters, numbers, and spaces allowed.',
+		'Max 16 characters. Printable ASCII characters allowed.',
 	'profile-pin-mapping-title': '{{profileLabel}} - GPIO Pin Mapping',
 	'profile-label-default': 'Profile {{profileNumber}}',
 	'profile-add-button': '+ Add Profile',
