@@ -6,7 +6,7 @@ export default {
 	'pin-pressed': '当前按下的 GPIO 引脚：{{pressedPin}}',
 	'profile-label-title': '配置文件名称',
 	'profile-label-description':
-		'最多 16 个字符。支持字母、数字和空格。',
+		'最多 16 个字符。支持可打印 ASCII 字符。',
 	'profile-pin-mapping-title': '{{profileLabel}} - GPIO 引脚映射',
 	'profile-label-default': '配置文件 {{profileNumber}}',
 	'profile-add-button': '+ 添加配置文件',

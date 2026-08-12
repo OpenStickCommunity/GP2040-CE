@@ -108,8 +108,8 @@ void GamepadUSBHostListener::xmount(uint8_t dev_addr, uint8_t instance, uint8_t 
 }
 
 void GamepadUSBHostListener::unmount(uint8_t dev_addr) {
-    if ( _controller_host == nullptr ) return;
-    
+    if ( _controller_host == nullptr || _controller_dev_addr != dev_addr ) return;
+
     _controller_host->shutdown();
     delete _controller_host;
     _controller_host = nullptr;
