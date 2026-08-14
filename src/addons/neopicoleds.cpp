@@ -293,6 +293,11 @@ void NeoPicoLEDAddon::setup() {
     as.SetMode(animationOptions.baseAnimationIndex);
 	as.SetBrightness(animationOptions.brightness);
 
+	// Tell Host Lighting how fast we actually render, so it can report a rate
+	// rather than have the protocol assert one. A host streaming faster than
+	// this simply discards the difference, with nothing to tell it why.
+	HostLighting::setRenderRate((uint8_t)((intervalMS > 0) ? (1000 / intervalMS) : 0));
+
 	// Next Run
     nextRunTime = make_timeout_time_ms(0); // Reset timeout
 

@@ -70,6 +70,39 @@ static const int32_t LEDOptions::* const buttonIndexFields[HOST_LIGHTING_BUTTON_
 	&LEDOptions::indexA1, &LEDOptions::indexA2,
 };
 
+// The GPIO action each protocol button ID stands for. Referenced by name so a
+// renumbering of the enum cannot silently change what the wire means; the tail
+// is a permutation, since protocol order is the gamepad bit order while
+// GpioAction declares A1 and A2 ahead of L3 and R3.
+static const GpioAction canonicalAction[HOST_LIGHTING_BUTTON_COUNT] = {
+	GpioAction::BUTTON_PRESS_UP, GpioAction::BUTTON_PRESS_DOWN,
+	GpioAction::BUTTON_PRESS_LEFT, GpioAction::BUTTON_PRESS_RIGHT,
+	GpioAction::BUTTON_PRESS_B1, GpioAction::BUTTON_PRESS_B2,
+	GpioAction::BUTTON_PRESS_B3, GpioAction::BUTTON_PRESS_B4,
+	GpioAction::BUTTON_PRESS_L1, GpioAction::BUTTON_PRESS_R1,
+	GpioAction::BUTTON_PRESS_L2, GpioAction::BUTTON_PRESS_R2,
+	GpioAction::BUTTON_PRESS_S1, GpioAction::BUTTON_PRESS_S2,
+	GpioAction::BUTTON_PRESS_L3, GpioAction::BUTTON_PRESS_R3,
+	GpioAction::BUTTON_PRESS_A1, GpioAction::BUTTON_PRESS_A2,
+};
+
+// The GPIO a control sits on, for the light table's diagnostic column. A unique
+// match or nothing: a board that maps one action across several pins has no
+// single answer, and here an honest "unknown" beats picking the first.
+static uint8_t pinForAction(GpioAction action) {
+	GpioMappingInfo * pinMappings = Storage::getInstance().getProfilePinMappings();
+	uint8_t found = 0xFF;
+
+	for (uint8_t pin = 0; pin < (uint8_t)NUM_BANK0_GPIOS; pin++) {
+		if (pinMappings[pin].action != action)
+			continue;
+		if (found != 0xFF)
+			return 0xFF;
+		found = pin;
+	}
+	return found;
+}
+
 // Resolves a protocol button ID to its physical LED chain range from the live
 // configuration; {-1, 0} when the control has no LED on this board.
 static LedRange resolveButton(uint8_t buttonId) {
@@ -103,7 +136,15 @@ static LedRange resolveButton(uint8_t buttonId) {
 	}
 
 	if (buttonId == HOST_LIGHTING_BUTTON_CASE) {
-		if ((lo.caseRGBIndex < 0) || (lo.caseRGBCount == 0))
+		// The index is rejected outright when it lands outside the addressable
+		// space, as every branch above does. Clamping the count instead is not
+		// enough: the subtraction below is signed, so an index past the end
+		// yields a negative width that becomes a huge one as an unsigned count,
+		// and an index of exactly the maximum yields a zero-width range at an
+		// address no pixel occupies. Neither is a range, and both would be
+		// published to a host through page 2 and the light table.
+		if ((lo.caseRGBIndex < 0) || (lo.caseRGBIndex >= HOST_LIGHTING_MAX_LEDS) ||
+				(lo.caseRGBCount == 0))
 			return none;
 		uint32_t count = lo.caseRGBCount;
 		if ((uint32_t)lo.caseRGBIndex + count > HOST_LIGHTING_MAX_LEDS)
@@ -119,26 +160,58 @@ static void stagePixel(uint32_t index, uint32_t colour) {
 	stagingValid[index / 32] |= (1u << (index % 32));
 }
 
+// Clamped against the staging buffer rather than trusting the caller: a stored
+// configuration can name an LED index past the end of the chain, and the ranges
+// resolveButton derives from one are only as sound as the values behind them.
+// Bounding the write here keeps a bad config a lighting bug instead of a
+// memory-corruption bug, for every present and future caller.
 static void stageRange(const LedRange & range, uint32_t colour) {
-	for (uint8_t i = 0; i < range.count; i++)
-		stagePixel((uint32_t)range.first + i, colour);
+	if (range.first < 0)
+		return;
+
+	uint32_t end = (uint32_t)range.first + range.count;
+	if (end > HOST_LIGHTING_MAX_LEDS)
+		end = HOST_LIGHTING_MAX_LEDS;
+
+	for (uint32_t index = (uint32_t)range.first; index < end; index++)
+		stagePixel(index, colour);
 }
 
 // GET_CAPS pages are ordered so hosts only ever read forward: page 0 identity
 // (fetch once), page 1 runtime state (the cheap poll target), page 2 LED map
 // (carries the same fingerprint as page 1, so a fetched map self-certifies
 // against the state that prompted it), page 3 on-board animations, page 4
-// per-light positions (optional, spatial).
+// per-light positions, page 5 the light table.
 
-// FNV-1a over the resolved LED ranges: changes exactly when the map a host
-// would cache changes (profile pin remaps, webconfig LED edits)
+// FNV-1a over everything the capability pages say about the map, so one value
+// certifies pages 2, 4 and 5 together and a host knows from a single poll that
+// anything it cached is still true.
+//
+// The pin map is hashed wholesale rather than through per-control reverse
+// lookups. It is both cheaper - one pass instead of one scan per control - and
+// the honest scope: a profile switch remaps pins underneath the board without
+// touching a single stored LED index, which changes what page 5 reports about
+// ownership while every LED range stays exactly as it was.
 static uint32_t ledMapFingerprint() {
 	uint32_t fingerprint = 2166136261u;
+
 	for (uint8_t id = 0; id <= HOST_LIGHTING_BUTTON_CASE; id++) {
 		LedRange range = resolveButton(id);
 		fingerprint = (fingerprint ^ (uint8_t)range.first) * 16777619u;
 		fingerprint = (fingerprint ^ range.count) * 16777619u;
 	}
+
+	GpioMappingInfo * pinMappings = Storage::getInstance().getProfilePinMappings();
+	for (uint8_t pin = 0; pin < (uint8_t)NUM_BANK0_GPIOS; pin++)
+		fingerprint = (fingerprint ^ (uint32_t)pinMappings[pin].action) * 16777619u;
+
+	// Board shape page 2 carries and the range loop above never reaches
+	const LEDOptions & lo = Storage::getInstance().getLedOptions();
+	fingerprint = (fingerprint ^ (uint32_t)lo.ledsPerButton) * 16777619u;
+	fingerprint = (fingerprint ^ (uint32_t)lo.ledFormat) * 16777619u;
+	fingerprint = (fingerprint ^ (uint32_t)lo.ledLayout) * 16777619u;
+	fingerprint = (fingerprint ^ (uint32_t)lo.brightnessMaximum) * 16777619u;
+
 	return fingerprint;
 }
 
@@ -163,10 +236,27 @@ static void buildCapsIdentity(uint8_t * reply) {
 	reply[pos] = 0;
 }
 
+// Published by the LED addon, which owns the render interval; zero until it
+// has, which a host reads as "not stated" rather than as a rate of nothing
+static uint8_t renderRateHz = 0;
+
+void HostLighting::setRenderRate(uint8_t hz) {
+	renderRateHz = hz;
+}
+
+void HostLighting::releaseTakeover() {
+	liveActive = false;
+}
+
 // Page 1 - runtime state, everything that changes without replugging:
 // [3] current InputMode   [4] profile number   [5] brightness step
 // [6] host-assigned player (0 = none)   [7..10] LED-map fingerprint (LE)
 // [11] current on-board animation index
+// [12..15] feature bitmask (LE)   [16] LED framework   [17] animation namespace
+// [18] render rate in Hz (0 = not stated)
+// Everything from [12] was appended in v1.1. Replies are zero-filled before they
+// are built, so firmware predating those fields reports them as zero, which
+// reads correctly as no optional features and nothing stated.
 static void buildCapsState(uint8_t * reply) {
 	reply[3] = (uint8_t)DriverManager::getInstance().getInputMode();
 
@@ -183,12 +273,43 @@ static void buildCapsState(uint8_t * reply) {
 	memcpy(&reply[7], &fingerprint, 4);
 
 	reply[11] = (uint8_t)animationOptions.baseAnimationIndex;
+
+	// This pipeline has no per-light positions, so bit 0 stays clear. Bit 1 is
+	// set whenever page 5 has anything to say, which here means the board has at
+	// least one control with a light.
+	uint32_t features = 0;
+	for (uint8_t id = 0; id <= HOST_LIGHTING_BUTTON_CASE; id++) {
+		if (resolveButton(id).first >= 0) {
+			features |= HOST_LIGHTING_FEATURE_LIGHT_TABLE;
+			break;
+		}
+	}
+	memcpy(&reply[12], &features, 4);
+
+	reply[16] = HOST_LIGHTING_FRAMEWORK_CLASSIC;
+	reply[17] = HOST_LIGHTING_ANIM_EFFECTS;
+	reply[18] = renderRateHz;
+}
+
+// Tracks the highest LED index any reported range reaches, for page 2's [6].
+// An extent rather than a sum of counts: a sum only equals the strip length
+// when every LED belongs to a control this page names, and it undercounts by
+// exactly the lights a host most needs to know about on a board that has more
+// lights than named controls. An extent is also a number a host can size a
+// frame buffer from, which a sum is not.
+static void noteExtent(uint32_t & extent, const LedRange & range) {
+	if (range.first < 0)
+		return;
+
+	uint32_t end = (uint32_t)range.first + range.count;
+	if (end > extent)
+		extent = end;
 }
 
 // Page 2 - LED map; the trailing fingerprint matches page 1's for the same
 // map, letting a host confirm a coherent snapshot without re-reading page 1:
 // [3] ledsPerButton   [4] LEDFormat   [5] ButtonLayout
-// [6] total LED count   [7] brightness maximum
+// [6] LED count, as the extent of the mapped range   [7] brightness maximum
 // [8..43]  per-button {first LED, count} pairs, button IDs 0-17 (0xFF = unmapped)
 // [44..47] player LED indexes   [48] turbo LED index   [49..50] case {first, count}
 // [51..54] LED-map fingerprint (LE)
@@ -201,7 +322,7 @@ static void buildCapsLedMap(uint8_t * reply) {
 	reply[5] = (uint8_t)lo.ledLayout;
 	reply[7] = (uint8_t)((lo.brightnessMaximum > 255) ? 255 : lo.brightnessMaximum);
 
-	uint32_t totalLeds = 0;
+	uint32_t ledExtent = 0;
 	for (uint8_t b = 0; b < HOST_LIGHTING_BUTTON_COUNT; b++) {
 		LedRange range = resolveButton(b);
 		if (range.first < 0) {
@@ -210,31 +331,41 @@ static void buildCapsLedMap(uint8_t * reply) {
 		} else {
 			reply[8 + b * 2] = (uint8_t)range.first;
 			reply[9 + b * 2] = range.count;
-			totalLeds += range.count;
 		}
+		noteExtent(ledExtent, range);
 	}
 
 	for (uint8_t p = 0; p < 4; p++) {
 		LedRange range = resolveButton(HOST_LIGHTING_BUTTON_PLED1 + p);
 		reply[44 + p] = (range.first < 0) ? 0xFF : (uint8_t)range.first;
-		if (range.first >= 0)
-			totalLeds += 1;
+		noteExtent(ledExtent, range);
 	}
 
 	LedRange turbo = resolveButton(HOST_LIGHTING_BUTTON_TURBO);
 	reply[48] = (turbo.first < 0) ? 0xFF : (uint8_t)turbo.first;
-	if (turbo.first >= 0)
-		totalLeds += 1;
+	noteExtent(ledExtent, turbo);
 
 	LedRange caseRange = resolveButton(HOST_LIGHTING_BUTTON_CASE);
 	reply[49] = (caseRange.first < 0) ? 0xFF : (uint8_t)caseRange.first;
 	reply[50] = caseRange.count;
-	totalLeds += caseRange.count;
+	noteExtent(ledExtent, caseRange);
 
-	reply[6] = (uint8_t)((totalLeds > 255) ? 255 : totalLeds);
+	reply[6] = (uint8_t)((ledExtent > 255) ? 255 : ledExtent);
 
 	uint32_t fingerprint = ledMapFingerprint();
 	memcpy(&reply[51], &fingerprint, 4);
+}
+
+// How many on-board animations a host may actually select. AnimationStation
+// counts the custom theme as an extra effect once the user has configured one
+// (see its constructor in animationstation.cpp), and the board's own hotkeys
+// will cycle onto it, so reporting the bare TOTAL_EFFECTS hides an animation
+// the board really has and makes SET_ANIMATION refuse a valid index. Derived
+// from stored config rather than read from AnimationStation because HLP holds
+// no handle on the LED addon by design; keep this in step with that constructor.
+static uint8_t onBoardAnimationCount() {
+	const AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
+	return (uint8_t)(TOTAL_EFFECTS + (animationOptions.hasCustomTheme ? 1 : 0));
 }
 
 // Page 3 - on-board animation selection (the lighting shown outside host
@@ -242,7 +373,7 @@ static void buildCapsLedMap(uint8_t * reply) {
 static void buildCapsAnimations(uint8_t * reply) {
 	const AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
 	reply[3] = (uint8_t)animationOptions.baseAnimationIndex;
-	reply[4] = (uint8_t)TOTAL_EFFECTS;
+	reply[4] = onBoardAnimationCount();
 }
 
 // Page 4 - per-light grid positions, for spatially aware host effects.
@@ -253,6 +384,92 @@ static void buildCapsPositions(uint8_t * reply, uint8_t startEntry) {
 	(void)startEntry;
 	reply[3] = 0;
 	reply[4] = 0;
+}
+
+// Page 5 - the light table: one twelve-byte record per light, the same layout
+// on every pipeline, so a host parses one way and reads the flags and sentinels
+// to learn which fields carry real data on this board.
+//
+// This pipeline keeps no per-light records - all it knows is a scalar config
+// slot per control. Rather than answer with an empty page, which would leave
+// every host maintaining a page 2 inference path forever for the firmware most
+// people actually run, it rebuilds those slots into records and leaves the
+// PER_LIGHT flag clear. That absence carries the honest part: these rows are
+// per-control, so a board wiring two buttons to one action cannot be
+// represented here, and each action is definitional rather than read back
+// from a live light.
+//
+// Reply: [3] total records   [4] start entry, echoed   [5] count in this reply
+//        [6] record stride   [7..54] records   [60..63] LED-map fingerprint
+// The echo makes a paged walk self-identifying, which page 4 is not, and the
+// fingerprint lets a host notice the map changing underneath a multi-read walk.
+static void buildCapsLights(uint8_t * reply, uint8_t startEntry) {
+	// Every control that has a light, in protocol ID order
+	uint8_t ids[HOST_LIGHTING_BUTTON_COUNT + 6];
+	uint8_t total = 0;
+
+	for (uint8_t id = 0; id < HOST_LIGHTING_BUTTON_COUNT; id++) {
+		if (resolveButton(id).first >= 0)
+			ids[total++] = id;
+	}
+	for (uint8_t id = HOST_LIGHTING_BUTTON_PLED1; id <= HOST_LIGHTING_BUTTON_CASE; id++) {
+		if (resolveButton(id).first >= 0)
+			ids[total++] = id;
+	}
+
+	reply[3] = total;
+	reply[4] = startEntry;
+	reply[6] = HOST_LIGHTING_LIGHT_STRIDE;
+
+	uint8_t count = 0;
+	for (uint8_t i = startEntry;
+			(i < total) && (count < HOST_LIGHTING_LIGHTS_PER_PAGE);
+			i++, count++) {
+		const uint8_t id = ids[i];
+		const LedRange range = resolveButton(id);
+		uint8_t * record = &reply[7 + count * HOST_LIGHTING_LIGHT_STRIDE];
+
+		uint8_t type = HOST_LIGHTING_LIGHT_ACTION;
+		uint8_t player = 0xFF;
+		uint8_t pin = 0xFF;
+		int16_t action = HOST_LIGHTING_ACTION_NONE;
+
+		if (id < HOST_LIGHTING_BUTTON_COUNT) {
+			action = (int16_t)canonicalAction[id];
+			pin = pinForAction(canonicalAction[id]);
+		} else if (id <= HOST_LIGHTING_BUTTON_PLED4) {
+			type = (uint8_t)(HOST_LIGHTING_LIGHT_PLAYER1 + (id - HOST_LIGHTING_BUTTON_PLED1));
+			player = (uint8_t)(id - HOST_LIGHTING_BUTTON_PLED1);
+		} else if (id == HOST_LIGHTING_BUTTON_TURBO) {
+			// The turbo light is addressed by its LED index, never by a pin: the
+			// action named here is the turbo button, a different thing entirely
+			type = HOST_LIGHTING_LIGHT_TURBO;
+			action = (int16_t)GpioAction::BUTTON_PRESS_TURBO;
+		} else {
+			type = HOST_LIGHTING_LIGHT_CASE;
+		}
+
+		record[0]  = (uint8_t)range.first;
+		record[1]  = range.count;
+		record[2]  = type;
+		record[3]  = id;
+		record[4]  = pin;
+		record[5]  = (uint8_t)(action & 0xFF);
+		record[6]  = (uint8_t)((action >> 8) & 0xFF);
+		record[7]  = player;
+		record[8]  = 0xFF; // no case-group index exists in this pipeline
+		record[9]  = 0;    // no positions either, so the POSITION flag stays clear
+		record[10] = 0;
+		// Both flags clear: this pipeline has no per-light table and no
+		// positions, so it asserts neither. The record is rebuilt from
+		// per-control configuration, which is exactly what a clear PER_LIGHT
+		// tells a host.
+		record[11] = 0;
+	}
+	reply[5] = count;
+
+	uint32_t fingerprint = ledMapFingerprint();
+	memcpy(&reply[60], &fingerprint, 4);
 }
 
 bool HostLighting::enabledForMode(InputMode mode) {
@@ -379,6 +596,8 @@ void HostLighting::setReport(uint8_t report_id, hid_report_type_t report_type, c
 				buildCapsAnimations(responseBuffer);
 			else if (buffer[2] == 4)
 				buildCapsPositions(responseBuffer, (bufsize > 3) ? buffer[3] : 0);
+			else if (buffer[2] == 5)
+				buildCapsLights(responseBuffer, (bufsize > 3) ? buffer[3] : 0);
 			else
 				status = HOST_LIGHTING_STATUS_INVALID_ARG;
 			break;
@@ -394,6 +613,11 @@ void HostLighting::setReport(uint8_t report_id, hid_report_type_t report_type, c
 				timeoutMs = HOST_LIGHTING_DEFAULT_TIMEOUT_MS;
 			if (timeoutMs < 100)
 				timeoutMs = 100;
+			// Clamped rather than refused: a host asking for longer than we are
+			// willing to hold the lights still gets a working session, just a
+			// shorter leash than it asked for
+			if (timeoutMs > HOST_LIGHTING_MAX_TIMEOUT_MS)
+				timeoutMs = HOST_LIGHTING_MAX_TIMEOUT_MS;
 			liveTakeover = buffer[2];
 			liveTimeoutMs = timeoutMs;
 			liveApplyBrightness = (buffer[5] != 0);
@@ -505,7 +729,7 @@ void HostLighting::setReport(uint8_t report_id, hid_report_type_t report_type, c
 			// Selects the on-board animation shown outside host control; the
 			// render core applies it, and the choice persists like the hotkeys'
 			if (bufsize < 3) { status = HOST_LIGHTING_STATUS_INVALID_ARG; break; }
-			if (buffer[2] >= TOTAL_EFFECTS) {
+			if (buffer[2] >= onBoardAnimationCount()) {
 				status = HOST_LIGHTING_STATUS_INVALID_ARG;
 				break;
 			}

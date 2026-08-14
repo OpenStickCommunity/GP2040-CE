@@ -54,6 +54,7 @@ void tud_umount_cb(void)
 {
 	usb_mounted = false;
 	usb_suspended = false;
+	HostLighting::releaseTakeover();
 }
 
 // Invoked when usb bus is suspended
@@ -62,6 +63,8 @@ void tud_umount_cb(void)
 void tud_suspend_cb(bool remote_wakeup_en) {
 	(void)remote_wakeup_en;
 	usb_suspended = true;
+	// The host holding the takeover is, by definition, no longer talking
+	HostLighting::releaseTakeover();
 }
 
 // Invoked when usb bus is resumed

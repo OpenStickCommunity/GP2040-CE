@@ -22,9 +22,12 @@
 // Staging commands (SET_BUTTONS/SET_RANGE/SET_RANGE_RGBW/FILL/CLEAR) edit an
 // off-screen frame that COMMIT publishes atomically to the render loop;
 // RELEASE - or the host going quiet past the keepalive timeout - hands the
-// LEDs back to the on-board animations. GET_CAPS serves five forward-only
-// pages (identity, runtime state, LED map, animations, positions) built from
-// the board's live configuration, so hosts need no per-board knowledge.
+// LEDs back to the on-board animations. GET_CAPS serves six forward-only
+// pages (identity, runtime state, LED map, animations, positions, light table)
+// built from the board's live configuration, so hosts need no per-board
+// knowledge. Page 2 answers "where do I write this control" for the eighteen
+// canonical controls; page 5 is the full inventory, and where a control owns
+// several lights it is page 5 that says so.
 // Management commands select the on-board idle animation (SET_ANIMATION) and,
 // magic-guarded, switch input mode or reboot into webconfig or the bootloader.
 //
@@ -43,8 +46,23 @@
 #define HOST_LIGHTING_XINPUT 1
 #endif
 
+// v1.1 adds capability page 5, appends fields to page 1, and widens FILL's
+// buttons scope to every button light. No command ID and no existing payload
+// layout changes, so every field a v1.0 host reads is still where it was.
+//
+// What a v1.0 host can observe did change in places, and the spec lists every
+// case rather than claiming otherwise: page 2 [6] reports the extent of the
+// mapped range instead of the sum of the ranges above it, SET_MODE's timeout
+// gained a ceiling, FILL's buttons scope widened, and the map fingerprint now
+// also moves on profile pin remaps. All are the board describing itself more
+// accurately at the same offsets, which is what keeps this a minor bump; the
+// changelog in docs/host-lighting.md is the authority.
+//
+// The caps format byte on page 0 stays at 2: it versions that page's layout,
+// which is untouched, and moving it would force every host to re-derive a
+// parser for a surface that did not move.
 #define HOST_LIGHTING_PROTOCOL_VERSION_MAJOR 1
-#define HOST_LIGHTING_PROTOCOL_VERSION_MINOR 0
+#define HOST_LIGHTING_PROTOCOL_VERSION_MINOR 1
 
 // All transfers are fixed-size reports: [0]=command, [1]=sequence, [2..63]=payload.
 // Replies echo the sequence and set bit 7 of the command byte.
@@ -85,6 +103,11 @@
 #define HOST_LIGHTING_BUTTONS_MAX_ENTRIES    15
 #define HOST_LIGHTING_POSITIONS_PER_PAGE     19
 #define HOST_LIGHTING_DEFAULT_TIMEOUT_MS   2000
+// Upper bound on the keepalive a host may ask for. The field is sixteen bits,
+// so without one a dead host could hold the lights for over a minute. Not
+// configurable: a host that wants to idle longer sends PING, which refreshes
+// the keepalive and is how the protocol expects a quiet host to behave.
+#define HOST_LIGHTING_MAX_TIMEOUT_MS      10000
 
 #define HOST_LIGHTING_FILL_SCOPE_ALL     0x00
 #define HOST_LIGHTING_FILL_SCOPE_BUTTONS 0x01
@@ -94,12 +117,82 @@
 #define HOST_LIGHTING_TAKEOVER_WHOLE_FRAME 0x00
 #define HOST_LIGHTING_TAKEOVER_OVERLAY     0x01
 
-// Button IDs: 0-17 in GP2040-CE canonical order, then addressable specials
+// Button IDs follow GP2040-CE's gamepad bit order - the four dpad masks, then
+// the button masks from B1 upward (GamepadState.h). That is deliberately not
+// GpioAction's declaration order, whose tail runs A1, A2, L3, R3; the bridge
+// between the two is a table, never arithmetic.
+//
+// 0-17 are the canonical set page 2 can express and are frozen from v1.0.
+// 18-19 name A3 and A4, and 30-41 name E1-E12, both added in v1.1: page 2 has
+// no slot for them, so they appear only in the light table, and a host learns
+// them from there. 20-23 stay permanently unassigned - those mask bits are
+// GAMEPAD_MASK_DU..DR, which are the dpad in a second encoding rather than
+// four more controls, and giving Up a second ID would be a lasting mistake.
 #define HOST_LIGHTING_BUTTON_COUNT    18
+#define HOST_LIGHTING_BUTTON_A3       18
+#define HOST_LIGHTING_BUTTON_A4       19
 #define HOST_LIGHTING_BUTTON_PLED1    24
 #define HOST_LIGHTING_BUTTON_PLED4    27
 #define HOST_LIGHTING_BUTTON_TURBO    28
 #define HOST_LIGHTING_BUTTON_CASE     29
+#define HOST_LIGHTING_BUTTON_E1       30
+#define HOST_LIGHTING_BUTTON_E12      41
+#define HOST_LIGHTING_BUTTON_NONE     0xFF
+
+// Page 5 - the light table. One record per light, the same twelve bytes on
+// every pipeline: a board fills in what it knows and writes the sentinels
+// where it does not, so a host parses one way and reads flags to learn what
+// is real. Availability is a property of the board, never of the version.
+#define HOST_LIGHTING_LIGHT_STRIDE       12
+#define HOST_LIGHTING_LIGHTS_PER_PAGE     4
+
+// Light kinds as HLP defines them. Numerically equal to the LED-refactor's
+// LightType today, but owned here: that enum exists in only one tree and is
+// itself hand-mirrored from pixel.h, so the wire cannot depend on it.
+#define HOST_LIGHTING_LIGHT_ACTION    0x00
+#define HOST_LIGHTING_LIGHT_CASE      0x01
+#define HOST_LIGHTING_LIGHT_TURBO     0x02
+#define HOST_LIGHTING_LIGHT_PLAYER1   0x03
+#define HOST_LIGHTING_LIGHT_PLAYER4   0x06
+#define HOST_LIGHTING_LIGHT_UNKNOWN   0xFF
+
+// Per-record flags, both positive assertions: a set bit is the board vouching
+// for something, so a record asserting nothing reads as the weaker case.
+// POSITION says the grid coordinates are real - it cannot be inferred from
+// (0,0), because positions are origin-normalised so some light always sits
+// there. PER_LIGHT says the record was read from a per-light table and
+// describes exactly one light; clear means it was rebuilt from per-control
+// configuration, where duplicates are structurally invisible.
+#define HOST_LIGHTING_LIGHT_FLAG_POSITION     0x01
+#define HOST_LIGHTING_LIGHT_FLAG_PER_LIGHT    0x02
+
+// GpioAction travels verbatim as a signed 16-bit value so it never needs an
+// HLP allocation when GP2040-CE adds one. This sentinel means no owning action
+// exists, which is distinct from the pin's action genuinely being NONE (-10).
+#define HOST_LIGHTING_ACTION_NONE     ((int16_t)0x8000)
+
+// Page 1 feature bits. A cleared bit is a promise that the corresponding page
+// returns nothing, not merely that it might.
+#define HOST_LIGHTING_FEATURE_POSITIONS    (1u << 0)
+#define HOST_LIGHTING_FEATURE_LIGHT_TABLE  (1u << 1)
+
+// Page 1 LED-framework byte. CLASSIC is the AnimationStation the released
+// firmware ships; REFACTOR is the Lights/Light rewrite on the LED-refactor
+// branch. Zero is reserved for "not reported", so a board that never wrote the
+// byte cannot be read as naming a framework. Diagnostic only: hosts must branch
+// on the feature bits and the per-record flags, never on this, because the two
+// differ in more ways than one byte can carry.
+#define HOST_LIGHTING_FRAMEWORK_UNREPORTED 0x00
+#define HOST_LIGHTING_FRAMEWORK_CLASSIC    0x01
+#define HOST_LIGHTING_FRAMEWORK_REFACTOR   0x02
+
+// Which universe page 3's animation index selects. Classic indexes its
+// built-in effects; the refactor indexes the user's stored animation profiles.
+// Those are genuinely different objects, so a host that assumes one silently
+// selects the wrong thing on a board running the other. Naming the universe
+// costs a byte and means neither has to pretend to be the other.
+#define HOST_LIGHTING_ANIM_EFFECTS    0x01
+#define HOST_LIGHTING_ANIM_PROFILES   0x02
 
 // The HID instance index the lighting interface occupies in HID-class modes
 // (the gamepad interface enumerates first as instance 0). In XInput mode the
@@ -146,6 +239,14 @@ namespace HostLighting {
 	// The verdict survives soft reboots and clears on power loss (unplug).
 	void xinputAutoDetectTask(bool consoleAuthSeen);
 
+	// Publishes the LED render rate for GET_CAPS; called by the LED addon, which
+	// owns the interval. Reported rather than asserted by the specification,
+	// because the frameworks tick at different rates - classic at 100 Hz, the
+	// refactor at 40 Hz, both derived from the LED addon's intervalMS - and a
+	// host that streams faster than the board renders simply discards the
+	// difference.
+	void setRenderRate(uint8_t hz);
+
 	const uint8_t * getReportDescriptor();
 
 	uint16_t getReport(uint8_t report_id, hid_report_type_t report_type, uint8_t * buffer, uint16_t reqlen);
@@ -161,6 +262,12 @@ namespace HostLighting {
 	// animation index, or -1 when none is pending. Called from the LED render
 	// loop (core1), which owns animation selection.
 	int16_t takeLocalAnimationRequest();
+
+	// Hands the LEDs back to the on-board animations, as RELEASE does. Called
+	// when the bus goes away: takeover is session state, and without this it
+	// outlives the session that set it, so the next host to send anything at
+	// all revives the previous host's frame before saying what it wants.
+	void releaseTakeover();
 }
 
 #endif
