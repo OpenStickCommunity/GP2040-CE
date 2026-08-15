@@ -128,7 +128,7 @@ uint32_t GPGFX_TinySSD1306::getPixel(uint8_t x, uint8_t y) {
 		row=((y/8)*MAX_SCREEN_WIDTH)+x;
 		bitIndex=y % 8;
 
-        result = (frameBuffer[row] >> bitIndex) && 0x01;
+        result = (frameBuffer[row] >> bitIndex) & 0x01;
 	}
 
     return result;
