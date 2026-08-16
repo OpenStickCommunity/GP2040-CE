@@ -57,6 +57,15 @@ interface next to the regular controller interface. Hosts exchange fixed
 - **Always on**: the composite identity from boot (PC-only while enabled).
 - **Off**: stock XInput identity always; no lighting interface in XInput mode.
 
+The composite presents its own USB identity, chosen so Windows queries the
+MS OS descriptors that bind its Xbox 360 driver. A user USB ID override
+replaces that identity, and Windows caches the query's verdict per VID:PID:
+an ID the PC has already seen on a device without those descriptors can
+leave the controller interface unbound there. The lighting interface is
+HID-class and enumerates regardless - the protocol suite passes in full
+under an overridden ID. If the controller side fails after an override in
+this mode, choose an ID that PC has not seen before.
+
 With the add-on disabled (the default), every mode presents byte-identical
 USB descriptors to stock firmware.
 
@@ -103,7 +112,8 @@ command, `2` invalid argument.
 | 0x12 | SET_RANGE_RGBW | `[2]=start, [3]=count (1-15)`, count x `[R,G,B,W]` | Boards without a white channel ignore W |
 | 0x13 | FILL | `[2]=scope (0 all, 1 buttons, 2 case, 3 player LEDs), [3..5]=RGB` | Stage a scope. The buttons scope covers every button light, including any on the extended controls |
 | 0x14 | CLEAR | - | Reset staged pixels and overlay validity |
-| 0x15 | SET_LIGHT | `[2]=n (1-15)`, n x `[ordinal,R,G,B]` | Stage single lights by page 5 ordinal; reply `[3]=applied, [4]=skipped` |
+| 0x15 | SET_LIGHT | `[2]=n (1-15)`, n x `[ordinal,R,G,B]` | Stage single lights by page 5 ordinal; reply `[3]=applied, [4]=skipped, [5..6]=outcome mask LE (bit n set = entry n applied)` |
+| 0x16 | SET_LIGHT_RGBW | `[2]=n (1-12)`, n x `[ordinal,R,G,B,W]` | As SET_LIGHT with a white component; boards without a white channel ignore W |
 
 *Frame lifecycle (0x30-0x3F)*
 | 0x30 | COMMIT | - | Atomically publish the staged frame |
@@ -141,7 +151,10 @@ gamepad bits are the dpad in a second encoding, not four more controls.
 Every named button ID stages: an entry naming a control the board has no
 light for is counted as skipped, the extended IDs included. To colour one
 specific light when a control owns several, stage it by its page 5 ordinal
-with `SET_LIGHT`.
+with `SET_LIGHT`, or `SET_LIGHT_RGBW` where the chain has a white channel.
+A skipped ordinal means the light table changed underneath the host; the
+reply's outcome mask names the entry, so the host knows what to re-read
+without walking page 5 on speculation.
 
 `SET_INPUT_MODE` values are the firmware's `InputMode` enum (0 XINPUT,
 1 SWITCH, 2 PS3, 3 KEYBOARD, 4 PS4,
@@ -411,15 +424,48 @@ capability decoding, streaming and board management live in the
   boot-time button holds.
 - `SET_RANGE_RGBW` may be sent to any board; the white component only renders
   on GRBW/RGBW strips (see page 2's colour format).
+- **White handling.** On a white-format chain a host-supplied W byte renders
+  on the white emitter alongside the RGB emitters; send the subtractive
+  conversion (W = min(R,G,B), RGB reduced by W) and each colour lands on the
+  emitters that produce it. A host that sends no W - any RGB-only host - gets
+  achromatic colours (R=G=B) mapped to the white emitter by the board itself,
+  the same mapping the on-board animations use. Firmware before v1.3 applied
+  that mapping even when a W byte was supplied, so a subtractive white
+  (0,0,0,W) rendered dark: gate host-supplied W on `PING` minor >= 3 and send
+  plain RGB to older boards.
 
 ## Changelog
 
-Everything above describes the protocol as it is now. This section records
-what changed between versions, for hosts written against an earlier one.
+Everything above describes the Host Lighting Protocol (HLP) as it is now.
+This section records what changed between HLP versions, for hosts written
+against an earlier one.
 
-Versions are the protocol version `PING` reports, not the firmware version.
-A host should gate on `>= v1.0` and read the capability pages, never require
-an exact version.
+Versions are the Host Lighting Protocol version `PING` reports, not the
+GP2040-CE firmware version. A host should gate on `>= v1.0` and read the
+capability pages for maximum compatibility, rather than require an exact
+version.
+
+### v1.3 - 17 August 2026
+
+Additive. A host detects it by minor version >= 3; nothing existing moved.
+
+**Added**
+
+- **Per-entry outcome mask.** `SET_LIGHT` replies define `[5..6]` as a
+  little-endian mask, bit n set meaning entry n applied. Its popcount equals
+  the applied count, and bits at or above the entry count are zero. A host
+  can now name the stale ordinal behind a skip instead of re-walking page 5.
+  Earlier firmware zero-fills these bytes, so gate on the minor version
+  before reading them.
+- **`SET_LIGHT_RGBW` (0x16)**: as `SET_LIGHT` with a white component, up to
+  12 entries per report, the pairing `SET_RANGE` already had. Boards whose
+  chain has no white channel ignore W, exactly as `SET_RANGE_RGBW` does.
+  The reply carries the same counts and outcome mask.
+- **Host-supplied W is honoured on white-format chains.** Earlier firmware
+  routed achromatic colours to the white emitter without reading the host's
+  W byte, so a subtractive white (0,0,0,W) rendered dark. From v1.3 a host
+  pixel carrying W composes all four channels; pixels without W render
+  exactly as before. See White handling under Compatibility.
 
 ### v1.2 - 16 August 2026
 
@@ -437,11 +483,12 @@ Additive. A host detects it by minor version >= 2; nothing existing moved.
 
 ### v1.1 - 16 August 2026
 
-Additive. No command ID and no existing payload layout changed: every field a
-v1.0 host reads is still at the offset and width it was, so a v1.0 host keeps
-working unchanged. Two values it can observe are more accurate than they were,
-both listed under **Changed**. Input sampling and per-frame render cost are
-unaffected - the new work runs only on capability reads.
+Additive. A host detects it by minor version >= 1; no command ID and no
+existing payload layout changed: every field a v1.0 host reads is still at
+the offset and width it was, so a v1.0 host keeps working unchanged. Two
+values it can observe are more accurate than they were, both listed under
+**Changed**. Input sampling and per-frame render cost are unaffected - the
+new work runs only on capability reads.
 
 **Added**
 

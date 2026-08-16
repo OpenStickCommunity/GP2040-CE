@@ -66,8 +66,15 @@
 // SET_BUTTONS stage the extended IDs on boards that have such lights. Both are
 // additive - a new command in a reserved slot and a skip that becomes an apply
 // where a light exists - and a host detects them by minor version >= 2.
+//
+// v1.3 defines reply bytes [5..6] of the per-light staging commands as a
+// per-entry outcome mask (bit n set = entry n applied), so a skip names the
+// stale entry instead of forcing a page 5 re-walk, and adds SET_LIGHT_RGBW,
+// the RGBW pairing SET_RANGE already has. Both are additive - the mask
+// occupies bytes v1.2 zero-filled and the command sits in a reserved slot -
+// and a host detects them by minor version >= 3.
 #define HOST_LIGHTING_PROTOCOL_VERSION_MAJOR 1
-#define HOST_LIGHTING_PROTOCOL_VERSION_MINOR 2
+#define HOST_LIGHTING_PROTOCOL_VERSION_MINOR 3
 
 // All transfers are fixed-size reports: [0]=command, [1]=sequence, [2..63]=payload.
 // Replies echo the sequence and set bit 7 of the command byte.
@@ -88,6 +95,7 @@
 #define HOST_LIGHTING_CMD_FILL           0x13
 #define HOST_LIGHTING_CMD_CLEAR          0x14
 #define HOST_LIGHTING_CMD_SET_LIGHT      0x15
+#define HOST_LIGHTING_CMD_SET_LIGHT_RGBW 0x16
 // 0x30-0x3F: frame lifecycle
 #define HOST_LIGHTING_CMD_COMMIT         0x30
 #define HOST_LIGHTING_CMD_RELEASE        0x31
@@ -108,6 +116,7 @@
 #define HOST_LIGHTING_RANGE_RGBW_MAX_PIXELS  15
 #define HOST_LIGHTING_BUTTONS_MAX_ENTRIES    15
 #define HOST_LIGHTING_SET_LIGHT_MAX_ENTRIES  15
+#define HOST_LIGHTING_SET_LIGHT_RGBW_MAX_ENTRIES 12
 #define HOST_LIGHTING_POSITIONS_PER_PAGE     19
 #define HOST_LIGHTING_DEFAULT_TIMEOUT_MS   2000
 // Upper bound on the keepalive a host may ask for. The field is sixteen bits,

@@ -562,6 +562,39 @@ static void publishFrame() {
 	liveSeq = liveSeq + 1; // even: stable
 }
 
+// Shared by SET_LIGHT and SET_LIGHT_RGBW: stages one light per entry by its
+// page 5 ordinal. On this pipeline the ordinal space is the collected control
+// list, rebuilt here so the numbering always matches what page 5 most
+// recently reported. The reply carries the counts in [3..4] and a per-entry
+// outcome mask in [5..6] (bit n set = entry n applied), so a skip names the
+// stale entry instead of forcing a page 5 re-walk.
+static void stageLightEntries(const uint8_t * buffer, uint8_t entries,
+		bool withWhite, uint8_t * responseBuffer) {
+	uint8_t ids[HOST_LIGHTING_BUTTON_COUNT + 6];
+	uint8_t total = collectLightIds(ids);
+	uint8_t stride = withWhite ? 5 : 4;
+	uint8_t applied = 0, skipped = 0;
+	uint16_t mask = 0;
+	for (uint8_t e = 0; e < entries; e++) {
+		const uint8_t * entry = &buffer[3 + e * stride];
+		if (entry[0] >= total) {
+			skipped++;
+			continue;
+		}
+		uint32_t colour = ((uint32_t)entry[1] << 16) |
+			((uint32_t)entry[2] << 8) | entry[3];
+		if (withWhite)
+			colour |= (uint32_t)entry[4] << 24;
+		stageRange(resolveButton(ids[entry[0]]), colour);
+		mask |= (uint16_t)1 << e;
+		applied++;
+	}
+	responseBuffer[3] = applied;
+	responseBuffer[4] = skipped;
+	responseBuffer[5] = (uint8_t)(mask & 0xFF);
+	responseBuffer[6] = (uint8_t)(mask >> 8);
+}
+
 void HostLighting::setReport(uint8_t report_id, hid_report_type_t report_type, const uint8_t * buffer, uint16_t bufsize) {
 	// Reports arrive via the OUT endpoint (type 0) or a SET_REPORT control request
 	if ((report_type != HID_REPORT_TYPE_INVALID) && (report_type != HID_REPORT_TYPE_OUTPUT))
@@ -655,10 +688,6 @@ void HostLighting::setReport(uint8_t report_id, hid_report_type_t report_type, c
 		}
 
 		case HOST_LIGHTING_CMD_SET_LIGHT: {
-			// Stages one light per entry by its page 5 ordinal. On this
-			// pipeline the ordinal space is the collected control list,
-			// rebuilt here so the numbering always matches what page 5 most
-			// recently reported.
 			if (bufsize < 3) { status = HOST_LIGHTING_STATUS_INVALID_ARG; break; }
 			uint8_t entries = buffer[2];
 			if ((entries == 0) || (entries > HOST_LIGHTING_SET_LIGHT_MAX_ENTRIES) ||
@@ -666,21 +695,21 @@ void HostLighting::setReport(uint8_t report_id, hid_report_type_t report_type, c
 				status = HOST_LIGHTING_STATUS_INVALID_ARG;
 				break;
 			}
-			uint8_t ids[HOST_LIGHTING_BUTTON_COUNT + 6];
-			uint8_t total = collectLightIds(ids);
-			uint8_t applied = 0, skipped = 0;
-			for (uint8_t e = 0; e < entries; e++) {
-				const uint8_t * entry = &buffer[3 + e * 4];
-				if (entry[0] >= total) {
-					skipped++;
-					continue;
-				}
-				stageRange(resolveButton(ids[entry[0]]),
-					((uint32_t)entry[1] << 16) | ((uint32_t)entry[2] << 8) | entry[3]);
-				applied++;
+			stageLightEntries(buffer, entries, false, responseBuffer);
+			break;
+		}
+
+		case HOST_LIGHTING_CMD_SET_LIGHT_RGBW: {
+			// As SET_LIGHT with a white component; boards whose colour format
+			// has no white channel simply ignore the fifth byte
+			if (bufsize < 3) { status = HOST_LIGHTING_STATUS_INVALID_ARG; break; }
+			uint8_t entries = buffer[2];
+			if ((entries == 0) || (entries > HOST_LIGHTING_SET_LIGHT_RGBW_MAX_ENTRIES) ||
+					(bufsize < (uint16_t)(3 + entries * 5))) {
+				status = HOST_LIGHTING_STATUS_INVALID_ARG;
+				break;
 			}
-			responseBuffer[3] = applied;
-			responseBuffer[4] = skipped;
+			stageLightEntries(buffer, entries, true, responseBuffer);
 			break;
 		}
 
@@ -869,6 +898,36 @@ void HostLighting::setReport(uint8_t report_id, hid_report_type_t report_type, c
 	}
 }
 
+// Host pixels are stored as 0xWWRRGGBB and convert through the framework's
+// RGB::value(), so host colours and on-board animations render identically -
+// with one carve-out. value()'s achromatic shortcut routes r==g==b colours to
+// the white emitter and never reads W, which would render a host's
+// subtractive white (0,0,0,W) black on a white-format chain. When the host
+// supplied a white byte on such a chain, compose the channel word directly
+// with value()'s own per-channel arithmetic instead; with no white byte the
+// shortcut applies as always, so RGB-only hosts render exactly as before.
+// Formats without a white channel take value() regardless, which ignores W.
+// The compositions below must be kept byte-for-byte in step with the general
+// GRBW/RGBW paths of RGB::value() in headers/animationstation/animation.h.
+static uint32_t convertHostPixel(uint32_t stored, LEDFormat format, float brightnessX) {
+	uint8_t r = (uint8_t)(stored >> 16), g = (uint8_t)(stored >> 8);
+	uint8_t b = (uint8_t)stored, w = (uint8_t)(stored >> 24);
+	if (w != 0) {
+		if (format == LED_FORMAT_GRBW)
+			return ((uint32_t)(g * brightnessX) << 24)
+				| ((uint32_t)(r * brightnessX) << 16)
+				| ((uint32_t)(b * brightnessX) << 8)
+				| (uint32_t)(w * brightnessX);
+		if (format == LED_FORMAT_RGBW)
+			return ((uint32_t)(r * brightnessX) << 24)
+				| ((uint32_t)(g * brightnessX) << 16)
+				| ((uint32_t)(b * brightnessX) << 8)
+				| (uint32_t)(w * brightnessX);
+	}
+	RGB colour(r, g, b, w);
+	return colour.value(format, brightnessX);
+}
+
 void HostLighting::applyToFrame(uint32_t * frame, uint32_t ledCount, float brightnessX, int format) {
 	if (!liveActive)
 		return;
@@ -904,12 +963,9 @@ void HostLighting::applyToFrame(uint32_t * frame, uint32_t ledCount, float brigh
 			seqAfter = liveSeq;
 		} while ((seqBefore != seqAfter) || (seqBefore & 1));
 
-		for (uint32_t i = 0; i < HOST_LIGHTING_MAX_LEDS; i++) {
-			// Stored as 0xWWRRGGBB; the white byte only matters on RGBW formats
-			RGB colour((uint8_t)(local[i] >> 16), (uint8_t)(local[i] >> 8),
-				(uint8_t)local[i], (uint8_t)(local[i] >> 24));
-			convertedPixels[i] = colour.value(static_cast<LEDFormat>(format), brightness);
-		}
+		for (uint32_t i = 0; i < HOST_LIGHTING_MAX_LEDS; i++)
+			convertedPixels[i] = convertHostPixel(local[i],
+				static_cast<LEDFormat>(format), brightness);
 		convertedSeq = seqAfter;
 		convertedBrightnessBits = brightnessBits;
 		convertedFormat = format;
