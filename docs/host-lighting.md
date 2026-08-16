@@ -103,6 +103,7 @@ command, `2` invalid argument.
 | 0x12 | SET_RANGE_RGBW | `[2]=start, [3]=count (1-15)`, count x `[R,G,B,W]` | Boards without a white channel ignore W |
 | 0x13 | FILL | `[2]=scope (0 all, 1 buttons, 2 case, 3 player LEDs), [3..5]=RGB` | Stage a scope. The buttons scope covers every button light, including any on the extended controls |
 | 0x14 | CLEAR | - | Reset staged pixels and overlay validity |
+| 0x15 | SET_LIGHT | `[2]=n (1-15)`, n x `[ordinal,R,G,B]` | Stage single lights by page 5 ordinal; reply `[3]=applied, [4]=skipped` |
 
 *Frame lifecycle (0x30-0x3F)*
 | 0x30 | COMMIT | - | Atomically publish the staged frame |
@@ -137,11 +138,10 @@ and a host learns them from there. 20-23 are permanently unassigned - those
 gamepad bits are the dpad in a second encoding, not four more controls.
 `0xFF` means no button ID names this light.
 
-The extended IDs are report-only. `SET_BUTTONS` stages 0-17 and 24-29; an entry
-naming A3, A4 or an E-button is counted as skipped, exactly as any control the
-board has no light for. Colour those lights with `SET_RANGE` instead, using the
-first LED and count page 5 gives for the record - which is why the record
-carries both.
+Every named button ID stages: an entry naming a control the board has no
+light for is counted as skipped, the extended IDs included. To colour one
+specific light when a control owns several, stage it by its page 5 ordinal
+with `SET_LIGHT`.
 
 `SET_INPUT_MODE` values are the firmware's `InputMode` enum (0 XINPUT,
 1 SWITCH, 2 PS3, 3 KEYBOARD, 4 PS4,
@@ -265,9 +265,10 @@ Each record is 12 bytes:
 | +9..10 | grid X, Y | valid only when the position flag is set |
 | +11 | flags | bit 0 position is real, bit 1 record came from a per-light table, rest zero. A clear bit claims nothing |
 
-A light's identity is its **record ordinal**, which is why the reply echoes the
-start entry. Records appear in the same order as page 4's, so ordinal *n* on
-one page is ordinal *n* on the other.
+A light's identity is its **record ordinal**, which is why the reply echoes
+the start entry; the ordinal is also the address `SET_LIGHT` stages by.
+Records appear in the same order as page 4's, so ordinal *n* on one page is
+ordinal *n* on the other.
 
 Where a control owns several lights, several records carry the same button ID.
 That is the page's purpose, and it needs no special case in a host.
@@ -419,6 +420,20 @@ what changed between versions, for hosts written against an earlier one.
 Versions are the protocol version `PING` reports, not the firmware version.
 A host should gate on `>= v1.0` and read the capability pages, never require
 an exact version.
+
+### v1.2 - 16 August 2026
+
+Additive. A host detects it by minor version >= 2; nothing existing moved.
+
+**Added**
+
+- **`SET_LIGHT` (0x15)**: stage single lights by their page 5 ordinal, so a
+  host can colour one light of a control that owns several without raw LED
+  arithmetic.
+- **Extended button IDs stage.** `SET_BUTTONS` entries naming A3, A4 or
+  E1-E12 now apply on boards with such lights, and count as skipped where
+  there is none - the same rule as every other control. They were previously
+  report-only.
 
 ### v1.1 - 16 August 2026
 

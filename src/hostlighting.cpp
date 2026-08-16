@@ -403,11 +403,11 @@ static void buildCapsPositions(uint8_t * reply, uint8_t startEntry) {
 //        [6] record stride   [7..54] records   [60..63] LED-map fingerprint
 // The echo makes a paged walk self-identifying, which page 4 is not, and the
 // fingerprint lets a host notice the map changing underneath a multi-read walk.
-static void buildCapsLights(uint8_t * reply, uint8_t startEntry) {
-	// Every control that has a light, in protocol ID order
-	uint8_t ids[HOST_LIGHTING_BUTTON_COUNT + 6];
+// Every control that has a light, in protocol ID order. This list IS the
+// page 5 record order, so a light's ordinal - the index SET_LIGHT stages by -
+// is its position here.
+static uint8_t collectLightIds(uint8_t * ids) {
 	uint8_t total = 0;
-
 	for (uint8_t id = 0; id < HOST_LIGHTING_BUTTON_COUNT; id++) {
 		if (resolveButton(id).first >= 0)
 			ids[total++] = id;
@@ -416,6 +416,12 @@ static void buildCapsLights(uint8_t * reply, uint8_t startEntry) {
 		if (resolveButton(id).first >= 0)
 			ids[total++] = id;
 	}
+	return total;
+}
+
+static void buildCapsLights(uint8_t * reply, uint8_t startEntry) {
+	uint8_t ids[HOST_LIGHTING_BUTTON_COUNT + 6];
+	uint8_t total = collectLightIds(ids);
 
 	reply[3] = total;
 	reply[4] = startEntry;
@@ -641,6 +647,36 @@ void HostLighting::setReport(uint8_t report_id, hid_report_type_t report_type, c
 					continue;
 				}
 				stageRange(range, ((uint32_t)entry[1] << 16) | ((uint32_t)entry[2] << 8) | entry[3]);
+				applied++;
+			}
+			responseBuffer[3] = applied;
+			responseBuffer[4] = skipped;
+			break;
+		}
+
+		case HOST_LIGHTING_CMD_SET_LIGHT: {
+			// Stages one light per entry by its page 5 ordinal. On this
+			// pipeline the ordinal space is the collected control list,
+			// rebuilt here so the numbering always matches what page 5 most
+			// recently reported.
+			if (bufsize < 3) { status = HOST_LIGHTING_STATUS_INVALID_ARG; break; }
+			uint8_t entries = buffer[2];
+			if ((entries == 0) || (entries > HOST_LIGHTING_SET_LIGHT_MAX_ENTRIES) ||
+					(bufsize < (uint16_t)(3 + entries * 4))) {
+				status = HOST_LIGHTING_STATUS_INVALID_ARG;
+				break;
+			}
+			uint8_t ids[HOST_LIGHTING_BUTTON_COUNT + 6];
+			uint8_t total = collectLightIds(ids);
+			uint8_t applied = 0, skipped = 0;
+			for (uint8_t e = 0; e < entries; e++) {
+				const uint8_t * entry = &buffer[3 + e * 4];
+				if (entry[0] >= total) {
+					skipped++;
+					continue;
+				}
+				stageRange(resolveButton(ids[entry[0]]),
+					((uint32_t)entry[1] << 16) | ((uint32_t)entry[2] << 8) | entry[3]);
 				applied++;
 			}
 			responseBuffer[3] = applied;
