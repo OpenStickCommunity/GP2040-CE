@@ -90,3 +90,45 @@ void TurntableExtension::process(uint8_t *inputData) {
     //}
 #endif
 }
+
+uint8_t TurntableExtension::prepareOutput() {
+    uint16_t lx = 0;
+    uint16_t ly = 0;
+    uint16_t rx = 0;
+    uint16_t ry = 0;
+    uint16_t lt = 0;
+    uint16_t rt = 0;
+
+    lx = (uint8_t)((analogState[WiiAnalogs::WII_ANALOG_LEFT_X] * 0x3F) / 0xFFFF);
+    ly = (uint8_t)(0x3F - ((analogState[WiiAnalogs::WII_ANALOG_LEFT_Y] * 0x3F) / 0xFFFF));
+    rx = (uint8_t)((analogState[WiiAnalogs::WII_ANALOG_RIGHT_X] * 0x1F) / 0xFFFF);
+    ry = (uint8_t)(0x1F - ((analogState[WiiAnalogs::WII_ANALOG_RIGHT_Y] * 0x1F) / 0xFFFF));
+    lt = (uint8_t)((analogState[WiiAnalogs::WII_ANALOG_LEFT_TRIGGER] * 0x1F) / 0xFF);
+    rt = (uint8_t)((analogState[WiiAnalogs::WII_ANALOG_RIGHT_TRIGGER] * 0x1F) / 0xFF);
+
+    controllerData[0x00] = /*((rx & 0x18) << 6) | */(lx & 0x3F);
+    controllerData[0x01] = /*((rx & 0x06) << 6) | */(ly & 0x3F);
+    controllerData[0x02] = /*((rx & 0x01) << 7) | ((lt & 0x0C) << 5) | ((rx & 0x1F) >> 4)*/0xFF;
+    controllerData[0x03] = /*((lt & 0x07) << 5) | (rt & 0x1F)*/0xFF;
+    controllerData[0x04] = (
+        ((1                                                          << 0)) | 
+        ((!(buttons[TurntableButtons::TURNTABLE_RIGHT_RED] & 0x01)   << 1)) | 
+        ((!(buttons[WiiButtons::WII_BUTTON_PLUS] & 0x01)             << 2)) | 
+        ((0                                                          << 3)) | 
+        ((!(buttons[WiiButtons::WII_BUTTON_MINUS] & 0x01)            << 4)) | 
+        ((!(buttons[TurntableButtons::TURNTABLE_LEFT_RED] & 0x01)    << 5)) | 
+        ((0                                                          << 6)) | 
+        ((0                                                          << 7))
+    );
+    controllerData[0x05] = (
+        ((0                                                          << 0)) | 
+        ((0                                                          << 1)) | 
+        ((!(buttons[TurntableButtons::TURNTABLE_RIGHT_BLUE] & 0x01)  << 2)) | 
+        ((!(buttons[TurntableButtons::TURNTABLE_LEFT_GREEN] & 0x01)  << 3)) | 
+        ((!(buttons[TurntableButtons::TURNTABLE_EUPHORIA] & 0x01)    << 4)) | 
+        ((!(buttons[TurntableButtons::TURNTABLE_RIGHT_GREEN] & 0x01) << 5)) | 
+        ((0                                                          << 6)) | 
+        ((!(buttons[TurntableButtons::TURNTABLE_LEFT_BLUE] & 0x01)   << 7))
+    );
+    return 6;
+}
