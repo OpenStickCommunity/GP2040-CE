@@ -208,6 +208,9 @@ src/drivers/astro/AstroDriver.cpp
 src/drivers/egret/EgretDriver.cpp
 src/drivers/hid/HIDDriver.cpp
 src/drivers/keyboard/KeyboardDriver.cpp
+src/drivers/mayflashs5/MayflashS5Auth.cpp
+src/drivers/mayflashs5/MayflashS5AuthUSBListener.cpp
+src/drivers/mayflashs5/MayflashS5Driver.cpp
 src/drivers/mdmini/MDMiniDriver.cpp
 src/drivers/neogeo/NeoGeoDriver.cpp
 src/drivers/net/NetDriver.cpp
@@ -375,6 +378,13 @@ target_compile_definitions(${PROJECT_NAME} PUBLIC
   BOARD_CONFIG_FILE_NAME="$<TARGET_FILE_BASE_NAME:${PROJECT_NAME}>"
   GP2040_BOARDCONFIG="${GP2040_BOARDCONFIG}"
 )
+
+# The Mayflash S5 pass-through presents the DualSense's captured device
+# descriptor, which advertises an 8-byte endpoint 0. The device stack has to
+# packetize EP0 to match, so the descriptor and this definition change together.
+if(GP2040_BOARDCONFIG STREQUAL "Haute42COSMOX")
+  target_compile_definitions(${PROJECT_NAME} PUBLIC CFG_TUD_ENDPOINT0_SIZE=8)
+endif()
 
 target_include_directories(${PROJECT_NAME}  PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}
