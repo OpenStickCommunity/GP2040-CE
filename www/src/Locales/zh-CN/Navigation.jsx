@@ -2,7 +2,6 @@ export default {
 	'add-ons-label': '扩展功能配置',
 	'backup-label': '数据备份与还原',
 	'config-label': '功能配置',
-	'custom-theme-label': '自定义 LED 主题',
 	'display-config-label': '显示屏配置',
 	'docs-label': '项目文档',
 	'github-label': 'GitHub',

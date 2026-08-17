@@ -58,7 +58,6 @@ export default {
 	'turbo-led-type-label-off': 'Éteint',
 	'turbo-led-type-label-pwm': 'PWM',
 	'turbo-led-type-label-rgb': 'RGB',
-	'turbo-led-index-label': 'Index de la LED Turbo',
 	'turbo-led-color-label': 'Couleur de la LED Turbo',
 	'joystick-selection-slider-header-text': 'Interrupteur de sélection du joystick',
 	'joystick-selection-slider-mode-zero-label': 'Mode par défaut de la broche GPIO de l\'interrupteur',

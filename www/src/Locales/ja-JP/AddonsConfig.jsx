@@ -56,7 +56,6 @@ export default {
 	'turbo-shmup-mix-mode-label': '同時優先モード',
 	'turbo-led-type-label': '連射LEDタイプ',
 	'turbo-led-type-label-off': 'オフ',
-	'turbo-led-index-label': '連射LEDインデックス',
 	'turbo-led-color-label': '連射LED色',
 	'joystick-selection-slider-header-text': '十字キー選択スライダー',
 	'joystick-selection-slider-mode-zero-label': 'スライダー端子標準モード',

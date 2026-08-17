@@ -58,7 +58,6 @@ export default {
 	'turbo-led-type-label-off': 'Kapalı',
 	'turbo-led-type-label-pwm': 'PWM',
 	'turbo-led-type-label-rgb': 'RGB',
-	'turbo-led-index-label': 'Turbo LED Index',
 	'turbo-led-color-label': 'Turbo LED Rengi',
 	'joystick-selection-slider-header-text': 'Joystick Seçim Kaydırıcısı',
 	'joystick-selection-slider-mode-zero-label': 'Kaydırıcı GPIO Pin Modu Varsayılanı',

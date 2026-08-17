@@ -55,7 +55,6 @@ export default {
 	'turbo-led-type-label-off': 'Apagado',
 	'turbo-led-type-label-pwm': 'PWM',
 	'turbo-led-type-label-rgb': 'RGB',
-	'turbo-led-index-label': 'Índice LED Turbo',
 	'turbo-led-color-label': 'Color LED Turbo',
 	'joystick-selection-slider-header-text': 'Deslizador de Selección de Joystick',
 	'joystick-selection-slider-mode-zero-label': 'Modo Predeterminado Pin GPIO Deslizador',

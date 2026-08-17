@@ -8,18 +8,36 @@
 #include <vector>
 #include "animationstation.h"
 
-class Rainbow : public Animation {
+class RainbowSynced : public Animation 
+{
 public:
-  Rainbow(PixelMatrix &matrix);
-  ~Rainbow() {};
+  RainbowSynced(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType);
+  ~RainbowSynced() {};
 
-  bool Animate(RGB (&frame)[100]);
-  void ParameterUp();
-  void ParameterDown();
+  virtual void Animate(RGB (&frame)[FRAME_MAX]) override;
+
+  //These change the speed of the rainbow changing color
+  virtual void CycleParameterChange() override;
 
 protected:
   int currentFrame = 0;
   bool reverse = false;
+  absolute_time_t nextRunTime = nil_time;
+};
+
+class RainbowRotate : public Animation 
+{
+public:
+  RainbowRotate(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType);
+  ~RainbowRotate() {};
+
+  virtual void Animate(RGB (&frame)[FRAME_MAX]) override;
+
+  //These change the speed of the rainbow changing color
+  virtual void CycleParameterChange() override;
+
+protected:
+  int currentFrame = 0;
   absolute_time_t nextRunTime = nil_time;
 };
 

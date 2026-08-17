@@ -6,8 +6,7 @@ import ResetSettings from './ResetSettings';
 import Components from './Components';
 import PinMapping from './PinMapping';
 import PeripheralMapping from './PeripheralMapping';
-import LedConfig from './LedConfig';
-import CustomTheme from './CustomTheme';
+import LedConfigPage from './LedConfigPage';
 import BackupPage from './BackupPage';
 import DisplayConfig from './DisplayConfig';
 import AddonsConfig from './AddonsConfig';
@@ -24,8 +23,7 @@ export default {
 	Components,
 	PinMapping,
 	PeripheralMapping,
-	LedConfig,
-	CustomTheme,
+	LedConfigPage,
 	BackupPage,
 	DisplayConfig,
 	AddonsConfig,

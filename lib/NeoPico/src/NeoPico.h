@@ -12,6 +12,8 @@ typedef enum
   LED_FORMAT_RGBW = 3,
 } LEDFormat;
 
+#define FRAME_MAX 100
+
 class NeoPico
 {
 public:
@@ -22,13 +24,14 @@ public:
   void Off();
   LEDFormat GetFormat();
   void SetFrame(uint32_t * newFrame);
+  void ChangeNumPixels(int inNumPixels) {numPixels = inNumPixels;}
 private:
   void PutPixel(uint32_t pixel_grb);
   LEDFormat format;
   PIO pio = pio1;
   int stateMachine = 0;
   int numPixels = 0;
-  uint32_t frame[100];
+  uint32_t frame[FRAME_MAX];
 };
 
 #endif
