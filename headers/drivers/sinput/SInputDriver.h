@@ -29,7 +29,7 @@ private:
     uint8_t last_report[CFG_TUD_ENDPOINT0_SIZE] = { };
     uint8_t queuedReport[GAMEPAD_SIZE] = { };
     bool isReportQueued = false;
-    SInputReport sinputReport;
+    SInputReport sinputReport = {};
 };
 
 #endif // _SINPUT_DRIVER_H_
