@@ -361,6 +361,24 @@ enum GpioAction
     MODE_WHEEL_PEDAL_GAS         = 128;
     MODE_WHEEL_PEDAL_BRAKE       = 129;
     MODE_WHEEL_PEDAL_CLUTCH      = 130;
+
+    ABSOLUTE_ANALOG_1            = 131;
+    ABSOLUTE_ANALOG_2            = 132;
+    ABSOLUTE_ANALOG_3            = 133;
+    ABSOLUTE_ANALOG_4            = 134;
+    ABSOLUTE_ANALOG_5            = 135;
+    ABSOLUTE_ANALOG_6            = 136;
+    ABSOLUTE_ANALOG_7            = 137;
+    ABSOLUTE_ANALOG_8            = 138;
+    ABSOLUTE_ANALOG_9            = 139;
+}
+
+enum AbsoluteAnalogStick
+{
+    option (nanopb_enumopt).long_names = false;
+
+    ABSOLUTE_ANALOG_STICK_LEFT  = 0;
+    ABSOLUTE_ANALOG_STICK_RIGHT = 1;
 }
 
 enum GpioDirection
@@ -463,6 +481,15 @@ enum GamepadHotkey
     HOTKEY_RS_RIGHT              = 85;
     HOTKEY_REBOOT_WEBCONFIG      = 86;
     HOTKEY_REBOOT_USB            = 87;
+    HOTKEY_ABSOLUTE_ANALOG_1     = 88;
+    HOTKEY_ABSOLUTE_ANALOG_2     = 89;
+    HOTKEY_ABSOLUTE_ANALOG_3     = 90;
+    HOTKEY_ABSOLUTE_ANALOG_4     = 91;
+    HOTKEY_ABSOLUTE_ANALOG_5     = 92;
+    HOTKEY_ABSOLUTE_ANALOG_6     = 93;
+    HOTKEY_ABSOLUTE_ANALOG_7     = 94;
+    HOTKEY_ABSOLUTE_ANALOG_8     = 95;
+    HOTKEY_ABSOLUTE_ANALOG_9     = 96;
 }
 
 enum AnimationEffects

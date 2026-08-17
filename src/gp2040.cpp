@@ -14,6 +14,7 @@
 #include "usbhostmanager.h"
 
 // Inputs for Core0
+#include "addons/absolute_analog.h"
 #include "addons/analog.h"
 #include "addons/bootsel_button.h"
 #include "addons/focus_mode.h"
@@ -118,6 +119,7 @@ void GP2040::setup() {
 	addons.LoadAddon(new TG16padInput());
 
 	// Input override addons
+	addons.LoadAddon(new AbsoluteAnalogAddon()); // Overrides analog stick input
 	addons.LoadAddon(new ReverseInput());
 	addons.LoadAddon(new TurboInput()); // Turbo overrides button states and should be close to the end
 	addons.LoadAddon(new InputMacro());

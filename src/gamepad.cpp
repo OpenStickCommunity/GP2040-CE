@@ -16,6 +16,8 @@
 #include "storagemanager.h"
 #include "system.h"
 
+#include "addons/absolute_analog.h"
+
 // MUST BE DEFINED for mpgs
 uint32_t getMillis() {
 	return to_ms_since_boot(get_absolute_time());
@@ -793,7 +795,34 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 		case HOTKEY_RS_RIGHT:
 			state.rx = GAMEPAD_JOYSTICK_MAX;
 			break;
-       
+		case HOTKEY_ABSOLUTE_ANALOG_1:
+			applyAbsoluteAnalogValue(state, 0);
+			break;
+		case HOTKEY_ABSOLUTE_ANALOG_2:
+			applyAbsoluteAnalogValue(state, 1);
+			break;
+		case HOTKEY_ABSOLUTE_ANALOG_3:
+			applyAbsoluteAnalogValue(state, 2);
+			break;
+		case HOTKEY_ABSOLUTE_ANALOG_4:
+			applyAbsoluteAnalogValue(state, 3);
+			break;
+		case HOTKEY_ABSOLUTE_ANALOG_5:
+			applyAbsoluteAnalogValue(state, 4);
+			break;
+		case HOTKEY_ABSOLUTE_ANALOG_6:
+			applyAbsoluteAnalogValue(state, 5);
+			break;
+		case HOTKEY_ABSOLUTE_ANALOG_7:
+			applyAbsoluteAnalogValue(state, 6);
+			break;
+		case HOTKEY_ABSOLUTE_ANALOG_8:
+			applyAbsoluteAnalogValue(state, 7);
+			break;
+		case HOTKEY_ABSOLUTE_ANALOG_9:
+			applyAbsoluteAnalogValue(state, 8);
+			break;
+
 		default: // Unknown action
 			break;
 	}

@@ -908,6 +908,21 @@ message HETriggerOptions
     optional int32 smoothingFactor = 13;
 }
 
+message AbsoluteAnalogEntry
+{
+    optional bool enabled = 1;
+    optional AbsoluteAnalogStick stick = 2;
+    // -255 to 255, scaled to the gamepad axis range at runtime
+    optional int32 x = 3;
+    optional int32 y = 4;
+}
+
+message AbsoluteAnalogOptions
+{
+    optional bool enabled = 1;
+    repeated AbsoluteAnalogEntry entries = 2 [(nanopb).max_count = 9];
+}
+
 message AddonOptions
 {
     optional BootselButtonOptions bootselButtonOptions = 1;
@@ -940,6 +955,7 @@ message AddonOptions
     optional GamepadUSBHostOptions gamepadUSBHostOptions = 28;
     optional TG16Options tg16Options = 29;
     optional HETriggerOptions heTriggerOptions = 30;
+    optional AbsoluteAnalogOptions absoluteAnalogOptions = 31;
 }
 
 message MigrationHistory
