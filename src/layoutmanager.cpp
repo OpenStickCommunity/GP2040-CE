@@ -167,7 +167,9 @@ LayoutManager::LayoutList LayoutManager::getLeftLayout(uint16_t index) {
         case BUTTON_LAYOUT_BOARD_DEFINED_ALT6_A:
             return drawBoardDefinedAlt6A();   
         case BUTTON_LAYOUT_BOARD_DEFINED_ALT7_A:
-            return drawBoardDefinedAlt7A();    
+            return drawBoardDefinedAlt7A();
+        case BUTTON_LAYOUT_CUSTOM_DEFINED_A:
+            return drawCustomDefinedA();
         default:
             break;
     }
@@ -276,11 +278,44 @@ LayoutManager::LayoutList LayoutManager::getRightLayout(uint16_t index) {
             return this->drawBoardDefinedAlt6B();
         case BUTTON_LAYOUT_BOARD_DEFINED_ALT7_B:
             return this->drawBoardDefinedAlt7B();
+        case BUTTON_LAYOUT_CUSTOM_DEFINED_B:
+            return drawCustomDefinedB();
         default:
             break;
     }
 
     return {};
+}
+
+// Packed custom layouts: 24 bytes per element, 12 little-endian uint16 values:
+// elementType, x1, y1, x2, y2, stroke, fill, value, shape, angleStart, angleEnd, closed
+LayoutManager::LayoutList LayoutManager::drawCustomDefined(const uint8_t* bytes, uint16_t size) {
+    LayoutList layout;
+    const uint16_t elementSize = CUSTOM_LAYOUT_ELEMENT_BYTES;
+    uint16_t count = size / elementSize;
+    for (uint16_t i = 0; i < count; i++) {
+        const uint8_t* p = bytes + (i * elementSize);
+        uint16_t values[12];
+        for (uint8_t j = 0; j < 12; j++) {
+            values[j] = (uint16_t)p[j * 2] | ((uint16_t)p[(j * 2) + 1] << 8);
+        }
+        layout.push_back({(GPElement)values[0], {
+            values[1], values[2], values[3], values[4],
+            values[5], values[6], values[7], values[8],
+            values[9], values[10], values[11]
+        }});
+    }
+    return layout;
+}
+
+LayoutManager::LayoutList LayoutManager::drawCustomDefinedA() {
+    const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
+    return drawCustomDefined(options.customLayoutA.bytes, options.customLayoutA.size);
+}
+
+LayoutManager::LayoutList LayoutManager::drawCustomDefinedB() {
+    const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
+    return drawCustomDefined(options.customLayoutB.bytes, options.customLayoutB.size);
 }
 
 LayoutManager::LayoutList LayoutManager::drawButtonLayoutLeft()

@@ -11,6 +11,12 @@ import FormControl from '../Components/FormControl';
 import FormSelect from '../Components/FormSelect';
 import Section from '../Components/Section';
 import WebApi from '../Services/WebApi';
+import {
+	parseLayoutCode,
+	generateLayoutCode,
+	elementsToBase64,
+	base64ToElements,
+} from '../Services/CustomLayout';
 
 const ON_OFF_OPTIONS = [
 	{ label: 'form.display-state.disabled', value: 0 },
@@ -83,6 +89,8 @@ const defaultValues = {
 	inputHistoryRow: 7,
 	turnOffWhenSuspended: 0,
 	displayContrast: 255,
+	customLayoutA: '',
+	customLayoutB: '',
 };
 
 let buttonLayoutDefinitions = { buttonLayout: {}, buttonLayoutRight: {} };
@@ -170,6 +178,8 @@ const schema = yup.object().shape({
 	inputHistoryLength: yup.number().label('Input History Length'),
 	inputHistoryCol: yup.number().label('Input History Column Position'),
 	inputHistoryRow: yup.number().label('Input History Row Position'),
+	customLayoutA: yup.string().label('Custom Layout (Left)'),
+	customLayoutB: yup.string().label('Custom Layout (Right)'),
 });
 
 const FormContext = () => {
@@ -189,9 +199,65 @@ const FormContext = () => {
 const isButtonLayoutCustom = (values) =>
 	values.buttonLayout === 12 || values.buttonLayoutRight === 16;
 
+const CUSTOM_DEFINED_LAYOUT_LEFT = 42;
+const CUSTOM_DEFINED_LAYOUT_RIGHT = 48;
+
+const CustomLayoutCodeEditor = ({ label, defineName, value, onChange }) => {
+	const { t } = useTranslation('');
+	const [code, setCode] = useState(() =>
+		generateLayoutCode(base64ToElements(value), defineName),
+	);
+	const [parseError, setParseError] = useState(null);
+	const [elementCount, setElementCount] = useState(
+		() => base64ToElements(value).length,
+	);
+
+	const onCodeChange = (e) => {
+		const newCode = e.target.value;
+		setCode(newCode);
+		const { elements, error } = parseLayoutCode(newCode, defineName);
+		setParseError(error);
+		if (error === null) {
+			setElementCount(elements.length);
+			onChange(elementsToBase64(elements));
+		}
+	};
+
+	return (
+		<Form.Group>
+			<Form.Label>{label}</Form.Label>
+			<Form.Control
+				as="textarea"
+				rows={12}
+				spellCheck="false"
+				className="font-monospace"
+				style={{ fontSize: '0.8rem', whiteSpace: 'pre' }}
+				value={code}
+				onChange={onCodeChange}
+				isInvalid={Boolean(parseError)}
+				isValid={!parseError && elementCount > 0}
+			/>
+			{parseError ? (
+				<Form.Control.Feedback type="invalid">
+					{parseError}
+				</Form.Control.Feedback>
+			) : (
+				<Form.Text muted>
+					{elementCount > 0
+						? t('DisplayConfig:form.custom-layout-element-count', {
+								count: elementCount,
+							})
+						: t('DisplayConfig:form.custom-layout-empty')}
+				</Form.Text>
+			)}
+		</Form.Group>
+	);
+};
+
 export default function DisplayConfigPage() {
 	const [loadingValues, setLoadingValues] = useState(true);
 	const [values, setValues] = useState(defaultValues);
+	const [showCustomLayouts, setShowCustomLayouts] = useState(false);
 
 	const { updateUsedPins, getAvailablePeripherals, updatePeripherals } =
 		useContext(AppContext);
@@ -210,6 +276,10 @@ export default function DisplayConfigPage() {
 			);
 			buttonLayoutRightSchema = buttonLayoutRightSchema.oneOf(
 				Object.values(buttonLayoutDefinitions.buttonLayoutRight),
+			);
+			setShowCustomLayouts(
+				Number(data.buttonLayout) === CUSTOM_DEFINED_LAYOUT_LEFT ||
+					Number(data.buttonLayoutRight) === CUSTOM_DEFINED_LAYOUT_RIGHT,
 			);
 			setValues(data);
 			setLoadingValues(false);
@@ -234,6 +304,19 @@ export default function DisplayConfigPage() {
 
 	const onChangeCanvas = (base64, form, field) => {
 		return form.setFieldValue(field.name, base64);
+	};
+
+	const toggleCustomLayouts = (enabled, values, setFieldValue) => {
+		setShowCustomLayouts(enabled);
+		if (enabled) {
+			setFieldValue('buttonLayout', CUSTOM_DEFINED_LAYOUT_LEFT);
+			setFieldValue('buttonLayoutRight', CUSTOM_DEFINED_LAYOUT_RIGHT);
+		} else {
+			if (Number(values.buttonLayout) === CUSTOM_DEFINED_LAYOUT_LEFT)
+				setFieldValue('buttonLayout', defaultValues.buttonLayout);
+			if (Number(values.buttonLayoutRight) === CUSTOM_DEFINED_LAYOUT_RIGHT)
+				setFieldValue('buttonLayoutRight', defaultValues.buttonLayoutRight);
+		}
 	};
 
 	if (loadingValues) {
@@ -394,16 +477,21 @@ export default function DisplayConfigPage() {
 												isInvalid={errors.buttonLayout}
 												onChange={handleChange}
 											>
-												{Object.keys(buttonLayoutDefinitions.buttonLayout).map(
-													(o, i) => (
+												{Object.keys(buttonLayoutDefinitions.buttonLayout)
+													.filter(
+														(o) =>
+															showCustomLayouts ||
+															buttonLayoutDefinitions.buttonLayout[o] !==
+																CUSTOM_DEFINED_LAYOUT_LEFT,
+													)
+													.map((o, i) => (
 														<option
 															key={`buttonLayout-option-${i}`}
 															value={buttonLayoutDefinitions.buttonLayout[o]}
 														>
 															{t(`LayoutConfig:layouts.left.${o}`)}
 														</option>
-													),
-												)}
+													))}
 											</FormSelect>
 											<FormSelect
 												label={t(
@@ -417,16 +505,23 @@ export default function DisplayConfigPage() {
 												isInvalid={errors.buttonLayoutRight}
 												onChange={handleChange}
 											>
-												{Object.keys(
-													buttonLayoutDefinitions.buttonLayoutRight,
-												).map((o, i) => (
-													<option
-														key={`buttonLayoutRight-option-${i}`}
-														value={buttonLayoutDefinitions.buttonLayoutRight[o]}
-													>
-														{t(`LayoutConfig:layouts.right.${o}`)}
-													</option>
-												))}
+												{Object.keys(buttonLayoutDefinitions.buttonLayoutRight)
+													.filter(
+														(o) =>
+															showCustomLayouts ||
+															buttonLayoutDefinitions.buttonLayoutRight[o] !==
+																CUSTOM_DEFINED_LAYOUT_RIGHT,
+													)
+													.map((o, i) => (
+														<option
+															key={`buttonLayoutRight-option-${i}`}
+															value={
+																buttonLayoutDefinitions.buttonLayoutRight[o]
+															}
+														>
+															{t(`LayoutConfig:layouts.right.${o}`)}
+														</option>
+													))}
 											</FormSelect>
 											<FormSelect
 												label={t(
@@ -449,6 +544,25 @@ export default function DisplayConfigPage() {
 													</option>
 												))}
 											</FormSelect>
+										</Row>
+										<Row className="mb-3">
+											<div className="col-sm-3">
+												<Form.Check
+													label={t('DisplayConfig:form.custom-layouts-toggle')}
+													type="switch"
+													id="showCustomLayouts"
+													className="align-middle"
+													isInvalid={false}
+													checked={showCustomLayouts}
+													onChange={(e) =>
+														toggleCustomLayouts(
+															e.target.checked,
+															values,
+															setFieldValue,
+														)
+													}
+												/>
+											</div>
 										</Row>
 										{isButtonLayoutCustom(values) && (
 											<Row className="mb-3">
@@ -647,6 +761,49 @@ export default function DisplayConfigPage() {
 													</Form.Group>
 												</Col>
 											</Row>
+										)}
+										{showCustomLayouts && (
+											<>
+												<h1>
+													{t('DisplayConfig:section.custom-layout-header')}
+												</h1>
+												<Row className="mb-4">
+													<p>
+														{t('DisplayConfig:form.custom-layout-description')}{' '}
+														<a
+															href="https://pelsin.github.io/GP2040-CE-layout-viewer/"
+															target="_blank"
+															rel="noreferrer"
+														>
+															{t('DisplayConfig:form.custom-layout-link-text')}
+														</a>
+													</p>
+													<Col sm="6">
+														<CustomLayoutCodeEditor
+															label={t(
+																'DisplayConfig:form.custom-layout-left-label',
+															)}
+															defineName="DEFAULT_BOARD_LAYOUT_A"
+															value={values.customLayoutA}
+															onChange={(base64) =>
+																setFieldValue('customLayoutA', base64)
+															}
+														/>
+													</Col>
+													<Col sm="6">
+														<CustomLayoutCodeEditor
+															label={t(
+																'DisplayConfig:form.custom-layout-right-label',
+															)}
+															defineName="DEFAULT_BOARD_LAYOUT_B"
+															value={values.customLayoutB}
+															onChange={(base64) =>
+																setFieldValue('customLayoutB', base64)
+															}
+														/>
+													</Col>
+												</Row>
+											</>
 										)}
 										<h1>{t('DisplayConfig:section.status-layout-header')}</h1>
 										<Row className="mb-4">
