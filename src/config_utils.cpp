@@ -11,6 +11,7 @@
 #include "BoardConfig.h"
 #include "GamepadConfig.h"
 #include "version.h"
+#include "addons/absolute_analog.h"
 #include "addons/analog.h"
 #include "addons/board_led.h"
 #include "addons/bootsel_button.h"
@@ -1093,6 +1094,17 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
     // reminder that this must be set or else nanopb won't retain anything
     config.addonOptions.heTriggerOptions.triggers_count = HETRIGGER_COUNT;
+
+    // addonOptions.absoluteAnalogOptions
+    INIT_UNSET_PROPERTY(config.addonOptions.absoluteAnalogOptions, enabled, !!ABSOLUTE_ANALOG_ENABLED);
+    for (uint8_t absoluteAnalogIndex = 0; absoluteAnalogIndex < ABSOLUTE_ANALOG_COUNT; absoluteAnalogIndex++) {
+        AbsoluteAnalogEntry& absoluteAnalogEntry = config.addonOptions.absoluteAnalogOptions.entries[absoluteAnalogIndex];
+        INIT_UNSET_PROPERTY(absoluteAnalogEntry, enabled, false);
+        INIT_UNSET_PROPERTY(absoluteAnalogEntry, stick, ABSOLUTE_ANALOG_STICK_LEFT);
+        INIT_UNSET_PROPERTY(absoluteAnalogEntry, x, 0);
+        INIT_UNSET_PROPERTY(absoluteAnalogEntry, y, 0);
+    }
+    config.addonOptions.absoluteAnalogOptions.entries_count = ABSOLUTE_ANALOG_COUNT;
 
     // keyboardMapping
     INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions, enabled, KEYBOARD_HOST_ENABLED);

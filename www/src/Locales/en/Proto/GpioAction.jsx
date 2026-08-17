@@ -132,4 +132,13 @@ export default {
 	'MODE_WHEEL_PEDAL_GAS': 'Gas Pedal',
 	'MODE_WHEEL_PEDAL_BRAKE': 'Brake Pedal',
 	'MODE_WHEEL_PEDAL_CLUTCH': 'Clutch Pedal',
+	'ABSOLUTE_ANALOG_1': 'Absolute Analog 1',
+	'ABSOLUTE_ANALOG_2': 'Absolute Analog 2',
+	'ABSOLUTE_ANALOG_3': 'Absolute Analog 3',
+	'ABSOLUTE_ANALOG_4': 'Absolute Analog 4',
+	'ABSOLUTE_ANALOG_5': 'Absolute Analog 5',
+	'ABSOLUTE_ANALOG_6': 'Absolute Analog 6',
+	'ABSOLUTE_ANALOG_7': 'Absolute Analog 7',
+	'ABSOLUTE_ANALOG_8': 'Absolute Analog 8',
+	'ABSOLUTE_ANALOG_9': 'Absolute Analog 9',
 };

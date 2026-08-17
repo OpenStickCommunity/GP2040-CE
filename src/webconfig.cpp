@@ -34,6 +34,7 @@
 #include "lwip/apps/httpd.h"
 #include "lwip/def.h"
 #include "lwip/mem.h"
+#include "addons/absolute_analog.h"
 #include "addons/input_macro.h"
 
 #define PATH_CGI_ACTION "/cgi/action"
@@ -107,6 +108,24 @@ static void __attribute__((noinline)) docToValue(T& value, const DynamicJsonDocu
         value = doc[key0][key1][key2];
     }
 }
+
+// ArduinoJson stores const char* keys by pointer, so these must be literals, not a stack buffer.
+static const struct {
+    const char* enabled;
+    const char* stick;
+    const char* x;
+    const char* y;
+} ABSOLUTE_ANALOG_KEYS[ABSOLUTE_ANALOG_COUNT] = {
+    { "absoluteAnalog1Enabled", "absoluteAnalog1Stick", "absoluteAnalog1X", "absoluteAnalog1Y" },
+    { "absoluteAnalog2Enabled", "absoluteAnalog2Stick", "absoluteAnalog2X", "absoluteAnalog2Y" },
+    { "absoluteAnalog3Enabled", "absoluteAnalog3Stick", "absoluteAnalog3X", "absoluteAnalog3Y" },
+    { "absoluteAnalog4Enabled", "absoluteAnalog4Stick", "absoluteAnalog4X", "absoluteAnalog4Y" },
+    { "absoluteAnalog5Enabled", "absoluteAnalog5Stick", "absoluteAnalog5X", "absoluteAnalog5Y" },
+    { "absoluteAnalog6Enabled", "absoluteAnalog6Stick", "absoluteAnalog6X", "absoluteAnalog6Y" },
+    { "absoluteAnalog7Enabled", "absoluteAnalog7Stick", "absoluteAnalog7X", "absoluteAnalog7Y" },
+    { "absoluteAnalog8Enabled", "absoluteAnalog8Stick", "absoluteAnalog8X", "absoluteAnalog8Y" },
+    { "absoluteAnalog9Enabled", "absoluteAnalog9Stick", "absoluteAnalog9X", "absoluteAnalog9Y" },
+};
 
 // Don't inline this function, we do not want to consume stack space in the calling function
 static void __attribute__((noinline)) cleanAddonGpioMappings(Pin_t& addonPin, Pin_t oldAddonPin)
@@ -1939,6 +1958,16 @@ std::string setAddonOptions()
     docToValue(heTriggerOptions.emaSmoothing, doc, "heTriggerSmoothing");
     docToValue(heTriggerOptions.smoothingFactor, doc, "heTriggerSmoothingFactor");
 
+    AbsoluteAnalogOptions& absoluteAnalogOptions = Storage::getInstance().getAddonOptions().absoluteAnalogOptions;
+    docToValue(absoluteAnalogOptions.enabled, doc, "AbsoluteAnalogAddonEnabled");
+    for (int index = 0; index < ABSOLUTE_ANALOG_COUNT; index++) {
+        docToValue(absoluteAnalogOptions.entries[index].enabled, doc, ABSOLUTE_ANALOG_KEYS[index].enabled);
+        docToValue(absoluteAnalogOptions.entries[index].stick, doc, ABSOLUTE_ANALOG_KEYS[index].stick);
+        docToValue(absoluteAnalogOptions.entries[index].x, doc, ABSOLUTE_ANALOG_KEYS[index].x);
+        docToValue(absoluteAnalogOptions.entries[index].y, doc, ABSOLUTE_ANALOG_KEYS[index].y);
+    }
+    absoluteAnalogOptions.entries_count = ABSOLUTE_ANALOG_COUNT;
+
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
     return serialize_json(doc);
@@ -2396,6 +2425,15 @@ std::string getAddonOptions()
     writeDoc(doc, "muxADCPin3", cleanPin(heTriggerOptions.muxADCPin3));
     writeDoc(doc, "heTriggerSmoothing", heTriggerOptions.emaSmoothing);
     writeDoc(doc, "heTriggerSmoothingFactor", heTriggerOptions.smoothingFactor);
+
+    const AbsoluteAnalogOptions& absoluteAnalogOptions = Storage::getInstance().getAddonOptions().absoluteAnalogOptions;
+    writeDoc(doc, "AbsoluteAnalogAddonEnabled", absoluteAnalogOptions.enabled);
+    for (int index = 0; index < ABSOLUTE_ANALOG_COUNT; index++) {
+        writeDoc(doc, ABSOLUTE_ANALOG_KEYS[index].enabled, absoluteAnalogOptions.entries[index].enabled);
+        writeDoc(doc, ABSOLUTE_ANALOG_KEYS[index].stick, absoluteAnalogOptions.entries[index].stick);
+        writeDoc(doc, ABSOLUTE_ANALOG_KEYS[index].x, absoluteAnalogOptions.entries[index].x);
+        writeDoc(doc, ABSOLUTE_ANALOG_KEYS[index].y, absoluteAnalogOptions.entries[index].y);
+    }
 
     return serialize_json(doc);
 }

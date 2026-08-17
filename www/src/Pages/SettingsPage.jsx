@@ -278,6 +278,15 @@ const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.rs-down', value: 83 },
 	{ labelKey: 'hotkey-actions.rs-left', value: 84 },
 	{ labelKey: 'hotkey-actions.rs-right', value: 85 },
+	{ labelKey: 'hotkey-actions.absolute-analog-1', value: 88 },
+	{ labelKey: 'hotkey-actions.absolute-analog-2', value: 89 },
+	{ labelKey: 'hotkey-actions.absolute-analog-3', value: 90 },
+	{ labelKey: 'hotkey-actions.absolute-analog-4', value: 91 },
+	{ labelKey: 'hotkey-actions.absolute-analog-5', value: 92 },
+	{ labelKey: 'hotkey-actions.absolute-analog-6', value: 93 },
+	{ labelKey: 'hotkey-actions.absolute-analog-7', value: 94 },
+	{ labelKey: 'hotkey-actions.absolute-analog-8', value: 95 },
+	{ labelKey: 'hotkey-actions.absolute-analog-9', value: 96 },
 ];
 
 const FORCED_SETUP_MODES = [

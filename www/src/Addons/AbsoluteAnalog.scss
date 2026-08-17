@@ -1,0 +1,41 @@
+.absolute-analog-entry {
+	border: 1px solid rgba(128, 128, 128, 0.35);
+	border-radius: 0.375rem;
+	padding: 0.75rem;
+}
+
+.absolute-analog-pad {
+	touch-action: none;
+	cursor: pointer;
+	user-select: none;
+	color: inherit;
+
+	&.disabled {
+		cursor: not-allowed;
+		opacity: 0.45;
+	}
+
+	.absolute-analog-pad-label {
+		font-size: 0.6rem;
+		fill: currentColor;
+		opacity: 0.7;
+		text-transform: uppercase;
+	}
+
+	.absolute-analog-pad-guide {
+		fill: none;
+		stroke: currentColor;
+		opacity: 0.35;
+	}
+
+	.absolute-analog-pad-line {
+		stroke: currentColor;
+		opacity: 0.6;
+	}
+
+	.absolute-analog-pad-dot {
+		fill: #28a745;
+		stroke: currentColor;
+		stroke-width: 1;
+	}
+}

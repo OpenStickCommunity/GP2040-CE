@@ -17,6 +17,7 @@ import Rotary from './Addons/Rotary';
 import PCF8575 from './Addons/PCF8575';
 import ReactiveLED from './Addons/ReactiveLED';
 import HETrigger from './Addons/HETrigger';
+import AbsoluteAnalog from './Addons/AbsoluteAnalog';
 import InputMacroAddon from './InputMacroAddon';
 import LayoutConfig from './LayoutConfig';
 import Proto from './Proto/Index';
@@ -45,5 +46,6 @@ export default {
 	ReactiveLED,
 	Proto,
 	HETrigger,
+	AbsoluteAnalog,
 	BootModeMapping
 };
