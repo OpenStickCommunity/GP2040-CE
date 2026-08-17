@@ -8,6 +8,7 @@
 
 #include "tusb.h"
 #include "drivermanager.h"
+#include "hostlighting.h"
 
 static bool usb_mounted;
 static bool usb_suspended;
@@ -26,12 +27,18 @@ const usbd_class_driver_t *usbd_app_driver_get_cb(uint8_t *driver_count) {
 }
 
 uint16_t tud_hid_get_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
+	if (HostLighting::isLightingInterface(itf))
+		return HostLighting::getReport(report_id, report_type, buffer, reqlen);
 	return DriverManager::getInstance().getDriver()->get_report(report_id, report_type, buffer, reqlen);
 }
 
 // Invoked when received SET_REPORT control request or
 // received data on OUT endpoint ( Report ID = 0, Type = 0 )
 void tud_hid_set_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize) {
+	if (HostLighting::isLightingInterface(itf)) {
+		HostLighting::setReport(report_id, report_type, buffer, bufsize);
+		return;
+	}
 	DriverManager::getInstance().getDriver()->set_report(report_id, report_type, buffer, bufsize);
 }
 
@@ -47,6 +54,7 @@ void tud_umount_cb(void)
 {
 	usb_mounted = false;
 	usb_suspended = false;
+	HostLighting::releaseTakeover();
 }
 
 // Invoked when usb bus is suspended
@@ -55,6 +63,8 @@ void tud_umount_cb(void)
 void tud_suspend_cb(bool remote_wakeup_en) {
 	(void)remote_wakeup_en;
 	usb_suspended = true;
+	// The host holding the takeover is, by definition, no longer talking
+	HostLighting::releaseTakeover();
 }
 
 // Invoked when usb bus is resumed
@@ -85,6 +95,8 @@ uint8_t const *tud_descriptor_device_cb() {
 // Application return pointer to descriptor
 // Descriptor contents must exist long enough for transfer to complete
 uint8_t const *tud_hid_descriptor_report_cb(uint8_t itf) {
+	if (HostLighting::isLightingInterface(itf))
+		return HostLighting::getReportDescriptor();
 	return DriverManager::getInstance().getDriver()->get_hid_descriptor_report_cb(itf);
 }
 

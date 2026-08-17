@@ -15,6 +15,7 @@
 #include "usbdriver.h"
 #include "enums.h"
 #include "helper.h"
+#include "hostlighting.h"
 
 #define FRAME_MAX 100
 #define AL_ROW	5
@@ -291,6 +292,11 @@ void NeoPicoLEDAddon::setup() {
 	as.SetMatrix(matrix);
     as.SetMode(animationOptions.baseAnimationIndex);
 	as.SetBrightness(animationOptions.brightness);
+
+	// Tell Host Lighting how fast we actually render, so it can report a rate
+	// rather than have the protocol assert one. A host streaming faster than
+	// this simply discards the difference, with nothing to tell it why.
+	HostLighting::setRenderRate((uint8_t)((intervalMS > 0) ? (1000 / intervalMS) : 0));
 
 	// Next Run
     nextRunTime = make_timeout_time_ms(0); // Reset timeout
@@ -611,6 +617,15 @@ void NeoPicoLEDAddon::process() {
 			this->ambientLightLinkage(); //Custom mode
 		}
 	}
+
+    // A live host-lighting takeover replaces the whole frame; expires back to
+    // the animations above when the host goes quiet
+    HostLighting::applyToFrame(frame, (uint32_t)ledCount, as.GetBrightnessX(), neopico.GetFormat());
+
+    // Host-requested change of the on-board animation
+    int16_t requestedAnimation = HostLighting::takeLocalAnimationRequest();
+    if (requestedAnimation >= 0)
+        as.SetMode((uint8_t)requestedAnimation);
 
     neopico.SetFrame(frame);
     neopico.Show();

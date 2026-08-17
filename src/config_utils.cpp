@@ -10,6 +10,7 @@
 
 #include "BoardConfig.h"
 #include "GamepadConfig.h"
+#include "hostlighting.h"
 #include "version.h"
 #include "addons/analog.h"
 #include "addons/board_led.h"
@@ -1128,6 +1129,11 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, buttonLockEnabled, !!FOCUS_MODE_BUTTON_LOCK_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, macroLockEnabled, !!FOCUS_MODE_MACRO_LOCK_ENABLED);
 
+
+    // addonOptions.hostLightingOptions
+    INIT_UNSET_PROPERTY(config.addonOptions.hostLightingOptions, enabled, !!HOST_LIGHTING_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.hostLightingOptions, xinputMode,
+        HOST_LIGHTING_XINPUT ? HOST_LIGHTING_XINPUT_MODE_AUTO : HOST_LIGHTING_XINPUT_MODE_OFF);
 
     // addonOptions.gamepadUSBHostOptions
     INIT_UNSET_PROPERTY(config.addonOptions.gamepadUSBHostOptions, enabled, GAMEPAD_USB_HOST_ENABLED)

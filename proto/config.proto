@@ -908,6 +908,12 @@ message HETriggerOptions
     optional int32 smoothingFactor = 13;
 }
 
+message HostLightingOptions
+{
+    optional bool enabled = 1;
+    optional HostLightingXInputMode xinputMode = 2;
+}
+
 message AddonOptions
 {
     optional BootselButtonOptions bootselButtonOptions = 1;
@@ -940,6 +946,7 @@ message AddonOptions
     optional GamepadUSBHostOptions gamepadUSBHostOptions = 28;
     optional TG16Options tg16Options = 29;
     optional HETriggerOptions heTriggerOptions = 30;
+    optional HostLightingOptions hostLightingOptions = 31;
 }
 
 message MigrationHistory
