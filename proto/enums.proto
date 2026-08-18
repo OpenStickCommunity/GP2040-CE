@@ -212,6 +212,22 @@ enum SOCDMode
     SOCD_MODE_SECOND_INPUT_PRIORITY = 2; // U>D=D, L>R=R (Last Input Priority, aka Last Win)
     SOCD_MODE_FIRST_INPUT_PRIORITY = 3; // U>D=U, L>R=L (First Input Priority, aka First Win)
     SOCD_MODE_BYPASS = 4; // U+D=UD, L+R=LR (No cleaning applied)
+    SOCD_MODE_ADVANCED_1 = 5;
+    SOCD_MODE_ADVANCED_2 = 6;
+    SOCD_MODE_ADVANCED_3 = 7;
+    SOCD_MODE_ADVANCED_4 = 8;
+}
+
+// UP_PRIORITY applies to the up/down axis only; left/right treats it as NEUTRAL
+enum SOCDAxisMode
+{
+    option (nanopb_enumopt).long_names = false;
+
+    SOCD_AXIS_MODE_NEUTRAL = 0;
+    SOCD_AXIS_MODE_LAST_WIN = 1;
+    SOCD_AXIS_MODE_FIRST_WIN = 2;
+    SOCD_AXIS_MODE_OFF = 3;
+    SOCD_AXIS_MODE_UP_PRIORITY = 4;
 }
 
 enum GpioAction
@@ -361,6 +377,11 @@ enum GpioAction
     MODE_WHEEL_PEDAL_GAS         = 128;
     MODE_WHEEL_PEDAL_BRAKE       = 129;
     MODE_WHEEL_PEDAL_CLUTCH      = 130;
+
+    SUSTAIN_SOCD_MODE_ADVANCED_1 = 131;
+    SUSTAIN_SOCD_MODE_ADVANCED_2 = 132;
+    SUSTAIN_SOCD_MODE_ADVANCED_3 = 133;
+    SUSTAIN_SOCD_MODE_ADVANCED_4 = 134;
 }
 
 enum GpioDirection
@@ -463,6 +484,10 @@ enum GamepadHotkey
     HOTKEY_RS_RIGHT              = 85;
     HOTKEY_REBOOT_WEBCONFIG      = 86;
     HOTKEY_REBOOT_USB            = 87;
+    HOTKEY_SOCD_ADVANCED_1       = 88;
+    HOTKEY_SOCD_ADVANCED_2       = 89;
+    HOTKEY_SOCD_ADVANCED_3       = 90;
+    HOTKEY_SOCD_ADVANCED_4       = 91;
 }
 
 enum AnimationEffects

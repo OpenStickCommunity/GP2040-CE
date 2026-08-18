@@ -247,6 +247,10 @@ void ButtonLayoutScreen::generateHeader() {
             case SOCD_MODE_SECOND_INPUT_PRIORITY: statusBar += " SOCD-L"; break;
             case SOCD_MODE_FIRST_INPUT_PRIORITY:  statusBar += " SOCD-F"; break;
             case SOCD_MODE_BYPASS:                statusBar += " SOCD-X"; break;
+            case SOCD_MODE_ADVANCED_1:            statusBar += " SOCD-1"; break;
+            case SOCD_MODE_ADVANCED_2:            statusBar += " SOCD-2"; break;
+            case SOCD_MODE_ADVANCED_3:            statusBar += " SOCD-3"; break;
+            case SOCD_MODE_ADVANCED_4:            statusBar += " SOCD-4"; break;
         }
     }
 

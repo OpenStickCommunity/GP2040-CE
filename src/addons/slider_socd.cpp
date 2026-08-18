@@ -24,6 +24,10 @@ void SliderSOCDInput::setup()
             case SUSTAIN_SOCD_MODE_SECOND_WIN:  secondInputModeMask |= 1 << pin; break;
             case SUSTAIN_SOCD_MODE_FIRST_WIN:   firstInputModeMask |= 1 << pin; break;
             case SUSTAIN_SOCD_MODE_BYPASS:      bypassModeMask |= 1 << pin; break;
+            case SUSTAIN_SOCD_MODE_ADVANCED_1:  advanced1ModeMask |= 1 << pin; break;
+            case SUSTAIN_SOCD_MODE_ADVANCED_2:  advanced2ModeMask |= 1 << pin; break;
+            case SUSTAIN_SOCD_MODE_ADVANCED_3:  advanced3ModeMask |= 1 << pin; break;
+            case SUSTAIN_SOCD_MODE_ADVANCED_4:  advanced4ModeMask |= 1 << pin; break;
             default:                            break;
         }
     }
@@ -37,6 +41,10 @@ SOCDMode SliderSOCDInput::read() {
     else if (values & secondInputModeMask)      return SOCDMode::SOCD_MODE_SECOND_INPUT_PRIORITY;
     else if (values & firstInputModeMask)       return SOCDMode::SOCD_MODE_FIRST_INPUT_PRIORITY;
     else if (values & bypassModeMask)           return SOCDMode::SOCD_MODE_BYPASS;
+    else if (values & advanced1ModeMask)        return SOCDMode::SOCD_MODE_ADVANCED_1;
+    else if (values & advanced2ModeMask)        return SOCDMode::SOCD_MODE_ADVANCED_2;
+    else if (values & advanced3ModeMask)        return SOCDMode::SOCD_MODE_ADVANCED_3;
+    else if (values & advanced4ModeMask)        return SOCDMode::SOCD_MODE_ADVANCED_4;
     return options.modeDefault;
 }
 
@@ -50,6 +58,10 @@ void SliderSOCDInput::reinit()
     secondInputModeMask = 0;
     firstInputModeMask = 0;
     bypassModeMask = 0;
+    advanced1ModeMask = 0;
+    advanced2ModeMask = 0;
+    advanced3ModeMask = 0;
+    advanced4ModeMask = 0;
     this->setup();
 }
 
