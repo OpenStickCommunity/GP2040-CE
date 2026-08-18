@@ -147,7 +147,12 @@ private:
     uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
     float magnitudeCalculation(int stick_num, adc_instance & adc_inst);
     void radialDeadzone(int stick_num, adc_instance & adc_inst);
+    void processStickToggles(Gamepad * gamepad);
     adc_instance adc_pairs[ADC_COUNT];
+    Mask_t toggleLeftMask = 0;
+    Mask_t toggleRightMask = 0;
+    bool toggleLeftWasPressed = false;
+    bool toggleRightWasPressed = false;
 };
 
 #endif  // _Analog_H_

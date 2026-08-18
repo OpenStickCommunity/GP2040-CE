@@ -90,6 +90,8 @@ export default {
 		ANALOG_DIRECTION_RS_Y_POS: 'Right Analog Stick Y+ (Down)',
 		ANALOG_DIRECTION_MOD_LOW: 'Analog Stick Tilt 1',
 		ANALOG_DIRECTION_MOD_HIGH: 'Analog Stick Tilt 2',
+		TOGGLE_LEFT_ANALOG: 'Toggle Left Analog Stick',
+		TOGGLE_RIGHT_ANALOG: 'Toggle Right Analog Stick',
 		BUTTON_PRESS_INPUT_REVERSE: 'Reverse Input',
 		SUSTAIN_FOCUS_MODE: 'Focus Mode Enable',
 		SUSTAIN_4_8_WAY_MODE: 'Toggle 4-Way Mode',

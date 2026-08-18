@@ -15,6 +15,8 @@ export default {
 	'analog-header-text': 'Analog',
 	'analog-warning':
 		'Note: Analog sticks will override gamepad Left-Stick and Right-Stick inputs when enabled',
+	'analog-left-stick-enabled': 'Left Analog Stick Enabled',
+	'analog-right-stick-enabled': 'Right Analog Stick Enabled',
 	'analog-available-pins-text': 'Available GPIO pins: {{pins}}',
 	'analog-available-pins-option-not-set': 'None',
 	'analog-adc-1': 'Analog Stick 1',

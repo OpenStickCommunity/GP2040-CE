@@ -5,6 +5,7 @@
 #include "helper.h"
 #include "storagemanager.h"
 #include "drivermanager.h"
+#include "GPStorageSaveEvent.h"
 
 #include <math.h>
 
@@ -20,6 +21,18 @@ bool AnalogInput::available() {
 
 void AnalogInput::setup() {
     const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
+
+    toggleLeftMask = 0;
+    toggleRightMask = 0;
+    GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
+    for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
+    {
+        switch (pinMappings[pin].action) {
+            case GpioAction::TOGGLE_LEFT_ANALOG:    toggleLeftMask |= 1 << pin; break;
+            case GpioAction::TOGGLE_RIGHT_ANALOG:   toggleRightMask |= 1 << pin; break;
+            default:                                break;
+        }
+    }
     
     // Setup our ADC Pair of Sticks
     adc_pairs[0].x_pin = analogOptions.analogAdc1PinX;
@@ -90,6 +103,9 @@ void AnalogInput::setup() {
 
 void AnalogInput::process() {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
+    const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
+
+    processStickToggles(gamepad);
     
     uint32_t joystickMid = GAMEPAD_JOYSTICK_MID;
     uint32_t joystickMax = GAMEPAD_JOYSTICK_MAX;
@@ -141,12 +157,47 @@ void AnalogInput::process() {
         }
 
         if (adc_pairs[i].analog_dpad == DpadMode::DPAD_MODE_LEFT_ANALOG) {
+            if (!analogOptions.analogLeftEnabled) continue;
             gamepad->state.lx = clampedX;
             gamepad->state.ly = clampedY;
         } else if (adc_pairs[i].analog_dpad == DpadMode::DPAD_MODE_RIGHT_ANALOG) {
+            if (!analogOptions.analogRightEnabled) continue;
             gamepad->state.rx = clampedX;
             gamepad->state.ry = clampedY;
         }
+    }
+}
+
+void AnalogInput::processStickToggles(Gamepad * gamepad) {
+    if (!toggleLeftMask && !toggleRightMask) return;
+
+    AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
+    GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
+    bool reqSave = false;
+
+    const bool leftPressed = toggleLeftMask && (gamepad->debouncedGpio & toggleLeftMask);
+    if (leftPressed && !toggleLeftWasPressed) {
+        analogOptions.analogLeftEnabled = !analogOptions.analogLeftEnabled;
+        // Turning the stick back on releases the d-pad from standing in for it
+        if (analogOptions.analogLeftEnabled && gamepadOptions.dpadMode == DPAD_MODE_LEFT_ANALOG) {
+            gamepadOptions.dpadMode = DPAD_MODE_DIGITAL;
+        }
+        reqSave = true;
+    }
+    toggleLeftWasPressed = leftPressed;
+
+    const bool rightPressed = toggleRightMask && (gamepad->debouncedGpio & toggleRightMask);
+    if (rightPressed && !toggleRightWasPressed) {
+        analogOptions.analogRightEnabled = !analogOptions.analogRightEnabled;
+        if (analogOptions.analogRightEnabled && gamepadOptions.dpadMode == DPAD_MODE_RIGHT_ANALOG) {
+            gamepadOptions.dpadMode = DPAD_MODE_DIGITAL;
+        }
+        reqSave = true;
+    }
+    toggleRightWasPressed = rightPressed;
+
+    if (reqSave) {
+        EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
     }
 }
 

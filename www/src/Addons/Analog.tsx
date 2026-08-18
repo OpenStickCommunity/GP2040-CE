@@ -44,6 +44,14 @@ const ANALOG_ERROR_RATES = [
 
 export const analogScheme = {
 	AnalogInputEnabled: yup.number().required().label('Analog Input Enabled'),
+	analogLeftEnabled: yup
+		.number()
+		.label('Left Analog Stick Enabled')
+		.validateRangeWhenValue('AnalogInputEnabled', 0, 1),
+	analogRightEnabled: yup
+		.number()
+		.label('Right Analog Stick Enabled')
+		.validateRangeWhenValue('AnalogInputEnabled', 0, 1),
 	analogAdc1PinX: yup
 		.number()
 		.label('Analog Stick 1 Pin X')
@@ -153,6 +161,8 @@ export const analogScheme = {
 
 export const analogState = {
 	AnalogInputEnabled: 0,
+	analogLeftEnabled: 1,
+	analogRightEnabled: 1,
 	analogAdc1PinX: -1,
 	analogAdc1PinY: -1,
 	analogAdc1Mode: 1,
@@ -180,6 +190,10 @@ export const analogState = {
 	analog_error: 1,
 	analog_error2: 1,
 };
+
+// Each ADC pair drives whichever stick its mode is set to
+const stickEnabledKey = (mode) =>
+	Number(mode) === 2 ? 'analogRightEnabled' : 'analogLeftEnabled';
 
 const Analog = ({ values, errors, handleChange, handleCheckbox, setFieldValue }: AddonPropTypes) => {
 	const { usedPins } = useContext(AppContext);
@@ -219,6 +233,19 @@ const Analog = ({ values, errors, handleChange, handleCheckbox, setFieldValue }:
 							eventKey="analog1Config"
 							title={t('AddonsConfig:analog-adc-1')}
 						>
+							<FormCheck
+								label={t(
+									`AddonsConfig:${stickEnabledKey(values.analogAdc1Mode) === 'analogRightEnabled' ? 'analog-right-stick-enabled' : 'analog-left-stick-enabled'}`,
+								)}
+								type="switch"
+								id="analogAdc1StickEnabled"
+								className="col-sm-4 mb-3 ms-3"
+								isInvalid={false}
+								checked={Boolean(values[stickEnabledKey(values.analogAdc1Mode)])}
+								onChange={() =>
+									handleCheckbox(stickEnabledKey(values.analogAdc1Mode))
+								}
+							/>
 							<Row className="mb-3">
 								<FormSelect
 									label={t('AddonsConfig:analog-adc-1-pin-x-label')}
@@ -504,6 +531,19 @@ const Analog = ({ values, errors, handleChange, handleCheckbox, setFieldValue }:
 							eventKey="analog2Config"
 							title={t('AddonsConfig:analog-adc-2')}
 						>
+							<FormCheck
+								label={t(
+									`AddonsConfig:${stickEnabledKey(values.analogAdc2Mode) === 'analogRightEnabled' ? 'analog-right-stick-enabled' : 'analog-left-stick-enabled'}`,
+								)}
+								type="switch"
+								id="analogAdc2StickEnabled"
+								className="col-sm-4 mb-3 ms-3"
+								isInvalid={false}
+								checked={Boolean(values[stickEnabledKey(values.analogAdc2Mode)])}
+								onChange={() =>
+									handleCheckbox(stickEnabledKey(values.analogAdc2Mode))
+								}
+							/>
 							<Row className="mb-3">
 								<FormSelect
 									label={t('AddonsConfig:analog-adc-2-pin-x-label')}

@@ -159,6 +159,8 @@ export default {
 		'rs-down': 'Right Stick Down',
 		'rs-left': 'Right Stick Left',
 		'rs-right': 'Right Stick Right',
+		'toggle-left-analog': 'Toggle Left Analog Stick',
+		'toggle-right-analog': 'Toggle Right Analog Stick',
 	},
 	'forced-setup-mode-label': 'Forced Setup Mode',
 	'forced-setup-mode-options': {
