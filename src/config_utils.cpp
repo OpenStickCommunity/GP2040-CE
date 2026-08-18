@@ -322,6 +322,14 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.gamepadOptions, usbProductID, DEFAULT_USB_PRODUCT_ID);
     INIT_UNSET_PROPERTY(config.gamepadOptions, miniMenuGamepadInput, MINI_MENU_GAMEPAD_INPUT);
 
+    // per-profile settings (profile 1 lives in gpioMappings, 2-6 in profileOptions)
+    INIT_UNSET_PROPERTY(config.gpioMappings.settings, socdEnabled, false);
+    INIT_UNSET_PROPERTY(config.gpioMappings.settings, socdMode, SOCD_MODE_NEUTRAL);
+    for (size_t i = 0; i < sizeof(config.profileOptions.gpioMappingsSets) / sizeof(config.profileOptions.gpioMappingsSets[0]); i++) {
+        INIT_UNSET_PROPERTY(config.profileOptions.gpioMappingsSets[i].settings, socdEnabled, false);
+        INIT_UNSET_PROPERTY(config.profileOptions.gpioMappingsSets[i].settings, socdMode, SOCD_MODE_NEUTRAL);
+    }
+
     // hotkeyOptions
     HotkeyOptions& hotkeyOptions = config.hotkeyOptions;
     INIT_UNSET_PROPERTY(hotkeyOptions.hotkey01, auxMask, HOTKEY_01_AUX_MASK);
