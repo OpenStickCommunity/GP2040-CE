@@ -1756,6 +1756,8 @@ std::string setAddonOptions()
     docToValue(analogOptions.smoothing_factor2, doc, "smoothing_factor2");
     docToValue(analogOptions.analog_error, doc, "analog_error");
     docToValue(analogOptions.analog_error2, doc, "analog_error2");
+    docToValue(analogOptions.analogLeftEnabled, doc, "analogLeftEnabled");
+    docToValue(analogOptions.analogRightEnabled, doc, "analogRightEnabled");
     docToValue(analogOptions.enabled, doc, "AnalogInputEnabled");
 
     BootselButtonOptions& bootselButtonOptions = Storage::getInstance().getAddonOptions().bootselButtonOptions;
@@ -2214,6 +2216,8 @@ std::string getAddonOptions()
     writeDoc(doc, "smoothing_factor2", analogOptions.smoothing_factor2);
     writeDoc(doc, "analog_error", analogOptions.analog_error);
     writeDoc(doc, "analog_error2", analogOptions.analog_error2);
+    writeDoc(doc, "analogLeftEnabled", analogOptions.analogLeftEnabled);
+    writeDoc(doc, "analogRightEnabled", analogOptions.analogRightEnabled);
     writeDoc(doc, "AnalogInputEnabled", analogOptions.enabled);
 
     const BootselButtonOptions& bootselButtonOptions = Storage::getInstance().getAddonOptions().bootselButtonOptions;

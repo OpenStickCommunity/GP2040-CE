@@ -574,6 +574,27 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 				reqSave = true;
 			}
 			break;
+		case HOTKEY_TOGGLE_LEFT_ANALOG:
+			if (action != lastAction) {
+				AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
+				analogOptions.analogLeftEnabled = !analogOptions.analogLeftEnabled;
+				// Turning the stick back on releases the d-pad from standing in for it
+				if (analogOptions.analogLeftEnabled && options.dpadMode == DPAD_MODE_LEFT_ANALOG) {
+					options.dpadMode = DPAD_MODE_DIGITAL;
+				}
+				reqSave = true;
+			}
+			break;
+		case HOTKEY_TOGGLE_RIGHT_ANALOG:
+			if (action != lastAction) {
+				AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
+				analogOptions.analogRightEnabled = !analogOptions.analogRightEnabled;
+				if (analogOptions.analogRightEnabled && options.dpadMode == DPAD_MODE_RIGHT_ANALOG) {
+					options.dpadMode = DPAD_MODE_DIGITAL;
+				}
+				reqSave = true;
+			}
+			break;
 		case HOTKEY_REBOOT_DEFAULT:
 			if (action != lastAction) {
 				System::reboot(System::BootMode::DEFAULT);

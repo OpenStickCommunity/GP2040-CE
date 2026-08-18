@@ -278,6 +278,8 @@ const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.rs-down', value: 83 },
 	{ labelKey: 'hotkey-actions.rs-left', value: 84 },
 	{ labelKey: 'hotkey-actions.rs-right', value: 85 },
+	{ labelKey: 'hotkey-actions.toggle-left-analog', value: 88 },
+	{ labelKey: 'hotkey-actions.toggle-right-analog', value: 89 },
 ];
 
 const FORCED_SETUP_MODES = [
