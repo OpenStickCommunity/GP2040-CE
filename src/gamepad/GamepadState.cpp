@@ -90,6 +90,61 @@ uint8_t filterToFourWayMode(uint8_t dpad)
 	return updateDpad(dpad, DIRECTION_RIGHT);
 }
 
+static DpadDirection lastUD = DIRECTION_NONE;
+static DpadDirection lastLR = DIRECTION_NONE;
+
+// maskA/dirA is up or left, maskB/dirB the opposing direction
+static uint8_t cleanSOCDAxis(SOCDAxisMode mode, uint8_t dpad, uint8_t maskA, uint8_t maskB,
+	DpadDirection dirA, DpadDirection dirB, DpadDirection& last)
+{
+	const bool pressedA = dpad & maskA;
+	const bool pressedB = dpad & maskB;
+
+	if (pressedA && pressedB)
+	{
+		if (mode == SOCD_AXIS_MODE_OFF)
+			return maskA | maskB;
+		else if (mode == SOCD_AXIS_MODE_UP_PRIORITY)
+		{
+			last = dirA;
+			return maskA;
+		}
+		else if (mode == SOCD_AXIS_MODE_LAST_WIN && last != DIRECTION_NONE)
+			return (last == dirA) ? maskB : maskA;
+		else if (mode == SOCD_AXIS_MODE_FIRST_WIN && last != DIRECTION_NONE)
+			return (last == dirA) ? maskA : maskB;
+
+		last = DIRECTION_NONE;
+		return 0;
+	}
+
+	if (pressedA)
+	{
+		last = dirA;
+		return maskA;
+	}
+
+	if (pressedB)
+	{
+		last = dirB;
+		return maskB;
+	}
+
+	last = DIRECTION_NONE;
+	return 0;
+}
+
+uint8_t runSOCDCleanerPerAxis(SOCDAxisMode upDownMode, SOCDAxisMode leftRightMode, uint8_t dpad)
+{
+	// Up priority has no left/right meaning; we cannot know which way a character faces
+	if (leftRightMode == SOCD_AXIS_MODE_UP_PRIORITY) leftRightMode = SOCD_AXIS_MODE_NEUTRAL;
+
+	return cleanSOCDAxis(upDownMode, dpad, GAMEPAD_MASK_UP, GAMEPAD_MASK_DOWN,
+			DIRECTION_UP, DIRECTION_DOWN, lastUD)
+		| cleanSOCDAxis(leftRightMode, dpad, GAMEPAD_MASK_LEFT, GAMEPAD_MASK_RIGHT,
+			DIRECTION_LEFT, DIRECTION_RIGHT, lastLR);
+}
+
 /**
  * @brief Run SOCD cleaning against a D-pad value.
  *
@@ -103,66 +158,15 @@ uint8_t runSOCDCleaner(SOCDMode mode, uint8_t dpad)
 		return dpad;
 	}
 
-	static DpadDirection lastUD = DIRECTION_NONE;
-	static DpadDirection lastLR = DIRECTION_NONE;
-	uint8_t newDpad = 0;
-
-	switch (dpad & (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN))
+	switch (mode)
 	{
-		case (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN):
-			if (mode == SOCD_MODE_UP_PRIORITY)
-			{
-				newDpad |= GAMEPAD_MASK_UP;
-				lastUD = DIRECTION_UP;
-			}
-			else if (mode == SOCD_MODE_SECOND_INPUT_PRIORITY && lastUD != DIRECTION_NONE)
-				newDpad |= (lastUD == DIRECTION_UP) ? GAMEPAD_MASK_DOWN : GAMEPAD_MASK_UP;
-			else if (mode == SOCD_MODE_FIRST_INPUT_PRIORITY && lastUD != DIRECTION_NONE)
-				newDpad |= (lastUD == DIRECTION_UP) ? GAMEPAD_MASK_UP : GAMEPAD_MASK_DOWN;
-			else
-				lastUD = DIRECTION_NONE;
-			break;
-
-		case GAMEPAD_MASK_UP:
-			newDpad |= GAMEPAD_MASK_UP;
-			lastUD = DIRECTION_UP;
-			break;
-
-		case GAMEPAD_MASK_DOWN:
-			newDpad |= GAMEPAD_MASK_DOWN;
-			lastUD = DIRECTION_DOWN;
-			break;
-
+		case SOCD_MODE_UP_PRIORITY:
+			return runSOCDCleanerPerAxis(SOCD_AXIS_MODE_UP_PRIORITY, SOCD_AXIS_MODE_NEUTRAL, dpad);
+		case SOCD_MODE_SECOND_INPUT_PRIORITY:
+			return runSOCDCleanerPerAxis(SOCD_AXIS_MODE_LAST_WIN, SOCD_AXIS_MODE_LAST_WIN, dpad);
+		case SOCD_MODE_FIRST_INPUT_PRIORITY:
+			return runSOCDCleanerPerAxis(SOCD_AXIS_MODE_FIRST_WIN, SOCD_AXIS_MODE_FIRST_WIN, dpad);
 		default:
-			lastUD = DIRECTION_NONE;
-			break;
+			return runSOCDCleanerPerAxis(SOCD_AXIS_MODE_NEUTRAL, SOCD_AXIS_MODE_NEUTRAL, dpad);
 	}
-
-	switch (dpad & (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT))
-	{
-		case (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT):
-			if (mode == SOCD_MODE_SECOND_INPUT_PRIORITY && lastLR != DIRECTION_NONE)
-				newDpad |= (lastLR == DIRECTION_LEFT) ? GAMEPAD_MASK_RIGHT : GAMEPAD_MASK_LEFT;
-			else if (mode == SOCD_MODE_FIRST_INPUT_PRIORITY && lastLR != DIRECTION_NONE)
-				newDpad |= (lastLR == DIRECTION_LEFT) ? GAMEPAD_MASK_LEFT : GAMEPAD_MASK_RIGHT;
-			else
-				lastLR = DIRECTION_NONE;
-			break;
-
-		case GAMEPAD_MASK_LEFT:
-			newDpad |= GAMEPAD_MASK_LEFT;
-			lastLR = DIRECTION_LEFT;
-			break;
-
-		case GAMEPAD_MASK_RIGHT:
-			newDpad |= GAMEPAD_MASK_RIGHT;
-			lastLR = DIRECTION_RIGHT;
-			break;
-
-		default:
-			lastLR = DIRECTION_NONE;
-			break;
-	}
-
-	return newDpad;
 }

@@ -335,5 +335,8 @@ uint8_t DualDirectionalInput::gpadToBinary(DpadMode dpadMode, GamepadState state
 }
 
 const SOCDMode DualDirectionalInput::getSOCDMode(const GamepadOptions& options) {
-    return Gamepad::resolveSOCDMode(options);
+    const SOCDMode mode = Gamepad::resolveSOCDMode(options);
+
+    // The single-mode cleaning below would leave left + right untouched for an unknown mode
+    return Gamepad::isAdvancedSOCDMode(mode) ? SOCD_MODE_NEUTRAL : mode;
 }

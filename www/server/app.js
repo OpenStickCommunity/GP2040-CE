@@ -106,6 +106,19 @@ app.get('/api/getSplashImage', (req, res) => {
 
 app.get('/api/getGamepadOptions', (req, res) => {
 	return res.send({
+		advancedSOCDEnabled: 1,
+		advancedSOCD1Enabled: 1,
+		advancedSOCD1UpDown: 0,
+		advancedSOCD1LeftRight: 0,
+		advancedSOCD2Enabled: 1,
+		advancedSOCD2UpDown: 0,
+		advancedSOCD2LeftRight: 0,
+		advancedSOCD3Enabled: 1,
+		advancedSOCD3UpDown: 0,
+		advancedSOCD3LeftRight: 0,
+		advancedSOCD4Enabled: 1,
+		advancedSOCD4UpDown: 0,
+		advancedSOCD4LeftRight: 0,
 		dpadMode: 0,
 		inputMode: 4,
 		inputDeviceType: 0,

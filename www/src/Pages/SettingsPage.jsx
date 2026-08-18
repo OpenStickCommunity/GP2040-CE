@@ -14,6 +14,10 @@ import ContextualHelpOverlay from '../Components/ContextualHelpOverlay';
 import KeyboardMapper from '../Components/KeyboardMapper';
 import Section from '../Components/Section';
 import WebApi, { baseButtonMappings } from '../Services/WebApi';
+import AdvancedSOCD, {
+	ADVANCED_SOCD_SLOTS,
+	advancedSOCDScheme,
+} from '../Components/AdvancedSOCD';
 import { BUTTON_MASKS_OPTIONS, getButtonLabels } from '../Data/Buttons';
 
 import { hexToInt } from '../Services/Utilities';
@@ -278,6 +282,10 @@ const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.rs-down', value: 83 },
 	{ labelKey: 'hotkey-actions.rs-left', value: 84 },
 	{ labelKey: 'hotkey-actions.rs-right', value: 85 },
+	{ labelKey: 'hotkey-actions.socd-advanced-1', value: 88 },
+	{ labelKey: 'hotkey-actions.socd-advanced-2', value: 89 },
+	{ labelKey: 'hotkey-actions.socd-advanced-3', value: 90 },
+	{ labelKey: 'hotkey-actions.socd-advanced-4', value: 91 },
 ];
 
 const FORCED_SETUP_MODES = [
@@ -361,8 +369,12 @@ const schema = yup.object().shape({
 	socdMode: yup
 		.number()
 		.required()
-		.oneOf(SOCD_MODES.map((o) => o.value))
+		.oneOf([
+			...SOCD_MODES.map((o) => o.value),
+			...ADVANCED_SOCD_SLOTS.map((o) => o.value),
+		])
 		.label('SOCD Cleaning Mode'),
+	...advancedSOCDScheme,
 	switchTpShareForDs4: yup
 		.number()
 		.required()
@@ -465,6 +477,13 @@ const FormContext = ({ setButtonLabels, setKeyMappings }) => {
 		if (!!values.dpadMode) values.dpadMode = parseInt(values.dpadMode);
 		if (!!values.inputMode) values.inputMode = parseInt(values.inputMode);
 		if (!!values.socdMode) values.socdMode = parseInt(values.socdMode);
+		if (values.advancedSOCDEnabled !== undefined)
+			values.advancedSOCDEnabled = parseInt(values.advancedSOCDEnabled);
+		ADVANCED_SOCD_SLOTS.forEach(({ enabledKey, upDownKey, leftRightKey }) => {
+			[enabledKey, upDownKey, leftRightKey].forEach((key) => {
+				if (values[key] !== undefined) values[key] = parseInt(values[key]);
+			});
+		});
 		if (!!values.switchTpShareForDs4)
 			values.switchTpShareForDs4 = parseInt(values.switchTpShareForDs4);
 		if (!!values.forcedSetupMode)
@@ -1588,13 +1607,49 @@ export default function SettingsPage() {
 																		{o.label}
 																	</option>
 																))}
+																{Boolean(values.advancedSOCDEnabled) &&
+																	ADVANCED_SOCD_SLOTS.filter(
+																		(slot) => values[slot.enabledKey],
+																	).map((slot) => (
+																		<option
+																			key={`button-socdMode-advanced-${slot.index}`}
+																			value={slot.value}
+																		>
+																			{slot.label}
+																		</option>
+																	))}
 															</Form.Select>
 															<Form.Control.Feedback type="invalid">
 																{errors.socdMode}
 															</Form.Control.Feedback>
 														</Col>
+														<Col sm={3}>
+															<Form.Check
+																label={t(
+																	'SettingsPage:advanced-socd-enabled-label',
+																)}
+																type="switch"
+																id="advancedSOCDEnabled"
+																isInvalid={false}
+																checked={Boolean(values.advancedSOCDEnabled)}
+																onChange={(e) => {
+																	setFieldValue(
+																		'advancedSOCDEnabled',
+																		e.target.checked ? 1 : 0,
+																	);
+																}}
+															/>
+														</Col>
 													</Form.Group>
 													<p>{t('SettingsPage:socd-cleaning-mode-note')}</p>
+													{Boolean(values.advancedSOCDEnabled) && (
+														<AdvancedSOCD
+															values={values}
+															errors={errors}
+															handleChange={handleChange}
+															setFieldValue={setFieldValue}
+														/>
+													)}
 													<Form.Group className="row mb-3">
 														<Form.Label>
 															{t('SettingsPage:forced-setup-mode-label')}

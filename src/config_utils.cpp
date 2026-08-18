@@ -11,6 +11,7 @@
 #include "BoardConfig.h"
 #include "GamepadConfig.h"
 #include "version.h"
+#include "advanced_socd.h"
 #include "addons/analog.h"
 #include "addons/board_led.h"
 #include "addons/bootsel_button.h"
@@ -294,6 +295,14 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.gamepadOptions, inputMode, DEFAULT_INPUT_MODE);
     INIT_UNSET_PROPERTY(config.gamepadOptions, dpadMode, DEFAULT_DPAD_MODE);
     INIT_UNSET_PROPERTY(config.gamepadOptions, socdMode, DEFAULT_SOCD_MODE);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, advancedSOCDEnabled, false);
+    for (uint8_t socdSlotIndex = 0; socdSlotIndex < ADVANCED_SOCD_SLOT_COUNT; socdSlotIndex++) {
+        AdvancedSOCDSlot& socdSlot = config.gamepadOptions.advancedSOCDSlots[socdSlotIndex];
+        INIT_UNSET_PROPERTY(socdSlot, enabled, false);
+        INIT_UNSET_PROPERTY(socdSlot, upDownMode, SOCD_AXIS_MODE_NEUTRAL);
+        INIT_UNSET_PROPERTY(socdSlot, leftRightMode, SOCD_AXIS_MODE_NEUTRAL);
+    }
+    config.gamepadOptions.advancedSOCDSlots_count = ADVANCED_SOCD_SLOT_COUNT;
     INIT_UNSET_PROPERTY(config.gamepadOptions, invertXAxis, false);
     INIT_UNSET_PROPERTY(config.gamepadOptions, switchTpShareForDs4, false);
     INIT_UNSET_PROPERTY(config.gamepadOptions, lockHotkeys, DEFAULT_LOCK_HOTKEYS);

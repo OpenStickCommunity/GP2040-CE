@@ -34,6 +34,7 @@
 #include "lwip/apps/httpd.h"
 #include "lwip/def.h"
 #include "lwip/mem.h"
+#include "advanced_socd.h"
 #include "addons/input_macro.h"
 
 #define PATH_CGI_ACTION "/cgi/action"
@@ -107,6 +108,18 @@ static void __attribute__((noinline)) docToValue(T& value, const DynamicJsonDocu
         value = doc[key0][key1][key2];
     }
 }
+
+// ArduinoJson stores keys by pointer, so these must be literals, not a stack buffer
+static const struct {
+    const char* enabled;
+    const char* upDown;
+    const char* leftRight;
+} ADVANCED_SOCD_KEYS[ADVANCED_SOCD_SLOT_COUNT] = {
+    { "advancedSOCD1Enabled", "advancedSOCD1UpDown", "advancedSOCD1LeftRight" },
+    { "advancedSOCD2Enabled", "advancedSOCD2UpDown", "advancedSOCD2LeftRight" },
+    { "advancedSOCD3Enabled", "advancedSOCD3UpDown", "advancedSOCD3LeftRight" },
+    { "advancedSOCD4Enabled", "advancedSOCD4UpDown", "advancedSOCD4LeftRight" },
+};
 
 // Don't inline this function, we do not want to consume stack space in the calling function
 static void __attribute__((noinline)) cleanAddonGpioMappings(Pin_t& addonPin, Pin_t oldAddonPin)
@@ -666,6 +679,15 @@ std::string setGamepadOptions()
     readDoc(gamepadOptions.inputMode, doc, "inputMode");
     readDoc(gamepadOptions.inputDeviceType, doc, "inputDeviceType");
     readDoc(gamepadOptions.socdMode, doc, "socdMode");
+    readDoc(gamepadOptions.advancedSOCDEnabled, doc, "advancedSOCDEnabled");
+
+    for (int index = 0; index < ADVANCED_SOCD_SLOT_COUNT; index++) {
+        AdvancedSOCDSlot& socdSlot = gamepadOptions.advancedSOCDSlots[index];
+        docToValue(socdSlot.enabled, doc, ADVANCED_SOCD_KEYS[index].enabled);
+        docToValue(socdSlot.upDownMode, doc, ADVANCED_SOCD_KEYS[index].upDown);
+        docToValue(socdSlot.leftRightMode, doc, ADVANCED_SOCD_KEYS[index].leftRight);
+    }
+    gamepadOptions.advancedSOCDSlots_count = ADVANCED_SOCD_SLOT_COUNT;
     readDoc(gamepadOptions.switchTpShareForDs4, doc, "switchTpShareForDs4");
     readDoc(gamepadOptions.lockHotkeys, doc, "lockHotkeys");
     readDoc(gamepadOptions.fourWayMode, doc, "fourWayMode");
@@ -736,6 +758,12 @@ std::string getGamepadOptions()
     writeDoc(doc, "inputMode", gamepadOptions.inputMode);
     writeDoc(doc, "inputDeviceType", gamepadOptions.inputDeviceType);
     writeDoc(doc, "socdMode", gamepadOptions.socdMode);
+    writeDoc(doc, "advancedSOCDEnabled", gamepadOptions.advancedSOCDEnabled);
+    for (int index = 0; index < ADVANCED_SOCD_SLOT_COUNT; index++) {
+        writeDoc(doc, ADVANCED_SOCD_KEYS[index].enabled, gamepadOptions.advancedSOCDSlots[index].enabled);
+        writeDoc(doc, ADVANCED_SOCD_KEYS[index].upDown, gamepadOptions.advancedSOCDSlots[index].upDownMode);
+        writeDoc(doc, ADVANCED_SOCD_KEYS[index].leftRight, gamepadOptions.advancedSOCDSlots[index].leftRightMode);
+    }
     writeDoc(doc, "switchTpShareForDs4", gamepadOptions.switchTpShareForDs4 ? 1 : 0);
     writeDoc(doc, "lockHotkeys", gamepadOptions.lockHotkeys ? 1 : 0);
     writeDoc(doc, "fourWayMode", gamepadOptions.fourWayMode ? 1 : 0);

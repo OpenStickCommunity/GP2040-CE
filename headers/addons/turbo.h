@@ -112,7 +112,7 @@ public:
     void handleEncoder(GPEvent* e);
 private:
     void updateTurboShotCount(uint8_t turboShotCount, bool save = true);
-    Mask_t turboPinMask;        // Pin mask for Turbo pin
+    Mask_t turboPinMask = 0;    // Pin mask for Turbo pin
     bool bDebState;             // Debounce TURBO Button State
     uint32_t uDebTime;          // Debounce TURBO Button Time
     uint32_t debChargeState;    // Debounce Charge Button State

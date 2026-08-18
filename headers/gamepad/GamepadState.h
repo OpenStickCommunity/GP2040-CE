@@ -180,3 +180,5 @@ uint8_t filterToFourWayMode(uint8_t dpad);
  * @return uint8_t The clean D-pad value.
  */
 uint8_t runSOCDCleaner(SOCDMode mode, uint8_t dpad);
+
+uint8_t runSOCDCleanerPerAxis(SOCDAxisMode upDownMode, SOCDAxisMode leftRightMode, uint8_t dpad);

@@ -42,6 +42,10 @@ private:
     Mask_t secondInputModeMask = 0;
     Mask_t firstInputModeMask = 0;
     Mask_t bypassModeMask = 0;
+    Mask_t advanced1ModeMask = 0;
+    Mask_t advanced2ModeMask = 0;
+    Mask_t advanced3ModeMask = 0;
+    Mask_t advanced4ModeMask = 0;
 };
 
 #endif  // _SliderSOCD_H_

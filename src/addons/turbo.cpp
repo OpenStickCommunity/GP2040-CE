@@ -25,6 +25,7 @@
 bool TurboInput::available() {
     // Turbo Button initialized by void Gamepad::setup()
     hasTurboAssigned = false;
+    turboPinMask = 0;
     GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
     {

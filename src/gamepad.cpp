@@ -295,7 +295,7 @@ void Gamepad::process()
 	}
 
 	// clean up after yourself. nobody likes bad inputs.
-	state.dpad = runSOCDCleaner(resolveSOCDMode(options), state.dpad);
+	state.dpad = runConfiguredSOCDCleaner(state.dpad);
 
 	// since analog modes only care about the dpad mode inputs, set the dpad state to digital only dpad values
 	switch (activeDpadMode)
@@ -457,6 +457,25 @@ void Gamepad::clearRumbleState() {
 	auxState.haptics.rightTrigger.intensity = 0;
 }
 
+uint8_t Gamepad::runConfiguredSOCDCleaner(uint8_t dpad) {
+	const SOCDMode mode = resolveSOCDMode(options);
+	if (!isAdvancedSOCDMode(mode)) {
+		return runSOCDCleaner(mode, dpad);
+	}
+
+	const uint8_t slotIndex = mode - SOCD_MODE_ADVANCED_1;
+	SOCDAxisMode upDownMode = options.advancedSOCDSlots[slotIndex].upDownMode;
+	SOCDAxisMode leftRightMode = options.advancedSOCDSlots[slotIndex].leftRightMode;
+
+	// Same protection the bypass preset gets
+	if (socdRequiresCleaning(options)) {
+		if (upDownMode == SOCD_AXIS_MODE_OFF) upDownMode = SOCD_AXIS_MODE_NEUTRAL;
+		if (leftRightMode == SOCD_AXIS_MODE_OFF) leftRightMode = SOCD_AXIS_MODE_NEUTRAL;
+	}
+
+	return runSOCDCleanerPerAxis(upDownMode, leftRightMode, dpad);
+}
+
 /**
  * @brief Take a hotkey action if it hasn't already been taken, modifying state/options appropriately.
  */
@@ -571,6 +590,30 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 		case HOTKEY_SOCD_BYPASS:
 			if (action != lastAction) {
 				options.socdMode = SOCD_MODE_BYPASS;
+				reqSave = true;
+			}
+			break;
+		case HOTKEY_SOCD_ADVANCED_1:
+			if (action != lastAction) {
+				options.socdMode = SOCD_MODE_ADVANCED_1;
+				reqSave = true;
+			}
+			break;
+		case HOTKEY_SOCD_ADVANCED_2:
+			if (action != lastAction) {
+				options.socdMode = SOCD_MODE_ADVANCED_2;
+				reqSave = true;
+			}
+			break;
+		case HOTKEY_SOCD_ADVANCED_3:
+			if (action != lastAction) {
+				options.socdMode = SOCD_MODE_ADVANCED_3;
+				reqSave = true;
+			}
+			break;
+		case HOTKEY_SOCD_ADVANCED_4:
+			if (action != lastAction) {
+				options.socdMode = SOCD_MODE_ADVANCED_4;
 				reqSave = true;
 			}
 			break;
