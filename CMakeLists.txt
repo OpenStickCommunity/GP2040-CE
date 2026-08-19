@@ -236,7 +236,6 @@ src/drivers/xinput/XInputAuthUSBListener.cpp
 src/drivers/xinput/XInputDriver.cpp
 src/interfaces/i2c/i2cdevicebase.cpp
 src/interfaces/i2c/pcf8575/pcf8575.cpp
-src/interfaces/i2c/ssd1306/obd_ssd1306.cpp
 src/interfaces/i2c/ssd1306/tiny_ssd1306.cpp
 src/display/ui/elements/GPWidget.cpp
 src/display/ui/elements/GPButton.cpp
@@ -330,7 +329,6 @@ FlashPROM
 ADS1219
 ADS1256
 NeoPico
-OneBitDisplay
 ArduinoJson
 rndis
 hardware_adc
