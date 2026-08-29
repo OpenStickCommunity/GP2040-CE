@@ -52,6 +52,10 @@ import DRV8833Rumble, {
 	drv8833RumbleScheme,
 	drv8833RumbleState,
 } from '../Addons/DRV8833';
+import AnalogTriggers, {
+	analogTriggersScheme,
+	analogTriggersState,
+} from '../Addons/AnalogTriggers';
 import ReactiveLED, {
 	reactiveLEDScheme,
 	reactiveLEDState,
@@ -88,6 +92,7 @@ const schema = yup.object().shape({
 	...rotaryScheme,
 	...pcf8575Scheme,
 	...drv8833RumbleScheme,
+	...analogTriggersScheme,
 	...reactiveLEDScheme,
 	...gamepadUSBHostScheme,
 	...HETriggerScheme,
@@ -113,6 +118,7 @@ export const DEFAULT_VALUES = {
 	...rotaryState,
 	...pcf8575State,
 	...drv8833RumbleState,
+	...analogTriggersState,
 	...reactiveLEDState,
 	...gamepadUSBHostState,
 	...HETriggerState,
@@ -139,6 +145,7 @@ const ADDONS = [
 	Rotary,
 	PCF8575,
 	DRV8833Rumble,
+	AnalogTriggers,
 	ReactiveLED,
 	HETrigger,
 ];
