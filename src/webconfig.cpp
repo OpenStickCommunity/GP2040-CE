@@ -1916,6 +1916,15 @@ std::string setAddonOptions()
     docToValue(drv8833RumbleOptions.dutyMin, doc, "drv8833RumbleDutyMin");
     docToValue(drv8833RumbleOptions.dutyMax, doc, "drv8833RumbleDutyMax");
 
+    AnalogTriggerOptions& analogTriggerOptions = Storage::getInstance().getAddonOptions().analogTriggerOptions;
+    docToValue(analogTriggerOptions.enabled, doc, "AnalogTriggersAddonEnabled");
+    docToPin(analogTriggerOptions.leftTriggerPin, doc, "analogTriggersLeftPin");
+    docToPin(analogTriggerOptions.rightTriggerPin, doc, "analogTriggersRightPin");
+    docToValue(analogTriggerOptions.leftTriggerInvert, doc, "analogTriggersLeftInvert");
+    docToValue(analogTriggerOptions.rightTriggerInvert, doc, "analogTriggersRightInvert");
+    docToValue(analogTriggerOptions.innerDeadzone, doc, "analogTriggersInnerDeadzone");
+    docToValue(analogTriggerOptions.outerDeadzone, doc, "analogTriggersOuterDeadzone");
+
     TG16Options& tg16Options = Storage::getInstance().getAddonOptions().tg16Options;
     docToValue(tg16Options.enabled, doc, "TG16padAddonEnabled");
     docToPin(tg16Options.oePin, doc, "tg16PadOePin");
@@ -2373,6 +2382,15 @@ std::string getAddonOptions()
     writeDoc(doc, "drv8833RumblePWMFrequency", drv8833RumbleOptions.pwmFrequency);
     writeDoc(doc, "drv8833RumbleDutyMin", drv8833RumbleOptions.dutyMin);
     writeDoc(doc, "drv8833RumbleDutyMax", drv8833RumbleOptions.dutyMax);
+
+    const AnalogTriggerOptions& analogTriggerOptions = Storage::getInstance().getAddonOptions().analogTriggerOptions;
+    writeDoc(doc, "AnalogTriggersAddonEnabled", analogTriggerOptions.enabled);
+    writeDoc(doc, "analogTriggersLeftPin", cleanPin(analogTriggerOptions.leftTriggerPin));
+    writeDoc(doc, "analogTriggersRightPin", cleanPin(analogTriggerOptions.rightTriggerPin));
+    writeDoc(doc, "analogTriggersLeftInvert", analogTriggerOptions.leftTriggerInvert);
+    writeDoc(doc, "analogTriggersRightInvert", analogTriggerOptions.rightTriggerInvert);
+    writeDoc(doc, "analogTriggersInnerDeadzone", analogTriggerOptions.innerDeadzone);
+    writeDoc(doc, "analogTriggersOuterDeadzone", analogTriggerOptions.outerDeadzone);
 
     TG16Options& tg16Options = Storage::getInstance().getAddonOptions().tg16Options;
     writeDoc(doc, "TG16padAddonEnabled", tg16Options.enabled);
