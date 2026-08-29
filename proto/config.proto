@@ -864,6 +864,18 @@ message DRV8833RumbleOptions
     optional float dutyMax = 7;
 }
 
+message AnalogTriggerOptions
+{
+    optional bool enabled = 1;
+
+    optional int32 leftTriggerPin = 2;
+    optional int32 rightTriggerPin = 3;
+    optional bool leftTriggerInvert = 4;
+    optional bool rightTriggerInvert = 5;
+    optional float innerDeadzone = 6;
+    optional float outerDeadzone = 7;
+}
+
 message ReactiveLEDInfo
 {
     optional int32 pin = 1;
@@ -940,6 +952,7 @@ message AddonOptions
     optional GamepadUSBHostOptions gamepadUSBHostOptions = 28;
     optional TG16Options tg16Options = 29;
     optional HETriggerOptions heTriggerOptions = 30;
+    optional AnalogTriggerOptions analogTriggerOptions = 31;
 }
 
 message MigrationHistory
