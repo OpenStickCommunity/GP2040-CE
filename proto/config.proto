@@ -517,8 +517,6 @@ message AnalogADS1115Options
     optional uint32 lyChannel = 20;
     optional uint32 rxChannel = 21;
     optional uint32 ryChannel = 22;
-    optional bool alertMode = 23;
-    optional int32 alertPin = 24;
 }
 
 message AnalogADS1219Options
