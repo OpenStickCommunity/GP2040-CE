@@ -70,9 +70,6 @@ void I2CAnalog1115Input::setup() {
   instance.rxChannel = options.rxChannel;
   instance.ryChannel = options.ryChannel;
 
-  instance.alertMode = options.alertMode;
-  instance.alertPin = options.alertPin;
-
   instance.inner_deadzone[0] = options.channel0InnerDeadzone * (1 << 16) / 100;
   instance.outer_deadzone[0] = options.channel0OuterDeadzone * (1 << 16) / 100;
   instance.inner_deadzone[1] = options.channel1InnerDeadzone * (1 << 16) / 100;
