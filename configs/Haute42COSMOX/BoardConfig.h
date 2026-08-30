@@ -103,6 +103,10 @@
  #define I2C0_ENABLED 1
  #define I2C0_PIN_SDA 0
  #define I2C0_PIN_SCL 1
+ // Bump I2C0 to Fast Mode Plus (1 MHz) so the SSD1306 framebuffer write
+ // (~1024 bytes) blocks Core 1 for ~10 ms instead of ~25 ms. This reduces
+ // the P5General auth stall window when the OLED display is enabled.
+ #define I2C0_SPEED 1000000
  #define SPLASH_MODE SPLASH_MODE_STATIC
  #define SPLASH_DURATION 3000
  
