@@ -691,8 +691,6 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, lyChannel, ANALOG1115_LY_CHANNEL);
     INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, rxChannel, ANALOG1115_RX_CHANNEL);
     INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, ryChannel, ANALOG1115_RY_CHANNEL);
-    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, alertMode, ANALOG1115_ALERT_MODE);
-    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, alertPin, ANALOG1115_ALERT_PIN);
 
     // addonOptions.analogADS1219Options
     INIT_UNSET_PROPERTY(config.addonOptions.analogADS1219Options, enabled, !!I2C_ANALOG1219_ENABLED);
