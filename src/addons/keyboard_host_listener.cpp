@@ -199,8 +199,8 @@ void KeyboardHostListener::process_kbd_report(uint8_t dev_addr, hid_keyboard_rep
   // move this preprocess dpad reset only to kbd_report (so as to not have it run on mouse input, by Fran89)
   _keyboard_host_state.dpad = 0;
 
-  // make this 13 instead of 7 to include modifier bitfields from hid_keyboard_modifier_bm_t
-  for(uint8_t i=0; i<13; i++)
+  // make this 14 instead of 7 to include modifier bitfields from hid_keyboard_modifier_bm_t
+  for(uint8_t i=0; i<14; i++)
   {
     uint8_t keycode = 0;
     if (i < 6) {
