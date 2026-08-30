@@ -212,11 +212,19 @@ message GpioMappingInfo
     optional uint32 customButtonMask = 4;
 }
 
+message ProfileSettings
+{
+    optional bool socdEnabled = 1 [default = false];
+    optional SOCDMode socdMode = 2;
+}
+
 message GpioMappings
 {
     repeated GpioMappingInfo pins = 1 [(nanopb).max_count = 30];
     optional string profileLabel = 2 [(nanopb).max_length = 16];
     optional bool enabled = 3 [default = false];
+    // Field 4 is reserved for PR #1566 (per-profile keyboardMapping).
+    optional ProfileSettings settings = 5;
 }
 
 

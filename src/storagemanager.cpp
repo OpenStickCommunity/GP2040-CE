@@ -108,6 +108,19 @@ char* Storage::currentProfileLabel() {
 		return this->config.profileOptions.gpioMappingsSets[config.gamepadOptions.profileNumber-2].profileLabel;
 }
 
+/**
+ * @brief Return the current profile's settings.
+ */
+ProfileSettings* Storage::getCurrentProfileSettings() {
+	uint32_t profileNumber = config.gamepadOptions.profileNumber;
+	if (profileNumber == 1)
+		return &config.gpioMappings.settings;
+	else if (profileNumber >= 2 && profileNumber <= config.profileOptions.gpioMappingsSets_count + 1)
+		return &config.profileOptions.gpioMappingsSets[profileNumber - 2].settings;
+	else
+		return nullptr;
+}
+
 void Storage::setFunctionalPinMappings()
 {
 	GpioMappingInfo* alts = nullptr;

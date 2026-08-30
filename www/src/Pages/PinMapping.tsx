@@ -163,6 +163,65 @@ const ProfileLabel = memo(function ProfileLabel({
 	);
 });
 
+const SOCD_OPTION_KEYS = [
+	'up-priority',
+	'neutral',
+	'last-win',
+	'first-win',
+	'off',
+]; // index == SOCDMode enum value
+
+const ProfileSocdSelect = memo(function ProfileSocdSelect({
+	profileIndex,
+	sliderEnabled,
+}: {
+	profileIndex: number;
+	sliderEnabled: boolean;
+}) {
+	const { t } = useTranslation('');
+	const setProfileSocd = useProfilesStore((state) => state.setProfileSocd);
+	const socdEnabled = useProfilesStore(
+		(state) => state.profiles[profileIndex].socdEnabled,
+	);
+	const socdMode = useProfilesStore(
+		(state) => state.profiles[profileIndex].socdMode,
+	);
+
+	const onChange = useCallback(
+		(event: React.ChangeEvent<HTMLSelectElement>) => {
+			const value = parseInt(event.target.value, 10);
+			if (value < 0) {
+				setProfileSocd(profileIndex, false, 0);
+			} else {
+				setProfileSocd(profileIndex, true, value);
+			}
+		},
+		[],
+	);
+
+	return (
+		<div>
+			<Form.Label>{t('PinMapping:profile-socd-mode-title')}</Form.Label>
+			<Form.Select
+				value={socdEnabled ? socdMode : -1}
+				onChange={onChange}
+			>
+				<option value={-1}>{t('PinMapping:profile-socd-use-global')}</option>
+				{SOCD_OPTION_KEYS.map((key, value) => (
+					<option key={key} value={value}>
+						{t(`SettingsPage:socd-cleaning-mode-options.${key}`)}
+					</option>
+				))}
+			</Form.Select>
+			{sliderEnabled && (
+				<Form.Text muted>
+					{t('PinMapping:profile-socd-slider-note')}
+				</Form.Text>
+			)}
+		</div>
+	);
+});
+
 const PinSelectList = memo(function PinSelectList({
 	profileIndex,
 }: {
@@ -172,7 +231,12 @@ const PinSelectList = memo(function PinSelectList({
 
 	const pins = useProfilesStore(
 		useShallow((state) =>
-			omit(state.profiles[profileIndex], ['profileLabel', 'enabled']),
+			omit(state.profiles[profileIndex], [
+				'profileLabel',
+				'enabled',
+				'socdEnabled',
+				'socdMode',
+			]),
 		),
 	);
 	const { t } = useTranslation('');
@@ -290,6 +354,7 @@ const PinSection = memo(function PinSection({
 		});
 
 	const [activeProfile, setActiveProfile] = useState(0);
+	const [sliderEnabled, setSliderEnabled] = useState(false);
 
 	const { updateUsedPins, buttonLabels, setLoading } = useContext(AppContext);
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
@@ -318,6 +383,12 @@ const PinSection = memo(function PinSection({
 		getActiveProfile();
 	}, []);
 
+	useEffect(() => {
+		WebApi.getAddonsOptions(() => {}).then((options) =>
+			setSliderEnabled(Boolean(options?.SliderSOCDInputEnabled)),
+		);
+	}, []);
+
 	return (
 		<>
 			<div className="alert alert-warning">
@@ -340,6 +411,10 @@ const PinSection = memo(function PinSection({
 					<Row>
 						<Col md={7}>
 							<ProfileLabel profileIndex={profileIndex} />
+							<ProfileSocdSelect
+								profileIndex={profileIndex}
+								sliderEnabled={sliderEnabled}
+							/>
 						</Col>
 						{profileIndex > 0 && (
 							<Col className='order-first order-md-last'>

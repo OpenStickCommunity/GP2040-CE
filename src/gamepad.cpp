@@ -25,6 +25,29 @@ uint64_t getMicro() {
 	return to_us_since_boot(get_absolute_time());
 }
 
+const SOCDMode Gamepad::readSOCDMode(const GamepadOptions& options) {
+	// The SOCD slider addon rewrites the global mode every loop while enabled;
+	// physical slider position beats any per-profile override.
+	if (!Storage::getInstance().getAddonOptions().socdSliderOptions.enabled) {
+		const ProfileSettings* profileSettings = Storage::getInstance().getCurrentProfileSettings();
+		if (profileSettings != nullptr && profileSettings->socdEnabled) {
+			return profileSettings->socdMode;
+		}
+	}
+	return options.socdMode;
+}
+
+const SOCDMode Gamepad::resolveSOCDMode(const GamepadOptions& options) {
+	SOCDMode mode = readSOCDMode(options);
+	return (mode == SOCD_MODE_BYPASS &&
+			(options.inputMode == INPUT_MODE_PS3 ||
+			options.inputMode == INPUT_MODE_SWITCH ||
+			options.inputMode == INPUT_MODE_SWITCH_PRO ||
+			options.inputMode == INPUT_MODE_NEOGEO ||
+			options.inputMode == INPUT_MODE_PS4)) ?
+		SOCD_MODE_NEUTRAL : mode;
+}
+
 Gamepad::Gamepad() :
 	options(Storage::getInstance().getGamepadOptions())
 	, hotkeyOptions(Storage::getInstance().getHotkeyOptions())
@@ -457,6 +480,21 @@ void Gamepad::clearRumbleState() {
 	auxState.haptics.rightTrigger.intensity = 0;
 }
 
+void Gamepad::applySOCDMode(SOCDMode mode) {
+	// Write to the source of the effective value: the profile override when one
+	// is active, the global otherwise. A hotkey never creates an override.
+	// While the slider addon is enabled it owns the effective mode; write the
+	// global, as stock firmware does, and leave the stored override alone.
+	if (!Storage::getInstance().getAddonOptions().socdSliderOptions.enabled) {
+		ProfileSettings* profileSettings = Storage::getInstance().getCurrentProfileSettings();
+		if (profileSettings != nullptr && profileSettings->socdEnabled) {
+			profileSettings->socdMode = mode;
+			return;
+		}
+	}
+	options.socdMode = mode;
+}
+
 /**
  * @brief Take a hotkey action if it hasn't already been taken, modifying state/options appropriately.
  */
@@ -546,31 +584,31 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 			break;
 		case HOTKEY_SOCD_UP_PRIORITY:
 			if (action != lastAction) {
-				options.socdMode = SOCD_MODE_UP_PRIORITY;
+				applySOCDMode(SOCD_MODE_UP_PRIORITY);
 				reqSave = true;
 			}
 			break;
 		case HOTKEY_SOCD_NEUTRAL:
 			if (action != lastAction) {
-				options.socdMode = SOCD_MODE_NEUTRAL;
+				applySOCDMode(SOCD_MODE_NEUTRAL);
 				reqSave = true;
 			}
 			break;
 		case HOTKEY_SOCD_LAST_INPUT:
 			if (action != lastAction) {
-				options.socdMode = SOCD_MODE_SECOND_INPUT_PRIORITY;
+				applySOCDMode(SOCD_MODE_SECOND_INPUT_PRIORITY);
 				reqSave = true;
 			}
 			break;
 		case HOTKEY_SOCD_FIRST_INPUT:
 			if (action != lastAction) {
-				options.socdMode = SOCD_MODE_FIRST_INPUT_PRIORITY;
+				applySOCDMode(SOCD_MODE_FIRST_INPUT_PRIORITY);
 				reqSave = true;
 			}
 			break;
 		case HOTKEY_SOCD_BYPASS:
 			if (action != lastAction) {
-				options.socdMode = SOCD_MODE_BYPASS;
+				applySOCDMode(SOCD_MODE_BYPASS);
 				reqSave = true;
 			}
 			break;

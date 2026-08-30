@@ -47,6 +47,8 @@ export type PinsType = {
 	pin29: MaskPayload;
 	profileLabel: string;
 	enabled: boolean;
+	socdEnabled: boolean;
+	socdMode: number;
 };
 
 type State = {
@@ -66,6 +68,11 @@ type Actions = {
 	fetchProfiles: () => void;
 	saveProfiles: () => Promise<object>;
 	setProfileLabel: (profileIndex: number, profileLabel: string) => void;
+	setProfileSocd: (
+		profileIndex: number,
+		socdEnabled: boolean,
+		socdMode: number,
+	) => void;
 	setProfilePin: SetProfilePinType;
 	toggleProfileEnabled: (profileIndex: number) => void;
 };
@@ -139,6 +146,16 @@ const useProfilesStore = create<State & Actions>()((set, get) => ({
 		set((state) => {
 			const profiles = [...state.profiles];
 			profiles[profileIndex] = { ...profiles[profileIndex], profileLabel };
+			return { profiles };
+		}),
+	setProfileSocd: (profileIndex, socdEnabled, socdMode) =>
+		set((state) => {
+			const profiles = [...state.profiles];
+			profiles[profileIndex] = {
+				...profiles[profileIndex],
+				socdEnabled,
+				socdMode,
+			};
 			return { profiles };
 		}),
 	saveProfiles: async () => {

@@ -63,6 +63,7 @@ public:
 	void setFunctionalPinMappings();
 	void setBootModeFunctionalPinMappings();
 	char* currentProfileLabel();
+	ProfileSettings* getCurrentProfileSettings(); // active profile's settings, nullptr if profile number is invalid
 
 	void ResetSettings(); 				// EEPROM Reset Feature
 

@@ -104,7 +104,7 @@ function PinSelect({ mappingKey }: { mappingKey: string }) {
 	// Need the profile pin mapping to determine which pins are assigned to addons or reserved,
 	// relying on the assumption that these are the same across all profiles.
 	const profilePins: { [key: string]: MaskPayload } = useProfilesStore(
-		useShallow((state) => omit(state.profiles[0], ['profileLabel', 'enabled'])),
+		useShallow((state) => omit(state.profiles[0], ['profileLabel', 'enabled', 'socdEnabled', 'socdMode'])),
 	);
 
 	const { t } = useTranslation('');

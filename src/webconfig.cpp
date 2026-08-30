@@ -587,6 +587,15 @@ std::string setProfileOptions()
         strncpy(profileOptions.gpioMappingsSets[altsIndex].profileLabel, alt["profileLabel"], profileLabelSize - 1);
         profileOptions.gpioMappingsSets[altsIndex].profileLabel[profileLabelSize - 1] = '\0';
         profileOptions.gpioMappingsSets[altsIndex].enabled = alt["enabled"];
+        if (alt["socdEnabled"] != nullptr) {
+            profileOptions.gpioMappingsSets[altsIndex].settings.socdEnabled = alt["socdEnabled"];
+        }
+        if (alt["socdMode"] != nullptr) {
+            const int socdMode = alt["socdMode"];
+            if (socdMode >= SOCD_MODE_UP_PRIORITY && socdMode <= SOCD_MODE_BYPASS) {
+                profileOptions.gpioMappingsSets[altsIndex].settings.socdMode = (SOCDMode)socdMode;
+            }
+        }
 
         profileOptions.gpioMappingsSets_count = ++altsIndex;
         if (altsIndex > 4) break;
@@ -598,7 +607,7 @@ std::string setProfileOptions()
 
 std::string getProfileOptions()
 {
-    const size_t capacity = JSON_OBJECT_SIZE(500);
+    const size_t capacity = JSON_OBJECT_SIZE(700);
     DynamicJsonDocument doc(capacity);
 
     const auto writePinDoc = [&](const int item, const char* key, const GpioMappingInfo& value) -> void
@@ -651,6 +660,8 @@ std::string getProfileOptions()
         writePinDoc(i, "pin29", profileOptions.gpioMappingsSets[i].pins[29]);
         writeDoc(doc, "alternativePinMappings", i, "profileLabel", profileOptions.gpioMappingsSets[i].profileLabel);
         doc["alternativePinMappings"][i]["enabled"] = profileOptions.gpioMappingsSets[i].enabled;
+        doc["alternativePinMappings"][i]["socdEnabled"] = profileOptions.gpioMappingsSets[i].settings.socdEnabled;
+        doc["alternativePinMappings"][i]["socdMode"] = (int)profileOptions.gpioMappingsSets[i].settings.socdMode;
     }
 
     return serialize_json(doc);
@@ -1139,6 +1150,15 @@ std::string setPinMappings()
     strncpy(gpioMappings.profileLabel, doc["profileLabel"], profileLabelSize - 1);
     gpioMappings.profileLabel[profileLabelSize - 1] = '\0';
     gpioMappings.enabled = doc["enabled"];
+    if (doc["socdEnabled"] != nullptr) {
+        gpioMappings.settings.socdEnabled = doc["socdEnabled"];
+    }
+    if (doc["socdMode"] != nullptr) {
+        const int socdMode = doc["socdMode"];
+        if (socdMode >= SOCD_MODE_UP_PRIORITY && socdMode <= SOCD_MODE_BYPASS) {
+            gpioMappings.settings.socdMode = (SOCDMode)socdMode;
+        }
+    }
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
@@ -1192,6 +1212,8 @@ std::string getPinMappings()
 
     writeDoc(doc, "profileLabel", gpioMappings.profileLabel);
     doc["enabled"] = gpioMappings.enabled;
+    doc["socdEnabled"] = gpioMappings.settings.socdEnabled;
+    doc["socdMode"] = (int)gpioMappings.settings.socdMode;
 
     return serialize_json(doc);
 }
