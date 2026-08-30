@@ -277,14 +277,13 @@ void Gamepad::process()
 		state.dpad = filterToFourWayMode(state.dpad);
 	}
 
-	// hold current dpad state regardless of input
-	state.dpadOriginal = state.dpad;
+	uint8_t currentDpadSnapshot = state.dpad;
 
 	// stash digital-only dpad state for later
-	uint8_t dpadOnlyMask = ((state.dpadOriginal & 0xF0) >> 4);
+	uint8_t dpadOnlyMask = ((currentDpadSnapshot & 0xF0) >> 4);
 
 	// and mask out the mode-specific mask
-	uint8_t dpadModeMask = (state.dpadOriginal & 0x0F);
+	uint8_t dpadModeMask = (currentDpadSnapshot & 0x0F);
 
 	// set dpad back to dpad mode-specific state
 	state.dpad = dpadModeMask;
@@ -372,6 +371,9 @@ void Gamepad::read()
 		| ((values & mapButtonE11->pinMask) ? mapButtonE11->buttonMask : 0)
 		| ((values & mapButtonE12->pinMask) ? mapButtonE12->buttonMask : 0)
 	;
+
+	// hold current dpad state regardless of input mode -> output, which is determined in process()
+	state.dpadOriginal = state.dpad;
 
 	// set the effective dpad mode based on settings + overrides
 	if (values & mapButtonDP->pinMask)	activeDpadMode = DpadMode::DPAD_MODE_DIGITAL;
@@ -575,6 +577,16 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 		case HOTKEY_REBOOT_DEFAULT:
 			if (action != lastAction) {
 				System::reboot(System::BootMode::DEFAULT);
+			}
+			break;
+		case HOTKEY_REBOOT_WEBCONFIG:
+			if (action != lastAction) {
+				System::reboot(System::BootMode::WEBCONFIG);
+			}
+			break;
+		case HOTKEY_REBOOT_USB:
+			if (action != lastAction) {
+				System::reboot(System::BootMode::USB);
 			}
 			break;
 		case HOTKEY_SAVE_CONFIG:

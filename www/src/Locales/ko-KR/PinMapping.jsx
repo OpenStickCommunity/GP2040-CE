@@ -6,7 +6,7 @@ export default {
 	'pin-pressed': '눌린 핀: {{pressedPin}}',
 	'profile-label-title': '프로필 이름',
 	'profile-label-description':
-		'최대 16자(영문)로 문자, 숫자, 공백을 사용할 수 있습니다.',
+		'최대 16자. 인쇄 가능한 ASCII 문자를 사용할 수 있습니다.',
 	'profile-pin-mapping-title': '{{profileLabel}} - GPIO 핀 매핑',
 	'profile-label-default': '프로필 {{profileNumber}}',
 	'profile-add-button': '+ 프로필 추가',

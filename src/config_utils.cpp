@@ -2,6 +2,7 @@
 
 #include "config.pb.h"
 #include "enums.pb.h"
+#include "layoutmanager.h"
 #include "pb_encode.h"
 #include "pb_decode.h"
 #include "pb_common.h"
@@ -26,6 +27,7 @@
 #include "addons/reactiveleds.h"
 #include "addons/reverse.h"
 #include "addons/slider_socd.h"
+#include "addons/slider_profile.h"
 #include "addons/spi_analog_ads1256.h"
 #include "addons/turbo.h"
 #include "addons/wiiext.h"
@@ -421,6 +423,20 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.displayOptions, deprecatedI2cSpeed, I2C_SPEED);
     INIT_UNSET_PROPERTY(config.displayOptions, buttonLayout, BUTTON_LAYOUT);
     INIT_UNSET_PROPERTY(config.displayOptions, buttonLayoutRight, BUTTON_LAYOUT_RIGHT);
+
+    // If the stored layout is a board-defined ALT not compiled into the flashed board configuration, reset to board default
+    if (config.displayOptions.buttonLayout >= BUTTON_LAYOUT_BOARD_DEFINED_ALT0_A &&
+        config.displayOptions.buttonLayout <= BUTTON_LAYOUT_BOARD_DEFINED_ALT7_A &&
+        LayoutManager::getInstance().getLeftLayout((ButtonLayout)config.displayOptions.buttonLayout).empty()) {
+        config.displayOptions.buttonLayout = BUTTON_LAYOUT;
+        }
+
+    if (config.displayOptions.buttonLayoutRight >= BUTTON_LAYOUT_BOARD_DEFINED_ALT0_B &&
+        config.displayOptions.buttonLayoutRight <= BUTTON_LAYOUT_BOARD_DEFINED_ALT7_B &&
+        LayoutManager::getInstance().getRightLayout((ButtonLayout)config.displayOptions.buttonLayoutRight).empty()) {
+        config.displayOptions.buttonLayoutRight = BUTTON_LAYOUT_RIGHT;
+        }
+
     INIT_UNSET_PROPERTY(config.displayOptions, turnOffWhenSuspended, DISPLAY_TURN_OFF_WHEN_SUSPENDED);
     INIT_UNSET_PROPERTY(config.displayOptions, inputMode, DISPLAY_INPUT_MODE);
     INIT_UNSET_PROPERTY(config.displayOptions, turboMode, DISPLAY_TURBO_MODE);
@@ -664,6 +680,11 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, deprecatedModeOne, SLIDER_SOCD_SLOT_ONE);
     INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, deprecatedModeTwo, SLIDER_SOCD_SLOT_TWO);
 
+    // addonOptions.profileSliderOptions
+    INIT_UNSET_PROPERTY(config.addonOptions.profileSliderOptions, enabled, !!SLIDER_PROFILE_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.profileSliderOptions, numPositions, SLIDER_PROFILE_NUM_POSITIONS);
+    INIT_UNSET_PROPERTY(config.addonOptions.profileSliderOptions, defaultProfile, SLIDER_PROFILE_DEFAULT_PROFILE);
+  
     // addonOptions.analogADS1115Options
     INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, enabled, !!I2C_ANALOG1115_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, channel_enabled, ANALOG1115_CHANNEL_ENABLE);
@@ -1951,7 +1972,7 @@ static bool loadConfigInner(Config& config)
 void ConfigUtils::load(Config& config)
 {
     // First try to load from Protobuf storage, if that fails fall back to legacy storage.
-    const bool loaded = loadConfigInner(config) | fromLegacyStorage(config);
+    const bool loaded = loadConfigInner(config) || fromLegacyStorage(config);
 
     if (!loaded)
     {

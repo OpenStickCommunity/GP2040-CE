@@ -25,6 +25,7 @@ export default {
 		psclassic: 'Playstation Classic',
 		xboxoriginal: 'Original Xbox',
 		xbone: 'Xbox One',
+		sinput: 'SInput',
 	},
 	'input-mode-group': {
 		primary: 'Primary Input Modes',
@@ -49,7 +50,7 @@ export default {
 	},
 	'socd-cleaning-mode-label': 'SOCD Cleaning Mode',
 	'socd-cleaning-mode-note':
-		'Note: PS4, PS3, Nintendo Switch, and mini series modes do not support setting SOCD Cleaning to Off and will default to Neutral SOCD Cleaning mode.',
+		'Note: PS4, PS3, Nintendo Switch, Nintendo Switch Pro, and mini series modes do not support setting SOCD Cleaning to Off and will default to Neutral SOCD Cleaning mode.',
 	'socd-cleaning-mode-options': {
 		'up-priority': 'Up Priority',
 		neutral: 'Neutral',
@@ -136,6 +137,8 @@ export default {
 		'load-profile-5': 'Load Profile #5',
 		'load-profile-6': 'Load Profile #6',
 		'reboot-default': 'Reboot GP2040-CE',
+		'reboot-webconfig': 'Reboot GP2040-CE into web-config mode',
+		'reboot-usb': 'Reboot GP2040-CE into BOOTSEL/USB mode',
 		'save-config': 'Save Config',
 		'next-profile': 'Next Profile',
 		'previous-profile': 'Previous Profile',

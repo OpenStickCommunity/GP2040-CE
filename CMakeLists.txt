@@ -220,6 +220,7 @@ src/drivers/p5general/P5GeneralAuth.cpp
 src/drivers/p5general/P5GeneralAuthUSBListener.cpp
 src/drivers/p5general/P5GeneralDriver.cpp
 src/drivers/psclassic/PSClassicDriver.cpp
+src/drivers/sinput/SInputDriver.cpp
 src/drivers/switch/SwitchDriver.cpp
 src/drivers/switchpro/SwitchProDriver.cpp
 src/drivers/xbone/XBOneAuth.cpp
@@ -236,7 +237,6 @@ src/drivers/xinput/XInputAuthUSBListener.cpp
 src/drivers/xinput/XInputDriver.cpp
 src/interfaces/i2c/i2cdevicebase.cpp
 src/interfaces/i2c/pcf8575/pcf8575.cpp
-src/interfaces/i2c/ssd1306/obd_ssd1306.cpp
 src/interfaces/i2c/ssd1306/tiny_ssd1306.cpp
 src/display/ui/elements/GPWidget.cpp
 src/display/ui/elements/GPButton.cpp
@@ -289,6 +289,7 @@ src/addons/reverse.cpp
 src/addons/drv8833_rumble.cpp
 src/addons/turbo.cpp
 src/addons/slider_socd.cpp
+src/addons/slider_profile.cpp
 src/addons/wiiext.cpp
 src/addons/input_macro.cpp
 src/addons/snes_input.cpp
@@ -305,6 +306,13 @@ src/animationstation/effects/customthemepressed.cpp
 src/animationstation/effects/rainbow.cpp
 src/animationstation/effects/staticcolor.cpp
 src/animationstation/effects/statictheme.cpp
+src/hosts/DualsensePS5Host.cpp
+src/hosts/DualshockPS4Host.cpp
+src/hosts/GoogleStadioHost.cpp
+src/hosts/DrivingForceHost.cpp
+src/hosts/Ultrastik360Host.cpp
+src/hosts/SwitchProHost.cpp
+src/hosts/Xbox360Host.cpp
 ${PROTO_OUTPUT_DIR}/enums.pb.c
 ${PROTO_OUTPUT_DIR}/config.pb.c
 )
@@ -325,7 +333,6 @@ ADS1115
 ADS1219
 ADS1256
 NeoPico
-OneBitDisplay
 ArduinoJson
 rndis
 hardware_adc
@@ -360,6 +367,7 @@ headers/display/ui/elements
 headers/display/ui/screens
 headers/animationstation
 headers/animationstation/effects
+headers/hosts
 configs/${GP2040_BOARDCONFIG}
 ${PROTO_OUTPUT_DIR}
 ${CMAKE_BINARY_DIR}/headers
