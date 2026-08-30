@@ -31,6 +31,7 @@
 #define GPIO_PIN_10 GpioAction::BUTTON_PRESS_R3     // R3     | RS     | RS      | R3       | 12     | RS     |
 #define GPIO_PIN_15 GpioAction::BUTTON_PRESS_A1     // A1     | Guide  | Home    | PS       | 13     | ~      |
 #define GPIO_PIN_20 GpioAction::BUTTON_PRESS_A2     // A2     | ~      | Capture | ~        | 14     | ~      |
+#define GPIO_PIN_04 GpioAction::BUTTON_PRESS_FN     // FN   
 
 
 // Setting GPIO pins to assigned by add-on
@@ -70,7 +71,7 @@
 
 
 // J4 - I2C
-// SparkFun Micro OLED Breakout recommended
+// SparkFun Micro OLED Breakout recommended (LCD-22495)
 #define HAS_I2C_DISPLAY 1
 #define I2C0_ENABLED 1
 #define DISPLAY_I2C_ADDR 0x3D
@@ -95,5 +96,42 @@
 #define ANALOG_ADC_1_VRY 28
 #define ANALOG_ADC_2_VRX 27
 #define ANALOG_ADC_2_VRY 29
+
+
+// Display settings for recommended SparkFun Micro OLED Breakout (LCD-22495)
+#define DISPLAY_FLIP 3
+#define DISPLAY_INPUT_MODE 0
+#define DISPLAY_TURBO_MODE 0
+#define DISPLAY_DPAD_MODE 0
+#define DISPLAY_SOCD_MODE 0
+#define DISPLAY_MACRO_MODE 0
+#define DISPLAY_PROFILE_MODE 0
+#define BUTTON_LAYOUT BUTTON_LAYOUT_BOARD_DEFINED_A
+#define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_BOARD_DEFINED_B
+
+#define DEFAULT_BOARD_LAYOUT_A {\
+    {GP_ELEMENT_PIN_BUTTON, {51, 34, 2, 2, 1, 1, 17, GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {51, 40, 2, 2, 1, 1, 13, GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {48, 37, 2, 2, 1, 1, 16, GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {54, 37, 2, 2, 1, 1, 14, GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {64, 39, 2, 2, 1, 1, 15, GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {55, 23, 2, 2, 1, 1, 22, GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {73, 23, 2, 2, 1, 1, 2, GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {53, 16, 47, 13, 1, 1, 21, GP_SHAPE_SQUARE}},\
+    {GP_ELEMENT_PIN_BUTTON, {43, 14, 40, 6, 1, 1, 18, GP_SHAPE_SQUARE}},\
+    {GP_ELEMENT_LEVER, {41, 28, 4, 4, 1, 0, GP_LEVER_MODE_LEFT_ANALOG}},\
+}
+
+#define DEFAULT_BOARD_LAYOUT_B {\
+    {GP_ELEMENT_PIN_BUTTON, {55, 27, 2, 2, 1, 1, 20, GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {73, 27, 2, 2, 1, 1, 4, GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {82, 30, 2, 2, 1, 1, 6, GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {86, 26, 2, 2, 1, 1, 5, GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {90, 30, 2, 2, 1, 1, 8, GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {86, 34, 2, 2, 1, 1, 9, GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {81, 16, 75, 13, 1, 1, 3, GP_SHAPE_SQUARE}},\
+    {GP_ELEMENT_PIN_BUTTON, {88, 14, 85, 6, 1, 1, 7, GP_SHAPE_SQUARE}},\
+    {GP_ELEMENT_LEVER, {77, 39, 4, 4, 1, 0, GP_LEVER_MODE_RIGHT_ANALOG}},\
+}
 
 #endif

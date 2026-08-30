@@ -37,8 +37,8 @@ public:
 private:
     USBHostManager() : tuh_ready(false), core0Ready(false), core1Ready(false) {}
     std::vector<USBListener*> listeners;
-    usb_device_t *usb_device;
-    uint8_t dataPin;
+    usb_device_t *usb_device = nullptr;
+    uint8_t dataPin = 0;
     bool tuh_ready;
     bool core0Ready;
     bool core1Ready;

@@ -171,7 +171,6 @@ void PS3Driver::initialize() {
 
 // Generate PS3 report from gamepad and send to TUSB Device
 bool PS3Driver::process(Gamepad * gamepad) {
-    const GamepadOptions & options = gamepad->getOptions();
     Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
 
     uint8_t * report;

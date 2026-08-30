@@ -4,9 +4,9 @@ if(WIN32)
 else()
     set(USERHOME $ENV{HOME})
 endif()
-set(sdkVersion 2.1.1)
+set(sdkVersion 2.2.0)
 set(toolchainVersion 14_2_Rel1)
-set(picotoolVersion 2.1.1)
+set(picotoolVersion 2.2.0-a4)
 set(picoVscode ${USERHOME}/.pico-sdk/cmake/pico-vscode.cmake)
 if (EXISTS ${picoVscode})
     include(${picoVscode})
@@ -59,8 +59,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # note: this must happen before project()
 include(pico_sdk_import.cmake)
 
-if (PICO_SDK_VERSION_STRING VERSION_LESS "2.1.1")
-  message(FATAL_ERROR "Raspberry Pi Pico SDK version 2.1.1 (or later) required. Your version is ${PICO_SDK_VERSION_STRING}")
+if (PICO_SDK_VERSION_STRING VERSION_LESS "2.2.0")
+  message(FATAL_ERROR "Raspberry Pi Pico SDK version 2.2.0 (or later) required. Your version is ${PICO_SDK_VERSION_STRING}")
 endif()
 
 # set the version for webconfig, etc. based on git
@@ -169,6 +169,8 @@ compile_proto()
 #pull in tinyUSB
 set(PICO_TINYUSB_PATH "${CMAKE_CURRENT_LIST_DIR}/lib/tinyusb")
 
+set(PICO_USE_FASTEST_SUPPORTED_CLOCK 1)
+
 # initialize the Raspberry Pi Pico SDK
 pico_sdk_init()
 
@@ -180,7 +182,7 @@ add_subdirectory(lib)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
   # Activate some compiler / linker options to aid us with diagnosing stack space issues in Debug builds
-  add_compile_options(-fstack-usage -Wstack-usage=500)
+  add_compile_options(-fstack-usage -Wstack-usage=500 -Wnull-dereference -Wcast-align -Wimplicit-fallthrough)
   add_compile_definitions(PICO_USE_STACK_GUARDS=1)
 endif()
 
@@ -303,6 +305,13 @@ src/animationstation/effects/customthemepressed.cpp
 src/animationstation/effects/rainbow.cpp
 src/animationstation/effects/staticcolor.cpp
 src/animationstation/effects/statictheme.cpp
+src/hosts/DualsensePS5Host.cpp
+src/hosts/DualshockPS4Host.cpp
+src/hosts/GoogleStadioHost.cpp
+src/hosts/DrivingForceHost.cpp
+src/hosts/Ultrastik360Host.cpp
+src/hosts/SwitchProHost.cpp
+src/hosts/Xbox360Host.cpp
 ${PROTO_OUTPUT_DIR}/enums.pb.c
 ${PROTO_OUTPUT_DIR}/config.pb.c
 )
@@ -356,6 +365,7 @@ headers/display/ui/elements
 headers/display/ui/screens
 headers/animationstation
 headers/animationstation/effects
+headers/hosts
 configs/${GP2040_BOARDCONFIG}
 ${PROTO_OUTPUT_DIR}
 ${CMAKE_BINARY_DIR}/headers

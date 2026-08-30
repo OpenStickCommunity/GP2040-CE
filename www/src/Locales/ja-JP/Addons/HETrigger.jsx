@@ -23,7 +23,6 @@ export default {
 	'voltage-table-header-text': 'ホールセンサ電圧設定表',
 	'voltage-table-idle-text': '未押下',
 	'voltage-table-trigger-text': '押下判定値',
-	'voltage-table-max-text': '最大値',
 	'voltage-table-polarity-text': '極性',
 	'voltage-table-disabled-label': '(無効)',
 	'overwrite-all-warning': '全ボタンに反映',
@@ -45,7 +44,7 @@ export default {
 	'calibration-idle-text': '未押下電圧値:',
 	'calibration-pressed-text': '最大押下電圧値:',
 	'calibration-trigger-text': '押下判定電圧値',
-	'calibration-flip-polarity': '極性反転 (未実装)',
+	'calibration-flip-polarity': '極性反転',
 	'calibration-back-button': '戻る',
 	'calibration-first-step':
 		'まずはホールセンサスイッチの未押下状態と完全押下状態の電圧を調整します。' +

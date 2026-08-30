@@ -7,8 +7,11 @@ export type Trigger = {
 	action: PinActionValues;
 	idle: number;
 	active: number;
-	max: number;
-	polarity: number;
+	pressed: number;
+	is_polarized: boolean;
+	release: number;
+	noise: number;
+	rapidTrigger: boolean;
 };
 
 type State = {
@@ -24,40 +27,16 @@ type Actions = {
 };
 
 const INITIAL_STATE: State = {
-    triggers: [
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-		{ action:-10 ,idle:100,active:2000,max:3500,polarity:0},
-	],
+    triggers: Array(32).map(()=>({ 
+		action:-10,
+		idle:100,
+		active:2000,
+		pressed:3500,
+		is_polarized: false,
+		release:2000,
+		noise:50,
+		rapidTrigger:false
+	})),
 	loadingTriggers: false,
 };
 
@@ -65,18 +44,18 @@ const useHETriggerStore = create<State & Actions>()((set, get) => ({
 	...INITIAL_STATE,
 	fetchHETriggers: async () => {
 		set({ loadingTriggers: true });
-		const triggers = await WebApi.getHETriggerOptions();
+		const triggers = await WebApi.getHETriggerCalibrations();
 		set((state) => ({
 			...state,
 			...triggers,
 			loadingTriggers: false,
 		}));
 	},
-	setHETrigger: ({ id, action, idle, active, max, polarity }) => {
+	setHETrigger: ({ id, ...trigger}) => {
 		set((state) => {
 			const newTriggers = [...state.triggers];
 			if (newTriggers[id]) {
-				newTriggers[id] = { action, idle, active, max, polarity };
+				newTriggers[id] = trigger;
 			}
 
 			return {
@@ -95,7 +74,7 @@ const useHETriggerStore = create<State & Actions>()((set, get) => ({
 		}));
 	},
 
-	saveHETriggers: async () => WebApi.setHETriggerOptions(get()),
+	saveHETriggers: async () => WebApi.setHETriggerCalibrations(get()),
 }));
 
 export default useHETriggerStore;

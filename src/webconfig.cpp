@@ -1,5 +1,7 @@
 #include "config.pb.h"
 #include "base64.h"
+#include "hardware/adc.h"
+#include "helper.h"
 
 #include "drivermanager.h"
 #include "storagemanager.h"
@@ -38,9 +40,11 @@
 
 #define LWIP_HTTPD_POST_MAX_PAYLOAD_LEN (1024 * 16)
 
+#define MAX_MAPPED_INPUT_MODES 8
+
 extern struct fsdata_file file__index_html[];
 
-const static char* spaPaths[] = { "/backup", "/display-config", "/led-config", "/pin-mapping", "/settings", "/reset-settings", "/add-ons", "/custom-theme", "/macro", "/peripheral-mapping" };
+const static char* spaPaths[] = { "/backup", "/display-config", "/led-config", "/pin-mapping", "/settings", "/reset-settings", "/add-ons", "/custom-theme", "/macro", "/peripheral-mapping", "/boot-mode-mapping" };
 const static char* excludePaths[] = { "/css", "/images", "/js", "/static" };
 const static uint32_t rebootDelayMs = 500;
 static string http_post_uri;
@@ -232,7 +236,7 @@ struct DataAndStatusCode
 // **** WEB SERVER Overrides and Special Functionality ****
 int set_file_data(fs_file* file, const DataAndStatusCode& dataAndStatusCode)
 {
-    static string returnData;
+    std::string* returnData = new std::string();
 
     const char* statusCodeStr = "";
     switch (dataAndStatusCode.statusCode)
@@ -242,25 +246,27 @@ int set_file_data(fs_file* file, const DataAndStatusCode& dataAndStatusCode)
         case HttpStatusCode::_500: statusCodeStr = "500 Internal Server Error"; break;
     }
 
-    returnData.clear();
-    returnData.append("HTTP/1.0 ");
-    returnData.append(statusCodeStr);
-    returnData.append("\r\n");
-    returnData.append(
+    returnData->clear();
+    returnData->append("HTTP/1.0 ");
+    returnData->append(statusCodeStr);
+    returnData->append("\r\n");
+    returnData->append(
         "Server: GP2040-CE " GP2040VERSION "\r\n"
         "Content-Type: application/json\r\n"
         "Access-Control-Allow-Origin: *\r\n"
         "Content-Length: "
     );
-    returnData.append(std::to_string(dataAndStatusCode.data.length()));
-    returnData.append("\r\n\r\n");
-    returnData.append(dataAndStatusCode.data);
 
-    file->data = returnData.c_str();
-    file->len = returnData.size();
+    returnData->append(std::to_string(dataAndStatusCode.data.length()));
+    returnData->append("\r\n\r\n");
+    returnData->append(dataAndStatusCode.data);
+
+    file->data = returnData->c_str();
+    file->len = returnData->size();
     file->index = file->len;
-    file->http_header_included = file->http_header_included;
-    file->pextension = NULL;
+    file->http_header_included = true;
+    file->pextension = returnData;  // store for cleanup
+    file->is_custom_file = 1;
 
     return 1;
 }
@@ -443,6 +449,7 @@ std::string setDisplayOptions(DisplayOptions& displayOptions)
     readDoc(displayOptions.inputHistoryLength, doc, "inputHistoryLength");
     readDoc(displayOptions.inputHistoryCol, doc, "inputHistoryCol");
     readDoc(displayOptions.inputHistoryRow, doc, "inputHistoryRow");
+    readDoc(displayOptions.contrast, doc, "displayContrast");
 
     readDoc(displayOptions.buttonLayoutCustomOptions.paramsLeft.layout, doc, "buttonLayoutCustomOptions", "params", "layout");
     readDoc(displayOptions.buttonLayoutCustomOptions.paramsLeft.common.startX, doc, "buttonLayoutCustomOptions", "params", "startX");
@@ -499,6 +506,7 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
     writeDoc(doc, "inputHistoryLength", displayOptions.inputHistoryLength);
     writeDoc(doc, "inputHistoryCol", displayOptions.inputHistoryCol);
     writeDoc(doc, "inputHistoryRow", displayOptions.inputHistoryRow);
+    writeDoc(doc, "displayContrast", displayOptions.contrast);
 
     writeDoc(doc, "buttonLayoutCustomOptions", "params", "layout", displayOptions.buttonLayoutCustomOptions.paramsLeft.layout);
     writeDoc(doc, "buttonLayoutCustomOptions", "params", "startX", displayOptions.buttonLayoutCustomOptions.paramsLeft.common.startX);
@@ -556,7 +564,7 @@ std::string setProfileOptions()
     char pinName[6];
     for (JsonObject alt : alts) {
         for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
-            snprintf(pinName, 6, "pin%0*d", 2, pin);
+            snprintf(pinName, 6, "pin%02d", (int)pin);
             // setting a pin shouldn't change a new existing addon/reserved pin
             // but if the profile definition is new, we should still capture the addon/reserved state
             if (profileOptions.gpioMappingsSets[altsIndex].pins[pin].action != GpioAction::ASSIGNED_TO_ADDON &&
@@ -753,10 +761,10 @@ std::string getGamepadOptions()
     writeDoc(doc, "miniMenuGamepadInput", gamepadOptions.miniMenuGamepadInput);
     // Write USB Vendor ID and Product ID as 4 character hex strings with 0 padding
     char usbVendorStr[5];
-    snprintf(usbVendorStr, 5, "%04X", gamepadOptions.usbVendorID);
+    snprintf(usbVendorStr, 5, "%04X", (unsigned int)gamepadOptions.usbVendorID);
     writeDoc(doc, "usbVendorID", usbVendorStr);
     char usbProductStr[5];
-    snprintf(usbProductStr, 5, "%04X", gamepadOptions.usbProductID);
+    snprintf(usbProductStr, 5, "%04X", (unsigned int)gamepadOptions.usbProductID);
     writeDoc(doc, "usbProductID", usbProductStr);
     writeDoc(doc, "fnButtonPin", -1);
     GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
@@ -1116,7 +1124,7 @@ std::string setPinMappings()
 
     char pinName[6];
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
-        snprintf(pinName, 6, "pin%0*d", 2, pin);
+        snprintf(pinName, 6, "pin%02d", (int)pin);
         // setting a pin shouldn't change a new existing addon/reserved pin
         if (gpioMappings.pins[pin].action != GpioAction::RESERVED &&
                 gpioMappings.pins[pin].action != GpioAction::ASSIGNED_TO_ADDON &&
@@ -1186,6 +1194,56 @@ std::string getPinMappings()
     doc["enabled"] = gpioMappings.enabled;
 
     return serialize_json(doc);
+}
+
+std::string getBootModeOptions() {
+	const size_t capacity = JSON_OBJECT_SIZE(100);
+	DynamicJsonDocument doc(capacity);
+
+	BootModeOptions& bootModeOptions = Storage::getInstance().getBootModeOptions();
+	auto &mappings = bootModeOptions.inputModeMappings;
+
+	writeDoc(doc, "enabled", bootModeOptions.enabled);
+	writeDoc(doc, "webConfigPinMask", bootModeOptions.webConfigPinMask);
+	writeDoc(doc, "usbModePinMask", bootModeOptions.usbModePinMask);
+
+	if (bootModeOptions.inputModeMappings_count == 0) {
+        doc.createNestedArray("inputModeMappings");
+    }
+	for (int i = 0; i < bootModeOptions.inputModeMappings_count; i++) {
+		writeDoc(doc, "inputModeMappings", i, "pinMask", mappings[i].pinMask);
+		writeDoc(doc, "inputModeMappings", i, "inputMode", mappings[i].inputMode);
+		writeDoc(doc, "inputModeMappings", i, "profileNumber", mappings[i].profileNumber);
+	}
+
+	return serialize_json(doc);
+}
+
+std::string setBootModeOptions() {
+	BootModeOptions& bootModeOptions = Storage::getInstance().getBootModeOptions();
+
+	DynamicJsonDocument doc = get_post_data();
+    JsonObject options = doc.as<JsonObject>();
+
+	bootModeOptions.enabled = options["enabled"].as<bool>();
+	bootModeOptions.webConfigPinMask = options["webConfigPinMask"].as<int32_t>();
+	bootModeOptions.usbModePinMask = options["usbModePinMask"].as<int32_t>();
+
+    JsonArray mappings = options["inputModeMappings"];
+
+    size_t i = 0;
+    for (JsonObject mapping : mappings) {
+		bootModeOptions.inputModeMappings[i].pinMask = mapping["pinMask"].as<int32_t>();
+		bootModeOptions.inputModeMappings[i].inputMode = mapping["inputMode"].as<InputMode>();
+		bootModeOptions.inputModeMappings[i].profileNumber = mapping["profileNumber"].as<uint32_t>();
+		if (++i >= MAX_MAPPED_INPUT_MODES) {
+			break;
+		}
+	}
+	bootModeOptions.inputModeMappings_count = i;
+
+	EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
+	return serialize_json(doc);
 }
 
 std::string setKeyMappings()
@@ -1467,8 +1525,8 @@ static uint32_t calibrationSmoothingFactor = 0;
 static float ema_smoothing;
 static uint32_t smoothingRead = 0;
 
-// Get the HE Trigger Calibration using our manual GPIO input and everything
-std::string setHETriggerCalibration()
+// Get the HE Trigger Options using our manual GPIO input and everything
+std::string setHETriggerOptions()
 {
     DynamicJsonDocument doc = get_post_data();
     calibrationMuxChannels = doc["muxChannels"];
@@ -1476,7 +1534,7 @@ std::string setHETriggerCalibration()
     calibrationSelectPins[1] = doc["muxSelectPin1"];
     calibrationSelectPins[2] = doc["muxSelectPin2"];
     calibrationSelectPins[3] = doc["muxSelectPin3"];
-    
+
     calibrationADCPins[0] = doc["muxADCPin0"];
     calibrationADCPins[1] = doc["muxADCPin1"];
     calibrationADCPins[2] = doc["muxADCPin2"];
@@ -1487,15 +1545,15 @@ std::string setHETriggerCalibration()
     ema_smoothing = (float)calibrationSmoothingFactor / 100.f; // 99 = max smoothing factor
 
     for (int i = 0; i < 4; i++) {
-        if ( calibrationSelectPins[i] != -1 && 
-                calibrationSelectPins[i] >= 0 && 
+        if ( calibrationSelectPins[i] != -1 &&
+                calibrationSelectPins[i] >= 0 &&
                 calibrationSelectPins[i] <= 29 ) {
             gpio_init(calibrationSelectPins[i]);
             gpio_set_dir(calibrationSelectPins[i], GPIO_OUT);
             gpio_put(calibrationSelectPins[i], 0);
         }
-        if ( calibrationADCPins[i] != -1 && 
-                calibrationADCPins[i] >= 26 && 
+        if ( calibrationADCPins[i] != -1 &&
+                calibrationADCPins[i] >= 26 &&
                 calibrationADCPins[i] <= 29 ) {
             adc_gpio_init(calibrationADCPins[i]);
         }
@@ -1512,7 +1570,7 @@ uint16_t emaCalculation(uint16_t value, uint16_t previous) {
 }
 
 // Get the HE Trigger Calibration using our manual GPIO input and everything
-std::string getHETriggerCalibration()
+std::string getHETriggerVoltage()
 {
     DynamicJsonDocument postDoc = get_post_data();
     uint32_t id = postDoc["targetId"];
@@ -1585,28 +1643,31 @@ std::string getHETriggerCalibration()
     return serialize_json(doc);
 }
 
-std::string getHETriggerOptions()
+std::string getHETriggerCalibrations()
 {
     const size_t capacity = JSON_OBJECT_SIZE(500);
     DynamicJsonDocument doc(capacity);
-    
+
     HETriggerInfo * heTriggers = Storage::getInstance().getAddonOptions().heTriggerOptions.triggers;
-    
+
     JsonArray triggerList = doc.createNestedArray("triggers");
     for(int i = 0; i < 32; i++) {
         JsonObject trigger = triggerList.createNestedObject();
         trigger["action"] = heTriggers[i].action;
         trigger["idle"] = heTriggers[i].idle;
         trigger["active"] = heTriggers[i].active;
-        trigger["max"] = heTriggers[i].max;
-        trigger["polarity"] = heTriggers[i].polarity;
+        trigger["pressed"] = heTriggers[i].pressed;
+        trigger["is_polarized"] = heTriggers[i].is_polarized;
+        trigger["release"] = heTriggers[i].release;
+        trigger["noise"] = heTriggers[i].noise;
+        trigger["rapidTrigger"] = heTriggers[i].rapidTrigger;
     }
 
     return serialize_json(doc);
 }
 
-// Set Hall Effect Trigger Options
-std::string setHETriggerOptions()
+// Set Hall Effect Trigger Calibrations
+std::string setHETriggerCalibrations()
 {
     DynamicJsonDocument doc = get_post_data();
     HETriggerInfo * heTriggers = Storage::getInstance().getAddonOptions().heTriggerOptions.triggers;
@@ -1615,10 +1676,13 @@ std::string setHETriggerOptions()
         heTriggers[i].action = doc["triggers"][i]["action"];
         heTriggers[i].idle = doc["triggers"][i]["idle"];
         heTriggers[i].active = doc["triggers"][i]["active"];
-        heTriggers[i].max = doc["triggers"][i]["max"];
-        heTriggers[i].polarity = doc["triggers"][i]["polarity"];
+        heTriggers[i].pressed = doc["triggers"][i]["pressed"];
+        heTriggers[i].is_polarized = doc["triggers"][i]["is_polarized"];
+        heTriggers[i].release = doc["triggers"][i]["release"];
+        heTriggers[i].noise = doc["triggers"][i]["noise"];
+        heTriggers[i].rapidTrigger = doc["triggers"][i]["rapidTrigger"];
     }
-    
+
     Storage::getInstance().getAddonOptions().heTriggerOptions.triggers_count = 32;
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
@@ -1665,8 +1729,6 @@ std::string setAddonOptions()
 {
     DynamicJsonDocument doc = get_post_data();
 
-    GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
-
     AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
     docToPin(analogOptions.analogAdc1PinX, doc, "analogAdc1PinX");
     docToPin(analogOptions.analogAdc1PinY, doc, "analogAdc1PinY");
@@ -1684,6 +1746,10 @@ std::string setAddonOptions()
     docToValue(analogOptions.outer_deadzone2, doc, "outer_deadzone2");
     docToValue(analogOptions.auto_calibrate, doc, "auto_calibrate");
     docToValue(analogOptions.auto_calibrate2, doc, "auto_calibrate2");
+    docToValue(analogOptions.joystick_center_x, doc, "joystickCenterX");
+    docToValue(analogOptions.joystick_center_y, doc, "joystickCenterY");
+    docToValue(analogOptions.joystick_center_x2, doc, "joystickCenterX2");
+    docToValue(analogOptions.joystick_center_y2, doc, "joystickCenterY2");
     docToValue(analogOptions.analog_smoothing, doc, "analog_smoothing");
     docToValue(analogOptions.analog_smoothing2, doc, "analog_smoothing2");
     docToValue(analogOptions.smoothing_factor, doc, "smoothing_factor");
@@ -1824,24 +1890,24 @@ std::string setAddonOptions()
     AnalogADS1256Options& ads1256Options = Storage::getInstance().getAddonOptions().analogADS1256Options;
     docToValue(ads1256Options.enabled, doc, "Analog1256Enabled");
     docToValue(ads1256Options.spiBlock, doc, "analog1256Block");
-    docToValue(ads1256Options.csPin, doc, "analog1256CsPin");
-    docToValue(ads1256Options.drdyPin, doc, "analog1256DrdyPin");
+    docToPin(ads1256Options.csPin, doc, "analog1256CsPin");
+    docToPin(ads1256Options.drdyPin, doc, "analog1256DrdyPin");
     docToValue(ads1256Options.avdd, doc, "analog1256AnalogMax");
     docToValue(ads1256Options.enableTriggers, doc, "analog1256EnableTriggers");
 
     RotaryOptions& rotaryOptions = Storage::getInstance().getAddonOptions().rotaryOptions;
     docToValue(rotaryOptions.enabled, doc, "RotaryAddonEnabled");
     docToValue(rotaryOptions.encoderOne.enabled, doc, "encoderOneEnabled");
-    docToValue(rotaryOptions.encoderOne.pinA, doc, "encoderOnePinA");
-    docToValue(rotaryOptions.encoderOne.pinB, doc, "encoderOnePinB");
+    docToPin(rotaryOptions.encoderOne.pinA, doc, "encoderOnePinA");
+    docToPin(rotaryOptions.encoderOne.pinB, doc, "encoderOnePinB");
     docToValue(rotaryOptions.encoderOne.mode, doc, "encoderOneMode");
     docToValue(rotaryOptions.encoderOne.pulsesPerRevolution, doc, "encoderOnePPR");
     docToValue(rotaryOptions.encoderOne.resetAfter, doc, "encoderOneResetAfter");
     docToValue(rotaryOptions.encoderOne.allowWrapAround, doc, "encoderOneAllowWrapAround");
     docToValue(rotaryOptions.encoderOne.multiplier, doc, "encoderOneMultiplier");
     docToValue(rotaryOptions.encoderTwo.enabled, doc, "encoderTwoEnabled");
-    docToValue(rotaryOptions.encoderTwo.pinA, doc, "encoderTwoPinA");
-    docToValue(rotaryOptions.encoderTwo.pinB, doc, "encoderTwoPinB");
+    docToPin(rotaryOptions.encoderTwo.pinA, doc, "encoderTwoPinA");
+    docToPin(rotaryOptions.encoderTwo.pinB, doc, "encoderTwoPinB");
     docToValue(rotaryOptions.encoderTwo.mode, doc, "encoderTwoMode");
     docToValue(rotaryOptions.encoderTwo.pulsesPerRevolution, doc, "encoderTwoPPR");
     docToValue(rotaryOptions.encoderTwo.resetAfter, doc, "encoderTwoResetAfter");
@@ -2151,6 +2217,10 @@ std::string getAddonOptions()
     writeDoc(doc, "outer_deadzone2", analogOptions.outer_deadzone2);
     writeDoc(doc, "auto_calibrate", analogOptions.auto_calibrate);
     writeDoc(doc, "auto_calibrate2", analogOptions.auto_calibrate2);
+    writeDoc(doc, "joystickCenterX", analogOptions.joystick_center_x);
+    writeDoc(doc, "joystickCenterY", analogOptions.joystick_center_y);
+    writeDoc(doc, "joystickCenterX2", analogOptions.joystick_center_x2);
+    writeDoc(doc, "joystickCenterY2", analogOptions.joystick_center_y2);
     writeDoc(doc, "analog_smoothing", analogOptions.analog_smoothing);
     writeDoc(doc, "analog_smoothing2", analogOptions.analog_smoothing2);
     writeDoc(doc, "smoothing_factor", analogOptions.smoothing_factor);
@@ -2281,8 +2351,8 @@ std::string getAddonOptions()
     AnalogADS1256Options& ads1256Options = Storage::getInstance().getAddonOptions().analogADS1256Options;
     writeDoc(doc, "Analog1256Enabled", ads1256Options.enabled);
     writeDoc(doc, "analog1256Block", ads1256Options.spiBlock);
-    writeDoc(doc, "analog1256CsPin", ads1256Options.csPin);
-    writeDoc(doc, "analog1256DrdyPin", ads1256Options.drdyPin);
+    writeDoc(doc, "analog1256CsPin", cleanPin(ads1256Options.csPin));
+    writeDoc(doc, "analog1256DrdyPin", cleanPin(ads1256Options.drdyPin));
     writeDoc(doc, "analog1256AnalogMax", ads1256Options.avdd);
     writeDoc(doc, "analog1256EnableTriggers", ads1256Options.enableTriggers);
 
@@ -2295,16 +2365,16 @@ std::string getAddonOptions()
     RotaryOptions& rotaryOptions = Storage::getInstance().getAddonOptions().rotaryOptions;
     writeDoc(doc, "RotaryAddonEnabled", rotaryOptions.enabled);
     writeDoc(doc, "encoderOneEnabled", rotaryOptions.encoderOne.enabled);
-    writeDoc(doc, "encoderOnePinA", rotaryOptions.encoderOne.pinA);
-    writeDoc(doc, "encoderOnePinB", rotaryOptions.encoderOne.pinB);
+    writeDoc(doc, "encoderOnePinA", cleanPin(rotaryOptions.encoderOne.pinA));
+    writeDoc(doc, "encoderOnePinB", cleanPin(rotaryOptions.encoderOne.pinB));
     writeDoc(doc, "encoderOneMode", rotaryOptions.encoderOne.mode);
     writeDoc(doc, "encoderOnePPR", rotaryOptions.encoderOne.pulsesPerRevolution);
     writeDoc(doc, "encoderOneResetAfter", rotaryOptions.encoderOne.resetAfter);
     writeDoc(doc, "encoderOneAllowWrapAround", rotaryOptions.encoderOne.allowWrapAround);
     writeDoc(doc, "encoderOneMultiplier", rotaryOptions.encoderOne.multiplier);
     writeDoc(doc, "encoderTwoEnabled", rotaryOptions.encoderTwo.enabled);
-    writeDoc(doc, "encoderTwoPinA", rotaryOptions.encoderTwo.pinA);
-    writeDoc(doc, "encoderTwoPinB", rotaryOptions.encoderTwo.pinB);
+    writeDoc(doc, "encoderTwoPinA", cleanPin(rotaryOptions.encoderTwo.pinA));
+    writeDoc(doc, "encoderTwoPinB", cleanPin(rotaryOptions.encoderTwo.pinB));
     writeDoc(doc, "encoderTwoMode", rotaryOptions.encoderTwo.mode);
     writeDoc(doc, "encoderTwoPPR", rotaryOptions.encoderTwo.pulsesPerRevolution);
     writeDoc(doc, "encoderTwoResetAfter", rotaryOptions.encoderTwo.resetAfter);
@@ -2591,6 +2661,94 @@ std::string reboot() {
     return serialize_json(doc);
 }
 
+// NEW API: return current raw ADC reading for the configured analog pins
+std:: string getJoystickCenter() {
+    const size_t capacity = JSON_OBJECT_SIZE(10);
+    DynamicJsonDocument doc(capacity);
+    const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
+
+    uint16_t x = 0, y = 0;
+    bool success = true;
+    std::string error_msg = "";
+
+    // Check if analog input is enabled
+    if (!analogOptions.enabled) {
+        success = false;
+        error_msg = "Analog input is not enabled";
+    } else {
+        // Initialize ADC if not already initialized
+        adc_init();
+
+        // Check if specific stick is requested via query parameter
+        // For now, we'll read both sticks and return the appropriate one
+        // In a more sophisticated implementation, we could parse query parameters
+
+        // Read first stick X/Y
+        if (isValidPin(analogOptions.analogAdc1PinX)) {
+            adc_gpio_init(analogOptions.analogAdc1PinX);
+            adc_select_input(analogOptions.analogAdc1PinX - 26);
+            x = adc_read();
+        }
+        if (isValidPin(analogOptions.analogAdc1PinY)) {
+            adc_gpio_init(analogOptions.analogAdc1PinY);
+            adc_select_input(analogOptions.analogAdc1PinY - 26);
+            y = adc_read();
+        }
+    }
+
+    JsonObject o = doc.to<JsonObject>();
+    o["success"] = success;
+    if (!success) {
+        o["error"] = error_msg;
+    } else {
+        o["x"] = x;
+        o["y"] = y;
+    }
+    return serialize_json(doc);
+}
+
+// NEW API: return current raw ADC reading for stick 2
+std:: string getJoystickCenter2() {
+    const size_t capacity = JSON_OBJECT_SIZE(10);
+    DynamicJsonDocument doc(capacity);
+    const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
+
+    uint16_t x = 0, y = 0;
+    bool success = true;
+    std::string error_msg = "";
+
+    // Check if analog input is enabled
+    if (!analogOptions.enabled) {
+        success = false;
+        error_msg = "Analog input is not enabled";
+    } else {
+        // Initialize ADC if not already initialized
+        adc_init();
+
+        // Read second stick X/Y
+        if (isValidPin(analogOptions.analogAdc2PinX)) {
+            adc_gpio_init(analogOptions.analogAdc2PinX);
+            adc_select_input(analogOptions.analogAdc2PinX - 26);
+            x = adc_read();
+        }
+        if (isValidPin(analogOptions.analogAdc2PinY)) {
+            adc_gpio_init(analogOptions.analogAdc2PinY);
+            adc_select_input(analogOptions.analogAdc2PinY - 26);
+            y = adc_read();
+        }
+    }
+
+    JsonObject o = doc.to<JsonObject>();
+    o["success"] = success;
+    if (!success) {
+        o["error"] = error_msg;
+    } else {
+        o["x"] = x;
+        o["y"] = y;
+    }
+    return serialize_json(doc);
+}
+
 typedef std::string (*HandlerFuncPtr)();
 static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
 {
@@ -2607,10 +2765,10 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/getI2CPeripheralMap", getI2CPeripheralMap },
     { "/api/setExpansionPins", setExpansionPins },
     { "/api/getExpansionPins", getExpansionPins },
+    { "/api/setHETriggerCalibrations", setHETriggerCalibrations },
+    { "/api/getHETriggerCalibrations", getHETriggerCalibrations },
+    { "/api/getHETriggerVoltage", getHETriggerVoltage },
     { "/api/setHETriggerOptions", setHETriggerOptions },
-    { "/api/getHETriggerOptions", getHETriggerOptions },
-    { "/api/getHETriggerCalibration", getHETriggerCalibration },
-    { "/api/setHETriggerCalibration", setHETriggerCalibration },
     { "/api/setReactiveLEDs", setReactiveLEDs },
     { "/api/getReactiveLEDs", getReactiveLEDs },
     { "/api/setKeyMappings", setKeyMappings },
@@ -2639,6 +2797,10 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/abortGetHeldPins", abortGetHeldPins },
     { "/api/getUsedPins", getUsedPins },
     { "/api/getConfig", getConfig },
+    { "/api/getJoystickCenter", getJoystickCenter },
+    { "/api/getJoystickCenter2", getJoystickCenter2 },
+		{ "/api/getBootModeOptions", getBootModeOptions },
+		{ "/api/setBootModeOptions", setBootModeOptions },
 #if !defined(NDEBUG)
     { "/api/echo", echo },
 #endif
@@ -2693,7 +2855,7 @@ void fs_close_custom(struct fs_file *file)
 {
     if (file && file->is_custom_file && file->pextension)
     {
-        mem_free(file->pextension);
+        delete static_cast<std::string*>(file->pextension);
         file->pextension = NULL;
     }
 }

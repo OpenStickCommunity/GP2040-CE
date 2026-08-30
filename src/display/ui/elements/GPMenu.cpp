@@ -4,12 +4,6 @@
 
 void GPMenu::draw() {
     if (this->getVisibility()) {
-        uint16_t baseX = this->x;
-        uint16_t baseY = this->y;
-
-        uint16_t menuWidth = this->menuSizeX * 6;
-        uint16_t menuHeight = this->menuSizeY * 8;
-
         uint16_t dataSize = this->getDataSize();
         uint16_t totalPages = (dataSize + this->menuSizeY - 1) / this->menuSizeY;
         uint16_t itemPage = (this->menuIndex / this->menuSizeY);

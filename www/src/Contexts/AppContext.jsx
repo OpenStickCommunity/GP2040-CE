@@ -188,7 +188,7 @@ export const AppContextProvider = ({ children, ...props }) => {
 	);
 	const [expansionPins, setExpansionPins] = useState({});
 
-	const [HETriggerOptions, setHETriggerOptions] = useState({});
+	const [HETriggerCalibrations, setHETriggerCalibrations] = useState({});
 
 	const updateUsedPins = async () => {
 		const data = await WebApi.getUsedPins(setLoading);
@@ -202,9 +202,9 @@ export const AppContextProvider = ({ children, ...props }) => {
 		return data;
 	};
 
-	const updateHETriggerOptions = async () => {
-		const data = await WebApi.getHETriggerOptions(setLoading);
-		setHETriggerOptions(data);
+	const updateHETriggerCalibrations = async () => {
+		const data = await WebApi.getHETriggerCalibrations(setLoading);
+		setHETriggerCalibrations(data);
 		return data;
 	};
 
@@ -216,7 +216,7 @@ export const AppContextProvider = ({ children, ...props }) => {
 	useEffect(() => {
 		updateUsedPins();
 		updateExpansionPins();
-		updateHETriggerOptions();
+		updateHETriggerCalibrations();
 		updatePeripherals();
 	}, []);
 
@@ -231,7 +231,7 @@ export const AppContextProvider = ({ children, ...props }) => {
 		};
 	}, [usedPins, setUsedPins]);
 
-	useEffect(() => {}, [expansionPins, setExpansionPins, HETriggerOptions, setHETriggerOptions]);
+	useEffect(() => {}, [expansionPins, setExpansionPins, HETriggerCalibrations, setHETriggerCalibrations]);
 
 	const getAvailablePeripherals = (device) => {
 		// gymnastics to make sure the device is defined before trusting config value
@@ -308,7 +308,7 @@ export const AppContextProvider = ({ children, ...props }) => {
 				availablePeripherals,
 				getAvailablePeripherals,
 				expansionPins,
-				HETriggerOptions,
+				HETriggerCalibrations,
 				getSelectedPeripheral,
 				setButtonLabels,
 				setGradientNormalColor1,
@@ -318,8 +318,8 @@ export const AppContextProvider = ({ children, ...props }) => {
 				setSavedColors,
 				setUsedPins,
 				setExpansionPins,
-				setHETriggerOptions,
-				updateHETriggerOptions,
+				setHETriggerCalibrations,
+				updateHETriggerCalibrations,
 				setAvailablePeripherals,
 				updatePeripherals,
 				updateUsedPins,

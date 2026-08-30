@@ -12,8 +12,8 @@ class GPProfileChangeEvent : public GPEvent {
 
         GPEventType eventType() { return this->_eventType; }
 
-        uint8_t previousValue;
-        uint8_t currentValue;
+        uint8_t previousValue = 0;
+        uint8_t currentValue = 0;
     private:
         GPEventType _eventType = GP_EVENT_PROFILE_CHANGE;
 };

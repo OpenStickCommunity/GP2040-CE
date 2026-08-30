@@ -277,14 +277,13 @@ void Gamepad::process()
 		state.dpad = filterToFourWayMode(state.dpad);
 	}
 
-	// hold current dpad state regardless of input
-	state.dpadOriginal = state.dpad;
+	uint8_t currentDpadSnapshot = state.dpad;
 
 	// stash digital-only dpad state for later
-	uint8_t dpadOnlyMask = ((state.dpadOriginal & 0xF0) >> 4);
+	uint8_t dpadOnlyMask = ((currentDpadSnapshot & 0xF0) >> 4);
 
 	// and mask out the mode-specific mask
-	uint8_t dpadModeMask = (state.dpadOriginal & 0x0F);
+	uint8_t dpadModeMask = (currentDpadSnapshot & 0x0F);
 
 	// set dpad back to dpad mode-specific state
 	state.dpad = dpadModeMask;
@@ -372,6 +371,9 @@ void Gamepad::read()
 		| ((values & mapButtonE11->pinMask) ? mapButtonE11->buttonMask : 0)
 		| ((values & mapButtonE12->pinMask) ? mapButtonE12->buttonMask : 0)
 	;
+
+	// hold current dpad state regardless of input mode -> output, which is determined in process()
+	state.dpadOriginal = state.dpad;
 
 	// set the effective dpad mode based on settings + overrides
 	if (values & mapButtonDP->pinMask)	activeDpadMode = DpadMode::DPAD_MODE_DIGITAL;
@@ -577,6 +579,16 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 				System::reboot(System::BootMode::DEFAULT);
 			}
 			break;
+		case HOTKEY_REBOOT_WEBCONFIG:
+			if (action != lastAction) {
+				System::reboot(System::BootMode::WEBCONFIG);
+			}
+			break;
+		case HOTKEY_REBOOT_USB:
+			if (action != lastAction) {
+				System::reboot(System::BootMode::USB);
+			}
+			break;
 		case HOTKEY_SAVE_CONFIG:
 			if (action != lastAction) {
 				Storage::getInstance().save(true);
@@ -757,6 +769,31 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 			}
 		}
 			break;
+		case HOTKEY_LS_UP:
+			state.ly = GAMEPAD_JOYSTICK_MIN;
+			break;
+		case HOTKEY_LS_DOWN:
+			state.ly = GAMEPAD_JOYSTICK_MAX;
+			break;
+		case HOTKEY_LS_LEFT:
+			state.lx = GAMEPAD_JOYSTICK_MIN;
+			break;
+		case HOTKEY_LS_RIGHT:
+			state.lx = GAMEPAD_JOYSTICK_MAX;
+			break;
+		case HOTKEY_RS_UP:
+			state.ry = GAMEPAD_JOYSTICK_MIN;
+			break;
+		case HOTKEY_RS_DOWN:
+			state.ry = GAMEPAD_JOYSTICK_MAX;
+			break;
+		case HOTKEY_RS_LEFT:
+			state.rx = GAMEPAD_JOYSTICK_MIN;
+			break;
+		case HOTKEY_RS_RIGHT:
+			state.rx = GAMEPAD_JOYSTICK_MAX;
+			break;
+       
 		default: // Unknown action
 			break;
 	}

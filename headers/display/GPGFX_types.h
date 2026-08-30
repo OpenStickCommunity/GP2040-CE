@@ -43,6 +43,7 @@ typedef struct {
     uint8_t orientation;
     bool inverted;
     GPGFX_DisplayFont font;
+    uint8_t contrast;
 } GPGFX_DisplayTypeOptions;
 
 #endif

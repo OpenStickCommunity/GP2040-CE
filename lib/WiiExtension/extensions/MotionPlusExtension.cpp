@@ -47,31 +47,31 @@ bool MotionPlusExtension::calibrate(uint8_t *calibrationData) {
 
     calibration = {
         .fastCalibration = {
-            .yawZero = (calibrationData[0] << 8) | (calibrationData[1] << 0),
-            .rollZero = (calibrationData[2] << 8) | (calibrationData[3] << 0),
-            .pitchZero = (calibrationData[4] << 8) | (calibrationData[5] << 0),
-            .yawScale = (calibrationData[6] << 8) | (calibrationData[7] << 0),
-            .rollScale = (calibrationData[8] << 8) | (calibrationData[9] << 0),
-            .pitchScale = (calibrationData[10] << 8) | (calibrationData[11] << 0),
+            .yawZero = (uint16_t)((calibrationData[0] << 8) | (calibrationData[1] << 0)),
+            .rollZero = (uint16_t)((calibrationData[2] << 8) | (calibrationData[3] << 0)),
+            .pitchZero = (uint16_t)((calibrationData[4] << 8) | (calibrationData[5] << 0)),
+            .yawScale = (uint16_t)((calibrationData[6] << 8) | (calibrationData[7] << 0)),
+            .rollScale = (uint16_t)((calibrationData[8] << 8) | (calibrationData[9] << 0)),
+            .pitchScale = (uint16_t)((calibrationData[10] << 8) | (calibrationData[11] << 0)),
             .degreeScale = calibrationData[12],
         },
         .fastUID = calibrationData[13],
-        .crc32MSB = (calibrationData[14] << 8) | (calibrationData[15] << 0),
+        .crc32MSB = (uint16_t)((calibrationData[14] << 8) | (calibrationData[15] << 0)),
         .slowCalibration = {
-            .yawZero = (calibrationData[16] << 8) | (calibrationData[17] << 0),
-            .rollZero = (calibrationData[18] << 8) | (calibrationData[19] << 0),
-            .pitchZero = (calibrationData[20] << 8) | (calibrationData[21] << 0),
-            .yawScale = (calibrationData[22] << 8) | (calibrationData[23] << 0),
-            .rollScale = (calibrationData[24] << 8) | (calibrationData[25] << 0),
-            .pitchScale = (calibrationData[26] << 8) | (calibrationData[27] << 0),
+            .yawZero = (uint16_t)((calibrationData[16] << 8) | (calibrationData[17] << 0)),
+            .rollZero = (uint16_t)((calibrationData[18] << 8) | (calibrationData[19] << 0)),
+            .pitchZero = (uint16_t)((calibrationData[20] << 8) | (calibrationData[21] << 0)),
+            .yawScale = (uint16_t)((calibrationData[22] << 8) | (calibrationData[23] << 0)),
+            .rollScale = (uint16_t)((calibrationData[24] << 8) | (calibrationData[25] << 0)),
+            .pitchScale = (uint16_t)((calibrationData[26] << 8) | (calibrationData[27] << 0)),
             .degreeScale = calibrationData[28],
         },
         .slowUID = calibrationData[29],
-        .crc32LSB = (calibrationData[30] << 8) | (calibrationData[31] << 0)
+        .crc32LSB = (uint16_t)((calibrationData[30] << 8) | (calibrationData[31] << 0))
     };
 
     crc32 = CRC32::calculate(calibrationCheck, 28);
-    result = (((calibration.crc32MSB << 16) | calibration.crc32LSB) == crc32);
+    result = (((calibration.crc32MSB << 16) | calibration.crc32LSB) == (uint16_t)crc32);
 
 #if WII_EXTENSION_DEBUG==true
 //    for (uint8_t i = 0; i < 32; i++) {

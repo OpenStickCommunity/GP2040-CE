@@ -72,6 +72,8 @@ void HETriggerAddon::setup() {
                 lastADCSelected = muxPinArray[mux];
             }
             emaSmoothingReads[i] = adc_read();
+            lastIncrement[i] = adc_read();
+            triggerActive[i] = false;
         }
         emaSmoothingFactor = (float)options.smoothingFactor / 100.f; // 99 = max smoothing factor
     }
@@ -106,7 +108,14 @@ void HETriggerAddon::preprocess() {
             adc_select_input(muxPinArray[mux]-26);
             lastADCSelected = muxPinArray[mux];
         }
+
         value = adc_read();
+        activationThreshold = (uint16_t)options.triggers[he].active;
+        releaseThreshold = (uint16_t)options.triggers[he].active;
+
+        if ( options.triggers[he].rapidTrigger ) {
+            releaseThreshold = (uint16_t)options.triggers[he].release;
+        }
 
         // EMA Smoothing
         if ( options.emaSmoothing == 1 ) {
@@ -114,7 +123,31 @@ void HETriggerAddon::preprocess() {
             emaSmoothingReads[he] = value;
         }
 
-        if (value >= options.triggers[he].active) {
+        if (options.triggers[he].is_polarized) {
+            // effectively inverting value and thresholds
+            value = ADC_MAX - value;
+            activationThreshold = ADC_MAX - activationThreshold;
+            releaseThreshold = ADC_MAX - releaseThreshold;
+        }
+
+        if (!options.triggers[he].rapidTrigger) {
+            // no rapid trigger
+            triggerActive[he] = value > activationThreshold;
+        } else {
+            // chad rapid trigger
+            bool pressing = (value > lastIncrement[he]) && (value - lastIncrement[he]) > options.triggers[he].noise;
+            bool releasing = (lastIncrement[he] > value) && (lastIncrement[he] - value) > options.triggers[he].noise;
+            if (pressing || releasing) {
+                lastIncrement[he] = value;
+            }
+
+            if ( !triggerActive[he] && pressing && value >= activationThreshold) {
+                triggerActive[he] = true;
+            } else if (triggerActive[he] && releasing && value <= releaseThreshold) {
+                triggerActive[he] = false;
+            }
+        }
+        if (triggerActive[he]) {
             switch (options.triggers[he].action) {
                 case GpioAction::BUTTON_PRESS_UP: gamepad->state.dpad |= GAMEPAD_MASK_UP; break;
                 case GpioAction::BUTTON_PRESS_DOWN: gamepad->state.dpad |= GAMEPAD_MASK_DOWN; break;

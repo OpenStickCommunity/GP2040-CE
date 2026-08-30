@@ -422,6 +422,14 @@ async function setProfileOptions(mappings) {
 	});
 }
 
+async function getBootModeOptions() {
+	return Http.get(`${baseUrl}/api/getBootModeOptions`);
+}
+
+async function setBootModeOptions(options) {
+	return Http.post(`${baseUrl}/api/setBootModeOptions`, options);
+}
+
 async function getKeyMappings(setLoading) {
 	setLoading(true);
 
@@ -645,29 +653,30 @@ async function setExpansionPins(mappings) {
 	return Http.post(`${baseUrl}/api/setExpansionPins`, mappings);
 }
 
-// POST function to get the ADC reading of a hall-effect trigger
-async function getHETriggerCalibration(settings) {
-	return Http.post(`${baseUrl}/api/getHETriggerCalibration`, settings);
+// POST function to get the ADC reading for one Hall Effect channel
+async function getHETriggerVoltage(settings) {
+	return Http.post(`${baseUrl}/api/getHETriggerVoltage`, settings);
 }
 
 // POST function to set our channels, select, and ADC pin
-async function setHETriggerCalibration(settings) {
-	return Http.post(`${baseUrl}/api/setHETriggerCalibration`, settings);
+async function setHETriggerOptions(settings) {
+	return Http.post(`${baseUrl}/api/setHETriggerOptions`, settings);
 }
 
-async function getHETriggerOptions() {
+async function getHETriggerCalibrations() {
 	try {
-		const response = await Http.get(`${baseUrl}/api/getHETriggerOptions`);
+		const response = await Http.get(`${baseUrl}/api/getHETriggerCalibrations`);
 		return response.data;
 	} catch (error) {
 		console.error(error);
 	}
 }
 
-async function setHETriggerOptions(triggers) {
+// POST to set all Hall Effect Trigger Calibrations
+async function setHETriggerCalibrations(triggers) {
 	console.dir(triggers);
 
-	return Http.post(`${baseUrl}/api/setHETriggerOptions`, triggers);
+	return Http.post(`${baseUrl}/api/setHETriggerCalibrations`, triggers);
 }
 
 async function getHeldPins(abortSignal) {
@@ -714,6 +723,8 @@ export default {
 	setCustomTheme,
 	getPinMappings,
 	setPinMappings,
+	getBootModeOptions,
+	setBootModeOptions,
 	getProfileOptions,
 	setProfileOptions,
 	getKeyMappings,
@@ -729,9 +740,9 @@ export default {
 	setPeripheralOptions,
 	getExpansionPins,
 	setExpansionPins,
-	getHETriggerCalibration,
-	setHETriggerCalibration,
-	getHETriggerOptions,
+	getHETriggerVoltage,
+	setHETriggerCalibrations,
+	getHETriggerCalibrations,
 	setHETriggerOptions,
 	getReactiveLEDs,
 	setReactiveLEDs,

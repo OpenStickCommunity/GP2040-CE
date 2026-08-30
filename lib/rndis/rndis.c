@@ -49,6 +49,7 @@ try changing the first byte of tud_network_mac_address[] below from 0x02 to 0x00
 #include "lwip/init.h"
 #include "lwip/timeouts.h"
 #include "lwip/apps/httpd.h"
+#include "lwip/apps/mdns.h"
 
 #define INIT_IP4(a,b,c,d) { PP_HTONL(LWIP_MAKEU32(a,b,c,d)) }
 
@@ -117,7 +118,7 @@ static err_t netif_init_cb(struct netif *netif)
 {
   LWIP_ASSERT("netif != NULL", (netif != NULL));
   netif->mtu = CFG_TUD_NET_MTU;
-  netif->flags = NETIF_FLAG_BROADCAST | NETIF_FLAG_ETHARP | NETIF_FLAG_LINK_UP | NETIF_FLAG_UP;
+  netif->flags = NETIF_FLAG_BROADCAST | NETIF_FLAG_ETHARP | NETIF_FLAG_LINK_UP | NETIF_FLAG_UP | NETIF_FLAG_IGMP;
   netif->state = NULL;
   netif->name[0] = 'E';
   netif->name[1] = 'X';
@@ -154,7 +155,7 @@ bool dns_query_proc(const char *name, ip4_addr_t *addr)
 
 bool tud_network_recv_cb(const uint8_t *src, uint16_t size)
 {
-  /* this shouldn't happen, but if we get another packet before 
+  /* this shouldn't happen, but if we get another packet before
   parsing the previous, we must signal our inability to accept it */
   if (received_frame)
     return false;
@@ -209,9 +210,12 @@ void tud_network_init_cb(void)
     pbuf_free(received_frame);
     received_frame = NULL;
   }
+
+  /* re-announce mDNS, so hostname resolves after reconnect, getting issues on windows on hard-refresh without this */
+  mdns_resp_announce(&netif_data);
 }
 
-int rndis_init(void)
+int rndis_init(const char *hostname)
 {
   // Removed as rndis defect 07-08-2025 as we need to setup TinyUSB to non-default values
   ///* initialize TinyUSB */
@@ -225,6 +229,8 @@ int rndis_init(void)
     ;
   while (dnserv_init(&ipaddr, 53, dns_query_proc) != ERR_OK)
     ;
+  mdns_resp_init();
+  mdns_resp_add_netif(&netif_data, hostname);
   httpd_init();
 
   return 0;

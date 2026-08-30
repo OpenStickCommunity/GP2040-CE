@@ -11,6 +11,7 @@ export default {
 	'links-label': '링크',
 	'macro-label': '매크로',
 	'pin-mapping-label': 'GPIO 핀 매핑',
+	'boot-mode-mapping-label': '부팅 모드 구성',
 	'multi-mapping-label': '멀티 매핑',
 	'peripheral-mapping-label': '주변 기기 매핑',
 	'profile-settings-label': '프로필 설정',

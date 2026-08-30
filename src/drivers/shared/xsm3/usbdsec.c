@@ -117,8 +117,12 @@ void UsbdSecXSM3AuthenticationMac(const uint8_t *key, uint8_t *salt, uint8_t *in
 	}
 	// for every 8 byte input block, xor the temp value with it and encrypt over itself
 	for (i = 0; i < length; i += 8) {
-		memcpy(&input_temp, input+i, sizeof(input_temp));
-		*(uint64_t *)temp ^= input_temp;
+		uint64_t xor_temp;
+
+		memcpy(&input_temp, input + i, sizeof(input_temp));
+		memcpy(&xor_temp, temp, sizeof(xor_temp));
+		xor_temp ^= input_temp;
+		memcpy(temp, &xor_temp, sizeof(xor_temp));
 		
 		ExCryptDesEcb(&des, temp, temp, 1);
 	}
@@ -138,6 +142,7 @@ void UsbdSecXSMAuthenticationAcr(const uint8_t *console_id, const uint8_t *input
 	uint8_t iv[8];
 	uint8_t ab[8];
 	uint8_t cd[8];
+	uint64_t xor_temp;
 
 	// fill in the input block with the first 4 bytes of input data and the first 4 bytes of the console ID
 	// *(uint32_t *)block = *(uint32_t *)input;
@@ -151,7 +156,8 @@ void UsbdSecXSMAuthenticationAcr(const uint8_t *console_id, const uint8_t *input
 	ExCryptChainAndSumMac((uint32_t *)cd, (uint32_t *)ab, (uint32_t *)UsbdSecPlainTextData, 0x20, (uint32_t *)output);
 	uint64_t current;
 	memcpy(&current, output, sizeof(current));
-	current ^= *(uint64_t *)ab;
+	memcpy(&xor_temp, ab, sizeof(xor_temp));
+	current ^= xor_temp;
 	// *(uint64_t *)output ^= *(uint64_t *)ab;
 	memcpy(output, &current, sizeof(current));
 }

@@ -2,7 +2,7 @@ export const I2C_BLOCKS = [
 	{
 		label: 'i2c0',
 		value: 0,
-		pins: { sda: [0, 4, 8, 12, 16, 20], scl: [1, 5, 9, 13, 17, 21] },
+		pins: { sda: [0, 4, 8, 12, 16, 20, 28], scl: [1, 5, 9, 13, 17, 21, 29] },
 	},
 	{
 		label: 'i2c1',

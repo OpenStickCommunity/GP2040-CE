@@ -14,7 +14,7 @@
 #define XBONE_ENDPOINT_SIZE 64
 
 // 0x80 = std. device
-// 
+//
 
 static const uint8_t xbone_string_language[]    = { 0x09, 0x04 };
 static const uint8_t xbone_string_manufacturer[] = "Open Stick Community";
@@ -33,13 +33,22 @@ static uint8_t uniqueSerial[] = "012345678ABCDEFGH";
 static const uint8_t xboxSecurityMethod[] = "Xbox Security Method 3, Version 1.00, \xa9 2005 Microsoft Corporation. All rights reserved.";
 static const uint8_t xboxOSDescriptor[] = "MSFT100\x20\x00";
 
+static const uint8_t XBOXONE_RUMBLE[] = {0x09, 0x00, 0x00, 0x09, 0x00, 0x0F, 0x00, 0x00, 0x00, 0x00, 0xFF, 0x00, 0xFF};
+// power-on states and rumble-on with everything disabled
+static const uint8_t XBOXONE_POWER_ON[] = {0x06, 0x62, 0x45, 0xb8, 0x77, 0x26, 0x2c, 0x55,
+                                 0x53, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1f};
+static const uint8_t XBOXONE_POWER_ON_SINGLE[] = {0x00};
+static const uint8_t XBOXONE_RUMBLE_ON[] = {0x00, 0x0f, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0xeb};
+static const uint8_t XBOXONE_LED_ON[] = {0x00, 0x01, 0x14}; // 0x01 - LED on, 0x14 - Brightness
+
+
 static const uint8_t * xbone_get_string_descriptor(int index) {
 	if ( index == 3 ) {
 		// Generate a serial number from the pico's unique ID
 		pico_unique_board_id_t id;
 		pico_get_unique_board_id(&id);
         for(int i = 0; i < PICO_UNIQUE_BOARD_ID_SIZE_BYTES; i++) {
-            uniqueSerial[i] = 'A' + (id.id[i]%25); // some alphanumeric from 'A' to 'Z'
+            uniqueSerial[i] = 'A' + (id.id[i]%26); // some alphanumeric from 'A' to 'Z'
         }
         return uniqueSerial;
 	} else if ( index == 4 ) { // security method used
