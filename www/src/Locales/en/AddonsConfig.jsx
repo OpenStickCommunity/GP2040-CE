@@ -98,6 +98,7 @@ export default {
 	'reverse-action-disable-label': 'Disable',
 	'reverse-action-enable-label': 'Enable',
 	'reverse-action-neutral-label': 'Neutral',
+	'i2c-analog-ads1115-header-text': 'I2C Analog ADS1115',
 	'i2c-analog-ads1219-header-text': 'I2C Analog ADS1219',
 	'i2c-analog-ads1219-scl-pin-label': 'I2C Analog ADS1219 SCL GPIO Pin',
 	'i2c-analog-ads1219-sda-pin-label': 'I2C Analog ADS1219 SDA GPIO Pin',

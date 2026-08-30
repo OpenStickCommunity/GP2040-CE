@@ -1,3 +1,4 @@
+add_subdirectory(ADS1115)
 add_subdirectory(ADS1219)
 add_subdirectory(ADS1256)
 add_subdirectory(CRC32)
