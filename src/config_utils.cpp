@@ -1870,6 +1870,60 @@ void hotkeysMigration(Config& config)
     config.migrations.hotkeysMigrated = true;
 }
 
+// derive the default keycode for a GPIO from its assigned button action
+static uint32_t keyboardKeycodeForGpioAction(const KeyboardMapping& mapping, GpioAction action)
+{
+    switch (action) {
+        case GpioAction::BUTTON_PRESS_UP:    return mapping.keyDpadUp;
+        case GpioAction::BUTTON_PRESS_DOWN:  return mapping.keyDpadDown;
+        case GpioAction::BUTTON_PRESS_LEFT:  return mapping.keyDpadLeft;
+        case GpioAction::BUTTON_PRESS_RIGHT: return mapping.keyDpadRight;
+        case GpioAction::BUTTON_PRESS_B1:    return mapping.keyButtonB1;
+        case GpioAction::BUTTON_PRESS_B2:    return mapping.keyButtonB2;
+        case GpioAction::BUTTON_PRESS_B3:    return mapping.keyButtonB3;
+        case GpioAction::BUTTON_PRESS_B4:    return mapping.keyButtonB4;
+        case GpioAction::BUTTON_PRESS_L1:    return mapping.keyButtonL1;
+        case GpioAction::BUTTON_PRESS_R1:    return mapping.keyButtonR1;
+        case GpioAction::BUTTON_PRESS_L2:    return mapping.keyButtonL2;
+        case GpioAction::BUTTON_PRESS_R2:    return mapping.keyButtonR2;
+        case GpioAction::BUTTON_PRESS_S1:    return mapping.keyButtonS1;
+        case GpioAction::BUTTON_PRESS_S2:    return mapping.keyButtonS2;
+        case GpioAction::BUTTON_PRESS_L3:    return mapping.keyButtonL3;
+        case GpioAction::BUTTON_PRESS_R3:    return mapping.keyButtonR3;
+        case GpioAction::BUTTON_PRESS_A1:    return mapping.keyButtonA1;
+        case GpioAction::BUTTON_PRESS_A2:    return mapping.keyButtonA2;
+        case GpioAction::BUTTON_PRESS_A3:    return mapping.keyButtonA3;
+        case GpioAction::BUTTON_PRESS_A4:    return mapping.keyButtonA4;
+        case GpioAction::BUTTON_PRESS_E1:    return mapping.keyButtonE1;
+        case GpioAction::BUTTON_PRESS_E2:    return mapping.keyButtonE2;
+        case GpioAction::BUTTON_PRESS_E3:    return mapping.keyButtonE3;
+        case GpioAction::BUTTON_PRESS_E4:    return mapping.keyButtonE4;
+        case GpioAction::BUTTON_PRESS_E5:    return mapping.keyButtonE5;
+        case GpioAction::BUTTON_PRESS_E6:    return mapping.keyButtonE6;
+        case GpioAction::BUTTON_PRESS_E7:    return mapping.keyButtonE7;
+        case GpioAction::BUTTON_PRESS_E8:    return mapping.keyButtonE8;
+        case GpioAction::BUTTON_PRESS_E9:    return mapping.keyButtonE9;
+        case GpioAction::BUTTON_PRESS_E10:   return mapping.keyButtonE10;
+        case GpioAction::BUTTON_PRESS_E11:   return mapping.keyButtonE11;
+        case GpioAction::BUTTON_PRESS_E12:   return mapping.keyButtonE12;
+        default:                             return 0;
+    }
+}
+
+// populate the GPIO-based keyboard mapping from each pin's button action;
+// only runs when unpopulated so stored user assignments are preserved
+void keyboardGpioMigration(Config& config)
+{
+    if (config.keyboardGpioMappings.pinKeycodes_count == NUM_BANK0_GPIOS)
+        return;
+
+    for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
+        config.keyboardGpioMappings.pinKeycodes[pin] = keyboardKeycodeForGpioAction(
+            config.keyboardMapping, config.gpioMappings.pins[pin].action);
+    }
+    config.keyboardGpioMappings.pinKeycodes_count = NUM_BANK0_GPIOS;
+}
+
 // -----------------------------------------------------
 // Loading / Saving
 // -----------------------------------------------------
@@ -1978,6 +2032,8 @@ void ConfigUtils::load(Config& config)
     migrateMacroPinsToGpio(config);
     // Migrate old JS slider add-on to core
     migrateJSliderToCore(config);
+    // Keyboard mapping needs the final pin actions, so it migrates last
+    keyboardGpioMigration(config);
 
     // Update boardVersion, in case we migrated from an older version
     strncpy(config.boardVersion, GP2040VERSION, sizeof(config.boardVersion));

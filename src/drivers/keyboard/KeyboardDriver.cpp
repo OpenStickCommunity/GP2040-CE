@@ -2,6 +2,8 @@
 #include "storagemanager.h"
 #include "drivers/shared/driverhelper.h"
 #include "drivers/hid/HIDDescriptors.h"
+#include "types.h"
+#include "pico/platform.h"
 
 #include "eventmanager.h"
 
@@ -58,40 +60,15 @@ uint8_t KeyboardDriver::getMultimedia(uint8_t code) {
 
 
 bool KeyboardDriver::process(Gamepad * gamepad) {
-	const KeyboardMapping& keyboardMapping = Storage::getInstance().getKeyboardMapping();
+	const KeyboardGpioMappings& keyboardGpioMappings = Storage::getInstance().getKeyboardGpioMappings();
 	releaseAllKeys();
-	if(gamepad->pressedUp())     { pressKey(keyboardMapping.keyDpadUp); }
-	if(gamepad->pressedDown())   { pressKey(keyboardMapping.keyDpadDown); }
-	if(gamepad->pressedLeft())	{ pressKey(keyboardMapping.keyDpadLeft); }
-	if(gamepad->pressedRight()) 	{ pressKey(keyboardMapping.keyDpadRight); }
-	if(gamepad->pressedB1()) 	{ pressKey(keyboardMapping.keyButtonB1); }
-	if(gamepad->pressedB2()) 	{ pressKey(keyboardMapping.keyButtonB2); }
-	if(gamepad->pressedB3()) 	{ pressKey(keyboardMapping.keyButtonB3); }
-	if(gamepad->pressedB4()) 	{ pressKey(keyboardMapping.keyButtonB4); }
-	if(gamepad->pressedL1()) 	{ pressKey(keyboardMapping.keyButtonL1); }
-	if(gamepad->pressedR1()) 	{ pressKey(keyboardMapping.keyButtonR1); }
-	if(gamepad->pressedL2()) 	{ pressKey(keyboardMapping.keyButtonL2); }
-	if(gamepad->pressedR2()) 	{ pressKey(keyboardMapping.keyButtonR2); }
-	if(gamepad->pressedS1()) 	{ pressKey(keyboardMapping.keyButtonS1); }
-	if(gamepad->pressedS2()) 	{ pressKey(keyboardMapping.keyButtonS2); }
-	if(gamepad->pressedL3()) 	{ pressKey(keyboardMapping.keyButtonL3); }
-	if(gamepad->pressedR3()) 	{ pressKey(keyboardMapping.keyButtonR3); }
-	if(gamepad->pressedA1()) 	{ pressKey(keyboardMapping.keyButtonA1); }
-	if(gamepad->pressedA2()) 	{ pressKey(keyboardMapping.keyButtonA2); }
-	if(gamepad->pressedA3()) 	{ pressKey(keyboardMapping.keyButtonA3); }
-	if(gamepad->pressedA4()) 	{ pressKey(keyboardMapping.keyButtonA4); }
-	if(gamepad->pressedE1()) 	{ pressKey(keyboardMapping.keyButtonE1); }
-	if(gamepad->pressedE2()) 	{ pressKey(keyboardMapping.keyButtonE2); }
-	if(gamepad->pressedE3()) 	{ pressKey(keyboardMapping.keyButtonE3); }
-	if(gamepad->pressedE4()) 	{ pressKey(keyboardMapping.keyButtonE4); }
-	if(gamepad->pressedE5()) 	{ pressKey(keyboardMapping.keyButtonE5); }
-	if(gamepad->pressedE6()) 	{ pressKey(keyboardMapping.keyButtonE6); }
-	if(gamepad->pressedE7()) 	{ pressKey(keyboardMapping.keyButtonE7); }
-	if(gamepad->pressedE8()) 	{ pressKey(keyboardMapping.keyButtonE8); }
-	if(gamepad->pressedE9()) 	{ pressKey(keyboardMapping.keyButtonE9); }
-	if(gamepad->pressedE10()) 	{ pressKey(keyboardMapping.keyButtonE10); }
-	if(gamepad->pressedE11()) 	{ pressKey(keyboardMapping.keyButtonE11); }
-	if(gamepad->pressedE12()) 	{ pressKey(keyboardMapping.keyButtonE12); }
+
+	const Mask_t values = gamepad->debouncedGpio;
+	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
+		if ((values & (1 << pin)) && keyboardGpioMappings.pinKeycodes[pin] != 0) {
+			pressKey(keyboardGpioMappings.pinKeycodes[pin]);
+		}
+	}
 
     if( volumeChange > 0 ) {
         pressKey(KEYBOARD_MULTIMEDIA_VOLUME_UP);

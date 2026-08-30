@@ -166,11 +166,17 @@ void GP2040::setup() {
  */
 void GP2040::initializeStandardGpio() {
 	GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
+	const KeyboardGpioMappings& keyboardGpioMappings = Storage::getInstance().getKeyboardGpioMappings();
+	bool keyboardMode = Storage::getInstance().getGamepadOptions().inputMode == INPUT_MODE_KEYBOARD;
 	buttonGpios = 0;
 	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
 	{
 		// (NONE=-10, RESERVED=-5, ASSIGNED_TO_ADDON=0, everything else is ours)
-		if (pinMappings[pin].action > 0)
+		// in keyboard mode a pin with no button action but an assigned keycode
+		// is also ours, so the GPIO-based keyboard mapping can read it
+		if (pinMappings[pin].action > 0 ||
+				(keyboardMode && pinMappings[pin].action == GpioAction::NONE &&
+					keyboardGpioMappings.pinKeycodes[pin] != 0))
 		{
 			gpio_init(pin);             // Initialize pin
 			gpio_set_dir(pin, GPIO_IN); // Set as INPUT
