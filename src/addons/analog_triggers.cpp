@@ -35,13 +35,7 @@ void AnalogTriggerInput::setup() {
     }
 }
 
-// Lee un pedal/trigger analogico y lo devuelve como 0-255.
-//
-// A diferencia de un stick (que descansa en el CENTRO de su recorrido y usa
-// una calibracion relativa a ese centro), un pedal descansa en un EXTREMO.
-// Por eso acá se lee el ADC crudo directo (sin ningun plegado relativo a un
-// centro) y se hace un mapeo lineal simple, usando innerDeadzone/outerDeadzone
-// como los limites reposo->fondo del recorrido real del pedal.
+// 
 uint8_t AnalogTriggerInput::readTriggerByte(uint8_t pinAdc, bool invert, float innerDz, float outerDz) {
     adc_select_input(pinAdc);
     uint16_t raw = adc_read();
