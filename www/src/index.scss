@@ -1,14 +1,13 @@
-$gp-primary: #ec008c;
-
 // Override default variables before the import
-$primary: #495057;
+$primary: #ec008c;
 $danger: #7b2d26;
+$min-contrast-ratio: 3;
 
 $body-color-dark: #e3e3e3;
 $body-bg-dark: #1b1b1d;
 
-$navbar-light-hover-color: $gp-primary;
-$navbar-light-active-color: $gp-primary;
+$navbar-light-hover-color: $primary;
+$navbar-light-active-color: $primary;
 
 $enable-cssgrid: true;
 
@@ -60,15 +59,6 @@ button {
 	background-repeat: no-repeat;
 	background-position: right calc(0.375em + 0.1875rem) center;
 	background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
-}
-
-.card {
-	border-color: $primary;
-}
-
-.card-header {
-	background-color: $primary;
-	color: $white;
 }
 
 .popover {
