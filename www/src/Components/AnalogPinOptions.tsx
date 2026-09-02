@@ -1,8 +1,21 @@
+import { useContext, useEffect, useState } from 'react';
+import { AppContext } from '../Contexts/AppContext';
 import { useTranslation } from 'react-i18next';
-import { ANALOG_PINS } from '../Data/Buttons';
+
+import useBoardDefinition from '../Store/useBoardDefinitionStore';
 
 const AnalogPinOptions = () => {
+	const { usedPins } = useContext(AppContext);
 	const { t } = useTranslation();
+
+	const { boardDefinition, getBoardDefinition } = useBoardDefinition();
+
+	useEffect(() => {
+		getBoardDefinition();
+	}, []);
+
+	const ANALOG_PINS = boardDefinition.analogPins;
+
 	return (
 		<>
 			<option value={-1}>

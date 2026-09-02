@@ -1,9 +1,15 @@
+import { useContext } from 'react';
+
+import { AppContext } from '../Contexts/AppContext';
+
 import { useTranslation } from 'react-i18next';
 import { FormCheck, Row } from 'react-bootstrap';
 
 import Section from '../Components/Section';
 import FormControl from '../Components/FormControl';
 import { AddonPropTypes } from '../Pages/AddonsConfigPage';
+
+import useBoardDefinition from '../Store/useBoardDefinitionStore';
 
 export const tg16Scheme = {};
 
@@ -18,6 +24,8 @@ export const tg16State = {
 };
 
 const TG16 = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) => {
+	const { usedPins } = useContext(AppContext);
+	const { boardDefinition } = useBoardDefinition();
 	const { t } = useTranslation();
 	return (
 		<Section title={
@@ -49,7 +57,7 @@ const TG16 = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) 
 						isInvalid={Boolean(errors.tg16PadOePin)}
 						onChange={handleChange}
 						min={-1}
-						max={29}
+						max={boardDefinition.maxPin}
 					/>
 					<FormControl
 						type="number"
@@ -62,7 +70,7 @@ const TG16 = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) 
 						isInvalid={Boolean(errors.tg16PadSelectPin)}
 						onChange={handleChange}
 						min={-1}
-						max={29}
+						max={boardDefinition.maxPin}
 					/>
 					<FormControl
 						type="number"
@@ -75,7 +83,7 @@ const TG16 = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) 
 						isInvalid={Boolean(errors.tg16PadDataPin0)}
 						onChange={handleChange}
 						min={-1}
-						max={29}
+						max={boardDefinition.maxPin}
 					/>
 					<FormControl
 						type="number"
@@ -88,7 +96,7 @@ const TG16 = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) 
 						isInvalid={Boolean(errors.tg16PadDataPin1)}
 						onChange={handleChange}
 						min={-1}
-						max={29}
+						max={boardDefinition.maxPin}
 					/>
 					<FormControl
 						type="number"
@@ -101,7 +109,7 @@ const TG16 = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) 
 						isInvalid={Boolean(errors.tg16PadDataPin2)}
 						onChange={handleChange}
 						min={-1}
-						max={29}
+						max={boardDefinition.maxPin}
 					/>
 					<FormControl
 						type="number"
@@ -114,7 +122,7 @@ const TG16 = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) 
 						isInvalid={Boolean(errors.tg16PadDataPin3)}
 						onChange={handleChange}
 						min={-1}
-						max={29}
+						max={boardDefinition.maxPin}
 					/>
 				</Row>
 			</div>

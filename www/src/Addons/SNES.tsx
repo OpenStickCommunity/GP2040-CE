@@ -1,11 +1,16 @@
+import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FormCheck, Row } from 'react-bootstrap';
+
+import { AppContext } from '../Contexts/AppContext';
 
 import Section from '../Components/Section';
 
 import FormControl from '../Components/FormControl';
 import ContextualHelpOverlay from '../Components/ContextualHelpOverlay';
 import { AddonPropTypes } from '../Pages/AddonsConfigPage';
+
+import useBoardDefinition from '../Store/useBoardDefinitionStore';
 
 // TODO: add scheme for validation
 export const snesScheme = {};
@@ -34,6 +39,8 @@ const SNES_MAPPING_TABLE = [
 ];
 
 const SNES = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) => {
+	const { usedPins } = useContext(AppContext);
+	const { boardDefinition } = useBoardDefinition();
 	const { t } = useTranslation();
 	return (
 		<Section title={
@@ -90,7 +97,7 @@ const SNES = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) 
 						isInvalid={Boolean(errors.snesPadClockPin)}
 						onChange={handleChange}
 						min={-1}
-						max={29}
+						max={boardDefinition.maxPin}
 					/>
 					<FormControl
 						type="number"
@@ -103,7 +110,7 @@ const SNES = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) 
 						isInvalid={Boolean(errors.snesPadLatchPin)}
 						onChange={handleChange}
 						min={-1}
-						max={29}
+						max={boardDefinition.maxPin}
 					/>
 					<FormControl
 						type="number"
@@ -116,7 +123,7 @@ const SNES = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) 
 						isInvalid={Boolean(errors.snesPadDataPin)}
 						onChange={handleChange}
 						min={-1}
-						max={29}
+						max={boardDefinition.maxPin}
 					/>
 				</Row>
 			</div>

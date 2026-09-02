@@ -11,6 +11,8 @@ import WebApi, { basePeripheralMapping } from '../Services/WebApi';
 import { PERIPHERAL_DEVICES } from '../Data/Peripherals';
 import boards from '../Data/Boards.json';
 
+import useBoardDefinition from '../Store/useBoardDefinitionStore';
+
 let peripheralFieldsSchema = {
 	peripheral: yup.object().shape(
 		Object.assign(
@@ -68,11 +70,17 @@ export default function PeripheralMappingPage() {
 	const { setButtonLabels, usedPins } = useContext(AppContext);
 	const [saveMessage, setSaveMessage] = useState('');
 
+	const { boardDefinition, getBoardDefinition } = useBoardDefinition();
+
+	useEffect(() => {
+		getBoardDefinition();
+	}, []);
+
 	let allPins = [
-		...Array(boards[import.meta.env.VITE_GP2040_BOARD].maxPin + 1).keys(),
+		...boardDefinition.availablePins.keys(),
 	];
 	const pinLookup = (pinList) => {
-		return pinList && pinList.length > 0 ? pinList : allPins;
+		return (pinList && pinList.length > 0 ? pinList : allPins).filter(x => boardDefinition.availablePins.includes(x));
 	};
 
 	const onSuccess = async (values) => {

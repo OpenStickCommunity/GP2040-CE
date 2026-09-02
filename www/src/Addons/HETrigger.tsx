@@ -11,12 +11,12 @@ import omit from 'lodash/omit';
 import HECalibration from '../Components/HECalibration';
 
 import useHETriggerStore, { Trigger } from '../Store/useHETriggerStore';
+import useBoardDefinition from '../Store/useBoardDefinitionStore';
 
 import { AppContext } from '../Contexts/AppContext';
 import Section from '../Components/Section';
 import FormSelect from '../Components/FormSelect';
 import FormControl from '../Components/FormControl';
-import { ANALOG_PINS } from '../Data/Buttons';
 import CustomSelect from '../Components/CustomSelect';
 import AnalogPinOptions from '../Components/AnalogPinOptions';
 import { getButtonLabels } from '../Data/Buttons';
@@ -182,7 +182,7 @@ const TriggerActionsForm = ({
 						{t('HETrigger:calibrate-all-button')}
 					</Button>
 				</div>
-				{Array.from({ length: Math.min(4,Math.floor(32/muxChannels)) }, (_, i) => (
+				{Array.from({ length: Math.min(8,Math.floor(32/muxChannels)) }, (_, i) => (
 					<div
 						key={`he-trigger-item-${i}`} 
 						className="mt-3 mb-3"
@@ -334,6 +334,10 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }: AddonPropTy
 	};
 
 	const { usedPins } = useContext(AppContext);
+	const { boardDefinition } = useBoardDefinition();
+
+	const ANALOG_PINS = boardDefinition.analogPins;
+
 	const availableAnalogPins = ANALOG_PINS.filter(
 		(pin) => !usedPins?.includes(pin),
 	);
@@ -396,7 +400,7 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }: AddonPropTy
 						isInvalid={Boolean(errors.muxSelectPin0)}
 						onChange={handleChange}
 						min={-1}
-						max={29}
+						max={boardDefinition.maxPin}
 					/>
 					<FormControl
 						type="number"
@@ -410,7 +414,7 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }: AddonPropTy
 						isInvalid={Boolean(errors.muxSelectPin1)}
 						onChange={handleChange}
 						min={-1}
-						max={29}
+						max={boardDefinition.maxPin}
 					/>
 					<FormControl
 						type="number"
@@ -424,7 +428,7 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }: AddonPropTy
 						isInvalid={Boolean(errors.muxSelectPin2)}
 						onChange={handleChange}
 						min={-1}
-						max={29}
+						max={boardDefinition.maxPin}
 					/>
 					<FormControl
 						type="number"
@@ -438,60 +442,24 @@ const HETrigger = ({ values, errors, handleChange, handleCheckbox }: AddonPropTy
 						isInvalid={Boolean(errors.muxSelectPin3)}
 						onChange={handleChange}
 						min={-1}
-						max={29}
+						max={boardDefinition.maxPin}
 					/>
 				</Row>
 				<Row className="mb-3">
+					{boardDefinition.analogPins.map((val,i) => (
 					<FormSelect
-						label={t('HETrigger:adc-pin-0')}
-						name='muxADCPin0'
+						label={t(`HETrigger:adc-pin-${i}`)}
+						name={`muxADCPin${i}`}
 						className="form-select-sm"
 						groupClassName="col-sm-2 mb-3"
-						value={values.muxADCPin0}
-						error={errors.muxADCPin0}
-						isInvalid={Boolean(errors.muxADCPin0)}
+						value={values[`muxADCPin${i}`]}
+						error={errors[`muxADCPin${i}`]}
+						isInvalid={Boolean(errors[`muxADCPin${i}`])}
 						onChange={handleChange}
 					>
 						<AnalogPinOptions />
 					</FormSelect>
-					<FormSelect
-						label={t('HETrigger:adc-pin-1')}
-						name='muxADCPin1'
-						className="form-select-sm"
-						groupClassName="col-sm-2 mb-3"
-						value={values.muxADCPin1}
-						error={errors.muxADCPin1}
-						isInvalid={Boolean(errors.muxADCPin1)}
-						onChange={handleChange}
-					>
-						<AnalogPinOptions />
-					</FormSelect>
-					<FormSelect
-						label={t('HETrigger:adc-pin-2')}
-						name='muxADCPin2'
-						hidden={values.muxChannels >= 16}
-						className="form-select-sm"
-						groupClassName="col-sm-2 mb-3"
-						value={values.muxADCPin2}
-						error={errors.muxADCPin2}
-						isInvalid={Boolean(errors.muxADCPin2)}
-						onChange={handleChange}
-					>
-						<AnalogPinOptions />
-					</FormSelect>
-					<FormSelect
-						label={t('HETrigger:adc-pin-3')}
-						name='muxADCPin3'
-						hidden={values.muxChannels >= 8}
-						className="form-select-sm"
-						groupClassName="col-sm-2 mb-3"
-						value={values.muxADCPin3}
-						error={errors.muxADCPin3}
-						isInvalid={Boolean(errors.muxADCPin3)}
-						onChange={handleChange}
-					>
-						<AnalogPinOptions />
-					</FormSelect>
+					))}
 				</Row>
 				<Row className="mb-3">
 					<FormCheck

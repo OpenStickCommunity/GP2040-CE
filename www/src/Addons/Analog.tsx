@@ -5,11 +5,12 @@ import * as yup from 'yup';
 
 import Section from '../Components/Section';
 import FormSelect from '../Components/FormSelect';
-import { ANALOG_PINS } from '../Data/Buttons';
 import AnalogPinOptions from '../Components/AnalogPinOptions';
 import { AppContext } from '../Contexts/AppContext';
 import FormControl from '../Components/FormControl';
 import { AddonPropTypes } from '../Pages/AddonsConfigPage';
+
+import useBoardDefinition from '../Store/useBoardDefinitionStore';
 
 const ANALOG_STICK_MODES = [
 	{ label: 'Left Analog', value: 1 },
@@ -184,6 +185,10 @@ export const analogState = {
 const Analog = ({ values, errors, handleChange, handleCheckbox, setFieldValue }: AddonPropTypes) => {
 	const { usedPins } = useContext(AppContext);
 	const { t } = useTranslation();
+	const { boardDefinition } = useBoardDefinition();
+
+	const ANALOG_PINS = boardDefinition.analogPins;
+
 	const availableAnalogPins = ANALOG_PINS.filter(
 		(pin) => !usedPins?.includes(pin),
 	);

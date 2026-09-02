@@ -1,11 +1,8 @@
 import { create } from 'zustand';
 import { INPUT_MODE_OPTIONS } from '../Data/InputBootModes';
-import WebApi from '../Services/WebApi';
+import WebApi, { baseUrl } from '../Services/WebApi';
 import { InputMode } from '@proto/enums';
 import { nanoid } from 'nanoid';
-
-// Should this come from config somewhere?
-export const NUM_PINS = 30;
 
 type BootModeMapping = {
 	pins: Set<number>;
@@ -53,12 +50,12 @@ type APIResponseData = {
 	}[];
 };
 
-function maskToSet(mask: number) {
+function maskToSet(mask: number, maxPins: number) {
 	let s = new Set<number>();
 	if (mask === -1) {
 		return s;
 	}
-	for (let i = 0; i < NUM_PINS; i++) {
+	for (let i = 0; i < maxPins; i++) {
 		if ((1 << i) & mask) {
 			s.add(i);
 		}
@@ -143,6 +140,12 @@ export const useBootModeStore = create<State & { actions: Actions }>()((set, get
 		fetchBootModeOptions: async () => {
 			set({ loadingBootModes: true });
 			let response: APIResponseData;
+
+			const [boardDefinition] = await Promise.all([
+				fetch(`${baseUrl}/api/getBoardDefinition`).then((res) => res.json()),
+			]);
+
+			const NUM_PINS = boardDefinition.maxPin+1;
 			try {
 				let { data } = await WebApi.getBootModeOptions();
 				response = data;
@@ -163,7 +166,7 @@ export const useBootModeStore = create<State & { actions: Actions }>()((set, get
 					continue;
 				}
 				inputModes[`inputMode-${nanoid()}`] = {
-					pins: maskToSet(m.pinMask),
+					pins: maskToSet(m.pinMask, NUM_PINS),
 					inputMode: m.inputMode as InputMode,
 					profileIndex: m.profileNumber == 0 ? undefined : m.profileNumber - 1,
 				};
@@ -175,12 +178,12 @@ export const useBootModeStore = create<State & { actions: Actions }>()((set, get
 				enabled: !!enabled,
 				bootModes: {
 					webConfig: {
-						pins: maskToSet(webConfigPinMask),
+						pins: maskToSet(webConfigPinMask, NUM_PINS),
 						inputMode: undefined,
 						profileIndex: undefined,
 					},
 					usbMode: {
-						pins: maskToSet(usbModePinMask),
+						pins: maskToSet(usbModePinMask, NUM_PINS),
 						inputMode: undefined,
 						profileIndex: undefined,
 					},

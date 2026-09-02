@@ -138,7 +138,7 @@ const ExpansionPinsForm = ({
 								value={getPinDirection(pinData.direction)}
 								getOptionLabel={(option) => {
 									const labelKey = option.label.replace('_', '.').toLowerCase();
-									return t(`PCF8575:label-${labelKey}`);
+									return t(`Proto:GpioDirection.${option.label}`);
 								}}
 								onChange={(change) =>
 									setPinDirection(

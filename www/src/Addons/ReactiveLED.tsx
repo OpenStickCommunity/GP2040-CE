@@ -19,6 +19,8 @@ import { getButtonLabels } from '../Data/Buttons';
 import './ReactiveLED.scss';
 import { AddonPropTypes } from '../Pages/AddonsConfigPage';
 
+import useBoardDefinition from '../Store/useBoardDefinitionStore';
+
 const NON_SELECTABLE_BUTTON_ACTIONS = [
 	-5, 0, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36,
 	37, 38, 39, 40,
@@ -57,6 +59,7 @@ const ReactiveLED = ({ values, handleChange, handleCheckbox }: AddonPropTypes) =
 	const [reactiveLEDs, setSelectedLEDs] = useState<any[]>([]);
 	const [selectedLEDs] = useState([]);
 	const { setLoading, buttonLabels } = useContext(AppContext);
+	const { boardDefinition } = useBoardDefinition();
 
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
 	const CURRENT_BUTTONS = getButtonLabels(buttonLabelType, swapTpShareLabels);
@@ -119,7 +122,7 @@ const ReactiveLED = ({ values, handleChange, handleCheckbox }: AddonPropTypes) =
 										)
 									}
 									min={-1}
-									max={29}
+									max={boardDefinition.maxPin}
 								/>
 								<FormSelect
 									label={t('ReactiveLED:led-action-label')}

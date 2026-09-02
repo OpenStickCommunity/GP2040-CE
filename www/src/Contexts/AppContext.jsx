@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from 'react';
 import * as yup from 'yup';
 
-import WebApi, { basePeripheralMapping } from '../Services/WebApi';
+import WebApi, { basePeripheralMapping, baseBoardDefinitions } from '../Services/WebApi';
 import { PERIPHERAL_DEVICES } from '../Data/Peripherals';
 
 export const AppContext = createContext(null);
@@ -187,8 +187,15 @@ export const AppContextProvider = ({ children, ...props }) => {
 		basePeripheralMapping,
 	);
 	const [expansionPins, setExpansionPins] = useState({});
+	const [boardDefinition, setBoardDefinition] = useState(baseBoardDefinitions.pico);
 
 	const [HETriggerCalibrations, setHETriggerCalibrations] = useState({});
+
+	const updateBoardDefinition = async () => {
+		const data = await WebApi.getBoardDefinition();
+		setBoardDefinition(data);
+		return data;
+	};
 
 	const updateUsedPins = async () => {
 		const data = await WebApi.getUsedPins(setLoading);
@@ -218,6 +225,7 @@ export const AppContextProvider = ({ children, ...props }) => {
 		updateExpansionPins();
 		updateHETriggerCalibrations();
 		updatePeripherals();
+		updateBoardDefinition();
 	}, []);
 
 	useEffect(() => {
@@ -226,7 +234,7 @@ export const AppContextProvider = ({ children, ...props }) => {
 			const isValid =
 				value === undefined ||
 				value === -1 ||
-				(hasValue && value < 30 && (usedPins || []).indexOf(value) === -1);
+				(hasValue && value <= boardDefinition.maxPin && (usedPins || []).indexOf(value) === -1);
 			return isValid;
 		};
 	}, [usedPins, setUsedPins]);
@@ -309,6 +317,7 @@ export const AppContextProvider = ({ children, ...props }) => {
 				getAvailablePeripherals,
 				expansionPins,
 				HETriggerCalibrations,
+				boardDefinition,
 				getSelectedPeripheral,
 				setButtonLabels,
 				setGradientNormalColor1,
@@ -324,6 +333,7 @@ export const AppContextProvider = ({ children, ...props }) => {
 				updatePeripherals,
 				updateUsedPins,
 				updateExpansionPins,
+				updateBoardDefinition,
 				savedColorScheme,
 				setSavedColorScheme,
 				savedLanguage,

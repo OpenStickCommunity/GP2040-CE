@@ -2775,6 +2775,80 @@ std:: string getJoystickCenter2() {
     return serialize_json(doc);
 }
 
+std::string getBoardDefinition() {
+    const size_t capacity = JSON_OBJECT_SIZE(100);
+    DynamicJsonDocument doc(capacity);
+    JsonObject root = doc.to<JsonObject>();
+
+    GpioMappings& gpioMappings = Storage::getInstance().getGpioMappings();
+
+    JsonObject picoPins = root["pico"].to<JsonObject>();
+    picoPins["minPin"] = 0;
+    picoPins["maxPin"] = NUM_BANK0_GPIOS-1;
+
+    JsonArray analogPins = picoPins.createNestedArray("analogPins");
+
+    JsonArray availablePins = picoPins.createNestedArray("availablePins");
+    for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
+        if (!(pin < ADC_BASE_PIN || pin >= ADC_BASE_PIN + NUM_ADC_CHANNELS - 1)) analogPins.add(pin);
+        availablePins.add(pin);
+    }
+
+    JsonObject usedPins = picoPins.createNestedObject("usedPins");
+    usedPins["pin00"] = gpioMappings.pins[0].action;
+    usedPins["pin01"] = gpioMappings.pins[1].action;
+    usedPins["pin02"] = gpioMappings.pins[2].action;
+    usedPins["pin03"] = gpioMappings.pins[3].action;
+    usedPins["pin04"] = gpioMappings.pins[4].action;
+    usedPins["pin05"] = gpioMappings.pins[5].action;
+    usedPins["pin06"] = gpioMappings.pins[6].action;
+    usedPins["pin07"] = gpioMappings.pins[7].action;
+    usedPins["pin08"] = gpioMappings.pins[8].action;
+    usedPins["pin09"] = gpioMappings.pins[9].action;
+    usedPins["pin10"] = gpioMappings.pins[10].action;
+    usedPins["pin11"] = gpioMappings.pins[11].action;
+    usedPins["pin12"] = gpioMappings.pins[12].action;
+    usedPins["pin13"] = gpioMappings.pins[13].action;
+    usedPins["pin14"] = gpioMappings.pins[14].action;
+    usedPins["pin15"] = gpioMappings.pins[15].action;
+    usedPins["pin16"] = gpioMappings.pins[16].action;
+    usedPins["pin17"] = gpioMappings.pins[17].action;
+    usedPins["pin18"] = gpioMappings.pins[18].action;
+    usedPins["pin19"] = gpioMappings.pins[19].action;
+    usedPins["pin20"] = gpioMappings.pins[20].action;
+    usedPins["pin21"] = gpioMappings.pins[21].action;
+    usedPins["pin22"] = gpioMappings.pins[22].action;
+    usedPins["pin23"] = gpioMappings.pins[23].action;
+    usedPins["pin24"] = gpioMappings.pins[24].action;
+    usedPins["pin25"] = gpioMappings.pins[25].action;
+    usedPins["pin26"] = gpioMappings.pins[26].action;
+    usedPins["pin27"] = gpioMappings.pins[27].action;
+    usedPins["pin28"] = gpioMappings.pins[28].action;
+    usedPins["pin29"] = gpioMappings.pins[29].action;
+#if NUM_BANK0_GPIOS > 32
+    usedPins["pin30"] = gpioMappings.pins[30].action;
+    usedPins["pin31"] = gpioMappings.pins[31].action;
+    usedPins["pin32"] = gpioMappings.pins[32].action;
+    usedPins["pin33"] = gpioMappings.pins[33].action;
+    usedPins["pin34"] = gpioMappings.pins[34].action;
+    usedPins["pin35"] = gpioMappings.pins[35].action;
+    usedPins["pin36"] = gpioMappings.pins[36].action;
+    usedPins["pin37"] = gpioMappings.pins[37].action;
+    usedPins["pin38"] = gpioMappings.pins[38].action;
+    usedPins["pin39"] = gpioMappings.pins[39].action;
+    usedPins["pin40"] = gpioMappings.pins[40].action;
+    usedPins["pin41"] = gpioMappings.pins[41].action;
+    usedPins["pin42"] = gpioMappings.pins[42].action;
+    usedPins["pin43"] = gpioMappings.pins[43].action;
+    usedPins["pin44"] = gpioMappings.pins[44].action;
+    usedPins["pin45"] = gpioMappings.pins[45].action;
+    usedPins["pin46"] = gpioMappings.pins[46].action;
+    usedPins["pin47"] = gpioMappings.pins[47].action;
+#endif
+
+    return serialize_json(doc);
+}
+
 typedef std::string (*HandlerFuncPtr)();
 static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
 {
@@ -2825,6 +2899,7 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/getConfig", getConfig },
     { "/api/getJoystickCenter", getJoystickCenter },
     { "/api/getJoystickCenter2", getJoystickCenter2 },
+    { "/api/getBoardDefinition", getBoardDefinition },
 		{ "/api/getBootModeOptions", getBootModeOptions },
 		{ "/api/setBootModeOptions", setBootModeOptions },
 #if !defined(NDEBUG)

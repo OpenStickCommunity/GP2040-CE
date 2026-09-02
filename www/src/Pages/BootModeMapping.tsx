@@ -6,8 +6,8 @@ import { NavLink } from 'react-router-dom';
 import {
 	useBootModeStore,
 	useBootModeStoreActions,
-	NUM_PINS,
 } from '../Store/useBootModesStore';
+import useBoardDefinition from '../Store/useBoardDefinitionStore';
 import { INPUT_MODE_OPTIONS, InputModeOptions } from '../Data/InputBootModes';
 import { AppContext } from '../Contexts/AppContext';
 import CustomSelect from '../Components/CustomSelect';
@@ -43,17 +43,14 @@ const GROUPED_OPTIONS = [
 	},
 ];
 
-const PIN_OPTIONS: PinOption[] = Array.from({ length: NUM_PINS }, (_, i) => ({
-	label: `GP${i}`,
-	value: i,
-}));
-
 function BootModeSelect({ mappingKey }: { mappingKey: string }) {
 	const inputMode = useBootModeStore((state) => state.bootModes[mappingKey].inputMode);
 	const saveAttempted = useBootModeStore((state) => state.saveAttempted);
 	const { setInputMode, clearErrors, setDirty } = useBootModeStoreActions();
 
-	const { getAvailablePeripherals } = useContext(AppContext);
+	const { boardDefinition } = useBoardDefinition();
+
+    const { getAvailablePeripherals } = useContext(AppContext);
 	const { t } = useTranslation('');
 
 	const value = INPUT_MODE_OPTIONS.find(({ value }) => value === inputMode);
@@ -113,6 +110,16 @@ function PinSelect({ mappingKey }: { mappingKey: string }) {
 		let s = '0' + value;
 		return 'pin' + s.substring(s.length - 2);
 	};
+
+	const { boardDefinition } = useBoardDefinition();
+
+	const PIN_OPTIONS: PinOption[] = Array.from({ length: boardDefinition.availablePins.length }, (_, i) => ({
+		label: `GP${i}`,
+		value: i,
+	}));
+
+    console.dir(boardDefinition);
+    console.dir(PIN_OPTIONS);
 
 	const values = PIN_OPTIONS.filter(({ value }) => pins.has(value));
 
@@ -293,6 +300,8 @@ export default function BootModeMappingPage() {
 		validateRequired,
 	} = useBootModeStoreActions();
 
+	const { getBoardDefinition, boardDefinition } = useBoardDefinition();
+
 	const loadingProfiles = useProfilesStore((state) => state.loadingProfiles);
 	const fetchProfiles = useProfilesStore((state) => state.fetchProfiles);
 	const { t } = useTranslation('');
@@ -300,6 +309,7 @@ export default function BootModeMappingPage() {
 	useEffect(() => {
 		fetchBootModeOptions();
 		fetchProfiles();
+		getBoardDefinition();
 	}, []);
 
 	// The delete-able input mode keys (i.e. not web-config or usb mode)
