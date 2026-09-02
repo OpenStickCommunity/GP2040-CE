@@ -20,6 +20,7 @@
 #include "addons/dualdirectional.h"
 #include "addons/tilt.h"
 #include "addons/keyboard_host.h"
+#include "addons/i2canalog1115.h"
 #include "addons/i2canalog1219.h"
 #include "addons/reverse.h"
 #include "addons/turbo.h"
@@ -33,6 +34,7 @@
 #include "addons/gamepad_usb_host.h"
 #include "addons/he_trigger.h"
 #include "addons/tg16_input.h"
+#include "addons/slider_profile.h"
 
 // Pico includes
 #include "pico/bootrom.h"
@@ -107,11 +109,13 @@ void GP2040::setup() {
 	addons.LoadAddon(new BootselButtonAddon());
 	addons.LoadAddon(new DualDirectionalInput());
 	addons.LoadAddon(new FocusModeAddon());
+	addons.LoadAddon(new I2CAnalog1115Input());
 	addons.LoadAddon(new I2CAnalog1219Input());
 	addons.LoadAddon(new SPIAnalog1256Input());
 	addons.LoadAddon(new WiiExtensionInput());
 	addons.LoadAddon(new SNESpadInput());
 	addons.LoadAddon(new SliderSOCDInput());
+	addons.LoadAddon(new SliderProfileInput());
 	addons.LoadAddon(new TiltInput());
 	addons.LoadAddon(new RotaryEncoderInput());
 	addons.LoadAddon(new PCF8575Addon());
@@ -140,7 +144,6 @@ void GP2040::setup() {
 	}
 
 	InputMode inputMode = bootAction.inputMode;
-	uint32_t profile = bootAction.profileNumber;
 
 	// Setup USB Driver
 	DriverManager::getInstance().setup(inputMode);
@@ -204,30 +207,40 @@ void GP2040::deinitializeStandardGpio() {
  * instead, if you don't want debounced data.
  */
 void GP2040::debounceGpioGetAll() {
-	Mask_t raw_gpio = ~gpio_get_all();
+	Mask_t rawGpios = ~gpio_get_all();
+	Mask_t pressedGpios = rawGpios & buttonGpios;
 	Gamepad* gamepad = Storage::getInstance().GetGamepad();
-	// return if state isn't different than the actual
-	if (gamepad->debouncedGpio == (raw_gpio & buttonGpios)) return;
+
+	// Return if state isn't different than the actual
+	if (gamepad->debouncedGpio == (pressedGpios)) return;
 
 	uint32_t debounceDelay = Storage::getInstance().getGamepadOptions().debounceDelay;
-	// abort if no delay is configured
+	// Abort if no delay is configured
 	if (debounceDelay == 0) {
-		gamepad->debouncedGpio = raw_gpio;
+		gamepad->debouncedGpio = pressedGpios;
+		return;
+	}
+
+	Mask_t debounceChange = (pressedGpios ^ gamepad->debouncedGpio) & buttonGpios;
+
+	if (debounceChange == 0) {
+		gamepad->debouncedGpio = pressedGpios;
 		return;
 	}
 
 	uint32_t now = getMillis();
-	// check each button use case GPIO for state
-	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
+
+	// Check only changed button use case GPIO for state
+	while (debounceChange != 0) {
+		Pin_t pin = __builtin_ctz(debounceChange);
 		Mask_t pin_mask = 1 << pin;
-		if (buttonGpios & pin_mask) {
-			// Allow debouncer to change state if button state changed and debounce delay threshold met
-			if ((gamepad->debouncedGpio & pin_mask) != \
-					(raw_gpio & pin_mask) && ((now - gpioDebounceTime[pin]) > debounceDelay)) {
-				gamepad->debouncedGpio ^= pin_mask;
-				gpioDebounceTime[pin] = now;
-			}
+		
+		// Allow debouncer to change state if button state changed and debounce delay threshold met
+		if ((now - gpioDebounceTime[pin]) >= debounceDelay) {
+			gamepad->debouncedGpio ^= pin_mask;
+			gpioDebounceTime[pin] = now;
 		}
+		debounceChange &= debounceChange - 1;
 	}
 }
 

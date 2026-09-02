@@ -69,6 +69,13 @@ public:
 	 * @brief Check for a dpad press. Used by `pressed[Dpad]` helper methods.
 	 */
 	inline bool __attribute__((always_inline)) pressedDpad(const uint8_t mask) {
+		return (state.dpad & mask) == mask;
+	}
+
+	/**
+	 * @brief Check for a raw, physical dpad press. Unaffected by macros, SOCD, or D-pad modes. Typically used for hotkey detection.
+	 */
+	inline bool __attribute__((always_inline)) pressedDpadPhysical(const uint8_t mask) {
 		return (state.dpadOriginal & mask) == mask;
 	}
 
@@ -84,7 +91,7 @@ public:
 	 */
 	inline bool __attribute__((always_inline)) pressedHotkey(const HotkeyEntry &hotkey) {
 		return (hotkey.action != 0 && pressedButton(hotkey.buttonsMask) &&
-				pressedDpad(hotkey.dpadMask) && pressedAux(hotkey.auxMask));
+				pressedDpadPhysical(hotkey.dpadMask) && pressedAux(hotkey.auxMask));
 	}
 
 	/**
@@ -201,6 +208,7 @@ public:
 		return (options.socdMode == SOCD_MODE_BYPASS &&
 				(options.inputMode == INPUT_MODE_PS3 ||
 				options.inputMode == INPUT_MODE_SWITCH ||
+				options.inputMode == INPUT_MODE_SWITCH_PRO ||
 				options.inputMode == INPUT_MODE_NEOGEO ||
 				options.inputMode == INPUT_MODE_PS4)) ?
 			SOCD_MODE_NEUTRAL : options.socdMode;
