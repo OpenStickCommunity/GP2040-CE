@@ -84,6 +84,11 @@ void SNESpadInput::process() {
     if (nextTimer < getMillis()) {
         snes->poll();
 
+        dpadUp = false;
+        dpadDown = false;
+        dpadLeft = false;
+        dpadRight = false;
+
         uint16_t joystickMid = GAMEPAD_JOYSTICK_MID;
         if ( DriverManager::getInstance().getDriver() != nullptr ) {
             joystickMid = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
