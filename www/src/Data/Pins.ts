@@ -1,12 +1,9 @@
-import { GpioAction } from '@proto/enums';
+import { GpioAction, GpioDirection } from '@proto/enums';
 import { createEnumRecord } from '../Services/Utilities';
 
 export const BUTTON_ACTIONS = createEnumRecord(GpioAction)
 
-export const PIN_DIRECTIONS = {
-	DIRECTION_INPUT: 0,
-	DIRECTION_OUTPUT: 1,
-} as const;
+export const PIN_DIRECTIONS = createEnumRecord(GpioDirection);
 
 export type PinActionKeys = keyof typeof BUTTON_ACTIONS;
 export type PinActionValues = (typeof BUTTON_ACTIONS)[PinActionKeys];

@@ -7,6 +7,8 @@ import Section from '../Components/Section';
 import FormControl from '../Components/FormControl';
 import { AddonPropTypes } from '../Pages/AddonsConfigPage';
 
+import useBoardDefinition from '../Store/useBoardDefinitionStore';
+
 export const buzzerScheme = {
 	BuzzerSpeakerAddonEnabled: yup
 		.number()
@@ -35,6 +37,7 @@ export const buzzerState = {
 
 const Buzzer = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) => {
 	const { t } = useTranslation();
+	const { boardDefinition } = useBoardDefinition();
 	return (
 		<Section title={
 			<a
@@ -62,7 +65,7 @@ const Buzzer = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes
 						isInvalid={Boolean(errors.buzzerPin)}
 						onChange={handleChange}
 						min={-1}
-						max={29}
+						max={boardDefinition.maxPin}
 					/>
 					<FormControl
 						type="number"
@@ -75,7 +78,7 @@ const Buzzer = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes
 						isInvalid={Boolean(errors.buzzerEnablePin)}
 						onChange={handleChange}
 						min={-1}
-						max={29}
+						max={boardDefinition.maxPin}
 					/>
 					<FormControl
 						type="number"

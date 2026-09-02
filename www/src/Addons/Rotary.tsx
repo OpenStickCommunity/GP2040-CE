@@ -7,6 +7,8 @@ import FormControl from '../Components/FormControl';
 import { FormCheck, Row } from 'react-bootstrap';
 import { AddonPropTypes } from '../Pages/AddonsConfigPage';
 
+import useBoardDefinition from '../Store/useBoardDefinitionStore';
+
 const ENCODER_MODES = [
 	{ label: 'encoder-mode-none', value: 0 },
 	{ label: 'encoder-mode-left-analog-x', value: 1 },
@@ -118,6 +120,7 @@ export const rotaryState = {
 
 const Rotary = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) => {
 	const { t } = useTranslation();
+	const { boardDefinition } = useBoardDefinition();
 	return (
 		<Section title={
 			<a
@@ -156,7 +159,7 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes
 								isInvalid={Boolean(errors.encoderOnePinA)}
 								onChange={handleChange}
 								min={-1}
-								max={29}
+								max={boardDefinition.maxPin}
 							/>
 							<FormControl
 								type="number"
@@ -169,7 +172,7 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes
 								isInvalid={Boolean(errors.encoderOnePinB)}
 								onChange={handleChange}
 								min={-1}
-								max={29}
+								max={boardDefinition.maxPin}
 							/>
 							<FormControl
 								type="number"
@@ -264,7 +267,7 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes
 								isInvalid={Boolean(errors.encoderTwoPinA)}
 								onChange={handleChange}
 								min={-1}
-								max={29}
+								max={boardDefinition.maxPin}
 							/>
 							<FormControl
 								type="number"
@@ -277,7 +280,7 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes
 								isInvalid={Boolean(errors.encoderTwoPinB)}
 								onChange={handleChange}
 								min={-1}
-								max={29}
+								max={boardDefinition.maxPin}
 							/>
 							<FormControl
 								type="number"

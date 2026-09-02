@@ -6,6 +6,16 @@ export const baseUrl =
 		? ''
 		: import.meta.env.VITE_DEV_BASE_URL;
 
+export const baseBoardDefinitions = {
+	"pico": {
+		"minPin": 0,
+		"maxPin": 29,
+		"analogPins": [26, 27, 28, 29],
+		"availablePins": {},
+		"usedPins": {}
+	}
+};
+
 export const baseButtonMappings = {
 	Up: { pin: -1, key: 0, error: null },
 	Down: { pin: -1, key: 0, error: null },
@@ -699,6 +709,15 @@ async function abortGetHeldPins() {
 	}
 }
 
+async function getBoardDefinition() {
+	try {
+		const response = await Http.get(`${baseUrl}/api/getBoardDefinition`);
+		return response.data.pico;
+	} catch (error) {
+		console.error(error);
+	}
+}
+
 async function reboot(bootMode) {
 	return Http.post(`${baseUrl}/api/reboot`, { bootMode })
 		.then((response) => response.data)
@@ -753,5 +772,6 @@ export default {
 	getUsedPins,
 	getHeldPins,
 	abortGetHeldPins,
+    getBoardDefinition,
 	reboot,
 };

@@ -1,11 +1,15 @@
+import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FormCheck, Row } from 'react-bootstrap';
 import * as yup from 'yup';
 
+import { AppContext } from '../Contexts/AppContext';
 import Section from '../Components/Section';
 import FormSelect from '../Components/FormSelect';
 import FormControl from '../Components/FormControl';
 import { AddonPropTypes } from '../Pages/AddonsConfigPage';
+
+import useBoardDefinition from '../Store/useBoardDefinitionStore';
 
 const REVERSE_ACTION = [
 	{ label: 'Disable', value: 0 },
@@ -32,6 +36,8 @@ export const reverseState = {
 
 const Reverse = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) => {
 	const { t } = useTranslation();
+	const { usedPins } = useContext(AppContext);
+	const { boardDefinition } = useBoardDefinition();
 	const translatedReverseAction = REVERSE_ACTION.map((option) => ({
 		...option,
 		label: t(`AddonsConfig:reverse-action-${option.label.toLowerCase()}-label`),
@@ -60,7 +66,7 @@ const Reverse = ({ values, errors, handleChange, handleCheckbox }: AddonPropType
 						isInvalid={Boolean(errors.reversePinLED)}
 						onChange={handleChange}
 						min={-1}
-						max={29}
+						max={boardDefinition.maxPin}
 					/>
 				</Row>
 				<Row className="mb-3">

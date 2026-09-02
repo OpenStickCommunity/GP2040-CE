@@ -649,6 +649,26 @@ std::string getProfileOptions()
         writePinDoc(i, "pin27", profileOptions.gpioMappingsSets[i].pins[27]);
         writePinDoc(i, "pin28", profileOptions.gpioMappingsSets[i].pins[28]);
         writePinDoc(i, "pin29", profileOptions.gpioMappingsSets[i].pins[29]);
+#if NUM_BANK0_GPIOS > 32
+        writePinDoc(i, "pin30", profileOptions.gpioMappingsSets[i].pins[30]);
+        writePinDoc(i, "pin31", profileOptions.gpioMappingsSets[i].pins[31]);
+        writePinDoc(i, "pin32", profileOptions.gpioMappingsSets[i].pins[32]);
+        writePinDoc(i, "pin33", profileOptions.gpioMappingsSets[i].pins[33]);
+        writePinDoc(i, "pin34", profileOptions.gpioMappingsSets[i].pins[34]);
+        writePinDoc(i, "pin35", profileOptions.gpioMappingsSets[i].pins[35]);
+        writePinDoc(i, "pin36", profileOptions.gpioMappingsSets[i].pins[36]);
+        writePinDoc(i, "pin37", profileOptions.gpioMappingsSets[i].pins[37]);
+        writePinDoc(i, "pin38", profileOptions.gpioMappingsSets[i].pins[38]);
+        writePinDoc(i, "pin39", profileOptions.gpioMappingsSets[i].pins[39]);
+        writePinDoc(i, "pin40", profileOptions.gpioMappingsSets[i].pins[40]);
+        writePinDoc(i, "pin41", profileOptions.gpioMappingsSets[i].pins[41]);
+        writePinDoc(i, "pin42", profileOptions.gpioMappingsSets[i].pins[42]);
+        writePinDoc(i, "pin43", profileOptions.gpioMappingsSets[i].pins[43]);
+        writePinDoc(i, "pin44", profileOptions.gpioMappingsSets[i].pins[44]);
+        writePinDoc(i, "pin45", profileOptions.gpioMappingsSets[i].pins[45]);
+        writePinDoc(i, "pin46", profileOptions.gpioMappingsSets[i].pins[46]);
+        writePinDoc(i, "pin47", profileOptions.gpioMappingsSets[i].pins[47]);
+#endif
         writeDoc(doc, "alternativePinMappings", i, "profileLabel", profileOptions.gpioMappingsSets[i].profileLabel);
         doc["alternativePinMappings"][i]["enabled"] = profileOptions.gpioMappingsSets[i].enabled;
     }
@@ -1189,6 +1209,26 @@ std::string getPinMappings()
     writePinDoc("pin27", gpioMappings.pins[27]);
     writePinDoc("pin28", gpioMappings.pins[28]);
     writePinDoc("pin29", gpioMappings.pins[29]);
+#if NUM_BANK0_GPIOS > 32
+    writePinDoc("pin30", gpioMappings.pins[30]);
+    writePinDoc("pin31", gpioMappings.pins[31]);
+    writePinDoc("pin32", gpioMappings.pins[32]);
+    writePinDoc("pin33", gpioMappings.pins[33]);
+    writePinDoc("pin34", gpioMappings.pins[34]);
+    writePinDoc("pin35", gpioMappings.pins[35]);
+    writePinDoc("pin36", gpioMappings.pins[36]);
+    writePinDoc("pin37", gpioMappings.pins[37]);
+    writePinDoc("pin38", gpioMappings.pins[38]);
+    writePinDoc("pin39", gpioMappings.pins[39]);
+    writePinDoc("pin40", gpioMappings.pins[40]);
+    writePinDoc("pin41", gpioMappings.pins[41]);
+    writePinDoc("pin42", gpioMappings.pins[42]);
+    writePinDoc("pin43", gpioMappings.pins[43]);
+    writePinDoc("pin44", gpioMappings.pins[44]);
+    writePinDoc("pin45", gpioMappings.pins[45]);
+    writePinDoc("pin46", gpioMappings.pins[46]);
+    writePinDoc("pin47", gpioMappings.pins[47]);
+#endif
 
     writeDoc(doc, "profileLabel", gpioMappings.profileLabel);
     doc["enabled"] = gpioMappings.enabled;
@@ -1544,17 +1584,25 @@ std::string setHETriggerOptions()
     calibrationSmoothingFactor = doc["heTriggerSmoothingFactor"];
     ema_smoothing = (float)calibrationSmoothingFactor / 100.f; // 99 = max smoothing factor
 
+    uint8_t pinStart, pinEnd;
+#if NUM_BANK0_GPIOS <= 32
+    pinStart = 26;
+    pinEnd = 29;
+#elif NUM_BANK0_GPIOS > 32
+    pinStart = 40;
+    pinEnd = 47;
+#endif
     for (int i = 0; i < 4; i++) {
         if ( calibrationSelectPins[i] != -1 &&
                 calibrationSelectPins[i] >= 0 &&
-                calibrationSelectPins[i] <= 29 ) {
+                calibrationSelectPins[i] <= pinEnd ) {
             gpio_init(calibrationSelectPins[i]);
             gpio_set_dir(calibrationSelectPins[i], GPIO_OUT);
             gpio_put(calibrationSelectPins[i], 0);
         }
         if ( calibrationADCPins[i] != -1 &&
-                calibrationADCPins[i] >= 26 &&
-                calibrationADCPins[i] <= 29 ) {
+                calibrationADCPins[i] >= pinStart &&
+                calibrationADCPins[i] <= pinEnd ) {
             adc_gpio_init(calibrationADCPins[i]);
         }
     }
@@ -2793,6 +2841,80 @@ std:: string getJoystickCenter2() {
     return serialize_json(doc);
 }
 
+std::string getBoardDefinition() {
+    const size_t capacity = JSON_OBJECT_SIZE(100);
+    DynamicJsonDocument doc(capacity);
+    JsonObject root = doc.to<JsonObject>();
+
+    GpioMappings& gpioMappings = Storage::getInstance().getGpioMappings();
+
+    JsonObject picoPins = root["pico"].to<JsonObject>();
+    picoPins["minPin"] = 0;
+    picoPins["maxPin"] = NUM_BANK0_GPIOS-1;
+
+    JsonArray analogPins = picoPins.createNestedArray("analogPins");
+
+    JsonArray availablePins = picoPins.createNestedArray("availablePins");
+    for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
+        if (!(pin < ADC_BASE_PIN || pin >= ADC_BASE_PIN + NUM_ADC_CHANNELS - 1)) analogPins.add(pin);
+        availablePins.add(pin);
+    }
+
+    JsonObject usedPins = picoPins.createNestedObject("usedPins");
+    usedPins["pin00"] = gpioMappings.pins[0].action;
+    usedPins["pin01"] = gpioMappings.pins[1].action;
+    usedPins["pin02"] = gpioMappings.pins[2].action;
+    usedPins["pin03"] = gpioMappings.pins[3].action;
+    usedPins["pin04"] = gpioMappings.pins[4].action;
+    usedPins["pin05"] = gpioMappings.pins[5].action;
+    usedPins["pin06"] = gpioMappings.pins[6].action;
+    usedPins["pin07"] = gpioMappings.pins[7].action;
+    usedPins["pin08"] = gpioMappings.pins[8].action;
+    usedPins["pin09"] = gpioMappings.pins[9].action;
+    usedPins["pin10"] = gpioMappings.pins[10].action;
+    usedPins["pin11"] = gpioMappings.pins[11].action;
+    usedPins["pin12"] = gpioMappings.pins[12].action;
+    usedPins["pin13"] = gpioMappings.pins[13].action;
+    usedPins["pin14"] = gpioMappings.pins[14].action;
+    usedPins["pin15"] = gpioMappings.pins[15].action;
+    usedPins["pin16"] = gpioMappings.pins[16].action;
+    usedPins["pin17"] = gpioMappings.pins[17].action;
+    usedPins["pin18"] = gpioMappings.pins[18].action;
+    usedPins["pin19"] = gpioMappings.pins[19].action;
+    usedPins["pin20"] = gpioMappings.pins[20].action;
+    usedPins["pin21"] = gpioMappings.pins[21].action;
+    usedPins["pin22"] = gpioMappings.pins[22].action;
+    usedPins["pin23"] = gpioMappings.pins[23].action;
+    usedPins["pin24"] = gpioMappings.pins[24].action;
+    usedPins["pin25"] = gpioMappings.pins[25].action;
+    usedPins["pin26"] = gpioMappings.pins[26].action;
+    usedPins["pin27"] = gpioMappings.pins[27].action;
+    usedPins["pin28"] = gpioMappings.pins[28].action;
+    usedPins["pin29"] = gpioMappings.pins[29].action;
+#if NUM_BANK0_GPIOS > 32
+    usedPins["pin30"] = gpioMappings.pins[30].action;
+    usedPins["pin31"] = gpioMappings.pins[31].action;
+    usedPins["pin32"] = gpioMappings.pins[32].action;
+    usedPins["pin33"] = gpioMappings.pins[33].action;
+    usedPins["pin34"] = gpioMappings.pins[34].action;
+    usedPins["pin35"] = gpioMappings.pins[35].action;
+    usedPins["pin36"] = gpioMappings.pins[36].action;
+    usedPins["pin37"] = gpioMappings.pins[37].action;
+    usedPins["pin38"] = gpioMappings.pins[38].action;
+    usedPins["pin39"] = gpioMappings.pins[39].action;
+    usedPins["pin40"] = gpioMappings.pins[40].action;
+    usedPins["pin41"] = gpioMappings.pins[41].action;
+    usedPins["pin42"] = gpioMappings.pins[42].action;
+    usedPins["pin43"] = gpioMappings.pins[43].action;
+    usedPins["pin44"] = gpioMappings.pins[44].action;
+    usedPins["pin45"] = gpioMappings.pins[45].action;
+    usedPins["pin46"] = gpioMappings.pins[46].action;
+    usedPins["pin47"] = gpioMappings.pins[47].action;
+#endif
+
+    return serialize_json(doc);
+}
+
 typedef std::string (*HandlerFuncPtr)();
 static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
 {
@@ -2843,6 +2965,7 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/getConfig", getConfig },
     { "/api/getJoystickCenter", getJoystickCenter },
     { "/api/getJoystickCenter2", getJoystickCenter2 },
+    { "/api/getBoardDefinition", getBoardDefinition },
 		{ "/api/getBootModeOptions", getBootModeOptions },
 		{ "/api/setBootModeOptions", setBootModeOptions },
 #if !defined(NDEBUG)

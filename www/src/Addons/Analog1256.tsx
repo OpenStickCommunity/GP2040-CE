@@ -13,6 +13,8 @@ import { SPI_BLOCKS } from '../Data/Peripherals';
 import WebApi from '../Services/WebApi';
 import { AddonPropTypes } from '../Pages/AddonsConfigPage';
 
+import useBoardDefinition from '../Store/useBoardDefinitionStore';
+
 const ANALOG_MAX_VALUES = [
 	{ label: '3.3v', value: 33 },
 	{ label: '5.0v', value: 50 },

@@ -22,6 +22,8 @@ import { hexToInt } from '../Services/Utilities';
 import WebApi from '../Services/WebApi';
 import { BUTTON_LAYOUTS } from '../Data/Buttons';
 
+import useBoardDefinition from '../Store/useBoardDefinitionStore';
+
 const LED_FORMATS = [
 	{ label: 'GRB', value: 0 },
 	{ label: 'RGB', value: 1 },
@@ -236,8 +238,12 @@ export default function LEDConfigPage() {
 	const [rgbLedStartIndex, setRgbLedStartIndex] = useState(0);
 
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
-
+	const { boardDefinition, getBoardDefinition } = useBoardDefinition();
 	const { t } = useTranslation('');
+
+	useEffect(() => {
+		getBoardDefinition();
+	}, []);
 
 	// Translate PLED labels
 	PLED_LABELS.map((p, n) => {
@@ -329,7 +335,7 @@ export default function LEDConfigPage() {
 								isInvalid={errors.dataPin}
 								onChange={handleChange}
 								min={-1}
-								max={29}
+								max={boardDefinition.maxPin}
 							/>
 							<FormSelect
 								label={t('LedConfig:rgb.led-format-label')}

@@ -814,8 +814,6 @@ export const BUTTON_MASKS_OPTIONS = [
 	{ label: 'E12', value: 1 << 31 },
 ];
 
-export const ANALOG_PINS = [26, 27, 28, 29];
-
 // deep copy and swp
 export const getButtonLabels = (labelType, swapTpShareLabels = false) => {
 	const buttons = BUTTONS[labelType];
