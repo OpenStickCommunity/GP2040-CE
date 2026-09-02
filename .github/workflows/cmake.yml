@@ -67,6 +67,7 @@ on:
           - SparkFunProMicro
           - SparkFunProMicroRP2350
           - WaveshareZero
+          - WaveshareRP2350BPlusW
           - Stress
           - SGFDevices
           - ZeroRhythm
