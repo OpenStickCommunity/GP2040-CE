@@ -7,6 +7,7 @@ export default {
 	'load-export-option-label': '{{api}} オプションをインポート',
 	'api-display-text': 'ディスプレイ',
 	'api-gamepad-text': 'ゲームパッド',
+	'api-keyboard-text': 'キーボード割当',
 	'api-led-text': 'LED',
 	'api-ledTheme-text': 'カスタムLEDテーマ',
 	'api-macros-text': 'マクロボタン割り当て',

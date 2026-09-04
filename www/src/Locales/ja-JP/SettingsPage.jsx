@@ -5,7 +5,7 @@ export default {
 	'gamepad-settings-header-text': 'コントローラ設定',
 	'input-mode-label': '入力モード',
 	'current-input-mode-label': '現在の入力モード',
-	'input-mode-extra-label': 'Switch タッチパッドと Share',
+	'input-mode-extra-label': 'タッチパッドとShareを入れ替え',
 	'input-mode-options': {
 		none: 'モード未選択',
 		'nintendo-switch': '任天堂Switch',
@@ -41,7 +41,7 @@ export default {
 	},
 	'socd-cleaning-mode-label': 'SOCDクリーニングモード',
 	'socd-cleaning-mode-note':
-		'注：PS4、PS3、任天堂SwitchおよびミニコンソールシリーズのモードではSOCDクリーニングモード無効設定はできないため、ニュートラルSOCDクリーニングに設定されます。',
+		'注：PS4、PS3、任天堂Switch・Switch ProおよびミニコンソールシリーズのモードではSOCDクリーニングモード無効設定はできないため、ニュートラルSOCDクリーニングに設定されます。',
 	'socd-cleaning-mode-options': {
 		'up-priority': '上優先',
 		neutral: 'ニュートラル',
@@ -73,6 +73,8 @@ export default {
 		'<span>補足: </span> USB 周辺機器が有効化されており、PS5に互換性のあるデバイスが接続されていることを確認してください。',
 	'xbone-mode-text':
 		'<span>補足: </span> XBox One モードで正しく認証するにははUSBホスト接続とUSBドングルが必要です。',
+	'p5general-mode-text':
+		'<span>補足: </span> PS5のP5Generalモードで正しく認証するにはUSBホスト接続と <span>P5General</span> が必要です',
 	'xinput-mode-text':
 		'<span>補足:</span> XInput モードはドングル無しでXbox 360で利用可能です。外部の認証ドングルを利用したい場合のみUSBを選択してください。',
 	'hotkey-settings-label': 'ホットキー設定',
@@ -126,6 +128,8 @@ export default {
 		'load-profile-5': 'プロファイル #5をロード',
 		'load-profile-6': 'プロファイル #6をロード',
 		'reboot-default': 'GP2040-CEを再起動',
+		'reboot-webconfig': 'GP2040-CEをWeb Configモードで再起動',
+		'reboot-usb': 'GP2040-CEをBOOTSEL/USBモードで再起動',
 		'save-config': '設定を保存',
 		'next-profile': '次のプロファイル',
 		'previous-profile': '前のプロファイル',
@@ -139,6 +143,14 @@ export default {
 		'focus-mode-toggle': 'フォーカスモード切替え',
 		'turbo-count-up': 'ターボカウントUP',
 		'turbo-count-down': 'ターボカウントDOWN',
+		'ls-up': '左スティック上',
+		'ls-down': '左スティック下',
+		'ls-left': '左スティック左',
+		'ls-right': '左スティック右',
+		'rs-up': '右スティック上',
+		'rs-down': '右スティック下',
+		'rs-left': '右スティック左',
+		'rs-right': '右スティック右',
 	},
 	'forced-setup-mode-label': '強制セットアップモード',
 	'forced-setup-mode-options': {
@@ -160,7 +172,7 @@ export default {
 			'危険: 無効なUSBパラメータを設定するとデバイスが動作しなくなります。',
 		'product-name': '製品名',
 		manufacturer: '製造者',
-		version: 'バージョン',
+		version: 'シリアル',
 		'physical-warning-danger': '⚡ 物理ID変更 ⚡ ',
 		'product-id': 'プロダクトID',
 		'vendor-id': 'ベンダーID',
