@@ -38,6 +38,7 @@ public:
 	PinMappings& getDeprecatedPinMappings() { return config.deprecatedPinMappings; }
 	GpioMappings& getGpioMappings() { return config.gpioMappings; }
 	KeyboardMapping& getKeyboardMapping() { return config.keyboardMapping; }
+	KeyboardGpioMappings& getKeyboardGpioMappings() { return config.keyboardGpioMappings; }
 	DisplayOptions& getDisplayOptions() { return config.displayOptions; }
 	LEDOptions& getLedOptions() { return config.ledOptions; }
 	AddonOptions& getAddonOptions() { return config.addonOptions; }

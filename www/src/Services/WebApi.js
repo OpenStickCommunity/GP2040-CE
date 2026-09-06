@@ -437,11 +437,7 @@ async function getKeyMappings(setLoading) {
 		const response = await Http.get(`${baseUrl}/api/getKeyMappings`);
 		setLoading(false);
 
-		let mappings = { ...baseButtonMappings };
-		for (let prop of Object.keys(response.data))
-			mappings[prop].key = parseInt(response.data[prop]);
-
-		return mappings;
+		return response.data;
 	} catch (error) {
 		setLoading(false);
 		console.error(error);
@@ -449,10 +445,7 @@ async function getKeyMappings(setLoading) {
 }
 
 async function setKeyMappings(mappings) {
-	let data = {};
-	Object.keys(mappings).map((button) => (data[button] = mappings[button].key));
-
-	return Http.post(`${baseUrl}/api/setKeyMappings`, sanitizeRequest(data))
+	return Http.post(`${baseUrl}/api/setKeyMappings`, sanitizeRequest(mappings))
 		.then((response) => {
 			console.log(response.data);
 			return true;

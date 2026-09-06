@@ -77,6 +77,13 @@ const Navigation = () => {
 						<NavDropdown.Item
 							as={NavLink}
 							eventKey={eventKey++}
+							to="/keyboard-mapping"
+						>
+							{t('Navigation:keyboard-mapping-label')}
+						</NavDropdown.Item>
+						<NavDropdown.Item
+							as={NavLink}
+							eventKey={eventKey++}
 							to="/boot-mode-mapping"
 						>
 							{t('Navigation:boot-mode-mapping-label')}

@@ -4,7 +4,6 @@
 
 import express from 'express';
 import cors from 'cors';
-import mapValues from 'lodash/mapValues.js';
 import { readFileSync } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -295,9 +294,35 @@ app.get('/api/getPinMappings', (req, res) => {
 	return res.send(createPinMappings({ profileLabel: 'Profile 1' }));
 });
 
-app.get('/api/getKeyMappings', (req, res) =>
-	res.send(mapValues(DEFAULT_KEYBOARD_MAPPING)),
-);
+const GPIO_ACTION_TO_BUTTON = {
+	1: 'Up',
+	2: 'Down',
+	3: 'Left',
+	4: 'Right',
+	5: 'B1',
+	6: 'B2',
+	7: 'B3',
+	8: 'B4',
+	9: 'L1',
+	10: 'R1',
+	11: 'L2',
+	12: 'R2',
+	13: 'S1',
+	14: 'S2',
+	15: 'A1',
+	16: 'A2',
+	17: 'L3',
+	18: 'R3',
+};
+
+app.get('/api/getKeyMappings', (req, res) => {
+	const mappings = {};
+	for (const [pin, action] of Object.entries(picoController)) {
+		mappings[pin] =
+			DEFAULT_KEYBOARD_MAPPING[GPIO_ACTION_TO_BUTTON[action]] || 0;
+	}
+	return res.send(mappings);
+});
 
 app.get('/api/getPeripheralOptions', (req, res) => {
 	return res.send({

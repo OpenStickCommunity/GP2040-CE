@@ -11,9 +11,8 @@ import useProfilesStore from '../Store/useProfilesStore';
 import { AppContext } from '../Contexts/AppContext';
 
 import ContextualHelpOverlay from '../Components/ContextualHelpOverlay';
-import KeyboardMapper from '../Components/KeyboardMapper';
 import Section from '../Components/Section';
-import WebApi, { baseButtonMappings } from '../Services/WebApi';
+import WebApi from '../Services/WebApi';
 import { BUTTON_MASKS_OPTIONS, getButtonLabels } from '../Data/Buttons';
 
 import { hexToInt } from '../Services/Utilities';
@@ -445,7 +444,7 @@ const schema = yup.object().shape({
 	usbProductID: yup.string().label('USB Product ID').validateUSBHexID(),
 });
 
-const FormContext = ({ setButtonLabels, setKeyMappings }) => {
+const FormContext = ({ setButtonLabels }) => {
 	const { values, setValues } = useFormikContext();
 	const { setLoading } = useContext(AppContext);
 
@@ -457,10 +456,9 @@ const FormContext = ({ setButtonLabels, setKeyMappings }) => {
 				swapTpShareLabels:
 					options.switchTpShareForDs4 === 1 && options.inputMode === 4,
 			});
-			setKeyMappings(await WebApi.getKeyMappings(setLoading));
 		}
 		fetchData();
-	}, [setKeyMappings, setValues]);
+	}, [setValues]);
 
 	useEffect(() => {
 		if (!!values.dpadMode) values.dpadMode = parseInt(values.dpadMode);
@@ -525,7 +523,6 @@ export default function SettingsPage() {
 	const [saveMessage, setSaveMessage] = useState('');
 	const [warning, setWarning] = useState({ show: false, acceptText: '' });
 	const [validated, setValidated] = useState(false);
-	const [keyMappings, setKeyMappings] = useState(baseButtonMappings);
 
 	const [message, setMessage] = useState(null);
 	const [PS4Key, setPS4Key] = useState();
@@ -672,12 +669,6 @@ export default function SettingsPage() {
 		},
 	];
 
-	const handleKeyChange = (value, button) => {
-		const newMappings = { ...keyMappings };
-		newMappings[button].key = value;
-		setKeyMappings(newMappings);
-	};
-
 	const generateDeviceTypeSelection = (values, errors, setFieldValue, handleChange) => {
 		let mode = INPUT_MODES.find((i) => i.value == values.inputMode);
 		let options = Object.keys(InputModeDeviceType).filter(key => isNaN(Number(key))).map((o) => ({
@@ -775,14 +766,14 @@ export default function SettingsPage() {
 				</Row>
 				<Row className="mb-3">
 					<Col sm={6}>
-						<div>{t('SettingsPage:keyboard-mapping-sub-header-text')}</div>
+						<div>
+							{t('SettingsPage:keyboard-mapping-gpio-text')}{' '}
+							<NavLink to="/keyboard-mapping">
+								{t('Navigation:keyboard-mapping-label')}
+							</NavLink>
+						</div>
 					</Col>
 				</Row>
-				<KeyboardMapper
-					buttonLabels={buttonLabels}
-					handleKeyChange={handleKeyChange}
-					getKeyMappingForButton={getKeyMappingForButton}
-				/>
 			</div>
 		);
 	};
@@ -1343,8 +1334,6 @@ export default function SettingsPage() {
 	};
 
 	const onSubmit = async (values) => {
-		const isKeyboardMode = values.inputMode === 3;
-
 		const data = {
 			...values,
 			usbProductID: hexToInt(values.usbProductID || '0000'),
@@ -1354,9 +1343,6 @@ export default function SettingsPage() {
 		if (values.forcedSetupMode > 1) {
 			setWarning({ show: true, acceptText: '' });
 		} else {
-			if (isKeyboardMode) {
-				await WebApi.setKeyMappings(keyMappings);
-			}
 			await saveSettings(data);
 		}
 	};
@@ -1405,8 +1391,6 @@ export default function SettingsPage() {
 		buttonLabelType,
 		swapTpShareLabels,
 	);
-
-	const getKeyMappingForButton = (button) => keyMappings[button];
 
 	const { t } = useTranslation('');
 
@@ -1982,10 +1966,7 @@ export default function SettingsPage() {
 									</Col>
 								</Row>
 							</Tab.Container>
-							<FormContext
-								setButtonLabels={setButtonLabels}
-								setKeyMappings={setKeyMappings}
-							/>
+							<FormContext setButtonLabels={setButtonLabels} />
 						</Form>
 						<Modal size="lg" show={warning.show} onHide={handleWarningClose}>
 							<Modal.Header closeButton>

@@ -1250,40 +1250,20 @@ std::string setKeyMappings()
 {
     DynamicJsonDocument doc = get_post_data();
 
-    KeyboardMapping& keyboardMapping = Storage::getInstance().getKeyboardMapping();
+    KeyboardGpioMappings& keyboardGpioMappings = Storage::getInstance().getKeyboardGpioMappings();
+    GpioMappings& gpioMappings = Storage::getInstance().getGpioMappings();
 
-    readDoc(keyboardMapping.keyDpadUp, doc, "Up");
-    readDoc(keyboardMapping.keyDpadDown, doc, "Down");
-    readDoc(keyboardMapping.keyDpadLeft, doc, "Left");
-    readDoc(keyboardMapping.keyDpadRight, doc, "Right");
-    readDoc(keyboardMapping.keyButtonB1, doc, "B1");
-    readDoc(keyboardMapping.keyButtonB2, doc, "B2");
-    readDoc(keyboardMapping.keyButtonB3, doc, "B3");
-    readDoc(keyboardMapping.keyButtonB4, doc, "B4");
-    readDoc(keyboardMapping.keyButtonL1, doc, "L1");
-    readDoc(keyboardMapping.keyButtonR1, doc, "R1");
-    readDoc(keyboardMapping.keyButtonL2, doc, "L2");
-    readDoc(keyboardMapping.keyButtonR2, doc, "R2");
-    readDoc(keyboardMapping.keyButtonS1, doc, "S1");
-    readDoc(keyboardMapping.keyButtonS2, doc, "S2");
-    readDoc(keyboardMapping.keyButtonL3, doc, "L3");
-    readDoc(keyboardMapping.keyButtonR3, doc, "R3");
-    readDoc(keyboardMapping.keyButtonA1, doc, "A1");
-    readDoc(keyboardMapping.keyButtonA2, doc, "A2");
-    readDoc(keyboardMapping.keyButtonA3, doc, "A3");
-    readDoc(keyboardMapping.keyButtonA4, doc, "A4");
-    readDoc(keyboardMapping.keyButtonE1, doc, "E1");
-    readDoc(keyboardMapping.keyButtonE2, doc, "E2");
-    readDoc(keyboardMapping.keyButtonE3, doc, "E3");
-    readDoc(keyboardMapping.keyButtonE4, doc, "E4");
-    readDoc(keyboardMapping.keyButtonE5, doc, "E5");
-    readDoc(keyboardMapping.keyButtonE6, doc, "E6");
-    readDoc(keyboardMapping.keyButtonE7, doc, "E7");
-    readDoc(keyboardMapping.keyButtonE8, doc, "E8");
-    readDoc(keyboardMapping.keyButtonE9, doc, "E9");
-    readDoc(keyboardMapping.keyButtonE10, doc, "E10");
-    readDoc(keyboardMapping.keyButtonE11, doc, "E11");
-    readDoc(keyboardMapping.keyButtonE12, doc, "E12");
+    char pinName[6];
+    for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
+        snprintf(pinName, 6, "pin%02d", (int)pin);
+        // reserved and addon-managed pins can't emit keys
+        if (gpioMappings.pins[pin].action != GpioAction::RESERVED &&
+                gpioMappings.pins[pin].action != GpioAction::ASSIGNED_TO_ADDON &&
+                doc.containsKey(pinName)) {
+            keyboardGpioMappings.pinKeycodes[pin] = (uint32_t)doc[pinName];
+        }
+    }
+    keyboardGpioMappings.pinKeycodes_count = NUM_BANK0_GPIOS;
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
@@ -1294,40 +1274,41 @@ std::string getKeyMappings()
 {
     const size_t capacity = JSON_OBJECT_SIZE(100);
     DynamicJsonDocument doc(capacity);
-    const KeyboardMapping& keyboardMapping = Storage::getInstance().getKeyboardMapping();
+    const KeyboardGpioMappings& keyboardGpioMappings = Storage::getInstance().getKeyboardGpioMappings();
 
-    writeDoc(doc, "Up", keyboardMapping.keyDpadUp);
-    writeDoc(doc, "Down", keyboardMapping.keyDpadDown);
-    writeDoc(doc, "Left", keyboardMapping.keyDpadLeft);
-    writeDoc(doc, "Right", keyboardMapping.keyDpadRight);
-    writeDoc(doc, "B1", keyboardMapping.keyButtonB1);
-    writeDoc(doc, "B2", keyboardMapping.keyButtonB2);
-    writeDoc(doc, "B3", keyboardMapping.keyButtonB3);
-    writeDoc(doc, "B4", keyboardMapping.keyButtonB4);
-    writeDoc(doc, "L1", keyboardMapping.keyButtonL1);
-    writeDoc(doc, "R1", keyboardMapping.keyButtonR1);
-    writeDoc(doc, "L2", keyboardMapping.keyButtonL2);
-    writeDoc(doc, "R2", keyboardMapping.keyButtonR2);
-    writeDoc(doc, "S1", keyboardMapping.keyButtonS1);
-    writeDoc(doc, "S2", keyboardMapping.keyButtonS2);
-    writeDoc(doc, "L3", keyboardMapping.keyButtonL3);
-    writeDoc(doc, "R3", keyboardMapping.keyButtonR3);
-    writeDoc(doc, "A1", keyboardMapping.keyButtonA1);
-    writeDoc(doc, "A2", keyboardMapping.keyButtonA2);
-    writeDoc(doc, "A3", keyboardMapping.keyButtonA3);
-    writeDoc(doc, "A4", keyboardMapping.keyButtonA4);
-    writeDoc(doc, "E1", keyboardMapping.keyButtonE1);
-    writeDoc(doc, "E2", keyboardMapping.keyButtonE2);
-    writeDoc(doc, "E3", keyboardMapping.keyButtonE3);
-    writeDoc(doc, "E4", keyboardMapping.keyButtonE4);
-    writeDoc(doc, "E5", keyboardMapping.keyButtonE5);
-    writeDoc(doc, "E6", keyboardMapping.keyButtonE6);
-    writeDoc(doc, "E7", keyboardMapping.keyButtonE7);
-    writeDoc(doc, "E8", keyboardMapping.keyButtonE8);
-    writeDoc(doc, "E9", keyboardMapping.keyButtonE9);
-    writeDoc(doc, "E10", keyboardMapping.keyButtonE10);
-    writeDoc(doc, "E11", keyboardMapping.keyButtonE11);
-    writeDoc(doc, "E12", keyboardMapping.keyButtonE12);
+    // this looks duplicative, but something in arduinojson treats the doc
+    // field string by reference so you can't be "clever" and do an snprintf
+    // thing or else you only send the last field in the JSON
+    writeDoc(doc, "pin00", keyboardGpioMappings.pinKeycodes[0]);
+    writeDoc(doc, "pin01", keyboardGpioMappings.pinKeycodes[1]);
+    writeDoc(doc, "pin02", keyboardGpioMappings.pinKeycodes[2]);
+    writeDoc(doc, "pin03", keyboardGpioMappings.pinKeycodes[3]);
+    writeDoc(doc, "pin04", keyboardGpioMappings.pinKeycodes[4]);
+    writeDoc(doc, "pin05", keyboardGpioMappings.pinKeycodes[5]);
+    writeDoc(doc, "pin06", keyboardGpioMappings.pinKeycodes[6]);
+    writeDoc(doc, "pin07", keyboardGpioMappings.pinKeycodes[7]);
+    writeDoc(doc, "pin08", keyboardGpioMappings.pinKeycodes[8]);
+    writeDoc(doc, "pin09", keyboardGpioMappings.pinKeycodes[9]);
+    writeDoc(doc, "pin10", keyboardGpioMappings.pinKeycodes[10]);
+    writeDoc(doc, "pin11", keyboardGpioMappings.pinKeycodes[11]);
+    writeDoc(doc, "pin12", keyboardGpioMappings.pinKeycodes[12]);
+    writeDoc(doc, "pin13", keyboardGpioMappings.pinKeycodes[13]);
+    writeDoc(doc, "pin14", keyboardGpioMappings.pinKeycodes[14]);
+    writeDoc(doc, "pin15", keyboardGpioMappings.pinKeycodes[15]);
+    writeDoc(doc, "pin16", keyboardGpioMappings.pinKeycodes[16]);
+    writeDoc(doc, "pin17", keyboardGpioMappings.pinKeycodes[17]);
+    writeDoc(doc, "pin18", keyboardGpioMappings.pinKeycodes[18]);
+    writeDoc(doc, "pin19", keyboardGpioMappings.pinKeycodes[19]);
+    writeDoc(doc, "pin20", keyboardGpioMappings.pinKeycodes[20]);
+    writeDoc(doc, "pin21", keyboardGpioMappings.pinKeycodes[21]);
+    writeDoc(doc, "pin22", keyboardGpioMappings.pinKeycodes[22]);
+    writeDoc(doc, "pin23", keyboardGpioMappings.pinKeycodes[23]);
+    writeDoc(doc, "pin24", keyboardGpioMappings.pinKeycodes[24]);
+    writeDoc(doc, "pin25", keyboardGpioMappings.pinKeycodes[25]);
+    writeDoc(doc, "pin26", keyboardGpioMappings.pinKeycodes[26]);
+    writeDoc(doc, "pin27", keyboardGpioMappings.pinKeycodes[27]);
+    writeDoc(doc, "pin28", keyboardGpioMappings.pinKeycodes[28]);
+    writeDoc(doc, "pin29", keyboardGpioMappings.pinKeycodes[29]);
 
     return serialize_json(doc);
 }
