@@ -44,11 +44,15 @@ const HEMonitor = ({ muxChannels, actionForChannel }: Props) => {
 	const [running, setRunning] = useState(false);
 	const [status, setStatus] = useState<MonitorStatus | null>(null);
 	const [error, setError] = useState('');
-	const timerId = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
+	const timerId = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+	// Set false to stop the self-scheduling poll loop. A ref rather than state so
+	// the running loop sees the change immediately.
+	const pollingRef = useRef(false);
 
 	const stopPolling = () => {
+		pollingRef.current = false;
 		if (timerId.current) {
-			clearInterval(timerId.current);
+			clearTimeout(timerId.current);
 			timerId.current = undefined;
 		}
 	};
@@ -73,9 +77,18 @@ const HEMonitor = ({ muxChannels, actionForChannel }: Props) => {
 			}
 			setRunning(true);
 			stopPolling();
-			timerId.current = setInterval(async () => {
+			pollingRef.current = true;
+
+			// Poll sequentially rather than on a fixed interval. The device serves one
+			// HTTP request at a time, so a setInterval that fires faster than the board
+			// can answer stacks overlapping requests -- and a collided response comes
+			// back truncated, which surfaces as a JSON parse error. Waiting for each
+			// response before scheduling the next keeps at most one in flight.
+			const loop = async () => {
+				if (!pollingRef.current) return;
 				try {
 					const data: MonitorStatus = await WebApi.getHEMonitorStatus();
+					if (!pollingRef.current) return;
 					if (data?.error) {
 						setError(data.error);
 						stopPolling();
@@ -85,8 +98,13 @@ const HEMonitor = ({ muxChannels, actionForChannel }: Props) => {
 				} catch (e) {
 					setError(String(e));
 					stopPolling();
+					return;
 				}
-			}, POLL_INTERVAL_MS);
+				if (pollingRef.current) {
+					timerId.current = setTimeout(loop, POLL_INTERVAL_MS);
+				}
+			};
+			loop();
 		} catch (e) {
 			setError(String(e));
 		}

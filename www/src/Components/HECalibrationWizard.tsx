@@ -83,7 +83,9 @@ const HECalibrationWizard = ({ showModal, setShowModal, values }: Props) => {
 	const [presetLevel, setPresetLevel] = useState(DEFAULT_PRESET_LEVEL);
 	const [error, setError] = useState('');
 	const [busy, setBusy] = useState(false);
-	const timerId = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
+	const timerId = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+	// Set false to stop the self-scheduling poll loop.
+	const pollingRef = useRef(false);
 
 	// A channel needs calibrating if it is bound in ANY profile, not just the base
 	// one: a profile for a game that uses fewer buttons would otherwise leave the
@@ -125,8 +127,9 @@ const HECalibrationWizard = ({ showModal, setShowModal, values }: Props) => {
 	};
 
 	const stopPolling = () => {
+		pollingRef.current = false;
 		if (timerId.current) {
-			clearInterval(timerId.current);
+			clearTimeout(timerId.current);
 			timerId.current = undefined;
 		}
 	};
@@ -159,9 +162,20 @@ const HECalibrationWizard = ({ showModal, setShowModal, values }: Props) => {
 		}
 	};
 
+	// Sequential, not setInterval: the device answers one HTTP request at a time,
+	// so a fixed interval faster than it can respond stacks overlapping requests
+	// and a collided response arrives truncated, failing to parse.
 	const startPolling = () => {
 		stopPolling();
-		timerId.current = setInterval(poll, POLL_INTERVAL_MS);
+		pollingRef.current = true;
+		const loop = async () => {
+			if (!pollingRef.current) return;
+			await poll();
+			if (pollingRef.current) {
+				timerId.current = setTimeout(loop, POLL_INTERVAL_MS);
+			}
+		};
+		loop();
 	};
 
 	// Tear down on unmount so a closed modal cannot keep polling the device.
