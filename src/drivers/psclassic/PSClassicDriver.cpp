@@ -36,8 +36,8 @@ bool PSClassicDriver::process(Gamepad * gamepad) {
 	}
 
 	psClassicReport.buttons |=
-          (gamepad->pressedS2()    ? PSCLASSIC_MASK_SELECT   : 0)
-		| (gamepad->pressedS1()    ? PSCLASSIC_MASK_START    : 0)
+          (gamepad->pressedS2()    ? PSCLASSIC_MASK_START   : 0)
+		| (gamepad->pressedS1()    ? PSCLASSIC_MASK_SELECT    : 0)
 		| (gamepad->pressedB1()    ? PSCLASSIC_MASK_CROSS    : 0)
 		| (gamepad->pressedB2()    ? PSCLASSIC_MASK_CIRCLE   : 0)
 		| (gamepad->pressedB3()    ? PSCLASSIC_MASK_SQUARE   : 0)

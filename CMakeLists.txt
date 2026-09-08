@@ -4,9 +4,9 @@ if(WIN32)
 else()
     set(USERHOME $ENV{HOME})
 endif()
-set(sdkVersion 2.2.0)
-set(toolchainVersion 14_2_Rel1)
-set(picotoolVersion 2.2.0-a4)
+set(sdkVersion 2.3.0)
+set(toolchainVersion 15_2_Rel1)
+set(picotoolVersion 2.3.0)
 set(picoVscode ${USERHOME}/.pico-sdk/cmake/pico-vscode.cmake)
 if (EXISTS ${picoVscode})
     include(${picoVscode})
@@ -59,8 +59,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # note: this must happen before project()
 include(pico_sdk_import.cmake)
 
-if (PICO_SDK_VERSION_STRING VERSION_LESS "2.2.0")
-  message(FATAL_ERROR "Raspberry Pi Pico SDK version 2.2.0 (or later) required. Your version is ${PICO_SDK_VERSION_STRING}")
+if (PICO_SDK_VERSION_STRING VERSION_LESS "2.3.0")
+  message(FATAL_ERROR "Raspberry Pi Pico SDK version 2.3.0 (or later) required. Your version is ${PICO_SDK_VERSION_STRING}")
 endif()
 
 # set the version for webconfig, etc. based on git
@@ -220,6 +220,7 @@ src/drivers/p5general/P5GeneralAuth.cpp
 src/drivers/p5general/P5GeneralAuthUSBListener.cpp
 src/drivers/p5general/P5GeneralDriver.cpp
 src/drivers/psclassic/PSClassicDriver.cpp
+src/drivers/sinput/SInputDriver.cpp
 src/drivers/switch/SwitchDriver.cpp
 src/drivers/switchpro/SwitchProDriver.cpp
 src/drivers/xbone/XBOneAuth.cpp
@@ -236,7 +237,6 @@ src/drivers/xinput/XInputAuthUSBListener.cpp
 src/drivers/xinput/XInputDriver.cpp
 src/interfaces/i2c/i2cdevicebase.cpp
 src/interfaces/i2c/pcf8575/pcf8575.cpp
-src/interfaces/i2c/ssd1306/obd_ssd1306.cpp
 src/interfaces/i2c/ssd1306/tiny_ssd1306.cpp
 src/display/ui/elements/GPWidget.cpp
 src/display/ui/elements/GPButton.cpp
@@ -277,6 +277,7 @@ src/addons/buzzerspeaker.cpp
 src/addons/dualdirectional.cpp
 src/addons/keyboard_host.cpp
 src/addons/keyboard_host_listener.cpp
+src/addons/i2canalog1115.cpp
 src/addons/i2canalog1219.cpp
 src/addons/i2c_gpio_pcf8575.cpp
 src/addons/display.cpp
@@ -288,6 +289,7 @@ src/addons/reverse.cpp
 src/addons/drv8833_rumble.cpp
 src/addons/turbo.cpp
 src/addons/slider_socd.cpp
+src/addons/slider_profile.cpp
 src/addons/wiiext.cpp
 src/addons/input_macro.cpp
 src/addons/snes_input.cpp
@@ -327,10 +329,10 @@ tinyusb_host
 tinyusb_pico_pio_usb
 CRC32
 FlashPROM
+ADS1115
 ADS1219
 ADS1256
 NeoPico
-OneBitDisplay
 ArduinoJson
 rndis
 hardware_adc
@@ -351,6 +353,7 @@ headers/drivers/shared
 headers/events
 headers/interfaces
 headers/interfaces/i2c
+headers/interfaces/i2c/ads1115
 headers/interfaces/i2c/ads1219
 headers/interfaces/i2c/pcf8575
 headers/interfaces/i2c/ssd1306
