@@ -766,7 +766,7 @@ void NeoPicoLEDAddon::configureLEDs()
 	    int32_t pledIndexes[] = { ledOptions.pledIndex1, ledOptions.pledIndex2, ledOptions.pledIndex3, ledOptions.pledIndex4 };
         for (int i = 0; i < PLED_COUNT; i++)
 		{
-			if(pledIndexes[i] >= 0 && pledIndexes[i] <= 99 && pledIndexes[i] > ledCount)
+			if(pledIndexes[i] >= 0 && pledIndexes[i] < FRAME_MAX && pledIndexes[i] > ledCount)
 				ledCount = pledIndexes[i];
 		}
 	}
