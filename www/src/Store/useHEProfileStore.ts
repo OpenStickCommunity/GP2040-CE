@@ -29,6 +29,9 @@ type State = {
 	profiles: HEProfile[];
 	activeProfile: number;
 	loadingProfiles: boolean;
+	// False until fetchHEProfiles has returned. Saving before that would write
+	// INITIAL_STATE -- every binding NONE -- over whatever is on the device.
+	profilesLoaded: boolean;
 };
 
 type Actions = {
@@ -75,6 +78,7 @@ const INITIAL_STATE: State = {
 	})),
 	activeProfile: 0,
 	loadingProfiles: false,
+	profilesLoaded: false,
 };
 
 const useHEProfileStore = create<State & Actions>()((set, get) => ({
@@ -109,6 +113,9 @@ const useHEProfileStore = create<State & Actions>()((set, get) => ({
 			}),
 			activeProfile: data?.activeProfile ?? 0,
 			loadingProfiles: false,
+			// Only mark loaded when the device actually answered; a failed fetch
+			// must not licence a save that would overwrite the board.
+			profilesLoaded: Boolean(data?.profiles),
 		}));
 	},
 
@@ -162,7 +169,16 @@ const useHEProfileStore = create<State & Actions>()((set, get) => ({
 		set((state) => ({ ...state, activeProfile: profileIndex })),
 
 	saveHEProfiles: async () => {
-		const { profiles, activeProfile } = get();
+		const { profiles, activeProfile, profilesLoaded } = get();
+		// Refuse to save a store that was never populated. setHETriggerProfiles
+		// overwrites every binding on the device, so posting INITIAL_STATE would
+		// wipe the board's profiles -- which is exactly what happened when the
+		// calibration wizard saved before anything had fetched.
+		if (!profilesLoaded) {
+			throw new Error(
+				'Refusing to save hall effect profiles before they have been loaded',
+			);
+		}
 		return WebApi.setHETriggerProfiles({ profiles, activeProfile });
 	},
 }));

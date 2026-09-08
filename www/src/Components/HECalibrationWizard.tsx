@@ -76,7 +76,7 @@ const actionLabel = (actionId: number) => {
 const HECalibrationWizard = ({ showModal, setShowModal, values }: Props) => {
 	const { t } = useTranslation('');
 	const { triggers, fetchHETriggers } = useHETriggerStore();
-	const { profiles, saveHEProfiles } = useHEProfileStore();
+	const { profiles, fetchHEProfiles, saveHEProfiles } = useHEProfileStore();
 
 	const [step, setStep] = useState(STEP_READY);
 	const [status, setStatus] = useState<CalStatus | null>(null);
@@ -202,6 +202,11 @@ const HECalibrationWizard = ({ showModal, setShowModal, values }: Props) => {
 			// a newly assigned button is still unset as far as the sweep is concerned
 			// and gets skipped entirely. Bindings live in the profile store, which is
 			// what owns triggers[].action on the firmware side.
+			//
+			// Fetch first. This modal can be opened before anything has populated the
+			// profile store, and saving an unpopulated store would post every binding
+			// as NONE -- wiping the profiles on the device.
+			await fetchHEProfiles();
 			await saveHEProfiles();
 
 			const result = await WebApi.startHECalibration();
