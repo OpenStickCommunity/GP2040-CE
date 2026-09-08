@@ -205,6 +205,7 @@ export default function AddonsConfigPage() {
 
 	const onSuccess = async (values: typeof DEFAULT_VALUES) => {
 		const flattened = flattenObject(storedData);
+		const valuesSchema = schema.cast(values); // Strip invalid values
 
 		// Compare what's changed and set it to resultObject
 		let resultObject = {};
