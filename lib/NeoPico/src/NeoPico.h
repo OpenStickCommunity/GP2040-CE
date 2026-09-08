@@ -24,7 +24,7 @@ public:
   void Off();
   LEDFormat GetFormat();
   void SetFrame(uint32_t * newFrame);
-  void ChangeNumPixels(int inNumPixels) {numPixels = inNumPixels;}
+  void ChangeNumPixels(int inNumPixels) { numPixels = (inNumPixels <= FRAME_MAX) ? inNumPixels : FRAME_MAX;}
 private:
   void PutPixel(uint32_t pixel_grb);
   LEDFormat format;
