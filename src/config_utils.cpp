@@ -876,11 +876,9 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         HETriggerInfo& trigger = config.addonOptions.heTriggerOptions.triggers[i];
         const HETriggerDefaults& defaults = HE_TRIGGER_DEFAULTS[i];
         INIT_UNSET_PROPERTY(trigger, action, defaults.action);
-        INIT_UNSET_PROPERTY(trigger, active, defaults.active);
         INIT_UNSET_PROPERTY(trigger, idle, defaults.idle);
         INIT_UNSET_PROPERTY(trigger, pressed, defaults.pressed);
         INIT_UNSET_PROPERTY(trigger, is_polarized, defaults.polarity);
-        INIT_UNSET_PROPERTY(trigger, release, defaults.release);
         INIT_UNSET_PROPERTY(trigger, noise, defaults.noise);
         INIT_UNSET_PROPERTY(trigger, rapidTrigger, defaults.rapid);
         // rapid trigger v2, percent of travel
@@ -1611,56 +1609,6 @@ void profileEnabledFlagsMigration(Config& config) {
     config.migrations.profileEnabledFlagsMigrated = true;
 }
 
-// Convert pre-v2 hall effect trigger tuning to the travel-percent model.
-//
-// The old model stored `active` and `release` as absolute ADC thresholds and
-// `noise` as absolute counts, which only mean anything for the exact switch and
-// magnet they were calibrated against. v2 stores everything as a percentage of
-// the idle..pressed span. Recalibrating via the wizard is still the recommended
-// path, but converting here means an existing board keeps working -- and keeps
-// roughly its previous feel -- immediately after a firmware update.
-void migrateHETriggerRapidTrigger(Config& config) {
-    HETriggerOptions& options = config.addonOptions.heTriggerOptions;
-
-    for (uint16_t i = 0; i < options.triggers_count; i++) {
-        HETriggerInfo& trigger = options.triggers[i];
-
-        if (trigger.action == GpioAction::NONE) continue;
-
-        // A degenerate span means the channel was never actually calibrated, so
-        // there is nothing to convert; the v2 defaults already applied are better
-        // than anything derived from it.
-        const int32_t span = trigger.pressed - trigger.idle;
-        if (span > -64 && span < 64) continue;
-        const int32_t absSpan = (span < 0) ? -span : span;
-
-        // Old actuation threshold -> percent of travel.
-        const int32_t actuationPercent = ((trigger.active - trigger.idle) * 100) / span;
-        trigger.actuationPoint = (uint32_t)std::min(std::max(actuationPercent, (int32_t)5), (int32_t)90);
-        trigger.has_actuationPoint = true;
-
-        // The old release threshold sat below the actuation threshold; that gap is
-        // conceptually the same thing as v2's release sensitivity, so carry it over
-        // and use it for both directions.
-        const int32_t releaseGapPercent = ((trigger.active - trigger.release) * 100) / span;
-        const int32_t sensitivity = std::min(std::max(releaseGapPercent, (int32_t)3), (int32_t)40);
-        trigger.rtReleaseSensitivity = (uint32_t)sensitivity;
-        trigger.rtPressSensitivity = (uint32_t)sensitivity;
-        trigger.has_rtReleaseSensitivity = true;
-        trigger.has_rtPressSensitivity = true;
-
-        // Old absolute noise floor -> deadzone percent.
-        const int32_t deadzonePercent = (trigger.noise * 100) / absSpan;
-        trigger.travelDeadzone = (uint32_t)std::min(std::max(deadzonePercent, (int32_t)2), (int32_t)15);
-        trigger.has_travelDeadzone = true;
-
-        trigger.continuousRapidTrigger = false;
-        trigger.has_continuousRapidTrigger = true;
-    }
-
-    config.migrations.heTriggerRapidTriggerMigrated = true;
-}
-
 void migrateMacroPinsToGpio(Config& config) {
     // Convert Macro pin mapping to GPIO mapping configs
     MacroOptions & macroOptions = config.addonOptions.macroOptions;
@@ -1843,11 +1791,6 @@ void ConfigUtils::load(Config& config)
     if (!config.migrations.profileEnabledFlagsMigrated)
         profileEnabledFlagsMigration(config);
 
-    // Convert legacy absolute hall effect thresholds to travel percentages.
-    // Must run after initUnsetPropertiesWithDefaults, since it reads
-    // triggers_count and overwrites the v2 defaults applied there.
-    if (!config.migrations.heTriggerRapidTriggerMigrated)
-        migrateHETriggerRapidTrigger(config);
 
     // following migrations are simple enough to not need a protobuf boolean to track
     // Migrate turbo into GpioMappings

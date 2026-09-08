@@ -656,19 +656,6 @@ void HETriggerAddon::applyCalibration(uint8_t actuationPercent, uint8_t pressPer
         trigger.has_rtReleaseSensitivity = true;
         trigger.has_continuousRapidTrigger = true;
 
-        // The runtime no longer reads `active` and `release` -- they are the old
-        // absolute-ADC thresholds that the travel percentages replaced. They are
-        // still shown in the voltage table and are what the per-channel calibration
-        // modal edits, so keep them consistent with the new values; leaving them
-        // stale makes a freshly calibrated board look uncalibrated.
-        const int32_t travelSpan = (int32_t)trigger.pressed - (int32_t)trigger.idle;
-        trigger.active = trigger.idle + ((travelSpan * (int32_t)actuationPercent) / 100);
-        trigger.release = trigger.idle +
-            ((travelSpan * (int32_t)(actuationPercent > releasePercent
-                                         ? actuationPercent - releasePercent
-                                         : 0)) / 100);
-        trigger.has_active = true;
-        trigger.has_release = true;
     }
 
     options.triggers_count = HETRIGGER_COUNT;

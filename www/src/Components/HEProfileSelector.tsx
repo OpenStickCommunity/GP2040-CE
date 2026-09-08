@@ -22,8 +22,6 @@ type Props = {
 	// multiplexer has no pin assigned and is therefore not connected.
 	connectedMuxes: number[];
 	getOptionLabel: (option: Option) => string;
-	// Opens the single-channel calibration modal for a given channel.
-	onCalibrateChannel: (channel: number) => void;
 };
 
 // The one place bindings are edited. The base profile lives on the triggers
@@ -34,7 +32,6 @@ const HEProfileSelector = ({
 	muxChannels,
 	connectedMuxes,
 	getOptionLabel,
-	onCalibrateChannel,
 }: Props) => {
 	const { t } = useTranslation('');
 	const {
@@ -445,16 +442,6 @@ const HEProfileSelector = ({
 																				)
 																	}
 																/>
-																<Button
-																	type="button"
-																	size="sm"
-																	variant="outline-secondary"
-																	onClick={() => onCalibrateChannel(channel)}
-																	disabled={profile.actions[channel] === -10}
-																	title={t('HETrigger:calibrate-single-title')}
-																>
-																	🧲
-																</Button>
 															</div>
 														)}
 														{/* Other profiles can override the same tuning, or inherit whatever

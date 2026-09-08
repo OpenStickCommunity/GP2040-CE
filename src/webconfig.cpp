@@ -1521,13 +1521,6 @@ std::string setExpansionPins()
 static uint32_t calibrationMuxChannels = 0;
 static Pin_t calibrationSelectPins[4];
 static Pin_t calibrationADCPins[4];
-static bool calibrationSmoothing = false;
-static uint32_t calibrationSmoothingFactor = 0;
-static float ema_smoothing;
-// One filter state per channel. A single shared accumulator carried the previous
-// channel's level into the next channel's first reads, so switching calibration
-// targets showed a decaying ghost of the old channel.
-static uint16_t smoothingRead[HETRIGGER_COUNT] = {};
 
 // Get the HE Trigger Options using our manual GPIO input and everything
 std::string setHETriggerOptions()
@@ -1544,9 +1537,6 @@ std::string setHETriggerOptions()
     calibrationADCPins[2] = doc["muxADCPin2"];
     calibrationADCPins[3] = doc["muxADCPin3"];
 
-    calibrationSmoothing = doc["heTriggerSmoothing"];
-    calibrationSmoothingFactor = doc["heTriggerSmoothingFactor"];
-    ema_smoothing = (float)calibrationSmoothingFactor / 100.f; // 99 = max smoothing factor
 
     for (int i = 0; i < 4; i++) {
         if ( calibrationSelectPins[i] != -1 &&
@@ -1563,86 +1553,6 @@ std::string setHETriggerOptions()
         }
     }
 
-    return serialize_json(doc);
-}
-
-#define ADC_MAX ((1 << 12) - 1) // 4095
-uint16_t emaCalculation(uint16_t value, uint16_t previous) {
-    float ema_value = (float)value / ADC_MAX;
-    float ema_previous = (float)previous / ADC_MAX;
-    return ((ema_smoothing*ema_value) + ((1.0f-ema_smoothing) * ema_previous)) * ADC_MAX;
-}
-
-// Get the HE Trigger Calibration using our manual GPIO input and everything
-std::string getHETriggerVoltage()
-{
-    DynamicJsonDocument postDoc = get_post_data();
-    uint32_t id = postDoc["targetId"];
-    const size_t capacity = JSON_OBJECT_SIZE(20);
-    DynamicJsonDocument doc(capacity);
-    uint32_t adcSelectPin = 0;
-
-    // Mux Channels determines how many select pins we use
-    if (calibrationMuxChannels == 1) {
-        if ( id > 3 ) {
-            doc["error"] = "id out of range";
-            return serialize_json(doc);
-        }
-        adcSelectPin = calibrationADCPins[id];
-    } else if ( calibrationMuxChannels == 4) {
-        uint32_t adcNum = id / 4;
-        uint32_t channel = (id % 4);
-        if ( adcNum > 3 ) {
-            doc["error"] = "id out of 4-channel mux range";
-            return serialize_json(doc);
-        }
-        adcSelectPin = calibrationADCPins[adcNum];
-        gpio_put(calibrationSelectPins[0], channel & 0x01);
-        gpio_put(calibrationSelectPins[1], (channel >> 1) & 0x01);
-    } else if (calibrationMuxChannels == 8) {
-        uint32_t adcNum = id / 8;
-        uint32_t channel = (id % 8);
-        if ( adcNum > 2 ) {
-            doc["error"] = "id out of 8-channel mux range";
-            return serialize_json(doc);
-        }
-        adcSelectPin = calibrationADCPins[adcNum];
-        gpio_put(calibrationSelectPins[0], channel & 0x01);
-        gpio_put(calibrationSelectPins[1], (channel >> 1) & 0x01);
-        gpio_put(calibrationSelectPins[2], (channel >> 2) & 0x01);
-    } else if (calibrationMuxChannels == 16) {
-        uint32_t adcNum = id / 16;
-        uint32_t channel = (id % 16);
-        if ( adcNum > 1 ) {
-            doc["error"] = "id out of 16-channel mux range";
-            return serialize_json(doc);
-        }
-        adcSelectPin = calibrationADCPins[adcNum];
-        gpio_put(calibrationSelectPins[0], channel & 0x01);
-        gpio_put(calibrationSelectPins[1], (channel >> 1) & 0x01);
-        gpio_put(calibrationSelectPins[2], (channel >> 2) & 0x01);
-        gpio_put(calibrationSelectPins[3], (channel >> 3) & 0x01);
-    } else {
-        doc["error"] = "mux channels incorrect";
-        return serialize_json(doc);
-    }
-
-    if ( adcSelectPin < 26 || adcSelectPin > 29) {
-        doc["error"] = "adc pin out of range";
-        return serialize_json(doc);
-    }
-    adc_select_input(adcSelectPin-26);
-    // Web-Config triggers getHECalibration every 50ms, game controller triggers <1ms
-    if ( calibrationSmoothing && id < HETRIGGER_COUNT ) {
-        uint16_t read = adc_read();
-        for(int i = 0; i < 50; i++) {
-            read = emaCalculation(adc_read(), smoothingRead[id]);
-            smoothingRead[id] = read;
-        }
-        doc["voltage"] = read;
-    } else {
-        doc["voltage"] = adc_read();
-    }
     return serialize_json(doc);
 }
 
@@ -1664,10 +1574,8 @@ std::string getHETriggerCalibrations()
         JsonObject trigger = triggerList.createNestedObject();
         trigger["action"] = heTriggers[i].action;
         trigger["idle"] = heTriggers[i].idle;
-        trigger["active"] = heTriggers[i].active;
         trigger["pressed"] = heTriggers[i].pressed;
         trigger["is_polarized"] = heTriggers[i].is_polarized;
-        trigger["release"] = heTriggers[i].release;
         trigger["noise"] = heTriggers[i].noise;
         trigger["rapidTrigger"] = heTriggers[i].rapidTrigger;
         // Rapid trigger v2. These are what the runtime actually uses; without them
@@ -1694,10 +1602,8 @@ std::string setHETriggerCalibrations()
         // button -- writing the binding from both raced, so whichever request
         // landed second won and edits appeared not to save.
         heTriggers[i].idle = doc["triggers"][i]["idle"];
-        heTriggers[i].active = doc["triggers"][i]["active"];
         heTriggers[i].pressed = doc["triggers"][i]["pressed"];
         heTriggers[i].is_polarized = doc["triggers"][i]["is_polarized"];
-        heTriggers[i].release = doc["triggers"][i]["release"];
         heTriggers[i].noise = doc["triggers"][i]["noise"];
         heTriggers[i].rapidTrigger = doc["triggers"][i]["rapidTrigger"];
 
@@ -3120,7 +3026,6 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/getExpansionPins", getExpansionPins },
     { "/api/setHETriggerCalibrations", setHETriggerCalibrations },
     { "/api/getHETriggerCalibrations", getHETriggerCalibrations },
-    { "/api/getHETriggerVoltage", getHETriggerVoltage },
     { "/api/setHETriggerOptions", setHETriggerOptions },
     { "/api/startHECalibration", startHECalibration },
     { "/api/advanceHECalibration", advanceHECalibration },

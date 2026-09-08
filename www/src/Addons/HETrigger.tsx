@@ -7,7 +7,6 @@ import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import omit from 'lodash/omit';
 
-import HECalibration from '../Components/HECalibration';
 import HECalibrationWizard from '../Components/HECalibrationWizard';
 import HEProfileSelector from '../Components/HEProfileSelector';
 import HEMonitor from '../Components/HEMonitor';
@@ -187,10 +186,7 @@ const TriggerActionsForm = ({
 
 	const { buttonLabels } = useContext(AppContext);
 	const [saveMessage, setSaveMessage] = useState('');
-	const [showModal, setShowModal] = useState(false);
 	const [showWizard, setShowWizard] = useState(false);
-	const [calibrationTarget, setCalibrationTarget] = useState(0);
-	const [calibrateAllLoop, setCalibrateAllLoop] = useState(false);
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
 	const [showVoltTable, setShowVoltTable] = useState(false);
 	const CURRENT_BUTTONS = getButtonLabels(buttonLabelType, swapTpShareLabels);
@@ -268,31 +264,7 @@ const TriggerActionsForm = ({
 					>
 						{t('HETrigger:wizard-button')}
 					</Button>
-					{/* Per-channel flow, kept for hand tuning a single switch. */}
-					<Button
-						type="button"
-						key={`calibrate-all-he`}
-						variant="secondary"
-						onClick={(e) => {
-							setShowModal(true);
-							setCalibrationTarget(0);
-							setCalibrateAllLoop(true);
-						}}
-						disabled={!anyChannelAssigned}
-						className="my-2"
-					>
-						{t('HETrigger:calibrate-all-button')}
-					</Button>
 				</div>
-				<HECalibration
-					values={values}
-					showModal={showModal}
-					setShowModal={setShowModal}
-					triggers={triggers}
-					calibrationTarget={calibrationTarget}
-					calibrateAllLoop={calibrateAllLoop}
-					muxChannels={muxChannels}
-				></HECalibration>
 				<HECalibrationWizard
 					values={values}
 					showModal={showWizard}
@@ -308,11 +280,6 @@ const TriggerActionsForm = ({
 						(_, i) => values[`muxADCPin${i}` as keyof typeof values] as number,
 					)}
 					getOptionLabel={optionLabel}
-					onCalibrateChannel={(channel) => {
-						setCalibrationTarget(channel);
-						setCalibrateAllLoop(false);
-						setShowModal(true);
-					}}
 				></HEProfileSelector>
 				<HEMonitor
 					muxChannels={muxChannels}

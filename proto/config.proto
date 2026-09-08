@@ -919,11 +919,11 @@ message HETriggerInfo
     // switching, see he_trigger.h) can share this field. Wire-compatible with
     // the previous GpioAction declaration, so stored configs load unchanged.
     optional int32 action = 1;
-    optional int32 active = 2 [deprecated = true];
+    // Tags 2, 5 and 6 held `active`, `polarity` and `release`: the absolute ADC
+    // thresholds the travel percentages replaced. Removed rather than reused, so
+    // an older config decodes them as unknown fields instead of misreading them.
     optional int32 idle = 3;
     optional int32 pressed = 4;
-    optional int32 polarity = 5 [deprecated = true];
-    optional int32 release = 6 [deprecated = true];
     optional int32 noise = 7;
     optional bool rapidTrigger = 8;
     optional bool is_polarized = 9;

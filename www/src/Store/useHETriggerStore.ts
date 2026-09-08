@@ -6,10 +6,8 @@ import { PinActionValues } from '../Data/Pins';
 export type Trigger = {
 	action: PinActionValues;
 	idle: number;
-	active: number;
 	pressed: number;
 	is_polarized: boolean;
-	release: number;
 	noise: number;
 	rapidTrigger: boolean;
 	// Rapid trigger v2. These are percentages of the idle->pressed travel, so they
@@ -24,10 +22,8 @@ export type Trigger = {
 export const DEFAULT_TRIGGER: Trigger = {
 	action: -10 as PinActionValues,
 	idle: 150,
-	active: 2000,
 	pressed: 3500,
 	is_polarized: false,
-	release: 2000,
 	noise: 30,
 	rapidTrigger: false,
 	actuationPoint: 35,
