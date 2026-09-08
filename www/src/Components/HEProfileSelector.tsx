@@ -44,8 +44,14 @@ const HEProfileSelector = ({
 		setProfileAction,
 		toggleProfileEnabled,
 		setProfileTuning,
+		copyProfile,
+		exportProfile,
+		importProfile,
 		saveHEProfiles,
 	} = useHEProfileStore();
+	const [copyFrom, setCopyFrom] = useState<number[]>([]);
+	const [codeText, setCodeText] = useState<string[]>([]);
+	const [codeMessage, setCodeMessage] = useState('');
 	const { triggers, setHETrigger, saveHETriggers } = useHETriggerStore();
 	const [saveMessage, setSaveMessage] = useState('');
 
@@ -64,6 +70,49 @@ const HEProfileSelector = ({
 			setSaveMessage(t('Common:saved-success-message'));
 		} catch (error) {
 			setSaveMessage(t('Common:saved-error-message'));
+		}
+	};
+
+	const profileName = (index: number) =>
+		index === 0
+			? t('HETrigger:profile-base-label')
+			: t('HETrigger:profile-label', { number: index + 1 });
+
+	const handleCopy = (toIndex: number) => {
+		const fromIndex = copyFrom[toIndex];
+		if (fromIndex === undefined) return;
+		copyProfile(fromIndex, toIndex);
+		setCodeMessage(
+			t('HETrigger:profile-copied', {
+				from: profileName(fromIndex),
+				to: profileName(toIndex),
+			}),
+		);
+	};
+
+	const handleExport = async (index: number) => {
+		const code = exportProfile(index);
+		setCodeText((prev) => {
+			const next = [...prev];
+			next[index] = code;
+			return next;
+		});
+		try {
+			await navigator.clipboard.writeText(code);
+			setCodeMessage(t('HETrigger:profile-code-copied'));
+		} catch {
+			// Clipboard access is not always granted; the code is shown in the field
+			// either way, so this is not worth surfacing as an error.
+			setCodeMessage(t('HETrigger:profile-code-ready'));
+		}
+	};
+
+	const handleImport = (index: number) => {
+		try {
+			importProfile(index, codeText[index] ?? '');
+			setCodeMessage(t('HETrigger:profile-code-applied'));
+		} catch (e) {
+			setCodeMessage(String(e instanceof Error ? e.message : e));
 		}
 	};
 
@@ -223,6 +272,77 @@ const HEProfileSelector = ({
 								</div>
 							)}
 
+							{/* Copy another profile's bindings in, or move a profile between boards
+							    as a pasteable code. */}
+							<div className="he-profile-transfer mb-3">
+								<div className="he-transfer-row">
+									<Form.Select
+										size="sm"
+										value={copyFrom[profileIndex] ?? ''}
+										onChange={(e) =>
+											setCopyFrom((prev) => {
+												const next = [...prev];
+												next[profileIndex] = Number(e.target.value);
+												return next;
+											})
+										}
+									>
+										<option value="">
+											{t('HETrigger:profile-copy-placeholder')}
+										</option>
+										{profiles.map((_, index) =>
+											index === profileIndex ? null : (
+												<option
+													key={`copy-${profileIndex}-${index}`}
+													value={index}
+												>
+													{profileName(index)}
+												</option>
+											),
+										)}
+									</Form.Select>
+									<Button
+										size="sm"
+										variant="outline-secondary"
+										disabled={copyFrom[profileIndex] === undefined}
+										onClick={() => handleCopy(profileIndex)}
+									>
+										{t('HETrigger:profile-copy-button')}
+									</Button>
+								</div>
+								<div className="he-transfer-row">
+									<Form.Control
+										size="sm"
+										placeholder={t('HETrigger:profile-code-placeholder')}
+										value={codeText[profileIndex] ?? ''}
+										onChange={(e) =>
+											setCodeText((prev) => {
+												const next = [...prev];
+												next[profileIndex] = e.target.value;
+												return next;
+											})
+										}
+									/>
+									<Button
+										size="sm"
+										variant="outline-secondary"
+										onClick={() => handleExport(profileIndex)}
+									>
+										{t('HETrigger:profile-code-copy')}
+									</Button>
+									<Button
+										size="sm"
+										variant="outline-secondary"
+										disabled={!codeText[profileIndex]}
+										onClick={() => handleImport(profileIndex)}
+									>
+										{t('HETrigger:profile-code-apply')}
+									</Button>
+								</div>
+								{codeMessage && (
+									<div className="he-transfer-message">{codeMessage}</div>
+								)}
+							</div>
 							{connectedMuxes.map((adcPin, muxIndex) =>
 								adcPin === -1 ? null : (
 									<div

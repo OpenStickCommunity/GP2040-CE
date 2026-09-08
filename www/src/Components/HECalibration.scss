@@ -247,3 +247,22 @@
 	flex: 0 0 auto;
 	width: 7.5rem;
 }
+
+// Profile copy / code transfer controls.
+.he-profile-transfer {
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+	max-width: 34rem;
+}
+
+.he-transfer-row {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+}
+
+.he-transfer-message {
+	font-size: 0.85rem;
+	opacity: 0.85;
+}
