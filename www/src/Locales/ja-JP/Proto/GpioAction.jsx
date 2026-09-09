@@ -116,4 +116,12 @@ export default {
 	'MODE_WHEEL_PEDAL_GAS': 'アクセルペダル',
 	'MODE_WHEEL_PEDAL_BRAKE': 'ブレーキペダル',
 	'MODE_WHEEL_PEDAL_CLUTCH': 'クラッチペダル',
+	'SUSTAIN_PROFILE_SLIDER_POSITION_1': 'プロフィールスライダーポジション 1',
+	'SUSTAIN_PROFILE_SLIDER_POSITION_2': 'プロフィールスライダーポジション 2',
+	'SUSTAIN_PROFILE_SLIDER_POSITION_3': 'プロフィールスライダーポジション 3',
+	'SUSTAIN_PROFILE_SLIDER_POSITION_4': 'プロフィールスライダーポジション 4',
+	'SUSTAIN_PROFILE_SLIDER_POSITION_5': 'プロフィールスライダーポジション 5',
+	'SUSTAIN_PROFILE_SLIDER_POSITION_6': 'プロフィールスライダーポジション 6',
+	'SUSTAIN_PROFILE_SLIDER_POSITION_7': 'プロフィールスライダーポジション 7',
+	'SUSTAIN_PROFILE_SLIDER_POSITION_8': 'プロフィールスライダーポジション 8',
 };

@@ -104,6 +104,11 @@ export default {
 		"Hinweis: PS4, PS3 und Nintendo Switch modi unterstützen nicht die SOCD-Säuberung auf 'Aus' und verwenden standardmäßig den neutralen SOCD-Säuberungsmodus",
 	'socd-cleaning-mode-selection-slider-mode-default-label':
 		'SOCD Schieberegler Modus Standard',
+	'profile-slider-header-text': 'Profilauswahl-Schieberegler',
+	'profile-slider-sub-header-text': 'Hinweis: GPIO-Pins für die Positionen des Profilschiebereglers werden auf der Seite Pin-Zuordnung konfiguriert.',
+	'profile-slider-num-positions-label': 'Anzahl der Schiebereglerpositionen',
+	'profile-slider-default-profile-label': 'Standardprofil',
+	'profile-slider-position-label': 'Profil für Position {{position}}',
 	'ps4-mode-sub-header': 'HAFTUNGSAUSSCHLUSS!',
 	'ps4-mode-sub-header-text':
 		'GP2040-CE WIRD NIEMALS DIESE DATEIEN ZUR VERFÜGUNG STELLEN!!!',

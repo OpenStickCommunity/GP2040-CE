@@ -4,7 +4,6 @@
 #include <vector>
 
 #include "peripheralmanager.h"
-#include "obd_ssd1306.h"
 #include "tiny_ssd1306.h"
 
 std::map<GPGFX_DisplayType, std::map<GPGFX_DisplaySize, GPGFX_DisplayMetrics>> GPGFX_DisplayModes = {

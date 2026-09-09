@@ -5,7 +5,8 @@ export default {
 	'pin-viewer': '端子確認',
 	'pin-pressed': 'このボタンの配線先は {{pressedPin}} 番端子です！',
 	'profile-label-title': 'プロファイル名',
-	'profile-label-description': '最大１６文字。半角英数とスペースのみ。',
+	'profile-label-description':
+		'最大16文字。印字可能なASCII文字を使用できます。',
 	'profile-pin-mapping-title': '{{profileLabel}} - 端子割当',
 	'profile-label-default': 'プロファイル {{profileNumber}}',
 	'profile-add-button': '+ プロファイル追加',

@@ -1,5 +1,5 @@
-#ifndef _I2CAnalog_H
-#define _I2CAnalog_H
+#ifndef _I2CAnalog1219_H
+#define _I2CAnalog1219_H
 
 #include "ads1219_dev.h"
 
@@ -33,7 +33,7 @@
 #endif
 
 // Analog Module Name
-#define I2CAnalog1219Name "I2CAnalog"
+#define I2CAnalog1219Name "ADS1219I2CAnalog"
 
 typedef struct {
     float A[4];
@@ -56,4 +56,5 @@ private:
     uint32_t nextTimer;         // Turbo Timer
 };
 
-#endif  // _I2CAnalog_H_
+
+#endif  // _I2CAnalog1219_H_

@@ -4,6 +4,7 @@
 #include "drivermanager.h"
 #include "pico/stdlib.h"
 #include "version.h"
+#include <algorithm>
 
 void DisplaySaverScreen::init() {
     const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
@@ -79,10 +80,7 @@ void DisplaySaverScreen::drawSnowScene() {
                 uint8_t speed = snowflakeSpeeds[x][y];
                 uint8_t newY = y + speed;
                 int8_t drift = snowflakeDrift[x][y];
-                int8_t newX = x + drift;
-
-                if (newX < 0) newX = 0;
-                if (newX >= SCREEN_WIDTH) newX = SCREEN_WIDTH - 1;
+                int8_t newX = std::clamp((x + drift), 0, (SCREEN_WIDTH - 1));
 
                 if (newY >= SCREEN_HEIGHT) {
                     getRenderer()->drawPixel(x, y, 0);

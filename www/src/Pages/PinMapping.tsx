@@ -141,7 +141,7 @@ const ProfileLabel = memo(function ProfileLabel({
 		(event: React.ChangeEvent<HTMLInputElement>) =>
 			setProfileLabel(
 				profileIndex,
-				event.target.value.replace(/[^a-zA-Z0-9\s]/g, ''),
+				event.target.value.replace(/[^\x20-\x7e]/g, ''),
 			),
 		[],
 	);
@@ -157,7 +157,7 @@ const ProfileLabel = memo(function ProfileLabel({
 				})}
 				onChange={onLabelChange}
 				maxLength={16}
-				pattern="[a-zA-Z0-9\s]+"
+				pattern="[\x20-\x7e]+"
 			/>
 			<Form.Text muted>{t('PinMapping:profile-label-description')}</Form.Text>
 		</div>

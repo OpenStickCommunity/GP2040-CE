@@ -6,7 +6,7 @@ export default {
 	'pin-pressed': 'Basılan GPIO Pini: {{pressedPin}}',
 	'profile-label-title': 'Profil adı',
 	'profile-label-description':
-		'En fazla 16 karakter. Harf, rakam ve boşluklara izin verilir.',
+		'En fazla 16 karakter. Yazdırılabilir ASCII karakterlerine izin verilir.',
 	'profile-pin-mapping-title': '{{profileLabel}} - GPIO Pin Eşlemesi',
 	'profile-label-default': 'Profil {{profileNumber}}',
 	'profile-add-button': '+ Profil Ekle',

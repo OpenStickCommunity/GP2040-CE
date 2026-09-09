@@ -6,7 +6,7 @@ export default {
 	'pin-pressed': 'Pin presionado: {{pressedPin}}',
 	'profile-label-title': 'Nombre del perfil',
 	'profile-label-description':
-		'Máximo 16 caracteres. Se permiten letras, números y espacios.',
+		'Máximo 16 caracteres. Se permiten caracteres ASCII imprimibles.',
 	'profile-pin-mapping-title': '{{profileLabel}} - Mapeo de Pines GPIO',
 	'profile-label-default': 'Perfil {{profileNumber}}',
 	'profile-add-button': '+ Añadir Perfil',

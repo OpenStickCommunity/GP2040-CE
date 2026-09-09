@@ -6,7 +6,7 @@ export default {
 	'pin-pressed': 'Broche GPIO activée : {{pressedPin}}',
 	'profile-label-title': 'Nom du profil',
 	'profile-label-description':
-		'16 caractères maximum. Lettres, chiffres et espaces autorisés.',
+		'16 caractères maximum. Les caractères ASCII imprimables sont autorisés.',
 	'profile-pin-mapping-title': '{{profileLabel}} - Mappage des broches GPIO',
 	'profile-label-default': 'Profil {{profileNumber}}',
 	'profile-add-button': '+ Ajouter un profil',
