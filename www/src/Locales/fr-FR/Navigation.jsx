@@ -2,7 +2,7 @@ export default {
 	'add-ons-label': 'Configuration des modules complémentaires',
 	'backup-label': 'Sauvegarde et restauration des données',
 	'config-label': 'Configuration',
-	'display-config-label': 'Configuration de l\'affichage',
+	'display-config-label': "Configuration de l'affichage",
 	'docs-label': 'Documentation',
 	'github-label': 'GitHub',
 	'home-label': 'Accueil',
@@ -22,7 +22,8 @@ export default {
 	'reboot-modal-button-progress-label': 'Redémarrage en cours',
 	'reboot-modal-button-success-label': 'Terminé !',
 	'reboot-modal-label': 'Redémarrer ?',
-	'reboot-modal-success': 'Redémarrage terminé, cet onglet peut maintenant être fermé.',
+	'reboot-modal-success':
+		'Redémarrage terminé, cet onglet peut maintenant être fermé.',
 	'resetSettings-label': 'Réinitialiser les paramètres',
 	'settings-label': 'Paramètres',
 };

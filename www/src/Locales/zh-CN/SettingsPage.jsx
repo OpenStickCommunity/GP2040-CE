@@ -73,8 +73,7 @@ export default {
 	'hotkey-settings-label': '快捷键设置',
 	'hotkey-settings-sub-header':
 		'<strong>Fn</strong> 滑块可在 <link_pinmap>引脚映射</link_pinmap> 页面中设置可自定义的功能按键。启用了 Fn 滑块选项后，必须在按住功能键 (Fn) 的同时按下对应组合键。此外，在下拉菜单中选择 <strong>无</strong> 可取消按键绑定。',
-	'hotkey-settings-warning':
-		'尚未映射功能键 (Fn)，Fn 组合键逻辑将无法使用。',
+	'hotkey-settings-warning': '尚未映射功能键 (Fn)，Fn 组合键逻辑将无法使用。',
 	'hotkey-actions': {
 		'no-action': '无动作',
 		'dpad-digital': '十字键数字模式',

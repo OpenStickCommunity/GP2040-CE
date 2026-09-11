@@ -88,8 +88,7 @@ export default {
 	},
 	theme: {
 		'profile-label': 'Active profile',
-		'idle-timout-label':
-			'Disable Lights Timeout (0 is disabled)',
+		'idle-timout-label': 'Disable Lights Timeout (0 is disabled)',
 		'current-led-brightness-label': 'Current Brightness: {{percent}}% of max',
 		'profile-number': 'Profile {{profileNumber}}',
 		'case-animation-label': 'Case animation',
@@ -113,10 +112,8 @@ export default {
 			'A disabled profile will not be available when using hotkeys to change profile.',
 		'switch-case-light-pressed-label':
 			'Include case lights in pressed animations',
-		'switch-specialpressed-rainbow-label':
-			'Pressed special color is rainbow',
-		'switch-specialnonpressed-rainbow-label':
-			'Idle special color is rainbow',
+		'switch-specialpressed-rainbow-label': 'Pressed special color is rainbow',
+		'switch-specialnonpressed-rainbow-label': 'Idle special color is rainbow',
 		'layout-mode-label': 'Layout mode',
 		'layout-mode-description':
 			'Layout mode allows for manual configuration of LED positions and GPIO pins.',

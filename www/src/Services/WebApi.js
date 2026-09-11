@@ -8,13 +8,13 @@ export const baseUrl =
 		: import.meta.env.VITE_DEV_BASE_URL;
 
 export const baseBoardDefinitions = {
-	"pico": {
-		"minPin": 0,
-		"maxPin": 29,
-		"analogPins": [26, 27, 28, 29],
-		"availablePins": {},
-		"usedPins": {}
-	}
+	pico: {
+		minPin: 0,
+		maxPin: 29,
+		analogPins: [26, 27, 28, 29],
+		availablePins: {},
+		usedPins: {},
+	},
 };
 
 export const baseButtonMappings = {
@@ -779,6 +779,6 @@ export default {
 	getUsedPins,
 	getHeldPins,
 	abortGetHeldPins,
-    getBoardDefinition,
+	getBoardDefinition,
 	reboot,
 };

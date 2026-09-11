@@ -60,13 +60,13 @@ export default {
 	'controller-analog-leftturntable': 'Platine Gauche',
 	'controller-analog-rightturntable': 'Platine Droite',
 	'controller-analog-fader': 'Fader',
-	'controller-analog-effects': 'Potentiomètre d\'effets',
+	'controller-analog-effects': "Potentiomètre d'effets",
 	'controller-analog-whammybar': 'Barre Whammy',
 	'controller-analog-axis-x': 'Axe X +/-',
 	'controller-analog-axis-y': 'Axe Y +/-',
 	'controller-analog-axis-trigger': 'Déclencheur',
 	'analog-axis-mode-trigger':
-		'<0>La plage complète des valeurs sera envoyée à l\'interface.</0>',
+		"<0>La plage complète des valeurs sera envoyée à l'interface.</0>",
 	'analog-axis-mode-button':
 		'<0>Agît comme un interrupteur numérique, définissant un état "appuyé" après un seuil défini.</0>',
 	'analog-axis-mode-normal-direction':

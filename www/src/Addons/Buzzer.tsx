@@ -35,19 +35,25 @@ export const buzzerState = {
 	buzzerVolume: 100,
 };
 
-const Buzzer = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) => {
+const Buzzer = ({
+	values,
+	errors,
+	handleChange,
+	handleCheckbox,
+}: AddonPropTypes) => {
 	const { t } = useTranslation();
 	const { boardDefinition } = useBoardDefinition();
 	return (
-		<Section title={
-			<a
-				href="https://gp2040-ce.info/add-ons/buzzer-speaker"
-				target="_blank"
-				className="text-reset text-decoration-none"
-			>
-				{t('AddonsConfig:buzzer-speaker-header-text')}
-			</a>
-		}
+		<Section
+			title={
+				<a
+					href="https://gp2040-ce.info/add-ons/buzzer-speaker"
+					target="_blank"
+					className="text-reset text-decoration-none"
+				>
+					{t('AddonsConfig:buzzer-speaker-header-text')}
+				</a>
+			}
 		>
 			<div
 				id="BuzzerSpeakerAddonOptions"

@@ -1,18 +1,16 @@
 export default {
 	'sub-header-text': `使用 GPIO 引脚查看器查看按键与 GPIO 引脚的连接状态。`,
 	'alert-text':
-		"将按键映射到未连接或不可用的引脚可能会导致设备进入无法正常工作的状态。如需清除无效配置，请前往 <2>重置设置</2> 页面。",
+		'将按键映射到未连接或不可用的引脚可能会导致设备进入无法正常工作的状态。如需清除无效配置，请前往 <2>重置设置</2> 页面。',
 	'pin-viewer': 'GPIO 引脚查看器',
 	'pin-pressed': '当前按下的 GPIO 引脚：{{pressedPin}}',
 	'profile-label-title': '配置文件名称',
-	'profile-label-description':
-		'最多 16 个字符。支持可打印 ASCII 字符。',
+	'profile-label-description': '最多 16 个字符。支持可打印 ASCII 字符。',
 	'profile-pin-mapping-title': '{{profileLabel}} - GPIO 引脚映射',
 	'profile-label-default': '配置文件 {{profileNumber}}',
 	'profile-add-button': '+ 添加配置文件',
 	'profile-disabled': ' - (已禁用)',
-	'profile-enabled-tooltip':
-		'被禁用的配置文件在通过快捷键切换时将被跳过。',
+	'profile-enabled-tooltip': '被禁用的配置文件在通过快捷键切换时将被跳过。',
 	'profile-enabled-active-tooltip':
 		'无法禁用当前激活的配置文件，请在“系统设置 > 手柄设置”中更改。',
 	'profile-pins-warning':

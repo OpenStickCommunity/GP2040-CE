@@ -1,4 +1,3 @@
-
 // Definitions should match those in /AnimationStation/animation.h
 export const LED_COLORS = [
 	{ value: 0, label: 'Black', color: '#000000' },
@@ -29,4 +28,4 @@ export const LIGHT_TYPES = {
 	Case: 1,
 	Turbo: 2,
 	PlayerLight: 3,
-}
+};

@@ -271,9 +271,7 @@ export default function LightCoordsSection({
 									className="form-control"
 									groupClassName="mb-3"
 									value={values.Lights[selectedLight]?.numLedsOnLight}
-									error={
-										getLightError(errors, selectedLight)?.numLedsOnLight
-									}
+									error={getLightError(errors, selectedLight)?.numLedsOnLight}
 									isInvalid={Boolean(
 										getLightError(errors, selectedLight)?.numLedsOnLight,
 									)}
@@ -289,9 +287,7 @@ export default function LightCoordsSection({
 									className="form-control"
 									groupClassName="mb-3"
 									value={values.Lights[selectedLight]?.firstLedIndex}
-									error={
-										getLightError(errors, selectedLight)?.firstLedIndex
-									}
+									error={getLightError(errors, selectedLight)?.firstLedIndex}
 									isInvalid={Boolean(
 										getLightError(errors, selectedLight)?.firstLedIndex,
 									)}

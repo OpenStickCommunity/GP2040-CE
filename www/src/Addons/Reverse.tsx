@@ -34,7 +34,12 @@ export const reverseState = {
 	reverseActionRight: 0,
 };
 
-const Reverse = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) => {
+const Reverse = ({
+	values,
+	errors,
+	handleChange,
+	handleCheckbox,
+}: AddonPropTypes) => {
 	const { t } = useTranslation();
 	const { usedPins } = useContext(AppContext);
 	const { boardDefinition } = useBoardDefinition();
@@ -43,15 +48,16 @@ const Reverse = ({ values, errors, handleChange, handleCheckbox }: AddonPropType
 		label: t(`AddonsConfig:reverse-action-${option.label.toLowerCase()}-label`),
 	}));
 	return (
-		<Section title={
-			<a
-				href="https://gp2040-ce.info/add-ons/input-reverse"
-				target="_blank"
-				className="text-reset text-decoration-none"
-			>
-				{t('AddonsConfig:input-reverse-header-text')}
-			</a>
-		}
+		<Section
+			title={
+				<a
+					href="https://gp2040-ce.info/add-ons/input-reverse"
+					target="_blank"
+					className="text-reset text-decoration-none"
+				>
+					{t('AddonsConfig:input-reverse-header-text')}
+				</a>
+			}
 		>
 			<div id="ReverseInputOptions" hidden={!values.ReverseInputEnabled}>
 				<Row className="mb-3">

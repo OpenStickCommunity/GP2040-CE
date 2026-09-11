@@ -111,14 +111,14 @@ export default {
 	'player-number-sub-header-text':
 		'플레이어 번호가 활성화된 여러개의 GP2040-CE 장치를 연결하는 경우에만 이 옵션을 활성화하십시오.',
 	'player-number-label': '플레이어 번호',
-	'socd-cleaning-mode-selection-slider-header-text':
-		'SOCD 모드 선택 슬라이더',
+	'socd-cleaning-mode-selection-slider-header-text': 'SOCD 모드 선택 슬라이더',
 	'socd-cleaning-mode-selection-slider-sub-header-text':
 		'참고：PS4, PS3 및 닌텐도 스위치 모드에서는 SOCD 클리닝 끄기를 지원하지 않으며 중립이 기본 값으로 설정됩니다.',
 	'socd-cleaning-mode-selection-slider-mode-default-label':
 		'SOCD 슬라이더 모드 기본값',
 	'ps4-mode-sub-header': '주의!',
-	'ps4-mode-sub-header-text':'어떠한 경우에도 GP2040-CE에서는 다음의 파일을 제공하지 않습니다!!!',
+	'ps4-mode-sub-header-text':
+		'어떠한 경우에도 GP2040-CE에서는 다음의 파일을 제공하지 않습니다!!!',
 	'ps4-mode-text':
 		'3개의 필수 파일을 업로드하고 "확인 및 저장" 버튼을 클릭하여 PS4 모드를 사용하십시오.',
 	'ps4-mode-private-key-label': 'Private Key (PEM)',
@@ -172,7 +172,8 @@ export default {
 	'socd-slider-mode-3': '선 입력 우선',
 	'socd-slider-mode-4': 'SOCD 끄기',
 	'profile-slider-header-text': '프로필 선택 슬라이더',
-	'profile-slider-sub-header-text': '참고: 프로필 슬라이더 위치에 대한 GPIO 핀은 핀 매핑 페이지에서 구성됩니다.',
+	'profile-slider-sub-header-text':
+		'참고: 프로필 슬라이더 위치에 대한 GPIO 핀은 핀 매핑 페이지에서 구성됩니다.',
 	'profile-slider-num-positions-label': '슬라이더 위치 수',
 	'profile-slider-default-profile-label': '기본 프로필',
 	'profile-slider-position-label': '위치 {{position}}의 프로필',
@@ -187,7 +188,8 @@ export default {
 	'drv8833-rumble-duty-min-label': '최소 듀티 사이클',
 	'drv8833-rumble-duty-max-label': '최대 듀티 사이클',
 	'tg16-extension-header-text': 'PC 엔진/터보그래픽스-16 확장 설정',
-	'tg16-extension-sub-header-text': '참고 ：디스플레이가 동시에 활성화되면 현재 애드온은 비활성화됩니다',
+	'tg16-extension-sub-header-text':
+		'참고 ：디스플레이가 동시에 활성화되면 현재 애드온은 비활성화됩니다',
 	'tg16-extension-oe-pin-label': 'OE GPIO 핀',
 	'tg16-extension-select-pin-label': 'GPIO 핀 선택',
 	'tg16-extension-data-pin0-label': '데이터 GPIO 핀 0 (U_I)',

@@ -109,195 +109,201 @@ const INITIAL_STATE = {
 	errorMessage: undefined,
 };
 
-export const useBootModeStore = create<State & { actions: Actions }>()((set, get) => ({
-	...INITIAL_STATE,
-	actions: {
-		addBootMode: () => {
-			set((state) => ({
-				...state,
-				bootModes: {
-					...state.bootModes,
-					[`inputMode-${nanoid()}`]: {
-						pins: new Set(),
-						inputMode: undefined,
-						profileIndex: undefined,
-					},
-				},
-			}));
-		},
-
-		removeBootMode: (key: string) => {
-			set((state) => {
-				let newModes = { ...state.bootModes };
-				delete newModes[key];
-				return {
+export const useBootModeStore = create<State & { actions: Actions }>()(
+	(set, get) => ({
+		...INITIAL_STATE,
+		actions: {
+			addBootMode: () => {
+				set((state) => ({
 					...state,
-					bootModes: newModes,
-				};
-			});
-		},
+					bootModes: {
+						...state.bootModes,
+						[`inputMode-${nanoid()}`]: {
+							pins: new Set(),
+							inputMode: undefined,
+							profileIndex: undefined,
+						},
+					},
+				}));
+			},
 
-		fetchBootModeOptions: async () => {
-			set({ loadingBootModes: true });
-			let response: APIResponseData;
+			removeBootMode: (key: string) => {
+				set((state) => {
+					let newModes = { ...state.bootModes };
+					delete newModes[key];
+					return {
+						...state,
+						bootModes: newModes,
+					};
+				});
+			},
 
-			const [boardDefinition] = await Promise.all([
-				fetch(`${baseUrl}/api/getBoardDefinition`).then((res) => res.json()),
-			]);
+			fetchBootModeOptions: async () => {
+				set({ loadingBootModes: true });
+				let response: APIResponseData;
 
-			const NUM_PINS = boardDefinition.maxPin+1;
-			try {
-				let { data } = await WebApi.getBootModeOptions();
-				response = data;
-			} catch (error) {
-				console.error(error);
-				set({
-					errorMessage: 'Failed to load boot mode options',
+				const [boardDefinition] = await Promise.all([
+					fetch(`${baseUrl}/api/getBoardDefinition`).then((res) => res.json()),
+				]);
+
+				const NUM_PINS = boardDefinition.maxPin + 1;
+				try {
+					let { data } = await WebApi.getBootModeOptions();
+					response = data;
+				} catch (error) {
+					console.error(error);
+					set({
+						errorMessage: 'Failed to load boot mode options',
+						loadingBootModes: false,
+					});
+					return;
+				}
+
+				let { enabled, webConfigPinMask, usbModePinMask, inputModeMappings } =
+					response;
+
+				let inputModes: { [key: string]: BootModeMapping } = {};
+				for (const m of inputModeMappings) {
+					if (m.inputMode == -1) {
+						continue;
+					}
+					inputModes[`inputMode-${nanoid()}`] = {
+						pins: maskToSet(m.pinMask, NUM_PINS),
+						inputMode: m.inputMode as InputMode,
+						profileIndex:
+							m.profileNumber == 0 ? undefined : m.profileNumber - 1,
+					};
+				}
+
+				set((state) => ({
+					...state,
 					loadingBootModes: false,
-				});
-				return;
-			}
+					enabled: !!enabled,
+					bootModes: {
+						webConfig: {
+							pins: maskToSet(webConfigPinMask, NUM_PINS),
+							inputMode: undefined,
+							profileIndex: undefined,
+						},
+						usbMode: {
+							pins: maskToSet(usbModePinMask, NUM_PINS),
+							inputMode: undefined,
+							profileIndex: undefined,
+						},
+						...inputModes,
+					},
+				}));
+			},
 
-			let { enabled, webConfigPinMask, usbModePinMask, inputModeMappings } = response;
-
-			let inputModes: { [key: string]: BootModeMapping } = {};
-			for (const m of inputModeMappings) {
-				if (m.inputMode == -1) {
-					continue;
-				}
-				inputModes[`inputMode-${nanoid()}`] = {
-					pins: maskToSet(m.pinMask, NUM_PINS),
-					inputMode: m.inputMode as InputMode,
-					profileIndex: m.profileNumber == 0 ? undefined : m.profileNumber - 1,
+			saveBootModeOptions: async (errorMessage: string) => {
+				const { bootModes, enabled } = get();
+				set({ saveAttempted: true });
+				const postData: APIResponseData = {
+					webConfigPinMask: setToMask(bootModes['webConfig'].pins),
+					usbModePinMask: setToMask(bootModes['usbMode'].pins),
+					enabled: enabled,
+					inputModeMappings: Object.entries(bootModes)
+						.filter(([k, _v], _i) => k.startsWith('inputMode-'))
+						.map(([_, m], _i) => ({
+							pinMask: setToMask(m.pins),
+							inputMode: m.inputMode === undefined ? 0 : m.inputMode,
+							profileNumber:
+								m.profileIndex === undefined ? 0 : m.profileIndex + 1,
+						})),
 				};
-			}
-
-			set((state) => ({
-				...state,
-				loadingBootModes: false,
-				enabled: !!enabled,
-				bootModes: {
-					webConfig: {
-						pins: maskToSet(webConfigPinMask, NUM_PINS),
-						inputMode: undefined,
-						profileIndex: undefined,
-					},
-					usbMode: {
-						pins: maskToSet(usbModePinMask, NUM_PINS),
-						inputMode: undefined,
-						profileIndex: undefined,
-					},
-					...inputModes,
-				},
-			}));
-		},
-
-		saveBootModeOptions: async (errorMessage: string) => {
-			const { bootModes, enabled } = get();
-			set({ saveAttempted: true });
-			const postData: APIResponseData = {
-				webConfigPinMask: setToMask(bootModes['webConfig'].pins),
-				usbModePinMask: setToMask(bootModes['usbMode'].pins),
-				enabled: enabled,
-				inputModeMappings: Object.entries(bootModes)
-					.filter(([k, _v], _i) => k.startsWith('inputMode-'))
-					.map(([_, m], _i) => ({
-						pinMask: setToMask(m.pins),
-						inputMode: m.inputMode === undefined ? 0 : m.inputMode,
-						profileNumber: m.profileIndex === undefined ? 0 : m.profileIndex + 1,
-					})),
-			};
-			try {
-				await WebApi.setBootModeOptions(postData);
-				set({ dirty: false });
-			} catch (error) {
-				set({ saveAttempted: true, errorMessage: errorMessage });
-			}
-		},
-
-		addPin: (key: string, pin: number) => {
-			set((state) => {
-				let newModes = { ...state.bootModes };
-				let newPins = new Set([...newModes[key].pins, pin]);
-				newModes[key].pins = newPins;
-				return { ...state, bootModes: newModes };
-			});
-		},
-
-		removePin: (key: string, pin: number) => {
-			set((state) => {
-				let newModes = { ...state.bootModes };
-				let newPins = new Set([...newModes[key].pins]);
-				newPins.delete(pin);
-				newModes[key].pins = newPins;
-				return { ...state, bootModes: newModes };
-			});
-		},
-
-		setInputMode: (key: string, inputMode?: InputMode) => {
-			set((state) => {
-				let newModes = { ...state.bootModes };
-				newModes[key].inputMode = inputMode;
-				return { ...state, bootModes: newModes };
-			});
-		},
-
-		setProfileIndex: (key: string, profileIndex?: number) => {
-			set((state) => {
-				let newModes = { ...state.bootModes };
-				newModes[key].profileIndex = profileIndex;
-				return { ...state, bootModes: newModes };
-			});
-		},
-
-		setEnabled: (value: boolean) => {
-			set({ enabled: value });
-		},
-
-		setDirty: () => {
-			set({ dirty: true });
-		},
-
-		clearErrors: () => {
-			set({ saveAttempted: false, errorMessage: undefined });
-		},
-
-		validatePins: (errorMessage: string) => {
-			const { bootModes } = get();
-			const duplicates = findDuplicates(bootModes);
-			if (duplicates.length > 0) {
-				set({
-					errorMessage: errorMessage,
-					modesWithDuplicates: duplicates,
-				});
-				return false;
-			} else {
-				set({
-					errorMessage: undefined,
-					modesWithDuplicates: [],
-				});
-				return true;
-			}
-		},
-
-		validateRequired: (errorMessage: string) => {
-			const { bootModes } = get();
-			for (const [key, mode] of Object.entries(bootModes)) {
-				let valid = true;
-				if (key.startsWith('inputMode-')) {
-					valid = !(mode.inputMode === undefined || mode.pins.size == 0);
-				} else {
-					valid = mode.pins.size > 0;
+				try {
+					await WebApi.setBootModeOptions(postData);
+					set({ dirty: false });
+				} catch (error) {
+					set({ saveAttempted: true, errorMessage: errorMessage });
 				}
-				if (!valid) {
-					set({ errorMessage: errorMessage });
+			},
+
+			addPin: (key: string, pin: number) => {
+				set((state) => {
+					let newModes = { ...state.bootModes };
+					let newPins = new Set([...newModes[key].pins, pin]);
+					newModes[key].pins = newPins;
+					return { ...state, bootModes: newModes };
+				});
+			},
+
+			removePin: (key: string, pin: number) => {
+				set((state) => {
+					let newModes = { ...state.bootModes };
+					let newPins = new Set([...newModes[key].pins]);
+					newPins.delete(pin);
+					newModes[key].pins = newPins;
+					return { ...state, bootModes: newModes };
+				});
+			},
+
+			setInputMode: (key: string, inputMode?: InputMode) => {
+				set((state) => {
+					let newModes = { ...state.bootModes };
+					newModes[key].inputMode = inputMode;
+					return { ...state, bootModes: newModes };
+				});
+			},
+
+			setProfileIndex: (key: string, profileIndex?: number) => {
+				set((state) => {
+					let newModes = { ...state.bootModes };
+					newModes[key].profileIndex = profileIndex;
+					return { ...state, bootModes: newModes };
+				});
+			},
+
+			setEnabled: (value: boolean) => {
+				set({ enabled: value });
+			},
+
+			setDirty: () => {
+				set({ dirty: true });
+			},
+
+			clearErrors: () => {
+				set({ saveAttempted: false, errorMessage: undefined });
+			},
+
+			validatePins: (errorMessage: string) => {
+				const { bootModes } = get();
+				const duplicates = findDuplicates(bootModes);
+				if (duplicates.length > 0) {
+					set({
+						errorMessage: errorMessage,
+						modesWithDuplicates: duplicates,
+					});
 					return false;
+				} else {
+					set({
+						errorMessage: undefined,
+						modesWithDuplicates: [],
+					});
+					return true;
 				}
-			}
-			set({ errorMessage: undefined });
-			return true;
-		},
-	},
-}));
+			},
 
-export const useBootModeStoreActions = () => useBootModeStore((state) => state.actions);
+			validateRequired: (errorMessage: string) => {
+				const { bootModes } = get();
+				for (const [key, mode] of Object.entries(bootModes)) {
+					let valid = true;
+					if (key.startsWith('inputMode-')) {
+						valid = !(mode.inputMode === undefined || mode.pins.size == 0);
+					} else {
+						valid = mode.pins.size > 0;
+					}
+					if (!valid) {
+						set({ errorMessage: errorMessage });
+						return false;
+					}
+				}
+				set({ errorMessage: undefined });
+				return true;
+			},
+		},
+	}),
+);
+
+export const useBootModeStoreActions = () =>
+	useBootModeStore((state) => state.actions);

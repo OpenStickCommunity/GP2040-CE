@@ -1,6 +1,7 @@
 export default {
 	'header-text': 'Déclencheurs à Effet Hall',
-	'desc-header-text': 'Le déclenchement à effet Hall prend en charge les multiplexeurs 4, 8 et 16 canaux.',
+	'desc-header-text':
+		'Le déclenchement à effet Hall prend en charge les multiplexeurs 4, 8 et 16 canaux.',
 	'available-pins-text': 'Broches ADC disponibles : {{pins}}',
 	'multiplexer-channel-select': 'Canaux par multiplexeur',
 	'direct-no-mux': 'Direct (sans multiplexeur)',
@@ -15,7 +16,8 @@ export default {
 	'adc-pin-1': 'Broche ADC 1',
 	'adc-pin-2': 'Broche ADC 2',
 	'adc-pin-3': 'Broche ADC 3',
-	'action-assignment-sub-header': 'Affectation des actions de déclenchement à effet Hall',
+	'action-assignment-sub-header':
+		'Affectation des actions de déclenchement à effet Hall',
 	'multiplexer-label': 'Multiplexeur',
 	'channel-label': 'Canal',
 	'voltage-table-show-label': 'Afficher le tableau des tensions',
@@ -46,13 +48,17 @@ export default {
 	'calibration-trigger-text': 'Tension de déclenchement',
 	'calibration-flip-polarity': 'Inverser la polarité',
 	'calibration-back-button': 'Retour',
-	'calibration-first-step': 'Nous devons calibrer la tension de repos et la tension maximale en appui du switch à effet Hall. ' +
-								'Une fois cela fait, nous pourrons régler le point d’activation à la profondeur souhaitée. ' +
-								'Commencez par calibrer la tension au repos. Ne touchez pas au switch et cliquez sur « Calibrer le repos ».',
-	'calibration-second-step': 'Ensuite, appuyez complètement sur le switch pour atteindre la profondeur maximale. La position d’activation pourra être ajustée après la calibration.',
-	'calibration-third-step': 'Enfin, ajustez le point d’activation afin de fixer la profondeur de déclenchement souhaitée. '+
-								'Une fois réglé, appuyez sur le switch pour vérifier qu’il s’active à la profondeur voulue.',
-	'calibration-manual-step': 'Veuillez ajuster manuellement les paramètres suivants du switch à effet Hall.'+
-							    'Une fois les valeurs souhaitées déterminées, vous pouvez les copier et les appliquer à tous les déclencheurs '+
-							    'du périphérique',
+	'calibration-first-step':
+		'Nous devons calibrer la tension de repos et la tension maximale en appui du switch à effet Hall. ' +
+		'Une fois cela fait, nous pourrons régler le point d’activation à la profondeur souhaitée. ' +
+		'Commencez par calibrer la tension au repos. Ne touchez pas au switch et cliquez sur « Calibrer le repos ».',
+	'calibration-second-step':
+		'Ensuite, appuyez complètement sur le switch pour atteindre la profondeur maximale. La position d’activation pourra être ajustée après la calibration.',
+	'calibration-third-step':
+		'Enfin, ajustez le point d’activation afin de fixer la profondeur de déclenchement souhaitée. ' +
+		'Une fois réglé, appuyez sur le switch pour vérifier qu’il s’active à la profondeur voulue.',
+	'calibration-manual-step':
+		'Veuillez ajuster manuellement les paramètres suivants du switch à effet Hall.' +
+		'Une fois les valeurs souhaitées déterminées, vous pouvez les copier et les appliquer à tous les déclencheurs ' +
+		'du périphérique',
 };

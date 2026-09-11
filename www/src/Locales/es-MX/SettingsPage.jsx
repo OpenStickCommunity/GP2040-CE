@@ -148,7 +148,8 @@ export default {
 		'disable-web-config': 'Deshabilitar Config Web',
 		'disable-both': 'Deshabilitar Ambos',
 	},
-	'forced-setup-mode-modal-title': 'Advertencia de Modo de Configuración Forzado',
+	'forced-setup-mode-modal-title':
+		'Advertencia de Modo de Configuración Forzado',
 	'forced-setup-mode-modal-body':
 		'Si reinicia al modo Controlador después de guardar, ya no tendrá acceso a la configuración web. Por favor escriba "<strong>{{warningCheckText}}</strong>" a continuación para desbloquear el botón Guardar si reconoce completamente esto y es su intención. Hacer clic en Descartar revertirá esta configuración que luego se guardará.',
 	'4-way-joystick-mode-label': 'Modo Joystick 4 Vías',

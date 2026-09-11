@@ -39,8 +39,10 @@ export default {
 	'analog-auto-calibration-enabled-stick-1': 'Stick 1 Auto Calibration Enabled',
 	'analog-auto-calibration-enabled-stick-2': 'Stick 2 Auto Calibration Enabled',
 	'analog-calibration-step-title': 'Calibration Step {{step}}/4',
-	'analog-calibration-step-instruction': 'Please move stick {{stick}} to {{direction}} position, then release to center',
-	'analog-calibration-step-confirm': 'Confirm stick {{stick}} has returned to center, then click "OK" to record center value {{step}}',
+	'analog-calibration-step-instruction':
+		'Please move stick {{stick}} to {{direction}} position, then release to center',
+	'analog-calibration-step-confirm':
+		'Confirm stick {{stick}} has returned to center, then click "OK" to record center value {{step}}',
 	'analog-calibration-cancelled': 'Calibration cancelled',
 	'analog-calibration-failed': 'Calibration failed: {{error}}',
 	'analog-calibration-success-stick-1': 'Stick 1 calibration successful!',
@@ -51,12 +53,18 @@ export default {
 	'analog-calibration-direction-bottom-left': 'Bottom-Left',
 	'analog-calibration-direction-bottom-right': 'Bottom-Right',
 	'analog-calibration-final-center': 'Final center value: X={{x}}, Y={{y}}',
-	'analog-calibration-save-notice': 'Please save configuration to apply calibration values.',
-	'analog-calibration-manual-mode-instruction-1': 'Click "Calibrate" button to start multi-step calibration process',
-	'analog-calibration-manual-mode-instruction-2': 'Follow prompts to move stick to four directions and center',
-	'analog-calibration-manual-mode-instruction-3': 'System will automatically calculate optimal center value',
-	'analog-calibration-manual-mode-instruction-4': 'Save configuration and restart device to apply calibration',
-	'analog-calibration-auto-mode-instruction': 'System will automatically read stick {{stick}} center value on startup. For manual calibration, please uncheck "Auto Calibration" first.',
+	'analog-calibration-save-notice':
+		'Please save configuration to apply calibration values.',
+	'analog-calibration-manual-mode-instruction-1':
+		'Click "Calibrate" button to start multi-step calibration process',
+	'analog-calibration-manual-mode-instruction-2':
+		'Follow prompts to move stick to four directions and center',
+	'analog-calibration-manual-mode-instruction-3':
+		'System will automatically calculate optimal center value',
+	'analog-calibration-manual-mode-instruction-4':
+		'Save configuration and restart device to apply calibration',
+	'analog-calibration-auto-mode-instruction':
+		'System will automatically read stick {{stick}} center value on startup. For manual calibration, please uncheck "Auto Calibration" first.',
 	'analog-smoothing': 'Analog Smoothing',
 	'smoothing-factor': 'Smoothing Factor',
 	'analog-error-label': 'Error Rate',
@@ -199,7 +207,8 @@ export default {
 	'socd-slider-mode-3': 'First Win',
 	'socd-slider-mode-4': 'SOCD Cleaning Off',
 	'profile-slider-header-text': 'Profile Selection Slider',
-	'profile-slider-sub-header-text': 'Note: GPIO pins for the profile slider positions are configured in the Pin Mapping page.',
+	'profile-slider-sub-header-text':
+		'Note: GPIO pins for the profile slider positions are configured in the Pin Mapping page.',
 	'profile-slider-num-positions-label': 'Number of Slider Positions',
 	'profile-slider-default-profile-label': 'Default Profile',
 	'profile-slider-position-label': 'Profile for Position {{position}}',
@@ -213,8 +222,10 @@ export default {
 	'drv8833-rumble-pwm-frequency-label': 'PWM Frequency',
 	'drv8833-rumble-duty-min-label': 'Minimum Duty Cycle',
 	'drv8833-rumble-duty-max-label': 'Maximum Duty Cycle',
-	'tg16-extension-header-text': 'PC Engine/TurboGrafx-16 Extension Configuration',
-	'tg16-extension-sub-header-text': 'Note: If the display is enabled at the same time, this add-on will be disabled.',
+	'tg16-extension-header-text':
+		'PC Engine/TurboGrafx-16 Extension Configuration',
+	'tg16-extension-sub-header-text':
+		'Note: If the display is enabled at the same time, this add-on will be disabled.',
 	'tg16-extension-oe-pin-label': 'OE GPIO Pin',
 	'tg16-extension-select-pin-label': 'Select GPIO Pin',
 	'tg16-extension-data-pin0-label': 'Data GPIO Pin 0 (U_I)',

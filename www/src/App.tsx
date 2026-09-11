@@ -16,7 +16,6 @@ import PlaygroundPage from './Pages/PlaygroundPage';
 import InputMacroAddonPage from './Pages/InputMacroAddonPage';
 import LedConfigPage from './Pages/LedConfigPage';
 
-
 import './App.scss';
 import BootModeMappingPage from './Pages/BootModeMapping';
 
@@ -30,7 +29,10 @@ const App = () => {
 						<Route path="/" element={<HomePage />} />
 						<Route path="/settings" element={<SettingsPage />} />
 						<Route path="/pin-mapping" element={<PinMappingPage />} />
-						<Route path="/boot-mode-mapping" element={<BootModeMappingPage />} />
+						<Route
+							path="/boot-mode-mapping"
+							element={<BootModeMappingPage />}
+						/>
 						<Route
 							path="/peripheral-mapping"
 							element={<PeripheralMappingPage />}

@@ -1,5 +1,13 @@
 import { useEffect, useState, useRef } from 'react';
-import { Button, Modal, Row, Col, ProgressBar, Form, Spinner } from 'react-bootstrap';
+import {
+	Button,
+	Modal,
+	Row,
+	Col,
+	ProgressBar,
+	Form,
+	Spinner,
+} from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 import FormControl from '../Components/FormControl';
@@ -22,7 +30,7 @@ type HECalibrationProps = {
 	showModal: boolean;
 	triggers: Trigger[];
 	values: any;
-}
+};
 
 const getOption = (e, actionId) => {
 	return {
@@ -60,10 +68,7 @@ const HECalibration = ({
 	const [noise, setNoise] = useState(50);
 	const [rapidTrigger, setRapidTrigger] = useState(false);
 
-
-
 	useEffect(() => {
-
 		let polarizedVoltage = voltage;
 		let polarizedRelease = release;
 		let polarizedActiveVoltage = voltageActive;
@@ -75,10 +80,10 @@ const HECalibration = ({
 			polarizedActiveVoltage = ADC_MAX - voltageActive;
 			polarizedLastVoltage = ADC_MAX - lastVoltage;
 		}
-		
+
 		if (!rapidTrigger) {
-			setActivationState(polarizedVoltage > polarizedActiveVoltage)
-			return
+			setActivationState(polarizedVoltage > polarizedActiveVoltage);
+			return;
 		}
 
 		if (Math.abs(voltage - lastVoltage) > noise) {
@@ -87,20 +92,27 @@ const HECalibration = ({
 
 		let pressing = false;
 		let releasing = false;
-		
-		if(polarizedVoltage > polarizedLastVoltage + noise) {
+
+		if (polarizedVoltage > polarizedLastVoltage + noise) {
 			pressing = true;
 		} else if (polarizedVoltage < polarizedLastVoltage - noise) {
 			releasing = true;
 		}
 
-		if (!activationState && pressing && polarizedVoltage > polarizedActiveVoltage) {
-			setActivationState(true)
-		} else if (activationState && releasing && polarizedVoltage < polarizedRelease) {
-			setActivationState(false)
+		if (
+			!activationState &&
+			pressing &&
+			polarizedVoltage > polarizedActiveVoltage
+		) {
+			setActivationState(true);
+		} else if (
+			activationState &&
+			releasing &&
+			polarizedVoltage < polarizedRelease
+		) {
+			setActivationState(false);
 		}
-		
-  	}, [voltage]);
+	}, [voltage]);
 
 	const saveCalibration = () => {
 		// Set to Trigger Store
@@ -114,9 +126,9 @@ const HECalibration = ({
 			release,
 			noise,
 			rapidTrigger,
-		})
+		});
 		stopCalibration();
-		if ( calibrateAllLoop ) {
+		if (calibrateAllLoop) {
 			checkNextTarget();
 		} else {
 			setShowModal(false);
@@ -124,7 +136,7 @@ const HECalibration = ({
 	};
 
 	const checkNextTarget = () => {
-		if ( nextTarget!== -1 ) {
+		if (nextTarget !== -1) {
 			target.current = nextTarget;
 			setNextTarget(getNextTarget());
 			updateTitle();
@@ -135,29 +147,34 @@ const HECalibration = ({
 	};
 
 	const updateTitle = () => {
-		if ( target.current !== -1 ) {
+		if (target.current !== -1) {
 			// set title
-			const option = getOption(triggers[target.current], triggers[target.current].action);
+			const option = getOption(
+				triggers[target.current],
+				triggers[target.current].action,
+			);
 			const actionTitle = t(`PinMapping:actions.${option.label}`);
-			if ( muxChannels > 1 ) {
-				const muxNum = Math.floor(target.current/muxChannels);
-				const channelNum = target.current%muxChannels;
+			if (muxChannels > 1) {
+				const muxNum = Math.floor(target.current / muxChannels);
+				const channelNum = target.current % muxChannels;
 				setTitle(`${actionTitle} - Mux ${muxNum} - Channel ${channelNum}`);
 			} else {
-				setTitle(`${actionTitle} - Direct - ADC ${values[`muxADCPin${target.current}` as keyof typeof values]}`);
+				setTitle(
+					`${actionTitle} - Direct - ADC ${values[`muxADCPin${target.current}` as keyof typeof values]}`,
+				);
 			}
 		}
 	};
 
 	const getNextTarget = () => {
 		// Find our next
-		for(var i = target.current+1; i < 32; i++) {
+		for (var i = target.current + 1; i < 32; i++) {
 			if (triggers[i].action !== -10) {
 				return i;
 			}
 		}
 		return -1;
-	}
+	};
 
 	const overwriteAllCalibration = () => {
 		setAllHETriggers({
@@ -175,8 +192,7 @@ const HECalibration = ({
 	const stopCalibration = async () => {
 		setCalibrationStep(0);
 		target.current = -1;
-		if (timerId)
-			clearInterval(timerId.current);
+		if (timerId) clearInterval(timerId.current);
 	};
 
 	const closeModal = async () => {
@@ -202,13 +218,12 @@ const HECalibration = ({
 			});
 			updateCalibrationRead(0);
 		}
-	}
+	};
 
-	const updateCalibrationRead = (step:number) => {
+	const updateCalibrationRead = (step: number) => {
 		setCalibrationStep(step);
 		// Begin reading
-		if (timerId.current)
-			clearInterval(timerId.current);
+		if (timerId.current) clearInterval(timerId.current);
 		const intervalId = setInterval(() => {
 			readHallEffect(step);
 		}, 50);
@@ -216,8 +231,8 @@ const HECalibration = ({
 	};
 
 	// Start Capturing on Modal Show
-	const startCalibration = async() => {
-		if ( calibrateAllLoop ) {
+	const startCalibration = async () => {
+		if (calibrateAllLoop) {
 			target.current = getNextTarget();
 			setNextTarget(getNextTarget());
 		} else {
@@ -245,20 +260,20 @@ const HECalibration = ({
 	};
 
 	const calculateVoltagePercentage = () => {
-		return (voltage/(ADC_MAX/100.0));
+		return voltage / (ADC_MAX / 100.0);
 	};
 
 	const calculateVoltPressedPercentage = () => {
-		return (voltage-voltageIdle)/((voltagePressed-voltageIdle)/100.0);
+		return (voltage - voltageIdle) / ((voltagePressed - voltageIdle) / 100.0);
 	};
 
-	const readHallEffect = async (calibrationStep:number) => {
+	const readHallEffect = async (calibrationStep: number) => {
 		const result = await WebApi.getHETriggerVoltage({
-			targetId: target.current
+			targetId: target.current,
 		});
 
 		if (!result || !result.data) {
-			console.error("Could not get hall-effect trigger calibration!");
+			console.error('Could not get hall-effect trigger calibration!');
 			return;
 		}
 
@@ -266,13 +281,17 @@ const HECalibration = ({
 
 		// For Web-Testing Debug Only
 		if (data.debug && data.debug === true) {
-			if ( calibrationStep === 0 ) {
+			if (calibrationStep === 0) {
 				setVoltage(150); // min we'll set to 20
-			} else if ( calibrationStep === 1 ) {
+			} else if (calibrationStep === 1) {
 				setVoltage(3500); // max we'll set to 3500
-			} else if ( calibrationStep === 2 || calibrationStep === 3 ) {
-				let time = (new Date()).getTime();
-				const V = (150)+Math.floor((Math.cos((( time/10 ) % 365) * Math.PI / 180)+1.0)*1500);
+			} else if (calibrationStep === 2 || calibrationStep === 3) {
+				let time = new Date().getTime();
+				const V =
+					150 +
+					Math.floor(
+						(Math.cos((((time / 10) % 365) * Math.PI) / 180) + 1.0) * 1500,
+					);
 				setVoltage(V);
 			}
 		} else {
@@ -293,7 +312,11 @@ const HECalibration = ({
 				</Col>
 				<Col xs={12} className="mb-3 text-center">
 					<ProgressBar>
-						<ProgressBar variant="info" now={calculateVoltagePercentage()} key={1} />
+						<ProgressBar
+							variant="info"
+							now={calculateVoltagePercentage()}
+							key={1}
+						/>
 					</ProgressBar>
 				</Col>
 				<Col xs={12} className="mb-3">
@@ -315,14 +338,23 @@ const HECalibration = ({
 				</Col>
 				<Col xs={12} className="mb-3 text-center">
 					<ProgressBar>
-						<ProgressBar variant="info" now={calculateVoltagePercentage()} key={1} />
+						<ProgressBar
+							variant="info"
+							now={calculateVoltagePercentage()}
+							key={1}
+						/>
 					</ProgressBar>
 				</Col>
 				<Col xs={12} className="mb-3">
 					<h3>{voltage}</h3>
 				</Col>
 				<Col xs={3} className="mb-3">
-					<Button onClick={() => { restartCalibration(); }} variant="danger">
+					<Button
+						onClick={() => {
+							restartCalibration();
+						}}
+						variant="danger"
+					>
 						{t(`HETrigger:restart-text`)}
 					</Button>
 				</Col>
@@ -380,7 +412,11 @@ const HECalibration = ({
 				</Col>
 				<Col xs={12} className="mb-3 text-center">
 					<ProgressBar>
-						<ProgressBar variant={activationState?"success":"warning"} now={calculateVoltPressedPercentage()} key={1} />
+						<ProgressBar
+							variant={activationState ? 'success' : 'warning'}
+							now={calculateVoltPressedPercentage()}
+							key={1}
+						/>
 					</ProgressBar>
 				</Col>
 				<Col xs={12} className="mb-3">
@@ -390,12 +426,14 @@ const HECalibration = ({
 						step={1}
 						value={(voltageActive - voltageIdle) * (-polarity || 1)}
 						onChange={(e) => {
-							setVoltageActive(parseInt(e.target.value) * (-polarity || 1) + voltageIdle);
-						}}>
-					</Form.Range>
+							setVoltageActive(
+								parseInt(e.target.value) * (-polarity || 1) + voltageIdle,
+							);
+						}}
+					></Form.Range>
 				</Col>
 				<Col xs={12} className="mb-3">
-					{voltage} {activationState?t('HETrigger:pressed-text'):""}
+					{voltage} {activationState ? t('HETrigger:pressed-text') : ''}
 				</Col>
 				<Col xs={3} className="mb-3">
 					<Button onClick={() => restartCalibration()} variant="danger">
@@ -489,43 +527,50 @@ const HECalibration = ({
 						onChange={(e) => {
 							setRapidTrigger(e.target.checked);
 						}}
-					/></Col>
-					{rapidTrigger && <>
-					
-				<Col xs={4} className="mb-3">
-						<FormControl
-							type="number"
-							label={t(`HETrigger:rapid-trigger-threshold-input-text`)}
-							name="release"
-							className="form-select-sm"
-							value={release}
-							onChange={(e) => {
-								setRelease(parseInt((e.target as HTMLInputElement).value));
-							}}
-							min={0}
-							max={ADC_MAX}
-						/>
+					/>
+				</Col>
+				{rapidTrigger && (
+					<>
+						<Col xs={4} className="mb-3">
+							<FormControl
+								type="number"
+								label={t(`HETrigger:rapid-trigger-threshold-input-text`)}
+								name="release"
+								className="form-select-sm"
+								value={release}
+								onChange={(e) => {
+									setRelease(parseInt((e.target as HTMLInputElement).value));
+								}}
+								min={0}
+								max={ADC_MAX}
+							/>
 						</Col>
-				<Col xs={4} className="mb-3">
-						<FormControl
-							type="number"
-							label={t(`HETrigger:rapid-trigger-noise-input-text`)}
-							name="noise"
-							className="form-select-sm"
-							value={noise}
-							onChange={(e) => {
-								setNoise(parseInt((e.target as HTMLInputElement).value));
-							}}
-							min={0}
-							max={ADC_MAX}
-						/></Col>
-					</>}
+						<Col xs={4} className="mb-3">
+							<FormControl
+								type="number"
+								label={t(`HETrigger:rapid-trigger-noise-input-text`)}
+								name="noise"
+								className="form-select-sm"
+								value={noise}
+								onChange={(e) => {
+									setNoise(parseInt((e.target as HTMLInputElement).value));
+								}}
+								min={0}
+								max={ADC_MAX}
+							/>
+						</Col>
+					</>
+				)}
 				<Col xs={12} className="mb-3">
 					{t(`HETrigger:activation-reading-text`)}
 				</Col>
 				<Col xs={12} className="mb-3 text-center">
 					<ProgressBar>
-						<ProgressBar variant={activationState?"success":"warning"} now={calculateVoltPressedPercentage()} key={1} />
+						<ProgressBar
+							variant={activationState ? 'success' : 'warning'}
+							now={calculateVoltPressedPercentage()}
+							key={1}
+						/>
 					</ProgressBar>
 				</Col>
 				<Col xs={12} className="mb-3">
@@ -535,23 +580,29 @@ const HECalibration = ({
 						step={1}
 						value={(voltageActive - voltageIdle) * (-polarity || 1)}
 						onChange={(e) => {
-							setVoltageActive(parseInt(e.target.value) * (-polarity || 1) + voltageIdle);
+							setVoltageActive(
+								parseInt(e.target.value) * (-polarity || 1) + voltageIdle,
+							);
 						}}
 					></Form.Range>
 				</Col>
-				{rapidTrigger && <Col xs={12} className="mb-3">
-					<Form.Range
-						min={0}
-						max={(voltagePressed - voltageIdle) * (-polarity || 1)}
-						step={1}
-						value={(release - voltageIdle) * (-polarity || 1)}
-						onChange={(e) => {
-							setRelease(parseInt(e.target.value) * (-polarity || 1) + voltageIdle);
-						}}
-					></Form.Range>
-				</Col>}
+				{rapidTrigger && (
+					<Col xs={12} className="mb-3">
+						<Form.Range
+							min={0}
+							max={(voltagePressed - voltageIdle) * (-polarity || 1)}
+							step={1}
+							value={(release - voltageIdle) * (-polarity || 1)}
+							onChange={(e) => {
+								setRelease(
+									parseInt(e.target.value) * (-polarity || 1) + voltageIdle,
+								);
+							}}
+						></Form.Range>
+					</Col>
+				)}
 				<Col xs={12} className="mb-3">
-					{voltage} {activationState?t('HETrigger:pressed-text'):""}
+					{voltage} {activationState ? t('HETrigger:pressed-text') : ''}
 				</Col>
 				<Col xs={12} className="mb-3" />
 				<Col xs={12} className="mb-3 text-center">
@@ -563,7 +614,8 @@ const HECalibration = ({
 							}
 						}}
 						className="col-sm-4"
-					>{t(`HETrigger:overwrite-all-warning`)}
+					>
+						{t(`HETrigger:overwrite-all-warning`)}
 					</Button>
 				</Col>
 			</Row>
@@ -571,7 +623,7 @@ const HECalibration = ({
 	};
 
 	useEffect(() => {
-		if ( showModal === true ) {
+		if (showModal === true) {
 			startCalibration();
 			startReadingCalibrationLoop();
 			updateTitle();
@@ -580,12 +632,18 @@ const HECalibration = ({
 
 	return (
 		<>
-			<Modal className="modal-lg" contentClassName="he-modal" centered show={showModal}
+			<Modal
+				className="modal-lg"
+				contentClassName="he-modal"
+				centered
+				show={showModal}
 				onClose={() => closeModal()}
 				onHide={() => closeModal()}
 			>
 				<Modal.Header closeButton>
-					<Modal.Title className="me-auto">{t(`HETrigger:calibration-header-text`)} - {title}</Modal.Title>
+					<Modal.Title className="me-auto">
+						{t(`HETrigger:calibration-header-text`)} - {title}
+					</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
 					{firstStep()}
@@ -594,27 +652,38 @@ const HECalibration = ({
 					{manualAdjustments()}
 				</Modal.Body>
 				<Modal.Footer>
-					<Button onClick={() => {
-						setVoltageIdle(voltage);
-						updateCalibrationRead(1);
-					}} hidden={calibrationStep !== 0}>
+					<Button
+						onClick={() => {
+							setVoltageIdle(voltage);
+							updateCalibrationRead(1);
+						}}
+						hidden={calibrationStep !== 0}
+					>
 						<Spinner
 							as="span"
 							animation="grow"
 							size="sm"
 							role="status"
 							aria-hidden="true"
-						/> {t(`HETrigger:calibrate-idle-button`)}
+						/>{' '}
+						{t(`HETrigger:calibrate-idle-button`)}
 					</Button>
-					<Button onClick={() => {
-						setVoltagePressed(voltage);
-						setPolarity(voltage < voltageIdle)
-						setVoltageActive(voltageIdle + Math.floor((voltage-voltageIdle)*0.625));
-						setRelease(voltageIdle + Math.floor((voltage-voltageIdle)*0.625));
-						setNoise(50);
-						setRapidTrigger(false);
-						updateCalibrationRead(2);
-					}} hidden={calibrationStep !== 1}>
+					<Button
+						onClick={() => {
+							setVoltagePressed(voltage);
+							setPolarity(voltage < voltageIdle);
+							setVoltageActive(
+								voltageIdle + Math.floor((voltage - voltageIdle) * 0.625),
+							);
+							setRelease(
+								voltageIdle + Math.floor((voltage - voltageIdle) * 0.625),
+							);
+							setNoise(50);
+							setRapidTrigger(false);
+							updateCalibrationRead(2);
+						}}
+						hidden={calibrationStep !== 1}
+					>
 						<Spinner
 							as="span"
 							animation="grow"
@@ -622,26 +691,33 @@ const HECalibration = ({
 							role="status"
 							aria-hidden="true"
 							variant="success"
-						/> {t(`HETrigger:calibrate-pressed-button`)}
+						/>{' '}
+						{t(`HETrigger:calibrate-pressed-button`)}
 					</Button>
 					<Button
 						variant="success"
 						onClick={() => saveCalibration()}
 						hidden={calibrationStep < 2}
 					>
-						{nextTarget !== -1 ? t(`HETrigger:next-calibration-text`): t(`HETrigger:finish-calibration-text`)}
+						{nextTarget !== -1
+							? t(`HETrigger:next-calibration-text`)
+							: t(`HETrigger:finish-calibration-text`)}
 					</Button>
-					<Button onClick={() => {
+					<Button
+						onClick={() => {
 							updateCalibrationRead(previousStep.current);
 						}}
-						hidden={calibrationStep !== 3}>
+						hidden={calibrationStep !== 3}
+					>
 						{t(`HETrigger:calibration-back-button`)}
 					</Button>
-					<Button onClick={() => {
+					<Button
+						onClick={() => {
 							previousStep.current = calibrationStep;
 							updateCalibrationRead(3);
 						}}
-						hidden={calibrationStep === 3}>
+						hidden={calibrationStep === 3}
+					>
 						{t(`HETrigger:manual-text`)}
 					</Button>
 				</Modal.Footer>

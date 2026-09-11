@@ -1,7 +1,6 @@
 export default {
 	'header-text': '扩展功能配置',
-	'sub-header-text':
-		'使用下方表单重新配置 GP2040-CE 的扩展功能选项。',
+	'sub-header-text': '使用下方表单重新配置 GP2040-CE 的扩展功能选项。',
 	'bootsel-header-text': 'BOOTSEL 按钮配置',
 	'bootsel-sub-header-text':
 		'注意：如果设置了此按钮，OLED 屏幕可能会停止响应；取消设置即可恢复。',
@@ -39,8 +38,10 @@ export default {
 	'analog-auto-calibration-enabled-stick-1': '摇杆 1 自动校准已启用',
 	'analog-auto-calibration-enabled-stick-2': '摇杆 2 自动校准已启用',
 	'analog-calibration-step-title': '校准步骤 {{step}}/4',
-	'analog-calibration-step-instruction': '请将摇杆 {{stick}} 推至 {{direction}} 位置，然后松开回中',
-	'analog-calibration-step-confirm': '确认摇杆 {{stick}} 已回中，然后点击“确定”记录中心点数值 {{step}}',
+	'analog-calibration-step-instruction':
+		'请将摇杆 {{stick}} 推至 {{direction}} 位置，然后松开回中',
+	'analog-calibration-step-confirm':
+		'确认摇杆 {{stick}} 已回中，然后点击“确定”记录中心点数值 {{step}}',
 	'analog-calibration-cancelled': '校准已取消',
 	'analog-calibration-failed': '校准失败：{{error}}',
 	'analog-calibration-success-stick-1': '摇杆 1 校准成功！',
@@ -52,11 +53,15 @@ export default {
 	'analog-calibration-direction-bottom-right': '右下',
 	'analog-calibration-final-center': '最终中心点数值：X={{x}}, Y={{y}}',
 	'analog-calibration-save-notice': '请保存配置以应用校准数值。',
-	'analog-calibration-manual-mode-instruction-1': '点击“开始校准”按钮启动多步校准流程。',
-	'analog-calibration-manual-mode-instruction-2': '根据提示将摇杆推向四个方向及中心位置。',
+	'analog-calibration-manual-mode-instruction-1':
+		'点击“开始校准”按钮启动多步校准流程。',
+	'analog-calibration-manual-mode-instruction-2':
+		'根据提示将摇杆推向四个方向及中心位置。',
 	'analog-calibration-manual-mode-instruction-3': '系统将自动计算最佳中心值。',
-	'analog-calibration-manual-mode-instruction-4': '保存配置并重启设备后应用校准。',
-	'analog-calibration-auto-mode-instruction': '系统将在启动时自动读取摇杆 {{stick}} 的中心值。如需手动校准，请先取消勾选“自动校准”。',
+	'analog-calibration-manual-mode-instruction-4':
+		'保存配置并重启设备后应用校准。',
+	'analog-calibration-auto-mode-instruction':
+		'系统将在启动时自动读取摇杆 {{stick}} 的中心值。如需手动校准，请先取消勾选“自动校准”。',
 	'analog-smoothing': '模拟量平滑',
 	'smoothing-factor': '平滑因子',
 	'analog-error-label': '误差率',
@@ -103,8 +108,7 @@ export default {
 	'dual-directional-input-header-text': '双方向输入 (DDI)',
 	'dual-directional-input-dpad-mode-label': '双十字键模式',
 	'dual-directional-input-combine-mode-label': '混合模式',
-	'dual-directional-input-four-way-joystick-mode-label':
-		'双方向四向摇杆模式',
+	'dual-directional-input-four-way-joystick-mode-label': '双方向四向摇杆模式',
 	'tilt-header-text': '倾斜 (Tilt) 输入',
 	'tilt-1-pin-label': 'Tilt 1 GPIO 引脚',
 	'tilt-1-factor-left-x-label': 'Tilt 1 左摇杆 X 轴权重 %',
@@ -134,12 +138,10 @@ export default {
 	'player-number-sub-header-text':
 		'仅在连接多个启用了玩家编号功能的 GP2040-CE 设备时才开启此选项',
 	'player-number-label': '玩家编号',
-	'socd-cleaning-mode-selection-slider-header-text':
-		'SOCD 清理模式选择滑块',
+	'socd-cleaning-mode-selection-slider-header-text': 'SOCD 清理模式选择滑块',
 	'socd-cleaning-mode-selection-slider-sub-header-text':
 		'注意：PS4、PS3 和 Nintendo Switch 模式不支持将 SOCD 清理设为“关闭”，将默认使用“中性”清理模式。',
-	'socd-cleaning-mode-selection-slider-mode-default-label':
-		'SOCD 滑块默认模式',
+	'socd-cleaning-mode-selection-slider-mode-default-label': 'SOCD 滑块默认模式',
 	'ps4-mode-sub-header': '免责声明！',
 	'ps4-mode-sub-header-text': 'GP2040-CE 永远不会提供这些认证文件！！！',
 	'ps4-mode-text':
@@ -194,7 +196,8 @@ export default {
 	'socd-slider-mode-3': '先输入优先 (First Win)',
 	'socd-slider-mode-4': '关闭 SOCD 清理',
 	'profile-slider-header-text': '个人资料选择滑块',
-	'profile-slider-sub-header-text': '注意：个人资料滑块位置的 GPIO 引脚在引脚映射页面上配置。',
+	'profile-slider-sub-header-text':
+		'注意：个人资料滑块位置的 GPIO 引脚在引脚映射页面上配置。',
 	'profile-slider-num-positions-label': '滑块位置数',
 	'profile-slider-default-profile-label': '默认个人资料',
 	'profile-slider-position-label': '位置 {{position}} 的个人资料',
@@ -209,7 +212,8 @@ export default {
 	'drv8833-rumble-duty-min-label': '最小占空比',
 	'drv8833-rumble-duty-max-label': '最大占空比',
 	'tg16-extension-header-text': 'PC Engine/TurboGrafx-16 扩展配置',
-	'tg16-extension-sub-header-text': '注意：如果同时启用了屏幕显示，此扩展功能将被禁用。',
+	'tg16-extension-sub-header-text':
+		'注意：如果同时启用了屏幕显示，此扩展功能将被禁用。',
 	'tg16-extension-oe-pin-label': 'OE GPIO 引脚',
 	'tg16-extension-select-pin-label': 'Select GPIO 引脚',
 	'tg16-extension-data-pin0-label': '数据 GPIO 引脚 0 (上/I)',

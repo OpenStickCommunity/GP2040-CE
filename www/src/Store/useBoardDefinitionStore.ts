@@ -8,7 +8,7 @@ type State = {
 		analogPins: Array<number>;
 		availablePins: {};
 		usedPins: {};
-	},
+	};
 	loading: boolean;
 	error: boolean;
 };
@@ -39,7 +39,7 @@ const useBoardDefinition = create<State & Actions>()((set) => ({
 				fetch(`${baseUrl}/api/getBoardDefinition`).then((res) => res.json()),
 			]);
 
-			set({boardDefinition: definition.pico});
+			set({ boardDefinition: definition.pico });
 		} catch (error) {
 			set({ error: true, loading: false });
 		}

@@ -29,19 +29,25 @@ export const onBoardLedState = {
 	BoardLedAddonEnabled: 0,
 };
 
-const OnBoardLed = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) => {
+const OnBoardLed = ({
+	values,
+	errors,
+	handleChange,
+	handleCheckbox,
+}: AddonPropTypes) => {
 	const { t } = useTranslation();
 
 	return (
-		<Section title={
-			<a
-				href="https://gp2040-ce.info/add-ons/on-board-led"
-				target="_blank"
-				className="text-reset text-decoration-none"
-			>
-				{t('AddonsConfig:on-board-led-configuration-label')}
-			</a>
-		}
+		<Section
+			title={
+				<a
+					href="https://gp2040-ce.info/add-ons/on-board-led"
+					target="_blank"
+					className="text-reset text-decoration-none"
+				>
+					{t('AddonsConfig:on-board-led-configuration-label')}
+				</a>
+			}
 		>
 			<div
 				id="BoardLedAddonEnabledOptions"

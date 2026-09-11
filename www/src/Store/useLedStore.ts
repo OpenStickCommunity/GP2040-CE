@@ -13,9 +13,9 @@ export const MAX_ANIMATION_PROFILES = 4;
 export type AnimationProfile = {
 	bEnabled: 0 | 1;
 	bUseCaseLightsInPressedAnimations: 0 | 1;
-	baseCaseEffect: typeof ANIMATION_NON_PRESSED_EFFECTS[keyof typeof ANIMATION_NON_PRESSED_EFFECTS];
-	baseNonPressedEffect: typeof ANIMATION_NON_PRESSED_EFFECTS[keyof typeof ANIMATION_NON_PRESSED_EFFECTS];
-	basePressedEffect: typeof ANIMATION_PRESSED_EFFECTS[keyof typeof ANIMATION_PRESSED_EFFECTS];
+	baseCaseEffect: (typeof ANIMATION_NON_PRESSED_EFFECTS)[keyof typeof ANIMATION_NON_PRESSED_EFFECTS];
+	baseNonPressedEffect: (typeof ANIMATION_NON_PRESSED_EFFECTS)[keyof typeof ANIMATION_NON_PRESSED_EFFECTS];
+	basePressedEffect: (typeof ANIMATION_PRESSED_EFFECTS)[keyof typeof ANIMATION_PRESSED_EFFECTS];
 	buttonPressFadeOutTimeInMs: number;
 	buttonPressHoldTimeInMs: number;
 	nonButtonStaticColors: number[];
@@ -119,8 +119,13 @@ const useLedStore = create<State & Actions>()((set) => ({
 				...AnimationOptions,
 				customColors: [
 					...AnimationOptions.customColors,
-					...Array(Math.max(0, MAX_CUSTOM_COLORS - AnimationOptions.customColors.length)).fill(0)
-				]
+					...Array(
+						Math.max(
+							0,
+							MAX_CUSTOM_COLORS - AnimationOptions.customColors.length,
+						),
+					).fill(0),
+				],
 			},
 			Lights: LightData?.Lights || [],
 			loading: false,

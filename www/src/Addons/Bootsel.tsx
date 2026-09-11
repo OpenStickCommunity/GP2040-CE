@@ -26,18 +26,24 @@ export const bootselState = {
 	BootselButtonAddonEnabled: 0,
 };
 
-const Bootsel = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) => {
+const Bootsel = ({
+	values,
+	errors,
+	handleChange,
+	handleCheckbox,
+}: AddonPropTypes) => {
 	const { t } = useTranslation();
 	return (
-		<Section title={
-			<a
-				href="https://gp2040-ce.info/add-ons/bootsel-button"
-				target="_blank"
-				className="text-reset text-decoration-none"
-			>
-				{t('AddonsConfig:bootsel-header-text')}
-			</a>
-		}
+		<Section
+			title={
+				<a
+					href="https://gp2040-ce.info/add-ons/bootsel-button"
+					target="_blank"
+					className="text-reset text-decoration-none"
+				>
+					{t('AddonsConfig:bootsel-header-text')}
+				</a>
+			}
 		>
 			<div
 				id="BootselButtonAddonOptions"

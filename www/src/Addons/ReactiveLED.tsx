@@ -54,7 +54,11 @@ const getOption = (o, actionId) => {
 	};
 };
 
-const ReactiveLED = ({ values, handleChange, handleCheckbox }: AddonPropTypes) => {
+const ReactiveLED = ({
+	values,
+	handleChange,
+	handleCheckbox,
+}: AddonPropTypes) => {
 	const { t } = useTranslation();
 	const [reactiveLEDs, setSelectedLEDs] = useState<any[]>([]);
 	const [selectedLEDs] = useState([]);
@@ -90,15 +94,16 @@ const ReactiveLED = ({ values, handleChange, handleCheckbox }: AddonPropTypes) =
 	};
 
 	return (
-		<Section title={
-			<a
-				href="https://gp2040-ce.info/add-ons/reactive-led"
-				target="_blank"
-				className="text-reset text-decoration-none"
-			>
-				{t('ReactiveLED:header-text')}
-			</a>
-		}
+		<Section
+			title={
+				<a
+					href="https://gp2040-ce.info/add-ons/reactive-led"
+					target="_blank"
+					className="text-reset text-decoration-none"
+				>
+					{t('ReactiveLED:header-text')}
+				</a>
+			}
 		>
 			<div
 				id="ReactiveLEDEnabledOptions"
@@ -118,7 +123,12 @@ const ReactiveLED = ({ values, handleChange, handleCheckbox }: AddonPropTypes) =
 									value={reactiveLEDs[i].pin}
 									onChange={(e) =>
 										setSelectedLEDs((c) =>
-											handleLEDChange(c, i, 'pin', Number((e.target as HTMLInputElement).value)),
+											handleLEDChange(
+												c,
+												i,
+												'pin',
+												Number((e.target as HTMLInputElement).value),
+											),
 										)
 									}
 									min={-1}
@@ -132,7 +142,12 @@ const ReactiveLED = ({ values, handleChange, handleCheckbox }: AddonPropTypes) =
 									value={reactiveLEDs[i].action}
 									onChange={(e) =>
 										setSelectedLEDs((c) =>
-											handleLEDChange(c, i, 'action', Number((e.target as HTMLSelectElement).value)),
+											handleLEDChange(
+												c,
+												i,
+												'action',
+												Number((e.target as HTMLSelectElement).value),
+											),
 										)
 									}
 								>
@@ -157,7 +172,12 @@ const ReactiveLED = ({ values, handleChange, handleCheckbox }: AddonPropTypes) =
 									value={reactiveLEDs[i].modeUp}
 									onChange={(e) =>
 										setSelectedLEDs((c) =>
-											handleLEDChange(c, i, 'modeUp', Number((e.target as HTMLSelectElement).value)),
+											handleLEDChange(
+												c,
+												i,
+												'modeUp',
+												Number((e.target as HTMLSelectElement).value),
+											),
 										)
 									}
 								>
@@ -175,7 +195,12 @@ const ReactiveLED = ({ values, handleChange, handleCheckbox }: AddonPropTypes) =
 									value={reactiveLEDs[i].modeDown}
 									onChange={(e) =>
 										setSelectedLEDs((c) =>
-											handleLEDChange(c, i, 'modeDown', Number((e.target as HTMLSelectElement).value)),
+											handleLEDChange(
+												c,
+												i,
+												'modeDown',
+												Number((e.target as HTMLSelectElement).value),
+											),
 										)
 									}
 								>

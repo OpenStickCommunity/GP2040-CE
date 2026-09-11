@@ -56,8 +56,10 @@ export default {
 	'turbo-led-type-label-pwm': 'PWM',
 	'turbo-led-type-label-rgb': 'RGB',
 	'turbo-led-color-label': 'Color LED Turbo',
-	'joystick-selection-slider-header-text': 'Deslizador de Selección de Joystick',
-	'joystick-selection-slider-mode-zero-label': 'Modo Predeterminado Pin GPIO Deslizador',
+	'joystick-selection-slider-header-text':
+		'Deslizador de Selección de Joystick',
+	'joystick-selection-slider-mode-zero-label':
+		'Modo Predeterminado Pin GPIO Deslizador',
 	'input-reverse-header-text': 'Invertir Entrada',
 	'input-reverse-button-pin-label': 'Pin GPIO Invertir Entrada',
 	'input-reverse-led-pin-label': 'Pin GPIO LED Invertir Entrada',
@@ -90,14 +92,22 @@ export default {
 	'tilt-2-factor-left-y-label': 'Inclinación 2 Eje Y Izquierdo %',
 	'tilt-2-factor-right-x-label': 'Inclinación 2 Eje X Derecho %',
 	'tilt-2-factor-right-y-label': 'Inclinación 2 Eje Y Derecho %',
-	'tilt-left-analog-up-pin-label': 'Pin GPIO Inclinación Analógico Izquierdo Arriba',
-	'tilt-left-analog-down-pin-label': 'Pin GPIO Inclinación Analógico Izquierdo Abajo',
-	'tilt-left-analog-left-pin-label': 'Pin GPIO Inclinación Analógico Izquierdo Izquierda',
-	'tilt-left-analog-right-pin-label': 'Pin GPIO Inclinación Analógico Izquierdo Derecha',
-	'tilt-right-analog-up-pin-label': 'Pin GPIO Inclinación Analógico Derecho Arriba',
-	'tilt-right-analog-down-pin-label': 'Pin GPIO Inclinación Analógico Derecho Abajo',
-	'tilt-right-analog-left-pin-label': 'Pin GPIO Inclinación Analógico Derecho Izquierda',
-	'tilt-right-analog-right-pin-label': 'Pin GPIO Inclinación Analógico Derecho Derecha',
+	'tilt-left-analog-up-pin-label':
+		'Pin GPIO Inclinación Analógico Izquierdo Arriba',
+	'tilt-left-analog-down-pin-label':
+		'Pin GPIO Inclinación Analógico Izquierdo Abajo',
+	'tilt-left-analog-left-pin-label':
+		'Pin GPIO Inclinación Analógico Izquierdo Izquierda',
+	'tilt-left-analog-right-pin-label':
+		'Pin GPIO Inclinación Analógico Izquierdo Derecha',
+	'tilt-right-analog-up-pin-label':
+		'Pin GPIO Inclinación Analógico Derecho Arriba',
+	'tilt-right-analog-down-pin-label':
+		'Pin GPIO Inclinación Analógico Derecho Abajo',
+	'tilt-right-analog-left-pin-label':
+		'Pin GPIO Inclinación Analógico Derecho Izquierda',
+	'tilt-right-analog-right-pin-label':
+		'Pin GPIO Inclinación Analógico Derecho Derecha',
 	'tilt-socd-mode-label': 'Modo SOCD Inclinación',
 	'buzzer-speaker-header-text': 'Altavoz Zumbador',
 	'buzzer-speaker-pin-label': 'Pin GPIO Zumbador',
@@ -115,7 +125,8 @@ export default {
 	'socd-cleaning-mode-selection-slider-mode-default-label':
 		'Modo Predeterminado Deslizador SOCD',
 	'ps4-mode-sub-header': '¡AVISO LEGAL!',
-	'ps4-mode-sub-header-text': '¡¡¡GP2040-CE NUNCA PROPORCIONARÁ ESTOS ARCHIVOS!!!',
+	'ps4-mode-sub-header-text':
+		'¡¡¡GP2040-CE NUNCA PROPORCIONARÁ ESTOS ARCHIVOS!!!',
 	'ps4-mode-text':
 		'Por favor, suba los 3 archivos requeridos y haga clic en el botón "Verificar y Guardar" para usar el Modo PS4.',
 	'ps4-mode-private-key-label': 'Clave Privada (PEM)',
@@ -163,7 +174,8 @@ export default {
 	'socd-slider-mode-3': 'Primero Gana',
 	'socd-slider-mode-4': 'Limpieza SOCD Desactivada',
 	'profile-slider-header-text': 'Deslizador de Selección de Perfil',
-	'profile-slider-sub-header-text': 'Nota: Los pines GPIO para las posiciones del deslizador de perfil se configuran en la página de Asignación de Pines.',
+	'profile-slider-sub-header-text':
+		'Nota: Los pines GPIO para las posiciones del deslizador de perfil se configuran en la página de Asignación de Pines.',
 	'profile-slider-num-positions-label': 'Número de Posiciones del Deslizador',
 	'profile-slider-default-profile-label': 'Perfil Predeterminado',
 	'profile-slider-position-label': 'Perfil para Posición {{position}}',

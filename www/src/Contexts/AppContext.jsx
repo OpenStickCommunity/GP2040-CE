@@ -1,7 +1,10 @@
 import { createContext, useEffect, useState } from 'react';
 import * as yup from 'yup';
 
-import WebApi, { basePeripheralMapping, baseBoardDefinitions } from '../Services/WebApi';
+import WebApi, {
+	basePeripheralMapping,
+	baseBoardDefinitions,
+} from '../Services/WebApi';
 import { PERIPHERAL_DEVICES } from '../Data/Peripherals';
 
 export const AppContext = createContext(null);
@@ -151,7 +154,9 @@ export const AppContextProvider = ({ children, ...props }) => {
 		basePeripheralMapping,
 	);
 	const [expansionPins, setExpansionPins] = useState({});
-	const [boardDefinition, setBoardDefinition] = useState(baseBoardDefinitions.pico);
+	const [boardDefinition, setBoardDefinition] = useState(
+		baseBoardDefinitions.pico,
+	);
 
 	const [HETriggerCalibrations, setHETriggerCalibrations] = useState({});
 
@@ -198,12 +203,19 @@ export const AppContextProvider = ({ children, ...props }) => {
 			const isValid =
 				value === undefined ||
 				value === -1 ||
-				(hasValue && value <= boardDefinition.maxPin && (usedPins || []).indexOf(value) === -1);
+				(hasValue &&
+					value <= boardDefinition.maxPin &&
+					(usedPins || []).indexOf(value) === -1);
 			return isValid;
 		};
 	}, [usedPins, setUsedPins]);
 
-	useEffect(() => {}, [expansionPins, setExpansionPins, HETriggerCalibrations, setHETriggerCalibrations]);
+	useEffect(() => {}, [
+		expansionPins,
+		setExpansionPins,
+		HETriggerCalibrations,
+		setHETriggerCalibrations,
+	]);
 
 	const getAvailablePeripherals = (device) => {
 		// gymnastics to make sure the device is defined before trusting config value

@@ -1,7 +1,7 @@
 import { GpioAction, GpioDirection } from '@proto/enums';
 import { createEnumRecord } from '../Services/Utilities';
 
-export const BUTTON_ACTIONS = createEnumRecord(GpioAction)
+export const BUTTON_ACTIONS = createEnumRecord(GpioAction);
 
 export const PIN_DIRECTIONS = createEnumRecord(GpioDirection);
 

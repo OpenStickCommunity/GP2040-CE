@@ -58,7 +58,8 @@ export default {
 	},
 	'profile-label': 'Profil',
 	'debounce-delay-label': 'Geri Tepme Gecikmesi (milisaniye)',
-	'mini-menu-gamepad-input': 'Mini Menüyü Görüntülemek İçin Gamepad Girişini Kullanın',
+	'mini-menu-gamepad-input':
+		'Mini Menüyü Görüntülemek İçin Gamepad Girişini Kullanın',
 	'ps4-mode-explanation-text':
 		'PS4 modu, GP2040-CE kimliği doğrulanmış bir PS4 kontrolcüsü olarak çalışmasına olanak tanır.',
 	'ps4-mode-warning-text':

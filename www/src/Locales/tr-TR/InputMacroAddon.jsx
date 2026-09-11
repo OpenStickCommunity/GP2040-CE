@@ -1,12 +1,12 @@
 export default {
 	'input-macro-editor-tab': 'Düzenleyici',
 	'input-macro-advanced-tab': 'Gelişmiş',
-	'input-macro-board-led-enabled': 'Makro Durumunu Görüntülemek İçin Kart Ledi Kullanın',
+	'input-macro-board-led-enabled':
+		'Makro Durumunu Görüntülemek İçin Kart Ledi Kullanın',
 	'input-macro-macro-enabled': 'Etkin',
 	'input-macro-macro-enabled-badge': 'Etkin',
 	'input-macro-macro-disabled-badge': 'Devre dışı',
-	'input-macro-macro-exclusive':
-		'Özel (Başka Bir Makroya Geçilemez)',
+	'input-macro-macro-exclusive': 'Özel (Başka Bir Makroya Geçilemez)',
 	'input-macro-macro-interruptible':
 		'Kesintiye Uğrayabilir (Kullanıcı Girişi Makroyu İptal Eder)',
 	'input-macro-macro-show-frames': 'Kareleri Göster (1 Kare = 16,666 ms)',

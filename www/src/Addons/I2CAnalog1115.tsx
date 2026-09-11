@@ -11,9 +11,11 @@ import Section from '../Components/Section';
 import { AddonPropTypes } from '../Pages/AddonsConfigPage';
 // import Form4BitSwitches from '../Components/FormBitConfig'
 
-
 export const i2cAnalogScheme = {
-	I2CAnalog1115InputEnabled: yup.number().required().label('I2C Analog1115 Input Enabled'),
+	I2CAnalog1115InputEnabled: yup
+		.number()
+		.required()
+		.label('I2C Analog1115 Input Enabled'),
 	// channelEnabled: yup
 	// 	.number()
 	// 	.label('Channel Enabled')
@@ -72,7 +74,13 @@ export const i2cAnalogState = {
 	rightStickDeadzone: 5,
 };
 
-const I2CAnalog1115 = ({ values, errors, handleChange, handleCheckbox, setFieldValue }: AddonPropTypes) => {
+const I2CAnalog1115 = ({
+	values,
+	errors,
+	handleChange,
+	handleCheckbox,
+	setFieldValue,
+}: AddonPropTypes) => {
 	const { t } = useTranslation();
 	const { getAvailablePeripherals, getSelectedPeripheral } =
 		useContext(AppContext);
@@ -83,15 +91,16 @@ const I2CAnalog1115 = ({ values, errors, handleChange, handleCheckbox, setFieldV
 	};
 
 	return (
-		<Section title={
-			<a
-				href="https://gp2040-ce.info/add-ons/i2c-analog-ads1115"
-				target="_blank"
-				className="text-reset text-decoration-none"
-			>
-				{t('AddonsConfig:i2c-analog-ads1115-header-text')}
-			</a>
-		}
+		<Section
+			title={
+				<a
+					href="https://gp2040-ce.info/add-ons/i2c-analog-ads1115"
+					target="_blank"
+					className="text-reset text-decoration-none"
+				>
+					{t('AddonsConfig:i2c-analog-ads1115-header-text')}
+				</a>
+			}
 		>
 			<div
 				id="I2CAnalog1115InputOptions"
@@ -100,19 +109,15 @@ const I2CAnalog1115 = ({ values, errors, handleChange, handleCheckbox, setFieldV
 				}
 			>
 				<div className="alert alert-info" role="alert">
-					The SDA and SCL pins and Speed are configured in <a href="../peripheral-mapping" className="alert-link">Peripheral Mapping</a>
+					The SDA and SCL pins and Speed are configured in{' '}
+					<a href="../peripheral-mapping" className="alert-link">
+						Peripheral Mapping
+					</a>
 				</div>
-
 			</div>
-			<div
-				id="I2CAnalog1115Options"
-				hidden={
-					!values.I2CAnalog1115InputEnabled
-				}
-			>
+			<div id="I2CAnalog1115Options" hidden={!values.I2CAnalog1115InputEnabled}>
 				<Row className="mb-3">
 					WIP: Enable/Disable Channels
-
 					<FormSelect
 						label="Left Stick X-axis Channel"
 						name="lxChannel"
@@ -169,7 +174,8 @@ const I2CAnalog1115 = ({ values, errors, handleChange, handleCheckbox, setFieldV
 						value={values.ryChannel}
 						error={errors.ryChannel}
 						isInvalid={Boolean(errors.ryChannel)}
-						onChange={handleChange}					>
+						onChange={handleChange}
+					>
 						{[0, 1, 2, 3].map((i) => (
 							<option key={`analog1115Pins-ry-option-${i}`} value={i}>
 								Channel A{i}
@@ -210,7 +216,6 @@ const I2CAnalog1115 = ({ values, errors, handleChange, handleCheckbox, setFieldV
 							max={100}
 						/>
 					</Row>
-
 					<Row>
 						{/* RStick Deadzone Enable: {values.rightStickDeadzoneEnable} */}
 						<FormCheck
@@ -302,7 +307,6 @@ const I2CAnalog1115 = ({ values, errors, handleChange, handleCheckbox, setFieldV
 							max={100}
 						/>
 					</Row>
-
 					<Row>
 						<br />
 						<FormControl
@@ -362,7 +366,6 @@ const I2CAnalog1115 = ({ values, errors, handleChange, handleCheckbox, setFieldV
 						/>
 					</Row>
 				</Row>
-
 			</div>
 			{getAvailablePeripherals('i2c') ? (
 				<FormCheck
@@ -392,9 +395,7 @@ const I2CAnalog1115 = ({ values, errors, handleChange, handleCheckbox, setFieldV
 						</NavLink>
 					</Trans>
 				</FormLabel>
-
 			)}
-
 		</Section>
 	);
 };

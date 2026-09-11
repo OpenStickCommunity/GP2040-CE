@@ -60,7 +60,8 @@ export default {
 	'turbo-led-type-label-rgb': 'RGB',
 	'turbo-led-color-label': 'Turbo LED Rengi',
 	'joystick-selection-slider-header-text': 'Joystick Seçim Kaydırıcısı',
-	'joystick-selection-slider-mode-zero-label': 'Kaydırıcı GPIO Pin Modu Varsayılanı',
+	'joystick-selection-slider-mode-zero-label':
+		'Kaydırıcı GPIO Pin Modu Varsayılanı',
 	'input-reverse-header-text': 'Girişi Terese çevir',
 	'input-reverse-button-pin-label': 'Ters Giriş GPIO Pini',
 	'input-reverse-led-pin-label': 'Ters Giriş LED GPIO Pini',
@@ -172,7 +173,8 @@ export default {
 	'socd-slider-mode-3': 'İlk basılan',
 	'socd-slider-mode-4': 'SOCD Temizleme Kapalı',
 	'profile-slider-header-text': 'Profil Seçim Kaydırıcısı',
-	'profile-slider-sub-header-text': 'Not: Profil kaydırıcı konumları için GPIO pinleri Pin Eşlemesi sayfasında yapılandırılır.',
+	'profile-slider-sub-header-text':
+		'Not: Profil kaydırıcı konumları için GPIO pinleri Pin Eşlemesi sayfasında yapılandırılır.',
 	'profile-slider-num-positions-label': 'Kaydırıcı Konum Sayısı',
 	'profile-slider-default-profile-label': 'Varsayılan Profil',
 	'profile-slider-position-label': 'Konum {{position}} için Profil',
@@ -187,7 +189,8 @@ export default {
 	'drv8833-rumble-duty-min-label': 'Minimum Görev Döngüsü',
 	'drv8833-rumble-duty-max-label': 'Maksimum Görev Döngüsü',
 	'tg16-extension-header-text': 'PC Motoru/TurboGrafx-16 Uzantı Yapılandırması',
-	'tg16-extension-sub-header-text': 'Not: Aynı anda ekran etkinleştirilirse bu eklenti devre dışı kalacaktır.',
+	'tg16-extension-sub-header-text':
+		'Not: Aynı anda ekran etkinleştirilirse bu eklenti devre dışı kalacaktır.',
 	'tg16-extension-oe-pin-label': 'OE GPIO Pin',
 	'tg16-extension-select-pin-label': 'GPIO Pini seçin',
 	'tg16-extension-data-pin0-label': 'Veri GPIO Pin 0 (U_I)',

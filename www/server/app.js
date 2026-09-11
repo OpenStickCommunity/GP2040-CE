@@ -24,11 +24,13 @@ app.use((req, res, next) => {
 });
 
 app.get('/api/getBoardDefinition', (req, res) => {
-	return res.send(readFileSync(path.resolve(__dirname, '../src/Data/Boards.json'), 'utf8'));
+	return res.send(
+		readFileSync(path.resolve(__dirname, '../src/Data/Boards.json'), 'utf8'),
+	);
 });
 
 const { pico: picoController } = JSON.parse(
-	readFileSync(path.resolve(__dirname, '../src/Data/Boards.json'), 'utf8')
+	readFileSync(path.resolve(__dirname, '../src/Data/Boards.json'), 'utf8'),
 );
 
 const BoardLights = [
@@ -373,7 +375,10 @@ app.get('/api/getAnimationProtoOptions', (req, res) => {
 					baseCaseCycleTime: 0,
 					bNonPressedSpecialColorIsRainbow: 0,
 					bPressedSpecialColorIsRainbow: 0,
-					nonButtonStaticColors: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+					nonButtonStaticColors: [
+						1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+						1,
+					],
 					bCaseSpecialColorIsRainbow: 0,
 					nonPressedContextParam: 0,
 					pressedContextParam: 0,
@@ -403,7 +408,10 @@ app.get('/api/getAnimationProtoOptions', (req, res) => {
 					caseSpecialColor: 0x80ff00,
 					bNonPressedSpecialColorIsRainbow: 0,
 					bPressedSpecialColorIsRainbow: 0,
-					nonButtonStaticColors: [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+					nonButtonStaticColors: [
+						3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+						3,
+					],
 					bCaseSpecialColorIsRainbow: 0,
 					nonPressedContextParam: 0,
 					pressedContextParam: 0,
@@ -903,7 +911,7 @@ app.get('/api/getHETriggerCalibrations', (req, res) => {
 			is_polarized: false,
 			release: 1500,
 			noise: 50,
-			rapidTrigger: false
+			rapidTrigger: false,
 		},
 		{
 			action: 3,
@@ -913,7 +921,7 @@ app.get('/api/getHETriggerCalibrations', (req, res) => {
 			is_polarized: true,
 			release: 1500,
 			noise: 50,
-			rapidTrigger: false
+			rapidTrigger: false,
 		},
 		{
 			action: 4,
@@ -923,7 +931,7 @@ app.get('/api/getHETriggerCalibrations', (req, res) => {
 			is_polarized: false,
 			release: 2000,
 			noise: 50,
-			rapidTrigger: true
+			rapidTrigger: true,
 		},
 		{
 			action: 5,
@@ -933,10 +941,10 @@ app.get('/api/getHETriggerCalibrations', (req, res) => {
 			is_polarized: true,
 			release: 1500,
 			noise: 50,
-			rapidTrigger: true
+			rapidTrigger: true,
 		},
 	);
-	for(var i = 4; i < 32; i++) {
+	for (var i = 4; i < 32; i++) {
 		triggers.push({
 			action: -10,
 			idle: 100,
@@ -1399,7 +1407,7 @@ app.get('/api/getBootModeOptions', (req, res) => {
 				pinMask: 8,
 				inputMode: 3,
 				profileNumber: 0,
-			}
+			},
 		],
 	});
 });

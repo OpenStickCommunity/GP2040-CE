@@ -107,8 +107,10 @@ export default {
 	'socd-cleaning-mode-selection-slider-mode-default-label':
 		'Modo de Controle Deslizante SOCD Padrão',
 	'profile-slider-header-text': 'Controle Deslizante de Seleção de Perfil',
-	'profile-slider-sub-header-text': 'Observação: os pinos GPIO para as posições do controle deslizante de perfil são configurados na página de Mapeamento de Pinos.',
-	'profile-slider-num-positions-label': 'Número de Posições do Controle Deslizante',
+	'profile-slider-sub-header-text':
+		'Observação: os pinos GPIO para as posições do controle deslizante de perfil são configurados na página de Mapeamento de Pinos.',
+	'profile-slider-num-positions-label':
+		'Número de Posições do Controle Deslizante',
 	'profile-slider-default-profile-label': 'Perfil Padrão',
 	'profile-slider-position-label': 'Perfil para Posição {{position}}',
 	'ps4-mode-sub-header-text':

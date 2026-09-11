@@ -249,7 +249,10 @@ const PinSelectList = memo(function PinSelectList({
 	);
 
 	return (
-		<div className="pin-grid gap-3 mt-2" style={{ '--pin-count': (Object.entries(pins).length > 32 ? 12 : 15) }}>
+		<div
+			className="pin-grid gap-3 mt-2"
+			style={{ '--pin-count': Object.entries(pins).length > 32 ? 12 : 15 }}
+		>
 			{Object.entries(pins).map(([pin, pinData], index) => (
 				<div key={`select-${index}`} className="d-flex align-items-center">
 					<div className="d-flex flex-shrink-0" style={{ width: '3.5rem' }}>
@@ -346,7 +349,7 @@ const PinSection = memo(function PinSection({
 							<ProfileLabel profileIndex={profileIndex} />
 						</Col>
 						{profileIndex > 0 && (
-							<Col className='order-first order-md-last'>
+							<Col className="order-first order-md-last">
 								<FormCheck
 									disabled={profileIndex === activeProfile}
 									size={3}

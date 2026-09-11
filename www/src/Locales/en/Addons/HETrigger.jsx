@@ -1,6 +1,7 @@
 export default {
 	'header-text': 'Hall-Effect Trigger',
-	'desc-header-text': 'Hall Effect Trigger Supports 4-Channel, 8-Channel, and 16-Channel Multiplexers.',
+	'desc-header-text':
+		'Hall Effect Trigger Supports 4-Channel, 8-Channel, and 16-Channel Multiplexers.',
 	'available-pins-text': 'Available ADC pins: {{pins}}',
 	'multiplexer-channel-select': 'Channels Per Multiplexer',
 	'direct-no-mux': 'Direct (No Mux)',
@@ -57,13 +58,17 @@ export default {
 	'calibration-flip-polarity': 'Flip Polarity',
 	'calibration-flip-rapid-trigger': 'Enable Rapid Trigger',
 	'calibration-back-button': 'Back',
-	'calibration-first-step': 'We need to calibrate the idle voltage and full press voltage of the hall-effect switch. ' +
-								'After calibration, we can adjust the trigger-activation point to our desired depth. ' +
-								'First, let\'s calibrate the idle voltage. Leave the hall-effect button untouched and click the "Calibrate Idle" button.',
-	'calibration-second-step': 'Next, press the button fully to reach our maximum depth. Activation position can be adjusted after calibration.',
-	'calibration-third-step': 'Finally, let\'s adjust our current activation point and set the desired trigger point. '+
-								'Once adjusted, press the button and verify it activates at the desired position.',
-	'calibration-manual-step': 'Please adjust the following attributes of the hall effect button to the desired amounts. '+
-							    'Once the desired values have been found, you can copy these values and set all triggers '+
-							    'on the device.',
+	'calibration-first-step':
+		'We need to calibrate the idle voltage and full press voltage of the hall-effect switch. ' +
+		'After calibration, we can adjust the trigger-activation point to our desired depth. ' +
+		'First, let\'s calibrate the idle voltage. Leave the hall-effect button untouched and click the "Calibrate Idle" button.',
+	'calibration-second-step':
+		'Next, press the button fully to reach our maximum depth. Activation position can be adjusted after calibration.',
+	'calibration-third-step':
+		"Finally, let's adjust our current activation point and set the desired trigger point. " +
+		'Once adjusted, press the button and verify it activates at the desired position.',
+	'calibration-manual-step':
+		'Please adjust the following attributes of the hall effect button to the desired amounts. ' +
+		'Once the desired values have been found, you can copy these values and set all triggers ' +
+		'on the device.',
 };

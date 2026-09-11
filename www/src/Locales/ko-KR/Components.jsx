@@ -10,7 +10,6 @@ export default {
 		'es-MX': 'Español (멕시코 스페인어)',
 		'tr-TR': 'Türkçe (터키어)',
 		'fr-FR': 'Français (프랑스 국민)',
-    
 	},
 	'color-scheme': {
 		dark: '다크',

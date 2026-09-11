@@ -205,7 +205,7 @@ const Wii = ({
 	const { buttonLabels } = useContext(AppContext);
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
 	const CURRENT_BUTTONS = getButtonLabels(buttonLabelType, swapTpShareLabels);
-	const buttonNames = omit(CURRENT_BUTTONS, ['label', 'value']);        
+	const buttonNames = omit(CURRENT_BUTTONS, ['label', 'value']);
 
 	useEffect(() => {
 		async function fetchData() {
@@ -350,15 +350,16 @@ const Wii = ({
 	};
 
 	return (
-		<Section title={
-			<a
-				href="https://gp2040-ce.info/add-ons/wii-extensions"
-				target="_blank"
-				className="text-reset text-decoration-none"
-			>
-				{t('WiiAddon:header-text')}
-			</a>
-		}
+		<Section
+			title={
+				<a
+					href="https://gp2040-ce.info/add-ons/wii-extensions"
+					target="_blank"
+					className="text-reset text-decoration-none"
+				>
+					{t('WiiAddon:header-text')}
+				</a>
+			}
 		>
 			<div
 				id="WiiExtensionAddonOptions"
@@ -373,8 +374,11 @@ const Wii = ({
 					</div>
 				</Trans>
 				<div className="alert alert-info" role="alert">
-					The SDA and SCL pins and Speed are configured in <a href="../peripheral-mapping" className="alert-link">Peripheral Mapping</a>
-				</div>			
+					The SDA and SCL pins and Speed are configured in{' '}
+					<a href="../peripheral-mapping" className="alert-link">
+						Peripheral Mapping
+					</a>
+				</div>
 				<Row className="mb-3">
 					<Tabs
 						defaultActiveKey={`wii${WII_EXTENSION_CONTROLS[0].id}Config`}

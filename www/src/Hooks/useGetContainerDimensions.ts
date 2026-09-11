@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 
 export const useGetContainerDimensions = () => {
 	const [dimensions, setDimensions] = useState({ height: 0, width: 0 });

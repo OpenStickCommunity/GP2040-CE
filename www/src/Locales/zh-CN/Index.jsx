@@ -43,5 +43,5 @@ export default {
 	ReactiveLED,
 	Proto,
 	HETrigger,
-	BootModeMapping
+	BootModeMapping,
 };

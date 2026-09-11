@@ -105,7 +105,8 @@ export default {
 	'socd-cleaning-mode-selection-slider-mode-default-label':
 		'SOCD Schieberegler Modus Standard',
 	'profile-slider-header-text': 'Profilauswahl-Schieberegler',
-	'profile-slider-sub-header-text': 'Hinweis: GPIO-Pins für die Positionen des Profilschiebereglers werden auf der Seite Pin-Zuordnung konfiguriert.',
+	'profile-slider-sub-header-text':
+		'Hinweis: GPIO-Pins für die Positionen des Profilschiebereglers werden auf der Seite Pin-Zuordnung konfiguriert.',
 	'profile-slider-num-positions-label': 'Anzahl der Schiebereglerpositionen',
 	'profile-slider-default-profile-label': 'Standardprofil',
 	'profile-slider-position-label': 'Profil für Position {{position}}',

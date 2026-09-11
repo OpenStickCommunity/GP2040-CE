@@ -23,20 +23,26 @@ export const tg16State = {
 	tg16PadDataPin3: -1,
 };
 
-const TG16 = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) => {
+const TG16 = ({
+	values,
+	errors,
+	handleChange,
+	handleCheckbox,
+}: AddonPropTypes) => {
 	const { usedPins } = useContext(AppContext);
 	const { boardDefinition } = useBoardDefinition();
 	const { t } = useTranslation();
 	return (
-		<Section title={
-			<a
-				href="https://gp2040-ce.info/add-ons/tg16-input"
-				target="_blank"
-				className="text-reset text-decoration-none"
-			>
-				{t('AddonsConfig:tg16-extension-header-text')}
-			</a>
-		}
+		<Section
+			title={
+				<a
+					href="https://gp2040-ce.info/add-ons/tg16-input"
+					target="_blank"
+					className="text-reset text-decoration-none"
+				>
+					{t('AddonsConfig:tg16-extension-header-text')}
+				</a>
+			}
 		>
 			<div id="TG16padAddonOptions" hidden={!values.TG16padAddonEnabled}>
 				<div className="alert alert-info" role="alert">

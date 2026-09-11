@@ -21,7 +21,8 @@ export default {
 	'reboot-modal-button-progress-label': 'Yeniden başlatılıyor',
 	'reboot-modal-button-success-label': 'Tamamlandı!',
 	'reboot-modal-label': 'Yeniden başlatılsın mı?',
-	'reboot-modal-success': 'Yeniden başlatma işlemi tamamlandı, artık bu tarayıcı sekmesi kapatılabilir.',
+	'reboot-modal-success':
+		'Yeniden başlatma işlemi tamamlandı, artık bu tarayıcı sekmesi kapatılabilir.',
 	'resetSettings-label': 'Ayarları Sıfırla',
 	'settings-label': 'Ayarlar',
 };

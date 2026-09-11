@@ -4,7 +4,7 @@ import { Light } from './useLedStore';
 
 type State = {
 	loading: boolean;
-	presets: { name: string; lightData: { Lights: Light[] } }[]
+	presets: { name: string; lightData: { Lights: Light[] } }[];
 };
 
 type Actions = {
@@ -46,6 +46,5 @@ const useLightsPresetsStore = create<State & Actions>()((set) => ({
 	},
 	...INITIAL_STATE,
 }));
-
 
 export default useLightsPresetsStore;

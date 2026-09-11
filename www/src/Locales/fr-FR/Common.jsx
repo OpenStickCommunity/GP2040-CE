@@ -12,7 +12,7 @@ export default {
 	'button-set-pressed-gradient-label': 'Définir le dégradé appuyé',
 	'button-verify-save-label': 'Vérifier et enregistrer',
 	'saved-success-message': 'Enregistré ! Veuillez redémarrer votre appareil',
-	'saved-error-message': 'Impossible d\'enregistrer',
+	'saved-error-message': "Impossible d'enregistrer",
 	errors: {
 		required: 'requis',
 		conflict: 'conflit',
@@ -21,7 +21,7 @@ export default {
 		'validation-error': 'Erreurs de validation, voir ci-dessus',
 	},
 	'switch-enabled': 'Activé',
-	'lock-oled-screen': 'Verrouiller l\'écran OLED',
+	'lock-oled-screen': "Verrouiller l'écran OLED",
 	'lock-rgb-led': 'Verrouiller la LED RGB',
 	'lock-macro': 'Verrouiller la macro',
 	'lock-buttons': 'Verrouiller les boutons',

@@ -23,19 +23,24 @@ export const socdState = {
 	sliderSOCDModeDefault: 1,
 };
 
-const SOCD = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) => {
+const SOCD = ({
+	values,
+	errors,
+	handleChange,
+	handleCheckbox,
+}: AddonPropTypes) => {
 	const { t } = useTranslation();
 	return (
 		<Section
 			title={
-			<a
-				href="https://gp2040-ce.info/add-ons/socd-selection-slider"
-				target="_blank"
-				className="text-reset text-decoration-none"
-			>
-				{t('AddonsConfig:socd-cleaning-mode-selection-slider-header-text')}
-			</a>
-		}
+				<a
+					href="https://gp2040-ce.info/add-ons/socd-selection-slider"
+					target="_blank"
+					className="text-reset text-decoration-none"
+				>
+					{t('AddonsConfig:socd-cleaning-mode-selection-slider-header-text')}
+				</a>
+			}
 		>
 			<div id="SliderSOCDInputOptions" hidden={!values.SliderSOCDInputEnabled}>
 				<div className="alert alert-info" role="alert">
@@ -46,14 +51,14 @@ const SOCD = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) 
 				<div className="alert alert-info" role="alert">
 					<Trans
 						ns="AddonsConfig"
-						i18nKey='AddonsConfig:pin-config-moved-to-core-text'
+						i18nKey="AddonsConfig:pin-config-moved-to-core-text"
 						components={[
 							<a
 								key="0"
 								href="../pin-mapping"
 								className="alert-link"
 								target="_blank"
-							/>
+							/>,
 						]}
 					/>
 				</div>

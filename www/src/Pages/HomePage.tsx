@@ -13,7 +13,7 @@ export default function HomePage() {
 		currentVersion,
 		boardConfigProperties,
 		memoryReport,
-        stats,
+		stats,
 		getSystemStats,
 		loading,
 	} = useSystemStats();
@@ -60,7 +60,9 @@ export default function HomePage() {
 							</div>
 						)}
 					<div className="system-text">
-						{t('HomePage:architecture-text', { architecture: stats.architecture })}
+						{t('HomePage:architecture-text', {
+							architecture: stats.architecture,
+						})}
 					</div>
 					<div className="system-text">
 						{t('HomePage:build-type-text', { build: stats.buildType })}

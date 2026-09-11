@@ -65,8 +65,7 @@ export default {
 	'controller-analog-axis-x': 'X +/- 轴',
 	'controller-analog-axis-y': 'Y +/- 轴',
 	'controller-analog-axis-trigger': '扳机模式',
-	'analog-axis-mode-trigger':
-		'<0>完整数值范围将直接发送至主机接口。</0>',
+	'analog-axis-mode-trigger': '<0>完整数值范围将直接发送至主机接口。</0>',
 	'analog-axis-mode-button':
 		'<0>作为数字开关使用，在超过设定的阈值后设置为“按下”状态。</0>',
 	'analog-axis-mode-normal-direction':

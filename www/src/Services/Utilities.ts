@@ -9,9 +9,8 @@ const rgbIntToHex = (color: number) =>
 const createEnumRecord = <T extends Record<string, number | string>>(
 	enumObj: T,
 ): Record<keyof T, T[keyof T]> =>
-Object.fromEntries(
+	Object.fromEntries(
 		Object.entries(enumObj).filter(([, value]) => typeof value === 'number'),
 	) as Record<keyof T, T[keyof T]>;
-
 
 export { hexToInt, rgbIntToHex, createEnumRecord };

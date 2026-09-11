@@ -21,7 +21,8 @@ export default {
 	'reboot-modal-button-progress-label': 'Reiniciando',
 	'reboot-modal-button-success-label': '¡Listo!',
 	'reboot-modal-label': '¿Reiniciar?',
-	'reboot-modal-success': 'Reinicio completado, esta pestaña del navegador puede cerrarse ahora.',
+	'reboot-modal-success':
+		'Reinicio completado, esta pestaña del navegador puede cerrarse ahora.',
 	'resetSettings-label': 'Restablecer Ajustes',
 	'settings-label': 'Ajustes',
 };

@@ -27,15 +27,15 @@ type Actions = {
 };
 
 const INITIAL_STATE: State = {
-    triggers: Array(32).map(()=>({ 
-		action:-10,
-		idle:100,
-		active:2000,
-		pressed:3500,
+	triggers: Array(32).map(() => ({
+		action: -10,
+		idle: 100,
+		active: 2000,
+		pressed: 3500,
 		is_polarized: false,
-		release:2000,
-		noise:50,
-		rapidTrigger:false
+		release: 2000,
+		noise: 50,
+		rapidTrigger: false,
 	})),
 	loadingTriggers: false,
 };
@@ -51,7 +51,7 @@ const useHETriggerStore = create<State & Actions>()((set, get) => ({
 			loadingTriggers: false,
 		}));
 	},
-	setHETrigger: ({ id, ...trigger}) => {
+	setHETrigger: ({ id, ...trigger }) => {
 		set((state) => {
 			const newTriggers = [...state.triggers];
 			if (newTriggers[id]) {
