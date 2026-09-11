@@ -79,3 +79,21 @@ void NunchuckExtension::process(uint8_t *inputData) {
     //printf("Joy X=%4d Y=%4d   Acc X=%4d Y=%4d Z=%4d   Btn Z=%1d C=%1d\n", analogState[WiiAnalogs::ANALOG_LEFT_X], analogState[WiiAnalogs::ANALOG_LEFT_Y], motionState[WiiMotions::MOTION_X], motionState[WiiMotions::MOTION_Y], motionState[WiiMotions::MOTION_Z], buttons[WiiButtons::BUTTON_Z], buttons[WiiButtons::BUTTON_C]);
 #endif
 }
+
+uint8_t NunchuckExtension::prepareOutput() {
+    uint16_t lx = 0;
+    uint16_t ly = 0;
+
+    lx = (uint8_t)((analogState[WiiAnalogs::WII_ANALOG_LEFT_X] * 0xFF) / 0xFFFF);
+    ly = (uint8_t)(0xFF - ((analogState[WiiAnalogs::WII_ANALOG_LEFT_Y] * 0xFF) / 0xFFFF));
+
+    // expect all source analogs at 16 bit and scale down
+    controllerData[0x00] = lx;
+    controllerData[0x01] = ly;
+    controllerData[0x02] = 0x00;
+    controllerData[0x03] = 0x00;
+    controllerData[0x04] = 0x00;
+    controllerData[0x05] = ((!(buttons[WiiButtons::WII_BUTTON_C] & 0x01)) << 1) | ((!(buttons[WiiButtons::WII_BUTTON_Z] & 0x01)) << 0);
+
+    return 6;
+}

@@ -8,6 +8,7 @@ class MotionPlusExtension : public ExtensionBase {
         void init(uint8_t dataType) override;
         bool calibrate(uint8_t *calibrationData) override;
         void process(uint8_t *inputData) override;
+        uint8_t prepareOutput() override;
 
     private:
         struct CalibrationBlock {

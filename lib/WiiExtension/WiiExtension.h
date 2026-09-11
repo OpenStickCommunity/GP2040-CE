@@ -6,6 +6,7 @@
 
 #include "pico/stdlib.h"
 #include "hardware/i2c.h"
+#include "pico/i2c_slave.h"
 #include "peripheral_i2c.h"
 
 #include "extensions/Extensions.h"
@@ -99,6 +100,7 @@ typedef enum {
 #define WII_CHECKSUM_MAGIC 0x55
 #define WII_CALIBRATION_SIZE 0x10
 #define WII_CALIBRATION_CHECKSUM_SIZE 0x02
+#define WII_EXT_MEMORY_SIZE 256
 
 static volatile bool WiiExtension_alarmFired;
 
@@ -116,47 +118,65 @@ static volatile bool WiiExtension_alarmFired;
 #define TOUCH_BETWEEN_RANGE(val,beg,end) (((val) >= ((beg)-WII_GUITAR_TOUCHPAD_OVERLAP)) && ((val) < (end)))
 #define WII_DECRYPT_BYTE(x) (((x) ^ 0x17) + 0x17)
 
+static bool WiiExtension_isCryptoEnabled;
+static uint8_t WiiExtension_extensionMemory[WII_EXT_MEMORY_SIZE];
+static uint16_t WiiExtension_memoryCursor;
+static bool WiiExtension_hasAddress;
+static bool WiiExtension_firstRead;
+static uint8_t WiiExtension_ft[8];
+static uint8_t WiiExtension_sb[8];
+
 class WiiExtension {
-  protected:
-    uint8_t address;
-    PeripheralI2C* i2c;
-  public:
-    int8_t extensionType = WII_EXTENSION_NONE;
-    int8_t dataType = WII_DATA_TYPE_0;
+    protected:
+        uint8_t address;
+        PeripheralI2C* i2c;
+    public:
+        int8_t extensionType = WII_EXTENSION_NONE;
+        int8_t dataType = WII_DATA_TYPE_0;
+        
+        // false = read input from connected device (default)
+        // true  = output as extension
+        bool extensionMode = false;
 
-    bool isReady         = false;
+        bool isReady         = false;
 
-    // Constructor 
-    WiiExtension() {}
-    WiiExtension(PeripheralI2C *i2cController, uint8_t addr);
+        // Constructor 
+        WiiExtension() {}
+        WiiExtension(PeripheralI2C *i2cController, uint8_t addr);
 
-    // Methods
-    void begin();
-    void reset();
-    void start();
-    void poll();
+        // Methods
+        void begin();
+        void reset();
+        void start();
+        void poll();
 
-    void setI2C(PeripheralI2C *i2cController) { this->i2c = i2cController; }
-    void setAddress(uint8_t addr) { this->address = addr; }
+        void setI2C(PeripheralI2C *i2cController) { this->i2c = i2cController; }
+        void setAddress(uint8_t addr) { this->address = addr; }
+        void setExtensionMode(bool extMode) { this->extensionMode = extMode; }
 
-    ExtensionBase* getController() { return extensionController; };
-  private:
-    ExtensionBase *extensionController = NULL;
+        ExtensionBase* getController() { return extensionController; };
+    private:
+        ExtensionBase *extensionController = NULL;
 
 #if WII_EXTENSION_DEBUG==true
-    uint8_t _lastRead[16] = {0xFF};
+        uint8_t _lastRead[16] = {0xFF};
 #endif
 
-    int doI2CWrite(uint8_t *pData, int iLen);
-    int doI2CRead(uint8_t *pData, int iLen);
-    uint8_t doI2CTest();
-    void doI2CInit();
+        int doI2CWrite(uint8_t *pData, int iLen);
+        int doI2CRead(uint8_t *pData, int iLen);
+        uint8_t doI2CTest();
+        void doI2CInit();
 
-    void waitUntil_us(uint64_t us);
-    static void alarmIRQ();
+        void waitUntil_us(uint64_t us);
+        static void alarmIRQ();
 
-    bool isMotionPlus = false;
-    bool isExtension = false;
+        bool isMotionPlus = false;
+        bool isExtension = false;
+
+        static void i2cHandler(i2c_inst_t *i2c, i2c_slave_event_t event);
+        static void initCrypt(const uint8_t key[16]);
+        static void decrypt(uint8_t* data, uint8_t addr, uint8_t len);
+        static void encrypt(uint8_t* data, uint8_t addr, uint8_t len);
 };
 
 #endif

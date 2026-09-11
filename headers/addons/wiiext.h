@@ -382,6 +382,7 @@ private:
     void setControllerAnalog(uint16_t controllerID, uint16_t analogID, uint32_t axisType);
     void setControllerStickMode(uint16_t controllerID, uint16_t analogID, uint32_t axisType);
     void setButtonState(bool buttonState, uint16_t buttonMask);
+    bool getButtonState(uint16_t buttonMask);
     void queueAnalogChange(uint16_t analogInput, uint16_t analogValue, uint16_t lastAnalogValue);
     void updateAnalogState();
     void updateMotionState();
