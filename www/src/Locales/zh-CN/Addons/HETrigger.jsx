@@ -12,6 +12,7 @@ export default {
 	'select-pin-1': '选择引脚 1',
 	'select-pin-2': '选择引脚 2',
 	'select-pin-3': '选择引脚 3',
+	'separate-select-pins-label': '启用独立选择引脚',
 	'adc-pin-0': 'ADC 引脚 0',
 	'adc-pin-1': 'ADC 引脚 1',
 	'adc-pin-2': 'ADC 引脚 2',
