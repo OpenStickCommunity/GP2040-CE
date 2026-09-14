@@ -2,14 +2,8 @@ export default {
 	'header-text': 'Wii Extension',
 	'sub-header-text':
 		'<0>Note: If the display is enabled at the same time, this add-on will be disabled.</0>',
-	'sda-pin-label': 'I2C SDA Pin',
-	'scl-pin-label': 'I2C SCL Pin',
-	'block-label': 'I2C Block',
-	'speed-label': 'I2C Speed',
 	'section-digital': 'Digital',
 	'section-analog': 'Analog',
-	'option-simple': 'Simple',
-	'option-advanced': 'Advanced',
 	'controller-nunchuk': 'Nunchuk',
 	'controller-classic': 'Classic',
 	'controller-taiko': 'Taiko',
@@ -65,13 +59,5 @@ export default {
 	'controller-analog-axis-x': 'X +/- Axis',
 	'controller-analog-axis-y': 'Y +/- Axis',
 	'controller-analog-axis-trigger': 'Trigger',
-	'analog-axis-mode-trigger':
-		'<0>The full range of values will be sent to the interface.</0>',
-	'analog-axis-mode-button':
-		'<0>Acts as a digital switch, setting a "pressed" state after a defined threshold.</0>',
-	'analog-axis-mode-normal-direction':
-		'<0>The full range of values will be translated to an axis of a joystick, where the lowest value is assumed the negative edge, and maximum is the positive edge.</0>',
-	'analog-axis-mode-invert-direction':
-		'<0>The full range of values will be translated to an axis of a joystick, where the lowest value is assumed the positive edge, and maximum is the negative edge.</0>',
 	'button-save': 'Save Controllers',
 };

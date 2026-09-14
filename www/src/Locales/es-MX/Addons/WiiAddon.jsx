@@ -2,14 +2,8 @@ export default {
 	'header-text': 'Extensión Wii',
 	'sub-header-text':
 		'<0>Nota: Si la pantalla está habilitada al mismo tiempo, este complemento será desactivado.</0>',
-	'sda-pin-label': 'Pin I2C SDA',
-	'scl-pin-label': 'Pin I2C SCL',
-	'block-label': 'Bloque I2C',
-	'speed-label': 'Velocidad I2C',
 	'section-digital': 'Digital',
 	'section-analog': 'Analógico',
-	'option-simple': 'Simple',
-	'option-advanced': 'Avanzado',
 	'controller-nunchuk': 'Nunchuk',
 	'controller-classic': 'Clásico',
 	'controller-taiko': 'Taiko',
@@ -65,13 +59,5 @@ export default {
 	'controller-analog-axis-x': 'Eje X +/-',
 	'controller-analog-axis-y': 'Eje Y +/-',
 	'controller-analog-axis-trigger': 'Gatillo',
-	'analog-axis-mode-trigger':
-		'<0>El rango completo de valores será enviado a la interfaz.</0>',
-	'analog-axis-mode-button':
-		'<0>Actúa como un interruptor digital, estableciendo un estado "presionado" después de un umbral definido.</0>',
-	'analog-axis-mode-normal-direction':
-		'<0>El rango completo de valores se traducirá a un eje de un joystick, donde el valor más bajo se asume como el borde negativo, y el máximo como el borde positivo.</0>',
-	'analog-axis-mode-invert-direction':
-		'<0>El rango completo de valores se traducirá a un eje de un joystick, donde el valor más bajo se asume como el borde positivo, y el máximo como el borde negativo.</0>',
 	'button-save': 'Guardar Controladores',
 };

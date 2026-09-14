@@ -2,14 +2,8 @@ export default {
 	'header-text': 'Wii拡張機能',
 	'sub-header-text':
 		'<0>注：ディスプレイが有効な場合このAdd-onは無効化されます</0>',
-	'sda-pin-label': 'I2C SDA 端子',
-	'scl-pin-label': 'I2C SCL 端子',
-	'block-label': 'I2C ブロック',
-	'speed-label': 'I2C 速度',
 	'section-digital': 'デジタル',
 	'section-analog': 'アナログ',
-	'option-simple': '簡易設定',
-	'option-advanced': '詳細設定',
 	'controller-nunchuk': 'ヌンチャク',
 	'controller-classic': 'クラシック',
 	'controller-taiko': '太鼓',
@@ -50,13 +44,5 @@ export default {
 	'controller-analog-axis-x': 'X軸 +/-',
 	'controller-analog-axis-y': 'Y軸 +/-',
 	'controller-analog-axis-trigger': 'トリガー',
-	'analog-axis-mode-trigger':
-		'<0>インターフェースには値のフルレンジが送信されます</0>',
-	'analog-axis-mode-button':
-		'<0>一定の閾値を超えた時点で押下として判定されるデジタルなボタンとして動作します。</0>',
-	'analog-axis-mode-normal-direction':
-		'<0>値の最大値がジョイスティックの軸入力値として送信されます。押下時に最大値、離した際に最低値が送信されます。</0>',
-	'analog-axis-mode-invert-direction':
-		'<0>値の最大値がジョイスティックの軸入力値として送信されます。押下時に最低値、離した際に最大値が送信されます。</0>',
 	'button-save': 'コントローラを保存',
 };

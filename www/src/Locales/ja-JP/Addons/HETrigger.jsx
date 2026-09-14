@@ -44,7 +44,6 @@ export default {
 	'calibration-header-text': 'ホールセンサ調整',
 	'calibration-idle-text': '未押下電圧値:',
 	'calibration-pressed-text': '最大押下電圧値:',
-	'calibration-trigger-text': '押下判定電圧値',
 	'calibration-flip-polarity': '極性反転',
 	'calibration-back-button': '戻る',
 	'calibration-first-step':

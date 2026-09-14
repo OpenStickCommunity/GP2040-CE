@@ -54,7 +54,6 @@ export default {
 	'calibration-header-text': 'Hall-Effect Calibration',
 	'calibration-idle-text': 'Idle Voltage Reading:',
 	'calibration-pressed-text': 'Pressed Voltage Reading:',
-	'calibration-trigger-text': 'Trigger Voltage',
 	'calibration-flip-polarity': 'Flip Polarity',
 	'calibration-flip-rapid-trigger': 'Enable Rapid Trigger',
 	'calibration-back-button': 'Back',

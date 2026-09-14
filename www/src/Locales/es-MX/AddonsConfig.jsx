@@ -33,7 +33,6 @@ export default {
 	'smoothing-factor': 'Factor de Suavizado',
 	'analog-error-label': 'Tasa de Error',
 	'turbo-header-text': 'Turbo',
-	'turbo-button-pin-label': 'Pin GPIO Turbo',
 	'turbo-led-pin-label': 'Pin GPIO LED Turbo',
 	'turbo-shmup-dial-pin-label': 'Dial Turbo (SOLO ADC)',
 	'turbo-shot-count-label': 'Disparos Turbo por Segundo',
@@ -55,13 +54,7 @@ export default {
 	'turbo-led-type-label-off': 'Apagado',
 	'turbo-led-type-label-pwm': 'PWM',
 	'turbo-led-type-label-rgb': 'RGB',
-	'turbo-led-color-label': 'Color LED Turbo',
-	'joystick-selection-slider-header-text':
-		'Deslizador de Selección de Joystick',
-	'joystick-selection-slider-mode-zero-label':
-		'Modo Predeterminado Pin GPIO Deslizador',
 	'input-reverse-header-text': 'Invertir Entrada',
-	'input-reverse-button-pin-label': 'Pin GPIO Invertir Entrada',
 	'input-reverse-led-pin-label': 'Pin GPIO LED Invertir Entrada',
 	'input-reverse-action-up-label': 'Invertir Arriba',
 	'input-reverse-action-down-label': 'Invertir Abajo',
@@ -71,43 +64,20 @@ export default {
 	'reverse-action-enable-label': 'Activar',
 	'reverse-action-neutral-label': 'Neutral',
 	'i2c-analog-ads1219-header-text': 'I2C Analógico ADS1219',
-	'i2c-analog-ads1219-scl-pin-label': 'Pin GPIO SCL I2C Analógico ADS1219',
-	'i2c-analog-ads1219-sda-pin-label': 'Pin GPIO SDA I2C Analógico ADS1219',
-	'i2c-analog-ads1219-block-label': 'Bloque I2C Analógico ADS1219',
-	'i2c-analog-ads1219-speed-label': 'Velocidad I2C Analógico ADS1219',
-	'i2c-analog-ads1219-address-label': 'Dirección I2C Analógico ADS1219',
 	'dual-directional-input-header-text': 'Entrada Direccional Dual',
 	'dual-directional-input-dpad-mode-label': 'Modo D-Pad Dual',
 	'dual-directional-input-combine-mode-label': 'Modo Combinación',
 	'dual-directional-input-four-way-joystick-mode-label':
 		'Modo Joystick de 4 Direcciones Dual',
 	'tilt-header-text': 'Entrada de Inclinación',
-	'tilt-1-pin-label': 'Pin GPIO Inclinación 1',
 	'tilt-1-factor-left-x-label': 'Inclinación 1 Eje X Izquierdo %',
 	'tilt-1-factor-left-y-label': 'Inclinación 1 Eje Y Izquierdo %',
 	'tilt-1-factor-right-x-label': 'Inclinación 1 Eje X Derecho %',
 	'tilt-1-factor-right-y-label': 'Inclinación 1 Eje Y Derecho %',
-	'tilt-2-pin-label': 'Pin GPIO Inclinación 2',
 	'tilt-2-factor-left-x-label': 'Inclinación 2 Eje X Izquierdo %',
 	'tilt-2-factor-left-y-label': 'Inclinación 2 Eje Y Izquierdo %',
 	'tilt-2-factor-right-x-label': 'Inclinación 2 Eje X Derecho %',
 	'tilt-2-factor-right-y-label': 'Inclinación 2 Eje Y Derecho %',
-	'tilt-left-analog-up-pin-label':
-		'Pin GPIO Inclinación Analógico Izquierdo Arriba',
-	'tilt-left-analog-down-pin-label':
-		'Pin GPIO Inclinación Analógico Izquierdo Abajo',
-	'tilt-left-analog-left-pin-label':
-		'Pin GPIO Inclinación Analógico Izquierdo Izquierda',
-	'tilt-left-analog-right-pin-label':
-		'Pin GPIO Inclinación Analógico Izquierdo Derecha',
-	'tilt-right-analog-up-pin-label':
-		'Pin GPIO Inclinación Analógico Derecho Arriba',
-	'tilt-right-analog-down-pin-label':
-		'Pin GPIO Inclinación Analógico Derecho Abajo',
-	'tilt-right-analog-left-pin-label':
-		'Pin GPIO Inclinación Analógico Derecho Izquierda',
-	'tilt-right-analog-right-pin-label':
-		'Pin GPIO Inclinación Analógico Derecho Derecha',
 	'tilt-socd-mode-label': 'Modo SOCD Inclinación',
 	'buzzer-speaker-header-text': 'Altavoz Zumbador',
 	'buzzer-speaker-pin-label': 'Pin GPIO Zumbador',
@@ -127,8 +97,6 @@ export default {
 	'ps4-mode-sub-header': '¡AVISO LEGAL!',
 	'ps4-mode-sub-header-text':
 		'¡¡¡GP2040-CE NUNCA PROPORCIONARÁ ESTOS ARCHIVOS!!!',
-	'ps4-mode-text':
-		'Por favor, suba los 3 archivos requeridos y haga clic en el botón "Verificar y Guardar" para usar el Modo PS4.',
 	'ps4-mode-private-key-label': 'Clave Privada (PEM)',
 	'ps4-mode-serial-number-label': 'Número de Serie (16 Bytes en Hex Ascii)',
 	'ps4-mode-signature-label': 'Firma (256 Bytes en Binario)',
@@ -139,7 +107,6 @@ export default {
 	'snes-extension-latch-pin-label': 'Pin GPIO Latch',
 	'snes-extension-data-pin-label': 'Pin GPIO Datos',
 	'focus-mode-header-text': 'Configuración de Modo Enfoque',
-	'focus-mode-pin-label': 'Pin GPIO Modo Enfoque',
 	'keyboard-host-header-text': 'Configuración de Host Teclado/Ratón',
 	'keyboard-host-sub-header-text': 'Botones de Teclado',
 	'keyboard-host-mouse-header-text': 'Botones de Ratón',
@@ -148,7 +115,6 @@ export default {
 	'keyboard-host-right-mouse': 'Derecho',
 	'pin-config-moved-to-core-text':
 		'Nota: los pines GPIO para este complemento ahora se configuran en la página de Mapeo de Pines GPIO.',
-	'input-history-header-text': 'Historial de Entrada',
 	'input-history-length-label': 'Longitud del historial (caracteres)',
 	'input-history-col-label': 'Columna',
 	'input-history-row-label': 'Fila',
@@ -158,9 +124,6 @@ export default {
 	'analog1256-drdy-pin': 'Pin GPIO Datos Listos (DRDY)',
 	'analog1256-analog-max': 'Máximo Analógico',
 	'analog1256-enable-triggers': 'Habilitar Gatillos',
-	'joystick-selection-slider-mode-0': 'Digital',
-	'joystick-selection-slider-mode-1': 'Analógico Izquierdo',
-	'joystick-selection-slider-mode-2': 'Analógico Derecho',
 	'dual-directional-input-dual-dpad-mode-0': 'D-Pad',
 	'dual-directional-input-dual-dpad-mode-1': 'Analógico Izquierdo',
 	'dual-directional-input-dual-dpad-mode-2': 'Analógico Derecho',
