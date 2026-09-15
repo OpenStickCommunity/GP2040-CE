@@ -620,9 +620,9 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bCaseSpecialColorIsRainbow, LEDS_CASE_SPECIAL_COLOR_IS_RAINDOW);
         INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], effectContextParam, 0);
         config.animationOptions.profiles_count = 1;
-        config.animationOptions.profiles[0].notPressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
-        config.animationOptions.profiles[0].pressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
-        for (unsigned int lightIndex = 0; lightIndex < (NUM_BANK0_GPIOS/4)+1; ++lightIndex) 
+        config.animationOptions.profiles[0].notPressedStaticColors_count = (NUM_BANK0_GPIOS + 3) / 4;
+        config.animationOptions.profiles[0].pressedStaticColors_count = (NUM_BANK0_GPIOS + 3) / 4;
+        for (unsigned int lightIndex = 0; lightIndex < (NUM_BANK0_GPIOS + 3) / 4; ++lightIndex)
         {
             config.animationOptions.profiles[0].notPressedStaticColors[lightIndex] = LEDS_STATIC_COLOR_UNPRESSED;
             config.animationOptions.profiles[0].notPressedStaticColors[lightIndex] += LEDS_STATIC_COLOR_UNPRESSED<<8;
@@ -674,9 +674,9 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
             INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], baseCaseCycleTime, 4);
 
             INIT_UNSET_PROPERTY(config.animationOptions.profiles[profileIndex], bUseCaseLightsInPressedAnimations, 0);   
-            config.animationOptions.profiles[profileIndex].notPressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
-            config.animationOptions.profiles[profileIndex].pressedStaticColors_count = (NUM_BANK0_GPIOS/4)+1;
-            for (unsigned int lightIndex = 0; lightIndex < (NUM_BANK0_GPIOS/4)+1; ++lightIndex) 
+            config.animationOptions.profiles[profileIndex].notPressedStaticColors_count = (NUM_BANK0_GPIOS + 3) / 4;
+            config.animationOptions.profiles[profileIndex].pressedStaticColors_count = (NUM_BANK0_GPIOS + 3) / 4;
+            for (unsigned int lightIndex = 0; lightIndex < (NUM_BANK0_GPIOS + 3) / 4; ++lightIndex)
             {
                 config.animationOptions.profiles[profileIndex].notPressedStaticColors[lightIndex] = 0; //Black
                 config.animationOptions.profiles[profileIndex].pressedStaticColors[lightIndex] = 0; //Black

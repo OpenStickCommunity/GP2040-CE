@@ -25,7 +25,7 @@ struct GamepadButtonMapping
 		buttonMask(bm)
 	{}
 
-	uint32_t pinMask;
+	Mask_t pinMask;
 	const uint32_t buttonMask;
 };
 

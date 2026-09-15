@@ -9,7 +9,7 @@
 #include <math.h>
 
 #define ADC_MAX ((1 << 12) - 1) // 4095
-#define ADC_PIN_OFFSET 26
+#define ADC_PIN_OFFSET ADC_BASE_PIN
 #define ANALOG_MAX 1.0f
 #define ANALOG_CENTER 0.5f
 #define ANALOG_MINIMUM 0.0f

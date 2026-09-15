@@ -522,7 +522,7 @@ void AnimationStation::DecompressProfile(int ProfileIndex, const AnimationProfil
 		options.profiles[ProfileIndex].baseCycleTime = ProfileToDecompress->baseCycleTime;
 		options.profiles[ProfileIndex].basePressedCycleTime = ProfileToDecompress->basePressedCycleTime;
     options.profiles[ProfileIndex].baseCaseCycleTime = ProfileToDecompress->baseCaseCycleTime;
-		for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS/4)+1; ++packedPinIndex)
+		for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS + 3) / 4; ++packedPinIndex)
 		{
 			int pinIndex = packedPinIndex * 4;
 			if(packedPinIndex < ProfileToDecompress->notPressedStaticColors_count)
@@ -682,7 +682,7 @@ void AnimationStation::SetTestMode(AnimationStationTestMode TestType, const Anim
     options.profiles[testProfileIndex].baseNonPressedEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_LEFT_TO_RIGHT;
     options.profiles[testProfileIndex].basePressedEffect = AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_STATIC_COLOR;
 
-    for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS/4)+1; ++packedPinIndex)
+    for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS + 3) / 4; ++packedPinIndex)
 		{
 			int pinIndex = packedPinIndex * 4;
       options.profiles[testProfileIndex].notPressedStaticColors[pinIndex + 0] = 0;
@@ -718,7 +718,7 @@ void AnimationStation::SetTestMode(AnimationStationTestMode TestType, const Anim
     options.profiles[testProfileIndex].baseNonPressedEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_STATIC_COLOR;
     options.profiles[testProfileIndex].basePressedEffect = AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_STATIC_COLOR;
 
-    for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS/4)+1; ++packedPinIndex)
+    for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS + 3) / 4; ++packedPinIndex)
 		{
 			int pinIndex = packedPinIndex * 4;
       options.profiles[testProfileIndex].notPressedStaticColors[pinIndex + 0] = 0;

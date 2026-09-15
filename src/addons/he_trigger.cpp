@@ -21,7 +21,7 @@ void HETriggerAddon::setup() {
     muxPinArray[2] = options.muxADCPin2;
     muxPinArray[3] = options.muxADCPin3;
     for(int i = 0; i < muxTotal; i++) {
-        if ( muxPinArray[i] >= 26 && muxPinArray[i] <= 29 ) {
+        if (muxPinArray[i] >= ADC_BASE_PIN && muxPinArray[i] < ADC_BASE_PIN + NUM_ADC_CHANNELS - 1) {
             adc_gpio_init(muxPinArray[i]);
         }
     }
@@ -68,7 +68,7 @@ void HETriggerAddon::setup() {
             selectChannel(channel);
             // Only Switch ADC if we are not currently on the mux ADC
             if ( lastADCSelected != muxPinArray[mux]) {
-                adc_select_input(muxPinArray[mux]-26);
+                adc_select_input(muxPinArray[mux] - ADC_BASE_PIN);
                 lastADCSelected = muxPinArray[mux];
             }
             emaSmoothingReads[i] = adc_read();
@@ -105,7 +105,7 @@ void HETriggerAddon::preprocess() {
         selectChannel(channel);
         // Only Switch ADC if we are not currently on the mux ADC
         if ( lastADCSelected != muxPinArray[mux]) {
-            adc_select_input(muxPinArray[mux]-26);
+            adc_select_input(muxPinArray[mux] - ADC_BASE_PIN);
             lastADCSelected = muxPinArray[mux];
         }
 
