@@ -45,7 +45,6 @@ export default {
 	'calibration-header-text': 'Calibration - Effet Hall',
 	'calibration-idle-text': 'Lecture de la tension au repos :',
 	'calibration-pressed-text': 'Lecture de la tension enfoncée :',
-	'calibration-trigger-text': 'Tension de déclenchement',
 	'calibration-flip-polarity': 'Inverser la polarité',
 	'calibration-back-button': 'Retour',
 	'calibration-first-step':

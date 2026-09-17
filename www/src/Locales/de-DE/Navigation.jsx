@@ -12,7 +12,6 @@ export default {
 	'macro-label': 'Makro',
 	'pin-mapping-label': 'Pin Zuweisung',
 	'peripheral-mapping-label': 'Peripherie Zuordnung',
-	'profile-settings-label': 'Profil Einstellungen',
 	'reboot-label': 'Neustart',
 	'reboot-modal-body': 'Wählen Sie einen Neustartsmodus aus',
 	'reboot-modal-button-bootsel-label': 'USB (BOOTSEL)',

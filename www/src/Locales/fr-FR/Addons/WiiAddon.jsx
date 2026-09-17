@@ -2,14 +2,8 @@ export default {
 	'header-text': 'Wii Extension',
 	'sub-header-text':
 		'<0>Remarque : Si l’écran OLED est activé en même temps, ce module complémentaire sera désactivé.</0>',
-	'sda-pin-label': 'Broche SDA I²C',
-	'scl-pin-label': 'Broche SCL I²C',
-	'block-label': 'Bloc I²C',
-	'speed-label': 'Vitesse I²C',
 	'section-digital': 'Numérique',
 	'section-analog': 'Analogique',
-	'option-simple': 'Simple',
-	'option-advanced': 'Avancé',
 	'controller-nunchuk': 'Nunchuk',
 	'controller-classic': 'Classique',
 	'controller-taiko': 'Taiko',
@@ -65,13 +59,5 @@ export default {
 	'controller-analog-axis-x': 'Axe X +/-',
 	'controller-analog-axis-y': 'Axe Y +/-',
 	'controller-analog-axis-trigger': 'Déclencheur',
-	'analog-axis-mode-trigger':
-		"<0>La plage complète des valeurs sera envoyée à l'interface.</0>",
-	'analog-axis-mode-button':
-		'<0>Agît comme un interrupteur numérique, définissant un état "appuyé" après un seuil défini.</0>',
-	'analog-axis-mode-normal-direction':
-		'<0>La plage complète des valeurs sera traduite en un axe de joystick, où la valeur la plus basse est supposée être le bord négatif, et la valeur maximale le bord positif.</0>',
-	'analog-axis-mode-invert-direction':
-		'<0>La plage complète des valeurs sera traduite en un axe de joystick, où la valeur la plus basse est supposée être le bord positif, et la valeur maximale le bord négatif.</0>',
 	'button-save': 'Enregistrer les Contrôleurs',
 };

@@ -24,7 +24,6 @@ export default {
 	'analog-force-circularity': 'Forçar Circularidade',
 	'analog-auto-calibrate': 'Calibração Automática',
 	'turbo-header-text': 'Turbo',
-	'turbo-button-pin-label': 'Pino do Turbo',
 	'turbo-led-pin-label': 'Pino do LED do Turbo',
 	'turbo-shmup-dial-pin-label': 'Dial do Turbo (APENAS ADC)',
 	'turbo-shot-count-label': 'Contagem de Disparos do Turbo',
@@ -42,18 +41,13 @@ export default {
 	'turbo-shmup-button-mask-3-label': 'Atribuição do Botão de Carregamento 3',
 	'turbo-shmup-button-mask-4-label': 'Atribuição do Botão de Carregamento 4',
 	'turbo-shmup-mix-mode-label': 'Modo de Prioridade Simultânea',
-	'joystick-selection-slider-header-text':
-		'Controle Deslizante de Seleção de Joystick',
 	'joystick-selection-slider-pin-one-label': 'Pino Um do Controle Deslizante',
 	'joystick-selection-slider-pin-two-label': 'Pino Dois do Controle Deslizante',
-	'joystick-selection-slider-mode-zero-label':
-		'Modo Padrão do Pino do Controle Deslizante',
 	'joystick-selection-slider-mode-one-label':
 		'Modo Um do Pino do Controle Deslizante',
 	'joystick-selection-slider-mode-two-label':
 		'Modo Dois do Pino do Controle Deslizante',
 	'input-reverse-header-text': 'Inverter Entrada',
-	'input-reverse-button-pin-label': 'Pino de Inversão de Entrada',
 	'input-reverse-led-pin-label': 'Pino do LED de Inversão de Entrada',
 	'input-reverse-action-up-label': 'Inverter Cima',
 	'input-reverse-action-down-label': 'Inverter Baixo',
@@ -63,35 +57,12 @@ export default {
 	'reverse-action-enable-label': 'Ativar',
 	'reverse-action-neutral-label': 'Neutro',
 	'i2c-analog-ads1219-header-text': 'I2C Analógico ADS1219',
-	'i2c-analog-ads1219-scl-pin-label': 'Pino SCL do I2C Analógico ADS1219',
-	'i2c-analog-ads1219-sda-pin-label': 'Pino SDA do I2C Analógico ADS1219',
-	'i2c-analog-ads1219-block-label': 'Bloquear o I2C Analógico ADS1219',
-	'i2c-analog-ads1219-speed-label': 'Velocidade do I2C Analógico ADS1219',
-	'i2c-analog-ads1219-address-label': 'Endereço do I2C Analógico ADS1219',
 	'dual-directional-input-header-text': 'Entrada Dual Direcional',
 	'dual-directional-input-dpad-mode-label': 'Modo D-Pad Dual',
 	'dual-directional-input-combine-mode-label': 'Modo de Combinação',
 	'dual-directional-input-four-way-joystick-mode-label':
 		'Modo Joystick de 4 Vias Dual Direcional',
 	'tilt-header-text': 'Entrada de Inclinação',
-	'tilt-1-pin-label': 'Pino 1 de Inclinação',
-	'tilt-2-pin-label': 'Pino 2 de Inclinação',
-	'tilt-left-analog-up-pin-label':
-		'Pino de Inclinação Analógica Esquerda para Cima',
-	'tilt-left-analog-down-pin-label':
-		'Pino de Inclinação Analógica Esquerda para Baixo',
-	'tilt-left-analog-left-pin-label':
-		'Pino de Inclinação Analógica Esquerda para a Esquerda',
-	'tilt-left-analog-right-pin-label':
-		'Pino de Inclinação Analógica Esquerda para a Direita',
-	'tilt-right-analog-up-pin-label':
-		'Pino de Inclinação Analógica Direita para Cima',
-	'tilt-right-analog-down-pin-label':
-		'Pino de Inclinação Analógica Direita para Baixo',
-	'tilt-right-analog-left-pin-label':
-		'Pino de Inclinação Analógica Direita para a Esquerda',
-	'tilt-right-analog-right-pin-label':
-		'Pino de Inclinação Analógica Direita para a Direita',
 	'tilt-socd-mode-label': 'Modo SOCD de Inclinação',
 	'buzzer-speaker-header-text': 'Alto-falante do Buzzer',
 	'buzzer-speaker-pin-label': 'Pino do Buzzer',
@@ -133,11 +104,9 @@ export default {
 	'snes-extension-latch-pin-label': 'Pino de Latch',
 	'snes-extension-data-pin-label': 'Pino de Dados',
 	'focus-mode-header-text': 'Configuração de Modo de Foco',
-	'focus-mode-pin-label': 'Pino do Modo de Foco',
 	'keyboard-host-header-text': 'Configuração de Host de Teclado',
 	'keyboard-host-sub-header-text':
 		'A seguir, defina os pinos de dados +, - e 5V (opcional). Apenas os pinos + e 5V podem ser configurados.',
-	'input-history-header-text': 'Histórico de Entrada',
 	'input-history-length-label': 'Comprimento do histórico (caracteres)',
 	'input-history-col-label': 'Coluna',
 	'input-history-row-label': 'Linha',
