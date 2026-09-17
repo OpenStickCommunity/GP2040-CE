@@ -126,7 +126,7 @@ void GPButton::draw() {
         }
     }
 
-    state = (buttonState ? pinState : 0);
+    state = (useMask ? buttonState : pinState);
 
     // base
     if (this->_shape == GP_SHAPE_ELLIPSE) {
