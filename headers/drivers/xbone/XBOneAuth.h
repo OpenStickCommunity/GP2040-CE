@@ -18,7 +18,8 @@ public:
         }
     }
 
-    void setBuffer(uint8_t * inData, uint16_t inLen, uint8_t inSeq, uint8_t inType) {
+    void setBuffer(const uint8_t * inData, uint16_t inLen, uint8_t inSeq = 0, uint8_t inType = 0) {
+        reset();
         data = new uint8_t[inLen];
         length = inLen;
         sequence = inSeq;
@@ -55,6 +56,14 @@ typedef struct {
 
     // Send announce to console AFTER the dongle is established
     bool dongle_ready = false;
+
+    // Whether the attached authentication device needs byte-for-byte relay.
+    // Controllers use this path; known authentication dongles retain the
+    // original parsed/reframed path.
+    bool auth_passthrough_enabled = false;
+
+    // True only while a byte-for-byte authentication exchange is active.
+    bool auth_passthrough = false;
 } XboxOneAuthData;
 
 class XBOneAuth : public GPAuthDriver {
