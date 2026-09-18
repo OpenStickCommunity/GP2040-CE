@@ -62,6 +62,10 @@
 #define LWIP_HTTPD_SUPPORT_V09          0
 #define LWIP_HTTPD_SUPPORT_11_KEEPALIVE 0 // Causes lockups with CGI requests
 #define LWIP_HTTPD_ABORT_ON_CLOSE_MEM_ERROR 1
+// API responses are heap strings freed on connection close (fs_close_custom
+// in webconfig.cpp). lwIP's default queues custom-file data by reference,
+// assuming it lives in ROM, so copy it here to avoid sending freed memory.
+#define HTTP_IS_DATA_VOLATILE(hs)       TCP_WRITE_FLAG_COPY
 
 #define LWIP_SINGLE_NETIF               1
 

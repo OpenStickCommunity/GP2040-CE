@@ -203,16 +203,15 @@ public:
 
 	uint32_t lastReinitProfileNumber = 0;
 
-	// These are special to SOCD
-	inline static const SOCDMode resolveSOCDMode(const GamepadOptions& options) {
-		return (options.socdMode == SOCD_MODE_BYPASS &&
-				(options.inputMode == INPUT_MODE_PS3 ||
-				options.inputMode == INPUT_MODE_SWITCH ||
-				options.inputMode == INPUT_MODE_SWITCH_PRO ||
-				options.inputMode == INPUT_MODE_NEOGEO ||
-				options.inputMode == INPUT_MODE_PS4)) ?
-			SOCD_MODE_NEUTRAL : options.socdMode;
-	};
+	// These are special to SOCD.
+	// Resolution order: SOCD slider addon > profile override > global.
+	static const SOCDMode resolveSOCDMode(const GamepadOptions& options);
+	// Stored value of the effective SOCD source (no input-mode coercion).
+	static const SOCDMode readSOCDMode(const GamepadOptions& options);
+	// Write the effective SOCD source: profile override when active (and the
+	// slider addon is disabled), the global otherwise. Never creates an override.
+	// Note: setSOCDMode() always writes the global (the slider addon relies on this).
+	void applySOCDMode(SOCDMode mode);
 
 private:
 	void processHotkeyAction(GamepadHotkey action);
