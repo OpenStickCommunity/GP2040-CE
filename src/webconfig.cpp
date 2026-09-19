@@ -1286,7 +1286,7 @@ void helperGetProfileFromJsonObject(AnimationProfile* Profile, JsonObject* JsonD
 
     JsonArray nonButtonStaticColorsList = (*JsonData)["nonButtonStaticColors"];
     Profile->nonButtonStaticColors_count = 0;
-    for(unsigned int packedPinIndex = 0; packedPinIndex < (MAX_NON_BUTTON_LIGHT_COLOR_INDEXES/4)+1; ++packedPinIndex)
+    for(unsigned int packedPinIndex = 0; packedPinIndex < (MAX_NON_BUTTON_LIGHT_COLOR_INDEXES/4); ++packedPinIndex)
     {
         unsigned int pinIndex = packedPinIndex * 4;
         if(pinIndex < nonButtonStaticColorsList.size())
