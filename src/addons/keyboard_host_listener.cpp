@@ -31,6 +31,8 @@ void KeyboardHostListener::setup() {
   _keyboard_host_mapButtonR3.setMask(GAMEPAD_MASK_R3);
   _keyboard_host_mapButtonA1.setMask(GAMEPAD_MASK_A1);
   _keyboard_host_mapButtonA2.setMask(GAMEPAD_MASK_A2);
+  _keyboard_host_mapButtonA3.setMask(GAMEPAD_MASK_A3);
+  _keyboard_host_mapButtonA4.setMask(GAMEPAD_MASK_A4);
   _keyboard_host_mapDpadUp.setKey(keyboardMapping.keyDpadUp);
   _keyboard_host_mapDpadDown.setKey(keyboardMapping.keyDpadDown);
   _keyboard_host_mapDpadLeft.setKey(keyboardMapping.keyDpadLeft);
