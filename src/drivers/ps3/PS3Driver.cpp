@@ -635,6 +635,7 @@ void PS3Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uin
         }
         switch(report_id) {
             case PS3ReportTypes::PS3_FEATURE_01:
+                if (bufsize > sizeof(ps3Features)) return;
                 memcpy(&ps3Features, buf, bufsize);
                 break;
         }

@@ -883,6 +883,7 @@ void PS4Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uin
 
     if (report_type == HID_REPORT_TYPE_OUTPUT) {
         if (report_id == 0) {
+            if (bufsize > sizeof(ps4Features)) return;
             memcpy(&ps4Features, buffer, bufsize);
         }
     } else if (report_type == HID_REPORT_TYPE_FEATURE) {
