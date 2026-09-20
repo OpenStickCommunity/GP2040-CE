@@ -119,55 +119,7 @@
 #define LEDS_BRIGHTNESS -1
 #endif
 
-#ifndef LEDS_BASE_ANIMATION_INDEX
-#define LEDS_BASE_ANIMATION_INDEX AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_SYNCED
-#endif
-
-#ifndef LEDS_PRESSED_ANIMATION_INDEX
-#define LEDS_PRESSED_ANIMATION_INDEX AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_STATIC_COLOR
-#endif
-
-#ifndef LEDS_CASE_ANIMATION_INDEX
-#define LEDS_CASE_ANIMATION_INDEX AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_STATIC_COLOR
-#endif
-
 #define LEDS_COLOR_QUAD(color) ((color<<24) + (color<<16) + (color<<8) + color)
-
-#ifndef LEDS_STATIC_COLOR_UNPRESSED
-#define LEDS_STATIC_COLOR_UNPRESSED ColorIndexRed 
-#endif
-
-#ifndef LEDS_STATIC_COLOR_PRESSED
-#define LEDS_STATIC_COLOR_PRESSED ColorIndexWhite 
-#endif
-
-#ifndef LEDS_STATIC_COLOR_CASE
-#define LEDS_STATIC_COLOR_CASE ColorIndexGreen 
-#endif
-
-#ifndef LEDS_IDLE_SPECIAL_COLOR
-#define LEDS_IDLE_SPECIAL_COLOR ColorYellow 
-#endif
-
-#ifndef LEDS_PRESSED_SPECIAL_COLOR
-#define LEDS_PRESSED_SPECIAL_COLOR ColorGreen 
-#endif
-
-#ifndef LEDS_CASE_SPECIAL_COLOR
-#define LEDS_CASE_SPECIAL_COLOR ColorBlue 
-#endif
-
-#ifndef LEDS_IDLE_SPECIAL_COLOR_IS_RAINDOW
-#define LEDS_IDLE_SPECIAL_COLOR_IS_RAINDOW false 
-#endif
-
-#ifndef LEDS_PRESSED_SPECIAL_COLOR_IS_RAINDOW
-#define LEDS_PRESSED_SPECIAL_COLOR_IS_RAINDOW false
-#endif
-
-#ifndef LEDS_CASE_SPECIAL_COLOR_IS_RAINDOW
-#define LEDS_CASE_SPECIAL_COLOR_IS_RAINDOW false
-#endif
 
 #ifndef LEDS_AUTO_DISABLE_TIME
 #define LEDS_AUTO_DISABLE_TIME 0 // in ms
