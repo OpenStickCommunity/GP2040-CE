@@ -64,7 +64,7 @@
 #define BOARD_LEDS_PIN 0
 #define LIGHT_DATA_NAME_DEFAULT "Flatbox Rev5 RGB" 
 #define LIGHT_DATA_SIZE_DEFAULT 12 //number of sets in the below data
-#define LEDS_BASE_ANIMATION_INDEX AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_ROTATE
+
 #define LIGHT_DATA_DEFAULT \
 0,  2, 0,  3, 13, LightType::LightType_ActionButton, \
 2,  2, 2,  3, 12, LightType::LightType_ActionButton, \
