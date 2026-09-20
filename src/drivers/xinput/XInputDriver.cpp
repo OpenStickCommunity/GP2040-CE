@@ -465,6 +465,11 @@ bool XInputDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_co
             tud_control_xfer(rhport, request, tud_buffer, len);
         }
     } else if (request->bmRequestType_bit.direction == TUSB_DIR_OUT) {
+        if ((request->bRequest != XSM360_INIT_AUTH || request->wLength != X360_AUTHLEN_CONSOLE_INIT) &&
+            (request->bRequest != XSM360_VERIFY_AUTH || request->wLength != X360_AUTHLEN_CHALLENGE)) {
+            return false;
+        }
+
         if (stage == CONTROL_STAGE_SETUP ) { // Pass on output setup in DIR OUT stage
             tud_control_xfer(rhport, request, tud_buffer, request->wLength);
         } else if ( stage == CONTROL_STAGE_DATA ) {
