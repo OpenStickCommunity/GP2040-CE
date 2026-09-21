@@ -207,6 +207,24 @@ static GpioAction actionForButtonId(uint8_t buttonId) {
 	return GpioAction::NONE;
 }
 
+// Reverse of actionForButtonId. An action with no button ID returns
+// HOST_LIGHTING_BUTTON_NONE and is identified by its action field.
+static uint8_t buttonIdForAction(GpioAction pinAction) {
+	for (uint8_t id = 0; id < HOST_LIGHTING_BUTTON_COUNT; id++) {
+		if (canonicalAction[id] == pinAction)
+			return id;
+	}
+	if (pinAction == GpioAction::BUTTON_PRESS_A3)
+		return HOST_LIGHTING_BUTTON_A3;
+	if (pinAction == GpioAction::BUTTON_PRESS_A4)
+		return HOST_LIGHTING_BUTTON_A4;
+	if ((pinAction >= GpioAction::BUTTON_PRESS_E1) &&
+			(pinAction <= GpioAction::BUTTON_PRESS_E12))
+		return (uint8_t)(HOST_LIGHTING_BUTTON_E1 +
+			((int)pinAction - (int)GpioAction::BUTTON_PRESS_E1));
+	return HOST_LIGHTING_BUTTON_NONE;
+}
+
 // Stages every light whose pin carries the control's action: boards may wire
 // several buttons to one action (the Haute42 B16 has two Up and two L3).
 // Returns false when the control has no light. Page 2 reports only the first.
@@ -240,10 +258,10 @@ static bool stageButton(uint8_t buttonId, uint32_t colour) {
 }
 
 // GET_CAPS pages: 0 identity, 1 runtime state (poll target), 2 LED map,
-// 3 animations, 4 light positions, 5 light table.
-// Pages 1, 2 and 5 carry the LED-map fingerprint.
+// 3 animations, 4 light positions, 5 light table, 6 control table.
+// Pages 1, 2, 5 and 6 carry the LED-map fingerprint.
 
-// LED-map fingerprint: 32-bit FNV-1a over everything pages 2, 4 and 5
+// LED-map fingerprint: 32-bit FNV-1a over everything pages 2, 4, 5 and 6
 // report, so a host polling page 1 knows whether its cached pages are stale.
 // Inputs, in order:
 //   - each registered light: first LED, count, type, pin, player index,
@@ -396,11 +414,13 @@ static void buildCapsState(uint8_t * reply) {
 	reply[11] = (animationOptions.baseProfileIndex < 0)
 		? 0xFF : (uint8_t)animationOptions.baseProfileIndex;
 
-	// Both bits follow the registry, which is populated on the render core during
+	// Bits 0-1 follow the registry, which is populated on the render core during
 	// LED setup; a host that reads earlier sees them clear and re-reads.
 	uint32_t features = 0;
 	if (lightsReady && (registeredLightCount > 0))
 		features |= HOST_LIGHTING_FEATURE_POSITIONS | HOST_LIGHTING_FEATURE_LIGHT_TABLE;
+	// Bit 2: the control table is built from the pin map, available from boot
+	features |= HOST_LIGHTING_FEATURE_CONTROL_TABLE;
 	memcpy(&reply[12], &features, 4);
 
 	reply[16] = HOST_LIGHTING_FRAMEWORK_REFACTOR;
@@ -477,24 +497,65 @@ static void resolveLight(const RegisteredLight & light, uint8_t & buttonId,
 	GpioMappingInfo * pinMappings = Storage::getInstance().getProfilePinMappings();
 	const GpioAction pinAction = pinMappings[light.gpioPin].action;
 	action = (int16_t)pinAction;
+	buttonId = buttonIdForAction(pinAction);
+}
 
-	for (uint8_t id = 0; id < HOST_LIGHTING_BUTTON_COUNT; id++) {
-		if (canonicalAction[id] == pinAction) {
-			buttonId = id;
-			return;
+// Page 6 - control table: one record per GPIO pin whose action is greater
+// than zero, lit or not. NONE, RESERVED and ASSIGNED_TO_ADDON are not, so
+// add-on pins are excluded; every other action is reported verbatim.
+//
+// Reply: [3] total records   [4] start entry, echoed   [5] count in this reply
+//        [6] record stride   [7] lit controls   [8] unlit controls
+//        [9] flags   [10..57] records   [60..63] LED-map fingerprint
+// Record: +0 pin   +1..2 GpioAction (int16 LE)   +3 button ID   +4 flags
+//         +5 reserved
+//
+// The counts and the records come from the same walk.
+static void buildCapsControls(uint8_t * reply, uint8_t startEntry) {
+	reply[6] = HOST_LIGHTING_CONTROL_STRIDE;
+	// Lit bits come from the registry and the inventory from the pin map; the
+	// fingerprint covers both.
+	const uint32_t fingerprint = ledMapFingerprint();
+	memcpy(&reply[60], &fingerprint, 4);
+	reply[9] = HOST_LIGHTING_CONTROLS_FLAG_PER_LIGHT;
+
+	GpioMappingInfo * pinMappings = Storage::getInstance().getProfilePinMappings();
+	uint8_t total = 0, lit = 0, count = 0;
+	for (uint8_t pin = 0; pin < (uint8_t)NUM_BANK0_GPIOS; pin++) {
+		const GpioAction pinAction = pinMappings[pin].action;
+		if ((int)pinAction <= 0)
+			continue;
+		const uint8_t ordinal = total++;
+
+		bool isLit = false;
+		if (lightsReady) {
+			for (uint8_t i = 0; i < registeredLightCount; i++) {
+				if ((registeredLights[i].type == LightType::LightType_ActionButton) &&
+						(registeredLights[i].gpioPin == (int32_t)pin)) {
+					isLit = true;
+					break;
+				}
+			}
 		}
-	}
+		if (isLit)
+			lit++;
 
-	// A3, A4 and E1-E12 have no page 2 slot. Any other action keeps the NONE ID
-	// and is identified by its action field.
-	if (pinAction == GpioAction::BUTTON_PRESS_A3)
-		buttonId = HOST_LIGHTING_BUTTON_A3;
-	else if (pinAction == GpioAction::BUTTON_PRESS_A4)
-		buttonId = HOST_LIGHTING_BUTTON_A4;
-	else if ((pinAction >= GpioAction::BUTTON_PRESS_E1) &&
-			(pinAction <= GpioAction::BUTTON_PRESS_E12))
-		buttonId = (uint8_t)(HOST_LIGHTING_BUTTON_E1 +
-			((int)pinAction - (int)GpioAction::BUTTON_PRESS_E1));
+		if ((ordinal < startEntry) || (count >= HOST_LIGHTING_CONTROLS_PER_PAGE))
+			continue;
+		uint8_t * record = &reply[10 + count * HOST_LIGHTING_CONTROL_STRIDE];
+		record[0] = pin;
+		record[1] = (uint8_t)((int16_t)pinAction & 0xFF);
+		record[2] = (uint8_t)(((int16_t)pinAction >> 8) & 0xFF);
+		record[3] = buttonIdForAction(pinAction);
+		record[4] = isLit ? HOST_LIGHTING_CONTROL_FLAG_LIT : 0;
+		record[5] = 0;
+		count++;
+	}
+	reply[3] = total;
+	reply[4] = startEntry;
+	reply[5] = count;
+	reply[7] = lit;
+	reply[8] = (uint8_t)(total - lit);
 }
 
 // Page 5 - light table: one twelve-byte record per light.
@@ -707,6 +768,8 @@ void HostLighting::setReport(uint8_t report_id, hid_report_type_t report_type, c
 				buildCapsPositions(responseBuffer, (bufsize > 3) ? buffer[3] : 0);
 			else if (buffer[2] == 5)
 				buildCapsLights(responseBuffer, (bufsize > 3) ? buffer[3] : 0);
+			else if (buffer[2] == 6)
+				buildCapsControls(responseBuffer, (bufsize > 3) ? buffer[3] : 0);
 			else
 				status = HOST_LIGHTING_STATUS_INVALID_ARG;
 			break;

@@ -42,9 +42,10 @@
 //        covers every button light; SET_MODE timeout ceiling
 //   1.2  SET_LIGHT; SET_BUTTONS stages the extended button IDs
 //   1.3  outcome mask in SET_LIGHT replies [5..6]; SET_LIGHT_RGBW
+//   1.4  page 6 (control table); page 1 feature bit 2
 // The caps format byte on page 0 versions that page's layout only; it stays 2.
 #define HOST_LIGHTING_PROTOCOL_VERSION_MAJOR 1
-#define HOST_LIGHTING_PROTOCOL_VERSION_MINOR 3
+#define HOST_LIGHTING_PROTOCOL_VERSION_MINOR 4
 
 // All transfers are fixed-size reports: [0]=command, [1]=sequence, [2..63]=payload.
 // Replies echo the sequence and set bit 7 of the command byte.
@@ -141,14 +142,27 @@
 #define HOST_LIGHTING_LIGHT_FLAG_POSITION     0x01
 #define HOST_LIGHTING_LIGHT_FLAG_PER_LIGHT    0x02
 
+// Page 6 - control table. One 6-byte record per GPIO pin that carries an
+// action, keyed by pin (unique, where a button ID is not). Joins to page 5 on
+// the pin column. Eight records per reply.
+#define HOST_LIGHTING_CONTROL_STRIDE      6
+#define HOST_LIGHTING_CONTROLS_PER_PAGE   8
+// Per-record flag: a light is bound to this control
+#define HOST_LIGHTING_CONTROL_FLAG_LIT    0x01
+// Page header flag: lit bits are resolved per light, so two pins sharing an
+// action can differ. Always set.
+#define HOST_LIGHTING_CONTROLS_FLAG_PER_LIGHT 0x01
+
 // GpioAction is sent verbatim as int16. This sentinel means no owning action,
 // which is distinct from GpioAction::NONE (-10).
 #define HOST_LIGHTING_ACTION_NONE     ((int16_t)0x8000)
 
 // Page 1 feature bits. A clear bit guarantees the page returns no records.
-// Both follow the light registry, which is populated during LED setup.
-#define HOST_LIGHTING_FEATURE_POSITIONS    (1u << 0)
-#define HOST_LIGHTING_FEATURE_LIGHT_TABLE  (1u << 1)
+// Bits 0-1 follow the light registry, which is populated during LED setup;
+// bit 2 is set from boot because the control table is built from the pin map.
+#define HOST_LIGHTING_FEATURE_POSITIONS      (1u << 0)
+#define HOST_LIGHTING_FEATURE_LIGHT_TABLE    (1u << 1)
+#define HOST_LIGHTING_FEATURE_CONTROL_TABLE  (1u << 2)
 
 // Page 1 LED framework byte. Diagnostic only: hosts branch on the feature bits
 // and record flags. The firmware reports REFACTOR. CLASSIC was reported by

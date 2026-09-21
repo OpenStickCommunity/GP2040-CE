@@ -104,7 +104,7 @@ command, `2` invalid argument.
 |---|---|---|---|
 | | **Session and discovery (0x01-0x0F)** | | |
 | 0x01 | PING | - | Reply `[3..6]="GPHL", [7..8]=version`; any OK command refreshes the takeover keepalive |
-| 0x02 | GET_CAPS | `[2]=page` (+`[3]=start` for pages 4 and 5) | See pages below |
+| 0x02 | GET_CAPS | `[2]=page` (+`[3]=start` for pages 4, 5 and 6) | See pages below |
 | 0x03 | SET_MODE | `[2]=takeover (0 whole-frame, 1 overlay), [3..4]=timeout ms LE (0->2000, min 100, max 10000), [5]=apply board brightness` | Send at connect; settings persist until reboot |
 | | **Frame staging (0x10-0x2F)** | | |
 | 0x10 | SET_BUTTONS | `[2]=n (1-15)`, n x `[buttonId,R,G,B]` | Stage by control; reply `[3]=applied, [4]=skipped` |
@@ -198,21 +198,23 @@ firmware version.
 (the XInput slot granted by the OS; 0 = none), `[7..10]` LED-map fingerprint,
 `[11]` current animation index (0xFF = none selected), `[12..15]` feature
 bitmask (bit 0 per-light positions are real, bit 1 the light table returns
-entries, remaining bits zero), `[16]` LED framework (0 not reported,
-1 classic, 2 LED-refactor), `[17]` animation namespace (0 not reported,
-1 built-in effects, 2 stored profiles), `[18]` render rate in Hz
-(0 = not stated).
+entries, bit 2 the control table returns entries, remaining bits zero),
+`[16]` LED framework (0 not reported, 1 classic, 2 LED-refactor), `[17]`
+animation namespace (0 not reported, 1 built-in effects, 2 stored profiles),
+`[18]` render rate in Hz (0 = not stated).
 
 A cleared feature bit is a promise the corresponding page returns nothing, not
-merely that it might. Both bits describe the board as it is at the moment of
-the read: the light registry is populated on the render core during LED setup,
-so a host that enumerates early can legitimately see them clear and should
-re-read when the fingerprint changes. The framework byte is diagnostic - it
-exists so a support question can be answered in one read. Current firmware
-always reports 2; value 1 named the earlier per-control LED pipeline, which
-pre-release builds reported and which no longer exists, and it stays defined
-so those replies keep their meaning. Branch on the feature bits and the
-per-record flags, never on it.
+merely that it might. Bits 0 and 1 describe the board as it is at the moment
+of the read: the light registry is populated on the render core during LED
+setup, so a host that enumerates early can legitimately see them clear and
+should re-read when the fingerprint changes. Bit 2 is set from boot: the
+control table is built from the pin map, which is live before any light is.
+
+The framework byte is diagnostic - it exists so a support question can be
+answered in one read. Current firmware always reports 2; value 1 named the
+earlier per-control LED pipeline, which pre-release builds reported and which
+no longer exists, and it stays defined so those replies keep their meaning.
+Branch on the feature bits and the per-record flags, never on it.
 
 Read `[18]` rather than assuming a rate: the board renders at 40 Hz today, the
 rate is free to change, and a host streaming faster than the board renders
@@ -285,12 +287,46 @@ The fingerprint in the tail lets a host notice the map changing underneath a
 walk that takes several reads. If it changes mid-walk, discard the partial
 table and start again.
 
+**Page 6 - control table** (request `[3]=start entry`): `[3]` total records,
+`[4]` start entry echoed, `[5]` count in this reply, `[6]` record stride in
+bytes, `[7]` lit controls, `[8]` unlit controls, `[9]` flags (bit 0 the lit
+bits are resolved per light, rest zero), `[10..57]` the records, `[60..63]`
+the LED-map fingerprint.
+
+Each record is 6 bytes:
+
+| off | field | meaning |
+|---|---|---|
+| +0 | GPIO pin | the control's identity. A pin carries exactly one action, so this is unique where a button ID is not |
+| +1..2 | GPIO action | the pin's action, signed 16-bit little-endian, verbatim - the same value page 5 carries at `+5..6` |
+| +3 | button ID | the protocol ID the action maps to, or `0xFF` where the protocol has none |
+| +4 | flags | bit 0 lit: a light is bound to this control; rest zero |
+| +5 | reserved | zero |
+
+Page 6 is the board's control inventory: every pin whose action is greater
+than zero, whether or not a light sits under it. `NONE`, `RESERVED` and
+`ASSIGNED_TO_ADDON` are not, so I2C, USB-host and LED-data pins never appear.
+Modifiers and alternate-direction actions do, with the action verbatim; a
+host that only wants buttons filters on `+3 != 0xFF`. Unlike page 2 (`0xFF`
+means "no LED") and page 5 (which omits), a control absent from page 6 does
+not exist, so a host can configure its inputs from this page alone.
+
+Two pins with the same action are two records with the same button ID, which
+is why the page is keyed by pin; to find the light behind a lit control, join
+to page 5 on the pin. Eight records fit a reply; read the stride from `[6]`
+as on page 5. The counts in `[7..8]` come from the same walk as the records.
+The lit bits depend on the light registry, so a host that reads early can see
+every control unlit and should re-read when page 1's fingerprint changes. The
+fingerprint also covers the active profile's pin map, so one value certifies
+this page along with pages 2, 4 and 5.
+
 ## Typical host flow
 
 1. Discover by usage page; `PING`; require version >= v1.0.
 2. `GET_CAPS` 0 (bind by unique ID), 1 (state), 2 (map), optionally 3, and 4
    or 5. Page 5 is the full light inventory; page 2 alone suits a host that
-   only colours canonical controls.
+   only colours canonical controls. Page 6 is the control inventory, lit or
+   not, for a host that configures its inputs from the board as well.
 3. `SET_MODE` with the desired takeover, timeout and brightness policy. The
    timeout is clamped to the range in the command table; send `PING` to idle
    longer.
@@ -321,7 +357,7 @@ table and start again.
 - Unknown commands are rejected with status `1` (unsupported); unknown
   capability pages with status `2` (invalid argument). Hosts should treat
   both as "not supported by this firmware", not as errors. Capability pages
-  6 and above are reserved.
+  7 and above are reserved.
 - Command IDs are grouped by function with room to grow: `0x01-0x0F` session
   and discovery, `0x10-0x2F` frame staging, `0x30-0x3F` frame lifecycle,
   `0x40-0x4F` board features, `0x70-0x7F` privileged management. New commands
@@ -419,6 +455,24 @@ Versions are the Host Lighting Protocol version `PING` reports, not the
 GP2040-CE firmware version. A host should gate on `>= v1.0` and read the
 capability pages for maximum compatibility, rather than require an exact
 version.
+
+### v1.4 - 21 September 2026
+
+Additive. A host detects it by minor version >= 4; nothing existing moved.
+
+**Added**
+
+- **Capability page 6, the control table.** One 6-byte record per GPIO pin
+  that carries an action, lit or not, keyed by pin so duplicated controls
+  appear twice and the page joins to page 5 on the pin column. It is the
+  first page that can assert a control does not exist, which is what a host
+  needs to configure its inputs from the board rather than from the user.
+  Eight records per read; the header carries lit and unlit counts and the
+  LED-map fingerprint.
+- **Page 1 feature bit 2**, "the control table returns entries". Earlier
+  firmware reports it clear and rejects page 6 with an invalid-argument
+  status, which a host reads as "not supported", exactly as the reserved
+  range promised.
 
 ### Port to the merged LED pipeline - September 2026
 
