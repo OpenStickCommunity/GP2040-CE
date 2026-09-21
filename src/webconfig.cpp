@@ -2198,6 +2198,10 @@ std::string setAddonOptions()
     docToValue(analogADS1115Options.leftStickDeadzone, doc, "leftStickDeadzone");
     docToValue(analogADS1115Options.rightStickDeadzone, doc, "rightStickDeadzone");
 
+    HostLightingOptions& hostLightingOptions = Storage::getInstance().getAddonOptions().hostLightingOptions;
+    docToValue(hostLightingOptions.enabled, doc, "HostLightingAddonEnabled");
+    docToValue(hostLightingOptions.xinputMode, doc, "hostLightingXInputMode");
+
     AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
     docToValue(analogADS1219Options.enabled, doc, "I2CAnalog1219InputEnabled");
 
@@ -2784,6 +2788,10 @@ std::string getAddonOptions()
     writeDoc(doc, "focusModeButtonLockEnabled", focusModeOptions.buttonLockEnabled);
     writeDoc(doc, "focusModeMacroLockEnabled", focusModeOptions.macroLockEnabled);
     writeDoc(doc, "FocusModeAddonEnabled", focusModeOptions.enabled);
+
+    const HostLightingOptions& hostLightingOptions = Storage::getInstance().getAddonOptions().hostLightingOptions;
+    writeDoc(doc, "HostLightingAddonEnabled", hostLightingOptions.enabled);
+    writeDoc(doc, "hostLightingXInputMode", hostLightingOptions.xinputMode);
 
     RotaryOptions& rotaryOptions = Storage::getInstance().getAddonOptions().rotaryOptions;
     writeDoc(doc, "RotaryAddonEnabled", rotaryOptions.enabled);

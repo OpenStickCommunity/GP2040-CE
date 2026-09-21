@@ -148,6 +148,12 @@ export enum InputModeAuthType {
     INPUT_MODE_AUTH_TYPE_I2C = 3
 }
 
+export enum HostLightingXInputMode {
+    HOST_LIGHTING_XINPUT_MODE_OFF = 0,
+    HOST_LIGHTING_XINPUT_MODE_ON = 1,
+    HOST_LIGHTING_XINPUT_MODE_AUTO = 2
+}
+
 export enum InputModeDeviceType {
     INPUT_MODE_DEVICE_TYPE_GAMEPAD = 0,
     INPUT_MODE_DEVICE_TYPE_WHEEL = 1,
