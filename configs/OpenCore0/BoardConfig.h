@@ -101,16 +101,12 @@
 #define LEDS_DPAD_UP     11
 
 #define PLED_TYPE PLED_TYPE_RGB
-#define PLED1_PIN 24
-#define PLED2_PIN 25
-#define PLED3_PIN 26
-#define PLED4_PIN 27
-#define PLED_COLOR 6 // ColorGreen index from Animation.h
+#define PLED_COLOR 6
+#define TURBO_LED_TYPE PLED_TYPE_RGB
 
 #define LIGHT_DATA_NAME_DEFAULT "OpenCore0" 
-#define LIGHT_DATA_SIZE_DEFAULT 48 //number of sets in the below data
+#define LIGHT_DATA_SIZE_DEFAULT 37
 #define LIGHT_DATA_DEFAULT \
-0,  1, 5,  4, 5,  LightType::LightType_ActionButton, \
 0,  2, 2,  3, 9,  LightType::LightType_ActionButton, \
 2,  2, 4,  3, 10, LightType::LightType_ActionButton, \
 4,  2, 6,  4, 11, LightType::LightType_ActionButton, \
@@ -123,6 +119,11 @@
 18, 2, 10, 4, 14, LightType::LightType_ActionButton, \
 20, 2, 8,  5, 13, LightType::LightType_ActionButton, \
 22, 2, 6,  7, 12, LightType::LightType_ActionButton, \
+24, 1, 10, 0, 31, LightType::LightType_Player1Light, \
+25, 1, 11, 0, 31, LightType::LightType_Player2Light, \
+26, 1, 12, 0, 31, LightType::LightType_Player3Light, \
+27, 1, 13, 0, 31, LightType::LightType_Player4Light, \
+28, 1, 14, 0, 27, LightType::LightType_Turbo, \
 29, 1, 16, 0, 0,  LightType::LightType_Case, \
 30, 1, 16, 1, 1,  LightType::LightType_Case, \
 31, 1, 16, 2, 2,  LightType::LightType_Case, \
@@ -144,14 +145,15 @@
 47, 1, 0,  1, 18 ,LightType::LightType_Case, \
 48, 1, 0,  0, 19 ,LightType::LightType_Case
 
-#define TURBO_LED_INDEX 28
-#define TURBO_LED_TYPE PLED_TYPE_RGB
-
-#define CASE_RGB_TYPE CASE_RGB_TYPE_AMBIENT
-#define CASE_RGB_INDEX 29
-#define CASE_RGB_COUNT 20
-#define AMBIENT_LIGHT_EFFECT AL_CUSTOM_EFFECT_STATIC_COLOR
-#define AMBIENT_STATIC_COLOR ANIMATION_COLOR_GREEN
+// LED Profile 0
+#define LEDS_PROFILE0_ENABLED 1
+#define LEDS_PROFILE0_BASE_ANIMATION_INDEX AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_SYNCED
+#define LEDS_PROFILE0_PRESSED_ANIMATION_INDEX AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_STATIC_COLOR
+#define LEDS_PROFILE0_CASE_ANIMATION_INDEX AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_STATIC_COLOR
+#define LEDS_PROFILE0_STATIC_COLOR_UNPRESSED ColorIndexRed
+#define LEDS_PROFILE0_STATIC_COLOR_PRESSED ColorIndexWhite
+#define LEDS_PROFILE0_STATIC_COLOR_CASE ColorIndexGreen
+#define LEDS_PROFILE0_USE_CASE_IN_PRESSED true
 
 #define HAS_I2C_DISPLAY 1
 #define I2C0_ENABLED 1
