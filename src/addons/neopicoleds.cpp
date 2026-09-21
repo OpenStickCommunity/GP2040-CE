@@ -15,6 +15,7 @@
 #include "usbdriver.h"
 #include "enums.h"
 #include "helper.h"
+#include "hostlighting.h"
 #include "animation.h"
 
 const std::string BUTTON_LABEL_UP = "Up";
@@ -260,6 +261,11 @@ void NeoPicoLEDAddon::setup() {
 
 	configureLEDs();
 
+	HostLighting::registerLights(RGBLights);
+
+	// Publish the render rate for Host Lighting (GET_CAPS page 1)
+	HostLighting::setRenderRate((uint8_t)((intervalMS > 0) ? (1000 / intervalMS) : 0));
+
 	// Next Run
     nextRunTime = make_timeout_time_ms(0); // Reset timeout
 }
@@ -278,6 +284,8 @@ void NeoPicoLEDAddon::process()
 		neopico.Show();
 		decompressSettings();
 		configureLEDs();
+
+		HostLighting::registerLights(RGBLights);
 
 		//Restore saved profile if applicable
 		if(AnimStation.TestMode != AnimationStationTestMode::AnimationStation_TestModeDisableTestMode)
@@ -356,6 +364,15 @@ void NeoPicoLEDAddon::process()
 
 	UpdatePlayerLEDs();
 	UpdateTurboLED();
+
+	// Apply a live Host Lighting takeover: the whole frame, or only the staged
+	// pixels in overlay mode. No-op once the host releases or times out.
+	HostLighting::applyToFrame(frame, RGBLights.GetLedCount(), AnimationStation::GetNormalisedBrightness(), neopico.GetFormat());
+
+	// Host-requested change of the on-board animation profile
+	int16_t requestedAnimation = HostLighting::takeLocalAnimationRequest();
+	if (requestedAnimation >= 0)
+		AnimStation.SetMode((int8_t)requestedAnimation);
 
 	//Set led values out to the actual leds
 	neopico.SetFrame(frame);
