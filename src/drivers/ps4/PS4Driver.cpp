@@ -314,70 +314,70 @@ void PS4Driver::initialize() {
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
         if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GUITAR) {
             switch (pinMappings[pin].action) {
-                case GpioAction::MODE_GUITAR_FRET_GREEN: buttonFretGreen->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_GUITAR_FRET_RED: buttonFretRed->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_GUITAR_FRET_YELLOW: buttonFretYellow->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_GUITAR_FRET_BLUE: buttonFretBlue->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_GUITAR_FRET_ORANGE: buttonFretOrange->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_GUITAR_FRET_SOLO_GREEN: buttonFretSoloGreen->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_GUITAR_FRET_SOLO_RED: buttonFretSoloRed->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_GUITAR_FRET_SOLO_YELLOW: buttonFretSoloYellow->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_GUITAR_FRET_SOLO_BLUE: buttonFretSoloBlue->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_GUITAR_FRET_SOLO_ORANGE: buttonFretSoloOrange->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_GUITAR_WHAMMY: buttonWhammy->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_GUITAR_PICKUP: buttonPickup->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_GUITAR_TILT: buttonTilt->pinMask |= 1 << pin; break;
+                case GpioAction::MODE_GUITAR_FRET_GREEN: buttonFretGreen->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_FRET_RED: buttonFretRed->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_FRET_YELLOW: buttonFretYellow->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_FRET_BLUE: buttonFretBlue->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_FRET_ORANGE: buttonFretOrange->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_FRET_SOLO_GREEN: buttonFretSoloGreen->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_FRET_SOLO_RED: buttonFretSoloRed->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_FRET_SOLO_YELLOW: buttonFretSoloYellow->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_FRET_SOLO_BLUE: buttonFretSoloBlue->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_FRET_SOLO_ORANGE: buttonFretSoloOrange->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_WHAMMY: buttonWhammy->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_PICKUP: buttonPickup->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_TILT: buttonTilt->pinMask |= Mask_t{1} << pin; break;
                 default:    break;
             }
         } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_DRUM) {
             switch (pinMappings[pin].action) {
-                case GpioAction::MODE_DRUM_RED_DRUMPAD: buttonDrumPadRed->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_DRUM_BLUE_DRUMPAD: buttonDrumPadBlue->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_DRUM_YELLOW_DRUMPAD: buttonDrumPadYellow->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_DRUM_GREEN_DRUMPAD: buttonDrumPadGreen->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_DRUM_YELLOW_CYMBAL: buttonCymbalYellow->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_DRUM_BLUE_CYMBAL: buttonCymbalBlue->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_DRUM_GREEN_CYMBAL: buttonCymbalGreen->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_DRUM_KICK_PEDAL_LEFT: buttonKickPedalLeft->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_DRUM_KICK_PEDAL_RIGHT: buttonKickPedalRight->pinMask |= 1 << pin; break;
+                case GpioAction::MODE_DRUM_RED_DRUMPAD: buttonDrumPadRed->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_DRUM_BLUE_DRUMPAD: buttonDrumPadBlue->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_DRUM_YELLOW_DRUMPAD: buttonDrumPadYellow->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_DRUM_GREEN_DRUMPAD: buttonDrumPadGreen->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_DRUM_YELLOW_CYMBAL: buttonCymbalYellow->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_DRUM_BLUE_CYMBAL: buttonCymbalBlue->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_DRUM_GREEN_CYMBAL: buttonCymbalGreen->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_DRUM_KICK_PEDAL_LEFT: buttonKickPedalLeft->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_DRUM_KICK_PEDAL_RIGHT: buttonKickPedalRight->pinMask |= Mask_t{1} << pin; break;
                 default:    break;
             }
         } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_HOTAS) {
             switch (pinMappings[pin].action) {
-                case GpioAction::MODE_HOTAS_RUDDER_LEFT: buttonRudderLeft->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_HOTAS_RUDDER_RIGHT: buttonRudderRight->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_HOTAS_THROTTLE_FORWARD: buttonThrottleForward->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_HOTAS_THROTTLE_REVERSE: buttonThrottleReverse->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_HOTAS_ROCKER_LEFT: buttonRockerLeft->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_HOTAS_ROCKER_RIGHT: buttonRockerRight->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_HOTAS_PEDAL_LEFT: buttonPedalLeft->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_HOTAS_PEDAL_RIGHT: buttonPedalRight->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_HOTAS_PEDAL_RUDDER_LEFT: buttonPedalRudderLeft->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_HOTAS_PEDAL_RUDDER_RIGHT: buttonPedalRudderRight->pinMask |= 1 << pin; break;
+                case GpioAction::MODE_HOTAS_RUDDER_LEFT: buttonRudderLeft->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_HOTAS_RUDDER_RIGHT: buttonRudderRight->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_HOTAS_THROTTLE_FORWARD: buttonThrottleForward->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_HOTAS_THROTTLE_REVERSE: buttonThrottleReverse->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_HOTAS_ROCKER_LEFT: buttonRockerLeft->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_HOTAS_ROCKER_RIGHT: buttonRockerRight->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_HOTAS_PEDAL_LEFT: buttonPedalLeft->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_HOTAS_PEDAL_RIGHT: buttonPedalRight->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_HOTAS_PEDAL_RUDDER_LEFT: buttonPedalRudderLeft->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_HOTAS_PEDAL_RUDDER_RIGHT: buttonPedalRudderRight->pinMask |= Mask_t{1} << pin; break;
                 default:    break;
             }
         } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_WHEEL) {
             switch (pinMappings[pin].action) {
-                case GpioAction::MODE_WHEEL_SHIFTER_GEAR_1: buttonShift1->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_WHEEL_SHIFTER_GEAR_2: buttonShift2->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_WHEEL_SHIFTER_GEAR_3: buttonShift3->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_WHEEL_SHIFTER_GEAR_4: buttonShift4->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_WHEEL_SHIFTER_GEAR_5: buttonShift5->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_WHEEL_SHIFTER_GEAR_6: buttonShift6->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_WHEEL_SHIFTER_GEAR_R: buttonShiftR->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_WHEEL_SHIFTER_GEAR_N: buttonShiftN->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_WHEEL_SHIFTER_GEAR_UP: buttonShiftUp->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_WHEEL_SHIFTER_GEAR_DOWN: buttonShiftDown->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_WHEEL_STEERING_LEFT: buttonSteerLeft->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_WHEEL_STEERING_RIGHT: buttonSteerRight->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_WHEEL_BUTTON_PLUS: buttonPlus->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_WHEEL_BUTTON_MINUS: buttonMinus->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_WHEEL_DIAL_UP: buttonDialUp->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_WHEEL_DIAL_DOWN: buttonDialDown->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_WHEEL_DIAL_ENTER: buttonDialEnter->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_WHEEL_PEDAL_GAS: buttonGas->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_WHEEL_PEDAL_BRAKE: buttonBrake->pinMask |= 1 << pin; break;
-                case GpioAction::MODE_WHEEL_PEDAL_CLUTCH: buttonClutch->pinMask |= 1 << pin; break;
+                case GpioAction::MODE_WHEEL_SHIFTER_GEAR_1: buttonShift1->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_SHIFTER_GEAR_2: buttonShift2->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_SHIFTER_GEAR_3: buttonShift3->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_SHIFTER_GEAR_4: buttonShift4->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_SHIFTER_GEAR_5: buttonShift5->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_SHIFTER_GEAR_6: buttonShift6->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_SHIFTER_GEAR_R: buttonShiftR->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_SHIFTER_GEAR_N: buttonShiftN->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_SHIFTER_GEAR_UP: buttonShiftUp->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_SHIFTER_GEAR_DOWN: buttonShiftDown->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_STEERING_LEFT: buttonSteerLeft->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_STEERING_RIGHT: buttonSteerRight->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_BUTTON_PLUS: buttonPlus->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_BUTTON_MINUS: buttonMinus->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_DIAL_UP: buttonDialUp->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_DIAL_DOWN: buttonDialDown->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_DIAL_ENTER: buttonDialEnter->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_PEDAL_GAS: buttonGas->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_PEDAL_BRAKE: buttonBrake->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_PEDAL_CLUTCH: buttonClutch->pinMask |= Mask_t{1} << pin; break;
                 default:    break;
             }
         }

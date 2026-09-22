@@ -18,7 +18,7 @@ void ReverseInput::setup()
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
     {
         switch (pinMappings[pin].action) {
-            case GpioAction::BUTTON_PRESS_INPUT_REVERSE: mapInputReverse->pinMask |= 1 << pin; break;
+            case GpioAction::BUTTON_PRESS_INPUT_REVERSE: mapInputReverse->pinMask |= Mask_t{1} << pin; break;
             default:    break;
         }
     }
