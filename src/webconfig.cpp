@@ -3112,68 +3112,22 @@ static std::string getJoystickCalibrationSample(Pin_t pinX, Pin_t pinY) {
         doc["error"] = "analog is not enabled";
     } else if ((!validX && pinX != -1) || (!validY && pinY != -1) || (!validX && !validY)) {
         doc["success"] = false;
-        doc["error"] = "select ADC pins 26-29";
+        doc["error"] = "select valid ADC pins";
     } else {
         adc_init();
-
-        // Check if specific stick is requested via query parameter
-        // For now, we'll read both sticks and return the appropriate one
-        // In a more sophisticated implementation, we could parse query parameters
-
-        // Read first stick X/Y
-        if (isValidPin(analogOptions.analogAdc1PinX)) {
-            adc_gpio_init(analogOptions.analogAdc1PinX);
-            adc_select_input(analogOptions.analogAdc1PinX - ADC_BASE_PIN);
-            x = adc_read();
-        }
-        if (isValidPin(analogOptions.analogAdc1PinY)) {
-            adc_gpio_init(analogOptions.analogAdc1PinY);
-            adc_select_input(analogOptions.analogAdc1PinY - ADC_BASE_PIN);
-            y = adc_read();
-        }
-    }
-
-    JsonObject o = doc.to<JsonObject>();
-    o["success"] = success;
-    if (!success) {
-        o["error"] = error_msg;
-    } else {
-        o["x"] = x;
-        o["y"] = y;
+        doc["success"] = true;
+        doc["pinX"] = pinX;
+        doc["pinY"] = pinY;
+        doc["x"] = AnalogInput::readCalibrationSample(pinX);
+        doc["y"] = AnalogInput::readCalibrationSample(pinY);
     }
     return serialize_json(doc);
 }
 
-// NEW API: return current raw ADC reading for stick 2
-std:: string getJoystickCenter2() {
-    const size_t capacity = JSON_OBJECT_SIZE(10);
-    DynamicJsonDocument doc(capacity);
-    const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
-
-    uint16_t x = 0, y = 0;
-    bool success = true;
-    std::string error_msg = "";
-
-    // Check if analog input is enabled
-    if (!analogOptions.enabled) {
-        success = false;
-        error_msg = "Analog input is not enabled";
-    } else {
-        // Initialize ADC if not already initialized
-        adc_init();
-
-        // Read second stick X/Y
-        if (isValidPin(analogOptions.analogAdc2PinX)) {
-            adc_gpio_init(analogOptions.analogAdc2PinX);
-            adc_select_input(analogOptions.analogAdc2PinX - ADC_BASE_PIN);
-            x = adc_read();
-        }
-        if (isValidPin(analogOptions.analogAdc2PinY)) {
-            adc_gpio_init(analogOptions.analogAdc2PinY);
-            adc_select_input(analogOptions.analogAdc2PinY - ADC_BASE_PIN);
-            y = adc_read();
-        }
-    }
+std::string getJoystickCenter() {
+    const AnalogOptions& options = Storage::getInstance().getAddonOptions().analogOptions;
+    return getJoystickCalibrationSample(options.analogAdc1PinX, options.analogAdc1PinY);
+}
 
 std::string getJoystickCenter2() {
     const AnalogOptions& options = Storage::getInstance().getAddonOptions().analogOptions;
