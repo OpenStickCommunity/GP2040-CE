@@ -82,6 +82,7 @@ void KeyboardHostListener::process() {
   Gamepad *gamepad = Storage::getInstance().GetGamepad();
   if (_keyboard_host_mounted == true || _mouse_host_mounted == true) {
     gamepad->state.dpad     |= _keyboard_host_state.dpad;
+    gamepad->state.dpadOriginal |= _keyboard_host_state.dpad;
     gamepad->state.buttons  |= _keyboard_host_state.buttons;
     gamepad->state.lx       = _keyboard_host_state.lx;
     gamepad->state.ly       = _keyboard_host_state.ly;
@@ -97,7 +98,6 @@ void KeyboardHostListener::process() {
     gamepad->auxState.sensors.mouse.active = mouseActive;
 
     if ( mouseActive == true ) {
-        gamepad->auxState.sensors.mouse.active = true;
         gamepad->auxState.sensors.mouse.x = mouseX;
         gamepad->auxState.sensors.mouse.y = mouseY;
         gamepad->auxState.sensors.mouse.z = mouseZ;
