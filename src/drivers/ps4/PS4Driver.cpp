@@ -896,7 +896,7 @@ void PS4Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uin
             uint8_t nonce_id;
             uint8_t nonce_page;
             uint16_t buflen;
-            if (bufsize != 63 ) {
+            if (bufsize != 63 || ps4AuthData == nullptr || buffer[1] > 4) {
                 return;
             }
             // Calculate CRC32 of buffer
