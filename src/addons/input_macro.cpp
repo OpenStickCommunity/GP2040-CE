@@ -181,7 +181,6 @@ void InputMacro::runCurrentMacro() {
         return;
     }
 
-    MacroInput& macroInput = macro.macroInputs[macroInputPosition];
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     currentMicros = getMicro();
 
@@ -211,6 +210,7 @@ void InputMacro::runCurrentMacro() {
         if (macroInputPosition >= (macro.macroInputs_count)) {
             if ( macro.macroType == ON_PRESS ) {
                 reset(); // On press = no more macro
+                return;
             } else {
                 restart(macro); // On Hold-Repeat or On Toggle = start macro again
             }
@@ -220,6 +220,8 @@ void InputMacro::runCurrentMacro() {
             macroInputHoldTime = newMacroInputDuration <= 0 ? INPUT_HOLD_US : newMacroInputDuration;
         }
     }
+
+    MacroInput& macroInput = macro.macroInputs[macroInputPosition];
 
     // Check if we should still hold this macro input based on duration
     if ((currentMicros - macroStartTime) <= macroInput.duration) {
