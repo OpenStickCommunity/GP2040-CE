@@ -208,7 +208,7 @@ export const AppContextProvider = ({ children, ...props }) => {
 					(usedPins || []).indexOf(value) === -1);
 			return isValid;
 		};
-	}, [usedPins, setUsedPins]);
+	}, [boardDefinition.maxPin, usedPins]);
 
 	useEffect(() => {}, [
 		expansionPins,

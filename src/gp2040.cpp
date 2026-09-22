@@ -176,7 +176,7 @@ void GP2040::initializeStandardGpio() {
 			gpio_init(pin);             // Initialize pin
 			gpio_set_dir(pin, GPIO_IN); // Set as INPUT
 			gpio_pull_up(pin);          // Set as PULLUP
-			buttonGpios |= 1 << pin;    // mark this pin as mattering for GPIO debouncing
+			buttonGpios |= Mask_t{1} << pin;    // mark this pin as mattering for GPIO debouncing
 		}
 	}
 }
@@ -207,7 +207,7 @@ void GP2040::deinitializeStandardGpio() {
  * instead, if you don't want debounced data.
  */
 void GP2040::debounceGpioGetAll() {
-	Mask_t rawGpios = ~gpio_get_all();
+	Mask_t rawGpios = ~gpio_get_all64();
 	Mask_t pressedGpios = rawGpios & buttonGpios;
 	Gamepad* gamepad = Storage::getInstance().GetGamepad();
 
@@ -232,8 +232,8 @@ void GP2040::debounceGpioGetAll() {
 
 	// Check only changed button use case GPIO for state
 	while (debounceChange != 0) {
-		Pin_t pin = __builtin_ctz(debounceChange);
-		Mask_t pin_mask = 1 << pin;
+		Pin_t pin = __builtin_ctzll(debounceChange);
+		Mask_t pin_mask = Mask_t{1} << pin;
 		
 		// Allow debouncer to change state if button state changed and debounce delay threshold met
 		if ((now - gpioDebounceTime[pin]) >= debounceDelay) {
@@ -454,7 +454,7 @@ GP2040::BootAction GP2040::getGpioMappedBootAction() {
 		default:
 			break;
 	}
-	Mask_t gpio = ~gpio_get_all() & buttonGpios;
+	Mask_t gpio = ~gpio_get_all64() & buttonGpios;
 
 	if (gpio == bootModeOptions.usbModePinMask) {
 		action.type = BootActionType::ENTER_USB_MODE;

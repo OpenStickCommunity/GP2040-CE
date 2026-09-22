@@ -50,7 +50,6 @@ export default {
 	'calibration-header-text': '霍尔效应校准',
 	'calibration-idle-text': '初始电压读数：',
 	'calibration-pressed-text': '满按电压读数：',
-	'calibration-trigger-text': '触发电压',
 	'calibration-flip-polarity': '反转极性',
 	'calibration-flip-rapid-trigger': '启用快速触发 (RT)',
 	'calibration-back-button': '返回',

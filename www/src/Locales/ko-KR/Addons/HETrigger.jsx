@@ -44,7 +44,6 @@ export default {
 	'calibration-header-text': '홀 이펙트 보정',
 	'calibration-idle-text': '유휴 전압 값:',
 	'calibration-pressed-text': '눌림 전압 값:',
-	'calibration-trigger-text': '트리거 전압',
 	'calibration-flip-polarity': '극성 반전',
 	'calibration-back-button': '이전',
 	'calibration-first-step':

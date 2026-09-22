@@ -354,8 +354,8 @@ message AnimationProfile
 
     optional int32 baseCycleTime = 4;
 
-    repeated uint32 notPressedStaticColors = 5 [(nanopb).max_count = 8]; //NUM_BANK0_GPIOS/4 from platform_defs.h
-    repeated uint32 pressedStaticColors = 6 [(nanopb).max_count = 8]; //NUM_BANK0_GPIOS/4 from platform_defs.h
+    repeated uint32 notPressedStaticColors = 5 [(nanopb).max_count = 12]; //NUM_BANK0_GPIOS/4 from platform_defs.h
+    repeated uint32 pressedStaticColors = 6 [(nanopb).max_count = 12]; //NUM_BANK0_GPIOS/4 from platform_defs.h
 
     optional uint32 buttonPressHoldTimeInMs = 7;
     optional uint32 buttonPressFadeOutTimeInMs = 8;

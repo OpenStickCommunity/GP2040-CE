@@ -7,13 +7,11 @@ export default {
 		'turn-off-when-suspended': 'Askıya Alındığında Kapat',
 	},
 	player: {
-		'header-text': 'Oyuncu Ledleri',
 		'pwm-sub-header-text': 'Parlaklık Adımları',
 		'pled-type-label': 'Oyuncu LED Tipi',
 		'pled-type-off': 'Kapalı',
 		'pled-type-pwm': 'PWM',
 		'pled-type-rgb': 'RGB',
-		'pled-color-label': 'RGB PLED Rengi',
 		'pled-pin-label': 'PLED #{{pin}} GPIO Pin',
 	},
 };

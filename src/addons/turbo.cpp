@@ -45,7 +45,7 @@ void TurboInput::setup(){
     if (isValidPin(options.shmupDialPin)) {
         hasShmupDial = true;
         adc_gpio_init(options.shmupDialPin);
-        adcShmupDial = 26 - options.shmupDialPin;
+        adcShmupDial = options.shmupDialPin - ADC_BASE_PIN;
         adc_select_input(adcShmupDial);
         dialValue = adc_read(); // setup initial Dial + Turbo Speed
         shotCount = (dialValue / TURBO_DIAL_INCREMENTS) + TURBO_SHOT_MIN;

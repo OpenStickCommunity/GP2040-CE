@@ -1250,7 +1250,7 @@ void helperGetProfileFromJsonObject(AnimationProfile* Profile, JsonObject* JsonD
 
     JsonArray notPressedStaticColorsList = (*JsonData)["notPressedStaticColors"];
     Profile->notPressedStaticColors_count = 0;
-    for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS/4)+1; ++packedPinIndex)
+    for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS + 3) / 4; ++packedPinIndex)
     {
         unsigned int pinIndex = packedPinIndex * 4;
         if(pinIndex < notPressedStaticColorsList.size())
@@ -1268,7 +1268,7 @@ void helperGetProfileFromJsonObject(AnimationProfile* Profile, JsonObject* JsonD
 
     JsonArray pressedStaticColorsList = (*JsonData)["pressedStaticColors"];
     Profile->pressedStaticColors_count = 0;
-    for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS/4)+1; ++packedPinIndex)
+    for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS + 3) / 4; ++packedPinIndex)
     {
         unsigned int pinIndex = packedPinIndex * 4;
         if(pinIndex < pressedStaticColorsList.size())
@@ -2007,11 +2007,11 @@ std::string getHETriggerVoltage()
         return serialize_json(doc);
     }
 
-    if ( adcSelectPin < 26 || adcSelectPin > 29) {
+    if (adcSelectPin < ADC_BASE_PIN || adcSelectPin >= ADC_BASE_PIN + NUM_ADC_CHANNELS - 1) {
         doc["error"] = "adc pin out of range";
         return serialize_json(doc);
     }
-    adc_select_input(adcSelectPin-26);
+    adc_select_input(adcSelectPin - ADC_BASE_PIN);
     // Web-Config triggers getHECalibration every 50ms, game controller triggers <1ms
     if ( calibrationSmoothing ) {
         uint16_t read;
@@ -2969,12 +2969,15 @@ static bool _abortGetHeldPins = false;
 
 std::string getHeldPins()
 {
+    _abortGetHeldPins = false;
     DynamicJsonDocument doc(JSON_OBJECT_SIZE(100));
 
     // Initialize unassigned pins for reading
+    GpioMappings& gpioMappings = Storage::getInstance().getGpioMappings();
     std::vector<uint> uninitPins;
     for (uint32_t pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
-        if (gpio_get_function(pin) == GPIO_FUNC_NULL) {
+        if (gpioMappings.pins[pin].action == GpioAction::NONE &&
+            gpio_get_function(pin) == GPIO_FUNC_NULL) {
             uninitPins.push_back(pin);
             gpio_init(pin);
             gpio_set_dir(pin, GPIO_IN);
@@ -2984,22 +2987,21 @@ std::string getHeldPins()
 
     std::set<uint> heldPinsSet;
     uint32_t startTime = getMillis();
-    uint32_t oldState = ~gpio_get_all();
+    uint64_t oldState = ~gpio_get_all64() & ((uint64_t{1} << NUM_BANK0_GPIOS) - 1);
     uint32_t debounceTime = 0;
     bool isAnyPinHeld = false;
 
-    // Monitor pins for 5 seconds or until released
-    while (!_abortGetHeldPins && (isAnyPinHeld || (getMillis() - startTime) < 5000)) {
-        rndis_task();
+    // Monitor pins for 5 seconds
+    while (!_abortGetHeldPins && (getMillis() - startTime) < 5000) {
+        uint64_t newState = ~gpio_get_all64() & ((uint64_t{1} << NUM_BANK0_GPIOS) - 1);
 
-        uint32_t newState = ~gpio_get_all();
-        if (isAnyPinHeld && newState == oldState) break; // Pins released
-
-        uint32_t changedPins = newState ^ oldState;
+        uint64_t changedPins = newState & ~oldState;
+        if (isAnyPinHeld && changedPins == 0) break; // Pins released
+        if (changedPins == 0) debounceTime = 0;
         uint32_t currentTime = getMillis();
 
         for (uint32_t pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
-            if ((changedPins & (1 << pin)) &&
+            if ((changedPins & (uint64_t{1} << pin)) &&
                 gpio_get_function(pin) == GPIO_FUNC_SIO &&
                 !gpio_is_dir_out(pin)) {
 
@@ -3113,19 +3115,65 @@ static std::string getJoystickCalibrationSample(Pin_t pinX, Pin_t pinY) {
         doc["error"] = "select ADC pins 26-29";
     } else {
         adc_init();
-        doc["success"] = true;
-        doc["pinX"] = pinX;
-        doc["pinY"] = pinY;
-        doc["x"] = AnalogInput::readCalibrationSample(pinX);
-        doc["y"] = AnalogInput::readCalibrationSample(pinY);
+
+        // Check if specific stick is requested via query parameter
+        // For now, we'll read both sticks and return the appropriate one
+        // In a more sophisticated implementation, we could parse query parameters
+
+        // Read first stick X/Y
+        if (isValidPin(analogOptions.analogAdc1PinX)) {
+            adc_gpio_init(analogOptions.analogAdc1PinX);
+            adc_select_input(analogOptions.analogAdc1PinX - ADC_BASE_PIN);
+            x = adc_read();
+        }
+        if (isValidPin(analogOptions.analogAdc1PinY)) {
+            adc_gpio_init(analogOptions.analogAdc1PinY);
+            adc_select_input(analogOptions.analogAdc1PinY - ADC_BASE_PIN);
+            y = adc_read();
+        }
+    }
+
+    JsonObject o = doc.to<JsonObject>();
+    o["success"] = success;
+    if (!success) {
+        o["error"] = error_msg;
+    } else {
+        o["x"] = x;
+        o["y"] = y;
     }
     return serialize_json(doc);
 }
 
-std::string getJoystickCenter() {
-    const AnalogOptions& options = Storage::getInstance().getAddonOptions().analogOptions;
-    return getJoystickCalibrationSample(options.analogAdc1PinX, options.analogAdc1PinY);
-}
+// NEW API: return current raw ADC reading for stick 2
+std:: string getJoystickCenter2() {
+    const size_t capacity = JSON_OBJECT_SIZE(10);
+    DynamicJsonDocument doc(capacity);
+    const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
+
+    uint16_t x = 0, y = 0;
+    bool success = true;
+    std::string error_msg = "";
+
+    // Check if analog input is enabled
+    if (!analogOptions.enabled) {
+        success = false;
+        error_msg = "Analog input is not enabled";
+    } else {
+        // Initialize ADC if not already initialized
+        adc_init();
+
+        // Read second stick X/Y
+        if (isValidPin(analogOptions.analogAdc2PinX)) {
+            adc_gpio_init(analogOptions.analogAdc2PinX);
+            adc_select_input(analogOptions.analogAdc2PinX - ADC_BASE_PIN);
+            x = adc_read();
+        }
+        if (isValidPin(analogOptions.analogAdc2PinY)) {
+            adc_gpio_init(analogOptions.analogAdc2PinY);
+            adc_select_input(analogOptions.analogAdc2PinY - ADC_BASE_PIN);
+            y = adc_read();
+        }
+    }
 
 std::string getJoystickCenter2() {
     const AnalogOptions& options = Storage::getInstance().getAddonOptions().analogOptions;

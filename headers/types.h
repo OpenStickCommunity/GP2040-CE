@@ -8,6 +8,6 @@
 
 // common types
 #define	Pin_t		int32_t		// signed to accommodate for -1
-#define Mask_t		uint32_t
+#define Mask_t		uint64_t
 
 #endif
