@@ -21,7 +21,7 @@ void BuzzerSpeakerAddon::setup() {
 	buzzerPinChannel = pwm_gpio_to_channel (buzzerPin);
 
     // enable pin is optional so not required to toggle addon
-    if (isValidPin(options.pin)) {
+    if (isValidPin(options.enablePin)) {
         isSpeakerOn = true;
         buzzerEnablePin = options.enablePin;
         gpio_init(buzzerEnablePin);
@@ -64,12 +64,13 @@ void BuzzerSpeakerAddon::processBuzzer() {
 	uint32_t currentTimeSong = getMillis() - startedSongMils;
 	uint32_t totalTimeSong = currentSong->song.size() * currentSong->toneDuration;
 	uint16_t currentTonePosition = floor((currentTimeSong * currentSong->song.size()) / totalTimeSong);
-	Tone currentTone = currentSong->song[currentTonePosition];
 
 	if (currentTonePosition >= currentSong->song.size()) {
 		stop();
 		return;
 	}
+
+	Tone currentTone = currentSong->song[currentTonePosition];
 
 	if (currentTone == PAUSE) {
 		pwm_set_enabled (buzzerPinSlice, false);
