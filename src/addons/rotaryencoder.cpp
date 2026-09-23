@@ -155,7 +155,7 @@ void RotaryEncoderInput::process()
 
 uint16_t RotaryEncoderInput::mapEncoderValueStick(int8_t index, int32_t encoderValue, uint16_t ppr) {
     // Calculate total number of positions based on PPR
-    int32_t totalPositions = ENCODER_RADIUS * (int32_t)(ppr / (ENCODER_PRECISION * encoderMap[index].multiplier));
+    int32_t totalPositions = ENCODER_RADIUS * (ppr / (ENCODER_PRECISION * encoderMap[index].multiplier));
 
     // Calculate range of encoder values corresponding to mapped range
     int32_t minValue = -totalPositions / 2;
@@ -176,7 +176,7 @@ uint16_t RotaryEncoderInput::mapEncoderValueStick(int8_t index, int32_t encoderV
 
 uint16_t RotaryEncoderInput::mapEncoderValueTrigger(int8_t index, int32_t encoderValue, uint16_t ppr) {
     // Calculate total number of positions based on PPR
-    int32_t totalPositions = ENCODER_RADIUS * (int32_t)(ppr / (ENCODER_PRECISION * encoderMap[index].multiplier));
+    int32_t totalPositions = ENCODER_RADIUS * (ppr / (ENCODER_PRECISION * encoderMap[index].multiplier));
 
     // Calculate range of encoder values corresponding to mapped range
     int32_t minValue = 0;
@@ -194,7 +194,7 @@ uint16_t RotaryEncoderInput::mapEncoderValueTrigger(int8_t index, int32_t encode
 
 int8_t RotaryEncoderInput::mapEncoderValueDPad(int8_t index, int32_t encoderValue, uint16_t ppr) {
     // Calculate total number of positions based on PPR
-    int32_t totalPositions = ENCODER_RADIUS * (int32_t)(ppr / (ENCODER_PRECISION * encoderMap[index].multiplier));
+    int32_t totalPositions = ENCODER_RADIUS * (ppr / (ENCODER_PRECISION * encoderMap[index].multiplier));
 
     // Calculate range of encoder values corresponding to mapped range
     int32_t minValue = -totalPositions / 2;
@@ -214,7 +214,7 @@ int8_t RotaryEncoderInput::mapEncoderValueDPad(int8_t index, int32_t encoderValu
 }
 
 int32_t RotaryEncoderInput::map(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max) {
-    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+    return ((int64_t)x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
 int32_t RotaryEncoderInput::bounds(int32_t x, int32_t out_min, int32_t out_max) {
