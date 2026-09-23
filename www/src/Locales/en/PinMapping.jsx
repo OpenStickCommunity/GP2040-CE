@@ -7,6 +7,10 @@ export default {
 	'profile-label-title': 'Profile name',
 	'profile-label-description':
 		'Max 16 characters. Printable ASCII characters allowed.',
+	'profile-socd-mode-title': 'SOCD Cleaning Mode',
+	'profile-socd-use-global': 'Use global setting',
+	'profile-socd-slider-note':
+		'The SOCD slider add-on is enabled. The slider hardware overrides this setting.',
 	'profile-pin-mapping-title': '{{profileLabel}} - GPIO Pin Mapping',
 	'profile-label-default': 'Profile {{profileNumber}}',
 	'profile-add-button': '+ Add Profile',
