@@ -593,6 +593,9 @@ bool XBOneDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_con
 }
 
 const uint16_t * XBOneDriver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
+    if (index >= TU_ARRAY_SIZE(xbone_string_descriptors) && index != 4 && index != 0xEE)
+        return nullptr;
+
     const char *value = (const char *)xbone_get_string_descriptor(index);
     return getStringDescriptor(value, index); // getStringDescriptor returns a static array
 }

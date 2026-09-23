@@ -934,6 +934,9 @@ bool PS4Driver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_contr
 }
 
 const uint16_t * PS4Driver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
+    if (index >= TU_ARRAY_SIZE(ps4_string_descriptors))
+        return nullptr;
+
     const char *value = (const char *)ps4_string_descriptors[index];
     return getStringDescriptor(value, index); // getStringDescriptor returns a static array
 }
