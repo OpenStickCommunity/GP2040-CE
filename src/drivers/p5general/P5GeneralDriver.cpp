@@ -271,7 +271,7 @@ uint16_t P5GeneralDriver::get_report(uint8_t report_id, hid_report_type_t report
         if (reqlen < sizeof(output_0x03)) {
             return -1;
         }
-        responseLen = MAX(reqlen, sizeof(output_0x03));
+        responseLen = MIN(reqlen, sizeof(output_0x03));
         memcpy(buffer, output_0x03, responseLen);
         return responseLen;
     case P5GeneralAuthReport::P5GENERAL_GET_SIGNATURE_NONCE:

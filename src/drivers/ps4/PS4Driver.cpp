@@ -804,7 +804,7 @@ uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
             if (reqlen < sizeof(output_0x02)) {
                 return -1;
             }
-            responseLen = MAX(reqlen, sizeof(output_0x02));
+            responseLen = MIN(reqlen, sizeof(output_0x02));
             memcpy(buffer, output_0x02, responseLen);
             return responseLen;
         case PS4AuthReport::PS4_DEFINITION:
@@ -812,7 +812,7 @@ uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
                 return -1;
             }
             controllerConfig.controllerType = (uint8_t)controllerType;
-            responseLen = MAX(reqlen, sizeof(controllerConfig));
+            responseLen = MIN(reqlen, sizeof(controllerConfig));
             memcpy(buffer, &controllerConfig, responseLen);
             //buffer[4] = (uint8_t)controllerType; // Change controller type in definition
             return responseLen;
@@ -820,14 +820,14 @@ uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
             if (reqlen < sizeof(output_0x12)) {
                 return -1;
             }
-            responseLen = MAX(reqlen, sizeof(output_0x12));
+            responseLen = MIN(reqlen, sizeof(output_0x12));
             memcpy(buffer, output_0x12, responseLen);
             return responseLen;
         case PS4AuthReport::PS4_GET_VERSION_DATE:
             if (reqlen < sizeof(output_0xa3)) {
                 return -1;
             }
-            responseLen = MAX(reqlen, sizeof(output_0xa3));
+            responseLen = MIN(reqlen, sizeof(output_0xa3));
             memcpy(buffer, output_0xa3, responseLen);
             return responseLen;
         // Use our private RSA key to sign the nonce and return chunks
@@ -865,7 +865,7 @@ uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
             if (reqlen < sizeof(output_0xf3)) {
                 return -1;
             }
-            responseLen = MAX(reqlen, sizeof(output_0xf3));
+            responseLen = MIN(reqlen, sizeof(output_0xf3));
             memcpy(buffer, output_0xf3, responseLen);
             ps4AuthData->passthrough_state = GPAuthState::auth_idle_state;
             ps4AuthDriver->resetAuth(); // reset our auth driver (ps4 keys or usb host)
