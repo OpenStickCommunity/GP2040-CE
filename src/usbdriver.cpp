@@ -6,6 +6,7 @@
 #ifndef _USBDRIVER_CPP_
 #define _USBDRIVER_CPP_
 
+#include <cstring>
 #include "tusb.h"
 #include "drivermanager.h"
 
@@ -78,7 +79,17 @@ uint16_t const *tud_descriptor_string_cb(uint8_t index, uint16_t langid) {
 // Invoked when received GET DEVICE DESCRIPTOR
 // Application return pointer to descriptor
 uint8_t const *tud_descriptor_device_cb() {
-	return DriverManager::getInstance().getDriver()->get_descriptor_device_cb();
+	const uint8_t *descriptor = DriverManager::getInstance().getDriver()->get_descriptor_device_cb();
+#if MAYFLASH_S5_EXACT_IDENTITY
+	// EP0 size applies to the whole image; keep every mode's descriptor in step.
+	static uint8_t deviceDescriptor[sizeof(tusb_desc_device_t)];
+	if (descriptor == nullptr) return nullptr;
+	memcpy(deviceDescriptor, descriptor, sizeof(deviceDescriptor));
+	deviceDescriptor[7] = CFG_TUD_ENDPOINT0_SIZE;
+	return deviceDescriptor;
+#else
+	return descriptor;
+#endif
 }
 
 // Invoked when received GET HID REPORT DESCRIPTOR
