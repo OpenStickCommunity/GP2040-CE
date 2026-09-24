@@ -103,24 +103,17 @@ bool KeyboardDriver::process(Gamepad * gamepad) {
 	if (tud_suspended())
 		tud_remote_wakeup();
 
-	void *keyboard_report_payload;
-	uint16_t keyboard_report_size;
-	if ( keyboardReport.reportId == KEYBOARD_KEY_REPORT_ID ) {
-		keyboard_report_payload = (void *)keyboardReport.keycode;
-		keyboard_report_size = sizeof(KeyboardReport::keycode);
-		
-	} else {
-		keyboard_report_payload = (void *)&keyboardReport.multimedia;
-		keyboard_report_size = sizeof(KeyboardReport::multimedia);
+	if (memcmp(last_report, keyboardReport.keycode, sizeof(KeyboardReport::keycode)) != 0) {
+		if (tud_hid_ready() && tud_hid_report(KEYBOARD_KEY_REPORT_ID, keyboardReport.keycode, sizeof(KeyboardReport::keycode))) {
+			memcpy(last_report, keyboardReport.keycode, sizeof(KeyboardReport::keycode));
+			return true;
+		}
 	}
 
-	// If we had a keycode but now have a multimedia key OR report is different
-	if (keyboard_report_size != last_report_size || 
-			memcmp(last_report, keyboard_report_payload, last_report_size) != 0) {
+	if (last_multimedia_report != keyboardReport.multimedia) {
 		if (tud_hid_ready()) {
-			if ( tud_hid_report(keyboardReport.reportId, keyboard_report_payload, keyboard_report_size) ) {
-				memcpy(last_report, keyboard_report_payload, keyboard_report_size);
-				last_report_size = keyboard_report_size;
+			if (tud_hid_report(KEYBOARD_MULTIMEDIA_REPORT_ID, &keyboardReport.multimedia, sizeof(KeyboardReport::multimedia))) {
+				last_multimedia_report = keyboardReport.multimedia;
 
                 // Adjust volume on success
                 if( volumeChange > 0 ) {
