@@ -319,7 +319,7 @@ const TriggerActionsForm = ({
 								</div>
 								{values[`muxADCPin${i}` as keyof typeof values] !== -1 ? (
 									<div
-										className={`action-grid-HE-trigger-${muxChannels} gap-0 mt-0 mb-0`}
+										className={`action-grid-HE-trigger-${muxChannels} gap-0 mt-0 mb-0 d-inline-flex`}
 									>
 										<Table bordered className="mb-0 mt-0">
 											<thead>
@@ -353,8 +353,8 @@ const TriggerActionsForm = ({
 															<td>{triggers[key].is_polarized ? 'S' : 'N'}</td>
 															<td>
 																{triggers[key].rapidTrigger
-																	? 'Enabled'
-																	: 'Disabled'}
+																	? t('Common:status-enabled')
+																	: t('Common:status-disabled')}
 															</td>
 															<td>
 																{triggers[key].rapidTrigger
