@@ -6,6 +6,7 @@
 #include "CRC32.h"
 #include "peripheralmanager.h"
 #include "usbhostmanager.h"
+#include "pio_usb.h"
 
 #include "storagemanager.h"
 #include "eventmanager.h"
@@ -285,6 +286,7 @@ void MayflashS5AuthUSBListener::mount(uint8_t dev_addr, uint8_t instance, uint8_
         ps_instance = instance;
         ps5AuthData->dongle_mounted = true; // mount only, not ready
         mount_probe_us = getMicro();
+        set_interval_override(1); // poll the S5 every frame
         if (!local_auth_complete) {
             ps5AuthData->init_stage = 1;
             memset(ps5AuthData->mayflash_buffer, 0,
@@ -315,6 +317,7 @@ void MayflashS5AuthUSBListener::unmount(uint8_t dev_addr) {
         reset_state == S5ResetState::reset_asserted ||
         reset_state == S5ResetState::awaiting_remount;
     resetHostData();
+    set_interval_override(0);
     ps5AuthData->dongle_ready = false;
     ps5AuthData->dongle_mounted = false;
     if (!intentional_reset) {

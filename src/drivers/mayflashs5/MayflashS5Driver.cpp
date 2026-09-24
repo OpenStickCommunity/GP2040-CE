@@ -415,6 +415,9 @@ bool MayflashS5Driver::process(Gamepad * gamepad) {
         memcpy(ps5AuthData->hash_pending_buffer, &ps5Report, sizeof(ps5Report));
         ps5AuthData->hash_pending = true;
         timeout_report_us = getMicro(); // don't immediatley send a timeout
+        if (mayflashS5AuthDriver != nullptr && mayflashS5AuthDriver->available()) {
+            mayflashS5AuthDriver->process();
+        }
         return true; // New input, return true
     }
 
