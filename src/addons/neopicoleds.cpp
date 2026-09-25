@@ -831,10 +831,6 @@ void NeoPicoLEDAddon::GenerateLights()
 		generatedLights.push_back(newLight);
 	}
 
-	//check for critical error
-	if(minX < 0 || minY < 0)
-		return;
-
 	//Strip Empty rows and coloums on left and top side
 	for(int index = 0; index < (int)generatedLights.size(); ++index)
 	{
