@@ -980,10 +980,6 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
     // addonOptions.heTriggerOptions
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, enabled, !!HETRIGGER_ENABLED);
-    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, selectPin0, HETRIGGER_S0_PIN);
-    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, selectPin1, HETRIGGER_S1_PIN);
-    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, selectPin2, HETRIGGER_S2_PIN);
-    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, selectPin3, HETRIGGER_S3_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, muxADCPin0, HETRIGGER_ADC0);
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, muxADCPin1, HETRIGGER_ADC1);
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, muxADCPin2, HETRIGGER_ADC2);
@@ -991,6 +987,24 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, muxChannels, HETRIGGER_MUX_CHANNELS);
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, emaSmoothing, HETRIGGER_SMOOTHING_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, smoothingFactor, HETRIGGER_SMOOTHING_FACTOR);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, separateSelectPins, !!HETRIGGER_SEPARATE_SELECT_PINS);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[0], selectPin0, HETRIGGER_S0_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[0], selectPin1, HETRIGGER_S1_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[0], selectPin2, HETRIGGER_S2_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[0], selectPin3, HETRIGGER_S3_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[1], selectPin0, HETRIGGER_MUX1_S0_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[1], selectPin1, HETRIGGER_MUX1_S1_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[1], selectPin2, HETRIGGER_MUX1_S2_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[1], selectPin3, HETRIGGER_MUX1_S3_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[2], selectPin0, HETRIGGER_MUX2_S0_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[2], selectPin1, HETRIGGER_MUX2_S1_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[2], selectPin2, HETRIGGER_MUX2_S2_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[2], selectPin3, HETRIGGER_MUX2_S3_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[3], selectPin0, HETRIGGER_MUX3_S0_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[3], selectPin1, HETRIGGER_MUX3_S1_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[3], selectPin2, HETRIGGER_MUX3_S2_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[3], selectPin3, HETRIGGER_MUX3_S3_PIN);
+    config.addonOptions.heTriggerOptions.muxes_count = 4;
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[0], action, HETRIGGER_HE0_ACTION);
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[0], active, HETRIGGER_HE0_ACTIVE);
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[0], idle, HETRIGGER_HE0_IDLE);
@@ -1791,14 +1805,18 @@ void gpioMappingsMigrationCore(Config& config)
 
     // Set our HE trigger options
     if (config.addonOptions.heTriggerOptions.enabled) {
-        markAddonPinIfUsed(config.addonOptions.heTriggerOptions.muxADCPin0);
-        markAddonPinIfUsed(config.addonOptions.heTriggerOptions.muxADCPin1);
-        markAddonPinIfUsed(config.addonOptions.heTriggerOptions.muxADCPin2);
-        markAddonPinIfUsed(config.addonOptions.heTriggerOptions.muxADCPin3);
-        markAddonPinIfUsed(config.addonOptions.heTriggerOptions.selectPin0);
-        markAddonPinIfUsed(config.addonOptions.heTriggerOptions.selectPin1);
-        markAddonPinIfUsed(config.addonOptions.heTriggerOptions.selectPin2);
-        markAddonPinIfUsed(config.addonOptions.heTriggerOptions.selectPin3);
+        HETriggerOptions& heOptions = config.addonOptions.heTriggerOptions;
+        markAddonPinIfUsed(heOptions.muxADCPin0);
+        markAddonPinIfUsed(heOptions.muxADCPin1);
+        markAddonPinIfUsed(heOptions.muxADCPin2);
+        markAddonPinIfUsed(heOptions.muxADCPin3);
+        int muxSelectRows = heOptions.separateSelectPins ? 4 : 1;
+        for (int m = 0; m < muxSelectRows; m++) {
+            markAddonPinIfUsed(heOptions.muxes[m].selectPin0);
+            markAddonPinIfUsed(heOptions.muxes[m].selectPin1);
+            markAddonPinIfUsed(heOptions.muxes[m].selectPin2);
+            markAddonPinIfUsed(heOptions.muxes[m].selectPin3);
+        }
     }
 
 
@@ -1948,6 +1966,28 @@ void profileEnabledFlagsMigration(Config& config) {
         }
     }
     config.migrations.profileEnabledFlagsMigrated = true;
+}
+
+void heTriggerSelectPinsMigration(Config& config) {
+    // Migrate the legacy shared select pins (selectPin0-3) into muxes[0]
+    HETriggerOptions& heOptions = config.addonOptions.heTriggerOptions;
+    if (heOptions.has_selectPin0) {
+        heOptions.muxes[0].selectPin0 = heOptions.selectPin0;
+        heOptions.muxes[0].has_selectPin0 = true;
+    }
+    if (heOptions.has_selectPin1) {
+        heOptions.muxes[0].selectPin1 = heOptions.selectPin1;
+        heOptions.muxes[0].has_selectPin1 = true;
+    }
+    if (heOptions.has_selectPin2) {
+        heOptions.muxes[0].selectPin2 = heOptions.selectPin2;
+        heOptions.muxes[0].has_selectPin2 = true;
+    }
+    if (heOptions.has_selectPin3) {
+        heOptions.muxes[0].selectPin3 = heOptions.selectPin3;
+        heOptions.muxes[0].has_selectPin3 = true;
+    }
+    config.migrations.heTriggerSelectPinsMigrated = true;
 }
 
 void migrateMacroPinsToGpio(Config& config) {
@@ -2122,6 +2162,10 @@ void ConfigUtils::load(Config& config)
     // Make sure that fields that were not deserialized are properly initialized.
     // They were probably added with a newer version of the firmware.
     initUnsetPropertiesWithDefaults(config);
+
+    // Migrate legacy HE Trigger shared select pins into muxes[0]
+    if (!config.migrations.heTriggerSelectPinsMigrated)
+        heTriggerSelectPinsMigration(config);
 
     // Run migrations that need to happen after initUnset...
     // ProtoBuf && Board Config settings are loaded here
@@ -2771,6 +2815,9 @@ bool ConfigUtils::fromJSON(Config& config, const char* data, size_t dataLen)
     initUnsetPropertiesWithDefaults(config);
 
     // we need to run migrations here too, in case the json document changed pins or things derived from pins
+    if (!config.migrations.heTriggerSelectPinsMigrated)
+        heTriggerSelectPinsMigration(config);
+
     gpioMappingsMigrationCore(config);
     migrateTurboPinToGpio(config);
     migrateAuthenticationMethods(config);

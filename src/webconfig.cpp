@@ -1894,7 +1894,8 @@ std::string setExpansionPins()
 }
 
 static uint32_t calibrationMuxChannels = 0;
-static Pin_t calibrationSelectPins[4];
+static Pin_t calibrationSelectPins[4][4];
+static bool calibrationSeparateSelectPins = false;
 static Pin_t calibrationADCPins[4];
 static bool calibrationSmoothing = false;
 static uint32_t calibrationSmoothingFactor = 0;
@@ -1906,10 +1907,21 @@ std::string setHETriggerOptions()
 {
     DynamicJsonDocument doc = get_post_data();
     calibrationMuxChannels = doc["muxChannels"];
-    calibrationSelectPins[0] = doc["muxSelectPin0"];
-    calibrationSelectPins[1] = doc["muxSelectPin1"];
-    calibrationSelectPins[2] = doc["muxSelectPin2"];
-    calibrationSelectPins[3] = doc["muxSelectPin3"];
+    calibrationSeparateSelectPins = doc["separateSelectPins"];
+    static const char* selectPinKeys[4] = { "selectPin0", "selectPin1", "selectPin2", "selectPin3" };
+    for (int i = 0; i < 4; i++) {
+        for (int b = 0; b < 4; b++) {
+            calibrationSelectPins[i][b] = doc["muxes"][i][selectPinKeys[b]];
+        }
+    }
+    if ( !calibrationSeparateSelectPins ) {
+        // Shared select lines: every mux mirrors mux 0.
+        for(int mux = 1; mux < 4; mux++) {
+            for(int i = 0; i < 4; i++) {
+                calibrationSelectPins[mux][i] = calibrationSelectPins[0][i];
+            }
+        }
+    }
 
     calibrationADCPins[0] = doc["muxADCPin0"];
     calibrationADCPins[1] = doc["muxADCPin1"];
@@ -1929,12 +1941,15 @@ std::string setHETriggerOptions()
     pinEnd = 47;
 #endif
     for (int i = 0; i < 4; i++) {
-        if ( calibrationSelectPins[i] != -1 &&
-                calibrationSelectPins[i] >= 0 &&
-                calibrationSelectPins[i] <= pinEnd ) {
-            gpio_init(calibrationSelectPins[i]);
-            gpio_set_dir(calibrationSelectPins[i], GPIO_OUT);
-            gpio_put(calibrationSelectPins[i], 0);
+        for (int mux = 0; mux < 4; mux++) {
+            Pin_t selectPin = calibrationSelectPins[mux][i];
+            if ( selectPin != -1 &&
+                    selectPin >= 0 &&
+                    selectPin <= pinEnd ) {
+                gpio_init(selectPin);
+                gpio_set_dir(selectPin, GPIO_OUT);
+                gpio_put(selectPin, 0);
+            }
         }
         if ( calibrationADCPins[i] != -1 &&
                 calibrationADCPins[i] >= pinStart &&
@@ -1977,8 +1992,8 @@ std::string getHETriggerVoltage()
             return serialize_json(doc);
         }
         adcSelectPin = calibrationADCPins[adcNum];
-        gpio_put(calibrationSelectPins[0], channel & 0x01);
-        gpio_put(calibrationSelectPins[1], (channel >> 1) & 0x01);
+        gpio_put(calibrationSelectPins[adcNum][0], channel & 0x01);
+        gpio_put(calibrationSelectPins[adcNum][1], (channel >> 1) & 0x01);
     } else if (calibrationMuxChannels == 8) {
         uint32_t adcNum = id / 8;
         uint32_t channel = (id % 8);
@@ -1987,9 +2002,9 @@ std::string getHETriggerVoltage()
             return serialize_json(doc);
         }
         adcSelectPin = calibrationADCPins[adcNum];
-        gpio_put(calibrationSelectPins[0], channel & 0x01);
-        gpio_put(calibrationSelectPins[1], (channel >> 1) & 0x01);
-        gpio_put(calibrationSelectPins[2], (channel >> 2) & 0x01);
+        gpio_put(calibrationSelectPins[adcNum][0], channel & 0x01);
+        gpio_put(calibrationSelectPins[adcNum][1], (channel >> 1) & 0x01);
+        gpio_put(calibrationSelectPins[adcNum][2], (channel >> 2) & 0x01);
     } else if (calibrationMuxChannels == 16) {
         uint32_t adcNum = id / 16;
         uint32_t channel = (id % 16);
@@ -1998,10 +2013,10 @@ std::string getHETriggerVoltage()
             return serialize_json(doc);
         }
         adcSelectPin = calibrationADCPins[adcNum];
-        gpio_put(calibrationSelectPins[0], channel & 0x01);
-        gpio_put(calibrationSelectPins[1], (channel >> 1) & 0x01);
-        gpio_put(calibrationSelectPins[2], (channel >> 2) & 0x01);
-        gpio_put(calibrationSelectPins[3], (channel >> 3) & 0x01);
+        gpio_put(calibrationSelectPins[adcNum][0], channel & 0x01);
+        gpio_put(calibrationSelectPins[adcNum][1], (channel >> 1) & 0x01);
+        gpio_put(calibrationSelectPins[adcNum][2], (channel >> 2) & 0x01);
+        gpio_put(calibrationSelectPins[adcNum][3], (channel >> 3) & 0x01);
     } else {
         doc["error"] = "mux channels incorrect";
         return serialize_json(doc);
@@ -2355,16 +2370,30 @@ std::string setAddonOptions()
     HETriggerOptions& heTriggerOptions = Storage::getInstance().getAddonOptions().heTriggerOptions;
     docToValue(heTriggerOptions.enabled, doc, "HETriggerEnabled");
     docToValue(heTriggerOptions.muxChannels, doc, "muxChannels");
-    docToPin(heTriggerOptions.selectPin0, doc, "muxSelectPin0");
-    docToPin(heTriggerOptions.selectPin1, doc, "muxSelectPin1");
-    docToPin(heTriggerOptions.selectPin2, doc, "muxSelectPin2");
-    docToPin(heTriggerOptions.selectPin3, doc, "muxSelectPin3");
     docToPin(heTriggerOptions.muxADCPin0, doc, "muxADCPin0");
     docToPin(heTriggerOptions.muxADCPin1, doc, "muxADCPin1");
     docToPin(heTriggerOptions.muxADCPin2, doc, "muxADCPin2");
     docToPin(heTriggerOptions.muxADCPin3, doc, "muxADCPin3");
     docToValue(heTriggerOptions.emaSmoothing, doc, "heTriggerSmoothing");
     docToValue(heTriggerOptions.smoothingFactor, doc, "heTriggerSmoothingFactor");
+    docToValue(heTriggerOptions.separateSelectPins, doc, "separateSelectPins");
+    static const char* selectPinKeys[4] = { "selectPin0", "selectPin1", "selectPin2", "selectPin3" };
+    for (int i = 0; i < 4; i++) {
+        Pin_t* muxSelectPins[4] = {
+            &heTriggerOptions.muxes[i].selectPin0,
+            &heTriggerOptions.muxes[i].selectPin1,
+            &heTriggerOptions.muxes[i].selectPin2,
+            &heTriggerOptions.muxes[i].selectPin3,
+        };
+        for (int b = 0; b < 4; b++) {
+            if (doc["muxes"][i].containsKey(selectPinKeys[b])) {
+                Pin_t oldPin = *muxSelectPins[b];
+                *muxSelectPins[b] = doc["muxes"][i][selectPinKeys[b]];
+                cleanAddonGpioMappings(*muxSelectPins[b], oldPin);
+            }
+        }
+    }
+    heTriggerOptions.muxes_count = 4;
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
@@ -2848,16 +2877,20 @@ std::string getAddonOptions()
     const HETriggerOptions& heTriggerOptions = Storage::getInstance().getAddonOptions().heTriggerOptions;
     writeDoc(doc, "HETriggerEnabled", heTriggerOptions.enabled);
     writeDoc(doc, "muxChannels", heTriggerOptions.muxChannels);
-    writeDoc(doc, "muxSelectPin0", cleanPin(heTriggerOptions.selectPin0));
-    writeDoc(doc, "muxSelectPin1", cleanPin(heTriggerOptions.selectPin1));
-    writeDoc(doc, "muxSelectPin2", cleanPin(heTriggerOptions.selectPin2));
-    writeDoc(doc, "muxSelectPin3", cleanPin(heTriggerOptions.selectPin3));
     writeDoc(doc, "muxADCPin0", cleanPin(heTriggerOptions.muxADCPin0));
     writeDoc(doc, "muxADCPin1", cleanPin(heTriggerOptions.muxADCPin1));
     writeDoc(doc, "muxADCPin2", cleanPin(heTriggerOptions.muxADCPin2));
     writeDoc(doc, "muxADCPin3", cleanPin(heTriggerOptions.muxADCPin3));
     writeDoc(doc, "heTriggerSmoothing", heTriggerOptions.emaSmoothing);
     writeDoc(doc, "heTriggerSmoothingFactor", heTriggerOptions.smoothingFactor);
+    writeDoc(doc, "separateSelectPins", heTriggerOptions.separateSelectPins);
+    doc.createNestedArray("muxes");
+    for (int i = 0; i < 4; i++) {
+        writeDoc(doc, "muxes", i, "selectPin0", cleanPin(heTriggerOptions.muxes[i].selectPin0));
+        writeDoc(doc, "muxes", i, "selectPin1", cleanPin(heTriggerOptions.muxes[i].selectPin1));
+        writeDoc(doc, "muxes", i, "selectPin2", cleanPin(heTriggerOptions.muxes[i].selectPin2));
+        writeDoc(doc, "muxes", i, "selectPin3", cleanPin(heTriggerOptions.muxes[i].selectPin3));
+    }
 
     return serialize_json(doc);
 }

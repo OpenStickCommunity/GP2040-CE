@@ -71,22 +71,18 @@ export const HETriggerScheme = {
 		.number()
 		.label('Multiplexer ADC 3 Pin')
 		.validatePinWhenValue('HETriggerEnabled'),
-	muxSelectPin0: yup
+	separateSelectPins: yup
 		.number()
-		.label('Multiplexer Select 0 Pin')
-		.validatePinWhenValue('HETriggerEnabled'),
-	muxSelectPin1: yup
-		.number()
-		.label('Multiplexer Select 1 Pin')
-		.validatePinWhenValue('HETriggerEnabled'),
-	muxSelectPin2: yup
-		.number()
-		.label('Multiplexer Select 2 Pin')
-		.validatePinWhenValue('HETriggerEnabled'),
-	muxSelectPin3: yup
-		.number()
-		.label('Multiplexer Select 3 Pin')
-		.validatePinWhenValue('HETriggerEnabled'),
+		.label('Separate Select Pins')
+		.validateRangeWhenValue('HETriggerEnabled', 0, 1),
+	muxes: yup.array().of(
+		yup.object().shape({
+			selectPin0: yup.number().label('Mux Select 0 Pin'),
+			selectPin1: yup.number().label('Mux Select 1 Pin'),
+			selectPin2: yup.number().label('Mux Select 2 Pin'),
+			selectPin3: yup.number().label('Mux Select 3 Pin'),
+		}),
+	),
 	heTriggerSmoothing: yup
 		.number()
 		.label('EMA Smoothing')
@@ -104,10 +100,13 @@ export const HETriggerState = {
 	muxADCPin1: 27,
 	muxADCPin2: 28,
 	muxADCPin3: -1,
-	muxSelectPin0: 0,
-	muxSelectPin1: 1,
-	muxSelectPin2: 2,
-	muxSelectPin3: -1,
+	separateSelectPins: 0,
+	muxes: [
+		{ selectPin0: 0, selectPin1: 1, selectPin2: 2, selectPin3: -1 },
+		{ selectPin0: -1, selectPin1: -1, selectPin2: -1, selectPin3: -1 },
+		{ selectPin0: -1, selectPin1: -1, selectPin2: -1, selectPin3: -1 },
+		{ selectPin0: -1, selectPin1: -1, selectPin2: -1, selectPin3: -1 },
+	],
 	heTriggerSmoothing: 0,
 	heTriggerSmoothingFactor: 5,
 };
@@ -192,7 +191,9 @@ const TriggerActionsForm = ({
 						<div
 							key={`he-trigger-item-${i}`}
 							className="mt-3 mb-3"
-							hidden={values[`muxADCPin${i}` as keyof typeof values] === -1}
+							hidden={
+								Number(values[`muxADCPin${i}` as keyof typeof values]) === -1
+							}
 						>
 							<div className="d-flex flex-shrink-0">
 								<label htmlFor={i}>
@@ -232,11 +233,13 @@ const TriggerActionsForm = ({
 														const labelKey = option.label
 															.split('BUTTON_PRESS_')
 															.pop();
-														// Need to fallback as some button actions are not part of button names
-														return (
-															(labelKey && buttonNames[labelKey]) ||
-															t(`PinMapping:actions.${option.label}`)
-														);
+														// Unused buttons mapped to '-', falling back to action's proper label
+														const buttonName = labelKey
+															? buttonNames[labelKey]
+															: undefined;
+														return buttonName && buttonName !== '-'
+															? buttonName
+															: t(`PinMapping:actions.${option.label}`);
 													}}
 													onChange={(change) =>
 														setHETrigger({
@@ -306,7 +309,9 @@ const TriggerActionsForm = ({
 							<div
 								key={`voltage-table-header-${i}`}
 								className="mt-3 mb-3"
-								hidden={values[`muxADCPin${i}` as keyof typeof values] === -1}
+								hidden={
+									Number(values[`muxADCPin${i}` as keyof typeof values]) === -1
+								}
 							>
 								<div className="d-flex flex-shrink-0">
 									<label>
@@ -457,64 +462,74 @@ const HETrigger = ({
 						))}
 					</FormSelect>
 				</Row>
-				<Row className="mb-3">
-					<FormControl
-						type="number"
-						label={t('HETrigger:select-pin-0')}
-						name="muxSelectPin0"
-						hidden={values.muxChannels < 4}
-						className="form-select-sm"
-						groupClassName="col-sm-2 mb-3"
-						value={values.muxSelectPin0}
-						error={errors.muxSelectPin0}
-						isInvalid={Boolean(errors.muxSelectPin0)}
-						onChange={handleChange}
-						min={-1}
-						max={boardDefinition.maxPin}
-					/>
-					<FormControl
-						type="number"
-						label={t('HETrigger:select-pin-1')}
-						name="muxSelectPin1"
-						hidden={values.muxChannels < 4}
-						className="form-select-sm"
-						groupClassName="col-sm-2 mb-3"
-						value={values.muxSelectPin1}
-						error={errors.muxSelectPin1}
-						isInvalid={Boolean(errors.muxSelectPin1)}
-						onChange={handleChange}
-						min={-1}
-						max={boardDefinition.maxPin}
-					/>
-					<FormControl
-						type="number"
-						label={t('HETrigger:select-pin-2')}
-						name="muxSelectPin2"
-						hidden={values.muxChannels < 8}
-						className="form-select-sm"
-						groupClassName="col-sm-2 mb-3"
-						value={values.muxSelectPin2}
-						error={errors.muxSelectPin2}
-						isInvalid={Boolean(errors.muxSelectPin2)}
-						onChange={handleChange}
-						min={-1}
-						max={boardDefinition.maxPin}
-					/>
-					<FormControl
-						type="number"
-						label={t('HETrigger:select-pin-3')}
-						name="muxSelectPin3"
-						hidden={values.muxChannels < 16}
-						className="form-select-sm"
-						groupClassName="col-sm-2 mb-3"
-						value={values.muxSelectPin3}
-						error={errors.muxSelectPin3}
-						isInvalid={Boolean(errors.muxSelectPin3)}
-						onChange={handleChange}
-						min={-1}
-						max={boardDefinition.maxPin}
+				<Row className="mb-3" hidden={values.muxChannels < 4}>
+					<FormCheck
+						label={t('HETrigger:separate-select-pins-label')}
+						type="switch"
+						id="HETriggerSeparateSelectPins"
+						className="col-sm-4 mt-auto mb-auto ms-3"
+						isInvalid={false}
+						checked={Boolean(values.separateSelectPins)}
+						onChange={(e) => {
+							handleCheckbox('separateSelectPins');
+							handleChange(e);
+						}}
 					/>
 				</Row>
+				{/* Mux 0 always uses the primary select pins; extra muxes appear
+				    when separate select pins are enabled and their ADC pin is set. */}
+				{[0, 1, 2, 3].map((mux) => {
+					const isExtra = mux > 0;
+					if (isExtra && !values.separateSelectPins) return null;
+					if (
+						isExtra &&
+						Number(values[`muxADCPin${mux}` as keyof typeof values]) === -1
+					)
+						return null;
+					const muxValues = (values.muxes?.[mux] ?? {}) as Record<
+						string,
+						number
+					>;
+					const muxErrors = ((
+						errors.muxes as unknown as Record<string, string>[]
+					)?.[mux] ?? {}) as Record<string, string>;
+					return (
+						<Row
+							className="mb-3"
+							key={`select-pin-row-${mux}`}
+							hidden={values.muxChannels < 4}
+						>
+							{Boolean(values.separateSelectPins) && (
+								<div className="d-flex flex-shrink-0 mb-2">
+									<label>
+										{t('HETrigger:multiplexer-label')} {mux}
+									</label>
+								</div>
+							)}
+							{[0, 1, 2, 3].map((bit) => {
+								const name = `muxes.${mux}.selectPin${bit}`;
+								const minChannels = bit < 2 ? 4 : bit === 2 ? 8 : 16;
+								return (
+									<FormControl
+										key={name}
+										type="number"
+										label={t(`HETrigger:select-pin-${bit}`)}
+										name={name}
+										hidden={values.muxChannels < minChannels}
+										className="form-select-sm"
+										groupClassName="col-sm-2 mb-3"
+										value={muxValues[`selectPin${bit}`]}
+										error={muxErrors[`selectPin${bit}`]}
+										isInvalid={Boolean(muxErrors[`selectPin${bit}`])}
+										onChange={handleChange}
+										min={-1}
+										max={boardDefinition.maxPin}
+									/>
+								);
+							})}
+						</Row>
+					);
+				})}
 				<Row className="mb-3">
 					{boardDefinition.analogPins.map((val, i) => (
 						<FormSelect
