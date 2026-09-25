@@ -442,6 +442,14 @@ message AnalogOptions
     optional uint32 joystick_center_y = 25;
     optional uint32 joystick_center_x2 = 26;
     optional uint32 joystick_center_y2 = 27;
+    optional uint32 joystick_min_x = 28;
+    optional uint32 joystick_max_x = 29;
+    optional uint32 joystick_min_y = 30;
+    optional uint32 joystick_max_y = 31;
+    optional uint32 joystick_min_x2 = 32;
+    optional uint32 joystick_max_x2 = 33;
+    optional uint32 joystick_min_y2 = 34;
+    optional uint32 joystick_max_y2 = 35;
 }
 
 message TurboOptions
