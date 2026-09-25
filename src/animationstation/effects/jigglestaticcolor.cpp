@@ -29,7 +29,7 @@ JiggleStaticColor::JiggleStaticColor(Lights& InRGBLights, std::vector<int32_t> &
 RGB JiggleStaticColor::AdjustColor(int ledIndex, RGB InColor, LightType lightType)
 {
   //Generate a colour thats it 50% of the in color
-  RGB outColor;
+  RGB outColor{};
   outColor.r = (int)(((float)InColor.r) * 0.50f);
   outColor.g = (int)(((float)InColor.g) * 0.50f);
   outColor.b = (int)(((float)InColor.b) * 0.50f);
@@ -61,7 +61,7 @@ RGB JiggleStaticColor::AdvanceColor(int ledIndex, RGB InColor, RGB DestColor)
     }
   }
 
-  RGB outColor;
+  RGB outColor{};
   float colDiff = (int)DestColor.r - (int)InColor.r;
   int newR = InColor.r + (colDiff * (JitterVal[SafeLightIndex] / 100.0f));
   if(newR > 255)
