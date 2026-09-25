@@ -102,6 +102,7 @@ uint16_t HETriggerAddon::emaSmoothing(uint16_t value, uint16_t previous) {
 void HETriggerAddon::preprocess() {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     HETriggerOptions & options = Storage::getInstance().getAddonOptions().heTriggerOptions;
+    gamepad->state.heTriggers = 0;
     for (uint8_t he = 0; he < 32; he++) {
         // Ignore triggers with no actions
         if (options.triggers[he].action == -10 )
@@ -154,6 +155,7 @@ void HETriggerAddon::preprocess() {
             }
         }
         if (triggerActive[he]) {
+            gamepad->state.heTriggers |= (1u << he);
             switch (options.triggers[he].action) {
                 case GpioAction::BUTTON_PRESS_UP: gamepad->state.dpad |= GAMEPAD_MASK_UP; break;
                 case GpioAction::BUTTON_PRESS_DOWN: gamepad->state.dpad |= GAMEPAD_MASK_DOWN; break;

@@ -110,6 +110,9 @@ void GPButton::draw() {
             case GpioAction::BUTTON_PRESS_R3: turboState |= (getGamepad()->turboState.buttons & GAMEPAD_MASK_R3); break;
             default: break;
         }
+    } else if (_inputType == GP_ELEMENT_HE_BUTTON) {
+        pinState = ((getProcessedGamepad()->state.heTriggers >> this->_inputMask) & 0x01);
+        buttonState = true;
     }
 
     if (useMask && mapMask != NULL) {

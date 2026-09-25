@@ -447,7 +447,7 @@ LayoutManager::LayoutList LayoutManager::adjustByCustomSettings(LayoutManager::L
         int32_t offsetX = customX-startX;
         int32_t offsetY = customY-startY;
         for (uint16_t elementCtr = 0; elementCtr < layout.size(); elementCtr++) {
-            if (layout[elementCtr].elementType == GP_ELEMENT_BTN_BUTTON) {
+            if ((layout[elementCtr].elementType == GP_ELEMENT_BTN_BUTTON) || (layout[elementCtr].elementType == GP_ELEMENT_HE_BUTTON)) {
                 layout[elementCtr].parameters.x1 += originX+(offsetX+common.buttonPadding);
                 layout[elementCtr].parameters.y1 += originY+(offsetY+common.buttonPadding);
             } else {
