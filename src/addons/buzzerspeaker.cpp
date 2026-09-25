@@ -1,3 +1,4 @@
+#include "hardware/clocks.h"
 #include "hardware/pwm.h"
 #include "addons/buzzerspeaker.h"
 #include "songs.h"
@@ -92,7 +93,7 @@ void BuzzerSpeakerAddon::stop() {
 }
 
 uint32_t BuzzerSpeakerAddon::pwmSetFreqDuty(uint slice, uint channel, uint32_t frequency, float duty) {
-	uint32_t clock = 125000000;
+	uint32_t clock = clock_get_hz(clk_sys);
 	uint32_t divider16 = clock / frequency / 4096 +
 							(clock % (frequency * 4096) != 0);
 	if (divider16 / 16 == 0)
