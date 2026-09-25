@@ -79,6 +79,16 @@ void ButtonLayoutScreen::init() {
     showMacroMode = Storage::getInstance().getDisplayOptions().macroMode;
     showProfileMode = Storage::getInstance().getDisplayOptions().profileMode;
 
+    // only announce profile changes when there is more than one profile to switch between
+    showProfileBanner = false;
+    const ProfileOptions& profileOptions = Storage::getInstance().getProfileOptions();
+    for (pb_size_t i = 0; i < profileOptions.gpioMappingsSets_count; i++) {
+        if (profileOptions.gpioMappingsSets[i].enabled) {
+            showProfileBanner = true;
+            break;
+        }
+    }
+
     getRenderer()->clearScreen();
 }
 
@@ -112,19 +122,24 @@ void ButtonLayoutScreen::updateCustomHeaders()
     if (prevGamepadProfileNumber != gamePadProfileNumber) {
         prevGamepadProfileNumber = gamePadProfileNumber;
 
-        bannerMessage.assign(storage.currentProfileLabel(), strlen(storage.currentProfileLabel()));
-        if (bannerMessage.empty()) {
-            bannerMessage = "     Profile #";
-            bannerMessage +=  std::to_string(gamePadProfileNumber);
-        } else {
-            bannerMessage.insert(bannerMessage.begin(), (21-bannerMessage.length())/2, ' ');
-        }
+        if (showProfileBanner) {
+            bannerMessage.assign(storage.currentProfileLabel(), strlen(storage.currentProfileLabel()));
+            if (bannerMessage.empty()) {
+                bannerMessage = "     Profile #";
+                bannerMessage +=  std::to_string(gamePadProfileNumber);
+            } else {
+                bannerMessage.insert(bannerMessage.begin(), (21-bannerMessage.length())/2, ' ');
+            }
 
-        addCustomHeader(bannerMessage, "profile");
+            addCustomHeader(bannerMessage, "profile");
+        }
     }
 
     // Check to see if LED animation profile has changed
     int8_t profileNumber = AnimationStation::options.baseProfileIndex;
+    // seed on first check so the banner only shows when the LED profile is cycled, not on boot
+    if (prevLEDAnimationProfileNumber == -2)
+        prevLEDAnimationProfileNumber = profileNumber;
     if (prevLEDAnimationProfileNumber != profileNumber) {
         prevLEDAnimationProfileNumber = profileNumber;
 
