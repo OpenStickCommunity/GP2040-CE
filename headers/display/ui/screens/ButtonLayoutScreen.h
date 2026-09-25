@@ -149,6 +149,7 @@ class ButtonLayoutScreen : public GPScreen {
             {INPUT_MODE_XBOXORIGINAL, 10},
             {INPUT_MODE_GENERIC, 11},
             {INPUT_MODE_SINPUT, 12},
+            {INPUT_MODE_MAYFLASHS5, 4},
         };
 
         Gamepad* gamepad = nullptr;
