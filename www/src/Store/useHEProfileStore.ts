@@ -7,8 +7,9 @@ import WebApi from '../Services/WebApi';
 export const HE_PROFILE_COUNT = 4;
 export const HE_TRIGGER_COUNT = 32;
 
-// Bindings only. Calibration and tuning live on the triggers themselves and are
-// deliberately shared across profiles, to keep the config small.
+// Bindings, plus optional per-channel tuning overrides. Calibration itself
+// (idle/pressed/polarity/noise) lives on the triggers and is always shared,
+// because it describes the switch rather than how it should behave.
 export type HEProfile = {
 	enabled: boolean;
 	actions: number[];

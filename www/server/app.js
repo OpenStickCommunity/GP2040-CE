@@ -616,9 +616,7 @@ app.get('/api/getHETriggerCalibrations', (req, res) => {
 			action: 2, 
 			idle: 120,
 			pressed: 3500,
-			active: 1500,
 			is_polarized: false,
-			release: 1500,
 			noise: 50, 
 			rapidTrigger: false,
 			actuationPoint: 35,
@@ -631,9 +629,7 @@ app.get('/api/getHETriggerCalibrations', (req, res) => {
 			action: 3, 
 			idle: 3500,
 			pressed: 120,
-			active: 1500,
 			is_polarized: true,
-			release: 1500,
 			noise: 50, 
 			rapidTrigger: false,
 			actuationPoint: 35,
@@ -646,9 +642,7 @@ app.get('/api/getHETriggerCalibrations', (req, res) => {
 			action: 4, 
 			idle: 120,
 			pressed: 3500,
-			active: 1500,
 			is_polarized: false,
-			release: 2000,
 			noise: 50, 
 			rapidTrigger: true,
 			actuationPoint: 35,
@@ -661,9 +655,7 @@ app.get('/api/getHETriggerCalibrations', (req, res) => {
 			action: 5, 
 			idle: 3500,
 			pressed: 120,
-			active: 2000,
 			is_polarized: true,
-			release: 1500,
 			noise: 50, 
 			rapidTrigger: true,
 			actuationPoint: 35,
@@ -677,10 +669,8 @@ app.get('/api/getHETriggerCalibrations', (req, res) => {
 		triggers.push({
 			action: -10,
 			idle: 100,
-			active: 2000,
 			pressed: 3500,
 			is_polarized: false,
-			release: 1500,
 			noise: 50,
 			rapidTrigger: false,
 			actuationPoint: 35,
@@ -943,13 +933,6 @@ app.get('/api/getHeldPins', async (req, res) => {
 
 app.get('/api/abortGetHeldPins', async (req, res) => {
 	return res.send();
-});
-
-app.post('/api/getHETriggerVoltage', (req, res) => {
-	return res.send({
-		voltage: 0.0,
-		debug: true
-	});
 });
 
 // --- guided calibration mock ---

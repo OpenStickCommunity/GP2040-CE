@@ -956,8 +956,11 @@ message HETriggerProfile
     // HETriggerInfo and is shared, since it describes the hardware.
     //
     // A profile with no stored tuning falls back to the base switch values, the
-    // same rule bindings use, so existing configs keep working unmigrated. An
-    // entry of -1 means "not set for this profile".
+    // same rule bindings use, so existing configs keep working unmigrated.
+    //
+    // `actions` uses GpioAction::NONE (-10) for an unbound channel, which is a
+    // deliberate choice rather than a fallback: leaving a button unbound in one
+    // profile is a thing users want.
     repeated int32 actions = 1 [(nanopb).max_count = 32];
     optional bool enabled = 2;
 

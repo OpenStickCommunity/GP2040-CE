@@ -36,12 +36,15 @@ export const DEFAULT_TRIGGER: Trigger = {
 type State = {
 	triggers: Trigger[];
 	loadingTriggers: boolean;
+	// False until fetchHETriggers has returned. Saving before that would post
+	// DEFAULT_TRIGGER for all 32 channels over whatever the board has calibrated,
+	// the same failure mode the profile store guards against.
+	triggersLoaded: boolean;
 };
 
 type Actions = {
-	fetchHETriggers: () => void;
+	fetchHETriggers: () => Promise<void>;
 	setHETrigger: (trigger: Trigger & { id: number }) => void;
-	setAllHETriggers: (trigger: Partial<Trigger>) => void;
 	saveHETriggers: () => Promise<object>;
 };
 
@@ -51,17 +54,20 @@ const INITIAL_STATE: State = {
 	// resolved would read undefined. Array.from actually populates.
 	triggers: Array.from({ length: 32 }, () => ({ ...DEFAULT_TRIGGER })),
 	loadingTriggers: false,
+	triggersLoaded: false,
 };
 
 const useHETriggerStore = create<State & Actions>()((set, get) => ({
 	...INITIAL_STATE,
 	fetchHETriggers: async () => {
 		set({ loadingTriggers: true });
-		const triggers = await WebApi.getHETriggerCalibrations();
+		const data = await WebApi.getHETriggerCalibrations();
 		set((state) => ({
 			...state,
-			...triggers,
+			...data,
 			loadingTriggers: false,
+			// Only a real response licenses a later save; a failed fetch must not.
+			triggersLoaded: Boolean(data?.triggers),
 		}));
 	},
 	setHETrigger: ({ id, ...trigger}) => {
@@ -77,17 +83,16 @@ const useHETriggerStore = create<State & Actions>()((set, get) => ({
 			};
 		});
 	},
-	setAllHETriggers: (triggerValues) => {
-		set((state) => ({
-			...state,
-			triggers: state.triggers.map((trigger) => ({
-				...trigger,
-				...triggerValues,
-			})),
-		}));
+	saveHETriggers: async () => {
+		const { triggers, triggersLoaded } = get();
+		if (!triggersLoaded) {
+			throw new Error(
+				'Refusing to save hall effect calibration before it has been loaded',
+			);
+		}
+		// Send only the payload the firmware reads, not the whole store.
+		return WebApi.setHETriggerCalibrations({ triggers });
 	},
-
-	saveHETriggers: async () => WebApi.setHETriggerCalibrations(get()),
 }));
 
 export default useHETriggerStore;

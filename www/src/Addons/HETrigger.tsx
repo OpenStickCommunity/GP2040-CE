@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { Alert, Button, FormCheck, Row, Table } from 'react-bootstrap';
 
-import { FormikErrors } from 'formik';
 
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
@@ -167,19 +166,13 @@ const profileOptions = HE_PROFILE_ACTIONS.map((value) => ({
 type TriggerActionsFormTypes = {
 	triggers: Trigger[];
 	values: typeof DEFAULT_VALUES;
-	errors: FormikErrors<typeof DEFAULT_VALUES>;
 	muxChannels: number;
-	handleChange: (e: Event) => void;
-	handleCheckbox: (e: Event) => void;
 };
 
 const TriggerActionsForm = ({
 	triggers,
 	values,
-	errors,
 	muxChannels,
-	handleChange,
-	handleCheckbox,
 }: TriggerActionsFormTypes) => {
 	const saveHETriggers = useHETriggerStore((state) => state.saveHETriggers);
 	const heProfiles = useHEProfileStore((state) => state.profiles);
@@ -347,7 +340,7 @@ const TriggerActionsForm = ({
 											</thead>
 											<tbody>
 												{Object.keys(triggers)
-													.splice(i * muxChannels, muxChannels)
+													.slice(i * muxChannels, i * muxChannels + muxChannels)
 													.map((key, index) => (
 														<tr key={`table-tr-triggers-${index}`}>
 															<td>
@@ -612,10 +605,7 @@ const HETrigger = ({
 					<TriggerActionsForm
 						key="triggers-actions-form"
 						values={values}
-						errors={errors}
 						triggers={triggers}
-						handleChange={handleChange}
-						handleCheckbox={handleCheckbox}
 						muxChannels={values.muxChannels}
 					/>
 				</Row>

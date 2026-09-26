@@ -653,11 +653,6 @@ async function setExpansionPins(mappings) {
 	return Http.post(`${baseUrl}/api/setExpansionPins`, mappings);
 }
 
-// POST function to get the ADC reading for one Hall Effect channel
-async function getHETriggerVoltage(settings) {
-	return Http.post(`${baseUrl}/api/getHETriggerVoltage`, settings);
-}
-
 // POST function to set our channels, select, and ADC pin
 async function setHETriggerOptions(settings) {
 	return Http.post(`${baseUrl}/api/setHETriggerOptions`, settings);
@@ -792,7 +787,6 @@ export default {
 	setPeripheralOptions,
 	getExpansionPins,
 	setExpansionPins,
-	getHETriggerVoltage,
 	setHETriggerCalibrations,
 	getHETriggerCalibrations,
 	setHETriggerOptions,

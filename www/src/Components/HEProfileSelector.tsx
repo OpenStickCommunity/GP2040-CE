@@ -10,7 +10,16 @@ import useHEProfileStore, {
 	RT_ON,
 } from '../Store/useHEProfileStore';
 import useHETriggerStore, { Trigger } from '../Store/useHETriggerStore';
-import { HE_PRESETS, getPreset, matchPreset } from '../Data/HEPresets';
+import {
+	HE_PRESETS,
+	DEFAULT_PRESET_LEVEL,
+	getPreset,
+	matchPreset,
+} from '../Data/HEPresets';
+
+// Shown when a profile's stored tuning matches no level. Negative so it can
+// collide with neither a real level nor RT_UNSET.
+const CUSTOM_LEVEL = -1;
 
 type Option = { label: string; value: number };
 type OptionGroup = { label: string; options: Option[] };
@@ -166,24 +175,27 @@ const HEProfileSelector = ({
 	};
 
 	// On a non-base profile a channel may either inherit the base switch tuning
-	// (stored as 0) or override it. Level 0 in the dropdown means inherit.
+	// (stored as 0) or override it. RT_UNSET in the dropdown means inherit, and
+	// CUSTOM_LEVEL covers an override that matches no level.
 	const profileSensitivityLevel = (profileIndex: number, channel: number) => {
 		const profile = profiles[profileIndex];
 		if (!profile) return RT_UNSET;
 		const actuation = profile.actuationPoint?.[channel] ?? 0;
 		if (actuation === 0) return RT_UNSET;
-		return (
-			matchPreset({
-				actuationPoint: actuation,
-				rtPressSensitivity: profile.rtPressSensitivity?.[channel] ?? 0,
-				rtReleaseSensitivity: profile.rtReleaseSensitivity?.[channel] ?? 0,
-				// Continuous RT is not overridable per profile, so match against the
-				// level's own value to avoid reporting Custom for every level.
-				continuousRapidTrigger: getPreset(
-					HE_PRESETS.find((p) => p.actuationPoint === actuation)?.level ?? 0,
-				).continuousRapidTrigger,
-			})?.level ?? -1
-		);
+		// Continuous RT is not overridable per profile, so it is taken from
+		// whichever level the actuation point identifies rather than matched on --
+		// otherwise every level would report Custom.
+		const level = HE_PRESETS.find(
+			(preset) => preset.actuationPoint === actuation,
+		)?.level;
+		const matched = matchPreset({
+			actuationPoint: actuation,
+			rtPressSensitivity: profile.rtPressSensitivity?.[channel] ?? 0,
+			rtReleaseSensitivity: profile.rtReleaseSensitivity?.[channel] ?? 0,
+			continuousRapidTrigger: getPreset(level ?? DEFAULT_PRESET_LEVEL)
+				.continuousRapidTrigger,
+		});
+		return matched?.level ?? CUSTOM_LEVEL;
 	};
 
 	const setProfileSensitivity = (
@@ -191,6 +203,9 @@ const HEProfileSelector = ({
 		channel: number,
 		level: number,
 	) => {
+		// Custom is a readout, not a choice: selecting it would mean writing a
+		// level that does not exist.
+		if (level === CUSTOM_LEVEL) return;
 		if (level === RT_UNSET) {
 			setProfileTuning(profileIndex, channel, {
 				actuationPoint: 0,
@@ -468,6 +483,14 @@ const HEProfileSelector = ({
 																	<option value={RT_UNSET}>
 																		{t('HETrigger:tuning-inherit')}
 																	</option>
+																	{profileSensitivityLevel(
+																		profileIndex,
+																		channel,
+																	) === CUSTOM_LEVEL && (
+																		<option value={CUSTOM_LEVEL}>
+																			{t('HETrigger:sensitivity-custom')}
+																		</option>
+																	)}
 																	{HE_PRESETS.map((preset) => (
 																		<option
 																			key={`psens-${preset.level}`}

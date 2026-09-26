@@ -1518,38 +1518,31 @@ std::string setExpansionPins()
     return serialize_json(doc);
 }
 
-static uint32_t calibrationMuxChannels = 0;
-static Pin_t calibrationSelectPins[4];
-static Pin_t calibrationADCPins[4];
-
-// Get the HE Trigger Options using our manual GPIO input and everything
+// Initialises the multiplexer select and ADC pins from the values the web config
+// currently has, which may not be saved yet. The addon owns the sampling itself,
+// so nothing is retained here -- this only makes the pins usable before the user
+// commits the form.
 std::string setHETriggerOptions()
 {
     DynamicJsonDocument doc = get_post_data();
-    calibrationMuxChannels = doc["muxChannels"];
-    calibrationSelectPins[0] = doc["muxSelectPin0"];
-    calibrationSelectPins[1] = doc["muxSelectPin1"];
-    calibrationSelectPins[2] = doc["muxSelectPin2"];
-    calibrationSelectPins[3] = doc["muxSelectPin3"];
 
-    calibrationADCPins[0] = doc["muxADCPin0"];
-    calibrationADCPins[1] = doc["muxADCPin1"];
-    calibrationADCPins[2] = doc["muxADCPin2"];
-    calibrationADCPins[3] = doc["muxADCPin3"];
-
+    const Pin_t selectPins[4] = {
+        doc["muxSelectPin0"], doc["muxSelectPin1"],
+        doc["muxSelectPin2"], doc["muxSelectPin3"],
+    };
+    const Pin_t adcPins[4] = {
+        doc["muxADCPin0"], doc["muxADCPin1"],
+        doc["muxADCPin2"], doc["muxADCPin3"],
+    };
 
     for (int i = 0; i < 4; i++) {
-        if ( calibrationSelectPins[i] != -1 &&
-                calibrationSelectPins[i] >= 0 &&
-                calibrationSelectPins[i] <= 29 ) {
-            gpio_init(calibrationSelectPins[i]);
-            gpio_set_dir(calibrationSelectPins[i], GPIO_OUT);
-            gpio_put(calibrationSelectPins[i], 0);
+        if ( selectPins[i] >= 0 && selectPins[i] <= 29 ) {
+            gpio_init(selectPins[i]);
+            gpio_set_dir(selectPins[i], GPIO_OUT);
+            gpio_put(selectPins[i], 0);
         }
-        if ( calibrationADCPins[i] != -1 &&
-                calibrationADCPins[i] >= 26 &&
-                calibrationADCPins[i] <= 29 ) {
-            adc_gpio_init(calibrationADCPins[i]);
+        if ( adcPins[i] >= 26 && adcPins[i] <= 29 ) {
+            adc_gpio_init(adcPins[i]);
         }
     }
 
@@ -1645,6 +1638,19 @@ static std::string heCalibrationError(const char* message)
     return serialize_json(doc);
 }
 
+// One spelling of the mode strings, shared by every handler that reports one.
+static const char* heCalibrationModeName(HECalMode mode)
+{
+    switch (mode) {
+        case HECalMode::OFF:           return "off";
+        case HECalMode::IDLE_BASELINE: return "idle";
+        case HECalMode::PRESS_CAPTURE: return "press";
+        case HECalMode::DONE:          return "done";
+        case HECalMode::MONITOR:       return "monitor";
+    }
+    return "off";
+}
+
 std::string startHECalibration()
 {
     HETriggerAddon* addon = HETriggerAddon::getInstance();
@@ -1653,7 +1659,7 @@ std::string startHECalibration()
     addon->startCalibration();
 
     DynamicJsonDocument doc(JSON_OBJECT_SIZE(4));
-    doc["mode"] = "idle";
+    doc["mode"] = heCalibrationModeName(addon->getCalibrationMode());
     return serialize_json(doc);
 }
 
@@ -1670,8 +1676,9 @@ std::string advanceHECalibration()
     else if (strcmp(phase, "abort") == 0)  addon->abortCalibration();
     else return heCalibrationError("unknown phase");
 
+    // Same shape as the other calibration handlers: `mode` is always a string.
     DynamicJsonDocument doc(JSON_OBJECT_SIZE(4));
-    doc["mode"] = (int)addon->getCalibrationMode();
+    doc["mode"] = heCalibrationModeName(addon->getCalibrationMode());
     return serialize_json(doc);
 }
 
@@ -1687,12 +1694,7 @@ std::string getHECalibrationStatus()
                             JSON_OBJECT_SIZE(8);
     DynamicJsonDocument doc(capacity);
 
-    switch (addon->getCalibrationMode()) {
-        case HECalMode::OFF:           doc["mode"] = "off"; break;
-        case HECalMode::IDLE_BASELINE: doc["mode"] = "idle"; break;
-        case HECalMode::PRESS_CAPTURE: doc["mode"] = "press"; break;
-        case HECalMode::DONE:          doc["mode"] = "done"; break;
-    }
+    doc["mode"] = heCalibrationModeName(addon->getCalibrationMode());
     doc["elapsedMs"] = addon->getCalibrationElapsedMs();
     doc["idleDurationMs"] = HETRIGGER_CAL_IDLE_MS;
 
@@ -1739,7 +1741,7 @@ std::string applyHECalibration()
     addon->applyCalibration(actuation, press, release, continuousRT);
 
     DynamicJsonDocument doc(JSON_OBJECT_SIZE(4));
-    doc["mode"] = "off";
+    doc["mode"] = heCalibrationModeName(addon->getCalibrationMode());
     return serialize_json(doc);
 }
 
