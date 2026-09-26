@@ -77,24 +77,32 @@ public:
   void SetTestMode(AnimationStationTestMode TestType, const AnimationProfile* TestProfile, uint8_t overrideBrightness, uint8_t overrideMaxBrightness);
   void SetTestPinState(int PinOrNonButtonIndex, bool IsNonButtonLight);
   void ClearTestMode();
+  void CopyTestProfile(const AnimationProfile* Profile);
+  void SetTestModeLayout();
+  void SetTestModeButton();
 
   uint8_t getBrightnessSteps() { return brightnessSteps; }
   uint8_t getTestMode() { return TestMode; }
   bool getTestModeLightIsNonButton() { return TestModeLightIsNonButton; }
   int getTestModePinOrNonButtonIndex() { return TestModePinOrNonButtonIndex; }
 
-protected:
-  uint8_t getBrightnessStepSize() { return (brightnessMax / brightnessSteps); }
-  uint8_t brightnessMax; //0-255
-  uint8_t brightnessStepValue; //0-10
-  float normalisedBrightness; //0-1
+  bool getRestartLeds() { return bRestartLeds; }
+  void setRestartLeds(bool restartLeds) { bRestartLeds = restartLeds; }
 
+  void AssignLedPreset(const unsigned char* data, int32_t dataSize);
+  uint8_t getBrightnessStepSize() { return (brightnessMax / brightnessSteps); }
   Animation* GetNonPressedEffectForEffectType(AnimationNonPressedEffects EffectType, EButtonCaseEffectType InButtonCaseEffectType);
 
   //webconfig test mode
   void UpdateTestMode();
-
   void UpdateTimeout();
+
+private:
+	AnimationStation();
+
+  uint8_t brightnessMax; //0-255
+  uint8_t brightnessStepValue; //0-10
+  float normalisedBrightness; //0-1
 
   //Light data
   Lights RGBLights;
@@ -106,9 +114,6 @@ protected:
   //idletimeout
   absolute_time_t timeLastButtonPressed;
   bool bIsInIdleTimeout = false;
-
-private:
-	AnimationStation();
 
   //Running non-pressed animation
   Animation* baseAnimation;
@@ -134,6 +139,9 @@ private:
   bool bTestModeChangeRequested;
   int TestModePinOrNonButtonIndex;
   bool TestModeLightIsNonButton;
+
+	//Webconfig/testing
+	bool bRestartLeds;
 };
 
 #endif

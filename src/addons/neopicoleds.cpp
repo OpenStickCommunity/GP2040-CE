@@ -38,8 +38,6 @@ const std::string BUTTON_LABEL_A2 = "A2";
 
 static std::vector<uint8_t> EMPTY_VECTOR;
 
-bool NeoPicoLEDAddon::bRestartLeds = false;
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Player LEDs ////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -267,9 +265,9 @@ void NeoPicoLEDAddon::setup() {
 void NeoPicoLEDAddon::process()
 {
 	AnimationStation & AnimStation = AnimationStation::getInstance();
-	if(bRestartLeds)
+	if(AnimStation.getRestartLeds() == true)
 	{
-		bRestartLeds = false;
+		AnimStation.setRestartLeds(false);
 
 		//Save off test mode selected profile so we can restore it after the restart
 		int8_t savedMode = AnimStation.GetMode();
@@ -713,28 +711,6 @@ uint8_t NeoPicoLEDAddon::setupButtonPositions()
     return buttonCount;
 }
 
-void NeoPicoLEDAddon::AssignLedPreset(const unsigned char* data, int32_t dataSize) 
-{
-	LEDOptions& options = Storage::getInstance().getLedOptions();
-	options.lightClusterData_count = 0;
-	options.lightClusterDataInitialised = true;
-	for (int thisEntryIndex = 0; (thisEntryIndex * 6) + 5 < dataSize; ++thisEntryIndex) //each data entry has 6 elements
-	{
-		int thisDataIndex = thisEntryIndex * 6;
-		options.lightClusterData[thisEntryIndex].lightLocationData = data[thisDataIndex];
-		options.lightClusterData[thisEntryIndex].lightLocationData += ((int)data[thisDataIndex+1]) << 8;
-		options.lightClusterData[thisEntryIndex].lightLocationData += ((int)data[thisDataIndex+2]) << 16;
-		options.lightClusterData[thisEntryIndex].lightLocationData += ((int)data[thisDataIndex+3]) << 24;
-		options.lightClusterData[thisEntryIndex].lightTypeData = ((int)data[thisDataIndex+4]);
-		options.lightClusterData[thisEntryIndex].lightTypeData += ((int)data[thisDataIndex+5]) << 8;
-
-		options.lightClusterData_count = thisEntryIndex + 1;
-
-		if(options.lightClusterData_count >= FRAME_MAX) //100 entries total
-			return;
-	}
-}
-
 void NeoPicoLEDAddon::configureLEDs()
 {
 	AnimationStation & AnimStation = AnimationStation::getInstance();
@@ -750,7 +726,7 @@ void NeoPicoLEDAddon::configureLEDs()
 		if(strcmp("", LIGHT_DATA_NAME_DEFAULT) != 0)
 		{
 			const unsigned char lightData[] = { LIGHT_DATA_DEFAULT };
-			AssignLedPreset(lightData, sizeof(lightData));
+			AnimStation.AssignLedPreset(lightData, sizeof(lightData));
 		}
 		else
 		{

@@ -595,12 +595,9 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     // animationOptions
     AnimationStation& AnimStation = AnimationStation::getInstance();
     int brightSteps = AnimStation.getBrightnessSteps(); //cache locally to avoid false positive compiler warning
-    if(LEDS_BRIGHTNESS >= 0 && LEDS_BRIGHTNESS <= brightSteps)
-    {
+    if(LEDS_BRIGHTNESS >= 0 && LEDS_BRIGHTNESS <= brightSteps) {
         INIT_UNSET_PROPERTY(config.animationOptions, brightness, LEDS_BRIGHTNESS);
-    }
-    else
-    {
+    } else {
         INIT_UNSET_PROPERTY(config.animationOptions, brightness, AnimStation.getBrightnessSteps());
     }
     INIT_UNSET_PROPERTY(config.animationOptions, baseProfileIndex, 0);
@@ -638,6 +635,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     // Set all last 4 to PLED_COLOR
     memset(&localBuffer[MAX_NON_BUTTON_LIGHT_COLOR_INDEXES - 4], PLED_COLOR, 4);
 
+    // Copy to case
     memset(localBuffer, LEDS_PROFILE0_STATIC_COLOR_CASE, MAX_NON_BUTTON_LIGHT_COLOR_INDEXES - 4);
     INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[0], nonButtonStaticColors, localBuffer);
 

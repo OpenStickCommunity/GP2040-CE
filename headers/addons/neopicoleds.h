@@ -547,10 +547,6 @@ public:
    	virtual void postprocess(bool sent) {}
     virtual void reinit() {}
 	virtual std::string name() { return NeoPicoLEDName; }
-
-	static void AssignLedPreset(const unsigned char* data, int32_t dataSize);
-	static void RestartLedSystem() { bRestartLeds = true; }
-
 	uint32_t frame[FRAME_MAX];
 private:
 
@@ -598,9 +594,6 @@ private:
 	bool turnOffWhenSuspended;
 
 	bool bHasSetupNeoPico = false;
-
-	//Webconfig/testing
-	static bool bRestartLeds;
 };
 
 #endif

@@ -981,7 +981,7 @@ std::string setLightsDataOptions()
             break;
     }
 
-    NeoPicoLEDAddon::RestartLedSystem();
+    AnimationStation::getInstance().setRestartLeds(true);
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
     return serialize_json(doc);
@@ -1160,6 +1160,7 @@ std::string getLightsDataPresets()
 std::string setLightsToDefault()
 {
     DynamicJsonDocument doc = get_post_data();
+    AnimationStation & AnimStation = AnimationStation::getInstance();
 
     JsonObject docJson = doc.as<JsonObject>();
     const char*  resetName = docJson["ResetName"];
@@ -1167,45 +1168,45 @@ std::string setLightsToDefault()
     if(strcmp(resetName, LIGHT_DATA_NAME_DEFAULT) == 0)
     {
         const unsigned char lightData[] = { LIGHT_DATA_DEFAULT };
-        NeoPicoLEDAddon::AssignLedPreset(lightData, sizeof(lightData));
+        AnimStation.AssignLedPreset(lightData, sizeof(lightData));
     }
     else if(strcmp(resetName, LIGHT_DATA_NAME_1) == 0)
     {
         const unsigned char lightData[] = { LIGHT_DATA_1 };
-        NeoPicoLEDAddon::AssignLedPreset(lightData, sizeof(lightData));
+        AnimStation.AssignLedPreset(lightData, sizeof(lightData));
     }
     else if(strcmp(resetName, LIGHT_DATA_NAME_2) == 0)
     {
         const unsigned char lightData[] = { LIGHT_DATA_2 };
-        NeoPicoLEDAddon::AssignLedPreset(lightData, sizeof(lightData));
+        AnimStation.AssignLedPreset(lightData, sizeof(lightData));
     }
     else if(strcmp(resetName, LIGHT_DATA_NAME_3) == 0)
     {
         const unsigned char lightData[] = { LIGHT_DATA_3 };
-        NeoPicoLEDAddon::AssignLedPreset(lightData, sizeof(lightData));
+        AnimStation.AssignLedPreset(lightData, sizeof(lightData));
     }
     else if(strcmp(resetName, LIGHT_DATA_NAME_4) == 0)
     {
         const unsigned char lightData[] = { LIGHT_DATA_4 };
-        NeoPicoLEDAddon::AssignLedPreset(lightData, sizeof(lightData));
+        AnimStation.AssignLedPreset(lightData, sizeof(lightData));
     }
     else if(strcmp(resetName, LIGHT_DATA_NAME_5) == 0)
     {
         const unsigned char lightData[] = { LIGHT_DATA_5 };
-        NeoPicoLEDAddon::AssignLedPreset(lightData, sizeof(lightData));
+        AnimStation.AssignLedPreset(lightData, sizeof(lightData));
     }
     else if(strcmp(resetName, LIGHT_DATA_NAME_6) == 0)
     {
         const unsigned char lightData[] = { LIGHT_DATA_6 };
-        NeoPicoLEDAddon::AssignLedPreset(lightData, sizeof(lightData));
+        AnimStation.AssignLedPreset(lightData, sizeof(lightData));
     }
     else if(strcmp(resetName, LIGHT_DATA_NAME_7) == 0)
     {
         const unsigned char lightData[] = { LIGHT_DATA_7 };
-        NeoPicoLEDAddon::AssignLedPreset(lightData, sizeof(lightData));
+        AnimStation.AssignLedPreset(lightData, sizeof(lightData));
     }
 
-    NeoPicoLEDAddon::RestartLedSystem();
+    AnimStation.setRestartLeds(true);
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
@@ -1250,11 +1251,11 @@ void helperGetProfileFromJsonObject(AnimationProfile* Profile, JsonObject* JsonD
     JsonArray notPressedStaticColorsList = (*JsonData)["notPressedStaticColors"];
     JsonArray pressedStaticColorsList = (*JsonData)["pressedStaticColors"];
 
-    copyArray(Profile->notPressedStaticColors.bytes, Profile->notPressedStaticColors.size, notPressedStaticColorsList);
-    copyArray(Profile->pressedStaticColors.bytes, Profile->pressedStaticColors.size, pressedStaticColorsList);
+    copyArray(notPressedStaticColorsList, Profile->notPressedStaticColors.bytes);
+    copyArray(pressedStaticColorsList, Profile->pressedStaticColors.bytes);
     
     JsonArray nonButtonStaticColorsList = (*JsonData)["nonButtonStaticColors"];
-    copyArray(Profile->nonButtonStaticColors.bytes, Profile->nonButtonStaticColors.size, nonButtonStaticColorsList);
+    copyArray(nonButtonStaticColorsList, Profile->nonButtonStaticColors.bytes);
 
 /*
     for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS + 3) / 4; ++packedPinIndex)
@@ -1403,7 +1404,7 @@ std::string setAnimationProtoOptions()
             break;
     }
 
-    NeoPicoLEDAddon::RestartLedSystem();
+    AnimationStation::getInstance().setRestartLeds(true);
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
     return serialize_json(doc);
