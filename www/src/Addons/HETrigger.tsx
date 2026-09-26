@@ -23,6 +23,7 @@ import { getButtonLabels } from '../Data/Buttons';
 import { AddonPropTypes, DEFAULT_VALUES } from '../Pages/AddonsConfigPage';
 
 import './HETrigger.scss';
+import '../Components/HECalibration.scss';
 
 import {
 	BUTTON_ACTIONS,
@@ -127,6 +128,9 @@ export const HETriggerState = {
 
 // Grouped so the analog stick directions are findable: the flat list ran to
 // ~50 entries and buried them among the button presses.
+// 12-bit ADC, matching the RP2040 that reads the switches.
+const ADC_MAX = 4095;
+
 const ANALOG_ACTION_MIN = 59;
 const ANALOG_ACTION_MAX = 66;
 
@@ -175,6 +179,24 @@ const TriggerActionsForm = ({
 }: TriggerActionsFormTypes) => {
 	const saveHETriggers = useHETriggerStore((state) => state.saveHETriggers);
 	const heProfiles = useHEProfileStore((state) => state.profiles);
+	const setHETrigger = useHETriggerStore((state) => state.setHETrigger);
+
+	// Manual override for the measured calibration values. The wizard is the
+	// normal path, but these stay editable for a switch it could not read, or
+	// for a user moving known-good numbers between boards. Clamped to the ADC
+	// range, and a blank field reads as 0 rather than NaN, which would other-
+	// wise propagate into the travel maths and leave the channel dead.
+	const setTriggerField = (
+		id: number,
+		field: 'idle' | 'pressed' | 'noise',
+		raw: string,
+	) => {
+		const parsed = parseInt(raw, 10);
+		const value = Number.isNaN(parsed)
+			? 0
+			: Math.min(Math.max(parsed, 0), ADC_MAX);
+		setHETrigger({ ...triggers[id], id, [field]: value });
+	};
 
 	const { buttonLabels } = useContext(AppContext);
 	const [saveMessage, setSaveMessage] = useState('');
@@ -350,8 +372,35 @@ const TriggerActionsForm = ({
 																	? t('HETrigger:voltage-table-disabled-label')
 																	: ''}
 															</td>
-															<td>{triggers[key].idle}</td>
-															<td>{triggers[key].pressed}</td>
+															{/* Editable: the wizard measures these, but a user who knows their
+															    hardware may want to set them by hand, and a switch the sweep
+															    could not read needs some way in. */}
+															<td>
+																<input
+																	type="number"
+																	className="he-voltage-input"
+																	value={triggers[key].idle}
+																	min={0}
+																	max={ADC_MAX}
+																	aria-label={t('HETrigger:voltage-table-idle-text')}
+																	onChange={(e) =>
+																		setTriggerField(parseInt(key), 'idle', e.target.value)
+																	}
+																/>
+															</td>
+															<td>
+																<input
+																	type="number"
+																	className="he-voltage-input"
+																	value={triggers[key].pressed}
+																	min={0}
+																	max={ADC_MAX}
+																	aria-label={t('HETrigger:voltage-table-pressed-text')}
+																	onChange={(e) =>
+																		setTriggerField(parseInt(key), 'pressed', e.target.value)
+																	}
+																/>
+															</td>
 															{/* Span is what makes a bad calibration obvious at a glance:
 											    a near-zero span means the channel never really moved. */}
 															<td>
@@ -360,7 +409,20 @@ const TriggerActionsForm = ({
 																)}
 															</td>
 															<td>{triggers[key].actuationPoint}%</td>
-															<td>{triggers[key].is_polarized ? 'S' : 'N'}</td>
+															<td>
+																<FormCheck
+																	type="switch"
+																	checked={triggers[key].is_polarized}
+																	aria-label={t('HETrigger:voltage-table-polarity-text')}
+																	onChange={() =>
+																		setHETrigger({
+																			id: parseInt(key),
+																			...triggers[key],
+																			is_polarized: !triggers[key].is_polarized,
+																		})
+																	}
+																/>
+															</td>
 															<td>
 																{triggers[key].rapidTrigger
 																	? 'Enabled'
@@ -376,7 +438,19 @@ const TriggerActionsForm = ({
 																	? `${triggers[key].rtReleaseSensitivity}%`
 																	: 'N/A'}
 															</td>
-															<td>{triggers[key].noise}</td>
+															<td>
+																<input
+																	type="number"
+																	className="he-voltage-input"
+																	value={triggers[key].noise}
+																	min={0}
+																	max={ADC_MAX}
+																	aria-label={t('HETrigger:voltage-table-noise-text')}
+																	onChange={(e) =>
+																		setTriggerField(parseInt(key), 'noise', e.target.value)
+																	}
+																/>
+															</td>
 														</tr>
 													))}
 											</tbody>

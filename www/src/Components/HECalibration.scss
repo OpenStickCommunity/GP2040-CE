@@ -271,3 +271,21 @@
 .he-monitor-name {
 	font-weight: 600;
 }
+
+// Manual calibration entry inside the voltage table. Sized to the values it
+// holds so the table stays readable at 16 or 32 rows.
+.he-voltage-input {
+	width: 5rem;
+	padding: 0.1rem 0.25rem;
+	font-size: 0.85rem;
+	font-variant-numeric: tabular-nums;
+	background-color: transparent;
+	color: inherit;
+	border: 1px solid rgba(128, 128, 128, 0.4);
+	border-radius: 0.2rem;
+
+	&:focus {
+		outline: none;
+		border-color: var(--bs-primary, #0d6efd);
+	}
+}

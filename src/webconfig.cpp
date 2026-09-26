@@ -2017,6 +2017,14 @@ std::string setHETriggerCalibrations()
     Storage::getInstance().getAddonOptions().heTriggerOptions.triggers_count = 32;
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
+    // The addon caches travel geometry derived from these values, and a
+    // storage save alone does not rebuild it -- reinit() is only reached on a
+    // GPIO profile change. Without this, hand-edited calibration would persist
+    // but not take effect until the next reboot. The wizard's apply path
+    // already rebuilds for the same reason.
+    HETriggerAddon* heAddon = HETriggerAddon::getInstance();
+    if (heAddon != nullptr) heAddon->reinit();
+
     return serialize_json(doc);
 }
 
