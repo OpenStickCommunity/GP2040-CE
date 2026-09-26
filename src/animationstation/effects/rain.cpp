@@ -1,4 +1,5 @@
 #include "rain.h"
+#include "storagemanager.h"
 #include <algorithm>
 
 #define RAIN_CYCLE_MAX         300
@@ -8,15 +9,14 @@
 
 Rain::Rain(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType) : Animation(InRGBLights, InButtonCaseEffectType) 
 {
+    AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+
     int rainFrequencyVal;
 
-    if(InButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_ONLY || InButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE)
-    {
-        rainFrequencyVal = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedEffectContextParam;
-    }
-    else
-    {
-        rainFrequencyVal = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].caseEffectContextParam;
+    if(InButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_ONLY || InButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE) {
+        rainFrequencyVal = options.profiles[options.baseProfileIndex].effectContextParam & 0xFF;
+    } else {
+        rainFrequencyVal = (options.profiles[options.baseProfileIndex].effectContextParam >> 16) & 0xFF;
     }
     if(rainFrequencyVal != 0 && rainFrequencyVal <= ERainFrequency::RAIN_MAX)
         RainFrequency = (ERainFrequency)(rainFrequencyVal - 1);
@@ -124,10 +124,12 @@ int Rain::FindLightForCoord(int xCoord, int yCoord)
 
 void Rain::GetSpecialColors(RGB& specialLightCol, RGB& caseSpecialLightCol, int rainIndex)
 {
-    specialLightCol = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor;
-    caseSpecialLightCol = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].caseSpecialColor;
-    bool buttonIsRainbow = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].bNonPressedSpecialColorIsRainbow;
-    bool caseIsRainbow = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].bCaseSpecialColorIsRainbow;
+    AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+
+    specialLightCol = options.profiles[options.baseProfileIndex].nonPressedSpecialColor;
+    caseSpecialLightCol = options.profiles[options.baseProfileIndex].caseSpecialColor;
+    bool buttonIsRainbow = options.profiles[options.baseProfileIndex].bNonPressedSpecialColorIsRainbow;
+    bool caseIsRainbow = options.profiles[options.baseProfileIndex].bCaseSpecialColorIsRainbow;
 
     if(buttonIsRainbow || caseIsRainbow)
     {
@@ -279,11 +281,13 @@ void Rain::Animate(RGB (&frame)[FRAME_MAX])
 
 void Rain::CycleParameterChange() 
 {
+    AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+
     int16_t cycleStep = 2;
     if(ButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_CASE_ONLY)
-      cycleStep = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCaseCycleTime;
+      cycleStep = options.profiles[options.baseProfileIndex].baseCaseCycleTime;
     else
-      cycleStep = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime;
+      cycleStep = options.profiles[options.baseProfileIndex].baseCycleTime;
 
     cycleTime = RAIN_CYCLE_MIN + (((RAIN_CYCLE_MAX - RAIN_CYCLE_MIN) / CYCLE_STEPS) * cycleStep);
 }

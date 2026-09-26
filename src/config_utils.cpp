@@ -593,17 +593,62 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.ledOptions, lightClusterDataInitialised, false);
  
     // animationOptions
-    int brightSteps = AnimationStation::brightnessSteps; //cache locally to avoid false positive compiler warning
+    AnimationStation& AnimStation = AnimationStation::getInstance();
+    int brightSteps = AnimStation.getBrightnessSteps(); //cache locally to avoid false positive compiler warning
     if(LEDS_BRIGHTNESS >= 0 && LEDS_BRIGHTNESS <= brightSteps)
     {
         INIT_UNSET_PROPERTY(config.animationOptions, brightness, LEDS_BRIGHTNESS);
     }
     else
     {
-        INIT_UNSET_PROPERTY(config.animationOptions, brightness, AnimationStation::brightnessSteps);
+        INIT_UNSET_PROPERTY(config.animationOptions, brightness, AnimStation.getBrightnessSteps());
     }
     INIT_UNSET_PROPERTY(config.animationOptions, baseProfileIndex, 0);
     INIT_UNSET_PROPERTY(config.animationOptions, autoDisableTime, LEDS_AUTO_DISABLE_TIME);
+
+    // Max local buffer big enough to be 30, 32, or 48
+    unsigned char localBuffer[std::max(NUM_BANK0_GPIOS, MAX_NON_BUTTON_LIGHT_COLOR_INDEXES)];
+
+    // Button Colors
+    memset(localBuffer, LEDS_PROFILE0_STATIC_COLOR_UNPRESSED, NUM_BANK0_GPIOS);
+    INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[0], notPressedStaticColors, localBuffer);
+    memset(localBuffer, LEDS_PROFILE0_STATIC_COLOR_PRESSED, NUM_BANK0_GPIOS);
+    INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[0], pressedStaticColors, localBuffer);
+
+    memset(localBuffer, LEDS_PROFILE1_STATIC_COLOR_UNPRESSED, NUM_BANK0_GPIOS);
+    INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[1], notPressedStaticColors, localBuffer);
+    memset(localBuffer, LEDS_PROFILE1_STATIC_COLOR_PRESSED, NUM_BANK0_GPIOS);
+    INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[1], pressedStaticColors, localBuffer);
+    
+    memset(localBuffer, LEDS_PROFILE2_STATIC_COLOR_UNPRESSED, NUM_BANK0_GPIOS);    
+    INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[2], notPressedStaticColors, localBuffer);
+    memset(localBuffer, LEDS_PROFILE2_STATIC_COLOR_PRESSED, NUM_BANK0_GPIOS);
+    INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[2], pressedStaticColors, localBuffer);
+    
+    memset(localBuffer, LEDS_PROFILE3_STATIC_COLOR_UNPRESSED, NUM_BANK0_GPIOS);
+    INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[3], notPressedStaticColors, localBuffer);
+    memset(localBuffer, LEDS_PROFILE3_STATIC_COLOR_PRESSED, NUM_BANK0_GPIOS);
+    INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[3], pressedStaticColors, localBuffer);
+    
+    memset(localBuffer, LEDS_PROFILE3_STATIC_COLOR_UNPRESSED, NUM_BANK0_GPIOS);
+    INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[3], notPressedStaticColors, localBuffer);
+    memset(localBuffer, LEDS_PROFILE3_STATIC_COLOR_PRESSED, NUM_BANK0_GPIOS);
+    INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[3], pressedStaticColors, localBuffer);
+
+    // Set all last 4 to PLED_COLOR
+    memset(&localBuffer[MAX_NON_BUTTON_LIGHT_COLOR_INDEXES - 4], PLED_COLOR, 4);
+
+    memset(localBuffer, LEDS_PROFILE0_STATIC_COLOR_CASE, MAX_NON_BUTTON_LIGHT_COLOR_INDEXES - 4);
+    INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[0], nonButtonStaticColors, localBuffer);
+
+    memset(localBuffer, LEDS_PROFILE1_STATIC_COLOR_CASE, MAX_NON_BUTTON_LIGHT_COLOR_INDEXES - 4);
+    INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[1], nonButtonStaticColors, localBuffer);
+
+    memset(localBuffer, LEDS_PROFILE2_STATIC_COLOR_CASE, MAX_NON_BUTTON_LIGHT_COLOR_INDEXES - 4);
+    INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[2], nonButtonStaticColors, localBuffer);
+
+    memset(localBuffer, LEDS_PROFILE3_STATIC_COLOR_CASE, MAX_NON_BUTTON_LIGHT_COLOR_INDEXES - 4);
+    INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[3], nonButtonStaticColors, localBuffer);
 
     // Set LED Profile 0
     INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bEnabled, LEDS_PROFILE0_ENABLED);
@@ -680,47 +725,6 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], basePressedEffect, LEDS_PROFILE3_PRESSED_ANIMATION_INDEX);
     INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], baseCaseEffect, LEDS_PROFILE3_CASE_ANIMATION_INDEX);
     INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], bUseCaseLightsInPressedAnimations, LEDS_PROFILE3_USE_CASE_IN_PRESSED);
-
-    unsigned int buttonCount = (NUM_BANK0_GPIOS+3)/4;
-    unsigned int caseCount = (MAX_NON_BUTTON_LIGHT_COLOR_INDEXES/4);
-
-    config.animationOptions.profiles_count = 0;
-    for (unsigned int i = 0; i < MAX_ANIMATION_PROFILES; i++) {
-        config.animationOptions.profiles[i].notPressedStaticColors_count = buttonCount;
-        config.animationOptions.profiles[i].pressedStaticColors_count = buttonCount;
-        config.animationOptions.profiles[i].nonButtonStaticColors_count = caseCount;
-        if ( config.animationOptions.profiles[i].bEnabled == true ) {
-            config.animationOptions.profiles_count++;
-        }
-    }
-
-    // Button Colors
-    for (unsigned int lightIndex = 0; lightIndex < buttonCount; lightIndex++) {
-        config.animationOptions.profiles[0].notPressedStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE0_STATIC_COLOR_UNPRESSED);
-        config.animationOptions.profiles[0].pressedStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE0_STATIC_COLOR_PRESSED);
-        config.animationOptions.profiles[1].notPressedStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE1_STATIC_COLOR_UNPRESSED);
-        config.animationOptions.profiles[1].pressedStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE1_STATIC_COLOR_PRESSED);
-        config.animationOptions.profiles[2].notPressedStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE2_STATIC_COLOR_UNPRESSED);
-        config.animationOptions.profiles[2].pressedStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE2_STATIC_COLOR_PRESSED);
-        config.animationOptions.profiles[3].notPressedStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE3_STATIC_COLOR_UNPRESSED);
-        config.animationOptions.profiles[3].pressedStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE3_STATIC_COLOR_PRESSED);
-    }
-
-    // Case Colors
-    for (unsigned int lightIndex = 0; lightIndex < caseCount; lightIndex++) {
-        if(lightIndex == caseCount - 1) {
-            config.animationOptions.profiles[0].nonButtonStaticColors[lightIndex] = (LEDS_COLOR_QUAD(LEDS_PROFILE0_STATIC_COLOR_CASE) & 0x00FFFFFF) + (PLED_COLOR<<24);
-            config.animationOptions.profiles[1].nonButtonStaticColors[lightIndex] = (LEDS_COLOR_QUAD(LEDS_PROFILE1_STATIC_COLOR_CASE) & 0x00FFFFFF) + (PLED_COLOR<<24);
-            config.animationOptions.profiles[2].nonButtonStaticColors[lightIndex] = (LEDS_COLOR_QUAD(LEDS_PROFILE2_STATIC_COLOR_CASE) & 0x00FFFFFF) + (PLED_COLOR<<24);
-            config.animationOptions.profiles[3].nonButtonStaticColors[lightIndex] = (LEDS_COLOR_QUAD(LEDS_PROFILE3_STATIC_COLOR_CASE) & 0x00FFFFFF) + (PLED_COLOR<<24);
-        }
-        else {
-            config.animationOptions.profiles[0].nonButtonStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE0_STATIC_COLOR_CASE);
-            config.animationOptions.profiles[1].nonButtonStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE1_STATIC_COLOR_CASE);
-            config.animationOptions.profiles[2].nonButtonStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE2_STATIC_COLOR_CASE);
-            config.animationOptions.profiles[3].nonButtonStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE3_STATIC_COLOR_CASE);
-        }
-    }
 
     // addonOptions.bootselButtonOptions
     INIT_UNSET_PROPERTY(config.addonOptions.bootselButtonOptions, enabled, !!BOOTSEL_BUTTON_ENABLED);

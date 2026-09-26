@@ -119,8 +119,6 @@
 #define LEDS_BRIGHTNESS -1
 #endif
 
-#define LEDS_COLOR_QUAD(color) ((color<<24) + (color<<16) + (color<<8) + color)
-
 #ifndef LEDS_AUTO_DISABLE_TIME
 #define LEDS_AUTO_DISABLE_TIME 0 // in ms
 #endif
@@ -556,7 +554,7 @@ public:
 	uint32_t frame[FRAME_MAX];
 private:
 
-	void decompressSettings();
+	//void decompressSettings();
 
 	void configureLEDs();
 
@@ -589,7 +587,7 @@ private:
 	Lights RGBLights;
 
 	//Animation class. Handles idle animations, special move animations and pressed button effects
-	class AnimationStation AnimStation;
+	//class AnimationStation AnimStation;
 
 	const uint32_t intervalMS = 25;
 	absolute_time_t nextRunTime;

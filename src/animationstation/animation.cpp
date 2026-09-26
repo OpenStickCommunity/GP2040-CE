@@ -10,6 +10,8 @@ LEDFormat Animation::format;
 
 Animation::Animation(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType) : RGBLights(&InRGBLights) 
 {
+  AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+
   ButtonCaseEffectType = InButtonCaseEffectType;
 
   fadeTimes.clear();
@@ -18,8 +20,8 @@ Animation::Animation(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffe
     fadeTimes.push_back(0); 
   }
 
-  holdTimeInMs = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].buttonPressHoldTimeInMs;
-  fadeoutTimeInMs = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].buttonPressFadeOutTimeInMs;
+  holdTimeInMs = options.profiles[options.baseProfileIndex].buttonPressHoldTimeInMs;
+  fadeoutTimeInMs = options.profiles[options.baseProfileIndex].buttonPressFadeOutTimeInMs;
   
   //Since we use the fadeTimes array to know if a light is held. make sure that we hold for at least 1 ms.
   if(holdTimeInMs <= 0)
@@ -170,26 +172,28 @@ bool Animation::LightTypeIsForAnimation(LightType Type)
 //Get correct color for light index
 RGB Animation::StaticGetNonPressedColorForLight(Lights* AllLights, uint32_t LightIndex)
 {
+  AnimationStation & AnimStation = AnimationStation::getInstance();
+  AnimationOptions & options = Storage::getInstance().getAnimationOptions();
   int colIndex = 0;
   Light* thisLight = &(AllLights->AllLights[LightIndex]);
   if(thisLight->Type == LightType::LightType_ActionButton || thisLight->Type == LightType::LightType_Turbo)
   {
     //button
-    colIndex = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].notPressedStaticColors[thisLight->GIPOPin];
+    colIndex = options.profiles[options.baseProfileIndex].notPressedStaticColors.bytes[thisLight->GIPOPin];
   }
   else
   {
     //If we're in test mode for case lights then turn all lights black and return white for the requested case Light
-    if(AnimationStation::TestModeLightIsNonButton && AnimationStation::TestModePinOrNonButtonIndex != -1)
+    if(AnimStation.getTestModeLightIsNonButton() && AnimStation.getTestModePinOrNonButtonIndex() != -1)
     {
       colIndex = 0;
-      if(thisLight->Type == LightType::LightType_Turbo && ((int)thisLight->FirstLedIndex == AnimationStation::TestModePinOrNonButtonIndex))
+      if(thisLight->Type == LightType::LightType_Turbo && ((int)thisLight->FirstLedIndex == AnimStation.getTestModePinOrNonButtonIndex()))
       colIndex = 1;
     }
     else
     {
       //case light or player led
-      colIndex = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonButtonStaticColors[thisLight->NonButtonIndex];
+      colIndex = options.profiles[options.baseProfileIndex].nonButtonStaticColors.bytes[thisLight->NonButtonIndex];
     }
   }
 
@@ -203,8 +207,9 @@ RGB Animation::GetNonPressedColorForLight(uint32_t LightIndex)
 
 RGB Animation::GetPressedColorForLight(uint32_t LightIndex)
 {
+  AnimationOptions & options = Storage::getInstance().getAnimationOptions();
   Light* thisLight = &(RGBLights->AllLights[LightIndex]);
-  int colIndex = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].pressedStaticColors[thisLight->GIPOPin];
+  int colIndex = options.profiles[options.baseProfileIndex].pressedStaticColors.bytes[thisLight->GIPOPin];
   return GetColorForIndex(colIndex);
 }
 

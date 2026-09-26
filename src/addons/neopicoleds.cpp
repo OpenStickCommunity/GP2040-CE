@@ -256,7 +256,7 @@ void NeoPicoLEDAddon::setup() {
         neoPLEDs = new NeoPicoPlayerLEDs();
     }
 
-	decompressSettings();
+	//decompressSettings();
 
 	configureLEDs();
 
@@ -266,6 +266,7 @@ void NeoPicoLEDAddon::setup() {
 
 void NeoPicoLEDAddon::process()
 {
+	AnimationStation & AnimStation = AnimationStation::getInstance();
 	if(bRestartLeds)
 	{
 		bRestartLeds = false;
@@ -276,11 +277,11 @@ void NeoPicoLEDAddon::process()
 		AnimStation.Clear();
 		neopico.Clear();
 		neopico.Show();
-		decompressSettings();
+		//decompressSettings();
 		configureLEDs();
 
 		//Restore saved profile if applicable
-		if(AnimStation.TestMode != AnimationStationTestMode::AnimationStation_TestModeDisableTestMode)
+		if(AnimStation.getTestMode() != AnimationStationTestMode::AnimationStation_TestModeDisableTestMode)
 			AnimStation.SetMode(savedMode);
 	}
 
@@ -372,6 +373,7 @@ void NeoPicoLEDAddon::process()
 
 void NeoPicoLEDAddon::UpdatePlayerLEDs()
 {
+	AnimationStation & AnimStation = AnimationStation::getInstance();
 	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
     Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
 
@@ -387,7 +389,7 @@ void NeoPicoLEDAddon::UpdatePlayerLEDs()
 				if(playerId >= 0 && playerId < 4)
 				{
 					float level = (static_cast<float>(PLED_MAX_LEVEL - neoPLEDs->getLedLevels()[playerId]) / static_cast<float>(PLED_MAX_LEVEL));
-					float brightness = as.GetNormalisedBrightness() * level;
+					float brightness = AnimStation.GetNormalisedBrightness() * level;
 					uint32_t valueToApply;
 
 					if (gamepad->auxState.sensors.statusLight.enabled && gamepad->auxState.sensors.statusLight.active) 
@@ -416,6 +418,7 @@ void NeoPicoLEDAddon::UpdatePlayerLEDs()
 
 void NeoPicoLEDAddon::UpdateTurboLED()
 {
+	AnimationStation & AnimStation = AnimationStation::getInstance();
     Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
 	// Get turbo options (turbo RGB led)
     const TurboOptions& turboOptions = Storage::getInstance().getAddonOptions().turboOptions;
@@ -734,7 +737,9 @@ void NeoPicoLEDAddon::AssignLedPreset(const unsigned char* data, int32_t dataSiz
 
 void NeoPicoLEDAddon::configureLEDs()
 {
+	AnimationStation & AnimStation = AnimationStation::getInstance();
 	LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
+	AnimationOptions& animOptions = Storage::getInstance().getAnimationOptions();
 
 	//New grid based setup
 	if(ledOptions.lightClusterDataInitialised == false)
@@ -784,15 +789,15 @@ void NeoPicoLEDAddon::configureLEDs()
 
 	Animation::format = static_cast<LEDFormat>(ledOptions.ledFormat);
 	AnimStation.SetMaxBrightness(ledOptions.brightnessMaximum);
-	AnimStation.SetBrightnessStepValue(AnimStation.options.brightness);
+	AnimStation.SetBrightnessStepValue(animOptions.brightness);
 	AnimStation.SetLights(RGBLights);
-	AnimStation.SetMode(as.options.baseProfileIndex);
+	AnimStation.SetMode(animOptions.baseProfileIndex);
 }
-
+/*
 void NeoPicoLEDAddon::decompressSettings()
 {
 	AnimStation.DecompressSettings();
-}
+}*/
 
 ////////////////////////////////////////////
 //New RGBLight setups

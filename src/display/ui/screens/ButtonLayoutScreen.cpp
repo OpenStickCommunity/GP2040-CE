@@ -107,6 +107,7 @@ void ButtonLayoutScreen::addCustomHeader(std::string newStr, std::string identif
 void ButtonLayoutScreen::updateCustomHeaders()
 {
 	Storage& storage = Storage::getInstance();
+    AnimationOptions & options = storage.getAnimationOptions();
 
     // Check to see if gamepad profile has changed
     if (prevGamepadProfileNumber != gamePadProfileNumber) {
@@ -124,7 +125,7 @@ void ButtonLayoutScreen::updateCustomHeaders()
     }
 
     // Check to see if LED animation profile has changed
-    int8_t profileNumber = AnimationStation::options.baseProfileIndex;
+    int8_t profileNumber = options.baseProfileIndex;
     if (prevLEDAnimationProfileNumber != profileNumber) {
         prevLEDAnimationProfileNumber = profileNumber;
 
@@ -146,7 +147,9 @@ void ButtonLayoutScreen::updateCustomHeaders()
 
 void ButtonLayoutScreen::checkLEDCycleParams()
 {
-    int8_t baseCycleNumber = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime;
+    AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+
+    int8_t baseCycleNumber = options.profiles[options.baseProfileIndex].baseCycleTime;
     if(prevLEDBaseCycleNumber == -1)
         prevLEDBaseCycleNumber = baseCycleNumber;
     if (prevLEDBaseCycleNumber != baseCycleNumber) {
@@ -160,7 +163,7 @@ void ButtonLayoutScreen::checkLEDCycleParams()
         addCustomHeader(bannerMessage, "ledBaseCycle");
     }
         
-    int8_t baseCaseCycleNumber = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCaseCycleTime;
+    int8_t baseCaseCycleNumber = options.profiles[options.baseProfileIndex].baseCaseCycleTime;
     if(prevLEDBaseCaseCycleNumber == -1)
         prevLEDBaseCaseCycleNumber = baseCaseCycleNumber;
     if (prevLEDBaseCaseCycleNumber != baseCaseCycleNumber) {
@@ -174,7 +177,7 @@ void ButtonLayoutScreen::checkLEDCycleParams()
         addCustomHeader(bannerMessage, "ledBaseCaseCycle");
     }
     
-    int8_t basePressedCycleNumber = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].basePressedCycleTime;
+    int8_t basePressedCycleNumber = options.profiles[options.baseProfileIndex].basePressedCycleTime;
     if(prevLEDBasePressedCycleNumber == -1)
         prevLEDBasePressedCycleNumber = basePressedCycleNumber;
     if (prevLEDBasePressedCycleNumber != basePressedCycleNumber) {

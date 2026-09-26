@@ -1,5 +1,6 @@
 #include "jigglestaticcolor.h"
 #include "staticcolor.h"
+#include "storagemanager.h"
 
 #define JIGGLE_CYCLE_MAX         300
 #define JIGGLE_CYCLE_MIN         50
@@ -85,13 +86,15 @@ RGB JiggleStaticColor::AdvanceColor(int ledIndex, RGB InColor, RGB DestColor)
 
 void JiggleStaticColor::CycleParameterChange() 
 {
+    AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+  
     int16_t cycleStep;
     if(isButtonAnimation)
-      cycleStep = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].basePressedCycleTime;
+      cycleStep = options.profiles[options.baseProfileIndex].basePressedCycleTime;
     else if(ButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_CASE_ONLY)
-      cycleStep = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCaseCycleTime;
+      cycleStep = options.profiles[options.baseProfileIndex].baseCaseCycleTime;
     else
-      cycleStep = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime;
+      cycleStep = options.profiles[options.baseProfileIndex].baseCycleTime;
 
     cycleTime = JIGGLE_CYCLE_MIN + (((JIGGLE_CYCLE_MAX - JIGGLE_CYCLE_MIN) / CYCLE_STEPS) * cycleStep);
 }
