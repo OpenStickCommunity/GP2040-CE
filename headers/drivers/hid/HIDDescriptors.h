@@ -7,6 +7,8 @@
 
 #include <stdint.h>
 
+#include "hostlighting.h"
+
 #define HID_ENDPOINT_SIZE 64
 
 // Mac OS-X and Linux automatically load the correct drivers.  On
@@ -25,6 +27,9 @@
 #define GAMEPAD_INTERFACE	0
 #define GAMEPAD_ENDPOINT	1
 #define GAMEPAD_SIZE		64
+
+#define HOST_LIGHTING_INTERFACE	1
+#define HOST_LIGHTING_ENDPOINT	2
 
 #define LSB(n) (n & 255)
 #define MSB(n) ((n >> 8) & 255)
@@ -173,5 +178,81 @@ static const uint8_t hid_configuration_descriptor[] =
 	GAMEPAD_ENDPOINT | 0x80,			       // bEndpointAddress
 	0x03,						       // bmAttributes (0x03=intr)
 	GAMEPAD_SIZE, 0,				       // wMaxPacketSize
+	1						       // bInterval (1 ms)
+};
+
+// Variant with the host lighting interface appended; selected at runtime by
+// HostLighting::enabledForMode()
+#define CONFIG1_HOST_LIGHTING_DESC_SIZE		(9+9+9+7 + 9+9+7+7)
+static const uint8_t hid_hostlighting_configuration_descriptor[] __attribute__((unused)) =
+{
+	// configuration descriptor, USB spec 9.6.3, page 264-266, Table 9-10
+	9,						       // bLength;
+	2,						       // bDescriptorType;
+	LSB(CONFIG1_HOST_LIGHTING_DESC_SIZE),		       // wTotalLength
+	MSB(CONFIG1_HOST_LIGHTING_DESC_SIZE),
+	2,						       // bNumInterfaces
+	1,						       // bConfigurationValue
+	0,						       // iConfiguration
+	0x80,						       // bmAttributes
+	50,						       // bMaxPower
+	// interface descriptor, USB spec 9.6.5, page 267-269, Table 9-12
+	9,						       // bLength
+	4,						       // bDescriptorType
+	GAMEPAD_INTERFACE,				       // bInterfaceNumber
+	0,						       // bAlternateSetting
+	1,						       // bNumEndpoints
+	0x03,						       // bInterfaceClass (0x03 = HID)
+	0x00,						       // bInterfaceSubClass (0x00 = No Boot)
+	0x00,						       // bInterfaceProtocol (0x00 = No Protocol)
+	0,						       // iInterface
+	// HID interface descriptor, HID 1.11 spec, section 6.2.1
+	9,						       // bLength
+	0x21,						       // bDescriptorType
+	0x11, 0x01,					       // bcdHID
+	0,						       // bCountryCode
+	1,						       // bNumDescriptors
+	0x22,						       // bDescriptorType
+	sizeof(hid_report_descriptor),			       // wDescriptorLength
+	0,
+	// endpoint descriptor, USB spec 9.6.6, page 269-271, Table 9-13
+	7,						       // bLength
+	5,						       // bDescriptorType
+	GAMEPAD_ENDPOINT | 0x80,			       // bEndpointAddress
+	0x03,						       // bmAttributes (0x03=intr)
+	GAMEPAD_SIZE, 0,				       // wMaxPacketSize
+	1,						       // bInterval (1 ms)
+	// host lighting interface descriptor
+	9,						       // bLength
+	4,						       // bDescriptorType
+	HOST_LIGHTING_INTERFACE,				       // bInterfaceNumber
+	0,						       // bAlternateSetting
+	2,						       // bNumEndpoints
+	0x03,						       // bInterfaceClass (0x03 = HID)
+	0x00,						       // bInterfaceSubClass (0x00 = No Boot)
+	0x00,						       // bInterfaceProtocol (0x00 = No Protocol)
+	0,						       // iInterface
+	// HID interface descriptor, HID 1.11 spec, section 6.2.1
+	9,						       // bLength
+	0x21,						       // bDescriptorType
+	0x11, 0x01,					       // bcdHID
+	0,						       // bCountryCode
+	1,						       // bNumDescriptors
+	0x22,						       // bDescriptorType
+	sizeof(hostlighting_report_descriptor),		       // wDescriptorLength
+	0,
+	// endpoint descriptor, USB spec 9.6.6, page 269-271, Table 9-13
+	7,						       // bLength
+	5,						       // bDescriptorType
+	HOST_LIGHTING_ENDPOINT | 0x80,			       // bEndpointAddress
+	0x03,						       // bmAttributes (0x03=intr)
+	HID_ENDPOINT_SIZE, 0,				       // wMaxPacketSize
+	1,						       // bInterval (1 ms)
+	// endpoint descriptor, USB spec 9.6.6, page 269-271, Table 9-13
+	7,						       // bLength
+	5,						       // bDescriptorType
+	HOST_LIGHTING_ENDPOINT,				       // bEndpointAddress
+	0x03,						       // bmAttributes (0x03=intr)
+	HID_ENDPOINT_SIZE, 0,				       // wMaxPacketSize
 	1						       // bInterval (1 ms)
 };

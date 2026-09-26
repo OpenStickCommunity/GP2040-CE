@@ -964,6 +964,12 @@ message HETriggerOptions
     repeated HETriggerMux muxes = 15 [(nanopb).max_count = 4];
 }
 
+message HostLightingOptions
+{
+    optional bool enabled = 1;
+    optional HostLightingXInputMode xinputMode = 2;
+}
+
 message AddonOptions
 {
     optional BootselButtonOptions bootselButtonOptions = 1;
@@ -998,6 +1004,7 @@ message AddonOptions
     optional HETriggerOptions heTriggerOptions = 30;
     optional ProfileSliderOptions profileSliderOptions = 31;
     optional AnalogADS1115Options analogADS1115Options = 32;
+    optional HostLightingOptions hostLightingOptions = 33;
 }
 
 message MigrationHistory
