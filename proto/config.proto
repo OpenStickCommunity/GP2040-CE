@@ -943,12 +943,12 @@ message HETriggerInfo
     // against the idle..pressed span, so they survive recalibration and mean
     // the same thing on every switch regardless of magnet polarity.
     //
-    // These would fit in a uint8, but (nanopb).int_size cannot be used on a
-    // SINGULAR field here: FROM_JSON_UINT32 calls fromJsonUint32(..., uint32_t&
-    // value, ...), and a uint8_t member cannot bind to that reference.
-    // Repeated fields are different -- FROM_JSON_REPEATED_UINT32 assigns each
-    // element instead of binding a reference -- so the per-profile arrays in
-    // HETriggerProfile do use int_size. See the note there.
+    // These would fit in a uint8, but (nanopb).int_size cannot be used anywhere
+    // in this config. The JSON conversion in config_utils.cpp is macro-generated
+    // from the protobuf type: the parse side binds a uint32_t& that a narrowed
+    // member cannot bind to, and the serialize side passes each value to an
+    // overload set of appendAsString(double/float/int32_t/uint32_t) that a
+    // narrowed type does not resolve against on the ARM toolchain.
     optional uint32 actuationPoint         = 10;
     optional uint32 rtPressSensitivity     = 11;
     optional uint32 rtReleaseSensitivity   = 12;
@@ -987,15 +987,17 @@ message HETriggerProfile
     // "not set for this profile, use the base switch value"; a real actuation
     // point or sensitivity is always >= 1, and rapidTrigger stores 1/2 for
     // off/on so that 0 stays free as the not-set sentinel.
-    // int_size = IS_8 is load-bearing, not a micro-optimisation: nanopb worst-
-    // cases a uint32 varint at 5 bytes, so these four arrays would reserve 2304
-    // bytes across the three profiles instead of 768. It is safe here only
-    // because FROM_JSON_REPEATED_UINT32 assigns elements rather than binding a
-    // uint32_t& the way the singular path does.
-    repeated uint32 rapidTrigger = 3 [(nanopb).max_count = 32, (nanopb).int_size = IS_8];
-    repeated uint32 actuationPoint = 4 [(nanopb).max_count = 32, (nanopb).int_size = IS_8];
-    repeated uint32 rtPressSensitivity = 5 [(nanopb).max_count = 32, (nanopb).int_size = IS_8];
-    repeated uint32 rtReleaseSensitivity = 6 [(nanopb).max_count = 32, (nanopb).int_size = IS_8];
+    // Left as full-width uint32 deliberately. These values are 0..100 and nanopb
+    // worst-cases each varint at 5 bytes, so IS_8 would save ~1.1KB of the config
+    // budget -- but the JSON serializer is macro-generated from the protobuf type,
+    // and TO_JSON_REPEATED_UINT32 passes each element to an overload set of
+    // appendAsString(double/float/int32_t/uint32_t). A narrowed element does not
+    // resolve cleanly against that set on the ARM toolchain, so int_size cannot be
+    // used here any more than on a singular field. No field in this proto uses it.
+    repeated uint32 rapidTrigger = 3 [(nanopb).max_count = 32];
+    repeated uint32 actuationPoint = 4 [(nanopb).max_count = 32];
+    repeated uint32 rtPressSensitivity = 5 [(nanopb).max_count = 32];
+    repeated uint32 rtReleaseSensitivity = 6 [(nanopb).max_count = 32];
 }
 
 message HETriggerMux
