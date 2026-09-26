@@ -37,6 +37,7 @@ public:
     bool getAuthSent() { return false;}
     bool getDongleAuthRequired();
 private:
+    void processDongle();
     P5GenerorReport p5GeneralReport;
     P5GenerorReport p5GeneralReport_last;
     TouchpadData touchpadData;

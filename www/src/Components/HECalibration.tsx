@@ -205,10 +205,8 @@ const HECalibration = ({
 			// Set the Hall Effect configuration pins
 			await WebApi.setHETriggerOptions({
 				muxChannels: values['muxChannels'],
-				muxSelectPin0: values['muxSelectPin0'],
-				muxSelectPin1: values['muxSelectPin1'],
-				muxSelectPin2: values['muxSelectPin2'],
-				muxSelectPin3: values['muxSelectPin3'],
+				separateSelectPins: values['separateSelectPins'],
+				muxes: values['muxes'],
 				muxADCPin0: values['muxADCPin0'],
 				muxADCPin1: values['muxADCPin1'],
 				muxADCPin2: values['muxADCPin2'],
