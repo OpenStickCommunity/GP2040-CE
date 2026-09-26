@@ -36,29 +36,8 @@ export default {
 	'analog-manual-calibration-mode-stick-2': '摇杆 2 手动校准模式',
 	'analog-auto-calibration-enabled-stick-1': '摇杆 1 自动校准已启用',
 	'analog-auto-calibration-enabled-stick-2': '摇杆 2 自动校准已启用',
-	'analog-calibration-step-title': '校准步骤 {{step}}/4',
-	'analog-calibration-step-instruction':
-		'请将摇杆 {{stick}} 推至 {{direction}} 位置，然后松开回中',
-	'analog-calibration-step-confirm':
-		'确认摇杆 {{stick}} 已回中，然后点击“确定”记录中心点数值 {{step}}',
-	'analog-calibration-cancelled': '校准已取消',
 	'analog-calibration-failed': '校准失败：{{error}}',
-	'analog-calibration-success-stick-1': '摇杆 1 校准成功！',
-	'analog-calibration-success-stick-2': '摇杆 2 校准成功！',
-	'analog-calibration-data': '校准数据：',
-	'analog-calibration-direction-top-left': '左上',
-	'analog-calibration-direction-top-right': '右上',
-	'analog-calibration-direction-bottom-left': '左下',
-	'analog-calibration-direction-bottom-right': '右下',
-	'analog-calibration-final-center': '最终中心点数值：X={{x}}, Y={{y}}',
 	'analog-calibration-save-notice': '请保存配置以应用校准数值。',
-	'analog-calibration-manual-mode-instruction-1':
-		'点击“开始校准”按钮启动多步校准流程。',
-	'analog-calibration-manual-mode-instruction-2':
-		'根据提示将摇杆推向四个方向及中心位置。',
-	'analog-calibration-manual-mode-instruction-3': '系统将自动计算最佳中心值。',
-	'analog-calibration-manual-mode-instruction-4':
-		'保存配置并重启设备后应用校准。',
 	'analog-calibration-auto-mode-instruction':
 		'系统将在启动时自动读取摇杆 {{stick}} 的中心值。如需手动校准，请先取消勾选“自动校准”。',
 	'analog-smoothing': '模拟量平滑',

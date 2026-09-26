@@ -540,7 +540,8 @@ export enum GPElement {
     GP_ELEMENT_LEVER = 5,
     GP_ELEMENT_LABEL = 6,
     GP_ELEMENT_SPRITE = 7,
-    GP_ELEMENT_SHAPE = 8
+    GP_ELEMENT_SHAPE = 8,
+    GP_ELEMENT_HE_BUTTON = 9
 }
 
 export enum GPShape_Type {

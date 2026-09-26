@@ -205,6 +205,7 @@ class ButtonLayoutScreen : public GPScreen {
         bool showSocdMode = true;
         bool showMacroMode = true;
         bool showProfileMode = false;
+        bool showProfileBanner = false;
         void trim(std::string &s);
 
         uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);

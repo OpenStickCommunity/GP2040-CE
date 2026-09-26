@@ -32,6 +32,20 @@
 #define GPIO_PIN_14 GpioAction::BUTTON_PRESS_A1     // A1     | Guide  | Home    | PS       | 13     | ~      |
 #define GPIO_PIN_15 GpioAction::BUTTON_PRESS_A2     // A2     | ~      | Capture | ~        | 14     | ~      |
 
+#define BOARD_LEDS_PIN 16
+#define LED_BRIGHTNESS_MAXIMUM 50
+
+#define LIGHT_DATA_NAME_DEFAULT "Onboard LED"
+#define LIGHT_DATA_SIZE_DEFAULT 1
+#define LIGHT_DATA_DEFAULT \
+0,  1, 8,  4, 1,  LightType::LightType_ActionButton
+
+// LED Profile 0
+#define LEDS_PROFILE0_ENABLED 1
+#define LEDS_PROFILE0_BASE_ANIMATION_INDEX AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_ROTATE
+#define LEDS_PROFILE0_PRESSED_ANIMATION_INDEX AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_STATIC_COLOR
+#define LEDS_PROFILE0_STATIC_COLOR_PRESSED ColorIndexWhite
+
 // Keyboard Mapping Configuration
 //                                            // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
 #define KEY_DPAD_UP     HID_KEY_ARROW_UP      // UP     | UP     | UP      | UP       | UP     | UP     |

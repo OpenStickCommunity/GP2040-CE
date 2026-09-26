@@ -62,41 +62,34 @@
 #define LED_BRIGHTNESS_MAXIMUM 50
 
 #define BOARD_LEDS_PIN 0
-#define LIGHT_DATA_NAME_DEFAULT "Flatbox Rev5 RGB" 
-#define LIGHT_DATA_SIZE_DEFAULT 12 //number of sets in the below data
 
+#define LIGHT_DATA_NAME_DEFAULT "Standard"
+#define LIGHT_DATA_SIZE_DEFAULT 16
 #define LIGHT_DATA_DEFAULT \
-0,  2, 0,  3, 13, LightType::LightType_ActionButton, \
-2,  2, 2,  3, 12, LightType::LightType_ActionButton, \
-4,  2, 4,  4, 11, LightType::LightType_ActionButton, \
-6,  2, 6,  3, 10, LightType::LightType_ActionButton, \
-8,  2, 8,  2, 9,  LightType::LightType_ActionButton, \
-10, 2, 10, 2, 8,  LightType::LightType_ActionButton, \
-12, 2, 12, 2, 7,  LightType::LightType_ActionButton, \
-14, 2, 12, 4, 6,  LightType::LightType_ActionButton, \
-16, 2, 10, 4, 5,  LightType::LightType_ActionButton, \
-18, 2, 8,  4, 4,  LightType::LightType_ActionButton, \
-20, 2, 6,  5, 3,  LightType::LightType_ActionButton, \
-22, 2, 5,  7, 2,  LightType::LightType_ActionButton, 
+0,  2, 2,  3, 13, LightType::LightType_ActionButton, \
+2,  2, 4,  3, 12, LightType::LightType_ActionButton, \
+4,  2, 6,  4, 11, LightType::LightType_ActionButton, \
+6,  2, 7,  7, 10, LightType::LightType_ActionButton, \
+8,  2, 8,  3, 8,  LightType::LightType_ActionButton, \
+10, 2, 10, 2, 6,  LightType::LightType_ActionButton, \
+12, 2, 12, 2, 4,  LightType::LightType_ActionButton, \
+14, 2, 14, 2, 2,  LightType::LightType_ActionButton, \
+16, 2, 8,  5, 9,  LightType::LightType_ActionButton, \
+18, 2, 10, 4, 7,  LightType::LightType_ActionButton, \
+20, 2, 12, 4, 5,  LightType::LightType_ActionButton, \
+22, 2, 14, 4, 3,  LightType::LightType_ActionButton, \
+24, 1, 10, 0, 31, LightType::LightType_Player1Light, \
+25, 1, 11, 0, 31, LightType::LightType_Player2Light, \
+26, 1, 12, 0, 31, LightType::LightType_Player3Light, \
+27, 1, 13, 0, 31, LightType::LightType_Player4Light
 
-#define LEDS_DPAD_LEFT   0
-#define LEDS_DPAD_DOWN   1
-#define LEDS_DPAD_RIGHT  2
-#define LEDS_DPAD_UP     3
-#define LEDS_BUTTON_B3   4
-#define LEDS_BUTTON_B4   5
-#define LEDS_BUTTON_R1   6
-#define LEDS_BUTTON_L1   7
-#define LEDS_BUTTON_B1   8
-#define LEDS_BUTTON_B2   9
-#define LEDS_BUTTON_R2   10
-#define LEDS_BUTTON_L2   11
+// LED Profile 0
+#define LEDS_PROFILE0_ENABLED 1
+#define LEDS_PROFILE0_BASE_ANIMATION_INDEX AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_ROTATE
+#define LEDS_PROFILE0_PRESSED_ANIMATION_INDEX AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_STATIC_COLOR
+#define LEDS_PROFILE0_STATIC_COLOR_PRESSED ColorIndexWhite
 
 #define PLED_TYPE PLED_TYPE_RGB
-#define PLED1_PIN 24
-#define PLED2_PIN 25
-#define PLED3_PIN 26
-#define PLED4_PIN 27
 #define PLED_COLOR 6 // ColorGreen index from Animation.h
 
 #define HAS_I2C_DISPLAY 0 //This needs to be defined or the LEDs will not work
