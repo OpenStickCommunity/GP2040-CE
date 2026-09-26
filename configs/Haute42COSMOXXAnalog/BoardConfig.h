@@ -6,9 +6,6 @@
 #ifndef PICO_BOARD_CONFIG_H_
 #define PICO_BOARD_CONFIG_H_
 
-#include "enums.pb.h"
-#include "class/hid/hid.h"
-
 #define BOARD_CONFIG_LABEL "Haute42 COSMOX X Series Analog"
 
 // Main pin mapping Configuration
@@ -83,7 +80,7 @@
 #define LED_BRIGHTNESS_STEPS 5
 #define LED_FORMAT LED_FORMAT_GRB
 #define LEDS_PER_PIXEL 1
-#define LEDS_BASE_ANIMATION_INDEX 1
+
 #define LEDS_DPAD_LEFT   0
 #define LEDS_DPAD_DOWN   1
 #define LEDS_DPAD_RIGHT  2
@@ -142,6 +139,7 @@
 }
  
 #define DEFAULT_BOARD_LAYOUT_B_NAME "Haute42|COSMOX X Series Analog"
+
 #define DEFAULT_BOARD_LAYOUT_B {\
      {GP_ELEMENT_PIN_BUTTON, {69, 17, 4, 4, 1, 1, 15,  GP_SHAPE_ELLIPSE}},\
      {GP_ELEMENT_PIN_BUTTON, {64, 27, 4, 4, 1, 1, 10,  GP_SHAPE_ELLIPSE}},\
@@ -312,6 +310,7 @@
 }
  
 #define DEFAULT_BOARD_LAYOUT_B_ALT5_NAME "Haute42|COSMOX X Series Standard - Bottom"
+
 #define DEFAULT_BOARD_LAYOUT_B_ALT5 {\
      {GP_ELEMENT_PIN_BUTTON, {69, 17, 4, 4, 1, 1, 15,  GP_SHAPE_ELLIPSE}},\
      {GP_ELEMENT_PIN_BUTTON, {64, 27, 4, 4, 1, 1, 10,  GP_SHAPE_ELLIPSE}},\

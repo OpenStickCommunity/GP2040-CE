@@ -7,6 +7,8 @@ import Section from '../Components/Section';
 import FormControl from '../Components/FormControl';
 import { AddonPropTypes } from '../Pages/AddonsConfigPage';
 
+import useBoardDefinition from '../Store/useBoardDefinitionStore';
+
 export const drv8833RumbleScheme = {
 	DRV8833RumbleAddonEnabled: yup
 		.number()
@@ -52,18 +54,25 @@ export const drv8833RumbleState = {
 	drv8833RumbleDutyMax: 100,
 };
 
-const DRV8833Rumble = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) => {
+const DRV8833Rumble = ({
+	values,
+	errors,
+	handleChange,
+	handleCheckbox,
+}: AddonPropTypes) => {
 	const { t } = useTranslation();
+	const { boardDefinition } = useBoardDefinition();
 	return (
-		<Section title={
-			<a
-				href="https://gp2040-ce.info/add-ons/drv8833-rumble"
-				target="_blank"
-				className="text-reset text-decoration-none"
-			>
-				{t('AddonsConfig:drv8833-rumble-header-text')}
-			</a>
-		}
+		<Section
+			title={
+				<a
+					href="https://gp2040-ce.info/add-ons/drv8833-rumble"
+					target="_blank"
+					className="text-reset text-decoration-none"
+				>
+					{t('AddonsConfig:drv8833-rumble-header-text')}
+				</a>
+			}
 		>
 			<div
 				id="DRV8833RumbleAddonOptions"
@@ -81,7 +90,7 @@ const DRV8833Rumble = ({ values, errors, handleChange, handleCheckbox }: AddonPr
 						isInvalid={Boolean(errors.drv8833RumbleLeftMotorPin)}
 						onChange={handleChange}
 						min={-1}
-						max={29}
+						max={boardDefinition.maxPin}
 					/>
 					<FormControl
 						type="number"
@@ -94,7 +103,7 @@ const DRV8833Rumble = ({ values, errors, handleChange, handleCheckbox }: AddonPr
 						isInvalid={Boolean(errors.drv8833RumbleRightMotorPin)}
 						onChange={handleChange}
 						min={-1}
-						max={29}
+						max={boardDefinition.maxPin}
 					/>
 					<FormControl
 						type="number"
@@ -107,7 +116,7 @@ const DRV8833Rumble = ({ values, errors, handleChange, handleCheckbox }: AddonPr
 						isInvalid={Boolean(errors.drv8833RumbleMotorSleepPin)}
 						onChange={handleChange}
 						min={-1}
-						max={29}
+						max={boardDefinition.maxPin}
 					/>
 					<FormControl
 						type="number"

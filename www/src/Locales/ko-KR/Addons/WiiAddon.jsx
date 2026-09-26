@@ -2,14 +2,8 @@ export default {
 	'header-text': 'Wii 확장포트',
 	'sub-header-text':
 		'<0>참고: 디스플레이가 활성화 되어있으면 현재 애드온은 비활성화됩니다.</0>',
-	'sda-pin-label': 'I2C SDA 핀',
-	'scl-pin-label': 'I2C SCL 핀',
-	'block-label': 'I2C 블록',
-	'speed-label': 'I2C 속도',
 	'section-digital': '디지털',
 	'section-analog': '아날로그',
-	'option-simple': '간단',
-	'option-advanced': '고급',
 	'controller-nunchuk': '넌척',
 	'controller-classic': '클래식',
 	'controller-taiko': '태고',
@@ -65,13 +59,5 @@ export default {
 	'controller-analog-axis-x': 'X +/- 축',
 	'controller-analog-axis-y': 'Y +/- 축',
 	'controller-analog-axis-trigger': '트리거',
-	'analog-axis-mode-trigger':
-		'<0>전체 영역의 값이 인터페이스로 전달됩니다.</0>',
-	'analog-axis-mode-button':
-		'<0>디지털 스위치로 동작, 지정된 임계값을 넘어서면 "눌린"상태로 설정됩니다.</0>',
-	'analog-axis-mode-normal-direction':
-		'<0>전체 영역의 값이 조이스틱의 축으로 변환됩니다. 여기서 가장 낮은 값은 - 의 끝단으로 간주되고 최대값은 + 의 끝단으로 간주됩니다.</0>',
-	'analog-axis-mode-invert-direction':
-		'<0>전체 영역의 값이 조이스틱의 축으로 변환됩니다. 여기서 가장 낮은 값은 + 의 끝단으로 간주되고 최대값은 - 의 끝단으로 간주됩니다.</0>',
 	'button-save': '컨트롤러 저장',
 };

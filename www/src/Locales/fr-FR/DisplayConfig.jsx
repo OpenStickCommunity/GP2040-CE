@@ -1,17 +1,17 @@
 export default {
-	'header-text': 'Configuration de l\'affichage',
+	'header-text': "Configuration de l'affichage",
 	'sub-header-text':
-		'Un écran monochrome peut être utilisé pour afficher l\'état du contrôleur et l\'activité des boutons. Assurez-vous que votre module d\'affichage possède les attributs suivants :',
+		"Un écran monochrome peut être utilisé pour afficher l'état du contrôleur et l'activité des boutons. Assurez-vous que votre module d'affichage possède les attributs suivants :",
 	'list-text':
-		'<1>Écran monochrome avec une résolution de 128x64</1> <1>Utilise I2C avec un SSD1306, SH1106, SH1107 ou autre circuit intégré d\'affichage compatible</1> <1>Supporte le fonctionnement en 3.3v</1>',
+		"<1>Écran monochrome avec une résolution de 128x64</1> <1>Utilise I2C avec un SSD1306, SH1106, SH1107 ou autre circuit intégré d'affichage compatible</1> <1>Supporte le fonctionnement en 3.3v</1>",
 	section: {
 		'hardware-header': 'Options matérielles',
-		'screen-header': 'Options d\'écran',
+		'screen-header': "Options d'écran",
 		'layout-header': 'Options de disposition',
 		'mode-header': 'Options de mode',
 		'button-layout-header': 'Disposition des boutons',
-		'status-layout-header': 'Disposition de la barre d\'état',
-		'history-layout-header': 'Disposition de l\'historique des entrées',
+		'status-layout-header': "Disposition de la barre d'état",
+		'history-layout-header': "Disposition de l'historique des entrées",
 	},
 	table: {
 		header:
@@ -25,24 +25,26 @@ export default {
 		'scl-pin-label': 'Broche SCL',
 		'i2c-address-label': 'Adresse I2C',
 		'i2c-speed-label': 'Vitesse I2C',
-		'flip-display-label': 'Retourner l\'affichage',
-		'invert-display-label': 'Inverser l\'affichage',
+		'flip-display-label': "Retourner l'affichage",
+		'invert-display-label': "Inverser l'affichage",
 		'button-layout-label': 'Disposition des boutons (Gauche)',
 		'button-layout-right-label': 'Disposition des boutons (Droite)',
 		'button-layout-orientation': 'Orientation de la disposition des boutons',
-		'button-layout-custom-header': 'Paramètres personnalisés de la disposition des boutons',
+		'button-layout-custom-header':
+			'Paramètres personnalisés de la disposition des boutons',
 		'button-layout-custom-left-label': 'Disposition gauche',
 		'button-layout-custom-right-label': 'Disposition droite',
 		'button-layout-custom-start-x-label': 'Début X',
 		'button-layout-custom-start-y-label': 'Début Y',
 		'button-layout-custom-button-radius-label': 'Rayon des boutons',
 		'button-layout-custom-button-padding-label': 'Espacement des boutons',
-		'splash-mode-label': 'Mode de l\'écran d\'accueil',
-		'splash-duration-label': 'Durée de l\'écran d\'accueil (en secondes, 0 pour toujours activé)',
-		'display-saver-timeout-label': 'Délai d\'extinction de l\'écran (en minutes)',
-		'screen-saver-mode-label': 'Mode de l\'économiseur d\'écran',
+		'splash-mode-label': "Mode de l'écran d'accueil",
+		'splash-duration-label':
+			"Durée de l'écran d'accueil (en secondes, 0 pour toujours activé)",
+		'display-saver-timeout-label': "Délai d'extinction de l'écran (en minutes)",
+		'screen-saver-mode-label': "Mode de l'économiseur d'écran",
 		'inverted-label': 'Inversé',
-		'power-management-header': 'Gestion de l\'alimentation',
+		'power-management-header': "Gestion de l'alimentation",
 		'turn-off-when-suspended': 'Éteindre lors de la mise en veille',
 		'input-history-label': 'Historique des entrées',
 		'display-state': {
@@ -56,7 +58,7 @@ export default {
 			'flip-mirror': 'Retourner et Miroir',
 		},
 		'splash-modes': {
-			enabled: 'Activé (Écran d\'accueil personnalisé)',
+			enabled: "Activé (Écran d'accueil personnalisé)",
 			'close-in': 'Zoom sur le logo',
 			'close-in-custom': 'Zoom sur le logo personnalisé',
 			disabled: 'Désactivé',
@@ -74,7 +76,7 @@ export default {
 			switched: 'Inversé',
 		},
 		'status-header': {
-			'input-mode': 'Mode d\'entrée',
+			'input-mode': "Mode d'entrée",
 			'turbo-mode': 'Turbo',
 			'dpad-mode': 'Mode D-Pad',
 			'socd-mode': 'Mode SOCD',

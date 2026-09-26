@@ -19,6 +19,8 @@ import { getButtonLabels } from '../Data/Buttons';
 import './ReactiveLED.scss';
 import { AddonPropTypes } from '../Pages/AddonsConfigPage';
 
+import useBoardDefinition from '../Store/useBoardDefinitionStore';
+
 const NON_SELECTABLE_BUTTON_ACTIONS = [
 	-5, 0, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36,
 	37, 38, 39, 40,
@@ -52,11 +54,16 @@ const getOption = (o, actionId) => {
 	};
 };
 
-const ReactiveLED = ({ values, handleChange, handleCheckbox }: AddonPropTypes) => {
+const ReactiveLED = ({
+	values,
+	handleChange,
+	handleCheckbox,
+}: AddonPropTypes) => {
 	const { t } = useTranslation();
 	const [reactiveLEDs, setSelectedLEDs] = useState<any[]>([]);
 	const [selectedLEDs] = useState([]);
 	const { setLoading, buttonLabels } = useContext(AppContext);
+	const { boardDefinition } = useBoardDefinition();
 
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
 	const CURRENT_BUTTONS = getButtonLabels(buttonLabelType, swapTpShareLabels);
@@ -87,15 +94,16 @@ const ReactiveLED = ({ values, handleChange, handleCheckbox }: AddonPropTypes) =
 	};
 
 	return (
-		<Section title={
-			<a
-				href="https://gp2040-ce.info/add-ons/reactive-led"
-				target="_blank"
-				className="text-reset text-decoration-none"
-			>
-				{t('ReactiveLED:header-text')}
-			</a>
-		}
+		<Section
+			title={
+				<a
+					href="https://gp2040-ce.info/add-ons/reactive-led"
+					target="_blank"
+					className="text-reset text-decoration-none"
+				>
+					{t('ReactiveLED:header-text')}
+				</a>
+			}
 		>
 			<div
 				id="ReactiveLEDEnabledOptions"
@@ -115,11 +123,16 @@ const ReactiveLED = ({ values, handleChange, handleCheckbox }: AddonPropTypes) =
 									value={reactiveLEDs[i].pin}
 									onChange={(e) =>
 										setSelectedLEDs((c) =>
-											handleLEDChange(c, i, 'pin', Number((e.target as HTMLInputElement).value)),
+											handleLEDChange(
+												c,
+												i,
+												'pin',
+												Number((e.target as HTMLInputElement).value),
+											),
 										)
 									}
 									min={-1}
-									max={29}
+									max={boardDefinition.maxPin}
 								/>
 								<FormSelect
 									label={t('ReactiveLED:led-action-label')}
@@ -129,7 +142,12 @@ const ReactiveLED = ({ values, handleChange, handleCheckbox }: AddonPropTypes) =
 									value={reactiveLEDs[i].action}
 									onChange={(e) =>
 										setSelectedLEDs((c) =>
-											handleLEDChange(c, i, 'action', Number((e.target as HTMLSelectElement).value)),
+											handleLEDChange(
+												c,
+												i,
+												'action',
+												Number((e.target as HTMLSelectElement).value),
+											),
 										)
 									}
 								>
@@ -154,7 +172,12 @@ const ReactiveLED = ({ values, handleChange, handleCheckbox }: AddonPropTypes) =
 									value={reactiveLEDs[i].modeUp}
 									onChange={(e) =>
 										setSelectedLEDs((c) =>
-											handleLEDChange(c, i, 'modeUp', Number((e.target as HTMLSelectElement).value)),
+											handleLEDChange(
+												c,
+												i,
+												'modeUp',
+												Number((e.target as HTMLSelectElement).value),
+											),
 										)
 									}
 								>
@@ -172,7 +195,12 @@ const ReactiveLED = ({ values, handleChange, handleCheckbox }: AddonPropTypes) =
 									value={reactiveLEDs[i].modeDown}
 									onChange={(e) =>
 										setSelectedLEDs((c) =>
-											handleLEDChange(c, i, 'modeDown', Number((e.target as HTMLSelectElement).value)),
+											handleLEDChange(
+												c,
+												i,
+												'modeDown',
+												Number((e.target as HTMLSelectElement).value),
+											),
 										)
 									}
 								>

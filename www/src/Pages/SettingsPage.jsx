@@ -22,7 +22,10 @@ import { InputModeDeviceType, PS4ControllerType } from '@proto/enums';
 
 import './SettingsPage.scss';
 import { INPUT_MODE_OPTIONS as INPUT_MODES } from '../Data/InputBootModes';
-import { useBootModeStore, useBootModeStoreActions } from '../Store/useBootModesStore';
+import {
+	useBootModeStore,
+	useBootModeStoreActions,
+} from '../Store/useBootModesStore';
 
 const SHA256 = (ascii) => {
 	function rightRotate(value, amount) {
@@ -103,7 +106,7 @@ const SHA256 = (ascii) => {
 								(rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3)) + // s0
 								w[i - 7] +
 								(rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10))) | // s1
-						  0);
+							0);
 			// This is only used once, so *could* be moved below, but it only saves 4 bytes and makes things unreadble
 			const temp2 =
 				(rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22)) + // S0
@@ -162,7 +165,11 @@ const INPUT_BOOT_MODES = [
 		value: 1,
 		group: 'primary',
 	},
-	{ labelKey: 'input-mode-options.nintendo-switch-pro', value: 15, group: 'primary' },
+	{
+		labelKey: 'input-mode-options.nintendo-switch-pro',
+		value: 15,
+		group: 'primary',
+	},
 	{ labelKey: 'input-mode-options.keyboard', value: 3, group: 'primary' },
 	{ labelKey: 'input-mode-options.generic', value: 14, group: 'primary' },
 	{ labelKey: 'input-mode-options.mdmini', value: 6, group: 'mini' },
@@ -357,7 +364,11 @@ const schema = yup.object().shape({
 	inputDeviceType: yup
 		.number()
 		.required()
-		.oneOf(Object.keys(InputModeDeviceType).filter(key => isNaN(Number(key))).map((o) => InputModeDeviceType[o]))
+		.oneOf(
+			Object.keys(InputModeDeviceType)
+				.filter((key) => isNaN(Number(key)))
+				.map((o) => InputModeDeviceType[o]),
+		)
 		.label('Input Mode Device Type'),
 	socdMode: yup
 		.number()
@@ -480,7 +491,8 @@ const FormContext = ({ setButtonLabels, setKeyMappings }) => {
 			values.xinputAuthType = parseInt(values.xinputAuthType);
 		if (!!values.ps4ControllerIDMode)
 			values.ps4ControllerIDMode = parseInt(values.ps4ControllerIDMode);
-		if (!!values.inputDeviceType) values.inputDeviceType = parseInt(values.inputDeviceType);
+		if (!!values.inputDeviceType)
+			values.inputDeviceType = parseInt(values.inputDeviceType);
 
 		setButtonLabels({
 			swapTpShareLabels:
@@ -678,23 +690,38 @@ export default function SettingsPage() {
 		setKeyMappings(newMappings);
 	};
 
-	const generateDeviceTypeSelection = (values, errors, setFieldValue, handleChange) => {
+	const generateDeviceTypeSelection = (
+		values,
+		errors,
+		setFieldValue,
+		handleChange,
+	) => {
 		let mode = INPUT_MODES.find((i) => i.value == values.inputMode);
-		let options = Object.keys(InputModeDeviceType).filter(key => isNaN(Number(key))).map((o) => ({
-			key: o,
-			value: Number(InputModeDeviceType[o]),
-		}));
+		let options = Object.keys(InputModeDeviceType)
+			.filter((key) => isNaN(Number(key)))
+			.map((o) => ({
+				key: o,
+				value: Number(InputModeDeviceType[o]),
+			}));
 
 		if (mode) {
-			options = options.filter((o) => mode.deviceTypes?.indexOf(o.value) !== -1).sort((a,b) => mode.deviceTypes?.findIndex(o => o === a.value) - mode.deviceTypes?.findIndex(o => o === b.value))
+			options = options
+				.filter((o) => mode.deviceTypes?.indexOf(o.value) !== -1)
+				.sort(
+					(a, b) =>
+						mode.deviceTypes?.findIndex((o) => o === a.value) -
+						mode.deviceTypes?.findIndex((o) => o === b.value),
+				);
 		} else {
-			options = []
+			options = [];
 		}
 
-		return (mode && mode.deviceTypes?.length > 1 ?
+		return mode && mode.deviceTypes?.length > 1 ? (
 			<Row className="mb-3">
 				<Col sm={4}>
-					<Form.Label>{t('SettingsPage:input-mode-device-type-label')}</Form.Label>
+					<Form.Label>
+						{t('SettingsPage:input-mode-device-type-label')}
+					</Form.Label>
 					<Form.Select
 						name="inputDeviceType"
 						className="form-select-sm"
@@ -713,7 +740,9 @@ export default function SettingsPage() {
 					</Form.Select>
 				</Col>
 			</Row>
-		: '');
+		) : (
+			''
+		);
 	};
 
 	const generateAuthSelection = (
@@ -1052,9 +1081,11 @@ export default function SettingsPage() {
 							checked={Boolean(values.usbDescOverride)}
 							onChange={(e) => {
 								setFieldValue('usbDescOverride', e.target.checked ? 1 : 0);
-								setFieldValue('usbOverrideID', e.target.checked ? values.usbOverrideID : 0);
-								}
-							}
+								setFieldValue(
+									'usbOverrideID',
+									e.target.checked ? values.usbOverrideID : 0,
+								);
+							}}
 						/>
 					</Col>
 				</Row>
@@ -1224,7 +1255,12 @@ export default function SettingsPage() {
 		);
 	};
 
-	const p5generalModeSpecifics = (values, errors, setFieldValue, handleChange) => {
+	const p5generalModeSpecifics = (
+		values,
+		errors,
+		setFieldValue,
+		handleChange,
+	) => {
 		return (
 			<div className="row mb-3">
 				<Row className="mb-3">
@@ -1290,7 +1326,7 @@ export default function SettingsPage() {
 					values,
 					errors,
 					setFieldValue,
-					handleChange
+					handleChange,
 				);
 			case 'input-mode-options.generic':
 				return genericHidModeSpecifics(
@@ -1709,8 +1745,10 @@ export default function SettingsPage() {
 													{gpioBootModeMappingEnabled ? (
 														<p>
 															To use the new GPIO-based mapping, go to the{' '}
-															<NavLink to="/boot-mode-mapping">Boot Mode Configuration</NavLink>
-															{' '}page.
+															<NavLink to="/boot-mode-mapping">
+																Boot Mode Configuration
+															</NavLink>{' '}
+															page.
 														</p>
 													) : (
 														<div>
@@ -1731,33 +1769,39 @@ export default function SettingsPage() {
 																				className="form-select-sm"
 																				value={values[`inputMode${mode.value}`]}
 																				onChange={handleChange}
-																				isInvalid={errors[`inputMode${mode.value}`]}
+																				isInvalid={
+																					errors[`inputMode${mode.value}`]
+																				}
 																			>
-																				{translatedInputModeGroups.map((o, i) => (
-																					<optgroup
-																						label={o.label}
-																						key={`optgroup-${o.label}-${i}`}
-																					>
-																						{translatedInputBootModes
-																							.filter(
-																								({ group }) => group == o.group,
-																							)
-																							.map((o, i) => (
-																								<option
-																									key={`button-inputMode-${mode.value
-																										.toString()
-																										.toLowerCase()}-option-${i}`}
-																									value={o.value}
-																									disabled={o.disabled}
-																								>
-																									{o.label}
-																									{o.disabled && o.reason != ''
-																										? ' (' + o.reason + ')'
-																										: ''}
-																								</option>
-																							))}
-																					</optgroup>
-																				))}
+																				{translatedInputModeGroups.map(
+																					(o, i) => (
+																						<optgroup
+																							label={o.label}
+																							key={`optgroup-${o.label}-${i}`}
+																						>
+																							{translatedInputBootModes
+																								.filter(
+																									({ group }) =>
+																										group == o.group,
+																								)
+																								.map((o, i) => (
+																									<option
+																										key={`button-inputMode-${mode.value
+																											.toString()
+																											.toLowerCase()}-option-${i}`}
+																										value={o.value}
+																										disabled={o.disabled}
+																									>
+																										{o.label}
+																										{o.disabled &&
+																										o.reason != ''
+																											? ' (' + o.reason + ')'
+																											: ''}
+																									</option>
+																								))}
+																						</optgroup>
+																					),
+																				)}
 																			</Form.Select>
 																			<Form.Control.Feedback type="invalid">
 																				{errors[`inputMode${mode.value}`]}

@@ -39,7 +39,8 @@ export default {
 		'button-layout-custom-button-padding-label': 'Düğme Dolgusu',
 		'splash-mode-label': 'Sıçrama Modu',
 		'splash-duration-label': 'Sıçrama Süresi (saniye, Her Zaman Açık için 0)',
-		'display-saver-timeout-label': 'Ekran Tasarrufu Zaman Aşımı (dakika, Kapalı için 0)',
+		'display-saver-timeout-label':
+			'Ekran Tasarrufu Zaman Aşımı (dakika, Kapalı için 0)',
 		'screen-saver-mode-label': 'Ekran Tasarruf Modu',
 		'inverted-label': 'Ters çevrilmiş',
 		'power-management-header': 'Güç Yönetimi',

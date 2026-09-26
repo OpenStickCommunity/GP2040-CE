@@ -38,8 +38,10 @@ export default {
 		'button-layout-custom-button-radius-label': 'Radio de Botón',
 		'button-layout-custom-button-padding-label': 'Espaciado de Botón',
 		'splash-mode-label': 'Modo de Pantalla de Inicio',
-		'splash-duration-label': 'Duración de Pantalla de Inicio (segundos, 0 para Siempre)',
-		'display-saver-timeout-label': 'Tiempo para Protector de Pantalla (minutos, 0 para Desactivar)',
+		'splash-duration-label':
+			'Duración de Pantalla de Inicio (segundos, 0 para Siempre)',
+		'display-saver-timeout-label':
+			'Tiempo para Protector de Pantalla (minutos, 0 para Desactivar)',
 		'screen-saver-mode-label': 'Modo Protector de Pantalla',
 		'inverted-label': 'Invertido',
 		'power-management-header': 'Administración de Energía',

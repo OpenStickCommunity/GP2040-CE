@@ -28,6 +28,49 @@
 #define HETRIGGER_S3_PIN -1
 #endif
 
+#ifndef HETRIGGER_SEPARATE_SELECT_PINS
+#define HETRIGGER_SEPARATE_SELECT_PINS 0
+#endif
+
+#ifndef HETRIGGER_MUX1_S0_PIN
+#define HETRIGGER_MUX1_S0_PIN -1
+#endif
+#ifndef HETRIGGER_MUX1_S1_PIN
+#define HETRIGGER_MUX1_S1_PIN -1
+#endif
+#ifndef HETRIGGER_MUX1_S2_PIN
+#define HETRIGGER_MUX1_S2_PIN -1
+#endif
+#ifndef HETRIGGER_MUX1_S3_PIN
+#define HETRIGGER_MUX1_S3_PIN -1
+#endif
+
+#ifndef HETRIGGER_MUX2_S0_PIN
+#define HETRIGGER_MUX2_S0_PIN -1
+#endif
+#ifndef HETRIGGER_MUX2_S1_PIN
+#define HETRIGGER_MUX2_S1_PIN -1
+#endif
+#ifndef HETRIGGER_MUX2_S2_PIN
+#define HETRIGGER_MUX2_S2_PIN -1
+#endif
+#ifndef HETRIGGER_MUX2_S3_PIN
+#define HETRIGGER_MUX2_S3_PIN -1
+#endif
+
+#ifndef HETRIGGER_MUX3_S0_PIN
+#define HETRIGGER_MUX3_S0_PIN -1
+#endif
+#ifndef HETRIGGER_MUX3_S1_PIN
+#define HETRIGGER_MUX3_S1_PIN -1
+#endif
+#ifndef HETRIGGER_MUX3_S2_PIN
+#define HETRIGGER_MUX3_S2_PIN -1
+#endif
+#ifndef HETRIGGER_MUX3_S3_PIN
+#define HETRIGGER_MUX3_S3_PIN -1
+#endif
+
 #ifndef HETRIGGER_ADC0
 #define HETRIGGER_ADC0 -1
 #endif
@@ -1035,7 +1078,7 @@ public:
     const HECalChannel& getCalibrationChannel(uint8_t he) { return calData[he]; }
     bool isChannelAssigned(uint8_t he);
 private:
-    void selectChannel(uint8_t channel);
+    void selectChannel(uint8_t mux, uint8_t channel);
     uint16_t emaSmoothing(uint16_t value, uint16_t previous);
 
     // Rebuilds the cached travel geometry from config. Must be called whenever
@@ -1063,7 +1106,12 @@ private:
     int muxTotal = 0;
     int selectPins = 0;
     Pin_t muxPinArray[4] = { -1, -1, -1, -1 };
-    Pin_t selectPinArray[4] = { -1, -1, -1, -1 };
+    // Select pins indexed by [mux][selectBit]. Upstream made these per-mux so a
+    // board whose muxes do not share a select bus can still address every channel.
+    Pin_t selectPinArray[4][4] = {
+        { -1, -1, -1, -1 }, { -1, -1, -1, -1 },
+        { -1, -1, -1, -1 }, { -1, -1, -1, -1 },
+    };
     Pin_t lastADCSelected = -1;
 
     // Per-trigger runtime state. These are initialized unconditionally: the

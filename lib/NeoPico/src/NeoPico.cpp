@@ -37,7 +37,7 @@ void NeoPico::PutPixel(uint32_t pixelData) {
 void NeoPico::Setup(int ledPin, int inNumPixels, LEDFormat inFormat, PIO inPio, int inState){
   format = inFormat;
   pio = inPio;
-  numPixels = inNumPixels;
+  numPixels = inNumPixels <= FRAME_MAX ? inNumPixels : FRAME_MAX;
   stateMachine = inState;
   uint offset = pio_add_program(pio, &ws2812_program);
   bool rgbw = (format == LED_FORMAT_GRBW) || (format == LED_FORMAT_RGBW);

@@ -1,16 +1,16 @@
 export default {
 	'input-macro-editor-tab': 'Editor',
 	'input-macro-advanced-tab': 'Avanzado',
-	'input-macro-board-led-enabled': 'Usar LED de la Placa para Mostrar Estado de Macro',
+	'input-macro-board-led-enabled':
+		'Usar LED de la Placa para Mostrar Estado de Macro',
 	'input-macro-macro-enabled': 'Habilitado',
 	'input-macro-macro-enabled-badge': 'Habilitado',
 	'input-macro-macro-disabled-badge': 'Deshabilitado',
-	'input-macro-macro-exclusive': 
-		'Exclusivo (No Se Puede Cambiar a Otro Macro)',
-	'input-macro-macro-interruptible': 
+	'input-macro-macro-exclusive': 'Exclusivo (No Se Puede Cambiar a Otro Macro)',
+	'input-macro-macro-interruptible':
 		'Interrumpible (La Entrada del Usuario Cancela el Macro)',
 	'input-macro-macro-show-frames': 'Mostrar Frames (1 Frame = 16.666 ms)',
-	'input-macro-macro-uses-buttons': 
+	'input-macro-macro-uses-buttons':
 		'Usar Botón de Macro + Botón de Control para Activar',
 	'input-macro-macro-button-pin-plus': 'Asignación de Botón:',
 	'input-macro-header-text': 'Resumen de Macros',
@@ -20,7 +20,7 @@ export default {
 	'input-macro-time-label-ms': 'ms',
 	'input-macro-time-label-frames': 'frame(s)',
 	'input-macro-release-and-wait-label': 'soltar y esperar ',
-	'input-macro-sub-header': 
+	'input-macro-sub-header':
 		'Nota: Para los macros mapeados a pines, consulte la página de Mapeo de Pines en Configuración. Los macros también pueden asignarse a un botón del control manteniendo presionado el botón de Macro correspondiente.',
 	'input-macro-macro-label-label': 'Etiqueta',
 	'input-macro-add-input-label': 'Añadir Entrada +',

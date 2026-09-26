@@ -40,18 +40,24 @@ export const dualDirectionState = {
 	dualDirFourWayMode: 0,
 };
 
-const DualDirection = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) => {
+const DualDirection = ({
+	values,
+	errors,
+	handleChange,
+	handleCheckbox,
+}: AddonPropTypes) => {
 	const { t } = useTranslation();
 	return (
-		<Section title={
-			<a
-				href="https://gp2040-ce.info/add-ons/dual-direction-input"
-				target="_blank"
-				className="text-reset text-decoration-none"
-			>
-				{t('AddonsConfig:dual-directional-input-header-text')}
-			</a>
-		}
+		<Section
+			title={
+				<a
+					href="https://gp2040-ce.info/add-ons/dual-direction-input"
+					target="_blank"
+					className="text-reset text-decoration-none"
+				>
+					{t('AddonsConfig:dual-directional-input-header-text')}
+				</a>
+			}
 		>
 			<div
 				id="DualDirectionalInputOptions"
@@ -60,14 +66,14 @@ const DualDirection = ({ values, errors, handleChange, handleCheckbox }: AddonPr
 				<div className="alert alert-info" role="alert">
 					<Trans
 						ns="AddonsConfig"
-						i18nKey='AddonsConfig:pin-config-moved-to-core-text'
+						i18nKey="AddonsConfig:pin-config-moved-to-core-text"
 						components={[
 							<a
 								key="0"
 								href="../pin-mapping"
 								className="alert-link"
 								target="_blank"
-							/>
+							/>,
 						]}
 					/>
 				</div>

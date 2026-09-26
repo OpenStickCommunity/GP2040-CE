@@ -1,7 +1,7 @@
 export default {
 	'sub-header-text': `Utilisez le visualiseur de broches GPIO pour voir la correspondance entre les boutons et les broches GPIO.`,
 	'alert-text':
-		"La configuration de boutons sur des broches non connectées ou non disponibles peut rendre le périphérique non fonctionnel. Pour réinitialiser une configuration invalide, allez sur la page <2>Réinitialiser les paramètres</2>.",
+		'La configuration de boutons sur des broches non connectées ou non disponibles peut rendre le périphérique non fonctionnel. Pour réinitialiser une configuration invalide, allez sur la page <2>Réinitialiser les paramètres</2>.',
 	'pin-viewer': 'Visualiseur de broches GPIO',
 	'pin-pressed': 'Broche GPIO activée : {{pressedPin}}',
 	'profile-label-title': 'Nom du profil',

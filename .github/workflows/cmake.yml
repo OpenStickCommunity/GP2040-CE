@@ -31,7 +31,7 @@ on:
           - FlatboxRev8
           - Granola
           - GranolaBeacon
-          - KB2040
+          - AdafruitKB2040
           - KeyboardConverter
           - Haute42COSMOX
           - Haute42COSMOXCAS
@@ -48,8 +48,8 @@ on:
           - OpenCore0MIXUP
           - OpenCore0WASD
           - OSUMGP-RP2040
-          - PicoAnn
           - PicoFightingBoard
+          - PimoroniPicoPlus2
           - PXPGamepad
           - ReflexCtrlGenesis6
           - ReflexCtrlNES
@@ -66,7 +66,7 @@ on:
           - SparkFunProMicro
           - SparkFunProMicroRP2350
           - WaveshareZero
-          - Stress
+          - WaveshareRP2350BPlusW
           - SGFDevices
           - ZeroRhythm
 
@@ -76,15 +76,25 @@ env:
 jobs:
   call-node-workflow:
     uses: ./.github/workflows/node.js.yml
+  build-config-list:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v6.0.1
+      - id: set-matrix
+        run: |
+          CONFIG_DIRS=$(ls -d ./configs/*/ | cut -f3 -d'/' | jq -R -s -c 'split("\n")[:-1]')
+          echo "matrix=$CONFIG_DIRS" >> $GITHUB_OUTPUT
   build:
-    needs: call-node-workflow
+    needs: [call-node-workflow, build-config-list]
     # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
     # You can convert this to a matrix build if you need cross-platform coverage.
     # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        GP2040_BOARDCONFIG: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.board_config != '' && fromJSON(format('["{0}"]', github.event.inputs.board_config)) || fromJSON('["ARCController", "ASiLVLABC", "ASiLVLWASD", "Blank", "Pico", "PicoW", "Pico2", "BentoBox", "FlatboxRev4", "FlatboxRev5", "FlatboxRev5RGB", "FlatboxRev5USBPassthrough", "FlatboxRev5Southpaw", "FlatboxRev8", "Granola", "GranolaBeacon", "KB2040", "KeyboardConverter", "Haute42COSMOX", "Haute42COSMOXCAS", "Haute42COSMOXCAT", "Haute42COSMOXMLite", "Haute42COSMOXMUltra", "Haute42COSMOXXAnalog", "Liatris", "MavercadeRev1", "MavercadeRev2", "MavercadeRev3", "MiSTercadeV2", "OpenCore0", "OpenCore0MIXUP", "OpenCore0WASD", "OSUMGP-RP2040", "PicoAnn", "PicoFightingBoard", "PXPGamepad", "ReflexCtrlGenesis6", "ReflexCtrlNES", "ReflexCtrlSaturn", "ReflexCtrlSNES", "ReflexCtrlVB", "ReflexEncodeV1.2", "ReflexEncodeV2.0", "RP2040AdvancedBreakoutBoard", "RP2040AdvancedBreakoutBoardUSBPassthrough", "RP2040MiniBreakoutBoard", "RP2040MiniBreakoutBoardUSBPassthrough", "SeeedXIAORP2040", "SparkFunProMicro", "SparkFunProMicroRP2350", "WaveshareZero", "Stress", "SGFDevices", "ZeroRhythm", "AdafruitQTPyRP2040"]') }}
+        GP2040_BOARDCONFIG: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.board_config != '' && fromJSON(format('["{0}"]', github.event.inputs.board_config)) || fromJSON(needs.build-config-list.outputs.matrix) }}
     steps:
       - name: Setup cmake
         uses: jwlawson/actions-setup-cmake@v2
@@ -103,11 +113,11 @@ jobs:
       - name: arm-none-eabi-gcc GNU Arm Embedded Toolchain
         uses: carlosperate/arm-none-eabi-gcc-action@v1
 
-      - name: Checkout pico-sdk/2.3.0
+      - name: Checkout pico-sdk/2.3.1
         uses: actions/checkout@v6.0.1
         with:
           repository: raspberrypi/pico-sdk
-          ref: 2.3.0
+          ref: 2.3.1
           path: pico-sdk
 
       - name: Checkout pico-sdk submodules

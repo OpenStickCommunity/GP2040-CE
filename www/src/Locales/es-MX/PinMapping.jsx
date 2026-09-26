@@ -1,5 +1,6 @@
 export default {
-	'sub-header-text': 'Use el Visor de Pines GPIO para ver la conexión de botones a pines.',
+	'sub-header-text':
+		'Use el Visor de Pines GPIO para ver la conexión de botones a pines.',
 	'alert-text':
 		'Mapear botones a pines que no están conectados o disponibles puede dejar el dispositivo en un estado no funcional. Para limpiar la configuración inválida, vaya a la página <2>Restablecer Ajustes</2>.',
 	'pin-viewer': 'Visor de pines GPIO',

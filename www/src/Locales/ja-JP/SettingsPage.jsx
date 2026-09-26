@@ -51,7 +51,8 @@ export default {
 	},
 	'profile-label': 'プロファイル',
 	'debounce-delay-label': 'チャタリング除去ディレイ(ミリ秒)',
-	'mini-menu-gamepad-input': 'ディスプレイメニューの入力にゲームパッド入力を利用',
+	'mini-menu-gamepad-input':
+		'ディスプレイメニューの入力にゲームパッド入力を利用',
 	'ps4-mode-explanation-text':
 		'PS4モードはGP2040-CEコントローラを認証済みPS4コントローラとして動作させることができます。',
 	'ps4-mode-warning-text':

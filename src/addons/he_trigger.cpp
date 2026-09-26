@@ -37,7 +37,7 @@ void HETriggerAddon::setup() {
     muxPinArray[2] = options.muxADCPin2;
     muxPinArray[3] = options.muxADCPin3;
     for(int i = 0; i < muxTotal; i++) {
-        if ( muxPinArray[i] >= 26 && muxPinArray[i] <= 29 ) {
+        if (muxPinArray[i] >= ADC_BASE_PIN && muxPinArray[i] < ADC_BASE_PIN + NUM_ADC_CHANNELS - 1) {
             adc_gpio_init(muxPinArray[i]);
         }
     }
@@ -59,15 +59,21 @@ void HETriggerAddon::setup() {
             break;
     }
 
-    selectPinArray[0] = options.selectPin0;
-    selectPinArray[1] = options.selectPin1;
-    selectPinArray[2] = options.selectPin2;
-    selectPinArray[3] = options.selectPin3;
-    for(int i = 0; i < selectPins; i++) {
-        if ( selectPinArray[i] != -1 ) {
-            gpio_init(selectPinArray[i]);
-            gpio_set_dir(selectPinArray[i], GPIO_OUT);
-            gpio_put(selectPinArray[i], 0);
+    for(int mux = 0; mux < 4; mux++) {
+        int src = options.separateSelectPins ? mux : 0;
+        selectPinArray[mux][0] = options.muxes[src].selectPin0;
+        selectPinArray[mux][1] = options.muxes[src].selectPin1;
+        selectPinArray[mux][2] = options.muxes[src].selectPin2;
+        selectPinArray[mux][3] = options.muxes[src].selectPin3;
+    }
+
+    for(int mux = 0; mux < muxTotal; mux++) {
+        for(int i = 0; i < selectPins; i++) {
+            if ( selectPinArray[mux][i] != -1 ) {
+                gpio_init(selectPinArray[mux][i]);
+                gpio_set_dir(selectPinArray[mux][i], GPIO_OUT);
+                gpio_put(selectPinArray[mux][i], 0);
+            }
         }
     }
 
@@ -93,11 +99,12 @@ void HETriggerAddon::setup() {
         const uint32_t channel = (options.muxChannels <= 1) ? 0 : (he % options.muxChannels);
         const uint32_t adcIndex = (options.muxChannels <= 1) ? he : (he / options.muxChannels);
         if (adcIndex >= 4) continue;
-        if (muxPinArray[adcIndex] < 26 || muxPinArray[adcIndex] > 29) continue;
+        if (muxPinArray[adcIndex] < ADC_BASE_PIN ||
+            muxPinArray[adcIndex] >= ADC_BASE_PIN + NUM_ADC_CHANNELS - 1) continue;
 
-        if (options.muxChannels > 1) selectChannel(channel);
+        if (options.muxChannels > 1) selectChannel(adcIndex, channel);
         if (lastADCSelected != muxPinArray[adcIndex]) {
-            adc_select_input(muxPinArray[adcIndex] - 26);
+            adc_select_input(muxPinArray[adcIndex] - ADC_BASE_PIN);
             lastADCSelected = muxPinArray[adcIndex];
         }
         busy_wait_us_32(HETRIGGER_SETTLE_US);
@@ -190,10 +197,10 @@ int16_t HETriggerAddon::toTravel(uint8_t he, uint16_t raw) {
     return (int16_t)travel;
 }
 
-void HETriggerAddon::selectChannel(uint8_t channel) {
+void HETriggerAddon::selectChannel(uint8_t mux, uint8_t channel) {
     for(int i = 0; i < selectPins; i++) {
-        if ( selectPinArray[i] != -1 ) {
-            gpio_put(selectPinArray[i], (channel >> i) & 0x01);
+        if ( selectPinArray[mux][i] != -1 ) {
+            gpio_put(selectPinArray[mux][i], (channel >> i) & 0x01);
         }
     }
 }
@@ -469,10 +476,14 @@ void HETriggerAddon::startCalibration() {
     muxPinArray[1] = options.muxADCPin1;
     muxPinArray[2] = options.muxADCPin2;
     muxPinArray[3] = options.muxADCPin3;
-    selectPinArray[0] = options.selectPin0;
-    selectPinArray[1] = options.selectPin1;
-    selectPinArray[2] = options.selectPin2;
-    selectPinArray[3] = options.selectPin3;
+    // Mirrors setup(): with shared select lines every mux reads mux 0's pins.
+    for(int mux = 0; mux < 4; mux++) {
+        const int src = options.separateSelectPins ? mux : 0;
+        selectPinArray[mux][0] = options.muxes[src].selectPin0;
+        selectPinArray[mux][1] = options.muxes[src].selectPin1;
+        selectPinArray[mux][2] = options.muxes[src].selectPin2;
+        selectPinArray[mux][3] = options.muxes[src].selectPin3;
+    }
     switch(options.muxChannels) {
         case 4:  this->selectPins = 2; break;
         case 8:  this->selectPins = 3; break;
@@ -703,11 +714,12 @@ void HETriggerAddon::runCalibrationSweep() {
             const uint32_t channel  = (monitorOptions.muxChannels <= 1) ? 0 : (he % monitorOptions.muxChannels);
             const uint32_t adcIndex = (monitorOptions.muxChannels <= 1) ? he : (he / monitorOptions.muxChannels);
             if (adcIndex >= 4) continue;
-            if (muxPinArray[adcIndex] < 26 || muxPinArray[adcIndex] > 29) continue;
+            if (muxPinArray[adcIndex] < ADC_BASE_PIN ||
+                muxPinArray[adcIndex] >= ADC_BASE_PIN + NUM_ADC_CHANNELS - 1) continue;
 
-            if (monitorOptions.muxChannels > 1) selectChannel(channel);
+            if (monitorOptions.muxChannels > 1) selectChannel(adcIndex, channel);
             if (lastADCSelected != muxPinArray[adcIndex]) {
-                adc_select_input(muxPinArray[adcIndex] - 26);
+                adc_select_input(muxPinArray[adcIndex] - ADC_BASE_PIN);
                 lastADCSelected = muxPinArray[adcIndex];
             }
             busy_wait_us_32(HETRIGGER_SETTLE_US);
@@ -733,11 +745,12 @@ void HETriggerAddon::runCalibrationSweep() {
         const uint32_t channel  = (options.muxChannels <= 1) ? 0 : (he % options.muxChannels);
         const uint32_t adcIndex = (options.muxChannels <= 1) ? he : (he / options.muxChannels);
         if (adcIndex >= 4) continue;
-        if (muxPinArray[adcIndex] < 26 || muxPinArray[adcIndex] > 29) continue;
+        if (muxPinArray[adcIndex] < ADC_BASE_PIN ||
+            muxPinArray[adcIndex] >= ADC_BASE_PIN + NUM_ADC_CHANNELS - 1) continue;
 
-        if (options.muxChannels > 1) selectChannel(channel);
+        if (options.muxChannels > 1) selectChannel(adcIndex, channel);
         if (lastADCSelected != muxPinArray[adcIndex]) {
-            adc_select_input(muxPinArray[adcIndex] - 26);
+            adc_select_input(muxPinArray[adcIndex] - ADC_BASE_PIN);
             lastADCSelected = muxPinArray[adcIndex];
         }
         busy_wait_us_32(HETRIGGER_SETTLE_US);
@@ -759,6 +772,9 @@ void HETriggerAddon::preprocess() {
         runCalibrationSweep();
         return;
     }
+
+    // Rebuilt every frame; the OLED HE button element reads this mask.
+    gamepad->state.heTriggers = 0;
 
     for (uint8_t he = 0; he < HETRIGGER_COUNT; he++) {
         const int32_t action = actionFor(he);
@@ -783,13 +799,14 @@ void HETriggerAddon::preprocess() {
         // muxPinArray only has four entries. Direct mode indexes it by `he`, which
         // runs to 31, so this guard is load-bearing and not just defensive.
         if (adcIndex >= 4) continue;
-        if (muxPinArray[adcIndex] < 26 || muxPinArray[adcIndex] > 29) continue;
+        if (muxPinArray[adcIndex] < ADC_BASE_PIN ||
+            muxPinArray[adcIndex] >= ADC_BASE_PIN + NUM_ADC_CHANNELS - 1) continue;
 
-        if (options.muxChannels > 1) selectChannel(channel);
+        if (options.muxChannels > 1) selectChannel(adcIndex, channel);
 
         // Only Switch ADC if we are not currently on the mux ADC
         if ( lastADCSelected != muxPinArray[adcIndex]) {
-            adc_select_input(muxPinArray[adcIndex]-26);
+            adc_select_input(muxPinArray[adcIndex] - ADC_BASE_PIN);
             lastADCSelected = muxPinArray[adcIndex];
         }
 
@@ -828,6 +845,8 @@ void HETriggerAddon::preprocess() {
         }
 
         if (triggerActive[he]) {
+            // Mirror the active set into the OLED display mask before dispatching.
+            gamepad->state.heTriggers |= (1u << he);
             applyAction(gamepad, he, action);
         } else {
             menuActionHeld[he] = false;

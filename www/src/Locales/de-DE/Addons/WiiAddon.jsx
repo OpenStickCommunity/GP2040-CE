@@ -2,14 +2,8 @@ export default {
 	'header-text': 'Wii Erweiterung',
 	'sub-header-text':
 		'<0>Hinweis: Wenn das Display gleichzeitig aktiviert ist, wird dieses Add-On deaktiviert.</0>',
-	'sda-pin-label': 'I2C SDA Pin',
-	'scl-pin-label': 'I2C SCL Pin',
-	'block-label': 'I2C Block',
-	'speed-label': 'I2C Geschwindigkeit',
 	'section-digital': 'Digital',
 	'section-analog': 'Analog',
-	'option-simple': 'Simpel',
-	'option-advanced': 'Fortgeschritten',
 	'controller-nunchuk': 'Nunchuk',
 	'controller-classic': 'Klassisch',
 	'controller-taiko': 'Taiko',
@@ -65,13 +59,5 @@ export default {
 	'controller-analog-axis-x': 'X +/- Achse',
 	'controller-analog-axis-y': 'Y +/- Achse',
 	'controller-analog-axis-trigger': 'Auslöser',
-	'analog-axis-mode-trigger':
-		'<0>Der gesamte Wertebereich wird an die Schnittstelle gesendet.</0>',
-	'analog-axis-mode-button':
-		'<0>Fungiert als digitaler Schalter und stellt nach einem definierten Schwellenwert einen „gedrückten“ Zustand ein.</0>',
-	'analog-axis-mode-normal-direction':
-		'<0>Der gesamte Wertebereich wird auf die Achse eines Joysticks übertragen, wobei der niedrigste Wert als negative Flanke und der maximale Wert als positive Flanke angenommen wird.</0>',
-	'analog-axis-mode-invert-direction':
-		'<0>Der gesamte Wertebereich wird auf die Achse eines Joysticks übertragen, wobei der niedrigste Wert als positive Flanke und der maximale Wert als negative Flanke angenommen wird.</0>',
 	'button-save': 'Controller Speichern',
 };

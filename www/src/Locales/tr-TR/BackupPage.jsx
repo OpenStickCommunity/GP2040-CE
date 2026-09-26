@@ -8,7 +8,7 @@ export default {
 	'load-export-option-label': '{{api}} Seçeneklerini İçe Aktar',
 	'api-display-text': 'Ekran',
 	'api-gamepad-text': 'Gamepad',
-	'api-led-text': 'LED',
+	'api-leds-text': 'LED',
 	'api-ledTheme-text': 'Özel LED Teması',
 	'api-macros-text': 'Macro Atamaları',
 	'api-pins-text': 'Pin Atamaları',

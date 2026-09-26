@@ -32,7 +32,7 @@
 #endif
 
 #ifndef TURBO_LED_COLOR
-#define TURBO_LED_COLOR ColorRed
+#define TURBO_LED_COLOR 2 // ColorRed index from Animation.h
 #endif
 
 // TURBO SHMUP MODE

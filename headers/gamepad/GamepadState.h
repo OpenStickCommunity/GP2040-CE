@@ -146,6 +146,7 @@ struct GamepadState
 	uint16_t ry {GAMEPAD_JOYSTICK_MID};
 	uint8_t lt {0};
 	uint8_t rt {0};
+	uint32_t heTriggers {0}; // consumed by GP_ELEMENT_HE_BUTTON for display
 	float ema_1_x {GAMEPAD_JOYSTICK_MID};
 	float ema_1_y {GAMEPAD_JOYSTICK_MID};
 	float ema_2_x {GAMEPAD_JOYSTICK_MID};

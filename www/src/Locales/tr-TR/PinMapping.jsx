@@ -1,7 +1,7 @@
 export default {
 	'sub-header-text': `GPIO Pin bağlantısını görmek için GPIO Pin Görüntüleyicisini kullanın.`,
 	'alert-text':
-		"Bağlı olmayan veya kullanılamayan pinlere düğme eşlemek, cihazı işlevsiz duruma getirebilir. Geçersiz yapılandırmayı temizlemek için <2>Ayarları Sıfırla</2> sayfasına gidin.",
+		'Bağlı olmayan veya kullanılamayan pinlere düğme eşlemek, cihazı işlevsiz duruma getirebilir. Geçersiz yapılandırmayı temizlemek için <2>Ayarları Sıfırla</2> sayfasına gidin.',
 	'pin-viewer': 'GPIO Pin görüntüleyici',
 	'pin-pressed': 'Basılan GPIO Pini: {{pressedPin}}',
 	'profile-label-title': 'Profil adı',

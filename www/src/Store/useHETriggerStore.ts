@@ -70,7 +70,7 @@ const useHETriggerStore = create<State & Actions>()((set, get) => ({
 			triggersLoaded: Boolean(data?.triggers),
 		}));
 	},
-	setHETrigger: ({ id, ...trigger}) => {
+	setHETrigger: ({ id, ...trigger }) => {
 		set((state) => {
 			const newTriggers = [...state.triggers];
 			if (newTriggers[id]) {
