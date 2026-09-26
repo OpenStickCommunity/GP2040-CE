@@ -87,6 +87,7 @@ const useProfilesStore = create<State & Actions>()((set, get) => ({
 					{
 						...state.profiles[0],
 						profileLabel: `Profile ${state.profiles.length + 1}`,
+						enabled: true,
 					},
 				],
 			}));

@@ -602,7 +602,11 @@ std::string setProfileOptions()
 
 std::string getProfileOptions()
 {
-    const size_t capacity = JSON_OBJECT_SIZE(500);
+    ProfileOptions& profileOptions = Storage::getInstance().getProfileOptions();
+    const size_t maxAlts = sizeof(profileOptions.gpioMappingsSets) / sizeof(profileOptions.gpioMappingsSets[0]);
+    const size_t capacity = JSON_OBJECT_SIZE(1) + JSON_ARRAY_SIZE(maxAlts)
+        + maxAlts * (JSON_OBJECT_SIZE(NUM_BANK0_GPIOS + 2) + NUM_BANK0_GPIOS * JSON_OBJECT_SIZE(3))
+        + maxAlts * sizeof(profileOptions.gpioMappingsSets[0].profileLabel);
     DynamicJsonDocument doc(capacity);
 
     const auto writePinDoc = [&](const int item, const char* key, const GpioMappingInfo& value) -> void
@@ -611,8 +615,6 @@ std::string getProfileOptions()
         writeDoc(doc, "alternativePinMappings", item, key, "customButtonMask", value.customButtonMask);
         writeDoc(doc, "alternativePinMappings", item, key, "customDpadMask", value.customDpadMask);
     };
-
-    ProfileOptions& profileOptions = Storage::getInstance().getProfileOptions();
 
     // return an empty list if no profiles are currently set, since we no longer populate by default
     if (profileOptions.gpioMappingsSets_count == 0) {
