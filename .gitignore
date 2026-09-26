@@ -5,7 +5,7 @@ node_modules/
 configs/MyBoard
 .DS_Store
 build/
-error.md
+
 .*.sw*
 compile_commands.json
 lib/httpd/fsdata.c
