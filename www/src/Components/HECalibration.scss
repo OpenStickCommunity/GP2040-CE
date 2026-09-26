@@ -289,3 +289,10 @@
 		border-color: var(--bs-primary, #0d6efd);
 	}
 }
+
+// Explains that the voltage table is editable; the values look read-only.
+.he-voltage-help {
+	font-size: 0.85rem;
+	opacity: 0.8;
+	max-width: 60rem;
+}

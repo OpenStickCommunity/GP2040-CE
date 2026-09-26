@@ -317,6 +317,9 @@ const TriggerActionsForm = ({
 			<div hidden={!showVoltTable} className="mt-2">
 				<div>
 					<h1>{t('HETrigger:voltage-table-header-text')}</h1>
+					<p className="he-voltage-help">
+						{t('HETrigger:voltage-table-help-text')}
+					</p>
 				</div>
 				<div>
 					{Array.from(

@@ -24,9 +24,13 @@ export default {
 	'action-assignment-sub-header': 'Hall-Effect Action Assignment',
 	'multiplexer-label': 'Multiplexer',
 	'channel-label': 'Channel',
-	'voltage-table-show-label': 'Show Voltage Table',
+	'voltage-table-show-label': 'Show Voltage Table (manual calibration)',
 	'voltage-table-hide-label': 'Hide Voltage Table',
 	'voltage-table-header-text': 'Hall-Effect Voltage Table',
+	'voltage-table-help-text':
+		'Idle, Pressed, Polarity and Rapid Trigger Noise Filter can be edited directly. ' +
+		'The calibration wizard fills these in, so only change them if you know the values ' +
+		'you want, or if a switch could not be read automatically. Remember to save.',
 	'voltage-table-idle-text': 'Idle',
 	'voltage-table-pressed-text': 'Pressed',
 	'voltage-table-polarity-text': 'Polarity',
