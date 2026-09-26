@@ -684,6 +684,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     unsigned int buttonCount = (NUM_BANK0_GPIOS+3)/4;
     unsigned int caseCount = (MAX_NON_BUTTON_LIGHT_COLOR_INDEXES/4);
 
+    bool profilesLoaded = (config.animationOptions.profiles[0].pressedStaticColors_count > 0) || (config.animationOptions.profiles[0].notPressedStaticColors_count > 0);
     config.animationOptions.profiles_count = 0;
     for (unsigned int i = 0; i < MAX_ANIMATION_PROFILES; i++) {
         config.animationOptions.profiles[i].notPressedStaticColors_count = buttonCount;
@@ -694,31 +695,33 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         }
     }
 
-    // Button Colors
-    for (unsigned int lightIndex = 0; lightIndex < buttonCount; lightIndex++) {
-        config.animationOptions.profiles[0].notPressedStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE0_STATIC_COLOR_UNPRESSED);
-        config.animationOptions.profiles[0].pressedStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE0_STATIC_COLOR_PRESSED);
-        config.animationOptions.profiles[1].notPressedStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE1_STATIC_COLOR_UNPRESSED);
-        config.animationOptions.profiles[1].pressedStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE1_STATIC_COLOR_PRESSED);
-        config.animationOptions.profiles[2].notPressedStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE2_STATIC_COLOR_UNPRESSED);
-        config.animationOptions.profiles[2].pressedStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE2_STATIC_COLOR_PRESSED);
-        config.animationOptions.profiles[3].notPressedStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE3_STATIC_COLOR_UNPRESSED);
-        config.animationOptions.profiles[3].pressedStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE3_STATIC_COLOR_PRESSED);
-    }
-
-    // Case Colors
-    for (unsigned int lightIndex = 0; lightIndex < caseCount; lightIndex++) {
-        if(lightIndex == caseCount - 1) {
-            config.animationOptions.profiles[0].nonButtonStaticColors[lightIndex] = (LEDS_COLOR_QUAD(LEDS_PROFILE0_STATIC_COLOR_CASE) & 0x00FFFFFF) + (PLED_COLOR<<24);
-            config.animationOptions.profiles[1].nonButtonStaticColors[lightIndex] = (LEDS_COLOR_QUAD(LEDS_PROFILE1_STATIC_COLOR_CASE) & 0x00FFFFFF) + (PLED_COLOR<<24);
-            config.animationOptions.profiles[2].nonButtonStaticColors[lightIndex] = (LEDS_COLOR_QUAD(LEDS_PROFILE2_STATIC_COLOR_CASE) & 0x00FFFFFF) + (PLED_COLOR<<24);
-            config.animationOptions.profiles[3].nonButtonStaticColors[lightIndex] = (LEDS_COLOR_QUAD(LEDS_PROFILE3_STATIC_COLOR_CASE) & 0x00FFFFFF) + (PLED_COLOR<<24);
+    if (!profilesLoaded) {
+        // Button Colors
+        for (unsigned int lightIndex = 0; lightIndex < buttonCount; lightIndex++) {
+            config.animationOptions.profiles[0].notPressedStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE0_STATIC_COLOR_UNPRESSED);
+            config.animationOptions.profiles[0].pressedStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE0_STATIC_COLOR_PRESSED);
+            config.animationOptions.profiles[1].notPressedStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE1_STATIC_COLOR_UNPRESSED);
+            config.animationOptions.profiles[1].pressedStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE1_STATIC_COLOR_PRESSED);
+            config.animationOptions.profiles[2].notPressedStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE2_STATIC_COLOR_UNPRESSED);
+            config.animationOptions.profiles[2].pressedStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE2_STATIC_COLOR_PRESSED);
+            config.animationOptions.profiles[3].notPressedStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE3_STATIC_COLOR_UNPRESSED);
+            config.animationOptions.profiles[3].pressedStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE3_STATIC_COLOR_PRESSED);
         }
-        else {
-            config.animationOptions.profiles[0].nonButtonStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE0_STATIC_COLOR_CASE);
-            config.animationOptions.profiles[1].nonButtonStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE1_STATIC_COLOR_CASE);
-            config.animationOptions.profiles[2].nonButtonStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE2_STATIC_COLOR_CASE);
-            config.animationOptions.profiles[3].nonButtonStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE3_STATIC_COLOR_CASE);
+
+        // Case Colors
+        for (unsigned int lightIndex = 0; lightIndex < caseCount; lightIndex++) {
+            if(lightIndex == caseCount - 1) {
+                config.animationOptions.profiles[0].nonButtonStaticColors[lightIndex] = (LEDS_COLOR_QUAD(LEDS_PROFILE0_STATIC_COLOR_CASE) & 0x00FFFFFF) + (PLED_COLOR<<24);
+                config.animationOptions.profiles[1].nonButtonStaticColors[lightIndex] = (LEDS_COLOR_QUAD(LEDS_PROFILE1_STATIC_COLOR_CASE) & 0x00FFFFFF) + (PLED_COLOR<<24);
+                config.animationOptions.profiles[2].nonButtonStaticColors[lightIndex] = (LEDS_COLOR_QUAD(LEDS_PROFILE2_STATIC_COLOR_CASE) & 0x00FFFFFF) + (PLED_COLOR<<24);
+                config.animationOptions.profiles[3].nonButtonStaticColors[lightIndex] = (LEDS_COLOR_QUAD(LEDS_PROFILE3_STATIC_COLOR_CASE) & 0x00FFFFFF) + (PLED_COLOR<<24);
+            }
+            else {
+                config.animationOptions.profiles[0].nonButtonStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE0_STATIC_COLOR_CASE);
+                config.animationOptions.profiles[1].nonButtonStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE1_STATIC_COLOR_CASE);
+                config.animationOptions.profiles[2].nonButtonStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE2_STATIC_COLOR_CASE);
+                config.animationOptions.profiles[3].nonButtonStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE3_STATIC_COLOR_CASE);
+            }
         }
     }
 
