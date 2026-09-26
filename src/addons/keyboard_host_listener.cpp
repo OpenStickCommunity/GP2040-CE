@@ -31,6 +31,8 @@ void KeyboardHostListener::setup() {
   _keyboard_host_mapButtonR3.setMask(GAMEPAD_MASK_R3);
   _keyboard_host_mapButtonA1.setMask(GAMEPAD_MASK_A1);
   _keyboard_host_mapButtonA2.setMask(GAMEPAD_MASK_A2);
+  _keyboard_host_mapButtonA3.setMask(GAMEPAD_MASK_A3);
+  _keyboard_host_mapButtonA4.setMask(GAMEPAD_MASK_A4);
   _keyboard_host_mapDpadUp.setKey(keyboardMapping.keyDpadUp);
   _keyboard_host_mapDpadDown.setKey(keyboardMapping.keyDpadDown);
   _keyboard_host_mapDpadLeft.setKey(keyboardMapping.keyDpadLeft);
@@ -83,7 +85,7 @@ void KeyboardHostListener::process() {
   if (_keyboard_host_mounted == true || _mouse_host_mounted == true) {
     gamepad->state.dpad     |= _keyboard_host_state.dpad;
     gamepad->state.dpadOriginal |= _keyboard_host_state.dpad;
-    gamepad->state.buttons  |= _keyboard_host_state.buttons;
+    gamepad->state.buttons  |= _keyboard_host_state.buttons | mouseButtons;
     gamepad->state.lx       = _keyboard_host_state.lx;
     gamepad->state.ly       = _keyboard_host_state.ly;
     gamepad->state.rx       = _keyboard_host_state.rx;
@@ -132,12 +134,14 @@ void KeyboardHostListener::mount(uint8_t dev_addr, uint8_t instance, uint8_t con
 
 void KeyboardHostListener::unmount(uint8_t dev_addr) {
     if ( _keyboard_host_mounted == true && _keyboard_dev_addr == dev_addr ) {
+        _keyboard_host_state.buttons = 0;
         _keyboard_host_mounted = false;
         _keyboard_dev_addr = DEV_ADDR_NONE;
         _keyboard_instance = 0;
     } else if ( _mouse_host_mounted == true && _mouse_dev_addr == dev_addr ) {
         Gamepad *gamepad = Storage::getInstance().GetGamepad();
         gamepad->auxState.sensors.mouse.enabled = false;
+        mouseButtons = 0;
         _mouse_host_mounted = false;
         _mouse_dev_addr = DEV_ADDR_NONE;
         _mouse_instance = 0;
@@ -174,7 +178,6 @@ uint8_t KeyboardHostListener::getKeycodeFromModifier(uint8_t modifier) {
 
 void KeyboardHostListener::preprocess_report()
 {
-  _keyboard_host_state.buttons = 0;
   // --- preprocess only select analog movements --- // (by Pelsin)
   if (mouseMovementMode == MOUSE_MOVEMENT_LEFT_ANALOG) {
     _keyboard_host_state.lx = joystickMid;
@@ -198,6 +201,7 @@ void KeyboardHostListener::process_kbd_report(uint8_t dev_addr, hid_keyboard_rep
   preprocess_report();
   // move this preprocess dpad reset only to kbd_report (so as to not have it run on mouse input, by Fran89)
   _keyboard_host_state.dpad = 0;
+  _keyboard_host_state.buttons = 0;
 
   // make this 14 instead of 7 to include modifier bitfields from hid_keyboard_modifier_bm_t
   for(uint8_t i=0; i<14; i++)
@@ -253,10 +257,10 @@ void KeyboardHostListener::process_mouse_report(uint8_t dev_addr, hid_mouse_repo
   preprocess_report();
 
   //------------- button state  -------------//
-  _keyboard_host_state.buttons |=
-      (report->buttons & MOUSE_BUTTON_LEFT   ?   mouseLeftMapping : _keyboard_host_state.buttons)
-    | (report->buttons & MOUSE_BUTTON_MIDDLE ? mouseMiddleMapping : _keyboard_host_state.buttons)
-    | (report->buttons & MOUSE_BUTTON_RIGHT  ?  mouseRightMapping : _keyboard_host_state.buttons)
+  mouseButtons =
+      (report->buttons & MOUSE_BUTTON_LEFT   ?   mouseLeftMapping : 0)
+    | (report->buttons & MOUSE_BUTTON_MIDDLE ? mouseMiddleMapping : 0)
+    | (report->buttons & MOUSE_BUTTON_RIGHT  ?  mouseRightMapping : 0)
   ;
 
   //------------- cursor movement -------------//

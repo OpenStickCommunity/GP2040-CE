@@ -14,8 +14,8 @@ void XInputAuth::initialize() {
         listener = new XInputAuthUSBListener();
         xinputAuthData.xinputState = auth_idle_state;
         xinputAuthData.authCompleted = false;
-        ((XInputAuthUSBListener*)listener)->setup();
         ((XInputAuthUSBListener*)listener)->setAuthData(&xinputAuthData);
+        ((XInputAuthUSBListener*)listener)->setup();
     } else {
         // Generate a serial number from the pico's unique ID
         uint8_t serial[0x0C];

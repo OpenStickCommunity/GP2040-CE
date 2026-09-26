@@ -419,7 +419,7 @@ GP2040::BootAction GP2040::getButtonMappedBootAction() {
 	bootActions.insert({GAMEPAD_MASK_R2, gamepadOptions.inputModeR2});
 
 	if (!modeSwitchLocked) {
-		if (auto search = bootActions.find(gamepad->state.buttons); search != bootActions.end()) {
+		if (auto search = bootActions.find(gamepad->state.buttons); search != bootActions.end() && search->second >= 0) {
 			bootAction.inputMode = static_cast<InputMode>(search->second);
 			return bootAction;
 		}

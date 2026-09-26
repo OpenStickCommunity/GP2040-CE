@@ -67,6 +67,7 @@ private:
     bool _mouse_host_mounted;
     uint8_t _mouse_dev_addr;
     uint8_t _mouse_instance;
+    uint16_t mouseButtons = 0;
     uint16_t mouseLeftMapping;
     uint16_t mouseMiddleMapping;
     uint16_t mouseRightMapping;

@@ -101,7 +101,8 @@ void Storage::previousProfile()
  * @brief Return the current profile label.
  */
 char* Storage::currentProfileLabel() {
-	if (this->config.gamepadOptions.profileNumber == 1)
+	if (this->config.gamepadOptions.profileNumber < 2 ||
+		this->config.gamepadOptions.profileNumber > this->config.profileOptions.gpioMappingsSets_count + 1u)
 		return this->config.gpioMappings.profileLabel;
 	else
 		return this->config.profileOptions.gpioMappingsSets[config.gamepadOptions.profileNumber-2].profileLabel;

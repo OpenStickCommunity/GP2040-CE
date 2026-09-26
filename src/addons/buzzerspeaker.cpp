@@ -1,3 +1,4 @@
+#include "hardware/clocks.h"
 #include "hardware/pwm.h"
 #include "addons/buzzerspeaker.h"
 #include "songs.h"
@@ -21,7 +22,7 @@ void BuzzerSpeakerAddon::setup() {
 	buzzerPinChannel = pwm_gpio_to_channel (buzzerPin);
 
     // enable pin is optional so not required to toggle addon
-    if (isValidPin(options.pin)) {
+    if (isValidPin(options.enablePin)) {
         isSpeakerOn = true;
         buzzerEnablePin = options.enablePin;
         gpio_init(buzzerEnablePin);
@@ -64,12 +65,13 @@ void BuzzerSpeakerAddon::processBuzzer() {
 	uint32_t currentTimeSong = getMillis() - startedSongMils;
 	uint32_t totalTimeSong = currentSong->song.size() * currentSong->toneDuration;
 	uint16_t currentTonePosition = floor((currentTimeSong * currentSong->song.size()) / totalTimeSong);
-	Tone currentTone = currentSong->song[currentTonePosition];
 
 	if (currentTonePosition >= currentSong->song.size()) {
 		stop();
 		return;
 	}
+
+	Tone currentTone = currentSong->song[currentTonePosition];
 
 	if (currentTone == PAUSE) {
 		pwm_set_enabled (buzzerPinSlice, false);
@@ -91,7 +93,7 @@ void BuzzerSpeakerAddon::stop() {
 }
 
 uint32_t BuzzerSpeakerAddon::pwmSetFreqDuty(uint slice, uint channel, uint32_t frequency, float duty) {
-	uint32_t clock = 125000000;
+	uint32_t clock = clock_get_hz(clk_sys);
 	uint32_t divider16 = clock / frequency / 4096 +
 							(clock % (frequency * 4096) != 0);
 	if (divider16 / 16 == 0)

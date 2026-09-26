@@ -122,37 +122,44 @@ void PS3Driver::initialize() {
 
     GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
-        switch (pinMappings[pin].action) {
-            case GpioAction::MODE_GUITAR_FRET_GREEN: buttonFretGreen->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_FRET_RED: buttonFretRed->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_FRET_YELLOW: buttonFretYellow->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_FRET_BLUE: buttonFretBlue->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_FRET_ORANGE: buttonFretOrange->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_WHAMMY: buttonWhammy->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_PICKUP: buttonPickup->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_TILT: buttonTilt->pinMask |= 1 << pin; break;
-
-            case GpioAction::MODE_DRUM_RED_DRUMPAD: buttonDrumPadRed->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_DRUM_BLUE_DRUMPAD: buttonDrumPadBlue->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_DRUM_YELLOW_DRUMPAD: buttonDrumPadYellow->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_DRUM_GREEN_DRUMPAD: buttonDrumPadGreen->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_DRUM_YELLOW_CYMBAL: buttonCymbalYellow->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_DRUM_BLUE_CYMBAL: buttonCymbalBlue->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_DRUM_GREEN_CYMBAL: buttonCymbalGreen->pinMask |= 1 << pin; break;
-
-            case GpioAction::MODE_WHEEL_SHIFTER_GEAR_UP: buttonShiftUp->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_WHEEL_SHIFTER_GEAR_DOWN: buttonShiftDown->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_WHEEL_STEERING_LEFT: buttonSteerLeft->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_WHEEL_STEERING_RIGHT: buttonSteerRight->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_WHEEL_BUTTON_PLUS: buttonPlus->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_WHEEL_BUTTON_MINUS: buttonMinus->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_WHEEL_DIAL_UP: buttonDialUp->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_WHEEL_DIAL_DOWN: buttonDialDown->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_WHEEL_DIAL_ENTER: buttonDialEnter->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_WHEEL_PEDAL_GAS: buttonGas->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_WHEEL_PEDAL_BRAKE: buttonBrake->pinMask |= 1 << pin; break;
-
-            default:    break;
+        if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GUITAR) {
+            switch (pinMappings[pin].action) {
+                case GpioAction::MODE_GUITAR_FRET_GREEN: buttonFretGreen->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_FRET_RED: buttonFretRed->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_FRET_YELLOW: buttonFretYellow->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_FRET_BLUE: buttonFretBlue->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_FRET_ORANGE: buttonFretOrange->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_WHAMMY: buttonWhammy->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_PICKUP: buttonPickup->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_TILT: buttonTilt->pinMask |= Mask_t{1} << pin; break;
+                default:    break;
+            }
+        } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_DRUM) {
+            switch (pinMappings[pin].action) {
+                case GpioAction::MODE_DRUM_RED_DRUMPAD: buttonDrumPadRed->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_DRUM_BLUE_DRUMPAD: buttonDrumPadBlue->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_DRUM_YELLOW_DRUMPAD: buttonDrumPadYellow->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_DRUM_GREEN_DRUMPAD: buttonDrumPadGreen->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_DRUM_YELLOW_CYMBAL: buttonCymbalYellow->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_DRUM_BLUE_CYMBAL: buttonCymbalBlue->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_DRUM_GREEN_CYMBAL: buttonCymbalGreen->pinMask |= Mask_t{1} << pin; break;
+                default:    break;
+            }
+        } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_WHEEL) {
+            switch (pinMappings[pin].action) {
+                case GpioAction::MODE_WHEEL_SHIFTER_GEAR_UP: buttonShiftUp->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_SHIFTER_GEAR_DOWN: buttonShiftDown->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_STEERING_LEFT: buttonSteerLeft->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_STEERING_RIGHT: buttonSteerRight->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_BUTTON_PLUS: buttonPlus->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_BUTTON_MINUS: buttonMinus->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_DIAL_UP: buttonDialUp->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_DIAL_DOWN: buttonDialDown->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_DIAL_ENTER: buttonDialEnter->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_PEDAL_GAS: buttonGas->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_PEDAL_BRAKE: buttonBrake->pinMask |= Mask_t{1} << pin; break;
+                default:    break;
+            }
         }
     }
 
@@ -567,37 +574,40 @@ uint16_t PS3Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
         uint8_t ctr = 0;
         switch(report_id) {
             case PS3ReportTypes::PS3_FEATURE_01:
-                responseLen = reqlen;
                 if (deviceType != InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GAMEPAD) {
+                    responseLen = MIN(reqlen, sizeof(output_ps3_0x01));
                     memcpy(buffer, output_ps3_0x01, responseLen);
                 } else {
+                    responseLen = MIN(reqlen, sizeof(output_ps3_alt_0x01));
                     memcpy(buffer, output_ps3_alt_0x01, responseLen);
                 }
                 return responseLen;
             case PS3ReportTypes::PS3_FEATURE_EF:
-                responseLen = reqlen;
+                responseLen = MIN(reqlen, sizeof(output_ps3_0xef));
                 memcpy(buffer, output_ps3_0xef, responseLen);
-                buffer[6] = efByte;
+                if (responseLen > 6)
+                    buffer[6] = efByte;
                 return responseLen;
             case PS3ReportTypes::PS3_GET_PAIRING_INFO:
-                responseLen = reqlen;
+                responseLen = MIN(reqlen, sizeof(ps3BTInfo));
                 memcpy(buffer, &ps3BTInfo, responseLen);
                 return responseLen;
             case PS3ReportTypes::PS3_FEATURE_F5:
-                responseLen = reqlen;
+                responseLen = MIN(reqlen, sizeof(output_ps3_0xf5));
                 memcpy(buffer, output_ps3_0xf5, responseLen);
-                for (ctr = 0; ctr < 6; ctr++) {
+                for (ctr = 0; ctr < 6 && 1 + ctr < responseLen; ctr++) {
                     buffer[1+ctr] = ps3BTInfo.hostAddress[ctr];
                 }
                 return responseLen;
             case PS3ReportTypes::PS3_FEATURE_F7:
-                responseLen = reqlen;
+                responseLen = MIN(reqlen, sizeof(output_ps3_0xf7));
                 memcpy(buffer, output_ps3_0xf7, responseLen);
                 return responseLen;
             case PS3ReportTypes::PS3_FEATURE_F8:
-                responseLen = reqlen;
+                responseLen = MIN(reqlen, sizeof(output_ps3_0xf8));
                 memcpy(buffer, output_ps3_0xf8, responseLen);
-                buffer[6] = efByte;
+                if (responseLen > 6)
+                    buffer[6] = efByte;
                 return responseLen;
         }
     }
@@ -628,6 +638,7 @@ void PS3Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uin
         }
         switch(report_id) {
             case PS3ReportTypes::PS3_FEATURE_01:
+                if (bufsize > sizeof(ps3Features)) return;
                 memcpy(&ps3Features, buf, bufsize);
                 break;
         }
@@ -640,6 +651,9 @@ bool PS3Driver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_contr
 }
 
 const uint16_t * PS3Driver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
+	if (index >= TU_ARRAY_SIZE(ps3_string_descriptors))
+		return nullptr;
+
 	const char *value = (const char *)ps3_string_descriptors[index];
 	return getStringDescriptor(value, index); // getStringDescriptor returns a static array
 }

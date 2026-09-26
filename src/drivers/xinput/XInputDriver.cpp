@@ -179,36 +179,43 @@ void XInputDriver::initialize() {
 
     GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
-        switch (pinMappings[pin].action) {
-            case GpioAction::MODE_GUITAR_FRET_GREEN: buttonFretGreen->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_FRET_RED: buttonFretRed->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_FRET_YELLOW: buttonFretYellow->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_FRET_BLUE: buttonFretBlue->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_FRET_ORANGE: buttonFretOrange->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_FRET_SOLO_GREEN: buttonFretSoloGreen->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_FRET_SOLO_RED: buttonFretSoloRed->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_FRET_SOLO_YELLOW: buttonFretSoloYellow->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_FRET_SOLO_BLUE: buttonFretSoloBlue->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_FRET_SOLO_ORANGE: buttonFretSoloOrange->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_WHAMMY: buttonWhammy->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_TILT: buttonTilt->pinMask |= 1 << pin; break;
-
-            case GpioAction::MODE_DRUM_RED_DRUMPAD: buttonDrumPadRed->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_DRUM_BLUE_DRUMPAD: buttonDrumPadBlue->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_DRUM_YELLOW_DRUMPAD: buttonDrumPadYellow->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_DRUM_GREEN_DRUMPAD: buttonDrumPadGreen->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_DRUM_YELLOW_CYMBAL: buttonCymbalYellow->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_DRUM_BLUE_CYMBAL: buttonCymbalBlue->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_DRUM_GREEN_CYMBAL: buttonCymbalGreen->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_DRUM_KICK_PEDAL_LEFT: buttonKickPedalLeft->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_DRUM_KICK_PEDAL_RIGHT: buttonKickPedalRight->pinMask |= 1 << pin; break;
-
-            case GpioAction::MODE_WHEEL_STEERING_LEFT: buttonSteerLeft->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_WHEEL_STEERING_RIGHT: buttonSteerRight->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_WHEEL_PEDAL_GAS: buttonGas->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_WHEEL_PEDAL_BRAKE: buttonBrake->pinMask |= 1 << pin; break;
-
-            default:    break;
+        if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GUITAR) {
+            switch (pinMappings[pin].action) {
+                case GpioAction::MODE_GUITAR_FRET_GREEN: buttonFretGreen->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_FRET_RED: buttonFretRed->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_FRET_YELLOW: buttonFretYellow->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_FRET_BLUE: buttonFretBlue->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_FRET_ORANGE: buttonFretOrange->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_FRET_SOLO_GREEN: buttonFretSoloGreen->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_FRET_SOLO_RED: buttonFretSoloRed->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_FRET_SOLO_YELLOW: buttonFretSoloYellow->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_FRET_SOLO_BLUE: buttonFretSoloBlue->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_FRET_SOLO_ORANGE: buttonFretSoloOrange->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_WHAMMY: buttonWhammy->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_TILT: buttonTilt->pinMask |= Mask_t{1} << pin; break;
+                default:    break;
+            }
+        } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_DRUM) {
+            switch (pinMappings[pin].action) {
+                case GpioAction::MODE_DRUM_RED_DRUMPAD: buttonDrumPadRed->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_DRUM_BLUE_DRUMPAD: buttonDrumPadBlue->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_DRUM_YELLOW_DRUMPAD: buttonDrumPadYellow->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_DRUM_GREEN_DRUMPAD: buttonDrumPadGreen->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_DRUM_YELLOW_CYMBAL: buttonCymbalYellow->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_DRUM_BLUE_CYMBAL: buttonCymbalBlue->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_DRUM_GREEN_CYMBAL: buttonCymbalGreen->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_DRUM_KICK_PEDAL_LEFT: buttonKickPedalLeft->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_DRUM_KICK_PEDAL_RIGHT: buttonKickPedalRight->pinMask |= Mask_t{1} << pin; break;
+                default:    break;
+            }
+        } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_WHEEL) {
+            switch (pinMappings[pin].action) {
+                case GpioAction::MODE_WHEEL_STEERING_LEFT: buttonSteerLeft->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_STEERING_RIGHT: buttonSteerRight->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_PEDAL_GAS: buttonGas->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_PEDAL_BRAKE: buttonBrake->pinMask |= Mask_t{1} << pin; break;
+                default:    break;
+            }
         }
     }
 
@@ -458,6 +465,11 @@ bool XInputDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_co
             tud_control_xfer(rhport, request, tud_buffer, len);
         }
     } else if (request->bmRequestType_bit.direction == TUSB_DIR_OUT) {
+        if ((request->bRequest != XSM360_INIT_AUTH || request->wLength != X360_AUTHLEN_CONSOLE_INIT) &&
+            (request->bRequest != XSM360_VERIFY_AUTH || request->wLength != X360_AUTHLEN_CHALLENGE)) {
+            return false;
+        }
+
         if (stage == CONTROL_STAGE_SETUP ) { // Pass on output setup in DIR OUT stage
             tud_control_xfer(rhport, request, tud_buffer, request->wLength);
         } else if ( stage == CONTROL_STAGE_DATA ) {
@@ -487,6 +499,9 @@ bool XInputDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_co
 }
 
 const uint16_t * XInputDriver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
+    if (index >= TU_ARRAY_SIZE(xinput_string_descriptors))
+        return nullptr;
+
     char *value;
     // Check for override settings
     GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();

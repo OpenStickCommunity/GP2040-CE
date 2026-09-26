@@ -18,10 +18,10 @@ void DualDirectionalInput::setup() {
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
     {
         switch (pinMappings[pin].action) {
-            case GpioAction::BUTTON_PRESS_DDI_UP:    mapDpadUp->pinMask |= 1 << pin; break;
-            case GpioAction::BUTTON_PRESS_DDI_DOWN:  mapDpadDown->pinMask |= 1 << pin; break;
-            case GpioAction::BUTTON_PRESS_DDI_LEFT:  mapDpadLeft->pinMask |= 1 << pin; break;
-            case GpioAction::BUTTON_PRESS_DDI_RIGHT: mapDpadRight->pinMask |= 1 << pin; break;
+            case GpioAction::BUTTON_PRESS_DDI_UP:    mapDpadUp->pinMask |= Mask_t{1} << pin; break;
+            case GpioAction::BUTTON_PRESS_DDI_DOWN:  mapDpadDown->pinMask |= Mask_t{1} << pin; break;
+            case GpioAction::BUTTON_PRESS_DDI_LEFT:  mapDpadLeft->pinMask |= Mask_t{1} << pin; break;
+            case GpioAction::BUTTON_PRESS_DDI_RIGHT: mapDpadRight->pinMask |= Mask_t{1} << pin; break;
             default:                                 break;
         }
     }
