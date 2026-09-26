@@ -44,10 +44,13 @@ type CalStatus = {
 // The addon form values, as supplied by the parent's Formik state.
 type HEFormValues = {
 	muxChannels: number;
-	muxSelectPin0: number;
-	muxSelectPin1: number;
-	muxSelectPin2: number;
-	muxSelectPin3: number;
+	separateSelectPins: number;
+	muxes: {
+		selectPin0: number;
+		selectPin1: number;
+		selectPin2: number;
+		selectPin3: number;
+	}[];
 	muxADCPin0: number;
 	muxADCPin1: number;
 	muxADCPin2: number;
@@ -198,10 +201,8 @@ const HECalibrationWizard = ({ showModal, setShowModal, values }: Props) => {
 			// before the user has committed the addon form.
 			await WebApi.setHETriggerOptions({
 				muxChannels: values['muxChannels'],
-				muxSelectPin0: values['muxSelectPin0'],
-				muxSelectPin1: values['muxSelectPin1'],
-				muxSelectPin2: values['muxSelectPin2'],
-				muxSelectPin3: values['muxSelectPin3'],
+				separateSelectPins: values['separateSelectPins'],
+				muxes: values['muxes'],
 				muxADCPin0: values['muxADCPin0'],
 				muxADCPin1: values['muxADCPin1'],
 				muxADCPin2: values['muxADCPin2'],
