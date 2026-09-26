@@ -31,7 +31,7 @@ on:
           - FlatboxRev8
           - Granola
           - GranolaBeacon
-          - KB2040
+          - AdafruitKB2040
           - KeyboardConverter
           - Haute42COSMOX
           - Haute42COSMOXCAS
@@ -48,7 +48,6 @@ on:
           - OpenCore0MIXUP
           - OpenCore0WASD
           - OSUMGP-RP2040
-          - PicoAnn
           - PicoFightingBoard
           - PimoroniPicoPlus2
           - PXPGamepad
@@ -68,7 +67,6 @@ on:
           - SparkFunProMicroRP2350
           - WaveshareZero
           - WaveshareRP2350BPlusW
-          - Stress
           - SGFDevices
           - ZeroRhythm
 
