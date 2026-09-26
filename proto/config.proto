@@ -943,11 +943,12 @@ message HETriggerInfo
     // against the idle..pressed span, so they survive recalibration and mean
     // the same thing on every switch regardless of magnet polarity.
     //
-    // These would fit in a uint8, but (nanopb).int_size cannot be used anywhere
-    // in this config: the JSON serializer in config_utils.cpp is macro-generated
-    // from the protobuf type, so a UINT32 field is always passed to overloads
-    // taking uint32_t. A narrowed C type fails to bind, and no field in this
-    // proto uses int_size for that reason.
+    // These would fit in a uint8, but (nanopb).int_size cannot be used on a
+    // SINGULAR field here: FROM_JSON_UINT32 calls fromJsonUint32(..., uint32_t&
+    // value, ...), and a uint8_t member cannot bind to that reference.
+    // Repeated fields are different -- FROM_JSON_REPEATED_UINT32 assigns each
+    // element instead of binding a reference -- so the per-profile arrays in
+    // HETriggerProfile do use int_size. See the note there.
     optional uint32 actuationPoint         = 10;
     optional uint32 rtPressSensitivity     = 11;
     optional uint32 rtReleaseSensitivity   = 12;
@@ -972,6 +973,11 @@ message HETriggerProfile
     // `actions` uses GpioAction::NONE (-10) for an unbound channel, which is a
     // deliberate choice rather than a fallback: leaving a button unbound in one
     // profile is a thing users want.
+    // int_size would narrow the C storage here but saves no config space: nanopb
+    // budgets an int32 by its wire worst case, and a negative varint sign-extends
+    // to 10 bytes whatever the field's C type. Left wide rather than adding a
+    // truncation risk for nothing. (The uint32 arrays below are different --
+    // unsigned values have no sign extension, so IS_8 genuinely shrinks them.)
     repeated int32 actions = 1 [(nanopb).max_count = 32];
     optional bool enabled = 2;
 
@@ -981,10 +987,15 @@ message HETriggerProfile
     // "not set for this profile, use the base switch value"; a real actuation
     // point or sensitivity is always >= 1, and rapidTrigger stores 1/2 for
     // off/on so that 0 stays free as the not-set sentinel.
-    repeated uint32 rapidTrigger = 3 [(nanopb).max_count = 32];
-    repeated uint32 actuationPoint = 4 [(nanopb).max_count = 32];
-    repeated uint32 rtPressSensitivity = 5 [(nanopb).max_count = 32];
-    repeated uint32 rtReleaseSensitivity = 6 [(nanopb).max_count = 32];
+    // int_size = IS_8 is load-bearing, not a micro-optimisation: nanopb worst-
+    // cases a uint32 varint at 5 bytes, so these four arrays would reserve 2304
+    // bytes across the three profiles instead of 768. It is safe here only
+    // because FROM_JSON_REPEATED_UINT32 assigns elements rather than binding a
+    // uint32_t& the way the singular path does.
+    repeated uint32 rapidTrigger = 3 [(nanopb).max_count = 32, (nanopb).int_size = IS_8];
+    repeated uint32 actuationPoint = 4 [(nanopb).max_count = 32, (nanopb).int_size = IS_8];
+    repeated uint32 rtPressSensitivity = 5 [(nanopb).max_count = 32, (nanopb).int_size = IS_8];
+    repeated uint32 rtReleaseSensitivity = 6 [(nanopb).max_count = 32, (nanopb).int_size = IS_8];
 }
 
 message HETriggerMux
