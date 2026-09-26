@@ -198,6 +198,20 @@ const TriggerActionsForm = ({
 		setHETrigger({ ...triggers[id], id, [field]: value });
 	};
 
+	// The tuning values are percentages of travel rather than ADC counts, so
+	// they clamp to 0..100. Editing here writes the base switch value; a
+	// profile that overrides this channel keeps its own number and is
+	// unaffected, which is the same split the profile tab already uses.
+	const setTriggerPercent = (
+		id: number,
+		field: 'actuationPoint' | 'rtPressSensitivity' | 'rtReleaseSensitivity',
+		raw: string,
+	) => {
+		const parsed = parseInt(raw, 10);
+		const value = Number.isNaN(parsed) ? 0 : Math.min(Math.max(parsed, 0), 100);
+		setHETrigger({ ...triggers[id], id, [field]: value });
+	};
+
 	const { buttonLabels } = useContext(AppContext);
 	const [saveMessage, setSaveMessage] = useState('');
 	const [showWizard, setShowWizard] = useState(false);
@@ -411,7 +425,19 @@ const TriggerActionsForm = ({
 																	triggers[key].pressed - triggers[key].idle,
 																)}
 															</td>
-															<td>{triggers[key].actuationPoint}%</td>
+															<td>
+																<input
+																	type="number"
+																	className="he-voltage-input"
+																	value={triggers[key].actuationPoint}
+																	min={0}
+																	max={100}
+																	aria-label={t('HETrigger:voltage-table-actuation-text')}
+																	onChange={(e) =>
+																		setTriggerPercent(parseInt(key), 'actuationPoint', e.target.value)
+																	}
+																/>
+															</td>
 															<td>
 																<FormCheck
 																	type="switch"
@@ -432,14 +458,38 @@ const TriggerActionsForm = ({
 																	: 'Disabled'}
 															</td>
 															<td>
-																{triggers[key].rapidTrigger
-																	? `${triggers[key].rtPressSensitivity}%`
-																	: 'N/A'}
+																{triggers[key].rapidTrigger ? (
+																	<input
+																		type="number"
+																		className="he-voltage-input"
+																		value={triggers[key].rtPressSensitivity}
+																		min={0}
+																		max={100}
+																		aria-label={t('HETrigger:voltage-table-rt-press-text')}
+																		onChange={(e) =>
+																			setTriggerPercent(parseInt(key), 'rtPressSensitivity', e.target.value)
+																		}
+																	/>
+																) : (
+																	'N/A'
+																)}
 															</td>
 															<td>
-																{triggers[key].rapidTrigger
-																	? `${triggers[key].rtReleaseSensitivity}%`
-																	: 'N/A'}
+																{triggers[key].rapidTrigger ? (
+																	<input
+																		type="number"
+																		className="he-voltage-input"
+																		value={triggers[key].rtReleaseSensitivity}
+																		min={0}
+																		max={100}
+																		aria-label={t('HETrigger:voltage-table-rt-release-text')}
+																		onChange={(e) =>
+																			setTriggerPercent(parseInt(key), 'rtReleaseSensitivity', e.target.value)
+																		}
+																	/>
+																) : (
+																	'N/A'
+																)}
 															</td>
 															<td>
 																<input

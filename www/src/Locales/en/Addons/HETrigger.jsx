@@ -28,9 +28,12 @@ export default {
 	'voltage-table-hide-label': 'Hide Voltage Table',
 	'voltage-table-header-text': 'Hall-Effect Voltage Table',
 	'voltage-table-help-text':
-		'Idle, Pressed, Polarity and Rapid Trigger Noise Filter can be edited directly. ' +
-		'The calibration wizard fills these in, so only change them if you know the values ' +
-		'you want, or if a switch could not be read automatically. Remember to save.',
+		'Every value with a box around it can be edited: idle and pressed voltages, ' +
+		'polarity, actuation point, rapid trigger sensitivities and the noise filter. ' +
+		'Actuation and the RT sensitivities are percentages of measured travel, and let ' +
+		'you set an exact figure rather than picking one of the sensitivity levels. ' +
+		'The calibration wizard fills all of this in, so only change it if you know the ' +
+		'value you want. Remember to save.',
 	'voltage-table-idle-text': 'Idle',
 	'voltage-table-pressed-text': 'Pressed',
 	'voltage-table-polarity-text': 'Polarity',
