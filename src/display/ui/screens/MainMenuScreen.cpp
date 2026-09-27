@@ -75,8 +75,8 @@ void MainMenuScreen::init() {
     prevDpadMode = Storage::getInstance().GetGamepad()->getOptions().dpadMode;
     updateDpadMode = Storage::getInstance().GetGamepad()->getOptions().dpadMode;
     
-    prevSocdMode = Storage::getInstance().GetGamepad()->getOptions().socdMode;
-    updateSocdMode = Storage::getInstance().GetGamepad()->getOptions().socdMode;
+    prevSocdMode = Gamepad::readSOCDMode(Storage::getInstance().GetGamepad()->getOptions());
+    updateSocdMode = prevSocdMode;
     
     prevProfile = Storage::getInstance().GetGamepad()->getOptions().profileNumber;
     updateProfile = Storage::getInstance().GetGamepad()->getOptions().profileNumber;
@@ -351,7 +351,7 @@ int32_t MainMenuScreen::currentDpadMode() {
 void MainMenuScreen::selectSOCDMode() {
     if (currentMenu->at(gpMenu->getIndex()).optionValue != -1) {
         SOCDMode valueToSave = (SOCDMode)currentMenu->at(gpMenu->getIndex()).optionValue;
-        prevSocdMode = Storage::getInstance().GetGamepad()->getOptions().socdMode;
+        prevSocdMode = Gamepad::readSOCDMode(Storage::getInstance().GetGamepad()->getOptions());
         updateSocdMode = valueToSave;
 
         chooseAndReturn();
@@ -394,7 +394,10 @@ void MainMenuScreen::saveOptions() {
             saveHasChanged = true;
         }
         if (prevSocdMode != updateSocdMode) {
-            options.socdMode = updateSocdMode;
+            // write the profile override when active, the global otherwise.
+            // this runs before the profile change below, because the override
+            // is looked up through the current profile number
+            Storage::getInstance().GetGamepad()->applySOCDMode(updateSocdMode);
             saveHasChanged = true;
         }
         if (prevProfile != updateProfile) {
