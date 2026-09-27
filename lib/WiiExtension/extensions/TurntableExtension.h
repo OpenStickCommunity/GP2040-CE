@@ -32,6 +32,7 @@ class TurntableExtension : public ExtensionBase {
     public:
         void init(uint8_t dataType) override;
         void process(uint8_t *inputData) override;
+        uint8_t prepareOutput() override;
 
         void setLED(bool ledOn) {_ledState = ledOn;};
         bool getLED() {return _ledState;};

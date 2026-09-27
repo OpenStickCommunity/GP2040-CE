@@ -6,6 +6,7 @@
 class UDrawExtension : public ExtensionBase {
     public:
         void process(uint8_t *inputData) override;
+        uint8_t prepareOutput() override;
     private:
         const uint16_t UDRAW_MIN_X = 80;
         const uint16_t UDRAW_MAX_X = 1955;

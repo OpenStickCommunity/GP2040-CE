@@ -30,3 +30,14 @@ void UDrawExtension::process(uint8_t *inputData) {
     printf("\x1B[21;0HX=%5d Y=%5d B0=%1d B1=%1d B2=%1d\n", motionState[WiiMotions::WII_TOUCH_X], motionState[WiiMotions::WII_TOUCH_Y], buttons[WiiButtons::WII_BUTTON_A], buttons[WiiButtons::WII_BUTTON_L], buttons[WiiButtons::WII_BUTTON_R]);
 #endif
 }
+
+uint8_t UDrawExtension::prepareOutput() {
+    controllerData[0x00] = analogState[WiiAnalogs::WII_ANALOG_LEFT_X];
+    controllerData[0x01] = analogState[WiiAnalogs::WII_ANALOG_LEFT_Y];
+    controllerData[0x02] = 0x00;
+    controllerData[0x03] = 0x00;
+    controllerData[0x04] = 0x00;
+    controllerData[0x05] = ((!(buttons[WiiButtons::WII_BUTTON_C] & 0x01)) << 1) | ((!(buttons[WiiButtons::WII_BUTTON_Z] & 0x01)) << 0);
+
+    return 6;
+}

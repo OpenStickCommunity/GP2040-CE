@@ -164,3 +164,15 @@ void MotionPlusExtension::process(uint8_t *inputData) {
 //    printf("Roll: %5d Pitch: %5d Yaw: %5d\n", motionState[WiiMotions::WII_GYROSCOPE_ROLL], motionState[WiiMotions::WII_GYROSCOPE_PITCH], motionState[WiiMotions::WII_GYROSCOPE_YAW]);
 #endif
 }
+
+uint8_t MotionPlusExtension::prepareOutput() {
+    controllerData[0x00] = analogState[WiiAnalogs::WII_ANALOG_LEFT_X];
+    controllerData[0x01] = analogState[WiiAnalogs::WII_ANALOG_LEFT_Y];
+    controllerData[0x02] = 0x00;
+    controllerData[0x03] = 0x00;
+    controllerData[0x04] = 0x00;
+    controllerData[0x05] = ((!(buttons[WiiButtons::WII_BUTTON_C] & 0x01)) << 1) | ((!(buttons[WiiButtons::WII_BUTTON_Z] & 0x01)) << 0);
+
+    return 6;
+}
+
