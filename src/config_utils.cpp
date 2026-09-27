@@ -529,6 +529,11 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.displayOptions, displaySaverMode, DISPLAY_SAVER_MODE);
     INIT_UNSET_PROPERTY(config.displayOptions, buttonLayoutOrientation, DISPLAY_LAYOUT_ORIENTATION);
     INIT_UNSET_PROPERTY(config.displayOptions, contrast, DISPLAY_CONTRAST);
+    INIT_UNSET_PROPERTY(config.displayOptions, interfaceType, DISPLAY_INTERFACE_TYPE);
+    INIT_UNSET_PROPERTY(config.displayOptions, spiBlock, DISPLAY_SPI_BLOCK);
+    INIT_UNSET_PROPERTY(config.displayOptions, spiDcPin, DISPLAY_SPI_DC_PIN);
+    INIT_UNSET_PROPERTY(config.displayOptions, spiResetPin, DISPLAY_SPI_RESET_PIN);
+    INIT_UNSET_PROPERTY(config.displayOptions, controller, DISPLAY_CONTROLLER);
 
     // peripheralOptions
     PeripheralOptions& peripheralOptions = config.peripheralOptions;
@@ -721,6 +726,16 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, outer_deadzone2, DEFAULT_OUTER_DEADZONE2);
     INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, auto_calibrate2, !!AUTO_CALIBRATE2_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, forced_circularity2, !!FORCED_CIRCULARITY2_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, muxSelectPin0, ANALOG_MUX_S0_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, muxSelectPin1, ANALOG_MUX_S1_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, muxSelectPin2, ANALOG_MUX_S2_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, muxZPin, ANALOG_MUX_Z_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, triggerLPin, ANALOG_TRIGGER_L_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, triggerRPin, ANALOG_TRIGGER_R_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, triggerLMin, ANALOG_TRIGGER_L_MIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, triggerLMax, ANALOG_TRIGGER_L_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, triggerRMin, ANALOG_TRIGGER_R_MIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, triggerRMax, ANALOG_TRIGGER_R_MAX);
 
     // addonOptions.turboOptions
     INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, enabled, !!TURBO_ENABLED);
@@ -1714,6 +1729,8 @@ void gpioMappingsMigrationCore(Config& config)
     }
 
     markAddonPinIfUsed(config.ledOptions.dataPin);
+    markAddonPinIfUsed(config.displayOptions.spiDcPin);
+    markAddonPinIfUsed(config.displayOptions.spiResetPin);
     // check if PLED PINs are actually GPIOs or not
     // pledPin used to be used for RGB indexes, so we should only mark the GPIO
     // as assigned to addon if in PWM mode
@@ -1729,6 +1746,12 @@ void gpioMappingsMigrationCore(Config& config)
     markAddonPinIfUsed(config.addonOptions.analogOptions.analogAdc1PinY);
     markAddonPinIfUsed(config.addonOptions.analogOptions.analogAdc2PinX);
     markAddonPinIfUsed(config.addonOptions.analogOptions.analogAdc2PinY);
+    markAddonPinIfUsed(config.addonOptions.analogOptions.triggerLPin);
+    markAddonPinIfUsed(config.addonOptions.analogOptions.triggerRPin);
+    markAddonPinIfUsed(config.addonOptions.analogOptions.muxSelectPin0);
+    markAddonPinIfUsed(config.addonOptions.analogOptions.muxSelectPin1);
+    markAddonPinIfUsed(config.addonOptions.analogOptions.muxSelectPin2);
+    markAddonPinIfUsed(config.addonOptions.analogOptions.muxZPin);
     markAddonPinIfUsed(config.addonOptions.buzzerOptions.pin);
     markAddonPinIfUsed(config.addonOptions.buzzerOptions.enablePin);
     markAddonPinIfUsed(config.addonOptions.turboOptions.ledPin);

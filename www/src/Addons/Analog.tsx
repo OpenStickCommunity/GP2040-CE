@@ -5,7 +5,10 @@ import * as yup from 'yup';
 
 import Section from '../Components/Section';
 import FormSelect from '../Components/FormSelect';
-import AnalogPinOptions from '../Components/AnalogPinOptions';
+import AnalogMuxMonitor from '../Components/AnalogMuxMonitor';
+import AnalogPinOptions, {
+	isAnalogMuxPin,
+} from '../Components/AnalogPinOptions';
 import { AppContext } from '../Contexts/AppContext';
 import FormControl from '../Components/FormControl';
 import { AddonPropTypes } from '../Pages/AddonsConfigPage';
@@ -43,16 +46,18 @@ const ANALOG_ERROR_RATES = [
 	{ label: '15%', value: 821 },
 ];
 
+// A stick / trigger pin can also be a mux channel (Y0-Y7), which is not a GPIO
+const analogPinScheme = (label: string) =>
+	yup.lazy((value) =>
+		isAnalogMuxPin(value)
+			? yup.number().label(label)
+			: yup.number().label(label).validatePinWhenValue('AnalogInputEnabled'),
+	);
+
 export const analogScheme = {
 	AnalogInputEnabled: yup.number().required().label('Analog Input Enabled'),
-	analogAdc1PinX: yup
-		.number()
-		.label('Analog Stick 1 Pin X')
-		.validatePinWhenValue('AnalogInputEnabled'),
-	analogAdc1PinY: yup
-		.number()
-		.label('Analog Stick 1 Pin Y')
-		.validatePinWhenValue('AnalogInputEnabled'),
+	analogAdc1PinX: analogPinScheme('Analog Stick 1 Pin X'),
+	analogAdc1PinY: analogPinScheme('Analog Stick 1 Pin Y'),
 	analogAdc1Mode: yup
 		.number()
 		.label('Analog Stick 1 Mode')
@@ -61,14 +66,8 @@ export const analogScheme = {
 		.number()
 		.label('Analog Stick 1 Invert')
 		.validateSelectionWhenValue('AnalogInputEnabled', INVERT_MODES),
-	analogAdc2PinX: yup
-		.number()
-		.label('Analog Stick 2 Pin X')
-		.validatePinWhenValue('AnalogInputEnabled'),
-	analogAdc2PinY: yup
-		.number()
-		.label('Analog Stick 2 Pin Y')
-		.validatePinWhenValue('AnalogInputEnabled'),
+	analogAdc2PinX: analogPinScheme('Analog Stick 2 Pin X'),
+	analogAdc2PinY: analogPinScheme('Analog Stick 2 Pin Y'),
 	analogAdc2Mode: yup
 		.number()
 		.label('Analog Stick 2 Mode')
@@ -150,6 +149,41 @@ export const analogScheme = {
 		.number()
 		.label('Joystick Center Y2')
 		.validateRangeWhenValue('AnalogInputEnabled', 0, 4095),
+
+	analogMuxS0Pin: yup
+		.number()
+		.label('Mux S0 Pin')
+		.validatePinWhenValue('AnalogInputEnabled'),
+	analogMuxS1Pin: yup
+		.number()
+		.label('Mux S1 Pin')
+		.validatePinWhenValue('AnalogInputEnabled'),
+	analogMuxS2Pin: yup
+		.number()
+		.label('Mux S2 Pin')
+		.validatePinWhenValue('AnalogInputEnabled'),
+	analogMuxZPin: yup
+		.number()
+		.label('Mux Z Pin')
+		.validatePinWhenValue('AnalogInputEnabled'),
+	analogTriggerLPin: analogPinScheme('Left Trigger Pin'),
+	analogTriggerRPin: analogPinScheme('Right Trigger Pin'),
+	analogTriggerLMin: yup
+		.number()
+		.label('Left Trigger Released Value')
+		.validateRangeWhenValue('AnalogInputEnabled', 0, 4095),
+	analogTriggerLMax: yup
+		.number()
+		.label('Left Trigger Pressed Value')
+		.validateRangeWhenValue('AnalogInputEnabled', 0, 4095),
+	analogTriggerRMin: yup
+		.number()
+		.label('Right Trigger Released Value')
+		.validateRangeWhenValue('AnalogInputEnabled', 0, 4095),
+	analogTriggerRMax: yup
+		.number()
+		.label('Right Trigger Pressed Value')
+		.validateRangeWhenValue('AnalogInputEnabled', 0, 4095),
 };
 
 export const analogState = {
@@ -180,6 +214,16 @@ export const analogState = {
 	smoothing_factor2: 5,
 	analog_error: 1,
 	analog_error2: 1,
+	analogMuxS0Pin: -1,
+	analogMuxS1Pin: -1,
+	analogMuxS2Pin: -1,
+	analogMuxZPin: -1,
+	analogTriggerLPin: -1,
+	analogTriggerRPin: -1,
+	analogTriggerLMin: 1985,
+	analogTriggerLMax: 2730,
+	analogTriggerRMin: 1985,
+	analogTriggerRMax: 2730,
 };
 
 const Analog = ({
@@ -242,7 +286,7 @@ const Analog = ({
 								isInvalid={Boolean(errors.analogAdc1PinX)}
 								onChange={handleChange}
 							>
-								<AnalogPinOptions />
+								<AnalogPinOptions mux />
 							</FormSelect>
 							<FormSelect
 								label={t('AddonsConfig:analog-adc-1-pin-y-label')}
@@ -254,7 +298,7 @@ const Analog = ({
 								isInvalid={Boolean(errors.analogAdc1PinY)}
 								onChange={handleChange}
 							>
-								<AnalogPinOptions />
+								<AnalogPinOptions mux />
 							</FormSelect>
 							<Row className="mb-3">
 								<FormSelect
@@ -606,7 +650,7 @@ const Analog = ({
 								isInvalid={Boolean(errors.analogAdc2PinX)}
 								onChange={handleChange}
 							>
-								<AnalogPinOptions />
+								<AnalogPinOptions mux />
 							</FormSelect>
 							<FormSelect
 								label={t('AddonsConfig:analog-adc-2-pin-y-label')}
@@ -618,7 +662,7 @@ const Analog = ({
 								isInvalid={Boolean(errors.analogAdc2PinY)}
 								onChange={handleChange}
 							>
-								<AnalogPinOptions />
+								<AnalogPinOptions mux />
 							</FormSelect>
 							<Row className="mb-3">
 								<FormSelect
@@ -953,6 +997,152 @@ const Analog = ({
 								</div>
 							)}
 						</Row>
+					</Tab>
+					<Tab
+						key="analogMuxConfig"
+						eventKey="analogMuxConfig"
+						title={t('AddonsConfig:analog-mux-tab')}
+					>
+						<div className="alert alert-info" role="alert">
+							{t('AddonsConfig:analog-mux-description')}
+						</div>
+						<Row className="mb-3">
+							<FormControl
+								type="number"
+								label={t('AddonsConfig:analog-mux-s0-label')}
+								name="analogMuxS0Pin"
+								className="form-control-sm"
+								groupClassName="col-sm-3 mb-3"
+								value={values.analogMuxS0Pin}
+								error={errors.analogMuxS0Pin}
+								isInvalid={Boolean(errors.analogMuxS0Pin)}
+								onChange={handleChange}
+								min={-1}
+								max={boardDefinition.maxPin}
+							/>
+							<FormControl
+								type="number"
+								label={t('AddonsConfig:analog-mux-s1-label')}
+								name="analogMuxS1Pin"
+								className="form-control-sm"
+								groupClassName="col-sm-3 mb-3"
+								value={values.analogMuxS1Pin}
+								error={errors.analogMuxS1Pin}
+								isInvalid={Boolean(errors.analogMuxS1Pin)}
+								onChange={handleChange}
+								min={-1}
+								max={boardDefinition.maxPin}
+							/>
+							<FormControl
+								type="number"
+								label={t('AddonsConfig:analog-mux-s2-label')}
+								name="analogMuxS2Pin"
+								className="form-control-sm"
+								groupClassName="col-sm-3 mb-3"
+								value={values.analogMuxS2Pin}
+								error={errors.analogMuxS2Pin}
+								isInvalid={Boolean(errors.analogMuxS2Pin)}
+								onChange={handleChange}
+								min={-1}
+								max={boardDefinition.maxPin}
+							/>
+							<FormSelect
+								label={t('AddonsConfig:analog-mux-z-label')}
+								name="analogMuxZPin"
+								className="form-select-sm"
+								groupClassName="col-sm-3 mb-3"
+								value={values.analogMuxZPin}
+								error={errors.analogMuxZPin}
+								isInvalid={Boolean(errors.analogMuxZPin)}
+								onChange={handleChange}
+							>
+								<AnalogPinOptions />
+							</FormSelect>
+						</Row>
+						<div className="alert alert-secondary" role="alert">
+							{t('AddonsConfig:analog-trigger-description')}
+						</div>
+						<Row className="mb-3">
+							<FormSelect
+								label={t('AddonsConfig:analog-trigger-l-pin-label')}
+								name="analogTriggerLPin"
+								className="form-select-sm"
+								groupClassName="col-sm-3 mb-3"
+								value={values.analogTriggerLPin}
+								error={errors.analogTriggerLPin}
+								isInvalid={Boolean(errors.analogTriggerLPin)}
+								onChange={handleChange}
+							>
+								<AnalogPinOptions mux />
+							</FormSelect>
+							<FormControl
+								type="number"
+								label={t('AddonsConfig:analog-trigger-l-min-label')}
+								name="analogTriggerLMin"
+								className="form-control-sm"
+								groupClassName="col-sm-3 mb-3"
+								value={values.analogTriggerLMin}
+								error={errors.analogTriggerLMin}
+								isInvalid={Boolean(errors.analogTriggerLMin)}
+								onChange={handleChange}
+								min={0}
+								max={4095}
+							/>
+							<FormControl
+								type="number"
+								label={t('AddonsConfig:analog-trigger-l-max-label')}
+								name="analogTriggerLMax"
+								className="form-control-sm"
+								groupClassName="col-sm-3 mb-3"
+								value={values.analogTriggerLMax}
+								error={errors.analogTriggerLMax}
+								isInvalid={Boolean(errors.analogTriggerLMax)}
+								onChange={handleChange}
+								min={0}
+								max={4095}
+							/>
+						</Row>
+						<Row className="mb-3">
+							<FormSelect
+								label={t('AddonsConfig:analog-trigger-r-pin-label')}
+								name="analogTriggerRPin"
+								className="form-select-sm"
+								groupClassName="col-sm-3 mb-3"
+								value={values.analogTriggerRPin}
+								error={errors.analogTriggerRPin}
+								isInvalid={Boolean(errors.analogTriggerRPin)}
+								onChange={handleChange}
+							>
+								<AnalogPinOptions mux />
+							</FormSelect>
+							<FormControl
+								type="number"
+								label={t('AddonsConfig:analog-trigger-r-min-label')}
+								name="analogTriggerRMin"
+								className="form-control-sm"
+								groupClassName="col-sm-3 mb-3"
+								value={values.analogTriggerRMin}
+								error={errors.analogTriggerRMin}
+								isInvalid={Boolean(errors.analogTriggerRMin)}
+								onChange={handleChange}
+								min={0}
+								max={4095}
+							/>
+							<FormControl
+								type="number"
+								label={t('AddonsConfig:analog-trigger-r-max-label')}
+								name="analogTriggerRMax"
+								className="form-control-sm"
+								groupClassName="col-sm-3 mb-3"
+								value={values.analogTriggerRMax}
+								error={errors.analogTriggerRMax}
+								isInvalid={Boolean(errors.analogTriggerRMax)}
+								onChange={handleChange}
+								min={0}
+								max={4095}
+							/>
+						</Row>
+						<AnalogMuxMonitor />
 					</Tab>
 				</Tabs>
 			</div>

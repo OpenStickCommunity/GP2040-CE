@@ -285,6 +285,14 @@ message DisplayOptions
     optional uint32 inputHistoryRow = 30;
     
     optional uint32 contrast = 31;
+
+    // SPI displays (SSD1306 / SH1106). SCK, MOSI and CS come from the SPI
+    // block set up in Peripheral Mapping; DC and RESET are set here.
+    optional int32 interfaceType = 32; // 0 = I2C (auto-detected), 1 = SPI
+    optional int32 spiBlock = 33;
+    optional int32 spiDcPin = 34;
+    optional int32 spiResetPin = 35;
+    optional int32 controller = 36; // 0 = SSD1306, 1 = SH1106
 }
 
 message LightCluster
@@ -442,6 +450,22 @@ message AnalogOptions
     optional uint32 joystick_center_y = 25;
     optional uint32 joystick_center_x2 = 26;
     optional uint32 joystick_center_y2 = 27;
+
+    // 74HC4051 (8:1 analog mux) support. Any stick axis / trigger pin can be a
+    // mux channel (Y0-Y7 are stored as 100-107), read through muxZPin.
+    optional int32 muxSelectPin0 = 28;
+    optional int32 muxSelectPin1 = 29;
+    optional int32 muxSelectPin2 = 30;
+    optional int32 muxZPin = 31;
+
+    // Analog triggers (e.g. hall effect sensors). min/max are raw 12-bit ADC
+    // counts; min > max inverts the sensor polarity.
+    optional int32 triggerLPin = 32;
+    optional int32 triggerRPin = 33;
+    optional uint32 triggerLMin = 34;
+    optional uint32 triggerLMax = 35;
+    optional uint32 triggerRMin = 36;
+    optional uint32 triggerRMax = 37;
 }
 
 message TurboOptions
