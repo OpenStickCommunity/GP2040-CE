@@ -66,14 +66,18 @@ void USBHostManager::hid_report_received_cb(uint8_t dev_addr, uint8_t instance, 
 void USBHostManager::hid_set_report_complete_cb(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
     if ( listeners.size() == 0 ) return;
     for( std::vector<USBListener*>::iterator it = listeners.begin(); it != listeners.end(); it++ ){
-        (*it)->set_report_complete(dev_addr, instance, report_id, report_type, len);
+        if (len != 0 || (*it)->accepts_failed_report_completions()) {
+            (*it)->set_report_complete(dev_addr, instance, report_id, report_type, len);
+        }
     }
 }
 
 void USBHostManager::hid_get_report_complete_cb(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
     if ( listeners.size() == 0 ) return;
     for( std::vector<USBListener*>::iterator it = listeners.begin(); it != listeners.end(); it++ ){
-        (*it)->get_report_complete(dev_addr, instance, report_id, report_type, len);
+        if (len != 0 || (*it)->accepts_failed_report_completions()) {
+            (*it)->get_report_complete(dev_addr, instance, report_id, report_type, len);
+        }
     }
 }
 
@@ -149,15 +153,13 @@ void tuh_hid_report_received_cb(uint8_t dev_addr, uint8_t instance, uint8_t cons
 
 // On IN/OUT/FEATURE set report callback
 void tuh_hid_set_report_complete_cb(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
-    if ( len != 0 )
-        USBHostManager::getInstance().hid_set_report_complete_cb(dev_addr, instance, report_id, report_type, len);
+    USBHostManager::getInstance().hid_set_report_complete_cb(dev_addr, instance, report_id, report_type, len);
 }
 
 
 // GET REPORT FEATURE
 void tuh_hid_get_report_complete_cb(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
-    if ( len != 0 )
-        USBHostManager::getInstance().hid_get_report_complete_cb(dev_addr, instance, report_id, report_type, len);
+    USBHostManager::getInstance().hid_get_report_complete_cb(dev_addr, instance, report_id, report_type, len);
 }
 
 // USB Host: X-Input
