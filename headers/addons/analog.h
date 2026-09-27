@@ -6,7 +6,6 @@
 #include "BoardConfig.h"
 #include "enums.pb.h"
 #include "config.pb.h"
-#include "helper.h"
 #include "types.h"
 
 #ifndef ANALOG_INPUT_ENABLED
@@ -43,6 +42,62 @@
 
 #ifndef ANALOG_ADC_2_INVERT
 #define ANALOG_ADC_2_INVERT INVERT_NONE
+#endif
+
+#ifndef FORCED_CIRCULARITY_ENABLED
+#define FORCED_CIRCULARITY_ENABLED 0
+#endif
+
+#ifndef FORCED_CIRCULARITY2_ENABLED
+#define FORCED_CIRCULARITY2_ENABLED 0
+#endif
+
+#ifndef DEFAULT_INNER_DEADZONE
+#define DEFAULT_INNER_DEADZONE 5
+#endif
+
+#ifndef DEFAULT_INNER_DEADZONE2
+#define DEFAULT_INNER_DEADZONE2 5
+#endif
+
+#ifndef DEFAULT_OUTER_DEADZONE
+#define DEFAULT_OUTER_DEADZONE 95
+#endif
+
+#ifndef DEFAULT_OUTER_DEADZONE2
+#define DEFAULT_OUTER_DEADZONE2 95
+#endif
+
+#ifndef AUTO_CALIBRATE_ENABLED
+#define AUTO_CALIBRATE_ENABLED 0
+#endif
+
+#ifndef AUTO_CALIBRATE2_ENABLED
+#define AUTO_CALIBRATE2_ENABLED 0
+#endif
+
+#ifndef ANALOG_SMOOTHING_ENABLED
+#define ANALOG_SMOOTHING_ENABLED 0
+#endif
+
+#ifndef ANALOG_SMOOTHING2_ENABLED
+#define ANALOG_SMOOTHING2_ENABLED 0
+#endif
+
+#ifndef SMOOTHING_FACTOR
+#define SMOOTHING_FACTOR 2
+#endif
+
+#ifndef SMOOTHING_FACTOR2
+#define SMOOTHING_FACTOR2 2
+#endif
+
+#ifndef ANALOG_ERROR
+#define ANALOG_ERROR 1000
+#endif
+
+#ifndef ANALOG_ERROR2
+#define ANALOG_ERROR2 1000
 #endif
 
 // 74HC4051 analog multiplexer: select pins S0-S2 and the ADC pin wired to Z
@@ -88,73 +143,17 @@
 #define ANALOG_TRIGGER_R_MAX 2730
 #endif
 
-#ifndef FORCED_CIRCULARITY_ENABLED
-#define FORCED_CIRCULARITY_ENABLED 0
-#endif
-
-#ifndef FORCED_CIRCULARITY2_ENABLED
-#define FORCED_CIRCULARITY2_ENABLED 0
-#endif
-
-#ifndef DEFAULT_INNER_DEADZONE
-#define DEFAULT_INNER_DEADZONE 5
-#endif
-
-#ifndef DEFAULT_INNER_DEADZONE2
-#define DEFAULT_INNER_DEADZONE2 5
-#endif
-
-#ifndef DEFAULT_OUTER_DEADZONE
-#define DEFAULT_OUTER_DEADZONE 95
-#endif
-
-#ifndef DEFAULT_OUTER_DEADZONE2
-#define DEFAULT_OUTER_DEADZONE2 95
-#endif
-
-#ifndef AUTO_CALIBRATE_ENABLED
-#define AUTO_CALIBRATE_ENABLED 0
-#endif
-
-#ifndef AUTO_CALIBRATE2_ENABLED
-#define AUTO_CALIBRATE2_ENABLED 0
-#endif
-
-#ifndef ANALOG_SMOOTHING_ENABLED
-#define ANALOG_SMOOTHING_ENABLED 0
-#endif
-
-#ifndef ANALOG_SMOOTHING2_ENABLED
-#define ANALOG_SMOOTHING2_ENABLED 0
-#endif
-
-#ifndef SMOOTHING_FACTOR
-#define SMOOTHING_FACTOR 5
-#endif
-
-#ifndef SMOOTHING_FACTOR2
-#define SMOOTHING_FACTOR2 5
-#endif
-
-#ifndef ANALOG_ERROR
-#define ANALOG_ERROR 1000
-#endif
-
-#ifndef ANALOG_ERROR2
-#define ANALOG_ERROR2 1000
-#endif
-
 // Analog Module Name
 #define AnalogName "Analog"
 
 #define ADC_COUNT 2
 
 // Mux channels Y0-Y7 are stored in the pin fields as ANALOG_MUX_PIN_BASE + channel.
-// They sit above every real GPIO number, so isValidPin() rejects them on purpose.
+// They sit above every real GPIO number, so isAdcPin() rejects them on purpose.
 #define ANALOG_MUX_PIN_BASE 100
 #define ANALOG_MUX_CHANNELS 8
 
-// Wait after switching the mux, throw away one sample, then average several (see readRaw)
+// Wait after switching the mux, throw away one sample, then average several
 #define ANALOG_MUX_SETTLE_US 10
 #define ANALOG_MUX_SAMPLES 8
 
@@ -164,10 +163,6 @@
 
 static inline bool isAnalogMuxPin(int32_t pin) {
     return pin >= ANALOG_MUX_PIN_BASE && pin < (ANALOG_MUX_PIN_BASE + ANALOG_MUX_CHANNELS);
-}
-
-static inline bool isAnalogPinUsable(int32_t pin) {
-    return isAnalogMuxPin(pin) || isValidPin(pin);
 }
 
 typedef struct
@@ -180,8 +175,12 @@ typedef struct
     bool y_mux;
     float x_value;
     float y_value;
-    uint16_t x_center;
-    uint16_t y_center;
+    uint32_t x_center;
+    uint32_t y_center;
+    uint32_t x_min;
+    uint32_t x_max;
+    uint32_t y_min;
+    uint32_t y_max;
     float xy_magnitude;
     float x_magnitude;
     float y_magnitude;
@@ -189,6 +188,8 @@ typedef struct
     DpadMode analog_dpad;
     float x_ema;
     float y_ema;
+    bool x_ema_initialized;
+    bool y_ema_initialized;
     bool ema_option;
     float ema_smoothing;
     float error_rate;
@@ -213,6 +214,9 @@ typedef struct
 
 class AnalogInput : public GPAddon {
 public:
+    static bool isAdcPin(Pin_t pin);
+    static bool isAnalogPinUsable(Pin_t pin);
+    static uint16_t readCalibrationSample(Pin_t pin);
     virtual bool available();
     virtual void setup();       // Analog Setup
     virtual void process();     // Analog Process
@@ -225,9 +229,8 @@ private:
     void muxSelect(uint8_t channel);
     uint16_t readRaw(bool mux, Pin_t pin_adc);
     uint8_t readTrigger(trigger_instance & trigger);
-    float readPin(int stick_num, Pin_t pin_adc, bool mux, uint16_t center);
+    float readPin(Pin_t pin_adc, bool mux, uint32_t center, uint32_t minimum, uint32_t maximum);
     float emaCalculation(int stick_num, float ema_value, float ema_previous);
-    uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
     float magnitudeCalculation(int stick_num, adc_instance & adc_inst);
     void radialDeadzone(int stick_num, adc_instance & adc_inst);
     adc_instance adc_pairs[ADC_COUNT];

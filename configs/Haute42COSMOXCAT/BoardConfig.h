@@ -84,7 +84,7 @@
 #define LED_BRIGHTNESS_STEPS 5
 #define LED_FORMAT LED_FORMAT_GRB
 #define LEDS_PER_PIXEL 1
-#define LEDS_BASE_ANIMATION_INDEX AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_SYNCED
+
 #define LEDS_DPAD_LEFT   0
 #define LEDS_DPAD_DOWN   1
 #define LEDS_DPAD_RIGHT  2
@@ -103,6 +103,17 @@
 #define LEDS_BUTTON_A2   15
 #define LEDS_BUTTON_S2   16
 #define LEDS_BUTTON_S1   17
+
+// LED Profile 0
+#define LEDS_PROFILE0_ENABLED 1
+#define LEDS_PROFILE0_DEFAULT_CYCLE_TIME 4
+#define LEDS_PROFILE0_BASE_ANIMATION_INDEX AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_SYNCED
+#define LEDS_PROFILE0_PRESSED_ANIMATION_INDEX AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_STATIC_COLOR
+#define LEDS_PROFILE0_CASE_ANIMATION_INDEX AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_SYNCED
+#define LEDS_PROFILE0_STATIC_COLOR_UNPRESSED ColorIndexRed
+#define LEDS_PROFILE0_STATIC_COLOR_PRESSED ColorIndexWhite
+#define LEDS_PROFILE0_STATIC_COLOR_CASE ColorIndexGreen
+#define LEDS_PROFILE0_USE_CASE_IN_PRESSED true
 
 // Set our default ambient light
 #define CASE_RGB_TYPE CASE_RGB_TYPE_AMBIENT

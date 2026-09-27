@@ -12,6 +12,7 @@ export default {
 	'select-pin-1': 'Select Pin 1',
 	'select-pin-2': 'Select Pin 2',
 	'select-pin-3': 'Select Pin 3',
+	'separate-select-pins-label': 'Enable Separate Select Pins',
 	'adc-pin-0': 'ADC Pin 0',
 	'adc-pin-1': 'ADC Pin 1',
 	'adc-pin-2': 'ADC Pin 2',

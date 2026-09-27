@@ -62,17 +62,26 @@
 
 #define LED_BRIGHTNESS_MAXIMUM 100
 
-#define LEDS_DPAD_LEFT   0
-#define LEDS_DPAD_DOWN   1
-#define LEDS_DPAD_RIGHT  2
-#define LEDS_DPAD_UP     3
-#define LEDS_BUTTON_B3   4
-#define LEDS_BUTTON_B4   5
-#define LEDS_BUTTON_R1   6
-#define LEDS_BUTTON_L1   7
-#define LEDS_BUTTON_B1   8
-#define LEDS_BUTTON_B2   9
-#define LEDS_BUTTON_R2   10
-#define LEDS_BUTTON_L2   11
+#define LIGHT_DATA_NAME_DEFAULT "Standard"
+#define LIGHT_DATA_SIZE_DEFAULT 12
+#define LIGHT_DATA_DEFAULT \
+0,  1, 2,  3, 12, LightType::LightType_ActionButton, \
+1,  1, 4,  3, 14, LightType::LightType_ActionButton, \
+2,  1, 6,  4, 13, LightType::LightType_ActionButton, \
+3,  1, 7,  7, 15, LightType::LightType_ActionButton, \
+4,  1, 8,  3, 8,  LightType::LightType_ActionButton, \
+5,  1, 10, 2, 6,  LightType::LightType_ActionButton, \
+6,  1, 12, 2, 5,  LightType::LightType_ActionButton, \
+7,  1, 14, 2, 4,  LightType::LightType_ActionButton, \
+8,  1, 8,  5, 3,  LightType::LightType_ActionButton, \
+9,  1, 10, 4, 2,  LightType::LightType_ActionButton, \
+10, 1, 12, 4, 0,  LightType::LightType_ActionButton, \
+11, 1, 14, 4, 1,  LightType::LightType_ActionButton
+
+// LED Profile 0
+#define LEDS_PROFILE0_ENABLED 1
+#define LEDS_PROFILE0_BASE_ANIMATION_INDEX AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_ROTATE
+#define LEDS_PROFILE0_PRESSED_ANIMATION_INDEX AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_STATIC_COLOR
+#define LEDS_PROFILE0_STATIC_COLOR_PRESSED ColorIndexWhite
 
 #endif
