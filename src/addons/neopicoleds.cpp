@@ -242,6 +242,7 @@ bool NeoPicoLEDAddon::available() {
 
 void NeoPicoLEDAddon::setup() {
     // Set Default LED Options
+	AnimationStation & AnimStation = AnimationStation::getInstance();
     const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
 	turnOffWhenSuspended = ledOptions.turnOffWhenSuspended;
 
@@ -254,8 +255,7 @@ void NeoPicoLEDAddon::setup() {
         neoPLEDs = new NeoPicoPlayerLEDs();
     }
 
-	//decompressSettings();
-
+	AnimStation.InitSettings();
 	configureLEDs();
 
 	// Next Run
@@ -267,20 +267,21 @@ void NeoPicoLEDAddon::process()
 	AnimationStation & AnimStation = AnimationStation::getInstance();
 	if(AnimStation.getRestartLeds() == true)
 	{
-		AnimStation.setRestartLeds(false);
-
 		//Save off test mode selected profile so we can restore it after the restart
 		int8_t savedMode = AnimStation.GetMode();
 
 		AnimStation.Clear();
 		neopico.Clear();
 		neopico.Show();
-		//decompressSettings();
+		AnimStation.InitSettings();
 		configureLEDs();
 
 		//Restore saved profile if applicable
 		if(AnimStation.getTestMode() != AnimationStationTestMode::AnimationStation_TestModeDisableTestMode)
 			AnimStation.SetMode(savedMode);
+
+		// Remove restart led flag
+		AnimStation.setRestartLeds(false);
 	}
 
 	//Check we have LEDs enabled and is it time to update
@@ -396,7 +397,7 @@ void NeoPicoLEDAddon::UpdatePlayerLEDs()
 					} 
 					else 
 					{
-						RGB pledCol = Animation::StaticGetNonPressedColorForLight(&RGBLights, lightIndex);
+						RGB pledCol = AnimStation.StaticGetNonPressedColorForLight(&RGBLights, lightIndex);
 						valueToApply = pledCol.value(neopico.GetFormat(), brightness);
 					}
 					
@@ -434,7 +435,7 @@ void NeoPicoLEDAddon::UpdateTurboLED()
 				{
 					for(uint8_t index = RGBLights.AllLights[lightIndex].FirstLedIndex; index < (RGBLights.AllLights[lightIndex].FirstLedIndex + RGBLights.AllLights[lightIndex].LedsPerLight); ++index)
 					{
-						RGB turboCol = Animation::StaticGetNonPressedColorForLight(&RGBLights, lightIndex);
+						RGB turboCol = AnimStation.StaticGetNonPressedColorForLight(&RGBLights, lightIndex);
             		    frame[index] = turboCol.value(neopico.GetFormat(), brightness);
 					}
 				}
@@ -763,17 +764,12 @@ void NeoPicoLEDAddon::configureLEDs()
 		neopico.ChangeNumPixels(ledCount);
 	}
 
-	Animation::format = static_cast<LEDFormat>(ledOptions.ledFormat);
+	AnimStation.SetFormat(static_cast<LEDFormat>(ledOptions.ledFormat));
 	AnimStation.SetMaxBrightness(ledOptions.brightnessMaximum);
 	AnimStation.SetBrightnessStepValue(animOptions.brightness);
 	AnimStation.SetLights(RGBLights);
 	AnimStation.SetMode(animOptions.baseProfileIndex);
 }
-/*
-void NeoPicoLEDAddon::decompressSettings()
-{
-	AnimStation.DecompressSettings();
-}*/
 
 ////////////////////////////////////////////
 //New RGBLight setups

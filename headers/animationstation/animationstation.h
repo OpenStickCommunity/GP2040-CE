@@ -68,9 +68,6 @@ public:
   void DecreaseBrightnessByStep();
   void IncreaseBrightnessByStep();
   void DimBrightnessTo0();
-
-  //static void DecompressProfile(int ProfileIndex, const AnimationProfile* ProfileToDecompress);
-  //void DecompressSettings();
   void CheckForOptionsUpdate();
  
   //Testing/webconfig
@@ -97,8 +94,19 @@ public:
   void UpdateTestMode();
   void UpdateTimeout();
 
+  void InitSettings();
+
+  void SetFormat(LEDFormat newFormat) { format = newFormat; }
+
+
+  RGB GetColorForIndex(uint32_t ColorIndex);
+  RGB StaticGetNonPressedColorForLight(Lights* AllLights, uint32_t LightIndex);
+
 private:
 	AnimationStation();
+
+  bool IncreaseProfile();
+  bool DecreaseProfile();
 
   uint8_t brightnessMax; //0-255
   uint8_t brightnessStepValue; //0-10
@@ -127,8 +135,6 @@ private:
   //Buttons pressed (physical gipo pins) last frame, used when changing button theme so starts initialised
   std::vector<int32_t> lastPressed;
 
-  absolute_time_t nextChange;
-
   //Color of all lights this frame
   RGB frame[FRAME_MAX];
 
@@ -142,6 +148,12 @@ private:
 
 	//Webconfig/testing
 	bool bRestartLeds;
+
+  bool bChangeDetected;
+
+  LEDFormat format;
+
+  GamepadHotkey lastAction;
 };
 
 #endif

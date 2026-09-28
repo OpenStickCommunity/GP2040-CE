@@ -549,9 +549,6 @@ public:
 	virtual std::string name() { return NeoPicoLEDName; }
 	uint32_t frame[FRAME_MAX];
 private:
-
-	//void decompressSettings();
-
 	void configureLEDs();
 
 	GamepadHotkey ProcessAnimationHotkeys(Gamepad *gamepad);

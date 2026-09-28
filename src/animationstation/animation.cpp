@@ -6,8 +6,6 @@
 #define PRESS_COOLDOWN_MAX 5000
 #define PRESS_COOLDOWN_MIN 0
 
-LEDFormat Animation::format;
-
 Animation::Animation(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType) : RGBLights(&InRGBLights) 
 {
   AnimationOptions & options = Storage::getInstance().getAnimationOptions();
@@ -169,62 +167,17 @@ bool Animation::LightTypeIsForAnimation(LightType Type)
   return false;
 }
 
-//Get correct color for light index
-RGB Animation::StaticGetNonPressedColorForLight(Lights* AllLights, uint32_t LightIndex)
-{
-  AnimationStation & AnimStation = AnimationStation::getInstance();
-  AnimationOptions & options = Storage::getInstance().getAnimationOptions();
-  int colIndex = 0;
-  Light* thisLight = &(AllLights->AllLights[LightIndex]);
-  if(thisLight->Type == LightType::LightType_ActionButton || thisLight->Type == LightType::LightType_Turbo)
-  {
-    //button
-    colIndex = options.profiles[options.baseProfileIndex].notPressedStaticColors.bytes[thisLight->GIPOPin];
-  }
-  else
-  {
-    //If we're in test mode for case lights then turn all lights black and return white for the requested case Light
-    if(AnimStation.getTestModeLightIsNonButton() && AnimStation.getTestModePinOrNonButtonIndex() != -1)
-    {
-      colIndex = 0;
-      if(thisLight->Type == LightType::LightType_Turbo && ((int)thisLight->FirstLedIndex == AnimStation.getTestModePinOrNonButtonIndex()))
-      colIndex = 1;
-    }
-    else
-    {
-      //case light or player led
-      colIndex = options.profiles[options.baseProfileIndex].nonButtonStaticColors.bytes[thisLight->NonButtonIndex];
-    }
-  }
-
-  return GetColorForIndex(colIndex);
-}
-
 RGB Animation::GetNonPressedColorForLight(uint32_t LightIndex)
 {
-  return StaticGetNonPressedColorForLight(RGBLights, LightIndex);
+  AnimationStation & AnimStation = AnimationStation::getInstance();
+  return AnimStation.StaticGetNonPressedColorForLight(RGBLights, LightIndex);
 }
 
 RGB Animation::GetPressedColorForLight(uint32_t LightIndex)
 {
+  AnimationStation & AnimStation = AnimationStation::getInstance();
   AnimationOptions & options = Storage::getInstance().getAnimationOptions();
   Light* thisLight = &(RGBLights->AllLights[LightIndex]);
   int colIndex = options.profiles[options.baseProfileIndex].pressedStaticColors.bytes[thisLight->GIPOPin];
-  return GetColorForIndex(colIndex);
-}
-
-RGB Animation::GetColorForIndex(uint32_t ColorIndex)
-{
-    //pre defined color?
-    if(ColorIndex < (uint32_t)colors.size())
-      return colors[ColorIndex];
-
-    //must be custom color
-    ColorIndex -= colors.size();
-    if(ColorIndex > customColors.size())
-    {
-      //error, no such color
-      return colors[0];
-    }
-    return customColors[ColorIndex];
+  return AnimStation.GetColorForIndex(colIndex);
 }

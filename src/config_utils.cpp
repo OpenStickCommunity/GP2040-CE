@@ -631,7 +631,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[3], notPressedStaticColors, localBuffer);
     memset(localBuffer, LEDS_PROFILE3_STATIC_COLOR_PRESSED, NUM_BANK0_GPIOS);
     INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[3], pressedStaticColors, localBuffer);
-
+/*
     // Set all last 4 to PLED_COLOR
     memset(&localBuffer[MAX_NON_BUTTON_LIGHT_COLOR_INDEXES - 4], PLED_COLOR, 4);
 
@@ -647,7 +647,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
     memset(localBuffer, LEDS_PROFILE3_STATIC_COLOR_CASE, MAX_NON_BUTTON_LIGHT_COLOR_INDEXES - 4);
     INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[3], nonButtonStaticColors, localBuffer);
-
+*/
     // Set LED Profile 0
     INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bEnabled, LEDS_PROFILE0_ENABLED);
     INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], basePressedCycleTime, LEDS_PROFILE0_PRESSED_CYCLE_TIME);
