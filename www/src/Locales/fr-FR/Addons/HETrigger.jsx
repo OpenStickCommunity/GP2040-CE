@@ -12,6 +12,7 @@ export default {
 	'select-pin-1': 'Sélectionner la broche 1',
 	'select-pin-2': 'Sélectionner la broche 2',
 	'select-pin-3': 'Sélectionner la broche 3',
+	'separate-select-pins-label': 'Activer des broches de sélection séparées',
 	'adc-pin-0': 'Broche ADC 0',
 	'adc-pin-1': 'Broche ADC 1',
 	'adc-pin-2': 'Broche ADC 2',
