@@ -36,6 +36,7 @@ private:
     uint8_t nonce_chunk;            // PS4 Encryption Nonce Chunk (Max 19)
     uint8_t report_buffer[PS4_ENDPOINT_SIZE];   // Report buffer
     bool awaiting_cb;   // Global call-back wait
+    uint32_t awaiting_since_ms; // When awaiting_cb was last set (for timeout)
     uint8_t noncelen;   // process(): nonce-len
     uint32_t crc32;     // process(): crc32
     PS4State dongle_state;
