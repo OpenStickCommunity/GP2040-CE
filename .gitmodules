@@ -1,6 +1,7 @@
 [submodule "lib/tinyusb"]
 	path = lib/tinyusb
-	url = https://github.com/OpenStickCommunity/tinyusb.git
+	url = https://github.com/speedypotato/tinyusb.git
+	branch = gp2040/0.21-ctrl-timeout
 [submodule "lib/pico_pio_usb"]
 	path = lib/pico_pio_usb
 	url = https://github.com/speedypotato/Pico-PIO-USB.git
