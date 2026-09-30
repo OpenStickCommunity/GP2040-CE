@@ -194,7 +194,7 @@ static uint16_t xbone_open(uint8_t rhport, tusb_desc_interface_t const *itf_desc
 
             // Prepare for output endpoint
             if (p_xbone->ep_out) {
-                if (!usbd_edpt_xfer(rhport, p_xbone->ep_out, p_xbone->epout_buf, sizeof(p_xbone->epout_buf))) {
+                if (!usbd_edpt_xfer(rhport, p_xbone->ep_out, p_xbone->epout_buf, sizeof(p_xbone->epout_buf), false)) {
                     TU_LOG_FAILED();
                     TU_BREAKPOINT();
                 }
@@ -308,7 +308,7 @@ bool xbone_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result,
         }
 
         TU_ASSERT(usbd_edpt_xfer(rhport, p_xbone->ep_out, p_xbone->epout_buf,
-                                 sizeof(p_xbone->epout_buf)));
+                                 sizeof(p_xbone->epout_buf), false));
     } else if (ep_addr == p_xbone->ep_in) {
         // Nothing needed
     }
@@ -553,7 +553,7 @@ bool XBOneDriver::send_xbone_usb(uint8_t const *report, uint16_t report_size) {
         (p_xbone->ep_in != 0) && (!usbd_edpt_busy(TUD_OPT_RHPORT, p_xbone->ep_in))) // Is the IN endpoint available?
     {
         usbd_edpt_claim(0, p_xbone->ep_in);										// Take control of IN endpoint
-        usbd_edpt_xfer(0, p_xbone->ep_in, (uint8_t *)report, report_size); 	// Send report buffer
+        usbd_edpt_xfer(0, p_xbone->ep_in, (uint8_t *)report, report_size, false); 	// Send report buffer
         usbd_edpt_release(0, p_xbone->ep_in);										// Release control of IN endpoint
 
         // we successfully sent the report
