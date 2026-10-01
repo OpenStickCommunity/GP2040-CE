@@ -4,7 +4,19 @@ import { useTranslation } from 'react-i18next';
 
 import useBoardDefinition from '../Store/useBoardDefinitionStore';
 
-const AnalogPinOptions = () => {
+// 74HC4051 mux channels Y0-Y7 are stored as 100-107 (they are not GPIOs)
+export const ANALOG_MUX_PIN_BASE = 100;
+export const ANALOG_MUX_CHANNELS = 8;
+
+export const isAnalogMuxPin = (pin: number) =>
+	pin >= ANALOG_MUX_PIN_BASE && pin < ANALOG_MUX_PIN_BASE + ANALOG_MUX_CHANNELS;
+
+type AnalogPinOptionsProps = {
+	// also offer the mux channels Y0-Y7 next to the ADC pins
+	mux?: boolean;
+};
+
+const AnalogPinOptions = ({ mux = false }: AnalogPinOptionsProps) => {
 	const { usedPins } = useContext(AppContext);
 	const { t } = useTranslation();
 
@@ -26,6 +38,15 @@ const AnalogPinOptions = () => {
 					{i}
 				</option>
 			))}
+			{mux &&
+				Array.from({ length: ANALOG_MUX_CHANNELS }, (_, channel) => (
+					<option
+						key={`analogMuxPins-option-${channel}`}
+						value={ANALOG_MUX_PIN_BASE + channel}
+					>
+						{`Y${channel} (mux)`}
+					</option>
+				))}
 		</>
 	);
 };

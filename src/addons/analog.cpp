@@ -2,6 +2,8 @@
 #include "config.pb.h"
 #include "enums.pb.h"
 #include "hardware/adc.h"
+#include "hardware/gpio.h"
+#include "pico/time.h"
 #include "helper.h"
 #include "storagemanager.h"
 #include "drivermanager.h"
@@ -22,6 +24,10 @@ bool AnalogInput::available() {
 
 bool AnalogInput::isAdcPin(Pin_t pin) {
     return pin >= ADC_PIN_OFFSET && pin < ADC_PIN_OFFSET + NUM_ADC_CHANNELS - 1;
+}
+
+bool AnalogInput::isAnalogPinUsable(Pin_t pin) {
+    return isAnalogMuxPin(pin) || isAdcPin(pin);
 }
 
 uint16_t AnalogInput::readCalibrationSample(Pin_t pin) {
@@ -78,19 +84,32 @@ void AnalogInput::setup() {
     adc_pairs[1].x_max = analogOptions.joystick_max_x2;
     adc_pairs[1].y_min = analogOptions.joystick_min_y2;
     adc_pairs[1].y_max = analogOptions.joystick_max_y2;
-    
+
+    // Bring the multiplexer up first: auto-calibration below reads through it
+    muxSetup(analogOptions);
 
     // Setup defaults and helpers
     for (int i = 0; i < ADC_COUNT; i++) {
-        if (!isAdcPin(adc_pairs[i].x_pin)) {
+        adc_pairs[i].x_mux = isAnalogMuxPin(adc_pairs[i].x_pin);
+        adc_pairs[i].y_mux = isAnalogMuxPin(adc_pairs[i].y_pin);
+        // Mux channels are unusable until S0-S2 and Z are all configured
+        if (adc_pairs[i].x_mux && !muxReady) {
+            adc_pairs[i].x_pin = -1;
+            adc_pairs[i].x_mux = false;
+        }
+        if (adc_pairs[i].y_mux && !muxReady) {
+            adc_pairs[i].y_pin = -1;
+            adc_pairs[i].y_mux = false;
+        }
+        if (!adc_pairs[i].x_mux && !isAdcPin(adc_pairs[i].x_pin)) {
             adc_pairs[i].x_pin = -1;
         }
-        if (!isAdcPin(adc_pairs[i].y_pin)) {
+        if (!adc_pairs[i].y_mux && !isAdcPin(adc_pairs[i].y_pin)) {
             adc_pairs[i].y_pin = -1;
         }
 
-        adc_pairs[i].x_pin_adc = adc_pairs[i].x_pin - ADC_PIN_OFFSET;
-        adc_pairs[i].y_pin_adc = adc_pairs[i].y_pin - ADC_PIN_OFFSET;
+        adc_pairs[i].x_pin_adc = adc_pairs[i].x_mux ? (adc_pairs[i].x_pin - ANALOG_MUX_PIN_BASE) : (adc_pairs[i].x_pin - ADC_PIN_OFFSET);
+        adc_pairs[i].y_pin_adc = adc_pairs[i].y_mux ? (adc_pairs[i].y_pin - ANALOG_MUX_PIN_BASE) : (adc_pairs[i].y_pin - ADC_PIN_OFFSET);
         adc_pairs[i].in_deadzone = std::clamp(adc_pairs[i].in_deadzone, ANALOG_MINIMUM, ANALOG_MAX - ANALOG_MIN_DEADZONE_BAND);
         adc_pairs[i].out_deadzone = std::clamp(adc_pairs[i].out_deadzone, adc_pairs[i].in_deadzone + ANALOG_MIN_DEADZONE_BAND, ANALOG_MAX);
         adc_pairs[i].x_value = ANALOG_CENTER;
@@ -113,25 +132,126 @@ void AnalogInput::setup() {
 
     // Intialize and auto center X/Y for each pair
     for (int i = 0; i < ADC_COUNT; i++) {
-        if(isValidPin(adc_pairs[i].x_pin)) {
-            adc_gpio_init(adc_pairs[i].x_pin);
+        if(isAnalogPinUsable(adc_pairs[i].x_pin)) {
+            if (!adc_pairs[i].x_mux) {
+                adc_gpio_init(adc_pairs[i].x_pin);
+            }
             if (adc_pairs[i].auto_calibration) {
-                adc_pairs[i].x_center = readCalibrationSample(adc_pairs[i].x_pin);
+                adc_pairs[i].x_center = adc_pairs[i].x_mux ? readRaw(true, adc_pairs[i].x_pin_adc) : readCalibrationSample(adc_pairs[i].x_pin);
             } else {
                 // if auto calibration is disabled, attempt to use stored manual calibration value
                 adc_pairs[i].x_center = adc_pairs[i].joystick_center_x;
             }
         }
-        if(isValidPin(adc_pairs[i].y_pin)) {
-            adc_gpio_init(adc_pairs[i].y_pin);
+        if(isAnalogPinUsable(adc_pairs[i].y_pin)) {
+            if (!adc_pairs[i].y_mux) {
+                adc_gpio_init(adc_pairs[i].y_pin);
+            }
             if (adc_pairs[i].auto_calibration) {
-                adc_pairs[i].y_center = readCalibrationSample(adc_pairs[i].y_pin);
+                adc_pairs[i].y_center = adc_pairs[i].y_mux ? readRaw(true, adc_pairs[i].y_pin_adc) : readCalibrationSample(adc_pairs[i].y_pin);
             } else {
                 // if auto calibration is disabled, attempt to use stored manual calibration value
                 adc_pairs[i].y_center = adc_pairs[i].joystick_center_y;
             }
         }
     }
+
+    // Analog triggers
+    triggers[0].pin = analogOptions.triggerLPin;
+    triggers[0].min = (float)analogOptions.triggerLMin;
+    triggers[0].max = (float)analogOptions.triggerLMax;
+    triggers[1].pin = analogOptions.triggerRPin;
+    triggers[1].min = (float)analogOptions.triggerRMin;
+    triggers[1].max = (float)analogOptions.triggerRMax;
+    for (int i = 0; i < 2; i++) {
+        triggers[i].mux = isAnalogMuxPin(triggers[i].pin);
+        if (triggers[i].mux && !muxReady) {
+            triggers[i].pin = -1;
+            triggers[i].mux = false;
+        }
+        triggers[i].pin_adc = triggers[i].mux ? (triggers[i].pin - ANALOG_MUX_PIN_BASE) : (triggers[i].pin - ADC_PIN_OFFSET);
+        triggers[i].primed = false;
+        triggers[i].ema = 0.0f;
+        if (isAnalogPinUsable(triggers[i].pin) && !triggers[i].mux) {
+            adc_gpio_init(triggers[i].pin);
+        }
+    }
+    if (isAnalogPinUsable(triggers[0].pin) || isAnalogPinUsable(triggers[1].pin)) {
+        // Drivers only use state.lt / state.rt when this is set
+        Storage::getInstance().GetGamepad()->hasAnalogTriggers = true;
+    }
+}
+
+void AnalogInput::muxSetup(const AnalogOptions& analogOptions) {
+    muxSelectPins[0] = analogOptions.muxSelectPin0;
+    muxSelectPins[1] = analogOptions.muxSelectPin1;
+    muxSelectPins[2] = analogOptions.muxSelectPin2;
+    muxZPin = analogOptions.muxZPin;
+    muxChannel = -1;
+
+    // Z must be an ADC-capable pin (same range the web config offers as analog pins)
+    bool zIsAdc = isAdcPin(muxZPin);
+    muxReady = zIsAdc &&
+        isValidPin(muxSelectPins[0]) && isValidPin(muxSelectPins[1]) && isValidPin(muxSelectPins[2]);
+
+    if (muxReady) {
+        for (int i = 0; i < 3; i++) {
+            gpio_init(muxSelectPins[i]);
+            gpio_set_dir(muxSelectPins[i], GPIO_OUT);
+            gpio_put(muxSelectPins[i], 0);
+        }
+        adc_gpio_init(muxZPin);
+    }
+}
+
+void AnalogInput::muxSelect(uint8_t channel) {
+    if ((int8_t)channel == muxChannel) {
+        return;
+    }
+    for (int i = 0; i < 3; i++) {
+        gpio_put(muxSelectPins[i], (channel >> i) & 0x01);
+    }
+    muxChannel = (int8_t)channel;
+    busy_wait_us(ANALOG_MUX_SETTLE_US);
+}
+
+// Read one 12-bit sample either straight from an ADC pin, or from a mux channel via Z.
+uint16_t AnalogInput::readRaw(bool mux, Pin_t pin_adc) {
+    if (mux) {
+        muxSelect((uint8_t)pin_adc);
+        adc_select_input(muxZPin - ADC_PIN_OFFSET);
+        // Discard one sample: the ADC sample-and-hold still holds charge from the
+        // previous channel, which shows up as crosstalk between mux channels.
+        (void)adc_read();
+        // Average several samples to tame the noise a single conversion picks up
+        uint32_t sum = 0;
+        for (int i = 0; i < ANALOG_MUX_SAMPLES; i++) {
+            sum += adc_read();
+        }
+        return (uint16_t)(sum / ANALOG_MUX_SAMPLES);
+    }
+    adc_select_input(pin_adc);
+    return adc_read();
+}
+
+uint8_t AnalogInput::readTrigger(trigger_instance & trigger) {
+    float raw = (float)readRaw(trigger.mux, trigger.pin_adc);
+    if (!trigger.primed) {
+        trigger.ema = raw;
+        trigger.primed = true;
+    } else {
+        trigger.ema += ANALOG_TRIGGER_EMA * (raw - trigger.ema);
+    }
+
+    float range = trigger.max - trigger.min;   // negative range = inverted sensor
+    if (range == 0.0f) {
+        return 0;
+    }
+    float normalized = std::clamp((trigger.ema - trigger.min) / range, 0.0f, 1.0f);
+    if (normalized < ANALOG_TRIGGER_DEADZONE) {
+        return 0;
+    }
+    return (uint8_t)(normalized * GAMEPAD_TRIGGER_MAX + 0.5f);
 }
 
 void AnalogInput::process() {
@@ -146,8 +266,8 @@ void AnalogInput::process() {
 
     for(int i = 0; i < ADC_COUNT; i++) {
         // Read X-Axis
-        if (isValidPin(adc_pairs[i].x_pin)) {
-            adc_pairs[i].x_value = readPin(adc_pairs[i].x_pin_adc, adc_pairs[i].x_center,
+        if (isAnalogPinUsable(adc_pairs[i].x_pin)) {
+            adc_pairs[i].x_value = readPin(adc_pairs[i].x_pin_adc, adc_pairs[i].x_mux, adc_pairs[i].x_center,
                 adc_pairs[i].x_min, adc_pairs[i].x_max);
             if (adc_pairs[i].analog_invert == InvertMode::INVERT_X || 
                 adc_pairs[i].analog_invert == InvertMode::INVERT_XY) {
@@ -161,8 +281,8 @@ void AnalogInput::process() {
             }
         }
         // Read Y-Axis
-        if (isValidPin(adc_pairs[i].y_pin)) {
-            adc_pairs[i].y_value = readPin(adc_pairs[i].y_pin_adc, adc_pairs[i].y_center,
+        if (isAnalogPinUsable(adc_pairs[i].y_pin)) {
+            adc_pairs[i].y_value = readPin(adc_pairs[i].y_pin_adc, adc_pairs[i].y_mux, adc_pairs[i].y_center,
                 adc_pairs[i].y_min, adc_pairs[i].y_max);
             if (adc_pairs[i].analog_invert == InvertMode::INVERT_Y || 
                 adc_pairs[i].analog_invert == InvertMode::INVERT_XY) {
@@ -200,11 +320,21 @@ void AnalogInput::process() {
             gamepad->state.ry = clampedY;
         }
     }
+
+    // Analog triggers (state.lt / state.rt are cleared every input cycle by Gamepad::read)
+    if (isAnalogPinUsable(triggers[0].pin) || isAnalogPinUsable(triggers[1].pin)) {
+        gamepad->hasAnalogTriggers = true;
+        if (isAnalogPinUsable(triggers[0].pin)) {
+            gamepad->state.lt = readTrigger(triggers[0]);
+        }
+        if (isAnalogPinUsable(triggers[1].pin)) {
+            gamepad->state.rt = readTrigger(triggers[1]);
+        }
+    }
 }
 
-float AnalogInput::readPin(Pin_t pin_adc, uint32_t center, uint32_t minimum, uint32_t maximum) {
-    adc_select_input(pin_adc);
-    uint16_t adc_value = adc_read();
+float AnalogInput::readPin(Pin_t pin_adc, bool mux, uint32_t center, uint32_t minimum, uint32_t maximum) {
+    uint16_t adc_value = readRaw(mux, pin_adc);
     // Only a valid calibration changes the raw ADC scaling
     if (minimum < center && center < maximum && maximum <= ADC_MAX) {
         const float delta = (float)adc_value - center;
