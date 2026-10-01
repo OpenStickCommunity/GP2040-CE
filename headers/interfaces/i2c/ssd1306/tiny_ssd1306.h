@@ -93,6 +93,7 @@ class GPGFX_TinySSD1306 : public GPGFX_DisplayBase {
 
         void sendCommand(uint8_t command);
         void sendCommands(uint8_t* commands, uint16_t length);
+        void sendData(uint8_t* data, uint16_t length);
 
         uint8_t frameBuffer[MAX_SCREEN_SIZE];
         uint8_t framePage = 0;

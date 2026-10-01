@@ -1,7 +1,9 @@
 #include <cstdio>
+#include <pico.h>
 #include "peripheral_i2c.h"
 
 PeripheralI2C::PeripheralI2C() {
+    mutex_init(&_mutex);
 #ifdef PICO_DEFAULT_I2C_INSTANCE
 
 #if PICO_SDK_VERSION_MAJOR >= 2
@@ -14,6 +16,23 @@ PeripheralI2C::PeripheralI2C() {
     _SCL = PICO_DEFAULT_I2C_SCL_PIN;
     _Speed = DEFAULT_SPEED;
 #endif
+}
+
+void PeripheralI2C::lock() {
+    if (get_core_num() == 0) {
+        _inputPending.store(true, std::memory_order_release);
+        mutex_enter_blocking(&_mutex);
+        _inputPending.store(false, std::memory_order_release);
+        return;
+    }
+
+    // Inputs take priority before display transfers
+    while (true) {
+        while (_inputPending.load(std::memory_order_acquire)) tight_loop_contents();
+        mutex_enter_blocking(&_mutex);
+        if (!_inputPending.load(std::memory_order_acquire)) return;
+        mutex_exit(&_mutex);
+    }
 }
 
 void PeripheralI2C::setConfig(uint8_t block, int8_t sda, int8_t scl, uint32_t speed) {
@@ -47,7 +66,9 @@ void PeripheralI2C::setup() {
 int16_t PeripheralI2C::read(uint8_t address, uint8_t *data, uint16_t len, bool isBlock) {
     if ((_exclusiveAddress > -1) && (_exclusiveAddress != address)) return -1;
 
+    lock();
     int16_t result = i2c_read_blocking(_I2C, address, data, len, isBlock);
+    mutex_exit(&_mutex);
 #ifdef DEBUG_PERIPHERALI2C
     printf("PeripheralI2C::write %d:%d (blocking? %d)\n", address, len, isBlock);
     for (int i = 0; i < len; i++) {
@@ -62,11 +83,13 @@ int16_t PeripheralI2C::read(uint8_t address, uint8_t *data, uint16_t len, bool i
 int16_t PeripheralI2C::readRegister(uint8_t address, uint8_t reg, uint8_t *data, uint16_t len) {
     if ((_exclusiveAddress > -1) && (_exclusiveAddress != address)) return -1;
 
+    lock();
     int16_t registerCheck;
     registerCheck = i2c_write_blocking(_I2C, address, &reg, 1, true);
     if (registerCheck >= 0) {
         registerCheck = i2c_read_blocking(_I2C, address, data, len, false);
     }
+    mutex_exit(&_mutex);
     return (registerCheck >= 0);
 }
 
@@ -79,7 +102,9 @@ int16_t PeripheralI2C::write(uint8_t address, uint8_t *data, uint16_t len, bool 
         printf("%02x ", data[i]);
     }
 #endif
+    lock();
     int16_t result = i2c_write_blocking(_I2C, address, data, len, isBlock);
+    mutex_exit(&_mutex);
 #ifdef DEBUG_PERIPHERALI2C
     printf("\nResult: %d\n", result);
     printf("-----\n");
@@ -92,8 +117,10 @@ uint8_t PeripheralI2C::test(uint8_t address) {
     
     // TODO: Revert to i2c_read_blocking when we have I2C resolved
     // int16_t ret = i2c_read_blocking(_I2C, address, &data, 1, false);
+    lock();
     absolute_time_t test_timeout = make_timeout_time_ms(100);
     int16_t ret = i2c_read_blocking_until(_I2C, address, &data, 1, false, test_timeout);
+    mutex_exit(&_mutex);
     return (ret >= 0);
 }
 
@@ -108,7 +135,9 @@ std::map<uint8_t,bool> PeripheralI2C::scan() {
     for (uint8_t addr = 0; addr < (1 << 7); ++addr) {
         int8_t ret;
         uint8_t rxdata;
+        lock();
         ret = i2c_read_blocking(_I2C, addr, &rxdata, 1, false);
+        mutex_exit(&_mutex);
 
         if (ret >= 0) {
             result.insert({addr,(ret >= 0)});

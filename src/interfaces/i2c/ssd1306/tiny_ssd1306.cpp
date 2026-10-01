@@ -1,5 +1,7 @@
 #include "tiny_ssd1306.h"
 
+#define OLED_I2C_CHUNK_SIZE 8
+
 void GPGFX_TinySSD1306::init(GPGFX_DisplayTypeOptions options) {
     _options.displayType = options.displayType;
     _options.i2c = options.i2c;
@@ -544,9 +546,19 @@ void GPGFX_TinySSD1306::drawSprite(uint8_t* image, uint16_t width, uint16_t heig
 	}
 }
 
+// Chunk transfers so inputs can be read
+void GPGFX_TinySSD1306::sendData(uint8_t* data, uint16_t length) {
+    uint8_t chunk[OLED_I2C_CHUNK_SIZE + 1] = {0x40};
+    for (uint16_t offset = 0; offset < length; offset += OLED_I2C_CHUNK_SIZE) {
+        uint16_t count = std::min(OLED_I2C_CHUNK_SIZE, length - offset);
+        memcpy(&chunk[1], &data[offset], count);
+        if (_options.i2c->write(_options.address, chunk, count + 1, false) != count + 1) return;
+    }
+}
+
 void GPGFX_TinySSD1306::drawBuffer(uint8_t* pBuffer) {
-	uint16_t bufferSize = MAX_SCREEN_SIZE;
-	uint8_t buffer[bufferSize+1] = {SET_START_LINE};
+	uint8_t buffer[MAX_SCREEN_SIZE] = {};
+    if (pBuffer == NULL) pBuffer = frameBuffer;
 
 	if (this->screenType == ScreenAlternatives::SCREEN_132x64) {
         uint16_t x = 0;
@@ -556,13 +568,9 @@ void GPGFX_TinySSD1306::drawBuffer(uint8_t* pBuffer) {
             sendCommand(x & 0x0F);
             sendCommand(0x10 | (x >> 4));
         
-            if (pBuffer == NULL) {
-                memcpy(&buffer[1],&frameBuffer[y*MAX_SCREEN_WIDTH],MAX_SCREEN_WIDTH);
-            } else {
-                memcpy(&buffer[1],&pBuffer[y*MAX_SCREEN_WIDTH],MAX_SCREEN_WIDTH);
-            }
+            memcpy(buffer, &pBuffer[y*MAX_SCREEN_WIDTH], MAX_SCREEN_WIDTH);
         
-            _options.i2c->write(_options.address, buffer, MAX_SCREEN_WIDTH+3, false);
+            sendData(buffer, MAX_SCREEN_WIDTH+2);
         }
     } else {
         sendCommand(CommandOps::PAGE_ADDRESS);
@@ -572,12 +580,8 @@ void GPGFX_TinySSD1306::drawBuffer(uint8_t* pBuffer) {
         sendCommand(0x00);
         sendCommand(0x7F);
 
-        if (pBuffer == NULL) {
-            memcpy(&buffer[1],frameBuffer,bufferSize);
-        } else {
-            memcpy(&buffer[1],pBuffer,bufferSize);
-        }
-        _options.i2c->write(_options.address, buffer, sizeof(buffer), false);
+        memcpy(buffer, pBuffer, MAX_SCREEN_SIZE);
+        sendData(buffer, MAX_SCREEN_SIZE);
     }
 
 	if (framePage < MAX_SCREEN_HEIGHT/8) {
