@@ -6,6 +6,8 @@
 #include "drivers/xinput/XInputDriver.h"
 #include "drivers/p5general/P5GeneralDriver.h"
 
+static bool debugMessage = false;
+
 void ButtonLayoutScreen::init() {
     isInputHistoryEnabled = Storage::getInstance().getDisplayOptions().inputHistoryEnabled;
     inputHistoryX = Storage::getInstance().getDisplayOptions().inputHistoryRow;
@@ -82,11 +84,15 @@ void ButtonLayoutScreen::init() {
 
     // only announce profile changes when there is more than one profile to switch between
     showProfileBanner = false;
+    uint32_t profileCount = 0;
     const ProfileOptions& profileOptions = Storage::getInstance().getProfileOptions();
     for (pb_size_t i = 0; i < profileOptions.gpioMappingsSets_count; i++) {
         if (profileOptions.gpioMappingsSets[i].enabled) {
-            showProfileBanner = true;
-            break;
+            profileCount++;
+            if ( profileCount > 1 ) {
+                showProfileBanner = true;
+                break;
+            }
         }
     }
 

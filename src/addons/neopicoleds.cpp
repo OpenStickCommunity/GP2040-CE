@@ -330,9 +330,9 @@ void NeoPicoLEDAddon::process()
 	vector<int32_t> pressedPins;
 	for(auto thisLight : RGBLights.AllLights)
 	{
-		if(values & (1 << thisLight.GIPOPin))
+		if(values & (1 << thisLight.GPIOPin))
 		{
-			pressedPins.push_back(thisLight.GIPOPin);
+			pressedPins.push_back(thisLight.GPIOPin);
 		}
 	}
 	AnimStation.HandlePressedPins(pressedPins);

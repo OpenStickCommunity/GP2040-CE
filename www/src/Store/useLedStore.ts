@@ -52,7 +52,7 @@ export type AnimationOptions = {
 	idletimeout: number;
 };
 
-export type LedOptions = {
+export type LedConfiguration = {
 	dataPin: number;
 	ledFormat: number;
 	turnOffWhenSuspended: number;
@@ -65,7 +65,7 @@ export type LedOptions = {
 };
 
 type State = {
-	ledOptions: LedOptions;
+	LedConfiguration: LedConfiguration;
 	AnimationOptions: AnimationOptions;
 	Lights: Light[];
 	loading: boolean;
@@ -74,13 +74,11 @@ type State = {
 
 type Actions = {
 	fetchLedOptions: () => void;
-	saveAnimationOptions: (AnimationOptions: AnimationOptions) => Promise<object>;
-	saveLightOptions: (Lights: Light[]) => Promise<object>;
-	saveLedOptions: (ledOptions: LedOptions) => Promise<boolean>;
+	saveLedOptions: (Lights: Light[], LedConfiguration: LedConfiguration, AnimationOptions: AnimationOptions) => Promise<boolean>;
 };
 
 const INITIAL_STATE: State = {
-	ledOptions: {
+	LedConfiguration: {
 		dataPin: -1,
 		ledFormat: 0,
 		turnOffWhenSuspended: 0,
@@ -108,13 +106,15 @@ const useLedStore = create<State & Actions>()((set) => ({
 	fetchLedOptions: async () => {
 		set({ loading: true });
 
-		const { AnimationOptions } = await WebApi.getAnimationOptions();
-		const { LightData } = await WebApi.getLightsDataOptions();
-		const ledOptions = await WebApi.getLedOptions();
+		const { LedOptions } = await WebApi.getLedOptions();
+
+		const LightData = LedOptions.LightData;
+		const LedConfiguration = LedOptions.LedConfiguration;
+		const AnimationOptions = LedOptions.AnimationOptions;
 
 		set((state) => ({
 			...state,
-			ledOptions,
+			LedConfiguration,
 			AnimationOptions: {
 				...AnimationOptions,
 				customColors: [
@@ -132,14 +132,15 @@ const useLedStore = create<State & Actions>()((set) => ({
 			initialized: true,
 		}));
 	},
+	/*
 	saveAnimationOptions: async (AnimationOptions: AnimationOptions) => {
 		return WebApi.setAnimationOptions({ AnimationOptions });
 	},
 	saveLightOptions: async (Lights: Light[]) => {
 		return WebApi.setLightsDataOptions({ LightData: { Lights } });
-	},
-	saveLedOptions: async (ledOptions: LedOptions) => {
-		return WebApi.setLedOptions(ledOptions);
+	},*/
+	saveLedOptions: async (Lights: Light[], LedConfiguration: LedConfiguration, AnimationOptions: AnimationOptions) => {
+		return WebApi.setLedOptions({ LedOptions: { LightData: { Lights }, LedConfiguration, AnimationOptions }});
 	},
 }));
 

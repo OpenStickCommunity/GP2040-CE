@@ -56,7 +56,7 @@ void Animation::UpdatePresses()
 
     for(unsigned int pressedPinIndex = 0; pressedPinIndex < pressedPins.size(); ++pressedPinIndex)
     {
-      if(pressedPins[pressedPinIndex] == RGBLights->AllLights[lightIndex].GIPOPin)
+      if(pressedPins[pressedPinIndex] == RGBLights->AllLights[lightIndex].GPIOPin)
       {
         uint8_t firstLightIndex = RGBLights->AllLights[lightIndex].FirstLedIndex;
         uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[lightIndex].LedsPerLight;
@@ -99,7 +99,7 @@ void Animation::DecrementFadeCounters()
     bool wasPressed = false;
     for(unsigned int pressedPinIndex = 0; pressedPinIndex < pressedPins.size(); ++pressedPinIndex)
     {
-      if(pressedPins[pressedPinIndex] == RGBLights->AllLights[lightIndex].GIPOPin)
+      if(pressedPins[pressedPinIndex] == RGBLights->AllLights[lightIndex].GPIOPin)
       {
         wasPressed = true;
       }
@@ -178,6 +178,6 @@ RGB Animation::GetPressedColorForLight(uint32_t LightIndex)
   AnimationStation & AnimStation = AnimationStation::getInstance();
   AnimationOptions & options = Storage::getInstance().getAnimationOptions();
   Light* thisLight = &(RGBLights->AllLights[LightIndex]);
-  int colIndex = options.profiles[options.baseProfileIndex].pressedStaticColors.bytes[thisLight->GIPOPin];
+  int colIndex = options.profiles[options.baseProfileIndex].pressedStaticColors.bytes[thisLight->GPIOPin];
   return AnimStation.GetColorForIndex(colIndex);
 }

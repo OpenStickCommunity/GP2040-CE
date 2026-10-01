@@ -659,7 +659,7 @@ RGB AnimationStation::StaticGetNonPressedColorForLight(Lights* AllLights, uint32
   if(thisLight->Type == LightType::LightType_ActionButton || thisLight->Type == LightType::LightType_Turbo)
   {
     //button
-    colIndex = options.profiles[options.baseProfileIndex].notPressedStaticColors.bytes[thisLight->GIPOPin];
+    colIndex = options.profiles[options.baseProfileIndex].notPressedStaticColors.bytes[thisLight->GPIOPin];
   }
   else
   {
@@ -668,7 +668,7 @@ RGB AnimationStation::StaticGetNonPressedColorForLight(Lights* AllLights, uint32
     {
       colIndex = 0;
       if(thisLight->Type == LightType::LightType_Turbo && ((int)thisLight->FirstLedIndex == AnimStation.getTestModePinOrNonButtonIndex()))
-      colIndex = 1;
+        colIndex = 1;
     }
     else
     {

@@ -24,7 +24,7 @@ import * as yup from 'yup';
 import useLedsPreview from '../../Hooks/useLedsPreview';
 import useLedStore, {
 	AnimationOptions,
-	LedOptions,
+	LedConfiguration,
 	Light,
 	MAX_ANIMATION_PROFILES,
 	MAX_NON_BUTTON_LIGHT_COLOR_INDEXES,
@@ -54,7 +54,7 @@ const GPIO_PIN_LENGTH =
 	boards[import.meta.env.VITE_GP2040_BOARD as keyof typeof boards].maxPin + 1;
 
 const schema = yup.object({
-	ledOptions: yup.object().shape({
+	LedConfiguration: yup.object().shape({
 		dataPin: yup.number().required().checkUsedPins(),
 		ledFormat: yup
 			.number()
@@ -250,7 +250,7 @@ const PreviewLedChanges = ({
 	const { values } = useFormikContext<{
 		AnimationOptions: AnimationOptions;
 		Lights: Light[];
-		ledOptions: LedOptions;
+		LedConfiguration: LedConfiguration;
 	}>();
 	const { activateLedsProfile } = useLedsPreview();
 
@@ -260,7 +260,7 @@ const PreviewLedChanges = ({
 		activateLedsProfile(
 			profile,
 			values.AnimationOptions.brightness,
-			values.ledOptions.brightnessMaximum,
+			values.LedConfiguration.brightnessMaximum,
 		);
 	}, [values, selectedProfile]);
 
@@ -271,13 +271,11 @@ export default function LedConfigPage() {
 	const { t } = useTranslation('');
 	const {
 		fetchLedOptions,
-		saveAnimationOptions,
-		saveLightOptions,
 		saveLedOptions,
 	} = useLedStore();
 
 	const { fetchPresets } = useLightsPresetsStore();
-	const ledOptions = useLedStore((state) => state.ledOptions);
+	const LedConfiguration = useLedStore((state) => state.LedConfiguration);
 	const AnimationOptions = useLedStore((state) => state.AnimationOptions);
 	const Lights = useLedStore((state) => state.Lights);
 	const loading = useLedStore((state) => state.loading);
@@ -289,18 +287,16 @@ export default function LedConfigPage() {
 	const [saveMessage, setSaveMessage] = useState('');
 
 	const onSuccess = async ({
-		ledOptions,
+		LedConfiguration,
 		AnimationOptions,
 		Lights,
 	}: {
-		ledOptions: LedOptions;
+		LedConfiguration: LedConfiguration;
 		AnimationOptions: AnimationOptions;
 		Lights: Light[];
 	}) => {
 		try {
-			await saveAnimationOptions(AnimationOptions);
-			await saveLightOptions(Lights);
-			await saveLedOptions(ledOptions);
+			await saveLedOptions(Lights, LedConfiguration, AnimationOptions);
 			setSaveMessage(t('Common:saved-success-message'));
 		} catch (error) {
 			console.error(error);
@@ -331,7 +327,7 @@ export default function LedConfigPage() {
 		<Formik
 			validationSchema={schema}
 			onSubmit={onSuccess}
-			initialValues={{ AnimationOptions, Lights, ledOptions }}
+			initialValues={{ AnimationOptions, Lights, LedConfiguration }}
 			validateOnChange={true}
 		>
 			{({
@@ -349,27 +345,27 @@ export default function LedConfigPage() {
 							<FormControl
 								type="number"
 								label={t('LedConfigPage:rgb.data-pin-label')}
-								name="ledOptions.dataPin"
+								name="LedConfiguration.dataPin"
 								className="form-control-sm"
 								groupClassName="col-sm-4 mb-3"
-								value={values.ledOptions.dataPin}
-								error={errors.ledOptions?.dataPin}
-								isInvalid={Boolean(errors.ledOptions?.dataPin)}
+								value={values.LedConfiguration.dataPin}
+								error={errors.LedConfiguration?.dataPin}
+								isInvalid={Boolean(errors.LedConfiguration?.dataPin)}
 								onChange={handleChange}
 								min={-1}
 								max={GPIO_PIN_LENGTH - 1}
 							/>
 							<FormSelect
 								label={t('LedConfigPage:rgb.led-format-label')}
-								name="ledOptions.ledFormat"
+								name="LedConfiguration.ledFormat"
 								className="form-select-sm"
 								groupClassName="col-sm-4 mb-3"
-								value={values.ledOptions.ledFormat}
-								error={errors.ledOptions?.ledFormat}
-								isInvalid={Boolean(errors.ledOptions?.ledFormat)}
+								value={values.LedConfiguration.ledFormat}
+								error={errors.LedConfiguration?.ledFormat}
+								isInvalid={Boolean(errors.LedConfiguration?.ledFormat)}
 								onChange={(e) =>
 									setFieldValue(
-										'ledOptions.ledFormat',
+										'LedConfiguration.ledFormat',
 										parseInt(e.target.value),
 									)
 								}
@@ -381,14 +377,14 @@ export default function LedConfigPage() {
 								))}
 							</FormSelect>
 							<div className="form-control-sm col-sm-4 mb-3">
-								<Form.Label>{`${t('LedConfigPage:rgb.led-brightness-maximum-label')}: ${values.ledOptions.brightnessMaximum}%`}</Form.Label>
+								<Form.Label>{`${t('LedConfigPage:rgb.led-brightness-maximum-label')}: ${values.LedConfiguration.brightnessMaximum}%`}</Form.Label>
 								<Form.Range
-									name="ledOptions.brightnessMaximum"
-									id={`ledOptions.brightnessMaximum`}
+									name="LedConfiguration.brightnessMaximum"
+									id={`LedConfiguration.brightnessMaximum`}
 									min={0}
 									max={100}
 									step={1}
-									value={values.ledOptions.brightnessMaximum}
+									value={values.LedConfiguration.brightnessMaximum}
 									onChange={handleChange}
 								/>
 							</div>
@@ -400,10 +396,10 @@ export default function LedConfigPage() {
 									label={t('LedConfigPage:rgb.turn-off-when-suspended')}
 									type="switch"
 									isInvalid={false}
-									checked={Boolean(values.ledOptions.turnOffWhenSuspended)}
+									checked={Boolean(values.LedConfiguration.turnOffWhenSuspended)}
 									onChange={(e) => {
 										setFieldValue(
-											'ledOptions.turnOffWhenSuspended',
+											'LedConfiguration.turnOffWhenSuspended',
 											e.target.checked ? 1 : 0,
 										);
 									}}
@@ -413,14 +409,14 @@ export default function LedConfigPage() {
 						<Row className="mb-3">
 							<FormSelect
 								label={t('LedConfigPage:player.pled-type-label')}
-								name="ledOptions.pledType"
+								name="LedConfiguration.pledType"
 								className="form-select-sm"
 								groupClassName="col-sm-2 mb-3"
-								value={values.ledOptions.pledType}
-								error={errors.ledOptions?.pledType}
-								isInvalid={Boolean(errors.ledOptions?.pledType)}
+								value={values.LedConfiguration.pledType}
+								error={errors.LedConfiguration?.pledType}
+								isInvalid={Boolean(errors.LedConfiguration?.pledType)}
 								onChange={(e) =>
-									setFieldValue('ledOptions.pledType', parseInt(e.target.value))
+									setFieldValue('LedConfiguration.pledType', parseInt(e.target.value))
 								}
 							>
 								<option value="-1">
@@ -435,67 +431,67 @@ export default function LedConfigPage() {
 							</FormSelect>
 							<FormControl
 								type="number"
-								name="ledOptions.pledPin1"
-								hidden={values.ledOptions.pledType !== 0}
+								name="LedConfiguration.pledPin1"
+								hidden={values.LedConfiguration.pledType !== 0}
 								label={t('LedConfigPage:player.pled-pin-label', { pin: 1 })}
 								className="form-control-sm"
 								groupClassName="col-sm-2 mb-3"
-								value={values.ledOptions.pledPin1}
-								error={errors.ledOptions?.pledPin1}
-								isInvalid={Boolean(errors.ledOptions?.pledPin1)}
+								value={values.LedConfiguration.pledPin1}
+								error={errors.LedConfiguration?.pledPin1}
+								isInvalid={Boolean(errors.LedConfiguration?.pledPin1)}
 								onChange={handleChange}
 								min={-1}
 								max={GPIO_PIN_LENGTH - 1}
 							/>
 							<FormControl
 								type="number"
-								name="ledOptions.pledPin2"
-								hidden={values.ledOptions.pledType !== 0}
+								name="LedConfiguration.pledPin2"
+								hidden={values.LedConfiguration.pledType !== 0}
 								label={t('LedConfigPage:player.pled-pin-label', { pin: 2 })}
 								className="form-control-sm"
 								groupClassName="col-sm-2 mb-3"
-								value={values.ledOptions.pledPin2}
-								error={errors.ledOptions?.pledPin2}
-								isInvalid={Boolean(errors.ledOptions?.pledPin2)}
+								value={values.LedConfiguration.pledPin2}
+								error={errors.LedConfiguration?.pledPin2}
+								isInvalid={Boolean(errors.LedConfiguration?.pledPin2)}
 								onChange={handleChange}
 								min={-1}
 								max={GPIO_PIN_LENGTH - 1}
 							/>
 							<FormControl
 								type="number"
-								name="ledOptions.pledPin3"
-								hidden={values.ledOptions.pledType !== 0}
+								name="LedConfiguration.pledPin3"
+								hidden={values.LedConfiguration.pledType !== 0}
 								label={t('LedConfigPage:player.pled-pin-label', { pin: 3 })}
 								className="form-control-sm"
 								groupClassName="col-sm-2 mb-3"
-								value={values.ledOptions.pledPin3}
-								error={errors.ledOptions?.pledPin3}
-								isInvalid={Boolean(errors.ledOptions?.pledPin3)}
+								value={values.LedConfiguration.pledPin3}
+								error={errors.LedConfiguration?.pledPin3}
+								isInvalid={Boolean(errors.LedConfiguration?.pledPin3)}
 								onChange={handleChange}
 								min={-1}
 								max={GPIO_PIN_LENGTH - 1}
 							/>
 							<FormControl
 								type="number"
-								name="ledOptions.pledPin4"
-								hidden={values.ledOptions.pledType !== 0}
+								name="LedConfiguration.pledPin4"
+								hidden={values.LedConfiguration.pledType !== 0}
 								label={t('LedConfigPage:player.pled-pin-label', { pin: 4 })}
 								className="form-control-sm"
 								groupClassName="col-sm-2 mb-3"
-								value={values.ledOptions.pledPin4}
-								error={errors.ledOptions?.pledPin4}
-								isInvalid={Boolean(errors.ledOptions?.pledPin4)}
+								value={values.LedConfiguration.pledPin4}
+								error={errors.LedConfiguration?.pledPin4}
+								isInvalid={Boolean(errors.LedConfiguration?.pledPin4)}
 								onChange={handleChange}
 								min={-1}
 								max={GPIO_PIN_LENGTH - 1}
 							/>
 						</Row>
-						{values.ledOptions.pledType === 0 && (
+						{values.LedConfiguration.pledType === 0 && (
 							<Alert variant="info">
 								{t('LedConfigPage:player.pwm-sub-header-text')}
 							</Alert>
 						)}
-						{values.ledOptions.pledType === 1 && (
+						{values.LedConfiguration.pledType === 1 && (
 							<Alert variant="info">
 								{t('LedConfigPage:player.rgb-sub-header-text')}
 							</Alert>

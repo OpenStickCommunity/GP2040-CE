@@ -132,7 +132,7 @@ private:
   //Running pressed animation
   Animation* buttonAnimation;
 
-  //Buttons pressed (physical gipo pins) last frame, used when changing button theme so starts initialised
+  //Buttons pressed (physical gpio pins) last frame, used when changing button theme so starts initialised
   std::vector<int32_t> lastPressed;
 
   //Color of all lights this frame
