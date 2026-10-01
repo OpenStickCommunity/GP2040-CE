@@ -3,7 +3,9 @@
 #include <cstring>
 #include <vector>
 
+#include "helper.h"
 #include "peripheralmanager.h"
+#include "storagemanager.h"
 #include "tiny_ssd1306.h"
 
 std::map<GPGFX_DisplayType, std::map<GPGFX_DisplaySize, GPGFX_DisplayMetrics>> GPGFX_DisplayModes = {
@@ -50,6 +52,36 @@ GPGFX_DisplayTypeOptions GPGFX::getAvailableDisplay(GPGFX_DisplayType displayTyp
             display.displayType = GPGFX_DisplayType::DISPLAY_TYPE_NONE;
         }
     }
+    return display;
+}
+
+GPGFX_DisplayTypeOptions GPGFX::getSPIDisplay(uint8_t block, int32_t dcPin, int32_t resetPin, bool sh1106) {
+    GPGFX_DisplayTypeOptions display;
+
+    display.displayType = GPGFX_DisplayType::DISPLAY_TYPE_NONE;
+    display.i2c = nullptr;
+    display.spi = nullptr;
+
+    if (block >= NUM_SPIS || !PeripheralManager::getInstance().isSPIEnabled(block)) {
+        return display;
+    }
+
+    // SCK/MOSI/CS come from the SPI block in Peripheral Mapping
+    const PeripheralOptions& peripheralOptions = Storage::getInstance().getPeripheralOptions();
+    int32_t csPin = (block == 0) ? peripheralOptions.blockSPI0.cs : peripheralOptions.blockSPI1.cs;
+
+    // CS and DC are required, RESET is optional (-1 when the module ties it to 3.3V)
+    if (!isValidPin(csPin) || !isValidPin(dcPin)) {
+        return display;
+    }
+
+    display.displayType = GPGFX_DisplayType::DISPLAY_TYPE_SSD1306; // SH1106 is a variant of this driver
+    display.spi = PeripheralManager::getInstance().getSPI(block);
+    display.useSPI = true;
+    display.sh1106 = sh1106;
+    display.spiCsPin = csPin;
+    display.spiDcPin = dcPin;
+    display.spiResetPin = isValidPin(resetPin) ? resetPin : -1;
     return display;
 }
 

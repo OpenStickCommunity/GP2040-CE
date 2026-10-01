@@ -10,12 +10,25 @@ void GPGFX_TinySSD1306::init(GPGFX_DisplayTypeOptions options) {
     _options.inverted = options.inverted;
     _options.font = options.font;
     _options.contrast = options.contrast;
+    _options.useSPI = options.useSPI;
+    _options.sh1106 = options.sh1106;
+    _options.spiCsPin = options.spiCsPin;
+    _options.spiDcPin = options.spiDcPin;
+    _options.spiResetPin = options.spiResetPin;
 
-    _options.i2c->readRegister(_options.address, 0x00, &this->screenType, 1);
-    this->screenType &= 0x0F;
+    if (_options.useSPI && _options.spi != nullptr) {
+        // An SPI display can't be probed, the controller comes from the config
+        _isSPI = true;
+        _isI2C = false;
+        this->screenType = _options.sh1106 ? SCREEN_132x64 : SCREEN_128x64_MAIN;
+        initSPIBus();
+    } else {
+        _options.i2c->readRegister(_options.address, 0x00, &this->screenType, 1);
+        this->screenType &= 0x0F;
 
-    if (isSH1106(this->screenType)) {
-        this->screenType = SCREEN_132x64;
+        if (isSH1106(this->screenType)) {
+            this->screenType = SCREEN_132x64;
+        }
     }
 
 	uint8_t commands[] = {
@@ -104,6 +117,38 @@ bool GPGFX_TinySSD1306::isSH1106(int detectedDisplay) {
 
     this->setPower(true);
     return i == sizeof(RANDOM_DATA);
+}
+
+void GPGFX_TinySSD1306::initSPIBus() {
+    gpio_init(_options.spiDcPin);
+    gpio_set_dir(_options.spiDcPin, GPIO_OUT);
+    gpio_put(_options.spiDcPin, 0);
+
+    // CS is driven here as a plain GPIO
+    gpio_init(_options.spiCsPin);
+    gpio_set_dir(_options.spiCsPin, GPIO_OUT);
+    gpio_put(_options.spiCsPin, 1);
+
+    if (_options.spiResetPin >= 0) {
+        gpio_init(_options.spiResetPin);
+        gpio_set_dir(_options.spiResetPin, GPIO_OUT);
+        gpio_put(_options.spiResetPin, 1);
+        sleep_ms(1);
+        gpio_put(_options.spiResetPin, 0); // hardware reset pulse
+        sleep_ms(10);
+        gpio_put(_options.spiResetPin, 1);
+        sleep_ms(10);
+    }
+
+    // SH1106 tops out lower than SSD1306; mode 0, MSB first
+    _options.spi->beginTransaction(_options.sh1106 ? 4000000 : 8000000, SPI_MSB_FIRST, SPI_MODE0);
+}
+
+void GPGFX_TinySSD1306::writeSPI(const uint8_t* data, uint16_t length, bool isData) {
+    gpio_put(_options.spiDcPin, isData ? 1 : 0); // DC low = command, high = display data
+    gpio_put(_options.spiCsPin, 0);
+    spi_write_blocking(_options.spi->getController(), data, length);
+    gpio_put(_options.spiCsPin, 1);
 }
 
 void GPGFX_TinySSD1306::setPower(bool isPowered) {
@@ -562,7 +607,12 @@ void GPGFX_TinySSD1306::drawBuffer(uint8_t* pBuffer) {
                 memcpy(&buffer[1],&pBuffer[y*MAX_SCREEN_WIDTH],MAX_SCREEN_WIDTH);
             }
         
-            _options.i2c->write(_options.address, buffer, MAX_SCREEN_WIDTH+3, false);
+            if (_isSPI) {
+                // 128 columns plus the 2 blank columns SH1106 RAM has beyond them
+                writeSPI(&buffer[1], MAX_SCREEN_WIDTH+2, true);
+            } else {
+                _options.i2c->write(_options.address, buffer, MAX_SCREEN_WIDTH+3, false);
+            }
         }
     } else {
         sendCommand(CommandOps::PAGE_ADDRESS);
@@ -577,7 +627,11 @@ void GPGFX_TinySSD1306::drawBuffer(uint8_t* pBuffer) {
         } else {
             memcpy(&buffer[1],pBuffer,bufferSize);
         }
-        _options.i2c->write(_options.address, buffer, sizeof(buffer), false);
+        if (_isSPI) {
+            writeSPI(&buffer[1], bufferSize, true);
+        } else {
+            _options.i2c->write(_options.address, buffer, sizeof(buffer), false);
+        }
     }
 
 	if (framePage < MAX_SCREEN_HEIGHT/8) {
@@ -600,5 +654,10 @@ void GPGFX_TinySSD1306::sendCommand(uint8_t command){
 }
 
 void GPGFX_TinySSD1306::sendCommands(uint8_t* commands, uint16_t length){ 
+	if (_isSPI) {
+		// skip the I2C control byte; DC low marks the rest as commands
+		writeSPI(commands + 1, length - 1, false);
+		return;
+	}
 	_options.i2c->write(_options.address, commands, length, false);
 }
