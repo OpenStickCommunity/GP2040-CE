@@ -63,7 +63,7 @@ private:
     PSSensorData sensorData;
     uint32_t last_report_timer;
     PS4Auth * ps4AuthDriver;
-    PS4AuthData * ps4AuthData;      // PS4 Authentication Data
+    PS4AuthData * ps4AuthData = nullptr;      // PS4 Authentication Data
     uint8_t cur_nonce_chunk;            // PS4 Encryption Nonce Chunk (Max 19)
     uint8_t cur_nonce_id;
     bool pointOneTouched = false;

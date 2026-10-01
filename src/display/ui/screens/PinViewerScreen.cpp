@@ -29,7 +29,7 @@ void PinViewerScreen::drawScreen() {
                 pinsPressed += " ";
 
                 const char * action = buttonLookup[pinMappings[pin].action];
-                buttonsPressed += action;
+                buttonsPressed += action ? action : "?";
                 buttonsPressed += " ";
             }
         } else {

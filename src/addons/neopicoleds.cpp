@@ -158,8 +158,8 @@ PLEDAnimationState getPS3AnimationNEOPICO(uint16_t ledState)
         .speed = PLED_SPEED_OFF,
     };
 
-    if (ledState != 0) {
-        uint8_t ledNumber = ledState & 0x0F;
+    uint8_t ledNumber = ledState & 0x0F;
+    if (ledNumber > 0 && ledNumber <= 10) {
         if (ps3LEDs[ledNumber-1][0] == 0x01) animationState.state |= PLED_STATE_LED1;
         if (ps3LEDs[ledNumber-1][1] == 0x01) animationState.state |= PLED_STATE_LED2;
         if (ps3LEDs[ledNumber-1][2] == 0x01) animationState.state |= PLED_STATE_LED3;
@@ -830,10 +830,6 @@ void NeoPicoLEDAddon::GenerateLights()
 
 		generatedLights.push_back(newLight);
 	}
-
-	//check for critical error
-	if(minX < 0 || minY < 0)
-		return;
 
 	//Strip Empty rows and coloums on left and top side
 	for(int index = 0; index < (int)generatedLights.size(); ++index)

@@ -41,7 +41,7 @@ export const SPI_BLOCKS = [
 ];
 
 export const USB_BLOCKS = [
-	{ label: 'usb0', value: 0, pins: { dp: [], enable5v: [] } },
+	{ label: 'usb0', value: 0, pins: { dp: [], dm: [], enable5v: [] } },
 ];
 
 export const PERIPHERAL_DEVICES = [
@@ -70,11 +70,6 @@ export const PERIPHERAL_DEVICES = [
 		value: 2,
 		blocks: USB_BLOCKS,
 		pinTable: false,
-		options: {
-			order: [
-				{ label: 'D+/D-', value: 0, isDefault: true },
-				{ label: 'D-/D+', value: 1 },
-			],
-		},
+		options: {},
 	},
 ];

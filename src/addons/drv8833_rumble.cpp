@@ -1,3 +1,4 @@
+#include "hardware/clocks.h"
 #include "hardware/pwm.h"
 #include "addons/drv8833_rumble.h"
 #include "storagemanager.h"
@@ -26,11 +27,7 @@ void DRV8833RumbleAddon::setup() {
 	dutyMin = options.dutyMin;
 	dutyMax = options.dutyMax;
 
-	// TODO: More robust clock check. Currently just assumes 120 MHz if USB Enabled, 125 MHz otherwise.
-	if ( PeripheralManager::getInstance().isUSBEnabled(0) )
-		sysClock = 120000000;
-	else
-		sysClock = 125000000;
+	sysClock = clock_get_hz(clk_sys);
 
 
 	// enable haptics in Aux sensors depending on pin assignments
