@@ -351,7 +351,6 @@ app.get('/api/getSplashImage', (req, res) => {
 	return res.send(data);
 });
 
-/*
 app.get('/api/getAnimationProtoOptions', (req, res) => {
 	return res.send({
 		AnimationOptions: {
@@ -430,7 +429,6 @@ app.get('/api/getAnimationProtoOptions', (req, res) => {
 		},
 	});
 });
-*/
 
 app.get('/api/getGamepadOptions', (req, res) => {
 	return res.send({
@@ -550,96 +548,15 @@ app.get('/api/getGamepadOptions', (req, res) => {
 
 app.get('/api/getLedOptions', (req, res) => {
 	return res.send({
-		LedOptions: {
-			LedConfiguration: {
-				dataPin: 22,
-				ledFormat: 0,
-				turnOffWhenSuspended: 0,
-				brightnessMaximum: 50,
-				pledType: 1,
-				pledPin1: 12,
-				pledPin2: 13,
-				pledPin3: 14,
-				pledPin4: 15,
-			},
-			LightData: {
-				LightData: BoardLights[0].lightData,
-			},
-			AnimationOptions: {
-				brightness: 5,
-				idletimeout: 0,
-				baseProfileIndex: 0,
-				customColors: [255],
-				profiles: [
-					{
-						bEnabled: 1,
-						baseNonPressedEffect: 1,
-						basePressedEffect: 0,
-						buttonPressHoldTimeInMs: 500,
-						buttonPressFadeOutTimeInMs: 500,
-						nonPressedSpecialColor: 0xffff00,
-						bUseCaseLightsInPressedAnimations: 0,
-						baseCaseEffect: 0,
-						pressedSpecialColor: 0,
-						caseSpecialColor: 0,
-						baseCycleTime: 0,
-						basePressedCycleTime: 0,
-						baseCaseCycleTime: 0,
-						bNonPressedSpecialColorIsRainbow: 0,
-						bPressedSpecialColorIsRainbow: 0,
-						nonButtonStaticColors: [
-							1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-							1,
-						],
-						bCaseSpecialColorIsRainbow: 0,
-						nonPressedContextParam: 0,
-						pressedContextParam: 0,
-						caseContextParam: 0,
-						notPressedStaticColors: [
-							2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-							2, 2, 2, 2, 2, 2, 2, 2, 2,
-						],
-						pressedStaticColors: [
-							4, 6, 10, 12, 4, 6, 10, 12, 4, 6, 10, 12, 4, 6, 10, 12, 4, 6, 10,
-							12, 4, 6, 10, 12, 4, 6, 10, 12, 4, 6, 10, 12,
-						],
-					},
-					{
-						bEnabled: 1,
-						baseNonPressedEffect: 0,
-						basePressedEffect: 3,
-						buttonPressHoldTimeInMs: 500,
-						buttonPressFadeOutTimeInMs: 500,
-						nonPressedSpecialColor: 255,
-						bUseCaseLightsInPressedAnimations: 1,
-						baseCaseEffect: 0,
-						baseCycleTime: 0,
-						basePressedCycleTime: 0,
-						baseCaseCycleTime: 0,
-						pressedSpecialColor: 0x80ff00,
-						caseSpecialColor: 0x80ff00,
-						bNonPressedSpecialColorIsRainbow: 0,
-						bPressedSpecialColorIsRainbow: 0,
-						nonButtonStaticColors: [
-							3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-							3,
-						],
-						bCaseSpecialColorIsRainbow: 0,
-						nonPressedContextParam: 0,
-						pressedContextParam: 0,
-						caseContextParam: 0,
-						notPressedStaticColors: [
-							6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-							6, 6, 6, 6, 6, 6, 6, 6, 6,
-						],
-						pressedStaticColors: [
-							2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-							2, 2, 2, 2, 2, 2, 2, 2, 2,
-						],
-					},
-				],
-			}
-		}
+		dataPin: 22,
+		ledFormat: 0,
+		turnOffWhenSuspended: 0,
+		brightnessMaximum: 50,
+		pledType: 1,
+		pledPin1: 12,
+		pledPin2: 13,
+		pledPin3: 14,
+		pledPin4: 15,
 	});
 });
 
@@ -932,13 +849,11 @@ app.get('/api/getAddonsOptions', (req, res) => {
 	});
 });
 
-/*
 app.get('/api/getLightsDataOptions', (req, res) => {
 	return res.send({
 		LightData: BoardLights[0].lightData,
 	});
 });
-*/
 
 app.get('/api/getLightsDataPresets', (req, res) => {
 	return res.send(BoardLights);
