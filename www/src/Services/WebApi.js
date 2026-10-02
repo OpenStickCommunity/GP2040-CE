@@ -347,6 +347,19 @@ async function getButtonLayoutDefs() {
 	}
 }
 
+async function getAnimationOptions() {
+	try {
+		const { data } = await Http.get(`${baseUrl}/api/getAnimationProtoOptions`);
+		return data;
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+async function setAnimationOptions(options) {
+	return Http.post(`${baseUrl}/api/setAnimationProtoOptions`, options);
+}
+
 async function getPinMappings() {
 	try {
 		const { data } = await Http.get(`${baseUrl}/api/getPinMappings`);
@@ -590,6 +603,18 @@ async function getExpansionPins() {
 		console.error(error);
 	}
 }
+async function setLightsDataOptions(options) {
+	return Http.post(`${baseUrl}/api/setLightsDataOptions`, options);
+}
+
+async function getLightsDataOptions() {
+	try {
+		const response = await Http.get(`${baseUrl}/api/getLightsDataOptions`);
+		return response.data;
+	} catch (error) {
+		console.error(error);
+	}
+}
 
 async function getLightsDataPresets() {
 	try {
@@ -707,6 +732,8 @@ async function clearAnimationButtonTestMode(options) {
 
 export default {
 	resetSettings,
+	getAnimationOptions,
+	setAnimationOptions,
 	getDisplayOptions,
 	setDisplayOptions,
 	getLedOptions,
@@ -730,6 +757,8 @@ export default {
 	setWiiControls,
 	getPeripheralOptions,
 	setPeripheralOptions,
+	setLightsDataOptions,
+	getLightsDataOptions,
 	getLightsDataPresets,
 	getLightsPresets,
 	getExpansionPins,

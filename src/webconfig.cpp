@@ -820,7 +820,7 @@ std::string getGamepadOptions()
     writeDoc(doc, "forcedSetupMode", forcedSetupOptions.mode);
     return serialize_json(doc);
 }
-/*
+
 std::string setLedOptions()
 {
     DynamicJsonDocument doc = get_post_data();
@@ -860,7 +860,28 @@ std::string setLedOptions()
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
     return serialize_json(doc);
 }
-*/
+
+std::string getLedOptions()
+{
+    const size_t capacity = JSON_OBJECT_SIZE(500);
+    DynamicJsonDocument doc(capacity);
+    const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
+    writeDoc(doc, "dataPin", cleanPin(ledOptions.dataPin));
+    writeDoc(doc, "ledFormat", ledOptions.ledFormat);
+    writeDoc(doc, "turnOffWhenSuspended", ledOptions.turnOffWhenSuspended);
+
+    uint32_t adjustedbrightnessMax = (uint32_t)(((float)ledOptions.brightnessMaximum / 2.55f) + 0.5f); //+0.5 to cause it to round to nearest number
+    adjustedbrightnessMax = std::clamp<uint32_t>(adjustedbrightnessMax, 0, 100);
+    writeDoc(doc, "brightnessMaximum", adjustedbrightnessMax);
+
+    writeDoc(doc, "pledType", ledOptions.pledType);
+    writeDoc(doc, "pledPin1", ledOptions.pledPin1);
+    writeDoc(doc, "pledPin2", ledOptions.pledPin2);
+    writeDoc(doc, "pledPin3", ledOptions.pledPin3);
+    writeDoc(doc, "pledPin4", ledOptions.pledPin4);
+
+    return serialize_json(doc);
+}
 
 std::string getButtonLayoutDefs()
 {
@@ -934,7 +955,6 @@ std::string getButtonLayouts()
     return serialize_json(doc);
 }
 
-/*
 std::string setLightsDataOptions()
 {
     DynamicJsonDocument doc = get_post_data();
@@ -993,7 +1013,6 @@ std::string getLightsDataOptions()
 
     return serialize_json(doc);
 }
-*/
 
 std::string getLightsPresetsByIndex(int presetIdx)
 {
@@ -1297,7 +1316,7 @@ std::string clearAnimationButtonTestMode()
 
     return serialize_json(doc);
 }
-/*
+
 std::string setAnimationProtoOptions()
 {
     DynamicJsonDocument doc = get_post_data();
@@ -1395,7 +1414,6 @@ std::string getAnimationProtoOptions()
 
     return serialize_json(doc);
 }
-*/
 
 std::string setPinMappings()
 {
@@ -3166,7 +3184,7 @@ std::string getBoardDefinition() {
     return serialize_json(doc);
 }
 
-
+/*
 std::string setLedOptions() {
     DynamicJsonDocument doc = get_post_data();
 
@@ -3346,6 +3364,7 @@ std::string getLedOptions() {
 
     return serialize_json(doc);
 }
+*/
 
 typedef std::string (*HandlerFuncPtr)();
 static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
@@ -3353,11 +3372,14 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/setDisplayOptions", setDisplayOptions },
     { "/api/setPreviewDisplayOptions", setPreviewDisplayOptions },
     { "/api/setGamepadOptions", setGamepadOptions },
+    { "/api/setLedOptions", setLedOptions },
     { "/api/setAnimationButtonTestMode", setAnimationButtonTestMode },
     { "/api/setAnimationButtonTestState", setAnimationButtonTestState },
     { "/api/clearAnimationButtonTestMode", clearAnimationButtonTestMode },
-    { "/api/getLedOptions", getLedOptions },
-    { "/api/setLedOptions", setLedOptions },
+    { "/api/setAnimationProtoOptions", setAnimationProtoOptions },
+    { "/api/getAnimationProtoOptions", getAnimationProtoOptions },
+    { "/api/setLightsDataOptions", setLightsDataOptions },
+    { "/api/getLightsDataOptions", getLightsDataOptions },
     { "/api/getLightsPresets/0", getLightsPresets0 },
     { "/api/getLightsPresets/1", getLightsPresets1 },
     { "/api/getLightsPresets/2", getLightsPresets2 },
@@ -3392,6 +3414,7 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/getGamepadOptions", getGamepadOptions },
     { "/api/getButtonLayoutDefs", getButtonLayoutDefs },
     { "/api/getButtonLayouts", getButtonLayouts },
+    { "/api/getLedOptions", getLedOptions },
     { "/api/getPinMappings", getPinMappings },
     { "/api/getProfileOptions", getProfileOptions },
     { "/api/getKeyMappings", getKeyMappings },
