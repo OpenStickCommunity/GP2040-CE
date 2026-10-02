@@ -286,6 +286,17 @@ export default function LedConfigPage() {
 	const [layouteMode, setLayouteMode] = useState(false);
 	const [saveMessage, setSaveMessage] = useState('');
 
+	const handleSave = async (e) => {
+		e.preventDefault();
+		e.stopPropagation();
+		try {
+			await saveLedOptions(Lights, LedConfiguration, AnimationOptions);
+			setSaveMessage(t('Common:saved-success-message'));
+		} catch (error) {
+			setSaveMessage(t('Common:saved-error-message'));
+		}
+	};
+
 	const onSuccess = async ({
 		LedConfiguration,
 		AnimationOptions,
@@ -1180,9 +1191,10 @@ export default function LedConfigPage() {
 							)}
 						/>
 					</Section>
-					<Button className="mb-3" type="submit">
+					<Button className="mb-3" type="button" onClick={handleSave} >
 						{t('Common:button-save-label')}
 					</Button>
+
 					{saveMessage && <Alert variant="info">{saveMessage}</Alert>}
 					<PreviewLedChanges selectedProfile={selectedProfile} />
 				</Form>

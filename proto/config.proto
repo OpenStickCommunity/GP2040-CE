@@ -375,7 +375,7 @@ message AnimationOptions
 {
     reserved 1, 3 to 56;
     optional uint32 brightness = 2;
-    repeated AnimationProfile profiles = 57 [(nanopb).max_count = 4]; //MAX_ANIMATION_PROFILES from AnimationStation.hpp
+    repeated AnimationProfile profiles = 57 [(nanopb).max_count = 5]; //MAX_ANIMATION_PROFILES+1 (test profile) from AnimationStation.hpp
     optional int32 baseProfileIndex = 58;
     repeated uint32 customColors = 59 [(nanopb).max_count = 16]; //MAX_CUSTOM_COLORS from Animation.hpp
     optional uint32 autoDisableTime = 60;
