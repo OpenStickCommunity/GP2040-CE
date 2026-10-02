@@ -14,6 +14,7 @@
 #include "GPEvent.h"
 #include "GPGamepadEvent.h"
 #include "GPEncoderEvent.h"
+#include "GPLEDEvent.h"
 #include "GPMenuNavigateEvent.h"
 #include "GPProfileEvent.h"
 #include "GPRestartEvent.h"
