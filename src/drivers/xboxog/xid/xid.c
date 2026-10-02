@@ -128,7 +128,7 @@ bool xid_get_report(uint8_t index, void *report, uint16_t len)
     //Most games send to control pipe, but some send to out pipe. THPSX2 atleast
     if (tud_ready() && !usbd_edpt_busy(TUD_OPT_RHPORT, _xid_itf[index].ep_out))
     {
-        usbd_edpt_xfer(TUD_OPT_RHPORT, _xid_itf[index].ep_out, _xid_itf[index].ep_out_buff, len);
+        usbd_edpt_xfer(TUD_OPT_RHPORT, _xid_itf[index].ep_out, _xid_itf[index].ep_out_buff, len, false);
     }
     return true;
 }
@@ -153,7 +153,7 @@ bool xid_send_report(uint8_t index, void *report, uint16_t len)
     memcpy(_xid_itf[index].in, report, len);
 
     //Send it to the host
-    return usbd_edpt_xfer(TUD_OPT_RHPORT, _xid_itf[index].ep_in, _xid_itf[index].in, len);
+    return usbd_edpt_xfer(TUD_OPT_RHPORT, _xid_itf[index].ep_in, _xid_itf[index].in, len, false);
 }
 
 static bool xid_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result, uint32_t xferred_bytes)
