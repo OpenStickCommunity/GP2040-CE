@@ -3,6 +3,11 @@
 #include "buttonlayouts.h"
 #include "enums.pb.h"
 
+#ifdef DEFAULT_BOARD_LAYOUT_A_NAME
+#define STRINGIFY(x) #x
+#define TOSTRING(x) STRINGIFY(x)
+#endif
+
 LayoutManager::LayoutList LayoutManager::getLayoutA() {
     const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
     uint16_t layoutLeft = options.buttonLayout;
@@ -59,21 +64,155 @@ std::string LayoutManager::getLayoutBName() {
 }
 
 std::string LayoutManager::getButtonLayoutName(ButtonLayout layout) {
-    #define ENUM_CASE(name, value) case name: return #name;
     switch (layout) {
-        ButtonLayout_VALUELIST(ENUM_CASE)
-        default: return "BUTTON_LAYOUT_UNKNOWN";
+        case BUTTON_LAYOUT_BOARD_DEFINED_A: {
+            #ifdef DEFAULT_BOARD_LAYOUT_A_NAME
+            return DEFAULT_BOARD_LAYOUT_A_NAME;
+            #else
+            return "BUTTON_LAYOUT_BOARD_DEFINED_A";
+            #endif
+        }
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT0_A: {
+            #ifdef DEFAULT_BOARD_LAYOUT_A_ALT0_NAME
+            return DEFAULT_BOARD_LAYOUT_A_ALT0_NAME;
+            #else
+            return "BUTTON_LAYOUT_BOARD_DEFINED_ALT0_A";
+            #endif
+        }
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT1_A: {
+            #ifdef DEFAULT_BOARD_LAYOUT_A_ALT1_NAME
+            return DEFAULT_BOARD_LAYOUT_A_ALT1_NAME;
+            #else
+            return "BUTTON_LAYOUT_BOARD_DEFINED_ALT1_A";
+            #endif
+        }
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT2_A: {
+            #ifdef DEFAULT_BOARD_LAYOUT_A_ALT2_NAME
+            return DEFAULT_BOARD_LAYOUT_A_ALT2_NAME;
+            #else
+            return "BUTTON_LAYOUT_BOARD_DEFINED_ALT2_A";
+            #endif
+        }
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT3_A: {
+            #ifdef DEFAULT_BOARD_LAYOUT_A_ALT3_NAME
+            return DEFAULT_BOARD_LAYOUT_A_ALT3_NAME;
+            #else
+            return "BUTTON_LAYOUT_BOARD_DEFINED_ALT3_A";
+            #endif
+        }
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT4_A: {
+            #ifdef DEFAULT_BOARD_LAYOUT_A_ALT4_NAME
+            return DEFAULT_BOARD_LAYOUT_A_ALT4_NAME;
+            #else
+            return "BUTTON_LAYOUT_BOARD_DEFINED_ALT4_A";
+            #endif
+        }
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT5_A: {
+            #ifdef DEFAULT_BOARD_LAYOUT_A_ALT5_NAME
+            return DEFAULT_BOARD_LAYOUT_A_ALT5_NAME;
+            #else
+            return "BUTTON_LAYOUT_BOARD_DEFINED_ALT5_A";
+            #endif
+        }
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT6_A: {
+            #ifdef DEFAULT_BOARD_LAYOUT_A_ALT6_NAME
+            return DEFAULT_BOARD_LAYOUT_A_ALT6_NAME;
+            #else
+            return "BUTTON_LAYOUT_BOARD_DEFINED_ALT6_A";
+            #endif
+        }
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT7_A: {
+            #ifdef DEFAULT_BOARD_LAYOUT_A_ALT7_NAME
+            return DEFAULT_BOARD_LAYOUT_A_ALT7_NAME;
+            #else
+            return "BUTTON_LAYOUT_BOARD_DEFINED_ALT7_A";
+            #endif
+        }
+        default: {
+            #define ENUM_CASE(name, value) case name: return #name;
+            switch (layout) {
+                ButtonLayout_VALUELIST(ENUM_CASE)
+                default: return "BUTTON_LAYOUT_UNKNOWN";
+            }
+            #undef ENUM_CASE
+        }
     }
-    #undef ENUM_CASE
 }
 
 std::string LayoutManager::getButtonLayoutRightName(ButtonLayoutRight layout) {
-    #define ENUM_CASE(name, value) case name: return #name;
     switch (layout) {
-        ButtonLayoutRight_VALUELIST(ENUM_CASE)
-        default: return "BUTTON_LAYOUT_UNKNOWN";
+        case BUTTON_LAYOUT_BOARD_DEFINED_B: {
+            #ifdef DEFAULT_BOARD_LAYOUT_B_NAME
+            return DEFAULT_BOARD_LAYOUT_B_NAME;
+            #else
+            return "BUTTON_LAYOUT_BOARD_DEFINED_B";
+            #endif
+        }
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT0_B: {
+            #ifdef DEFAULT_BOARD_LAYOUT_B_ALT0_NAME
+            return DEFAULT_BOARD_LAYOUT_B_ALT0_NAME;
+            #else
+            return "BUTTON_LAYOUT_BOARD_DEFINED_ALT0_B";
+            #endif
+        }
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT1_B: {
+            #ifdef DEFAULT_BOARD_LAYOUT_B_ALT1_NAME
+            return DEFAULT_BOARD_LAYOUT_B_ALT1_NAME;
+            #else
+            return "BUTTON_LAYOUT_BOARD_DEFINED_ALT1_B";
+            #endif
+        }
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT2_B: {
+            #ifdef DEFAULT_BOARD_LAYOUT_B_ALT2_NAME
+            return DEFAULT_BOARD_LAYOUT_B_ALT2_NAME;
+            #else
+            return "BUTTON_LAYOUT_BOARD_DEFINED_ALT2_B";
+            #endif
+        }
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT3_B: {
+            #ifdef DEFAULT_BOARD_LAYOUT_B_ALT3_NAME
+            return DEFAULT_BOARD_LAYOUT_B_ALT3_NAME;
+            #else
+            return "BUTTON_LAYOUT_BOARD_DEFINED_ALT3_B";
+            #endif
+        }
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT4_B: {
+            #ifdef DEFAULT_BOARD_LAYOUT_B_ALT4_NAME
+            return DEFAULT_BOARD_LAYOUT_B_ALT4_NAME;
+            #else
+            return "BUTTON_LAYOUT_BOARD_DEFINED_ALT4_B";
+            #endif
+        }
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT5_B: {
+            #ifdef DEFAULT_BOARD_LAYOUT_B_ALT5_NAME
+            return DEFAULT_BOARD_LAYOUT_B_ALT5_NAME;
+            #else
+            return "BUTTON_LAYOUT_BOARD_DEFINED_ALT5_B";
+            #endif
+        }
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT6_B: {
+            #ifdef DEFAULT_BOARD_LAYOUT_B_ALT6_NAME
+            return DEFAULT_BOARD_LAYOUT_B_ALT6_NAME;
+            #else
+            return "BUTTON_LAYOUT_BOARD_DEFINED_ALT6_B";
+            #endif
+        }
+        case BUTTON_LAYOUT_BOARD_DEFINED_ALT7_B: {
+            #ifdef DEFAULT_BOARD_LAYOUT_B_ALT7_NAME
+            return DEFAULT_BOARD_LAYOUT_B_ALT7_NAME;
+            #else
+            return "BUTTON_LAYOUT_BOARD_DEFINED_ALT7_B";
+            #endif
+        }
+        default: {
+            #define ENUM_CASE(name, value) case name: return #name;
+            switch (layout) {
+                ButtonLayoutRight_VALUELIST(ENUM_CASE)
+                default: return "BUTTON_LAYOUT_UNKNOWN";
+            }
+            #undef ENUM_CASE
+        }
     }
-    #undef ENUM_CASE
 }
 
 LayoutManager::LayoutList LayoutManager::getLeftLayout(uint16_t index) {
@@ -308,7 +447,7 @@ LayoutManager::LayoutList LayoutManager::adjustByCustomSettings(LayoutManager::L
         int32_t offsetX = customX-startX;
         int32_t offsetY = customY-startY;
         for (uint16_t elementCtr = 0; elementCtr < layout.size(); elementCtr++) {
-            if (layout[elementCtr].elementType == GP_ELEMENT_BTN_BUTTON) {
+            if ((layout[elementCtr].elementType == GP_ELEMENT_BTN_BUTTON) || (layout[elementCtr].elementType == GP_ELEMENT_HE_BUTTON)) {
                 layout[elementCtr].parameters.x1 += originX+(offsetX+common.buttonPadding);
                 layout[elementCtr].parameters.y1 += originY+(offsetY+common.buttonPadding);
             } else {

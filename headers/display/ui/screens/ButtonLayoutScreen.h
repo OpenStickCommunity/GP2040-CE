@@ -148,6 +148,10 @@ class ButtonLayoutScreen : public GPScreen {
         GPWidget* pushElement(GPButtonLayout element);
         void generateHeader();
 
+        void updateCustomHeaders();
+        void checkLEDCycleParams();
+        void addCustomHeader(std::string newStr, std::string identifier);
+
         const std::map<uint16_t, uint16_t> displayModeLookup = {
             {INPUT_MODE_PS3, 0},
             {INPUT_MODE_SWITCH, 1},
@@ -168,6 +172,7 @@ class ButtonLayoutScreen : public GPScreen {
             {INPUT_MODE_ASTRO, 9},
             {INPUT_MODE_XBOXORIGINAL, 10},
             {INPUT_MODE_GENERIC, 11},
+            {INPUT_MODE_SINPUT, 3},
         };
 
         Gamepad* gamepad = nullptr;
@@ -185,13 +190,31 @@ class ButtonLayoutScreen : public GPScreen {
 
         bool bannerDisplay = false;
         uint8_t bannerDelay = 2;
+        float inbetweenBannerDelay = 0.3f;
         int bannerDelayStart = 0;
+        bool inbetweenBanners = false;
+
         std::string bannerMessage{};
+
+        std::deque<std::string> bannerString;
+        std::deque<std::string> bannerIdentifier;
+
+        int8_t gamePadProfileNumber = -2;
+        int8_t prevGamepadProfileNumber = -2;
+        
+        int8_t prevLEDAnimationProfileNumber = -2;
+ 
+        int8_t prevLEDBaseCycleNumber = -1;
+        int8_t prevLEDBaseCaseCycleNumber = -1;
+        int8_t prevLEDBasePressedCycleNumber = -1;
+ 
         uint16_t prevButtonState = 0;
         uint8_t prevLayoutLeft = 0;
         uint8_t prevLayoutRight = 0;
+        
         uint8_t profileNumber = 0;
         uint8_t prevProfileNumber = 0;
+        
         ButtonLayoutParamsLeft prevLeftOptions{};
         ButtonLayoutParamsRight prevRightOptions{};
         ButtonLayoutOrientation prevOrientation{};
@@ -206,6 +229,7 @@ class ButtonLayoutScreen : public GPScreen {
         bool showSocdMode = true;
         bool showMacroMode = true;
         bool showProfileMode = false;
+        bool showProfileBanner = false;
         void trim(std::string &s);
 
         uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);

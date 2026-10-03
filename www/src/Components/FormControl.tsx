@@ -3,7 +3,7 @@ import { Form, FormControlProps } from 'react-bootstrap';
 
 type formTypes = {
 	onClick?: () => void;
-	label: string;
+	label?: string;
 	error?: string;
 	groupClassName?: string;
 	hidden?: boolean;
@@ -20,7 +20,7 @@ const FormControl = ({
 }: formTypes) => {
 	return (
 		<Form.Group className={groupClassName} onClick={onClick} hidden={hidden}>
-			<Form.Label>{label}</Form.Label>
+			{label && <Form.Label>{label}</Form.Label>}
 			<Form.Control {...props} />
 			<Form.Control.Feedback type="invalid">{error}</Form.Control.Feedback>
 		</Form.Group>

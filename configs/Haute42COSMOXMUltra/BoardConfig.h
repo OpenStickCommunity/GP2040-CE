@@ -76,11 +76,10 @@
 
 #define BOARD_LEDS_PIN 28
 #define LED_BRIGHTNESS_MAXIMUM 200
-#define LEDS_BRIGHTNESS 200
-#define LED_BRIGHTNESS_STEPS 5
+#define LEDS_BRIGHTNESS 5
 #define LED_FORMAT LED_FORMAT_GRB
 #define LEDS_PER_PIXEL 1
-#define LEDS_BASE_ANIMATION_INDEX 1
+
 #define LEDS_DPAD_LEFT   0
 #define LEDS_DPAD_DOWN   1
 #define LEDS_DPAD_RIGHT  2
@@ -114,6 +113,7 @@
 #define SPLASH_MODE SPLASH_MODE_STATIC
 #define SPLASH_DURATION 3000
 
+#define DEFAULT_BOARD_LAYOUT_A_NAME "Haute42 COSMOX M Ultra Default"
 #define DEFAULT_BOARD_LAYOUT_A {\
     {GP_ELEMENT_PIN_BUTTON, {47,  19, 4, 4, 1, 1, 27,   GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {32,  27, 4, 4, 1, 1, 5,    GP_SHAPE_ELLIPSE}},\
@@ -129,6 +129,7 @@
     {GP_ELEMENT_PIN_BUTTON, {105, 15, 2, 2, 1, 1, 17,   GP_SHAPE_ELLIPSE}}\
 }
 
+#define DEFAULT_BOARD_LAYOUT_B_NAME "Haute42 COSMOX M Ultra Default"
 #define DEFAULT_BOARD_LAYOUT_B {\
     {GP_ELEMENT_PIN_BUTTON, {59, 27, 4, 4, 1, 1, 10,    GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {69, 25, 4, 4, 1, 1, 11,    GP_SHAPE_ELLIPSE}},\
@@ -142,6 +143,7 @@
 }
 
 // C16
+#define DEFAULT_BOARD_LAYOUT_A_ALT0_NAME "Haute42|COSMOX X-Move Series Standard"
 #define DEFAULT_BOARD_LAYOUT_A_ALT0 {\
     {GP_ELEMENT_PIN_BUTTON, {47,  19, 4, 4, 1, 1, 27,   GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {32,  27, 4, 4, 1, 1, 5,    GP_SHAPE_ELLIPSE}},\
@@ -157,6 +159,7 @@
     {GP_ELEMENT_PIN_BUTTON, {105, 15, 2, 2, 1, 1, 17,   GP_SHAPE_ELLIPSE}}\
 }
 
+#define DEFAULT_BOARD_LAYOUT_B_ALT0_NAME "Haute42|COSMOX X-Move Series Standard"
 #define DEFAULT_BOARD_LAYOUT_B_ALT0 {\
     {GP_ELEMENT_PIN_BUTTON, {59, 27, 4, 4, 1, 1, 10,    GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {69, 25, 4, 4, 1, 1, 11,    GP_SHAPE_ELLIPSE}},\
@@ -170,6 +173,7 @@
 }
 
 // C16-S
+#define DEFAULT_BOARD_LAYOUT_A_ALT1_NAME "Haute42|COSMOX X-Move Series + WASD"
 #define DEFAULT_BOARD_LAYOUT_A_ALT1 {\
     {GP_ELEMENT_PIN_BUTTON, {19, 30, 20, 24, 1, 1, 18, GP_SHAPE_PILL,120}},\
     {GP_ELEMENT_PIN_BUTTON, {32, 25, 4, 4, 1, 1, 5, GP_SHAPE_ELLIPSE}},\
@@ -179,6 +183,7 @@
     {GP_ELEMENT_PIN_BUTTON, {55, 53, 56, 47, 1, 1, 2, GP_SHAPE_PILL,120}},\
 }
 
+#define DEFAULT_BOARD_LAYOUT_B_ALT1_NAME "Haute42|COSMOX X-Move Series + WASD"
 #define DEFAULT_BOARD_LAYOUT_B_ALT1 {\
     {GP_ELEMENT_PIN_BUTTON, {74, 25, 4, 4, 1, 1, 10, GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {83, 20, 4, 4, 1, 1, 11, GP_SHAPE_ELLIPSE}},\
@@ -193,6 +198,7 @@
 }
 
 // M Ultra Gen 2
+#define DEFAULT_BOARD_LAYOUT_A_ALT2_NAME "Haute42|COSMOX X-Move Series + Joystick"
 #define DEFAULT_BOARD_LAYOUT_A_ALT2 {\
     {GP_ELEMENT_PIN_BUTTON, {51, 19, 4, 4, 1, 1, 27, GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {36, 27, 4, 4, 1, 1, 5, GP_SHAPE_ELLIPSE}},\
@@ -208,6 +214,7 @@
     {GP_ELEMENT_PIN_BUTTON, {105, 15, 2, 2, 1, 1, 14, GP_SHAPE_ELLIPSE}},\
 }
 
+#define DEFAULT_BOARD_LAYOUT_B_ALT2_NAME "Haute42|COSMOX X-Move Series + Joystick"
 #define DEFAULT_BOARD_LAYOUT_B_ALT2 {\
     {GP_ELEMENT_PIN_BUTTON, {63, 27, 4, 4, 1, 1, 10, GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {73, 25, 4, 4, 1, 1, 11, GP_SHAPE_ELLIPSE}},\
@@ -221,6 +228,7 @@
 }
 
 // Haute42|COSMOX X-Move Series Standard
+#define DEFAULT_BOARD_LAYOUT_A_ALT3_NAME "M Ultra Gen 2"
 #define DEFAULT_BOARD_LAYOUT_A_ALT3 {\
     {GP_ELEMENT_PIN_BUTTON, {37, 19, 4, 4, 1, 1, 2, GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {23, 24, 4, 4, 1, 1, 5, GP_SHAPE_ELLIPSE}},\
@@ -235,6 +243,7 @@
     {GP_ELEMENT_PIN_BUTTON, {103, 15, 2, 2, 1, 1, 17, GP_SHAPE_ELLIPSE}},\
 }
 
+#define DEFAULT_BOARD_LAYOUT_B_ALT3_NAME "M Ultra Gen 2"
 #define DEFAULT_BOARD_LAYOUT_B_ALT3 {\
     {GP_ELEMENT_PIN_BUTTON, {64, 27, 4, 4, 1, 1, 10, GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {74, 25, 4, 4, 1, 1, 11, GP_SHAPE_ELLIPSE}},\
@@ -248,6 +257,7 @@
 }
 
 // Haute42|COSMOX X-Move Series + WASD
+#define DEFAULT_BOARD_LAYOUT_A_ALT4_NAME "C16"
 #define DEFAULT_BOARD_LAYOUT_A_ALT4 {\
     {GP_ELEMENT_PIN_BUTTON, {20, 21, 27, 28, 1, 1, 5, GP_SHAPE_SQUARE,22}},\
     {GP_ELEMENT_PIN_BUTTON, {28, 25, 35, 32, 1, 1, 3, GP_SHAPE_SQUARE,22}},\
@@ -262,6 +272,7 @@
     {GP_ELEMENT_PIN_BUTTON, {103, 15, 2, 2, 1, 1, 17, GP_SHAPE_ELLIPSE}},\
 }
 
+#define DEFAULT_BOARD_LAYOUT_B_ALT4_NAME "C16"
 #define DEFAULT_BOARD_LAYOUT_B_ALT4 {\
     {GP_ELEMENT_PIN_BUTTON, {64, 27, 4, 4, 1, 1, 10, GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {74, 25, 4, 4, 1, 1, 11, GP_SHAPE_ELLIPSE}},\
@@ -275,6 +286,7 @@
 }
 
 // Haute42|COSMOX X-Move Series + Joystick
+#define DEFAULT_BOARD_LAYOUT_A_ALT5_NAME "C16-S"
 #define DEFAULT_BOARD_LAYOUT_A_ALT5 {\
     {GP_ELEMENT_LEVER,      {28, 28, 7, 7, 1, 0,  0}},\
     {GP_ELEMENT_PIN_BUTTON, {68, 15, 2, 2, 1, 1, 14, GP_SHAPE_ELLIPSE}},\
@@ -286,6 +298,7 @@
     {GP_ELEMENT_PIN_BUTTON, {103, 15, 2, 2, 1, 1, 17, GP_SHAPE_ELLIPSE}},\
 }
 
+#define DEFAULT_BOARD_LAYOUT_B_ALT5_NAME "C16-S"
 #define DEFAULT_BOARD_LAYOUT_B_ALT5 {\
     {GP_ELEMENT_PIN_BUTTON, {64, 27, 4, 4, 1, 1, 10, GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {74, 25, 4, 4, 1, 1, 11, GP_SHAPE_ELLIPSE}},\
@@ -307,6 +320,206 @@
 
 #define BOARD_LED_ENABLED 1
 #define BOARD_LED_TYPE ON_BOARD_LED_MODE_MODE_INDICATOR
+
+#define LIGHT_DATA_NAME_DEFAULT "Haute42|Cosmox M Ultra" 
+#define LIGHT_DATA_SIZE_DEFAULT 46 //number of sets in the below data
+#define LIGHT_DATA_DEFAULT \
+0,  1,  3,  5,  5, LightType::LightType_ActionButton, \
+1,  1,  5,  5,  3, LightType::LightType_ActionButton, \
+2,  1,  7,  6,  4, LightType::LightType_ActionButton, \
+3,  1,  8,  9,  2, LightType::LightType_ActionButton, \
+4,  1,  9,  5, 10, LightType::LightType_ActionButton, \
+5,  1, 11,  4, 11, LightType::LightType_ActionButton, \
+6,  1, 13,  4, 12, LightType::LightType_ActionButton, \
+7,  1, 15,  4, 13, LightType::LightType_ActionButton, \
+8,  1,  9,  7,  6, LightType::LightType_ActionButton, \
+9,  1, 11,  6,  7, LightType::LightType_ActionButton, \
+10, 1, 13,  6,  8, LightType::LightType_ActionButton, \
+11, 1, 15,  6,  9, LightType::LightType_ActionButton, \
+12, 1,  6,  3, 27, LightType::LightType_ActionButton, \
+13, 1,  9,  3, 18, LightType::LightType_ActionButton, \
+14, 1, 10,  9, 19, LightType::LightType_ActionButton, \
+15, 1,  6,  9, 26, LightType::LightType_ActionButton, \
+16, 1,  8,  0,  0, LightType::LightType_Case, \
+17, 1,  6,  0,  1, LightType::LightType_Case, \
+18, 1,  4,  0,  2, LightType::LightType_Case, \
+19, 1,  2,  0,  3, LightType::LightType_Case, \
+20, 1,  0,  0,  4, LightType::LightType_Case, \
+21, 1,  0,  2,  5, LightType::LightType_Case, \
+22, 1,  0,  4,  6, LightType::LightType_Case, \
+23, 1,  0,  6,  7, LightType::LightType_Case, \
+24, 1,  0,  8,  8, LightType::LightType_Case, \
+25, 1,  0, 10,  9, LightType::LightType_Case, \
+26, 1,  0, 12, 10, LightType::LightType_Case, \
+27, 1,  2, 12, 11, LightType::LightType_Case, \
+28, 1,  4, 12, 12, LightType::LightType_Case, \
+29, 1,  6, 12, 13, LightType::LightType_Case, \
+30, 1,  8, 12, 14, LightType::LightType_Case, \
+31, 1, 10, 12, 15, LightType::LightType_Case, \
+32, 1, 12, 12, 16, LightType::LightType_Case, \
+33, 1, 14, 12, 17, LightType::LightType_Case, \
+34, 1, 16, 12, 18, LightType::LightType_Case, \
+35, 1, 18, 12, 19, LightType::LightType_Case, \
+36, 1, 18, 10, 20, LightType::LightType_Case, \
+37, 1, 18,  8, 21, LightType::LightType_Case, \
+38, 1, 18,  6, 22, LightType::LightType_Case, \
+39, 1, 18,  4, 23, LightType::LightType_Case, \
+40, 1, 18,  2, 24, LightType::LightType_Case, \
+41, 1, 18,  0, 25, LightType::LightType_Case, \
+42, 1, 16,  0, 26, LightType::LightType_Case, \
+43, 1, 14,  0, 27, LightType::LightType_Case, \
+44, 1, 12,  0, 28, LightType::LightType_Case, \
+45, 1, 10,  0, 29, LightType::LightType_Case
+
+#define LIGHT_DATA_NAME_1 "Haute42|Cosmox C16" 
+#define LIGHT_DATA_SIZE_1 46 //number of sets in the below data
+#define LIGHT_DATA_1 \
+0,  1,  3,  5,  5, LightType::LightType_ActionButton, \
+1,  1,  5,  5,  3, LightType::LightType_ActionButton, \
+2,  1,  7,  6,  4, LightType::LightType_ActionButton, \
+3,  1,  8,  9,  2, LightType::LightType_ActionButton, \
+4,  1,  9,  5, 10, LightType::LightType_ActionButton, \
+5,  1, 11,  4, 11, LightType::LightType_ActionButton, \
+6,  1, 13,  4, 12, LightType::LightType_ActionButton, \
+7,  1, 15,  4, 13, LightType::LightType_ActionButton, \
+8,  1,  9,  7,  6, LightType::LightType_ActionButton, \
+9,  1, 11,  6,  7, LightType::LightType_ActionButton, \
+10, 1, 13,  6,  8, LightType::LightType_ActionButton, \
+11, 1, 15,  6,  9, LightType::LightType_ActionButton, \
+12, 1,  6,  3, 27, LightType::LightType_ActionButton, \
+13, 1,  6,  9, 18, LightType::LightType_ActionButton, \
+14, 1, 10,  9, 19, LightType::LightType_ActionButton, \
+15, 1,  9,  3, 26, LightType::LightType_ActionButton, \
+16, 1,  0,  0,  0, LightType::LightType_Case, \
+17, 1,  0,  2,  1, LightType::LightType_Case, \
+18, 1,  0,  4,  2, LightType::LightType_Case, \
+19, 1,  0,  6,  3, LightType::LightType_Case, \
+20, 1,  0,  8,  4, LightType::LightType_Case, \
+21, 1,  0, 10,  5, LightType::LightType_Case, \
+22, 1,  0, 12,  6, LightType::LightType_Case, \
+23, 1,  2, 12,  7, LightType::LightType_Case, \
+24, 1,  4, 12,  8, LightType::LightType_Case, \
+25, 1,  6, 12,  9, LightType::LightType_Case, \
+26, 1,  8, 12, 10, LightType::LightType_Case, \
+27, 1, 10, 12, 11, LightType::LightType_Case, \
+28, 1, 12, 12, 12, LightType::LightType_Case, \
+29, 1, 14, 12, 13, LightType::LightType_Case, \
+30, 1, 16, 12, 14, LightType::LightType_Case, \
+31, 1, 18, 12, 15, LightType::LightType_Case, \
+32, 1, 18, 10, 16, LightType::LightType_Case, \
+33, 1, 18,  8, 17, LightType::LightType_Case, \
+34, 1, 18,  6, 18, LightType::LightType_Case, \
+35, 1, 18,  4, 19, LightType::LightType_Case, \
+36, 1, 18,  2, 20, LightType::LightType_Case, \
+37, 1, 18,  0, 21, LightType::LightType_Case, \
+38, 1, 16,  0, 22, LightType::LightType_Case, \
+39, 1, 14,  0, 23, LightType::LightType_Case, \
+40, 1, 12,  0, 24, LightType::LightType_Case, \
+41, 1, 10,  0, 25, LightType::LightType_Case, \
+42, 1,  8,  0, 26, LightType::LightType_Case, \
+43, 1,  6,  0, 27, LightType::LightType_Case, \
+44, 1,  4,  0, 28, LightType::LightType_Case, \
+45, 1,  2,  0, 29, LightType::LightType_Case
+
+#define LIGHT_DATA_NAME_2 "Haute42|Cosmox C16-S" 
+#define LIGHT_DATA_SIZE_2 46 //number of sets in the below data
+#define LIGHT_DATA_2 \
+0,  1,  3,  4,  5, LightType::LightType_ActionButton, \
+1,  1,  5,  4,  3, LightType::LightType_ActionButton, \
+2,  1,  7,  5,  4, LightType::LightType_ActionButton, \
+3,  1,  8,  9,  2, LightType::LightType_ActionButton, \
+4,  1, 11,  4, 10, LightType::LightType_ActionButton, \
+5,  1, 13,  3, 11, LightType::LightType_ActionButton, \
+6,  1, 15,  3, 12, LightType::LightType_ActionButton, \
+7,  1,  6,  8, 13, LightType::LightType_ActionButton, \
+8,  1, 11,  6,  6, LightType::LightType_ActionButton, \
+9,  1, 13,  5,  7, LightType::LightType_ActionButton, \
+10, 1, 15,  5,  8, LightType::LightType_ActionButton, \
+11, 1, 12,  8,  9, LightType::LightType_ActionButton, \
+12, 1, 10,  9, 27, LightType::LightType_ActionButton, \
+13, 1,  1,  4, 18, LightType::LightType_ActionButton, \
+14, 1, 17,  4, 19, LightType::LightType_ActionButton, \
+15, 1,  9,  5, 26, LightType::LightType_ActionButton, \
+16, 1,  0,  0,  0, LightType::LightType_Case, \
+17, 1,  0,  2,  1, LightType::LightType_Case, \
+18, 1,  0,  4,  2, LightType::LightType_Case, \
+19, 1,  0,  6,  3, LightType::LightType_Case, \
+20, 1,  0,  8,  4, LightType::LightType_Case, \
+21, 1,  0, 10,  5, LightType::LightType_Case, \
+22, 1,  0, 12,  6, LightType::LightType_Case, \
+23, 1,  2, 12,  7, LightType::LightType_Case, \
+24, 1,  4, 12,  8, LightType::LightType_Case, \
+25, 1,  6, 12,  9, LightType::LightType_Case, \
+26, 1,  8, 12, 10, LightType::LightType_Case, \
+27, 1, 10, 12, 11, LightType::LightType_Case, \
+28, 1, 12, 12, 12, LightType::LightType_Case, \
+29, 1, 14, 12, 13, LightType::LightType_Case, \
+30, 1, 16, 12, 14, LightType::LightType_Case, \
+31, 1, 18, 12, 15, LightType::LightType_Case, \
+32, 1, 18, 10, 16, LightType::LightType_Case, \
+33, 1, 18,  8, 17, LightType::LightType_Case, \
+34, 1, 18,  6, 18, LightType::LightType_Case, \
+35, 1, 18,  4, 19, LightType::LightType_Case, \
+36, 1, 18,  2, 20, LightType::LightType_Case, \
+37, 1, 18,  0, 21, LightType::LightType_Case, \
+38, 1, 16,  0, 22, LightType::LightType_Case, \
+39, 1, 14,  0, 23, LightType::LightType_Case, \
+40, 1, 12,  0, 24, LightType::LightType_Case, \
+41, 1, 10,  0, 25, LightType::LightType_Case, \
+42, 1,  8,  0, 26, LightType::LightType_Case, \
+43, 1,  6,  0, 27, LightType::LightType_Case, \
+44, 1,  4,  0, 28, LightType::LightType_Case, \
+45, 1,  2,  0, 29, LightType::LightType_Case
+
+#define LIGHT_DATA_NAME_3 "Haute42|Cosmox M Ultra Gen 2" 
+#define LIGHT_DATA_SIZE_3 46 //number of sets in the below data
+#define LIGHT_DATA_3 \
+0,  1,  4,  4,  5, LightType::LightType_ActionButton, \
+1,  1,  6,  4,  3, LightType::LightType_ActionButton, \
+2,  1,  8,  5,  4, LightType::LightType_ActionButton, \
+3,  1,  9,  9,  2, LightType::LightType_ActionButton, \
+4,  1, 10,  4, 10, LightType::LightType_ActionButton, \
+5,  1, 12,  3, 11, LightType::LightType_ActionButton, \
+6,  1, 14,  3, 12, LightType::LightType_ActionButton, \
+7,  1, 16,  4, 13, LightType::LightType_ActionButton, \
+8,  1, 10,  6,  6, LightType::LightType_ActionButton, \
+9,  1, 12,  5,  7, LightType::LightType_ActionButton, \
+10, 1, 14,  5,  8, LightType::LightType_ActionButton, \
+11, 1, 16,  6,  9, LightType::LightType_ActionButton, \
+12, 1,  7,  2, 27, LightType::LightType_ActionButton, \
+13, 1,  7,  8, 18, LightType::LightType_ActionButton, \
+14, 1, 11,  8, 19, LightType::LightType_ActionButton, \
+15, 1,  2,  5, 26, LightType::LightType_ActionButton, \
+16, 1,  8,  0,  0, LightType::LightType_Case, \
+17, 1,  6,  0,  1, LightType::LightType_Case, \
+18, 1,  4,  0,  2, LightType::LightType_Case, \
+19, 1,  2,  0,  3, LightType::LightType_Case, \
+20, 1,  0,  0,  4, LightType::LightType_Case, \
+21, 1,  0,  2,  5, LightType::LightType_Case, \
+22, 1,  0,  4,  6, LightType::LightType_Case, \
+23, 1,  0,  6,  7, LightType::LightType_Case, \
+24, 1,  0,  8,  8, LightType::LightType_Case, \
+25, 1,  0, 10,  9, LightType::LightType_Case, \
+26, 1,  0, 12, 10, LightType::LightType_Case, \
+27, 1,  2, 12, 11, LightType::LightType_Case, \
+28, 1,  4, 12, 12, LightType::LightType_Case, \
+29, 1,  6, 12, 13, LightType::LightType_Case, \
+30, 1,  8, 12, 14, LightType::LightType_Case, \
+31, 1, 10, 12, 15, LightType::LightType_Case, \
+32, 1, 12, 12, 16, LightType::LightType_Case, \
+33, 1, 14, 12, 17, LightType::LightType_Case, \
+34, 1, 16, 12, 18, LightType::LightType_Case, \
+35, 1, 18, 12, 19, LightType::LightType_Case, \
+36, 1, 18, 10, 20, LightType::LightType_Case, \
+37, 1, 18,  8, 21, LightType::LightType_Case, \
+38, 1, 18,  6, 22, LightType::LightType_Case, \
+39, 1, 18,  4, 23, LightType::LightType_Case, \
+40, 1, 18,  2, 24, LightType::LightType_Case, \
+41, 1, 18,  0, 25, LightType::LightType_Case, \
+42, 1, 16,  0, 26, LightType::LightType_Case, \
+43, 1, 14,  0, 27, LightType::LightType_Case, \
+44, 1, 12,  0, 28, LightType::LightType_Case, \
+45, 1, 10,  0, 29, LightType::LightType_Case
 
 #define DEFAULT_SPLASH \
 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \

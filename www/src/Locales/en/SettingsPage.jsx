@@ -26,6 +26,7 @@ export default {
 		psclassic: 'Playstation Classic',
 		xboxoriginal: 'Original Xbox',
 		xbone: 'Xbox One',
+		sinput: 'SInput',
 	},
 	'switch-input-type-options': {
 		'pro-controller': 'Switch Pro Controller',

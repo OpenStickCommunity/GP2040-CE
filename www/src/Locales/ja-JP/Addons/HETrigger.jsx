@@ -1,7 +1,8 @@
 export default {
-  'header-text': 'ホールセンサボタン',
-	'desc-header-text': 'ホールセンサボタンでは４チャンネル、８チャンネル及び１６チャンネルマルチプレクサに対応しています。',
-    'available-pins-text': '利用可能ADC端子: {{pins}}',
+	'header-text': 'ホールセンサボタン',
+	'desc-header-text':
+		'ホールセンサボタンでは４チャンネル、８チャンネル及び１６チャンネルマルチプレクサに対応しています。',
+	'available-pins-text': '利用可能ADC端子: {{pins}}',
 	'multiplexer-channel-select': 'マルチプレクサチャンネル数',
 	'direct-no-mux': '直接接続（MUX無し）',
 	'4-channels': '4チャンネル',
@@ -11,6 +12,7 @@ export default {
 	'select-pin-1': 'セレクト端子 1',
 	'select-pin-2': 'セレクト端子 2',
 	'select-pin-3': 'セレクト端子 3',
+	'separate-select-pins-label': '個別のセレクト端子を有効化',
 	'adc-pin-0': 'ADC端子 0',
 	'adc-pin-1': 'ADC端子 1',
 	'adc-pin-2': 'ADC端子 2',
@@ -43,7 +45,6 @@ export default {
 	'calibration-header-text': 'ホールセンサ調整',
 	'calibration-idle-text': '未押下電圧値:',
 	'calibration-pressed-text': '最大押下電圧値:',
-	'calibration-trigger-text': '押下判定電圧値',
 	'calibration-flip-polarity': '極性反転',
 	'calibration-back-button': '戻る',
 	'calibration-first-step':
@@ -53,8 +54,8 @@ export default {
 	'calibration-second-step':
 		'次に、ホールセンサ対応ボタンを一番下まで押し込んだ状態でボタンを押して下さい。ボタン反応位置は後ほど調整します。',
 	'calibration-third-step':
-	  '最後に、ボタン押下判定電圧を設定して、好みのストロークでボタン押下判定するよう設定しましょう。' +
+		'最後に、ボタン押下判定電圧を設定して、好みのストロークでボタン押下判定するよう設定しましょう。' +
 		'調整が完了したら、「調整完了」または「次へ」ボタンを押して設定を保存し、動作確認してください。',
 	'calibration-manual-step':
-	  '以下の設定値を好みの値に設定してください。設定後、全ボタンに設定を反映できます。',
+		'以下の設定値を好みの値に設定してください。設定後、全ボタンに設定を反映できます。',
 };

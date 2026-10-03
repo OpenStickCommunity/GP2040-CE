@@ -85,37 +85,61 @@
 #define BOARD_LEDS_PIN 8
 
 #define LED_BRIGHTNESS_MAXIMUM 50
-#define LEDS_PER_PIXEL 2
-
-#define LEDS_DPAD_LEFT   0
-#define LEDS_DPAD_DOWN   1
-#define LEDS_DPAD_RIGHT  2
-#define LEDS_BUTTON_B3   3
-#define LEDS_BUTTON_B4   4
-#define LEDS_BUTTON_R1   5
-#define LEDS_BUTTON_L1   6
-#define LEDS_BUTTON_L2   7
-#define LEDS_BUTTON_R2   8
-#define LEDS_BUTTON_B2   9
-#define LEDS_BUTTON_B1   10
-#define LEDS_DPAD_UP     11
 
 #define PLED_TYPE PLED_TYPE_RGB
-#define PLED1_PIN 24
-#define PLED2_PIN 25
-#define PLED3_PIN 26
-#define PLED4_PIN 27
-#define PLED_COLOR ColorGreen
-
-#define TURBO_LED_INDEX 28
+#define PLED_COLOR 6
 #define TURBO_LED_TYPE PLED_TYPE_RGB
-#define TURBO_LED_COLOR ColorRed
 
-#define CASE_RGB_TYPE CASE_RGB_TYPE_AMBIENT
-#define CASE_RGB_INDEX 29
-#define CASE_RGB_COUNT 20
-#define AMBIENT_LIGHT_EFFECT AL_CUSTOM_EFFECT_STATIC_COLOR
-#define AMBIENT_STATIC_COLOR ANIMATION_COLOR_GREEN
+#define LIGHT_DATA_NAME_DEFAULT "OpenCore0" 
+#define LIGHT_DATA_SIZE_DEFAULT 37
+#define LIGHT_DATA_DEFAULT \
+0,  2, 2,  3, 9,  LightType::LightType_ActionButton, \
+2,  2, 4,  3, 10, LightType::LightType_ActionButton, \
+4,  2, 6,  4, 11, LightType::LightType_ActionButton, \
+6,  2, 8,  3, 17, LightType::LightType_ActionButton, \
+8,  2, 10, 2, 18, LightType::LightType_ActionButton, \
+10, 2, 12, 2, 19, LightType::LightType_ActionButton, \
+12, 2, 14, 2, 20, LightType::LightType_ActionButton, \
+14, 2, 14, 4, 16, LightType::LightType_ActionButton, \
+16, 2, 12, 4, 15, LightType::LightType_ActionButton, \
+18, 2, 10, 4, 14, LightType::LightType_ActionButton, \
+20, 2, 8,  5, 13, LightType::LightType_ActionButton, \
+22, 2, 6,  7, 12, LightType::LightType_ActionButton, \
+24, 1, 10, 0, 31, LightType::LightType_Player1Light, \
+25, 1, 11, 0, 31, LightType::LightType_Player2Light, \
+26, 1, 12, 0, 31, LightType::LightType_Player3Light, \
+27, 1, 13, 0, 31, LightType::LightType_Player4Light, \
+28, 1, 14, 0, 27, LightType::LightType_Turbo, \
+29, 1, 16, 0, 0,  LightType::LightType_Case, \
+30, 1, 16, 1, 1,  LightType::LightType_Case, \
+31, 1, 16, 2, 2,  LightType::LightType_Case, \
+32, 1, 16, 3, 3,  LightType::LightType_Case, \
+33, 1, 16, 4, 4,  LightType::LightType_Case, \
+34, 1, 16, 5, 5,  LightType::LightType_Case, \
+35, 1, 16, 6, 6,  LightType::LightType_Case, \
+36, 1, 16, 7, 7,  LightType::LightType_Case, \
+37, 1, 16, 8, 8,  LightType::LightType_Case, \
+38, 1, 16, 9, 9,  LightType::LightType_Case, \
+39, 1, 0,  9, 10, LightType::LightType_Case, \
+40, 1, 0,  8, 11, LightType::LightType_Case, \
+41, 1, 0,  7, 12, LightType::LightType_Case, \
+42, 1, 0,  6, 13 ,LightType::LightType_Case, \
+43, 1, 0,  5, 14 ,LightType::LightType_Case, \
+44, 1, 0,  4, 15 ,LightType::LightType_Case, \
+45, 1, 0,  3, 16 ,LightType::LightType_Case, \
+46, 1, 0,  2, 17 ,LightType::LightType_Case, \
+47, 1, 0,  1, 18 ,LightType::LightType_Case, \
+48, 1, 0,  0, 19 ,LightType::LightType_Case
+
+// LED Profile 0
+#define LEDS_PROFILE0_ENABLED 1
+#define LEDS_PROFILE0_BASE_ANIMATION_INDEX AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_SYNCED
+#define LEDS_PROFILE0_PRESSED_ANIMATION_INDEX AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_STATIC_COLOR
+#define LEDS_PROFILE0_CASE_ANIMATION_INDEX AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_STATIC_COLOR
+#define LEDS_PROFILE0_STATIC_COLOR_UNPRESSED ColorIndexRed
+#define LEDS_PROFILE0_STATIC_COLOR_PRESSED ColorIndexWhite
+#define LEDS_PROFILE0_STATIC_COLOR_CASE ColorIndexGreen
+#define LEDS_PROFILE0_USE_CASE_IN_PRESSED true
 
 #define HAS_I2C_DISPLAY 1
 #define I2C0_ENABLED 1
@@ -124,16 +148,12 @@
 #define DISPLAY_I2C_BLOCK i2c0
 #define DISPLAY_FLIP 1
 
-#define REVERSE_UP_DEFAULT 1
-#define REVERSE_DOWN_DEFAULT 1
-#define REVERSE_LEFT_DEFAULT 1
-#define REVERSE_RIGHT_DEFAULT 1
-
 #define BUTTON_LAYOUT BUTTON_LAYOUT_BOARD_DEFINED_A
 #define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_BOARD_DEFINED_B
 #define SPLASH_MODE SPLASH_MODE_STATIC
 #define SPLASH_DURATION 3000
 
+#define DEFAULT_BOARD_LAYOUT_A_NAME "Open_Core0 Default"
 #define DEFAULT_BOARD_LAYOUT_A {\
     {GP_ELEMENT_PIN_BUTTON, {12, 25, 7, 7, 1, 1, 9,    GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {28, 25, 7, 7, 1, 1, 10,   GP_SHAPE_ELLIPSE}},\
@@ -149,7 +169,8 @@
     {GP_ELEMENT_PIN_BUTTON, {62, 12, 2, 2, 1, 1, 26,   GP_SHAPE_ELLIPSE}}\
   }
   
-  #define DEFAULT_BOARD_LAYOUT_B {\
+#define DEFAULT_BOARD_LAYOUT_B_NAME "Open_Core0 Default"
+#define DEFAULT_BOARD_LAYOUT_B {\
     {GP_ELEMENT_PIN_BUTTON, {56,  25, 7, 7, 1, 1, 17,  GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {72,  22, 7, 7, 1, 1, 18,  GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {88,  22, 7, 7, 1, 1, 19,  GP_SHAPE_ELLIPSE}},\

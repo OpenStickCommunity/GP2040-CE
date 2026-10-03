@@ -28,8 +28,7 @@ const SELECTABLE_BUTTON_ACTIONS = [
 	-10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
 ];
 
-const isSelectable = (value) =>
-	SELECTABLE_BUTTON_ACTIONS.includes(value);
+const isSelectable = (value) => SELECTABLE_BUTTON_ACTIONS.includes(value);
 
 export const pcf8575Scheme = {
 	PCF8575AddonEnabled: yup
@@ -138,7 +137,7 @@ const ExpansionPinsForm = ({
 								value={getPinDirection(pinData.direction)}
 								getOptionLabel={(option) => {
 									const labelKey = option.label.replace('_', '.').toLowerCase();
-									return t(`PCF8575:label-${labelKey}`);
+									return t(`Proto:GpioDirection.${option.label}`);
 								}}
 								onChange={(change) =>
 									setPinDirection(
@@ -202,15 +201,16 @@ const PCF8575 = ({ values, handleChange, handleCheckbox }: AddonPropTypes) => {
 	}, [savePins]);
 
 	return (
-		<Section title={
-			<a
-				href="https://gp2040-ce.info/add-ons/pcf8575-io-expander"
-				target="_blank"
-				className="text-reset text-decoration-none"
-			>
-				{t('PCF8575:header-text')}
-			</a>
-		}
+		<Section
+			title={
+				<a
+					href="https://gp2040-ce.info/add-ons/pcf8575-io-expander"
+					target="_blank"
+					className="text-reset text-decoration-none"
+				>
+					{t('PCF8575:header-text')}
+				</a>
+			}
 		>
 			<div
 				id="PCF8575AddonOptions"

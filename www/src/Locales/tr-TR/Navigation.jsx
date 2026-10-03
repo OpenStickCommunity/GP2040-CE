@@ -2,7 +2,6 @@ export default {
 	'add-ons-label': 'Eklenti Yapılandırması',
 	'backup-label': 'Veri Yedekleme ve Geri Yükleme',
 	'config-label': 'Yapılandırma',
-	'custom-theme-label': 'Özel LED Teması',
 	'display-config-label': 'Ekran Yapılandırması',
 	'docs-label': 'Dokümantasyon',
 	'github-label': 'GitHub',
@@ -11,9 +10,7 @@ export default {
 	'links-label': 'Linkler',
 	'macro-label': 'Makro Yapılandırması',
 	'pin-mapping-label': 'GPIO Pin Atamaları',
-	'multi-mapping-label': 'Çoklu Atamalar',
 	'peripheral-mapping-label': 'Çevresel Atamalar',
-	'profile-settings-label': 'Profil Ayarları',
 	'reboot-label': 'Yeniden Başlat',
 	'reboot-modal-body': 'Yeniden başlatılacak bir mod seçin',
 	'reboot-modal-button-bootsel-label': 'Yazılım yükleme',
@@ -22,7 +19,8 @@ export default {
 	'reboot-modal-button-progress-label': 'Yeniden başlatılıyor',
 	'reboot-modal-button-success-label': 'Tamamlandı!',
 	'reboot-modal-label': 'Yeniden başlatılsın mı?',
-	'reboot-modal-success': 'Yeniden başlatma işlemi tamamlandı, artık bu tarayıcı sekmesi kapatılabilir.',
+	'reboot-modal-success':
+		'Yeniden başlatma işlemi tamamlandı, artık bu tarayıcı sekmesi kapatılabilir.',
 	'resetSettings-label': 'Ayarları Sıfırla',
 	'settings-label': 'Ayarlar',
 };

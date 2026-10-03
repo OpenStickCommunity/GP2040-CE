@@ -84,7 +84,7 @@
 #define LED_BRIGHTNESS_STEPS 5
 #define LED_FORMAT LED_FORMAT_GRB
 #define LEDS_PER_PIXEL 1
-#define LEDS_BASE_ANIMATION_INDEX 1
+
 #define LEDS_DPAD_LEFT   0
 #define LEDS_DPAD_DOWN   1
 #define LEDS_DPAD_RIGHT  2
@@ -104,10 +104,21 @@
 #define LEDS_BUTTON_S2   16
 #define LEDS_BUTTON_S1   17
 
+// LED Profile 0
+#define LEDS_PROFILE0_ENABLED 1
+#define LEDS_PROFILE0_DEFAULT_CYCLE_TIME 4
+#define LEDS_PROFILE0_BASE_ANIMATION_INDEX AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_SYNCED
+#define LEDS_PROFILE0_PRESSED_ANIMATION_INDEX AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_STATIC_COLOR
+#define LEDS_PROFILE0_CASE_ANIMATION_INDEX AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_SYNCED
+#define LEDS_PROFILE0_STATIC_COLOR_UNPRESSED ColorIndexRed
+#define LEDS_PROFILE0_STATIC_COLOR_PRESSED ColorIndexWhite
+#define LEDS_PROFILE0_STATIC_COLOR_CASE ColorIndexGreen
+#define LEDS_PROFILE0_USE_CASE_IN_PRESSED true
+
 // Set our default ambient light
 #define CASE_RGB_TYPE CASE_RGB_TYPE_AMBIENT
 #define CASE_RGB_INDEX 18
-#define CASE_RGB_COUNT 30
+#define CASE_RGB_COUNT 32
 #define AMBIENT_LIGHT_EFFECT AL_CUSTOM_EFFECT_GRADIENT
 #define AMBIENT_STATIC_COLOR ANIMATION_COLOR_PURPLE
 
@@ -120,6 +131,7 @@
 #define SPLASH_MODE SPLASH_MODE_STATIC
 #define SPLASH_DURATION 3000
 
+#define DEFAULT_BOARD_LAYOUT_A_NAME "Haute42 COSMOX C-AT Default"
 #define DEFAULT_BOARD_LAYOUT_A {\
     {GP_ELEMENT_PIN_BUTTON, {43, 17, 4, 4, 1, 1, 29, GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {31, 27, 4, 4, 1, 1, 5, GP_SHAPE_ELLIPSE}},\
@@ -135,6 +147,7 @@
     {GP_ELEMENT_PIN_BUTTON, {108, 10, 112, 14, 1, 1, 14, GP_SHAPE_SQUARE}},\
 }
 
+#define DEFAULT_BOARD_LAYOUT_B_NAME "Haute42 COSMOX C-AT Default"
 #define DEFAULT_BOARD_LAYOUT_B {\
     {GP_ELEMENT_PIN_BUTTON, {71, 27, 4, 4, 1, 1, 10, GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {81, 25, 4, 4, 1, 1, 11, GP_SHAPE_ELLIPSE}},\
@@ -148,6 +161,61 @@
     {GP_ELEMENT_PIN_BUTTON, {65, 50, 5, 5, 1, 1, 27, GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {72, 17, 4, 4, 1, 1, 25, GP_SHAPE_ELLIPSE}},\
 }
+
+#define LEDS_AUTO_DISABLE_TIME 0
+#define LIGHT_DATA_NAME_DEFAULT "Haute42|Cosmox CAT" 
+#define LIGHT_DATA_SIZE_DEFAULT 48 //number of sets in the below data
+#define LIGHT_DATA_DEFAULT \
+0,  1, 5,  4,  5,  LightType::LightType_ActionButton, \
+1,  1, 7,  4,  3,  LightType::LightType_ActionButton, \
+2,  1, 9,  5,  4,  LightType::LightType_ActionButton, \
+3,  1, 9,  9,  2,  LightType::LightType_ActionButton, \
+4,  1, 11, 4,  10, LightType::LightType_ActionButton, \
+5,  1, 13, 3,  11, LightType::LightType_ActionButton, \
+6,  1, 15, 3,  12, LightType::LightType_ActionButton, \
+7,  1, 17, 4,  13, LightType::LightType_ActionButton, \
+8,  1, 11, 6,  6,  LightType::LightType_ActionButton, \
+9,  1, 13, 5,  7,  LightType::LightType_ActionButton, \
+10, 1, 15, 5,  8,  LightType::LightType_ActionButton, \
+11, 1, 17, 6,  9,  LightType::LightType_ActionButton, \
+12, 1, 11, 9,  27, LightType::LightType_ActionButton, \
+13, 1, 7,  8,  18, LightType::LightType_ActionButton, \
+14, 1, 13, 8,  19, LightType::LightType_ActionButton, \
+15, 1, 3,  5,  26, LightType::LightType_ActionButton, \
+16, 1, 8,  2,  29, LightType::LightType_ActionButton, \
+17, 1, 11, 2,  25, LightType::LightType_ActionButton, \
+18, 1, 8,  0,  0,  LightType::LightType_Case, \
+19, 1, 6,  0,  1,  LightType::LightType_Case, \
+20, 1, 4,  0,  2,  LightType::LightType_Case, \
+21, 1, 2,  0,  3,  LightType::LightType_Case, \
+22, 1, 0,  0,  4,  LightType::LightType_Case, \
+23, 1, 0,  2,  5,  LightType::LightType_Case, \
+24, 1, 0,  4,  6,  LightType::LightType_Case, \
+25, 1, 0,  6,  7,  LightType::LightType_Case, \
+26, 1, 0,  8,  8,  LightType::LightType_Case, \
+27, 1, 0,  10, 9,  LightType::LightType_Case, \
+28, 1, 0,  12, 10, LightType::LightType_Case, \
+29, 1, 2,  12, 11, LightType::LightType_Case, \
+30, 1, 4,  12, 12, LightType::LightType_Case, \
+31, 1, 6,  12, 13, LightType::LightType_Case, \
+32, 1, 8,  12, 14, LightType::LightType_Case, \
+33, 1, 10, 12, 15, LightType::LightType_Case, \
+34, 1, 12, 12, 16, LightType::LightType_Case, \
+35, 1, 14, 12, 17, LightType::LightType_Case, \
+36, 1, 16, 12, 18, LightType::LightType_Case, \
+37, 1, 18, 12, 19, LightType::LightType_Case, \
+38, 1, 20, 12, 20, LightType::LightType_Case, \
+39, 1, 20, 10, 21, LightType::LightType_Case, \
+40, 1, 20, 8,  22, LightType::LightType_Case, \
+41, 1, 20, 6,  23, LightType::LightType_Case, \
+42, 1, 20, 4,  24, LightType::LightType_Case, \
+43, 1, 20, 2,  25, LightType::LightType_Case, \
+44, 1, 20, 0,  26, LightType::LightType_Case, \
+45, 1, 18, 0,  27, LightType::LightType_Case, \
+46, 1, 16, 0,  28, LightType::LightType_Case, \
+47, 1, 14, 0,  29, LightType::LightType_Case, \
+48, 1, 12, 0,  29, LightType::LightType_Case, \
+49, 1, 10, 0,  29, LightType::LightType_Case
 
 // Keyboard Host enabled by default
 #define KEYBOARD_HOST_ENABLED 1

@@ -40,6 +40,7 @@ import './PinMapping.scss';
 import { MultiValue, SingleValue } from 'react-select';
 import InfoCircle from '../Icons/InfoCircle';
 import WebApi from '../Services/WebApi';
+import useLedsPreview from '../Hooks/useLedsPreview';
 
 type OptionType = {
 	label: string;
@@ -140,7 +141,7 @@ const ProfileLabel = memo(function ProfileLabel({
 		(event: React.ChangeEvent<HTMLInputElement>) =>
 			setProfileLabel(
 				profileIndex,
-				event.target.value.replace(/[^a-zA-Z0-9\s]/g, ''),
+				event.target.value.replace(/[^\x20-\x7e]/g, ''),
 			),
 		[],
 	);
@@ -156,7 +157,7 @@ const ProfileLabel = memo(function ProfileLabel({
 				})}
 				onChange={onLabelChange}
 				maxLength={16}
-				pattern="[a-zA-Z0-9\s]+"
+				pattern="[\x20-\x7e]+"
 			/>
 			<Form.Text muted>{t('PinMapping:profile-label-description')}</Form.Text>
 		</div>
@@ -169,7 +170,7 @@ const PinSelectList = memo(function PinSelectList({
 	profileIndex: number;
 }) {
 	const setProfilePin = useProfilesStore((state) => state.setProfilePin);
-
+	const { activateLedsOnId, turnOffLedTestModes } = useLedsPreview();
 	const pins = useProfilesStore(
 		useShallow((state) =>
 			omit(state.profiles[profileIndex], ['profileLabel', 'enabled']),
@@ -246,8 +247,12 @@ const PinSelectList = memo(function PinSelectList({
 		},
 		[buttonNames],
 	);
+
 	return (
-		<div className="pin-grid gap-3 mt-2">
+		<div
+			className="pin-grid gap-3 mt-2"
+			style={{ '--pin-count': Object.entries(pins).length > 32 ? 12 : 15 }}
+		>
 			{Object.entries(pins).map(([pin, pinData], index) => (
 				<div key={`select-${index}`} className="d-flex align-items-center">
 					<div className="d-flex flex-shrink-0" style={{ width: '3.5rem' }}>
@@ -261,6 +266,8 @@ const PinSelectList = memo(function PinSelectList({
 						getOptionLabel={getOptionLabel}
 						onChange={onChange(pin)}
 						value={getMultiValue(pinData)}
+						onFocus={() => activateLedsOnId(index)}
+						onBlur={turnOffLedTestModes}
 					/>
 				</div>
 			))}
@@ -342,7 +349,7 @@ const PinSection = memo(function PinSection({
 							<ProfileLabel profileIndex={profileIndex} />
 						</Col>
 						{profileIndex > 0 && (
-							<Col className='order-first order-md-last'>
+							<Col className="order-first order-md-last">
 								<FormCheck
 									disabled={profileIndex === activeProfile}
 									size={3}
@@ -430,7 +437,7 @@ export default function PinMapping() {
 				<Col md={3}>
 					{loadingProfiles && (
 						<div className="d-flex justify-content-center">
-							<span className="spinner-border" />
+							<span className="spinner-border"></span>
 						</div>
 					)}
 					<Nav variant="pills" className="flex-column">

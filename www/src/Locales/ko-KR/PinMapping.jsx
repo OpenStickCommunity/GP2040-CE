@@ -1,12 +1,13 @@
 export default {
-	'sub-header-text': '여기에서 어떤 핀에 어떤 동작을 할당할지 설정할 수 있습니다. 버튼이 어느 핀에 연결되었는지 확인이 어려운 경우 핀 확인 기능을 사용해 보세요.',
+	'sub-header-text':
+		'여기에서 어떤 핀에 어떤 동작을 할당할지 설정할 수 있습니다. 버튼이 어느 핀에 연결되었는지 확인이 어려운 경우 핀 확인 기능을 사용해 보세요.',
 	'alert-text':
 		'연결되지 않았거나 사용할 수 없는 핀에 버튼을 매핑하면 장치가 작동불능에 빠질 수 있습니다. 잘못된 설정을 지우려면 <2>설정 초기화</2> 페이지로 이동해주세요.',
 	'pin-viewer': '핀 확인',
 	'pin-pressed': '눌린 핀: {{pressedPin}}',
 	'profile-label-title': '프로필 이름',
 	'profile-label-description':
-		'최대 16자(영문)로 문자, 숫자, 공백을 사용할 수 있습니다.',
+		'최대 16자. 인쇄 가능한 ASCII 문자를 사용할 수 있습니다.',
 	'profile-pin-mapping-title': '{{profileLabel}} - GPIO 핀 매핑',
 	'profile-label-default': '프로필 {{profileNumber}}',
 	'profile-add-button': '+ 프로필 추가',

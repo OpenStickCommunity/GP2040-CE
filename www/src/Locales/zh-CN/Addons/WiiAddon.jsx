@@ -2,14 +2,8 @@ export default {
 	'header-text': 'Wii 扩展外设配置',
 	'sub-header-text':
 		'<0>注意：如果同时启用了屏幕显示，此扩展功能将被禁用。</0>',
-	'sda-pin-label': 'I2C SDA 引脚',
-	'scl-pin-label': 'I2C SCL 引脚',
-	'block-label': 'I2C 模块',
-	'speed-label': 'I2C 速率',
 	'section-digital': '数字量 (Digital)',
 	'section-analog': '模拟量 (Analog)',
-	'option-simple': '简单模式',
-	'option-advanced': '高级模式',
 	'controller-nunchuk': '双节棍手柄 (Nunchuk)',
 	'controller-classic': '经典手柄 (Classic)',
 	'controller-taiko': '太鼓 (Taiko)',
@@ -65,13 +59,5 @@ export default {
 	'controller-analog-axis-x': 'X +/- 轴',
 	'controller-analog-axis-y': 'Y +/- 轴',
 	'controller-analog-axis-trigger': '扳机模式',
-	'analog-axis-mode-trigger':
-		'<0>完整数值范围将直接发送至主机接口。</0>',
-	'analog-axis-mode-button':
-		'<0>作为数字开关使用，在超过设定的阈值后设置为“按下”状态。</0>',
-	'analog-axis-mode-normal-direction':
-		'<0>完整数值范围将映射到摇杆轴：最小值对应负向边缘，最大值对应正向边缘。</0>',
-	'analog-axis-mode-invert-direction':
-		'<0>完整数值范围将映射到摇杆轴：最小值对应正向边缘，最大值对应负向边缘。</0>',
 	'button-save': '保存控制器设置',
 };

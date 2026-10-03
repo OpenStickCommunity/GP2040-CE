@@ -1,14 +1,15 @@
 export default {
 	'input-macro-editor-tab': 'Editeur',
 	'input-macro-advanced-tab': 'Avancé',
-	'input-macro-board-led-enabled': 'Utiliser la LED de la carte pour afficher l\'état de la macro',
+	'input-macro-board-led-enabled':
+		"Utiliser la LED de la carte pour afficher l'état de la macro",
 	'input-macro-macro-enabled': 'Activé',
 	'input-macro-macro-enabled-badge': 'Activé',
 	'input-macro-macro-disabled-badge': 'Désactivé',
 	'input-macro-macro-exclusive':
 		'Exclusif (Ne peut pas être basculé vers une autre macro)',
 	'input-macro-macro-interruptible':
-		'Interruptible (L\'entrée utilisateur annule la macro)',
+		"Interruptible (L'entrée utilisateur annule la macro)",
 	'input-macro-macro-show-frames': 'Afficher les frames (1 frame = 16,666 ms)',
 	'input-macro-macro-uses-buttons':
 		'Utiliser le bouton de macro + le bouton de la manette pour déclencher',
@@ -16,7 +17,7 @@ export default {
 	'input-macro-header-text': 'Aperçu des macros',
 	'input-macro-macro-list-txt': 'Macro {{macroNumber}}',
 	'input-macro-duration-label': 'Durée',
-	'input-macro-wait-duration-label': 'Durée d\'attente',
+	'input-macro-wait-duration-label': "Durée d'attente",
 	'input-macro-time-label-ms': 'ms',
 	'input-macro-time-label-frames': 'frame(s)',
 	'input-macro-release-and-wait-label': 'relâcher et attendre ',
@@ -30,7 +31,7 @@ export default {
 		toggle: 'Basculer',
 	},
 	'macro-name': 'Nom de la macro',
-	'macro-activation-type': 'Type d\'activation de la macro',
+	'macro-activation-type': "Type d'activation de la macro",
 	'table-thread-label': 'Étiquette',
 	'table-thread-type': 'Type',
 	'table-thread-assigned-to': 'Assigné à',

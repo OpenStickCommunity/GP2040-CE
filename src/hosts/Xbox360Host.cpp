@@ -1,4 +1,6 @@
 #include "hosts/Xbox360Host.h"
+#include "tusb_config.h"
+#include "tusb.h"
 #include "drivers/shared/xinput_host.h"
 #include <storagemanager.h>
 

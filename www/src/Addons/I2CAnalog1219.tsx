@@ -16,7 +16,12 @@ export const i2cAnalogState = {
 	I2CAnalog1219InputEnabled: 0,
 };
 
-const I2CAnalog1219 = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) => {
+const I2CAnalog1219 = ({
+	values,
+	errors,
+	handleChange,
+	handleCheckbox,
+}: AddonPropTypes) => {
 	const { t } = useTranslation();
 	const { getAvailablePeripherals, getSelectedPeripheral } =
 		useContext(AppContext);
@@ -27,15 +32,16 @@ const I2CAnalog1219 = ({ values, errors, handleChange, handleCheckbox }: AddonPr
 	};
 
 	return (
-		<Section title={
-			<a
-				href="https://gp2040-ce.info/add-ons/i2c-analog-ads1219"
-				target="_blank"
-				className="text-reset text-decoration-none"
-			>
-				{t('AddonsConfig:i2c-analog-ads1219-header-text')}
-			</a>
-		}
+		<Section
+			title={
+				<a
+					href="https://gp2040-ce.info/add-ons/i2c-analog-ads1219"
+					target="_blank"
+					className="text-reset text-decoration-none"
+				>
+					{t('AddonsConfig:i2c-analog-ads1219-header-text')}
+				</a>
+			}
 		>
 			<div
 				id="I2CAnalog1219InputOptions"
@@ -44,7 +50,10 @@ const I2CAnalog1219 = ({ values, errors, handleChange, handleCheckbox }: AddonPr
 				}
 			>
 				<div className="alert alert-info" role="alert">
-					The SDA and SCL pins and Speed are configured in <a href="../peripheral-mapping" className="alert-link">Peripheral Mapping</a>
+					The SDA and SCL pins and Speed are configured in{' '}
+					<a href="../peripheral-mapping" className="alert-link">
+						Peripheral Mapping
+					</a>
 				</div>
 			</div>
 			{getAvailablePeripherals('i2c') ? (

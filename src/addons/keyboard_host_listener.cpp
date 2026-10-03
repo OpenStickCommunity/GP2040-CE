@@ -82,6 +82,7 @@ void KeyboardHostListener::process() {
   Gamepad *gamepad = Storage::getInstance().GetGamepad();
   if (_keyboard_host_mounted == true || _mouse_host_mounted == true) {
     gamepad->state.dpad     |= _keyboard_host_state.dpad;
+    gamepad->state.dpadOriginal |= _keyboard_host_state.dpad;
     gamepad->state.buttons  |= _keyboard_host_state.buttons;
     gamepad->state.lx       = _keyboard_host_state.lx;
     gamepad->state.ly       = _keyboard_host_state.ly;
@@ -97,7 +98,6 @@ void KeyboardHostListener::process() {
     gamepad->auxState.sensors.mouse.active = mouseActive;
 
     if ( mouseActive == true ) {
-        gamepad->auxState.sensors.mouse.active = true;
         gamepad->auxState.sensors.mouse.x = mouseX;
         gamepad->auxState.sensors.mouse.y = mouseY;
         gamepad->auxState.sensors.mouse.z = mouseZ;
@@ -199,8 +199,8 @@ void KeyboardHostListener::process_kbd_report(uint8_t dev_addr, hid_keyboard_rep
   // move this preprocess dpad reset only to kbd_report (so as to not have it run on mouse input, by Fran89)
   _keyboard_host_state.dpad = 0;
 
-  // make this 13 instead of 7 to include modifier bitfields from hid_keyboard_modifier_bm_t
-  for(uint8_t i=0; i<13; i++)
+  // make this 14 instead of 7 to include modifier bitfields from hid_keyboard_modifier_bm_t
+  for(uint8_t i=0; i<14; i++)
   {
     uint8_t keycode = 0;
     if (i < 6) {

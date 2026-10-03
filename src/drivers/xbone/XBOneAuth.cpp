@@ -16,6 +16,11 @@ void XBOneAuth::initialize() {
         listener = new XBOneAuthUSBListener();
         xboxOneAuthData.xboneState = GPAuthState::auth_idle_state;
         xboxOneAuthData.authCompleted = false;
+        xboxOneAuthData.auth_passthrough_enabled = false;
+        xboxOneAuthData.auth_passthrough = false;
+        queue_init(&xboxOneAuthData.relayToDevice, sizeof(XBOneRelayPacket), XBONE_RELAY_QUEUE_DEPTH);
+        queue_init(&xboxOneAuthData.relayToConsole, sizeof(XBOneRelayPacket), XBONE_RELAY_QUEUE_DEPTH);
+        xboxOneAuthData.relayDropped = 0;
         ((XBOneAuthUSBListener*)listener)->setup();
         ((XBOneAuthUSBListener*)listener)->setAuthData(&xboxOneAuthData);
     }
@@ -27,4 +32,8 @@ bool XBOneAuth::available() {
 
 void XBOneAuth::process() {
     ((XBOneAuthUSBListener*)listener)->process();
+}
+
+void XBOneAuth::processHost() {
+    ((XBOneAuthUSBListener*)listener)->processHost();
 }

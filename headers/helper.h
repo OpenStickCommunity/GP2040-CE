@@ -32,7 +32,7 @@
 #define PLED_TYPE PLED_TYPE_NONE
 #endif
 #ifndef PLED_COLOR
-#define PLED_COLOR ColorWhite // White
+#define PLED_COLOR 1 // ColorWhite index from Animation.h
 #endif
 
 static inline bool isValidPin(int32_t pin) {

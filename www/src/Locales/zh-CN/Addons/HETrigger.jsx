@@ -1,6 +1,7 @@
 export default {
 	'header-text': '霍尔效应扳机配置',
-	'desc-header-text': '霍尔效应扳机支持 4 通道、8 通道和 16 通道的多路复用器 (Multiplexer)。',
+	'desc-header-text':
+		'霍尔效应扳机支持 4 通道、8 通道和 16 通道的多路复用器 (Multiplexer)。',
 	'available-pins-text': '可用 ADC 引脚：{{pins}}',
 	'multiplexer-channel-select': '每个复用器的通道数',
 	'direct-no-mux': '直接连接 (不使用复用器)',
@@ -11,6 +12,7 @@ export default {
 	'select-pin-1': '选择引脚 1',
 	'select-pin-2': '选择引脚 2',
 	'select-pin-3': '选择引脚 3',
+	'separate-select-pins-label': '启用独立选择引脚',
 	'adc-pin-0': 'ADC 引脚 0',
 	'adc-pin-1': 'ADC 引脚 1',
 	'adc-pin-2': 'ADC 引脚 2',
@@ -49,16 +51,19 @@ export default {
 	'calibration-header-text': '霍尔效应校准',
 	'calibration-idle-text': '初始电压读数：',
 	'calibration-pressed-text': '满按电压读数：',
-	'calibration-trigger-text': '触发电压',
 	'calibration-flip-polarity': '反转极性',
 	'calibration-flip-rapid-trigger': '启用快速触发 (RT)',
 	'calibration-back-button': '返回',
-	'calibration-first-step': '我们需要校准霍尔按键的初始电压和满按电压。' +
-								'校准完成后，我们可以将触发激活点调整到所需的深度。' +
-								'首先，让我们校准初始电压。请确保不要触碰霍尔按键，然后点击“校准初始状态”按钮。',
-	'calibration-second-step': '接下来，请将按键完全按下至最大深度。激活位置可以在校准完成后进行调整。',
-	'calibration-third-step': '最后，让我们调整当前的激活点并设置所需的触发位置。' +
-								'调整完成后，按下按键并验证它是否在预期的位置激活。',
-	'calibration-manual-step': '请根据需要调整霍尔按键的以下参数。' +
-							    '找到理想数值后，您可以复制这些数值并将其应用到设备上的所有扳机。',
+	'calibration-first-step':
+		'我们需要校准霍尔按键的初始电压和满按电压。' +
+		'校准完成后，我们可以将触发激活点调整到所需的深度。' +
+		'首先，让我们校准初始电压。请确保不要触碰霍尔按键，然后点击“校准初始状态”按钮。',
+	'calibration-second-step':
+		'接下来，请将按键完全按下至最大深度。激活位置可以在校准完成后进行调整。',
+	'calibration-third-step':
+		'最后，让我们调整当前的激活点并设置所需的触发位置。' +
+		'调整完成后，按下按键并验证它是否在预期的位置激活。',
+	'calibration-manual-step':
+		'请根据需要调整霍尔按键的以下参数。' +
+		'找到理想数值后，您可以复制这些数值并将其应用到设备上的所有扳机。',
 };
