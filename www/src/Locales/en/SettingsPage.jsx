@@ -27,12 +27,78 @@ export default {
 		xboxoriginal: 'Original Xbox',
 		xbone: 'Xbox One',
 		sinput: 'SInput',
+		ble: 'Bluetooth (BLE)',
 	},
 	'input-mode-group': {
 		primary: 'Primary Input Modes',
 		mini: 'Mini/Classic Console Modes',
+		wireless: 'Wireless Modes',
 	},
 	'boot-input-mode-label': 'Boot Input Modes',
+	'ble-status': {
+		title: 'Bluetooth setup',
+		intro:
+			'Pair your controller without leaving Web Config. Keep the USB cable connected while you set up Bluetooth.',
+		state: {
+			loading: 'Loading',
+			unsupported: 'Not supported',
+			'init-failed': 'Radio unavailable',
+			initializing: 'Starting Bluetooth',
+			ready: 'Ready to pair',
+			pairing: 'Discoverable',
+			connecting: 'Connecting',
+			connected: 'Connected',
+			unavailable: 'Status unavailable',
+		},
+		'status-error':
+			'Could not reach the controller. Check the USB connection. Status will update automatically when it becomes available.',
+		retry: 'Try again',
+		unsupported:
+			'This firmware does not support Bluetooth. Use a supported wireless board and its matching firmware.',
+		'init-failed':
+			'The Bluetooth radio could not start. The controller will retry automatically. If this continues, check that the firmware matches your board.',
+		initializing: 'Starting the Bluetooth radio. This may take a few seconds.',
+		'device-name': 'Bluetooth device name',
+		'pairing-help':
+			'Open Bluetooth settings on your computer or phone and select {{name}}. The controller stays discoverable until connected or canceled.',
+		'connected-help':
+			'Your device is connected. You can finish configuring the controller before switching to Bluetooth play.',
+		'save-failed':
+			'The controller could not save its Bluetooth pairings. It will retry automatically. Keep it powered on until this warning clears.',
+		'connecting-help':
+			"Complete the connection in your computer or phone's Bluetooth settings.",
+		'step-start': 'Select Start pairing below.',
+		'step-host':
+			'On your computer or phone, add a Bluetooth device and select {{name}}.',
+		'step-play':
+			'Once connected, save Bluetooth as the input mode and restart the controller to play.',
+		start: 'Start pairing',
+		cancel: 'Cancel pairing',
+		'webconfig-note':
+			'Gamepad inputs are paused in Web Config. Pairing changes take effect immediately; saving the input mode requires a restart.',
+		'saved-title': 'Saved devices',
+		'saved-count_zero': 'No saved devices yet.',
+		'saved-count_one': '{{count}} device saved for reconnection.',
+		'saved-count_other': '{{count}} devices saved for reconnection.',
+		forget: 'Forget saved devices',
+		'disconnect-help':
+			"To pair another device or forget saved devices, first disconnect the controller in your computer or phone's Bluetooth settings.",
+		'forget-title': 'Forget all saved devices?',
+		'forget-help':
+			"This removes every saved Bluetooth pairing from the controller. Also forget the controller in your computer or phone's Bluetooth settings before pairing again.",
+		'keep-devices': 'Keep devices',
+		forgotten:
+			'Saved devices have been forgotten. You can start a new pairing now.',
+		canceled: 'Pairing canceled. The controller is no longer discoverable.',
+		errors: {
+			'not-ready': 'Bluetooth is still starting. Wait a moment and try again.',
+			connected:
+				'A device is connected. Disconnect it in its Bluetooth settings before trying again.',
+			unsupported: 'Bluetooth is not supported by this firmware.',
+			'control-failed':
+				'Could not confirm the Bluetooth action. Check the connection and current status before trying again.',
+		},
+	},
 	'ps4-mode-options': {
 		controller: 'Controller',
 		arcadestick: 'Arcade Stick',

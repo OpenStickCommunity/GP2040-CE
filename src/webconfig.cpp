@@ -14,6 +14,9 @@
 #include "types.h"
 #include "version.h"
 
+#ifdef ENABLE_BLUETOOTH
+#include "BLEHIDManager.h"
+#endif
 #include "neopicoleds.h"
 
 #include <cstring>
@@ -2972,6 +2975,77 @@ std::string getMemoryReport()
     return serialize_json(doc);
 }
 
+static void writeBLEHIDStatus(DynamicJsonDocument& doc)
+{
+#ifdef ENABLE_BLUETOOTH
+    const BLEHIDStatus status = BLEHIDManager::getInstance().getStatus();
+    writeDoc(doc, "supported", true);
+    writeDoc(doc, "enabled", status.ready);
+    writeDoc(doc, "initializationFailed", status.initFailed);
+    writeDoc(doc, "bondSaveFailed", status.bondSaveFailed);
+    writeDoc(doc, "connected", status.connected);
+    writeDoc(doc, "notifying", status.notifying);
+    writeDoc(doc, "pairingMode", status.pairing);
+    writeDoc(doc, "hasBondedPeers", status.bondCount > 0);
+    writeDoc(doc, "bondCount", status.bondCount);
+    writeDoc(doc, "deviceName", BLEHIDManager::DEVICE_NAME);
+#else
+    writeDoc(doc, "supported", false);
+    writeDoc(doc, "enabled", false);
+    writeDoc(doc, "initializationFailed", false);
+    writeDoc(doc, "bondSaveFailed", false);
+    writeDoc(doc, "connected", false);
+    writeDoc(doc, "notifying", false);
+    writeDoc(doc, "pairingMode", false);
+    writeDoc(doc, "hasBondedPeers", false);
+    writeDoc(doc, "bondCount", 0);
+    writeDoc(doc, "deviceName", "");
+#endif
+}
+
+std::string getBLEHIDStatus()
+{
+    DynamicJsonDocument doc(JSON_OBJECT_SIZE(16) + 64);
+    writeBLEHIDStatus(doc);
+    return serialize_json(doc);
+}
+
+std::string setBLEHIDControls()
+{
+    const DynamicJsonDocument request = get_post_data();
+    DynamicJsonDocument doc(JSON_OBJECT_SIZE(16) + 128);
+    const bool pairingCommand = request["pairingMode"].is<bool>();
+    const bool clearCommand = request["clearBonds"].is<bool>() && request["clearBonds"].as<bool>();
+    const char* error = nullptr;
+
+    if (request.size() != 1 || (!pairingCommand && !clearCommand)) {
+        error = "invalid-request";
+    } else {
+#ifdef ENABLE_BLUETOOTH
+        BLEHIDManager& ble = BLEHIDManager::getInstance();
+        const BLEHIDStatus status = ble.getStatus();
+        if (!status.ready) {
+            error = "not-ready";
+        } else if (status.connected) {
+            error = "connected";
+        } else if (pairingCommand) {
+            if (!ble.setPairingMode(request["pairingMode"].as<bool>())) {
+                error = "control-failed";
+            }
+        } else if (!ble.clearBonds()) {
+            error = "control-failed";
+        }
+#else
+        error = "unsupported";
+#endif
+    }
+
+    writeBLEHIDStatus(doc);
+    writeDoc(doc, "success", error == nullptr);
+    if (error != nullptr) writeDoc(doc, "error", error);
+    return serialize_json(doc);
+}
+
 static bool _abortGetHeldPins = false;
 
 std::string getHeldPins()
@@ -3274,6 +3348,8 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/getSplashImage", getSplashImage },
     { "/api/getFirmwareVersion", getFirmwareVersion },
     { "/api/getMemoryReport", getMemoryReport },
+    { "/api/getBLEHIDStatus", getBLEHIDStatus },
+    { "/api/setBLEHIDControls", setBLEHIDControls },
     { "/api/getHeldPins", getHeldPins },
     { "/api/abortGetHeldPins", abortGetHeldPins },
     { "/api/getUsedPins", getUsedPins },
