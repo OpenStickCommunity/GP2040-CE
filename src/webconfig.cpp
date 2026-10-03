@@ -1,6 +1,8 @@
 #include "config.pb.h"
 #include "base64.h"
 #include "hardware/adc.h"
+#include "hardware/gpio.h"
+#include "pico/time.h"
 #include "addons/analog.h"
 #include "helper.h"
 
@@ -172,6 +174,31 @@ static void __attribute__((noinline)) docToPin(Pin_t& pin, const DynamicJsonDocu
     }
 }
 
+// Analog pins can be a mux channel (Y0-Y7). Those are not GPIOs, so they must skip
+// cleanAddonGpioMappings (which would reset them to -1) but still free the old GPIO.
+static void __attribute__((noinline)) docToAnalogPin(Pin_t& pin, const DynamicJsonDocument& doc, const char* key)
+{
+    if (doc.containsKey(key) && isAnalogMuxPin(doc[key].as<int32_t>()))
+    {
+        Pin_t oldPin = pin;
+        pin = doc[key];
+        if (isValidPin(oldPin))
+        {
+            GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
+            ProfileOptions& profiles = Storage::getInstance().getProfileOptions();
+            gpioMappings[oldPin].action = GpioAction::NONE;
+            profiles.gpioMappingsSets[0].pins[oldPin].action = GpioAction::NONE;
+            profiles.gpioMappingsSets[1].pins[oldPin].action = GpioAction::NONE;
+            profiles.gpioMappingsSets[2].pins[oldPin].action = GpioAction::NONE;
+        }
+    }
+    else
+    {
+        docToPin(pin, doc, key);
+    }
+}
+
+
 // Don't inline this function, we do not want to consume stack space in the calling function
 template <typename T, typename K>
 static void __attribute__((noinline)) writeDoc(DynamicJsonDocument& doc, const K& key, const T& var)
@@ -216,6 +243,9 @@ static void __attribute__((noinline)) writeDoc(DynamicJsonDocument& doc, const K
 }
 
 static int32_t cleanPin(int32_t pin) { return isValidPin(pin) ? pin : -1; }
+
+// Analog input pins may also be 74HC4051 mux channels (Y0-Y7), which are not GPIOs
+static int32_t cleanAnalogPin(int32_t pin) { return AnalogInput::isAnalogPinUsable(pin) ? pin : -1; }
 
 enum class HttpStatusCode
 {
@@ -2129,12 +2159,12 @@ std::string setAddonOptions()
     DynamicJsonDocument doc = get_post_data();
 
     AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
-    docToPin(analogOptions.analogAdc1PinX, doc, "analogAdc1PinX");
-    docToPin(analogOptions.analogAdc1PinY, doc, "analogAdc1PinY");
+    docToAnalogPin(analogOptions.analogAdc1PinX, doc, "analogAdc1PinX");
+    docToAnalogPin(analogOptions.analogAdc1PinY, doc, "analogAdc1PinY");
     docToValue(analogOptions.analogAdc1Mode, doc, "analogAdc1Mode");
     docToValue(analogOptions.analogAdc1Invert, doc, "analogAdc1Invert");
-    docToPin(analogOptions.analogAdc2PinX, doc, "analogAdc2PinX");
-    docToPin(analogOptions.analogAdc2PinY, doc, "analogAdc2PinY");
+    docToAnalogPin(analogOptions.analogAdc2PinX, doc, "analogAdc2PinX");
+    docToAnalogPin(analogOptions.analogAdc2PinY, doc, "analogAdc2PinY");
     docToValue(analogOptions.analogAdc2Mode, doc, "analogAdc2Mode");
     docToValue(analogOptions.analogAdc2Invert, doc, "analogAdc2Invert");
     docToValue(analogOptions.forced_circularity, doc, "forced_circularity");
@@ -2164,6 +2194,16 @@ std::string setAddonOptions()
     docToValue(analogOptions.analog_error, doc, "analog_error");
     docToValue(analogOptions.analog_error2, doc, "analog_error2");
     docToValue(analogOptions.enabled, doc, "AnalogInputEnabled");
+    docToPin(analogOptions.muxSelectPin0, doc, "analogMuxS0Pin");
+    docToPin(analogOptions.muxSelectPin1, doc, "analogMuxS1Pin");
+    docToPin(analogOptions.muxSelectPin2, doc, "analogMuxS2Pin");
+    docToPin(analogOptions.muxZPin, doc, "analogMuxZPin");
+    docToAnalogPin(analogOptions.triggerLPin, doc, "analogTriggerLPin");
+    docToAnalogPin(analogOptions.triggerRPin, doc, "analogTriggerRPin");
+    docToValue(analogOptions.triggerLMin, doc, "analogTriggerLMin");
+    docToValue(analogOptions.triggerLMax, doc, "analogTriggerLMax");
+    docToValue(analogOptions.triggerRMin, doc, "analogTriggerRMin");
+    docToValue(analogOptions.triggerRMax, doc, "analogTriggerRMax");
 
     BootselButtonOptions& bootselButtonOptions = Storage::getInstance().getAddonOptions().bootselButtonOptions;
     docToValue(bootselButtonOptions.buttonMap, doc, "bootselButtonMap");
@@ -2644,12 +2684,12 @@ std::string getAddonOptions()
     DynamicJsonDocument doc(capacity);
 
     const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
-    writeDoc(doc, "analogAdc1PinX", cleanPin(analogOptions.analogAdc1PinX));
-    writeDoc(doc, "analogAdc1PinY", cleanPin(analogOptions.analogAdc1PinY));
+    writeDoc(doc, "analogAdc1PinX", cleanAnalogPin(analogOptions.analogAdc1PinX));
+    writeDoc(doc, "analogAdc1PinY", cleanAnalogPin(analogOptions.analogAdc1PinY));
     writeDoc(doc, "analogAdc1Mode", analogOptions.analogAdc1Mode);
     writeDoc(doc, "analogAdc1Invert", analogOptions.analogAdc1Invert);
-    writeDoc(doc, "analogAdc2PinX", cleanPin(analogOptions.analogAdc2PinX));
-    writeDoc(doc, "analogAdc2PinY", cleanPin(analogOptions.analogAdc2PinY));
+    writeDoc(doc, "analogAdc2PinX", cleanAnalogPin(analogOptions.analogAdc2PinX));
+    writeDoc(doc, "analogAdc2PinY", cleanAnalogPin(analogOptions.analogAdc2PinY));
     writeDoc(doc, "analogAdc2Mode", analogOptions.analogAdc2Mode);
     writeDoc(doc, "analogAdc2Invert", analogOptions.analogAdc2Invert);
     writeDoc(doc, "forced_circularity", analogOptions.forced_circularity);
@@ -2679,6 +2719,16 @@ std::string getAddonOptions()
     writeDoc(doc, "analog_error", analogOptions.analog_error);
     writeDoc(doc, "analog_error2", analogOptions.analog_error2);
     writeDoc(doc, "AnalogInputEnabled", analogOptions.enabled);
+    writeDoc(doc, "analogMuxS0Pin", cleanPin(analogOptions.muxSelectPin0));
+    writeDoc(doc, "analogMuxS1Pin", cleanPin(analogOptions.muxSelectPin1));
+    writeDoc(doc, "analogMuxS2Pin", cleanPin(analogOptions.muxSelectPin2));
+    writeDoc(doc, "analogMuxZPin", cleanPin(analogOptions.muxZPin));
+    writeDoc(doc, "analogTriggerLPin", cleanAnalogPin(analogOptions.triggerLPin));
+    writeDoc(doc, "analogTriggerRPin", cleanAnalogPin(analogOptions.triggerRPin));
+    writeDoc(doc, "analogTriggerLMin", analogOptions.triggerLMin);
+    writeDoc(doc, "analogTriggerLMax", analogOptions.triggerLMax);
+    writeDoc(doc, "analogTriggerRMin", analogOptions.triggerRMin);
+    writeDoc(doc, "analogTriggerRMax", analogOptions.triggerRMax);
 
     const BootselButtonOptions& bootselButtonOptions = Storage::getInstance().getAddonOptions().bootselButtonOptions;
     writeDoc(doc, "bootselButtonMap", bootselButtonOptions.buttonMap);
@@ -3157,6 +3207,52 @@ static std::string getJoystickCalibrationSample(Pin_t pinX, Pin_t pinY) {
     return serialize_json(doc);
 }
 
+// Live raw readings of the 8 channels of the 74HC4051 (wiring check and trigger
+// calibration). Uses the saved analog settings; the analog add-on itself does not
+// run while web-config is open.
+std::string getAnalogMuxRaw()
+{
+    DynamicJsonDocument doc(1024);
+    const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
+    Pin_t selectPins[3] = { analogOptions.muxSelectPin0, analogOptions.muxSelectPin1, analogOptions.muxSelectPin2 };
+    Pin_t zPin = analogOptions.muxZPin;
+
+    // Echo the pins the firmware actually has saved, to spot wrong settings
+    JsonArray pins = doc.createNestedArray("s");
+    for (int i = 0; i < 3; i++) {
+        pins.add((int)selectPins[i]);
+    }
+    doc["z"] = (int)zPin;
+
+    if (!AnalogInput::isAdcPin(zPin) || !isValidPin(selectPins[0]) || !isValidPin(selectPins[1]) || !isValidPin(selectPins[2])) {
+        doc["error"] = "S0-S2 and Z must be saved in the Analog settings first";
+        return serialize_json(doc);
+    }
+
+    adc_init();
+    for (int i = 0; i < 3; i++) {
+        gpio_init(selectPins[i]);
+        gpio_set_dir(selectPins[i], GPIO_OUT);
+    }
+    adc_gpio_init(zPin);
+    adc_select_input(zPin - ADC_BASE_PIN);
+
+    JsonArray values = doc.createNestedArray("values");
+    for (int channel = 0; channel < ANALOG_MUX_CHANNELS; channel++) {
+        for (int i = 0; i < 3; i++) {
+            gpio_put(selectPins[i], (channel >> i) & 0x01);
+        }
+        busy_wait_us(ANALOG_MUX_SETTLE_US);
+        (void)adc_read();   // discard: charge left from the previous channel
+        uint32_t sum = 0;
+        for (int n = 0; n < 4; n++) {
+            sum += adc_read();
+        }
+        values.add((int)(sum / 4));
+    }
+    return serialize_json(doc);
+}
+
 std::string getJoystickCenter() {
     const AnalogOptions& options = Storage::getInstance().getAddonOptions().analogOptions;
     return getJoystickCalibrationSample(options.analogAdc1PinX, options.analogAdc1PinY);
@@ -3306,6 +3402,7 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/getConfig", getConfig },
     { "/api/getJoystickCenter", getJoystickCenter },
     { "/api/getJoystickCenter2", getJoystickCenter2 },
+    { "/api/getAnalogMuxRaw", getAnalogMuxRaw },
     { "/api/getBoardDefinition", getBoardDefinition },
 		{ "/api/getBootModeOptions", getBootModeOptions },
 		{ "/api/setBootModeOptions", setBootModeOptions },
