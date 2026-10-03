@@ -1005,6 +1005,28 @@ message MigrationHistory
     optional bool heTriggerSelectPinsMigrated = 5 [default = false];
 }
 
+message BLEBondEntry
+{
+    optional bool    valid            = 1  [default = false];
+    optional bytes   addr             = 2  [(nanopb).max_size = 6];
+    optional uint32  addrType         = 3;
+    optional bytes   irk              = 4  [(nanopb).max_size = 16];
+    optional bytes   ltk              = 5  [(nanopb).max_size = 16];
+    optional uint32  ediv             = 6;
+    optional bytes   rand             = 7  [(nanopb).max_size = 8];
+    optional uint32  keySize          = 8;
+    optional bool    authenticated    = 9  [default = false];
+    optional bool    authorized       = 10 [default = false];
+    optional bool    secureConnection = 11 [default = false];
+    optional uint32  seqNr            = 12;
+}
+
+message BLEConfig
+{
+    repeated BLEBondEntry bonds      = 1  [(nanopb).max_count = 4];
+    optional uint32       seqCounter = 2  [default = 0];
+}
+
 message Config
 {
     optional string boardVersion = 1 [(nanopb).max_length = 31];
@@ -1026,4 +1048,5 @@ message Config
     optional PeripheralOptions peripheralOptions = 15;
 
 	optional BootModeOptions bootModeOptions = 16;
+    optional BLEConfig bleConfig = 17;
 }

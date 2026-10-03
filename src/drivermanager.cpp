@@ -84,6 +84,15 @@ void DriverManager::setup(InputMode mode) {
         case INPUT_MODE_SINPUT:
             driver = new SInputDriver();
             break;
+#ifdef ENABLE_BLUETOOTH
+        case INPUT_MODE_BLE:
+            // BLE HID is a wireless-only mode with no TinyUSB driver. Record
+            // the mode so getInputMode() reports BLE (consumers such as the
+            // OLED status bar rely on this), then return without instantiating
+            // a USB driver.
+            inputMode = mode;
+            return;
+#endif
         default:
             return;
     }

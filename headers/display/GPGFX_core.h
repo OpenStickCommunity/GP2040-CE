@@ -34,5 +34,6 @@
 #define CHAR_TPAD_P   "\x91"
 #define CHAR_HOME_P   "\x92"
 #define CHAR_SHARE_P  "\x93"
+#define CHAR_BT       "\x94"
 
 #endif
