@@ -628,7 +628,16 @@ void PS3Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uin
         }
         switch(report_id) {
             case PS3ReportTypes::PS3_FEATURE_01:
-                memcpy(&ps3Features, buf, bufsize);
+                // Linux hid-sony sends this report without the report ID byte
+                // (HID_QUIRK_SKIP_OUTPUT_REPORT_ID), so it starts with the 0x01
+                // padding byte, which TinyUSB strips as the report ID. Put it back.
+                if (bufsize == 34) {
+                    uint8_t *out = (uint8_t *)&ps3Features;
+                    out[0] = 0x01;
+                    memcpy(&out[1], buf, bufsize);
+                } else {
+                    memcpy(&ps3Features, buf, bufsize);
+                }
                 break;
         }
     }
