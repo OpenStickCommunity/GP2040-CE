@@ -209,6 +209,9 @@ public:
 				(options.inputMode == INPUT_MODE_PS3 ||
 				options.inputMode == INPUT_MODE_SWITCH ||
 				options.inputMode == INPUT_MODE_SWITCH_PRO ||
+				options.inputMode == INPUT_MODE_SWITCH_SNES ||
+				options.inputMode == INPUT_MODE_SWITCH_N64 ||
+				options.inputMode == INPUT_MODE_SWITCH_GENESIS ||
 				options.inputMode == INPUT_MODE_NEOGEO ||
 				options.inputMode == INPUT_MODE_PS4)) ?
 			SOCD_MODE_NEUTRAL : options.socdMode;

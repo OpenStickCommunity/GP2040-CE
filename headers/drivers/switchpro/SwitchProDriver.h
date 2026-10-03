@@ -15,6 +15,7 @@
 
 class SwitchProDriver : public GPDriver {
 public:
+    SwitchProDriver(SwitchControllerType controllerType = SWITCH_TYPE_PRO_CONTROLLER) : controllerType(controllerType) {}
     virtual void initialize();
     virtual bool process(Gamepad * gamepad);
     virtual void initializeAux() {}
@@ -30,6 +31,9 @@ public:
     virtual uint16_t GetJoystickMidValue();
     virtual USBListener * get_usb_auth_listener() { return nullptr; }
 private:
+    SwitchControllerType controllerType;
+    tusb_desc_device_t deviceDescriptor;
+    const uint8_t* productString = switch_pro_string_product;
     uint8_t report[SWITCH_PRO_ENDPOINT_SIZE] = { };
     uint8_t last_report[SWITCH_PRO_ENDPOINT_SIZE] = { };
     SwitchProReport switchReport;
@@ -91,7 +95,7 @@ private:
         0xFF, 0xFF, 
 
         // device type
-        SwitchControllerType::SWITCH_TYPE_PRO_CONTROLLER, 
+        static_cast<uint8_t>(controllerType),
 
         // unknown
         0xA0, 

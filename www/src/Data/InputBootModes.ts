@@ -12,6 +12,35 @@ export type InputModeOptions = {
 	deviceTypes: InputModeDeviceType[];
 };
 
+export const SWITCH_INPUT_MODE_OPTIONS: Pick<InputModeOptions, 'labelKey' | 'value'>[] = [
+	{
+		labelKey: 'switch-input-type-options.pro-controller',
+		value: InputMode.INPUT_MODE_SWITCH_PRO,
+	},
+	{
+		labelKey: 'switch-input-type-options.nso-snes',
+		value: InputMode.INPUT_MODE_SWITCH_SNES,
+	},
+	{
+		labelKey: 'switch-input-type-options.nso-n64',
+		value: InputMode.INPUT_MODE_SWITCH_N64,
+	},
+	{
+		labelKey: 'switch-input-type-options.nso-genesis',
+		value: InputMode.INPUT_MODE_SWITCH_GENESIS,
+	},
+];
+
+export const SWITCH_INPUT_MODE_VALUES = SWITCH_INPUT_MODE_OPTIONS.map(
+	({ value }) => value,
+);
+
+export const isSwitchInputMode = (value?: InputMode | number) =>
+	SWITCH_INPUT_MODE_VALUES.includes(Number(value));
+
+export const displayInputModeValue = (value?: InputMode | number) =>
+	isSwitchInputMode(value) ? InputMode.INPUT_MODE_SWITCH_PRO : value;
+
 export const INPUT_MODE_OPTIONS: InputModeOptions[] = [
 	{
 		labelKey: 'input-mode-options.xinput',
@@ -28,8 +57,17 @@ export const INPUT_MODE_OPTIONS: InputModeOptions[] = [
 		required: [],
 	},
 	{
-		labelKey: 'input-mode-options.nintendo-switch',
+		labelKey: 'input-mode-options.hori-pokken',
 		value: InputMode.INPUT_MODE_SWITCH,
+		group: 'primary',
+		required: [],
+		optional: [],
+		authentication: [],
+		deviceTypes: [],
+	},
+	{
+		labelKey: 'input-mode-options.nintendo-switch',
+		value: InputMode.INPUT_MODE_SWITCH_PRO,
 		group: 'primary',
 		required: [],
 		optional: [],
@@ -166,15 +204,6 @@ export const INPUT_MODE_OPTIONS: InputModeOptions[] = [
 	{
 		labelKey: 'input-mode-options.generic',
 		value: InputMode.INPUT_MODE_GENERIC,
-		group: 'primary',
-		required: [],
-		optional: [],
-		authentication: [],
-		deviceTypes: [],
-	},
-	{
-		labelKey: 'input-mode-options.nintendo-switch-pro',
-		value: InputMode.INPUT_MODE_SWITCH_PRO,
 		group: 'primary',
 		required: [],
 		optional: [],

@@ -9,6 +9,7 @@ export default {
 	'input-mode-options': {
 		none: 'No Mode Selected',
 		xinput: 'XInput',
+		'hori-pokken': 'HORI Pokken',
 		'nintendo-switch': 'Nintendo Switch',
 		'nintendo-switch-pro': 'Nintendo Switch Pro',
 		ps3: 'PS3',
@@ -25,6 +26,12 @@ export default {
 		psclassic: 'Playstation Classic',
 		xboxoriginal: 'Original Xbox',
 		xbone: 'Xbox One',
+	},
+	'switch-input-type-options': {
+		'pro-controller': 'Switch Pro Controller',
+		'nso-snes': 'NSO SNES',
+		'nso-n64': 'NSO N64',
+		'nso-genesis': 'NSO Genesis',
 	},
 	'input-mode-group': {
 		primary: 'Primary Input Modes',

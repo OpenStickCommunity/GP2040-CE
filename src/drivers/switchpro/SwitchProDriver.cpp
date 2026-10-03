@@ -12,10 +12,28 @@ void SwitchProDriver::initialize() {
     handshakeCounter = 0;
     isReady = false;
 
+    memcpy(&deviceDescriptor, switch_pro_device_descriptor, sizeof(deviceDescriptor));
+    switch (controllerType) {
+        case SWITCH_TYPE_SNES:
+            deviceDescriptor.idProduct = SWITCH_PRO_SNES_PRODUCT_ID;
+            productString = switch_pro_snes_string_product;
+            break;
+        case SWITCH_TYPE_N64:
+            deviceDescriptor.idProduct = SWITCH_PRO_N64_PRODUCT_ID;
+            productString = switch_pro_n64_string_product;
+            break;
+        case SWITCH_TYPE_GENESIS:
+            deviceDescriptor.idProduct = SWITCH_PRO_GENESIS_PRODUCT_ID;
+            productString = switch_pro_genesis_string_product;
+            break;
+        default:
+            break;
+    }
+
     deviceInfo = {
         .majorVersion = 0x04,
         .minorVersion = 0x91,
-        .controllerType = SwitchControllerType::SWITCH_TYPE_PRO_CONTROLLER,
+        .controllerType = controllerType,
         .unknown00 = 0x02,
         // MAC address in reverse
         .macAddress = {0x7c, 0xbb, 0x8a, (uint8_t)(get_rand_32() % 0xff), (uint8_t)(get_rand_32() % 0xff), (uint8_t)(get_rand_32() % 0xff)},
@@ -99,7 +117,7 @@ bool SwitchProDriver::process(Gamepad * gamepad) {
     switchReport.inputs.dpadLeft =  ((gamepad->state.dpad & GAMEPAD_MASK_LEFT) == GAMEPAD_MASK_LEFT);
     switchReport.inputs.dpadRight = ((gamepad->state.dpad & GAMEPAD_MASK_RIGHT) == GAMEPAD_MASK_RIGHT);
 
-    switchReport.inputs.chargingGrip = 1;
+    switchReport.inputs.chargingGrip = controllerType == SWITCH_TYPE_PRO_CONTROLLER;
 
     switchReport.inputs.buttonY = gamepad->pressedB3();
     switchReport.inputs.buttonX = gamepad->pressedB4();
@@ -123,6 +141,41 @@ bool SwitchProDriver::process(Gamepad * gamepad) {
     switchReport.inputs.buttonZL = gamepad->pressedL2();
     if (gamepad->hasAnalogTriggers || gamepad->hasLeftAnalogStick)
         switchReport.inputs.buttonZL |= gamepad->state.lt > 0;
+
+    switch (controllerType) {
+        case SWITCH_TYPE_SNES:
+            switchReport.inputs.buttonZL = gamepad->pressedL2();
+            switchReport.inputs.buttonZR = gamepad->pressedR2();
+            switchReport.inputs.buttonThumbL = 0;
+            switchReport.inputs.buttonThumbR = 0;
+            switchReport.inputs.buttonHome = 0;
+            switchReport.inputs.buttonCapture = 0;
+            break;
+        case SWITCH_TYPE_N64:
+            switchReport.inputs.buttonX = gamepad->pressedB3();       // C left
+            switchReport.inputs.buttonY = gamepad->pressedB4();       // C up
+            switchReport.inputs.buttonZL = gamepad->pressedL2();      // Z
+            switchReport.inputs.buttonThumbL = gamepad->pressedR2();  // ZR
+            switchReport.inputs.buttonZR = gamepad->pressedL3();      // C down
+            switchReport.inputs.buttonMinus = gamepad->pressedR3();   // C right
+            switchReport.inputs.buttonThumbR = 0;
+            break;
+        case SWITCH_TYPE_GENESIS:
+            switchReport.inputs.buttonA = gamepad->pressedB1();
+            switchReport.inputs.buttonB = gamepad->pressedB2();
+            switchReport.inputs.buttonX = gamepad->pressedB3();
+            switchReport.inputs.buttonY = gamepad->pressedB4();
+            switchReport.inputs.buttonL = gamepad->pressedR1();       // Z
+            switchReport.inputs.buttonR = gamepad->pressedR2();       // C
+            switchReport.inputs.buttonZR = gamepad->pressedS1();      // Mode
+            switchReport.inputs.buttonZL = 0;
+            switchReport.inputs.buttonMinus = 0;
+            switchReport.inputs.buttonThumbL = 0;
+            switchReport.inputs.buttonThumbR = 0;
+            break;
+        default:
+            break;
+    }
 
     // analog
     uint16_t scaleLeftStickX = scale16To12(gamepad->state.lx);
@@ -531,11 +584,12 @@ bool SwitchProDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb
 
 const uint16_t * SwitchProDriver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
 	const char *value = (const char *)switch_pro_string_descriptors[index];
+	if (index == 2) value = (const char *)productString;
 	return getStringDescriptor(value, index); // getStringDescriptor returns a static array
 }
 
 const uint8_t * SwitchProDriver::get_descriptor_device_cb() {
-    return switch_pro_device_descriptor;
+    return (const uint8_t *)&deviceDescriptor;
 }
 
 const uint8_t * SwitchProDriver::get_hid_descriptor_report_cb(uint8_t itf) {

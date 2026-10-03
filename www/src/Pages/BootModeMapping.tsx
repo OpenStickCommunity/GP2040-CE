@@ -8,7 +8,14 @@ import {
 	useBootModeStoreActions,
 	NUM_PINS,
 } from '../Store/useBootModesStore';
-import { INPUT_MODE_OPTIONS, InputModeOptions } from '../Data/InputBootModes';
+import {
+	displayInputModeValue,
+	INPUT_MODE_OPTIONS,
+	InputModeOptions,
+	isSwitchInputMode,
+	SWITCH_INPUT_MODE_OPTIONS,
+} from '../Data/InputBootModes';
+import { InputMode } from '@proto/enums';
 import { AppContext } from '../Contexts/AppContext';
 import CustomSelect from '../Components/CustomSelect';
 import { Trans, useTranslation } from 'react-i18next';
@@ -56,7 +63,9 @@ function BootModeSelect({ mappingKey }: { mappingKey: string }) {
 	const { getAvailablePeripherals } = useContext(AppContext);
 	const { t } = useTranslation('');
 
-	const value = INPUT_MODE_OPTIONS.find(({ value }) => value === inputMode);
+	const value = INPUT_MODE_OPTIONS.find(
+		({ value }) => value === displayInputModeValue(inputMode),
+	);
 	const usbAvailable: boolean = getAvailablePeripherals('usb');
 
 	const isOptionDisabled = (option: InputModeOptions) => {
@@ -72,24 +81,47 @@ function BootModeSelect({ mappingKey }: { mappingKey: string }) {
 
 	const onChange = (option: SingleValue<InputModeOptions>) => {
 		clearErrors();
-		setInputMode(mappingKey, option?.value);
-		setDirty();
+		if (option?.value !== displayInputModeValue(inputMode)) {
+			setInputMode(mappingKey, option?.value);
+			setDirty();
+		}
 	};
 
 	const isInvalid = saveAttempted && !value;
 
 	return (
-		<CustomSelect
-			isClearable={false}
-			isMulti={false}
-			options={GROUPED_OPTIONS}
-			isOptionDisabled={isOptionDisabled}
-			isDisabled={false}
-			getOptionLabel={getOptionLabel}
-			onChange={onChange}
-			value={value}
-			isInvalid={isInvalid}
-		/>
+		<div className="d-grid gap-2">
+			<CustomSelect
+				isClearable={false}
+				isMulti={false}
+				options={GROUPED_OPTIONS}
+				isOptionDisabled={isOptionDisabled}
+				isDisabled={false}
+				getOptionLabel={getOptionLabel}
+				onChange={onChange}
+				value={value}
+				isInvalid={isInvalid}
+			/>
+			{isSwitchInputMode(inputMode) ? (
+				<Form.Select
+					aria-label={t('SettingsPage:input-mode-device-type-label')}
+					className="form-select-sm"
+					value={inputMode}
+					onChange={(e) => {
+						clearErrors();
+						setInputMode(mappingKey, Number(e.target.value) as InputMode);
+						setDirty();
+					}}
+					isInvalid={isInvalid}
+				>
+					{SWITCH_INPUT_MODE_OPTIONS.map((o) => (
+						<option key={`switch-input-mode-option-${o.value}`} value={o.value}>
+							{t(`SettingsPage:${o.labelKey}`)}
+						</option>
+					))}
+				</Form.Select>
+			) : null}
+		</div>
 	);
 }
 
