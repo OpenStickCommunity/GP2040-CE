@@ -21,7 +21,13 @@ import { hexToInt } from '../Services/Utilities';
 import { InputModeDeviceType, PS4ControllerType } from '@proto/enums';
 
 import './SettingsPage.scss';
-import { INPUT_MODE_OPTIONS as INPUT_MODES } from '../Data/InputBootModes';
+import {
+	displayInputModeValue,
+	INPUT_MODE_OPTIONS as INPUT_MODES,
+	isSwitchInputMode,
+	SWITCH_INPUT_MODE_OPTIONS,
+	SWITCH_INPUT_MODE_VALUES,
+} from '../Data/InputBootModes';
 import {
 	useBootModeStore,
 	useBootModeStoreActions,
@@ -161,12 +167,12 @@ const INPUT_BOOT_MODES = [
 		authentication: ['usb'],
 	},
 	{
-		labelKey: 'input-mode-options.nintendo-switch',
+		labelKey: 'input-mode-options.hori-pokken',
 		value: 1,
 		group: 'primary',
 	},
 	{
-		labelKey: 'input-mode-options.nintendo-switch-pro',
+		labelKey: 'input-mode-options.nintendo-switch',
 		value: 15,
 		group: 'primary',
 	},
@@ -179,6 +185,11 @@ const INPUT_BOOT_MODES = [
 	{ labelKey: 'input-mode-options.astro', value: 10, group: 'mini' },
 	{ labelKey: 'input-mode-options.psclassic', value: 11, group: 'mini' },
 	{ labelKey: 'input-mode-options.sinput', value: 17, group: 'primary' },
+];
+
+const INPUT_BOOT_MODE_VALUES = [
+	...INPUT_BOOT_MODES.map((o) => o.value),
+	...SWITCH_INPUT_MODE_VALUES,
 ];
 
 const INPUT_MODE_GROUPS = [
@@ -359,7 +370,10 @@ const schema = yup.object().shape({
 	inputMode: yup
 		.number()
 		.required()
-		.oneOf(INPUT_MODES.map((o) => o.value))
+		.oneOf([
+			...INPUT_MODES.map((o) => o.value),
+			...SWITCH_INPUT_MODE_VALUES,
+		])
 		.label('Input Mode'),
 	inputDeviceType: yup
 		.number()
@@ -412,42 +426,42 @@ const schema = yup.object().shape({
 	inputModeB1: yup
 		.number()
 		.required()
-		.oneOf(INPUT_BOOT_MODES.map((o) => o.value))
+		.oneOf(INPUT_BOOT_MODE_VALUES)
 		.label('B1 Input Mode'),
 	inputModeB2: yup
 		.number()
 		.required()
-		.oneOf(INPUT_BOOT_MODES.map((o) => o.value))
+		.oneOf(INPUT_BOOT_MODE_VALUES)
 		.label('B2 Input Mode'),
 	inputModeB3: yup
 		.number()
 		.required()
-		.oneOf(INPUT_BOOT_MODES.map((o) => o.value))
+		.oneOf(INPUT_BOOT_MODE_VALUES)
 		.label('B3 Input Mode'),
 	inputModeB4: yup
 		.number()
 		.required()
-		.oneOf(INPUT_BOOT_MODES.map((o) => o.value))
+		.oneOf(INPUT_BOOT_MODE_VALUES)
 		.label('B4 Input Mode'),
 	inputModeL1: yup
 		.number()
 		.required()
-		.oneOf(INPUT_BOOT_MODES.map((o) => o.value))
+		.oneOf(INPUT_BOOT_MODE_VALUES)
 		.label('L1 Input Mode'),
 	inputModeL2: yup
 		.number()
 		.required()
-		.oneOf(INPUT_BOOT_MODES.map((o) => o.value))
+		.oneOf(INPUT_BOOT_MODE_VALUES)
 		.label('L2 Input Mode'),
 	inputModeR1: yup
 		.number()
 		.required()
-		.oneOf(INPUT_BOOT_MODES.map((o) => o.value))
+		.oneOf(INPUT_BOOT_MODE_VALUES)
 		.label('R1 Input Mode'),
 	inputModeR2: yup
 		.number()
 		.required()
-		.oneOf(INPUT_BOOT_MODES.map((o) => o.value))
+		.oneOf(INPUT_BOOT_MODE_VALUES)
 		.label('R2 Input Mode'),
 	usbDescProduct: yup.string().label('USB Description: Product Name'),
 	usbDescManufacturer: yup.string().label('USB Description: Manufacturer'),
@@ -696,6 +710,8 @@ export default function SettingsPage() {
 		setFieldValue,
 		handleChange,
 	) => {
+		const switchMode = isSwitchInputMode(values.inputMode);
+		const field = switchMode ? 'inputMode' : 'inputDeviceType';
 		let mode = INPUT_MODES.find((i) => i.value == values.inputMode);
 		let options = Object.keys(InputModeDeviceType)
 			.filter((key) => isNaN(Number(key)))
@@ -704,7 +720,12 @@ export default function SettingsPage() {
 				value: Number(InputModeDeviceType[o]),
 			}));
 
-		if (mode) {
+		if (switchMode) {
+			options = SWITCH_INPUT_MODE_OPTIONS.map(({ labelKey, value }) => ({
+				key: labelKey,
+				value,
+			}));
+		} else if (mode) {
 			options = options
 				.filter((o) => mode.deviceTypes?.indexOf(o.value) !== -1)
 				.sort(
@@ -716,25 +737,25 @@ export default function SettingsPage() {
 			options = [];
 		}
 
-		return mode && mode.deviceTypes?.length > 1 ? (
+		return options.length > 1 ? (
 			<Row className="mb-3">
 				<Col sm={4}>
 					<Form.Label>
 						{t('SettingsPage:input-mode-device-type-label')}
 					</Form.Label>
 					<Form.Select
-						name="inputDeviceType"
+						name={field}
 						className="form-select-sm"
-						value={values.inputDeviceType}
+						value={values[field]}
 						onChange={handleChange}
-						isInvalid={errors.inputDeviceType}
+						isInvalid={errors[field]}
 					>
 						{options?.map((o) => (
 							<option
 								key={`button-inputDeviceType-option-${o.key}`}
 								value={o.value}
 							>
-								{t(`Proto:InputModeDeviceType.${o.key}`)}
+								{t(switchMode ? `SettingsPage:${o.key}` : `Proto:InputModeDeviceType.${o.key}`)}
 							</option>
 						))}
 					</Form.Select>
@@ -1296,6 +1317,10 @@ export default function SettingsPage() {
 			return;
 		}
 
+		if (isSwitchInputMode(values.inputMode)) {
+			return;
+		}
+
 		const inputMode = INPUT_MODES.find((o) => o.value == values.inputMode);
 		switch (inputMode.labelKey) {
 			case 'input-mode-options.keyboard':
@@ -1505,7 +1530,7 @@ export default function SettingsPage() {
 																<Form.Select
 																	name="inputMode"
 																	className="form-select-sm"
-																	value={values.inputMode}
+																	value={displayInputModeValue(values.inputMode)}
 																	onChange={handleChange}
 																	isInvalid={errors.inputMode}
 																>
@@ -1767,7 +1792,7 @@ export default function SettingsPage() {
 																			<Form.Select
 																				name={`inputMode${mode.value}`}
 																				className="form-select-sm"
-																				value={values[`inputMode${mode.value}`]}
+																				value={displayInputModeValue(values[`inputMode${mode.value}`])}
 																				onChange={handleChange}
 																				isInvalid={
 																					errors[`inputMode${mode.value}`]
@@ -1803,6 +1828,22 @@ export default function SettingsPage() {
 																					),
 																				)}
 																			</Form.Select>
+																			{isSwitchInputMode(values[`inputMode${mode.value}`]) && (
+																				<Form.Select
+																					aria-label={t('SettingsPage:input-mode-device-type-label')}
+																					name={`inputMode${mode.value}`}
+																					className="form-select-sm mt-2"
+																					value={values[`inputMode${mode.value}`]}
+																					onChange={handleChange}
+																					isInvalid={errors[`inputMode${mode.value}`]}
+																				>
+																					{SWITCH_INPUT_MODE_OPTIONS.map((o) => (
+																						<option key={o.value} value={o.value}>
+																							{t(`SettingsPage:${o.labelKey}`)}
+																						</option>
+																					))}
+																				</Form.Select>
+																			)}
 																			<Form.Control.Feedback type="invalid">
 																				{errors[`inputMode${mode.value}`]}
 																			</Form.Control.Feedback>

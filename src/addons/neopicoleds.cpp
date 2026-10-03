@@ -309,6 +309,9 @@ void NeoPicoLEDAddon::process()
                     animationState = getXBoneAnimationNEOPICO(gamepad);
                     break;
                 case INPUT_MODE_SWITCH_PRO:
+                case INPUT_MODE_SWITCH_SNES:
+                case INPUT_MODE_SWITCH_N64:
+                case INPUT_MODE_SWITCH_GENESIS:
                     animationState = getSwitchProAnimationNEOPICO(gamepad->auxState.playerID.ledValue);
                     break;
                 default:

@@ -77,6 +77,15 @@ void DriverManager::setup(InputMode mode) {
         case INPUT_MODE_SWITCH_PRO:
             driver = new SwitchProDriver();
             break;
+        case INPUT_MODE_SWITCH_SNES:
+            driver = new SwitchProDriver(SWITCH_TYPE_SNES);
+            break;
+        case INPUT_MODE_SWITCH_N64:
+            driver = new SwitchProDriver(SWITCH_TYPE_N64);
+            break;
+        case INPUT_MODE_SWITCH_GENESIS:
+            driver = new SwitchProDriver(SWITCH_TYPE_GENESIS);
+            break;
         case INPUT_MODE_SINPUT:
             driver = new SInputDriver();
             break;

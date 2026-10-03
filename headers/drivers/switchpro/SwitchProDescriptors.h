@@ -11,6 +11,9 @@
 
 #define SWITCH_PRO_VENDOR_ID     0x057E
 #define SWITCH_PRO_PRODUCT_ID    0x2009
+#define SWITCH_PRO_SNES_PRODUCT_ID 0x2017
+#define SWITCH_PRO_N64_PRODUCT_ID 0x2019
+#define SWITCH_PRO_GENESIS_PRODUCT_ID 0x201E
 
 #ifndef LSB
 #define LSB(n) ((n) & 255)
@@ -315,6 +318,7 @@ typedef enum {
     SWITCH_TYPE_NES_RIGHT_JOYCON = 0x0A,
     SWITCH_TYPE_SNES = 0x0B,
     SWITCH_TYPE_N64 = 0x0C,
+    SWITCH_TYPE_GENESIS = 0x0D,
 } SwitchControllerType;
 
 typedef struct {
@@ -340,6 +344,9 @@ typedef struct
 static const uint8_t switch_pro_string_language[]     = { 0x09, 0x04 };
 static const uint8_t switch_pro_string_manufacturer[] = "Open Stick Community";
 static const uint8_t switch_pro_string_product[]      = "GP2040-CE (Pro Controller)";
+static const uint8_t switch_pro_snes_string_product[] = "GP2040-CE (NSO SNES Controller)";
+static const uint8_t switch_pro_n64_string_product[]  = "GP2040-CE (NSO N64 Controller)";
+static const uint8_t switch_pro_genesis_string_product[] = "GP2040-CE (NSO Genesis Controller)";
 static const uint8_t switch_pro_string_version[]      = "000000000001";
 
 static const uint8_t *switch_pro_string_descriptors[] __attribute__((unused)) =

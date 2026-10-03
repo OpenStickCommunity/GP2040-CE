@@ -285,6 +285,9 @@ void ButtonLayoutScreen::generateHeader() {
             case INPUT_MODE_PSCLASSIC: statusBar += "PSC"; break;
             case INPUT_MODE_XBOXORIGINAL: statusBar += "OGXBOX"; break;
             case INPUT_MODE_SWITCH_PRO: statusBar += "SWPRO"; break;
+            case INPUT_MODE_SWITCH_SNES: statusBar += "SWSNES"; break;
+            case INPUT_MODE_SWITCH_N64: statusBar += "SWN64"; break;
+            case INPUT_MODE_SWITCH_GENESIS: statusBar += "SWGEN"; break;
             case INPUT_MODE_SINPUT: statusBar += "SINPUT"; break;
             case INPUT_MODE_PS4:
                 statusBar += "PS4";

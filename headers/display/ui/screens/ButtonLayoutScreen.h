@@ -15,7 +15,7 @@
 #include "GPGFX_UI_layouts.h"
 
 #define INPUT_HISTORY_MAX_INPUTS 22
-#define INPUT_HISTORY_MAX_MODES 12
+#define INPUT_HISTORY_MAX_MODES 15
 
 // Static to ensure memory is never doubled
 static const char * displayNames[INPUT_HISTORY_MAX_MODES][INPUT_HISTORY_MAX_INPUTS] __attribute__((unused)) = {
@@ -102,6 +102,27 @@ static const char * displayNames[INPUT_HISTORY_MAX_MODES][INPUT_HISTORY_MAX_INPU
             "2", "3", "1", "4",
             "5", "6", "7", "8",
             "9", "10", "11", "12", "13", "14"
+    },
+    {		// Switch SNES - 12
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "B", "A", "Y", "X",
+            "L", "R", "ZL", "ZR",
+            "SEL", "STA", "", "", "", ""
+    },
+    {		// Switch N64 - 13
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "B", "A", "C-L", "C-U",
+            "L", "R", "Z", "ZR",
+            "", "STA", "C-D", "C-R", CHAR_HOME_S, CHAR_CAP_S
+    },
+    {		// Switch Genesis - 14
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "A", "B", "X", "Y",
+            "", "Z", "", "C",
+            "MODE", "STA", "", "", CHAR_HOME_S, CHAR_CAP_S
     }
 };
 
@@ -134,6 +155,9 @@ class ButtonLayoutScreen : public GPScreen {
         const std::map<uint16_t, uint16_t> displayModeLookup = {
             {INPUT_MODE_PS3, 0},
             {INPUT_MODE_SWITCH, 1},
+            {INPUT_MODE_SWITCH_SNES, 12},
+            {INPUT_MODE_SWITCH_N64, 13},
+            {INPUT_MODE_SWITCH_GENESIS, 14},
             {INPUT_MODE_XINPUT, 2},
             {INPUT_MODE_XBONE, 2},
             {INPUT_MODE_KEYBOARD, 3},
@@ -148,7 +172,7 @@ class ButtonLayoutScreen : public GPScreen {
             {INPUT_MODE_ASTRO, 9},
             {INPUT_MODE_XBOXORIGINAL, 10},
             {INPUT_MODE_GENERIC, 11},
-            {INPUT_MODE_SINPUT, 12},
+            {INPUT_MODE_SINPUT, 3},
         };
 
         Gamepad* gamepad = nullptr;
