@@ -926,15 +926,78 @@ message ReactiveLEDOptions
 
 message HETriggerInfo
 {
-    optional GpioAction action = 1;
-    optional int32 active = 2;
+    // int32 rather than GpioAction so that HE-local pseudo-actions (profile
+    // switching, see he_trigger.h) can share this field. Wire-compatible with
+    // the previous GpioAction declaration, so stored configs load unchanged.
+    optional int32 action = 1;
+    // Tags 2, 5 and 6 held `active`, `polarity` and `release`: the absolute ADC
+    // thresholds the travel percentages replaced. Removed rather than reused, so
+    // an older config decodes them as unknown fields instead of misreading them.
     optional int32 idle = 3;
     optional int32 pressed = 4;
-    optional int32 polarity = 5 [deprecated = true];
-    optional int32 release = 6;
     optional int32 noise = 7;
-    optional bool rapidTrigger = 8; 
+    optional bool rapidTrigger = 8;
     optional bool is_polarized = 9;
+
+    // Rapid trigger v2. All of these are PERCENT OF TRAVEL (0-100), resolved
+    // against the idle..pressed span, so they survive recalibration and mean
+    // the same thing on every switch regardless of magnet polarity.
+    //
+    // These would fit in a uint8, but (nanopb).int_size cannot be used anywhere
+    // in this config. The JSON conversion in config_utils.cpp is macro-generated
+    // from the protobuf type: the parse side binds a uint32_t& that a narrowed
+    // member cannot bind to, and the serialize side passes each value to an
+    // overload set of appendAsString(double/float/int32_t/uint32_t) that a
+    // narrowed type does not resolve against on the ARM toolchain.
+    optional uint32 actuationPoint         = 10;
+    optional uint32 rtPressSensitivity     = 11;
+    optional uint32 rtReleaseSensitivity   = 12;
+    optional bool   continuousRapidTrigger = 13;
+    optional uint32 travelDeadzone         = 14;
+
+    // Superseded by HE_ANALOG_PROPORTIONAL_OFFSET on the action itself, which
+    // makes proportional output a per-binding (and therefore per-profile) choice.
+    // Retained so the tag is not reused.
+    optional bool analogProportional = 15 [deprecated = true];
+}
+
+message HETriggerProfile
+{
+    // Bindings, plus the tuning that is a behavioural choice rather than a
+    // property of the switch. Calibration (idle/pressed/polarity/noise) stays in
+    // HETriggerInfo and is shared, since it describes the hardware.
+    //
+    // A profile with no stored tuning falls back to the base switch values, the
+    // same rule bindings use, so existing configs keep working unmigrated.
+    //
+    // `actions` uses GpioAction::NONE (-10) for an unbound channel, which is a
+    // deliberate choice rather than a fallback: leaving a button unbound in one
+    // profile is a thing users want.
+    // int_size would narrow the C storage here but saves no config space: nanopb
+    // budgets an int32 by its wire worst case, and a negative varint sign-extends
+    // to 10 bytes whatever the field's C type. Left wide rather than adding a
+    // truncation risk for nothing. (The uint32 arrays below are different --
+    // unsigned values have no sign extension, so IS_8 genuinely shrinks them.)
+    repeated int32 actions = 1 [(nanopb).max_count = 32];
+    optional bool enabled = 2;
+
+    // Per-channel tuning overrides. Stored as uint32 rather than int32 because a
+    // negative varint costs 10 bytes on the wire and this is 32 entries x 3
+    // profiles x 3 fields -- signed would add ~4.2KB instead of ~1.9KB. 0 means
+    // "not set for this profile, use the base switch value"; a real actuation
+    // point or sensitivity is always >= 1, and rapidTrigger stores 1/2 for
+    // off/on so that 0 stays free as the not-set sentinel.
+    // Left as full-width uint32 deliberately. These values are 0..100 and nanopb
+    // worst-cases each varint at 5 bytes, so IS_8 would save ~1.1KB of the config
+    // budget -- but the JSON serializer is macro-generated from the protobuf type,
+    // and TO_JSON_REPEATED_UINT32 passes each element to an overload set of
+    // appendAsString(double/float/int32_t/uint32_t). A narrowed element does not
+    // resolve cleanly against that set on the ARM toolchain, so int_size cannot be
+    // used here any more than on a singular field. No field in this proto uses it.
+    repeated uint32 rapidTrigger = 3 [(nanopb).max_count = 32];
+    repeated uint32 actuationPoint = 4 [(nanopb).max_count = 32];
+    repeated uint32 rtPressSensitivity = 5 [(nanopb).max_count = 32];
+    repeated uint32 rtReleaseSensitivity = 6 [(nanopb).max_count = 32];
 }
 
 message HETriggerMux
@@ -962,6 +1025,11 @@ message HETriggerOptions
     optional int32 smoothingFactor = 13;
     optional bool separateSelectPins = 14;
     repeated HETriggerMux muxes = 15 [(nanopb).max_count = 4];
+
+    // HE-local binding profiles, independent of the GPIO profile system.
+    // triggers[].action is the base profile (0); profileSets[0..2] are 1..3.
+    repeated HETriggerProfile profileSets = 16 [(nanopb).max_count = 3];
+    optional uint32 activeProfile = 17;
 }
 
 message AddonOptions
@@ -1007,6 +1075,10 @@ message MigrationHistory
     optional bool buttonProfilesMigrated = 3 [default = false];
     optional bool profileEnabledFlagsMigrated = 4 [default = false];
     optional bool heTriggerSelectPinsMigrated = 5 [default = false];
+    // Reserved. The rapid trigger rework was a clean break -- users recalibrate
+    // rather than having old absolute thresholds converted -- so nothing sets
+    // this yet. Kept so the tag is not reused if a converter is added later.
+    optional bool heTriggerRapidTriggerMigrated = 6 [default = false];
 }
 
 message Config

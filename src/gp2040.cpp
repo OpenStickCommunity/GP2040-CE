@@ -279,6 +279,15 @@ void GP2040::run() {
 
 		// Config Loop (Web-Config skips Core0 add-ons)
 		if (configMode == true) {
+			// Hall effect calibration is driven from the web config, so its sweep
+			// has to be ticked here: add-ons are otherwise skipped in this mode, and
+			// sampling from the HTTP handler instead would only catch bursts every
+			// poll interval -- long enough to miss a button press entirely.
+			HETriggerAddon* heTrigger = HETriggerAddon::getInstance();
+			if (heTrigger != nullptr && heTrigger->isCalibrating()) {
+				heTrigger->runCalibrationSweep();
+			}
+
 			inputDriver->process(gamepad);
 			rebootHotkeys.process(gamepad, configMode);
 			checkSaveRebootState();

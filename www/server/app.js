@@ -907,53 +907,68 @@ app.get('/api/getHETriggerCalibrations', (req, res) => {
 			action: 2,
 			idle: 120,
 			pressed: 3500,
-			active: 1500,
 			is_polarized: false,
-			release: 1500,
 			noise: 50,
 			rapidTrigger: false,
+			actuationPoint: 35,
+			rtPressSensitivity: 10,
+			rtReleaseSensitivity: 10,
+			continuousRapidTrigger: false,
+			travelDeadzone: 3
 		},
 		{
 			action: 3,
 			idle: 3500,
 			pressed: 120,
-			active: 1500,
 			is_polarized: true,
-			release: 1500,
 			noise: 50,
 			rapidTrigger: false,
+			actuationPoint: 35,
+			rtPressSensitivity: 10,
+			rtReleaseSensitivity: 10,
+			continuousRapidTrigger: false,
+			travelDeadzone: 3
 		},
 		{
 			action: 4,
 			idle: 120,
 			pressed: 3500,
-			active: 1500,
 			is_polarized: false,
-			release: 2000,
 			noise: 50,
 			rapidTrigger: true,
+			actuationPoint: 35,
+			rtPressSensitivity: 10,
+			rtReleaseSensitivity: 10,
+			continuousRapidTrigger: false,
+			travelDeadzone: 3
 		},
 		{
 			action: 5,
 			idle: 3500,
 			pressed: 120,
-			active: 2000,
 			is_polarized: true,
-			release: 1500,
 			noise: 50,
 			rapidTrigger: true,
+			actuationPoint: 35,
+			rtPressSensitivity: 10,
+			rtReleaseSensitivity: 10,
+			continuousRapidTrigger: false,
+			travelDeadzone: 3
 		},
 	);
 	for (var i = 4; i < 32; i++) {
 		triggers.push({
 			action: -10,
 			idle: 100,
-			active: 2000,
 			pressed: 3500,
 			is_polarized: false,
-			release: 1500,
 			noise: 50,
 			rapidTrigger: false,
+			actuationPoint: 35,
+			rtPressSensitivity: 10,
+			rtReleaseSensitivity: 10,
+			continuousRapidTrigger: false,
+			travelDeadzone: 3,
 		});
 	}
 	return res.send({ triggers });
@@ -1385,11 +1400,125 @@ app.get('/api/abortGetHeldPins', async (req, res) => {
 	return res.send();
 });
 
-app.post('/api/getHETriggerVoltage', (req, res) => {
-	return res.send({
-		voltage: 0.0,
-		debug: true,
+// --- guided calibration mock ---
+// Scripts a plausible session so the wizard can be exercised in a browser with no
+// hardware: two seconds of idle, then channels report "moved" one at a time.
+let heCalState = { mode: 'off', startedAt: 0, phaseStartedAt: 0 };
+const HE_MOCK_CHANNELS = [0, 1, 2, 3, 4, 5, 6, 7];
+const HE_MOCK_IDLE_MS = 2000;
+
+app.post('/api/startHECalibration', (req, res) => {
+	const now = Date.now();
+	heCalState = { mode: 'idle', startedAt: now, phaseStartedAt: now };
+	return res.send({ mode: 'idle' });
+});
+
+app.post('/api/advanceHECalibration', (req, res) => {
+	const phase = req.body?.phase;
+	if (phase === 'press') heCalState.mode = 'press';
+	else if (phase === 'finish') heCalState.mode = 'done';
+	else if (phase === 'abort') heCalState.mode = 'off';
+	heCalState.phaseStartedAt = Date.now();
+	return res.send({ mode: heCalState.mode });
+});
+
+app.post('/api/getHECalibrationStatus', (req, res) => {
+	const now = Date.now();
+	let elapsed = now - heCalState.phaseStartedAt;
+
+	// Mirror the firmware, which advances out of the idle phase on its own.
+	if (heCalState.mode === 'idle' && elapsed >= HE_MOCK_IDLE_MS) {
+		heCalState.mode = 'press';
+		heCalState.phaseStartedAt = now;
+		elapsed = 0;
+	}
+
+	const pressElapsed = heCalState.mode === 'press' ? elapsed : 0;
+	const channels = HE_MOCK_CHANNELS.map((id) => {
+		// One channel "captured" every 1.5s, so the tiles fill in progressively.
+		const moved = heCalState.mode === 'press' && pressElapsed > (id + 1) * 1500;
+		return {
+			id,
+			raw: moved ? 3400 + (id % 5) : 1840 + (id % 7),
+			idle: 1840 + (id % 7),
+			stdDev: id === 3 ? 140 : 6, // channel 3 exercises the unstable warning
+			maxDeviation: moved ? 1600 + id * 20 : (id % 3) - 1,
+			moved,
+			unstable: id === 3,
+		};
 	});
+
+	return res.send({
+		mode: heCalState.mode,
+		elapsedMs: elapsed,
+		idleDurationMs: HE_MOCK_IDLE_MS,
+		assignedCount: channels.length,
+		movedCount: channels.filter((c) => c.moved).length,
+		channels,
+	});
+});
+
+app.post('/api/applyHECalibration', (req, res) => {
+	heCalState.mode = 'off';
+	return res.send({ mode: 'off', received: req.body });
+});
+
+// --- hall effect binding profiles ---
+let heProfiles = {
+	activeProfile: 0,
+	profiles: Array.from({ length: 4 }, (_, index) => ({
+		enabled: index === 0,
+		// Base profile gets a few sample bindings; alternates start as copies.
+		actions: Array.from({ length: 32 }, (__, channel) =>
+			channel < 8 ? channel + 1 : -10,
+		),
+		// 0 = inherit the base switch value.
+		rapidTrigger: Array.from({ length: 32 }, () => 0),
+		actuationPoint: Array.from({ length: 32 }, () => 0),
+		rtPressSensitivity: Array.from({ length: 32 }, () => 0),
+		rtReleaseSensitivity: Array.from({ length: 32 }, () => 0),
+	})),
+};
+
+// --- live test view mock: a slow sine sweep per channel so the bars move ---
+let heMonitoring = false;
+app.post('/api/startHEMonitor', (req, res) => {
+	heMonitoring = true;
+	return res.send({ monitoring: true });
+});
+app.post('/api/stopHEMonitor', (req, res) => {
+	heMonitoring = false;
+	return res.send({ monitoring: false });
+});
+app.post('/api/getHEMonitorStatus', (req, res) => {
+	const now = Date.now() / 1000;
+	const channels = Array.from({ length: 8 }, (_, id) => {
+		const travel = Math.round(
+			500 + 500 * Math.sin(now * 1.5 + id * 0.7),
+		);
+		const actuationPoint = 35;
+		return {
+			id,
+			travel: Math.max(0, Math.min(1000, travel)),
+			active: travel > actuationPoint * 10,
+			rapidTrigger: id % 3 === 0,
+			actuationPoint,
+		};
+	});
+	return res.send({
+		monitoring: heMonitoring,
+		activeProfile: heProfiles.activeProfile,
+		channels,
+	});
+});
+
+app.get('/api/getHETriggerProfiles', (req, res) => {
+	return res.send(heProfiles);
+});
+
+app.post('/api/setHETriggerProfiles', (req, res) => {
+	heProfiles = req.body;
+	return res.send(req.body);
 });
 
 app.get('/api/getBootModeOptions', (req, res) => {
