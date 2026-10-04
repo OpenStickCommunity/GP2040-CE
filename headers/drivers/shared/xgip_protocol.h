@@ -51,19 +51,20 @@
 
 #include <stdint.h>
 
-// All max chunks are this size
+// 64-byte USB packet minus a six-byte fragmented GIP header.
 #define GIP_MAX_CHUNK_SIZE 0x3A
 
 typedef struct
 {
     uint8_t command;
-    uint8_t client : 4;
-    uint8_t needsAck : 1;
-    uint8_t internal : 1;
-    uint8_t chunkStart : 1;
+    uint8_t client : 3;       // Expansion index; zero is the primary gamepad.
+    uint8_t reserved : 1;
+    uint8_t needsAck : 1;     // ACME: request a protocol acknowledgement.
+    uint8_t internal : 1;     // System message, rather than device input/output.
+    uint8_t chunkStart : 1;   // InitFrag: TLO is total size; otherwise it is offset.
     uint8_t chunked : 1;
     uint8_t sequence;
-    uint8_t length;
+    uint8_t length;          // Low length byte; bit 7 announces an extension byte.
 } __attribute__((packed)) GipHeader_t;
 
 #define GIP_HEADER(packet, cmd, isInternal, seq) \
@@ -71,6 +72,7 @@ typedef struct
     packet->Header.internal = isInternal;        \
     packet->Header.sequence = seq;               \
     packet->Header.client = 0;                   \
+    packet->Header.reserved = 0;                 \
     packet->Header.needsAck = 0;                 \
     packet->Header.chunkStart = 0;               \
     packet->Header.chunked = 0;                  \

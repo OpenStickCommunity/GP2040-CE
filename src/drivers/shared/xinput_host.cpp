@@ -152,11 +152,10 @@ bool tuh_xinput_send_report(uint8_t dev_addr, uint8_t instance, uint8_t const *r
         (xid_itf->ep_out != 0) && (!edpt_busy)) {
         TU_VERIFY(usbh_edpt_claim(dev_addr, xid_itf->ep_out));
         memcpy(xid_itf->epout_buf, report, len);
-        if (!usbh_edpt_xfer(dev_addr, xid_itf->ep_out, xid_itf->epout_buf, len)) {
+        ret = usbh_edpt_xfer(dev_addr, xid_itf->ep_out, xid_itf->epout_buf, len);
+        if (!ret) {
             usbh_edpt_release(dev_addr, xid_itf->ep_out);
-            ret = false;
         }
-        ret = true;
 
     } 
 

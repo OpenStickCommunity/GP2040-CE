@@ -55,7 +55,7 @@ void XGIPProtocol::reset() {
 // Parse incoming packet
 bool XGIPProtocol::parse(const uint8_t * buffer, uint16_t len) {
     // Do we have enough room for a header? No, this isn't valid
-    if ( len < 4 ) {
+    if ( buffer == nullptr || len < 4 || len > sizeof(packet) ) {
         reset();
         isValidPacket = false;
         return false;
@@ -78,11 +78,14 @@ bool XGIPProtocol::parse(const uint8_t * buffer, uint16_t len) {
     } else { // Non-ACK
         // Continue parsing chunked data
         if ( newPacket->chunked == true ) {
+            if (len < 6) { isValidPacket = false; return false; }
             memcpy((void*)&header, buffer, sizeof(GipHeader_t)); // Always copy to header buffer
-            if ( header.length == 0 ) { // END OF CHUNK
-                uint16_t endChunkSize = (buffer[4] | buffer[5] << 8);
-                // Verify chunk is good
-                if ( totalChunkLength != endChunkSize) {
+            if ( (header.length & 0x7F) == 0 ) { // END OF CHUNK
+                // Six-byte header: padding may extend either length or offset.
+                uint16_t endChunkSize = (header.length & 0x80) ? buffer[5] :
+                    (buffer[4] & 0x7F) | ((uint16_t)(buffer[5] & 0x7F) << 7);
+                if (len != 6 || ((header.length & 0x80) && buffer[4] != 0) ||
+                    endChunkSize != dataLength || actualDataReceived != dataLength) {
                     isValidPacket = false;
                     return false;
                 }
@@ -109,6 +112,8 @@ bool XGIPProtocol::parse(const uint8_t * buffer, uint16_t len) {
                     dataLength = dataLength - ((dataLength / 0x100)*0x80);
                 }
 
+                if (dataLength > sizeof(data)) { isValidPacket = false; return false; }
+
                 // Set our chunk received to the header length
                 totalChunkReceived = header.length;
             } else {
@@ -118,13 +123,18 @@ bool XGIPProtocol::parse(const uint8_t * buffer, uint16_t len) {
             if ( header.length > GIP_MAX_CHUNK_SIZE ) { // if length is greater than 0x3A (bigger than 64 bytes), we know it is | 0x80 so we can ^ 0x80 and get the real length
                 copyLength ^= 0x80;  // packet length is set to length | 0x80 (0xBA instead of 0x3A)
             }
-            memcpy(&data[actualDataReceived], &buffer[6], copyLength); // 
+            if (copyLength > len - 6 || copyLength > sizeof(data) - actualDataReceived) {
+                isValidPacket = false;
+                return false;
+            }
+            memcpy(&data[actualDataReceived], &buffer[6], copyLength);
             actualDataReceived += copyLength;
             numberOfChunksSent++; // count our chunks for the ACK
             isValidPacket = true;
         } else {
             reset();
             memcpy((void*)&header, buffer, sizeof(GipHeader_t));
+            if (header.length > len - sizeof(GipHeader_t)) { isValidPacket = false; return false; }
             if ( header.length > 0 ) {
                 memcpy(data, &buffer[4], header.length); // copy incoming data
             }
@@ -152,6 +162,7 @@ void XGIPProtocol::incrementSequence() {
 }
 
 void XGIPProtocol::setAttributes(uint8_t cmd, uint8_t seq, uint8_t internal, uint8_t isChunked, uint8_t needsAck) { // Set attributes for next output packet
+    header.reserved = 0;
     header.command = cmd;
     header.sequence = seq;
     header.internal = internal;
@@ -160,10 +171,11 @@ void XGIPProtocol::setAttributes(uint8_t cmd, uint8_t seq, uint8_t internal, uin
 }
 
 bool XGIPProtocol::setData(const uint8_t * buffer, uint16_t len) {
-    if ( len > 0x3000) { // arbitrary but this should cover us if something bad happens
+    if ((len && buffer == nullptr) || len > sizeof(data) ||
+        (!header.chunked && len > sizeof(packet) - sizeof(GipHeader_t))) {
         return false;
     }
-    memcpy(data, buffer, len);
+    if (len) memcpy(data, buffer, len);
     dataLength = len;
     return true;
 }
@@ -180,7 +192,8 @@ uint8_t * XGIPProtocol::generatePacket() {
             header.needsAck = 0;
             header.length = 0;
             memcpy(packet, &header, sizeof(GipHeader_t));
-            packet[4] = totalChunkLength & 0x00FF;
+            // Pad the offset to two bytes, including totals below 128.
+            packet[4] = (totalChunkLength & 0x00FF) | 0x80;
             packet[5] = (totalChunkLength & 0xFF00) >> 8;
             packetLength = sizeof(GipHeader_t) + 2;
             chunkEnded = true;
@@ -278,7 +291,7 @@ uint8_t * XGIPProtocol::generatePacket() {
                 packet[5] = (chunkValue & 0xFF00) >> 8;
             }
 
-            // XGIP Hashing: If we're sending over 0x80, + ( data to send + 0x100 )
+            // Advance the packed 7-bit offset across the first extension boundary
             if ( totalChunkSent < 0x100 && (totalChunkSent + dataToSend) > 0x80) {
                 totalChunkSent = totalChunkSent + dataToSend + 0x100;
             // else if our next chunk sent will roll over the 3rd digit e.g. 0x200 to 0x300,  + ( data to send | 0x80 )
@@ -304,7 +317,7 @@ uint8_t * XGIPProtocol::generateAckPacket() { // Generate output packet
     packet[5] = header.command;
     packet[6] = 0x20;
 
-    // we have to keep track of # of chunks because data received for ACK is +2 for size of chunk
+    // ACK progress counts payload bytes only, excluding all GIP headers.
     uint16_t dataReceived = actualDataReceived;
     packet[7] = dataReceived & 0x00FF;
     packet[8] = (dataReceived & 0xFF00) >> 8;
