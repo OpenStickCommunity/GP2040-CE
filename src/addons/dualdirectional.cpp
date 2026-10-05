@@ -177,7 +177,8 @@ uint8_t DualDirectionalInput::SOCDGamepadClean(uint8_t gamepadState, bool isLast
     // Gamepad SOCD Last-Win OR First-Win Clean
     switch (gamepadState & (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN)) {
         case (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN): // If last state was Up or Down, exclude it from our gamepad
-            if (isLastWin) gamepadState ^= (lastGPUD == DIRECTION_UP) ? GAMEPAD_MASK_UP : GAMEPAD_MASK_DOWN;
+            if (lastGPUD == DIRECTION_NONE) gamepadState ^= (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN);
+            else if (isLastWin) gamepadState ^= (lastGPUD == DIRECTION_UP) ? GAMEPAD_MASK_UP : GAMEPAD_MASK_DOWN;
             else gamepadState ^= (lastGPUD == DIRECTION_UP) ? GAMEPAD_MASK_DOWN : GAMEPAD_MASK_UP;
             break;
         case GAMEPAD_MASK_UP:
@@ -198,7 +199,7 @@ uint8_t DualDirectionalInput::SOCDGamepadClean(uint8_t gamepadState, bool isLast
                 if (isLastWin) gamepadState ^= (lastGPLR == DIRECTION_LEFT) ? GAMEPAD_MASK_LEFT : GAMEPAD_MASK_RIGHT;
                 else gamepadState ^= (lastGPLR == DIRECTION_LEFT) ? GAMEPAD_MASK_RIGHT : GAMEPAD_MASK_LEFT;
             else
-                lastGPLR = DIRECTION_NONE;
+                gamepadState ^= (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT);
             break;
         case GAMEPAD_MASK_LEFT:
             gamepadState |= GAMEPAD_MASK_LEFT;
