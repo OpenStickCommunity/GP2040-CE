@@ -182,6 +182,15 @@ export const INPUT_MODE_OPTIONS: InputModeOptions[] = [
 		deviceTypes: [],
 	},
 	{
+		labelKey: 'input-mode-options.nintendo-switch2-pro',
+		value: InputMode.INPUT_MODE_SWITCH2_PRO,
+		group: 'primary',
+		required: [],
+		optional: [],
+		authentication: [],
+		deviceTypes: [],
+	},
+	{
 		labelKey: 'input-mode-options.sinput',
 		value: InputMode.INPUT_MODE_SINPUT,
 		group: 'primary',

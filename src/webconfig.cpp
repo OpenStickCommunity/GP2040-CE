@@ -707,6 +707,12 @@ std::string setGamepadOptions()
     readDoc(gamepadOptions.ps5AuthType, doc, "ps5AuthType");
     readDoc(gamepadOptions.xinputAuthType, doc, "xinputAuthType");
     readDoc(gamepadOptions.ps4ControllerIDMode, doc, "ps4ControllerIDMode");
+    readDoc(gamepadOptions.switch2ProIdentity, doc, "switch2ProIdentity");
+    readDoc(gamepadOptions.switch2ProColorPreset, doc, "switch2ProColorPreset");
+    readDoc(gamepadOptions.switch2ProBodyColor, doc, "switch2ProBodyColor");
+    readDoc(gamepadOptions.switch2ProButtonsColor, doc, "switch2ProButtonsColor");
+    readDoc(gamepadOptions.switch2ProHighlightColor, doc, "switch2ProHighlightColor");
+    readDoc(gamepadOptions.switch2ProGripColor, doc, "switch2ProGripColor");
     readDoc(gamepadOptions.usbDescOverride, doc, "usbDescOverride");
     readDoc(gamepadOptions.miniMenuGamepadInput, doc, "miniMenuGamepadInput");
     // Copy USB descriptor strings
@@ -777,6 +783,12 @@ std::string getGamepadOptions()
     writeDoc(doc, "ps5AuthType", gamepadOptions.ps5AuthType);
     writeDoc(doc, "xinputAuthType", gamepadOptions.xinputAuthType);
     writeDoc(doc, "ps4ControllerIDMode", gamepadOptions.ps4ControllerIDMode);
+    writeDoc(doc, "switch2ProIdentity", gamepadOptions.switch2ProIdentity);
+    writeDoc(doc, "switch2ProColorPreset", gamepadOptions.switch2ProColorPreset);
+    writeDoc(doc, "switch2ProBodyColor", gamepadOptions.switch2ProBodyColor);
+    writeDoc(doc, "switch2ProButtonsColor", gamepadOptions.switch2ProButtonsColor);
+    writeDoc(doc, "switch2ProHighlightColor", gamepadOptions.switch2ProHighlightColor);
+    writeDoc(doc, "switch2ProGripColor", gamepadOptions.switch2ProGripColor);
     writeDoc(doc, "usbDescOverride", gamepadOptions.usbDescOverride);
     writeDoc(doc, "usbDescManufacturer", gamepadOptions.usbDescManufacturer);
     writeDoc(doc, "usbDescProduct", gamepadOptions.usbDescProduct);

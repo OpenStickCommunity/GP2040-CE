@@ -113,7 +113,7 @@ void DualshockPS4Host::update() {
     } else if ( inputMode == INPUT_MODE_XINPUT || inputMode == INPUT_MODE_XBONE || inputMode == INPUT_MODE_XBOXORIGINAL ) {
         controller_output.enableUpdateLED = true;
         controller_output.ledGreen = UINT8_MAX/2;
-    } else if ( inputMode == INPUT_MODE_SWITCH || inputMode == INPUT_MODE_SWITCH_PRO ) {
+    } else if ( inputMode == INPUT_MODE_SWITCH || inputMode == INPUT_MODE_SWITCH_PRO || inputMode == INPUT_MODE_SWITCH2_PRO ) {
         controller_output.enableUpdateLED = true;
         controller_output.ledRed = UINT8_MAX/2;
     }

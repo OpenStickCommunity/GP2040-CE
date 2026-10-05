@@ -138,6 +138,7 @@ export enum InputMode {
     INPUT_MODE_SWITCH_PRO = 15,
     INPUT_MODE_P5GENERAL = 16,
     INPUT_MODE_SINPUT = 17,
+    INPUT_MODE_SWITCH2_PRO = 19,
     INPUT_MODE_CONFIG = 255
 }
 
@@ -581,6 +582,17 @@ export enum ReactiveLEDMode {
     REACTIVE_LED_STATIC_ON = 1,
     REACTIVE_LED_FADE_IN = 2,
     REACTIVE_LED_FADE_OUT = 3
+}
+
+export enum Switch2ProIdentity {
+    SWITCH2_PRO_IDENTITY_PRO = 0,
+    SWITCH2_PRO_IDENTITY_GAMECUBE = 1
+}
+
+export enum Switch2ProColorPreset {
+    SWITCH2_PRO_COLOR_STOCK = 0,
+    SWITCH2_PRO_COLOR_GP2040 = 1,
+    SWITCH2_PRO_COLOR_CUSTOM = 2
 }
 
 export enum PS4ControllerIDMode {
