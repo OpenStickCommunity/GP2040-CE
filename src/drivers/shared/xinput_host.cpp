@@ -291,7 +291,6 @@ uint16_t xinputh_open(uint8_t rhport, uint8_t dev_addr, tusb_desc_interface_t co
         p_xinput->type = XBOX360;
         if (desc_itf->bInterfaceProtocol == TUSB_DESC_DEVICE) {
             p_xinput->subtype = x_desc->subtype;
-            usbh_edpt_xfer(dev_addr, p_xinput->ep_in, p_xinput->epin_buf, p_xinput->epin_size);
         }
         return pos;
     // Xbox One instance == 0x47 0xD0
