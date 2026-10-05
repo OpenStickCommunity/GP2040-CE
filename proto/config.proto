@@ -442,6 +442,14 @@ message AnalogOptions
     optional uint32 joystick_center_y = 25;
     optional uint32 joystick_center_x2 = 26;
     optional uint32 joystick_center_y2 = 27;
+    optional uint32 joystick_min_x = 28;
+    optional uint32 joystick_max_x = 29;
+    optional uint32 joystick_min_y = 30;
+    optional uint32 joystick_max_y = 31;
+    optional uint32 joystick_min_x2 = 32;
+    optional uint32 joystick_max_x2 = 33;
+    optional uint32 joystick_min_y2 = 34;
+    optional uint32 joystick_max_y2 = 35;
 }
 
 message TurboOptions
@@ -929,13 +937,21 @@ message HETriggerInfo
     optional bool is_polarized = 9;
 }
 
+message HETriggerMux
+{
+    optional int32 selectPin0 = 1;
+    optional int32 selectPin1 = 2;
+    optional int32 selectPin2 = 3;
+    optional int32 selectPin3 = 4;
+}
+
 message HETriggerOptions
 {
     optional bool enabled = 1;
-    optional int32 selectPin0 = 2;
-    optional int32 selectPin1 = 3;
-    optional int32 selectPin2 = 4;
-    optional int32 selectPin3 = 5;
+    optional int32 selectPin0 = 2 [deprecated = true]; // Deprecated in favor of muxes[]
+    optional int32 selectPin1 = 3 [deprecated = true];
+    optional int32 selectPin2 = 4 [deprecated = true];
+    optional int32 selectPin3 = 5 [deprecated = true];
     optional int32 muxADCPin0 = 6;
     optional int32 muxADCPin1 = 7;
     optional int32 muxADCPin2 = 8;
@@ -944,6 +960,8 @@ message HETriggerOptions
     repeated HETriggerInfo triggers = 11 [(nanopb).max_count = 32];
     optional bool emaSmoothing = 12;
     optional int32 smoothingFactor = 13;
+    optional bool separateSelectPins = 14;
+    repeated HETriggerMux muxes = 15 [(nanopb).max_count = 4];
 }
 
 message AddonOptions
@@ -988,6 +1006,7 @@ message MigrationHistory
     optional bool gpioMappingsMigrated = 2 [default = false];
     optional bool buttonProfilesMigrated = 3 [default = false];
     optional bool profileEnabledFlagsMigrated = 4 [default = false];
+    optional bool heTriggerSelectPinsMigrated = 5 [default = false];
 }
 
 message Config

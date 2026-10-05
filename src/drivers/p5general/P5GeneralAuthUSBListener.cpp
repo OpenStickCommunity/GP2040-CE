@@ -8,6 +8,12 @@
 
 #include <iostream>
 
+// A dongle GET/SET_REPORT that has not completed within this window is treated
+// as lost. Failed completions (len == 0) are dropped by USBHostManager, and the
+// driver only accepts new console requests while the listener is idle, so a
+// lost completion would otherwise wedge P5General auth until replug.
+#define P5GENERAL_WAIT_TIMEOUT_US                       (500 * 1000)
+
 #define P5GENERAL_LISTENER_PRINTF_ENABLE                0       // GP0 as UART0_TX
 #if P5GENERAL_LISTENER_PRINTF_ENABLE
 #   define P5LRPINTF_INIT(...)                          stdio_init_all(__VA_ARGS__)
@@ -29,30 +35,43 @@ void P5GeneralAuthUSBListener::setup() {
 
 void P5GeneralAuthUSBListener::resetHostData() {
     P5LRPINTF("P5L:resetHostData\n");
+    wait_since_us = 0;
 }
 
 void P5GeneralAuthUSBListener::process() {
     if ( p5GeneralAuthData == nullptr )
         return;
 
+    if ( p5GeneralAuthData->dongle_ready == false )
+        return;
+
+    // tuh_* calls return false when the transfer could not be queued (e.g. the
+    // single shared host control pipe is busy with another device on the hub).
+    // Only advance state on success so the next process() pass retries instead
+    // of waiting forever for a completion that will never arrive.
     if (p5GeneralAuthData->hash_pending && tuh_hid_send_ready(ps_dev_addr, ps_instance)) {
-        tuh_hid_send_report(ps_dev_addr, ps_instance, 0, p5GeneralAuthData->hash_pending_buffer, 64);
-        p5GeneralAuthData->hash_pending = false;
+        if (tuh_hid_send_report(ps_dev_addr, ps_instance, 0, p5GeneralAuthData->hash_pending_buffer, 64)) {
+            p5GeneralAuthData->hash_pending = false;
+        }
     }
 
     switch ( p5GeneralAuthData->passthrough_state ) {
     case P5GeneralGPAuthState::p5g_auth_send_f0:
         memcpy(report_buffer, p5GeneralAuthData->auth_buffer, 64);
         P5LRPINTF("P5L:p5g_auth_send_f0 %d %d %d %d\n", report_buffer[0], report_buffer[1], report_buffer[2], report_buffer[3]);
-        host_set_report(P5GeneralAuthReport::P5GENERAL_SET_AUTH_PAYLOAD, report_buffer, 64);
-        p5GeneralAuthData->passthrough_state = P5GeneralGPAuthState::p5g_auth_send_f0_wait;
+        if (host_set_report(P5GeneralAuthReport::P5GENERAL_SET_AUTH_PAYLOAD, report_buffer, 64)) {
+            p5GeneralAuthData->passthrough_state = P5GeneralGPAuthState::p5g_auth_send_f0_wait;
+            wait_since_us = getMicro();
+        }
         break;
     case P5GeneralGPAuthState::p5g_auth_recv_f1:
         P5LRPINTF("P5L:p5g_auth_recv_f1\n");
         if (f1_num) {
-            host_get_report(P5GeneralAuthReport::P5GENERAL_GET_SIGNATURE_NONCE, report_buffer, 64);
-            p5GeneralAuthData->passthrough_state = P5GeneralGPAuthState::p5g_auth_recv_f1_wait;
-            f1_num--;
+            if (host_get_report(P5GeneralAuthReport::P5GENERAL_GET_SIGNATURE_NONCE, report_buffer, 64)) {
+                p5GeneralAuthData->passthrough_state = P5GeneralGPAuthState::p5g_auth_recv_f1_wait;
+                wait_since_us = getMicro();
+                f1_num--;
+            }
         } else {
             p5GeneralAuthData->passthrough_state = P5GeneralGPAuthState::p5g_auth_idle;
         }
@@ -65,8 +84,24 @@ void P5GeneralAuthUSBListener::process() {
         }
     case P5GeneralGPAuthState::p5g_auth_recv_f2:
         P5LRPINTF("P5L:p5g_auth_recv_f2\n");
-        host_get_report(P5GeneralAuthReport::P5GENERAL_GET_SIGNING_STATE, report_buffer, 16);
-        p5GeneralAuthData->passthrough_state = P5GeneralGPAuthState::p5g_auth_recv_f2_wait;
+        if (host_get_report(P5GeneralAuthReport::P5GENERAL_GET_SIGNING_STATE, report_buffer, 16)) {
+            p5GeneralAuthData->passthrough_state = P5GeneralGPAuthState::p5g_auth_recv_f2_wait;
+            wait_since_us = getMicro();
+        }
+        break;
+    case P5GeneralGPAuthState::p5g_auth_send_f0_wait:
+    case P5GeneralGPAuthState::p5g_auth_recv_f1_wait:
+    case P5GeneralGPAuthState::p5g_auth_recv_f2_wait:
+        // Completion lost: return to idle so the driver accepts the console's
+        // next request. A late completion is ignored because its handler only
+        // acts while still in the matching *_wait state.
+        if ((getMicro() - wait_since_us) >= P5GENERAL_WAIT_TIMEOUT_US) {
+            P5LRPINTF("P5L:wait timeout, back to idle\n");
+            p5GeneralAuthData->passthrough_state = P5GeneralGPAuthState::p5g_auth_idle;
+        }
+        break;
+    case P5GeneralGPAuthState::p5g_auth_idle:
+    default:
         break;
     }
 }
@@ -113,6 +148,15 @@ void P5GeneralAuthUSBListener::unmount(uint8_t dev_addr) {
 }
 
 void P5GeneralAuthUSBListener::report_received(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len) {
+    // Only the latched P5General dongle's reports are signed hashes. Every other
+    // HID device on the bus (other auth dongles, controllers behind a hub) also
+    // streams input reports through this callback; forwarding those to the
+    // console as the "signed" report breaks authentication.
+    if ( p5GeneralAuthData == nullptr || p5GeneralAuthData->dongle_ready == false ||
+        (dev_addr != ps_dev_addr) || (instance != ps_instance) ) {
+        return;
+    }
+
     if (!p5GeneralAuthData->hash_ready) {
         memcpy(p5GeneralAuthData->hash_finish_buffer, report, sizeof(p5GeneralAuthData->hash_finish_buffer));
         p5GeneralAuthData->hash_ready = true;

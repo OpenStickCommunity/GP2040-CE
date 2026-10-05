@@ -103,6 +103,8 @@ bool P5GeneralDriver::getDongleAuthRequired() {
 }
 
 bool P5GeneralDriver::process(Gamepad * gamepad) {
+    processDongle();
+
     if (!p5GeneralAuthData || !p5GeneralAuthData->dongle_ready) {
         return false;
     }
@@ -231,11 +233,13 @@ bool P5GeneralDriver::process(Gamepad * gamepad) {
         memcpy(p5GeneralAuthData->hash_pending_buffer, &p5GeneralReport, sizeof(p5GeneralReport));
         p5GeneralAuthData->hash_pending = true;
         diff_report_repeat = 4;
+        processDongle();
         return true;
     } else if (diff_report_repeat) {
         diff_report_repeat--;
         memcpy(p5GeneralAuthData->hash_pending_buffer, &p5GeneralReport, sizeof(p5GeneralReport));
         p5GeneralAuthData->hash_pending = true;
+        processDongle();
         return true;
     } else {
         return false;
@@ -243,6 +247,9 @@ bool P5GeneralDriver::process(Gamepad * gamepad) {
 }
 
 void P5GeneralDriver::processAux() {
+}
+
+void P5GeneralDriver::processDongle() {
     if ( p5GeneralAuthDriver != nullptr && p5GeneralAuthDriver->available() ) {
         p5GeneralAuthDriver->process();
     }

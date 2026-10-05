@@ -33,39 +33,34 @@ export default {
 	'analog-auto-calibrate': 'Auto Calibration',
 	'analog-calibrate-stick-1-button': 'Calibrate Stick 1',
 	'analog-calibrate-stick-2-button': 'Calibrate Stick 2',
+	'analog-calibration-title': 'Analog calibration',
+	'analog-calibration-rotation-overview':
+		'Start calibration and slowly sweep the full range several times. Select "Capture resting center", then let go and keep the stick untouched until calibration finishes. Save the configuration and restart to apply it.',
+	'analog-calibration-rotate':
+		'Slowly rotate the stick around its full outer edge several times, or sweep a single connected axis through its full travel. Then select "Capture resting center".',
+	'analog-calibration-done-rotating': 'Capture resting center',
+	'analog-calibration-release':
+		'Let go of the stick and leave it untouched. The center will be captured automatically once the readings stay steady.',
+	'analog-calibration-cancel': 'Cancel',
+	'analog-calibration-connection-timeout':
+		'The controller did not respond. Check the connection and try again.',
+	'analog-calibration-rest-timeout':
+		'The stick did not settle away from its travel limits. Release it completely and try calibration again.',
+	'analog-calibration-select-pins':
+		'Select at least one analog ADC pin and save before calibrating.',
+	'analog-calibration-save-pins':
+		'Save the selected analog pins before calibrating.',
 	'analog-manual-calibration-mode-stick-1': 'Stick 1 Manual Calibration Mode',
 	'analog-manual-calibration-mode-stick-2': 'Stick 2 Manual Calibration Mode',
 	'analog-auto-calibration-enabled-stick-1': 'Stick 1 Auto Calibration Enabled',
 	'analog-auto-calibration-enabled-stick-2': 'Stick 2 Auto Calibration Enabled',
-	'analog-calibration-step-title': 'Calibration Step {{step}}/4',
-	'analog-calibration-step-instruction':
-		'Please move stick {{stick}} to {{direction}} position, then release to center',
-	'analog-calibration-step-confirm':
-		'Confirm stick {{stick}} has returned to center, then click "OK" to record center value {{step}}',
-	'analog-calibration-cancelled': 'Calibration cancelled',
 	'analog-calibration-failed': 'Calibration failed: {{error}}',
-	'analog-calibration-success-stick-1': 'Stick 1 calibration successful!',
-	'analog-calibration-success-stick-2': 'Stick 2 calibration successful!',
-	'analog-calibration-data': 'Calibration data:',
-	'analog-calibration-direction-top-left': 'Top-Left',
-	'analog-calibration-direction-top-right': 'Top-Right',
-	'analog-calibration-direction-bottom-left': 'Bottom-Left',
-	'analog-calibration-direction-bottom-right': 'Bottom-Right',
-	'analog-calibration-final-center': 'Final center value: X={{x}}, Y={{y}}',
 	'analog-calibration-save-notice':
 		'Please save configuration to apply calibration values.',
-	'analog-calibration-manual-mode-instruction-1':
-		'Click "Calibrate" button to start multi-step calibration process',
-	'analog-calibration-manual-mode-instruction-2':
-		'Follow prompts to move stick to four directions and center',
-	'analog-calibration-manual-mode-instruction-3':
-		'System will automatically calculate optimal center value',
-	'analog-calibration-manual-mode-instruction-4':
-		'Save configuration and restart device to apply calibration',
 	'analog-calibration-auto-mode-instruction':
 		'System will automatically read stick {{stick}} center value on startup. For manual calibration, please uncheck "Auto Calibration" first.',
 	'analog-smoothing': 'Analog Smoothing',
-	'smoothing-factor': 'Smoothing Factor',
+	'smoothing-factor': 'Smoothing Strength (0–10)',
 	'analog-error-label': 'Error Rate',
 	'turbo-header-text': 'Turbo',
 	'turbo-led-pin-label': 'Turbo LED GPIO Pin',
