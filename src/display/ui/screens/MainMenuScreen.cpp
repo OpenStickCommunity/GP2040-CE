@@ -92,6 +92,13 @@ void MainMenuScreen::init() {
 
 void MainMenuScreen::shutdown() {
     clearElements();
+    delete mapMenuUp;
+    delete mapMenuDown;
+    delete mapMenuLeft;
+    delete mapMenuRight;
+    delete mapMenuSelect;
+    delete mapMenuBack;
+    delete mapMenuToggle;
     exitToScreen = -1;
 }
 
