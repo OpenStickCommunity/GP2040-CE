@@ -103,10 +103,7 @@ public:
     bool ackRequired();                         // Did our last parsed packet require an ack?
 private:
     GipHeader_t header;             // On-going GIP header
-    uint16_t totalChunkLength;      // How big is the chunk?
     uint16_t actualDataReceived;    // How much actual data have we received?
-    uint16_t totalChunkReceived;    // How much have we received in chunk mode length? (length | 0x80)
-    uint16_t totalChunkSent;        // How much have we sent?
     uint16_t totalDataSent;         // How much actual data have we sent?
     uint16_t numberOfChunksSent;    // How many actual chunks have we sent?
     bool chunkEnded;                // did we hit the end of the chunk successfully?
