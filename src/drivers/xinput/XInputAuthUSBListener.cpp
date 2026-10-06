@@ -11,7 +11,7 @@
 #define X360_WVALUE_CONTROLLER_ID 0x5B
 #define X360_WVALUE_NO_DATA 0x00
 
-// How long to wait for calling auth state (in microseconds)
+// How long to wait for calling auth state (in milliseconds)
 #define WAIT_TIME_MS 100
 
 void XInputAuthUSBListener::setAuthData(XInputAuthData * authData ) {
@@ -26,7 +26,7 @@ void XInputAuthUSBListener::setup() {
     xinput_dev_addr = 0xFF;
     xinput_instance = 0xFF;
     dongleAuthState = DONGLE_AUTH_STATE::DONGLE_AUTH_IDLE;
-    wait_time = 0;
+    wait_started_ms = 0;
     wait_count = 0;
     sending = false;
     xinputAuthData->dongle_ready = false;
@@ -122,10 +122,10 @@ void XInputAuthUSBListener::process() {
             }
         }
     } else if ( dongleAuthState == DONGLE_AUTH_STATE::DONGLE_AUTH_WAIT_STATE ) {
-        uint64_t now_time = to_ms_since_boot(get_absolute_time());
-        if ( now_time > wait_time ) {
+        uint32_t now_time = to_ms_since_boot(get_absolute_time());
+        if ( now_time - wait_started_ms > WAIT_TIME_MS ) {
             if ( auth_dongle_wait_get_state() == false ) {
-                wait_time = now_time + WAIT_TIME_MS;
+                wait_started_ms = now_time;
                 wait_count++;
             } else {
                 switch(waitBufferID) {
@@ -155,7 +155,7 @@ void XInputAuthUSBListener::process() {
             if ( wait_count == 60 ) {
                 dongleAuthState = DONGLE_AUTH_STATE::DONGLE_AUTH_IDLE;
                 wait_count = 0;
-                wait_time = 0;
+                wait_started_ms = 0;
                 xinputAuthData->xinputState = GPAuthState::auth_idle_state;
             }
         }
@@ -240,7 +240,7 @@ bool XInputAuthUSBListener::auth_dongle_keepalive() {
 void XInputAuthUSBListener::auth_dongle_wait(uint8_t waitID) {
     // Setup a wait-for mode for the dongle or controller to finish auth
     wait_count = 0;
-    wait_time = to_ms_since_boot(get_absolute_time()) + WAIT_TIME_MS;
+    wait_started_ms = to_ms_since_boot(get_absolute_time());
     memcpy(waitBuffer, xinputAuthData->passthruBuffer, xinputAuthData->passthruBufferLen);
     dongleAuthState = DONGLE_AUTH_STATE::DONGLE_AUTH_WAIT_STATE;
     waitBufferID = waitID;

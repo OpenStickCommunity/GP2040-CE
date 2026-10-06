@@ -15,7 +15,7 @@
 
 // 6-button support state
 static bool sixButtonMode = false;
-static uint32_t sixButtonTimeout = 0;
+static uint32_t lastSixButtonSequence = 0;
 #define SIX_BUTTON_TIMEOUT_MS 150
 static int sixButtonSequenceStep = 0;
 
@@ -35,7 +35,7 @@ static void detectSixButtonSequence(bool selectState) {
         lastSelect = selectState;
         if (sixButtonSequenceStep >= 3) {
             sixButtonMode = true;
-            sixButtonTimeout = getMillis() + SIX_BUTTON_TIMEOUT_MS;
+            lastSixButtonSequence = getMillis();
             sixButtonSequenceStep = 0;
         }
     }
@@ -54,7 +54,7 @@ bool TG16padInput::available()
 void TG16padInput::setup()
 {
 	const TG16Options &tg16Options = Storage::getInstance().getAddonOptions().tg16Options;
-	nextTimer = getMillis();
+	lastPoll = getMillis();
 	uIntervalMS = 0;
 
 	// Set up OE and SELECT as outputs
@@ -154,14 +154,14 @@ void TG16padInput::updateButtons(uint16_t data)
 
 void TG16padInput::process()
 {
-    if (nextTimer < getMillis())
+    if (getMillis() - lastPoll > uIntervalMS)
     {
         uint16_t data = readController();
         updateButtons(data);
-        nextTimer = getMillis() + uIntervalMS;
+        lastPoll = getMillis();
     }
     // Timeout for 6-button mode
-    if (sixButtonMode && getMillis() > sixButtonTimeout) {
+    if (sixButtonMode && getMillis() - lastSixButtonSequence > SIX_BUTTON_TIMEOUT_MS) {
         sixButtonMode = false;
     }
 #if TG16_PAD_DEBUG==true

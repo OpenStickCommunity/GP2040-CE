@@ -48,7 +48,7 @@ void I2CAnalog1115Input::setup() {
   channelHop = 0;
 
   uIntervalMS = 8;
-  nextTimer = getMillis();
+  lastPoll = getMillis() - uIntervalMS;
 
   // Init our ADS1115 library
   ads->resetConfig();
@@ -92,7 +92,7 @@ void I2CAnalog1115Input::setup() {
 }
 
 void I2CAnalog1115Input::process() {
-  if (nextTimer < getMillis()) {
+  if (getMillis() - lastPoll > uIntervalMS) {
     // if (ads->getConfig() & 0x8000) { // This definitely would not work
     float result;
     uint16_t readValue;
@@ -113,8 +113,8 @@ void I2CAnalog1115Input::process() {
       instance.pins[channelHop] = (uint16_t)GAMEPAD_JOYSTICK_MID;
     }
     ads->setChannel(channelHop);
-    nextTimer =
-        getMillis() + uIntervalMS; // interval for read (we can't be too fast)
+    lastPoll =
+        getMillis(); // interval for read (we can't be too fast)
                                    // }
     // }
   }

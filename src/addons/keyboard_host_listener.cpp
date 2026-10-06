@@ -61,7 +61,7 @@ void KeyboardHostListener::setup() {
   mouseMovementMode = keyboardHostOptions.movementMode;
   mouseSensitivityScale = mouseSensitivity / 10.0f;
   mouseResetMS = 16;
-  mouseResetNextTimer = 0;
+  lastMouseReport = getMillis() - mouseResetMS;
 
   joystickMid = DriverManager::getInstance().getDriver() != nullptr ?
       DriverManager::getInstance().getDriver()->GetJoystickMidValue() : GAMEPAD_JOYSTICK_MID;
@@ -104,7 +104,7 @@ void KeyboardHostListener::process() {
         gamepad->auxState.sensors.mouse.y = mouseY;
         gamepad->auxState.sensors.mouse.z = mouseZ;
         mouseActive = false;
-    } else if(mouseResetNextTimer < getMillis()) {
+    } else if(getMillis() - lastMouseReport > mouseResetMS) {
         // Since mouse position reports only happen when the mouse is moved, we need to reset the position manually
        _keyboard_host_state.lx = joystickMid;
        _keyboard_host_state.ly = joystickMid;
@@ -273,7 +273,7 @@ void KeyboardHostListener::process_mouse_report(uint8_t dev_addr, hid_mouse_repo
     return;
   }
 
-  mouseResetNextTimer = getMillis() + mouseResetMS;
+  lastMouseReport = getMillis();
   //-------- report correct analog move --------// (by Pelsin)
   if (mouseMovementMode == MOUSE_MOVEMENT_LEFT_ANALOG) {
     _keyboard_host_state.lx = scaleMouseToJoystick(report->x);

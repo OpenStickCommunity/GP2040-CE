@@ -47,7 +47,7 @@ public:
     virtual std::string name() { return TG16padName; }
 private:
     uint32_t uIntervalMS;
-    uint32_t nextTimer;
+    uint32_t lastPoll;
 
     bool buttonI = false;
     bool buttonII = false;
