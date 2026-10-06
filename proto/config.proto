@@ -52,6 +52,12 @@ message GamepadOptions
     optional uint32 usbVendorID = 31;
     optional uint32 miniMenuGamepadInput = 32;
     optional InputModeDeviceType inputDeviceType = 33;
+    optional Switch2ProColorPreset switch2ProColorPreset = 34;
+    optional uint32 switch2ProBodyColor = 35;
+    optional uint32 switch2ProButtonsColor = 36;
+    optional uint32 switch2ProHighlightColor = 37;
+    optional uint32 switch2ProGripColor = 38;
+    optional Switch2ProIdentity switch2ProIdentity = 39;
 }
 
 message KeyboardMapping
@@ -964,6 +970,11 @@ message HETriggerOptions
     repeated HETriggerMux muxes = 15 [(nanopb).max_count = 4];
 }
 
+message AmiiboOptions
+{
+    optional bool enabled = 1;
+}
+
 message AddonOptions
 {
     optional BootselButtonOptions bootselButtonOptions = 1;
@@ -998,6 +1009,7 @@ message AddonOptions
     optional HETriggerOptions heTriggerOptions = 30;
     optional ProfileSliderOptions profileSliderOptions = 31;
     optional AnalogADS1115Options analogADS1115Options = 32;
+    optional AmiiboOptions amiiboOptions = 33;
 }
 
 message MigrationHistory

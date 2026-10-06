@@ -23,6 +23,7 @@
 #include "addons/i2canalog1115.h"
 #include "addons/i2canalog1219.h"
 #include "addons/reverse.h"
+#include "addons/amiibo.h"
 #include "addons/turbo.h"
 #include "addons/slider_socd.h"
 #include "addons/spi_analog_ads1256.h"
@@ -123,6 +124,7 @@ void GP2040::setup() {
 
 	// Input override addons
 	addons.LoadAddon(new ReverseInput());
+	addons.LoadAddon(new AmiiboAddon());
 	addons.LoadAddon(new TurboInput()); // Turbo overrides button states and should be close to the end
 	addons.LoadAddon(new InputMacro());
 

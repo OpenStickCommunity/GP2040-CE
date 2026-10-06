@@ -37,6 +37,7 @@ public:
     virtual const uint8_t * get_hid_descriptor_report_cb(uint8_t itf) = 0;
     virtual const uint8_t * get_descriptor_configuration_cb(uint8_t index) = 0;
     virtual const uint8_t * get_descriptor_device_qualifier_cb() = 0;
+    virtual const uint8_t * get_descriptor_other_speed_configuration_cb(uint8_t index) { return nullptr; }
     virtual uint16_t GetJoystickMidValue() = 0;
     const usbd_class_driver_t * get_class_driver() { return &class_driver; }
     virtual USBListener * get_usb_auth_listener() = 0;

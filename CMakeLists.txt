@@ -223,6 +223,7 @@ src/drivers/psclassic/PSClassicDriver.cpp
 src/drivers/sinput/SInputDriver.cpp
 src/drivers/switch/SwitchDriver.cpp
 src/drivers/switchpro/SwitchProDriver.cpp
+src/drivers/switch2pro/Switch2ProDriver.cpp
 src/drivers/xbone/XBOneAuth.cpp
 src/drivers/xbone/XBOneAuthUSBListener.cpp
 src/drivers/xbone/XBOneDriver.cpp
@@ -286,6 +287,8 @@ src/addons/playerleds.cpp
 src/addons/reactiveleds.cpp
 src/addons/rotaryencoder.cpp
 src/addons/reverse.cpp
+src/addons/amiibo.cpp
+src/addons/amiibo_crypto.cpp
 src/addons/drv8833_rumble.cpp
 src/addons/turbo.cpp
 src/addons/slider_socd.cpp

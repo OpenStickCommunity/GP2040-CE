@@ -282,6 +282,70 @@ async function setSplashImage({ splashImage }) {
 		.catch(console.error);
 }
 
+async function getAmiiboSlots() {
+	try {
+		const response = await Http.get(`${baseUrl}/api/getAmiiboSlots`);
+		return response.data?.slots;
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+async function setAmiiboSlot({ slot, name, data }) {
+	return Http.post(`${baseUrl}/api/setAmiiboSlot`, { slot, name, data })
+		.then((response) => response.data?.success)
+		.catch(console.error);
+}
+
+async function setAmiiboSlotOptions({ slot, randomizeSerial }) {
+	try {
+		const response = await Http.post(`${baseUrl}/api/setAmiiboSlotOptions`, {
+			slot,
+			randomizeSerial,
+		});
+		return response.data?.success === true;
+	} catch {
+		return false;
+	}
+}
+
+async function clearAmiiboSlot(slot) {
+	return Http.post(`${baseUrl}/api/clearAmiiboSlot`, { slot })
+		.then((response) => response.data?.success)
+		.catch(console.error);
+}
+
+// Never log upload errors: HTTP error objects may contain the key payload.
+async function getAmiiboKeys() {
+	try {
+		const response = await Http.get(`${baseUrl}/api/getAmiiboKeys`);
+		return response.data;
+	} catch {
+		return undefined;
+	}
+}
+
+async function setAmiiboKey({ type, data }) {
+	try {
+		const response = await Http.post(`${baseUrl}/api/setAmiiboKey`, {
+			type,
+			data,
+		});
+		return response.data?.success === true;
+	} catch {
+		return false;
+	}
+}
+
+async function clearAmiiboKeys() {
+	try {
+		const response = await Http.post(`${baseUrl}/api/clearAmiiboKeys`, {});
+		return response.data?.success === true;
+	} catch {
+		return false;
+	}
+}
+
 async function getGamepadOptions(setLoading) {
 	setLoading(true);
 
@@ -773,6 +837,13 @@ export default {
 	getButtonLayoutDefs,
 	getSplashImage,
 	setSplashImage,
+	getAmiiboKeys,
+	setAmiiboKey,
+	clearAmiiboKeys,
+	getAmiiboSlots,
+	setAmiiboSlot,
+	setAmiiboSlotOptions,
+	clearAmiiboSlot,
 	setAnimationButtonTestMode,
 	setAnimationButtonTestState,
 	clearAnimationButtonTestMode,

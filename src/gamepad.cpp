@@ -15,6 +15,7 @@
 #include "drivermanager.h"
 #include "storagemanager.h"
 #include "system.h"
+#include "addons/amiibo.h"
 
 // MUST BE DEFINED for mpgs
 uint32_t getMillis() {
@@ -587,6 +588,14 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 		case HOTKEY_REBOOT_USB:
 			if (action != lastAction) {
 				System::reboot(System::BootMode::USB);
+			}
+			break;
+		case HOTKEY_AMIIBO_1:
+		case HOTKEY_AMIIBO_2:
+		case HOTKEY_AMIIBO_3:
+		case HOTKEY_AMIIBO_4:
+			if (action != lastAction) {
+				AmiiboAddon::tap(action - HOTKEY_AMIIBO_1);
 			}
 			break;
 		case HOTKEY_SAVE_CONFIG:

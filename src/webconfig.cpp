@@ -1,5 +1,6 @@
 #include "config.pb.h"
 #include "base64.h"
+#include "addons/amiibo.h"
 #include "hardware/adc.h"
 #include "addons/analog.h"
 #include "helper.h"
@@ -527,6 +528,103 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
     return serialize_json(doc);
 }
 
+std::string getAmiiboSlots()
+{
+    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    JsonArray slots = doc.createNestedArray("slots");
+    for (uint8_t i = 0; i < AMIIBO_SLOT_COUNT; i++) {
+        JsonObject slot = slots.createNestedObject();
+        slot["filled"] = AmiiboAddon::slotFilled(i);
+        slot["name"] = AmiiboAddon::slotName(i);
+        slot["size"] = AmiiboAddon::slotSize(i);
+        slot["randomizeSerial"] = AmiiboAddon::slotRandomizeSerial(i);
+    }
+    return serialize_json(doc);
+}
+
+static bool decodeAmiiboUpload(const std::string & encoded, std::string & decoded)
+{
+    return encoded.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=") == std::string::npos
+        && Base64::Decode(encoded, decoded) && Base64::Encode(decoded) == encoded;
+}
+
+std::string setAmiiboSlot()
+{
+    DynamicJsonDocument doc = get_post_data();
+    bool success = false;
+    if (doc["slot"].is<int>() && doc["data"].is<const char *>()) {
+        const int slot = doc["slot"];
+        const std::string encoded = doc["data"];
+        const std::string name = doc["name"] | "";
+        std::string decoded;
+        if (slot >= 0 && slot < AMIIBO_SLOT_COUNT && (encoded.size() == 720 || encoded.size() == 764)
+            && decodeAmiiboUpload(encoded, decoded)
+            && (decoded.size() == AMIIBO_DATA_SIZE || decoded.size() == AMIIBO_FILE_SIZE))
+            success = AmiiboAddon::writeSlot(slot, reinterpret_cast<const uint8_t *>(decoded.data()), decoded.size(), name.c_str());
+    }
+    DynamicJsonDocument result(128);
+    result["success"] = success;
+    return serialize_json(result);
+}
+
+std::string setAmiiboSlotOptions()
+{
+    DynamicJsonDocument doc = get_post_data();
+    bool success = false;
+    if (doc["slot"].is<int>() && doc["randomizeSerial"].is<bool>()) {
+        const int slot = doc["slot"];
+        if (slot >= 0 && slot < AMIIBO_SLOT_COUNT)
+            success = AmiiboAddon::setSlotRandomizeSerial(slot, doc["randomizeSerial"].as<bool>());
+    }
+    DynamicJsonDocument result(128);
+    result["success"] = success;
+    return serialize_json(result);
+}
+
+std::string clearAmiiboSlot()
+{
+    DynamicJsonDocument doc = get_post_data();
+    const int slot = doc["slot"].is<int>() ? doc["slot"].as<int>() : -1;
+    DynamicJsonDocument result(128);
+    result["success"] = slot >= 0 && slot < AMIIBO_SLOT_COUNT && AmiiboAddon::clearSlot(slot);
+    return serialize_json(result);
+}
+
+std::string getAmiiboKeys()
+{
+    DynamicJsonDocument doc(256);
+    const bool unfixed = AmiiboAddon::keyPresent(false);
+    const bool locked = AmiiboAddon::keyPresent(true);
+    doc["unfixed"] = unfixed;
+    doc["locked"] = locked;
+    doc["ready"] = unfixed && locked;
+    return serialize_json(doc);
+}
+
+std::string setAmiiboKey()
+{
+    DynamicJsonDocument doc = get_post_data();
+    bool success = false;
+    if (doc["type"].is<const char *>() && doc["data"].is<const char *>()) {
+        const std::string type = doc["type"];
+        const std::string encoded = doc["data"];
+        std::string decoded;
+        if ((type == "unfixed" || type == "locked") && encoded.size() == 108
+            && decodeAmiiboUpload(encoded, decoded) && decoded.size() == AMIIBO_KEY_SIZE)
+            success = AmiiboAddon::writeKey(type == "locked", reinterpret_cast<const uint8_t *>(decoded.data()), decoded.size());
+    }
+    DynamicJsonDocument result(128);
+    result["success"] = success;
+    return serialize_json(result);
+}
+
+std::string clearAmiiboKeys()
+{
+    DynamicJsonDocument result(128);
+    result["success"] = AmiiboAddon::clearKeys();
+    return serialize_json(result);
+}
+
 std::string getSplashImage()
 {
     const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
@@ -707,6 +805,12 @@ std::string setGamepadOptions()
     readDoc(gamepadOptions.ps5AuthType, doc, "ps5AuthType");
     readDoc(gamepadOptions.xinputAuthType, doc, "xinputAuthType");
     readDoc(gamepadOptions.ps4ControllerIDMode, doc, "ps4ControllerIDMode");
+    readDoc(gamepadOptions.switch2ProIdentity, doc, "switch2ProIdentity");
+    readDoc(gamepadOptions.switch2ProColorPreset, doc, "switch2ProColorPreset");
+    readDoc(gamepadOptions.switch2ProBodyColor, doc, "switch2ProBodyColor");
+    readDoc(gamepadOptions.switch2ProButtonsColor, doc, "switch2ProButtonsColor");
+    readDoc(gamepadOptions.switch2ProHighlightColor, doc, "switch2ProHighlightColor");
+    readDoc(gamepadOptions.switch2ProGripColor, doc, "switch2ProGripColor");
     readDoc(gamepadOptions.usbDescOverride, doc, "usbDescOverride");
     readDoc(gamepadOptions.miniMenuGamepadInput, doc, "miniMenuGamepadInput");
     // Copy USB descriptor strings
@@ -777,6 +881,12 @@ std::string getGamepadOptions()
     writeDoc(doc, "ps5AuthType", gamepadOptions.ps5AuthType);
     writeDoc(doc, "xinputAuthType", gamepadOptions.xinputAuthType);
     writeDoc(doc, "ps4ControllerIDMode", gamepadOptions.ps4ControllerIDMode);
+    writeDoc(doc, "switch2ProIdentity", gamepadOptions.switch2ProIdentity);
+    writeDoc(doc, "switch2ProColorPreset", gamepadOptions.switch2ProColorPreset);
+    writeDoc(doc, "switch2ProBodyColor", gamepadOptions.switch2ProBodyColor);
+    writeDoc(doc, "switch2ProButtonsColor", gamepadOptions.switch2ProButtonsColor);
+    writeDoc(doc, "switch2ProHighlightColor", gamepadOptions.switch2ProHighlightColor);
+    writeDoc(doc, "switch2ProGripColor", gamepadOptions.switch2ProGripColor);
     writeDoc(doc, "usbDescOverride", gamepadOptions.usbDescOverride);
     writeDoc(doc, "usbDescManufacturer", gamepadOptions.usbDescManufacturer);
     writeDoc(doc, "usbDescProduct", gamepadOptions.usbDescProduct);
@@ -2348,6 +2458,7 @@ std::string setAddonOptions()
 
     ReactiveLEDOptions& reactiveLEDOptions = Storage::getInstance().getAddonOptions().reactiveLEDOptions;
     docToValue(reactiveLEDOptions.enabled, doc, "ReactiveLEDAddonEnabled");
+    docToValue(Storage::getInstance().getAddonOptions().amiiboOptions.enabled, doc, "AmiiboAddonEnabled");
 
     DRV8833RumbleOptions& drv8833RumbleOptions = Storage::getInstance().getAddonOptions().drv8833RumbleOptions;
     docToValue(drv8833RumbleOptions.enabled, doc, "DRV8833RumbleAddonEnabled");
@@ -2855,6 +2966,7 @@ std::string getAddonOptions()
 
     ReactiveLEDOptions& reactiveLEDOptions = Storage::getInstance().getAddonOptions().reactiveLEDOptions;
     writeDoc(doc, "ReactiveLEDAddonEnabled", reactiveLEDOptions.enabled);
+    writeDoc(doc, "AmiiboAddonEnabled", Storage::getInstance().getAddonOptions().amiiboOptions.enabled);
 
     const DRV8833RumbleOptions& drv8833RumbleOptions = Storage::getInstance().getAddonOptions().drv8833RumbleOptions;
     writeDoc(doc, "DRV8833RumbleAddonEnabled", drv8833RumbleOptions.enabled);
@@ -3280,6 +3392,13 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/getReactiveLEDs", getReactiveLEDs },
     { "/api/setKeyMappings", setKeyMappings },
     { "/api/setAddonsOptions", setAddonOptions },
+    { "/api/getAmiiboSlots", getAmiiboSlots },
+    { "/api/setAmiiboSlotOptions", setAmiiboSlotOptions },
+    { "/api/getAmiiboKeys", getAmiiboKeys },
+    { "/api/setAmiiboKey", setAmiiboKey },
+    { "/api/clearAmiiboKeys", clearAmiiboKeys },
+    { "/api/setAmiiboSlot", setAmiiboSlot },
+    { "/api/clearAmiiboSlot", clearAmiiboSlot },
     { "/api/setMacroAddonOptions", setMacroAddonOptions },
     { "/api/setPS4Options", setPS4Options },
     { "/api/setWiiControls", setWiiControls },
