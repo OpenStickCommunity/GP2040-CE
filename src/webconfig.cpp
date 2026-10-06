@@ -707,6 +707,7 @@ std::string setGamepadOptions()
     readDoc(gamepadOptions.ps5AuthType, doc, "ps5AuthType");
     readDoc(gamepadOptions.xinputAuthType, doc, "xinputAuthType");
     readDoc(gamepadOptions.ps4ControllerIDMode, doc, "ps4ControllerIDMode");
+    readDoc(gamepadOptions.genericDpadMode, doc, "genericDpadMode");
     readDoc(gamepadOptions.usbDescOverride, doc, "usbDescOverride");
     readDoc(gamepadOptions.miniMenuGamepadInput, doc, "miniMenuGamepadInput");
     // Copy USB descriptor strings
@@ -777,6 +778,7 @@ std::string getGamepadOptions()
     writeDoc(doc, "ps5AuthType", gamepadOptions.ps5AuthType);
     writeDoc(doc, "xinputAuthType", gamepadOptions.xinputAuthType);
     writeDoc(doc, "ps4ControllerIDMode", gamepadOptions.ps4ControllerIDMode);
+    writeDoc(doc, "genericDpadMode", gamepadOptions.genericDpadMode);
     writeDoc(doc, "usbDescOverride", gamepadOptions.usbDescOverride);
     writeDoc(doc, "usbDescManufacturer", gamepadOptions.usbDescManufacturer);
     writeDoc(doc, "usbDescProduct", gamepadOptions.usbDescProduct);

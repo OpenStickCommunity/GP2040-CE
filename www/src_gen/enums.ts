@@ -588,6 +588,12 @@ export enum PS4ControllerIDMode {
     PS4_ID_EMULATION = 1
 }
 
+export enum GenericDpadMode {
+    GENERIC_DPAD_HAT_AND_BUTTONS = 0,
+    GENERIC_DPAD_HAT_ONLY = 1,
+    GENERIC_DPAD_BUTTONS_ONLY = 2
+}
+
 export enum DisplaySaverMode {
     DISPLAY_SAVER_DISPLAY_OFF = 0,
     DISPLAY_SAVER_SNOW = 1,
