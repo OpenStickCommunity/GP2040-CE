@@ -112,25 +112,32 @@ class MainMenuScreen : public GPScreen {
         bool changeRequiresReboot = false;
         bool changeRequiresSave = false;
 
-        #define INPUT_MODE_ENTRIES(name, value) {name##_NAME, NULL, nullptr, std::bind(&MainMenuScreen::currentInputMode, this), std::bind(&MainMenuScreen::selectInputMode, this), value},
+        #define INPUT_MODE_ENTRIES(name, value) {name##_NAME, value},
         #define DPAD_MODE_ENTRIES(name, value)  {name##_NAME, NULL, nullptr, std::bind(&MainMenuScreen::currentDpadMode,  this), std::bind(&MainMenuScreen::selectDPadMode,  this), value},
-        #define SOCD_MODE_ENTRIES(name, value)  {name##_NAME, NULL, nullptr, std::bind(&MainMenuScreen::currentSOCDMode,  this), std::bind(&MainMenuScreen::selectSOCDMode,  this), value},
+        #define SOCD_MODE_ENTRIES(name, value)  {name##_NAME, NULL, nullptr, [this] { return currentSOCDMode(); }, [this] { selectSOCDMode(); }, value},
 
-        std::vector<MenuEntry> inputModeMenu = {
-            InputMode_VALUELIST(INPUT_MODE_ENTRIES)
-        };
+        std::vector<MenuEntry> inputModeMenu = [this] {
+            static const struct InputModeEntry { const char* label; int32_t value; } entries[] = {
+                InputMode_VALUELIST(INPUT_MODE_ENTRIES)
+            };
+            std::vector<MenuEntry> menu;
+            menu.reserve(sizeof(entries) / sizeof(entries[0]));
+            for (const InputModeEntry& entry : entries)
+                menu.push_back({entry.label, NULL, nullptr, std::bind(&MainMenuScreen::currentInputMode, this), std::bind(&MainMenuScreen::selectInputMode, this), entry.value});
+            return menu;
+        }();
         InputMode prevInputMode{};
         InputMode updateInputMode{};
 
-        std::vector<MenuEntry> dpadModeMenu = {
+        std::vector<MenuEntry> dpadModeMenu = [this] { return std::vector<MenuEntry>{
             DpadMode_VALUELIST(DPAD_MODE_ENTRIES)
-        };
+        }; }();
         DpadMode prevDpadMode{};
         DpadMode updateDpadMode{};
 
-        std::vector<MenuEntry> socdModeMenu = {
+        std::vector<MenuEntry> socdModeMenu = [this] { return std::vector<MenuEntry>{
             SOCDMode_VALUELIST(SOCD_MODE_ENTRIES)
-        };
+        }; }();
         SOCDMode prevSocdMode{};
         SOCDMode updateSocdMode{};
 
@@ -138,34 +145,34 @@ class MainMenuScreen : public GPScreen {
         uint8_t prevProfile{};
         uint8_t updateProfile{};
 
-        std::vector<MenuEntry> focusModeMenu = {
+        std::vector<MenuEntry> focusModeMenu = [this] { return std::vector<MenuEntry>{
             {"Off",        NULL, nullptr,        std::bind(&MainMenuScreen::currentFocusMode, this), std::bind(&MainMenuScreen::selectFocusMode, this), 0},
             {"On",         NULL, nullptr,        std::bind(&MainMenuScreen::currentFocusMode, this), std::bind(&MainMenuScreen::selectFocusMode, this), 1},
-        };
+        }; }();
         bool prevFocus = false;
         bool updateFocus = false;
 
-        std::vector<MenuEntry> turboModeMenu = {
+        std::vector<MenuEntry> turboModeMenu = [this] { return std::vector<MenuEntry>{
             {"Off",        NULL, nullptr,        std::bind(&MainMenuScreen::currentTurboMode, this), std::bind(&MainMenuScreen::selectTurboMode, this), 0},
             {"On",         NULL, nullptr,        std::bind(&MainMenuScreen::currentTurboMode, this), std::bind(&MainMenuScreen::selectTurboMode, this), 1},
-        };
+        }; }();
         bool prevTurbo = false;
         bool updateTurbo = false;
 
-        std::vector<MenuEntry> saveMenu = {
+        std::vector<MenuEntry> saveMenu = [this] { return std::vector<MenuEntry>{
             {"Save & Exit",NULL, nullptr,        std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::saveAndExit, this), 1},
             {"Exit",       NULL, nullptr,        std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::exitOnly, this), 0},
-        };
+        }; }();
         
-        std::vector<MenuEntry> mainMenu = {
-            {"Input Mode", NULL, &inputModeMenu, std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::testMenu, this)},
-            {"D-Pad Mode", NULL, &dpadModeMenu,  std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::testMenu, this)},
-            {"SOCD Mode",  NULL, &socdModeMenu,  std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::testMenu, this)},
-            {"Profile",    NULL, &profilesMenu,  std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::testMenu, this)},
-            /*{"Focus Mode", NULL, &focusModeMenu, std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::testMenu, this)},*/
-            {"Turbo",      NULL, &turboModeMenu, std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::testMenu, this)},
-            {"Exit",       NULL, &saveMenu,      std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::testMenu, this)},
-        };
+        std::vector<MenuEntry> mainMenu = [this] { return std::vector<MenuEntry>{
+            {"Input Mode", NULL, &inputModeMenu, [this] { return modeValue(); }, [this] { testMenu(); }},
+            {"D-Pad Mode", NULL, &dpadModeMenu,  [this] { return modeValue(); }, [this] { testMenu(); }},
+            {"SOCD Mode",  NULL, &socdModeMenu,  [this] { return modeValue(); }, [this] { testMenu(); }},
+            {"Profile",    NULL, &profilesMenu,  [this] { return modeValue(); }, [this] { testMenu(); }},
+            /*{"Focus Mode", NULL, &focusModeMenu, [this] { return modeValue(); }, [this] { testMenu(); }},*/
+            {"Turbo",      NULL, &turboModeMenu, [this] { return modeValue(); }, [this] { testMenu(); }},
+            {"Exit",       NULL, &saveMenu,      [this] { return modeValue(); }, [this] { testMenu(); }},
+        }; }();
 
         
 };
