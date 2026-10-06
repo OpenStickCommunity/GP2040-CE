@@ -73,7 +73,7 @@ void TG16padInput::setup()
 	}
 }
 
-uint8_t TG16padInput::readController()
+uint16_t TG16padInput::readController()
 {
     const TG16Options &tg16Options = Storage::getInstance().getAddonOptions().tg16Options;
     int dataPins[4] = {tg16Options.dataPin3, tg16Options.dataPin2, tg16Options.dataPin1, tg16Options.dataPin0};
