@@ -330,7 +330,7 @@ void NeoPicoLEDAddon::process()
 	vector<int32_t> pressedPins;
 	for(auto thisLight : RGBLights.AllLights)
 	{
-		if(values & (1 << thisLight.GIPOPin))
+		if(isValidPin(thisLight.GIPOPin) && (values & (Mask_t{1} << thisLight.GIPOPin)))
 		{
 			pressedPins.push_back(thisLight.GIPOPin);
 		}
