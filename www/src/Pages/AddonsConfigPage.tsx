@@ -24,6 +24,7 @@ import Analog1256, {
 	analog1256State,
 } from '../Addons/Analog1256';
 import Bootsel, { bootselScheme, bootselState } from '../Addons/Bootsel';
+import Amiibo, { amiiboScheme, amiiboState } from '../Addons/Amiibo';
 import Buzzer, { buzzerScheme, buzzerState } from '../Addons/Buzzer';
 import DualDirection, {
 	dualDirectionScheme,
@@ -107,6 +108,7 @@ const schema = yup.object().shape({
 	...reactiveLEDScheme,
 	...gamepadUSBHostScheme,
 	...HETriggerScheme,
+	...amiiboScheme,
 });
 
 export const DEFAULT_VALUES = {
@@ -134,6 +136,7 @@ export const DEFAULT_VALUES = {
 	...reactiveLEDState,
 	...gamepadUSBHostState,
 	...HETriggerState,
+	...amiiboState,
 } as const;
 
 const ADDONS = [
@@ -161,6 +164,7 @@ const ADDONS = [
 	DRV8833Rumble,
 	ReactiveLED,
 	HETrigger,
+	Amiibo,
 ];
 
 const FormContext = ({ setStoredData }) => {

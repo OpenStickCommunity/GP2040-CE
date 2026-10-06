@@ -285,6 +285,7 @@ void ButtonLayoutScreen::generateHeader() {
             case INPUT_MODE_PSCLASSIC: statusBar += "PSC"; break;
             case INPUT_MODE_XBOXORIGINAL: statusBar += "OGXBOX"; break;
             case INPUT_MODE_SWITCH_PRO: statusBar += "SWPRO"; break;
+            case INPUT_MODE_SWITCH2_PRO: statusBar += "SW2PRO"; break;
             case INPUT_MODE_SINPUT: statusBar += "SINPUT"; break;
             case INPUT_MODE_PS4:
                 statusBar += "PS4";
@@ -491,6 +492,7 @@ void ButtonLayoutScreen::processInputHistory() {
 		getProcessedGamepad()->pressedR3(),
 		getProcessedGamepad()->pressedA1(),
 		getProcessedGamepad()->pressedA2(),
+		getProcessedGamepad()->pressedA3(),
 	};
 
 	uint8_t mode = ((displayModeLookup.count(inputMode) > 0) ? displayModeLookup.at(inputMode) : 0);

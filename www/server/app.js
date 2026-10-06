@@ -430,6 +430,90 @@ app.get('/api/getAnimationProtoOptions', (req, res) => {
 	});
 });
 
+// Track only presence in the mock; never retain or return uploaded key material.
+const amiiboKeys = { unfixed: false, locked: false };
+app.get('/api/getAmiiboKeys', (req, res) => {
+	return res.send({
+		...amiiboKeys,
+		ready: amiiboKeys.unfixed && amiiboKeys.locked,
+	});
+});
+app.post('/api/setAmiiboKey', (req, res) => {
+	const { type, data } = req.body;
+	if (
+		!['unfixed', 'locked'].includes(type) ||
+		typeof data !== 'string' ||
+		!/^[A-Za-z0-9+/]{107}=$/.test(data) ||
+		Buffer.from(data, 'base64').length !== 80
+	) {
+		return res.status(400).send({ success: false });
+	}
+	amiiboKeys[type] = true;
+	return res.send({ success: true });
+});
+app.post('/api/clearAmiiboKeys', (req, res) => {
+	amiiboKeys.unfixed = false;
+	amiiboKeys.locked = false;
+	return res.send({ success: true });
+});
+
+// Synthetic metadata only: the mock does not retain dumps or perform cryptography.
+const emptyAmiiboSlot = () => ({
+	filled: false,
+	name: '',
+	size: 0,
+	randomizeSerial: false,
+});
+const amiiboSlots = [
+	{ filled: true, name: 'Example', size: 540, randomizeSerial: true },
+	...Array.from({ length: 3 }, emptyAmiiboSlot),
+];
+const validAmiiboSlot = (slot) =>
+	Number.isInteger(slot) && slot >= 0 && slot < amiiboSlots.length;
+app.get('/api/getAmiiboSlots', (req, res) => res.send({ slots: amiiboSlots }));
+app.post('/api/setAmiiboSlot', (req, res) => {
+	const { slot, name, data } = req.body;
+	if (
+		!validAmiiboSlot(slot) ||
+		typeof name !== 'string' ||
+		typeof data !== 'string' ||
+		!/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(
+			data,
+		)
+	)
+		return res.status(400).send({ success: false });
+	const size = Buffer.from(data, 'base64').length;
+	if (![540, 572].includes(size))
+		return res.status(400).send({ success: false });
+	const randomizeSerial = amiiboSlots[slot].filled
+		? amiiboSlots[slot].randomizeSerial
+		: false;
+	amiiboSlots[slot] = {
+		filled: true,
+		name: name.substring(0, 31),
+		size,
+		randomizeSerial,
+	};
+	return res.send({ success: true });
+});
+app.post('/api/setAmiiboSlotOptions', (req, res) => {
+	const { slot, randomizeSerial } = req.body;
+	if (
+		!validAmiiboSlot(slot) ||
+		typeof randomizeSerial !== 'boolean' ||
+		!amiiboSlots[slot].filled
+	)
+		return res.status(400).send({ success: false });
+	amiiboSlots[slot].randomizeSerial = randomizeSerial;
+	return res.send({ success: true });
+});
+app.post('/api/clearAmiiboSlot', (req, res) => {
+	const { slot } = req.body;
+	if (!validAmiiboSlot(slot)) return res.status(400).send({ success: false });
+	amiiboSlots[slot] = emptyAmiiboSlot();
+	return res.send({ success: true });
+});
+
 app.get('/api/getGamepadOptions', (req, res) => {
 	return res.send({
 		dpadMode: 0,
@@ -455,6 +539,12 @@ app.get('/api/getGamepadOptions', (req, res) => {
 		ps5AuthType: 0,
 		xinputAuthType: 0,
 		ps4ControllerIDMode: 0,
+		switch2ProIdentity: 0,
+		switch2ProColorPreset: 0,
+		switch2ProBodyColor: 0x232323,
+		switch2ProButtonsColor: 0xa0a0a0,
+		switch2ProHighlightColor: 0xe6e6e6,
+		switch2ProGripColor: 0x323232,
 		usbDescOverride: 0,
 		usbDescProduct: 'GP2040-CE (Custom)',
 		usbDescManufacturer: 'Open Stick Community',
@@ -785,6 +875,7 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		keyboardHostMouseMovement: 0,
 		AnalogInputEnabled: 1,
 		BoardLedAddonEnabled: 1,
+		AmiiboAddonEnabled: 1,
 		FocusModeAddonEnabled: 1,
 		focusModeMacroLockEnabled: 0,
 		BuzzerSpeakerAddonEnabled: 1,
@@ -1417,6 +1508,6 @@ app.post('/api/*', (req, res) => {
 	return res.send(req.body);
 });
 
-app.listen(port, () => {
+app.listen(port, process.env.HOST, () => {
 	console.log(`Dev app listening at http://localhost:${port}`);
 });

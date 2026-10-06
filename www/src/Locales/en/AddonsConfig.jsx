@@ -200,4 +200,54 @@ export default {
 	'tg16-extension-data-pin2-label': 'Data GPIO Pin 2 (D_SELECT)',
 	'tg16-extension-data-pin3-label': 'Data GPIO Pin 3 (L_RUN)',
 	'tg16-extension-desc-header': 'PC Engine/TurboGrafx-16 Extension Mapping',
+	'amiibo-header-text': 'Amiibo',
+	'amiibo-sub-header-text':
+		'Load amiibo dumps (.bin, 540 or 572 bytes) of amiibo you own.',
+	'amiibo-assign-help':
+		'Assign each slot (Amiibo 1 through Amiibo 4) to a GPIO button on the Pin Mapping page or set it as a hotkey action. Then press the assigned control while the game is waiting for an amiibo to be tapped.',
+	'amiibo-mode-warning':
+		"Works only in the 'Nintendo Switch 2 Pro Controller' input mode. Amiibo reading is supported, but writing changes back to the amiibo is not currently supported.",
+	'amiibo-keys-title': 'Keys for serial randomization',
+	'amiibo-keys-help':
+		'Upload both the unfixed-info.bin and locked-secret.bin files below to enable serial randomization on each press. If either file is missing or a slot’s toggle is off, the amiibo uses its original serial and, in some games, may only be usable once per day.',
+	'amiibo-keys-warning':
+		'The GP2040-CE team will not provide these files. Please do not ask.',
+	'amiibo-randomize-label': 'Randomize serial on every press',
+	'amiibo-option-saving': 'Saving…',
+	'amiibo-option-saved': 'Slot setting saved to the controller.',
+	'amiibo-option-failed':
+		'Could not save the setting. Check the connection; enabling randomization with both keys loaded requires an authenticated dump.',
+	'amiibo-clear-failed':
+		'Could not clear the slot. Check the connection and retry.',
+	'amiibo-key-unfixed': 'unfixed-info.bin',
+	'amiibo-key-locked': 'locked-secret.bin',
+	'amiibo-key-loaded': 'Loaded',
+	'amiibo-key-missing': 'Missing',
+	'amiibo-key-unknown': 'Unknown',
+	'amiibo-keys-loading': 'Loading key status…',
+	'amiibo-keys-status-failed':
+		'Could not read key status. Retry to check the controller.',
+	'amiibo-keys-ready':
+		'Both keys loaded. Serial randomization is available for enabled slots.',
+	'amiibo-keys-saving': 'Saving key…',
+	'amiibo-key-saved': 'Key saved to the controller.',
+	'amiibo-key-failed':
+		'Could not save this key. Check the file type and connection, then retry.',
+	'amiibo-key-invalid-size':
+		'This file is {{size}} bytes. Each key must be exactly 80 bytes.',
+	'amiibo-keys-clear': 'Clear both keys',
+	'amiibo-keys-clearing': 'Clearing keys…',
+	'amiibo-keys-cleared': 'Both keys cleared. Serial randomization is inactive.',
+	'amiibo-keys-clear-failed':
+		'Could not clear keys. Retry and check the controller status.',
+	'amiibo-keys-retry': 'Refresh key status',
+	'amiibo-slot-label': 'Slot {{slot}}',
+	'amiibo-empty': 'Empty',
+	'amiibo-unnamed': 'Unnamed',
+	'amiibo-clear': 'Clear',
+	'amiibo-saved': 'Saved to the controller.',
+	'amiibo-save-failed':
+		'Could not save the amiibo. Check the connection and file; slots with randomization enabled require an authenticated dump when both keys are loaded.',
+	'amiibo-invalid-size':
+		'This file is {{size}} bytes. Amiibo dumps are 540 or 572 bytes.',
 };
