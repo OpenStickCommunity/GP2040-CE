@@ -31,6 +31,7 @@ public:
     virtual void processAux() = 0;
     virtual uint16_t get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) = 0;
     virtual void set_report(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize) = 0;
+    virtual void set_report_n(uint8_t itf, uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize) { set_report(report_id, report_type, buffer, bufsize); }
     virtual bool vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request) = 0;
     virtual const uint16_t * get_descriptor_string_cb(uint8_t index, uint16_t langid) = 0;
     virtual const uint8_t * get_descriptor_device_cb() = 0;

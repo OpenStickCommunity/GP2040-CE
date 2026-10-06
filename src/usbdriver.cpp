@@ -32,7 +32,7 @@ uint16_t tud_hid_get_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t
 // Invoked when received SET_REPORT control request or
 // received data on OUT endpoint ( Report ID = 0, Type = 0 )
 void tud_hid_set_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize) {
-	DriverManager::getInstance().getDriver()->set_report(report_id, report_type, buffer, bufsize);
+	DriverManager::getInstance().getDriver()->set_report_n(itf, report_id, report_type, buffer, bufsize);
 }
 
 // Invoked when device is mounted

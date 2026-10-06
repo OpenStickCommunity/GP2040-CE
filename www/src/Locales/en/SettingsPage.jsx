@@ -70,6 +70,52 @@ export default {
 	'ps4-id-mode-label': 'Identification Mode',
 	'ps4-id-mode-explanation-text':
 		'<ul><li>Console mode is used when connecting primarily to a PS4 console.</li><li>Remote/Emulation mode should only be used when connecting to an emulation layer or remote playing environment that requires a DualShock 4-compatible controller.</li></ul>',
+	'switch-pro-controller-type-label': 'Controller Type',
+	'switch-pro-controller-type-options': {
+		pro: 'Pro Controller',
+		snes: 'NSO SNES Controller',
+		'super-famicom': 'NSO Super Famicom Controller',
+		n64: 'NSO N64 Controller',
+		genesis: 'NSO Genesis Controller',
+		'mega-drive': 'NSO Mega Drive Controller',
+		nes: 'NSO NES Controller',
+		'famicom-i': 'NSO Famicom Controller I',
+		'famicom-ii': 'NSO Famicom Controller II',
+		'joycon-left': 'Joy-Con (L)',
+		'joycon-right': 'Joy-Con (R)',
+		'joycon-pair': 'Joy-Con (L + R)',
+	},
+	'switch-pro-color-label': 'Controller Display Colors',
+	'switch-pro-color-explanation':
+		'Sets the colors the Switch shows for this controller.',
+	'switch-pro-color-presets': {
+		stock: 'Stock',
+		gp2040: 'GP2040-CE',
+		custom: 'Custom',
+	},
+	'switch-pro-joycon-single-note':
+		"To use a single Joy-Con on its own, go into 'Change Grip/Order' and press SL + SR ({{buttons}}). You will need to do this each time you change between {{mode}} and Joy-Con (L + R) mode.",
+	'switch-pro-joycon-pair-note':
+		"To use the Joy-Cons as a pair, go into 'Change Grip/Order' and press L + R ({{buttons}}). You will need to do this each time you change between paired mode and a single Joy-Con mode.",
+	'switch-pro-joycon-color-explanation':
+		'Sets the colors the Switch shows for this Joy-Con. Only the body and buttons are shown.',
+	'switch-pro-joycon-color-presets': {
+		grey: 'Stock Grey',
+		neon: 'Stock Neon',
+		white: 'White (OLED)',
+		gp2040: 'GP2040-CE',
+		custom: 'Custom',
+	},
+	'switch-pro-color-parts': {
+		body: 'Body',
+		buttons: 'Buttons',
+		'left-grip': 'Left Grip',
+		'right-grip': 'Right Grip',
+		'left-body': 'Left Body',
+		'left-buttons': 'Left Buttons',
+		'right-body': 'Right Body',
+		'right-buttons': 'Right Buttons',
+	},
 	'ps4-id-mode-options': {
 		console: 'Console',
 		emulation: 'Remote/Emulation',
