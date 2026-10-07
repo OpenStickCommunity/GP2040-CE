@@ -15,7 +15,7 @@
 #include "GPGFX_UI_layouts.h"
 
 #define INPUT_HISTORY_MAX_INPUTS 23
-#define INPUT_HISTORY_MAX_MODES 13
+#define INPUT_HISTORY_MAX_MODES 15
 
 // Static to ensure memory is never doubled
 static const char * displayNames[INPUT_HISTORY_MAX_MODES][INPUT_HISTORY_MAX_INPUTS] __attribute__((unused)) = {
@@ -109,6 +109,20 @@ static const char * displayNames[INPUT_HISTORY_MAX_MODES][INPUT_HISTORY_MAX_INPU
             "B", "A", "Y", "X",
             "L", "R", "ZL", "ZR",
             "-", "+", "LS", "RS", CHAR_HOME_S, CHAR_CAP_S, "C"
+    },
+    {		// Switch 2 Joy-Con 2 (L) - 13
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "B", "A", "Y", "X",
+            "SL", "SR", "L", "ZL",
+            "-", "", "LS", "", "", CHAR_CAP_S, ""
+    },
+    {		// Switch 2 Joy-Con 2 (R) - 14
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "B", "A", "Y", "X",
+            "SL", "SR", "R", "ZR",
+            "", "+", "RS", "RS", CHAR_HOME_S, "", "C"
     }
 };
 

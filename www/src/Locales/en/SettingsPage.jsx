@@ -75,6 +75,23 @@ export default {
 	'switch2-pro-identity-options': {
 		pro2: 'Switch 2 Pro Controller',
 		gamecube: 'GameCube Controller',
+		'joycon2-left': 'Joy-Con 2 (L)',
+		'joycon2-right': 'Joy-Con 2 (R)',
+	},
+	'switch2-pro-joycon2-color-explanation':
+		'Sets the colors the Switch 2 shows for this Joy-Con 2.',
+	'switch2-pro-joycon2-color-presets': {
+		stock: 'Stock',
+		'purple-green': 'Purple / Green',
+		'blue-yellow': 'Blue / Yellow',
+		gp2040: 'GP2040-CE',
+		custom: 'Custom',
+	},
+	'switch2-pro-joycon2-color-parts': {
+		body: 'Body',
+		buttons: 'Buttons',
+		accent: 'Accent',
+		stick: 'Stick',
 	},
 	'switch2-pro-color-label': 'Controller Display Colors',
 	'switch2-pro-color-explanation':

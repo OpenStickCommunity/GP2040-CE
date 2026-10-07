@@ -13,6 +13,7 @@ import { AppContext } from '../Contexts/AppContext';
 import ContextualHelpOverlay from '../Components/ContextualHelpOverlay';
 import KeyboardMapper from '../Components/KeyboardMapper';
 import Switch2ProController from '../Icons/Switch2ProController';
+import JoyCon2Controller from '../Icons/JoyCon2Controller';
 import Section from '../Components/Section';
 import WebApi, { baseButtonMappings } from '../Services/WebApi';
 import { BUTTON_MASKS_OPTIONS, getButtonLabels } from '../Data/Buttons';
@@ -23,6 +24,7 @@ import {
 	InputModeDeviceType,
 	PS4ControllerType,
 	Switch2ProColorPreset,
+	Switch2ProJoyCon2ColorPreset,
 	Switch2ProIdentity,
 } from '@proto/enums';
 
@@ -227,6 +229,14 @@ const SWITCH2_PRO_IDENTITIES = [
 		labelKey: 'gamecube',
 		value: Switch2ProIdentity.SWITCH2_PRO_IDENTITY_GAMECUBE,
 	},
+	{
+		labelKey: 'joycon2-left',
+		value: Switch2ProIdentity.SWITCH2_PRO_IDENTITY_JOYCON2_LEFT,
+	},
+	{
+		labelKey: 'joycon2-right',
+		value: Switch2ProIdentity.SWITCH2_PRO_IDENTITY_JOYCON2_RIGHT,
+	},
 ];
 
 const SWITCH2_PRO_COLOR_PARTS = [
@@ -264,6 +274,65 @@ const SWITCH2_PRO_COLOR_PRESETS = [
 	{
 		labelKey: 'custom',
 		value: Switch2ProColorPreset.SWITCH2_PRO_COLOR_CUSTOM,
+	},
+];
+
+const JOYCON2_COLOR_PARTS = ['body', 'buttons', 'accent', 'stick'];
+
+const JOYCON2_COLOR_FIELDS = {
+	left: {
+		body: 'switch2ProJoyCon2LeftBodyColor',
+		buttons: 'switch2ProJoyCon2LeftButtonsColor',
+		accent: 'switch2ProJoyCon2LeftAccentColor',
+		stick: 'switch2ProJoyCon2LeftStickColor',
+	},
+	right: {
+		body: 'switch2ProJoyCon2RightBodyColor',
+		buttons: 'switch2ProJoyCon2RightButtonsColor',
+		accent: 'switch2ProJoyCon2RightAccentColor',
+		stick: 'switch2ProJoyCon2RightStickColor',
+	},
+};
+
+const joyCon2Colors = (leftAccent, rightAccent) => ({
+	left: {
+		body: 0x323232,
+		buttons: 0xaaaaaa,
+		accent: leftAccent,
+		stick: 0x323232,
+	},
+	right: {
+		body: 0x323232,
+		buttons: 0xaaaaaa,
+		accent: rightAccent,
+		stick: 0x323232,
+	},
+});
+
+const JOYCON2_COLOR_PRESETS = [
+	{
+		labelKey: 'stock',
+		value: Switch2ProJoyCon2ColorPreset.SWITCH2_PRO_JOYCON2_COLOR_STOCK,
+		colors: joyCon2Colors(0x9be1e6, 0xff8c5f),
+	},
+	{
+		labelKey: 'purple-green',
+		value: Switch2ProJoyCon2ColorPreset.SWITCH2_PRO_JOYCON2_COLOR_PURPLE_GREEN,
+		colors: joyCon2Colors(0xb19ffb, 0x90ee90),
+	},
+	{
+		labelKey: 'blue-yellow',
+		value: Switch2ProJoyCon2ColorPreset.SWITCH2_PRO_JOYCON2_COLOR_BLUE_YELLOW,
+		colors: joyCon2Colors(0x2b4cff, 0xfff066),
+	},
+	{
+		labelKey: 'gp2040',
+		value: Switch2ProJoyCon2ColorPreset.SWITCH2_PRO_JOYCON2_COLOR_GP2040,
+		colors: joyCon2Colors(0xec008c, 0x00ff00),
+	},
+	{
+		labelKey: 'custom',
+		value: Switch2ProJoyCon2ColorPreset.SWITCH2_PRO_JOYCON2_COLOR_CUSTOM,
 	},
 ];
 
@@ -441,6 +510,34 @@ const schema = yup.object().shape({
 		.required()
 		.oneOf(PS4_ID_MODES.map((o) => o.value))
 		.label('PS4 Controller Identification Mode'),
+	switch2ProJoyCon2ColorPreset: yup
+		.number()
+		.oneOf(JOYCON2_COLOR_PRESETS.map((o) => o.value))
+		.label('Joy-Con 2 Colors'),
+	switch2ProJoyCon2LeftBodyColor: yup
+		.number()
+		.label('Joy-Con 2 (L) Body Color'),
+	switch2ProJoyCon2LeftButtonsColor: yup
+		.number()
+		.label('Joy-Con 2 (L) Buttons Color'),
+	switch2ProJoyCon2LeftAccentColor: yup
+		.number()
+		.label('Joy-Con 2 (L) Accent Color'),
+	switch2ProJoyCon2LeftStickColor: yup
+		.number()
+		.label('Joy-Con 2 (L) Stick Color'),
+	switch2ProJoyCon2RightBodyColor: yup
+		.number()
+		.label('Joy-Con 2 (R) Body Color'),
+	switch2ProJoyCon2RightButtonsColor: yup
+		.number()
+		.label('Joy-Con 2 (R) Buttons Color'),
+	switch2ProJoyCon2RightAccentColor: yup
+		.number()
+		.label('Joy-Con 2 (R) Accent Color'),
+	switch2ProJoyCon2RightStickColor: yup
+		.number()
+		.label('Joy-Con 2 (R) Stick Color'),
 	switch2ProIdentity: yup
 		.number()
 		.oneOf(SWITCH2_PRO_IDENTITIES.map((o) => o.value))
@@ -564,6 +661,10 @@ const FormContext = ({ setButtonLabels, setKeyMappings }) => {
 			values.inputDeviceType = parseInt(values.inputDeviceType);
 		if (!!values.switch2ProIdentity)
 			values.switch2ProIdentity = parseInt(values.switch2ProIdentity);
+		if (!!values.switch2ProJoyCon2ColorPreset)
+			values.switch2ProJoyCon2ColorPreset = parseInt(
+				values.switch2ProJoyCon2ColorPreset,
+			);
 		if (!!values.switch2ProColorPreset)
 			values.switch2ProColorPreset = parseInt(values.switch2ProColorPreset);
 
@@ -1392,6 +1493,44 @@ export default function SettingsPage() {
 		const active = SWITCH2_PRO_COLOR_PARTS.find(
 			({ field }) => field === activeColorPart,
 		);
+		const joyCon2Side = {
+			[Switch2ProIdentity.SWITCH2_PRO_IDENTITY_JOYCON2_LEFT]: 'left',
+			[Switch2ProIdentity.SWITCH2_PRO_IDENTITY_JOYCON2_RIGHT]: 'right',
+		}[values.switch2ProIdentity];
+		const joyCon2Preset = JOYCON2_COLOR_PRESETS.find(
+			(o) => o.value === values.switch2ProJoyCon2ColorPreset,
+		);
+		const isJoyCon2Custom =
+			values.switch2ProJoyCon2ColorPreset ===
+			Switch2ProJoyCon2ColorPreset.SWITCH2_PRO_JOYCON2_COLOR_CUSTOM;
+		const joyCon2ColorFor = (side, part) =>
+			rgbIntToHex(
+				(isJoyCon2Custom
+					? values[JOYCON2_COLOR_FIELDS[side][part]]
+					: joyCon2Preset?.colors?.[side]?.[part]) ?? 0,
+			);
+		const setJoyCon2Color = (side, part, hex) => {
+			if (!isJoyCon2Custom) {
+				['left', 'right'].forEach((s) =>
+					JOYCON2_COLOR_PARTS.forEach((p) =>
+						setFieldValue(
+							JOYCON2_COLOR_FIELDS[s][p],
+							hexToInt(joyCon2ColorFor(s, p)),
+						),
+					),
+				);
+				setFieldValue(
+					'switch2ProJoyCon2ColorPreset',
+					Switch2ProJoyCon2ColorPreset.SWITCH2_PRO_JOYCON2_COLOR_CUSTOM,
+				);
+			}
+			setFieldValue(JOYCON2_COLOR_FIELDS[side][part], hexToInt(hex));
+		};
+		const activeJoyCon2Part = joyCon2Side
+			? JOYCON2_COLOR_PARTS.find(
+					(part) => JOYCON2_COLOR_FIELDS[joyCon2Side][part] === activeColorPart,
+				)
+			: null;
 
 		return (
 			<div className="row mb-3">
@@ -1416,6 +1555,93 @@ export default function SettingsPage() {
 						</Form.Select>
 					</Col>
 				</Row>
+				{joyCon2Side && (
+					<>
+						<Row className="mb-3">
+							<Col xs={12}>
+								<Form.Label>
+									{t('SettingsPage:switch2-pro-color-label')}
+								</Form.Label>
+								<p className="small text-body-secondary mb-2">
+									{t('SettingsPage:switch2-pro-joycon2-color-explanation')}
+								</p>
+							</Col>
+							<Col sm={3}>
+								<Form.Select
+									name="switch2ProJoyCon2ColorPreset"
+									className="form-select-sm"
+									value={values.switch2ProJoyCon2ColorPreset}
+									onChange={(e) =>
+										setFieldValue(
+											'switch2ProJoyCon2ColorPreset',
+											parseInt(e.target.value),
+										)
+									}
+								>
+									{JOYCON2_COLOR_PRESETS.map((o) => (
+										<option key={`joycon2-color-${o.value}`} value={o.value}>
+											{t(
+												`SettingsPage:switch2-pro-joycon2-color-presets.${o.labelKey}`,
+											)}
+										</option>
+									))}
+								</Form.Select>
+							</Col>
+						</Row>
+						<div className="switch2-pro-colors mb-3">
+							<div className="mb-3 switch2-pro-joycon2-drawing">
+								<JoyCon2Controller
+									side={joyCon2Side}
+									active={activeJoyCon2Part ?? null}
+									body={joyCon2ColorFor(joyCon2Side, 'body')}
+									buttons={joyCon2ColorFor(joyCon2Side, 'buttons')}
+									accent={joyCon2ColorFor(joyCon2Side, 'accent')}
+									stick={joyCon2ColorFor(joyCon2Side, 'stick')}
+								/>
+							</div>
+							<Row className="g-2">
+								{JOYCON2_COLOR_PARTS.map((part) => {
+									const field = JOYCON2_COLOR_FIELDS[joyCon2Side][part];
+									const value = joyCon2ColorFor(joyCon2Side, part);
+									return (
+										<Col xs={6} key={`joycon2-color-${part}`}>
+											<label
+												htmlFor={field}
+												className={`switch2-pro-color-chip${
+													activeColorPart === field ? ' is-active' : ''
+												}`}
+												onMouseEnter={() => setActiveColorPart(field)}
+												onMouseLeave={() => setActiveColorPart(null)}
+											>
+												<input
+													type="color"
+													id={field}
+													name={field}
+													value={value}
+													onFocus={() => setActiveColorPart(field)}
+													onBlur={() => setActiveColorPart(null)}
+													onChange={(e) =>
+														setJoyCon2Color(joyCon2Side, part, e.target.value)
+													}
+												/>
+												<span className="switch2-pro-color-chip-text">
+													<span className="fw-semibold">
+														{t(
+															`SettingsPage:switch2-pro-joycon2-color-parts.${part}`,
+														)}
+													</span>
+													<span className="small font-monospace text-body-secondary">
+														{value.toUpperCase()}
+													</span>
+												</span>
+											</label>
+										</Col>
+									);
+								})}
+							</Row>
+						</div>
+					</>
+				)}
 				{isPro && (
 					<>
 						<Row className="mb-3">

@@ -60,6 +60,8 @@ static const char *productString;
 static uint8_t firmwareType;
 
 static uint8_t otherSpeedConfiguration[sizeof(switch2pro_configuration_descriptor)];
+static uint8_t configuration[sizeof(switch2pro_configuration_descriptor)];
+static uint8_t joyCon2Side = 0;
 static uint16_t stringDescriptor[64];
 
 static void resetProtocolState() {
@@ -104,10 +106,24 @@ static void replyFlashRead(const uint8_t *req) {
     uint8_t *data = &payload[8];
     memset(data, 0xFF, length);
     overlayFlash(address, data, length, 0x13000, factoryData, sizeof(factoryData));
-    overlayFlash(address, data, length, 0x13040, switch2pro_flash_13040, sizeof(switch2pro_flash_13040));
-    overlayFlash(address, data, length, 0x13080, switch2pro_flash_13080, sizeof(switch2pro_flash_13080));
-    overlayFlash(address, data, length, 0x130C0, switch2pro_flash_130c0, sizeof(switch2pro_flash_130c0));
-    overlayFlash(address, data, length, 0x13100, switch2pro_flash_13100, sizeof(switch2pro_flash_13100));
+    if (joyCon2Side == 1) {
+        overlayFlash(address, data, length, 0x13040, switch2_joycon2_left_flash_13040, sizeof(switch2_joycon2_left_flash_13040));
+        overlayFlash(address, data, length, 0x13060, switch2_joycon2_left_flash_13060, sizeof(switch2_joycon2_left_flash_13060));
+        overlayFlash(address, data, length, 0x13080, switch2_joycon2_left_flash_13080, sizeof(switch2_joycon2_left_flash_13080));
+        overlayFlash(address, data, length, 0x13100, switch2_joycon2_left_flash_13100, sizeof(switch2_joycon2_left_flash_13100));
+        overlayFlash(address, data, length, 0x13140, switch2_joycon2_left_flash_13140, sizeof(switch2_joycon2_left_flash_13140));
+    } else if (joyCon2Side == 2) {
+        overlayFlash(address, data, length, 0x13040, switch2_joycon2_right_flash_13040, sizeof(switch2_joycon2_right_flash_13040));
+        overlayFlash(address, data, length, 0x13060, switch2_joycon2_right_flash_13060, sizeof(switch2_joycon2_right_flash_13060));
+        overlayFlash(address, data, length, 0x13080, switch2_joycon2_right_flash_13080, sizeof(switch2_joycon2_right_flash_13080));
+        overlayFlash(address, data, length, 0x13100, switch2_joycon2_right_flash_13100, sizeof(switch2_joycon2_right_flash_13100));
+        overlayFlash(address, data, length, 0x13140, switch2_joycon2_right_flash_13140, sizeof(switch2_joycon2_right_flash_13140));
+    } else {
+        overlayFlash(address, data, length, 0x13040, switch2pro_flash_13040, sizeof(switch2pro_flash_13040));
+        overlayFlash(address, data, length, 0x13080, switch2pro_flash_13080, sizeof(switch2pro_flash_13080));
+        overlayFlash(address, data, length, 0x130C0, switch2pro_flash_130c0, sizeof(switch2pro_flash_130c0));
+        overlayFlash(address, data, length, 0x13100, switch2pro_flash_13100, sizeof(switch2pro_flash_13100));
+    }
     setReply(CMD_FLASH_MEMORY, req[3], payload, 8 + length);
 }
 
@@ -436,6 +452,44 @@ static void loadIdentity() {
         return;
     }
 
+    joyCon2Side = 0;
+    if (options.switch2ProIdentity == SWITCH2_PRO_IDENTITY_JOYCON2_LEFT || options.switch2ProIdentity == SWITCH2_PRO_IDENTITY_JOYCON2_RIGHT) {
+        const bool left = options.switch2ProIdentity == SWITCH2_PRO_IDENTITY_JOYCON2_LEFT;
+        const uint16_t pid = left ? SWITCH2_JOYCON2_LEFT_PRODUCT_ID : SWITCH2_JOYCON2_RIGHT_PRODUCT_ID;
+        joyCon2Side = left ? 1 : 2;
+        setProductId(&deviceDescriptor[SWITCH2_PRO_DEVICE_PID_OFFSET], pid);
+        deviceDescriptor[12] = 0x00;
+        deviceDescriptor[13] = 0x01;
+        setProductId(&factoryData[SWITCH2_PRO_FACTORY_PID_OFFSET], pid);
+        setProductId(&chargingGripData[SWITCH2_PRO_GRIP_PID_OFFSET], pid);
+        productString = left ? switch2_joycon2_left_product_string : switch2_joycon2_right_product_string;
+        firmwareType = left ? SWITCH2_FW_TYPE_JOYCON2_LEFT : SWITCH2_FW_TYPE_JOYCON2_RIGHT;
+        factoryData[SWITCH2_PRO_FACTORY_VARIANT_OFFSET] = 0x01;
+        factoryData[SWITCH2_PRO_FACTORY_VARIANT_OFFSET + 1] = 0x08;
+        factoryData[SWITCH2_PRO_FACTORY_VARIANT_OFFSET + 2] = 0x02;
+        uint32_t colors[4] = { 0x323232, 0xAAAAAA, left ? 0x9BE1E6u : 0xFF8C5Fu, 0x323232 };
+        if (options.switch2ProJoyCon2ColorPreset == SWITCH2_PRO_JOYCON2_COLOR_PURPLE_GREEN) {
+            colors[2] = left ? 0xB19FFB : 0x90EE90;
+        } else if (options.switch2ProJoyCon2ColorPreset == SWITCH2_PRO_JOYCON2_COLOR_BLUE_YELLOW) {
+            colors[2] = left ? 0x2B4CFF : 0xFFF066;
+        } else if (options.switch2ProJoyCon2ColorPreset == SWITCH2_PRO_JOYCON2_COLOR_GP2040) {
+            colors[2] = left ? 0xEC008C : 0x00FF00;
+        } else if (options.switch2ProJoyCon2ColorPreset == SWITCH2_PRO_JOYCON2_COLOR_CUSTOM) {
+            const uint32_t custom[4] = {
+                left ? options.switch2ProJoyCon2LeftBodyColor : options.switch2ProJoyCon2RightBodyColor,
+                left ? options.switch2ProJoyCon2LeftButtonsColor : options.switch2ProJoyCon2RightButtonsColor,
+                left ? options.switch2ProJoyCon2LeftAccentColor : options.switch2ProJoyCon2RightAccentColor,
+                left ? options.switch2ProJoyCon2LeftStickColor : options.switch2ProJoyCon2RightStickColor,
+            };
+            memcpy(colors, custom, sizeof(colors));
+        }
+        setFactoryColor(SWITCH2_PRO_FACTORY_BODY_COLOR, colors[0]);
+        setFactoryColor(SWITCH2_PRO_FACTORY_BUTTONS_COLOR, colors[1]);
+        setFactoryColor(SWITCH2_PRO_FACTORY_HIGHLIGHT_COLOR, colors[2]);
+        setFactoryColor(SWITCH2_PRO_FACTORY_GRIP_COLOR, colors[3]);
+        return;
+    }
+
     uint32_t body, buttons, highlight, grip;
     switch (options.switch2ProColorPreset) {
         case SWITCH2_PRO_COLOR_GP2040:
@@ -529,6 +583,47 @@ bool Switch2ProDriver::process(Gamepad * gamepad) {
     packStick(&inputReport[5], gamepad->state.lx, gamepad->state.ly);
     packStick(&inputReport[8], gamepad->state.rx, gamepad->state.ry);
     inputReport[11] = 0x38;
+    if (joyCon2Side != 0) {
+        const bool left = joyCon2Side == 1;
+        uint16_t x = gamepad->state.lx;
+        uint16_t y = gamepad->state.ly;
+        if (gamepad->pressedLeft()) x = GAMEPAD_JOYSTICK_MIN;
+        if (gamepad->pressedRight()) x = GAMEPAD_JOYSTICK_MAX;
+        if (gamepad->pressedUp()) y = GAMEPAD_JOYSTICK_MIN;
+        if (gamepad->pressedDown()) y = GAMEPAD_JOYSTICK_MAX;
+        uint8_t j0 = 0, j1 = 0;
+        if (left) {
+            if (gamepad->pressedB1()) j0 |= 0x04;
+            if (gamepad->pressedB2()) j0 |= 0x01;
+            if (gamepad->pressedB3()) j0 |= 0x08;
+            if (gamepad->pressedB4()) j0 |= 0x02;
+            if (gamepad->pressedS1()) j0 |= 0x40;
+            if (gamepad->pressedL3()) j0 |= 0x80;
+            if (gamepad->pressedA2()) j1 |= 0x01;
+        } else {
+            if (gamepad->pressedB1()) j0 |= 0x02;
+            if (gamepad->pressedB2()) j0 |= 0x08;
+            if (gamepad->pressedB3()) j0 |= 0x01;
+            if (gamepad->pressedB4()) j0 |= 0x04;
+            if (gamepad->pressedS2()) j0 |= 0x40;
+            if (gamepad->pressedL3() || gamepad->pressedR3()) j0 |= 0x80;
+            if (gamepad->pressedA1()) j1 |= 0x01;
+            if (gamepad->pressedA3()) j1 |= 0x10;
+        }
+        if (gamepad->pressedL2()) j0 |= 0x10;
+        if (gamepad->pressedR2()) j0 |= 0x20;
+        if (gamepad->pressedL1()) j1 |= 0x80;
+        if (gamepad->pressedR1()) j1 |= 0x40;
+        memset(&inputReport[1], 0, sizeof(inputReport) - 1);
+        inputReport[1] = 0x25;
+        inputReport[2] = j0;
+        inputReport[3] = j1;
+        inputReport[4] = 0x07;
+        if (left)
+            packStick(&inputReport[5], GAMEPAD_JOYSTICK_MAX - y, x);
+        else
+            packStick(&inputReport[5], y, GAMEPAD_JOYSTICK_MAX - x);
+    }
     const uint32_t now = to_ms_since_boot(get_absolute_time());
     const bool changed = memcmp(&inputReport[2], &lastSentState[0], sizeof(lastSentState)) != 0;
     if (!changed && (now - lastSentMs) < SWITCH2_PRO_KEEPALIVE_MS)
@@ -537,7 +632,9 @@ bool Switch2ProDriver::process(Gamepad * gamepad) {
         return false;
 
     inputReport[0] = reportCounter;
-    if (!tud_hid_n_report(0, SWITCH2_PRO_INPUT_REPORT_ID, inputReport, sizeof(inputReport)))
+    const uint8_t reportId = joyCon2Side == 1 ? SWITCH2_JOYCON2_LEFT_INPUT_REPORT_ID
+        : joyCon2Side == 2 ? SWITCH2_JOYCON2_RIGHT_INPUT_REPORT_ID : SWITCH2_PRO_INPUT_REPORT_ID;
+    if (!tud_hid_n_report(0, reportId, inputReport, sizeof(inputReport)))
         return false;
     memcpy(lastSentState, &inputReport[2], sizeof(lastSentState));
     lastSentMs = now;
@@ -605,11 +702,18 @@ const uint8_t * Switch2ProDriver::get_descriptor_device_cb() {
 }
 
 const uint8_t * Switch2ProDriver::get_hid_descriptor_report_cb(uint8_t itf) {
+    if (joyCon2Side == 1)
+        return switch2_joycon2_left_report_descriptor;
+    if (joyCon2Side == 2)
+        return switch2_joycon2_right_report_descriptor;
     return switch2pro_report_descriptor;
 }
 
 const uint8_t * Switch2ProDriver::get_descriptor_configuration_cb(uint8_t index) {
-    return switch2pro_configuration_descriptor;
+    memcpy(configuration, switch2pro_configuration_descriptor, sizeof(configuration));
+    if (joyCon2Side != 0)
+        configuration[33] = sizeof(switch2_joycon2_left_report_descriptor);
+    return configuration;
 }
 
 const uint8_t * Switch2ProDriver::get_descriptor_device_qualifier_cb() {
@@ -617,7 +721,7 @@ const uint8_t * Switch2ProDriver::get_descriptor_device_qualifier_cb() {
 }
 
 const uint8_t * Switch2ProDriver::get_descriptor_other_speed_configuration_cb(uint8_t index) {
-    memcpy(otherSpeedConfiguration, switch2pro_configuration_descriptor, sizeof(otherSpeedConfiguration));
+    memcpy(otherSpeedConfiguration, get_descriptor_configuration_cb(index), sizeof(otherSpeedConfiguration));
     otherSpeedConfiguration[1] = TUSB_DESC_OTHER_SPEED_CONFIG;
     for (size_t offset = 0; offset < sizeof(otherSpeedConfiguration);) {
         const uint8_t length = otherSpeedConfiguration[offset];

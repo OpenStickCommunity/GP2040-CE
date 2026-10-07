@@ -58,6 +58,15 @@ message GamepadOptions
     optional uint32 switch2ProHighlightColor = 37;
     optional uint32 switch2ProGripColor = 38;
     optional Switch2ProIdentity switch2ProIdentity = 39;
+    optional Switch2ProJoyCon2ColorPreset switch2ProJoyCon2ColorPreset = 51;
+    optional uint32 switch2ProJoyCon2LeftBodyColor = 52;
+    optional uint32 switch2ProJoyCon2LeftButtonsColor = 53;
+    optional uint32 switch2ProJoyCon2LeftAccentColor = 54;
+    optional uint32 switch2ProJoyCon2LeftStickColor = 55;
+    optional uint32 switch2ProJoyCon2RightBodyColor = 56;
+    optional uint32 switch2ProJoyCon2RightButtonsColor = 57;
+    optional uint32 switch2ProJoyCon2RightAccentColor = 58;
+    optional uint32 switch2ProJoyCon2RightStickColor = 59;
 }
 
 message KeyboardMapping

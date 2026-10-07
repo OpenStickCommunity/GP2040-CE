@@ -713,6 +713,15 @@ std::string setGamepadOptions()
     readDoc(gamepadOptions.switch2ProButtonsColor, doc, "switch2ProButtonsColor");
     readDoc(gamepadOptions.switch2ProHighlightColor, doc, "switch2ProHighlightColor");
     readDoc(gamepadOptions.switch2ProGripColor, doc, "switch2ProGripColor");
+    readDoc(gamepadOptions.switch2ProJoyCon2ColorPreset, doc, "switch2ProJoyCon2ColorPreset");
+    readDoc(gamepadOptions.switch2ProJoyCon2LeftBodyColor, doc, "switch2ProJoyCon2LeftBodyColor");
+    readDoc(gamepadOptions.switch2ProJoyCon2LeftButtonsColor, doc, "switch2ProJoyCon2LeftButtonsColor");
+    readDoc(gamepadOptions.switch2ProJoyCon2LeftAccentColor, doc, "switch2ProJoyCon2LeftAccentColor");
+    readDoc(gamepadOptions.switch2ProJoyCon2LeftStickColor, doc, "switch2ProJoyCon2LeftStickColor");
+    readDoc(gamepadOptions.switch2ProJoyCon2RightBodyColor, doc, "switch2ProJoyCon2RightBodyColor");
+    readDoc(gamepadOptions.switch2ProJoyCon2RightButtonsColor, doc, "switch2ProJoyCon2RightButtonsColor");
+    readDoc(gamepadOptions.switch2ProJoyCon2RightAccentColor, doc, "switch2ProJoyCon2RightAccentColor");
+    readDoc(gamepadOptions.switch2ProJoyCon2RightStickColor, doc, "switch2ProJoyCon2RightStickColor");
     readDoc(gamepadOptions.usbDescOverride, doc, "usbDescOverride");
     readDoc(gamepadOptions.miniMenuGamepadInput, doc, "miniMenuGamepadInput");
     // Copy USB descriptor strings
@@ -789,6 +798,15 @@ std::string getGamepadOptions()
     writeDoc(doc, "switch2ProButtonsColor", gamepadOptions.switch2ProButtonsColor);
     writeDoc(doc, "switch2ProHighlightColor", gamepadOptions.switch2ProHighlightColor);
     writeDoc(doc, "switch2ProGripColor", gamepadOptions.switch2ProGripColor);
+    writeDoc(doc, "switch2ProJoyCon2ColorPreset", gamepadOptions.switch2ProJoyCon2ColorPreset);
+    writeDoc(doc, "switch2ProJoyCon2LeftBodyColor", gamepadOptions.switch2ProJoyCon2LeftBodyColor);
+    writeDoc(doc, "switch2ProJoyCon2LeftButtonsColor", gamepadOptions.switch2ProJoyCon2LeftButtonsColor);
+    writeDoc(doc, "switch2ProJoyCon2LeftAccentColor", gamepadOptions.switch2ProJoyCon2LeftAccentColor);
+    writeDoc(doc, "switch2ProJoyCon2LeftStickColor", gamepadOptions.switch2ProJoyCon2LeftStickColor);
+    writeDoc(doc, "switch2ProJoyCon2RightBodyColor", gamepadOptions.switch2ProJoyCon2RightBodyColor);
+    writeDoc(doc, "switch2ProJoyCon2RightButtonsColor", gamepadOptions.switch2ProJoyCon2RightButtonsColor);
+    writeDoc(doc, "switch2ProJoyCon2RightAccentColor", gamepadOptions.switch2ProJoyCon2RightAccentColor);
+    writeDoc(doc, "switch2ProJoyCon2RightStickColor", gamepadOptions.switch2ProJoyCon2RightStickColor);
     writeDoc(doc, "usbDescOverride", gamepadOptions.usbDescOverride);
     writeDoc(doc, "usbDescManufacturer", gamepadOptions.usbDescManufacturer);
     writeDoc(doc, "usbDescProduct", gamepadOptions.usbDescProduct);
