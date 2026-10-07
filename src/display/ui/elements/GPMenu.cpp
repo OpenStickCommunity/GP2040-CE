@@ -15,11 +15,11 @@ void GPMenu::draw() {
             currPageItems = 0;
         }
 
-        getRenderer()->drawText((21-this->menuTitle.length()) / 2, 0, this->menuTitle.c_str());
+        getRenderer()->drawText((21-this->menuTitle.length()) / 2, 0, this->menuTitle);
 
         std::string pageDisplay = "";
         pageDisplay += "Page: " + std::to_string(itemPage+1) + "/" + std::to_string(totalPages);
-        getRenderer()->drawText(11, 7, pageDisplay.c_str());
+        getRenderer()->drawText(11, 7, pageDisplay);
 
         if (this->menuEntryData->size() > 0) {
             for (uint8_t menuLine = 0; menuLine < currPageItems; menuLine++) {

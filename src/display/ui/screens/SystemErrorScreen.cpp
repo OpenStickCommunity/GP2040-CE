@@ -15,7 +15,7 @@ void SystemErrorScreen::shutdown() {
 
 void SystemErrorScreen::drawScreen() {
     getRenderer()->drawSprite((uint8_t *)bitmapGP2040Logo, 128, 35, 10, 0, 2, 1);
-    getRenderer()->drawText(1, 6, errorMessage.c_str());
+    getRenderer()->drawText(1, 6, errorMessage);
     //getRenderer()->drawText(1, 6, "No USB Data Detected");
     //getRenderer()->drawText(1, 7, "Check Cable and Port");
 }

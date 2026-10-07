@@ -40,7 +40,7 @@ PeripheralSPI* PeripheralManager::getSPI(uint8_t block) {
 
 PeripheralUSB* PeripheralManager::getUSB(uint8_t block) {
     if (block < NUM_USBS) {
-        return ((block == 0) ? &blockUSB0 : &blockUSB0);
+        return &blockUSB0;
     }
     return nullptr;
 }

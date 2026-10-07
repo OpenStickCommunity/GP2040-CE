@@ -43,10 +43,10 @@ void PinViewerScreen::drawScreen() {
         }
     }
 
-    getRenderer()->drawText(0, 2, pinsUndefined.c_str());
-    getRenderer()->drawText(0, 3, pinsInUse.c_str());
-    getRenderer()->drawText(0, 4, pinsPressed.c_str());
-    getRenderer()->drawText(0, 5, buttonsPressed.c_str());
+    getRenderer()->drawText(0, 2, pinsUndefined);
+    getRenderer()->drawText(0, 3, pinsInUse);
+    getRenderer()->drawText(0, 4, pinsPressed);
+    getRenderer()->drawText(0, 5, buttonsPressed);
 
     getRenderer()->drawText(4, 7, "A2 to Return");
 }
