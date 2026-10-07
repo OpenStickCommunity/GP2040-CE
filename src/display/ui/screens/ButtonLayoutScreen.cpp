@@ -43,6 +43,7 @@ void ButtonLayoutScreen::init() {
     prevLeftOptions = Storage::getInstance().getDisplayOptions().buttonLayoutCustomOptions.paramsLeft;
     prevRightOptions = Storage::getInstance().getDisplayOptions().buttonLayoutCustomOptions.paramsRight;
     prevOrientation = Storage::getInstance().getDisplayOptions().buttonLayoutOrientation;
+    prevCustomLayoutHash = getCustomLayoutHash();
 
     // we cannot look at macro options enabled, pull the pins
     
@@ -554,7 +555,22 @@ bool ButtonLayoutScreen::compareCustomLayouts()
     bool leftChanged = ((leftOptions.layout != prevLeftOptions.layout) || (leftOptions.common.startX != prevLeftOptions.common.startX) || (leftOptions.common.startY != prevLeftOptions.common.startY) || (leftOptions.common.buttonPadding != prevLeftOptions.common.buttonPadding) || (leftOptions.common.buttonRadius != prevLeftOptions.common.buttonRadius));
     bool rightChanged = ((rightOptions.layout != prevRightOptions.layout) || (rightOptions.common.startX != prevRightOptions.common.startX) || (rightOptions.common.startY != prevRightOptions.common.startY) || (rightOptions.common.buttonPadding != prevRightOptions.common.buttonPadding) || (rightOptions.common.buttonRadius != prevRightOptions.common.buttonRadius));
     
-    return (leftChanged || rightChanged);
+    return (leftChanged || rightChanged || (prevCustomLayoutHash != getCustomLayoutHash()));
+}
+
+uint32_t ButtonLayoutScreen::getCustomLayoutHash()
+{
+    const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
+    uint32_t hash = 2166136261u;
+    auto addBytes = [&hash](const uint8_t* bytes, size_t size) {
+        for (size_t i = 0; i < size; i++) {
+            hash = (hash ^ bytes[i]) * 16777619u;
+        }
+    };
+    addBytes(options.customLayoutA.bytes, options.customLayoutA.size);
+    hash = (hash ^ 0xFF) * 16777619u;
+    addBytes(options.customLayoutB.bytes, options.customLayoutB.size);
+    return hash;
 }
 
 bool ButtonLayoutScreen::pressedUp()

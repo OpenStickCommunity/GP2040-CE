@@ -285,6 +285,11 @@ message DisplayOptions
     optional uint32 inputHistoryRow = 30;
     
     optional uint32 contrast = 31;
+
+    // Packed custom layouts: 24 bytes per element,
+    // 12 little-endian uint16 values: elementType, x1, y1, x2, y2, stroke, fill, value, shape, angleStart, angleEnd, closed
+    optional bytes customLayoutA = 32 [(nanopb).max_size = 720];
+    optional bytes customLayoutB = 33 [(nanopb).max_size = 720];
 }
 
 message LightCluster

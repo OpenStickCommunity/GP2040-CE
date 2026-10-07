@@ -194,6 +194,7 @@ class ButtonLayoutScreen : public GPScreen {
         ButtonLayoutParamsLeft prevLeftOptions{};
         ButtonLayoutParamsRight prevRightOptions{};
         ButtonLayoutOrientation prevOrientation{};
+        uint32_t prevCustomLayoutHash = 0;
 
         bool hasTurboAssigned = false;
 
@@ -211,6 +212,7 @@ class ButtonLayoutScreen : public GPScreen {
         uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
         void processInputHistory();
         bool compareCustomLayouts();
+        uint32_t getCustomLayoutHash();
         bool pressedUp();
         bool pressedDown();
         bool pressedLeft();
