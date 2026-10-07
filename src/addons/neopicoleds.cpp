@@ -328,7 +328,7 @@ void NeoPicoLEDAddon::process()
 	//New check for buttons being pressed. this is a direct check to see if a pin is held
 	Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
 	vector<int32_t> pressedPins;
-	for(auto thisLight : RGBLights.AllLights)
+	for(const auto& thisLight : RGBLights.AllLights)
 	{
 		if(isValidPin(thisLight.GIPOPin) && (values & (Mask_t{1} << thisLight.GIPOPin)))
 		{
