@@ -85,20 +85,20 @@ struct RGB {
   }
 };
 
-constexpr RGB ColorBlack(0, 0, 0);
-constexpr RGB ColorWhite(255, 255, 255);
-constexpr RGB ColorRed(255, 0, 0);
-constexpr RGB ColorOrange(255, 128, 0);
-constexpr RGB ColorYellow(255, 255, 0);
-constexpr RGB ColorLimeGreen(128, 255, 0);
-constexpr RGB ColorGreen(0, 255, 0);
-constexpr RGB ColorSeafoam(0, 255, 128);
-constexpr RGB ColorAqua(0, 255, 255);
-constexpr RGB ColorSkyBlue(0, 128, 255);
-constexpr RGB ColorBlue(0, 0, 255);
-constexpr RGB ColorPurple(128, 0, 255);
-constexpr RGB ColorPink(255, 0, 255);
-constexpr RGB ColorMagenta(255, 0, 128);
+inline constexpr RGB ColorBlack(0, 0, 0);
+inline constexpr RGB ColorWhite(255, 255, 255);
+inline constexpr RGB ColorRed(255, 0, 0);
+inline constexpr RGB ColorOrange(255, 128, 0);
+inline constexpr RGB ColorYellow(255, 255, 0);
+inline constexpr RGB ColorLimeGreen(128, 255, 0);
+inline constexpr RGB ColorGreen(0, 255, 0);
+inline constexpr RGB ColorSeafoam(0, 255, 128);
+inline constexpr RGB ColorAqua(0, 255, 255);
+inline constexpr RGB ColorSkyBlue(0, 128, 255);
+inline constexpr RGB ColorBlue(0, 0, 255);
+inline constexpr RGB ColorPurple(128, 0, 255);
+inline constexpr RGB ColorPink(255, 0, 255);
+inline constexpr RGB ColorMagenta(255, 0, 128);
 
 inline const std::vector<RGB> colors {
     ColorBlack,     ColorWhite,  ColorRed,     ColorOrange, ColorYellow,
