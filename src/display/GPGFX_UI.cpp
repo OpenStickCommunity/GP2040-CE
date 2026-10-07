@@ -15,6 +15,6 @@ Gamepad* GPGFX_UI::getProcessedGamepad() {
     return Storage::getInstance().GetProcessedGamepad();
 }
 
-const DisplayOptions& GPGFX_UI::getDisplayOptions() {
+DisplayOptions GPGFX_UI::getDisplayOptions() {
     return Storage::getInstance().getDisplayOptions();
 }

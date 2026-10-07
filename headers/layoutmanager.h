@@ -33,8 +33,6 @@ typedef struct {
 
 #define LAYOUTMGR LayoutManager::getInstance()
 
-#define CUSTOM_LAYOUT_ELEMENT_BYTES 24
-
 class LayoutManager {
     public:
         typedef std::vector<GPButtonLayout> LayoutList;
@@ -105,8 +103,6 @@ class LayoutManager {
         LayoutList drawSticklessButtons14B();
         LayoutList drawButtonLayoutLeft();
         LayoutList drawButtonLayoutRight();
-        LayoutList drawCustomDefinedA();
-        LayoutList drawCustomDefinedB();
         LayoutList drawBoardDefinedA();
         LayoutList drawBoardDefinedAlt0A();
         LayoutList drawBoardDefinedAlt1A();
@@ -159,8 +155,6 @@ class LayoutManager {
         LayoutManager::LayoutList getRightLayout(uint16_t index);
     private:
         LayoutManager(){}
-
-        LayoutList drawCustomDefined(const uint8_t* bytes, uint16_t size);
 
         std::string getLayoutNameByID();
 };

@@ -20,9 +20,10 @@ class GPGFX_UI {
         GPGFX* getRenderer() { return _renderer; }
         Gamepad* getGamepad();
         Gamepad* getProcessedGamepad();
-        const DisplayOptions& getDisplayOptions();
+        DisplayOptions getDisplayOptions();
     private:
         GPGFX* _renderer;
+        DisplayOptions _displayOptions{};
         bool _configMode = false;
 };
 
