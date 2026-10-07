@@ -1,4 +1,6 @@
 #include "addons/dualdirectional.h"
+#include <algorithm>
+#include <array>
 #include "storagemanager.h"
 #include "helper.h"
 #include "config.pb.h"
@@ -51,13 +53,14 @@ void DualDirectionalInput::reinit()
 uint8_t DualDirectionalInput::updateDpadDDI(uint8_t dpad, DpadDirection direction)
 {
 	static bool inList[] = {false, false, false, false, false}; // correspond to DpadDirection: none, up, down, left, right
-	static list<DpadDirection> dpadList;
+	static std::array<DpadDirection, 4> dpadList{};
+	static uint8_t dpadCount = 0;
 
 	if(dpad & getMaskFromDirection(direction))
 	{
 		if(!inList[direction])
 		{
-			dpadList.push_back(direction);
+			dpadList[dpadCount++] = direction;
 			inList[direction] = true;
 		}
 	}
@@ -65,16 +68,16 @@ uint8_t DualDirectionalInput::updateDpadDDI(uint8_t dpad, DpadDirection directio
 	{
 		if(inList[direction])
 		{
-			dpadList.remove(direction);
+			dpadCount = std::remove(dpadList.begin(), dpadList.begin() + dpadCount, direction) - dpadList.begin();
 			inList[direction] = false;
 		}
 	}
 
-	if(dpadList.empty()) {
+	if(dpadCount == 0) {
 		return 0;
 	}
 	else {
-		return getMaskFromDirection(dpadList.back());
+		return getMaskFromDirection(dpadList[dpadCount - 1]);
 	}
 }
 

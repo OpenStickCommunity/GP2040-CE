@@ -54,7 +54,7 @@ bool XInputAuthUSBListener::xinputh_vendor_report(tusb_dir_t dir, uint8_t reques
         .user_data   = user_data,
     };
 
-    return tuh_control_xfer(&xfer);
+    return tuh_control_xfer(&xfer) && xfer.result == XFER_RESULT_SUCCESS && xfer.actual_len == length;
 }
 
 void XInputAuthUSBListener::xmount(uint8_t dev_addr, uint8_t instance, uint8_t controllerType, uint8_t subtype) {

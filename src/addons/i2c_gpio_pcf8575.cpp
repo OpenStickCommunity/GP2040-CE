@@ -28,7 +28,7 @@ void PCF8575Addon::setup() {
     for (uint8_t i = 0; i < options.pins_count; i++) {
         GpioMappingInfo pin = gpioMappings[i];
         if ((pin.action != GpioAction::NONE) && (pin.action != GpioAction::RESERVED) && (pin.action != GpioAction::ASSIGNED_TO_ADDON)) {
-            pinRef.insert({i,pin});
+            pinRef.emplace(i, pin);
         }
     }
 

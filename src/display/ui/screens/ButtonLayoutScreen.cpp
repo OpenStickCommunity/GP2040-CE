@@ -462,7 +462,7 @@ GPWidget* ButtonLayoutScreen::pushElement(GPButtonLayout element) {
 }
 
 void ButtonLayoutScreen::processInputHistory() {
-	std::deque<std::string> pressed;
+	std::string newInput;
 
 	// Get key states
 	std::array<bool, INPUT_HISTORY_MAX_INPUTS> currentInput = {
@@ -499,22 +499,18 @@ void ButtonLayoutScreen::processInputHistory() {
 	if (lastInput != currentInput) {
 		// Iterate through array
 		for (uint8_t x=0; x<INPUT_HISTORY_MAX_INPUTS; x++) {
-			// Add any pressed keys to deque
+			// Append any pressed keys in display order
 			std::string inputChar(displayNames[mode][x]);
-			if (currentInput[x] && (inputChar != "")) pressed.push_back(inputChar);
+			if (currentInput[x] && (inputChar != "")) {
+				if (!newInput.empty()) newInput += "+";
+				newInput += inputChar;
+			}
 		}
 		// Update the last keypress array
 		lastInput = currentInput;
 	}
 
-	if (pressed.size() > 0) {
-		std::string newInput;
-		for(const auto &s : pressed) {
-				if(!newInput.empty())
-						newInput += "+";
-				newInput += s;
-		}
-
+	if (!newInput.empty()) {
 		inputHistory.push_back(newInput);
 	}
 
