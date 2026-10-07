@@ -1535,6 +1535,10 @@ export default function SettingsPage() {
 		const isJoyConPair =
 			values.switchProControllerType ===
 			SwitchProControllerType.SWITCH_PRO_CONTROLLER_TYPE_JOYCON_PAIR;
+		const isGenesis = [
+			SwitchProControllerType.SWITCH_PRO_CONTROLLER_TYPE_GENESIS,
+			SwitchProControllerType.SWITCH_PRO_CONTROLLER_TYPE_MEGA_DRIVE,
+		].includes(values.switchProControllerType);
 		const activeJoyCon = ['left', 'right']
 			.flatMap((side) => ['body', 'buttons'].map((part) => ({ side, part })))
 			.find(
@@ -1600,23 +1604,48 @@ export default function SettingsPage() {
 							))}
 						</Form.Select>
 					</Col>
-					{(joyConSide || isJoyConPair) && (
+					{isGenesis && (
+						<Col xs={12}>
+							<div className="alert alert-warning mt-2 mb-0">
+								<Trans
+									ns="SettingsPage"
+									i18nKey="switch-pro-genesis-warning"
+									components={{ strong: <strong /> }}
+								/>
+							</div>
+						</Col>
+					)}
+					{joyConSide && (
 						<Col xs={12}>
 							<p className="small text-body-secondary mt-2 mb-0">
-								{t(
-									isJoyConPair
-										? 'SettingsPage:switch-pro-joycon-pair-note'
-										: 'SettingsPage:switch-pro-joycon-single-note',
-									{
-										buttons: `${currentButtonLabels.L1} + ${currentButtonLabels.R1}`,
-										mode:
-											joyConSide &&
-											t(
-												`SettingsPage:switch-pro-controller-type-options.joycon-${joyConSide}`,
-											),
-									},
-								)}
+								{t('SettingsPage:switch-pro-joycon-single-note', {
+									buttons: `${currentButtonLabels.L1} + ${currentButtonLabels.R1}`,
+									mode: t(
+										`SettingsPage:switch-pro-controller-type-options.joycon-${joyConSide}`,
+									),
+								})}
 							</p>
+							<div className="alert alert-warning mt-2 mb-0">
+								<Trans
+									ns="SettingsPage"
+									i18nKey="switch-pro-joycon-single-warning"
+									components={{ strong: <strong /> }}
+								/>
+							</div>
+						</Col>
+					)}
+					{isJoyConPair && (
+						<Col xs={12}>
+							<div className="alert alert-warning mt-2 mb-0">
+								<Trans
+									ns="SettingsPage"
+									i18nKey="switch-pro-joycon-pair-warning"
+									values={{
+										buttons: `${currentButtonLabels.L1} + ${currentButtonLabels.R1}`,
+									}}
+									components={{ strong: <strong /> }}
+								/>
+							</div>
 						</Col>
 					)}
 				</Row>
