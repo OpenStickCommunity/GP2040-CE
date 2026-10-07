@@ -903,8 +903,9 @@ void PS4Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uin
             sendBuffer[0] = report_id;
             memcpy(&sendBuffer[1], buffer, bufsize);
             buflen = bufsize + 1;
-            if ( CRC32::calculate(sendBuffer, buflen-sizeof(uint32_t)) !=
-                    *((unsigned int*)&sendBuffer[buflen-sizeof(uint32_t)])) {
+            uint32_t receivedCrc;
+            memcpy(&receivedCrc, &sendBuffer[buflen-sizeof(uint32_t)], sizeof(receivedCrc));
+            if ( CRC32::calculate(sendBuffer, buflen-sizeof(uint32_t)) != receivedCrc) {
                 return; // CRC32 failed on set report
             }
             // 256 byte nonce, 4 56-byte chunks, 1 32-byte chunk

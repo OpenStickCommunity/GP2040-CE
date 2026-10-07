@@ -44,7 +44,6 @@ void I2CAnalog1115Input::setup() {
   const AnalogADS1115Options &options =
       Storage::getInstance().getAddonOptions().analogADS1115Options;
 
-  Gamepad *gamepad = Storage::getInstance().GetGamepad();
   channelHop = 0;
 
   uIntervalMS = 8;

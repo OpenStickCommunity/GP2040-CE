@@ -21,7 +21,7 @@ bool AnalogInput::available() {
 }
 
 bool AnalogInput::isAdcPin(Pin_t pin) {
-    return pin >= ADC_PIN_OFFSET && pin < ADC_PIN_OFFSET + NUM_ADC_CHANNELS - 1;
+    return pin >= static_cast<Pin_t>(ADC_PIN_OFFSET) && pin < static_cast<Pin_t>(ADC_PIN_OFFSET + NUM_ADC_CHANNELS - 1);
 }
 
 uint16_t AnalogInput::readCalibrationSample(Pin_t pin) {
