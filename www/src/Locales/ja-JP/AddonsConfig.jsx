@@ -40,7 +40,6 @@ export default {
 		'ゆっくりアナログスティックを外周を数回往復するように回すか、XY軸それぞれの端から端まで動かしてください。その後、「中心点補正」を選択してください。',
 	'analog-calibration-done-rotating': '中心点補正',
 	'analog-calibration-release':
-		'Let go of the stick and leave it untouched. The center will be captured automatically once the readings stay steady.',
 		'スティックを離して一定時間触らず放置してください。入力値が安定した時点で中心点補正が自動で行われます。',
 	'analog-calibration-cancel': 'キャンセル',
 	'analog-calibration-connection-timeout':
