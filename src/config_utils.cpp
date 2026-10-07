@@ -522,15 +522,6 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.displayOptions, splashDuration, SPLASH_DURATION);
 	const unsigned char defaultSplash[] = { DEFAULT_SPLASH };
     INIT_UNSET_PROPERTY_BYTES(config.displayOptions, splashImage, defaultSplash);
-
-    if (!config.displayOptions.has_customLayoutA) {
-        config.displayOptions.customLayoutA.size = 0;
-        config.displayOptions.has_customLayoutA = true;
-    }
-    if (!config.displayOptions.has_customLayoutB) {
-        config.displayOptions.customLayoutB.size = 0;
-        config.displayOptions.has_customLayoutB = true;
-    }
     INIT_UNSET_PROPERTY(config.displayOptions, size, DISPLAY_SIZE);
     INIT_UNSET_PROPERTY(config.displayOptions, flip, DISPLAY_FLIP);
     INIT_UNSET_PROPERTY(config.displayOptions, invert, !!DISPLAY_INVERT);
