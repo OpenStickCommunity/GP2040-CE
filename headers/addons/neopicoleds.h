@@ -550,6 +550,7 @@ public:
 	uint32_t frame[FRAME_MAX];
 private:
 	void configureLEDs();
+	void handleSystemReboot(GPEvent* e);
 
 	GamepadHotkey ProcessAnimationHotkeys(Gamepad *gamepad);
 

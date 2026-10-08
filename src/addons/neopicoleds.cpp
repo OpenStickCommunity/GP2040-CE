@@ -258,6 +258,8 @@ void NeoPicoLEDAddon::setup() {
 	AnimStation.InitSettings();
 	configureLEDs();
 
+	EventManager::getInstance().registerEventHandler(GP_EVENT_SYSTEM_REBOOT, GPEVENT_CALLBACK(this->handleSystemReboot(event)));
+
 	// Next Run
     nextRunTime = make_timeout_time_ms(0); // Reset timeout
 }
@@ -875,6 +877,11 @@ GamepadHotkey NeoPicoLEDAddon::ProcessAnimationHotkeys(Gamepad *gamepad)
 	}
 
 	return action;
+}
+
+void NeoPicoLEDAddon::handleSystemReboot(GPEvent* e) {
+	neopico.Clear();
+	neopico.Show();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////

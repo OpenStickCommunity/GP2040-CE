@@ -117,6 +117,7 @@ class ButtonLayoutScreen : public GPScreen {
         void handleProfileChange(GPEvent* e);
         void handleUSB(GPEvent* e);
         void handleLEDChange(GPEvent* e);
+        void handleSystemReboot(GPEvent* e);
     protected:
         virtual void drawScreen();
     private:
@@ -128,8 +129,6 @@ class ButtonLayoutScreen : public GPScreen {
         GPWidget* pushElement(GPButtonLayout element);
         void generateHeader();
 
-        void updateCustomHeaders();
-        void checkLEDCycleParams();
         void addCustomHeader(std::string newStr, std::string identifier);
 
         const std::map<uint16_t, uint16_t> displayModeLookup = {
@@ -175,15 +174,6 @@ class ButtonLayoutScreen : public GPScreen {
 
         std::deque<std::string> bannerString;
         std::deque<std::string> bannerIdentifier;
-
-        int8_t gamePadProfileNumber = -2;
-        int8_t prevGamepadProfileNumber = -2;
-        
-        int8_t prevLEDAnimationProfileNumber = -2;
- 
-        int8_t prevLEDBaseCycleNumber = -1;
-        int8_t prevLEDBaseCaseCycleNumber = -1;
-        int8_t prevLEDBasePressedCycleNumber = -1;
  
         uint16_t prevButtonState = 0;
         uint8_t prevLayoutLeft = 0;
