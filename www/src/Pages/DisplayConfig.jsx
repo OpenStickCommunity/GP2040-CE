@@ -294,6 +294,7 @@ export default function DisplayConfigPage() {
 		swapTpShareLabels,
 	);
 	const [saveMessage, setSaveMessage] = useState('');
+	const [activeTab, setActiveTab] = useState('defaultHardwareOptions');
 
 	const { t } = useTranslation('');
 
@@ -376,7 +377,8 @@ export default function DisplayConfigPage() {
 							</ul>
 							<Form noValidate onSubmit={handleSubmit}>
 								<Tabs
-									defaultActiveKey="defaultHardwareOptions"
+									activeKey={activeTab}
+									onSelect={(k) => setActiveTab(k)}
 									id="displayConfigTabs"
 									className="mb-3 pb-0"
 									fill

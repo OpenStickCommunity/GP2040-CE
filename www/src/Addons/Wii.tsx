@@ -199,6 +199,9 @@ const Wii = ({
 	const { t } = useTranslation();
 	const [wiiControls, setWiiControls] = useState(baseWiiControls);
 	const [selectedControls] = useState(baseWiiControls);
+	const [activeTab, setActiveTab] = useState(
+		`wii${WII_EXTENSION_CONTROLS[0].id}Config`,
+	);
 	const { setLoading, getAvailablePeripherals, getSelectedPeripheral } =
 		useContext(AppContext);
 
@@ -381,7 +384,8 @@ const Wii = ({
 				</div>
 				<Row className="mb-3">
 					<Tabs
-						defaultActiveKey={`wii${WII_EXTENSION_CONTROLS[0].id}Config`}
+						activeKey={activeTab}
+						onSelect={(k) => k && setActiveTab(k)}
 						id="wiiControllerConfig"
 						className="mb-3"
 						fill

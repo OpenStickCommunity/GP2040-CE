@@ -238,6 +238,7 @@ const Analog = ({
 	const ANALOG_PINS = boardDefinition.analogPins;
 
 	const [calibrationStep, setCalibrationStep] = useState('');
+	const [activeTab, setActiveTab] = useState('analog1Config');
 	const calibration = useRef<{
 		controller: AbortController;
 		centerStarted: number;
@@ -456,7 +457,8 @@ const Analog = ({
 					})}
 				</div>
 				<Tabs
-					defaultActiveKey="analog1Config"
+					activeKey={activeTab}
+					onSelect={(k) => k && setActiveTab(k)}
 					id="analogConfigTabs"
 					className="mb-3 pb-0"
 					fill
