@@ -12,6 +12,10 @@
 
 Chase::Chase(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType, ChaseTypes InChaseType) : Animation(InRGBLights, InButtonCaseEffectType) 
 {
+  for(int i = 0; i < FRAME_MAX; i++ ) {
+    ChaseBlendValues[i] = 0.0f;
+  }
+
   ChaseTypeInUse = InChaseType;
 
   CycleParameterChange();
@@ -306,6 +310,10 @@ void Chase::Animate(RGB (&frame)[FRAME_MAX])
 
 void Chase::AssignThisFrameValues()
 {
+  if(OrderedLights.empty()) {
+    return;
+  }
+
   int currentLightReverseAdjusted = CurrentLight;
 
    //now light the correct lights
