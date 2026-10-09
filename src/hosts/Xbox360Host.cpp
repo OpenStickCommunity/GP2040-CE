@@ -6,9 +6,18 @@
 
 bool Xbox360Host::match(uint8_t dev_addr, uint8_t instance, uint16_t vendor_id, uint16_t product_id, uint8_t controller_type) {    
     if ( controller_type == 1 ) {    
+        // Microsoft
         if ( vendor_id == 0x045E ) {
             switch(product_id) {
-                case 0x028E:
+                case 0x028E: // Xbox 360 Controller
+                    return true;
+            }
+        }
+
+        // 8BitDo
+        if ( vendor_id == 0x2DC8 ) {
+            switch(product_id) {
+                case 0x310B: // 8BitDo Ultimate Wireless / 2.4G Receiver (XInput mode)
                     return true;
             }
         }
