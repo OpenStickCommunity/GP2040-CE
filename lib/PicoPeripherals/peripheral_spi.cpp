@@ -43,8 +43,11 @@ void PeripheralSPI::setup() {
 
     gpio_set_function(_SCK, GPIO_FUNC_SPI);
     gpio_set_function(_TX, GPIO_FUNC_SPI);
-    gpio_set_function(_RX, GPIO_FUNC_SPI);
-    gpio_pull_up(_RX);
+    // RX is optional (write-only devices such as displays); an unset pin is 0xFF here
+    if (_RX < NUM_BANK0_GPIOS) {
+        gpio_set_function(_RX, GPIO_FUNC_SPI);
+        gpio_pull_up(_RX);
+    }
 
     if (_UseDMA) {
         // DMA configuration - 2 channels (TX/RX)

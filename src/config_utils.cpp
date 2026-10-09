@@ -529,6 +529,11 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.displayOptions, displaySaverMode, DISPLAY_SAVER_MODE);
     INIT_UNSET_PROPERTY(config.displayOptions, buttonLayoutOrientation, DISPLAY_LAYOUT_ORIENTATION);
     INIT_UNSET_PROPERTY(config.displayOptions, contrast, DISPLAY_CONTRAST);
+    INIT_UNSET_PROPERTY(config.displayOptions, interfaceType, DISPLAY_INTERFACE_TYPE);
+    INIT_UNSET_PROPERTY(config.displayOptions, spiBlock, DISPLAY_SPI_BLOCK);
+    INIT_UNSET_PROPERTY(config.displayOptions, spiDcPin, DISPLAY_SPI_DC_PIN);
+    INIT_UNSET_PROPERTY(config.displayOptions, spiResetPin, DISPLAY_SPI_RESET_PIN);
+    INIT_UNSET_PROPERTY(config.displayOptions, controller, DISPLAY_CONTROLLER);
 
     // peripheralOptions
     PeripheralOptions& peripheralOptions = config.peripheralOptions;
@@ -1774,6 +1779,8 @@ void gpioMappingsMigrationCore(Config& config)
     }
 
     markAddonPinIfUsed(config.ledOptions.dataPin);
+    markAddonPinIfUsed(config.displayOptions.spiDcPin);
+    markAddonPinIfUsed(config.displayOptions.spiResetPin);
     // check if PLED PINs are actually GPIOs or not
     // pledPin used to be used for RGB indexes, so we should only mark the GPIO
     // as assigned to addon if in PWM mode
