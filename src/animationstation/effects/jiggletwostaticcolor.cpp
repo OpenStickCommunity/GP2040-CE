@@ -1,5 +1,6 @@
 #include "jiggletwostaticcolor.h"
 #include "jigglestaticcolor.h"
+#include "storagemanager.h"
 
 #define JIGGLE_RAINBOW_FRAME_CHANGE_PER_TICK 1
 
@@ -23,24 +24,25 @@ JiggleTwoStaticColor::JiggleTwoStaticColor(Lights& InRGBLights, std::vector<int3
 
 RGB JiggleTwoStaticColor::AdjustColor(int ledIndex, RGB InColor, LightType lightType)
 {
+    AnimationOptions & options = Storage::getInstance().getAnimationOptions();
     RGB otherColor;
     
     //calculate other color and advance rainbow effect if required
     bool bUseRainbow = false;
     if(isButtonAnimation)
     {
-        otherColor = RGB(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].pressedSpecialColor);
-        bUseRainbow = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].bPressedSpecialColorIsRainbow;
+        otherColor = RGB(options.profiles[options.baseProfileIndex].pressedSpecialColor);
+        bUseRainbow = options.profiles[options.baseProfileIndex].bPressedSpecialColorIsRainbow;
     }
     else if(lightType == LightType::LightType_ActionButton)
     {
-        otherColor = RGB(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor);
-        bUseRainbow = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].bNonPressedSpecialColorIsRainbow;
+        otherColor = RGB(options.profiles[options.baseProfileIndex].nonPressedSpecialColor);
+        bUseRainbow = options.profiles[options.baseProfileIndex].bNonPressedSpecialColorIsRainbow;
     }
     else
     {
-        otherColor = RGB(AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].caseSpecialColor);
-        bUseRainbow = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].bCaseSpecialColorIsRainbow;
+        otherColor = RGB(options.profiles[options.baseProfileIndex].caseSpecialColor);
+        bUseRainbow = options.profiles[options.baseProfileIndex].bCaseSpecialColorIsRainbow;
     }
 
     if(bUseRainbow)

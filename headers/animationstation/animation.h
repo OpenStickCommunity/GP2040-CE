@@ -137,9 +137,6 @@ public:
 
   //Which buttons are held at the moment
   virtual void UpdatePressed(std::vector<int32_t> InPressedPins);
-  void ClearPressed();
-
-  static LEDFormat format;
 
   virtual void Animate(RGB (&frame)[FRAME_MAX]) = 0;
   
@@ -150,10 +147,16 @@ public:
 
   virtual bool IsFinished() { return false; } //ready for delete? Only applicable to special move anims really
 
-  //Get color helpers
-  static RGB StaticGetNonPressedColorForLight(Lights* AllLights, uint32_t LightIndex);
+  void ClearPressed();
 
 protected:
+
+  //notifies
+  virtual void NewPressForPin(int lightIndex) {};  
+  virtual int32_t GetFadeTime();
+  virtual RGB GetNonPressedColorForLight(uint32_t LightIndex);
+  virtual RGB GetPressedColorForLight(uint32_t LightIndex);
+
 
   //gets current frame time
   void UpdateTime();
@@ -162,21 +165,11 @@ protected:
   void UpdatePresses();
   void DecrementFadeCounters();
 
-  //notifies
-  virtual void NewPressForPin(int lightIndex) {};
-
   RGB BlendColor(RGB start, RGB end, float alpha);
   RGB FadeColor(RGB start, RGB end, uint32_t TimeLeft);
 
-  virtual int32_t GetFadeTime();
-
   //Type Helpers
   bool LightTypeIsForAnimation(LightType Type);
-
-  //Get color helpers
-  virtual RGB GetNonPressedColorForLight(uint32_t LightIndex);
-  virtual RGB GetPressedColorForLight(uint32_t LightIndex);
-  static RGB GetColorForIndex(uint32_t ColorIndex);
 
   //Light data
   Lights* RGBLights;

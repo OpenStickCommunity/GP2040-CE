@@ -119,8 +119,6 @@
 #define LEDS_BRIGHTNESS -1
 #endif
 
-#define LEDS_COLOR_QUAD(color) ((color<<24) + (color<<16) + (color<<8) + color)
-
 #ifndef LEDS_AUTO_DISABLE_TIME
 #define LEDS_AUTO_DISABLE_TIME 0 // in ms
 #endif
@@ -549,16 +547,10 @@ public:
    	virtual void postprocess(bool sent) {}
     virtual void reinit() {}
 	virtual std::string name() { return NeoPicoLEDName; }
-
-	static void AssignLedPreset(const unsigned char* data, int32_t dataSize);
-	static void RestartLedSystem() { bRestartLeds = true; }
-
 	uint32_t frame[FRAME_MAX];
 private:
-
-	void decompressSettings();
-
 	void configureLEDs();
+	void handleSystemReboot(GPEvent* e);
 
 	GamepadHotkey ProcessAnimationHotkeys(Gamepad *gamepad);
 
@@ -589,7 +581,7 @@ private:
 	Lights RGBLights;
 
 	//Animation class. Handles idle animations, special move animations and pressed button effects
-	class AnimationStation AnimStation;
+	//class AnimationStation AnimStation;
 
 	const uint32_t intervalMS = 25;
 	absolute_time_t nextRunTime;
@@ -600,9 +592,6 @@ private:
 	bool turnOffWhenSuspended;
 
 	bool bHasSetupNeoPico = false;
-
-	//Webconfig/testing
-	static bool bRestartLeds;
 };
 
 #endif

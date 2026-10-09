@@ -22,249 +22,225 @@
 #include "enums.pb.h"
 #include "config.pb.h"
 
-uint8_t AnimationStation::brightnessMax = 100;
-uint8_t AnimationStation::brightnessSteps = 10;
-uint8_t AnimationStation::brightnessStepValue = 0;
-float AnimationStation::normalisedBrightness = 0;
-absolute_time_t AnimationStation::nextChange = nil_time;
-AnimationOptions_Unpacked AnimationStation::options = {};
-AnimationStationTestMode AnimationStation::TestMode = AnimationStationTestMode::AnimationStation_TestModeDisableTestMode;
-bool AnimationStation::bTestModeChangeRequested = false;
-int AnimationStation::TestModePinOrNonButtonIndex = -1;
-bool AnimationStation::TestModeLightIsNonButton = false;
+AnimationStation::AnimationStation() {
+    AnimationOptions & options = Storage::getInstance().getAnimationOptions();
 
-AnimationStation::AnimationStation()
-{
-  AnimationStation::SetBrightnessStepValue(1);
-
-  timeLastButtonPressed = get_absolute_time();
-
-  //ensure valid profile set
-  ChangeProfile(0);
-}
-
-void AnimationStation::SetLights(Lights InRGBLights)
-{
-  RGBLights = InRGBLights;
-}
-
-void AnimationStation::SetMaxBrightness(uint8_t max)
-{
-  brightnessMax = max;
-  if(brightnessMax < brightnessSteps)
-    brightnessMax = brightnessSteps;
-}
-
-void AnimationStation::HandleEvent(GamepadHotkey action)
-{
-  if (action == HOTKEY_LEDS_NONE)
-  {
-    AnimationStation::nextChange = nil_time;
-    return;
-  }
-  else if(!time_reached(AnimationStation::nextChange))
-  {
-    return;
-  }
-
-  AnimationStation::nextChange = make_timeout_time_ms(250);
-
-  //Adjust brigness
-  if (action == HOTKEY_LEDS_BRIGHTNESS_UP)
-  {
-    AnimationStation::IncreaseBrightnessByStep();
-  }
-  if (action == HOTKEY_LEDS_BRIGHTNESS_DOWN)
-  {
-    AnimationStation::DecreaseBrightnessByStep();
-  }
-
-  //Switch to new profile
-  if (action == HOTKEY_LEDS_PROFILE_UP)
-  {
-    ChangeProfile(1);
-  }
-  if (action == HOTKEY_LEDS_PROFILE_DOWN)
-  {
-    ChangeProfile(-1);
-  }
-
-  //Adjust existing profile hotkeys
-  if (this->baseAnimation == nullptr || this->buttonAnimation == nullptr)
-  {
-    return;
-  }
-
-  if (action == HOTKEY_LEDS_PARAMETER_CYCLE)
-  {
-    options.profiles[options.baseProfileIndex].baseCycleTime++;
-    if(options.profiles[options.baseProfileIndex].baseCycleTime >= CYCLE_STEPS)
-      options.profiles[options.baseProfileIndex].baseCycleTime = 0;
-    this->baseAnimation->CycleParameterChange();
-  }
-  else if (this->caseAnimation && action == HOTKEY_LEDS_CASE_PARAMETER_CYCLE)
-  {
-    options.profiles[options.baseProfileIndex].baseCaseCycleTime++;
-    if(options.profiles[options.baseProfileIndex].baseCaseCycleTime >= CYCLE_STEPS)
-      options.profiles[options.baseProfileIndex].baseCaseCycleTime = 0;
-
-    this->caseAnimation->CycleParameterChange();
-  }
-  else if (action == HOTKEY_LEDS_PRESS_PARAMETER_CYCLE)
-  {
-    options.profiles[options.baseProfileIndex].basePressedCycleTime++;
-    if(options.profiles[options.baseProfileIndex].basePressedCycleTime >= CYCLE_STEPS)
-      options.profiles[options.baseProfileIndex].basePressedCycleTime = 0;
-
-    this->buttonAnimation->CycleParameterChange();
-  }
-}
-
-void AnimationStation::ChangeProfile(int changeSize)
-{
-  timeLastButtonPressed = get_absolute_time();
-
-  this->SetMode(this->AdjustIndex(changeSize));
-}
-
-uint16_t AnimationStation::AdjustIndex(int changeSize)
-{
-  std::vector<int> validIndexes;
-
-  //when initalising then changesize will be 0. If current profile is -1 then we saved in the off state. So just resume in off state
-  if(changeSize == 0 && this->options.baseProfileIndex == -1)
-    return -1;
-
-  //if no profiles defined then return -1 to turn everything off
-  if(options.NumValidProfiles == 0)
-    return -1;
-
-  //Check to see which ones are enabled. If none then return -1 to turn everything off
-  for(int index = 0; index < MAX_ANIMATION_PROFILES; ++index)
-  {
-    if(options.profiles[index].bEnabled)
-      validIndexes.push_back(index);
-  }
-  if(validIndexes.size() == 0)
-    return -1;
-
-  //find index of current profile
-  int indexOfCurrentProfile = -1;
-  for(unsigned int index = 0; index < validIndexes.size(); ++index)
-  {
-    if(validIndexes[index] == (int)this->options.baseProfileIndex)
-    {
-      indexOfCurrentProfile = index;
-      break;
-    }
-  }
-
-  //if we cant find it then either we're in the off state or this is probably the first call and the first profile isnt valid.
-  if(indexOfCurrentProfile == -1)
-  {
-    if(changeSize >= 0)
-      return validIndexes[0];
-    else
-      return validIndexes[validIndexes.size() - 1];
-  }
-
-  int newProfileIndex = indexOfCurrentProfile + changeSize;
-
-  //if we're going to wrap around then move to "OFF" profile
-  if (newProfileIndex >= (int)validIndexes.size())
-  {
-    return -1;
-  }
-  else if (newProfileIndex < 0)
-  {
-    return -1;
-  }
-
-  return (uint16_t)validIndexes[newProfileIndex];
-}
-
-void AnimationStation::HandlePressedPins(std::vector<int32_t> pressedPins)
-{
-  if(pressedPins.size())
-  {
+    // Changed when neopicoled starts up
+    brightnessMax = 100;
+    brightnessSteps = 10;
+    brightnessStepValue = 0;
+    normalisedBrightness = 0;
+    TestMode = AnimationStationTestMode::AnimationStation_TestModeDisableTestMode;
+    bTestModeChangeRequested = false;
+    TestModePinOrNonButtonIndex = -1;
+    TestModeLightIsNonButton = false;
+    SetBrightnessStepValue(1);
     timeLastButtonPressed = get_absolute_time();
-    this->lastPressed = pressedPins;
-    if(this->buttonAnimation)
-      this->buttonAnimation->UpdatePressed(pressedPins);
-  }
-  else
-  {
-    this->lastPressed.clear();
-    if(this->buttonAnimation)
-      this->buttonAnimation->ClearPressed();
-  }
+
+    lastAction = HOTKEY_LEDS_NONE;
+  
+    // For save update
+    bChangeDetected = false;
+    bRestartLeds = false;
 }
 
-void AnimationStation::HandlePressedButtons(uint32_t pressedButtons)
-{
+void AnimationStation::SetLights(Lights InRGBLights) {
+    RGBLights = InRGBLights;
+}
+
+void AnimationStation::SetMaxBrightness(uint8_t max) {
+    brightnessMax = max;
+    if(brightnessMax < brightnessSteps)
+      brightnessMax = brightnessSteps;
+}
+
+void AnimationStation::HandleEvent(GamepadHotkey action) {
+    AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+
+    // Do nothing if we haven't reached our 250ms timeout
+    if (action == lastAction) {
+      return;
+    }
+
+    switch(action) {
+        case HOTKEY_LEDS_NONE:
+            break;
+        case HOTKEY_LEDS_BRIGHTNESS_UP:
+            IncreaseBrightnessByStep();
+            bChangeDetected = true;
+            break;
+        case HOTKEY_LEDS_BRIGHTNESS_DOWN:
+            DecreaseBrightnessByStep();
+            bChangeDetected = true;
+            break;
+        case HOTKEY_LEDS_PROFILE_UP:
+            if ( IncreaseProfile() ) {
+              bChangeDetected = true;
+            }
+            break;
+        case HOTKEY_LEDS_PROFILE_DOWN:
+            if ( DecreaseProfile() ) {
+              bChangeDetected = true;
+            }
+            break;
+        case HOTKEY_LEDS_PARAMETER_CYCLE:
+            if ( baseAnimation == nullptr || options.baseProfileIndex == -1 )
+                return;
+            options.profiles[options.baseProfileIndex].baseCycleTime++;
+            if(options.profiles[options.baseProfileIndex].baseCycleTime >= CYCLE_STEPS)
+                options.profiles[options.baseProfileIndex].baseCycleTime = 0;
+            baseAnimation->CycleParameterChange();
+            EventManager::getInstance().triggerEvent(new GPLEDEvent(false, true, false, false, false));
+            bChangeDetected = true;
+            break;
+        case HOTKEY_LEDS_CASE_PARAMETER_CYCLE:
+            if ( caseAnimation == nullptr || options.baseProfileIndex == -1 )
+                return;
+            options.profiles[options.baseProfileIndex].baseCaseCycleTime++;
+            if( options.profiles[options.baseProfileIndex].baseCaseCycleTime >= CYCLE_STEPS )
+                options.profiles[options.baseProfileIndex].baseCaseCycleTime = 0;
+            caseAnimation->CycleParameterChange();
+            EventManager::getInstance().triggerEvent(new GPLEDEvent(false, false, true, false, false));
+            bChangeDetected = true;
+            break;
+        case HOTKEY_LEDS_PRESS_PARAMETER_CYCLE:
+            if ( buttonAnimation == nullptr || options.baseProfileIndex == -1 )
+                return;
+            options.profiles[options.baseProfileIndex].basePressedCycleTime++;
+            if( options.profiles[options.baseProfileIndex].basePressedCycleTime >= CYCLE_STEPS )
+                options.profiles[options.baseProfileIndex].basePressedCycleTime = 0;
+            buttonAnimation->CycleParameterChange();
+            EventManager::getInstance().triggerEvent(new GPLEDEvent(false, false, false, true, false));
+            bChangeDetected = true;
+            break;
+        default:
+            break;
+    };
+
+    lastAction = action;
+}
+
+void AnimationStation::ChangeProfile(int changeSize) {
+    timeLastButtonPressed = get_absolute_time();
+
+    this->SetMode(this->AdjustIndex(changeSize));
+}
+
+bool AnimationStation::IncreaseProfile() {
+    // find next valid index
+    AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+    int32_t nextIndex = options.baseProfileIndex;
+    while ( 1 ) { // find the next LED profile or disable profile
+        if ( nextIndex == MAX_ANIMATION_PROFILES-1 ) { // disable profile
+            SetMode(-1);
+            EventManager::getInstance().triggerEvent(new GPLEDEvent(true, false, false, false, false));
+            return true;
+        }
+        nextIndex++;
+        if ( options.profiles[nextIndex].bEnabled ) {
+            SetMode(nextIndex);
+            EventManager::getInstance().triggerEvent(new GPLEDEvent(true, false, false, false, false));
+            return true;
+        }
+    }
+    return false;
+}
+
+bool AnimationStation::DecreaseProfile() {
+    // find next valid index
+    AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+    int32_t prevIndex = options.baseProfileIndex;
+    if ( prevIndex == -1 ) { // Disabled, wraparound to the top
+      prevIndex = MAX_ANIMATION_PROFILES;
+    }
+    while ( 1 ) {
+        if ( prevIndex == 0 ) { // disable profile
+            SetMode(-1);
+            EventManager::getInstance().triggerEvent(new GPLEDEvent(true, false, false, false, false));
+            return true;
+        }
+        prevIndex--;
+        if ( options.profiles[prevIndex].bEnabled ) {
+            SetMode(prevIndex);
+            EventManager::getInstance().triggerEvent(new GPLEDEvent(true, false, false, false, false));
+            return true;
+        }
+    }
+    return false;
+}
+
+void AnimationStation::HandlePressedPins(std::vector<int32_t> pressedPins) {
+    if(pressedPins.size()) {
+        timeLastButtonPressed = get_absolute_time();
+        this->lastPressed = pressedPins;
+        if(this->buttonAnimation)
+            this->buttonAnimation->UpdatePressed(pressedPins);
+    } else {
+      this->lastPressed.clear();
+      if(this->buttonAnimation)
+        this->buttonAnimation->ClearPressed();
+    }
+}
+
+void AnimationStation::HandlePressedButtons(uint32_t pressedButtons) {
 }
 
 void AnimationStation::UpdateTestMode()
 {
-  if(!bTestModeChangeRequested)
-    return;
-  bTestModeChangeRequested = false;
+    if(!bTestModeChangeRequested)
+        return;
+    bTestModeChangeRequested = false;
 
-  switch(TestMode)
-  {
-    case AnimationStationTestMode::AnimationStation_TestModeOff:
-    {
-      SetMode(-1);
-    } break;
-    case AnimationStationTestMode::AnimationStation_TestModeButtons:
-    case AnimationStationTestMode::AnimationStation_TestModeLayout:
-    case AnimationStationTestMode::AnimationStation_TestModeProfilePreview:
-    {
-      SetMode(MAX_ANIMATION_PROFILES_INCLUDING_TEST - 1);
-    } break;
-
-    case AnimationStationTestMode::AnimationStation_TestModeDisableTestMode:
-    {
-       SetMode(0);     
-    } break;
-
-    default:
-      break;
-  }
+    switch(TestMode) {
+        case AnimationStationTestMode::AnimationStation_TestModeOff:
+            SetMode(-1);
+            break;
+        case AnimationStationTestMode::AnimationStation_TestModeButtons:
+        case AnimationStationTestMode::AnimationStation_TestModeLayout:
+        case AnimationStationTestMode::AnimationStation_TestModeProfilePreview:
+            SetMode(MAX_ANIMATION_PROFILES_INCLUDING_TEST - 1);
+            break;
+        case AnimationStationTestMode::AnimationStation_TestModeDisableTestMode:
+            SetMode(0);     
+            break;
+        default:
+            break;
+    };
 }
 
 void AnimationStation::Animate()
 {
-  //Test mode checks
-  UpdateTestMode();
+    //Test mode checks
+    UpdateTestMode();
 
-  //timeout checks
-  UpdateTimeout();
+    //timeout checks
+    UpdateTimeout();
 
-  //Check for options changing and need saving
-  CheckForOptionsUpdate();
+    //Check for options changing and need saving
+    CheckForOptionsUpdate();
 
-  //If no profiles running
-  if (baseAnimation == nullptr || buttonAnimation == nullptr)
-  {
-    this->Clear();
-    return;
-  }
+    //If no profiles running
+    if (baseAnimation == nullptr || buttonAnimation == nullptr) {
+        this->Clear();
+        return;
+    }
 
-  baseAnimation->Animate(this->frame);
-  if(caseAnimation != nullptr)
-    caseAnimation->Animate(this->frame);
-  buttonAnimation->Animate(this->frame);
+    baseAnimation->Animate(this->frame);
+    if(caseAnimation != nullptr)
+        caseAnimation->Animate(this->frame);
+    buttonAnimation->Animate(this->frame);
 }
 
 void AnimationStation::Clear()
 {
-  //sets all lights to black (off)
-  memset(frame, 0, sizeof(frame));
+    //sets all lights to black (off)
+    memset(frame, 0, sizeof(frame));
 }
 
 void AnimationStation::UpdateTimeout()
 {
+  AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+
   if(TestMode == AnimationStationTestMode::AnimationStation_TestModeDisableTestMode && options.autoDisableTime > 0)
   {
     if(bIsInIdleTimeout == false)
@@ -287,22 +263,44 @@ void AnimationStation::UpdateTimeout()
       bIsInIdleTimeout = false;
       if(this->baseAnimation != nullptr)
         delete this->baseAnimation;
-      bool bCaseLightsUsingButtonNonPressedAnim = this->options.profiles[this->options.baseProfileIndex].baseNonPressedEffect == this->options.profiles[this->options.baseProfileIndex].baseCaseEffect;
+      bool bCaseLightsUsingButtonNonPressedAnim = options.profiles[options.baseProfileIndex].baseNonPressedEffect == options.profiles[options.baseProfileIndex].baseCaseEffect;
 
       //set new profile nonpressed animation
-      this->baseAnimation = GetNonPressedEffectForEffectType(this->options.profiles[this->options.baseProfileIndex].baseNonPressedEffect, bCaseLightsUsingButtonNonPressedAnim ? EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE : EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_ONLY);
+      this->baseAnimation = GetNonPressedEffectForEffectType(options.profiles[options.baseProfileIndex].baseNonPressedEffect, bCaseLightsUsingButtonNonPressedAnim ? EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE : EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_ONLY);
       //Set case animation if required
       if(!bCaseLightsUsingButtonNonPressedAnim)
       {
-        this->caseAnimation = GetNonPressedEffectForEffectType(this->options.profiles[this->options.baseProfileIndex].baseCaseEffect, EButtonCaseEffectType::BUTTONCASELIGHTTYPE_CASE_ONLY);
+        this->caseAnimation = GetNonPressedEffectForEffectType(options.profiles[options.baseProfileIndex].baseCaseEffect, EButtonCaseEffectType::BUTTONCASELIGHTTYPE_CASE_ONLY);
       }
     }
   }
 }
 
+void AnimationStation::AssignLedPreset(const unsigned char* data, int32_t dataSize) {
+  LEDOptions& options = Storage::getInstance().getLedOptions();
+	options.lightClusterData_count = 0;
+	options.lightClusterDataInitialised = true;
+	for (int entryIndex = 0; (entryIndex * 6) + 5 < dataSize; ++entryIndex) //each data entry has 6 elements
+	{
+		int dataIndex = entryIndex * 6;
+		options.lightClusterData[entryIndex].lightLocationData = data[dataIndex];
+		options.lightClusterData[entryIndex].lightLocationData += ((int)data[dataIndex+1]) << 8;
+		options.lightClusterData[entryIndex].lightLocationData += ((int)data[dataIndex+2]) << 16;
+		options.lightClusterData[entryIndex].lightLocationData += ((int)data[dataIndex+3]) << 24;
+		options.lightClusterData[entryIndex].lightTypeData = ((int)data[dataIndex+4]);
+		options.lightClusterData[entryIndex].lightTypeData += ((int)data[dataIndex+5]) << 8;
+
+		options.lightClusterData_count = entryIndex + 1;
+
+		if(options.lightClusterData_count >= FRAME_MAX) //100 entries total
+			return;
+	}
+}
+
 int8_t AnimationStation::GetMode()
 {
-  return this->options.baseProfileIndex;
+  AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+  return options.baseProfileIndex;
 }
 
 Animation* AnimationStation::GetNonPressedEffectForEffectType(AnimationNonPressedEffects EffectType, EButtonCaseEffectType InButtonCaseEffectType)
@@ -388,7 +386,9 @@ Animation* AnimationStation::GetNonPressedEffectForEffectType(AnimationNonPresse
 
 void AnimationStation::SetMode(int8_t mode)
 {
-  this->options.baseProfileIndex = mode;
+  AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+
+  options.baseProfileIndex = mode;
 
   //remove old animations
   if (this->baseAnimation != nullptr)
@@ -414,21 +414,21 @@ void AnimationStation::SetMode(int8_t mode)
   if(mode == -1)
     return;
 
-  bool bCaseLightsUsingButtonNonPressedAnim = this->options.profiles[this->options.baseProfileIndex].baseNonPressedEffect == this->options.profiles[this->options.baseProfileIndex].baseCaseEffect;
+  bool bCaseLightsUsingButtonNonPressedAnim = options.profiles[options.baseProfileIndex].baseNonPressedEffect == options.profiles[options.baseProfileIndex].baseCaseEffect;
 
   //set new profile nonpressed animation
-  this->baseAnimation = GetNonPressedEffectForEffectType(this->options.profiles[this->options.baseProfileIndex].baseNonPressedEffect, bCaseLightsUsingButtonNonPressedAnim ? EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE : EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_ONLY);
+  this->baseAnimation = GetNonPressedEffectForEffectType(options.profiles[options.baseProfileIndex].baseNonPressedEffect, bCaseLightsUsingButtonNonPressedAnim ? EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE : EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_ONLY);
 
   //Set case animation if required
   if(!bCaseLightsUsingButtonNonPressedAnim)
   {
-    this->caseAnimation = GetNonPressedEffectForEffectType(this->options.profiles[this->options.baseProfileIndex].baseCaseEffect, EButtonCaseEffectType::BUTTONCASELIGHTTYPE_CASE_ONLY);
+    this->caseAnimation = GetNonPressedEffectForEffectType(options.profiles[options.baseProfileIndex].baseCaseEffect, EButtonCaseEffectType::BUTTONCASELIGHTTYPE_CASE_ONLY);
   }
 
   //set new profile pressed animation
   //for effects that can alter multiple lights, tell them if they should also effect case lights
-  EButtonCaseEffectType buttonCaseEffectType = this->options.profiles[this->options.baseProfileIndex].bUseCaseLightsInPressedAnimations ? EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE : EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_ONLY;
-  switch (this->options.profiles[this->options.baseProfileIndex].basePressedEffect)
+  EButtonCaseEffectType buttonCaseEffectType = options.profiles[options.baseProfileIndex].bUseCaseLightsInPressedAnimations ? EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE : EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_ONLY;
+  switch (options.profiles[options.baseProfileIndex].basePressedEffect)
   {
   case AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_RANDOM:
     this->buttonAnimation = new RandomColor(RGBLights, lastPressed);
@@ -464,150 +464,98 @@ void AnimationStation::SetMode(int8_t mode)
 void AnimationStation::ApplyBrightness(uint32_t *frameValue)
 {
   for (int i = 0; i < FRAME_MAX; i++)
-    frameValue[i] = this->frame[i].value(Animation::format, normalisedBrightness);
+    frameValue[i] = this->frame[i].value(format, normalisedBrightness);
 }
 
 void AnimationStation::SetBrightnessStepValue(uint8_t brightness)
 {
-  AnimationStation::brightnessStepValue = brightness;
+  brightnessStepValue = brightness;
   ApplyBrightnessStepValue();
 }
 
 void AnimationStation::ApplyBrightnessStepValue()
 {
-  AnimationStation::brightnessStepValue = std::clamp<uint32_t>(AnimationStation::brightnessStepValue, 0, brightnessSteps);
-
-  AnimationStation::normalisedBrightness = (brightnessStepValue * getBrightnessStepSize()) / 255.0F;
-  AnimationStation::normalisedBrightness = std::clamp<float>(AnimationStation::normalisedBrightness, 0.0f, 1.0f);
+  brightnessStepValue = std::clamp<uint32_t>(brightnessStepValue, 0, brightnessSteps);
+  normalisedBrightness = (brightnessStepValue * getBrightnessStepSize()) / 255.0F;
+  normalisedBrightness = std::clamp<float>(normalisedBrightness, 0.0f, 1.0f);
 }
 
 void AnimationStation::DecreaseBrightnessByStep()
 {
-  AnimationStation::options.brightness = std::clamp<int32_t>(((int32_t)options.brightness)-1, 0, brightnessSteps);
-  SetBrightnessStepValue(AnimationStation::options.brightness);
+  AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+  options.brightness = std::clamp<int32_t>(((int32_t)options.brightness)-1, 0, brightnessSteps);
+  SetBrightnessStepValue(options.brightness);
+
+  EventManager::getInstance().triggerEvent(new GPLEDEvent(false, false, false, false, true));
 }
 
 void AnimationStation::IncreaseBrightnessByStep()
 {
-  AnimationStation::options.brightness = std::clamp<int32_t>(options.brightness+1, 0, brightnessSteps);
-  SetBrightnessStepValue(AnimationStation::options.brightness);
+  AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+  options.brightness = std::clamp<int32_t>(options.brightness+1, 0, brightnessSteps);
+  SetBrightnessStepValue(options.brightness);
+
+  EventManager::getInstance().triggerEvent(new GPLEDEvent(false, false, false, false, true));
 }
 
 void AnimationStation::DimBrightnessTo0()
 {
-  AnimationStation::normalisedBrightness = 0;
+  normalisedBrightness = 0;
 }
 
 float AnimationStation::GetNormalisedBrightness()
 {
-  return AnimationStation::normalisedBrightness;
+  return normalisedBrightness;
 }
 
 uint8_t AnimationStation::GetBrightnessStepValue()
 {
-  return AnimationStation::brightnessStepValue;
+  return brightnessStepValue;
 }
 
-void AnimationStation::DecompressProfile(int ProfileIndex, const AnimationProfile* ProfileToDecompress)
-{
-		options.profiles[ProfileIndex].bEnabled = ProfileToDecompress->bEnabled;
-		options.profiles[ProfileIndex].baseNonPressedEffect = (AnimationNonPressedEffects)((int)ProfileToDecompress->baseNonPressedEffect);
-		options.profiles[ProfileIndex].basePressedEffect = (AnimationPressedEffects)((int)ProfileToDecompress->basePressedEffect);
-		options.profiles[ProfileIndex].baseCaseEffect = (AnimationNonPressedEffects)((int)ProfileToDecompress->baseCaseEffect);
-
-    options.profiles[ProfileIndex].nonPressedEffectContextParam = ProfileToDecompress->effectContextParam & 0xFF;
-    options.profiles[ProfileIndex].pressedEffectContextParam = (ProfileToDecompress->effectContextParam >> 8) & 0xFF;
-    options.profiles[ProfileIndex].caseEffectContextParam = (ProfileToDecompress->effectContextParam >> 16) & 0xFF;
-
-		options.profiles[ProfileIndex].baseCycleTime = ProfileToDecompress->baseCycleTime;
-		options.profiles[ProfileIndex].basePressedCycleTime = ProfileToDecompress->basePressedCycleTime;
-    options.profiles[ProfileIndex].baseCaseCycleTime = ProfileToDecompress->baseCaseCycleTime;
-		for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS + 3) / 4; ++packedPinIndex)
-		{
-			int pinIndex = packedPinIndex * 4;
-			if(packedPinIndex < ProfileToDecompress->notPressedStaticColors_count)
-			{
-				options.profiles[ProfileIndex].notPressedStaticColors[pinIndex + 0] = ProfileToDecompress->notPressedStaticColors[packedPinIndex] & 0xFF;
-				options.profiles[ProfileIndex].notPressedStaticColors[pinIndex + 1] = (ProfileToDecompress->notPressedStaticColors[packedPinIndex] >> 8) & 0xFF;
-				options.profiles[ProfileIndex].notPressedStaticColors[pinIndex + 2] = (ProfileToDecompress->notPressedStaticColors[packedPinIndex] >> 16) & 0xFF;
-				options.profiles[ProfileIndex].notPressedStaticColors[pinIndex + 3] = (ProfileToDecompress->notPressedStaticColors[packedPinIndex] >> 24) & 0xFF;
-			}
-      else
-      {
-        //Set all black
-				options.profiles[ProfileIndex].notPressedStaticColors[pinIndex + 0] = 0;
-				options.profiles[ProfileIndex].notPressedStaticColors[pinIndex + 1] = 0;
-				options.profiles[ProfileIndex].notPressedStaticColors[pinIndex + 2] = 0;
-				options.profiles[ProfileIndex].notPressedStaticColors[pinIndex + 3] = 0;
-      }
-
-			if(packedPinIndex < ProfileToDecompress->pressedStaticColors_count)
-			{
-				options.profiles[ProfileIndex].pressedStaticColors[pinIndex + 0] = ProfileToDecompress->pressedStaticColors[packedPinIndex] & 0xFF;
-				options.profiles[ProfileIndex].pressedStaticColors[pinIndex + 1] = (ProfileToDecompress->pressedStaticColors[packedPinIndex] >> 8) & 0xFF;
-				options.profiles[ProfileIndex].pressedStaticColors[pinIndex + 2] = (ProfileToDecompress->pressedStaticColors[packedPinIndex] >> 16) & 0xFF;
-				options.profiles[ProfileIndex].pressedStaticColors[pinIndex + 3] = (ProfileToDecompress->pressedStaticColors[packedPinIndex] >> 24) & 0xFF;
-			}
-      else
-      {
-        //Set all black
-				options.profiles[ProfileIndex].pressedStaticColors[pinIndex + 0] = 0;
-				options.profiles[ProfileIndex].pressedStaticColors[pinIndex + 1] = 0;
-				options.profiles[ProfileIndex].pressedStaticColors[pinIndex + 2] = 0;
-				options.profiles[ProfileIndex].pressedStaticColors[pinIndex + 3] = 0;
-      }
-		}
-
-		for(unsigned int packedNonButtonIndex = 0; packedNonButtonIndex < (MAX_NON_BUTTON_LIGHT_COLOR_INDEXES / 4); ++packedNonButtonIndex)
-		{
-			int nonButtonIndex = packedNonButtonIndex * 4;
-      if(packedNonButtonIndex < ProfileToDecompress->nonButtonStaticColors_count)
-      {
-        options.profiles[ProfileIndex].nonButtonStaticColors[nonButtonIndex + 0] = ProfileToDecompress->nonButtonStaticColors[packedNonButtonIndex] & 0xFF;
-        options.profiles[ProfileIndex].nonButtonStaticColors[nonButtonIndex + 1] = (ProfileToDecompress->nonButtonStaticColors[packedNonButtonIndex] >> 8) & 0xFF;
-        options.profiles[ProfileIndex].nonButtonStaticColors[nonButtonIndex + 2] = (ProfileToDecompress->nonButtonStaticColors[packedNonButtonIndex] >> 16) & 0xFF;
-        options.profiles[ProfileIndex].nonButtonStaticColors[nonButtonIndex + 3] = (ProfileToDecompress->nonButtonStaticColors[packedNonButtonIndex] >> 24) & 0xFF;
-      }
-      else
-      {
-        //Set all black
-				options.profiles[ProfileIndex].nonButtonStaticColors[nonButtonIndex + 0] = 0;
-				options.profiles[ProfileIndex].nonButtonStaticColors[nonButtonIndex + 1] = 0;
-				options.profiles[ProfileIndex].nonButtonStaticColors[nonButtonIndex + 2] = 0;
-				options.profiles[ProfileIndex].nonButtonStaticColors[nonButtonIndex + 3] = 0;
-      }
-		}
-    
-    options.profiles[ProfileIndex].buttonPressHoldTimeInMs = ProfileToDecompress->buttonPressHoldTimeInMs;
-		options.profiles[ProfileIndex].buttonPressFadeOutTimeInMs = ProfileToDecompress->buttonPressFadeOutTimeInMs;
-		options.profiles[ProfileIndex].nonPressedSpecialColor = ProfileToDecompress->nonPressedSpecialColor;
-		options.profiles[ProfileIndex].pressedSpecialColor = ProfileToDecompress->pressedSpecialColor;
-		options.profiles[ProfileIndex].caseSpecialColor = ProfileToDecompress->caseSpecialColor;
-		options.profiles[ProfileIndex].bNonPressedSpecialColorIsRainbow = ProfileToDecompress->bNonPressedSpecialColorIsRainbow;
-		options.profiles[ProfileIndex].bPressedSpecialColorIsRainbow = ProfileToDecompress->bPressedSpecialColorIsRainbow;
-		options.profiles[ProfileIndex].bCaseSpecialColorIsRainbow = ProfileToDecompress->bCaseSpecialColorIsRainbow;
-		options.profiles[ProfileIndex].bUseCaseLightsInPressedAnimations = ProfileToDecompress->bUseCaseLightsInPressedAnimations;
+void AnimationStation::CopyTestProfile(const AnimationProfile* newProfile) {
+    AnimationOptions& options = Storage::getInstance().getAnimationOptions();
+    int ProfileIndex = MAX_ANIMATION_PROFILES_INCLUDING_TEST - 1;
+    memcpy(&options.profiles[ProfileIndex], newProfile, sizeof(AnimationProfile));
 }
 
-void AnimationStation::DecompressSettings()
+void AnimationStation::SetTestModeLayout(){
+    //Set up test profile that is Chase Random
+    AnimationOptions& options = Storage::getInstance().getAnimationOptions();
+    int testProfileIndex = MAX_ANIMATION_PROFILES_INCLUDING_TEST - 1;
+    options.profiles[testProfileIndex].baseCaseEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_LEFT_TO_RIGHT;
+    options.profiles[testProfileIndex].baseNonPressedEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_LEFT_TO_RIGHT;
+    options.profiles[testProfileIndex].basePressedEffect = AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_STATIC_COLOR;
+    memset(options.profiles[testProfileIndex].notPressedStaticColors.bytes, 0, NUM_BANK0_GPIOS);
+    memset(options.profiles[testProfileIndex].pressedStaticColors.bytes, 0, NUM_BANK0_GPIOS);
+    memset(options.profiles[testProfileIndex].nonButtonStaticColors.bytes, 0, MAX_NON_BUTTON_LIGHT_COLOR_INDEXES);
+    options.profiles[testProfileIndex].nonPressedSpecialColor = 0xFFFFFF; //White
+    options.profiles[testProfileIndex].caseSpecialColor = 0xFFFFFF; //White
+    options.profiles[testProfileIndex].baseCycleTime = 2;
+    options.profiles[testProfileIndex].basePressedCycleTime = 2;
+    options.profiles[testProfileIndex].baseCaseCycleTime = 2;
+}
+
+void AnimationStation::SetTestModeButton(){
+    //Set up test profile that is all black
+    AnimationOptions& options = Storage::getInstance().getAnimationOptions();
+    int testProfileIndex = MAX_ANIMATION_PROFILES_INCLUDING_TEST - 1;
+    options.profiles[testProfileIndex].baseCaseEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_STATIC_COLOR;
+    options.profiles[testProfileIndex].baseNonPressedEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_STATIC_COLOR;
+    options.profiles[testProfileIndex].basePressedEffect = AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_STATIC_COLOR;
+    memset(options.profiles[testProfileIndex].notPressedStaticColors.bytes, 0, NUM_BANK0_GPIOS);
+    memset(options.profiles[testProfileIndex].pressedStaticColors.bytes, 0, NUM_BANK0_GPIOS);
+    memset(options.profiles[testProfileIndex].nonButtonStaticColors.bytes, 0, MAX_NON_BUTTON_LIGHT_COLOR_INDEXES);
+}
+
+void AnimationStation::InitSettings()
 {
-	const AnimationOptions& optionsProto = Storage::getInstance().getAnimationOptions();
-
-	options.checksum				= 0;
-	options.NumValidProfiles = optionsProto.profiles_count;
-	for(int index = 0; index < options.NumValidProfiles && index < 4; ++index) //MAX_ANIMATION_PROFILES from AnimationStation.hpp
-	{
-    DecompressProfile(index, &(optionsProto.profiles[index]));
-	}
-
-	options.brightness				= std::min<uint32_t>(optionsProto.brightness, brightnessSteps);
-	options.baseProfileIndex	= optionsProto.baseProfileIndex;
-  options.autoDisableTime   = optionsProto.autoDisableTime;
+	const AnimationOptions& options = Storage::getInstance().getAnimationOptions();
 
 	customColors.clear();
 	for(unsigned int customColIndex = 0; customColIndex < MAX_CUSTOM_COLORS; ++customColIndex)
 	{
-		customColors.push_back(optionsProto.customColors[customColIndex]);
+		customColors.push_back(options.customColors[customColIndex]);
 	}
 }
 
@@ -616,24 +564,6 @@ void AnimationStation::CheckForOptionsUpdate()
   //No saving in test/webconfig mode
   if(TestMode != AnimationStationTestMode::AnimationStation_TestModeDisableTestMode)
     return;
-
-  bool bChangeDetected = false;
-  AnimationOptions& optionsProto = Storage::getInstance().getAnimationOptions();
-
-  //Any changes?
-	for(int index = 0; index < MAX_ANIMATION_PROFILES && !bChangeDetected; ++index)
-	{
-		if(optionsProto.profiles[index].baseCycleTime != options.profiles[index].baseCycleTime)
-      bChangeDetected = true;
-		else if(optionsProto.profiles[index].basePressedCycleTime != options.profiles[index].basePressedCycleTime)
-      bChangeDetected = true;
-		else if(optionsProto.profiles[index].baseCaseCycleTime != options.profiles[index].baseCaseCycleTime)
-      bChangeDetected = true;
-	}
-	if(optionsProto.brightness != options.brightness)
-      bChangeDetected = true;
-	else if(optionsProto.baseProfileIndex != options.baseProfileIndex)
-      bChangeDetected = true;
 
   //only change settings if they've been static for a little while
   if(bChangeDetected)
@@ -647,141 +577,105 @@ void AnimationStation::CheckForOptionsUpdate()
     if(bAnimConfigSaveNeeded && (absolute_time_diff_us(timeAnimationSaveSet, get_absolute_time()) / 1000) > 1000) // 1 second delay on saves
     {
       bAnimConfigSaveNeeded = false;
-      for(int index = 0; index < MAX_ANIMATION_PROFILES; ++index)
-      {
-        optionsProto.profiles[index].baseCycleTime = options.profiles[index].baseCycleTime;
-        optionsProto.profiles[index].basePressedCycleTime = options.profiles[index].basePressedCycleTime;
-        optionsProto.profiles[index].baseCaseCycleTime = options.profiles[index].baseCaseCycleTime;
-      }
-      optionsProto.brightness					= options.brightness;
-      optionsProto.baseProfileIndex			= options.baseProfileIndex;
-
       EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(false));
     }
   }
 }
 
 //Testmode functions
-void AnimationStation::SetTestMode(AnimationStationTestMode TestType, const AnimationProfile* TestProfile, uint8_t overrideBrightness, uint8_t overrideMaxBrightness)
-{
-  bTestModeChangeRequested = true;
-
-  TestMode = TestType;
-
-  SetMaxBrightness(overrideMaxBrightness);
-  SetBrightnessStepValue(overrideBrightness);
-
-  //Decompress profile into the test entry
-  int testProfileIndex = MAX_ANIMATION_PROFILES_INCLUDING_TEST - 1;
-  if(TestMode == AnimationStationTestMode::AnimationStation_TestModeProfilePreview)
-    DecompressProfile(testProfileIndex, TestProfile);
-  else if(TestMode == AnimationStationTestMode::AnimationStation_TestModeLayout)
-  {
-    //Set up test profile that is Chase Random
-    options.profiles[testProfileIndex].baseCaseEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_LEFT_TO_RIGHT;
-    options.profiles[testProfileIndex].baseNonPressedEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_LEFT_TO_RIGHT;
-    options.profiles[testProfileIndex].basePressedEffect = AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_STATIC_COLOR;
-
-    for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS + 3) / 4; ++packedPinIndex)
-		{
-			int pinIndex = packedPinIndex * 4;
-      options.profiles[testProfileIndex].notPressedStaticColors[pinIndex + 0] = 0;
-      options.profiles[testProfileIndex].notPressedStaticColors[pinIndex + 1] = 0;
-      options.profiles[testProfileIndex].notPressedStaticColors[pinIndex + 2] = 0;
-      options.profiles[testProfileIndex].notPressedStaticColors[pinIndex + 3] = 0;
-
-      options.profiles[testProfileIndex].pressedStaticColors[pinIndex + 0] = 0;
-      options.profiles[testProfileIndex].pressedStaticColors[pinIndex + 1] = 0;
-      options.profiles[testProfileIndex].pressedStaticColors[pinIndex + 2] = 0;
-      options.profiles[testProfileIndex].pressedStaticColors[pinIndex + 3] = 0;
-		}
-
-		for(unsigned int packedNonButtonIndex = 0; packedNonButtonIndex < (MAX_NON_BUTTON_LIGHT_COLOR_INDEXES / 4); ++packedNonButtonIndex)
-		{
-			int nonButtonIndex = packedNonButtonIndex * 4;
-      options.profiles[testProfileIndex].nonButtonStaticColors[nonButtonIndex + 0] = 0;
-      options.profiles[testProfileIndex].nonButtonStaticColors[nonButtonIndex + 1] = 0;
-      options.profiles[testProfileIndex].nonButtonStaticColors[nonButtonIndex + 2] = 0;
-      options.profiles[testProfileIndex].nonButtonStaticColors[nonButtonIndex + 3] = 0;
-		}
-
-    options.profiles[testProfileIndex].nonPressedSpecialColor = 0xFFFFFF; //White
-    options.profiles[testProfileIndex].caseSpecialColor = 0xFFFFFF; //White
-    options.profiles[testProfileIndex].baseCycleTime = 2;
-    options.profiles[testProfileIndex].basePressedCycleTime = 2;
-    options.profiles[testProfileIndex].baseCaseCycleTime = 2;
-  }
-  else if(TestMode == AnimationStationTestMode::AnimationStation_TestModeButtons)
-  {
-    //Set up test profile that is all black
-    options.profiles[testProfileIndex].baseCaseEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_STATIC_COLOR;
-    options.profiles[testProfileIndex].baseNonPressedEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_STATIC_COLOR;
-    options.profiles[testProfileIndex].basePressedEffect = AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_STATIC_COLOR;
-
-    for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS + 3) / 4; ++packedPinIndex)
-		{
-			int pinIndex = packedPinIndex * 4;
-      options.profiles[testProfileIndex].notPressedStaticColors[pinIndex + 0] = 0;
-      options.profiles[testProfileIndex].notPressedStaticColors[pinIndex + 1] = 0;
-      options.profiles[testProfileIndex].notPressedStaticColors[pinIndex + 2] = 0;
-      options.profiles[testProfileIndex].notPressedStaticColors[pinIndex + 3] = 0;
-
-      options.profiles[testProfileIndex].pressedStaticColors[pinIndex + 0] = 0;
-      options.profiles[testProfileIndex].pressedStaticColors[pinIndex + 1] = 0;
-      options.profiles[testProfileIndex].pressedStaticColors[pinIndex + 2] = 0;
-      options.profiles[testProfileIndex].pressedStaticColors[pinIndex + 3] = 0;
-		}
-
-    for(unsigned int packedNonButtonIndex = 0; packedNonButtonIndex < (MAX_NON_BUTTON_LIGHT_COLOR_INDEXES / 4); ++packedNonButtonIndex)
-		{
-			int nonButtonIndex = packedNonButtonIndex * 4;
-      options.profiles[testProfileIndex].nonButtonStaticColors[nonButtonIndex + 0] = 0;
-      options.profiles[testProfileIndex].nonButtonStaticColors[nonButtonIndex + 1] = 0;
-      options.profiles[testProfileIndex].nonButtonStaticColors[nonButtonIndex + 2] = 0;
-      options.profiles[testProfileIndex].nonButtonStaticColors[nonButtonIndex + 3] = 0;
-		}
-  }
+void AnimationStation::SetTestMode(AnimationStationTestMode testType, const AnimationProfile* testProfile, uint8_t overrideBrightness, uint8_t overrideMaxBrightness) {
+    bTestModeChangeRequested = true;
+    TestMode = testType;
+    SetMaxBrightness(overrideMaxBrightness);
+    SetBrightnessStepValue(overrideBrightness);
+    if(TestMode == AnimationStationTestMode::AnimationStation_TestModeProfilePreview)
+      CopyTestProfile(testProfile);
+    else if(TestMode == AnimationStationTestMode::AnimationStation_TestModeLayout) {
+      SetTestModeLayout();
+    }
+    else if(TestMode == AnimationStationTestMode::AnimationStation_TestModeButtons) {
+      SetTestModeButton();
+    }
 }
 
 void AnimationStation::SetTestPinState(int PinOrNonButtonIndex, bool IsNonButtonLight)
 {
-  int testProfileIndex = MAX_ANIMATION_PROFILES_INCLUDING_TEST - 1;
+    AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+    int testProfileIndex = MAX_ANIMATION_PROFILES_INCLUDING_TEST - 1;
 
-  //reset old test light
-  if(TestModePinOrNonButtonIndex != -1)
-  {
-    if(TestModeLightIsNonButton)
-    {
-      options.profiles[testProfileIndex].nonButtonStaticColors[TestModePinOrNonButtonIndex] = 0x00; //Black/off
+    //reset old test light
+    if(TestModePinOrNonButtonIndex != -1) {
+      if(TestModeLightIsNonButton) {
+        options.profiles[testProfileIndex].nonButtonStaticColors.bytes[TestModePinOrNonButtonIndex] = 0x00; //Black/off
+      } else {
+        options.profiles[testProfileIndex].notPressedStaticColors.bytes[TestModePinOrNonButtonIndex] = 0x00; //Black/off
+      }
     }
-    else
-    {
-      options.profiles[testProfileIndex].notPressedStaticColors[TestModePinOrNonButtonIndex] = 0x00; //Black/off
-    }
-  }
 
-  //Store new test light
-  TestModePinOrNonButtonIndex = PinOrNonButtonIndex;
-  TestModeLightIsNonButton = IsNonButtonLight;
+    //Store new test light
+    TestModePinOrNonButtonIndex = PinOrNonButtonIndex;
+    TestModeLightIsNonButton = IsNonButtonLight;
 
-  if(TestModePinOrNonButtonIndex != -1)
-  {
-    if(IsNonButtonLight)
-    {
-      options.profiles[testProfileIndex].notPressedStaticColors[PinOrNonButtonIndex] = 0x01; //White
+    if(TestModePinOrNonButtonIndex != -1) {
+        if(IsNonButtonLight) {
+          options.profiles[testProfileIndex].notPressedStaticColors.bytes[PinOrNonButtonIndex] = 0x01; //White
+        } else {
+          options.profiles[testProfileIndex].notPressedStaticColors.bytes[PinOrNonButtonIndex] = 0x01; //White
+        }
     }
-    else
-    {
-      options.profiles[testProfileIndex].notPressedStaticColors[PinOrNonButtonIndex] = 0x01; //White
-    }
-  }
 }
 
 void AnimationStation::ClearTestMode()
 {
+  AnimationOptions & options = Storage::getInstance().getAnimationOptions();
   bTestModeChangeRequested = true;
   TestMode = AnimationStationTestMode::AnimationStation_TestModeDisableTestMode;
   LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
   SetMaxBrightness(ledOptions.brightnessMaximum);
   SetBrightnessStepValue(options.brightness);
+}
+
+RGB AnimationStation::GetColorForIndex(uint32_t ColorIndex) {
+    //pre defined color?
+    if(ColorIndex < (uint32_t)colors.size())
+      return colors[ColorIndex];
+
+    //must be custom color
+    ColorIndex -= colors.size();
+    if(ColorIndex > customColors.size())
+    {
+      //error, no such color
+      return colors[0];
+    }
+    return customColors[ColorIndex];
+}
+
+//Get correct color for light index
+RGB AnimationStation::StaticGetNonPressedColorForLight(Lights* AllLights, uint32_t LightIndex) {
+  AnimationStation & AnimStation = AnimationStation::getInstance();
+  AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+  int colIndex = 0;
+  Light* thisLight = &(AllLights->AllLights[LightIndex]);
+  if(thisLight->Type == LightType::LightType_ActionButton || thisLight->Type == LightType::LightType_Turbo)
+  {
+    //button
+    colIndex = options.profiles[options.baseProfileIndex].notPressedStaticColors.bytes[thisLight->GPIOPin];
+  }
+  else
+  {
+    //If we're in test mode for case lights then turn all lights black and return white for the requested case Light
+    if(AnimStation.getTestModeLightIsNonButton() && AnimStation.getTestModePinOrNonButtonIndex() != -1)
+    {
+      colIndex = 0;
+      if(thisLight->Type == LightType::LightType_Turbo && ((int)thisLight->FirstLedIndex == AnimStation.getTestModePinOrNonButtonIndex()))
+        colIndex = 1;
+    }
+    else
+    {
+      //case light or player led
+      colIndex = options.profiles[options.baseProfileIndex].nonButtonStaticColors.bytes[thisLight->NonButtonIndex];
+    }
+  }
+
+  return GetColorForIndex(colIndex);
 }
