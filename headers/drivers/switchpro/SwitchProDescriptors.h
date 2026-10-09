@@ -11,6 +11,9 @@
 
 #define SWITCH_PRO_VENDOR_ID     0x057E
 #define SWITCH_PRO_PRODUCT_ID    0x2009
+#define SWITCH_PRO_SNES_PRODUCT_ID    0x2017
+#define SWITCH_PRO_N64_PRODUCT_ID     0x2019
+#define SWITCH_PRO_GENESIS_PRODUCT_ID 0x201E
 
 #ifndef LSB
 #define LSB(n) ((n) & 255)
@@ -231,7 +234,9 @@ typedef struct __attribute((packed, aligned(1)))
 
     SwitchColorDefinition rightGripColor;
 
-    uint8_t unknown06[37];
+    uint8_t controllerRegion;
+
+    uint8_t unknown06[36];
 
     uint8_t motionHorizontalOffsets[6];
 
@@ -286,8 +291,8 @@ typedef struct __attribute((packed, aligned(1)))
     uint8_t dpadUp : 1;
     uint8_t dpadRight : 1;
     uint8_t dpadLeft : 1;
-    uint8_t buttonLeftSL : 1;
     uint8_t buttonLeftSR : 1;
+    uint8_t buttonLeftSL : 1;
     uint8_t buttonL : 1;
     uint8_t buttonZL : 1;
 
@@ -315,7 +320,14 @@ typedef enum {
     SWITCH_TYPE_NES_RIGHT_JOYCON = 0x0A,
     SWITCH_TYPE_SNES = 0x0B,
     SWITCH_TYPE_N64 = 0x0C,
+    SWITCH_TYPE_GENESIS = 0x0D,
 } SwitchControllerType;
+
+typedef enum {
+    SWITCH_REGION_USA = 0x00,
+    SWITCH_REGION_JAPAN = 0x01,
+    SWITCH_REGION_EUROPE = 0x02,
+} SwitchControllerRegion;
 
 typedef struct {
     uint8_t majorVersion;
@@ -340,6 +352,11 @@ typedef struct
 static const uint8_t switch_pro_string_language[]     = { 0x09, 0x04 };
 static const uint8_t switch_pro_string_manufacturer[] = "Open Stick Community";
 static const uint8_t switch_pro_string_product[]      = "GP2040-CE (Pro Controller)";
+static const uint8_t switch_pro_snes_string_product[] = "GP2040-CE (NSO SNES Controller)";
+static const uint8_t switch_pro_super_famicom_string_product[] = "GP2040-CE (NSO Super Famicom Controller)";
+static const uint8_t switch_pro_n64_string_product[] = "GP2040-CE (NSO N64 Controller)";
+static const uint8_t switch_pro_genesis_string_product[] = "GP2040-CE (NSO Genesis Controller)";
+static const uint8_t switch_pro_mega_drive_string_product[] = "GP2040-CE (NSO Mega Drive Controller)";
 static const uint8_t switch_pro_string_version[]      = "000000000001";
 
 static const uint8_t *switch_pro_string_descriptors[] __attribute__((unused)) =
@@ -418,6 +435,82 @@ static const uint8_t switch_pro_configuration_descriptor[] =
     0x07,        // bLength
     0x05,        // bDescriptorType (Endpoint)
     0x01,        // bEndpointAddress (OUT/H2D)
+    0x03,        // bmAttributes (Interrupt)
+    0x40, 0x00,  // wMaxPacketSize 64
+    0x08,        // bInterval 8 (unit depends on device speed)
+};
+
+static const uint8_t switch_pro_pair_configuration_descriptor[] =
+{
+    0x09,        // bLength
+    0x02,        // bDescriptorType (Configuration)
+    0x49, 0x00,  // wTotalLength 73
+    0x02,        // bNumInterfaces 2
+    0x01,        // bConfigurationValue
+    0x00,        // iConfiguration (String Index)
+    0xA0,        // bmAttributes Remote Wakeup
+    0xFA,        // bMaxPower 500mA
+
+    0x09,        // bLength
+    0x04,        // bDescriptorType (Interface)
+    0x00,        // bInterfaceNumber 0
+    0x00,        // bAlternateSetting
+    0x02,        // bNumEndpoints 2
+    0x03,        // bInterfaceClass
+    0x00,        // bInterfaceSubClass
+    0x00,        // bInterfaceProtocol
+    0x00,        // iInterface (String Index)
+
+    0x09,        // bLength
+    0x21,        // bDescriptorType (HID)
+    0x11, 0x01,  // bcdHID 1.11
+    0x00,        // bCountryCode
+    0x01,        // bNumDescriptors
+    0x22,        // bDescriptorType[0] (HID)
+    0xCB, 0x00,  // wDescriptorLength[0] 203
+
+    0x07,        // bLength
+    0x05,        // bDescriptorType (Endpoint)
+    0x81,        // bEndpointAddress (IN/D2H)
+    0x03,        // bmAttributes (Interrupt)
+    0x40, 0x00,  // wMaxPacketSize 64
+    0x08,        // bInterval 8 (unit depends on device speed)
+
+    0x07,        // bLength
+    0x05,        // bDescriptorType (Endpoint)
+    0x01,        // bEndpointAddress (OUT/H2D)
+    0x03,        // bmAttributes (Interrupt)
+    0x40, 0x00,  // wMaxPacketSize 64
+    0x08,        // bInterval 8 (unit depends on device speed)
+
+    0x09,        // bLength
+    0x04,        // bDescriptorType (Interface)
+    0x01,        // bInterfaceNumber 1
+    0x00,        // bAlternateSetting
+    0x02,        // bNumEndpoints 2
+    0x03,        // bInterfaceClass
+    0x00,        // bInterfaceSubClass
+    0x00,        // bInterfaceProtocol
+    0x00,        // iInterface (String Index)
+
+    0x09,        // bLength
+    0x21,        // bDescriptorType (HID)
+    0x11, 0x01,  // bcdHID 1.11
+    0x00,        // bCountryCode
+    0x01,        // bNumDescriptors
+    0x22,        // bDescriptorType[0] (HID)
+    0xCB, 0x00,  // wDescriptorLength[0] 203
+
+    0x07,        // bLength
+    0x05,        // bDescriptorType (Endpoint)
+    0x82,        // bEndpointAddress (IN/D2H)
+    0x03,        // bmAttributes (Interrupt)
+    0x40, 0x00,  // wMaxPacketSize 64
+    0x08,        // bInterval 8 (unit depends on device speed)
+
+    0x07,        // bLength
+    0x05,        // bDescriptorType (Endpoint)
+    0x02,        // bEndpointAddress (OUT/H2D)
     0x03,        // bmAttributes (Interrupt)
     0x40, 0x00,  // wMaxPacketSize 64
     0x08,        // bInterval 8 (unit depends on device speed)

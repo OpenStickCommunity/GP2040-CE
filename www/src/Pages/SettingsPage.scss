@@ -14,3 +14,50 @@
 		}
 	}
 }
+
+.row > .switch-pro-colors {
+	max-width: 28rem;
+}
+
+.switch-pro-joycon-drawing {
+	max-width: 20rem;
+}
+
+.switch-pro-joycon-pair-drawing {
+	max-width: 16rem;
+}
+
+.switch-pro-color-chip {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+	width: 100%;
+	padding: 0.4rem 0.6rem;
+	border: 1px solid var(--bs-border-color);
+	border-radius: var(--bs-border-radius);
+	cursor: pointer;
+	transition: border-color 150ms;
+
+	&:hover,
+	&.is-active {
+		border-color: var(--bs-primary);
+	}
+
+	input[type="color"] {
+		flex: none;
+		width: 2.25rem;
+		height: 2.25rem;
+		padding: 2px;
+		border: 1px solid var(--bs-border-color);
+		border-radius: var(--bs-border-radius-sm);
+		background: none;
+		cursor: pointer;
+	}
+}
+
+.switch-pro-color-chip-text {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+	line-height: 1.25;
+}

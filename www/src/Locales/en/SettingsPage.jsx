@@ -70,6 +70,56 @@ export default {
 	'ps4-id-mode-label': 'Identification Mode',
 	'ps4-id-mode-explanation-text':
 		'<ul><li>Console mode is used when connecting primarily to a PS4 console.</li><li>Remote/Emulation mode should only be used when connecting to an emulation layer or remote playing environment that requires a DualShock 4-compatible controller.</li></ul>',
+	'switch-pro-controller-type-label': 'Controller Type',
+	'switch-pro-controller-type-options': {
+		pro: 'Pro Controller',
+		snes: 'NSO SNES',
+		'super-famicom': 'NSO Super Famicom',
+		n64: 'NSO N64',
+		genesis: 'NSO Genesis',
+		'mega-drive': 'NSO Mega Drive',
+		nes: 'NSO NES',
+		'famicom-i': 'NSO Famicom I',
+		'famicom-ii': 'NSO Famicom II',
+		'joycon-left': 'Joy-Con (L)',
+		'joycon-right': 'Joy-Con (R)',
+		'joycon-pair': 'Joy-Con (L + R)',
+	},
+	'switch-pro-color-label': 'Controller Display Colors',
+	'switch-pro-color-explanation':
+		'Sets the colors the Switch shows for this controller.',
+	'switch-pro-color-presets': {
+		stock: 'Stock',
+		gp2040: 'GP2040-CE',
+		custom: 'Custom',
+	},
+	'switch-pro-joycon-single-note':
+		"To use a single Joy-Con on its own, go into 'Change Grip/Order' and press SL + SR ({{buttons}}). You will need to do this each time you change between {{mode}} and Joy-Con (L + R) mode.",
+	'switch-pro-joycon-single-warning':
+		'<strong>WARNING:</strong> Joy-Con (L) and Joy-Con (R) modes will be very difficult to use as a normal controller and are only included for those people who are working on specific device accessories that need a single Joy-Con. For most normal use cases please use the Pro Controller or Joy-Con (L + R) controller type.',
+	'switch-pro-joycon-pair-warning':
+		"<strong>WARNING:</strong> You may need to go into the 'Change Grip/Order' section and press L + R ({{buttons}}) to get the Joy-Con (L + R) controller type to connect.",
+	'switch-pro-genesis-warning':
+		'<strong>WARNING:</strong> The Switch has no system icon for this controller, so it shows as a Pro Controller in the system menus. The NSO Genesis app shows the correct controller icon under your username.',
+	'switch-pro-joycon-color-explanation':
+		'Sets the colors the Switch shows for this Joy-Con. Only the body and buttons are shown.',
+	'switch-pro-joycon-color-presets': {
+		grey: 'Stock Grey',
+		neon: 'Stock Neon',
+		white: 'White (OLED)',
+		gp2040: 'GP2040-CE',
+		custom: 'Custom',
+	},
+	'switch-pro-color-parts': {
+		body: 'Body',
+		buttons: 'Buttons',
+		'left-grip': 'Left Grip',
+		'right-grip': 'Right Grip',
+		'left-body': 'Left Body',
+		'left-buttons': 'Left Buttons',
+		'right-body': 'Right Body',
+		'right-buttons': 'Right Buttons',
+	},
 	'ps4-id-mode-options': {
 		console: 'Console',
 		emulation: 'Remote/Emulation',
