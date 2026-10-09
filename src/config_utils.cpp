@@ -1267,6 +1267,17 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[31], noise, HETRIGGER_HE31_NOISE);
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[31], rapidTrigger, HETRIGGER_HE31_RAPID);
 
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, switchTravel, HETRIGGER_DEFAULT_SWITCH_TRAVEL);
+    for (int i = 0; i < HETRIGGER_COUNT; i++) {
+        HETriggerInfo& trigger = config.addonOptions.heTriggerOptions.triggers[i];
+        // Legacy Rapid Trigger moved once a reading changed by more than `noise`; keep that feel.
+        const bool legacyRapidTrigger = trigger.rapidTrigger && trigger.noise > 0;
+        INIT_UNSET_PROPERTY(trigger, rtPressSensitivity, legacyRapidTrigger ? trigger.noise + 1 : HETRIGGER_DEFAULT_RT_PRESS_SENSITIVITY);
+        INIT_UNSET_PROPERTY(trigger, rtReleaseSensitivity, legacyRapidTrigger ? trigger.noise + 1 : HETRIGGER_DEFAULT_RT_RELEASE_SENSITIVITY);
+        INIT_UNSET_PROPERTY(trigger, rtSeparateSensitivity, !!HETRIGGER_DEFAULT_RT_SEPARATE_SENSITIVITY);
+        INIT_UNSET_PROPERTY(trigger, rtContinuous, !!HETRIGGER_DEFAULT_RT_CONTINUOUS);
+    }
+
     // reminder that this must be set or else nanopb won't retain anything
     config.addonOptions.heTriggerOptions.triggers_count = HETRIGGER_COUNT;
 

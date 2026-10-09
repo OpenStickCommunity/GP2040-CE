@@ -16,6 +16,7 @@
 
 #include "neopicoleds.h"
 
+#include <cmath>
 #include <cstring>
 #include <string>
 #include <vector>
@@ -2000,12 +2001,20 @@ std::string getHETriggerCalibrations()
         trigger["active"] = heTriggers[i].active;
         trigger["pressed"] = heTriggers[i].pressed;
         trigger["is_polarized"] = heTriggers[i].is_polarized;
-        trigger["release"] = heTriggers[i].release;
         trigger["noise"] = heTriggers[i].noise;
         trigger["rapidTrigger"] = heTriggers[i].rapidTrigger;
+        trigger["rtPressSensitivity"] = heTriggers[i].rtPressSensitivity;
+        trigger["rtReleaseSensitivity"] = heTriggers[i].rtReleaseSensitivity;
+        trigger["rtSeparateSensitivity"] = heTriggers[i].rtSeparateSensitivity;
+        trigger["rtContinuous"] = heTriggers[i].rtContinuous;
     }
 
     return serialize_json(doc);
+}
+
+static float clampSwitchTravel(float travel)
+{
+    return std::min(std::max(travel, 0.0f), 20.0f);
 }
 
 // Set Hall Effect Trigger Calibrations
@@ -2020,12 +2029,22 @@ std::string setHETriggerCalibrations()
         heTriggers[i].active = doc["triggers"][i]["active"];
         heTriggers[i].pressed = doc["triggers"][i]["pressed"];
         heTriggers[i].is_polarized = doc["triggers"][i]["is_polarized"];
-        heTriggers[i].release = doc["triggers"][i]["release"];
         heTriggers[i].noise = doc["triggers"][i]["noise"];
         heTriggers[i].rapidTrigger = doc["triggers"][i]["rapidTrigger"];
+        // Older backups have no sensitivities; derive them like the config migration does.
+        const int32_t legacySensitivity = heTriggers[i].noise + 1;
+        heTriggers[i].rtPressSensitivity = doc["triggers"][i]["rtPressSensitivity"] | legacySensitivity;
+        heTriggers[i].rtReleaseSensitivity = doc["triggers"][i]["rtReleaseSensitivity"] | legacySensitivity;
+        if (doc["triggers"][i]["rtSeparateSensitivity"] != nullptr)
+            heTriggers[i].rtSeparateSensitivity = doc["triggers"][i]["rtSeparateSensitivity"];
+        if (doc["triggers"][i]["rtContinuous"] != nullptr)
+            heTriggers[i].rtContinuous = doc["triggers"][i]["rtContinuous"];
     }
 
-    Storage::getInstance().getAddonOptions().heTriggerOptions.triggers_count = 32;
+    HETriggerOptions& heTriggerOptions = Storage::getInstance().getAddonOptions().heTriggerOptions;
+    docToValue(heTriggerOptions.switchTravel, doc, "heTriggerSwitchTravel");
+    heTriggerOptions.switchTravel = clampSwitchTravel(heTriggerOptions.switchTravel);
+    heTriggerOptions.triggers_count = 32;
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
     return serialize_json(doc);
@@ -2320,6 +2339,8 @@ std::string setAddonOptions()
     docToValue(heTriggerOptions.emaSmoothing, doc, "heTriggerSmoothing");
     docToValue(heTriggerOptions.smoothingFactor, doc, "heTriggerSmoothingFactor");
     docToValue(heTriggerOptions.separateSelectPins, doc, "separateSelectPins");
+    docToValue(heTriggerOptions.switchTravel, doc, "heTriggerSwitchTravel");
+    heTriggerOptions.switchTravel = clampSwitchTravel(heTriggerOptions.switchTravel);
     static const char* selectPinKeys[4] = { "selectPin0", "selectPin1", "selectPin2", "selectPin3" };
     for (int i = 0; i < 4; i++) {
         Pin_t* muxSelectPins[4] = {
@@ -2827,6 +2848,8 @@ std::string getAddonOptions()
     writeDoc(doc, "heTriggerSmoothing", heTriggerOptions.emaSmoothing);
     writeDoc(doc, "heTriggerSmoothingFactor", heTriggerOptions.smoothingFactor);
     writeDoc(doc, "separateSelectPins", heTriggerOptions.separateSelectPins);
+    // Round so 3.8f is reported as 3.8, not 3.799999952.
+    writeDoc(doc, "heTriggerSwitchTravel", std::round(heTriggerOptions.switchTravel * 100.0) / 100.0);
     doc.createNestedArray("muxes");
     for (int i = 0; i < 4; i++) {
         writeDoc(doc, "muxes", i, "selectPin0", cleanPin(heTriggerOptions.muxes[i].selectPin0));

@@ -1,0 +1,13 @@
+# name | rapidTrigger continuous actuation pressSensitivity releaseSensitivity noise travel | depth samples | expected pressed states
+# Depths are ADC counts from idle. Shared by test.cpp (firmware) and www/scripts/test-he-rapid-trigger.mjs (web preview).
+fixed actuation with hysteresis    | 0 0 1000 100 100 30 3400 | 0 999 1000 990 971 970 969 990 1000 | 001111001
+fixed actuation near idle releases | 0 0 20 100 100 30 3400 | 0 25 10 1 0 | 01110
+actuation at idle releases         | 0 0 0 100 100 30 3400 | 0 1 0 | 010
+rapid release and re-press         | 1 0 1000 100 100 30 3400 | 0 999 1000 3000 2901 2900 2700 2799 2800 | 001110001
+reset above actuation              | 1 0 1000 100 100 30 3400 | 1020 980 970 969 990 1000 | 111001
+separate sensitivities             | 1 0 1000 50 300 30 3400 | 2000 1701 1700 1749 1750 | 11001
+sensitivity floored at noise       | 1 0 1000 5 5 30 3400 | 2000 1990 1980 1971 1970 1990 2000 | 1111001
+jitter below noise does not chatter | 1 0 1000 5 5 30 3400 | 2000 1980 2000 1980 2000 1980 | 111111
+continuous re-press above actuation | 1 1 1000 100 100 30 3400 | 900 2000 1900 200 300 200 | 010010
+continuous resets in released zone | 1 1 1000 100 100 30 3400 | 2000 1900 171 170 169 300 1000 | 1000001
+continuous released zone uses noise when larger | 1 1 1000 100 100 400 3400 | 2000 1600 401 400 900 | 10000
