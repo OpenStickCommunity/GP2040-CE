@@ -9,9 +9,12 @@ export type Trigger = {
 	active: number;
 	pressed: number;
 	is_polarized: boolean;
-	release: number;
 	noise: number;
 	rapidTrigger: boolean;
+	rtPressSensitivity: number;
+	rtReleaseSensitivity: number;
+	rtSeparateSensitivity: boolean;
+	rtContinuous: boolean;
 };
 
 type State = {
@@ -23,19 +26,22 @@ type Actions = {
 	fetchHETriggers: () => void;
 	setHETrigger: (trigger: Trigger & { id: number }) => void;
 	setAllHETriggers: (trigger: Partial<Trigger>) => void;
-	saveHETriggers: () => Promise<object>;
+	saveHETriggers: (switchTravel: number) => Promise<object>;
 };
 
 const INITIAL_STATE: State = {
-	triggers: Array(32).map(() => ({
+	triggers: Array.from({ length: 32 }, () => ({
 		action: -10,
 		idle: 100,
 		active: 2000,
 		pressed: 3500,
 		is_polarized: false,
-		release: 2000,
-		noise: 50,
+		noise: 30,
 		rapidTrigger: false,
+		rtPressSensitivity: 100,
+		rtReleaseSensitivity: 100,
+		rtSeparateSensitivity: false,
+		rtContinuous: false,
 	})),
 	loadingTriggers: false,
 };
@@ -74,7 +80,11 @@ const useHETriggerStore = create<State & Actions>()((set, get) => ({
 		}));
 	},
 
-	saveHETriggers: async () => WebApi.setHETriggerCalibrations(get()),
+	saveHETriggers: async (switchTravel) =>
+		WebApi.setHETriggerCalibrations({
+			triggers: get().triggers,
+			heTriggerSwitchTravel: switchTravel,
+		}),
 }));
 
 export default useHETriggerStore;
