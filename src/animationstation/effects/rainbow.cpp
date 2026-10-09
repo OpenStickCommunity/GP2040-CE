@@ -60,11 +60,13 @@ void RainbowSynced::Animate(RGB (&frame)[FRAME_MAX])
 
 void RainbowSynced::CycleParameterChange() 
 {
+    AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+  
     int16_t cycleStep = 2;
     if(ButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_CASE_ONLY)
-      cycleStep = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCaseCycleTime;
+      cycleStep = options.profiles[options.baseProfileIndex].baseCaseCycleTime;
     else
-      cycleStep = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime;
+      cycleStep = options.profiles[options.baseProfileIndex].baseCycleTime;
 
     cycleTime = RAINBOW_CYCLE_MIN + (((RAINBOW_CYCLE_MAX - RAINBOW_CYCLE_MIN) / CYCLE_STEPS) * cycleStep);
 }
@@ -111,11 +113,13 @@ void RainbowRotate::Animate(RGB (&frame)[FRAME_MAX])
 
 void RainbowRotate::CycleParameterChange() 
 {
+    AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+  
     int16_t cycleStep = 2;
     if(ButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_CASE_ONLY)
-      cycleStep = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCaseCycleTime;
+      cycleStep = options.profiles[options.baseProfileIndex].baseCaseCycleTime;
     else
-      cycleStep = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime;
+      cycleStep = options.profiles[options.baseProfileIndex].baseCycleTime;
 
     cycleTime = RAINBOW_CYCLE_MIN + (((RAINBOW_CYCLE_MAX - RAINBOW_CYCLE_MIN) / CYCLE_STEPS) * cycleStep);
 }

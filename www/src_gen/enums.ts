@@ -618,7 +618,8 @@ export enum GPEventType {
     GP_EVENT_STORAGE_SAVE = 12,
     GP_EVENT_SYSTEM_REBOOT = 13,
     GP_EVENT_MENU_NAVIGATE = 14,
-    GP_EVENT_SYSTEM_ERROR = 15
+    GP_EVENT_SYSTEM_ERROR = 15,
+    GP_EVENT_LED_CHANGE = 16
 }
 
 export enum MouseMovementMode {

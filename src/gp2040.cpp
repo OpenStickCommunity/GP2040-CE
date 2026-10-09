@@ -52,7 +52,7 @@
 static const uint32_t REBOOT_HOTKEY_ACTIVATION_TIME_MS = 50;
 static const uint32_t REBOOT_HOTKEY_HOLD_TIME_MS = 4000;
 
-const static uint32_t rebootDelayMs = 500;
+const static uint32_t rebootDelayMs = 300;
 static absolute_time_t rebootDelayTimeout = nil_time;
 
 
@@ -73,13 +73,14 @@ void GP2040::setup() {
 	BootModeOptions& bootModeOptions = Storage::getInstance().getBootModeOptions();
 	BootAction bootAction;
 
+	const ProfileOptions& profileOptions = Storage::getInstance().getProfileOptions();
 	GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
-	uint32_t prevProfile = gamepadOptions.profileNumber;
 	bool profileChanged = false;
 
 	if (bootModeOptions.enabled) {
 		bootAction = getGpioMappedBootAction();
-		profileChanged = bootAction.profileNumber != prevProfile;
+		if ( bootAction.profileNumber != gamepadOptions.profileNumber )
+			profileChanged = true;
 		gamepadOptions.profileNumber = bootAction.profileNumber;
 	}
 
@@ -96,7 +97,7 @@ void GP2040::setup() {
 
 	// now we can load the latest configured profile, which will map the
 	// new set of GPIOs to use...
-  this->initializeStandardGpio();
+    this->initializeStandardGpio();
 
 	// Initialize our ADC (various add-ons)
 	adc_init();
@@ -519,9 +520,12 @@ void GP2040::RebootHotkeys::process(Gamepad* gamepad, bool configMode) {
 			if (time_reached(rebootHotkeysHoldTimeout)) {
 				if (gamepad->state.buttons == webConfigHotkeyMask) {
 					// If we are in webconfig mode we go to gamepad mode and vice versa
-					System::reboot(configMode ? System::BootMode::GAMEPAD : System::BootMode::WEBCONFIG);
+					if ( configMode )
+						EventManager::getInstance().triggerEvent(new GPRestartEvent((System::BootMode)System::BootMode::GAMEPAD));
+					else
+						EventManager::getInstance().triggerEvent(new GPRestartEvent((System::BootMode)System::BootMode::WEBCONFIG));
 				} else if (gamepad->state.buttons == bootselHotkeyMask) {
-					System::reboot(System::BootMode::USB);
+					EventManager::getInstance().triggerEvent(new GPRestartEvent(System::BootMode::USB));
 				}
 			}
 		} else {

@@ -1,4 +1,6 @@
 #include "chase.h"
+#include "storagemanager.h"
+
 #include <algorithm>
 #include <math.h>
 
@@ -10,6 +12,10 @@
 
 Chase::Chase(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType, ChaseTypes InChaseType) : Animation(InRGBLights, InButtonCaseEffectType) 
 {
+  for(int i = 0; i < FRAME_MAX; i++ ) {
+    ChaseBlendValues[i] = 0.0f;
+  }
+
   ChaseTypeInUse = InChaseType;
 
   CycleParameterChange();
@@ -237,10 +243,12 @@ void Chase::OrderLights()
 
 void Chase::GetSpecialColors(RGB& chaseCol, RGB& caseChaseCol)
 {
-  chaseCol = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedSpecialColor;
-  caseChaseCol = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].caseSpecialColor;
-  bool buttonIsRainbow = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].bNonPressedSpecialColorIsRainbow;
-  bool caseIsRainbow = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].bCaseSpecialColorIsRainbow;
+  AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+
+  chaseCol = options.profiles[options.baseProfileIndex].nonPressedSpecialColor;
+  caseChaseCol = options.profiles[options.baseProfileIndex].caseSpecialColor;
+  bool buttonIsRainbow = options.profiles[options.baseProfileIndex].bNonPressedSpecialColorIsRainbow;
+  bool caseIsRainbow = options.profiles[options.baseProfileIndex].bCaseSpecialColorIsRainbow;
   if(buttonIsRainbow || caseIsRainbow)
   {
     if(!RainbowWheelReversed)
@@ -302,6 +310,10 @@ void Chase::Animate(RGB (&frame)[FRAME_MAX])
 
 void Chase::AssignThisFrameValues()
 {
+  if(OrderedLights.empty()) {
+    return;
+  }
+
   int currentLightReverseAdjusted = CurrentLight;
 
    //now light the correct lights
@@ -390,13 +402,12 @@ void Chase::CheckToAdvanceLight()
     int tailLengthBase;
     int tailLength;
 
-    if(ButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_ONLY || ButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE)
-    {
-      tailLengthBase = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonPressedEffectContextParam;
-    }
-    else
-    {
-      tailLengthBase = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].caseEffectContextParam;
+    AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+
+    if(ButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_ONLY || ButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE) {
+      tailLengthBase = options.profiles[options.baseProfileIndex].effectContextParam & 0xFF;
+    } else {
+      tailLengthBase = (options.profiles[options.baseProfileIndex].effectContextParam >> 16) & 0xFF;
     }
     tailLength = (int)((tailLengthBase * OrderedLights.size()) / 100.0f);
     
@@ -542,11 +553,12 @@ void Chase::SetStartLight()
 
 void Chase::CycleParameterChange() 
 {
+    AnimationOptions & options = Storage::getInstance().getAnimationOptions();
     int16_t cycleStep;
     if(ButtonCaseEffectType == EButtonCaseEffectType::BUTTONCASELIGHTTYPE_CASE_ONLY)
-      cycleStep = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCaseCycleTime;
+      cycleStep = options.profiles[options.baseProfileIndex].baseCaseCycleTime;
     else
-      cycleStep = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime;
+      cycleStep = options.profiles[options.baseProfileIndex].baseCycleTime;
 
     cycleTime = CHASE_CYCLE_MIN + (((CHASE_CYCLE_MAX - CHASE_CYCLE_MIN) / CYCLE_STEPS) * cycleStep);
 }

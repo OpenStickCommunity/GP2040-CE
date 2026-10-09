@@ -46,7 +46,7 @@ struct LightPosition
 //A single RGB light on the device. Replaced Pixel
 struct Light 
 {
-  Light(uint8_t InFirstLedIndex, uint8_t InNumLedsPerLight, LightPosition InPosition, uint8_t InGIPOPinOrNonButtonIndex, LightType InType)
+  Light(uint8_t InFirstLedIndex, uint8_t InNumLedsPerLight, LightPosition InPosition, uint8_t InGPIOPinOrNonButtonIndex, LightType InType)
   {
     FirstLedIndex = InFirstLedIndex;
     Position = InPosition;
@@ -54,29 +54,29 @@ struct Light
     LedsPerLight = InNumLedsPerLight;
     //GamePadMask = GamePadMask;
     if(InType == LightType::LightType_Case)
-      NonButtonIndex = InGIPOPinOrNonButtonIndex;
+      NonButtonIndex = InGPIOPinOrNonButtonIndex;
     else if(InType == LightType::LightType_Player1Light)
     {
-      NonButtonIndex = InGIPOPinOrNonButtonIndex;
+      NonButtonIndex = InGPIOPinOrNonButtonIndex;
       PlayerLightIndex = 0;
     }
     else if(InType == LightType::LightType_Player2Light)
     {
-      NonButtonIndex = InGIPOPinOrNonButtonIndex;
+      NonButtonIndex = InGPIOPinOrNonButtonIndex;
       PlayerLightIndex = 1;
     }
     else if(InType == LightType::LightType_Player3Light)
     {
-      NonButtonIndex = InGIPOPinOrNonButtonIndex;
+      NonButtonIndex = InGPIOPinOrNonButtonIndex;
       PlayerLightIndex = 2;
     }
     else if(InType == LightType::LightType_Player4Light)
     {
-      NonButtonIndex = InGIPOPinOrNonButtonIndex;
+      NonButtonIndex = InGPIOPinOrNonButtonIndex;
       PlayerLightIndex = 3;
     }
     else if(InType == LightType::LightType_ActionButton || InType == LightType::LightType_Turbo)
-      GIPOPin = InGIPOPinOrNonButtonIndex;
+      GPIOPin = InGPIOPinOrNonButtonIndex;
   }
 
   // index of first LED
@@ -94,8 +94,8 @@ struct Light
   //Game pad mask (if applicaple) (Needed to do SOCD on Lights)
  // uint32_t GamePadMask;
 
-  //GIPO pin this action (if applicaple) is on
-  int32_t GIPOPin = -1;
+  //GPIOPin pin this action (if applicaple) is on
+  int32_t GPIOPin = -1;
 
   //Index into NonButtonIndex array in a led profile
   int32_t NonButtonIndex = -1;

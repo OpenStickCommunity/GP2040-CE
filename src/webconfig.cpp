@@ -982,9 +982,10 @@ std::string setLightsDataOptions()
             break;
     }
 
-    NeoPicoLEDAddon::RestartLedSystem();
+    AnimationStation::getInstance().setRestartLeds(true);
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
+    
     return serialize_json(doc);
 }
 
@@ -1161,6 +1162,7 @@ std::string getLightsDataPresets()
 std::string setLightsToDefault()
 {
     DynamicJsonDocument doc = get_post_data();
+    AnimationStation & AnimStation = AnimationStation::getInstance();
 
     JsonObject docJson = doc.as<JsonObject>();
     const char*  resetName = docJson["ResetName"];
@@ -1168,45 +1170,45 @@ std::string setLightsToDefault()
     if(strcmp(resetName, LIGHT_DATA_NAME_DEFAULT) == 0)
     {
         const unsigned char lightData[] = { LIGHT_DATA_DEFAULT };
-        NeoPicoLEDAddon::AssignLedPreset(lightData, sizeof(lightData));
+        AnimStation.AssignLedPreset(lightData, sizeof(lightData));
     }
     else if(strcmp(resetName, LIGHT_DATA_NAME_1) == 0)
     {
         const unsigned char lightData[] = { LIGHT_DATA_1 };
-        NeoPicoLEDAddon::AssignLedPreset(lightData, sizeof(lightData));
+        AnimStation.AssignLedPreset(lightData, sizeof(lightData));
     }
     else if(strcmp(resetName, LIGHT_DATA_NAME_2) == 0)
     {
         const unsigned char lightData[] = { LIGHT_DATA_2 };
-        NeoPicoLEDAddon::AssignLedPreset(lightData, sizeof(lightData));
+        AnimStation.AssignLedPreset(lightData, sizeof(lightData));
     }
     else if(strcmp(resetName, LIGHT_DATA_NAME_3) == 0)
     {
         const unsigned char lightData[] = { LIGHT_DATA_3 };
-        NeoPicoLEDAddon::AssignLedPreset(lightData, sizeof(lightData));
+        AnimStation.AssignLedPreset(lightData, sizeof(lightData));
     }
     else if(strcmp(resetName, LIGHT_DATA_NAME_4) == 0)
     {
         const unsigned char lightData[] = { LIGHT_DATA_4 };
-        NeoPicoLEDAddon::AssignLedPreset(lightData, sizeof(lightData));
+        AnimStation.AssignLedPreset(lightData, sizeof(lightData));
     }
     else if(strcmp(resetName, LIGHT_DATA_NAME_5) == 0)
     {
         const unsigned char lightData[] = { LIGHT_DATA_5 };
-        NeoPicoLEDAddon::AssignLedPreset(lightData, sizeof(lightData));
+        AnimStation.AssignLedPreset(lightData, sizeof(lightData));
     }
     else if(strcmp(resetName, LIGHT_DATA_NAME_6) == 0)
     {
         const unsigned char lightData[] = { LIGHT_DATA_6 };
-        NeoPicoLEDAddon::AssignLedPreset(lightData, sizeof(lightData));
+        AnimStation.AssignLedPreset(lightData, sizeof(lightData));
     }
     else if(strcmp(resetName, LIGHT_DATA_NAME_7) == 0)
     {
         const unsigned char lightData[] = { LIGHT_DATA_7 };
-        NeoPicoLEDAddon::AssignLedPreset(lightData, sizeof(lightData));
+        AnimStation.AssignLedPreset(lightData, sizeof(lightData));
     }
 
-    NeoPicoLEDAddon::RestartLedSystem();
+    //AnimStation.setRestartLeds(true);
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
@@ -1216,95 +1218,49 @@ std::string setLightsToDefault()
 void helperGetProfileFromJsonObject(AnimationProfile* Profile, JsonObject* JsonData)
 {
     Profile->bEnabled = (*JsonData)["bEnabled"].as<bool>();
-    if(Profile->baseNonPressedEffect != (AnimationNonPressedEffects)((*JsonData)["baseNonPressedEffect"].as<uint32_t>()))
-    {
-        Profile->baseNonPressedEffect = (AnimationNonPressedEffects)((*JsonData)["baseNonPressedEffect"].as<uint32_t>());
-    }
-    if(Profile->basePressedEffect != (AnimationPressedEffects)((*JsonData)["basePressedEffect"].as<uint32_t>()))
-    {
-        Profile->basePressedEffect = (AnimationPressedEffects)((*JsonData)["basePressedEffect"].as<uint32_t>());
-    }
-    if(Profile->baseCaseEffect != (AnimationNonPressedEffects)((*JsonData)["baseCaseEffect"].as<uint32_t>()))
-    {
-        Profile->baseCaseEffect = (AnimationNonPressedEffects)((*JsonData)["baseCaseEffect"].as<uint32_t>());
-    }
-
+    Profile->baseNonPressedEffect = (AnimationNonPressedEffects)((*JsonData)["baseNonPressedEffect"].as<uint32_t>());
+    Profile->basePressedEffect = (AnimationPressedEffects)((*JsonData)["basePressedEffect"].as<uint32_t>());
+    Profile->baseCaseEffect = (AnimationNonPressedEffects)((*JsonData)["baseCaseEffect"].as<uint32_t>());
     Profile->buttonPressHoldTimeInMs = (*JsonData)["buttonPressHoldTimeInMs"].as<uint32_t>();
     Profile->buttonPressFadeOutTimeInMs = (*JsonData)["buttonPressFadeOutTimeInMs"].as<uint32_t>();
     Profile->nonPressedSpecialColor = (*JsonData)["nonPressedSpecialColor"].as<uint32_t>();
     Profile->bUseCaseLightsInPressedAnimations = (*JsonData)["bUseCaseLightsInPressedAnimations"].as<bool>();
     Profile->pressedSpecialColor = (*JsonData)["pressedSpecialColor"].as<uint32_t>();
     Profile->caseSpecialColor = (*JsonData)["caseSpecialColor"].as<uint32_t>();
-
     Profile->baseCycleTime = (*JsonData)["baseCycleTime"].as<uint32_t>() - 1;
     Profile->basePressedCycleTime = (*JsonData)["basePressedCycleTime"].as<uint32_t>() - 1;
     Profile->baseCaseCycleTime = (*JsonData)["baseCaseCycleTime"].as<uint32_t>() - 1;
-
     Profile->effectContextParam = (*JsonData)["nonPressedContextParam"].as<uint32_t>() & 0xFF;
     Profile->effectContextParam += ((*JsonData)["pressedContextParam"].as<uint32_t>() & 0xFF) << 8;
     Profile->effectContextParam += ((*JsonData)["caseContextParam"].as<uint32_t>() & 0xFF) << 16;
-
     Profile->bNonPressedSpecialColorIsRainbow = (*JsonData)["bNonPressedSpecialColorIsRainbow"].as<bool>();
     Profile->bPressedSpecialColorIsRainbow = (*JsonData)["bPressedSpecialColorIsRainbow"].as<bool>();
     Profile->bCaseSpecialColorIsRainbow = (*JsonData)["bCaseSpecialColorIsRainbow"].as<bool>();
 
     JsonArray notPressedStaticColorsList = (*JsonData)["notPressedStaticColors"];
-    Profile->notPressedStaticColors_count = 0;
-    for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS + 3) / 4; ++packedPinIndex)
-    {
-        unsigned int pinIndex = packedPinIndex * 4;
-        if(pinIndex < notPressedStaticColorsList.size())
-            Profile->notPressedStaticColors[packedPinIndex] = notPressedStaticColorsList[pinIndex].as<uint32_t>() & 0xFF;
-        else
-            break;
-        if(pinIndex+1 < notPressedStaticColorsList.size())
-            Profile->notPressedStaticColors[packedPinIndex] += ((notPressedStaticColorsList[pinIndex+1].as<uint32_t>() & 0xFF) << 8);
-        if(pinIndex+2 < notPressedStaticColorsList.size())
-            Profile->notPressedStaticColors[packedPinIndex] += ((notPressedStaticColorsList[pinIndex+2].as<uint32_t>() & 0xFF) << 16);
-        if(pinIndex+3 < notPressedStaticColorsList.size())
-            Profile->notPressedStaticColors[packedPinIndex] += ((notPressedStaticColorsList[pinIndex+3].as<uint32_t>() & 0xFF) << 24);
-        Profile->notPressedStaticColors_count = packedPinIndex+1;
-    }
-
     JsonArray pressedStaticColorsList = (*JsonData)["pressedStaticColors"];
-    Profile->pressedStaticColors_count = 0;
-    for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS + 3) / 4; ++packedPinIndex)
-    {
-        unsigned int pinIndex = packedPinIndex * 4;
-        if(pinIndex < pressedStaticColorsList.size())
-            Profile->pressedStaticColors[packedPinIndex] = pressedStaticColorsList[pinIndex].as<uint32_t>() & 0xFF;
-        else
-            break;
-        if(pinIndex+1 < pressedStaticColorsList.size())
-            Profile->pressedStaticColors[packedPinIndex] += ((pressedStaticColorsList[pinIndex+1].as<uint32_t>() & 0xFF) << 8);
-        if(pinIndex+2 < pressedStaticColorsList.size())
-            Profile->pressedStaticColors[packedPinIndex] += ((pressedStaticColorsList[pinIndex+2].as<uint32_t>() & 0xFF) << 16);
-        if(pinIndex+3 < pressedStaticColorsList.size())
-            Profile->pressedStaticColors[packedPinIndex] += ((pressedStaticColorsList[pinIndex+3].as<uint32_t>() & 0xFF) << 24);
-        Profile->pressedStaticColors_count = packedPinIndex+1;
-    }
-
     JsonArray nonButtonStaticColorsList = (*JsonData)["nonButtonStaticColors"];
-    Profile->nonButtonStaticColors_count = 0;
-    for(unsigned int packedPinIndex = 0; packedPinIndex < (MAX_NON_BUTTON_LIGHT_COLOR_INDEXES/4)+1; ++packedPinIndex)
-    {
-        unsigned int pinIndex = packedPinIndex * 4;
-        if(pinIndex < nonButtonStaticColorsList.size())
-            Profile->nonButtonStaticColors[packedPinIndex] = nonButtonStaticColorsList[pinIndex].as<uint32_t>() & 0xFF;
-        else
-            break;
-        if(pinIndex+1 < nonButtonStaticColorsList.size())
-            Profile->nonButtonStaticColors[packedPinIndex] += ((nonButtonStaticColorsList[pinIndex+1].as<uint32_t>() & 0xFF) << 8);
-        if(pinIndex+2 < nonButtonStaticColorsList.size())
-            Profile->nonButtonStaticColors[packedPinIndex] += ((nonButtonStaticColorsList[pinIndex+2].as<uint32_t>() & 0xFF) << 16);
-        if(pinIndex+3 < nonButtonStaticColorsList.size())
-            Profile->nonButtonStaticColors[packedPinIndex] += ((nonButtonStaticColorsList[pinIndex+3].as<uint32_t>() & 0xFF) << 24);
-        Profile->nonButtonStaticColors_count = packedPinIndex+1;
+
+    memset(Profile->notPressedStaticColors.bytes, 0, NUM_BANK0_GPIOS);
+    memset(Profile->pressedStaticColors.bytes, 0, NUM_BANK0_GPIOS);
+    memset(Profile->nonButtonStaticColors.bytes, 0, MAX_NON_BUTTON_LIGHT_COLOR_INDEXES);
+
+    for(uint32_t i = 0; i < NUM_BANK0_GPIOS; i++){
+        Profile->notPressedStaticColors.bytes[i] = notPressedStaticColorsList[i].as<uint32_t>() & 0xFF;
+        Profile->pressedStaticColors.bytes[i] = pressedStaticColorsList[i].as<uint32_t>() & 0xFF;
     }
+    Profile->notPressedStaticColors.size = NUM_BANK0_GPIOS;
+    Profile->pressedStaticColors.size = NUM_BANK0_GPIOS;
+    for(uint32_t i = 0; i < MAX_NON_BUTTON_LIGHT_COLOR_INDEXES; i++){
+        Profile->nonButtonStaticColors.bytes[i] = nonButtonStaticColorsList[i].as<uint32_t>() & 0xFF;
+    }
+    Profile->nonButtonStaticColors.size = MAX_NON_BUTTON_LIGHT_COLOR_INDEXES;
 }
 
+// Fix issue here
 std::string setAnimationButtonTestMode()
 {
+    AnimationStation & AnimStation = AnimationStation::getInstance();
     DynamicJsonDocument doc = get_post_data();
 
     JsonObject docJson = doc.as<JsonObject>();
@@ -1328,16 +1284,17 @@ std::string setAnimationButtonTestMode()
         uint32_t checkedBrightnessMax = std::clamp<uint32_t>(testOptions["overrideMaxBrightness"].as<uint8_t>(), 0, 100);
         overrideMaxBrightness = int(((float)checkedBrightnessMax * 2.55f) +  + 0.5f); //+0.5 to cause it to round to nearest number
         overrideMaxBrightness = std::clamp<uint32_t>(overrideMaxBrightness, 0, 255);
-        overrideBrightness = std::clamp<uint32_t>(testOptions["overrideBrightness"].as<uint8_t>(), 0, AnimationStation::brightnessSteps);
+        overrideBrightness = std::clamp<uint32_t>(testOptions["overrideBrightness"].as<uint8_t>(), 0, AnimStation.getBrightnessSteps());
     }
 
-    AnimationStation::SetTestMode(testMode, &testAnimProfile, overrideBrightness, overrideMaxBrightness);
+    AnimStation.SetTestMode(testMode, &testAnimProfile, overrideBrightness, overrideMaxBrightness);
 
     return serialize_json(doc);
 }
 
 std::string setAnimationButtonTestState()
 {
+    AnimationStation & AnimStation = AnimationStation::getInstance();
     DynamicJsonDocument doc = get_post_data();
 
     JsonObject docJson = doc.as<JsonObject>();
@@ -1345,16 +1302,17 @@ std::string setAnimationButtonTestState()
     int testButton = testOptions["testID"].as<uint32_t>();
     bool testIsNonButtonLight = testOptions["testIsNonButtonLight"].as<bool>();
 
-    AnimationStation::SetTestPinState(testButton, testIsNonButtonLight);
+    AnimStation.SetTestPinState(testButton, testIsNonButtonLight);
 
     return serialize_json(doc);
 }
 
 std::string clearAnimationButtonTestMode()
 {
+    AnimationStation & AnimStation = AnimationStation::getInstance();
     DynamicJsonDocument doc = get_post_data();
 
-    AnimationStation::ClearTestMode();
+    AnimStation.ClearTestMode();
 
     return serialize_json(doc);
 }
@@ -1364,36 +1322,33 @@ std::string setAnimationProtoOptions()
     DynamicJsonDocument doc = get_post_data();
 
     AnimationOptions& options = Storage::getInstance().getAnimationOptions();
+    AnimationStation& AnimStation = AnimationStation::getInstance();
 
     JsonObject docJson = doc.as<JsonObject>();
     JsonObject AnimOptions = docJson["AnimationOptions"];
 
     options.brightness = AnimOptions["brightness"].as<uint32_t>();
-    options.brightness = std::clamp<uint32_t>(options.brightness, 0, AnimationStation::brightnessSteps);
+    options.brightness = std::clamp<uint32_t>(options.brightness, 0, AnimStation.getBrightnessSteps());
     options.autoDisableTime = AnimOptions["idletimeout"].as<uint32_t>() * 1000;
     options.baseProfileIndex = AnimOptions["baseProfileIndex"].as<uint32_t>();
     JsonArray customColorsList = AnimOptions["customColors"];
-    options.customColors_count = 0;
-    for(unsigned int customColorsIndex = 0; customColorsIndex < customColorsList.size() && customColorsIndex < MAX_CUSTOM_COLORS; ++customColorsIndex)
-    {
-        options.customColors[customColorsIndex] = customColorsList[customColorsIndex];
-        options.customColors_count = customColorsIndex+1;
+    options.customColors_count = std::min(customColorsList.size(), (size_t)MAX_CUSTOM_COLORS);
+    for(unsigned int customColorsIndex = 0; customColorsIndex < options.customColors_count; ++customColorsIndex) {
+        options.customColors[customColorsIndex] = customColorsList[customColorsIndex].as<uint32_t>();
     }
 
     JsonArray profilesList = AnimOptions["profiles"];
     int profilesIndex = 0;
-    options.profiles_count = 0;
-    for (JsonObject profile : profilesList)
-    {
+    for (JsonObject profile : profilesList) {
         helperGetProfileFromJsonObject(&(options.profiles[profilesIndex]), &profile);
 
-        options.profiles_count = profilesIndex+1;
-
-        if (++profilesIndex >= MAX_ANIMATION_PROFILES)
+        options.profiles[profilesIndex].baseCycleTime = options.profiles[profilesIndex].baseCycleTime + 1;
+        profilesIndex = profilesIndex + 1;
+        if (profilesIndex >= MAX_ANIMATION_PROFILES)
             break;
     }
 
-    NeoPicoLEDAddon::RestartLedSystem();
+    AnimStation.setRestartLeds(true);
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
     return serialize_json(doc);
@@ -1403,8 +1358,9 @@ std::string getAnimationProtoOptions()
 {
     DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
     const AnimationOptions& options = Storage::getInstance().getAnimationOptions();
+    AnimationStation& AnimStation = AnimationStation::getInstance();
 
-    uint32_t checkedBrightness = std::clamp<uint32_t>(options.brightness, 0, AnimationStation::brightnessSteps);
+    uint32_t checkedBrightness = std::clamp<uint32_t>(options.brightness, 0, AnimStation.getBrightnessSteps());
 
     JsonObject AnimOptions = doc.createNestedObject("AnimationOptions");
     AnimOptions["brightness"] = checkedBrightness;
@@ -1417,7 +1373,7 @@ std::string getAnimationProtoOptions()
     }
 
     JsonArray profileList = AnimOptions.createNestedArray("profiles");
-    for (int profilesIndex = 0; profilesIndex < options.profiles_count; ++profilesIndex)
+    for (int profilesIndex = 0; profilesIndex < MAX_ANIMATION_PROFILES; profilesIndex++)
     {
         JsonObject profile = profileList.createNestedObject();
         profile["bEnabled"] = options.profiles[profilesIndex].bEnabled ? 1 : 0;
@@ -1444,28 +1400,15 @@ std::string getAnimationProtoOptions()
         profile["caseContextParam"] = (options.profiles[profilesIndex].effectContextParam >> 16) & 0xFF;
 
         JsonArray notPressedStaticColorsList = profile.createNestedArray("notPressedStaticColors");
-        for (int notPressedStaticColorsIndex = 0; notPressedStaticColorsIndex < options.profiles[profilesIndex].notPressedStaticColors_count; ++notPressedStaticColorsIndex)
-        {
-            notPressedStaticColorsList.add(options.profiles[profilesIndex].notPressedStaticColors[notPressedStaticColorsIndex] & 0xFF);
-            notPressedStaticColorsList.add((options.profiles[profilesIndex].notPressedStaticColors[notPressedStaticColorsIndex] >> 8) & 0xFF);
-            notPressedStaticColorsList.add((options.profiles[profilesIndex].notPressedStaticColors[notPressedStaticColorsIndex] >> 16) & 0xFF);
-            notPressedStaticColorsList.add((options.profiles[profilesIndex].notPressedStaticColors[notPressedStaticColorsIndex] >> 24) & 0xFF);
-        }
         JsonArray pressedStaticColorsList = profile.createNestedArray("pressedStaticColors");
-        for (int pressedStaticColorsIndex = 0; pressedStaticColorsIndex < options.profiles[profilesIndex].pressedStaticColors_count; ++pressedStaticColorsIndex)
-        {
-            pressedStaticColorsList.add(options.profiles[profilesIndex].pressedStaticColors[pressedStaticColorsIndex] & 0xFF);
-            pressedStaticColorsList.add((options.profiles[profilesIndex].pressedStaticColors[pressedStaticColorsIndex] >> 8) & 0xFF);
-            pressedStaticColorsList.add((options.profiles[profilesIndex].pressedStaticColors[pressedStaticColorsIndex] >> 16) & 0xFF);
-            pressedStaticColorsList.add((options.profiles[profilesIndex].pressedStaticColors[pressedStaticColorsIndex] >> 24) & 0xFF);
-        }
         JsonArray nonButtonStaticColorsList = profile.createNestedArray("nonButtonStaticColors");
-        for (int nonButtonStaticColorsIndex = 0; nonButtonStaticColorsIndex < options.profiles[profilesIndex].nonButtonStaticColors_count; ++nonButtonStaticColorsIndex)
-        {
-            nonButtonStaticColorsList.add(options.profiles[profilesIndex].nonButtonStaticColors[nonButtonStaticColorsIndex] & 0xFF);
-            nonButtonStaticColorsList.add((options.profiles[profilesIndex].nonButtonStaticColors[nonButtonStaticColorsIndex] >> 8) & 0xFF);
-            nonButtonStaticColorsList.add((options.profiles[profilesIndex].nonButtonStaticColors[nonButtonStaticColorsIndex] >> 16) & 0xFF);
-            nonButtonStaticColorsList.add((options.profiles[profilesIndex].nonButtonStaticColors[nonButtonStaticColorsIndex] >> 24) & 0xFF);
+        for (unsigned int index = 0; index < NUM_BANK0_GPIOS; index++ ) {
+            notPressedStaticColorsList.add(options.profiles[profilesIndex].notPressedStaticColors.bytes[index]);
+            pressedStaticColorsList.add(options.profiles[profilesIndex].pressedStaticColors.bytes[index]);
+        }
+        
+        for (unsigned int index = 0; index < MAX_NON_BUTTON_LIGHT_COLOR_INDEXES; index++) {
+            nonButtonStaticColorsList.add(options.profiles[profilesIndex].nonButtonStaticColors.bytes[index]);
         }
     }
 
@@ -3241,6 +3184,188 @@ std::string getBoardDefinition() {
     return serialize_json(doc);
 }
 
+/*
+std::string setLedOptions() {
+    DynamicJsonDocument doc = get_post_data();
+
+    AnimationOptions& animationOptionsProto = Storage::getInstance().getAnimationOptions();
+    LEDOptions& ledOptionsProto = Storage::getInstance().getLedOptions();
+    AnimationStation& AnimStation = AnimationStation::getInstance();
+
+    JsonObject docJson = doc.as<JsonObject>();
+
+    // {"LEDOptions": {"LightData":{},"LEDConfiguration":{},"AnimationOptions":{}}}
+    JsonObject root = docJson["LedOptions"];
+
+    // LightData assignment
+    JsonObject LightData = root["LightData"];
+    JsonArray lightsList = LightData["Lights"];
+    ledOptionsProto.lightClusterData_count = 0;
+    ledOptionsProto.lightClusterDataInitialised = true;
+    for (JsonObject light : lightsList) {
+        int thisEntryIndex = ledOptionsProto.lightClusterData_count;
+        ledOptionsProto.lightClusterData[thisEntryIndex].lightLocationData = light["firstLedIndex"].as<uint8_t>();
+        ledOptionsProto.lightClusterData[thisEntryIndex].lightLocationData += ((int)light["numLedsOnLight"].as<uint8_t>()) << 8;
+        ledOptionsProto.lightClusterData[thisEntryIndex].lightLocationData += ((int)light["xCoord"].as<uint8_t>()) << 16;
+        ledOptionsProto.lightClusterData[thisEntryIndex].lightLocationData += ((int)light["yCoord"].as<uint8_t>()) << 24;
+        ledOptionsProto.lightClusterData[thisEntryIndex].lightTypeData = light["GPIOPinOrNonButtonIndex"].as<uint8_t>();
+        ledOptionsProto.lightClusterData[thisEntryIndex].lightTypeData += ((int)light["lightType"].as<uint8_t>()) << 8;
+        ledOptionsProto.lightClusterData_count++;
+        if(ledOptionsProto.lightClusterData_count >= FRAME_MAX) //100 entries total
+            break;
+    }
+
+    // LED Configuration
+    JsonObject LedConfiguration = root["LedConfiguration"];
+    cleanAddonGpioMappings(ledOptionsProto.dataPin, LedConfiguration["dataPin"]);
+    ledOptionsProto.ledFormat = (LEDFormat_Proto)LedConfiguration["ledFormat"].as<uint32_t>();
+    ledOptionsProto.turnOffWhenSuspended = LedConfiguration["turnOffWhenSuspended"].as<bool>();
+    ledOptionsProto.brightnessMaximum = LedConfiguration["brightnessMaximum"].as<uint32_t>();
+    uint32_t checkedBrightnessMax = std::clamp<uint32_t>(ledOptionsProto.brightnessMaximum, 0, 100);
+    ledOptionsProto.brightnessMaximum = int(((float)checkedBrightnessMax * 2.55f) +  + 0.5f); //+0.5 to cause it to round to nearest number
+    ledOptionsProto.brightnessMaximum = std::clamp<uint32_t>(ledOptionsProto.brightnessMaximum, 0, 255);
+    ledOptionsProto.pledType = (PLEDType)LedConfiguration["pledType"].as<uint32_t>();
+    if(ledOptionsProto.pledType == PLEDType::PLED_TYPE_PWM) {
+        cleanAddonGpioMappings(ledOptionsProto.pledPin1, LedConfiguration["pledPin1"]);
+        cleanAddonGpioMappings(ledOptionsProto.pledPin2, LedConfiguration["pledPin2"]);
+        cleanAddonGpioMappings(ledOptionsProto.pledPin3, LedConfiguration["pledPin3"]);
+        cleanAddonGpioMappings(ledOptionsProto.pledPin4, LedConfiguration["pledPin4"]);
+    } else {
+        int32_t resetVal = -1;
+        cleanAddonGpioMappings(resetVal, ledOptionsProto.pledPin1);
+        cleanAddonGpioMappings(resetVal, ledOptionsProto.pledPin2);
+        cleanAddonGpioMappings(resetVal, ledOptionsProto.pledPin3);
+        cleanAddonGpioMappings(resetVal, ledOptionsProto.pledPin4);
+        ledOptionsProto.pledPin1 = resetVal;
+        ledOptionsProto.pledPin2 = resetVal;
+        ledOptionsProto.pledPin3 = resetVal;
+        ledOptionsProto.pledPin4 = resetVal;
+    }
+
+    // Animation Options assignment
+    JsonObject AnimOptions = root["AnimationOptions"];
+    animationOptionsProto.brightness = AnimOptions["brightness"].as<uint32_t>();
+    animationOptionsProto.brightness = std::clamp<uint32_t>(animationOptionsProto.brightness, 0, AnimStation.getBrightnessSteps());
+    animationOptionsProto.autoDisableTime = AnimOptions["idletimeout"].as<uint32_t>() * 1000;
+    animationOptionsProto.baseProfileIndex = AnimOptions["baseProfileIndex"].as<uint32_t>();
+    JsonArray customColorsList = AnimOptions["customColors"];
+    animationOptionsProto.customColors_count = std::min(customColorsList.size(), (size_t)MAX_CUSTOM_COLORS);
+    for(unsigned int customColorsIndex = 0; customColorsIndex < animationOptionsProto.customColors_count; ++customColorsIndex) {
+        animationOptionsProto.customColors[customColorsIndex] = customColorsList[customColorsIndex].as<uint32_t>();
+    }
+    JsonArray profilesList = AnimOptions["profiles"];
+    int profilesIndex = 0;
+    for (JsonObject profile : profilesList) {
+        helperGetProfileFromJsonObject(&(animationOptionsProto.profiles[profilesIndex]), &profile);
+        animationOptionsProto.profiles[profilesIndex].baseCycleTime = animationOptionsProto.profiles[profilesIndex].baseCycleTime + 1;
+        profilesIndex = profilesIndex + 1;
+        if (profilesIndex >= MAX_ANIMATION_PROFILES)
+            break;
+    }
+
+    AnimStation.setRestartLeds(true);
+
+    EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
+    return serialize_json(doc);
+}
+
+std::string getLedOptions() {
+    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+
+    const LEDOptions& LedOptionsProto = Storage::getInstance().getLedOptions();
+    const TurboOptions& turboOptions = Storage::getInstance().getAddonOptions().turboOptions;
+    const AnimationOptions& animationOptions = Storage::getInstance().getAnimationOptions();
+    AnimationStation& AnimStation = AnimationStation::getInstance();
+
+    // Parent LedOptions { "LightData": {}, "AnimationOptions":{}, "":{} }
+    JsonObject LedOptions = doc.createNestedObject("LedOptions");
+
+    // "LEDOptions": {"LightData": .. }
+    JsonObject LightData = LedOptions.createNestedObject("LightData");
+    JsonArray lightsList = LightData.createNestedArray("Lights");
+    for (int lightsIndex = 0; lightsIndex < LedOptionsProto.lightClusterData_count; ++lightsIndex)
+    {
+        JsonObject light = lightsList.createNestedObject();
+        light["firstLedIndex"] = LedOptionsProto.lightClusterData[lightsIndex].lightLocationData & 0xFF;
+        light["numLedsOnLight"] = (LedOptionsProto.lightClusterData[lightsIndex].lightLocationData >> 8) & 0xFF;
+        light["xCoord"] = (LedOptionsProto.lightClusterData[lightsIndex].lightLocationData >> 16) & 0xFF;
+        light["yCoord"] = (LedOptionsProto.lightClusterData[lightsIndex].lightLocationData >> 24) & 0xFF;
+        light["GPIOPinOrNonButtonIndex"] = LedOptionsProto.lightClusterData[lightsIndex].lightTypeData & 0xFF;
+        light["lightType"] = (LedOptionsProto.lightClusterData[lightsIndex].lightTypeData >> 8) & 0xFF;
+    }
+    LightData["TurboIsRGB"] = turboOptions.turboLedType == PLED_TYPE_RGB ? 1 : 0;
+    LightData["PLedIsRGB"] = LedOptionsProto.pledType == PLED_TYPE_RGB ? 1 : 0;
+
+    // "LEDOptions": {.., "LEDConfiguration": .. }
+    JsonObject LedConfiguration = LedOptions.createNestedObject("LedConfiguration");
+    LedConfiguration["dataPin"] = cleanPin(LedOptionsProto.dataPin);
+    LedConfiguration["ledFormat"] = LedOptionsProto.ledFormat;
+    LedConfiguration["turnOffWhenSuspended"] = LedOptionsProto.turnOffWhenSuspended;
+    uint32_t adjustedbrightnessMax = (uint32_t)(((float)LedOptionsProto.brightnessMaximum / 2.55f) + 0.5f); //+0.5 to cause it to round to nearest number
+    adjustedbrightnessMax = std::clamp<uint32_t>(adjustedbrightnessMax, 0, 100);
+    LedConfiguration["brightnessMaximum"] = adjustedbrightnessMax;
+    LedConfiguration["pledType"] = LedOptionsProto.pledType;
+    LedConfiguration["pledPin1"] = LedOptionsProto.pledPin1;
+    LedConfiguration["pledPin2"] = LedOptionsProto.pledPin2;
+    LedConfiguration["pledPin3"] = LedOptionsProto.pledPin3;
+    LedConfiguration["pledPin4"] = LedOptionsProto.pledPin4;
+
+    // "LEDOptions": {.., "AnimationOptions": .. }
+    JsonObject AnimOptions = LedOptions.createNestedObject("AnimationOptions");
+    uint32_t checkedBrightness = std::clamp<uint32_t>(animationOptions.brightness, 0, AnimStation.getBrightnessSteps());
+    AnimOptions["brightness"] = checkedBrightness;
+    AnimOptions["baseProfileIndex"] = animationOptions.baseProfileIndex;
+    AnimOptions["idletimeout"] = (animationOptions.autoDisableTime / 1000);
+    JsonArray customColorsList = AnimOptions.createNestedArray("customColors");
+    for (int customColorsIndex = 0; customColorsIndex < animationOptions.customColors_count; ++customColorsIndex)
+    {
+        customColorsList.add(animationOptions.customColors[customColorsIndex]);
+    }
+
+    JsonArray profileList = AnimOptions.createNestedArray("profiles");
+    for (int profilesIndex = 0; profilesIndex < MAX_ANIMATION_PROFILES; profilesIndex++)
+    {
+        JsonObject profile = profileList.createNestedObject();
+        profile["bEnabled"] = animationOptions.profiles[profilesIndex].bEnabled ? 1 : 0;
+        profile["baseNonPressedEffect"] = animationOptions.profiles[profilesIndex].baseNonPressedEffect;
+        profile["basePressedEffect"] = animationOptions.profiles[profilesIndex].basePressedEffect;
+        profile["buttonPressHoldTimeInMs"] = animationOptions.profiles[profilesIndex].buttonPressHoldTimeInMs;
+        profile["buttonPressFadeOutTimeInMs"] = animationOptions.profiles[profilesIndex].buttonPressFadeOutTimeInMs;
+        profile["nonPressedSpecialColor"] = animationOptions.profiles[profilesIndex].nonPressedSpecialColor;
+        profile["bUseCaseLightsInPressedAnimations"] = animationOptions.profiles[profilesIndex].bUseCaseLightsInPressedAnimations ? 1 : 0;
+        profile["baseCaseEffect"] = animationOptions.profiles[profilesIndex].baseCaseEffect;
+        profile["pressedSpecialColor"] = animationOptions.profiles[profilesIndex].pressedSpecialColor;
+        profile["caseSpecialColor"] = animationOptions.profiles[profilesIndex].caseSpecialColor;
+
+        profile["baseCycleTime"] = animationOptions.profiles[profilesIndex].baseCycleTime + 1;
+        profile["basePressedCycleTime"] = animationOptions.profiles[profilesIndex].basePressedCycleTime + 1;
+        profile["baseCaseCycleTime"] = animationOptions.profiles[profilesIndex].baseCaseCycleTime + 1;
+
+        profile["bNonPressedSpecialColorIsRainbow"] = animationOptions.profiles[profilesIndex].bNonPressedSpecialColorIsRainbow ? 1 : 0;
+        profile["bPressedSpecialColorIsRainbow"] = animationOptions.profiles[profilesIndex].bPressedSpecialColorIsRainbow ? 1 : 0;
+        profile["bCaseSpecialColorIsRainbow"] = animationOptions.profiles[profilesIndex].bCaseSpecialColorIsRainbow ? 1 : 0;
+
+        profile["nonPressedContextParam"] = animationOptions.profiles[profilesIndex].effectContextParam & 0xFF;
+        profile["pressedContextParam"] = (animationOptions.profiles[profilesIndex].effectContextParam >> 8) & 0xFF;
+        profile["caseContextParam"] = (animationOptions.profiles[profilesIndex].effectContextParam >> 16) & 0xFF;
+
+        JsonArray notPressedStaticColorsList = profile.createNestedArray("notPressedStaticColors");
+        JsonArray pressedStaticColorsList = profile.createNestedArray("pressedStaticColors");
+        JsonArray nonButtonStaticColorsList = profile.createNestedArray("nonButtonStaticColors");
+        for (unsigned int index = 0; index < NUM_BANK0_GPIOS; index++ ) {
+            notPressedStaticColorsList.add(animationOptions.profiles[profilesIndex].notPressedStaticColors.bytes[index]);
+            pressedStaticColorsList.add(animationOptions.profiles[profilesIndex].pressedStaticColors.bytes[index]);
+        }
+        
+        for (unsigned int index = 0; index < MAX_NON_BUTTON_LIGHT_COLOR_INDEXES; index++) {
+            nonButtonStaticColorsList.add(animationOptions.profiles[profilesIndex].nonButtonStaticColors.bytes[index]);
+        }
+    }
+
+    return serialize_json(doc);
+}
+*/
+
 typedef std::string (*HandlerFuncPtr)();
 static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
 {
@@ -3307,8 +3432,8 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/getJoystickCenter", getJoystickCenter },
     { "/api/getJoystickCenter2", getJoystickCenter2 },
     { "/api/getBoardDefinition", getBoardDefinition },
-		{ "/api/getBootModeOptions", getBootModeOptions },
-		{ "/api/setBootModeOptions", setBootModeOptions },
+    { "/api/getBootModeOptions", getBootModeOptions },
+    { "/api/setBootModeOptions", setBootModeOptions },
 #if !defined(NDEBUG)
     { "/api/echo", echo },
 #endif
