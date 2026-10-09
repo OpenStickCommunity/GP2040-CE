@@ -11,6 +11,13 @@ import FormControl from '../Components/FormControl';
 import FormSelect from '../Components/FormSelect';
 import Section from '../Components/Section';
 import WebApi from '../Services/WebApi';
+import { getButtonLabels } from '../Data/Buttons';
+import { ButtonLayout, ButtonLayoutRight } from '@proto/enums';
+import {
+	parseLayoutCode,
+	layoutCodeToBase64,
+	base64ToLayoutCode,
+} from '../Services/CustomLayout';
 
 const ON_OFF_OPTIONS = [
 	{ label: 'form.display-state.disabled', value: 0 },
@@ -83,6 +90,8 @@ const defaultValues = {
 	inputHistoryRow: 7,
 	turnOffWhenSuspended: 0,
 	displayContrast: 255,
+	customLayoutA: '',
+	customLayoutB: '',
 };
 
 let buttonLayoutDefinitions = { buttonLayout: {}, buttonLayoutRight: {} };
@@ -93,6 +102,38 @@ let buttonLayoutSchema = buttonLayoutSchemaBase.label('Button Layout Left');
 let buttonLayoutRightSchema = buttonLayoutSchemaBase.label(
 	'Button Layout Right',
 );
+
+const CUSTOM_LAYOUT_LEFT = {
+	layout: ButtonLayout.BUTTON_LAYOUT_CUSTOM_DEFINED_A,
+	defineName: 'DEFAULT_BOARD_LAYOUT_A',
+};
+const CUSTOM_LAYOUT_RIGHT = {
+	layout: ButtonLayoutRight.BUTTON_LAYOUT_CUSTOM_DEFINED_B,
+	defineName: 'DEFAULT_BOARD_LAYOUT_B',
+};
+
+const customLayoutSchema = (layoutField, { layout, defineName }) =>
+	yup.string().when(layoutField, {
+		is: (value) => Number(value) === layout,
+		then: (schema) =>
+			schema.test('layout-code', (code, context) => {
+				const { error } = parseLayoutCode(code, defineName);
+				return error === null || context.createError({ message: error });
+			}),
+	});
+
+const toDisplayOptionsRequest = (values) => {
+	const request = { ...values };
+	[
+		['customLayoutA', CUSTOM_LAYOUT_LEFT],
+		['customLayoutB', CUSTOM_LAYOUT_RIGHT],
+	].forEach(([field, { defineName }]) => {
+		const base64 = layoutCodeToBase64(values[field], defineName);
+		if (base64 === null) delete request[field];
+		else request[field] = base64;
+	});
+	return request;
+};
 
 const schema = yup.object().shape({
 	enabled: yup
@@ -170,6 +211,8 @@ const schema = yup.object().shape({
 	inputHistoryLength: yup.number().label('Input History Length'),
 	inputHistoryCol: yup.number().label('Input History Column Position'),
 	inputHistoryRow: yup.number().label('Input History Row Position'),
+	customLayoutA: customLayoutSchema('buttonLayout', CUSTOM_LAYOUT_LEFT),
+	customLayoutB: customLayoutSchema('buttonLayoutRight', CUSTOM_LAYOUT_RIGHT),
 });
 
 const FormContext = () => {
@@ -177,7 +220,7 @@ const FormContext = () => {
 
 	useEffect(() => {
 		async function setDisplayOptions() {
-			await WebApi.setDisplayOptions(values, true);
+			await WebApi.setDisplayOptions(toDisplayOptionsRequest(values), true);
 		}
 
 		setDisplayOptions();
@@ -189,13 +232,69 @@ const FormContext = () => {
 const isButtonLayoutCustom = (values) =>
 	values.buttonLayout === 12 || values.buttonLayoutRight === 16;
 
+const isCustomLayoutUsed = (values) =>
+	Number(values.buttonLayout) === CUSTOM_LAYOUT_LEFT.layout ||
+	Number(values.buttonLayoutRight) === CUSTOM_LAYOUT_RIGHT.layout;
+
+const CustomLayoutCodeEditor = ({
+	label,
+	name,
+	defineName,
+	value,
+	error,
+	onChange,
+}) => {
+	const { t } = useTranslation('');
+	const { elements } = parseLayoutCode(value, defineName);
+	const elementCount = elements?.length ?? 0;
+
+	return (
+		<Form.Group>
+			<Form.Label>{label}</Form.Label>
+			<Form.Control
+				as="textarea"
+				name={name}
+				rows={12}
+				spellCheck="false"
+				className="font-monospace"
+				style={{ fontSize: '0.8rem', whiteSpace: 'pre' }}
+				value={value}
+				onChange={onChange}
+				isInvalid={Boolean(error)}
+				isValid={!error && elementCount > 0}
+			/>
+			{error ? (
+				<Form.Control.Feedback type="invalid">{error}</Form.Control.Feedback>
+			) : (
+				<Form.Text muted>
+					{elementCount > 0
+						? t('DisplayConfig:form.custom-layout-element-count', {
+								count: elementCount,
+							})
+						: t('DisplayConfig:form.custom-layout-empty')}
+				</Form.Text>
+			)}
+		</Form.Group>
+	);
+};
+
 export default function DisplayConfigPage() {
 	const [loadingValues, setLoadingValues] = useState(true);
 	const [values, setValues] = useState(defaultValues);
 
-	const { updateUsedPins, getAvailablePeripherals, updatePeripherals } =
-		useContext(AppContext);
+	const {
+		buttonLabels,
+		updateUsedPins,
+		getAvailablePeripherals,
+		updatePeripherals,
+	} = useContext(AppContext);
+	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
+	const currentButtonLabels = getButtonLabels(
+		buttonLabelType,
+		swapTpShareLabels,
+	);
 	const [saveMessage, setSaveMessage] = useState('');
+	const [activeTab, setActiveTab] = useState('defaultHardwareOptions');
 
 	const { t } = useTranslation('');
 
@@ -211,6 +310,14 @@ export default function DisplayConfigPage() {
 			buttonLayoutRightSchema = buttonLayoutRightSchema.oneOf(
 				Object.values(buttonLayoutDefinitions.buttonLayoutRight),
 			);
+			data.customLayoutA = base64ToLayoutCode(
+				data.customLayoutA,
+				CUSTOM_LAYOUT_LEFT.defineName,
+			);
+			data.customLayoutB = base64ToLayoutCode(
+				data.customLayoutB,
+				CUSTOM_LAYOUT_RIGHT.defineName,
+			);
 			setValues(data);
 			setLoadingValues(false);
 		}
@@ -219,9 +326,10 @@ export default function DisplayConfigPage() {
 	}, []);
 
 	const onSuccess = async (values) => {
-		const success = await WebApi.setDisplayOptions(values, false).then(() =>
-			WebApi.setSplashImage(values),
-		);
+		const success = await WebApi.setDisplayOptions(
+			toDisplayOptionsRequest(values),
+			false,
+		).then(() => WebApi.setSplashImage(values));
 
 		if (success) await updateUsedPins();
 
@@ -269,7 +377,8 @@ export default function DisplayConfigPage() {
 							</ul>
 							<Form noValidate onSubmit={handleSubmit}>
 								<Tabs
-									defaultActiveKey="defaultHardwareOptions"
+									activeKey={activeTab}
+									onSelect={(k) => setActiveTab(k)}
 									id="displayConfigTabs"
 									className="mb-3 pb-0"
 									fill
@@ -655,6 +764,63 @@ export default function DisplayConfigPage() {
 													</Form.Group>
 												</Col>
 											</Row>
+										)}
+										{isCustomLayoutUsed(values) && (
+											<>
+												<h1>
+													{t('DisplayConfig:section.custom-layout-header')}
+												</h1>
+												<Row className="mb-4">
+													<p>
+														{t('DisplayConfig:form.custom-layout-description')}
+													</p>
+													<p>
+														{t('DisplayConfig:form.custom-layout-format')}{' '}
+														<a
+															href="https://pelsin.github.io/GP2040-CE-layout-viewer/"
+															target="_blank"
+															rel="noreferrer"
+														>
+															{t('DisplayConfig:form.custom-layout-link-text')}
+														</a>
+													</p>
+													<p>
+														{t('DisplayConfig:form.custom-layout-preview-tip', {
+															button: currentButtonLabels.B1,
+														})}
+													</p>
+													{Number(values.buttonLayout) ===
+														CUSTOM_LAYOUT_LEFT.layout && (
+														<Col sm="6">
+															<CustomLayoutCodeEditor
+																label={t(
+																	'DisplayConfig:form.custom-layout-left-label',
+																)}
+																name="customLayoutA"
+																defineName={CUSTOM_LAYOUT_LEFT.defineName}
+																value={values.customLayoutA}
+																error={errors.customLayoutA}
+																onChange={handleChange}
+															/>
+														</Col>
+													)}
+													{Number(values.buttonLayoutRight) ===
+														CUSTOM_LAYOUT_RIGHT.layout && (
+														<Col sm="6">
+															<CustomLayoutCodeEditor
+																label={t(
+																	'DisplayConfig:form.custom-layout-right-label',
+																)}
+																name="customLayoutB"
+																defineName={CUSTOM_LAYOUT_RIGHT.defineName}
+																value={values.customLayoutB}
+																error={errors.customLayoutB}
+																onChange={handleChange}
+															/>
+														</Col>
+													)}
+												</Row>
+											</>
 										)}
 										<h1>{t('DisplayConfig:section.status-layout-header')}</h1>
 										<Row className="mb-4">
