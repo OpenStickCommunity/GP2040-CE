@@ -38,6 +38,7 @@
 #define LED_FORMAT LED_FORMAT_GRB
 #endif
 
+// LIGHT_DATA_* entries: firstLedIndex, ledCount, x, y, GPIO pin / case index / HE sensor index, type (LightType_HallEffectButton for HE)
 #ifndef LIGHT_DATA_SIZE_DEFAULT
 #define LIGHT_DATA_SIZE_DEFAULT 0
 #endif
@@ -579,6 +580,7 @@ private:
 
 	//Data representation of the lights
 	Lights RGBLights;
+	std::vector<int32_t> pressedInputs;
 
 	//Animation class. Handles idle animations, special move animations and pressed button effects
 	//class AnimationStation AnimStation;

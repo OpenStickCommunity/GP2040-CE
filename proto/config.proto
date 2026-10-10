@@ -290,7 +290,7 @@ message DisplayOptions
 message LightCluster
 {
     optional uint32 lightLocationData = 1; // [ledIndex, ledCount, xCoord, yCoord]
-    optional uint32 lightTypeData = 2; // [gpioPin, type, unused, unused]
+    optional uint32 lightTypeData = 2; // [gpioPin or input index, type, LightInputSource (ActionButton only), unused]
 };
 
 message LEDOptions
@@ -368,6 +368,8 @@ message AnimationProfile
     optional bool bCaseSpecialColorIsRainbow = 19;
     optional uint32 caseSpecialColor = 20;
     optional uint32 effectContextParam = 21;
+    optional bytes extNotPressedStaticColors = 22 [(nanopb).max_size = 32]; //Hall Effect button lights (MAX_EXT_INPUT_LIGHT_COLOR_INDEXES)
+    optional bytes extPressedStaticColors = 23 [(nanopb).max_size = 32]; //Hall Effect button lights (MAX_EXT_INPUT_LIGHT_COLOR_INDEXES)
 };
 
 // This has to be kept in sync with AnimationOptions_Unpacked in animationstation.hpp

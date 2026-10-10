@@ -522,6 +522,13 @@ enum LightType
     Player4Light = 6;
 }
 
+// Input an ActionButton light follows (LightCluster.lightTypeData bits 16-23)
+enum LightInputSource
+{
+    GPIO = 0;
+    HallEffect = 1;
+}
+
 enum ShmupMixMode
 {
     option (nanopb_enumopt).long_names = false;

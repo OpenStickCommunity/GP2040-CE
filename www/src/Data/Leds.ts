@@ -29,3 +29,38 @@ export const LIGHT_TYPES = {
 	Turbo: 2,
 	PlayerLight: 3,
 };
+
+// Must match LightInputSource in proto/enums.proto
+export const LIGHT_INPUT_SOURCES = {
+	GPIO: 0,
+	HallEffect: 1,
+};
+
+// Must match MAX_EXT_INPUT_LIGHT_COLOR_INDEXES in pixel.h
+export const MAX_EXT_INPUT_LIGHT_COLOR_INDEXES = 32;
+
+type LightInputInfo = {
+	lightType: number;
+	inputSource?: number;
+	GPIOPinOrNonButtonIndex: number;
+};
+
+export const isExtInputLight = (light: LightInputInfo) =>
+	light.lightType === LIGHT_TYPES.ActionButton &&
+	light.inputSource === LIGHT_INPUT_SOURCES.HallEffect;
+
+export const getButtonColorKeys = (light: LightInputInfo) =>
+	isExtInputLight(light)
+		? ({
+				notPressed: 'extNotPressedStaticColors',
+				pressed: 'extPressedStaticColors',
+			} as const)
+		: ({
+				notPressed: 'notPressedStaticColors',
+				pressed: 'pressedStaticColors',
+			} as const);
+
+export const getLightInputLabel = (light: LightInputInfo) =>
+	isExtInputLight(light)
+		? `HE${light.GPIOPinOrNonButtonIndex + 1}`
+		: `GP${light.GPIOPinOrNonButtonIndex}`;

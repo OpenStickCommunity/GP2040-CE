@@ -727,6 +727,23 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         config.animationOptions.profiles_count = MAX_ANIMATION_PROFILES;
     }
 
+    // Hall Effect button light colors, set outside the fresh install block so older configs get them too.
+    {
+        const uint8_t extNotPressedDefaults[MAX_ANIMATION_PROFILES] = {
+            LEDS_PROFILE0_STATIC_COLOR_UNPRESSED, LEDS_PROFILE1_STATIC_COLOR_UNPRESSED,
+            LEDS_PROFILE2_STATIC_COLOR_UNPRESSED, LEDS_PROFILE3_STATIC_COLOR_UNPRESSED };
+        const uint8_t extPressedDefaults[MAX_ANIMATION_PROFILES] = {
+            LEDS_PROFILE0_STATIC_COLOR_PRESSED, LEDS_PROFILE1_STATIC_COLOR_PRESSED,
+            LEDS_PROFILE2_STATIC_COLOR_PRESSED, LEDS_PROFILE3_STATIC_COLOR_PRESSED };
+        unsigned char extBuffer[MAX_EXT_INPUT_LIGHT_COLOR_INDEXES];
+        for (int profileIndex = 0; profileIndex < MAX_ANIMATION_PROFILES; profileIndex++) {
+            memset(extBuffer, extNotPressedDefaults[profileIndex], sizeof(extBuffer));
+            INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[profileIndex], extNotPressedStaticColors, extBuffer);
+            memset(extBuffer, extPressedDefaults[profileIndex], sizeof(extBuffer));
+            INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[profileIndex], extPressedStaticColors, extBuffer);
+        }
+    }
+
     // addonOptions.bootselButtonOptions
     INIT_UNSET_PROPERTY(config.addonOptions.bootselButtonOptions, enabled, !!BOOTSEL_BUTTON_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.bootselButtonOptions, buttonMap, BOOTSEL_BUTTON_MASK);

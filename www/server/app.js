@@ -45,6 +45,7 @@ const BoardLights = [
 					yCoord: 2,
 					GPIOPinOrNonButtonIndex: 5,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 1,
@@ -53,6 +54,7 @@ const BoardLights = [
 					yCoord: 2,
 					GPIOPinOrNonButtonIndex: 3,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 2,
@@ -61,6 +63,7 @@ const BoardLights = [
 					yCoord: 3,
 					GPIOPinOrNonButtonIndex: 4,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 3,
@@ -69,6 +72,7 @@ const BoardLights = [
 					yCoord: 7,
 					GPIOPinOrNonButtonIndex: 2,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 4,
@@ -77,6 +81,7 @@ const BoardLights = [
 					yCoord: 2,
 					GPIOPinOrNonButtonIndex: 10,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 5,
@@ -85,6 +90,7 @@ const BoardLights = [
 					yCoord: 1,
 					GPIOPinOrNonButtonIndex: 11,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 6,
@@ -93,6 +99,7 @@ const BoardLights = [
 					yCoord: 1,
 					GPIOPinOrNonButtonIndex: 12,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 7,
@@ -101,6 +108,7 @@ const BoardLights = [
 					yCoord: 1,
 					GPIOPinOrNonButtonIndex: 13,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 8,
@@ -109,6 +117,7 @@ const BoardLights = [
 					yCoord: 4,
 					GPIOPinOrNonButtonIndex: 6,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 9,
@@ -117,6 +126,7 @@ const BoardLights = [
 					yCoord: 3,
 					GPIOPinOrNonButtonIndex: 7,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 10,
@@ -125,6 +135,7 @@ const BoardLights = [
 					yCoord: 3,
 					GPIOPinOrNonButtonIndex: 8,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 11,
@@ -133,6 +144,7 @@ const BoardLights = [
 					yCoord: 3,
 					GPIOPinOrNonButtonIndex: 9,
 					lightType: 0,
+					inputSource: 0,
 				},
 			],
 		},
@@ -148,6 +160,7 @@ const BoardLights = [
 					yCoord: 2,
 					GPIOPinOrNonButtonIndex: 5,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 1,
@@ -156,6 +169,7 @@ const BoardLights = [
 					yCoord: 2,
 					GPIOPinOrNonButtonIndex: 3,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 2,
@@ -164,6 +178,7 @@ const BoardLights = [
 					yCoord: 3,
 					GPIOPinOrNonButtonIndex: 4,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 3,
@@ -172,6 +187,7 @@ const BoardLights = [
 					yCoord: 7,
 					GPIOPinOrNonButtonIndex: 2,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 4,
@@ -180,6 +196,7 @@ const BoardLights = [
 					yCoord: 2,
 					GPIOPinOrNonButtonIndex: 10,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 5,
@@ -188,6 +205,7 @@ const BoardLights = [
 					yCoord: 1,
 					GPIOPinOrNonButtonIndex: 11,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 6,
@@ -196,6 +214,7 @@ const BoardLights = [
 					yCoord: 1,
 					GPIOPinOrNonButtonIndex: 12,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 7,
@@ -204,6 +223,7 @@ const BoardLights = [
 					yCoord: 1,
 					GPIOPinOrNonButtonIndex: 13,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 8,
@@ -212,6 +232,7 @@ const BoardLights = [
 					yCoord: 4,
 					GPIOPinOrNonButtonIndex: 6,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 9,
@@ -220,6 +241,7 @@ const BoardLights = [
 					yCoord: 3,
 					GPIOPinOrNonButtonIndex: 7,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 10,
@@ -228,6 +250,7 @@ const BoardLights = [
 					yCoord: 3,
 					GPIOPinOrNonButtonIndex: 8,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 11,
@@ -236,6 +259,7 @@ const BoardLights = [
 					yCoord: 3,
 					GPIOPinOrNonButtonIndex: 9,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 12,
@@ -244,6 +268,7 @@ const BoardLights = [
 					yCoord: 0,
 					GPIOPinOrNonButtonIndex: 27,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 13,
@@ -252,6 +277,7 @@ const BoardLights = [
 					yCoord: 0,
 					GPIOPinOrNonButtonIndex: 18,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 14,
@@ -260,6 +286,7 @@ const BoardLights = [
 					yCoord: 5,
 					GPIOPinOrNonButtonIndex: 19,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 15,
@@ -268,6 +295,7 @@ const BoardLights = [
 					yCoord: 6,
 					GPIOPinOrNonButtonIndex: 26,
 					lightType: 0,
+					inputSource: 0,
 				},
 			],
 		},
@@ -391,6 +419,8 @@ app.get('/api/getAnimationProtoOptions', (req, res) => {
 						4, 6, 10, 12, 4, 6, 10, 12, 4, 6, 10, 12, 4, 6, 10, 12, 4, 6, 10,
 						12, 4, 6, 10, 12, 4, 6, 10, 12, 4, 6, 10, 12,
 					],
+					extNotPressedStaticColors: Array(32).fill(2),
+					extPressedStaticColors: Array(32).fill(4),
 				},
 				{
 					bEnabled: 1,
@@ -424,6 +454,8 @@ app.get('/api/getAnimationProtoOptions', (req, res) => {
 						2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
 						2, 2, 2, 2, 2, 2, 2, 2, 2,
 					],
+					extNotPressedStaticColors: Array(32).fill(2),
+					extPressedStaticColors: Array(32).fill(4),
 				},
 			],
 		},

@@ -20,6 +20,8 @@
 
 #include "pico/types.h"
 
+class HETriggerAddon;
+
 class GP2040 {
 public:
     GP2040(){}
@@ -29,6 +31,7 @@ public:
 private:
     Gamepad snapshot;
     AddonManager addons;
+    HETriggerAddon* heTriggerAddon = nullptr;
     // GPIO debouncer
     void debounceGpioGetAll();
     Mask_t buttonGpios;

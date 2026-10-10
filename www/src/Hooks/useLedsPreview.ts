@@ -10,7 +10,7 @@ const useLedsPreview = () => {
 	// }, []);
 
 	const activateLedsOnId = useCallback(
-		async (pin: number, isCase: boolean = false) => {
+		async (pin: number, isCase: boolean = false, inputSource: number = 0) => {
 			await WebApi.setAnimationButtonTestMode({
 				TestData: {
 					testMode: 2,
@@ -20,6 +20,8 @@ const useLedsPreview = () => {
 				TestLight: {
 					testID: pin,
 					testIsNonButtonLight: isCase,
+					// LIGHT_INPUT_SOURCES
+					inputSource,
 				},
 			});
 		},
