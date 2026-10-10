@@ -73,7 +73,6 @@ void GP2040::setup() {
 	BootModeOptions& bootModeOptions = Storage::getInstance().getBootModeOptions();
 	BootAction bootAction;
 
-	const ProfileOptions& profileOptions = Storage::getInstance().getProfileOptions();
 	GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
 	bool profileChanged = false;
 
