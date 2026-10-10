@@ -767,6 +767,16 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, joystick_max_x2, 4095);
     INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, joystick_min_y2, 0);
     INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, joystick_max_y2, 4095);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, muxSelectPin0, ANALOG_MUX_S0_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, muxSelectPin1, ANALOG_MUX_S1_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, muxSelectPin2, ANALOG_MUX_S2_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, muxZPin, ANALOG_MUX_Z_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, triggerLPin, ANALOG_TRIGGER_L_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, triggerRPin, ANALOG_TRIGGER_R_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, triggerLMin, ANALOG_TRIGGER_L_MIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, triggerLMax, ANALOG_TRIGGER_L_MAX);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, triggerRMin, ANALOG_TRIGGER_R_MIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, triggerRMax, ANALOG_TRIGGER_R_MAX);
 
     // addonOptions.turboOptions
     INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, enabled, !!TURBO_ENABLED);
@@ -1789,6 +1799,12 @@ void gpioMappingsMigrationCore(Config& config)
     markAddonPinIfUsed(config.addonOptions.analogOptions.analogAdc1PinY);
     markAddonPinIfUsed(config.addonOptions.analogOptions.analogAdc2PinX);
     markAddonPinIfUsed(config.addonOptions.analogOptions.analogAdc2PinY);
+    markAddonPinIfUsed(config.addonOptions.analogOptions.triggerLPin);
+    markAddonPinIfUsed(config.addonOptions.analogOptions.triggerRPin);
+    markAddonPinIfUsed(config.addonOptions.analogOptions.muxSelectPin0);
+    markAddonPinIfUsed(config.addonOptions.analogOptions.muxSelectPin1);
+    markAddonPinIfUsed(config.addonOptions.analogOptions.muxSelectPin2);
+    markAddonPinIfUsed(config.addonOptions.analogOptions.muxZPin);
     markAddonPinIfUsed(config.addonOptions.buzzerOptions.pin);
     markAddonPinIfUsed(config.addonOptions.buzzerOptions.enablePin);
     markAddonPinIfUsed(config.addonOptions.turboOptions.ledPin);

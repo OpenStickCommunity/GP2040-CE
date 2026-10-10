@@ -646,6 +646,17 @@ async function getHETriggerVoltage(settings) {
 	return Http.post(`${baseUrl}/api/getHETriggerVoltage`, settings);
 }
 
+// GET function to read the raw value of all 8 mux channels (wiring check / calibration)
+async function getAnalogMuxRaw() {
+	try {
+		const response = await Http.get(`${baseUrl}/api/getAnalogMuxRaw`);
+		return response.data;
+	} catch (error) {
+		console.error(error);
+		return { error: 'request failed' };
+	}
+}
+
 // POST function to set our channels, select, and ADC pin
 async function setHETriggerOptions(settings) {
 	return Http.post(`${baseUrl}/api/setHETriggerOptions`, settings);
@@ -764,6 +775,7 @@ export default {
 	getExpansionPins,
 	setExpansionPins,
 	getHETriggerVoltage,
+	getAnalogMuxRaw,
 	setHETriggerCalibrations,
 	getHETriggerCalibrations,
 	setHETriggerOptions,

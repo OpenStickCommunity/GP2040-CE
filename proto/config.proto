@@ -431,6 +431,22 @@ message AnalogOptions
     optional uint32 joystick_max_x2 = 33;
     optional uint32 joystick_min_y2 = 34;
     optional uint32 joystick_max_y2 = 35;
+
+    // 74HC4051 (8:1 analog mux) support. Any stick axis / trigger pin can be a
+    // mux channel (Y0-Y7 are stored as 100-107), read through muxZPin.
+    optional int32 muxSelectPin0 = 36;
+    optional int32 muxSelectPin1 = 37;
+    optional int32 muxSelectPin2 = 38;
+    optional int32 muxZPin = 39;
+
+    // Analog triggers (e.g. hall effect sensors). min/max are raw 12-bit ADC
+    // counts; min > max inverts the sensor polarity.
+    optional int32 triggerLPin = 40;
+    optional int32 triggerRPin = 41;
+    optional uint32 triggerLMin = 42;
+    optional uint32 triggerLMax = 43;
+    optional uint32 triggerRMin = 44;
+    optional uint32 triggerRMax = 45;
 }
 
 message TurboOptions
