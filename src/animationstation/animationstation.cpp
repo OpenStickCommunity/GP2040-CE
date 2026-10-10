@@ -591,6 +591,7 @@ void AnimationStation::CheckForOptionsUpdate()
     if(bAnimConfigSaveNeeded && (absolute_time_diff_us(timeAnimationSaveSet, get_absolute_time()) / 1000) > 1000) // 1 second delay on saves
     {
       bAnimConfigSaveNeeded = false;
+      bChangeDetected = false;
       EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(false));
     }
   }
