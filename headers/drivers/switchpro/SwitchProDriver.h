@@ -62,7 +62,7 @@ private:
     void readSPIFlash(uint8_t* dest, uint32_t address, uint8_t size);
 
     void handleConfigReport(uint8_t switchReportID, uint8_t switchReportSubID, const uint8_t *reportData, uint16_t reportLength);
-    void handleFeatureReport(uint8_t switchReportID, uint8_t switchReportSubID, const uint8_t *reportData, uint16_t reportLength);
+    void handleFeatureReport(uint8_t switchReportID, uint8_t switchReportSubID, const uint8_t *reportData, uint16_t reportLength, bool hasPrefix = true);
 
     //
     //void getConfigFromOffset(uint16_t configOffset, uint8_t* destData);
