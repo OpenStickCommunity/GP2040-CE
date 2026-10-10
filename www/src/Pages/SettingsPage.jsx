@@ -12,13 +12,21 @@ import { AppContext } from '../Contexts/AppContext';
 
 import ContextualHelpOverlay from '../Components/ContextualHelpOverlay';
 import KeyboardMapper from '../Components/KeyboardMapper';
+import Switch2ProController from '../Icons/Switch2ProController';
+import JoyCon2Controller from '../Icons/JoyCon2Controller';
 import Section from '../Components/Section';
 import WebApi, { baseButtonMappings } from '../Services/WebApi';
 import { BUTTON_MASKS_OPTIONS, getButtonLabels } from '../Data/Buttons';
 
-import { hexToInt } from '../Services/Utilities';
+import { hexToInt, rgbIntToHex } from '../Services/Utilities';
 
-import { InputModeDeviceType, PS4ControllerType } from '@proto/enums';
+import {
+	InputModeDeviceType,
+	PS4ControllerType,
+	Switch2ProColorPreset,
+	Switch2ProJoyCon2ColorPreset,
+	Switch2ProIdentity,
+} from '@proto/enums';
 
 import './SettingsPage.scss';
 import { INPUT_MODE_OPTIONS as INPUT_MODES } from '../Data/InputBootModes';
@@ -170,6 +178,11 @@ const INPUT_BOOT_MODES = [
 		value: 15,
 		group: 'primary',
 	},
+	{
+		labelKey: 'input-mode-options.nintendo-switch2-pro',
+		value: 19,
+		group: 'primary',
+	},
 	{ labelKey: 'input-mode-options.keyboard', value: 3, group: 'primary' },
 	{ labelKey: 'input-mode-options.generic', value: 14, group: 'primary' },
 	{ labelKey: 'input-mode-options.mdmini', value: 6, group: 'mini' },
@@ -208,6 +221,119 @@ const PS4_MODES = [
 const PS4_ID_MODES = [
 	{ labelKey: 'ps4-id-mode-options.console', value: 0 },
 	{ labelKey: 'ps4-id-mode-options.emulation', value: 1 },
+];
+
+const SWITCH2_PRO_IDENTITIES = [
+	{ labelKey: 'pro2', value: Switch2ProIdentity.SWITCH2_PRO_IDENTITY_PRO },
+	{
+		labelKey: 'gamecube',
+		value: Switch2ProIdentity.SWITCH2_PRO_IDENTITY_GAMECUBE,
+	},
+	{
+		labelKey: 'joycon2-left',
+		value: Switch2ProIdentity.SWITCH2_PRO_IDENTITY_JOYCON2_LEFT,
+	},
+	{
+		labelKey: 'joycon2-right',
+		value: Switch2ProIdentity.SWITCH2_PRO_IDENTITY_JOYCON2_RIGHT,
+	},
+];
+
+const SWITCH2_PRO_COLOR_PARTS = [
+	{ labelKey: 'face-plate', field: 'switch2ProBodyColor', svgPart: 'body' },
+	{ labelKey: 'buttons', field: 'switch2ProButtonsColor', svgPart: 'buttons' },
+	{
+		labelKey: 'highlight',
+		field: 'switch2ProHighlightColor',
+		svgPart: 'highlight',
+	},
+	{ labelKey: 'main-body', field: 'switch2ProGripColor', svgPart: 'grip' },
+];
+
+const SWITCH2_PRO_COLOR_PRESETS = [
+	{
+		labelKey: 'stock',
+		value: Switch2ProColorPreset.SWITCH2_PRO_COLOR_STOCK,
+		colors: {
+			switch2ProBodyColor: 0x232323,
+			switch2ProButtonsColor: 0xa0a0a0,
+			switch2ProHighlightColor: 0xe6e6e6,
+			switch2ProGripColor: 0x323232,
+		},
+	},
+	{
+		labelKey: 'gp2040',
+		value: Switch2ProColorPreset.SWITCH2_PRO_COLOR_GP2040,
+		colors: {
+			switch2ProBodyColor: 0x1b1b1d,
+			switch2ProButtonsColor: 0xffffff,
+			switch2ProHighlightColor: 0x00ff00,
+			switch2ProGripColor: 0xec008c,
+		},
+	},
+	{
+		labelKey: 'custom',
+		value: Switch2ProColorPreset.SWITCH2_PRO_COLOR_CUSTOM,
+	},
+];
+
+const JOYCON2_COLOR_PARTS = ['body', 'buttons', 'accent', 'stick'];
+
+const JOYCON2_COLOR_FIELDS = {
+	left: {
+		body: 'switch2ProJoyCon2LeftBodyColor',
+		buttons: 'switch2ProJoyCon2LeftButtonsColor',
+		accent: 'switch2ProJoyCon2LeftAccentColor',
+		stick: 'switch2ProJoyCon2LeftStickColor',
+	},
+	right: {
+		body: 'switch2ProJoyCon2RightBodyColor',
+		buttons: 'switch2ProJoyCon2RightButtonsColor',
+		accent: 'switch2ProJoyCon2RightAccentColor',
+		stick: 'switch2ProJoyCon2RightStickColor',
+	},
+};
+
+const joyCon2Colors = (leftAccent, rightAccent) => ({
+	left: {
+		body: 0x323232,
+		buttons: 0xaaaaaa,
+		accent: leftAccent,
+		stick: 0x323232,
+	},
+	right: {
+		body: 0x323232,
+		buttons: 0xaaaaaa,
+		accent: rightAccent,
+		stick: 0x323232,
+	},
+});
+
+const JOYCON2_COLOR_PRESETS = [
+	{
+		labelKey: 'stock',
+		value: Switch2ProJoyCon2ColorPreset.SWITCH2_PRO_JOYCON2_COLOR_STOCK,
+		colors: joyCon2Colors(0x9be1e6, 0xff8c5f),
+	},
+	{
+		labelKey: 'purple-green',
+		value: Switch2ProJoyCon2ColorPreset.SWITCH2_PRO_JOYCON2_COLOR_PURPLE_GREEN,
+		colors: joyCon2Colors(0xb19ffb, 0x90ee90),
+	},
+	{
+		labelKey: 'blue-yellow',
+		value: Switch2ProJoyCon2ColorPreset.SWITCH2_PRO_JOYCON2_COLOR_BLUE_YELLOW,
+		colors: joyCon2Colors(0x2b4cff, 0xfff066),
+	},
+	{
+		labelKey: 'gp2040',
+		value: Switch2ProJoyCon2ColorPreset.SWITCH2_PRO_JOYCON2_COLOR_GP2040,
+		colors: joyCon2Colors(0xec008c, 0x00ff00),
+	},
+	{
+		labelKey: 'custom',
+		value: Switch2ProJoyCon2ColorPreset.SWITCH2_PRO_JOYCON2_COLOR_CUSTOM,
+	},
 ];
 
 const AUTHENTICATION_TYPES = [
@@ -384,6 +510,46 @@ const schema = yup.object().shape({
 		.required()
 		.oneOf(PS4_ID_MODES.map((o) => o.value))
 		.label('PS4 Controller Identification Mode'),
+	switch2ProJoyCon2ColorPreset: yup
+		.number()
+		.oneOf(JOYCON2_COLOR_PRESETS.map((o) => o.value))
+		.label('Joy-Con 2 Colors'),
+	switch2ProJoyCon2LeftBodyColor: yup
+		.number()
+		.label('Joy-Con 2 (L) Body Color'),
+	switch2ProJoyCon2LeftButtonsColor: yup
+		.number()
+		.label('Joy-Con 2 (L) Buttons Color'),
+	switch2ProJoyCon2LeftAccentColor: yup
+		.number()
+		.label('Joy-Con 2 (L) Accent Color'),
+	switch2ProJoyCon2LeftStickColor: yup
+		.number()
+		.label('Joy-Con 2 (L) Stick Color'),
+	switch2ProJoyCon2RightBodyColor: yup
+		.number()
+		.label('Joy-Con 2 (R) Body Color'),
+	switch2ProJoyCon2RightButtonsColor: yup
+		.number()
+		.label('Joy-Con 2 (R) Buttons Color'),
+	switch2ProJoyCon2RightAccentColor: yup
+		.number()
+		.label('Joy-Con 2 (R) Accent Color'),
+	switch2ProJoyCon2RightStickColor: yup
+		.number()
+		.label('Joy-Con 2 (R) Stick Color'),
+	switch2ProIdentity: yup
+		.number()
+		.oneOf(SWITCH2_PRO_IDENTITIES.map((o) => o.value))
+		.label('Switch 2 Controller Type'),
+	switch2ProColorPreset: yup
+		.number()
+		.oneOf(SWITCH2_PRO_COLOR_PRESETS.map((o) => o.value))
+		.label('Switch 2 Pro Controller Colors'),
+	switch2ProBodyColor: yup.number().label('Switch 2 Pro Body Color'),
+	switch2ProButtonsColor: yup.number().label('Switch 2 Pro Buttons Color'),
+	switch2ProHighlightColor: yup.number().label('Switch 2 Pro Highlight Color'),
+	switch2ProGripColor: yup.number().label('Switch 2 Pro Grip Color'),
 	forcedSetupMode: yup
 		.number()
 		.required()
@@ -493,6 +659,14 @@ const FormContext = ({ setButtonLabels, setKeyMappings }) => {
 			values.ps4ControllerIDMode = parseInt(values.ps4ControllerIDMode);
 		if (!!values.inputDeviceType)
 			values.inputDeviceType = parseInt(values.inputDeviceType);
+		if (!!values.switch2ProIdentity)
+			values.switch2ProIdentity = parseInt(values.switch2ProIdentity);
+		if (!!values.switch2ProJoyCon2ColorPreset)
+			values.switch2ProJoyCon2ColorPreset = parseInt(
+				values.switch2ProJoyCon2ColorPreset,
+			);
+		if (!!values.switch2ProColorPreset)
+			values.switch2ProColorPreset = parseInt(values.switch2ProColorPreset);
 
 		setButtonLabels({
 			swapTpShareLabels:
@@ -535,6 +709,7 @@ export default function SettingsPage() {
 	}, []);
 
 	const [saveMessage, setSaveMessage] = useState('');
+	const [activeColorPart, setActiveColorPart] = useState(null);
 	const [warning, setWarning] = useState({ show: false, acceptText: '' });
 	const [validated, setValidated] = useState(false);
 	const [keyMappings, setKeyMappings] = useState(baseButtonMappings);
@@ -1290,6 +1465,270 @@ export default function SettingsPage() {
 		);
 	};
 
+	const switch2ProModeSpecifics = (values, setFieldValue) => {
+		const isPro =
+			(values.switch2ProIdentity ??
+				Switch2ProIdentity.SWITCH2_PRO_IDENTITY_PRO) ===
+			Switch2ProIdentity.SWITCH2_PRO_IDENTITY_PRO;
+		const preset = SWITCH2_PRO_COLOR_PRESETS.find(
+			(o) => o.value === values.switch2ProColorPreset,
+		);
+		const isCustom =
+			values.switch2ProColorPreset ===
+			Switch2ProColorPreset.SWITCH2_PRO_COLOR_CUSTOM;
+		const colorFor = (field) =>
+			rgbIntToHex((isCustom ? values[field] : preset?.colors?.[field]) ?? 0);
+		const setColor = (field, hex) => {
+			if (!isCustom) {
+				SWITCH2_PRO_COLOR_PARTS.forEach((part) =>
+					setFieldValue(part.field, hexToInt(colorFor(part.field))),
+				);
+				setFieldValue(
+					'switch2ProColorPreset',
+					Switch2ProColorPreset.SWITCH2_PRO_COLOR_CUSTOM,
+				);
+			}
+			setFieldValue(field, hexToInt(hex));
+		};
+		const active = SWITCH2_PRO_COLOR_PARTS.find(
+			({ field }) => field === activeColorPart,
+		);
+		const joyCon2Side = {
+			[Switch2ProIdentity.SWITCH2_PRO_IDENTITY_JOYCON2_LEFT]: 'left',
+			[Switch2ProIdentity.SWITCH2_PRO_IDENTITY_JOYCON2_RIGHT]: 'right',
+		}[values.switch2ProIdentity];
+		const joyCon2Preset = JOYCON2_COLOR_PRESETS.find(
+			(o) => o.value === values.switch2ProJoyCon2ColorPreset,
+		);
+		const isJoyCon2Custom =
+			values.switch2ProJoyCon2ColorPreset ===
+			Switch2ProJoyCon2ColorPreset.SWITCH2_PRO_JOYCON2_COLOR_CUSTOM;
+		const joyCon2ColorFor = (side, part) =>
+			rgbIntToHex(
+				(isJoyCon2Custom
+					? values[JOYCON2_COLOR_FIELDS[side][part]]
+					: joyCon2Preset?.colors?.[side]?.[part]) ?? 0,
+			);
+		const setJoyCon2Color = (side, part, hex) => {
+			if (!isJoyCon2Custom) {
+				['left', 'right'].forEach((s) =>
+					JOYCON2_COLOR_PARTS.forEach((p) =>
+						setFieldValue(
+							JOYCON2_COLOR_FIELDS[s][p],
+							hexToInt(joyCon2ColorFor(s, p)),
+						),
+					),
+				);
+				setFieldValue(
+					'switch2ProJoyCon2ColorPreset',
+					Switch2ProJoyCon2ColorPreset.SWITCH2_PRO_JOYCON2_COLOR_CUSTOM,
+				);
+			}
+			setFieldValue(JOYCON2_COLOR_FIELDS[side][part], hexToInt(hex));
+		};
+		const activeJoyCon2Part = joyCon2Side
+			? JOYCON2_COLOR_PARTS.find(
+					(part) => JOYCON2_COLOR_FIELDS[joyCon2Side][part] === activeColorPart,
+				)
+			: null;
+
+		return (
+			<div className="row mb-3">
+				<Row className="mb-3">
+					<Col sm={3}>
+						<Form.Label>
+							{t('SettingsPage:switch2-pro-identity-label')}
+						</Form.Label>
+						<Form.Select
+							name="switch2ProIdentity"
+							className="form-select-sm"
+							value={values.switch2ProIdentity}
+							onChange={(e) =>
+								setFieldValue('switch2ProIdentity', parseInt(e.target.value))
+							}
+						>
+							{SWITCH2_PRO_IDENTITIES.map((o) => (
+								<option key={`switch2-pro-identity-${o.value}`} value={o.value}>
+									{t(`SettingsPage:switch2-pro-identity-options.${o.labelKey}`)}
+								</option>
+							))}
+						</Form.Select>
+					</Col>
+				</Row>
+				{joyCon2Side && (
+					<>
+						<Row className="mb-3">
+							<Col xs={12}>
+								<Form.Label>
+									{t('SettingsPage:switch2-pro-color-label')}
+								</Form.Label>
+								<p className="small text-body-secondary mb-2">
+									{t('SettingsPage:switch2-pro-joycon2-color-explanation')}
+								</p>
+							</Col>
+							<Col sm={3}>
+								<Form.Select
+									name="switch2ProJoyCon2ColorPreset"
+									className="form-select-sm"
+									value={values.switch2ProJoyCon2ColorPreset}
+									onChange={(e) =>
+										setFieldValue(
+											'switch2ProJoyCon2ColorPreset',
+											parseInt(e.target.value),
+										)
+									}
+								>
+									{JOYCON2_COLOR_PRESETS.map((o) => (
+										<option key={`joycon2-color-${o.value}`} value={o.value}>
+											{t(
+												`SettingsPage:switch2-pro-joycon2-color-presets.${o.labelKey}`,
+											)}
+										</option>
+									))}
+								</Form.Select>
+							</Col>
+						</Row>
+						<div className="switch2-pro-colors mb-3">
+							<div className="mb-3 switch2-pro-joycon2-drawing">
+								<JoyCon2Controller
+									side={joyCon2Side}
+									active={activeJoyCon2Part ?? null}
+									body={joyCon2ColorFor(joyCon2Side, 'body')}
+									buttons={joyCon2ColorFor(joyCon2Side, 'buttons')}
+									accent={joyCon2ColorFor(joyCon2Side, 'accent')}
+									stick={joyCon2ColorFor(joyCon2Side, 'stick')}
+								/>
+							</div>
+							<Row className="g-2">
+								{JOYCON2_COLOR_PARTS.map((part) => {
+									const field = JOYCON2_COLOR_FIELDS[joyCon2Side][part];
+									const value = joyCon2ColorFor(joyCon2Side, part);
+									return (
+										<Col xs={6} key={`joycon2-color-${part}`}>
+											<label
+												htmlFor={field}
+												className={`switch2-pro-color-chip${
+													activeColorPart === field ? ' is-active' : ''
+												}`}
+												onMouseEnter={() => setActiveColorPart(field)}
+												onMouseLeave={() => setActiveColorPart(null)}
+											>
+												<input
+													type="color"
+													id={field}
+													name={field}
+													value={value}
+													onFocus={() => setActiveColorPart(field)}
+													onBlur={() => setActiveColorPart(null)}
+													onChange={(e) =>
+														setJoyCon2Color(joyCon2Side, part, e.target.value)
+													}
+												/>
+												<span className="switch2-pro-color-chip-text">
+													<span className="fw-semibold">
+														{t(
+															`SettingsPage:switch2-pro-joycon2-color-parts.${part}`,
+														)}
+													</span>
+													<span className="small font-monospace text-body-secondary">
+														{value.toUpperCase()}
+													</span>
+												</span>
+											</label>
+										</Col>
+									);
+								})}
+							</Row>
+						</div>
+					</>
+				)}
+				{isPro && (
+					<>
+						<Row className="mb-3">
+							<Col xs={12}>
+								<Form.Label>
+									{t('SettingsPage:switch2-pro-color-label')}
+								</Form.Label>
+								<p className="small text-body-secondary mb-2">
+									{t('SettingsPage:switch2-pro-color-explanation')}
+								</p>
+							</Col>
+							<Col sm={3}>
+								<Form.Select
+									name="switch2ProColorPreset"
+									className="form-select-sm"
+									value={values.switch2ProColorPreset}
+									onChange={(e) =>
+										setFieldValue(
+											'switch2ProColorPreset',
+											parseInt(e.target.value),
+										)
+									}
+								>
+									{SWITCH2_PRO_COLOR_PRESETS.map((o) => (
+										<option
+											key={`switch2-pro-color-${o.value}`}
+											value={o.value}
+										>
+											{t(
+												`SettingsPage:switch2-pro-color-presets.${o.labelKey}`,
+											)}
+										</option>
+									))}
+								</Form.Select>
+							</Col>
+						</Row>
+						<div className="switch2-pro-colors mb-3">
+							<div className="mb-3">
+								<Switch2ProController
+									active={active?.svgPart ?? null}
+									body={colorFor('switch2ProBodyColor')}
+									buttons={colorFor('switch2ProButtonsColor')}
+									highlight={colorFor('switch2ProHighlightColor')}
+									grip={colorFor('switch2ProGripColor')}
+								/>
+							</div>
+							<Row className="g-2">
+								{SWITCH2_PRO_COLOR_PARTS.map(({ labelKey, field }) => (
+									<Col xs={6} key={`switch2-pro-color-${field}`}>
+										<label
+											htmlFor={field}
+											className={`switch2-pro-color-chip${
+												activeColorPart === field ? ' is-active' : ''
+											}`}
+											onMouseEnter={() => setActiveColorPart(field)}
+											onMouseLeave={() => setActiveColorPart(null)}
+										>
+											<input
+												type="color"
+												id={field}
+												name={field}
+												value={colorFor(field)}
+												onFocus={() => setActiveColorPart(field)}
+												onBlur={() => setActiveColorPart(null)}
+												onChange={(e) => setColor(field, e.target.value)}
+											/>
+											<span className="switch2-pro-color-chip-text">
+												<span className="fw-semibold">
+													{t(
+														`SettingsPage:switch2-pro-color-parts.${labelKey}`,
+													)}
+												</span>
+												<span className="small font-monospace text-body-secondary">
+													{colorFor(field).toUpperCase()}
+												</span>
+											</span>
+										</label>
+									</Col>
+								))}
+							</Row>
+						</div>
+					</>
+				)}
+			</div>
+		);
+	};
+
 	const inputModeSpecifics = (values, errors, setFieldValue, handleChange) => {
 		// Value hasn't been filled out yet
 		if (Object.keys(values).length == 0) {
@@ -1345,6 +1784,8 @@ export default function SettingsPage() {
 				);
 			case 'input-mode-options.xbone':
 				return xboneModeSpecifics(values, errors, setFieldValue, handleChange);
+			case 'input-mode-options.nintendo-switch2-pro':
+				return switch2ProModeSpecifics(values, setFieldValue);
 			default:
 				return (
 					<Row className="mb-3">

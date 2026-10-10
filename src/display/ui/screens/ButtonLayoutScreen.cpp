@@ -193,6 +193,13 @@ void ButtonLayoutScreen::generateHeader() {
             case INPUT_MODE_PSCLASSIC: statusBar += "PSC"; break;
             case INPUT_MODE_XBOXORIGINAL: statusBar += "OGXBOX"; break;
             case INPUT_MODE_SWITCH_PRO: statusBar += "SWPRO"; break;
+            case INPUT_MODE_SWITCH2_PRO:
+                switch (Storage::getInstance().getGamepadOptions().switch2ProIdentity) {
+                    case SWITCH2_PRO_IDENTITY_JOYCON2_LEFT: statusBar += "SW2JCL"; break;
+                    case SWITCH2_PRO_IDENTITY_JOYCON2_RIGHT: statusBar += "SW2JCR"; break;
+                    default: statusBar += "SW2PRO"; break;
+                }
+                break;
             case INPUT_MODE_SINPUT: statusBar += "SINPUT"; break;
             case INPUT_MODE_PS4:
                 statusBar += "PS4";
@@ -399,9 +406,17 @@ void ButtonLayoutScreen::processInputHistory() {
 		getProcessedGamepad()->pressedR3(),
 		getProcessedGamepad()->pressedA1(),
 		getProcessedGamepad()->pressedA2(),
+		getProcessedGamepad()->pressedA3(),
 	};
 
 	uint8_t mode = ((displayModeLookup.count(inputMode) > 0) ? displayModeLookup.at(inputMode) : 0);
+	if (inputMode == INPUT_MODE_SWITCH2_PRO) {
+		switch (Storage::getInstance().getGamepadOptions().switch2ProIdentity) {
+			case SWITCH2_PRO_IDENTITY_JOYCON2_LEFT: mode = 13; break;
+			case SWITCH2_PRO_IDENTITY_JOYCON2_RIGHT: mode = 14; break;
+			default: break;
+		}
+	}
 
 	// Check if any new keys have been pressed
 	if (lastInput != currentInput) {
