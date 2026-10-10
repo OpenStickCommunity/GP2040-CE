@@ -327,17 +327,26 @@ void NeoPicoLEDAddon::process()
 	GamepadHotkey action = ProcessAnimationHotkeys(gamepad);
 	AnimStation.HandleEvent(action);
 
-	//New check for buttons being pressed. this is a direct check to see if a pin is held
-	Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
-	vector<int32_t> pressedPins;
-	for(auto thisLight : RGBLights.AllLights)
+	//Check each light's own input (GPIO pin or HE sensor) so inputs sharing a gamepad button light separately
+	const Mask_t gpioValues = Storage::getInstance().GetGamepad()->debouncedGpio;
+	const uint32_t heValues = gamepad->state.heTriggers;
+	pressedInputs.clear();
+	for(const Light& thisLight : RGBLights.AllLights)
 	{
-		if(values & (1 << thisLight.GPIOPin))
+		if(thisLight.InputKey < 0)
+			continue;
+
+		bool isPressed = false;
+		switch(thisLight.InputSource)
 		{
-			pressedPins.push_back(thisLight.GPIOPin);
+			case LightInputSource::LightInputSource_GPIO:       isPressed = (gpioValues >> thisLight.InputIndex) & 1ULL; break;
+			case LightInputSource::LightInputSource_HallEffect: isPressed = (heValues >> thisLight.InputIndex) & 1u; break;
+			default: break;
 		}
+		if(isPressed)
+			pressedInputs.push_back(thisLight.InputKey);
 	}
-	AnimStation.HandlePressedPins(pressedPins);
+	AnimStation.HandlePressedPins(pressedInputs);
 
 	//Still need to check logical buttons so that we can trigger special moves (coming later)
 	uint32_t buttonState = gamepad->state.dpad << 16 | gamepad->state.buttons;
@@ -485,8 +494,10 @@ void NeoPicoLEDAddon::generateLegacyIndividualLight(int firstLedIndex, int xCoor
 	options.lightClusterData[thisEntryIndex].lightLocationData += ledsPerPixel << 8;
 	options.lightClusterData[thisEntryIndex].lightLocationData += xCoord << 16;
 	options.lightClusterData[thisEntryIndex].lightLocationData += yCoord << 24;
-	options.lightClusterData[thisEntryIndex].lightTypeData = customDataIndex;
-	options.lightClusterData[thisEntryIndex].lightTypeData += lightType << 8;
+	//An unmatched index (-1) becomes 0xFF (unbound) instead of spilling into the type byte
+	options.lightClusterData[thisEntryIndex].lightTypeData = ((uint32_t)customDataIndex & 0xFF)
+		| (((uint32_t)lightType & 0xFF) << 8)
+		| ((uint32_t)LightInputSource::LightInputSource_GPIO << 16);
 	options.lightClusterData_count++;
 }
 
@@ -793,13 +804,17 @@ void NeoPicoLEDAddon::GenerateLights()
 		int posY = (ledOptions.lightClusterData[index].lightLocationData >> 24) & 0xFF;
 		int gpioPin = (ledOptions.lightClusterData[index].lightTypeData) & 0xFF;
 		int ledType = (ledOptions.lightClusterData[index].lightTypeData >> 8) & 0xFF;
-		//Data format = {first led index, leds on this light, xcoord, ycoord, GPIO pin, Type}
+		LightInputSource inputSource = LightInputSource::LightInputSource_GPIO;
+		if(ledType == LightType::LightType_ActionButton)
+			inputSource = (LightInputSource)((ledOptions.lightClusterData[index].lightTypeData >> 16) & 0xFF);
+		//Data format = {first led index, leds on this light, xcoord, ycoord, GPIO pin/input index, Type}
 		LightPosition newLightPos (posX, posY);
 		Light newLight (ledIndex,
 						ledCount,
 						newLightPos,
 						gpioPin,
-						(LightType)ledType);
+						(LightType)ledType,
+						inputSource);
 
 		//Update mins
 		if(minX == -1 || newLight.Position.XPosition < minX)
@@ -822,6 +837,7 @@ void NeoPicoLEDAddon::GenerateLights()
 	}
 
 	RGBLights.Setup(generatedLights);
+	pressedInputs.reserve(RGBLights.AllLights.size());
 }
 
 ////////////////////////////////////////////

@@ -458,6 +458,11 @@ export enum LightType {
     Player4Light = 6
 }
 
+export enum LightInputSource {
+    GPIO = 0,
+    HallEffect = 1
+}
+
 export enum ShmupMixMode {
     SHMUP_MIX_MODE_TURBO_PRIORITY = 0,
     SHMUP_MIX_MODE_CHARGE_PRIORITY = 1

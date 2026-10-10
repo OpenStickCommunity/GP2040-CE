@@ -100,6 +100,16 @@ uint16_t HETriggerAddon::emaSmoothing(uint16_t value, uint16_t previous) {
 }
 
 void HETriggerAddon::preprocess() {
+    scan(true);
+}
+
+// Web config skips core0 add-ons, so only track sensor state for LEDs and the display
+void HETriggerAddon::configModeProcess() {
+    lastADCSelected = -1; // calibration reads may have switched the ADC input
+    scan(false);
+}
+
+void HETriggerAddon::scan(bool applyActions) {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     HETriggerOptions & options = Storage::getInstance().getAddonOptions().heTriggerOptions;
     gamepad->state.heTriggers = 0;
@@ -156,6 +166,8 @@ void HETriggerAddon::preprocess() {
         }
         if (triggerActive[he]) {
             gamepad->state.heTriggers |= (1u << he);
+            if (!applyActions)
+                continue;
             switch (options.triggers[he].action) {
                 case GpioAction::BUTTON_PRESS_UP: gamepad->state.dpad |= GAMEPAD_MASK_UP; break;
                 case GpioAction::BUTTON_PRESS_DOWN: gamepad->state.dpad |= GAMEPAD_MASK_DOWN; break;

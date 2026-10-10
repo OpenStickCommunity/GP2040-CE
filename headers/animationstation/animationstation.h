@@ -50,7 +50,7 @@ public:
   uint16_t AdjustIndex(int changeSize);
 
   //What buttons (physical gpio pins) are pressed this frame
-  void HandlePressedPins(std::vector<int32_t> pressedPins);
+  void HandlePressedPins(const std::vector<int32_t>& pressedPins);
 
   //What buttons (logical ones) are pressed this frame
   void HandlePressedButtons(uint32_t pressedButtons);
@@ -72,7 +72,7 @@ public:
  
   //Testing/webconfig
   void SetTestMode(AnimationStationTestMode TestType, const AnimationProfile* TestProfile, uint8_t overrideBrightness, uint8_t overrideMaxBrightness);
-  void SetTestPinState(int PinOrNonButtonIndex, bool IsNonButtonLight);
+  void SetTestPinState(int PinOrNonButtonIndex, bool IsNonButtonLight, LightInputSource InputSource = LightInputSource::LightInputSource_GPIO);
   void ClearTestMode();
   void CopyTestProfile(const AnimationProfile* Profile);
   void SetTestModeLayout();
@@ -101,6 +101,9 @@ public:
 
   RGB GetColorForIndex(uint32_t ColorIndex);
   RGB StaticGetNonPressedColorForLight(Lights* AllLights, uint32_t LightIndex);
+
+  //nullptr if out of range. Bounded by capacity, not .size, because the test profile is never sized.
+  static uint8_t* ButtonColorSlot(AnimationProfile& Profile, LightInputSource InputSource, uint32_t InputIndex, bool Pressed);
 
 private:
 	AnimationStation();
@@ -145,6 +148,7 @@ private:
   bool bTestModeChangeRequested;
   int TestModePinOrNonButtonIndex;
   bool TestModeLightIsNonButton;
+  LightInputSource TestModeInputSource;
 
 	//Webconfig/testing
 	bool bRestartLeds;

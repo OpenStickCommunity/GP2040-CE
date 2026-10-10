@@ -26,7 +26,7 @@ Animation::Animation(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffe
     holdTimeInMs = 1;
 }
 
-void Animation::UpdatePressed(std::vector<int32_t> InPressedPins)
+void Animation::UpdatePressed(const std::vector<int32_t>& InPressedPins)
 {
   this->pressedPins = InPressedPins;
 }
@@ -56,7 +56,7 @@ void Animation::UpdatePresses()
 
     for(unsigned int pressedPinIndex = 0; pressedPinIndex < pressedPins.size(); ++pressedPinIndex)
     {
-      if(pressedPins[pressedPinIndex] == RGBLights->AllLights[lightIndex].GPIOPin)
+      if(pressedPins[pressedPinIndex] == RGBLights->AllLights[lightIndex].InputKey)
       {
         uint8_t firstLightIndex = RGBLights->AllLights[lightIndex].FirstLedIndex;
         uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[lightIndex].LedsPerLight;
@@ -99,7 +99,7 @@ void Animation::DecrementFadeCounters()
     bool wasPressed = false;
     for(unsigned int pressedPinIndex = 0; pressedPinIndex < pressedPins.size(); ++pressedPinIndex)
     {
-      if(pressedPins[pressedPinIndex] == RGBLights->AllLights[lightIndex].GPIOPin)
+      if(pressedPins[pressedPinIndex] == RGBLights->AllLights[lightIndex].InputKey)
       {
         wasPressed = true;
       }
@@ -178,6 +178,10 @@ RGB Animation::GetPressedColorForLight(uint32_t LightIndex)
   AnimationStation & AnimStation = AnimationStation::getInstance();
   AnimationOptions & options = Storage::getInstance().getAnimationOptions();
   Light* thisLight = &(RGBLights->AllLights[LightIndex]);
-  int colIndex = options.profiles[options.baseProfileIndex].pressedStaticColors.bytes[thisLight->GPIOPin];
+  int colIndex = 0;
+  if(thisLight->InputKey >= 0) {
+    if(const uint8_t* slot = AnimationStation::ButtonColorSlot(options.profiles[options.baseProfileIndex], thisLight->InputSource, thisLight->InputIndex, true))
+      colIndex = *slot;
+  }
   return AnimStation.GetColorForIndex(colIndex);
 }

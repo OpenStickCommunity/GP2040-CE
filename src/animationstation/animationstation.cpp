@@ -33,6 +33,7 @@ AnimationStation::AnimationStation() {
     TestMode = AnimationStationTestMode::AnimationStation_TestModeDisableTestMode;
     bTestModeChangeRequested = false;
     TestModePinOrNonButtonIndex = -1;
+    TestModeInputSource = LightInputSource::LightInputSource_GPIO;
     TestModeLightIsNonButton = false;
     SetBrightnessStepValue(1);
     timeLastButtonPressed = get_absolute_time();
@@ -169,7 +170,7 @@ bool AnimationStation::DecreaseProfile() {
     return false;
 }
 
-void AnimationStation::HandlePressedPins(std::vector<int32_t> pressedPins) {
+void AnimationStation::HandlePressedPins(const std::vector<int32_t>& pressedPins) {
     if(pressedPins.size()) {
         timeLastButtonPressed = get_absolute_time();
         this->lastPressed = pressedPins;
@@ -288,7 +289,8 @@ void AnimationStation::AssignLedPreset(const unsigned char* data, int32_t dataSi
 		options.lightClusterData[entryIndex].lightLocationData += ((int)data[dataIndex+2]) << 16;
 		options.lightClusterData[entryIndex].lightLocationData += ((int)data[dataIndex+3]) << 24;
 		options.lightClusterData[entryIndex].lightTypeData = ((int)data[dataIndex+4]);
-		options.lightClusterData[entryIndex].lightTypeData += ((int)data[dataIndex+5]) << 8;
+		options.lightClusterData[entryIndex].lightTypeData += ((int)LightDataTypeByteToType(data[dataIndex+5])) << 8;
+		options.lightClusterData[entryIndex].lightTypeData += ((uint32_t)LightDataTypeByteToSource(data[dataIndex+5])) << 16;
 
 		options.lightClusterData_count = entryIndex + 1;
 
@@ -529,6 +531,8 @@ void AnimationStation::SetTestModeLayout(){
     memset(options.profiles[testProfileIndex].notPressedStaticColors.bytes, 0, NUM_BANK0_GPIOS);
     memset(options.profiles[testProfileIndex].pressedStaticColors.bytes, 0, NUM_BANK0_GPIOS);
     memset(options.profiles[testProfileIndex].nonButtonStaticColors.bytes, 0, MAX_NON_BUTTON_LIGHT_COLOR_INDEXES);
+    memset(options.profiles[testProfileIndex].extNotPressedStaticColors.bytes, 0, sizeof(options.profiles[testProfileIndex].extNotPressedStaticColors.bytes));
+    memset(options.profiles[testProfileIndex].extPressedStaticColors.bytes, 0, sizeof(options.profiles[testProfileIndex].extPressedStaticColors.bytes));
     options.profiles[testProfileIndex].nonPressedSpecialColor = 0xFFFFFF; //White
     options.profiles[testProfileIndex].caseSpecialColor = 0xFFFFFF; //White
     options.profiles[testProfileIndex].baseCycleTime = 2;
@@ -546,6 +550,8 @@ void AnimationStation::SetTestModeButton(){
     memset(options.profiles[testProfileIndex].notPressedStaticColors.bytes, 0, NUM_BANK0_GPIOS);
     memset(options.profiles[testProfileIndex].pressedStaticColors.bytes, 0, NUM_BANK0_GPIOS);
     memset(options.profiles[testProfileIndex].nonButtonStaticColors.bytes, 0, MAX_NON_BUTTON_LIGHT_COLOR_INDEXES);
+    memset(options.profiles[testProfileIndex].extNotPressedStaticColors.bytes, 0, sizeof(options.profiles[testProfileIndex].extNotPressedStaticColors.bytes));
+    memset(options.profiles[testProfileIndex].extPressedStaticColors.bytes, 0, sizeof(options.profiles[testProfileIndex].extPressedStaticColors.bytes));
 }
 
 void AnimationStation::InitSettings()
@@ -598,30 +604,29 @@ void AnimationStation::SetTestMode(AnimationStationTestMode testType, const Anim
     }
 }
 
-void AnimationStation::SetTestPinState(int PinOrNonButtonIndex, bool IsNonButtonLight)
+void AnimationStation::SetTestPinState(int PinOrNonButtonIndex, bool IsNonButtonLight, LightInputSource InputSource)
 {
     AnimationOptions & options = Storage::getInstance().getAnimationOptions();
-    int testProfileIndex = MAX_ANIMATION_PROFILES_INCLUDING_TEST - 1;
+    AnimationProfile& testProfile = options.profiles[MAX_ANIMATION_PROFILES_INCLUDING_TEST - 1];
 
     //reset old test light
     if(TestModePinOrNonButtonIndex != -1) {
       if(TestModeLightIsNonButton) {
-        options.profiles[testProfileIndex].nonButtonStaticColors.bytes[TestModePinOrNonButtonIndex] = 0x00; //Black/off
-      } else {
-        options.profiles[testProfileIndex].notPressedStaticColors.bytes[TestModePinOrNonButtonIndex] = 0x00; //Black/off
+        if((uint32_t)TestModePinOrNonButtonIndex < MAX_NON_BUTTON_LIGHT_COLOR_INDEXES)
+          testProfile.nonButtonStaticColors.bytes[TestModePinOrNonButtonIndex] = 0x00; //Black/off
+      } else if(uint8_t* slot = ButtonColorSlot(testProfile, TestModeInputSource, TestModePinOrNonButtonIndex, false)) {
+        *slot = 0x00; //Black/off
       }
     }
 
     //Store new test light
     TestModePinOrNonButtonIndex = PinOrNonButtonIndex;
     TestModeLightIsNonButton = IsNonButtonLight;
+    TestModeInputSource = IsNonButtonLight ? LightInputSource::LightInputSource_GPIO : InputSource;
 
     if(TestModePinOrNonButtonIndex != -1) {
-        if(IsNonButtonLight) {
-          options.profiles[testProfileIndex].notPressedStaticColors.bytes[PinOrNonButtonIndex] = 0x01; //White
-        } else {
-          options.profiles[testProfileIndex].notPressedStaticColors.bytes[PinOrNonButtonIndex] = 0x01; //White
-        }
+        if(uint8_t* slot = ButtonColorSlot(testProfile, TestModeInputSource, PinOrNonButtonIndex, false))
+          *slot = 0x01; //White
     }
 }
 
@@ -650,6 +655,21 @@ RGB AnimationStation::GetColorForIndex(uint32_t ColorIndex) {
     return customColors[ColorIndex];
 }
 
+uint8_t* AnimationStation::ButtonColorSlot(AnimationProfile& Profile, LightInputSource InputSource, uint32_t InputIndex, bool Pressed) {
+  switch(InputSource) {
+    case LightInputSource::LightInputSource_GPIO:
+      if(Pressed)
+        return InputIndex < sizeof(Profile.pressedStaticColors.bytes) ? &Profile.pressedStaticColors.bytes[InputIndex] : nullptr;
+      return InputIndex < sizeof(Profile.notPressedStaticColors.bytes) ? &Profile.notPressedStaticColors.bytes[InputIndex] : nullptr;
+    case LightInputSource::LightInputSource_HallEffect:
+      if(Pressed)
+        return InputIndex < sizeof(Profile.extPressedStaticColors.bytes) ? &Profile.extPressedStaticColors.bytes[InputIndex] : nullptr;
+      return InputIndex < sizeof(Profile.extNotPressedStaticColors.bytes) ? &Profile.extNotPressedStaticColors.bytes[InputIndex] : nullptr;
+    default:
+      return nullptr;
+  }
+}
+
 //Get correct color for light index
 RGB AnimationStation::StaticGetNonPressedColorForLight(Lights* AllLights, uint32_t LightIndex) {
   AnimationStation & AnimStation = AnimationStation::getInstance();
@@ -659,7 +679,10 @@ RGB AnimationStation::StaticGetNonPressedColorForLight(Lights* AllLights, uint32
   if(thisLight->Type == LightType::LightType_ActionButton || thisLight->Type == LightType::LightType_Turbo)
   {
     //button
-    colIndex = options.profiles[options.baseProfileIndex].notPressedStaticColors.bytes[thisLight->GPIOPin];
+    if(thisLight->InputKey >= 0) {
+      if(const uint8_t* slot = ButtonColorSlot(options.profiles[options.baseProfileIndex], thisLight->InputSource, thisLight->InputIndex, false))
+        colIndex = *slot;
+    }
   }
   else
   {
