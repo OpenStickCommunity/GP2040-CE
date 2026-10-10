@@ -1,5 +1,13 @@
 import { useContext, useEffect, useState } from 'react';
-import { Alert, Button, FormCheck, Row, Table } from 'react-bootstrap';
+import {
+	Alert,
+	Button,
+	Form,
+	FormCheck,
+	InputGroup,
+	Row,
+	Table,
+} from 'react-bootstrap';
 
 import { FormikErrors } from 'formik';
 
@@ -23,6 +31,7 @@ import { getButtonLabels } from '../Data/Buttons';
 import { AddonPropTypes, DEFAULT_VALUES } from '../Pages/AddonsConfigPage';
 
 import './HETrigger.scss';
+import { formatDistance, formatReading } from './HERapidTrigger';
 
 import {
 	BUTTON_ACTIONS,
@@ -91,6 +100,11 @@ export const HETriggerScheme = {
 		.number()
 		.label('EMA Smoothing Factor')
 		.validateRangeWhenValue('HETriggerEnabled', 1, 99),
+	heTriggerSwitchTravel: yup
+		.number()
+		.label('Switch Travel Conversion (mm)')
+		.min(0)
+		.max(20),
 };
 
 export const HETriggerState = {
@@ -109,6 +123,7 @@ export const HETriggerState = {
 	],
 	heTriggerSmoothing: 0,
 	heTriggerSmoothingFactor: 5,
+	heTriggerSwitchTravel: 0,
 };
 
 const options = Object.entries(BUTTON_ACTIONS)
@@ -148,12 +163,13 @@ const TriggerActionsForm = ({
 	const CURRENT_BUTTONS = getButtonLabels(buttonLabelType, swapTpShareLabels);
 	const buttonNames = omit(CURRENT_BUTTONS, ['label', 'value']);
 	const { t } = useTranslation('');
+	const travelMm = Number(values.heTriggerSwitchTravel) || 0;
 
 	const handleSave = async (e) => {
 		e.preventDefault();
 		e.stopPropagation();
 		try {
-			await saveHETriggers();
+			await saveHETriggers(travelMm);
 			setSaveMessage(t('Common:saved-success-message'));
 		} catch (error) {
 			setSaveMessage(t('Common:saved-error-message'));
@@ -207,7 +223,8 @@ const TriggerActionsForm = ({
 								<div
 									className={`action-grid-HE-trigger-${muxChannels} gap-3 mt-2 mb-3`}
 								>
-									{Object.keys(triggers)
+									{triggers
+										.map((_, triggerIndex) => triggerIndex)
 										.splice(i * muxChannels, muxChannels)
 										.map((key, index) => (
 											<div
@@ -218,13 +235,13 @@ const TriggerActionsForm = ({
 													className="d-flex flex-shrink-0"
 													style={{ width: '6rem' }}
 												>
-													<label htmlFor={key}>
+													<label htmlFor={String(key)}>
 														{t('HETrigger:channel-label')} {index}
 													</label>
 												</div>
 												<CustomSelect
 													key={`select-option-he-${index}`}
-													inputId={key}
+													inputId={String(key)}
 													isClearable
 													isSearchable
 													options={options}
@@ -243,7 +260,7 @@ const TriggerActionsForm = ({
 													}}
 													onChange={(change) =>
 														setHETrigger({
-															id: parseInt(key),
+															id: key,
 															...triggers[key],
 															action:
 																change?.value === undefined
@@ -257,7 +274,7 @@ const TriggerActionsForm = ({
 													key={`select-button-he-${index}`}
 													onClick={(e) => {
 														setShowModal(true);
-														setCalibrationTarget(parseInt(key));
+														setCalibrationTarget(key);
 														setCalibrateAllLoop(false);
 													}}
 													disabled={triggers[key].action === -10}
@@ -337,12 +354,25 @@ const TriggerActionsForm = ({
 													<th>
 														{t('HETrigger:voltage-table-rapid-trigger-text')}
 													</th>
-													<th>{t('HETrigger:voltage-table-release-text')}</th>
+													<th>
+														{t(
+															'HETrigger:voltage-table-press-sensitivity-text',
+														)}
+													</th>
+													<th>
+														{t(
+															'HETrigger:voltage-table-release-sensitivity-text',
+														)}
+													</th>
+													<th>
+														{t('HETrigger:voltage-table-continuous-text')}
+													</th>
 													<th>{t('HETrigger:voltage-table-noise-text')}</th>
 												</tr>
 											</thead>
 											<tbody>
-												{Object.keys(triggers)
+												{triggers
+													.map((_, triggerIndex) => triggerIndex)
 													.splice(i * muxChannels, muxChannels)
 													.map((key, index) => (
 														<tr key={`table-tr-triggers-${index}`}>
@@ -352,24 +382,66 @@ const TriggerActionsForm = ({
 																	? t('HETrigger:voltage-table-disabled-label')
 																	: ''}
 															</td>
-															<td>{triggers[key].idle}</td>
-															<td>{triggers[key].active}</td>
-															<td>{triggers[key].pressed}</td>
+															<td>
+																{formatReading(
+																	triggers[key].idle,
+																	travelMm,
+																	triggers[key],
+																)}
+															</td>
+															<td>
+																{formatReading(
+																	triggers[key].active,
+																	travelMm,
+																	triggers[key],
+																)}
+															</td>
+															<td>
+																{formatReading(
+																	triggers[key].pressed,
+																	travelMm,
+																	triggers[key],
+																)}
+															</td>
 															<td>{triggers[key].is_polarized ? 'S' : 'N'}</td>
 															<td>
 																{triggers[key].rapidTrigger
-																	? 'Enabled'
-																	: 'Disabled'}
+																	? t('HETrigger:voltage-table-enabled-label')
+																	: t('HETrigger:voltage-table-off-label')}
 															</td>
 															<td>
 																{triggers[key].rapidTrigger
-																	? triggers[key].release
-																	: 'N/A'}
+																	? formatDistance(
+																			triggers[key].rtPressSensitivity,
+																			travelMm,
+																			triggers[key],
+																		)
+																	: t('HETrigger:voltage-table-na-label')}
 															</td>
 															<td>
 																{triggers[key].rapidTrigger
-																	? triggers[key].noise
-																	: 'N/A'}
+																	? formatDistance(
+																			triggers[key].rtSeparateSensitivity
+																				? triggers[key].rtReleaseSensitivity
+																				: triggers[key].rtPressSensitivity,
+																			travelMm,
+																			triggers[key],
+																		)
+																	: t('HETrigger:voltage-table-na-label')}
+															</td>
+															<td>
+																{triggers[key].rapidTrigger
+																	? triggers[key].rtContinuous
+																		? t('HETrigger:voltage-table-enabled-label')
+																		: t('HETrigger:voltage-table-off-label')
+																	: t('HETrigger:voltage-table-na-label')}
+															</td>
+															<td>
+																{formatDistance(
+																	triggers[key].noise,
+																	travelMm,
+																	triggers[key],
+																)}
 															</td>
 														</tr>
 													))}
@@ -394,11 +466,66 @@ const TriggerActionsForm = ({
 	);
 };
 
+type SwitchTravelInputProps = {
+	value: number;
+	error?: string;
+	onChange: (travelMm: number) => void;
+};
+
+// When set, ADC readings are shown as mm of key travel.
+const SwitchTravelInput = ({
+	value,
+	error,
+	onChange,
+}: SwitchTravelInputProps) => {
+	const { t } = useTranslation();
+	const format = (travel: number) =>
+		travel > 0 ? String(Number(travel.toFixed(2))) : '';
+	const [text, setText] = useState(format(value));
+
+	useEffect(() => {
+		const parsed = parseFloat(text);
+		const current = Number.isNaN(parsed) ? 0 : parsed;
+		if (current !== value) setText(format(value));
+	}, [value]);
+
+	return (
+		<Form.Group
+			controlId="heTriggerSwitchTravel"
+			className="d-flex align-items-center gap-2 ms-auto"
+		>
+			<Form.Label className="mb-0 text-nowrap">
+				{t('HETrigger:switch-travel-label')}
+			</Form.Label>
+			<InputGroup size="sm" style={{ width: '8rem' }} hasValidation>
+				<Form.Control
+					type="number"
+					name="heTriggerSwitchTravel"
+					placeholder={t('HETrigger:switch-travel-placeholder')}
+					min={0}
+					max={20}
+					step={0.01}
+					value={text}
+					isInvalid={Boolean(error)}
+					onChange={(e) => {
+						const raw = e.target.value;
+						setText(raw);
+						const parsed = parseFloat(raw);
+						onChange(Number.isNaN(parsed) || parsed < 0 ? 0 : parsed);
+					}}
+				/>
+				<Form.Control.Feedback type="invalid">{error}</Form.Control.Feedback>
+			</InputGroup>
+		</Form.Group>
+	);
+};
+
 const HETrigger = ({
 	values,
 	errors,
 	handleChange,
 	handleCheckbox,
+	setFieldValue,
 }: AddonPropTypes) => {
 	const { fetchHETriggers, triggers } = useHETriggerStore();
 	const { t } = useTranslation();
@@ -433,6 +560,17 @@ const HETrigger = ({
 				>
 					{t('HETrigger:header-text')}
 				</a>
+			}
+			headerRight={
+				values.HETriggerEnabled ? (
+					<SwitchTravelInput
+						value={Number(values.heTriggerSwitchTravel) || 0}
+						error={errors.heTriggerSwitchTravel}
+						onChange={(travel) =>
+							setFieldValue('heTriggerSwitchTravel', travel)
+						}
+					/>
+				) : null
 			}
 		>
 			<div id="HETriggerOptions" hidden={!values.HETriggerEnabled}>

@@ -186,7 +186,8 @@ const FormContext = ({ setStoredData }) => {
 
 const sanitizeData = (values) => {
 	for (const prop in Object.keys(values).filter(
-		(key) => !!!key.includes('keyboardHostMap'),
+		(key) =>
+			!!!key.includes('keyboardHostMap') && key !== 'heTriggerSwitchTravel',
 	)) {
 		if (!!values[prop]) values[prop] = parseInt(values[prop]);
 	}

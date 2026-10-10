@@ -912,10 +912,14 @@ message HETriggerInfo
     optional int32 idle = 3;
     optional int32 pressed = 4;
     optional int32 polarity = 5 [deprecated = true];
-    optional int32 release = 6;
-    optional int32 noise = 7;
-    optional bool rapidTrigger = 8; 
+    optional int32 release = 6 [deprecated = true]; // Superseded by rtPressSensitivity / rtReleaseSensitivity
+    optional int32 noise = 7; // Hysteresis and minimum Rapid Trigger sensitivity (ADC counts)
+    optional bool rapidTrigger = 8;
     optional bool is_polarized = 9;
+    optional int32 rtPressSensitivity = 10; // Rapid Trigger downstroke distance (ADC counts) to re-press
+    optional int32 rtReleaseSensitivity = 11; // Rapid Trigger upstroke distance (ADC counts) to release
+    optional bool rtSeparateSensitivity = 12; // Use rtReleaseSensitivity for the upstroke
+    optional bool rtContinuous = 13; // Keep Rapid Trigger active until the key is fully released
 }
 
 message HETriggerMux
@@ -943,6 +947,7 @@ message HETriggerOptions
     optional int32 smoothingFactor = 13;
     optional bool separateSelectPins = 14;
     repeated HETriggerMux muxes = 15 [(nanopb).max_count = 4];
+    optional float switchTravel = 16; // Web UI only: switch travel in mm for display (0 = unset)
 }
 
 message AddonOptions
