@@ -26,7 +26,14 @@ import { useGetContainerDimensions } from '../../Hooks/useGetContainerDimensions
 import FormControl from '../../Components/FormControl';
 import FormSelect from '../../Components/FormSelect';
 
-import { LED_COLORS, LIGHT_TYPES } from '../../Data/Leds';
+import {
+	LED_COLORS,
+	LIGHT_INPUT_SOURCES,
+	LIGHT_TYPES,
+	MAX_EXT_INPUT_LIGHT_COLOR_INDEXES,
+	getButtonColorKeys,
+	isExtInputLight,
+} from '../../Data/Leds';
 import boards from '../../Data/Boards.json';
 
 import { rgbIntToHex } from '../../Services/Utilities';
@@ -57,6 +64,8 @@ const getFirstEmptyLightCoord = (lights: Light[]) => {
 export default function LightCoordsSection({
 	pressedStaticColors,
 	notPressedStaticColors,
+	extPressedStaticColors = [],
+	extNotPressedStaticColors = [],
 	nonButtonStaticColors,
 	profileIndex,
 	values,
@@ -67,6 +76,8 @@ export default function LightCoordsSection({
 }: {
 	pressedStaticColors: number[];
 	notPressedStaticColors: number[];
+	extPressedStaticColors?: number[];
+	extNotPressedStaticColors?: number[];
 	nonButtonStaticColors: number[];
 	profileIndex: number;
 	values: LedFormValues;
@@ -83,6 +94,21 @@ export default function LightCoordsSection({
 
 	const [cellWidth, setCellWidth] = useState(dimensions.width / GRID_SIZE);
 	const [selectedLight, setSelectedLight] = useState<number | null>(null);
+
+	const selectedLightValue =
+		selectedLight !== null ? values.Lights[selectedLight] : undefined;
+	const selectedIsExtInput = selectedLightValue
+		? isExtInputLight(selectedLightValue)
+		: false;
+	const selectedColorKeys = getButtonColorKeys(
+		selectedLightValue ?? { lightType: -1, GPIOPinOrNonButtonIndex: 0 },
+	);
+	const selectedNotPressedColors = selectedIsExtInput
+		? extNotPressedStaticColors
+		: notPressedStaticColors;
+	const selectedPressedColors = selectedIsExtInput
+		? extPressedStaticColors
+		: pressedStaticColors;
 
 	const mouseSensor = useSensor(MouseSensor, {
 		activationConstraint: undefined,
@@ -147,6 +173,7 @@ export default function LightCoordsSection({
 						GPIOPinOrNonButtonIndex: 0,
 						firstLedIndex: values.Lights.length,
 						lightType,
+						inputSource: LIGHT_INPUT_SOURCES.GPIO,
 						numLedsOnLight: 1,
 						xCoord: emptyCoord.xCoord,
 						yCoord: emptyCoord.yCoord,
@@ -240,10 +267,17 @@ export default function LightCoordsSection({
 									groupClassName="mb-3"
 									value={values.Lights[selectedLight]?.lightType}
 									onChange={(e) => {
+										const lightType = parseInt(e.target.value);
 										setFieldValue(
 											`Lights[${selectedLight}].lightType`,
-											parseInt(e.target.value),
+											lightType,
 										);
+										if (lightType !== LIGHT_TYPES.ActionButton) {
+											setFieldValue(
+												`Lights[${selectedLight}].inputSource`,
+												LIGHT_INPUT_SOURCES.GPIO,
+											);
+										}
 									}}
 									name={`Lights[${selectedLight}].lightType`}
 								>
@@ -294,13 +328,52 @@ export default function LightCoordsSection({
 									onChange={handleChange}
 									min={0}
 								/>
+								{values.Lights[selectedLight]?.lightType ===
+									LIGHT_TYPES.ActionButton && (
+									<FormSelect
+										label={t(
+											'LedConfigPage:lightCoordsSection.input-source-label',
+										)}
+										className="form-select"
+										groupClassName="mb-3"
+										value={
+											values.Lights[selectedLight]?.inputSource ??
+											LIGHT_INPUT_SOURCES.GPIO
+										}
+										onChange={(e) => {
+											setFieldValue(
+												`Lights[${selectedLight}].inputSource`,
+												parseInt(e.target.value),
+											);
+											// Index ranges differ per source
+											setFieldValue(
+												`Lights[${selectedLight}].GPIOPinOrNonButtonIndex`,
+												0,
+											);
+										}}
+										name={`Lights[${selectedLight}].inputSource`}
+									>
+										<option value={LIGHT_INPUT_SOURCES.GPIO}>
+											{t('LedConfigPage:lightCoordsSection.input-source-gpio')}
+										</option>
+										<option value={LIGHT_INPUT_SOURCES.HallEffect}>
+											{t(
+												'LedConfigPage:lightCoordsSection.input-source-hall-effect',
+											)}
+										</option>
+									</FormSelect>
+								)}
 								<FormSelect
 									label={
 										values.Lights[selectedLight]?.lightType == LIGHT_TYPES.Case
 											? t('LedConfigPage:lightCoordsSection.case-id-tied-label')
-											: t(
-													'LedConfigPage:lightCoordsSection.gpio-pin-tied-label',
-												)
+											: selectedIsExtInput
+												? t(
+														'LedConfigPage:lightCoordsSection.hall-effect-sensor-tied-label',
+													)
+												: t(
+														'LedConfigPage:lightCoordsSection.gpio-pin-tied-label',
+													)
 									}
 									className="form-select"
 									groupClassName="mb-3"
@@ -318,6 +391,19 @@ export default function LightCoordsSection({
 													{t(
 														'LedConfigPage:lightCoordsSection.case-id-option',
 														{ index: nonButtonIndex + 1 },
+													)}
+												</option>
+											))}
+										</>
+									) : selectedIsExtInput ? (
+										<>
+											{Array.from({
+												length: MAX_EXT_INPUT_LIGHT_COLOR_INDEXES,
+											}).map((_, sensorIndex) => (
+												<option key={sensorIndex} value={sensorIndex}>
+													{t(
+														'LedConfigPage:lightCoordsSection.hall-effect-sensor-option',
+														{ index: sensorIndex + 1 },
 													)}
 												</option>
 											))}
@@ -370,7 +456,7 @@ export default function LightCoordsSection({
 												options={colorOptions}
 												value={
 													colorOptions[
-														notPressedStaticColors[
+														selectedNotPressedColors[
 															values.Lights[selectedLight]
 																.GPIOPinOrNonButtonIndex
 														]
@@ -378,7 +464,7 @@ export default function LightCoordsSection({
 												}
 												onChange={(selected) => {
 													setFieldValue(
-														`AnimationOptions.profiles.${profileIndex}.notPressedStaticColors.${values.Lights[selectedLight].GPIOPinOrNonButtonIndex}`,
+														`AnimationOptions.profiles.${profileIndex}.${selectedColorKeys.notPressed}.${values.Lights[selectedLight].GPIOPinOrNonButtonIndex}`,
 														selected?.value || 0,
 													);
 												}}
@@ -401,7 +487,7 @@ export default function LightCoordsSection({
 												options={colorOptions}
 												value={
 													colorOptions[
-														pressedStaticColors[
+														selectedPressedColors[
 															values.Lights[selectedLight]
 																.GPIOPinOrNonButtonIndex
 														]
@@ -409,7 +495,7 @@ export default function LightCoordsSection({
 												}
 												onChange={(selected) => {
 													setFieldValue(
-														`AnimationOptions.profiles.${profileIndex}.pressedStaticColors.${values.Lights[selectedLight].GPIOPinOrNonButtonIndex}`,
+														`AnimationOptions.profiles.${profileIndex}.${selectedColorKeys.pressed}.${values.Lights[selectedLight].GPIOPinOrNonButtonIndex}`,
 														selected?.value || 0,
 													);
 												}}

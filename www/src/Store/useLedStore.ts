@@ -23,6 +23,8 @@ export type AnimationProfile = {
 	notPressedStaticColors: number[];
 	pressedSpecialColor: number;
 	pressedStaticColors: number[];
+	extNotPressedStaticColors?: number[];
+	extPressedStaticColors?: number[];
 	caseSpecialColor: number;
 	bNonPressedSpecialColorIsRainbow: 0 | 1;
 	bPressedSpecialColorIsRainbow: 0 | 1;
@@ -39,6 +41,7 @@ export type Light = {
 	GPIOPinOrNonButtonIndex: number;
 	firstLedIndex: number;
 	lightType: number;
+	inputSource?: number;
 	numLedsOnLight: number;
 	xCoord: number;
 	yCoord: number;

@@ -6,7 +6,33 @@
 #include <stdlib.h>
 #include <vector>
 
+#include "pico.h" // NUM_BANK0_GPIOS
 #include "enums.pb.h"
+
+// Hall Effect sensors that can drive a light; matches ext*StaticColors max_size in config.proto
+#define MAX_EXT_INPUT_LIGHT_COLOR_INDEXES 32
+
+// GPIO keys equal the pin number
+inline int32_t MakeLightInputKey(LightInputSource source, uint8_t index) { return ((int32_t)source << 8) | index; }
+
+// Board config LIGHT_DATA_* entries: firstLedIndex, ledCount, x, y, GPIO pin / case index / HE sensor index, type, input source
+#define LIGHT_DATA_ENTRY_SIZE 7
+
+constexpr LightInputSource LightDataInputSource(uint8_t type, uint8_t source)
+{
+  return (type == LightType::LightType_ActionButton && source == LightInputSource::LightInputSource_HallEffect)
+    ? LightInputSource::LightInputSource_HallEffect : LightInputSource::LightInputSource_GPIO;
+}
+
+inline bool IsValidLightInput(LightInputSource source, uint32_t index)
+{
+  switch(source)
+  {
+    case LightInputSource::LightInputSource_GPIO:       return index < NUM_BANK0_GPIOS;
+    case LightInputSource::LightInputSource_HallEffect: return index < MAX_EXT_INPUT_LIGHT_COLOR_INDEXES;
+    default:                                            return false;
+  }
+}
 
 struct Pixel {
   Pixel(int index, uint32_t mask = 0) : index(index), mask(mask) { }
@@ -46,7 +72,7 @@ struct LightPosition
 //A single RGB light on the device. Replaced Pixel
 struct Light 
 {
-  Light(uint8_t InFirstLedIndex, uint8_t InNumLedsPerLight, LightPosition InPosition, uint8_t InGPIOPinOrNonButtonIndex, LightType InType)
+  Light(uint8_t InFirstLedIndex, uint8_t InNumLedsPerLight, LightPosition InPosition, uint8_t InGPIOPinOrNonButtonIndex, LightType InType, LightInputSource InSource = LightInputSource::LightInputSource_GPIO)
   {
     FirstLedIndex = InFirstLedIndex;
     Position = InPosition;
@@ -76,7 +102,17 @@ struct Light
       PlayerLightIndex = 3;
     }
     else if(InType == LightType::LightType_ActionButton || InType == LightType::LightType_Turbo)
-      GPIOPin = InGPIOPinOrNonButtonIndex;
+    {
+      if(InType == LightType::LightType_Turbo)
+        InSource = LightInputSource::LightInputSource_GPIO;
+
+      if(IsValidLightInput(InSource, InGPIOPinOrNonButtonIndex))
+      {
+        InputSource = InSource;
+        InputIndex = InGPIOPinOrNonButtonIndex;
+        InputKey = MakeLightInputKey(InSource, InGPIOPinOrNonButtonIndex);
+      }
+    }
   }
 
   // index of first LED
@@ -91,11 +127,14 @@ struct Light
   //How many leds make up this light.
   uint8_t LedsPerLight;
 
+  LightInputSource InputSource = LightInputSource::LightInputSource_GPIO;
+  uint8_t InputIndex = 0;
+
   //Game pad mask (if applicaple) (Needed to do SOCD on Lights)
  // uint32_t GamePadMask;
 
-  //GPIOPin pin this action (if applicaple) is on
-  int32_t GPIOPin = -1;
+  //-1 if unbound
+  int32_t InputKey = -1;
 
   //Index into NonButtonIndex array in a led profile
   int32_t NonButtonIndex = -1;

@@ -3,7 +3,14 @@ import { useTranslation } from 'react-i18next';
 import { Button, Col, OverlayTrigger, Popover, Row } from 'react-bootstrap';
 import { FormikProps } from 'formik';
 
-import { LED_COLORS, LIGHT_TYPES } from '../../Data/Leds';
+import {
+	LED_COLORS,
+	LIGHT_TYPES,
+	MAX_EXT_INPUT_LIGHT_COLOR_INDEXES,
+	getButtonColorKeys,
+	getLightInputLabel,
+	isExtInputLight,
+} from '../../Data/Leds';
 import {
 	Light,
 	MAX_NON_BUTTON_LIGHT_COLOR_INDEXES,
@@ -68,6 +75,8 @@ const ColorSelectOverlay = ({
 function ButtonLayoutPreview({
 	pressedStaticColors,
 	notPressedStaticColors,
+	extPressedStaticColors = [],
+	extNotPressedStaticColors = [],
 	nonButtonStaticColors,
 	profileIndex,
 	setFieldValue,
@@ -76,6 +85,8 @@ function ButtonLayoutPreview({
 }: {
 	pressedStaticColors: number[];
 	notPressedStaticColors: number[];
+	extPressedStaticColors?: number[];
+	extNotPressedStaticColors?: number[];
 	nonButtonStaticColors: number[];
 	profileIndex: number;
 	customColors?: number[];
@@ -189,13 +200,28 @@ function ButtonLayoutPreview({
 						{Lights.map((light, index) => {
 							switch (light.lightType) {
 								case LIGHT_TYPES.ActionButton: {
+									const isExtInput = isExtInputLight(light);
+									const colorKeys = getButtonColorKeys(light);
+									const lightNotPressedColors = isExtInput
+										? extNotPressedStaticColors
+										: notPressedStaticColors;
+									const lightPressedColors = isExtInput
+										? extPressedStaticColors
+										: pressedStaticColors;
 									return (
 										<ColorSelectOverlay
 											key={`button-light-${index}`}
-											title={t(
-												'LedConfigPage:buttonLayoutPreview.overlay-gpio-title',
-												{ pin: light.GPIOPinOrNonButtonIndex },
-											)}
+											title={
+												isExtInput
+													? t(
+															'LedConfigPage:buttonLayoutPreview.overlay-hall-effect-title',
+															{ index: light.GPIOPinOrNonButtonIndex + 1 },
+														)
+													: t(
+															'LedConfigPage:buttonLayoutPreview.overlay-gpio-title',
+															{ pin: light.GPIOPinOrNonButtonIndex },
+														)
+											}
 											content={
 												<div style={{ minWidth: 200 }}>
 													<p>
@@ -205,14 +231,14 @@ function ButtonLayoutPreview({
 														options={colorOptions}
 														value={
 															colorOptions[
-																notPressedStaticColors[
+																lightNotPressedColors[
 																	light.GPIOPinOrNonButtonIndex
 																]
 															] || null
 														}
 														onChange={(selected) => {
 															setFieldValue(
-																`AnimationOptions.profiles.${profileIndex}.notPressedStaticColors.${light.GPIOPinOrNonButtonIndex}`,
+																`AnimationOptions.profiles.${profileIndex}.${colorKeys.notPressed}.${light.GPIOPinOrNonButtonIndex}`,
 																selected?.value || 0,
 															);
 														}}
@@ -227,14 +253,14 @@ function ButtonLayoutPreview({
 														options={colorOptions}
 														value={
 															colorOptions[
-																pressedStaticColors[
+																lightPressedColors[
 																	light.GPIOPinOrNonButtonIndex
 																]
 															] || null
 														}
 														onChange={(selected) => {
 															setFieldValue(
-																`AnimationOptions.profiles.${profileIndex}.pressedStaticColors.${light.GPIOPinOrNonButtonIndex}`,
+																`AnimationOptions.profiles.${profileIndex}.${colorKeys.pressed}.${light.GPIOPinOrNonButtonIndex}`,
 																selected?.value || 0,
 															);
 														}}
@@ -251,10 +277,10 @@ function ButtonLayoutPreview({
 													fill={
 														colorOptions[
 															pressed
-																? pressedStaticColors[
+																? lightPressedColors[
 																		light.GPIOPinOrNonButtonIndex
 																	]
-																: notPressedStaticColors[
+																: lightNotPressedColors[
 																		light.GPIOPinOrNonButtonIndex
 																	]
 														]?.color || 'black'
@@ -274,7 +300,7 @@ function ButtonLayoutPreview({
 														textShadow: '0 0 3px black',
 													}}
 												>
-													{`GP${light.GPIOPinOrNonButtonIndex}`}
+													{getLightInputLabel(light)}
 												</text>
 											</g>
 										</ColorSelectOverlay>
@@ -465,6 +491,12 @@ function ButtonLayoutPreview({
 									`AnimationOptions.profiles.${profileIndex}.notPressedStaticColors`,
 									Array(GPIO_PIN_LENGTH).fill(selected?.value || 0),
 								);
+								setFieldValue(
+									`AnimationOptions.profiles.${profileIndex}.extNotPressedStaticColors`,
+									Array(MAX_EXT_INPUT_LIGHT_COLOR_INDEXES).fill(
+										selected?.value || 0,
+									),
+								);
 							}}
 						/>
 						<p className="mt-3">
@@ -481,6 +513,12 @@ function ButtonLayoutPreview({
 								setFieldValue(
 									`AnimationOptions.profiles.${profileIndex}.pressedStaticColors`,
 									Array(GPIO_PIN_LENGTH).fill(selected?.value || 0),
+								);
+								setFieldValue(
+									`AnimationOptions.profiles.${profileIndex}.extPressedStaticColors`,
+									Array(MAX_EXT_INPUT_LIGHT_COLOR_INDEXES).fill(
+										selected?.value || 0,
+									),
 								);
 							}}
 						/>

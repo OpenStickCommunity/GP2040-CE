@@ -986,6 +986,15 @@ std::string getButtonLayouts()
     return serialize_json(doc);
 }
 
+// Missing or unknown sources default to GPIO
+LightInputSource helperGetLightInputSource(JsonObject& light)
+{
+    uint8_t source = light["inputSource"].as<uint8_t>();
+    if (source == LightInputSource::LightInputSource_HallEffect)
+        return LightInputSource::LightInputSource_HallEffect;
+    return LightInputSource::LightInputSource_GPIO;
+}
+
 std::string setLightsDataOptions()
 {
     DynamicJsonDocument doc = get_post_data();
@@ -1006,6 +1015,7 @@ std::string setLightsDataOptions()
         options.lightClusterData[thisEntryIndex].lightLocationData += ((int)light["yCoord"].as<uint8_t>()) << 24;
         options.lightClusterData[thisEntryIndex].lightTypeData = light["GPIOPinOrNonButtonIndex"].as<uint8_t>();
         options.lightClusterData[thisEntryIndex].lightTypeData += ((int)light["lightType"].as<uint8_t>()) << 8;
+        options.lightClusterData[thisEntryIndex].lightTypeData += ((uint32_t)helperGetLightInputSource(light)) << 16;
 
         options.lightClusterData_count++;
 
@@ -1037,6 +1047,7 @@ std::string getLightsDataOptions()
         light["yCoord"] = (options.lightClusterData[lightsIndex].lightLocationData >> 24) & 0xFF;
         light["GPIOPinOrNonButtonIndex"] = options.lightClusterData[lightsIndex].lightTypeData & 0xFF;
         light["lightType"] = (options.lightClusterData[lightsIndex].lightTypeData >> 8) & 0xFF;
+        light["inputSource"] = (options.lightClusterData[lightsIndex].lightTypeData >> 16) & 0xFF;
     }
 
     LedOptions["TurboIsRGB"] = turboOptions.turboLedType == PLED_TYPE_RGB ? 1 : 0;
@@ -1062,7 +1073,7 @@ std::string getLightsPresetsByIndex(int presetIdx)
 
             for (int lightsIndex = 0; lightsIndex < dataSize; ++lightsIndex)
             {
-                int thisEntryIndex = lightsIndex * 6;
+                int thisEntryIndex = lightsIndex * LIGHT_DATA_ENTRY_SIZE;
                 JsonObject light = lightsList.createNestedObject();
                 light["firstLedIndex"] = data[thisEntryIndex];
                 light["numLedsOnLight"] = data[thisEntryIndex+1];
@@ -1070,6 +1081,7 @@ std::string getLightsPresetsByIndex(int presetIdx)
                 light["yCoord"] = data[thisEntryIndex+3];
                 light["GPIOPinOrNonButtonIndex"] = data[thisEntryIndex+4];
                 light["lightType"] = data[thisEntryIndex+5];
+                light["inputSource"] = (uint8_t)LightDataInputSource(data[thisEntryIndex+5], data[thisEntryIndex+6]);
             }
         }
     };
@@ -1142,7 +1154,7 @@ std::string getLightsDataPresets()
 
             for (int lightsIndex = 0; lightsIndex < dataSize; ++lightsIndex)
             {
-                int thisEntryIndex = lightsIndex * 6;
+                int thisEntryIndex = lightsIndex * LIGHT_DATA_ENTRY_SIZE;
                 JsonObject light = lightsList.createNestedObject();
                 light["firstLedIndex"] = data[thisEntryIndex];
                 light["numLedsOnLight"] = data[thisEntryIndex+1];
@@ -1150,6 +1162,7 @@ std::string getLightsDataPresets()
                 light["yCoord"] = data[thisEntryIndex+3];
                 light["GPIOPinOrNonButtonIndex"] = data[thisEntryIndex+4];
                 light["lightType"] = data[thisEntryIndex+5];
+                light["inputSource"] = (uint8_t)LightDataInputSource(data[thisEntryIndex+5], data[thisEntryIndex+6]);
             }
         }
     };
@@ -1286,7 +1299,22 @@ void helperGetProfileFromJsonObject(AnimationProfile* Profile, JsonObject* JsonD
         Profile->nonButtonStaticColors.bytes[i] = nonButtonStaticColorsList[i].as<uint32_t>() & 0xFF;
     }
     Profile->nonButtonStaticColors.size = MAX_NON_BUTTON_LIGHT_COLOR_INDEXES;
+
+    // Older UIs and exports omit these
+    if ((*JsonData).containsKey("extNotPressedStaticColors") && (*JsonData).containsKey("extPressedStaticColors")) {
+        JsonArray extNotPressedStaticColorsList = (*JsonData)["extNotPressedStaticColors"];
+        JsonArray extPressedStaticColorsList = (*JsonData)["extPressedStaticColors"];
+        for(uint32_t i = 0; i < MAX_EXT_INPUT_LIGHT_COLOR_INDEXES; i++){
+            Profile->extNotPressedStaticColors.bytes[i] = extNotPressedStaticColorsList[i].as<uint32_t>() & 0xFF;
+            Profile->extPressedStaticColors.bytes[i] = extPressedStaticColorsList[i].as<uint32_t>() & 0xFF;
+        }
+        Profile->extNotPressedStaticColors.size = MAX_EXT_INPUT_LIGHT_COLOR_INDEXES;
+        Profile->extPressedStaticColors.size = MAX_EXT_INPUT_LIGHT_COLOR_INDEXES;
+        Profile->has_extNotPressedStaticColors = true;
+        Profile->has_extPressedStaticColors = true;
+    }
 }
+
 
 // Fix issue here
 std::string setAnimationButtonTestMode()
@@ -1305,7 +1333,7 @@ std::string setAnimationButtonTestMode()
     AnimationOptions& animOptions = Storage::getInstance().getAnimationOptions();
     uint32_t overrideBrightness = animOptions.brightness;
 
-    AnimationProfile testAnimProfile;
+    AnimationProfile testAnimProfile = AnimationProfile_init_zero;
     if(testMode == AnimationStationTestMode::AnimationStation_TestModeProfilePreview)
     {
         JsonObject testProfile = testOptions["testProfile"];
@@ -1332,8 +1360,9 @@ std::string setAnimationButtonTestState()
     JsonObject testOptions = docJson["TestLight"];
     int testButton = testOptions["testID"].as<uint32_t>();
     bool testIsNonButtonLight = testOptions["testIsNonButtonLight"].as<bool>();
+    LightInputSource testSource = helperGetLightInputSource(testOptions);
 
-    AnimStation.SetTestPinState(testButton, testIsNonButtonLight);
+    AnimStation.SetTestPinState(testButton, testIsNonButtonLight, testSource);
 
     return serialize_json(doc);
 }
@@ -1441,6 +1470,13 @@ std::string getAnimationProtoOptions()
         
         for (unsigned int index = 0; index < MAX_NON_BUTTON_LIGHT_COLOR_INDEXES; index++) {
             nonButtonStaticColorsList.add(options.profiles[profilesIndex].nonButtonStaticColors.bytes[index]);
+        }
+
+        JsonArray extNotPressedStaticColorsList = profile.createNestedArray("extNotPressedStaticColors");
+        JsonArray extPressedStaticColorsList = profile.createNestedArray("extPressedStaticColors");
+        for (unsigned int index = 0; index < MAX_EXT_INPUT_LIGHT_COLOR_INDEXES; index++) {
+            extNotPressedStaticColorsList.add(options.profiles[profilesIndex].extNotPressedStaticColors.bytes[index]);
+            extPressedStaticColorsList.add(options.profiles[profilesIndex].extPressedStaticColors.bytes[index]);
         }
     }
 

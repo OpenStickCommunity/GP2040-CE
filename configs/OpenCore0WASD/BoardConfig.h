@@ -93,44 +93,44 @@
 #define LIGHT_DATA_NAME_DEFAULT "OpenCore0WASD"
 #define LIGHT_DATA_SIZE_DEFAULT 38 //number of sets in the below data
 #define LIGHT_DATA_DEFAULT \
-0,  1, 4,  3, 10, LightType::LightType_ActionButton, \
-1,  1, 3,  4, 9,  LightType::LightType_ActionButton, \
-2,  1, 4,  4, 11, LightType::LightType_ActionButton, \
-3,  1, 5,  4, 12, LightType::LightType_ActionButton, \
-4,  1, 9,  3, 18, LightType::LightType_ActionButton, \
-5,  1, 10, 3, 19, LightType::LightType_ActionButton, \
-6,  1, 11, 3, 20, LightType::LightType_ActionButton, \
-7,  1, 12, 3, 21, LightType::LightType_ActionButton, \
-8,  1, 12, 4, 17, LightType::LightType_ActionButton, \
-9,  1, 11, 4, 16, LightType::LightType_ActionButton, \
-10, 1, 10, 4, 15, LightType::LightType_ActionButton, \
-11, 1, 9,  4, 14, LightType::LightType_ActionButton, \
-12, 1, 7,  6, 13, LightType::LightType_ActionButton, \
-13, 1, 9,  0, 31, LightType::LightType_Player1Light, \
-14, 1, 10, 0, 31, LightType::LightType_Player2Light, \
-15, 1, 11, 0, 31, LightType::LightType_Player3Light, \
-16, 1, 12, 0, 31, LightType::LightType_Player4Light, \
-17, 1, 13, 0, 27, LightType::LightType_Turbo, \
-18, 1, 15, 0, 0,  LightType::LightType_Case, \
-19, 1, 15, 1, 1,  LightType::LightType_Case, \
-20, 1, 15, 2, 2,  LightType::LightType_Case, \
-21, 1, 15, 3, 3,  LightType::LightType_Case, \
-22, 1, 15, 4, 4,  LightType::LightType_Case, \
-23, 1, 15, 5, 5,  LightType::LightType_Case, \
-24, 1, 15, 6, 6,  LightType::LightType_Case, \
-25, 1, 15, 7, 7,  LightType::LightType_Case, \
-26, 1, 15, 8, 8,  LightType::LightType_Case, \
-27, 1, 15, 9, 9,  LightType::LightType_Case, \
-28, 1, 0,  9, 10, LightType::LightType_Case, \
-29, 1, 0,  8, 11, LightType::LightType_Case, \
-30, 1, 0,  7, 12, LightType::LightType_Case, \
-31, 1, 0,  6, 13, LightType::LightType_Case, \
-32, 1, 0,  5, 14, LightType::LightType_Case, \
-33, 1, 0,  4, 15, LightType::LightType_Case, \
-34, 1, 0,  3, 16, LightType::LightType_Case, \
-35, 1, 0,  2, 17, LightType::LightType_Case, \
-36, 1, 0,  1, 18, LightType::LightType_Case, \
-37, 1, 0,  0, 19, LightType::LightType_Case
+0,  1, 4,  3, 10, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+1,  1, 3,  4, 9,  LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+2,  1, 4,  4, 11, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+3,  1, 5,  4, 12, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+4,  1, 9,  3, 18, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+5,  1, 10, 3, 19, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+6,  1, 11, 3, 20, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+7,  1, 12, 3, 21, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+8,  1, 12, 4, 17, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+9,  1, 11, 4, 16, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+10, 1, 10, 4, 15, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+11, 1, 9,  4, 14, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+12, 1, 7,  6, 13, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+13, 1, 9,  0, 31, LightType::LightType_Player1Light, LightInputSource::LightInputSource_GPIO, \
+14, 1, 10, 0, 31, LightType::LightType_Player2Light, LightInputSource::LightInputSource_GPIO, \
+15, 1, 11, 0, 31, LightType::LightType_Player3Light, LightInputSource::LightInputSource_GPIO, \
+16, 1, 12, 0, 31, LightType::LightType_Player4Light, LightInputSource::LightInputSource_GPIO, \
+17, 1, 13, 0, 27, LightType::LightType_Turbo, LightInputSource::LightInputSource_GPIO, \
+18, 1, 15, 0, 0,  LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+19, 1, 15, 1, 1,  LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+20, 1, 15, 2, 2,  LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+21, 1, 15, 3, 3,  LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+22, 1, 15, 4, 4,  LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+23, 1, 15, 5, 5,  LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+24, 1, 15, 6, 6,  LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+25, 1, 15, 7, 7,  LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+26, 1, 15, 8, 8,  LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+27, 1, 15, 9, 9,  LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+28, 1, 0,  9, 10, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+29, 1, 0,  8, 11, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+30, 1, 0,  7, 12, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+31, 1, 0,  6, 13, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+32, 1, 0,  5, 14, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+33, 1, 0,  4, 15, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+34, 1, 0,  3, 16, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+35, 1, 0,  2, 17, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+36, 1, 0,  1, 18, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+37, 1, 0,  0, 19, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO
 
 // LED Profile 0
 #define LEDS_PROFILE0_ENABLED 1
