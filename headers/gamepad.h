@@ -199,7 +199,7 @@ public:
 
 	// gamepad specific proxy of debounced buttons --- 1 = active (inverse of the raw GPIO)
 	// see GP2040::debounceGpioGetAll for details
-	Mask_t debouncedGpio;
+	Mask_t debouncedGpio = 0;
 
 	uint32_t lastReinitProfileNumber = 0;
 
