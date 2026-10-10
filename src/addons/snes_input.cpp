@@ -77,6 +77,19 @@ void SNESpadInput::setup() {
 
         leftX = map(snes->mouseX,0,255,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
         leftY = map(snes->mouseY,0,255,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+    } else { //No controller detected, reset buttons
+        buttonA = false;
+        buttonB = false;
+        buttonX = false;
+        buttonY = false;
+        buttonL = false;
+        buttonR = false;
+        dpadUp = false;
+        dpadDown = false;
+        dpadLeft = false;
+        dpadRight = false;
+        buttonSelect = false;
+        buttonStart = false;
     }
 }
 
@@ -144,6 +157,19 @@ void SNESpadInput::process() {
             leftX = map(snes->mouseX,0,255,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
             leftY = map(snes->mouseY,0,255,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
 
+        } else { //No controller detected, reset buttons
+            buttonA = false;
+            buttonB = false;
+            buttonX = false;
+            buttonY = false;
+            buttonL = false;
+            buttonR = false;
+            dpadUp = false;
+            dpadDown = false;
+            dpadLeft = false;
+            dpadRight = false;
+            buttonSelect = false;
+            buttonStart = false;
         }
 
         nextTimer = getMillis() + uIntervalMS;
