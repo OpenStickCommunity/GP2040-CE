@@ -131,7 +131,7 @@ private:
     uint16_t dialValue;         // Turbo Dial Value (Raw)
     uint16_t incrementValue;    // Turbo Dial Increment Value
     uint8_t shmupBtnPin[4];     // Turbo SHMUP Non-Turbo Pins
-    uint16_t shmupBtnPinMask[4];// Cache for shmup button pin masks
+    Mask_t shmupBtnPinMask[4];// Cache for shmup button pin masks
     uint16_t shmupBtnMask[4];   // Turbo SHMUP Non-Turbo Button Masks
     uint16_t lastButtons;       // Last buttons (for Turbo Reset on Release)
     bool hasLedPin;             // Flag for LED pin presence

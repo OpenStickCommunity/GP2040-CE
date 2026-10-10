@@ -2121,7 +2121,8 @@ static bool loadConfigInner(Config& config)
     config = Config Config_init_zero;
 
     const uint8_t* flashEnd = reinterpret_cast<const uint8_t*>(EEPROM_ADDRESS_START) + EEPROM_SIZE_BYTES;
-    const ConfigFooter& footer = *reinterpret_cast<const ConfigFooter*>(flashEnd - sizeof(ConfigFooter));
+    ConfigFooter footer;
+    memcpy(&footer, flashEnd - sizeof(ConfigFooter), sizeof(footer));
 
     // Check for presence of magic value
     if (footer.magic != FOOTER_MAGIC)
@@ -2286,7 +2287,8 @@ bool ConfigUtils::save(Config& config)
     newFooter.magic = FOOTER_MAGIC;
 
     // The data has changed when the footer content has changed. Only then do we acutally need to save.
-    const ConfigFooter& oldFooter = *reinterpret_cast<ConfigFooter*>(EEPROM.writeCache + EEPROM_SIZE_BYTES - sizeof(ConfigFooter));
+    ConfigFooter oldFooter;
+    memcpy(&oldFooter, EEPROM.writeCache + EEPROM_SIZE_BYTES - sizeof(ConfigFooter), sizeof(oldFooter));
     if (newFooter == oldFooter)
     {
         // The data has not changed, no saving neccessary.
@@ -2294,8 +2296,7 @@ bool ConfigUtils::save(Config& config)
     }
 
     // Write the footer
-    ConfigFooter* cacheFooter = reinterpret_cast<ConfigFooter*>(EEPROM.writeCache + EEPROM_SIZE_BYTES - sizeof(ConfigFooter));
-    memcpy(cacheFooter, &newFooter, sizeof(ConfigFooter));
+    memcpy(EEPROM.writeCache + EEPROM_SIZE_BYTES - sizeof(ConfigFooter), &newFooter, sizeof(newFooter));
 
     // Move the encoded data in memory down to the footer
     memmove(EEPROM.writeCache + EEPROM_SIZE_BYTES - sizeof(ConfigFooter) - newFooter.dataSize, EEPROM.writeCache, newFooter.dataSize);

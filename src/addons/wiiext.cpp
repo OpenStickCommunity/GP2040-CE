@@ -23,7 +23,7 @@ bool WiiExtensionInput::available() {
 }
 
 void WiiExtensionInput::setup() {
-    nextTimer = getMillis();
+    lastPoll = getMillis();
 
 #if WII_EXTENSION_DEBUG==true
     stdio_init_all();
@@ -48,12 +48,12 @@ void WiiExtensionInput::setup() {
 }
 
 void WiiExtensionInput::process() {
-    if (nextTimer < getMillis()) {
+    if (getMillis() - lastPoll > uIntervalMS) {
         wii->poll();
 
         update();
               
-        nextTimer = getMillis() + uIntervalMS;
+        lastPoll = getMillis();
     }
 
     if (currentConfig != NULL) {

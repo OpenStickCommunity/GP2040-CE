@@ -25,7 +25,7 @@ class GamepadUSBHostListener : public USBListener {
         uint8_t _controller_dev_addr;
         uint8_t _controller_instance;
         GPHost * _controller_host;
-        uint32_t _next_update;
+        uint32_t _last_update;
 };
 
 #endif

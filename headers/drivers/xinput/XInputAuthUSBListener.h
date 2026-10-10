@@ -39,7 +39,7 @@ private:
     uint8_t xinput_instance;
     bool sending;
     XInputAuthData * xinputAuthData;
-    uint32_t wait_time;
+    uint32_t wait_started_ms;
     uint8_t wait_count;
     uint8_t waitBuffer[64]; // wait buffer
     uint8_t waitBufferID;

@@ -140,7 +140,7 @@ void WiiExtension::start() {
         if (result > -1) {
             result = doI2CRead(idRead, 6);
 
-            if (idRead[2] != 0xA4 || idRead[3] != 0x20) return;
+            if (result != 6 || idRead[2] != 0xA4 || idRead[3] != 0x20) return;
 
             if (idRead[5] == 0x00) {
                 extensionType = WII_EXTENSION_NUNCHUCK;
@@ -172,6 +172,8 @@ void WiiExtension::start() {
                 extensionType = WII_EXTENSION_UDRAW;
                 extensionController = new UDrawExtension();
             }
+
+            if (extensionType == WII_EXTENSION_NONE) return;
 
             // in certain situations (eg. Nunchuck), setting the data type in reset() does not affect what this value will be
             dataType = idRead[4];

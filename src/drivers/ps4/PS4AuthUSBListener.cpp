@@ -119,7 +119,7 @@ void PS4AuthUSBListener::process() {
             }
             break;
         case PS4State::signed_nonce_ready:
-            if ( (int32_t)(now_ms() - poll_after_ms) < 0 )
+            if ( (now_ms() - last_signing_poll_ms) < PS4_SIGNING_POLL_INTERVAL_MS )
                 break; // dongle said "not ready"; wait before polling again
             report_buffer[0] = PS4AuthReport::PS4_GET_SIGNING_STATE;
             report_buffer[1] = ps4AuthData->nonce_id;
@@ -146,7 +146,7 @@ void PS4AuthUSBListener::resetHostData() {
     nonce_chunk = 0; // which part of the nonce are we getting from send?
     awaiting_cb = false;
     awaiting_since_ms = 0;
-    poll_after_ms = 0;
+    last_signing_poll_ms = 0;
     dongle_state = PS4State::no_nonce;
 }
 
@@ -339,6 +339,7 @@ void PS4AuthUSBListener::set_report_complete(uint8_t dev_addr, uint8_t instance,
         case PS4AuthReport::PS4_SET_AUTH_PAYLOAD:
             if (nonce_page == 5) {
                 nonce_page = 0;
+                last_signing_poll_ms = now_ms() - PS4_SIGNING_POLL_INTERVAL_MS;
                 dongle_state = PS4State::signed_nonce_ready;
             }
             break;
@@ -386,7 +387,7 @@ void PS4AuthUSBListener::get_report_complete(uint8_t dev_addr, uint8_t instance,
                 // the device this completion came from.
                 return;
             } else {
-                poll_after_ms = now_ms() + PS4_SIGNING_POLL_INTERVAL_MS; // not ready yet
+                last_signing_poll_ms = now_ms(); // not ready yet
             }
             break;
         case PS4AuthReport::PS4_GET_SIGNATURE_NONCE:

@@ -149,7 +149,7 @@ private:
   ADS1115Device *ads;
   int channelHop;
   uint32_t uIntervalMS; // ADS1115 Interval
-  uint32_t nextTimer;   // Turbo Timer
+  uint32_t lastPoll;   // Turbo Timer
   ADS1115_Instance instance;
   int16_t CalculateMagnitudeXY(uint16_t &channelX, uint16_t &channelY);
 };

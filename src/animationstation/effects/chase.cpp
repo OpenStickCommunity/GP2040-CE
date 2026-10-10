@@ -43,7 +43,7 @@ Chase::Chase(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType, 
       MinYCoord = RGBLights->AllLights[lightIndex].Position.YPosition;   
 
     //save types
-    int lastLed = RGBLights->AllLights[lightIndex].FirstLedIndex + RGBLights->AllLights[lightIndex].LedsPerLight;
+    const uint32_t lastLed = RGBLights->AllLights[lightIndex].FirstLedIndex + RGBLights->AllLights[lightIndex].LedsPerLight;
     for(unsigned int ledIndex = RGBLights->AllLights[lightIndex].FirstLedIndex ; ledIndex < lastLed; ++ledIndex)
       ChaseBlendType[ledIndex] = RGBLights->AllLights[lightIndex].Type;
 
@@ -139,7 +139,7 @@ void Chase::OrderLights()
 
   if(ChaseTypeInUse == ChaseTypes::CHASETYPES_INDEX || ChaseTypeInUse == ChaseTypes::CHASETYPES_INDEX_PINGPONG)
   {
-    int sortedLights[FRAME_MAX];
+    unsigned int sortedLights[FRAME_MAX];
     unsigned int lightsFound = 0;
 
     for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size() && lightIndex < FRAME_MAX; ++lightIndex)
@@ -339,7 +339,7 @@ void Chase::AssignThisFrameValues()
     case SingleChaseTypes::SINGLECHASETYPES_RIGHT_TO_LEFT:
       //reverse the order and fall through
       currentLightReverseAdjusted = (MaxXCoord) - (CurrentLight - MinXCoord);
-      //Fall through (no break)
+      [[fallthrough]];
     case SingleChaseTypes::SINGLECHASETYPES_LEFT_TO_RIGHT:
     { 
       for(unsigned int lightIndex = 0; lightIndex < OrderedLights.size(); ++lightIndex)
@@ -359,7 +359,7 @@ void Chase::AssignThisFrameValues()
     case SingleChaseTypes::SINGLECHASETYPES_BOTTOM_TO_TOP:
       //reverse the order and fall through
       currentLightReverseAdjusted = (MaxYCoord) - (CurrentLight - MinYCoord);
-      //Fall through (no break)
+      [[fallthrough]];
     case SingleChaseTypes::SINGLECHASETYPES_TOP_TO_BOTTOM:
     { 
       for(unsigned int lightIndex = 0; lightIndex < OrderedLights.size(); ++lightIndex)
@@ -379,7 +379,7 @@ void Chase::AssignThisFrameValues()
     case SingleChaseTypes::SINGLECHASETYPES_CIRCLE_ANTICLOCKWISE:
       //reverse the order and fall through
       currentLightReverseAdjusted = (OrderedLights.size()-1) - CurrentLight;
-      //Fall through (no break)
+      [[fallthrough]];
     case SingleChaseTypes::SINGLECHASETYPES_CIRCLE_CLOCKWISE:
     {
       uint8_t firstLightIndex = RGBLights->AllLights[OrderedLights[currentLightReverseAdjusted]].FirstLedIndex;

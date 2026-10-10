@@ -23,8 +23,6 @@
 #include "config.pb.h"
 
 AnimationStation::AnimationStation() {
-    AnimationOptions & options = Storage::getInstance().getAnimationOptions();
-
     // Changed when neopicoled starts up
     brightnessMax = 100;
     brightnessSteps = 10;

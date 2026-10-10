@@ -15,7 +15,7 @@ bool SNESpadInput::available() {
 
 void SNESpadInput::setup() {
     const SNESOptions& snesOptions = Storage::getInstance().getAddonOptions().snesOptions;
-    nextTimer = getMillis();
+    lastPoll = getMillis();
 
 #if SNES_PAD_DEBUG==true
     stdio_init_all();
@@ -81,7 +81,7 @@ void SNESpadInput::setup() {
 }
 
 void SNESpadInput::process() {
-    if (nextTimer < getMillis()) {
+    if (getMillis() - lastPoll > uIntervalMS) {
         snes->poll();
 
         dpadUp = false;
@@ -146,7 +146,7 @@ void SNESpadInput::process() {
 
         }
 
-        nextTimer = getMillis() + uIntervalMS;
+        lastPoll = getMillis();
     }
 
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
