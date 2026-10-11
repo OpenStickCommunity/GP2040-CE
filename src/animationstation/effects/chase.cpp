@@ -339,7 +339,7 @@ void Chase::AssignThisFrameValues()
     case SingleChaseTypes::SINGLECHASETYPES_RIGHT_TO_LEFT:
       //reverse the order and fall through
       currentLightReverseAdjusted = (MaxXCoord) - (CurrentLight - MinXCoord);
-      [[fallthrough]];
+      //Fall through (no break)
     case SingleChaseTypes::SINGLECHASETYPES_LEFT_TO_RIGHT:
     { 
       for(unsigned int lightIndex = 0; lightIndex < OrderedLights.size(); ++lightIndex)
@@ -359,7 +359,7 @@ void Chase::AssignThisFrameValues()
     case SingleChaseTypes::SINGLECHASETYPES_BOTTOM_TO_TOP:
       //reverse the order and fall through
       currentLightReverseAdjusted = (MaxYCoord) - (CurrentLight - MinYCoord);
-      [[fallthrough]];
+      //Fall through (no break)
     case SingleChaseTypes::SINGLECHASETYPES_TOP_TO_BOTTOM:
     { 
       for(unsigned int lightIndex = 0; lightIndex < OrderedLights.size(); ++lightIndex)
@@ -379,7 +379,7 @@ void Chase::AssignThisFrameValues()
     case SingleChaseTypes::SINGLECHASETYPES_CIRCLE_ANTICLOCKWISE:
       //reverse the order and fall through
       currentLightReverseAdjusted = (OrderedLights.size()-1) - CurrentLight;
-      [[fallthrough]];
+      //Fall through (no break)
     case SingleChaseTypes::SINGLECHASETYPES_CIRCLE_CLOCKWISE:
     {
       uint8_t firstLightIndex = RGBLights->AllLights[OrderedLights[currentLightReverseAdjusted]].FirstLedIndex;
