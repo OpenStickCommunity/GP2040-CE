@@ -428,7 +428,8 @@ std::string getUsedPins()
     return serialize_json(doc);
 }
 
-std::string setDisplayOptions(DisplayOptions& displayOptions)
+// assignPins is false for the live preview: DC/RESET are only claimed on a real save
+std::string setDisplayOptions(DisplayOptions& displayOptions, bool assignPins)
 {
     DynamicJsonDocument doc = get_post_data();
     readDoc(displayOptions.enabled, doc, "enabled");
@@ -454,6 +455,16 @@ std::string setDisplayOptions(DisplayOptions& displayOptions)
     readDoc(displayOptions.inputHistoryCol, doc, "inputHistoryCol");
     readDoc(displayOptions.inputHistoryRow, doc, "inputHistoryRow");
     readDoc(displayOptions.contrast, doc, "displayContrast");
+    readDoc(displayOptions.interfaceType, doc, "displayInterface");
+    readDoc(displayOptions.spiBlock, doc, "displaySpiBlock");
+    readDoc(displayOptions.controller, doc, "displayController");
+    if (assignPins) {
+        docToPin(displayOptions.spiDcPin, doc, "displayDcPin");
+        docToPin(displayOptions.spiResetPin, doc, "displayResetPin");
+    } else {
+        readDoc(displayOptions.spiDcPin, doc, "displayDcPin");
+        readDoc(displayOptions.spiResetPin, doc, "displayResetPin");
+    }
 
     readDoc(displayOptions.buttonLayoutCustomOptions.paramsLeft.layout, doc, "buttonLayoutCustomOptions", "params", "layout");
     readDoc(displayOptions.buttonLayoutCustomOptions.paramsLeft.common.startX, doc, "buttonLayoutCustomOptions", "params", "startX");
@@ -472,14 +483,14 @@ std::string setDisplayOptions(DisplayOptions& displayOptions)
 
 std::string setDisplayOptions()
 {
-    std::string response = setDisplayOptions(Storage::getInstance().getDisplayOptions());
+    std::string response = setDisplayOptions(Storage::getInstance().getDisplayOptions(), true);
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
     return response;
 }
 
 std::string setPreviewDisplayOptions()
 {
-    std::string response = setDisplayOptions(Storage::getInstance().getDisplayOptions());
+    std::string response = setDisplayOptions(Storage::getInstance().getDisplayOptions(), false);
     return response;
 }
 
@@ -511,6 +522,11 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
     writeDoc(doc, "inputHistoryCol", displayOptions.inputHistoryCol);
     writeDoc(doc, "inputHistoryRow", displayOptions.inputHistoryRow);
     writeDoc(doc, "displayContrast", displayOptions.contrast);
+    writeDoc(doc, "displayInterface", displayOptions.interfaceType);
+    writeDoc(doc, "displaySpiBlock", displayOptions.spiBlock);
+    writeDoc(doc, "displayDcPin", cleanPin(displayOptions.spiDcPin));
+    writeDoc(doc, "displayResetPin", cleanPin(displayOptions.spiResetPin));
+    writeDoc(doc, "displayController", displayOptions.controller);
 
     writeDoc(doc, "buttonLayoutCustomOptions", "params", "layout", displayOptions.buttonLayoutCustomOptions.paramsLeft.layout);
     writeDoc(doc, "buttonLayoutCustomOptions", "params", "startX", displayOptions.buttonLayoutCustomOptions.paramsLeft.common.startX);

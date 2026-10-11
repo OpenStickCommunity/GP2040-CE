@@ -14,6 +14,9 @@ class GPGFX {
 
         GPGFX_DisplayTypeOptions getAvailableDisplay(GPGFX_DisplayType displayType);
 
+        // SPI displays can't be scanned for: build the options from the config instead
+        GPGFX_DisplayTypeOptions getSPIDisplay(uint8_t block, int32_t dcPin, int32_t resetPin, bool sh1106);
+
         GPGFX_DisplayBase* getDriver() { return displayDriver; }
 
         // drawing methods

@@ -11,10 +11,26 @@ import FormControl from '../Components/FormControl';
 import FormSelect from '../Components/FormSelect';
 import Section from '../Components/Section';
 import WebApi from '../Services/WebApi';
+import useBoardDefinition from '../Store/useBoardDefinitionStore';
 
 const ON_OFF_OPTIONS = [
 	{ label: 'form.display-state.disabled', value: 0 },
 	{ label: 'form.display-state.enabled', value: 1 },
+];
+
+const DISPLAY_INTERFACES = [
+	{ label: 'form.interface.i2c', value: 0 },
+	{ label: 'form.interface.spi', value: 1 },
+];
+
+const DISPLAY_CONTROLLERS = [
+	{ label: 'form.controller.ssd1306', value: 0 },
+	{ label: 'form.controller.sh1106', value: 1 },
+];
+
+const SPI_BLOCKS = [
+	{ label: 'SPI0', value: 0 },
+	{ label: 'SPI1', value: 1 },
 ];
 
 const SPLASH_MODES = [
@@ -83,6 +99,11 @@ const defaultValues = {
 	inputHistoryRow: 7,
 	turnOffWhenSuspended: 0,
 	displayContrast: 255,
+	displayInterface: 0,
+	displaySpiBlock: 1,
+	displayDcPin: -1,
+	displayResetPin: -1,
+	displayController: 0,
 };
 
 let buttonLayoutDefinitions = { buttonLayout: {}, buttonLayoutRight: {} };
@@ -108,6 +129,20 @@ const schema = yup.object().shape({
 		.oneOf(ON_OFF_OPTIONS.map((o) => o.value))
 		.label('Invert Display'),
 	displayContrast: yup.number().min(38).max(255).label('Display Contrast'),
+	displayInterface: yup
+		.number()
+		.oneOf(DISPLAY_INTERFACES.map((o) => o.value))
+		.label('Display Interface'),
+	displaySpiBlock: yup
+		.number()
+		.oneOf(SPI_BLOCKS.map((o) => o.value))
+		.label('SPI Block'),
+	displayDcPin: yup.number().label('DC Pin'),
+	displayResetPin: yup.number().label('Reset Pin'),
+	displayController: yup
+		.number()
+		.oneOf(DISPLAY_CONTROLLERS.map((o) => o.value))
+		.label('Display Controller'),
 	turnOffWhenSuspended: yup.number().label('Turn Off When Suspended'),
 	buttonLayout: buttonLayoutSchema,
 	buttonLayoutRight: buttonLayoutRightSchema,
@@ -198,6 +233,7 @@ export default function DisplayConfigPage() {
 	const [saveMessage, setSaveMessage] = useState('');
 
 	const { t } = useTranslation('');
+	const { boardDefinition } = useBoardDefinition();
 
 	useEffect(() => {
 		async function fetchData() {
@@ -254,15 +290,17 @@ export default function DisplayConfigPage() {
 		>
 			{({ handleSubmit, handleChange, values, errors, setFieldValue }) => (
 				<Section title={t('DisplayConfig:header-text')}>
-					{getAvailablePeripherals('i2c') ? (
+					{getAvailablePeripherals('i2c') ||
+					getAvailablePeripherals('spi') ||
+					Number(values.displayInterface) === 1 ? (
 						<div>
 							<p>{t('DisplayConfig:sub-header-text')}</p>
 							<ul>
 								<Trans ns="DisplayConfig" i18nKey="list-text">
 									<li>Monochrome display with 128x64 resolution</li>
 									<li>
-										Uses I2C with a SSD1306, SH1106, SH1107 or other compatible
-										display IC
+										Uses I2C or SPI with a SSD1306, SH1106, SH1107 or other
+										compatible display IC
 									</li>
 									<li>Supports 3.3v operation</li>
 								</Trans>
@@ -296,7 +334,113 @@ export default function DisplayConfigPage() {
 													</option>
 												))}
 											</FormSelect>
+											<FormSelect
+												label={t('DisplayConfig:form.interface-label')}
+												name="displayInterface"
+												className="form-select-sm"
+												groupClassName="col-sm-3 mb-3"
+												value={values.displayInterface}
+												error={errors.displayInterface}
+												isInvalid={errors.displayInterface}
+												onChange={handleChange}
+											>
+												{DISPLAY_INTERFACES.map((o, i) => (
+													<option
+														key={`displayInterface-option-${i}`}
+														value={o.value}
+													>
+														{t(`DisplayConfig:${o.label}`)}
+													</option>
+												))}
+											</FormSelect>
+											{Number(values.displayInterface) === 1 && (
+												<>
+													<FormSelect
+														label={t('DisplayConfig:form.spi-block-label')}
+														name="displaySpiBlock"
+														className="form-select-sm"
+														groupClassName="col-sm-3 mb-3"
+														value={values.displaySpiBlock}
+														error={errors.displaySpiBlock}
+														isInvalid={errors.displaySpiBlock}
+														onChange={handleChange}
+													>
+														{SPI_BLOCKS.map((o, i) => (
+															<option
+																key={`displaySpiBlock-option-${i}`}
+																value={o.value}
+															>
+																{t(`DisplayConfig:${o.label}`)}
+															</option>
+														))}
+													</FormSelect>
+													<FormSelect
+														label={t('DisplayConfig:form.controller-label')}
+														name="displayController"
+														className="form-select-sm"
+														groupClassName="col-sm-3 mb-3"
+														value={values.displayController}
+														error={errors.displayController}
+														isInvalid={errors.displayController}
+														onChange={handleChange}
+													>
+														{DISPLAY_CONTROLLERS.map((o, i) => (
+															<option
+																key={`displayController-option-${i}`}
+																value={o.value}
+															>
+																{t(`DisplayConfig:${o.label}`)}
+															</option>
+														))}
+													</FormSelect>
+													<FormControl
+														type="number"
+														label={t('DisplayConfig:form.dc-pin-label')}
+														name="displayDcPin"
+														className="form-control-sm"
+														groupClassName="col-sm-3 mb-3"
+														value={values.displayDcPin}
+														error={errors.displayDcPin}
+														isInvalid={Boolean(errors.displayDcPin)}
+														onChange={handleChange}
+														min={-1}
+														max={boardDefinition.maxPin}
+													/>
+													<FormControl
+														type="number"
+														label={t('DisplayConfig:form.reset-pin-label')}
+														name="displayResetPin"
+														className="form-control-sm"
+														groupClassName="col-sm-3 mb-3"
+														value={values.displayResetPin}
+														error={errors.displayResetPin}
+														isInvalid={Boolean(errors.displayResetPin)}
+														onChange={handleChange}
+														min={-1}
+														max={boardDefinition.maxPin}
+													/>
+												</>
+											)}
 										</Row>
+										{Number(values.displayInterface) === 1 && (
+											<div className="alert alert-info" role="alert">
+												{t('DisplayConfig:form.spi-note')}
+											</div>
+										)}
+										{Number(values.displayInterface) === 1 &&
+											!getAvailablePeripherals('spi') && (
+												<div className="alert alert-warning" role="alert">
+													<Trans
+														ns="PeripheralMapping"
+														i18nKey="peripheral-toggle-unavailable"
+														values={{ name: 'SPI' }}
+													>
+														<NavLink exact="true" to="/peripheral-mapping">
+															{t('PeripheralMapping:header-text')}
+														</NavLink>
+													</Trans>
+												</div>
+											)}
 									</Tab>
 									<Tab
 										key="displayScreenOptions"

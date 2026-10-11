@@ -44,6 +44,12 @@ typedef struct {
     bool inverted;
     GPGFX_DisplayFont font;
     uint8_t contrast;
+    // SPI displays: the controller can't be probed, so it comes from the config
+    bool useSPI = false;
+    bool sh1106 = false;
+    int32_t spiCsPin = -1;
+    int32_t spiDcPin = -1;
+    int32_t spiResetPin = -1;
 } GPGFX_DisplayTypeOptions;
 
 #endif

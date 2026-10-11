@@ -3,7 +3,7 @@ export default {
 	'sub-header-text':
 		'A monochrome display can be used to show controller status and button activity. Ensure your display module has the following attributes:',
 	'list-text':
-		'<1>Monochrome display with 128x64 resolution</1> <1>Uses I2C with a SSD1306, SH1106, SH1107 or other compatible display IC</1> <1>Supports 3.3v operation</1>',
+		'<1>Monochrome display with 128x64 resolution</1> <1>Uses I2C or SPI with a SSD1306, SH1106, SH1107 or other compatible display IC</1> <1>Supports 3.3v operation</1>',
 	section: {
 		'hardware-header': 'Hardware Options',
 		'screen-header': 'Screen Options',
@@ -46,6 +46,21 @@ export default {
 		'turn-off-when-suspended': 'Turn Off When Suspended',
 		'input-history-label': 'Input History',
 		'display-contrast-label': 'Display Contrast',
+		'interface-label': 'Interface',
+		'spi-block-label': 'SPI Block',
+		'controller-label': 'Display Controller',
+		'dc-pin-label': 'DC Pin',
+		'reset-pin-label': 'Reset Pin (-1 if not wired)',
+		'spi-note':
+			'SPI displays: SCK, MOSI (TX) and CS come from the SPI block set in Peripheral Mapping (RX can stay unset). DC and Reset are set here. Most 1.3" modules use the SH1106 controller.',
+		interface: {
+			i2c: 'I2C (auto-detected)',
+			spi: 'SPI',
+		},
+		controller: {
+			ssd1306: 'SSD1306',
+			sh1106: 'SH1106',
+		},
 		'display-state': {
 			disabled: 'Disabled',
 			enabled: 'Enabled',
