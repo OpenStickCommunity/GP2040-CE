@@ -43,9 +43,20 @@ let peripheralFieldsSchema = {
 	),
 };
 
-const schema = yup.object().shape({
-	...peripheralFieldsSchema,
-});
+const schema = yup
+	.object()
+	.shape(peripheralFieldsSchema)
+	.test(
+		'usb-pins-consecutive',
+		'PeripheralMapping:usb-pins-consecutive',
+		function ({ peripheral: { usb0 } }) {
+			return (
+				!usb0.enabled ||
+				(usb0.dp >= 0 && usb0.dm >= 0 && Math.abs(usb0.dp - usb0.dm) === 1) ||
+				this.createError({ path: 'peripheral.usb0.dm' })
+			);
+		},
+	);
 
 const FormContext = () => {
 	const { values, setValues } = useFormikContext();
@@ -56,6 +67,8 @@ const FormContext = () => {
 			await WebApi.getGamepadOptions(setLoading);
 			const peripheralOptions = await WebApi.getPeripheralOptions(setLoading);
 
+			const usb0 = peripheralOptions.peripheral.usb0;
+			usb0.dm = usb0.dp < 0 ? -1 : usb0.dp + (usb0.order ? -1 : 1);
 			setValues(peripheralOptions);
 		}
 		fetchData();
@@ -76,7 +89,7 @@ export default function PeripheralMappingPage() {
 		getBoardDefinition();
 	}, []);
 
-	let allPins = [...boardDefinition.availablePins.keys()];
+	const allPins = boardDefinition.availablePins;
 	const pinLookup = (pinList) => {
 		return (pinList && pinList.length > 0 ? pinList : allPins).filter((x) =>
 			boardDefinition.availablePins.includes(x),
@@ -85,6 +98,8 @@ export default function PeripheralMappingPage() {
 
 	const onSuccess = async (values) => {
 		const cleanValues = schema.cast(values);
+		const { dm, ...usb0 } = cleanValues.peripheral.usb0;
+		cleanValues.peripheral.usb0 = { ...usb0, order: dm < usb0.dp ? 1 : 0 };
 		console.dir(cleanValues);
 
 		const success = await WebApi.setPeripheralOptions(cleanValues);
@@ -210,7 +225,9 @@ export default function PeripheralMappingPage() {
 														key={`${block.label}.${pin}`}
 														className="col-sm-auto"
 													>
-														<Form.Label>
+														<Form.Label
+															htmlFor={`peripheral.${block.label}.${pin}`}
+														>
 															{t(
 																`PeripheralMapping:pin-${pin.toLowerCase()}-label`,
 															)}
@@ -225,9 +242,11 @@ export default function PeripheralMappingPage() {
 																	values.peripheral[`${block.label}`].enabled,
 																)
 															}
-															error={getIn(
-																errors,
-																`peripheral.${block.label}.${pin}`,
+															isInvalid={Boolean(
+																getIn(
+																	errors,
+																	`peripheral.${block.label}.${pin}`,
+																),
 															)}
 															value={
 																values.peripheral[`${block.label}`][`${pin}`]
@@ -258,6 +277,14 @@ export default function PeripheralMappingPage() {
 																</option>
 															))}
 														</FormSelect>
+														<Form.Control.Feedback type="invalid">
+															{t(
+																getIn(
+																	errors,
+																	`peripheral.${block.label}.${pin}`,
+																) || '',
+															)}
+														</Form.Control.Feedback>
 													</div>
 												))}
 												{Object.keys(peripheral.options).map((option, i) => (

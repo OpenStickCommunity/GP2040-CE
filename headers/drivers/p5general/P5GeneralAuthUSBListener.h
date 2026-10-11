@@ -25,6 +25,7 @@ private:
     uint8_t ps_instance;
     P5GeneralAuthData * p5GeneralAuthData;
     uint8_t f1_num;
+    uint64_t wait_since_us;   // When the current *_wait state was entered
     uint8_t report_buffer[P5GENERAL_ENDPOINT_SIZE];   // Report buffer
 };
 

@@ -44,8 +44,7 @@ void ADS1219::powerDown(){
 //  in this second I2C frame.
 uint8_t ADS1219::readRegister(adsRegister_t reg){ // reg must be 0 or 1
   uc[0] = 0x20 | (reg<<2); // this is a guess
-  i2c->write(address, uc, 1);
-  i2c->read(address, uc, 1);
+  i2c->readRegister(address, uc[0], uc, 1);
   return uc[0];
 }
 
@@ -71,8 +70,7 @@ void ADS1219::writeRegister(uint8_t data){
 //  high.
 uint32_t ADS1219::readConversionResult(){
   uc[0] = 0x10; // Read from 24-bit conversion
-  i2c->write(address, uc, 1);
-  i2c->read(address, uc, 3);
+  i2c->readRegister(address, uc[0], uc, 3);
   uint32_t data32 = (uc[0] << 16) | (uc[1] << 8) | (uc[2]);
   if (data32 >= 0x800000)
 			data32 = data32-0x1000000;

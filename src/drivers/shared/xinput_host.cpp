@@ -245,7 +245,7 @@ void xinputh_close(uint8_t dev_addr) {
     tu_memclr(hid_dev, sizeof(xinputh_device_t));
 }
 
-bool xinputh_open(uint8_t rhport, uint8_t dev_addr, tusb_desc_interface_t const *desc_itf, uint16_t max_len) {
+uint16_t xinputh_open(uint8_t rhport, uint8_t dev_addr, tusb_desc_interface_t const *desc_itf, uint16_t max_len) {
     (void)rhport;
     TU_VERIFY(TUSB_CLASS_VENDOR_SPECIFIC == desc_itf->bInterfaceClass || TUSB_CLASS_HID == desc_itf->bInterfaceClass, 0);
     xinputh_interface_t *p_xinput = NULL;
@@ -294,7 +294,7 @@ bool xinputh_open(uint8_t rhport, uint8_t dev_addr, tusb_desc_interface_t const 
             p_xinput->subtype = x_desc->subtype;
             usbh_edpt_xfer(dev_addr, p_xinput->ep_in, p_xinput->epin_buf, p_xinput->epin_size);
         }
-        return true;
+        return pos;
     // Xbox One instance == 0x47 0xD0
     } else if (desc_itf->bInterfaceSubClass == 0x47 &&
                desc_itf->bInterfaceProtocol == 0xD0 && desc_itf->bNumEndpoints) {
@@ -323,9 +323,9 @@ bool xinputh_open(uint8_t rhport, uint8_t dev_addr, tusb_desc_interface_t const 
 
         _xinputh_dev->inst_count++;
         usbh_edpt_xfer(dev_addr, p_xinput->ep_in, p_xinput->epin_buf, p_xinput->epin_size);
-        return true;
+        return pos;
     } 
-    return false;
+    return 0;
 }
 
 //--------------------------------------------------------------------+
