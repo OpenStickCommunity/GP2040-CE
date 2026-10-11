@@ -6,16 +6,91 @@
 // force a report to be sent every X ms
 #define SWITCH_PRO_KEEPALIVE_TIMER 5
 
+static bool isRailType(SwitchControllerType type) {
+    switch (type) {
+        case SWITCH_TYPE_LEFT_JOYCON:
+        case SWITCH_TYPE_RIGHT_JOYCON:
+        case SWITCH_TYPE_FAMICOM_LEFT_JOYCON:
+        case SWITCH_TYPE_FAMICOM_RIGHT_JOYCON:
+        case SWITCH_TYPE_NES_LEFT_JOYCON:
+        case SWITCH_TYPE_NES_RIGHT_JOYCON:
+            return true;
+        default:
+            return false;
+    }
+}
+
+static void setSwitchColor(SwitchColorDefinition& color, uint32_t rgb) {
+    color.red = (rgb >> 16) & 0xFF;
+    color.green = (rgb >> 8) & 0xFF;
+    color.blue = rgb & 0xFF;
+}
+
 void SwitchProDriver::initialize() {
     playerID = 0;
     last_report_counter = 0;
     handshakeCounter = 0;
     isReady = false;
 
+    memcpy(&deviceDescriptor, switch_pro_device_descriptor, sizeof(deviceDescriptor));
+    switch (controllerType) {
+        case SWITCH_TYPE_SNES:
+            deviceDescriptor.idProduct = SWITCH_PRO_SNES_PRODUCT_ID;
+            productString = controllerRegion == SWITCH_REGION_JAPAN ? switch_pro_super_famicom_string_product : switch_pro_snes_string_product;
+            break;
+        case SWITCH_TYPE_N64:
+            deviceDescriptor.idProduct = SWITCH_PRO_N64_PRODUCT_ID;
+            productString = switch_pro_n64_string_product;
+            break;
+        case SWITCH_TYPE_GENESIS:
+            deviceDescriptor.idProduct = SWITCH_PRO_GENESIS_PRODUCT_ID;
+            productString = controllerRegion == SWITCH_REGION_JAPAN ? switch_pro_mega_drive_string_product : switch_pro_genesis_string_product;
+            break;
+        default:
+            break;
+    }
+
+    if (controllerType != SWITCH_TYPE_PRO_CONTROLLER && !isRailType(controllerType)) factoryConfig->controllerRegion = controllerRegion;
+
+    if (controllerType == SWITCH_TYPE_LEFT_JOYCON || controllerType == SWITCH_TYPE_RIGHT_JOYCON) {
+        const GamepadOptions& options = Storage::getInstance().getGamepadOptions();
+        const bool left = controllerType == SWITCH_TYPE_LEFT_JOYCON;
+        uint32_t colors[2] = { 0x828282, 0x0F0F0F };
+        if (options.switchProJoyConColorPreset == SWITCH_PRO_JOYCON_COLOR_NEON) {
+            colors[0] = left ? 0x0AB9E6 : 0xFF3C28;
+        } else if (options.switchProJoyConColorPreset == SWITCH_PRO_JOYCON_COLOR_WHITE) {
+            colors[0] = 0xE6E6E6;
+        } else if (options.switchProJoyConColorPreset == SWITCH_PRO_JOYCON_COLOR_GP2040) {
+            colors[0] = left ? 0xEC008C : 0x00FF00;
+        } else if (options.switchProJoyConColorPreset == SWITCH_PRO_JOYCON_COLOR_CUSTOM) {
+            colors[0] = left ? options.switchProJoyConLeftBodyColor : options.switchProJoyConRightBodyColor;
+            colors[1] = left ? options.switchProJoyConLeftButtonsColor : options.switchProJoyConRightButtonsColor;
+        }
+        setSwitchColor(factoryConfig->bodyColor, colors[0]);
+        setSwitchColor(factoryConfig->buttonColor, colors[1]);
+    }
+
+    if (controllerType == SWITCH_TYPE_PRO_CONTROLLER) {
+        const GamepadOptions& options = Storage::getInstance().getGamepadOptions();
+        uint32_t colors[4] = { 0x333333, 0xFFFFFF, 0xEC008C, 0x00FF00 };
+        if (options.switchProColorPreset == SWITCH_PRO_COLOR_STOCK) {
+            const uint32_t stock[4] = { 0x323232, 0xFFFFFF, 0x323232, 0x323232 };
+            memcpy(colors, stock, sizeof(colors));
+        } else if (options.switchProColorPreset == SWITCH_PRO_COLOR_CUSTOM) {
+            const uint32_t custom[4] = { options.switchProBodyColor, options.switchProButtonsColor,
+                options.switchProLeftGripColor, options.switchProRightGripColor };
+            memcpy(colors, custom, sizeof(colors));
+        }
+        setSwitchColor(factoryConfig->bodyColor, colors[0]);
+        setSwitchColor(factoryConfig->buttonColor, colors[1]);
+        setSwitchColor(factoryConfig->leftGripColor, colors[2]);
+        setSwitchColor(factoryConfig->rightGripColor, colors[3]);
+    }
+
     deviceInfo = {
         .majorVersion = 0x04,
         .minorVersion = 0x91,
-        .controllerType = SwitchControllerType::SWITCH_TYPE_PRO_CONTROLLER,
+        .controllerType = controllerType,
         .unknown00 = 0x02,
         // MAC address in reverse
         .macAddress = {0x7c, 0xbb, 0x8a, (uint8_t)(get_rand_32() % 0xff), (uint8_t)(get_rand_32() % 0xff), (uint8_t)(get_rand_32() % 0xff)},
@@ -56,8 +131,8 @@ void SwitchProDriver::initialize() {
             .dpadUp = 0,
             .dpadRight = 0,
             .dpadLeft = 0,
-            .buttonLeftSL = 0,
             .buttonLeftSR = 0,
+            .buttonLeftSL = 0,
             .buttonL = 0,
             .buttonZL = 0,
             .leftStick = {0xFF, 0xF7, 0x7F},
@@ -67,6 +142,8 @@ void SwitchProDriver::initialize() {
         .imuData = {0x00},
         .padding = {0x00}
     };
+
+    if (isRailType(controllerType)) switchReport.inputs.connectionInfo = 0x0F;
 
     last_report_timer = to_ms_since_boot(get_absolute_time());
 
@@ -88,18 +165,26 @@ void SwitchProDriver::initialize() {
 		.xfer_cb = hidd_xfer_cb,
 		.sof = NULL
 	};
+
+    if (joyConPair && controllerType == SWITCH_TYPE_LEFT_JOYCON && pairRight == nullptr) {
+        pairRight = new SwitchProDriver(SWITCH_TYPE_RIGHT_JOYCON, controllerRegion, true);
+        pairRight->hidInstance = 1;
+        pairRight->initialize();
+    }
 }
 
 bool SwitchProDriver::process(Gamepad * gamepad) {
     uint32_t now = to_ms_since_boot(get_absolute_time());
     reportSent = false;
+    if (pairRight != nullptr)
+        pairRight->process(gamepad);
 
     switchReport.inputs.dpadUp =    ((gamepad->state.dpad & GAMEPAD_MASK_UP) == GAMEPAD_MASK_UP);
     switchReport.inputs.dpadDown =  ((gamepad->state.dpad & GAMEPAD_MASK_DOWN) == GAMEPAD_MASK_DOWN);
     switchReport.inputs.dpadLeft =  ((gamepad->state.dpad & GAMEPAD_MASK_LEFT) == GAMEPAD_MASK_LEFT);
     switchReport.inputs.dpadRight = ((gamepad->state.dpad & GAMEPAD_MASK_RIGHT) == GAMEPAD_MASK_RIGHT);
 
-    switchReport.inputs.chargingGrip = 1;
+    switchReport.inputs.chargingGrip = controllerType == SWITCH_TYPE_PRO_CONTROLLER || isRailType(controllerType);
 
     switchReport.inputs.buttonY = gamepad->pressedB3();
     switchReport.inputs.buttonX = gamepad->pressedB4();
@@ -124,6 +209,84 @@ bool SwitchProDriver::process(Gamepad * gamepad) {
     if (gamepad->hasAnalogTriggers || gamepad->hasLeftAnalogStick)
         switchReport.inputs.buttonZL |= gamepad->state.lt > 0;
 
+    switch (controllerType) {
+        case SWITCH_TYPE_SNES:
+            switchReport.inputs.buttonZL = gamepad->pressedL2();
+            switchReport.inputs.buttonZR = gamepad->pressedR2();
+            switchReport.inputs.buttonThumbL = 0;
+            switchReport.inputs.buttonThumbR = 0;
+            switchReport.inputs.buttonHome = 0;
+            switchReport.inputs.buttonCapture = 0;
+            break;
+        case SWITCH_TYPE_N64:
+            switchReport.inputs.buttonX = gamepad->pressedB3();       // C left
+            switchReport.inputs.buttonY = gamepad->pressedB4();       // C up
+            switchReport.inputs.buttonZL = gamepad->pressedL2();      // Z
+            switchReport.inputs.buttonThumbL = gamepad->pressedR2();  // ZR
+            switchReport.inputs.buttonZR = gamepad->pressedL3();      // C down
+            switchReport.inputs.buttonMinus = gamepad->pressedR3();   // C right
+            switchReport.inputs.buttonThumbR = 0;
+            break;
+        case SWITCH_TYPE_GENESIS:
+            switchReport.inputs.buttonA = gamepad->pressedB1();
+            switchReport.inputs.buttonB = gamepad->pressedB2();
+            switchReport.inputs.buttonX = gamepad->pressedB3();
+            switchReport.inputs.buttonY = gamepad->pressedB4();
+            switchReport.inputs.buttonL = gamepad->pressedR1();       // Z
+            switchReport.inputs.buttonR = gamepad->pressedR2();       // C
+            switchReport.inputs.buttonZR = gamepad->pressedS1();      // Mode
+            switchReport.inputs.buttonZL = 0;
+            switchReport.inputs.buttonMinus = 0;
+            switchReport.inputs.buttonThumbL = 0;
+            switchReport.inputs.buttonThumbR = 0;
+            break;
+        case SWITCH_TYPE_LEFT_JOYCON:
+            switchReport.inputs.buttonY = 0;
+            switchReport.inputs.buttonX = 0;
+            switchReport.inputs.buttonB = 0;
+            switchReport.inputs.buttonA = 0;
+            switchReport.inputs.buttonR = 0;
+            switchReport.inputs.buttonZR = 0;
+            switchReport.inputs.buttonPlus = 0;
+            switchReport.inputs.buttonThumbR = 0;
+            switchReport.inputs.buttonHome = 0;
+            if (joyConPair)
+                break;
+            switchReport.inputs.dpadLeft = gamepad->pressedB1();
+            switchReport.inputs.dpadDown = gamepad->pressedB2();
+            switchReport.inputs.dpadUp = gamepad->pressedB3();
+            switchReport.inputs.dpadRight = gamepad->pressedB4();
+            switchReport.inputs.buttonL = gamepad->pressedL2();
+            switchReport.inputs.buttonZL = gamepad->pressedR2();
+            switchReport.inputs.buttonLeftSL = gamepad->pressedL1();
+            switchReport.inputs.buttonLeftSR = gamepad->pressedR1();
+            break;
+        case SWITCH_TYPE_RIGHT_JOYCON:
+            switchReport.inputs.dpadUp = 0;
+            switchReport.inputs.dpadDown = 0;
+            switchReport.inputs.dpadLeft = 0;
+            switchReport.inputs.dpadRight = 0;
+            switchReport.inputs.buttonL = 0;
+            switchReport.inputs.buttonZL = 0;
+            switchReport.inputs.buttonMinus = 0;
+            switchReport.inputs.buttonThumbL = 0;
+            switchReport.inputs.buttonCapture = 0;
+            if (joyConPair)
+                break;
+            switchReport.inputs.buttonA = gamepad->pressedB1();
+            switchReport.inputs.buttonX = gamepad->pressedB2();
+            switchReport.inputs.buttonB = gamepad->pressedB3();
+            switchReport.inputs.buttonY = gamepad->pressedB4();
+            switchReport.inputs.buttonThumbR = gamepad->pressedL3() || gamepad->pressedR3();
+            switchReport.inputs.buttonR = gamepad->pressedL2();
+            switchReport.inputs.buttonZR = gamepad->pressedR2();
+            switchReport.inputs.buttonRightSL = gamepad->pressedL1();
+            switchReport.inputs.buttonRightSR = gamepad->pressedR1();
+            break;
+        default:
+            break;
+    }
+
     // analog
     uint16_t scaleLeftStickX = scale16To12(gamepad->state.lx);
     uint16_t scaleLeftStickY = scale16To12(gamepad->state.ly);
@@ -134,6 +297,36 @@ bool SwitchProDriver::process(Gamepad * gamepad) {
     switchReport.inputs.leftStick.setY(-std::min(std::max(scaleLeftStickY,leftMinY), leftMaxY));
     switchReport.inputs.rightStick.setX(std::min(std::max(scaleRightStickX,rightMinX), rightMaxX));
     switchReport.inputs.rightStick.setY(-std::min(std::max(scaleRightStickY,rightMinY), rightMaxY));
+    if (joyConPair) {
+        if (controllerType == SWITCH_TYPE_LEFT_JOYCON) {
+            switchReport.inputs.rightStick.setX(rightCenX);
+            switchReport.inputs.rightStick.setY(rightCenY);
+        } else {
+            switchReport.inputs.leftStick.setX(leftCenX);
+            switchReport.inputs.leftStick.setY(leftCenY);
+        }
+    } else if (controllerType == SWITCH_TYPE_LEFT_JOYCON || controllerType == SWITCH_TYPE_RIGHT_JOYCON) {
+        uint16_t x = gamepad->state.lx;
+        uint16_t y = gamepad->state.ly;
+        if (gamepad->state.dpad & GAMEPAD_MASK_LEFT) x = GAMEPAD_JOYSTICK_MIN;
+        if (gamepad->state.dpad & GAMEPAD_MASK_RIGHT) x = GAMEPAD_JOYSTICK_MAX;
+        if (gamepad->state.dpad & GAMEPAD_MASK_UP) y = GAMEPAD_JOYSTICK_MIN;
+        if (gamepad->state.dpad & GAMEPAD_MASK_DOWN) y = GAMEPAD_JOYSTICK_MAX;
+        const bool left = controllerType == SWITCH_TYPE_LEFT_JOYCON;
+        const uint16_t rotatedX = scale16To12(left ? GAMEPAD_JOYSTICK_MAX - y : y);
+        const uint16_t rotatedY = scale16To12(left ? x : GAMEPAD_JOYSTICK_MAX - x);
+        if (left) {
+            switchReport.inputs.leftStick.setX(std::min(std::max(rotatedX,leftMinX), leftMaxX));
+            switchReport.inputs.leftStick.setY(-std::min(std::max(rotatedY,leftMinY), leftMaxY));
+            switchReport.inputs.rightStick.setX(rightCenX);
+            switchReport.inputs.rightStick.setY(rightCenY);
+        } else {
+            switchReport.inputs.rightStick.setX(std::min(std::max(rotatedX,rightMinX), rightMaxX));
+            switchReport.inputs.rightStick.setY(-std::min(std::max(rotatedY,rightMinY), rightMaxY));
+            switchReport.inputs.leftStick.setX(leftCenX);
+            switchReport.inputs.leftStick.setY(leftCenY);
+        }
+    }
 
     switchReport.rumbleReport = 0x09;
     //switchReport.reportID = inputMode;
@@ -144,7 +337,7 @@ bool SwitchProDriver::process(Gamepad * gamepad) {
 
     if (isReportQueued) {
         if ((now - last_report_timer) > SWITCH_PRO_KEEPALIVE_TIMER) {
-            if (tud_hid_ready() && sendReport(queuedReportID, report, 64) == true ) {
+            if (tud_hid_n_ready(hidInstance) && sendReport(queuedReportID, report, 64) == true ) {
             }
             isReportQueued = false;
             last_report_timer = now;
@@ -164,7 +357,7 @@ bool SwitchProDriver::process(Gamepad * gamepad) {
             uint16_t report_size = sizeof(switchReport);
             if (memcmp(last_report, inputReport, report_size) != 0) {
                 // HID ready + report sent, copy previous report
-                if (tud_hid_ready() && sendReport(0, inputReport, report_size) == true ) {
+                if (tud_hid_n_ready(hidInstance) && sendReport(0, inputReport, report_size) == true ) {
                     memcpy(last_report, inputReport, report_size);
                     reportSent = true;
                 }
@@ -176,7 +369,7 @@ bool SwitchProDriver::process(Gamepad * gamepad) {
         if (!isInitialized) {
             // send identification
             sendIdentify();
-            if (tud_hid_ready() && tud_hid_report(0, report, 64) == true) {
+            if (tud_hid_n_ready(hidInstance) && tud_hid_n_report(hidInstance, 0, report, 64) == true) {
                 isInitialized = true;
                 reportSent = true;
             }
@@ -204,7 +397,7 @@ void SwitchProDriver::sendIdentify() {
     report[0] = SwitchReportID::REPORT_USB_INPUT_81;
     report[1] = SwitchOutputSubtypes::IDENTIFY;
     report[2] = 0x00;
-    report[3] = deviceInfo.controllerType;
+    report[3] = isRailType(controllerType) ? SWITCH_TYPE_PRO_CONTROLLER : deviceInfo.controllerType;
     // MAC address
     for (uint8_t i = 0; i < 6; i++) {
         report[4+i] = deviceInfo.macAddress[5-i];
@@ -216,7 +409,7 @@ void SwitchProDriver::sendSubCommand(uint8_t subCommand) {
 }
 
 bool SwitchProDriver::sendReport(uint8_t reportID, void const* reportData, uint16_t reportLength) {
-    bool result = tud_hid_report(reportID, reportData, reportLength);
+    bool result = tud_hid_n_report(hidInstance, reportID, reportData, reportLength);
     if (last_report_counter < 255) {
         last_report_counter++;
     } else {
@@ -531,11 +724,12 @@ bool SwitchProDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb
 
 const uint16_t * SwitchProDriver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
 	const char *value = (const char *)switch_pro_string_descriptors[index];
+	if (index == 2) value = (const char *)productString;
 	return getStringDescriptor(value, index); // getStringDescriptor returns a static array
 }
 
 const uint8_t * SwitchProDriver::get_descriptor_device_cb() {
-    return switch_pro_device_descriptor;
+    return (const uint8_t *)&deviceDescriptor;
 }
 
 const uint8_t * SwitchProDriver::get_hid_descriptor_report_cb(uint8_t itf) {
@@ -543,7 +737,14 @@ const uint8_t * SwitchProDriver::get_hid_descriptor_report_cb(uint8_t itf) {
 }
 
 const uint8_t * SwitchProDriver::get_descriptor_configuration_cb(uint8_t index) {
-    return switch_pro_configuration_descriptor;
+    return joyConPair ? switch_pro_pair_configuration_descriptor : switch_pro_configuration_descriptor;
+}
+
+void SwitchProDriver::set_report_n(uint8_t itf, uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize) {
+    if (itf == 1 && pairRight != nullptr)
+        pairRight->set_report(report_id, report_type, buffer, bufsize);
+    else
+        set_report(report_id, report_type, buffer, bufsize);
 }
 
 const uint8_t * SwitchProDriver::get_descriptor_device_qualifier_cb() {

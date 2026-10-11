@@ -20,6 +20,7 @@
 #include "drivers/sinput/SInputDriver.h"
 
 #include "usbhostmanager.h"
+#include "storagemanager.h"
 
 void DriverManager::setup(InputMode mode) {
     switch (mode) {
@@ -75,7 +76,44 @@ void DriverManager::setup(InputMode mode) {
             driver = new XInputDriver();
             break;
         case INPUT_MODE_SWITCH_PRO:
-            driver = new SwitchProDriver();
+            switch (Storage::getInstance().getGamepadOptions().switchProControllerType) {
+                case SWITCH_PRO_CONTROLLER_TYPE_SNES:
+                    driver = new SwitchProDriver(SWITCH_TYPE_SNES);
+                    break;
+                case SWITCH_PRO_CONTROLLER_TYPE_SUPER_FAMICOM:
+                    driver = new SwitchProDriver(SWITCH_TYPE_SNES, SWITCH_REGION_JAPAN);
+                    break;
+                case SWITCH_PRO_CONTROLLER_TYPE_N64:
+                    driver = new SwitchProDriver(SWITCH_TYPE_N64);
+                    break;
+                case SWITCH_PRO_CONTROLLER_TYPE_GENESIS:
+                    driver = new SwitchProDriver(SWITCH_TYPE_GENESIS);
+                    break;
+                case SWITCH_PRO_CONTROLLER_TYPE_MEGA_DRIVE:
+                    driver = new SwitchProDriver(SWITCH_TYPE_GENESIS, SWITCH_REGION_JAPAN);
+                    break;
+                case SWITCH_PRO_CONTROLLER_TYPE_NES:
+                    driver = new SwitchProDriver(SWITCH_TYPE_NES_LEFT_JOYCON);
+                    break;
+                case SWITCH_PRO_CONTROLLER_TYPE_FAMICOM_I:
+                    driver = new SwitchProDriver(SWITCH_TYPE_FAMICOM_LEFT_JOYCON);
+                    break;
+                case SWITCH_PRO_CONTROLLER_TYPE_FAMICOM_II:
+                    driver = new SwitchProDriver(SWITCH_TYPE_FAMICOM_RIGHT_JOYCON);
+                    break;
+                case SWITCH_PRO_CONTROLLER_TYPE_JOYCON_LEFT:
+                    driver = new SwitchProDriver(SWITCH_TYPE_LEFT_JOYCON);
+                    break;
+                case SWITCH_PRO_CONTROLLER_TYPE_JOYCON_RIGHT:
+                    driver = new SwitchProDriver(SWITCH_TYPE_RIGHT_JOYCON);
+                    break;
+                case SWITCH_PRO_CONTROLLER_TYPE_JOYCON_PAIR:
+                    driver = new SwitchProDriver(SWITCH_TYPE_LEFT_JOYCON, SWITCH_REGION_USA, true);
+                    break;
+                default:
+                    driver = new SwitchProDriver();
+                    break;
+            }
             break;
         case INPUT_MODE_SINPUT:
             driver = new SInputDriver();

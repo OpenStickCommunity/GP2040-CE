@@ -15,7 +15,7 @@
 #include "GPGFX_UI_layouts.h"
 
 #define INPUT_HISTORY_MAX_INPUTS 22
-#define INPUT_HISTORY_MAX_MODES 12
+#define INPUT_HISTORY_MAX_MODES 18
 
 // Static to ensure memory is never doubled
 static const char * displayNames[INPUT_HISTORY_MAX_MODES][INPUT_HISTORY_MAX_INPUTS] __attribute__((unused)) = {
@@ -102,6 +102,48 @@ static const char * displayNames[INPUT_HISTORY_MAX_MODES][INPUT_HISTORY_MAX_INPU
             "2", "3", "1", "4",
             "5", "6", "7", "8",
             "9", "10", "11", "12", "13", "14"
+    },
+    {		// Switch SNES - 12
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "B", "A", "Y", "X",
+            "L", "R", "ZL", "ZR",
+            "SEL", "STA", "", "", "", ""
+    },
+    {		// Switch N64 - 13
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "B", "A", "CL", "CU",
+            "L", "R", "Z", "ZR",
+            "", "STA", "CD", "CR", CHAR_HOME_S, CHAR_CAP_S
+    },
+    {		// Switch Genesis - 14
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "A", "B", "X", "Y",
+            "", "Z", "", "C",
+            "MODE", "STA", "", "", CHAR_HOME_S, CHAR_CAP_S
+    },
+    {		// Switch Joy-Con (L) - 15
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "B", "A", "Y", "X",
+            "SL", "SR", "L", "ZL",
+            "-", "", "LS", "", "", CHAR_CAP_S
+    },
+    {		// Switch Joy-Con (R) - 16
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "B", "A", "Y", "X",
+            "SL", "SR", "R", "ZR",
+            "", "+", "RS", "RS", CHAR_HOME_S, ""
+    },
+    {		// Switch NES / Famicom - 17
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "B", "A", "", "",
+            "L", "R", "", "",
+            "SEL", "STA", "", "", "", ""
     }
 };
 
@@ -148,7 +190,7 @@ class ButtonLayoutScreen : public GPScreen {
             {INPUT_MODE_ASTRO, 9},
             {INPUT_MODE_XBOXORIGINAL, 10},
             {INPUT_MODE_GENERIC, 11},
-            {INPUT_MODE_SINPUT, 12},
+            {INPUT_MODE_SINPUT, 3},
         };
 
         Gamepad* gamepad = nullptr;
