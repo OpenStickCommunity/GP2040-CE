@@ -274,7 +274,7 @@ void Gamepad::process()
 
 	// 4-way before SOCD, might have better history without losing any coherent functionality
 	if (options.fourWayMode ^ map48WayModeToggle) {
-		state.dpad = filterToFourWayMode(state.dpad);
+		state.dpad = (state.dpad & 0xF0) | filterToFourWayMode(state.dpad);
 	}
 
 	uint8_t currentDpadSnapshot = state.dpad;
