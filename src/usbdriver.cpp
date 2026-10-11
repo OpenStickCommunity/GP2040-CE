@@ -99,4 +99,9 @@ uint8_t const* tud_descriptor_device_qualifier_cb() {
 	return DriverManager::getInstance().getDriver()->get_descriptor_device_qualifier_cb();
 }
 
+// Invoked when received GET OTHER SPEED CONFIGURATION DESCRIPTOR request
+uint8_t const* tud_descriptor_other_speed_configuration_cb(uint8_t index) {
+	return DriverManager::getInstance().getDriver()->get_descriptor_other_speed_configuration_cb(index);
+}
+
 #endif
