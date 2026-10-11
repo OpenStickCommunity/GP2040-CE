@@ -24,46 +24,10 @@ export default {
 	'voltage-table-hide-label': '隐藏电压表',
 	'voltage-table-header-text': '霍尔效应电压表',
 	'voltage-table-idle-text': '初始 (Idle)',
-	'voltage-table-trigger-text': '触发 (Trigger)',
 	'voltage-table-pressed-text': '满按 (Pressed)',
 	'voltage-table-polarity-text': '极性 (Polarity)',
 	'voltage-table-rapid-trigger-text': '快速触发 (RT)',
-	'voltage-table-release-text': 'RT 释放阈值',
 	'voltage-table-noise-text': 'RT 噪声滤波',
 	'voltage-table-disabled-label': '(已禁用)',
-	'overwrite-all-warning': '覆盖所有扳机设置',
-	'overwrite-confirm': '确认覆盖所有扳机设置？',
-	'next-calibration-text': '下一步校准',
-	'finish-calibration-text': '完成校准',
-	'calibrate-idle-button': '校准初始状态',
-	'calibrate-pressed-button': '校准满按状态',
 	'save-button': '保存扳机数值',
-	'manual-text': '手动调节',
-	'restart-text': '重新开始',
-	'pressed-text': '已触发！',
-	'idle-input-text': '初始电压',
-	'activation-input-text': '激活电压',
-	'rapid-trigger-threshold-input-text': '快速触发阈值',
-	'rapid-trigger-noise-input-text': '快速触发噪声滤波',
-	'pressed-input-text': '满按电压',
-	'activation-reading-text': '当前激活点读数：',
-	'calibrate-all-button': '校准全部 🧲',
-	'calibration-header-text': '霍尔效应校准',
-	'calibration-idle-text': '初始电压读数：',
-	'calibration-pressed-text': '满按电压读数：',
-	'calibration-flip-polarity': '反转极性',
-	'calibration-flip-rapid-trigger': '启用快速触发 (RT)',
-	'calibration-back-button': '返回',
-	'calibration-first-step':
-		'我们需要校准霍尔按键的初始电压和满按电压。' +
-		'校准完成后，我们可以将触发激活点调整到所需的深度。' +
-		'首先，让我们校准初始电压。请确保不要触碰霍尔按键，然后点击“校准初始状态”按钮。',
-	'calibration-second-step':
-		'接下来，请将按键完全按下至最大深度。激活位置可以在校准完成后进行调整。',
-	'calibration-third-step':
-		'最后，让我们调整当前的激活点并设置所需的触发位置。' +
-		'调整完成后，按下按键并验证它是否在预期的位置激活。',
-	'calibration-manual-step':
-		'请根据需要调整霍尔按键的以下参数。' +
-		'找到理想数值后，您可以复制这些数值并将其应用到设备上的所有扳机。',
 };

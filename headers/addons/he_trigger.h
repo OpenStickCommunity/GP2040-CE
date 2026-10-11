@@ -3,6 +3,8 @@
 
 #include "gpaddon.h"
 
+#include "pico/time.h"
+
 #define HETRIGGER_COUNT 32
 
 #ifndef HETRIGGER_ENABLED
@@ -116,6 +118,28 @@
 
 #ifndef HETRIGGER_DEFAULT_RAPID
 #define HETRIGGER_DEFAULT_RAPID 0
+#endif
+
+// Rapid trigger v2 defaults, in percent of travel. These match the "Standard"
+// calibration preset (see HE_PRESETS below).
+#ifndef HETRIGGER_DEFAULT_ACTUATION
+#define HETRIGGER_DEFAULT_ACTUATION 35
+#endif
+
+#ifndef HETRIGGER_DEFAULT_RT_PRESS
+#define HETRIGGER_DEFAULT_RT_PRESS 10
+#endif
+
+#ifndef HETRIGGER_DEFAULT_RT_RELEASE
+#define HETRIGGER_DEFAULT_RT_RELEASE 10
+#endif
+
+#ifndef HETRIGGER_DEFAULT_RT_CONTINUOUS
+#define HETRIGGER_DEFAULT_RT_CONTINUOUS 0
+#endif
+
+#ifndef HETRIGGER_DEFAULT_DEADZONE
+#define HETRIGGER_DEFAULT_DEADZONE 3
 #endif
 
 // 32 possible HE triggers
@@ -888,38 +912,254 @@
 #define HETRIGGER_HE31_RAPID HETRIGGER_DEFAULT_RAPID
 #endif
 
+// Per-channel board-config defaults, gathered into one table so that config
+// hydration can loop instead of unrolling 32 blocks by hand. Board configs
+// (e.g. configs/GranolaBeacon/BoardConfig.h) override the macros above; this
+// table just collects whatever they resolved to.
+#define HETRIGGER_DEFAULT_ENTRY(n) \
+    { HETRIGGER_HE##n##_ACTION, HETRIGGER_HE##n##_ACTIVE, HETRIGGER_HE##n##_IDLE, \
+      HETRIGGER_HE##n##_PRESSED, HETRIGGER_HE##n##_POLARITY, HETRIGGER_HE##n##_RELEASE, \
+      HETRIGGER_HE##n##_NOISE, HETRIGGER_HE##n##_RAPID }
+
+struct HETriggerDefaults {
+    int32_t action;
+    int32_t active;
+    int32_t idle;
+    int32_t pressed;
+    int32_t polarity;
+    int32_t release;
+    int32_t noise;
+    int32_t rapid;
+};
+
+static const HETriggerDefaults HE_TRIGGER_DEFAULTS[HETRIGGER_COUNT] = {
+    HETRIGGER_DEFAULT_ENTRY(0),  HETRIGGER_DEFAULT_ENTRY(1),  HETRIGGER_DEFAULT_ENTRY(2),
+    HETRIGGER_DEFAULT_ENTRY(3),  HETRIGGER_DEFAULT_ENTRY(4),  HETRIGGER_DEFAULT_ENTRY(5),
+    HETRIGGER_DEFAULT_ENTRY(6),  HETRIGGER_DEFAULT_ENTRY(7),  HETRIGGER_DEFAULT_ENTRY(8),
+    HETRIGGER_DEFAULT_ENTRY(9),  HETRIGGER_DEFAULT_ENTRY(10), HETRIGGER_DEFAULT_ENTRY(11),
+    HETRIGGER_DEFAULT_ENTRY(12), HETRIGGER_DEFAULT_ENTRY(13), HETRIGGER_DEFAULT_ENTRY(14),
+    HETRIGGER_DEFAULT_ENTRY(15), HETRIGGER_DEFAULT_ENTRY(16), HETRIGGER_DEFAULT_ENTRY(17),
+    HETRIGGER_DEFAULT_ENTRY(18), HETRIGGER_DEFAULT_ENTRY(19), HETRIGGER_DEFAULT_ENTRY(20),
+    HETRIGGER_DEFAULT_ENTRY(21), HETRIGGER_DEFAULT_ENTRY(22), HETRIGGER_DEFAULT_ENTRY(23),
+    HETRIGGER_DEFAULT_ENTRY(24), HETRIGGER_DEFAULT_ENTRY(25), HETRIGGER_DEFAULT_ENTRY(26),
+    HETRIGGER_DEFAULT_ENTRY(27), HETRIGGER_DEFAULT_ENTRY(28), HETRIGGER_DEFAULT_ENTRY(29),
+    HETRIGGER_DEFAULT_ENTRY(30), HETRIGGER_DEFAULT_ENTRY(31),
+};
+
+// HE-local pseudo-actions. These live in the same int32 `action` field as
+// GpioAction values but sit far above GpioAction's range (max 130), so they can
+// never collide. They are inert to the gamepad -- applyAction() ignores them --
+// and are handled explicitly before the action switch. Deliberately NOT
+// GpioAction values: a positive GpioAction would show up in the GPIO pin
+// mapping UI and flow into GPIO init paths, and HE channels are not GPIOs.
+// Analog directions can be bound in two ways. The plain GpioAction snaps the
+// axis to full tilt on actuation; the same action plus this offset drives the
+// axis proportionally to how far the switch is pressed. Encoding it in the
+// action keeps it a per-binding choice, so it works per profile like anything
+// else, rather than needing a separate per-switch flag.
+#define HE_ANALOG_PROPORTIONAL_OFFSET 2000
+
+#define HE_ACTION_PROFILE_CYCLE 1000
+#define HE_ACTION_PROFILE_1     1001
+#define HE_ACTION_PROFILE_2     1002
+#define HE_ACTION_PROFILE_3     1003
+#define HE_ACTION_PROFILE_4     1004
+
+// Total HE binding profiles: base (triggers[].action) + profileSets[0..2].
+#define HE_PROFILE_COUNT 4
+
+// How long to wait after the last profile change before persisting it. Storage
+// saves are not debounced and rewrite the whole config block, so this keeps a
+// burst of cycling from turning into a burst of flash erases.
+#ifndef HETRIGGER_PROFILE_SAVE_DELAY_MS
+#define HETRIGGER_PROFILE_SAVE_DELAY_MS 10000
+#endif
+
+// Calibration tuning. The idle window needs enough samples for a stable mean and
+// standard deviation; at roughly 1kHz per channel two seconds is ~2000 samples.
+#define HETRIGGER_CAL_IDLE_MS 2000
+// A channel counts as "pressed" once it deviates well clear of its own noise. The
+// absolute floor keeps an unusually quiet channel from latching on a light brush.
+#define HETRIGGER_CAL_MOVED_SIGMA 10
+#define HETRIGGER_CAL_MOVED_FLOOR 300
+// Idle noise beyond this suggests a wiring problem rather than a real signal.
+#define HETRIGGER_CAL_UNSTABLE_STDDEV 100
+// Calibration suppresses gamepad output, so a user who wanders off mid-session
+// would otherwise be left with a dead controller.
+#define HETRIGGER_CAL_TIMEOUT_MS 300000
+
+// Tuning that a profile may override per channel.
+enum class HETuningField : uint8_t {
+    RAPID_TRIGGER = 0,
+    ACTUATION_POINT = 1,
+    RT_PRESS = 2,
+    RT_RELEASE = 3,
+};
+
+enum class HECalMode : uint8_t {
+    OFF = 0,
+    IDLE_BASELINE = 1,
+    PRESS_CAPTURE = 2,
+    DONE = 3,
+    // Live monitoring for the test view: samples and runs the normal actuation
+    // logic so the UI can show real travel and trigger state, but produces no
+    // gamepad input. Shares the sweep with calibration since the config-mode loop
+    // has to tick it either way.
+    MONITOR = 4,
+};
+
+// Per-channel accumulators for the calibration sweep.
+struct HECalChannel {
+    uint32_t sampleCount;
+    uint64_t sum;           // for the idle mean
+    uint64_t sumSquares;    // for the idle standard deviation
+    uint16_t idleMean;
+    uint16_t idleStdDev;
+    uint16_t lastRaw;
+    int32_t  maxDeviation;  // signed: the sign is what reveals switch polarity
+    bool     moved;
+    bool     unstable;
+};
+
 // HETrigger Module Name
 #define HETriggerAddonName "Hall Effect Trigger"
 
 class HETriggerAddon : public GPAddon {
 public:
+    // The web config handlers need to drive calibration, but AddonManager is a
+    // private member of GP2040 and is not reachable from webconfig.cpp. Rather
+    // than duplicate the mux addressing logic there (which is what the previous
+    // calibration path did, and it drifted out of sync), the addon publishes
+    // itself here on construction.
+    static HETriggerAddon* getInstance() { return instance; }
+
+    HETriggerAddon() { instance = this; }
+    // AddonManager::LoadAddon deletes the addon when available() is false, so the
+    // pointer must be cleared here or the web handlers would dereference freed
+    // memory whenever the addon is disabled.
+    ~HETriggerAddon() { if (instance == this) instance = nullptr; }
+
     virtual bool available();
     virtual void setup();
     virtual void process() {}
     virtual void preprocess();
     virtual void postprocess(bool sent) {}
-    virtual void reinit() {}
+    virtual void reinit();
     virtual std::string name() { return HETriggerAddonName; }
+
+    uint8_t getActiveProfile() { return activeProfile; }
+    void setHEProfile(uint8_t profile);
+    void cycleHEProfile();
+
+    // --- calibration, driven by the web config wizard ---
+    // The sweep runs here rather than in webconfig.cpp so it samples at full loop
+    // speed. A 32-channel sweep over HTTP would take most of a second per pass,
+    // which is longer than a button press, so presses would simply be missed.
+    void startCalibration();
+    // Samples every assigned channel once. Called from preprocess() in gamepad
+    // mode, and directly from the config-mode loop, which skips add-ons.
+    void runCalibrationSweep();
+    void advanceCalibration();          // idle baseline -> press capture
+    void finishCalibration();           // press capture -> done
+    void abortCalibration();
+    // Derives idle/pressed/polarity/noise from the sweep and writes them to config.
+    // Actuation and sensitivities come from the caller's chosen preset.
+    void applyCalibration(uint8_t actuationPercent, uint8_t pressPercent,
+                          uint8_t releasePercent, bool continuousRT);
+    bool isCalibrating() { return calMode != HECalMode::OFF; }
+    void startMonitor();
+    void stopMonitor();
+    bool isMonitoring() { return calMode == HECalMode::MONITOR; }
+    // Live per-channel state for the test view.
+    int16_t getChannelTravel(uint8_t he) { return lastTravel[he]; }
+    bool isChannelActive(uint8_t he) { return triggerActive[he]; }
+    HECalMode getCalibrationMode() { return calMode; }
+    uint32_t getCalibrationElapsedMs();
+    const HECalChannel& getCalibrationChannel(uint8_t he) { return calData[he]; }
+    bool isChannelAssigned(uint8_t he);
 private:
     void selectChannel(uint8_t mux, uint8_t channel);
     uint16_t emaSmoothing(uint16_t value, uint16_t previous);
-    int muxTotal;
-    int selectPins;
-    Pin_t muxPinArray[4];
-    Pin_t selectPinArray[4][4]; // Select pins indexed by [mux][selectBit]
-    Pin_t lastADCSelected;
 
-    uint16_t emaSmoothingReads[32];
-    bool triggerActive[32];
-    uint16_t lastIncrement[32];
-    float emaSmoothingFactor;
+    // Rebuilds the cached travel geometry from config. Must be called whenever
+    // calibration values change (setup, reinit).
+    void rebuildGeometry();
+    // Maps a raw ADC reading to monotonic travel: 0 = released, 1000 = pressed.
+    // This is where polarity is handled, exactly once.
+    int16_t toTravel(uint8_t he, uint16_t raw);
+    // Runs the actuation/rapid-trigger state machine for one channel.
+    void updateTrigger(uint8_t he, int16_t travel);
+    // Resolves the binding for a channel under the active profile.
+    int32_t actionFor(uint8_t he);
+    // Resolves one tuning value through the active profile, falling back to the
+    // base switch when the profile does not override it.
+    uint32_t tuningFor(uint8_t he, HETuningField field);
+    void applyAction(Gamepad* gamepad, uint8_t he, int32_t action);
+    uint16_t analogDeflection(uint8_t he, bool positive);
+    // Commits a pending profile change once cycling has settled.
+    void updateProfilePersistence();
+    // Accumulates one sample into the calibration state for a channel.
+    void accumulateCalibration(uint8_t he, uint16_t raw);
 
-    // Used during processing
-    uint32_t mux;
-    uint32_t channel;
-    uint16_t value;
-    uint16_t activationThreshold;
-    uint16_t releaseThreshold;
+    static const int16_t TRAVEL_MAX = 1000;
+
+    int muxTotal = 0;
+    int selectPins = 0;
+    Pin_t muxPinArray[4] = { -1, -1, -1, -1 };
+    // Select pins indexed by [mux][selectBit]. Upstream made these per-mux so a
+    // board whose muxes do not share a select bus can still address every channel.
+    Pin_t selectPinArray[4][4] = {
+        { -1, -1, -1, -1 }, { -1, -1, -1, -1 },
+        { -1, -1, -1, -1 }, { -1, -1, -1, -1 },
+    };
+    Pin_t lastADCSelected = -1;
+
+    // Per-trigger runtime state. These are initialized unconditionally: the
+    // previous code only initialized them when EMA smoothing was enabled, which
+    // left rapid trigger running on uninitialized memory when it was not.
+    uint16_t emaSmoothingReads[HETRIGGER_COUNT] = {};
+    bool     triggerActive[HETRIGGER_COUNT] = {};
+    int16_t  travelPeak[HETRIGGER_COUNT] = {};    // deepest press since direction change
+    int16_t  travelTrough[HETRIGGER_COUNT] = {};  // shallowest release since direction change
+    bool     rtArmed[HETRIGGER_COUNT] = {};       // has crossed the actuation point at least once
+    bool     menuActionHeld[HETRIGGER_COUNT] = {};    // edge detection for menu events
+    bool     profileActionHeld[HETRIGGER_COUNT] = {}; // edge detection for profile switching
+
+    // Cached travel geometry, rebuilt by rebuildGeometry(). Precomputing the
+    // reciprocal keeps a 32-bit divide out of the per-channel hot path.
+    int16_t  travelIdle[HETRIGGER_COUNT] = {};
+    int32_t  travelSpanRecip[HETRIGGER_COUNT] = {};
+    int16_t  actuationTravel[HETRIGGER_COUNT] = {};
+    int16_t  pressSensTravel[HETRIGGER_COUNT] = {};
+    int16_t  releaseSensTravel[HETRIGGER_COUNT] = {};
+    int16_t  deadzoneTravel[HETRIGGER_COUNT] = {};
+    int16_t  noiseTravel[HETRIGGER_COUNT] = {};
+    // Resolved rapid trigger state per channel; cached because it can come from
+    // the active profile rather than the switch record.
+    bool     rapidTriggerOn[HETRIGGER_COUNT] = {};
+
+    float emaSmoothingFactor = 0.0f;
+
+    uint8_t activeProfile = 0;
+    bool profileSavePending = false;
+    absolute_time_t profileSaveDeadline = {};
+
+    HECalMode calMode = HECalMode::OFF;
+    // Most recent travel per channel, in 0..TRAVEL_MAX. Written on every sample
+    // in both the gamepad and monitor paths: the test view reports it, and
+    // proportional analog output scales the axis by it.
+    int16_t lastTravel[HETRIGGER_COUNT] = {};
+    // Travel from the unsmoothed reading. The EMA exists to keep the trigger
+    // state stable, but it is a lag filter: at the default smoothing factor it
+    // needs ~70 samples to settle, so an axis driven from the smoothed value
+    // trails the finger and a brisk press never reaches the rail. Proportional
+    // analog output uses this instead.
+    int16_t lastRawTravel[HETRIGGER_COUNT] = {};
+    HECalChannel calData[HETRIGGER_COUNT] = {};
+    absolute_time_t calPhaseStart = {};
+    absolute_time_t calTimeout = {};
+
+    static HETriggerAddon* instance;
 };
 
 #endif  // _HE_Trigger_H

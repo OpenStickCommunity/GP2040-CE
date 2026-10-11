@@ -3,5 +3,296 @@
 }
 
 .progress-bar {
-	transition: width 0.1s ease !important;
+    transition: width 0.1s ease !important;
+}
+
+// Calibration wizard: one tile per assigned channel, so the user can watch the
+// whole board light up while pressing buttons in any order.
+.he-channel-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
+	gap: 0.5rem;
+	max-height: 22rem;
+	overflow-y: auto;
+}
+
+.he-channel-tile {
+	border: 1px solid rgba(128, 128, 128, 0.4);
+	border-radius: 0.375rem;
+	padding: 0.5rem;
+	transition: border-color 0.15s ease, background-color 0.15s ease;
+
+	&.captured {
+		border-color: var(--bs-success, #198754);
+		background-color: rgba(25, 135, 84, 0.12);
+	}
+}
+
+.he-channel-name {
+	font-weight: 600;
+	font-size: 0.9rem;
+}
+
+.he-channel-meta {
+	font-size: 0.75rem;
+	opacity: 0.7;
+	font-variant-numeric: tabular-nums;
+}
+
+.he-channel-value {
+	font-variant-numeric: tabular-nums;
+	font-size: 1.1rem;
+}
+
+.he-channel-bar {
+	height: 0.4rem;
+	margin: 0.35rem 0;
+}
+
+.he-progress-line {
+	font-variant-numeric: tabular-nums;
+	font-weight: 600;
+}
+
+.he-preset-card {
+	border: 1px solid rgba(128, 128, 128, 0.4);
+	border-radius: 0.375rem;
+	padding: 0.75rem;
+	height: 100%;
+	cursor: pointer;
+	transition: border-color 0.15s ease, background-color 0.15s ease;
+
+	&:hover {
+		border-color: rgba(128, 128, 128, 0.8);
+	}
+
+	&.selected {
+		border-color: var(--bs-primary, #0d6efd);
+		background-color: rgba(13, 110, 253, 0.12);
+	}
+}
+
+.he-preset-name {
+	font-weight: 600;
+}
+
+.he-preset-detail {
+	font-size: 0.85rem;
+	font-variant-numeric: tabular-nums;
+	opacity: 0.85;
+}
+
+.he-preset-desc {
+	font-size: 0.8rem;
+	opacity: 0.7;
+}
+
+// Unified binding grid: one row per channel, carrying the action, and on the
+// base profile also the per-switch rapid trigger toggle and calibrate button.
+.he-binding-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
+	gap: 0.75rem 1.5rem;
+}
+
+.he-binding-row {
+	display: flex;
+	flex-direction: column;
+	gap: 0.35rem;
+	min-width: 0;
+	padding-bottom: 0.5rem;
+	border-bottom: 1px solid rgba(128, 128, 128, 0.15);
+}
+
+// Binding line: channel label plus the action select.
+.he-binding-main {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	min-width: 0;
+}
+
+// Per-switch controls, indented under the binding they belong to.
+.he-binding-controls {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	flex-wrap: wrap;
+	padding-left: 11.5rem;
+	min-width: 0;
+}
+
+.he-binding-label {
+	flex: 0 0 11rem;
+	font-size: 0.9rem;
+}
+
+.he-binding-select {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.he-binding-rt {
+	flex: 0 0 auto;
+	white-space: nowrap;
+	font-size: 0.85rem;
+}
+.he-binding-mux-label {
+	font-weight: 600;
+	opacity: 0.85;
+	margin-bottom: 0.35rem;
+}
+
+// Live test view: a vertical depth bar per switch, green while the button is
+// actually sending its action and amber while it is pressed but not actuated.
+.he-monitor-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(5rem, 1fr));
+	gap: 0.75rem;
+}
+
+.he-monitor-tile {
+	border: 1px solid rgba(128, 128, 128, 0.4);
+	border-radius: 0.375rem;
+	padding: 0.5rem;
+	text-align: center;
+	transition: border-color 0.08s linear, background-color 0.08s linear;
+
+	&.active {
+		border-color: #2fbf6b;
+		background-color: rgba(47, 191, 107, 0.12);
+	}
+}
+
+.he-monitor-head {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.25rem;
+	font-weight: 600;
+	font-size: 0.85rem;
+}
+
+.he-monitor-rt {
+	font-size: 0.8rem;
+	line-height: 1;
+}
+
+.he-monitor-bar {
+	position: relative;
+	height: 6rem;
+	margin: 0.4rem auto;
+	width: 1.75rem;
+	border-radius: 0.25rem;
+	background-color: rgba(128, 128, 128, 0.22);
+	overflow: hidden;
+}
+
+.he-monitor-fill {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	// Amber while travelling, green once the action is actually firing.
+	background-color: #d8a219;
+	transition: height 0.08s linear, background-color 0.08s linear;
+
+	&.active {
+		background-color: #2fbf6b;
+	}
+}
+
+// Actuation point marker, so it is obvious where the switch should fire.
+.he-monitor-actuation {
+	position: absolute;
+	left: 0;
+	right: 0;
+	height: 2px;
+	background-color: rgba(255, 255, 255, 0.75);
+}
+
+.he-monitor-meta {
+	font-size: 0.7rem;
+	opacity: 0.7;
+	font-variant-numeric: tabular-nums;
+}
+
+.he-monitor-depth {
+	font-size: 0.8rem;
+	opacity: 0.9;
+}
+
+.he-monitor-legend {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	font-size: 0.8rem;
+	opacity: 0.85;
+	flex-wrap: wrap;
+}
+
+.he-legend-swatch {
+	display: inline-block;
+	width: 0.8rem;
+	height: 0.8rem;
+	border-radius: 0.15rem;
+	margin-left: 0.6rem;
+}
+
+.he-legend-active { background-color: #2fbf6b; }
+.he-legend-idle { background-color: #d8a219; }
+.he-legend-rt { margin-left: 0.6rem; }
+
+.he-binding-sens {
+	flex: 0 0 auto;
+	width: 7.5rem;
+}
+
+// Profile copy / code transfer controls.
+.he-profile-transfer {
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+	max-width: 34rem;
+}
+
+.he-transfer-row {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+}
+
+.he-transfer-message {
+	font-size: 0.85rem;
+	opacity: 0.85;
+}
+
+// Action name on a monitor tile.
+.he-monitor-name {
+	font-weight: 600;
+}
+
+// Manual calibration entry inside the voltage table. Sized to the values it
+// holds so the table stays readable at 16 or 32 rows.
+.he-voltage-input {
+	width: 5rem;
+	padding: 0.1rem 0.25rem;
+	font-size: 0.85rem;
+	font-variant-numeric: tabular-nums;
+	background-color: transparent;
+	color: inherit;
+	border: 1px solid rgba(128, 128, 128, 0.4);
+	border-radius: 0.2rem;
+
+	&:focus {
+		outline: none;
+		border-color: var(--bs-primary, #0d6efd);
+	}
+}
+
+// Explains that the voltage table is editable; the values look read-only.
+.he-voltage-help {
+	font-size: 0.85rem;
+	opacity: 0.8;
+	max-width: 60rem;
 }

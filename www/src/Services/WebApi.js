@@ -641,11 +641,6 @@ async function setExpansionPins(mappings) {
 	return Http.post(`${baseUrl}/api/setExpansionPins`, mappings);
 }
 
-// POST function to get the ADC reading for one Hall Effect channel
-async function getHETriggerVoltage(settings) {
-	return Http.post(`${baseUrl}/api/getHETriggerVoltage`, settings);
-}
-
 // POST function to set our channels, select, and ADC pin
 async function setHETriggerOptions(settings) {
 	return Http.post(`${baseUrl}/api/setHETriggerOptions`, settings);
@@ -662,9 +657,61 @@ async function getHETriggerCalibrations() {
 
 // POST to set all Hall Effect Trigger Calibrations
 async function setHETriggerCalibrations(triggers) {
-	console.dir(triggers);
-
 	return Http.post(`${baseUrl}/api/setHETriggerCalibrations`, triggers);
+}
+
+// --- guided calibration ---
+// The firmware runs the sweep; these only drive it and read progress.
+async function startHECalibration() {
+	const response = await Http.post(`${baseUrl}/api/startHECalibration`, {});
+	return response.data;
+}
+
+async function advanceHECalibration(phase) {
+	const response = await Http.post(`${baseUrl}/api/advanceHECalibration`, {
+		phase,
+	});
+	return response.data;
+}
+
+async function getHECalibrationStatus() {
+	const response = await Http.post(`${baseUrl}/api/getHECalibrationStatus`, {});
+	return response.data;
+}
+
+async function applyHECalibration(preset) {
+	const response = await Http.post(`${baseUrl}/api/applyHECalibration`, preset);
+	return response.data;
+}
+
+// --- hall effect binding profiles (bindings only; tuning is shared) ---
+async function getHETriggerProfiles() {
+	try {
+		const response = await Http.get(`${baseUrl}/api/getHETriggerProfiles`);
+		return response.data;
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+// --- live test view ---
+async function startHEMonitor() {
+	const response = await Http.post(`${baseUrl}/api/startHEMonitor`, {});
+	return response.data;
+}
+
+async function stopHEMonitor() {
+	const response = await Http.post(`${baseUrl}/api/stopHEMonitor`, {});
+	return response.data;
+}
+
+async function getHEMonitorStatus() {
+	const response = await Http.post(`${baseUrl}/api/getHEMonitorStatus`, {});
+	return response.data;
+}
+
+async function setHETriggerProfiles(profiles) {
+	return Http.post(`${baseUrl}/api/setHETriggerProfiles`, profiles);
 }
 
 async function getHeldPins(abortSignal) {
@@ -763,10 +810,18 @@ export default {
 	getLightsPresets,
 	getExpansionPins,
 	setExpansionPins,
-	getHETriggerVoltage,
 	setHETriggerCalibrations,
 	getHETriggerCalibrations,
 	setHETriggerOptions,
+	startHECalibration,
+	advanceHECalibration,
+	getHECalibrationStatus,
+	applyHECalibration,
+	getHETriggerProfiles,
+	setHETriggerProfiles,
+	startHEMonitor,
+	stopHEMonitor,
+	getHEMonitorStatus,
 	getReactiveLEDs,
 	setReactiveLEDs,
 	getButtonLayouts,
