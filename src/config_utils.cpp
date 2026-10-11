@@ -602,24 +602,6 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     }
     INIT_UNSET_PROPERTY(config.animationOptions, baseProfileIndex, 0);
     INIT_UNSET_PROPERTY(config.animationOptions, autoDisableTime, LEDS_AUTO_DISABLE_TIME);
-    
-/*
-    // Set all last 4 to PLED_COLOR
-    memset(&localBuffer[MAX_NON_BUTTON_LIGHT_COLOR_INDEXES - 4], PLED_COLOR, 4);
-
-    // Copy to case
-    memset(localBuffer, LEDS_PROFILE0_STATIC_COLOR_CASE, MAX_NON_BUTTON_LIGHT_COLOR_INDEXES - 4);
-    INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[0], nonButtonStaticColors, localBuffer);
-
-    memset(localBuffer, LEDS_PROFILE1_STATIC_COLOR_CASE, MAX_NON_BUTTON_LIGHT_COLOR_INDEXES - 4);
-    INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[1], nonButtonStaticColors, localBuffer);
-
-    memset(localBuffer, LEDS_PROFILE2_STATIC_COLOR_CASE, MAX_NON_BUTTON_LIGHT_COLOR_INDEXES - 4);
-    INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[2], nonButtonStaticColors, localBuffer);
-
-    memset(localBuffer, LEDS_PROFILE3_STATIC_COLOR_CASE, MAX_NON_BUTTON_LIGHT_COLOR_INDEXES - 4);
-    INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[3], nonButtonStaticColors, localBuffer);
-*/
 
     // Fresh Install, profiles are not set
     if ( config.animationOptions.profiles_count == 0 ) {
