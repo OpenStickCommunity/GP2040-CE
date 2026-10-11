@@ -131,6 +131,7 @@ export const basePeripheralMapping = {
 		usb0: {
 			enabled: 0,
 			dp: -1,
+			dm: -1,
 			enable5v: -1,
 			order: 0,
 		},
@@ -574,7 +575,7 @@ async function setPeripheralOptions(mappings) {
 		sanitizeRequest(mappings),
 	)
 		.then((response) => {
-			return true;
+			return !response.data.error;
 		})
 		.catch((err) => {
 			console.error(err);

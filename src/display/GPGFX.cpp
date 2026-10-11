@@ -69,7 +69,6 @@ bool GPGFX::detectDisplay(GPGFX_DisplayTypeOptions* display, GPGFX_DisplayType d
                 display->displayType = displayType;
                 display->address = result.address;
                 display->i2c = PeripheralManager::getInstance().getI2C(result.block);
-                display->i2c->setExclusiveUse(result.address);
                 return true;
             }
         }

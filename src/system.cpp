@@ -7,6 +7,8 @@
 #include <hardware/watchdog.h>
 #include <pico/multicore.h>
 
+#include "device/usbd.h"
+
 #include <malloc.h>
 
 extern char __flash_binary_start;
@@ -62,9 +64,15 @@ void System::reboot(BootMode bootMode) {
     // Halt all running USB instances
     USBHostManager::getInstance().shutdown();
 
+    // Disconnect the USB from the console
+    tud_disconnect();
+
     // Make sure that the other core is halted
     // We do not want it to be talking to devices (e.g. OLED display) while we reboot
 	multicore_lockout_start_timeout_us(0xfffffffffffffff);
+
+    // wait 50ms to prevent web config crashing
+    sleep_ms(50);
 
 	watchdog_hw->scratch[5] = static_cast<uint32_t>(bootMode);
 
