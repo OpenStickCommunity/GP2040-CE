@@ -17,7 +17,8 @@ bool Xbox360Host::match(uint8_t dev_addr, uint8_t instance, uint16_t vendor_id, 
         // 8BitDo
         if ( vendor_id == 0x2DC8 ) {
             switch(product_id) {
-                case 0x310B: // 8BitDo Ultimate Wireless / 2.4G Receiver (XInput mode)
+                case 0x3106: // 8BitDo Ultimate Wireless / 2.4G Receiver (XInput mode)
+                case 0x310B: // 8BitDo Ultimate 2 Wireless / 2.4G Receiver (XInput mode)
                     return true;
             }
         }
