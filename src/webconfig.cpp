@@ -1331,6 +1331,7 @@ std::string setAnimationProtoOptions()
     options.brightness = std::clamp<uint32_t>(options.brightness, 0, AnimStation.getBrightnessSteps());
     options.autoDisableTime = AnimOptions["idletimeout"].as<uint32_t>() * 1000;
     options.baseProfileIndex = AnimOptions["baseProfileIndex"].as<uint32_t>();
+    AnimStation.SetSavedMode(options.baseProfileIndex);
     JsonArray customColorsList = AnimOptions["customColors"];
     options.customColors_count = std::min(customColorsList.size(), (size_t)MAX_CUSTOM_COLORS);
     for(unsigned int customColorsIndex = 0; customColorsIndex < options.customColors_count; ++customColorsIndex) {
@@ -1364,7 +1365,7 @@ std::string getAnimationProtoOptions()
 
     JsonObject AnimOptions = doc.createNestedObject("AnimationOptions");
     AnimOptions["brightness"] = checkedBrightness;
-    AnimOptions["baseProfileIndex"] = options.baseProfileIndex;
+    AnimOptions["baseProfileIndex"] = AnimStation.GetSavedMode();
     AnimOptions["idletimeout"] = (options.autoDisableTime / 1000);
     JsonArray customColorsList = AnimOptions.createNestedArray("customColors");
     for (int customColorsIndex = 0; customColorsIndex < options.customColors_count; ++customColorsIndex)
@@ -3248,6 +3249,7 @@ std::string setLedOptions() {
     animationOptionsProto.brightness = std::clamp<uint32_t>(animationOptionsProto.brightness, 0, AnimStation.getBrightnessSteps());
     animationOptionsProto.autoDisableTime = AnimOptions["idletimeout"].as<uint32_t>() * 1000;
     animationOptionsProto.baseProfileIndex = AnimOptions["baseProfileIndex"].as<uint32_t>();
+    AnimStation.SetSavedMode(animationOptionsProto.baseProfileIndex);
     JsonArray customColorsList = AnimOptions["customColors"];
     animationOptionsProto.customColors_count = std::min(customColorsList.size(), (size_t)MAX_CUSTOM_COLORS);
     for(unsigned int customColorsIndex = 0; customColorsIndex < animationOptionsProto.customColors_count; ++customColorsIndex) {
@@ -3314,7 +3316,7 @@ std::string getLedOptions() {
     JsonObject AnimOptions = LedOptions.createNestedObject("AnimationOptions");
     uint32_t checkedBrightness = std::clamp<uint32_t>(animationOptions.brightness, 0, AnimStation.getBrightnessSteps());
     AnimOptions["brightness"] = checkedBrightness;
-    AnimOptions["baseProfileIndex"] = animationOptions.baseProfileIndex;
+    AnimOptions["baseProfileIndex"] = AnimStation.GetSavedMode();
     AnimOptions["idletimeout"] = (animationOptions.autoDisableTime / 1000);
     JsonArray customColorsList = AnimOptions.createNestedArray("customColors");
     for (int customColorsIndex = 0; customColorsIndex < animationOptions.customColors_count; ++customColorsIndex)
