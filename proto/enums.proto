@@ -697,6 +697,15 @@ enum PS4ControllerIDMode
     PS4_ID_EMULATION = 1;
 };
 
+enum GenericDpadMode
+{
+    option (nanopb_enumopt).long_names = false;
+
+    GENERIC_DPAD_HAT_AND_BUTTONS = 0;
+    GENERIC_DPAD_HAT_ONLY = 1;
+    GENERIC_DPAD_BUTTONS_ONLY = 2;
+};
+
 enum DisplaySaverMode
 {
     option (nanopb_enumopt).long_names = false;

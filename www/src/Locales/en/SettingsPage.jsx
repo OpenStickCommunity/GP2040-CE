@@ -70,6 +70,12 @@ export default {
 	'ps4-id-mode-label': 'Identification Mode',
 	'ps4-id-mode-explanation-text':
 		'<ul><li>Console mode is used when connecting primarily to a PS4 console.</li><li>Remote/Emulation mode should only be used when connecting to an emulation layer or remote playing environment that requires a DualShock 4-compatible controller.</li></ul>',
+	'generic-dpad-mode-label': 'D-Pad Reporting',
+	'generic-dpad-mode-options': {
+		'hat-and-buttons': 'Hat + Buttons',
+		'hat-only': 'Hat Only',
+		'buttons-only': 'Buttons Only',
+	},
 	'ps4-id-mode-options': {
 		console: 'Console',
 		emulation: 'Remote/Emulation',

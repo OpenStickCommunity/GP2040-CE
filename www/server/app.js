@@ -455,6 +455,7 @@ app.get('/api/getGamepadOptions', (req, res) => {
 		ps5AuthType: 0,
 		xinputAuthType: 0,
 		ps4ControllerIDMode: 0,
+		genericDpadMode: 0,
 		usbDescOverride: 0,
 		usbDescProduct: 'GP2040-CE (Custom)',
 		usbDescManufacturer: 'Open Stick Community',

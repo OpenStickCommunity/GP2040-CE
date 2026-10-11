@@ -210,6 +210,12 @@ const PS4_ID_MODES = [
 	{ labelKey: 'ps4-id-mode-options.emulation', value: 1 },
 ];
 
+const GENERIC_DPAD_MODES = [
+	{ labelKey: 'generic-dpad-mode-options.hat-and-buttons', value: 0 },
+	{ labelKey: 'generic-dpad-mode-options.hat-only', value: 1 },
+	{ labelKey: 'generic-dpad-mode-options.buttons-only', value: 2 },
+];
+
 const AUTHENTICATION_TYPES = [
 	{ labelKey: 'input-mode-authentication.none', value: 0 },
 	{ labelKey: 'input-mode-authentication.key', value: 1 },
@@ -384,6 +390,11 @@ const schema = yup.object().shape({
 		.required()
 		.oneOf(PS4_ID_MODES.map((o) => o.value))
 		.label('PS4 Controller Identification Mode'),
+	genericDpadMode: yup
+		.number()
+		.required()
+		.oneOf(GENERIC_DPAD_MODES.map((o) => o.value))
+		.label('Generic HID D-Pad Mode'),
 	forcedSetupMode: yup
 		.number()
 		.required()
@@ -493,6 +504,8 @@ const FormContext = ({ setButtonLabels, setKeyMappings }) => {
 			values.ps4ControllerIDMode = parseInt(values.ps4ControllerIDMode);
 		if (!!values.inputDeviceType)
 			values.inputDeviceType = parseInt(values.inputDeviceType);
+		if (!!values.genericDpadMode)
+			values.genericDpadMode = parseInt(values.genericDpadMode);
 
 		setButtonLabels({
 			swapTpShareLabels:
@@ -1285,6 +1298,23 @@ export default function SettingsPage() {
 	) => {
 		return (
 			<div className="row mb-3">
+				<Row className="mb-3">
+					<Col sm={3}>
+						<Form.Label>{t('SettingsPage:generic-dpad-mode-label')}</Form.Label>
+						<Form.Select
+							name="genericDpadMode"
+							className="form-select-sm"
+							value={values.genericDpadMode}
+							onChange={handleChange}
+						>
+							{GENERIC_DPAD_MODES.map((o) => (
+								<option key={`generic-dpad-option-${o.value}`} value={o.value}>
+									{`${t('SettingsPage:' + o.labelKey)}`}
+								</option>
+							))}
+						</Form.Select>
+					</Col>
+				</Row>
 				{usbOverride(values, errors, setFieldValue, handleChange)}
 			</div>
 		);
