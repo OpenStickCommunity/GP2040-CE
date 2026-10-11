@@ -158,6 +158,7 @@ enum InputMode
     INPUT_MODE_SWITCH_PRO = 15;
     INPUT_MODE_P5GENERAL = 16;
     INPUT_MODE_SINPUT = 17;
+    INPUT_MODE_SWITCH2_PRO = 19;
     INPUT_MODE_CONFIG = 255;
 }
 
@@ -370,6 +371,11 @@ enum GpioAction
     SUSTAIN_PROFILE_SLIDER_POSITION_6 = 136;
     SUSTAIN_PROFILE_SLIDER_POSITION_7 = 137;
     SUSTAIN_PROFILE_SLIDER_POSITION_8 = 138;
+    BUTTON_PRESS_AMIIBO_1        = 139;
+    BUTTON_PRESS_AMIIBO_2        = 140;
+    BUTTON_PRESS_AMIIBO_3        = 141;
+    BUTTON_PRESS_AMIIBO_4        = 142;
+    reserved 143;
 }
 
 enum GpioDirection
@@ -463,6 +469,11 @@ enum GamepadHotkey
     HOTKEY_RS_RIGHT              = 85;
     HOTKEY_REBOOT_WEBCONFIG      = 86;
     HOTKEY_REBOOT_USB            = 87;
+    HOTKEY_AMIIBO_1              = 88;
+    HOTKEY_AMIIBO_2              = 89;
+    HOTKEY_AMIIBO_3              = 90;
+    HOTKEY_AMIIBO_4              = 91;
+    reserved 92;
 }
 
 // This has to be kept in sync with LEDFormat in NeoPico.h
@@ -688,6 +699,23 @@ enum ReactiveLEDMode
     REACTIVE_LED_FADE_IN = 2;
     REACTIVE_LED_FADE_OUT = 3;
 };
+
+enum Switch2ProIdentity
+{
+    option (nanopb_enumopt).long_names = false;
+
+    SWITCH2_PRO_IDENTITY_PRO = 0;
+    SWITCH2_PRO_IDENTITY_GAMECUBE = 1;
+}
+
+enum Switch2ProColorPreset
+{
+    option (nanopb_enumopt).long_names = false;
+
+    SWITCH2_PRO_COLOR_STOCK = 0;
+    SWITCH2_PRO_COLOR_GP2040 = 1;
+    SWITCH2_PRO_COLOR_CUSTOM = 2;
+}
 
 enum PS4ControllerIDMode
 {

@@ -140,4 +140,8 @@ export default {
 	SUSTAIN_PROFILE_SLIDER_POSITION_6: 'Profile Slider Position 6',
 	SUSTAIN_PROFILE_SLIDER_POSITION_7: 'Profile Slider Position 7',
 	SUSTAIN_PROFILE_SLIDER_POSITION_8: 'Profile Slider Position 8',
+	BUTTON_PRESS_AMIIBO_1: 'Amiibo 1',
+	BUTTON_PRESS_AMIIBO_2: 'Amiibo 2',
+	BUTTON_PRESS_AMIIBO_3: 'Amiibo 3',
+	BUTTON_PRESS_AMIIBO_4: 'Amiibo 4',
 };
