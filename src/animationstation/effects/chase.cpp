@@ -43,7 +43,7 @@ Chase::Chase(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType, 
       MinYCoord = RGBLights->AllLights[lightIndex].Position.YPosition;   
 
     //save types
-    int lastLed = RGBLights->AllLights[lightIndex].FirstLedIndex + RGBLights->AllLights[lightIndex].LedsPerLight;
+    const uint32_t lastLed = RGBLights->AllLights[lightIndex].FirstLedIndex + RGBLights->AllLights[lightIndex].LedsPerLight;
     for(unsigned int ledIndex = RGBLights->AllLights[lightIndex].FirstLedIndex ; ledIndex < lastLed; ++ledIndex)
       ChaseBlendType[ledIndex] = RGBLights->AllLights[lightIndex].Type;
 
@@ -139,7 +139,7 @@ void Chase::OrderLights()
 
   if(ChaseTypeInUse == ChaseTypes::CHASETYPES_INDEX || ChaseTypeInUse == ChaseTypes::CHASETYPES_INDEX_PINGPONG)
   {
-    int sortedLights[FRAME_MAX];
+    unsigned int sortedLights[FRAME_MAX];
     unsigned int lightsFound = 0;
 
     for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size() && lightIndex < FRAME_MAX; ++lightIndex)

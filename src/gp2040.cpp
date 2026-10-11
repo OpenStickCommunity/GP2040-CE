@@ -73,7 +73,6 @@ void GP2040::setup() {
 	BootModeOptions& bootModeOptions = Storage::getInstance().getBootModeOptions();
 	BootAction bootAction;
 
-	const ProfileOptions& profileOptions = Storage::getInstance().getProfileOptions();
 	GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
 	bool profileChanged = false;
 
@@ -411,17 +410,17 @@ GP2040::BootAction GP2040::getButtonMappedBootAction() {
 	std::map<uint32_t, int32_t> bootActions;
 
 	// check setup options and add modes to the list
-	bootActions.insert({GAMEPAD_MASK_B1, gamepadOptions.inputModeB1});
-	bootActions.insert({GAMEPAD_MASK_B2, gamepadOptions.inputModeB2});
-	bootActions.insert({GAMEPAD_MASK_B3, gamepadOptions.inputModeB3});
-	bootActions.insert({GAMEPAD_MASK_B4, gamepadOptions.inputModeB4});
-	bootActions.insert({GAMEPAD_MASK_L1, gamepadOptions.inputModeL1});
-	bootActions.insert({GAMEPAD_MASK_L2, gamepadOptions.inputModeL2});
-	bootActions.insert({GAMEPAD_MASK_R1, gamepadOptions.inputModeR1});
-	bootActions.insert({GAMEPAD_MASK_R2, gamepadOptions.inputModeR2});
+	bootActions.emplace(GAMEPAD_MASK_B1, gamepadOptions.inputModeB1);
+	bootActions.emplace(GAMEPAD_MASK_B2, gamepadOptions.inputModeB2);
+	bootActions.emplace(GAMEPAD_MASK_B3, gamepadOptions.inputModeB3);
+	bootActions.emplace(GAMEPAD_MASK_B4, gamepadOptions.inputModeB4);
+	bootActions.emplace(GAMEPAD_MASK_L1, gamepadOptions.inputModeL1);
+	bootActions.emplace(GAMEPAD_MASK_L2, gamepadOptions.inputModeL2);
+	bootActions.emplace(GAMEPAD_MASK_R1, gamepadOptions.inputModeR1);
+	bootActions.emplace(GAMEPAD_MASK_R2, gamepadOptions.inputModeR2);
 
 	if (!modeSwitchLocked) {
-		if (auto search = bootActions.find(gamepad->state.buttons); search != bootActions.end()) {
+		if (auto search = bootActions.find(gamepad->state.buttons); search != bootActions.end() && search->second >= 0) {
 			bootAction.inputMode = static_cast<InputMode>(search->second);
 			return bootAction;
 		}
@@ -502,7 +501,7 @@ void GP2040::RebootHotkeys::process(Gamepad* gamepad, bool configMode) {
 	if (!active) {
 		if (gamepad->state.buttons == 0) {
 			if (is_nil_time(noButtonsPressedTimeout)) {
-				noButtonsPressedTimeout = make_timeout_time_us(REBOOT_HOTKEY_ACTIVATION_TIME_MS);
+				noButtonsPressedTimeout = make_timeout_time_ms(REBOOT_HOTKEY_ACTIVATION_TIME_MS);
 			}
 
 			if (time_reached(noButtonsPressedTimeout)) {

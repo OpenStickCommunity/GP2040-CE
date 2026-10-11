@@ -602,7 +602,10 @@ std::string setProfileOptions()
 
 std::string getProfileOptions()
 {
-    const size_t capacity = JSON_OBJECT_SIZE(500);
+    ProfileOptions& profileOptions = Storage::getInstance().getProfileOptions();
+    // Make capacity slots dynamic, max for 5 profiles * 48 pins is 976 slots
+    const size_t capacity = JSON_OBJECT_SIZE(1) + JSON_ARRAY_SIZE(profileOptions.gpioMappingsSets_count)
+        + (profileOptions.gpioMappingsSets_count * JSON_OBJECT_SIZE(4 * NUM_BANK0_GPIOS + 2));
     DynamicJsonDocument doc(capacity);
 
     const auto writePinDoc = [&](const int item, const char* key, const GpioMappingInfo& value) -> void
@@ -611,8 +614,6 @@ std::string getProfileOptions()
         writeDoc(doc, "alternativePinMappings", item, key, "customButtonMask", value.customButtonMask);
         writeDoc(doc, "alternativePinMappings", item, key, "customDpadMask", value.customDpadMask);
     };
-
-    ProfileOptions& profileOptions = Storage::getInstance().getProfileOptions();
 
     // return an empty list if no profiles are currently set, since we no longer populate by default
     if (profileOptions.gpioMappingsSets_count == 0) {
@@ -707,6 +708,21 @@ std::string setGamepadOptions()
     readDoc(gamepadOptions.ps5AuthType, doc, "ps5AuthType");
     readDoc(gamepadOptions.xinputAuthType, doc, "xinputAuthType");
     readDoc(gamepadOptions.ps4ControllerIDMode, doc, "ps4ControllerIDMode");
+    readDoc(gamepadOptions.switch2ProIdentity, doc, "switch2ProIdentity");
+    readDoc(gamepadOptions.switch2ProColorPreset, doc, "switch2ProColorPreset");
+    readDoc(gamepadOptions.switch2ProBodyColor, doc, "switch2ProBodyColor");
+    readDoc(gamepadOptions.switch2ProButtonsColor, doc, "switch2ProButtonsColor");
+    readDoc(gamepadOptions.switch2ProHighlightColor, doc, "switch2ProHighlightColor");
+    readDoc(gamepadOptions.switch2ProGripColor, doc, "switch2ProGripColor");
+    readDoc(gamepadOptions.switch2ProJoyCon2ColorPreset, doc, "switch2ProJoyCon2ColorPreset");
+    readDoc(gamepadOptions.switch2ProJoyCon2LeftBodyColor, doc, "switch2ProJoyCon2LeftBodyColor");
+    readDoc(gamepadOptions.switch2ProJoyCon2LeftButtonsColor, doc, "switch2ProJoyCon2LeftButtonsColor");
+    readDoc(gamepadOptions.switch2ProJoyCon2LeftAccentColor, doc, "switch2ProJoyCon2LeftAccentColor");
+    readDoc(gamepadOptions.switch2ProJoyCon2LeftStickColor, doc, "switch2ProJoyCon2LeftStickColor");
+    readDoc(gamepadOptions.switch2ProJoyCon2RightBodyColor, doc, "switch2ProJoyCon2RightBodyColor");
+    readDoc(gamepadOptions.switch2ProJoyCon2RightButtonsColor, doc, "switch2ProJoyCon2RightButtonsColor");
+    readDoc(gamepadOptions.switch2ProJoyCon2RightAccentColor, doc, "switch2ProJoyCon2RightAccentColor");
+    readDoc(gamepadOptions.switch2ProJoyCon2RightStickColor, doc, "switch2ProJoyCon2RightStickColor");
     readDoc(gamepadOptions.usbDescOverride, doc, "usbDescOverride");
     readDoc(gamepadOptions.miniMenuGamepadInput, doc, "miniMenuGamepadInput");
     // Copy USB descriptor strings
@@ -777,6 +793,21 @@ std::string getGamepadOptions()
     writeDoc(doc, "ps5AuthType", gamepadOptions.ps5AuthType);
     writeDoc(doc, "xinputAuthType", gamepadOptions.xinputAuthType);
     writeDoc(doc, "ps4ControllerIDMode", gamepadOptions.ps4ControllerIDMode);
+    writeDoc(doc, "switch2ProIdentity", gamepadOptions.switch2ProIdentity);
+    writeDoc(doc, "switch2ProColorPreset", gamepadOptions.switch2ProColorPreset);
+    writeDoc(doc, "switch2ProBodyColor", gamepadOptions.switch2ProBodyColor);
+    writeDoc(doc, "switch2ProButtonsColor", gamepadOptions.switch2ProButtonsColor);
+    writeDoc(doc, "switch2ProHighlightColor", gamepadOptions.switch2ProHighlightColor);
+    writeDoc(doc, "switch2ProGripColor", gamepadOptions.switch2ProGripColor);
+    writeDoc(doc, "switch2ProJoyCon2ColorPreset", gamepadOptions.switch2ProJoyCon2ColorPreset);
+    writeDoc(doc, "switch2ProJoyCon2LeftBodyColor", gamepadOptions.switch2ProJoyCon2LeftBodyColor);
+    writeDoc(doc, "switch2ProJoyCon2LeftButtonsColor", gamepadOptions.switch2ProJoyCon2LeftButtonsColor);
+    writeDoc(doc, "switch2ProJoyCon2LeftAccentColor", gamepadOptions.switch2ProJoyCon2LeftAccentColor);
+    writeDoc(doc, "switch2ProJoyCon2LeftStickColor", gamepadOptions.switch2ProJoyCon2LeftStickColor);
+    writeDoc(doc, "switch2ProJoyCon2RightBodyColor", gamepadOptions.switch2ProJoyCon2RightBodyColor);
+    writeDoc(doc, "switch2ProJoyCon2RightButtonsColor", gamepadOptions.switch2ProJoyCon2RightButtonsColor);
+    writeDoc(doc, "switch2ProJoyCon2RightAccentColor", gamepadOptions.switch2ProJoyCon2RightAccentColor);
+    writeDoc(doc, "switch2ProJoyCon2RightStickColor", gamepadOptions.switch2ProJoyCon2RightStickColor);
     writeDoc(doc, "usbDescOverride", gamepadOptions.usbDescOverride);
     writeDoc(doc, "usbDescManufacturer", gamepadOptions.usbDescManufacturer);
     writeDoc(doc, "usbDescProduct", gamepadOptions.usbDescProduct);
@@ -1716,6 +1747,23 @@ std::string setPeripheralOptions()
     DynamicJsonDocument doc = get_post_data();
 
     PeripheralOptions& peripheralOptions = Storage::getInstance().getPeripheralOptions();
+    Pin_t pinDplus = peripheralOptions.blockUSB0.dp;
+    uint32_t pinOrder = peripheralOptions.blockUSB0.order;
+    docToValue(pinDplus, doc, "peripheral", "usb0", "dp");
+    docToValue(pinOrder, doc, "peripheral", "usb0", "order");
+    if (pinDplus != -1 && (!isValidPin(pinDplus) ||
+        !isValidPin(pinDplus + (pinOrder ? -1 : 1)))) {
+        return "{ \"error\": \"USB D+ and D- must use valid consecutive GPIO pins\" }";
+    }
+
+    Pin_t pinDminus = pinDplus == -1 ? -1 : pinDplus + (pinOrder ? -1 : 1);
+    Pin_t oldPinDplus = peripheralOptions.blockUSB0.dp;
+    Pin_t oldPinDminus = isValidPin(oldPinDplus)
+        ? oldPinDplus + (peripheralOptions.blockUSB0.order ? -1 : 1) : -1;
+    // Release both old pins before reserving the new pair, including a pin swap.
+    Pin_t unsetPin = -1;
+    cleanAddonGpioMappings(unsetPin, oldPinDplus);
+    cleanAddonGpioMappings(unsetPin, oldPinDminus);
 
     docToValue(peripheralOptions.blockI2C0.enabled, doc, "peripheral", "i2c0", "enabled");
     docToPin(peripheralOptions.blockI2C0.sda, doc, "peripheral", "i2c0", "sda");
@@ -1741,31 +1789,10 @@ std::string setPeripheralOptions()
 
     docToValue(peripheralOptions.blockUSB0.enabled, doc, "peripheral", "usb0", "enabled");
     docToValue(peripheralOptions.blockUSB0.enable5v, doc, "peripheral", "usb0", "enable5v");
-    docToValue(peripheralOptions.blockUSB0.order, doc, "peripheral", "usb0", "order");
-
-    // need to reserve previous/next pin for dp
-    GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
-    ProfileOptions& profiles = Storage::getInstance().getProfileOptions();
-    uint8_t adjacent = peripheralOptions.blockUSB0.order ? -1 : 1;
-
-    Pin_t oldPinDplus = peripheralOptions.blockUSB0.dp;
-    docToPin(peripheralOptions.blockUSB0.dp, doc, "peripheral", "usb0", "dp");
-    if (isValidPin(peripheralOptions.blockUSB0.dp)) {
-        // if D+ pin is now set, also set the pin that will be used for D-
-        gpioMappings[peripheralOptions.blockUSB0.dp+adjacent].action = GpioAction::ASSIGNED_TO_ADDON;
-        profiles.gpioMappingsSets[0].pins[peripheralOptions.blockUSB0.dp+adjacent].action =
-            GpioAction::ASSIGNED_TO_ADDON;
-        profiles.gpioMappingsSets[1].pins[peripheralOptions.blockUSB0.dp+adjacent].action =
-            GpioAction::ASSIGNED_TO_ADDON;
-        profiles.gpioMappingsSets[2].pins[peripheralOptions.blockUSB0.dp+adjacent].action =
-            GpioAction::ASSIGNED_TO_ADDON;
-    } else if (isValidPin(oldPinDplus)) {
-        // if D+ pin was set and is no longer, also unset the pin that was used for D-
-        gpioMappings[oldPinDplus+adjacent].action = GpioAction::NONE;
-        profiles.gpioMappingsSets[0].pins[oldPinDplus+adjacent].action = GpioAction::NONE;
-        profiles.gpioMappingsSets[1].pins[oldPinDplus+adjacent].action = GpioAction::NONE;
-        profiles.gpioMappingsSets[2].pins[oldPinDplus+adjacent].action = GpioAction::NONE;
-    }
+    peripheralOptions.blockUSB0.dp = pinDplus;
+    peripheralOptions.blockUSB0.order = pinOrder;
+    cleanAddonGpioMappings(peripheralOptions.blockUSB0.dp, -1);
+    cleanAddonGpioMappings(pinDminus, -1);
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
@@ -2884,7 +2911,10 @@ std::string setMacroAddonOptions()
 
 std::string getMacroAddonOptions()
 {
-    const size_t capacity = JSON_OBJECT_SIZE(500);
+    const size_t capacity = JSON_OBJECT_SIZE(MacroOptions_msg.field_count) + JSON_ARRAY_SIZE(MAX_MACRO_LIMIT)
+        + MAX_MACRO_LIMIT * (JSON_OBJECT_SIZE(Macro_msg.field_count) + sizeof(Macro::macroLabel)
+        + JSON_ARRAY_SIZE(MAX_MACRO_INPUT_LIMIT)
+        + MAX_MACRO_INPUT_LIMIT * JSON_OBJECT_SIZE(MacroInput_msg.field_count));
     DynamicJsonDocument doc(capacity);
 
     MacroOptions& macroOptions = Storage::getInstance().getAddonOptions().macroOptions;
@@ -3126,7 +3156,7 @@ std::string getBoardDefinition() {
 
     JsonArray availablePins = picoPins.createNestedArray("availablePins");
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
-        if (!(pin < ADC_BASE_PIN || pin >= ADC_BASE_PIN + NUM_ADC_CHANNELS - 1)) analogPins.add(pin);
+        if (AnalogInput::isAdcPin(pin)) analogPins.add(pin);
         availablePins.add(pin);
     }
 

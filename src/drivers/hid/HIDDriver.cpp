@@ -134,6 +134,9 @@ bool HIDDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_contr
 }
 
 const uint16_t * HIDDriver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
+    if (index >= TU_ARRAY_SIZE(hid_string_descriptors))
+        return nullptr;
+
     char *value;
     // Check for override settings
     GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();
