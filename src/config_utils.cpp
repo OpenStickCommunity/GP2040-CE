@@ -2273,9 +2273,17 @@ bool ConfigUtils::save(Config& config)
     // its default value.
     setHasFlags(Config_fields, &config);
 
+    // An LED preview runs on the test profile; save the user's profile instead
+    AnimationStation& animStation = AnimationStation::getInstance();
+    const int32_t activeProfileIndex = config.animationOptions.baseProfileIndex;
+    if (animStation.IsTestModeActive())
+        config.animationOptions.baseProfileIndex = animStation.GetSavedMode();
+
     // Encode the data directly into the cache of FlashPROM
     pb_ostream_t outputStream = pb_ostream_from_buffer(EEPROM.writeCache, EEPROM_SIZE_BYTES - sizeof(ConfigFooter));
-    if (!pb_encode(&outputStream, Config_fields, &config))
+    const bool encoded = pb_encode(&outputStream, Config_fields, &config);
+    config.animationOptions.baseProfileIndex = activeProfileIndex;
+    if (!encoded)
     {
         return false;
     }

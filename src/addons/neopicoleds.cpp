@@ -770,6 +770,9 @@ void NeoPicoLEDAddon::configureLEDs()
 	AnimStation.SetMaxBrightness(ledOptions.brightnessMaximum);
 	AnimStation.SetBrightnessStepValue(animOptions.brightness);
 	AnimStation.SetLights(RGBLights);
+	// Settings saved during an LED preview may hold the test profile; fall back to the first profile
+	if (animOptions.baseProfileIndex < -1 || animOptions.baseProfileIndex >= MAX_ANIMATION_PROFILES)
+		animOptions.baseProfileIndex = 0;
 	AnimStation.SetMode(animOptions.baseProfileIndex);
 }
 

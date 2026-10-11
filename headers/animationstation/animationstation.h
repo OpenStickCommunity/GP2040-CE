@@ -57,6 +57,10 @@ public:
 
   int8_t GetMode();
   void SetMode(int8_t mode);
+  // Profile chosen by the user; test modes switch profiles without changing it
+  int8_t GetSavedMode() { return savedProfileIndex; }
+  void SetSavedMode(int32_t mode);
+  bool IsTestModeActive() { return TestMode != AnimationStationTestMode::AnimationStation_TestModeDisableTestMode; }
   void SetLights(Lights InRGBLights);
 
   //Brightness settings
@@ -142,6 +146,7 @@ private:
 
   //Testing/webconfig
   AnimationStationTestMode TestMode;
+  int8_t savedProfileIndex;
   bool bTestModeChangeRequested;
   int TestModePinOrNonButtonIndex;
   bool TestModeLightIsNonButton;
