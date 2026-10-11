@@ -556,6 +556,24 @@ std::string setSplashImage()
     return serialize_json(doc);
 }
 
+static void readInvertedPins(GpioMappings& mappings, JsonVariantConst json)
+{
+    mappings.pinInversionEnabled = json["pinInversionEnabled"];
+    mappings.invertedPins_count = 0;
+    for (int pin : json["invertedPins"].as<JsonArrayConst>()) {
+        if (pin >= 0 && pin < (int)NUM_BANK0_GPIOS && mappings.invertedPins_count < std::size(mappings.invertedPins))
+            mappings.invertedPins[mappings.invertedPins_count++] = pin;
+    }
+}
+
+static void writeInvertedPins(JsonVariant json, const GpioMappings& mappings)
+{
+    json["pinInversionEnabled"] = mappings.pinInversionEnabled;
+    JsonArray pins = json.createNestedArray("invertedPins");
+    for (pb_size_t i = 0; i < mappings.invertedPins_count; i++)
+        pins.add(mappings.invertedPins[i]);
+}
+
 std::string setProfileOptions()
 {
     DynamicJsonDocument doc = get_post_data();
@@ -592,6 +610,7 @@ std::string setProfileOptions()
         strncpy(profileOptions.gpioMappingsSets[altsIndex].profileLabel, alt["profileLabel"], profileLabelSize - 1);
         profileOptions.gpioMappingsSets[altsIndex].profileLabel[profileLabelSize - 1] = '\0';
         profileOptions.gpioMappingsSets[altsIndex].enabled = alt["enabled"];
+        readInvertedPins(profileOptions.gpioMappingsSets[altsIndex], alt);
         if (altsIndex >= previousCount)
             profileOptions.gpioMappingsSets[altsIndex].keyboardMapping = Storage::getInstance().getKeyboardMapping();
 
@@ -608,7 +627,7 @@ std::string getProfileOptions()
     ProfileOptions& profileOptions = Storage::getInstance().getProfileOptions();
     // Make capacity slots dynamic, max for 5 profiles * 48 pins is 976 slots
     const size_t capacity = JSON_OBJECT_SIZE(1) + JSON_ARRAY_SIZE(profileOptions.gpioMappingsSets_count)
-        + (profileOptions.gpioMappingsSets_count * JSON_OBJECT_SIZE(4 * NUM_BANK0_GPIOS + 2));
+        + (profileOptions.gpioMappingsSets_count * (JSON_OBJECT_SIZE(4 * NUM_BANK0_GPIOS + 4) + JSON_ARRAY_SIZE(NUM_BANK0_GPIOS)));
     DynamicJsonDocument doc(capacity);
 
     const auto writePinDoc = [&](const int item, const char* key, const GpioMappingInfo& value) -> void
@@ -679,6 +698,7 @@ std::string getProfileOptions()
 #endif
         writeDoc(doc, "alternativePinMappings", i, "profileLabel", profileOptions.gpioMappingsSets[i].profileLabel);
         doc["alternativePinMappings"][i]["enabled"] = profileOptions.gpioMappingsSets[i].enabled;
+        writeInvertedPins(doc["alternativePinMappings"][i], profileOptions.gpioMappingsSets[i]);
     }
 
     return serialize_json(doc);
@@ -1473,6 +1493,7 @@ std::string setPinMappings()
     strncpy(gpioMappings.profileLabel, doc["profileLabel"], profileLabelSize - 1);
     gpioMappings.profileLabel[profileLabelSize - 1] = '\0';
     gpioMappings.enabled = doc["enabled"];
+    readInvertedPins(gpioMappings, doc.as<JsonVariantConst>());
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
@@ -1546,6 +1567,7 @@ std::string getPinMappings()
 
     writeDoc(doc, "profileLabel", gpioMappings.profileLabel);
     doc["enabled"] = gpioMappings.enabled;
+    writeInvertedPins(doc.as<JsonVariant>(), gpioMappings);
 
     return serialize_json(doc);
 }
@@ -3005,13 +3027,13 @@ std::string getHeldPins()
 
     std::set<uint> heldPinsSet;
     uint32_t startTime = getMillis();
-    uint64_t oldState = ~gpio_get_all64() & ((uint64_t{1} << NUM_BANK0_GPIOS) - 1);
+    uint64_t oldState = Storage::getInstance().getPressedGpios() & ((uint64_t{1} << NUM_BANK0_GPIOS) - 1);
     uint32_t debounceTime = 0;
     bool isAnyPinHeld = false;
 
     // Monitor pins for 5 seconds
     while (!_abortGetHeldPins && (getMillis() - startTime) < 5000) {
-        uint64_t newState = ~gpio_get_all64() & ((uint64_t{1} << NUM_BANK0_GPIOS) - 1);
+        uint64_t newState = Storage::getInstance().getPressedGpios() & ((uint64_t{1} << NUM_BANK0_GPIOS) - 1);
 
         uint64_t changedPins = newState & ~oldState;
         if (isAnyPinHeld && changedPins == 0) break; // Pins released

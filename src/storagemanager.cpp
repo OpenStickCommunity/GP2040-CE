@@ -10,6 +10,7 @@
 #include "drivermanager.h"
 #include "eventmanager.h"
 #include "peripheralmanager.h"
+#include "hardware/gpio.h"
 #include "config.pb.h"
 #include "hardware/watchdog.h"
 #include "CRC32.h"
@@ -108,6 +109,23 @@ char* Storage::currentProfileLabel() {
 		return this->config.profileOptions.gpioMappingsSets[config.gamepadOptions.profileNumber-2].profileLabel;
 }
 
+void Storage::setInvertedPins(const GpioMappings& mappings)
+{
+	invertedPins = 0;
+	if (!mappings.pinInversionEnabled)
+		return;
+	for (pb_size_t i = 0; i < mappings.invertedPins_count; i++) {
+		const uint32_t pin = mappings.invertedPins[i];
+		if (pin < NUM_BANK0_GPIOS && functionalPinMappings[pin].action > 0)
+			invertedPins |= Mask_t{1} << pin;
+	}
+}
+
+Mask_t Storage::getPressedGpios() const
+{
+	return ~gpio_get_all64() ^ invertedPins;
+}
+
 void Storage::setFunctionalPinMappings()
 {
 	GpioMappings* profile = nullptr;
@@ -138,6 +156,7 @@ void Storage::setFunctionalPinMappings()
 			functionalPinMappings[pin] = this->config.gpioMappings.pins[pin];
 		}
 	}
+	setInvertedPins(profile ? *profile : config.gpioMappings);
 }
 
 /**
@@ -171,6 +190,7 @@ void Storage::setBootModeFunctionalPinMappings()
 			functionalPinMappings[pin].action = GpioAction::BUTTON_PRESS_A1;
 		}
 	}
+	setInvertedPins(getGpioMappings());
 }
 
 void Storage::SetGamepad(Gamepad * newpad)
