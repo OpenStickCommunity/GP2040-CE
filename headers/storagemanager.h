@@ -38,6 +38,7 @@ public:
 	PinMappings& getDeprecatedPinMappings() { return config.deprecatedPinMappings; }
 	GpioMappings& getGpioMappings() { return config.gpioMappings; }
 	KeyboardMapping& getKeyboardMapping() { return config.keyboardMapping; }
+	KeyboardMapping& getActiveKeyboardMapping() { return *activeKeyboardMapping; }
 	DisplayOptions& getDisplayOptions() { return config.displayOptions; }
 	LEDOptions& getLedOptions() { return config.ledOptions; }
 	AddonOptions& getAddonOptions() { return config.addonOptions; }
@@ -76,6 +77,7 @@ private:
 	uint8_t featureData[32]; // USB X-Input Feature Data
 	Config config;
 	GpioMappingInfo functionalPinMappings[NUM_BANK0_GPIOS];
+	KeyboardMapping* activeKeyboardMapping = &config.keyboardMapping;
 	uint32_t systemFlashSize;
 };
 

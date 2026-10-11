@@ -564,6 +564,7 @@ std::string setProfileOptions()
     GpioMappings& coreMappings = Storage::getInstance().getGpioMappings();
     JsonObject options = doc.as<JsonObject>();
     JsonArray alts = options["alternativePinMappings"];
+    const pb_size_t previousCount = profileOptions.gpioMappingsSets_count;
     int altsIndex = 0;
     char pinName[6];
     for (JsonObject alt : alts) {
@@ -591,6 +592,8 @@ std::string setProfileOptions()
         strncpy(profileOptions.gpioMappingsSets[altsIndex].profileLabel, alt["profileLabel"], profileLabelSize - 1);
         profileOptions.gpioMappingsSets[altsIndex].profileLabel[profileLabelSize - 1] = '\0';
         profileOptions.gpioMappingsSets[altsIndex].enabled = alt["enabled"];
+        if (altsIndex >= previousCount)
+            profileOptions.gpioMappingsSets[altsIndex].keyboardMapping = Storage::getInstance().getKeyboardMapping();
 
         profileOptions.gpioMappingsSets_count = ++altsIndex;
         if (altsIndex > 4) break;
@@ -1597,44 +1600,57 @@ std::string setBootModeOptions() {
 	return serialize_json(doc);
 }
 
+static const std::pair<const char*, uint32_t KeyboardMapping::*> keyboardMappingFields[] = {
+    { "Up", &KeyboardMapping::keyDpadUp },
+    { "Down", &KeyboardMapping::keyDpadDown },
+    { "Left", &KeyboardMapping::keyDpadLeft },
+    { "Right", &KeyboardMapping::keyDpadRight },
+    { "B1", &KeyboardMapping::keyButtonB1 },
+    { "B2", &KeyboardMapping::keyButtonB2 },
+    { "B3", &KeyboardMapping::keyButtonB3 },
+    { "B4", &KeyboardMapping::keyButtonB4 },
+    { "L1", &KeyboardMapping::keyButtonL1 },
+    { "R1", &KeyboardMapping::keyButtonR1 },
+    { "L2", &KeyboardMapping::keyButtonL2 },
+    { "R2", &KeyboardMapping::keyButtonR2 },
+    { "S1", &KeyboardMapping::keyButtonS1 },
+    { "S2", &KeyboardMapping::keyButtonS2 },
+    { "L3", &KeyboardMapping::keyButtonL3 },
+    { "R3", &KeyboardMapping::keyButtonR3 },
+    { "A1", &KeyboardMapping::keyButtonA1 },
+    { "A2", &KeyboardMapping::keyButtonA2 },
+    { "A3", &KeyboardMapping::keyButtonA3 },
+    { "A4", &KeyboardMapping::keyButtonA4 },
+    { "E1", &KeyboardMapping::keyButtonE1 },
+    { "E2", &KeyboardMapping::keyButtonE2 },
+    { "E3", &KeyboardMapping::keyButtonE3 },
+    { "E4", &KeyboardMapping::keyButtonE4 },
+    { "E5", &KeyboardMapping::keyButtonE5 },
+    { "E6", &KeyboardMapping::keyButtonE6 },
+    { "E7", &KeyboardMapping::keyButtonE7 },
+    { "E8", &KeyboardMapping::keyButtonE8 },
+    { "E9", &KeyboardMapping::keyButtonE9 },
+    { "E10", &KeyboardMapping::keyButtonE10 },
+    { "E11", &KeyboardMapping::keyButtonE11 },
+    { "E12", &KeyboardMapping::keyButtonE12 },
+};
+
+static void readKeyboardMapping(KeyboardMapping& mapping, JsonVariantConst json)
+{
+    for (const auto& [key, field] : keyboardMappingFields)
+        mapping.*field = json[key];
+}
+
+static void writeKeyboardMapping(JsonObject json, const KeyboardMapping& mapping)
+{
+    for (const auto& [key, field] : keyboardMappingFields)
+        json[key] = mapping.*field;
+}
+
 std::string setKeyMappings()
 {
     DynamicJsonDocument doc = get_post_data();
-
-    KeyboardMapping& keyboardMapping = Storage::getInstance().getKeyboardMapping();
-
-    readDoc(keyboardMapping.keyDpadUp, doc, "Up");
-    readDoc(keyboardMapping.keyDpadDown, doc, "Down");
-    readDoc(keyboardMapping.keyDpadLeft, doc, "Left");
-    readDoc(keyboardMapping.keyDpadRight, doc, "Right");
-    readDoc(keyboardMapping.keyButtonB1, doc, "B1");
-    readDoc(keyboardMapping.keyButtonB2, doc, "B2");
-    readDoc(keyboardMapping.keyButtonB3, doc, "B3");
-    readDoc(keyboardMapping.keyButtonB4, doc, "B4");
-    readDoc(keyboardMapping.keyButtonL1, doc, "L1");
-    readDoc(keyboardMapping.keyButtonR1, doc, "R1");
-    readDoc(keyboardMapping.keyButtonL2, doc, "L2");
-    readDoc(keyboardMapping.keyButtonR2, doc, "R2");
-    readDoc(keyboardMapping.keyButtonS1, doc, "S1");
-    readDoc(keyboardMapping.keyButtonS2, doc, "S2");
-    readDoc(keyboardMapping.keyButtonL3, doc, "L3");
-    readDoc(keyboardMapping.keyButtonR3, doc, "R3");
-    readDoc(keyboardMapping.keyButtonA1, doc, "A1");
-    readDoc(keyboardMapping.keyButtonA2, doc, "A2");
-    readDoc(keyboardMapping.keyButtonA3, doc, "A3");
-    readDoc(keyboardMapping.keyButtonA4, doc, "A4");
-    readDoc(keyboardMapping.keyButtonE1, doc, "E1");
-    readDoc(keyboardMapping.keyButtonE2, doc, "E2");
-    readDoc(keyboardMapping.keyButtonE3, doc, "E3");
-    readDoc(keyboardMapping.keyButtonE4, doc, "E4");
-    readDoc(keyboardMapping.keyButtonE5, doc, "E5");
-    readDoc(keyboardMapping.keyButtonE6, doc, "E6");
-    readDoc(keyboardMapping.keyButtonE7, doc, "E7");
-    readDoc(keyboardMapping.keyButtonE8, doc, "E8");
-    readDoc(keyboardMapping.keyButtonE9, doc, "E9");
-    readDoc(keyboardMapping.keyButtonE10, doc, "E10");
-    readDoc(keyboardMapping.keyButtonE11, doc, "E11");
-    readDoc(keyboardMapping.keyButtonE12, doc, "E12");
+    readKeyboardMapping(Storage::getInstance().getKeyboardMapping(), doc.as<JsonVariantConst>());
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
@@ -1643,42 +1659,37 @@ std::string setKeyMappings()
 
 std::string getKeyMappings()
 {
-    const size_t capacity = JSON_OBJECT_SIZE(100);
-    DynamicJsonDocument doc(capacity);
-    const KeyboardMapping& keyboardMapping = Storage::getInstance().getKeyboardMapping();
+    DynamicJsonDocument doc(JSON_OBJECT_SIZE(std::size(keyboardMappingFields)));
+    writeKeyboardMapping(doc.to<JsonObject>(), Storage::getInstance().getKeyboardMapping());
 
-    writeDoc(doc, "Up", keyboardMapping.keyDpadUp);
-    writeDoc(doc, "Down", keyboardMapping.keyDpadDown);
-    writeDoc(doc, "Left", keyboardMapping.keyDpadLeft);
-    writeDoc(doc, "Right", keyboardMapping.keyDpadRight);
-    writeDoc(doc, "B1", keyboardMapping.keyButtonB1);
-    writeDoc(doc, "B2", keyboardMapping.keyButtonB2);
-    writeDoc(doc, "B3", keyboardMapping.keyButtonB3);
-    writeDoc(doc, "B4", keyboardMapping.keyButtonB4);
-    writeDoc(doc, "L1", keyboardMapping.keyButtonL1);
-    writeDoc(doc, "R1", keyboardMapping.keyButtonR1);
-    writeDoc(doc, "L2", keyboardMapping.keyButtonL2);
-    writeDoc(doc, "R2", keyboardMapping.keyButtonR2);
-    writeDoc(doc, "S1", keyboardMapping.keyButtonS1);
-    writeDoc(doc, "S2", keyboardMapping.keyButtonS2);
-    writeDoc(doc, "L3", keyboardMapping.keyButtonL3);
-    writeDoc(doc, "R3", keyboardMapping.keyButtonR3);
-    writeDoc(doc, "A1", keyboardMapping.keyButtonA1);
-    writeDoc(doc, "A2", keyboardMapping.keyButtonA2);
-    writeDoc(doc, "A3", keyboardMapping.keyButtonA3);
-    writeDoc(doc, "A4", keyboardMapping.keyButtonA4);
-    writeDoc(doc, "E1", keyboardMapping.keyButtonE1);
-    writeDoc(doc, "E2", keyboardMapping.keyButtonE2);
-    writeDoc(doc, "E3", keyboardMapping.keyButtonE3);
-    writeDoc(doc, "E4", keyboardMapping.keyButtonE4);
-    writeDoc(doc, "E5", keyboardMapping.keyButtonE5);
-    writeDoc(doc, "E6", keyboardMapping.keyButtonE6);
-    writeDoc(doc, "E7", keyboardMapping.keyButtonE7);
-    writeDoc(doc, "E8", keyboardMapping.keyButtonE8);
-    writeDoc(doc, "E9", keyboardMapping.keyButtonE9);
-    writeDoc(doc, "E10", keyboardMapping.keyButtonE10);
-    writeDoc(doc, "E11", keyboardMapping.keyButtonE11);
-    writeDoc(doc, "E12", keyboardMapping.keyButtonE12);
+    return serialize_json(doc);
+}
+
+std::string setProfileKeyMappings()
+{
+    DynamicJsonDocument doc = get_post_data();
+    ProfileOptions& profileOptions = Storage::getInstance().getProfileOptions();
+
+    pb_size_t index = 0;
+    for (JsonVariantConst mapping : doc["profiles"].as<JsonArrayConst>()) {
+        if (index >= profileOptions.gpioMappingsSets_count) break;
+        readKeyboardMapping(profileOptions.gpioMappingsSets[index++].keyboardMapping, mapping);
+    }
+
+    EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
+
+    return serialize_json(doc);
+}
+
+std::string getProfileKeyMappings()
+{
+    const ProfileOptions& profileOptions = Storage::getInstance().getProfileOptions();
+    DynamicJsonDocument doc(JSON_OBJECT_SIZE(1) + JSON_ARRAY_SIZE(profileOptions.gpioMappingsSets_count)
+        + profileOptions.gpioMappingsSets_count * JSON_OBJECT_SIZE(std::size(keyboardMappingFields)));
+
+    JsonArray profiles = doc.createNestedArray("profiles");
+    for (pb_size_t i = 0; i < profileOptions.gpioMappingsSets_count; i++)
+        writeKeyboardMapping(profiles.createNestedObject(), profileOptions.gpioMappingsSets[i].keyboardMapping);
 
     return serialize_json(doc);
 }
@@ -3253,6 +3264,7 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/setReactiveLEDs", setReactiveLEDs },
     { "/api/getReactiveLEDs", getReactiveLEDs },
     { "/api/setKeyMappings", setKeyMappings },
+    { "/api/setProfileKeyMappings", setProfileKeyMappings },
     { "/api/setAddonsOptions", setAddonOptions },
     { "/api/setMacroAddonOptions", setMacroAddonOptions },
     { "/api/setPS4Options", setPS4Options },
@@ -3267,6 +3279,7 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/getPinMappings", getPinMappings },
     { "/api/getProfileOptions", getProfileOptions },
     { "/api/getKeyMappings", getKeyMappings },
+    { "/api/getProfileKeyMappings", getProfileKeyMappings },
     { "/api/getAddonsOptions", getAddonOptions },
     { "/api/getWiiControls", getWiiControls },
     { "/api/getMacroAddonOptions", getMacroAddonOptions },

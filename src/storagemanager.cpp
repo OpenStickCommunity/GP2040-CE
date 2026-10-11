@@ -110,15 +110,17 @@ char* Storage::currentProfileLabel() {
 
 void Storage::setFunctionalPinMappings()
 {
-	GpioMappingInfo* alts = nullptr;
+	GpioMappings* profile = nullptr;
 	uint32_t profileCeiling = config.profileOptions.gpioMappingsSets_count + 1;
 
 	if (config.gamepadOptions.profileNumber >= 2 &&
 			config.gamepadOptions.profileNumber <= profileCeiling) {
 		if (config.profileOptions.gpioMappingsSets[config.gamepadOptions.profileNumber-2].enabled) {
-			alts = config.profileOptions.gpioMappingsSets[config.gamepadOptions.profileNumber-2].pins;
+			profile = &config.profileOptions.gpioMappingsSets[config.gamepadOptions.profileNumber-2];
 		}
 	}
+	GpioMappingInfo* alts = profile ? profile->pins : nullptr;
+	activeKeyboardMapping = profile ? &profile->keyboardMapping : &config.keyboardMapping;
 
 	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
 		// assign the functional pin to the profile pin if:

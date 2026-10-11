@@ -529,6 +529,13 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.keyboardMapping, keyButtonA1, KEY_BUTTON_A1);
     INIT_UNSET_PROPERTY(config.keyboardMapping, keyButtonA2, KEY_BUTTON_A2);
 
+    for (GpioMappings& profile : config.profileOptions.gpioMappingsSets) {
+        if (!profile.has_keyboardMapping) {
+            profile.keyboardMapping = config.keyboardMapping;
+            profile.has_keyboardMapping = true;
+        }
+    }
+
     // displayOptions
     INIT_UNSET_PROPERTY(config.displayOptions, enabled, !!HAS_I2C_DISPLAY);
     INIT_UNSET_PROPERTY(config.displayOptions, deprecatedI2cBlock, (DISPLAY_I2C_BLOCK == i2c0) ? 0 : 1);

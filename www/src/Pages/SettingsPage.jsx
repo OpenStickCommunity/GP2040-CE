@@ -634,7 +634,10 @@ const FormContext = ({ setButtonLabels, setKeyMappings }) => {
 				swapTpShareLabels:
 					options.switchTpShareForDs4 === 1 && options.inputMode === 4,
 			});
-			setKeyMappings(await WebApi.getKeyMappings(setLoading));
+			setKeyMappings([
+				await WebApi.getKeyMappings(setLoading),
+				...(await WebApi.getProfileKeyMappings()),
+			]);
 		}
 		fetchData();
 	}, [setKeyMappings, setValues]);
@@ -712,7 +715,8 @@ export default function SettingsPage() {
 	const [activeColorPart, setActiveColorPart] = useState(null);
 	const [warning, setWarning] = useState({ show: false, acceptText: '' });
 	const [validated, setValidated] = useState(false);
-	const [keyMappings, setKeyMappings] = useState(baseButtonMappings);
+	const [keyMappings, setKeyMappings] = useState([baseButtonMappings]);
+	const [keyboardProfile, setKeyboardProfile] = useState(0);
 
 	const [message, setMessage] = useState(null);
 	const [PS4Key, setPS4Key] = useState();
@@ -859,11 +863,14 @@ export default function SettingsPage() {
 		},
 	];
 
-	const handleKeyChange = (value, button) => {
-		const newMappings = { ...keyMappings };
-		newMappings[button].key = value;
-		setKeyMappings(newMappings);
-	};
+	const handleKeyChange = (value, button) =>
+		setKeyMappings((mappings) =>
+			mappings.map((mapping, index) =>
+				index === keyboardProfile
+					? { ...mapping, [button]: { ...mapping[button], key: value } }
+					: mapping,
+			),
+		);
 
 	const generateDeviceTypeSelection = (
 		values,
@@ -982,6 +989,32 @@ export default function SettingsPage() {
 						<div>{t('SettingsPage:keyboard-mapping-sub-header-text')}</div>
 					</Col>
 				</Row>
+				{keyMappings.length > 1 && (
+					<Row className="mb-3">
+						<Col sm={4}>
+							<Form.Label>
+								{t('SettingsPage:keyboard-profile-label')}
+							</Form.Label>
+							<Form.Select
+								className="form-select-sm"
+								value={keyboardProfile}
+								onChange={(e) => setKeyboardProfile(Number(e.target.value))}
+							>
+								{keyMappings.map((_, index) => (
+									<option key={`keyboard-profile-${index}`} value={index}>
+										{profiles[index]?.profileLabel ||
+											t('PinMapping:profile-label-default', {
+												profileNumber: index + 1,
+											})}
+										{index > 0 &&
+											profiles[index]?.enabled === false &&
+											t('PinMapping:profile-disabled')}
+									</option>
+								))}
+							</Form.Select>
+						</Col>
+					</Row>
+				)}
 				<KeyboardMapper
 					buttonLabels={buttonLabels}
 					handleKeyChange={handleKeyChange}
@@ -1832,7 +1865,10 @@ export default function SettingsPage() {
 			setWarning({ show: true, acceptText: '' });
 		} else {
 			if (isKeyboardMode) {
-				await WebApi.setKeyMappings(keyMappings);
+				const [baseMappings, ...profileMappings] = keyMappings;
+				await WebApi.setKeyMappings(baseMappings);
+				if (profileMappings.length)
+					await WebApi.setProfileKeyMappings(profileMappings);
 			}
 			await saveSettings(data);
 		}
@@ -1883,7 +1919,8 @@ export default function SettingsPage() {
 		swapTpShareLabels,
 	);
 
-	const getKeyMappingForButton = (button) => keyMappings[button];
+	const getKeyMappingForButton = (button) =>
+		keyMappings[keyboardProfile][button];
 
 	const { t } = useTranslation('');
 
