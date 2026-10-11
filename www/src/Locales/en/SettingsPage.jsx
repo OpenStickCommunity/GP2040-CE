@@ -11,6 +11,7 @@ export default {
 		xinput: 'XInput',
 		'nintendo-switch': 'Nintendo Switch',
 		'nintendo-switch-pro': 'Nintendo Switch Pro',
+		'nintendo-switch2-pro': 'Nintendo Switch 2 Pro',
 		ps3: 'PS3',
 		generic: 'Generic HID',
 		keyboard: 'Keyboard',
@@ -70,6 +71,42 @@ export default {
 	'ps4-id-mode-label': 'Identification Mode',
 	'ps4-id-mode-explanation-text':
 		'<ul><li>Console mode is used when connecting primarily to a PS4 console.</li><li>Remote/Emulation mode should only be used when connecting to an emulation layer or remote playing environment that requires a DualShock 4-compatible controller.</li></ul>',
+	'switch2-pro-identity-label': 'Controller Type',
+	'switch2-pro-identity-options': {
+		pro2: 'Switch 2 Pro Controller',
+		gamecube: 'GameCube Controller',
+		'joycon2-left': 'Joy-Con 2 (L)',
+		'joycon2-right': 'Joy-Con 2 (R)',
+	},
+	'switch2-pro-joycon2-color-explanation':
+		'Sets the colors the Switch 2 shows for this Joy-Con 2.',
+	'switch2-pro-joycon2-color-presets': {
+		stock: 'Stock',
+		'purple-green': 'Purple / Green',
+		'blue-yellow': 'Blue / Yellow',
+		gp2040: 'GP2040-CE',
+		custom: 'Custom',
+	},
+	'switch2-pro-joycon2-color-parts': {
+		body: 'Body',
+		buttons: 'Buttons',
+		accent: 'Accent',
+		stick: 'Stick',
+	},
+	'switch2-pro-color-label': 'Controller Display Colors',
+	'switch2-pro-color-explanation':
+		'Sets the colors the Switch 2 shows for this controller.',
+	'switch2-pro-color-presets': {
+		stock: 'Stock',
+		gp2040: 'GP2040-CE',
+		custom: 'Custom',
+	},
+	'switch2-pro-color-parts': {
+		'face-plate': 'Face Plate',
+		buttons: 'Buttons',
+		highlight: 'Highlight',
+		'main-body': 'Main Body',
+	},
 	'ps4-id-mode-options': {
 		console: 'Console',
 		emulation: 'Remote/Emulation',
