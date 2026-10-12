@@ -4,6 +4,7 @@
  */
 
 #include "drivers/switch2pro/Switch2ProDriver.h"
+#include "BoardConfig.h"
 #include "storagemanager.h"
 #include "mbedtls/aes.h"
 #include "pico/rand.h"
@@ -21,6 +22,10 @@
 #define VENDOR_REQ_DEVICE_INFO  0x02
 #define VENDOR_REQ_FACTORY_DATA 0x03
 #define VENDOR_REQ_SET_MAX_LEN  0x04
+
+#ifndef SWITCH_TRIGGER_THRESHOLD
+#define SWITCH_TRIGGER_THRESHOLD 128
+#endif
 
 
 typedef enum {
@@ -64,11 +69,55 @@ static uint8_t configuration[sizeof(switch2pro_configuration_descriptor)];
 static uint8_t joyCon2Side = 0;
 static uint16_t stringDescriptor[64];
 
+static uint8_t decode_switch2_motor(const uint8_t *d) {
+    // d points to 16 bytes of Switch 2 HD rumble data:
+    // d[0]: Sequence counter (0x50..0x5F)
+    // d[1]: HF frequency
+    // d[2]: HF amplitude (0x01 when idle/0 amp, non-zero when active: d[2] & 0xFE)
+    // d[3]: LF frequency
+    // d[4]: LF amplitude (0x1C..0x1F when idle/0 amp; bit 7 (0x80) is set when active)
+    // d[5]: Extension / sub-band amplitude (0x00 when idle)
+    uint8_t hf_amp = (d[2] & 0xFE);
+    uint8_t lf_amp = (d[4] & 0x80) ? ((d[4] & 0x7F) * 2) : 0;
+    uint8_t ext_amp = d[5];
+
+    uint16_t scaled_hf = (hf_amp * 255) / 200;
+    uint16_t scaled_lf = (lf_amp * 255) / 50;
+    uint16_t scaled_ext = (uint16_t)ext_amp * 16;
+
+    uint16_t max_amp = scaled_hf;
+    if (scaled_lf > max_amp) max_amp = scaled_lf;
+    if (scaled_ext > max_amp) max_amp = scaled_ext;
+
+    return (max_amp > 255) ? 255 : (uint8_t)max_amp;
+}
+
+static uint8_t decode_switch1_motor(const uint8_t *d) {
+    uint8_t hf_amp = d[1] & 0xFE;
+    uint8_t lf_amp = (d[3] >= 0x40) ? (d[3] - 0x40) : 0;
+    uint16_t scaled_hf = (hf_amp * 255) / 200;
+    uint16_t scaled_lf = (lf_amp * 255) / 50;
+    uint16_t max_amp = (scaled_hf > scaled_lf) ? scaled_hf : scaled_lf;
+    return (max_amp > 255) ? 255 : (uint8_t)max_amp;
+}
+
+static void setSwitch2ProRumble(uint8_t left, uint8_t right) {
+    Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
+    if (gamepad == nullptr) return;
+
+    gamepad->auxState.haptics.leftActuator.active = (left > 0);
+    gamepad->auxState.haptics.leftActuator.intensity = left;
+
+    gamepad->auxState.haptics.rightActuator.active = (right > 0);
+    gamepad->auxState.haptics.rightActuator.intensity = right;
+}
+
 static void resetProtocolState() {
     cmdReplyLen = 0;
     cmdReplyPending = false;
     reportsEnabled = false;
     playerLedMask = 0;
+    setSwitch2ProRumble(0, 0);
 }
 
 static void setReply(uint8_t command, uint8_t subcommand, const uint8_t *payload, uint16_t payloadLen) {
@@ -243,8 +292,20 @@ static void handleCommand(const uint8_t *req) {
             break;
         case CMD_VIBRATION:
             if (sub == 0x02) {
+                if (req[8] == 0) {
+                    setSwitch2ProRumble(0, 0);
+                } else {
+                    setSwitch2ProRumble(200, 200);
+                }
                 const uint8_t payload[] = { req[8], 0x00, 0x00, 0x00 };
                 setReply(command, sub, payload, sizeof(payload));
+            } else if (sub == 0x08) {
+                bool active = false;
+                for (int i = 8; i < 28 && i < CMD_BUFFER_LEN; i++) {
+                    if (req[i] != 0 && req[i] != 0xFF) active = true;
+                }
+                if (active) setSwitch2ProRumble(200, 200);
+                setReply(command, sub, nullptr, 0);
             } else {
                 setReply(command, sub, nullptr, 0);
             }
@@ -558,7 +619,11 @@ bool Switch2ProDriver::process(Gamepad * gamepad) {
     if (gamepad->pressedB3()) b0 |= SWITCH2_PRO_MASK_Y;
     if (gamepad->pressedB4()) b0 |= SWITCH2_PRO_MASK_X;
     if (gamepad->pressedR1()) b0 |= SWITCH2_PRO_MASK_R;
-    if (gamepad->pressedR2()) b0 |= SWITCH2_PRO_MASK_ZR;
+    bool zr_pressed = gamepad->pressedR2();
+    if (gamepad->hasAnalogTriggers || gamepad->hasRightAnalogStick)
+        zr_pressed |= (gamepad->state.rt >= SWITCH_TRIGGER_THRESHOLD);
+    if (zr_pressed) b0 |= SWITCH2_PRO_MASK_ZR;
+
     if (gamepad->pressedS2()) b0 |= SWITCH2_PRO_MASK_PLUS;
     if (gamepad->pressedR3()) b0 |= SWITCH2_PRO_MASK_RSTICK;
 
@@ -567,7 +632,11 @@ bool Switch2ProDriver::process(Gamepad * gamepad) {
     if (gamepad->pressedLeft())  b1 |= SWITCH2_PRO_MASK_LEFT;
     if (gamepad->pressedUp())    b1 |= SWITCH2_PRO_MASK_UP;
     if (gamepad->pressedL1())    b1 |= SWITCH2_PRO_MASK_L;
-    if (gamepad->pressedL2())    b1 |= SWITCH2_PRO_MASK_ZL;
+
+    bool zl_pressed = gamepad->pressedL2();
+    if (gamepad->hasAnalogTriggers || gamepad->hasLeftAnalogStick)
+        zl_pressed |= (gamepad->state.lt >= SWITCH_TRIGGER_THRESHOLD);
+    if (zl_pressed) b1 |= SWITCH2_PRO_MASK_ZL;
     if (gamepad->pressedS1())    b1 |= SWITCH2_PRO_MASK_MINUS;
     if (gamepad->pressedL3())    b1 |= SWITCH2_PRO_MASK_LSTICK;
 
@@ -610,8 +679,8 @@ bool Switch2ProDriver::process(Gamepad * gamepad) {
             if (gamepad->pressedA1()) j1 |= 0x01;
             if (gamepad->pressedA3()) j1 |= 0x10;
         }
-        if (gamepad->pressedL2()) j0 |= 0x10;
-        if (gamepad->pressedR2()) j0 |= 0x20;
+        if (zl_pressed) j0 |= 0x10;
+        if (zr_pressed) j0 |= 0x20;
         if (gamepad->pressedL1()) j1 |= 0x80;
         if (gamepad->pressedR1()) j1 |= 0x40;
         memset(&inputReport[1], 0, sizeof(inputReport) - 1);
@@ -647,6 +716,50 @@ uint16_t Switch2ProDriver::get_report(uint8_t report_id, hid_report_type_t repor
 }
 
 void Switch2ProDriver::set_report(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize) {
+    if (bufsize == 0 || buffer == nullptr) return;
+
+    uint8_t switchReportID = report_id;
+    const uint8_t *data = buffer;
+    uint16_t dataLen = bufsize;
+
+    if (report_id == 0) {
+        switchReportID = buffer[0];
+        data = buffer + 1;
+        dataLen = bufsize - 1;
+    }
+
+    if (switchReportID == 0x02) {
+        // Pro Controller 2 Output Report (16 bytes Left + 16 bytes Right)
+        if (dataLen >= 32) {
+            uint8_t left = decode_switch2_motor(data);
+            uint8_t right = decode_switch2_motor(data + 16);
+            setSwitch2ProRumble(left, right);
+        }
+    } else if (switchReportID == 0x01) {
+        if (dataLen >= 16 && (data[0] & 0xF0) == 0x50) {
+            // Joy-Con 2 Output Report (16 bytes HD rumble)
+            uint8_t rumble = decode_switch2_motor(data);
+            if (joyCon2Side == 1) {
+                setSwitch2ProRumble(rumble, 0);
+            } else if (joyCon2Side == 2) {
+                setSwitch2ProRumble(0, rumble);
+            } else {
+                setSwitch2ProRumble(rumble, rumble);
+            }
+        } else if (dataLen >= 9) {
+            // Backward-compatible Switch 1 Output Report 0x01
+            uint8_t left = decode_switch1_motor(data + 1);
+            uint8_t right = decode_switch1_motor(data + 5);
+            setSwitch2ProRumble(left, right);
+        }
+    } else if (switchReportID == 0x10 || switchReportID == 0x80) {
+        // Backward-compatible Switch 1 Output Report 0x10 / Feature 0x80
+        if (dataLen >= 9) {
+            uint8_t left = decode_switch1_motor(data + 1);
+            uint8_t right = decode_switch1_motor(data + 5);
+            setSwitch2ProRumble(left, right);
+        }
+    }
 }
 
 bool Switch2ProDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request) {
