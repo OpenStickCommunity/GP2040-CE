@@ -5,7 +5,7 @@ void GPButton::draw() {
     // new style button:
     uint16_t baseX = this->x;
     uint16_t baseY = this->y;
-    Mask_t pinValues = ~gpio_get_all();
+    Mask_t pinValues = ~gpio_get_all64();
 
     // scale to viewport
     double scaleX = this->getScaleX();

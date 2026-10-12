@@ -602,7 +602,10 @@ std::string setProfileOptions()
 
 std::string getProfileOptions()
 {
-    const size_t capacity = JSON_OBJECT_SIZE(500);
+    ProfileOptions& profileOptions = Storage::getInstance().getProfileOptions();
+    // Make capacity slots dynamic, max for 5 profiles * 48 pins is 976 slots
+    const size_t capacity = JSON_OBJECT_SIZE(1) + JSON_ARRAY_SIZE(profileOptions.gpioMappingsSets_count)
+        + (profileOptions.gpioMappingsSets_count * JSON_OBJECT_SIZE(4 * NUM_BANK0_GPIOS + 2));
     DynamicJsonDocument doc(capacity);
 
     const auto writePinDoc = [&](const int item, const char* key, const GpioMappingInfo& value) -> void
@@ -611,8 +614,6 @@ std::string getProfileOptions()
         writeDoc(doc, "alternativePinMappings", item, key, "customButtonMask", value.customButtonMask);
         writeDoc(doc, "alternativePinMappings", item, key, "customDpadMask", value.customDpadMask);
     };
-
-    ProfileOptions& profileOptions = Storage::getInstance().getProfileOptions();
 
     // return an empty list if no profiles are currently set, since we no longer populate by default
     if (profileOptions.gpioMappingsSets_count == 0) {
@@ -707,6 +708,21 @@ std::string setGamepadOptions()
     readDoc(gamepadOptions.ps5AuthType, doc, "ps5AuthType");
     readDoc(gamepadOptions.xinputAuthType, doc, "xinputAuthType");
     readDoc(gamepadOptions.ps4ControllerIDMode, doc, "ps4ControllerIDMode");
+    readDoc(gamepadOptions.switch2ProIdentity, doc, "switch2ProIdentity");
+    readDoc(gamepadOptions.switch2ProColorPreset, doc, "switch2ProColorPreset");
+    readDoc(gamepadOptions.switch2ProBodyColor, doc, "switch2ProBodyColor");
+    readDoc(gamepadOptions.switch2ProButtonsColor, doc, "switch2ProButtonsColor");
+    readDoc(gamepadOptions.switch2ProHighlightColor, doc, "switch2ProHighlightColor");
+    readDoc(gamepadOptions.switch2ProGripColor, doc, "switch2ProGripColor");
+    readDoc(gamepadOptions.switch2ProJoyCon2ColorPreset, doc, "switch2ProJoyCon2ColorPreset");
+    readDoc(gamepadOptions.switch2ProJoyCon2LeftBodyColor, doc, "switch2ProJoyCon2LeftBodyColor");
+    readDoc(gamepadOptions.switch2ProJoyCon2LeftButtonsColor, doc, "switch2ProJoyCon2LeftButtonsColor");
+    readDoc(gamepadOptions.switch2ProJoyCon2LeftAccentColor, doc, "switch2ProJoyCon2LeftAccentColor");
+    readDoc(gamepadOptions.switch2ProJoyCon2LeftStickColor, doc, "switch2ProJoyCon2LeftStickColor");
+    readDoc(gamepadOptions.switch2ProJoyCon2RightBodyColor, doc, "switch2ProJoyCon2RightBodyColor");
+    readDoc(gamepadOptions.switch2ProJoyCon2RightButtonsColor, doc, "switch2ProJoyCon2RightButtonsColor");
+    readDoc(gamepadOptions.switch2ProJoyCon2RightAccentColor, doc, "switch2ProJoyCon2RightAccentColor");
+    readDoc(gamepadOptions.switch2ProJoyCon2RightStickColor, doc, "switch2ProJoyCon2RightStickColor");
     readDoc(gamepadOptions.usbDescOverride, doc, "usbDescOverride");
     readDoc(gamepadOptions.miniMenuGamepadInput, doc, "miniMenuGamepadInput");
     // Copy USB descriptor strings
@@ -777,6 +793,21 @@ std::string getGamepadOptions()
     writeDoc(doc, "ps5AuthType", gamepadOptions.ps5AuthType);
     writeDoc(doc, "xinputAuthType", gamepadOptions.xinputAuthType);
     writeDoc(doc, "ps4ControllerIDMode", gamepadOptions.ps4ControllerIDMode);
+    writeDoc(doc, "switch2ProIdentity", gamepadOptions.switch2ProIdentity);
+    writeDoc(doc, "switch2ProColorPreset", gamepadOptions.switch2ProColorPreset);
+    writeDoc(doc, "switch2ProBodyColor", gamepadOptions.switch2ProBodyColor);
+    writeDoc(doc, "switch2ProButtonsColor", gamepadOptions.switch2ProButtonsColor);
+    writeDoc(doc, "switch2ProHighlightColor", gamepadOptions.switch2ProHighlightColor);
+    writeDoc(doc, "switch2ProGripColor", gamepadOptions.switch2ProGripColor);
+    writeDoc(doc, "switch2ProJoyCon2ColorPreset", gamepadOptions.switch2ProJoyCon2ColorPreset);
+    writeDoc(doc, "switch2ProJoyCon2LeftBodyColor", gamepadOptions.switch2ProJoyCon2LeftBodyColor);
+    writeDoc(doc, "switch2ProJoyCon2LeftButtonsColor", gamepadOptions.switch2ProJoyCon2LeftButtonsColor);
+    writeDoc(doc, "switch2ProJoyCon2LeftAccentColor", gamepadOptions.switch2ProJoyCon2LeftAccentColor);
+    writeDoc(doc, "switch2ProJoyCon2LeftStickColor", gamepadOptions.switch2ProJoyCon2LeftStickColor);
+    writeDoc(doc, "switch2ProJoyCon2RightBodyColor", gamepadOptions.switch2ProJoyCon2RightBodyColor);
+    writeDoc(doc, "switch2ProJoyCon2RightButtonsColor", gamepadOptions.switch2ProJoyCon2RightButtonsColor);
+    writeDoc(doc, "switch2ProJoyCon2RightAccentColor", gamepadOptions.switch2ProJoyCon2RightAccentColor);
+    writeDoc(doc, "switch2ProJoyCon2RightStickColor", gamepadOptions.switch2ProJoyCon2RightStickColor);
     writeDoc(doc, "usbDescOverride", gamepadOptions.usbDescOverride);
     writeDoc(doc, "usbDescManufacturer", gamepadOptions.usbDescManufacturer);
     writeDoc(doc, "usbDescProduct", gamepadOptions.usbDescProduct);
@@ -982,9 +1013,10 @@ std::string setLightsDataOptions()
             break;
     }
 
-    NeoPicoLEDAddon::RestartLedSystem();
+    AnimationStation::getInstance().setRestartLeds(true);
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
+    
     return serialize_json(doc);
 }
 
@@ -1161,6 +1193,7 @@ std::string getLightsDataPresets()
 std::string setLightsToDefault()
 {
     DynamicJsonDocument doc = get_post_data();
+    AnimationStation & AnimStation = AnimationStation::getInstance();
 
     JsonObject docJson = doc.as<JsonObject>();
     const char*  resetName = docJson["ResetName"];
@@ -1168,45 +1201,45 @@ std::string setLightsToDefault()
     if(strcmp(resetName, LIGHT_DATA_NAME_DEFAULT) == 0)
     {
         const unsigned char lightData[] = { LIGHT_DATA_DEFAULT };
-        NeoPicoLEDAddon::AssignLedPreset(lightData, sizeof(lightData));
+        AnimStation.AssignLedPreset(lightData, sizeof(lightData));
     }
     else if(strcmp(resetName, LIGHT_DATA_NAME_1) == 0)
     {
         const unsigned char lightData[] = { LIGHT_DATA_1 };
-        NeoPicoLEDAddon::AssignLedPreset(lightData, sizeof(lightData));
+        AnimStation.AssignLedPreset(lightData, sizeof(lightData));
     }
     else if(strcmp(resetName, LIGHT_DATA_NAME_2) == 0)
     {
         const unsigned char lightData[] = { LIGHT_DATA_2 };
-        NeoPicoLEDAddon::AssignLedPreset(lightData, sizeof(lightData));
+        AnimStation.AssignLedPreset(lightData, sizeof(lightData));
     }
     else if(strcmp(resetName, LIGHT_DATA_NAME_3) == 0)
     {
         const unsigned char lightData[] = { LIGHT_DATA_3 };
-        NeoPicoLEDAddon::AssignLedPreset(lightData, sizeof(lightData));
+        AnimStation.AssignLedPreset(lightData, sizeof(lightData));
     }
     else if(strcmp(resetName, LIGHT_DATA_NAME_4) == 0)
     {
         const unsigned char lightData[] = { LIGHT_DATA_4 };
-        NeoPicoLEDAddon::AssignLedPreset(lightData, sizeof(lightData));
+        AnimStation.AssignLedPreset(lightData, sizeof(lightData));
     }
     else if(strcmp(resetName, LIGHT_DATA_NAME_5) == 0)
     {
         const unsigned char lightData[] = { LIGHT_DATA_5 };
-        NeoPicoLEDAddon::AssignLedPreset(lightData, sizeof(lightData));
+        AnimStation.AssignLedPreset(lightData, sizeof(lightData));
     }
     else if(strcmp(resetName, LIGHT_DATA_NAME_6) == 0)
     {
         const unsigned char lightData[] = { LIGHT_DATA_6 };
-        NeoPicoLEDAddon::AssignLedPreset(lightData, sizeof(lightData));
+        AnimStation.AssignLedPreset(lightData, sizeof(lightData));
     }
     else if(strcmp(resetName, LIGHT_DATA_NAME_7) == 0)
     {
         const unsigned char lightData[] = { LIGHT_DATA_7 };
-        NeoPicoLEDAddon::AssignLedPreset(lightData, sizeof(lightData));
+        AnimStation.AssignLedPreset(lightData, sizeof(lightData));
     }
 
-    NeoPicoLEDAddon::RestartLedSystem();
+    //AnimStation.setRestartLeds(true);
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
@@ -1216,95 +1249,49 @@ std::string setLightsToDefault()
 void helperGetProfileFromJsonObject(AnimationProfile* Profile, JsonObject* JsonData)
 {
     Profile->bEnabled = (*JsonData)["bEnabled"].as<bool>();
-    if(Profile->baseNonPressedEffect != (AnimationNonPressedEffects)((*JsonData)["baseNonPressedEffect"].as<uint32_t>()))
-    {
-        Profile->baseNonPressedEffect = (AnimationNonPressedEffects)((*JsonData)["baseNonPressedEffect"].as<uint32_t>());
-    }
-    if(Profile->basePressedEffect != (AnimationPressedEffects)((*JsonData)["basePressedEffect"].as<uint32_t>()))
-    {
-        Profile->basePressedEffect = (AnimationPressedEffects)((*JsonData)["basePressedEffect"].as<uint32_t>());
-    }
-    if(Profile->baseCaseEffect != (AnimationNonPressedEffects)((*JsonData)["baseCaseEffect"].as<uint32_t>()))
-    {
-        Profile->baseCaseEffect = (AnimationNonPressedEffects)((*JsonData)["baseCaseEffect"].as<uint32_t>());
-    }
-
+    Profile->baseNonPressedEffect = (AnimationNonPressedEffects)((*JsonData)["baseNonPressedEffect"].as<uint32_t>());
+    Profile->basePressedEffect = (AnimationPressedEffects)((*JsonData)["basePressedEffect"].as<uint32_t>());
+    Profile->baseCaseEffect = (AnimationNonPressedEffects)((*JsonData)["baseCaseEffect"].as<uint32_t>());
     Profile->buttonPressHoldTimeInMs = (*JsonData)["buttonPressHoldTimeInMs"].as<uint32_t>();
     Profile->buttonPressFadeOutTimeInMs = (*JsonData)["buttonPressFadeOutTimeInMs"].as<uint32_t>();
     Profile->nonPressedSpecialColor = (*JsonData)["nonPressedSpecialColor"].as<uint32_t>();
     Profile->bUseCaseLightsInPressedAnimations = (*JsonData)["bUseCaseLightsInPressedAnimations"].as<bool>();
     Profile->pressedSpecialColor = (*JsonData)["pressedSpecialColor"].as<uint32_t>();
     Profile->caseSpecialColor = (*JsonData)["caseSpecialColor"].as<uint32_t>();
-
     Profile->baseCycleTime = (*JsonData)["baseCycleTime"].as<uint32_t>() - 1;
     Profile->basePressedCycleTime = (*JsonData)["basePressedCycleTime"].as<uint32_t>() - 1;
     Profile->baseCaseCycleTime = (*JsonData)["baseCaseCycleTime"].as<uint32_t>() - 1;
-
     Profile->effectContextParam = (*JsonData)["nonPressedContextParam"].as<uint32_t>() & 0xFF;
     Profile->effectContextParam += ((*JsonData)["pressedContextParam"].as<uint32_t>() & 0xFF) << 8;
     Profile->effectContextParam += ((*JsonData)["caseContextParam"].as<uint32_t>() & 0xFF) << 16;
-
     Profile->bNonPressedSpecialColorIsRainbow = (*JsonData)["bNonPressedSpecialColorIsRainbow"].as<bool>();
     Profile->bPressedSpecialColorIsRainbow = (*JsonData)["bPressedSpecialColorIsRainbow"].as<bool>();
     Profile->bCaseSpecialColorIsRainbow = (*JsonData)["bCaseSpecialColorIsRainbow"].as<bool>();
 
     JsonArray notPressedStaticColorsList = (*JsonData)["notPressedStaticColors"];
-    Profile->notPressedStaticColors_count = 0;
-    for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS + 3) / 4; ++packedPinIndex)
-    {
-        unsigned int pinIndex = packedPinIndex * 4;
-        if(pinIndex < notPressedStaticColorsList.size())
-            Profile->notPressedStaticColors[packedPinIndex] = notPressedStaticColorsList[pinIndex].as<uint32_t>() & 0xFF;
-        else
-            break;
-        if(pinIndex+1 < notPressedStaticColorsList.size())
-            Profile->notPressedStaticColors[packedPinIndex] += ((notPressedStaticColorsList[pinIndex+1].as<uint32_t>() & 0xFF) << 8);
-        if(pinIndex+2 < notPressedStaticColorsList.size())
-            Profile->notPressedStaticColors[packedPinIndex] += ((notPressedStaticColorsList[pinIndex+2].as<uint32_t>() & 0xFF) << 16);
-        if(pinIndex+3 < notPressedStaticColorsList.size())
-            Profile->notPressedStaticColors[packedPinIndex] += ((notPressedStaticColorsList[pinIndex+3].as<uint32_t>() & 0xFF) << 24);
-        Profile->notPressedStaticColors_count = packedPinIndex+1;
-    }
-
     JsonArray pressedStaticColorsList = (*JsonData)["pressedStaticColors"];
-    Profile->pressedStaticColors_count = 0;
-    for(unsigned int packedPinIndex = 0; packedPinIndex < (NUM_BANK0_GPIOS + 3) / 4; ++packedPinIndex)
-    {
-        unsigned int pinIndex = packedPinIndex * 4;
-        if(pinIndex < pressedStaticColorsList.size())
-            Profile->pressedStaticColors[packedPinIndex] = pressedStaticColorsList[pinIndex].as<uint32_t>() & 0xFF;
-        else
-            break;
-        if(pinIndex+1 < pressedStaticColorsList.size())
-            Profile->pressedStaticColors[packedPinIndex] += ((pressedStaticColorsList[pinIndex+1].as<uint32_t>() & 0xFF) << 8);
-        if(pinIndex+2 < pressedStaticColorsList.size())
-            Profile->pressedStaticColors[packedPinIndex] += ((pressedStaticColorsList[pinIndex+2].as<uint32_t>() & 0xFF) << 16);
-        if(pinIndex+3 < pressedStaticColorsList.size())
-            Profile->pressedStaticColors[packedPinIndex] += ((pressedStaticColorsList[pinIndex+3].as<uint32_t>() & 0xFF) << 24);
-        Profile->pressedStaticColors_count = packedPinIndex+1;
-    }
-
     JsonArray nonButtonStaticColorsList = (*JsonData)["nonButtonStaticColors"];
-    Profile->nonButtonStaticColors_count = 0;
-    for(unsigned int packedPinIndex = 0; packedPinIndex < (MAX_NON_BUTTON_LIGHT_COLOR_INDEXES/4)+1; ++packedPinIndex)
-    {
-        unsigned int pinIndex = packedPinIndex * 4;
-        if(pinIndex < nonButtonStaticColorsList.size())
-            Profile->nonButtonStaticColors[packedPinIndex] = nonButtonStaticColorsList[pinIndex].as<uint32_t>() & 0xFF;
-        else
-            break;
-        if(pinIndex+1 < nonButtonStaticColorsList.size())
-            Profile->nonButtonStaticColors[packedPinIndex] += ((nonButtonStaticColorsList[pinIndex+1].as<uint32_t>() & 0xFF) << 8);
-        if(pinIndex+2 < nonButtonStaticColorsList.size())
-            Profile->nonButtonStaticColors[packedPinIndex] += ((nonButtonStaticColorsList[pinIndex+2].as<uint32_t>() & 0xFF) << 16);
-        if(pinIndex+3 < nonButtonStaticColorsList.size())
-            Profile->nonButtonStaticColors[packedPinIndex] += ((nonButtonStaticColorsList[pinIndex+3].as<uint32_t>() & 0xFF) << 24);
-        Profile->nonButtonStaticColors_count = packedPinIndex+1;
+
+    memset(Profile->notPressedStaticColors.bytes, 0, NUM_BANK0_GPIOS);
+    memset(Profile->pressedStaticColors.bytes, 0, NUM_BANK0_GPIOS);
+    memset(Profile->nonButtonStaticColors.bytes, 0, MAX_NON_BUTTON_LIGHT_COLOR_INDEXES);
+
+    for(uint32_t i = 0; i < NUM_BANK0_GPIOS; i++){
+        Profile->notPressedStaticColors.bytes[i] = notPressedStaticColorsList[i].as<uint32_t>() & 0xFF;
+        Profile->pressedStaticColors.bytes[i] = pressedStaticColorsList[i].as<uint32_t>() & 0xFF;
     }
+    Profile->notPressedStaticColors.size = NUM_BANK0_GPIOS;
+    Profile->pressedStaticColors.size = NUM_BANK0_GPIOS;
+    for(uint32_t i = 0; i < MAX_NON_BUTTON_LIGHT_COLOR_INDEXES; i++){
+        Profile->nonButtonStaticColors.bytes[i] = nonButtonStaticColorsList[i].as<uint32_t>() & 0xFF;
+    }
+    Profile->nonButtonStaticColors.size = MAX_NON_BUTTON_LIGHT_COLOR_INDEXES;
 }
 
+// Fix issue here
 std::string setAnimationButtonTestMode()
 {
+    AnimationStation & AnimStation = AnimationStation::getInstance();
     DynamicJsonDocument doc = get_post_data();
 
     JsonObject docJson = doc.as<JsonObject>();
@@ -1328,16 +1315,17 @@ std::string setAnimationButtonTestMode()
         uint32_t checkedBrightnessMax = std::clamp<uint32_t>(testOptions["overrideMaxBrightness"].as<uint8_t>(), 0, 100);
         overrideMaxBrightness = int(((float)checkedBrightnessMax * 2.55f) +  + 0.5f); //+0.5 to cause it to round to nearest number
         overrideMaxBrightness = std::clamp<uint32_t>(overrideMaxBrightness, 0, 255);
-        overrideBrightness = std::clamp<uint32_t>(testOptions["overrideBrightness"].as<uint8_t>(), 0, AnimationStation::brightnessSteps);
+        overrideBrightness = std::clamp<uint32_t>(testOptions["overrideBrightness"].as<uint8_t>(), 0, AnimStation.getBrightnessSteps());
     }
 
-    AnimationStation::SetTestMode(testMode, &testAnimProfile, overrideBrightness, overrideMaxBrightness);
+    AnimStation.SetTestMode(testMode, &testAnimProfile, overrideBrightness, overrideMaxBrightness);
 
     return serialize_json(doc);
 }
 
 std::string setAnimationButtonTestState()
 {
+    AnimationStation & AnimStation = AnimationStation::getInstance();
     DynamicJsonDocument doc = get_post_data();
 
     JsonObject docJson = doc.as<JsonObject>();
@@ -1345,16 +1333,17 @@ std::string setAnimationButtonTestState()
     int testButton = testOptions["testID"].as<uint32_t>();
     bool testIsNonButtonLight = testOptions["testIsNonButtonLight"].as<bool>();
 
-    AnimationStation::SetTestPinState(testButton, testIsNonButtonLight);
+    AnimStation.SetTestPinState(testButton, testIsNonButtonLight);
 
     return serialize_json(doc);
 }
 
 std::string clearAnimationButtonTestMode()
 {
+    AnimationStation & AnimStation = AnimationStation::getInstance();
     DynamicJsonDocument doc = get_post_data();
 
-    AnimationStation::ClearTestMode();
+    AnimStation.ClearTestMode();
 
     return serialize_json(doc);
 }
@@ -1364,36 +1353,34 @@ std::string setAnimationProtoOptions()
     DynamicJsonDocument doc = get_post_data();
 
     AnimationOptions& options = Storage::getInstance().getAnimationOptions();
+    AnimationStation& AnimStation = AnimationStation::getInstance();
 
     JsonObject docJson = doc.as<JsonObject>();
     JsonObject AnimOptions = docJson["AnimationOptions"];
 
     options.brightness = AnimOptions["brightness"].as<uint32_t>();
-    options.brightness = std::clamp<uint32_t>(options.brightness, 0, AnimationStation::brightnessSteps);
+    options.brightness = std::clamp<uint32_t>(options.brightness, 0, AnimStation.getBrightnessSteps());
     options.autoDisableTime = AnimOptions["idletimeout"].as<uint32_t>() * 1000;
     options.baseProfileIndex = AnimOptions["baseProfileIndex"].as<uint32_t>();
+    AnimStation.SetSavedMode(options.baseProfileIndex);
     JsonArray customColorsList = AnimOptions["customColors"];
-    options.customColors_count = 0;
-    for(unsigned int customColorsIndex = 0; customColorsIndex < customColorsList.size() && customColorsIndex < MAX_CUSTOM_COLORS; ++customColorsIndex)
-    {
-        options.customColors[customColorsIndex] = customColorsList[customColorsIndex];
-        options.customColors_count = customColorsIndex+1;
+    options.customColors_count = std::min(customColorsList.size(), (size_t)MAX_CUSTOM_COLORS);
+    for(unsigned int customColorsIndex = 0; customColorsIndex < options.customColors_count; ++customColorsIndex) {
+        options.customColors[customColorsIndex] = customColorsList[customColorsIndex].as<uint32_t>();
     }
 
     JsonArray profilesList = AnimOptions["profiles"];
     int profilesIndex = 0;
-    options.profiles_count = 0;
-    for (JsonObject profile : profilesList)
-    {
+    for (JsonObject profile : profilesList) {
         helperGetProfileFromJsonObject(&(options.profiles[profilesIndex]), &profile);
 
-        options.profiles_count = profilesIndex+1;
-
-        if (++profilesIndex >= MAX_ANIMATION_PROFILES)
+        options.profiles[profilesIndex].baseCycleTime = options.profiles[profilesIndex].baseCycleTime + 1;
+        profilesIndex = profilesIndex + 1;
+        if (profilesIndex >= MAX_ANIMATION_PROFILES)
             break;
     }
 
-    NeoPicoLEDAddon::RestartLedSystem();
+    AnimStation.setRestartLeds(true);
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
     return serialize_json(doc);
@@ -1403,12 +1390,13 @@ std::string getAnimationProtoOptions()
 {
     DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
     const AnimationOptions& options = Storage::getInstance().getAnimationOptions();
+    AnimationStation& AnimStation = AnimationStation::getInstance();
 
-    uint32_t checkedBrightness = std::clamp<uint32_t>(options.brightness, 0, AnimationStation::brightnessSteps);
+    uint32_t checkedBrightness = std::clamp<uint32_t>(options.brightness, 0, AnimStation.getBrightnessSteps());
 
     JsonObject AnimOptions = doc.createNestedObject("AnimationOptions");
     AnimOptions["brightness"] = checkedBrightness;
-    AnimOptions["baseProfileIndex"] = options.baseProfileIndex;
+    AnimOptions["baseProfileIndex"] = AnimStation.GetSavedMode();
     AnimOptions["idletimeout"] = (options.autoDisableTime / 1000);
     JsonArray customColorsList = AnimOptions.createNestedArray("customColors");
     for (int customColorsIndex = 0; customColorsIndex < options.customColors_count; ++customColorsIndex)
@@ -1417,7 +1405,7 @@ std::string getAnimationProtoOptions()
     }
 
     JsonArray profileList = AnimOptions.createNestedArray("profiles");
-    for (int profilesIndex = 0; profilesIndex < options.profiles_count; ++profilesIndex)
+    for (int profilesIndex = 0; profilesIndex < MAX_ANIMATION_PROFILES; profilesIndex++)
     {
         JsonObject profile = profileList.createNestedObject();
         profile["bEnabled"] = options.profiles[profilesIndex].bEnabled ? 1 : 0;
@@ -1444,28 +1432,15 @@ std::string getAnimationProtoOptions()
         profile["caseContextParam"] = (options.profiles[profilesIndex].effectContextParam >> 16) & 0xFF;
 
         JsonArray notPressedStaticColorsList = profile.createNestedArray("notPressedStaticColors");
-        for (int notPressedStaticColorsIndex = 0; notPressedStaticColorsIndex < options.profiles[profilesIndex].notPressedStaticColors_count; ++notPressedStaticColorsIndex)
-        {
-            notPressedStaticColorsList.add(options.profiles[profilesIndex].notPressedStaticColors[notPressedStaticColorsIndex] & 0xFF);
-            notPressedStaticColorsList.add((options.profiles[profilesIndex].notPressedStaticColors[notPressedStaticColorsIndex] >> 8) & 0xFF);
-            notPressedStaticColorsList.add((options.profiles[profilesIndex].notPressedStaticColors[notPressedStaticColorsIndex] >> 16) & 0xFF);
-            notPressedStaticColorsList.add((options.profiles[profilesIndex].notPressedStaticColors[notPressedStaticColorsIndex] >> 24) & 0xFF);
-        }
         JsonArray pressedStaticColorsList = profile.createNestedArray("pressedStaticColors");
-        for (int pressedStaticColorsIndex = 0; pressedStaticColorsIndex < options.profiles[profilesIndex].pressedStaticColors_count; ++pressedStaticColorsIndex)
-        {
-            pressedStaticColorsList.add(options.profiles[profilesIndex].pressedStaticColors[pressedStaticColorsIndex] & 0xFF);
-            pressedStaticColorsList.add((options.profiles[profilesIndex].pressedStaticColors[pressedStaticColorsIndex] >> 8) & 0xFF);
-            pressedStaticColorsList.add((options.profiles[profilesIndex].pressedStaticColors[pressedStaticColorsIndex] >> 16) & 0xFF);
-            pressedStaticColorsList.add((options.profiles[profilesIndex].pressedStaticColors[pressedStaticColorsIndex] >> 24) & 0xFF);
-        }
         JsonArray nonButtonStaticColorsList = profile.createNestedArray("nonButtonStaticColors");
-        for (int nonButtonStaticColorsIndex = 0; nonButtonStaticColorsIndex < options.profiles[profilesIndex].nonButtonStaticColors_count; ++nonButtonStaticColorsIndex)
-        {
-            nonButtonStaticColorsList.add(options.profiles[profilesIndex].nonButtonStaticColors[nonButtonStaticColorsIndex] & 0xFF);
-            nonButtonStaticColorsList.add((options.profiles[profilesIndex].nonButtonStaticColors[nonButtonStaticColorsIndex] >> 8) & 0xFF);
-            nonButtonStaticColorsList.add((options.profiles[profilesIndex].nonButtonStaticColors[nonButtonStaticColorsIndex] >> 16) & 0xFF);
-            nonButtonStaticColorsList.add((options.profiles[profilesIndex].nonButtonStaticColors[nonButtonStaticColorsIndex] >> 24) & 0xFF);
+        for (unsigned int index = 0; index < NUM_BANK0_GPIOS; index++ ) {
+            notPressedStaticColorsList.add(options.profiles[profilesIndex].notPressedStaticColors.bytes[index]);
+            pressedStaticColorsList.add(options.profiles[profilesIndex].pressedStaticColors.bytes[index]);
+        }
+        
+        for (unsigned int index = 0; index < MAX_NON_BUTTON_LIGHT_COLOR_INDEXES; index++) {
+            nonButtonStaticColorsList.add(options.profiles[profilesIndex].nonButtonStaticColors.bytes[index]);
         }
     }
 
@@ -1772,6 +1747,23 @@ std::string setPeripheralOptions()
     DynamicJsonDocument doc = get_post_data();
 
     PeripheralOptions& peripheralOptions = Storage::getInstance().getPeripheralOptions();
+    Pin_t pinDplus = peripheralOptions.blockUSB0.dp;
+    uint32_t pinOrder = peripheralOptions.blockUSB0.order;
+    docToValue(pinDplus, doc, "peripheral", "usb0", "dp");
+    docToValue(pinOrder, doc, "peripheral", "usb0", "order");
+    if (pinDplus != -1 && (!isValidPin(pinDplus) ||
+        !isValidPin(pinDplus + (pinOrder ? -1 : 1)))) {
+        return "{ \"error\": \"USB D+ and D- must use valid consecutive GPIO pins\" }";
+    }
+
+    Pin_t pinDminus = pinDplus == -1 ? -1 : pinDplus + (pinOrder ? -1 : 1);
+    Pin_t oldPinDplus = peripheralOptions.blockUSB0.dp;
+    Pin_t oldPinDminus = isValidPin(oldPinDplus)
+        ? oldPinDplus + (peripheralOptions.blockUSB0.order ? -1 : 1) : -1;
+    // Release both old pins before reserving the new pair, including a pin swap.
+    Pin_t unsetPin = -1;
+    cleanAddonGpioMappings(unsetPin, oldPinDplus);
+    cleanAddonGpioMappings(unsetPin, oldPinDminus);
 
     docToValue(peripheralOptions.blockI2C0.enabled, doc, "peripheral", "i2c0", "enabled");
     docToPin(peripheralOptions.blockI2C0.sda, doc, "peripheral", "i2c0", "sda");
@@ -1797,31 +1789,10 @@ std::string setPeripheralOptions()
 
     docToValue(peripheralOptions.blockUSB0.enabled, doc, "peripheral", "usb0", "enabled");
     docToValue(peripheralOptions.blockUSB0.enable5v, doc, "peripheral", "usb0", "enable5v");
-    docToValue(peripheralOptions.blockUSB0.order, doc, "peripheral", "usb0", "order");
-
-    // need to reserve previous/next pin for dp
-    GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
-    ProfileOptions& profiles = Storage::getInstance().getProfileOptions();
-    uint8_t adjacent = peripheralOptions.blockUSB0.order ? -1 : 1;
-
-    Pin_t oldPinDplus = peripheralOptions.blockUSB0.dp;
-    docToPin(peripheralOptions.blockUSB0.dp, doc, "peripheral", "usb0", "dp");
-    if (isValidPin(peripheralOptions.blockUSB0.dp)) {
-        // if D+ pin is now set, also set the pin that will be used for D-
-        gpioMappings[peripheralOptions.blockUSB0.dp+adjacent].action = GpioAction::ASSIGNED_TO_ADDON;
-        profiles.gpioMappingsSets[0].pins[peripheralOptions.blockUSB0.dp+adjacent].action =
-            GpioAction::ASSIGNED_TO_ADDON;
-        profiles.gpioMappingsSets[1].pins[peripheralOptions.blockUSB0.dp+adjacent].action =
-            GpioAction::ASSIGNED_TO_ADDON;
-        profiles.gpioMappingsSets[2].pins[peripheralOptions.blockUSB0.dp+adjacent].action =
-            GpioAction::ASSIGNED_TO_ADDON;
-    } else if (isValidPin(oldPinDplus)) {
-        // if D+ pin was set and is no longer, also unset the pin that was used for D-
-        gpioMappings[oldPinDplus+adjacent].action = GpioAction::NONE;
-        profiles.gpioMappingsSets[0].pins[oldPinDplus+adjacent].action = GpioAction::NONE;
-        profiles.gpioMappingsSets[1].pins[oldPinDplus+adjacent].action = GpioAction::NONE;
-        profiles.gpioMappingsSets[2].pins[oldPinDplus+adjacent].action = GpioAction::NONE;
-    }
+    peripheralOptions.blockUSB0.dp = pinDplus;
+    peripheralOptions.blockUSB0.order = pinOrder;
+    cleanAddonGpioMappings(peripheralOptions.blockUSB0.dp, -1);
+    cleanAddonGpioMappings(pinDminus, -1);
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
@@ -2940,7 +2911,10 @@ std::string setMacroAddonOptions()
 
 std::string getMacroAddonOptions()
 {
-    const size_t capacity = JSON_OBJECT_SIZE(500);
+    const size_t capacity = JSON_OBJECT_SIZE(MacroOptions_msg.field_count) + JSON_ARRAY_SIZE(MAX_MACRO_LIMIT)
+        + MAX_MACRO_LIMIT * (JSON_OBJECT_SIZE(Macro_msg.field_count) + sizeof(Macro::macroLabel)
+        + JSON_ARRAY_SIZE(MAX_MACRO_INPUT_LIMIT)
+        + MAX_MACRO_INPUT_LIMIT * JSON_OBJECT_SIZE(MacroInput_msg.field_count));
     DynamicJsonDocument doc(capacity);
 
     MacroOptions& macroOptions = Storage::getInstance().getAddonOptions().macroOptions;
@@ -3182,7 +3156,7 @@ std::string getBoardDefinition() {
 
     JsonArray availablePins = picoPins.createNestedArray("availablePins");
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
-        if (!(pin < ADC_BASE_PIN || pin >= ADC_BASE_PIN + NUM_ADC_CHANNELS - 1)) analogPins.add(pin);
+        if (AnalogInput::isAdcPin(pin)) analogPins.add(pin);
         availablePins.add(pin);
     }
 
@@ -3307,8 +3281,8 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/getJoystickCenter", getJoystickCenter },
     { "/api/getJoystickCenter2", getJoystickCenter2 },
     { "/api/getBoardDefinition", getBoardDefinition },
-		{ "/api/getBootModeOptions", getBootModeOptions },
-		{ "/api/setBootModeOptions", setBootModeOptions },
+    { "/api/getBootModeOptions", getBootModeOptions },
+    { "/api/setBootModeOptions", setBootModeOptions },
 #if !defined(NDEBUG)
     { "/api/echo", echo },
 #endif

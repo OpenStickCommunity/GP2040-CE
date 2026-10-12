@@ -52,7 +52,7 @@
 static const uint32_t REBOOT_HOTKEY_ACTIVATION_TIME_MS = 50;
 static const uint32_t REBOOT_HOTKEY_HOLD_TIME_MS = 4000;
 
-const static uint32_t rebootDelayMs = 500;
+const static uint32_t rebootDelayMs = 300;
 static absolute_time_t rebootDelayTimeout = nil_time;
 
 
@@ -74,12 +74,12 @@ void GP2040::setup() {
 	BootAction bootAction;
 
 	GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
-	uint32_t prevProfile = gamepadOptions.profileNumber;
 	bool profileChanged = false;
 
 	if (bootModeOptions.enabled) {
 		bootAction = getGpioMappedBootAction();
-		profileChanged = bootAction.profileNumber != prevProfile;
+		if ( bootAction.profileNumber != gamepadOptions.profileNumber )
+			profileChanged = true;
 		gamepadOptions.profileNumber = bootAction.profileNumber;
 	}
 
@@ -96,7 +96,7 @@ void GP2040::setup() {
 
 	// now we can load the latest configured profile, which will map the
 	// new set of GPIOs to use...
-  this->initializeStandardGpio();
+    this->initializeStandardGpio();
 
 	// Initialize our ADC (various add-ons)
 	adc_init();
@@ -410,17 +410,17 @@ GP2040::BootAction GP2040::getButtonMappedBootAction() {
 	std::map<uint32_t, int32_t> bootActions;
 
 	// check setup options and add modes to the list
-	bootActions.insert({GAMEPAD_MASK_B1, gamepadOptions.inputModeB1});
-	bootActions.insert({GAMEPAD_MASK_B2, gamepadOptions.inputModeB2});
-	bootActions.insert({GAMEPAD_MASK_B3, gamepadOptions.inputModeB3});
-	bootActions.insert({GAMEPAD_MASK_B4, gamepadOptions.inputModeB4});
-	bootActions.insert({GAMEPAD_MASK_L1, gamepadOptions.inputModeL1});
-	bootActions.insert({GAMEPAD_MASK_L2, gamepadOptions.inputModeL2});
-	bootActions.insert({GAMEPAD_MASK_R1, gamepadOptions.inputModeR1});
-	bootActions.insert({GAMEPAD_MASK_R2, gamepadOptions.inputModeR2});
+	bootActions.emplace(GAMEPAD_MASK_B1, gamepadOptions.inputModeB1);
+	bootActions.emplace(GAMEPAD_MASK_B2, gamepadOptions.inputModeB2);
+	bootActions.emplace(GAMEPAD_MASK_B3, gamepadOptions.inputModeB3);
+	bootActions.emplace(GAMEPAD_MASK_B4, gamepadOptions.inputModeB4);
+	bootActions.emplace(GAMEPAD_MASK_L1, gamepadOptions.inputModeL1);
+	bootActions.emplace(GAMEPAD_MASK_L2, gamepadOptions.inputModeL2);
+	bootActions.emplace(GAMEPAD_MASK_R1, gamepadOptions.inputModeR1);
+	bootActions.emplace(GAMEPAD_MASK_R2, gamepadOptions.inputModeR2);
 
 	if (!modeSwitchLocked) {
-		if (auto search = bootActions.find(gamepad->state.buttons); search != bootActions.end()) {
+		if (auto search = bootActions.find(gamepad->state.buttons); search != bootActions.end() && search->second >= 0) {
 			bootAction.inputMode = static_cast<InputMode>(search->second);
 			return bootAction;
 		}
@@ -501,7 +501,7 @@ void GP2040::RebootHotkeys::process(Gamepad* gamepad, bool configMode) {
 	if (!active) {
 		if (gamepad->state.buttons == 0) {
 			if (is_nil_time(noButtonsPressedTimeout)) {
-				noButtonsPressedTimeout = make_timeout_time_us(REBOOT_HOTKEY_ACTIVATION_TIME_MS);
+				noButtonsPressedTimeout = make_timeout_time_ms(REBOOT_HOTKEY_ACTIVATION_TIME_MS);
 			}
 
 			if (time_reached(noButtonsPressedTimeout)) {
@@ -519,9 +519,12 @@ void GP2040::RebootHotkeys::process(Gamepad* gamepad, bool configMode) {
 			if (time_reached(rebootHotkeysHoldTimeout)) {
 				if (gamepad->state.buttons == webConfigHotkeyMask) {
 					// If we are in webconfig mode we go to gamepad mode and vice versa
-					System::reboot(configMode ? System::BootMode::GAMEPAD : System::BootMode::WEBCONFIG);
+					if ( configMode )
+						EventManager::getInstance().triggerEvent(new GPRestartEvent((System::BootMode)System::BootMode::GAMEPAD));
+					else
+						EventManager::getInstance().triggerEvent(new GPRestartEvent((System::BootMode)System::BootMode::WEBCONFIG));
 				} else if (gamepad->state.buttons == bootselHotkeyMask) {
-					System::reboot(System::BootMode::USB);
+					EventManager::getInstance().triggerEvent(new GPRestartEvent(System::BootMode::USB));
 				}
 			}
 		} else {

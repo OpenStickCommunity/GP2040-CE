@@ -6,6 +6,7 @@
 #include "gamepad.h"
 #include "helper.h"
 #include "storagemanager.h"
+#include <algorithm>
 #include <cmath>
 #include <cstdint>
 #include <map>
@@ -43,11 +44,10 @@ void I2CAnalog1115Input::setup() {
   const AnalogADS1115Options &options =
       Storage::getInstance().getAddonOptions().analogADS1115Options;
 
-  Gamepad *gamepad = Storage::getInstance().GetGamepad();
   channelHop = 0;
 
   uIntervalMS = 8;
-  nextTimer = getMillis();
+  lastPoll = getMillis() - uIntervalMS;
 
   // Init our ADS1115 library
   ads->resetConfig();
@@ -91,7 +91,7 @@ void I2CAnalog1115Input::setup() {
 }
 
 void I2CAnalog1115Input::process() {
-  if (nextTimer < getMillis()) {
+  if (getMillis() - lastPoll > uIntervalMS) {
     // if (ads->getConfig() & 0x8000) { // This definitely would not work
     float result;
     uint16_t readValue;
@@ -112,38 +112,42 @@ void I2CAnalog1115Input::process() {
       instance.pins[channelHop] = (uint16_t)GAMEPAD_JOYSTICK_MID;
     }
     ads->setChannel(channelHop);
-    nextTimer =
-        getMillis() + uIntervalMS; // interval for read (we can't be too fast)
+    lastPoll =
+        getMillis(); // interval for read (we can't be too fast)
                                    // }
     // }
   }
 
+  // Keep cached samples unchanged between ADC conversions.
+  uint16_t pins[ADS1115_CHANNEL_COUNT];
+  std::copy_n(instance.pins, ADS1115_CHANNEL_COUNT, pins);
+
   // apply option modifiers
   for (int i = 0; i < ADS1115_CHANNEL_COUNT; i++) {
     // Clamp value
-    instance.pins[i] =
-        std::clamp(instance.pins[i], (uint16_t)GAMEPAD_JOYSTICK_MIN,
+    pins[i] =
+        std::clamp(pins[i], (uint16_t)GAMEPAD_JOYSTICK_MIN,
                    (uint16_t)GAMEPAD_JOYSTICK_MAX);
 
-    int32_t offsetPin = instance.pins[i] - GAMEPAD_JOYSTICK_MID;
+    int32_t offsetPin = pins[i] - GAMEPAD_JOYSTICK_MID;
 
     // Apply By-Channel Deadzone
     if (instance.inner_deadzone_enable & (ADS1115_CHANNEL_FLAG_START >> i)) {
       if (abs(offsetPin) < instance.inner_deadzone[i]) {
-        instance.pins[i] = GAMEPAD_JOYSTICK_MID;
+        pins[i] = GAMEPAD_JOYSTICK_MID;
       }
     }
     if (instance.outer_deadzone_enable & (ADS1115_CHANNEL_FLAG_START >> i)) {
       if (offsetPin > instance.outer_deadzone[i]) {
-        instance.pins[i] = (uint16_t)(GAMEPAD_JOYSTICK_MAX);
+        pins[i] = (uint16_t)(GAMEPAD_JOYSTICK_MAX);
       } else if (offsetPin < -instance.outer_deadzone[i]) {
-        instance.pins[i] = 0;
+        pins[i] = 0;
       }
     }
 
     // Apply Invert
     if (instance.invert & (ADS1115_CHANNEL_FLAG_START >> i)) {
-      instance.pins[i] = GAMEPAD_JOYSTICK_MAX - instance.pins[i];
+      pins[i] = GAMEPAD_JOYSTICK_MAX - pins[i];
     }
 
     // TODO apply auto calibration
@@ -155,26 +159,26 @@ void I2CAnalog1115Input::process() {
   // be compatible with by-channel deadzones)
   if (instance.LStickDeadzoneEnable) {
     uint16_t magnitude = CalculateMagnitudeXY(
-        instance.pins[instance.lxChannel], instance.pins[instance.lyChannel]);
+        pins[instance.lxChannel], pins[instance.lyChannel]);
     if (magnitude < instance.l_stick_deadzone) {
-      instance.pins[instance.lxChannel] = GAMEPAD_JOYSTICK_MID;
-      instance.pins[instance.lyChannel] = GAMEPAD_JOYSTICK_MID;
+      pins[instance.lxChannel] = GAMEPAD_JOYSTICK_MID;
+      pins[instance.lyChannel] = GAMEPAD_JOYSTICK_MID;
     }
   }
   if (instance.RStickDeadzoneEnable) {
     uint16_t magnitude = CalculateMagnitudeXY(
-        instance.pins[instance.rxChannel], instance.pins[instance.ryChannel]);
+        pins[instance.rxChannel], pins[instance.ryChannel]);
     if (magnitude < instance.r_stick_deadzone) {
-      instance.pins[instance.rxChannel] = GAMEPAD_JOYSTICK_MID;
-      instance.pins[instance.ryChannel] = GAMEPAD_JOYSTICK_MID;
+      pins[instance.rxChannel] = GAMEPAD_JOYSTICK_MID;
+      pins[instance.ryChannel] = GAMEPAD_JOYSTICK_MID;
     }
   }
 
   Gamepad *gamepad = Storage::getInstance().GetGamepad();
-  gamepad->state.lx = (uint16_t)(instance.pins[instance.lxChannel]);
-  gamepad->state.ly = (uint16_t)(instance.pins[instance.lyChannel]);
-  gamepad->state.rx = (uint16_t)(instance.pins[instance.rxChannel]);
-  gamepad->state.ry = (uint16_t)(instance.pins[instance.ryChannel]);
+  gamepad->state.lx = (uint16_t)(pins[instance.lxChannel]);
+  gamepad->state.ly = (uint16_t)(pins[instance.lyChannel]);
+  gamepad->state.rx = (uint16_t)(pins[instance.rxChannel]);
+  gamepad->state.ry = (uint16_t)(pins[instance.ryChannel]);
 }
 
 int16_t I2CAnalog1115Input::CalculateMagnitudeXY(uint16_t &channelX,
