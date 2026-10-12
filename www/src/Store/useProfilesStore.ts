@@ -157,10 +157,8 @@ const useProfilesStore = create<State & Actions>()((set, get) => ({
 		}),
 	saveProfiles: async () => {
 		const [baseProfile, ...profiles] = get().profiles;
-		return Promise.all([
-			WebApi.setPinMappings(baseProfile),
-			WebApi.setProfileOptions(profiles),
-		]);
+		await WebApi.setPinMappings(baseProfile);
+		return WebApi.setProfileOptions(profiles);
 	},
 	setPinInversionEnabled: (profileIndex, pinInversionEnabled) =>
 		set((state) => {
