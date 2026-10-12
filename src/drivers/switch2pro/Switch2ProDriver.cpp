@@ -51,6 +51,7 @@ static uint16_t cmdReplyLen;
 static bool cmdReplyPending;
 static bool reportsEnabled;
 static uint8_t playerLedMask;
+static uint32_t handshakeRumbleUntil = 0;
 static uint8_t btLongTermKey[16];
 static uint8_t hostAddress[6];
 
@@ -112,11 +113,17 @@ static void setSwitch2ProRumble(uint8_t left, uint8_t right) {
     gamepad->auxState.haptics.rightActuator.intensity = right;
 }
 
+static void triggerHandshakeRumble() {
+    handshakeRumbleUntil = to_ms_since_boot(get_absolute_time()) + 100;
+    setSwitch2ProRumble(180, 180);
+}
+
 static void resetProtocolState() {
     cmdReplyLen = 0;
     cmdReplyPending = false;
     reportsEnabled = false;
     playerLedMask = 0;
+    handshakeRumbleUntil = 0;
     setSwitch2ProRumble(0, 0);
 }
 
@@ -286,8 +293,12 @@ static void handleCommand(const uint8_t *req) {
                 setReply(command, sub, nullptr, 0);
             break;
         case CMD_PLAYER_LED:
-            if (sub == 0x07)
+            if (sub == 0x07) {
+                if (req[8] != 0 && req[8] != playerLedMask) {
+                    triggerHandshakeRumble();
+                }
                 playerLedMask = req[8];
+            }
             setReply(command, sub, nullptr, 0);
             break;
         case CMD_VIBRATION:
@@ -601,6 +612,13 @@ bool Switch2ProDriver::process(Gamepad * gamepad) {
     if (tud_suspended())
         tud_remote_wakeup();
 
+    if (handshakeRumbleUntil != 0) {
+        if (to_ms_since_boot(get_absolute_time()) >= handshakeRumbleUntil) {
+            handshakeRumbleUntil = 0;
+            setSwitch2ProRumble(0, 0);
+        }
+    }
+
     if (!reportsEnabled)
         return false;
 
@@ -720,6 +738,7 @@ void Switch2ProDriver::set_report(uint8_t report_id, hid_report_type_t report_ty
     }
 
     if (switchReportID == 0x02) {
+        handshakeRumbleUntil = 0;
         // Pro Controller 2 Output Report (16 bytes Left + 16 bytes Right)
         if (dataLen >= 32) {
             uint8_t left = decode_switch2_motor(data);
