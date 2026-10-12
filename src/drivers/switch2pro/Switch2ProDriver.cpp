@@ -294,18 +294,9 @@ static void handleCommand(const uint8_t *req) {
             if (sub == 0x02) {
                 if (req[8] == 0) {
                     setSwitch2ProRumble(0, 0);
-                } else {
-                    setSwitch2ProRumble(200, 200);
                 }
                 const uint8_t payload[] = { req[8], 0x00, 0x00, 0x00 };
                 setReply(command, sub, payload, sizeof(payload));
-            } else if (sub == 0x08) {
-                bool active = false;
-                for (int i = 8; i < 28 && i < CMD_BUFFER_LEN; i++) {
-                    if (req[i] != 0 && req[i] != 0xFF) active = true;
-                }
-                if (active) setSwitch2ProRumble(200, 200);
-                setReply(command, sub, nullptr, 0);
             } else {
                 setReply(command, sub, nullptr, 0);
             }
