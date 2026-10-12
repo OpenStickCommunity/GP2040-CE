@@ -35,6 +35,8 @@ private:
     SwitchProReport switchReport;
     uint8_t last_report_counter;
     uint32_t last_report_timer;
+    uint32_t analogSchedulingProfile = UINT32_MAX;
+    bool analogSchedulingAllowed = false;
     bool isReady = false;
     bool isInitialized = false;
     bool isReportQueued = false;

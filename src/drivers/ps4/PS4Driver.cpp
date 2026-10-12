@@ -735,7 +735,7 @@ bool PS4Driver::process(Gamepad * gamepad) {
     uint8_t const *report = reinterpret_cast<uint8_t const *>(&ps4Report);
     uint16_t report_size = sizeof(ps4Report);
 
-    if (memcmp(last_report, report, report_size) != 0)
+    if (scheduler.needsReport() || memcmp(last_report, report, report_size) != 0)
     {
         USBReportPriority priority = {};
         // Hat positions are mutually exclusive states, not a button bitmask.

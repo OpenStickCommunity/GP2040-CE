@@ -554,7 +554,7 @@ bool XBOneDriver::process(Gamepad * gamepad) {
     }
 
     // A replacement is still the same queued GIP packet, so retain its sequence.
-    if ( memcmp(&last_report[4], &((uint8_t*)&newInputReport)[4], sizeof(XboxOneGamepad_Data_t)-4) != 0 ) {
+    if ( scheduler.needsReport() || memcmp(&last_report[4], &((uint8_t*)&newInputReport)[4], sizeof(XboxOneGamepad_Data_t)-4) != 0 ) {
         xboneReportSize = sizeof(XboxOneGamepad_Data_t);
         memcpy(&xboneReport, &newInputReport, xboneReportSize);
         xboneReport.Header.sequence = scheduler.hasPendingReport() ?
@@ -571,12 +571,10 @@ bool XBOneDriver::process(Gamepad * gamepad) {
         bool const allowAnalogScheduling = analogSchedulingAllowed &&
             gamepad->getActiveDpadMode() == DPAD_MODE_DIGITAL;
         if (scheduler.sendDirectReport(report, xboneReportSize, priority, allowAnalogScheduling)) {
-            if ( memcmp(&last_report[4], &((uint8_t*)&xboneReport)[4], xboneReportSize-4) != 0) {
-                last_report_counter = xboneReport.Header.sequence;
-                memcpy(last_report, &xboneReport, xboneReportSize);
-                scheduler.endInputProcessing();
-                return true;
-            }
+            last_report_counter = xboneReport.Header.sequence;
+            memcpy(last_report, &xboneReport, xboneReportSize);
+            scheduler.endInputProcessing();
+            return true;
         }
     }
 
@@ -609,15 +607,13 @@ bool XBOneDriver::send_xbone_usb(uint8_t const *report, uint16_t report_size) {
         if (p_xbone->ep_in)
             break;
     }
-    if ( tud_ready() &&											// Is the device ready?
-        (p_xbone->ep_in != 0) && (!usbd_edpt_busy(TUD_OPT_RHPORT, p_xbone->ep_in))) // Is the IN endpoint available?
-    {
-        usbd_edpt_claim(0, p_xbone->ep_in);										// Take control of IN endpoint
-        usbd_edpt_xfer(0, p_xbone->ep_in, (uint8_t *)report, report_size, false); 	// Send report buffer
-        usbd_edpt_release(0, p_xbone->ep_in);										// Release control of IN endpoint
-
-        // we successfully sent the report
-        return true;
+    if (tud_ready() && p_xbone->ep_in != 0 &&
+        !usbd_edpt_busy(TUD_OPT_RHPORT, p_xbone->ep_in) &&
+        usbd_edpt_claim(TUD_OPT_RHPORT, p_xbone->ep_in)) {
+        bool const queued = usbd_edpt_xfer(TUD_OPT_RHPORT, p_xbone->ep_in,
+            const_cast<uint8_t *>(report), report_size, false);
+        usbd_edpt_release(TUD_OPT_RHPORT, p_xbone->ep_in);
+        return queued;
     }
     return false;
 }
@@ -783,9 +779,6 @@ void XBOneDriver::process_report_queue(uint32_t now) {
             memcpy(last_report, &report_queue.front().report, report_queue.front().len);
             report_queue.pop();
             lastReportQueue = now;
-        } else {
-            // THIS IS REQUIRED FOR TIMING ON PC / CONSOLE
-            sleep_ms(REPORT_QUEUE_INTERVAL); // sleep while we wait, never happens during input only auth
         }
     }
 }

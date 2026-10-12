@@ -365,7 +365,7 @@ bool __not_in_flash_func(XInputDriver::process)(Gamepad * gamepad) {
     }
     bool const allowAnalogScheduling = analogSchedulingAllowed &&
         gamepad->getActiveDpadMode() == DPAD_MODE_DIGITAL;
-    if (memcmp(last_report, &xinputReport, sizeof(XInputReport)) != 0) {
+    if (scheduler.needsReport() || memcmp(last_report, &xinputReport, sizeof(XInputReport)) != 0) {
         if (scheduler.sendDirectReport(
                 &xinputReport, sizeof(XInputReport), priority, allowAnalogScheduling)) {
             memcpy(last_report, &xinputReport, sizeof(XInputReport));
