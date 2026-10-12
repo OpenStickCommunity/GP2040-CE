@@ -1,5 +1,7 @@
 #include "drivers/xbone/XBOneDriver.h"
 #include "drivers/shared/driverhelper.h"
+#include "drivers/shared/InputReportPolicy.h"
+#include "drivers/shared/USBReportScheduler.h"
 
 #include "drivers/xbone/XBOneAuth.h"
 #include "peripheralmanager.h"
@@ -149,6 +151,7 @@ const OS_COMPATIBLE_ID_DESCRIPTOR_SINGLE DevCompatIDsOne = {
 
 static void xbone_reset(uint8_t rhport) {
     (void)rhport;
+    USBReportScheduler::getInstance().reset();
     timer_wait_for_announce = to_ms_since_boot(get_absolute_time());
     xbox_one_powered_on = false;
     report_led_mode = 0; // 0 = OFF
@@ -189,6 +192,8 @@ static uint16_t xbone_open(uint8_t rhport, tusb_desc_interface_t const *itf_desc
                    itf_desc->bInterfaceProtocol == 0xD0) {
             p_desc = tu_desc_next(p_desc);
             TU_ASSERT(usbd_open_edpt_pair(rhport, p_desc, itf_desc->bNumEndpoints, TUSB_XFER_INTERRUPT, &p_xbone->ep_out, &p_xbone->ep_in), 0);
+            USBReportScheduler::getInstance().configure(p_xbone->ep_in);
+            USBReportScheduler::getInstance().start();
 
             p_xbone->itf_num = itf_desc->bInterfaceNumber;
 
@@ -243,19 +248,27 @@ bool xbone_vendor_control_xfer_cb(uint8_t rhport, uint8_t stage,
 
 bool xbone_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result,
                      uint32_t xferred_bytes) {
-    // Do nothing if we couldn't setup our auth listener
-    if ( xboxOneAuthData == nullptr || incomingXGIP == nullptr ||
-            outgoingXGIP == nullptr) {
-        return true;
-    }
-    
-    (void)result;
     uint8_t itf = 0;
     xboned_interface_t *p_xbone = _xboned_itf;
 
     for (;; itf++, p_xbone++) {
         if (itf >= TU_ARRAY_SIZE(_xboned_itf)) return false;
-        if (ep_addr == p_xbone->ep_out || ep_addr == p_xbone->ep_in) break;
+        if (ep_addr != 0 && (ep_addr == p_xbone->ep_out || ep_addr == p_xbone->ep_in)) break;
+    }
+
+    if (ep_addr == p_xbone->ep_in) {
+        if (result == XFER_RESULT_SUCCESS) {
+            USBReportScheduler::getInstance().onReportComplete();
+        } else {
+            USBReportScheduler::getInstance().onReportFailed();
+        }
+        return true;
+    }
+
+    // Do nothing if we couldn't setup our auth listener
+    if ( xboxOneAuthData == nullptr || incomingXGIP == nullptr ||
+            outgoingXGIP == nullptr) {
+        return true;
     }
 
     if (ep_addr == p_xbone->ep_out) {
@@ -338,8 +351,6 @@ bool xbone_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result,
 
         TU_ASSERT(usbd_edpt_xfer(rhport, p_xbone->ep_out, p_xbone->epout_buf,
                                  sizeof(p_xbone->epout_buf), false));
-    } else if (ep_addr == p_xbone->ep_in) {
-        // Nothing needed
     }
     return true;
 }
@@ -379,7 +390,7 @@ void XBOneDriver::initialize() {
         .open = xbone_open,
         .control_xfer_cb = xbone_vendor_control_xfer_cb,
         .xfer_cb = xbone_xfer_cb,
-        .sof = NULL
+        .sof = USBReportScheduler::onSof
     };
 
     keep_alive_timer = to_ms_since_boot(get_absolute_time());
@@ -394,6 +405,8 @@ void XBOneDriver::initialize() {
     xboxOneAuthData = nullptr;
 
     xbone_led_mode = 0;
+    analogSchedulingProfile = Storage::getInstance().GetGamepad()->lastReinitProfileNumber;
+    analogSchedulingAllowed = !hasDigitalAxisMappings();
 }
 
 
@@ -492,6 +505,14 @@ bool XBOneDriver::process(Gamepad * gamepad) {
         return true;
     }
 
+    USBReportScheduler &scheduler = USBReportScheduler::getInstance();
+    if (analogSchedulingProfile != gamepad->lastReinitProfileNumber) {
+        analogSchedulingProfile = gamepad->lastReinitProfileNumber;
+        analogSchedulingAllowed = !hasDigitalAxisMappings();
+        scheduler.resetInputTiming();
+    }
+    scheduler.beginInputProcessing();
+
     // Only change xbox one input report if we have different inputs!
     XboxOneGamepad_Data_t newInputReport;
 
@@ -532,26 +553,34 @@ bool XBOneDriver::process(Gamepad * gamepad) {
         newInputReport.rightTrigger = gamepad->pressedR2() ? 0x03FF : 0;
     }
 
-    // We changed inputs since generating our last report, increment last report counter (but don't update until success)
+    // A replacement is still the same queued GIP packet, so retain its sequence.
     if ( memcmp(&last_report[4], &((uint8_t*)&newInputReport)[4], sizeof(XboxOneGamepad_Data_t)-4) != 0 ) {
         xboneReportSize = sizeof(XboxOneGamepad_Data_t);
         memcpy(&xboneReport, &newInputReport, xboneReportSize);
-        xboneReport.Header.sequence = last_report_counter + 1;
+        xboneReport.Header.sequence = scheduler.hasPendingReport() ?
+            last_report_counter : last_report_counter + 1;
         if ( xboneReport.Header.sequence == 0 )
             xboneReport.Header.sequence = 1;
 
-        // Successfully sent report, actually increment last report counter!
-        if ( send_xbone_usb((uint8_t*)&xboneReport, xboneReportSize) == true ) {
+        uint8_t const *report = reinterpret_cast<uint8_t const *>(&xboneReport);
+        USBReportPriority priority = {};
+        priority.digital = static_cast<uint64_t>(report[4]) |
+            (static_cast<uint64_t>(report[5]) << 8);
+        priority.triggers = static_cast<uint32_t>(xboneReport.leftTrigger) |
+            (static_cast<uint32_t>(xboneReport.rightTrigger) << 16);
+        bool const allowAnalogScheduling = analogSchedulingAllowed &&
+            gamepad->getActiveDpadMode() == DPAD_MODE_DIGITAL;
+        if (scheduler.sendDirectReport(report, xboneReportSize, priority, allowAnalogScheduling)) {
             if ( memcmp(&last_report[4], &((uint8_t*)&xboneReport)[4], xboneReportSize-4) != 0) {
-                last_report_counter++;
-                if (last_report_counter == 0)
-                    last_report_counter = 1;
+                last_report_counter = xboneReport.Header.sequence;
                 memcpy(last_report, &xboneReport, xboneReportSize);
+                scheduler.endInputProcessing();
                 return true;
             }
         }
     }
-    
+
+    scheduler.endInputProcessing();
     return false;
 }
 
@@ -569,6 +598,8 @@ bool XBOneDriver::getAuthSent() {
 }
 
 bool XBOneDriver::send_xbone_usb(uint8_t const *report, uint16_t report_size) {
+    // Protocol traffic can wait for auth; relearn gameplay timing afterwards.
+    USBReportScheduler::getInstance().resetInputTiming();
     uint8_t itf = 0;
     xboned_interface_t *p_xbone = _xboned_itf;
     for (;; itf++, p_xbone++) {

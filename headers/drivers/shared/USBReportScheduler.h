@@ -9,7 +9,7 @@
 
 struct USBReportPriority {
     uint64_t digital = 0;
-    uint16_t triggers = 0;
+    uint32_t triggers = 0;
 
     bool operator==(USBReportPriority const &other) const {
         return digital == other.digital && triggers == other.triggers;
@@ -37,6 +37,8 @@ public:
     bool sendDirectReport(void const *report, uint16_t len,
                           USBReportPriority const &priority,
                           bool allowAnalogScheduling = true);
+    // Only reports submitted through this scheduler, not other endpoint traffic.
+    bool hasPendingReport() const { return pendingOwned; }
     void onReportComplete();
     void onReportFailed();
 
