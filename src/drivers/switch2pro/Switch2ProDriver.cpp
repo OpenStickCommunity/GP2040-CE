@@ -49,7 +49,7 @@ static uint8_t cmdRequest[CMD_BUFFER_LEN];
 static uint8_t cmdReply[CMD_REPLY_MAX];
 static uint16_t cmdReplyLen;
 static bool cmdReplyPending;
-static bool reportsEnabled;
+static bool reportsEnabled = true;
 static uint8_t playerLedMask;
 static uint32_t handshakeRumbleUntil = 0;
 static uint8_t btLongTermKey[16];
@@ -121,7 +121,7 @@ static void triggerHandshakeRumble() {
 static void resetProtocolState() {
     cmdReplyLen = 0;
     cmdReplyPending = false;
-    reportsEnabled = false;
+    reportsEnabled = true;
     playerLedMask = 0;
     handshakeRumbleUntil = 0;
     setSwitch2ProRumble(0, 0);
