@@ -603,8 +603,11 @@ void GP2040::checkSaveRebootState() {
 void GP2040::handleStorageSave(GPEvent* e) {
 	saveRequested = true;
 	forceSave = ((GPStorageSaveEvent*)e)->forceSave;
-	rebootRequested = ((GPStorageSaveEvent*)e)->restartAfterSave;
-	rebootMode = System::BootMode::DEFAULT;
+	// A save that asks for no restart leaves a pending reboot and its mode alone
+	if (((GPStorageSaveEvent*)e)->restartAfterSave) {
+		rebootRequested = true;
+		rebootMode = System::BootMode::DEFAULT;
+	}
 }
 
 void GP2040::handleSystemReboot(GPEvent* e) {
