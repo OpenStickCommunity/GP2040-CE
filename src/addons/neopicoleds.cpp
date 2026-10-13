@@ -38,8 +38,6 @@ const std::string BUTTON_LABEL_A2 = "A2";
 
 static std::vector<uint8_t> EMPTY_VECTOR;
 
-bool NeoPicoLEDAddon::bRestartLeds = false;
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Player LEDs ////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -158,8 +156,8 @@ PLEDAnimationState getPS3AnimationNEOPICO(uint16_t ledState)
         .speed = PLED_SPEED_OFF,
     };
 
-    if (ledState != 0) {
-        uint8_t ledNumber = ledState & 0x0F;
+    uint8_t ledNumber = ledState & 0x0F;
+    if (ledNumber > 0 && ledNumber <= 10) {
         if (ps3LEDs[ledNumber-1][0] == 0x01) animationState.state |= PLED_STATE_LED1;
         if (ps3LEDs[ledNumber-1][1] == 0x01) animationState.state |= PLED_STATE_LED2;
         if (ps3LEDs[ledNumber-1][2] == 0x01) animationState.state |= PLED_STATE_LED3;
@@ -244,6 +242,7 @@ bool NeoPicoLEDAddon::available() {
 
 void NeoPicoLEDAddon::setup() {
     // Set Default LED Options
+	AnimationStation & AnimStation = AnimationStation::getInstance();
     const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
 	turnOffWhenSuspended = ledOptions.turnOffWhenSuspended;
 
@@ -256,9 +255,10 @@ void NeoPicoLEDAddon::setup() {
         neoPLEDs = new NeoPicoPlayerLEDs();
     }
 
-	decompressSettings();
-
+	AnimStation.InitSettings();
 	configureLEDs();
+
+	EventManager::getInstance().registerEventHandler(GP_EVENT_SYSTEM_REBOOT, GPEVENT_CALLBACK(this->handleSystemReboot(event)));
 
 	// Next Run
     nextRunTime = make_timeout_time_ms(0); // Reset timeout
@@ -266,22 +266,24 @@ void NeoPicoLEDAddon::setup() {
 
 void NeoPicoLEDAddon::process()
 {
-	if(bRestartLeds)
+	AnimationStation & AnimStation = AnimationStation::getInstance();
+	if(AnimStation.getRestartLeds() == true)
 	{
-		bRestartLeds = false;
-
 		//Save off test mode selected profile so we can restore it after the restart
 		int8_t savedMode = AnimStation.GetMode();
 
 		AnimStation.Clear();
 		neopico.Clear();
 		neopico.Show();
-		decompressSettings();
+		AnimStation.InitSettings();
 		configureLEDs();
 
 		//Restore saved profile if applicable
-		if(AnimStation.TestMode != AnimationStationTestMode::AnimationStation_TestModeDisableTestMode)
+		if(AnimStation.getTestMode() != AnimationStationTestMode::AnimationStation_TestModeDisableTestMode)
 			AnimStation.SetMode(savedMode);
+
+		// Remove restart led flag
+		AnimStation.setRestartLeds(false);
 	}
 
 	//Check we have LEDs enabled and is it time to update
@@ -309,6 +311,7 @@ void NeoPicoLEDAddon::process()
                     animationState = getXBoneAnimationNEOPICO(gamepad);
                     break;
                 case INPUT_MODE_SWITCH_PRO:
+                case INPUT_MODE_SWITCH2_PRO:
                     animationState = getSwitchProAnimationNEOPICO(gamepad->auxState.playerID.ledValue);
                     break;
                 default:
@@ -328,11 +331,11 @@ void NeoPicoLEDAddon::process()
 	//New check for buttons being pressed. this is a direct check to see if a pin is held
 	Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
 	vector<int32_t> pressedPins;
-	for(auto thisLight : RGBLights.AllLights)
+	for(const auto& thisLight : RGBLights.AllLights)
 	{
-		if(values & (1 << thisLight.GIPOPin))
+		if(isValidPin(thisLight.GPIOPin) && (values & (Mask_t{1} << thisLight.GPIOPin)))
 		{
-			pressedPins.push_back(thisLight.GIPOPin);
+			pressedPins.push_back(thisLight.GPIOPin);
 		}
 	}
 	AnimStation.HandlePressedPins(pressedPins);
@@ -372,6 +375,7 @@ void NeoPicoLEDAddon::process()
 
 void NeoPicoLEDAddon::UpdatePlayerLEDs()
 {
+	AnimationStation & AnimStation = AnimationStation::getInstance();
 	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
     Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
 
@@ -387,7 +391,7 @@ void NeoPicoLEDAddon::UpdatePlayerLEDs()
 				if(playerId >= 0 && playerId < 4)
 				{
 					float level = (static_cast<float>(PLED_MAX_LEVEL - neoPLEDs->getLedLevels()[playerId]) / static_cast<float>(PLED_MAX_LEVEL));
-					float brightness = as.GetNormalisedBrightness() * level;
+					float brightness = AnimStation.GetNormalisedBrightness() * level;
 					uint32_t valueToApply;
 
 					if (gamepad->auxState.sensors.statusLight.enabled && gamepad->auxState.sensors.statusLight.active) 
@@ -396,7 +400,7 @@ void NeoPicoLEDAddon::UpdatePlayerLEDs()
 					} 
 					else 
 					{
-						RGB pledCol = Animation::StaticGetNonPressedColorForLight(&RGBLights, lightIndex);
+						RGB pledCol = AnimStation.StaticGetNonPressedColorForLight(&RGBLights, lightIndex);
 						valueToApply = pledCol.value(neopico.GetFormat(), brightness);
 					}
 					
@@ -416,6 +420,7 @@ void NeoPicoLEDAddon::UpdatePlayerLEDs()
 
 void NeoPicoLEDAddon::UpdateTurboLED()
 {
+	AnimationStation & AnimStation = AnimationStation::getInstance();
     Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
 	// Get turbo options (turbo RGB led)
     const TurboOptions& turboOptions = Storage::getInstance().getAddonOptions().turboOptions;
@@ -433,7 +438,7 @@ void NeoPicoLEDAddon::UpdateTurboLED()
 				{
 					for(uint8_t index = RGBLights.AllLights[lightIndex].FirstLedIndex; index < (RGBLights.AllLights[lightIndex].FirstLedIndex + RGBLights.AllLights[lightIndex].LedsPerLight); ++index)
 					{
-						RGB turboCol = Animation::StaticGetNonPressedColorForLight(&RGBLights, lightIndex);
+						RGB turboCol = AnimStation.StaticGetNonPressedColorForLight(&RGBLights, lightIndex);
             		    frame[index] = turboCol.value(neopico.GetFormat(), brightness);
 					}
 				}
@@ -710,31 +715,11 @@ uint8_t NeoPicoLEDAddon::setupButtonPositions()
     return buttonCount;
 }
 
-void NeoPicoLEDAddon::AssignLedPreset(const unsigned char* data, int32_t dataSize) 
-{
-	LEDOptions& options = Storage::getInstance().getLedOptions();
-	options.lightClusterData_count = 0;
-	options.lightClusterDataInitialised = true;
-	for (int thisEntryIndex = 0; (thisEntryIndex * 6) + 5 < dataSize; ++thisEntryIndex) //each data entry has 6 elements
-	{
-		int thisDataIndex = thisEntryIndex * 6;
-		options.lightClusterData[thisEntryIndex].lightLocationData = data[thisDataIndex];
-		options.lightClusterData[thisEntryIndex].lightLocationData += ((int)data[thisDataIndex+1]) << 8;
-		options.lightClusterData[thisEntryIndex].lightLocationData += ((int)data[thisDataIndex+2]) << 16;
-		options.lightClusterData[thisEntryIndex].lightLocationData += ((int)data[thisDataIndex+3]) << 24;
-		options.lightClusterData[thisEntryIndex].lightTypeData = ((int)data[thisDataIndex+4]);
-		options.lightClusterData[thisEntryIndex].lightTypeData += ((int)data[thisDataIndex+5]) << 8;
-
-		options.lightClusterData_count = thisEntryIndex + 1;
-
-		if(options.lightClusterData_count >= FRAME_MAX) //100 entries total
-			return;
-	}
-}
-
 void NeoPicoLEDAddon::configureLEDs()
 {
+	AnimationStation & AnimStation = AnimationStation::getInstance();
 	LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
+	AnimationOptions& animOptions = Storage::getInstance().getAnimationOptions();
 
 	//New grid based setup
 	if(ledOptions.lightClusterDataInitialised == false)
@@ -745,7 +730,7 @@ void NeoPicoLEDAddon::configureLEDs()
 		if(strcmp("", LIGHT_DATA_NAME_DEFAULT) != 0)
 		{
 			const unsigned char lightData[] = { LIGHT_DATA_DEFAULT };
-			AssignLedPreset(lightData, sizeof(lightData));
+			AnimStation.AssignLedPreset(lightData, sizeof(lightData));
 		}
 		else
 		{
@@ -782,16 +767,14 @@ void NeoPicoLEDAddon::configureLEDs()
 		neopico.ChangeNumPixels(ledCount);
 	}
 
-	Animation::format = static_cast<LEDFormat>(ledOptions.ledFormat);
+	AnimStation.SetFormat(static_cast<LEDFormat>(ledOptions.ledFormat));
 	AnimStation.SetMaxBrightness(ledOptions.brightnessMaximum);
-	AnimStation.SetBrightnessStepValue(AnimStation.options.brightness);
+	AnimStation.SetBrightnessStepValue(animOptions.brightness);
 	AnimStation.SetLights(RGBLights);
-	AnimStation.SetMode(as.options.baseProfileIndex);
-}
-
-void NeoPicoLEDAddon::decompressSettings()
-{
-	AnimStation.DecompressSettings();
+	// Settings saved during an LED preview may hold the test profile; fall back to the first profile
+	if (animOptions.baseProfileIndex < -1 || animOptions.baseProfileIndex >= MAX_ANIMATION_PROFILES)
+		animOptions.baseProfileIndex = 0;
+	AnimStation.SetMode(animOptions.baseProfileIndex);
 }
 
 ////////////////////////////////////////////
@@ -830,10 +813,6 @@ void NeoPicoLEDAddon::GenerateLights()
 
 		generatedLights.push_back(newLight);
 	}
-
-	//check for critical error
-	if(minX < 0 || minY < 0)
-		return;
 
 	//Strip Empty rows and coloums on left and top side
 	for(int index = 0; index < (int)generatedLights.size(); ++index)
@@ -898,6 +877,11 @@ GamepadHotkey NeoPicoLEDAddon::ProcessAnimationHotkeys(Gamepad *gamepad)
 	}
 
 	return action;
+}
+
+void NeoPicoLEDAddon::handleSystemReboot(GPEvent* e) {
+	neopico.Clear();
+	neopico.Show();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////

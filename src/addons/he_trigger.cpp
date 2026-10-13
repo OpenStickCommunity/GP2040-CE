@@ -21,7 +21,7 @@ void HETriggerAddon::setup() {
     muxPinArray[2] = options.muxADCPin2;
     muxPinArray[3] = options.muxADCPin3;
     for(int i = 0; i < muxTotal; i++) {
-        if (muxPinArray[i] >= ADC_BASE_PIN && muxPinArray[i] < ADC_BASE_PIN + NUM_ADC_CHANNELS - 1) {
+        if (muxPinArray[i] >= static_cast<Pin_t>(ADC_BASE_PIN) && muxPinArray[i] < static_cast<Pin_t>(ADC_BASE_PIN + NUM_ADC_CHANNELS - 1)) {
             adc_gpio_init(muxPinArray[i]);
         }
     }
@@ -137,6 +137,7 @@ void HETriggerAddon::preprocess() {
             releaseThreshold = ADC_MAX - releaseThreshold;
         }
 
+        bool wasActive = triggerActive[he];
         if (!options.triggers[he].rapidTrigger) {
             // no rapid trigger
             triggerActive[he] = value > activationThreshold;
@@ -198,13 +199,17 @@ void HETriggerAddon::preprocess() {
                 case GpioAction::ANALOG_DIRECTION_RS_Y_NEG:	gamepad->state.ry = GAMEPAD_JOYSTICK_MIN; break;
                 case GpioAction::ANALOG_DIRECTION_RS_Y_POS:	gamepad->state.ry = GAMEPAD_JOYSTICK_MAX; break;
                 case GpioAction::BUTTON_PRESS_FN:	gamepad->state.aux |= AUX_MASK_FUNCTION; break;
-                case GpioAction::MENU_NAVIGATION_UP: EventManager::getInstance().triggerEvent(new GPMenuNavigateEvent(GpioAction::MENU_NAVIGATION_UP)); break;
-                case GpioAction::MENU_NAVIGATION_DOWN: EventManager::getInstance().triggerEvent(new GPMenuNavigateEvent(GpioAction::MENU_NAVIGATION_DOWN)); break;
-                case GpioAction::MENU_NAVIGATION_LEFT: EventManager::getInstance().triggerEvent(new GPMenuNavigateEvent(GpioAction::MENU_NAVIGATION_LEFT)); break;
-                case GpioAction::MENU_NAVIGATION_RIGHT: EventManager::getInstance().triggerEvent(new GPMenuNavigateEvent(GpioAction::MENU_NAVIGATION_RIGHT)); break;
-                case GpioAction::MENU_NAVIGATION_SELECT: EventManager::getInstance().triggerEvent(new GPMenuNavigateEvent(GpioAction::MENU_NAVIGATION_SELECT)); break;
-                case GpioAction::MENU_NAVIGATION_BACK: EventManager::getInstance().triggerEvent(new GPMenuNavigateEvent(GpioAction::MENU_NAVIGATION_BACK)); break;
-                case GpioAction::MENU_NAVIGATION_TOGGLE: EventManager::getInstance().triggerEvent(new GPMenuNavigateEvent(GpioAction::MENU_NAVIGATION_TOGGLE)); break;
+                case GpioAction::MENU_NAVIGATION_UP:
+                case GpioAction::MENU_NAVIGATION_DOWN:
+                case GpioAction::MENU_NAVIGATION_LEFT:
+                case GpioAction::MENU_NAVIGATION_RIGHT:
+                case GpioAction::MENU_NAVIGATION_SELECT:
+                case GpioAction::MENU_NAVIGATION_BACK:
+                case GpioAction::MENU_NAVIGATION_TOGGLE:
+                    if (!wasActive) {
+                        EventManager::getInstance().triggerEvent(new GPMenuNavigateEvent(options.triggers[he].action));
+                    }
+                    break;
                 default: break;
             }
         }
