@@ -42,8 +42,8 @@ void USBReportScheduler::configure(uint8_t endpoint, bool stageReports) {
 }
 
 void USBReportScheduler::start() {
-    uint8_t const epNum = endpoint & 0x0f;
-    if ((endpoint & 0x80) && epNum != 0 && epNum < USB_NUM_ENDPOINTS) {
+    uint8_t const epNum = tu_edpt_number(endpoint);
+    if ((tu_edpt_dir(endpoint) == TUSB_DIR_IN) && epNum != 0 && epNum < USB_NUM_ENDPOINTS) {
         // Latch polls while unarmed without enabling another USB interrupt.
         usb_hw->ep_nak_stall_status = 1u << (2 * epNum);
         usb_dpram->ep_ctrl[epNum - 1].in |= EP_CTRL_INTERRUPT_ON_NAK;
@@ -64,7 +64,6 @@ void USBReportScheduler::reset() {
     inputTimingResetPending = false;
     reportPendingAtSof = false;
     lastSofFrame = 0;
-    lastNakCheckSofEpoch = 0;
     resetPollTiming();
     restore_interrupts(irqState);
 
@@ -118,8 +117,8 @@ void __not_in_flash_func(USBReportScheduler::onSof)(uint8_t rhport, uint32_t fra
     (void)rhport;
     USBReportScheduler &scheduler = getInstance();
     uint32_t const now = time_us_32();
-    uint8_t const epNum = scheduler.endpoint & 0x0f;
-    if ((scheduler.endpoint & 0x80) && epNum != 0 && epNum < USB_NUM_ENDPOINTS) {
+    uint8_t const epNum = tu_edpt_number(scheduler.endpoint);
+    if ((tu_edpt_dir(scheduler.endpoint) == TUSB_DIR_IN) && epNum != 0 && epNum < USB_NUM_ENDPOINTS) {
         uint32_t const nakMask = 1u << (2 * epNum);
         // Keep missed-poll evidence for staged input without attributing its frame.
         if (scheduler.stagedLength != 0 && (usb_hw->ep_nak_stall_status & nakMask)) {
@@ -141,7 +140,6 @@ void __not_in_flash_func(USBReportScheduler::onSof)(uint8_t rhport, uint32_t fra
             (USB_BUF_CTRL_AVAIL | USB_BUF_CTRL_FULL);
     scheduler.lastSofUs = now;
     ++scheduler.sofEpoch;
-    scheduler.lastNakCheckSofEpoch = scheduler.sofEpoch;
     scheduler.sofTimingReady = true;
 }
 
@@ -157,13 +155,13 @@ void __not_in_flash_func(USBReportScheduler::beginInputProcessing)() {
         resetInputTiming();
         inputTimingResetPending = false;
     }
-    uint32_t const nakMask = 1u << (2 * (endpoint & 0x0f));
+    uint32_t const nakMask = 1u << (2 * tu_edpt_number(endpoint));
     if (usb_hw->ep_nak_stall_status & nakMask) {
         // A poll while staged expires this packet's wait, even if cadence agrees.
         if (stagedLength != 0) stagedFlushRequired = true;
         usb_hw->ep_nak_stall_status = nakMask; // W1C: leave other endpoints alone.
         // Only attribute a NAK when both observations are in the same frame.
-        if (sofTimingReady && lastNakCheckSofEpoch == sofEpoch &&
+        if (sofTimingReady &&
             !(usb_hw->ints & USB_INTS_DEV_SOF_BITS)) {
             noteHostPoll(sofEpoch);
             // An idle NAK also completes this interrupt endpoint's service
@@ -176,7 +174,6 @@ void __not_in_flash_func(USBReportScheduler::beginInputProcessing)() {
             resetPollTiming();
         }
     }
-    lastNakCheckSofEpoch = sofEpoch;
     uint32_t const windowEpoch = sofEpoch;
     uint32_t const windowFrames = pollTimingReady ? pollIntervalFrames : 1;
     restore_interrupts(irqState);
@@ -332,7 +329,6 @@ bool __not_in_flash_func(USBReportScheduler::sendDirectReport)(
 
         bool const queued = usbd_edpt_xfer(
             0, endpoint, const_cast<uint8_t *>(static_cast<uint8_t const *>(report)), len, false);
-        usbd_edpt_release(0, endpoint);
         if (queued) {
             uint32_t const queuedIrqState = save_and_disable_interrupts();
             noteQueued(priority, queueSofEpoch,
@@ -340,6 +336,7 @@ bool __not_in_flash_func(USBReportScheduler::sendDirectReport)(
             restore_interrupts(queuedIrqState);
             return true;
         }
+        usbd_edpt_release(0, endpoint);
     }
 
     return allowAnalogScheduling && tryReplace(report, len, priority);
@@ -370,12 +367,11 @@ bool __not_in_flash_func(USBReportScheduler::canCoalesce)(
         pendingPriority.triggers == priority.triggers;
     bool const sameDeliveredTriggers = samePendingTriggers &&
         deliveredPriority.triggers == pendingPriority.triggers;
-    bool const monotonicPress = !pendingPriorityUnchanged && samePendingTriggers &&
+    bool const monotonicPress = samePendingTriggers &&
         (pendingPriority.digital & priority.digital) == pendingPriority.digital &&
         // Do not re-add a delivered bit that the pending report released.
         (priority.digital & deliveredPriority.digital & ~pendingPriority.digital) == 0;
-    bool const monotonicRelease = !pendingPriorityUnchanged && !monotonicPress &&
-        sameDeliveredTriggers &&
+    bool const monotonicRelease = sameDeliveredTriggers &&
         (pendingPriority.digital & deliveredPriority.digital) == pendingPriority.digital &&
         (priority.digital & pendingPriority.digital) == priority.digital;
 
@@ -468,8 +464,8 @@ void USBReportScheduler::onReportFailed() {
 
 bool __no_inline_not_in_flash_func(USBReportScheduler::replacePendingInBuffer)(
         void const *report, uint16_t len) {
-    uint8_t const epNum = endpoint & 0x0f;
-    if (rp2040_chip_version() < 2 || !(endpoint & 0x80) || epNum == 0 ||
+    uint8_t const epNum = tu_edpt_number(endpoint);
+    if (rp2040_chip_version() < 2 || tu_edpt_dir(endpoint) != TUSB_DIR_IN || epNum == 0 ||
         epNum >= USB_NUM_ENDPOINTS || len > USB_MAX_PACKET_SIZE) {
         return false;
     }

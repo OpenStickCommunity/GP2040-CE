@@ -354,18 +354,18 @@ bool __not_in_flash_func(XInputDriver::process)(Gamepad * gamepad) {
 
     bool reportSent = false;
 
-    USBReportPriority priority = {};
-    priority.digital = static_cast<uint64_t>(xinputReport.buttons1) |
-        (static_cast<uint64_t>(xinputReport.buttons2) << 8);
-    priority.triggers = static_cast<uint16_t>(xinputReport.lt) |
-        (static_cast<uint16_t>(xinputReport.rt) << 8);
     // A hotkey can request the next profile before its mappings are applied.
     if (analogSchedulingProfile != gamepad->lastReinitProfileNumber) {
         updateAnalogScheduling(gamepad->lastReinitProfileNumber);
     }
-    bool const allowAnalogScheduling = analogSchedulingAllowed &&
-        gamepad->getActiveDpadMode() == DPAD_MODE_DIGITAL;
     if (scheduler.needsReport() || memcmp(last_report, &xinputReport, sizeof(XInputReport)) != 0) {
+        USBReportPriority priority = {};
+        priority.digital = static_cast<uint64_t>(xinputReport.buttons1) |
+            (static_cast<uint64_t>(xinputReport.buttons2) << 8);
+        priority.triggers = static_cast<uint16_t>(xinputReport.lt) |
+            (static_cast<uint16_t>(xinputReport.rt) << 8);
+        bool const allowAnalogScheduling = analogSchedulingAllowed &&
+            gamepad->getActiveDpadMode() == DPAD_MODE_DIGITAL;
         if (scheduler.sendDirectReport(
                 &xinputReport, sizeof(XInputReport), priority, allowAnalogScheduling)) {
             memcpy(last_report, &xinputReport, sizeof(XInputReport));

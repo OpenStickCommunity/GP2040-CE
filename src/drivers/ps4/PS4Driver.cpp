@@ -739,7 +739,7 @@ bool PS4Driver::process(Gamepad * gamepad) {
     {
         USBReportPriority priority = {};
         // Hat positions are mutually exclusive states, not a button bitmask.
-        priority.digital = ps4Report.dpad <= PS4_HAT_UPLEFT ? uint64_t{1} << ps4Report.dpad : 0;
+        priority.digital = ps4Report.dpad <= PS4_HAT_UPLEFT ? uint32_t{1} << ps4Report.dpad : 0;
         priority.digital |= (static_cast<uint64_t>(report[5] >> 4) << 8) |
             (static_cast<uint64_t>(report[6]) << 12) |
             (static_cast<uint64_t>(report[7] & 0x03) << 20);

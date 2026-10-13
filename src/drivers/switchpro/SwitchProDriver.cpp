@@ -185,7 +185,8 @@ bool SwitchProDriver::process(Gamepad * gamepad) {
 
     bool const protocolQueued = isReportQueued;
     if (protocolQueued && (now - last_report_timer) > SWITCH_PRO_KEEPALIVE_TIMER) {
-        if (tud_hid_ready() && sendReport(queuedReportID, report, 64)) {
+        if (tud_hid_ready() && tud_hid_report(queuedReportID, report, 64)) {
+            last_report_counter++;
             isReportQueued = false;
             last_report_timer = now;
             reportSent = true;
@@ -260,12 +261,6 @@ void SwitchProDriver::sendIdentify() {
 
 void SwitchProDriver::sendSubCommand(uint8_t subCommand) {
 
-}
-
-bool SwitchProDriver::sendReport(uint8_t reportID, void const* reportData, uint16_t reportLength) {
-    bool result = tud_hid_report(reportID, reportData, reportLength);
-    if (result) last_report_counter++;
-    return result;
 }
 
 void SwitchProDriver::handleConfigReport(uint8_t switchReportID, uint8_t switchReportSubID, const uint8_t *reportData, uint16_t reportLength) {

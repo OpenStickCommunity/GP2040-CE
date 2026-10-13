@@ -183,8 +183,6 @@ void __not_in_flash_func(AnalogInput::process)() {
         if (isValidPin(adc_pairs[i].y_pin)) samples[sampleCount++] = { (uint8_t)i, false, adc_pairs[i].y_pin_adc };
     }
 
-    bool stickProcessed[ADC_COUNT] = {};
-
     if (sampleCount != 0) {
         adc_select_input(samples[0].input);
         hw_set_bits(&adc_hw->cs, ADC_CS_START_ONCE_BITS);
@@ -232,13 +230,6 @@ void __not_in_flash_func(AnalogInput::process)() {
 
         if (sample + 1 == sampleCount || samples[sample + 1].stick != axis.stick) {
             processStick(axis.stick, gamepad, joystickMax);
-            stickProcessed[axis.stick] = true;
-        }
-    }
-
-    for (int i = 0; i < ADC_COUNT; i++) {
-        if (!stickProcessed[i]) {
-            processStick(i, gamepad, joystickMax);
         }
     }
 }

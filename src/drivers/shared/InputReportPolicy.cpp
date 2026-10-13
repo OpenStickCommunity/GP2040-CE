@@ -50,12 +50,9 @@ bool hasDigitalAxisMappings() {
 
     if (!storage.getGamepadOptions().lockHotkeys) {
         HotkeyOptions const &hotkeys = storage.getHotkeyOptions();
-        GamepadHotkey const actions[] = {
-            hotkeys.hotkey01.action, hotkeys.hotkey02.action, hotkeys.hotkey03.action, hotkeys.hotkey04.action,
-            hotkeys.hotkey05.action, hotkeys.hotkey06.action, hotkeys.hotkey07.action, hotkeys.hotkey08.action,
-            hotkeys.hotkey09.action, hotkeys.hotkey10.action, hotkeys.hotkey11.action, hotkeys.hotkey12.action,
-            hotkeys.hotkey13.action, hotkeys.hotkey14.action, hotkeys.hotkey15.action, hotkeys.hotkey16.action,
-        };
+#define HOTKEY_ACTION(options, allocation, rule, type, field, tag, other) options.field.action,
+        GamepadHotkey const actions[] = { HotkeyOptions_FIELDLIST(HOTKEY_ACTION, hotkeys) };
+#undef HOTKEY_ACTION
         for (GamepadHotkey const action : actions) {
             switch (action) {
                 case HOTKEY_LS_UP:

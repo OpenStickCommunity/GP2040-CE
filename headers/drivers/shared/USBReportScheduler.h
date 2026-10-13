@@ -78,7 +78,6 @@ private:
     volatile uint32_t lastSofUs = 0;
     volatile uint32_t sofEpoch = 0;
     uint32_t lastSofFrame = 0;
-    uint32_t lastNakCheckSofEpoch = 0;
     uint32_t lastPollSofEpoch = 0;
     uint32_t pollIntervalFrames = 0;
     bool lastPollValid = false;
