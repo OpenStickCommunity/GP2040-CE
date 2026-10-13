@@ -10,6 +10,7 @@ export default {
 		none: 'モード未選択',
 		'nintendo-switch': '任天堂Switch',
 		'nintendo-switch-pro': '任天堂Switch Pro',
+		'nintendo-switch2-pro': '任天堂Switch 2 Pro',
 		generic: '標準HID',
 		keyboard: 'キーボード',
 		mdmini: 'Sega Genesis/メガドライブ Mini',
@@ -59,6 +60,39 @@ export default {
 		'<span>⏳ 警告 ⏳:</span> 認証無しの場合8分でPS4はタイムアウトして切断します.',
 	'ps4-usb-host-mode-text':
 		'<span>補足: </span> USB 周辺機器が有効化されており、PS4に互換性のあるデバイスが接続されていることを確認してください。',
+	'switch2-pro-identity-label': 'コントローラ種別',
+	'switch2-pro-identity-options': {
+		pro2: 'Switch 2 Pro コントローラ',
+		gamecube: 'ニンテンドー ゲームキューブ コントローラ',
+	},
+	'switch2-pro-joycon2-color-explanation':
+		'Switch 2上でこのコントローラを何色で表示するかを設定します。',
+	'switch2-pro-joycon2-color-presets': {
+		stock: '標準',
+		'purple-green': '紫 / 緑',
+		'blue-yellow': '青 / 黄',
+		custom: 'カスタム',
+	},
+	'switch2-pro-joycon2-color-parts': {
+		body: '本体',
+		buttons: 'ボタン',
+		accent: 'アクセント',
+		stick: 'スティック',
+	},
+	'switch2-pro-color-label': 'コントローラ表示色',
+	'switch2-pro-color-explanation':
+		'Switch 2上でこのコントローラを何色で表示するかを設定します。',
+	'switch2-pro-color-presets': {
+		stock: '標準',
+		gp2040: 'GP2040-CE',
+		custom: 'カスタム',
+	},
+	'switch2-pro-color-parts': {
+		'face-plate': 'フェースプレート',
+		buttons: 'ボタン',
+		highlight: 'ハイライト',
+		'main-body': '本体',
+	},
 	'ps4-id-mode-label': '識別モード',
 	'ps4-id-mode-explanation-text':
 		'<ul><li>コンソールモードはPS4接続時に利用してください。</li><li></li>リモート/エミュレーションモードはエミュレーションレイヤーとの接続やリモートプレイ環境でDualShock 4互換コントローラーが必要な際にのみ利用してください。</ul>',
