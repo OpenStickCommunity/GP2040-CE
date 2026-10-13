@@ -27,6 +27,8 @@ export default {
 	'pin-sck-label': 'SCK端子',
 	'pin-tx-label': 'TX端子',
 	'pin-dp-label': 'D+端子',
+	'pin-dm-label': 'D-端子',
+	'usb-pins-consecutive': 'D+端子とD-端子は連続したGPIO端子である必要があります。',
 	'pin-enable5v-label': '5V有効化',
 	'option-order-label': '端子順序',
 };
