@@ -149,6 +149,8 @@ jobs:
 
       - name: arm-none-eabi-gcc GNU Arm Embedded Toolchain
         uses: carlosperate/arm-none-eabi-gcc-action@v1
+        with:
+          release: '14.2.Rel1'
 
       - name: Configure CMake
         shell: bash
