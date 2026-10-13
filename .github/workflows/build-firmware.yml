@@ -1,0 +1,192 @@
+name: Build Firmware
+
+on:
+  workflow_call:
+    inputs:
+      board-configs:
+        description: 'Board config names to build, one per line or comma-separated. Empty builds every folder in configs/'
+        required: false
+        type: string
+        default: ''
+      config-path:
+        description: 'Path in the calling repo to copy into configs/<board>/. "{board}" is replaced with the board name (e.g. "configs/{board}"). Empty builds the configs in GP2040-CE as-is'
+        required: false
+        type: string
+        default: ''
+      build-type:
+        description: 'CMake build type'
+        required: false
+        type: string
+        default: 'Release'
+      artifact-prefix:
+        description: 'Prefix for the uploaded firmware artifacts (<prefix><board>)'
+        required: false
+        type: string
+        default: 'GP2040-CE - '
+      elf-boards:
+        description: 'Board config names whose .elf is also uploaded (as elf - <board>), one per line or comma-separated'
+        required: false
+        type: string
+        default: ''
+
+env:
+  PICO_SDK_REF: 2.3.1
+
+jobs:
+  prepare:
+    runs-on: ubuntu-22.04
+    outputs:
+      boards: ${{ steps.boards.outputs.json }}
+    steps:
+      - name: Checkout GP2040-CE
+        uses: actions/checkout@v6.0.1
+        with:
+          repository: ${{ job.workflow_repository }}
+          ref: ${{ job.workflow_sha }}
+          path: gp2040-ce
+
+      - name: Resolve board configs
+        id: boards
+        shell: bash
+        env:
+          BOARD_CONFIGS: ${{ inputs.board-configs }}
+          CONFIG_PATH: ${{ inputs.config-path }}
+        run: |
+          if [[ -z "${BOARD_CONFIGS//[[:space:],]/}" ]]; then
+            if [[ -n "${CONFIG_PATH}" ]]; then
+              echo "::error::board-configs must be set when config-path is set."
+              exit 1
+            fi
+            JSON=$(ls -d gp2040-ce/configs/*/ | xargs -n1 basename | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          else
+            JSON=$(printf '%s' "${BOARD_CONFIGS}" | tr ',' '\n' | jq -R -s -c 'split("\n") | map(gsub("^\\s+|\\s+$"; "")) | map(select(length > 0)) | unique')
+          fi
+          echo "Boards: ${JSON}"
+          echo "json=${JSON}" >> "$GITHUB_OUTPUT"
+
+      - name: Use Node.js
+        uses: actions/setup-node@v6.1.0
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+          cache-dependency-path: gp2040-ce/www/package-lock.json
+
+      - name: Build web configurator
+        working-directory: gp2040-ce/www
+        run: |
+          npm ci
+          CI=false npm run build --if-present
+
+      - name: Upload fsdata.c
+        uses: actions/upload-artifact@v6.0.0
+        with:
+          name: fsData
+          path: gp2040-ce/lib/httpd/fsdata.c
+          if-no-files-found: error
+
+  build:
+    needs: prepare
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        board: ${{ fromJSON(needs.prepare.outputs.boards) }}
+    name: build (${{ matrix.board }})
+    steps:
+      - name: Checkout GP2040-CE
+        uses: actions/checkout@v6.0.1
+        with:
+          repository: ${{ job.workflow_repository }}
+          ref: ${{ job.workflow_sha }}
+          path: gp2040-ce
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Checkout config repo
+        if: inputs.config-path != ''
+        uses: actions/checkout@v6.0.1
+        with:
+          path: config
+
+      - name: Overlay ${{ matrix.board }} config
+        if: inputs.config-path != ''
+        shell: bash
+        env:
+          CONFIG_PATH: ${{ inputs.config-path }}
+          BOARD: ${{ matrix.board }}
+        run: |
+          SRC="config/${CONFIG_PATH//\{board\}/${BOARD}}"
+          if [[ ! -d "${SRC}" ]]; then
+            echo "::error::Config path ${SRC} does not exist for board ${BOARD}."
+            exit 1
+          fi
+          DEST="gp2040-ce/configs/${BOARD}"
+          rm -rf "${DEST}"
+          mkdir -p "${DEST}"
+          rsync -a --exclude='.git' --exclude='.github' --exclude='.gitignore' "${SRC}/" "${DEST}/"
+
+      - name: Download fsdata.c
+        uses: actions/download-artifact@v7.0.0
+        with:
+          name: fsData
+          path: gp2040-ce/lib/httpd/
+
+      - name: Checkout pico-sdk/${{ env.PICO_SDK_REF }}
+        uses: actions/checkout@v6.0.1
+        with:
+          repository: raspberrypi/pico-sdk
+          ref: ${{ env.PICO_SDK_REF }}
+          path: pico-sdk
+
+      - name: Checkout pico-sdk submodules
+        working-directory: pico-sdk
+        run: git submodule update --init
+
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v2
+        with:
+          cmake-version: "3.31.x"
+
+      - name: arm-none-eabi-gcc GNU Arm Embedded Toolchain
+        uses: carlosperate/arm-none-eabi-gcc-action@v1
+        with:
+          release: '14.2.Rel1'
+
+      - name: Configure CMake
+        shell: bash
+        working-directory: gp2040-ce
+        env:
+          BOARD: ${{ matrix.board }}
+          BUILD_TYPE: ${{ inputs.build-type }}
+          PICO_SDK_PATH: ${{ github.workspace }}/pico-sdk
+        run: GP2040_BOARDCONFIG="${BOARD}" SKIP_WEBBUILD=TRUE cmake -B build -DCMAKE_BUILD_TYPE="${BUILD_TYPE}"
+
+      - name: Build ${{ matrix.board }}
+        id: build
+        shell: bash
+        working-directory: gp2040-ce
+        env:
+          BOARD: ${{ matrix.board }}
+          BUILD_TYPE: ${{ inputs.build-type }}
+          ELF_BOARDS: ${{ inputs.elf-boards }}
+        run: |
+          GP2040_BOARDCONFIG="${BOARD}" cmake --build build --config "${BUILD_TYPE}" --parallel "$(nproc)"
+          echo "firmware=$(ls "${PWD}"/build/GP2040-CE_*_"${BOARD}".uf2)" >> "$GITHUB_OUTPUT"
+          if printf '%s' "${ELF_BOARDS}" | tr ',' '\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | grep -qxF "${BOARD}"; then
+            echo "elf=$(ls "${PWD}"/build/GP2040-CE_*_"${BOARD}".elf)" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Upload firmware
+        uses: actions/upload-artifact@v6.0.0
+        with:
+          name: ${{ inputs.artifact-prefix }}${{ matrix.board }}
+          path: ${{ steps.build.outputs.firmware }}
+          if-no-files-found: error
+
+      - name: Upload .elf
+        if: steps.build.outputs.elf != ''
+        uses: actions/upload-artifact@v6.0.0
+        with:
+          name: elf - ${{ matrix.board }}
+          path: ${{ steps.build.outputs.elf }}
+          if-no-files-found: error
