@@ -287,7 +287,7 @@ static void handleCommand(const uint8_t *req) {
             break;
         case CMD_FW_INFO:
             if (sub == 0x01) {
-                const uint8_t payload[] = { 0x02, 0x01, 0x04, firmwareType, 0x0C, 0x00, 0x00, 0x00, 0x00, 0x02, 0x03, 0x00 };
+                const uint8_t payload[] = { 0x20, 0x00, 0x00, firmwareType, 0x0C, 0x00, 0x00, 0x00, 0x00, 0x02, 0x03, 0x00 };
                 setReply(command, sub, payload, sizeof(payload));
             } else {
                 setReply(command, sub, nullptr, 0);
@@ -459,7 +459,7 @@ static void loadIdentity() {
         joyCon2Side = left ? 1 : 2;
         setProductId(&deviceDescriptor[SWITCH2_PRO_DEVICE_PID_OFFSET], pid);
         deviceDescriptor[12] = 0x00;
-        deviceDescriptor[13] = 0x01;
+        deviceDescriptor[13] = 0x20;
         setProductId(&factoryData[SWITCH2_PRO_FACTORY_PID_OFFSET], pid);
         setProductId(&chargingGripData[SWITCH2_PRO_GRIP_PID_OFFSET], pid);
         productString = left ? switch2_joycon2_left_product_string : switch2_joycon2_right_product_string;
