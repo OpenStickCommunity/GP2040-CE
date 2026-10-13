@@ -416,6 +416,7 @@ void addUsedPinsArray(DynamicJsonDocument& doc)
 std::string serialize_json(DynamicJsonDocument &doc)
 {
     std::string data;
+    data.reserve(measureJson(doc));
     serializeJson(doc, data);
     return data;
 }
