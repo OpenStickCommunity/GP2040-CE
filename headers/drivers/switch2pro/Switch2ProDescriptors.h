@@ -76,7 +76,7 @@ static const uint8_t switch2pro_device_descriptor[] = {
     0x40,        // bMaxPacketSize0 64
     0x7E, 0x05,  // idVendor 0x057E
     0x69, 0x20,  // idProduct 0x2069
-    0x01, 0x02,  // bcdDevice 2.01
+    0x00, 0x20,  // bcdDevice 20.00
     0x01,        // iManufacturer
     0x02,        // iProduct
     0x03,        // iSerialNumber
@@ -154,7 +154,7 @@ static const char * const switch2_joycon2_right_product_string = "Joy-Con 2 (R)"
 static const uint16_t switch2pro_language_ids[] = { 0x0409, 0x0402, 0x0801 };
 
 static const uint8_t switch2pro_device_info[] = {
-    0x02, 0x01, 0x04,
+    0x20, 0x00, 0x00,
     0x0C, 0x00, 0x00, 0x00,
     0x00, 0x02, 0x03,
     0xE8, 0x20, 0x17, 0x05, 0x48, 0xC8,
