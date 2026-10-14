@@ -8,7 +8,6 @@
 #include "mbedtls/aes.h"
 #include "pico/rand.h"
 #include "usbdriver.h"
-#include "device/dcd.h"
 
 #include <string.h>
 
@@ -553,14 +552,7 @@ bool Switch2ProDriver::process(Gamepad * gamepad) {
                        (gamepad->state.dpad != 0);
 
     if (tud_suspended() && wake_needed) {
-        static uint32_t last_wakeup_attempt = 0;
-        uint32_t now = to_ms_since_boot(get_absolute_time());
-        if (now - last_wakeup_attempt >= 50) {
-            last_wakeup_attempt = now;
-            if (!tud_remote_wakeup()) {
-                dcd_remote_wakeup(0);
-            }
-        }
+        tud_remote_wakeup();
     }
 
     if (!reportsEnabled)
