@@ -3,6 +3,7 @@
 #include "tusb.h"
 #include "drivers/shared/xinput_host.h"
 #include <storagemanager.h>
+#include "usbdriver.h"
 
 bool Xbox360Host::match(uint8_t dev_addr, uint8_t instance, uint16_t vendor_id, uint16_t product_id, uint8_t controller_type) {    
     if ( controller_type == 1 ) {    
@@ -44,6 +45,7 @@ void Xbox360Host::initialize(uint8_t dev_addr, uint8_t instance, uint16_t vendor
     last_right_rumble = 0;
 
     memset(&prev_report, 0, sizeof(XInputReport));
+    last_report_ms = 0;
 
     Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
     
@@ -96,8 +98,20 @@ void Xbox360Host::process(uint8_t const* report, uint16_t len) {
 
     memcpy(&controller_report, report, sizeof(controller_report));
 
-    if (memcmp(&prev_report, &controller_report, sizeof(XInputReport)) == 0)
+    uint32_t now = to_ms_since_boot(get_absolute_time());
+    bool is_reconnect = (last_report_ms == 0) || ((now - last_report_ms) > 1000);
+    last_report_ms = now;
+
+    if (is_reconnect) {
+        request_remote_wakeup(500);
+    } else if (memcmp(&prev_report, &controller_report, sizeof(XInputReport)) == 0) {
         return;
+    }
+
+    if (controller_report.buttons1 != 0 || controller_report.buttons2 != 0 ||
+        controller_report.lt > 0 || controller_report.rt > 0) {
+        request_remote_wakeup(200);
+    }
 
     _controller_host_state.dpad = 0;
     if (controller_report.buttons1 & XBOX_MASK_UP) _controller_host_state.dpad |= GAMEPAD_MASK_UP;

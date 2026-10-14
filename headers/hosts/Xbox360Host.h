@@ -29,6 +29,7 @@ private:
     uint8_t last_left_rumble;
     uint8_t last_right_rumble;
     XInputReport prev_report;
+    uint32_t last_report_ms;
 };
 
 #endif // _XBOX360HOST_H_
