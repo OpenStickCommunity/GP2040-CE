@@ -41,6 +41,10 @@ const GROUPED_OPTIONS = [
 		label: 'Mini',
 		options: INPUT_MODE_OPTIONS.filter(({ group }) => group === 'mini'),
 	},
+	{
+		label: 'Wireless',
+		options: INPUT_MODE_OPTIONS.filter(({ group }) => group === 'wireless'),
+	},
 ];
 
 function BootModeSelect({ mappingKey }: { mappingKey: string }) {

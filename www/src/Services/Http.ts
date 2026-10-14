@@ -25,7 +25,12 @@ class Http {
 		}
 	}
 
-	async post(url: string, body: unknown, headers: object = {}) {
+	async post(
+		url: string,
+		body: unknown,
+		headers: object = {},
+		signal?: AbortSignal,
+	) {
 		try {
 			const response = await fetch(url, {
 				method: 'POST',
@@ -34,6 +39,7 @@ class Http {
 					...headers,
 				},
 				body: JSON.stringify(body),
+				signal,
 			});
 
 			const json = await response.json();
