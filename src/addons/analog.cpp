@@ -82,6 +82,7 @@ void AnalogInput::setup() {
     
 
     // Setup defaults and helpers
+    sampleCount = 0;
     for (int i = 0; i < ADC_COUNT; i++) {
         if (!isAdcPin(adc_pairs[i].x_pin)) {
             adc_pairs[i].x_pin = -1;
@@ -94,7 +95,9 @@ void AnalogInput::setup() {
         adc_pairs[i].y_pin_adc = adc_pairs[i].y_pin - ADC_PIN_OFFSET;
         adc_pairs[i].in_deadzone = std::clamp(adc_pairs[i].in_deadzone, ANALOG_MINIMUM, ANALOG_MAX - ANALOG_MIN_DEADZONE_BAND);
         adc_pairs[i].out_deadzone = std::clamp(adc_pairs[i].out_deadzone, adc_pairs[i].in_deadzone + ANALOG_MIN_DEADZONE_BAND, ANALOG_MAX);
-        deadzone_span[i] = adc_pairs[i].out_deadzone - adc_pairs[i].in_deadzone;
+        inverse_deadzone_span[i] = 1.0f / (adc_pairs[i].out_deadzone - adc_pairs[i].in_deadzone);
+        if (isValidPin(adc_pairs[i].x_pin)) samples[sampleCount++] = { (uint8_t)i, true, adc_pairs[i].x_pin_adc };
+        if (isValidPin(adc_pairs[i].y_pin)) samples[sampleCount++] = { (uint8_t)i, false, adc_pairs[i].y_pin_adc };
         adc_pairs[i].x_value = ANALOG_CENTER;
         adc_pairs[i].y_value = ANALOG_CENTER;
         adc_pairs[i].xy_magnitude = 0.0f;
@@ -170,19 +173,6 @@ void __not_in_flash_func(AnalogInput::process)() {
     uint32_t joystickMid = GAMEPAD_JOYSTICK_MID;
     uint32_t joystickMax = GAMEPAD_JOYSTICK_MAX;
 
-    struct AxisSample {
-        uint8_t stick;
-        bool xAxis;
-        Pin_t input;
-    };
-
-    AxisSample samples[ADC_COUNT * 2];
-    uint sampleCount = 0;
-    for (int i = 0; i < ADC_COUNT; i++) {
-        if (isValidPin(adc_pairs[i].x_pin)) samples[sampleCount++] = { (uint8_t)i, true, adc_pairs[i].x_pin_adc };
-        if (isValidPin(adc_pairs[i].y_pin)) samples[sampleCount++] = { (uint8_t)i, false, adc_pairs[i].y_pin_adc };
-    }
-
     if (sampleCount != 0) {
         adc_select_input(samples[0].input);
         hw_set_bits(&adc_hw->cs, ADC_CS_START_ONCE_BITS);
@@ -255,12 +245,13 @@ float AnalogInput::magnitudeCalculation(int stick_num, adc_instance & adc_inst) 
 }
 
 void __not_in_flash_func(AnalogInput::radialDeadzone)(int stick_num, adc_instance & adc_inst) {
-    float scaling_factor = (adc_inst.xy_magnitude - adc_pairs[stick_num].in_deadzone) / deadzone_span[stick_num];
+    float scaling_factor = (adc_inst.xy_magnitude - adc_pairs[stick_num].in_deadzone) * inverse_deadzone_span[stick_num];
     if (adc_pairs[stick_num].forced_circularity == true) {
         scaling_factor = std::fmin(scaling_factor, ANALOG_CENTER * adc_inst.error_rate);
     }
-    adc_inst.x_value = ((adc_inst.x_magnitude / adc_inst.xy_magnitude) * scaling_factor) + ANALOG_CENTER;
-    adc_inst.y_value = ((adc_inst.y_magnitude / adc_inst.xy_magnitude) * scaling_factor) + ANALOG_CENTER;
+    scaling_factor /= adc_inst.xy_magnitude;
+    adc_inst.x_value = (adc_inst.x_magnitude * scaling_factor) + ANALOG_CENTER;
+    adc_inst.y_value = (adc_inst.y_magnitude * scaling_factor) + ANALOG_CENTER;
     adc_inst.x_value = std::clamp(adc_inst.x_value, ANALOG_MINIMUM, ANALOG_MAX);
     adc_inst.y_value = std::clamp(adc_inst.y_value, ANALOG_MINIMUM, ANALOG_MAX);
 }
