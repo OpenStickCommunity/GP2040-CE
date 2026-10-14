@@ -546,8 +546,11 @@ bool Switch2ProDriver::process(Gamepad * gamepad) {
     processedGamepad->auxState.playerID.ledValue = playerLedMask;
     processedGamepad->auxState.playerID.value = playerLedMask;
 
-    if (tud_suspended())
-        tud_remote_wakeup();
+    if (tud_suspended()) {
+        if (gamepad->state.buttons != 0 || gamepad->state.dpad != 0) {
+            tud_remote_wakeup();
+        }
+    }
 
     if (!reportsEnabled)
         return false;

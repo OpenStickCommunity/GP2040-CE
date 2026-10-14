@@ -31,6 +31,8 @@
 
 #include "host/usbh.h"
 #include "host/usbh_pvt.h"
+#include "tusb.h"
+#include "pico/time.h"
 #include "drivers/shared/xinput_host.h"
 
 //--------------------------------------------------------------------+
@@ -198,8 +200,13 @@ void tuh_xinput_wait_for_tx(uint8_t dev_addr, uint8_t instance) {
     }
 
     xinputh_interface_t *hid_itf = get_instance(dev_addr, instance);
+    uint32_t start = to_ms_since_boot(get_absolute_time());
     while (usbh_edpt_busy(dev_addr, hid_itf->ep_out)) {
         tuh_task();
+        tud_task();
+        if ((to_ms_since_boot(get_absolute_time()) - start) > 2) {
+            break;
+        }
     }
 }
 

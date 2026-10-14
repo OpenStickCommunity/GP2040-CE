@@ -149,26 +149,28 @@ void Xbox360Host::gamepad(Gamepad * gamepad) {
 }
 
 void Xbox360Host::xbox360_set_led(uint8_t quadrant) {
+    if (!tuh_xinput_mounted(_dev_addr, _instance))
+        return;
+
     uint8_t out[32] = { 0 };
 
     memcpy(out, XBOX360_WIRED_LED, sizeof(XBOX360_WIRED_LED));
     out[2] = (quadrant == 0) ? 0 : (quadrant + 5);
-    bool ret = tuh_xinput_send_report(_dev_addr, _instance, out, sizeof(XBOX360_WIRED_LED));
-    if (ret) {
-        tuh_xinput_wait_for_tx(_dev_addr, _instance);
-    }
+    tuh_xinput_send_report(_dev_addr, _instance, out, sizeof(XBOX360_WIRED_LED));
 }
 
 void Xbox360Host::xinput_set_rumble(uint8_t left, uint8_t right) {
+    if (!tuh_xinput_mounted(_dev_addr, _instance))
+        return;
+
     uint8_t out[32];
     memset(out, 0, 32);
     uint16_t len = sizeof(XBOX360_WIRED_RUMBLE);
     memcpy(out, XBOX360_WIRED_RUMBLE, sizeof(XBOX360_WIRED_RUMBLE));
     out[3] = left;
     out[4] = right;
-    tuh_xinput_wait_for_tx(_dev_addr, _instance);
-    bool ret = tuh_xinput_send_report(_dev_addr, _instance, out, len);
-    if (ret) {
-        tuh_xinput_wait_for_tx(_dev_addr, _instance);
+    if (!tuh_xinput_send_report(_dev_addr, _instance, out, len)) {
+        last_left_rumble = 0xFF;
+        last_right_rumble = 0xFF;
     }
 }
