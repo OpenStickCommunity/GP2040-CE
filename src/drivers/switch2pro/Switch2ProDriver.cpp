@@ -73,24 +73,33 @@ static uint16_t stringDescriptor[64];
 static uint8_t decode_switch2_motor(const uint8_t *d) {
     // d points to 16 bytes of Switch 2 HD rumble data:
     // d[0]: Sequence counter (0x50..0x5F)
-    // d[1]: HF frequency
-    // d[2]: HF amplitude (0x01 when idle/0 amp, non-zero when active: d[2] & 0xFE)
-    // d[3]: LF frequency
-    // d[4]: LF amplitude (0x1C..0x1F when idle/0 amp; bit 7 (0x80) is set when active)
-    // d[5]: Extension / sub-band amplitude (0x00 when idle)
-    uint8_t hf_amp = (d[2] & 0xFE);
-    uint8_t lf_amp = (d[4] & 0x80) ? ((d[4] & 0x7F) * 2) : 0;
-    uint8_t ext_amp = d[5];
+    // Slices 0..2 (5 bytes / 40 bits each):
+    //   bits 0..8:   LF frequency (9 bits)
+    //   bit 9:       LF tone enable (1 bit)
+    //   bits 10..19: LF amplitude (10 bits, 0..1023)
+    //   bits 20..28: HF frequency (9 bits)
+    //   bit 29:      HF tone enable (1 bit)
+    //   bits 30..39: HF amplitude (10 bits, 0..1023)
+    uint16_t peak_amp = 0;
 
-    uint16_t scaled_hf = (hf_amp * 255) / 200;
-    uint16_t scaled_lf = (lf_amp * 255) / 50;
-    uint16_t scaled_ext = (uint16_t)ext_amp * 16;
+    for (int s = 0; s < 3; s++) {
+        const uint8_t *slice = &d[1 + s * 5];
+        const uint64_t v = (uint64_t)slice[0] |
+                          ((uint64_t)slice[1] << 8) |
+                          ((uint64_t)slice[2] << 16) |
+                          ((uint64_t)slice[3] << 24) |
+                          ((uint64_t)slice[4] << 32);
 
-    uint16_t max_amp = scaled_hf;
-    if (scaled_lf > max_amp) max_amp = scaled_lf;
-    if (scaled_ext > max_amp) max_amp = scaled_ext;
+        const uint16_t lf_amp = (v >> 10) & 0x3FF;
+        const uint16_t hf_amp = (v >> 30) & 0x3FF;
 
-    return (max_amp > 255) ? 255 : (uint8_t)max_amp;
+        if (lf_amp > peak_amp) peak_amp = lf_amp;
+        if (hf_amp > peak_amp) peak_amp = hf_amp;
+    }
+
+    if (peak_amp == 0) return 0;
+    const uint32_t scaled = ((uint32_t)peak_amp * 255) / 1023;
+    return (scaled > 255) ? 255 : (uint8_t)scaled;
 }
 
 static uint8_t decode_switch1_motor(const uint8_t *d) {
@@ -578,6 +587,9 @@ static void loadIdentity() {
 
 void Switch2ProDriver::initialize() {
     memset(inputReport, 0, sizeof(inputReport));
+    inputReport[11] = 0x38;
+    inputReport[31] = 0x04;
+    inputReport[32] = 0x10;
     reportCounter = 0;
     loadIdentity();
 
@@ -661,6 +673,8 @@ bool Switch2ProDriver::process(Gamepad * gamepad) {
     packStick(&inputReport[5], gamepad->state.lx, gamepad->state.ly);
     packStick(&inputReport[8], gamepad->state.rx, gamepad->state.ry);
     inputReport[11] = 0x38;
+    inputReport[31] = 0x04;
+    inputReport[32] = 0x10;
     if (joyCon2Side != 0) {
         const bool left = joyCon2Side == 1;
         uint16_t x = gamepad->state.lx;
@@ -701,6 +715,9 @@ bool Switch2ProDriver::process(Gamepad * gamepad) {
             packStick(&inputReport[5], GAMEPAD_JOYSTICK_MAX - y, x);
         else
             packStick(&inputReport[5], y, GAMEPAD_JOYSTICK_MAX - x);
+        inputReport[11] = 0x38;
+        inputReport[31] = 0x04;
+        inputReport[32] = 0x10;
     }
     const uint32_t now = to_ms_since_boot(get_absolute_time());
     const bool changed = memcmp(&inputReport[2], &lastSentState[0], sizeof(lastSentState)) != 0;
