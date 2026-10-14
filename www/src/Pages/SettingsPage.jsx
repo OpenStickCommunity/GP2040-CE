@@ -1,14 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import {
-	Alert,
-	Button,
-	Form,
-	Modal,
-	Nav,
-	Row,
-	Col,
-	Tab,
-} from 'react-bootstrap';
+import { Button, Form, Modal, Nav, Row, Col, Tab } from 'react-bootstrap';
 import { Formik, useFormikContext } from 'formik';
 import { NavLink } from 'react-router-dom';
 import * as yup from 'yup';
@@ -1578,7 +1569,7 @@ export default function SettingsPage() {
 					<>
 						<Row className="mb-3">
 							<Col xs={12}>
-								<Alert variant="warning" className="mb-0">
+								<div className="alert alert-warning mb-0">
 									<Trans
 										ns="SettingsPage"
 										i18nKey="switch2-pro-joycon2-experimental-warning"
@@ -1589,7 +1580,7 @@ export default function SettingsPage() {
 										}}
 										components={{ strong: <strong /> }}
 									/>
-								</Alert>
+								</div>
 							</Col>
 						</Row>
 						<Row className="mb-3">
