@@ -6,7 +6,26 @@
 // force a report to be sent every X ms
 #define SWITCH_PRO_KEEPALIVE_TIMER 5
 
+static SwitchProDriver * switchProInstance = nullptr;
+
+static void switchpro_reset(uint8_t rhport) {
+    hidd_reset(rhport);
+    if (switchProInstance) {
+        switchProInstance->resetDriver();
+    }
+}
+
+void SwitchProDriver::resetDriver() {
+    isReady = false;
+    isInitialized = false;
+    isReportQueued = false;
+    reportSent = false;
+    queuedReportID = 0;
+    queuedReportTime = 0;
+}
+
 void SwitchProDriver::initialize() {
+    switchProInstance = this;
     playerID = 0;
     last_report_counter = 0;
     handshakeCounter = 0;
@@ -82,7 +101,7 @@ void SwitchProDriver::initialize() {
 		.name = "SWITCHPRO",
 	#endif
 		.init = hidd_init,
-		.reset = hidd_reset,
+		.reset = switchpro_reset,
 		.open = hidd_open,
 		.control_xfer_cb = hidd_control_xfer_cb,
 		.xfer_cb = hidd_xfer_cb,
@@ -142,14 +161,20 @@ bool SwitchProDriver::process(Gamepad * gamepad) {
 	if (tud_suspended())
 		tud_remote_wakeup();
 
+    bool hasPendingReply = isReportQueued;
     if (isReportQueued) {
-        if ((now - last_report_timer) > SWITCH_PRO_KEEPALIVE_TIMER) {
+        if ((now - queuedReportTime) > 500) {
+            // Drop stuck queued report after 500ms to prevent permanent input starvation
+            isReportQueued = false;
+            hasPendingReply = false;
+        } else if ((now - last_report_timer) > SWITCH_PRO_KEEPALIVE_TIMER) {
             if (tud_hid_ready() && sendReport(queuedReportID, report, 64) == true) {
                 isReportQueued = false;
+                hasPendingReply = false;
                 last_report_timer = now;
+                reportSent = true;
             }
         }
-        reportSent = true;
     }
 
     Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
@@ -157,7 +182,7 @@ bool SwitchProDriver::process(Gamepad * gamepad) {
     processedGamepad->auxState.playerID.ledValue = playerID;
     processedGamepad->auxState.playerID.value = playerID;
 
-    if (isReady && !reportSent) {
+    if (isReady && !hasPendingReply) {
         if ((now - last_report_timer) > SWITCH_PRO_KEEPALIVE_TIMER) {
             switchReport.timestamp = last_report_counter;
             void * inputReport = &switchReport;
@@ -172,7 +197,7 @@ bool SwitchProDriver::process(Gamepad * gamepad) {
                 last_report_timer = now;
             }
         }
-    } else {
+    } else if (!isReady && !hasPendingReply) {
         if (!isInitialized) {
             // send identification
             sendIdentify();
@@ -294,7 +319,10 @@ void SwitchProDriver::handleConfigReport(const uint8_t *data, uint16_t dataLen) 
             break;
     }
 
-    if (canSend) isReportQueued = true;
+    if (canSend) {
+        isReportQueued = true;
+        queuedReportTime = to_ms_since_boot(get_absolute_time());
+    }
 }
 
 void SwitchProDriver::handleFeatureReport(const uint8_t *data, uint16_t dataLen) {
@@ -347,7 +375,7 @@ void SwitchProDriver::handleFeatureReport(const uint8_t *data, uint16_t dataLen)
             canSend = true;
             break;
         case SwitchCommands::SPI_READ:
-            if (dataLen < 15) return;
+            if (dataLen < 15 || data[14] > sizeof(report) - 20) return;
             spiReadAddress = (data[13] << 24) | (data[12] << 16) | (data[11] << 8) | (data[10]);
             spiReadSize = data[14];
             report[13] = 0x90;
@@ -441,7 +469,10 @@ void SwitchProDriver::handleFeatureReport(const uint8_t *data, uint16_t dataLen)
             break;
     }
 
-    if (canSend) isReportQueued = true;
+    if (canSend) {
+        isReportQueued = true;
+        queuedReportTime = to_ms_since_boot(get_absolute_time());
+    }
 }
 
 void SwitchProDriver::set_report(uint8_t report_id, hid_report_type_t report_type, const uint8_t *buffer, uint16_t bufsize) {

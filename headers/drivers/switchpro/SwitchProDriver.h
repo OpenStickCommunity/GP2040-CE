@@ -29,12 +29,14 @@ public:
     virtual const uint8_t * get_descriptor_device_qualifier_cb();
     virtual uint16_t GetJoystickMidValue();
     virtual USBListener * get_usb_auth_listener() { return nullptr; }
+    void resetDriver();
 private:
     uint8_t report[SWITCH_PRO_ENDPOINT_SIZE] = { };
     uint8_t last_report[SWITCH_PRO_ENDPOINT_SIZE] = { };
     SwitchProReport switchReport;
     uint8_t last_report_counter;
     uint32_t last_report_timer;
+    uint32_t queuedReportTime = 0;
     bool isReady = false;
     bool isInitialized = false;
     bool isReportQueued = false;
