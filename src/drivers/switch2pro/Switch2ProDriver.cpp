@@ -4,6 +4,7 @@
  */
 
 #include "drivers/switch2pro/Switch2ProDriver.h"
+#include "BoardConfig.h"
 #include "storagemanager.h"
 #include "mbedtls/aes.h"
 #include "pico/rand.h"
@@ -17,10 +18,18 @@
 #define CMD_HEADER_LEN        8
 #define CMD_BUFFER_LEN        64
 #define CMD_REPLY_MAX         160
+#define CMD_REPLY_RETRY_MS    10
+#define CMD_REPLY_TIMEOUT_MS  5000
+#define CMD_REATTACH_MS       250
+#define CMD_MAX_FAILURES      3
 
 #define VENDOR_REQ_DEVICE_INFO  0x02
 #define VENDOR_REQ_FACTORY_DATA 0x03
 #define VENDOR_REQ_SET_MAX_LEN  0x04
+
+#ifndef SWITCH_TRIGGER_THRESHOLD
+#define SWITCH_TRIGGER_THRESHOLD 128
+#endif
 
 
 typedef enum {
@@ -44,8 +53,25 @@ static uint8_t cmdRequest[CMD_BUFFER_LEN];
 static uint8_t cmdReply[CMD_REPLY_MAX];
 static uint16_t cmdReplyLen;
 static bool cmdReplyPending;
-static bool reportsEnabled;
+static bool cmdReplyInFlight;
+static uint32_t cmdReplyInFlightStart = 0;
+static uint8_t cmdReplyFailures;
+static bool cmdReplyRetryScheduled;
+static uint32_t cmdReplyRetryAt;
+static bool cmdBulkFaulted;
+static bool cmdWasSuspended;
+static uint32_t cmdSuspendedAt;
+
+// Do not clear these in resetProtocolState(): a reset can be caused by our
+// own software detach, and clearing the one-shot guard would create a loop.
+static bool cmdRecoveryAttempted;
+static bool cmdRecoveryDetached;
+static bool cmdRecoveryAwaitingReset;
+static uint32_t cmdRecoveryReattachAt;
+
+static bool reportsEnabled = true;
 static uint8_t playerLedMask;
+static uint32_t handshakeRumbleUntil = 0;
 static uint8_t btLongTermKey[16];
 static uint8_t hostAddress[6];
 
@@ -64,11 +90,76 @@ static uint8_t configuration[sizeof(switch2pro_configuration_descriptor)];
 static uint8_t joyCon2Side = 0;
 static uint16_t stringDescriptor[64];
 
+static uint8_t decode_switch2_motor(const uint8_t *d) {
+    // d points to 16 bytes of Switch 2 HD rumble data:
+    // d[0]: Sequence counter (0x50..0x5F)
+    // Slices 0..2 (5 bytes / 40 bits each):
+    //   bits 0..8:   LF frequency (9 bits)
+    //   bit 9:       LF tone enable (1 bit)
+    //   bits 10..19: LF amplitude (10 bits, 0..1023)
+    //   bits 20..28: HF frequency (9 bits)
+    //   bit 29:      HF tone enable (1 bit)
+    //   bits 30..39: HF amplitude (10 bits, 0..1023)
+    uint16_t peak_amp = 0;
+
+    for (int s = 0; s < 3; s++) {
+        const uint8_t *slice = &d[1 + s * 5];
+        const uint64_t v = (uint64_t)slice[0] |
+                          ((uint64_t)slice[1] << 8) |
+                          ((uint64_t)slice[2] << 16) |
+                          ((uint64_t)slice[3] << 24) |
+                          ((uint64_t)slice[4] << 32);
+
+        const uint16_t lf_amp = (v >> 10) & 0x3FF;
+        const uint16_t hf_amp = (v >> 30) & 0x3FF;
+
+        if (lf_amp > peak_amp) peak_amp = lf_amp;
+        if (hf_amp > peak_amp) peak_amp = hf_amp;
+    }
+
+    if (peak_amp == 0) return 0;
+    const uint32_t scaled = ((uint32_t)peak_amp * 255) / 1023;
+    return (scaled > 255) ? 255 : (uint8_t)scaled;
+}
+
+static uint8_t decode_switch1_motor(const uint8_t *d) {
+    uint8_t hf_amp = d[1] & 0xFE;
+    uint8_t lf_amp = (d[3] >= 0x40) ? (d[3] - 0x40) : 0;
+    uint16_t scaled_hf = (hf_amp * 255) / 200;
+    uint16_t scaled_lf = (lf_amp * 255) / 50;
+    uint16_t max_amp = (scaled_hf > scaled_lf) ? scaled_hf : scaled_lf;
+    return (max_amp > 255) ? 255 : (uint8_t)max_amp;
+}
+
+static void setSwitch2ProRumble(uint8_t left, uint8_t right) {
+    Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
+    if (gamepad == nullptr) return;
+
+    gamepad->auxState.haptics.leftActuator.active = (left > 0);
+    gamepad->auxState.haptics.leftActuator.intensity = left;
+
+    gamepad->auxState.haptics.rightActuator.active = (right > 0);
+    gamepad->auxState.haptics.rightActuator.intensity = right;
+}
+
+static void triggerHandshakeRumble() {
+    handshakeRumbleUntil = to_ms_since_boot(get_absolute_time()) + 100;
+    setSwitch2ProRumble(180, 180);
+}
+
 static void resetProtocolState() {
     cmdReplyLen = 0;
     cmdReplyPending = false;
-    reportsEnabled = false;
+    cmdReplyInFlight = false;
+    cmdReplyInFlightStart = 0;
+    cmdReplyFailures = 0;
+    cmdReplyRetryScheduled = false;
+    cmdBulkFaulted = false;
+    cmdWasSuspended = false;
+    reportsEnabled = true;
     playerLedMask = 0;
+    handshakeRumbleUntil = 0;
+    setSwitch2ProRumble(0, 0);
 }
 
 static void setReply(uint8_t command, uint8_t subcommand, const uint8_t *payload, uint16_t payloadLen) {
@@ -237,12 +328,19 @@ static void handleCommand(const uint8_t *req) {
                 setReply(command, sub, nullptr, 0);
             break;
         case CMD_PLAYER_LED:
-            if (sub == 0x07)
+            if (sub == 0x07) {
+                if (req[8] != 0 && req[8] != playerLedMask) {
+                    triggerHandshakeRumble();
+                }
                 playerLedMask = req[8];
+            }
             setReply(command, sub, nullptr, 0);
             break;
         case CMD_VIBRATION:
             if (sub == 0x02) {
+                if (req[8] == 0) {
+                    setSwitch2ProRumble(0, 0);
+                }
                 const uint8_t payload[] = { req[8], 0x00, 0x00, 0x00 };
                 setReply(command, sub, payload, sizeof(payload));
             } else {
@@ -287,7 +385,7 @@ static void handleCommand(const uint8_t *req) {
             break;
         case CMD_FW_INFO:
             if (sub == 0x01) {
-                const uint8_t payload[] = { 0x02, 0x01, 0x04, firmwareType, 0x0C, 0x00, 0x00, 0x00, 0x00, 0x02, 0x03, 0x00 };
+                const uint8_t payload[] = { 0x20, 0x00, 0x00, firmwareType, 0x0C, 0x00, 0x00, 0x00, 0x00, 0x02, 0x03, 0x00 };
                 setReply(command, sub, payload, sizeof(payload));
             } else {
                 setReply(command, sub, nullptr, 0);
@@ -337,10 +435,27 @@ static void handleCommand(const uint8_t *req) {
 }
 
 static void sendReply(uint8_t rhport) {
-    if (!cmdReplyPending || usbd_edpt_busy(rhport, SWITCH2_PRO_EP_BULK_IN))
+    if (!cmdReplyPending || cmdReplyInFlight || cmdBulkFaulted ||
+        usbd_edpt_busy(rhport, SWITCH2_PRO_EP_BULK_IN))
         return;
-    cmdReplyPending = false;
-    usbd_edpt_xfer(rhport, SWITCH2_PRO_EP_BULK_IN, cmdReply, cmdReplyLen, false);
+
+    const uint32_t now = to_ms_since_boot(get_absolute_time());
+    if (cmdReplyRetryScheduled &&
+        (int32_t)(now - cmdReplyRetryAt) < 0)
+        return;
+
+    cmdReplyRetryScheduled = false;
+    if (usbd_edpt_xfer(rhport, SWITCH2_PRO_EP_BULK_IN,
+                      cmdReply, cmdReplyLen, false)) {
+        cmdReplyPending = false;
+        cmdReplyInFlight = true;
+        cmdReplyInFlightStart = now;
+    } else if (++cmdReplyFailures >= CMD_MAX_FAILURES) {
+        cmdBulkFaulted = true;       // Leave OUT unarmed; recover in process().
+    } else {
+        cmdReplyRetryScheduled = true;
+        cmdReplyRetryAt = now + CMD_REPLY_RETRY_MS;
+    }
 }
 
 static void switch2pro_init(void) {
@@ -355,6 +470,8 @@ static bool switch2pro_deinit(void) {
 static void switch2pro_reset(uint8_t rhport) {
     hidd_reset(rhport);
     resetProtocolState();
+    // Only the stack reset releases ownership after a software detach.
+    cmdRecoveryAwaitingReset = false;
 }
 
 static uint16_t switch2pro_open(uint8_t rhport, tusb_desc_interface_t const *itf_desc, uint16_t max_len) {
@@ -396,18 +513,56 @@ static bool switch2pro_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_contr
 static bool switch2pro_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result, uint32_t xferred_bytes) {
     switch (ep_addr) {
         case SWITCH2_PRO_EP_BULK_OUT:
+            if (cmdRecoveryAwaitingReset || cmdRecoveryDetached)
+                return true;
+
             if (result == XFER_RESULT_SUCCESS && xferred_bytes >= 4 &&
-                    cmdRequest[1] == CMD_DIRECTION_REQUEST && cmdRequest[2] == CMD_TRANSPORT_USB) {
+                cmdRequest[1] == CMD_DIRECTION_REQUEST &&
+                cmdRequest[2] == CMD_TRANSPORT_USB) {
                 if (xferred_bytes < sizeof(cmdRequest))
-                    memset(&cmdRequest[xferred_bytes], 0, sizeof(cmdRequest) - xferred_bytes);
+                    memset(&cmdRequest[xferred_bytes], 0,
+                           sizeof(cmdRequest) - xferred_bytes);
+
+                cmdReplyFailures = 0;
+                cmdReplyRetryScheduled = false;
                 handleCommand(cmdRequest);
                 cmdReplyPending = true;
                 sendReply(rhport);
             }
-            usbd_edpt_xfer(rhport, SWITCH2_PRO_EP_BULK_OUT, cmdRequest, sizeof(cmdRequest), false);
+
+            if (!cmdReplyInFlight && !cmdReplyPending && !cmdBulkFaulted)
+                usbd_edpt_xfer(rhport, SWITCH2_PRO_EP_BULK_OUT,
+                              cmdRequest, sizeof(cmdRequest), false);
             return true;
+
         case SWITCH2_PRO_EP_BULK_IN:
-            sendReply(rhport);
+            if (cmdRecoveryAwaitingReset || cmdRecoveryDetached)
+                return true;
+
+            cmdReplyInFlight = false;
+            if (result != XFER_RESULT_SUCCESS) {
+                // Completion terminates this transfer. Its reply buffer can now
+                // safely be retried; do not accept another OUT in the meantime.
+                cmdReplyPending = true;
+                if (++cmdReplyFailures >= CMD_MAX_FAILURES) {
+                    cmdBulkFaulted = true;
+                } else {
+                    cmdReplyRetryScheduled = true;
+                    cmdReplyRetryAt =
+                        to_ms_since_boot(get_absolute_time()) + CMD_REPLY_RETRY_MS;
+                }
+                return true;
+            }
+
+            cmdReplyFailures = 0;
+            cmdRecoveryAttempted = false; // The vendor exchange works again.
+            if (cmdReplyPending) {
+                sendReply(rhport);
+            } else {
+                // process() retries if arming OUT fails.
+                usbd_edpt_xfer(rhport, SWITCH2_PRO_EP_BULK_OUT,
+                              cmdRequest, sizeof(cmdRequest), false);
+            }
             return true;
         default:
             return hidd_xfer_cb(rhport, ep_addr, result, xferred_bytes);
@@ -459,7 +614,7 @@ static void loadIdentity() {
         joyCon2Side = left ? 1 : 2;
         setProductId(&deviceDescriptor[SWITCH2_PRO_DEVICE_PID_OFFSET], pid);
         deviceDescriptor[12] = 0x00;
-        deviceDescriptor[13] = 0x01;
+        deviceDescriptor[13] = 0x20;
         setProductId(&factoryData[SWITCH2_PRO_FACTORY_PID_OFFSET], pid);
         setProductId(&chargingGripData[SWITCH2_PRO_GRIP_PID_OFFSET], pid);
         productString = left ? switch2_joycon2_left_product_string : switch2_joycon2_right_product_string;
@@ -515,6 +670,11 @@ static void loadIdentity() {
 
 void Switch2ProDriver::initialize() {
     memset(inputReport, 0, sizeof(inputReport));
+    inputReport[11] = 0x38;
+    inputReport[12] = 0x00;
+    inputReport[13] = 0x00;
+    inputReport[31] = 0x04;
+    inputReport[32] = 0x10;
     reportCounter = 0;
     loadIdentity();
 
@@ -546,8 +706,88 @@ bool Switch2ProDriver::process(Gamepad * gamepad) {
     processedGamepad->auxState.playerID.ledValue = playerLedMask;
     processedGamepad->auxState.playerID.value = playerLedMask;
 
-    if (tud_suspended())
-        tud_remote_wakeup();
+    const uint32_t now = to_ms_since_boot(get_absolute_time());
+
+    // These persist across suspended and nonsuspended passes. In particular,
+    // a button already held when suspend begins is not a new press.
+    static bool previousWakeInput = false;
+    static bool lastWakeupValid = false;
+    static uint32_t lastWakeupMs = 0;
+
+    if (handshakeRumbleUntil != 0 &&
+        (int32_t)(now - handshakeRumbleUntil) >= 0) {
+        handshakeRumbleUntil = 0;
+        setSwitch2ProRumble(0, 0);
+    }
+
+    const bool currentWakeInput =
+        gamepad->state.buttons != 0 ||
+        gamepad->state.dpad != 0 ||
+        (gamepad->hasAnalogTriggers &&
+         (gamepad->state.lt >= SWITCH_TRIGGER_THRESHOLD ||
+          gamepad->state.rt >= SWITCH_TRIGGER_THRESHOLD));
+    const bool wakeEdge = currentWakeInput && !previousWakeInput;
+    previousWakeInput = currentWakeInput;
+
+    if (cmdRecoveryDetached) {
+        if ((int32_t)(now - cmdRecoveryReattachAt) >= 0) {
+            tud_connect();
+            cmdRecoveryDetached = false;
+        }
+        return false;
+    }
+
+    // A detach does not cancel a buffer by itself. Await the class reset,
+    // which occurs on host unplug/bus reset, before using cmdReply again.
+    if (cmdRecoveryAwaitingReset)
+        return false;
+
+    if (tud_suspended()) {
+        if (!cmdWasSuspended) {
+            cmdWasSuspended = true;
+            cmdSuspendedAt = now;
+        }
+        if (wakeEdge &&
+            (!lastWakeupValid || (uint32_t)(now - lastWakeupMs) >= 2000) &&
+            tud_remote_wakeup()) {
+            lastWakeupMs = now;
+            lastWakeupValid = true;
+        }
+        return false;
+    }
+
+    if (cmdWasSuspended) {
+        if (cmdReplyInFlight)
+            cmdReplyInFlightStart += (uint32_t)(now - cmdSuspendedAt);
+        cmdWasSuspended = false;
+    }
+
+    const bool replyTimedOut =
+        cmdReplyInFlight &&
+        (uint32_t)(now - cmdReplyInFlightStart) >= CMD_REPLY_TIMEOUT_MS;
+
+    if ((replyTimedOut || cmdBulkFaulted) &&
+        !cmdRecoveryAttempted && tud_mounted()) {
+        cmdRecoveryAttempted = true;
+        cmdRecoveryAwaitingReset = true;
+        cmdRecoveryDetached = true;
+        cmdRecoveryReattachAt = now + CMD_REATTACH_MS;
+        tud_disconnect();
+        return false;
+    }
+
+    // If the one-shot recovery was already used, keep the vendor channel
+    // isolated. Do not block the separate HID input path below.
+    if (!cmdBulkFaulted && cmdReplyPending && !cmdReplyInFlight &&
+        tud_ready())
+        sendReply(TUD_OPT_RHPORT);
+
+    if (!cmdBulkFaulted && !cmdReplyInFlight && !cmdReplyPending &&
+        !usbd_edpt_busy(TUD_OPT_RHPORT, SWITCH2_PRO_EP_BULK_OUT) &&
+        tud_ready()) {
+        usbd_edpt_xfer(TUD_OPT_RHPORT, SWITCH2_PRO_EP_BULK_OUT,
+                      cmdRequest, sizeof(cmdRequest), false);
+    }
 
     if (!reportsEnabled)
         return false;
@@ -558,7 +798,11 @@ bool Switch2ProDriver::process(Gamepad * gamepad) {
     if (gamepad->pressedB3()) b0 |= SWITCH2_PRO_MASK_Y;
     if (gamepad->pressedB4()) b0 |= SWITCH2_PRO_MASK_X;
     if (gamepad->pressedR1()) b0 |= SWITCH2_PRO_MASK_R;
-    if (gamepad->pressedR2()) b0 |= SWITCH2_PRO_MASK_ZR;
+    bool zr_pressed = gamepad->pressedR2();
+    if (gamepad->hasAnalogTriggers || gamepad->hasRightAnalogStick)
+        zr_pressed |= (gamepad->state.rt >= SWITCH_TRIGGER_THRESHOLD);
+    if (zr_pressed) b0 |= SWITCH2_PRO_MASK_ZR;
+
     if (gamepad->pressedS2()) b0 |= SWITCH2_PRO_MASK_PLUS;
     if (gamepad->pressedR3()) b0 |= SWITCH2_PRO_MASK_RSTICK;
 
@@ -567,7 +811,11 @@ bool Switch2ProDriver::process(Gamepad * gamepad) {
     if (gamepad->pressedLeft())  b1 |= SWITCH2_PRO_MASK_LEFT;
     if (gamepad->pressedUp())    b1 |= SWITCH2_PRO_MASK_UP;
     if (gamepad->pressedL1())    b1 |= SWITCH2_PRO_MASK_L;
-    if (gamepad->pressedL2())    b1 |= SWITCH2_PRO_MASK_ZL;
+
+    bool zl_pressed = gamepad->pressedL2();
+    if (gamepad->hasAnalogTriggers || gamepad->hasLeftAnalogStick)
+        zl_pressed |= (gamepad->state.lt >= SWITCH_TRIGGER_THRESHOLD);
+    if (zl_pressed) b1 |= SWITCH2_PRO_MASK_ZL;
     if (gamepad->pressedS1())    b1 |= SWITCH2_PRO_MASK_MINUS;
     if (gamepad->pressedL3())    b1 |= SWITCH2_PRO_MASK_LSTICK;
 
@@ -583,6 +831,16 @@ bool Switch2ProDriver::process(Gamepad * gamepad) {
     packStick(&inputReport[5], gamepad->state.lx, gamepad->state.ly);
     packStick(&inputReport[8], gamepad->state.rx, gamepad->state.ry);
     inputReport[11] = 0x38;
+
+    uint8_t zl_analog = gamepad->hasAnalogTriggers ? gamepad->state.lt : (zl_pressed ? 0xFF : 0x00);
+    if (zl_pressed && zl_analog == 0) zl_analog = 0xFF;
+    uint8_t zr_analog = gamepad->hasAnalogTriggers ? gamepad->state.rt : (zr_pressed ? 0xFF : 0x00);
+    if (zr_pressed && zr_analog == 0) zr_analog = 0xFF;
+    inputReport[12] = zl_analog;
+    inputReport[13] = zr_analog;
+
+    inputReport[31] = 0x04;
+    inputReport[32] = 0x10;
     if (joyCon2Side != 0) {
         const bool left = joyCon2Side == 1;
         uint16_t x = gamepad->state.lx;
@@ -610,8 +868,8 @@ bool Switch2ProDriver::process(Gamepad * gamepad) {
             if (gamepad->pressedA1()) j1 |= 0x01;
             if (gamepad->pressedA3()) j1 |= 0x10;
         }
-        if (gamepad->pressedL2()) j0 |= 0x10;
-        if (gamepad->pressedR2()) j0 |= 0x20;
+        if (zl_pressed) j0 |= 0x10;
+        if (zr_pressed) j0 |= 0x20;
         if (gamepad->pressedL1()) j1 |= 0x80;
         if (gamepad->pressedR1()) j1 |= 0x40;
         memset(&inputReport[1], 0, sizeof(inputReport) - 1);
@@ -623,8 +881,12 @@ bool Switch2ProDriver::process(Gamepad * gamepad) {
             packStick(&inputReport[5], GAMEPAD_JOYSTICK_MAX - y, x);
         else
             packStick(&inputReport[5], y, GAMEPAD_JOYSTICK_MAX - x);
+        inputReport[11] = 0x38;
+        inputReport[12] = zl_pressed ? 0xFF : 0x00;
+        inputReport[13] = zr_pressed ? 0xFF : 0x00;
+        inputReport[31] = 0x04;
+        inputReport[32] = 0x10;
     }
-    const uint32_t now = to_ms_since_boot(get_absolute_time());
     const bool changed = memcmp(&inputReport[2], &lastSentState[0], sizeof(lastSentState)) != 0;
     if (!changed && (now - lastSentMs) < SWITCH2_PRO_KEEPALIVE_MS)
         return false;
@@ -647,6 +909,51 @@ uint16_t Switch2ProDriver::get_report(uint8_t report_id, hid_report_type_t repor
 }
 
 void Switch2ProDriver::set_report(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize) {
+    if (bufsize == 0 || buffer == nullptr) return;
+
+    uint8_t switchReportID = report_id;
+    const uint8_t *data = buffer;
+    uint16_t dataLen = bufsize;
+
+    if (report_id == 0) {
+        switchReportID = buffer[0];
+        data = buffer + 1;
+        dataLen = bufsize - 1;
+    }
+
+    if (switchReportID == 0x02) {
+        handshakeRumbleUntil = 0;
+        // Pro Controller 2 Output Report (16 bytes Left + 16 bytes Right)
+        if (dataLen >= 32) {
+            uint8_t left = decode_switch2_motor(data);
+            uint8_t right = decode_switch2_motor(data + 16);
+            setSwitch2ProRumble(left, right);
+        }
+    } else if (switchReportID == 0x01) {
+        if (dataLen >= 16 && (data[0] & 0xF0) == 0x50) {
+            // Joy-Con 2 Output Report (16 bytes HD rumble)
+            uint8_t rumble = decode_switch2_motor(data);
+            if (joyCon2Side == 1) {
+                setSwitch2ProRumble(rumble, 0);
+            } else if (joyCon2Side == 2) {
+                setSwitch2ProRumble(0, rumble);
+            } else {
+                setSwitch2ProRumble(rumble, rumble);
+            }
+        } else if (dataLen >= 9) {
+            // Backward-compatible Switch 1 Output Report 0x01
+            uint8_t left = decode_switch1_motor(data + 1);
+            uint8_t right = decode_switch1_motor(data + 5);
+            setSwitch2ProRumble(left, right);
+        }
+    } else if (switchReportID == 0x10 || switchReportID == 0x80) {
+        // Backward-compatible Switch 1 Output Report 0x10 / Feature 0x80
+        if (dataLen >= 9) {
+            uint8_t left = decode_switch1_motor(data + 1);
+            uint8_t right = decode_switch1_motor(data + 5);
+            setSwitch2ProRumble(left, right);
+        }
+    }
 }
 
 bool Switch2ProDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request) {
