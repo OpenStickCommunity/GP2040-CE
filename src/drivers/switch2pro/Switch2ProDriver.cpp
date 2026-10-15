@@ -18,6 +18,10 @@
 #define CMD_HEADER_LEN        8
 #define CMD_BUFFER_LEN        64
 #define CMD_REPLY_MAX         160
+#define CMD_REPLY_RETRY_MS    10
+#define CMD_REPLY_TIMEOUT_MS  5000
+#define CMD_REATTACH_MS       250
+#define CMD_MAX_FAILURES      3
 
 #define VENDOR_REQ_DEVICE_INFO  0x02
 #define VENDOR_REQ_FACTORY_DATA 0x03
@@ -51,6 +55,20 @@ static uint16_t cmdReplyLen;
 static bool cmdReplyPending;
 static bool cmdReplyInFlight;
 static uint32_t cmdReplyInFlightStart = 0;
+static uint8_t cmdReplyFailures;
+static bool cmdReplyRetryScheduled;
+static uint32_t cmdReplyRetryAt;
+static bool cmdBulkFaulted;
+static bool cmdWasSuspended;
+static uint32_t cmdSuspendedAt;
+
+// Do not clear these in resetProtocolState(): a reset can be caused by our
+// own software detach, and clearing the one-shot guard would create a loop.
+static bool cmdRecoveryAttempted;
+static bool cmdRecoveryDetached;
+static bool cmdRecoveryAwaitingReset;
+static uint32_t cmdRecoveryReattachAt;
+
 static bool reportsEnabled = true;
 static uint8_t playerLedMask;
 static uint32_t handshakeRumbleUntil = 0;
@@ -134,6 +152,10 @@ static void resetProtocolState() {
     cmdReplyPending = false;
     cmdReplyInFlight = false;
     cmdReplyInFlightStart = 0;
+    cmdReplyFailures = 0;
+    cmdReplyRetryScheduled = false;
+    cmdBulkFaulted = false;
+    cmdWasSuspended = false;
     reportsEnabled = true;
     playerLedMask = 0;
     handshakeRumbleUntil = 0;
@@ -413,12 +435,26 @@ static void handleCommand(const uint8_t *req) {
 }
 
 static void sendReply(uint8_t rhport) {
-    if (!cmdReplyPending || cmdReplyInFlight || usbd_edpt_busy(rhport, SWITCH2_PRO_EP_BULK_IN))
+    if (!cmdReplyPending || cmdReplyInFlight || cmdBulkFaulted ||
+        usbd_edpt_busy(rhport, SWITCH2_PRO_EP_BULK_IN))
         return;
-    if (usbd_edpt_xfer(rhport, SWITCH2_PRO_EP_BULK_IN, cmdReply, cmdReplyLen, false)) {
+
+    const uint32_t now = to_ms_since_boot(get_absolute_time());
+    if (cmdReplyRetryScheduled &&
+        (int32_t)(now - cmdReplyRetryAt) < 0)
+        return;
+
+    cmdReplyRetryScheduled = false;
+    if (usbd_edpt_xfer(rhport, SWITCH2_PRO_EP_BULK_IN,
+                      cmdReply, cmdReplyLen, false)) {
         cmdReplyPending = false;
         cmdReplyInFlight = true;
-        cmdReplyInFlightStart = to_ms_since_boot(get_absolute_time());
+        cmdReplyInFlightStart = now;
+    } else if (++cmdReplyFailures >= CMD_MAX_FAILURES) {
+        cmdBulkFaulted = true;       // Leave OUT unarmed; recover in process().
+    } else {
+        cmdReplyRetryScheduled = true;
+        cmdReplyRetryAt = now + CMD_REPLY_RETRY_MS;
     }
 }
 
@@ -434,6 +470,8 @@ static bool switch2pro_deinit(void) {
 static void switch2pro_reset(uint8_t rhport) {
     hidd_reset(rhport);
     resetProtocolState();
+    // Only the stack reset releases ownership after a software detach.
+    cmdRecoveryAwaitingReset = false;
 }
 
 static uint16_t switch2pro_open(uint8_t rhport, tusb_desc_interface_t const *itf_desc, uint16_t max_len) {
@@ -475,24 +513,55 @@ static bool switch2pro_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_contr
 static bool switch2pro_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result, uint32_t xferred_bytes) {
     switch (ep_addr) {
         case SWITCH2_PRO_EP_BULK_OUT:
+            if (cmdRecoveryAwaitingReset || cmdRecoveryDetached)
+                return true;
+
             if (result == XFER_RESULT_SUCCESS && xferred_bytes >= 4 &&
-                    cmdRequest[1] == CMD_DIRECTION_REQUEST && cmdRequest[2] == CMD_TRANSPORT_USB) {
+                cmdRequest[1] == CMD_DIRECTION_REQUEST &&
+                cmdRequest[2] == CMD_TRANSPORT_USB) {
                 if (xferred_bytes < sizeof(cmdRequest))
-                    memset(&cmdRequest[xferred_bytes], 0, sizeof(cmdRequest) - xferred_bytes);
+                    memset(&cmdRequest[xferred_bytes], 0,
+                           sizeof(cmdRequest) - xferred_bytes);
+
+                cmdReplyFailures = 0;
+                cmdReplyRetryScheduled = false;
                 handleCommand(cmdRequest);
                 cmdReplyPending = true;
                 sendReply(rhport);
             }
-            if (!cmdReplyInFlight && !cmdReplyPending) {
-                usbd_edpt_xfer(rhport, SWITCH2_PRO_EP_BULK_OUT, cmdRequest, sizeof(cmdRequest), false);
-            }
+
+            if (!cmdReplyInFlight && !cmdReplyPending && !cmdBulkFaulted)
+                usbd_edpt_xfer(rhport, SWITCH2_PRO_EP_BULK_OUT,
+                              cmdRequest, sizeof(cmdRequest), false);
             return true;
+
         case SWITCH2_PRO_EP_BULK_IN:
+            if (cmdRecoveryAwaitingReset || cmdRecoveryDetached)
+                return true;
+
             cmdReplyInFlight = false;
-            if (result == XFER_RESULT_SUCCESS && cmdReplyPending) {
+            if (result != XFER_RESULT_SUCCESS) {
+                // Completion terminates this transfer. Its reply buffer can now
+                // safely be retried; do not accept another OUT in the meantime.
+                cmdReplyPending = true;
+                if (++cmdReplyFailures >= CMD_MAX_FAILURES) {
+                    cmdBulkFaulted = true;
+                } else {
+                    cmdReplyRetryScheduled = true;
+                    cmdReplyRetryAt =
+                        to_ms_since_boot(get_absolute_time()) + CMD_REPLY_RETRY_MS;
+                }
+                return true;
+            }
+
+            cmdReplyFailures = 0;
+            cmdRecoveryAttempted = false; // The vendor exchange works again.
+            if (cmdReplyPending) {
                 sendReply(rhport);
             } else {
-                usbd_edpt_xfer(rhport, SWITCH2_PRO_EP_BULK_OUT, cmdRequest, sizeof(cmdRequest), false);
+                // process() retries if arming OUT fails.
+                usbd_edpt_xfer(rhport, SWITCH2_PRO_EP_BULK_OUT,
+                              cmdRequest, sizeof(cmdRequest), false);
             }
             return true;
         default:
@@ -639,35 +708,85 @@ bool Switch2ProDriver::process(Gamepad * gamepad) {
 
     const uint32_t now = to_ms_since_boot(get_absolute_time());
 
+    // These persist across suspended and nonsuspended passes. In particular,
+    // a button already held when suspend begins is not a new press.
+    static bool previousWakeInput = false;
+    static bool lastWakeupValid = false;
     static uint32_t lastWakeupMs = 0;
-    if (tud_suspended()) {
-        bool hasInput = (gamepad->state.buttons != 0) || (gamepad->state.dpad != 0);
-        if (hasInput && (now - lastWakeupMs > 2000)) {
-            lastWakeupMs = now;
-            tud_remote_wakeup();
+
+    if (handshakeRumbleUntil != 0 &&
+        (int32_t)(now - handshakeRumbleUntil) >= 0) {
+        handshakeRumbleUntil = 0;
+        setSwitch2ProRumble(0, 0);
+    }
+
+    const bool currentWakeInput =
+        gamepad->state.buttons != 0 ||
+        gamepad->state.dpad != 0 ||
+        (gamepad->hasAnalogTriggers &&
+         (gamepad->state.lt >= SWITCH_TRIGGER_THRESHOLD ||
+          gamepad->state.rt >= SWITCH_TRIGGER_THRESHOLD));
+    const bool wakeEdge = currentWakeInput && !previousWakeInput;
+    previousWakeInput = currentWakeInput;
+
+    if (cmdRecoveryDetached) {
+        if ((int32_t)(now - cmdRecoveryReattachAt) >= 0) {
+            tud_connect();
+            cmdRecoveryDetached = false;
         }
         return false;
     }
 
-    if (cmdReplyPending && !cmdReplyInFlight) {
-        sendReply(0);
-    }
+    // A detach does not cancel a buffer by itself. Await the class reset,
+    // which occurs on host unplug/bus reset, before using cmdReply again.
+    if (cmdRecoveryAwaitingReset)
+        return false;
 
-    if (cmdReplyInFlight && (now - cmdReplyInFlightStart > 1000)) {
-        if (!usbd_edpt_busy(0, SWITCH2_PRO_EP_BULK_IN)) {
-            cmdReplyInFlight = false;
+    if (tud_suspended()) {
+        if (!cmdWasSuspended) {
+            cmdWasSuspended = true;
+            cmdSuspendedAt = now;
         }
-    }
-
-    if (!cmdReplyInFlight && !cmdReplyPending && !usbd_edpt_busy(0, SWITCH2_PRO_EP_BULK_OUT) && tud_ready()) {
-        usbd_edpt_xfer(0, SWITCH2_PRO_EP_BULK_OUT, cmdRequest, sizeof(cmdRequest), false);
-    }
-
-    if (handshakeRumbleUntil != 0) {
-        if (to_ms_since_boot(get_absolute_time()) >= handshakeRumbleUntil) {
-            handshakeRumbleUntil = 0;
-            setSwitch2ProRumble(0, 0);
+        if (wakeEdge &&
+            (!lastWakeupValid || (uint32_t)(now - lastWakeupMs) >= 2000) &&
+            tud_remote_wakeup()) {
+            lastWakeupMs = now;
+            lastWakeupValid = true;
         }
+        return false;
+    }
+
+    if (cmdWasSuspended) {
+        if (cmdReplyInFlight)
+            cmdReplyInFlightStart += (uint32_t)(now - cmdSuspendedAt);
+        cmdWasSuspended = false;
+    }
+
+    const bool replyTimedOut =
+        cmdReplyInFlight &&
+        (uint32_t)(now - cmdReplyInFlightStart) >= CMD_REPLY_TIMEOUT_MS;
+
+    if ((replyTimedOut || cmdBulkFaulted) &&
+        !cmdRecoveryAttempted && tud_mounted()) {
+        cmdRecoveryAttempted = true;
+        cmdRecoveryAwaitingReset = true;
+        cmdRecoveryDetached = true;
+        cmdRecoveryReattachAt = now + CMD_REATTACH_MS;
+        tud_disconnect();
+        return false;
+    }
+
+    // If the one-shot recovery was already used, keep the vendor channel
+    // isolated. Do not block the separate HID input path below.
+    if (!cmdBulkFaulted && cmdReplyPending && !cmdReplyInFlight &&
+        tud_ready())
+        sendReply(TUD_OPT_RHPORT);
+
+    if (!cmdBulkFaulted && !cmdReplyInFlight && !cmdReplyPending &&
+        !usbd_edpt_busy(TUD_OPT_RHPORT, SWITCH2_PRO_EP_BULK_OUT) &&
+        tud_ready()) {
+        usbd_edpt_xfer(TUD_OPT_RHPORT, SWITCH2_PRO_EP_BULK_OUT,
+                      cmdRequest, sizeof(cmdRequest), false);
     }
 
     if (!reportsEnabled)
