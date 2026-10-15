@@ -588,6 +588,8 @@ static void loadIdentity() {
 void Switch2ProDriver::initialize() {
     memset(inputReport, 0, sizeof(inputReport));
     inputReport[11] = 0x38;
+    inputReport[12] = 0x00;
+    inputReport[13] = 0x00;
     inputReport[31] = 0x04;
     inputReport[32] = 0x10;
     reportCounter = 0;
@@ -673,6 +675,14 @@ bool Switch2ProDriver::process(Gamepad * gamepad) {
     packStick(&inputReport[5], gamepad->state.lx, gamepad->state.ly);
     packStick(&inputReport[8], gamepad->state.rx, gamepad->state.ry);
     inputReport[11] = 0x38;
+
+    uint8_t zl_analog = gamepad->hasAnalogTriggers ? gamepad->state.lt : (zl_pressed ? 0xFF : 0x00);
+    if (zl_pressed && zl_analog == 0) zl_analog = 0xFF;
+    uint8_t zr_analog = gamepad->hasAnalogTriggers ? gamepad->state.rt : (zr_pressed ? 0xFF : 0x00);
+    if (zr_pressed && zr_analog == 0) zr_analog = 0xFF;
+    inputReport[12] = zl_analog;
+    inputReport[13] = zr_analog;
+
     inputReport[31] = 0x04;
     inputReport[32] = 0x10;
     if (joyCon2Side != 0) {
@@ -716,6 +726,8 @@ bool Switch2ProDriver::process(Gamepad * gamepad) {
         else
             packStick(&inputReport[5], y, GAMEPAD_JOYSTICK_MAX - x);
         inputReport[11] = 0x38;
+        inputReport[12] = zl_pressed ? 0xFF : 0x00;
+        inputReport[13] = zr_pressed ? 0xFF : 0x00;
         inputReport[31] = 0x04;
         inputReport[32] = 0x10;
     }
