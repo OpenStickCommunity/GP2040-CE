@@ -91,12 +91,15 @@ static uint8_t get_instance_id_by_epaddr(uint8_t dev_addr, uint8_t ep_addr);
 //--------------------------------------------------------------------+
 
 uint8_t tuh_xinput_instance_count(uint8_t dev_addr) {
-    return get_dev(dev_addr)->inst_count;
+    xinputh_device_t *dev = get_dev(dev_addr);
+    return dev ? dev->inst_count : 0;
 }
 
 bool tuh_xinput_mounted(uint8_t dev_addr, uint8_t instance) {
-    if (instance >= get_dev(dev_addr)->inst_count) return false;
+    xinputh_device_t *dev = get_dev(dev_addr);
+    if (dev == NULL || instance >= dev->inst_count) return false;
     xinputh_interface_t *hid_itf = get_instance(dev_addr, instance);
+    if (hid_itf == NULL) return false;
     return (hid_itf->ep_in != 0) || (hid_itf->ep_out != 0);
 }
 
@@ -106,6 +109,7 @@ bool tuh_xinput_mounted(uint8_t dev_addr, uint8_t instance) {
 
 bool tuh_xinput_receive_report(uint8_t dev_addr, uint8_t instance) {
     xinputh_interface_t *xid_itf = get_instance(dev_addr, instance);
+    if (!xid_itf || xid_itf->ep_in == 0) return false;
 
     // claim endpoint
     TU_VERIFY(usbh_edpt_claim(dev_addr, xid_itf->ep_in));
@@ -143,6 +147,7 @@ bool tuh_xinput_receive_vendor_report(uint8_t dev_addr, uint8_t instance, uint8_
 
 bool tuh_xinput_send_report(uint8_t dev_addr, uint8_t instance, uint8_t const *report, uint16_t len) {
     xinputh_interface_t *xid_itf = get_instance(dev_addr, instance);
+    if (!xid_itf) return false;
 
     bool ret = false;
 
@@ -244,8 +249,8 @@ bool xinputh_xfer_cb(uint8_t dev_addr, uint8_t ep_addr, xfer_result_t result, ui
 }
 
 void xinputh_close(uint8_t dev_addr) {
-    TU_VERIFY(dev_addr <= CFG_TUH_DEVICE_MAX, );
     xinputh_device_t *hid_dev = get_dev(dev_addr);
+    if (!hid_dev) return;
     if (tuh_xinput_umount_cb) {
         for (uint8_t inst = 0; inst < hid_dev->inst_count; inst++) tuh_xinput_umount_cb(dev_addr, inst);
     }
@@ -259,7 +264,7 @@ uint16_t xinputh_open(uint8_t rhport, uint8_t dev_addr, tusb_desc_interface_t co
     xinputh_interface_t *p_xinput = NULL;
     for (uint8_t i = 0; i < CFG_TUH_XINPUT; i++) {
         xinputh_interface_t *xid_itf = get_instance(dev_addr, i);
-        if (xid_itf->ep_in == 0 && xid_itf->ep_out == 0) {
+        if (xid_itf && xid_itf->ep_in == 0 && xid_itf->ep_out == 0) {
             p_xinput = xid_itf;
             break;
         }
@@ -275,23 +280,29 @@ uint16_t xinputh_open(uint8_t rhport, uint8_t dev_addr, tusb_desc_interface_t co
         uint8_t ep = 0;
         XBOX_ID_DESCRIPTOR const *x_desc = nullptr;
         while (ep < desc_itf->bNumEndpoints && pos < max_len) {
+            uint8_t desc_len = tu_desc_len(p_desc);
+            if (desc_len == 0 || pos + desc_len > max_len) break;
             uint8_t desc_type = tu_desc_type(p_desc);
             if (desc_type == TUSB_DESC_ENDPOINT) {
                 tusb_desc_endpoint_t const *ep_desc = (tusb_desc_endpoint_t const*) p_desc;
-                TU_ASSERT(tuh_edpt_open(dev_addr, ep_desc));
+                uint16_t const packet_size = tu_edpt_packet_size(ep_desc);
                 if (tu_edpt_dir(ep_desc->bEndpointAddress) == TUSB_DIR_OUT) {
+                    if (packet_size > CFG_TUH_XINPUT_EPOUT_BUFSIZE) return 0;
+                    TU_ASSERT(tuh_edpt_open(dev_addr, ep_desc));
                     p_xinput->ep_out = ep_desc->bEndpointAddress;
-                    p_xinput->epout_size = tu_edpt_packet_size(ep_desc);
+                    p_xinput->epout_size = packet_size;
                 } else {
+                    if (packet_size > CFG_TUH_XINPUT_EPIN_BUFSIZE) return 0;
+                    TU_ASSERT(tuh_edpt_open(dev_addr, ep_desc));
                     p_xinput->ep_in = ep_desc->bEndpointAddress;
-                    p_xinput->epin_size = tu_edpt_packet_size(ep_desc);
+                    p_xinput->epin_size = packet_size;
                 }
                 ep++;
             } else if (desc_type == XINPUT_DESC_TYPE_RESERVED) {
                 TU_ASSERT(ep == 0, 0); // assert this is the first descriptor
                 x_desc = (XBOX_ID_DESCRIPTOR const *)p_desc;
             }
-            pos += tu_desc_len(p_desc);
+            pos += desc_len;
             p_desc = tu_desc_next(p_desc);
         }
         TU_ASSERT(x_desc, 0);
@@ -309,22 +320,28 @@ uint16_t xinputh_open(uint8_t rhport, uint8_t dev_addr, tusb_desc_interface_t co
                desc_itf->bInterfaceProtocol == 0xD0 && desc_itf->bNumEndpoints) {
         uint8_t ep = 0;
         while (ep < desc_itf->bNumEndpoints && pos < max_len) {
+            uint8_t desc_len = tu_desc_len(p_desc);
+            if (desc_len == 0 || pos + desc_len > max_len) break;
             uint8_t desc_type = tu_desc_type(p_desc);
             if (desc_type == TUSB_DESC_ENDPOINT) {
                 tusb_desc_endpoint_t const *ep_desc =
                     (tusb_desc_endpoint_t const *)p_desc;
-                TU_ASSERT(tuh_edpt_open(dev_addr, ep_desc));
+                uint16_t const packet_size = tu_edpt_packet_size(ep_desc);
                 if (ep_desc->bEndpointAddress & 0x80) {
+                    if (packet_size > CFG_TUH_XINPUT_EPIN_BUFSIZE) return 0;
+                    TU_ASSERT(tuh_edpt_open(dev_addr, ep_desc));
                     p_xinput->ep_in = ep_desc->bEndpointAddress;
-                    p_xinput->epin_size = tu_edpt_packet_size(ep_desc);
+                    p_xinput->epin_size = packet_size;
                 } else {
+                    if (packet_size > CFG_TUH_XINPUT_EPOUT_BUFSIZE) return 0;
+                    TU_ASSERT(tuh_edpt_open(dev_addr, ep_desc));
                     p_xinput->ep_out = ep_desc->bEndpointAddress;
-                    p_xinput->epout_size = tu_edpt_packet_size(ep_desc);
+                    p_xinput->epout_size = packet_size;
                 }
                 ep++;
             }
 
-            pos += tu_desc_len(p_desc);
+            pos += desc_len;
             p_desc = tu_desc_next(p_desc);
         }
         p_xinput->itf_num = desc_itf->bInterfaceNumber;
@@ -365,11 +382,13 @@ static void config_driver_mount_complete(uint8_t dev_addr, uint8_t instance) {
 
 // Get Device by address
 TU_ATTR_ALWAYS_INLINE static inline xinputh_device_t *get_dev(uint8_t dev_addr) {
+    if (dev_addr == 0 || dev_addr > CFG_TUH_DEVICE_MAX) return NULL;
     return &_xinputh_dev[dev_addr - 1];
 }
 
 // Get Interface by instance number
 TU_ATTR_ALWAYS_INLINE static inline xinputh_interface_t *get_instance(uint8_t dev_addr, uint8_t instance) {
+    if (dev_addr == 0 || dev_addr > CFG_TUH_DEVICE_MAX || instance >= CFG_TUH_XINPUT) return NULL;
     return &_xinputh_dev[dev_addr - 1].instances[instance];
 }
 
@@ -377,7 +396,7 @@ TU_ATTR_ALWAYS_INLINE static inline xinputh_interface_t *get_instance(uint8_t de
 static uint8_t get_instance_id_by_itfnum(uint8_t dev_addr, uint8_t itf) {
     for (uint8_t inst = 0; inst < CFG_TUH_XINPUT; inst++) {
         xinputh_interface_t *hid = get_instance(dev_addr, inst);
-        if ((hid->itf_num == itf)) return inst;
+        if (hid && (hid->itf_num == itf)) return inst;
     }
     return 0xff;
 }
@@ -386,7 +405,7 @@ static uint8_t get_instance_id_by_itfnum(uint8_t dev_addr, uint8_t itf) {
 static uint8_t get_instance_id_by_epaddr(uint8_t dev_addr, uint8_t ep_addr) {
     for (uint8_t inst = 0; inst < CFG_TUH_XINPUT; inst++) {
         xinputh_interface_t *hid = get_instance(dev_addr, inst);
-        if ((ep_addr == hid->ep_in) || (ep_addr == hid->ep_out)) return inst;
+        if (hid && ((ep_addr == hid->ep_in) || (ep_addr == hid->ep_out))) return inst;
     }
     return 0xff;
 }
