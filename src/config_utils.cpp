@@ -1053,6 +1053,18 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[3], selectPin2, HETRIGGER_MUX3_S2_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[3], selectPin3, HETRIGGER_MUX3_S3_PIN);
     config.addonOptions.heTriggerOptions.muxes_count = 4;
+
+    // Legacy Rapid Trigger moved once a reading changed by more than `noise`; keep that feel.
+    // Runs before the trigger defaults below so only settings loaded from flash count as legacy.
+    for (int i = 0; i < HETRIGGER_COUNT; i++) {
+        HETriggerInfo& trigger = config.addonOptions.heTriggerOptions.triggers[i];
+        const bool legacyRapidTrigger = trigger.has_rapidTrigger && trigger.rapidTrigger && trigger.has_noise && trigger.noise > 0;
+        INIT_UNSET_PROPERTY(trigger, rtPressSensitivity, legacyRapidTrigger ? trigger.noise + 1 : HETRIGGER_DEFAULT_RT_PRESS_SENSITIVITY);
+        INIT_UNSET_PROPERTY(trigger, rtReleaseSensitivity, legacyRapidTrigger ? trigger.noise + 1 : HETRIGGER_DEFAULT_RT_RELEASE_SENSITIVITY);
+        INIT_UNSET_PROPERTY(trigger, rtSeparateSensitivity, !!HETRIGGER_DEFAULT_RT_SEPARATE_SENSITIVITY);
+        INIT_UNSET_PROPERTY(trigger, rtContinuous, !!HETRIGGER_DEFAULT_RT_CONTINUOUS);
+    }
+
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[0], action, HETRIGGER_HE0_ACTION);
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[0], active, HETRIGGER_HE0_ACTIVE);
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[0], idle, HETRIGGER_HE0_IDLE);
@@ -1309,6 +1321,8 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[31], release, HETRIGGER_HE31_RELEASE);
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[31], noise, HETRIGGER_HE31_NOISE);
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[31], rapidTrigger, HETRIGGER_HE31_RAPID);
+
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, switchTravel, HETRIGGER_DEFAULT_SWITCH_TRAVEL);
 
     // reminder that this must be set or else nanopb won't retain anything
     config.addonOptions.heTriggerOptions.triggers_count = HETRIGGER_COUNT;
