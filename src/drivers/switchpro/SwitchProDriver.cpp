@@ -6,7 +6,27 @@
 // force a report to be sent every X ms
 #define SWITCH_PRO_KEEPALIVE_TIMER 5
 
+static SwitchProDriver * switchProInstance = nullptr;
+
+static void switchpro_reset(uint8_t rhport) {
+    hidd_reset(rhport);
+    if (switchProInstance) {
+        switchProInstance->resetDriver();
+    }
+}
+
+void SwitchProDriver::resetDriver() {
+    isReady = false;
+    isInitialized = false;
+    isReportQueued = false;
+    reportSent = false;
+    queuedReportID = 0;
+    queuedReportTime = 0;
+    replyPreparedThisCommand = false;
+}
+
 void SwitchProDriver::initialize() {
+    switchProInstance = this;
     playerID = 0;
     last_report_counter = 0;
     handshakeCounter = 0;
@@ -82,7 +102,7 @@ void SwitchProDriver::initialize() {
 		.name = "SWITCHPRO",
 	#endif
 		.init = hidd_init,
-		.reset = hidd_reset,
+		.reset = switchpro_reset,
 		.open = hidd_open,
 		.control_xfer_cb = hidd_control_xfer_cb,
 		.xfer_cb = hidd_xfer_cb,
@@ -142,14 +162,20 @@ bool SwitchProDriver::process(Gamepad * gamepad) {
 	if (tud_suspended())
 		tud_remote_wakeup();
 
+    bool hasPendingReply = isReportQueued;
     if (isReportQueued) {
-        if ((now - last_report_timer) > SWITCH_PRO_KEEPALIVE_TIMER) {
-            if (tud_hid_ready() && sendReport(queuedReportID, report, 64) == true ) {
-            }
+        if ((now - queuedReportTime) > 500) {
+            // Drop stuck queued report after 500ms to prevent permanent input starvation
             isReportQueued = false;
-            last_report_timer = now;
+            hasPendingReply = false;
+        } else if ((now - last_report_timer) > SWITCH_PRO_KEEPALIVE_TIMER) {
+            if (tud_hid_ready() && sendReport(queuedReportID, report, 64) == true) {
+                isReportQueued = false;
+                hasPendingReply = false;
+                last_report_timer = now;
+                reportSent = true;
+            }
         }
-        reportSent = true;
     }
 
     Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
@@ -157,7 +183,7 @@ bool SwitchProDriver::process(Gamepad * gamepad) {
     processedGamepad->auxState.playerID.ledValue = playerID;
     processedGamepad->auxState.playerID.value = playerID;
 
-    if (isReady && !reportSent) {
+    if (isReady && !hasPendingReply) {
         if ((now - last_report_timer) > SWITCH_PRO_KEEPALIVE_TIMER) {
             switchReport.timestamp = last_report_counter;
             void * inputReport = &switchReport;
@@ -172,7 +198,7 @@ bool SwitchProDriver::process(Gamepad * gamepad) {
                 last_report_timer = now;
             }
         }
-    } else {
+    } else if (!isReady && !hasPendingReply) {
         if (!isInitialized) {
             // send identification
             sendIdentify();
@@ -225,7 +251,30 @@ bool SwitchProDriver::sendReport(uint8_t reportID, void const* reportData, uint1
     return result;
 }
 
-void SwitchProDriver::handleConfigReport(uint8_t switchReportID, uint8_t switchReportSubID, const uint8_t *reportData, uint16_t reportLength) {
+static inline uint8_t decode_hd_rumble(const uint8_t* r) {
+    uint8_t hf_amp = (r[1] & 0xFE) >> 1;
+    uint8_t lf_amp = r[3] & 0x7F;
+    uint16_t combined = (uint16_t)hf_amp * 2 + lf_amp;
+    if (combined > 255) combined = 255;
+    return (uint8_t)combined;
+}
+
+static void setSwitchProRumble(const uint8_t* rumbleData) {
+    uint8_t left_intensity = decode_hd_rumble(&rumbleData[0]);
+    uint8_t right_intensity = decode_hd_rumble(&rumbleData[4]);
+
+    Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
+    if (processedGamepad != nullptr) {
+        processedGamepad->auxState.haptics.leftActuator.active = (left_intensity > 0);
+        processedGamepad->auxState.haptics.leftActuator.intensity = left_intensity;
+        processedGamepad->auxState.haptics.rightActuator.active = (right_intensity > 0);
+        processedGamepad->auxState.haptics.rightActuator.intensity = right_intensity;
+    }
+}
+
+void SwitchProDriver::handleConfigReport(const uint8_t *data, uint16_t dataLen) {
+    if (dataLen < 1) return;
+    uint8_t switchReportSubID = data[0];
     bool canSend = false;
 
     switch (switchReportSubID) {
@@ -271,19 +320,21 @@ void SwitchProDriver::handleConfigReport(uint8_t switchReportID, uint8_t switchR
             break;
     }
 
-    if (canSend) isReportQueued = true;
+    if (canSend) {
+        replyPreparedThisCommand = true;
+        if (!isReportQueued)
+            queuedReportTime = to_ms_since_boot(get_absolute_time());
+        isReportQueued = true;
+    }
 }
 
-void SwitchProDriver::handleFeatureReport(uint8_t switchReportID, uint8_t switchReportSubID, const uint8_t *reportData, uint16_t reportLength) {
-    if (reportLength < 11) return;
+void SwitchProDriver::handleFeatureReport(const uint8_t *data, uint16_t dataLen) {
+    if (dataLen < 10) return;
 
-    uint8_t commandID = reportData[10];
+    uint8_t commandID = data[9];
     uint32_t spiReadAddress = 0;
     uint8_t spiReadSize = 0;
     bool canSend = false;
-
-    //uint8_t inputReportSize = sizeof(SwitchInputReport);
-    //printf("inputReportSize: %d\n", inputReportSize);
 
     report[0] = SwitchReportID::REPORT_OUTPUT_21;
     report[1] = last_report_counter;
@@ -291,186 +342,122 @@ void SwitchProDriver::handleFeatureReport(uint8_t switchReportID, uint8_t switch
 
     switch (commandID) {
         case SwitchCommands::GET_CONTROLLER_STATE:
-            //printf("SwitchProDriver::set_report: Rpt 0x01 GET_CONTROLLER_STATE\n");
             report[13] = 0x80;
             report[14] = commandID;
             report[15] = 0x03;
             canSend = true;
             break;
         case SwitchCommands::BLUETOOTH_PAIR_REQUEST:
-            //printf("SwitchProDriver::set_report: Rpt 0x01 BLUETOOTH_PAIR_REQUEST\n");
             report[13] = 0x81;
             report[14] = commandID;
             report[15] = 0x03;
             canSend = true;
             break;
         case SwitchCommands::REQUEST_DEVICE_INFO:
-            //printf("SwitchProDriver::set_report: Rpt 0x01 REQUEST_DEVICE_INFO\n");
             report[13] = 0x82;
             report[14] = 0x02;
             memcpy(&report[15], &deviceInfo, sizeof(deviceInfo));
             canSend = true;
             break;
         case SwitchCommands::SET_MODE:
-            //printf("SwitchProDriver::set_report: Rpt 0x01 SET_MODE\n");
-            inputMode = reportData[11];
+            if (dataLen < 11) return;
+            inputMode = data[10];
             report[13] = 0x80;
             report[14] = 0x03;
             report[15] = inputMode;
             canSend = true;
-            //printf("Input Mode set to ");
-            switch (inputMode) {
-                case 0x00:
-                    //printf("NFC/IR Polling Data");
-                    break;
-                case 0x01:
-                    //printf("NFC/IR Polling Config");
-                    break;
-                case 0x02:
-                    //printf("NFC/IR Polling Data+Config");
-                    break;
-                case 0x03:
-                    //printf("IR Scan");
-                    break;
-                case 0x23:
-                    //printf("MCU Update");
-                    break;
-                case 0x30:
-                    //printf("Full Input");
-                    break;
-                case 0x31:
-                    //printf("NFC/IR");
-                    break;
-                case 0x3F:
-                    //printf("Simple HID");
-                    break;
-                case 0x33:
-                case 0x35:
-                default:
-                    //printf("Unknown");
-                    break;
-            }
-            //printf("\n");
             break;
         case SwitchCommands::TRIGGER_BUTTONS:
-            //printf("SwitchProDriver::set_report: Rpt 0x01 TRIGGER_BUTTONS\n");
             report[13] = 0x83;
             report[14] = 0x04;
             canSend = true;
             break;
         case SwitchCommands::SET_SHIPMENT:
-            //printf("SwitchProDriver::set_report: Rpt 0x01 SET_SHIPMENT\n");
             report[13] = 0x80;
             report[14] = commandID;
             canSend = true;
-            //for (uint8_t i = 2; i < bufsize; i++) {
-            //    //printf("%02x ", reportData[i]);
-            //}
-            //printf("\n");
             break;
         case SwitchCommands::SPI_READ:
-            if (reportLength < 16 || reportData[15] > sizeof(report) - 20) return;
-
-            //printf("SwitchProDriver::set_report: Rpt 0x01 SPI_READ\n");
-            spiReadAddress = (reportData[14] << 24) | (reportData[13] << 16) | (reportData[12] << 8) | (reportData[11]);
-            spiReadSize = reportData[15];
-            //printf("Read From: 0x%08x Size %d\n", spiReadAddress, spiReadSize);
+            if (dataLen < 15 || data[14] > sizeof(report) - 20) return;
+            spiReadAddress = (data[13] << 24) | (data[12] << 16) | (data[11] << 8) | (data[10]);
+            spiReadSize = data[14];
             report[13] = 0x90;
-            report[14] = reportData[10];
-            report[15] = reportData[11];
-            report[16] = reportData[12];
-            report[17] = reportData[13];
-            report[18] = reportData[14];
-            report[19] = reportData[15];
+            report[14] = data[9];
+            report[15] = data[10];
+            report[16] = data[11];
+            report[17] = data[12];
+            report[18] = data[13];
+            report[19] = data[14];
             readSPIFlash(&report[20], spiReadAddress, spiReadSize);
             canSend = true;
-            //printf("----------------------------------------------\n");
             break;
         case SwitchCommands::SET_NFC_IR_CONFIG:
-            //printf("SwitchProDriver::set_report: Rpt 0x01 SET_NFC_IR_CONFIG\n");
             report[13] = 0x80;
             report[14] = commandID;
             canSend = true;
             break;
         case SwitchCommands::SET_NFC_IR_STATE:
-            //printf("SwitchProDriver::set_report: Rpt 0x01 SET_NFC_IR_STATE\n");
             report[13] = 0x80;
             report[14] = commandID;
             canSend = true;
             break;
         case SwitchCommands::SET_PLAYER_LIGHTS:
-            //printf("SwitchProDriver::set_report: Rpt 0x01 SET_PLAYER_LIGHTS\n");
-            playerID = reportData[11];
+            if (dataLen < 11) return;
+            playerID = data[10];
             report[13] = 0x80;
             report[14] = commandID;
             canSend = true;
-            //printf("Player set to %d\n", playerID);
-            //printf("----------------------------------------------\n");
             break;
         case SwitchCommands::GET_PLAYER_LIGHTS:
-            //printf("SwitchProDriver::set_report: Rpt 0x01 GET_PLAYER_LIGHTS\n");
-            playerID = reportData[11];
+            if (dataLen < 11) return;
+            playerID = data[10];
             report[13] = 0xB0;
             report[14] = commandID;
             report[15] = playerID;
             canSend = true;
-            //printf("Player is %d\n", playerID);
-            //printf("----------------------------------------------\n");
             break;
         case SwitchCommands::COMMAND_UNKNOWN_33:
-            //printf("SwitchProDriver::set_report: Rpt 0x01 COMMAND_UNKNOWN_33\n");
-            // Command typically thrown by Chromium to detect if a Switch controller exists. Can ignore.
             report[13] = 0x80;
             report[14] = commandID;
             report[15] = 0x03;
             canSend = true;
             break;
         case SwitchCommands::SET_HOME_LIGHT:
-            //printf("SwitchProDriver::set_report: Rpt 0x01 SET_HOME_LIGHT\n");
-            // NYI
             report[13] = 0x80;
             report[14] = commandID;
             report[15] = 0x00;
             canSend = true;
             break;
         case SwitchCommands::TOGGLE_IMU:
-            //printf("SwitchProDriver::set_report: Rpt 0x01 TOGGLE_IMU\n");
-            isIMUEnabled = reportData[11];
+            if (dataLen < 11) return;
+            isIMUEnabled = data[10];
             report[13] = 0x80;
             report[14] = commandID;
             report[15] = 0x00;
             canSend = true;
-            //printf("IMU set to %d\n", isIMUEnabled);
-            //printf("----------------------------------------------\n");
             break;
         case SwitchCommands::IMU_SENSITIVITY:
-            //printf("SwitchProDriver::set_report: Rpt 0x01 IMU_SENSITIVITY\n");
             report[13] = 0x80;
             report[14] = commandID;
             canSend = true;
             break;
         case SwitchCommands::ENABLE_VIBRATION:
-            //printf("SwitchProDriver::set_report: Rpt 0x01 ENABLE_VIBRATION\n");
-            isVibrationEnabled = reportData[11];
+            if (dataLen < 11) return;
+            isVibrationEnabled = (data[10] != 0);
             report[13] = 0x80;
             report[14] = commandID;
             report[15] = 0x00;
             canSend = true;
-            //printf("Vibration set to %d\n", isVibrationEnabled);
-            //printf("----------------------------------------------\n");
             break;
         case SwitchCommands::READ_IMU:
-            //printf("SwitchProDriver::set_report: Rpt 0x01 READ_IMU\n");
+            if (dataLen < 12) return;
             report[13] = 0xC0;
             report[14] = commandID;
-            report[15] = reportData[11];
-            report[16] = reportData[12];
+            report[15] = data[10];
+            report[16] = data[11];
             canSend = true;
-            //printf("IMU Addr: %02x, Size: %02x\n", reportData[11], reportData[12]);
-            //printf("----------------------------------------------\n");
             break;
         case SwitchCommands::GET_VOLTAGE:
-            //printf("SwitchProDriver::set_report: Rpt 0x01 GET_VOLTAGE\n");
             report[13] = 0xD0;
             report[14] = 0x50;
             report[15] = 0x83;
@@ -478,7 +465,6 @@ void SwitchProDriver::handleFeatureReport(uint8_t switchReportID, uint8_t switch
             canSend = true;
             break;
         default:
-            //printf("SwitchProDriver::set_report: Rpt 0x01 Unknown 0x%02x\n", commandID);
             report[13] = 0x80;
             report[14] = commandID;
             report[15] = 0x03;
@@ -486,46 +472,79 @@ void SwitchProDriver::handleFeatureReport(uint8_t switchReportID, uint8_t switch
             break;
     }
 
-    if (canSend) isReportQueued = true;
+    if (canSend) {
+        replyPreparedThisCommand = true;
+        if (!isReportQueued)
+            queuedReportTime = to_ms_since_boot(get_absolute_time());
+        isReportQueued = true;
+    }
 }
 
 void SwitchProDriver::set_report(uint8_t report_id, hid_report_type_t report_type, const uint8_t *buffer, uint16_t bufsize) {
-    if (report_type != HID_REPORT_TYPE_OUTPUT || bufsize < 2 || bufsize > sizeof(report)) return;
+    if (report_type != HID_REPORT_TYPE_OUTPUT && report_type != HID_REPORT_TYPE_FEATURE) return;
 
-    memset(report, 0x00, bufsize);
+    uint8_t switchReportID;
+    const uint8_t *data;
+    uint16_t dataLen;
 
-    uint8_t switchReportID = buffer[0];
-    uint8_t switchReportSubID = buffer[1];
-    //printf("SwitchProDriver::set_report Rpt: %02x, Type: %d, Len: %d :: SID: %02x, SSID: %02x\n", report_id, report_type, bufsize, switchReportID, switchReportSubID);
-    if (switchReportID == SwitchReportID::REPORT_OUTPUT_00) {
-    } else if (switchReportID == SwitchReportID::REPORT_FEATURE) {
-        queuedReportID = report_id;
-        handleFeatureReport(switchReportID, switchReportSubID, buffer, bufsize);
-    } else if (switchReportID == SwitchReportID::REPORT_CONFIGURATION) {
-        queuedReportID = report_id;
-        handleConfigReport(switchReportID, switchReportSubID, buffer, bufsize);
+    if (report_id != 0) {
+        switchReportID = report_id;
+        data = buffer;
+        dataLen = bufsize;
     } else {
-        //printf("SwitchProDriver::set_report Rpt: %02x, Type: %d, Len: %d :: SID: %02x, SSID: %02x\n", report_id, report_type, bufsize, switchReportID, switchReportSubID);
+        if (bufsize == 0) return;
+        switchReportID = buffer[0];
+        data = buffer + 1;
+        dataLen = bufsize - 1;
+    }
+
+    if (switchReportID == SwitchReportID::REPORT_OUTPUT_10) {
+        if (dataLen >= 9) {
+            setSwitchProRumble(data + 1);
+        }
+    } else if (switchReportID == SwitchReportID::REPORT_FEATURE ||
+               switchReportID == SwitchReportID::REPORT_CONFIGURATION) {
+        const uint16_t minimum =
+            (switchReportID == SwitchReportID::REPORT_FEATURE) ? 10 : 1;
+        if (dataLen < minimum)
+            return;
+
+        const bool hadPendingReply = isReportQueued;
+        uint8_t previousReply[sizeof(report)];
+        if (hadPendingReply)
+            memcpy(previousReply, report, sizeof(report));
+
+        replyPreparedThisCommand = false;
+        memset(report, 0, sizeof(report));
+        if (switchReportID == SwitchReportID::REPORT_FEATURE) {
+            if (dataLen >= 9) {
+                setSwitchProRumble(data + 1);
+            }
+            handleFeatureReport(data, dataLen);
+        } else {
+            handleConfigReport(data, dataLen);
+        }
+
+        // Malformed/one-way commands may modify other protocol state, but
+        // must not replace an older response waiting for HID IN.
+        if (hadPendingReply && !replyPreparedThisCommand)
+            memcpy(report, previousReply, sizeof(report));
     }
 }
 
 void SwitchProDriver::readSPIFlash(uint8_t* dest, uint32_t address, uint8_t size) {
-    uint32_t addressBank = address & 0xFFFFFF00;
-    uint32_t addressOffset = address & 0x000000FF;
-    //printf("Address: %08x, Bank: %04x, Offset: %04x, Size: %d\n", address, addressBank, addressOffset, size);
-    std::map<uint32_t, const uint8_t*>::iterator it = spiFlashData.find(addressBank);
+    memset(dest, 0xFF, size);
 
-    if (it != spiFlashData.end() &&
-        addressOffset + size <= (addressBank == 0x6000 ? sizeof(factoryConfigData) : sizeof(userCalibrationData))) {
-        // address found
-        const uint8_t* data = it->second;
-        memcpy(dest, data+addressOffset, size);
-        //for (uint8_t i = 0; i < size; i++) printf("%02x ", dest[i]);
-        //printf("\n---\n");
-    } else {
-        // could not find defined address
-        //printf("Not Found\n");
-        memset(dest, 0xFF, size);
+    if (address >= 0x6000 && address < (0x6000 + sizeof(factoryConfigData))) {
+        uint32_t offset = address - 0x6000;
+        uint32_t available = sizeof(factoryConfigData) - offset;
+        uint32_t bytesToCopy = (size < available) ? size : available;
+        memcpy(dest, factoryConfigData + offset, bytesToCopy);
+    } else if (address >= 0x8000 && address < (0x8000 + sizeof(userCalibrationData))) {
+        uint32_t offset = address - 0x8000;
+        uint32_t available = sizeof(userCalibrationData) - offset;
+        uint32_t bytesToCopy = (size < available) ? size : available;
+        memcpy(dest, userCalibrationData + offset, bytesToCopy);
     }
 }
 

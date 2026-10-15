@@ -29,12 +29,15 @@ public:
     virtual const uint8_t * get_descriptor_device_qualifier_cb();
     virtual uint16_t GetJoystickMidValue();
     virtual USBListener * get_usb_auth_listener() { return nullptr; }
+    void resetDriver();
 private:
     uint8_t report[SWITCH_PRO_ENDPOINT_SIZE] = { };
     uint8_t last_report[SWITCH_PRO_ENDPOINT_SIZE] = { };
     SwitchProReport switchReport;
     uint8_t last_report_counter;
     uint32_t last_report_timer;
+    uint32_t queuedReportTime = 0;
+    bool replyPreparedThisCommand = false;
     bool isReady = false;
     bool isInitialized = false;
     bool isReportQueued = false;
@@ -42,11 +45,6 @@ private:
     uint8_t queuedReportID = 0;
 
     uint8_t handshakeCounter = 0;
-
-    std::map<uint32_t, const uint8_t*> spiFlashData = {
-        {0x6000, factoryConfigData},
-        {0x8000, userCalibrationData}
-    };
 
     SwitchDeviceInfo deviceInfo;
     uint8_t playerID = 0;
@@ -61,8 +59,8 @@ private:
 
     void readSPIFlash(uint8_t* dest, uint32_t address, uint8_t size);
 
-    void handleConfigReport(uint8_t switchReportID, uint8_t switchReportSubID, const uint8_t *reportData, uint16_t reportLength);
-    void handleFeatureReport(uint8_t switchReportID, uint8_t switchReportSubID, const uint8_t *reportData, uint16_t reportLength);
+    void handleConfigReport(const uint8_t *data, uint16_t dataLen);
+    void handleFeatureReport(const uint8_t *data, uint16_t dataLen);
 
     //
     //void getConfigFromOffset(uint16_t configOffset, uint8_t* destData);

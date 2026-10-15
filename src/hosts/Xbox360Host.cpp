@@ -42,6 +42,10 @@ void Xbox360Host::initialize(uint8_t dev_addr, uint8_t instance, uint16_t vendor
 
     last_left_rumble = 0;
     last_right_rumble = 0;
+    left_rumble_until = 0;
+    right_rumble_until = 0;
+    sustained_left_rumble = 0;
+    sustained_right_rumble = 0;
 
     memset(&prev_report, 0, sizeof(XInputReport));
 
@@ -60,6 +64,7 @@ void Xbox360Host::initialize(uint8_t dev_addr, uint8_t instance, uint16_t vendor
 
 void Xbox360Host::update() {
     Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
+    if (gamepad == nullptr) return;
 
     // rumble
     gamepad->auxState.haptics.leftActuator.enabled = 1;
@@ -71,6 +76,25 @@ void Xbox360Host::update() {
     }
     if (gamepad->auxState.haptics.rightActuator.active) {
         rightRumble = gamepad->auxState.haptics.rightActuator.intensity;
+    }
+
+    uint32_t now = to_ms_since_boot(get_absolute_time());
+
+    // Pulse stretching / sustain: ERM vibration motors have mechanical inertia (40-60ms rise time).
+    // HD Rumble transmits very short pulses (1-2 frames = 16-32ms). Sustain non-zero rumble for 75ms
+    // so physical motors have sufficient time to accelerate and deliver tactile feedback.
+    if (leftRumble > 0) {
+        sustained_left_rumble = leftRumble;
+        left_rumble_until = now + 75;
+    } else if (now < left_rumble_until) {
+        leftRumble = sustained_left_rumble;
+    }
+
+    if (rightRumble > 0) {
+        sustained_right_rumble = rightRumble;
+        right_rumble_until = now + 75;
+    } else if (now < right_rumble_until) {
+        rightRumble = sustained_right_rumble;
     }
 
     if (leftRumble == last_left_rumble && rightRumble == last_right_rumble) {
