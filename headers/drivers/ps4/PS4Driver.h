@@ -62,6 +62,8 @@ private:
     TouchpadData touchpadData;
     PSSensorData sensorData;
     uint32_t last_report_timer;
+    bool analogSchedulingAllowed = false;
+    uint32_t analogSchedulingProfile = 0;
     PS4Auth * ps4AuthDriver;
     PS4AuthData * ps4AuthData = nullptr;      // PS4 Authentication Data
     uint8_t cur_nonce_chunk;            // PS4 Encryption Nonce Chunk (Max 19)
