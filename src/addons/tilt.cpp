@@ -24,7 +24,7 @@ void TiltInput::setup() {
 	mapAnalogModLow = new GamepadButtonMapping(ANALOG_DIRECTION_MOD_LOW);
 	mapAnalogModHigh = new GamepadButtonMapping(ANALOG_DIRECTION_MOD_HIGH);
 
-	EventManager::getInstance().registerEventHandler(GP_EVENT_PROFILE_CHANGE, GPEVENT_CALLBACK(this->handleProfileChange(event)));
+	EventManager::getInstance().registerEventHandler(GP_EVENT_PROFILE_CHANGE, GPEVENT_CALLBACK(this->handleProfileChange(event)), this);
 
 	reloadMappings();
 

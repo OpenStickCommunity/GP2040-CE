@@ -28,7 +28,8 @@
 class EventManager {
     public:
         typedef std::function<void(GPEvent* event)> EventFunction;
-        typedef std::pair<GPEventType, std::vector<EventFunction>> EventEntry;
+        typedef std::pair<const void*, EventFunction> EventHandler;
+        typedef std::pair<GPEventType, std::vector<EventHandler>> EventEntry;
 
         EventManager(EventManager const&) = delete;
         void operator=(EventManager const&)  = delete;
@@ -41,8 +42,8 @@ class EventManager {
         void init();
         void clearEventHandlers();
 
-        void registerEventHandler(GPEventType eventType, EventFunction handler);
-        void unregisterEventHandler(GPEventType eventType, EventFunction handler);
+        void registerEventHandler(GPEventType eventType, EventFunction handler, const void* owner);
+        void unregisterEventHandlers(const void* owner);
         void triggerEvent(GPEvent* event);
     private:
         EventManager(){}
