@@ -43,11 +43,6 @@ private:
 
     uint8_t handshakeCounter = 0;
 
-    std::map<uint32_t, const uint8_t*> spiFlashData = {
-        {0x6000, factoryConfigData},
-        {0x8000, userCalibrationData}
-    };
-
     SwitchDeviceInfo deviceInfo;
     uint8_t playerID = 0;
     uint8_t inputMode = 0x30;
@@ -61,8 +56,8 @@ private:
 
     void readSPIFlash(uint8_t* dest, uint32_t address, uint8_t size);
 
-    void handleConfigReport(uint8_t switchReportID, uint8_t switchReportSubID, const uint8_t *reportData, uint16_t reportLength);
-    void handleFeatureReport(uint8_t switchReportID, uint8_t switchReportSubID, const uint8_t *reportData, uint16_t reportLength);
+    void handleConfigReport(const uint8_t *data, uint16_t dataLen);
+    void handleFeatureReport(const uint8_t *data, uint16_t dataLen);
 
     //
     //void getConfigFromOffset(uint16_t configOffset, uint8_t* destData);

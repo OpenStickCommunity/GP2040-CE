@@ -28,6 +28,10 @@ private:
     void xinput_set_rumble(uint8_t left, uint8_t right);
     uint8_t last_left_rumble;
     uint8_t last_right_rumble;
+    uint32_t left_rumble_until;
+    uint32_t right_rumble_until;
+    uint8_t sustained_left_rumble;
+    uint8_t sustained_right_rumble;
     XInputReport prev_report;
 };
 
