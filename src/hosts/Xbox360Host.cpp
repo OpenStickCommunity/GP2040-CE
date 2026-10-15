@@ -27,6 +27,15 @@ bool Xbox360Host::match(uint8_t dev_addr, uint8_t instance, uint16_t vendor_id, 
     return false;
 }
 
+static uint8_t switchPlayerMaskToQuadrant(uint8_t mask) {
+    mask &= 0x0F;
+    for (uint8_t quadrant = 1; quadrant <= 4; ++quadrant) {
+        if (mask & (1u << (quadrant - 1)))
+            return quadrant;
+    }
+    return 1;
+}
+
 void Xbox360Host::initialize(uint8_t dev_addr, uint8_t instance, uint16_t vendor_id, uint16_t product_id, uint8_t const* desc_report, uint16_t desc_len) {
     // Setup our vars
     _dev_addr = dev_addr;
@@ -51,12 +60,11 @@ void Xbox360Host::initialize(uint8_t dev_addr, uint8_t instance, uint16_t vendor
 
     Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
     
-    uint32_t quadrant = gamepad->auxState.playerID.value;
-    if (quadrant == 0)
-        quadrant = 1;
+    const uint8_t quadrant =
+        switchPlayerMaskToQuadrant(gamepad->auxState.playerID.value);
     xbox360_set_led(quadrant);
 
-    xinput_set_rumble(0, 0);
+    rumble_dirty = !xinput_set_rumble(0, 0);
     tuh_xinput_receive_report(_dev_addr, _instance);
 }
 
