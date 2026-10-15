@@ -49,6 +49,7 @@ static uint8_t cmdRequest[CMD_BUFFER_LEN];
 static uint8_t cmdReply[CMD_REPLY_MAX];
 static uint16_t cmdReplyLen;
 static bool cmdReplyPending;
+static bool cmdReplyInFlight;
 static bool reportsEnabled = true;
 static uint8_t playerLedMask;
 static uint32_t handshakeRumbleUntil = 0;
@@ -130,6 +131,7 @@ static void triggerHandshakeRumble() {
 static void resetProtocolState() {
     cmdReplyLen = 0;
     cmdReplyPending = false;
+    cmdReplyInFlight = false;
     reportsEnabled = true;
     playerLedMask = 0;
     handshakeRumbleUntil = 0;
@@ -409,10 +411,14 @@ static void handleCommand(const uint8_t *req) {
 }
 
 static void sendReply(uint8_t rhport) {
-    if (!cmdReplyPending || usbd_edpt_busy(rhport, SWITCH2_PRO_EP_BULK_IN))
+    if (!cmdReplyPending || cmdReplyInFlight || usbd_edpt_busy(rhport, SWITCH2_PRO_EP_BULK_IN))
         return;
-    cmdReplyPending = false;
-    usbd_edpt_xfer(rhport, SWITCH2_PRO_EP_BULK_IN, cmdReply, cmdReplyLen, false);
+    if (usbd_edpt_xfer(rhport, SWITCH2_PRO_EP_BULK_IN, cmdReply, cmdReplyLen, false)) {
+        cmdReplyPending = false;
+        cmdReplyInFlight = true;
+    } else {
+        cmdReplyPending = false;
+    }
 }
 
 static void switch2pro_init(void) {
@@ -476,10 +482,17 @@ static bool switch2pro_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t re
                 cmdReplyPending = true;
                 sendReply(rhport);
             }
-            usbd_edpt_xfer(rhport, SWITCH2_PRO_EP_BULK_OUT, cmdRequest, sizeof(cmdRequest), false);
+            if (!cmdReplyInFlight && !cmdReplyPending) {
+                usbd_edpt_xfer(rhport, SWITCH2_PRO_EP_BULK_OUT, cmdRequest, sizeof(cmdRequest), false);
+            }
             return true;
         case SWITCH2_PRO_EP_BULK_IN:
-            sendReply(rhport);
+            cmdReplyInFlight = false;
+            if (cmdReplyPending) {
+                sendReply(rhport);
+            } else {
+                usbd_edpt_xfer(rhport, SWITCH2_PRO_EP_BULK_OUT, cmdRequest, sizeof(cmdRequest), false);
+            }
             return true;
         default:
             return hidd_xfer_cb(rhport, ep_addr, result, xferred_bytes);
