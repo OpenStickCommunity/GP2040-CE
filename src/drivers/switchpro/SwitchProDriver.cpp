@@ -22,6 +22,7 @@ void SwitchProDriver::resetDriver() {
     reportSent = false;
     queuedReportID = 0;
     queuedReportTime = 0;
+    replyPreparedThisCommand = false;
 }
 
 void SwitchProDriver::initialize() {
@@ -320,8 +321,10 @@ void SwitchProDriver::handleConfigReport(const uint8_t *data, uint16_t dataLen) 
     }
 
     if (canSend) {
+        replyPreparedThisCommand = true;
+        if (!isReportQueued)
+            queuedReportTime = to_ms_since_boot(get_absolute_time());
         isReportQueued = true;
-        queuedReportTime = to_ms_since_boot(get_absolute_time());
     }
 }
 
@@ -470,8 +473,10 @@ void SwitchProDriver::handleFeatureReport(const uint8_t *data, uint16_t dataLen)
     }
 
     if (canSend) {
+        replyPreparedThisCommand = true;
+        if (!isReportQueued)
+            queuedReportTime = to_ms_since_boot(get_absolute_time());
         isReportQueued = true;
-        queuedReportTime = to_ms_since_boot(get_absolute_time());
     }
 }
 
@@ -497,19 +502,33 @@ void SwitchProDriver::set_report(uint8_t report_id, hid_report_type_t report_typ
         if (dataLen >= 9) {
             setSwitchProRumble(data + 1);
         }
-    } else if (switchReportID == SwitchReportID::REPORT_FEATURE) {
-        if (dataLen >= 9) {
-            setSwitchProRumble(data + 1);
-        }
-        if (dataLen >= 10) {
-            memset(report, 0x00, sizeof(report));
+    } else if (switchReportID == SwitchReportID::REPORT_FEATURE ||
+               switchReportID == SwitchReportID::REPORT_CONFIGURATION) {
+        const uint16_t minimum =
+            (switchReportID == SwitchReportID::REPORT_FEATURE) ? 10 : 1;
+        if (dataLen < minimum)
+            return;
+
+        const bool hadPendingReply = isReportQueued;
+        uint8_t previousReply[sizeof(report)];
+        if (hadPendingReply)
+            memcpy(previousReply, report, sizeof(report));
+
+        replyPreparedThisCommand = false;
+        memset(report, 0, sizeof(report));
+        if (switchReportID == SwitchReportID::REPORT_FEATURE) {
+            if (dataLen >= 9) {
+                setSwitchProRumble(data + 1);
+            }
             handleFeatureReport(data, dataLen);
-        }
-    } else if (switchReportID == SwitchReportID::REPORT_CONFIGURATION) {
-        if (dataLen >= 1) {
-            memset(report, 0x00, sizeof(report));
+        } else {
             handleConfigReport(data, dataLen);
         }
+
+        // Malformed/one-way commands may modify other protocol state, but
+        // must not replace an older response waiting for HID IN.
+        if (hadPendingReply && !replyPreparedThisCommand)
+            memcpy(report, previousReply, sizeof(report));
     }
 }
 

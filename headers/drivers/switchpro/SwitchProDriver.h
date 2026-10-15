@@ -37,6 +37,7 @@ private:
     uint8_t last_report_counter;
     uint32_t last_report_timer;
     uint32_t queuedReportTime = 0;
+    bool replyPreparedThisCommand = false;
     bool isReady = false;
     bool isInitialized = false;
     bool isReportQueued = false;
