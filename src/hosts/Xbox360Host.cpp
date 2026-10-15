@@ -55,7 +55,6 @@ void Xbox360Host::initialize(uint8_t dev_addr, uint8_t instance, uint16_t vendor
     rumble_dirty = false;
 
     memset(&prev_report, 0, sizeof(XInputReport));
-    last_report_ms = 0;
     is_controller_connected = false;
 
     Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
@@ -69,17 +68,6 @@ void Xbox360Host::initialize(uint8_t dev_addr, uint8_t instance, uint16_t vendor
 }
 
 void Xbox360Host::update() {
-    uint32_t now = to_ms_since_boot(get_absolute_time());
-    if (is_controller_connected && (now - last_report_ms > 1500)) {
-        is_controller_connected = false;
-        memset(&prev_report, 0, sizeof(XInputReport));
-        _controller_host_state = GamepadState{};
-        _controller_host_state.lx = GAMEPAD_JOYSTICK_MID;
-        _controller_host_state.ly = GAMEPAD_JOYSTICK_MID;
-        _controller_host_state.rx = GAMEPAD_JOYSTICK_MID;
-        _controller_host_state.ry = GAMEPAD_JOYSTICK_MID;
-    }
-
     Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
 
     // rumble
@@ -118,11 +106,8 @@ void Xbox360Host::process(uint8_t const* report, uint16_t len) {
     }
 
     memcpy(&controller_report, report, sizeof(controller_report));
-
-    uint32_t now = to_ms_since_boot(get_absolute_time());
     bool just_connected = !is_controller_connected;
     is_controller_connected = true;
-    last_report_ms = now;
 
     bool hasInput = (controller_report.buttons1 != 0 || controller_report.buttons2 != 0 ||
                      controller_report.lt > 0 || controller_report.rt > 0);
