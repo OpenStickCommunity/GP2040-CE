@@ -95,7 +95,7 @@ uint8_t tuh_xinput_instance_count(uint8_t dev_addr) {
 }
 
 bool tuh_xinput_mounted(uint8_t dev_addr, uint8_t instance) {
-    if (get_dev(dev_addr)->inst_count < instance) return false;
+    if (instance >= get_dev(dev_addr)->inst_count) return false;
     xinputh_interface_t *hid_itf = get_instance(dev_addr, instance);
     return (hid_itf->ep_in != 0) || (hid_itf->ep_out != 0);
 }
@@ -157,8 +157,9 @@ bool tuh_xinput_send_report(uint8_t dev_addr, uint8_t instance, uint8_t const *r
         if (!usbh_edpt_xfer(dev_addr, xid_itf->ep_out, xid_itf->epout_buf, len)) {
             usbh_edpt_release(dev_addr, xid_itf->ep_out);
             ret = false;
+        } else {
+            ret = true;
         }
-        ret = true;
 
     } 
 
@@ -297,6 +298,7 @@ uint16_t xinputh_open(uint8_t rhport, uint8_t dev_addr, tusb_desc_interface_t co
 
         p_xinput->itf_num = desc_itf->bInterfaceNumber;
         p_xinput->type = XBOX360;
+        get_dev(dev_addr)->inst_count++;
         if (desc_itf->bInterfaceProtocol == TUSB_DESC_DEVICE) {
             p_xinput->subtype = x_desc->subtype;
             usbh_edpt_xfer(dev_addr, p_xinput->ep_in, p_xinput->epin_buf, p_xinput->epin_size);
@@ -328,7 +330,7 @@ uint16_t xinputh_open(uint8_t rhport, uint8_t dev_addr, tusb_desc_interface_t co
         p_xinput->itf_num = desc_itf->bInterfaceNumber;
         p_xinput->type = XBOXONE;
 
-        _xinputh_dev->inst_count++;
+        get_dev(dev_addr)->inst_count++;
         usbh_edpt_xfer(dev_addr, p_xinput->ep_in, p_xinput->epin_buf, p_xinput->epin_size);
         return pos;
     } 

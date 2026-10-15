@@ -66,6 +66,11 @@ void Xbox360Host::update() {
     if (is_controller_connected && (now - last_report_ms > 1500)) {
         is_controller_connected = false;
         memset(&prev_report, 0, sizeof(XInputReport));
+        _controller_host_state = GamepadState{};
+        _controller_host_state.lx = GAMEPAD_JOYSTICK_MID;
+        _controller_host_state.ly = GAMEPAD_JOYSTICK_MID;
+        _controller_host_state.rx = GAMEPAD_JOYSTICK_MID;
+        _controller_host_state.ry = GAMEPAD_JOYSTICK_MID;
     }
 
     Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
