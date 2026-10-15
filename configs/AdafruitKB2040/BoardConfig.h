@@ -70,7 +70,7 @@
 #define LIGHT_DATA_NAME_DEFAULT "Onboard LED"
 #define LIGHT_DATA_SIZE_DEFAULT 1
 #define LIGHT_DATA_DEFAULT \
-0,  1, 8,  4, 18, LightType::LightType_ActionButton
+0,  1, 8,  4, 18, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO
 
 // LED Profile 0
 #define LEDS_PROFILE0_ENABLED 1

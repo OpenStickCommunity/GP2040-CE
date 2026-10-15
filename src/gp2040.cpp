@@ -105,7 +105,9 @@ void GP2040::setup() {
 	addons.LoadUSBAddon(new KeyboardHostAddon());
 	addons.LoadUSBAddon(new GamepadUSBHostAddon());
 	addons.LoadAddon(new AnalogInput());
-	addons.LoadAddon(new HETriggerAddon());
+	HETriggerAddon* heTrigger = new HETriggerAddon();
+	if (addons.LoadAddon(heTrigger))
+		heTriggerAddon = heTrigger;
 	addons.LoadAddon(new BootselButtonAddon());
 	addons.LoadAddon(new DualDirectionalInput());
 	addons.LoadAddon(new FocusModeAddon());
@@ -279,6 +281,10 @@ void GP2040::run() {
 
 		// Config Loop (Web-Config skips Core0 add-ons)
 		if (configMode == true) {
+			if (heTriggerAddon) {
+				heTriggerAddon->configModeProcess();
+				processedGamepad->state.heTriggers = gamepad->state.heTriggers;
+			}
 			inputDriver->process(gamepad);
 			rebootHotkeys.process(gamepad, configMode);
 			checkSaveRebootState();
