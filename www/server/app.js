@@ -276,7 +276,12 @@ const BoardLights = [
 
 // Structure pin mappings to include masks and profile label
 const createPinMappings = ({ profileLabel = 'Profile', enabled = true }) => {
-	let pinMappings = { profileLabel, enabled };
+	let pinMappings = {
+		profileLabel,
+		enabled,
+		pinInversionEnabled: false,
+		invertedPins: [],
+	};
 
 	for (const [key, value] of Object.entries(picoController.usedPins)) {
 		pinMappings[key] = {
@@ -581,6 +586,15 @@ app.get('/api/getPinMappings', (req, res) => {
 
 app.get('/api/getKeyMappings', (req, res) =>
 	res.send(mapValues(DEFAULT_KEYBOARD_MAPPING)),
+);
+
+app.get('/api/getProfileKeyMappings', (req, res) =>
+	res.send({
+		profiles: [
+			mapValues(DEFAULT_KEYBOARD_MAPPING),
+			mapValues(DEFAULT_KEYBOARD_MAPPING),
+		],
+	}),
 );
 
 app.get('/api/getPeripheralOptions', (req, res) => {

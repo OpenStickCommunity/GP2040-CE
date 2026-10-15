@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import omit from 'lodash/omit';
 import WebApi from '../Services/WebApi';
 import { PinActionValues } from '../Data/Pins';
 
@@ -47,7 +48,17 @@ export type PinsType = {
 	pin29: MaskPayload;
 	profileLabel: string;
 	enabled: boolean;
+	pinInversionEnabled: boolean;
+	invertedPins: number[];
 };
+
+export const getProfilePins = (profile: PinsType) =>
+	omit(profile, [
+		'profileLabel',
+		'enabled',
+		'pinInversionEnabled',
+		'invertedPins',
+	]);
 
 type State = {
 	profiles: PinsType[];
@@ -67,6 +78,8 @@ type Actions = {
 	saveProfiles: () => Promise<object>;
 	setProfileLabel: (profileIndex: number, profileLabel: string) => void;
 	setProfilePin: SetProfilePinType;
+	setPinInversionEnabled: (profileIndex: number, enabled: boolean) => void;
+	togglePinInverted: (profileIndex: number, pin: number) => void;
 	toggleProfileEnabled: (profileIndex: number) => void;
 };
 
@@ -144,11 +157,30 @@ const useProfilesStore = create<State & Actions>()((set, get) => ({
 		}),
 	saveProfiles: async () => {
 		const [baseProfile, ...profiles] = get().profiles;
-		return Promise.all([
-			WebApi.setPinMappings(baseProfile),
-			WebApi.setProfileOptions(profiles),
-		]);
+		await WebApi.setPinMappings(baseProfile);
+		return WebApi.setProfileOptions(profiles);
 	},
+	setPinInversionEnabled: (profileIndex, pinInversionEnabled) =>
+		set((state) => {
+			const profiles = [...state.profiles];
+			profiles[profileIndex] = {
+				...profiles[profileIndex],
+				pinInversionEnabled,
+			};
+			return { profiles };
+		}),
+	togglePinInverted: (profileIndex, pin) =>
+		set((state) => {
+			const profiles = [...state.profiles];
+			const invertedPins = profiles[profileIndex].invertedPins ?? [];
+			profiles[profileIndex] = {
+				...profiles[profileIndex],
+				invertedPins: invertedPins.includes(pin)
+					? invertedPins.filter((invertedPin) => invertedPin !== pin)
+					: [...invertedPins, pin],
+			};
+			return { profiles };
+		}),
 	toggleProfileEnabled: (profileIndex) =>
 		set((state) => {
 			const profiles = [...state.profiles];

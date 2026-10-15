@@ -210,6 +210,7 @@ export default {
 		'If you reboot to Controller mode after saving, you will no longer have access to the web-config. Please type "<strong>{{warningCheckText}}</strong>" below to unlock the Save button if you fully acknowledge this and intend it. Clicking on Dismiss will revert this setting which then is to be saved.',
 	'4-way-joystick-mode-label': '4-Way Joystick Mode',
 	'keyboard-mapping-header-text': 'Keyboard Mapping',
+	'keyboard-profile-label': 'Profile',
 	'keyboard-mapping-sub-header-text':
 		'Use the form below to reconfigure your button-to-key mapping.',
 	'usb-override': {
