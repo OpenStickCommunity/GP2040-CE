@@ -3,7 +3,6 @@
 #include "tusb.h"
 #include "drivers/shared/xinput_host.h"
 #include <storagemanager.h>
-#include "usbdriver.h"
 
 bool Xbox360Host::match(uint8_t dev_addr, uint8_t instance, uint16_t vendor_id, uint16_t product_id, uint8_t controller_type) {    
     if ( controller_type == 1 ) {    
@@ -55,7 +54,6 @@ void Xbox360Host::initialize(uint8_t dev_addr, uint8_t instance, uint16_t vendor
     rumble_dirty = false;
 
     memset(&prev_report, 0, sizeof(XInputReport));
-    is_controller_connected = false;
 
     Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
     
@@ -108,22 +106,8 @@ void Xbox360Host::process(uint8_t const* report, uint16_t len) {
     }
 
     memcpy(&controller_report, report, sizeof(controller_report));
-    bool just_connected = !is_controller_connected;
-    is_controller_connected = true;
-
-    bool hasInput = (controller_report.buttons1 != 0 || controller_report.buttons2 != 0 ||
-                     controller_report.lt > 0 || controller_report.rt > 0);
-
-    if (just_connected) {
-        if (hasInput) {
-            request_remote_wakeup(1000);
-        }
-    } else if (memcmp(&prev_report, &controller_report, sizeof(XInputReport)) == 0) {
+    if (memcmp(&prev_report, &controller_report, sizeof(XInputReport)) == 0) {
         return;
-    }
-
-    if (hasInput) {
-        request_remote_wakeup(200);
     }
 
     _controller_host_state.dpad = 0;

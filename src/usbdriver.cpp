@@ -8,26 +8,9 @@
 
 #include "tusb.h"
 #include "drivermanager.h"
-#include "pico/time.h"
 
 static bool usb_mounted;
 static bool usb_suspended;
-static volatile uint32_t remote_wakeup_until = 0;
-
-void request_remote_wakeup(uint32_t duration_ms) {
-    uint32_t now = to_ms_since_boot(get_absolute_time());
-    remote_wakeup_until = now + duration_ms;
-}
-
-bool is_remote_wakeup_requested(void) {
-    if (remote_wakeup_until == 0) return false;
-    uint32_t now = to_ms_since_boot(get_absolute_time());
-    if (now >= remote_wakeup_until) {
-        remote_wakeup_until = 0;
-        return false;
-    }
-    return true;
-}
 
 bool get_usb_mounted(void) {
 	return usb_mounted;

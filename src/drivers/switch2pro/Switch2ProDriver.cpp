@@ -7,7 +7,6 @@
 #include "storagemanager.h"
 #include "mbedtls/aes.h"
 #include "pico/rand.h"
-#include "usbdriver.h"
 
 #include <string.h>
 
@@ -547,13 +546,8 @@ bool Switch2ProDriver::process(Gamepad * gamepad) {
     processedGamepad->auxState.playerID.ledValue = playerLedMask;
     processedGamepad->auxState.playerID.value = playerLedMask;
 
-    bool wake_needed = is_remote_wakeup_requested() ||
-                       (gamepad->state.buttons != 0) ||
-                       (gamepad->state.dpad != 0);
-
-    if (tud_suspended() && wake_needed) {
+    if (tud_suspended())
         tud_remote_wakeup();
-    }
 
     if (!reportsEnabled)
         return false;
