@@ -78,6 +78,10 @@ export default {
 		'joycon2-left': 'Joy-Con 2 (L)',
 		'joycon2-right': 'Joy-Con 2 (R)',
 	},
+	'switch2-pro-gamecube-no-options':
+		'There are no additional options for GameCube Controller mode.',
+	'switch2-pro-joycon2-experimental-warning':
+		'<strong>WARNING:</strong> {{mode}} mode is experimental. In most cases you will want to choose one of the other controller types, such as Switch 2 Pro Controller. If you still want to try this mode, go to the Nintendo Switch 2 controller pairing screen and press the pairing buttons it shows so the Joy-Con 2 appears in the horizontal position. If you connect it from the main screen it will appear in the vertical position and input mappings may be incorrect. There is also a known issue with the analog inputs.',
 	'switch2-pro-joycon2-color-explanation':
 		'Sets the colors the Switch 2 shows for this Joy-Con 2.',
 	'switch2-pro-joycon2-color-presets': {
