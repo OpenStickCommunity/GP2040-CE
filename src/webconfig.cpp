@@ -224,6 +224,7 @@ enum class HttpStatusCode
     _400,
     _404,
     _500,
+    _503,
 };
 
 struct DataAndStatusCode
@@ -240,6 +241,25 @@ struct DataAndStatusCode
 // **** WEB SERVER Overrides and Special Functionality ****
 // lwIP sends replies zero-copy: keep closed ones until no segment points into them.
 static std::vector<std::string*> retiredReplies;
+
+// The SDK's malloc panics on failure: answer 503 before the heap runs out.
+static const size_t LARGE_REPLY_SIZE = 16 * 1024;           // only one such reply alive at a time
+static const size_t MIN_FREE_HEAP_FOR_HANDLER = 24 * 1024;  // a 16 KB JSON document plus its reply
+static const size_t MIN_FREE_HEAP_AFTER_REPLY = 16 * 1024;
+static size_t liveLargeReplies = 0;
+
+static size_t freeHeap()
+{
+    const uint32_t total = System::getTotalHeap();
+    const uint32_t used = System::getUsedHeap();
+    return (total > used) ? (total - used) : 0;
+}
+
+static void deleteReply(std::string* reply)
+{
+    if (reply->capacity() >= LARGE_REPLY_SIZE) --liveLargeReplies;
+    delete reply;
+}
 
 static bool pbufReferences(const struct pbuf* p, const char* lo, const char* hi)
 {
@@ -269,7 +289,7 @@ static void freeRetiredReplies()
         if (tcpReferences(retiredReplies[i])) {
             ++i;
         } else {
-            delete retiredReplies[i];
+            deleteReply(retiredReplies[i]);
             retiredReplies[i] = retiredReplies.back();
             retiredReplies.pop_back();
         }
@@ -288,6 +308,7 @@ int set_file_data(fs_file* file, DataAndStatusCode&& dataAndStatusCode)
         case HttpStatusCode::_400: statusCodeStr = "400 Bad Request"; break;
         case HttpStatusCode::_404: statusCodeStr = "404 Not Found"; break;
         case HttpStatusCode::_500: statusCodeStr = "500 Internal Server Error"; break;
+        case HttpStatusCode::_503: statusCodeStr = "503 Service Unavailable"; break;
     }
 
     std::string header;
@@ -316,6 +337,8 @@ int set_file_data(fs_file* file, DataAndStatusCode&& dataAndStatusCode)
         returnData->swap(combined);
     }
 
+    if (returnData->capacity() >= LARGE_REPLY_SIZE) ++liveLargeReplies;
+
     file->data = returnData->c_str();
     file->len = returnData->size();
     file->index = file->len;
@@ -331,6 +354,11 @@ int set_file_data(fs_file *file, string&& data)
     if (data.empty())
         return 0;
     return set_file_data(file, DataAndStatusCode(std::move(data), HttpStatusCode::_200));
+}
+
+static DataAndStatusCode busyReply()
+{
+    return DataAndStatusCode("{\"error\":\"busy\"}", HttpStatusCode::_503);
 }
 
 DynamicJsonDocument get_post_data()
@@ -3097,6 +3125,18 @@ std::string getConfig()
     return ConfigUtils::toJSON(Storage::getInstance().getConfig(), HTTP_HEADER_RESERVE);
 }
 
+DataAndStatusCode getConfigReply()
+{
+    // The full config is tens of KB: only build it when no other large reply is in flight.
+    const size_t avail = freeHeap();
+    if (liveLargeReplies == 0 && avail > MIN_FREE_HEAP_AFTER_REPLY) {
+        std::string data = ConfigUtils::toJSON(Storage::getInstance().getConfig(), HTTP_HEADER_RESERVE,
+                                               avail - MIN_FREE_HEAP_AFTER_REPLY);
+        if (!data.empty()) return DataAndStatusCode(std::move(data), HttpStatusCode::_200);
+    }
+    return busyReply();
+}
+
 DataAndStatusCode setConfig()
 {
     // Store config struct on the heap to avoid stack overflow
@@ -3329,7 +3369,6 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/getHeldPins", getHeldPins },
     { "/api/abortGetHeldPins", abortGetHeldPins },
     { "/api/getUsedPins", getUsedPins },
-    { "/api/getConfig", getConfig },
     { "/api/getJoystickCenter", getJoystickCenter },
     { "/api/getJoystickCenter2", getJoystickCenter2 },
     { "/api/getBoardDefinition", getBoardDefinition },
@@ -3344,6 +3383,7 @@ typedef DataAndStatusCode (*HandlerFuncStatusCodePtr)();
 static const std::pair<const char*, HandlerFuncStatusCodePtr> handlerFuncsWithStatusCode[] =
 {
     { "/api/setConfig", setConfig },
+    { "/api/getConfig", getConfigReply },
 };
 
 int fs_open_custom(struct fs_file *file, const char *name)
@@ -3354,6 +3394,7 @@ int fs_open_custom(struct fs_file *file, const char *name)
     {
         if (strcmp(handlerFunc.first, name) == 0)
         {
+            if (freeHeap() < MIN_FREE_HEAP_FOR_HANDLER) return set_file_data(file, busyReply());
             return set_file_data(file, handlerFunc.second());
         }
     }
@@ -3362,6 +3403,7 @@ int fs_open_custom(struct fs_file *file, const char *name)
     {
         if (strcmp(handlerFunc.first, name) == 0)
         {
+            if (freeHeap() < MIN_FREE_HEAP_FOR_HANDLER) return set_file_data(file, busyReply());
             return set_file_data(file, handlerFunc.second());
         }
     }

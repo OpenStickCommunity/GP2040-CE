@@ -2483,13 +2483,15 @@ static void __attribute__((noinline)) appendAsString(JsonWriter& str, uint32_t v
     ENUM_MESSAGES_GP2040(GEN_TO_JSON_FUNCTION)
 #endif
 
-std::string ConfigUtils::toJSON(const Config& config, size_t headroom)
+std::string ConfigUtils::toJSON(const Config& config, size_t headroom, size_t maxSize)
 {
     JsonWriter counter(nullptr);
     toJSONConfig(counter, config, 1);
 
     std::string str;
-    str.reserve(counter.size() + 1 + headroom);
+    const size_t needed = counter.size() + 1 + headroom;
+    if (needed > maxSize) return str;
+    str.reserve(needed);
     JsonWriter writer(&str);
     toJSONConfig(writer, config, 1);
     str.push_back('\n');
