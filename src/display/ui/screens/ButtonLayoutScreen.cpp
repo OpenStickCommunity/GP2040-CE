@@ -1,6 +1,9 @@
 #include "ButtonLayoutScreen.h"
 #include "buttonlayouts.h"
 #include "drivermanager.h"
+#ifdef ENABLE_BLUETOOTH
+#include "BLEHIDManager.h"
+#endif
 #include "drivers/ps4/PS4Driver.h"
 #include "drivers/xbone/XBOneDriver.h"
 #include "drivers/xinput/XInputDriver.h"
@@ -238,6 +241,22 @@ void ButtonLayoutScreen::generateHeader() {
                 break;
             case INPUT_MODE_KEYBOARD: statusBar += "HID-KB"; break;
             case INPUT_MODE_CONFIG: statusBar += "CONFIG"; break;
+#ifdef ENABLE_BLUETOOTH
+            case INPUT_MODE_BLE:
+            {
+                BLEHIDManager& bleManager = BLEHIDManager::getInstance();
+                statusBar += CHAR_BT;
+                if (bleManager.isConnected()) {
+                    uint8_t battLevel = bleManager.getBatteryLevel();
+                    if (battLevel != 255) {
+                        statusBar += std::to_string(battLevel) + "%";
+                    }
+                } else if (bleManager.isEnabled()) {
+                    statusBar += "...";
+                }
+                break;
+            }
+#endif
         }
     }
 

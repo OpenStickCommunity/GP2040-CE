@@ -1,5 +1,9 @@
 import { set } from 'lodash';
 import Http from './Http';
+import {
+	parseBluetoothStatus,
+	parseBluetoothControlResponse,
+} from './BluetoothApi';
 import { hexToInt, rgbIntToHex } from './Utilities';
 
 export const baseUrl =
@@ -703,6 +707,33 @@ async function reboot(bootMode) {
 		.catch(console.error);
 }
 
+async function getBLEHIDStatus() {
+	try {
+		const response = await Http.get(`${baseUrl}/api/getBLEHIDStatus`, {
+			signal: AbortSignal.timeout(5000),
+		});
+		return parseBluetoothStatus(response.data);
+	} catch (error) {
+		console.error(error);
+		return null;
+	}
+}
+
+async function setBLEHIDControls(options) {
+	try {
+		const response = await Http.post(
+			`${baseUrl}/api/setBLEHIDControls`,
+			sanitizeRequest(options),
+			{},
+			AbortSignal.timeout(5000),
+		);
+		return parseBluetoothControlResponse(response.data);
+	} catch (error) {
+		console.error(error);
+		return null;
+	}
+}
+
 function sanitizeRequest(request) {
 	const newRequest = { ...request };
 	delete newRequest.usedPins;
@@ -782,4 +813,6 @@ export default {
 	abortGetHeldPins,
 	getBoardDefinition,
 	reboot,
+	getBLEHIDStatus,
+	setBLEHIDControls,
 };
