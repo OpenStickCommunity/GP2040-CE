@@ -306,7 +306,7 @@ int set_file_data(fs_file* file, const DataAndStatusCode& dataAndStatusCode)
 
     file->data = returnData->c_str();
     file->len = returnData->size();
-    file->index = 0;//file->len;
+    file->index = file->len;
     file->http_header_included = true;
     file->pextension = returnData;  // store for cleanup
     file->is_custom_file = 1;
