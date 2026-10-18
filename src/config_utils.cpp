@@ -2362,31 +2362,46 @@ bool ConfigUtils::save(Config& config)
 // To JSON
 // -----------------------------------------------------
 
-static void writeIndentation(std::string& str, int level)
+// Counts bytes when it has no string, so toJSON() allocates exactly once.
+class JsonWriter
+{
+public:
+    explicit JsonWriter(std::string* out) : out(out) {}
+    void append(const char* s) { const size_t n = strlen(s); len += n; if (out) out->append(s, n); }
+    void append(const std::string& s) { len += s.size(); if (out) out->append(s); }
+    void append(std::string::size_type n, char c) { len += n; if (out) out->append(n, c); }
+    void push_back(char c) { ++len; if (out) out->push_back(c); }
+    size_t size() const { return len; }
+private:
+    std::string* out;
+    size_t len = 0;
+};
+
+static void writeIndentation(JsonWriter& str, int level)
 {
     str.append(static_cast<std::string::size_type>(level), '\t');
 }
 
 // Don't inline this function, we do not want to consume stack space in the calling function
-static void __attribute__((noinline)) appendAsString(std::string& str, double value)
+static void __attribute__((noinline)) appendAsString(JsonWriter& str, double value)
 {
     str.append(std::to_string(value));
 }
 
 // Don't inline this function, we do not want to consume stack space in the calling function
-static void __attribute__((noinline)) appendAsString(std::string& str, float value)
+static void __attribute__((noinline)) appendAsString(JsonWriter& str, float value)
 {
     str.append(std::to_string(value));
 }
 
 // Don't inline this function, we do not want to consume stack space in the calling function
-static void __attribute__((noinline)) appendAsString(std::string& str, int32_t value)
+static void __attribute__((noinline)) appendAsString(JsonWriter& str, int32_t value)
 {
     str.append(std::to_string(value));
 }
 
 // Don't inline this function, we do not want to consume stack space in the calling function
-static void __attribute__((noinline)) appendAsString(std::string& str, uint32_t value)
+static void __attribute__((noinline)) appendAsString(JsonWriter& str, uint32_t value)
 {
     str.append(std::to_string(value));
 }
@@ -2446,10 +2461,10 @@ static void __attribute__((noinline)) appendAsString(std::string& str, uint32_t 
         PREPROCESSOR_JOIN(TO_JSON_, atype)(htype, ltype, fieldname, parenttype ## _ ## fieldname ## _MSGTYPE) \
     }
 
-#define GEN_TO_JSON_FUNCTION_DECL(structtype) static void toJSON ## structtype(std::string& str, const structtype& s, int indentLevel);
+#define GEN_TO_JSON_FUNCTION_DECL(structtype) static void toJSON ## structtype(JsonWriter& str, const structtype& s, int indentLevel);
 
 #define GEN_TO_JSON_FUNCTION(structtype) \
-    static void toJSON ## structtype(std::string& str, const structtype& s, int indentLevel) \
+    static void toJSON ## structtype(JsonWriter& str, const structtype& s, int indentLevel) \
     { \
         bool firstField = true; \
         str.append("{\n"); \
@@ -2468,11 +2483,15 @@ static void __attribute__((noinline)) appendAsString(std::string& str, uint32_t 
     ENUM_MESSAGES_GP2040(GEN_TO_JSON_FUNCTION)
 #endif
 
-std::string ConfigUtils::toJSON(const Config& config)
+std::string ConfigUtils::toJSON(const Config& config, size_t headroom)
 {
+    JsonWriter counter(nullptr);
+    toJSONConfig(counter, config, 1);
+
     std::string str;
-    str.reserve(1024 * 4);
-    toJSONConfig(str, config, 1);
+    str.reserve(counter.size() + 1 + headroom);
+    JsonWriter writer(&str);
+    toJSONConfig(writer, config, 1);
     str.push_back('\n');
 
     return str;

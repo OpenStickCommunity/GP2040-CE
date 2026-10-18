@@ -276,10 +276,11 @@ static void freeRetiredReplies()
     }
 }
 
-int set_file_data(fs_file* file, const DataAndStatusCode& dataAndStatusCode)
-{
-    std::string* returnData = new std::string();
+// Room that replies reserve so set_file_data() can prepend the HTTP header in place.
+static const size_t HTTP_HEADER_RESERVE = 256;
 
+int set_file_data(fs_file* file, DataAndStatusCode&& dataAndStatusCode)
+{
     const char* statusCodeStr = "";
     switch (dataAndStatusCode.statusCode)
     {
@@ -289,20 +290,31 @@ int set_file_data(fs_file* file, const DataAndStatusCode& dataAndStatusCode)
         case HttpStatusCode::_500: statusCodeStr = "500 Internal Server Error"; break;
     }
 
-    returnData->clear();
-    returnData->append("HTTP/1.0 ");
-    returnData->append(statusCodeStr);
-    returnData->append("\r\n");
-    returnData->append(
+    std::string header;
+    header.reserve(HTTP_HEADER_RESERVE);
+    header.append("HTTP/1.0 ");
+    header.append(statusCodeStr);
+    header.append("\r\n");
+    header.append(
         "Server: GP2040-CE " GP2040VERSION "\r\n"
         "Content-Type: application/json\r\n"
         "Access-Control-Allow-Origin: *\r\n"
         "Content-Length: "
     );
+    header.append(std::to_string(dataAndStatusCode.data.length()));
+    header.append("\r\n\r\n");
 
-    returnData->append(std::to_string(dataAndStatusCode.data.length()));
-    returnData->append("\r\n\r\n");
-    returnData->append(dataAndStatusCode.data);
+    // Prepend the header in place, so a large reply is not held twice.
+    std::string* returnData = new std::string(std::move(dataAndStatusCode.data));
+    if (returnData->capacity() >= returnData->size() + header.size()) {
+        returnData->insert(0, header);
+    } else {
+        std::string combined;
+        combined.reserve(header.size() + returnData->size());
+        combined.append(header);
+        combined.append(*returnData);
+        returnData->swap(combined);
+    }
 
     file->data = returnData->c_str();
     file->len = returnData->size();
@@ -455,7 +467,7 @@ void addUsedPinsArray(DynamicJsonDocument& doc)
 std::string serialize_json(DynamicJsonDocument &doc)
 {
     std::string data;
-    data.reserve(measureJson(doc));
+    data.reserve(measureJson(doc) + HTTP_HEADER_RESERVE);
     serializeJson(doc, data);
     return data;
 }
@@ -3082,7 +3094,7 @@ std::string abortGetHeldPins()
 
 std::string getConfig()
 {
-    return ConfigUtils::toJSON(Storage::getInstance().getConfig());
+    return ConfigUtils::toJSON(Storage::getInstance().getConfig(), HTTP_HEADER_RESERVE);
 }
 
 DataAndStatusCode setConfig()
