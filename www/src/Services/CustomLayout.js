@@ -1,4 +1,4 @@
-const MAX_CUSTOM_LAYOUT_ELEMENTS = 30;
+const MAX_CUSTOM_LAYOUT_ELEMENTS = 24;
 
 const ELEMENT_VALUES = {
 	GP_ELEMENT_BTN_BUTTON: 2,
@@ -9,8 +9,9 @@ const ELEMENT_VALUES = {
 	GP_ELEMENT_HE_BUTTON: 9,
 };
 
+const DEFAULT_MAX_PIN = 47;
+
 const MAX_VALUE = {
-	[ELEMENT_VALUES.GP_ELEMENT_PIN_BUTTON]: 47,
 	[ELEMENT_VALUES.GP_ELEMENT_HE_BUTTON]: 31,
 };
 
@@ -70,11 +71,42 @@ const LEVER_MODE_NAMES = {
 };
 
 const PARAM_COUNT = 11;
-const VALUES_PER_ELEMENT = PARAM_COUNT + 1;
-const BYTES_PER_ELEMENT = VALUES_PER_ELEMENT * 2;
+const BYTES_PER_ELEMENT = 12;
+const PARAM_NAMES = [
+	'x1',
+	'y1',
+	'x2',
+	'y2',
+	'stroke',
+	'fill',
+	'value',
+	'shape',
+	'angleStart',
+	'angleEnd',
+	'closed',
+];
+const MAX_ANGLE = 720;
+const PARAM_MAX = [
+	255,
+	255,
+	255,
+	255,
+	1,
+	3,
+	0xffff,
+	5,
+	MAX_ANGLE,
+	MAX_ANGLE,
+	1,
+];
 const VALUE_PARAM_INDEX = 6;
 const SHAPE_PARAM_INDEX = 7;
 const MIN_PARAMS = 7;
+const X1_PARAM_INDEX = 0;
+const Y1_PARAM_INDEX = 1;
+const X2_PARAM_INDEX = 2;
+const Y2_PARAM_INDEX = 3;
+const MAX_POLYGON_SIDES = 32;
 
 function resolveToken(token) {
 	const parts = token
@@ -99,35 +131,54 @@ function resolveToken(token) {
 	return result;
 }
 
-export function parseLayoutCode(code, preferredDefine) {
+function defineBody(text) {
+	const open = text.indexOf('{');
+	let depth = 0;
+	for (let i = open; i < text.length; i++) {
+		if (text[i] === '{') depth++;
+		else if (text[i] === '}' && --depth === 0) return text.slice(open + 1, i);
+	}
+	return null;
+}
+
+const ELEMENT_PATTERN =
+	/\{\s*([A-Za-z_][A-Za-z0-9_]*|\d+)\s*,\s*\{([^{}]*)\}\s*\}/g;
+
+export function parseLayoutCode(code, defineName, maxPin = DEFAULT_MAX_PIN) {
 	if (!code || code.trim() === '') return { elements: [], error: null };
 
 	let cleaned = code
-		.replace(/\/\*[\s\S]*?\*\//g, '')
-		.replace(/\/\/.*$/gm, '')
+		.replace(/\/\*[\s\S]*?\*\/|\/\/.*$/gm, '')
 		.replace(/\\\s*$/gm, '');
 
-	const defines = [
+	const define = [
 		...cleaned.matchAll(/#define\s+([A-Za-z_][A-Za-z0-9_]*)\s*\{/g),
-	];
-	if (defines.length > 1) {
-		const start = defines.findIndex((define) => define[1] === preferredDefine);
-		if (start === -1)
-			return {
-				elements: null,
-				error: `Multiple layout definitions found; paste a single layout or include one named ${preferredDefine}`,
-			};
-		cleaned = cleaned.slice(
-			defines[start].index,
-			start + 1 < defines.length ? defines[start + 1].index : undefined,
-		);
-	}
+	].find((match) => match[1] === defineName);
+	if (!define)
+		return {
+			elements: null,
+			error: `Missing #define ${defineName} {`,
+		};
+	cleaned = defineBody(cleaned.slice(define.index));
+	if (cleaned === null)
+		return {
+			elements: null,
+			error: `Layout ${defineName} is missing its closing }`,
+		};
 
-	const elementPattern =
-		/\{\s*([A-Za-z_][A-Za-z0-9_]*|\d+)\s*,\s*\{([^{}]*)\}\s*\}/g;
+	const rest = cleaned.replace(ELEMENT_PATTERN, (match) =>
+		' '.repeat(match.length),
+	);
+	const leftoverAt = rest.search(/[^\s,]/);
+	if (leftoverAt !== -1)
+		return {
+			elements: null,
+			error: `Could not read "${rest.slice(leftoverAt).trim().split('\n')[0].slice(0, 40)}", check for a missing comma or brace`,
+		};
+
 	const elements = [];
-	let match;
-	while ((match = elementPattern.exec(cleaned)) !== null) {
+	for (const match of cleaned.matchAll(ELEMENT_PATTERN)) {
+		const elementNumber = elements.length + 1;
 		if (elements.length >= MAX_CUSTOM_LAYOUT_ELEMENTS)
 			return {
 				elements: null,
@@ -143,18 +194,21 @@ export function parseLayoutCode(code, preferredDefine) {
 		} else {
 			return {
 				elements: null,
-				error: `Unsupported element type "${typeToken}" in element ${elements.length + 1}`,
+				error: `Unsupported element type "${typeToken}" in element ${elementNumber}`,
 			};
 		}
 
-		const tokens = paramsText
-			.split(',')
-			.map((token) => token.trim())
-			.filter((token) => token !== '');
+		const tokens = paramsText.split(',').map((token) => token.trim());
+		if (tokens.length > 1 && tokens[tokens.length - 1] === '') tokens.pop();
+		if (tokens.includes(''))
+			return {
+				elements: null,
+				error: `Element ${elementNumber} has an empty parameter`,
+			};
 		if (tokens.length < MIN_PARAMS || tokens.length > PARAM_COUNT)
 			return {
 				elements: null,
-				error: `Element ${elements.length + 1} has ${tokens.length} parameters (expected ${MIN_PARAMS} to ${PARAM_COUNT})`,
+				error: `Element ${elementNumber} has ${tokens.length} parameters (expected ${MIN_PARAMS} to ${PARAM_COUNT})`,
 			};
 
 		const params = [];
@@ -163,17 +217,53 @@ export function parseLayoutCode(code, preferredDefine) {
 			if (value === null || isNaN(value) || value < 0 || value > 0xffff)
 				return {
 					elements: null,
-					error: `Invalid parameter "${token}" in element ${elements.length + 1}`,
+					error: `Invalid parameter "${token}" in element ${elementNumber}`,
 				};
 			params.push(value);
 		}
 		while (params.length < PARAM_COUNT) params.push(0);
 
-		if (params[VALUE_PARAM_INDEX] > (MAX_VALUE[elementType] ?? 0xffff))
+		const tooHigh = params.findIndex(
+			(value, index) => value > PARAM_MAX[index],
+		);
+		if (tooHigh !== -1)
 			return {
 				elements: null,
-				error: `Value ${params[VALUE_PARAM_INDEX]} in element ${elements.length + 1} is too high (maximum is ${MAX_VALUE[elementType]})`,
+				error: `${PARAM_NAMES[tooHigh]} ${params[tooHigh]} in element ${elementNumber} is too high (maximum is ${PARAM_MAX[tooHigh]})`,
 			};
+
+		const maxValue =
+			elementType === ELEMENT_VALUES.GP_ELEMENT_PIN_BUTTON
+				? maxPin
+				: MAX_VALUE[elementType];
+		if (maxValue !== undefined && params[VALUE_PARAM_INDEX] > maxValue)
+			return {
+				elements: null,
+				error: `Value ${params[VALUE_PARAM_INDEX]} in element ${elementNumber} is too high (maximum is ${maxValue})`,
+			};
+
+		if (elementType !== ELEMENT_VALUES.GP_ELEMENT_LEVER) {
+			const shape = params[SHAPE_PARAM_INDEX];
+			if (
+				shape === SHAPE_VALUES.GP_SHAPE_POLYGON &&
+				(params[Y2_PARAM_INDEX] < 1 ||
+					params[Y2_PARAM_INDEX] > MAX_POLYGON_SIDES)
+			)
+				return {
+					elements: null,
+					error: `Polygon in element ${elementNumber} needs 1 to ${MAX_POLYGON_SIDES} sides (got ${params[Y2_PARAM_INDEX]})`,
+				};
+			if (
+				(shape === SHAPE_VALUES.GP_SHAPE_ARC ||
+					shape === SHAPE_VALUES.GP_SHAPE_POLYGON) &&
+				(params[X1_PARAM_INDEX] < params[X2_PARAM_INDEX] ||
+					params[Y1_PARAM_INDEX] < params[X2_PARAM_INDEX])
+			)
+				return {
+					elements: null,
+					error: `${shape === SHAPE_VALUES.GP_SHAPE_ARC ? 'Arc' : 'Polygon'} in element ${elementNumber} runs off the left or top of the screen (x1 and y1 must be at least the radius ${params[X2_PARAM_INDEX]})`,
+				};
+		}
 
 		elements.push([elementType, ...params]);
 	}
@@ -217,8 +307,8 @@ function generateLayoutCode(elements, defineName) {
 	return `#define ${defineName} {\\\n${lines.join('\n')}\n}`;
 }
 
-export function layoutCodeToBase64(code, defineName) {
-	const { elements, error } = parseLayoutCode(code, defineName);
+export function layoutCodeToBase64(code, defineName, maxPin) {
+	const { elements, error } = parseLayoutCode(code, defineName, maxPin);
 	return error === null ? elementsToBase64(elements) : null;
 }
 
@@ -229,11 +319,38 @@ export function base64ToLayoutCode(base64, defineName) {
 function elementsToBase64(elements) {
 	const bytes = new Uint8Array(elements.length * BYTES_PER_ELEMENT);
 	elements.forEach((values, elementIndex) => {
-		values.forEach((value, valueIndex) => {
-			const offset = elementIndex * BYTES_PER_ELEMENT + valueIndex * 2;
-			bytes[offset] = value & 0xff;
-			bytes[offset + 1] = (value >> 8) & 0xff;
-		});
+		const [
+			elementType,
+			x1,
+			y1,
+			x2,
+			y2,
+			stroke,
+			fill,
+			value,
+			shape,
+			angleStart,
+			angleEnd,
+			closed,
+		] = values;
+		const offset = elementIndex * BYTES_PER_ELEMENT;
+		bytes.set(
+			[
+				elementType,
+				x1,
+				y1,
+				x2,
+				y2,
+				stroke | (fill << 1) | (shape << 3) | (closed << 6),
+				value & 0xff,
+				value >> 8,
+				angleStart & 0xff,
+				angleStart >> 8,
+				angleEnd & 0xff,
+				angleEnd >> 8,
+			],
+			offset,
+		);
 	});
 	return btoa(String.fromCharCode(...bytes));
 }
@@ -249,14 +366,24 @@ function base64ToElements(base64) {
 	const elements = [];
 	const count = Math.floor(binary.length / BYTES_PER_ELEMENT);
 	for (let elementIndex = 0; elementIndex < count; elementIndex++) {
-		const values = [];
-		for (let valueIndex = 0; valueIndex < VALUES_PER_ELEMENT; valueIndex++) {
-			const offset = elementIndex * BYTES_PER_ELEMENT + valueIndex * 2;
-			values.push(
-				binary.charCodeAt(offset) | (binary.charCodeAt(offset + 1) << 8),
-			);
-		}
-		elements.push(values);
+		const offset = elementIndex * BYTES_PER_ELEMENT;
+		const byte = (index) => binary.charCodeAt(offset + index);
+		const word = (index) => byte(index) | (byte(index + 1) << 8);
+		const flags = byte(5);
+		elements.push([
+			byte(0),
+			byte(1),
+			byte(2),
+			byte(3),
+			byte(4),
+			flags & 0x01,
+			(flags >> 1) & 0x03,
+			word(6),
+			(flags >> 3) & 0x07,
+			word(8),
+			word(10),
+			(flags >> 6) & 0x01,
+		]);
 	}
 	return elements;
 }

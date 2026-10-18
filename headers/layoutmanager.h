@@ -33,7 +33,7 @@ typedef struct {
 
 #define LAYOUTMGR LayoutManager::getInstance()
 
-#define CUSTOM_LAYOUT_ELEMENT_BYTES 24
+#define CUSTOM_LAYOUT_ELEMENT_BYTES 12
 
 class LayoutManager {
     public:

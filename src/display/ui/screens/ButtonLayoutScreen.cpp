@@ -400,7 +400,7 @@ GPLever* ButtonLayoutScreen::addLever(uint16_t startX, uint16_t startY, uint16_t
     return (GPLever*)addElement(lever);
 }
 
-GPButton* ButtonLayoutScreen::addButton(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, int16_t inputMask) {
+GPButton* ButtonLayoutScreen::addButton(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, int32_t inputMask) {
     GPButton* button = new GPButton();
     button->setRenderer(getRenderer());
     button->setPosition(startX, startY);
@@ -568,7 +568,7 @@ uint32_t ButtonLayoutScreen::getCustomLayoutHash()
         }
     };
     addBytes(options.customLayoutA.bytes, options.customLayoutA.size);
-    hash = (hash ^ 0xFF) * 16777619u;
+    hash = (hash ^ options.customLayoutA.size) * 16777619u;
     addBytes(options.customLayoutB.bytes, options.customLayoutB.size);
     return hash;
 }

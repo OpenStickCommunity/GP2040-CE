@@ -95,6 +95,7 @@ const defaultValues = {
 };
 
 let buttonLayoutDefinitions = { buttonLayout: {}, buttonLayoutRight: {} };
+let customLayoutMaxPin;
 
 const buttonLayoutSchemaBase = yup.number().required();
 
@@ -117,7 +118,7 @@ const customLayoutSchema = (layoutField, { layout, defineName }) =>
 		is: (value) => Number(value) === layout,
 		then: (schema) =>
 			schema.test('layout-code', (code, context) => {
-				const { error } = parseLayoutCode(code, defineName);
+				const { error } = parseLayoutCode(code, defineName, customLayoutMaxPin);
 				return error === null || context.createError({ message: error });
 			}),
 	});
@@ -128,7 +129,11 @@ const toDisplayOptionsRequest = (values) => {
 		['customLayoutA', CUSTOM_LAYOUT_LEFT],
 		['customLayoutB', CUSTOM_LAYOUT_RIGHT],
 	].forEach(([field, { defineName }]) => {
-		const base64 = layoutCodeToBase64(values[field], defineName);
+		const base64 = layoutCodeToBase64(
+			values[field],
+			defineName,
+			customLayoutMaxPin,
+		);
 		if (base64 === null) delete request[field];
 		else request[field] = base64;
 	});
@@ -229,6 +234,15 @@ const FormContext = () => {
 	return null;
 };
 
+const CUSTOM_BASE_EXCLUDED_LEFT = [
+	ButtonLayout.BUTTON_LAYOUT_CUSTOMA,
+	ButtonLayout.BUTTON_LAYOUT_CUSTOM_DEFINED_A,
+];
+const CUSTOM_BASE_EXCLUDED_RIGHT = [
+	ButtonLayoutRight.BUTTON_LAYOUT_CUSTOMB,
+	ButtonLayoutRight.BUTTON_LAYOUT_CUSTOM_DEFINED_B,
+];
+
 const isButtonLayoutCustom = (values) =>
 	values.buttonLayout === 12 || values.buttonLayoutRight === 16;
 
@@ -245,7 +259,7 @@ const CustomLayoutCodeEditor = ({
 	onChange,
 }) => {
 	const { t } = useTranslation('');
-	const { elements } = parseLayoutCode(value, defineName);
+	const { elements } = parseLayoutCode(value, defineName, customLayoutMaxPin);
 	const elementCount = elements?.length ?? 0;
 
 	return (
@@ -287,7 +301,9 @@ export default function DisplayConfigPage() {
 		updateUsedPins,
 		getAvailablePeripherals,
 		updatePeripherals,
+		boardDefinition,
 	} = useContext(AppContext);
+	customLayoutMaxPin = boardDefinition.maxPin;
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
 	const currentButtonLabels = getButtonLabels(
 		buttonLabelType,
@@ -310,6 +326,10 @@ export default function DisplayConfigPage() {
 			buttonLayoutRightSchema = buttonLayoutRightSchema.oneOf(
 				Object.values(buttonLayoutDefinitions.buttonLayoutRight),
 			);
+			const { params, paramsRight } = data.buttonLayoutCustomOptions;
+			if (CUSTOM_BASE_EXCLUDED_LEFT.includes(params.layout)) params.layout = 0;
+			if (CUSTOM_BASE_EXCLUDED_RIGHT.includes(paramsRight.layout))
+				paramsRight.layout = 0;
 			data.customLayoutA = base64ToLayoutCode(
 				data.customLayoutA,
 				CUSTOM_LAYOUT_LEFT.defineName,
@@ -329,7 +349,7 @@ export default function DisplayConfigPage() {
 		const success = await WebApi.setDisplayOptions(
 			toDisplayOptionsRequest(values),
 			false,
-		).then(() => WebApi.setSplashImage(values));
+		).then((saved) => saved && WebApi.setSplashImage(values));
 
 		if (success) await updateUsedPins();
 
@@ -584,20 +604,25 @@ export default function DisplayConfigPage() {
 															}
 															onChange={handleChange}
 														>
-															{Object.keys(
-																buttonLayoutDefinitions.buttonLayout,
-															).map((o, i) => (
-																<option
-																	key={`buttonLayout-option-${i}`}
-																	value={
-																		buttonLayoutDefinitions.buttonLayout[o]
-																	}
-																>
-																	{t(`LayoutConfig:layouts.left.${o}`, {
-																		defaultValue: o,
-																	})}
-																</option>
-															))}
+															{Object.keys(buttonLayoutDefinitions.buttonLayout)
+																.filter(
+																	(o) =>
+																		!CUSTOM_BASE_EXCLUDED_LEFT.includes(
+																			buttonLayoutDefinitions.buttonLayout[o],
+																		),
+																)
+																.map((o, i) => (
+																	<option
+																		key={`buttonLayout-option-${i}`}
+																		value={
+																			buttonLayoutDefinitions.buttonLayout[o]
+																		}
+																	>
+																		{t(`LayoutConfig:layouts.left.${o}`, {
+																			defaultValue: o,
+																		})}
+																	</option>
+																))}
 														</FormSelect>
 													</Form.Group>
 													<Form.Group as={Row}>
@@ -684,18 +709,29 @@ export default function DisplayConfigPage() {
 														>
 															{Object.keys(
 																buttonLayoutDefinitions.buttonLayoutRight,
-															).map((o, i) => (
-																<option
-																	key={`buttonLayoutRight-option-${i}`}
-																	value={
-																		buttonLayoutDefinitions.buttonLayoutRight[o]
-																	}
-																>
-																	{t(`LayoutConfig:layouts.right.${o}`, {
-																		defaultValue: o,
-																	})}
-																</option>
-															))}
+															)
+																.filter(
+																	(o) =>
+																		!CUSTOM_BASE_EXCLUDED_RIGHT.includes(
+																			buttonLayoutDefinitions.buttonLayoutRight[
+																				o
+																			],
+																		),
+																)
+																.map((o, i) => (
+																	<option
+																		key={`buttonLayoutRight-option-${i}`}
+																		value={
+																			buttonLayoutDefinitions.buttonLayoutRight[
+																				o
+																			]
+																		}
+																	>
+																		{t(`LayoutConfig:layouts.right.${o}`, {
+																			defaultValue: o,
+																		})}
+																	</option>
+																))}
 														</FormSelect>
 													</Form.Group>
 													<Form.Group as={Row}>

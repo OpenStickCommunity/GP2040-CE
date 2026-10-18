@@ -428,15 +428,21 @@ std::string getUsedPins()
     return serialize_json(doc);
 }
 
-static void __attribute__((noinline)) readCustomLayout(bool& hasLayout, pb_byte_t* bytes, pb_size_t& size, size_t maxSize, const DynamicJsonDocument& doc, const char* key)
+static bool __attribute__((noinline)) decodeCustomLayout(const DynamicJsonDocument& doc, const char* key, size_t maxSize, std::string& decoded)
 {
     if (!doc.containsKey(key))
-        return;
-    std::string decoded;
+        return true;
+    if (!doc[key].is<const char*>())
+        return false;
     std::string base64String = doc[key];
     if (!Base64::Decode(base64String, decoded))
-        return;
-    if (decoded.length() > maxSize || (decoded.length() % CUSTOM_LAYOUT_ELEMENT_BYTES) != 0)
+        return false;
+    return decoded.length() <= maxSize && (decoded.length() % CUSTOM_LAYOUT_ELEMENT_BYTES) == 0;
+}
+
+static void __attribute__((noinline)) applyCustomLayout(bool& hasLayout, pb_byte_t* bytes, pb_size_t& size, const DynamicJsonDocument& doc, const char* key, const std::string& decoded)
+{
+    if (!doc.containsKey(key))
         return;
     memcpy(bytes, decoded.data(), decoded.length());
     size = decoded.length();
@@ -451,6 +457,11 @@ static void __attribute__((noinline)) writeCustomLayout(const pb_byte_t* bytes, 
 std::string setDisplayOptions(DisplayOptions& displayOptions)
 {
     DynamicJsonDocument doc = get_post_data();
+    std::string customLayoutA;
+    std::string customLayoutB;
+    if (!decodeCustomLayout(doc, "customLayoutA", sizeof(displayOptions.customLayoutA.bytes), customLayoutA) ||
+        !decodeCustomLayout(doc, "customLayoutB", sizeof(displayOptions.customLayoutB.bytes), customLayoutB))
+        return "{\"success\":false,\"error\":\"Invalid custom layout\"}";
     readDoc(displayOptions.enabled, doc, "enabled");
     readDoc(displayOptions.flip, doc, "flipDisplay");
     readDoc(displayOptions.invert, doc, "invertDisplay");
@@ -487,8 +498,8 @@ std::string setDisplayOptions(DisplayOptions& displayOptions)
     readDoc(displayOptions.buttonLayoutCustomOptions.paramsRight.common.buttonRadius, doc, "buttonLayoutCustomOptions", "paramsRight", "buttonRadius");
     readDoc(displayOptions.buttonLayoutCustomOptions.paramsRight.common.buttonPadding, doc, "buttonLayoutCustomOptions", "paramsRight", "buttonPadding");
 
-    readCustomLayout(displayOptions.has_customLayoutA, displayOptions.customLayoutA.bytes, displayOptions.customLayoutA.size, sizeof(displayOptions.customLayoutA.bytes), doc, "customLayoutA");
-    readCustomLayout(displayOptions.has_customLayoutB, displayOptions.customLayoutB.bytes, displayOptions.customLayoutB.size, sizeof(displayOptions.customLayoutB.bytes), doc, "customLayoutB");
+    applyCustomLayout(displayOptions.has_customLayoutA, displayOptions.customLayoutA.bytes, displayOptions.customLayoutA.size, doc, "customLayoutA", customLayoutA);
+    applyCustomLayout(displayOptions.has_customLayoutB, displayOptions.customLayoutB.bytes, displayOptions.customLayoutB.size, doc, "customLayoutB", customLayoutB);
 
     return serialize_json(doc);
 }
@@ -496,7 +507,8 @@ std::string setDisplayOptions(DisplayOptions& displayOptions)
 std::string setDisplayOptions()
 {
     std::string response = setDisplayOptions(Storage::getInstance().getDisplayOptions());
-    EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
+    if (response.rfind("{\"success\":false", 0) != 0)
+        EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
     return response;
 }
 
@@ -919,12 +931,12 @@ std::string getButtonLayoutDefs()
 
     for (layoutCtr = _ButtonLayout_MIN; layoutCtr < _ButtonLayout_ARRAYSIZE; layoutCtr++) {
         LayoutManager::LayoutList leftLayout = LayoutManager::getInstance().getLeftLayout((ButtonLayout)layoutCtr);
-        if ((leftLayout.size() > 0) || (layoutCtr == ButtonLayout::BUTTON_LAYOUT_BLANKA) || (layoutCtr == ButtonLayout::BUTTON_LAYOUT_CUSTOM_DEFINED_A)) writeDoc(doc, "buttonLayout", LayoutManager::getInstance().getButtonLayoutName((ButtonLayout)layoutCtr), layoutCtr);
+        if ((leftLayout.size() > 0) || (layoutCtr == ButtonLayout::BUTTON_LAYOUT_BLANKA) || (layoutCtr == ButtonLayout::BUTTON_LAYOUT_CUSTOMA) || (layoutCtr == ButtonLayout::BUTTON_LAYOUT_CUSTOM_DEFINED_A)) writeDoc(doc, "buttonLayout", LayoutManager::getInstance().getButtonLayoutName((ButtonLayout)layoutCtr), layoutCtr);
     }
 
     for (layoutCtr = _ButtonLayoutRight_MIN; layoutCtr < _ButtonLayoutRight_ARRAYSIZE; layoutCtr++) {
         LayoutManager::LayoutList rightLayout = LayoutManager::getInstance().getRightLayout((ButtonLayoutRight)layoutCtr);
-        if ((rightLayout.size() > 0) || (layoutCtr == ButtonLayoutRight::BUTTON_LAYOUT_BLANKB) || (layoutCtr == ButtonLayoutRight::BUTTON_LAYOUT_CUSTOM_DEFINED_B)) writeDoc(doc, "buttonLayoutRight", LayoutManager::getInstance().getButtonLayoutRightName((ButtonLayoutRight)layoutCtr), layoutCtr);
+        if ((rightLayout.size() > 0) || (layoutCtr == ButtonLayoutRight::BUTTON_LAYOUT_BLANKB) || (layoutCtr == ButtonLayoutRight::BUTTON_LAYOUT_CUSTOMB) || (layoutCtr == ButtonLayoutRight::BUTTON_LAYOUT_CUSTOM_DEFINED_B)) writeDoc(doc, "buttonLayoutRight", LayoutManager::getInstance().getButtonLayoutRightName((ButtonLayoutRight)layoutCtr), layoutCtr);
     }
 
     return serialize_json(doc);
@@ -932,17 +944,18 @@ std::string getButtonLayoutDefs()
 
 std::string getButtonLayouts()
 {
-    const size_t capacity = JSON_OBJECT_SIZE(500);
-    DynamicJsonDocument doc(capacity);
     const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
     uint16_t elementCtr = 0;
 
     LayoutManager::LayoutList layoutA = LayoutManager::getInstance().getLayoutA();
     LayoutManager::LayoutList layoutB = LayoutManager::getInstance().getLayoutB();
 
+    const size_t capacity = JSON_OBJECT_SIZE(10) + (layoutA.size() + layoutB.size()) * (JSON_OBJECT_SIZE(14) + 8);
+    DynamicJsonDocument doc(capacity);
+
     writeDoc(doc, "displayLayouts", "buttonLayoutId", displayOptions.buttonLayout);
     for (elementCtr = 0; elementCtr < layoutA.size(); elementCtr++) {
-        const size_t elementSize = JSON_OBJECT_SIZE(12);
+        const size_t elementSize = JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(11);
         DynamicJsonDocument ele(elementSize);
 
         writeDoc(ele, "elementType", layoutA[elementCtr].elementType);
@@ -962,7 +975,7 @@ std::string getButtonLayouts()
 
     writeDoc(doc, "displayLayouts", "buttonLayoutRightId", displayOptions.buttonLayoutRight);
     for (elementCtr = 0; elementCtr < layoutB.size(); elementCtr++) {
-        const size_t elementSize = JSON_OBJECT_SIZE(12);
+        const size_t elementSize = JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(11);
         DynamicJsonDocument ele(elementSize);
 
         writeDoc(ele, "elementType", layoutB[elementCtr].elementType);
