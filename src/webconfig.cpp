@@ -36,6 +36,7 @@
 #include "lwip/apps/httpd.h"
 #include "lwip/def.h"
 #include "lwip/mem.h"
+#include "lwip/priv/tcp_priv.h"
 #include "addons/input_macro.h"
 
 #define PATH_CGI_ACTION "/cgi/action"
@@ -237,6 +238,44 @@ struct DataAndStatusCode
 };
 
 // **** WEB SERVER Overrides and Special Functionality ****
+// lwIP sends replies zero-copy: keep closed ones until no segment points into them.
+static std::vector<std::string*> retiredReplies;
+
+static bool pbufReferences(const struct pbuf* p, const char* lo, const char* hi)
+{
+    for (; p != NULL; p = p->next) {
+        const char* payload = static_cast<const char*>(p->payload);
+        if (payload < hi && payload + p->len > lo) return true;
+    }
+    return false;
+}
+
+static bool tcpReferences(const std::string* reply)
+{
+    const char* lo = reply->data();
+    const char* hi = lo + reply->size();
+    for (const struct tcp_pcb* pcb = tcp_active_pcbs; pcb != NULL; pcb = pcb->next) {
+        for (const struct tcp_seg* seg = pcb->unsent; seg != NULL; seg = seg->next)
+            if (pbufReferences(seg->p, lo, hi)) return true;
+        for (const struct tcp_seg* seg = pcb->unacked; seg != NULL; seg = seg->next)
+            if (pbufReferences(seg->p, lo, hi)) return true;
+    }
+    return false;
+}
+
+static void freeRetiredReplies()
+{
+    for (size_t i = 0; i < retiredReplies.size();) {
+        if (tcpReferences(retiredReplies[i])) {
+            ++i;
+        } else {
+            delete retiredReplies[i];
+            retiredReplies[i] = retiredReplies.back();
+            retiredReplies.pop_back();
+        }
+    }
+}
+
 int set_file_data(fs_file* file, const DataAndStatusCode& dataAndStatusCode)
 {
     std::string* returnData = new std::string();
@@ -3297,6 +3336,8 @@ static const std::pair<const char*, HandlerFuncStatusCodePtr> handlerFuncsWithSt
 
 int fs_open_custom(struct fs_file *file, const char *name)
 {
+    freeRetiredReplies();
+
     for (const auto& handlerFunc : handlerFuncs)
     {
         if (strcmp(handlerFunc.first, name) == 0)
@@ -3338,7 +3379,14 @@ void fs_close_custom(struct fs_file *file)
 {
     if (file && file->is_custom_file && file->pextension)
     {
-        delete static_cast<std::string*>(file->pextension);
+        // lwIP may still be sending from it: free it once it has been acknowledged.
+        retiredReplies.push_back(static_cast<std::string*>(file->pextension));
         file->pextension = NULL;
+        freeRetiredReplies();
     }
+}
+
+void fs_release_custom(void)
+{
+    if (!retiredReplies.empty()) freeRetiredReplies();
 }

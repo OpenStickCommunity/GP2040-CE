@@ -2,6 +2,7 @@
 #include "drivers/shared/driverhelper.h"
 #include "class/net/net_device.h"
 #include "rndis.h"
+#include "fscustom.h"
 
 // Bulk endpoint size for the RNDIS/ECM/NCM data interface (full speed).
 // TinyUSB 0.21 removed CFG_TUD_NET_ENDPOINT_SIZE.
@@ -63,6 +64,7 @@ void NetDriver::initialize() {
 // Run RNDIS task from web config
 bool NetDriver::process(Gamepad * gamepad) {
     rndis_task();
+    fs_release_custom();
     return false;
 }
 
