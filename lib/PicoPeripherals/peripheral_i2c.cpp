@@ -132,11 +132,12 @@ void PeripheralI2C::clear() {
 std::map<uint8_t,bool> PeripheralI2C::scan() {
     std::map<uint8_t,bool> result;
 
-    for (uint8_t addr = 0; addr < (1 << 7); ++addr) {
+    // Skip reserved addresses and bound each probe, so a stuck device cannot hang the core.
+    for (uint8_t addr = 0x08; addr < 0x78; ++addr) {
         int8_t ret;
         uint8_t rxdata;
         lock();
-        ret = i2c_read_blocking(_I2C, addr, &rxdata, 1, false);
+        ret = i2c_read_blocking_until(_I2C, addr, &rxdata, 1, false, make_timeout_time_ms(5));
         mutex_exit(&_mutex);
 
         if (ret >= 0) {
