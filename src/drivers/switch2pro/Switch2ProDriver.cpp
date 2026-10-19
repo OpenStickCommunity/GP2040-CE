@@ -44,7 +44,7 @@ static uint8_t cmdRequest[CMD_BUFFER_LEN];
 static uint8_t cmdReply[CMD_REPLY_MAX];
 static uint16_t cmdReplyLen;
 static bool cmdReplyPending;
-static bool reportsEnabled;
+static bool reportsEnabled = true;
 static uint8_t playerLedMask;
 static uint8_t btLongTermKey[16];
 static uint8_t hostAddress[6];
@@ -67,7 +67,7 @@ static uint16_t stringDescriptor[64];
 static void resetProtocolState() {
     cmdReplyLen = 0;
     cmdReplyPending = false;
-    reportsEnabled = false;
+    reportsEnabled = true;
     playerLedMask = 0;
 }
 
@@ -545,9 +545,29 @@ bool Switch2ProDriver::process(Gamepad * gamepad) {
     processedGamepad->auxState.playerID.active = reportsEnabled;
     processedGamepad->auxState.playerID.ledValue = playerLedMask;
     processedGamepad->auxState.playerID.value = playerLedMask;
+    const uint32_t now = to_ms_since_boot(get_absolute_time());
 
-    if (tud_suspended())
-        tud_remote_wakeup();
+    static bool previousWakeInput = false;
+    static bool lastWakeupValid = false;
+    static uint32_t lastWakeupMs = 0;
+
+    const bool currentWakeInput =
+        gamepad->state.buttons != 0 ||
+        gamepad->state.dpad != 0 ||
+        (gamepad->hasAnalogTriggers &&
+         (gamepad->state.lt >= 128 || gamepad->state.rt >= 128));
+    const bool wakeEdge = currentWakeInput && !previousWakeInput;
+    previousWakeInput = currentWakeInput;
+
+    if (tud_suspended()) {
+        if (wakeEdge &&
+            (!lastWakeupValid || (uint32_t)(now - lastWakeupMs) >= 2000) &&
+            tud_remote_wakeup()) {
+            lastWakeupMs = now;
+            lastWakeupValid = true;
+        }
+        return false;
+    }
 
     if (!reportsEnabled)
         return false;
@@ -624,7 +644,6 @@ bool Switch2ProDriver::process(Gamepad * gamepad) {
         else
             packStick(&inputReport[5], y, GAMEPAD_JOYSTICK_MAX - x);
     }
-    const uint32_t now = to_ms_since_boot(get_absolute_time());
     const bool changed = memcmp(&inputReport[2], &lastSentState[0], sizeof(lastSentState)) != 0;
     if (!changed && (now - lastSentMs) < SWITCH2_PRO_KEEPALIVE_MS)
         return false;
