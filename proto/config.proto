@@ -52,6 +52,17 @@ message GamepadOptions
     optional uint32 usbVendorID = 31;
     optional uint32 miniMenuGamepadInput = 32;
     optional InputModeDeviceType inputDeviceType = 33;
+    optional SwitchProControllerType switchProControllerType = 40;
+    optional SwitchProColorPreset switchProColorPreset = 41;
+    optional uint32 switchProBodyColor = 42;
+    optional uint32 switchProButtonsColor = 43;
+    optional uint32 switchProLeftGripColor = 44;
+    optional uint32 switchProRightGripColor = 45;
+    optional SwitchProJoyConColorPreset switchProJoyConColorPreset = 46;
+    optional uint32 switchProJoyConLeftBodyColor = 47;
+    optional uint32 switchProJoyConLeftButtonsColor = 48;
+    optional uint32 switchProJoyConRightBodyColor = 49;
+    optional uint32 switchProJoyConRightButtonsColor = 50;
     optional Switch2ProColorPreset switch2ProColorPreset = 34;
     optional uint32 switch2ProBodyColor = 35;
     optional uint32 switch2ProButtonsColor = 36;
@@ -232,6 +243,9 @@ message GpioMappings
     repeated GpioMappingInfo pins = 1 [(nanopb).max_count = 48];
     optional string profileLabel = 2 [(nanopb).max_length = 16];
     optional bool enabled = 3 [default = false];
+    optional KeyboardMapping keyboardMapping = 4;
+    optional bool pinInversionEnabled = 5;
+    repeated uint32 invertedPins = 6 [(nanopb).max_count = 48];
 }
 
 

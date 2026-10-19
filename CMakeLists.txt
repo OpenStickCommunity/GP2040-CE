@@ -197,6 +197,8 @@ src/gamepad.cpp
 src/gamepad/GamepadState.cpp
 src/addonmanager.cpp
 src/playerleds.cpp
+src/drivers/shared/USBReportScheduler.cpp
+src/drivers/shared/InputReportPolicy.cpp
 src/drivers/shared/xinput_host.cpp
 src/drivers/shared/xgip_protocol.cpp
 src/drivers/shared/xsm3/excrypt_des.c
@@ -236,6 +238,7 @@ src/drivers/xboxog/XboxOriginalDriver.cpp
 src/drivers/xinput/XInputAuth.cpp
 src/drivers/xinput/XInputAuthUSBListener.cpp
 src/drivers/xinput/XInputDriver.cpp
+src/drivers/xinput/XInputReportPolicy.cpp
 src/interfaces/i2c/i2cdevicebase.cpp
 src/interfaces/i2c/pcf8575/pcf8575.cpp
 src/interfaces/i2c/ssd1306/tiny_ssd1306.cpp
@@ -382,6 +385,10 @@ target_compile_definitions(${PROJECT_NAME} PUBLIC
   BOARD_CONFIG_FILE_NAME="$<TARGET_FILE_BASE_NAME:${PROJECT_NAME}>"
   GP2040_BOARDCONFIG="${GP2040_BOARDCONFIG}"
 )
+
+if(PICO_RP2040)
+  target_compile_definitions(${PROJECT_NAME} PUBLIC PICO_FLOAT_IN_RAM=1)
+endif()
 
 target_include_directories(${PROJECT_NAME}  PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}

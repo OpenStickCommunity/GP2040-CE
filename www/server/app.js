@@ -276,7 +276,12 @@ const BoardLights = [
 
 // Structure pin mappings to include masks and profile label
 const createPinMappings = ({ profileLabel = 'Profile', enabled = true }) => {
-	let pinMappings = { profileLabel, enabled };
+	let pinMappings = {
+		profileLabel,
+		enabled,
+		pinInversionEnabled: false,
+		invertedPins: [],
+	};
 
 	for (const [key, value] of Object.entries(picoController.usedPins)) {
 		pinMappings[key] = {
@@ -455,6 +460,17 @@ app.get('/api/getGamepadOptions', (req, res) => {
 		ps5AuthType: 0,
 		xinputAuthType: 0,
 		ps4ControllerIDMode: 0,
+		switchProControllerType: 0,
+		switchProColorPreset: 0,
+		switchProBodyColor: 0x333333,
+		switchProButtonsColor: 0xffffff,
+		switchProLeftGripColor: 0xec008c,
+		switchProRightGripColor: 0x00ff00,
+		switchProJoyConColorPreset: 0,
+		switchProJoyConLeftBodyColor: 0x0ab9e6,
+		switchProJoyConLeftButtonsColor: 0x0f0f0f,
+		switchProJoyConRightBodyColor: 0xff3c28,
+		switchProJoyConRightButtonsColor: 0x0f0f0f,
 		switch2ProIdentity: 0,
 		switch2ProColorPreset: 0,
 		switch2ProBodyColor: 0x232323,
@@ -581,6 +597,15 @@ app.get('/api/getPinMappings', (req, res) => {
 
 app.get('/api/getKeyMappings', (req, res) =>
 	res.send(mapValues(DEFAULT_KEYBOARD_MAPPING)),
+);
+
+app.get('/api/getProfileKeyMappings', (req, res) =>
+	res.send({
+		profiles: [
+			mapValues(DEFAULT_KEYBOARD_MAPPING),
+			mapValues(DEFAULT_KEYBOARD_MAPPING),
+		],
+	}),
 );
 
 app.get('/api/getPeripheralOptions', (req, res) => {

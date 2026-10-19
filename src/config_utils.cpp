@@ -149,6 +149,39 @@
     #define DEFAULT_PS4_ID_MODE PS4_ID_CONSOLE
 #endif
 
+#ifndef DEFAULT_SWITCH_PRO_CONTROLLER_TYPE
+    #define DEFAULT_SWITCH_PRO_CONTROLLER_TYPE SWITCH_PRO_CONTROLLER_TYPE_PRO
+#endif
+#ifndef DEFAULT_SWITCH_PRO_COLOR_PRESET
+    #define DEFAULT_SWITCH_PRO_COLOR_PRESET SWITCH_PRO_COLOR_STOCK
+#endif
+#ifndef DEFAULT_SWITCH_PRO_BODY_COLOR
+    #define DEFAULT_SWITCH_PRO_BODY_COLOR 0x333333
+#endif
+#ifndef DEFAULT_SWITCH_PRO_BUTTONS_COLOR
+    #define DEFAULT_SWITCH_PRO_BUTTONS_COLOR 0xFFFFFF
+#endif
+#ifndef DEFAULT_SWITCH_PRO_LEFT_GRIP_COLOR
+    #define DEFAULT_SWITCH_PRO_LEFT_GRIP_COLOR 0xEC008C
+#endif
+#ifndef DEFAULT_SWITCH_PRO_RIGHT_GRIP_COLOR
+    #define DEFAULT_SWITCH_PRO_RIGHT_GRIP_COLOR 0x00FF00
+#endif
+#ifndef DEFAULT_SWITCH_PRO_JOYCON_COLOR_PRESET
+    #define DEFAULT_SWITCH_PRO_JOYCON_COLOR_PRESET SWITCH_PRO_JOYCON_COLOR_GREY
+#endif
+#ifndef DEFAULT_SWITCH_PRO_JOYCON_LEFT_BODY_COLOR
+    #define DEFAULT_SWITCH_PRO_JOYCON_LEFT_BODY_COLOR 0x0AB9E6
+#endif
+#ifndef DEFAULT_SWITCH_PRO_JOYCON_LEFT_BUTTONS_COLOR
+    #define DEFAULT_SWITCH_PRO_JOYCON_LEFT_BUTTONS_COLOR 0x0F0F0F
+#endif
+#ifndef DEFAULT_SWITCH_PRO_JOYCON_RIGHT_BODY_COLOR
+    #define DEFAULT_SWITCH_PRO_JOYCON_RIGHT_BODY_COLOR 0xFF3C28
+#endif
+#ifndef DEFAULT_SWITCH_PRO_JOYCON_RIGHT_BUTTONS_COLOR
+    #define DEFAULT_SWITCH_PRO_JOYCON_RIGHT_BUTTONS_COLOR 0x0F0F0F
+#endif
 #ifndef DEFAULT_SWITCH2_PRO_IDENTITY
     #define DEFAULT_SWITCH2_PRO_IDENTITY SWITCH2_PRO_IDENTITY_PRO
 #endif
@@ -225,6 +258,10 @@
 
 #ifndef MINI_MENU_GAMEPAD_INPUT
    #define MINI_MENU_GAMEPAD_INPUT 0
+#endif
+
+#ifndef GPIO_INVERTED_PIN_MASK
+    #define GPIO_INVERTED_PIN_MASK 0
 #endif
 
 #ifndef GPIO_PIN_00
@@ -415,6 +452,17 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.gamepadOptions, ps5AuthType, DEFAULT_PS5AUTHENTICATION_TYPE);
     INIT_UNSET_PROPERTY(config.gamepadOptions, xinputAuthType, DEFAULT_XINPUTAUTHENTICATION_TYPE);
     INIT_UNSET_PROPERTY(config.gamepadOptions, ps4ControllerIDMode, DEFAULT_PS4_ID_MODE);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switchProControllerType, DEFAULT_SWITCH_PRO_CONTROLLER_TYPE);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switchProColorPreset, DEFAULT_SWITCH_PRO_COLOR_PRESET);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switchProBodyColor, DEFAULT_SWITCH_PRO_BODY_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switchProButtonsColor, DEFAULT_SWITCH_PRO_BUTTONS_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switchProLeftGripColor, DEFAULT_SWITCH_PRO_LEFT_GRIP_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switchProRightGripColor, DEFAULT_SWITCH_PRO_RIGHT_GRIP_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switchProJoyConColorPreset, DEFAULT_SWITCH_PRO_JOYCON_COLOR_PRESET);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switchProJoyConLeftBodyColor, DEFAULT_SWITCH_PRO_JOYCON_LEFT_BODY_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switchProJoyConLeftButtonsColor, DEFAULT_SWITCH_PRO_JOYCON_LEFT_BUTTONS_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switchProJoyConRightBodyColor, DEFAULT_SWITCH_PRO_JOYCON_RIGHT_BODY_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switchProJoyConRightButtonsColor, DEFAULT_SWITCH_PRO_JOYCON_RIGHT_BUTTONS_COLOR);
     INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProIdentity, DEFAULT_SWITCH2_PRO_IDENTITY);
     INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProColorPreset, DEFAULT_SWITCH2_PRO_COLOR_PRESET);
     INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProBodyColor, DEFAULT_SWITCH2_PRO_BODY_COLOR);
@@ -528,6 +576,28 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.keyboardMapping, keyButtonR3, KEY_BUTTON_R3);
     INIT_UNSET_PROPERTY(config.keyboardMapping, keyButtonA1, KEY_BUTTON_A1);
     INIT_UNSET_PROPERTY(config.keyboardMapping, keyButtonA2, KEY_BUTTON_A2);
+
+    const auto initPinInversion = [](GpioMappings& mappings) {
+        if (mappings.has_pinInversionEnabled)
+            return;
+        const uint64_t invertedPinMask = GPIO_INVERTED_PIN_MASK;
+        mappings.pinInversionEnabled = invertedPinMask != 0;
+        mappings.has_pinInversionEnabled = true;
+        mappings.invertedPins_count = 0;
+        for (uint32_t pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
+            if (invertedPinMask & (uint64_t{1} << pin))
+                mappings.invertedPins[mappings.invertedPins_count++] = pin;
+        }
+    };
+    initPinInversion(config.gpioMappings);
+
+    for (GpioMappings& profile : config.profileOptions.gpioMappingsSets) {
+        if (!profile.has_keyboardMapping) {
+            profile.keyboardMapping = config.keyboardMapping;
+            profile.has_keyboardMapping = true;
+        }
+        initPinInversion(profile);
+    }
 
     // displayOptions
     INIT_UNSET_PROPERTY(config.displayOptions, enabled, !!HAS_I2C_DISPLAY);
