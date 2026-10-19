@@ -39,16 +39,14 @@ export default {
 		'button-layout-custom-button-radius-label': 'Button Radius',
 		'button-layout-custom-button-padding-label': 'Button Padding',
 		'custom-layout-description':
-			'Paste button layout code below to define your own display layouts without compiling custom firmware. Each side holds up to 24 elements, 48 elements total.',
-		'custom-layout-format':
-			'The code format is the same as board configurations and the layout builder, linked here:',
-		'custom-layout-link-text': 'GP2040-CE Layout Viewer',
+			'Enter your custom layout as a JSON array of elements. Check the documentation for the correct format and examples.',
 		'custom-layout-preview-tip':
-			'Tip: while in web config, press {{button}} on your controller to switch the display to a live preview of your button layout, and press it again to go back. The preview updates as you type, so you can build your layout in real time.',
+			'Toggle live preview by pressing {{button}} on your controller.',
 		'custom-layout-left-label': 'Custom Layout Code (Left)',
 		'custom-layout-right-label': 'Custom Layout Code (Right)',
 		'custom-layout-element-count': '{{count}} element(s) parsed',
 		'custom-layout-empty': 'No custom layout set',
+		'custom-layout-format-button': 'Format',
 		'splash-mode-label': 'Splash Mode',
 		'splash-duration-label': 'Splash Duration (seconds, 0 for Always On)',
 		'display-saver-timeout-label': 'Display Saver Timeout (minutes, 0 for Off)',
