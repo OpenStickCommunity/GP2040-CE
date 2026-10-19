@@ -30,7 +30,6 @@ export default {
 			BUTTON_LAYOUT_GITADORA_FRET_A: 'Gitadora Fret',
 			BUTTON_LAYOUT_GITADORA_STRUM_A: 'Gitadora Strum',
 			BUTTON_LAYOUT_BOARD_DEFINED_A: 'Board Defined',
-			BUTTON_LAYOUT_CUSTOMA: 'Custom',
 			BUTTON_LAYOUT_BANDHERO_FRET_A: 'GH/RB Fret',
 			BUTTON_LAYOUT_BANDHERO_STRUM_A: 'GH/RB Strum',
 			BUTTON_LAYOUT_6GAWD_A: '6GAWD Left',
@@ -44,7 +43,7 @@ export default {
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT5_A: 'Board Defined Alternate 5',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT6_A: 'Board Defined Alternate 6',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT7_A: 'Board Defined Alternate 7',
-			BUTTON_LAYOUT_CUSTOM_DEFINED_A: 'Custom Defined',
+			BUTTON_LAYOUT_CUSTOM_DEFINED_A: 'Custom',
 		},
 		right: {
 			BUTTON_LAYOUT_ARCADE: 'Arcade',
@@ -82,7 +81,6 @@ export default {
 			BUTTON_LAYOUT_GITADORA_FRET_B: 'Gitadora Fret',
 			BUTTON_LAYOUT_GITADORA_STRUM_B: 'Gitadora Strum',
 			BUTTON_LAYOUT_BOARD_DEFINED_B: 'Board Defined',
-			BUTTON_LAYOUT_CUSTOMB: 'Custom',
 			BUTTON_LAYOUT_BANDHERO_FRET_B: 'GH/RB Fret',
 			BUTTON_LAYOUT_BANDHERO_STRUM_B: 'GH/RB Strum',
 			BUTTON_LAYOUT_6GAWD_B: '6GAWD Right',
@@ -96,7 +94,7 @@ export default {
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT5_B: 'Board Defined Alternate 5',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT6_B: 'Board Defined Alternate 6',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT7_B: 'Board Defined Alternate 7',
-			BUTTON_LAYOUT_CUSTOM_DEFINED_B: 'Custom Defined',
+			BUTTON_LAYOUT_CUSTOM_DEFINED_B: 'Custom',
 		},
 	},
 };

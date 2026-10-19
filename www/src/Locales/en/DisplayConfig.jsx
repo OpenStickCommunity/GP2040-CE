@@ -31,13 +31,6 @@ export default {
 		'button-layout-label': 'Button Layout (Left)',
 		'button-layout-right-label': 'Button Layout (Right)',
 		'button-layout-orientation': 'Button Layout Orientation',
-		'button-layout-custom-header': 'Custom Button Layout Params',
-		'button-layout-custom-left-label': 'Layout Left',
-		'button-layout-custom-right-label': 'Layout Right',
-		'button-layout-custom-start-x-label': 'Start X',
-		'button-layout-custom-start-y-label': 'Start Y',
-		'button-layout-custom-button-radius-label': 'Button Radius',
-		'button-layout-custom-button-padding-label': 'Button Padding',
 		'custom-layout-description':
 			'Enter your custom layout as a JSON array of elements. Check the documentation for the correct format and examples.',
 		'custom-layout-preview-tip':

@@ -61,22 +61,6 @@ const defaultValues = {
 	splashDuration: 0,
 	splashMode: 3,
 	splashImage: Array(16 * 64).fill(0), // 128 columns represented by bytes so 16 and 64 rows
-	buttonLayoutCustomOptions: {
-		params: {
-			layout: 0,
-			startX: 8,
-			startY: 28,
-			buttonRadius: 8,
-			buttonPadding: 2,
-		},
-		paramsRight: {
-			layout: 3,
-			startX: 8,
-			startY: 28,
-			buttonRadius: 8,
-			buttonPadding: 2,
-		},
-	},
 	displaySaverTimeout: 0,
 	displaySaverMode: 0,
 	inputMode: true,
@@ -148,42 +132,6 @@ const schema = yup.object().shape({
 		.required()
 		.oneOf(SPLASH_MODES.map((o) => o.value))
 		.label('Splash Screen'),
-	buttonLayoutCustomOptions: yup.object().shape({
-		params: yup.object().shape({
-			layout: buttonLayoutSchema,
-			startX: yup.number().required().min(0).max(128).label('Start X'),
-			startY: yup.number().required().min(0).max(64).label('Start Y'),
-			buttonRadius: yup
-				.number()
-				.required()
-				.min(0)
-				.max(20)
-				.label('Button Radius'),
-			buttonPadding: yup
-				.number()
-				.required()
-				.min(0)
-				.max(20)
-				.label('Button Padding'),
-		}),
-		paramsRight: yup.object().shape({
-			layout: buttonLayoutRightSchema,
-			startX: yup.number().required().min(0).max(128).label('Start X'),
-			startY: yup.number().required().min(0).max(64).label('Start Y'),
-			buttonRadius: yup
-				.number()
-				.required()
-				.min(0)
-				.max(20)
-				.label('Button Radius'),
-			buttonPadding: yup
-				.number()
-				.required()
-				.min(0)
-				.max(20)
-				.label('Button Padding'),
-		}),
-	}),
 	splashDuration: yup.number().required().min(0).label('Splash Duration'),
 	displaySaverTimeout: yup
 		.number()
@@ -224,19 +172,6 @@ const FormContext = () => {
 
 	return null;
 };
-
-const CUSTOM_BASE_EXCLUDED_LEFT = [
-	ButtonLayout.BUTTON_LAYOUT_CUSTOMA,
-	ButtonLayout.BUTTON_LAYOUT_CUSTOM_DEFINED_A,
-];
-const CUSTOM_BASE_EXCLUDED_RIGHT = [
-	ButtonLayoutRight.BUTTON_LAYOUT_CUSTOMB,
-	ButtonLayoutRight.BUTTON_LAYOUT_CUSTOM_DEFINED_B,
-];
-
-const isButtonLayoutCustom = (values) =>
-	Number(values.buttonLayout) === ButtonLayout.BUTTON_LAYOUT_CUSTOMA ||
-	Number(values.buttonLayoutRight) === ButtonLayoutRight.BUTTON_LAYOUT_CUSTOMB;
 
 const isCustomLayoutUsed = (values) =>
 	Number(values.buttonLayout) === ButtonLayout.BUTTON_LAYOUT_CUSTOM_DEFINED_A ||
@@ -336,10 +271,6 @@ export default function DisplayConfigPage() {
 			buttonLayoutRightSchema = buttonLayoutRightSchema.oneOf(
 				Object.values(buttonLayoutDefinitions.buttonLayoutRight),
 			);
-			const { params, paramsRight } = data.buttonLayoutCustomOptions;
-			if (CUSTOM_BASE_EXCLUDED_LEFT.includes(params.layout)) params.layout = 0;
-			if (CUSTOM_BASE_EXCLUDED_RIGHT.includes(paramsRight.layout))
-				paramsRight.layout = 0;
 			data.customLayoutA = base64ToLayoutCode(data.customLayoutA);
 			data.customLayoutB = base64ToLayoutCode(data.customLayoutB);
 			setValues(data);
@@ -587,232 +518,6 @@ export default function DisplayConfigPage() {
 												))}
 											</FormSelect>
 										</Row>
-										{isButtonLayoutCustom(values) && (
-											<>
-												<h1>
-													{t('DisplayConfig:form.button-layout-custom-header')}
-												</h1>
-												<Row className="mb-3">
-													{Number(values.buttonLayout) ===
-														ButtonLayout.BUTTON_LAYOUT_CUSTOMA && (
-														<Col sm="6">
-															<Form.Group
-																as={Row}
-																name="buttonLayoutCustomOptions"
-															>
-																<Form.Label>
-																	{t(
-																		'DisplayConfig:form.button-layout-custom-left-label',
-																	)}
-																</Form.Label>
-																<FormSelect
-																	name="buttonLayoutCustomOptions.params.layout"
-																	className="form-select-sm"
-																	groupClassName="mb-1"
-																	value={
-																		values.buttonLayoutCustomOptions.params
-																			.layout
-																	}
-																	onChange={handleChange}
-																>
-																	{Object.keys(
-																		buttonLayoutDefinitions.buttonLayout,
-																	)
-																		.filter(
-																			(o) =>
-																				!CUSTOM_BASE_EXCLUDED_LEFT.includes(
-																					buttonLayoutDefinitions.buttonLayout[
-																						o
-																					],
-																				),
-																		)
-																		.map((o, i) => (
-																			<option
-																				key={`buttonLayout-option-${i}`}
-																				value={
-																					buttonLayoutDefinitions.buttonLayout[
-																						o
-																					]
-																				}
-																			>
-																				{t(`LayoutConfig:layouts.left.${o}`, {
-																					defaultValue: o,
-																				})}
-																			</option>
-																		))}
-																</FormSelect>
-															</Form.Group>
-															<Form.Group as={Row}>
-																<Form.Label>
-																	{t(
-																		'DisplayConfig:form.button-layout-custom-start-x-label',
-																	)}
-																</Form.Label>
-																<Col>
-																	<Field
-																		className="mb-1"
-																		name="buttonLayoutCustomOptions.params.startX"
-																		type="number"
-																		as={Form.Control}
-																	/>
-																</Col>
-															</Form.Group>
-															<Form.Group as={Row}>
-																<Form.Label>
-																	{t(
-																		'DisplayConfig:form.button-layout-custom-start-y-label',
-																	)}
-																</Form.Label>
-																<Col>
-																	<Field
-																		className="mb-1"
-																		name="buttonLayoutCustomOptions.params.startY"
-																		type="number"
-																		as={Form.Control}
-																	/>
-																</Col>
-															</Form.Group>
-															<Form.Group as={Row}>
-																<Form.Label>
-																	{t(
-																		'DisplayConfig:form.button-layout-custom-button-radius-label',
-																	)}
-																</Form.Label>
-																<Col>
-																	<Field
-																		className="mb-1"
-																		name="buttonLayoutCustomOptions.params.buttonRadius"
-																		type="number"
-																		as={Form.Control}
-																	/>
-																</Col>
-															</Form.Group>
-															<Form.Group as={Row}>
-																<Form.Label>
-																	{t(
-																		'DisplayConfig:form.button-layout-custom-button-padding-label',
-																	)}
-																</Form.Label>
-																<Col>
-																	<Field
-																		className="mb-1"
-																		name="buttonLayoutCustomOptions.params.buttonPadding"
-																		type="number"
-																		as={Form.Control}
-																	/>
-																</Col>
-															</Form.Group>
-														</Col>
-													)}
-													{Number(values.buttonLayoutRight) ===
-														ButtonLayoutRight.BUTTON_LAYOUT_CUSTOMB && (
-														<Col sm="6">
-															<Form.Group as={Row}>
-																<Form.Label>
-																	{t(
-																		'DisplayConfig:form.button-layout-custom-right-label',
-																	)}
-																</Form.Label>
-																<FormSelect
-																	name="buttonLayoutCustomOptions.paramsRight.layout"
-																	className="form-select-sm"
-																	groupClassName="mb-1"
-																	value={
-																		values.buttonLayoutCustomOptions.paramsRight
-																			.layout
-																	}
-																	onChange={handleChange}
-																>
-																	{Object.keys(
-																		buttonLayoutDefinitions.buttonLayoutRight,
-																	)
-																		.filter(
-																			(o) =>
-																				!CUSTOM_BASE_EXCLUDED_RIGHT.includes(
-																					buttonLayoutDefinitions
-																						.buttonLayoutRight[o],
-																				),
-																		)
-																		.map((o, i) => (
-																			<option
-																				key={`buttonLayoutRight-option-${i}`}
-																				value={
-																					buttonLayoutDefinitions
-																						.buttonLayoutRight[o]
-																				}
-																			>
-																				{t(`LayoutConfig:layouts.right.${o}`, {
-																					defaultValue: o,
-																				})}
-																			</option>
-																		))}
-																</FormSelect>
-															</Form.Group>
-															<Form.Group as={Row}>
-																<Form.Label>
-																	{t(
-																		'DisplayConfig:form.button-layout-custom-start-x-label',
-																	)}
-																</Form.Label>
-																<Col>
-																	<Field
-																		className="mb-1"
-																		name="buttonLayoutCustomOptions.paramsRight.startX"
-																		type="number"
-																		as={Form.Control}
-																	/>
-																</Col>
-															</Form.Group>
-															<Form.Group as={Row}>
-																<Form.Label>
-																	{t(
-																		'DisplayConfig:form.button-layout-custom-start-y-label',
-																	)}
-																</Form.Label>
-																<Col>
-																	<Field
-																		className="mb-1"
-																		name="buttonLayoutCustomOptions.paramsRight.startY"
-																		type="number"
-																		as={Form.Control}
-																	/>
-																</Col>
-															</Form.Group>
-															<Form.Group as={Row}>
-																<Form.Label>
-																	{t(
-																		'DisplayConfig:form.button-layout-custom-button-radius-label',
-																	)}
-																</Form.Label>
-																<Col>
-																	<Field
-																		className="mb-1"
-																		name="buttonLayoutCustomOptions.paramsRight.buttonRadius"
-																		type="number"
-																		as={Form.Control}
-																	/>
-																</Col>
-															</Form.Group>
-															<Form.Group as={Row}>
-																<Form.Label>
-																	{t(
-																		'DisplayConfig:form.button-layout-custom-button-padding-label',
-																	)}
-																</Form.Label>
-																<Col>
-																	<Field
-																		className="mb-1"
-																		name="buttonLayoutCustomOptions.paramsRight.buttonPadding"
-																		type="number"
-																		as={Form.Control}
-																	/>
-																</Col>
-															</Form.Group>
-														</Col>
-													)}
-												</Row>
-											</>
-										)}
 										{isCustomLayoutUsed(values) && (
 											<>
 												<h1>

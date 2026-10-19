@@ -238,15 +238,6 @@ async function setDisplayOptions(options, isPreview) {
 		parseInt(options.displaySaverTimeout) * 60000; // minutes to milliseconds
 	newOptions.splashChoice = parseInt(options.splashChoice);
 
-	if (newOptions.buttonLayoutCustomOptions) {
-		newOptions.buttonLayoutCustomOptions.params.layout = parseInt(
-			options.buttonLayoutCustomOptions?.params?.layout,
-		);
-		newOptions.buttonLayoutCustomOptions.paramsRight.layout = parseInt(
-			options.buttonLayoutCustomOptions?.paramsRight?.layout,
-		);
-	}
-
 	delete newOptions.splashImage;
 	const url = !isPreview
 		? `${baseUrl}/api/setDisplayOptions`
