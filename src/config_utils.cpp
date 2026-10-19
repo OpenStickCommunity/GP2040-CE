@@ -227,6 +227,10 @@
    #define MINI_MENU_GAMEPAD_INPUT 0
 #endif
 
+#ifndef GPIO_INVERTED_PIN_MASK
+    #define GPIO_INVERTED_PIN_MASK 0
+#endif
+
 #ifndef GPIO_PIN_00
     #define GPIO_PIN_00 GpioAction::NONE
 #endif
@@ -528,6 +532,28 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.keyboardMapping, keyButtonR3, KEY_BUTTON_R3);
     INIT_UNSET_PROPERTY(config.keyboardMapping, keyButtonA1, KEY_BUTTON_A1);
     INIT_UNSET_PROPERTY(config.keyboardMapping, keyButtonA2, KEY_BUTTON_A2);
+
+    const auto initPinInversion = [](GpioMappings& mappings) {
+        if (mappings.has_pinInversionEnabled)
+            return;
+        const uint64_t invertedPinMask = GPIO_INVERTED_PIN_MASK;
+        mappings.pinInversionEnabled = invertedPinMask != 0;
+        mappings.has_pinInversionEnabled = true;
+        mappings.invertedPins_count = 0;
+        for (uint32_t pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
+            if (invertedPinMask & (uint64_t{1} << pin))
+                mappings.invertedPins[mappings.invertedPins_count++] = pin;
+        }
+    };
+    initPinInversion(config.gpioMappings);
+
+    for (GpioMappings& profile : config.profileOptions.gpioMappingsSets) {
+        if (!profile.has_keyboardMapping) {
+            profile.keyboardMapping = config.keyboardMapping;
+            profile.has_keyboardMapping = true;
+        }
+        initPinInversion(profile);
+    }
 
     // displayOptions
     INIT_UNSET_PROPERTY(config.displayOptions, enabled, !!HAS_I2C_DISPLAY);

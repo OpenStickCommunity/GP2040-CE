@@ -208,7 +208,7 @@ void GP2040::deinitializeStandardGpio() {
  * instead, if you don't want debounced data.
  */
 void GP2040::debounceGpioGetAll() {
-	Mask_t rawGpios = ~gpio_get_all64();
+	Mask_t rawGpios = Storage::getInstance().getPressedGpios();
 	Mask_t pressedGpios = rawGpios & buttonGpios;
 	Gamepad* gamepad = Storage::getInstance().GetGamepad();
 
@@ -456,7 +456,7 @@ GP2040::BootAction GP2040::getGpioMappedBootAction() {
 		default:
 			break;
 	}
-	Mask_t gpio = ~gpio_get_all64() & buttonGpios;
+	Mask_t gpio = Storage::getInstance().getPressedGpios() & buttonGpios;
 
 	if (gpio == bootModeOptions.usbModePinMask) {
 		action.type = BootActionType::ENTER_USB_MODE;

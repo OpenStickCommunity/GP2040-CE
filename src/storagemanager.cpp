@@ -10,6 +10,7 @@
 #include "drivermanager.h"
 #include "eventmanager.h"
 #include "peripheralmanager.h"
+#include "hardware/gpio.h"
 #include "config.pb.h"
 #include "hardware/watchdog.h"
 #include "CRC32.h"
@@ -108,17 +109,36 @@ char* Storage::currentProfileLabel() {
 		return this->config.profileOptions.gpioMappingsSets[config.gamepadOptions.profileNumber-2].profileLabel;
 }
 
+void Storage::setInvertedPins(const GpioMappings& mappings)
+{
+	invertedPins = 0;
+	if (!mappings.pinInversionEnabled)
+		return;
+	for (pb_size_t i = 0; i < mappings.invertedPins_count; i++) {
+		const uint32_t pin = mappings.invertedPins[i];
+		if (pin < NUM_BANK0_GPIOS && functionalPinMappings[pin].action > 0)
+			invertedPins |= Mask_t{1} << pin;
+	}
+}
+
+Mask_t Storage::getPressedGpios() const
+{
+	return ~gpio_get_all64() ^ invertedPins;
+}
+
 void Storage::setFunctionalPinMappings()
 {
-	GpioMappingInfo* alts = nullptr;
+	GpioMappings* profile = nullptr;
 	uint32_t profileCeiling = config.profileOptions.gpioMappingsSets_count + 1;
 
 	if (config.gamepadOptions.profileNumber >= 2 &&
 			config.gamepadOptions.profileNumber <= profileCeiling) {
 		if (config.profileOptions.gpioMappingsSets[config.gamepadOptions.profileNumber-2].enabled) {
-			alts = config.profileOptions.gpioMappingsSets[config.gamepadOptions.profileNumber-2].pins;
+			profile = &config.profileOptions.gpioMappingsSets[config.gamepadOptions.profileNumber-2];
 		}
 	}
+	GpioMappingInfo* alts = profile ? profile->pins : nullptr;
+	activeKeyboardMapping = profile ? &profile->keyboardMapping : &config.keyboardMapping;
 
 	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
 		// assign the functional pin to the profile pin if:
@@ -136,6 +156,7 @@ void Storage::setFunctionalPinMappings()
 			functionalPinMappings[pin] = this->config.gpioMappings.pins[pin];
 		}
 	}
+	setInvertedPins(profile ? *profile : config.gpioMappings);
 }
 
 /**
@@ -169,6 +190,7 @@ void Storage::setBootModeFunctionalPinMappings()
 			functionalPinMappings[pin].action = GpioAction::BUTTON_PRESS_A1;
 		}
 	}
+	setInvertedPins(getGpioMappings());
 }
 
 void Storage::SetGamepad(Gamepad * newpad)

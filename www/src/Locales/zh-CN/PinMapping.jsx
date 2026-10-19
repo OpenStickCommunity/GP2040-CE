@@ -16,6 +16,10 @@ export default {
 	'profile-pins-warning':
 		'请尽量避免更改用于切换配置文件的快捷键所涉及的按键或方向。否则，可能会导致难以判断当前选中了哪个配置文件！',
 	'profile-copy-base': '复制基础配置文件',
+	'pin-inversion-label': '引脚反相',
+	'pin-inversion-tooltip':
+		'在每个引脚旁显示复选框。勾选的引脚在读到高电平时视为按下，适用于光轴等高电平有效的开关。',
+	'pin-invert-label': '反相 GP{{pin}}',
 	actions: {
 		NONE: '无',
 		RESERVED: '预留',

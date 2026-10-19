@@ -232,6 +232,9 @@ message GpioMappings
     repeated GpioMappingInfo pins = 1 [(nanopb).max_count = 48];
     optional string profileLabel = 2 [(nanopb).max_length = 16];
     optional bool enabled = 3 [default = false];
+    optional KeyboardMapping keyboardMapping = 4;
+    optional bool pinInversionEnabled = 5;
+    repeated uint32 invertedPins = 6 [(nanopb).max_count = 48];
 }
 
 

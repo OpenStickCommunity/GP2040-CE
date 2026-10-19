@@ -13,6 +13,7 @@ export default {
 	'api-macros-text': '宏映射',
 	'api-pins-text': '引脚映射',
 	'api-profiles-text': '配置文件映射',
+	'api-profileKeyboard-text': '配置文件键盘映射',
 	'api-addons-text': '扩展功能',
 	'api-heTrigger-text': '霍尔效应扳机',
 	'api-splash-text': '启动画面',
