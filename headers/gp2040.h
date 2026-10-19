@@ -32,7 +32,7 @@ private:
     // GPIO debouncer
     void debounceGpioGetAll();
     Mask_t buttonGpios;
-    uint32_t gpioDebounceTime[NUM_BANK0_GPIOS];
+    uint32_t gpioDebounceTime[NUM_BANK0_GPIOS] = {};
 
     struct RebootHotkeys {
         RebootHotkeys();

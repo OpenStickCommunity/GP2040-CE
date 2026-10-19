@@ -6,10 +6,10 @@
 #define PRESS_COOLDOWN_MAX 5000
 #define PRESS_COOLDOWN_MIN 0
 
-LEDFormat Animation::format;
-
 Animation::Animation(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffectType) : RGBLights(&InRGBLights) 
 {
+  AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+
   ButtonCaseEffectType = InButtonCaseEffectType;
 
   fadeTimes.clear();
@@ -18,8 +18,8 @@ Animation::Animation(Lights& InRGBLights, EButtonCaseEffectType InButtonCaseEffe
     fadeTimes.push_back(0); 
   }
 
-  holdTimeInMs = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].buttonPressHoldTimeInMs;
-  fadeoutTimeInMs = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].buttonPressFadeOutTimeInMs;
+  holdTimeInMs = options.profiles[options.baseProfileIndex].buttonPressHoldTimeInMs;
+  fadeoutTimeInMs = options.profiles[options.baseProfileIndex].buttonPressFadeOutTimeInMs;
   
   //Since we use the fadeTimes array to know if a light is held. make sure that we hold for at least 1 ms.
   if(holdTimeInMs <= 0)
@@ -56,7 +56,7 @@ void Animation::UpdatePresses()
 
     for(unsigned int pressedPinIndex = 0; pressedPinIndex < pressedPins.size(); ++pressedPinIndex)
     {
-      if(pressedPins[pressedPinIndex] == RGBLights->AllLights[lightIndex].GIPOPin)
+      if(pressedPins[pressedPinIndex] == RGBLights->AllLights[lightIndex].GPIOPin)
       {
         uint8_t firstLightIndex = RGBLights->AllLights[lightIndex].FirstLedIndex;
         uint8_t lastLightIndex = firstLightIndex + RGBLights->AllLights[lightIndex].LedsPerLight;
@@ -99,7 +99,7 @@ void Animation::DecrementFadeCounters()
     bool wasPressed = false;
     for(unsigned int pressedPinIndex = 0; pressedPinIndex < pressedPins.size(); ++pressedPinIndex)
     {
-      if(pressedPins[pressedPinIndex] == RGBLights->AllLights[lightIndex].GIPOPin)
+      if(pressedPins[pressedPinIndex] == RGBLights->AllLights[lightIndex].GPIOPin)
       {
         wasPressed = true;
       }
@@ -167,59 +167,17 @@ bool Animation::LightTypeIsForAnimation(LightType Type)
   return false;
 }
 
-//Get correct color for light index
-RGB Animation::StaticGetNonPressedColorForLight(Lights* AllLights, uint32_t LightIndex)
-{
-  int colIndex = 0;
-  Light* thisLight = &(AllLights->AllLights[LightIndex]);
-  if(thisLight->Type == LightType::LightType_ActionButton || thisLight->Type == LightType::LightType_Turbo)
-  {
-    //button
-    colIndex = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].notPressedStaticColors[thisLight->GIPOPin];
-  }
-  else
-  {
-    //If we're in test mode for case lights then turn all lights black and return white for the requested case Light
-    if(AnimationStation::TestModeLightIsNonButton && AnimationStation::TestModePinOrNonButtonIndex != -1)
-    {
-      colIndex = 0;
-      if(thisLight->Type == LightType::LightType_Turbo && ((int)thisLight->FirstLedIndex == AnimationStation::TestModePinOrNonButtonIndex))
-      colIndex = 1;
-    }
-    else
-    {
-      //case light or player led
-      colIndex = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].nonButtonStaticColors[thisLight->NonButtonIndex];
-    }
-  }
-
-  return GetColorForIndex(colIndex);
-}
-
 RGB Animation::GetNonPressedColorForLight(uint32_t LightIndex)
 {
-  return StaticGetNonPressedColorForLight(RGBLights, LightIndex);
+  AnimationStation & AnimStation = AnimationStation::getInstance();
+  return AnimStation.StaticGetNonPressedColorForLight(RGBLights, LightIndex);
 }
 
 RGB Animation::GetPressedColorForLight(uint32_t LightIndex)
 {
+  AnimationStation & AnimStation = AnimationStation::getInstance();
+  AnimationOptions & options = Storage::getInstance().getAnimationOptions();
   Light* thisLight = &(RGBLights->AllLights[LightIndex]);
-  int colIndex = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].pressedStaticColors[thisLight->GIPOPin];
-  return GetColorForIndex(colIndex);
-}
-
-RGB Animation::GetColorForIndex(uint32_t ColorIndex)
-{
-    //pre defined color?
-    if(ColorIndex < (uint32_t)colors.size())
-      return colors[ColorIndex];
-
-    //must be custom color
-    ColorIndex -= colors.size();
-    if(ColorIndex > customColors.size())
-    {
-      //error, no such color
-      return colors[0];
-    }
-    return customColors[ColorIndex];
+  int colIndex = options.profiles[options.baseProfileIndex].pressedStaticColors.bytes[thisLight->GPIOPin];
+  return AnimStation.GetColorForIndex(colIndex);
 }

@@ -15,6 +15,7 @@ export default {
 	'api-macros-text': 'Macro Mappings',
 	'api-pins-text': 'Pin Mappings',
 	'api-profiles-text': 'Profile Mappings',
+	'api-profileKeyboard-text': 'Profile Keyboard Mappings',
 	'api-addons-text': 'Add-Ons',
 	'api-heTrigger-text': 'Hall Effect Trigger',
 	'api-splash-text': 'Splash Image',

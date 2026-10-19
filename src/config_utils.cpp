@@ -182,6 +182,51 @@
 #ifndef DEFAULT_SWITCH_PRO_JOYCON_RIGHT_BUTTONS_COLOR
     #define DEFAULT_SWITCH_PRO_JOYCON_RIGHT_BUTTONS_COLOR 0x0F0F0F
 #endif
+#ifndef DEFAULT_SWITCH2_PRO_IDENTITY
+    #define DEFAULT_SWITCH2_PRO_IDENTITY SWITCH2_PRO_IDENTITY_PRO
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_COLOR_PRESET
+    #define DEFAULT_SWITCH2_PRO_COLOR_PRESET SWITCH2_PRO_COLOR_STOCK
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_BODY_COLOR
+    #define DEFAULT_SWITCH2_PRO_BODY_COLOR 0x232323
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_BUTTONS_COLOR
+    #define DEFAULT_SWITCH2_PRO_BUTTONS_COLOR 0xA0A0A0
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_HIGHLIGHT_COLOR
+    #define DEFAULT_SWITCH2_PRO_HIGHLIGHT_COLOR 0xE6E6E6
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_GRIP_COLOR
+    #define DEFAULT_SWITCH2_PRO_GRIP_COLOR 0x323232
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_JOYCON2_COLOR_PRESET
+    #define DEFAULT_SWITCH2_PRO_JOYCON2_COLOR_PRESET SWITCH2_PRO_JOYCON2_COLOR_STOCK
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_JOYCON2_LEFT_BODY_COLOR
+    #define DEFAULT_SWITCH2_PRO_JOYCON2_LEFT_BODY_COLOR 0x323232
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_JOYCON2_LEFT_BUTTONS_COLOR
+    #define DEFAULT_SWITCH2_PRO_JOYCON2_LEFT_BUTTONS_COLOR 0xAAAAAA
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_JOYCON2_LEFT_ACCENT_COLOR
+    #define DEFAULT_SWITCH2_PRO_JOYCON2_LEFT_ACCENT_COLOR 0x9BE1E6
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_JOYCON2_LEFT_STICK_COLOR
+    #define DEFAULT_SWITCH2_PRO_JOYCON2_LEFT_STICK_COLOR 0x323232
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_JOYCON2_RIGHT_BODY_COLOR
+    #define DEFAULT_SWITCH2_PRO_JOYCON2_RIGHT_BODY_COLOR 0x323232
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_JOYCON2_RIGHT_BUTTONS_COLOR
+    #define DEFAULT_SWITCH2_PRO_JOYCON2_RIGHT_BUTTONS_COLOR 0xAAAAAA
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_JOYCON2_RIGHT_ACCENT_COLOR
+    #define DEFAULT_SWITCH2_PRO_JOYCON2_RIGHT_ACCENT_COLOR 0xFF8C5F
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_JOYCON2_RIGHT_STICK_COLOR
+    #define DEFAULT_SWITCH2_PRO_JOYCON2_RIGHT_STICK_COLOR 0x323232
+#endif
 
 #ifndef DEFAULT_USB_DESC_OVERRIDE
    #define DEFAULT_USB_DESC_OVERRIDE false
@@ -213,6 +258,10 @@
 
 #ifndef MINI_MENU_GAMEPAD_INPUT
    #define MINI_MENU_GAMEPAD_INPUT 0
+#endif
+
+#ifndef GPIO_INVERTED_PIN_MASK
+    #define GPIO_INVERTED_PIN_MASK 0
 #endif
 
 #ifndef GPIO_PIN_00
@@ -414,6 +463,21 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.gamepadOptions, switchProJoyConLeftButtonsColor, DEFAULT_SWITCH_PRO_JOYCON_LEFT_BUTTONS_COLOR);
     INIT_UNSET_PROPERTY(config.gamepadOptions, switchProJoyConRightBodyColor, DEFAULT_SWITCH_PRO_JOYCON_RIGHT_BODY_COLOR);
     INIT_UNSET_PROPERTY(config.gamepadOptions, switchProJoyConRightButtonsColor, DEFAULT_SWITCH_PRO_JOYCON_RIGHT_BUTTONS_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProIdentity, DEFAULT_SWITCH2_PRO_IDENTITY);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProColorPreset, DEFAULT_SWITCH2_PRO_COLOR_PRESET);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProBodyColor, DEFAULT_SWITCH2_PRO_BODY_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProButtonsColor, DEFAULT_SWITCH2_PRO_BUTTONS_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProHighlightColor, DEFAULT_SWITCH2_PRO_HIGHLIGHT_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProGripColor, DEFAULT_SWITCH2_PRO_GRIP_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProJoyCon2ColorPreset, DEFAULT_SWITCH2_PRO_JOYCON2_COLOR_PRESET);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProJoyCon2LeftBodyColor, DEFAULT_SWITCH2_PRO_JOYCON2_LEFT_BODY_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProJoyCon2LeftButtonsColor, DEFAULT_SWITCH2_PRO_JOYCON2_LEFT_BUTTONS_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProJoyCon2LeftAccentColor, DEFAULT_SWITCH2_PRO_JOYCON2_LEFT_ACCENT_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProJoyCon2LeftStickColor, DEFAULT_SWITCH2_PRO_JOYCON2_LEFT_STICK_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProJoyCon2RightBodyColor, DEFAULT_SWITCH2_PRO_JOYCON2_RIGHT_BODY_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProJoyCon2RightButtonsColor, DEFAULT_SWITCH2_PRO_JOYCON2_RIGHT_BUTTONS_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProJoyCon2RightAccentColor, DEFAULT_SWITCH2_PRO_JOYCON2_RIGHT_ACCENT_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProJoyCon2RightStickColor, DEFAULT_SWITCH2_PRO_JOYCON2_RIGHT_STICK_COLOR);
     INIT_UNSET_PROPERTY(config.gamepadOptions, usbDescOverride, DEFAULT_USB_DESC_OVERRIDE);
     INIT_UNSET_PROPERTY_STR(config.gamepadOptions, usbDescProduct, DEFAULT_USB_DESC_PRODUCT);
     INIT_UNSET_PROPERTY_STR(config.gamepadOptions, usbDescManufacturer, DEFAULT_USB_DESC_MANUFACTURER);
@@ -512,6 +576,28 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.keyboardMapping, keyButtonR3, KEY_BUTTON_R3);
     INIT_UNSET_PROPERTY(config.keyboardMapping, keyButtonA1, KEY_BUTTON_A1);
     INIT_UNSET_PROPERTY(config.keyboardMapping, keyButtonA2, KEY_BUTTON_A2);
+
+    const auto initPinInversion = [](GpioMappings& mappings) {
+        if (mappings.has_pinInversionEnabled)
+            return;
+        const uint64_t invertedPinMask = GPIO_INVERTED_PIN_MASK;
+        mappings.pinInversionEnabled = invertedPinMask != 0;
+        mappings.has_pinInversionEnabled = true;
+        mappings.invertedPins_count = 0;
+        for (uint32_t pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
+            if (invertedPinMask & (uint64_t{1} << pin))
+                mappings.invertedPins[mappings.invertedPins_count++] = pin;
+        }
+    };
+    initPinInversion(config.gpioMappings);
+
+    for (GpioMappings& profile : config.profileOptions.gpioMappingsSets) {
+        if (!profile.has_keyboardMapping) {
+            profile.keyboardMapping = config.keyboardMapping;
+            profile.has_keyboardMapping = true;
+        }
+        initPinInversion(profile);
+    }
 
     // displayOptions
     INIT_UNSET_PROPERTY(config.displayOptions, enabled, !!HAS_I2C_DISPLAY);
@@ -638,133 +724,120 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.ledOptions, lightClusterDataInitialised, false);
  
     // animationOptions
-    int brightSteps = AnimationStation::brightnessSteps; //cache locally to avoid false positive compiler warning
-    if(LEDS_BRIGHTNESS >= 0 && LEDS_BRIGHTNESS <= brightSteps)
-    {
+    AnimationStation& AnimStation = AnimationStation::getInstance();
+    int brightSteps = AnimStation.getBrightnessSteps(); //cache locally to avoid false positive compiler warning
+    if(LEDS_BRIGHTNESS >= 0 && LEDS_BRIGHTNESS <= brightSteps) {
         INIT_UNSET_PROPERTY(config.animationOptions, brightness, LEDS_BRIGHTNESS);
-    }
-    else
-    {
-        INIT_UNSET_PROPERTY(config.animationOptions, brightness, AnimationStation::brightnessSteps);
+    } else {
+        INIT_UNSET_PROPERTY(config.animationOptions, brightness, AnimStation.getBrightnessSteps());
     }
     INIT_UNSET_PROPERTY(config.animationOptions, baseProfileIndex, 0);
     INIT_UNSET_PROPERTY(config.animationOptions, autoDisableTime, LEDS_AUTO_DISABLE_TIME);
 
-    // Set LED Profile 0
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bEnabled, LEDS_PROFILE0_ENABLED);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], basePressedCycleTime, LEDS_PROFILE0_PRESSED_CYCLE_TIME);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], baseCycleTime, LEDS_PROFILE0_NONPRESSED_CYCLE_TIME);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], baseCaseCycleTime, LEDS_PROFILE0_CASE_CYCLE_TIME);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], nonPressedSpecialColor, LEDS_PROFILE0_SPECIAL_COLOR_NONPRESSED.value(LED_FORMAT_RGB, 1.0f));
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], pressedSpecialColor, LEDS_PROFILE0_SPECIAL_COLOR_PRESSED.value(LED_FORMAT_RGB, 1.0f));
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], caseSpecialColor, LEDS_PROFILE0_SPECIAL_COLOR_CASE.value(LED_FORMAT_RGB, 1.0f));
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bNonPressedSpecialColorIsRainbow, LEDS_PROFILE0_SPECIAL_COLOR_IS_RAINBOW_NONPRESSED);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bPressedSpecialColorIsRainbow, LEDS_PROFILE0_SPECIAL_COLOR_IS_RAINBOW_PRESSED);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bCaseSpecialColorIsRainbow, LEDS_PROFILE0_SPECIAL_COLOR_IS_RAINBOW_CASE);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], effectContextParam,  (LEDS_PROFILE0_CONTEXT_PARAM_NONPRESSED & 0xFF) | 
-                                                                                 ((LEDS_PROFILE0_CONTEXT_PARAM_PRESSED & 0xFF)<<8) |
-                                                                                 ((LEDS_PROFILE0_CONTEXT_PARAM_CASE & 0xFF)<<16));
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], baseNonPressedEffect, LEDS_PROFILE0_BASE_ANIMATION_INDEX);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], basePressedEffect, LEDS_PROFILE0_PRESSED_ANIMATION_INDEX);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], baseCaseEffect, LEDS_PROFILE0_CASE_ANIMATION_INDEX);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bUseCaseLightsInPressedAnimations, LEDS_PROFILE0_USE_CASE_IN_PRESSED);
+    // Fresh Install, profiles are not set
+    if ( config.animationOptions.profiles_count == 0 ) {
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bEnabled, LEDS_PROFILE0_ENABLED);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], basePressedCycleTime, LEDS_PROFILE0_PRESSED_CYCLE_TIME);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], baseCycleTime, LEDS_PROFILE0_NONPRESSED_CYCLE_TIME);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], baseCaseCycleTime, LEDS_PROFILE0_CASE_CYCLE_TIME);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], nonPressedSpecialColor, LEDS_PROFILE0_SPECIAL_COLOR_NONPRESSED.value(LED_FORMAT_RGB, 1.0f));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], pressedSpecialColor, LEDS_PROFILE0_SPECIAL_COLOR_PRESSED.value(LED_FORMAT_RGB, 1.0f));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], caseSpecialColor, LEDS_PROFILE0_SPECIAL_COLOR_CASE.value(LED_FORMAT_RGB, 1.0f));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bNonPressedSpecialColorIsRainbow, LEDS_PROFILE0_SPECIAL_COLOR_IS_RAINBOW_NONPRESSED);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bPressedSpecialColorIsRainbow, LEDS_PROFILE0_SPECIAL_COLOR_IS_RAINBOW_PRESSED);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bCaseSpecialColorIsRainbow, LEDS_PROFILE0_SPECIAL_COLOR_IS_RAINBOW_CASE);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], effectContextParam,  (LEDS_PROFILE0_CONTEXT_PARAM_NONPRESSED & 0xFF) | 
+                                                                                    ((LEDS_PROFILE0_CONTEXT_PARAM_PRESSED & 0xFF)<<8) |
+                                                                                    ((LEDS_PROFILE0_CONTEXT_PARAM_CASE & 0xFF)<<16));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], baseNonPressedEffect, LEDS_PROFILE0_BASE_ANIMATION_INDEX);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], basePressedEffect, LEDS_PROFILE0_PRESSED_ANIMATION_INDEX);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], baseCaseEffect, LEDS_PROFILE0_CASE_ANIMATION_INDEX);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bUseCaseLightsInPressedAnimations, LEDS_PROFILE0_USE_CASE_IN_PRESSED);
+        unsigned char localBuffer[NUM_BANK0_GPIOS];
+        memset(localBuffer, LEDS_PROFILE0_STATIC_COLOR_UNPRESSED, NUM_BANK0_GPIOS);
+        INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[0], notPressedStaticColors, localBuffer);
+        memset(localBuffer, LEDS_PROFILE0_STATIC_COLOR_PRESSED, NUM_BANK0_GPIOS);
+        INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[0], pressedStaticColors, localBuffer);
+        unsigned char localCaseBuffer[MAX_NON_BUTTON_LIGHT_COLOR_INDEXES];
+        memset(localCaseBuffer, LEDS_PROFILE0_STATIC_COLOR_CASE, NUM_BANK0_GPIOS);
+        INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[0], nonButtonStaticColors, localCaseBuffer);
 
-    // Set LED Profile 1
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], bEnabled, LEDS_PROFILE1_ENABLED);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], basePressedCycleTime, LEDS_PROFILE1_PRESSED_CYCLE_TIME);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], baseCycleTime, LEDS_PROFILE1_NONPRESSED_CYCLE_TIME);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], baseCaseCycleTime, LEDS_PROFILE1_CASE_CYCLE_TIME);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], nonPressedSpecialColor, LEDS_PROFILE1_SPECIAL_COLOR_NONPRESSED.value(LED_FORMAT_RGB, 1.0f));
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], pressedSpecialColor, LEDS_PROFILE1_SPECIAL_COLOR_PRESSED.value(LED_FORMAT_RGB, 1.0f));
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], caseSpecialColor, LEDS_PROFILE1_SPECIAL_COLOR_CASE.value(LED_FORMAT_RGB, 1.0f));
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], bNonPressedSpecialColorIsRainbow, LEDS_PROFILE1_SPECIAL_COLOR_IS_RAINBOW_NONPRESSED);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], bPressedSpecialColorIsRainbow, LEDS_PROFILE1_SPECIAL_COLOR_IS_RAINBOW_PRESSED);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], bCaseSpecialColorIsRainbow, LEDS_PROFILE1_SPECIAL_COLOR_IS_RAINBOW_CASE);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], effectContextParam,  (LEDS_PROFILE1_CONTEXT_PARAM_NONPRESSED & 0xFF) | 
-                                                                                 ((LEDS_PROFILE1_CONTEXT_PARAM_PRESSED & 0xFF)<<8) |
-                                                                                 ((LEDS_PROFILE1_CONTEXT_PARAM_CASE & 0xFF)<<16));
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], baseNonPressedEffect, LEDS_PROFILE1_BASE_ANIMATION_INDEX);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], basePressedEffect, LEDS_PROFILE1_PRESSED_ANIMATION_INDEX);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], baseCaseEffect, LEDS_PROFILE1_CASE_ANIMATION_INDEX);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], bUseCaseLightsInPressedAnimations, LEDS_PROFILE1_USE_CASE_IN_PRESSED);
+        // Set LED Profile 1
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], bEnabled, LEDS_PROFILE1_ENABLED);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], basePressedCycleTime, LEDS_PROFILE1_PRESSED_CYCLE_TIME);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], baseCycleTime, LEDS_PROFILE1_NONPRESSED_CYCLE_TIME);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], baseCaseCycleTime, LEDS_PROFILE1_CASE_CYCLE_TIME);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], nonPressedSpecialColor, LEDS_PROFILE1_SPECIAL_COLOR_NONPRESSED.value(LED_FORMAT_RGB, 1.0f));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], pressedSpecialColor, LEDS_PROFILE1_SPECIAL_COLOR_PRESSED.value(LED_FORMAT_RGB, 1.0f));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], caseSpecialColor, LEDS_PROFILE1_SPECIAL_COLOR_CASE.value(LED_FORMAT_RGB, 1.0f));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], bNonPressedSpecialColorIsRainbow, LEDS_PROFILE1_SPECIAL_COLOR_IS_RAINBOW_NONPRESSED);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], bPressedSpecialColorIsRainbow, LEDS_PROFILE1_SPECIAL_COLOR_IS_RAINBOW_PRESSED);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], bCaseSpecialColorIsRainbow, LEDS_PROFILE1_SPECIAL_COLOR_IS_RAINBOW_CASE);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], effectContextParam,  (LEDS_PROFILE1_CONTEXT_PARAM_NONPRESSED & 0xFF) | 
+                                                                                    ((LEDS_PROFILE1_CONTEXT_PARAM_PRESSED & 0xFF)<<8) |
+                                                                                    ((LEDS_PROFILE1_CONTEXT_PARAM_CASE & 0xFF)<<16));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], baseNonPressedEffect, LEDS_PROFILE1_BASE_ANIMATION_INDEX);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], basePressedEffect, LEDS_PROFILE1_PRESSED_ANIMATION_INDEX);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], baseCaseEffect, LEDS_PROFILE1_CASE_ANIMATION_INDEX);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], bUseCaseLightsInPressedAnimations, LEDS_PROFILE1_USE_CASE_IN_PRESSED);
+        memset(localBuffer, LEDS_PROFILE1_STATIC_COLOR_UNPRESSED, NUM_BANK0_GPIOS);
+        INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[1], notPressedStaticColors, localBuffer);
+        memset(localBuffer, LEDS_PROFILE1_STATIC_COLOR_PRESSED, NUM_BANK0_GPIOS);
+        INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[1], pressedStaticColors, localBuffer);
+        memset(localCaseBuffer, LEDS_PROFILE1_STATIC_COLOR_CASE, NUM_BANK0_GPIOS);
+        INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[1], nonButtonStaticColors, localCaseBuffer);
 
-    // Set LED Profile 2
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], bEnabled, LEDS_PROFILE2_ENABLED);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], basePressedCycleTime, LEDS_PROFILE2_PRESSED_CYCLE_TIME);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], baseCycleTime, LEDS_PROFILE2_NONPRESSED_CYCLE_TIME);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], baseCaseCycleTime, LEDS_PROFILE2_CASE_CYCLE_TIME);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], nonPressedSpecialColor, LEDS_PROFILE2_SPECIAL_COLOR_NONPRESSED.value(LED_FORMAT_RGB, 1.0f));
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], pressedSpecialColor, LEDS_PROFILE2_SPECIAL_COLOR_NONPRESSED.value(LED_FORMAT_RGB, 1.0f));
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], caseSpecialColor, LEDS_PROFILE2_SPECIAL_COLOR_NONPRESSED.value(LED_FORMAT_RGB, 1.0f));
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], bNonPressedSpecialColorIsRainbow, LEDS_PROFILE2_SPECIAL_COLOR_IS_RAINBOW_NONPRESSED);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], bPressedSpecialColorIsRainbow, LEDS_PROFILE2_SPECIAL_COLOR_IS_RAINBOW_PRESSED);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], bCaseSpecialColorIsRainbow, LEDS_PROFILE2_SPECIAL_COLOR_IS_RAINBOW_CASE);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], effectContextParam,  (LEDS_PROFILE2_CONTEXT_PARAM_NONPRESSED & 0xFF) | 
-                                                                                 ((LEDS_PROFILE2_CONTEXT_PARAM_PRESSED & 0xFF)<<8) |
-                                                                                 ((LEDS_PROFILE2_CONTEXT_PARAM_CASE & 0xFF)<<16));
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], baseNonPressedEffect, LEDS_PROFILE2_BASE_ANIMATION_INDEX);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], basePressedEffect, LEDS_PROFILE2_PRESSED_ANIMATION_INDEX);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], baseCaseEffect, LEDS_PROFILE2_CASE_ANIMATION_INDEX);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], bUseCaseLightsInPressedAnimations, LEDS_PROFILE2_USE_CASE_IN_PRESSED);
+        // Set LED Profile 2
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], bEnabled, LEDS_PROFILE2_ENABLED);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], basePressedCycleTime, LEDS_PROFILE2_PRESSED_CYCLE_TIME);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], baseCycleTime, LEDS_PROFILE2_NONPRESSED_CYCLE_TIME);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], baseCaseCycleTime, LEDS_PROFILE2_CASE_CYCLE_TIME);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], nonPressedSpecialColor, LEDS_PROFILE2_SPECIAL_COLOR_NONPRESSED.value(LED_FORMAT_RGB, 1.0f));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], pressedSpecialColor, LEDS_PROFILE2_SPECIAL_COLOR_NONPRESSED.value(LED_FORMAT_RGB, 1.0f));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], caseSpecialColor, LEDS_PROFILE2_SPECIAL_COLOR_NONPRESSED.value(LED_FORMAT_RGB, 1.0f));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], bNonPressedSpecialColorIsRainbow, LEDS_PROFILE2_SPECIAL_COLOR_IS_RAINBOW_NONPRESSED);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], bPressedSpecialColorIsRainbow, LEDS_PROFILE2_SPECIAL_COLOR_IS_RAINBOW_PRESSED);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], bCaseSpecialColorIsRainbow, LEDS_PROFILE2_SPECIAL_COLOR_IS_RAINBOW_CASE);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], effectContextParam,  (LEDS_PROFILE2_CONTEXT_PARAM_NONPRESSED & 0xFF) | 
+                                                                                    ((LEDS_PROFILE2_CONTEXT_PARAM_PRESSED & 0xFF)<<8) |
+                                                                                    ((LEDS_PROFILE2_CONTEXT_PARAM_CASE & 0xFF)<<16));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], baseNonPressedEffect, LEDS_PROFILE2_BASE_ANIMATION_INDEX);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], basePressedEffect, LEDS_PROFILE2_PRESSED_ANIMATION_INDEX);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], baseCaseEffect, LEDS_PROFILE2_CASE_ANIMATION_INDEX);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], bUseCaseLightsInPressedAnimations, LEDS_PROFILE2_USE_CASE_IN_PRESSED);
+        memset(localBuffer, LEDS_PROFILE2_STATIC_COLOR_UNPRESSED, NUM_BANK0_GPIOS);    
+        INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[2], notPressedStaticColors, localBuffer);
+        memset(localBuffer, LEDS_PROFILE2_STATIC_COLOR_PRESSED, NUM_BANK0_GPIOS);
+        INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[2], pressedStaticColors, localBuffer);
+        memset(localCaseBuffer, LEDS_PROFILE2_STATIC_COLOR_CASE, NUM_BANK0_GPIOS);
+        INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[2], nonButtonStaticColors, localCaseBuffer);
 
-    // Set LED Profile 3
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], bEnabled, LEDS_PROFILE3_ENABLED);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], basePressedCycleTime, LEDS_PROFILE3_PRESSED_CYCLE_TIME);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], baseCycleTime, LEDS_PROFILE3_NONPRESSED_CYCLE_TIME);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], baseCaseCycleTime, LEDS_PROFILE3_CASE_CYCLE_TIME);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], nonPressedSpecialColor, LEDS_PROFILE3_SPECIAL_COLOR_NONPRESSED.value(LED_FORMAT_RGB, 1.0f));
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], pressedSpecialColor, LEDS_PROFILE3_SPECIAL_COLOR_NONPRESSED.value(LED_FORMAT_RGB, 1.0f));
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], caseSpecialColor, LEDS_PROFILE3_SPECIAL_COLOR_NONPRESSED.value(LED_FORMAT_RGB, 1.0f));
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], bNonPressedSpecialColorIsRainbow, LEDS_PROFILE3_SPECIAL_COLOR_IS_RAINBOW_NONPRESSED);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], bPressedSpecialColorIsRainbow, LEDS_PROFILE3_SPECIAL_COLOR_IS_RAINBOW_PRESSED);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], bCaseSpecialColorIsRainbow, LEDS_PROFILE3_SPECIAL_COLOR_IS_RAINBOW_CASE);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], effectContextParam,  (LEDS_PROFILE3_CONTEXT_PARAM_NONPRESSED & 0xFF) | 
-                                                                                 ((LEDS_PROFILE3_CONTEXT_PARAM_PRESSED & 0xFF)<<8) |
-                                                                                 ((LEDS_PROFILE3_CONTEXT_PARAM_CASE & 0xFF)<<16));
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], baseNonPressedEffect, LEDS_PROFILE3_BASE_ANIMATION_INDEX);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], basePressedEffect, LEDS_PROFILE3_PRESSED_ANIMATION_INDEX);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], baseCaseEffect, LEDS_PROFILE3_CASE_ANIMATION_INDEX);
-    INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], bUseCaseLightsInPressedAnimations, LEDS_PROFILE3_USE_CASE_IN_PRESSED);
+        // Set LED Profile 3
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], bEnabled, LEDS_PROFILE3_ENABLED);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], basePressedCycleTime, LEDS_PROFILE3_PRESSED_CYCLE_TIME);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], baseCycleTime, LEDS_PROFILE3_NONPRESSED_CYCLE_TIME);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], baseCaseCycleTime, LEDS_PROFILE3_CASE_CYCLE_TIME);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], nonPressedSpecialColor, LEDS_PROFILE3_SPECIAL_COLOR_NONPRESSED.value(LED_FORMAT_RGB, 1.0f));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], pressedSpecialColor, LEDS_PROFILE3_SPECIAL_COLOR_NONPRESSED.value(LED_FORMAT_RGB, 1.0f));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], caseSpecialColor, LEDS_PROFILE3_SPECIAL_COLOR_NONPRESSED.value(LED_FORMAT_RGB, 1.0f));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], bNonPressedSpecialColorIsRainbow, LEDS_PROFILE3_SPECIAL_COLOR_IS_RAINBOW_NONPRESSED);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], bPressedSpecialColorIsRainbow, LEDS_PROFILE3_SPECIAL_COLOR_IS_RAINBOW_PRESSED);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], bCaseSpecialColorIsRainbow, LEDS_PROFILE3_SPECIAL_COLOR_IS_RAINBOW_CASE);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], effectContextParam,  (LEDS_PROFILE3_CONTEXT_PARAM_NONPRESSED & 0xFF) | 
+                                                                                    ((LEDS_PROFILE3_CONTEXT_PARAM_PRESSED & 0xFF)<<8) |
+                                                                                    ((LEDS_PROFILE3_CONTEXT_PARAM_CASE & 0xFF)<<16));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], baseNonPressedEffect, LEDS_PROFILE3_BASE_ANIMATION_INDEX);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], basePressedEffect, LEDS_PROFILE3_PRESSED_ANIMATION_INDEX);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], baseCaseEffect, LEDS_PROFILE3_CASE_ANIMATION_INDEX);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], bUseCaseLightsInPressedAnimations, LEDS_PROFILE3_USE_CASE_IN_PRESSED);
+        memset(localBuffer, LEDS_PROFILE3_STATIC_COLOR_UNPRESSED, NUM_BANK0_GPIOS);
+        INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[3], notPressedStaticColors, localBuffer);
+        memset(localBuffer, LEDS_PROFILE3_STATIC_COLOR_PRESSED, NUM_BANK0_GPIOS);
+        INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[3], pressedStaticColors, localBuffer);
+        memset(localCaseBuffer, LEDS_PROFILE3_STATIC_COLOR_CASE, NUM_BANK0_GPIOS);
+        INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[3], nonButtonStaticColors, localCaseBuffer);
 
-    unsigned int buttonCount = (NUM_BANK0_GPIOS+3)/4;
-    unsigned int caseCount = (MAX_NON_BUTTON_LIGHT_COLOR_INDEXES/4);
-
-    config.animationOptions.profiles_count = 0;
-    for (unsigned int i = 0; i < MAX_ANIMATION_PROFILES; i++) {
-        config.animationOptions.profiles[i].notPressedStaticColors_count = buttonCount;
-        config.animationOptions.profiles[i].pressedStaticColors_count = buttonCount;
-        config.animationOptions.profiles[i].nonButtonStaticColors_count = caseCount;
-        if ( config.animationOptions.profiles[i].bEnabled == true ) {
-            config.animationOptions.profiles_count++;
-        }
-    }
-
-    // Button Colors
-    for (unsigned int lightIndex = 0; lightIndex < buttonCount; lightIndex++) {
-        config.animationOptions.profiles[0].notPressedStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE0_STATIC_COLOR_UNPRESSED);
-        config.animationOptions.profiles[0].pressedStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE0_STATIC_COLOR_PRESSED);
-        config.animationOptions.profiles[1].notPressedStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE1_STATIC_COLOR_UNPRESSED);
-        config.animationOptions.profiles[1].pressedStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE1_STATIC_COLOR_PRESSED);
-        config.animationOptions.profiles[2].notPressedStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE2_STATIC_COLOR_UNPRESSED);
-        config.animationOptions.profiles[2].pressedStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE2_STATIC_COLOR_PRESSED);
-        config.animationOptions.profiles[3].notPressedStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE3_STATIC_COLOR_UNPRESSED);
-        config.animationOptions.profiles[3].pressedStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE3_STATIC_COLOR_PRESSED);
-    }
-
-    // Case Colors
-    for (unsigned int lightIndex = 0; lightIndex < caseCount; lightIndex++) {
-        if(lightIndex == caseCount - 1) {
-            config.animationOptions.profiles[0].nonButtonStaticColors[lightIndex] = (LEDS_COLOR_QUAD(LEDS_PROFILE0_STATIC_COLOR_CASE) & 0x00FFFFFF) + (PLED_COLOR<<24);
-            config.animationOptions.profiles[1].nonButtonStaticColors[lightIndex] = (LEDS_COLOR_QUAD(LEDS_PROFILE1_STATIC_COLOR_CASE) & 0x00FFFFFF) + (PLED_COLOR<<24);
-            config.animationOptions.profiles[2].nonButtonStaticColors[lightIndex] = (LEDS_COLOR_QUAD(LEDS_PROFILE2_STATIC_COLOR_CASE) & 0x00FFFFFF) + (PLED_COLOR<<24);
-            config.animationOptions.profiles[3].nonButtonStaticColors[lightIndex] = (LEDS_COLOR_QUAD(LEDS_PROFILE3_STATIC_COLOR_CASE) & 0x00FFFFFF) + (PLED_COLOR<<24);
-        }
-        else {
-            config.animationOptions.profiles[0].nonButtonStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE0_STATIC_COLOR_CASE);
-            config.animationOptions.profiles[1].nonButtonStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE1_STATIC_COLOR_CASE);
-            config.animationOptions.profiles[2].nonButtonStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE2_STATIC_COLOR_CASE);
-            config.animationOptions.profiles[3].nonButtonStaticColors[lightIndex] = LEDS_COLOR_QUAD(LEDS_PROFILE3_STATIC_COLOR_CASE);
-        }
+        config.animationOptions.profiles_count = MAX_ANIMATION_PROFILES;
     }
 
     // addonOptions.bootselButtonOptions
@@ -2161,7 +2234,8 @@ static bool loadConfigInner(Config& config)
     config = Config Config_init_zero;
 
     const uint8_t* flashEnd = reinterpret_cast<const uint8_t*>(EEPROM_ADDRESS_START) + EEPROM_SIZE_BYTES;
-    const ConfigFooter& footer = *reinterpret_cast<const ConfigFooter*>(flashEnd - sizeof(ConfigFooter));
+    ConfigFooter footer;
+    memcpy(&footer, flashEnd - sizeof(ConfigFooter), sizeof(footer));
 
     // Check for presence of magic value
     if (footer.magic != FOOTER_MAGIC)
@@ -2312,9 +2386,17 @@ bool ConfigUtils::save(Config& config)
     // its default value.
     setHasFlags(Config_fields, &config);
 
+    // An LED preview runs on the test profile; save the user's profile instead
+    AnimationStation& animStation = AnimationStation::getInstance();
+    const int32_t activeProfileIndex = config.animationOptions.baseProfileIndex;
+    if (animStation.IsTestModeActive())
+        config.animationOptions.baseProfileIndex = animStation.GetSavedMode();
+
     // Encode the data directly into the cache of FlashPROM
     pb_ostream_t outputStream = pb_ostream_from_buffer(EEPROM.writeCache, EEPROM_SIZE_BYTES - sizeof(ConfigFooter));
-    if (!pb_encode(&outputStream, Config_fields, &config))
+    const bool encoded = pb_encode(&outputStream, Config_fields, &config);
+    config.animationOptions.baseProfileIndex = activeProfileIndex;
+    if (!encoded)
     {
         return false;
     }
@@ -2326,7 +2408,8 @@ bool ConfigUtils::save(Config& config)
     newFooter.magic = FOOTER_MAGIC;
 
     // The data has changed when the footer content has changed. Only then do we acutally need to save.
-    const ConfigFooter& oldFooter = *reinterpret_cast<ConfigFooter*>(EEPROM.writeCache + EEPROM_SIZE_BYTES - sizeof(ConfigFooter));
+    ConfigFooter oldFooter;
+    memcpy(&oldFooter, EEPROM.writeCache + EEPROM_SIZE_BYTES - sizeof(ConfigFooter), sizeof(oldFooter));
     if (newFooter == oldFooter)
     {
         // The data has not changed, no saving neccessary.
@@ -2334,8 +2417,7 @@ bool ConfigUtils::save(Config& config)
     }
 
     // Write the footer
-    ConfigFooter* cacheFooter = reinterpret_cast<ConfigFooter*>(EEPROM.writeCache + EEPROM_SIZE_BYTES - sizeof(ConfigFooter));
-    memcpy(cacheFooter, &newFooter, sizeof(ConfigFooter));
+    memcpy(EEPROM.writeCache + EEPROM_SIZE_BYTES - sizeof(ConfigFooter), &newFooter, sizeof(newFooter));
 
     // Move the encoded data in memory down to the footer
     memmove(EEPROM.writeCache + EEPROM_SIZE_BYTES - sizeof(ConfigFooter) - newFooter.dataSize, EEPROM.writeCache, newFooter.dataSize);

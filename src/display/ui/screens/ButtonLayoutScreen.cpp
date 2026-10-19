@@ -7,17 +7,21 @@
 #include "drivers/p5general/P5GeneralDriver.h"
 
 void ButtonLayoutScreen::init() {
-    isInputHistoryEnabled = Storage::getInstance().getDisplayOptions().inputHistoryEnabled;
-    inputHistoryX = Storage::getInstance().getDisplayOptions().inputHistoryRow;
-    inputHistoryY = Storage::getInstance().getDisplayOptions().inputHistoryCol;
-    inputHistoryLength = Storage::getInstance().getDisplayOptions().inputHistoryLength;
+    DisplayOptions & displayOptions = Storage::getInstance().getDisplayOptions();
+    GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();
+    isInputHistoryEnabled = displayOptions.inputHistoryEnabled;
+    inputHistoryX = displayOptions.inputHistoryRow;
+    inputHistoryY = displayOptions.inputHistoryCol;
+    inputHistoryLength = displayOptions.inputHistoryLength;
     gamepad = Storage::getInstance().GetGamepad();
     inputMode = DriverManager::getInstance().getInputMode();
 
     EventManager::getInstance().registerEventHandler(GP_EVENT_PROFILE_CHANGE, GPEVENT_CALLBACK(this->handleProfileChange(event)));
     EventManager::getInstance().registerEventHandler(GP_EVENT_USBHOST_MOUNT, GPEVENT_CALLBACK(this->handleUSB(event)));
     EventManager::getInstance().registerEventHandler(GP_EVENT_USBHOST_UNMOUNT, GPEVENT_CALLBACK(this->handleUSB(event)));
-    
+    EventManager::getInstance().registerEventHandler(GP_EVENT_LED_CHANGE, GPEVENT_CALLBACK(this->handleLEDChange(event)));
+    EventManager::getInstance().registerEventHandler(GP_EVENT_SYSTEM_REBOOT, GPEVENT_CALLBACK(this->handleSystemReboot(event)));
+
     footer = "";
     historyString = "";
     inputHistory.clear();
@@ -35,14 +39,20 @@ void ButtonLayoutScreen::init() {
         pushElement(currLayoutRight[elementCtr]);
     }
 
-	// get current profile number. Future changes are communicated by event
-    gamePadProfileNumber = (int16_t)(getGamepad()->getOptions().profileNumber);
- 
     prevLayoutLeft = Storage::getInstance().getDisplayOptions().buttonLayout;
     prevLayoutRight = Storage::getInstance().getDisplayOptions().buttonLayoutRight;
     prevLeftOptions = Storage::getInstance().getDisplayOptions().buttonLayoutCustomOptions.paramsLeft;
     prevRightOptions = Storage::getInstance().getDisplayOptions().buttonLayoutCustomOptions.paramsRight;
     prevOrientation = Storage::getInstance().getDisplayOptions().buttonLayoutOrientation;
+
+    // Any extra profile enabled? Display banner
+    ProfileOptions & profileOptions = Storage::getInstance().getProfileOptions();
+    for (pb_size_t i = 0; i < profileOptions.gpioMappingsSets_count; i++) {
+        if (profileOptions.gpioMappingsSets[i].enabled) {
+			EventManager::getInstance().triggerEvent(new GPProfileChangeEvent(-2, gamepadOptions.profileNumber));
+            break;
+        }
+    }
 
     // we cannot look at macro options enabled, pull the pins
     
@@ -79,16 +89,6 @@ void ButtonLayoutScreen::init() {
     showMacroMode = Storage::getInstance().getDisplayOptions().macroMode;
     showProfileMode = Storage::getInstance().getDisplayOptions().profileMode;
 
-    // only announce profile changes when there is more than one profile to switch between
-    showProfileBanner = false;
-    const ProfileOptions& profileOptions = Storage::getInstance().getProfileOptions();
-    for (pb_size_t i = 0; i < profileOptions.gpioMappingsSets_count; i++) {
-        if (profileOptions.gpioMappingsSets[i].enabled) {
-            showProfileBanner = true;
-            break;
-        }
-    }
-
     getRenderer()->clearScreen();
 }
 
@@ -114,96 +114,6 @@ void ButtonLayoutScreen::addCustomHeader(std::string newStr, std::string identif
     bannerIdentifier.push_back(identifier);
 }
 
-void ButtonLayoutScreen::updateCustomHeaders()
-{
-	Storage& storage = Storage::getInstance();
-
-    // Check to see if gamepad profile has changed
-    if (prevGamepadProfileNumber != gamePadProfileNumber) {
-        prevGamepadProfileNumber = gamePadProfileNumber;
-
-        if (showProfileBanner) {
-            bannerMessage.assign(storage.currentProfileLabel(), strlen(storage.currentProfileLabel()));
-            if (bannerMessage.empty()) {
-                bannerMessage = "     Profile #";
-                bannerMessage +=  std::to_string(gamePadProfileNumber);
-            } else {
-                bannerMessage.insert(bannerMessage.begin(), (21-bannerMessage.length())/2, ' ');
-            }
-
-            addCustomHeader(bannerMessage, "profile");
-        }
-    }
-
-    // Check to see if LED animation profile has changed
-    int8_t profileNumber = AnimationStation::options.baseProfileIndex;
-    // seed on first check so the banner only shows when the LED profile is cycled, not on boot
-    if (prevLEDAnimationProfileNumber == -2)
-        prevLEDAnimationProfileNumber = profileNumber;
-    if (prevLEDAnimationProfileNumber != profileNumber) {
-        prevLEDAnimationProfileNumber = profileNumber;
-
-        if(profileNumber != -1)
-        {
-            bannerMessage = "    LED Profile #";
-            bannerMessage +=  std::to_string(profileNumber+1); //add 1 so its from 1-x not from 0-x
-        }
-        else
-        {
-            bannerMessage = "    LED Profile OFF";
-        }
-
-        addCustomHeader(bannerMessage, "led");
-    }
-
-    checkLEDCycleParams();
-}
-
-void ButtonLayoutScreen::checkLEDCycleParams()
-{
-    int8_t baseCycleNumber = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCycleTime;
-    if(prevLEDBaseCycleNumber == -1)
-        prevLEDBaseCycleNumber = baseCycleNumber;
-    if (prevLEDBaseCycleNumber != baseCycleNumber) {
-        prevLEDBaseCycleNumber = baseCycleNumber;
-
-        bannerMessage = "LED Idle Rate =";
-        bannerMessage +=  std::to_string(baseCycleNumber+1); //add 1 so its from 1-x not from 0-x
-        bannerMessage += "/";
-        bannerMessage +=  std::to_string(CYCLE_STEPS); //add 1 so its from 1-x not from 0-x
-
-        addCustomHeader(bannerMessage, "ledBaseCycle");
-    }
-        
-    int8_t baseCaseCycleNumber = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].baseCaseCycleTime;
-    if(prevLEDBaseCaseCycleNumber == -1)
-        prevLEDBaseCaseCycleNumber = baseCaseCycleNumber;
-    if (prevLEDBaseCaseCycleNumber != baseCaseCycleNumber) {
-        prevLEDBaseCaseCycleNumber = baseCaseCycleNumber;
-
-        bannerMessage = "LED Case Rate =";
-        bannerMessage +=  std::to_string(baseCaseCycleNumber+1); //add 1 so its from 1-x not from 0-x
-        bannerMessage += "/";
-        bannerMessage +=  std::to_string(CYCLE_STEPS); //add 1 so its from 1-x not from 0-x
-
-        addCustomHeader(bannerMessage, "ledBaseCaseCycle");
-    }
-    
-    int8_t basePressedCycleNumber = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].basePressedCycleTime;
-    if(prevLEDBasePressedCycleNumber == -1)
-        prevLEDBasePressedCycleNumber = basePressedCycleNumber;
-    if (prevLEDBasePressedCycleNumber != basePressedCycleNumber) {
-        prevLEDBasePressedCycleNumber = basePressedCycleNumber;
-
-        bannerMessage = "LED Press Rate =";
-        bannerMessage +=  std::to_string(basePressedCycleNumber+1); //add 1 so its from 1-x not from 0-x
-        bannerMessage += "/";
-        bannerMessage +=  std::to_string(CYCLE_STEPS); //add 1 so its from 1-x not from 0-x
-
-        addCustomHeader(bannerMessage, "ledBasePressedCycle");
-    }
-}
-
 int8_t ButtonLayoutScreen::update() {
     bool configMode = DriverManager::getInstance().isConfigMode();
     
@@ -218,8 +128,6 @@ int8_t ButtonLayoutScreen::update() {
             init();
         }
     }
-
-    updateCustomHeaders();
 
     // main logic loop
 	generateHeader();
@@ -300,6 +208,13 @@ void ButtonLayoutScreen::generateHeader() {
                     default: statusBar += "SWPRO"; break;
                 }
                 break;
+            case INPUT_MODE_SWITCH2_PRO:
+                switch (Storage::getInstance().getGamepadOptions().switch2ProIdentity) {
+                    case SWITCH2_PRO_IDENTITY_JOYCON2_LEFT: statusBar += "SW2JCL"; break;
+                    case SWITCH2_PRO_IDENTITY_JOYCON2_RIGHT: statusBar += "SW2JCR"; break;
+                    default: statusBar += "SW2PRO"; break;
+                }
+                break;
             case INPUT_MODE_SINPUT: statusBar += "SINPUT"; break;
             case INPUT_MODE_PS4:
                 statusBar += "PS4";
@@ -332,7 +247,7 @@ void ButtonLayoutScreen::generateHeader() {
             case INPUT_MODE_XINPUT:
                 statusBar += "X";
                 if(((XInputDriver*)DriverManager::getInstance().getDriver())->getAuthSent() == true )
-                    statusBar += "B360";
+                    statusBar += "B360 ";
                 else
                     statusBar += "INPUT";
                 break;
@@ -477,7 +392,7 @@ GPWidget* ButtonLayoutScreen::pushElement(GPButtonLayout element) {
 }
 
 void ButtonLayoutScreen::processInputHistory() {
-	std::deque<std::string> pressed;
+	std::string newInput;
 
 	// Get key states
 	std::array<bool, INPUT_HISTORY_MAX_INPUTS> currentInput = {
@@ -506,22 +421,29 @@ void ButtonLayoutScreen::processInputHistory() {
 		getProcessedGamepad()->pressedR3(),
 		getProcessedGamepad()->pressedA1(),
 		getProcessedGamepad()->pressedA2(),
+		getProcessedGamepad()->pressedA3(),
 	};
 
 	uint8_t mode = ((displayModeLookup.count(inputMode) > 0) ? displayModeLookup.at(inputMode) : 0);
 	if (inputMode == INPUT_MODE_SWITCH_PRO) {
 		switch (Storage::getInstance().getGamepadOptions().switchProControllerType) {
 			case SWITCH_PRO_CONTROLLER_TYPE_SNES:
-			case SWITCH_PRO_CONTROLLER_TYPE_SUPER_FAMICOM: mode = 12; break;
-			case SWITCH_PRO_CONTROLLER_TYPE_N64: mode = 13; break;
+			case SWITCH_PRO_CONTROLLER_TYPE_SUPER_FAMICOM: mode = 15; break;
+			case SWITCH_PRO_CONTROLLER_TYPE_N64: mode = 16; break;
 			case SWITCH_PRO_CONTROLLER_TYPE_GENESIS:
-			case SWITCH_PRO_CONTROLLER_TYPE_MEGA_DRIVE: mode = 14; break;
-			case SWITCH_PRO_CONTROLLER_TYPE_JOYCON_LEFT: mode = 15; break;
-			case SWITCH_PRO_CONTROLLER_TYPE_JOYCON_RIGHT: mode = 16; break;
+			case SWITCH_PRO_CONTROLLER_TYPE_MEGA_DRIVE: mode = 17; break;
+			case SWITCH_PRO_CONTROLLER_TYPE_JOYCON_LEFT: mode = 18; break;
+			case SWITCH_PRO_CONTROLLER_TYPE_JOYCON_RIGHT: mode = 19; break;
 			case SWITCH_PRO_CONTROLLER_TYPE_NES:
 			case SWITCH_PRO_CONTROLLER_TYPE_FAMICOM_I:
-			case SWITCH_PRO_CONTROLLER_TYPE_FAMICOM_II: mode = 17; break;
+			case SWITCH_PRO_CONTROLLER_TYPE_FAMICOM_II: mode = 20; break;
 			default: mode = 1; break;
+		}
+	} else if (inputMode == INPUT_MODE_SWITCH2_PRO) {
+		switch (Storage::getInstance().getGamepadOptions().switch2ProIdentity) {
+			case SWITCH2_PRO_IDENTITY_JOYCON2_LEFT: mode = 13; break;
+			case SWITCH2_PRO_IDENTITY_JOYCON2_RIGHT: mode = 14; break;
+			default: break;
 		}
 	}
 
@@ -529,22 +451,18 @@ void ButtonLayoutScreen::processInputHistory() {
 	if (lastInput != currentInput) {
 		// Iterate through array
 		for (uint8_t x=0; x<INPUT_HISTORY_MAX_INPUTS; x++) {
-			// Add any pressed keys to deque
+			// Append any pressed keys in display order
 			std::string inputChar(displayNames[mode][x]);
-			if (currentInput[x] && (inputChar != "")) pressed.push_back(inputChar);
+			if (currentInput[x] && (inputChar != "")) {
+				if (!newInput.empty()) newInput += "+";
+				newInput += inputChar;
+			}
 		}
 		// Update the last keypress array
 		lastInput = currentInput;
 	}
 
-	if (pressed.size() > 0) {
-		std::string newInput;
-		for(const auto &s : pressed) {
-				if(!newInput.empty())
-						newInput += "+";
-				newInput += s;
-		}
-
+	if (!newInput.empty()) {
 		inputHistory.push_back(newInput);
 	}
 
@@ -653,7 +571,7 @@ bool ButtonLayoutScreen::pressedUpRight()
     {
         case DPAD_MODE_DIGITAL:      return ((getProcessedGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == (GAMEPAD_MASK_UP | GAMEPAD_MASK_RIGHT));
         case DPAD_MODE_LEFT_ANALOG:  return (getProcessedGamepad()->state.lx == GAMEPAD_JOYSTICK_MAX) && (getProcessedGamepad()->state.ly == GAMEPAD_JOYSTICK_MIN);
-        case DPAD_MODE_RIGHT_ANALOG: return (getProcessedGamepad()->state.lx == GAMEPAD_JOYSTICK_MAX) && (getProcessedGamepad()->state.ly == GAMEPAD_JOYSTICK_MIN);
+        case DPAD_MODE_RIGHT_ANALOG: return (getProcessedGamepad()->state.rx == GAMEPAD_JOYSTICK_MAX) && (getProcessedGamepad()->state.ry == GAMEPAD_JOYSTICK_MIN);
     }
 
     return false;
@@ -665,7 +583,7 @@ bool ButtonLayoutScreen::pressedDownLeft()
     {
         case DPAD_MODE_DIGITAL:      return ((getProcessedGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == (GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT));
         case DPAD_MODE_LEFT_ANALOG:  return (getProcessedGamepad()->state.lx == GAMEPAD_JOYSTICK_MIN) && (getProcessedGamepad()->state.ly == GAMEPAD_JOYSTICK_MAX);
-        case DPAD_MODE_RIGHT_ANALOG: return (getProcessedGamepad()->state.lx == GAMEPAD_JOYSTICK_MIN) && (getProcessedGamepad()->state.ly == GAMEPAD_JOYSTICK_MAX);
+        case DPAD_MODE_RIGHT_ANALOG: return (getProcessedGamepad()->state.rx == GAMEPAD_JOYSTICK_MIN) && (getProcessedGamepad()->state.ry == GAMEPAD_JOYSTICK_MAX);
     }
 
     return false;
@@ -677,7 +595,7 @@ bool ButtonLayoutScreen::pressedDownRight()
     {
         case DPAD_MODE_DIGITAL:      return ((getProcessedGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == (GAMEPAD_MASK_DOWN | GAMEPAD_MASK_RIGHT));
         case DPAD_MODE_LEFT_ANALOG:  return (getProcessedGamepad()->state.lx == GAMEPAD_JOYSTICK_MAX) && (getProcessedGamepad()->state.ly == GAMEPAD_JOYSTICK_MAX);
-        case DPAD_MODE_RIGHT_ANALOG: return (getProcessedGamepad()->state.lx == GAMEPAD_JOYSTICK_MAX) && (getProcessedGamepad()->state.ly == GAMEPAD_JOYSTICK_MAX);
+        case DPAD_MODE_RIGHT_ANALOG: return (getProcessedGamepad()->state.rx == GAMEPAD_JOYSTICK_MAX) && (getProcessedGamepad()->state.ry == GAMEPAD_JOYSTICK_MAX);
     }
 
     return false;
@@ -685,9 +603,23 @@ bool ButtonLayoutScreen::pressedDownRight()
 
 void ButtonLayoutScreen::handleProfileChange(GPEvent* e) {
     GPProfileChangeEvent* event = (GPProfileChangeEvent*)e;
+    Storage& storage = Storage::getInstance();
 
-    gamePadProfileNumber = event->currentValue;
-    prevGamepadProfileNumber = event->previousValue;
+    int8_t gamePadProfileNumber = event->currentValue;
+    int8_t prevGamepadProfileNumber = event->previousValue;
+
+    // Check to see if gamepad profile has changed
+    if (prevGamepadProfileNumber != gamePadProfileNumber) {
+        bannerMessage.assign(storage.currentProfileLabel(), strlen(storage.currentProfileLabel()));
+        if (bannerMessage.empty()) {
+            bannerMessage = "     Profile #";
+            bannerMessage +=  std::to_string(gamePadProfileNumber);
+        } else {
+            bannerMessage.insert(bannerMessage.begin(), (21-bannerMessage.length())/2, ' ');
+        }
+
+        addCustomHeader(bannerMessage, "profile");
+    }
 }
 
 void ButtonLayoutScreen::handleUSB(GPEvent* e) {
@@ -700,6 +632,56 @@ void ButtonLayoutScreen::handleUSB(GPEvent* e) {
     }
 
     addCustomHeader(bannerMessage, "USB");
+}
+
+void ButtonLayoutScreen::handleLEDChange(GPEvent* e) {
+    // GPEvent can be recast to a GPLEDChangeEvent * e
+    GPLEDEvent * ledEvent = (GPLEDEvent*)e;
+
+    AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+
+    // Order of events incase we get more than one
+    if ( ledEvent->bChangeProfile ) {
+        if(options.baseProfileIndex != -1) {
+            bannerMessage = "    LED Profile #";
+            bannerMessage +=  std::to_string(options.baseProfileIndex+1); //add 1 so its from 1-x not from 0-x
+        } else {
+            bannerMessage = "    LED Profile OFF";
+        }
+        addCustomHeader(bannerMessage, "led");
+    } else if ( ledEvent->bChangeBase ) {
+        int8_t baseCycleNumber = options.profiles[options.baseProfileIndex].baseCycleTime + 1;
+        bannerMessage = "LED Idle Rate: ";
+        bannerMessage +=  std::to_string(baseCycleNumber); //add 1 so its from 1-x not from 0-x
+        bannerMessage += "/";
+        bannerMessage +=  std::to_string(CYCLE_STEPS); //add 1 so its from 1-x not from 0-x
+        addCustomHeader(bannerMessage, "ledBaseCycle");
+    } else if ( ledEvent->bChangeCase ) {
+        int8_t baseCaseCycleNumber = options.profiles[options.baseProfileIndex].baseCaseCycleTime + 1;
+        bannerMessage = "LED Case Rate: ";
+        bannerMessage +=  std::to_string(baseCaseCycleNumber); //add 1 so its from 1-x not from 0-x
+        bannerMessage += "/";
+        bannerMessage +=  std::to_string(CYCLE_STEPS); //add 1 so its from 1-x not from 0-x
+        addCustomHeader(bannerMessage, "ledBaseCaseCycle");
+    } else if ( ledEvent->bChangePressed ) {
+        int8_t basePressedCycleNumber = options.profiles[options.baseProfileIndex].basePressedCycleTime + 1;
+        bannerMessage = "LED Press Rate: ";
+        bannerMessage +=  std::to_string(basePressedCycleNumber); //add 1 so its from 1-x not from 0-x
+        bannerMessage += "/";
+        bannerMessage +=  std::to_string(CYCLE_STEPS); //add 1 so its from 1-x not from 0-x
+        addCustomHeader(bannerMessage, "ledBasePressedCycle");
+    } else if ( ledEvent->bChangeBrightness ) {
+        int8_t brightness = options.brightness;
+        bannerMessage = "Brightness: ";
+        bannerMessage +=  std::to_string(brightness); //add 1 so its from 1-x not from 0-x
+        bannerMessage += "/";
+        bannerMessage +=  std::to_string(10); //add 1 so its from 1-x not from 0-x
+        addCustomHeader(bannerMessage, "ledBrightness");
+    }
+}
+
+void ButtonLayoutScreen::handleSystemReboot(GPEvent* e) {
+    getRenderer()->clearScreen();
 }
 
 void ButtonLayoutScreen::trim(std::string &s) {

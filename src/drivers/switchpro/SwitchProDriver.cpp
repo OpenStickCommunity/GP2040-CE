@@ -1,5 +1,7 @@
 #include "drivers/switchpro/SwitchProDriver.h"
 #include "drivers/shared/driverhelper.h"
+#include "drivers/shared/InputReportPolicy.h"
+#include "drivers/shared/USBReportScheduler.h"
 #include "storagemanager.h"
 #include "pico/rand.h"
 
@@ -24,6 +26,38 @@ static void setSwitchColor(SwitchColorDefinition& color, uint32_t rgb) {
     color.red = (rgb >> 16) & 0xFF;
     color.green = (rgb >> 8) & 0xFF;
     color.blue = rgb & 0xFF;
+}
+
+static constexpr uint8_t SWITCH_PRO_INPUT_ENDPOINT = 0x81;
+
+static void switchpro_reset(uint8_t rhport) {
+    hidd_reset(rhport);
+    USBReportScheduler::getInstance().reset();
+}
+
+static uint16_t switchpro_open(uint8_t rhport, tusb_desc_interface_t const *itf, uint16_t max_len) {
+    uint16_t const len = hidd_open(rhport, itf, max_len);
+    if (len != 0 && itf->bInterfaceNumber == 0) {
+        USBReportScheduler &scheduler = USBReportScheduler::getInstance();
+        scheduler.configure(SWITCH_PRO_INPUT_ENDPOINT, true);
+        scheduler.start();
+    }
+    return len;
+}
+
+static bool switchpro_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result, uint32_t xferred_bytes) {
+    if (ep_addr == SWITCH_PRO_INPUT_ENDPOINT) {
+        USBReportScheduler &scheduler = USBReportScheduler::getInstance();
+        bool const gameplay = scheduler.hasPendingReport();
+        if (result == XFER_RESULT_SUCCESS) {
+            scheduler.onReportComplete();
+        } else {
+            scheduler.onReportFailed();
+        }
+        // Only direct gameplay reports bypass HID's own completion buffer.
+        if (gameplay) return true;
+    }
+    return hidd_xfer_cb(rhport, ep_addr, result, xferred_bytes);
 }
 
 void SwitchProDriver::initialize() {
@@ -159,11 +193,11 @@ void SwitchProDriver::initialize() {
 		.name = "SWITCHPRO",
 	#endif
 		.init = hidd_init,
-		.reset = hidd_reset,
-		.open = hidd_open,
+		.reset = switchpro_reset,
+		.open = switchpro_open,
 		.control_xfer_cb = hidd_control_xfer_cb,
-		.xfer_cb = hidd_xfer_cb,
-		.sof = NULL
+		.xfer_cb = switchpro_xfer_cb,
+		.sof = USBReportScheduler::onSof
 	};
 
     if (joyConPair && controllerType == SWITCH_TYPE_LEFT_JOYCON && pairRight == nullptr) {
@@ -174,6 +208,15 @@ void SwitchProDriver::initialize() {
 }
 
 bool SwitchProDriver::process(Gamepad * gamepad) {
+    USBReportScheduler &scheduler = USBReportScheduler::getInstance();
+    if (hidInstance == 0) {
+        if (analogSchedulingProfile != gamepad->lastReinitProfileNumber) {
+            analogSchedulingProfile = gamepad->lastReinitProfileNumber;
+            analogSchedulingAllowed = !hasDigitalAxisMappings();
+            scheduler.resetInputTiming();
+        }
+        scheduler.beginInputProcessing();
+    }
     uint32_t now = to_ms_since_boot(get_absolute_time());
     reportSent = false;
     if (pairRight != nullptr)
@@ -335,14 +378,14 @@ bool SwitchProDriver::process(Gamepad * gamepad) {
 	if (tud_suspended())
 		tud_remote_wakeup();
 
-    if (isReportQueued) {
-        if ((now - last_report_timer) > SWITCH_PRO_KEEPALIVE_TIMER) {
-            if (tud_hid_n_ready(hidInstance) && sendReport(queuedReportID, report, 64) == true ) {
-            }
+    bool const protocolQueued = isReportQueued;
+    if (protocolQueued && (now - last_report_timer) > SWITCH_PRO_KEEPALIVE_TIMER) {
+        if (tud_hid_n_ready(hidInstance) && tud_hid_n_report(hidInstance, queuedReportID, report, 64)) {
+            last_report_counter++;
             isReportQueued = false;
             last_report_timer = now;
+            reportSent = true;
         }
-        reportSent = true;
     }
 
     Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
@@ -350,23 +393,33 @@ bool SwitchProDriver::process(Gamepad * gamepad) {
     processedGamepad->auxState.playerID.ledValue = playerID;
     processedGamepad->auxState.playerID.value = playerID;
 
-    if (isReady && !reportSent) {
-        if ((now - last_report_timer) > SWITCH_PRO_KEEPALIVE_TIMER) {
-            switchReport.timestamp = last_report_counter;
-            void * inputReport = &switchReport;
-            uint16_t report_size = sizeof(switchReport);
-            if (memcmp(last_report, inputReport, report_size) != 0) {
-                // HID ready + report sent, copy previous report
-                if (tud_hid_n_ready(hidInstance) && sendReport(0, inputReport, report_size) == true ) {
-                    memcpy(last_report, inputReport, report_size);
-                    reportSent = true;
-                }
-
+    if (isReady && !protocolQueued) {
+        bool const pending = hidInstance == 0 && scheduler.hasQueuedReport();
+        switchReport.timestamp = pending ? last_report[1] : last_report_counter;
+        uint8_t const *inputReport = reinterpret_cast<uint8_t const *>(&switchReport);
+        uint16_t const report_size = sizeof(switchReport);
+        // Timestamp advances only for a fresh submission, not payload changes.
+        if ((hidInstance == 0 && scheduler.needsReport()) || last_report[0] != inputReport[0] ||
+            memcmp(last_report + 2, inputReport + 2, report_size - 2) != 0 ||
+            (now - last_report_timer) > SWITCH_PRO_KEEPALIVE_TIMER) {
+            USBReportPriority priority = {};
+            priority.digital = uint64_t{inputReport[3]} |
+                (uint64_t{inputReport[4] & 0x3fu} << 8) | (uint64_t{inputReport[5]} << 16);
+            bool const allowAnalogScheduling = analogSchedulingAllowed &&
+                gamepad->getActiveDpadMode() == DPAD_MODE_DIGITAL;
+            // The scheduler owns the first HID interface; the Joy-Con pair's right half sends directly
+            bool const sent = hidInstance == 0
+                ? scheduler.sendDirectReport(inputReport, report_size, priority, allowAnalogScheduling)
+                : (tud_hid_n_ready(hidInstance) && tud_hid_n_report(hidInstance, 0, inputReport, report_size));
+            if (sent) {
+                memcpy(last_report, inputReport, report_size);
+                if (!pending) last_report_counter++;
                 last_report_timer = now;
+                reportSent = true;
             }
         }
     } else {
-        if (!isInitialized) {
+        if (!isInitialized && !protocolQueued) {
             // send identification
             sendIdentify();
             if (tud_hid_n_ready(hidInstance) && tud_hid_n_report(hidInstance, 0, report, 64) == true) {
@@ -378,6 +431,8 @@ bool SwitchProDriver::process(Gamepad * gamepad) {
         }
     }
 
+    if (hidInstance == 0)
+        scheduler.endInputProcessing();
     return reportSent;
 }
 
@@ -406,16 +461,6 @@ void SwitchProDriver::sendIdentify() {
 
 void SwitchProDriver::sendSubCommand(uint8_t subCommand) {
 
-}
-
-bool SwitchProDriver::sendReport(uint8_t reportID, void const* reportData, uint16_t reportLength) {
-    bool result = tud_hid_n_report(hidInstance, reportID, reportData, reportLength);
-    if (last_report_counter < 255) {
-        last_report_counter++;
-    } else {
-        last_report_counter = 0;
-    }
-    return result;
 }
 
 void SwitchProDriver::handleConfigReport(uint8_t switchReportID, uint8_t switchReportSubID, const uint8_t *reportData, uint16_t reportLength) {
@@ -468,6 +513,8 @@ void SwitchProDriver::handleConfigReport(uint8_t switchReportID, uint8_t switchR
 }
 
 void SwitchProDriver::handleFeatureReport(uint8_t switchReportID, uint8_t switchReportSubID, const uint8_t *reportData, uint16_t reportLength) {
+    if (reportLength < 11) return;
+
     uint8_t commandID = reportData[10];
     uint32_t spiReadAddress = 0;
     uint8_t spiReadSize = 0;
@@ -560,6 +607,8 @@ void SwitchProDriver::handleFeatureReport(uint8_t switchReportID, uint8_t switch
             //printf("\n");
             break;
         case SwitchCommands::SPI_READ:
+            if (reportLength < 16 || reportData[15] > sizeof(report) - 20) return;
+
             //printf("SwitchProDriver::set_report: Rpt 0x01 SPI_READ\n");
             spiReadAddress = (reportData[14] << 24) | (reportData[13] << 16) | (reportData[12] << 8) | (reportData[11]);
             spiReadSize = reportData[15];
@@ -679,18 +728,18 @@ void SwitchProDriver::handleFeatureReport(uint8_t switchReportID, uint8_t switch
 }
 
 void SwitchProDriver::set_report(uint8_t report_id, hid_report_type_t report_type, const uint8_t *buffer, uint16_t bufsize) {
-    if (report_type != HID_REPORT_TYPE_OUTPUT) return;
-
-    memset(report, 0x00, bufsize);
+    if (report_type != HID_REPORT_TYPE_OUTPUT || bufsize < 2 || bufsize > sizeof(report)) return;
 
     uint8_t switchReportID = buffer[0];
     uint8_t switchReportSubID = buffer[1];
     //printf("SwitchProDriver::set_report Rpt: %02x, Type: %d, Len: %d :: SID: %02x, SSID: %02x\n", report_id, report_type, bufsize, switchReportID, switchReportSubID);
     if (switchReportID == SwitchReportID::REPORT_OUTPUT_00) {
     } else if (switchReportID == SwitchReportID::REPORT_FEATURE) {
+        memset(report, 0x00, bufsize);
         queuedReportID = report_id;
         handleFeatureReport(switchReportID, switchReportSubID, buffer, bufsize);
     } else if (switchReportID == SwitchReportID::REPORT_CONFIGURATION) {
+        memset(report, 0x00, bufsize);
         queuedReportID = report_id;
         handleConfigReport(switchReportID, switchReportSubID, buffer, bufsize);
     } else {
@@ -704,7 +753,8 @@ void SwitchProDriver::readSPIFlash(uint8_t* dest, uint32_t address, uint8_t size
     //printf("Address: %08x, Bank: %04x, Offset: %04x, Size: %d\n", address, addressBank, addressOffset, size);
     std::map<uint32_t, const uint8_t*>::iterator it = spiFlashData.find(addressBank);
 
-    if (it != spiFlashData.end()) {
+    if (it != spiFlashData.end() &&
+        addressOffset + size <= (addressBank == 0x6000 ? sizeof(factoryConfigData) : sizeof(userCalibrationData))) {
         // address found
         const uint8_t* data = it->second;
         memcpy(dest, data+addressOffset, size);
@@ -723,6 +773,9 @@ bool SwitchProDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb
 }
 
 const uint16_t * SwitchProDriver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
+	if (index >= TU_ARRAY_SIZE(switch_pro_string_descriptors))
+		return nullptr;
+
 	const char *value = (const char *)switch_pro_string_descriptors[index];
 	if (index == 2) value = (const char *)productString;
 	return getStringDescriptor(value, index); // getStringDescriptor returns a static array

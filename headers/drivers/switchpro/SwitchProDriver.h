@@ -45,6 +45,8 @@ private:
     SwitchProReport switchReport;
     uint8_t last_report_counter;
     uint32_t last_report_timer;
+    uint32_t analogSchedulingProfile = UINT32_MAX;
+    bool analogSchedulingAllowed = false;
     bool isReady = false;
     bool isInitialized = false;
     bool isReportQueued = false;
@@ -66,8 +68,6 @@ private:
 
     void sendIdentify();
     void sendSubCommand(uint8_t subCommand);
-
-    bool sendReport(uint8_t reportID, const void* reportData, uint16_t reportLength);
 
     void readSPIFlash(uint8_t* dest, uint32_t address, uint8_t size);
 

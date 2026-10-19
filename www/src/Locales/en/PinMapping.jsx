@@ -18,6 +18,10 @@ export default {
 	'profile-pins-warning':
 		'Try to avoid changing the buttons and/or directions used for the switch profile hotkeys. Otherwise, it will be difficult to understand what profile is being selected!',
 	'profile-copy-base': 'Copy base profile',
+	'pin-inversion-label': 'Invert Pins',
+	'pin-inversion-tooltip':
+		'Shows a checkbox next to each pin. Checked pins are pressed when the pin reads high, for active-high switches such as optical switches.',
+	'pin-invert-label': 'Invert GP{{pin}}',
 	actions: {
 		NONE: 'None',
 		RESERVED: 'Reserved',

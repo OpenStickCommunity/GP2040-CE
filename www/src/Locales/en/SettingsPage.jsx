@@ -11,6 +11,7 @@ export default {
 		xinput: 'XInput',
 		'nintendo-switch': 'Nintendo Switch',
 		'nintendo-switch-pro': 'Nintendo Switch Pro',
+		'nintendo-switch2-pro': 'Nintendo Switch 2 Pro',
 		ps3: 'PS3',
 		generic: 'Generic HID',
 		keyboard: 'Keyboard',
@@ -93,6 +94,36 @@ export default {
 		gp2040: 'GP2040-CE',
 		custom: 'Custom',
 	},
+	'switch2-pro-identity-label': 'Controller Type',
+	'switch2-pro-identity-options': {
+		pro2: 'Switch 2 Pro Controller',
+		gamecube: 'GameCube Controller',
+		'joycon2-left': 'Joy-Con 2 (L)',
+		'joycon2-right': 'Joy-Con 2 (R)',
+	},
+	'switch2-pro-joycon2-color-explanation':
+		'Sets the colors the Switch 2 shows for this Joy-Con 2.',
+	'switch2-pro-joycon2-color-presets': {
+		stock: 'Stock',
+		'purple-green': 'Purple / Green',
+		'blue-yellow': 'Blue / Yellow',
+		gp2040: 'GP2040-CE',
+		custom: 'Custom',
+	},
+	'switch2-pro-joycon2-color-parts': {
+		body: 'Body',
+		buttons: 'Buttons',
+		accent: 'Accent',
+		stick: 'Stick',
+	},
+	'switch2-pro-color-label': 'Controller Display Colors',
+	'switch2-pro-color-explanation':
+		'Sets the colors the Switch 2 shows for this controller.',
+	'switch2-pro-color-presets': {
+		stock: 'Stock',
+		gp2040: 'GP2040-CE',
+		custom: 'Custom',
+	},
 	'switch-pro-joycon-single-note':
 		"To use a single Joy-Con on its own, go into 'Change Grip/Order' and press SL + SR ({{buttons}}). You will need to do this each time you change between {{mode}} and Joy-Con (L + R) mode.",
 	'switch-pro-joycon-single-warning':
@@ -119,6 +150,12 @@ export default {
 		'left-buttons': 'Left Buttons',
 		'right-body': 'Right Body',
 		'right-buttons': 'Right Buttons',
+	},
+	'switch2-pro-color-parts': {
+		'face-plate': 'Face Plate',
+		buttons: 'Buttons',
+		highlight: 'Highlight',
+		'main-body': 'Main Body',
 	},
 	'ps4-id-mode-options': {
 		console: 'Console',
@@ -223,6 +260,7 @@ export default {
 		'If you reboot to Controller mode after saving, you will no longer have access to the web-config. Please type "<strong>{{warningCheckText}}</strong>" below to unlock the Save button if you fully acknowledge this and intend it. Clicking on Dismiss will revert this setting which then is to be saved.',
 	'4-way-joystick-mode-label': '4-Way Joystick Mode',
 	'keyboard-mapping-header-text': 'Keyboard Mapping',
+	'keyboard-profile-label': 'Profile',
 	'keyboard-mapping-sub-header-text':
 		'Use the form below to reconfigure your button-to-key mapping.',
 	'usb-override': {

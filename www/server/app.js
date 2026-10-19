@@ -276,7 +276,12 @@ const BoardLights = [
 
 // Structure pin mappings to include masks and profile label
 const createPinMappings = ({ profileLabel = 'Profile', enabled = true }) => {
-	let pinMappings = { profileLabel, enabled };
+	let pinMappings = {
+		profileLabel,
+		enabled,
+		pinInversionEnabled: false,
+		invertedPins: [],
+	};
 
 	for (const [key, value] of Object.entries(picoController.usedPins)) {
 		pinMappings[key] = {
@@ -466,6 +471,21 @@ app.get('/api/getGamepadOptions', (req, res) => {
 		switchProJoyConLeftButtonsColor: 0x0f0f0f,
 		switchProJoyConRightBodyColor: 0xff3c28,
 		switchProJoyConRightButtonsColor: 0x0f0f0f,
+		switch2ProIdentity: 0,
+		switch2ProColorPreset: 0,
+		switch2ProBodyColor: 0x232323,
+		switch2ProButtonsColor: 0xa0a0a0,
+		switch2ProHighlightColor: 0xe6e6e6,
+		switch2ProGripColor: 0x323232,
+		switch2ProJoyCon2ColorPreset: 0,
+		switch2ProJoyCon2LeftBodyColor: 0x323232,
+		switch2ProJoyCon2LeftButtonsColor: 0xaaaaaa,
+		switch2ProJoyCon2LeftAccentColor: 0x9be1e6,
+		switch2ProJoyCon2LeftStickColor: 0x323232,
+		switch2ProJoyCon2RightBodyColor: 0x323232,
+		switch2ProJoyCon2RightButtonsColor: 0xaaaaaa,
+		switch2ProJoyCon2RightAccentColor: 0xff8c5f,
+		switch2ProJoyCon2RightStickColor: 0x323232,
 		usbDescOverride: 0,
 		usbDescProduct: 'GP2040-CE (Custom)',
 		usbDescManufacturer: 'Open Stick Community',
@@ -577,6 +597,15 @@ app.get('/api/getPinMappings', (req, res) => {
 
 app.get('/api/getKeyMappings', (req, res) =>
 	res.send(mapValues(DEFAULT_KEYBOARD_MAPPING)),
+);
+
+app.get('/api/getProfileKeyMappings', (req, res) =>
+	res.send({
+		profiles: [
+			mapValues(DEFAULT_KEYBOARD_MAPPING),
+			mapValues(DEFAULT_KEYBOARD_MAPPING),
+		],
+	}),
 );
 
 app.get('/api/getPeripheralOptions', (req, res) => {
