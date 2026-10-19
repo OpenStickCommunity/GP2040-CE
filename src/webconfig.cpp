@@ -486,18 +486,6 @@ std::string setDisplayOptions(DisplayOptions& displayOptions)
     readDoc(displayOptions.inputHistoryRow, doc, "inputHistoryRow");
     readDoc(displayOptions.contrast, doc, "displayContrast");
 
-    readDoc(displayOptions.buttonLayoutCustomOptions.paramsLeft.layout, doc, "buttonLayoutCustomOptions", "params", "layout");
-    readDoc(displayOptions.buttonLayoutCustomOptions.paramsLeft.common.startX, doc, "buttonLayoutCustomOptions", "params", "startX");
-    readDoc(displayOptions.buttonLayoutCustomOptions.paramsLeft.common.startY, doc, "buttonLayoutCustomOptions", "params", "startY");
-    readDoc(displayOptions.buttonLayoutCustomOptions.paramsLeft.common.buttonRadius, doc, "buttonLayoutCustomOptions", "params", "buttonRadius");
-    readDoc(displayOptions.buttonLayoutCustomOptions.paramsLeft.common.buttonPadding, doc, "buttonLayoutCustomOptions", "params", "buttonPadding");
-
-    readDoc(displayOptions.buttonLayoutCustomOptions.paramsRight.layout, doc, "buttonLayoutCustomOptions", "paramsRight", "layout");
-    readDoc(displayOptions.buttonLayoutCustomOptions.paramsRight.common.startX, doc, "buttonLayoutCustomOptions", "paramsRight", "startX");
-    readDoc(displayOptions.buttonLayoutCustomOptions.paramsRight.common.startY, doc, "buttonLayoutCustomOptions", "paramsRight", "startY");
-    readDoc(displayOptions.buttonLayoutCustomOptions.paramsRight.common.buttonRadius, doc, "buttonLayoutCustomOptions", "paramsRight", "buttonRadius");
-    readDoc(displayOptions.buttonLayoutCustomOptions.paramsRight.common.buttonPadding, doc, "buttonLayoutCustomOptions", "paramsRight", "buttonPadding");
-
     applyCustomLayout(displayOptions.has_customLayoutA, displayOptions.customLayoutA.bytes, displayOptions.customLayoutA.size, doc, "customLayoutA", customLayoutA);
     applyCustomLayout(displayOptions.has_customLayoutB, displayOptions.customLayoutB.bytes, displayOptions.customLayoutB.size, doc, "customLayoutB", customLayoutB);
 
@@ -548,18 +536,6 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
     writeDoc(doc, "inputHistoryCol", displayOptions.inputHistoryCol);
     writeDoc(doc, "inputHistoryRow", displayOptions.inputHistoryRow);
     writeDoc(doc, "displayContrast", displayOptions.contrast);
-
-    writeDoc(doc, "buttonLayoutCustomOptions", "params", "layout", displayOptions.buttonLayoutCustomOptions.paramsLeft.layout);
-    writeDoc(doc, "buttonLayoutCustomOptions", "params", "startX", displayOptions.buttonLayoutCustomOptions.paramsLeft.common.startX);
-    writeDoc(doc, "buttonLayoutCustomOptions", "params", "startY", displayOptions.buttonLayoutCustomOptions.paramsLeft.common.startY);
-    writeDoc(doc, "buttonLayoutCustomOptions", "params", "buttonRadius", displayOptions.buttonLayoutCustomOptions.paramsLeft.common.buttonRadius);
-    writeDoc(doc, "buttonLayoutCustomOptions", "params", "buttonPadding", displayOptions.buttonLayoutCustomOptions.paramsLeft.common.buttonPadding);
-
-    writeDoc(doc, "buttonLayoutCustomOptions", "paramsRight", "layout", displayOptions.buttonLayoutCustomOptions.paramsRight.layout);
-    writeDoc(doc, "buttonLayoutCustomOptions", "paramsRight", "startX", displayOptions.buttonLayoutCustomOptions.paramsRight.common.startX);
-    writeDoc(doc, "buttonLayoutCustomOptions", "paramsRight", "startY", displayOptions.buttonLayoutCustomOptions.paramsRight.common.startY);
-    writeDoc(doc, "buttonLayoutCustomOptions", "paramsRight", "buttonRadius", displayOptions.buttonLayoutCustomOptions.paramsRight.common.buttonRadius);
-    writeDoc(doc, "buttonLayoutCustomOptions", "paramsRight", "buttonPadding", displayOptions.buttonLayoutCustomOptions.paramsRight.common.buttonPadding);
 
     writeCustomLayout(displayOptions.customLayoutA.bytes, displayOptions.customLayoutA.size, doc, "customLayoutA");
     writeCustomLayout(displayOptions.customLayoutB.bytes, displayOptions.customLayoutB.size, doc, "customLayoutB");
@@ -931,12 +907,12 @@ std::string getButtonLayoutDefs()
 
     for (layoutCtr = _ButtonLayout_MIN; layoutCtr < _ButtonLayout_ARRAYSIZE; layoutCtr++) {
         LayoutManager::LayoutList leftLayout = LayoutManager::getInstance().getLeftLayout((ButtonLayout)layoutCtr);
-        if ((leftLayout.size() > 0) || (layoutCtr == ButtonLayout::BUTTON_LAYOUT_BLANKA) || (layoutCtr == ButtonLayout::BUTTON_LAYOUT_CUSTOMA) || (layoutCtr == ButtonLayout::BUTTON_LAYOUT_CUSTOM_DEFINED_A)) writeDoc(doc, "buttonLayout", LayoutManager::getInstance().getButtonLayoutName((ButtonLayout)layoutCtr), layoutCtr);
+        if ((leftLayout.size() > 0) || (layoutCtr == ButtonLayout::BUTTON_LAYOUT_BLANKA) || (layoutCtr == ButtonLayout::BUTTON_LAYOUT_CUSTOM_DEFINED_A)) writeDoc(doc, "buttonLayout", LayoutManager::getInstance().getButtonLayoutName((ButtonLayout)layoutCtr), layoutCtr);
     }
 
     for (layoutCtr = _ButtonLayoutRight_MIN; layoutCtr < _ButtonLayoutRight_ARRAYSIZE; layoutCtr++) {
         LayoutManager::LayoutList rightLayout = LayoutManager::getInstance().getRightLayout((ButtonLayoutRight)layoutCtr);
-        if ((rightLayout.size() > 0) || (layoutCtr == ButtonLayoutRight::BUTTON_LAYOUT_BLANKB) || (layoutCtr == ButtonLayoutRight::BUTTON_LAYOUT_CUSTOMB) || (layoutCtr == ButtonLayoutRight::BUTTON_LAYOUT_CUSTOM_DEFINED_B)) writeDoc(doc, "buttonLayoutRight", LayoutManager::getInstance().getButtonLayoutRightName((ButtonLayoutRight)layoutCtr), layoutCtr);
+        if ((rightLayout.size() > 0) || (layoutCtr == ButtonLayoutRight::BUTTON_LAYOUT_BLANKB) || (layoutCtr == ButtonLayoutRight::BUTTON_LAYOUT_CUSTOM_DEFINED_B)) writeDoc(doc, "buttonLayoutRight", LayoutManager::getInstance().getButtonLayoutRightName((ButtonLayoutRight)layoutCtr), layoutCtr);
     }
 
     return serialize_json(doc);

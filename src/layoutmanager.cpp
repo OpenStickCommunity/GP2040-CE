@@ -247,8 +247,6 @@ LayoutManager::LayoutList LayoutManager::getLeftLayout(uint16_t index) {
             return drawBlankA();
         case BUTTON_LAYOUT_FIGHTBOARD_MIRRORED:
             return drawFightboardMirrored();
-        case BUTTON_LAYOUT_CUSTOMA:
-            return drawButtonLayoutLeft();
         case BUTTON_LAYOUT_OPENCORE0WASDA:
             return drawOpenCore0WASDA();
         case BUTTON_LAYOUT_STICKLESS_13:
@@ -355,8 +353,6 @@ LayoutManager::LayoutList LayoutManager::getRightLayout(uint16_t index) {
             return this->drawFightboard();
         case BUTTON_LAYOUT_FIGHTBOARD_STICK_MIRRORED:
             return this->drawFightboardStickMirrored();
-        case BUTTON_LAYOUT_CUSTOMB:
-            return this->drawButtonLayoutRight();
         case BUTTON_LAYOUT_KEYBOARD8B:
             return this->drawMAME8B();
         case BUTTON_LAYOUT_OPENCORE0WASDB:
@@ -488,52 +484,6 @@ LayoutManager::LayoutList LayoutManager::drawCustomDefinedA() {
 LayoutManager::LayoutList LayoutManager::drawCustomDefinedB() {
     const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
     return drawCustomDefined(options.customLayoutB.bytes, options.customLayoutB.size);
-}
-
-LayoutManager::LayoutList LayoutManager::drawButtonLayoutLeft()
-{
-    const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
-    ButtonLayoutCustomOptions buttonLayoutCustomOptions = options.buttonLayoutCustomOptions;
-    ButtonLayoutParamsLeft leftOptions = buttonLayoutCustomOptions.paramsLeft;
-    if (leftOptions.layout == BUTTON_LAYOUT_CUSTOMA) return {};
-    return adjustByCustomSettings(getLeftLayout(leftOptions.layout), leftOptions.common);
-}
-
-LayoutManager::LayoutList LayoutManager::drawButtonLayoutRight()
-{
-    const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
-    ButtonLayoutCustomOptions buttonLayoutCustomOptions = options.buttonLayoutCustomOptions;
-    ButtonLayoutParamsRight rightOptions = buttonLayoutCustomOptions.paramsRight;
-    if (rightOptions.layout == BUTTON_LAYOUT_CUSTOMB) return {};
-    return adjustByCustomSettings(getRightLayout(rightOptions.layout), rightOptions.common, 64);
-}
-
-LayoutManager::LayoutList LayoutManager::adjustByCustomSettings(LayoutManager::LayoutList layout, ButtonLayoutParamsCommon common, uint16_t originX, uint16_t originY) {
-    if (layout.size() > 0) {
-        int32_t startX = layout[0].parameters.x1;
-        int32_t startY = layout[0].parameters.y1;
-        int32_t customX = common.startX;
-        int32_t customY = common.startY;
-        int32_t offsetX = customX-startX;
-        int32_t offsetY = customY-startY;
-        for (uint16_t elementCtr = 0; elementCtr < layout.size(); elementCtr++) {
-            if ((layout[elementCtr].elementType == GP_ELEMENT_BTN_BUTTON) || (layout[elementCtr].elementType == GP_ELEMENT_HE_BUTTON)) {
-                layout[elementCtr].parameters.x1 += originX+(offsetX+common.buttonPadding);
-                layout[elementCtr].parameters.y1 += originY+(offsetY+common.buttonPadding);
-            } else {
-                layout[elementCtr].parameters.x1 += originX+offsetX;
-                layout[elementCtr].parameters.y1 += originY+offsetY;
-            }
-
-            if (((GPShape_Type)layout[elementCtr].parameters.shape == GP_SHAPE_ELLIPSE) || ((GPShape_Type)layout[elementCtr].parameters.shape == GP_SHAPE_POLYGON)) {
-                // radius
-                layout[elementCtr].parameters.x2 = common.buttonRadius;
-                if ((GPShape_Type)layout[elementCtr].parameters.shape == GP_SHAPE_ELLIPSE)
-                    layout[elementCtr].parameters.y2 = common.buttonRadius;
-            }
-        }
-    }
-    return layout;
 }
 
 LayoutManager::LayoutList LayoutManager::adjustByOffset(LayoutManager::LayoutList layout, int16_t originX, int16_t originY) {
