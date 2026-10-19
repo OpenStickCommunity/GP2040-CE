@@ -33,6 +33,7 @@ typedef enum {
     CMD_VIBRATION    = 0x0A,
     CMD_BATTERY      = 0x0B,
     CMD_FEATURE      = 0x0C,
+    CMD_FW_UPDATE    = 0x0D,
     CMD_FW_INFO      = 0x10,
     CMD_UNKNOWN11    = 0x11,
     CMD_PAIRING      = 0x15,
@@ -287,7 +288,7 @@ static void handleCommand(const uint8_t *req) {
             break;
         case CMD_FW_INFO:
             if (sub == 0x01) {
-                const uint8_t payload[] = { 0x02, 0x01, 0x04, firmwareType, 0x0C, 0x00, 0x00, 0x00, 0x00, 0x02, 0x03, 0x00 };
+                const uint8_t payload[] = { 0x00, 0x00, 0x00, firmwareType, 0x0C, 0x00, 0x00, 0x00, 0x00, 0x02, 0x03, 0x00 };
                 setReply(command, sub, payload, sizeof(payload));
             } else {
                 setReply(command, sub, nullptr, 0);
@@ -396,8 +397,10 @@ static bool switch2pro_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_contr
 static bool switch2pro_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result, uint32_t xferred_bytes) {
     switch (ep_addr) {
         case SWITCH2_PRO_EP_BULK_OUT:
+            // Ignore firmware updates so the console fails cleanly instead of hanging
             if (result == XFER_RESULT_SUCCESS && xferred_bytes >= 4 &&
-                    cmdRequest[1] == CMD_DIRECTION_REQUEST && cmdRequest[2] == CMD_TRANSPORT_USB) {
+                    cmdRequest[1] == CMD_DIRECTION_REQUEST && cmdRequest[2] == CMD_TRANSPORT_USB &&
+                    cmdRequest[0] != CMD_FW_UPDATE) {
                 if (xferred_bytes < sizeof(cmdRequest))
                     memset(&cmdRequest[xferred_bytes], 0, sizeof(cmdRequest) - xferred_bytes);
                 handleCommand(cmdRequest);

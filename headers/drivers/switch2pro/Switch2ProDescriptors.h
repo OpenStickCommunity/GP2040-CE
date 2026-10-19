@@ -153,8 +153,9 @@ static const char * const switch2_joycon2_left_product_string = "Joy-Con 2 (L)";
 static const char * const switch2_joycon2_right_product_string = "Joy-Con 2 (R)";
 static const uint16_t switch2pro_language_ids[] = { 0x0409, 0x0402, 0x0801 };
 
+// Firmware version 0.0.0: the console currently skips the update check for it
 static const uint8_t switch2pro_device_info[] = {
-    0x02, 0x01, 0x04,
+    0x00, 0x00, 0x00,
     0x0C, 0x00, 0x00, 0x00,
     0x00, 0x02, 0x03,
     0xE8, 0x20, 0x17, 0x05, 0x48, 0xC8,
