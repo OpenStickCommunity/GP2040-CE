@@ -557,8 +557,9 @@ bool Switch2ProDriver::process(Gamepad * gamepad) {
     if (gamepad->pressedB2()) b0 |= SWITCH2_PRO_MASK_A;
     if (gamepad->pressedB3()) b0 |= SWITCH2_PRO_MASK_Y;
     if (gamepad->pressedB4()) b0 |= SWITCH2_PRO_MASK_X;
-    if (gamepad->pressedR1()) b0 |= SWITCH2_PRO_MASK_R;
-    if (gamepad->pressedR2()) b0 |= SWITCH2_PRO_MASK_ZR;
+    const bool gamecube = firmwareType == SWITCH2_FW_TYPE_GAMECUBE;
+    if (gamepad->pressedR1()) b0 |= gamecube ? SWITCH2_GAMECUBE_MASK_Z : SWITCH2_PRO_MASK_R;
+    if (gamepad->pressedR2()) b0 |= gamecube ? SWITCH2_GAMECUBE_MASK_R : SWITCH2_PRO_MASK_ZR;
     if (gamepad->pressedS2()) b0 |= SWITCH2_PRO_MASK_PLUS;
     if (gamepad->pressedR3()) b0 |= SWITCH2_PRO_MASK_RSTICK;
 
@@ -566,8 +567,8 @@ bool Switch2ProDriver::process(Gamepad * gamepad) {
     if (gamepad->pressedRight()) b1 |= SWITCH2_PRO_MASK_RIGHT;
     if (gamepad->pressedLeft())  b1 |= SWITCH2_PRO_MASK_LEFT;
     if (gamepad->pressedUp())    b1 |= SWITCH2_PRO_MASK_UP;
-    if (gamepad->pressedL1())    b1 |= SWITCH2_PRO_MASK_L;
-    if (gamepad->pressedL2())    b1 |= SWITCH2_PRO_MASK_ZL;
+    if (gamepad->pressedL1())    b1 |= gamecube ? SWITCH2_GAMECUBE_MASK_ZL : SWITCH2_PRO_MASK_L;
+    if (gamepad->pressedL2())    b1 |= gamecube ? SWITCH2_GAMECUBE_MASK_L : SWITCH2_PRO_MASK_ZL;
     if (gamepad->pressedS1())    b1 |= SWITCH2_PRO_MASK_MINUS;
     if (gamepad->pressedL3())    b1 |= SWITCH2_PRO_MASK_LSTICK;
 
@@ -583,6 +584,10 @@ bool Switch2ProDriver::process(Gamepad * gamepad) {
     packStick(&inputReport[5], gamepad->state.lx, gamepad->state.ly);
     packStick(&inputReport[8], gamepad->state.rx, gamepad->state.ry);
     inputReport[11] = 0x38;
+    if (gamecube) {
+        inputReport[12] = gamepad->pressedL2() ? 0xFF : (gamepad->hasAnalogTriggers ? gamepad->state.lt : 0x00);
+        inputReport[13] = gamepad->pressedR2() ? 0xFF : (gamepad->hasAnalogTriggers ? gamepad->state.rt : 0x00);
+    }
     if (joyCon2Side != 0) {
         const bool left = joyCon2Side == 1;
         uint16_t x = gamepad->state.lx;
@@ -633,7 +638,8 @@ bool Switch2ProDriver::process(Gamepad * gamepad) {
 
     inputReport[0] = reportCounter;
     const uint8_t reportId = joyCon2Side == 1 ? SWITCH2_JOYCON2_LEFT_INPUT_REPORT_ID
-        : joyCon2Side == 2 ? SWITCH2_JOYCON2_RIGHT_INPUT_REPORT_ID : SWITCH2_PRO_INPUT_REPORT_ID;
+        : joyCon2Side == 2 ? SWITCH2_JOYCON2_RIGHT_INPUT_REPORT_ID
+        : firmwareType == SWITCH2_FW_TYPE_GAMECUBE ? SWITCH2_GAMECUBE_INPUT_REPORT_ID : SWITCH2_PRO_INPUT_REPORT_ID;
     if (!tud_hid_n_report(0, reportId, inputReport, sizeof(inputReport)))
         return false;
     memcpy(lastSentState, &inputReport[2], sizeof(lastSentState));
@@ -706,6 +712,8 @@ const uint8_t * Switch2ProDriver::get_hid_descriptor_report_cb(uint8_t itf) {
         return switch2_joycon2_left_report_descriptor;
     if (joyCon2Side == 2)
         return switch2_joycon2_right_report_descriptor;
+    if (firmwareType == SWITCH2_FW_TYPE_GAMECUBE)
+        return switch2gamecube_report_descriptor;
     return switch2pro_report_descriptor;
 }
 
