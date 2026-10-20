@@ -315,6 +315,9 @@ message DisplayOptions
     optional uint32 inputHistoryRow = 30;
     
     optional uint32 contrast = 31;
+
+    optional bytes customLayoutA = 32 [(nanopb).max_size = 288];
+    optional bytes customLayoutB = 33 [(nanopb).max_size = 288];
 }
 
 message LightCluster

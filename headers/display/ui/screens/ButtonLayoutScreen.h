@@ -186,7 +186,7 @@ class ButtonLayoutScreen : public GPScreen {
     private:
         // new layout methods
         GPLever* addLever(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, uint16_t inputType);
-        GPButton* addButton(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, int16_t inputMask = -1);
+        GPButton* addButton(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, int32_t inputMask = -1);
         GPSprite* addSprite(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY);
         GPShape* addShape(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor);
         GPWidget* pushElement(GPButtonLayout element);
@@ -246,6 +246,7 @@ class ButtonLayoutScreen : public GPScreen {
         ButtonLayoutParamsLeft prevLeftOptions{};
         ButtonLayoutParamsRight prevRightOptions{};
         ButtonLayoutOrientation prevOrientation{};
+        uint32_t prevCustomLayoutHash = 0;
 
         bool hasTurboAssigned = false;
 
@@ -263,6 +264,7 @@ class ButtonLayoutScreen : public GPScreen {
         uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
         void processInputHistory();
         bool compareCustomLayouts();
+        uint32_t getCustomLayoutHash();
         bool pressedUp();
         bool pressedDown();
         bool pressedLeft();
