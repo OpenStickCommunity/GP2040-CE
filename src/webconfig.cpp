@@ -1315,7 +1315,6 @@ void helperGetProfileFromJsonObject(AnimationProfile* Profile, JsonObject* JsonD
     }
 }
 
-
 // Fix issue here
 std::string setAnimationButtonTestMode()
 {
