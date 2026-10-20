@@ -3,18 +3,14 @@ import { useTranslation } from 'react-i18next';
 import { AppContext } from '../Contexts/AppContext';
 import './Section.scss';
 
-/** @param {{ children?: import('react').ReactNode, title?: import('react').ReactNode, headerRight?: import('react').ReactNode }} props */
-const Section = ({ children, title, headerRight = null }) => {
+const Section = ({ children, title }) => {
 	const { loading } = useContext(AppContext);
 	const { t } = useTranslation('');
 
 	return (
 		<div className={`card`}>
-			<div
-				className={`card-header${headerRight ? ' d-flex flex-wrap align-items-center justify-content-between gap-2' : ''}`}
-			>
+			<div className={`card-header`}>
 				<strong>{title}</strong>
-				{headerRight}
 			</div>
 			<div className="card-body">
 				{loading ? (
