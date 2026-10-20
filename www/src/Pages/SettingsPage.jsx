@@ -369,6 +369,12 @@ const PS4_ID_MODES = [
 	{ labelKey: 'ps4-id-mode-options.emulation', value: 1 },
 ];
 
+const GENERIC_DPAD_MODES = [
+	{ labelKey: 'generic-dpad-mode-options.hat-and-buttons', value: 0 },
+	{ labelKey: 'generic-dpad-mode-options.hat-only', value: 1 },
+	{ labelKey: 'generic-dpad-mode-options.buttons-only', value: 2 },
+];
+
 const SWITCH2_PRO_IDENTITIES = [
 	{ labelKey: 'pro2', value: Switch2ProIdentity.SWITCH2_PRO_IDENTITY_PRO },
 	{
@@ -720,6 +726,11 @@ const schema = yup.object().shape({
 	switch2ProButtonsColor: yup.number().label('Switch 2 Pro Buttons Color'),
 	switch2ProHighlightColor: yup.number().label('Switch 2 Pro Highlight Color'),
 	switch2ProGripColor: yup.number().label('Switch 2 Pro Grip Color'),
+	genericDpadMode: yup
+		.number()
+		.required()
+		.oneOf(GENERIC_DPAD_MODES.map((o) => o.value))
+		.label('Generic HID D-Pad Mode'),
 	forcedSetupMode: yup
 		.number()
 		.required()
@@ -848,6 +859,8 @@ const FormContext = ({ setButtonLabels, setKeyMappings }) => {
 			);
 		if (!!values.switch2ProColorPreset)
 			values.switch2ProColorPreset = parseInt(values.switch2ProColorPreset);
+		if (!!values.genericDpadMode)
+			values.genericDpadMode = parseInt(values.genericDpadMode);
 
 		setButtonLabels({
 			swapTpShareLabels:
@@ -1671,6 +1684,23 @@ export default function SettingsPage() {
 	) => {
 		return (
 			<div className="row mb-3">
+				<Row className="mb-3">
+					<Col sm={3}>
+						<Form.Label>{t('SettingsPage:generic-dpad-mode-label')}</Form.Label>
+						<Form.Select
+							name="genericDpadMode"
+							className="form-select-sm"
+							value={values.genericDpadMode}
+							onChange={handleChange}
+						>
+							{GENERIC_DPAD_MODES.map((o) => (
+								<option key={`generic-dpad-option-${o.value}`} value={o.value}>
+									{`${t('SettingsPage:' + o.labelKey)}`}
+								</option>
+							))}
+						</Form.Select>
+					</Col>
+				</Row>
 				{usbOverride(values, errors, setFieldValue, handleChange)}
 			</div>
 		);

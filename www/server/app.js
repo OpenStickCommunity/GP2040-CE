@@ -486,6 +486,7 @@ app.get('/api/getGamepadOptions', (req, res) => {
 		switch2ProJoyCon2RightButtonsColor: 0xaaaaaa,
 		switch2ProJoyCon2RightAccentColor: 0xff8c5f,
 		switch2ProJoyCon2RightStickColor: 0x323232,
+		genericDpadMode: 0,
 		usbDescOverride: 0,
 		usbDescProduct: 'GP2040-CE (Custom)',
 		usbDescManufacturer: 'Open Stick Community',

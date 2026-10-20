@@ -78,6 +78,7 @@ message GamepadOptions
     optional uint32 switch2ProJoyCon2RightButtonsColor = 57;
     optional uint32 switch2ProJoyCon2RightAccentColor = 58;
     optional uint32 switch2ProJoyCon2RightStickColor = 59;
+    optional GenericDpadMode genericDpadMode = 60;
 }
 
 message KeyboardMapping

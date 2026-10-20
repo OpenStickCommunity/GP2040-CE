@@ -92,6 +92,14 @@ bool HIDDriver::process(Gamepad * gamepad) {
 		| (gamepad->pressedE11()   ? GAMEPAD_MASK_E11    : 0)
 		| (gamepad->pressedE12()   ? GAMEPAD_MASK_E12    : 0)
 	;
+
+	const GenericDpadMode dpadMode = Storage::getInstance().getGamepadOptions().genericDpadMode;
+	if (dpadMode == GENERIC_DPAD_HAT_ONLY) {
+		hidReport.buttons &= ~(GAMEPAD_MASK_DU | GAMEPAD_MASK_DD | GAMEPAD_MASK_DL | GAMEPAD_MASK_DR);
+	} else if (dpadMode == GENERIC_DPAD_BUTTONS_ONLY) {
+		hidReport.direction = HID_HAT_NOTHING;
+	}
+
 	if (gamepad->hasAnalogTriggers || gamepad->hasLeftAnalogStick) {
 		if (gamepad->state.lt > 0)
 			hidReport.buttons |= GAMEPAD_MASK_L2;
