@@ -42,7 +42,7 @@
 #define LIGHT_DATA_SIZE_DEFAULT 0
 #endif
 #ifndef LIGHT_DATA_DEFAULT
-#define LIGHT_DATA_DEFAULT 0,0,0,0,0,LightType::LightType_ActionButton
+#define LIGHT_DATA_DEFAULT 0,0,0,0,0,LightType::LightType_ActionButton,LightInputSource::LightInputSource_GPIO
 #endif
 #ifndef LIGHT_DATA_NAME_DEFAULT
 #define LIGHT_DATA_NAME_DEFAULT ""
@@ -51,7 +51,7 @@
 #define LIGHT_DATA_SIZE_1 0
 #endif
 #ifndef LIGHT_DATA_1
-#define LIGHT_DATA_1 0,0,0,0,0,LightType::LightType_ActionButton
+#define LIGHT_DATA_1 0,0,0,0,0,LightType::LightType_ActionButton,LightInputSource::LightInputSource_GPIO
 #endif
 #ifndef LIGHT_DATA_NAME_1
 #define LIGHT_DATA_NAME_1 ""
@@ -60,7 +60,7 @@
 #define LIGHT_DATA_SIZE_2 0
 #endif
 #ifndef LIGHT_DATA_2
-#define LIGHT_DATA_2 0,0,0,0,0,LightType::LightType_ActionButton
+#define LIGHT_DATA_2 0,0,0,0,0,LightType::LightType_ActionButton,LightInputSource::LightInputSource_GPIO
 #endif
 #ifndef LIGHT_DATA_NAME_2
 #define LIGHT_DATA_NAME_2 ""
@@ -69,7 +69,7 @@
 #define LIGHT_DATA_SIZE_3 0
 #endif
 #ifndef LIGHT_DATA_3
-#define LIGHT_DATA_3 0,0,0,0,0,LightType::LightType_ActionButton
+#define LIGHT_DATA_3 0,0,0,0,0,LightType::LightType_ActionButton,LightInputSource::LightInputSource_GPIO
 #endif
 #ifndef LIGHT_DATA_NAME_3
 #define LIGHT_DATA_NAME_3 ""
@@ -78,7 +78,7 @@
 #define LIGHT_DATA_SIZE_4 0
 #endif
 #ifndef LIGHT_DATA_4
-#define LIGHT_DATA_4 0,0,0,0,0,LightType::LightType_ActionButton
+#define LIGHT_DATA_4 0,0,0,0,0,LightType::LightType_ActionButton,LightInputSource::LightInputSource_GPIO
 #endif
 #ifndef LIGHT_DATA_NAME_4
 #define LIGHT_DATA_NAME_4 ""
@@ -87,7 +87,7 @@
 #define LIGHT_DATA_SIZE_5 0
 #endif
 #ifndef LIGHT_DATA_5
-#define LIGHT_DATA_5 0,0,0,0,0,LightType::LightType_ActionButton
+#define LIGHT_DATA_5 0,0,0,0,0,LightType::LightType_ActionButton,LightInputSource::LightInputSource_GPIO
 #endif
 #ifndef LIGHT_DATA_NAME_5
 #define LIGHT_DATA_NAME_5 ""
@@ -96,7 +96,7 @@
 #define LIGHT_DATA_SIZE_6 0
 #endif
 #ifndef LIGHT_DATA_6
-#define LIGHT_DATA_6 0,0,0,0,0,LightType::LightType_ActionButton
+#define LIGHT_DATA_6 0,0,0,0,0,LightType::LightType_ActionButton,LightInputSource::LightInputSource_GPIO
 #endif
 #ifndef LIGHT_DATA_NAME_6
 #define LIGHT_DATA_NAME_6 ""
@@ -105,7 +105,7 @@
 #define LIGHT_DATA_SIZE_7 0
 #endif
 #ifndef LIGHT_DATA_7
-#define LIGHT_DATA_7 0,0,0,0,0,LightType::LightType_ActionButton
+#define LIGHT_DATA_7 0,0,0,0,0,LightType::LightType_ActionButton,LightInputSource::LightInputSource_GPIO
 #endif
 #ifndef LIGHT_DATA_NAME_7
 #define LIGHT_DATA_NAME_7 ""
@@ -579,6 +579,7 @@ private:
 
 	//Data representation of the lights
 	Lights RGBLights;
+	std::vector<int32_t> pressedInputs;
 
 	//Animation class. Handles idle animations, special move animations and pressed button effects
 	//class AnimationStation AnimStation;
