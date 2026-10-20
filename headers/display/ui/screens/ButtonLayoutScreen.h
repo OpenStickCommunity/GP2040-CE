@@ -14,8 +14,8 @@
 #include "GPGFX_UI_widgets.h"
 #include "GPGFX_UI_layouts.h"
 
-#define INPUT_HISTORY_MAX_INPUTS 22
-#define INPUT_HISTORY_MAX_MODES 12
+#define INPUT_HISTORY_MAX_INPUTS 23
+#define INPUT_HISTORY_MAX_MODES 21
 
 // Static to ensure memory is never doubled
 static const char * displayNames[INPUT_HISTORY_MAX_MODES][INPUT_HISTORY_MAX_INPUTS] __attribute__((unused)) = {
@@ -24,84 +24,147 @@ static const char * displayNames[INPUT_HISTORY_MAX_MODES][INPUT_HISTORY_MAX_INPU
             CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
             CHAR_CROSS, CHAR_CIRCLE, CHAR_SQUARE, CHAR_TRIANGLE,
             "L1", "R1", "L2", "R2",
-            "SL", "ST", "L3", "R3", "PS", "A2"
+            "SL", "ST", "L3", "R3", "PS", "A2", ""
     },
     {		// Switch - 1
             CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
             CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
             "B", "A", "Y", "X",
             "L", "R", "ZL", "ZR",
-            "-", "+", "LS", "RS", CHAR_HOME_S, CHAR_CAP_S
+            "-", "+", "LS", "RS", CHAR_HOME_S, CHAR_CAP_S, ""
     },
     {		// XInput - 2
             CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
             CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
             "A", "B", "X", "Y",
             "LB", "RB", "LT", "RT",
-            CHAR_VIEW_X, CHAR_MENU_X, "LS", "RS", CHAR_HOME_X, "A2"
+            CHAR_VIEW_X, CHAR_MENU_X, "LS", "RS", CHAR_HOME_X, "A2", ""
     },
     {		// Keyboard / HID-KB - 3
             CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
             CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
             "B1", "B2", "B3", "B4",
             "L1", "R1", "L2", "R2",
-            "S1", "S2", "L3", "R3", "A1", "A2"
+            "S1", "S2", "L3", "R3", "A1", "A2", ""
     },
     {		// PS4/PS5 - 4
             CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
             CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
             CHAR_CROSS, CHAR_CIRCLE, CHAR_SQUARE, CHAR_TRIANGLE,
             "L1", "R1", "L2", "R2",
-            CHAR_SHARE_P, "OP", "L3", "R3", CHAR_HOME_P, CHAR_TPAD_P
+            CHAR_SHARE_P, "OP", "L3", "R3", CHAR_HOME_P, CHAR_TPAD_P, ""
     },
     {		// GEN/MD Mini - 5
             CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
             CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
             "A", "B", "X", "Y",
             "", "Z", "", "C",
-            "M", "S", "", "", "", ""
+            "M", "S", "", "", "", "", ""
     },
     {		// Neo Geo Mini - 6
             CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
             CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
             "B", "D", "A", "C",
             "", "", "", "",
-            "SE", "ST", "", "", "", ""
+            "SE", "ST", "", "", "", "", ""
     },
     {		// PC Engine/TG16 Mini - 7
             CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
             CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
             "I", "II", "", "",
             "", "", "", "",
-            "SE", "RUN", "", "", "", ""
+            "SE", "RUN", "", "", "", "", ""
     },
     {		// Egret II Mini - 8
             CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
             CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
             "A", "B", "C", "D",
             "", "E", "", "F",
-            "CRD", "ST", "", "", "MN", ""
+            "CRD", "ST", "", "", "MN", "", ""
     },
     {		// Astro City Mini - 9
             CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
             CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
             "A", "B", "D", "E",
             "", "C", "", "F",
-            "CRD", "ST", "", "", "", ""
+            "CRD", "ST", "", "", "", "", ""
     },
     {		// Original Xbox - 10
             CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
             CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
             "A", "B", "X", "Y",
             "BL", "WH", "L", "R",
-            "BK", "ST", "LS", "RS", "", ""
+            "BK", "ST", "LS", "RS", "", "", ""
     },
     {		// HID / DINPUT - 11
             CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
             CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
             "2", "3", "1", "4",
             "5", "6", "7", "8",
-            "9", "10", "11", "12", "13", "14"
+            "9", "10", "11", "12", "13", "14", ""
+    },
+    {		// Switch 2 Pro - 12
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "B", "A", "Y", "X",
+            "L", "R", "ZL", "ZR",
+            "-", "+", "LS", "RS", CHAR_HOME_S, CHAR_CAP_S, "C"
+    },
+    {		// Switch 2 Joy-Con 2 (L) - 13
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "B", "A", "Y", "X",
+            "SL", "SR", "L", "ZL",
+            "-", "", "LS", "", "", CHAR_CAP_S, ""
+    },
+    {		// Switch 2 Joy-Con 2 (R) - 14
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "B", "A", "Y", "X",
+            "SL", "SR", "R", "ZR",
+            "", "+", "RS", "RS", CHAR_HOME_S, "", "C"
+    },
+    {		// Switch SNES - 15
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "B", "A", "Y", "X",
+            "L", "R", "ZL", "ZR",
+            "SEL", "STA", "", "", "", "", ""
+    },
+    {		// Switch N64 - 16
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "B", "A", "CL", "CU",
+            "L", "R", "Z", "ZR",
+            "", "STA", "CD", "CR", CHAR_HOME_S, CHAR_CAP_S, ""
+    },
+    {		// Switch Genesis - 17
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "A", "B", "X", "Y",
+            "", "Z", "", "C",
+            "MODE", "STA", "", "", CHAR_HOME_S, CHAR_CAP_S, ""
+    },
+    {		// Switch Joy-Con (L) - 18
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "B", "A", "Y", "X",
+            "SL", "SR", "L", "ZL",
+            "-", "", "LS", "", "", CHAR_CAP_S, ""
+    },
+    {		// Switch Joy-Con (R) - 19
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "B", "A", "Y", "X",
+            "SL", "SR", "R", "ZR",
+            "", "+", "RS", "RS", CHAR_HOME_S, "", ""
+    },
+    {		// Switch NES / Famicom - 20
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "B", "A", "", "",
+            "L", "R", "", "",
+            "SEL", "STA", "", "", "", "", ""
     }
 };
 
@@ -116,6 +179,8 @@ class ButtonLayoutScreen : public GPScreen {
 
         void handleProfileChange(GPEvent* e);
         void handleUSB(GPEvent* e);
+        void handleLEDChange(GPEvent* e);
+        void handleSystemReboot(GPEvent* e);
     protected:
         virtual void drawScreen();
     private:
@@ -127,13 +192,12 @@ class ButtonLayoutScreen : public GPScreen {
         GPWidget* pushElement(GPButtonLayout element);
         void generateHeader();
 
-        void updateCustomHeaders();
-        void checkLEDCycleParams();
         void addCustomHeader(std::string newStr, std::string identifier);
 
         const std::map<uint16_t, uint16_t> displayModeLookup = {
             {INPUT_MODE_PS3, 0},
             {INPUT_MODE_SWITCH, 1},
+            {INPUT_MODE_SWITCH2_PRO, 12},
             {INPUT_MODE_XINPUT, 2},
             {INPUT_MODE_XBONE, 2},
             {INPUT_MODE_KEYBOARD, 3},
@@ -148,7 +212,7 @@ class ButtonLayoutScreen : public GPScreen {
             {INPUT_MODE_ASTRO, 9},
             {INPUT_MODE_XBOXORIGINAL, 10},
             {INPUT_MODE_GENERIC, 11},
-            {INPUT_MODE_SINPUT, 12},
+            {INPUT_MODE_SINPUT, 3},
         };
 
         Gamepad* gamepad = nullptr;
@@ -174,22 +238,10 @@ class ButtonLayoutScreen : public GPScreen {
 
         std::deque<std::string> bannerString;
         std::deque<std::string> bannerIdentifier;
-
-        int8_t gamePadProfileNumber = -2;
-        int8_t prevGamepadProfileNumber = -2;
-        
-        int8_t prevLEDAnimationProfileNumber = -2;
- 
-        int8_t prevLEDBaseCycleNumber = -1;
-        int8_t prevLEDBaseCaseCycleNumber = -1;
-        int8_t prevLEDBasePressedCycleNumber = -1;
  
         uint16_t prevButtonState = 0;
         uint8_t prevLayoutLeft = 0;
         uint8_t prevLayoutRight = 0;
-        
-        uint8_t profileNumber = 0;
-        uint8_t prevProfileNumber = 0;
         
         ButtonLayoutParamsLeft prevLeftOptions{};
         ButtonLayoutParamsRight prevRightOptions{};

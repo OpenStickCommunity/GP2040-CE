@@ -14,6 +14,7 @@
 #include "GPEvent.h"
 #include "GPGamepadEvent.h"
 #include "GPEncoderEvent.h"
+#include "GPLEDEvent.h"
 #include "GPMenuNavigateEvent.h"
 #include "GPProfileEvent.h"
 #include "GPRestartEvent.h"
@@ -42,6 +43,7 @@ class EventManager {
 
         void registerEventHandler(GPEventType eventType, EventFunction handler);
         void unregisterEventHandler(GPEventType eventType, EventFunction handler);
+        bool hasEventHandlers(GPEventType eventType) const;
         void triggerEvent(GPEvent* event);
     private:
         EventManager(){}

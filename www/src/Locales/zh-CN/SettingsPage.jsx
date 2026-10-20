@@ -156,6 +156,7 @@ export default {
 		'如果您在保存后重启到控制器模式，将无法再通过常规方式访问网页配置界面。如果您完全了解风险并确实需要这样做，请在下方输入“<strong>{{warningCheckText}}</strong>”以解锁保存按钮。点击“关闭”将撤销此设置。',
 	'4-way-joystick-mode-label': '四向摇杆模式',
 	'keyboard-mapping-header-text': '键盘映射',
+	'keyboard-profile-label': '配置文件',
 	'keyboard-mapping-sub-header-text':
 		'使用下方表单重新配置按键到键盘按键的映射。',
 	'usb-override': {

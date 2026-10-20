@@ -52,7 +52,33 @@ message GamepadOptions
     optional uint32 usbVendorID = 31;
     optional uint32 miniMenuGamepadInput = 32;
     optional InputModeDeviceType inputDeviceType = 33;
-    optional GenericDpadMode genericDpadMode = 34;
+    optional SwitchProControllerType switchProControllerType = 40;
+    optional SwitchProColorPreset switchProColorPreset = 41;
+    optional uint32 switchProBodyColor = 42;
+    optional uint32 switchProButtonsColor = 43;
+    optional uint32 switchProLeftGripColor = 44;
+    optional uint32 switchProRightGripColor = 45;
+    optional SwitchProJoyConColorPreset switchProJoyConColorPreset = 46;
+    optional uint32 switchProJoyConLeftBodyColor = 47;
+    optional uint32 switchProJoyConLeftButtonsColor = 48;
+    optional uint32 switchProJoyConRightBodyColor = 49;
+    optional uint32 switchProJoyConRightButtonsColor = 50;
+    optional Switch2ProColorPreset switch2ProColorPreset = 34;
+    optional uint32 switch2ProBodyColor = 35;
+    optional uint32 switch2ProButtonsColor = 36;
+    optional uint32 switch2ProHighlightColor = 37;
+    optional uint32 switch2ProGripColor = 38;
+    optional Switch2ProIdentity switch2ProIdentity = 39;
+    optional Switch2ProJoyCon2ColorPreset switch2ProJoyCon2ColorPreset = 51;
+    optional uint32 switch2ProJoyCon2LeftBodyColor = 52;
+    optional uint32 switch2ProJoyCon2LeftButtonsColor = 53;
+    optional uint32 switch2ProJoyCon2LeftAccentColor = 54;
+    optional uint32 switch2ProJoyCon2LeftStickColor = 55;
+    optional uint32 switch2ProJoyCon2RightBodyColor = 56;
+    optional uint32 switch2ProJoyCon2RightButtonsColor = 57;
+    optional uint32 switch2ProJoyCon2RightAccentColor = 58;
+    optional uint32 switch2ProJoyCon2RightStickColor = 59;
+    optional GenericDpadMode genericDpadMode = 60;
 }
 
 message KeyboardMapping
@@ -218,6 +244,9 @@ message GpioMappings
     repeated GpioMappingInfo pins = 1 [(nanopb).max_count = 48];
     optional string profileLabel = 2 [(nanopb).max_length = 16];
     optional bool enabled = 3 [default = false];
+    optional KeyboardMapping keyboardMapping = 4;
+    optional bool pinInversionEnabled = 5;
+    repeated uint32 invertedPins = 6 [(nanopb).max_count = 48];
 }
 
 
@@ -349,40 +378,25 @@ message LEDOptions
 message AnimationProfile
 {
     optional bool bEnabled = 1;
-
  	optional AnimationNonPressedEffects baseNonPressedEffect = 2;
   	optional AnimationPressedEffects basePressedEffect = 3;
-
     optional int32 baseCycleTime = 4;
-
-    repeated uint32 notPressedStaticColors = 5 [(nanopb).max_count = 12]; //NUM_BANK0_GPIOS/4 from platform_defs.h
-    repeated uint32 pressedStaticColors = 6 [(nanopb).max_count = 12]; //NUM_BANK0_GPIOS/4 from platform_defs.h
-
+    optional bytes notPressedStaticColors = 5 [(nanopb).max_size = 48]; //NUM_BANK0_GPIOS from platform_defs.h
+    optional bytes pressedStaticColors = 6 [(nanopb).max_size = 48]; //NUM_BANK0_GPIOS from platform_defs.h
     optional uint32 buttonPressHoldTimeInMs = 7;
     optional uint32 buttonPressFadeOutTimeInMs = 8;
-
     optional uint32 nonPressedSpecialColor = 9;
-
  	optional AnimationNonPressedEffects baseCaseEffect = 10;
-
-    repeated uint32 nonButtonStaticColors = 11 [(nanopb).max_count = 8]; //(MAX_NON_BUTTON_LIGHT_COLOR_INDEXES/4) from AnimationStation.hpp
-
+    optional bytes nonButtonStaticColors = 11 [(nanopb).max_size = 32]; //(MAX_NON_BUTTON_LIGHT_COLOR_INDEXES) from AnimationStation.hpp
     optional uint32 pressedSpecialColor = 12;
-
     optional bool bUseCaseLightsInSpecialMoves = 13;
-
     optional int32 basePressedCycleTime = 14; 
-
     optional bool bUseCaseLightsInPressedAnimations = 15;
-
     optional int32 baseCaseCycleTime = 16; 
-
     optional bool bNonPressedSpecialColorIsRainbow = 17;
     optional bool bPressedSpecialColorIsRainbow = 18;
     optional bool bCaseSpecialColorIsRainbow = 19;
-
     optional uint32 caseSpecialColor = 20;
-
     optional uint32 effectContextParam = 21;
 };
 
@@ -390,14 +404,10 @@ message AnimationProfile
 message AnimationOptions
 {
     reserved 1, 3 to 56;
-    
     optional uint32 brightness = 2;
-    
-    repeated AnimationProfile profiles = 57 [(nanopb).max_count = 4]; //MAX_ANIMATION_PROFILES from AnimationStation.hpp
+    repeated AnimationProfile profiles = 57 [(nanopb).max_count = 5]; //MAX_ANIMATION_PROFILES+1 (test profile) from AnimationStation.hpp
     optional int32 baseProfileIndex = 58;
-    
     repeated uint32 customColors = 59 [(nanopb).max_count = 16]; //MAX_CUSTOM_COLORS from Animation.hpp
-
     optional uint32 autoDisableTime = 60;
 }
 
