@@ -288,7 +288,7 @@ static void handleCommand(const uint8_t *req) {
             break;
         case CMD_FW_INFO:
             if (sub == 0x01) {
-                const uint8_t payload[] = { 0x00, 0x00, 0x00, firmwareType, 0x0C, 0x00, 0x00, 0x00, 0x00, 0x02, 0x03, 0x00 };
+                const uint8_t payload[] = { 0x02, 0x01, 0x04, firmwareType, 0x0C, 0x00, 0x00, 0x00, 0x00, 0x02, 0x03, 0x00 };
                 setReply(command, sub, payload, sizeof(payload));
             } else {
                 setReply(command, sub, nullptr, 0);
