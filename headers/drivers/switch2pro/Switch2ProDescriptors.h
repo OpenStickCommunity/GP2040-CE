@@ -56,11 +56,6 @@
 #define SWITCH2_PRO_MASK_UP      0x08
 #define SWITCH2_PRO_MASK_L       0x10
 #define SWITCH2_PRO_MASK_ZL      0x20
-
-#define SWITCH2_GAMECUBE_MASK_R  0x10
-#define SWITCH2_GAMECUBE_MASK_Z  0x20
-#define SWITCH2_GAMECUBE_MASK_L  0x10
-#define SWITCH2_GAMECUBE_MASK_ZL 0x20
 #define SWITCH2_PRO_MASK_MINUS   0x40
 #define SWITCH2_PRO_MASK_LSTICK  0x80
 
@@ -69,6 +64,12 @@
 #define SWITCH2_PRO_MASK_GR      0x04
 #define SWITCH2_PRO_MASK_GL      0x08
 #define SWITCH2_PRO_MASK_C       0x10
+
+// GameCube layout: R/L are the trigger full-press clicks, Z/ZL take the ZR/ZL bits
+#define SWITCH2_GAMECUBE_MASK_R  0x10
+#define SWITCH2_GAMECUBE_MASK_Z  0x20
+#define SWITCH2_GAMECUBE_MASK_L  0x10
+#define SWITCH2_GAMECUBE_MASK_ZL 0x20
 
 #define SWITCH2_PRO_STICK_MAX    0xFFF
 
