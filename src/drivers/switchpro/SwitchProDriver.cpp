@@ -4,9 +4,25 @@
 #include "drivers/shared/USBReportScheduler.h"
 #include "storagemanager.h"
 #include "pico/rand.h"
+#include <cmath>
 
 // force a report to be sent every X ms
 #define SWITCH_PRO_KEEPALIVE_TIMER 5
+
+static bool rumbleWatchdogActive = false;
+static uint32_t lastRumbleTime = 0;
+
+static void setSwitchProRumbleZero() {
+    Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
+    if (processedGamepad != nullptr) {
+        processedGamepad->auxState.haptics.leftActuator.active = false;
+        processedGamepad->auxState.haptics.leftActuator.intensity = 0;
+        processedGamepad->auxState.haptics.rightActuator.active = false;
+        processedGamepad->auxState.haptics.rightActuator.intensity = 0;
+    }
+    rumbleWatchdogActive = false;
+    lastRumbleTime = 0;
+}
 
 static bool isRailType(SwitchControllerType type) {
     switch (type) {
@@ -33,6 +49,7 @@ static constexpr uint8_t SWITCH_PRO_INPUT_ENDPOINT = 0x81;
 static void switchpro_reset(uint8_t rhport) {
     hidd_reset(rhport);
     USBReportScheduler::getInstance().reset();
+    setSwitchProRumbleZero();
 }
 
 static uint16_t switchpro_open(uint8_t rhport, tusb_desc_interface_t const *itf, uint16_t max_len) {
@@ -375,8 +392,20 @@ bool SwitchProDriver::process(Gamepad * gamepad) {
     //switchReport.reportID = inputMode;
 
 	// Wake up TinyUSB device
-	if (tud_suspended())
+	if (tud_suspended()) {
 		tud_remote_wakeup();
+		setSwitchProRumbleZero();
+	}
+
+    if (rumbleWatchdogActive && (now - lastRumbleTime) > 1000) {
+        setSwitchProRumbleZero();
+        rumbleWatchdogActive = false;
+    }
+
+    if (isReportQueued && (now - queuedReportTime) > 500) {
+        // Drop stuck queued report after 500ms to prevent permanent input starvation
+        isReportQueued = false;
+    }
 
     bool const protocolQueued = isReportQueued;
     if (protocolQueued && (now - last_report_timer) > SWITCH_PRO_KEEPALIVE_TIMER) {
@@ -509,7 +538,10 @@ void SwitchProDriver::handleConfigReport(uint8_t switchReportID, uint8_t switchR
             break;
     }
 
-    if (canSend) isReportQueued = true;
+    if (canSend) {
+        queuedReportTime = to_ms_since_boot(get_absolute_time());
+        isReportQueued = true;
+    }
 }
 
 void SwitchProDriver::handleFeatureReport(uint8_t switchReportID, uint8_t switchReportSubID, const uint8_t *reportData, uint16_t reportLength) {
@@ -550,6 +582,7 @@ void SwitchProDriver::handleFeatureReport(uint8_t switchReportID, uint8_t switch
             canSend = true;
             break;
         case SwitchCommands::SET_MODE:
+            if (reportLength < 12) return;
             //printf("SwitchProDriver::set_report: Rpt 0x01 SET_MODE\n");
             inputMode = reportData[11];
             report[13] = 0x80;
@@ -637,6 +670,7 @@ void SwitchProDriver::handleFeatureReport(uint8_t switchReportID, uint8_t switch
             canSend = true;
             break;
         case SwitchCommands::SET_PLAYER_LIGHTS:
+            if (reportLength < 12) return;
             //printf("SwitchProDriver::set_report: Rpt 0x01 SET_PLAYER_LIGHTS\n");
             playerID = reportData[11];
             report[13] = 0x80;
@@ -646,6 +680,7 @@ void SwitchProDriver::handleFeatureReport(uint8_t switchReportID, uint8_t switch
             //printf("----------------------------------------------\n");
             break;
         case SwitchCommands::GET_PLAYER_LIGHTS:
+            if (reportLength < 12) return;
             //printf("SwitchProDriver::set_report: Rpt 0x01 GET_PLAYER_LIGHTS\n");
             playerID = reportData[11];
             report[13] = 0xB0;
@@ -672,6 +707,7 @@ void SwitchProDriver::handleFeatureReport(uint8_t switchReportID, uint8_t switch
             canSend = true;
             break;
         case SwitchCommands::TOGGLE_IMU:
+            if (reportLength < 12) return;
             //printf("SwitchProDriver::set_report: Rpt 0x01 TOGGLE_IMU\n");
             isIMUEnabled = reportData[11];
             report[13] = 0x80;
@@ -688,8 +724,13 @@ void SwitchProDriver::handleFeatureReport(uint8_t switchReportID, uint8_t switch
             canSend = true;
             break;
         case SwitchCommands::ENABLE_VIBRATION:
+            if (reportLength < 12) return;
             //printf("SwitchProDriver::set_report: Rpt 0x01 ENABLE_VIBRATION\n");
             isVibrationEnabled = reportData[11];
+            if (!isVibrationEnabled) {
+                setSwitchProRumbleZero();
+                rumbleWatchdogActive = false;
+            }
             report[13] = 0x80;
             report[14] = commandID;
             report[15] = 0x00;
@@ -698,6 +739,7 @@ void SwitchProDriver::handleFeatureReport(uint8_t switchReportID, uint8_t switch
             //printf("----------------------------------------------\n");
             break;
         case SwitchCommands::READ_IMU:
+            if (reportLength < 13) return;
             //printf("SwitchProDriver::set_report: Rpt 0x01 READ_IMU\n");
             report[13] = 0xC0;
             report[14] = commandID;
@@ -724,7 +766,58 @@ void SwitchProDriver::handleFeatureReport(uint8_t switchReportID, uint8_t switch
             break;
     }
 
-    if (canSend) isReportQueued = true;
+    if (canSend) {
+        queuedReportTime = to_ms_since_boot(get_absolute_time());
+        isReportQueued = true;
+    }
+}
+
+// Nintendo Switch HD Rumble packet downmixing for ERM/LRA motors (0..255 PWM).
+// Switch 1 HD rumble encodes 4 bytes per actuator:
+//   r[0]: HF frequency MSB (8 bits)
+//   r[1]: HF frequency LSB (bit 0) | HF amplitude (bits 1..7)
+//   r[2]: LF frequency (bits 0..6) | LF amplitude LSB (bit 7)
+//   r[3]: LF amplitude (bits 0..6)
+// Neutral (silence) packet is 0x00, 0x01, 0x40, 0x40 where LF baseline is 0x40.
+// Amplitude code runs from 0x0040 (level 0) to 0x0072 (level 100):
+//   hf_amp: (r[1] & 0xFE) >> 1 gives 0..100
+//   lf_amp: ((r[3] - 0x40) << 1) + ((r[2] & 0x80) ? 1 : 0) gives 0..100
+static inline uint8_t decode_hd_rumble(const uint8_t* r) {
+    if (r[0] == 0x00 && r[1] == 0x01 && r[2] == 0x40 && r[3] == 0x40) return 0;
+
+    uint8_t hf_amp = (r[1] & 0xFE) >> 1;
+    if (hf_amp > 100) hf_amp = 100;
+
+    uint8_t lf_amp = 0;
+    if (r[3] >= 0x40) {
+        uint16_t step = ((uint16_t)(r[3] - 0x40) << 1) + ((r[2] & 0x80) ? 1 : 0);
+        lf_amp = (step > 100) ? 100 : (uint8_t)step;
+    }
+
+    uint16_t combined = (uint16_t)hf_amp * 2 + (uint16_t)lf_amp * 4;
+    if (combined == 0) return 0;
+    if (combined > 255) combined = 255;
+    uint32_t scaled = (uint32_t)(sqrtf((float)combined / 255.0f) * 255.0f);
+    return (scaled > 255) ? 255 : (uint8_t)scaled;
+}
+
+static void setSwitchProRumble(const uint8_t* rumbleData) {
+    uint8_t left_intensity = decode_hd_rumble(&rumbleData[0]);
+    uint8_t right_intensity = decode_hd_rumble(&rumbleData[4]);
+
+    Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
+    if (processedGamepad != nullptr) {
+        processedGamepad->auxState.haptics.leftActuator.active = (left_intensity > 0);
+        processedGamepad->auxState.haptics.leftActuator.intensity = left_intensity;
+        processedGamepad->auxState.haptics.rightActuator.active = (right_intensity > 0);
+        processedGamepad->auxState.haptics.rightActuator.intensity = right_intensity;
+    }
+    rumbleWatchdogActive = (left_intensity > 0 || right_intensity > 0);
+    if (rumbleWatchdogActive) {
+        lastRumbleTime = to_ms_since_boot(get_absolute_time());
+    } else {
+        lastRumbleTime = 0;
+    }
 }
 
 void SwitchProDriver::set_report(uint8_t report_id, hid_report_type_t report_type, const uint8_t *buffer, uint16_t bufsize) {
@@ -734,7 +827,18 @@ void SwitchProDriver::set_report(uint8_t report_id, hid_report_type_t report_typ
     uint8_t switchReportSubID = buffer[1];
     //printf("SwitchProDriver::set_report Rpt: %02x, Type: %d, Len: %d :: SID: %02x, SSID: %02x\n", report_id, report_type, bufsize, switchReportID, switchReportSubID);
     if (switchReportID == SwitchReportID::REPORT_OUTPUT_00) {
+    } else if (switchReportID == SwitchReportID::REPORT_OUTPUT_10) {
+        if (bufsize >= 10 && isVibrationEnabled) {
+            setSwitchProRumble(&buffer[2]);
+        } else {
+            setSwitchProRumbleZero();
+        }
     } else if (switchReportID == SwitchReportID::REPORT_FEATURE) {
+        if (bufsize >= 10 && isVibrationEnabled) {
+            setSwitchProRumble(&buffer[2]);
+        } else {
+            setSwitchProRumbleZero();
+        }
         memset(report, 0x00, bufsize);
         queuedReportID = report_id;
         handleFeatureReport(switchReportID, switchReportSubID, buffer, bufsize);

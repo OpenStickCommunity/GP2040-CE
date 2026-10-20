@@ -759,6 +759,14 @@ std::string setGamepadOptions()
     readDoc(gamepadOptions.switch2ProJoyCon2RightAccentColor, doc, "switch2ProJoyCon2RightAccentColor");
     readDoc(gamepadOptions.switch2ProJoyCon2RightStickColor, doc, "switch2ProJoyCon2RightStickColor");
     readDoc(gamepadOptions.genericDpadMode, doc, "genericDpadMode");
+    readDoc(gamepadOptions.ermRumbleMotorFloor, doc, "ermRumbleMotorFloor");
+    readDoc(gamepadOptions.ermRumbleKickstartMs, doc, "ermRumbleKickstartMs");
+    readDoc(gamepadOptions.ermRumbleSustainMs, doc, "ermRumbleSustainMs");
+    readDoc(gamepadOptions.ermRumbleBoostPercent, doc, "ermRumbleBoostPercent");
+    if (gamepadOptions.ermRumbleMotorFloor > 255) gamepadOptions.ermRumbleMotorFloor = 255;
+    if (gamepadOptions.ermRumbleKickstartMs > 500) gamepadOptions.ermRumbleKickstartMs = 500;
+    if (gamepadOptions.ermRumbleSustainMs > 500) gamepadOptions.ermRumbleSustainMs = 500;
+    if (gamepadOptions.ermRumbleBoostPercent > 100) gamepadOptions.ermRumbleBoostPercent = 100;
     readDoc(gamepadOptions.usbDescOverride, doc, "usbDescOverride");
     readDoc(gamepadOptions.miniMenuGamepadInput, doc, "miniMenuGamepadInput");
     // Copy USB descriptor strings
@@ -856,6 +864,10 @@ std::string getGamepadOptions()
     writeDoc(doc, "switch2ProJoyCon2RightAccentColor", gamepadOptions.switch2ProJoyCon2RightAccentColor);
     writeDoc(doc, "switch2ProJoyCon2RightStickColor", gamepadOptions.switch2ProJoyCon2RightStickColor);
     writeDoc(doc, "genericDpadMode", gamepadOptions.genericDpadMode);
+    writeDoc(doc, "ermRumbleMotorFloor", gamepadOptions.ermRumbleMotorFloor);
+    writeDoc(doc, "ermRumbleKickstartMs", gamepadOptions.ermRumbleKickstartMs);
+    writeDoc(doc, "ermRumbleSustainMs", gamepadOptions.ermRumbleSustainMs);
+    writeDoc(doc, "ermRumbleBoostPercent", gamepadOptions.ermRumbleBoostPercent);
     writeDoc(doc, "usbDescOverride", gamepadOptions.usbDescOverride);
     writeDoc(doc, "usbDescManufacturer", gamepadOptions.usbDescManufacturer);
     writeDoc(doc, "usbDescProduct", gamepadOptions.usbDescProduct);
