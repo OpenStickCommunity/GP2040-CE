@@ -24,7 +24,7 @@ void KeyboardDriver::initialize() {
 	};
 
     // Handle Volume for Rotary Encoder
-    EventManager::getInstance().registerEventHandler(GP_EVENT_ENCODER_CHANGE, GPEVENT_CALLBACK(this->handleEncoder(event)));
+    EventManager::getInstance().registerEventHandler(GP_EVENT_ENCODER_CHANGE, GPEVENT_CALLBACK(this->handleEncoder(event)), this);
     volumeChange = 0; // no change
 }
 
