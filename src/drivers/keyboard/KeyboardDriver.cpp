@@ -58,7 +58,7 @@ uint8_t KeyboardDriver::getMultimedia(uint8_t code) {
 
 
 bool KeyboardDriver::process(Gamepad * gamepad) {
-	const KeyboardMapping& keyboardMapping = Storage::getInstance().getKeyboardMapping();
+	const KeyboardMapping& keyboardMapping = Storage::getInstance().getActiveKeyboardMapping();
 	releaseAllKeys();
 	if(gamepad->pressedUp())     { pressKey(keyboardMapping.keyDpadUp); }
 	if(gamepad->pressedDown())   { pressKey(keyboardMapping.keyDpadDown); }

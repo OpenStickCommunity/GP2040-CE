@@ -690,6 +690,44 @@ enum ReactiveLEDMode
     REACTIVE_LED_FADE_OUT = 3;
 };
 
+enum SwitchProControllerType
+{
+    option (nanopb_enumopt).long_names = false;
+
+    SWITCH_PRO_CONTROLLER_TYPE_PRO = 0;
+    SWITCH_PRO_CONTROLLER_TYPE_SNES = 1;
+    SWITCH_PRO_CONTROLLER_TYPE_N64 = 2;
+    SWITCH_PRO_CONTROLLER_TYPE_GENESIS = 3;
+    SWITCH_PRO_CONTROLLER_TYPE_SUPER_FAMICOM = 4;
+    SWITCH_PRO_CONTROLLER_TYPE_NES = 5;
+    SWITCH_PRO_CONTROLLER_TYPE_FAMICOM_I = 6;
+    SWITCH_PRO_CONTROLLER_TYPE_FAMICOM_II = 7;
+    SWITCH_PRO_CONTROLLER_TYPE_JOYCON_LEFT = 8;
+    SWITCH_PRO_CONTROLLER_TYPE_JOYCON_RIGHT = 9;
+    SWITCH_PRO_CONTROLLER_TYPE_MEGA_DRIVE = 10;
+    SWITCH_PRO_CONTROLLER_TYPE_JOYCON_PAIR = 11;
+}
+
+enum SwitchProColorPreset
+{
+    option (nanopb_enumopt).long_names = false;
+
+    SWITCH_PRO_COLOR_STOCK = 0;
+    SWITCH_PRO_COLOR_GP2040 = 1;
+    SWITCH_PRO_COLOR_CUSTOM = 2;
+}
+
+enum SwitchProJoyConColorPreset
+{
+    option (nanopb_enumopt).long_names = false;
+
+    SWITCH_PRO_JOYCON_COLOR_GREY = 0;
+    SWITCH_PRO_JOYCON_COLOR_NEON = 1;
+    SWITCH_PRO_JOYCON_COLOR_WHITE = 2;
+    SWITCH_PRO_JOYCON_COLOR_GP2040 = 3;
+    SWITCH_PRO_JOYCON_COLOR_CUSTOM = 4;
+}
+
 enum Switch2ProIdentity
 {
     option (nanopb_enumopt).long_names = false;
@@ -726,6 +764,15 @@ enum PS4ControllerIDMode
 
     PS4_ID_CONSOLE = 0;
     PS4_ID_EMULATION = 1;
+};
+
+enum GenericDpadMode
+{
+    option (nanopb_enumopt).long_names = false;
+
+    GENERIC_DPAD_HAT_AND_BUTTONS = 0;
+    GENERIC_DPAD_HAT_ONLY = 1;
+    GENERIC_DPAD_BUTTONS_ONLY = 2;
 };
 
 enum DisplaySaverMode

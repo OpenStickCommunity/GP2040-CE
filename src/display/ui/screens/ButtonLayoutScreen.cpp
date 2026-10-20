@@ -193,7 +193,22 @@ void ButtonLayoutScreen::generateHeader() {
             case INPUT_MODE_ASTRO: statusBar += "ASTRO"; break;
             case INPUT_MODE_PSCLASSIC: statusBar += "PSC"; break;
             case INPUT_MODE_XBOXORIGINAL: statusBar += "OGXBOX"; break;
-            case INPUT_MODE_SWITCH_PRO: statusBar += "SWPRO"; break;
+            case INPUT_MODE_SWITCH_PRO:
+                switch (Storage::getInstance().getGamepadOptions().switchProControllerType) {
+                    case SWITCH_PRO_CONTROLLER_TYPE_SNES: statusBar += "SWSNES"; break;
+                    case SWITCH_PRO_CONTROLLER_TYPE_SUPER_FAMICOM: statusBar += "SWSFC"; break;
+                    case SWITCH_PRO_CONTROLLER_TYPE_N64: statusBar += "SWN64"; break;
+                    case SWITCH_PRO_CONTROLLER_TYPE_GENESIS: statusBar += "SWGEN"; break;
+                    case SWITCH_PRO_CONTROLLER_TYPE_MEGA_DRIVE: statusBar += "SWMD"; break;
+                    case SWITCH_PRO_CONTROLLER_TYPE_NES: statusBar += "SWNES"; break;
+                    case SWITCH_PRO_CONTROLLER_TYPE_FAMICOM_I: statusBar += "SWFC1"; break;
+                    case SWITCH_PRO_CONTROLLER_TYPE_FAMICOM_II: statusBar += "SWFC2"; break;
+                    case SWITCH_PRO_CONTROLLER_TYPE_JOYCON_LEFT: statusBar += "SWJCL"; break;
+                    case SWITCH_PRO_CONTROLLER_TYPE_JOYCON_RIGHT: statusBar += "SWJCR"; break;
+                    case SWITCH_PRO_CONTROLLER_TYPE_JOYCON_PAIR: statusBar += "SWJCP"; break;
+                    default: statusBar += "SWPRO"; break;
+                }
+                break;
             case INPUT_MODE_SWITCH2_PRO:
                 switch (Storage::getInstance().getGamepadOptions().switch2ProIdentity) {
                     case SWITCH2_PRO_IDENTITY_JOYCON2_LEFT: statusBar += "SW2JCL"; break;
@@ -411,7 +426,21 @@ void ButtonLayoutScreen::processInputHistory() {
 	};
 
 	uint8_t mode = ((displayModeLookup.count(inputMode) > 0) ? displayModeLookup.at(inputMode) : 0);
-	if (inputMode == INPUT_MODE_SWITCH2_PRO) {
+	if (inputMode == INPUT_MODE_SWITCH_PRO) {
+		switch (Storage::getInstance().getGamepadOptions().switchProControllerType) {
+			case SWITCH_PRO_CONTROLLER_TYPE_SNES:
+			case SWITCH_PRO_CONTROLLER_TYPE_SUPER_FAMICOM: mode = 15; break;
+			case SWITCH_PRO_CONTROLLER_TYPE_N64: mode = 16; break;
+			case SWITCH_PRO_CONTROLLER_TYPE_GENESIS:
+			case SWITCH_PRO_CONTROLLER_TYPE_MEGA_DRIVE: mode = 17; break;
+			case SWITCH_PRO_CONTROLLER_TYPE_JOYCON_LEFT: mode = 18; break;
+			case SWITCH_PRO_CONTROLLER_TYPE_JOYCON_RIGHT: mode = 19; break;
+			case SWITCH_PRO_CONTROLLER_TYPE_NES:
+			case SWITCH_PRO_CONTROLLER_TYPE_FAMICOM_I:
+			case SWITCH_PRO_CONTROLLER_TYPE_FAMICOM_II: mode = 20; break;
+			default: mode = 1; break;
+		}
+	} else if (inputMode == INPUT_MODE_SWITCH2_PRO) {
 		switch (Storage::getInstance().getGamepadOptions().switch2ProIdentity) {
 			case SWITCH2_PRO_IDENTITY_JOYCON2_LEFT: mode = 13; break;
 			case SWITCH2_PRO_IDENTITY_JOYCON2_RIGHT: mode = 14; break;

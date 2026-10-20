@@ -397,18 +397,26 @@ async function setBootModeOptions(options) {
 	return Http.post(`${baseUrl}/api/setBootModeOptions`, options);
 }
 
+const toButtonMappings = (keyCodes) =>
+	Object.fromEntries(
+		Object.entries(baseButtonMappings).map(([button, mapping]) => [
+			button,
+			{ ...mapping, key: parseInt(keyCodes?.[button]) || 0 },
+		]),
+	);
+
+const toKeyCodes = (mappings) =>
+	Object.fromEntries(
+		Object.entries(mappings).map(([button, { key }]) => [button, key]),
+	);
+
 async function getKeyMappings(setLoading) {
 	setLoading(true);
 
 	try {
 		const response = await Http.get(`${baseUrl}/api/getKeyMappings`);
 		setLoading(false);
-
-		let mappings = { ...baseButtonMappings };
-		for (let prop of Object.keys(response.data))
-			mappings[prop].key = parseInt(response.data[prop]);
-
-		return mappings;
+		return toButtonMappings(response.data);
 	} catch (error) {
 		setLoading(false);
 		console.error(error);
@@ -416,13 +424,32 @@ async function getKeyMappings(setLoading) {
 }
 
 async function setKeyMappings(mappings) {
-	let data = {};
-	Object.keys(mappings).map((button) => (data[button] = mappings[button].key));
+	return Http.post(
+		`${baseUrl}/api/setKeyMappings`,
+		sanitizeRequest(toKeyCodes(mappings)),
+	)
+		.then(() => true)
+		.catch((err) => {
+			console.error(err);
+			return false;
+		});
+}
 
-	return Http.post(`${baseUrl}/api/setKeyMappings`, sanitizeRequest(data))
-		.then((response) => {
-			return true;
-		})
+async function getProfileKeyMappings() {
+	try {
+		const { data } = await Http.get(`${baseUrl}/api/getProfileKeyMappings`);
+		return (data?.profiles ?? []).map(toButtonMappings);
+	} catch (error) {
+		console.error(error);
+		return [];
+	}
+}
+
+async function setProfileKeyMappings(profiles) {
+	return Http.post(`${baseUrl}/api/setProfileKeyMappings`, {
+		profiles: profiles.map(toKeyCodes),
+	})
+		.then(() => true)
 		.catch((err) => {
 			console.error(err);
 			return false;
@@ -749,6 +776,8 @@ export default {
 	setProfileOptions,
 	getKeyMappings,
 	setKeyMappings,
+	getProfileKeyMappings,
+	setProfileKeyMappings,
 	getAddonsOptions,
 	setAddonsOptions,
 	getMacroAddonOptions,

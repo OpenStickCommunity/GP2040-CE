@@ -12,7 +12,7 @@ void PinViewerScreen::shutdown() {
 }
 
 void PinViewerScreen::drawScreen() {
-    Mask_t pinValues = ~gpio_get_all64();
+    Mask_t pinValues = Storage::getInstance().getPressedGpios();
     GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
 
     std::string pinsPressed = "GPIO Pin : ";

@@ -793,6 +793,12 @@ void NeoPicoLEDAddon::GenerateLights()
 	{
 		int ledIndex = (ledOptions.lightClusterData[index].lightLocationData) & 0xFF;
 		int ledCount = (ledOptions.lightClusterData[index].lightLocationData >> 8) & 0xFF;
+		// Lights index frame[FRAME_MAX] unchecked: drop a light that starts past the
+		// frame and trim one that runs off its end
+		if(ledIndex >= FRAME_MAX)
+			continue;
+		if(ledIndex + ledCount > FRAME_MAX)
+			ledCount = FRAME_MAX - ledIndex;
 		int posX = (ledOptions.lightClusterData[index].lightLocationData >> 16) & 0xFF;
 		int posY = (ledOptions.lightClusterData[index].lightLocationData >> 24) & 0xFF;
 		int gpioPin = (ledOptions.lightClusterData[index].lightTypeData) & 0xFF;

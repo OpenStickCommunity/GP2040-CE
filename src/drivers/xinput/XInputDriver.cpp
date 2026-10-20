@@ -5,7 +5,9 @@
 
 #include "drivers/xinput/XInputDriver.h"
 #include "drivers/shared/driverhelper.h"
+#include "drivers/shared/USBReportScheduler.h"
 #include "storagemanager.h"
+#include "pico/platform.h"
 
 #define USB_SETUP_DEVICE_TO_HOST 0x80
 #define USB_SETUP_HOST_TO_DEVICE 0x00
@@ -55,6 +57,7 @@ static void xinput_init(void) {
 
 static void xinput_reset(uint8_t rhport) {
     (void)rhport;
+	USBReportScheduler::getInstance().reset();
 }
 
 static uint16_t xinput_open(uint8_t rhport, tusb_desc_interface_t const *itf_descriptor, uint16_t max_length) {
@@ -79,6 +82,8 @@ static uint16_t xinput_open(uint8_t rhport, tusb_desc_interface_t const *itf_des
             if ( itf_descriptor->bInterfaceProtocol == 0x01 ) {
                 TU_ASSERT(usbd_open_edpt_pair(rhport, (const uint8_t*)p_desc, itf_descriptor->bNumEndpoints,
                             TUSB_XFER_INTERRUPT, &endpoint_out, &endpoint_in), 0);
+                USBReportScheduler::getInstance().configure(endpoint_in);
+                USBReportScheduler::getInstance().start();
             }
         // Xbox 360 Security Interface
         } else if (itf_descriptor->bInterfaceSubClass == 0xFD &&
@@ -114,11 +119,17 @@ static bool xinput_control_complete(uint8_t rhport, tusb_control_request_t const
 static bool xinput_xfer_callback(uint8_t rhport, uint8_t ep_addr, xfer_result_t result, uint32_t xferred_bytes)
 {
     (void)rhport;
-    (void)result;
     (void)xferred_bytes;
 
-    if (ep_addr == endpoint_out)
+    if (ep_addr == endpoint_in) {
+        if (result == XFER_RESULT_SUCCESS) {
+            USBReportScheduler::getInstance().onReportComplete();
+        } else {
+            USBReportScheduler::getInstance().onReportFailed();
+        }
+    } else if (ep_addr == endpoint_out) {
         usbd_edpt_xfer(0, endpoint_out, xinput_out_buffer, XINPUT_OUT_SIZE, false);
+    }
 
     return true;
 }
@@ -228,11 +239,12 @@ void XInputDriver::initialize() {
         .open = xinput_open,
         .control_xfer_cb = xinput_device_control_request,
         .xfer_cb = xinput_xfer_callback,
-        .sof = NULL
+        .sof = USBReportScheduler::onSof
     };
 
     xAuthDriver = nullptr;
     xAuthSent = false;
+    updateAnalogScheduling(Storage::getInstance().GetGamepad()->lastReinitProfileNumber);
 }
 
 void XInputDriver::initializeAux() {
@@ -257,7 +269,10 @@ bool XInputDriver::getAuthSent() {
     return xAuthSent;
 }
 
-bool XInputDriver::process(Gamepad * gamepad) {
+bool __not_in_flash_func(XInputDriver::process)(Gamepad * gamepad) {
+    USBReportScheduler &scheduler = USBReportScheduler::getInstance();
+    scheduler.beginInputProcessing();
+
     Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
     Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
 
@@ -339,15 +354,21 @@ bool XInputDriver::process(Gamepad * gamepad) {
 
     bool reportSent = false;
 
-    // compare against previous report and send new
-    if ( memcmp(last_report, &xinputReport, sizeof(XInputReport)) != 0) {
-        if ( tud_ready() &&											// Is the device ready?
-            (endpoint_in != 0) && (!usbd_edpt_busy(0, endpoint_in)) ) // Is the IN endpoint available?
-        {
-            usbd_edpt_claim(0, endpoint_in);								// Take control of IN endpoint
-            usbd_edpt_xfer(0, endpoint_in, (uint8_t *)&xinputReport, sizeof(XInputReport), false); // Send report buffer
-            usbd_edpt_release(0, endpoint_in);								// Release control of IN endpoint
-            memcpy(last_report, &xinputReport, sizeof(XInputReport)); // save if we sent it
+    // A hotkey can request the next profile before its mappings are applied.
+    if (analogSchedulingProfile != gamepad->lastReinitProfileNumber) {
+        updateAnalogScheduling(gamepad->lastReinitProfileNumber);
+    }
+    if (scheduler.needsReport() || memcmp(last_report, &xinputReport, sizeof(XInputReport)) != 0) {
+        USBReportPriority priority = {};
+        priority.digital = static_cast<uint64_t>(xinputReport.buttons1) |
+            (static_cast<uint64_t>(xinputReport.buttons2) << 8);
+        priority.triggers = static_cast<uint16_t>(xinputReport.lt) |
+            (static_cast<uint16_t>(xinputReport.rt) << 8);
+        bool const allowAnalogScheduling = analogSchedulingAllowed &&
+            gamepad->getActiveDpadMode() == DPAD_MODE_DIGITAL;
+        if (scheduler.sendDirectReport(
+                &xinputReport, sizeof(XInputReport), priority, allowAnalogScheduling)) {
+            memcpy(last_report, &xinputReport, sizeof(XInputReport));
             reportSent = true;
         }
     }
@@ -400,6 +421,7 @@ bool XInputDriver::process(Gamepad * gamepad) {
         }
     }
 
+    scheduler.endInputProcessing();
     return reportSent;
 }
 
