@@ -84,6 +84,10 @@ message GamepadOptions
     optional uint32 switch2ProStickColor = 63;
     optional uint32 switch2ProLeftRingColor = 64;
     optional uint32 switch2ProRightRingColor = 65;
+    optional uint32 ermRumbleMotorFloor = 66;
+    optional uint32 ermRumbleKickstartMs = 67;
+    optional uint32 ermRumbleSustainMs = 68;
+    optional uint32 ermRumbleBoostPercent = 69;
 }
 
 message KeyboardMapping

@@ -25,9 +25,20 @@ public:
     virtual void get_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {}
 private:
     void xbox360_set_led(uint8_t quadrant);
-    void xinput_set_rumble(uint8_t left, uint8_t right);
+    bool xinput_set_rumble(uint8_t left, uint8_t right);
     uint8_t last_left_rumble;
     uint8_t last_right_rumble;
+    bool rumble_dirty;
+    uint32_t left_rumble_start;
+    uint32_t right_rumble_start;
+    uint32_t left_kickstart_start;
+    uint32_t right_kickstart_start;
+    bool left_kickstart_active;
+    bool right_kickstart_active;
+    bool left_rumble_active;
+    bool right_rumble_active;
+    uint8_t sustained_left_rumble;
+    uint8_t sustained_right_rumble;
     XInputReport prev_report;
 };
 
