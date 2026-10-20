@@ -63,6 +63,10 @@ void HETriggerAddon::setup() {
 
     lastADCSelected = -1;
 
+    for(int i = 0; i < 32; i++) {
+        heRapidTriggerReset(triggerState[i]);
+    }
+
     if ( options.emaSmoothing == 1 ) {
         // Read all ADC values once
         for(int i = 0; i < 32; i++) {
@@ -78,8 +82,6 @@ void HETriggerAddon::setup() {
                 lastADCSelected = muxPinArray[mux];
             }
             emaSmoothingReads[i] = adc_read();
-            lastIncrement[i] = adc_read();
-            triggerActive[i] = false;
         }
         emaSmoothingFactor = (float)options.smoothingFactor / 100.f; // 99 = max smoothing factor
     }
@@ -127,12 +129,6 @@ void HETriggerAddon::scan(bool applyActions) {
         }
 
         value = adc_read();
-        activationThreshold = (uint16_t)options.triggers[he].active;
-        releaseThreshold = (uint16_t)options.triggers[he].active;
-
-        if ( options.triggers[he].rapidTrigger ) {
-            releaseThreshold = (uint16_t)options.triggers[he].release;
-        }
 
         // EMA Smoothing
         if ( options.emaSmoothing == 1 ) {
@@ -140,32 +136,24 @@ void HETriggerAddon::scan(bool applyActions) {
             emaSmoothingReads[he] = value;
         }
 
-        if (options.triggers[he].is_polarized) {
-            // effectively inverting value and thresholds
-            value = ADC_MAX - value;
-            activationThreshold = ADC_MAX - activationThreshold;
-            releaseThreshold = ADC_MAX - releaseThreshold;
-        }
+        const HETriggerInfo & trigger = options.triggers[he];
 
-        bool wasActive = triggerActive[he];
-        if (!options.triggers[he].rapidTrigger) {
-            // no rapid trigger
-            triggerActive[he] = value > activationThreshold;
-        } else {
-            // chad rapid trigger
-            bool pressing = (value > lastIncrement[he]) && (value - lastIncrement[he]) > options.triggers[he].noise;
-            bool releasing = (lastIncrement[he] > value) && (lastIncrement[he] - value) > options.triggers[he].noise;
-            if (pressing || releasing) {
-                lastIncrement[he] = value;
-            }
+        const int32_t direction = trigger.is_polarized ? -1 : 1;
+        const int32_t depth = direction * ((int32_t)value - trigger.idle);
 
-            if ( !triggerActive[he] && pressing && value >= activationThreshold) {
-                triggerActive[he] = true;
-            } else if (triggerActive[he] && releasing && value <= releaseThreshold) {
-                triggerActive[he] = false;
-            }
-        }
-        if (triggerActive[he]) {
+        HERapidTriggerConfig rtConfig;
+        rtConfig.actuation = direction * (trigger.active - trigger.idle);
+        rtConfig.pressSensitivity = trigger.rtPressSensitivity;
+        rtConfig.releaseSensitivity = trigger.rtSeparateSensitivity ? trigger.rtReleaseSensitivity : trigger.rtPressSensitivity;
+        rtConfig.noise = trigger.noise;
+        rtConfig.travel = direction * (trigger.pressed - trigger.idle);
+        rtConfig.rapidTrigger = trigger.rapidTrigger;
+        rtConfig.continuous = trigger.rtContinuous;
+
+        const bool wasActive = triggerState[he].active;
+        heRapidTriggerUpdate(triggerState[he], rtConfig, depth);
+
+        if (triggerState[he].active) {
             gamepad->state.heTriggers |= (1u << he);
             if (!applyActions)
                 continue;
