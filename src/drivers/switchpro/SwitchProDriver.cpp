@@ -378,6 +378,11 @@ bool SwitchProDriver::process(Gamepad * gamepad) {
 	if (tud_suspended())
 		tud_remote_wakeup();
 
+    if (isReportQueued && (now - queuedReportTime) > 500) {
+        // Drop stuck queued report after 500ms to prevent permanent input starvation
+        isReportQueued = false;
+    }
+
     bool const protocolQueued = isReportQueued;
     if (protocolQueued && (now - last_report_timer) > SWITCH_PRO_KEEPALIVE_TIMER) {
         if (tud_hid_n_ready(hidInstance) && tud_hid_n_report(hidInstance, queuedReportID, report, 64)) {
@@ -509,7 +514,12 @@ void SwitchProDriver::handleConfigReport(uint8_t switchReportID, uint8_t switchR
             break;
     }
 
-    if (canSend) isReportQueued = true;
+    if (canSend) {
+        if (!isReportQueued) {
+            queuedReportTime = to_ms_since_boot(get_absolute_time());
+        }
+        isReportQueued = true;
+    }
 }
 
 void SwitchProDriver::handleFeatureReport(uint8_t switchReportID, uint8_t switchReportSubID, const uint8_t *reportData, uint16_t reportLength) {
@@ -724,7 +734,38 @@ void SwitchProDriver::handleFeatureReport(uint8_t switchReportID, uint8_t switch
             break;
     }
 
-    if (canSend) isReportQueued = true;
+    if (canSend) {
+        if (!isReportQueued) {
+            queuedReportTime = to_ms_since_boot(get_absolute_time());
+        }
+        isReportQueued = true;
+    }
+}
+
+// Nintendo Switch HD Rumble packet downmixing for ERM/LRA motors (0..255 PWM).
+// Switch 1 HD rumble encodes 4 bytes per actuator with HF frequency/amplitude
+// and LF frequency/amplitude for voice-coil/LRA actuators. Standard gamepads
+// use DC motors without frequency tuning. We extract HF amplitude (r[1]) and
+// LF amplitude (r[3]) and combine them into a single 0..255 PWM intensity.
+static inline uint8_t decode_hd_rumble(const uint8_t* r) {
+    uint8_t hf_amp = (r[1] & 0xFE) >> 1;
+    uint8_t lf_amp = r[3] & 0x7F;
+    uint16_t combined = (uint16_t)hf_amp * 2 + lf_amp;
+    if (combined > 255) combined = 255;
+    return (uint8_t)combined;
+}
+
+static void setSwitchProRumble(const uint8_t* rumbleData) {
+    uint8_t left_intensity = decode_hd_rumble(&rumbleData[0]);
+    uint8_t right_intensity = decode_hd_rumble(&rumbleData[4]);
+
+    Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
+    if (processedGamepad != nullptr) {
+        processedGamepad->auxState.haptics.leftActuator.active = (left_intensity > 0);
+        processedGamepad->auxState.haptics.leftActuator.intensity = left_intensity;
+        processedGamepad->auxState.haptics.rightActuator.active = (right_intensity > 0);
+        processedGamepad->auxState.haptics.rightActuator.intensity = right_intensity;
+    }
 }
 
 void SwitchProDriver::set_report(uint8_t report_id, hid_report_type_t report_type, const uint8_t *buffer, uint16_t bufsize) {
@@ -734,7 +775,14 @@ void SwitchProDriver::set_report(uint8_t report_id, hid_report_type_t report_typ
     uint8_t switchReportSubID = buffer[1];
     //printf("SwitchProDriver::set_report Rpt: %02x, Type: %d, Len: %d :: SID: %02x, SSID: %02x\n", report_id, report_type, bufsize, switchReportID, switchReportSubID);
     if (switchReportID == SwitchReportID::REPORT_OUTPUT_00) {
+    } else if (switchReportID == SwitchReportID::REPORT_OUTPUT_10) {
+        if (bufsize >= 10) {
+            setSwitchProRumble(&buffer[2]);
+        }
     } else if (switchReportID == SwitchReportID::REPORT_FEATURE) {
+        if (bufsize >= 10) {
+            setSwitchProRumble(&buffer[2]);
+        }
         memset(report, 0x00, bufsize);
         queuedReportID = report_id;
         handleFeatureReport(switchReportID, switchReportSubID, buffer, bufsize);
