@@ -1,5 +1,5 @@
 // Mirror of headers/addons/he_rapid_trigger.h so the calibration preview matches the firmware.
-// Both are checked against tests/he_rapid_trigger/vectors.txt.
+// Keep the two in sync when changing rapid trigger behavior.
 
 export type RapidTriggerConfig = {
 	actuation: number;

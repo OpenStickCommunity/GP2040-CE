@@ -492,7 +492,7 @@ const SwitchTravelInput = ({
 	return (
 		<Form.Group
 			controlId="heTriggerSwitchTravel"
-			className="d-flex align-items-center gap-2 ms-auto"
+			className="col-sm-4 d-flex align-items-center gap-2"
 		>
 			<Form.Label className="mb-0 text-nowrap">
 				{t('HETrigger:switch-travel-label')}
@@ -561,17 +561,6 @@ const HETrigger = ({
 					{t('HETrigger:header-text')}
 				</a>
 			}
-			headerRight={
-				values.HETriggerEnabled ? (
-					<SwitchTravelInput
-						value={Number(values.heTriggerSwitchTravel) || 0}
-						error={errors.heTriggerSwitchTravel}
-						onChange={(travel) =>
-							setFieldValue('heTriggerSwitchTravel', travel)
-						}
-					/>
-				) : null
-			}
 		>
 			<div id="HETriggerOptions" hidden={!values.HETriggerEnabled}>
 				<div className="alert alert-info" role="alert">
@@ -582,6 +571,15 @@ const HETrigger = ({
 						pins: availableAnalogPins.join(', '),
 					})}
 				</div>
+				<Row className="mb-3">
+					<SwitchTravelInput
+						value={Number(values.heTriggerSwitchTravel) || 0}
+						error={errors.heTriggerSwitchTravel}
+						onChange={(travel) =>
+							setFieldValue('heTriggerSwitchTravel', travel)
+						}
+					/>
+				</Row>
 				<Row className="mt-2">
 					<FormSelect
 						label={t('HETrigger:multiplexer-channel-select')}
