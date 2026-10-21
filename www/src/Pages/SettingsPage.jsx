@@ -2127,8 +2127,34 @@ export default function SettingsPage() {
 						</Form.Select>
 					</Col>
 				</Row>
+				{values.switch2ProIdentity ===
+					Switch2ProIdentity.SWITCH2_PRO_IDENTITY_GAMECUBE && (
+					<Row className="mb-3">
+						<Col xs={12}>
+							<p className="small text-body-secondary mb-0">
+								{t('SettingsPage:switch2-pro-gamecube-no-options')}
+							</p>
+						</Col>
+					</Row>
+				)}
 				{joyCon2Side && (
 					<>
+						<Row className="mb-3">
+							<Col xs={12}>
+								<div className="alert alert-warning mb-0">
+									<Trans
+										ns="SettingsPage"
+										i18nKey="switch2-pro-joycon2-experimental-warning"
+										values={{
+											mode: t(
+												`SettingsPage:switch2-pro-identity-options.joycon2-${joyCon2Side}`,
+											),
+										}}
+										components={{ strong: <strong /> }}
+									/>
+								</div>
+							</Col>
+						</Row>
 						<Row className="mb-3">
 							<Col xs={12}>
 								<Form.Label>
