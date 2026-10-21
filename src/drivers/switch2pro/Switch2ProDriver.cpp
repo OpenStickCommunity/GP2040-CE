@@ -36,6 +36,7 @@ typedef enum {
     CMD_FW_UPDATE    = 0x0D,
     CMD_FW_INFO      = 0x10,
     CMD_UNKNOWN11    = 0x11,
+    CMD_UNKNOWN13    = 0x13,
     CMD_PAIRING      = 0x15,
     CMD_UNKNOWN16    = 0x16,
     CMD_UNKNOWN18    = 0x18,
@@ -302,6 +303,14 @@ static void handleCommand(const uint8_t *req) {
                 const uint8_t payload[] = {
                     0x01, 0x20, 0x03, 0x00, 0x00, 0x0a, 0xe8, 0x1c, 0x3b, 0x79, 0x7d, 0x8b, 0x3a, 0x0a, 0xe8,
                     0x9c, 0x42, 0x58, 0xa0, 0x0b, 0x42, 0x0a, 0xe8, 0x9c, 0x41, 0x58, 0xa0, 0x0b, 0x41 };
+                setReply(command, sub, payload, sizeof(payload));
+            } else {
+                setReply(command, sub, nullptr, 0);
+            }
+            break;
+        case CMD_UNKNOWN13:
+            if (sub == 0x01) {
+                const uint8_t payload[] = { 0x01, 0x00, 0x00, 0x00 };
                 setReply(command, sub, payload, sizeof(payload));
             } else {
                 setReply(command, sub, nullptr, 0);
