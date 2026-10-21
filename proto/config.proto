@@ -315,6 +315,14 @@ message DisplayOptions
     optional uint32 inputHistoryRow = 30;
     
     optional uint32 contrast = 31;
+
+    optional bool splashTextEnabled = 32;
+    optional int32 splashTextDuration = 33;
+    optional uint32 splashTextLineCount = 34;
+    optional string splashTextLine1 = 35 [(nanopb).max_length = 21];
+    optional string splashTextLine2 = 36 [(nanopb).max_length = 21];
+    optional string splashTextLine3 = 37 [(nanopb).max_length = 21];
+    optional bool splashTextFirst = 38;
 }
 
 message LightCluster

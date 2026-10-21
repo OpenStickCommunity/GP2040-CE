@@ -11,6 +11,8 @@ import FormControl from '../Components/FormControl';
 import FormSelect from '../Components/FormSelect';
 import Section from '../Components/Section';
 import WebApi from '../Services/WebApi';
+import { getButtonLabels } from '../Data/Buttons';
+import { useRememberedTab } from '../Hooks/useRememberedTab';
 
 const ON_OFF_OPTIONS = [
 	{ label: 'form.display-state.disabled', value: 0 },
@@ -21,6 +23,55 @@ const SPLASH_MODES = [
 	{ label: 'form.splash-modes.enabled', value: 0 }, // STATICSPLASH
 	{ label: 'form.splash-modes.disabled', value: 3 }, // NOSPLASH
 ];
+
+const SPLASH_MODE_CHOICES = [
+	{
+		label: 'form.splash-modes.image-only',
+		splashMode: 0,
+		splashTextEnabled: 0,
+		splashTextFirst: 0,
+	},
+	{
+		label: 'form.splash-modes.text-only',
+		splashMode: 3,
+		splashTextEnabled: 1,
+		splashTextFirst: 0,
+	},
+	{
+		label: 'form.splash-modes.image-then-text',
+		splashMode: 0,
+		splashTextEnabled: 1,
+		splashTextFirst: 0,
+	},
+	{
+		label: 'form.splash-modes.text-then-image',
+		splashMode: 0,
+		splashTextEnabled: 1,
+		splashTextFirst: 1,
+	},
+	{
+		label: 'form.splash-modes.disabled',
+		splashMode: 3,
+		splashTextEnabled: 0,
+		splashTextFirst: 0,
+	},
+];
+
+const findSplashModeChoice = ({
+	splashMode,
+	splashTextEnabled,
+	splashTextFirst,
+}) => {
+	const mode = parseInt(splashMode);
+	const text = splashTextEnabled ? 1 : 0;
+	const first = mode !== 3 && text && splashTextFirst ? 1 : 0;
+	return SPLASH_MODE_CHOICES.findIndex(
+		(o) =>
+			o.splashMode === mode &&
+			o.splashTextEnabled === text &&
+			o.splashTextFirst === first,
+	);
+};
 
 const DISPLAY_FLIP_MODES = [
 	{ label: 'form.flip-display.none', value: 0 },
@@ -36,6 +87,13 @@ const DISPLAY_SAVER_MODES = [
 	{ label: 'form.saver-modes.pipes', value: 3 },
 	{ label: 'form.saver-modes.toast', value: 4 },
 ];
+
+const SPLASH_TEXT_LINE_COUNTS = [1, 2, 3];
+const SPLASH_TEXT_MAX_LENGTH = 21;
+const SPLASH_FIELD_WIDTHS = {
+	short: { maxWidth: '8rem' },
+	text: { maxWidth: '14rem' },
+};
 
 const LAYOUT_ORIENTATION = [
 	{ label: 'form.layout-modes.standard', value: 0 },
@@ -53,6 +111,13 @@ const defaultValues = {
 	splashDuration: 0,
 	splashMode: 3,
 	splashImage: Array(16 * 64).fill(0), // 128 columns represented by bytes so 16 and 64 rows
+	splashTextEnabled: 0,
+	splashTextFirst: 0,
+	splashTextDuration: 3,
+	splashTextLineCount: 2,
+	splashTextLine1: '',
+	splashTextLine2: '',
+	splashTextLine3: '',
 	buttonLayoutCustomOptions: {
 		params: {
 			layout: 0,
@@ -154,6 +219,28 @@ const schema = yup.object().shape({
 		}),
 	}),
 	splashDuration: yup.number().required().min(0).label('Splash Duration'),
+	splashTextEnabled: yup.number().label('Splash Text Enabled?'),
+	splashTextFirst: yup.number().label('Splash Text First?'),
+	splashTextDuration: yup
+		.number()
+		.required()
+		.min(0)
+		.label('Splash Text Duration'),
+	splashTextLineCount: yup
+		.number()
+		.required()
+		.oneOf(SPLASH_TEXT_LINE_COUNTS)
+		.label('Splash Text Lines'),
+	...Object.fromEntries(
+		SPLASH_TEXT_LINE_COUNTS.map((line) => [
+			`splashTextLine${line}`,
+			yup
+				.string()
+				.max(SPLASH_TEXT_MAX_LENGTH)
+				.matches(/^[ -~]*$/, 'Only standard keyboard characters are supported')
+				.label(`Splash Text Line ${line}`),
+		]),
+	),
 	displaySaverTimeout: yup
 		.number()
 		.required()
@@ -193,9 +280,19 @@ export default function DisplayConfigPage() {
 	const [loadingValues, setLoadingValues] = useState(true);
 	const [values, setValues] = useState(defaultValues);
 
-	const { updateUsedPins, getAvailablePeripherals, updatePeripherals } =
-		useContext(AppContext);
+	const {
+		buttonLabels,
+		updateUsedPins,
+		getAvailablePeripherals,
+		updatePeripherals,
+	} = useContext(AppContext);
+	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
+	const CURRENT_BUTTONS = getButtonLabels(buttonLabelType, swapTpShareLabels);
 	const [saveMessage, setSaveMessage] = useState('');
+	const [activeTab, setActiveTab] = useRememberedTab(
+		'displayConfigTabs',
+		'defaultHardwareOptions',
+	);
 
 	const { t } = useTranslation('');
 
@@ -269,7 +366,8 @@ export default function DisplayConfigPage() {
 							</ul>
 							<Form noValidate onSubmit={handleSubmit}>
 								<Tabs
-									defaultActiveKey="defaultHardwareOptions"
+									activeKey={activeTab}
+									onSelect={setActiveTab}
 									id="displayConfigTabs"
 									className="mb-3 pb-0"
 									fill
@@ -826,39 +924,194 @@ export default function DisplayConfigPage() {
 										eventKey="displayModeOptions"
 										title={t('DisplayConfig:section.mode-header')}
 									>
-										<Row className="mb-4">
+										<Row className="mb-3">
 											<FormSelect
 												label={t('DisplayConfig:form.splash-mode-label')}
 												name="splashMode"
 												className="form-select-sm"
 												groupClassName="col-sm-3 mb-3"
-												value={values.splashMode}
+												value={findSplashModeChoice(values)}
 												error={errors.splashMode}
 												isInvalid={errors.splashMode}
-												onChange={handleChange}
+												onChange={(e) => {
+													const choice =
+														SPLASH_MODE_CHOICES[parseInt(e.target.value)];
+													setFieldValue('splashMode', choice.splashMode);
+													setFieldValue(
+														'splashTextEnabled',
+														choice.splashTextEnabled,
+													);
+													setFieldValue(
+														'splashTextFirst',
+														choice.splashTextFirst,
+													);
+												}}
 											>
-												{SPLASH_MODES.map((o, i) => (
-													<option
-														key={`splashMode-option-${i}`}
-														value={o.value}
-													>
+												{SPLASH_MODE_CHOICES.map((o, i) => (
+													<option key={`splashMode-option-${i}`} value={i}>
 														{t(`DisplayConfig:${o.label}`)}
 													</option>
 												))}
 											</FormSelect>
-											<FormControl
-												type="number"
-												label={t('DisplayConfig:form.splash-duration-label')}
-												name="splashDuration"
-												className="form-select-sm"
-												groupClassName="col-sm-3 mb-3"
-												value={values.splashDuration}
-												error={errors.splashDuration}
-												isInvalid={errors.splashDuration}
-												onChange={handleChange}
-												min={0}
-											/>
 										</Row>
+										{(parseInt(values.splashMode) !== 3 ||
+											Boolean(values.splashTextEnabled)) && (
+											<>
+												<hr className="my-4" />
+												<Row>
+													{(values.splashTextFirst
+														? ['text', 'image']
+														: ['image', 'text']
+													)
+														.filter((panel) =>
+															panel === 'image'
+																? parseInt(values.splashMode) !== 3
+																: Boolean(values.splashTextEnabled),
+														)
+														.map((panel) =>
+															panel === 'image' ? (
+																<Col
+																	md={6}
+																	className="mb-3 splash-panel"
+																	key="splash-image-panel"
+																>
+																	<h1>
+																		{t(
+																			'DisplayConfig:section.splash-image-header',
+																		)}
+																	</h1>
+																	<FormControl
+																		type="number"
+																		label={t(
+																			'DisplayConfig:form.splash-duration-label',
+																		)}
+																		name="splashDuration"
+																		style={SPLASH_FIELD_WIDTHS.short}
+																		className="form-control-sm"
+																		groupClassName="mb-3"
+																		value={values.splashDuration}
+																		error={errors.splashDuration}
+																		isInvalid={errors.splashDuration}
+																		onChange={handleChange}
+																		min={0}
+																	/>
+																	<Field name="splashImage">
+																		{({
+																			field, // { name, value, onChange, onBlur }
+																			form, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
+																		}) => (
+																			<Canvas
+																				onChange={(base64) =>
+																					onChangeCanvas(base64, form, field)
+																				}
+																				value={field.value}
+																			/>
+																		)}
+																	</Field>
+																</Col>
+															) : (
+																<Col
+																	md={6}
+																	className="mb-3 splash-panel"
+																	key="splash-text-panel"
+																>
+																	<h1>
+																		{t(
+																			'DisplayConfig:section.splash-text-header',
+																		)}
+																	</h1>
+																	<FormControl
+																		type="number"
+																		label={t(
+																			'DisplayConfig:form.splash-text-duration-label',
+																		)}
+																		name="splashTextDuration"
+																		style={SPLASH_FIELD_WIDTHS.short}
+																		className="form-control-sm"
+																		groupClassName="mb-3"
+																		value={values.splashTextDuration}
+																		error={errors.splashTextDuration}
+																		isInvalid={errors.splashTextDuration}
+																		onChange={handleChange}
+																		min={0}
+																	/>
+																	<FormSelect
+																		label={t(
+																			'DisplayConfig:form.splash-text-lines-label',
+																		)}
+																		name="splashTextLineCount"
+																		style={SPLASH_FIELD_WIDTHS.short}
+																		className="form-select-sm"
+																		groupClassName="mb-3"
+																		value={values.splashTextLineCount}
+																		error={errors.splashTextLineCount}
+																		isInvalid={errors.splashTextLineCount}
+																		onChange={(e) =>
+																			setFieldValue(
+																				'splashTextLineCount',
+																				parseInt(e.target.value),
+																			)
+																		}
+																	>
+																		{SPLASH_TEXT_LINE_COUNTS.map((count) => (
+																			<option
+																				key={`splashTextLineCount-option-${count}`}
+																				value={count}
+																			>
+																				{count}
+																			</option>
+																		))}
+																	</FormSelect>
+																	{SPLASH_TEXT_LINE_COUNTS.filter(
+																		(line) =>
+																			line <= values.splashTextLineCount,
+																	).map((line) => (
+																		<FormControl
+																			key={`splashTextLine${line}`}
+																			type="text"
+																			label={t(
+																				'DisplayConfig:form.splash-text-line-label',
+																				{ line },
+																			)}
+																			name={`splashTextLine${line}`}
+																			style={SPLASH_FIELD_WIDTHS.text}
+																			className="form-control-sm"
+																			groupClassName="mb-3"
+																			value={values[`splashTextLine${line}`]}
+																			error={errors[`splashTextLine${line}`]}
+																			isInvalid={
+																				errors[`splashTextLine${line}`]
+																			}
+																			onChange={handleChange}
+																			maxLength={SPLASH_TEXT_MAX_LENGTH}
+																		/>
+																	))}
+																	<Form.Text muted as="div">
+																		<div>
+																			{t(
+																				'DisplayConfig:form.splash-text-help',
+																				{
+																					max: SPLASH_TEXT_MAX_LENGTH,
+																				},
+																			)}
+																		</div>
+																		<div>
+																			{t(
+																				'DisplayConfig:form.splash-text-preview-help',
+																				{
+																					button: CURRENT_BUTTONS['B2'],
+																				},
+																			)}
+																		</div>
+																	</Form.Text>
+																</Col>
+															),
+														)}
+												</Row>
+											</>
+										)}
+										<hr className="my-4" />
+										<h1>{t('DisplayConfig:section.display-saver-header')}</h1>
 										<Row className="mb-3">
 											<FormSelect
 												label={t('DisplayConfig:form.screen-saver-mode-label')}
@@ -879,37 +1132,25 @@ export default function DisplayConfigPage() {
 													</option>
 												))}
 											</FormSelect>
-											<FormControl
-												type="number"
-												label={t(
-													'DisplayConfig:form.display-saver-timeout-label',
-												)}
-												name="displaySaverTimeout"
-												className="form-select-sm"
-												groupClassName="col-sm-3 mb-3"
-												value={values.displaySaverTimeout}
-												error={errors.displaySaverTimeout}
-												isInvalid={errors.displaySaverTimeout}
-												onChange={handleChange}
-												min={0}
-											/>
-										</Row>
-										<Row>
-											<Field name="splashImage">
-												{({
-													field, // { name, value, onChange, onBlur }
-													form, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
-												}) => (
-													<div className="mt-3">
-														<Canvas
-															onChange={(base64) =>
-																onChangeCanvas(base64, form, field)
-															}
-															value={field.value}
-														/>
-													</div>
-												)}
-											</Field>
+											<Form.Group className="col-auto mb-3">
+												<Form.Label>
+													{t(
+														'DisplayConfig:form.display-saver-timeout-short-label',
+													)}
+												</Form.Label>
+												<Form.Control
+													type="number"
+													name="displaySaverTimeout"
+													className="form-control-sm"
+													value={values.displaySaverTimeout}
+													isInvalid={errors.displaySaverTimeout}
+													onChange={handleChange}
+													min={0}
+												/>
+												<Form.Control.Feedback type="invalid">
+													{errors.displaySaverTimeout}
+												</Form.Control.Feedback>
+											</Form.Group>
 										</Row>
 									</Tab>
 								</Tabs>

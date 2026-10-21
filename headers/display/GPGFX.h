@@ -23,6 +23,7 @@ class GPGFX {
         uint32_t getPixel(uint16_t x, uint16_t y);
         void drawPixel(uint16_t x, uint16_t y, uint32_t color);
         void drawText(uint16_t x, uint16_t y, std::string text, uint8_t invert = 0);
+        void drawTextAt(uint16_t x, uint16_t y, std::string text, uint8_t invert = 0);
         void drawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint32_t color, uint8_t filled);
         void drawArc(uint16_t x, uint16_t y, uint32_t radiusX, uint32_t radiusY, uint32_t color, uint8_t filled, double startAngle, double endAngle, uint8_t closed);
         void drawEllipse(uint16_t x, uint16_t y, uint32_t radiusX, uint32_t radiusY, uint32_t color, uint8_t filled);

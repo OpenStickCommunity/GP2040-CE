@@ -340,6 +340,13 @@ app.get('/api/getDisplayOptions', (req, res) => {
 		splashMode: 3,
 		splashChoice: 0,
 		splashDuration: 0,
+		splashTextEnabled: 1,
+		splashTextFirst: 0,
+		splashTextDuration: 3000,
+		splashTextLineCount: 2,
+		splashTextLine1: 'HAUTE42|COSMOX',
+		splashTextLine2: 'T13',
+		splashTextLine3: '',
 		buttonLayoutCustomOptions: {
 			params: {
 				layout: 2,
