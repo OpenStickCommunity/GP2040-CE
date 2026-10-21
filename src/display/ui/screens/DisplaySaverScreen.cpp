@@ -124,13 +124,22 @@ void DisplaySaverScreen::drawBounceScene() {
 void DisplaySaverScreen::drawPipeScene() {
     const uint8_t PIPE_WIDTH = 4;
     const uint8_t PIPE_COLOR = 1;
+    const uint32_t PIPE_UPDATE_MS = 500;
+
+    uint32_t now = to_ms_since_boot(get_absolute_time());
+    if (now - pipeLastUpdate >= PIPE_UPDATE_MS) {
+        pipeLastUpdate = now;
+        pipeSeed = rand();
+    }
+    uint32_t pipeRand = pipeSeed;
 
     uint8_t currentX = 0;
     uint8_t currentY = 0;
 
     while (currentY < SCREEN_HEIGHT) {
-        bool connectRight = rand() % 2;
-        bool connectDown = rand() % 2;
+        pipeRand = pipeRand * 1664525 + 1013904223;
+        bool connectRight = (pipeRand >> 31) & 1;
+        bool connectDown = (pipeRand >> 30) & 1;
 
         if (connectRight && currentX + PIPE_WIDTH < SCREEN_WIDTH) {
             for (uint8_t i = 0; i < PIPE_WIDTH; ++i) {
@@ -151,8 +160,6 @@ void DisplaySaverScreen::drawPipeScene() {
             currentX = 0;
             currentY += PIPE_WIDTH;
         }
-
-        delay_us(SCREEN_DELAY_PIPES);
     }
 }
 
@@ -191,12 +198,5 @@ void DisplaySaverScreen::drawToasterScene() {
         if (sprite.y > SCREEN_HEIGHT) {
             sprite.y = 0;
         }
-    }
-}
-
-void DisplaySaverScreen::delay_us(uint32_t us) {
-    uint32_t start = time_us_32();
-    while ((time_us_32() - start) < us) {
-        tight_loop_contents(); // hint for low-power/no-op
     }
 }
