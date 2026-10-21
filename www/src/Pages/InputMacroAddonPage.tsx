@@ -26,6 +26,7 @@ import {
 	BUTTONS,
 	BUTTON_MASKS_OPTIONS,
 } from '../Data/Buttons';
+import { useRememberedTab } from '../Hooks/useRememberedTab';
 
 const MACRO_TYPES = [
 	{ label: 'InputMacroAddon:input-macro-type.press', value: 1 },
@@ -240,6 +241,10 @@ const MacroInputComponent = (props) => {
 };
 
 const MacroComponent = (props) => {
+	const [activeEditorTab, setActiveEditorTab] = useRememberedTab(
+		`macroEditorTabs-${props.id}`,
+		'editor',
+	);
 	const {
 		value: {
 			macroLabel,
@@ -398,7 +403,12 @@ const MacroComponent = (props) => {
 					</Row>
 				)}
 			</Row>
-			<Tabs defaultActiveKey="editor" className="mt-3 mb-3 pb-0" fill>
+			<Tabs
+				activeKey={activeEditorTab}
+				onSelect={setActiveEditorTab}
+				className="mt-3 mb-3 pb-0"
+				fill
+			>
 				<Tab
 					eventKey="editor"
 					title={t('InputMacroAddon:input-macro-editor-tab')}
@@ -490,6 +500,10 @@ const MacroComponent = (props) => {
 };
 
 export default function MacrosPage() {
+	const [activeSettingsTab, setActiveSettingsTab] = useRememberedTab(
+		'macroSettingsTabs',
+		'settings',
+	);
 	const { buttonLabels, usedPins } = useContext(AppContext);
 	const [saveMessage, setSaveMessage] = useState('');
 
@@ -530,7 +544,10 @@ export default function MacrosPage() {
 			}) => (
 				<div>
 					<Form noValidate onSubmit={handleSubmit}>
-						<Tab.Container defaultActiveKey="settings">
+						<Tab.Container
+							activeKey={activeSettingsTab}
+							onSelect={setActiveSettingsTab}
+						>
 							<Row>
 								<Col md={3}>
 									<Nav variant="pills" className="flex-column text-nowrap">

@@ -166,6 +166,10 @@ void GPGFX_TinySSD1306::drawPixel(uint8_t x, uint8_t y, uint32_t color) {
 }
 
 void GPGFX_TinySSD1306::drawText(uint8_t x, uint8_t y, std::string text, uint8_t invert) {
+	drawTextAt(x * _options.font.width, y * _options.font.height, text, invert);
+}
+
+void GPGFX_TinySSD1306::drawTextAt(uint16_t x, uint16_t y, std::string text, uint8_t invert) {
 	uint8_t spriteX, spriteY;
 	uint8_t spriteByte;
 	uint8_t spriteBit;
@@ -187,7 +191,7 @@ void GPGFX_TinySSD1306::drawText(uint8_t x, uint8_t y, std::string text, uint8_t
 				spriteByte = currGlyph[spriteX];
 				color = ((spriteByte >> spriteBit) & 0x01);
                 if (invert) color = !color;
-				drawPixel(((x*_options.font.width)+spriteX)+charOffset, (y*_options.font.height)+spriteY, color);
+				drawPixel((x+spriteX)+charOffset, y+spriteY, color);
 			}
 		}
 

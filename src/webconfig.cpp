@@ -429,6 +429,19 @@ std::string getUsedPins()
     return serialize_json(doc);
 }
 
+template <size_t N>
+static void __attribute__((noinline)) readSplashTextLine(char (&line)[N], const DynamicJsonDocument& doc, const char* key)
+{
+    const char* value = doc[key] | "";
+    size_t length = 0;
+    for (; *value != '\0' && length < N - 1; value++) {
+        if (*value >= ' ' && *value <= '~') {
+            line[length++] = *value;
+        }
+    }
+    line[length] = '\0';
+}
+
 std::string setDisplayOptions(DisplayOptions& displayOptions)
 {
     DynamicJsonDocument doc = get_post_data();
@@ -455,6 +468,13 @@ std::string setDisplayOptions(DisplayOptions& displayOptions)
     readDoc(displayOptions.inputHistoryCol, doc, "inputHistoryCol");
     readDoc(displayOptions.inputHistoryRow, doc, "inputHistoryRow");
     readDoc(displayOptions.contrast, doc, "displayContrast");
+    readDoc(displayOptions.splashTextEnabled, doc, "splashTextEnabled");
+    readDoc(displayOptions.splashTextDuration, doc, "splashTextDuration");
+    readDoc(displayOptions.splashTextFirst, doc, "splashTextFirst");
+    readDoc(displayOptions.splashTextLineCount, doc, "splashTextLineCount");
+    readSplashTextLine(displayOptions.splashTextLine1, doc, "splashTextLine1");
+    readSplashTextLine(displayOptions.splashTextLine2, doc, "splashTextLine2");
+    readSplashTextLine(displayOptions.splashTextLine3, doc, "splashTextLine3");
 
     readDoc(displayOptions.buttonLayoutCustomOptions.paramsLeft.layout, doc, "buttonLayoutCustomOptions", "params", "layout");
     readDoc(displayOptions.buttonLayoutCustomOptions.paramsLeft.common.startX, doc, "buttonLayoutCustomOptions", "params", "startX");
@@ -512,6 +532,13 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
     writeDoc(doc, "inputHistoryCol", displayOptions.inputHistoryCol);
     writeDoc(doc, "inputHistoryRow", displayOptions.inputHistoryRow);
     writeDoc(doc, "displayContrast", displayOptions.contrast);
+    writeDoc(doc, "splashTextEnabled", displayOptions.splashTextEnabled ? 1 : 0);
+    writeDoc(doc, "splashTextDuration", displayOptions.splashTextDuration);
+    writeDoc(doc, "splashTextFirst", displayOptions.splashTextFirst ? 1 : 0);
+    writeDoc(doc, "splashTextLineCount", displayOptions.splashTextLineCount);
+    writeDoc(doc, "splashTextLine1", displayOptions.splashTextLine1);
+    writeDoc(doc, "splashTextLine2", displayOptions.splashTextLine2);
+    writeDoc(doc, "splashTextLine3", displayOptions.splashTextLine3);
 
     writeDoc(doc, "buttonLayoutCustomOptions", "params", "layout", displayOptions.buttonLayoutCustomOptions.paramsLeft.layout);
     writeDoc(doc, "buttonLayoutCustomOptions", "params", "startX", displayOptions.buttonLayoutCustomOptions.paramsLeft.common.startX);
