@@ -70,23 +70,23 @@ void PeripheralI2C::recoverBus() {
     gpio_init(_SCL);
     gpio_pull_up(_SDA);
     gpio_pull_up(_SCL);
-    sleep_us(10);
+    busy_wait_us_32(10);
 
     for (uint8_t i = 0; i < 9 && !gpio_get(_SDA); i++) {
         gpio_set_dir(_SCL, GPIO_OUT);
-        sleep_us(5);
+        busy_wait_us_32(5);
         gpio_set_dir(_SCL, GPIO_IN);
-        sleep_us(5);
+        busy_wait_us_32(5);
     }
 
     gpio_set_dir(_SCL, GPIO_OUT);
-    sleep_us(5);
+    busy_wait_us_32(5);
     gpio_set_dir(_SDA, GPIO_OUT);
-    sleep_us(5);
+    busy_wait_us_32(5);
     gpio_set_dir(_SCL, GPIO_IN);
-    sleep_us(5);
+    busy_wait_us_32(5);
     gpio_set_dir(_SDA, GPIO_IN);
-    sleep_us(5);
+    busy_wait_us_32(5);
 }
 
 int16_t PeripheralI2C::read(uint8_t address, uint8_t *data, uint16_t len, bool isBlock) {
