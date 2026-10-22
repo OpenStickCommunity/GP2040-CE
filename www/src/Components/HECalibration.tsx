@@ -13,7 +13,10 @@ import { useTranslation } from 'react-i18next';
 import FormControl from '../Components/FormControl';
 import FormCheck from '../Components/FormCheck';
 import WebApi from '../Services/WebApi';
-import useHETriggerStore, { Trigger } from '../Store/useHETriggerStore';
+import useHETriggerStore, {
+	isTriggerScanned,
+	Trigger,
+} from '../Store/useHETriggerStore';
 
 import './HECalibration.scss';
 
@@ -169,7 +172,10 @@ const HECalibration = ({
 	const getNextTarget = () => {
 		// Find our next
 		for (var i = target.current + 1; i < 32; i++) {
-			if (triggers[i].action !== -10) {
+			if (
+				triggers[i].action !== -10 &&
+				isTriggerScanned(i, muxChannels, values)
+			) {
 				return i;
 			}
 		}
