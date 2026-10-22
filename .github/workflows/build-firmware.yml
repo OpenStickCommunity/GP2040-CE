@@ -1,0 +1,41 @@
+name: Build Firmware
+
+on:
+  workflow_dispatch:
+    inputs:
+      checkout_ref:
+        description: 'Git ref (branch/tag/commit) to checkout'
+        required: false
+        default: 'main'
+      board:
+        description: 'Board target to build'
+        required: true
+        default: 'PicoW_BLE'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.checkout_ref }}
+          submodules: recursive
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y cmake gcc-arm-none-eabi libnewlib-arm-none-eabi build-essential ninja-build
+
+      - name: Build firmware
+        run: |
+          mkdir build
+          cd build
+          cmake -G Ninja -DBOARD=${{ github.event.inputs.board }} ..
+          ninja
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.event.inputs.board }}
+          path: build/*.uf2
