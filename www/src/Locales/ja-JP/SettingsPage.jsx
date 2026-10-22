@@ -149,11 +149,11 @@ export default {
 		custom: 'カスタム',
 	},
 	'switch-pro-joycon-single-note':
-		"Joy-Con単体での利用の場合は、「グリップの変更」に行きSL+SR ({{buttons}}) を押下してください。この操作は {{mode}} とJoy-Con (L + R)モードを切替える毎に実施が必要です",
+		"Joy-Con単体での利用の場合は、「持ちかた/順番を変える」に行きSL+SR ({{buttons}}) を押下してください。この操作は {{mode}} とJoy-Con (L + R)モードを切替える毎に実施が必要です",
 	'switch-pro-joycon-single-warning':
 		'<strong>注意:</strong> Joy-Con (L) and Joy-Con (R) モードは通常利用は非推奨となっており、特定のアクセサリ開発等で単体のJoy-Conモードが必要な人向けです。特段の理由がない場合は Pro コントローラや Joy-Con （L + R)モードをご利用ください。',
 	'switch-pro-joycon-pair-warning':
-		"<strong>注意:</strong> Joy-Con (L + R) を接続するためには「グリップの変更」セクションで L + R ({{buttons}}) を押下する必要がある場合があります。",
+		"<strong>注意:</strong> Joy-Con (L + R) を接続するためには「持ちかた/順番を変える」セクションで L + R ({{buttons}}) を押下する必要がある場合があります。",
 	'switch-pro-genesis-warning':
 		'<strong>注意:</strong> このコントローラ種別はSwitchにシステムアイコンがありません。よってシステムメニュー上はProコントローラとして表示されます。NSO Genesisアプリでは正しくコントローラアイコンが表示表示されます。',
 	'switch-pro-joycon-color-explanation':
