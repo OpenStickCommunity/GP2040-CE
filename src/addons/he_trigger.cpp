@@ -1,9 +1,30 @@
 #include "addons/he_trigger.h"
+#include "addons/analog.h"
 #include "storagemanager.h"
 
 #include "hardware/adc.h"
 
 #define ADC_MAX ((1 << 12) - 1) // 4095
+
+static Pin_t getMuxADCPin(const HETriggerOptions & options, uint32_t mux) {
+    switch (mux) {
+        case 0: return options.muxADCPin0;
+        case 1: return options.muxADCPin1;
+        case 2: return options.muxADCPin2;
+        case 3: return options.muxADCPin3;
+        default: return -1;
+    }
+}
+
+int HETriggerAddon::getMuxCount(int32_t muxChannels) {
+    int count = HETRIGGER_COUNT / muxChannels;
+    return count > HETRIGGER_MUX_COUNT ? HETRIGGER_MUX_COUNT : count;
+}
+
+bool HETriggerAddon::isTriggerScanned(const HETriggerOptions & options, uint32_t index) {
+    uint32_t mux = index / options.muxChannels;
+    return mux < (uint32_t)getMuxCount(options.muxChannels) && AnalogInput::isAdcPin(getMuxADCPin(options, mux));
+}
 
 bool HETriggerAddon::available() {
     return Storage::getInstance().getAddonOptions().heTriggerOptions.enabled;
@@ -11,17 +32,14 @@ bool HETriggerAddon::available() {
 
 void HETriggerAddon::setup() {
     HETriggerOptions & options = Storage::getInstance().getAddonOptions().heTriggerOptions;
-    this->muxTotal = 32 / options.muxChannels;
-    if ( this->muxTotal > 4 )
-        this->muxTotal = 4; // Direct = 4, 4-Channel = 4, 8-Channel = 3, 16-Channel = 2
+    this->muxTotal = getMuxCount(options.muxChannels);
 
     // Init the ADC options
-    muxPinArray[0] = options.muxADCPin0;
-    muxPinArray[1] = options.muxADCPin1;
-    muxPinArray[2] = options.muxADCPin2;
-    muxPinArray[3] = options.muxADCPin3;
+    for(int mux = 0; mux < HETRIGGER_MUX_COUNT; mux++) {
+        muxPinArray[mux] = getMuxADCPin(options, mux);
+    }
     for(int i = 0; i < muxTotal; i++) {
-        if (muxPinArray[i] >= static_cast<Pin_t>(ADC_BASE_PIN) && muxPinArray[i] < static_cast<Pin_t>(ADC_BASE_PIN + NUM_ADC_CHANNELS - 1)) {
+        if (AnalogInput::isAdcPin(muxPinArray[i])) {
             adc_gpio_init(muxPinArray[i]);
         }
     }
@@ -43,7 +61,7 @@ void HETriggerAddon::setup() {
             break;
     }
 
-    for(int mux = 0; mux < 4; mux++) {
+    for(int mux = 0; mux < HETRIGGER_MUX_COUNT; mux++) {
         int src = options.separateSelectPins ? mux : 0;
         selectPinArray[mux][0] = options.muxes[src].selectPin0;
         selectPinArray[mux][1] = options.muxes[src].selectPin1;
@@ -74,6 +92,9 @@ void HETriggerAddon::setup() {
             if (options.triggers[i].action == -10 )
                 continue;
             mux = (i / options.muxChannels);
+            // Ignore triggers past the configured multiplexers or on one without an ADC pin
+            if ( mux >= (uint32_t)muxTotal || !AnalogInput::isAdcPin(muxPinArray[mux]) )
+                continue;
             channel = (i % options.muxChannels);
             selectChannel(mux, channel);
             // Only Switch ADC if we are not currently on the mux ADC
@@ -120,6 +141,9 @@ void HETriggerAddon::scan(bool applyActions) {
         if (options.triggers[he].action == -10 )
             continue;
         mux = (he / options.muxChannels);
+        // Ignore triggers past the configured multiplexers or on one without an ADC pin
+        if ( mux >= (uint32_t)muxTotal || !AnalogInput::isAdcPin(muxPinArray[mux]) )
+            continue;
         channel = (he % options.muxChannels);
         selectChannel(mux, channel);
         // Only Switch ADC if we are not currently on the mux ADC

@@ -17,6 +17,25 @@ export type Trigger = {
 	rtContinuous: boolean;
 };
 
+// Multiplexers the firmware stores, one per muxADCPin0-3
+export const MAX_MUXES = 4;
+
+// Number of multiplexers scanned (32 / muxChannels, at most MAX_MUXES)
+const getMuxCount = (muxChannels: number) =>
+	Math.min(MAX_MUXES, Math.floor(32 / muxChannels));
+
+// True if the trigger is on a scanned multiplexer with an ADC pin
+export const isTriggerScanned = (
+	index: number,
+	muxChannels: number,
+	values: { [key: string]: unknown },
+) => {
+	const mux = Math.floor(index / muxChannels);
+	return (
+		mux < getMuxCount(muxChannels) && Number(values[`muxADCPin${mux}`]) !== -1
+	);
+};
+
 type State = {
 	triggers: Trigger[];
 	loadingTriggers: boolean;

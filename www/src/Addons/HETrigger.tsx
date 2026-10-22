@@ -18,7 +18,11 @@ import omit from 'lodash/omit';
 
 import HECalibration from '../Components/HECalibration';
 
-import useHETriggerStore, { Trigger } from '../Store/useHETriggerStore';
+import useHETriggerStore, {
+	MAX_MUXES,
+	isTriggerScanned,
+	Trigger,
+} from '../Store/useHETriggerStore';
 import useBoardDefinition from '../Store/useBoardDefinitionStore';
 
 import { AppContext } from '../Contexts/AppContext';
@@ -192,8 +196,10 @@ const TriggerActionsForm = ({
 							setCalibrateAllLoop(true);
 						}}
 						disabled={
-							triggers.filter((e) => {
-								return e.action !== -10;
+							triggers.filter((e, i) => {
+								return (
+									e.action !== -10 && isTriggerScanned(i, muxChannels, values)
+								);
 							}).length === 0
 						}
 						className="my-2"
@@ -202,7 +208,7 @@ const TriggerActionsForm = ({
 					</Button>
 				</div>
 				{Array.from(
-					{ length: Math.min(8, Math.floor(32 / muxChannels)) },
+					{ length: Math.min(MAX_MUXES, Math.floor(32 / muxChannels)) },
 					(_, i) => (
 						<div
 							key={`he-trigger-item-${i}`}
@@ -321,7 +327,7 @@ const TriggerActionsForm = ({
 				</div>
 				<div>
 					{Array.from(
-						{ length: Math.min(4, Math.floor(32 / muxChannels)) },
+						{ length: Math.min(MAX_MUXES, Math.floor(32 / muxChannels)) },
 						(_, i) => (
 							<div
 								key={`voltage-table-header-${i}`}
@@ -667,7 +673,7 @@ const HETrigger = ({
 					);
 				})}
 				<Row className="mb-3">
-					{boardDefinition.analogPins.map((val, i) => (
+					{boardDefinition.analogPins.slice(0, MAX_MUXES).map((val, i) => (
 						<FormSelect
 							label={t(`HETrigger:adc-pin-${i}`)}
 							name={`muxADCPin${i}`}

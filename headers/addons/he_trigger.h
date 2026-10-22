@@ -5,6 +5,7 @@
 #include "addons/he_rapid_trigger.h"
 
 #define HETRIGGER_COUNT 32
+#define HETRIGGER_MUX_COUNT 4 // Multiplexers, one per muxADCPin0-3
 
 #ifndef HETRIGGER_ENABLED
 #define HETRIGGER_ENABLED 0
@@ -923,14 +924,18 @@ public:
     virtual void reinit() {}
     virtual std::string name() { return HETriggerAddonName; }
     void configModeProcess();
+    // Number of multiplexers scanned (HETRIGGER_COUNT / muxChannels, at most HETRIGGER_MUX_COUNT)
+    static int getMuxCount(int32_t muxChannels);
+    // True if the trigger is on a scanned multiplexer with an ADC pin
+    static bool isTriggerScanned(const HETriggerOptions & options, uint32_t index);
 private:
     void scan(bool applyActions);
     void selectChannel(uint8_t mux, uint8_t channel);
     uint16_t emaSmoothing(uint16_t value, uint16_t previous);
     int muxTotal;
     int selectPins;
-    Pin_t muxPinArray[4];
-    Pin_t selectPinArray[4][4]; // Select pins indexed by [mux][selectBit]
+    Pin_t muxPinArray[HETRIGGER_MUX_COUNT];
+    Pin_t selectPinArray[HETRIGGER_MUX_COUNT][4]; // Select pins indexed by [mux][selectBit]
     Pin_t lastADCSelected;
 
     uint16_t emaSmoothingReads[32];
