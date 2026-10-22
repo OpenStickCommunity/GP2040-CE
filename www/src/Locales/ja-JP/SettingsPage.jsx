@@ -96,6 +96,90 @@ export default {
 	'ps4-id-mode-label': '識別モード',
 	'ps4-id-mode-explanation-text':
 		'<ul><li>コンソールモードはPS4接続時に利用してください。</li><li></li>リモート/エミュレーションモードはエミュレーションレイヤーとの接続やリモートプレイ環境でDualShock 4互換コントローラーが必要な際にのみ利用してください。</ul>',
+	'generic-dpad-mode-label': '十字キー入力',
+	'generic-dpad-mode-options': {
+		'hat-and-buttons': 'ハット + ボタン',
+		'hat-only': 'ハットのみ',
+		'buttons-only': 'ボタンのみ',
+	},
+	'switch-pro-controller-type-label': 'コントローラ種別',
+	'switch-pro-controller-type-options': {
+		pro: 'プロコントローラ',
+		'super-famicom': 'NSO スーパーファミコン',
+		n64: 'NSO 任天堂64',
+		'mega-drive': 'NSO メガドライブ',
+		'famicom-i': 'NSO ファミコン I',
+		'famicom-ii': 'NSO ファミコン II',
+	},
+	'switch-pro-color-label': 'コントローラ表示色',
+	'switch-pro-color-explanation':
+		'このコントローラをSwitchが何色で表示するかを設定します。',
+	'switch-pro-color-presets': {
+		stock: '標準',
+		custom: 'カスタム',
+	},
+	'switch2-pro-identity-label': 'コントローラ種別',
+	'switch2-pro-identity-options': {
+		pro2: 'Switch 2 Pro コントローラー',
+		gamecube: 'GameCube コントローラー',
+	},
+	'switch2-pro-gamecube-no-options':
+		'GameCubeコントローラモードに追加の設定はありません。',
+	'switch2-pro-joycon2-experimental-warning':
+		'<strong>注意:</strong> {{mode}} モードは実験機能です。大抵の場合においては他のSwitch 2 Pro コントローラー等のコントローラ種別を選択することを推奨します。このモードを試したい場合はNintendo Switch 2のコントローラー接続画面でペアリングボタンを押してJoy-Con 2が水平状態で表示されたことを確認ください。この作業はSwtich 2がスリープから復帰する毎に実施する必要が有ります。メイン画面でペアリングしてしまうとJoy-Conが縦状態でペアリングされボタンのマッピングが正しく動作しません。',
+	'switch2-pro-joycon2-color-explanation':
+		'このコントローラをSwitchが何色で表示するかを設定します。',
+	'switch2-pro-joycon2-color-presets': {
+		stock: '標準',
+		'purple-green': '紫 / 緑',
+		'blue-yellow': '青 / 黄',
+		custom: 'カスタム',
+	},
+	'switch2-pro-joycon2-color-parts': {
+		body: '本体',
+		buttons: 'ボタン',
+		accent: 'アクセント',
+		stick: 'スティック',
+	},
+	'switch2-pro-color-label': 'コントローラ表示色',
+	'switch2-pro-color-explanation':
+		'このコントローラをSwitch 2が何色で表示するかを設定します。',
+	'switch2-pro-color-presets': {
+		stock: '標準',
+		custom: 'カスタム',
+	},
+	'switch-pro-joycon-single-note':
+		"Joy-Con単体での利用の場合は、「グリップの変更」に行きSL+SR ({{buttons}}) を押下してください。この操作は {{mode}} とJoy-Con (L + R)モードを切替える毎に実施が必要です",
+	'switch-pro-joycon-single-warning':
+		'<strong>注意:</strong> Joy-Con (L) and Joy-Con (R) モードは通常利用は非推奨となっており、特定のアクセサリ開発等で単体のJoy-Conモードが必要な人向けです。特段の理由がない場合は Pro コントローラや Joy-Con （L + R)モードをご利用ください。',
+	'switch-pro-joycon-pair-warning':
+		"<strong>注意:</strong> Joy-Con (L + R) を接続するためには「グリップの変更」セクションで L + R ({{buttons}}) を押下する必要がある場合があります。",
+	'switch-pro-genesis-warning':
+		'<strong>注意:</strong> このコントローラ種別はSwitchにシステムアイコンがありません。よってシステムメニュー上はProコントローラとして表示されます。NSO Genesisアプリでは正しくコントローラアイコンが表示表示されます。',
+	'switch-pro-joycon-color-explanation':
+		'このJoy-ConをSwitchが何色で表示するかを設定します。本体とボタンのみが表示対象です。',
+	'switch-pro-joycon-color-presets': {
+		grey: '標準グレー',
+		neon: '標準ネオン',
+		white: '白 (OLED)',
+		custom: 'カスタム',
+	},
+	'switch-pro-color-parts': {
+		body: '本体',
+		buttons: 'ボタン',
+		'left-grip': '左グリップ',
+		'right-grip': '右グリップ',
+		'left-body': '左本体',
+		'left-buttons': '左ボタン',
+		'right-body': '右本体',
+		'right-buttons': '右ボタン',
+	},
+	'switch2-pro-color-parts': {
+		'face-plate': 'フェースプレート',
+		buttons: 'ボタン',
+		highlight: 'ハイライト',
+		'main-body': '本体',
+	},
 	'ps4-id-mode-options': {
 		console: 'コンソール',
 		emulation: 'リモート/エミュレーション',
@@ -199,6 +283,7 @@ export default {
 		'保存後にコントローラモードで再起動すると、以降Web設定モードにはアクセスできなくなります。注意点をよく理解したうえで、保存ボタンを有効化するには「{{warningCheckText}}」を以下に入力してください。閉じるボタンを押下した場合はこの設定は元に戻され保存されます。',
 	'4-way-joystick-mode-label': '4方向ジョイスティックモード',
 	'keyboard-mapping-header-text': 'キーボードキー割り当て',
+	'keyboard-profile-label': 'プロファイル',
 	'keyboard-mapping-sub-header-text':
 		'以下のフォームを利用してボタンとキーの割り当て変更をしてください。',
 	'usb-override': {
