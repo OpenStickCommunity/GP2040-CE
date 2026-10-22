@@ -37,6 +37,7 @@
 #include "lwip/def.h"
 #include "lwip/mem.h"
 #include "addons/input_macro.h"
+#include "addons/he_trigger.h"
 
 #define PATH_CGI_ACTION "/cgi/action"
 
@@ -2043,7 +2044,7 @@ std::string getHETriggerVoltage()
 
     // Mux Channels determines how many select pins we use
     if (calibrationMuxChannels == 1) {
-        if ( id > 3 ) {
+        if ( id >= (uint32_t)HETriggerAddon::getMuxCount(1) ) {
             doc["error"] = "id out of range";
             return serialize_json(doc);
         }
@@ -2051,7 +2052,7 @@ std::string getHETriggerVoltage()
     } else if ( calibrationMuxChannels == 4) {
         uint32_t adcNum = id / 4;
         uint32_t channel = (id % 4);
-        if ( adcNum > 3 ) {
+        if ( adcNum >= (uint32_t)HETriggerAddon::getMuxCount(4) ) {
             doc["error"] = "id out of 4-channel mux range";
             return serialize_json(doc);
         }
@@ -2061,7 +2062,7 @@ std::string getHETriggerVoltage()
     } else if (calibrationMuxChannels == 8) {
         uint32_t adcNum = id / 8;
         uint32_t channel = (id % 8);
-        if ( adcNum > 2 ) {
+        if ( adcNum >= (uint32_t)HETriggerAddon::getMuxCount(8) ) {
             doc["error"] = "id out of 8-channel mux range";
             return serialize_json(doc);
         }
@@ -2072,7 +2073,7 @@ std::string getHETriggerVoltage()
     } else if (calibrationMuxChannels == 16) {
         uint32_t adcNum = id / 16;
         uint32_t channel = (id % 16);
-        if ( adcNum > 1 ) {
+        if ( adcNum >= (uint32_t)HETriggerAddon::getMuxCount(16) ) {
             doc["error"] = "id out of 16-channel mux range";
             return serialize_json(doc);
         }
