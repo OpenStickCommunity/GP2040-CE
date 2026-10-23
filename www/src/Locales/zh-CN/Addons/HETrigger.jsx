@@ -36,6 +36,12 @@ export default {
 	'voltage-table-enabled-label': '已启用',
 	'voltage-table-off-label': '已禁用',
 	'voltage-table-na-label': '不适用',
+	'voltage-table-separate-text': '独立快速触发',
+	'voltage-table-edit-label': '编辑表格',
+	'voltage-table-unsaved-text': '{{count}} 个触发器有未保存的更改',
+	'voltage-table-discard-button': '放弃未保存的更改',
+	'voltage-table-discard-confirm':
+		'放弃所有未保存的触发器更改（包括尚未保存的校准）？',
 	'direct-label': '直连',
 	'quick-calibration-button': '快速校准 ⚡',
 	'quick-calibration-header-text': '快速校准',

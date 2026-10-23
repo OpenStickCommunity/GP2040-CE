@@ -38,6 +38,8 @@ export const isTriggerScanned = (
 
 type State = {
 	triggers: Trigger[];
+	// Last loaded or saved triggers, for spotting unsaved edits
+	savedTriggers: Trigger[];
 	loadingTriggers: boolean;
 };
 
@@ -46,22 +48,26 @@ type Actions = {
 	setHETrigger: (trigger: Trigger & { id: number }) => void;
 	setAllHETriggers: (trigger: Partial<Trigger>) => void;
 	saveHETriggers: (switchTravel: number) => Promise<object>;
+	resetHETriggers: () => void;
 };
 
+const DEFAULT_TRIGGERS: Trigger[] = Array.from({ length: 32 }, () => ({
+	action: -10,
+	idle: 100,
+	active: 2000,
+	pressed: 3500,
+	is_polarized: false,
+	noise: 30,
+	rapidTrigger: false,
+	rtPressSensitivity: 100,
+	rtReleaseSensitivity: 100,
+	rtSeparateSensitivity: false,
+	rtContinuous: false,
+}));
+
 const INITIAL_STATE: State = {
-	triggers: Array.from({ length: 32 }, () => ({
-		action: -10,
-		idle: 100,
-		active: 2000,
-		pressed: 3500,
-		is_polarized: false,
-		noise: 30,
-		rapidTrigger: false,
-		rtPressSensitivity: 100,
-		rtReleaseSensitivity: 100,
-		rtSeparateSensitivity: false,
-		rtContinuous: false,
-	})),
+	triggers: DEFAULT_TRIGGERS,
+	savedTriggers: DEFAULT_TRIGGERS,
 	loadingTriggers: false,
 };
 
@@ -73,6 +79,7 @@ const useHETriggerStore = create<State & Actions>()((set, get) => ({
 		set((state) => ({
 			...state,
 			...triggers,
+			savedTriggers: triggers?.triggers ?? state.savedTriggers,
 			loadingTriggers: false,
 		}));
 	},
@@ -99,11 +106,18 @@ const useHETriggerStore = create<State & Actions>()((set, get) => ({
 		}));
 	},
 
-	saveHETriggers: async (switchTravel) =>
-		WebApi.setHETriggerCalibrations({
-			triggers: get().triggers,
+	saveHETriggers: async (switchTravel) => {
+		const triggers = get().triggers;
+		const response = await WebApi.setHETriggerCalibrations({
+			triggers,
 			heTriggerSwitchTravel: switchTravel,
-		}),
+		});
+		set({ savedTriggers: triggers });
+		return response;
+	},
+	resetHETriggers: () => {
+		set((state) => ({ ...state, triggers: state.savedTriggers }));
+	},
 }));
 
 export default useHETriggerStore;

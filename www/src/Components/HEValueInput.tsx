@@ -22,6 +22,8 @@ type HEValueInputProps = {
 	min: number;
 	max: number;
 	onChange: (counts: number) => void;
+	/** Hides the visible label; it is still used as the aria-label. */
+	hideLabel?: boolean;
 };
 
 const clamp = (v: number, lo: number, hi: number) =>
@@ -38,6 +40,7 @@ const HEValueInput = ({
 	min,
 	max,
 	onChange,
+	hideLabel = false,
 }: HEValueInputProps) => {
 	const { t } = useTranslation('');
 	const useMm = canConvert(travelMm, calibration);
@@ -75,12 +78,14 @@ const HEValueInput = ({
 		calibration.is_polarized,
 	]);
 
+	const fullLabel = useMm ? `${label} (${t('HETrigger:unit-mm')})` : label;
 	const displayBounds = [Number(toDisplay(lo)), Number(toDisplay(hi))];
 
 	return (
 		<FormControl
 			type="number"
-			label={useMm ? `${label} (${t('HETrigger:unit-mm')})` : label}
+			label={hideLabel ? undefined : fullLabel}
+			aria-label={fullLabel}
 			name={name}
 			className="form-select-sm"
 			value={text}

@@ -40,6 +40,12 @@ export default {
 	'voltage-table-enabled-label': 'Enabled',
 	'voltage-table-off-label': 'Disabled',
 	'voltage-table-na-label': 'N/A',
+	'voltage-table-separate-text': 'Separate RT',
+	'voltage-table-edit-label': 'Edit Table',
+	'voltage-table-unsaved-text': '{{count}} trigger(s) with unsaved changes',
+	'voltage-table-discard-button': 'Discard Unsaved Changes',
+	'voltage-table-discard-confirm':
+		'Discard all unsaved trigger changes, including calibrations not yet saved?',
 	'direct-label': 'Direct',
 	'quick-calibration-button': 'Quick Calibrate ⚡',
 	'quick-calibration-header-text': 'Quick Calibration',
