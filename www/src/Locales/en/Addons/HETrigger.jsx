@@ -40,6 +40,21 @@ export default {
 	'voltage-table-enabled-label': 'Enabled',
 	'voltage-table-off-label': 'Disabled',
 	'voltage-table-na-label': 'N/A',
+	'direct-label': 'Direct',
+	'quick-calibration-button': 'Quick Calibrate ⚡',
+	'quick-calibration-header-text': 'Quick Calibration',
+	'quick-calibration-instructions':
+		'Open this with all keys released. Press each key all the way down and let it go; it turns green once its full travel has been recorded. ' +
+		'Click Finish when you are done. Only green keys are updated, and the actuation point keeps the same share of travel. ' +
+		'Remember to click Save Trigger Values afterwards.',
+	'quick-raw-label': 'Raw',
+	'quick-min-label': 'Min',
+	'quick-max-label': 'Max',
+	'quick-calibrated-count': '{{count}} of {{total}} calibrated',
+	'quick-no-triggers': 'No enabled triggers on a multiplexer with an ADC pin.',
+	'quick-read-error': 'Could not read the Hall Effect triggers.',
+	'quick-cancel-button': 'Cancel',
+	'quick-finish-button': 'Finish',
 	'switch-travel-label': 'Switch Travel Conversion (mm)',
 	'switch-travel-placeholder': 'e.g. 4.0',
 	'overwrite-all-warning': 'Overwrite All Triggers',

@@ -2108,6 +2108,55 @@ std::string getHETriggerVoltage()
     return serialize_json(doc);
 }
 
+// Reads every scanned trigger in one request for Quick Calibrate; unscanned triggers report -1.
+std::string getHETriggerVoltages()
+{
+    const size_t capacity = JSON_OBJECT_SIZE(2) + JSON_ARRAY_SIZE(HETRIGGER_COUNT);
+    DynamicJsonDocument doc(capacity);
+
+    const uint32_t muxChannels = calibrationMuxChannels;
+    uint32_t selectBits;
+    switch (muxChannels) {
+        case 1:  selectBits = 0; break;
+        case 4:  selectBits = 2; break;
+        case 8:  selectBits = 3; break;
+        case 16: selectBits = 4; break;
+        default:
+            doc["error"] = "mux channels incorrect";
+            return serialize_json(doc);
+    }
+
+    const uint32_t muxCount = HETriggerAddon::getMuxCount(muxChannels);
+    JsonArray voltages = doc.createNestedArray("voltages");
+    for (uint32_t id = 0; id < HETRIGGER_COUNT; id++) {
+        const uint32_t mux = id / muxChannels;
+        const uint32_t channel = id % muxChannels;
+        const Pin_t adcPin = mux < muxCount ? calibrationADCPins[mux] : -1;
+        if (!AnalogInput::isAdcPin(adcPin)) {
+            voltages.add(-1);
+            continue;
+        }
+        for (uint32_t b = 0; b < selectBits; b++) {
+            if (calibrationSelectPins[mux][b] != -1) {
+                gpio_put(calibrationSelectPins[mux][b], (channel >> b) & 0x01);
+            }
+        }
+        adc_select_input(adcPin - ADC_BASE_PIN);
+        // First sample after a channel switch can carry the previous channel
+        adc_read();
+        uint16_t read = adc_read();
+        if (calibrationSmoothing) {
+            uint16_t smoothed = read;
+            for (int i = 0; i < 50; i++) {
+                smoothed = emaCalculation(adc_read(), smoothed);
+            }
+            read = smoothed;
+        }
+        voltages.add(read);
+    }
+    return serialize_json(doc);
+}
+
 std::string getHETriggerCalibrations()
 {
     const size_t capacity = JSON_OBJECT_SIZE(500);
@@ -3366,6 +3415,7 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/setHETriggerCalibrations", setHETriggerCalibrations },
     { "/api/getHETriggerCalibrations", getHETriggerCalibrations },
     { "/api/getHETriggerVoltage", getHETriggerVoltage },
+    { "/api/getHETriggerVoltages", getHETriggerVoltages },
     { "/api/setHETriggerOptions", setHETriggerOptions },
     { "/api/setReactiveLEDs", setReactiveLEDs },
     { "/api/getReactiveLEDs", getReactiveLEDs },

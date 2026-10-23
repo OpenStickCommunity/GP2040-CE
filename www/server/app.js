@@ -1481,6 +1481,21 @@ app.post('/api/getHETriggerVoltage', (req, res) => {
 	});
 });
 
+// Simulates each trigger being pressed in turn so Quick Calibrate can be tried without hardware.
+// Odd triggers read like a south-facing (polarized) magnet.
+app.get('/api/getHETriggerVoltages', (req, res) => {
+	const time = Date.now();
+	const voltages = Array.from({ length: 32 }, (_, i) => {
+		const phase = ((time / 1000 + i * 0.7) % 8) / 8;
+		const press = phase < 0.15 ? Math.sin((phase / 0.15) * Math.PI) : 0;
+		const noise = Math.floor(Math.random() * 20);
+		return i % 2
+			? 3500 - Math.floor(press * 3000) - noise
+			: 150 + Math.floor(press * 3200) + noise;
+	});
+	return res.send({ voltages });
+});
+
 app.get('/api/getBootModeOptions', (req, res) => {
 	return res.send({
 		enabled: false,

@@ -36,6 +36,21 @@ export default {
 	'voltage-table-enabled-label': '已启用',
 	'voltage-table-off-label': '已禁用',
 	'voltage-table-na-label': '不适用',
+	'direct-label': '直连',
+	'quick-calibration-button': '快速校准 ⚡',
+	'quick-calibration-header-text': '快速校准',
+	'quick-calibration-instructions':
+		'打开前请松开所有按键。将每个按键按到底再松开；记录到完整行程后按键会变为绿色。' +
+		'完成后点击“完成”。只有绿色按键会被更新，触发点保持相同的行程比例。' +
+		'之后请记得点击“保存扳机数值”。',
+	'quick-raw-label': '原始值',
+	'quick-min-label': '最小值',
+	'quick-max-label': '最大值',
+	'quick-calibrated-count': '已校准 {{count}} / {{total}}',
+	'quick-no-triggers': '没有位于已设置 ADC 引脚的多路复用器上的已启用触发器。',
+	'quick-read-error': '无法读取霍尔效应触发器。',
+	'quick-cancel-button': '取消',
+	'quick-finish-button': '完成',
 	'switch-travel-label': '轴体行程换算 (mm)',
 	'switch-travel-placeholder': '例如 4.0',
 	'overwrite-all-warning': '覆盖所有扳机设置',

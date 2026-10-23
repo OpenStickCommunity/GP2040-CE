@@ -17,6 +17,7 @@ import invert from 'lodash/invert';
 import omit from 'lodash/omit';
 
 import HECalibration from '../Components/HECalibration';
+import HEQuickCalibration from '../Components/HEQuickCalibration';
 
 import useHETriggerStore, {
 	MAX_MUXES,
@@ -163,12 +164,26 @@ const TriggerActionsForm = ({
 	const [showModal, setShowModal] = useState(false);
 	const [calibrationTarget, setCalibrationTarget] = useState(0);
 	const [calibrateAllLoop, setCalibrateAllLoop] = useState(false);
+	const [showQuickCalibration, setShowQuickCalibration] = useState(false);
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
 	const [showVoltTable, setShowVoltTable] = useState(false);
 	const CURRENT_BUTTONS = getButtonLabels(buttonLabelType, swapTpShareLabels);
 	const buttonNames = omit(CURRENT_BUTTONS, ['label', 'value']);
 	const { t } = useTranslation('');
 	const travelMm = Number(values.heTriggerSwitchTravel) || 0;
+
+	const getActionLabel = (option: { label: string }) => {
+		const labelKey = option.label.split('BUTTON_PRESS_').pop();
+		// Unused buttons mapped to '-', falling back to action's proper label
+		const buttonName = labelKey ? buttonNames[labelKey] : undefined;
+		return buttonName && buttonName !== '-'
+			? buttonName
+			: t(`PinMapping:actions.${option.label}`);
+	};
+	const hasCalibrationTargets =
+		triggers.filter(
+			(e, i) => e.action !== -10 && isTriggerScanned(i, muxChannels, values),
+		).length > 0;
 
 	const handleSave = async (e) => {
 		e.preventDefault();
@@ -196,16 +211,18 @@ const TriggerActionsForm = ({
 							setCalibrationTarget(0);
 							setCalibrateAllLoop(true);
 						}}
-						disabled={
-							triggers.filter((e, i) => {
-								return (
-									e.action !== -10 && isTriggerScanned(i, muxChannels, values)
-								);
-							}).length === 0
-						}
+						disabled={!hasCalibrationTargets}
 						className="my-2"
 					>
 						{t('HETrigger:calibrate-all-button')}
+					</Button>
+					<Button
+						type="button"
+						onClick={() => setShowQuickCalibration(true)}
+						disabled={!hasCalibrationTargets}
+						className="my-2 ms-2"
+					>
+						{t('HETrigger:quick-calibration-button')}
 					</Button>
 				</div>
 				{Array.from({ length: getMuxCount(muxChannels) }, (_, i) => (
@@ -251,18 +268,7 @@ const TriggerActionsForm = ({
 												isSearchable
 												options={options}
 												value={getOption(triggers[key], triggers[key].action)}
-												getOptionLabel={(option) => {
-													const labelKey = option.label
-														.split('BUTTON_PRESS_')
-														.pop();
-													// Unused buttons mapped to '-', falling back to action's proper label
-													const buttonName = labelKey
-														? buttonNames[labelKey]
-														: undefined;
-													return buttonName && buttonName !== '-'
-														? buttonName
-														: t(`PinMapping:actions.${option.label}`);
-												}}
+												getOptionLabel={getActionLabel}
 												onChange={(change) =>
 													setHETrigger({
 														id: key,
@@ -293,6 +299,16 @@ const TriggerActionsForm = ({
 						)}
 					</div>
 				))}
+				<HEQuickCalibration
+					show={showQuickCalibration}
+					onHide={() => setShowQuickCalibration(false)}
+					triggers={triggers}
+					values={values}
+					muxChannels={muxChannels}
+					getTriggerLabel={(index) =>
+						getActionLabel(getOption(triggers[index], triggers[index].action))
+					}
+				/>
 				<HECalibration
 					values={values}
 					showModal={showModal}
