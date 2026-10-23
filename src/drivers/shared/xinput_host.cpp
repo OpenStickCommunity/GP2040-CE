@@ -98,6 +98,10 @@ bool tuh_xinput_mounted(uint8_t dev_addr, uint8_t instance) {
     return (hid_itf->ep_in != 0) || (hid_itf->ep_out != 0);
 }
 
+uint8_t tuh_xinput_type(uint8_t dev_addr, uint8_t instance) {
+    return get_instance(dev_addr, instance)->type;
+}
+
 //--------------------------------------------------------------------+
 // Interrupt Endpoint API
 //--------------------------------------------------------------------+
@@ -292,6 +296,29 @@ uint16_t xinputh_open(uint8_t rhport, uint8_t dev_addr, tusb_desc_interface_t co
         if (desc_itf->bInterfaceProtocol == TUSB_DESC_DEVICE) {
             p_xinput->subtype = x_desc->subtype;
         }
+        return pos;
+    // Xbox 360 wireless receiver: one 0x5D 0x81 interface per controller slot (0x82 headset interfaces are skipped)
+    } else if (desc_itf->bInterfaceSubClass == 0x5D &&
+               desc_itf->bInterfaceProtocol == 0x81 && desc_itf->bNumEndpoints) {
+        uint8_t ep = 0;
+        while (ep < desc_itf->bNumEndpoints && pos < max_len) {
+            if (tu_desc_type(p_desc) == TUSB_DESC_ENDPOINT) {
+                tusb_desc_endpoint_t const *ep_desc = (tusb_desc_endpoint_t const *)p_desc;
+                TU_ASSERT(tuh_edpt_open(dev_addr, ep_desc));
+                if (tu_edpt_dir(ep_desc->bEndpointAddress) == TUSB_DIR_OUT) {
+                    p_xinput->ep_out = ep_desc->bEndpointAddress;
+                    p_xinput->epout_size = tu_edpt_packet_size(ep_desc);
+                } else {
+                    p_xinput->ep_in = ep_desc->bEndpointAddress;
+                    p_xinput->epin_size = tu_edpt_packet_size(ep_desc);
+                }
+                ep++;
+            }
+            pos += tu_desc_len(p_desc);
+            p_desc = tu_desc_next(p_desc);
+        }
+        p_xinput->itf_num = desc_itf->bInterfaceNumber;
+        p_xinput->type = XBOX360_WIRELESS;
         return pos;
     // Xbox One instance == 0x47 0xD0
     } else if (desc_itf->bInterfaceSubClass == 0x47 &&

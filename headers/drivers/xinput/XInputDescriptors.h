@@ -52,6 +52,13 @@ typedef struct __attribute((packed, aligned(1)))
 static const uint8_t XBOX360_WIRED_RUMBLE[] = {0x00, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 static const uint8_t XBOX360_WIRED_LED[] = {0x01, 0x03, 0x00};
 
+// Xbox 360 wireless receiver command packets (12 bytes, zero padded)
+#define XBOX360_WIRELESS_PACKET_SIZE 12
+static const uint8_t XBOX360_WIRELESS_INQUIRE_PRESENT[] = {0x08, 0x00, 0x0F, 0xC0};
+static const uint8_t XBOX360_WIRELESS_RUMBLE_ENABLE[] = {0x00, 0x00, 0x08, 0x01};
+static const uint8_t XBOX360_WIRELESS_LED[] = {0x00, 0x00, 0x08, 0x40};
+static const uint8_t XBOX360_WIRELESS_RUMBLE[] = {0x00, 0x01, 0x0F, 0xC0, 0x00, 0x00, 0x00};
+
 typedef enum {
     XINPUT_SUBTYPE_NONE = 0x00,
     XINPUT_SUBTYPE_GAMEPAD = 0x01,

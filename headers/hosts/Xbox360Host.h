@@ -26,9 +26,16 @@ public:
 private:
     void xbox360_set_led(uint8_t quadrant);
     void xinput_set_rumble(uint8_t left, uint8_t right);
+    void process_wireless(uint8_t const* report, uint16_t len);
+    void process_report(XInputReport const& controller_report);
+    void reset_state();
+    bool wireless_send(uint8_t const* cmd, uint16_t cmd_len);
     uint8_t last_left_rumble;
     uint8_t last_right_rumble;
     XInputReport prev_report;
+    bool _wireless;
+    bool _wireless_connected;
+    bool _wireless_connect_pending;
 };
 
 #endif // _XBOX360HOST_H_

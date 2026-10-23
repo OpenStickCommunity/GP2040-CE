@@ -53,6 +53,7 @@ typedef enum
     UNKNOWN = 0,
     XBOX360,
     XBOXONE,
+    XBOX360_WIRELESS,
 } xinput_type_t;
 
 
@@ -65,6 +66,9 @@ uint8_t tuh_xinput_instance_count(uint8_t dev_addr);
 
 // Check if XINPUT instance is mounted
 bool tuh_xinput_mounted(uint8_t dev_addr, uint8_t instance);
+
+// Get the xinput_type_t of a mounted XINPUT instance
+uint8_t tuh_xinput_type(uint8_t dev_addr, uint8_t instance);
 
 //--------------------------------------------------------------------+
 // Interrupt Endpoint API
