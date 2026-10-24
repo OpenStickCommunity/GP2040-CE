@@ -52,6 +52,7 @@ private:
     bool isReportQueued = false;
     bool reportSent = false;
     uint8_t queuedReportID = 0;
+    uint32_t queuedReportTime = 0;
 
     uint8_t handshakeCounter = 0;
 
@@ -64,7 +65,7 @@ private:
     uint8_t playerID = 0;
     uint8_t inputMode = 0x30;
     bool isIMUEnabled = false;
-    bool isVibrationEnabled = false;
+    bool isVibrationEnabled = true;
 
     void sendIdentify();
     void sendSubCommand(uint8_t subCommand);

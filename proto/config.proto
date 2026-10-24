@@ -79,6 +79,10 @@ message GamepadOptions
     optional uint32 switch2ProJoyCon2RightAccentColor = 58;
     optional uint32 switch2ProJoyCon2RightStickColor = 59;
     optional GenericDpadMode genericDpadMode = 60;
+    optional uint32 ermRumbleMotorFloor = 61;
+    optional uint32 ermRumbleKickstartMs = 62;
+    optional uint32 ermRumbleSustainMs = 63;
+    optional uint32 ermRumbleBoostPercent = 64;
 }
 
 message KeyboardMapping

@@ -726,6 +726,30 @@ const schema = yup.object().shape({
 	switch2ProButtonsColor: yup.number().label('Switch 2 Pro Buttons Color'),
 	switch2ProHighlightColor: yup.number().label('Switch 2 Pro Highlight Color'),
 	switch2ProGripColor: yup.number().label('Switch 2 Pro Grip Color'),
+	ermRumbleMotorFloor: yup
+		.number()
+		.label('ERM Rumble Motor Floor')
+		.integer()
+		.min(0)
+		.max(255),
+	ermRumbleKickstartMs: yup
+		.number()
+		.label('ERM Rumble Kickstart Duration')
+		.integer()
+		.min(0)
+		.max(500),
+	ermRumbleSustainMs: yup
+		.number()
+		.label('ERM Rumble Sustain Duration')
+		.integer()
+		.min(0)
+		.max(500),
+	ermRumbleBoostPercent: yup
+		.number()
+		.label('ERM Rumble Boost Percent')
+		.integer()
+		.min(0)
+		.max(100),
 	genericDpadMode: yup
 		.number()
 		.required()
@@ -2400,10 +2424,30 @@ export default function SettingsPage() {
 		}
 	};
 
+	const prepareData = (values) => ({
+		...values,
+		usbProductID: hexToInt(values.usbProductID || '0000'),
+		usbVendorID: hexToInt(values.usbVendorID || '0000'),
+		ermRumbleMotorFloor: parseInt(values.ermRumbleMotorFloor ?? 0, 10),
+		ermRumbleKickstartMs: parseInt(values.ermRumbleKickstartMs ?? 0, 10),
+		ermRumbleSustainMs: parseInt(values.ermRumbleSustainMs ?? 0, 10),
+		ermRumbleBoostPercent: parseInt(values.ermRumbleBoostPercent ?? 0, 10),
+	});
+
 	const handleWarningClose = async (accepted, values, setFieldValue) => {
 		setWarning({ show: false, acceptText: '' });
-		if (accepted) await saveSettings(values);
-		else setFieldValue('forcedSetupMode', 0);
+		if (accepted) {
+			const isKeyboardMode = values.inputMode === 3;
+			if (isKeyboardMode) {
+				const [baseMappings, ...profileMappings] = keyMappings;
+				await WebApi.setKeyMappings(baseMappings);
+				if (profileMappings.length)
+					await WebApi.setProfileKeyMappings(profileMappings);
+			}
+			await saveSettings(prepareData(values));
+		} else {
+			setFieldValue('forcedSetupMode', 0);
+		}
 	};
 
 	const setWarningAcceptText = (e) => {
@@ -2422,12 +2466,6 @@ export default function SettingsPage() {
 	const onSubmit = async (values) => {
 		const isKeyboardMode = values.inputMode === 3;
 
-		const data = {
-			...values,
-			usbProductID: hexToInt(values.usbProductID || '0000'),
-			usbVendorID: hexToInt(values.usbVendorID || '0000'),
-		};
-
 		if (values.forcedSetupMode > 1) {
 			setWarning({ show: true, acceptText: '' });
 		} else {
@@ -2437,7 +2475,7 @@ export default function SettingsPage() {
 				if (profileMappings.length)
 					await WebApi.setProfileKeyMappings(profileMappings);
 			}
-			await saveSettings(data);
+			await saveSettings(prepareData(values));
 		}
 	};
 
@@ -2523,6 +2561,11 @@ export default function SettingsPage() {
 											<Nav.Item>
 												<Nav.Link eventKey="gamepad">
 													{t('SettingsPage:gamepad-settings-header-text')}
+												</Nav.Link>
+											</Nav.Item>
+											<Nav.Item>
+												<Nav.Link eventKey="rumble">
+													{t('SettingsPage:erm-rumble-header-text')}
 												</Nav.Link>
 											</Nav.Item>
 											<Nav.Item>
@@ -2773,6 +2816,139 @@ export default function SettingsPage() {
 																	);
 																}}
 															/>
+														</Col>
+													</Form.Group>
+													<Button type="submit">
+														{t('Common:button-save-label')}
+													</Button>
+													{saveMessage ? (
+														<span className="alert">{saveMessage}</span>
+													) : null}
+												</Section>
+											</Tab.Pane>
+											<Tab.Pane eventKey="rumble">
+												<Section
+													title={t('SettingsPage:erm-rumble-header-text')}
+												>
+													<p>{t('SettingsPage:erm-rumble-desc')}</p>
+													<Form.Group className="row mb-3">
+														<Form.Label>
+															{t(
+																'SettingsPage:erm-rumble-motor-floor-label',
+															)}
+														</Form.Label>
+														<Col sm={3}>
+															<Form.Control
+																type="number"
+																name="ermRumbleMotorFloor"
+																className="form-control-sm"
+																value={values.ermRumbleMotorFloor ?? 0}
+																error={errors.ermRumbleMotorFloor}
+																isInvalid={Boolean(errors.ermRumbleMotorFloor)}
+																onChange={handleChange}
+																min={0}
+																max={255}
+															/>
+															<Form.Control.Feedback type="invalid">
+																{errors.ermRumbleMotorFloor}
+															</Form.Control.Feedback>
+														</Col>
+														<Col sm={9}>
+															<Form.Text className="text-muted">
+																{t(
+																	'SettingsPage:erm-rumble-motor-floor-desc',
+																)}
+															</Form.Text>
+														</Col>
+													</Form.Group>
+													<Form.Group className="row mb-3">
+														<Form.Label>
+															{t(
+																'SettingsPage:erm-rumble-kickstart-ms-label',
+															)}
+														</Form.Label>
+														<Col sm={3}>
+															<Form.Control
+																type="number"
+																name="ermRumbleKickstartMs"
+																className="form-control-sm"
+																value={values.ermRumbleKickstartMs ?? 0}
+																error={errors.ermRumbleKickstartMs}
+																isInvalid={Boolean(errors.ermRumbleKickstartMs)}
+																onChange={handleChange}
+																min={0}
+																max={500}
+															/>
+															<Form.Control.Feedback type="invalid">
+																{errors.ermRumbleKickstartMs}
+															</Form.Control.Feedback>
+														</Col>
+														<Col sm={9}>
+															<Form.Text className="text-muted">
+																{t(
+																	'SettingsPage:erm-rumble-kickstart-ms-desc',
+																)}
+															</Form.Text>
+														</Col>
+													</Form.Group>
+													<Form.Group className="row mb-3">
+														<Form.Label>
+															{t(
+																'SettingsPage:erm-rumble-sustain-ms-label',
+															)}
+														</Form.Label>
+														<Col sm={3}>
+															<Form.Control
+																type="number"
+																name="ermRumbleSustainMs"
+																className="form-control-sm"
+																value={values.ermRumbleSustainMs ?? 0}
+																error={errors.ermRumbleSustainMs}
+																isInvalid={Boolean(errors.ermRumbleSustainMs)}
+																onChange={handleChange}
+																min={0}
+																max={500}
+															/>
+															<Form.Control.Feedback type="invalid">
+																{errors.ermRumbleSustainMs}
+															</Form.Control.Feedback>
+														</Col>
+														<Col sm={9}>
+															<Form.Text className="text-muted">
+																{t(
+																	'SettingsPage:erm-rumble-sustain-ms-desc',
+																)}
+															</Form.Text>
+														</Col>
+													</Form.Group>
+													<Form.Group className="row mb-3">
+														<Form.Label>
+															{t(
+																'SettingsPage:erm-rumble-boost-percent-label',
+															)}
+														</Form.Label>
+														<Col sm={3}>
+															<Form.Control
+																type="number"
+																name="ermRumbleBoostPercent"
+																className="form-control-sm"
+																value={values.ermRumbleBoostPercent ?? 0}
+																error={errors.ermRumbleBoostPercent}
+																isInvalid={Boolean(errors.ermRumbleBoostPercent)}
+																onChange={handleChange}
+																min={0}
+																max={100}
+															/>
+															<Form.Control.Feedback type="invalid">
+																{errors.ermRumbleBoostPercent}
+															</Form.Control.Feedback>
+														</Col>
+														<Col sm={9}>
+															<Form.Text className="text-muted">
+																{t(
+																	'SettingsPage:erm-rumble-boost-percent-desc',
+																)}
+															</Form.Text>
 														</Col>
 													</Form.Group>
 													<Button type="submit">

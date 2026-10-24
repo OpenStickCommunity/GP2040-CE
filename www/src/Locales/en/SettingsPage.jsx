@@ -285,4 +285,19 @@ export default {
 		'vendor-id': 'Vendor ID',
 	},
 	'input-mode-device-type-label': 'Input Mode Controller Type',
+	'erm-rumble-header-text': 'ERM Rumble Tuning',
+	'erm-rumble-desc':
+		'Fine-tune ERM vibration motors for converted Switch HD Rumble packets. Set any parameter to 0 to disable its enhancement.',
+	'erm-rumble-motor-floor-label': 'Motor Floor Threshold (0 - 255)',
+	'erm-rumble-motor-floor-desc':
+		'Minimum PWM duty cycle required to overcome static motor friction (stiction). Maps non-zero rumble intensities to ensure motors spin reliably on subtle vibrations (0 = pass-through).',
+	'erm-rumble-kickstart-ms-label': 'Kickstart Overdrive Duration (ms)',
+	'erm-rumble-kickstart-ms-desc':
+		'Initial boost pulse duration applied when transitioning from stop to overcome rotor inertia (0 - 500 ms, 0 = disabled).',
+	'erm-rumble-sustain-ms-label': 'Pulse Sustain Duration (ms)',
+	'erm-rumble-sustain-ms-desc':
+		'Minimum vibration pulse stretch duration so transient haptic clicks and taps are perceptible on physical ERM motors (0 - 500 ms, 0 = disabled).',
+	'erm-rumble-boost-percent-label': 'Global Rumble Boost (%)',
+	'erm-rumble-boost-percent-desc':
+		'Scales up overall rumble intensity by this percentage (0 - 100%, 0 = disabled).',
 };
