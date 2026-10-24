@@ -64,15 +64,15 @@ export default {
 		},
 		'saver-modes': {
 			'display-off': '关闭显示',
-			snow: '雪花像素',
+			snow: '雪花',
 			bounce: '标志弹跳',
-			pipes: '经典管道',
-			toast: '吐司提示',
+			pipes: '管道',
+			toast: '提示弹窗',
 		},
 		'layout-modes': {
-			standard: '标准',
-			southpaw: '左手',
-			switched: '交换',
+			standard: '默认',
+			southpaw: '左手 (Southpaw)',
+			switched: '交换手 (Switched)',
 		},
 		'status-header': {
 			'input-mode': '输入模式',
