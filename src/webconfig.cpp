@@ -9,6 +9,7 @@
 #include "eventmanager.h"
 #include "layoutmanager.h"
 #include "peripheralmanager.h"
+#include "rebootmodes.h"
 #include "system.h"
 #include "config_utils.h"
 #include "types.h"
@@ -2286,6 +2287,10 @@ std::string setAddonOptions()
     docToValue(analogADS1115Options.leftStickDeadzone, doc, "leftStickDeadzone");
     docToValue(analogADS1115Options.rightStickDeadzone, doc, "rightStickDeadzone");
 
+    HostLightingOptions& hostLightingOptions = Storage::getInstance().getAddonOptions().hostLightingOptions;
+    docToValue(hostLightingOptions.enabled, doc, "HostLightingAddonEnabled");
+    docToValue(hostLightingOptions.xinputMode, doc, "hostLightingXInputMode");
+
     AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
     docToValue(analogADS1219Options.enabled, doc, "I2CAnalog1219InputEnabled");
 
@@ -2895,6 +2900,10 @@ std::string getAddonOptions()
     writeDoc(doc, "focusModeMacroLockEnabled", focusModeOptions.macroLockEnabled);
     writeDoc(doc, "FocusModeAddonEnabled", focusModeOptions.enabled);
 
+    const HostLightingOptions& hostLightingOptions = Storage::getInstance().getAddonOptions().hostLightingOptions;
+    writeDoc(doc, "HostLightingAddonEnabled", hostLightingOptions.enabled);
+    writeDoc(doc, "hostLightingXInputMode", hostLightingOptions.xinputMode);
+
     RotaryOptions& rotaryOptions = Storage::getInstance().getAddonOptions().rotaryOptions;
     writeDoc(doc, "RotaryAddonEnabled", rotaryOptions.enabled);
     writeDoc(doc, "encoderOneEnabled", rotaryOptions.encoderOne.enabled);
@@ -3180,24 +3189,11 @@ std::string echo()
 }
 #endif
 
-// MUST MATCH NAVIGATION.JSX
-enum BOOT_MODES {
-	GAMEPAD = 0,
-	WEBCONFIG = 1,
-	BOOTSEL = 2,
-};
-
 std::string reboot() {
     DynamicJsonDocument doc = get_post_data();
     uint32_t bootMode = doc["bootMode"];
     System::BootMode systemBootMode = System::BootMode::DEFAULT;
-    if ( bootMode == BOOT_MODES::GAMEPAD ) {
-        systemBootMode = System::BootMode::GAMEPAD;
-    } else if ( bootMode == BOOT_MODES::WEBCONFIG ) {
-        systemBootMode = System::BootMode::WEBCONFIG;
-    } else if (bootMode == BOOT_MODES::BOOTSEL ) {
-        systemBootMode = System::BootMode::USB;
-    }
+    rebootModeToBootMode(bootMode, systemBootMode);
     EventManager::getInstance().triggerEvent(new GPRestartEvent((System::BootMode)systemBootMode));
     doc["success"] = true;
     return serialize_json(doc);

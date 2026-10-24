@@ -16,6 +16,8 @@ public:
     }
     GPDriver * getDriver() { return driver; }
     void setup(InputMode);
+    // Whether setup() has a driver for the mode
+    static bool hasDriver(InputMode mode);
     InputMode getInputMode(){ return inputMode; }
     bool isConfigMode(){ return (inputMode == INPUT_MODE_CONFIG); }
 private:
