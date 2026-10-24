@@ -86,6 +86,7 @@ private:
     int8_t _exclusiveAddress = -1;
 
     void setup();
+    void recoverBus();
 };
 
 #endif

@@ -52,6 +52,8 @@ void PeripheralI2C::setup() {
     if ((_SDA + 2 * i2c_hw_index(_I2C))%4 != 0) return;
     if ((_SCL + 3 + 2 * i2c_hw_index(_I2C))%4 != 0) return;
 
+    recoverBus();
+
     i2c_init(_I2C, _Speed);
     gpio_set_function(_SDA, GPIO_FUNC_I2C);
     gpio_set_function(_SCL, GPIO_FUNC_I2C);
@@ -61,6 +63,30 @@ void PeripheralI2C::setup() {
 
     // reset the bus before using it
     clear();
+}
+
+void PeripheralI2C::recoverBus() {
+    gpio_init(_SDA);
+    gpio_init(_SCL);
+    gpio_pull_up(_SDA);
+    gpio_pull_up(_SCL);
+    busy_wait_us_32(10);
+
+    for (uint8_t i = 0; i < 9 && !gpio_get(_SDA); i++) {
+        gpio_set_dir(_SCL, GPIO_OUT);
+        busy_wait_us_32(5);
+        gpio_set_dir(_SCL, GPIO_IN);
+        busy_wait_us_32(5);
+    }
+
+    gpio_set_dir(_SCL, GPIO_OUT);
+    busy_wait_us_32(5);
+    gpio_set_dir(_SDA, GPIO_OUT);
+    busy_wait_us_32(5);
+    gpio_set_dir(_SCL, GPIO_IN);
+    busy_wait_us_32(5);
+    gpio_set_dir(_SDA, GPIO_IN);
+    busy_wait_us_32(5);
 }
 
 int16_t PeripheralI2C::read(uint8_t address, uint8_t *data, uint16_t len, bool isBlock) {
