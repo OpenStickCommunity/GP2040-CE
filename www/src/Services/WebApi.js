@@ -253,9 +253,7 @@ async function setDisplayOptions(options, isPreview) {
 		? `${baseUrl}/api/setDisplayOptions`
 		: `${baseUrl}/api/setPreviewDisplayOptions`;
 	return Http.post(url, newOptions)
-		.then((response) => {
-			return true;
-		})
+		.then((response) => response.data?.success !== false)
 		.catch((err) => {
 			console.error(err);
 			return false;

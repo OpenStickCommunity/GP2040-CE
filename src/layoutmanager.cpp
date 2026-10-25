@@ -306,7 +306,9 @@ LayoutManager::LayoutList LayoutManager::getLeftLayout(uint16_t index) {
         case BUTTON_LAYOUT_BOARD_DEFINED_ALT6_A:
             return drawBoardDefinedAlt6A();   
         case BUTTON_LAYOUT_BOARD_DEFINED_ALT7_A:
-            return drawBoardDefinedAlt7A();    
+            return drawBoardDefinedAlt7A();
+        case BUTTON_LAYOUT_CUSTOM_DEFINED_A:
+            return drawCustomDefinedA();
         default:
             break;
     }
@@ -415,6 +417,8 @@ LayoutManager::LayoutList LayoutManager::getRightLayout(uint16_t index) {
             return this->drawBoardDefinedAlt6B();
         case BUTTON_LAYOUT_BOARD_DEFINED_ALT7_B:
             return this->drawBoardDefinedAlt7B();
+        case BUTTON_LAYOUT_CUSTOM_DEFINED_B:
+            return drawCustomDefinedB();
         default:
             break;
     }
@@ -422,11 +426,76 @@ LayoutManager::LayoutList LayoutManager::getRightLayout(uint16_t index) {
     return {};
 }
 
+LayoutManager::LayoutList LayoutManager::drawCustomDefined(const uint8_t* bytes, uint16_t size) {
+    LayoutList layout;
+    const uint16_t elementSize = CUSTOM_LAYOUT_ELEMENT_BYTES;
+    uint16_t count = size / elementSize;
+    for (uint16_t i = 0; i < count; i++) {
+        const uint8_t* p = bytes + (i * elementSize);
+        uint16_t values[12] = {
+            p[0], p[1], p[2], p[3], p[4],
+            (uint16_t)(p[5] & 0x01), (uint16_t)((p[5] >> 1) & 0x03),
+            (uint16_t)(p[6] | (p[7] << 8)),
+            (uint16_t)((p[5] >> 3) & 0x07),
+            (uint16_t)(p[8] | (p[9] << 8)),
+            (uint16_t)(p[10] | (p[11] << 8)),
+            (uint16_t)((p[5] >> 6) & 0x01)
+        };
+        uint16_t value = values[7];
+        bool drawable = false;
+        switch (values[0]) {
+            case GP_ELEMENT_BTN_BUTTON:
+            case GP_ELEMENT_DIR_BUTTON:
+            case GP_ELEMENT_LEVER:
+            case GP_ELEMENT_SHAPE:
+                drawable = true;
+                break;
+            case GP_ELEMENT_PIN_BUTTON:
+                drawable = (value < NUM_BANK0_GPIOS);
+                break;
+            case GP_ELEMENT_HE_BUTTON:
+                drawable = (value < 32);
+                break;
+            default:
+                break;
+        }
+        if (values[0] != GP_ELEMENT_LEVER) {
+            if (values[8] > GP_SHAPE_PILL)
+                drawable = false;
+            if (values[8] == GP_SHAPE_POLYGON && (values[4] < 1 || values[4] > 32))
+                drawable = false;
+            if ((values[8] == GP_SHAPE_ARC || values[8] == GP_SHAPE_POLYGON) && (values[1] < values[3] || values[2] < values[3]))
+                drawable = false;
+        }
+        if (values[9] > 720 || values[10] > 720)
+            drawable = false;
+        if (!drawable)
+            continue;
+        layout.push_back({(GPElement)values[0], {
+            values[1], values[2], values[3], values[4],
+            values[5], values[6], values[7], values[8],
+            values[9], values[10], values[11]
+        }});
+    }
+    return layout;
+}
+
+LayoutManager::LayoutList LayoutManager::drawCustomDefinedA() {
+    const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
+    return drawCustomDefined(options.customLayoutA.bytes, options.customLayoutA.size);
+}
+
+LayoutManager::LayoutList LayoutManager::drawCustomDefinedB() {
+    const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
+    return drawCustomDefined(options.customLayoutB.bytes, options.customLayoutB.size);
+}
+
 LayoutManager::LayoutList LayoutManager::drawButtonLayoutLeft()
 {
     const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
     ButtonLayoutCustomOptions buttonLayoutCustomOptions = options.buttonLayoutCustomOptions;
     ButtonLayoutParamsLeft leftOptions = buttonLayoutCustomOptions.paramsLeft;
+    if (leftOptions.layout == BUTTON_LAYOUT_CUSTOMA) return {};
     return adjustByCustomSettings(getLeftLayout(leftOptions.layout), leftOptions.common);
 }
 
@@ -435,6 +504,7 @@ LayoutManager::LayoutList LayoutManager::drawButtonLayoutRight()
     const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
     ButtonLayoutCustomOptions buttonLayoutCustomOptions = options.buttonLayoutCustomOptions;
     ButtonLayoutParamsRight rightOptions = buttonLayoutCustomOptions.paramsRight;
+    if (rightOptions.layout == BUTTON_LAYOUT_CUSTOMB) return {};
     return adjustByCustomSettings(getRightLayout(rightOptions.layout), rightOptions.common, 64);
 }
 
@@ -458,7 +528,8 @@ LayoutManager::LayoutList LayoutManager::adjustByCustomSettings(LayoutManager::L
             if (((GPShape_Type)layout[elementCtr].parameters.shape == GP_SHAPE_ELLIPSE) || ((GPShape_Type)layout[elementCtr].parameters.shape == GP_SHAPE_POLYGON)) {
                 // radius
                 layout[elementCtr].parameters.x2 = common.buttonRadius;
-                layout[elementCtr].parameters.y2 = common.buttonRadius;
+                if ((GPShape_Type)layout[elementCtr].parameters.shape == GP_SHAPE_ELLIPSE)
+                    layout[elementCtr].parameters.y2 = common.buttonRadius;
             }
         }
     }
@@ -472,7 +543,7 @@ LayoutManager::LayoutList LayoutManager::adjustByOffset(LayoutManager::LayoutLis
 
         for (uint16_t elementCtr = 0; elementCtr < layout.size(); elementCtr++) {
             int16_t newX = layout[elementCtr].parameters.x1 + originX;
-            if (((GPShape_Type)layout[elementCtr].parameters.shape == GP_SHAPE_ELLIPSE) || ((GPShape_Type)layout[elementCtr].parameters.shape == GP_SHAPE_POLYGON)) {
+            if (((GPShape_Type)layout[elementCtr].parameters.shape == GP_SHAPE_ELLIPSE) || ((GPShape_Type)layout[elementCtr].parameters.shape == GP_SHAPE_POLYGON) || ((GPShape_Type)layout[elementCtr].parameters.shape == GP_SHAPE_ARC)) {
                 newX = (layout[elementCtr].parameters.x1-(layout[elementCtr].parameters.x2)) + originX;
             } else if ((GPShape_Type)layout[elementCtr].parameters.shape == GP_SHAPE_SQUARE) {
                 if (originX > 0) newX = layout[elementCtr].parameters.x2 + originX;
