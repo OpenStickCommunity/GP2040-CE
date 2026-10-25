@@ -657,6 +657,13 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.displayOptions, splashDuration, SPLASH_DURATION);
 	const unsigned char defaultSplash[] = { DEFAULT_SPLASH };
     INIT_UNSET_PROPERTY_BYTES(config.displayOptions, splashImage, defaultSplash);
+    INIT_UNSET_PROPERTY(config.displayOptions, splashTextEnabled, !!SPLASH_TEXT_ENABLED);
+    INIT_UNSET_PROPERTY(config.displayOptions, splashTextDuration, SPLASH_TEXT_DURATION);
+    INIT_UNSET_PROPERTY(config.displayOptions, splashTextFirst, !!SPLASH_TEXT_FIRST);
+    INIT_UNSET_PROPERTY(config.displayOptions, splashTextLineCount, SPLASH_TEXT_LINE_COUNT);
+    INIT_UNSET_PROPERTY_STR(config.displayOptions, splashTextLine1, SPLASH_TEXT_LINE1);
+    INIT_UNSET_PROPERTY_STR(config.displayOptions, splashTextLine2, SPLASH_TEXT_LINE2);
+    INIT_UNSET_PROPERTY_STR(config.displayOptions, splashTextLine3, SPLASH_TEXT_LINE3);
     INIT_UNSET_PROPERTY(config.displayOptions, size, DISPLAY_SIZE);
     INIT_UNSET_PROPERTY(config.displayOptions, flip, DISPLAY_FLIP);
     INIT_UNSET_PROPERTY(config.displayOptions, invert, !!DISPLAY_INVERT);

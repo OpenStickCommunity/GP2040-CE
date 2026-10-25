@@ -12,6 +12,9 @@ export default {
 		'button-layout-header': 'Button Layout',
 		'status-layout-header': 'Status Bar Layout',
 		'history-layout-header': 'Input History Layout',
+		'splash-image-header': 'Splash Image',
+		'splash-text-header': 'Splash Text',
+		'display-saver-header': 'Display Saver',
 	},
 	table: {
 		header:
@@ -39,7 +42,17 @@ export default {
 		'button-layout-custom-button-padding-label': 'Button Padding',
 		'splash-mode-label': 'Splash Mode',
 		'splash-duration-label': 'Splash Duration (seconds, 0 for Always On)',
+		'splash-text-lines-label': 'Splash Text Lines',
+		'splash-text-duration-label':
+			'Splash Text Duration (seconds, 0 for Always On)',
+		'splash-text-line-label': 'Line {{line}}',
+		'splash-text-help':
+			'Up to {{max}} characters per line, each centred on the screen.',
+		'splash-text-preview-help':
+			'While in web config mode, press {{button}} to preview.',
 		'display-saver-timeout-label': 'Display Saver Timeout (minutes, 0 for Off)',
+		'display-saver-timeout-short-label':
+			'Display Saver Timeout (min, 0 for off)',
 		'screen-saver-mode-label': 'Display Saver Mode',
 		'inverted-label': 'Inverted',
 		'power-management-header': 'Power Management',
@@ -58,6 +71,10 @@ export default {
 		},
 		'splash-modes': {
 			enabled: 'Enabled (Custom Splash Screen)',
+			'image-only': 'Enabled (Splash Image Only)',
+			'text-only': 'Enabled (Splash Text Only)',
+			'image-then-text': 'Enabled (Splash Image -> Text)',
+			'text-then-image': 'Enabled (Splash Text -> Image)',
 			'close-in': 'Logo Close In',
 			'close-in-custom': 'Logo Close In Custom',
 			disabled: 'Disabled',

@@ -22,6 +22,8 @@ class GPGFX_TinySSD1306 : public GPGFX_DisplayBase {
 
         void drawText(uint8_t x, uint8_t y, std::string text, uint8_t invert = 0);
 
+        void drawTextAt(uint16_t x, uint16_t y, std::string text, uint8_t invert = 0);
+
         void drawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint32_t color, uint8_t filled);
 
         void drawArc(uint16_t x, uint16_t y, uint32_t radiusX, uint32_t radiusY, uint32_t color, uint8_t filled, double startAngle, double endAngle, uint8_t closed);
