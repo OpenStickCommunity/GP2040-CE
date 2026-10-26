@@ -230,6 +230,20 @@ export function base64ToLayoutCode(base64: string) {
 	return generateLayoutCode(base64ToElements(base64));
 }
 
+export function buttonLayoutToLayoutCode(
+	layout: Record<
+		string,
+		{ elementType: number; parameters: Omit<LayoutElement, 'type'> }
+	> = {},
+) {
+	return generateLayoutCode(
+		Object.values(layout).map(({ elementType, parameters }) => ({
+			...parameters,
+			type: elementType,
+		})),
+	);
+}
+
 function elementsToBase64(elements: LayoutElement[]) {
 	const bytes = new Uint8Array(elements.length * BYTES_PER_ELEMENT);
 	elements.forEach((element, elementIndex) => {

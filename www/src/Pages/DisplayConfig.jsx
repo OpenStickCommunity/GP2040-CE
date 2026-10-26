@@ -18,6 +18,7 @@ import {
 	parseLayoutCode,
 	layoutCodeToBase64,
 	base64ToLayoutCode,
+	buttonLayoutToLayoutCode,
 } from '../Services/CustomLayout';
 
 const ON_OFF_OPTIONS = [
@@ -263,16 +264,22 @@ export default function DisplayConfigPage() {
 		async function fetchData() {
 			const data = await WebApi.getDisplayOptions();
 			const splashImageResponse = await WebApi.getSplashImage();
-			data.splashImage = splashImageResponse.splashImage;
 			buttonLayoutDefinitions = await WebApi.getButtonLayoutDefs();
+			const { displayLayouts } = await WebApi.getButtonLayouts();
+
+			data.splashImage = splashImageResponse.splashImage;
 			buttonLayoutSchema = buttonLayoutSchema.oneOf(
 				Object.values(buttonLayoutDefinitions.buttonLayout),
 			);
 			buttonLayoutRightSchema = buttonLayoutRightSchema.oneOf(
 				Object.values(buttonLayoutDefinitions.buttonLayoutRight),
 			);
-			data.customLayoutA = base64ToLayoutCode(data.customLayoutA);
-			data.customLayoutB = base64ToLayoutCode(data.customLayoutB);
+			data.customLayoutA =
+				base64ToLayoutCode(data.customLayoutA) ||
+				buttonLayoutToLayoutCode(displayLayouts?.buttonLayout);
+			data.customLayoutB =
+				base64ToLayoutCode(data.customLayoutB) ||
+				buttonLayoutToLayoutCode(displayLayouts?.buttonLayoutRight);
 			setValues(data);
 			setLoadingValues(false);
 		}
