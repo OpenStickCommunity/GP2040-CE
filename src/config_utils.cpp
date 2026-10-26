@@ -515,12 +515,14 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 	const unsigned char defaultSplash[] = { DEFAULT_SPLASH };
     INIT_UNSET_PROPERTY_BYTES(config.displayOptions, splashImage, defaultSplash);
 
-    if (!config.displayOptions.has_customLayoutA) {
-        config.displayOptions.customLayoutA.size = 0;
+    if (!config.displayOptions.has_customLayoutA || config.displayOptions.customLayoutA.size == 0) {
+        LayoutManager::getInstance().encodeCustomDefined(config.displayOptions.customLayoutA.bytes, config.displayOptions.customLayoutA.size,
+            sizeof(config.displayOptions.customLayoutA.bytes), LayoutManager::getInstance().getLeftLayout(BUTTON_LAYOUT));
         config.displayOptions.has_customLayoutA = true;
     }
-    if (!config.displayOptions.has_customLayoutB) {
-        config.displayOptions.customLayoutB.size = 0;
+    if (!config.displayOptions.has_customLayoutB || config.displayOptions.customLayoutB.size == 0) {
+        LayoutManager::getInstance().encodeCustomDefined(config.displayOptions.customLayoutB.bytes, config.displayOptions.customLayoutB.size,
+            sizeof(config.displayOptions.customLayoutB.bytes), LayoutManager::getInstance().getRightLayout(BUTTON_LAYOUT_RIGHT));
         config.displayOptions.has_customLayoutB = true;
     }
     INIT_UNSET_PROPERTY(config.displayOptions, size, DISPLAY_SIZE);

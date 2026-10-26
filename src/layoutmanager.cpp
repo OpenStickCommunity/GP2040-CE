@@ -430,6 +430,29 @@ LayoutManager::LayoutList LayoutManager::getRightLayout(uint16_t index) {
     return {};
 }
 
+void LayoutManager::encodeCustomDefined(uint8_t* bytes, pb_size_t& size, size_t maxSize, const LayoutList& layout) {
+    size = 0;
+    for (const GPButtonLayout& element : layout) {
+        if (size + CUSTOM_LAYOUT_ELEMENT_BYTES > maxSize)
+            break;
+        const GPButtonParameters& p = element.parameters;
+        uint8_t* out = bytes + size;
+        out[0] = element.elementType;
+        out[1] = p.x1;
+        out[2] = p.y1;
+        out[3] = p.x2;
+        out[4] = p.y2;
+        out[5] = (p.stroke & 0x01) | ((p.fill & 0x03) << 1) | ((p.shape & 0x07) << 3) | ((p.closed & 0x01) << 6);
+        out[6] = p.value & 0xFF;
+        out[7] = p.value >> 8;
+        out[8] = p.angleStart & 0xFF;
+        out[9] = p.angleStart >> 8;
+        out[10] = p.angleEnd & 0xFF;
+        out[11] = p.angleEnd >> 8;
+        size += CUSTOM_LAYOUT_ELEMENT_BYTES;
+    }
+}
+
 LayoutManager::LayoutList LayoutManager::drawCustomDefined(const uint8_t* bytes, uint16_t size) {
     LayoutList layout;
     const uint16_t elementSize = CUSTOM_LAYOUT_ELEMENT_BYTES;

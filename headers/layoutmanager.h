@@ -154,6 +154,7 @@ class LayoutManager {
 
         LayoutManager::LayoutList getLeftLayout(uint16_t index);
         LayoutManager::LayoutList getRightLayout(uint16_t index);
+        void encodeCustomDefined(uint8_t* bytes, pb_size_t& size, size_t maxSize, const LayoutList& layout);
     private:
         LayoutManager(){}
 
