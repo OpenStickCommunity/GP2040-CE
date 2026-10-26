@@ -8,16 +8,23 @@
 #define TOSTRING(x) STRINGIFY(x)
 #endif
 
+static ButtonLayoutOrientation getLayoutOrientation(const DisplayOptions& options) {
+    if (options.buttonLayout == BUTTON_LAYOUT_CUSTOM_DEFINED_A || options.buttonLayoutRight == BUTTON_LAYOUT_CUSTOM_DEFINED_B)
+        return BUTTON_ORIENTATION_DEFAULT;
+    return options.buttonLayoutOrientation;
+}
+
 LayoutManager::LayoutList LayoutManager::getLayoutA() {
     const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
+    const ButtonLayoutOrientation orientation = getLayoutOrientation(options);
     uint16_t layoutLeft = options.buttonLayout;
-    if (options.buttonLayoutOrientation != BUTTON_ORIENTATION_DEFAULT) {
+    if (orientation != BUTTON_ORIENTATION_DEFAULT) {
         uint16_t layoutRight = options.buttonLayoutRight;
         LayoutManager::LayoutList rightLayout = getRightLayout(layoutRight);
         if (rightLayout.empty() && layoutRight >= BUTTON_LAYOUT_BOARD_DEFINED_ALT0_B && layoutRight <= BUTTON_LAYOUT_BOARD_DEFINED_ALT7_B) {
             rightLayout = drawBoardDefinedB();
         }
-        if (options.buttonLayoutOrientation == BUTTON_ORIENTATION_SWITCHED) {
+        if (orientation == BUTTON_ORIENTATION_SWITCHED) {
             return adjustByOffset(rightLayout, -64);
         } else {
             return adjustByOffset(flipHorizontally(rightLayout, 64, 0, 128, 0), -64);
@@ -33,14 +40,15 @@ LayoutManager::LayoutList LayoutManager::getLayoutA() {
 
 LayoutManager::LayoutList LayoutManager::getLayoutB() {
     const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
+    const ButtonLayoutOrientation orientation = getLayoutOrientation(options);
     uint16_t layoutRight = options.buttonLayoutRight;
-    if (options.buttonLayoutOrientation != BUTTON_ORIENTATION_DEFAULT) {
+    if (orientation != BUTTON_ORIENTATION_DEFAULT) {
         uint16_t layoutLeft = options.buttonLayout;
         LayoutManager::LayoutList leftLayout = getLeftLayout(layoutLeft);
         if (leftLayout.empty() && layoutLeft >= BUTTON_LAYOUT_BOARD_DEFINED_ALT0_A && layoutLeft <= BUTTON_LAYOUT_BOARD_DEFINED_ALT7_A) {
             leftLayout = drawBoardDefinedA();
         }
-        if (options.buttonLayoutOrientation == BUTTON_ORIENTATION_SWITCHED) {
+        if (orientation == BUTTON_ORIENTATION_SWITCHED) {
             return adjustByOffset(leftLayout, 64);
         } else {
             return adjustByOffset(flipHorizontally(leftLayout, 0, 0, 64, 0), 64);
@@ -302,7 +310,7 @@ LayoutManager::LayoutList LayoutManager::getLeftLayout(uint16_t index) {
         case BUTTON_LAYOUT_BOARD_DEFINED_ALT5_A:
             return drawBoardDefinedAlt5A();
         case BUTTON_LAYOUT_BOARD_DEFINED_ALT6_A:
-            return drawBoardDefinedAlt6A();   
+            return drawBoardDefinedAlt6A();
         case BUTTON_LAYOUT_BOARD_DEFINED_ALT7_A:
             return drawBoardDefinedAlt7A();
         case BUTTON_LAYOUT_CUSTOM_DEFINED_A:
@@ -787,17 +795,17 @@ LayoutManager::LayoutList LayoutManager::drawBandHeroStrumA()
     return BUTTON_GROUP_BANDHERO_STRUM_A;
 }
 
-LayoutManager::LayoutList LayoutManager::draw6GAWDLeft() 
+LayoutManager::LayoutList LayoutManager::draw6GAWDLeft()
 {
     return BUTTON_GROUP_6GAWD_A;
 }
 
-LayoutManager::LayoutList LayoutManager::draw6GAWDAllButtonLeft() 
+LayoutManager::LayoutList LayoutManager::draw6GAWDAllButtonLeft()
 {
     return BUTTON_GROUP_6GAWD_ALLBUTTON_A;
 }
 
-LayoutManager::LayoutList LayoutManager::draw6GAWDAllButtonPlusLeft() 
+LayoutManager::LayoutList LayoutManager::draw6GAWDAllButtonPlusLeft()
 {
     return BUTTON_GROUP_6GAWD_ALLBUTTONPLUS_A;
 }

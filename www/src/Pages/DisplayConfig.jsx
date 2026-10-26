@@ -464,9 +464,11 @@ export default function DisplayConfigPage() {
 															key={`buttonLayout-option-${i}`}
 															value={buttonLayoutDefinitions.buttonLayout[o]}
 														>
-															{t(`LayoutConfig:layouts.left.${o}`, {
-																defaultValue: o,
-															})}
+															{o in ButtonLayout
+																? t(`LayoutConfig:layouts.left.${o}`, {
+																		defaultValue: o,
+																	})
+																: o}
 														</option>
 													),
 												)}
@@ -490,33 +492,37 @@ export default function DisplayConfigPage() {
 														key={`buttonLayoutRight-option-${i}`}
 														value={buttonLayoutDefinitions.buttonLayoutRight[o]}
 													>
-														{t(`LayoutConfig:layouts.right.${o}`, {
-															defaultValue: o,
-														})}
+														{o in ButtonLayoutRight
+															? t(`LayoutConfig:layouts.right.${o}`, {
+																	defaultValue: o,
+																})
+															: o}
 													</option>
 												))}
 											</FormSelect>
-											<FormSelect
-												label={t(
-													'DisplayConfig:form.button-layout-orientation',
-												)}
-												name="buttonLayoutOrientation"
-												className="form-select-sm"
-												groupClassName="col-sm-3 mb-3"
-												value={values.buttonLayoutOrientation}
-												error={errors.buttonLayoutOrientation}
-												isInvalid={errors.buttonLayoutOrientation}
-												onChange={handleChange}
-											>
-												{LAYOUT_ORIENTATION.map((o, i) => (
-													<option
-														key={`buttonLayoutOrientation-option-${i}`}
-														value={o.value}
-													>
-														{t(`DisplayConfig:${o.label}`)}
-													</option>
-												))}
-											</FormSelect>
+											{!isCustomLayoutUsed(values) && (
+												<FormSelect
+													label={t(
+														'DisplayConfig:form.button-layout-orientation',
+													)}
+													name="buttonLayoutOrientation"
+													className="form-select-sm"
+													groupClassName="col-sm-3 mb-3"
+													value={values.buttonLayoutOrientation}
+													error={errors.buttonLayoutOrientation}
+													isInvalid={errors.buttonLayoutOrientation}
+													onChange={handleChange}
+												>
+													{LAYOUT_ORIENTATION.map((o, i) => (
+														<option
+															key={`buttonLayoutOrientation-option-${i}`}
+															value={o.value}
+														>
+															{t(`DisplayConfig:${o.label}`)}
+														</option>
+													))}
+												</FormSelect>
+											)}
 										</Row>
 										{isCustomLayoutUsed(values) && (
 											<>
@@ -671,7 +677,6 @@ export default function DisplayConfigPage() {
 										<h1>{t('DisplayConfig:section.history-layout-header')}</h1>
 										<Row className="mb-4">
 											<div className="col-sm-2 mb-3">
-												<label></label>
 												<Form.Check
 													label={t('DisplayConfig:form.input-history-label')}
 													type="switch"
