@@ -191,8 +191,6 @@ class ButtonLayoutScreen : public GPScreen {
         uint8_t profileNumber = 0;
         uint8_t prevProfileNumber = 0;
         
-        ButtonLayoutParamsLeft prevLeftOptions{};
-        ButtonLayoutParamsRight prevRightOptions{};
         ButtonLayoutOrientation prevOrientation{};
         uint32_t prevCustomLayoutHash = 0;
 

@@ -20,14 +20,6 @@ export default {
 		'invert-display-label': 'Inverter Display',
 		'button-layout-label': 'Layout dos Botões (Esquerda)',
 		'button-layout-right-label': 'Layout dos Botões (Direita)',
-		'button-layout-custom-header':
-			'Parâmetros de Layout Personalizado dos Botões',
-		'button-layout-custom-left-label': 'Layout Esquerdo',
-		'button-layout-custom-right-label': 'Layout Direito',
-		'button-layout-custom-start-x-label': 'Início X',
-		'button-layout-custom-start-y-label': 'Início Y',
-		'button-layout-custom-button-radius-label': 'Raio dos Botões',
-		'button-layout-custom-button-padding-label': 'Preenchimento dos Botões',
 		'splash-mode-label': 'Modo de Splash',
 		'splash-duration-label':
 			'Duração do Splash (segundos, 0 para sempre ligado)',
