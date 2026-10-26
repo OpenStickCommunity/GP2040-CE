@@ -17,6 +17,14 @@ message BootModeOptions {
     repeated InputModeMapping inputModeMappings = 4 [(nanopb).max_count = 8];
 }
 
+message AdvancedSOCDSlot
+{
+    optional string name = 1 [(nanopb).max_length = 6];
+    optional SOCDAxisMode upDownMode = 2;
+    optional SOCDAxisMode leftRightMode = 3;
+    optional bool enabled = 4;
+}
+
 message GamepadOptions
 {
     optional InputMode inputMode = 1;
@@ -79,6 +87,8 @@ message GamepadOptions
     optional uint32 switch2ProJoyCon2RightAccentColor = 58;
     optional uint32 switch2ProJoyCon2RightStickColor = 59;
     optional GenericDpadMode genericDpadMode = 60;
+    repeated AdvancedSOCDSlot advancedSOCDSlots = 61 [(nanopb).max_count = 4];
+    optional bool advancedSOCDEnabled = 62;
 }
 
 message KeyboardMapping
@@ -247,6 +257,8 @@ message GpioMappings
     optional KeyboardMapping keyboardMapping = 4;
     optional bool pinInversionEnabled = 5;
     repeated uint32 invertedPins = 6 [(nanopb).max_count = 48];
+    optional bool socdModeOverride = 7;
+    optional SOCDMode socdMode = 8;
 }
 
 
@@ -512,7 +524,7 @@ message SOCDSliderOptions
     optional int32 deprecatedPinOne = 2 [deprecated = true];
     optional int32 deprecatedPinTwo = 3 [deprecated = true];
 
-    optional SOCDMode modeDefault = 4;
+    optional SOCDMode deprecatedModeDefault = 4 [deprecated = true];
     optional SOCDMode deprecatedModeOne = 5 [deprecated = true];
     optional SOCDMode deprecatedModeTwo = 6 [deprecated = true];
 }
@@ -992,7 +1004,7 @@ message AddonOptions
     optional PlayerNumberOptions playerNumberOptions = 11 [deprecated = true];
     optional PS4Options ps4Options = 12 [(nanopb).disallow_export = true];
     optional WiiOptions wiiOptions = 13;
-    optional SOCDSliderOptions socdSliderOptions = 14;
+    optional SOCDSliderOptions deprecatedSocdSliderOptions = 14;
     optional SNESOptions snesOptions = 15;
     optional FocusModeOptions focusModeOptions = 16;
     optional KeyboardHostOptions keyboardHostOptions = 17;

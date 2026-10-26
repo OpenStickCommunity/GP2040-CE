@@ -110,7 +110,7 @@ void DualDirectionalInput::preprocess()
             | ((values & mapDpadLeft->pinMask)  ? mapDpadLeft->buttonMask : 0)
             | ((values & mapDpadRight->pinMask) ? mapDpadRight->buttonMask : 0);
 
-    const SOCDMode socdMode = getSOCDMode(gamepad->getOptions());
+    const SOCDMode socdMode = getSOCDMode(gamepad);
 
     // 4-way before SOCD, might have better history without losing any coherent functionality
     if (options.fourWayMode) {
@@ -126,7 +126,7 @@ void DualDirectionalInput::process()
     const DualDirectionalOptions& options = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     uint8_t dualOut = dualState;
-    const SOCDMode socdMode = getSOCDMode(gamepad->getOptions());
+    const SOCDMode socdMode = getSOCDMode(gamepad);
     uint8_t gamepadDpad = gpadToBinary(gamepad->getActiveDpadMode(), gamepad->state);
 
     // in mixed mode, we need to combine/re-clean the gamepad and DDI outputs to create a coherent behavior
@@ -338,6 +338,9 @@ uint8_t DualDirectionalInput::gpadToBinary(DpadMode dpadMode, GamepadState state
     return out;
 }
 
-const SOCDMode DualDirectionalInput::getSOCDMode(const GamepadOptions& options) {
-    return Gamepad::resolveSOCDMode(options);
+const SOCDMode DualDirectionalInput::getSOCDMode(Gamepad * gamepad) {
+    const SOCDMode mode = gamepad->getActiveSOCDMode();
+
+    // The single-mode cleaning below would leave left + right untouched for an unknown mode
+    return Gamepad::isAdvancedSOCDMode(mode) ? SOCD_MODE_NEUTRAL : mode;
 }

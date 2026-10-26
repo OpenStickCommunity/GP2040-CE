@@ -281,13 +281,22 @@ void ButtonLayoutScreen::generateHeader() {
     }
 
     if (showSocdMode) {
-        switch (Gamepad::resolveSOCDMode(options))
+        switch (gamepad->getActiveSOCDMode())
         {
             case SOCD_MODE_NEUTRAL:               statusBar += " SOCD-N"; break;
             case SOCD_MODE_UP_PRIORITY:           statusBar += " SOCD-U"; break;
             case SOCD_MODE_SECOND_INPUT_PRIORITY: statusBar += " SOCD-L"; break;
             case SOCD_MODE_FIRST_INPUT_PRIORITY:  statusBar += " SOCD-F"; break;
             case SOCD_MODE_BYPASS:                statusBar += " SOCD-X"; break;
+            case SOCD_MODE_ADVANCED_1:
+            case SOCD_MODE_ADVANCED_2:
+            case SOCD_MODE_ADVANCED_3:
+            case SOCD_MODE_ADVANCED_4: {
+                const uint8_t slotIndex = gamepad->getActiveSOCDMode() - SOCD_MODE_ADVANCED_1;
+                const char* slotName = options.advancedSOCDSlots[slotIndex].name;
+                statusBar += slotName[0] != '\0' ? " " + std::string(slotName) : " SOCD-" + std::to_string(slotIndex + 1);
+                break;
+            }
         }
     }
 

@@ -33,7 +33,7 @@ private:
     uint8_t SOCDCombine(SOCDMode, uint8_t);
     uint8_t SOCDGamepadClean(uint8_t, bool isLastWin);
     void OverrideGamepad(Gamepad *, DpadMode, uint8_t);
-    const SOCDMode getSOCDMode(const GamepadOptions&);
+    const SOCDMode getSOCDMode(Gamepad *);
     uint8_t dualState;          // Dual Directional State
     DpadDirection lastGPUD; // Gamepad Last Up-Down
     DpadDirection lastGPLR; // Gamepad Last Left-Right

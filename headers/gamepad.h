@@ -140,7 +140,7 @@ public:
 	const DpadMode getActiveDpadMode() { return activeDpadMode; }
 
 	void setInputMode(InputMode inputMode) { options.inputMode = inputMode; }
-	void setSOCDMode(SOCDMode socdMode) { options.socdMode = socdMode; }
+	void setSOCDMode(SOCDMode socdMode);
 	void setDpadMode(DpadMode dpadMode) { options.dpadMode = dpadMode; }
 
 	GamepadState state;
@@ -203,23 +203,46 @@ public:
 
 	uint32_t lastReinitProfileNumber = 0;
 
-	// These are special to SOCD
-	inline static const SOCDMode resolveSOCDMode(const GamepadOptions& options) {
-		return (options.socdMode == SOCD_MODE_BYPASS &&
-				(options.inputMode == INPUT_MODE_PS3 ||
-				options.inputMode == INPUT_MODE_SWITCH ||
-				options.inputMode == INPUT_MODE_SWITCH_PRO ||
-				options.inputMode == INPUT_MODE_SWITCH2_PRO ||
-				options.inputMode == INPUT_MODE_NEOGEO ||
-				options.inputMode == INPUT_MODE_PS4)) ?
-			SOCD_MODE_NEUTRAL : options.socdMode;
+	// Consoles that reject simultaneous opposing inputs
+	inline static const bool socdRequiresCleaning(const GamepadOptions& options) {
+		return options.inputMode == INPUT_MODE_PS3 ||
+			options.inputMode == INPUT_MODE_SWITCH ||
+			options.inputMode == INPUT_MODE_SWITCH_PRO ||
+			options.inputMode == INPUT_MODE_SWITCH2_PRO ||
+			options.inputMode == INPUT_MODE_NEOGEO ||
+			options.inputMode == INPUT_MODE_PS4;
 	};
+
+	inline static const bool isAdvancedSOCDMode(SOCDMode mode) {
+		return mode >= SOCD_MODE_ADVANCED_1 && mode <= SOCD_MODE_ADVANCED_4;
+	};
+
+	// These are special to SOCD
+	inline static const SOCDMode resolveSOCDMode(const GamepadOptions& options, SOCDMode mode) {
+		if (mode == SOCD_MODE_BYPASS && socdRequiresCleaning(options))
+			return SOCD_MODE_NEUTRAL;
+
+		if (isAdvancedSOCDMode(mode)) {
+			const uint8_t slotIndex = mode - SOCD_MODE_ADVANCED_1;
+			if (!options.advancedSOCDEnabled || slotIndex >= options.advancedSOCDSlots_count ||
+					!options.advancedSOCDSlots[slotIndex].enabled)
+				return SOCD_MODE_NEUTRAL;
+		}
+
+		return mode;
+	};
+
+	const SOCDMode getActiveSOCDMode() { return activeSOCDMode; }
+	SOCDMode getStoredSOCDMode() const;
 
 private:
 	void processHotkeyAction(GamepadHotkey action);
+	uint8_t runConfiguredSOCDCleaner(uint8_t dpad);
 
 	GamepadOptions & options;
 	DpadMode activeDpadMode;
+	SOCDMode activeSOCDMode;
+	Mask_t socdModePinMasks[SOCD_MODE_ADVANCED_4 + 1];
 	bool map48WayModeToggle;
 	const HotkeyOptions & hotkeyOptions;
 

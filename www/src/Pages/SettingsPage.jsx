@@ -19,6 +19,12 @@ import JoyConController from '../Icons/JoyConController';
 import JoyConPairController from '../Icons/JoyConPairController';
 import Section from '../Components/Section';
 import WebApi, { baseButtonMappings } from '../Services/WebApi';
+import AdvancedSOCD, {
+	ADVANCED_SOCD_SLOTS,
+	advancedSOCDScheme,
+	getAdvancedSOCDLabel,
+	getEnabledAdvancedSOCDSlots,
+} from '../Components/AdvancedSOCD';
 import { BUTTON_MASKS_OPTIONS, getButtonLabels } from '../Data/Buttons';
 
 import { hexToInt, rgbIntToHex } from '../Services/Utilities';
@@ -210,6 +216,10 @@ const DPAD_MODES = [
 	{ labelKey: 'd-pad-mode-options.left-analog', value: 1 },
 	{ labelKey: 'd-pad-mode-options.right-analog', value: 2 },
 ];
+
+const HOTKEY_SOCD_ADVANCED_1 = 88;
+const getAdvancedSOCDHotkeySlot = (action) =>
+	ADVANCED_SOCD_SLOTS[Number(action) - HOTKEY_SOCD_ADVANCED_1];
 
 const SOCD_MODES = [
 	{ labelKey: 'socd-cleaning-mode-options.up-priority', value: 0 },
@@ -564,6 +574,10 @@ const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.rs-down', value: 83 },
 	{ labelKey: 'hotkey-actions.rs-left', value: 84 },
 	{ labelKey: 'hotkey-actions.rs-right', value: 85 },
+	{ labelKey: 'hotkey-actions.socd-advanced-1', value: 88 },
+	{ labelKey: 'hotkey-actions.socd-advanced-2', value: 89 },
+	{ labelKey: 'hotkey-actions.socd-advanced-3', value: 90 },
+	{ labelKey: 'hotkey-actions.socd-advanced-4', value: 91 },
 ];
 
 const FORCED_SETUP_MODES = [
@@ -651,8 +665,12 @@ const schema = yup.object().shape({
 	socdMode: yup
 		.number()
 		.required()
-		.oneOf(SOCD_MODES.map((o) => o.value))
+		.oneOf([
+			...SOCD_MODES.map((o) => o.value),
+			...ADVANCED_SOCD_SLOTS.map((o) => o.value),
+		])
 		.label('SOCD Cleaning Mode'),
+	...advancedSOCDScheme,
 	switchTpShareForDs4: yup
 		.number()
 		.required()
@@ -827,6 +845,13 @@ const FormContext = ({ setButtonLabels, setKeyMappings }) => {
 		if (!!values.dpadMode) values.dpadMode = parseInt(values.dpadMode);
 		if (!!values.inputMode) values.inputMode = parseInt(values.inputMode);
 		if (!!values.socdMode) values.socdMode = parseInt(values.socdMode);
+		if (values.advancedSOCDEnabled !== undefined)
+			values.advancedSOCDEnabled = parseInt(values.advancedSOCDEnabled);
+		ADVANCED_SOCD_SLOTS.forEach(({ enabledKey, upDownKey, leftRightKey }) => {
+			[enabledKey, upDownKey, leftRightKey].forEach((key) => {
+				if (values[key] !== undefined) values[key] = parseInt(values[key]);
+			});
+		});
 		if (!!values.switchTpShareForDs4)
 			values.switchTpShareForDs4 = parseInt(values.switchTpShareForDs4);
 		if (!!values.forcedSetupMode)
@@ -2670,13 +2695,52 @@ export default function SettingsPage() {
 																		{o.label}
 																	</option>
 																))}
+																{ADVANCED_SOCD_SLOTS.filter(
+																	(slot) =>
+																		getEnabledAdvancedSOCDSlots(
+																			values,
+																		).includes(slot) ||
+																		Number(values.socdMode) === slot.value,
+																).map((slot) => (
+																	<option
+																		key={`button-socdMode-advanced-${slot.index}`}
+																		value={slot.value}
+																	>
+																		{getAdvancedSOCDLabel(values, slot)}
+																	</option>
+																))}
 															</Form.Select>
 															<Form.Control.Feedback type="invalid">
 																{errors.socdMode}
 															</Form.Control.Feedback>
 														</Col>
+														<Col sm={3}>
+															<Form.Check
+																label={t(
+																	'SettingsPage:advanced-socd-enabled-label',
+																)}
+																type="switch"
+																id="advancedSOCDEnabled"
+																isInvalid={false}
+																checked={Boolean(values.advancedSOCDEnabled)}
+																onChange={(e) => {
+																	setFieldValue(
+																		'advancedSOCDEnabled',
+																		e.target.checked ? 1 : 0,
+																	);
+																}}
+															/>
+														</Col>
 													</Form.Group>
 													<p>{t('SettingsPage:socd-cleaning-mode-note')}</p>
+													{Boolean(values.advancedSOCDEnabled) && (
+														<AdvancedSOCD
+															values={values}
+															errors={errors}
+															handleChange={handleChange}
+															setFieldValue={setFieldValue}
+														/>
+													)}
 													<Form.Group className="row mb-3">
 														<Form.Label>
 															{t('SettingsPage:forced-setup-mode-label')}
@@ -3007,14 +3071,39 @@ export default function SettingsPage() {
 																			onChange={handleChange}
 																			isInvalid={errors[o] && errors[o]?.action}
 																		>
-																			{translatedHotkeyActions.map((o, i) => (
-																				<option
-																					key={`hotkey-action-${i}`}
-																					value={o.value}
-																				>
-																					{o.label}
-																				</option>
-																			))}
+																			{translatedHotkeyActions
+																				.filter(
+																					(action) =>
+																						!getAdvancedSOCDHotkeySlot(
+																							action.value,
+																						) ||
+																						Number(values[o]?.action) ===
+																							action.value ||
+																						getEnabledAdvancedSOCDSlots(
+																							values,
+																						).includes(
+																							getAdvancedSOCDHotkeySlot(
+																								action.value,
+																							),
+																						),
+																				)
+																				.map((action, i) => (
+																					<option
+																						key={`hotkey-action-${i}`}
+																						value={action.value}
+																					>
+																						{getAdvancedSOCDHotkeySlot(
+																							action.value,
+																						)
+																							? getAdvancedSOCDLabel(
+																									values,
+																									getAdvancedSOCDHotkeySlot(
+																										action.value,
+																									),
+																								)
+																							: action.label}
+																					</option>
+																				))}
 																		</Form.Select>
 																		<Form.Control.Feedback type="invalid">
 																			{errors[o] && errors[o]?.action}

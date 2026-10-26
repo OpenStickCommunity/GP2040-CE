@@ -309,6 +309,8 @@ const createPinMappings = ({ profileLabel = 'Profile', enabled = true }) => {
 		enabled,
 		pinInversionEnabled: false,
 		invertedPins: [],
+		socdModeOverride: false,
+		socdMode: 1,
 	};
 
 	for (const [key, value] of Object.entries(picoController.usedPins)) {
@@ -469,6 +471,23 @@ app.get('/api/getAnimationProtoOptions', (req, res) => {
 
 app.get('/api/getGamepadOptions', (req, res) => {
 	return res.send({
+		advancedSOCDEnabled: 1,
+		advancedSOCD1Enabled: 1,
+		advancedSOCD1UpDown: 0,
+		advancedSOCD1LeftRight: 0,
+		advancedSOCD1Name: '',
+		advancedSOCD2Enabled: 1,
+		advancedSOCD2UpDown: 0,
+		advancedSOCD2LeftRight: 0,
+		advancedSOCD2Name: '',
+		advancedSOCD3Enabled: 1,
+		advancedSOCD3UpDown: 0,
+		advancedSOCD3LeftRight: 0,
+		advancedSOCD3Name: '',
+		advancedSOCD4Enabled: 1,
+		advancedSOCD4UpDown: 0,
+		advancedSOCD4LeftRight: 0,
+		advancedSOCD4Name: '',
 		dpadMode: 0,
 		inputMode: 4,
 		inputDeviceType: 0,
@@ -846,7 +865,6 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		shmupBtnMask4: 0,
 		pinShmupDial: -1,
 		turboLedType: 1,
-		sliderSOCDModeDefault: 1,
 		snesPadClockPin: -1,
 		snesPadLatchPin: -1,
 		snesPadDataPin: -1,
@@ -868,7 +886,6 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		KeyboardHostAddonEnabled: 1,
 		PlayerNumAddonEnabled: 1,
 		ReverseInputEnabled: 1,
-		SliderSOCDInputEnabled: 1,
 		TurboInputEnabled: 1,
 		WiiExtensionAddonEnabled: 1,
 		SNESpadAddonEnabled: 1,

@@ -960,14 +960,14 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         SET_PROPERTY(reverseOptions, actionLeft, legacyAddonOptions.reverseActionLeft);
         SET_PROPERTY(reverseOptions, actionRight, legacyAddonOptions.reverseActionRight);
 
-        SOCDSliderOptions& socdSliderOptions = config.addonOptions.socdSliderOptions;
-        config.addonOptions.has_socdSliderOptions = true;
+        SOCDSliderOptions& socdSliderOptions = config.addonOptions.deprecatedSocdSliderOptions;
+        config.addonOptions.has_deprecatedSocdSliderOptions = true;
         SET_PROPERTY(socdSliderOptions, enabled, legacyAddonOptions.SliderSOCDInputEnabled);
         SET_PROPERTY(socdSliderOptions, deprecatedPinOne, bytePinToIntPin(legacyAddonOptions.pinSliderSOCDOne));
         SET_PROPERTY(socdSliderOptions, deprecatedPinTwo, bytePinToIntPin(legacyAddonOptions.pinSliderSOCDTwo));
         if (isValidSOCDMode(legacyAddonOptions.sliderSOCDModeDefault))
         {
-            SET_PROPERTY(socdSliderOptions, modeDefault, static_cast<SOCDMode>(legacyAddonOptions.sliderSOCDModeDefault));
+            SET_PROPERTY(socdSliderOptions, deprecatedModeDefault, static_cast<SOCDMode>(legacyAddonOptions.sliderSOCDModeDefault));
         }
         if (isValidSOCDMode(legacyAddonOptions.sliderSOCDModeOne))
         {

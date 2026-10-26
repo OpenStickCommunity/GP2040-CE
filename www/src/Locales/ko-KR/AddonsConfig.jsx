@@ -91,11 +91,6 @@ export default {
 	'player-number-sub-header-text':
 		'플레이어 번호가 활성화된 여러개의 GP2040-CE 장치를 연결하는 경우에만 이 옵션을 활성화하십시오.',
 	'player-number-label': '플레이어 번호',
-	'socd-cleaning-mode-selection-slider-header-text': 'SOCD 모드 선택 슬라이더',
-	'socd-cleaning-mode-selection-slider-sub-header-text':
-		'참고：PS4, PS3 및 닌텐도 스위치 모드에서는 SOCD 클리닝 끄기를 지원하지 않으며 중립이 기본 값으로 설정됩니다.',
-	'socd-cleaning-mode-selection-slider-mode-default-label':
-		'SOCD 슬라이더 모드 기본값',
 	'ps4-mode-sub-header': '주의!',
 	'ps4-mode-sub-header-text':
 		'어떠한 경우에도 GP2040-CE에서는 다음의 파일을 제공하지 않습니다!!!',
@@ -139,11 +134,6 @@ export default {
 	'dual-directional-input-combine-mode-1': '게임패드 우선',
 	'dual-directional-input-combine-mode-2': 'DDI 우선',
 	'dual-directional-input-combine-mode-3': '없음',
-	'socd-slider-mode-0': '상단 우선',
-	'socd-slider-mode-1': '중립',
-	'socd-slider-mode-2': '후 입력 우선',
-	'socd-slider-mode-3': '선 입력 우선',
-	'socd-slider-mode-4': 'SOCD 끄기',
 	'profile-slider-header-text': '프로필 선택 슬라이더',
 	'profile-slider-sub-header-text':
 		'참고: 프로필 슬라이더 위치에 대한 GPIO 핀은 핀 매핑 페이지에서 구성됩니다.',
