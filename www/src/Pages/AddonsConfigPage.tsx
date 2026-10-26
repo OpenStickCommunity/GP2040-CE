@@ -42,7 +42,6 @@ import OnBoardLed, {
 	onBoardLedState,
 } from '../Addons/OnBoardLed';
 import Reverse, { reverseScheme, reverseState } from '../Addons/Reverse';
-import SOCD, { socdScheme, socdState } from '../Addons/SOCD';
 import ProfileSlider, {
 	profileSliderScheme,
 	profileSliderState,
@@ -96,7 +95,6 @@ const schema = yup.object().shape({
 	...dualDirectionScheme,
 	...tiltScheme,
 	...buzzerScheme,
-	...socdScheme,
 	...profileSliderScheme,
 	...wiiScheme,
 	...focusModeScheme,
@@ -121,7 +119,6 @@ export const DEFAULT_VALUES = {
 	...dualDirectionState,
 	...tiltState,
 	...buzzerState,
-	...socdState,
 	...profileSliderState,
 	...wiiState,
 	...snesState,
@@ -148,7 +145,6 @@ const ADDONS = [
 	DualDirection,
 	Tilt,
 	Buzzer,
-	SOCD,
 	ProfileSlider,
 	Wii,
 	SNES,

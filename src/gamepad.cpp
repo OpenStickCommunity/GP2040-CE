@@ -36,6 +36,9 @@ void Gamepad::setup()
 	// Configure pin mapping
 	GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
 
+	memset(socdModePinMasks, 0, sizeof(socdModePinMasks));
+	activeSOCDMode = resolveSOCDMode(options, getStoredSOCDMode());
+
 	mapDpadUp       = new GamepadButtonMapping(GAMEPAD_MASK_UP);
 	mapDpadDown     = new GamepadButtonMapping(GAMEPAD_MASK_DOWN);
 	mapDpadLeft     = new GamepadButtonMapping(GAMEPAD_MASK_LEFT);
@@ -151,6 +154,15 @@ void Gamepad::setup()
 			case GpioAction::SUSTAIN_DP_MODE_DP:	mapButtonDP->pinMask |= Mask_t{1} << pin; break;
 			case GpioAction::SUSTAIN_DP_MODE_LS:	mapButtonLS->pinMask |= Mask_t{1} << pin; break;
 			case GpioAction::SUSTAIN_DP_MODE_RS:	mapButtonRS->pinMask |= Mask_t{1} << pin; break;
+			case GpioAction::SUSTAIN_SOCD_MODE_UP_PRIO:	socdModePinMasks[SOCD_MODE_UP_PRIORITY] |= Mask_t{1} << pin; break;
+			case GpioAction::SUSTAIN_SOCD_MODE_NEUTRAL:	socdModePinMasks[SOCD_MODE_NEUTRAL] |= Mask_t{1} << pin; break;
+			case GpioAction::SUSTAIN_SOCD_MODE_SECOND_WIN:	socdModePinMasks[SOCD_MODE_SECOND_INPUT_PRIORITY] |= Mask_t{1} << pin; break;
+			case GpioAction::SUSTAIN_SOCD_MODE_FIRST_WIN:	socdModePinMasks[SOCD_MODE_FIRST_INPUT_PRIORITY] |= Mask_t{1} << pin; break;
+			case GpioAction::SUSTAIN_SOCD_MODE_BYPASS:	socdModePinMasks[SOCD_MODE_BYPASS] |= Mask_t{1} << pin; break;
+			case GpioAction::SUSTAIN_SOCD_MODE_ADVANCED_1:	socdModePinMasks[SOCD_MODE_ADVANCED_1] |= Mask_t{1} << pin; break;
+			case GpioAction::SUSTAIN_SOCD_MODE_ADVANCED_2:	socdModePinMasks[SOCD_MODE_ADVANCED_2] |= Mask_t{1} << pin; break;
+			case GpioAction::SUSTAIN_SOCD_MODE_ADVANCED_3:	socdModePinMasks[SOCD_MODE_ADVANCED_3] |= Mask_t{1} << pin; break;
+			case GpioAction::SUSTAIN_SOCD_MODE_ADVANCED_4:	socdModePinMasks[SOCD_MODE_ADVANCED_4] |= Mask_t{1} << pin; break;
 			case GpioAction::CUSTOM_BUTTON_COMBO:	assignCustomMappingToMaps(pinMappings[pin], pin); break;
 			case GpioAction::DIGITAL_DIRECTION_UP:	mapDigitalUp->pinMask |= Mask_t{1} << pin; break;
 			case GpioAction::DIGITAL_DIRECTION_DOWN:	mapDigitalDown->pinMask |= Mask_t{1} << pin; break;
@@ -295,7 +307,7 @@ void Gamepad::process()
 	}
 
 	// clean up after yourself. nobody likes bad inputs.
-	state.dpad = runSOCDCleaner(resolveSOCDMode(options), state.dpad);
+	state.dpad = runConfiguredSOCDCleaner(state.dpad);
 
 	// since analog modes only care about the dpad mode inputs, set the dpad state to digital only dpad values
 	switch (activeDpadMode)
@@ -381,6 +393,15 @@ void Gamepad::read()
 	else if (values & mapButtonRS->pinMask)	activeDpadMode = DpadMode::DPAD_MODE_RIGHT_ANALOG;
 	else					activeDpadMode = options.dpadMode;
 
+	SOCDMode socdMode = getStoredSOCDMode();
+	for (uint8_t mode = 0; mode <= SOCD_MODE_ADVANCED_4; mode++) {
+		if (values & socdModePinMasks[mode]) {
+			socdMode = (SOCDMode)mode;
+			break;
+		}
+	}
+	activeSOCDMode = resolveSOCDMode(options, socdMode);
+
 	map48WayModeToggle = (values & map48WayMode->pinMask);
 
 	if (values & mapAnalogLSXNeg->pinMask) {
@@ -455,6 +476,39 @@ void Gamepad::clearRumbleState() {
 	auxState.haptics.leftTrigger.intensity = 0;
 	auxState.haptics.rightTrigger.active = false;
 	auxState.haptics.rightTrigger.intensity = 0;
+}
+
+SOCDMode Gamepad::getStoredSOCDMode() const {
+	const GpioMappings& profile = Storage::getInstance().getActiveProfileMappings();
+	return profile.socdModeOverride ? profile.socdMode : options.socdMode;
+}
+
+void Gamepad::setSOCDMode(SOCDMode socdMode) {
+	GpioMappings& profile = Storage::getInstance().getActiveProfileMappings();
+	if (profile.socdModeOverride) {
+		profile.socdMode = socdMode;
+	} else {
+		options.socdMode = socdMode;
+	}
+}
+
+uint8_t Gamepad::runConfiguredSOCDCleaner(uint8_t dpad) {
+	const SOCDMode mode = activeSOCDMode;
+	if (!isAdvancedSOCDMode(mode)) {
+		return runSOCDCleaner(mode, dpad);
+	}
+
+	const uint8_t slotIndex = mode - SOCD_MODE_ADVANCED_1;
+	SOCDAxisMode upDownMode = options.advancedSOCDSlots[slotIndex].upDownMode;
+	SOCDAxisMode leftRightMode = options.advancedSOCDSlots[slotIndex].leftRightMode;
+
+	// Same protection the bypass preset gets
+	if (socdRequiresCleaning(options)) {
+		if (upDownMode == SOCD_AXIS_MODE_OFF) upDownMode = SOCD_AXIS_MODE_NEUTRAL;
+		if (leftRightMode == SOCD_AXIS_MODE_OFF) leftRightMode = SOCD_AXIS_MODE_NEUTRAL;
+	}
+
+	return runSOCDCleanerPerAxis(upDownMode, leftRightMode, dpad);
 }
 
 /**
@@ -546,31 +600,55 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 			break;
 		case HOTKEY_SOCD_UP_PRIORITY:
 			if (action != lastAction) {
-				options.socdMode = SOCD_MODE_UP_PRIORITY;
+				setSOCDMode(SOCD_MODE_UP_PRIORITY);
 				reqSave = true;
 			}
 			break;
 		case HOTKEY_SOCD_NEUTRAL:
 			if (action != lastAction) {
-				options.socdMode = SOCD_MODE_NEUTRAL;
+				setSOCDMode(SOCD_MODE_NEUTRAL);
 				reqSave = true;
 			}
 			break;
 		case HOTKEY_SOCD_LAST_INPUT:
 			if (action != lastAction) {
-				options.socdMode = SOCD_MODE_SECOND_INPUT_PRIORITY;
+				setSOCDMode(SOCD_MODE_SECOND_INPUT_PRIORITY);
 				reqSave = true;
 			}
 			break;
 		case HOTKEY_SOCD_FIRST_INPUT:
 			if (action != lastAction) {
-				options.socdMode = SOCD_MODE_FIRST_INPUT_PRIORITY;
+				setSOCDMode(SOCD_MODE_FIRST_INPUT_PRIORITY);
 				reqSave = true;
 			}
 			break;
 		case HOTKEY_SOCD_BYPASS:
 			if (action != lastAction) {
-				options.socdMode = SOCD_MODE_BYPASS;
+				setSOCDMode(SOCD_MODE_BYPASS);
+				reqSave = true;
+			}
+			break;
+		case HOTKEY_SOCD_ADVANCED_1:
+			if (action != lastAction) {
+				setSOCDMode(SOCD_MODE_ADVANCED_1);
+				reqSave = true;
+			}
+			break;
+		case HOTKEY_SOCD_ADVANCED_2:
+			if (action != lastAction) {
+				setSOCDMode(SOCD_MODE_ADVANCED_2);
+				reqSave = true;
+			}
+			break;
+		case HOTKEY_SOCD_ADVANCED_3:
+			if (action != lastAction) {
+				setSOCDMode(SOCD_MODE_ADVANCED_3);
+				reqSave = true;
+			}
+			break;
+		case HOTKEY_SOCD_ADVANCED_4:
+			if (action != lastAction) {
+				setSOCDMode(SOCD_MODE_ADVANCED_4);
 				reqSave = true;
 			}
 			break;

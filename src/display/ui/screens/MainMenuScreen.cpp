@@ -53,6 +53,20 @@ void MainMenuScreen::init() {
         profilesMenu.push_back(menuEntry);
     }
 
+    socdModeMenu.clear();
+    const GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
+    for (MenuEntry menuEntry : std::vector<MenuEntry>{ SOCDMode_VALUELIST(SOCD_MODE_ENTRIES) }) {
+        if (Gamepad::isAdvancedSOCDMode((SOCDMode)menuEntry.optionValue)) {
+            const uint8_t slotIndex = menuEntry.optionValue - SOCD_MODE_ADVANCED_1;
+            if (!gamepadOptions.advancedSOCDEnabled || slotIndex >= gamepadOptions.advancedSOCDSlots_count ||
+                    !gamepadOptions.advancedSOCDSlots[slotIndex].enabled)
+                continue;
+            if (gamepadOptions.advancedSOCDSlots[slotIndex].name[0] != '\0')
+                menuEntry.label = gamepadOptions.advancedSOCDSlots[slotIndex].name;
+        }
+        socdModeMenu.push_back(menuEntry);
+    }
+
     GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
         switch (pinMappings[pin].action) {
@@ -75,8 +89,8 @@ void MainMenuScreen::init() {
     prevDpadMode = Storage::getInstance().GetGamepad()->getOptions().dpadMode;
     updateDpadMode = Storage::getInstance().GetGamepad()->getOptions().dpadMode;
     
-    prevSocdMode = Storage::getInstance().GetGamepad()->getOptions().socdMode;
-    updateSocdMode = Storage::getInstance().GetGamepad()->getOptions().socdMode;
+    prevSocdMode = Storage::getInstance().GetGamepad()->getStoredSOCDMode();
+    updateSocdMode = Storage::getInstance().GetGamepad()->getStoredSOCDMode();
     
     prevProfile = Storage::getInstance().GetGamepad()->getOptions().profileNumber;
     updateProfile = Storage::getInstance().GetGamepad()->getOptions().profileNumber;
@@ -358,7 +372,7 @@ int32_t MainMenuScreen::currentDpadMode() {
 void MainMenuScreen::selectSOCDMode() {
     if (currentMenu->at(gpMenu->getIndex()).optionValue != -1) {
         SOCDMode valueToSave = (SOCDMode)currentMenu->at(gpMenu->getIndex()).optionValue;
-        prevSocdMode = Storage::getInstance().GetGamepad()->getOptions().socdMode;
+        prevSocdMode = Storage::getInstance().GetGamepad()->getStoredSOCDMode();
         updateSocdMode = valueToSave;
 
         chooseAndReturn();
@@ -401,7 +415,7 @@ void MainMenuScreen::saveOptions() {
             saveHasChanged = true;
         }
         if (prevSocdMode != updateSocdMode) {
-            options.socdMode = updateSocdMode;
+            Storage::getInstance().GetGamepad()->setSOCDMode(updateSocdMode);
             saveHasChanged = true;
         }
         if (prevProfile != updateProfile) {

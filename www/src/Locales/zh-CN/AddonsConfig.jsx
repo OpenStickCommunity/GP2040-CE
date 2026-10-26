@@ -98,10 +98,6 @@ export default {
 	'player-number-sub-header-text':
 		'仅在连接多个启用了玩家编号功能的 GP2040-CE 设备时才开启此选项',
 	'player-number-label': '玩家编号',
-	'socd-cleaning-mode-selection-slider-header-text': 'SOCD 清理模式选择滑块',
-	'socd-cleaning-mode-selection-slider-sub-header-text':
-		'注意：PS4、PS3 和 Nintendo Switch 模式不支持将 SOCD 清理设为“关闭”，将默认使用“中性”清理模式。',
-	'socd-cleaning-mode-selection-slider-mode-default-label': 'SOCD 滑块默认模式',
 	'ps4-mode-sub-header': '免责声明！',
 	'ps4-mode-sub-header-text': 'GP2040-CE 永远不会提供这些认证文件！！！',
 	'ps4-mode-private-key-label': '私钥 (Private Key, PEM 格式)',
@@ -143,11 +139,6 @@ export default {
 	'dual-directional-input-combine-mode-1': '手柄优先',
 	'dual-directional-input-combine-mode-2': '十字键优先',
 	'dual-directional-input-combine-mode-3': '无',
-	'socd-slider-mode-0': '上优先 (Up Priority)',
-	'socd-slider-mode-1': '中性 (Neutral)',
-	'socd-slider-mode-2': '后输入优先 (Last Win)',
-	'socd-slider-mode-3': '先输入优先 (First Win)',
-	'socd-slider-mode-4': '关闭 SOCD 清理',
 	'profile-slider-header-text': '个人资料选择滑块',
 	'profile-slider-sub-header-text':
 		'注意：个人资料滑块位置的 GPIO 引脚在引脚映射页面上配置。',

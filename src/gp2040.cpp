@@ -24,7 +24,6 @@
 #include "addons/i2canalog1219.h"
 #include "addons/reverse.h"
 #include "addons/turbo.h"
-#include "addons/slider_socd.h"
 #include "addons/spi_analog_ads1256.h"
 #include "addons/wiiext.h"
 #include "addons/input_macro.h"
@@ -117,7 +116,6 @@ void GP2040::setup() {
 	addons.LoadAddon(new SPIAnalog1256Input());
 	addons.LoadAddon(new WiiExtensionInput());
 	addons.LoadAddon(new SNESpadInput());
-	addons.LoadAddon(new SliderSOCDInput());
 	addons.LoadAddon(new SliderProfileInput());
 	addons.LoadAddon(new TiltInput());
 	addons.LoadAddon(new RotaryEncoderInput());

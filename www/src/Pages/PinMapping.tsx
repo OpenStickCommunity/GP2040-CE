@@ -41,6 +41,11 @@ import './PinMapping.scss';
 import { MultiValue, SingleValue } from 'react-select';
 import InfoCircle from '../Icons/InfoCircle';
 import WebApi from '../Services/WebApi';
+import {
+	ADVANCED_SOCD_SLOTS,
+	getAdvancedSOCDLabel,
+	getEnabledAdvancedSOCDSlots,
+} from '../Components/AdvancedSOCD';
 import useLedsPreview from '../Hooks/useLedsPreview';
 
 type OptionType = {
@@ -165,10 +170,81 @@ const ProfileLabel = memo(function ProfileLabel({
 	);
 });
 
-const PinSelectList = memo(function PinSelectList({
+const SOCD_MODES = [
+	{ labelKey: 'SettingsPage:socd-cleaning-mode-options.up-priority', value: 0 },
+	{ labelKey: 'SettingsPage:socd-cleaning-mode-options.neutral', value: 1 },
+	{ labelKey: 'SettingsPage:socd-cleaning-mode-options.last-win', value: 2 },
+	{ labelKey: 'SettingsPage:socd-cleaning-mode-options.first-win', value: 3 },
+	{ labelKey: 'SettingsPage:socd-cleaning-mode-options.off', value: 4 },
+];
+
+const ADVANCED_SOCD_PIN_ACTIONS = [
+	BUTTON_ACTIONS.SUSTAIN_SOCD_MODE_ADVANCED_1,
+	BUTTON_ACTIONS.SUSTAIN_SOCD_MODE_ADVANCED_2,
+	BUTTON_ACTIONS.SUSTAIN_SOCD_MODE_ADVANCED_3,
+	BUTTON_ACTIONS.SUSTAIN_SOCD_MODE_ADVANCED_4,
+] as PinActionValues[];
+
+const getAdvancedSOCDPinSlot = (action: PinActionValues) =>
+	ADVANCED_SOCD_SLOTS[ADVANCED_SOCD_PIN_ACTIONS.indexOf(action)];
+
+const ProfileSOCDMode = memo(function ProfileSOCDMode({
 	profileIndex,
+	gamepadOptions,
 }: {
 	profileIndex: number;
+	gamepadOptions: Record<string, any>;
+}) {
+	const { t } = useTranslation('');
+	const setProfileSOCDMode = useProfilesStore(
+		(state) => state.setProfileSOCDMode,
+	);
+	const socdModeOverride = useProfilesStore(
+		(state) => state.profiles[profileIndex].socdModeOverride,
+	);
+	const socdMode = useProfilesStore(
+		(state) => state.profiles[profileIndex].socdMode,
+	);
+	const advancedSlots = ADVANCED_SOCD_SLOTS.filter(
+		(slot) =>
+			getEnabledAdvancedSOCDSlots(gamepadOptions).includes(slot) ||
+			(socdModeOverride && socdMode === slot.value),
+	);
+
+	return (
+		<div className="mt-3">
+			<Form.Label>{t('PinMapping:profile-socd-mode-label')}</Form.Label>
+			<Form.Select
+				value={socdModeOverride ? socdMode : -1}
+				onChange={(e) =>
+					setProfileSOCDMode(profileIndex, Number(e.target.value))
+				}
+			>
+				<option value={-1}>{t('PinMapping:profile-socd-mode-global')}</option>
+				{SOCD_MODES.map(({ labelKey, value }) => (
+					<option key={value} value={value}>
+						{t(labelKey)}
+					</option>
+				))}
+				{advancedSlots.map((slot) => (
+					<option key={slot.value} value={slot.value}>
+						{getAdvancedSOCDLabel(gamepadOptions, slot)}
+					</option>
+				))}
+			</Form.Select>
+			<Form.Text muted>
+				{t('PinMapping:profile-socd-mode-description')}
+			</Form.Text>
+		</div>
+	);
+});
+
+const PinSelectList = memo(function PinSelectList({
+	profileIndex,
+	gamepadOptions,
+}: {
+	profileIndex: number;
+	gamepadOptions: Record<string, any>;
 }) {
 	const setProfilePin = useProfilesStore((state) => state.setProfilePin);
 	const { activateLedsOnId, turnOffLedTestModes } = useLedsPreview();
@@ -244,8 +320,21 @@ const PinSelectList = memo(function PinSelectList({
 		[],
 	);
 
+	const enabledAdvancedSlots = getEnabledAdvancedSOCDSlots(gamepadOptions);
+	const selectableOptions = groupedOptions.map((group) => ({
+		...group,
+		options: group.options.filter(
+			({ value }) =>
+				!getAdvancedSOCDPinSlot(value) ||
+				enabledAdvancedSlots.includes(getAdvancedSOCDPinSlot(value)),
+		),
+	}));
+
 	const getOptionLabel = useCallback(
 		(option: OptionType) => {
+			const advancedSlot = getAdvancedSOCDPinSlot(option.value);
+			if (advancedSlot)
+				return getAdvancedSOCDLabel(gamepadOptions, advancedSlot);
 			const labelKey = option.label?.split('BUTTON_PRESS_')?.pop();
 			// Need to fallback as some button actions are not part of button names
 			return (
@@ -253,7 +342,7 @@ const PinSelectList = memo(function PinSelectList({
 				t(`Proto:GpioAction.${option.label}`)
 			);
 		},
-		[buttonNames],
+		[buttonNames, gamepadOptions],
 	);
 
 	return (
@@ -283,7 +372,7 @@ const PinSelectList = memo(function PinSelectList({
 					<CustomSelect
 						isClearable
 						isMulti={!isDisabled(pinData.action)}
-						options={groupedOptions}
+						options={selectableOptions}
 						isDisabled={isDisabled(pinData.action)}
 						getOptionLabel={getOptionLabel}
 						onChange={onChange(pin)}
@@ -325,6 +414,7 @@ const PinSection = memo(function PinSection({
 		});
 
 	const [activeProfile, setActiveProfile] = useState(0);
+	const [gamepadOptions, setGamepadOptions] = useState({});
 
 	const { updateUsedPins, buttonLabels, setLoading } = useContext(AppContext);
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
@@ -347,8 +437,9 @@ const PinSection = memo(function PinSection({
 
 	useEffect(() => {
 		async function getActiveProfile() {
-			const { profileNumber } = await WebApi.getGamepadOptions(setLoading);
-			setActiveProfile(profileNumber - 1);
+			const options = await WebApi.getGamepadOptions(setLoading);
+			setActiveProfile(options.profileNumber - 1);
+			setGamepadOptions(options);
 		}
 		getActiveProfile();
 	}, []);
@@ -375,6 +466,10 @@ const PinSection = memo(function PinSection({
 					<Row>
 						<Col md={7}>
 							<ProfileLabel profileIndex={profileIndex} />
+							<ProfileSOCDMode
+								profileIndex={profileIndex}
+								gamepadOptions={gamepadOptions}
+							/>
 						</Col>
 						<Col className="order-first order-md-last">
 							{profileIndex > 0 && (
@@ -430,7 +525,10 @@ const PinSection = memo(function PinSection({
 					</Row>
 					<hr />
 
-					<PinSelectList profileIndex={profileIndex} />
+					<PinSelectList
+						profileIndex={profileIndex}
+						gamepadOptions={gamepadOptions}
+					/>
 					<div className="d-flex gap-3 my-3">
 						<CaptureButton
 							labels={Object.values(buttonNames)}

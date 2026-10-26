@@ -11,6 +11,7 @@
 #include "BoardConfig.h"
 #include "GamepadConfig.h"
 #include "version.h"
+#include "advanced_socd.h"
 #include "addons/analog.h"
 #include "addons/board_led.h"
 #include "addons/bootsel_button.h"
@@ -26,7 +27,6 @@
 #include "addons/pleds.h"
 #include "addons/reactiveleds.h"
 #include "addons/reverse.h"
-#include "addons/slider_socd.h"
 #include "addons/slider_profile.h"
 #include "addons/spi_analog_ads1256.h"
 #include "addons/turbo.h"
@@ -436,6 +436,23 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.gamepadOptions, inputMode, DEFAULT_INPUT_MODE);
     INIT_UNSET_PROPERTY(config.gamepadOptions, dpadMode, DEFAULT_DPAD_MODE);
     INIT_UNSET_PROPERTY(config.gamepadOptions, socdMode, DEFAULT_SOCD_MODE);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, advancedSOCDEnabled, !!ADVANCED_SOCD_ENABLED);
+    const bool socdSlotEnabled[ADVANCED_SOCD_SLOT_COUNT] = {
+        !!ADVANCED_SOCD_1_ENABLED, !!ADVANCED_SOCD_2_ENABLED, !!ADVANCED_SOCD_3_ENABLED, !!ADVANCED_SOCD_4_ENABLED };
+    const SOCDAxisMode socdSlotUpDown[ADVANCED_SOCD_SLOT_COUNT] = {
+        ADVANCED_SOCD_1_UP_DOWN, ADVANCED_SOCD_2_UP_DOWN, ADVANCED_SOCD_3_UP_DOWN, ADVANCED_SOCD_4_UP_DOWN };
+    const SOCDAxisMode socdSlotLeftRight[ADVANCED_SOCD_SLOT_COUNT] = {
+        ADVANCED_SOCD_1_LEFT_RIGHT, ADVANCED_SOCD_2_LEFT_RIGHT, ADVANCED_SOCD_3_LEFT_RIGHT, ADVANCED_SOCD_4_LEFT_RIGHT };
+    const char* socdSlotName[ADVANCED_SOCD_SLOT_COUNT] = {
+        ADVANCED_SOCD_1_NAME, ADVANCED_SOCD_2_NAME, ADVANCED_SOCD_3_NAME, ADVANCED_SOCD_4_NAME };
+    for (uint8_t socdSlotIndex = 0; socdSlotIndex < ADVANCED_SOCD_SLOT_COUNT; socdSlotIndex++) {
+        AdvancedSOCDSlot& socdSlot = config.gamepadOptions.advancedSOCDSlots[socdSlotIndex];
+        INIT_UNSET_PROPERTY(socdSlot, enabled, socdSlotEnabled[socdSlotIndex]);
+        INIT_UNSET_PROPERTY(socdSlot, upDownMode, socdSlotUpDown[socdSlotIndex]);
+        INIT_UNSET_PROPERTY(socdSlot, leftRightMode, socdSlotLeftRight[socdSlotIndex]);
+        INIT_UNSET_PROPERTY_STR(socdSlot, name, socdSlotName[socdSlotIndex]);
+    }
+    config.gamepadOptions.advancedSOCDSlots_count = ADVANCED_SOCD_SLOT_COUNT;
     INIT_UNSET_PROPERTY(config.gamepadOptions, invertXAxis, false);
     INIT_UNSET_PROPERTY(config.gamepadOptions, switchTpShareForDs4, false);
     INIT_UNSET_PROPERTY(config.gamepadOptions, lockHotkeys, DEFAULT_LOCK_HOTKEYS);
@@ -594,6 +611,8 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         }
     };
     initPinInversion(config.gpioMappings);
+    INIT_UNSET_PROPERTY(config.gpioMappings, socdModeOverride, false);
+    INIT_UNSET_PROPERTY(config.gpioMappings, socdMode, DEFAULT_SOCD_MODE);
 
     for (GpioMappings& profile : config.profileOptions.gpioMappingsSets) {
         if (!profile.has_keyboardMapping) {
@@ -601,6 +620,8 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
             profile.has_keyboardMapping = true;
         }
         initPinInversion(profile);
+        INIT_UNSET_PROPERTY(profile, socdModeOverride, false);
+        INIT_UNSET_PROPERTY(profile, socdMode, DEFAULT_SOCD_MODE);
     }
 
     // displayOptions
@@ -930,14 +951,6 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.reverseOptions, actionDown, REVERSE_DOWN_DEFAULT);
     INIT_UNSET_PROPERTY(config.addonOptions.reverseOptions, actionLeft, REVERSE_LEFT_DEFAULT);
     INIT_UNSET_PROPERTY(config.addonOptions.reverseOptions, actionRight, REVERSE_RIGHT_DEFAULT);
-
-    // addonOptions.socdSliderOptions
-    INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, enabled, !!SLIDER_SOCD_ENABLED);
-    INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, deprecatedPinOne, (Pin_t)-1);
-    INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, deprecatedPinTwo, (Pin_t)-1);
-    INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, modeDefault, SLIDER_SOCD_SLOT_DEFAULT);
-    INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, deprecatedModeOne, SLIDER_SOCD_SLOT_ONE);
-    INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, deprecatedModeTwo, SLIDER_SOCD_SLOT_TWO);
 
     // addonOptions.profileSliderOptions
     INIT_UNSET_PROPERTY(config.addonOptions.profileSliderOptions, enabled, !!SLIDER_PROFILE_ENABLED);
@@ -1485,7 +1498,7 @@ void gpioMappingsMigrationCore(Config& config)
     ExtraButtonOptions& extraButtonOptions = config.addonOptions.deprecatedExtraButtonOptions;
     DualDirectionalOptions& ddiOptions = config.addonOptions.dualDirectionalOptions;
     SliderOptions& jsSliderOptions = config.addonOptions.deprecatedSliderOptions;
-    SOCDSliderOptions& socdSliderOptions = config.addonOptions.socdSliderOptions;
+    SOCDSliderOptions& socdSliderOptions = config.addonOptions.deprecatedSocdSliderOptions;
     PeripheralOptions& peripheralOptions = config.peripheralOptions;
     KeyboardHostOptions& keyboardHostOptions = config.addonOptions.keyboardHostOptions;
     PSPassthroughOptions& psPassthroughOptions = config.addonOptions.psPassthroughOptions;
@@ -1976,6 +1989,14 @@ void migrateJSliderToCore(Config& config)
     }
 }
 
+void migrateSOCDSliderToCore(Config& config)
+{
+    if (config.addonOptions.deprecatedSocdSliderOptions.enabled) {
+        config.gamepadOptions.socdMode = config.addonOptions.deprecatedSocdSliderOptions.deprecatedModeDefault;
+        config.addonOptions.deprecatedSocdSliderOptions.enabled = false;
+    }
+}
+
 // populate the alternative gpio mapping sets, aka profiles, with
 // the old values or whatever is in the core mappings
 // NOTE: this also handles initializations for a blank config! if/when the deprecated
@@ -2323,6 +2344,7 @@ void ConfigUtils::load(Config& config)
     migrateMacroPinsToGpio(config);
     // Migrate old JS slider add-on to core
     migrateJSliderToCore(config);
+    migrateSOCDSliderToCore(config);
 
     // Update boardVersion, in case we migrated from an older version
     strncpy(config.boardVersion, GP2040VERSION, sizeof(config.boardVersion));

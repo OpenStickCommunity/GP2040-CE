@@ -88,12 +88,6 @@ export default {
 	'player-number-sub-header-text':
 		'Active esta opción solo si está conectando múltiples dispositivos gp2040-ce con número de jugador habilitado',
 	'player-number-label': 'Número de Jugador',
-	'socd-cleaning-mode-selection-slider-header-text':
-		'Deslizador de Selección de Modo de Limpieza SOCD',
-	'socd-cleaning-mode-selection-slider-sub-header-text':
-		'Nota: Los modos PS4, PS3 y Nintendo Switch no admiten establecer la Limpieza SOCD en Desactivado y usarán por defecto el modo de Limpieza SOCD Neutral.',
-	'socd-cleaning-mode-selection-slider-mode-default-label':
-		'Modo Predeterminado Deslizador SOCD',
 	'ps4-mode-sub-header': '¡AVISO LEGAL!',
 	'ps4-mode-sub-header-text':
 		'¡¡¡GP2040-CE NUNCA PROPORCIONARÁ ESTOS ARCHIVOS!!!',
@@ -131,11 +125,6 @@ export default {
 	'dual-directional-input-combine-mode-1': 'Sobrescribir Control',
 	'dual-directional-input-combine-mode-2': 'Sobrescribir DDI',
 	'dual-directional-input-combine-mode-3': 'Ninguno',
-	'socd-slider-mode-0': 'Prioridad Arriba',
-	'socd-slider-mode-1': 'Neutral',
-	'socd-slider-mode-2': 'Último Gana',
-	'socd-slider-mode-3': 'Primero Gana',
-	'socd-slider-mode-4': 'Limpieza SOCD Desactivada',
 	'profile-slider-header-text': 'Deslizador de Selección de Perfil',
 	'profile-slider-sub-header-text':
 		'Nota: Los pines GPIO para las posiciones del deslizador de perfil se configuran en la página de Asignación de Pines.',

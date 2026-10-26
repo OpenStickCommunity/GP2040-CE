@@ -36,6 +36,7 @@
 #include "lwip/apps/httpd.h"
 #include "lwip/def.h"
 #include "lwip/mem.h"
+#include "advanced_socd.h"
 #include "addons/input_macro.h"
 
 #define PATH_CGI_ACTION "/cgi/action"
@@ -109,6 +110,19 @@ static void __attribute__((noinline)) docToValue(T& value, const DynamicJsonDocu
         value = doc[key0][key1][key2];
     }
 }
+
+// ArduinoJson stores keys by pointer, so these must be literals, not a stack buffer
+static const struct {
+    const char* enabled;
+    const char* upDown;
+    const char* leftRight;
+    const char* name;
+} ADVANCED_SOCD_KEYS[ADVANCED_SOCD_SLOT_COUNT] = {
+    { "advancedSOCD1Enabled", "advancedSOCD1UpDown", "advancedSOCD1LeftRight", "advancedSOCD1Name" },
+    { "advancedSOCD2Enabled", "advancedSOCD2UpDown", "advancedSOCD2LeftRight", "advancedSOCD2Name" },
+    { "advancedSOCD3Enabled", "advancedSOCD3UpDown", "advancedSOCD3LeftRight", "advancedSOCD3Name" },
+    { "advancedSOCD4Enabled", "advancedSOCD4UpDown", "advancedSOCD4LeftRight", "advancedSOCD4Name" },
+};
 
 // Don't inline this function, we do not want to consume stack space in the calling function
 static void __attribute__((noinline)) cleanAddonGpioMappings(Pin_t& addonPin, Pin_t oldAddonPin)
@@ -575,6 +589,23 @@ static void writeInvertedPins(JsonVariant json, const GpioMappings& mappings)
         pins.add(mappings.invertedPins[i]);
 }
 
+static void readProfileSOCD(GpioMappings& mappings, JsonVariantConst json)
+{
+    if (!json["socdModeOverride"].isNull())
+        mappings.socdModeOverride = json["socdModeOverride"];
+    if (!json["socdMode"].isNull()) {
+        const int socdMode = json["socdMode"];
+        if (socdMode >= SOCD_MODE_UP_PRIORITY && socdMode <= SOCD_MODE_ADVANCED_4)
+            mappings.socdMode = (SOCDMode)socdMode;
+    }
+}
+
+static void writeProfileSOCD(JsonVariant json, const GpioMappings& mappings)
+{
+    json["socdModeOverride"] = mappings.socdModeOverride;
+    json["socdMode"] = (int)mappings.socdMode;
+}
+
 std::string setProfileOptions()
 {
     DynamicJsonDocument doc = get_post_data();
@@ -612,6 +643,7 @@ std::string setProfileOptions()
         profileOptions.gpioMappingsSets[altsIndex].profileLabel[profileLabelSize - 1] = '\0';
         profileOptions.gpioMappingsSets[altsIndex].enabled = alt["enabled"];
         readInvertedPins(profileOptions.gpioMappingsSets[altsIndex], alt);
+        readProfileSOCD(profileOptions.gpioMappingsSets[altsIndex], alt);
         if (altsIndex >= previousCount)
             profileOptions.gpioMappingsSets[altsIndex].keyboardMapping = Storage::getInstance().getKeyboardMapping();
 
@@ -628,7 +660,7 @@ std::string getProfileOptions()
     ProfileOptions& profileOptions = Storage::getInstance().getProfileOptions();
     // Make capacity slots dynamic, max for 5 profiles * 48 pins is 976 slots
     const size_t capacity = JSON_OBJECT_SIZE(1) + JSON_ARRAY_SIZE(profileOptions.gpioMappingsSets_count)
-        + (profileOptions.gpioMappingsSets_count * (JSON_OBJECT_SIZE(4 * NUM_BANK0_GPIOS + 4) + JSON_ARRAY_SIZE(NUM_BANK0_GPIOS)));
+        + (profileOptions.gpioMappingsSets_count * (JSON_OBJECT_SIZE(4 * NUM_BANK0_GPIOS + 6) + JSON_ARRAY_SIZE(NUM_BANK0_GPIOS)));
     DynamicJsonDocument doc(capacity);
 
     const auto writePinDoc = [&](const int item, const char* key, const GpioMappingInfo& value) -> void
@@ -700,6 +732,7 @@ std::string getProfileOptions()
         writeDoc(doc, "alternativePinMappings", i, "profileLabel", profileOptions.gpioMappingsSets[i].profileLabel);
         doc["alternativePinMappings"][i]["enabled"] = profileOptions.gpioMappingsSets[i].enabled;
         writeInvertedPins(doc["alternativePinMappings"][i], profileOptions.gpioMappingsSets[i]);
+        writeProfileSOCD(doc["alternativePinMappings"][i], profileOptions.gpioMappingsSets[i]);
     }
 
     return serialize_json(doc);
@@ -715,6 +748,20 @@ std::string setGamepadOptions()
     readDoc(gamepadOptions.inputMode, doc, "inputMode");
     readDoc(gamepadOptions.inputDeviceType, doc, "inputDeviceType");
     readDoc(gamepadOptions.socdMode, doc, "socdMode");
+    readDoc(gamepadOptions.advancedSOCDEnabled, doc, "advancedSOCDEnabled");
+
+    for (int index = 0; index < ADVANCED_SOCD_SLOT_COUNT; index++) {
+        AdvancedSOCDSlot& socdSlot = gamepadOptions.advancedSOCDSlots[index];
+        docToValue(socdSlot.enabled, doc, ADVANCED_SOCD_KEYS[index].enabled);
+        docToValue(socdSlot.upDownMode, doc, ADVANCED_SOCD_KEYS[index].upDown);
+        docToValue(socdSlot.leftRightMode, doc, ADVANCED_SOCD_KEYS[index].leftRight);
+        if (doc[ADVANCED_SOCD_KEYS[index].name].is<const char*>()) {
+            strncpy(socdSlot.name, doc[ADVANCED_SOCD_KEYS[index].name], sizeof(socdSlot.name) - 1);
+            socdSlot.name[sizeof(socdSlot.name) - 1] = '\0';
+            socdSlot.has_name = true;
+        }
+    }
+    gamepadOptions.advancedSOCDSlots_count = ADVANCED_SOCD_SLOT_COUNT;
     readDoc(gamepadOptions.switchTpShareForDs4, doc, "switchTpShareForDs4");
     readDoc(gamepadOptions.lockHotkeys, doc, "lockHotkeys");
     readDoc(gamepadOptions.fourWayMode, doc, "fourWayMode");
@@ -812,6 +859,13 @@ std::string getGamepadOptions()
     writeDoc(doc, "inputMode", gamepadOptions.inputMode);
     writeDoc(doc, "inputDeviceType", gamepadOptions.inputDeviceType);
     writeDoc(doc, "socdMode", gamepadOptions.socdMode);
+    writeDoc(doc, "advancedSOCDEnabled", gamepadOptions.advancedSOCDEnabled);
+    for (int index = 0; index < ADVANCED_SOCD_SLOT_COUNT; index++) {
+        writeDoc(doc, ADVANCED_SOCD_KEYS[index].enabled, gamepadOptions.advancedSOCDSlots[index].enabled);
+        writeDoc(doc, ADVANCED_SOCD_KEYS[index].upDown, gamepadOptions.advancedSOCDSlots[index].upDownMode);
+        writeDoc(doc, ADVANCED_SOCD_KEYS[index].leftRight, gamepadOptions.advancedSOCDSlots[index].leftRightMode);
+        writeDoc(doc, ADVANCED_SOCD_KEYS[index].name, gamepadOptions.advancedSOCDSlots[index].name);
+    }
     writeDoc(doc, "switchTpShareForDs4", gamepadOptions.switchTpShareForDs4 ? 1 : 0);
     writeDoc(doc, "lockHotkeys", gamepadOptions.lockHotkeys ? 1 : 0);
     writeDoc(doc, "fourWayMode", gamepadOptions.fourWayMode ? 1 : 0);
@@ -1554,6 +1608,7 @@ std::string setPinMappings()
     gpioMappings.profileLabel[profileLabelSize - 1] = '\0';
     gpioMappings.enabled = doc["enabled"];
     readInvertedPins(gpioMappings, doc.as<JsonVariantConst>());
+    readProfileSOCD(gpioMappings, doc.as<JsonVariantConst>());
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
@@ -1628,6 +1683,7 @@ std::string getPinMappings()
     writeDoc(doc, "profileLabel", gpioMappings.profileLabel);
     doc["enabled"] = gpioMappings.enabled;
     writeInvertedPins(doc.as<JsonVariant>(), gpioMappings);
+    writeProfileSOCD(doc.as<JsonVariant>(), gpioMappings);
 
     return serialize_json(doc);
 }
@@ -2298,10 +2354,6 @@ std::string setAddonOptions()
     docToValue(reverseOptions.actionLeft, doc, "reverseActionLeft");
     docToValue(reverseOptions.actionRight, doc, "reverseActionRight");
 
-    SOCDSliderOptions& socdSliderOptions = Storage::getInstance().getAddonOptions().socdSliderOptions;
-    docToValue(socdSliderOptions.enabled, doc, "SliderSOCDInputEnabled");
-    docToValue(socdSliderOptions.modeDefault, doc, "sliderSOCDModeDefault");
-
     ProfileSliderOptions& profileSliderOptions = Storage::getInstance().getAddonOptions().profileSliderOptions;
     docToValue(profileSliderOptions.enabled, doc, "SliderProfileInputEnabled");
     docToValue(profileSliderOptions.numPositions, doc, "sliderProfileNumPositions");
@@ -2802,10 +2854,6 @@ std::string getAddonOptions()
     writeDoc(doc, "reverseActionLeft", reverseOptions.actionLeft);
     writeDoc(doc, "reverseActionRight", reverseOptions.actionRight);
     writeDoc(doc, "ReverseInputEnabled", reverseOptions.enabled);
-
-    const SOCDSliderOptions& socdSliderOptions = Storage::getInstance().getAddonOptions().socdSliderOptions;
-    writeDoc(doc, "sliderSOCDModeDefault", socdSliderOptions.modeDefault);
-    writeDoc(doc, "SliderSOCDInputEnabled", socdSliderOptions.enabled);
 
     const ProfileSliderOptions& profileSliderOptions = Storage::getInstance().getAddonOptions().profileSliderOptions;
     writeDoc(doc, "SliderProfileInputEnabled", profileSliderOptions.enabled);

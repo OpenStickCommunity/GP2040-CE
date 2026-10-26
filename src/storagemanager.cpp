@@ -139,6 +139,7 @@ void Storage::setFunctionalPinMappings()
 	}
 	GpioMappingInfo* alts = profile ? profile->pins : nullptr;
 	activeKeyboardMapping = profile ? &profile->keyboardMapping : &config.keyboardMapping;
+	activeProfileMappings = profile ? profile : &config.gpioMappings;
 
 	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
 		// assign the functional pin to the profile pin if:
