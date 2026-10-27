@@ -204,7 +204,7 @@
     {GP_ELEMENT_PIN_BUTTON, {72, 17, 4, 4, 1, 1, 15, GP_SHAPE_ELLIPSE}},\
 }
 // Haute42|COSMOX C-AS with only right analog module as RS
-#define DEFAULT_BOARD_LAYOUT_A_ALT2_NAME "Haute42|COSMOX C-AS with only left analog module as RS"
+#define DEFAULT_BOARD_LAYOUT_A_ALT2_NAME "Haute42|COSMOX C-AS with only right analog module as RS"
 #define DEFAULT_BOARD_LAYOUT_A_ALT2 {\
     {GP_ELEMENT_PIN_BUTTON, {52, 50, 5, 5, 1, 1, 18, GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {87, 10, 91, 14, 1, 1, 17, GP_SHAPE_SQUARE}},\
@@ -213,7 +213,7 @@
     {GP_ELEMENT_PIN_BUTTON, {108, 10, 112, 14, 1, 1, 14, GP_SHAPE_SQUARE}},\
     {GP_ELEMENT_LEVER, {36, 28, 10, 10, 1, 1, 0, GP_SHAPE_ELLIPSE}},\
 }
-#define DEFAULT_BOARD_LAYOUT_B_ALT2_NAME "Haute42|COSMOX C-AS with only left analog module as RS"
+#define DEFAULT_BOARD_LAYOUT_B_ALT2_NAME "Haute42|COSMOX C-AS with only right analog module as RS"
 #define DEFAULT_BOARD_LAYOUT_B_ALT2 {\
     {GP_ELEMENT_PIN_BUTTON, {71, 27, 4, 4, 1, 1, 10, GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {81, 25, 4, 4, 1, 1, 11, GP_SHAPE_ELLIPSE}},\
@@ -227,7 +227,7 @@
     {GP_ELEMENT_PIN_BUTTON, {72, 17, 4, 4, 1, 1, 15, GP_SHAPE_ELLIPSE}},\
 }
 // Haute42|COSMOX C-AS with only left analog module as RS
-#define DEFAULT_BOARD_LAYOUT_A_ALT3_NAME "Haute42|COSMOX C-AS with only right analog module as LS"
+#define DEFAULT_BOARD_LAYOUT_A_ALT3_NAME "Haute42|COSMOX C-AS with only left analog module as RS"
 #define DEFAULT_BOARD_LAYOUT_A_ALT3 {\
     {GP_ELEMENT_LEVER, {52, 50, 5, 5, 1, 0, GP_LEVER_MODE_RIGHT_ANALOG}},\
     {GP_ELEMENT_PIN_BUTTON, {87, 10, 91, 14, 1, 1, 17, GP_SHAPE_SQUARE}},\
@@ -236,7 +236,7 @@
     {GP_ELEMENT_PIN_BUTTON, {108, 10, 112, 14, 1, 1, 14, GP_SHAPE_SQUARE}},\
     {GP_ELEMENT_LEVER, {36, 28, 10, 10, 1, 1, 0, GP_SHAPE_ELLIPSE}},\
 }
-#define DEFAULT_BOARD_LAYOUT_B_ALT3_NAME "Haute42|COSMOX C-AS with only right analog module as LS"
+#define DEFAULT_BOARD_LAYOUT_B_ALT3_NAME "Haute42|COSMOX C-AS with only left analog module as RS"
 #define DEFAULT_BOARD_LAYOUT_B_ALT3 {\
     {GP_ELEMENT_PIN_BUTTON, {71, 27, 4, 4, 1, 1, 10, GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {81, 25, 4, 4, 1, 1, 11, GP_SHAPE_ELLIPSE}},\
@@ -250,7 +250,7 @@
     {GP_ELEMENT_PIN_BUTTON, {72, 17, 4, 4, 1, 1, 15, GP_SHAPE_ELLIPSE}},\
 }
 // Haute42|COSMOX C-AS with only right analog module as LS
-#define DEFAULT_BOARD_LAYOUT_A_ALT4_NAME "Haute42|COSMOX C-AS with only right analog module as RS"
+#define DEFAULT_BOARD_LAYOUT_A_ALT4_NAME "Haute42|COSMOX C-AS with only right analog module as LS"
 #define DEFAULT_BOARD_LAYOUT_A_ALT4 {\
     {GP_ELEMENT_PIN_BUTTON, {52, 50, 5, 5, 1, 1, 18, GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {87, 10, 91, 14, 1, 1, 17, GP_SHAPE_SQUARE}},\
@@ -259,7 +259,7 @@
     {GP_ELEMENT_PIN_BUTTON, {108, 10, 112, 14, 1, 1, 14, GP_SHAPE_SQUARE}},\
     {GP_ELEMENT_LEVER, {36, 28, 10, 10, 1, 1, 0, GP_SHAPE_ELLIPSE}},\
 }
-#define DEFAULT_BOARD_LAYOUT_B_ALT4_NAME "Haute42|COSMOX C-AS with only right analog module as RS"
+#define DEFAULT_BOARD_LAYOUT_B_ALT4_NAME "Haute42|COSMOX C-AS with only right analog module as LS"
 #define DEFAULT_BOARD_LAYOUT_B_ALT4 {\
     {GP_ELEMENT_PIN_BUTTON, {71, 27, 4, 4, 1, 1, 10, GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {81, 25, 4, 4, 1, 1, 11, GP_SHAPE_ELLIPSE}},\

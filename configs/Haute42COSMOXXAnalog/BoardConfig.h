@@ -154,7 +154,7 @@
 }
 
 // Haute42|COSMOX X Series Analog + WASD
-#define DEFAULT_BOARD_LAYOUT_A_ALT0_NAME "Haute42|COSMOX X Series Standard"
+#define DEFAULT_BOARD_LAYOUT_A_ALT0_NAME "Haute42|COSMOX X Series Analog + WASD"
 #define DEFAULT_BOARD_LAYOUT_A_ALT0 {\
      {GP_ELEMENT_PIN_BUTTON, {24, 24, 31, 31, 1, 1, 5, GP_SHAPE_SQUARE, 22}},\
      {GP_ELEMENT_PIN_BUTTON, {32, 28, 39, 35, 1, 1, 3, GP_SHAPE_SQUARE, 22}},\
@@ -168,7 +168,7 @@
      {GP_ELEMENT_LEVER,      {40, 50, 5, 5, 1, 0,      GP_LEVER_MODE_LEFT_ANALOG}},\
 }
 
-#define DEFAULT_BOARD_LAYOUT_B_ALT0_NAME "Haute42|COSMOX X Series Standard"
+#define DEFAULT_BOARD_LAYOUT_B_ALT0_NAME "Haute42|COSMOX X Series Analog + WASD"
 #define DEFAULT_BOARD_LAYOUT_B_ALT0 {\
      {GP_ELEMENT_PIN_BUTTON, {69, 17, 4, 4, 1, 1, 15,  GP_SHAPE_ELLIPSE}},\
      {GP_ELEMENT_PIN_BUTTON, {64, 27, 4, 4, 1, 1, 10,  GP_SHAPE_ELLIPSE}},\
@@ -183,7 +183,7 @@
 }
 
 // Haute42|COSMOX X Series Analog + Joystick
-#define DEFAULT_BOARD_LAYOUT_A_ALT1_NAME "Haute42|COSMOX X Series Standard + WASD"
+#define DEFAULT_BOARD_LAYOUT_A_ALT1_NAME "Haute42|COSMOX X Series Analog + Joystick"
 #define DEFAULT_BOARD_LAYOUT_A_ALT1 {\
      {GP_ELEMENT_LEVER,      {36, 30, 7, 7, 1, 0,  0}},\
      {GP_ELEMENT_PIN_BUTTON, {25, 15, 2, 2, 1, 1, 14,  GP_SHAPE_ELLIPSE}},\
@@ -194,7 +194,7 @@
      {GP_ELEMENT_LEVER,      {40, 50, 5, 5, 1, 0,      GP_LEVER_MODE_LEFT_ANALOG}},\
 }
 
-#define DEFAULT_BOARD_LAYOUT_B_ALT1_NAME "Haute42|COSMOX X Series Standard + WASD"
+#define DEFAULT_BOARD_LAYOUT_B_ALT1_NAME "Haute42|COSMOX X Series Analog + Joystick"
 #define DEFAULT_BOARD_LAYOUT_B_ALT1 {\
      {GP_ELEMENT_PIN_BUTTON, {69, 17, 4, 4, 1, 1, 15,  GP_SHAPE_ELLIPSE}},\
      {GP_ELEMENT_PIN_BUTTON, {64, 27, 4, 4, 1, 1, 10,  GP_SHAPE_ELLIPSE}},\
@@ -209,7 +209,7 @@
 }
 
 // Haute42|COSMOX X Series Standard
-#define DEFAULT_BOARD_LAYOUT_A_ALT2_NAME "Haute42|COSMOX X Series Standard + Joystick"
+#define DEFAULT_BOARD_LAYOUT_A_ALT2_NAME "Haute42|COSMOX X Series Standard"
 #define DEFAULT_BOARD_LAYOUT_A_ALT2 {\
      {GP_ELEMENT_PIN_BUTTON, {42, 19, 4, 4, 1, 1, 2,   GP_SHAPE_ELLIPSE}},\
      {GP_ELEMENT_PIN_BUTTON, {27, 27, 4, 4, 1, 1, 5,   GP_SHAPE_ELLIPSE}},\
@@ -224,7 +224,7 @@
      {GP_ELEMENT_PIN_BUTTON, {54, 49, 5, 5, 1, 1, 27,  GP_SHAPE_ELLIPSE}},\
 }
 
-#define DEFAULT_BOARD_LAYOUT_B_ALT2_NAME "Haute42|COSMOX X Series Standard + Joystick"
+#define DEFAULT_BOARD_LAYOUT_B_ALT2_NAME "Haute42|COSMOX X Series Standard"
 #define DEFAULT_BOARD_LAYOUT_B_ALT2 {\
      {GP_ELEMENT_PIN_BUTTON, {69, 17, 4, 4, 1, 1, 15,  GP_SHAPE_ELLIPSE}},\
      {GP_ELEMENT_PIN_BUTTON, {64, 27, 4, 4, 1, 1, 10,  GP_SHAPE_ELLIPSE}},\
@@ -239,7 +239,7 @@
 }
 
 // Haute42|COSMOX X Series Standard + WASD
-#define DEFAULT_BOARD_LAYOUT_A_ALT3_NAME "Haute42|COSMOX X Series Analog + WASD"
+#define DEFAULT_BOARD_LAYOUT_A_ALT3_NAME "Haute42|COSMOX X Series Standard + WASD"
 #define DEFAULT_BOARD_LAYOUT_A_ALT3 {\
      {GP_ELEMENT_PIN_BUTTON, {24, 24, 31, 31, 1, 1, 5, GP_SHAPE_SQUARE, 22}},\
      {GP_ELEMENT_PIN_BUTTON, {32, 28, 39, 35, 1, 1, 3, GP_SHAPE_SQUARE, 22}},\
@@ -254,7 +254,7 @@
      {GP_ELEMENT_PIN_BUTTON, {54, 49, 5, 5, 1, 1, 27,  GP_SHAPE_ELLIPSE}},\
 }
 
-#define DEFAULT_BOARD_LAYOUT_B_ALT3_NAME "Haute42|COSMOX X Series Analog + WASD"
+#define DEFAULT_BOARD_LAYOUT_B_ALT3_NAME "Haute42|COSMOX X Series Standard + WASD"
 #define DEFAULT_BOARD_LAYOUT_B_ALT3 {\
      {GP_ELEMENT_PIN_BUTTON, {69, 17, 4, 4, 1, 1, 15,  GP_SHAPE_ELLIPSE}},\
      {GP_ELEMENT_PIN_BUTTON, {64, 27, 4, 4, 1, 1, 10,  GP_SHAPE_ELLIPSE}},\
@@ -269,7 +269,7 @@
 }
 
 // Haute42|COSMOX X Series Standard + Joystick
-#define DEFAULT_BOARD_LAYOUT_A_ALT4_NAME "Haute42|COSMOX X Series Analog + Joystick"
+#define DEFAULT_BOARD_LAYOUT_A_ALT4_NAME "Haute42|COSMOX X Series Standard + Joystick"
 #define DEFAULT_BOARD_LAYOUT_A_ALT4 {\
      {GP_ELEMENT_LEVER,      {36, 30, 7, 7, 1, 0,  0}},\
      {GP_ELEMENT_PIN_BUTTON, {25, 15, 2, 2, 1, 1, 14,  GP_SHAPE_ELLIPSE}},\
@@ -281,7 +281,7 @@
      {GP_ELEMENT_PIN_BUTTON, {54, 49, 5, 5, 1, 1, 27,  GP_SHAPE_ELLIPSE}},\
 }
 
-#define DEFAULT_BOARD_LAYOUT_B_ALT4_NAME "Haute42|COSMOX X Series Analog + Joystick"
+#define DEFAULT_BOARD_LAYOUT_B_ALT4_NAME "Haute42|COSMOX X Series Standard + Joystick"
 #define DEFAULT_BOARD_LAYOUT_B_ALT4 {\
      {GP_ELEMENT_PIN_BUTTON, {69, 17, 4, 4, 1, 1, 15,  GP_SHAPE_ELLIPSE}},\
      {GP_ELEMENT_PIN_BUTTON, {64, 27, 4, 4, 1, 1, 10,  GP_SHAPE_ELLIPSE}},\
