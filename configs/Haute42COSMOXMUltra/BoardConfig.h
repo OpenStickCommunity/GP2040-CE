@@ -9,7 +9,7 @@
 #include "enums.pb.h"
 #include "class/hid/hid.h"
 
-#define BOARD_CONFIG_LABEL "Haute42 COSMOX M Ultra"
+#define BOARD_CONFIG_LABEL "Haute42|COSMOX M Ultra"
 
 // Main pin mapping Configuration
 //                          // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
@@ -113,7 +113,7 @@
 #define SPLASH_MODE SPLASH_MODE_STATIC
 #define SPLASH_DURATION 3000
 
-#define DEFAULT_BOARD_LAYOUT_A_NAME "Haute42 COSMOX M Ultra Default"
+#define DEFAULT_BOARD_LAYOUT_A_NAME "Haute42|COSMOX M Ultra Default"
 #define DEFAULT_BOARD_LAYOUT_A {\
     {GP_ELEMENT_PIN_BUTTON, {47,  19, 4, 4, 1, 1, 27,   GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {32,  27, 4, 4, 1, 1, 5,    GP_SHAPE_ELLIPSE}},\
@@ -129,7 +129,7 @@
     {GP_ELEMENT_PIN_BUTTON, {105, 15, 2, 2, 1, 1, 17,   GP_SHAPE_ELLIPSE}}\
 }
 
-#define DEFAULT_BOARD_LAYOUT_B_NAME "Haute42 COSMOX M Ultra Default"
+#define DEFAULT_BOARD_LAYOUT_B_NAME "Haute42|COSMOX M Ultra Default"
 #define DEFAULT_BOARD_LAYOUT_B {\
     {GP_ELEMENT_PIN_BUTTON, {59, 27, 4, 4, 1, 1, 10,    GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {69, 25, 4, 4, 1, 1, 11,    GP_SHAPE_ELLIPSE}},\
@@ -143,7 +143,7 @@
 }
 
 // C16
-#define DEFAULT_BOARD_LAYOUT_A_ALT0_NAME "C16"
+#define DEFAULT_BOARD_LAYOUT_A_ALT0_NAME "Haute42|COSMOX C16"
 #define DEFAULT_BOARD_LAYOUT_A_ALT0 {\
     {GP_ELEMENT_PIN_BUTTON, {47,  19, 4, 4, 1, 1, 27,   GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {32,  27, 4, 4, 1, 1, 5,    GP_SHAPE_ELLIPSE}},\
@@ -159,7 +159,7 @@
     {GP_ELEMENT_PIN_BUTTON, {105, 15, 2, 2, 1, 1, 17,   GP_SHAPE_ELLIPSE}}\
 }
 
-#define DEFAULT_BOARD_LAYOUT_B_ALT0_NAME "C16"
+#define DEFAULT_BOARD_LAYOUT_B_ALT0_NAME "Haute42|COSMOX C16"
 #define DEFAULT_BOARD_LAYOUT_B_ALT0 {\
     {GP_ELEMENT_PIN_BUTTON, {59, 27, 4, 4, 1, 1, 10,    GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {69, 25, 4, 4, 1, 1, 11,    GP_SHAPE_ELLIPSE}},\
@@ -173,7 +173,7 @@
 }
 
 // C16-S
-#define DEFAULT_BOARD_LAYOUT_A_ALT1_NAME "C16-S"
+#define DEFAULT_BOARD_LAYOUT_A_ALT1_NAME "Haute42|COSMOX C16-S"
 #define DEFAULT_BOARD_LAYOUT_A_ALT1 {\
     {GP_ELEMENT_PIN_BUTTON, {19, 30, 20, 24, 1, 1, 18, GP_SHAPE_PILL,120}},\
     {GP_ELEMENT_PIN_BUTTON, {32, 25, 4, 4, 1, 1, 5, GP_SHAPE_ELLIPSE}},\
@@ -183,7 +183,7 @@
     {GP_ELEMENT_PIN_BUTTON, {55, 53, 56, 47, 1, 1, 2, GP_SHAPE_PILL,120}},\
 }
 
-#define DEFAULT_BOARD_LAYOUT_B_ALT1_NAME "C16-S"
+#define DEFAULT_BOARD_LAYOUT_B_ALT1_NAME "Haute42|COSMOX C16-S"
 #define DEFAULT_BOARD_LAYOUT_B_ALT1 {\
     {GP_ELEMENT_PIN_BUTTON, {74, 25, 4, 4, 1, 1, 10, GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {83, 20, 4, 4, 1, 1, 11, GP_SHAPE_ELLIPSE}},\
@@ -198,7 +198,7 @@
 }
 
 // M Ultra Gen 2
-#define DEFAULT_BOARD_LAYOUT_A_ALT2_NAME "M Ultra Gen 2"
+#define DEFAULT_BOARD_LAYOUT_A_ALT2_NAME "Haute42|COSMOX M Ultra Gen 2"
 #define DEFAULT_BOARD_LAYOUT_A_ALT2 {\
     {GP_ELEMENT_PIN_BUTTON, {51, 19, 4, 4, 1, 1, 27, GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {36, 27, 4, 4, 1, 1, 5, GP_SHAPE_ELLIPSE}},\
@@ -214,7 +214,7 @@
     {GP_ELEMENT_PIN_BUTTON, {105, 15, 2, 2, 1, 1, 14, GP_SHAPE_ELLIPSE}},\
 }
 
-#define DEFAULT_BOARD_LAYOUT_B_ALT2_NAME "M Ultra Gen 2"
+#define DEFAULT_BOARD_LAYOUT_B_ALT2_NAME "Haute42|COSMOX M Ultra Gen 2"
 #define DEFAULT_BOARD_LAYOUT_B_ALT2 {\
     {GP_ELEMENT_PIN_BUTTON, {63, 27, 4, 4, 1, 1, 10, GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {73, 25, 4, 4, 1, 1, 11, GP_SHAPE_ELLIPSE}},\
@@ -321,7 +321,7 @@
 #define BOARD_LED_ENABLED 1
 #define BOARD_LED_TYPE ON_BOARD_LED_MODE_MODE_INDICATOR
 
-#define LIGHT_DATA_NAME_DEFAULT "Haute42|Cosmox M Ultra" 
+#define LIGHT_DATA_NAME_DEFAULT "Haute42|COSMOX M Ultra" 
 #define LIGHT_DATA_SIZE_DEFAULT 46 //number of sets in the below data
 #define LIGHT_DATA_DEFAULT \
 0,  1,  3,  5,  5, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
@@ -371,7 +371,7 @@
 44, 1, 12,  0, 28, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
 45, 1, 10,  0, 29, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO
 
-#define LIGHT_DATA_NAME_1 "Haute42|Cosmox C16" 
+#define LIGHT_DATA_NAME_1 "Haute42|COSMOX C16" 
 #define LIGHT_DATA_SIZE_1 46 //number of sets in the below data
 #define LIGHT_DATA_1 \
 0,  1,  3,  5,  5, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
@@ -421,7 +421,7 @@
 44, 1,  4,  0, 28, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
 45, 1,  2,  0, 29, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO
 
-#define LIGHT_DATA_NAME_2 "Haute42|Cosmox C16-S" 
+#define LIGHT_DATA_NAME_2 "Haute42|COSMOX C16-S" 
 #define LIGHT_DATA_SIZE_2 46 //number of sets in the below data
 #define LIGHT_DATA_2 \
 0,  1,  3,  4,  5, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
@@ -471,7 +471,7 @@
 44, 1,  4,  0, 28, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
 45, 1,  2,  0, 29, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO
 
-#define LIGHT_DATA_NAME_3 "Haute42|Cosmox M Ultra Gen 2" 
+#define LIGHT_DATA_NAME_3 "Haute42|COSMOX M Ultra Gen 2" 
 #define LIGHT_DATA_SIZE_3 46 //number of sets in the below data
 #define LIGHT_DATA_3 \
 0,  1,  4,  4,  5, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \

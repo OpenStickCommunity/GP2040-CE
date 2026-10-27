@@ -6,7 +6,7 @@
 #ifndef PICO_BOARD_CONFIG_H_
 #define PICO_BOARD_CONFIG_H_
 
-#define BOARD_CONFIG_LABEL "Haute42 COSMOX X Series Analog"
+#define BOARD_CONFIG_LABEL "Haute42|COSMOX X Series Analog"
 
 // Main pin mapping Configuration
 //                                                  // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
