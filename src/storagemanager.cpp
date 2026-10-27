@@ -18,6 +18,7 @@
 
 // Check for saves
 #include "ps4/PS4Driver.h"
+#include "ps5/PS5Driver.h"
 
 #include "config_utils.h"
 
@@ -43,12 +44,13 @@ bool Storage::save(const bool force) {
 	//   1. Force = True
 	//   2. Input Mode NOT (PS4/PS5 with USB enabled)
 	// Save will disconnect USB host, which is okay for gamepad and keyboard hosts
-	if (!force &&
-		PeripheralManager::getInstance().isUSBEnabled(0) &&
-		(DriverManager::getInstance().getInputMode() == INPUT_MODE_PS4 ||
-			DriverManager::getInstance().getInputMode() == INPUT_MODE_PS5) &&
-		((PS4Driver*)DriverManager::getInstance().getDriver())->getDongleAuthRequired() == true ) {
-		return false;
+	if (!force && PeripheralManager::getInstance().isUSBEnabled(0)) {
+		InputMode inputMode = DriverManager::getInstance().getInputMode();
+		GPDriver * driver = DriverManager::getInstance().getDriver();
+		if ((inputMode == INPUT_MODE_PS4 && ((PS4Driver*)driver)->getDongleAuthRequired()) ||
+			(inputMode == INPUT_MODE_PS5 && ((PS5Driver*)driver)->getDongleAuthRequired())) {
+			return false;
+		}
 	}
 
 	return ConfigUtils::save(config);
