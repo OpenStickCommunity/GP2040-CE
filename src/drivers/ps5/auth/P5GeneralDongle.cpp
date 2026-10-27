@@ -156,6 +156,11 @@ void P5GeneralDongle::onSetReportComplete(uint8_t report_id, uint8_t report_type
     if ( report_id != PS5_FEATURE_SET_AUTH_PAYLOAD || state != State::SendF0Wait ) {
         return;
     }
+    if ( len == 0 ) {
+        PS5_LOG("[P5G] dongle rejected F0, back to idle\n");
+        state = State::Idle;
+        return;
+    }
 
     const PS5AuthPage * page = (const PS5AuthPage *)(authBuffer + 1);
     switch ( page->auth_type ) {
@@ -182,6 +187,11 @@ void P5GeneralDongle::onGetReportComplete(uint8_t report_id, uint8_t report_type
     bool expected = (report_id == PS5_FEATURE_GET_SIGNATURE     && state == State::RecvF1Wait) ||
                     (report_id == PS5_FEATURE_GET_SIGNING_STATE && state == State::RecvF2Wait);
     if ( !expected ) {
+        return;
+    }
+    if ( len == 0 ) {
+        PS5_LOG("[P5G] dongle stalled 0x%02x, back to idle\n", report_id);
+        state = State::Idle;
         return;
     }
     memcpy(authBuffer, transferBuffer, len < sizeof(authBuffer) ? len : sizeof(authBuffer));

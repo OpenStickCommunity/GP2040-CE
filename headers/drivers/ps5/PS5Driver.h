@@ -10,6 +10,15 @@
 #include "drivers/ps5/PS5Descriptors.h"
 #include "drivers/ps5/PS5AuthDetector.h"
 
+//
+// PS5 mode: presents a licensed third-party PS5 controller and builds its
+// input reports.
+//
+// Authentication is optional and external. Without a ready auth provider the
+// controller still works (unsigned reports) until the console drops it for
+// failing auth. When a provider becomes ready, reports are routed through it
+// for signing and the console's auth feature reports are forwarded to it.
+//
 class PS5Driver : public GPDriver {
 public:
     virtual void initialize();
@@ -27,7 +36,7 @@ public:
     virtual uint16_t GetJoystickMidValue();
     virtual USBListener * get_usb_auth_listener();
 
-    bool getAuthSent();             // an auth provider is bound and ready
+    bool getAuthSent();             // the console completed auth with the bound provider
     bool getDongleAuthRequired();   // USB host carries the auth device
 
     // Bound provider that is ready to sign, or nullptr.
@@ -37,13 +46,32 @@ public:
     // PS5ModeDriver to fall back to the PS4 arcade-stick path.
     bool consoleAuthFailed() const;
 
+    // Lock the console-facing identity to the bound provider's (third-party
+    // when none). Call while disconnected, right before connecting.
+    void selectIdentity();
+    // A ready provider needs a different identity than the one presented.
+    bool identityMismatch() const;
+
+    // A provider is bound but still initializing (used to extend the boot wait).
+    bool authInitializing() const;
+
+    // Class driver hooks (called through static trampolines).
+    uint16_t classOpen(uint8_t rhport, tusb_desc_interface_t const * itf, uint16_t max_len);
+    void classReset(uint8_t rhport);
+    bool classControlXfer(uint8_t rhport, uint8_t stage, tusb_control_request_t const * request);
+
 private:
     void buildReport(Gamepad * gamepad);
     bool sendSigned(PS5Auth * auth, bool due);
     bool sendUnsigned(bool due);
     uint16_t getDefaultFeature(uint8_t report_id, uint8_t * buffer, uint16_t reqlen);
+    void trackConsoleAuth(PS5Auth * auth, uint8_t report_id, const uint8_t * buffer, uint16_t len);
+    void serviceProxy();
+    bool audioControlXfer(uint8_t rhport, uint8_t stage, tusb_control_request_t const * request);
+    void resetAudio();
 
     PS5AuthDetector authDetector;
+    const PS5Identity * identity = &ps5ThirdPartyIdentity;
     bool usbHostAuth = false;
 
     PS5Report ps5Report;
@@ -69,6 +97,21 @@ private:
 
     uint64_t consoleAuthStartUs = 0; // First console F0 of the current provider (0 = none yet)
     bool firstSignedDumped = false;  // logging
+    uint8_t lastServedF2Status = 0;  // logging
+
+    // Console feature read held while a provider fetches it live
+    bool proxyPending = false;
+    uint8_t proxyRhport = 0;
+    uint8_t proxyReportId = 0;
+    tusb_control_request_t proxyRequest {};
+    uint8_t proxyBuffer[PS5_ENDPOINT_SIZE];
+    uint64_t proxyStartUs = 0;
+
+    // Audio interface state for the composite DualSense identity
+    uint8_t audioAlt[3] = {0, 0, 0};
+    uint8_t audioCurrent[2][2];
+    uint8_t audioBuffer[8];
+    uint8_t audioPendingIndex = 0xFF;
 
     // Last challenge seen, so "not ready" can be answered without a provider
     uint8_t consoleFrameId = 0;

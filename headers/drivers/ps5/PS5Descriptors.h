@@ -3,8 +3,11 @@
  * SPDX-FileCopyrightText: Copyright (c) 2024 OpenStickCommunity (gp2040-ce.info)
  */
 
-// Sony DualSense (CFI-ZCT1) USB identity, as presented to the console.
-// Auth dongles never change what the console sees; they only sign reports.
+// USB identities presented to the console in PS5 mode. The driver presents
+// the identity matching the bound auth dongle's signing format:
+//  - third-party PS5 controller (Besavior P5General identity and layout)
+//  - DualSense CFI-ZCT1 (what the Mayflash MagicBoots S5 signs for)
+// With no dongle the third-party identity is used.
 
 #ifndef _PS5_DESCRIPTORS_H_
 #define _PS5_DESCRIPTORS_H_
@@ -15,8 +18,11 @@
 
 #define PS5_ENDPOINT_SIZE 64
 
-#define PS5_VENDOR_ID     0x2B81
+#define PS5_VENDOR_ID     0x2B81    // third-party (P5General)
 #define PS5_PRODUCT_ID    0x0101
+
+#define DUALSENSE_VENDOR_ID   0x054C
+#define DUALSENSE_PRODUCT_ID  0x0CE6
 
 // HAT report (4 bits)
 #define PS5_HAT_UP        0x00
@@ -56,16 +62,9 @@ typedef enum {
     PS5_FEATURE_GET_SIGNING_STATE= 0xF2,   // Auth status
 } PS5FeatureReport;
 
-enum PS5PowerState : uint8_t {
-    PS5_POWER_DISCHARGING          = 0x00,
-    PS5_POWER_CHARGING             = 0x01,
-    PS5_POWER_COMPLETE             = 0x02,
-    PS5_POWER_ABNORMAL_VOLTAGE     = 0x0A,
-    PS5_POWER_ABNORMAL_TEMPERATURE = 0x0B,
-    PS5_POWER_CHARGING_ERROR       = 0x0F,
-};
-
-// Input report 0x01 (USB)
+// Input report 0x01 as built by PS5Driver, third-party layout (byte-compatible
+// with P5GenerorReport). Bytes 0-11 are identical in the DualSense layout,
+// which is all the MagicBoots S5 takes from it.
 typedef struct __attribute__((packed)) {
     uint8_t report_id;
     uint8_t left_stick_x;
@@ -116,20 +115,20 @@ typedef struct __attribute__((packed)) {
 
 static_assert(sizeof(PS5Report) == PS5_ENDPOINT_SIZE, "PS5Report must be 64 bytes");
 
-static const uint8_t ps5_string_language[]     = { 0x09, 0x04 };
-static const uint8_t ps5_string_manufacturer[] = "Open Stick Community";
-static const uint8_t ps5_string_product[]      = "GP2040-CE (PS5)";
-static const uint8_t ps5_string_version[]      = "1.0";
+static const uint8_t ps5tp_string_language[]     = { 0x09, 0x04 };
+static const uint8_t ps5tp_string_manufacturer[] = "Activtor";
+static const uint8_t ps5tp_string_product[]      = "P5General";
+static const uint8_t ps5tp_string_version[]      = "0.1";
 
-static const uint8_t * ps5_string_descriptors[] __attribute__((unused)) =
+static const uint8_t * ps5tp_string_descriptors[] __attribute__((unused)) =
 {
-    ps5_string_language,
-    ps5_string_manufacturer,
-    ps5_string_product,
-    ps5_string_version
+    ps5tp_string_language,
+    ps5tp_string_manufacturer,
+    ps5tp_string_product,
+    ps5tp_string_version
 };
 
-static const uint8_t ps5_device_descriptor[] =
+static const uint8_t ps5tp_device_descriptor[] =
 {
     0x12,        // bLength
     0x01,        // bDescriptorType (Device)
@@ -147,9 +146,9 @@ static const uint8_t ps5_device_descriptor[] =
     0x01,        // bNumConfigurations 1
 };
 
-// DualSense report descriptor (audio and test-command reports omitted).
-// Byte layout of report 0x01 matches PS5Report.
-static const uint8_t ps5_report_descriptor[] =
+// Third-party PS5 report descriptor (from the P5General driver). Declares
+// input 0x01, output 0x02, feature 0x03 (definition), 0xE0, and F0/F1/F2.
+static const uint8_t ps5tp_report_descriptor[] =
 {
     0x05, 0x01,        // Usage Page (Generic Desktop Ctrls)
     0x09, 0x05,        // Usage (Game Pad)
@@ -232,9 +231,9 @@ static const uint8_t ps5_report_descriptor[] =
     0xC0,              // End Collection
 };
 
-static_assert(sizeof(ps5_report_descriptor) == 165, "third-party report descriptor is 165 bytes");
+static_assert(sizeof(ps5tp_report_descriptor) == 165, "third-party report descriptor is 165 bytes");
 
-static const uint8_t ps5_configuration_descriptor[] =
+static const uint8_t ps5tp_configuration_descriptor[] =
 {
     0x09,        // bLength
     0x02,        // bDescriptorType (Configuration)
@@ -261,7 +260,7 @@ static const uint8_t ps5_configuration_descriptor[] =
     0x00,        // bCountryCode
     0x01,        // bNumDescriptors
     0x22,        // bDescriptorType[0] (HID Report)
-    TU_U16_LOW(sizeof(ps5_report_descriptor)), TU_U16_HIGH(sizeof(ps5_report_descriptor)),
+    TU_U16_LOW(sizeof(ps5tp_report_descriptor)), TU_U16_HIGH(sizeof(ps5tp_report_descriptor)),
 
     0x07,        // bLength
     0x05,        // bDescriptorType (Endpoint)
@@ -278,6 +277,129 @@ static const uint8_t ps5_configuration_descriptor[] =
     0x06,        // bInterval 6
 };
 
-static_assert(sizeof(ps5_configuration_descriptor) == 41, "wTotalLength mismatch");
+static_assert(sizeof(ps5tp_configuration_descriptor) == 41, "wTotalLength mismatch");
+
+// ---- DualSense (CFI-ZCT1) identity ----
+
+static const uint8_t ds_string_language[]     = { 0x09, 0x04 };
+static const uint8_t ds_string_manufacturer[] = "Sony Interactive Entertainment";
+static const uint8_t ds_string_product[]      = "DualSense Wireless Controller";
+static const uint8_t ds_string_version[]      = "1.0";
+
+static const uint8_t * ds_string_descriptors[] __attribute__((unused)) =
+{
+    ds_string_language,
+    ds_string_manufacturer,
+    ds_string_product,
+    ds_string_version
+};
+
+static const uint8_t ds_device_descriptor[] =
+{
+    0x12,        // bLength
+    0x01,        // bDescriptorType (Device)
+    0x00, 0x02,  // bcdUSB 2.00
+    0x00,        // bDeviceClass (Use class information in the Interface Descriptors)
+    0x00,        // bDeviceSubClass
+    0x00,        // bDeviceProtocol
+    0x40,        // bMaxPacketSize0 64
+    TU_U16_LOW(DUALSENSE_VENDOR_ID),  TU_U16_HIGH(DUALSENSE_VENDOR_ID),   // idVendor 0x054C
+    TU_U16_LOW(DUALSENSE_PRODUCT_ID), TU_U16_HIGH(DUALSENSE_PRODUCT_ID),  // idProduct 0x0CE6
+    0x00, 0x01,  // bcdDevice 1.00
+    0x01,        // iManufacturer (String Index)
+    0x02,        // iProduct (String Index)
+    0x00,        // iSerialNumber (String Index)
+    0x01,        // bNumConfigurations 1
+};
+
+// Byte-identical to the CFI-ZCT1 report descriptor dump (273 bytes), including
+// the 0x80/0x81 test-command reports.
+static const uint8_t ds_report_descriptor[] =
+{
+    0x05, 0x01, 0x09, 0x05, 0xA1, 0x01, 0x85, 0x01, 0x09, 0x30, 0x09, 0x31, 0x09, 0x32, 0x09, 0x35,
+    0x09, 0x33, 0x09, 0x34, 0x15, 0x00, 0x26, 0xFF, 0x00, 0x75, 0x08, 0x95, 0x06, 0x81, 0x02, 0x06,
+    0x00, 0xFF, 0x09, 0x20, 0x95, 0x01, 0x81, 0x02, 0x05, 0x01, 0x09, 0x39, 0x15, 0x00, 0x25, 0x07,
+    0x35, 0x00, 0x46, 0x3B, 0x01, 0x65, 0x14, 0x75, 0x04, 0x95, 0x01, 0x81, 0x42, 0x65, 0x00, 0x05,
+    0x09, 0x19, 0x01, 0x29, 0x0F, 0x15, 0x00, 0x25, 0x01, 0x75, 0x01, 0x95, 0x0F, 0x81, 0x02, 0x06,
+    0x00, 0xFF, 0x09, 0x21, 0x95, 0x0D, 0x81, 0x02, 0x06, 0x00, 0xFF, 0x09, 0x22, 0x15, 0x00, 0x26,
+    0xFF, 0x00, 0x75, 0x08, 0x95, 0x34, 0x81, 0x02, 0x85, 0x02, 0x09, 0x23, 0x95, 0x2F, 0x91, 0x02,
+    0x85, 0x05, 0x09, 0x33, 0x95, 0x28, 0xB1, 0x02, 0x85, 0x08, 0x09, 0x34, 0x95, 0x2F, 0xB1, 0x02,
+    0x85, 0x09, 0x09, 0x24, 0x95, 0x13, 0xB1, 0x02, 0x85, 0x0A, 0x09, 0x25, 0x95, 0x1A, 0xB1, 0x02,
+    0x85, 0x20, 0x09, 0x26, 0x95, 0x3F, 0xB1, 0x02, 0x85, 0x21, 0x09, 0x27, 0x95, 0x04, 0xB1, 0x02,
+    0x85, 0x22, 0x09, 0x40, 0x95, 0x3F, 0xB1, 0x02, 0x85, 0x80, 0x09, 0x28, 0x95, 0x3F, 0xB1, 0x02,
+    0x85, 0x81, 0x09, 0x29, 0x95, 0x3F, 0xB1, 0x02, 0x85, 0x82, 0x09, 0x2A, 0x95, 0x09, 0xB1, 0x02,
+    0x85, 0x83, 0x09, 0x2B, 0x95, 0x3F, 0xB1, 0x02, 0x85, 0x84, 0x09, 0x2C, 0x95, 0x3F, 0xB1, 0x02,
+    0x85, 0x85, 0x09, 0x2D, 0x95, 0x02, 0xB1, 0x02, 0x85, 0xA0, 0x09, 0x2E, 0x95, 0x01, 0xB1, 0x02,
+    0x85, 0xE0, 0x09, 0x2F, 0x95, 0x3F, 0xB1, 0x02, 0x85, 0xF0, 0x09, 0x30, 0x95, 0x3F, 0xB1, 0x02,
+    0x85, 0xF1, 0x09, 0x31, 0x95, 0x3F, 0xB1, 0x02, 0x85, 0xF2, 0x09, 0x32, 0x95, 0x0F, 0xB1, 0x02,
+    0x85, 0xF4, 0x09, 0x35, 0x95, 0x3F, 0xB1, 0x02, 0x85, 0xF5, 0x09, 0x36, 0x95, 0x03, 0xB1, 0x02,
+    0xC0,
+};
+
+static_assert(sizeof(ds_report_descriptor) == 273, "DualSense report descriptor is 273 bytes");
+
+// Full DualSense composite configuration (227 bytes): audio control (itf 0),
+// speaker (itf 1) and microphone (itf 2) streaming interfaces, and HID on
+// interface 3 with endpoints 0x84 IN / 0x05 OUT. The audio interfaces are
+// claimed and answered but never stream. From PR #1727 (genuine pad layout).
+#define DS_HID_INTERFACE 3
+
+static const uint8_t ds_configuration_descriptor[] =
+{
+    0x09, 0x02, 0xE3, 0x00, 0x04, 0x01, 0x00, 0xC0, 0xFA,
+    0x09, 0x04, 0x00, 0x00, 0x00, 0x01, 0x01, 0x00, 0x00,
+    0x0A, 0x24, 0x01, 0x00, 0x01, 0x49, 0x00, 0x02, 0x01, 0x02,
+    0x0C, 0x24, 0x02, 0x01, 0x01, 0x01, 0x06, 0x04, 0x33, 0x00, 0x00, 0x00,
+    0x0C, 0x24, 0x06, 0x02, 0x01, 0x01, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x09, 0x24, 0x03, 0x03, 0x01, 0x03, 0x04, 0x02, 0x00,
+    0x0C, 0x24, 0x02, 0x04, 0x02, 0x04, 0x03, 0x02, 0x03, 0x00, 0x00, 0x00,
+    0x09, 0x24, 0x06, 0x05, 0x04, 0x01, 0x03, 0x00, 0x00,
+    0x09, 0x24, 0x03, 0x06, 0x01, 0x01, 0x01, 0x05, 0x00,
+    0x09, 0x04, 0x01, 0x00, 0x00, 0x01, 0x02, 0x00, 0x00,
+    0x09, 0x04, 0x01, 0x01, 0x01, 0x01, 0x02, 0x00, 0x00,
+    0x07, 0x24, 0x01, 0x01, 0x01, 0x01, 0x00,
+    0x0B, 0x24, 0x02, 0x01, 0x04, 0x02, 0x10, 0x01, 0x80, 0xBB, 0x00,
+    0x09, 0x05, 0x01, 0x09, 0xC4, 0x00, 0x04, 0x00, 0x00,
+    0x07, 0x25, 0x01, 0x00, 0x00, 0x00, 0x00,
+    0x09, 0x04, 0x02, 0x00, 0x00, 0x01, 0x02, 0x00, 0x00,
+    0x09, 0x04, 0x02, 0x01, 0x01, 0x01, 0x02, 0x00, 0x00,
+    0x07, 0x24, 0x01, 0x06, 0x01, 0x01, 0x00,
+    0x0B, 0x24, 0x02, 0x01, 0x01, 0x02, 0x10, 0x01, 0x80, 0xBB, 0x00,
+    0x09, 0x05, 0x82, 0x05, 0x62, 0x00, 0x04, 0x00, 0x00,
+    0x07, 0x25, 0x01, 0x00, 0x00, 0x00, 0x00,
+    0x09, 0x04, 0x03, 0x00, 0x02, 0x03, 0x00, 0x00, 0x00,
+    0x09, 0x21, 0x11, 0x01, 0x00, 0x01, 0x22, 0x11, 0x01,
+    0x07, 0x05, 0x84, 0x03, 0x40, 0x00, 0x06,
+    0x07, 0x05, 0x05, 0x03, 0x40, 0x00, 0x06
+};
+
+static_assert(sizeof(ds_configuration_descriptor) == 227, "DualSense composite configuration is 227 bytes");
+static_assert(sizeof(ds_report_descriptor) == 0x0111, "HID descriptor in the composite configuration declares 273 bytes");
+
+// ---- Identity bundles ----
+
+struct PS5Identity {
+    const char * name;
+    bool composite;             // audio interfaces present (claimed, never streamed)
+    uint8_t hidInterface;       // interface number of the HID interface
+    bool stallSetIdle;          // a real DualSense stalls HID SET_IDLE
+    const uint8_t * deviceDescriptor;
+    const uint8_t * configurationDescriptor;
+    const uint8_t * reportDescriptor;
+    const uint8_t * const * strings;
+    uint8_t stringCount;
+};
+
+static const PS5Identity ps5ThirdPartyIdentity = {
+    "third-party (2B81:0101)", false, 0, false,
+    ps5tp_device_descriptor, ps5tp_configuration_descriptor, ps5tp_report_descriptor,
+    ps5tp_string_descriptors, sizeof(ps5tp_string_descriptors) / sizeof(ps5tp_string_descriptors[0])
+};
+
+static const PS5Identity ps5DualSenseIdentity = {
+    "DualSense (054C:0CE6)", true, DS_HID_INTERFACE, true,
+    ds_device_descriptor, ds_configuration_descriptor, ds_report_descriptor,
+    ds_string_descriptors, sizeof(ds_string_descriptors) / sizeof(ds_string_descriptors[0])
+};
 
 #endif // _PS5_DESCRIPTORS_H_

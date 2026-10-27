@@ -1,7 +1,7 @@
 #include "addons/board_led.h"
 #include "drivermanager.h"
 #include "drivers/ps4/PS4Driver.h"
-#include "drivers/ps5/PS5Driver.h"
+#include "drivers/ps5/PS5ModeDriver.h"
 #include "usbdriver.h"
 #include "helper.h"
 #include "config.pb.h"
@@ -75,7 +75,7 @@ void BoardLedAddon::process() {
             if(processedGamepad->getOptions().inputMode == INPUT_MODE_PS4) {
                 state = ((PS4Driver*)DriverManager::getInstance().getDriver())->getAuthSent() == true;
             } else if(processedGamepad->getOptions().inputMode == INPUT_MODE_PS5) {
-                state = ((PS5Driver*)DriverManager::getInstance().getDriver())->getAuthSent() == true;
+                state = ((PS5ModeDriver*)DriverManager::getInstance().getDriver())->getAuthSent() == true;
             }
             if (prevState != state) {
                 gpio_put(BOARD_LED_PIN, state ? 1 : 0);

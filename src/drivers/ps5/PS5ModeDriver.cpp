@@ -9,8 +9,11 @@
 
 #include <stdio.h>
 
-// How long boot may hold the console connection waiting for a PS5 dongle.
+// How long boot may hold the console connection waiting for a PS5 dongle,
+// and the longer limit while a bound dongle is still setting up (the
+// MagicBoots S5 unlocks, waits ~0.9 s and re-enumerates before it's ready).
 #define PS5_MODE_DECIDE_US        (2000ull * 1000ull)
+#define PS5_MODE_DECIDE_MAX_US    (5000ull * 1000ull)
 
 // How long to stay disconnected before re-enumerating as the PS4 arcade stick,
 // so the console registers the unplug.
@@ -42,6 +45,9 @@ GPDriver * PS5ModeDriver::active() {
 
 void PS5ModeDriver::connectAs(Path newPath) {
     path = newPath;
+    if (path == Path::PS5) {
+        ps5.selectIdentity();
+    }
     class_driver = *active()->get_class_driver();
     PS5_LOG("[PS5Mode] connecting as %s\n", path == Path::PS5 ? "PS5 third-party (PS5Driver)" : "PS4 arcade stick (PS4Driver)");
     tud_connect();
@@ -54,11 +60,17 @@ bool PS5ModeDriver::process(Gamepad * gamepad) {
                 // First pass, right after tusb_init: keep the console from
                 // enumerating us until we know which identity to present.
                 tud_disconnect();
-                deadlineUs = getMicro() + PS5_MODE_DECIDE_US;
+                decideStartUs = getMicro();
+                deadlineUs = decideStartUs + PS5_MODE_DECIDE_US;
                 PS5_LOG("[PS5Mode] holding connection up to %llums for a PS5 dongle\n",
                         (unsigned long long)(PS5_MODE_DECIDE_US / 1000));
             }
             ps5.process(gamepad);   // pumps dongle detection; nothing is sent while disconnected
+            if (ps5.authInitializing() && deadlineUs < decideStartUs + PS5_MODE_DECIDE_MAX_US) {
+                deadlineUs = decideStartUs + PS5_MODE_DECIDE_MAX_US;
+                PS5_LOG("[PS5Mode] dongle still setting up, waiting up to %llums\n",
+                        (unsigned long long)(PS5_MODE_DECIDE_MAX_US / 1000));
+            }
             if (ps5.readyAuth() != nullptr) {
                 connectAs(Path::PS5);
             } else if (!usbHostAuth || getMicro() >= deadlineUs) {
@@ -69,7 +81,14 @@ bool PS5ModeDriver::process(Gamepad * gamepad) {
         }
         case Path::PS5: {
             bool sent = ps5.process(gamepad);
-            if (ps5.consoleAuthFailed()) {
+            if (ps5.identityMismatch()) {
+                // A dongle that signs for a different identity was bound
+                // after connecting (hot swap): re-enumerate with its identity.
+                PS5_LOG("[PS5Mode] bound dongle needs another identity, re-enumerating\n");
+                tud_disconnect();
+                deadlineUs = getMicro() + PS5_MODE_SWITCH_HOLD_US;
+                path = Path::ReconnectPS5;
+            } else if (ps5.consoleAuthFailed()) {
                 PS5_LOG("[PS5Mode] console did not complete PS5 auth, re-enumerating as PS4 arcade stick\n");
                 tud_disconnect();
                 deadlineUs = getMicro() + PS5_MODE_SWITCH_HOLD_US;
@@ -77,6 +96,12 @@ bool PS5ModeDriver::process(Gamepad * gamepad) {
             }
             return sent;
         }
+        case Path::ReconnectPS5:
+            ps5.process(gamepad);   // keep the dongle serviced while disconnected
+            if (getMicro() >= deadlineUs) {
+                connectAs(Path::PS5);
+            }
+            return false;
         case Path::SwitchingToPS4:
             if (getMicro() >= deadlineUs) {
                 connectAs(Path::PS4);

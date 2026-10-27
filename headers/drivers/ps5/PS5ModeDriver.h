@@ -20,6 +20,9 @@ public:
     void set(USBListener * first, USBListener * second) { a = first; b = second; }
     bool empty() const { return a == nullptr && b == nullptr; }
 
+    virtual bool accepts_failed_report_completions() const {
+        return (a && a->accepts_failed_report_completions()) || (b && b->accepts_failed_report_completions());
+    }
     virtual void setup() {}
     virtual void mount(uint8_t dev_addr, uint8_t instance, uint8_t const * desc_report, uint16_t desc_len) {
         if (a) a->mount(dev_addr, instance, desc_report, desc_len);
@@ -42,12 +45,12 @@ public:
         if (b) b->report_sent(dev_addr, instance, report, len);
     }
     virtual void set_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
-        if (a) a->set_report_complete(dev_addr, instance, report_id, report_type, len);
-        if (b) b->set_report_complete(dev_addr, instance, report_id, report_type, len);
+        if (a && (len != 0 || a->accepts_failed_report_completions())) a->set_report_complete(dev_addr, instance, report_id, report_type, len);
+        if (b && (len != 0 || b->accepts_failed_report_completions())) b->set_report_complete(dev_addr, instance, report_id, report_type, len);
     }
     virtual void get_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
-        if (a) a->get_report_complete(dev_addr, instance, report_id, report_type, len);
-        if (b) b->get_report_complete(dev_addr, instance, report_id, report_type, len);
+        if (a && (len != 0 || a->accepts_failed_report_completions())) a->get_report_complete(dev_addr, instance, report_id, report_type, len);
+        if (b && (len != 0 || b->accepts_failed_report_completions())) b->get_report_complete(dev_addr, instance, report_id, report_type, len);
     }
 
 private:
@@ -101,7 +104,7 @@ public:
     const char * statusLabel();
 
 private:
-    enum class Path : uint8_t { Deciding, PS5, SwitchingToPS4, PS4 };
+    enum class Path : uint8_t { Deciding, PS5, ReconnectPS5, SwitchingToPS4, PS4 };
 
     GPDriver * active();
     void connectAs(Path path);
@@ -113,6 +116,7 @@ private:
     Path path = Path::Deciding;
     bool usbHostAuth = false;
     uint64_t deadlineUs = 0;    // Decide window / switch hold-off end
+    uint64_t decideStartUs = 0;
     char label[8];
 };
 

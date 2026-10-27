@@ -8,8 +8,58 @@
 #include "peripheralmanager.h"
 #include "storagemanager.h"
 
+// A held (proxied) console feature read is stalled if the provider doesn't
+// answer within this long.
+#define PS5_PROXY_TIMEOUT_US     (1000ull * 1000ull)
+
+// ---- Class driver trampolines ----
+
+static PS5Driver * activePS5Driver = nullptr;
+
+static uint16_t ps5_open(uint8_t rhport, tusb_desc_interface_t const * itf, uint16_t max_len) {
+    return activePS5Driver ? activePS5Driver->classOpen(rhport, itf, max_len) : 0;
+}
+
+static void ps5_reset(uint8_t rhport) {
+    if (activePS5Driver) {
+        activePS5Driver->classReset(rhport);
+    } else {
+        hidd_reset(rhport);
+    }
+}
+
+static bool ps5_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const * request) {
+    return activePS5Driver ? activePS5Driver->classControlXfer(rhport, stage, request)
+                           : hidd_control_xfer_cb(rhport, stage, request);
+}
+
+// USB Audio Class 1.0 requests the console sends to a DualSense
+#define UAC_SET_CUR 0x01
+#define UAC_GET_CUR 0x81
+#define UAC_GET_MIN 0x82
+#define UAC_GET_MAX 0x83
+#define UAC_GET_RES 0x84
+
+// Feature-unit volume ranges as a genuine DualSense reports them (from PR
+// #1727): { entity, current, min, max, res }, little-endian 1/256 dB.
+static constexpr struct {
+    uint8_t entity;
+    uint8_t cur[2];
+    uint8_t min[2];
+    uint8_t max[2];
+    uint8_t res[2];
+} ds_audio_features[] = {
+    { 0x02, { 0x47, 0xE6 }, { 0x80, 0x9C }, { 0x00, 0xFF }, { 0x00, 0x01 } },
+    { 0x05, { 0xCC, 0xFE }, { 0xC0, 0xE8 }, { 0x00, 0x18 }, { 0xC0, 0x00 } },
+};
+static constexpr uint8_t DS_AUDIO_FEATURE_COUNT = sizeof(ds_audio_features) / sizeof(ds_audio_features[0]);
+
+// Re-send a changed report this many extra times (keeps signed reports
+// flowing while the dongle settles; matches the P5General driver).
 #define PS5_REPORT_REPEAT        4
 
+// Stream reports like a real controller: an unchanged report goes out at least this
+// often. With a dongle bound the rate is also limited by how fast it signs.
 #define PS5_STREAM_INTERVAL_US   (4ull * 1000ull)
 
 // Fall back if the console starts auth but hasn't completed it in this long.
@@ -30,33 +80,6 @@ static constexpr uint8_t output_0x03[] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 };
 
-// 0x05 Sensor calibration
-static constexpr uint8_t output_0x05[] = {
-    0xff, 0xff, 0xf4, 0xff, 0xfb, 0xff, 0x92, 0x22,
-    0x6a, 0xdd, 0x8d, 0x22, 0x5d, 0xdd, 0x9b, 0x22,
-    0x65, 0xdd, 0x1c, 0x02, 0x1c, 0x02, 0xd2, 0x1f,
-    0xf2, 0xdf, 0xd0, 0x1f, 0xb7, 0xdf, 0x04, 0x20,
-    0xfc, 0xdf, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00
-};
-
-// 0x09 Pairing info (no paired host)
-static constexpr uint8_t output_0x09[] = {
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-};
-
-// 0x20 Firmware version (Jun 24 2024 11:16:21)
-static constexpr uint8_t output_0x20[] = {
-    0x4a, 0x75, 0x6e, 0x20, 0x32, 0x34, 0x20, 0x32,
-    0x30, 0x32, 0x34, 0x31, 0x31, 0x3a, 0x31, 0x36,
-    0x3a, 0x32, 0x31, 0x03, 0x00, 0x04, 0x00, 0x13,
-    0x03, 0x00, 0x00, 0x00, 0x00, 0x0f, 0x01, 0x41,
-    0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x20, 0x05, 0x00, 0x00, 0x2a,
-    0x00, 0x01, 0x00, 0x0a, 0x00, 0x02, 0x00, 0x06,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-};
-
 void PS5Driver::initialize() {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
 
@@ -67,6 +90,7 @@ void PS5Driver::initialize() {
     touchpadData.p2.set_x(PS5_TP_X_MAX / 2);
     touchpadData.p2.set_y(PS5_TP_Y_MAX / 2);
 
+    // Preseed touchpad sensors with the center position
     gamepad->auxState.sensors.touchpad[0].x = PS5_TP_X_MAX / 2;
     gamepad->auxState.sensors.touchpad[0].y = PS5_TP_Y_MAX / 2;
     gamepad->auxState.sensors.touchpad[1].x = PS5_TP_X_MAX / 2;
@@ -85,14 +109,17 @@ void PS5Driver::initialize() {
     // Force the first report out
     memset(&lastReport, 0xFF, sizeof(lastReport));
 
+    activePS5Driver = this;
+    resetAudio();
+
     class_driver = {
 #if CFG_TUSB_DEBUG >= 2
         .name = "PS5",
 #endif
         .init = hidd_init,
-        .reset = hidd_reset,
-        .open = hidd_open,
-        .control_xfer_cb = hidd_control_xfer_cb,
+        .reset = ps5_reset,
+        .open = ps5_open,
+        .control_xfer_cb = ps5_control_xfer_cb,
         .xfer_cb = hidd_xfer_cb,
         .sof = NULL
     };
@@ -120,17 +147,217 @@ bool PS5Driver::getAuthSent() {
     return consoleAuthDone && readyAuth() != nullptr;
 }
 
+void PS5Driver::selectIdentity() {
+    PS5Auth * auth = readyAuth();
+    identity = (auth != nullptr) ? &auth->identity() : &ps5ThirdPartyIdentity;
+    consoleAuthDone = false;    // a new enumeration authenticates from scratch
+    consoleAuthStartUs = 0;
+    PS5_LOG("[PS5] presenting %s identity%s%s\n", identity->name,
+            auth ? " for " : "", auth ? auth->name() : "");
+}
+
+bool PS5Driver::identityMismatch() const {
+    PS5Auth * auth = readyAuth();
+    return auth != nullptr && &auth->identity() != identity;
+}
+
+bool PS5Driver::authInitializing() const {
+    PS5Auth * auth = authDetector.auth();
+    return auth != nullptr && !auth->ready() && !auth->failed();
+}
+
+// ---- Class driver ----
+
+uint16_t PS5Driver::classOpen(uint8_t rhport, tusb_desc_interface_t const * itf, uint16_t max_len) {
+    if (itf->bInterfaceClass == TUSB_CLASS_HID) {
+        return hidd_open(rhport, itf, max_len);
+    }
+    if (!identity->composite || itf->bInterfaceClass != TUSB_CLASS_AUDIO) {
+        return 0;
+    }
+    // Claim an audio interface (all its alternate settings and endpoints) so
+    // SET_CONFIGURATION and SET_INTERFACE succeed. Audio is never streamed.
+    uint8_t const * p = (uint8_t const *)itf;
+    uint16_t len = tu_desc_len(p);
+    while (len < max_len) {
+        uint8_t const * next = p + tu_desc_len(p);
+        uint8_t type = tu_desc_type(next);
+        if (type == TUSB_DESC_INTERFACE_ASSOCIATION) {
+            break;
+        }
+        if (type == TUSB_DESC_INTERFACE &&
+                ((tusb_desc_interface_t const *)next)->bInterfaceNumber != itf->bInterfaceNumber) {
+            break;
+        }
+        p = next;
+        len = (uint16_t)(len + tu_desc_len(p));
+    }
+    return len;
+}
+
+void PS5Driver::classReset(uint8_t rhport) {
+    hidd_reset(rhport);
+    proxyPending = false;
+    resetAudio();
+}
+
+void PS5Driver::resetAudio() {
+    memset(audioAlt, 0, sizeof(audioAlt));
+    for (uint8_t i = 0; i < DS_AUDIO_FEATURE_COUNT; i++) {
+        memcpy(audioCurrent[i], ds_audio_features[i].cur, 2);
+    }
+    audioPendingIndex = 0xFF;
+}
+
+bool PS5Driver::classControlXfer(uint8_t rhport, uint8_t stage, tusb_control_request_t const * request) {
+    // Requests for the (never streamed) audio interfaces
+    if (identity->composite &&
+            request->bmRequestType_bit.recipient == TUSB_REQ_RCPT_INTERFACE &&
+            tu_u16_low(request->wIndex) != identity->hidInterface) {
+        return audioControlXfer(rhport, stage, request);
+    }
+
+    bool isClass = request->bmRequestType_bit.type == TUSB_REQ_TYPE_CLASS;
+
+    // A real DualSense stalls SET_IDLE; TinyUSB's HID class would accept it.
+    if (identity->stallSetIdle && isClass && request->bRequest == HID_REQ_CONTROL_SET_IDLE) {
+        return false;
+    }
+
+    // Feature reads the provider answers live from its device
+    if (isClass && request->bRequest == HID_REQ_CONTROL_GET_REPORT &&
+            tu_u16_high(request->wValue) == HID_REPORT_TYPE_FEATURE) {
+        uint8_t reportId = tu_u16_low(request->wValue);
+        PS5Auth * auth = readyAuth();
+        if (auth != nullptr && auth->proxiesFeature(reportId)) {
+            if (stage == CONTROL_STAGE_SETUP) {
+                uint16_t len = tu_min16(request->wLength, sizeof(proxyBuffer));
+                // One held request at a time; a stall makes the console retry.
+                if (proxyPending || !auth->startProxyGet(reportId, len)) {
+                    return false;
+                }
+                proxyPending = true;
+                proxyRhport = rhport;
+                proxyReportId = reportId;
+                proxyRequest = *request;
+                proxyStartUs = getMicro();
+            }
+            // Leave EP0 without data: it NAKs until serviceProxy() answers.
+            return true;
+        }
+    }
+
+    return hidd_control_xfer_cb(rhport, stage, request);
+}
+
+void PS5Driver::serviceProxy() {
+    if (!proxyPending) {
+        return;
+    }
+    PS5Auth * auth = readyAuth();
+    if (auth == nullptr || (getMicro() - proxyStartUs) >= PS5_PROXY_TIMEOUT_US) {
+        PS5_LOG("[PS5] proxied GET 0x%02x abandoned, stalling\n", proxyReportId);
+        proxyPending = false;
+        usbd_edpt_stall(proxyRhport, 0x80);
+        return;
+    }
+    uint16_t len = 0;
+    switch (auth->pollProxyGet(proxyBuffer, len)) {
+        case PS5ProxyResult::Ready:
+            if (len > 1) {
+                trackConsoleAuth(auth, proxyReportId, &proxyBuffer[1], len - 1);
+            }
+            if (tud_control_xfer(proxyRhport, &proxyRequest, proxyBuffer, len)) {
+                proxyPending = false;
+            }
+            break;
+        case PS5ProxyResult::Stalled:
+            proxyPending = false;
+            usbd_edpt_stall(proxyRhport, 0x80);
+            break;
+        case PS5ProxyResult::Pending:
+        default:
+            break;
+    }
+}
+
+// Audio interfaces 0-2: the console reads and writes volume during
+// enumeration and auth, so these must answer rather than stall.
+bool PS5Driver::audioControlXfer(uint8_t rhport, uint8_t stage, tusb_control_request_t const * request) {
+    if (stage != CONTROL_STAGE_SETUP) {
+        if (stage == CONTROL_STAGE_ACK && audioPendingIndex != 0xFF) {
+            memcpy(audioCurrent[audioPendingIndex], audioBuffer, 2);
+            audioPendingIndex = 0xFF;
+        }
+        return true;
+    }
+
+    uint8_t itf = tu_u16_low(request->wIndex);
+
+    if (request->bmRequestType_bit.type == TUSB_REQ_TYPE_STANDARD) {
+        switch (request->bRequest) {
+            case TUSB_REQ_SET_INTERFACE:
+                if (itf < 3) {
+                    audioAlt[itf] = (uint8_t)tu_u16_low(request->wValue);
+                }
+                return tud_control_status(rhport, request);
+            case TUSB_REQ_GET_INTERFACE:
+                audioBuffer[0] = (itf < 3) ? audioAlt[itf] : 0;
+                return tud_control_xfer(rhport, request, audioBuffer, 1);
+            default:
+                return false;
+        }
+    }
+    if (request->bmRequestType_bit.type != TUSB_REQ_TYPE_CLASS) {
+        return false;
+    }
+
+    int8_t index = -1;
+    for (uint8_t i = 0; i < DS_AUDIO_FEATURE_COUNT; i++) {
+        if (ds_audio_features[i].entity == tu_u16_high(request->wIndex)) {
+            index = (int8_t)i;
+        }
+    }
+
+    if (request->bmRequestType_bit.direction == TUSB_DIR_IN) {
+        const uint8_t * value = nullptr;
+        if (index >= 0) {
+            switch (request->bRequest) {
+                case UAC_GET_CUR: value = audioCurrent[index]; break;
+                case UAC_GET_MIN: value = ds_audio_features[index].min; break;
+                case UAC_GET_MAX: value = ds_audio_features[index].max; break;
+                case UAC_GET_RES: value = ds_audio_features[index].res; break;
+                default: break;
+            }
+        }
+        if (value == nullptr) {
+            memset(audioBuffer, 0, 2);
+        } else {
+            memcpy(audioBuffer, value, 2);
+        }
+        return tud_control_xfer(rhport, request, audioBuffer, tu_min16(request->wLength, 2));
+    }
+
+    // Host to device: accept and remember, so a later GET_CUR echoes it.
+    memset(audioBuffer, 0, sizeof(audioBuffer));
+    audioPendingIndex = (request->bRequest == UAC_SET_CUR && index >= 0) ? (uint8_t)index : 0xFF;
+    return tud_control_xfer(rhport, request, audioBuffer, tu_min16(request->wLength, sizeof(audioBuffer)));
+}
+
 bool PS5Driver::consoleAuthFailed() const {
     return consoleAuthStartUs != 0 && !consoleAuthDone &&
            (getMicro() - consoleAuthStartUs) >= PS5_CONSOLE_AUTH_TIMEOUT_US;
 }
 
 bool PS5Driver::getDongleAuthRequired() {
+    // Saving restarts the USB host, which would drop the auth device.
     return usbHostAuth;
 }
 
 bool PS5Driver::process(Gamepad * gamepad) {
+    // Auth runs on core 0 alongside tuh_task() and tud_task().
     authDetector.process();
+    serviceProxy();
 
     if (tud_suspended()) {
         tud_remote_wakeup();
@@ -161,7 +388,7 @@ bool PS5Driver::process(Gamepad * gamepad) {
         }
     }
     if (auth == nullptr) {
-        signedOutPending = false;
+        signedOutPending = false;   // provider gone: drop any stale signature
         return sendUnsigned(due);
     }
     return sendSigned(auth, due);
@@ -325,6 +552,8 @@ void PS5Driver::buildReport(Gamepad * gamepad) {
     ps5Report.touchpad_data = touchpadData;
 }
 
+// ---- Feature reports ----
+
 uint16_t PS5Driver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t * buffer, uint16_t reqlen) {
     if (report_type != HID_REPORT_TYPE_FEATURE) {
         return -1;
@@ -333,16 +562,38 @@ uint16_t PS5Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
     PS5Auth * auth = readyAuth();
     uint16_t len = 0;
     if (auth != nullptr && auth->getFeature(report_id, buffer, reqlen, len)) {
-        // F2 payload: [1] frame, [2] status. "Done" ends a successful round.
-        if (report_id == PS5_FEATURE_GET_SIGNING_STATE && len >= 3) {
-            if (buffer[2] == PS5_AUTH_STATUS_DONE && !consoleAuthDone) {
-                consoleAuthDone = true;
-                PS5_LOG("[PS5] console auth complete (F2 done, frame=%02x) via %s\n", buffer[1], auth->name());
-            }
-        }
+        trackConsoleAuth(auth, report_id, buffer, len);
         return len;
     }
     return getDefaultFeature(report_id, buffer, reqlen);
+}
+
+// Decide when the console has completed auth, like PS4 mode's "auth sent":
+//  - the console has read the last page of a full signed response (F1, type
+//    0x01, page 3), or
+//  - an F2 read reports "done" (0x40).
+// F1 payload: [0] type, [1] frame, [2] page. F2 payload: [1] frame, [2] status.
+void PS5Driver::trackConsoleAuth(PS5Auth * auth, uint8_t report_id, const uint8_t * buffer, uint16_t len) {
+    if (len < 3) {
+        return;
+    }
+    if (report_id == PS5_FEATURE_GET_SIGNATURE) {
+        PS5_LOG("[PS5] console read F1 type=%02x frame=%02x page=%u\n", buffer[0], buffer[1], buffer[2]);
+        if (!consoleAuthDone && buffer[0] == 0x01 && buffer[2] == PS5_AUTH_PAGES - 1) {
+            consoleAuthDone = true;
+            PS5_LOG("[PS5] console auth complete (full response read, frame=%02x) via %s\n", buffer[1], auth->name());
+        }
+    } else if (report_id == PS5_FEATURE_GET_SIGNING_STATE) {
+        // Log status changes only; the console polls F2 repeatedly.
+        if (buffer[2] != lastServedF2Status) {
+            lastServedF2Status = buffer[2];
+            PS5_LOG("[PS5] console read F2 frame=%02x status=%02x\n", buffer[1], buffer[2]);
+        }
+        if (!consoleAuthDone && buffer[2] == PS5_AUTH_STATUS_DONE) {
+            consoleAuthDone = true;
+            PS5_LOG("[PS5] console auth complete (F2 done, frame=%02x) via %s\n", buffer[1], auth->name());
+        }
+    }
 }
 
 uint16_t PS5Driver::getDefaultFeature(uint8_t report_id, uint8_t * buffer, uint16_t reqlen) {
@@ -351,9 +602,6 @@ uint16_t PS5Driver::getDefaultFeature(uint8_t report_id, uint8_t * buffer, uint1
 
     switch (report_id) {
         case PS5_FEATURE_DEFINITION:   src = output_0x03; size = sizeof(output_0x03); break;
-        case PS5_FEATURE_CALIBRATION:  src = output_0x05; size = sizeof(output_0x05); break;
-        case PS5_FEATURE_PAIRING_INFO: src = output_0x09; size = sizeof(output_0x09); break;
-        case PS5_FEATURE_FIRMWARE:     src = output_0x20; size = sizeof(output_0x20); break;
         case PS5_FEATURE_GET_SIGNING_STATE:
             // No authenticator: report "still signing" for the console's
             // current challenge so it keeps polling until one is plugged in.
@@ -407,26 +655,29 @@ void PS5Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uin
     if (auth != nullptr) {
         auth->setFeature(report_id, buffer, bufsize);
     }
+    // Without an authenticator, Bluetooth/test/auth writes are accepted and ignored.
 }
 
+// ---- Descriptors ----
+
 const uint16_t * PS5Driver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
-    if (index >= TU_ARRAY_SIZE(ps5_string_descriptors)) {
+    if (index >= identity->stringCount) {
         return nullptr;
     }
-    const char * value = (const char *)ps5_string_descriptors[index];
-    return getStringDescriptor(value, index);
+    const char * value = (const char *)identity->strings[index];
+    return getStringDescriptor(value, index); // getStringDescriptor returns a static array
 }
 
 const uint8_t * PS5Driver::get_descriptor_device_cb() {
-    return ps5_device_descriptor;
+    return identity->deviceDescriptor;
 }
 
 const uint8_t * PS5Driver::get_hid_descriptor_report_cb(uint8_t itf) {
-    return ps5_report_descriptor;
+    return identity->reportDescriptor;
 }
 
 const uint8_t * PS5Driver::get_descriptor_configuration_cb(uint8_t index) {
-    return ps5_configuration_descriptor;
+    return identity->configurationDescriptor;
 }
 
 uint16_t PS5Driver::GetJoystickMidValue() {
