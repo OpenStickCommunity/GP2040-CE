@@ -9,7 +9,7 @@
 #include "enums.pb.h"
 #include "class/hid/hid.h"
 
-#define BOARD_CONFIG_LABEL "Haute42 COSMOX M Ultra"
+#define BOARD_CONFIG_LABEL "Haute42 COSMOX M Lite"
 
 // Main pin mapping Configuration
 //                          // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
@@ -113,7 +113,7 @@
 #define SPLASH_MODE SPLASH_MODE_STATIC
 #define SPLASH_DURATION 3000
 
-#define DEFAULT_BOARD_LAYOUT_A_NAME "Haute42 COSMOX M Ultra Default"
+#define DEFAULT_BOARD_LAYOUT_A_NAME "Haute42 COSMOX M Lite Default"
 #define DEFAULT_BOARD_LAYOUT_A {\
     {GP_ELEMENT_PIN_BUTTON, {47,  19, 4, 4, 1, 1, 27,   GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {32,  27, 4, 4, 1, 1, 5,    GP_SHAPE_ELLIPSE}},\
@@ -129,7 +129,7 @@
     {GP_ELEMENT_PIN_BUTTON, {105, 15, 2, 2, 1, 1, 17,   GP_SHAPE_ELLIPSE}}\
 }
 
-#define DEFAULT_BOARD_LAYOUT_B_NAME "Haute42 COSMOX M Ultra Default"
+#define DEFAULT_BOARD_LAYOUT_B_NAME "Haute42 COSMOX M Lite Default"
 #define DEFAULT_BOARD_LAYOUT_B {\
     {GP_ELEMENT_PIN_BUTTON, {59, 27, 4, 4, 1, 1, 10,    GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {69, 25, 4, 4, 1, 1, 11,    GP_SHAPE_ELLIPSE}},\
