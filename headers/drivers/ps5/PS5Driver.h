@@ -30,8 +30,14 @@ public:
     bool getAuthSent();             // an auth provider is bound and ready
     bool getDongleAuthRequired();   // USB host carries the auth device
 
-private:
+    // Bound provider that is ready to sign, or nullptr.
     PS5Auth * readyAuth() const;
+
+    // The console started auth but did not complete it in time. Used by
+    // PS5ModeDriver to fall back to the PS4 arcade-stick path.
+    bool consoleAuthFailed() const;
+
+private:
     void buildReport(Gamepad * gamepad);
     bool sendSigned(PS5Auth * auth, bool due);
     bool sendUnsigned(bool due);
@@ -51,6 +57,8 @@ private:
     uint64_t lastSentUs = 0;
 
     bool authWasReady = false;      // For logging ready/lost transitions
+    bool consoleAuthDone = false;   // Console was told "done" (F2 0x40) by the bound provider
+    bool outputLogged = false;      // logging: first console output report
     uint32_t signedSent = 0;        // Signed reports sent (logging)
     uint32_t submitted = 0;         // Reports handed to the dongle (logging)
     uint64_t lastSignedUs = 0;      // Last signed report sent (stall logging)
@@ -58,6 +66,9 @@ private:
 
     uint8_t signedOut[PS5_ENDPOINT_SIZE];
     bool signedOutPending = false;  // Signed report waiting for the IN endpoint
+
+    uint64_t consoleAuthStartUs = 0; // First console F0 of the current provider (0 = none yet)
+    bool firstSignedDumped = false;  // logging
 
     // Last challenge seen, so "not ready" can be answered without a provider
     uint8_t consoleFrameId = 0;

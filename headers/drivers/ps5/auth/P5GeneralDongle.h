@@ -24,6 +24,7 @@ public:
     static PS5USBAuth * create(uint8_t dev_addr, uint8_t instance) { return new P5GeneralDongle(dev_addr, instance); }
 
     virtual const char * name() const { return "P5General"; }
+    virtual const char * shortName() const { return "P5G"; }
     virtual bool ready() const { return true; }   // usable as soon as it enumerates
     virtual void process();
 

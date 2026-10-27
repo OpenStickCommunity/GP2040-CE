@@ -26,6 +26,7 @@ public:
     static PS5USBAuth * create(uint8_t dev_addr, uint8_t instance) { return new MayflashS5Dongle(dev_addr, instance); }
 
     virtual const char * name() const { return "Mayflash S5"; }
+    virtual const char * shortName() const { return "MS5"; }
     virtual bool ready() const { return setupDone; }   // unlocked and identity fetched
     virtual bool failed() const { return probeFailed; }
     virtual void process();

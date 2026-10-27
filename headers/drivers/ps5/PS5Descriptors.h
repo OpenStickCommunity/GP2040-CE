@@ -15,8 +15,8 @@
 
 #define PS5_ENDPOINT_SIZE 64
 
-#define PS5_VENDOR_ID     0x054C
-#define PS5_PRODUCT_ID    0x0CE6
+#define PS5_VENDOR_ID     0x2B81
+#define PS5_PRODUCT_ID    0x0101
 
 // HAT report (4 bits)
 #define PS5_HAT_UP        0x00
@@ -44,7 +44,7 @@
 
 // Console-facing feature reports
 typedef enum {
-    PS5_FEATURE_DEFINITION       = 0x03,   // Controller definition
+    PS5_FEATURE_DEFINITION       = 0x03,   // Controller definition (PS4ControllerConfig layout)
     PS5_FEATURE_CALIBRATION      = 0x05,   // Sensor calibration
     PS5_FEATURE_SET_BLUETOOTH    = 0x08,   // Bluetooth control
     PS5_FEATURE_PAIRING_INFO     = 0x09,   // Pairing info / MAC
@@ -95,12 +95,7 @@ typedef struct __attribute__((packed)) {
 
     uint8_t button_home : 1;
     uint8_t button_touchpad : 1;
-    uint8_t button_mute : 1;
-    uint8_t : 1;
-    uint8_t button_left_function : 1;   // DualSense Edge
-    uint8_t button_right_function : 1;  // DualSense Edge
-    uint8_t button_left_paddle : 1;     // DualSense Edge
-    uint8_t button_right_paddle : 1;    // DualSense Edge
+    uint8_t : 6;
 
     uint8_t reserved_11;
 
@@ -109,48 +104,21 @@ typedef struct __attribute__((packed)) {
     PSSensor gyroscope;
     PSSensor accelerometer;
 
-    uint32_t sensor_timestamp;
-    int8_t temperature;
+    uint16_t reserved_28_29;
+    uint16_t data_30_31;                // 0x001A, as sent by the P5General
 
-    TouchpadData touchpad_data;
-    uint8_t touchpad_timestamp;
+    TouchpadData touchpad_data;         // 0x20
 
-    uint8_t trigger_right_stop_location : 4;
-    uint8_t trigger_right_status : 4;
-    uint8_t trigger_left_stop_location : 4;
-    uint8_t trigger_left_status : 4;
+    uint8_t reserved_40_55[16];
 
-    uint32_t host_timestamp;
-
-    uint8_t trigger_right_effect : 4;
-    uint8_t trigger_left_effect : 4;
-
-    uint32_t device_timestamp;
-
-    uint8_t power_percent : 4;          // 0x00-0x0A
-    PS5PowerState power_state : 4;
-
-    uint8_t plugged_headphones : 1;
-    uint8_t plugged_mic : 1;
-    uint8_t mic_muted : 1;
-    uint8_t plugged_usb_data : 1;
-    uint8_t plugged_usb_power : 1;
-    uint8_t usb_power_on_bt : 1;
-    uint8_t dock_detect : 1;
-    uint8_t plugged_unk : 1;
-
-    uint8_t plugged_external_mic : 1;
-    uint8_t haptic_low_pass_filter : 1;
-    uint8_t : 6;
-
-    uint8_t aes_cmac[8];                // Filled in by the auth dongle
+    uint8_t aes_cmac[8];                // 0x38, filled in by the auth dongle
 } PS5Report;
 
 static_assert(sizeof(PS5Report) == PS5_ENDPOINT_SIZE, "PS5Report must be 64 bytes");
 
 static const uint8_t ps5_string_language[]     = { 0x09, 0x04 };
-static const uint8_t ps5_string_manufacturer[] = "Sony Interactive Entertainment";
-static const uint8_t ps5_string_product[]      = "DualSense Wireless Controller";
+static const uint8_t ps5_string_manufacturer[] = "Open Stick Community";
+static const uint8_t ps5_string_product[]      = "GP2040-CE (PS5)";
 static const uint8_t ps5_string_version[]      = "1.0";
 
 static const uint8_t * ps5_string_descriptors[] __attribute__((unused)) =
@@ -170,9 +138,9 @@ static const uint8_t ps5_device_descriptor[] =
     0x00,        // bDeviceSubClass
     0x00,        // bDeviceProtocol
     0x40,        // bMaxPacketSize0 64
-    TU_U16_LOW(PS5_VENDOR_ID),  TU_U16_HIGH(PS5_VENDOR_ID),   // idVendor 0x054C
-    TU_U16_LOW(PS5_PRODUCT_ID), TU_U16_HIGH(PS5_PRODUCT_ID),  // idProduct 0x0CE6
-    0x00, 0x01,  // bcdDevice 1.00
+    TU_U16_LOW(PS5_VENDOR_ID),  TU_U16_HIGH(PS5_VENDOR_ID),   // idVendor 0x2B81
+    TU_U16_LOW(PS5_PRODUCT_ID), TU_U16_HIGH(PS5_PRODUCT_ID),  // idProduct 0x0101
+    0x01, 0x00,  // bcdDevice 0.01
     0x01,        // iManufacturer (String Index)
     0x02,        // iProduct (String Index)
     0x00,        // iSerialNumber (String Index)
@@ -197,11 +165,11 @@ static const uint8_t ps5_report_descriptor[] =
     0x26, 0xFF, 0x00,  //   Logical Maximum (255)
     0x75, 0x08,        //   Report Size (8)
     0x95, 0x06,        //   Report Count (6)
-    0x81, 0x02,        //   Input (Data,Var,Abs)
+    0x81, 0x02,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
     0x06, 0x00, 0xFF,  //   Usage Page (Vendor Defined 0xFF00)
     0x09, 0x20,        //   Usage (0x20)
     0x95, 0x01,        //   Report Count (1)
-    0x81, 0x02,        //   Input (Data,Var,Abs)
+    0x81, 0x02,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
     0x05, 0x01,        //   Usage Page (Generic Desktop Ctrls)
     0x09, 0x39,        //   Usage (Hat switch)
     0x15, 0x00,        //   Logical Minimum (0)
@@ -211,105 +179,60 @@ static const uint8_t ps5_report_descriptor[] =
     0x65, 0x14,        //   Unit (System: English Rotation, Length: Centimeter)
     0x75, 0x04,        //   Report Size (4)
     0x95, 0x01,        //   Report Count (1)
-    0x81, 0x42,        //   Input (Data,Var,Abs,Null State)
+    0x81, 0x42,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,Null State)
     0x65, 0x00,        //   Unit (None)
     0x05, 0x09,        //   Usage Page (Button)
     0x19, 0x01,        //   Usage Minimum (0x01)
-    0x29, 0x0F,        //   Usage Maximum (0x0F)
+    0x29, 0x0E,        //   Usage Maximum (0x0E)
     0x15, 0x00,        //   Logical Minimum (0)
     0x25, 0x01,        //   Logical Maximum (1)
     0x75, 0x01,        //   Report Size (1)
-    0x95, 0x0F,        //   Report Count (15)
-    0x81, 0x02,        //   Input (Data,Var,Abs)
+    0x95, 0x0E,        //   Report Count (14)
+    0x81, 0x02,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
     0x06, 0x00, 0xFF,  //   Usage Page (Vendor Defined 0xFF00)
     0x09, 0x21,        //   Usage (0x21)
-    0x95, 0x0D,        //   Report Count (13)
-    0x81, 0x02,        //   Input (Data,Var,Abs)
+    0x95, 0x0E,        //   Report Count (14)
+    0x81, 0x02,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
     0x06, 0x00, 0xFF,  //   Usage Page (Vendor Defined 0xFF00)
     0x09, 0x22,        //   Usage (0x22)
     0x15, 0x00,        //   Logical Minimum (0)
     0x26, 0xFF, 0x00,  //   Logical Maximum (255)
     0x75, 0x08,        //   Report Size (8)
     0x95, 0x34,        //   Report Count (52)
-    0x81, 0x02,        //   Input (Data,Var,Abs)
+    0x81, 0x02,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
     0x85, 0x02,        //   Report ID (2)
     0x09, 0x23,        //   Usage (0x23)
     0x95, 0x2F,        //   Report Count (47)
-    0x91, 0x02,        //   Output (Data,Var,Abs)
-    0x85, 0x05,        //   Report ID (5)
-    0x09, 0x33,        //   Usage (0x33)
-    0x95, 0x28,        //   Report Count (40)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs)
-    0x85, 0x08,        //   Report ID (8)
-    0x09, 0x34,        //   Usage (0x34)
+    0x91, 0x02,        //   Output (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+    0x85, 0x03,        //   Report ID (3)
+    0x0A, 0x21, 0x28,  //   Usage (0x2821)
     0x95, 0x2F,        //   Report Count (47)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs)
-    0x85, 0x09,        //   Report ID (9)
-    0x09, 0x24,        //   Usage (0x24)
-    0x95, 0x13,        //   Report Count (19)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs)
-    0x85, 0x0A,        //   Report ID (10)
-    0x09, 0x25,        //   Usage (0x25)
-    0x95, 0x1A,        //   Report Count (26)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs)
-    0x85, 0x20,        //   Report ID (32)
-    0x09, 0x26,        //   Usage (0x26)
-    0x95, 0x3F,        //   Report Count (63)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs)
-    0x85, 0x21,        //   Report ID (33)
-    0x09, 0x27,        //   Usage (0x27)
-    0x95, 0x04,        //   Report Count (4)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs)
-    0x85, 0x22,        //   Report ID (34)
-    0x09, 0x40,        //   Usage (0x40)
-    0x95, 0x3F,        //   Report Count (63)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs)
-    0x85, 0x82,        //   Report ID (130)
-    0x09, 0x2A,        //   Usage (0x2A)
-    0x95, 0x09,        //   Report Count (9)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs)
-    0x85, 0x83,        //   Report ID (131)
-    0x09, 0x2B,        //   Usage (0x2B)
-    0x95, 0x3F,        //   Report Count (63)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs)
-    0x85, 0x84,        //   Report ID (132)
-    0x09, 0x2C,        //   Usage (0x2C)
-    0x95, 0x3F,        //   Report Count (63)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs)
-    0x85, 0x85,        //   Report ID (133)
-    0x09, 0x2D,        //   Usage (0x2D)
+    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+    0x06, 0x80, 0xFF,  //   Usage Page (Vendor Defined 0xFF80)
+    0x85, 0xE0,        //   Report ID (-32)
+    0x09, 0x57,        //   Usage (0x57)
     0x95, 0x02,        //   Report Count (2)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs)
-    0x85, 0xA0,        //   Report ID (160)
-    0x09, 0x2E,        //   Usage (0x2E)
-    0x95, 0x01,        //   Report Count (1)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs)
-    0x85, 0xE0,        //   Report ID (224)
-    0x09, 0x2F,        //   Usage (0x2F)
+    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+    0xC0,              // End Collection
+    0x06, 0xF0, 0xFF,  // Usage Page (Vendor Defined 0xFFF0)
+    0x09, 0x40,        // Usage (0x40)
+    0xA1, 0x01,        // Collection (Application)
+    0x85, 0xF0,        //   Report ID (-16)
+    0x09, 0x47,        //   Usage (0x47)
     0x95, 0x3F,        //   Report Count (63)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs)
-    0x85, 0xF0,        //   Report ID (240)
-    0x09, 0x30,        //   Usage (0x30)
+    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+    0x85, 0xF1,        //   Report ID (-15)
+    0x09, 0x48,        //   Usage (0x48)
     0x95, 0x3F,        //   Report Count (63)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs)
-    0x85, 0xF1,        //   Report ID (241)
-    0x09, 0x31,        //   Usage (0x31)
-    0x95, 0x3F,        //   Report Count (63)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs)
-    0x85, 0xF2,        //   Report ID (242)
-    0x09, 0x32,        //   Usage (0x32)
+    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+    0x85, 0xF2,        //   Report ID (-14)
+    0x09, 0x49,        //   Usage (0x49)
     0x95, 0x0F,        //   Report Count (15)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs)
-    0x85, 0xF4,        //   Report ID (244)
-    0x09, 0x35,        //   Usage (0x35)
-    0x95, 0x3F,        //   Report Count (63)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs)
-    0x85, 0xF5,        //   Report ID (245)
-    0x09, 0x36,        //   Usage (0x36)
-    0x95, 0x03,        //   Report Count (3)
-    0xB1, 0x02,        //   Feature (Data,Var,Abs)
+    0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
     0xC0,              // End Collection
 };
+
+static_assert(sizeof(ps5_report_descriptor) == 165, "third-party report descriptor is 165 bytes");
 
 static const uint8_t ps5_configuration_descriptor[] =
 {
@@ -319,7 +242,7 @@ static const uint8_t ps5_configuration_descriptor[] =
     0x01,        // bNumInterfaces 1
     0x01,        // bConfigurationValue
     0x00,        // iConfiguration (String Index)
-    0xC0,        // bmAttributes (Self Powered)
+    0x80,        // bmAttributes (Bus Powered)
     0xFA,        // bMaxPower 500mA
 
     0x09,        // bLength

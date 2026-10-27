@@ -18,7 +18,7 @@
 
 // Check for saves
 #include "ps4/PS4Driver.h"
-#include "ps5/PS5Driver.h"
+#include "ps5/PS5ModeDriver.h"
 
 #include "config_utils.h"
 
@@ -48,7 +48,7 @@ bool Storage::save(const bool force) {
 		InputMode inputMode = DriverManager::getInstance().getInputMode();
 		GPDriver * driver = DriverManager::getInstance().getDriver();
 		if ((inputMode == INPUT_MODE_PS4 && ((PS4Driver*)driver)->getDongleAuthRequired()) ||
-			(inputMode == INPUT_MODE_PS5 && ((PS5Driver*)driver)->getDongleAuthRequired())) {
+			(inputMode == INPUT_MODE_PS5 && ((PS5ModeDriver*)driver)->getDongleAuthRequired())) {
 			return false;
 		}
 	}

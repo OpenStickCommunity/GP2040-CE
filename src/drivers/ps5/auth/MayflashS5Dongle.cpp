@@ -36,6 +36,11 @@ static constexpr uint8_t  S5_MAX_PROBE_RETRIES   = 3;
 static constexpr uint64_t S5_F2_DELAY_US         = 500 * 1000;   // Before the first signing-state poll
 static constexpr uint64_t S5_F2_POLL_INTERVAL_US = 10 * 1000;    // Between "not ready" polls
 
+// Status byte (battery level / charge state) in the third-party report layout.
+// It sits one byte before the DualSense position (0x35) because third-party
+// reports have no temperature byte ahead of the touchpad.
+static constexpr uint8_t S5_THIRD_PARTY_STATUS_OFFSET = 0x34;
+
 // Smallest dongle input report spliceSignedReport() can read
 static constexpr uint16_t S5_SIGNED_REPORT_MIN_LEN = 0x35;
 
@@ -564,6 +569,9 @@ void MayflashS5Dongle::spliceSignedReport(const uint8_t * report) {
     memcpy(&out[0x31], &report[0x31], 4);                       // device timestamp
     memcpy(&out[0x35], S5_BATTERY_REPORT, sizeof(S5_BATTERY_REPORT));
     memcpy(&out[0x38], &report[0x1D], 8);                       // AES-CMAC
+    // Force a full/charged status where the console reads it for this identity,
+    // otherwise it reads a timestamp byte as the battery level ("low battery").
+    out[S5_THIRD_PARTY_STATUS_OFFSET] = S5_BATTERY_REPORT[0];
 }
 
 void MayflashS5Dongle::onReport(const uint8_t * report, uint16_t len) {

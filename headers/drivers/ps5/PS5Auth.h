@@ -58,6 +58,7 @@ class PS5Auth {
 public:
     virtual ~PS5Auth() = default;
     virtual const char * name() const = 0;
+    virtual const char * shortName() const = 0;   // 3 chars, for the status bar
 
     virtual bool ready() const = 0;
 
