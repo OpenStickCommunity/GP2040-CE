@@ -27,12 +27,20 @@ const usbd_class_driver_t *usbd_app_driver_get_cb(uint8_t *driver_count) {
 }
 
 uint16_t tud_hid_get_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
+	HostLighting& hostLighting = HostLighting::getInstance();
+	if (hostLighting.isLightingInterface(itf))
+		return hostLighting.getReport(report_id, report_type, buffer, reqlen);
 	return DriverManager::getInstance().getDriver()->get_report(report_id, report_type, buffer, reqlen);
 }
 
 // Invoked when received SET_REPORT control request or
 // received data on OUT endpoint ( Report ID = 0, Type = 0 )
 void tud_hid_set_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize) {
+	HostLighting& hostLighting = HostLighting::getInstance();
+	if (hostLighting.isLightingInterface(itf)) {
+		hostLighting.setReport(report_id, report_type, buffer, bufsize);
+		return;
+	}
 	DriverManager::getInstance().getDriver()->set_report_n(itf, report_id, report_type, buffer, bufsize);
 }
 
@@ -109,6 +117,9 @@ uint8_t const *tud_descriptor_device_cb() {
 // Application return pointer to descriptor
 // Descriptor contents must exist long enough for transfer to complete
 uint8_t const *tud_hid_descriptor_report_cb(uint8_t itf) {
+	HostLighting& hostLighting = HostLighting::getInstance();
+	if (hostLighting.isLightingInterface(itf))
+		return hostLighting.getReportDescriptor();
 	return DriverManager::getInstance().getDriver()->get_hid_descriptor_report_cb(itf);
 }
 
