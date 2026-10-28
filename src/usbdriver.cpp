@@ -8,6 +8,7 @@
 
 #include "tusb.h"
 #include "drivermanager.h"
+#include "hostlighting.h"
 
 static bool usb_mounted;
 static bool usb_suspended;
@@ -47,6 +48,7 @@ void tud_umount_cb(void)
 {
 	usb_mounted = false;
 	usb_suspended = false;
+	HostLighting::usbUnmounted();
 }
 
 // Invoked when usb bus is suspended
@@ -55,11 +57,29 @@ void tud_umount_cb(void)
 void tud_suspend_cb(bool remote_wakeup_en) {
 	(void)remote_wakeup_en;
 	usb_suspended = true;
+	HostLighting::usbSuspended();
 }
 
 // Invoked when usb bus is resumed
 void tud_resume_cb(void) {
 	usb_suspended = false;
+}
+
+// Invoked when an IN report has been sent. TinyUSB weak callback, defined
+// only here.
+void tud_hid_report_complete_cb(uint8_t instance, uint8_t const *report, uint16_t len) {
+	(void)report;
+	(void)len;
+	if (HostLighting::interfaceActive)
+		HostLighting::reportComplete(instance);
+}
+
+// Invoked for every USB device event, in interrupt context. Sets flags
+// only. TinyUSB weak callback, defined only here.
+void tud_event_hook_cb(uint8_t rhport, uint32_t eventid, bool in_isr) {
+	(void)rhport;
+	(void)in_isr;
+	HostLighting::usbEvent(eventid);
 }
 
 // Vendor Controlled XFER occured
