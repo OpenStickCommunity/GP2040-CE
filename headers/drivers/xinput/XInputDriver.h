@@ -40,6 +40,9 @@ private:
     uint8_t featureBuffer[XINPUT_OUT_SIZE];
     uint8_t tud_buffer[64];
     bool xAuthSent;
+    // Console hosts run XSM3 authentication almost immediately; its absence after
+    // enumeration is the AUTO-mode signal that the host is a PC
+    bool consoleAuthSeen = false;
     bool analogSchedulingAllowed = false;
     uint32_t analogSchedulingProfile = 0;
 
