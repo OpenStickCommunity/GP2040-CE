@@ -921,6 +921,8 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, shmupBtnMask4, SHMUP_BUTTON4);
     INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, shmupMixMode, SHMUP_MIX_MODE);
     INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, turboLedType, TURBO_LED_TYPE);
+    INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, holdToClear, !!TURBO_HOLD_TO_CLEAR);
+    INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, holdToClearTime, TURBO_HOLD_CLEAR_TIME);
 
     // addonOptions.reverseOptions
     INIT_UNSET_PROPERTY(config.addonOptions.reverseOptions, enabled, !!REVERSE_ENABLED);

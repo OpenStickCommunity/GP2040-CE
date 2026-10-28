@@ -492,6 +492,8 @@ message TurboOptions
     optional PLEDType turboLedType = 20;
     optional int32 turboLedIndex = 21  [deprecated = true];
     optional uint32 turboLedColor = 22 [deprecated = true];
+    optional bool holdToClear = 23;
+    optional uint32 holdToClearTime = 24;
 }
 
 message SliderOptions
