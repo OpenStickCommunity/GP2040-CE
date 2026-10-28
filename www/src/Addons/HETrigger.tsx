@@ -10,7 +10,12 @@ import omit from 'lodash/omit';
 
 import HECalibration from '../Components/HECalibration';
 
-import useHETriggerStore, { Trigger } from '../Store/useHETriggerStore';
+import useHETriggerStore, {
+	MAX_MUXES,
+	getMuxCount,
+	isTriggerScanned,
+	Trigger,
+} from '../Store/useHETriggerStore';
 import useBoardDefinition from '../Store/useBoardDefinitionStore';
 
 import { AppContext } from '../Contexts/AppContext';
@@ -176,8 +181,10 @@ const TriggerActionsForm = ({
 							setCalibrateAllLoop(true);
 						}}
 						disabled={
-							triggers.filter((e) => {
-								return e.action !== -10;
+							triggers.filter((e, i) => {
+								return (
+									e.action !== -10 && isTriggerScanned(i, muxChannels, values)
+								);
 							}).length === 0
 						}
 						className="my-2"
@@ -185,95 +192,90 @@ const TriggerActionsForm = ({
 						{t('HETrigger:calibrate-all-button')}
 					</Button>
 				</div>
-				{Array.from(
-					{ length: Math.min(8, Math.floor(32 / muxChannels)) },
-					(_, i) => (
-						<div
-							key={`he-trigger-item-${i}`}
-							className="mt-3 mb-3"
-							hidden={
-								Number(values[`muxADCPin${i}` as keyof typeof values]) === -1
-							}
-						>
-							<div className="d-flex flex-shrink-0">
-								<label htmlFor={i}>
-									{muxChannels > 1
-										? `${t('HETrigger:multiplexer-label')} ${i}`
-										: 'Direct'}{' '}
-									(ADC {values[`muxADCPin${i}` as keyof typeof values]})
-								</label>
-							</div>
-							{values[`muxADCPin${i}` as keyof typeof values] !== -1 ? (
-								<div
-									className={`action-grid-HE-trigger-${muxChannels} gap-3 mt-2 mb-3`}
-								>
-									{Object.keys(triggers)
-										.splice(i * muxChannels, muxChannels)
-										.map((key, index) => (
-											<div
-												key={`select-he-${index}`}
-												className="d-flex align-items-center gap-2"
-											>
-												<div
-													className="d-flex flex-shrink-0"
-													style={{ width: '6rem' }}
-												>
-													<label htmlFor={key}>
-														{t('HETrigger:channel-label')} {index}
-													</label>
-												</div>
-												<CustomSelect
-													key={`select-option-he-${index}`}
-													inputId={key}
-													isClearable
-													isSearchable
-													options={options}
-													value={getOption(triggers[key], triggers[key].action)}
-													getOptionLabel={(option) => {
-														const labelKey = option.label
-															.split('BUTTON_PRESS_')
-															.pop();
-														// Unused buttons mapped to '-', falling back to action's proper label
-														const buttonName = labelKey
-															? buttonNames[labelKey]
-															: undefined;
-														return buttonName && buttonName !== '-'
-															? buttonName
-															: t(`PinMapping:actions.${option.label}`);
-													}}
-													onChange={(change) =>
-														setHETrigger({
-															id: parseInt(key),
-															...triggers[key],
-															action:
-																change?.value === undefined
-																	? -10
-																	: change.value,
-														})
-													}
-												/>
-												<Button
-													type="button"
-													key={`select-button-he-${index}`}
-													onClick={(e) => {
-														setShowModal(true);
-														setCalibrationTarget(parseInt(key));
-														setCalibrateAllLoop(false);
-													}}
-													disabled={triggers[key].action === -10}
-													className="d-flex flex-shrink-0"
-												>
-													🧲
-												</Button>
-											</div>
-										))}
-								</div>
-							) : (
-								''
-							)}
+				{Array.from({ length: getMuxCount(muxChannels) }, (_, i) => (
+					<div
+						key={`he-trigger-item-${i}`}
+						className="mt-3 mb-3"
+						hidden={
+							Number(values[`muxADCPin${i}` as keyof typeof values]) === -1
+						}
+					>
+						<div className="d-flex flex-shrink-0">
+							<label htmlFor={i}>
+								{muxChannels > 1
+									? `${t('HETrigger:multiplexer-label')} ${i}`
+									: 'Direct'}{' '}
+								(ADC {values[`muxADCPin${i}` as keyof typeof values]})
+							</label>
 						</div>
-					),
-				)}
+						{values[`muxADCPin${i}` as keyof typeof values] !== -1 ? (
+							<div
+								className={`action-grid-HE-trigger-${muxChannels} gap-3 mt-2 mb-3`}
+							>
+								{Object.keys(triggers)
+									.splice(i * muxChannels, muxChannels)
+									.map((key, index) => (
+										<div
+											key={`select-he-${index}`}
+											className="d-flex align-items-center gap-2"
+										>
+											<div
+												className="d-flex flex-shrink-0"
+												style={{ width: '6rem' }}
+											>
+												<label htmlFor={key}>
+													{t('HETrigger:channel-label')} {index}
+												</label>
+											</div>
+											<CustomSelect
+												key={`select-option-he-${index}`}
+												inputId={key}
+												isClearable
+												isSearchable
+												options={options}
+												value={getOption(triggers[key], triggers[key].action)}
+												getOptionLabel={(option) => {
+													const labelKey = option.label
+														.split('BUTTON_PRESS_')
+														.pop();
+													// Unused buttons mapped to '-', falling back to action's proper label
+													const buttonName = labelKey
+														? buttonNames[labelKey]
+														: undefined;
+													return buttonName && buttonName !== '-'
+														? buttonName
+														: t(`PinMapping:actions.${option.label}`);
+												}}
+												onChange={(change) =>
+													setHETrigger({
+														id: parseInt(key),
+														...triggers[key],
+														action:
+															change?.value === undefined ? -10 : change.value,
+													})
+												}
+											/>
+											<Button
+												type="button"
+												key={`select-button-he-${index}`}
+												onClick={(e) => {
+													setShowModal(true);
+													setCalibrationTarget(parseInt(key));
+													setCalibrateAllLoop(false);
+												}}
+												disabled={triggers[key].action === -10}
+												className="d-flex flex-shrink-0"
+											>
+												🧲
+											</Button>
+										</div>
+									))}
+							</div>
+						) : (
+							''
+						)}
+					</div>
+				))}
 				<HECalibration
 					values={values}
 					showModal={showModal}
@@ -303,85 +305,81 @@ const TriggerActionsForm = ({
 					<h1>{t('HETrigger:voltage-table-header-text')}</h1>
 				</div>
 				<div>
-					{Array.from(
-						{ length: Math.min(4, Math.floor(32 / muxChannels)) },
-						(_, i) => (
-							<div
-								key={`voltage-table-header-${i}`}
-								className="mt-3 mb-3"
-								hidden={
-									Number(values[`muxADCPin${i}` as keyof typeof values]) === -1
-								}
-							>
-								<div className="d-flex flex-shrink-0">
-									<label>
-										{muxChannels > 1
-											? `${t('HETrigger:multiplexer-label')} ${i}`
-											: 'Direct'}{' '}
-										(ADC{' '}
-										{String(values[`muxADCPin${i}` as keyof typeof values])})
-									</label>
-								</div>
-								{values[`muxADCPin${i}` as keyof typeof values] !== -1 ? (
-									<div
-										className={`action-grid-HE-trigger-${muxChannels} gap-0 mt-0 mb-0 d-inline-flex`}
-									>
-										<Table bordered className="mb-0 mt-0">
-											<thead>
-												<tr>
-													<th>{t('HETrigger:channel-label')}</th>
-													<th>{t('HETrigger:voltage-table-idle-text')}</th>
-													<th>{t('HETrigger:voltage-table-trigger-text')}</th>
-													<th>{t('HETrigger:voltage-table-pressed-text')}</th>
-													<th>{t('HETrigger:voltage-table-polarity-text')}</th>
-													<th>
-														{t('HETrigger:voltage-table-rapid-trigger-text')}
-													</th>
-													<th>{t('HETrigger:voltage-table-release-text')}</th>
-													<th>{t('HETrigger:voltage-table-noise-text')}</th>
-												</tr>
-											</thead>
-											<tbody>
-												{Object.keys(triggers)
-													.splice(i * muxChannels, muxChannels)
-													.map((key, index) => (
-														<tr key={`table-tr-triggers-${index}`}>
-															<td>
-																{index}{' '}
-																{triggers[key].action === -10
-																	? t('HETrigger:voltage-table-disabled-label')
-																	: ''}
-															</td>
-															<td>{triggers[key].idle}</td>
-															<td>{triggers[key].active}</td>
-															<td>{triggers[key].pressed}</td>
-															<td>{triggers[key].is_polarized ? 'S' : 'N'}</td>
-															<td>
-																{triggers[key].rapidTrigger
-																	? t('Common:status-enabled')
-																	: t('Common:status-disabled')}
-															</td>
-															<td>
-																{triggers[key].rapidTrigger
-																	? triggers[key].release
-																	: 'N/A'}
-															</td>
-															<td>
-																{triggers[key].rapidTrigger
-																	? triggers[key].noise
-																	: 'N/A'}
-															</td>
-														</tr>
-													))}
-											</tbody>
-										</Table>
-									</div>
-								) : (
-									''
-								)}
+					{Array.from({ length: getMuxCount(muxChannels) }, (_, i) => (
+						<div
+							key={`voltage-table-header-${i}`}
+							className="mt-3 mb-3"
+							hidden={
+								Number(values[`muxADCPin${i}` as keyof typeof values]) === -1
+							}
+						>
+							<div className="d-flex flex-shrink-0">
+								<label>
+									{muxChannels > 1
+										? `${t('HETrigger:multiplexer-label')} ${i}`
+										: 'Direct'}{' '}
+									(ADC {String(values[`muxADCPin${i}` as keyof typeof values])})
+								</label>
 							</div>
-						),
-					)}
+							{values[`muxADCPin${i}` as keyof typeof values] !== -1 ? (
+								<div
+									className={`action-grid-HE-trigger-${muxChannels} gap-0 mt-0 mb-0 d-inline-flex`}
+								>
+									<Table bordered className="mb-0 mt-0">
+										<thead>
+											<tr>
+												<th>{t('HETrigger:channel-label')}</th>
+												<th>{t('HETrigger:voltage-table-idle-text')}</th>
+												<th>{t('HETrigger:voltage-table-trigger-text')}</th>
+												<th>{t('HETrigger:voltage-table-pressed-text')}</th>
+												<th>{t('HETrigger:voltage-table-polarity-text')}</th>
+												<th>
+													{t('HETrigger:voltage-table-rapid-trigger-text')}
+												</th>
+												<th>{t('HETrigger:voltage-table-release-text')}</th>
+												<th>{t('HETrigger:voltage-table-noise-text')}</th>
+											</tr>
+										</thead>
+										<tbody>
+											{Object.keys(triggers)
+												.splice(i * muxChannels, muxChannels)
+												.map((key, index) => (
+													<tr key={`table-tr-triggers-${index}`}>
+														<td>
+															{index}{' '}
+															{triggers[key].action === -10
+																? t('HETrigger:voltage-table-disabled-label')
+																: ''}
+														</td>
+														<td>{triggers[key].idle}</td>
+														<td>{triggers[key].active}</td>
+														<td>{triggers[key].pressed}</td>
+														<td>{triggers[key].is_polarized ? 'S' : 'N'}</td>
+														<td>
+															{triggers[key].rapidTrigger
+																? t('Common:status-enabled')
+																: t('Common:status-disabled')}
+														</td>
+														<td>
+															{triggers[key].rapidTrigger
+																? triggers[key].release
+																: 'N/A'}
+														</td>
+														<td>
+															{triggers[key].rapidTrigger
+																? triggers[key].noise
+																: 'N/A'}
+														</td>
+													</tr>
+												))}
+										</tbody>
+									</Table>
+								</div>
+							) : (
+								''
+							)}
+						</div>
+					))}
 				</div>
 			</div>
 			<div className="mt-2">
@@ -531,7 +529,7 @@ const HETrigger = ({
 					);
 				})}
 				<Row className="mb-3">
-					{boardDefinition.analogPins.map((val, i) => (
+					{boardDefinition.analogPins.slice(0, MAX_MUXES).map((val, i) => (
 						<FormSelect
 							label={t(`HETrigger:adc-pin-${i}`)}
 							name={`muxADCPin${i}`}
