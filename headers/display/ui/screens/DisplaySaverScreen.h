@@ -37,8 +37,27 @@ class DisplaySaverScreen : public GPScreen {
         void drawBounceScene();
 
         // pipes
-        uint32_t pipeSeed = 0;
-        uint32_t pipeLastUpdate = 0;
+        static const uint8_t PIPE_CELL = 7;
+        static const uint8_t PIPE_COLS = SCREEN_WIDTH / PIPE_CELL;
+        static const uint8_t PIPE_ROWS = SCREEN_HEIGHT / PIPE_CELL;
+        static const uint8_t PIPE_HEADS = 2;
+        struct PipeHead {
+            uint8_t x;
+            uint8_t y;
+            uint8_t dir;
+            uint8_t length;
+            bool alive;
+        };
+        uint8_t pipeCells[PIPE_ROWS][PIPE_COLS] = {};
+        PipeHead pipeHeads[PIPE_HEADS] = {};
+        uint16_t pipeFilled = 0;
+        uint32_t pipeLastStep = 0;
+        uint32_t pipeFullSince = 0;
+        void initPipeScene();
+        bool isPipeCellFree(int16_t x, int16_t y);
+        bool spawnPipe(PipeHead& head);
+        void stepPipe(PipeHead& head);
+        void fillPipeRect(uint16_t x, uint16_t y, uint16_t w, uint16_t h);
         void drawPipeScene();
 
         // toaster
