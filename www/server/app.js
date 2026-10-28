@@ -831,6 +831,8 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		focusModeButtonLockMask: 0,
 		focusModeButtonLockEnabled: 0,
 		shmupMode: 0,
+		turboHoldToClear: 0,
+		turboHoldToClearTime: 5,
 		shmupMixMode: 0,
 		shmupAlwaysOn1: 0,
 		shmupAlwaysOn2: 0,
