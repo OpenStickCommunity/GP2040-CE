@@ -123,7 +123,6 @@ void DisplaySaverScreen::drawBounceScene() {
     getRenderer()->drawSprite((uint8_t *)bitmapGP2040Logo, bounceSpriteWidth, bounceSpriteHeight, 0, bounceSpriteX, bounceSpriteY, 0, bounceScale);
 }
 
-// Pipe cell flags: one bit per connected side, plus a joint bit for turns and pipe ends
 enum : uint8_t {
     PIPE_NORTH = 1 << 0,
     PIPE_EAST  = 1 << 1,
@@ -151,7 +150,6 @@ bool DisplaySaverScreen::isPipeCellFree(int16_t x, int16_t y) {
 }
 
 bool DisplaySaverScreen::spawnPipe(PipeHead& head) {
-    // pick a random free cell, so the last few gaps still get filled
     uint16_t freeCells = PIPE_COLS * PIPE_ROWS - pipeFilled;
     if (freeCells == 0) return false;
 
@@ -173,7 +171,6 @@ void DisplaySaverScreen::stepPipe(PipeHead& head) {
     const uint8_t PIPE_TURN_CHANCE = 5;
     const uint8_t PIPE_MAX_LENGTH = 30;
 
-    // go straight most of the time, turn left or right when blocked or at random
     uint8_t left = (head.dir + 3) % 4;
     uint8_t right = (head.dir + 1) % 4;
     if (rand() % 2) std::swap(left, right);
@@ -236,7 +233,6 @@ void DisplaySaverScreen::drawPipeScene() {
             }
         }
 
-        // once every cell is filled, hold the finished screen for a moment before starting over
         if (!anyAlive && pipeFilled >= PIPE_COLS * PIPE_ROWS) {
             if (pipeFullSince == 0) {
                 pipeFullSince = now;
@@ -250,8 +246,6 @@ void DisplaySaverScreen::drawPipeScene() {
         pipeLastStep = now;
     }
 
-    // pipes are 3px thick with 5px joints, both centered in the cell so neighbours keep a 2px gap;
-    // arms run from the body to the cell edge to meet the neighbouring cell's arms
     const uint8_t PIPE_THICKNESS = 3;
     const uint8_t PIPE_JOINT_SIZE = 5;
     const uint8_t body = (PIPE_CELL - PIPE_THICKNESS) / 2;
