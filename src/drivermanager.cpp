@@ -23,110 +23,95 @@
 #include "usbhostmanager.h"
 #include "storagemanager.h"
 
-void DriverManager::setup(InputMode mode) {
+typedef GPDriver * (*DriverFactory)();
+
+// The driver of each input mode. setup() and hasDriver() share it, so a
+// mode added here needs nothing else.
+static DriverFactory driverFactory(InputMode mode) {
     switch (mode) {
         case INPUT_MODE_CONFIG:
-            driver = new NetDriver();
-            break;
+            return []() -> GPDriver * { return new NetDriver(); };
         case INPUT_MODE_ASTRO:
-            driver = new AstroDriver();
-            break;
+            return []() -> GPDriver * { return new AstroDriver(); };
         case INPUT_MODE_EGRET:
-            driver = new EgretDriver();
-            break;
+            return []() -> GPDriver * { return new EgretDriver(); };
         case INPUT_MODE_KEYBOARD:
-            driver = new KeyboardDriver();
-            break;
+            return []() -> GPDriver * { return new KeyboardDriver(); };
         case INPUT_MODE_GENERIC:
-            driver = new HIDDriver();
-            break;
+            return []() -> GPDriver * { return new HIDDriver(); };
         case INPUT_MODE_MDMINI:
-            driver = new MDMiniDriver();
-            break;
+            return []() -> GPDriver * { return new MDMiniDriver(); };
         case INPUT_MODE_NEOGEO:
-            driver = new NeoGeoDriver();
-            break;
+            return []() -> GPDriver * { return new NeoGeoDriver(); };
         case INPUT_MODE_PSCLASSIC:
-            driver = new PSClassicDriver();
-            break;
+            return []() -> GPDriver * { return new PSClassicDriver(); };
         case INPUT_MODE_PCEMINI:
-            driver = new PCEngineDriver();
-            break;
+            return []() -> GPDriver * { return new PCEngineDriver(); };
         case INPUT_MODE_PS3:
-            driver = new PS3Driver();
-            break;
+            return []() -> GPDriver * { return new PS3Driver(); };
         case INPUT_MODE_PS4:
-            driver = new PS4Driver(PS4_CONTROLLER);
-            break;
+            return []() -> GPDriver * { return new PS4Driver(PS4_CONTROLLER); };
         case INPUT_MODE_PS5:
-            driver = new PS4Driver(PS4_ARCADESTICK);
-            break;
+            return []() -> GPDriver * { return new PS4Driver(PS4_ARCADESTICK); };
         case INPUT_MODE_P5GENERAL:
-            driver = new P5GeneralDriver();
-            break;
+            return []() -> GPDriver * { return new P5GeneralDriver(); };
         case INPUT_MODE_SWITCH:
-            driver = new SwitchDriver();
-            break;
+            return []() -> GPDriver * { return new SwitchDriver(); };
         case INPUT_MODE_XBONE:
-            driver = new XBOneDriver();
-            break;
+            return []() -> GPDriver * { return new XBOneDriver(); };
         case INPUT_MODE_XBOXORIGINAL:
-            driver = new XboxOriginalDriver();
-            break;
+            return []() -> GPDriver * { return new XboxOriginalDriver(); };
         case INPUT_MODE_XINPUT:
-            driver = new XInputDriver();
-            break;
+            return []() -> GPDriver * { return new XInputDriver(); };
         case INPUT_MODE_SWITCH_PRO:
-            switch (Storage::getInstance().getGamepadOptions().switchProControllerType) {
-                case SWITCH_PRO_CONTROLLER_TYPE_SNES:
-                    driver = new SwitchProDriver(SWITCH_TYPE_SNES);
-                    break;
-                case SWITCH_PRO_CONTROLLER_TYPE_SUPER_FAMICOM:
-                    driver = new SwitchProDriver(SWITCH_TYPE_SNES, SWITCH_REGION_JAPAN);
-                    break;
-                case SWITCH_PRO_CONTROLLER_TYPE_N64:
-                    driver = new SwitchProDriver(SWITCH_TYPE_N64);
-                    break;
-                case SWITCH_PRO_CONTROLLER_TYPE_GENESIS:
-                    driver = new SwitchProDriver(SWITCH_TYPE_GENESIS);
-                    break;
-                case SWITCH_PRO_CONTROLLER_TYPE_MEGA_DRIVE:
-                    driver = new SwitchProDriver(SWITCH_TYPE_GENESIS, SWITCH_REGION_JAPAN);
-                    break;
-                case SWITCH_PRO_CONTROLLER_TYPE_NES:
-                    driver = new SwitchProDriver(SWITCH_TYPE_NES_LEFT_JOYCON);
-                    break;
-                case SWITCH_PRO_CONTROLLER_TYPE_FAMICOM_I:
-                    driver = new SwitchProDriver(SWITCH_TYPE_FAMICOM_LEFT_JOYCON);
-                    break;
-                case SWITCH_PRO_CONTROLLER_TYPE_FAMICOM_II:
-                    driver = new SwitchProDriver(SWITCH_TYPE_FAMICOM_RIGHT_JOYCON);
-                    break;
-                case SWITCH_PRO_CONTROLLER_TYPE_JOYCON_LEFT:
-                    driver = new SwitchProDriver(SWITCH_TYPE_LEFT_JOYCON);
-                    break;
-                case SWITCH_PRO_CONTROLLER_TYPE_JOYCON_RIGHT:
-                    driver = new SwitchProDriver(SWITCH_TYPE_RIGHT_JOYCON);
-                    break;
-                case SWITCH_PRO_CONTROLLER_TYPE_JOYCON_PAIR:
-                    driver = new SwitchProDriver(SWITCH_TYPE_LEFT_JOYCON, SWITCH_REGION_USA, true);
-                    break;
-                default:
-                    driver = new SwitchProDriver();
-                    break;
-            }
-            break;
+            return []() -> GPDriver * {
+                switch (Storage::getInstance().getGamepadOptions().switchProControllerType) {
+                    case SWITCH_PRO_CONTROLLER_TYPE_SNES:
+                        return new SwitchProDriver(SWITCH_TYPE_SNES);
+                    case SWITCH_PRO_CONTROLLER_TYPE_SUPER_FAMICOM:
+                        return new SwitchProDriver(SWITCH_TYPE_SNES, SWITCH_REGION_JAPAN);
+                    case SWITCH_PRO_CONTROLLER_TYPE_N64:
+                        return new SwitchProDriver(SWITCH_TYPE_N64);
+                    case SWITCH_PRO_CONTROLLER_TYPE_GENESIS:
+                        return new SwitchProDriver(SWITCH_TYPE_GENESIS);
+                    case SWITCH_PRO_CONTROLLER_TYPE_MEGA_DRIVE:
+                        return new SwitchProDriver(SWITCH_TYPE_GENESIS, SWITCH_REGION_JAPAN);
+                    case SWITCH_PRO_CONTROLLER_TYPE_NES:
+                        return new SwitchProDriver(SWITCH_TYPE_NES_LEFT_JOYCON);
+                    case SWITCH_PRO_CONTROLLER_TYPE_FAMICOM_I:
+                        return new SwitchProDriver(SWITCH_TYPE_FAMICOM_LEFT_JOYCON);
+                    case SWITCH_PRO_CONTROLLER_TYPE_FAMICOM_II:
+                        return new SwitchProDriver(SWITCH_TYPE_FAMICOM_RIGHT_JOYCON);
+                    case SWITCH_PRO_CONTROLLER_TYPE_JOYCON_LEFT:
+                        return new SwitchProDriver(SWITCH_TYPE_LEFT_JOYCON);
+                    case SWITCH_PRO_CONTROLLER_TYPE_JOYCON_RIGHT:
+                        return new SwitchProDriver(SWITCH_TYPE_RIGHT_JOYCON);
+                    case SWITCH_PRO_CONTROLLER_TYPE_JOYCON_PAIR:
+                        return new SwitchProDriver(SWITCH_TYPE_LEFT_JOYCON, SWITCH_REGION_USA, true);
+                    default:
+                        return new SwitchProDriver();
+                }
+            };
         case INPUT_MODE_SWITCH2_PRO:
-            driver = new Switch2ProDriver();
-            break;
+            return []() -> GPDriver * { return new Switch2ProDriver(); };
         case INPUT_MODE_SINPUT:
-            driver = new SInputDriver();
-            break;
+            return []() -> GPDriver * { return new SInputDriver(); };
         default:
-            return;
+            return nullptr;
     }
+}
+
+void DriverManager::setup(InputMode mode) {
+    DriverFactory factory = driverFactory(mode);
+    if (factory == nullptr)
+        return;
+    driver = factory();
 
     // Initialize our chosen driver
     driver->initialize();
     inputMode = mode;
+}
+
+bool DriverManager::hasDriver(InputMode mode) {
+    return driverFactory(mode) != nullptr;
 }
