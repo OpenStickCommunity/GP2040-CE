@@ -16,6 +16,7 @@
 
 #include "neopicoleds.h"
 
+#include <cmath>
 #include <cstring>
 #include <string>
 #include <vector>
@@ -37,6 +38,7 @@
 #include "lwip/def.h"
 #include "lwip/mem.h"
 #include "addons/input_macro.h"
+#include "addons/he_trigger.h"
 
 #define PATH_CGI_ACTION "/cgi/action"
 
@@ -2043,7 +2045,7 @@ std::string getHETriggerVoltage()
 
     // Mux Channels determines how many select pins we use
     if (calibrationMuxChannels == 1) {
-        if ( id > 3 ) {
+        if ( id >= (uint32_t)HETriggerAddon::getMuxCount(1) ) {
             doc["error"] = "id out of range";
             return serialize_json(doc);
         }
@@ -2051,7 +2053,7 @@ std::string getHETriggerVoltage()
     } else if ( calibrationMuxChannels == 4) {
         uint32_t adcNum = id / 4;
         uint32_t channel = (id % 4);
-        if ( adcNum > 3 ) {
+        if ( adcNum >= (uint32_t)HETriggerAddon::getMuxCount(4) ) {
             doc["error"] = "id out of 4-channel mux range";
             return serialize_json(doc);
         }
@@ -2061,7 +2063,7 @@ std::string getHETriggerVoltage()
     } else if (calibrationMuxChannels == 8) {
         uint32_t adcNum = id / 8;
         uint32_t channel = (id % 8);
-        if ( adcNum > 2 ) {
+        if ( adcNum >= (uint32_t)HETriggerAddon::getMuxCount(8) ) {
             doc["error"] = "id out of 8-channel mux range";
             return serialize_json(doc);
         }
@@ -2072,7 +2074,7 @@ std::string getHETriggerVoltage()
     } else if (calibrationMuxChannels == 16) {
         uint32_t adcNum = id / 16;
         uint32_t channel = (id % 16);
-        if ( adcNum > 1 ) {
+        if ( adcNum >= (uint32_t)HETriggerAddon::getMuxCount(16) ) {
             doc["error"] = "id out of 16-channel mux range";
             return serialize_json(doc);
         }
@@ -2106,6 +2108,55 @@ std::string getHETriggerVoltage()
     return serialize_json(doc);
 }
 
+// Reads every scanned trigger in one request for Quick Calibrate; unscanned triggers report -1.
+std::string getHETriggerVoltages()
+{
+    const size_t capacity = JSON_OBJECT_SIZE(2) + JSON_ARRAY_SIZE(HETRIGGER_COUNT);
+    DynamicJsonDocument doc(capacity);
+
+    const uint32_t muxChannels = calibrationMuxChannels;
+    uint32_t selectBits;
+    switch (muxChannels) {
+        case 1:  selectBits = 0; break;
+        case 4:  selectBits = 2; break;
+        case 8:  selectBits = 3; break;
+        case 16: selectBits = 4; break;
+        default:
+            doc["error"] = "mux channels incorrect";
+            return serialize_json(doc);
+    }
+
+    const uint32_t muxCount = HETriggerAddon::getMuxCount(muxChannels);
+    JsonArray voltages = doc.createNestedArray("voltages");
+    for (uint32_t id = 0; id < HETRIGGER_COUNT; id++) {
+        const uint32_t mux = id / muxChannels;
+        const uint32_t channel = id % muxChannels;
+        const Pin_t adcPin = mux < muxCount ? calibrationADCPins[mux] : -1;
+        if (!AnalogInput::isAdcPin(adcPin)) {
+            voltages.add(-1);
+            continue;
+        }
+        for (uint32_t b = 0; b < selectBits; b++) {
+            if (calibrationSelectPins[mux][b] != -1) {
+                gpio_put(calibrationSelectPins[mux][b], (channel >> b) & 0x01);
+            }
+        }
+        adc_select_input(adcPin - ADC_BASE_PIN);
+        // First sample after a channel switch can carry the previous channel
+        adc_read();
+        uint16_t read = adc_read();
+        if (calibrationSmoothing) {
+            uint16_t smoothed = read;
+            for (int i = 0; i < 50; i++) {
+                smoothed = emaCalculation(adc_read(), smoothed);
+            }
+            read = smoothed;
+        }
+        voltages.add(read);
+    }
+    return serialize_json(doc);
+}
+
 std::string getHETriggerCalibrations()
 {
     const size_t capacity = JSON_OBJECT_SIZE(500);
@@ -2121,12 +2172,20 @@ std::string getHETriggerCalibrations()
         trigger["active"] = heTriggers[i].active;
         trigger["pressed"] = heTriggers[i].pressed;
         trigger["is_polarized"] = heTriggers[i].is_polarized;
-        trigger["release"] = heTriggers[i].release;
         trigger["noise"] = heTriggers[i].noise;
         trigger["rapidTrigger"] = heTriggers[i].rapidTrigger;
+        trigger["rtPressSensitivity"] = heTriggers[i].rtPressSensitivity;
+        trigger["rtReleaseSensitivity"] = heTriggers[i].rtReleaseSensitivity;
+        trigger["rtSeparateSensitivity"] = heTriggers[i].rtSeparateSensitivity;
+        trigger["rtContinuous"] = heTriggers[i].rtContinuous;
     }
 
     return serialize_json(doc);
+}
+
+static float clampSwitchTravel(float travel)
+{
+    return std::min(std::max(travel, 0.0f), 20.0f);
 }
 
 // Set Hall Effect Trigger Calibrations
@@ -2141,12 +2200,22 @@ std::string setHETriggerCalibrations()
         heTriggers[i].active = doc["triggers"][i]["active"];
         heTriggers[i].pressed = doc["triggers"][i]["pressed"];
         heTriggers[i].is_polarized = doc["triggers"][i]["is_polarized"];
-        heTriggers[i].release = doc["triggers"][i]["release"];
         heTriggers[i].noise = doc["triggers"][i]["noise"];
         heTriggers[i].rapidTrigger = doc["triggers"][i]["rapidTrigger"];
+        // Older backups have no sensitivities; derive them like the config migration does.
+        const int32_t legacySensitivity = heTriggers[i].noise + 1;
+        heTriggers[i].rtPressSensitivity = doc["triggers"][i]["rtPressSensitivity"] | legacySensitivity;
+        heTriggers[i].rtReleaseSensitivity = doc["triggers"][i]["rtReleaseSensitivity"] | legacySensitivity;
+        if (doc["triggers"][i]["rtSeparateSensitivity"] != nullptr)
+            heTriggers[i].rtSeparateSensitivity = doc["triggers"][i]["rtSeparateSensitivity"];
+        if (doc["triggers"][i]["rtContinuous"] != nullptr)
+            heTriggers[i].rtContinuous = doc["triggers"][i]["rtContinuous"];
     }
 
-    Storage::getInstance().getAddonOptions().heTriggerOptions.triggers_count = 32;
+    HETriggerOptions& heTriggerOptions = Storage::getInstance().getAddonOptions().heTriggerOptions;
+    docToValue(heTriggerOptions.switchTravel, doc, "heTriggerSwitchTravel");
+    heTriggerOptions.switchTravel = clampSwitchTravel(heTriggerOptions.switchTravel);
+    heTriggerOptions.triggers_count = 32;
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
     return serialize_json(doc);
@@ -2441,6 +2510,8 @@ std::string setAddonOptions()
     docToValue(heTriggerOptions.emaSmoothing, doc, "heTriggerSmoothing");
     docToValue(heTriggerOptions.smoothingFactor, doc, "heTriggerSmoothingFactor");
     docToValue(heTriggerOptions.separateSelectPins, doc, "separateSelectPins");
+    docToValue(heTriggerOptions.switchTravel, doc, "heTriggerSwitchTravel");
+    heTriggerOptions.switchTravel = clampSwitchTravel(heTriggerOptions.switchTravel);
     static const char* selectPinKeys[4] = { "selectPin0", "selectPin1", "selectPin2", "selectPin3" };
     for (int i = 0; i < 4; i++) {
         Pin_t* muxSelectPins[4] = {
@@ -2948,6 +3019,8 @@ std::string getAddonOptions()
     writeDoc(doc, "heTriggerSmoothing", heTriggerOptions.emaSmoothing);
     writeDoc(doc, "heTriggerSmoothingFactor", heTriggerOptions.smoothingFactor);
     writeDoc(doc, "separateSelectPins", heTriggerOptions.separateSelectPins);
+    // Round so 3.8f is reported as 3.8, not 3.799999952.
+    writeDoc(doc, "heTriggerSwitchTravel", std::round(heTriggerOptions.switchTravel * 100.0) / 100.0);
     doc.createNestedArray("muxes");
     for (int i = 0; i < 4; i++) {
         writeDoc(doc, "muxes", i, "selectPin0", cleanPin(heTriggerOptions.muxes[i].selectPin0));
@@ -3342,6 +3415,7 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/setHETriggerCalibrations", setHETriggerCalibrations },
     { "/api/getHETriggerCalibrations", getHETriggerCalibrations },
     { "/api/getHETriggerVoltage", getHETriggerVoltage },
+    { "/api/getHETriggerVoltages", getHETriggerVoltages },
     { "/api/setHETriggerOptions", setHETriggerOptions },
     { "/api/setReactiveLEDs", setReactiveLEDs },
     { "/api/getReactiveLEDs", getReactiveLEDs },

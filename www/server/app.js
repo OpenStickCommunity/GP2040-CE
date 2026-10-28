@@ -905,6 +905,7 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		muxSelectPin3: -1,
 		heTriggerSmoothing: 0,
 		heTriggerSmoothingFactor: 5,
+		heTriggerSwitchTravel: 0,
 		RotaryAddonEnabled: 1,
 		PCF8575AddonEnabled: 1,
 		DRV8833RumbleAddonEnabled: 1,
@@ -982,9 +983,12 @@ app.get('/api/getHETriggerCalibrations', (req, res) => {
 			pressed: 3500,
 			active: 1500,
 			is_polarized: false,
-			release: 1500,
-			noise: 50,
+			noise: 30,
 			rapidTrigger: false,
+			rtPressSensitivity: 100,
+			rtReleaseSensitivity: 150,
+			rtSeparateSensitivity: false,
+			rtContinuous: false,
 		},
 		{
 			action: 3,
@@ -992,9 +996,12 @@ app.get('/api/getHETriggerCalibrations', (req, res) => {
 			pressed: 120,
 			active: 1500,
 			is_polarized: true,
-			release: 1500,
-			noise: 50,
+			noise: 30,
 			rapidTrigger: false,
+			rtPressSensitivity: 100,
+			rtReleaseSensitivity: 150,
+			rtSeparateSensitivity: false,
+			rtContinuous: false,
 		},
 		{
 			action: 4,
@@ -1002,9 +1009,12 @@ app.get('/api/getHETriggerCalibrations', (req, res) => {
 			pressed: 3500,
 			active: 1500,
 			is_polarized: false,
-			release: 2000,
-			noise: 50,
+			noise: 30,
 			rapidTrigger: true,
+			rtPressSensitivity: 100,
+			rtReleaseSensitivity: 150,
+			rtSeparateSensitivity: true,
+			rtContinuous: false,
 		},
 		{
 			action: 5,
@@ -1012,9 +1022,12 @@ app.get('/api/getHETriggerCalibrations', (req, res) => {
 			pressed: 120,
 			active: 2000,
 			is_polarized: true,
-			release: 1500,
-			noise: 50,
+			noise: 30,
 			rapidTrigger: true,
+			rtPressSensitivity: 100,
+			rtReleaseSensitivity: 150,
+			rtSeparateSensitivity: true,
+			rtContinuous: false,
 		},
 	);
 	for (var i = 4; i < 32; i++) {
@@ -1024,9 +1037,12 @@ app.get('/api/getHETriggerCalibrations', (req, res) => {
 			active: 2000,
 			pressed: 3500,
 			is_polarized: false,
-			release: 1500,
-			noise: 50,
+			noise: 30,
 			rapidTrigger: false,
+			rtPressSensitivity: 100,
+			rtReleaseSensitivity: 150,
+			rtSeparateSensitivity: false,
+			rtContinuous: false,
 		});
 	}
 	return res.send({ triggers });
@@ -1463,6 +1479,21 @@ app.post('/api/getHETriggerVoltage', (req, res) => {
 		voltage: 0.0,
 		debug: true,
 	});
+});
+
+// Simulates each trigger being pressed in turn so Quick Calibrate can be tried without hardware.
+// Odd triggers read like a south-facing (polarized) magnet.
+app.get('/api/getHETriggerVoltages', (req, res) => {
+	const time = Date.now();
+	const voltages = Array.from({ length: 32 }, (_, i) => {
+		const phase = ((time / 1000 + i * 0.7) % 8) / 8;
+		const press = phase < 0.15 ? Math.sin((phase / 0.15) * Math.PI) : 0;
+		const noise = Math.floor(Math.random() * 20);
+		return i % 2
+			? 3500 - Math.floor(press * 3000) - noise
+			: 150 + Math.floor(press * 3200) + noise;
+	});
+	return res.send({ voltages });
 });
 
 app.get('/api/getBootModeOptions', (req, res) => {

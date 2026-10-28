@@ -2,8 +2,10 @@
 #define _HE_Trigger_H
 
 #include "gpaddon.h"
+#include "addons/he_rapid_trigger.h"
 
 #define HETRIGGER_COUNT 32
+#define HETRIGGER_MUX_COUNT 4 // Multiplexers, one per muxADCPin0-3
 
 #ifndef HETRIGGER_ENABLED
 #define HETRIGGER_ENABLED 0
@@ -116,6 +118,27 @@
 
 #ifndef HETRIGGER_DEFAULT_RAPID
 #define HETRIGGER_DEFAULT_RAPID 0
+#endif
+
+// Rapid Trigger sensitivities are in ADC counts (~85 counts is 0.1mm on a 4mm switch spanning 3400 counts).
+#ifndef HETRIGGER_DEFAULT_RT_PRESS_SENSITIVITY
+#define HETRIGGER_DEFAULT_RT_PRESS_SENSITIVITY 100
+#endif
+
+#ifndef HETRIGGER_DEFAULT_RT_RELEASE_SENSITIVITY
+#define HETRIGGER_DEFAULT_RT_RELEASE_SENSITIVITY 100
+#endif
+
+#ifndef HETRIGGER_DEFAULT_RT_SEPARATE_SENSITIVITY
+#define HETRIGGER_DEFAULT_RT_SEPARATE_SENSITIVITY 0
+#endif
+
+#ifndef HETRIGGER_DEFAULT_RT_CONTINUOUS
+#define HETRIGGER_DEFAULT_RT_CONTINUOUS 0
+#endif
+
+#ifndef HETRIGGER_DEFAULT_SWITCH_TRAVEL
+#define HETRIGGER_DEFAULT_SWITCH_TRAVEL 0.0f
 #endif
 
 // 32 possible HE triggers
@@ -901,27 +924,28 @@ public:
     virtual void reinit() {}
     virtual std::string name() { return HETriggerAddonName; }
     void configModeProcess();
+    // Number of multiplexers scanned (HETRIGGER_COUNT / muxChannels, at most HETRIGGER_MUX_COUNT)
+    static int getMuxCount(int32_t muxChannels);
+    // True if the trigger is on a scanned multiplexer with an ADC pin
+    static bool isTriggerScanned(const HETriggerOptions & options, uint32_t index);
 private:
     void scan(bool applyActions);
     void selectChannel(uint8_t mux, uint8_t channel);
     uint16_t emaSmoothing(uint16_t value, uint16_t previous);
     int muxTotal;
     int selectPins;
-    Pin_t muxPinArray[4];
-    Pin_t selectPinArray[4][4]; // Select pins indexed by [mux][selectBit]
+    Pin_t muxPinArray[HETRIGGER_MUX_COUNT];
+    Pin_t selectPinArray[HETRIGGER_MUX_COUNT][4]; // Select pins indexed by [mux][selectBit]
     Pin_t lastADCSelected;
 
     uint16_t emaSmoothingReads[32];
-    bool triggerActive[32];
-    uint16_t lastIncrement[32];
+    HERapidTriggerState triggerState[32];
     float emaSmoothingFactor;
 
     // Used during processing
     uint32_t mux;
     uint32_t channel;
     uint16_t value;
-    uint16_t activationThreshold;
-    uint16_t releaseThreshold;
 };
 
 #endif  // _HE_Trigger_H

@@ -674,6 +674,11 @@ async function getHETriggerVoltage(settings) {
 	return Http.post(`${baseUrl}/api/getHETriggerVoltage`, settings);
 }
 
+// GET the ADC reading for every scanned Hall Effect trigger (-1 when not scanned)
+async function getHETriggerVoltages() {
+	return Http.get(`${baseUrl}/api/getHETriggerVoltages`);
+}
+
 // POST function to set our channels, select, and ADC pin
 async function setHETriggerOptions(settings) {
 	return Http.post(`${baseUrl}/api/setHETriggerOptions`, settings);
@@ -794,6 +799,7 @@ export default {
 	getExpansionPins,
 	setExpansionPins,
 	getHETriggerVoltage,
+	getHETriggerVoltages,
 	setHETriggerCalibrations,
 	getHETriggerCalibrations,
 	setHETriggerOptions,
