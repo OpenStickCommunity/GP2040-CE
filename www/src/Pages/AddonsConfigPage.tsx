@@ -54,6 +54,10 @@ import FocusMode, {
 	focusModeScheme,
 	focusModeState,
 } from '../Addons/FocusMode';
+import HostLighting, {
+	hostLightingScheme,
+	hostLightingState,
+} from '../Addons/HostLighting';
 import Keyboard, { keyboardScheme, keyboardState } from '../Addons/Keyboard';
 import GamepadUSBHost, {
 	gamepadUSBHostScheme,
@@ -98,6 +102,7 @@ const schema = yup.object().shape({
 	...profileSliderScheme,
 	...wiiScheme,
 	...focusModeScheme,
+	...hostLightingScheme,
 	...keyboardScheme,
 	...rotaryScheme,
 	...pcf8575Scheme,
@@ -124,6 +129,7 @@ export const DEFAULT_VALUES = {
 	...snesState,
 	...tg16State,
 	...focusModeState,
+	...hostLightingState,
 	...keyboardState,
 	...rotaryState,
 	...pcf8575State,
@@ -150,6 +156,7 @@ const ADDONS = [
 	SNES,
 	TG16,
 	FocusMode,
+	HostLighting,
 	Keyboard,
 	GamepadUSBHost,
 	Rotary,
