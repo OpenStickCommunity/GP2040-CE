@@ -22,7 +22,6 @@ static constexpr uint64_t P5GENERAL_F2_DELAY_US = 500 * 1000;
 P5GeneralDongle::P5GeneralDongle(uint8_t dev_addr, uint8_t instance) : PS5USBAuth(dev_addr, instance) {
     memset(authBuffer, 0, sizeof(authBuffer));
     memset(transferBuffer, 0, sizeof(transferBuffer));
-    PS5_LOG("[P5G] created at addr=%u inst=%u (ready immediately)\n", dev_addr, instance);
 }
 
 void P5GeneralDongle::enterWait(State waitState) {
@@ -70,7 +69,6 @@ void P5GeneralDongle::process() {
             // accepted. A late completion is ignored because its handler only
             // acts while still in the matching wait state.
             if ( (getMicro() - waitSinceUs) >= P5GENERAL_WAIT_TIMEOUT_US ) {
-                PS5_LOG("[P5G] dongle transfer timed out (state %u), back to idle\n", (unsigned)state);
                 state = State::Idle;
             }
             break;
@@ -108,14 +106,10 @@ bool P5GeneralDongle::setFeature(uint8_t report_id, const uint8_t * buffer, uint
         return false;
     }
     // Only accept a new page while idle; the console retries.
-    const PS5AuthPage * page = (const PS5AuthPage *)buffer;
     if ( len == sizeof(PS5AuthPage) && state == State::Idle ) {
         authBuffer[0] = report_id;
         memcpy(authBuffer + 1, buffer, len);
         state = State::SendF0;
-        PS5_LOG("[P5G] console F0 type=%02x frame=%02x page=%u -> dongle\n", page->auth_type, page->frame_id, page->page_index);
-    } else {
-        PS5_LOG("[P5G] console F0 dropped (len=%u, busy=%u)\n", len, state != State::Idle);
     }
     return true;
 }
@@ -143,10 +137,6 @@ void P5GeneralDongle::onReport(const uint8_t * report, uint16_t len) {
     if ( reportSigned ) {
         return;
     }
-    if ( !firstSignedLogged ) {
-        firstSignedLogged = true;
-        PS5_LOG("[P5G] first signed report from dongle (len=%u)\n", len);
-    }
     memset(signedReport, 0, sizeof(signedReport));
     memcpy(signedReport, report, len < sizeof(signedReport) ? len : sizeof(signedReport));
     reportSigned = true;
@@ -157,7 +147,6 @@ void P5GeneralDongle::onSetReportComplete(uint8_t report_id, uint8_t report_type
         return;
     }
     if ( len == 0 ) {
-        PS5_LOG("[P5G] dongle rejected F0, back to idle\n");
         state = State::Idle;
         return;
     }
@@ -174,7 +163,6 @@ void P5GeneralDongle::onSetReportComplete(uint8_t report_id, uint8_t report_type
     // has had time to sign. Otherwise wait for the console's next page.
     bool lastPage = (page->auth_type == 0x01 && page->page_index == 3) ||
                     page->auth_type == 0x02 || page->auth_type == 0x03;
-    PS5_LOG("[P5G] F0 page=%u delivered%s\n", page->page_index, lastPage ? ", polling F2 in 500ms" : "");
     if ( lastPage ) {
         f2DueUs = getMicro() + P5GENERAL_F2_DELAY_US;
         state = State::RecvF2Delay;
@@ -190,15 +178,9 @@ void P5GeneralDongle::onGetReportComplete(uint8_t report_id, uint8_t report_type
         return;
     }
     if ( len == 0 ) {
-        PS5_LOG("[P5G] dongle stalled 0x%02x, back to idle\n", report_id);
         state = State::Idle;
         return;
     }
     memcpy(authBuffer, transferBuffer, len < sizeof(authBuffer) ? len : sizeof(authBuffer));
-    if ( report_id == PS5_FEATURE_GET_SIGNING_STATE ) {
-        PS5_LOG("[P5G] dongle F2 frame=%02x status=%02x\n", transferBuffer[2], transferBuffer[3]);
-    } else {
-        PS5_LOG("[P5G] dongle F1 frame=%02x page=%u (len=%u, %u left)\n", transferBuffer[2], transferBuffer[3], len, f1Remaining);
-    }
     state = State::Idle;
 }

@@ -65,9 +65,6 @@ static constexpr uint8_t DS_AUDIO_FEATURE_COUNT = sizeof(ds_audio_features) / si
 // Fall back if the console starts auth but hasn't completed it in this long.
 #define PS5_CONSOLE_AUTH_TIMEOUT_US (10000ull * 1000ull)
 
-// Log when a bound dongle stops returning signed reports for this long.
-#define PS5_SIGN_STALL_US        (1000ull * 1000ull)
-
 // ---- Default feature reports (report ID stripped) ----
 
 // 0x03 Controller definition (PS4ControllerConfig layout; byte 4 = controller type, 0 = gamepad)
@@ -130,7 +127,6 @@ void PS5Driver::initialize() {
 void PS5Driver::initializeAux() {
     usbHostAuth = PeripheralManager::getInstance().isUSBEnabled(0);
     authDetector.setup();
-    PS5_LOG("[PS5] init: USB host auth %s\n", usbHostAuth ? "enabled" : "disabled (no USB host peripheral)");
 }
 
 USBListener * PS5Driver::get_usb_auth_listener() {
@@ -152,8 +148,6 @@ void PS5Driver::selectIdentity() {
     identity = (auth != nullptr) ? &auth->identity() : &ps5ThirdPartyIdentity;
     consoleAuthDone = false;    // a new enumeration authenticates from scratch
     consoleAuthStartUs = 0;
-    PS5_LOG("[PS5] presenting %s identity%s%s\n", identity->name,
-            auth ? " for " : "", auth ? auth->name() : "");
 }
 
 bool PS5Driver::identityMismatch() const {
@@ -256,7 +250,6 @@ void PS5Driver::serviceProxy() {
     }
     PS5Auth * auth = readyAuth();
     if (auth == nullptr || (getMicro() - proxyStartUs) >= PS5_PROXY_TIMEOUT_US) {
-        PS5_LOG("[PS5] proxied GET 0x%02x abandoned, stalling\n", proxyReportId);
         proxyPending = false;
         usbd_edpt_stall(proxyRhport, 0x80);
         return;
@@ -377,15 +370,6 @@ bool PS5Driver::process(Gamepad * gamepad) {
         authWasReady = (auth != nullptr);
         consoleAuthDone = false;    // a new (or no) provider must authenticate again
         consoleAuthStartUs = 0;
-        if (authWasReady) {
-            PS5_LOG("[PS5] auth ready: %s, sending signed reports\n", auth->name());
-            signedSent = 0;
-            submitted = 0;
-            lastSignedUs = getMicro();
-            stallLogged = false;
-        } else {
-            PS5_LOG("[PS5] auth not available, sending unsigned reports\n");
-        }
     }
     if (auth == nullptr) {
         signedOutPending = false;   // provider gone: drop any stale signature
@@ -418,24 +402,7 @@ bool PS5Driver::sendSigned(PS5Auth * auth, bool due) {
     if (signedOutPending && tud_hid_ready() && tud_hid_report(0, signedOut, sizeof(signedOut))) {
         signedOutPending = false;
         lastSentUs = getMicro();
-        lastSignedUs = lastSentUs;
         sent = true;
-        if (stallLogged) {
-            PS5_LOG("[PS5] signing resumed\n");
-            stallLogged = false;
-        }
-        if (!firstSignedDumped) {
-            firstSignedDumped = true;
-            PS5_LOG("[PS5] first signed report (%s):", auth->name());
-            for (uint8_t i = 0; i < sizeof(signedOut); i++) {
-                PS5_LOG("%s%02x", (i % 16) ? " " : "\n    ", signedOut[i]);
-            }
-            PS5_LOG("\n");
-        }
-        // First signed report, then every 1000 to confirm signing continues
-        if (signedSent++ % 1000 == 0) {
-            PS5_LOG("[PS5] signed reports sent: %lu\n", (unsigned long)signedSent);
-        }
     }
 
     // Hand the provider the next report to sign.
@@ -444,13 +411,6 @@ bool PS5Driver::sendSigned(PS5Auth * auth, bool due) {
             repeatCount--;
         }
         lastSentUs = getMicro();
-        submitted++;
-    }
-
-    if (!stallLogged && (getMicro() - lastSignedUs) >= PS5_SIGN_STALL_US) {
-        stallLogged = true;
-        PS5_LOG("[PS5] signing stalled: no signed report for %lums (%lu submitted, %lu signed so far)\n",
-                (unsigned long)(PS5_SIGN_STALL_US / 1000), (unsigned long)submitted, (unsigned long)signedSent);
     }
     return sent;
 }
@@ -578,20 +538,12 @@ void PS5Driver::trackConsoleAuth(PS5Auth * auth, uint8_t report_id, const uint8_
         return;
     }
     if (report_id == PS5_FEATURE_GET_SIGNATURE) {
-        PS5_LOG("[PS5] console read F1 type=%02x frame=%02x page=%u\n", buffer[0], buffer[1], buffer[2]);
         if (!consoleAuthDone && buffer[0] == 0x01 && buffer[2] == PS5_AUTH_PAGES - 1) {
             consoleAuthDone = true;
-            PS5_LOG("[PS5] console auth complete (full response read, frame=%02x) via %s\n", buffer[1], auth->name());
         }
     } else if (report_id == PS5_FEATURE_GET_SIGNING_STATE) {
-        // Log status changes only; the console polls F2 repeatedly.
-        if (buffer[2] != lastServedF2Status) {
-            lastServedF2Status = buffer[2];
-            PS5_LOG("[PS5] console read F2 frame=%02x status=%02x\n", buffer[1], buffer[2]);
-        }
         if (!consoleAuthDone && buffer[2] == PS5_AUTH_STATUS_DONE) {
             consoleAuthDone = true;
-            PS5_LOG("[PS5] console auth complete (F2 done, frame=%02x) via %s\n", buffer[1], auth->name());
         }
     }
 }
@@ -629,13 +581,7 @@ uint16_t PS5Driver::getDefaultFeature(uint8_t report_id, uint8_t * buffer, uint1
 void PS5Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uint8_t const * buffer, uint16_t bufsize) {
     if (report_type != HID_REPORT_TYPE_FEATURE) {
         // A console sends output report 0x02 (lightbar, player LEDs, rumble)
-        // once it has taken the controller on.
-        if (!outputLogged) {
-            outputLogged = true;
-            // Interrupt OUT data arrives with report_id 0 and the ID in buffer[0].
-            uint8_t id = (report_id == 0 && bufsize > 0) ? buffer[0] : report_id;
-            PS5_LOG("[PS5] first output report: type=%u id=%02x len=%u\n", report_type, id, bufsize);
-        }
+        // once it has taken the controller on. Nothing to do with it here.
         return;
     }
 
@@ -643,10 +589,7 @@ void PS5Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uin
         const PS5AuthPage * page = (const PS5AuthPage *)buffer;
         consoleFrameId = page->frame_id;
         consoleAuthType = page->auth_type;
-        if (readyAuth() == nullptr) {
-            PS5_LOG("[PS5] console F0 type=%02x frame=%02x page=%u with no auth device (answering not ready)\n",
-                    page->auth_type, page->frame_id, page->page_index);
-        } else if (consoleAuthStartUs == 0) {
+        if (readyAuth() != nullptr && consoleAuthStartUs == 0) {
             consoleAuthStartUs = getMicro();
         }
     }

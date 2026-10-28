@@ -119,12 +119,6 @@ private:
     uint8_t keyBlock[48];
     uint8_t signedReport[PS5_ENDPOINT_SIZE];
     bool reportSigned = false;
-    bool firstSignedLogged = false;
-    uint32_t keyBlocksSent = 0;     // logging
-    uint32_t reportsIn = 0;         // logging: every IN report from the adapter
-    uint32_t shortReports = 0;      // logging
-    uint32_t sendBusyPasses = 0;    // logging
-    bool sendFailLogged = false;
 };
 
 #endif // _PS5_MAYFLASHS5_DONGLE_H_

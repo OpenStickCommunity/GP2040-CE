@@ -76,8 +76,9 @@ static bool s5Encrypt(const uint8_t in[16], uint8_t out[16]) {
 }
 
 bool MayflashS5Dongle::matches(uint16_t vid, uint16_t pid) {
-    // TODO: add the adapter's PS4-mode personality so it can be reported as
-    // "wrong mode" rather than ignored.
+    // PS5 mode only. In PS4 mode (button held on the dongle) the adapter
+    // enumerates as a DualShock 4 (054C:09CC), which PS5AuthDetector treats
+    // as a PS4 dongle.
     return vid == S5_VENDOR_ID && pid == S5_PRODUCT_ID_PS5;
 }
 
@@ -88,7 +89,6 @@ MayflashS5Dongle::MayflashS5Dongle(uint8_t dev_addr, uint8_t instance) : PS5USBA
     memset(&pendingReport, 0, sizeof(pendingReport));
     memset(keyBlock, 0, sizeof(keyBlock));
     memset(signedReport, 0, sizeof(signedReport));
-    PS5_LOG("[S5] created at addr=%u inst=%u, starting unlock\n", dev_addr, instance);
 }
 
 bool MayflashS5Dongle::expectsReenumeration() const {
@@ -100,7 +100,6 @@ void MayflashS5Dongle::onReattached() {
     probeRetries = 0;
     stateDueUs = 0;
     state = State::GetCalibration;
-    PS5_LOG("[S5] adapter re-enumerated after reset, reading identity reports\n");
 }
 
 // ---- Host transfers (one control transfer in flight) ----
@@ -135,7 +134,6 @@ void MayflashS5Dongle::transferLost() {
             proxy = Proxy::Stalled;
             return;
         case Xfer::ForwardSet:
-            PS5_LOG("[S5] forwarded SET 0x%02x failed\n", awaitingId);
             return;
         case Xfer::Setup:
         default:
@@ -143,7 +141,6 @@ void MayflashS5Dongle::transferLost() {
     }
 
     if ( ++probeRetries < S5_MAX_RETRIES ) {
-        PS5_LOG("[S5] setup transfer 0x%02x failed (state %u), retry %u\n", awaitingId, (unsigned)state, probeRetries);
         if ( state == State::UnlockReply ) {
             state = State::UnlockRequest;   // restart the handshake
         }
@@ -155,14 +152,12 @@ void MayflashS5Dongle::transferLost() {
         case State::UnlockRequest:
         case State::UnlockReply:
             // A real DualSense stalls or ignores the vendor request.
-            PS5_LOG("[S5] unlock never completed: not a MagicBoots S5 in PS5 mode\n");
             probeFailed = true;
             break;
         case State::GetCalibration: state = State::GetFirmware; break;
         case State::GetFirmware:    state = State::GetPairing;  break;
         case State::GetPairing:
             state = State::Ready;
-            PS5_LOG("[S5] pairing read failed; ready anyway\n");
             break;
         default:
             break;
@@ -179,7 +174,6 @@ void MayflashS5Dongle::process() {
     switch ( state ) {
         case State::ResetWait:
             if ( now >= stateDueUs ) {
-                PS5_LOG("[S5] resetting host bus so the adapter re-enumerates\n");
                 hcd_event_device_remove(BOARD_TUH_RHPORT, false);
                 tuh_rhport_reset_bus(BOARD_TUH_RHPORT, true);
                 state = State::ResetAssert;
@@ -196,7 +190,6 @@ void MayflashS5Dongle::process() {
             return;
         case State::AwaitRemount:
             if ( now >= stateDueUs ) {
-                PS5_LOG("[S5] adapter did not come back after reset\n");
                 probeFailed = true;
             }
             return;
@@ -210,19 +203,10 @@ void MayflashS5Dongle::process() {
     // Report signing uses the interrupt OUT pipe; hold it while a console
     // read is being proxied (as PR #1727 does).
     if ( state == State::Ready && reportPending && proxy == Proxy::Idle ) {
-        if ( !hostSendReady() ) {
-            sendBusyPasses++;
-        } else {
+        if ( hostSendReady() ) {
             buildKeyBlock();
             if ( hostSendReport(keyBlock, sizeof(keyBlock)) ) {
                 reportPending = false;
-                if ( keyBlocksSent++ % 1000 == 0 ) {
-                    PS5_LOG("[S5] key blocks sent: %lu (IN reports received: %lu, OUT-busy passes: %lu)\n",
-                            (unsigned long)keyBlocksSent, (unsigned long)reportsIn, (unsigned long)sendBusyPasses);
-                }
-            } else if ( !sendFailLogged ) {
-                sendFailLogged = true;
-                PS5_LOG("[S5] tuh_hid_send_report failed for key block\n");
             }
         }
     }
@@ -265,11 +249,6 @@ void MayflashS5Dongle::process() {
                 PendingSet & ps = setQueue[setHead];
                 memcpy(setBuffer, ps.data, ps.len);
                 if ( issueSet(Xfer::ForwardSet, ps.id, HID_REPORT_TYPE_FEATURE, setBuffer, ps.len) ) {
-                    if ( ps.id == PS5_FEATURE_SET_AUTH_PAYLOAD ) {
-                        PS5_LOG("[S5] -> F0 type=%02x frame=%02x page=%u\n", ps.data[1], ps.data[2], ps.data[3]);
-                    } else {
-                        PS5_LOG("[S5] -> SET 0x%02x len=%u\n", ps.id, ps.len);
-                    }
                     setHead = (setHead + 1) % SET_QUEUE_LEN;
                     setCount--;
                 }
@@ -294,7 +273,6 @@ void MayflashS5Dongle::onSetReportComplete(uint8_t report_id, uint8_t report_typ
         probeRetries = 0;
         state = State::ResetWait;
         stateDueUs = getMicro() + S5_RESET_DELAY_US;
-        PS5_LOG("[S5] unlocked; bus reset in %llums\n", (unsigned long long)(S5_RESET_DELAY_US / 1000));
     }
 }
 
@@ -325,8 +303,6 @@ void MayflashS5Dongle::onGetReportComplete(uint8_t report_id, uint8_t report_typ
                 isS5 = (setupBuffer[i] == 0x00);
             }
             if ( !isS5 ) {
-                PS5_LOG("[S5] unlock response mismatch (len=%u [7]=%02x [12]=%02x): not a MagicBoots S5\n",
-                        len, setupBuffer[7], setupBuffer[12]);
                 probeFailed = true;
                 return;
             }
@@ -335,7 +311,6 @@ void MayflashS5Dongle::onGetReportComplete(uint8_t report_id, uint8_t report_typ
                 probeFailed = true;
                 return;
             }
-            PS5_LOG("[S5] unlock nonce received, sending encrypted reply\n");
             memset(setupBuffer, 0, sizeof(setupBuffer));
             setupBuffer[0] = 0x02;
             setupBuffer[1] = 0x08;      // authentication data
@@ -345,15 +320,12 @@ void MayflashS5Dongle::onGetReportComplete(uint8_t report_id, uint8_t report_typ
             break;
         }
         case State::GetCalibration:
-            PS5_LOG("[S5] calibration 0x05 len=%u\n", len);
             state = State::GetFirmware;
             break;
         case State::GetFirmware:
-            PS5_LOG("[S5] firmware 0x20 len=%u\n", len);
             state = State::GetPairing;
             break;
         case State::GetPairing:
-            PS5_LOG("[S5] pairing 0x09 len=%u; ready\n", len);
             state = State::Ready;
             break;
         default:
@@ -387,14 +359,8 @@ PS5ProxyResult MayflashS5Dongle::pollProxyGet(uint8_t * buffer, uint16_t & len) 
             }
             len = proxyReplyLen;
             proxy = Proxy::Idle;
-            if ( proxyId == PS5_FEATURE_GET_SIGNING_STATE ) {
-                PS5_LOG("[S5] <- F2 status=%02x\n", buffer[3]);
-            } else if ( proxyId == PS5_FEATURE_GET_SIGNATURE ) {
-                PS5_LOG("[S5] <- F1 type=%02x frame=%02x page=%u\n", buffer[1], buffer[2], buffer[3]);
-            }
             return PS5ProxyResult::Ready;
         case Proxy::Stalled:
-            PS5_LOG("[S5] <- GET 0x%02x stalled by adapter\n", proxyId);
             proxy = Proxy::Idle;
             return PS5ProxyResult::Stalled;
         default:
@@ -408,7 +374,6 @@ bool MayflashS5Dongle::setFeature(uint8_t report_id, const uint8_t * buffer, uin
         return true;
     }
     if ( setCount == SET_QUEUE_LEN ) {
-        PS5_LOG("[S5] console SET 0x%02x dropped: queue full\n", report_id);
         return true;
     }
     PendingSet & ps = setQueue[(setHead + setCount) % SET_QUEUE_LEN];
@@ -464,24 +429,8 @@ void MayflashS5Dongle::spliceSignedReport(const uint8_t * report) {
 }
 
 void MayflashS5Dongle::onReport(const uint8_t * report, uint16_t len) {
-    if ( reportsIn < 3 ) {
-        PS5_LOG("[S5] IN report #%lu len=%u ready=%u: %02x %02x %02x %02x %02x %02x %02x %02x\n",
-                (unsigned long)reportsIn, len, ready(),
-                report[0], report[1], report[2], report[3], report[4], report[5], report[6], report[7]);
-    }
-    reportsIn++;
-    if ( !ready() ) {
+    if ( !ready() || len < S5_SIGNED_REPORT_MIN_LEN ) {
         return;
-    }
-    if ( len < S5_SIGNED_REPORT_MIN_LEN ) {
-        if ( shortReports++ == 0 ) {
-            PS5_LOG("[S5] IN report too short to splice (len=%u, need %u)\n", len, S5_SIGNED_REPORT_MIN_LEN);
-        }
-        return;
-    }
-    if ( !firstSignedLogged ) {
-        firstSignedLogged = true;
-        PS5_LOG("[S5] first signed report from adapter (len=%u)\n", len);
     }
     spliceSignedReport(report);     // newest signature wins
     reportSigned = true;

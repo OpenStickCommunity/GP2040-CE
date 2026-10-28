@@ -37,6 +37,10 @@ public:
     void process();
     PS5Auth * auth() const { return active; }
 
+    // A PS4-mode auth dongle is on the host port. PS5 mode then uses the PS4
+    // legacy arcade-stick path, where the PS4 auth listener drives it.
+    bool ps4DongleAttached() const { return numPS4Dongles > 0; }
+
 private:
     struct Candidate {
         uint8_t dev_addr;
@@ -54,6 +58,9 @@ private:
     PS5USBAuth * active = nullptr;
     uint8_t activeType = 0;         // provider index of `active`
     bool parked = false;            // active provider waiting for its device to re-enumerate
+
+    uint8_t ps4DongleAddrs[PS5_AUTH_MAX_INTERFACES];
+    uint8_t numPS4Dongles = 0;
 };
 
 #endif // _PS5_AUTH_DETECTOR_H_

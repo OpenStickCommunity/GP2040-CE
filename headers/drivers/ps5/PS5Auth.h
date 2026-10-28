@@ -11,20 +11,6 @@
 #include "CRC32.h"
 #include "drivers/ps5/PS5Descriptors.h"
 
-// Debug logging for PS5 mode detection and auth (printf; stdio is set up elsewhere).
-// Set to 0 to compile the messages out.
-#ifndef PS5_AUTH_DEBUG
-#define PS5_AUTH_DEBUG 1
-#endif
-
-#include <stdio.h>
-#if PS5_AUTH_DEBUG
-#define PS5_LOG(...) printf(__VA_ARGS__)
-#else
-// Arguments stay type-checked and "used", but the call is compiled out.
-#define PS5_LOG(...) do { if (0) printf(__VA_ARGS__); } while (0)
-#endif
-
 // PS5 auth protocol constants shared by auth providers.
 #define PS5_AUTH_PAGE_LEN  56    // Payload bytes per F0/F1 page
 #define PS5_AUTH_PAGES     4     // Pages per full challenge/response

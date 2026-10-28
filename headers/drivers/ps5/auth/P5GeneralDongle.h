@@ -66,7 +66,6 @@ private:
     uint8_t signedReport[PS5_ENDPOINT_SIZE];
     bool reportPending = false;
     bool reportSigned = false;
-    bool firstSignedLogged = false;
 };
 
 #endif // _PS5_P5GENERAL_DONGLE_H_

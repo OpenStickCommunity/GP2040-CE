@@ -55,6 +55,9 @@ public:
     // A provider is bound but still initializing (used to extend the boot wait).
     bool authInitializing() const;
 
+    // A PS4-mode auth dongle is attached (PS5 mode should use the PS4 path).
+    bool ps4DongleAttached() const { return authDetector.ps4DongleAttached(); }
+
     // Class driver hooks (called through static trampolines).
     uint16_t classOpen(uint8_t rhport, tusb_desc_interface_t const * itf, uint16_t max_len);
     void classReset(uint8_t rhport);
@@ -84,20 +87,13 @@ private:
     uint8_t repeatCount = 0;        // Re-send a changed report a few times
     uint64_t lastSentUs = 0;
 
-    bool authWasReady = false;      // For logging ready/lost transitions
-    bool consoleAuthDone = false;   // Console was told "done" (F2 0x40) by the bound provider
-    bool outputLogged = false;      // logging: first console output report
-    uint32_t signedSent = 0;        // Signed reports sent (logging)
-    uint32_t submitted = 0;         // Reports handed to the dongle (logging)
-    uint64_t lastSignedUs = 0;      // Last signed report sent (stall logging)
-    bool stallLogged = false;
+    bool authWasReady = false;      // A provider was ready on the last pass (detects ready/lost)
+    bool consoleAuthDone = false;   // Console completed auth with the bound provider
 
     uint8_t signedOut[PS5_ENDPOINT_SIZE];
     bool signedOutPending = false;  // Signed report waiting for the IN endpoint
 
     uint64_t consoleAuthStartUs = 0; // First console F0 of the current provider (0 = none yet)
-    bool firstSignedDumped = false;  // logging
-    uint8_t lastServedF2Status = 0;  // logging
 
     // Console feature read held while a provider fetches it live
     bool proxyPending = false;
