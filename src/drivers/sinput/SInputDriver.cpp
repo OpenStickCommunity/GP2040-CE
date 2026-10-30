@@ -382,6 +382,8 @@ const uint8_t * SInputDriver::get_hid_descriptor_report_cb(uint8_t itf) {
 }
 
 const uint8_t * SInputDriver::get_descriptor_configuration_cb(uint8_t index) {
+	if (HostLighting::enabledForMode(INPUT_MODE_SINPUT))
+		return sinput_hostlighting_configuration_descriptor;
 	return sinput_configuration_descriptor;
 }
 

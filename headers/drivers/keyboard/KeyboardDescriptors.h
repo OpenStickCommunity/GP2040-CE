@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include "tusb.h"
+#include "hostlighting.h"
 
 #define KEYBOARD_KEY_REPORT_ID 0x01
 #define KEYBOARD_MULTIMEDIA_REPORT_ID 0x02
@@ -60,8 +61,12 @@ enum
 };
 
 #define  CONFIG_TOTAL_LEN  (TUD_CONFIG_DESC_LEN + TUD_HID_DESC_LEN)
+#define  CONFIG_TOTAL_LEN_LIGHTING  (TUD_CONFIG_DESC_LEN + TUD_HID_DESC_LEN + TUD_HID_INOUT_DESC_LEN)
 
 #define EPNUM_HID   0x81
+#define ITF_NUM_HID_LIGHTING 1
+#define EPNUM_LIGHTING_OUT   0x02
+#define EPNUM_LIGHTING_IN    0x82
 
 static const uint8_t keyboard_report_descriptor[] =
 	{
@@ -124,4 +129,18 @@ static const uint8_t keyboard_configuration_descriptor[] =
 
 	// Interface number, string index, protocol, report descriptor len, EP Out & In address, size & polling interval
 	TUD_HID_DESCRIPTOR(ITF_NUM_HID_KEYBOARD, 0, HID_ITF_PROTOCOL_KEYBOARD, sizeof(keyboard_report_descriptor), EPNUM_HID, CFG_TUD_HID_EP_BUFSIZE, 1)
+};
+
+// Variant with the host lighting interface appended; selected at runtime by
+// HostLighting::enabledForMode()
+static const uint8_t keyboard_hostlighting_configuration_descriptor[] __attribute__((unused)) =
+{
+	// Config number, interface count, string index, total length, attribute, power in mA
+	TUD_CONFIG_DESCRIPTOR(1, 2, 0, CONFIG_TOTAL_LEN_LIGHTING, 32, 100),
+
+	// Interface number, string index, protocol, report descriptor len, EP Out & In address, size & polling interval
+	TUD_HID_DESCRIPTOR(ITF_NUM_HID_KEYBOARD, 0, HID_ITF_PROTOCOL_KEYBOARD, sizeof(keyboard_report_descriptor), EPNUM_HID, CFG_TUD_HID_EP_BUFSIZE, 1),
+
+	// Interface number, string index, protocol, report descriptor len, EP Out & In address, size & polling interval
+	TUD_HID_INOUT_DESCRIPTOR(ITF_NUM_HID_LIGHTING, 0, HID_ITF_PROTOCOL_NONE, sizeof(hostlighting_report_descriptor), EPNUM_LIGHTING_OUT, EPNUM_LIGHTING_IN, CFG_TUD_HID_EP_BUFSIZE, 1)
 };
