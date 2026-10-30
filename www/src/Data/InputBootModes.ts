@@ -153,14 +153,7 @@ export const INPUT_MODE_OPTIONS: InputModeOptions[] = [
 		group: 'primary',
 		optional: ['usb'],
 		authentication: ['none', 'usb'],
-		deviceTypes: [
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_GAMEPAD,
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_ARCADE_STICK,
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_WHEEL,
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_HOTAS,
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_GUITAR,
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_DRUM,
-		],
+		deviceTypes: [],
 		required: [],
 	},
 	{

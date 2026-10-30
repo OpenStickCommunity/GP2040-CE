@@ -1404,35 +1404,6 @@ export default function SettingsPage() {
 						/>
 					</Col>
 				</Row>
-				<Row className="mb-3">
-					<Col sm={3}>
-						<Form.Label>
-							{t('SettingsPage:ps4-id-mode-label')}
-							<ContextualHelpOverlay
-								title={t('SettingsPage:ps4-id-mode-label')}
-								body={
-									<Trans
-										ns="SettingsPage"
-										i18nKey="ps4-id-mode-explanation-text"
-										components={{ ul: <ul />, li: <li /> }}
-									/>
-								}
-							/>
-						</Form.Label>
-						<Form.Select
-							name="ps4ControllerIDMode"
-							className="form-select-sm"
-							value={values.ps4ControllerIDMode}
-							onChange={handleChange}
-						>
-							{PS4_ID_MODES.map((o) => (
-								<option key={`ps4-id-option-${o.value}`} value={o.value}>
-									{`${t('SettingsPage:' + o.labelKey)}`}
-								</option>
-							))}
-						</Form.Select>
-					</Col>
-				</Row>
 				{generateAuthSelection(
 					inputMode,
 					t('SettingsPage:auth-settings-label'),

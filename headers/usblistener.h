@@ -6,6 +6,9 @@
 class USBListener
 {
 public:
+    // Opt in to receive failed (len == 0) set/get report completions, e.g. a
+    // device stalling a request. Other listeners never see them.
+    virtual bool accepts_failed_report_completions() const { return false; }
     virtual void setup() = 0;
     virtual void mount(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len) = 0;
     virtual void xmount(uint8_t dev_addr, uint8_t instance, uint8_t controllerType, uint8_t subtype) = 0;
