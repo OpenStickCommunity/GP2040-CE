@@ -21,7 +21,7 @@ static constexpr uint16_t S5_PRODUCT_ID_PS5 = 0x0CE6;
 static constexpr uint8_t S5_REPORT_GET_UNLOCK   = 0x01;   // Input:  unlock nonce
 static constexpr uint8_t S5_REPORT_UNLOCK_REPLY = 0x02;   // Output: encrypted nonce
 
-// DES key pair for the S5 unlock (Mayflash MAGS5 protocol doc)
+// DES key pair for the S5 unlock
 static constexpr uint8_t S5_DES_SECRET_KEY[16] = {
     0x5C, 0x28, 0xE3, 0x05, 0x97, 0xC5, 0xAD, 0x04,
     0x9E, 0x5D, 0x19, 0xC3, 0x25, 0x40, 0x5B, 0x9D
@@ -415,7 +415,7 @@ void MayflashS5Dongle::buildKeyBlock() {
     memcpy(&keyBlock[19], S5_TOUCHPAD_IDLE, sizeof(S5_TOUCHPAD_IDLE));
 }
 
-// DualSense-layout report to the console (Mayflash MAGS5 doc / PR #1727)
+// DualSense-layout report to the console (PR #1727)
 void MayflashS5Dongle::spliceSignedReport(const uint8_t * report) {
     uint8_t * out = signedReport;
     memset(out, 0, PS5_ENDPOINT_SIZE);

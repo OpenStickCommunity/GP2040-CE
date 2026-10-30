@@ -9,8 +9,7 @@
 #include "drivers/ps5/PS5Auth.h"
 
 //
-// Mayflash MagicBoots S5 in PS5 mode (Mayflash MAGS5/TGS protocol, and the
-// working sequence from GP2040-CE PR #1727).
+// Mayflash MagicBoots S5 in PS5 mode (working sequence from GP2040-CE PR #1727).
 //
 // The adapter enumerates as a DualSense, so VID/PID only makes it a
 // candidate: it must answer the DES unlock handshake before it is used. A
