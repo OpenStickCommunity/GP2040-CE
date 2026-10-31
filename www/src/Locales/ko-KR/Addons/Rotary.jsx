@@ -6,7 +6,7 @@ export default {
 	'encoder-pin-b-label': 'B/DT 핀',
 	'encoder-ppr-label': '펄스/해상도 (PPR)',
 	'encoder-reset-after-label': '다음 시간 후 초기화 (ms)',
-	'encoder-allow-wrap-around-label': '끝에서 처음으로 돌아오도록',
+	'encoder-allow-wrap-around-label': '끝에서 순환 허용',
 	'encoder-multiplier-label': '배수',
 	'encoder-mode-label': '컨트롤 모드',
 	'encoder-mode-none': '없음',
