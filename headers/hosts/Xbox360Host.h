@@ -29,6 +29,7 @@ private:
     uint8_t last_left_rumble;
     uint8_t last_right_rumble;
     bool rumble_dirty;
+    XInputReport prev_report;
     uint32_t left_rumble_start;
     uint32_t right_rumble_start;
     uint32_t left_kickstart_start;
@@ -39,7 +40,6 @@ private:
     bool right_rumble_active;
     uint8_t sustained_left_rumble;
     uint8_t sustained_right_rumble;
-    XInputReport prev_report;
 };
 
 #endif // _XBOX360HOST_H_

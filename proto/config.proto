@@ -88,6 +88,10 @@ message GamepadOptions
     optional uint32 ermRumbleKickstartMs = 67;
     optional uint32 ermRumbleSustainMs = 68;
     optional uint32 ermRumbleBoostPercent = 69;
+    optional uint32 ermRumbleMode = 70;
+    optional uint32 ermRumbleRightMotorFloor = 71;
+    optional uint32 ermRumbleRightKickstartMs = 72;
+    optional uint32 ermRumbleRightSustainMs = 73;
 }
 
 message KeyboardMapping

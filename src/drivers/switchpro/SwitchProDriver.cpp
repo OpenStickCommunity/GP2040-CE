@@ -782,6 +782,26 @@ void SwitchProDriver::handleFeatureReport(uint8_t switchReportID, uint8_t switch
 // Amplitude code runs from 0x0040 (level 0) to 0x0072 (level 100):
 //   hf_amp: (r[1] & 0xFE) >> 1 gives 0..100
 //   lf_amp: ((r[3] - 0x40) << 1) + ((r[2] & 0x80) ? 1 : 0) gives 0..100
+static inline void extract_switch1_pro_amplitudes(const uint8_t* r, uint8_t &out_lf, uint8_t &out_hf) {
+    if (r[0] == 0x00 && r[1] == 0x01 && r[2] == 0x40 && r[3] == 0x40) {
+        out_lf = 0;
+        out_hf = 0;
+        return;
+    }
+
+    uint8_t hf_amp = (r[1] & 0xFE) >> 1;
+    if (hf_amp > 100) hf_amp = 100;
+
+    uint8_t lf_amp = 0;
+    if (r[3] >= 0x40) {
+        uint16_t step = ((uint16_t)(r[3] - 0x40) << 1) + ((r[2] & 0x80) ? 1 : 0);
+        lf_amp = (step > 100) ? 100 : (uint8_t)step;
+    }
+
+    out_lf = lf_amp;
+    out_hf = hf_amp;
+}
+
 static inline uint8_t decode_hd_rumble(const uint8_t* r) {
     if (r[0] == 0x00 && r[1] == 0x01 && r[2] == 0x40 && r[3] == 0x40) return 0;
 
@@ -801,9 +821,58 @@ static inline uint8_t decode_hd_rumble(const uint8_t* r) {
     return (scaled > 255) ? 255 : (uint8_t)scaled;
 }
 
+static inline void synthesize_switch1_pro_crossover(const uint8_t *left_r, const uint8_t *right_r, uint8_t &out_heavy, uint8_t &out_light) {
+    uint8_t l_lf = 0, l_hf = 0;
+    uint8_t r_lf = 0, r_hf = 0;
+    extract_switch1_pro_amplitudes(left_r, l_lf, l_hf);
+    extract_switch1_pro_amplitudes(right_r, r_lf, r_hf);
+
+    uint32_t lf_max = (l_lf > r_lf) ? l_lf : r_lf;
+    uint32_t lf_min = (l_lf > r_lf) ? r_lf : l_lf;
+    uint32_t lf_energy = lf_max + (lf_min / 4);
+
+    uint32_t hf_max = (l_hf > r_hf) ? l_hf : r_hf;
+    uint32_t hf_min = (l_hf > r_hf) ? r_hf : l_hf;
+    uint32_t hf_energy = hf_max + (hf_min / 4);
+
+    if (lf_energy < 8 && (lf_energy * 4 < hf_energy || lf_energy < 3)) {
+        lf_energy = 0;
+    } else if (lf_energy >= 8) {
+        lf_energy += (hf_energy / 4);
+    }
+
+    if (lf_energy == 0) {
+        out_heavy = 0;
+    } else {
+        if (lf_energy > 80) lf_energy = 80;
+        uint32_t heavy_pwm = (uint32_t)(sqrtf((float)lf_energy / 80.0f) * 255.0f);
+        out_heavy = (heavy_pwm > 255) ? 255 : (uint8_t)heavy_pwm;
+    }
+
+    if (hf_energy < 3) {
+        out_light = 0;
+    } else {
+        if (hf_energy > 100) hf_energy = 100;
+        uint32_t light_pwm = (hf_energy * 178) / 100;
+        out_light = (light_pwm > 255) ? 255 : (uint8_t)light_pwm;
+    }
+}
+
 static void setSwitchProRumble(const uint8_t* rumbleData) {
-    uint8_t left_intensity = decode_hd_rumble(&rumbleData[0]);
-    uint8_t right_intensity = decode_hd_rumble(&rumbleData[4]);
+    const uint32_t rumbleMode = Storage::getInstance().getGamepadOptions().ermRumbleMode;
+    if (rumbleMode == 0) {
+        setSwitchProRumbleZero();
+        return;
+    }
+
+    uint8_t left_intensity = 0;
+    uint8_t right_intensity = 0;
+    if (rumbleMode == 2) {
+        synthesize_switch1_pro_crossover(&rumbleData[0], &rumbleData[4], left_intensity, right_intensity);
+    } else {
+        left_intensity = decode_hd_rumble(&rumbleData[0]);
+        right_intensity = decode_hd_rumble(&rumbleData[4]);
+    }
 
     Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
     if (processedGamepad != nullptr) {
