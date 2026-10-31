@@ -287,7 +287,18 @@ export default {
 	'input-mode-device-type-label': 'Input Mode Controller Type',
 	'erm-rumble-header-text': 'ERM Rumble Tuning',
 	'erm-rumble-desc':
-		'Fine-tune ERM vibration motors for converted Switch HD Rumble packets. Set any parameter to 0 to disable its enhancement.',
+		'Configure how Switch HD Rumble is converted and delivered to physical ERM vibration motors. By default, rumble is disabled.',
+	'erm-rumble-mode-label': 'Rumble Mode',
+	'erm-rumble-mode-options': {
+		off: 'Off (Disabled)',
+		dual: 'Dual / Symmetric (Both motors vibrate regardless of frequency)',
+		crossover:
+			'Frequency Crossover (Low-Freq Bass -> Left Heavy Motor, High-Freq -> Right Light Motor)',
+	},
+	'erm-rumble-left-motor-section-label':
+		'Left Motor (Heavy / Low-Frequency Bass)',
+	'erm-rumble-right-motor-section-label':
+		'Right Motor (Light / High-Frequency Texture & Clicks)',
 	'erm-rumble-motor-floor-label': 'Motor Floor Threshold (0 - 255)',
 	'erm-rumble-motor-floor-desc':
 		'Minimum PWM duty cycle required to overcome static motor friction (stiction). Maps non-zero rumble intensities to ensure motors spin reliably on subtle vibrations (0 = pass-through).',
@@ -297,6 +308,17 @@ export default {
 	'erm-rumble-sustain-ms-label': 'Pulse Sustain Duration (ms)',
 	'erm-rumble-sustain-ms-desc':
 		'Minimum vibration pulse stretch duration so transient haptic clicks and taps are perceptible on physical ERM motors (0 - 500 ms, 0 = disabled).',
+	'erm-rumble-right-motor-floor-label':
+		'Right Motor Floor Threshold (0 - 255)',
+	'erm-rumble-right-motor-floor-desc':
+		'Minimum PWM duty cycle for the lighter right motor to overcome stiction on high-frequency clicks (0 = pass-through).',
+	'erm-rumble-right-kickstart-ms-label':
+		'Right Motor Kickstart Duration (ms)',
+	'erm-rumble-right-kickstart-ms-desc':
+		'Initial overdrive duration for the lighter right motor when starting from rest (0 - 500 ms, 0 = disabled).',
+	'erm-rumble-right-sustain-ms-label': 'Right Motor Pulse Sustain (ms)',
+	'erm-rumble-right-sustain-ms-desc':
+		'Minimum pulse stretch duration for high-frequency textures and crisp clicks on the right motor (0 - 500 ms, 0 = disabled).',
 	'erm-rumble-boost-percent-label': 'Global Rumble Boost (%)',
 	'erm-rumble-boost-percent-desc':
 		'Scales up overall rumble intensity by this percentage (0 - 100%, 0 = disabled).',

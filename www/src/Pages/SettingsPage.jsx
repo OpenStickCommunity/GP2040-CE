@@ -573,6 +573,12 @@ const FORCED_SETUP_MODES = [
 	{ labelKey: 'forced-setup-mode-options.disable-both', value: 3 },
 ];
 
+const ERM_RUMBLE_MODES = [
+	{ labelKey: 'erm-rumble-mode-options.off', value: 0 },
+	{ labelKey: 'erm-rumble-mode-options.dual', value: 1 },
+	{ labelKey: 'erm-rumble-mode-options.crossover', value: 2 },
+];
+
 const INPUT_MODES_BINDS = [
 	{ value: 'B1' },
 	{ value: 'B2' },
@@ -726,6 +732,12 @@ const schema = yup.object().shape({
 	switch2ProButtonsColor: yup.number().label('Switch 2 Pro Buttons Color'),
 	switch2ProHighlightColor: yup.number().label('Switch 2 Pro Highlight Color'),
 	switch2ProGripColor: yup.number().label('Switch 2 Pro Grip Color'),
+	ermRumbleMode: yup
+		.number()
+		.label('ERM Rumble Mode')
+		.integer()
+		.min(0)
+		.max(2),
 	ermRumbleMotorFloor: yup
 		.number()
 		.label('ERM Rumble Motor Floor')
@@ -741,6 +753,24 @@ const schema = yup.object().shape({
 	ermRumbleSustainMs: yup
 		.number()
 		.label('ERM Rumble Sustain Duration')
+		.integer()
+		.min(0)
+		.max(500),
+	ermRumbleRightMotorFloor: yup
+		.number()
+		.label('ERM Rumble Right Motor Floor')
+		.integer()
+		.min(0)
+		.max(255),
+	ermRumbleRightKickstartMs: yup
+		.number()
+		.label('ERM Rumble Right Kickstart Duration')
+		.integer()
+		.min(0)
+		.max(500),
+	ermRumbleRightSustainMs: yup
+		.number()
+		.label('ERM Rumble Right Sustain Duration')
 		.integer()
 		.min(0)
 		.max(500),
@@ -2428,9 +2458,16 @@ export default function SettingsPage() {
 		...values,
 		usbProductID: hexToInt(values.usbProductID || '0000'),
 		usbVendorID: hexToInt(values.usbVendorID || '0000'),
+		ermRumbleMode: parseInt(values.ermRumbleMode ?? 0, 10),
 		ermRumbleMotorFloor: parseInt(values.ermRumbleMotorFloor ?? 0, 10),
 		ermRumbleKickstartMs: parseInt(values.ermRumbleKickstartMs ?? 0, 10),
 		ermRumbleSustainMs: parseInt(values.ermRumbleSustainMs ?? 0, 10),
+		ermRumbleRightMotorFloor: parseInt(values.ermRumbleRightMotorFloor ?? 0, 10),
+		ermRumbleRightKickstartMs: parseInt(
+			values.ermRumbleRightKickstartMs ?? 0,
+			10,
+		),
+		ermRumbleRightSustainMs: parseInt(values.ermRumbleRightSustainMs ?? 0, 10),
 		ermRumbleBoostPercent: parseInt(values.ermRumbleBoostPercent ?? 0, 10),
 	});
 
@@ -2833,124 +2870,285 @@ export default function SettingsPage() {
 													<p>{t('SettingsPage:erm-rumble-desc')}</p>
 													<Form.Group className="row mb-3">
 														<Form.Label>
-															{t(
-																'SettingsPage:erm-rumble-motor-floor-label',
-															)}
+															{t('SettingsPage:erm-rumble-mode-label')}
 														</Form.Label>
-														<Col sm={3}>
-															<Form.Control
-																type="number"
-																name="ermRumbleMotorFloor"
-																className="form-control-sm"
-																value={values.ermRumbleMotorFloor ?? 0}
-																error={errors.ermRumbleMotorFloor}
-																isInvalid={Boolean(errors.ermRumbleMotorFloor)}
-																onChange={handleChange}
-																min={0}
-																max={255}
-															/>
+														<Col sm={6}>
+															<Form.Select
+																name="ermRumbleMode"
+																className="form-select-sm"
+																value={values.ermRumbleMode ?? 0}
+																onChange={(e) =>
+																	setFieldValue(
+																		'ermRumbleMode',
+																		parseInt(e.target.value, 10),
+																	)
+																}
+																isInvalid={Boolean(errors.ermRumbleMode)}
+															>
+																{ERM_RUMBLE_MODES.map((o) => (
+																	<option
+																		key={`erm-rumble-mode-${o.value}`}
+																		value={o.value}
+																	>
+																		{t(`SettingsPage:${o.labelKey}`)}
+																	</option>
+																))}
+															</Form.Select>
 															<Form.Control.Feedback type="invalid">
-																{errors.ermRumbleMotorFloor}
+																{errors.ermRumbleMode}
 															</Form.Control.Feedback>
 														</Col>
-														<Col sm={9}>
-															<Form.Text className="text-muted">
-																{t(
-																	'SettingsPage:erm-rumble-motor-floor-desc',
-																)}
-															</Form.Text>
-														</Col>
 													</Form.Group>
-													<Form.Group className="row mb-3">
-														<Form.Label>
-															{t(
-																'SettingsPage:erm-rumble-kickstart-ms-label',
+													{Number(values.ermRumbleMode ?? 0) > 0 && (
+														<>
+															{Number(values.ermRumbleMode ?? 0) === 2 && (
+																<h6 className="mt-3 mb-2">
+																	{t(
+																		'SettingsPage:erm-rumble-left-motor-section-label',
+																	)}
+																</h6>
 															)}
-														</Form.Label>
-														<Col sm={3}>
-															<Form.Control
-																type="number"
-																name="ermRumbleKickstartMs"
-																className="form-control-sm"
-																value={values.ermRumbleKickstartMs ?? 0}
-																error={errors.ermRumbleKickstartMs}
-																isInvalid={Boolean(errors.ermRumbleKickstartMs)}
-																onChange={handleChange}
-																min={0}
-																max={500}
-															/>
-															<Form.Control.Feedback type="invalid">
-																{errors.ermRumbleKickstartMs}
-															</Form.Control.Feedback>
-														</Col>
-														<Col sm={9}>
-															<Form.Text className="text-muted">
-																{t(
-																	'SettingsPage:erm-rumble-kickstart-ms-desc',
-																)}
-															</Form.Text>
-														</Col>
-													</Form.Group>
-													<Form.Group className="row mb-3">
-														<Form.Label>
-															{t(
-																'SettingsPage:erm-rumble-sustain-ms-label',
+															<Form.Group className="row mb-3">
+																<Form.Label>
+																	{t(
+																		'SettingsPage:erm-rumble-motor-floor-label',
+																	)}
+																</Form.Label>
+																<Col sm={3}>
+																	<Form.Control
+																		type="number"
+																		name="ermRumbleMotorFloor"
+																		className="form-control-sm"
+																		value={values.ermRumbleMotorFloor ?? 0}
+																		error={errors.ermRumbleMotorFloor}
+																		isInvalid={Boolean(
+																			errors.ermRumbleMotorFloor,
+																		)}
+																		onChange={handleChange}
+																		min={0}
+																		max={255}
+																	/>
+																	<Form.Control.Feedback type="invalid">
+																		{errors.ermRumbleMotorFloor}
+																	</Form.Control.Feedback>
+																</Col>
+																<Col sm={9}>
+																	<Form.Text className="text-muted">
+																		{t(
+																			'SettingsPage:erm-rumble-motor-floor-desc',
+																		)}
+																	</Form.Text>
+																</Col>
+															</Form.Group>
+															<Form.Group className="row mb-3">
+																<Form.Label>
+																	{t(
+																		'SettingsPage:erm-rumble-kickstart-ms-label',
+																	)}
+																</Form.Label>
+																<Col sm={3}>
+																	<Form.Control
+																		type="number"
+																		name="ermRumbleKickstartMs"
+																		className="form-control-sm"
+																		value={values.ermRumbleKickstartMs ?? 0}
+																		error={errors.ermRumbleKickstartMs}
+																		isInvalid={Boolean(
+																			errors.ermRumbleKickstartMs,
+																		)}
+																		onChange={handleChange}
+																		min={0}
+																		max={500}
+																	/>
+																	<Form.Control.Feedback type="invalid">
+																		{errors.ermRumbleKickstartMs}
+																	</Form.Control.Feedback>
+																</Col>
+																<Col sm={9}>
+																	<Form.Text className="text-muted">
+																		{t(
+																			'SettingsPage:erm-rumble-kickstart-ms-desc',
+																		)}
+																	</Form.Text>
+																</Col>
+															</Form.Group>
+															<Form.Group className="row mb-3">
+																<Form.Label>
+																	{t(
+																		'SettingsPage:erm-rumble-sustain-ms-label',
+																	)}
+																</Form.Label>
+																<Col sm={3}>
+																	<Form.Control
+																		type="number"
+																		name="ermRumbleSustainMs"
+																		className="form-control-sm"
+																		value={values.ermRumbleSustainMs ?? 0}
+																		error={errors.ermRumbleSustainMs}
+																		isInvalid={Boolean(
+																			errors.ermRumbleSustainMs,
+																		)}
+																		onChange={handleChange}
+																		min={0}
+																		max={500}
+																	/>
+																	<Form.Control.Feedback type="invalid">
+																		{errors.ermRumbleSustainMs}
+																	</Form.Control.Feedback>
+																</Col>
+																<Col sm={9}>
+																	<Form.Text className="text-muted">
+																		{t(
+																			'SettingsPage:erm-rumble-sustain-ms-desc',
+																		)}
+																	</Form.Text>
+																</Col>
+															</Form.Group>
+															{Number(values.ermRumbleMode ?? 0) === 2 && (
+																<>
+																	<h6 className="mt-3 mb-2">
+																		{t(
+																			'SettingsPage:erm-rumble-right-motor-section-label',
+																		)}
+																	</h6>
+																	<Form.Group className="row mb-3">
+																		<Form.Label>
+																			{t(
+																				'SettingsPage:erm-rumble-right-motor-floor-label',
+																			)}
+																		</Form.Label>
+																		<Col sm={3}>
+																			<Form.Control
+																				type="number"
+																				name="ermRumbleRightMotorFloor"
+																				className="form-control-sm"
+																				value={
+																					values.ermRumbleRightMotorFloor ?? 0
+																				}
+																				error={errors.ermRumbleRightMotorFloor}
+																				isInvalid={Boolean(
+																					errors.ermRumbleRightMotorFloor,
+																				)}
+																				onChange={handleChange}
+																				min={0}
+																				max={255}
+																			/>
+																			<Form.Control.Feedback type="invalid">
+																				{errors.ermRumbleRightMotorFloor}
+																			</Form.Control.Feedback>
+																		</Col>
+																		<Col sm={9}>
+																			<Form.Text className="text-muted">
+																				{t(
+																					'SettingsPage:erm-rumble-right-motor-floor-desc',
+																				)}
+																			</Form.Text>
+																		</Col>
+																	</Form.Group>
+																	<Form.Group className="row mb-3">
+																		<Form.Label>
+																			{t(
+																				'SettingsPage:erm-rumble-right-kickstart-ms-label',
+																			)}
+																		</Form.Label>
+																		<Col sm={3}>
+																			<Form.Control
+																				type="number"
+																				name="ermRumbleRightKickstartMs"
+																				className="form-control-sm"
+																				value={
+																					values.ermRumbleRightKickstartMs ?? 0
+																				}
+																				error={errors.ermRumbleRightKickstartMs}
+																				isInvalid={Boolean(
+																					errors.ermRumbleRightKickstartMs,
+																				)}
+																				onChange={handleChange}
+																				min={0}
+																				max={500}
+																			/>
+																			<Form.Control.Feedback type="invalid">
+																				{errors.ermRumbleRightKickstartMs}
+																			</Form.Control.Feedback>
+																		</Col>
+																		<Col sm={9}>
+																			<Form.Text className="text-muted">
+																				{t(
+																					'SettingsPage:erm-rumble-right-kickstart-ms-desc',
+																				)}
+																			</Form.Text>
+																		</Col>
+																	</Form.Group>
+																	<Form.Group className="row mb-3">
+																		<Form.Label>
+																			{t(
+																				'SettingsPage:erm-rumble-right-sustain-ms-label',
+																			)}
+																		</Form.Label>
+																		<Col sm={3}>
+																			<Form.Control
+																				type="number"
+																				name="ermRumbleRightSustainMs"
+																				className="form-control-sm"
+																				value={
+																					values.ermRumbleRightSustainMs ?? 0
+																				}
+																				error={errors.ermRumbleRightSustainMs}
+																				isInvalid={Boolean(
+																					errors.ermRumbleRightSustainMs,
+																				)}
+																				onChange={handleChange}
+																				min={0}
+																				max={500}
+																			/>
+																			<Form.Control.Feedback type="invalid">
+																				{errors.ermRumbleRightSustainMs}
+																			</Form.Control.Feedback>
+																		</Col>
+																		<Col sm={9}>
+																			<Form.Text className="text-muted">
+																				{t(
+																					'SettingsPage:erm-rumble-right-sustain-ms-desc',
+																				)}
+																			</Form.Text>
+																		</Col>
+																	</Form.Group>
+																</>
 															)}
-														</Form.Label>
-														<Col sm={3}>
-															<Form.Control
-																type="number"
-																name="ermRumbleSustainMs"
-																className="form-control-sm"
-																value={values.ermRumbleSustainMs ?? 0}
-																error={errors.ermRumbleSustainMs}
-																isInvalid={Boolean(errors.ermRumbleSustainMs)}
-																onChange={handleChange}
-																min={0}
-																max={500}
-															/>
-															<Form.Control.Feedback type="invalid">
-																{errors.ermRumbleSustainMs}
-															</Form.Control.Feedback>
-														</Col>
-														<Col sm={9}>
-															<Form.Text className="text-muted">
-																{t(
-																	'SettingsPage:erm-rumble-sustain-ms-desc',
-																)}
-															</Form.Text>
-														</Col>
-													</Form.Group>
-													<Form.Group className="row mb-3">
-														<Form.Label>
-															{t(
-																'SettingsPage:erm-rumble-boost-percent-label',
-															)}
-														</Form.Label>
-														<Col sm={3}>
-															<Form.Control
-																type="number"
-																name="ermRumbleBoostPercent"
-																className="form-control-sm"
-																value={values.ermRumbleBoostPercent ?? 0}
-																error={errors.ermRumbleBoostPercent}
-																isInvalid={Boolean(errors.ermRumbleBoostPercent)}
-																onChange={handleChange}
-																min={0}
-																max={100}
-															/>
-															<Form.Control.Feedback type="invalid">
-																{errors.ermRumbleBoostPercent}
-															</Form.Control.Feedback>
-														</Col>
-														<Col sm={9}>
-															<Form.Text className="text-muted">
-																{t(
-																	'SettingsPage:erm-rumble-boost-percent-desc',
-																)}
-															</Form.Text>
-														</Col>
-													</Form.Group>
+															<Form.Group className="row mb-3">
+																<Form.Label>
+																	{t(
+																		'SettingsPage:erm-rumble-boost-percent-label',
+																	)}
+																</Form.Label>
+																<Col sm={3}>
+																	<Form.Control
+																		type="number"
+																		name="ermRumbleBoostPercent"
+																		className="form-control-sm"
+																		value={values.ermRumbleBoostPercent ?? 0}
+																		error={errors.ermRumbleBoostPercent}
+																		isInvalid={Boolean(
+																			errors.ermRumbleBoostPercent,
+																		)}
+																		onChange={handleChange}
+																		min={0}
+																		max={100}
+																	/>
+																	<Form.Control.Feedback type="invalid">
+																		{errors.ermRumbleBoostPercent}
+																	</Form.Control.Feedback>
+																</Col>
+																<Col sm={9}>
+																	<Form.Text className="text-muted">
+																		{t(
+																			'SettingsPage:erm-rumble-boost-percent-desc',
+																		)}
+																	</Form.Text>
+																</Col>
+															</Form.Group>
+														</>
+													)}
 													<Button type="submit">
 														{t('Common:button-save-label')}
 													</Button>
