@@ -1,6 +1,6 @@
 export default {
 	'language-selector': {
-		en: 'English (US)',
+		en: 'English (영어)',
 		nl: 'Nederlands (네덜란드어)',
 		'pt-BR': 'Português Brasil (브라질 포르투갈어)',
 		'zh-CN': '简体中文 (중국어 간체)',
@@ -9,7 +9,7 @@ export default {
 		'ko-KR': '한국어',
 		'es-MX': 'Español (멕시코 스페인어)',
 		'tr-TR': 'Türkçe (터키어)',
-		'fr-FR': 'Français (프랑스 국민)',
+		'fr-FR': 'Français (프랑스어)',
 	},
 	'color-scheme': {
 		dark: '다크',
