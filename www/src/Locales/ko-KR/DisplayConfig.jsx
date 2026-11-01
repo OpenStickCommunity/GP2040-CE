@@ -45,6 +45,7 @@ export default {
 		'power-management-header': '전원 관리',
 		'turn-off-when-suspended': '대기모드에서 끄기',
 		'input-history-label': '입력 기록',
+		'display-contrast-label': '디스플레이 대비',
 		'display-state': {
 			disabled: '사용안함',
 			enabled: '사용',

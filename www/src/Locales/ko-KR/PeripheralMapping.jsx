@@ -1,9 +1,9 @@
 export default {
 	'header-text': '주변기기 매핑',
-	'sub-header-text':
-		'주변기기의 단자 할당 및 동작에 관한 설정을 할 수 있습니다',
+	'sub-header-text': '주변기기의 단자 할당 및 동작에 관한 설정을 할 수 있습니다',
 	'pins-label': '핀',
 	'pin-in-use': '사용 중',
+
 	'i2c-label': 'I\u00B2C',
 	'i2c-desc-header': 'I\u00B2C 정보',
 	'i2c-description':
@@ -29,8 +29,10 @@ export default {
 	'pin-sck-label': 'SCK',
 	'pin-tx-label': 'TX',
 	'pin-dp-label': 'D+',
+	'pin-dm-label': 'D-',
+	'usb-pins-consecutive': 'D+ 와 D-는 연속된 GPIO핀이어야 합니다.',
 	'pin-enable5v-label': '5V 사용',
-	'option-order-label': '핀 순서',
+	'option-order-label': 'GPIO 핀 순서',
 	'option-order-choice-0-label': 'D+/D-',
 	'option-order-choice-1-label': 'D-/D+',
 };

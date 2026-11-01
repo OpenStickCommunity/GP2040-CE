@@ -1,7 +1,4 @@
 export default {
-	'header-text': '레이아웃 구성',
-	'layout-left-header-text': '좌측 레이아웃',
-	'layout-right-header-text': '우측 레이아웃',
 	layouts: {
 		left: {
 			BUTTON_LAYOUT_STICK: '스틱',
@@ -38,8 +35,7 @@ export default {
 			BUTTON_LAYOUT_BANDHERO_STRUM_A: 'GH/RB 스트럼',
 			BUTTON_LAYOUT_6GAWD_A: '6GAWD 왼쪽',
 			BUTTON_LAYOUT_6GAWD_ALLBUTTON_A: '6GAWD 전제 버튼 왼쪽',
-			BUTTON_LAYOUT_6GAWD_ALLBUTTONPLUS_A:
-				'6GAWD 전체 버튼 및 새끼 손가락 왼쪽',
+			BUTTON_LAYOUT_6GAWD_ALLBUTTONPLUS_A: '6GAWD 전체 버튼 및 새끼 손가락 왼쪽',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT0_A: '보드 설정값 대체 0',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT1_A: '보드 설정값 대체 1',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT2_A: '보드 설정값 대체 2',
@@ -90,8 +86,7 @@ export default {
 			BUTTON_LAYOUT_BANDHERO_STRUM_B: 'GH/RB 스트럼',
 			BUTTON_LAYOUT_6GAWD_B: '6GAWD 오른쪽',
 			BUTTON_LAYOUT_6GAWD_ALLBUTTON_B: '6GAWD 전제 버튼 오른쪽',
-			BUTTON_LAYOUT_6GAWD_ALLBUTTONPLUS_B:
-				'6GAWD 전체 버튼 및 새끼 손가락 오른쪽',
+			BUTTON_LAYOUT_6GAWD_ALLBUTTONPLUS_B: '6GAWD 전체 버튼 및 새끼 손가락 오른쪽',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT0_B: '보드 설정값 대체 0',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT1_B: '보드 설정값 대체 1',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT2_B: '보드 설정값 대체 2',
