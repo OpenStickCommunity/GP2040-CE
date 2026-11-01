@@ -17,8 +17,8 @@ import ReactiveLED from './Addons/ReactiveLED';
 import HETrigger from './Addons/HETrigger';
 import InputMacroAddon from './InputMacroAddon';
 import LayoutConfig from './LayoutConfig';
-import LedConfigPage from './LedConfigPage';
 import Proto from './Proto/Index';
+import LedConfigPage from './LedConfigPage';
 import BootModeMapping from './BootModeMapping';
 
 export default {

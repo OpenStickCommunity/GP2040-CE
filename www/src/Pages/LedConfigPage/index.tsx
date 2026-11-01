@@ -43,7 +43,10 @@ import {
 	PRESSED_CONTEXT_PARAM_EFFECTS,
 } from '../../Data/Animations';
 import boards from '../../Data/Boards.json';
-import { LED_FORMATS } from '../../Data/Leds';
+import {
+	LED_FORMATS,
+	MAX_EXT_INPUT_LIGHT_COLOR_INDEXES,
+} from '../../Data/Leds';
 
 import LightCoordsSection from './LightCoordsSection';
 import ButtonLayoutPreview from './ButtonLayoutPreview';
@@ -117,6 +120,8 @@ const schema = yup.object({
 				notPressedStaticColors: yup.array().of(yup.number()).required(),
 				pressedSpecialColor: yup.number().required(),
 				pressedStaticColors: yup.array().of(yup.number()),
+				extNotPressedStaticColors: yup.array().of(yup.number()),
+				extPressedStaticColors: yup.array().of(yup.number()),
 				caseSpecialColor: yup.number().required(),
 				bNonPressedSpecialColorIsRainbow: yup.number().required(),
 				bPressedSpecialColorIsRainbow: yup.number().required(),
@@ -140,6 +145,7 @@ const schema = yup.object({
 					.min(0, 'First LED index must be at least 0')
 					.required('First LED index is required'),
 				lightType: yup.number().required(),
+				inputSource: yup.number().default(0),
 				numLedsOnLight: yup
 					.number()
 					.min(1, 'Number of LEDs on Light must be at least 1')
@@ -211,6 +217,14 @@ const emptyAnimationProfile = {
 	baseCaseCycleTime: 5,
 	notPressedStaticColors: Array.from({ length: GPIO_PIN_LENGTH }, () => 0),
 	pressedStaticColors: Array.from({ length: GPIO_PIN_LENGTH }, () => 1),
+	extNotPressedStaticColors: Array.from(
+		{ length: MAX_EXT_INPUT_LIGHT_COLOR_INDEXES },
+		() => 0,
+	),
+	extPressedStaticColors: Array.from(
+		{ length: MAX_EXT_INPUT_LIGHT_COLOR_INDEXES },
+		() => 1,
+	),
 };
 
 const ColorPickerList = memo(function ColorPickerList({
@@ -1145,6 +1159,12 @@ export default function LedConfigPage() {
 														notPressedStaticColors={
 															profile.notPressedStaticColors
 														}
+														extPressedStaticColors={
+															profile.extPressedStaticColors
+														}
+														extNotPressedStaticColors={
+															profile.extNotPressedStaticColors
+														}
 														nonButtonStaticColors={
 															profile.nonButtonStaticColors
 														}
@@ -1158,6 +1178,12 @@ export default function LedConfigPage() {
 														pressedStaticColors={profile.pressedStaticColors}
 														notPressedStaticColors={
 															profile.notPressedStaticColors
+														}
+														extPressedStaticColors={
+															profile.extPressedStaticColors
+														}
+														extNotPressedStaticColors={
+															profile.extNotPressedStaticColors
 														}
 														nonButtonStaticColors={
 															profile.nonButtonStaticColors

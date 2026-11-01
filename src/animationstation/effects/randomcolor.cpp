@@ -12,7 +12,7 @@ RandomColor::RandomColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPin
   savedPressedColor.clear();
   for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
   {
-    savedPressedColor.push_back(RGB(0));
+    savedPressedColor.emplace_back(0);
   }
 }
 

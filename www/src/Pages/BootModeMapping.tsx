@@ -14,8 +14,10 @@ import CustomSelect from '../Components/CustomSelect';
 import { Trans, useTranslation } from 'react-i18next';
 import { ActionMeta, MultiValue, SingleValue } from 'react-select';
 import CaptureButton from '../Components/CaptureButton';
-import useProfilesStore, { MaskPayload } from '../Store/useProfilesStore';
-import omit from 'lodash/omit';
+import useProfilesStore, {
+	getProfilePins,
+	MaskPayload,
+} from '../Store/useProfilesStore';
 import { BUTTON_ACTIONS } from '../Data/Pins';
 import ContextualHelpOverlay from '../Components/ContextualHelpOverlay';
 
@@ -105,7 +107,7 @@ function PinSelect({ mappingKey }: { mappingKey: string }) {
 	// Need the profile pin mapping to determine which pins are assigned to addons or reserved,
 	// relying on the assumption that these are the same across all profiles.
 	const profilePins: { [key: string]: MaskPayload } = useProfilesStore(
-		useShallow((state) => omit(state.profiles[0], ['profileLabel', 'enabled'])),
+		useShallow((state) => getProfilePins(state.profiles[0])),
 	);
 
 	const { t } = useTranslation('');

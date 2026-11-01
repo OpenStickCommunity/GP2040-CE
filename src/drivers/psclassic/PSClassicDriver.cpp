@@ -87,6 +87,9 @@ bool PSClassicDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb
 }
 
 const uint16_t * PSClassicDriver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
+	if (index >= TU_ARRAY_SIZE(psclassic_string_descriptors))
+		return nullptr;
+
 	const char *value = (const char *)psclassic_string_descriptors[index];
 	return getStringDescriptor(value, index); // getStringDescriptor returns a static array
 }

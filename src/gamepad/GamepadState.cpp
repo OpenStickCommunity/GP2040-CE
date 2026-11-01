@@ -1,4 +1,6 @@
 #include "GamepadState.h"
+#include <algorithm>
+#include <array>
 #include "drivermanager.h"
 
 // Convert the horizontal GamepadState dpad axis value into an analog value
@@ -47,13 +49,14 @@ uint8_t getMaskFromDirection(DpadDirection direction)
 uint8_t updateDpad(uint8_t dpad, DpadDirection direction)
 {
 	static bool inList[] = {false, false, false, false, false}; // correspond to DpadDirection: none, up, down, left, right
-	static list<DpadDirection> dpadList;
+	static std::array<DpadDirection, 4> dpadList{};
+	static uint8_t dpadCount = 0;
 
 	if(dpad & getMaskFromDirection(direction))
 	{
 		if(!inList[direction])
 		{
-			dpadList.push_back(direction);
+			dpadList[dpadCount++] = direction;
 			inList[direction] = true;
 		}
 	}
@@ -61,16 +64,16 @@ uint8_t updateDpad(uint8_t dpad, DpadDirection direction)
 	{
 		if(inList[direction])
 		{
-			dpadList.remove(direction);
+			dpadCount = std::remove(dpadList.begin(), dpadList.begin() + dpadCount, direction) - dpadList.begin();
 			inList[direction] = false;
 		}
 	}
 
-	if(dpadList.empty()) {
+	if(dpadCount == 0) {
 		return 0;
 	}
 	else {
-		return getMaskFromDirection(dpadList.back());
+		return getMaskFromDirection(dpadList[dpadCount - 1]);
 	}
 }
 

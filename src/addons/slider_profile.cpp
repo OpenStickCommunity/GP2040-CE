@@ -28,14 +28,14 @@ void SliderProfileInput::setup()
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
     {
         switch (pinMappings[pin].action) {
-            case SUSTAIN_PROFILE_SLIDER_POSITION_1:     positionMasks[0] |= 1 << pin; break;
-            case SUSTAIN_PROFILE_SLIDER_POSITION_2:     positionMasks[1] |= 1 << pin; break;
-            case SUSTAIN_PROFILE_SLIDER_POSITION_3:     positionMasks[2] |= 1 << pin; break;
-            case SUSTAIN_PROFILE_SLIDER_POSITION_4:     positionMasks[3] |= 1 << pin; break;
-            case SUSTAIN_PROFILE_SLIDER_POSITION_5:     positionMasks[4] |= 1 << pin; break;
-            case SUSTAIN_PROFILE_SLIDER_POSITION_6:     positionMasks[5] |= 1 << pin; break;
-            case SUSTAIN_PROFILE_SLIDER_POSITION_7:     positionMasks[6] |= 1 << pin; break;
-            case SUSTAIN_PROFILE_SLIDER_POSITION_8:     positionMasks[7] |= 1 << pin; break;
+            case SUSTAIN_PROFILE_SLIDER_POSITION_1:     positionMasks[0] |= Mask_t{1} << pin; break;
+            case SUSTAIN_PROFILE_SLIDER_POSITION_2:     positionMasks[1] |= Mask_t{1} << pin; break;
+            case SUSTAIN_PROFILE_SLIDER_POSITION_3:     positionMasks[2] |= Mask_t{1} << pin; break;
+            case SUSTAIN_PROFILE_SLIDER_POSITION_4:     positionMasks[3] |= Mask_t{1} << pin; break;
+            case SUSTAIN_PROFILE_SLIDER_POSITION_5:     positionMasks[4] |= Mask_t{1} << pin; break;
+            case SUSTAIN_PROFILE_SLIDER_POSITION_6:     positionMasks[5] |= Mask_t{1} << pin; break;
+            case SUSTAIN_PROFILE_SLIDER_POSITION_7:     positionMasks[6] |= Mask_t{1} << pin; break;
+            case SUSTAIN_PROFILE_SLIDER_POSITION_8:     positionMasks[7] |= Mask_t{1} << pin; break;
             default:                                    break;
         }
     }

@@ -274,7 +274,7 @@ void Gamepad::process()
 
 	// 4-way before SOCD, might have better history without losing any coherent functionality
 	if (options.fourWayMode ^ map48WayModeToggle) {
-		state.dpad = filterToFourWayMode(state.dpad);
+		state.dpad = (state.dpad & 0xF0) | filterToFourWayMode(state.dpad);
 	}
 
 	uint8_t currentDpadSnapshot = state.dpad;
@@ -576,17 +576,17 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 			break;
 		case HOTKEY_REBOOT_DEFAULT:
 			if (action != lastAction) {
-				System::reboot(System::BootMode::DEFAULT);
+				EventManager::getInstance().triggerEvent(new GPRestartEvent((System::BootMode)System::BootMode::DEFAULT));
 			}
 			break;
 		case HOTKEY_REBOOT_WEBCONFIG:
 			if (action != lastAction) {
-				System::reboot(System::BootMode::WEBCONFIG);
+				EventManager::getInstance().triggerEvent(new GPRestartEvent((System::BootMode)System::BootMode::WEBCONFIG));
 			}
 			break;
 		case HOTKEY_REBOOT_USB:
 			if (action != lastAction) {
-				System::reboot(System::BootMode::USB);
+				EventManager::getInstance().triggerEvent(new GPRestartEvent((System::BootMode)System::BootMode::USB));
 			}
 			break;
 		case HOTKEY_SAVE_CONFIG:

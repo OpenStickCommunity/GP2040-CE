@@ -52,6 +52,10 @@ const API_BINDING = {
 		get: WebApi.getProfileOptions,
 		set: WebApi.setProfileOptions,
 	},
+	profileKeyboard: {
+		get: WebApi.getProfileKeyMappings,
+		set: WebApi.setProfileKeyMappings,
+	},
 	heTrigger: {
 		get: WebApi.getHETriggerCalibrations,
 		set: WebApi.setHETriggerCalibrations,

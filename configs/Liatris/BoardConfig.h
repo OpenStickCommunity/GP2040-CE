@@ -63,18 +63,18 @@
 #define LIGHT_DATA_NAME_DEFAULT "Standard"
 #define LIGHT_DATA_SIZE_DEFAULT 12
 #define LIGHT_DATA_DEFAULT \
-0,  1, 2,  3, 28, LightType::LightType_ActionButton, \
-1,  1, 4,  3, 27, LightType::LightType_ActionButton, \
-2,  1, 6,  4, 29, LightType::LightType_ActionButton, \
-3,  1, 7,  7, 26, LightType::LightType_ActionButton, \
-4,  1, 8,  3, 0,  LightType::LightType_ActionButton, \
-5,  1, 10, 2, 1,  LightType::LightType_ActionButton, \
-6,  1, 12, 2, 22, LightType::LightType_ActionButton, \
-7,  1, 14, 2, 4,  LightType::LightType_ActionButton, \
-8,  1, 8,  5, 3,  LightType::LightType_ActionButton, \
-9,  1, 10, 4, 2,  LightType::LightType_ActionButton, \
-10, 1, 12, 4, 21, LightType::LightType_ActionButton, \
-11, 1, 14, 4, 6,  LightType::LightType_ActionButton
+0,  1, 2,  3, 28, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+1,  1, 4,  3, 27, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+2,  1, 6,  4, 29, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+3,  1, 7,  7, 26, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+4,  1, 8,  3, 0,  LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+5,  1, 10, 2, 1,  LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+6,  1, 12, 2, 22, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+7,  1, 14, 2, 4,  LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+8,  1, 8,  5, 3,  LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+9,  1, 10, 4, 2,  LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+10, 1, 12, 4, 21, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+11, 1, 14, 4, 6,  LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO
 
 // LED Profile 0
 #define LEDS_PROFILE0_ENABLED 1

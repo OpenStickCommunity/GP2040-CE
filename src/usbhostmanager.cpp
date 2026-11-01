@@ -2,6 +2,7 @@
 #include "storagemanager.h"
 #include "peripheralmanager.h"
 #include "eventmanager.h"
+#include "drivermanager.h"
 
 #include "pio_usb.h"
 #include "tusb.h"
@@ -103,6 +104,15 @@ void USBHostManager::xinput_report_sent_cb(uint8_t dev_addr, uint8_t instance, u
     if ( listeners.size() == 0 ) return;
     for( std::vector<USBListener*>::iterator it = listeners.begin(); it != listeners.end(); it++ ){
         (*it)->report_sent(dev_addr, instance, report, len);
+    }
+}
+
+void tuh_enum_descriptor_device_cb(uint8_t dev_addr, const tusb_desc_device_t *) {
+    if ( DriverManager::getInstance().getInputMode() == INPUT_MODE_XBONE ) {
+        static uint8_t config_descriptor[255];
+        // Xbox reads the full configuration before string discovery
+        tuh_descriptor_get_configuration(dev_addr, 0, config_descriptor, sizeof(config_descriptor),
+            [](tuh_xfer_t *) {}, 0);
     }
 }
 

@@ -199,7 +199,7 @@ public:
 
 	// gamepad specific proxy of debounced buttons --- 1 = active (inverse of the raw GPIO)
 	// see GP2040::debounceGpioGetAll for details
-	Mask_t debouncedGpio;
+	Mask_t debouncedGpio = 0;
 
 	uint32_t lastReinitProfileNumber = 0;
 
@@ -209,6 +209,7 @@ public:
 				(options.inputMode == INPUT_MODE_PS3 ||
 				options.inputMode == INPUT_MODE_SWITCH ||
 				options.inputMode == INPUT_MODE_SWITCH_PRO ||
+				options.inputMode == INPUT_MODE_SWITCH2_PRO ||
 				options.inputMode == INPUT_MODE_NEOGEO ||
 				options.inputMode == INPUT_MODE_PS4)) ?
 			SOCD_MODE_NEUTRAL : options.socdMode;

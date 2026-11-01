@@ -45,6 +45,7 @@ const BoardLights = [
 					yCoord: 2,
 					GPIOPinOrNonButtonIndex: 5,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 1,
@@ -53,6 +54,7 @@ const BoardLights = [
 					yCoord: 2,
 					GPIOPinOrNonButtonIndex: 3,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 2,
@@ -61,6 +63,7 @@ const BoardLights = [
 					yCoord: 3,
 					GPIOPinOrNonButtonIndex: 4,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 3,
@@ -69,6 +72,7 @@ const BoardLights = [
 					yCoord: 7,
 					GPIOPinOrNonButtonIndex: 2,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 4,
@@ -77,6 +81,7 @@ const BoardLights = [
 					yCoord: 2,
 					GPIOPinOrNonButtonIndex: 10,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 5,
@@ -85,6 +90,7 @@ const BoardLights = [
 					yCoord: 1,
 					GPIOPinOrNonButtonIndex: 11,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 6,
@@ -93,6 +99,7 @@ const BoardLights = [
 					yCoord: 1,
 					GPIOPinOrNonButtonIndex: 12,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 7,
@@ -101,6 +108,7 @@ const BoardLights = [
 					yCoord: 1,
 					GPIOPinOrNonButtonIndex: 13,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 8,
@@ -109,6 +117,7 @@ const BoardLights = [
 					yCoord: 4,
 					GPIOPinOrNonButtonIndex: 6,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 9,
@@ -117,6 +126,7 @@ const BoardLights = [
 					yCoord: 3,
 					GPIOPinOrNonButtonIndex: 7,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 10,
@@ -125,6 +135,7 @@ const BoardLights = [
 					yCoord: 3,
 					GPIOPinOrNonButtonIndex: 8,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 11,
@@ -133,6 +144,7 @@ const BoardLights = [
 					yCoord: 3,
 					GPIOPinOrNonButtonIndex: 9,
 					lightType: 0,
+					inputSource: 0,
 				},
 			],
 		},
@@ -148,6 +160,7 @@ const BoardLights = [
 					yCoord: 2,
 					GPIOPinOrNonButtonIndex: 5,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 1,
@@ -156,6 +169,7 @@ const BoardLights = [
 					yCoord: 2,
 					GPIOPinOrNonButtonIndex: 3,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 2,
@@ -164,6 +178,7 @@ const BoardLights = [
 					yCoord: 3,
 					GPIOPinOrNonButtonIndex: 4,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 3,
@@ -172,6 +187,7 @@ const BoardLights = [
 					yCoord: 7,
 					GPIOPinOrNonButtonIndex: 2,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 4,
@@ -180,6 +196,7 @@ const BoardLights = [
 					yCoord: 2,
 					GPIOPinOrNonButtonIndex: 10,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 5,
@@ -188,6 +205,7 @@ const BoardLights = [
 					yCoord: 1,
 					GPIOPinOrNonButtonIndex: 11,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 6,
@@ -196,6 +214,7 @@ const BoardLights = [
 					yCoord: 1,
 					GPIOPinOrNonButtonIndex: 12,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 7,
@@ -204,6 +223,7 @@ const BoardLights = [
 					yCoord: 1,
 					GPIOPinOrNonButtonIndex: 13,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 8,
@@ -212,6 +232,7 @@ const BoardLights = [
 					yCoord: 4,
 					GPIOPinOrNonButtonIndex: 6,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 9,
@@ -220,6 +241,7 @@ const BoardLights = [
 					yCoord: 3,
 					GPIOPinOrNonButtonIndex: 7,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 10,
@@ -228,6 +250,7 @@ const BoardLights = [
 					yCoord: 3,
 					GPIOPinOrNonButtonIndex: 8,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 11,
@@ -236,6 +259,7 @@ const BoardLights = [
 					yCoord: 3,
 					GPIOPinOrNonButtonIndex: 9,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 12,
@@ -244,6 +268,7 @@ const BoardLights = [
 					yCoord: 0,
 					GPIOPinOrNonButtonIndex: 27,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 13,
@@ -252,6 +277,7 @@ const BoardLights = [
 					yCoord: 0,
 					GPIOPinOrNonButtonIndex: 18,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 14,
@@ -260,6 +286,7 @@ const BoardLights = [
 					yCoord: 5,
 					GPIOPinOrNonButtonIndex: 19,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 15,
@@ -268,6 +295,7 @@ const BoardLights = [
 					yCoord: 6,
 					GPIOPinOrNonButtonIndex: 26,
 					lightType: 0,
+					inputSource: 0,
 				},
 			],
 		},
@@ -276,7 +304,12 @@ const BoardLights = [
 
 // Structure pin mappings to include masks and profile label
 const createPinMappings = ({ profileLabel = 'Profile', enabled = true }) => {
-	let pinMappings = { profileLabel, enabled };
+	let pinMappings = {
+		profileLabel,
+		enabled,
+		pinInversionEnabled: false,
+		invertedPins: [],
+	};
 
 	for (const [key, value] of Object.entries(picoController.usedPins)) {
 		pinMappings[key] = {
@@ -376,6 +409,8 @@ app.get('/api/getAnimationProtoOptions', (req, res) => {
 						4, 6, 10, 12, 4, 6, 10, 12, 4, 6, 10, 12, 4, 6, 10, 12, 4, 6, 10,
 						12, 4, 6, 10, 12, 4, 6, 10, 12, 4, 6, 10, 12,
 					],
+					extNotPressedStaticColors: Array(32).fill(2),
+					extPressedStaticColors: Array(32).fill(4),
 				},
 				{
 					bEnabled: 1,
@@ -409,6 +444,8 @@ app.get('/api/getAnimationProtoOptions', (req, res) => {
 						2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
 						2, 2, 2, 2, 2, 2, 2, 2, 2,
 					],
+					extNotPressedStaticColors: Array(32).fill(2),
+					extPressedStaticColors: Array(32).fill(4),
 				},
 			],
 		},
@@ -440,6 +477,33 @@ app.get('/api/getGamepadOptions', (req, res) => {
 		ps5AuthType: 0,
 		xinputAuthType: 0,
 		ps4ControllerIDMode: 0,
+		switchProControllerType: 0,
+		switchProColorPreset: 0,
+		switchProBodyColor: 0x333333,
+		switchProButtonsColor: 0xffffff,
+		switchProLeftGripColor: 0xec008c,
+		switchProRightGripColor: 0x00ff00,
+		switchProJoyConColorPreset: 0,
+		switchProJoyConLeftBodyColor: 0x0ab9e6,
+		switchProJoyConLeftButtonsColor: 0x0f0f0f,
+		switchProJoyConRightBodyColor: 0xff3c28,
+		switchProJoyConRightButtonsColor: 0x0f0f0f,
+		switch2ProIdentity: 0,
+		switch2ProColorPreset: 0,
+		switch2ProBodyColor: 0x232323,
+		switch2ProButtonsColor: 0xa0a0a0,
+		switch2ProHighlightColor: 0xe6e6e6,
+		switch2ProGripColor: 0x323232,
+		switch2ProJoyCon2ColorPreset: 0,
+		switch2ProJoyCon2LeftBodyColor: 0x323232,
+		switch2ProJoyCon2LeftButtonsColor: 0xaaaaaa,
+		switch2ProJoyCon2LeftAccentColor: 0x9be1e6,
+		switch2ProJoyCon2LeftStickColor: 0x323232,
+		switch2ProJoyCon2RightBodyColor: 0x323232,
+		switch2ProJoyCon2RightButtonsColor: 0xaaaaaa,
+		switch2ProJoyCon2RightAccentColor: 0xff8c5f,
+		switch2ProJoyCon2RightStickColor: 0x323232,
+		genericDpadMode: 0,
 		usbDescOverride: 0,
 		usbDescProduct: 'GP2040-CE (Custom)',
 		usbDescManufacturer: 'Open Stick Community',
@@ -551,6 +615,15 @@ app.get('/api/getPinMappings', (req, res) => {
 
 app.get('/api/getKeyMappings', (req, res) =>
 	res.send(mapValues(DEFAULT_KEYBOARD_MAPPING)),
+);
+
+app.get('/api/getProfileKeyMappings', (req, res) =>
+	res.send({
+		profiles: [
+			mapValues(DEFAULT_KEYBOARD_MAPPING),
+			mapValues(DEFAULT_KEYBOARD_MAPPING),
+		],
+	}),
 );
 
 app.get('/api/getPeripheralOptions', (req, res) => {

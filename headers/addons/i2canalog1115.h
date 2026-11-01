@@ -13,7 +13,7 @@
 #endif
 
 #ifndef I2C_ANALOG1115_ENABLED
-#define I2C_ANALOG1115_ENABLED 1
+#define I2C_ANALOG1115_ENABLED 0
 #endif
 
 #ifndef I2C_ANALOG1115_SDA_PIN
@@ -149,7 +149,7 @@ private:
   ADS1115Device *ads;
   int channelHop;
   uint32_t uIntervalMS; // ADS1115 Interval
-  uint32_t nextTimer;   // Turbo Timer
+  uint32_t lastPoll;   // Turbo Timer
   ADS1115_Instance instance;
   int16_t CalculateMagnitudeXY(uint16_t &channelX, uint16_t &channelY);
 };

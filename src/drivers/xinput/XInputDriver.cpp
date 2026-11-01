@@ -5,7 +5,9 @@
 
 #include "drivers/xinput/XInputDriver.h"
 #include "drivers/shared/driverhelper.h"
+#include "drivers/shared/USBReportScheduler.h"
 #include "storagemanager.h"
+#include "pico/platform.h"
 
 #define USB_SETUP_DEVICE_TO_HOST 0x80
 #define USB_SETUP_HOST_TO_DEVICE 0x00
@@ -55,6 +57,7 @@ static void xinput_init(void) {
 
 static void xinput_reset(uint8_t rhport) {
     (void)rhport;
+	USBReportScheduler::getInstance().reset();
 }
 
 static uint16_t xinput_open(uint8_t rhport, tusb_desc_interface_t const *itf_descriptor, uint16_t max_length) {
@@ -79,6 +82,8 @@ static uint16_t xinput_open(uint8_t rhport, tusb_desc_interface_t const *itf_des
             if ( itf_descriptor->bInterfaceProtocol == 0x01 ) {
                 TU_ASSERT(usbd_open_edpt_pair(rhport, (const uint8_t*)p_desc, itf_descriptor->bNumEndpoints,
                             TUSB_XFER_INTERRUPT, &endpoint_out, &endpoint_in), 0);
+                USBReportScheduler::getInstance().configure(endpoint_in);
+                USBReportScheduler::getInstance().start();
             }
         // Xbox 360 Security Interface
         } else if (itf_descriptor->bInterfaceSubClass == 0xFD &&
@@ -114,11 +119,17 @@ static bool xinput_control_complete(uint8_t rhport, tusb_control_request_t const
 static bool xinput_xfer_callback(uint8_t rhport, uint8_t ep_addr, xfer_result_t result, uint32_t xferred_bytes)
 {
     (void)rhport;
-    (void)result;
     (void)xferred_bytes;
 
-    if (ep_addr == endpoint_out)
+    if (ep_addr == endpoint_in) {
+        if (result == XFER_RESULT_SUCCESS) {
+            USBReportScheduler::getInstance().onReportComplete();
+        } else {
+            USBReportScheduler::getInstance().onReportFailed();
+        }
+    } else if (ep_addr == endpoint_out) {
         usbd_edpt_xfer(0, endpoint_out, xinput_out_buffer, XINPUT_OUT_SIZE, false);
+    }
 
     return true;
 }
@@ -179,36 +190,43 @@ void XInputDriver::initialize() {
 
     GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
-        switch (pinMappings[pin].action) {
-            case GpioAction::MODE_GUITAR_FRET_GREEN: buttonFretGreen->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_FRET_RED: buttonFretRed->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_FRET_YELLOW: buttonFretYellow->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_FRET_BLUE: buttonFretBlue->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_FRET_ORANGE: buttonFretOrange->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_FRET_SOLO_GREEN: buttonFretSoloGreen->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_FRET_SOLO_RED: buttonFretSoloRed->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_FRET_SOLO_YELLOW: buttonFretSoloYellow->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_FRET_SOLO_BLUE: buttonFretSoloBlue->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_FRET_SOLO_ORANGE: buttonFretSoloOrange->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_WHAMMY: buttonWhammy->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_GUITAR_TILT: buttonTilt->pinMask |= 1 << pin; break;
-
-            case GpioAction::MODE_DRUM_RED_DRUMPAD: buttonDrumPadRed->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_DRUM_BLUE_DRUMPAD: buttonDrumPadBlue->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_DRUM_YELLOW_DRUMPAD: buttonDrumPadYellow->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_DRUM_GREEN_DRUMPAD: buttonDrumPadGreen->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_DRUM_YELLOW_CYMBAL: buttonCymbalYellow->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_DRUM_BLUE_CYMBAL: buttonCymbalBlue->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_DRUM_GREEN_CYMBAL: buttonCymbalGreen->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_DRUM_KICK_PEDAL_LEFT: buttonKickPedalLeft->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_DRUM_KICK_PEDAL_RIGHT: buttonKickPedalRight->pinMask |= 1 << pin; break;
-
-            case GpioAction::MODE_WHEEL_STEERING_LEFT: buttonSteerLeft->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_WHEEL_STEERING_RIGHT: buttonSteerRight->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_WHEEL_PEDAL_GAS: buttonGas->pinMask |= 1 << pin; break;
-            case GpioAction::MODE_WHEEL_PEDAL_BRAKE: buttonBrake->pinMask |= 1 << pin; break;
-
-            default:    break;
+        if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GUITAR) {
+            switch (pinMappings[pin].action) {
+                case GpioAction::MODE_GUITAR_FRET_GREEN: buttonFretGreen->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_FRET_RED: buttonFretRed->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_FRET_YELLOW: buttonFretYellow->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_FRET_BLUE: buttonFretBlue->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_FRET_ORANGE: buttonFretOrange->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_FRET_SOLO_GREEN: buttonFretSoloGreen->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_FRET_SOLO_RED: buttonFretSoloRed->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_FRET_SOLO_YELLOW: buttonFretSoloYellow->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_FRET_SOLO_BLUE: buttonFretSoloBlue->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_FRET_SOLO_ORANGE: buttonFretSoloOrange->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_WHAMMY: buttonWhammy->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_GUITAR_TILT: buttonTilt->pinMask |= Mask_t{1} << pin; break;
+                default:    break;
+            }
+        } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_DRUM) {
+            switch (pinMappings[pin].action) {
+                case GpioAction::MODE_DRUM_RED_DRUMPAD: buttonDrumPadRed->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_DRUM_BLUE_DRUMPAD: buttonDrumPadBlue->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_DRUM_YELLOW_DRUMPAD: buttonDrumPadYellow->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_DRUM_GREEN_DRUMPAD: buttonDrumPadGreen->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_DRUM_YELLOW_CYMBAL: buttonCymbalYellow->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_DRUM_BLUE_CYMBAL: buttonCymbalBlue->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_DRUM_GREEN_CYMBAL: buttonCymbalGreen->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_DRUM_KICK_PEDAL_LEFT: buttonKickPedalLeft->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_DRUM_KICK_PEDAL_RIGHT: buttonKickPedalRight->pinMask |= Mask_t{1} << pin; break;
+                default:    break;
+            }
+        } else if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_WHEEL) {
+            switch (pinMappings[pin].action) {
+                case GpioAction::MODE_WHEEL_STEERING_LEFT: buttonSteerLeft->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_STEERING_RIGHT: buttonSteerRight->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_PEDAL_GAS: buttonGas->pinMask |= Mask_t{1} << pin; break;
+                case GpioAction::MODE_WHEEL_PEDAL_BRAKE: buttonBrake->pinMask |= Mask_t{1} << pin; break;
+                default:    break;
+            }
         }
     }
 
@@ -221,11 +239,12 @@ void XInputDriver::initialize() {
         .open = xinput_open,
         .control_xfer_cb = xinput_device_control_request,
         .xfer_cb = xinput_xfer_callback,
-        .sof = NULL
+        .sof = USBReportScheduler::onSof
     };
 
     xAuthDriver = nullptr;
     xAuthSent = false;
+    updateAnalogScheduling(Storage::getInstance().GetGamepad()->lastReinitProfileNumber);
 }
 
 void XInputDriver::initializeAux() {
@@ -250,7 +269,10 @@ bool XInputDriver::getAuthSent() {
     return xAuthSent;
 }
 
-bool XInputDriver::process(Gamepad * gamepad) {
+bool __not_in_flash_func(XInputDriver::process)(Gamepad * gamepad) {
+    USBReportScheduler &scheduler = USBReportScheduler::getInstance();
+    scheduler.beginInputProcessing();
+
     Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
     Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
 
@@ -332,15 +354,21 @@ bool XInputDriver::process(Gamepad * gamepad) {
 
     bool reportSent = false;
 
-    // compare against previous report and send new
-    if ( memcmp(last_report, &xinputReport, sizeof(XInputReport)) != 0) {
-        if ( tud_ready() &&											// Is the device ready?
-            (endpoint_in != 0) && (!usbd_edpt_busy(0, endpoint_in)) ) // Is the IN endpoint available?
-        {
-            usbd_edpt_claim(0, endpoint_in);								// Take control of IN endpoint
-            usbd_edpt_xfer(0, endpoint_in, (uint8_t *)&xinputReport, sizeof(XInputReport), false); // Send report buffer
-            usbd_edpt_release(0, endpoint_in);								// Release control of IN endpoint
-            memcpy(last_report, &xinputReport, sizeof(XInputReport)); // save if we sent it
+    // A hotkey can request the next profile before its mappings are applied.
+    if (analogSchedulingProfile != gamepad->lastReinitProfileNumber) {
+        updateAnalogScheduling(gamepad->lastReinitProfileNumber);
+    }
+    if (scheduler.needsReport() || memcmp(last_report, &xinputReport, sizeof(XInputReport)) != 0) {
+        USBReportPriority priority = {};
+        priority.digital = static_cast<uint64_t>(xinputReport.buttons1) |
+            (static_cast<uint64_t>(xinputReport.buttons2) << 8);
+        priority.triggers = static_cast<uint16_t>(xinputReport.lt) |
+            (static_cast<uint16_t>(xinputReport.rt) << 8);
+        bool const allowAnalogScheduling = analogSchedulingAllowed &&
+            gamepad->getActiveDpadMode() == DPAD_MODE_DIGITAL;
+        if (scheduler.sendDirectReport(
+                &xinputReport, sizeof(XInputReport), priority, allowAnalogScheduling)) {
+            memcpy(last_report, &xinputReport, sizeof(XInputReport));
             reportSent = true;
         }
     }
@@ -393,6 +421,7 @@ bool XInputDriver::process(Gamepad * gamepad) {
         }
     }
 
+    scheduler.endInputProcessing();
     return reportSent;
 }
 
@@ -458,6 +487,11 @@ bool XInputDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_co
             tud_control_xfer(rhport, request, tud_buffer, len);
         }
     } else if (request->bmRequestType_bit.direction == TUSB_DIR_OUT) {
+        if ((request->bRequest != XSM360_INIT_AUTH || request->wLength != X360_AUTHLEN_CONSOLE_INIT) &&
+            (request->bRequest != XSM360_VERIFY_AUTH || request->wLength != X360_AUTHLEN_CHALLENGE)) {
+            return false;
+        }
+
         if (stage == CONTROL_STAGE_SETUP ) { // Pass on output setup in DIR OUT stage
             tud_control_xfer(rhport, request, tud_buffer, request->wLength);
         } else if ( stage == CONTROL_STAGE_DATA ) {
@@ -487,6 +521,9 @@ bool XInputDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_co
 }
 
 const uint16_t * XInputDriver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
+    if (index >= TU_ARRAY_SIZE(xinput_string_descriptors))
+        return nullptr;
+
     char *value;
     // Check for override settings
     GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();

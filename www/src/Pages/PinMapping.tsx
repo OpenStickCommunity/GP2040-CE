@@ -26,6 +26,7 @@ import omit from 'lodash/omit';
 
 import { AppContext } from '../Contexts/AppContext';
 import useProfilesStore, {
+	getProfilePins,
 	MaskPayload,
 	MAX_PROFILES,
 } from '../Store/useProfilesStore';
@@ -171,10 +172,17 @@ const PinSelectList = memo(function PinSelectList({
 }) {
 	const setProfilePin = useProfilesStore((state) => state.setProfilePin);
 	const { activateLedsOnId, turnOffLedTestModes } = useLedsPreview();
+	const togglePinInverted = useProfilesStore(
+		(state) => state.togglePinInverted,
+	);
 	const pins = useProfilesStore(
-		useShallow((state) =>
-			omit(state.profiles[profileIndex], ['profileLabel', 'enabled']),
-		),
+		useShallow((state) => getProfilePins(state.profiles[profileIndex])),
+	);
+	const pinInversionEnabled = useProfilesStore(
+		(state) => state.profiles[profileIndex].pinInversionEnabled,
+	);
+	const invertedPins = useProfilesStore(
+		(state) => state.profiles[profileIndex].invertedPins,
 	);
 	const { t } = useTranslation('');
 	const { buttonLabels } = useContext(AppContext);
@@ -255,7 +263,21 @@ const PinSelectList = memo(function PinSelectList({
 		>
 			{Object.entries(pins).map(([pin, pinData], index) => (
 				<div key={`select-${index}`} className="d-flex align-items-center">
-					<div className="d-flex flex-shrink-0" style={{ width: '3.5rem' }}>
+					<div
+						className="d-flex flex-shrink-0 align-items-center gap-1"
+						style={{ width: pinInversionEnabled ? '4.5rem' : '3.5rem' }}
+					>
+						{pinInversionEnabled && (
+							<FormCheck
+								className="mb-0"
+								id={`invert-${profileIndex}-${pin}`}
+								aria-label={t('PinMapping:pin-invert-label', { pin: index })}
+								title={t('PinMapping:pin-invert-label', { pin: index })}
+								checked={invertedPins?.includes(index) ?? false}
+								disabled={isDisabled(pinData.action)}
+								onChange={() => togglePinInverted(profileIndex, index)}
+							/>
+						)}
 						<label>GP{index}</label>
 					</div>
 					<CustomSelect
@@ -286,6 +308,12 @@ const PinSection = memo(function PinSection({
 	const saveProfiles = useProfilesStore((state) => state.saveProfiles);
 	const toggleProfileEnabled = useProfilesStore(
 		(state) => state.toggleProfileEnabled,
+	);
+	const setPinInversionEnabled = useProfilesStore(
+		(state) => state.setPinInversionEnabled,
+	);
+	const pinInversionEnabled = useProfilesStore(
+		(state) => state.profiles[profileIndex].pinInversionEnabled,
 	);
 	const enabled = useProfilesStore(
 		(state) => state.profiles[profileIndex].enabled,
@@ -348,8 +376,8 @@ const PinSection = memo(function PinSection({
 						<Col md={7}>
 							<ProfileLabel profileIndex={profileIndex} />
 						</Col>
-						{profileIndex > 0 && (
-							<Col className="order-first order-md-last">
+						<Col className="order-first order-md-last">
+							{profileIndex > 0 && (
 								<FormCheck
 									disabled={profileIndex === activeProfile}
 									size={3}
@@ -376,8 +404,29 @@ const PinSection = memo(function PinSection({
 										toggleProfileEnabled(profileIndex);
 									}}
 								/>
-							</Col>
-						)}
+							)}
+							<FormCheck
+								type="switch"
+								reverse
+								id={`pin-inversion-${profileIndex}`}
+								checked={pinInversionEnabled ?? false}
+								onChange={(e) =>
+									setPinInversionEnabled(profileIndex, e.target.checked)
+								}
+								label={
+									<OverlayTrigger
+										overlay={
+											<Tooltip>{t('PinMapping:pin-inversion-tooltip')}</Tooltip>
+										}
+									>
+										<div className="d-flex gap-1">
+											<label>{t('PinMapping:pin-inversion-label')}</label>
+											<InfoCircle />
+										</div>
+									</OverlayTrigger>
+								}
+							/>
+						</Col>
 					</Row>
 					<hr />
 

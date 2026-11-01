@@ -1,5 +1,7 @@
 #include "burstcolor.h"
 
+#include "storagemanager.h"
+
 #define BURST_CYCLE_INCREMENT   10
 #define BURST_CYCLE_MAX         100
 #define BURST_CYCLE_MIN         10
@@ -13,7 +15,11 @@ BurstColor::BurstColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPins,
     isButtonAnimation = true;
     pressedPins = InPressedPins;
 
-    bRandomColor = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].bPressedSpecialColorIsRainbow;
+    
+
+    AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+
+    bRandomColor = options.profiles[options.baseProfileIndex].bPressedSpecialColorIsRainbow;
 
     for(unsigned int lightIndex = 0; lightIndex < RGBLights->AllLights.size(); ++lightIndex)
     {
@@ -33,7 +39,7 @@ BurstColor::BurstColor(Lights& InRGBLights, std::vector<int32_t> &InPressedPins,
 
     // Get burst length from the context param (1-100% of biggest X or Y dimension, 0 = default)
     int MaxDimension = MAX(MaxXCoord - MinYCoord, MaxYCoord - MinYCoord) + 1;
-    BurstTailLength = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].pressedEffectContextParam;
+    BurstTailLength = (options.profiles[options.baseProfileIndex].effectContextParam >> 8) & 0xFF;
     if(BurstTailLength == 0)
         BurstTailLength = MaxDimension * DEFAULT_BURST_TAIL_PROP;
     else
@@ -176,6 +182,8 @@ void BurstColor::Animate(RGB (&frame)[FRAME_MAX])
 
 void BurstColor::CycleParameterChange() 
 {
-    int16_t cycleStep = AnimationStation::options.profiles[AnimationStation::options.baseProfileIndex].basePressedCycleTime;
+    AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+
+    int16_t cycleStep = options.profiles[options.baseProfileIndex].basePressedCycleTime;
     cycleTime = BURST_CYCLE_MIN + (((BURST_CYCLE_MAX - BURST_CYCLE_MIN) / CYCLE_STEPS) * cycleStep);
 }

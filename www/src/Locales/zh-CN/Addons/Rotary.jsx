@@ -7,7 +7,7 @@ export default {
 	'encoder-ppr-label': '每圈脉冲数 (PPR)',
 	'encoder-reset-after-label': '重置延迟 (毫秒)',
 	'encoder-allow-wrap-around-label': '允许数值环绕 (Wrap-Around)',
-	'encoder-multiplier-label': '灵敏度倍率',
+	'encoder-multiplier-label': '步进倍率',
 	'encoder-mode-label': '控制模式',
 	'encoder-mode-none': '无',
 	'encoder-mode-left-analog-x': '左模拟摇杆 X 轴',

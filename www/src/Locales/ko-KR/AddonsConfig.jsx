@@ -31,6 +31,34 @@ export default {
 	'inner-deadzone-size': '내부 데드존(%)',
 	'outer-deadzone-size': '외부 데드존(%)',
 	'analog-auto-calibrate': '자동 보정',
+	'analog-calibrate-stick-1-button': '스틱 1 보정',
+	'analog-calibrate-stick-2-button': '스틱 2 보정',
+	'analog-calibration-title': '아날로그 보정',
+	'analog-calibration-rotation-overview':
+		'보정 시작 후 전체 가동 범위를 천천히 여러 번 회전하세요. "중립 위치 캡처"를 선택한 뒤 스틱에서 손을 떼고 보정이 완료될 때까지 손대지 마세요. 설정을 저장하고 적용을 위해 재시작하세요.',
+	'analog-calibration-rotate':
+		'스틱을 바깥쪽 가장자리를 따라 천천히 여러 번 돌리거나 단일 축인 경우 가동 범위 끝까지 움직여 주세요. 완료되면 "중립 위치 캡처"를 선택하세요.',
+	'analog-calibration-done-rotating': '중립 위치 캡처',
+	'analog-calibration-release':
+		'스틱에서 손을 떼고 그대로 두세요. 측정값이 안정되면 중립 위치가 자동으로 캡처됩니다.',
+	'analog-calibration-cancel': '취소',
+	'analog-calibration-connection-timeout':
+		'컨트롤러가 응답하지 않습니다. 연결 상태를 확인한 후 다시 시도해 주세요.',
+	'analog-calibration-rest-timeout':
+		'스틱이 가동 범위내에서 중립으로 안정되지 않았습니다. 스틱에서 완전히 손을 뗀 후 보정을 다시 시도해 주세요.',
+	'analog-calibration-select-pins':
+		'보정전에 아날로그 ADC 핀을 하나 이상 선택하고 저장해 주세요.',
+	'analog-calibration-save-pins':
+		'보정전에 선택한 아날로그 핀을 먼저 저장해 주세요.',
+	'analog-manual-calibration-mode-stick-1': '스틱 1 수동 보정 모드',
+	'analog-manual-calibration-mode-stick-2': '스틱 2 수동 보정 모드',
+	'analog-auto-calibration-enabled-stick-1': '스틱 1 자동 보정 활성화됨',
+	'analog-auto-calibration-enabled-stick-2': '스틱 2 자동 보정 활성화됨',
+	'analog-calibration-failed': '보정 실패: {{error}}',
+	'analog-calibration-save-notice':
+		'보정 값을 적용하려면 설정을 저장해 주세요.',
+	'analog-calibration-auto-mode-instruction':
+		'시스템 시작 시 스틱 {{stick}}의 중립 값을 자동으로 인식합니다. 수동 보정을 진행하려면 먼저 "자동 보정" 체크를 해제해 주세요.',
 	'analog-smoothing': '아날로그 스무딩',
 	'smoothing-factor': '스무딩 강도',
 	'analog-error-label': '오차율',
@@ -66,6 +94,7 @@ export default {
 	'reverse-action-disable-label': '사용안함',
 	'reverse-action-enable-label': '사용',
 	'reverse-action-neutral-label': '중립',
+	'i2c-analog-ads1115-header-text': 'I2C 아날로그 ADS1115',
 	'i2c-analog-ads1219-header-text': 'I2C 아날로그 ADS1219',
 	'dual-directional-input-header-text': '듀얼 방향 입력',
 	'dual-directional-input-dpad-mode-label': '듀얼 D-패드 모드',
@@ -91,14 +120,14 @@ export default {
 	'player-number-sub-header-text':
 		'플레이어 번호가 활성화된 여러개의 GP2040-CE 장치를 연결하는 경우에만 이 옵션을 활성화하십시오.',
 	'player-number-label': '플레이어 번호',
-	'socd-cleaning-mode-selection-slider-header-text': 'SOCD 모드 선택 슬라이더',
+	'socd-cleaning-mode-selection-slider-header-text':
+		'SOCD 모드 선택 슬라이더',
 	'socd-cleaning-mode-selection-slider-sub-header-text':
 		'참고：PS4, PS3 및 닌텐도 스위치 모드에서는 SOCD 클리닝 끄기를 지원하지 않으며 중립이 기본 값으로 설정됩니다.',
 	'socd-cleaning-mode-selection-slider-mode-default-label':
 		'SOCD 슬라이더 모드 기본값',
 	'ps4-mode-sub-header': '주의!',
-	'ps4-mode-sub-header-text':
-		'어떠한 경우에도 GP2040-CE에서는 다음의 파일을 제공하지 않습니다!!!',
+	'ps4-mode-sub-header-text':'GP2040-CE에서는 다음의 파일을 제공하지 않습니다!!!',
 	'ps4-mode-private-key-label': 'Private Key (PEM)',
 	'ps4-mode-serial-number-label': '시리얼 번호 (16바이트의 16진수 ASCII)',
 	'ps4-mode-signature-label': '서명파일 (256바이트 바이너리)',
@@ -160,7 +189,8 @@ export default {
 	'drv8833-rumble-pwm-frequency-label': 'PWM 주파수',
 	'drv8833-rumble-duty-min-label': '최소 듀티 사이클',
 	'drv8833-rumble-duty-max-label': '최대 듀티 사이클',
-	'tg16-extension-header-text': 'PC 엔진/터보그래픽스-16 확장 설정',
+	'tg16-extension-header-text':
+		'PC 엔진/터보그래픽스-16 확장 설정',
 	'tg16-extension-sub-header-text':
 		'참고 ：디스플레이가 동시에 활성화되면 현재 애드온은 비활성화됩니다',
 	'tg16-extension-oe-pin-label': 'OE GPIO 핀',

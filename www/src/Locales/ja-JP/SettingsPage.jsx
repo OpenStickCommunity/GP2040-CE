@@ -5,11 +5,12 @@ export default {
 	'gamepad-settings-header-text': 'コントローラ設定',
 	'input-mode-label': '入力モード',
 	'current-input-mode-label': '現在の入力モード',
-	'input-mode-extra-label': 'Switch タッチパッドと Share',
+	'input-mode-extra-label': 'タッチパッドとShareを入れ替え',
 	'input-mode-options': {
 		none: 'モード未選択',
 		'nintendo-switch': '任天堂Switch',
 		'nintendo-switch-pro': '任天堂Switch Pro',
+		'nintendo-switch2-pro': '任天堂Switch 2 Pro',
 		generic: '標準HID',
 		keyboard: 'キーボード',
 		mdmini: 'Sega Genesis/メガドライブ Mini',
@@ -41,7 +42,7 @@ export default {
 	},
 	'socd-cleaning-mode-label': 'SOCDクリーニングモード',
 	'socd-cleaning-mode-note':
-		'注：PS4、PS3、任天堂SwitchおよびミニコンソールシリーズのモードではSOCDクリーニングモード無効設定はできないため、ニュートラルSOCDクリーニングに設定されます。',
+		'注：PS4、PS3、任天堂Switch・Switch ProおよびミニコンソールシリーズのモードではSOCDクリーニングモード無効設定はできないため、ニュートラルSOCDクリーニングに設定されます。',
 	'socd-cleaning-mode-options': {
 		'up-priority': '上優先',
 		neutral: 'ニュートラル',
@@ -59,9 +60,126 @@ export default {
 		'<span>⏳ 警告 ⏳:</span> 認証無しの場合8分でPS4はタイムアウトして切断します.',
 	'ps4-usb-host-mode-text':
 		'<span>補足: </span> USB 周辺機器が有効化されており、PS4に互換性のあるデバイスが接続されていることを確認してください。',
+	'switch2-pro-identity-label': 'コントローラ種別',
+	'switch2-pro-identity-options': {
+		pro2: 'Switch 2 Pro コントローラ',
+		gamecube: 'ニンテンドー ゲームキューブ コントローラ',
+	},
+	'switch2-pro-joycon2-color-explanation':
+		'Switch 2上でこのコントローラを何色で表示するかを設定します。',
+	'switch2-pro-joycon2-color-presets': {
+		stock: '標準',
+		'purple-green': '紫 / 緑',
+		'blue-yellow': '青 / 黄',
+		custom: 'カスタム',
+	},
+	'switch2-pro-joycon2-color-parts': {
+		body: '本体',
+		buttons: 'ボタン',
+		accent: 'アクセント',
+		stick: 'スティック',
+	},
+	'switch2-pro-color-label': 'コントローラ表示色',
+	'switch2-pro-color-explanation':
+		'Switch 2上でこのコントローラを何色で表示するかを設定します。',
+	'switch2-pro-color-presets': {
+		stock: '標準',
+		gp2040: 'GP2040-CE',
+		custom: 'カスタム',
+	},
+	'switch2-pro-color-parts': {
+		'face-plate': 'フェースプレート',
+		buttons: 'ボタン',
+		highlight: 'ハイライト',
+		'main-body': '本体',
+	},
 	'ps4-id-mode-label': '識別モード',
 	'ps4-id-mode-explanation-text':
 		'<ul><li>コンソールモードはPS4接続時に利用してください。</li><li></li>リモート/エミュレーションモードはエミュレーションレイヤーとの接続やリモートプレイ環境でDualShock 4互換コントローラーが必要な際にのみ利用してください。</ul>',
+	'generic-dpad-mode-label': '十字キー入力',
+	'generic-dpad-mode-options': {
+		'hat-and-buttons': 'ハット + ボタン',
+		'hat-only': 'ハットのみ',
+		'buttons-only': 'ボタンのみ',
+	},
+	'switch-pro-controller-type-label': 'コントローラ種別',
+	'switch-pro-controller-type-options': {
+		pro: 'プロコントローラ',
+		'super-famicom': 'NSO スーパーファミコン',
+		n64: 'NSO 任天堂64',
+		'mega-drive': 'NSO メガドライブ',
+		'famicom-i': 'NSO ファミコン I',
+		'famicom-ii': 'NSO ファミコン II',
+	},
+	'switch-pro-color-label': 'コントローラ表示色',
+	'switch-pro-color-explanation':
+		'このコントローラをSwitchが何色で表示するかを設定します。',
+	'switch-pro-color-presets': {
+		stock: '標準',
+		custom: 'カスタム',
+	},
+	'switch2-pro-identity-label': 'コントローラ種別',
+	'switch2-pro-identity-options': {
+		pro2: 'Switch 2 Pro コントローラー',
+		gamecube: 'GameCube コントローラー',
+	},
+	'switch2-pro-gamecube-no-options':
+		'GameCubeコントローラモードに追加の設定はありません。',
+	'switch2-pro-joycon2-experimental-warning':
+		'<strong>注意:</strong> {{mode}} モードは実験機能です。大抵の場合においては他のSwitch 2 Pro コントローラー等のコントローラ種別を選択することを推奨します。このモードを試したい場合はNintendo Switch 2のコントローラー接続画面でペアリングボタンを押してJoy-Con 2が水平状態で表示されたことを確認ください。この作業はSwtich 2がスリープから復帰する毎に実施する必要が有ります。メイン画面でペアリングしてしまうとJoy-Conが縦状態でペアリングされボタンのマッピングが正しく動作しません。',
+	'switch2-pro-joycon2-color-explanation':
+		'このコントローラをSwitchが何色で表示するかを設定します。',
+	'switch2-pro-joycon2-color-presets': {
+		stock: '標準',
+		'purple-green': '紫 / 緑',
+		'blue-yellow': '青 / 黄',
+		custom: 'カスタム',
+	},
+	'switch2-pro-joycon2-color-parts': {
+		body: '本体',
+		buttons: 'ボタン',
+		accent: 'アクセント',
+		stick: 'スティック',
+	},
+	'switch2-pro-color-label': 'コントローラ表示色',
+	'switch2-pro-color-explanation':
+		'このコントローラをSwitch 2が何色で表示するかを設定します。',
+	'switch2-pro-color-presets': {
+		stock: '標準',
+		custom: 'カスタム',
+	},
+	'switch-pro-joycon-single-note':
+		"Joy-Con単体での利用の場合は、「持ちかた/順番を変える」に行きSL+SR ({{buttons}}) を押下してください。この操作は {{mode}} とJoy-Con (L + R)モードを切替える毎に実施が必要です",
+	'switch-pro-joycon-single-warning':
+		'<strong>注意:</strong> Joy-Con (L) and Joy-Con (R) モードは通常利用は非推奨となっており、特定のアクセサリ開発等で単体のJoy-Conモードが必要な人向けです。特段の理由がない場合は Pro コントローラや Joy-Con （L + R)モードをご利用ください。',
+	'switch-pro-joycon-pair-warning':
+		"<strong>注意:</strong> Joy-Con (L + R) を接続するためには「持ちかた/順番を変える」セクションで L + R ({{buttons}}) を押下する必要がある場合があります。",
+	'switch-pro-genesis-warning':
+		'<strong>注意:</strong> このコントローラ種別はSwitchにシステムアイコンがありません。よってシステムメニュー上はProコントローラとして表示されます。NSO Genesisアプリでは正しくコントローラアイコンが表示表示されます。',
+	'switch-pro-joycon-color-explanation':
+		'このJoy-ConをSwitchが何色で表示するかを設定します。本体とボタンのみが表示対象です。',
+	'switch-pro-joycon-color-presets': {
+		grey: '標準グレー',
+		neon: '標準ネオン',
+		white: '白 (OLED)',
+		custom: 'カスタム',
+	},
+	'switch-pro-color-parts': {
+		body: '本体',
+		buttons: 'ボタン',
+		'left-grip': '左グリップ',
+		'right-grip': '右グリップ',
+		'left-body': '左本体',
+		'left-buttons': '左ボタン',
+		'right-body': '右本体',
+		'right-buttons': '右ボタン',
+	},
+	'switch2-pro-color-parts': {
+		'face-plate': 'フェースプレート',
+		buttons: 'ボタン',
+		highlight: 'ハイライト',
+		'main-body': '本体',
+	},
 	'ps4-id-mode-options': {
 		console: 'コンソール',
 		emulation: 'リモート/エミュレーション',
@@ -74,6 +192,8 @@ export default {
 		'<span>補足: </span> USB 周辺機器が有効化されており、PS5に互換性のあるデバイスが接続されていることを確認してください。',
 	'xbone-mode-text':
 		'<span>補足: </span> XBox One モードで正しく認証するにははUSBホスト接続とUSBドングルが必要です。',
+	'p5general-mode-text':
+		'<span>補足: </span> PS5のP5Generalモードで正しく認証するにはUSBホスト接続と <span>P5General</span> が必要です',
 	'xinput-mode-text':
 		'<span>補足:</span> XInput モードはドングル無しでXbox 360で利用可能です。外部の認証ドングルを利用したい場合のみUSBを選択してください。',
 	'hotkey-settings-label': 'ホットキー設定',
@@ -127,6 +247,8 @@ export default {
 		'load-profile-5': 'プロファイル #5をロード',
 		'load-profile-6': 'プロファイル #6をロード',
 		'reboot-default': 'GP2040-CEを再起動',
+		'reboot-webconfig': 'GP2040-CEをWeb Configモードで再起動',
+		'reboot-usb': 'GP2040-CEをBOOTSEL/USBモードで再起動',
 		'save-config': '設定を保存',
 		'next-profile': '次のプロファイル',
 		'previous-profile': '前のプロファイル',
@@ -140,6 +262,14 @@ export default {
 		'focus-mode-toggle': 'フォーカスモード切替え',
 		'turbo-count-up': 'ターボカウントUP',
 		'turbo-count-down': 'ターボカウントDOWN',
+		'ls-up': '左スティック上',
+		'ls-down': '左スティック下',
+		'ls-left': '左スティック左',
+		'ls-right': '左スティック右',
+		'rs-up': '右スティック上',
+		'rs-down': '右スティック下',
+		'rs-left': '右スティック左',
+		'rs-right': '右スティック右',
 	},
 	'forced-setup-mode-label': '強制セットアップモード',
 	'forced-setup-mode-options': {
@@ -153,6 +283,7 @@ export default {
 		'保存後にコントローラモードで再起動すると、以降Web設定モードにはアクセスできなくなります。注意点をよく理解したうえで、保存ボタンを有効化するには「{{warningCheckText}}」を以下に入力してください。閉じるボタンを押下した場合はこの設定は元に戻され保存されます。',
 	'4-way-joystick-mode-label': '4方向ジョイスティックモード',
 	'keyboard-mapping-header-text': 'キーボードキー割り当て',
+	'keyboard-profile-label': 'プロファイル',
 	'keyboard-mapping-sub-header-text':
 		'以下のフォームを利用してボタンとキーの割り当て変更をしてください。',
 	'usb-override': {
@@ -161,7 +292,7 @@ export default {
 			'危険: 無効なUSBパラメータを設定するとデバイスが動作しなくなります。',
 		'product-name': '製品名',
 		manufacturer: '製造者',
-		version: 'バージョン',
+		version: 'シリアル',
 		'physical-warning-danger': '⚡ 物理ID変更 ⚡ ',
 		'product-id': 'プロダクトID',
 		'vendor-id': 'ベンダーID',

@@ -6,7 +6,7 @@ void GPLabel::draw() {
     this->_delimiter = ": ";
 
     if (!this->_scrolling) {
-        getRenderer()->drawText(x, y, label.c_str());
+        getRenderer()->drawText(x, y, label);
     } else {
         std::string prefix, scrollText;
         size_t delimiterPos = label.find(this->_delimiter);
@@ -30,7 +30,7 @@ void GPLabel::draw() {
                 std::string window = doubled.substr(this->_scrollPosition, scrollWidth);
 
                 std::string display = prefix + window;
-                getRenderer()->drawText(x, y, display.c_str());
+                getRenderer()->drawText(x, y, display);
 
                 uint32_t now = getMillis();
                 uint32_t delay = (_scrollPosition == 0) ? _scrollDelayStart : _scrollDelay;
@@ -44,10 +44,10 @@ void GPLabel::draw() {
                     this->_lastScrollTime = now;
                 }
             } else {
-                getRenderer()->drawText(x, y, label.c_str());
+                getRenderer()->drawText(x, y, label);
             }
         } else {
-            getRenderer()->drawText(x, y, label.c_str());
+            getRenderer()->drawText(x, y, label);
         }
     }
 }

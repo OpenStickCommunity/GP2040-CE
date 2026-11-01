@@ -900,7 +900,9 @@ public:
     virtual void postprocess(bool sent) {}
     virtual void reinit() {}
     virtual std::string name() { return HETriggerAddonName; }
+    void configModeProcess();
 private:
+    void scan(bool applyActions);
     void selectChannel(uint8_t mux, uint8_t channel);
     uint16_t emaSmoothing(uint16_t value, uint16_t previous);
     int muxTotal;

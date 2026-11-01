@@ -1,6 +1,10 @@
 #include "tiny_ssd1306.h"
 
+#define OLED_I2C_CHUNK_SIZE 8
+
 void GPGFX_TinySSD1306::init(GPGFX_DisplayTypeOptions options) {
+    lastFrameValid = false;
+    lastTransferUs = 0;
     _options.displayType = options.displayType;
     _options.i2c = options.i2c;
     _options.spi = options.spi;
@@ -107,6 +111,7 @@ bool GPGFX_TinySSD1306::isSH1106(int detectedDisplay) {
 }
 
 void GPGFX_TinySSD1306::setPower(bool isPowered) {
+    lastFrameValid = false;
 	_isPowered = isPowered;
 	sendCommand(_isPowered ? CommandOps::DISPLAY_ON : CommandOps::DISPLAY_OFF);
 }
@@ -435,6 +440,7 @@ void GPGFX_TinySSD1306::drawPill(uint16_t x, uint16_t y, uint16_t width, uint16_
     // Rectangle half-lengths along long and short axes
     double rectHalfLong  = (horizontal ? halfWidth : halfHeight) - radius;
     double rectHalfShort = horizontal ? halfHeight : halfWidth;
+    double capRadius = fabs(radius);
 
     // Rotation
     double angleRad = rotationAngle * M_PI / 180.0;
@@ -468,26 +474,54 @@ void GPGFX_TinySSD1306::drawPill(uint16_t x, uint16_t y, uint16_t width, uint16_
     drawLine(rx[2], ry[2], rx[3], ry[3], color, filled); // bottom
 
     if (filled) {
-        double longVecX = cosA * longX - sinA * longY;
-        double longVecY = sinA * longX + cosA * longY;
-        double shortVecX = cosA * shortX - sinA * shortY;
-        double shortVecY = sinA * shortX + cosA * shortY;
+        double axisX = (cosA * longX - sinA * longY) * rectHalfLong;
+        double axisY = (sinA * longX + cosA * longY) * rectHalfLong;
+        double fillRadius = capRadius + 0.5;
+        int top = std::max(0, (int)floor(centerY - fabs(axisY) - fillRadius));
+        int bottom = std::min(MAX_SCREEN_HEIGHT - 1, (int)ceil(centerY + fabs(axisY) + fillRadius));
 
-        int steps = (int)ceil(2.0 * rectHalfLong * 8.0);
-        if (steps < 1) steps = 1;
-
-        double shortExtra = 0.5;
-
-        for (int k = -steps; k <= steps; k++) {
-            double t = (double)k / steps;
-
-            double baseX = centerX + t * rectHalfLong * longVecX;
-            double baseY = centerY + t * rectHalfLong * longVecY;
-
-            double sx = rectHalfShort * shortVecX + shortExtra * (shortVecX >= 0 ? 1 : -1);
-            double sy = rectHalfShort * shortVecY + shortExtra * (shortVecY >= 0 ? 1 : -1);
-
-            drawLine((uint16_t)round(baseX - sx), (uint16_t)round(baseY - sy), (uint16_t)round(baseX + sx), (uint16_t)round(baseY + sy), color, 1);
+        for (int row = top; row <= bottom; row++) {
+            double left = INFINITY;
+            double right = -INFINITY;
+            for (int side = -1; side <= 1; side += 2) {
+                double dy = row - (centerY + side * axisY);
+                if (fabs(dy) <= fillRadius) {
+                    double dx = sqrt(fillRadius * fillRadius - dy * dy);
+                    left = std::min(left, centerX + side * axisX - dx);
+                    right = std::max(right, centerX + side * axisX + dx);
+                }
+            }
+            if (rectHalfLong > 0) {
+                double ux = axisX / rectHalfLong;
+                double uy = axisY / rectHalfLong;
+                double bandLow = -INFINITY;
+                double bandHigh = INFINITY;
+                double coefs[2] = {ux, -uy};
+                double offsets[2] = {(row - centerY) * uy, (row - centerY) * ux};
+                double limits[2] = {rectHalfLong, fillRadius};
+                for (int i = 0; i < 2; i++) {
+                    double low = -limits[i] - offsets[i];
+                    double high = limits[i] - offsets[i];
+                    if (fabs(coefs[i]) < 1e-9) {
+                        if (low > 0 || high < 0) bandHigh = -INFINITY;
+                        continue;
+                    }
+                    double first = low / coefs[i];
+                    double second = high / coefs[i];
+                    bandLow = std::max(bandLow, centerX + std::min(first, second));
+                    bandHigh = std::min(bandHigh, centerX + std::max(first, second));
+                }
+                if (bandLow <= bandHigh) {
+                    left = std::min(left, bandLow);
+                    right = std::max(right, bandHigh);
+                }
+            }
+            if (left > right)
+                continue;
+            int startX = std::max(0, (int)ceil(left));
+            int endX = std::min(MAX_SCREEN_WIDTH - 1, (int)floor(right));
+            for (int column = startX; column <= endX; column++)
+                drawPixel(column, row, color);
         }
     }
 
@@ -502,21 +536,14 @@ void GPGFX_TinySSD1306::drawPill(uint16_t x, uint16_t y, uint16_t width, uint16_
             double theta = -M_PI/2 + t * M_PI;
             if(side == -1) theta = M_PI/2 + t * M_PI;
 
-            double thetaOffset = horizontal ? -M_PI/2 : M_PI/2;
-            double arcLocalX = cx + radius * cos(theta + thetaOffset) * shortX + radius * sin(theta + thetaOffset) * longX;
-            double arcLocalY = cy + radius * cos(theta + thetaOffset) * shortY + radius * sin(theta + thetaOffset) * longY;
+            double arcLocalX = cx + capRadius * cos(theta) * longX + capRadius * sin(theta) * shortX;
+            double arcLocalY = cy + capRadius * cos(theta) * longY + capRadius * sin(theta) * shortY;
 
             double rotatedX = centerX + cosA * arcLocalX - sinA * arcLocalY;
             double rotatedY = centerY + sinA * arcLocalX + cosA * arcLocalY;
 
             if(i>0){
                 drawLine((uint16_t)round(rotatedX), (uint16_t)round(rotatedY), (uint16_t)round(prevX), (uint16_t)round(prevY), color, filled);
-
-                if (filled) {
-                    double capCenterX = centerX + cosA * cx - sinA * cy;
-                    double capCenterY = centerY + sinA * cx + cosA * cy;
-                    drawLine((uint16_t)round(rotatedX), (uint16_t)round(rotatedY), (uint16_t)round(capCenterX), (uint16_t)round(capCenterY), color, 1);
-                }
             }
             prevX = rotatedX;
             prevY = rotatedY;
@@ -544,41 +571,55 @@ void GPGFX_TinySSD1306::drawSprite(uint8_t* image, uint16_t width, uint16_t heig
 	}
 }
 
+// Chunk transfers so inputs can be read
+bool GPGFX_TinySSD1306::sendData(uint8_t* data, uint16_t length) {
+    uint8_t chunk[OLED_I2C_CHUNK_SIZE + 1] = {0x40};
+    for (uint16_t offset = 0; offset < length; offset += OLED_I2C_CHUNK_SIZE) {
+        uint16_t count = std::min(OLED_I2C_CHUNK_SIZE, length - offset);
+        memcpy(&chunk[1], &data[offset], count);
+        if (_options.i2c->write(_options.address, chunk, count + 1, false) != count + 1) return false;
+    }
+    return true;
+}
+
 void GPGFX_TinySSD1306::drawBuffer(uint8_t* pBuffer) {
-	uint16_t bufferSize = MAX_SCREEN_SIZE;
-	uint8_t buffer[bufferSize+1] = {SET_START_LINE};
+    if (pBuffer == NULL) pBuffer = frameBuffer;
+    if (lastFrameValid && memcmp(pBuffer, lastFrameBuffer, MAX_SCREEN_SIZE) == 0) {
+        // Yield for the previous successful transfer time instead of resending an unchanged frame.
+        sleep_us(lastTransferUs);
+        return;
+    }
+    const uint32_t startedUs = time_us_32();
+    // A partial transfer must be retried even if the next frame matches the old one.
+    lastFrameValid = false;
+    memcpy(lastFrameBuffer, pBuffer, MAX_SCREEN_SIZE);
 
 	if (this->screenType == ScreenAlternatives::SCREEN_132x64) {
+        uint8_t buffer[MAX_SCREEN_WIDTH + 2] = {};
         uint16_t x = 0;
         uint16_t y = 0;
         for (y = 0; y < (MAX_SCREEN_HEIGHT/8); y++) {
-            sendCommand(0xB0 + y);
-            sendCommand(x & 0x0F);
-            sendCommand(0x10 | (x >> 4));
+            if (!sendCommand(0xB0 + y) ||
+                !sendCommand(x & 0x0F) ||
+                !sendCommand(0x10 | (x >> 4))) return;
         
-            if (pBuffer == NULL) {
-                memcpy(&buffer[1],&frameBuffer[y*MAX_SCREEN_WIDTH],MAX_SCREEN_WIDTH);
-            } else {
-                memcpy(&buffer[1],&pBuffer[y*MAX_SCREEN_WIDTH],MAX_SCREEN_WIDTH);
-            }
+            memcpy(buffer, &lastFrameBuffer[y*MAX_SCREEN_WIDTH], MAX_SCREEN_WIDTH);
         
-            _options.i2c->write(_options.address, buffer, MAX_SCREEN_WIDTH+3, false);
+            if (!sendData(buffer, MAX_SCREEN_WIDTH+2)) return;
         }
     } else {
-        sendCommand(CommandOps::PAGE_ADDRESS);
-        sendCommand(0x00);
-        sendCommand(0x07);
-        sendCommand(CommandOps::COLUMN_ADDRESS);
-        sendCommand(0x00);
-        sendCommand(0x7F);
+        if (!sendCommand(CommandOps::PAGE_ADDRESS) ||
+            !sendCommand(0x00) ||
+            !sendCommand(0x07) ||
+            !sendCommand(CommandOps::COLUMN_ADDRESS) ||
+            !sendCommand(0x00) ||
+            !sendCommand(0x7F)) return;
 
-        if (pBuffer == NULL) {
-            memcpy(&buffer[1],frameBuffer,bufferSize);
-        } else {
-            memcpy(&buffer[1],pBuffer,bufferSize);
-        }
-        _options.i2c->write(_options.address, buffer, sizeof(buffer), false);
+        if (!sendData(lastFrameBuffer, MAX_SCREEN_SIZE)) return;
     }
+
+    lastFrameValid = true;
+    lastTransferUs = time_us_32() - startedUs;
 
 	if (framePage < MAX_SCREEN_HEIGHT/8) {
 		framePage++;
@@ -594,11 +635,11 @@ void GPGFX_TinySSD1306::rotatePoint(double cx, double cy, double &x, double &y, 
     y = yr;
 }
 
-void GPGFX_TinySSD1306::sendCommand(uint8_t command){ 
+bool GPGFX_TinySSD1306::sendCommand(uint8_t command){
 	uint8_t commandData[] = {0x00, command};
-	sendCommands(commandData, 2);
+	return sendCommands(commandData, 2);
 }
 
-void GPGFX_TinySSD1306::sendCommands(uint8_t* commands, uint16_t length){ 
-	_options.i2c->write(_options.address, commands, length, false);
+bool GPGFX_TinySSD1306::sendCommands(uint8_t* commands, uint16_t length){
+	return _options.i2c->write(_options.address, commands, length, false) == length;
 }
