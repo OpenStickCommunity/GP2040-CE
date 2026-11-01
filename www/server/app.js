@@ -340,23 +340,6 @@ app.get('/api/getDisplayOptions', (req, res) => {
 		splashMode: 3,
 		splashChoice: 0,
 		splashDuration: 0,
-		buttonLayoutCustomOptions: {
-			params: {
-				layout: 2,
-				startX: 8,
-				startY: 28,
-				buttonRadius: 8,
-				buttonPadding: 2,
-			},
-			paramsRight: {
-				layout: 9,
-				startX: 8,
-				startY: 28,
-				buttonRadius: 8,
-				buttonPadding: 2,
-			},
-		},
-
 		displaySaverTimeout: 0,
 		displaySaverMode: 0,
 		turnOffWhenSuspended: 0,
@@ -371,6 +354,8 @@ app.get('/api/getDisplayOptions', (req, res) => {
 		inputHistoryCol: 0,
 		inputHistoryRow: 7,
 		displayContrast: 255,
+		customLayoutA: '',
+		customLayoutB: '',
 	};
 	console.log('data', data);
 	return res.send(data);
@@ -1331,7 +1316,6 @@ app.get('/api/getButtonLayoutDefs', (req, res) => {
 			BUTTON_LAYOUT_VLXA: 9,
 			BUTTON_LAYOUT_FIGHTBOARD_STICK: 10,
 			BUTTON_LAYOUT_FIGHTBOARD_MIRRORED: 11,
-			BUTTON_LAYOUT_CUSTOMA: 12,
 			BUTTON_LAYOUT_OPENCORE0WASDA: 13,
 			BUTTON_LAYOUT_STICKLESS_13: 14,
 			BUTTON_LAYOUT_STICKLESS_16: 15,
@@ -1361,6 +1345,7 @@ app.get('/api/getButtonLayoutDefs', (req, res) => {
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT5_A: 39,
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT6_A: 40,
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT7_A: 41,
+			BUTTON_LAYOUT_CUSTOM_DEFINED_A: 42,
 		},
 		buttonLayoutRight: {
 			BUTTON_LAYOUT_ARCADE: 0,
@@ -1379,7 +1364,6 @@ app.get('/api/getButtonLayoutDefs', (req, res) => {
 			BUTTON_LAYOUT_VLXB: 13,
 			BUTTON_LAYOUT_FIGHTBOARD: 14,
 			BUTTON_LAYOUT_FIGHTBOARD_STICK_MIRRORED: 15,
-			BUTTON_LAYOUT_CUSTOMB: 16,
 			BUTTON_LAYOUT_KEYBOARD8B: 17,
 			BUTTON_LAYOUT_OPENCORE0WASDB: 18,
 			BUTTON_LAYOUT_STICKLESS_13B: 19,
@@ -1411,6 +1395,7 @@ app.get('/api/getButtonLayoutDefs', (req, res) => {
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT5_B: 45,
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT6_B: 46,
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT7_B: 47,
+			BUTTON_LAYOUT_CUSTOM_DEFINED_B: 48,
 		},
 	});
 });

@@ -30,14 +30,6 @@ export default {
 		'button-layout-label': 'Disposition des boutons (Gauche)',
 		'button-layout-right-label': 'Disposition des boutons (Droite)',
 		'button-layout-orientation': 'Orientation de la disposition des boutons',
-		'button-layout-custom-header':
-			'Paramètres personnalisés de la disposition des boutons',
-		'button-layout-custom-left-label': 'Disposition gauche',
-		'button-layout-custom-right-label': 'Disposition droite',
-		'button-layout-custom-start-x-label': 'Début X',
-		'button-layout-custom-start-y-label': 'Début Y',
-		'button-layout-custom-button-radius-label': 'Rayon des boutons',
-		'button-layout-custom-button-padding-label': 'Espacement des boutons',
 		'splash-mode-label': "Mode de l'écran d'accueil",
 		'splash-duration-label':
 			"Durée de l'écran d'accueil (en secondes, 0 pour toujours activé)",

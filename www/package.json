@@ -12,6 +12,7 @@
 		"i18next-browser-languagedetector": "^7.0.2",
 		"jsencrypt": "^3.3.2",
 		"lodash-es": "^4.17.21",
+		"prism-react-editor": "^3.4.0",
 		"react": "^18.2.0",
 		"react-bootstrap": "^2.7.4",
 		"react-dom": "^18.2.0",
