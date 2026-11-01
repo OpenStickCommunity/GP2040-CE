@@ -155,32 +155,6 @@ message ForcedSetupOptions
     optional ForcedSetupMode mode = 1;
 };
 
-message ButtonLayoutParamsCommon
-{
-    optional int32 startX = 1;
-    optional int32 startY = 2;
-    optional int32 buttonRadius = 3;
-    optional int32 buttonPadding = 4;
-}
-
-message ButtonLayoutParamsLeft
-{
-    optional ButtonLayout layout = 1;
-    optional ButtonLayoutParamsCommon common = 2;
-}
-
-message ButtonLayoutParamsRight
-{
-    optional ButtonLayoutRight layout = 1;
-    optional ButtonLayoutParamsCommon common = 2;
-}
-
-message ButtonLayoutCustomOptions
-{
-    optional ButtonLayoutParamsLeft paramsLeft = 1;
-    optional ButtonLayoutParamsRight paramsRight = 2;
-}
-
 message PinMappings
 {
     optional int32 pinDpadUp = 1;
@@ -255,7 +229,7 @@ message DisplayOptions
 
     optional ButtonLayout buttonLayout = 7;
     optional ButtonLayoutRight buttonLayoutRight = 8;
-    optional ButtonLayoutCustomOptions buttonLayoutCustomOptions = 9;
+    reserved 9; // buttonLayoutCustomOptions, removed with BUTTON_LAYOUT_CUSTOMA/B
 
     optional SplashMode splashMode = 10;
     optional SplashChoice splashChoice = 11;

@@ -8,16 +8,23 @@
 #define TOSTRING(x) STRINGIFY(x)
 #endif
 
+static ButtonLayoutOrientation getLayoutOrientation(const DisplayOptions& options) {
+    if (options.buttonLayout == BUTTON_LAYOUT_CUSTOM_DEFINED_A || options.buttonLayoutRight == BUTTON_LAYOUT_CUSTOM_DEFINED_B)
+        return BUTTON_ORIENTATION_DEFAULT;
+    return options.buttonLayoutOrientation;
+}
+
 LayoutManager::LayoutList LayoutManager::getLayoutA() {
     const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
+    const ButtonLayoutOrientation orientation = getLayoutOrientation(options);
     uint16_t layoutLeft = options.buttonLayout;
-    if (options.buttonLayoutOrientation != BUTTON_ORIENTATION_DEFAULT) {
+    if (orientation != BUTTON_ORIENTATION_DEFAULT) {
         uint16_t layoutRight = options.buttonLayoutRight;
         LayoutManager::LayoutList rightLayout = getRightLayout(layoutRight);
         if (rightLayout.empty() && layoutRight >= BUTTON_LAYOUT_BOARD_DEFINED_ALT0_B && layoutRight <= BUTTON_LAYOUT_BOARD_DEFINED_ALT7_B) {
             rightLayout = drawBoardDefinedB();
         }
-        if (options.buttonLayoutOrientation == BUTTON_ORIENTATION_SWITCHED) {
+        if (orientation == BUTTON_ORIENTATION_SWITCHED) {
             return adjustByOffset(rightLayout, -64);
         } else {
             return adjustByOffset(flipHorizontally(rightLayout, 64, 0, 128, 0), -64);
@@ -33,14 +40,15 @@ LayoutManager::LayoutList LayoutManager::getLayoutA() {
 
 LayoutManager::LayoutList LayoutManager::getLayoutB() {
     const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
+    const ButtonLayoutOrientation orientation = getLayoutOrientation(options);
     uint16_t layoutRight = options.buttonLayoutRight;
-    if (options.buttonLayoutOrientation != BUTTON_ORIENTATION_DEFAULT) {
+    if (orientation != BUTTON_ORIENTATION_DEFAULT) {
         uint16_t layoutLeft = options.buttonLayout;
         LayoutManager::LayoutList leftLayout = getLeftLayout(layoutLeft);
         if (leftLayout.empty() && layoutLeft >= BUTTON_LAYOUT_BOARD_DEFINED_ALT0_A && layoutLeft <= BUTTON_LAYOUT_BOARD_DEFINED_ALT7_A) {
             leftLayout = drawBoardDefinedA();
         }
-        if (options.buttonLayoutOrientation == BUTTON_ORIENTATION_SWITCHED) {
+        if (orientation == BUTTON_ORIENTATION_SWITCHED) {
             return adjustByOffset(leftLayout, 64);
         } else {
             return adjustByOffset(flipHorizontally(leftLayout, 0, 0, 64, 0), 64);
@@ -247,8 +255,6 @@ LayoutManager::LayoutList LayoutManager::getLeftLayout(uint16_t index) {
             return drawBlankA();
         case BUTTON_LAYOUT_FIGHTBOARD_MIRRORED:
             return drawFightboardMirrored();
-        case BUTTON_LAYOUT_CUSTOMA:
-            return drawButtonLayoutLeft();
         case BUTTON_LAYOUT_OPENCORE0WASDA:
             return drawOpenCore0WASDA();
         case BUTTON_LAYOUT_STICKLESS_13:
@@ -304,7 +310,7 @@ LayoutManager::LayoutList LayoutManager::getLeftLayout(uint16_t index) {
         case BUTTON_LAYOUT_BOARD_DEFINED_ALT5_A:
             return drawBoardDefinedAlt5A();
         case BUTTON_LAYOUT_BOARD_DEFINED_ALT6_A:
-            return drawBoardDefinedAlt6A();   
+            return drawBoardDefinedAlt6A();
         case BUTTON_LAYOUT_BOARD_DEFINED_ALT7_A:
             return drawBoardDefinedAlt7A();
         case BUTTON_LAYOUT_CUSTOM_DEFINED_A:
@@ -355,8 +361,6 @@ LayoutManager::LayoutList LayoutManager::getRightLayout(uint16_t index) {
             return this->drawFightboard();
         case BUTTON_LAYOUT_FIGHTBOARD_STICK_MIRRORED:
             return this->drawFightboardStickMirrored();
-        case BUTTON_LAYOUT_CUSTOMB:
-            return this->drawButtonLayoutRight();
         case BUTTON_LAYOUT_KEYBOARD8B:
             return this->drawMAME8B();
         case BUTTON_LAYOUT_OPENCORE0WASDB:
@@ -426,6 +430,29 @@ LayoutManager::LayoutList LayoutManager::getRightLayout(uint16_t index) {
     return {};
 }
 
+void LayoutManager::encodeCustomDefined(uint8_t* bytes, pb_size_t& size, size_t maxSize, const LayoutList& layout) {
+    size = 0;
+    for (const GPButtonLayout& element : layout) {
+        if (size + CUSTOM_LAYOUT_ELEMENT_BYTES > maxSize)
+            break;
+        const GPButtonParameters& p = element.parameters;
+        uint8_t* out = bytes + size;
+        out[0] = element.elementType;
+        out[1] = p.x1;
+        out[2] = p.y1;
+        out[3] = p.x2;
+        out[4] = p.y2;
+        out[5] = (p.stroke & 0x01) | ((p.fill & 0x03) << 1) | ((p.shape & 0x07) << 3) | ((p.closed & 0x01) << 6);
+        out[6] = p.value & 0xFF;
+        out[7] = p.value >> 8;
+        out[8] = p.angleStart & 0xFF;
+        out[9] = p.angleStart >> 8;
+        out[10] = p.angleEnd & 0xFF;
+        out[11] = p.angleEnd >> 8;
+        size += CUSTOM_LAYOUT_ELEMENT_BYTES;
+    }
+}
+
 LayoutManager::LayoutList LayoutManager::drawCustomDefined(const uint8_t* bytes, uint16_t size) {
     LayoutList layout;
     const uint16_t elementSize = CUSTOM_LAYOUT_ELEMENT_BYTES;
@@ -488,52 +515,6 @@ LayoutManager::LayoutList LayoutManager::drawCustomDefinedA() {
 LayoutManager::LayoutList LayoutManager::drawCustomDefinedB() {
     const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
     return drawCustomDefined(options.customLayoutB.bytes, options.customLayoutB.size);
-}
-
-LayoutManager::LayoutList LayoutManager::drawButtonLayoutLeft()
-{
-    const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
-    ButtonLayoutCustomOptions buttonLayoutCustomOptions = options.buttonLayoutCustomOptions;
-    ButtonLayoutParamsLeft leftOptions = buttonLayoutCustomOptions.paramsLeft;
-    if (leftOptions.layout == BUTTON_LAYOUT_CUSTOMA) return {};
-    return adjustByCustomSettings(getLeftLayout(leftOptions.layout), leftOptions.common);
-}
-
-LayoutManager::LayoutList LayoutManager::drawButtonLayoutRight()
-{
-    const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
-    ButtonLayoutCustomOptions buttonLayoutCustomOptions = options.buttonLayoutCustomOptions;
-    ButtonLayoutParamsRight rightOptions = buttonLayoutCustomOptions.paramsRight;
-    if (rightOptions.layout == BUTTON_LAYOUT_CUSTOMB) return {};
-    return adjustByCustomSettings(getRightLayout(rightOptions.layout), rightOptions.common, 64);
-}
-
-LayoutManager::LayoutList LayoutManager::adjustByCustomSettings(LayoutManager::LayoutList layout, ButtonLayoutParamsCommon common, uint16_t originX, uint16_t originY) {
-    if (layout.size() > 0) {
-        int32_t startX = layout[0].parameters.x1;
-        int32_t startY = layout[0].parameters.y1;
-        int32_t customX = common.startX;
-        int32_t customY = common.startY;
-        int32_t offsetX = customX-startX;
-        int32_t offsetY = customY-startY;
-        for (uint16_t elementCtr = 0; elementCtr < layout.size(); elementCtr++) {
-            if ((layout[elementCtr].elementType == GP_ELEMENT_BTN_BUTTON) || (layout[elementCtr].elementType == GP_ELEMENT_HE_BUTTON)) {
-                layout[elementCtr].parameters.x1 += originX+(offsetX+common.buttonPadding);
-                layout[elementCtr].parameters.y1 += originY+(offsetY+common.buttonPadding);
-            } else {
-                layout[elementCtr].parameters.x1 += originX+offsetX;
-                layout[elementCtr].parameters.y1 += originY+offsetY;
-            }
-
-            if (((GPShape_Type)layout[elementCtr].parameters.shape == GP_SHAPE_ELLIPSE) || ((GPShape_Type)layout[elementCtr].parameters.shape == GP_SHAPE_POLYGON)) {
-                // radius
-                layout[elementCtr].parameters.x2 = common.buttonRadius;
-                if ((GPShape_Type)layout[elementCtr].parameters.shape == GP_SHAPE_ELLIPSE)
-                    layout[elementCtr].parameters.y2 = common.buttonRadius;
-            }
-        }
-    }
-    return layout;
 }
 
 LayoutManager::LayoutList LayoutManager::adjustByOffset(LayoutManager::LayoutList layout, int16_t originX, int16_t originY) {
@@ -837,17 +818,17 @@ LayoutManager::LayoutList LayoutManager::drawBandHeroStrumA()
     return BUTTON_GROUP_BANDHERO_STRUM_A;
 }
 
-LayoutManager::LayoutList LayoutManager::draw6GAWDLeft() 
+LayoutManager::LayoutList LayoutManager::draw6GAWDLeft()
 {
     return BUTTON_GROUP_6GAWD_A;
 }
 
-LayoutManager::LayoutList LayoutManager::draw6GAWDAllButtonLeft() 
+LayoutManager::LayoutList LayoutManager::draw6GAWDAllButtonLeft()
 {
     return BUTTON_GROUP_6GAWD_ALLBUTTON_A;
 }
 
-LayoutManager::LayoutList LayoutManager::draw6GAWDAllButtonPlusLeft() 
+LayoutManager::LayoutList LayoutManager::draw6GAWDAllButtonPlusLeft()
 {
     return BUTTON_GROUP_6GAWD_ALLBUTTONPLUS_A;
 }

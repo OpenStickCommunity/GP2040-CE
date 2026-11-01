@@ -40,8 +40,6 @@ void ButtonLayoutScreen::init() {
  
     prevLayoutLeft = Storage::getInstance().getDisplayOptions().buttonLayout;
     prevLayoutRight = Storage::getInstance().getDisplayOptions().buttonLayoutRight;
-    prevLeftOptions = Storage::getInstance().getDisplayOptions().buttonLayoutCustomOptions.paramsLeft;
-    prevRightOptions = Storage::getInstance().getDisplayOptions().buttonLayoutCustomOptions.paramsRight;
     prevOrientation = Storage::getInstance().getDisplayOptions().buttonLayoutOrientation;
     prevCustomLayoutHash = getCustomLayoutHash();
 
@@ -549,13 +547,7 @@ void ButtonLayoutScreen::processInputHistory() {
 
 bool ButtonLayoutScreen::compareCustomLayouts()
 {
-    ButtonLayoutParamsLeft leftOptions = Storage::getInstance().getDisplayOptions().buttonLayoutCustomOptions.paramsLeft;
-    ButtonLayoutParamsRight rightOptions = Storage::getInstance().getDisplayOptions().buttonLayoutCustomOptions.paramsRight;
-
-    bool leftChanged = ((leftOptions.layout != prevLeftOptions.layout) || (leftOptions.common.startX != prevLeftOptions.common.startX) || (leftOptions.common.startY != prevLeftOptions.common.startY) || (leftOptions.common.buttonPadding != prevLeftOptions.common.buttonPadding) || (leftOptions.common.buttonRadius != prevLeftOptions.common.buttonRadius));
-    bool rightChanged = ((rightOptions.layout != prevRightOptions.layout) || (rightOptions.common.startX != prevRightOptions.common.startX) || (rightOptions.common.startY != prevRightOptions.common.startY) || (rightOptions.common.buttonPadding != prevRightOptions.common.buttonPadding) || (rightOptions.common.buttonRadius != prevRightOptions.common.buttonRadius));
-    
-    return (leftChanged || rightChanged || (prevCustomLayoutHash != getCustomLayoutHash()));
+    return prevCustomLayoutHash != getCustomLayoutHash();
 }
 
 uint32_t ButtonLayoutScreen::getCustomLayoutHash()
