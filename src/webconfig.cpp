@@ -765,6 +765,11 @@ std::string setGamepadOptions()
     readDoc(gamepadOptions.switch2ProButtonsColor, doc, "switch2ProButtonsColor");
     readDoc(gamepadOptions.switch2ProHighlightColor, doc, "switch2ProHighlightColor");
     readDoc(gamepadOptions.switch2ProGripColor, doc, "switch2ProGripColor");
+    readDoc(gamepadOptions.switch2ProLeftShoulderColor, doc, "switch2ProLeftShoulderColor");
+    readDoc(gamepadOptions.switch2ProRightShoulderColor, doc, "switch2ProRightShoulderColor");
+    readDoc(gamepadOptions.switch2ProStickColor, doc, "switch2ProStickColor");
+    readDoc(gamepadOptions.switch2ProLeftRingColor, doc, "switch2ProLeftRingColor");
+    readDoc(gamepadOptions.switch2ProRightRingColor, doc, "switch2ProRightRingColor");
     readDoc(gamepadOptions.switch2ProJoyCon2ColorPreset, doc, "switch2ProJoyCon2ColorPreset");
     readDoc(gamepadOptions.switch2ProJoyCon2LeftBodyColor, doc, "switch2ProJoyCon2LeftBodyColor");
     readDoc(gamepadOptions.switch2ProJoyCon2LeftButtonsColor, doc, "switch2ProJoyCon2LeftButtonsColor");
@@ -862,6 +867,11 @@ std::string getGamepadOptions()
     writeDoc(doc, "switch2ProButtonsColor", gamepadOptions.switch2ProButtonsColor);
     writeDoc(doc, "switch2ProHighlightColor", gamepadOptions.switch2ProHighlightColor);
     writeDoc(doc, "switch2ProGripColor", gamepadOptions.switch2ProGripColor);
+    writeDoc(doc, "switch2ProLeftShoulderColor", gamepadOptions.switch2ProLeftShoulderColor);
+    writeDoc(doc, "switch2ProRightShoulderColor", gamepadOptions.switch2ProRightShoulderColor);
+    writeDoc(doc, "switch2ProStickColor", gamepadOptions.switch2ProStickColor);
+    writeDoc(doc, "switch2ProLeftRingColor", gamepadOptions.switch2ProLeftRingColor);
+    writeDoc(doc, "switch2ProRightRingColor", gamepadOptions.switch2ProRightRingColor);
     writeDoc(doc, "switch2ProJoyCon2ColorPreset", gamepadOptions.switch2ProJoyCon2ColorPreset);
     writeDoc(doc, "switch2ProJoyCon2LeftBodyColor", gamepadOptions.switch2ProJoyCon2LeftBodyColor);
     writeDoc(doc, "switch2ProJoyCon2LeftButtonsColor", gamepadOptions.switch2ProJoyCon2LeftButtonsColor);

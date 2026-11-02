@@ -399,6 +399,27 @@ const SWITCH2_PRO_COLOR_PARTS = [
 		field: 'switch2ProHighlightColor',
 		svgPart: 'highlight',
 	},
+	{ labelKey: 'sticks', field: 'switch2ProStickColor', svgPart: 'sticks' },
+	{
+		labelKey: 'left-shoulder',
+		field: 'switch2ProLeftShoulderColor',
+		svgPart: 'leftShoulder',
+	},
+	{
+		labelKey: 'right-shoulder',
+		field: 'switch2ProRightShoulderColor',
+		svgPart: 'rightShoulder',
+	},
+	{
+		labelKey: 'left-ring',
+		field: 'switch2ProLeftRingColor',
+		svgPart: 'leftRing',
+	},
+	{
+		labelKey: 'right-ring',
+		field: 'switch2ProRightRingColor',
+		svgPart: 'rightRing',
+	},
 	{ labelKey: 'main-body', field: 'switch2ProGripColor', svgPart: 'grip' },
 ];
 
@@ -411,6 +432,26 @@ const SWITCH2_PRO_COLOR_PRESETS = [
 			switch2ProButtonsColor: 0xa0a0a0,
 			switch2ProHighlightColor: 0xe6e6e6,
 			switch2ProGripColor: 0x323232,
+			switch2ProLeftShoulderColor: 0xe6e6e6,
+			switch2ProRightShoulderColor: 0xe6e6e6,
+			switch2ProStickColor: 0x232323,
+			switch2ProLeftRingColor: 0xe6e6e6,
+			switch2ProRightRingColor: 0xe6e6e6,
+		},
+	},
+	{
+		labelKey: 'legendary',
+		value: Switch2ProColorPreset.SWITCH2_PRO_COLOR_LEGENDARY,
+		colors: {
+			switch2ProBodyColor: 0x2b3631,
+			switch2ProButtonsColor: 0xa0a0a0,
+			switch2ProHighlightColor: 0xf2eb5e,
+			switch2ProGripColor: 0x34a049,
+			switch2ProLeftShoulderColor: 0xf2eb5e,
+			switch2ProRightShoulderColor: 0xf2eb5e,
+			switch2ProStickColor: 0x2b3631,
+			switch2ProLeftRingColor: 0x34a049,
+			switch2ProRightRingColor: 0xf2eb5e,
 		},
 	},
 	{
@@ -421,6 +462,11 @@ const SWITCH2_PRO_COLOR_PRESETS = [
 			switch2ProButtonsColor: 0xffffff,
 			switch2ProHighlightColor: 0x00ff00,
 			switch2ProGripColor: 0xec008c,
+			switch2ProLeftShoulderColor: 0x00ff00,
+			switch2ProRightShoulderColor: 0x00ff00,
+			switch2ProStickColor: 0x1b1b1d,
+			switch2ProLeftRingColor: 0x00ff00,
+			switch2ProRightRingColor: 0x00ff00,
 		},
 	},
 	{
@@ -476,6 +522,24 @@ const JOYCON2_COLOR_PRESETS = [
 		labelKey: 'blue-yellow',
 		value: Switch2ProJoyCon2ColorPreset.SWITCH2_PRO_JOYCON2_COLOR_BLUE_YELLOW,
 		colors: joyCon2Colors(0x2b4cff, 0xfff066),
+	},
+	{
+		labelKeys: { left: 'legendary-left', right: 'legendary-right' },
+		value: Switch2ProJoyCon2ColorPreset.SWITCH2_PRO_JOYCON2_COLOR_LEGENDARY,
+		colors: {
+			left: {
+				body: 0x34a049,
+				buttons: 0x264623,
+				accent: 0xfcff7d,
+				stick: 0x364933,
+			},
+			right: {
+				body: 0x92dd9e,
+				buttons: 0x264623,
+				accent: 0xfcff7d,
+				stick: 0x364933,
+			},
+		},
 	},
 	{
 		labelKey: 'gp2040',
@@ -726,6 +790,15 @@ const schema = yup.object().shape({
 	switch2ProButtonsColor: yup.number().label('Switch 2 Pro Buttons Color'),
 	switch2ProHighlightColor: yup.number().label('Switch 2 Pro Highlight Color'),
 	switch2ProGripColor: yup.number().label('Switch 2 Pro Grip Color'),
+	switch2ProLeftShoulderColor: yup
+		.number()
+		.label('Switch 2 Pro Left Shoulder Color'),
+	switch2ProRightShoulderColor: yup
+		.number()
+		.label('Switch 2 Pro Right Shoulder Color'),
+	switch2ProStickColor: yup.number().label('Switch 2 Pro Stick Color'),
+	switch2ProLeftRingColor: yup.number().label('Switch 2 Pro Left Ring Color'),
+	switch2ProRightRingColor: yup.number().label('Switch 2 Pro Right Ring Color'),
 	genericDpadMode: yup
 		.number()
 		.required()
@@ -2179,7 +2252,7 @@ export default function SettingsPage() {
 									{JOYCON2_COLOR_PRESETS.map((o) => (
 										<option key={`joycon2-color-${o.value}`} value={o.value}>
 											{t(
-												`SettingsPage:switch2-pro-joycon2-color-presets.${o.labelKey}`,
+												`SettingsPage:switch2-pro-joycon2-color-presets.${o.labelKeys?.[joyCon2Side] ?? o.labelKey}`,
 											)}
 										</option>
 									))}
@@ -2284,6 +2357,11 @@ export default function SettingsPage() {
 									buttons={colorFor('switch2ProButtonsColor')}
 									highlight={colorFor('switch2ProHighlightColor')}
 									grip={colorFor('switch2ProGripColor')}
+									leftShoulder={colorFor('switch2ProLeftShoulderColor')}
+									rightShoulder={colorFor('switch2ProRightShoulderColor')}
+									sticks={colorFor('switch2ProStickColor')}
+									leftRing={colorFor('switch2ProLeftRingColor')}
+									rightRing={colorFor('switch2ProRightRingColor')}
 								/>
 							</div>
 							<Row className="g-2">
