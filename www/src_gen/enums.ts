@@ -579,7 +579,8 @@ export enum RotaryEncoderPinMode {
     ENCODER_MODE_RIGHT_TRIGGER = 6,
     ENCODER_MODE_DPAD_X = 7,
     ENCODER_MODE_DPAD_Y = 8,
-    ENCODER_MODE_VOLUME = 9
+    ENCODER_MODE_VOLUME = 9,
+    ENCODER_MODE_TURNTABLE = 10
 }
 
 export enum ReactiveLEDMode {

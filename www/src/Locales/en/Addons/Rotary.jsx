@@ -19,4 +19,5 @@ export default {
 	'encoder-mode-dpad-x': 'D-Pad Left/Right',
 	'encoder-mode-dpad-y': 'D-Pad Up/Down',
 	'encoder-mode-volume': 'Volume (Keyboard Only)',
+	'encoder-mode-turntable': 'Turntable',
 };

@@ -9,6 +9,8 @@ import { AddonPropTypes } from '../Pages/AddonsConfigPage';
 
 import useBoardDefinition from '../Store/useBoardDefinitionStore';
 
+import { RotaryEncoderPinMode } from '@proto/enums';
+
 const ENCODER_MODES = [
 	{ label: 'encoder-mode-none', value: 0 },
 	{ label: 'encoder-mode-left-analog-x', value: 1 },
@@ -223,9 +225,9 @@ const Rotary = ({
 								isInvalid={Boolean(errors.encoderOneMode)}
 								onChange={handleChange}
 							>
-								{ENCODER_MODES.map((o, i) => (
-									<option key={`encoderOneMode-option-${i}`} value={o.value}>
-										{t(`Rotary:${o.label}`)}
+								{Object.keys(RotaryEncoderPinMode).filter((key) => isNaN(Number(key))).map((o) => (
+									<option key={`encoderOneMode-option-${RotaryEncoderPinMode[o]}`} value={RotaryEncoderPinMode[o]}>
+										{t(`Rotary:${o.toLowerCase().replace(/_/g,'-')}`)}
 									</option>
 								))}
 							</FormSelect>
