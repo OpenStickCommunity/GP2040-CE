@@ -501,6 +501,11 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProJoyCon2RightButtonsColor, DEFAULT_SWITCH2_PRO_JOYCON2_RIGHT_BUTTONS_COLOR);
     INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProJoyCon2RightAccentColor, DEFAULT_SWITCH2_PRO_JOYCON2_RIGHT_ACCENT_COLOR);
     INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProJoyCon2RightStickColor, DEFAULT_SWITCH2_PRO_JOYCON2_RIGHT_STICK_COLOR);
+    if (!config.gamepadOptions.has_switch2ProUserCalib) {
+        memset(config.gamepadOptions.switch2ProUserCalib.bytes, 0xFF, sizeof(config.gamepadOptions.switch2ProUserCalib.bytes));
+        config.gamepadOptions.switch2ProUserCalib.size = sizeof(config.gamepadOptions.switch2ProUserCalib.bytes);
+        config.gamepadOptions.has_switch2ProUserCalib = true;
+    }
     INIT_UNSET_PROPERTY(config.gamepadOptions, genericDpadMode, DEFAULT_GENERIC_DPAD_MODE);
     INIT_UNSET_PROPERTY(config.gamepadOptions, usbDescOverride, DEFAULT_USB_DESC_OVERRIDE);
     INIT_UNSET_PROPERTY_STR(config.gamepadOptions, usbDescProduct, DEFAULT_USB_DESC_PRODUCT);

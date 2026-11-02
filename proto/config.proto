@@ -84,6 +84,7 @@ message GamepadOptions
     optional uint32 switch2ProStickColor = 63;
     optional uint32 switch2ProLeftRingColor = 64;
     optional uint32 switch2ProRightRingColor = 65;
+    optional bytes switch2ProUserCalib = 74 [(nanopb).max_size = 256];
 }
 
 message KeyboardMapping
