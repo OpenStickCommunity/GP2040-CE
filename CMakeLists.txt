@@ -340,6 +340,7 @@ ADS1115
 ADS1219
 ADS1256
 NeoPico
+QuadratureEncoder
 ArduinoJson
 rndis
 hardware_adc
