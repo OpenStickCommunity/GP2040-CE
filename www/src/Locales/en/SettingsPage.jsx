@@ -117,6 +117,8 @@ export default {
 		stock: 'Stock',
 		'purple-green': 'Purple / Green',
 		'blue-yellow': 'Blue / Yellow',
+		'legendary-left': 'Legendary Left',
+		'legendary-right': 'Legendary Right',
 		gp2040: 'GP2040-CE',
 		custom: 'Custom',
 	},
@@ -131,6 +133,7 @@ export default {
 		'Sets the colors the Switch 2 shows for this controller.',
 	'switch2-pro-color-presets': {
 		stock: 'Stock',
+		legendary: 'Legendary',
 		gp2040: 'GP2040-CE',
 		custom: 'Custom',
 	},
@@ -166,6 +169,11 @@ export default {
 		buttons: 'Buttons',
 		highlight: 'Highlight',
 		'main-body': 'Main Body',
+		'left-shoulder': 'Left Shoulder',
+		'right-shoulder': 'Right Shoulder',
+		sticks: 'Analog Sticks',
+		'left-ring': 'Left Ring',
+		'right-ring': 'Right Ring',
 	},
 	'ps4-id-mode-options': {
 		console: 'Console',
