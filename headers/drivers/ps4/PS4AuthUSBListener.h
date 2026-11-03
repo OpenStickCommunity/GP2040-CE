@@ -13,6 +13,14 @@ typedef enum {
     sending_nonce = 4
 } PS4State;
 
+struct PS4AuthCaps {
+    bool f0;
+    bool f1;
+    bool f2;
+    bool f3;
+    bool definition;
+};
+
 // Upper bound on remembered PS4-family dongle interfaces. Must be >= CFG_TUH_HID
 // (enforced by a static_assert in PS4AuthUSBListener.cpp).
 #define PS4_MAX_DONGLE_CANDIDATES 8
@@ -37,6 +45,7 @@ private:
     bool rotateCandidate();
     uint8_t otherCandidateDevices() const;
     void dongleFailed(bool nonce_intact);
+    PS4AuthCaps scanFeatureReports(const uint8_t* d, uint16_t len);
     uint8_t ps_dev_addr; // TinyUSB Address (USB)
     uint8_t ps_instance; // TinyUSB Instance (USB)
     PS4AuthData * ps4AuthData;      // PS4 Authentication Data
@@ -51,11 +60,14 @@ private:
     bool need_definition;       // PS4_DEFINITION still to be requested for the bound dongle
     uint8_t rotations;          // Dongle rotations for the current console nonce
     uint8_t rotation_nonce_id;  // Console nonce_id that rotations counts against
-    struct { uint8_t dev_addr; uint8_t instance; } candidates[PS4_MAX_DONGLE_CANDIDATES];
+    struct { uint8_t dev_addr; uint8_t instance; bool has_reset; bool has_definition; } candidates[PS4_MAX_DONGLE_CANDIDATES];
     uint8_t num_candidates;     // PS4-family dongle interfaces currently mounted
     uint8_t noncelen;   // process(): nonce-len
     uint32_t crc32;     // process(): crc32
     PS4State dongle_state;
+
+    bool has_reset;       // auth can be reset
+    bool has_definition; // likely a third party controller. has capability info.
 };
 
 #endif // _PS4AUTHUSBLISTENER_H_

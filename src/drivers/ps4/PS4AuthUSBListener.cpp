@@ -49,6 +49,8 @@ void PS4AuthUSBListener::setup() {
     need_definition = false;
     rotations = 0;
     rotation_nonce_id = 0;
+    has_reset = false;
+    has_definition = false;
     resetHostData();
 }
 
@@ -80,21 +82,29 @@ void PS4AuthUSBListener::process() {
     // PS4_DEFINITION is requested once per newly bound dongle. It is sent from
     // here rather than from bind() because bind() can run inside unmount(),
     // while tinyusb still holds the control slot for the removed device.
-    if ( need_definition ) {
+    if ( need_definition && has_definition ) {
         memset(report_buffer, 0, PS4_ENDPOINT_SIZE);
         report_buffer[0] = PS4AuthReport::PS4_DEFINITION;
         if ( host_get_report(PS4AuthReport::PS4_DEFINITION, report_buffer, 48) ) {
             need_definition = false;
         }
         return; // one control transfer per pass
+    } else {
+        need_definition = false;
     }
 
     switch ( dongle_state ) {
         case PS4State::no_nonce:
             // Once Console is ready with the nonce, begin!
             if ( ps4AuthData->passthrough_state == GPAuthState::send_auth_console_to_dongle ) {
-                memcpy(report_buffer, output_0xf3, sizeof(output_0xf3));
-                host_get_report(PS4AuthReport::PS4_RESET_AUTH, report_buffer, sizeof(output_0xf3) + 1);
+                if ( has_reset ) {
+                    memcpy(report_buffer, output_0xf3, sizeof(output_0xf3));
+                    host_get_report(PS4AuthReport::PS4_RESET_AUTH, report_buffer, sizeof(output_0xf3) + 1);
+                } else {
+                    nonce_page = 0;
+                    nonce_chunk = 0;
+                    dongle_state = PS4State::receiving_nonce;
+                }
             }
             break;
         case PS4State::receiving_nonce:
@@ -172,11 +182,20 @@ void PS4AuthUSBListener::bind(uint8_t dev_addr, uint8_t instance) {
     ps_instance = instance;
     timeout_retries = 0;
     signing_errors = 0;
+    has_reset = false;
+    has_definition = false;
+
+    for (uint8_t i = 0; i < num_candidates; i++) {
+        if ( candidates[i].dev_addr == dev_addr && candidates[i].instance == instance ) {
+            has_reset      = candidates[i].has_reset;
+            has_definition = candidates[i].has_definition;
+            break;
+        }
+    }
+    need_definition = has_definition;
+
     resetHostData();
     ps4AuthData->dongle_ready = true;
-
-    // Request PS4_DEFINITION as soon as it is connected; sent by process().
-    need_definition = true;
 }
 
 // Move the bound device's interfaces to the back of the candidate list and
@@ -206,12 +225,14 @@ bool PS4AuthUSBListener::rotateCandidate() {
         return false;
 
     // Stable partition: other devices first, then the bound device's interfaces.
-    struct { uint8_t dev_addr; uint8_t instance; } reordered[PS4_MAX_DONGLE_CANDIDATES];
+    struct { uint8_t dev_addr; uint8_t instance; bool has_reset; bool has_definition; } reordered[PS4_MAX_DONGLE_CANDIDATES];
     uint8_t n = 0;
     for (uint8_t i = 0; i < num_candidates; i++) {
         if ( candidates[i].dev_addr != bound ) {
             reordered[n].dev_addr = candidates[i].dev_addr;
             reordered[n].instance = candidates[i].instance;
+            reordered[n].has_reset = candidates[i].has_reset;
+            reordered[n].has_definition = candidates[i].has_definition;
             n++;
         }
     }
@@ -219,12 +240,16 @@ bool PS4AuthUSBListener::rotateCandidate() {
         if ( candidates[i].dev_addr == bound ) {
             reordered[n].dev_addr = candidates[i].dev_addr;
             reordered[n].instance = candidates[i].instance;
+            reordered[n].has_reset = candidates[i].has_reset;
+            reordered[n].has_definition = candidates[i].has_definition;
             n++;
         }
     }
     for (uint8_t i = 0; i < n; i++) {
         candidates[i].dev_addr = reordered[i].dev_addr;
         candidates[i].instance = reordered[i].instance;
+        candidates[i].has_reset = reordered[i].has_reset;
+        candidates[i].has_definition = reordered[i].has_definition;
     }
 
     bind(candidates[0].dev_addr, candidates[0].instance);
@@ -257,23 +282,51 @@ void PS4AuthUSBListener::dongleFailed(bool nonce_intact) {
     }
 }
 
-void PS4AuthUSBListener::mount(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len) {
-    // Only a PS4 interface has vendor IDs F0, F1, F2, and F3. A full DS4-style
-    // descriptor lists the vendor reports after many input/output reports, so
-    // parse enough entries to reach them.
-    static const uint8_t MAX_REPORT_INFO = 32;
-    tuh_hid_report_info_t report_info[MAX_REPORT_INFO];
-    uint8_t report_count = tuh_hid_parse_report_descriptor(report_info, MAX_REPORT_INFO, desc_report, desc_len);
-    bool isPS4Dongle = false;
-    for(uint8_t i = 0; i < report_count; i++) {
-        if ( report_info[i].usage_page == 0xFFF0 && 
-                (report_info[i].report_id == 0xF3) ) {
-            isPS4Dongle = true;
-            break;
+PS4AuthCaps PS4AuthUSBListener::scanFeatureReports(const uint8_t* d, uint16_t len) {
+    PS4AuthCaps caps = {};
+    uint16_t page = 0;
+    uint8_t rid = 0;
+    for (uint16_t i = 0; i < len; ) {
+        uint8_t h = d[i++];
+        if (h == 0xFE) {                    // long item: skip it
+            if (i + 1 >= len) break;
+            i += 2 + d[i];
+            continue;
+        }
+        uint8_t size = h & 0x03;
+        if (size == 3) size = 4;
+        if (i + size > len) break;
+        uint32_t v = 0;
+        for (uint8_t k = 0; k < size; k++) v |= (uint32_t)d[i + k] << (8 * k);
+        i += size;
+
+        switch (h & 0xFC) {
+            case 0x04: page = (uint16_t)v; break;   // Usage Page (global)
+            case 0x84: rid  = (uint8_t)v;  break;   // Report ID (global)
+            case 0xB0: {                            // Feature (main)
+                if (rid == 0x03) caps.definition = true;
+                if (page == 0xFF80 || page == 0xFFF0) {
+                    if (rid == 0xF0) caps.f0 = true;
+                    if (rid == 0xF1) caps.f1 = true;
+                    if (rid == 0xF2) caps.f2 = true;
+                    if (rid == 0xF3) caps.f3 = true;
+                }
+                break;
+            }
+            default: break;
         }
     }
-    if (isPS4Dongle == false )
-        return;
+    return caps;
+}
+
+void PS4AuthUSBListener::mount(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len) {
+    // Accept any HID interface with F0/F1/F2 feature reports on a PS4 vendor page
+    // (0xFFF0 dongles, 0xFF80 DS4-style). F3 (reset) and 0x03 (definition) are
+    // optional and recorded per candidate. TinyUSB's parser keeps one entry per
+    // top-level collection, so the descriptor is scanned directly.
+    PS4AuthCaps caps = scanFeatureReports(desc_report, desc_len);
+    if ( !(caps.f0 && caps.f1 && caps.f2) )
+        return; // not an auth interface
 
     // Remember every PS4-family dongle interface, not just the first, so the
     // listener can move to another one if the bound dongle is unplugged.
@@ -285,8 +338,10 @@ void PS4AuthUSBListener::mount(uint8_t dev_addr, uint8_t instance, uint8_t const
         }
     }
     if ( !known && num_candidates < PS4_MAX_DONGLE_CANDIDATES ) {
-        candidates[num_candidates].dev_addr = dev_addr;
-        candidates[num_candidates].instance = instance;
+        candidates[num_candidates].dev_addr       = dev_addr;
+        candidates[num_candidates].instance       = instance;
+        candidates[num_candidates].has_reset      = caps.f3;
+        candidates[num_candidates].has_definition = caps.definition;
         num_candidates++;
     }
 
@@ -315,6 +370,8 @@ void PS4AuthUSBListener::unmount(uint8_t dev_addr) {
     ps_dev_addr = 0xFF;
     ps_instance = 0xFF;
     need_definition = false;
+    has_definition = false;
+    has_reset = false;
     resetHostData();
     ps4AuthData->dongle_ready = false;
 
