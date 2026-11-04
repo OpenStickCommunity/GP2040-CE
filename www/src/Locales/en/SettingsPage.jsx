@@ -30,6 +30,9 @@ export default {
 	},
 	'input-mode-group': {
 		primary: 'Primary Input Modes',
+		sony: 'Sony Modes',
+		nintendo: 'Nintendo Modes',
+		microsoft: 'Microsoft Modes',
 		mini: 'Mini/Classic Console Modes',
 	},
 	'boot-input-mode-label': 'Boot Input Modes',

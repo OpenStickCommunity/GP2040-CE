@@ -5,7 +5,6 @@
 #include "drivers/ps5/PS5ModeDriver.h"
 #include "drivers/xbone/XBOneDriver.h"
 #include "drivers/xinput/XInputDriver.h"
-#include "drivers/p5general/P5GeneralDriver.h"
 
 void ButtonLayoutScreen::init() {
     DisplayOptions & displayOptions = Storage::getInstance().getDisplayOptions();
@@ -226,14 +225,8 @@ void ButtonLayoutScreen::generateHeader() {
                     statusBar += "   ";
                 break;
             case INPUT_MODE_PS5:
-                statusBar += ((PS5ModeDriver*)DriverManager::getInstance().getDriver())->statusLabel();
-                break;
             case INPUT_MODE_P5GENERAL:
-                statusBar += "P5G";
-                if(((P5GeneralDriver*)DriverManager::getInstance().getDriver())->getAuthSent() == true )
-                    statusBar += ":AS";
-                else
-                    statusBar += "   ";
+                statusBar += ((PS5ModeDriver*)DriverManager::getInstance().getDriver())->statusLabel();
                 break;
             case INPUT_MODE_XBONE:
                 statusBar += "XBON";

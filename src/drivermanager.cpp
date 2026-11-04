@@ -18,7 +18,6 @@
 #include "drivers/xbone/XBOneDriver.h"
 #include "drivers/xboxog/XboxOriginalDriver.h"
 #include "drivers/xinput/XInputDriver.h"
-#include "drivers/p5general/P5GeneralDriver.h"
 #include "drivers/sinput/SInputDriver.h"
 
 #include "usbhostmanager.h"
@@ -59,11 +58,9 @@ void DriverManager::setup(InputMode mode) {
         case INPUT_MODE_PS4:
             driver = new PS4Driver(PS4_CONTROLLER);
             break;
-        case INPUT_MODE_PS5:
-            driver = new PS5ModeDriver();   // PS5 third-party, PS4 arcade stick fallback
-            break;
         case INPUT_MODE_P5GENERAL:
-            driver = new P5GeneralDriver();
+        case INPUT_MODE_PS5:
+            driver = new PS5ModeDriver();
             break;
         case INPUT_MODE_SWITCH:
             driver = new SwitchDriver();

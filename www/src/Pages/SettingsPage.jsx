@@ -150,44 +150,37 @@ const INPUT_BOOT_MODES = [
 	{
 		labelKey: 'input-mode-options.xbone',
 		value: 5,
-		group: 'primary',
+		group: 'microsoft',
 		required: ['usb'],
 	},
-	{ labelKey: 'input-mode-options.xboxoriginal', value: 12, group: 'primary' },
-	{ labelKey: 'input-mode-options.ps3', value: 2, group: 'primary' },
+	{ labelKey: 'input-mode-options.xboxoriginal', value: 12, group: 'microsoft' },
+	{ labelKey: 'input-mode-options.ps3', value: 2, group: 'sony' },
 	{
 		labelKey: 'input-mode-options.ps4',
 		value: 4,
-		group: 'primary',
+		group: 'sony',
 		optional: ['usb'],
 	},
 	{
 		labelKey: 'input-mode-options.ps5',
 		value: 13,
-		group: 'primary',
+		group: 'sony',
 		optional: ['usb'],
-	},
-	{
-		labelKey: 'input-mode-options.p5general',
-		value: 16,
-		group: 'primary',
-		optional: ['usb'],
-		authentication: ['usb'],
 	},
 	{
 		labelKey: 'input-mode-options.nintendo-switch',
 		value: 1,
-		group: 'primary',
+		group: 'nintendo',
 	},
 	{
 		labelKey: 'input-mode-options.nintendo-switch-pro',
 		value: 15,
-		group: 'primary',
+		group: 'nintendo',
 	},
 	{
 		labelKey: 'input-mode-options.nintendo-switch2-pro',
 		value: 19,
-		group: 'primary',
+		group: 'nintendo',
 	},
 	{ labelKey: 'input-mode-options.keyboard', value: 3, group: 'primary' },
 	{ labelKey: 'input-mode-options.generic', value: 14, group: 'primary' },
@@ -202,7 +195,10 @@ const INPUT_BOOT_MODES = [
 
 const INPUT_MODE_GROUPS = [
 	{ labelKey: 'input-mode-group.primary', value: 0, group: 'primary' },
-	{ labelKey: 'input-mode-group.mini', value: 1, group: 'mini' },
+	{ labelKey: 'input-mode-group.sony', value: 1, group: 'sony' },
+	{ labelKey: 'input-mode-group.nintendo', value: 2, group: 'nintendo' },
+	{ labelKey: 'input-mode-group.microsoft', value: 3, group: 'microsoft' },
+	{ labelKey: 'input-mode-group.mini', value: 4, group: 'mini' },
 ];
 
 const DPAD_MODES = [
