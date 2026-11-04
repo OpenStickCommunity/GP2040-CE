@@ -127,6 +127,9 @@ void AnimationStation::ChangeProfile(int changeSize) {
 }
 
 bool AnimationStation::IncreaseProfile() {
+    // a profile hotkey wakes the animations from the idle timeout
+    timeLastButtonPressed = get_absolute_time();
+
     // find next valid index
     AnimationOptions & options = Storage::getInstance().getAnimationOptions();
     int32_t nextIndex = options.baseProfileIndex;
@@ -147,6 +150,9 @@ bool AnimationStation::IncreaseProfile() {
 }
 
 bool AnimationStation::DecreaseProfile() {
+    // a profile hotkey wakes the animations from the idle timeout
+    timeLastButtonPressed = get_absolute_time();
+
     // find next valid index
     AnimationOptions & options = Storage::getInstance().getAnimationOptions();
     int32_t prevIndex = options.baseProfileIndex;
@@ -267,8 +273,18 @@ void AnimationStation::UpdateTimeout()
     else if((absolute_time_diff_us(timeLastButtonPressed, get_absolute_time()) / 1000) < options.autoDisableTime)
     {
       bIsInIdleTimeout = false;
+      //remove the idle animation, or the animations a profile change built during the timeout
       if(this->baseAnimation != nullptr)
         delete this->baseAnimation;
+      if(this->caseAnimation != nullptr)
+        delete this->caseAnimation;
+      this->baseAnimation = nullptr;
+      this->caseAnimation = nullptr;
+
+      //no profiles
+      if(options.baseProfileIndex == -1)
+        return;
+
       bool bCaseLightsUsingButtonNonPressedAnim = options.profiles[options.baseProfileIndex].baseNonPressedEffect == options.profiles[options.baseProfileIndex].baseCaseEffect;
 
       //set new profile nonpressed animation
