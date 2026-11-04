@@ -68,6 +68,9 @@ private:
 
     bool has_reset;       // auth can be reset
     bool has_definition; // likely a third party controller. has capability info.
+
+    uint32_t pages_seen; 
+    uint8_t f1_reads;
 };
 
 #endif // _PS4AUTHUSBLISTENER_H_

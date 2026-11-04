@@ -1,3 +1,4 @@
+#include "tusb.h"
 #include "host/usbh.h"
 #include "class/hid/hid.h"
 #include "class/hid/hid_host.h"
@@ -157,6 +158,8 @@ void PS4AuthUSBListener::resetHostData() {
     awaiting_cb = false;
     awaiting_since_ms = 0;
     last_signing_poll_ms = 0;
+    pages_seen = 0;
+    f1_reads = 0;
     dongle_state = PS4State::no_nonce;
 }
 
@@ -447,18 +450,29 @@ void PS4AuthUSBListener::get_report_complete(uint8_t dev_addr, uint8_t instance,
                 last_signing_poll_ms = now_ms(); // not ready yet
             }
             break;
-        case PS4AuthReport::PS4_GET_SIGNATURE_NONCE:
-            // probably should mutex lock
-            if (nonce_chunk == 0 || nonce_chunk > 19) {
-                break; // out-of-sequence completion; never index before the buffer
+        case PS4AuthReport::PS4_GET_SIGNATURE_NONCE: {
+            // The device picks the page (byte 2); file it there and read until all
+            // 19 pages are in. A DS4 starts at 0, the S5 in PS4 mode may not.
+            uint8_t page = report_buffer[2];
+            if ( report_buffer[1] != ps4AuthData->nonce_id || page > 18 || ++f1_reads > 38 ) {
+                resetHostData();
+                if ( ++signing_errors >= PS4_AUTH_MAX_SIGNING_ERRORS ) {
+                    signing_errors = 0;
+                    dongleFailed(false);
+                } else {
+                    ps4AuthData->passthrough_state = GPAuthState::auth_idle_state;
+                }
+                return;
             }
-            memcpy(&ps4AuthData->ps4_auth_buffer[(nonce_chunk-1)*56], &report_buffer[4], 56);
-            if (nonce_chunk == 19) {
+            memcpy(&ps4AuthData->ps4_auth_buffer[page * 56], &report_buffer[4], 56);
+            pages_seen |= (1u << page);
+            if ( pages_seen == 0x7FFFF ) {          // pages 0-18 all received
                 nonce_chunk = 0;
-                dongle_state = PS4State::no_nonce; // something we don't support
+                dongle_state = PS4State::no_nonce;
                 ps4AuthData->passthrough_state = GPAuthState::send_auth_dongle_to_console;
             }
             break;
+        }
         default:
             break;
     };
