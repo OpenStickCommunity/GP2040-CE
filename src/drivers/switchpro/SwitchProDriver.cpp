@@ -60,7 +60,52 @@ static bool switchpro_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t res
     return hidd_xfer_cb(rhport, ep_addr, result, xferred_bytes);
 }
 
+void SwitchProDriver::loadControllerType() {
+    switch (Storage::getInstance().getGamepadOptions().switchProControllerType) {
+        case SWITCH_PRO_CONTROLLER_TYPE_SNES:
+            controllerType = SWITCH_TYPE_SNES;
+            break;
+        case SWITCH_PRO_CONTROLLER_TYPE_SUPER_FAMICOM:
+            controllerType = SWITCH_TYPE_SNES;
+            controllerRegion = SWITCH_REGION_JAPAN;
+            break;
+        case SWITCH_PRO_CONTROLLER_TYPE_N64:
+            controllerType = SWITCH_TYPE_N64;
+            break;
+        case SWITCH_PRO_CONTROLLER_TYPE_GENESIS:
+            controllerType = SWITCH_TYPE_GENESIS;
+            break;
+        case SWITCH_PRO_CONTROLLER_TYPE_MEGA_DRIVE:
+            controllerType = SWITCH_TYPE_GENESIS;
+            controllerRegion = SWITCH_REGION_JAPAN;
+            break;
+        case SWITCH_PRO_CONTROLLER_TYPE_NES:
+            controllerType = SWITCH_TYPE_NES_LEFT_JOYCON;
+            break;
+        case SWITCH_PRO_CONTROLLER_TYPE_FAMICOM_I:
+            controllerType = SWITCH_TYPE_FAMICOM_LEFT_JOYCON;
+            break;
+        case SWITCH_PRO_CONTROLLER_TYPE_FAMICOM_II:
+            controllerType = SWITCH_TYPE_FAMICOM_RIGHT_JOYCON;
+            break;
+        case SWITCH_PRO_CONTROLLER_TYPE_JOYCON_LEFT:
+            controllerType = SWITCH_TYPE_LEFT_JOYCON;
+            break;
+        case SWITCH_PRO_CONTROLLER_TYPE_JOYCON_RIGHT:
+            controllerType = SWITCH_TYPE_RIGHT_JOYCON;
+            break;
+        case SWITCH_PRO_CONTROLLER_TYPE_JOYCON_PAIR:
+            controllerType = SWITCH_TYPE_LEFT_JOYCON;
+            joyConPair = true;
+            break;
+        default:
+            break;
+    }
+}
+
 void SwitchProDriver::initialize() {
+    if (hidInstance == 0) loadControllerType();
+
     playerID = 0;
     last_report_counter = 0;
     handshakeCounter = 0;
@@ -84,6 +129,7 @@ void SwitchProDriver::initialize() {
             break;
     }
 
+    factoryConfig->deviceType = controllerType;
     if (controllerType != SWITCH_TYPE_PRO_CONTROLLER && !isRailType(controllerType)) factoryConfig->controllerRegion = controllerRegion;
 
     if (controllerType == SWITCH_TYPE_LEFT_JOYCON || controllerType == SWITCH_TYPE_RIGHT_JOYCON) {
@@ -201,7 +247,10 @@ void SwitchProDriver::initialize() {
 	};
 
     if (joyConPair && controllerType == SWITCH_TYPE_LEFT_JOYCON && pairRight == nullptr) {
-        pairRight = new SwitchProDriver(SWITCH_TYPE_RIGHT_JOYCON, controllerRegion, true);
+        pairRight = new SwitchProDriver();
+        pairRight->controllerType = SWITCH_TYPE_RIGHT_JOYCON;
+        pairRight->controllerRegion = controllerRegion;
+        pairRight->joyConPair = true;
         pairRight->hidInstance = 1;
         pairRight->initialize();
     }

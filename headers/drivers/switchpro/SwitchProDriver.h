@@ -15,8 +15,6 @@
 
 class SwitchProDriver : public GPDriver {
 public:
-    SwitchProDriver(SwitchControllerType controllerType = SWITCH_TYPE_PRO_CONTROLLER, SwitchControllerRegion controllerRegion = SWITCH_REGION_USA, bool joyConPair = false)
-        : controllerType(controllerType), controllerRegion(controllerRegion), joyConPair(joyConPair) {}
     virtual void initialize();
     virtual bool process(Gamepad * gamepad);
     virtual void initializeAux() {}
@@ -33,9 +31,9 @@ public:
     virtual uint16_t GetJoystickMidValue();
     virtual USBListener * get_usb_auth_listener() { return nullptr; }
 private:
-    SwitchControllerType controllerType;
-    SwitchControllerRegion controllerRegion;
-    bool joyConPair;
+    SwitchControllerType controllerType = SWITCH_TYPE_PRO_CONTROLLER;
+    SwitchControllerRegion controllerRegion = SWITCH_REGION_USA;
+    bool joyConPair = false;
     uint8_t hidInstance = 0;
     SwitchProDriver * pairRight = nullptr;
     tusb_desc_device_t deviceDescriptor;
@@ -66,6 +64,7 @@ private:
     bool isIMUEnabled = false;
     bool isVibrationEnabled = false;
 
+    void loadControllerType();
     void sendIdentify();
     void sendSubCommand(uint8_t subCommand);
 
