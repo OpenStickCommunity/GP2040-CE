@@ -30,6 +30,9 @@ export default {
 	},
 	'input-mode-group': {
 		primary: 'Primary Input Modes',
+		sony: 'Sony Modes',
+		nintendo: 'Nintendo Modes',
+		microsoft: 'Microsoft Modes',
 		mini: 'Mini/Classic Console Modes',
 	},
 	'boot-input-mode-label': 'Boot Input Modes',
@@ -180,7 +183,7 @@ export default {
 		emulation: 'Remote/Emulation',
 	},
 	'ps5-mode-explanation-text':
-		'PS5 mode allows GP2040-CE to run as an authenticated PS5 compatible arcade stick.',
+		'PS5 mode allows GP2040-CE to run as an authenticated PS5 compatible gamepad.',
 	'ps5-mode-warning-text':
 		'<span>⏳ WARNING ⏳:</span> PS5 will timeout after 8 minutes without authentication.',
 	'ps5-usb-host-mode-text':
