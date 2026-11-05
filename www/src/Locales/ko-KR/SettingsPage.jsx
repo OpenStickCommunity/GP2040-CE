@@ -1,6 +1,6 @@
 export default {
 	'auth-settings-label': '인증 설정',
-	'no-mode-settings-text': '{{mode}} 모드에 관한 설정항목은 없습니다.',
+	'no-mode-settings-text': '{{mode}} 모드에 관한 설정 항목은 없습니다.',
 	'settings-header-text': '입력 모드 설정',
 	'gamepad-settings-header-text': '게임패드 설정',
 	'input-mode-label': '입력 모드',
@@ -11,11 +11,13 @@ export default {
 		xinput: 'XInput',
 		'nintendo-switch': '닌텐도 스위치',
 		'nintendo-switch-pro': '닌텐도 스위치 프로',
+		'nintendo-switch2-pro': '닌텐도 스위치 2 프로',
 		ps3: 'PS3',
 		generic: '일반 HID 입력',
 		keyboard: '키보드',
 		ps4: 'PS4',
 		ps5: 'PS5',
+		p5general: 'P5General',
 		neogeo: 'NEOGEO 미니',
 		mdmini: '세가 메가드라이브 미니',
 		pcemini: 'PC 엔진 미니',
@@ -24,6 +26,7 @@ export default {
 		psclassic: '플레이스테이션 클래식',
 		xboxoriginal: '오리지널 Xbox',
 		xbone: 'Xbox One',
+		sinput: 'SInput',
 	},
 	'input-mode-group': {
 		primary: '주 입력 모드',
@@ -60,7 +63,7 @@ export default {
 	'debounce-delay-label': '디바운스 지연(ms)',
 	'mini-menu-gamepad-input': '미니 메뉴에 게임패드 입력 사용',
 	'ps4-mode-explanation-text':
-		'PS4 모드는 GP2040-CE를 인증된 PS4 컨트롤러로 실행합니다.',
+		'PS4 모드는 GP2040-CE가 인증된 PS4 컨트롤러로 동작하게됩니다.',
 	'ps4-mode-warning-text':
 		'<span>⏳ 경고 ⏳:</span> 인증없이는 8분 후 PS4 연결이 해제됩니다.',
 	'ps4-usb-host-mode-text':
@@ -68,6 +71,102 @@ export default {
 	'ps4-id-mode-label': '인식 모드',
 	'ps4-id-mode-explanation-text':
 		'<ul><li>콘솔 모드는 주로 PS4 콘솔에 연결할 때 사용됩니다.</li><li>리모트/에뮬레이션 모드는 듀얼쇼크4 호환 컨트롤러가 필요한 에뮬레이션 또는 PS 리모트 플레이 환경에 연결할 때만 사용해야합니다.</li></ul>',
+	'generic-dpad-mode-label': 'D-Pad 방식',
+	'generic-dpad-mode-options': {
+		'hat-and-buttons': 'HAT + 버튼',
+		'hat-only': 'HAT 전용',
+		'buttons-only': '버튼 전용',
+	},
+	'switch-pro-controller-type-label': '컨트롤러 유형',
+	'switch-pro-controller-type-options': {
+		pro: '프로 컨트롤러',
+		snes: 'NSO SNES',
+		'super-famicom': 'NSO 슈퍼 패미컴',
+		n64: 'NSO N64',
+		genesis: 'NSO 제네시스',
+		'mega-drive': 'NSO 메가 드라이브',
+		nes: 'NSO NES',
+		'famicom-i': 'NSO 패미컴 I',
+		'famicom-ii': 'NSO 패미컴 II',
+		'joycon-left': '조이콘 (L)',
+		'joycon-right': '조이콘 (R)',
+		'joycon-pair': '조이콘 (L + R)',
+	},
+	'switch-pro-color-label': '컨트롤러 표시 색상',
+	'switch-pro-color-explanation':
+		'스위치 본체에서 이 컨트롤러에 표시할 색상을 설정합니다.',
+	'switch-pro-color-presets': {
+		stock: '기본값',
+		gp2040: 'GP2040-CE',
+		custom: '사용자 지정',
+	},
+	'switch2-pro-identity-label': '컨트롤러 유형',
+	'switch2-pro-identity-options': {
+		pro2: '스위치 2 프로 컨트롤러',
+		gamecube: '게임큐브 컨트롤러',
+		'joycon2-left': '조이콘 2 (L)',
+		'joycon2-right': '조이콘 2 (R)',
+	},
+	'switch2-pro-gamecube-no-options':
+		'게임큐브 컨트롤러 모드에는 추가 옵션이 없습니다.',
+	'switch2-pro-joycon2-experimental-warning':
+		'<strong>경고:</strong> {{mode}} 모드는 실험적 기능입니다. 대부분의 경우 스위치 2 프로 컨트롤러 같은 다른 컨트롤러 유형 선택을 권장합니다. 이 모드를 사용하려면 닌텐도 스위치 2의 컨트롤러 페어링 화면으로 이동한 후 표시된 페어링 버튼을 눌러 조이콘 2가 가로 방향으로 인식되도록 연결해 주세요. 스위치 2가 절전 모드에서 깨어난 후에도 작업을 다시 수행해야 합니다. 메인 화면에서 연결하면 세로 방향으로 인식되어 입력 매핑이 올바르지 않을 수 있습니다.',
+	'switch2-pro-joycon2-color-explanation':
+		'스위치 2 본체에서 이 조이콘 2에 표시할 색상을 설정합니다.',
+	'switch2-pro-joycon2-color-presets': {
+		stock: '기본값',
+		'purple-green': '퍼플 / 그린',
+		'blue-yellow': '블루 / 옐로',
+		gp2040: 'GP2040-CE',
+		custom: '사용자 지정',
+	},
+	'switch2-pro-joycon2-color-parts': {
+		body: '본체',
+		buttons: '버튼',
+		accent: '액센트',
+		stick: '스틱',
+	},
+	'switch2-pro-color-label': '컨트롤러 표시 색상',
+	'switch2-pro-color-explanation':
+		'스위치 2 본체에서 이 컨트롤러에 표시할 색상을 설정합니다.',
+	'switch2-pro-color-presets': {
+		stock: '기본값',
+		gp2040: 'GP2040-CE',
+		custom: '사용자 지정',
+	},
+	'switch-pro-joycon-single-note':
+		"단일 조이콘으로 사용하려면 '잡는 방법/순서 변경' 화면으로 이동하여 SL + SR({{buttons}})을 누르세요. {{mode}} 모드와 조이콘 (L + R) 모드를 전환할 때마다 이 작업을 수행해야 합니다.",
+	'switch-pro-joycon-single-warning':
+		'<strong>경고:</strong> 조이콘 (L) 및 조이콘 (R) 모드는 일반적인 컨트롤러로 사용하기 매우 어려우며, 단일 조이콘이 필요한 특수 기기 액세서리를 제작하는 용도로만 제공됩니다. 일반적인 사용 환경에서는 프로 컨트롤러 또는 조이콘 (L + R) 모드를 사용해 주세요.',
+	'switch-pro-joycon-pair-warning':
+		"<strong>경고:</strong> 조이콘 (L + R) 컨트롤러 유형을 연결하려면 '잡는 방법/순서 변경' 화면으로 이동하여 L + R({{buttons}})을 눌러야 할 수 있습니다.",
+	'switch-pro-genesis-warning':
+		'<strong>경고:</strong> 스위치 본체 시스템에 해당 컨트롤러의 아이콘이 없으므로 시스템 메뉴에서는 프로 컨트롤러로 표시됩니다. NSO 제네시스 앱 내 사용자 이름 아래에는 정상적인 컨트롤러 아이콘이 표시됩니다.',
+	'switch-pro-joycon-color-explanation':
+		'스위치 본체에서 조이콘에 표시할 색상을 설정합니다. 본체와 버튼 색상만 표시됩니다.',
+	'switch-pro-joycon-color-presets': {
+		grey: '기본 그레이',
+		neon: '기본 네온',
+		white: '화이트 (OLED)',
+		gp2040: 'GP2040-CE',
+		custom: '사용자 지정',
+	},
+	'switch-pro-color-parts': {
+		body: '본체',
+		buttons: '버튼',
+		'left-grip': '좌측 그립',
+		'right-grip': '우측 그립',
+		'left-body': '좌측 본체',
+		'left-buttons': '좌측 버튼',
+		'right-body': '우측 본체',
+		'right-buttons': '우측 버튼',
+	},
+	'switch2-pro-color-parts': {
+		'face-plate': '페이스 플레이트',
+		buttons: '버튼',
+		highlight: '하이라이트',
+		'main-body': '메인 바디',
+	},
 	'ps4-id-mode-options': {
 		console: '콘솔',
 		emulation: '리모트/에뮬레이션',
@@ -80,6 +179,8 @@ export default {
 		'<span>정보:</span> USB 주변장치를 활성화 하고 PS4 호환 USB 장치가 연결되어있는지 확인하십시오.',
 	'xbone-mode-text':
 		'<span>정보:</span> Xbox One 모드에서는 USB 장치에 인증을 위한 USB 동글 연결이 필요합니다.',
+	'p5general-mode-text':
+		'<span>정보:</span> PS5 일반 모드에서 인증하려면 USB 호스트 연결과 <span>P5General</span>동글이 필요합니다.',
 	'xinput-mode-text':
 		'<span>정보:</span> Xinput은 동글 없이 Xbox360에서 사용가능합니다. 외부 동글을 이용해 인증하려는 경우에만 USB인증을 선택해주세요.',
 	'hotkey-settings-label': '핫키 설정',
@@ -133,6 +234,8 @@ export default {
 		'load-profile-5': '프로필 불러오기 #5',
 		'load-profile-6': '프로필 불러오기 #6',
 		'reboot-default': 'GP2040-CE 재시작',
+		'reboot-webconfig': 'GP2040-CE를 웹 설정 모드로 재시작',
+		'reboot-usb': 'GP2040-CE를 BOOTSEL/USB 모드로 재시작',
 		'save-config': '설정 저장',
 		'next-profile': '다음 프로필',
 		'previous-profile': '이전 프로필',
@@ -146,6 +249,14 @@ export default {
 		'focus-mode-toggle': '포커스 모드 전환',
 		'turbo-count-up': '터보 카운트 증가',
 		'turbo-count-down': '터보 카운트 감소',
+		'ls-up': '좌 스틱 위',
+		'ls-down': '좌 스틱 아래',
+		'ls-left': '좌 스틱 왼쪽',
+		'ls-right': '좌 스틱 오른쪽',
+		'rs-up': '우 스틱 위',
+		'rs-down': '우 스틱 아래',
+		'rs-left': '우 스틱 왼쪽',
+		'rs-right': '우 스틱 오른쪽',
 	},
 	'forced-setup-mode-label': '강제 설정 모드',
 	'forced-setup-mode-options': {
@@ -159,6 +270,7 @@ export default {
 		'저장 후 컨트롤러 모드로 재시작하면 더 이상 웹 설정모드에 접속하지 못하게 됩니다. 현재 작업을 이해하고 있고 의도한 바라면 다음을 입력해 저장 버튼을 활성화해 주세요. "<strong>{{warningCheckText}}</strong>" 해제를 클릭하면 설정이 복원된 후 저장됩니다.',
 	'4-way-joystick-mode-label': '4방향 조이스틱 모드',
 	'keyboard-mapping-header-text': '키보드 매핑',
+	'keyboard-profile-label': '프로필',
 	'keyboard-mapping-sub-header-text':
 		'아래에서 버튼-키보드 매핑을 설정해 주세요.',
 	'usb-override': {

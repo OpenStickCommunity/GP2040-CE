@@ -5,11 +5,27 @@ export default {
 	'gamepad-settings-header-text': '游戏手柄设置',
 	'input-mode-label': '输入模式',
 	'current-input-mode-label': '当前输入模式',
-	'input-mode-extra-label': '交换 Touchpad 和 Share 键',
+	'input-mode-extra-label': '交换触摸板键与 Share 键',
 	'input-mode-options': {
 		none: '未选择模式',
+		xinput: 'XInput',
+		'nintendo-switch': 'Nintendo Switch',
+		'nintendo-switch-pro': 'Nintendo Switch Pro',
+		ps3: 'PS3',
 		generic: '通用 HID',
 		keyboard: '键盘',
+		ps4: 'PS4',
+		ps5: 'PS5',
+		p5general: 'P5General',
+		neogeo: 'NEOGEO mini',
+		mdmini: 'Sega Genesis/MegaDrive Mini',
+		pcemini: 'PC Engine/TurboGrafx-16 Mini',
+		egret: 'EGRET II mini',
+		astro: 'ASTROCITY mini',
+		psclassic: 'PlayStation Classic',
+		xboxoriginal: '初代 Xbox',
+		xbone: 'Xbox One',
+		sinput: 'SInput',
 	},
 	'input-mode-group': {
 		primary: '主要输入模式',
@@ -23,7 +39,7 @@ export default {
 	'input-mode-authentication': {
 		none: '无',
 		key: '已上传的密钥文件',
-		usb: 'Host USB',
+		usb: 'USB 主机',
 		i2c: '外接 I2C 设备',
 	},
 	'd-pad-mode-label': '十字键模式',
@@ -34,7 +50,7 @@ export default {
 	},
 	'socd-cleaning-mode-label': 'SOCD 清理模式',
 	'socd-cleaning-mode-note':
-		'注意：PS4、PS3、Nintendo Switch 及迷你主机模式不支持关闭 SOCD 清理，将默认使用“中性”模式。',
+		'注意：PS4、PS3、Nintendo Switch、Nintendo Switch Pro 以及 mini 系列模式不支持将 SOCD 清理设为“关闭”，这些模式将默认使用“中性”清理模式。',
 	'socd-cleaning-mode-options': {
 		'up-priority': '上优先',
 		neutral: '中性',
@@ -50,7 +66,7 @@ export default {
 	'ps4-mode-warning-text':
 		'<span>⏳ 警告 ⏳:</span> 如果没有有效的身份验证，PS4 连接将在 8 分钟后超时断开。',
 	'ps4-usb-host-mode-text':
-		'<span>提示：</span> 请确保已启用 USB 外设，并插入了兼容 PS4 的 USB 引导设备。',
+		'<span>提示：</span> 请确保已启用 USB 外设，并已插入兼容 PS4 的 USB 设备。',
 	'ps4-id-mode-label': '识别模式',
 	'ps4-id-mode-explanation-text':
 		'<ul><li>“主机模式”主要用于直接连接到 PS4 主机。</li><li>“远程/模拟模式”仅在连接到需要 DualShock 4 兼容控制器的模拟层或远程游玩环境时使用。</li></ul>',
@@ -63,7 +79,7 @@ export default {
 	'ps5-mode-warning-text':
 		'<span>⏳ 警告 ⏳:</span> 如果没有有效的身份验证，PS5 连接将在 8 分钟后超时断开。',
 	'ps5-usb-host-mode-text':
-		'<span>提示：</span> 请确保已启用 USB 外设，并插入了兼容 PS5 的 USB 引导设备。',
+		'<span>提示：</span> 请确保已启用 USB 外设，并已插入兼容 PS5 的 USB 设备。',
 	'xbone-mode-text':
 		'<span>提示：</span> Xbox One 模式需要 USB 主机连接及对应的引导器 (Dongle) 才能完成验证。',
 	'p5general-mode-text':
@@ -73,7 +89,7 @@ export default {
 	'hotkey-settings-label': '快捷键设置',
 	'hotkey-settings-sub-header':
 		'<strong>Fn</strong> 滑块可在 <link_pinmap>引脚映射</link_pinmap> 页面中设置可自定义的功能按键。启用了 Fn 滑块选项后，必须在按住功能键 (Fn) 的同时按下对应组合键。此外，在下拉菜单中选择 <strong>无</strong> 可取消按键绑定。',
-	'hotkey-settings-warning': '尚未映射功能键 (Fn)，Fn 组合键逻辑将无法使用。',
+	'hotkey-settings-warning': '功能键 (Fn) 尚未映射，Fn 滑块将被禁用。',
 	'hotkey-actions': {
 		'no-action': '无动作',
 		'dpad-digital': '十字键数字模式',
@@ -121,7 +137,7 @@ export default {
 		'load-profile-6': '加载配置文件 #6',
 		'reboot-default': '重启 GP2040-CE',
 		'reboot-webconfig': '重启并进入网页配置模式',
-		'reboot-usb': '重启并进入 BOOTSEL 模式',
+		'reboot-usb': '重启并进入 BOOTSEL/USB 模式',
 		'save-config': '保存配置',
 		'next-profile': '下一个配置文件',
 		'previous-profile': '上一个配置文件',
@@ -133,8 +149,8 @@ export default {
 		'menu-nav-back': '菜单 返回',
 		'menu-nav-toggle': '菜单 切换',
 		'focus-mode-toggle': '切换专注模式',
-		'turbo-count-up': '增加连发速度',
-		'turbo-count-down': '降低连发速度',
+		'turbo-count-up': '增加连发次数',
+		'turbo-count-down': '减少连发次数',
 		'ls-up': '左摇杆 上',
 		'ls-down': '左摇杆 下',
 		'ls-left': '左摇杆 左',

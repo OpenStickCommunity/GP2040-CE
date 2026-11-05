@@ -7,6 +7,8 @@ export default {
 	'saved-success-message': '保存完了！コントローラを再起動してください',
 	'saved-error-message': '保存できませんでした',
 	'switch-enabled': '有効化',
+	'status-enabled': '有効',
+	'status-disabled': '無効',
 	'lock-macro': 'マクロをロック',
 	'lock-buttons': 'ボタンをロック',
 	'loading-text': '読込中...',

@@ -18,6 +18,10 @@ export default {
 	'profile-pins-warning':
 		'プロファイルの変更ホットキーに設定しているボタンや方向キーの設定変更は、現在のプロファイル選択状況がわからなくなる原因となるため非推奨です。',
 	'profile-copy-base': 'Baseプロファイルをコピー',
+	'pin-inversion-label': '端子入力反転',
+	'pin-inversion-tooltip':
+		'端子横にチェックボックスを表示します。チェックをつけた端子はアクティブハイ判定となり、端子入力が＋状態で押下判定となります。',
+	'pin-invert-label': 'GP{{pin}}反転',
 	actions: {
 		NONE: '無し',
 		RESERVED: '予約',

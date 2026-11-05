@@ -10,7 +10,7 @@ class GPButton : public GPWidget {
     public:
         void draw();
         GPButton* setSize(uint16_t sizeX, uint16_t sizeY) { this->_sizeX = sizeX; this->_sizeY = sizeY; return this; }
-        GPButton* setInputMask(int16_t inputMask) { this->_inputMask = inputMask; return this; }
+        GPButton* setInputMask(int32_t inputMask) { this->_inputMask = inputMask; return this; }
         GPButton* setInputDirection(bool inputDirection) { this->_inputDirection = inputDirection; return this; }
         GPButton* setInputType(GPElement inputType) { this->_inputType = inputType; return this; }
         GPButton* setAngle(double angle) { this->_angle = angle; return this; }

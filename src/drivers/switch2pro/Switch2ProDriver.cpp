@@ -484,6 +484,11 @@ static void loadIdentity() {
             colors[2] = left ? 0xB19FFB : 0x90EE90;
         } else if (options.switch2ProJoyCon2ColorPreset == SWITCH2_PRO_JOYCON2_COLOR_BLUE_YELLOW) {
             colors[2] = left ? 0x2B4CFF : 0xFFF066;
+        } else if (options.switch2ProJoyCon2ColorPreset == SWITCH2_PRO_JOYCON2_COLOR_LEGENDARY) {
+            colors[0] = left ? 0x34A049 : 0x92DD9E;
+            colors[1] = 0x264623;
+            colors[2] = 0xFCFF7D;
+            colors[3] = 0x364933;
         } else if (options.switch2ProJoyCon2ColorPreset == SWITCH2_PRO_JOYCON2_COLOR_GP2040) {
             colors[2] = left ? 0xEC008C : 0x00FF00;
         } else if (options.switch2ProJoyCon2ColorPreset == SWITCH2_PRO_JOYCON2_COLOR_CUSTOM) {
@@ -503,6 +508,8 @@ static void loadIdentity() {
     }
 
     uint32_t body, buttons, highlight, grip;
+    uint32_t leftShoulder = 0, rightShoulder = 0, stick = 0, leftRing = 0, rightRing = 0;
+    bool extended = false;
     switch (options.switch2ProColorPreset) {
         case SWITCH2_PRO_COLOR_GP2040:
             body = 0x1B1B1D;
@@ -510,11 +517,29 @@ static void loadIdentity() {
             highlight = 0x00FF00;
             grip = 0xEC008C;
             break;
+        case SWITCH2_PRO_COLOR_LEGENDARY:
+            body = 0x2B3631;
+            buttons = 0xA0A0A0;
+            highlight = 0xF2EB5E;
+            grip = 0x34A049;
+            leftShoulder = 0xF2EB5E;
+            rightShoulder = 0xF2EB5E;
+            stick = 0x2B3631;
+            leftRing = 0x34A049;
+            rightRing = 0xF2EB5E;
+            extended = true;
+            break;
         case SWITCH2_PRO_COLOR_CUSTOM:
             body = options.switch2ProBodyColor;
             buttons = options.switch2ProButtonsColor;
             highlight = options.switch2ProHighlightColor;
             grip = options.switch2ProGripColor;
+            leftShoulder = options.switch2ProLeftShoulderColor;
+            rightShoulder = options.switch2ProRightShoulderColor;
+            stick = options.switch2ProStickColor;
+            leftRing = options.switch2ProLeftRingColor;
+            rightRing = options.switch2ProRightRingColor;
+            extended = true;
             break;
         default:
             return;
@@ -523,6 +548,15 @@ static void loadIdentity() {
     setFactoryColor(SWITCH2_PRO_FACTORY_BUTTONS_COLOR, buttons);
     setFactoryColor(SWITCH2_PRO_FACTORY_HIGHLIGHT_COLOR, highlight);
     setFactoryColor(SWITCH2_PRO_FACTORY_GRIP_COLOR, grip);
+    if (extended) {
+        // A last variant byte of 2 makes the console use the separate shoulder, stick and ring colours.
+        factoryData[SWITCH2_PRO_FACTORY_VARIANT_OFFSET + 2] = 0x02;
+        setFactoryColor(SWITCH2_PRO_FACTORY_LEFT_SHOULDER_COLOR, leftShoulder);
+        setFactoryColor(SWITCH2_PRO_FACTORY_RIGHT_SHOULDER_COLOR, rightShoulder);
+        setFactoryColor(SWITCH2_PRO_FACTORY_STICK_COLOR, stick);
+        setFactoryColor(SWITCH2_PRO_FACTORY_LEFT_RING_COLOR, leftRing);
+        setFactoryColor(SWITCH2_PRO_FACTORY_RIGHT_RING_COLOR, rightRing);
+    }
 }
 
 void Switch2ProDriver::initialize() {

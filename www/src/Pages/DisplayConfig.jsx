@@ -10,9 +10,16 @@ import { AppContext } from '../Contexts/AppContext';
 import FormControl from '../Components/FormControl';
 import FormSelect from '../Components/FormSelect';
 import Section from '../Components/Section';
+import JsonEditor from '../Components/JsonEditor';
 import WebApi from '../Services/WebApi';
 import { getButtonLabels } from '../Data/Buttons';
 import { useRememberedTab } from '../Hooks/useRememberedTab';
+import { ButtonLayout, ButtonLayoutRight } from '@proto/enums';
+import {
+	parseLayoutCode,
+	layoutCodeToBase64,
+	base64ToLayoutCode,
+} from '../Services/CustomLayout';
 
 const ON_OFF_OPTIONS = [
 	{ label: 'form.display-state.disabled', value: 0 },
@@ -118,22 +125,6 @@ const defaultValues = {
 	splashTextLine1: '',
 	splashTextLine2: '',
 	splashTextLine3: '',
-	buttonLayoutCustomOptions: {
-		params: {
-			layout: 0,
-			startX: 8,
-			startY: 28,
-			buttonRadius: 8,
-			buttonPadding: 2,
-		},
-		paramsRight: {
-			layout: 3,
-			startX: 8,
-			startY: 28,
-			buttonRadius: 8,
-			buttonPadding: 2,
-		},
-	},
 	displaySaverTimeout: 0,
 	displaySaverMode: 0,
 	inputMode: true,
@@ -148,9 +139,12 @@ const defaultValues = {
 	inputHistoryRow: 7,
 	turnOffWhenSuspended: 0,
 	displayContrast: 255,
+	customLayoutA: '',
+	customLayoutB: '',
 };
 
 let buttonLayoutDefinitions = { buttonLayout: {}, buttonLayoutRight: {} };
+let customLayoutMaxPin;
 
 const buttonLayoutSchemaBase = yup.number().required();
 
@@ -158,6 +152,26 @@ let buttonLayoutSchema = buttonLayoutSchemaBase.label('Button Layout Left');
 let buttonLayoutRightSchema = buttonLayoutSchemaBase.label(
 	'Button Layout Right',
 );
+
+const customLayoutSchema = (layoutField, layout) =>
+	yup.string().when(layoutField, {
+		is: (value) => Number(value) === layout,
+		then: (schema) =>
+			schema.test('layout-code', (code, context) => {
+				const { error } = parseLayoutCode(code, customLayoutMaxPin);
+				return error === null || context.createError({ message: error });
+			}),
+	});
+
+const toDisplayOptionsRequest = (values) => {
+	const request = { ...values };
+	['customLayoutA', 'customLayoutB'].forEach((field) => {
+		const base64 = layoutCodeToBase64(values[field], customLayoutMaxPin);
+		if (base64 === null) delete request[field];
+		else request[field] = base64;
+	});
+	return request;
+};
 
 const schema = yup.object().shape({
 	enabled: yup
@@ -182,42 +196,6 @@ const schema = yup.object().shape({
 		.required()
 		.oneOf(SPLASH_MODES.map((o) => o.value))
 		.label('Splash Screen'),
-	buttonLayoutCustomOptions: yup.object().shape({
-		params: yup.object().shape({
-			layout: buttonLayoutSchema,
-			startX: yup.number().required().min(0).max(128).label('Start X'),
-			startY: yup.number().required().min(0).max(64).label('Start Y'),
-			buttonRadius: yup
-				.number()
-				.required()
-				.min(0)
-				.max(20)
-				.label('Button Radius'),
-			buttonPadding: yup
-				.number()
-				.required()
-				.min(0)
-				.max(20)
-				.label('Button Padding'),
-		}),
-		paramsRight: yup.object().shape({
-			layout: buttonLayoutRightSchema,
-			startX: yup.number().required().min(0).max(128).label('Start X'),
-			startY: yup.number().required().min(0).max(64).label('Start Y'),
-			buttonRadius: yup
-				.number()
-				.required()
-				.min(0)
-				.max(20)
-				.label('Button Radius'),
-			buttonPadding: yup
-				.number()
-				.required()
-				.min(0)
-				.max(20)
-				.label('Button Padding'),
-		}),
-	}),
 	splashDuration: yup.number().required().min(0).label('Splash Duration'),
 	splashTextEnabled: yup.number().label('Splash Text Enabled?'),
 	splashTextFirst: yup.number().label('Splash Text First?'),
@@ -257,6 +235,14 @@ const schema = yup.object().shape({
 	inputHistoryLength: yup.number().label('Input History Length'),
 	inputHistoryCol: yup.number().label('Input History Column Position'),
 	inputHistoryRow: yup.number().label('Input History Row Position'),
+	customLayoutA: customLayoutSchema(
+		'buttonLayout',
+		ButtonLayout.BUTTON_LAYOUT_CUSTOM_DEFINED_A,
+	),
+	customLayoutB: customLayoutSchema(
+		'buttonLayoutRight',
+		ButtonLayoutRight.BUTTON_LAYOUT_CUSTOM_DEFINED_B,
+	),
 });
 
 const FormContext = () => {
@@ -264,7 +250,7 @@ const FormContext = () => {
 
 	useEffect(() => {
 		async function setDisplayOptions() {
-			await WebApi.setDisplayOptions(values, true);
+			await WebApi.setDisplayOptions(toDisplayOptionsRequest(values), true);
 		}
 
 		setDisplayOptions();
@@ -273,8 +259,69 @@ const FormContext = () => {
 	return null;
 };
 
-const isButtonLayoutCustom = (values) =>
-	values.buttonLayout === 12 || values.buttonLayoutRight === 16;
+const isCustomLayoutUsed = (values) =>
+	Number(values.buttonLayout) === ButtonLayout.BUTTON_LAYOUT_CUSTOM_DEFINED_A ||
+	Number(values.buttonLayoutRight) ===
+		ButtonLayoutRight.BUTTON_LAYOUT_CUSTOM_DEFINED_B;
+
+const CustomLayoutCodeEditor = ({
+	label,
+	name,
+	value,
+	error,
+	setFieldValue,
+}) => {
+	const { t } = useTranslation('');
+	const editorRef = useRef(null);
+	const { elements } = parseLayoutCode(value, customLayoutMaxPin);
+	const elementCount = elements?.length ?? 0;
+	const isJson = (() => {
+		try {
+			JSON.parse(value);
+			return true;
+		} catch {
+			return false;
+		}
+	})();
+
+	return (
+		<Form.Group>
+			<div className="d-flex justify-content-between align-items-end">
+				<Form.Label>{label}</Form.Label>
+				<Button
+					variant="link"
+					size="sm"
+					className="p-0 mb-2"
+					disabled={!isJson}
+					onClick={() => editorRef.current?.format()}
+				>
+					{t('DisplayConfig:form.custom-layout-format-button')}
+				</Button>
+			</div>
+			<JsonEditor
+				ref={editorRef}
+				name={name}
+				value={value}
+				onChange={(newValue) => setFieldValue(name, newValue)}
+				isInvalid={Boolean(error)}
+				isValid={!error && elementCount > 0}
+			/>
+			{error ? (
+				<Form.Control.Feedback type="invalid" className="d-block">
+					{error}
+				</Form.Control.Feedback>
+			) : (
+				<Form.Text muted>
+					{elementCount > 0
+						? t('DisplayConfig:form.custom-layout-element-count', {
+								count: elementCount,
+							})
+						: t('DisplayConfig:form.custom-layout-empty')}
+				</Form.Text>
+			)}
+		</Form.Group>
+	);
+};
 
 export default function DisplayConfigPage() {
 	const [loadingValues, setLoadingValues] = useState(true);
@@ -285,9 +332,14 @@ export default function DisplayConfigPage() {
 		updateUsedPins,
 		getAvailablePeripherals,
 		updatePeripherals,
+		boardDefinition,
 	} = useContext(AppContext);
+	customLayoutMaxPin = boardDefinition.maxPin;
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
-	const CURRENT_BUTTONS = getButtonLabels(buttonLabelType, swapTpShareLabels);
+	const currentButtonLabels = getButtonLabels(
+		buttonLabelType,
+		swapTpShareLabels,
+	);
 	const [saveMessage, setSaveMessage] = useState('');
 	const [activeTab, setActiveTab] = useRememberedTab(
 		'displayConfigTabs',
@@ -300,14 +352,17 @@ export default function DisplayConfigPage() {
 		async function fetchData() {
 			const data = await WebApi.getDisplayOptions();
 			const splashImageResponse = await WebApi.getSplashImage();
-			data.splashImage = splashImageResponse.splashImage;
 			buttonLayoutDefinitions = await WebApi.getButtonLayoutDefs();
+
+			data.splashImage = splashImageResponse.splashImage;
 			buttonLayoutSchema = buttonLayoutSchema.oneOf(
 				Object.values(buttonLayoutDefinitions.buttonLayout),
 			);
 			buttonLayoutRightSchema = buttonLayoutRightSchema.oneOf(
 				Object.values(buttonLayoutDefinitions.buttonLayoutRight),
 			);
+			data.customLayoutA = base64ToLayoutCode(data.customLayoutA);
+			data.customLayoutB = base64ToLayoutCode(data.customLayoutB);
 			setValues(data);
 			setLoadingValues(false);
 		}
@@ -316,9 +371,10 @@ export default function DisplayConfigPage() {
 	}, []);
 
 	const onSuccess = async (values) => {
-		const success = await WebApi.setDisplayOptions(values, false).then(() =>
-			WebApi.setSplashImage(values),
-		);
+		const success = await WebApi.setDisplayOptions(
+			toDisplayOptionsRequest(values),
+			false,
+		).then((saved) => saved && WebApi.setSplashImage(values));
 
 		if (success) await updateUsedPins();
 
@@ -498,9 +554,11 @@ export default function DisplayConfigPage() {
 															key={`buttonLayout-option-${i}`}
 															value={buttonLayoutDefinitions.buttonLayout[o]}
 														>
-															{t(`LayoutConfig:layouts.left.${o}`, {
-																defaultValue: o,
-															})}
+															{o in ButtonLayout
+																? t(`LayoutConfig:layouts.left.${o}`, {
+																		defaultValue: o,
+																	})
+																: o}
 														</option>
 													),
 												)}
@@ -524,235 +582,82 @@ export default function DisplayConfigPage() {
 														key={`buttonLayoutRight-option-${i}`}
 														value={buttonLayoutDefinitions.buttonLayoutRight[o]}
 													>
-														{t(`LayoutConfig:layouts.right.${o}`, {
-															defaultValue: o,
-														})}
+														{o in ButtonLayoutRight
+															? t(`LayoutConfig:layouts.right.${o}`, {
+																	defaultValue: o,
+																})
+															: o}
 													</option>
 												))}
 											</FormSelect>
-											<FormSelect
-												label={t(
-													'DisplayConfig:form.button-layout-orientation',
-												)}
-												name="buttonLayoutOrientation"
-												className="form-select-sm"
-												groupClassName="col-sm-3 mb-3"
-												value={values.buttonLayoutOrientation}
-												error={errors.buttonLayoutOrientation}
-												isInvalid={errors.buttonLayoutOrientation}
-												onChange={handleChange}
-											>
-												{LAYOUT_ORIENTATION.map((o, i) => (
-													<option
-														key={`buttonLayoutOrientation-option-${i}`}
-														value={o.value}
-													>
-														{t(`DisplayConfig:${o.label}`)}
-													</option>
-												))}
-											</FormSelect>
+											{!isCustomLayoutUsed(values) && (
+												<FormSelect
+													label={t(
+														'DisplayConfig:form.button-layout-orientation',
+													)}
+													name="buttonLayoutOrientation"
+													className="form-select-sm"
+													groupClassName="col-sm-3 mb-3"
+													value={values.buttonLayoutOrientation}
+													error={errors.buttonLayoutOrientation}
+													isInvalid={errors.buttonLayoutOrientation}
+													onChange={handleChange}
+												>
+													{LAYOUT_ORIENTATION.map((o, i) => (
+														<option
+															key={`buttonLayoutOrientation-option-${i}`}
+															value={o.value}
+														>
+															{t(`DisplayConfig:${o.label}`)}
+														</option>
+													))}
+												</FormSelect>
+											)}
 										</Row>
-										{isButtonLayoutCustom(values) && (
-											<Row className="mb-3">
-												<FormLabel>
-													{t('DisplayConfig:form.button-layout-custom-header')}
-												</FormLabel>
-												<Col sm="6">
-													<Form.Group as={Row} name="buttonLayoutCustomOptions">
-														<Form.Label column>
-															{t(
-																'DisplayConfig:form.button-layout-custom-left-label',
-															)}
-														</Form.Label>
-														<FormSelect
-															name="buttonLayoutCustomOptions.params.layout"
-															className="form-select-sm"
-															groupClassName="col-sm-10 mb-1"
-															value={
-																values.buttonLayoutCustomOptions.params.layout
-															}
-															onChange={handleChange}
-														>
-															{Object.keys(
-																buttonLayoutDefinitions.buttonLayout,
-															).map((o, i) => (
-																<option
-																	key={`buttonLayout-option-${i}`}
-																	value={
-																		buttonLayoutDefinitions.buttonLayout[o]
-																	}
-																>
-																	{t(`LayoutConfig:layouts.left.${o}`, {
-																		defaultValue: o,
-																	})}
-																</option>
-															))}
-														</FormSelect>
-													</Form.Group>
-													<Form.Group as={Row}>
-														<Form.Label column>
-															{t(
-																'DisplayConfig:form.button-layout-custom-start-x-label',
-															)}
-														</Form.Label>
-														<Col sm="10">
-															<Field
-																column
-																className="mb-1"
-																name="buttonLayoutCustomOptions.params.startX"
-																type="number"
-																as={Form.Control}
+										{isCustomLayoutUsed(values) && (
+											<>
+												<h1>
+													{t('DisplayConfig:section.custom-layout-header')}
+												</h1>
+												<Row className="mb-4">
+													<p>
+														{t('DisplayConfig:form.custom-layout-description')}
+													</p>
+													<p>
+														{t('DisplayConfig:form.custom-layout-preview-tip', {
+															button: currentButtonLabels.B1,
+														})}
+													</p>
+													{Number(values.buttonLayout) ===
+														ButtonLayout.BUTTON_LAYOUT_CUSTOM_DEFINED_A && (
+														<Col sm="6">
+															<CustomLayoutCodeEditor
+																label={t(
+																	'DisplayConfig:form.custom-layout-left-label',
+																)}
+																name="customLayoutA"
+																value={values.customLayoutA}
+																error={errors.customLayoutA}
+																setFieldValue={setFieldValue}
 															/>
 														</Col>
-													</Form.Group>
-													<Form.Group as={Row}>
-														<Form.Label column>
-															{t(
-																'DisplayConfig:form.button-layout-custom-start-y-label',
-															)}
-														</Form.Label>
-														<Col sm="10">
-															<Field
-																column
-																className="mb-1"
-																name="buttonLayoutCustomOptions.params.startY"
-																type="number"
-																as={Form.Control}
+													)}
+													{Number(values.buttonLayoutRight) ===
+														ButtonLayoutRight.BUTTON_LAYOUT_CUSTOM_DEFINED_B && (
+														<Col sm="6">
+															<CustomLayoutCodeEditor
+																label={t(
+																	'DisplayConfig:form.custom-layout-right-label',
+																)}
+																name="customLayoutB"
+																value={values.customLayoutB}
+																error={errors.customLayoutB}
+																setFieldValue={setFieldValue}
 															/>
 														</Col>
-													</Form.Group>
-													<Form.Group as={Row}>
-														<Form.Label column>
-															{t(
-																'DisplayConfig:form.button-layout-custom-button-radius-label',
-															)}
-														</Form.Label>
-														<Col sm="10">
-															<Field
-																column
-																className="mb-1"
-																name="buttonLayoutCustomOptions.params.buttonRadius"
-																type="number"
-																as={Form.Control}
-															/>
-														</Col>
-													</Form.Group>
-													<Form.Group as={Row}>
-														<Form.Label column>
-															{t(
-																'DisplayConfig:form.button-layout-custom-button-padding-label',
-															)}
-														</Form.Label>
-														<Col sm="10">
-															<Field
-																column
-																className="mb-1"
-																name="buttonLayoutCustomOptions.params.buttonPadding"
-																type="number"
-																as={Form.Control}
-															/>
-														</Col>
-													</Form.Group>
-												</Col>
-												<Col sm="6">
-													<Form.Group as={Row}>
-														<Form.Label column>
-															{t(
-																'DisplayConfig:form.button-layout-custom-right-label',
-															)}
-														</Form.Label>
-														<FormSelect
-															name="buttonLayoutCustomOptions.paramsRight.layout"
-															className="form-select-sm"
-															groupClassName="col-sm-10 mb-1"
-															value={
-																values.buttonLayoutCustomOptions.paramsRight
-																	.layout
-															}
-															onChange={handleChange}
-														>
-															{Object.keys(
-																buttonLayoutDefinitions.buttonLayoutRight,
-															).map((o, i) => (
-																<option
-																	key={`buttonLayoutRight-option-${i}`}
-																	value={
-																		buttonLayoutDefinitions.buttonLayoutRight[o]
-																	}
-																>
-																	{t(`LayoutConfig:layouts.right.${o}`, {
-																		defaultValue: o,
-																	})}
-																</option>
-															))}
-														</FormSelect>
-													</Form.Group>
-													<Form.Group as={Row}>
-														<Form.Label column>
-															{t(
-																'DisplayConfig:form.button-layout-custom-start-x-label',
-															)}
-														</Form.Label>
-														<Col sm="10">
-															<Field
-																column
-																className="mb-1"
-																name="buttonLayoutCustomOptions.paramsRight.startX"
-																type="number"
-																as={Form.Control}
-															/>
-														</Col>
-													</Form.Group>
-													<Form.Group as={Row}>
-														<Form.Label column>
-															{t(
-																'DisplayConfig:form.button-layout-custom-start-y-label',
-															)}
-														</Form.Label>
-														<Col sm="10">
-															<Field
-																column
-																className="mb-1"
-																name="buttonLayoutCustomOptions.paramsRight.startY"
-																type="number"
-																as={Form.Control}
-															/>
-														</Col>
-													</Form.Group>
-													<Form.Group as={Row}>
-														<Form.Label column>
-															{t(
-																'DisplayConfig:form.button-layout-custom-button-radius-label',
-															)}
-														</Form.Label>
-														<Col sm="10">
-															<Field
-																column
-																className="mb-1"
-																name="buttonLayoutCustomOptions.paramsRight.buttonRadius"
-																type="number"
-																as={Form.Control}
-															/>
-														</Col>
-													</Form.Group>
-													<Form.Group as={Row}>
-														<Form.Label column>
-															{t(
-																'DisplayConfig:form.button-layout-custom-button-padding-label',
-															)}
-														</Form.Label>
-														<Col sm="10">
-															<Field
-																column
-																className="mb-1"
-																name="buttonLayoutCustomOptions.paramsRight.buttonPadding"
-																type="number"
-																as={Form.Control}
-															/>
-														</Col>
-													</Form.Group>
-												</Col>
-											</Row>
+													)}
+												</Row>
+											</>
 										)}
 										<h1>{t('DisplayConfig:section.status-layout-header')}</h1>
 										<Row className="mb-4">
@@ -862,7 +767,6 @@ export default function DisplayConfigPage() {
 										<h1>{t('DisplayConfig:section.history-layout-header')}</h1>
 										<Row className="mb-4">
 											<div className="col-sm-2 mb-3">
-												<label></label>
 												<Form.Check
 													label={t('DisplayConfig:form.input-history-label')}
 													type="switch"
@@ -1099,7 +1003,7 @@ export default function DisplayConfigPage() {
 																			{t(
 																				'DisplayConfig:form.splash-text-preview-help',
 																				{
-																					button: CURRENT_BUTTONS['B2'],
+																					button: currentButtonLabels['B2'],
 																				},
 																			)}
 																		</div>

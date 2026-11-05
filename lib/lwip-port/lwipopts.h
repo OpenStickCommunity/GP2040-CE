@@ -68,6 +68,8 @@
 #define LWIP_IGMP                       1
 #define LWIP_MDNS_RESPONDER             1
 #define MDNS_MAX_SERVICES               1
+#define LWIP_MDNS_SEARCH                0
+#define MEMP_NUM_SYS_TIMEOUT            (LWIP_NUM_SYS_TIMEOUT_INTERNAL + 8)
 #define LWIP_NUM_NETIF_CLIENT_DATA      1
 
 #define LWIP_RAND()                     ((uint32_t)get_rand_32())
