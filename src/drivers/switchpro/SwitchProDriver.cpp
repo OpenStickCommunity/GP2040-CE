@@ -104,7 +104,6 @@ void SwitchProDriver::loadControllerType() {
 }
 
 void SwitchProDriver::initialize() {
-    // The right half of a Joy-Con pair is configured by the left half
     if (hidInstance == 0) loadControllerType();
 
     playerID = 0;
