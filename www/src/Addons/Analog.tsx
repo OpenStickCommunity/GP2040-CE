@@ -11,6 +11,7 @@ import FormControl from '../Components/FormControl';
 import { AddonPropTypes } from '../Pages/AddonsConfigPage';
 
 import useBoardDefinition from '../Store/useBoardDefinitionStore';
+import { useRememberedTab } from '../Hooks/useRememberedTab';
 
 const ANALOG_STICK_MODES = [
 	{ label: 'Left Analog', value: 1 },
@@ -231,6 +232,10 @@ const Analog = ({
 	handleCheckbox,
 	setFieldValue,
 }: AddonPropTypes) => {
+	const [activeTab, setActiveTab] = useRememberedTab(
+		'analogConfigTabs',
+		'analog1Config',
+	);
 	const { usedPins } = useContext(AppContext);
 	const { t } = useTranslation();
 	const { boardDefinition } = useBoardDefinition();
@@ -238,7 +243,6 @@ const Analog = ({
 	const ANALOG_PINS = boardDefinition.analogPins;
 
 	const [calibrationStep, setCalibrationStep] = useState('');
-	const [activeTab, setActiveTab] = useState('analog1Config');
 	const calibration = useRef<{
 		controller: AbortController;
 		centerStarted: number;
@@ -458,7 +462,7 @@ const Analog = ({
 				</div>
 				<Tabs
 					activeKey={activeTab}
-					onSelect={(k) => k && setActiveTab(k)}
+					onSelect={setActiveTab}
 					id="analogConfigTabs"
 					className="mb-3 pb-0"
 					fill

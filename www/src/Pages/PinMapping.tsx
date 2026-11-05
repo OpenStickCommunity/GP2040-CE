@@ -42,6 +42,7 @@ import { MultiValue, SingleValue } from 'react-select';
 import InfoCircle from '../Icons/InfoCircle';
 import WebApi from '../Services/WebApi';
 import useLedsPreview from '../Hooks/useLedsPreview';
+import { useRememberedTab } from '../Hooks/useRememberedTab';
 
 type OptionType = {
 	label: string;
@@ -468,6 +469,10 @@ const PinSection = memo(function PinSection({
 });
 
 export default function PinMapping() {
+	const [activeTab, setActiveTab] = useRememberedTab(
+		'pinMappingTabs',
+		'profile-0',
+	);
 	const fetchProfiles = useProfilesStore((state) => state.fetchProfiles);
 	const addProfile = useProfilesStore((state) => state.addProfile);
 	const profiles = useProfilesStore((state) => state.profiles);
@@ -481,7 +486,7 @@ export default function PinMapping() {
 	}, []);
 
 	return (
-		<Tab.Container defaultActiveKey="profile-0">
+		<Tab.Container activeKey={activeTab} onSelect={setActiveTab}>
 			<Row>
 				<Col md={3}>
 					{loadingProfiles && (

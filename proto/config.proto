@@ -297,6 +297,13 @@ message DisplayOptions
 
     optional bytes customLayoutA = 32 [(nanopb).max_size = 288];
     optional bytes customLayoutB = 33 [(nanopb).max_size = 288];
+    optional bool splashTextEnabled = 34;
+    optional int32 splashTextDuration = 35;
+    optional uint32 splashTextLineCount = 36;
+    optional string splashTextLine1 = 37 [(nanopb).max_length = 21];
+    optional string splashTextLine2 = 38 [(nanopb).max_length = 21];
+    optional string splashTextLine3 = 39 [(nanopb).max_length = 21];
+    optional bool splashTextFirst = 40;
 }
 
 message LightCluster

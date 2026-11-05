@@ -101,6 +101,10 @@ void GPGFX::drawText(uint16_t x, uint16_t y, std::string text, uint8_t invert) {
     this->displayDriver->drawText(x, y, text, invert);
 }
 
+void GPGFX::drawTextAt(uint16_t x, uint16_t y, std::string text, uint8_t invert) {
+    this->displayDriver->drawTextAt(x, y, text, invert);
+}
+
 void GPGFX::drawArc(uint16_t x, uint16_t y, uint32_t radiusX, uint32_t radiusY, uint32_t color, uint8_t filled, double startAngle, double endAngle, uint8_t closed) {
     this->displayDriver->drawArc(x, y, radiusX, radiusY, color, filled, startAngle, endAngle, closed);
 }

@@ -24,6 +24,8 @@ class GPGFX_DisplayBase : public I2CDeviceBase {
 
         virtual void drawText(uint8_t x, uint8_t y, std::string text, uint8_t invert = 0) {}
 
+        virtual void drawTextAt(uint16_t x, uint16_t y, std::string text, uint8_t invert = 0) {}
+
         virtual void drawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint32_t color, uint8_t filled) {}
 
         virtual void drawArc(uint16_t x, uint16_t y, uint32_t radiusX, uint32_t radiusY, uint32_t color, uint8_t filled, double startAngle, double endAngle, uint8_t closed) {}

@@ -74,7 +74,8 @@ void DisplayAddon::setup() {
 
     // set current display mode
     if (!configMode) {
-        if (Storage::getInstance().getDisplayOptions().splashMode != static_cast<SplashMode>(SPLASH_MODE_NONE)) {
+        if (Storage::getInstance().getDisplayOptions().splashMode != static_cast<SplashMode>(SPLASH_MODE_NONE) ||
+            Storage::getInstance().getDisplayOptions().splashTextEnabled) {
             currDisplayMode = DisplayMode::SPLASH;
         } else {
             currDisplayMode = DisplayMode::BUTTONS;

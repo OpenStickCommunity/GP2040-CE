@@ -40,6 +40,7 @@ import {
 	useBootModeStore,
 	useBootModeStoreActions,
 } from '../Store/useBootModesStore';
+import { useRememberedTab } from '../Hooks/useRememberedTab';
 
 const SHA256 = (ascii) => {
 	function rightRotate(value, amount) {
@@ -956,6 +957,10 @@ const FormContext = ({ setButtonLabels, setKeyMappings }) => {
 };
 
 export default function SettingsPage() {
+	const [activeTab, setActiveTab] = useRememberedTab(
+		'settingsTabs',
+		'inputmode',
+	);
 	const {
 		buttonLabels,
 		setButtonLabels,
@@ -2589,7 +2594,7 @@ export default function SettingsPage() {
 				console.log('errors', errors) || (
 					<div>
 						<Form noValidate onSubmit={handleSubmit}>
-							<Tab.Container defaultActiveKey="inputmode">
+							<Tab.Container activeKey={activeTab} onSelect={setActiveTab}>
 								<Row>
 									<Col md={3}>
 										<Nav variant="pills" className="flex-column">
