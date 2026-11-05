@@ -60,11 +60,12 @@ export default {
 		off: 'Off',
 	},
 	'advanced-socd-description':
-		'Each slot sets its own rule per axis. Enabled slots appear in the SOCD Cleaning Mode list above, and can be assigned to a hotkey or a pin.',
+		'Each slot sets its own rule per axis. Enabled slots appear in the SOCD Cleaning Mode list above, and can be assigned to a hotkey or a pin. Dual Directional inputs use Neutral while a slot is active.',
 	'advanced-socd-enabled-label': 'Advanced SOCD',
 	'advanced-socd-name-label': 'Name',
 	'advanced-socd-up-down-label': 'Up + Down',
 	'advanced-socd-left-right-label': 'Left + Right',
+	'advanced-socd-action-label': 'Custom SOCD: {{name}}',
 	'advanced-socd-axis-neutral': 'Neutral',
 	'advanced-socd-axis-last-win': 'Last Win',
 	'advanced-socd-axis-first-win': 'First Win',

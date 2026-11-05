@@ -113,7 +113,6 @@ static void __attribute__((noinline)) docToValue(T& value, const DynamicJsonDocu
     }
 }
 
-// ArduinoJson stores keys by pointer, so these must be literals, not a stack buffer
 static const struct {
     const char* enabled;
     const char* upDown;
@@ -774,8 +773,14 @@ std::string setGamepadOptions()
         docToValue(socdSlot.upDownMode, doc, ADVANCED_SOCD_KEYS[index].upDown);
         docToValue(socdSlot.leftRightMode, doc, ADVANCED_SOCD_KEYS[index].leftRight);
         if (doc[ADVANCED_SOCD_KEYS[index].name].is<const char*>()) {
-            strncpy(socdSlot.name, doc[ADVANCED_SOCD_KEYS[index].name], sizeof(socdSlot.name) - 1);
-            socdSlot.name[sizeof(socdSlot.name) - 1] = '\0';
+            const char* value = doc[ADVANCED_SOCD_KEYS[index].name];
+            size_t length = 0;
+            for (; *value != '\0' && length < sizeof(socdSlot.name) - 1; value++) {
+                if (*value >= ' ' && *value <= '~') {
+                    socdSlot.name[length++] = *value;
+                }
+            }
+            socdSlot.name[length] = '\0';
             socdSlot.has_name = true;
         }
     }

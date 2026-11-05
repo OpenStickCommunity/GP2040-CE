@@ -96,7 +96,6 @@ uint8_t filterToFourWayMode(uint8_t dpad)
 static DpadDirection lastUD = DIRECTION_NONE;
 static DpadDirection lastLR = DIRECTION_NONE;
 
-// maskA/dirA is up or left, maskB/dirB the opposing direction
 static uint8_t cleanSOCDAxis(SOCDAxisMode mode, uint8_t dpad, uint8_t maskA, uint8_t maskB,
 	DpadDirection dirA, DpadDirection dirB, DpadDirection& last)
 {
@@ -139,7 +138,6 @@ static uint8_t cleanSOCDAxis(SOCDAxisMode mode, uint8_t dpad, uint8_t maskA, uin
 
 uint8_t runSOCDCleanerPerAxis(SOCDAxisMode upDownMode, SOCDAxisMode leftRightMode, uint8_t dpad)
 {
-	// Up priority has no left/right meaning; we cannot know which way a character faces
 	if (leftRightMode == SOCD_AXIS_MODE_UP_PRIORITY) leftRightMode = SOCD_AXIS_MODE_NEUTRAL;
 
 	return cleanSOCDAxis(upDownMode, dpad, GAMEPAD_MASK_UP, GAMEPAD_MASK_DOWN,

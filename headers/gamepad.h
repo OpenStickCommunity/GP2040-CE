@@ -139,7 +139,7 @@ public:
 	const GamepadOptions& getOptions() const { return options; }
 	const DpadMode getActiveDpadMode() { return activeDpadMode; }
 
-	void setInputMode(InputMode inputMode) { options.inputMode = inputMode; }
+	void setInputMode(InputMode inputMode);
 	void setSOCDMode(SOCDMode socdMode);
 	void setDpadMode(DpadMode dpadMode) { options.dpadMode = dpadMode; }
 
@@ -203,7 +203,6 @@ public:
 
 	uint32_t lastReinitProfileNumber = 0;
 
-	// Consoles that reject simultaneous opposing inputs
 	inline static const bool socdRequiresCleaning(const GamepadOptions& options) {
 		return options.inputMode == INPUT_MODE_PS3 ||
 			options.inputMode == INPUT_MODE_SWITCH ||
@@ -238,11 +237,14 @@ public:
 private:
 	void processHotkeyAction(GamepadHotkey action);
 	uint8_t runConfiguredSOCDCleaner(uint8_t dpad);
+	void updateStoredSOCDMode();
 
 	GamepadOptions & options;
 	DpadMode activeDpadMode;
 	SOCDMode activeSOCDMode;
+	SOCDMode resolvedStoredSOCDMode;
 	Mask_t socdModePinMasks[SOCD_MODE_ADVANCED_4 + 1];
+	Mask_t socdModeAnyPinMask;
 	bool map48WayModeToggle;
 	const HotkeyOptions & hotkeyOptions;
 

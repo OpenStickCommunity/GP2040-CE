@@ -222,7 +222,6 @@ enum SOCDMode
     SOCD_MODE_ADVANCED_4 = 8;
 }
 
-// UP_PRIORITY applies to the up/down axis only; left/right treats it as NEUTRAL
 enum SOCDAxisMode
 {
     option (nanopb_enumopt).long_names = false;

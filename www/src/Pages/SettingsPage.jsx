@@ -3173,12 +3173,14 @@ export default function SettingsPage() {
 																						{getAdvancedSOCDHotkeySlot(
 																							action.value,
 																						)
-																							? getAdvancedSOCDLabel(
-																									values,
-																									getAdvancedSOCDHotkeySlot(
-																										action.value,
+																							? t('SettingsPage:advanced-socd-action-label', {
+																									name: getAdvancedSOCDLabel(
+																										values,
+																										getAdvancedSOCDHotkeySlot(
+																											action.value,
+																										),
 																									),
-																								)
+																								})
 																							: action.label}
 																					</option>
 																				))}

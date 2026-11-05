@@ -4,7 +4,6 @@ import * as yup from 'yup';
 
 import FormSelect from './FormSelect';
 
-// Up priority is up/down only; we cannot know which way a character faces
 const SOCD_AXIS_MODES = [
 	{ labelKey: 'advanced-socd-axis-neutral', value: 0 },
 	{ labelKey: 'advanced-socd-axis-last-win', value: 1 },
@@ -13,8 +12,8 @@ const SOCD_AXIS_MODES = [
 ];
 
 const SOCD_UP_DOWN_MODES = [
-	...SOCD_AXIS_MODES,
 	{ labelKey: 'advanced-socd-axis-up-priority', value: 4 },
+	...SOCD_AXIS_MODES,
 ];
 
 export const ADVANCED_SOCD_SLOTS = [

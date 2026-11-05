@@ -334,7 +334,9 @@ const PinSelectList = memo(function PinSelectList({
 		(option: OptionType) => {
 			const advancedSlot = getAdvancedSOCDPinSlot(option.value);
 			if (advancedSlot)
-				return getAdvancedSOCDLabel(gamepadOptions, advancedSlot);
+				return t('SettingsPage:advanced-socd-action-label', {
+					name: getAdvancedSOCDLabel(gamepadOptions, advancedSlot),
+				});
 			const labelKey = option.label?.split('BUTTON_PRESS_')?.pop();
 			// Need to fallback as some button actions are not part of button names
 			return (

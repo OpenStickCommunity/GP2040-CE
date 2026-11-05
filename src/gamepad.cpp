@@ -37,7 +37,8 @@ void Gamepad::setup()
 	GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
 
 	memset(socdModePinMasks, 0, sizeof(socdModePinMasks));
-	activeSOCDMode = resolveSOCDMode(options, getStoredSOCDMode());
+	updateStoredSOCDMode();
+	activeSOCDMode = resolvedStoredSOCDMode;
 
 	mapDpadUp       = new GamepadButtonMapping(GAMEPAD_MASK_UP);
 	mapDpadDown     = new GamepadButtonMapping(GAMEPAD_MASK_DOWN);
@@ -180,6 +181,11 @@ void Gamepad::setup()
 			case GpioAction::SUSTAIN_FOCUS_MODE: mapFocusMode->pinMask |= Mask_t{1} << pin; break;
 			default:				break;
 		}
+	}
+
+	socdModeAnyPinMask = 0;
+	for (const Mask_t mask : socdModePinMasks) {
+		socdModeAnyPinMask |= mask;
 	}
 
 	// Define our hotkey array
@@ -393,14 +399,16 @@ void Gamepad::read()
 	else if (values & mapButtonRS->pinMask)	activeDpadMode = DpadMode::DPAD_MODE_RIGHT_ANALOG;
 	else					activeDpadMode = options.dpadMode;
 
-	SOCDMode socdMode = getStoredSOCDMode();
-	for (uint8_t mode = 0; mode <= SOCD_MODE_ADVANCED_4; mode++) {
-		if (values & socdModePinMasks[mode]) {
-			socdMode = (SOCDMode)mode;
-			break;
+	SOCDMode socdMode = resolvedStoredSOCDMode;
+	if (values & socdModeAnyPinMask) {
+		for (uint8_t mode = 0; mode <= SOCD_MODE_ADVANCED_4; mode++) {
+			if (values & socdModePinMasks[mode]) {
+				socdMode = resolveSOCDMode(options, (SOCDMode)mode);
+				break;
+			}
 		}
 	}
-	activeSOCDMode = resolveSOCDMode(options, socdMode);
+	activeSOCDMode = socdMode;
 
 	map48WayModeToggle = (values & map48WayMode->pinMask);
 
@@ -490,6 +498,16 @@ void Gamepad::setSOCDMode(SOCDMode socdMode) {
 	} else {
 		options.socdMode = socdMode;
 	}
+	updateStoredSOCDMode();
+}
+
+void Gamepad::setInputMode(InputMode inputMode) {
+	options.inputMode = inputMode;
+	updateStoredSOCDMode();
+}
+
+void Gamepad::updateStoredSOCDMode() {
+	resolvedStoredSOCDMode = resolveSOCDMode(options, getStoredSOCDMode());
 }
 
 uint8_t Gamepad::runConfiguredSOCDCleaner(uint8_t dpad) {
@@ -502,7 +520,6 @@ uint8_t Gamepad::runConfiguredSOCDCleaner(uint8_t dpad) {
 	SOCDAxisMode upDownMode = options.advancedSOCDSlots[slotIndex].upDownMode;
 	SOCDAxisMode leftRightMode = options.advancedSOCDSlots[slotIndex].leftRightMode;
 
-	// Same protection the bypass preset gets
 	if (socdRequiresCleaning(options)) {
 		if (upDownMode == SOCD_AXIS_MODE_OFF) upDownMode = SOCD_AXIS_MODE_NEUTRAL;
 		if (leftRightMode == SOCD_AXIS_MODE_OFF) leftRightMode = SOCD_AXIS_MODE_NEUTRAL;
