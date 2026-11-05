@@ -5,6 +5,7 @@
 
 #include "drivers/shared/InputReportPolicy.h"
 #include "storagemanager.h"
+#include "addons/he_trigger.h"
 
 static bool isDigitalAxisAction(GpioAction action) {
     switch (action) {
@@ -41,8 +42,9 @@ bool hasDigitalAxisMappings() {
         return true;
     }
     if (addons.heTriggerOptions.enabled) {
-        for (HETriggerInfo const &trigger : addons.heTriggerOptions.triggers) {
-            if (isDigitalAxisAction(trigger.action)) {
+        HETriggerOptions const &heTriggers = addons.heTriggerOptions;
+        for (uint32_t i = 0; i < HETRIGGER_COUNT; ++i) {
+            if (isDigitalAxisAction(heTriggers.triggers[i].action) && HETriggerAddon::isTriggerScanned(heTriggers, i)) {
                 return true;
             }
         }

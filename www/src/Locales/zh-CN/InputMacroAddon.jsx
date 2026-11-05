@@ -2,7 +2,7 @@ export default {
 	'input-macro-editor-tab': '编辑器',
 	'input-macro-advanced-tab': '高级设置',
 	'input-macro-board-led-enabled': '使用板载 LED 显示宏状态',
-	'input-macro-macro-enabled': '已启用',
+	'input-macro-macro-enabled': '启用',
 	'input-macro-macro-enabled-badge': '已启用',
 	'input-macro-macro-disabled-badge': '已禁用',
 	'input-macro-macro-exclusive': '独占模式 (执行期间不可切换到其他宏)',

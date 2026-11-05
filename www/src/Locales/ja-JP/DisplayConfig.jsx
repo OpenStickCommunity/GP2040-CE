@@ -30,13 +30,6 @@ export default {
 		'button-layout-label': 'ボタンレイアウト（左）',
 		'button-layout-right-label': 'ボタンレイアウト（右）',
 		'button-layout-orientation': 'ボタンレイアウト',
-		'button-layout-custom-header': 'カスタムボタンレイアウトパラメータ',
-		'button-layout-custom-left-label': '左側レイアウト',
-		'button-layout-custom-right-label': '右側レイアウト',
-		'button-layout-custom-start-x-label': 'X座標開始位置',
-		'button-layout-custom-start-y-label': 'Y座標開始位置',
-		'button-layout-custom-button-radius-label': 'ボタン半径',
-		'button-layout-custom-button-padding-label': 'ボタンパディング',
 		'splash-mode-label': 'スプラッシュモード',
 		'splash-duration-label': 'スプラッシュ表示時間 (秒, 0=常時)',
 		'display-saver-timeout-label':

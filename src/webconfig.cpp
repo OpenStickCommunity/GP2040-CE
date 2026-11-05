@@ -16,6 +16,7 @@
 
 #include "neopicoleds.h"
 
+#include <cmath>
 #include <cstring>
 #include <string>
 #include <vector>
@@ -38,6 +39,7 @@
 #include "lwip/mem.h"
 #include "advanced_socd.h"
 #include "addons/input_macro.h"
+#include "addons/he_trigger.h"
 
 #define PATH_CGI_ACTION "/cgi/action"
 
@@ -443,9 +445,40 @@ std::string getUsedPins()
     return serialize_json(doc);
 }
 
+static bool __attribute__((noinline)) decodeCustomLayout(const DynamicJsonDocument& doc, const char* key, size_t maxSize, std::string& decoded)
+{
+    if (!doc.containsKey(key))
+        return true;
+    if (!doc[key].is<const char*>())
+        return false;
+    std::string base64String = doc[key];
+    if (!Base64::Decode(base64String, decoded))
+        return false;
+    return decoded.length() <= maxSize && (decoded.length() % CUSTOM_LAYOUT_ELEMENT_BYTES) == 0;
+}
+
+static void __attribute__((noinline)) applyCustomLayout(bool& hasLayout, pb_byte_t* bytes, pb_size_t& size, const DynamicJsonDocument& doc, const char* key, const std::string& decoded)
+{
+    if (!doc.containsKey(key))
+        return;
+    memcpy(bytes, decoded.data(), decoded.length());
+    size = decoded.length();
+    hasLayout = true;
+}
+
+static void __attribute__((noinline)) writeCustomLayout(const pb_byte_t* bytes, pb_size_t size, DynamicJsonDocument& doc, const char* key)
+{
+    doc[key] = Base64::Encode(reinterpret_cast<const char*>(bytes), size);
+}
+
 std::string setDisplayOptions(DisplayOptions& displayOptions)
 {
     DynamicJsonDocument doc = get_post_data();
+    std::string customLayoutA;
+    std::string customLayoutB;
+    if (!decodeCustomLayout(doc, "customLayoutA", sizeof(displayOptions.customLayoutA.bytes), customLayoutA) ||
+        !decodeCustomLayout(doc, "customLayoutB", sizeof(displayOptions.customLayoutB.bytes), customLayoutB))
+        return "{\"success\":false,\"error\":\"Invalid custom layout\"}";
     readDoc(displayOptions.enabled, doc, "enabled");
     readDoc(displayOptions.flip, doc, "flipDisplay");
     readDoc(displayOptions.invert, doc, "invertDisplay");
@@ -470,17 +503,8 @@ std::string setDisplayOptions(DisplayOptions& displayOptions)
     readDoc(displayOptions.inputHistoryRow, doc, "inputHistoryRow");
     readDoc(displayOptions.contrast, doc, "displayContrast");
 
-    readDoc(displayOptions.buttonLayoutCustomOptions.paramsLeft.layout, doc, "buttonLayoutCustomOptions", "params", "layout");
-    readDoc(displayOptions.buttonLayoutCustomOptions.paramsLeft.common.startX, doc, "buttonLayoutCustomOptions", "params", "startX");
-    readDoc(displayOptions.buttonLayoutCustomOptions.paramsLeft.common.startY, doc, "buttonLayoutCustomOptions", "params", "startY");
-    readDoc(displayOptions.buttonLayoutCustomOptions.paramsLeft.common.buttonRadius, doc, "buttonLayoutCustomOptions", "params", "buttonRadius");
-    readDoc(displayOptions.buttonLayoutCustomOptions.paramsLeft.common.buttonPadding, doc, "buttonLayoutCustomOptions", "params", "buttonPadding");
-
-    readDoc(displayOptions.buttonLayoutCustomOptions.paramsRight.layout, doc, "buttonLayoutCustomOptions", "paramsRight", "layout");
-    readDoc(displayOptions.buttonLayoutCustomOptions.paramsRight.common.startX, doc, "buttonLayoutCustomOptions", "paramsRight", "startX");
-    readDoc(displayOptions.buttonLayoutCustomOptions.paramsRight.common.startY, doc, "buttonLayoutCustomOptions", "paramsRight", "startY");
-    readDoc(displayOptions.buttonLayoutCustomOptions.paramsRight.common.buttonRadius, doc, "buttonLayoutCustomOptions", "paramsRight", "buttonRadius");
-    readDoc(displayOptions.buttonLayoutCustomOptions.paramsRight.common.buttonPadding, doc, "buttonLayoutCustomOptions", "paramsRight", "buttonPadding");
+    applyCustomLayout(displayOptions.has_customLayoutA, displayOptions.customLayoutA.bytes, displayOptions.customLayoutA.size, doc, "customLayoutA", customLayoutA);
+    applyCustomLayout(displayOptions.has_customLayoutB, displayOptions.customLayoutB.bytes, displayOptions.customLayoutB.size, doc, "customLayoutB", customLayoutB);
 
     return serialize_json(doc);
 }
@@ -488,7 +512,8 @@ std::string setDisplayOptions(DisplayOptions& displayOptions)
 std::string setDisplayOptions()
 {
     std::string response = setDisplayOptions(Storage::getInstance().getDisplayOptions());
-    EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
+    if (response.rfind("{\"success\":false", 0) != 0)
+        EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
     return response;
 }
 
@@ -500,9 +525,11 @@ std::string setPreviewDisplayOptions()
 
 std::string getDisplayOptions() // Manually set Document Attributes for the display
 {
-    const size_t capacity = JSON_OBJECT_SIZE(100);
-    DynamicJsonDocument doc(capacity);
     const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
+    const size_t capacity = JSON_OBJECT_SIZE(100)
+        + JSON_STRING_SIZE(4 * ((sizeof(displayOptions.customLayoutA.bytes) + 2) / 3))
+        + JSON_STRING_SIZE(4 * ((sizeof(displayOptions.customLayoutB.bytes) + 2) / 3));
+    DynamicJsonDocument doc(capacity);
     writeDoc(doc, "enabled", displayOptions.enabled ? 1 : 0);
     writeDoc(doc, "flipDisplay", displayOptions.flip);
     writeDoc(doc, "invertDisplay", displayOptions.invert ? 1 : 0);
@@ -527,17 +554,8 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
     writeDoc(doc, "inputHistoryRow", displayOptions.inputHistoryRow);
     writeDoc(doc, "displayContrast", displayOptions.contrast);
 
-    writeDoc(doc, "buttonLayoutCustomOptions", "params", "layout", displayOptions.buttonLayoutCustomOptions.paramsLeft.layout);
-    writeDoc(doc, "buttonLayoutCustomOptions", "params", "startX", displayOptions.buttonLayoutCustomOptions.paramsLeft.common.startX);
-    writeDoc(doc, "buttonLayoutCustomOptions", "params", "startY", displayOptions.buttonLayoutCustomOptions.paramsLeft.common.startY);
-    writeDoc(doc, "buttonLayoutCustomOptions", "params", "buttonRadius", displayOptions.buttonLayoutCustomOptions.paramsLeft.common.buttonRadius);
-    writeDoc(doc, "buttonLayoutCustomOptions", "params", "buttonPadding", displayOptions.buttonLayoutCustomOptions.paramsLeft.common.buttonPadding);
-
-    writeDoc(doc, "buttonLayoutCustomOptions", "paramsRight", "layout", displayOptions.buttonLayoutCustomOptions.paramsRight.layout);
-    writeDoc(doc, "buttonLayoutCustomOptions", "paramsRight", "startX", displayOptions.buttonLayoutCustomOptions.paramsRight.common.startX);
-    writeDoc(doc, "buttonLayoutCustomOptions", "paramsRight", "startY", displayOptions.buttonLayoutCustomOptions.paramsRight.common.startY);
-    writeDoc(doc, "buttonLayoutCustomOptions", "paramsRight", "buttonRadius", displayOptions.buttonLayoutCustomOptions.paramsRight.common.buttonRadius);
-    writeDoc(doc, "buttonLayoutCustomOptions", "paramsRight", "buttonPadding", displayOptions.buttonLayoutCustomOptions.paramsRight.common.buttonPadding);
+    writeCustomLayout(displayOptions.customLayoutA.bytes, displayOptions.customLayoutA.size, doc, "customLayoutA");
+    writeCustomLayout(displayOptions.customLayoutB.bytes, displayOptions.customLayoutB.size, doc, "customLayoutB");
 
     return serialize_json(doc);
 }
@@ -796,6 +814,11 @@ std::string setGamepadOptions()
     readDoc(gamepadOptions.switch2ProButtonsColor, doc, "switch2ProButtonsColor");
     readDoc(gamepadOptions.switch2ProHighlightColor, doc, "switch2ProHighlightColor");
     readDoc(gamepadOptions.switch2ProGripColor, doc, "switch2ProGripColor");
+    readDoc(gamepadOptions.switch2ProLeftShoulderColor, doc, "switch2ProLeftShoulderColor");
+    readDoc(gamepadOptions.switch2ProRightShoulderColor, doc, "switch2ProRightShoulderColor");
+    readDoc(gamepadOptions.switch2ProStickColor, doc, "switch2ProStickColor");
+    readDoc(gamepadOptions.switch2ProLeftRingColor, doc, "switch2ProLeftRingColor");
+    readDoc(gamepadOptions.switch2ProRightRingColor, doc, "switch2ProRightRingColor");
     readDoc(gamepadOptions.switch2ProJoyCon2ColorPreset, doc, "switch2ProJoyCon2ColorPreset");
     readDoc(gamepadOptions.switch2ProJoyCon2LeftBodyColor, doc, "switch2ProJoyCon2LeftBodyColor");
     readDoc(gamepadOptions.switch2ProJoyCon2LeftButtonsColor, doc, "switch2ProJoyCon2LeftButtonsColor");
@@ -900,6 +923,11 @@ std::string getGamepadOptions()
     writeDoc(doc, "switch2ProButtonsColor", gamepadOptions.switch2ProButtonsColor);
     writeDoc(doc, "switch2ProHighlightColor", gamepadOptions.switch2ProHighlightColor);
     writeDoc(doc, "switch2ProGripColor", gamepadOptions.switch2ProGripColor);
+    writeDoc(doc, "switch2ProLeftShoulderColor", gamepadOptions.switch2ProLeftShoulderColor);
+    writeDoc(doc, "switch2ProRightShoulderColor", gamepadOptions.switch2ProRightShoulderColor);
+    writeDoc(doc, "switch2ProStickColor", gamepadOptions.switch2ProStickColor);
+    writeDoc(doc, "switch2ProLeftRingColor", gamepadOptions.switch2ProLeftRingColor);
+    writeDoc(doc, "switch2ProRightRingColor", gamepadOptions.switch2ProRightRingColor);
     writeDoc(doc, "switch2ProJoyCon2ColorPreset", gamepadOptions.switch2ProJoyCon2ColorPreset);
     writeDoc(doc, "switch2ProJoyCon2LeftBodyColor", gamepadOptions.switch2ProJoyCon2LeftBodyColor);
     writeDoc(doc, "switch2ProJoyCon2LeftButtonsColor", gamepadOptions.switch2ProJoyCon2LeftButtonsColor);
@@ -1024,12 +1052,12 @@ std::string getButtonLayoutDefs()
 
     for (layoutCtr = _ButtonLayout_MIN; layoutCtr < _ButtonLayout_ARRAYSIZE; layoutCtr++) {
         LayoutManager::LayoutList leftLayout = LayoutManager::getInstance().getLeftLayout((ButtonLayout)layoutCtr);
-        if ((leftLayout.size() > 0) || (layoutCtr == ButtonLayout::BUTTON_LAYOUT_BLANKA)) writeDoc(doc, "buttonLayout", LayoutManager::getInstance().getButtonLayoutName((ButtonLayout)layoutCtr), layoutCtr);
+        if ((leftLayout.size() > 0) || (layoutCtr == ButtonLayout::BUTTON_LAYOUT_BLANKA) || (layoutCtr == ButtonLayout::BUTTON_LAYOUT_CUSTOM_DEFINED_A)) writeDoc(doc, "buttonLayout", LayoutManager::getInstance().getButtonLayoutName((ButtonLayout)layoutCtr), layoutCtr);
     }
 
     for (layoutCtr = _ButtonLayoutRight_MIN; layoutCtr < _ButtonLayoutRight_ARRAYSIZE; layoutCtr++) {
         LayoutManager::LayoutList rightLayout = LayoutManager::getInstance().getRightLayout((ButtonLayoutRight)layoutCtr);
-        if ((rightLayout.size() > 0) || (layoutCtr == ButtonLayoutRight::BUTTON_LAYOUT_BLANKB)) writeDoc(doc, "buttonLayoutRight", LayoutManager::getInstance().getButtonLayoutRightName((ButtonLayoutRight)layoutCtr), layoutCtr);
+        if ((rightLayout.size() > 0) || (layoutCtr == ButtonLayoutRight::BUTTON_LAYOUT_BLANKB) || (layoutCtr == ButtonLayoutRight::BUTTON_LAYOUT_CUSTOM_DEFINED_B)) writeDoc(doc, "buttonLayoutRight", LayoutManager::getInstance().getButtonLayoutRightName((ButtonLayoutRight)layoutCtr), layoutCtr);
     }
 
     return serialize_json(doc);
@@ -1037,17 +1065,18 @@ std::string getButtonLayoutDefs()
 
 std::string getButtonLayouts()
 {
-    const size_t capacity = JSON_OBJECT_SIZE(500);
-    DynamicJsonDocument doc(capacity);
     const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
     uint16_t elementCtr = 0;
 
     LayoutManager::LayoutList layoutA = LayoutManager::getInstance().getLayoutA();
     LayoutManager::LayoutList layoutB = LayoutManager::getInstance().getLayoutB();
 
+    const size_t capacity = JSON_OBJECT_SIZE(10) + (layoutA.size() + layoutB.size()) * (JSON_OBJECT_SIZE(14) + 8);
+    DynamicJsonDocument doc(capacity);
+
     writeDoc(doc, "displayLayouts", "buttonLayoutId", displayOptions.buttonLayout);
     for (elementCtr = 0; elementCtr < layoutA.size(); elementCtr++) {
-        const size_t elementSize = JSON_OBJECT_SIZE(12);
+        const size_t elementSize = JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(11);
         DynamicJsonDocument ele(elementSize);
 
         writeDoc(ele, "elementType", layoutA[elementCtr].elementType);
@@ -1067,7 +1096,7 @@ std::string getButtonLayouts()
 
     writeDoc(doc, "displayLayouts", "buttonLayoutRightId", displayOptions.buttonLayoutRight);
     for (elementCtr = 0; elementCtr < layoutB.size(); elementCtr++) {
-        const size_t elementSize = JSON_OBJECT_SIZE(12);
+        const size_t elementSize = JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(11);
         DynamicJsonDocument ele(elementSize);
 
         writeDoc(ele, "elementType", layoutB[elementCtr].elementType);
@@ -2099,7 +2128,7 @@ std::string getHETriggerVoltage()
 
     // Mux Channels determines how many select pins we use
     if (calibrationMuxChannels == 1) {
-        if ( id > 3 ) {
+        if ( id >= (uint32_t)HETriggerAddon::getMuxCount(1) ) {
             doc["error"] = "id out of range";
             return serialize_json(doc);
         }
@@ -2107,7 +2136,7 @@ std::string getHETriggerVoltage()
     } else if ( calibrationMuxChannels == 4) {
         uint32_t adcNum = id / 4;
         uint32_t channel = (id % 4);
-        if ( adcNum > 3 ) {
+        if ( adcNum >= (uint32_t)HETriggerAddon::getMuxCount(4) ) {
             doc["error"] = "id out of 4-channel mux range";
             return serialize_json(doc);
         }
@@ -2117,7 +2146,7 @@ std::string getHETriggerVoltage()
     } else if (calibrationMuxChannels == 8) {
         uint32_t adcNum = id / 8;
         uint32_t channel = (id % 8);
-        if ( adcNum > 2 ) {
+        if ( adcNum >= (uint32_t)HETriggerAddon::getMuxCount(8) ) {
             doc["error"] = "id out of 8-channel mux range";
             return serialize_json(doc);
         }
@@ -2128,7 +2157,7 @@ std::string getHETriggerVoltage()
     } else if (calibrationMuxChannels == 16) {
         uint32_t adcNum = id / 16;
         uint32_t channel = (id % 16);
-        if ( adcNum > 1 ) {
+        if ( adcNum >= (uint32_t)HETriggerAddon::getMuxCount(16) ) {
             doc["error"] = "id out of 16-channel mux range";
             return serialize_json(doc);
         }
@@ -2162,6 +2191,55 @@ std::string getHETriggerVoltage()
     return serialize_json(doc);
 }
 
+// Reads every scanned trigger in one request for Quick Calibrate; unscanned triggers report -1.
+std::string getHETriggerVoltages()
+{
+    const size_t capacity = JSON_OBJECT_SIZE(2) + JSON_ARRAY_SIZE(HETRIGGER_COUNT);
+    DynamicJsonDocument doc(capacity);
+
+    const uint32_t muxChannels = calibrationMuxChannels;
+    uint32_t selectBits;
+    switch (muxChannels) {
+        case 1:  selectBits = 0; break;
+        case 4:  selectBits = 2; break;
+        case 8:  selectBits = 3; break;
+        case 16: selectBits = 4; break;
+        default:
+            doc["error"] = "mux channels incorrect";
+            return serialize_json(doc);
+    }
+
+    const uint32_t muxCount = HETriggerAddon::getMuxCount(muxChannels);
+    JsonArray voltages = doc.createNestedArray("voltages");
+    for (uint32_t id = 0; id < HETRIGGER_COUNT; id++) {
+        const uint32_t mux = id / muxChannels;
+        const uint32_t channel = id % muxChannels;
+        const Pin_t adcPin = mux < muxCount ? calibrationADCPins[mux] : -1;
+        if (!AnalogInput::isAdcPin(adcPin)) {
+            voltages.add(-1);
+            continue;
+        }
+        for (uint32_t b = 0; b < selectBits; b++) {
+            if (calibrationSelectPins[mux][b] != -1) {
+                gpio_put(calibrationSelectPins[mux][b], (channel >> b) & 0x01);
+            }
+        }
+        adc_select_input(adcPin - ADC_BASE_PIN);
+        // First sample after a channel switch can carry the previous channel
+        adc_read();
+        uint16_t read = adc_read();
+        if (calibrationSmoothing) {
+            uint16_t smoothed = read;
+            for (int i = 0; i < 50; i++) {
+                smoothed = emaCalculation(adc_read(), smoothed);
+            }
+            read = smoothed;
+        }
+        voltages.add(read);
+    }
+    return serialize_json(doc);
+}
+
 std::string getHETriggerCalibrations()
 {
     const size_t capacity = JSON_OBJECT_SIZE(500);
@@ -2177,12 +2255,20 @@ std::string getHETriggerCalibrations()
         trigger["active"] = heTriggers[i].active;
         trigger["pressed"] = heTriggers[i].pressed;
         trigger["is_polarized"] = heTriggers[i].is_polarized;
-        trigger["release"] = heTriggers[i].release;
         trigger["noise"] = heTriggers[i].noise;
         trigger["rapidTrigger"] = heTriggers[i].rapidTrigger;
+        trigger["rtPressSensitivity"] = heTriggers[i].rtPressSensitivity;
+        trigger["rtReleaseSensitivity"] = heTriggers[i].rtReleaseSensitivity;
+        trigger["rtSeparateSensitivity"] = heTriggers[i].rtSeparateSensitivity;
+        trigger["rtContinuous"] = heTriggers[i].rtContinuous;
     }
 
     return serialize_json(doc);
+}
+
+static float clampSwitchTravel(float travel)
+{
+    return std::min(std::max(travel, 0.0f), 20.0f);
 }
 
 // Set Hall Effect Trigger Calibrations
@@ -2197,12 +2283,22 @@ std::string setHETriggerCalibrations()
         heTriggers[i].active = doc["triggers"][i]["active"];
         heTriggers[i].pressed = doc["triggers"][i]["pressed"];
         heTriggers[i].is_polarized = doc["triggers"][i]["is_polarized"];
-        heTriggers[i].release = doc["triggers"][i]["release"];
         heTriggers[i].noise = doc["triggers"][i]["noise"];
         heTriggers[i].rapidTrigger = doc["triggers"][i]["rapidTrigger"];
+        // Older backups have no sensitivities; derive them like the config migration does.
+        const int32_t legacySensitivity = heTriggers[i].noise + 1;
+        heTriggers[i].rtPressSensitivity = doc["triggers"][i]["rtPressSensitivity"] | legacySensitivity;
+        heTriggers[i].rtReleaseSensitivity = doc["triggers"][i]["rtReleaseSensitivity"] | legacySensitivity;
+        if (doc["triggers"][i]["rtSeparateSensitivity"] != nullptr)
+            heTriggers[i].rtSeparateSensitivity = doc["triggers"][i]["rtSeparateSensitivity"];
+        if (doc["triggers"][i]["rtContinuous"] != nullptr)
+            heTriggers[i].rtContinuous = doc["triggers"][i]["rtContinuous"];
     }
 
-    Storage::getInstance().getAddonOptions().heTriggerOptions.triggers_count = 32;
+    HETriggerOptions& heTriggerOptions = Storage::getInstance().getAddonOptions().heTriggerOptions;
+    docToValue(heTriggerOptions.switchTravel, doc, "heTriggerSwitchTravel");
+    heTriggerOptions.switchTravel = clampSwitchTravel(heTriggerOptions.switchTravel);
+    heTriggerOptions.triggers_count = 32;
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
     return serialize_json(doc);
@@ -2493,6 +2589,8 @@ std::string setAddonOptions()
     docToValue(heTriggerOptions.emaSmoothing, doc, "heTriggerSmoothing");
     docToValue(heTriggerOptions.smoothingFactor, doc, "heTriggerSmoothingFactor");
     docToValue(heTriggerOptions.separateSelectPins, doc, "separateSelectPins");
+    docToValue(heTriggerOptions.switchTravel, doc, "heTriggerSwitchTravel");
+    heTriggerOptions.switchTravel = clampSwitchTravel(heTriggerOptions.switchTravel);
     static const char* selectPinKeys[4] = { "selectPin0", "selectPin1", "selectPin2", "selectPin3" };
     for (int i = 0; i < 4; i++) {
         Pin_t* muxSelectPins[4] = {
@@ -2996,6 +3094,8 @@ std::string getAddonOptions()
     writeDoc(doc, "heTriggerSmoothing", heTriggerOptions.emaSmoothing);
     writeDoc(doc, "heTriggerSmoothingFactor", heTriggerOptions.smoothingFactor);
     writeDoc(doc, "separateSelectPins", heTriggerOptions.separateSelectPins);
+    // Round so 3.8f is reported as 3.8, not 3.799999952.
+    writeDoc(doc, "heTriggerSwitchTravel", std::round(heTriggerOptions.switchTravel * 100.0) / 100.0);
     doc.createNestedArray("muxes");
     for (int i = 0; i < 4; i++) {
         writeDoc(doc, "muxes", i, "selectPin0", cleanPin(heTriggerOptions.muxes[i].selectPin0));
@@ -3390,6 +3490,7 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/setHETriggerCalibrations", setHETriggerCalibrations },
     { "/api/getHETriggerCalibrations", getHETriggerCalibrations },
     { "/api/getHETriggerVoltage", getHETriggerVoltage },
+    { "/api/getHETriggerVoltages", getHETriggerVoltages },
     { "/api/setHETriggerOptions", setHETriggerOptions },
     { "/api/setReactiveLEDs", setReactiveLEDs },
     { "/api/getReactiveLEDs", getReactiveLEDs },

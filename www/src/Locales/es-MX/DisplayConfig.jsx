@@ -30,13 +30,6 @@ export default {
 		'button-layout-label': 'Diseño de Botones (Izquierda)',
 		'button-layout-right-label': 'Diseño de Botones (Derecha)',
 		'button-layout-orientation': 'Orientación del Diseño de Botones',
-		'button-layout-custom-header': 'Parámetros Personalizados de Diseño',
-		'button-layout-custom-left-label': 'Diseño Izquierdo',
-		'button-layout-custom-right-label': 'Diseño Derecho',
-		'button-layout-custom-start-x-label': 'Inicio X',
-		'button-layout-custom-start-y-label': 'Inicio Y',
-		'button-layout-custom-button-radius-label': 'Radio de Botón',
-		'button-layout-custom-button-padding-label': 'Espaciado de Botón',
 		'splash-mode-label': 'Modo de Pantalla de Inicio',
 		'splash-duration-label':
 			'Duración de Pantalla de Inicio (segundos, 0 para Siempre)',

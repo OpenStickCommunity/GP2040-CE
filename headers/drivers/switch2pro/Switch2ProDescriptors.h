@@ -185,6 +185,11 @@ static const uint8_t switch2pro_bt_address_reversed[] = { 0xE8, 0x20, 0x17, 0x05
 #define SWITCH2_PRO_FACTORY_BUTTONS_COLOR   0x1C
 #define SWITCH2_PRO_FACTORY_HIGHLIGHT_COLOR 0x1F
 #define SWITCH2_PRO_FACTORY_GRIP_COLOR      0x22
+#define SWITCH2_PRO_FACTORY_LEFT_SHOULDER_COLOR  0x25
+#define SWITCH2_PRO_FACTORY_RIGHT_SHOULDER_COLOR 0x28
+#define SWITCH2_PRO_FACTORY_STICK_COLOR          0x2B
+#define SWITCH2_PRO_FACTORY_LEFT_RING_COLOR      0x2E
+#define SWITCH2_PRO_FACTORY_RIGHT_RING_COLOR     0x31
 
 static const uint8_t switch2pro_factory_data[] = {
     0x01, 0x00,
@@ -196,6 +201,11 @@ static const uint8_t switch2pro_factory_data[] = {
     0xA0, 0xA0, 0xA0,           // buttons colour
     0xE6, 0xE6, 0xE6,           // highlight colour
     0x32, 0x32, 0x32,           // grip colour
+    0xFF, 0xFF, 0xFF,           // left shoulder colour (unset)
+    0xFF, 0xFF, 0xFF,           // right shoulder colour (unset)
+    0xFF, 0xFF, 0xFF,           // stick colour (unset)
+    0xFF, 0xFF, 0xFF,           // left ring colour (unset)
+    0xFF, 0xFF, 0xFF,           // right ring colour (unset)
 };
 
 static const uint8_t switch2pro_flash_13040[] = {
