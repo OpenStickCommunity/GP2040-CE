@@ -303,6 +303,36 @@ const SWITCH_PRO_COLOR_PRESETS = [
 		},
 	},
 	{
+		labelKey: 'splat',
+		value: SwitchProColorPreset.SWITCH_PRO_COLOR_SPLAT,
+		colors: {
+			switchProBodyColor: 0x313232,
+			switchProButtonsColor: 0xffffff,
+			switchProLeftGripColor: 0x1edc00,
+			switchProRightGripColor: 0xff3278,
+		},
+	},
+	{
+		labelKey: 'xblade',
+		value: SwitchProColorPreset.SWITCH_PRO_COLOR_XBLADE,
+		colors: {
+			switchProBodyColor: 0x323132,
+			switchProButtonsColor: 0xffffff,
+			switchProLeftGripColor: 0xdd3b64,
+			switchProRightGripColor: 0xdd3b64,
+		},
+	},
+	{
+		labelKey: 'legendary-tears',
+		value: SwitchProColorPreset.SWITCH_PRO_COLOR_LEGENDARY_TEARS,
+		colors: {
+			switchProBodyColor: 0x2d2d2d,
+			switchProButtonsColor: 0xe6e6e6,
+			switchProLeftGripColor: 0x464646,
+			switchProRightGripColor: 0xffffff,
+		},
+	},
+	{
 		labelKey: 'gp2040',
 		value: SwitchProColorPreset.SWITCH_PRO_COLOR_GP2040,
 		colors: {
@@ -339,16 +369,147 @@ const JOYCON_COLOR_PRESETS = [
 		labelKey: 'neon',
 		value: SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_NEON,
 		colors: {
-			left: { body: 0x0ab9e6, buttons: 0x0f0f0f },
-			right: { body: 0xff3c28, buttons: 0x0f0f0f },
+			left: { body: 0x0ab9e6, buttons: 0x001e1e },
+			right: { body: 0xff3c28, buttons: 0x1e0a0a },
 		},
 	},
 	{
 		labelKey: 'white',
 		value: SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_WHITE,
 		colors: {
-			left: { body: 0xe6e6e6, buttons: 0x0f0f0f },
-			right: { body: 0xe6e6e6, buttons: 0x0f0f0f },
+			left: { body: 0xe6e6e6, buttons: 0x323232 },
+			right: { body: 0xe6e6e6, buttons: 0x323232 },
+		},
+	},
+	{
+		labelKey: 'black',
+		value: SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_BLACK,
+		colors: {
+			left: { body: 0x313131, buttons: 0x0f0f0f },
+			right: { body: 0x313131, buttons: 0x0f0f0f },
+		},
+	},
+	{
+		labelKey: 'blue',
+		value: SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_BLUE,
+		colors: {
+			left: { body: 0x4655f5, buttons: 0x00000a },
+			right: { body: 0x4655f5, buttons: 0x00000a },
+		},
+	},
+	{
+		labelKey: 'neon-yellow',
+		value: SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_NEON_YELLOW,
+		colors: {
+			left: { body: 0xe6ff00, buttons: 0x142800 },
+			right: { body: 0xe6ff00, buttons: 0x142800 },
+		},
+	},
+	{
+		labelKey: 'neon-green-pink',
+		value: SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_NEON_GREEN_PINK,
+		colors: {
+			left: { body: 0x1edc00, buttons: 0x002800 },
+			right: { body: 0xff3278, buttons: 0x28001e },
+		},
+	},
+	{
+		labelKey: 'neon-purple-orange',
+		value:
+			SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_NEON_PURPLE_ORANGE,
+		colors: {
+			left: { body: 0xb400e6, buttons: 0x140014 },
+			right: { body: 0xfaa005, buttons: 0x0f0a00 },
+		},
+	},
+	{
+		labelKey: 'pastel-pink-yellow',
+		value:
+			SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_PASTEL_PINK_YELLOW,
+		colors: {
+			left: { body: 0xffafaf, buttons: 0x372d2d },
+			right: { body: 0xf5ff82, buttons: 0x32332d },
+		},
+	},
+	{
+		labelKey: 'pastel-purple-green',
+		value:
+			SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_PASTEL_PURPLE_GREEN,
+		colors: {
+			left: { body: 0xf0cbeb, buttons: 0x373037 },
+			right: { body: 0xbcffc8, buttons: 0x2d322d },
+		},
+	},
+	{
+		labelKey: 'animal-x',
+		value: SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_ANIMAL_X,
+		colors: {
+			left: { body: 0x82ff96, buttons: 0x0a1e0a },
+			right: { body: 0x96f5f5, buttons: 0x0a1e28 },
+		},
+	},
+	{
+		labelKey: 'monster',
+		value: SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_MONSTER,
+		colors: {
+			left: { body: 0x818282, buttons: 0x0e0f0f },
+			right: { body: 0x818282, buttons: 0x0e0f0f },
+		},
+	},
+	{
+		labelKey: 'plumber-red',
+		value: SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_PLUMBER_RED,
+		colors: {
+			left: { body: 0xe10f00, buttons: 0x280a0a },
+			right: { body: 0xe10f00, buttons: 0x280a0a },
+		},
+	},
+	{
+		labelKey: 'plumber-red-blue',
+		value: SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_PLUMBER_RED_BLUE,
+		colors: {
+			left: { body: 0xf04614, buttons: 0x1e1914 },
+			right: { body: 0xf04614, buttons: 0x1e1914 },
+		},
+	},
+	{
+		labelKey: 'fort',
+		value: SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_FORT,
+		colors: {
+			left: { body: 0x0084ff, buttons: 0x000f1e },
+			right: { body: 0xffcc00, buttons: 0x1a1100 },
+		},
+	},
+	{
+		labelKey: 'legendary-sword',
+		value: SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_LEGENDARY_SWORD,
+		colors: {
+			left: { body: 0x2d50f0, buttons: 0x1e0f46 },
+			right: { body: 0x500fc8, buttons: 0x00051e },
+		},
+	},
+	{
+		labelKey: 'legendary-tears',
+		value: SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_LEGENDARY_TEARS,
+		colors: {
+			left: { body: 0xd2be69, buttons: 0x32322d },
+			right: { body: 0xd2be69, buttons: 0x32322d },
+		},
+	},
+	{
+		labelKey: 'splat',
+		value: SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_SPLAT,
+		colors: {
+			left: { body: 0x6455f5, buttons: 0x28282d },
+			right: { body: 0xc3fa05, buttons: 0x1e1e28 },
+		},
+	},
+	{
+		labelKey: 'pocket',
+		value: SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_POCKET,
+		colors: {
+			left: { body: 0xf07341, buttons: 0x322d1e },
+			right: { body: 0x9650aa, buttons: 0x32322d },
 		},
 	},
 	{

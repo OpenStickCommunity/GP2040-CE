@@ -2,8 +2,8 @@
 #include "drivers/shared/driverhelper.h"
 #include "drivers/shared/InputReportPolicy.h"
 #include "drivers/shared/USBReportScheduler.h"
+#include "drivers/shared/switchidentity.h"
 #include "storagemanager.h"
-#include "pico/rand.h"
 
 // force a report to be sent every X ms
 #define SWITCH_PRO_KEEPALIVE_TIMER 5
@@ -135,16 +135,20 @@ void SwitchProDriver::initialize() {
     if (controllerType == SWITCH_TYPE_LEFT_JOYCON || controllerType == SWITCH_TYPE_RIGHT_JOYCON) {
         const GamepadOptions& options = Storage::getInstance().getGamepadOptions();
         const bool left = controllerType == SWITCH_TYPE_LEFT_JOYCON;
-        uint32_t colors[2] = { 0x828282, 0x0F0F0F };
-        if (options.switchProJoyConColorPreset == SWITCH_PRO_JOYCON_COLOR_NEON) {
-            colors[0] = left ? 0x0AB9E6 : 0xFF3C28;
-        } else if (options.switchProJoyConColorPreset == SWITCH_PRO_JOYCON_COLOR_WHITE) {
-            colors[0] = 0xE6E6E6;
-        } else if (options.switchProJoyConColorPreset == SWITCH_PRO_JOYCON_COLOR_GP2040) {
-            colors[0] = left ? 0xEC008C : 0x00FF00;
-        } else if (options.switchProJoyConColorPreset == SWITCH_PRO_JOYCON_COLOR_CUSTOM) {
+        uint32_t colors[2];
+        if (options.switchProJoyConColorPreset == SWITCH_PRO_JOYCON_COLOR_CUSTOM) {
             colors[0] = left ? options.switchProJoyConLeftBodyColor : options.switchProJoyConRightBodyColor;
             colors[1] = left ? options.switchProJoyConLeftButtonsColor : options.switchProJoyConRightButtonsColor;
+        } else {
+            const SwitchJoyConColors* preset = &switch_pro_joycon_color_presets[0];
+            for (const SwitchJoyConColors& p : switch_pro_joycon_color_presets) {
+                if (p.preset == options.switchProJoyConColorPreset) {
+                    preset = &p;
+                    break;
+                }
+            }
+            colors[0] = left ? preset->leftBody : preset->rightBody;
+            colors[1] = left ? preset->leftButtons : preset->rightButtons;
         }
         setSwitchColor(factoryConfig->bodyColor, colors[0]);
         setSwitchColor(factoryConfig->buttonColor, colors[1]);
@@ -156,6 +160,16 @@ void SwitchProDriver::initialize() {
         if (options.switchProColorPreset == SWITCH_PRO_COLOR_STOCK) {
             const uint32_t stock[4] = { 0x323232, 0xFFFFFF, 0x323232, 0x323232 };
             memcpy(colors, stock, sizeof(colors));
+        } else if (options.switchProColorPreset == SWITCH_PRO_COLOR_SPLAT) {
+            // Splat/XBlade body colours make the console draw its own grips; grip colours here are for the web preview
+            const uint32_t splat[4] = { 0x313232, 0xFFFFFF, 0x1EDC00, 0xFF3278 };
+            memcpy(colors, splat, sizeof(colors));
+        } else if (options.switchProColorPreset == SWITCH_PRO_COLOR_XBLADE) {
+            const uint32_t xblade[4] = { 0x323132, 0xFFFFFF, 0xDD3B64, 0xDD3B64 };
+            memcpy(colors, xblade, sizeof(colors));
+        } else if (options.switchProColorPreset == SWITCH_PRO_COLOR_LEGENDARY_TEARS) {
+            const uint32_t legendaryTears[4] = { 0x2D2D2D, 0xE6E6E6, 0x464646, 0xFFFFFF };
+            memcpy(colors, legendaryTears, sizeof(colors));
         } else if (options.switchProColorPreset == SWITCH_PRO_COLOR_CUSTOM) {
             const uint32_t custom[4] = { options.switchProBodyColor, options.switchProButtonsColor,
                 options.switchProLeftGripColor, options.switchProRightGripColor };
@@ -167,13 +181,17 @@ void SwitchProDriver::initialize() {
         setSwitchColor(factoryConfig->rightGripColor, colors[3]);
     }
 
+    const uint8_t identityDomain = SWITCH_IDENTITY_DOMAIN_SWITCH + (Storage::getInstance().getGamepadOptions().switchProControllerType * 2) + hidInstance;
+    uint8_t macIdentity[3];
+    getSwitchIdentityBytes(identityDomain, macIdentity, sizeof(macIdentity));
+
     deviceInfo = {
         .majorVersion = 0x04,
         .minorVersion = 0x91,
         .controllerType = controllerType,
         .unknown00 = 0x02,
         // MAC address in reverse
-        .macAddress = {0x7c, 0xbb, 0x8a, (uint8_t)(get_rand_32() % 0xff), (uint8_t)(get_rand_32() % 0xff), (uint8_t)(get_rand_32() % 0xff)},
+        .macAddress = {0x7c, 0xbb, 0x8a, macIdentity[0], macIdentity[1], macIdentity[2]},
         .unknown01 = 0x01,
         .storedColors = 0x02,
     };

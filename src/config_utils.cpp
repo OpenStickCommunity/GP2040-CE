@@ -51,6 +51,7 @@
 #include <memory>
 
 #include "pico/platform.h"
+#include "pico/rand.h"
 
 // -----------------------------------------------------
 // Default values
@@ -446,6 +447,13 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
     INIT_UNSET_PROPERTY_STR(config, boardVersion, GP2040VERSION);
     INIT_UNSET_PROPERTY_STR(config, boardConfig, GP2040_BOARDCONFIG);
+
+    if (!config.has_switchIdentitySeed) {
+        for (size_t i = 0; i < sizeof(config.switchIdentitySeed.bytes); i++)
+            config.switchIdentitySeed.bytes[i] = get_rand_32() & 0xFF;
+        config.switchIdentitySeed.size = sizeof(config.switchIdentitySeed.bytes);
+        config.has_switchIdentitySeed = true;
+    }
 
     // gamepadOptions
     INIT_UNSET_PROPERTY(config.gamepadOptions, inputMode, DEFAULT_INPUT_MODE);

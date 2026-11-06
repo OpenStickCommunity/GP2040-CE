@@ -6,7 +6,7 @@
 #include "drivers/switch2pro/Switch2ProDriver.h"
 #include "storagemanager.h"
 #include "mbedtls/aes.h"
-#include "pico/rand.h"
+#include "drivers/shared/switchidentity.h"
 
 #include <string.h>
 
@@ -442,19 +442,24 @@ static void loadIdentity() {
     memcpy(factoryData, switch2pro_factory_data, sizeof(factoryData));
     memcpy(chargingGripData, switch2pro_charging_grip_data, sizeof(chargingGripData));
 
+    const GamepadOptions & options = Storage::getInstance().getGamepadOptions();
+
+    uint8_t identityBytes[SWITCH2_PRO_BT_RANDOM_BYTES + sizeof(deviceKey) + SWITCH2_PRO_FACTORY_SERIAL_COUNT];
+    getSwitchIdentityBytes(SWITCH_IDENTITY_DOMAIN_SWITCH2 + options.switch2ProIdentity, identityBytes, sizeof(identityBytes));
+    const uint8_t * nextIdentityByte = identityBytes;
+
     memcpy(btAddressReversed, switch2pro_bt_address_reversed, sizeof(btAddressReversed));
     for (int i = 0; i < SWITCH2_PRO_BT_RANDOM_BYTES; i++)
-        btAddressReversed[i] = get_rand_32() & 0xFF;
+        btAddressReversed[i] = *nextIdentityByte++;
     memcpy(deviceInfo, switch2pro_device_info, sizeof(deviceInfo));
     memcpy(&deviceInfo[SWITCH2_PRO_DEVICE_INFO_BT_OFFSET], btAddressReversed, sizeof(btAddressReversed));
     for (size_t i = 0; i < sizeof(deviceKey); i++)
-        deviceKey[i] = get_rand_32() & 0xFF;
+        deviceKey[i] = *nextIdentityByte++;
     for (int i = 0; i < SWITCH2_PRO_FACTORY_SERIAL_COUNT; i++)
-        factoryData[SWITCH2_PRO_FACTORY_SERIAL_DIGITS + i] = '0' + (get_rand_32() % 10);
+        factoryData[SWITCH2_PRO_FACTORY_SERIAL_DIGITS + i] = '0' + (*nextIdentityByte++ % 10);
     productString = switch2pro_strings[SWITCH2_PRO_STRING_PRODUCT];
     firmwareType = SWITCH2_FW_TYPE_PRO;
 
-    const GamepadOptions & options = Storage::getInstance().getGamepadOptions();
     if (options.switch2ProIdentity == SWITCH2_PRO_IDENTITY_GAMECUBE) {
         setProductId(&deviceDescriptor[SWITCH2_PRO_DEVICE_PID_OFFSET], SWITCH2_GAMECUBE_PRODUCT_ID);
         setProductId(&factoryData[SWITCH2_PRO_FACTORY_PID_OFFSET], SWITCH2_GAMECUBE_PRODUCT_ID);
