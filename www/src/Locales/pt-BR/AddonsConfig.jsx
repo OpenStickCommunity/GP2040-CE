@@ -71,12 +71,6 @@ export default {
 	'player-number-sub-header-text':
 		'ATENÇÃO: ATIVE ESTA OPÇÃO APENAS SE VOCÊ ESTIVER CONECTANDO VÁRIOS DISPOSITIVOS GP2040-CE COM NÚMERO DE JOGADOR HABILITADO',
 	'player-number-label': 'Número do Jogador',
-	'socd-cleaning-mode-selection-slider-header-text':
-		'Controle Deslizante de Seleção de Modo SOCD Cleaning',
-	'socd-cleaning-mode-selection-slider-sub-header-text':
-		'Observação: os modos PS4, PS3 e Nintendo Switch não suportam a configuração SOCD Cleaning como Desligada e usarão o modo SOCD Cleaning Neutro por padrão.',
-	'socd-cleaning-mode-selection-slider-mode-default-label':
-		'Modo de Controle Deslizante SOCD Padrão',
 	'profile-slider-header-text': 'Controle Deslizante de Seleção de Perfil',
 	'profile-slider-sub-header-text':
 		'Observação: os pinos GPIO para as posições do controle deslizante de perfil são configurados na página de Mapeamento de Pinos.',

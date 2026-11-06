@@ -50,6 +50,8 @@ export type PinsType = {
 	enabled: boolean;
 	pinInversionEnabled: boolean;
 	invertedPins: number[];
+	socdModeOverride: boolean;
+	socdMode: number;
 };
 
 export const getProfilePins = (profile: PinsType) =>
@@ -58,6 +60,8 @@ export const getProfilePins = (profile: PinsType) =>
 		'enabled',
 		'pinInversionEnabled',
 		'invertedPins',
+		'socdModeOverride',
+		'socdMode',
 	]);
 
 type State = {
@@ -79,6 +83,7 @@ type Actions = {
 	setProfileLabel: (profileIndex: number, profileLabel: string) => void;
 	setProfilePin: SetProfilePinType;
 	setPinInversionEnabled: (profileIndex: number, enabled: boolean) => void;
+	setProfileSOCDMode: (profileIndex: number, socdMode: number) => void;
 	togglePinInverted: (profileIndex: number, pin: number) => void;
 	toggleProfileEnabled: (profileIndex: number) => void;
 };
@@ -166,6 +171,16 @@ const useProfilesStore = create<State & Actions>()((set, get) => ({
 			profiles[profileIndex] = {
 				...profiles[profileIndex],
 				pinInversionEnabled,
+			};
+			return { profiles };
+		}),
+	setProfileSOCDMode: (profileIndex, socdMode) =>
+		set((state) => {
+			const profiles = [...state.profiles];
+			profiles[profileIndex] = {
+				...profiles[profileIndex],
+				socdModeOverride: socdMode >= 0,
+				socdMode: socdMode >= 0 ? socdMode : profiles[profileIndex].socdMode,
 			};
 			return { profiles };
 		}),

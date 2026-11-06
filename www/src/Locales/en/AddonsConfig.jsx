@@ -120,12 +120,6 @@ export default {
 	'player-number-sub-header-text':
 		'Only enable this option if you are connecting multiple gp2040-ce devices with player number enabled',
 	'player-number-label': 'Player Number',
-	'socd-cleaning-mode-selection-slider-header-text':
-		'SOCD Cleaning Mode Selection Slider',
-	'socd-cleaning-mode-selection-slider-sub-header-text':
-		'Note: PS4, PS3 and Nintendo Switch modes do not support setting SOCD Cleaning to Off and will default to Neutral SOCD Cleaning mode.',
-	'socd-cleaning-mode-selection-slider-mode-default-label':
-		'SOCD Slider Mode Default',
 	'ps4-mode-sub-header': 'DISCLAIMER!',
 	'ps4-mode-sub-header-text': 'GP2040-CE WILL NEVER SUPPLY THESE FILES!!!',
 	'ps4-mode-private-key-label': 'Private Key (PEM)',
@@ -168,11 +162,6 @@ export default {
 	'dual-directional-input-combine-mode-1': 'Gamepad Override',
 	'dual-directional-input-combine-mode-2': 'DDI Override',
 	'dual-directional-input-combine-mode-3': 'None',
-	'socd-slider-mode-0': 'Up Priority',
-	'socd-slider-mode-1': 'Neutral',
-	'socd-slider-mode-2': 'Last Win',
-	'socd-slider-mode-3': 'First Win',
-	'socd-slider-mode-4': 'SOCD Cleaning Off',
 	'profile-slider-header-text': 'Profile Selection Slider',
 	'profile-slider-sub-header-text':
 		'Note: GPIO pins for the profile slider positions are configured in the Pin Mapping page.',
