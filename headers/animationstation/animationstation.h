@@ -67,11 +67,35 @@ public:
   void SetMaxBrightness(uint8_t max);
   float GetNormalisedBrightness();
   uint8_t GetBrightnessStepValue();
+  uint8_t GetMaxBrightness() { return brightnessMax; }
   void SetBrightnessStepValue(uint8_t brightness);
   void ApplyBrightnessStepValue();
   void DecreaseBrightnessByStep();
   void IncreaseBrightnessByStep();
   void DimBrightnessTo0();
+
+  // The running animations re-read their profile's speeds
+  void CycleParameterChange() {
+    if (baseAnimation != nullptr)
+      baseAnimation->CycleParameterChange();
+    if (caseAnimation != nullptr)
+      caseAnimation->CycleParameterChange();
+    if (buttonAnimation != nullptr)
+      buttonAnimation->CycleParameterChange();
+  }
+
+  // A change to the animation options made outside HandleEvent() is saved
+  // as a hotkey's is
+  void OptionsChanged() { bChangeDetected = true; }
+
+  // An animation picked outside HandleEvent() wakes the animations from the
+  // idle timeout, as a button press does. Call before SetMode(), which
+  // then builds them awake.
+  void WakeFromIdle() {
+    timeLastButtonPressed = get_absolute_time();
+    bIsInIdleTimeout = false;
+  }
+
   void CheckForOptionsUpdate();
  
   //Testing/webconfig
@@ -83,6 +107,7 @@ public:
   void SetTestModeButton();
 
   uint8_t getBrightnessSteps() { return brightnessSteps; }
+  bool IsInIdleTimeout() { return bIsInIdleTimeout; }
   uint8_t getTestMode() { return TestMode; }
   bool getTestModeLightIsNonButton() { return TestModeLightIsNonButton; }
   int getTestModePinOrNonButtonIndex() { return TestModePinOrNonButtonIndex; }
