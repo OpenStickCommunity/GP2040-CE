@@ -1,0 +1,136 @@
+--- a/headers/addons/input_macro.h
++++ b/headers/addons/input_macro.h
+@@ -23,7 +23,7 @@
+ #endif
+ 
+ #define MAX_MACRO_INPUT_LIMIT 30
+-#define MAX_MACRO_LIMIT 6
++#define MAX_MACRO_LIMIT 12
+ #define INPUT_HOLD_US 16666
+ 
+ // Input Macro Module Name
+@@ -47,7 +47,7 @@
+     bool isMacroTriggerHeld;
+     int macroPosition;
+     Mask_t macroButtonMask;
+-    Mask_t macroPinMasks[6];
++    Mask_t macroPinMasks[MAX_MACRO_LIMIT];
+     uint64_t macroStartTime;
+     uint64_t currentMicros;
+     int pressedMacro;
+--- a/proto/config.proto
++++ b/proto/config.proto
+@@ -592,7 +592,7 @@
+ {
+     optional bool enabled = 1;
+     optional int32 deprecatedPin = 2 [deprecated = true];
+-    repeated Macro macroList = 3 [(nanopb).max_count = 6];
++    repeated Macro macroList = 3 [(nanopb).max_count = 12];
+     optional bool macroBoardLedEnabled = 4;
+ }
+ 
+--- a/proto/enums.proto
++++ b/proto/enums.proto
+@@ -332,6 +332,12 @@
+     SUSTAIN_PROFILE_SLIDER_POSITION_6 = 136;
+     SUSTAIN_PROFILE_SLIDER_POSITION_7 = 137;
+     SUSTAIN_PROFILE_SLIDER_POSITION_8 = 138;
++    BUTTON_PRESS_MACRO_7              = 139;
++    BUTTON_PRESS_MACRO_8              = 140;
++    BUTTON_PRESS_MACRO_9              = 141;
++    BUTTON_PRESS_MACRO_10             = 142;
++    BUTTON_PRESS_MACRO_11             = 143;
++    BUTTON_PRESS_MACRO_12             = 144;
+ }
+ 
+ enum GpioDirection
+--- a/src/addons/input_macro.cpp
++++ b/src/addons/input_macro.cpp
+@@ -16,6 +16,12 @@
+             case GpioAction::BUTTON_PRESS_MACRO_4:
+             case GpioAction::BUTTON_PRESS_MACRO_5:
+             case GpioAction::BUTTON_PRESS_MACRO_6:
++            case GpioAction::BUTTON_PRESS_MACRO_7:
++            case GpioAction::BUTTON_PRESS_MACRO_8:
++            case GpioAction::BUTTON_PRESS_MACRO_9:
++            case GpioAction::BUTTON_PRESS_MACRO_10:
++            case GpioAction::BUTTON_PRESS_MACRO_11:
++            case GpioAction::BUTTON_PRESS_MACRO_12:
+                 return true;
+             default:
+                 break;
+@@ -50,6 +56,24 @@
+             case GpioAction::BUTTON_PRESS_MACRO_6:
+                 macroPinMasks[5] = Mask_t{1} << pin;
+                 break;
++            case GpioAction::BUTTON_PRESS_MACRO_7:
++                macroPinMasks[6] = Mask_t{1} << pin;
++                break;
++            case GpioAction::BUTTON_PRESS_MACRO_8:
++                macroPinMasks[7] = Mask_t{1} << pin;
++                break;
++            case GpioAction::BUTTON_PRESS_MACRO_9:
++                macroPinMasks[8] = Mask_t{1} << pin;
++                break;
++            case GpioAction::BUTTON_PRESS_MACRO_10:
++                macroPinMasks[9] = Mask_t{1} << pin;
++                break;
++            case GpioAction::BUTTON_PRESS_MACRO_11:
++                macroPinMasks[10] = Mask_t{1} << pin;
++                break;
++            case GpioAction::BUTTON_PRESS_MACRO_12:
++                macroPinMasks[11] = Mask_t{1} << pin;
++                break;
+             default:
+                 break;
+         }
+@@ -258,6 +282,24 @@
+             case GpioAction::BUTTON_PRESS_MACRO_6:
+                 macroPinMasks[5] = Mask_t{1} << pin;
+                 break;
++            case GpioAction::BUTTON_PRESS_MACRO_7:
++                macroPinMasks[6] = Mask_t{1} << pin;
++                break;
++            case GpioAction::BUTTON_PRESS_MACRO_8:
++                macroPinMasks[7] = Mask_t{1} << pin;
++                break;
++            case GpioAction::BUTTON_PRESS_MACRO_9:
++                macroPinMasks[8] = Mask_t{1} << pin;
++                break;
++            case GpioAction::BUTTON_PRESS_MACRO_10:
++                macroPinMasks[9] = Mask_t{1} << pin;
++                break;
++            case GpioAction::BUTTON_PRESS_MACRO_11:
++                macroPinMasks[10] = Mask_t{1} << pin;
++                break;
++            case GpioAction::BUTTON_PRESS_MACRO_12:
++                macroPinMasks[11] = Mask_t{1} << pin;
++                break;
+             default:
+                 break;
+         }
+--- a/www/src/Pages/InputMacroAddonPage.tsx
++++ b/www/src/Pages/InputMacroAddonPage.tsx
+@@ -32,7 +32,7 @@
+ 	{ label: 'InputMacroAddon:input-macro-type.toggle', value: 3 },
+ ];
+ const MACRO_INPUTS_MAX = 30;
+-const MACRO_LIMIT = 6;
++const MACRO_LIMIT = 12;
+ 
+ const schema = yup.object().shape({
+ 	macroList: yup.array().of(
+--- a/www/src/Locales/de-DE/PinMapping.jsx
++++ b/www/src/Locales/de-DE/PinMapping.jsx
+@@ -47,5 +47,11 @@
+ 		BUTTON_PRESS_MACRO_4: 'Makro 4',
+ 		BUTTON_PRESS_MACRO_5: 'Makro 5',
+ 		BUTTON_PRESS_MACRO_6: 'Makro 6',
++		BUTTON_PRESS_MACRO_7: 'Makro 7',
++		BUTTON_PRESS_MACRO_8: 'Makro 8',
++		BUTTON_PRESS_MACRO_9: 'Makro 9',
++		BUTTON_PRESS_MACRO_10: 'Makro 10',
++		BUTTON_PRESS_MACRO_11: 'Makro 11',
++		BUTTON_PRESS_MACRO_12: 'Makro 12',
+ 	},
+ };
