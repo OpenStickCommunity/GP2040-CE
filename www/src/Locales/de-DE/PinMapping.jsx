@@ -46,5 +46,11 @@ export default {
 		BUTTON_PRESS_MACRO_4: 'Makro 4',
 		BUTTON_PRESS_MACRO_5: 'Makro 5',
 		BUTTON_PRESS_MACRO_6: 'Makro 6',
+		BUTTON_PRESS_MACRO_7: 'Makro 7',
+		BUTTON_PRESS_MACRO_8: 'Makro 8',
+		BUTTON_PRESS_MACRO_9: 'Makro 9',
+		BUTTON_PRESS_MACRO_10: 'Makro 10',
+		BUTTON_PRESS_MACRO_11: 'Makro 11',
+		BUTTON_PRESS_MACRO_12: 'Makro 12',
 	},
 };
