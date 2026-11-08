@@ -1,0 +1,109 @@
+name: Build My 3 Boards (12 Macros)
+
+on:
+  workflow_dispatch: # Erlaubt den manuellen Start per "Run workflow" Button
+  push:
+    branches:
+      - main
+      - development
+
+jobs:
+  build-web:
+    name: Build Web Configurator (12 Macros)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository & Submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: www/package-lock.json
+
+      - name: Install & Build Web UI
+        working-directory: ./www
+        run: |
+          npm ci
+          npm run build
+
+      - name: Upload Compiled Web Assets
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-build-assets
+          path: lib/httpd/
+
+  build-firmware:
+    name: Build ${{ matrix.board_config }}
+    needs: build-web
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - board_config: Pico2
+            pico_board: pico2
+            pico_platform: rp2350
+          - board_config: FlatboxRev4
+            pico_board: pico
+            pico_platform: rp2040
+          - board_config: FlatboxRev5
+            pico_board: pico
+            pico_platform: rp2040
+          - board_config: FlatboxRev5RGB
+            pico_board: pico
+            pico_platform: rp2040
+          - board_config: Haute42COSMOX
+            pico_board: pico
+            pico_platform: rp2040
+
+    steps:
+      - name: Checkout Repository & Submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Download Compiled Web Assets
+        uses: actions/download-artifact@v4
+        with:
+          name: web-build-assets
+          path: lib/httpd/
+
+      - name: Install Build Dependencies & Protobuf
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build protobuf-compiler python3 python3-pip libusb-1.0-0-dev pkg-config
+
+      - name: Setup ARM GNU Toolchain 13.2
+        uses: carlosperate/arm-none-eabi-gcc-action@v1
+        with:
+          release: '13.2.Rel1'
+
+      - name: Setup Raspberry Pi Pico SDK 2.1.0 & Picotool
+        run: |
+          git clone -b 2.1.0 --recurse-submodules https://github.com/raspberrypi/pico-sdk.git ${RUNNER_TEMP}/pico-sdk
+          echo "PICO_SDK_PATH=${RUNNER_TEMP}/pico-sdk" >> $GITHUB_ENV
+          git clone -b 2.1.0 https://github.com/raspberrypi/picotool.git ${RUNNER_TEMP}/picotool
+          cmake -B ${RUNNER_TEMP}/picotool/build -S ${RUNNER_TEMP}/picotool -DPICO_SDK_PATH=${RUNNER_TEMP}/pico-sdk
+          cmake --build ${RUNNER_TEMP}/picotool/build --parallel
+          sudo cmake --install ${RUNNER_TEMP}/picotool/build
+
+      - name: Build UF2 for ${{ matrix.board_config }}
+        run: |
+          mkdir build
+          cd build
+          cmake -G Ninja \
+            -DPICO_PLATFORM=${{ matrix.pico_platform }} \
+            -DPICO_BOARD=${{ matrix.pico_board }} \
+            -DGP2040_BOARDCONFIG=${{ matrix.board_config }} \
+            ..
+          ninja
+
+      - name: Upload UF2 Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: GP2040-CE_12Macros_${{ matrix.board_config }}
+          path: build/*.uf2
