@@ -862,7 +862,7 @@ message MacroOptions
 {
     optional bool enabled = 1;
     optional int32 deprecatedPin = 2 [deprecated = true];
-    repeated Macro macroList = 3 [(nanopb).max_count = 6];
+    repeated Macro macroList = 3 [(nanopb).max_count = 12];
     optional bool macroBoardLedEnabled = 4;
 }
 
