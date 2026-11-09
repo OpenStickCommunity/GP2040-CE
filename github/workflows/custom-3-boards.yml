@@ -1,7 +1,7 @@
-name: Build My 3 Boards (12 Macros)
+name: Build My 3 Boards (12 Macros Auto-Patch)
 
 on:
-  workflow_dispatch: # Erlaubt den manuellen Start per "Run workflow" Button
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -16,6 +16,71 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
+
+      - name: Auto-Patch Proto & Frontend Files for 12 Macros
+        shell: python3 {0}
+        run: |
+          import pathlib
+
+          p = pathlib.Path("proto/config.proto")
+          txt = p.read_text(encoding="utf-8")
+          txt = txt.replace(
+              "repeated Macro macroList = 3 [(nanopb).max_count = 6];",
+              "repeated Macro macroList = 3 [(nanopb).max_count = 12];"
+          )
+          p.write_text(txt, encoding="utf-8")
+
+          p = pathlib.Path("proto/enums.proto")
+          txt = p.read_text(encoding="utf-8")
+          if "BUTTON_PRESS_MACRO_7" not in txt:
+              txt = txt.replace(
+                  "SUSTAIN_PROFILE_SLIDER_POSITION_8 = 138;",
+                  "SUSTAIN_PROFILE_SLIDER_POSITION_8 = 138;\n"
+                  "    BUTTON_PRESS_MACRO_7              = 139;\n"
+                  "    BUTTON_PRESS_MACRO_8              = 140;\n"
+                  "    BUTTON_PRESS_MACRO_9              = 141;\n"
+                  "    BUTTON_PRESS_MACRO_10             = 142;\n"
+                  "    BUTTON_PRESS_MACRO_11             = 143;\n"
+                  "    BUTTON_PRESS_MACRO_12             = 144;"
+              )
+              p.write_text(txt, encoding="utf-8")
+
+          p = pathlib.Path("www/src/Pages/InputMacroAddonPage.tsx")
+          txt = p.read_text(encoding="utf-8")
+          txt = txt.replace("const MACRO_LIMIT = 6;", "const MACRO_LIMIT = 12;")
+          p.write_text(txt, encoding="utf-8")
+
+          p = pathlib.Path("www/src/Locales/de-DE/PinMapping.jsx")
+          if p.exists():
+              txt = p.read_text(encoding="utf-8")
+              if "BUTTON_PRESS_MACRO_7" not in txt:
+                  txt = txt.replace(
+                      "BUTTON_PRESS_MACRO_6: 'Makro 6',",
+                      "BUTTON_PRESS_MACRO_6: 'Makro 6',\n"
+                      "\t\tBUTTON_PRESS_MACRO_7: 'Makro 7',\n"
+                      "\t\tBUTTON_PRESS_MACRO_8: 'Makro 8',\n"
+                      "\t\tBUTTON_PRESS_MACRO_9: 'Makro 9',\n"
+                      "\t\tBUTTON_PRESS_MACRO_10: 'Makro 10',\n"
+                      "\t\tBUTTON_PRESS_MACRO_11: 'Makro 11',\n"
+                      "\t\tBUTTON_PRESS_MACRO_12: 'Makro 12',"
+                  )
+                  p.write_text(txt, encoding="utf-8")
+
+          p = pathlib.Path("www/src/Locales/en/PinMapping.jsx")
+          if p.exists():
+              txt = p.read_text(encoding="utf-8")
+              if "BUTTON_PRESS_MACRO_7" not in txt:
+                  txt = txt.replace(
+                      "BUTTON_PRESS_MACRO_6: 'Macro 6',",
+                      "BUTTON_PRESS_MACRO_6: 'Macro 6',\n"
+                      "\t\tBUTTON_PRESS_MACRO_7: 'Macro 7',\n"
+                      "\t\tBUTTON_PRESS_MACRO_8: 'Macro 8',\n"
+                      "\t\tBUTTON_PRESS_MACRO_9: 'Macro 9',\n"
+                      "\t\tBUTTON_PRESS_MACRO_10: 'Macro 10',\n"
+                      "\t\tBUTTON_PRESS_MACRO_11: 'Macro 11',\n"
+                      "\t\tBUTTON_PRESS_MACRO_12: 'Macro 12',"
+                  )
+                  p.write_text(txt, encoding="utf-8")
 
       - name: Setup Node.js 20
         uses: actions/setup-node@v4
@@ -66,21 +131,77 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Auto-Patch C++ & Proto Files for 12 Macros
+        shell: python3 {0}
+        run: |
+          import pathlib
+
+          p = pathlib.Path("proto/config.proto")
+          txt = p.read_text(encoding="utf-8")
+          txt = txt.replace(
+              "repeated Macro macroList = 3 [(nanopb).max_count = 6];",
+              "repeated Macro macroList = 3 [(nanopb).max_count = 12];"
+          )
+          p.write_text(txt, encoding="utf-8")
+
+          p = pathlib.Path("proto/enums.proto")
+          txt = p.read_text(encoding="utf-8")
+          if "BUTTON_PRESS_MACRO_7" not in txt:
+              txt = txt.replace(
+                  "SUSTAIN_PROFILE_SLIDER_POSITION_8 = 138;",
+                  "SUSTAIN_PROFILE_SLIDER_POSITION_8 = 138;\n"
+                  "    BUTTON_PRESS_MACRO_7              = 139;\n"
+                  "    BUTTON_PRESS_MACRO_8              = 140;\n"
+                  "    BUTTON_PRESS_MACRO_9              = 141;\n"
+                  "    BUTTON_PRESS_MACRO_10             = 142;\n"
+                  "    BUTTON_PRESS_MACRO_11             = 143;\n"
+                  "    BUTTON_PRESS_MACRO_12             = 144;"
+              )
+              p.write_text(txt, encoding="utf-8")
+
+          p = pathlib.Path("headers/addons/input_macro.h")
+          txt = p.read_text(encoding="utf-8")
+          txt = txt.replace("#define MAX_MACRO_LIMIT 6", "#define MAX_MACRO_LIMIT 12")
+          txt = txt.replace("Mask_t macroPinMasks[6];", "Mask_t macroPinMasks[MAX_MACRO_LIMIT];")
+          p.write_text(txt, encoding="utf-8")
+
+          p = pathlib.Path("src/addons/input_macro.cpp")
+          txt = p.read_text(encoding="utf-8")
+          if "BUTTON_PRESS_MACRO_7" not in txt:
+              txt = txt.replace(
+                  "case GpioAction::BUTTON_PRESS_MACRO_6:\n                return true;",
+                  "case GpioAction::BUTTON_PRESS_MACRO_6:\n"
+                  "            case GpioAction::BUTTON_PRESS_MACRO_7:\n"
+                  "            case GpioAction::BUTTON_PRESS_MACRO_8:\n"
+                  "            case GpioAction::BUTTON_PRESS_MACRO_9:\n"
+                  "            case GpioAction::BUTTON_PRESS_MACRO_10:\n"
+                  "            case GpioAction::BUTTON_PRESS_MACRO_11:\n"
+                  "            case GpioAction::BUTTON_PRESS_MACRO_12:\n"
+                  "                return true;"
+              )
+              txt = txt.replace(
+                  "case GpioAction::BUTTON_PRESS_MACRO_6:\n                macroPinMasks[5] = Mask_t{1} << pin;\n                break;",
+                  "case GpioAction::BUTTON_PRESS_MACRO_6:\n                macroPinMasks[5] = Mask_t{1} << pin;\n                break;\n"
+                  "            case GpioAction::BUTTON_PRESS_MACRO_7:\n                macroPinMasks[6] = Mask_t{1} << pin;\n                break;\n"
+                  "            case GpioAction::BUTTON_PRESS_MACRO_8:\n                macroPinMasks[7] = Mask_t{1} << pin;\n                break;\n"
+                  "            case GpioAction::BUTTON_PRESS_MACRO_9:\n                macroPinMasks[8] = Mask_t{1} << pin;\n                break;\n"
+                  "            case GpioAction::BUTTON_PRESS_MACRO_10:\n                macroPinMasks[9] = Mask_t{1} << pin;\n                break;\n"
+                  "            case GpioAction::BUTTON_PRESS_MACRO_11:\n                macroPinMasks[10] = Mask_t{1} << pin;\n                break;\n"
+                  "            case GpioAction::BUTTON_PRESS_MACRO_12:\n                macroPinMasks[11] = Mask_t{1} << pin;\n                break;"
+              )
+              p.write_text(txt, encoding="utf-8")
+
       - name: Download Compiled Web Assets
         uses: actions/download-artifact@v4
         with:
           name: web-build-assets
           path: lib/httpd/
 
-      - name: Install Build Dependencies & Protobuf
+      - name: Install Build Dependencies, Protobuf & ARM Toolchain
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake ninja-build protobuf-compiler python3 python3-pip libusb-1.0-0-dev pkg-config
-
-      - name: Setup ARM GNU Toolchain 13.2
-        uses: carlosperate/arm-none-eabi-gcc-action@v1
-        with:
-          release: '13.2.Rel1'
+          sudo apt-get install -y cmake ninja-build protobuf-compiler python3 python3-pip libusb-1.0-0-dev pkg-config gcc-arm-none-eabi libnewlib-arm-none-eabi libstdc++-arm-none-eabi-newlib
+          pip3 install --break-system-packages protobuf grpcio-tools || pip3 install protobuf grpcio-tools
 
       - name: Setup Raspberry Pi Pico SDK 2.1.0 & Picotool
         run: |
@@ -107,4 +228,3 @@ jobs:
         with:
           name: GP2040-CE_12Macros_${{ matrix.board_config }}
           path: build/*.uf2
-
