@@ -1,0 +1,13 @@
+.pin-grid {
+	display: grid;
+	grid-auto-flow: column;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: repeat(15, auto);
+}
+
+@media only screen and (max-width: 680px) {
+	.pin-grid {
+		display: flex;
+		flex-direction: column;
+	}
+}
