@@ -80,7 +80,7 @@ void KeyboardHostListener::setup() {
   mouseActive = false;
 }
 
-void KeyboardHostListener::process() {
+void __not_in_flash_func(KeyboardHostListener::process)() {
   Gamepad *gamepad = Storage::getInstance().GetGamepad();
   if (_keyboard_host_mounted == true || _mouse_host_mounted == true) {
     gamepad->state.dpad     |= _keyboard_host_state.dpad;

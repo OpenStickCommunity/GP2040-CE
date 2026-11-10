@@ -123,7 +123,7 @@ void TurboInput::reinit()
     }
 }
 
-void TurboInput::process()
+void __not_in_flash_func(TurboInput::process)()
 {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     const TurboOptions& options = Storage::getInstance().getAddonOptions().turboOptions;
