@@ -322,7 +322,7 @@ void __not_in_flash_func(GP2040::run)() {
 	}
 }
 
-void __not_in_flash_func(GP2040::getReinitGamepad)(Gamepad * gamepad) {
+void GP2040::getReinitGamepad(Gamepad * gamepad) {
 	GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
 
 	// Check if profile has changed since last reinit
@@ -501,7 +501,7 @@ GP2040::RebootHotkeys::RebootHotkeys() :
 	rebootHotkeysHoldTimeout(nil_time) {
 }
 
-void __not_in_flash_func(GP2040::RebootHotkeys::process)(Gamepad* gamepad, bool configMode) {
+void GP2040::RebootHotkeys::process(Gamepad* gamepad, bool configMode) {
 	// We only allow the hotkey to trigger after we observed no buttons pressed for a certain period of time.
 	// We do this to avoid detecting buttons that are held during the boot process. In particular we want to avoid
 	// oscillating between webconfig and default mode when the user keeps holding the hotkey buttons.
@@ -560,7 +560,7 @@ void GP2040::checkRawState(const GamepadState& prevState, const GamepadState& cu
     }
 }
 
-void __not_in_flash_func(GP2040::checkProcessedState)(const GamepadState& prevState, const GamepadState& currState) {
+void GP2040::checkProcessedState(const GamepadState& prevState, const GamepadState& currState) {
     // buttons pressed
     if ((
         ((currState.aux & ~prevState.aux) != 0) ||
@@ -591,7 +591,7 @@ void __not_in_flash_func(GP2040::checkProcessedState)(const GamepadState& prevSt
     }
 }
 
-void __not_in_flash_func(GP2040::checkSaveRebootState)() {
+void GP2040::checkSaveRebootState() {
 	if (saveRequested) {
 		saveRequested = false;
 		Storage::getInstance().save(forceSave);
