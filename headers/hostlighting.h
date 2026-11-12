@@ -87,9 +87,16 @@ public:
 	void registerLights(const Lights& layout, uint16_t rateHz);
 
 	// LED add-on (core 1), each render tick before the frame is shown.
-	// Applies host animation, speed and brightness requests, then a live host
-	// frame.
+	// Applies host animation, speed and brightness requests, then the
+	// lighting report's values and a live host frame.
 	void render(AnimationStation& station, uint32_t* frame, int format);
+
+	// The lights for the lighting report (core 0), after registerLights(). A
+	// light's name is its control's button, numbered when several controls
+	// share the button, else its kind (Turbo, Case n, Player n) or Light n, as
+	// for a control's later lights.
+	uint16_t getLightCount() { return lightCount(); }
+	void getLightName(uint16_t light, char* name, size_t size);
 
 	const uint8_t* getReportDescriptor() override;
 	uint16_t getReportDescriptorLength() override;
@@ -134,6 +141,7 @@ private:
 	void stageLed(uint16_t led, const uint32_t* pixel);
 	bool stageLight(uint16_t ordinal, const uint32_t* pixel);
 	void clearStaged();
+	void renderReport(AnimationStation& station, uint32_t* frame, int format);
 
 	// Session takeover, keepalive, claim and subscription
 	void raiseEvent();

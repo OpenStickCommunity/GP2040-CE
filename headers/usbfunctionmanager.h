@@ -71,6 +71,10 @@ public:
 		return active[instance - firstInstance];
 	}
 
+	// The string descriptor an active function names for index, else nullptr.
+	// tud_descriptor_string_cb asks before the input mode's driver.
+	const uint16_t* getString(uint8_t index);
+
 	// USB session hooks for the active functions (core 0, except usbEvent)
 	void usbEvent(uint32_t eventId); // Sets flags only, in interrupt context
 	void usbUnmounted();
