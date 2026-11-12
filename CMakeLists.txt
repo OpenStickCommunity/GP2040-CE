@@ -267,6 +267,7 @@ src/drivermanager.cpp
 src/eventmanager.cpp
 src/layoutmanager.cpp
 src/hostlighting.cpp
+src/keyboardinterface.cpp
 src/peripheralmanager.cpp
 src/storagemanager.cpp
 src/system.cpp

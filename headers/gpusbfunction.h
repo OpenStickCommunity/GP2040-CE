@@ -11,6 +11,8 @@
 #include "tusb.h"
 #include "enums.pb.h"
 
+class Gamepad;
+
 // A USB function's setting in an input mode. AUTO means PC only. In XInput
 // it follows USBFunctionManager's host detection, and the other modes treat
 // it as ON.
@@ -34,7 +36,9 @@ enum class USBFunctionSetting : uint8_t {
 //   path goes before those they find by usage. Run its own setup after
 //   USBFunctionManager::setup(), once its HID instance is known.
 // - Raise CFG_TUD_HID in tusb_config.h. Each function takes a HID instance.
-// HostLighting is an example.
+// - Return true from hasInputStep() if it overrides processInputs().
+// HostLighting (OUT endpoint, requests) and KeyboardInterface (input step)
+// are examples.
 class GPUSBFunction {
 public:
 	// HID instance for this boot, or -1 when inactive. Set by
@@ -52,6 +56,9 @@ public:
 	// True if the interface has an interrupt OUT endpoint as well as IN
 	virtual bool hasOutEndpoint() = 0;
 
+	// True if the function implements processInputs()
+	virtual bool hasInputStep() { return false; }
+
 	// HID requests (core 0)
 	virtual uint16_t getReport(uint8_t report_id, hid_report_type_t report_type, uint8_t* buffer, uint16_t reqlen) = 0;
 	virtual void setReport(uint8_t report_id, hid_report_type_t report_type, const uint8_t* buffer, uint16_t bufsize) = 0;
@@ -61,6 +68,11 @@ public:
 	virtual void usbEvent(uint32_t eventId) { (void)eventId; } // Sets flags only, in interrupt context
 	virtual void usbUnmounted() {}
 	virtual void usbSuspended() {}
+
+	// Core 0 main loop, before the input driver. It may clear buttons and
+	// directions from the gamepad state. GP2040::run() restores them after
+	// the driver.
+	virtual void processInputs(Gamepad* gamepad) { (void)gamepad; }
 
 	// Core 0 main loop, after tud_task()
 	virtual void process() {}

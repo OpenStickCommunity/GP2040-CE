@@ -183,6 +183,15 @@ enum HostLightingXInputMode
     HOST_LIGHTING_XINPUT_MODE_AUTO = 2;
 }
 
+enum KeyboardInterfaceXInputMode
+{
+    option (nanopb_enumopt).long_names = false;
+
+    KEYBOARD_INTERFACE_XINPUT_MODE_OFF = 0;
+    KEYBOARD_INTERFACE_XINPUT_MODE_ON = 1;
+    KEYBOARD_INTERFACE_XINPUT_MODE_AUTO = 2;
+}
+
 enum InputModeDeviceType
 {
     option (nanopb_enumopt).long_names = false;

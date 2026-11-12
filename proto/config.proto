@@ -94,6 +94,8 @@ message GamepadOptions
     optional uint32 switch2ProRightRingColor = 65;
     repeated AdvancedSOCDSlot advancedSOCDSlots = 66 [(nanopb).max_count = 4];
     optional bool advancedSOCDEnabled = 67;
+    optional bool keyboardInterfaceEnabled = 68;
+    optional KeyboardInterfaceXInputMode keyboardInterfaceXInputMode = 69;
 }
 
 message KeyboardMapping
@@ -238,6 +240,7 @@ message GpioMappings
     repeated uint32 invertedPins = 6 [(nanopb).max_count = 48];
     optional bool socdModeOverride = 7;
     optional SOCDMode socdMode = 8;
+    optional uint32 keyboardButtonMask = 9;
 }
 
 
