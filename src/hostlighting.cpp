@@ -26,6 +26,7 @@
 #include "NeoPico.h"
 #include "inputmodes.h"
 #include "keyboardinterface.h"
+#include "lightingreport.h"
 #include "addons/he_trigger.h"
 
 namespace {
@@ -332,6 +333,17 @@ static uint32_t decodePixel(const uint8_t* p, uint8_t format, bool white) {
 	if (white && (r == g) && (g == b))
 		return (uint32_t)r << 24;
 	return ((uint32_t)r << 16) | ((uint32_t)g << 8) | b;
+}
+
+// Scaled channels in the chain's order. The packing must stay in step with
+// RGB::value() (animation.h).
+static inline uint32_t packPixel(uint32_t r, uint32_t g, uint32_t b, uint32_t w, int format) {
+	switch (format) {
+		case LED_FORMAT_GRB:  return (g << 16) | (r << 8) | b;
+		case LED_FORMAT_RGB:  return (r << 16) | (g << 8) | b;
+		case LED_FORMAT_GRBW: return (g << 24) | (r << 16) | (b << 8) | w;
+		default:              return (r << 24) | (g << 16) | (b << 8) | w;
+	}
 }
 
 void HostLighting::stageLed(uint16_t led, const uint32_t* pixel) {
@@ -823,6 +835,87 @@ void HostLighting::controlInstance(uint16_t key, GpioAction action, uint16_t& in
 }
 
 static bool isControl(GpioAction action) { return (int)action > 0; }
+
+// The button labels of the actions that press one button, nullptr for others
+static const char* buttonLabel(GpioAction action) {
+	static const char* const labels[] = {
+		"Up", "Down", "Left", "Right", "B1", "B2", "B3", "B4", "L1", "R1", "L2", "R2", "S1", "S2", "A1", "A2", "L3", "R3",
+	};
+	static const char* const extraLabels[] = {
+		"A3", "A4", "E1", "E2", "E3", "E4", "E5", "E6", "E7", "E8", "E9", "E10", "E11", "E12",
+	};
+	static_assert((sizeof(labels) / sizeof(labels[0])) == (GpioAction::BUTTON_PRESS_R3 - GpioAction::BUTTON_PRESS_UP + 1),
+		"a label for each action from Up to R3");
+	static_assert((sizeof(extraLabels) / sizeof(extraLabels[0])) == (GpioAction::BUTTON_PRESS_E12 - GpioAction::BUTTON_PRESS_A3 + 1),
+		"a label for each action from A3 to E12");
+	if ((action >= GpioAction::BUTTON_PRESS_UP) && (action <= GpioAction::BUTTON_PRESS_R3))
+		return labels[action - GpioAction::BUTTON_PRESS_UP];
+	if ((action >= GpioAction::BUTTON_PRESS_A3) && (action <= GpioAction::BUTTON_PRESS_E12))
+		return extraLabels[action - GpioAction::BUTTON_PRESS_A3];
+	return nullptr;
+}
+
+// Writes text, then a space and number when number is not 0, cut to size
+static void writeName(char* name, size_t size, const char* text, uint16_t number) {
+	char digits[6];
+	uint8_t count = 0;
+	for (uint16_t n = number; n != 0; n /= 10)
+		digits[count++] = (char)('0' + (n % 10));
+	size_t at = 0;
+	for (; (*text != '\0') && ((at + 1) < size); text++)
+		name[at++] = *text;
+	if ((count != 0) && ((at + 1) < size))
+		name[at++] = ' ';
+	while ((count != 0) && ((at + 1) < size))
+		name[at++] = digits[--count];
+	if (size != 0)
+		name[at] = '\0';
+}
+
+void HostLighting::getLightName(uint16_t light, char* name, size_t size) {
+	if (light >= lightCount()) {
+		writeName(name, size, "", 0);
+		return;
+	}
+	const Light& l = lights->AllLights[light];
+	const int pin = ownerKey(l);
+	const GpioAction action = (pin >= 0) ? keyAction((uint16_t)pin) : GpioAction::NONE;
+	const char* label = buttonLabel(action);
+	// A control's later lights take their number, so each name is unique
+	for (uint16_t i = 0; (label != nullptr) && (i < light); i++) {
+		if (ownerKey(lights->AllLights[i]) == pin)
+			label = nullptr;
+	}
+	if (label != nullptr) {
+		uint16_t instance = 0, instances = 0;
+		controlInstance((uint16_t)pin, action, instance, instances);
+		writeName(name, size, label, (instances > 1) ? instance : 0);
+		return;
+	}
+	switch (l.Type) {
+		case LightType::LightType_Turbo:
+			writeName(name, size, "Turbo", 0);
+			return;
+		case LightType::LightType_Player1Light:
+		case LightType::LightType_Player2Light:
+		case LightType::LightType_Player3Light:
+		case LightType::LightType_Player4Light:
+			writeName(name, size, "Player", (uint16_t)(l.PlayerLightIndex + 1));
+			return;
+		case LightType::LightType_Case: {
+			uint16_t number = 1;
+			for (uint16_t i = 0; i < light; i++) {
+				if (lights->AllLights[i].Type == LightType::LightType_Case)
+					number++;
+			}
+			writeName(name, size, "Case", number);
+			return;
+		}
+		default:
+			writeName(name, size, "Light", (uint16_t)(light + 1));
+			return;
+	}
+}
 
 // The key of the index-th control; false past the last
 bool HostLighting::controlKey(uint16_t index, uint16_t& key) {
@@ -2137,6 +2230,9 @@ void HostLighting::render(AnimationStation& station, uint32_t* frame, int format
 		station.OptionsChanged();
 	}
 
+	// The lighting report shows under a live host frame
+	if (LightingReport::getInstance().isShowing())
+		renderReport(station, frame, format);
 	if (!liveActive)
 		return;
 	// CONFIGURE can change these mid-pass; one read each keeps the frame whole
@@ -2155,8 +2251,7 @@ void HostLighting::render(AnimationStation& station, uint32_t* frame, int format
 	}
 
 	// Converted frame, rebuilt when the host publishes or the scale or
-	// format changes; the steady state is a copy. The channel packing must
-	// stay in step with RGB::value() (animation.h); a stored grey on a white
+	// format changes. The steady state is a copy. A stored grey on a white
 	// chain is already W alone (decodePixel).
 	const uint16_t extent = ledExtent;
 	if (rescaled || (liveSeq != convertedSeq) || (format != convertedFormat)) {
@@ -2168,12 +2263,7 @@ void HostLighting::render(AnimationStation& station, uint32_t* frame, int format
 				uint32_t p = livePixels[i];
 				uint32_t r = scale[(p >> 16) & 0xFF], g = scale[(p >> 8) & 0xFF];
 				uint32_t b = scale[p & 0xFF], w = scale[p >> 24];
-				switch (format) {
-					case LED_FORMAT_GRB:  converted[i] = (g << 16) | (r << 8) | b; break;
-					case LED_FORMAT_RGB:  converted[i] = (r << 16) | (g << 8) | b; break;
-					case LED_FORMAT_GRBW: converted[i] = (g << 24) | (r << 16) | (b << 8) | w; break;
-					default:              converted[i] = (r << 24) | (g << 16) | (b << 8) | w; break;
-				}
+				converted[i] = packPixel(r, g, b, w, format);
 			}
 			memcpy(convertedBits, liveBits, sizeof(convertedBits));
 			__mem_fence_acquire();
@@ -2191,6 +2281,32 @@ void HostLighting::render(AnimationStation& station, uint32_t* frame, int format
 	} else {
 		memcpy(frame, converted, extent * sizeof(uint32_t));
 	}
+}
+
+// The lighting report's values on every LED of their lights, at the board's
+// brightness as the animations. Copied again if core 0 wrote meanwhile.
+void HostLighting::renderReport(AnimationStation& station, uint32_t* frame, int format) {
+	const LightingReport& report = LightingReport::getInstance();
+	const float factor = station.GetNormalisedBrightness();
+	const bool white = whiteChain();
+	const uint16_t count = std::min(report.getLightCount(), lightCount());
+	uint32_t before, after;
+	do {
+		before = report.getSequence();
+		__mem_fence_acquire();
+		for (uint16_t light = 0; light < count; light++) {
+			uint16_t first, end;
+			if (!lightLeds(lights->AllLights[light], first, end))
+				continue;
+			const uint32_t p = decodePixel(report.getLightValues(light), PIXEL_RGB, white);
+			const uint32_t pixel = packPixel((uint32_t)(((p >> 16) & 0xFF) * factor), (uint32_t)(((p >> 8) & 0xFF) * factor),
+				(uint32_t)((p & 0xFF) * factor), (uint32_t)((p >> 24) * factor), format);
+			for (uint16_t led = first; led < end; led++)
+				frame[led] = pixel;
+		}
+		__mem_fence_acquire();
+		after = report.getSequence();
+	} while ((before != after) || (before & 1));
 }
 
 // ---------------------------------------------------------------------------

@@ -11,6 +11,7 @@
 #include "BoardConfig.h"
 #include "GamepadConfig.h"
 #include "hostlighting.h"
+#include "lightingreport.h"
 #include "version.h"
 #include "advanced_socd.h"
 #include "addons/analog.h"
@@ -1523,6 +1524,11 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         HOST_LIGHTING_XINPUT ? HOST_LIGHTING_XINPUT_MODE_AUTO : HOST_LIGHTING_XINPUT_MODE_OFF);
     INIT_UNSET_PROPERTY(config.addonOptions.hostLightingOptions, allowKeyboardMappingChanges,
         !!HOST_LIGHTING_ALLOW_KEYBOARD_MAPPING_CHANGES);
+
+    // addonOptions.lightingReportOptions
+    INIT_UNSET_PROPERTY(config.addonOptions.lightingReportOptions, enabled, !!LIGHTING_REPORT_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.lightingReportOptions, xinputMode,
+        LIGHTING_REPORT_XINPUT ? LIGHTING_REPORT_XINPUT_MODE_AUTO : LIGHTING_REPORT_XINPUT_MODE_OFF);
 
     // addonOptions.gamepadUSBHostOptions
     INIT_UNSET_PROPERTY(config.addonOptions.gamepadUSBHostOptions, enabled, GAMEPAD_USB_HOST_ENABLED)

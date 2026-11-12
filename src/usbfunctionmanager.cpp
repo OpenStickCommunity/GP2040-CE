@@ -225,6 +225,15 @@ const uint8_t* USBFunctionManager::getXInputCompatibleIDs() {
 	return descriptor;
 }
 
+const uint16_t* USBFunctionManager::getString(uint8_t index) {
+	for (uint8_t i = 0; i < activeCount; i++) {
+		const uint16_t* string = active[i]->getString(index);
+		if (string != nullptr)
+			return string;
+	}
+	return nullptr;
+}
+
 // ---------------------------------------------------------------------------
 // USB session and main loop
 

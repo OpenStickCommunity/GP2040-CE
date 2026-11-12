@@ -37,8 +37,10 @@ enum class USBFunctionSetting : uint8_t {
 //   USBFunctionManager::setup(), once its HID instance is known.
 // - Raise CFG_TUD_HID in tusb_config.h. Each function takes a HID instance.
 // - Return true from hasInputStep() if it overrides processInputs().
-// HostLighting (OUT endpoint, requests) and KeyboardInterface (input step)
-// are examples.
+// - Answer getString() for the string indexes its report descriptor names,
+//   above the input modes' own strings and never 0xEE.
+// HostLighting (OUT endpoint, requests), KeyboardInterface (input step) and
+// LightingReport (built descriptor, strings) are examples.
 class GPUSBFunction {
 public:
 	// HID instance for this boot, or -1 when inactive. Set by
@@ -62,6 +64,9 @@ public:
 	// HID requests (core 0)
 	virtual uint16_t getReport(uint8_t report_id, hid_report_type_t report_type, uint8_t* buffer, uint16_t reqlen) = 0;
 	virtual void setReport(uint8_t report_id, hid_report_type_t report_type, const uint8_t* buffer, uint16_t bufsize) = 0;
+
+	// String descriptor for an index the function names, else nullptr (core 0)
+	virtual const uint16_t* getString(uint8_t index) { (void)index; return nullptr; }
 
 	// USB session hooks (core 0, except usbEvent)
 	virtual void reportComplete() {}

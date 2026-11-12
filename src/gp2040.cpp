@@ -5,6 +5,7 @@
 #include "helper.h"
 #include "hostlighting.h"
 #include "keyboardinterface.h"
+#include "lightingreport.h"
 #include "usbfunctionmanager.h"
 #include "system.h"
 #include "enums.pb.h"
@@ -166,11 +167,12 @@ void GP2040::setup() {
 	EventManager::getInstance().registerEventHandler(GP_EVENT_RESTART, GPEVENT_CALLBACK(this->handleSystemReboot(event)), this);
 
 	// The USB functions are added in interface order and the active ones
-	// chosen before USB starts. Hosts bind the keyboard by device path, so it
-	// comes first. Host Lighting lists the expander's pins as inputs only if
-	// the PCF8575 add-on loaded.
+	// chosen before USB starts. Hosts bind the keyboard and the lighting
+	// report by device path, so they come first. Host Lighting lists the
+	// expander's pins as inputs only if the PCF8575 add-on loaded.
 	USBFunctionManager& usbFunctions = USBFunctionManager::getInstance();
 	usbFunctions.addFunction(KeyboardInterface::getInstance());
+	usbFunctions.addFunction(LightingReport::getInstance());
 	usbFunctions.addFunction(HostLighting::getInstance());
 	usbFunctions.setup();
 	HostLighting::getInstance().setup(addons.GetAddon(PCF8575AddonName) != nullptr);

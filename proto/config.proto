@@ -993,6 +993,12 @@ message HostLightingOptions
     optional bool allowKeyboardMappingChanges = 3;
 }
 
+message LightingReportOptions
+{
+    optional bool enabled = 1;
+    optional LightingReportXInputMode xinputMode = 2;
+}
+
 message AddonOptions
 {
     optional BootselButtonOptions bootselButtonOptions = 1;
@@ -1028,6 +1034,7 @@ message AddonOptions
     optional ProfileSliderOptions profileSliderOptions = 31;
     optional AnalogADS1115Options analogADS1115Options = 32;
     optional HostLightingOptions hostLightingOptions = 33;
+    optional LightingReportOptions lightingReportOptions = 34;
 }
 
 message MigrationHistory

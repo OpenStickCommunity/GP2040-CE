@@ -104,6 +104,9 @@ bool tud_vendor_control_xfer_cb(uint8_t rhport, uint8_t stage,
 // Invoked when received GET STRING DESCRIPTOR request
 // Application return pointer to descriptor, whose contents must exist long enough for transfer to complete
 uint16_t const *tud_descriptor_string_cb(uint8_t index, uint16_t langid) {
+	const uint16_t* string = USBFunctionManager::getInstance().getString(index);
+	if (string != nullptr)
+		return string;
 	return DriverManager::getInstance().getDriver()->get_descriptor_string_cb(index, langid);
 }
 
