@@ -40,6 +40,18 @@ const GROUPED_OPTIONS = [
 		options: INPUT_MODE_OPTIONS.filter(({ group }) => group === 'primary'),
 	},
 	{
+		label: 'Sony',
+		options: INPUT_MODE_OPTIONS.filter(({ group }) => group === 'sony'),
+	},
+	{
+		label: 'Nintendo',
+		options: INPUT_MODE_OPTIONS.filter(({ group }) => group === 'nintendo'),
+	},
+	{
+		label: 'Microsoft',
+		options: INPUT_MODE_OPTIONS.filter(({ group }) => group === 'microsoft'),
+	},
+	{
 		label: 'Mini',
 		options: INPUT_MODE_OPTIONS.filter(({ group }) => group === 'mini'),
 	},
