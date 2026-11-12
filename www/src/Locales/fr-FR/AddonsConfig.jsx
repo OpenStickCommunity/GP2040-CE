@@ -91,12 +91,6 @@ export default {
 	'player-number-sub-header-text':
 		'Activez cette option uniquement si vous connectez plusieurs appareils GP2040-CE avec le numéro du joueur activé',
 	'player-number-label': 'Numéro du joueur',
-	'socd-cleaning-mode-selection-slider-header-text':
-		'Sélecteur de mode de nettoyage SOCD',
-	'socd-cleaning-mode-selection-slider-sub-header-text':
-		'Remarque : Les modes PS4, PS3 et Nintendo Switch ne prennent pas en charge la désactivation du nettoyage SOCD et utiliseront par défaut le mode de nettoyage SOCD neutre.',
-	'socd-cleaning-mode-selection-slider-mode-default-label':
-		'Mode par défaut du sélecteur SOCD',
 	'ps4-mode-sub-header': 'AVERTISSEMENT !',
 	'ps4-mode-sub-header-text': 'GP2040-CE NE FOURNIRA JAMAIS CES FICHIERS !!!',
 	'ps4-mode-private-key-label': 'Clé privée (PEM)',
@@ -139,11 +133,6 @@ export default {
 	'dual-directional-input-combine-mode-1': 'Priorité à la manette de jeu',
 	'dual-directional-input-combine-mode-2': 'Priorité au DDI',
 	'dual-directional-input-combine-mode-3': 'Aucun',
-	'socd-slider-mode-0': 'Priorité Haut',
-	'socd-slider-mode-1': 'Neutre',
-	'socd-slider-mode-2': 'Dernier gagne',
-	'socd-slider-mode-3': 'Premier gagne',
-	'socd-slider-mode-4': 'Désactivation du nettoyage SOCD',
 	'profile-slider-header-text': 'Sélecteur de Profil',
 	'profile-slider-sub-header-text':
 		'Remarque : les broches GPIO pour les positions du sélecteur de profil sont configurées sur la page de mappage des broches GPIO.',

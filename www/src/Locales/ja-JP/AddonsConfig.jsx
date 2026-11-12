@@ -116,12 +116,6 @@ export default {
 	'player-number-sub-header-text':
 		'このオプションは同時にプレイヤー番号を有効化した複数のGP2040-CEデバイスを接続する場合のみ利用してください。',
 	'player-number-label': 'プレイヤー番号',
-	'socd-cleaning-mode-selection-slider-header-text':
-		'SOCD クリーナモード選択スライダー',
-	'socd-cleaning-mode-selection-slider-sub-header-text':
-		'注：PS4、PS3及び任天堂Switch モードではSOCDクリーナのモード無効化は非対応となり、SOCDニュートラル設定になります。',
-	'socd-cleaning-mode-selection-slider-mode-default-label':
-		'SOCDクリーナ標準モード',
 	'ps4-mode-sub-header': '免責事項',
 	'ps4-mode-sub-header-text':
 		'いかなる場合においてもGP2040-CEから以下のファイルは提供いたしません！！',
@@ -166,11 +160,6 @@ export default {
 	'dual-directional-input-combine-mode-1': 'ゲームパッド上書き',
 	'dual-directional-input-combine-mode-2': 'DDI 上書き',
 	'dual-directional-input-combine-mode-3': '無し',
-	'socd-slider-mode-0': '上優先',
-	'socd-slider-mode-1': 'ニュートラル',
-	'socd-slider-mode-2': '後入力優先',
-	'socd-slider-mode-3': '先入力優先',
-	'socd-slider-mode-4': 'SOCDクリーナ無効',
 	'profile-slider-header-text': 'プロフィール選択スライダー',
 	'profile-slider-sub-header-text':
 		'注：プロフィール選択スライダーのポジションGPIOピンはピンマッピングページで設定されます。',

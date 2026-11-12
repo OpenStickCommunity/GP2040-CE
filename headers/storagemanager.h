@@ -39,6 +39,7 @@ public:
 	GpioMappings& getGpioMappings() { return config.gpioMappings; }
 	KeyboardMapping& getKeyboardMapping() { return config.keyboardMapping; }
 	KeyboardMapping& getActiveKeyboardMapping() { return *activeKeyboardMapping; }
+	GpioMappings& getActiveProfileMappings() { return *activeProfileMappings; }
 	DisplayOptions& getDisplayOptions() { return config.displayOptions; }
 	LEDOptions& getLedOptions() { return config.ledOptions; }
 	AddonOptions& getAddonOptions() { return config.addonOptions; }
@@ -79,6 +80,7 @@ private:
 	Config config;
 	GpioMappingInfo functionalPinMappings[NUM_BANK0_GPIOS];
 	KeyboardMapping* activeKeyboardMapping = &config.keyboardMapping;
+	GpioMappings* activeProfileMappings = &config.gpioMappings;
 	Mask_t invertedPins = 0;
 	void setInvertedPins(const GpioMappings& mappings);
 	uint32_t systemFlashSize;

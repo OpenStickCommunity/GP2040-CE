@@ -91,12 +91,6 @@ export default {
 	'player-number-sub-header-text':
 		'Yalnızca oyuncu numarası etkinleştirilmiş birden fazla gp2040-ce cihazını bağlıyorsanız bu seçeneği etkinleştirin',
 	'player-number-label': 'Oyuncu Numarası',
-	'socd-cleaning-mode-selection-slider-header-text':
-		'SOCD Temizleme Modu Seçim Kaydırıcısı',
-	'socd-cleaning-mode-selection-slider-sub-header-text':
-		'Not: PS4, PS3 ve Nintendo Switch modları SOCD Temizlemenin Kapalı olarak ayarlanmasını desteklemez ve varsayılan olarak Nötr SOCD Temizleme moduna ayarlanır.',
-	'socd-cleaning-mode-selection-slider-mode-default-label':
-		'SOCD Kaydırıcı Modu Varsayılanı',
 	'ps4-mode-sub-header': 'SORUMLULUK REDDİ!',
 	'ps4-mode-sub-header-text': 'GP2040-CE ASLA BU DOSYALARI SAĞLAMAYACAKTIR!!!',
 	'ps4-mode-private-key-label': 'Private Anahtarı (PEM)',
@@ -139,11 +133,6 @@ export default {
 	'dual-directional-input-combine-mode-1': 'Gamepad Geçersiz Kılma',
 	'dual-directional-input-combine-mode-2': 'DDI Geçersiz Kılma',
 	'dual-directional-input-combine-mode-3': 'Hiçbiri',
-	'socd-slider-mode-0': 'Yukarı Öncelik',
-	'socd-slider-mode-1': 'Doğal',
-	'socd-slider-mode-2': 'Son basılan',
-	'socd-slider-mode-3': 'İlk basılan',
-	'socd-slider-mode-4': 'SOCD Temizleme Kapalı',
 	'profile-slider-header-text': 'Profil Seçim Kaydırıcısı',
 	'profile-slider-sub-header-text':
 		'Not: Profil kaydırıcı konumları için GPIO pinleri Pin Eşlemesi sayfasında yapılandırılır.',
