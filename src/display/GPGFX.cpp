@@ -4,7 +4,6 @@
 #include <vector>
 
 #include "peripheralmanager.h"
-#include "obd_ssd1306.h"
 #include "tiny_ssd1306.h"
 
 std::map<GPGFX_DisplayType, std::map<GPGFX_DisplaySize, GPGFX_DisplayMetrics>> GPGFX_DisplayModes = {
@@ -70,7 +69,6 @@ bool GPGFX::detectDisplay(GPGFX_DisplayTypeOptions* display, GPGFX_DisplayType d
                 display->displayType = displayType;
                 display->address = result.address;
                 display->i2c = PeripheralManager::getInstance().getI2C(result.block);
-                display->i2c->setExclusiveUse(result.address);
                 return true;
             }
         }
@@ -101,6 +99,10 @@ void GPGFX::drawPixel(uint16_t x, uint16_t y, uint32_t color) {
 
 void GPGFX::drawText(uint16_t x, uint16_t y, std::string text, uint8_t invert) {
     this->displayDriver->drawText(x, y, text, invert);
+}
+
+void GPGFX::drawTextAt(uint16_t x, uint16_t y, std::string text, uint8_t invert) {
+    this->displayDriver->drawTextAt(x, y, text, invert);
 }
 
 void GPGFX::drawArc(uint16_t x, uint16_t y, uint32_t radiusX, uint32_t radiusY, uint32_t color, uint8_t filled, double startAngle, double endAngle, uint8_t closed) {

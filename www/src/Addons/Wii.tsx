@@ -14,6 +14,7 @@ import { I2C_BLOCKS } from '../Data/Peripherals';
 import { BUTTON_MASKS_OPTIONS, getButtonLabels } from '../Data/Buttons';
 
 import WebApi, { baseWiiControls } from '../Services/WebApi';
+import { useRememberedTab } from '../Hooks/useRememberedTab';
 
 export const wiiScheme = {
 	WiiExtensionAddonEnabled: yup
@@ -196,6 +197,10 @@ const Wii = ({
 	handleCheckbox,
 	setFieldValue,
 }) => {
+	const [activeTab, setActiveTab] = useRememberedTab(
+		'wiiControllerConfig',
+		`wii${WII_EXTENSION_CONTROLS[0].id}Config`,
+	);
 	const { t } = useTranslation();
 	const [wiiControls, setWiiControls] = useState(baseWiiControls);
 	const [selectedControls] = useState(baseWiiControls);
@@ -205,7 +210,7 @@ const Wii = ({
 	const { buttonLabels } = useContext(AppContext);
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
 	const CURRENT_BUTTONS = getButtonLabels(buttonLabelType, swapTpShareLabels);
-	const buttonNames = omit(CURRENT_BUTTONS, ['label', 'value']);        
+	const buttonNames = omit(CURRENT_BUTTONS, ['label', 'value']);
 
 	useEffect(() => {
 		async function fetchData() {
@@ -350,15 +355,16 @@ const Wii = ({
 	};
 
 	return (
-		<Section title={
-			<a
-				href="https://gp2040-ce.info/add-ons/wii-extensions"
-				target="_blank"
-				className="text-reset text-decoration-none"
-			>
-				{t('WiiAddon:header-text')}
-			</a>
-		}
+		<Section
+			title={
+				<a
+					href="https://gp2040-ce.info/add-ons/wii-extensions"
+					target="_blank"
+					className="text-reset text-decoration-none"
+				>
+					{t('WiiAddon:header-text')}
+				</a>
+			}
 		>
 			<div
 				id="WiiExtensionAddonOptions"
@@ -373,11 +379,15 @@ const Wii = ({
 					</div>
 				</Trans>
 				<div className="alert alert-info" role="alert">
-					The SDA and SCL pins and Speed are configured in <a href="../peripheral-mapping" className="alert-link">Peripheral Mapping</a>
-				</div>			
+					The SDA and SCL pins and Speed are configured in{' '}
+					<a href="../peripheral-mapping" className="alert-link">
+						Peripheral Mapping
+					</a>
+				</div>
 				<Row className="mb-3">
 					<Tabs
-						defaultActiveKey={`wii${WII_EXTENSION_CONTROLS[0].id}Config`}
+						activeKey={activeTab}
+						onSelect={setActiveTab}
 						id="wiiControllerConfig"
 						className="mb-3"
 						fill

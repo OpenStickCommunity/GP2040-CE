@@ -26,9 +26,6 @@
 #define GPIO_PIN_20 GpioAction::BUTTON_PRESS_R1     // R1     | RB     | R       | R1       | 6      | P3     |
 #define GPIO_PIN_21 GpioAction::BUTTON_PRESS_FN     // Hotkey Function                                        |
 
-#define BOARD_LEDS_PIN 12
-#define LED_BRIGHTNESS_MAXIMUM 50
-
 // Keyboard Mapping Configuration
 //                                            // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
 #define KEY_DPAD_UP     HID_KEY_ARROW_UP      // UP     | UP     | UP      | UP       | UP     | UP     |

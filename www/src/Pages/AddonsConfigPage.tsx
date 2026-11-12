@@ -1,6 +1,12 @@
 import { useContext, useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { Formik, FormikErrors, FormikHandlers, FormikHelpers, useFormikContext } from 'formik';
+import {
+	Formik,
+	FormikErrors,
+	FormikHandlers,
+	FormikHelpers,
+	useFormikContext,
+} from 'formik';
 import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
 
@@ -23,16 +29,23 @@ import DualDirection, {
 	dualDirectionScheme,
 	dualDirectionState,
 } from '../Addons/DualDirection';
+import I2CAnalog1115, {
+	i2cAnalogScheme as i2cAnalog1115Scheme,
+	i2cAnalogState as i2cAnalog1115State,
+} from '../Addons/I2CAnalog1115';
 import I2CAnalog1219, {
-	i2cAnalogScheme,
-	i2cAnalogState,
+	i2cAnalogScheme as i2cAnalog1219Scheme,
+	i2cAnalogState as i2cAnalog1219State,
 } from '../Addons/I2CAnalog1219';
 import OnBoardLed, {
 	onBoardLedScheme,
 	onBoardLedState,
 } from '../Addons/OnBoardLed';
 import Reverse, { reverseScheme, reverseState } from '../Addons/Reverse';
-import SOCD, { socdScheme, socdState } from '../Addons/SOCD';
+import ProfileSlider, {
+	profileSliderScheme,
+	profileSliderState,
+} from '../Addons/ProfileSlider';
 import Tilt, { tiltScheme, tiltState } from '../Addons/Tilt';
 import Turbo, { turboScheme, turboState } from '../Addons/Turbo';
 import Wii, { wiiScheme, wiiState } from '../Addons/Wii';
@@ -77,11 +90,12 @@ const schema = yup.object().shape({
 	...onBoardLedScheme,
 	...turboScheme,
 	...reverseScheme,
-	...i2cAnalogScheme,
+	...i2cAnalog1115Scheme,
+	...i2cAnalog1219Scheme,
 	...dualDirectionScheme,
 	...tiltScheme,
 	...buzzerScheme,
-	...socdScheme,
+	...profileSliderScheme,
 	...wiiScheme,
 	...focusModeScheme,
 	...keyboardScheme,
@@ -100,11 +114,12 @@ export const DEFAULT_VALUES = {
 	...onBoardLedState,
 	...turboState,
 	...reverseState,
-	...i2cAnalogState,
+	...i2cAnalog1115State,
+	...i2cAnalog1219State,
 	...dualDirectionState,
 	...tiltState,
 	...buzzerState,
-	...socdState,
+	...profileSliderState,
 	...wiiState,
 	...snesState,
 	...tg16State,
@@ -124,12 +139,13 @@ const ADDONS = [
 	Analog,
 	Turbo,
 	Reverse,
+	I2CAnalog1115,
 	I2CAnalog1219,
 	Analog1256,
 	DualDirection,
 	Tilt,
 	Buzzer,
-	SOCD,
+	ProfileSlider,
 	Wii,
 	SNES,
 	TG16,
@@ -166,7 +182,8 @@ const FormContext = ({ setStoredData }) => {
 
 const sanitizeData = (values) => {
 	for (const prop in Object.keys(values).filter(
-		(key) => !!!key.includes('keyboardHostMap'),
+		(key) =>
+			!!!key.includes('keyboardHostMap') && key !== 'heTriggerSwitchTravel',
 	)) {
 		if (!!values[prop]) values[prop] = parseInt(values[prop]);
 	}
@@ -205,13 +222,7 @@ export default function AddonsConfigPage() {
 
 	const onSuccess = async (values: typeof DEFAULT_VALUES) => {
 		const flattened = flattenObject(storedData);
-
-		// Convert turbo LED color if available
-		const data = {
-			...values,
-			turboLedColor: hexToInt(values.turboLedColor || '#000000'),
-		};
-		const valuesSchema = schema.cast(data); // Strip invalid values
+		const valuesSchema = schema.cast(values); // Strip invalid values
 
 		// Compare what's changed and set it to resultObject
 		let resultObject = {};

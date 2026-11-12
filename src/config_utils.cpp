@@ -11,6 +11,7 @@
 #include "BoardConfig.h"
 #include "GamepadConfig.h"
 #include "version.h"
+#include "advanced_socd.h"
 #include "addons/analog.h"
 #include "addons/board_led.h"
 #include "addons/bootsel_button.h"
@@ -18,6 +19,7 @@
 #include "addons/dualdirectional.h"
 #include "addons/tilt.h"
 #include "addons/focus_mode.h"
+#include "addons/i2canalog1115.h"
 #include "addons/i2canalog1219.h"
 #include "addons/display.h"
 #include "addons/keyboard_host.h"
@@ -25,7 +27,7 @@
 #include "addons/pleds.h"
 #include "addons/reactiveleds.h"
 #include "addons/reverse.h"
-#include "addons/slider_socd.h"
+#include "addons/slider_profile.h"
 #include "addons/spi_analog_ads1256.h"
 #include "addons/turbo.h"
 #include "addons/wiiext.h"
@@ -146,6 +148,103 @@
 #ifndef DEFAULT_PS4_ID_MODE
     #define DEFAULT_PS4_ID_MODE PS4_ID_CONSOLE
 #endif
+#ifndef DEFAULT_GENERIC_DPAD_MODE
+    #define DEFAULT_GENERIC_DPAD_MODE GENERIC_DPAD_HAT_AND_BUTTONS
+#endif
+
+#ifndef DEFAULT_SWITCH_PRO_CONTROLLER_TYPE
+    #define DEFAULT_SWITCH_PRO_CONTROLLER_TYPE SWITCH_PRO_CONTROLLER_TYPE_PRO
+#endif
+#ifndef DEFAULT_SWITCH_PRO_COLOR_PRESET
+    #define DEFAULT_SWITCH_PRO_COLOR_PRESET SWITCH_PRO_COLOR_STOCK
+#endif
+#ifndef DEFAULT_SWITCH_PRO_BODY_COLOR
+    #define DEFAULT_SWITCH_PRO_BODY_COLOR 0x333333
+#endif
+#ifndef DEFAULT_SWITCH_PRO_BUTTONS_COLOR
+    #define DEFAULT_SWITCH_PRO_BUTTONS_COLOR 0xFFFFFF
+#endif
+#ifndef DEFAULT_SWITCH_PRO_LEFT_GRIP_COLOR
+    #define DEFAULT_SWITCH_PRO_LEFT_GRIP_COLOR 0xEC008C
+#endif
+#ifndef DEFAULT_SWITCH_PRO_RIGHT_GRIP_COLOR
+    #define DEFAULT_SWITCH_PRO_RIGHT_GRIP_COLOR 0x00FF00
+#endif
+#ifndef DEFAULT_SWITCH_PRO_JOYCON_COLOR_PRESET
+    #define DEFAULT_SWITCH_PRO_JOYCON_COLOR_PRESET SWITCH_PRO_JOYCON_COLOR_GREY
+#endif
+#ifndef DEFAULT_SWITCH_PRO_JOYCON_LEFT_BODY_COLOR
+    #define DEFAULT_SWITCH_PRO_JOYCON_LEFT_BODY_COLOR 0x0AB9E6
+#endif
+#ifndef DEFAULT_SWITCH_PRO_JOYCON_LEFT_BUTTONS_COLOR
+    #define DEFAULT_SWITCH_PRO_JOYCON_LEFT_BUTTONS_COLOR 0x0F0F0F
+#endif
+#ifndef DEFAULT_SWITCH_PRO_JOYCON_RIGHT_BODY_COLOR
+    #define DEFAULT_SWITCH_PRO_JOYCON_RIGHT_BODY_COLOR 0xFF3C28
+#endif
+#ifndef DEFAULT_SWITCH_PRO_JOYCON_RIGHT_BUTTONS_COLOR
+    #define DEFAULT_SWITCH_PRO_JOYCON_RIGHT_BUTTONS_COLOR 0x0F0F0F
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_IDENTITY
+    #define DEFAULT_SWITCH2_PRO_IDENTITY SWITCH2_PRO_IDENTITY_PRO
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_COLOR_PRESET
+    #define DEFAULT_SWITCH2_PRO_COLOR_PRESET SWITCH2_PRO_COLOR_STOCK
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_BODY_COLOR
+    #define DEFAULT_SWITCH2_PRO_BODY_COLOR 0x232323
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_BUTTONS_COLOR
+    #define DEFAULT_SWITCH2_PRO_BUTTONS_COLOR 0xA0A0A0
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_HIGHLIGHT_COLOR
+    #define DEFAULT_SWITCH2_PRO_HIGHLIGHT_COLOR 0xE6E6E6
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_GRIP_COLOR
+    #define DEFAULT_SWITCH2_PRO_GRIP_COLOR 0x323232
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_LEFT_SHOULDER_COLOR
+    #define DEFAULT_SWITCH2_PRO_LEFT_SHOULDER_COLOR 0xE6E6E6
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_RIGHT_SHOULDER_COLOR
+    #define DEFAULT_SWITCH2_PRO_RIGHT_SHOULDER_COLOR 0xE6E6E6
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_STICK_COLOR
+    #define DEFAULT_SWITCH2_PRO_STICK_COLOR 0x232323
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_LEFT_RING_COLOR
+    #define DEFAULT_SWITCH2_PRO_LEFT_RING_COLOR 0xE6E6E6
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_RIGHT_RING_COLOR
+    #define DEFAULT_SWITCH2_PRO_RIGHT_RING_COLOR 0xE6E6E6
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_JOYCON2_COLOR_PRESET
+    #define DEFAULT_SWITCH2_PRO_JOYCON2_COLOR_PRESET SWITCH2_PRO_JOYCON2_COLOR_STOCK
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_JOYCON2_LEFT_BODY_COLOR
+    #define DEFAULT_SWITCH2_PRO_JOYCON2_LEFT_BODY_COLOR 0x323232
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_JOYCON2_LEFT_BUTTONS_COLOR
+    #define DEFAULT_SWITCH2_PRO_JOYCON2_LEFT_BUTTONS_COLOR 0xAAAAAA
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_JOYCON2_LEFT_ACCENT_COLOR
+    #define DEFAULT_SWITCH2_PRO_JOYCON2_LEFT_ACCENT_COLOR 0x9BE1E6
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_JOYCON2_LEFT_STICK_COLOR
+    #define DEFAULT_SWITCH2_PRO_JOYCON2_LEFT_STICK_COLOR 0x323232
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_JOYCON2_RIGHT_BODY_COLOR
+    #define DEFAULT_SWITCH2_PRO_JOYCON2_RIGHT_BODY_COLOR 0x323232
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_JOYCON2_RIGHT_BUTTONS_COLOR
+    #define DEFAULT_SWITCH2_PRO_JOYCON2_RIGHT_BUTTONS_COLOR 0xAAAAAA
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_JOYCON2_RIGHT_ACCENT_COLOR
+    #define DEFAULT_SWITCH2_PRO_JOYCON2_RIGHT_ACCENT_COLOR 0xFF8C5F
+#endif
+#ifndef DEFAULT_SWITCH2_PRO_JOYCON2_RIGHT_STICK_COLOR
+    #define DEFAULT_SWITCH2_PRO_JOYCON2_RIGHT_STICK_COLOR 0x323232
+#endif
 
 #ifndef DEFAULT_USB_DESC_OVERRIDE
    #define DEFAULT_USB_DESC_OVERRIDE false
@@ -177,6 +276,10 @@
 
 #ifndef MINI_MENU_GAMEPAD_INPUT
    #define MINI_MENU_GAMEPAD_INPUT 0
+#endif
+
+#ifndef GPIO_INVERTED_PIN_MASK
+    #define GPIO_INVERTED_PIN_MASK 0
 #endif
 
 #ifndef GPIO_PIN_00
@@ -269,6 +372,60 @@
 #ifndef GPIO_PIN_29
     #define GPIO_PIN_29 GpioAction::NONE
 #endif
+#ifndef GPIO_PIN_30
+    #define GPIO_PIN_30 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_31
+    #define GPIO_PIN_31 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_32
+    #define GPIO_PIN_32 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_33
+    #define GPIO_PIN_33 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_34
+    #define GPIO_PIN_34 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_35
+    #define GPIO_PIN_35 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_36
+    #define GPIO_PIN_36 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_37
+    #define GPIO_PIN_37 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_38
+    #define GPIO_PIN_38 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_39
+    #define GPIO_PIN_39 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_40
+    #define GPIO_PIN_40 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_41
+    #define GPIO_PIN_41 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_42
+    #define GPIO_PIN_42 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_43
+    #define GPIO_PIN_43 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_44
+    #define GPIO_PIN_44 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_45
+    #define GPIO_PIN_45 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_46
+    #define GPIO_PIN_46 GpioAction::NONE
+#endif
+#ifndef GPIO_PIN_47
+    #define GPIO_PIN_47 GpioAction::NONE
+#endif
 
 #define MAX_PROFILES (uint8_t)6
 
@@ -294,6 +451,23 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.gamepadOptions, inputMode, DEFAULT_INPUT_MODE);
     INIT_UNSET_PROPERTY(config.gamepadOptions, dpadMode, DEFAULT_DPAD_MODE);
     INIT_UNSET_PROPERTY(config.gamepadOptions, socdMode, DEFAULT_SOCD_MODE);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, advancedSOCDEnabled, !!ADVANCED_SOCD_ENABLED);
+    const bool socdSlotEnabled[ADVANCED_SOCD_SLOT_COUNT] = {
+        !!ADVANCED_SOCD_1_ENABLED, !!ADVANCED_SOCD_2_ENABLED, !!ADVANCED_SOCD_3_ENABLED, !!ADVANCED_SOCD_4_ENABLED };
+    const SOCDAxisMode socdSlotUpDown[ADVANCED_SOCD_SLOT_COUNT] = {
+        ADVANCED_SOCD_1_UP_DOWN, ADVANCED_SOCD_2_UP_DOWN, ADVANCED_SOCD_3_UP_DOWN, ADVANCED_SOCD_4_UP_DOWN };
+    const SOCDAxisMode socdSlotLeftRight[ADVANCED_SOCD_SLOT_COUNT] = {
+        ADVANCED_SOCD_1_LEFT_RIGHT, ADVANCED_SOCD_2_LEFT_RIGHT, ADVANCED_SOCD_3_LEFT_RIGHT, ADVANCED_SOCD_4_LEFT_RIGHT };
+    const char* socdSlotName[ADVANCED_SOCD_SLOT_COUNT] = {
+        ADVANCED_SOCD_1_NAME, ADVANCED_SOCD_2_NAME, ADVANCED_SOCD_3_NAME, ADVANCED_SOCD_4_NAME };
+    for (uint8_t socdSlotIndex = 0; socdSlotIndex < ADVANCED_SOCD_SLOT_COUNT; socdSlotIndex++) {
+        AdvancedSOCDSlot& socdSlot = config.gamepadOptions.advancedSOCDSlots[socdSlotIndex];
+        INIT_UNSET_PROPERTY(socdSlot, enabled, socdSlotEnabled[socdSlotIndex]);
+        INIT_UNSET_PROPERTY(socdSlot, upDownMode, socdSlotUpDown[socdSlotIndex]);
+        INIT_UNSET_PROPERTY(socdSlot, leftRightMode, socdSlotLeftRight[socdSlotIndex]);
+        INIT_UNSET_PROPERTY_STR(socdSlot, name, socdSlotName[socdSlotIndex]);
+    }
+    config.gamepadOptions.advancedSOCDSlots_count = ADVANCED_SOCD_SLOT_COUNT;
     INIT_UNSET_PROPERTY(config.gamepadOptions, invertXAxis, false);
     INIT_UNSET_PROPERTY(config.gamepadOptions, switchTpShareForDs4, false);
     INIT_UNSET_PROPERTY(config.gamepadOptions, lockHotkeys, DEFAULT_LOCK_HOTKEYS);
@@ -313,6 +487,38 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.gamepadOptions, ps5AuthType, DEFAULT_PS5AUTHENTICATION_TYPE);
     INIT_UNSET_PROPERTY(config.gamepadOptions, xinputAuthType, DEFAULT_XINPUTAUTHENTICATION_TYPE);
     INIT_UNSET_PROPERTY(config.gamepadOptions, ps4ControllerIDMode, DEFAULT_PS4_ID_MODE);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switchProControllerType, DEFAULT_SWITCH_PRO_CONTROLLER_TYPE);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switchProColorPreset, DEFAULT_SWITCH_PRO_COLOR_PRESET);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switchProBodyColor, DEFAULT_SWITCH_PRO_BODY_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switchProButtonsColor, DEFAULT_SWITCH_PRO_BUTTONS_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switchProLeftGripColor, DEFAULT_SWITCH_PRO_LEFT_GRIP_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switchProRightGripColor, DEFAULT_SWITCH_PRO_RIGHT_GRIP_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switchProJoyConColorPreset, DEFAULT_SWITCH_PRO_JOYCON_COLOR_PRESET);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switchProJoyConLeftBodyColor, DEFAULT_SWITCH_PRO_JOYCON_LEFT_BODY_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switchProJoyConLeftButtonsColor, DEFAULT_SWITCH_PRO_JOYCON_LEFT_BUTTONS_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switchProJoyConRightBodyColor, DEFAULT_SWITCH_PRO_JOYCON_RIGHT_BODY_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switchProJoyConRightButtonsColor, DEFAULT_SWITCH_PRO_JOYCON_RIGHT_BUTTONS_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProIdentity, DEFAULT_SWITCH2_PRO_IDENTITY);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProColorPreset, DEFAULT_SWITCH2_PRO_COLOR_PRESET);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProBodyColor, DEFAULT_SWITCH2_PRO_BODY_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProButtonsColor, DEFAULT_SWITCH2_PRO_BUTTONS_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProHighlightColor, DEFAULT_SWITCH2_PRO_HIGHLIGHT_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProGripColor, DEFAULT_SWITCH2_PRO_GRIP_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProLeftShoulderColor, DEFAULT_SWITCH2_PRO_LEFT_SHOULDER_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProRightShoulderColor, DEFAULT_SWITCH2_PRO_RIGHT_SHOULDER_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProStickColor, DEFAULT_SWITCH2_PRO_STICK_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProLeftRingColor, DEFAULT_SWITCH2_PRO_LEFT_RING_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProRightRingColor, DEFAULT_SWITCH2_PRO_RIGHT_RING_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProJoyCon2ColorPreset, DEFAULT_SWITCH2_PRO_JOYCON2_COLOR_PRESET);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProJoyCon2LeftBodyColor, DEFAULT_SWITCH2_PRO_JOYCON2_LEFT_BODY_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProJoyCon2LeftButtonsColor, DEFAULT_SWITCH2_PRO_JOYCON2_LEFT_BUTTONS_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProJoyCon2LeftAccentColor, DEFAULT_SWITCH2_PRO_JOYCON2_LEFT_ACCENT_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProJoyCon2LeftStickColor, DEFAULT_SWITCH2_PRO_JOYCON2_LEFT_STICK_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProJoyCon2RightBodyColor, DEFAULT_SWITCH2_PRO_JOYCON2_RIGHT_BODY_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProJoyCon2RightButtonsColor, DEFAULT_SWITCH2_PRO_JOYCON2_RIGHT_BUTTONS_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProJoyCon2RightAccentColor, DEFAULT_SWITCH2_PRO_JOYCON2_RIGHT_ACCENT_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, switch2ProJoyCon2RightStickColor, DEFAULT_SWITCH2_PRO_JOYCON2_RIGHT_STICK_COLOR);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, genericDpadMode, DEFAULT_GENERIC_DPAD_MODE);
     INIT_UNSET_PROPERTY(config.gamepadOptions, usbDescOverride, DEFAULT_USB_DESC_OVERRIDE);
     INIT_UNSET_PROPERTY_STR(config.gamepadOptions, usbDescProduct, DEFAULT_USB_DESC_PRODUCT);
     INIT_UNSET_PROPERTY_STR(config.gamepadOptions, usbDescManufacturer, DEFAULT_USB_DESC_MANUFACTURER);
@@ -412,6 +618,32 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.keyboardMapping, keyButtonA1, KEY_BUTTON_A1);
     INIT_UNSET_PROPERTY(config.keyboardMapping, keyButtonA2, KEY_BUTTON_A2);
 
+    const auto initPinInversion = [](GpioMappings& mappings) {
+        if (mappings.has_pinInversionEnabled)
+            return;
+        const uint64_t invertedPinMask = GPIO_INVERTED_PIN_MASK;
+        mappings.pinInversionEnabled = invertedPinMask != 0;
+        mappings.has_pinInversionEnabled = true;
+        mappings.invertedPins_count = 0;
+        for (uint32_t pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
+            if (invertedPinMask & (uint64_t{1} << pin))
+                mappings.invertedPins[mappings.invertedPins_count++] = pin;
+        }
+    };
+    initPinInversion(config.gpioMappings);
+    INIT_UNSET_PROPERTY(config.gpioMappings, socdModeOverride, false);
+    INIT_UNSET_PROPERTY(config.gpioMappings, socdMode, DEFAULT_SOCD_MODE);
+
+    for (GpioMappings& profile : config.profileOptions.gpioMappingsSets) {
+        if (!profile.has_keyboardMapping) {
+            profile.keyboardMapping = config.keyboardMapping;
+            profile.has_keyboardMapping = true;
+        }
+        initPinInversion(profile);
+        INIT_UNSET_PROPERTY(profile, socdModeOverride, false);
+        INIT_UNSET_PROPERTY(profile, socdMode, DEFAULT_SOCD_MODE);
+    }
+
     // displayOptions
     INIT_UNSET_PROPERTY(config.displayOptions, enabled, !!HAS_I2C_DISPLAY);
     INIT_UNSET_PROPERTY(config.displayOptions, deprecatedI2cBlock, (DISPLAY_I2C_BLOCK == i2c0) ? 0 : 1);
@@ -435,6 +667,12 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         config.displayOptions.buttonLayoutRight = BUTTON_LAYOUT_RIGHT;
         }
 
+    // The old Custom layouts (BUTTON_LAYOUT_CUSTOMA = 12, BUTTON_LAYOUT_CUSTOMB = 16)
+    if (config.displayOptions.buttonLayout == 12)
+        config.displayOptions.buttonLayout = BUTTON_LAYOUT;
+    if (config.displayOptions.buttonLayoutRight == 16)
+        config.displayOptions.buttonLayoutRight = BUTTON_LAYOUT_RIGHT;
+
     INIT_UNSET_PROPERTY(config.displayOptions, turnOffWhenSuspended, DISPLAY_TURN_OFF_WHEN_SUSPENDED);
     INIT_UNSET_PROPERTY(config.displayOptions, inputMode, DISPLAY_INPUT_MODE);
     INIT_UNSET_PROPERTY(config.displayOptions, turboMode, DISPLAY_TURBO_MODE);
@@ -447,25 +685,29 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.displayOptions, inputHistoryCol, INPUT_HISTORY_COL);
     INIT_UNSET_PROPERTY(config.displayOptions, inputHistoryRow, INPUT_HISTORY_ROW);
 
-    ButtonLayoutParamsLeft& paramsLeft = config.displayOptions.buttonLayoutCustomOptions.paramsLeft;
-    INIT_UNSET_PROPERTY(paramsLeft, layout, BUTTON_LAYOUT);
-    INIT_UNSET_PROPERTY(paramsLeft.common, startX, 8);
-    INIT_UNSET_PROPERTY(paramsLeft.common, startY, 28);
-    INIT_UNSET_PROPERTY(paramsLeft.common, buttonRadius, 8);
-    INIT_UNSET_PROPERTY(paramsLeft.common, buttonPadding, 2);
-
-    ButtonLayoutParamsRight& paramsRight = config.displayOptions.buttonLayoutCustomOptions.paramsRight;
-    INIT_UNSET_PROPERTY(paramsRight, layout, BUTTON_LAYOUT_RIGHT);
-    INIT_UNSET_PROPERTY(paramsRight.common, startX, 8);
-    INIT_UNSET_PROPERTY(paramsRight.common, startY, 28);
-    INIT_UNSET_PROPERTY(paramsRight.common, buttonRadius, 8);
-    INIT_UNSET_PROPERTY(paramsRight.common, buttonPadding, 2);
-
     INIT_UNSET_PROPERTY(config.displayOptions, splashMode, SPLASH_MODE);
     INIT_UNSET_PROPERTY(config.displayOptions, splashChoice, SPLASH_CHOICE);
     INIT_UNSET_PROPERTY(config.displayOptions, splashDuration, SPLASH_DURATION);
 	const unsigned char defaultSplash[] = { DEFAULT_SPLASH };
     INIT_UNSET_PROPERTY_BYTES(config.displayOptions, splashImage, defaultSplash);
+    INIT_UNSET_PROPERTY(config.displayOptions, splashTextEnabled, !!SPLASH_TEXT_ENABLED);
+    INIT_UNSET_PROPERTY(config.displayOptions, splashTextDuration, SPLASH_TEXT_DURATION);
+    INIT_UNSET_PROPERTY(config.displayOptions, splashTextFirst, !!SPLASH_TEXT_FIRST);
+    INIT_UNSET_PROPERTY(config.displayOptions, splashTextLineCount, SPLASH_TEXT_LINE_COUNT);
+    INIT_UNSET_PROPERTY_STR(config.displayOptions, splashTextLine1, SPLASH_TEXT_LINE1);
+    INIT_UNSET_PROPERTY_STR(config.displayOptions, splashTextLine2, SPLASH_TEXT_LINE2);
+    INIT_UNSET_PROPERTY_STR(config.displayOptions, splashTextLine3, SPLASH_TEXT_LINE3);
+
+    if (!config.displayOptions.has_customLayoutA || config.displayOptions.customLayoutA.size == 0) {
+        LayoutManager::getInstance().encodeCustomDefined(config.displayOptions.customLayoutA.bytes, config.displayOptions.customLayoutA.size,
+            sizeof(config.displayOptions.customLayoutA.bytes), LayoutManager::getInstance().getLeftLayout(BUTTON_LAYOUT));
+        config.displayOptions.has_customLayoutA = true;
+    }
+    if (!config.displayOptions.has_customLayoutB || config.displayOptions.customLayoutB.size == 0) {
+        LayoutManager::getInstance().encodeCustomDefined(config.displayOptions.customLayoutB.bytes, config.displayOptions.customLayoutB.size,
+            sizeof(config.displayOptions.customLayoutB.bytes), LayoutManager::getInstance().getRightLayout(BUTTON_LAYOUT_RIGHT));
+        config.displayOptions.has_customLayoutB = true;
+    }
     INIT_UNSET_PROPERTY(config.displayOptions, size, DISPLAY_SIZE);
     INIT_UNSET_PROPERTY(config.displayOptions, flip, DISPLAY_FLIP);
     INIT_UNSET_PROPERTY(config.displayOptions, invert, !!DISPLAY_INVERT);
@@ -507,7 +749,6 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.ledOptions, ledLayout, BUTTON_LAYOUT);
     INIT_UNSET_PROPERTY(config.ledOptions, ledsPerButton, LEDS_PER_PIXEL);
     INIT_UNSET_PROPERTY(config.ledOptions, brightnessMaximum, LED_BRIGHTNESS_MAXIMUM);
-    INIT_UNSET_PROPERTY(config.ledOptions, brightnessSteps, LED_BRIGHTNESS_STEPS);
     INIT_UNSET_PROPERTY(config.ledOptions, turnOffWhenSuspended, LEDS_TURN_OFF_WHEN_SUSPENDED);
 
     INIT_UNSET_PROPERTY(config.ledOptions, indexUp, LEDS_DPAD_UP);
@@ -534,75 +775,140 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.ledOptions, pledPin2, PLED2_PIN);
     INIT_UNSET_PROPERTY(config.ledOptions, pledPin3, PLED3_PIN);
     INIT_UNSET_PROPERTY(config.ledOptions, pledPin4, PLED4_PIN);
-    INIT_UNSET_PROPERTY(config.ledOptions, pledColor, static_cast<uint32_t>(PLED_COLOR.r) << 16 | static_cast<uint32_t>(PLED_COLOR.g) << 8 | static_cast<uint32_t>(PLED_COLOR.b));
-    // hacky, but previous versions used PLED1_PIN for either PWM GPIO pins or RGB indexes
-    // so we're just going to copy the defined values into both locations and have the migration
-    // to pin mappings sort it out
-    INIT_UNSET_PROPERTY(config.ledOptions, pledIndex1, PLED1_PIN);
-    INIT_UNSET_PROPERTY(config.ledOptions, pledIndex2, PLED2_PIN);
-    INIT_UNSET_PROPERTY(config.ledOptions, pledIndex3, PLED3_PIN);
-    INIT_UNSET_PROPERTY(config.ledOptions, pledIndex4, PLED4_PIN);
-
-    INIT_UNSET_PROPERTY(config.ledOptions, caseRGBType, CASE_RGB_TYPE);
-    INIT_UNSET_PROPERTY(config.ledOptions, caseRGBIndex, CASE_RGB_INDEX);
-    INIT_UNSET_PROPERTY(config.ledOptions, caseRGBCount, CASE_RGB_COUNT);
+    // lightEntries
+    INIT_UNSET_PROPERTY(config.ledOptions, lightClusterDataInitialised, false);
 
     // animationOptions
-    INIT_UNSET_PROPERTY(config.animationOptions, baseAnimationIndex, LEDS_BASE_ANIMATION_INDEX);
-    INIT_UNSET_PROPERTY(config.animationOptions, brightness, LEDS_BRIGHTNESS);
-    INIT_UNSET_PROPERTY(config.animationOptions, staticColorIndex, LEDS_STATIC_COLOR_INDEX);
-    INIT_UNSET_PROPERTY(config.animationOptions, buttonColorIndex, LEDS_BUTTON_COLOR_INDEX);
-    INIT_UNSET_PROPERTY(config.animationOptions, chaseCycleTime, LEDS_CHASE_CYCLE_TIME);
-    INIT_UNSET_PROPERTY(config.animationOptions, rainbowCycleTime, LEDS_RAINBOW_CYCLE_TIME);
-    INIT_UNSET_PROPERTY(config.animationOptions, themeIndex, LEDS_THEME_INDEX);
-    INIT_UNSET_PROPERTY(config.animationOptions, hasCustomTheme, false);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeUp, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeDown, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeLeft, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeRight, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeB1, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeB2, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeB3, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeB4, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeL1, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeR1, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeL2, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeR2, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeS1, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeS2, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeL3, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeR3, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeA1, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeA2, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeUpPressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeDownPressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeLeftPressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeRightPressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeB1Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeB2Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeB3Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeB4Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeL1Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeR1Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeL2Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeR2Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeS1Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeS2Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeL3Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeR3Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeA1Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeA2Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, buttonPressColorCooldownTimeInMs, LEDS_PRESS_COLOR_COOLDOWN_TIME);
-    INIT_UNSET_PROPERTY(config.animationOptions, ambientLightEffectsCountIndex, AMBIENT_LIGHT_EFFECT);
-    INIT_UNSET_PROPERTY(config.animationOptions, alStaticColorBrightnessCustomX, AMBIENT_STATIC_COLOR_BRIGHTNESS);
-    INIT_UNSET_PROPERTY(config.animationOptions, alGradientBrightnessCustomX, AMBIENT_GRADIENT_COLOR_BRIGHTNESS);
-    INIT_UNSET_PROPERTY(config.animationOptions, alChaseBrightnessCustomX, AMBIENT_CHASE_COLOR_BRIGHTNESS);
-    INIT_UNSET_PROPERTY(config.animationOptions, alStaticBrightnessCustomThemeX, AMBIENT_CUSTOM_THEME_BRIGHTNESS);
-    INIT_UNSET_PROPERTY(config.animationOptions, ambientLightGradientSpeed, AMBIENT_GRADIENT_SPEED);
-    INIT_UNSET_PROPERTY(config.animationOptions, ambientLightChaseSpeed, AMBIENT_CHASE_SPEED);
-    INIT_UNSET_PROPERTY(config.animationOptions, ambientLightBreathSpeed, AMBIENT_BREATH_SPEED);
-    INIT_UNSET_PROPERTY(config.animationOptions, alCustomStaticThemeIndex, AMBIENT_CUSTOM_THEME);
-    INIT_UNSET_PROPERTY(config.animationOptions, alCustomStaticColorIndex, AMBIENT_STATIC_COLOR);
+    AnimationStation& AnimStation = AnimationStation::getInstance();
+    int brightSteps = AnimStation.getBrightnessSteps(); //cache locally to avoid false positive compiler warning
+    if(LEDS_BRIGHTNESS >= 0 && LEDS_BRIGHTNESS <= brightSteps) {
+        INIT_UNSET_PROPERTY(config.animationOptions, brightness, LEDS_BRIGHTNESS);
+    } else {
+        INIT_UNSET_PROPERTY(config.animationOptions, brightness, AnimStation.getBrightnessSteps());
+    }
+    INIT_UNSET_PROPERTY(config.animationOptions, baseProfileIndex, 0);
+    INIT_UNSET_PROPERTY(config.animationOptions, autoDisableTime, LEDS_AUTO_DISABLE_TIME);
+
+    // Fresh Install, profiles are not set
+    if ( config.animationOptions.profiles_count == 0 ) {
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bEnabled, LEDS_PROFILE0_ENABLED);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], basePressedCycleTime, LEDS_PROFILE0_PRESSED_CYCLE_TIME);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], baseCycleTime, LEDS_PROFILE0_NONPRESSED_CYCLE_TIME);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], baseCaseCycleTime, LEDS_PROFILE0_CASE_CYCLE_TIME);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], nonPressedSpecialColor, LEDS_PROFILE0_SPECIAL_COLOR_NONPRESSED.value(LED_FORMAT_RGB, 1.0f));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], pressedSpecialColor, LEDS_PROFILE0_SPECIAL_COLOR_PRESSED.value(LED_FORMAT_RGB, 1.0f));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], caseSpecialColor, LEDS_PROFILE0_SPECIAL_COLOR_CASE.value(LED_FORMAT_RGB, 1.0f));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bNonPressedSpecialColorIsRainbow, LEDS_PROFILE0_SPECIAL_COLOR_IS_RAINBOW_NONPRESSED);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bPressedSpecialColorIsRainbow, LEDS_PROFILE0_SPECIAL_COLOR_IS_RAINBOW_PRESSED);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bCaseSpecialColorIsRainbow, LEDS_PROFILE0_SPECIAL_COLOR_IS_RAINBOW_CASE);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], effectContextParam,  (LEDS_PROFILE0_CONTEXT_PARAM_NONPRESSED & 0xFF) | 
+                                                                                    ((LEDS_PROFILE0_CONTEXT_PARAM_PRESSED & 0xFF)<<8) |
+                                                                                    ((LEDS_PROFILE0_CONTEXT_PARAM_CASE & 0xFF)<<16));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], baseNonPressedEffect, LEDS_PROFILE0_BASE_ANIMATION_INDEX);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], basePressedEffect, LEDS_PROFILE0_PRESSED_ANIMATION_INDEX);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], baseCaseEffect, LEDS_PROFILE0_CASE_ANIMATION_INDEX);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[0], bUseCaseLightsInPressedAnimations, LEDS_PROFILE0_USE_CASE_IN_PRESSED);
+        unsigned char localBuffer[NUM_BANK0_GPIOS];
+        memset(localBuffer, LEDS_PROFILE0_STATIC_COLOR_UNPRESSED, NUM_BANK0_GPIOS);
+        INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[0], notPressedStaticColors, localBuffer);
+        memset(localBuffer, LEDS_PROFILE0_STATIC_COLOR_PRESSED, NUM_BANK0_GPIOS);
+        INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[0], pressedStaticColors, localBuffer);
+        unsigned char localCaseBuffer[MAX_NON_BUTTON_LIGHT_COLOR_INDEXES];
+        memset(localCaseBuffer, LEDS_PROFILE0_STATIC_COLOR_CASE, NUM_BANK0_GPIOS);
+        INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[0], nonButtonStaticColors, localCaseBuffer);
+
+        // Set LED Profile 1
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], bEnabled, LEDS_PROFILE1_ENABLED);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], basePressedCycleTime, LEDS_PROFILE1_PRESSED_CYCLE_TIME);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], baseCycleTime, LEDS_PROFILE1_NONPRESSED_CYCLE_TIME);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], baseCaseCycleTime, LEDS_PROFILE1_CASE_CYCLE_TIME);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], nonPressedSpecialColor, LEDS_PROFILE1_SPECIAL_COLOR_NONPRESSED.value(LED_FORMAT_RGB, 1.0f));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], pressedSpecialColor, LEDS_PROFILE1_SPECIAL_COLOR_PRESSED.value(LED_FORMAT_RGB, 1.0f));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], caseSpecialColor, LEDS_PROFILE1_SPECIAL_COLOR_CASE.value(LED_FORMAT_RGB, 1.0f));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], bNonPressedSpecialColorIsRainbow, LEDS_PROFILE1_SPECIAL_COLOR_IS_RAINBOW_NONPRESSED);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], bPressedSpecialColorIsRainbow, LEDS_PROFILE1_SPECIAL_COLOR_IS_RAINBOW_PRESSED);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], bCaseSpecialColorIsRainbow, LEDS_PROFILE1_SPECIAL_COLOR_IS_RAINBOW_CASE);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], effectContextParam,  (LEDS_PROFILE1_CONTEXT_PARAM_NONPRESSED & 0xFF) | 
+                                                                                    ((LEDS_PROFILE1_CONTEXT_PARAM_PRESSED & 0xFF)<<8) |
+                                                                                    ((LEDS_PROFILE1_CONTEXT_PARAM_CASE & 0xFF)<<16));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], baseNonPressedEffect, LEDS_PROFILE1_BASE_ANIMATION_INDEX);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], basePressedEffect, LEDS_PROFILE1_PRESSED_ANIMATION_INDEX);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], baseCaseEffect, LEDS_PROFILE1_CASE_ANIMATION_INDEX);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[1], bUseCaseLightsInPressedAnimations, LEDS_PROFILE1_USE_CASE_IN_PRESSED);
+        memset(localBuffer, LEDS_PROFILE1_STATIC_COLOR_UNPRESSED, NUM_BANK0_GPIOS);
+        INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[1], notPressedStaticColors, localBuffer);
+        memset(localBuffer, LEDS_PROFILE1_STATIC_COLOR_PRESSED, NUM_BANK0_GPIOS);
+        INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[1], pressedStaticColors, localBuffer);
+        memset(localCaseBuffer, LEDS_PROFILE1_STATIC_COLOR_CASE, NUM_BANK0_GPIOS);
+        INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[1], nonButtonStaticColors, localCaseBuffer);
+
+        // Set LED Profile 2
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], bEnabled, LEDS_PROFILE2_ENABLED);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], basePressedCycleTime, LEDS_PROFILE2_PRESSED_CYCLE_TIME);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], baseCycleTime, LEDS_PROFILE2_NONPRESSED_CYCLE_TIME);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], baseCaseCycleTime, LEDS_PROFILE2_CASE_CYCLE_TIME);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], nonPressedSpecialColor, LEDS_PROFILE2_SPECIAL_COLOR_NONPRESSED.value(LED_FORMAT_RGB, 1.0f));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], pressedSpecialColor, LEDS_PROFILE2_SPECIAL_COLOR_NONPRESSED.value(LED_FORMAT_RGB, 1.0f));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], caseSpecialColor, LEDS_PROFILE2_SPECIAL_COLOR_NONPRESSED.value(LED_FORMAT_RGB, 1.0f));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], bNonPressedSpecialColorIsRainbow, LEDS_PROFILE2_SPECIAL_COLOR_IS_RAINBOW_NONPRESSED);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], bPressedSpecialColorIsRainbow, LEDS_PROFILE2_SPECIAL_COLOR_IS_RAINBOW_PRESSED);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], bCaseSpecialColorIsRainbow, LEDS_PROFILE2_SPECIAL_COLOR_IS_RAINBOW_CASE);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], effectContextParam,  (LEDS_PROFILE2_CONTEXT_PARAM_NONPRESSED & 0xFF) | 
+                                                                                    ((LEDS_PROFILE2_CONTEXT_PARAM_PRESSED & 0xFF)<<8) |
+                                                                                    ((LEDS_PROFILE2_CONTEXT_PARAM_CASE & 0xFF)<<16));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], baseNonPressedEffect, LEDS_PROFILE2_BASE_ANIMATION_INDEX);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], basePressedEffect, LEDS_PROFILE2_PRESSED_ANIMATION_INDEX);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], baseCaseEffect, LEDS_PROFILE2_CASE_ANIMATION_INDEX);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[2], bUseCaseLightsInPressedAnimations, LEDS_PROFILE2_USE_CASE_IN_PRESSED);
+        memset(localBuffer, LEDS_PROFILE2_STATIC_COLOR_UNPRESSED, NUM_BANK0_GPIOS);    
+        INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[2], notPressedStaticColors, localBuffer);
+        memset(localBuffer, LEDS_PROFILE2_STATIC_COLOR_PRESSED, NUM_BANK0_GPIOS);
+        INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[2], pressedStaticColors, localBuffer);
+        memset(localCaseBuffer, LEDS_PROFILE2_STATIC_COLOR_CASE, NUM_BANK0_GPIOS);
+        INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[2], nonButtonStaticColors, localCaseBuffer);
+
+        // Set LED Profile 3
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], bEnabled, LEDS_PROFILE3_ENABLED);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], basePressedCycleTime, LEDS_PROFILE3_PRESSED_CYCLE_TIME);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], baseCycleTime, LEDS_PROFILE3_NONPRESSED_CYCLE_TIME);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], baseCaseCycleTime, LEDS_PROFILE3_CASE_CYCLE_TIME);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], nonPressedSpecialColor, LEDS_PROFILE3_SPECIAL_COLOR_NONPRESSED.value(LED_FORMAT_RGB, 1.0f));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], pressedSpecialColor, LEDS_PROFILE3_SPECIAL_COLOR_NONPRESSED.value(LED_FORMAT_RGB, 1.0f));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], caseSpecialColor, LEDS_PROFILE3_SPECIAL_COLOR_NONPRESSED.value(LED_FORMAT_RGB, 1.0f));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], bNonPressedSpecialColorIsRainbow, LEDS_PROFILE3_SPECIAL_COLOR_IS_RAINBOW_NONPRESSED);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], bPressedSpecialColorIsRainbow, LEDS_PROFILE3_SPECIAL_COLOR_IS_RAINBOW_PRESSED);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], bCaseSpecialColorIsRainbow, LEDS_PROFILE3_SPECIAL_COLOR_IS_RAINBOW_CASE);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], effectContextParam,  (LEDS_PROFILE3_CONTEXT_PARAM_NONPRESSED & 0xFF) | 
+                                                                                    ((LEDS_PROFILE3_CONTEXT_PARAM_PRESSED & 0xFF)<<8) |
+                                                                                    ((LEDS_PROFILE3_CONTEXT_PARAM_CASE & 0xFF)<<16));
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], baseNonPressedEffect, LEDS_PROFILE3_BASE_ANIMATION_INDEX);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], basePressedEffect, LEDS_PROFILE3_PRESSED_ANIMATION_INDEX);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], baseCaseEffect, LEDS_PROFILE3_CASE_ANIMATION_INDEX);
+        INIT_UNSET_PROPERTY(config.animationOptions.profiles[3], bUseCaseLightsInPressedAnimations, LEDS_PROFILE3_USE_CASE_IN_PRESSED);
+        memset(localBuffer, LEDS_PROFILE3_STATIC_COLOR_UNPRESSED, NUM_BANK0_GPIOS);
+        INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[3], notPressedStaticColors, localBuffer);
+        memset(localBuffer, LEDS_PROFILE3_STATIC_COLOR_PRESSED, NUM_BANK0_GPIOS);
+        INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[3], pressedStaticColors, localBuffer);
+        memset(localCaseBuffer, LEDS_PROFILE3_STATIC_COLOR_CASE, NUM_BANK0_GPIOS);
+        INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[3], nonButtonStaticColors, localCaseBuffer);
+
+        config.animationOptions.profiles_count = MAX_ANIMATION_PROFILES;
+    }
+
+    // Hall Effect button light colors, set outside the fresh install block so older configs get them too.
+    const uint8_t extNotPressedDefaults[MAX_ANIMATION_PROFILES] = {
+        LEDS_PROFILE0_STATIC_COLOR_UNPRESSED, LEDS_PROFILE1_STATIC_COLOR_UNPRESSED,
+        LEDS_PROFILE2_STATIC_COLOR_UNPRESSED, LEDS_PROFILE3_STATIC_COLOR_UNPRESSED };
+    const uint8_t extPressedDefaults[MAX_ANIMATION_PROFILES] = {
+        LEDS_PROFILE0_STATIC_COLOR_PRESSED, LEDS_PROFILE1_STATIC_COLOR_PRESSED,
+        LEDS_PROFILE2_STATIC_COLOR_PRESSED, LEDS_PROFILE3_STATIC_COLOR_PRESSED };
+    unsigned char extBuffer[MAX_EXT_INPUT_LIGHT_COLOR_INDEXES];
+    for (int profileIndex = 0; profileIndex < MAX_ANIMATION_PROFILES; profileIndex++) {
+        memset(extBuffer, extNotPressedDefaults[profileIndex], sizeof(extBuffer));
+        INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[profileIndex], extNotPressedStaticColors, extBuffer);
+        memset(extBuffer, extPressedDefaults[profileIndex], sizeof(extBuffer));
+        INIT_UNSET_PROPERTY_BYTES(config.animationOptions.profiles[profileIndex], extPressedStaticColors, extBuffer);
+    }
 
     // addonOptions.bootselButtonOptions
     INIT_UNSET_PROPERTY(config.addonOptions.bootselButtonOptions, enabled, !!BOOTSEL_BUTTON_ENABLED);
@@ -627,15 +933,23 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, outer_deadzone, DEFAULT_OUTER_DEADZONE);
     INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, auto_calibrate, !!AUTO_CALIBRATE_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, analog_smoothing, !!ANALOG_SMOOTHING_ENABLED);
-    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, smoothing_factor, !!SMOOTHING_FACTOR);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, smoothing_factor, SMOOTHING_FACTOR);
     INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, analog_error, ANALOG_ERROR);
     INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, analog_smoothing2, !!ANALOG_SMOOTHING2_ENABLED);
-    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, smoothing_factor2, !!SMOOTHING_FACTOR2);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, smoothing_factor2, SMOOTHING_FACTOR2);
     INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, analog_error2, ANALOG_ERROR2);
     INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, inner_deadzone2, DEFAULT_INNER_DEADZONE2);
     INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, outer_deadzone2, DEFAULT_OUTER_DEADZONE2);
     INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, auto_calibrate2, !!AUTO_CALIBRATE2_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, forced_circularity2, !!FORCED_CIRCULARITY2_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, joystick_min_x, 0);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, joystick_max_x, 4095);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, joystick_min_y, 0);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, joystick_max_y, 4095);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, joystick_min_x2, 0);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, joystick_max_x2, 4095);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, joystick_min_y2, 0);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, joystick_max_y2, 4095);
 
     // addonOptions.turboOptions
     INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, enabled, !!TURBO_ENABLED);
@@ -658,8 +972,6 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, shmupBtnMask4, SHMUP_BUTTON4);
     INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, shmupMixMode, SHMUP_MIX_MODE);
     INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, turboLedType, TURBO_LED_TYPE);
-    INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, turboLedIndex, TURBO_LED_INDEX);
-    INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, turboLedColor, static_cast<uint32_t>(TURBO_LED_COLOR.r) << 16 | static_cast<uint32_t>(TURBO_LED_COLOR.g) << 8 | static_cast<uint32_t>(TURBO_LED_COLOR.b));
 
     // addonOptions.reverseOptions
     INIT_UNSET_PROPERTY(config.addonOptions.reverseOptions, enabled, !!REVERSE_ENABLED);
@@ -670,13 +982,38 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.reverseOptions, actionLeft, REVERSE_LEFT_DEFAULT);
     INIT_UNSET_PROPERTY(config.addonOptions.reverseOptions, actionRight, REVERSE_RIGHT_DEFAULT);
 
-    // addonOptions.socdSliderOptions
-    INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, enabled, !!SLIDER_SOCD_ENABLED);
-    INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, deprecatedPinOne, (Pin_t)-1);
-    INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, deprecatedPinTwo, (Pin_t)-1);
-    INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, modeDefault, SLIDER_SOCD_SLOT_DEFAULT);
-    INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, deprecatedModeOne, SLIDER_SOCD_SLOT_ONE);
-    INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, deprecatedModeTwo, SLIDER_SOCD_SLOT_TWO);
+    // addonOptions.profileSliderOptions
+    INIT_UNSET_PROPERTY(config.addonOptions.profileSliderOptions, enabled, !!SLIDER_PROFILE_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.profileSliderOptions, numPositions, SLIDER_PROFILE_NUM_POSITIONS);
+    INIT_UNSET_PROPERTY(config.addonOptions.profileSliderOptions, defaultProfile, SLIDER_PROFILE_DEFAULT_PROFILE);
+
+    // addonOptions.analogADS1115Options
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, enabled, !!I2C_ANALOG1115_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, channel_enabled, ANALOG1115_CHANNEL_ENABLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, channel_inner_deadzone_enabled, ANALOG1115_INNER_DEADZONE_ENABLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, channel_outer_deadzone_enabled, ANALOG1115_OUTER_DEADZONE_ENABLE);
+
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, left_stick_deadzone_enabled, ANALOG1115_LSTICK_DEADZONE_ENABLE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, right_stick_deadzone_enabled, ANALOG1115_RSTICK_DEADZONE_ENABLE);
+
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, leftStickDeadzone, ANALOG1115_LSTICK_DEADZONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, rightStickDeadzone, ANALOG1115_RSTICK_DEADZONE);
+
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, channel0InnerDeadzone, ANALOG1115_CHANNEL_INNER_DEADZONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, channel1InnerDeadzone, ANALOG1115_CHANNEL_INNER_DEADZONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, channel2InnerDeadzone, ANALOG1115_CHANNEL_INNER_DEADZONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, channel3InnerDeadzone, ANALOG1115_CHANNEL_INNER_DEADZONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, channel0OuterDeadzone, ANALOG1115_CHANNEL_OUTER_DEADZONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, channel1OuterDeadzone, ANALOG1115_CHANNEL_OUTER_DEADZONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, channel2OuterDeadzone, ANALOG1115_CHANNEL_OUTER_DEADZONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, channel3OuterDeadzone, ANALOG1115_CHANNEL_OUTER_DEADZONE);
+
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, invert_enabled, ANALOG1115_INVERT);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, autoCalibrate, ANALOG1115_AUTOCALIBRATE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, lxChannel, ANALOG1115_LX_CHANNEL);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, lyChannel, ANALOG1115_LY_CHANNEL);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, rxChannel, ANALOG1115_RX_CHANNEL);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1115Options, ryChannel, ANALOG1115_RY_CHANNEL);
 
     // addonOptions.analogADS1219Options
     INIT_UNSET_PROPERTY(config.addonOptions.analogADS1219Options, enabled, !!I2C_ANALOG1219_ENABLED);
@@ -823,10 +1160,6 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
     // addonOptions.heTriggerOptions
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, enabled, !!HETRIGGER_ENABLED);
-    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, selectPin0, HETRIGGER_S0_PIN);
-    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, selectPin1, HETRIGGER_S1_PIN);
-    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, selectPin2, HETRIGGER_S2_PIN);
-    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, selectPin3, HETRIGGER_S3_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, muxADCPin0, HETRIGGER_ADC0);
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, muxADCPin1, HETRIGGER_ADC1);
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, muxADCPin2, HETRIGGER_ADC2);
@@ -834,6 +1167,36 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, muxChannels, HETRIGGER_MUX_CHANNELS);
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, emaSmoothing, HETRIGGER_SMOOTHING_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, smoothingFactor, HETRIGGER_SMOOTHING_FACTOR);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, separateSelectPins, !!HETRIGGER_SEPARATE_SELECT_PINS);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[0], selectPin0, HETRIGGER_S0_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[0], selectPin1, HETRIGGER_S1_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[0], selectPin2, HETRIGGER_S2_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[0], selectPin3, HETRIGGER_S3_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[1], selectPin0, HETRIGGER_MUX1_S0_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[1], selectPin1, HETRIGGER_MUX1_S1_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[1], selectPin2, HETRIGGER_MUX1_S2_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[1], selectPin3, HETRIGGER_MUX1_S3_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[2], selectPin0, HETRIGGER_MUX2_S0_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[2], selectPin1, HETRIGGER_MUX2_S1_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[2], selectPin2, HETRIGGER_MUX2_S2_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[2], selectPin3, HETRIGGER_MUX2_S3_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[3], selectPin0, HETRIGGER_MUX3_S0_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[3], selectPin1, HETRIGGER_MUX3_S1_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[3], selectPin2, HETRIGGER_MUX3_S2_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.muxes[3], selectPin3, HETRIGGER_MUX3_S3_PIN);
+    config.addonOptions.heTriggerOptions.muxes_count = 4;
+
+    // Legacy Rapid Trigger moved once a reading changed by more than `noise`; keep that feel.
+    // Runs before the trigger defaults below so only settings loaded from flash count as legacy.
+    for (int i = 0; i < HETRIGGER_COUNT; i++) {
+        HETriggerInfo& trigger = config.addonOptions.heTriggerOptions.triggers[i];
+        const bool legacyRapidTrigger = trigger.has_rapidTrigger && trigger.rapidTrigger && trigger.has_noise && trigger.noise > 0;
+        INIT_UNSET_PROPERTY(trigger, rtPressSensitivity, legacyRapidTrigger ? trigger.noise + 1 : HETRIGGER_DEFAULT_RT_PRESS_SENSITIVITY);
+        INIT_UNSET_PROPERTY(trigger, rtReleaseSensitivity, legacyRapidTrigger ? trigger.noise + 1 : HETRIGGER_DEFAULT_RT_RELEASE_SENSITIVITY);
+        INIT_UNSET_PROPERTY(trigger, rtSeparateSensitivity, !!HETRIGGER_DEFAULT_RT_SEPARATE_SENSITIVITY);
+        INIT_UNSET_PROPERTY(trigger, rtContinuous, !!HETRIGGER_DEFAULT_RT_CONTINUOUS);
+    }
+
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[0], action, HETRIGGER_HE0_ACTION);
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[0], active, HETRIGGER_HE0_ACTIVE);
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[0], idle, HETRIGGER_HE0_IDLE);
@@ -1091,6 +1454,8 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[31], noise, HETRIGGER_HE31_NOISE);
     INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions.triggers[31], rapidTrigger, HETRIGGER_HE31_RAPID);
 
+    INIT_UNSET_PROPERTY(config.addonOptions.heTriggerOptions, switchTravel, HETRIGGER_DEFAULT_SWITCH_TRAVEL);
+
     // reminder that this must be set or else nanopb won't retain anything
     config.addonOptions.heTriggerOptions.triggers_count = HETRIGGER_COUNT;
 
@@ -1177,11 +1542,10 @@ void gpioMappingsMigrationCore(Config& config)
     ExtraButtonOptions& extraButtonOptions = config.addonOptions.deprecatedExtraButtonOptions;
     DualDirectionalOptions& ddiOptions = config.addonOptions.dualDirectionalOptions;
     SliderOptions& jsSliderOptions = config.addonOptions.deprecatedSliderOptions;
-    SOCDSliderOptions& socdSliderOptions = config.addonOptions.socdSliderOptions;
+    SOCDSliderOptions& socdSliderOptions = config.addonOptions.deprecatedSocdSliderOptions;
     PeripheralOptions& peripheralOptions = config.peripheralOptions;
     KeyboardHostOptions& keyboardHostOptions = config.addonOptions.keyboardHostOptions;
     PSPassthroughOptions& psPassthroughOptions = config.addonOptions.psPassthroughOptions;
-    TurboOptions& turboOptions = config.addonOptions.turboOptions;
     TiltOptions& tiltOptions = config.addonOptions.tiltOptions;
     FocusModeOptions& focusModeOptions = config.addonOptions.focusModeOptions;
     ReverseOptions& reverseOptions = config.addonOptions.reverseOptions;
@@ -1243,7 +1607,16 @@ void gpioMappingsMigrationCore(Config& config)
                                            GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
                                            GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
                                            GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
-                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE};
+                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
+#if NUM_BANK0_GPIOS > 32
+                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
+                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
+                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
+                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
+                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
+                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
+#endif
+                                           };
 
     // flag additional pins as being used by an addon not managed here
     const auto markAddonPinIfUsed = [&](Pin_t gpPin) -> void {
@@ -1421,7 +1794,16 @@ void gpioMappingsMigrationCore(Config& config)
                                                GPIO_PIN_18, GPIO_PIN_19, GPIO_PIN_20,
                                                GPIO_PIN_21, GPIO_PIN_22, GPIO_PIN_23,
                                                GPIO_PIN_24, GPIO_PIN_25, GPIO_PIN_26,
-                                               GPIO_PIN_27, GPIO_PIN_28, GPIO_PIN_29};
+                                               GPIO_PIN_27, GPIO_PIN_28, GPIO_PIN_29,
+#if NUM_BANK0_GPIOS > 32
+                                               GPIO_PIN_30, GPIO_PIN_31, GPIO_PIN_32,
+                                               GPIO_PIN_33, GPIO_PIN_34, GPIO_PIN_35,
+                                               GPIO_PIN_36, GPIO_PIN_37, GPIO_PIN_38,
+                                               GPIO_PIN_39, GPIO_PIN_40, GPIO_PIN_41,
+                                               GPIO_PIN_42, GPIO_PIN_43, GPIO_PIN_44,
+                                               GPIO_PIN_45, GPIO_PIN_46, GPIO_PIN_47,
+#endif
+                                               };
 
     // If we didn't import from protobuf, import from boardconfig
     for(unsigned int i = 0; i < NUM_BANK0_GPIOS; i++) {
@@ -1430,28 +1812,28 @@ void gpioMappingsMigrationCore(Config& config)
 
     // migrate I2C addons to use peripheral manager
     if (!peripheralOptions.blockI2C0.enabled && (
-            (config.displayOptions.enabled && (config.displayOptions.deprecatedI2cBlock == 0)) || 
-            (config.addonOptions.analogADS1219Options.enabled && (config.addonOptions.analogADS1219Options.deprecatedI2cBlock == 0)) || 
+            (config.displayOptions.enabled && (config.displayOptions.deprecatedI2cBlock == 0)) ||
+            (config.addonOptions.analogADS1219Options.enabled && (config.addonOptions.analogADS1219Options.deprecatedI2cBlock == 0)) ||
             (config.addonOptions.wiiOptions.enabled && (config.addonOptions.wiiOptions.deprecatedI2cBlock == 0))
         )
     ) {
         peripheralOptions.blockI2C0.enabled = (
-            (config.displayOptions.enabled && (config.displayOptions.deprecatedI2cBlock == 0)) | 
-            (config.addonOptions.analogADS1219Options.enabled && (config.addonOptions.analogADS1219Options.deprecatedI2cBlock == 0)) | 
-            (config.addonOptions.wiiOptions.enabled && (config.addonOptions.wiiOptions.deprecatedI2cBlock == 0)) | 
+            (config.displayOptions.enabled && (config.displayOptions.deprecatedI2cBlock == 0)) |
+            (config.addonOptions.analogADS1219Options.enabled && (config.addonOptions.analogADS1219Options.deprecatedI2cBlock == 0)) |
+            (config.addonOptions.wiiOptions.enabled && (config.addonOptions.wiiOptions.deprecatedI2cBlock == 0)) |
             (!!I2C0_ENABLED)
         );
 
         // pin configuration
         peripheralOptions.blockI2C0.sda = (
-            isValidPin(config.displayOptions.deprecatedI2cSDAPin) && (config.displayOptions.deprecatedI2cBlock == 0) ? 
-            config.displayOptions.deprecatedI2cSDAPin : 
+            isValidPin(config.displayOptions.deprecatedI2cSDAPin) && (config.displayOptions.deprecatedI2cBlock == 0) ?
+            config.displayOptions.deprecatedI2cSDAPin :
             (
-                isValidPin(config.addonOptions.analogADS1219Options.deprecatedI2cSDAPin) && (config.addonOptions.analogADS1219Options.deprecatedI2cBlock == 0) ? 
-                config.addonOptions.analogADS1219Options.deprecatedI2cSDAPin : 
+                isValidPin(config.addonOptions.analogADS1219Options.deprecatedI2cSDAPin) && (config.addonOptions.analogADS1219Options.deprecatedI2cBlock == 0) ?
+                config.addonOptions.analogADS1219Options.deprecatedI2cSDAPin :
                 (
-                    isValidPin(config.addonOptions.wiiOptions.deprecatedI2cSDAPin) && (config.addonOptions.wiiOptions.deprecatedI2cBlock == 0) ? 
-                    config.addonOptions.wiiOptions.deprecatedI2cSDAPin : 
+                    isValidPin(config.addonOptions.wiiOptions.deprecatedI2cSDAPin) && (config.addonOptions.wiiOptions.deprecatedI2cBlock == 0) ?
+                    config.addonOptions.wiiOptions.deprecatedI2cSDAPin :
                     I2C0_PIN_SDA
                 )
             )
@@ -1459,14 +1841,14 @@ void gpioMappingsMigrationCore(Config& config)
         markAddonPinIfUsed(peripheralOptions.blockI2C0.sda);
 
         peripheralOptions.blockI2C0.scl = (
-            isValidPin(config.displayOptions.deprecatedI2cSCLPin) && (config.displayOptions.deprecatedI2cBlock == 0) ? 
-            config.displayOptions.deprecatedI2cSCLPin : 
+            isValidPin(config.displayOptions.deprecatedI2cSCLPin) && (config.displayOptions.deprecatedI2cBlock == 0) ?
+            config.displayOptions.deprecatedI2cSCLPin :
             (
-                isValidPin(config.addonOptions.analogADS1219Options.deprecatedI2cSCLPin) && (config.addonOptions.analogADS1219Options.deprecatedI2cBlock == 0) ? 
-                config.addonOptions.analogADS1219Options.deprecatedI2cSCLPin : 
+                isValidPin(config.addonOptions.analogADS1219Options.deprecatedI2cSCLPin) && (config.addonOptions.analogADS1219Options.deprecatedI2cBlock == 0) ?
+                config.addonOptions.analogADS1219Options.deprecatedI2cSCLPin :
                 (
-                    isValidPin(config.addonOptions.wiiOptions.deprecatedI2cSCLPin) && (config.addonOptions.wiiOptions.deprecatedI2cBlock == 0) ? 
-                    config.addonOptions.wiiOptions.deprecatedI2cSCLPin : 
+                    isValidPin(config.addonOptions.wiiOptions.deprecatedI2cSCLPin) && (config.addonOptions.wiiOptions.deprecatedI2cBlock == 0) ?
+                    config.addonOptions.wiiOptions.deprecatedI2cSCLPin :
                     I2C0_PIN_SCL
                 )
             )
@@ -1475,14 +1857,14 @@ void gpioMappingsMigrationCore(Config& config)
 
         // option configuration
         peripheralOptions.blockI2C0.speed = (
-            isValidPin(config.displayOptions.deprecatedI2cSpeed) && (config.displayOptions.deprecatedI2cBlock == 0) ? 
-            config.displayOptions.deprecatedI2cSpeed : 
+            isValidPin(config.displayOptions.deprecatedI2cSpeed) && (config.displayOptions.deprecatedI2cBlock == 0) ?
+            config.displayOptions.deprecatedI2cSpeed :
             (
-                isValidPin(config.addonOptions.analogADS1219Options.deprecatedI2cSpeed) && (config.addonOptions.analogADS1219Options.deprecatedI2cBlock == 0) ? 
-                config.addonOptions.analogADS1219Options.deprecatedI2cSpeed : 
+                isValidPin(config.addonOptions.analogADS1219Options.deprecatedI2cSpeed) && (config.addonOptions.analogADS1219Options.deprecatedI2cBlock == 0) ?
+                config.addonOptions.analogADS1219Options.deprecatedI2cSpeed :
                 (
-                    isValidPin(config.addonOptions.wiiOptions.deprecatedI2cSpeed) && (config.addonOptions.wiiOptions.deprecatedI2cBlock == 0) ? 
-                    config.addonOptions.wiiOptions.deprecatedI2cSpeed : 
+                    isValidPin(config.addonOptions.wiiOptions.deprecatedI2cSpeed) && (config.addonOptions.wiiOptions.deprecatedI2cBlock == 0) ?
+                    config.addonOptions.wiiOptions.deprecatedI2cSpeed :
                     I2C0_SPEED
                 )
             )
@@ -1490,28 +1872,28 @@ void gpioMappingsMigrationCore(Config& config)
     }
 
     if (!peripheralOptions.blockI2C1.enabled && (
-            (config.displayOptions.enabled && (config.displayOptions.deprecatedI2cBlock == 1)) || 
-            (config.addonOptions.analogADS1219Options.enabled && (config.addonOptions.analogADS1219Options.deprecatedI2cBlock == 1)) || 
+            (config.displayOptions.enabled && (config.displayOptions.deprecatedI2cBlock == 1)) ||
+            (config.addonOptions.analogADS1219Options.enabled && (config.addonOptions.analogADS1219Options.deprecatedI2cBlock == 1)) ||
             (config.addonOptions.wiiOptions.enabled && (config.addonOptions.wiiOptions.deprecatedI2cBlock == 1))
         )
     ) {
         peripheralOptions.blockI2C1.enabled = (
-            (config.displayOptions.enabled && (config.displayOptions.deprecatedI2cBlock == 1)) | 
-            (config.addonOptions.analogADS1219Options.enabled && (config.addonOptions.analogADS1219Options.deprecatedI2cBlock == 1)) | 
-            (config.addonOptions.wiiOptions.enabled && (config.addonOptions.wiiOptions.deprecatedI2cBlock == 1)) | 
+            (config.displayOptions.enabled && (config.displayOptions.deprecatedI2cBlock == 1)) |
+            (config.addonOptions.analogADS1219Options.enabled && (config.addonOptions.analogADS1219Options.deprecatedI2cBlock == 1)) |
+            (config.addonOptions.wiiOptions.enabled && (config.addonOptions.wiiOptions.deprecatedI2cBlock == 1)) |
             (!!I2C1_ENABLED)
         );
 
         // pin configuration
         peripheralOptions.blockI2C1.sda = (
-            isValidPin(config.displayOptions.deprecatedI2cSDAPin) && (config.displayOptions.deprecatedI2cBlock == 1) ? 
-            config.displayOptions.deprecatedI2cSDAPin : 
+            isValidPin(config.displayOptions.deprecatedI2cSDAPin) && (config.displayOptions.deprecatedI2cBlock == 1) ?
+            config.displayOptions.deprecatedI2cSDAPin :
             (
-                isValidPin(config.addonOptions.analogADS1219Options.deprecatedI2cSDAPin) && (config.addonOptions.analogADS1219Options.deprecatedI2cBlock == 1) ? 
-                config.addonOptions.analogADS1219Options.deprecatedI2cSDAPin : 
+                isValidPin(config.addonOptions.analogADS1219Options.deprecatedI2cSDAPin) && (config.addonOptions.analogADS1219Options.deprecatedI2cBlock == 1) ?
+                config.addonOptions.analogADS1219Options.deprecatedI2cSDAPin :
                 (
-                    isValidPin(config.addonOptions.wiiOptions.deprecatedI2cSDAPin) && (config.addonOptions.wiiOptions.deprecatedI2cBlock == 1) ? 
-                    config.addonOptions.wiiOptions.deprecatedI2cSDAPin : 
+                    isValidPin(config.addonOptions.wiiOptions.deprecatedI2cSDAPin) && (config.addonOptions.wiiOptions.deprecatedI2cBlock == 1) ?
+                    config.addonOptions.wiiOptions.deprecatedI2cSDAPin :
                     I2C1_PIN_SDA
                 )
             )
@@ -1519,14 +1901,14 @@ void gpioMappingsMigrationCore(Config& config)
         markAddonPinIfUsed(peripheralOptions.blockI2C1.sda);
 
         peripheralOptions.blockI2C1.scl = (
-            isValidPin(config.displayOptions.deprecatedI2cSCLPin) && (config.displayOptions.deprecatedI2cBlock == 1) ? 
-            config.displayOptions.deprecatedI2cSCLPin : 
+            isValidPin(config.displayOptions.deprecatedI2cSCLPin) && (config.displayOptions.deprecatedI2cBlock == 1) ?
+            config.displayOptions.deprecatedI2cSCLPin :
             (
-                isValidPin(config.addonOptions.analogADS1219Options.deprecatedI2cSCLPin) && (config.addonOptions.analogADS1219Options.deprecatedI2cBlock == 1) ? 
-                config.addonOptions.analogADS1219Options.deprecatedI2cSCLPin : 
+                isValidPin(config.addonOptions.analogADS1219Options.deprecatedI2cSCLPin) && (config.addonOptions.analogADS1219Options.deprecatedI2cBlock == 1) ?
+                config.addonOptions.analogADS1219Options.deprecatedI2cSCLPin :
                 (
-                    isValidPin(config.addonOptions.wiiOptions.deprecatedI2cSCLPin) && (config.addonOptions.wiiOptions.deprecatedI2cBlock == 1) ? 
-                    config.addonOptions.wiiOptions.deprecatedI2cSCLPin : 
+                    isValidPin(config.addonOptions.wiiOptions.deprecatedI2cSCLPin) && (config.addonOptions.wiiOptions.deprecatedI2cBlock == 1) ?
+                    config.addonOptions.wiiOptions.deprecatedI2cSCLPin :
                     I2C1_PIN_SCL
                 )
             )
@@ -1535,14 +1917,14 @@ void gpioMappingsMigrationCore(Config& config)
 
         // option configuration
         peripheralOptions.blockI2C1.speed = (
-            isValidPin(config.displayOptions.deprecatedI2cSpeed) && (config.displayOptions.deprecatedI2cBlock == 1) ? 
-            config.displayOptions.deprecatedI2cSpeed : 
+            isValidPin(config.displayOptions.deprecatedI2cSpeed) && (config.displayOptions.deprecatedI2cBlock == 1) ?
+            config.displayOptions.deprecatedI2cSpeed :
             (
-                isValidPin(config.addonOptions.analogADS1219Options.deprecatedI2cSpeed) && (config.addonOptions.analogADS1219Options.deprecatedI2cBlock == 1) ? 
-                config.addonOptions.analogADS1219Options.deprecatedI2cSpeed : 
+                isValidPin(config.addonOptions.analogADS1219Options.deprecatedI2cSpeed) && (config.addonOptions.analogADS1219Options.deprecatedI2cBlock == 1) ?
+                config.addonOptions.analogADS1219Options.deprecatedI2cSpeed :
                 (
-                    isValidPin(config.addonOptions.wiiOptions.deprecatedI2cSpeed) && (config.addonOptions.wiiOptions.deprecatedI2cBlock == 1) ? 
-                    config.addonOptions.wiiOptions.deprecatedI2cSpeed : 
+                    isValidPin(config.addonOptions.wiiOptions.deprecatedI2cSpeed) && (config.addonOptions.wiiOptions.deprecatedI2cBlock == 1) ?
+                    config.addonOptions.wiiOptions.deprecatedI2cSpeed :
                     I2C1_SPEED
                 )
             )
@@ -1584,18 +1966,13 @@ void gpioMappingsMigrationCore(Config& config)
     // check if PLED PINs are actually GPIOs or not
     // pledPin used to be used for RGB indexes, so we should only mark the GPIO
     // as assigned to addon if in PWM mode
-    if (config.ledOptions.pledType == PLEDType::PLED_TYPE_PWM) {
+    if (config.ledOptions.pledType == PLEDType::PLED_TYPE_PWM)
+    {
         // fields are being used for PWM, so they are GPIOs; reserve them
         markAddonPinIfUsed(config.ledOptions.pledPin1);
         markAddonPinIfUsed(config.ledOptions.pledPin2);
         markAddonPinIfUsed(config.ledOptions.pledPin3);
         markAddonPinIfUsed(config.ledOptions.pledPin4);
-    } else {
-        // default init copied the values into the new fields, pledIndex1-4, so unset these
-        config.ledOptions.pledPin1 = -1;
-        config.ledOptions.pledPin2 = -1;
-        config.ledOptions.pledPin3 = -1;
-        config.ledOptions.pledPin4 = -1;
     }
     markAddonPinIfUsed(config.addonOptions.analogOptions.analogAdc1PinX);
     markAddonPinIfUsed(config.addonOptions.analogOptions.analogAdc1PinY);
@@ -1622,14 +1999,18 @@ void gpioMappingsMigrationCore(Config& config)
 
     // Set our HE trigger options
     if (config.addonOptions.heTriggerOptions.enabled) {
-        markAddonPinIfUsed(config.addonOptions.heTriggerOptions.muxADCPin0);
-        markAddonPinIfUsed(config.addonOptions.heTriggerOptions.muxADCPin1);
-        markAddonPinIfUsed(config.addonOptions.heTriggerOptions.muxADCPin2);
-        markAddonPinIfUsed(config.addonOptions.heTriggerOptions.muxADCPin3);
-        markAddonPinIfUsed(config.addonOptions.heTriggerOptions.selectPin0);
-        markAddonPinIfUsed(config.addonOptions.heTriggerOptions.selectPin1);
-        markAddonPinIfUsed(config.addonOptions.heTriggerOptions.selectPin2);
-        markAddonPinIfUsed(config.addonOptions.heTriggerOptions.selectPin3);
+        HETriggerOptions& heOptions = config.addonOptions.heTriggerOptions;
+        markAddonPinIfUsed(heOptions.muxADCPin0);
+        markAddonPinIfUsed(heOptions.muxADCPin1);
+        markAddonPinIfUsed(heOptions.muxADCPin2);
+        markAddonPinIfUsed(heOptions.muxADCPin3);
+        int muxSelectRows = heOptions.separateSelectPins ? 4 : 1;
+        for (int m = 0; m < muxSelectRows; m++) {
+            markAddonPinIfUsed(heOptions.muxes[m].selectPin0);
+            markAddonPinIfUsed(heOptions.muxes[m].selectPin1);
+            markAddonPinIfUsed(heOptions.muxes[m].selectPin2);
+            markAddonPinIfUsed(heOptions.muxes[m].selectPin3);
+        }
     }
 
 
@@ -1649,6 +2030,14 @@ void migrateJSliderToCore(Config& config)
     if (config.addonOptions.deprecatedSliderOptions.enabled) {
         config.gamepadOptions.dpadMode = config.addonOptions.deprecatedSliderOptions.deprecatedModeDefault;
         config.addonOptions.deprecatedSliderOptions.enabled = false;
+    }
+}
+
+void migrateSOCDSliderToCore(Config& config)
+{
+    if (config.addonOptions.deprecatedSocdSliderOptions.enabled) {
+        config.gamepadOptions.socdMode = config.addonOptions.deprecatedSocdSliderOptions.deprecatedModeDefault;
+        config.addonOptions.deprecatedSocdSliderOptions.enabled = false;
     }
 }
 
@@ -1781,6 +2170,28 @@ void profileEnabledFlagsMigration(Config& config) {
     config.migrations.profileEnabledFlagsMigrated = true;
 }
 
+void heTriggerSelectPinsMigration(Config& config) {
+    // Migrate the legacy shared select pins (selectPin0-3) into muxes[0]
+    HETriggerOptions& heOptions = config.addonOptions.heTriggerOptions;
+    if (heOptions.has_selectPin0) {
+        heOptions.muxes[0].selectPin0 = heOptions.selectPin0;
+        heOptions.muxes[0].has_selectPin0 = true;
+    }
+    if (heOptions.has_selectPin1) {
+        heOptions.muxes[0].selectPin1 = heOptions.selectPin1;
+        heOptions.muxes[0].has_selectPin1 = true;
+    }
+    if (heOptions.has_selectPin2) {
+        heOptions.muxes[0].selectPin2 = heOptions.selectPin2;
+        heOptions.muxes[0].has_selectPin2 = true;
+    }
+    if (heOptions.has_selectPin3) {
+        heOptions.muxes[0].selectPin3 = heOptions.selectPin3;
+        heOptions.muxes[0].has_selectPin3 = true;
+    }
+    config.migrations.heTriggerSelectPinsMigrated = true;
+}
+
 void migrateMacroPinsToGpio(Config& config) {
     // Convert Macro pin mapping to GPIO mapping configs
     MacroOptions & macroOptions = config.addonOptions.macroOptions;
@@ -1907,7 +2318,8 @@ static bool loadConfigInner(Config& config)
     config = Config Config_init_zero;
 
     const uint8_t* flashEnd = reinterpret_cast<const uint8_t*>(EEPROM_ADDRESS_START) + EEPROM_SIZE_BYTES;
-    const ConfigFooter& footer = *reinterpret_cast<const ConfigFooter*>(flashEnd - sizeof(ConfigFooter));
+    ConfigFooter footer;
+    memcpy(&footer, flashEnd - sizeof(ConfigFooter), sizeof(footer));
 
     // Check for presence of magic value
     if (footer.magic != FOOTER_MAGIC)
@@ -1937,7 +2349,7 @@ static bool loadConfigInner(Config& config)
 void ConfigUtils::load(Config& config)
 {
     // First try to load from Protobuf storage, if that fails fall back to legacy storage.
-    const bool loaded = loadConfigInner(config) | fromLegacyStorage(config);
+    const bool loaded = loadConfigInner(config) || fromLegacyStorage(config);
 
     if (!loaded)
     {
@@ -1953,6 +2365,10 @@ void ConfigUtils::load(Config& config)
     // Make sure that fields that were not deserialized are properly initialized.
     // They were probably added with a newer version of the firmware.
     initUnsetPropertiesWithDefaults(config);
+
+    // Migrate legacy HE Trigger shared select pins into muxes[0]
+    if (!config.migrations.heTriggerSelectPinsMigrated)
+        heTriggerSelectPinsMigration(config);
 
     // Run migrations that need to happen after initUnset...
     // ProtoBuf && Board Config settings are loaded here
@@ -1972,6 +2388,7 @@ void ConfigUtils::load(Config& config)
     migrateMacroPinsToGpio(config);
     // Migrate old JS slider add-on to core
     migrateJSliderToCore(config);
+    migrateSOCDSliderToCore(config);
 
     // Update boardVersion, in case we migrated from an older version
     strncpy(config.boardVersion, GP2040VERSION, sizeof(config.boardVersion));
@@ -2054,9 +2471,17 @@ bool ConfigUtils::save(Config& config)
     // its default value.
     setHasFlags(Config_fields, &config);
 
+    // An LED preview runs on the test profile; save the user's profile instead
+    AnimationStation& animStation = AnimationStation::getInstance();
+    const int32_t activeProfileIndex = config.animationOptions.baseProfileIndex;
+    if (animStation.IsTestModeActive())
+        config.animationOptions.baseProfileIndex = animStation.GetSavedMode();
+
     // Encode the data directly into the cache of FlashPROM
     pb_ostream_t outputStream = pb_ostream_from_buffer(EEPROM.writeCache, EEPROM_SIZE_BYTES - sizeof(ConfigFooter));
-    if (!pb_encode(&outputStream, Config_fields, &config))
+    const bool encoded = pb_encode(&outputStream, Config_fields, &config);
+    config.animationOptions.baseProfileIndex = activeProfileIndex;
+    if (!encoded)
     {
         return false;
     }
@@ -2068,7 +2493,8 @@ bool ConfigUtils::save(Config& config)
     newFooter.magic = FOOTER_MAGIC;
 
     // The data has changed when the footer content has changed. Only then do we acutally need to save.
-    const ConfigFooter& oldFooter = *reinterpret_cast<ConfigFooter*>(EEPROM.writeCache + EEPROM_SIZE_BYTES - sizeof(ConfigFooter));
+    ConfigFooter oldFooter;
+    memcpy(&oldFooter, EEPROM.writeCache + EEPROM_SIZE_BYTES - sizeof(ConfigFooter), sizeof(oldFooter));
     if (newFooter == oldFooter)
     {
         // The data has not changed, no saving neccessary.
@@ -2076,8 +2502,7 @@ bool ConfigUtils::save(Config& config)
     }
 
     // Write the footer
-    ConfigFooter* cacheFooter = reinterpret_cast<ConfigFooter*>(EEPROM.writeCache + EEPROM_SIZE_BYTES - sizeof(ConfigFooter));
-    memcpy(cacheFooter, &newFooter, sizeof(ConfigFooter));
+    memcpy(EEPROM.writeCache + EEPROM_SIZE_BYTES - sizeof(ConfigFooter), &newFooter, sizeof(newFooter));
 
     // Move the encoded data in memory down to the footer
     memmove(EEPROM.writeCache + EEPROM_SIZE_BYTES - sizeof(ConfigFooter) - newFooter.dataSize, EEPROM.writeCache, newFooter.dataSize);
@@ -2602,6 +3027,9 @@ bool ConfigUtils::fromJSON(Config& config, const char* data, size_t dataLen)
     initUnsetPropertiesWithDefaults(config);
 
     // we need to run migrations here too, in case the json document changed pins or things derived from pins
+    if (!config.migrations.heTriggerSelectPinsMigrated)
+        heTriggerSelectPinsMigration(config);
+
     gpioMappingsMigrationCore(config);
     migrateTurboPinToGpio(config);
     migrateAuthenticationMethods(config);

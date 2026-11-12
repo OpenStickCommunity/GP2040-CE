@@ -20,6 +20,8 @@
 
 #include "pico/types.h"
 
+class HETriggerAddon;
+
 class GP2040 {
 public:
     GP2040(){}
@@ -29,10 +31,11 @@ public:
 private:
     Gamepad snapshot;
     AddonManager addons;
+    HETriggerAddon* heTriggerAddon = nullptr;
     // GPIO debouncer
     void debounceGpioGetAll();
     Mask_t buttonGpios;
-    uint32_t gpioDebounceTime[NUM_BANK0_GPIOS];
+    uint32_t gpioDebounceTime[NUM_BANK0_GPIOS] = {};
 
     struct RebootHotkeys {
         RebootHotkeys();
@@ -53,9 +56,9 @@ private:
 		};
 
 		struct BootAction {
-			BootActionType type;
-			InputMode inputMode;
-			uint32_t profileNumber;
+			BootActionType type = BootActionType::SET_INPUT_MODE;
+			InputMode inputMode = INPUT_MODE_XINPUT;
+			uint32_t profileNumber = 0;
 		};
 
 		BootAction getGpioMappedBootAction();

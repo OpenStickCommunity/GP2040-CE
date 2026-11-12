@@ -92,6 +92,14 @@ bool HIDDriver::process(Gamepad * gamepad) {
 		| (gamepad->pressedE11()   ? GAMEPAD_MASK_E11    : 0)
 		| (gamepad->pressedE12()   ? GAMEPAD_MASK_E12    : 0)
 	;
+
+	const GenericDpadMode dpadMode = Storage::getInstance().getGamepadOptions().genericDpadMode;
+	if (dpadMode == GENERIC_DPAD_HAT_ONLY) {
+		hidReport.buttons &= ~(GAMEPAD_MASK_DU | GAMEPAD_MASK_DD | GAMEPAD_MASK_DL | GAMEPAD_MASK_DR);
+	} else if (dpadMode == GENERIC_DPAD_BUTTONS_ONLY) {
+		hidReport.direction = HID_HAT_NOTHING;
+	}
+
 	if (gamepad->hasAnalogTriggers || gamepad->hasLeftAnalogStick) {
 		if (gamepad->state.lt > 0)
 			hidReport.buttons |= GAMEPAD_MASK_L2;
@@ -134,6 +142,9 @@ bool HIDDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_contr
 }
 
 const uint16_t * HIDDriver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
+    if (index >= TU_ARRAY_SIZE(hid_string_descriptors))
+        return nullptr;
+
     char *value;
     // Check for override settings
     GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();

@@ -1,12 +1,13 @@
 export default {
-	'sub-header-text': 'Use el Visor de Pines GPIO para ver la conexión de botones a pines.',
+	'sub-header-text':
+		'Use el Visor de Pines GPIO para ver la conexión de botones a pines.',
 	'alert-text':
 		'Mapear botones a pines que no están conectados o disponibles puede dejar el dispositivo en un estado no funcional. Para limpiar la configuración inválida, vaya a la página <2>Restablecer Ajustes</2>.',
 	'pin-viewer': 'Visor de pines GPIO',
 	'pin-pressed': 'Pin presionado: {{pressedPin}}',
 	'profile-label-title': 'Nombre del perfil',
 	'profile-label-description':
-		'Máximo 16 caracteres. Se permiten letras, números y espacios.',
+		'Máximo 16 caracteres. Se permiten caracteres ASCII imprimibles.',
 	'profile-pin-mapping-title': '{{profileLabel}} - Mapeo de Pines GPIO',
 	'profile-label-default': 'Perfil {{profileNumber}}',
 	'profile-add-button': '+ Añadir Perfil',

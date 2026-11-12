@@ -2,7 +2,6 @@ export default {
 	'add-ons-label': 'Add-Ons 設定',
 	'backup-label': '設定のバックアップ保存と復元',
 	'config-label': '構成設定',
-	'custom-theme-label': 'カスタムLEDテーマ',
 	'display-config-label': 'ディスプレイ設定',
 	'docs-label': '公式サイト',
 
@@ -12,9 +11,7 @@ export default {
 	'macro-label': 'マクロ設定',
 	'pin-mapping-label': 'GPIO 端子割り当て設定',
 	'boot-mode-mapping-label': '起動モード割り当て設定',
-	'multi-mapping-label': 'マルチマッピング',
 	'peripheral-mapping-label': '周辺機器設定',
-	'profile-settings-label': 'プロファイル設定',
 	'reboot-label': '再起動',
 	'reboot-modal-body': '再起動するモードを選択',
 	'reboot-modal-button-bootsel-label': 'USB (BOOTSEL)',

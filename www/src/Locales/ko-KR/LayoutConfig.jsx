@@ -1,7 +1,4 @@
 export default {
-	'header-text': '레이아웃 구성',
-	'layout-left-header-text': '좌측 레이아웃',
-	'layout-right-header-text': '우측 레이아웃',
 	layouts: {
 		left: {
 			BUTTON_LAYOUT_STICK: '스틱',
@@ -33,7 +30,6 @@ export default {
 			BUTTON_LAYOUT_GITADORA_FRET_A: '기타도라 프렛',
 			BUTTON_LAYOUT_GITADORA_STRUM_A: '기타도라 스트럼',
 			BUTTON_LAYOUT_BOARD_DEFINED_A: '보드 설정값',
-			BUTTON_LAYOUT_CUSTOMA: '사용자',
 			BUTTON_LAYOUT_BANDHERO_FRET_A: 'GH/RB 프렛',
 			BUTTON_LAYOUT_BANDHERO_STRUM_A: 'GH/RB 스트럼',
 			BUTTON_LAYOUT_6GAWD_A: '6GAWD 왼쪽',
@@ -84,7 +80,6 @@ export default {
 			BUTTON_LAYOUT_GITADORA_FRET_B: '기타도라 프렛',
 			BUTTON_LAYOUT_GITADORA_STRUM_B: '기타도라 스트럼',
 			BUTTON_LAYOUT_BOARD_DEFINED_B: '보드 설정값',
-			BUTTON_LAYOUT_CUSTOMB: '커스텀',
 			BUTTON_LAYOUT_BANDHERO_FRET_B: 'GH/RB 프렛',
 			BUTTON_LAYOUT_BANDHERO_STRUM_B: 'GH/RB 스트럼',
 			BUTTON_LAYOUT_6GAWD_B: '6GAWD 오른쪽',

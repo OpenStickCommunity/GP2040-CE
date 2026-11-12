@@ -1,6 +1,7 @@
 export default {
 	'header-text': '홀 이펙트 트리거',
-	'desc-header-text': '홀 이펙트 트리거는 4채널, 8채널, 16채널 멀티플렉서를 지원합니다.',
+	'desc-header-text':
+		'홀 이펙트 트리거는 4채널, 8채널, 16채널 멀티플렉서를 지원합니다.',
 	'available-pins-text': '사용가능한 ADC 핀: {{pins}}',
 	'multiplexer-channel-select': '멀티플렉서 당 채널',
 	'direct-no-mux': '직접연결 (Mux 없음)',
@@ -11,19 +12,28 @@ export default {
 	'select-pin-1': '핀 1 선택',
 	'select-pin-2': '핀 2 선택',
 	'select-pin-3': '핀 3 선택',
+	'separate-select-pins-label': '개별 선택 핀 활성화',
 	'adc-pin-0': 'ADC 핀 0',
 	'adc-pin-1': 'ADC 핀 1',
 	'adc-pin-2': 'ADC 핀 2',
 	'adc-pin-3': 'ADC 핀 3',
+	'adc-pin-4': 'ADC 핀 4',
+	'adc-pin-5': 'ADC 핀 5',
+	'adc-pin-6': 'ADC 핀 6',
+	'adc-pin-7': 'ADC 핀 7',
 	'action-assignment-sub-header': '홀 이펙트 동작 할당',
 	'multiplexer-label': '멀티플렉서',
 	'channel-label': '채널',
 	'voltage-table-show-label': '전압 테이블 표시',
 	'voltage-table-hide-label': '전압 테이블 숨김',
-	'voltage-table-header-text': '홀 이펙트 볼트 테이블',
+	'voltage-table-header-text': '홀 이펙트 전압 테이블',
 	'voltage-table-idle-text': '유휴',
 	'voltage-table-trigger-text': '트리거',
+	'voltage-table-pressed-text': '눌림',
 	'voltage-table-polarity-text': '극성',
+	'voltage-table-rapid-trigger-text': '래피드 트리거',
+	'voltage-table-release-text': '래피드 트리거 임계값',
+	'voltage-table-noise-text': '래피드 트리거 노이즈 필터',
 	'voltage-table-disabled-label': '(사용안함)',
 	'overwrite-all-warning': '전체 트리거 덮어씌움',
 	'overwrite-confirm': '전체 트리거 덮어씌움 확인',
@@ -37,21 +47,27 @@ export default {
 	'pressed-text': '눌림!',
 	'idle-input-text': '유휴 전압',
 	'activation-input-text': '작동 전압',
+	'rapid-trigger-threshold-input-text': '래피드 트리거 임계값',
+	'rapid-trigger-noise-input-text': '래피드 트리거 노이즈 필터',
 	'pressed-input-text': '눌림 전압',
 	'activation-reading-text': '작동 지점 값:',
 	'calibrate-all-button': '모두 보정 🧲',
 	'calibration-header-text': '홀 이펙트 보정',
 	'calibration-idle-text': '유휴 전압 값:',
 	'calibration-pressed-text': '눌림 전압 값:',
-	'calibration-trigger-text': '트리거 전압',
 	'calibration-flip-polarity': '극성 반전',
+	'calibration-flip-rapid-trigger': '래피드 트리거 사용',
 	'calibration-back-button': '이전',
-	'calibration-first-step': '홀 이펙트 스위치의 유휴 전압과 눌렸을 때 전압을 보정해야 합니다. ' +
-								'교정 후, 원하는 깊이에 맞춰 트리거 작동 지점을 조정할 수 있습니다. ' +
-								'먼저, 유휴 전압을 보정합니다. 홀 이펙트 버튼은 그대로 두고 "유휴 상태 보정" 버튼을 클릭하세요.',
-	'calibration-second-step': '다음, 버튼을 완전히 눌러 최대 깊이까지 눌러주세요. 작동 위치는 보정 후 조정할 수 있습니다.',
-	'calibration-third-step': '마지막으로, 현재 작동 지점을 조정하고 원하는 트리거 지점을 설정합니다. '+
-								'조정이 완료되면 버튼을 눌러 원하는 위치에서 작동하는지 확인해주세요.',
-	'calibration-manual-step': '홀 이펙트 버튼의 다음 속성을 원하는 값으로 조정하세요. '+
-							    '원하는 값을 찾으면 값을 복사해서 기기의 모든 트리거에 설정할 수 있습니다.',
+	'calibration-first-step':
+		'홀 이펙트 스위치의 유휴 전압과 눌렸을 때 전압을 보정해야 합니다. ' +
+		'교정 후, 원하는 깊이에 맞춰 트리거 작동 지점을 조정할 수 있습니다. ' +
+		'먼저, 유휴 전압을 보정합니다. 홀 이펙트 버튼은 그대로 두고 "유휴 상태 보정" 버튼을 클릭하세요.',
+	'calibration-second-step':
+		'다음, 버튼을 완전히 눌러 최대 깊이까지 눌러주세요. 작동 위치는 보정 후 조정할 수 있습니다.',
+	'calibration-third-step':
+		'마지막으로, 현재 작동 지점을 조정하고 원하는 트리거 지점을 설정합니다. ' +
+		'조정이 완료되면 버튼을 눌러 원하는 위치에서 작동하는지 확인해주세요.',
+	'calibration-manual-step':
+		'홀 이펙트 버튼의 다음 속성을 원하는 값으로 조정하세요. ' +
+		'원하는 값을 찾으면 값을 복사해서 기기의 모든 트리거에 설정할 수 있습니다.',
 };

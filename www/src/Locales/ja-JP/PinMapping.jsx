@@ -5,7 +5,8 @@ export default {
 	'pin-viewer': '端子確認',
 	'pin-pressed': 'このボタンの配線先は {{pressedPin}} 番端子です！',
 	'profile-label-title': 'プロファイル名',
-	'profile-label-description': '最大１６文字。半角英数とスペースのみ。',
+	'profile-label-description':
+		'最大16文字。印字可能なASCII文字を使用できます。',
 	'profile-pin-mapping-title': '{{profileLabel}} - 端子割当',
 	'profile-label-default': 'プロファイル {{profileNumber}}',
 	'profile-add-button': '+ プロファイル追加',
@@ -17,6 +18,10 @@ export default {
 	'profile-pins-warning':
 		'プロファイルの変更ホットキーに設定しているボタンや方向キーの設定変更は、現在のプロファイル選択状況がわからなくなる原因となるため非推奨です。',
 	'profile-copy-base': 'Baseプロファイルをコピー',
+	'pin-inversion-label': '端子入力反転',
+	'pin-inversion-tooltip':
+		'端子横にチェックボックスを表示します。チェックをつけた端子はアクティブハイ判定となり、端子入力が＋状態で押下判定となります。',
+	'pin-invert-label': 'GP{{pin}}反転',
 	actions: {
 		NONE: '無し',
 		RESERVED: '予約',

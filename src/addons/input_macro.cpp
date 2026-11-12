@@ -33,25 +33,25 @@ void InputMacro::setup() {
     {
         switch( pinMappings[pin].action ) {
             case GpioAction::BUTTON_PRESS_MACRO:
-                macroButtonMask = 1 << pin;
+                macroButtonMask = Mask_t{1} << pin;
                 break;
             case GpioAction::BUTTON_PRESS_MACRO_1:
-                macroPinMasks[0] = 1 << pin;
+                macroPinMasks[0] = Mask_t{1} << pin;
                 break;
             case GpioAction::BUTTON_PRESS_MACRO_2:
-                macroPinMasks[1] = 1 << pin;
+                macroPinMasks[1] = Mask_t{1} << pin;
                 break;
             case GpioAction::BUTTON_PRESS_MACRO_3:
-                macroPinMasks[2] = 1 << pin;
+                macroPinMasks[2] = Mask_t{1} << pin;
                 break;
             case GpioAction::BUTTON_PRESS_MACRO_4:
-                macroPinMasks[3] = 1 << pin;
+                macroPinMasks[3] = Mask_t{1} << pin;
                 break;
             case GpioAction::BUTTON_PRESS_MACRO_5:
-                macroPinMasks[4] = 1 << pin;
+                macroPinMasks[4] = Mask_t{1} << pin;
                 break;
             case GpioAction::BUTTON_PRESS_MACRO_6:
-                macroPinMasks[5] = 1 << pin;
+                macroPinMasks[5] = Mask_t{1} << pin;
                 break;
             default:
                 break;
@@ -66,7 +66,6 @@ void InputMacro::setup() {
     } else {
         boardLedEnabled = false;
     }
-    boardLedEnabled = false;
     prevMacroInputPressed = false;
     reset();
 }
@@ -129,6 +128,11 @@ void InputMacro::checkMacroAction() {
 
     bool newPress = macroInputPressed && (prevMacroInputPressed ^ macroInputPressed);
 
+    if ( macroPosition == -1 ) {
+        prevMacroInputPressed = macroInputPressed;
+        return;
+    }
+
     // Check to see if we should change the current macro (or turn off based on input)
     if ( inputMacroOptions->macroList[macroPosition].macroType == ON_PRESS ) {
         // START Macro: On Press or On Hold Repeat
@@ -177,7 +181,6 @@ void InputMacro::runCurrentMacro() {
         return;
     }
 
-    MacroInput& macroInput = macro.macroInputs[macroInputPosition];
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     currentMicros = getMicro();
 
@@ -207,6 +210,7 @@ void InputMacro::runCurrentMacro() {
         if (macroInputPosition >= (macro.macroInputs_count)) {
             if ( macro.macroType == ON_PRESS ) {
                 reset(); // On press = no more macro
+                return;
             } else {
                 restart(macro); // On Hold-Repeat or On Toggle = start macro again
             }
@@ -216,6 +220,8 @@ void InputMacro::runCurrentMacro() {
             macroInputHoldTime = newMacroInputDuration <= 0 ? INPUT_HOLD_US : newMacroInputDuration;
         }
     }
+
+    MacroInput& macroInput = macro.macroInputs[macroInputPosition];
 
     // Check if we should still hold this macro input based on duration
     if ((currentMicros - macroStartTime) <= macroInput.duration) {
@@ -266,25 +272,25 @@ void InputMacro::reinit() {
     {
         switch( pinMappings[pin].action ) {
             case GpioAction::BUTTON_PRESS_MACRO:
-                macroButtonMask = 1 << pin;
+                macroButtonMask = Mask_t{1} << pin;
                 break;
             case GpioAction::BUTTON_PRESS_MACRO_1:
-                macroPinMasks[0] = 1 << pin;
+                macroPinMasks[0] = Mask_t{1} << pin;
                 break;
             case GpioAction::BUTTON_PRESS_MACRO_2:
-                macroPinMasks[1] = 1 << pin;
+                macroPinMasks[1] = Mask_t{1} << pin;
                 break;
             case GpioAction::BUTTON_PRESS_MACRO_3:
-                macroPinMasks[2] = 1 << pin;
+                macroPinMasks[2] = Mask_t{1} << pin;
                 break;
             case GpioAction::BUTTON_PRESS_MACRO_4:
-                macroPinMasks[3] = 1 << pin;
+                macroPinMasks[3] = Mask_t{1} << pin;
                 break;
             case GpioAction::BUTTON_PRESS_MACRO_5:
-                macroPinMasks[4] = 1 << pin;
+                macroPinMasks[4] = Mask_t{1} << pin;
                 break;
             case GpioAction::BUTTON_PRESS_MACRO_6:
-                macroPinMasks[5] = 1 << pin;
+                macroPinMasks[5] = Mask_t{1} << pin;
                 break;
             default:
                 break;

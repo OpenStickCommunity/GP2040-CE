@@ -43,28 +43,29 @@ const FocusMode = ({
 }: AddonPropTypes) => {
 	const { t } = useTranslation();
 	return (
-		<Section title={
-			<a
-				href="https://gp2040-ce.info/add-ons/focus-mode"
-				target="_blank"
-				className="text-reset text-decoration-none"
-			>
-				{t('AddonsConfig:focus-mode-header-text')}
-			</a>
-		}
+		<Section
+			title={
+				<a
+					href="https://gp2040-ce.info/add-ons/focus-mode"
+					target="_blank"
+					className="text-reset text-decoration-none"
+				>
+					{t('AddonsConfig:focus-mode-header-text')}
+				</a>
+			}
 		>
 			<div id="FocusModeAddonOptions" hidden={!values.FocusModeAddonEnabled}>
 				<div className="alert alert-info" role="alert">
 					<Trans
 						ns="AddonsConfig"
-						i18nKey='AddonsConfig:pin-config-moved-to-core-text'
+						i18nKey="AddonsConfig:pin-config-moved-to-core-text"
 						components={[
 							<a
 								key="0"
 								href="../pin-mapping"
 								className="alert-link"
 								target="_blank"
-							/>
+							/>,
 						]}
 					/>
 				</div>

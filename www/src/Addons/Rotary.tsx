@@ -7,6 +7,8 @@ import FormControl from '../Components/FormControl';
 import { FormCheck, Row } from 'react-bootstrap';
 import { AddonPropTypes } from '../Pages/AddonsConfigPage';
 
+import useBoardDefinition from '../Store/useBoardDefinitionStore';
+
 const ENCODER_MODES = [
 	{ label: 'encoder-mode-none', value: 0 },
 	{ label: 'encoder-mode-left-analog-x', value: 1 },
@@ -44,10 +46,7 @@ export const rotaryScheme = {
 		.number()
 		.required()
 		.label('Rotary Encoder Add-On Enabled'),
-	encoderOneEnabled: yup
-		.number()
-		.required()
-		.label('Encoder One Enabled'),
+	encoderOneEnabled: yup.number().required().label('Encoder One Enabled'),
 	encoderOnePinA: yup
 		.number()
 		.label('Encoder One Pin A')
@@ -69,10 +68,7 @@ export const rotaryScheme = {
 		.required()
 		.label('Encoder One Allow Wrap Around'),
 	encoderOneMultiplier: yup.number().label('Encoder One Multiplier').required(),
-	encoderTwoEnabled: yup
-		.number()
-		.required()
-		.label('Encoder Two Enabled'),
+	encoderTwoEnabled: yup.number().required().label('Encoder Two Enabled'),
 	encoderTwoPinA: yup
 		.number()
 		.label('Encoder Two Pin A')
@@ -116,18 +112,25 @@ export const rotaryState = {
 	RotaryAddonEnabled: 0,
 };
 
-const Rotary = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) => {
+const Rotary = ({
+	values,
+	errors,
+	handleChange,
+	handleCheckbox,
+}: AddonPropTypes) => {
 	const { t } = useTranslation();
+	const { boardDefinition } = useBoardDefinition();
 	return (
-		<Section title={
-			<a
-				href="https://gp2040-ce.info/add-ons/rotary-encoders"
-				target="_blank"
-				className="text-reset text-decoration-none"
-			>
-				{t('Rotary:header-text')}
-			</a>
-		}
+		<Section
+			title={
+				<a
+					href="https://gp2040-ce.info/add-ons/rotary-encoders"
+					target="_blank"
+					className="text-reset text-decoration-none"
+				>
+					{t('Rotary:header-text')}
+				</a>
+			}
 		>
 			<div id="RotaryAddonEnabledOptions" hidden={!values.RotaryAddonEnabled}>
 				<Row className="mb-3">
@@ -156,7 +159,7 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes
 								isInvalid={Boolean(errors.encoderOnePinA)}
 								onChange={handleChange}
 								min={-1}
-								max={29}
+								max={boardDefinition.maxPin}
 							/>
 							<FormControl
 								type="number"
@@ -169,7 +172,7 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes
 								isInvalid={Boolean(errors.encoderOnePinB)}
 								onChange={handleChange}
 								min={-1}
-								max={29}
+								max={boardDefinition.maxPin}
 							/>
 							<FormControl
 								type="number"
@@ -264,7 +267,7 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes
 								isInvalid={Boolean(errors.encoderTwoPinA)}
 								onChange={handleChange}
 								min={-1}
-								max={29}
+								max={boardDefinition.maxPin}
 							/>
 							<FormControl
 								type="number"
@@ -277,7 +280,7 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes
 								isInvalid={Boolean(errors.encoderTwoPinB)}
 								onChange={handleChange}
 								min={-1}
-								max={29}
+								max={boardDefinition.maxPin}
 							/>
 							<FormControl
 								type="number"

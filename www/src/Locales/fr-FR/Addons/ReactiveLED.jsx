@@ -9,7 +9,7 @@ export default {
 	'led-mode': {
 		'static-on': 'Allumées statique',
 		'static-off': 'Éteintes statique',
-		'fade-in': 'Fondu d\'entrée',
+		'fade-in': "Fondu d'entrée",
 		'fade-out': 'Fondu de sortie',
 	},
 };

@@ -1,6 +1,7 @@
 #include "config.pb.h"
 #include "base64.h"
 #include "hardware/adc.h"
+#include "addons/analog.h"
 #include "helper.h"
 
 #include "drivermanager.h"
@@ -8,12 +9,14 @@
 #include "eventmanager.h"
 #include "layoutmanager.h"
 #include "peripheralmanager.h"
-#include "animationstorage.h"
 #include "system.h"
 #include "config_utils.h"
 #include "types.h"
 #include "version.h"
 
+#include "neopicoleds.h"
+
+#include <cmath>
 #include <cstring>
 #include <string>
 #include <vector>
@@ -34,7 +37,9 @@
 #include "lwip/apps/httpd.h"
 #include "lwip/def.h"
 #include "lwip/mem.h"
+#include "advanced_socd.h"
 #include "addons/input_macro.h"
+#include "addons/he_trigger.h"
 
 #define PATH_CGI_ACTION "/cgi/action"
 
@@ -44,7 +49,7 @@
 
 extern struct fsdata_file file__index_html[];
 
-const static char* spaPaths[] = { "/backup", "/display-config", "/led-config", "/pin-mapping", "/settings", "/reset-settings", "/add-ons", "/custom-theme", "/macro", "/peripheral-mapping", "/boot-mode-mapping" };
+const static char* spaPaths[] = { "/animation", "/backup", "/display-config", "/led-config", "/pin-mapping", "/settings", "/reset-settings", "/add-ons", "/macro", "/peripheral-mapping", "/boot-mode-mapping" };
 const static char* excludePaths[] = { "/css", "/images", "/js", "/static" };
 const static uint32_t rebootDelayMs = 500;
 static string http_post_uri;
@@ -107,6 +112,18 @@ static void __attribute__((noinline)) docToValue(T& value, const DynamicJsonDocu
         value = doc[key0][key1][key2];
     }
 }
+
+static const struct {
+    const char* enabled;
+    const char* upDown;
+    const char* leftRight;
+    const char* name;
+} ADVANCED_SOCD_KEYS[ADVANCED_SOCD_SLOT_COUNT] = {
+    { "advancedSOCD1Enabled", "advancedSOCD1UpDown", "advancedSOCD1LeftRight", "advancedSOCD1Name" },
+    { "advancedSOCD2Enabled", "advancedSOCD2UpDown", "advancedSOCD2LeftRight", "advancedSOCD2Name" },
+    { "advancedSOCD3Enabled", "advancedSOCD3UpDown", "advancedSOCD3LeftRight", "advancedSOCD3Name" },
+    { "advancedSOCD4Enabled", "advancedSOCD4UpDown", "advancedSOCD4LeftRight", "advancedSOCD4Name" },
+};
 
 // Don't inline this function, we do not want to consume stack space in the calling function
 static void __attribute__((noinline)) cleanAddonGpioMappings(Pin_t& addonPin, Pin_t oldAddonPin)
@@ -219,6 +236,7 @@ enum class HttpStatusCode
 {
     _200,
     _400,
+    _404,
     _500,
 };
 
@@ -243,6 +261,7 @@ int set_file_data(fs_file* file, const DataAndStatusCode& dataAndStatusCode)
     {
         case HttpStatusCode::_200: statusCodeStr = "200 OK"; break;
         case HttpStatusCode::_400: statusCodeStr = "400 Bad Request"; break;
+        case HttpStatusCode::_404: statusCodeStr = "404 Not Found"; break;
         case HttpStatusCode::_500: statusCodeStr = "500 Internal Server Error"; break;
     }
 
@@ -263,7 +282,7 @@ int set_file_data(fs_file* file, const DataAndStatusCode& dataAndStatusCode)
 
     file->data = returnData->c_str();
     file->len = returnData->size();
-    file->index = file->len;
+    file->index = 0;//file->len;
     file->http_header_included = true;
     file->pextension = returnData;  // store for cleanup
     file->is_custom_file = 1;
@@ -412,6 +431,7 @@ void addUsedPinsArray(DynamicJsonDocument& doc)
 std::string serialize_json(DynamicJsonDocument &doc)
 {
     std::string data;
+    data.reserve(measureJson(doc));
     serializeJson(doc, data);
     return data;
 }
@@ -424,9 +444,53 @@ std::string getUsedPins()
     return serialize_json(doc);
 }
 
+template <size_t N>
+static void __attribute__((noinline)) readSplashTextLine(char (&line)[N], const DynamicJsonDocument& doc, const char* key)
+{
+    const char* value = doc[key] | "";
+    size_t length = 0;
+    for (; *value != '\0' && length < N - 1; value++) {
+        if (*value >= ' ' && *value <= '~') {
+            line[length++] = *value;
+        }
+    }
+    line[length] = '\0';
+}
+
+static bool __attribute__((noinline)) decodeCustomLayout(const DynamicJsonDocument& doc, const char* key, size_t maxSize, std::string& decoded)
+{
+    if (!doc.containsKey(key))
+        return true;
+    if (!doc[key].is<const char*>())
+        return false;
+    std::string base64String = doc[key];
+    if (!Base64::Decode(base64String, decoded))
+        return false;
+    return decoded.length() <= maxSize && (decoded.length() % CUSTOM_LAYOUT_ELEMENT_BYTES) == 0;
+}
+
+static void __attribute__((noinline)) applyCustomLayout(bool& hasLayout, pb_byte_t* bytes, pb_size_t& size, const DynamicJsonDocument& doc, const char* key, const std::string& decoded)
+{
+    if (!doc.containsKey(key))
+        return;
+    memcpy(bytes, decoded.data(), decoded.length());
+    size = decoded.length();
+    hasLayout = true;
+}
+
+static void __attribute__((noinline)) writeCustomLayout(const pb_byte_t* bytes, pb_size_t size, DynamicJsonDocument& doc, const char* key)
+{
+    doc[key] = Base64::Encode(reinterpret_cast<const char*>(bytes), size);
+}
+
 std::string setDisplayOptions(DisplayOptions& displayOptions)
 {
     DynamicJsonDocument doc = get_post_data();
+    std::string customLayoutA;
+    std::string customLayoutB;
+    if (!decodeCustomLayout(doc, "customLayoutA", sizeof(displayOptions.customLayoutA.bytes), customLayoutA) ||
+        !decodeCustomLayout(doc, "customLayoutB", sizeof(displayOptions.customLayoutB.bytes), customLayoutB))
+        return "{\"success\":false,\"error\":\"Invalid custom layout\"}";
     readDoc(displayOptions.enabled, doc, "enabled");
     readDoc(displayOptions.flip, doc, "flipDisplay");
     readDoc(displayOptions.invert, doc, "invertDisplay");
@@ -450,18 +514,16 @@ std::string setDisplayOptions(DisplayOptions& displayOptions)
     readDoc(displayOptions.inputHistoryCol, doc, "inputHistoryCol");
     readDoc(displayOptions.inputHistoryRow, doc, "inputHistoryRow");
     readDoc(displayOptions.contrast, doc, "displayContrast");
+    readDoc(displayOptions.splashTextEnabled, doc, "splashTextEnabled");
+    readDoc(displayOptions.splashTextDuration, doc, "splashTextDuration");
+    readDoc(displayOptions.splashTextFirst, doc, "splashTextFirst");
+    readDoc(displayOptions.splashTextLineCount, doc, "splashTextLineCount");
+    readSplashTextLine(displayOptions.splashTextLine1, doc, "splashTextLine1");
+    readSplashTextLine(displayOptions.splashTextLine2, doc, "splashTextLine2");
+    readSplashTextLine(displayOptions.splashTextLine3, doc, "splashTextLine3");
 
-    readDoc(displayOptions.buttonLayoutCustomOptions.paramsLeft.layout, doc, "buttonLayoutCustomOptions", "params", "layout");
-    readDoc(displayOptions.buttonLayoutCustomOptions.paramsLeft.common.startX, doc, "buttonLayoutCustomOptions", "params", "startX");
-    readDoc(displayOptions.buttonLayoutCustomOptions.paramsLeft.common.startY, doc, "buttonLayoutCustomOptions", "params", "startY");
-    readDoc(displayOptions.buttonLayoutCustomOptions.paramsLeft.common.buttonRadius, doc, "buttonLayoutCustomOptions", "params", "buttonRadius");
-    readDoc(displayOptions.buttonLayoutCustomOptions.paramsLeft.common.buttonPadding, doc, "buttonLayoutCustomOptions", "params", "buttonPadding");
-
-    readDoc(displayOptions.buttonLayoutCustomOptions.paramsRight.layout, doc, "buttonLayoutCustomOptions", "paramsRight", "layout");
-    readDoc(displayOptions.buttonLayoutCustomOptions.paramsRight.common.startX, doc, "buttonLayoutCustomOptions", "paramsRight", "startX");
-    readDoc(displayOptions.buttonLayoutCustomOptions.paramsRight.common.startY, doc, "buttonLayoutCustomOptions", "paramsRight", "startY");
-    readDoc(displayOptions.buttonLayoutCustomOptions.paramsRight.common.buttonRadius, doc, "buttonLayoutCustomOptions", "paramsRight", "buttonRadius");
-    readDoc(displayOptions.buttonLayoutCustomOptions.paramsRight.common.buttonPadding, doc, "buttonLayoutCustomOptions", "paramsRight", "buttonPadding");
+    applyCustomLayout(displayOptions.has_customLayoutA, displayOptions.customLayoutA.bytes, displayOptions.customLayoutA.size, doc, "customLayoutA", customLayoutA);
+    applyCustomLayout(displayOptions.has_customLayoutB, displayOptions.customLayoutB.bytes, displayOptions.customLayoutB.size, doc, "customLayoutB", customLayoutB);
 
     return serialize_json(doc);
 }
@@ -469,7 +531,8 @@ std::string setDisplayOptions(DisplayOptions& displayOptions)
 std::string setDisplayOptions()
 {
     std::string response = setDisplayOptions(Storage::getInstance().getDisplayOptions());
-    EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
+    if (response.rfind("{\"success\":false", 0) != 0)
+        EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
     return response;
 }
 
@@ -481,9 +544,11 @@ std::string setPreviewDisplayOptions()
 
 std::string getDisplayOptions() // Manually set Document Attributes for the display
 {
-    const size_t capacity = JSON_OBJECT_SIZE(100);
-    DynamicJsonDocument doc(capacity);
     const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
+    const size_t capacity = JSON_OBJECT_SIZE(100)
+        + JSON_STRING_SIZE(4 * ((sizeof(displayOptions.customLayoutA.bytes) + 2) / 3))
+        + JSON_STRING_SIZE(4 * ((sizeof(displayOptions.customLayoutB.bytes) + 2) / 3));
+    DynamicJsonDocument doc(capacity);
     writeDoc(doc, "enabled", displayOptions.enabled ? 1 : 0);
     writeDoc(doc, "flipDisplay", displayOptions.flip);
     writeDoc(doc, "invertDisplay", displayOptions.invert ? 1 : 0);
@@ -507,18 +572,16 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
     writeDoc(doc, "inputHistoryCol", displayOptions.inputHistoryCol);
     writeDoc(doc, "inputHistoryRow", displayOptions.inputHistoryRow);
     writeDoc(doc, "displayContrast", displayOptions.contrast);
+    writeDoc(doc, "splashTextEnabled", displayOptions.splashTextEnabled ? 1 : 0);
+    writeDoc(doc, "splashTextDuration", displayOptions.splashTextDuration);
+    writeDoc(doc, "splashTextFirst", displayOptions.splashTextFirst ? 1 : 0);
+    writeDoc(doc, "splashTextLineCount", displayOptions.splashTextLineCount);
+    writeDoc(doc, "splashTextLine1", displayOptions.splashTextLine1);
+    writeDoc(doc, "splashTextLine2", displayOptions.splashTextLine2);
+    writeDoc(doc, "splashTextLine3", displayOptions.splashTextLine3);
 
-    writeDoc(doc, "buttonLayoutCustomOptions", "params", "layout", displayOptions.buttonLayoutCustomOptions.paramsLeft.layout);
-    writeDoc(doc, "buttonLayoutCustomOptions", "params", "startX", displayOptions.buttonLayoutCustomOptions.paramsLeft.common.startX);
-    writeDoc(doc, "buttonLayoutCustomOptions", "params", "startY", displayOptions.buttonLayoutCustomOptions.paramsLeft.common.startY);
-    writeDoc(doc, "buttonLayoutCustomOptions", "params", "buttonRadius", displayOptions.buttonLayoutCustomOptions.paramsLeft.common.buttonRadius);
-    writeDoc(doc, "buttonLayoutCustomOptions", "params", "buttonPadding", displayOptions.buttonLayoutCustomOptions.paramsLeft.common.buttonPadding);
-
-    writeDoc(doc, "buttonLayoutCustomOptions", "paramsRight", "layout", displayOptions.buttonLayoutCustomOptions.paramsRight.layout);
-    writeDoc(doc, "buttonLayoutCustomOptions", "paramsRight", "startX", displayOptions.buttonLayoutCustomOptions.paramsRight.common.startX);
-    writeDoc(doc, "buttonLayoutCustomOptions", "paramsRight", "startY", displayOptions.buttonLayoutCustomOptions.paramsRight.common.startY);
-    writeDoc(doc, "buttonLayoutCustomOptions", "paramsRight", "buttonRadius", displayOptions.buttonLayoutCustomOptions.paramsRight.common.buttonRadius);
-    writeDoc(doc, "buttonLayoutCustomOptions", "paramsRight", "buttonPadding", displayOptions.buttonLayoutCustomOptions.paramsRight.common.buttonPadding);
+    writeCustomLayout(displayOptions.customLayoutA.bytes, displayOptions.customLayoutA.size, doc, "customLayoutA");
+    writeCustomLayout(displayOptions.customLayoutB.bytes, displayOptions.customLayoutB.size, doc, "customLayoutB");
 
     return serialize_json(doc);
 }
@@ -552,6 +615,41 @@ std::string setSplashImage()
     return serialize_json(doc);
 }
 
+static void readInvertedPins(GpioMappings& mappings, JsonVariantConst json)
+{
+    mappings.pinInversionEnabled = json["pinInversionEnabled"];
+    mappings.invertedPins_count = 0;
+    for (int pin : json["invertedPins"].as<JsonArrayConst>()) {
+        if (pin >= 0 && pin < (int)NUM_BANK0_GPIOS && mappings.invertedPins_count < std::size(mappings.invertedPins))
+            mappings.invertedPins[mappings.invertedPins_count++] = pin;
+    }
+}
+
+static void writeInvertedPins(JsonVariant json, const GpioMappings& mappings)
+{
+    json["pinInversionEnabled"] = mappings.pinInversionEnabled;
+    JsonArray pins = json.createNestedArray("invertedPins");
+    for (pb_size_t i = 0; i < mappings.invertedPins_count; i++)
+        pins.add(mappings.invertedPins[i]);
+}
+
+static void readProfileSOCD(GpioMappings& mappings, JsonVariantConst json)
+{
+    if (!json["socdModeOverride"].isNull())
+        mappings.socdModeOverride = json["socdModeOverride"];
+    if (!json["socdMode"].isNull()) {
+        const int socdMode = json["socdMode"];
+        if (socdMode >= SOCD_MODE_UP_PRIORITY && socdMode <= SOCD_MODE_ADVANCED_4)
+            mappings.socdMode = (SOCDMode)socdMode;
+    }
+}
+
+static void writeProfileSOCD(JsonVariant json, const GpioMappings& mappings)
+{
+    json["socdModeOverride"] = mappings.socdModeOverride;
+    json["socdMode"] = (int)mappings.socdMode;
+}
+
 std::string setProfileOptions()
 {
     DynamicJsonDocument doc = get_post_data();
@@ -560,6 +658,7 @@ std::string setProfileOptions()
     GpioMappings& coreMappings = Storage::getInstance().getGpioMappings();
     JsonObject options = doc.as<JsonObject>();
     JsonArray alts = options["alternativePinMappings"];
+    const pb_size_t previousCount = profileOptions.gpioMappingsSets_count;
     int altsIndex = 0;
     char pinName[6];
     for (JsonObject alt : alts) {
@@ -587,6 +686,10 @@ std::string setProfileOptions()
         strncpy(profileOptions.gpioMappingsSets[altsIndex].profileLabel, alt["profileLabel"], profileLabelSize - 1);
         profileOptions.gpioMappingsSets[altsIndex].profileLabel[profileLabelSize - 1] = '\0';
         profileOptions.gpioMappingsSets[altsIndex].enabled = alt["enabled"];
+        readInvertedPins(profileOptions.gpioMappingsSets[altsIndex], alt);
+        readProfileSOCD(profileOptions.gpioMappingsSets[altsIndex], alt);
+        if (altsIndex >= previousCount)
+            profileOptions.gpioMappingsSets[altsIndex].keyboardMapping = Storage::getInstance().getKeyboardMapping();
 
         profileOptions.gpioMappingsSets_count = ++altsIndex;
         if (altsIndex > 4) break;
@@ -598,7 +701,10 @@ std::string setProfileOptions()
 
 std::string getProfileOptions()
 {
-    const size_t capacity = JSON_OBJECT_SIZE(500);
+    ProfileOptions& profileOptions = Storage::getInstance().getProfileOptions();
+    // Make capacity slots dynamic, max for 5 profiles * 48 pins is 976 slots
+    const size_t capacity = JSON_OBJECT_SIZE(1) + JSON_ARRAY_SIZE(profileOptions.gpioMappingsSets_count)
+        + (profileOptions.gpioMappingsSets_count * (JSON_OBJECT_SIZE(4 * NUM_BANK0_GPIOS + 6) + JSON_ARRAY_SIZE(NUM_BANK0_GPIOS)));
     DynamicJsonDocument doc(capacity);
 
     const auto writePinDoc = [&](const int item, const char* key, const GpioMappingInfo& value) -> void
@@ -607,8 +713,6 @@ std::string getProfileOptions()
         writeDoc(doc, "alternativePinMappings", item, key, "customButtonMask", value.customButtonMask);
         writeDoc(doc, "alternativePinMappings", item, key, "customDpadMask", value.customDpadMask);
     };
-
-    ProfileOptions& profileOptions = Storage::getInstance().getProfileOptions();
 
     // return an empty list if no profiles are currently set, since we no longer populate by default
     if (profileOptions.gpioMappingsSets_count == 0) {
@@ -649,8 +753,30 @@ std::string getProfileOptions()
         writePinDoc(i, "pin27", profileOptions.gpioMappingsSets[i].pins[27]);
         writePinDoc(i, "pin28", profileOptions.gpioMappingsSets[i].pins[28]);
         writePinDoc(i, "pin29", profileOptions.gpioMappingsSets[i].pins[29]);
+#if NUM_BANK0_GPIOS > 32
+        writePinDoc(i, "pin30", profileOptions.gpioMappingsSets[i].pins[30]);
+        writePinDoc(i, "pin31", profileOptions.gpioMappingsSets[i].pins[31]);
+        writePinDoc(i, "pin32", profileOptions.gpioMappingsSets[i].pins[32]);
+        writePinDoc(i, "pin33", profileOptions.gpioMappingsSets[i].pins[33]);
+        writePinDoc(i, "pin34", profileOptions.gpioMappingsSets[i].pins[34]);
+        writePinDoc(i, "pin35", profileOptions.gpioMappingsSets[i].pins[35]);
+        writePinDoc(i, "pin36", profileOptions.gpioMappingsSets[i].pins[36]);
+        writePinDoc(i, "pin37", profileOptions.gpioMappingsSets[i].pins[37]);
+        writePinDoc(i, "pin38", profileOptions.gpioMappingsSets[i].pins[38]);
+        writePinDoc(i, "pin39", profileOptions.gpioMappingsSets[i].pins[39]);
+        writePinDoc(i, "pin40", profileOptions.gpioMappingsSets[i].pins[40]);
+        writePinDoc(i, "pin41", profileOptions.gpioMappingsSets[i].pins[41]);
+        writePinDoc(i, "pin42", profileOptions.gpioMappingsSets[i].pins[42]);
+        writePinDoc(i, "pin43", profileOptions.gpioMappingsSets[i].pins[43]);
+        writePinDoc(i, "pin44", profileOptions.gpioMappingsSets[i].pins[44]);
+        writePinDoc(i, "pin45", profileOptions.gpioMappingsSets[i].pins[45]);
+        writePinDoc(i, "pin46", profileOptions.gpioMappingsSets[i].pins[46]);
+        writePinDoc(i, "pin47", profileOptions.gpioMappingsSets[i].pins[47]);
+#endif
         writeDoc(doc, "alternativePinMappings", i, "profileLabel", profileOptions.gpioMappingsSets[i].profileLabel);
         doc["alternativePinMappings"][i]["enabled"] = profileOptions.gpioMappingsSets[i].enabled;
+        writeInvertedPins(doc["alternativePinMappings"][i], profileOptions.gpioMappingsSets[i]);
+        writeProfileSOCD(doc["alternativePinMappings"][i], profileOptions.gpioMappingsSets[i]);
     }
 
     return serialize_json(doc);
@@ -666,6 +792,26 @@ std::string setGamepadOptions()
     readDoc(gamepadOptions.inputMode, doc, "inputMode");
     readDoc(gamepadOptions.inputDeviceType, doc, "inputDeviceType");
     readDoc(gamepadOptions.socdMode, doc, "socdMode");
+    readDoc(gamepadOptions.advancedSOCDEnabled, doc, "advancedSOCDEnabled");
+
+    for (int index = 0; index < ADVANCED_SOCD_SLOT_COUNT; index++) {
+        AdvancedSOCDSlot& socdSlot = gamepadOptions.advancedSOCDSlots[index];
+        docToValue(socdSlot.enabled, doc, ADVANCED_SOCD_KEYS[index].enabled);
+        docToValue(socdSlot.upDownMode, doc, ADVANCED_SOCD_KEYS[index].upDown);
+        docToValue(socdSlot.leftRightMode, doc, ADVANCED_SOCD_KEYS[index].leftRight);
+        if (doc[ADVANCED_SOCD_KEYS[index].name].is<const char*>()) {
+            const char* value = doc[ADVANCED_SOCD_KEYS[index].name];
+            size_t length = 0;
+            for (; *value != '\0' && length < sizeof(socdSlot.name) - 1; value++) {
+                if (*value >= ' ' && *value <= '~') {
+                    socdSlot.name[length++] = *value;
+                }
+            }
+            socdSlot.name[length] = '\0';
+            socdSlot.has_name = true;
+        }
+    }
+    gamepadOptions.advancedSOCDSlots_count = ADVANCED_SOCD_SLOT_COUNT;
     readDoc(gamepadOptions.switchTpShareForDs4, doc, "switchTpShareForDs4");
     readDoc(gamepadOptions.lockHotkeys, doc, "lockHotkeys");
     readDoc(gamepadOptions.fourWayMode, doc, "fourWayMode");
@@ -683,6 +829,38 @@ std::string setGamepadOptions()
     readDoc(gamepadOptions.ps5AuthType, doc, "ps5AuthType");
     readDoc(gamepadOptions.xinputAuthType, doc, "xinputAuthType");
     readDoc(gamepadOptions.ps4ControllerIDMode, doc, "ps4ControllerIDMode");
+    readDoc(gamepadOptions.switchProControllerType, doc, "switchProControllerType");
+    readDoc(gamepadOptions.switchProColorPreset, doc, "switchProColorPreset");
+    readDoc(gamepadOptions.switchProBodyColor, doc, "switchProBodyColor");
+    readDoc(gamepadOptions.switchProButtonsColor, doc, "switchProButtonsColor");
+    readDoc(gamepadOptions.switchProLeftGripColor, doc, "switchProLeftGripColor");
+    readDoc(gamepadOptions.switchProRightGripColor, doc, "switchProRightGripColor");
+    readDoc(gamepadOptions.switchProJoyConColorPreset, doc, "switchProJoyConColorPreset");
+    readDoc(gamepadOptions.switchProJoyConLeftBodyColor, doc, "switchProJoyConLeftBodyColor");
+    readDoc(gamepadOptions.switchProJoyConLeftButtonsColor, doc, "switchProJoyConLeftButtonsColor");
+    readDoc(gamepadOptions.switchProJoyConRightBodyColor, doc, "switchProJoyConRightBodyColor");
+    readDoc(gamepadOptions.switchProJoyConRightButtonsColor, doc, "switchProJoyConRightButtonsColor");
+    readDoc(gamepadOptions.switch2ProIdentity, doc, "switch2ProIdentity");
+    readDoc(gamepadOptions.switch2ProColorPreset, doc, "switch2ProColorPreset");
+    readDoc(gamepadOptions.switch2ProBodyColor, doc, "switch2ProBodyColor");
+    readDoc(gamepadOptions.switch2ProButtonsColor, doc, "switch2ProButtonsColor");
+    readDoc(gamepadOptions.switch2ProHighlightColor, doc, "switch2ProHighlightColor");
+    readDoc(gamepadOptions.switch2ProGripColor, doc, "switch2ProGripColor");
+    readDoc(gamepadOptions.switch2ProLeftShoulderColor, doc, "switch2ProLeftShoulderColor");
+    readDoc(gamepadOptions.switch2ProRightShoulderColor, doc, "switch2ProRightShoulderColor");
+    readDoc(gamepadOptions.switch2ProStickColor, doc, "switch2ProStickColor");
+    readDoc(gamepadOptions.switch2ProLeftRingColor, doc, "switch2ProLeftRingColor");
+    readDoc(gamepadOptions.switch2ProRightRingColor, doc, "switch2ProRightRingColor");
+    readDoc(gamepadOptions.switch2ProJoyCon2ColorPreset, doc, "switch2ProJoyCon2ColorPreset");
+    readDoc(gamepadOptions.switch2ProJoyCon2LeftBodyColor, doc, "switch2ProJoyCon2LeftBodyColor");
+    readDoc(gamepadOptions.switch2ProJoyCon2LeftButtonsColor, doc, "switch2ProJoyCon2LeftButtonsColor");
+    readDoc(gamepadOptions.switch2ProJoyCon2LeftAccentColor, doc, "switch2ProJoyCon2LeftAccentColor");
+    readDoc(gamepadOptions.switch2ProJoyCon2LeftStickColor, doc, "switch2ProJoyCon2LeftStickColor");
+    readDoc(gamepadOptions.switch2ProJoyCon2RightBodyColor, doc, "switch2ProJoyCon2RightBodyColor");
+    readDoc(gamepadOptions.switch2ProJoyCon2RightButtonsColor, doc, "switch2ProJoyCon2RightButtonsColor");
+    readDoc(gamepadOptions.switch2ProJoyCon2RightAccentColor, doc, "switch2ProJoyCon2RightAccentColor");
+    readDoc(gamepadOptions.switch2ProJoyCon2RightStickColor, doc, "switch2ProJoyCon2RightStickColor");
+    readDoc(gamepadOptions.genericDpadMode, doc, "genericDpadMode");
     readDoc(gamepadOptions.usbDescOverride, doc, "usbDescOverride");
     readDoc(gamepadOptions.miniMenuGamepadInput, doc, "miniMenuGamepadInput");
     // Copy USB descriptor strings
@@ -736,6 +914,13 @@ std::string getGamepadOptions()
     writeDoc(doc, "inputMode", gamepadOptions.inputMode);
     writeDoc(doc, "inputDeviceType", gamepadOptions.inputDeviceType);
     writeDoc(doc, "socdMode", gamepadOptions.socdMode);
+    writeDoc(doc, "advancedSOCDEnabled", gamepadOptions.advancedSOCDEnabled);
+    for (int index = 0; index < ADVANCED_SOCD_SLOT_COUNT; index++) {
+        writeDoc(doc, ADVANCED_SOCD_KEYS[index].enabled, gamepadOptions.advancedSOCDSlots[index].enabled);
+        writeDoc(doc, ADVANCED_SOCD_KEYS[index].upDown, gamepadOptions.advancedSOCDSlots[index].upDownMode);
+        writeDoc(doc, ADVANCED_SOCD_KEYS[index].leftRight, gamepadOptions.advancedSOCDSlots[index].leftRightMode);
+        writeDoc(doc, ADVANCED_SOCD_KEYS[index].name, gamepadOptions.advancedSOCDSlots[index].name);
+    }
     writeDoc(doc, "switchTpShareForDs4", gamepadOptions.switchTpShareForDs4 ? 1 : 0);
     writeDoc(doc, "lockHotkeys", gamepadOptions.lockHotkeys ? 1 : 0);
     writeDoc(doc, "fourWayMode", gamepadOptions.fourWayMode ? 1 : 0);
@@ -753,6 +938,38 @@ std::string getGamepadOptions()
     writeDoc(doc, "ps5AuthType", gamepadOptions.ps5AuthType);
     writeDoc(doc, "xinputAuthType", gamepadOptions.xinputAuthType);
     writeDoc(doc, "ps4ControllerIDMode", gamepadOptions.ps4ControllerIDMode);
+    writeDoc(doc, "switchProControllerType", gamepadOptions.switchProControllerType);
+    writeDoc(doc, "switchProColorPreset", gamepadOptions.switchProColorPreset);
+    writeDoc(doc, "switchProBodyColor", gamepadOptions.switchProBodyColor);
+    writeDoc(doc, "switchProButtonsColor", gamepadOptions.switchProButtonsColor);
+    writeDoc(doc, "switchProLeftGripColor", gamepadOptions.switchProLeftGripColor);
+    writeDoc(doc, "switchProRightGripColor", gamepadOptions.switchProRightGripColor);
+    writeDoc(doc, "switchProJoyConColorPreset", gamepadOptions.switchProJoyConColorPreset);
+    writeDoc(doc, "switchProJoyConLeftBodyColor", gamepadOptions.switchProJoyConLeftBodyColor);
+    writeDoc(doc, "switchProJoyConLeftButtonsColor", gamepadOptions.switchProJoyConLeftButtonsColor);
+    writeDoc(doc, "switchProJoyConRightBodyColor", gamepadOptions.switchProJoyConRightBodyColor);
+    writeDoc(doc, "switchProJoyConRightButtonsColor", gamepadOptions.switchProJoyConRightButtonsColor);
+    writeDoc(doc, "switch2ProIdentity", gamepadOptions.switch2ProIdentity);
+    writeDoc(doc, "switch2ProColorPreset", gamepadOptions.switch2ProColorPreset);
+    writeDoc(doc, "switch2ProBodyColor", gamepadOptions.switch2ProBodyColor);
+    writeDoc(doc, "switch2ProButtonsColor", gamepadOptions.switch2ProButtonsColor);
+    writeDoc(doc, "switch2ProHighlightColor", gamepadOptions.switch2ProHighlightColor);
+    writeDoc(doc, "switch2ProGripColor", gamepadOptions.switch2ProGripColor);
+    writeDoc(doc, "switch2ProLeftShoulderColor", gamepadOptions.switch2ProLeftShoulderColor);
+    writeDoc(doc, "switch2ProRightShoulderColor", gamepadOptions.switch2ProRightShoulderColor);
+    writeDoc(doc, "switch2ProStickColor", gamepadOptions.switch2ProStickColor);
+    writeDoc(doc, "switch2ProLeftRingColor", gamepadOptions.switch2ProLeftRingColor);
+    writeDoc(doc, "switch2ProRightRingColor", gamepadOptions.switch2ProRightRingColor);
+    writeDoc(doc, "switch2ProJoyCon2ColorPreset", gamepadOptions.switch2ProJoyCon2ColorPreset);
+    writeDoc(doc, "switch2ProJoyCon2LeftBodyColor", gamepadOptions.switch2ProJoyCon2LeftBodyColor);
+    writeDoc(doc, "switch2ProJoyCon2LeftButtonsColor", gamepadOptions.switch2ProJoyCon2LeftButtonsColor);
+    writeDoc(doc, "switch2ProJoyCon2LeftAccentColor", gamepadOptions.switch2ProJoyCon2LeftAccentColor);
+    writeDoc(doc, "switch2ProJoyCon2LeftStickColor", gamepadOptions.switch2ProJoyCon2LeftStickColor);
+    writeDoc(doc, "switch2ProJoyCon2RightBodyColor", gamepadOptions.switch2ProJoyCon2RightBodyColor);
+    writeDoc(doc, "switch2ProJoyCon2RightButtonsColor", gamepadOptions.switch2ProJoyCon2RightButtonsColor);
+    writeDoc(doc, "switch2ProJoyCon2RightAccentColor", gamepadOptions.switch2ProJoyCon2RightAccentColor);
+    writeDoc(doc, "switch2ProJoyCon2RightStickColor", gamepadOptions.switch2ProJoyCon2RightStickColor);
+    writeDoc(doc, "genericDpadMode", gamepadOptions.genericDpadMode);
     writeDoc(doc, "usbDescOverride", gamepadOptions.usbDescOverride);
     writeDoc(doc, "usbDescManufacturer", gamepadOptions.usbDescManufacturer);
     writeDoc(doc, "usbDescProduct", gamepadOptions.usbDescProduct);
@@ -800,55 +1017,38 @@ std::string getGamepadOptions()
 std::string setLedOptions()
 {
     DynamicJsonDocument doc = get_post_data();
-
-    const auto readIndex = [&](int32_t& var, const char* key0, const char* key1)
-    {
-        var = -1;
-        if (hasValue(doc, key0, key1))
-        {
-            readDoc(var, doc, key0, key1);
-        }
-    };
-
     LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
+
     docToPin(ledOptions.dataPin, doc, "dataPin");
     readDoc(ledOptions.ledFormat, doc, "ledFormat");
-    readDoc(ledOptions.ledLayout, doc, "ledLayout");
-    readDoc(ledOptions.ledsPerButton, doc, "ledsPerButton");
-    readDoc(ledOptions.brightnessMaximum, doc, "brightnessMaximum");
-    readDoc(ledOptions.brightnessSteps, doc, "brightnessSteps");
     readDoc(ledOptions.turnOffWhenSuspended, doc, "turnOffWhenSuspended");
-    readIndex(ledOptions.indexUp, "ledButtonMap", "Up");
-    readIndex(ledOptions.indexDown, "ledButtonMap", "Down");
-    readIndex(ledOptions.indexLeft, "ledButtonMap", "Left");
-    readIndex(ledOptions.indexRight, "ledButtonMap", "Right");
-    readIndex(ledOptions.indexB1, "ledButtonMap", "B1");
-    readIndex(ledOptions.indexB2, "ledButtonMap", "B2");
-    readIndex(ledOptions.indexB3, "ledButtonMap", "B3");
-    readIndex(ledOptions.indexB4, "ledButtonMap", "B4");
-    readIndex(ledOptions.indexL1, "ledButtonMap", "L1");
-    readIndex(ledOptions.indexR1, "ledButtonMap", "R1");
-    readIndex(ledOptions.indexL2, "ledButtonMap", "L2");
-    readIndex(ledOptions.indexR2, "ledButtonMap", "R2");
-    readIndex(ledOptions.indexS1, "ledButtonMap", "S1");
-    readIndex(ledOptions.indexS2, "ledButtonMap", "S2");
-    readIndex(ledOptions.indexL3, "ledButtonMap", "L3");
-    readIndex(ledOptions.indexR3, "ledButtonMap", "R3");
-    readIndex(ledOptions.indexA1, "ledButtonMap", "A1");
-    readIndex(ledOptions.indexA2, "ledButtonMap", "A2");
+
+    readDoc(ledOptions.brightnessMaximum, doc, "brightnessMaximum");
+    uint32_t checkedBrightnessMax = std::clamp<uint32_t>(ledOptions.brightnessMaximum, 0, 100);
+    ledOptions.brightnessMaximum = int(((float)checkedBrightnessMax * 2.55f) +  + 0.5f); //+0.5 to cause it to round to nearest number
+    ledOptions.brightnessMaximum = std::clamp<uint32_t>(ledOptions.brightnessMaximum, 0, 255);
+
     readDoc(ledOptions.pledType, doc, "pledType");
-    docToPin(ledOptions.pledPin1, doc, "pledPin1");
-    docToPin(ledOptions.pledPin2, doc, "pledPin2");
-    docToPin(ledOptions.pledPin3, doc, "pledPin3");
-    docToPin(ledOptions.pledPin4, doc, "pledPin4");
-    readDoc(ledOptions.pledIndex1, doc, "pledIndex1");
-    readDoc(ledOptions.pledIndex2, doc, "pledIndex2");
-    readDoc(ledOptions.pledIndex3, doc, "pledIndex3");
-    readDoc(ledOptions.pledIndex4, doc, "pledIndex4");
-    readDoc(ledOptions.pledColor, doc, "pledColor");
-    readDoc(ledOptions.caseRGBType, doc, "caseRGBType");
-    readDoc(ledOptions.caseRGBIndex, doc, "caseRGBIndex");
-    readDoc(ledOptions.caseRGBCount, doc, "caseRGBCount");
+    if(ledOptions.pledType == PLEDType::PLED_TYPE_PWM)
+    {
+        docToPin(ledOptions.pledPin1, doc, "pledPin1");
+        docToPin(ledOptions.pledPin2, doc, "pledPin2");
+        docToPin(ledOptions.pledPin3, doc, "pledPin3");
+        docToPin(ledOptions.pledPin4, doc, "pledPin4");
+    }
+    else
+    {
+        int32_t resetVal = -1;
+        cleanAddonGpioMappings(resetVal, ledOptions.pledPin1);
+        cleanAddonGpioMappings(resetVal, ledOptions.pledPin2);
+        cleanAddonGpioMappings(resetVal, ledOptions.pledPin3);
+        cleanAddonGpioMappings(resetVal, ledOptions.pledPin4);
+
+        ledOptions.pledPin1 = resetVal;
+        ledOptions.pledPin2 = resetVal;
+        ledOptions.pledPin3 = resetVal;
+        ledOptions.pledPin4 = resetVal;
+    }
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
     return serialize_json(doc);
@@ -861,54 +1061,17 @@ std::string getLedOptions()
     const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
     writeDoc(doc, "dataPin", cleanPin(ledOptions.dataPin));
     writeDoc(doc, "ledFormat", ledOptions.ledFormat);
-    writeDoc(doc, "ledLayout", ledOptions.ledLayout);
-    writeDoc(doc, "ledsPerButton", ledOptions.ledsPerButton);
-    writeDoc(doc, "brightnessMaximum", ledOptions.brightnessMaximum);
-    writeDoc(doc, "brightnessSteps", ledOptions.brightnessSteps);
     writeDoc(doc, "turnOffWhenSuspended", ledOptions.turnOffWhenSuspended);
 
-    const auto writeIndex = [&](const char* key0, const char* key1, int var)
-    {
-        if (var < 0)
-        {
-            writeDoc(doc, key0, key1, nullptr);
-        }
-        else
-        {
-            writeDoc(doc, key0, key1, var);
-        }
-    };
-    writeIndex("ledButtonMap", "Up", ledOptions.indexUp);
-    writeIndex("ledButtonMap", "Down", ledOptions.indexDown);
-    writeIndex("ledButtonMap", "Left", ledOptions.indexLeft);
-    writeIndex("ledButtonMap", "Right", ledOptions.indexRight);
-    writeIndex("ledButtonMap", "B1", ledOptions.indexB1);
-    writeIndex("ledButtonMap", "B2", ledOptions.indexB2);
-    writeIndex("ledButtonMap", "B3", ledOptions.indexB3);
-    writeIndex("ledButtonMap", "B4", ledOptions.indexB4);
-    writeIndex("ledButtonMap", "L1", ledOptions.indexL1);
-    writeIndex("ledButtonMap", "R1", ledOptions.indexR1);
-    writeIndex("ledButtonMap", "L2", ledOptions.indexL2);
-    writeIndex("ledButtonMap", "R2", ledOptions.indexR2);
-    writeIndex("ledButtonMap", "S1", ledOptions.indexS1);
-    writeIndex("ledButtonMap", "S2", ledOptions.indexS2);
-    writeIndex("ledButtonMap", "L3", ledOptions.indexL3);
-    writeIndex("ledButtonMap", "R3", ledOptions.indexR3);
-    writeIndex("ledButtonMap", "A1", ledOptions.indexA1);
-    writeIndex("ledButtonMap", "A2", ledOptions.indexA2);
+    uint32_t adjustedbrightnessMax = (uint32_t)(((float)ledOptions.brightnessMaximum / 2.55f) + 0.5f); //+0.5 to cause it to round to nearest number
+    adjustedbrightnessMax = std::clamp<uint32_t>(adjustedbrightnessMax, 0, 100);
+    writeDoc(doc, "brightnessMaximum", adjustedbrightnessMax);
+
     writeDoc(doc, "pledType", ledOptions.pledType);
     writeDoc(doc, "pledPin1", ledOptions.pledPin1);
     writeDoc(doc, "pledPin2", ledOptions.pledPin2);
     writeDoc(doc, "pledPin3", ledOptions.pledPin3);
     writeDoc(doc, "pledPin4", ledOptions.pledPin4);
-    writeDoc(doc, "pledIndex1", ledOptions.pledIndex1);
-    writeDoc(doc, "pledIndex2", ledOptions.pledIndex2);
-    writeDoc(doc, "pledIndex3", ledOptions.pledIndex3);
-    writeDoc(doc, "pledIndex4", ledOptions.pledIndex4);
-    writeDoc(doc, "pledColor", ((RGB)ledOptions.pledColor).value(LED_FORMAT_RGB));
-    writeDoc(doc, "caseRGBType", ledOptions.caseRGBType);
-    writeDoc(doc, "caseRGBIndex", ledOptions.caseRGBIndex);
-    writeDoc(doc, "caseRGBCount", ledOptions.caseRGBCount);
 
     return serialize_json(doc);
 }
@@ -921,12 +1084,12 @@ std::string getButtonLayoutDefs()
 
     for (layoutCtr = _ButtonLayout_MIN; layoutCtr < _ButtonLayout_ARRAYSIZE; layoutCtr++) {
         LayoutManager::LayoutList leftLayout = LayoutManager::getInstance().getLeftLayout((ButtonLayout)layoutCtr);
-        if ((leftLayout.size() > 0) || (layoutCtr == ButtonLayout::BUTTON_LAYOUT_BLANKA)) writeDoc(doc, "buttonLayout", LayoutManager::getInstance().getButtonLayoutName((ButtonLayout)layoutCtr), layoutCtr);
+        if ((leftLayout.size() > 0) || (layoutCtr == ButtonLayout::BUTTON_LAYOUT_BLANKA) || (layoutCtr == ButtonLayout::BUTTON_LAYOUT_CUSTOM_DEFINED_A)) writeDoc(doc, "buttonLayout", LayoutManager::getInstance().getButtonLayoutName((ButtonLayout)layoutCtr), layoutCtr);
     }
 
     for (layoutCtr = _ButtonLayoutRight_MIN; layoutCtr < _ButtonLayoutRight_ARRAYSIZE; layoutCtr++) {
         LayoutManager::LayoutList rightLayout = LayoutManager::getInstance().getRightLayout((ButtonLayoutRight)layoutCtr);
-        if ((rightLayout.size() > 0) || (layoutCtr == ButtonLayoutRight::BUTTON_LAYOUT_BLANKB)) writeDoc(doc, "buttonLayoutRight", LayoutManager::getInstance().getButtonLayoutRightName((ButtonLayoutRight)layoutCtr), layoutCtr);
+        if ((rightLayout.size() > 0) || (layoutCtr == ButtonLayoutRight::BUTTON_LAYOUT_BLANKB) || (layoutCtr == ButtonLayoutRight::BUTTON_LAYOUT_CUSTOM_DEFINED_B)) writeDoc(doc, "buttonLayoutRight", LayoutManager::getInstance().getButtonLayoutRightName((ButtonLayoutRight)layoutCtr), layoutCtr);
     }
 
     return serialize_json(doc);
@@ -934,38 +1097,18 @@ std::string getButtonLayoutDefs()
 
 std::string getButtonLayouts()
 {
-    const size_t capacity = JSON_OBJECT_SIZE(500);
-    DynamicJsonDocument doc(capacity);
-    const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
     const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
     uint16_t elementCtr = 0;
 
     LayoutManager::LayoutList layoutA = LayoutManager::getInstance().getLayoutA();
     LayoutManager::LayoutList layoutB = LayoutManager::getInstance().getLayoutB();
 
-    writeDoc(doc, "ledLayout", "id", ledOptions.ledLayout);
-    writeDoc(doc, "ledLayout", "indexUp", ledOptions.indexUp);
-    writeDoc(doc, "ledLayout", "indexDown", ledOptions.indexDown);
-    writeDoc(doc, "ledLayout", "indexLeft", ledOptions.indexLeft);
-    writeDoc(doc, "ledLayout", "indexRight", ledOptions.indexRight);
-    writeDoc(doc, "ledLayout", "indexB1", ledOptions.indexB1);
-    writeDoc(doc, "ledLayout", "indexB2", ledOptions.indexB2);
-    writeDoc(doc, "ledLayout", "indexB3", ledOptions.indexB3);
-    writeDoc(doc, "ledLayout", "indexB4", ledOptions.indexB4);
-    writeDoc(doc, "ledLayout", "indexL1", ledOptions.indexL1);
-    writeDoc(doc, "ledLayout", "indexR1", ledOptions.indexR1);
-    writeDoc(doc, "ledLayout", "indexL2", ledOptions.indexL2);
-    writeDoc(doc, "ledLayout", "indexR2", ledOptions.indexR2);
-    writeDoc(doc, "ledLayout", "indexS1", ledOptions.indexS1);
-    writeDoc(doc, "ledLayout", "indexS2", ledOptions.indexS2);
-    writeDoc(doc, "ledLayout", "indexL3", ledOptions.indexL3);
-    writeDoc(doc, "ledLayout", "indexR3", ledOptions.indexR3);
-    writeDoc(doc, "ledLayout", "indexA1", ledOptions.indexA1);
-    writeDoc(doc, "ledLayout", "indexA2", ledOptions.indexA2);
+    const size_t capacity = JSON_OBJECT_SIZE(10) + (layoutA.size() + layoutB.size()) * (JSON_OBJECT_SIZE(14) + 8);
+    DynamicJsonDocument doc(capacity);
 
     writeDoc(doc, "displayLayouts", "buttonLayoutId", displayOptions.buttonLayout);
     for (elementCtr = 0; elementCtr < layoutA.size(); elementCtr++) {
-        const size_t elementSize = JSON_OBJECT_SIZE(12);
+        const size_t elementSize = JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(11);
         DynamicJsonDocument ele(elementSize);
 
         writeDoc(ele, "elementType", layoutA[elementCtr].elementType);
@@ -985,7 +1128,7 @@ std::string getButtonLayouts()
 
     writeDoc(doc, "displayLayouts", "buttonLayoutRightId", displayOptions.buttonLayoutRight);
     for (elementCtr = 0; elementCtr < layoutB.size(); elementCtr++) {
-        const size_t elementSize = JSON_OBJECT_SIZE(12);
+        const size_t elementSize = JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(11);
         DynamicJsonDocument ele(elementSize);
 
         writeDoc(ele, "elementType", layoutB[elementCtr].elementType);
@@ -1006,112 +1149,498 @@ std::string getButtonLayouts()
     return serialize_json(doc);
 }
 
-std::string setCustomTheme()
+// Missing or unknown sources default to GPIO
+LightInputSource helperGetLightInputSource(JsonObject& light)
+{
+    uint8_t source = light["inputSource"].as<uint8_t>();
+    if (source == LightInputSource::LightInputSource_HallEffect)
+        return LightInputSource::LightInputSource_HallEffect;
+    return LightInputSource::LightInputSource_GPIO;
+}
+
+std::string setLightsDataOptions()
 {
     DynamicJsonDocument doc = get_post_data();
 
-    AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+    LEDOptions& options = Storage::getInstance().getLedOptions();
 
-    const auto readDocDefaultToZero = [&](const char* key0, const char* key1) -> uint32_t
+    JsonObject docJson = doc.as<JsonObject>();
+    JsonObject AnimOptions = docJson["LightData"];
+    JsonArray lightsList = AnimOptions["Lights"];
+    options.lightClusterData_count = 0;
+    options.lightClusterDataInitialised = true;
+    for (JsonObject light : lightsList)
     {
-        uint32_t result = 0;
-        if (hasValue(doc, key0, key1))
-        {
-            readDoc(result, doc, key0, key1);
+        int thisEntryIndex = options.lightClusterData_count;
+        options.lightClusterData[thisEntryIndex].lightLocationData = light["firstLedIndex"].as<uint8_t>();
+        options.lightClusterData[thisEntryIndex].lightLocationData += ((int)light["numLedsOnLight"].as<uint8_t>()) << 8;
+        options.lightClusterData[thisEntryIndex].lightLocationData += ((int)light["xCoord"].as<uint8_t>()) << 16;
+        options.lightClusterData[thisEntryIndex].lightLocationData += ((int)light["yCoord"].as<uint8_t>()) << 24;
+        options.lightClusterData[thisEntryIndex].lightTypeData = light["GPIOPinOrNonButtonIndex"].as<uint8_t>();
+        options.lightClusterData[thisEntryIndex].lightTypeData += ((int)light["lightType"].as<uint8_t>()) << 8;
+        options.lightClusterData[thisEntryIndex].lightTypeData += ((uint32_t)helperGetLightInputSource(light)) << 16;
+
+        options.lightClusterData_count++;
+
+        if(options.lightClusterData_count >= FRAME_MAX) //100 entries total
+            break;
+    }
+
+    AnimationStation::getInstance().setRestartLeds(true);
+
+    EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
+    
+    return serialize_json(doc);
+}
+
+std::string getLightsDataOptions()
+{
+    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    const LEDOptions& options = Storage::getInstance().getLedOptions();
+    const TurboOptions& turboOptions = Storage::getInstance().getAddonOptions().turboOptions;
+
+    JsonObject LedOptions = doc.createNestedObject("LightData");
+    JsonArray lightsList = LedOptions.createNestedArray("Lights");
+    for (int lightsIndex = 0; lightsIndex < options.lightClusterData_count; ++lightsIndex)
+    {
+        JsonObject light = lightsList.createNestedObject();
+        light["firstLedIndex"] = options.lightClusterData[lightsIndex].lightLocationData & 0xFF;
+        light["numLedsOnLight"] = (options.lightClusterData[lightsIndex].lightLocationData >> 8) & 0xFF;
+        light["xCoord"] = (options.lightClusterData[lightsIndex].lightLocationData >> 16) & 0xFF;
+        light["yCoord"] = (options.lightClusterData[lightsIndex].lightLocationData >> 24) & 0xFF;
+        light["GPIOPinOrNonButtonIndex"] = options.lightClusterData[lightsIndex].lightTypeData & 0xFF;
+        light["lightType"] = (options.lightClusterData[lightsIndex].lightTypeData >> 8) & 0xFF;
+        light["inputSource"] = (options.lightClusterData[lightsIndex].lightTypeData >> 16) & 0xFF;
+    }
+
+    LedOptions["TurboIsRGB"] = turboOptions.turboLedType == PLED_TYPE_RGB ? 1 : 0;
+    LedOptions["PLedIsRGB"] = options.pledType == PLED_TYPE_RGB ? 1 : 0;
+
+    return serialize_json(doc);
+}
+
+std::string getLightsPresetsByIndex(int presetIdx)
+{
+    DynamicJsonDocument outDoc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    bool found = false;
+
+    auto addPreset = [&](const char* name, const unsigned char* data, int32_t dataSize)
+    {
+        if (strcmp(name, "") != 0) {
+            found = true;
+            JsonObject preset = outDoc.to<JsonObject>();
+            preset["name"] = name;
+
+            JsonObject lightDataObj = preset.createNestedObject("lightData");
+            JsonArray lightsList = lightDataObj.createNestedArray("Lights");
+
+            for (int lightsIndex = 0; lightsIndex < dataSize; ++lightsIndex)
+            {
+                int thisEntryIndex = lightsIndex * LIGHT_DATA_ENTRY_SIZE;
+                JsonObject light = lightsList.createNestedObject();
+                light["firstLedIndex"] = data[thisEntryIndex];
+                light["numLedsOnLight"] = data[thisEntryIndex+1];
+                light["xCoord"] = data[thisEntryIndex+2];
+                light["yCoord"] = data[thisEntryIndex+3];
+                light["GPIOPinOrNonButtonIndex"] = data[thisEntryIndex+4];
+                light["lightType"] = data[thisEntryIndex+5];
+                light["inputSource"] = (uint8_t)LightDataInputSource(data[thisEntryIndex+5], data[thisEntryIndex+6]);
+            }
         }
-        return result;
     };
 
-    readDoc(options.hasCustomTheme, doc, "enabled");
-    options.customThemeUp 			= readDocDefaultToZero("Up", "u");
-    options.customThemeDown 		= readDocDefaultToZero("Down", "u");
-    options.customThemeLeft			= readDocDefaultToZero("Left", "u");
-    options.customThemeRight		= readDocDefaultToZero("Right", "u");
-    options.customThemeB1			= readDocDefaultToZero("B1", "u");
-    options.customThemeB2			= readDocDefaultToZero("B2", "u");
-    options.customThemeB3			= readDocDefaultToZero("B3", "u");
-    options.customThemeB4			= readDocDefaultToZero("B4", "u");
-    options.customThemeL1			= readDocDefaultToZero("L1", "u");
-    options.customThemeR1			= readDocDefaultToZero("R1", "u");
-    options.customThemeL2			= readDocDefaultToZero("L2", "u");
-    options.customThemeR2			= readDocDefaultToZero("R2", "u");
-    options.customThemeS1			= readDocDefaultToZero("S1", "u");
-    options.customThemeS2			= readDocDefaultToZero("S2", "u");
-    options.customThemeL3			= readDocDefaultToZero("L3", "u");
-    options.customThemeR3			= readDocDefaultToZero("R3", "u");
-    options.customThemeA1			= readDocDefaultToZero("A1", "u");
-    options.customThemeA2			= readDocDefaultToZero("A2", "u");
-    options.customThemeUpPressed	= readDocDefaultToZero("Up", "d");
-    options.customThemeDownPressed	= readDocDefaultToZero("Down", "d");
-    options.customThemeLeftPressed	= readDocDefaultToZero("Left", "d");
-    options.customThemeRightPressed	= readDocDefaultToZero("Right", "d");
-    options.customThemeB1Pressed	= readDocDefaultToZero("B1", "d");
-    options.customThemeB2Pressed	= readDocDefaultToZero("B2", "d");
-    options.customThemeB3Pressed	= readDocDefaultToZero("B3", "d");
-    options.customThemeB4Pressed	= readDocDefaultToZero("B4", "d");
-    options.customThemeL1Pressed	= readDocDefaultToZero("L1", "d");
-    options.customThemeR1Pressed	= readDocDefaultToZero("R1", "d");
-    options.customThemeL2Pressed	= readDocDefaultToZero("L2", "d");
-    options.customThemeR2Pressed	= readDocDefaultToZero("R2", "d");
-    options.customThemeS1Pressed	= readDocDefaultToZero("S1", "d");
-    options.customThemeS2Pressed	= readDocDefaultToZero("S2", "d");
-    options.customThemeL3Pressed	= readDocDefaultToZero("L3", "d");
-    options.customThemeR3Pressed	= readDocDefaultToZero("R3", "d");
-    options.customThemeA1Pressed	= readDocDefaultToZero("A1", "d");
-    options.customThemeA2Pressed	= readDocDefaultToZero("A2", "d");
+    if(presetIdx == 0 && strcmp(LIGHT_DATA_NAME_DEFAULT, "") != 0) {
+        const unsigned char lightData[] = { LIGHT_DATA_DEFAULT };
+        addPreset(LIGHT_DATA_NAME_DEFAULT, lightData, LIGHT_DATA_SIZE_DEFAULT);
+    }
+    else if(presetIdx == 1 && strcmp(LIGHT_DATA_NAME_1, "") != 0) {
+        const unsigned char lightData[] = { LIGHT_DATA_1 };
+        addPreset(LIGHT_DATA_NAME_1, lightData, LIGHT_DATA_SIZE_1);
+    }
+    else if(presetIdx == 2 && strcmp(LIGHT_DATA_NAME_2, "") != 0) {
+        const unsigned char lightData[] = { LIGHT_DATA_2 };
+        addPreset(LIGHT_DATA_NAME_2, lightData, LIGHT_DATA_SIZE_2);
+    }
+    else if(presetIdx == 3 && strcmp(LIGHT_DATA_NAME_3, "") != 0) {
+        const unsigned char lightData[] = { LIGHT_DATA_3 };
+        addPreset(LIGHT_DATA_NAME_3, lightData, LIGHT_DATA_SIZE_3);
+    }
+    else if(presetIdx == 4 && strcmp(LIGHT_DATA_NAME_4, "") != 0) {
+        const unsigned char lightData[] = { LIGHT_DATA_4 };
+        addPreset(LIGHT_DATA_NAME_4, lightData, LIGHT_DATA_SIZE_4);
+    }
+    else if(presetIdx == 5 && strcmp(LIGHT_DATA_NAME_5, "") != 0) {
+        const unsigned char lightData[] = { LIGHT_DATA_5 };
+        addPreset(LIGHT_DATA_NAME_5, lightData, LIGHT_DATA_SIZE_5);
+    }
+    else if(presetIdx == 6 && strcmp(LIGHT_DATA_NAME_6, "") != 0) {
+        const unsigned char lightData[] = { LIGHT_DATA_6 };
+        addPreset(LIGHT_DATA_NAME_6, lightData, LIGHT_DATA_SIZE_6);
+    }
+    else if(presetIdx == 7 && strcmp(LIGHT_DATA_NAME_7, "") != 0) {
+        const unsigned char lightData[] = { LIGHT_DATA_7 };
+        addPreset(LIGHT_DATA_NAME_7, lightData, LIGHT_DATA_SIZE_7);
+    }
 
-    uint32_t pressCooldown = 0;
-    readDoc(pressCooldown, doc, "buttonPressColorCooldownTimeInMs");
-    options.buttonPressColorCooldownTimeInMs = pressCooldown;
+    if (!found) {
+        DynamicJsonDocument emptyDoc(16);
+        emptyDoc.to<JsonObject>();
+        return serialize_json(emptyDoc);
+    }
+
+    return serialize_json(outDoc);
+}
+
+std::string getLightsPresets0() { return getLightsPresetsByIndex(0); }
+std::string getLightsPresets1() { return getLightsPresetsByIndex(1); }
+std::string getLightsPresets2() { return getLightsPresetsByIndex(2); }
+std::string getLightsPresets3() { return getLightsPresetsByIndex(3); }
+std::string getLightsPresets4() { return getLightsPresetsByIndex(4); }
+std::string getLightsPresets5() { return getLightsPresetsByIndex(5); }
+std::string getLightsPresets6() { return getLightsPresetsByIndex(6); }
+std::string getLightsPresets7() { return getLightsPresetsByIndex(7); }
+
+std::string getLightsDataPresets()
+{
+    //DynamicJsonDocument outDoc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    DynamicJsonDocument outDoc((1024 * 32)); //Set a bigger value here as the preset data is quite large but it should be fine for a get call
+    JsonArray presetsArray = outDoc.to<JsonArray>();
+
+    auto addPreset = [&](const char* name, const unsigned char* data, int32_t dataSize)
+    {
+        if (strcmp(name, "") != 0) {
+            JsonObject preset = presetsArray.createNestedObject();
+            preset["name"] = name;
+
+            JsonObject lightDataObj = preset.createNestedObject("lightData");
+            JsonArray lightsList = lightDataObj.createNestedArray("Lights");
+
+            for (int lightsIndex = 0; lightsIndex < dataSize; ++lightsIndex)
+            {
+                int thisEntryIndex = lightsIndex * LIGHT_DATA_ENTRY_SIZE;
+                JsonObject light = lightsList.createNestedObject();
+                light["firstLedIndex"] = data[thisEntryIndex];
+                light["numLedsOnLight"] = data[thisEntryIndex+1];
+                light["xCoord"] = data[thisEntryIndex+2];
+                light["yCoord"] = data[thisEntryIndex+3];
+                light["GPIOPinOrNonButtonIndex"] = data[thisEntryIndex+4];
+                light["lightType"] = data[thisEntryIndex+5];
+                light["inputSource"] = (uint8_t)LightDataInputSource(data[thisEntryIndex+5], data[thisEntryIndex+6]);
+            }
+        }
+    };
+
+    if(strcmp(LIGHT_DATA_NAME_DEFAULT, "") != 0) {
+        const unsigned char lightData[] = { LIGHT_DATA_DEFAULT };
+        addPreset(LIGHT_DATA_NAME_DEFAULT, lightData, LIGHT_DATA_SIZE_DEFAULT);
+    }
+    if(strcmp(LIGHT_DATA_NAME_1, "") != 0) {
+        const unsigned char lightData[] = { LIGHT_DATA_1 };
+        addPreset(LIGHT_DATA_NAME_1, lightData, LIGHT_DATA_SIZE_1);
+    }
+    if(strcmp(LIGHT_DATA_NAME_2, "") != 0) {
+        const unsigned char lightData[] = { LIGHT_DATA_2 };
+        addPreset(LIGHT_DATA_NAME_2, lightData, LIGHT_DATA_SIZE_2);
+    }
+    if(strcmp(LIGHT_DATA_NAME_3, "") != 0) {
+        const unsigned char lightData[] = { LIGHT_DATA_3 };
+        addPreset(LIGHT_DATA_NAME_3, lightData, LIGHT_DATA_SIZE_3);
+    }
+    if(strcmp(LIGHT_DATA_NAME_4, "") != 0) {
+        const unsigned char lightData[] = { LIGHT_DATA_4 };
+        addPreset(LIGHT_DATA_NAME_4, lightData, LIGHT_DATA_SIZE_4);
+    }
+    if(strcmp(LIGHT_DATA_NAME_5, "") != 0) {
+        const unsigned char lightData[] = { LIGHT_DATA_5 };
+        addPreset(LIGHT_DATA_NAME_5, lightData, LIGHT_DATA_SIZE_5);
+    }
+    if(strcmp(LIGHT_DATA_NAME_6, "") != 0) {
+        const unsigned char lightData[] = { LIGHT_DATA_6 };
+        addPreset(LIGHT_DATA_NAME_6, lightData, LIGHT_DATA_SIZE_6);
+    }
+    if(strcmp(LIGHT_DATA_NAME_7, "") != 0) {
+        const unsigned char lightData[] = { LIGHT_DATA_7 };
+        addPreset(LIGHT_DATA_NAME_7, lightData, LIGHT_DATA_SIZE_7);
+    }
+
+    return serialize_json(outDoc);
+}
+
+std::string setLightsToDefault()
+{
+    DynamicJsonDocument doc = get_post_data();
+    AnimationStation & AnimStation = AnimationStation::getInstance();
+
+    JsonObject docJson = doc.as<JsonObject>();
+    const char*  resetName = docJson["ResetName"];
+
+    if(strcmp(resetName, LIGHT_DATA_NAME_DEFAULT) == 0)
+    {
+        const unsigned char lightData[] = { LIGHT_DATA_DEFAULT };
+        AnimStation.AssignLedPreset(lightData, sizeof(lightData));
+    }
+    else if(strcmp(resetName, LIGHT_DATA_NAME_1) == 0)
+    {
+        const unsigned char lightData[] = { LIGHT_DATA_1 };
+        AnimStation.AssignLedPreset(lightData, sizeof(lightData));
+    }
+    else if(strcmp(resetName, LIGHT_DATA_NAME_2) == 0)
+    {
+        const unsigned char lightData[] = { LIGHT_DATA_2 };
+        AnimStation.AssignLedPreset(lightData, sizeof(lightData));
+    }
+    else if(strcmp(resetName, LIGHT_DATA_NAME_3) == 0)
+    {
+        const unsigned char lightData[] = { LIGHT_DATA_3 };
+        AnimStation.AssignLedPreset(lightData, sizeof(lightData));
+    }
+    else if(strcmp(resetName, LIGHT_DATA_NAME_4) == 0)
+    {
+        const unsigned char lightData[] = { LIGHT_DATA_4 };
+        AnimStation.AssignLedPreset(lightData, sizeof(lightData));
+    }
+    else if(strcmp(resetName, LIGHT_DATA_NAME_5) == 0)
+    {
+        const unsigned char lightData[] = { LIGHT_DATA_5 };
+        AnimStation.AssignLedPreset(lightData, sizeof(lightData));
+    }
+    else if(strcmp(resetName, LIGHT_DATA_NAME_6) == 0)
+    {
+        const unsigned char lightData[] = { LIGHT_DATA_6 };
+        AnimStation.AssignLedPreset(lightData, sizeof(lightData));
+    }
+    else if(strcmp(resetName, LIGHT_DATA_NAME_7) == 0)
+    {
+        const unsigned char lightData[] = { LIGHT_DATA_7 };
+        AnimStation.AssignLedPreset(lightData, sizeof(lightData));
+    }
+
+    //AnimStation.setRestartLeds(true);
+
+    EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
+
+    return serialize_json(doc);
+}
+
+void helperGetProfileFromJsonObject(AnimationProfile* Profile, JsonObject* JsonData)
+{
+    Profile->bEnabled = (*JsonData)["bEnabled"].as<bool>();
+    Profile->baseNonPressedEffect = (AnimationNonPressedEffects)((*JsonData)["baseNonPressedEffect"].as<uint32_t>());
+    Profile->basePressedEffect = (AnimationPressedEffects)((*JsonData)["basePressedEffect"].as<uint32_t>());
+    Profile->baseCaseEffect = (AnimationNonPressedEffects)((*JsonData)["baseCaseEffect"].as<uint32_t>());
+    Profile->buttonPressHoldTimeInMs = (*JsonData)["buttonPressHoldTimeInMs"].as<uint32_t>();
+    Profile->buttonPressFadeOutTimeInMs = (*JsonData)["buttonPressFadeOutTimeInMs"].as<uint32_t>();
+    Profile->nonPressedSpecialColor = (*JsonData)["nonPressedSpecialColor"].as<uint32_t>();
+    Profile->bUseCaseLightsInPressedAnimations = (*JsonData)["bUseCaseLightsInPressedAnimations"].as<bool>();
+    Profile->pressedSpecialColor = (*JsonData)["pressedSpecialColor"].as<uint32_t>();
+    Profile->caseSpecialColor = (*JsonData)["caseSpecialColor"].as<uint32_t>();
+    Profile->baseCycleTime = (*JsonData)["baseCycleTime"].as<uint32_t>() - 1;
+    Profile->basePressedCycleTime = (*JsonData)["basePressedCycleTime"].as<uint32_t>() - 1;
+    Profile->baseCaseCycleTime = (*JsonData)["baseCaseCycleTime"].as<uint32_t>() - 1;
+    Profile->effectContextParam = (*JsonData)["nonPressedContextParam"].as<uint32_t>() & 0xFF;
+    Profile->effectContextParam += ((*JsonData)["pressedContextParam"].as<uint32_t>() & 0xFF) << 8;
+    Profile->effectContextParam += ((*JsonData)["caseContextParam"].as<uint32_t>() & 0xFF) << 16;
+    Profile->bNonPressedSpecialColorIsRainbow = (*JsonData)["bNonPressedSpecialColorIsRainbow"].as<bool>();
+    Profile->bPressedSpecialColorIsRainbow = (*JsonData)["bPressedSpecialColorIsRainbow"].as<bool>();
+    Profile->bCaseSpecialColorIsRainbow = (*JsonData)["bCaseSpecialColorIsRainbow"].as<bool>();
+
+    JsonArray notPressedStaticColorsList = (*JsonData)["notPressedStaticColors"];
+    JsonArray pressedStaticColorsList = (*JsonData)["pressedStaticColors"];
+    JsonArray nonButtonStaticColorsList = (*JsonData)["nonButtonStaticColors"];
+
+    memset(Profile->notPressedStaticColors.bytes, 0, NUM_BANK0_GPIOS);
+    memset(Profile->pressedStaticColors.bytes, 0, NUM_BANK0_GPIOS);
+    memset(Profile->nonButtonStaticColors.bytes, 0, MAX_NON_BUTTON_LIGHT_COLOR_INDEXES);
+
+    for(uint32_t i = 0; i < NUM_BANK0_GPIOS; i++){
+        Profile->notPressedStaticColors.bytes[i] = notPressedStaticColorsList[i].as<uint32_t>() & 0xFF;
+        Profile->pressedStaticColors.bytes[i] = pressedStaticColorsList[i].as<uint32_t>() & 0xFF;
+    }
+    Profile->notPressedStaticColors.size = NUM_BANK0_GPIOS;
+    Profile->pressedStaticColors.size = NUM_BANK0_GPIOS;
+    for(uint32_t i = 0; i < MAX_NON_BUTTON_LIGHT_COLOR_INDEXES; i++){
+        Profile->nonButtonStaticColors.bytes[i] = nonButtonStaticColorsList[i].as<uint32_t>() & 0xFF;
+    }
+    Profile->nonButtonStaticColors.size = MAX_NON_BUTTON_LIGHT_COLOR_INDEXES;
+
+    // Older UIs and exports omit these
+    if ((*JsonData).containsKey("extNotPressedStaticColors") && (*JsonData).containsKey("extPressedStaticColors")) {
+        JsonArray extNotPressedStaticColorsList = (*JsonData)["extNotPressedStaticColors"];
+        JsonArray extPressedStaticColorsList = (*JsonData)["extPressedStaticColors"];
+        for(uint32_t i = 0; i < MAX_EXT_INPUT_LIGHT_COLOR_INDEXES; i++){
+            Profile->extNotPressedStaticColors.bytes[i] = extNotPressedStaticColorsList[i].as<uint32_t>() & 0xFF;
+            Profile->extPressedStaticColors.bytes[i] = extPressedStaticColorsList[i].as<uint32_t>() & 0xFF;
+        }
+        Profile->extNotPressedStaticColors.size = MAX_EXT_INPUT_LIGHT_COLOR_INDEXES;
+        Profile->extPressedStaticColors.size = MAX_EXT_INPUT_LIGHT_COLOR_INDEXES;
+        Profile->has_extNotPressedStaticColors = true;
+        Profile->has_extPressedStaticColors = true;
+    }
+}
+
+// Fix issue here
+std::string setAnimationButtonTestMode()
+{
+    AnimationStation & AnimStation = AnimationStation::getInstance();
+    DynamicJsonDocument doc = get_post_data();
+
+    JsonObject docJson = doc.as<JsonObject>();
+    JsonObject testOptions = docJson["TestData"];
+
+    AnimationStationTestMode testMode = (AnimationStationTestMode)(testOptions["testMode"].as<uint32_t>());
+
+    //Get current max brightness
+    const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
+    uint32_t overrideMaxBrightness = ledOptions.brightnessMaximum;
+    AnimationOptions& animOptions = Storage::getInstance().getAnimationOptions();
+    uint32_t overrideBrightness = animOptions.brightness;
+
+    AnimationProfile testAnimProfile = AnimationProfile_init_zero;
+    if(testMode == AnimationStationTestMode::AnimationStation_TestModeProfilePreview)
+    {
+        JsonObject testProfile = testOptions["testProfile"];
+        helperGetProfileFromJsonObject(&testAnimProfile, &testProfile);
+
+        //Allow instant testing of max brightness or brightness changes without saving
+        uint32_t checkedBrightnessMax = std::clamp<uint32_t>(testOptions["overrideMaxBrightness"].as<uint8_t>(), 0, 100);
+        overrideMaxBrightness = int(((float)checkedBrightnessMax * 2.55f) +  + 0.5f); //+0.5 to cause it to round to nearest number
+        overrideMaxBrightness = std::clamp<uint32_t>(overrideMaxBrightness, 0, 255);
+        overrideBrightness = std::clamp<uint32_t>(testOptions["overrideBrightness"].as<uint8_t>(), 0, AnimStation.getBrightnessSteps());
+    }
+
+    AnimStation.SetTestMode(testMode, &testAnimProfile, overrideBrightness, overrideMaxBrightness);
+
+    return serialize_json(doc);
+}
+
+std::string setAnimationButtonTestState()
+{
+    AnimationStation & AnimStation = AnimationStation::getInstance();
+    DynamicJsonDocument doc = get_post_data();
+
+    JsonObject docJson = doc.as<JsonObject>();
+    JsonObject testOptions = docJson["TestLight"];
+    int testButton = testOptions["testID"].as<uint32_t>();
+    bool testIsNonButtonLight = testOptions["testIsNonButtonLight"].as<bool>();
+    LightInputSource testSource = helperGetLightInputSource(testOptions);
+
+    AnimStation.SetTestPinState(testButton, testIsNonButtonLight, testSource);
+
+    return serialize_json(doc);
+}
+
+std::string clearAnimationButtonTestMode()
+{
+    AnimationStation & AnimStation = AnimationStation::getInstance();
+    DynamicJsonDocument doc = get_post_data();
+
+    AnimStation.ClearTestMode();
+
+    return serialize_json(doc);
+}
+
+std::string setAnimationProtoOptions()
+{
+    DynamicJsonDocument doc = get_post_data();
+
+    AnimationOptions& options = Storage::getInstance().getAnimationOptions();
+    AnimationStation& AnimStation = AnimationStation::getInstance();
+
+    JsonObject docJson = doc.as<JsonObject>();
+    JsonObject AnimOptions = docJson["AnimationOptions"];
+
+    options.brightness = AnimOptions["brightness"].as<uint32_t>();
+    options.brightness = std::clamp<uint32_t>(options.brightness, 0, AnimStation.getBrightnessSteps());
+    options.autoDisableTime = AnimOptions["idletimeout"].as<uint32_t>() * 1000;
+    options.baseProfileIndex = AnimOptions["baseProfileIndex"].as<uint32_t>();
+    AnimStation.SetSavedMode(options.baseProfileIndex);
+    JsonArray customColorsList = AnimOptions["customColors"];
+    options.customColors_count = std::min(customColorsList.size(), (size_t)MAX_CUSTOM_COLORS);
+    for(unsigned int customColorsIndex = 0; customColorsIndex < options.customColors_count; ++customColorsIndex) {
+        options.customColors[customColorsIndex] = customColorsList[customColorsIndex].as<uint32_t>();
+    }
+
+    JsonArray profilesList = AnimOptions["profiles"];
+    int profilesIndex = 0;
+    for (JsonObject profile : profilesList) {
+        helperGetProfileFromJsonObject(&(options.profiles[profilesIndex]), &profile);
+
+        options.profiles[profilesIndex].baseCycleTime = options.profiles[profilesIndex].baseCycleTime + 1;
+        profilesIndex = profilesIndex + 1;
+        if (profilesIndex >= MAX_ANIMATION_PROFILES)
+            break;
+    }
+
+    AnimStation.setRestartLeds(true);
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
     return serialize_json(doc);
 }
 
-std::string getCustomTheme()
+std::string getAnimationProtoOptions()
 {
-    const size_t capacity = JSON_OBJECT_SIZE(100);
-    DynamicJsonDocument doc(capacity);
+    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
     const AnimationOptions& options = Storage::getInstance().getAnimationOptions();
+    AnimationStation& AnimStation = AnimationStation::getInstance();
 
-    writeDoc(doc, "enabled", options.hasCustomTheme);
-    writeDoc(doc, "Up", "u", options.customThemeUp);
-    writeDoc(doc, "Up", "d", options.customThemeUpPressed);
-    writeDoc(doc, "Down", "u", options.customThemeDown);
-    writeDoc(doc, "Down", "d", options.customThemeDownPressed);
-    writeDoc(doc, "Left", "u", options.customThemeLeft);
-    writeDoc(doc, "Left", "d", options.customThemeLeftPressed);
-    writeDoc(doc, "Right", "u", options.customThemeRight);
-    writeDoc(doc, "Right", "d", options.customThemeRightPressed);
-    writeDoc(doc, "B1", "u", options.customThemeB1);
-    writeDoc(doc, "B1", "d", options.customThemeB1Pressed);
-    writeDoc(doc, "B2", "u", options.customThemeB2);
-    writeDoc(doc, "B2", "d", options.customThemeB2Pressed);
-    writeDoc(doc, "B3", "u", options.customThemeB3);
-    writeDoc(doc, "B3", "d", options.customThemeB3Pressed);
-    writeDoc(doc, "B4", "u", options.customThemeB4);
-    writeDoc(doc, "B4", "d", options.customThemeB4Pressed);
-    writeDoc(doc, "L1", "u", options.customThemeL1);
-    writeDoc(doc, "L1", "d", options.customThemeL1Pressed);
-    writeDoc(doc, "R1", "u", options.customThemeR1);
-    writeDoc(doc, "R1", "d", options.customThemeR1Pressed);
-    writeDoc(doc, "L2", "u", options.customThemeL2);
-    writeDoc(doc, "L2", "d", options.customThemeL2Pressed);
-    writeDoc(doc, "R2", "u", options.customThemeR2);
-    writeDoc(doc, "R2", "d", options.customThemeR2Pressed);
-    writeDoc(doc, "S1", "u", options.customThemeS1);
-    writeDoc(doc, "S1", "d", options.customThemeS1Pressed);
-    writeDoc(doc, "S2", "u", options.customThemeS2);
-    writeDoc(doc, "S2", "d", options.customThemeS2Pressed);
-    writeDoc(doc, "A1", "u", options.customThemeA1);
-    writeDoc(doc, "A1", "d", options.customThemeA1Pressed);
-    writeDoc(doc, "A2", "u", options.customThemeA2);
-    writeDoc(doc, "A2", "d", options.customThemeA2Pressed);
-    writeDoc(doc, "L3", "u", options.customThemeL3);
-    writeDoc(doc, "L3", "d", options.customThemeL3Pressed);
-    writeDoc(doc, "R3", "u", options.customThemeR3);
-    writeDoc(doc, "R3", "d", options.customThemeR3Pressed);
-    writeDoc(doc, "buttonPressColorCooldownTimeInMs", options.buttonPressColorCooldownTimeInMs);
+    uint32_t checkedBrightness = std::clamp<uint32_t>(options.brightness, 0, AnimStation.getBrightnessSteps());
+
+    JsonObject AnimOptions = doc.createNestedObject("AnimationOptions");
+    AnimOptions["brightness"] = checkedBrightness;
+    AnimOptions["baseProfileIndex"] = AnimStation.GetSavedMode();
+    AnimOptions["idletimeout"] = (options.autoDisableTime / 1000);
+    JsonArray customColorsList = AnimOptions.createNestedArray("customColors");
+    for (int customColorsIndex = 0; customColorsIndex < options.customColors_count; ++customColorsIndex)
+    {
+        customColorsList.add(options.customColors[customColorsIndex]);
+    }
+
+    JsonArray profileList = AnimOptions.createNestedArray("profiles");
+    for (int profilesIndex = 0; profilesIndex < MAX_ANIMATION_PROFILES; profilesIndex++)
+    {
+        JsonObject profile = profileList.createNestedObject();
+        profile["bEnabled"] = options.profiles[profilesIndex].bEnabled ? 1 : 0;
+        profile["baseNonPressedEffect"] = options.profiles[profilesIndex].baseNonPressedEffect;
+        profile["basePressedEffect"] = options.profiles[profilesIndex].basePressedEffect;
+        profile["buttonPressHoldTimeInMs"] = options.profiles[profilesIndex].buttonPressHoldTimeInMs;
+        profile["buttonPressFadeOutTimeInMs"] = options.profiles[profilesIndex].buttonPressFadeOutTimeInMs;
+        profile["nonPressedSpecialColor"] = options.profiles[profilesIndex].nonPressedSpecialColor;
+        profile["bUseCaseLightsInPressedAnimations"] = options.profiles[profilesIndex].bUseCaseLightsInPressedAnimations ? 1 : 0;
+        profile["baseCaseEffect"] = options.profiles[profilesIndex].baseCaseEffect;
+        profile["pressedSpecialColor"] = options.profiles[profilesIndex].pressedSpecialColor;
+        profile["caseSpecialColor"] = options.profiles[profilesIndex].caseSpecialColor;
+
+        profile["baseCycleTime"] = options.profiles[profilesIndex].baseCycleTime + 1;
+        profile["basePressedCycleTime"] = options.profiles[profilesIndex].basePressedCycleTime + 1;
+        profile["baseCaseCycleTime"] = options.profiles[profilesIndex].baseCaseCycleTime + 1;
+
+        profile["bNonPressedSpecialColorIsRainbow"] = options.profiles[profilesIndex].bNonPressedSpecialColorIsRainbow ? 1 : 0;
+        profile["bPressedSpecialColorIsRainbow"] = options.profiles[profilesIndex].bPressedSpecialColorIsRainbow ? 1 : 0;
+        profile["bCaseSpecialColorIsRainbow"] = options.profiles[profilesIndex].bCaseSpecialColorIsRainbow ? 1 : 0;
+
+        profile["nonPressedContextParam"] = options.profiles[profilesIndex].effectContextParam & 0xFF;
+        profile["pressedContextParam"] = (options.profiles[profilesIndex].effectContextParam >> 8) & 0xFF;
+        profile["caseContextParam"] = (options.profiles[profilesIndex].effectContextParam >> 16) & 0xFF;
+
+        JsonArray notPressedStaticColorsList = profile.createNestedArray("notPressedStaticColors");
+        JsonArray pressedStaticColorsList = profile.createNestedArray("pressedStaticColors");
+        JsonArray nonButtonStaticColorsList = profile.createNestedArray("nonButtonStaticColors");
+        for (unsigned int index = 0; index < NUM_BANK0_GPIOS; index++ ) {
+            notPressedStaticColorsList.add(options.profiles[profilesIndex].notPressedStaticColors.bytes[index]);
+            pressedStaticColorsList.add(options.profiles[profilesIndex].pressedStaticColors.bytes[index]);
+        }
+        
+        for (unsigned int index = 0; index < MAX_NON_BUTTON_LIGHT_COLOR_INDEXES; index++) {
+            nonButtonStaticColorsList.add(options.profiles[profilesIndex].nonButtonStaticColors.bytes[index]);
+        }
+
+        JsonArray extNotPressedStaticColorsList = profile.createNestedArray("extNotPressedStaticColors");
+        JsonArray extPressedStaticColorsList = profile.createNestedArray("extPressedStaticColors");
+        for (unsigned int index = 0; index < MAX_EXT_INPUT_LIGHT_COLOR_INDEXES; index++) {
+            extNotPressedStaticColorsList.add(options.profiles[profilesIndex].extNotPressedStaticColors.bytes[index]);
+            extPressedStaticColorsList.add(options.profiles[profilesIndex].extPressedStaticColors.bytes[index]);
+        }
+    }
 
     return serialize_json(doc);
 }
@@ -1139,6 +1668,8 @@ std::string setPinMappings()
     strncpy(gpioMappings.profileLabel, doc["profileLabel"], profileLabelSize - 1);
     gpioMappings.profileLabel[profileLabelSize - 1] = '\0';
     gpioMappings.enabled = doc["enabled"];
+    readInvertedPins(gpioMappings, doc.as<JsonVariantConst>());
+    readProfileSOCD(gpioMappings, doc.as<JsonVariantConst>());
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
@@ -1189,9 +1720,31 @@ std::string getPinMappings()
     writePinDoc("pin27", gpioMappings.pins[27]);
     writePinDoc("pin28", gpioMappings.pins[28]);
     writePinDoc("pin29", gpioMappings.pins[29]);
+#if NUM_BANK0_GPIOS > 32
+    writePinDoc("pin30", gpioMappings.pins[30]);
+    writePinDoc("pin31", gpioMappings.pins[31]);
+    writePinDoc("pin32", gpioMappings.pins[32]);
+    writePinDoc("pin33", gpioMappings.pins[33]);
+    writePinDoc("pin34", gpioMappings.pins[34]);
+    writePinDoc("pin35", gpioMappings.pins[35]);
+    writePinDoc("pin36", gpioMappings.pins[36]);
+    writePinDoc("pin37", gpioMappings.pins[37]);
+    writePinDoc("pin38", gpioMappings.pins[38]);
+    writePinDoc("pin39", gpioMappings.pins[39]);
+    writePinDoc("pin40", gpioMappings.pins[40]);
+    writePinDoc("pin41", gpioMappings.pins[41]);
+    writePinDoc("pin42", gpioMappings.pins[42]);
+    writePinDoc("pin43", gpioMappings.pins[43]);
+    writePinDoc("pin44", gpioMappings.pins[44]);
+    writePinDoc("pin45", gpioMappings.pins[45]);
+    writePinDoc("pin46", gpioMappings.pins[46]);
+    writePinDoc("pin47", gpioMappings.pins[47]);
+#endif
 
     writeDoc(doc, "profileLabel", gpioMappings.profileLabel);
     doc["enabled"] = gpioMappings.enabled;
+    writeInvertedPins(doc.as<JsonVariant>(), gpioMappings);
+    writeProfileSOCD(doc.as<JsonVariant>(), gpioMappings);
 
     return serialize_json(doc);
 }
@@ -1246,44 +1799,57 @@ std::string setBootModeOptions() {
 	return serialize_json(doc);
 }
 
+static const std::pair<const char*, uint32_t KeyboardMapping::*> keyboardMappingFields[] = {
+    { "Up", &KeyboardMapping::keyDpadUp },
+    { "Down", &KeyboardMapping::keyDpadDown },
+    { "Left", &KeyboardMapping::keyDpadLeft },
+    { "Right", &KeyboardMapping::keyDpadRight },
+    { "B1", &KeyboardMapping::keyButtonB1 },
+    { "B2", &KeyboardMapping::keyButtonB2 },
+    { "B3", &KeyboardMapping::keyButtonB3 },
+    { "B4", &KeyboardMapping::keyButtonB4 },
+    { "L1", &KeyboardMapping::keyButtonL1 },
+    { "R1", &KeyboardMapping::keyButtonR1 },
+    { "L2", &KeyboardMapping::keyButtonL2 },
+    { "R2", &KeyboardMapping::keyButtonR2 },
+    { "S1", &KeyboardMapping::keyButtonS1 },
+    { "S2", &KeyboardMapping::keyButtonS2 },
+    { "L3", &KeyboardMapping::keyButtonL3 },
+    { "R3", &KeyboardMapping::keyButtonR3 },
+    { "A1", &KeyboardMapping::keyButtonA1 },
+    { "A2", &KeyboardMapping::keyButtonA2 },
+    { "A3", &KeyboardMapping::keyButtonA3 },
+    { "A4", &KeyboardMapping::keyButtonA4 },
+    { "E1", &KeyboardMapping::keyButtonE1 },
+    { "E2", &KeyboardMapping::keyButtonE2 },
+    { "E3", &KeyboardMapping::keyButtonE3 },
+    { "E4", &KeyboardMapping::keyButtonE4 },
+    { "E5", &KeyboardMapping::keyButtonE5 },
+    { "E6", &KeyboardMapping::keyButtonE6 },
+    { "E7", &KeyboardMapping::keyButtonE7 },
+    { "E8", &KeyboardMapping::keyButtonE8 },
+    { "E9", &KeyboardMapping::keyButtonE9 },
+    { "E10", &KeyboardMapping::keyButtonE10 },
+    { "E11", &KeyboardMapping::keyButtonE11 },
+    { "E12", &KeyboardMapping::keyButtonE12 },
+};
+
+static void readKeyboardMapping(KeyboardMapping& mapping, JsonVariantConst json)
+{
+    for (const auto& [key, field] : keyboardMappingFields)
+        mapping.*field = json[key];
+}
+
+static void writeKeyboardMapping(JsonObject json, const KeyboardMapping& mapping)
+{
+    for (const auto& [key, field] : keyboardMappingFields)
+        json[key] = mapping.*field;
+}
+
 std::string setKeyMappings()
 {
     DynamicJsonDocument doc = get_post_data();
-
-    KeyboardMapping& keyboardMapping = Storage::getInstance().getKeyboardMapping();
-
-    readDoc(keyboardMapping.keyDpadUp, doc, "Up");
-    readDoc(keyboardMapping.keyDpadDown, doc, "Down");
-    readDoc(keyboardMapping.keyDpadLeft, doc, "Left");
-    readDoc(keyboardMapping.keyDpadRight, doc, "Right");
-    readDoc(keyboardMapping.keyButtonB1, doc, "B1");
-    readDoc(keyboardMapping.keyButtonB2, doc, "B2");
-    readDoc(keyboardMapping.keyButtonB3, doc, "B3");
-    readDoc(keyboardMapping.keyButtonB4, doc, "B4");
-    readDoc(keyboardMapping.keyButtonL1, doc, "L1");
-    readDoc(keyboardMapping.keyButtonR1, doc, "R1");
-    readDoc(keyboardMapping.keyButtonL2, doc, "L2");
-    readDoc(keyboardMapping.keyButtonR2, doc, "R2");
-    readDoc(keyboardMapping.keyButtonS1, doc, "S1");
-    readDoc(keyboardMapping.keyButtonS2, doc, "S2");
-    readDoc(keyboardMapping.keyButtonL3, doc, "L3");
-    readDoc(keyboardMapping.keyButtonR3, doc, "R3");
-    readDoc(keyboardMapping.keyButtonA1, doc, "A1");
-    readDoc(keyboardMapping.keyButtonA2, doc, "A2");
-    readDoc(keyboardMapping.keyButtonA3, doc, "A3");
-    readDoc(keyboardMapping.keyButtonA4, doc, "A4");
-    readDoc(keyboardMapping.keyButtonE1, doc, "E1");
-    readDoc(keyboardMapping.keyButtonE2, doc, "E2");
-    readDoc(keyboardMapping.keyButtonE3, doc, "E3");
-    readDoc(keyboardMapping.keyButtonE4, doc, "E4");
-    readDoc(keyboardMapping.keyButtonE5, doc, "E5");
-    readDoc(keyboardMapping.keyButtonE6, doc, "E6");
-    readDoc(keyboardMapping.keyButtonE7, doc, "E7");
-    readDoc(keyboardMapping.keyButtonE8, doc, "E8");
-    readDoc(keyboardMapping.keyButtonE9, doc, "E9");
-    readDoc(keyboardMapping.keyButtonE10, doc, "E10");
-    readDoc(keyboardMapping.keyButtonE11, doc, "E11");
-    readDoc(keyboardMapping.keyButtonE12, doc, "E12");
+    readKeyboardMapping(Storage::getInstance().getKeyboardMapping(), doc.as<JsonVariantConst>());
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
@@ -1292,42 +1858,37 @@ std::string setKeyMappings()
 
 std::string getKeyMappings()
 {
-    const size_t capacity = JSON_OBJECT_SIZE(100);
-    DynamicJsonDocument doc(capacity);
-    const KeyboardMapping& keyboardMapping = Storage::getInstance().getKeyboardMapping();
+    DynamicJsonDocument doc(JSON_OBJECT_SIZE(std::size(keyboardMappingFields)));
+    writeKeyboardMapping(doc.to<JsonObject>(), Storage::getInstance().getKeyboardMapping());
 
-    writeDoc(doc, "Up", keyboardMapping.keyDpadUp);
-    writeDoc(doc, "Down", keyboardMapping.keyDpadDown);
-    writeDoc(doc, "Left", keyboardMapping.keyDpadLeft);
-    writeDoc(doc, "Right", keyboardMapping.keyDpadRight);
-    writeDoc(doc, "B1", keyboardMapping.keyButtonB1);
-    writeDoc(doc, "B2", keyboardMapping.keyButtonB2);
-    writeDoc(doc, "B3", keyboardMapping.keyButtonB3);
-    writeDoc(doc, "B4", keyboardMapping.keyButtonB4);
-    writeDoc(doc, "L1", keyboardMapping.keyButtonL1);
-    writeDoc(doc, "R1", keyboardMapping.keyButtonR1);
-    writeDoc(doc, "L2", keyboardMapping.keyButtonL2);
-    writeDoc(doc, "R2", keyboardMapping.keyButtonR2);
-    writeDoc(doc, "S1", keyboardMapping.keyButtonS1);
-    writeDoc(doc, "S2", keyboardMapping.keyButtonS2);
-    writeDoc(doc, "L3", keyboardMapping.keyButtonL3);
-    writeDoc(doc, "R3", keyboardMapping.keyButtonR3);
-    writeDoc(doc, "A1", keyboardMapping.keyButtonA1);
-    writeDoc(doc, "A2", keyboardMapping.keyButtonA2);
-    writeDoc(doc, "A3", keyboardMapping.keyButtonA3);
-    writeDoc(doc, "A4", keyboardMapping.keyButtonA4);
-    writeDoc(doc, "E1", keyboardMapping.keyButtonE1);
-    writeDoc(doc, "E2", keyboardMapping.keyButtonE2);
-    writeDoc(doc, "E3", keyboardMapping.keyButtonE3);
-    writeDoc(doc, "E4", keyboardMapping.keyButtonE4);
-    writeDoc(doc, "E5", keyboardMapping.keyButtonE5);
-    writeDoc(doc, "E6", keyboardMapping.keyButtonE6);
-    writeDoc(doc, "E7", keyboardMapping.keyButtonE7);
-    writeDoc(doc, "E8", keyboardMapping.keyButtonE8);
-    writeDoc(doc, "E9", keyboardMapping.keyButtonE9);
-    writeDoc(doc, "E10", keyboardMapping.keyButtonE10);
-    writeDoc(doc, "E11", keyboardMapping.keyButtonE11);
-    writeDoc(doc, "E12", keyboardMapping.keyButtonE12);
+    return serialize_json(doc);
+}
+
+std::string setProfileKeyMappings()
+{
+    DynamicJsonDocument doc = get_post_data();
+    ProfileOptions& profileOptions = Storage::getInstance().getProfileOptions();
+
+    pb_size_t index = 0;
+    for (JsonVariantConst mapping : doc["profiles"].as<JsonArrayConst>()) {
+        if (index >= profileOptions.gpioMappingsSets_count) break;
+        readKeyboardMapping(profileOptions.gpioMappingsSets[index++].keyboardMapping, mapping);
+    }
+
+    EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
+
+    return serialize_json(doc);
+}
+
+std::string getProfileKeyMappings()
+{
+    const ProfileOptions& profileOptions = Storage::getInstance().getProfileOptions();
+    DynamicJsonDocument doc(JSON_OBJECT_SIZE(1) + JSON_ARRAY_SIZE(profileOptions.gpioMappingsSets_count)
+        + profileOptions.gpioMappingsSets_count * JSON_OBJECT_SIZE(std::size(keyboardMappingFields)));
+
+    JsonArray profiles = doc.createNestedArray("profiles");
+    for (pb_size_t i = 0; i < profileOptions.gpioMappingsSets_count; i++)
+        writeKeyboardMapping(profiles.createNestedObject(), profileOptions.gpioMappingsSets[i].keyboardMapping);
 
     return serialize_json(doc);
 }
@@ -1396,6 +1957,23 @@ std::string setPeripheralOptions()
     DynamicJsonDocument doc = get_post_data();
 
     PeripheralOptions& peripheralOptions = Storage::getInstance().getPeripheralOptions();
+    Pin_t pinDplus = peripheralOptions.blockUSB0.dp;
+    uint32_t pinOrder = peripheralOptions.blockUSB0.order;
+    docToValue(pinDplus, doc, "peripheral", "usb0", "dp");
+    docToValue(pinOrder, doc, "peripheral", "usb0", "order");
+    if (pinDplus != -1 && (!isValidPin(pinDplus) ||
+        !isValidPin(pinDplus + (pinOrder ? -1 : 1)))) {
+        return "{ \"error\": \"USB D+ and D- must use valid consecutive GPIO pins\" }";
+    }
+
+    Pin_t pinDminus = pinDplus == -1 ? -1 : pinDplus + (pinOrder ? -1 : 1);
+    Pin_t oldPinDplus = peripheralOptions.blockUSB0.dp;
+    Pin_t oldPinDminus = isValidPin(oldPinDplus)
+        ? oldPinDplus + (peripheralOptions.blockUSB0.order ? -1 : 1) : -1;
+    // Release both old pins before reserving the new pair, including a pin swap.
+    Pin_t unsetPin = -1;
+    cleanAddonGpioMappings(unsetPin, oldPinDplus);
+    cleanAddonGpioMappings(unsetPin, oldPinDminus);
 
     docToValue(peripheralOptions.blockI2C0.enabled, doc, "peripheral", "i2c0", "enabled");
     docToPin(peripheralOptions.blockI2C0.sda, doc, "peripheral", "i2c0", "sda");
@@ -1421,31 +1999,10 @@ std::string setPeripheralOptions()
 
     docToValue(peripheralOptions.blockUSB0.enabled, doc, "peripheral", "usb0", "enabled");
     docToValue(peripheralOptions.blockUSB0.enable5v, doc, "peripheral", "usb0", "enable5v");
-    docToValue(peripheralOptions.blockUSB0.order, doc, "peripheral", "usb0", "order");
-
-    // need to reserve previous/next pin for dp
-    GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
-    ProfileOptions& profiles = Storage::getInstance().getProfileOptions();
-    uint8_t adjacent = peripheralOptions.blockUSB0.order ? -1 : 1;
-
-    Pin_t oldPinDplus = peripheralOptions.blockUSB0.dp;
-    docToPin(peripheralOptions.blockUSB0.dp, doc, "peripheral", "usb0", "dp");
-    if (isValidPin(peripheralOptions.blockUSB0.dp)) {
-        // if D+ pin is now set, also set the pin that will be used for D-
-        gpioMappings[peripheralOptions.blockUSB0.dp+adjacent].action = GpioAction::ASSIGNED_TO_ADDON;
-        profiles.gpioMappingsSets[0].pins[peripheralOptions.blockUSB0.dp+adjacent].action =
-            GpioAction::ASSIGNED_TO_ADDON;
-        profiles.gpioMappingsSets[1].pins[peripheralOptions.blockUSB0.dp+adjacent].action =
-            GpioAction::ASSIGNED_TO_ADDON;
-        profiles.gpioMappingsSets[2].pins[peripheralOptions.blockUSB0.dp+adjacent].action =
-            GpioAction::ASSIGNED_TO_ADDON;
-    } else if (isValidPin(oldPinDplus)) {
-        // if D+ pin was set and is no longer, also unset the pin that was used for D-
-        gpioMappings[oldPinDplus+adjacent].action = GpioAction::NONE;
-        profiles.gpioMappingsSets[0].pins[oldPinDplus+adjacent].action = GpioAction::NONE;
-        profiles.gpioMappingsSets[1].pins[oldPinDplus+adjacent].action = GpioAction::NONE;
-        profiles.gpioMappingsSets[2].pins[oldPinDplus+adjacent].action = GpioAction::NONE;
-    }
+    peripheralOptions.blockUSB0.dp = pinDplus;
+    peripheralOptions.blockUSB0.order = pinOrder;
+    cleanAddonGpioMappings(peripheralOptions.blockUSB0.dp, -1);
+    cleanAddonGpioMappings(pinDminus, -1);
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
@@ -1518,7 +2075,8 @@ std::string setExpansionPins()
 }
 
 static uint32_t calibrationMuxChannels = 0;
-static Pin_t calibrationSelectPins[4];
+static Pin_t calibrationSelectPins[4][4];
+static bool calibrationSeparateSelectPins = false;
 static Pin_t calibrationADCPins[4];
 static bool calibrationSmoothing = false;
 static uint32_t calibrationSmoothingFactor = 0;
@@ -1530,10 +2088,21 @@ std::string setHETriggerOptions()
 {
     DynamicJsonDocument doc = get_post_data();
     calibrationMuxChannels = doc["muxChannels"];
-    calibrationSelectPins[0] = doc["muxSelectPin0"];
-    calibrationSelectPins[1] = doc["muxSelectPin1"];
-    calibrationSelectPins[2] = doc["muxSelectPin2"];
-    calibrationSelectPins[3] = doc["muxSelectPin3"];
+    calibrationSeparateSelectPins = doc["separateSelectPins"];
+    static const char* selectPinKeys[4] = { "selectPin0", "selectPin1", "selectPin2", "selectPin3" };
+    for (int i = 0; i < 4; i++) {
+        for (int b = 0; b < 4; b++) {
+            calibrationSelectPins[i][b] = doc["muxes"][i][selectPinKeys[b]];
+        }
+    }
+    if ( !calibrationSeparateSelectPins ) {
+        // Shared select lines: every mux mirrors mux 0.
+        for(int mux = 1; mux < 4; mux++) {
+            for(int i = 0; i < 4; i++) {
+                calibrationSelectPins[mux][i] = calibrationSelectPins[0][i];
+            }
+        }
+    }
 
     calibrationADCPins[0] = doc["muxADCPin0"];
     calibrationADCPins[1] = doc["muxADCPin1"];
@@ -1544,17 +2113,28 @@ std::string setHETriggerOptions()
     calibrationSmoothingFactor = doc["heTriggerSmoothingFactor"];
     ema_smoothing = (float)calibrationSmoothingFactor / 100.f; // 99 = max smoothing factor
 
+    uint8_t pinStart, pinEnd;
+#if NUM_BANK0_GPIOS <= 32
+    pinStart = 26;
+    pinEnd = 29;
+#elif NUM_BANK0_GPIOS > 32
+    pinStart = 40;
+    pinEnd = 47;
+#endif
     for (int i = 0; i < 4; i++) {
-        if ( calibrationSelectPins[i] != -1 &&
-                calibrationSelectPins[i] >= 0 &&
-                calibrationSelectPins[i] <= 29 ) {
-            gpio_init(calibrationSelectPins[i]);
-            gpio_set_dir(calibrationSelectPins[i], GPIO_OUT);
-            gpio_put(calibrationSelectPins[i], 0);
+        for (int mux = 0; mux < 4; mux++) {
+            Pin_t selectPin = calibrationSelectPins[mux][i];
+            if ( selectPin != -1 &&
+                    selectPin >= 0 &&
+                    selectPin <= pinEnd ) {
+                gpio_init(selectPin);
+                gpio_set_dir(selectPin, GPIO_OUT);
+                gpio_put(selectPin, 0);
+            }
         }
         if ( calibrationADCPins[i] != -1 &&
-                calibrationADCPins[i] >= 26 &&
-                calibrationADCPins[i] <= 29 ) {
+                calibrationADCPins[i] >= pinStart &&
+                calibrationADCPins[i] <= pinEnd ) {
             adc_gpio_init(calibrationADCPins[i]);
         }
     }
@@ -1580,7 +2160,7 @@ std::string getHETriggerVoltage()
 
     // Mux Channels determines how many select pins we use
     if (calibrationMuxChannels == 1) {
-        if ( id > 3 ) {
+        if ( id >= (uint32_t)HETriggerAddon::getMuxCount(1) ) {
             doc["error"] = "id out of range";
             return serialize_json(doc);
         }
@@ -1588,46 +2168,46 @@ std::string getHETriggerVoltage()
     } else if ( calibrationMuxChannels == 4) {
         uint32_t adcNum = id / 4;
         uint32_t channel = (id % 4);
-        if ( adcNum > 3 ) {
+        if ( adcNum >= (uint32_t)HETriggerAddon::getMuxCount(4) ) {
             doc["error"] = "id out of 4-channel mux range";
             return serialize_json(doc);
         }
         adcSelectPin = calibrationADCPins[adcNum];
-        gpio_put(calibrationSelectPins[0], channel & 0x01);
-        gpio_put(calibrationSelectPins[1], (channel >> 1) & 0x01);
+        gpio_put(calibrationSelectPins[adcNum][0], channel & 0x01);
+        gpio_put(calibrationSelectPins[adcNum][1], (channel >> 1) & 0x01);
     } else if (calibrationMuxChannels == 8) {
         uint32_t adcNum = id / 8;
         uint32_t channel = (id % 8);
-        if ( adcNum > 2 ) {
+        if ( adcNum >= (uint32_t)HETriggerAddon::getMuxCount(8) ) {
             doc["error"] = "id out of 8-channel mux range";
             return serialize_json(doc);
         }
         adcSelectPin = calibrationADCPins[adcNum];
-        gpio_put(calibrationSelectPins[0], channel & 0x01);
-        gpio_put(calibrationSelectPins[1], (channel >> 1) & 0x01);
-        gpio_put(calibrationSelectPins[2], (channel >> 2) & 0x01);
+        gpio_put(calibrationSelectPins[adcNum][0], channel & 0x01);
+        gpio_put(calibrationSelectPins[adcNum][1], (channel >> 1) & 0x01);
+        gpio_put(calibrationSelectPins[adcNum][2], (channel >> 2) & 0x01);
     } else if (calibrationMuxChannels == 16) {
         uint32_t adcNum = id / 16;
         uint32_t channel = (id % 16);
-        if ( adcNum > 1 ) {
+        if ( adcNum >= (uint32_t)HETriggerAddon::getMuxCount(16) ) {
             doc["error"] = "id out of 16-channel mux range";
             return serialize_json(doc);
         }
         adcSelectPin = calibrationADCPins[adcNum];
-        gpio_put(calibrationSelectPins[0], channel & 0x01);
-        gpio_put(calibrationSelectPins[1], (channel >> 1) & 0x01);
-        gpio_put(calibrationSelectPins[2], (channel >> 2) & 0x01);
-        gpio_put(calibrationSelectPins[3], (channel >> 3) & 0x01);
+        gpio_put(calibrationSelectPins[adcNum][0], channel & 0x01);
+        gpio_put(calibrationSelectPins[adcNum][1], (channel >> 1) & 0x01);
+        gpio_put(calibrationSelectPins[adcNum][2], (channel >> 2) & 0x01);
+        gpio_put(calibrationSelectPins[adcNum][3], (channel >> 3) & 0x01);
     } else {
         doc["error"] = "mux channels incorrect";
         return serialize_json(doc);
     }
 
-    if ( adcSelectPin < 26 || adcSelectPin > 29) {
+    if (adcSelectPin < ADC_BASE_PIN || adcSelectPin >= ADC_BASE_PIN + NUM_ADC_CHANNELS - 1) {
         doc["error"] = "adc pin out of range";
         return serialize_json(doc);
     }
-    adc_select_input(adcSelectPin-26);
+    adc_select_input(adcSelectPin - ADC_BASE_PIN);
     // Web-Config triggers getHECalibration every 50ms, game controller triggers <1ms
     if ( calibrationSmoothing ) {
         uint16_t read;
@@ -1639,6 +2219,55 @@ std::string getHETriggerVoltage()
         doc["voltage"] = read;
     } else {
         doc["voltage"] = adc_read();
+    }
+    return serialize_json(doc);
+}
+
+// Reads every scanned trigger in one request for Quick Calibrate; unscanned triggers report -1.
+std::string getHETriggerVoltages()
+{
+    const size_t capacity = JSON_OBJECT_SIZE(2) + JSON_ARRAY_SIZE(HETRIGGER_COUNT);
+    DynamicJsonDocument doc(capacity);
+
+    const uint32_t muxChannels = calibrationMuxChannels;
+    uint32_t selectBits;
+    switch (muxChannels) {
+        case 1:  selectBits = 0; break;
+        case 4:  selectBits = 2; break;
+        case 8:  selectBits = 3; break;
+        case 16: selectBits = 4; break;
+        default:
+            doc["error"] = "mux channels incorrect";
+            return serialize_json(doc);
+    }
+
+    const uint32_t muxCount = HETriggerAddon::getMuxCount(muxChannels);
+    JsonArray voltages = doc.createNestedArray("voltages");
+    for (uint32_t id = 0; id < HETRIGGER_COUNT; id++) {
+        const uint32_t mux = id / muxChannels;
+        const uint32_t channel = id % muxChannels;
+        const Pin_t adcPin = mux < muxCount ? calibrationADCPins[mux] : -1;
+        if (!AnalogInput::isAdcPin(adcPin)) {
+            voltages.add(-1);
+            continue;
+        }
+        for (uint32_t b = 0; b < selectBits; b++) {
+            if (calibrationSelectPins[mux][b] != -1) {
+                gpio_put(calibrationSelectPins[mux][b], (channel >> b) & 0x01);
+            }
+        }
+        adc_select_input(adcPin - ADC_BASE_PIN);
+        // First sample after a channel switch can carry the previous channel
+        adc_read();
+        uint16_t read = adc_read();
+        if (calibrationSmoothing) {
+            uint16_t smoothed = read;
+            for (int i = 0; i < 50; i++) {
+                smoothed = emaCalculation(adc_read(), smoothed);
+            }
+            read = smoothed;
+        }
+        voltages.add(read);
     }
     return serialize_json(doc);
 }
@@ -1658,12 +2287,20 @@ std::string getHETriggerCalibrations()
         trigger["active"] = heTriggers[i].active;
         trigger["pressed"] = heTriggers[i].pressed;
         trigger["is_polarized"] = heTriggers[i].is_polarized;
-        trigger["release"] = heTriggers[i].release;
         trigger["noise"] = heTriggers[i].noise;
         trigger["rapidTrigger"] = heTriggers[i].rapidTrigger;
+        trigger["rtPressSensitivity"] = heTriggers[i].rtPressSensitivity;
+        trigger["rtReleaseSensitivity"] = heTriggers[i].rtReleaseSensitivity;
+        trigger["rtSeparateSensitivity"] = heTriggers[i].rtSeparateSensitivity;
+        trigger["rtContinuous"] = heTriggers[i].rtContinuous;
     }
 
     return serialize_json(doc);
+}
+
+static float clampSwitchTravel(float travel)
+{
+    return std::min(std::max(travel, 0.0f), 20.0f);
 }
 
 // Set Hall Effect Trigger Calibrations
@@ -1678,12 +2315,22 @@ std::string setHETriggerCalibrations()
         heTriggers[i].active = doc["triggers"][i]["active"];
         heTriggers[i].pressed = doc["triggers"][i]["pressed"];
         heTriggers[i].is_polarized = doc["triggers"][i]["is_polarized"];
-        heTriggers[i].release = doc["triggers"][i]["release"];
         heTriggers[i].noise = doc["triggers"][i]["noise"];
         heTriggers[i].rapidTrigger = doc["triggers"][i]["rapidTrigger"];
+        // Older backups have no sensitivities; derive them like the config migration does.
+        const int32_t legacySensitivity = heTriggers[i].noise + 1;
+        heTriggers[i].rtPressSensitivity = doc["triggers"][i]["rtPressSensitivity"] | legacySensitivity;
+        heTriggers[i].rtReleaseSensitivity = doc["triggers"][i]["rtReleaseSensitivity"] | legacySensitivity;
+        if (doc["triggers"][i]["rtSeparateSensitivity"] != nullptr)
+            heTriggers[i].rtSeparateSensitivity = doc["triggers"][i]["rtSeparateSensitivity"];
+        if (doc["triggers"][i]["rtContinuous"] != nullptr)
+            heTriggers[i].rtContinuous = doc["triggers"][i]["rtContinuous"];
     }
 
-    Storage::getInstance().getAddonOptions().heTriggerOptions.triggers_count = 32;
+    HETriggerOptions& heTriggerOptions = Storage::getInstance().getAddonOptions().heTriggerOptions;
+    docToValue(heTriggerOptions.switchTravel, doc, "heTriggerSwitchTravel");
+    heTriggerOptions.switchTravel = clampSwitchTravel(heTriggerOptions.switchTravel);
+    heTriggerOptions.triggers_count = 32;
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
     return serialize_json(doc);
@@ -1750,6 +2397,14 @@ std::string setAddonOptions()
     docToValue(analogOptions.joystick_center_y, doc, "joystickCenterY");
     docToValue(analogOptions.joystick_center_x2, doc, "joystickCenterX2");
     docToValue(analogOptions.joystick_center_y2, doc, "joystickCenterY2");
+    docToValue(analogOptions.joystick_min_x, doc, "joystickMinX");
+    docToValue(analogOptions.joystick_max_x, doc, "joystickMaxX");
+    docToValue(analogOptions.joystick_min_y, doc, "joystickMinY");
+    docToValue(analogOptions.joystick_max_y, doc, "joystickMaxY");
+    docToValue(analogOptions.joystick_min_x2, doc, "joystickMinX2");
+    docToValue(analogOptions.joystick_max_x2, doc, "joystickMaxX2");
+    docToValue(analogOptions.joystick_min_y2, doc, "joystickMinY2");
+    docToValue(analogOptions.joystick_max_y2, doc, "joystickMaxY2");
     docToValue(analogOptions.analog_smoothing, doc, "analog_smoothing");
     docToValue(analogOptions.analog_smoothing2, doc, "analog_smoothing2");
     docToValue(analogOptions.smoothing_factor, doc, "smoothing_factor");
@@ -1792,8 +2447,32 @@ std::string setAddonOptions()
     docToValue(focusModeOptions.macroLockEnabled, doc, "focusModeMacroLockEnabled");
     docToValue(focusModeOptions.enabled, doc, "FocusModeAddonEnabled");
 
+    AnalogADS1115Options& analogADS1115Options = Storage::getInstance().getAddonOptions().analogADS1115Options;
+    docToValue(analogADS1115Options.enabled, doc, "I2CAnalog1115InputEnabled");
+    // docToValue(analogADS1115Options.channel_enabled, doc, "channelEnabled");
+    // docToValue(analogADS1115Options.channel_inner_deadzone_enabled, doc, "channelInnerDeadzoneEnable");
+    // docToValue(analogADS1115Options.channel_outer_deadzone_enabled, doc, "channelOuterDeadzoneEnable");
+    docToValue(analogADS1115Options.lxChannel, doc, "lxChannel");
+    docToValue(analogADS1115Options.lyChannel, doc, "lyChannel");
+    docToValue(analogADS1115Options.rxChannel, doc, "rxChannel");
+    docToValue(analogADS1115Options.ryChannel, doc, "ryChannel");
+    docToValue(analogADS1115Options.channel0InnerDeadzone, doc, "channel0InnerDeadzone");
+    docToValue(analogADS1115Options.channel1InnerDeadzone, doc, "channel1InnerDeadzone");
+    docToValue(analogADS1115Options.channel2InnerDeadzone, doc, "channel2InnerDeadzone");
+    docToValue(analogADS1115Options.channel3InnerDeadzone, doc, "channel3InnerDeadzone");
+    docToValue(analogADS1115Options.channel0OuterDeadzone, doc, "channel0OuterDeadzone");
+    docToValue(analogADS1115Options.channel1OuterDeadzone, doc, "channel1OuterDeadzone");
+    docToValue(analogADS1115Options.channel2OuterDeadzone, doc, "channel2OuterDeadzone");
+    docToValue(analogADS1115Options.channel3OuterDeadzone, doc, "channel3OuterDeadzone");
+    // docToValue(analogADS1115Options.invert_enabled, doc, "invertEnabled");
+    docToValue(analogADS1115Options.left_stick_deadzone_enabled, doc, "leftStickDeadzoneEnable");
+    docToValue(analogADS1115Options.right_stick_deadzone_enabled, doc, "rightStickDeadzoneEnable");
+    docToValue(analogADS1115Options.leftStickDeadzone, doc, "leftStickDeadzone");
+    docToValue(analogADS1115Options.rightStickDeadzone, doc, "rightStickDeadzone");
+
     AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
     docToValue(analogADS1219Options.enabled, doc, "I2CAnalog1219InputEnabled");
+
 
     ReverseOptions& reverseOptions = Storage::getInstance().getAddonOptions().reverseOptions;
     docToValue(reverseOptions.enabled, doc, "ReverseInputEnabled");
@@ -1803,9 +2482,18 @@ std::string setAddonOptions()
     docToValue(reverseOptions.actionLeft, doc, "reverseActionLeft");
     docToValue(reverseOptions.actionRight, doc, "reverseActionRight");
 
-    SOCDSliderOptions& socdSliderOptions = Storage::getInstance().getAddonOptions().socdSliderOptions;
-    docToValue(socdSliderOptions.enabled, doc, "SliderSOCDInputEnabled");
-    docToValue(socdSliderOptions.modeDefault, doc, "sliderSOCDModeDefault");
+    ProfileSliderOptions& profileSliderOptions = Storage::getInstance().getAddonOptions().profileSliderOptions;
+    docToValue(profileSliderOptions.enabled, doc, "SliderProfileInputEnabled");
+    docToValue(profileSliderOptions.numPositions, doc, "sliderProfileNumPositions");
+    docToValue(profileSliderOptions.defaultProfile, doc, "sliderProfileDefaultProfile");
+    // Handle profile assignments array
+    if (doc.containsKey("sliderProfileAssignments")) {
+        JsonArray profileArray = doc["sliderProfileAssignments"];
+        profileSliderOptions.profileAssignments_count = std::min(static_cast<size_t>(8), profileArray.size());
+        for (size_t i = 0; i < profileSliderOptions.profileAssignments_count; i++) {
+            profileSliderOptions.profileAssignments[i] = profileArray[i];
+        }
+    }
 
     OnBoardLedOptions& onBoardLedOptions = Storage::getInstance().getAddonOptions().onBoardLedOptions;
     docToValue(onBoardLedOptions.mode, doc, "onBoardLedMode");
@@ -1830,8 +2518,6 @@ std::string setAddonOptions()
     docToValue(turboOptions.shmupBtnMask4, doc, "shmupBtnMask4");
     docToPin(turboOptions.shmupDialPin, doc, "pinShmupDial");
     docToValue(turboOptions.turboLedType, doc, "turboLedType");
-    docToValue(turboOptions.turboLedIndex, doc, "turboLedIndex");
-    docToValue(turboOptions.turboLedColor, doc, "turboLedColor");
     docToValue(turboOptions.enabled, doc, "TurboInputEnabled");
 
     WiiOptions& wiiOptions = Storage::getInstance().getAddonOptions().wiiOptions;
@@ -1928,16 +2614,32 @@ std::string setAddonOptions()
     HETriggerOptions& heTriggerOptions = Storage::getInstance().getAddonOptions().heTriggerOptions;
     docToValue(heTriggerOptions.enabled, doc, "HETriggerEnabled");
     docToValue(heTriggerOptions.muxChannels, doc, "muxChannels");
-    docToPin(heTriggerOptions.selectPin0, doc, "muxSelectPin0");
-    docToPin(heTriggerOptions.selectPin1, doc, "muxSelectPin1");
-    docToPin(heTriggerOptions.selectPin2, doc, "muxSelectPin2");
-    docToPin(heTriggerOptions.selectPin3, doc, "muxSelectPin3");
     docToPin(heTriggerOptions.muxADCPin0, doc, "muxADCPin0");
     docToPin(heTriggerOptions.muxADCPin1, doc, "muxADCPin1");
     docToPin(heTriggerOptions.muxADCPin2, doc, "muxADCPin2");
     docToPin(heTriggerOptions.muxADCPin3, doc, "muxADCPin3");
     docToValue(heTriggerOptions.emaSmoothing, doc, "heTriggerSmoothing");
     docToValue(heTriggerOptions.smoothingFactor, doc, "heTriggerSmoothingFactor");
+    docToValue(heTriggerOptions.separateSelectPins, doc, "separateSelectPins");
+    docToValue(heTriggerOptions.switchTravel, doc, "heTriggerSwitchTravel");
+    heTriggerOptions.switchTravel = clampSwitchTravel(heTriggerOptions.switchTravel);
+    static const char* selectPinKeys[4] = { "selectPin0", "selectPin1", "selectPin2", "selectPin3" };
+    for (int i = 0; i < 4; i++) {
+        Pin_t* muxSelectPins[4] = {
+            &heTriggerOptions.muxes[i].selectPin0,
+            &heTriggerOptions.muxes[i].selectPin1,
+            &heTriggerOptions.muxes[i].selectPin2,
+            &heTriggerOptions.muxes[i].selectPin3,
+        };
+        for (int b = 0; b < 4; b++) {
+            if (doc["muxes"][i].containsKey(selectPinKeys[b])) {
+                Pin_t oldPin = *muxSelectPins[b];
+                *muxSelectPins[b] = doc["muxes"][i][selectPinKeys[b]];
+                cleanAddonGpioMappings(*muxSelectPins[b], oldPin);
+            }
+        }
+    }
+    heTriggerOptions.muxes_count = 4;
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
@@ -2208,6 +2910,14 @@ std::string getAddonOptions()
     writeDoc(doc, "joystickCenterY", analogOptions.joystick_center_y);
     writeDoc(doc, "joystickCenterX2", analogOptions.joystick_center_x2);
     writeDoc(doc, "joystickCenterY2", analogOptions.joystick_center_y2);
+    writeDoc(doc, "joystickMinX", analogOptions.joystick_min_x);
+    writeDoc(doc, "joystickMaxX", analogOptions.joystick_max_x);
+    writeDoc(doc, "joystickMinY", analogOptions.joystick_min_y);
+    writeDoc(doc, "joystickMaxY", analogOptions.joystick_max_y);
+    writeDoc(doc, "joystickMinX2", analogOptions.joystick_min_x2);
+    writeDoc(doc, "joystickMaxX2", analogOptions.joystick_max_x2);
+    writeDoc(doc, "joystickMinY2", analogOptions.joystick_min_y2);
+    writeDoc(doc, "joystickMaxY2", analogOptions.joystick_max_y2);
     writeDoc(doc, "analog_smoothing", analogOptions.analog_smoothing);
     writeDoc(doc, "analog_smoothing2", analogOptions.analog_smoothing2);
     writeDoc(doc, "smoothing_factor", analogOptions.smoothing_factor);
@@ -2247,6 +2957,26 @@ std::string getAddonOptions()
     const AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
     writeDoc(doc, "I2CAnalog1219InputEnabled", analogADS1219Options.enabled);
 
+    const AnalogADS1115Options& analogADS1115Options = Storage::getInstance().getAddonOptions().analogADS1115Options;
+    writeDoc(doc, "I2CAnalog1115InputEnabled", analogADS1115Options.enabled);
+
+    writeDoc(doc, "lxChannel", analogADS1115Options.lxChannel);
+    writeDoc(doc, "lyChannel", analogADS1115Options.lyChannel);
+    writeDoc(doc, "rxChannel", analogADS1115Options.rxChannel);
+    writeDoc(doc, "ryChannel", analogADS1115Options.ryChannel);
+    writeDoc(doc, "channel0InnerDeadzone", analogADS1115Options.channel0InnerDeadzone);
+    writeDoc(doc, "channel1InnerDeadzone", analogADS1115Options.channel1InnerDeadzone);
+    writeDoc(doc, "channel2InnerDeadzone", analogADS1115Options.channel2InnerDeadzone);
+    writeDoc(doc, "channel3InnerDeadzone", analogADS1115Options.channel3InnerDeadzone);
+    writeDoc(doc, "channel0OuterDeadzone", analogADS1115Options.channel0OuterDeadzone);
+    writeDoc(doc, "channel1OuterDeadzone", analogADS1115Options.channel1OuterDeadzone);
+    writeDoc(doc, "channel2OuterDeadzone", analogADS1115Options.channel2OuterDeadzone);
+    writeDoc(doc, "channel3OuterDeadzone", analogADS1115Options.channel3OuterDeadzone);
+    writeDoc(doc, "leftStickDeadzoneEnable", analogADS1115Options.left_stick_deadzone_enabled);
+    writeDoc(doc, "rightStickDeadzoneEnable", analogADS1115Options.right_stick_deadzone_enabled);
+    writeDoc(doc, "leftStickDeadzone", analogADS1115Options.leftStickDeadzone);
+    writeDoc(doc, "rightStickDeadzone", analogADS1115Options.rightStickDeadzone);
+
     const ReverseOptions& reverseOptions = Storage::getInstance().getAddonOptions().reverseOptions;
     writeDoc(doc, "reversePinLED", cleanPin(reverseOptions.ledPin));
     writeDoc(doc, "reverseActionUp", reverseOptions.actionUp);
@@ -2255,9 +2985,14 @@ std::string getAddonOptions()
     writeDoc(doc, "reverseActionRight", reverseOptions.actionRight);
     writeDoc(doc, "ReverseInputEnabled", reverseOptions.enabled);
 
-    const SOCDSliderOptions& socdSliderOptions = Storage::getInstance().getAddonOptions().socdSliderOptions;
-    writeDoc(doc, "sliderSOCDModeDefault", socdSliderOptions.modeDefault);
-    writeDoc(doc, "SliderSOCDInputEnabled", socdSliderOptions.enabled);
+    const ProfileSliderOptions& profileSliderOptions = Storage::getInstance().getAddonOptions().profileSliderOptions;
+    writeDoc(doc, "SliderProfileInputEnabled", profileSliderOptions.enabled);
+    writeDoc(doc, "sliderProfileNumPositions", profileSliderOptions.numPositions);
+    writeDoc(doc, "sliderProfileDefaultProfile", profileSliderOptions.defaultProfile);
+    JsonArray profileAssignmentsArray = doc.createNestedArray("sliderProfileAssignments");
+    for (size_t i = 0; i < profileSliderOptions.profileAssignments_count; i++) {
+        profileAssignmentsArray.add(profileSliderOptions.profileAssignments[i]);
+    }
 
     const OnBoardLedOptions& onBoardLedOptions = Storage::getInstance().getAddonOptions().onBoardLedOptions;
     writeDoc(doc, "onBoardLedMode", onBoardLedOptions.mode);
@@ -2282,8 +3017,6 @@ std::string getAddonOptions()
     writeDoc(doc, "shmupBtnMask4", turboOptions.shmupBtnMask4);
     writeDoc(doc, "pinShmupDial", cleanPin(turboOptions.shmupDialPin));
     writeDoc(doc, "turboLedType", turboOptions.turboLedType);
-    writeDoc(doc, "turboLedIndex", turboOptions.turboLedIndex);
-    writeDoc(doc, "turboLedColor",  ((RGB)turboOptions.turboLedColor).value(LED_FORMAT_RGB));
     writeDoc(doc, "TurboInputEnabled", turboOptions.enabled);
 
     const WiiOptions& wiiOptions = Storage::getInstance().getAddonOptions().wiiOptions;
@@ -2386,16 +3119,22 @@ std::string getAddonOptions()
     const HETriggerOptions& heTriggerOptions = Storage::getInstance().getAddonOptions().heTriggerOptions;
     writeDoc(doc, "HETriggerEnabled", heTriggerOptions.enabled);
     writeDoc(doc, "muxChannels", heTriggerOptions.muxChannels);
-    writeDoc(doc, "muxSelectPin0", cleanPin(heTriggerOptions.selectPin0));
-    writeDoc(doc, "muxSelectPin1", cleanPin(heTriggerOptions.selectPin1));
-    writeDoc(doc, "muxSelectPin2", cleanPin(heTriggerOptions.selectPin2));
-    writeDoc(doc, "muxSelectPin3", cleanPin(heTriggerOptions.selectPin3));
     writeDoc(doc, "muxADCPin0", cleanPin(heTriggerOptions.muxADCPin0));
     writeDoc(doc, "muxADCPin1", cleanPin(heTriggerOptions.muxADCPin1));
     writeDoc(doc, "muxADCPin2", cleanPin(heTriggerOptions.muxADCPin2));
     writeDoc(doc, "muxADCPin3", cleanPin(heTriggerOptions.muxADCPin3));
     writeDoc(doc, "heTriggerSmoothing", heTriggerOptions.emaSmoothing);
     writeDoc(doc, "heTriggerSmoothingFactor", heTriggerOptions.smoothingFactor);
+    writeDoc(doc, "separateSelectPins", heTriggerOptions.separateSelectPins);
+    // Round so 3.8f is reported as 3.8, not 3.799999952.
+    writeDoc(doc, "heTriggerSwitchTravel", std::round(heTriggerOptions.switchTravel * 100.0) / 100.0);
+    doc.createNestedArray("muxes");
+    for (int i = 0; i < 4; i++) {
+        writeDoc(doc, "muxes", i, "selectPin0", cleanPin(heTriggerOptions.muxes[i].selectPin0));
+        writeDoc(doc, "muxes", i, "selectPin1", cleanPin(heTriggerOptions.muxes[i].selectPin1));
+        writeDoc(doc, "muxes", i, "selectPin2", cleanPin(heTriggerOptions.muxes[i].selectPin2));
+        writeDoc(doc, "muxes", i, "selectPin3", cleanPin(heTriggerOptions.muxes[i].selectPin3));
+    }
 
     return serialize_json(doc);
 }
@@ -2445,7 +3184,10 @@ std::string setMacroAddonOptions()
 
 std::string getMacroAddonOptions()
 {
-    const size_t capacity = JSON_OBJECT_SIZE(500);
+    const size_t capacity = JSON_OBJECT_SIZE(MacroOptions_msg.field_count) + JSON_ARRAY_SIZE(MAX_MACRO_LIMIT)
+        + MAX_MACRO_LIMIT * (JSON_OBJECT_SIZE(Macro_msg.field_count) + sizeof(Macro::macroLabel)
+        + JSON_ARRAY_SIZE(MAX_MACRO_INPUT_LIMIT)
+        + MAX_MACRO_INPUT_LIMIT * JSON_OBJECT_SIZE(MacroInput_msg.field_count));
     DynamicJsonDocument doc(capacity);
 
     MacroOptions& macroOptions = Storage::getInstance().getAddonOptions().macroOptions;
@@ -2507,12 +3249,15 @@ static bool _abortGetHeldPins = false;
 
 std::string getHeldPins()
 {
+    _abortGetHeldPins = false;
     DynamicJsonDocument doc(JSON_OBJECT_SIZE(100));
 
     // Initialize unassigned pins for reading
+    GpioMappings& gpioMappings = Storage::getInstance().getGpioMappings();
     std::vector<uint> uninitPins;
     for (uint32_t pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
-        if (gpio_get_function(pin) == GPIO_FUNC_NULL) {
+        if (gpioMappings.pins[pin].action == GpioAction::NONE &&
+            gpio_get_function(pin) == GPIO_FUNC_NULL) {
             uninitPins.push_back(pin);
             gpio_init(pin);
             gpio_set_dir(pin, GPIO_IN);
@@ -2522,22 +3267,21 @@ std::string getHeldPins()
 
     std::set<uint> heldPinsSet;
     uint32_t startTime = getMillis();
-    uint32_t oldState = ~gpio_get_all();
+    uint64_t oldState = Storage::getInstance().getPressedGpios() & ((uint64_t{1} << NUM_BANK0_GPIOS) - 1);
     uint32_t debounceTime = 0;
     bool isAnyPinHeld = false;
 
-    // Monitor pins for 5 seconds or until released
-    while (!_abortGetHeldPins && (isAnyPinHeld || (getMillis() - startTime) < 5000)) {
-        rndis_task();
+    // Monitor pins for 5 seconds
+    while (!_abortGetHeldPins && (getMillis() - startTime) < 5000) {
+        uint64_t newState = Storage::getInstance().getPressedGpios() & ((uint64_t{1} << NUM_BANK0_GPIOS) - 1);
 
-        uint32_t newState = ~gpio_get_all();
-        if (isAnyPinHeld && newState == oldState) break; // Pins released
-
-        uint32_t changedPins = newState ^ oldState;
+        uint64_t changedPins = newState & ~oldState;
+        if (isAnyPinHeld && changedPins == 0) break; // Pins released
+        if (changedPins == 0) debounceTime = 0;
         uint32_t currentTime = getMillis();
 
         for (uint32_t pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
-            if ((changedPins & (1 << pin)) &&
+            if ((changedPins & (uint64_t{1} << pin)) &&
                 gpio_get_function(pin) == GPIO_FUNC_SIO &&
                 !gpio_is_dir_out(pin)) {
 
@@ -2639,91 +3383,108 @@ std::string reboot() {
     return serialize_json(doc);
 }
 
-// NEW API: return current raw ADC reading for the configured analog pins
-std:: string getJoystickCenter() {
-    const size_t capacity = JSON_OBJECT_SIZE(10);
-    DynamicJsonDocument doc(capacity);
-    const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
-
-    uint16_t x = 0, y = 0;
-    bool success = true;
-    std::string error_msg = "";
-
-    // Check if analog input is enabled
-    if (!analogOptions.enabled) {
-        success = false;
-        error_msg = "Analog input is not enabled";
+static std::string getJoystickCalibrationSample(Pin_t pinX, Pin_t pinY) {
+    DynamicJsonDocument doc(JSON_OBJECT_SIZE(8));
+    const bool validX = AnalogInput::isAdcPin(pinX);
+    const bool validY = AnalogInput::isAdcPin(pinY);
+    if (!Storage::getInstance().getAddonOptions().analogOptions.enabled) {
+        doc["success"] = false;
+        doc["error"] = "analog is not enabled";
+    } else if ((!validX && pinX != -1) || (!validY && pinY != -1) || (!validX && !validY)) {
+        doc["success"] = false;
+        doc["error"] = "select valid ADC pins";
     } else {
-        // Initialize ADC if not already initialized
         adc_init();
-
-        // Check if specific stick is requested via query parameter
-        // For now, we'll read both sticks and return the appropriate one
-        // In a more sophisticated implementation, we could parse query parameters
-
-        // Read first stick X/Y
-        if (isValidPin(analogOptions.analogAdc1PinX)) {
-            adc_gpio_init(analogOptions.analogAdc1PinX);
-            adc_select_input(analogOptions.analogAdc1PinX - 26);
-            x = adc_read();
-        }
-        if (isValidPin(analogOptions.analogAdc1PinY)) {
-            adc_gpio_init(analogOptions.analogAdc1PinY);
-            adc_select_input(analogOptions.analogAdc1PinY - 26);
-            y = adc_read();
-        }
-    }
-
-    JsonObject o = doc.to<JsonObject>();
-    o["success"] = success;
-    if (!success) {
-        o["error"] = error_msg;
-    } else {
-        o["x"] = x;
-        o["y"] = y;
+        doc["success"] = true;
+        doc["pinX"] = pinX;
+        doc["pinY"] = pinY;
+        doc["x"] = AnalogInput::readCalibrationSample(pinX);
+        doc["y"] = AnalogInput::readCalibrationSample(pinY);
     }
     return serialize_json(doc);
 }
 
-// NEW API: return current raw ADC reading for stick 2
-std:: string getJoystickCenter2() {
-    const size_t capacity = JSON_OBJECT_SIZE(10);
+std::string getJoystickCenter() {
+    const AnalogOptions& options = Storage::getInstance().getAddonOptions().analogOptions;
+    return getJoystickCalibrationSample(options.analogAdc1PinX, options.analogAdc1PinY);
+}
+
+std::string getJoystickCenter2() {
+    const AnalogOptions& options = Storage::getInstance().getAddonOptions().analogOptions;
+    return getJoystickCalibrationSample(options.analogAdc2PinX, options.analogAdc2PinY);
+}
+
+std::string getBoardDefinition() {
+    const size_t capacity = JSON_OBJECT_SIZE(100);
     DynamicJsonDocument doc(capacity);
-    const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
+    JsonObject root = doc.to<JsonObject>();
 
-    uint16_t x = 0, y = 0;
-    bool success = true;
-    std::string error_msg = "";
+    GpioMappings& gpioMappings = Storage::getInstance().getGpioMappings();
 
-    // Check if analog input is enabled
-    if (!analogOptions.enabled) {
-        success = false;
-        error_msg = "Analog input is not enabled";
-    } else {
-        // Initialize ADC if not already initialized
-        adc_init();
+    JsonObject picoPins = root["pico"].to<JsonObject>();
+    picoPins["minPin"] = 0;
+    picoPins["maxPin"] = NUM_BANK0_GPIOS-1;
 
-        // Read second stick X/Y
-        if (isValidPin(analogOptions.analogAdc2PinX)) {
-            adc_gpio_init(analogOptions.analogAdc2PinX);
-            adc_select_input(analogOptions.analogAdc2PinX - 26);
-            x = adc_read();
-        }
-        if (isValidPin(analogOptions.analogAdc2PinY)) {
-            adc_gpio_init(analogOptions.analogAdc2PinY);
-            adc_select_input(analogOptions.analogAdc2PinY - 26);
-            y = adc_read();
-        }
+    JsonArray analogPins = picoPins.createNestedArray("analogPins");
+
+    JsonArray availablePins = picoPins.createNestedArray("availablePins");
+    for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
+        if (AnalogInput::isAdcPin(pin)) analogPins.add(pin);
+        availablePins.add(pin);
     }
 
-    JsonObject o = doc.to<JsonObject>();
-    o["success"] = success;
-    if (!success) {
-        o["error"] = error_msg;
-    } else {
-        o["x"] = x;
-        o["y"] = y;
-    }
+    JsonObject usedPins = picoPins.createNestedObject("usedPins");
+    usedPins["pin00"] = gpioMappings.pins[0].action;
+    usedPins["pin01"] = gpioMappings.pins[1].action;
+    usedPins["pin02"] = gpioMappings.pins[2].action;
+    usedPins["pin03"] = gpioMappings.pins[3].action;
+    usedPins["pin04"] = gpioMappings.pins[4].action;
+    usedPins["pin05"] = gpioMappings.pins[5].action;
+    usedPins["pin06"] = gpioMappings.pins[6].action;
+    usedPins["pin07"] = gpioMappings.pins[7].action;
+    usedPins["pin08"] = gpioMappings.pins[8].action;
+    usedPins["pin09"] = gpioMappings.pins[9].action;
+    usedPins["pin10"] = gpioMappings.pins[10].action;
+    usedPins["pin11"] = gpioMappings.pins[11].action;
+    usedPins["pin12"] = gpioMappings.pins[12].action;
+    usedPins["pin13"] = gpioMappings.pins[13].action;
+    usedPins["pin14"] = gpioMappings.pins[14].action;
+    usedPins["pin15"] = gpioMappings.pins[15].action;
+    usedPins["pin16"] = gpioMappings.pins[16].action;
+    usedPins["pin17"] = gpioMappings.pins[17].action;
+    usedPins["pin18"] = gpioMappings.pins[18].action;
+    usedPins["pin19"] = gpioMappings.pins[19].action;
+    usedPins["pin20"] = gpioMappings.pins[20].action;
+    usedPins["pin21"] = gpioMappings.pins[21].action;
+    usedPins["pin22"] = gpioMappings.pins[22].action;
+    usedPins["pin23"] = gpioMappings.pins[23].action;
+    usedPins["pin24"] = gpioMappings.pins[24].action;
+    usedPins["pin25"] = gpioMappings.pins[25].action;
+    usedPins["pin26"] = gpioMappings.pins[26].action;
+    usedPins["pin27"] = gpioMappings.pins[27].action;
+    usedPins["pin28"] = gpioMappings.pins[28].action;
+    usedPins["pin29"] = gpioMappings.pins[29].action;
+#if NUM_BANK0_GPIOS > 32
+    usedPins["pin30"] = gpioMappings.pins[30].action;
+    usedPins["pin31"] = gpioMappings.pins[31].action;
+    usedPins["pin32"] = gpioMappings.pins[32].action;
+    usedPins["pin33"] = gpioMappings.pins[33].action;
+    usedPins["pin34"] = gpioMappings.pins[34].action;
+    usedPins["pin35"] = gpioMappings.pins[35].action;
+    usedPins["pin36"] = gpioMappings.pins[36].action;
+    usedPins["pin37"] = gpioMappings.pins[37].action;
+    usedPins["pin38"] = gpioMappings.pins[38].action;
+    usedPins["pin39"] = gpioMappings.pins[39].action;
+    usedPins["pin40"] = gpioMappings.pins[40].action;
+    usedPins["pin41"] = gpioMappings.pins[41].action;
+    usedPins["pin42"] = gpioMappings.pins[42].action;
+    usedPins["pin43"] = gpioMappings.pins[43].action;
+    usedPins["pin44"] = gpioMappings.pins[44].action;
+    usedPins["pin45"] = gpioMappings.pins[45].action;
+    usedPins["pin46"] = gpioMappings.pins[46].action;
+    usedPins["pin47"] = gpioMappings.pins[47].action;
+#endif
+
     return serialize_json(doc);
 }
 
@@ -2734,8 +3495,23 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/setPreviewDisplayOptions", setPreviewDisplayOptions },
     { "/api/setGamepadOptions", setGamepadOptions },
     { "/api/setLedOptions", setLedOptions },
-    { "/api/setCustomTheme", setCustomTheme },
-    { "/api/getCustomTheme", getCustomTheme },
+    { "/api/setAnimationButtonTestMode", setAnimationButtonTestMode },
+    { "/api/setAnimationButtonTestState", setAnimationButtonTestState },
+    { "/api/clearAnimationButtonTestMode", clearAnimationButtonTestMode },
+    { "/api/setAnimationProtoOptions", setAnimationProtoOptions },
+    { "/api/getAnimationProtoOptions", getAnimationProtoOptions },
+    { "/api/setLightsDataOptions", setLightsDataOptions },
+    { "/api/getLightsDataOptions", getLightsDataOptions },
+    { "/api/getLightsPresets/0", getLightsPresets0 },
+    { "/api/getLightsPresets/1", getLightsPresets1 },
+    { "/api/getLightsPresets/2", getLightsPresets2 },
+    { "/api/getLightsPresets/3", getLightsPresets3 },
+    { "/api/getLightsPresets/4", getLightsPresets4 },
+    { "/api/getLightsPresets/5", getLightsPresets5 },
+    { "/api/getLightsPresets/6", getLightsPresets6 },
+    { "/api/getLightsPresets/7", getLightsPresets7 },
+    { "/api/getLightsDataPresets", getLightsDataPresets },
+    { "/api/setLightsToDefault", setLightsToDefault },
     { "/api/setPinMappings", setPinMappings },
     { "/api/setProfileOptions", setProfileOptions },
     { "/api/setPeripheralOptions", setPeripheralOptions },
@@ -2746,10 +3522,12 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/setHETriggerCalibrations", setHETriggerCalibrations },
     { "/api/getHETriggerCalibrations", getHETriggerCalibrations },
     { "/api/getHETriggerVoltage", getHETriggerVoltage },
+    { "/api/getHETriggerVoltages", getHETriggerVoltages },
     { "/api/setHETriggerOptions", setHETriggerOptions },
     { "/api/setReactiveLEDs", setReactiveLEDs },
     { "/api/getReactiveLEDs", getReactiveLEDs },
     { "/api/setKeyMappings", setKeyMappings },
+    { "/api/setProfileKeyMappings", setProfileKeyMappings },
     { "/api/setAddonsOptions", setAddonOptions },
     { "/api/setMacroAddonOptions", setMacroAddonOptions },
     { "/api/setPS4Options", setPS4Options },
@@ -2764,6 +3542,7 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/getPinMappings", getPinMappings },
     { "/api/getProfileOptions", getProfileOptions },
     { "/api/getKeyMappings", getKeyMappings },
+    { "/api/getProfileKeyMappings", getProfileKeyMappings },
     { "/api/getAddonsOptions", getAddonOptions },
     { "/api/getWiiControls", getWiiControls },
     { "/api/getMacroAddonOptions", getMacroAddonOptions },
@@ -2777,8 +3556,9 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/getConfig", getConfig },
     { "/api/getJoystickCenter", getJoystickCenter },
     { "/api/getJoystickCenter2", getJoystickCenter2 },
-		{ "/api/getBootModeOptions", getBootModeOptions },
-		{ "/api/setBootModeOptions", setBootModeOptions },
+    { "/api/getBoardDefinition", getBoardDefinition },
+    { "/api/getBootModeOptions", getBootModeOptions },
+    { "/api/setBootModeOptions", setBootModeOptions },
 #if !defined(NDEBUG)
     { "/api/echo", echo },
 #endif

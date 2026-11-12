@@ -6,16 +6,18 @@ import { NavLink } from 'react-router-dom';
 import {
 	useBootModeStore,
 	useBootModeStoreActions,
-	NUM_PINS,
 } from '../Store/useBootModesStore';
+import useBoardDefinition from '../Store/useBoardDefinitionStore';
 import { INPUT_MODE_OPTIONS, InputModeOptions } from '../Data/InputBootModes';
 import { AppContext } from '../Contexts/AppContext';
 import CustomSelect from '../Components/CustomSelect';
 import { Trans, useTranslation } from 'react-i18next';
 import { ActionMeta, MultiValue, SingleValue } from 'react-select';
 import CaptureButton from '../Components/CaptureButton';
-import useProfilesStore, { MaskPayload } from '../Store/useProfilesStore';
-import omit from 'lodash/omit';
+import useProfilesStore, {
+	getProfilePins,
+	MaskPayload,
+} from '../Store/useProfilesStore';
 import { BUTTON_ACTIONS } from '../Data/Pins';
 import ContextualHelpOverlay from '../Components/ContextualHelpOverlay';
 
@@ -38,20 +40,31 @@ const GROUPED_OPTIONS = [
 		options: INPUT_MODE_OPTIONS.filter(({ group }) => group === 'primary'),
 	},
 	{
+		label: 'Sony',
+		options: INPUT_MODE_OPTIONS.filter(({ group }) => group === 'sony'),
+	},
+	{
+		label: 'Nintendo',
+		options: INPUT_MODE_OPTIONS.filter(({ group }) => group === 'nintendo'),
+	},
+	{
+		label: 'Microsoft',
+		options: INPUT_MODE_OPTIONS.filter(({ group }) => group === 'microsoft'),
+	},
+	{
 		label: 'Mini',
 		options: INPUT_MODE_OPTIONS.filter(({ group }) => group === 'mini'),
 	},
 ];
 
-const PIN_OPTIONS: PinOption[] = Array.from({ length: NUM_PINS }, (_, i) => ({
-	label: `GP${i}`,
-	value: i,
-}));
-
 function BootModeSelect({ mappingKey }: { mappingKey: string }) {
-	const inputMode = useBootModeStore((state) => state.bootModes[mappingKey].inputMode);
+	const inputMode = useBootModeStore(
+		(state) => state.bootModes[mappingKey].inputMode,
+	);
 	const saveAttempted = useBootModeStore((state) => state.saveAttempted);
 	const { setInputMode, clearErrors, setDirty } = useBootModeStoreActions();
+
+	const { boardDefinition } = useBoardDefinition();
 
 	const { getAvailablePeripherals } = useContext(AppContext);
 	const { t } = useTranslation('');
@@ -95,7 +108,9 @@ function BootModeSelect({ mappingKey }: { mappingKey: string }) {
 
 function PinSelect({ mappingKey }: { mappingKey: string }) {
 	const pins = useBootModeStore((state) => state.bootModes[mappingKey].pins);
-	const modesWithDuplicates = useBootModeStore((state) => state.modesWithDuplicates);
+	const modesWithDuplicates = useBootModeStore(
+		(state) => state.modesWithDuplicates,
+	);
 	const saveAttempted = useBootModeStore((state) => state.saveAttempted);
 
 	const { addPin, removePin, validatePins, clearErrors, setDirty } =
@@ -104,7 +119,7 @@ function PinSelect({ mappingKey }: { mappingKey: string }) {
 	// Need the profile pin mapping to determine which pins are assigned to addons or reserved,
 	// relying on the assumption that these are the same across all profiles.
 	const profilePins: { [key: string]: MaskPayload } = useProfilesStore(
-		useShallow((state) => omit(state.profiles[0], ['profileLabel', 'enabled'])),
+		useShallow((state) => getProfilePins(state.profiles[0])),
 	);
 
 	const { t } = useTranslation('');
@@ -114,9 +129,25 @@ function PinSelect({ mappingKey }: { mappingKey: string }) {
 		return 'pin' + s.substring(s.length - 2);
 	};
 
+	const { boardDefinition } = useBoardDefinition();
+
+	const PIN_OPTIONS: PinOption[] = Array.from(
+		{ length: boardDefinition.availablePins.length },
+		(_, i) => ({
+			label: `GP${i}`,
+			value: i,
+		}),
+	);
+
+	console.dir(boardDefinition);
+	console.dir(PIN_OPTIONS);
+
 	const values = PIN_OPTIONS.filter(({ value }) => pins.has(value));
 
-	const onChange = (_: MultiValue<PinOption>, action: ActionMeta<PinOption>) => {
+	const onChange = (
+		_: MultiValue<PinOption>,
+		action: ActionMeta<PinOption>,
+	) => {
 		if (action.action === 'select-option' && action.option !== undefined) {
 			addPin(mappingKey, action.option.value);
 		} else if (action.action === 'remove-value') {
@@ -128,7 +159,8 @@ function PinSelect({ mappingKey }: { mappingKey: string }) {
 	};
 
 	const isInvalid =
-		modesWithDuplicates.includes(mappingKey) || (saveAttempted && values.length == 0);
+		modesWithDuplicates.includes(mappingKey) ||
+		(saveAttempted && values.length == 0);
 
 	const isOptionDisabled = (option: PinOption) => {
 		return [BUTTON_ACTIONS.RESERVED, BUTTON_ACTIONS.ASSIGNED_TO_ADDON].includes(
@@ -140,7 +172,10 @@ function PinSelect({ mappingKey }: { mappingKey: string }) {
 		if (profilePins[pinField(option.value)].action == BUTTON_ACTIONS.RESERVED) {
 			return `${option.label} (Reserved)`;
 		}
-		if (profilePins[pinField(option.value)].action == BUTTON_ACTIONS.ASSIGNED_TO_ADDON) {
+		if (
+			profilePins[pinField(option.value)].action ==
+			BUTTON_ACTIONS.ASSIGNED_TO_ADDON
+		) {
 			return `${option.label} (Assigned to Add-on)`;
 		}
 		return option.label;
@@ -293,6 +328,8 @@ export default function BootModeMappingPage() {
 		validateRequired,
 	} = useBootModeStoreActions();
 
+	const { getBoardDefinition, boardDefinition } = useBoardDefinition();
+
 	const loadingProfiles = useProfilesStore((state) => state.loadingProfiles);
 	const fetchProfiles = useProfilesStore((state) => state.fetchProfiles);
 	const { t } = useTranslation('');
@@ -300,10 +337,13 @@ export default function BootModeMappingPage() {
 	useEffect(() => {
 		fetchBootModeOptions();
 		fetchProfiles();
+		getBoardDefinition();
 	}, []);
 
 	// The delete-able input mode keys (i.e. not web-config or usb mode)
-	const inputModeKeys = Object.keys(bootModes).filter((k) => k.startsWith('inputMode-'));
+	const inputModeKeys = Object.keys(bootModes).filter((k) =>
+		k.startsWith('inputMode-'),
+	);
 
 	const handleSubmit = () => {
 		validateRequired(t('BootModeMapping:required-validation-err'));
@@ -326,9 +366,7 @@ export default function BootModeMappingPage() {
 			<Section title={t('SettingsPage:boot-input-mode-label')}>
 				<div className="d-flex align-items-center mb-2">
 					<Form.Check
-						label={t(
-							'BootModeMapping:use-gpio-slider-label',
-						)}
+						label={t('BootModeMapping:use-gpio-slider-label')}
 						type="switch"
 						className="text my-auto"
 						checked={enabled}

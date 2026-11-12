@@ -1,23 +1,25 @@
 export default {
 	'sub-header-text': `使用 GPIO 引脚查看器查看按键与 GPIO 引脚的连接状态。`,
 	'alert-text':
-		"将按键映射到未连接或不可用的引脚可能会导致设备进入无法正常工作的状态。如需清除无效配置，请前往 <2>重置设置</2> 页面。",
+		'将按键映射到未连接或不可用的引脚可能会导致设备进入无法正常工作的状态。如需清除无效配置，请前往 <2>重置设置</2> 页面。',
 	'pin-viewer': 'GPIO 引脚查看器',
 	'pin-pressed': '当前按下的 GPIO 引脚：{{pressedPin}}',
 	'profile-label-title': '配置文件名称',
-	'profile-label-description':
-		'最多 16 个字符。支持字母、数字和空格。',
+	'profile-label-description': '最多 16 个字符。支持可打印 ASCII 字符。',
 	'profile-pin-mapping-title': '{{profileLabel}} - GPIO 引脚映射',
 	'profile-label-default': '配置文件 {{profileNumber}}',
 	'profile-add-button': '+ 添加配置文件',
 	'profile-disabled': ' - (已禁用)',
-	'profile-enabled-tooltip':
-		'被禁用的配置文件在通过快捷键切换时将被跳过。',
+	'profile-enabled-tooltip': '被禁用的配置文件在通过快捷键切换时将被跳过。',
 	'profile-enabled-active-tooltip':
 		'无法禁用当前激活的配置文件，请在“系统设置 > 手柄设置”中更改。',
 	'profile-pins-warning':
 		'请尽量避免更改用于切换配置文件的快捷键所涉及的按键或方向。否则，可能会导致难以判断当前选中了哪个配置文件！',
 	'profile-copy-base': '复制基础配置文件',
+	'pin-inversion-label': '引脚反相',
+	'pin-inversion-tooltip':
+		'在每个引脚旁显示复选框。勾选的引脚在读到高电平时视为按下，适用于光轴等高电平有效的开关。',
+	'pin-invert-label': '反相 GP{{pin}}',
 	actions: {
 		NONE: '无',
 		RESERVED: '预留',

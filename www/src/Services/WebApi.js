@@ -1,3 +1,4 @@
+import { set } from 'lodash';
 import Http from './Http';
 import { hexToInt, rgbIntToHex } from './Utilities';
 
@@ -5,6 +6,16 @@ export const baseUrl =
 	process.env.NODE_ENV === 'production'
 		? ''
 		: import.meta.env.VITE_DEV_BASE_URL;
+
+export const baseBoardDefinitions = {
+	pico: {
+		minPin: 0,
+		maxPin: 29,
+		analogPins: [26, 27, 28, 29],
+		availablePins: {},
+		usedPins: {},
+	},
+};
 
 export const baseButtonMappings = {
 	Up: { pin: -1, key: 0, error: null },
@@ -120,6 +131,7 @@ export const basePeripheralMapping = {
 		usb0: {
 			enabled: 0,
 			dp: -1,
+			dm: -1,
 			enable5v: -1,
 			order: 0,
 		},
@@ -206,6 +218,7 @@ async function getDisplayOptions() {
 		const response = await Http.get(`${baseUrl}/api/getDisplayOptions`);
 
 		response.data.splashDuration = response.data.splashDuration / 1000; // milliseconds to seconds
+		response.data.splashTextDuration = response.data.splashTextDuration / 1000; // milliseconds to seconds
 		response.data.displaySaverTimeout =
 			response.data.displaySaverTimeout / 60000; // milliseconds to minutes
 
@@ -223,28 +236,20 @@ async function setDisplayOptions(options, isPreview) {
 	newOptions.buttonLayoutRight = parseInt(options.buttonLayoutRight);
 	newOptions.splashMode = parseInt(options.splashMode);
 	newOptions.splashDuration = parseInt(options.splashDuration) * 1000; // seconds to milliseconds
+	newOptions.splashTextEnabled = parseInt(options.splashTextEnabled);
+	newOptions.splashTextFirst = parseInt(options.splashTextFirst);
+	newOptions.splashTextDuration = parseInt(options.splashTextDuration) * 1000; // seconds to milliseconds
+	newOptions.splashTextLineCount = parseInt(options.splashTextLineCount);
 	newOptions.displaySaverTimeout =
 		parseInt(options.displaySaverTimeout) * 60000; // minutes to milliseconds
 	newOptions.splashChoice = parseInt(options.splashChoice);
-
-	if (newOptions.buttonLayoutCustomOptions) {
-		newOptions.buttonLayoutCustomOptions.params.layout = parseInt(
-			options.buttonLayoutCustomOptions?.params?.layout,
-		);
-		newOptions.buttonLayoutCustomOptions.paramsRight.layout = parseInt(
-			options.buttonLayoutCustomOptions?.paramsRight?.layout,
-		);
-	}
 
 	delete newOptions.splashImage;
 	const url = !isPreview
 		? `${baseUrl}/api/setDisplayOptions`
 		: `${baseUrl}/api/setPreviewDisplayOptions`;
 	return Http.post(url, newOptions)
-		.then((response) => {
-			console.log(response.data);
-			return true;
-		})
+		.then((response) => response.data?.success !== false)
 		.catch((err) => {
 			console.error(err);
 			return false;
@@ -288,7 +293,6 @@ async function getGamepadOptions(setLoading) {
 async function setGamepadOptions(options) {
 	return Http.post(`${baseUrl}/api/setGamepadOptions`, sanitizeRequest(options))
 		.then((response) => {
-			console.log(response.data);
 			return true;
 		})
 		.catch((err) => {
@@ -297,18 +301,12 @@ async function setGamepadOptions(options) {
 		});
 }
 
-async function getLedOptions(setLoading) {
-	setLoading(true);
-
+async function getLedOptions() {
 	try {
 		const response = await Http.get(`${baseUrl}/api/getLedOptions`);
-		setLoading(false);
-
-		response.data.pledColor = rgbIntToHex(response.data.pledColor) || '#ffffff';
 
 		return response.data;
 	} catch (error) {
-		setLoading(false);
 		console.error(error);
 	}
 }
@@ -316,56 +314,6 @@ async function getLedOptions(setLoading) {
 async function setLedOptions(options) {
 	return Http.post(`${baseUrl}/api/setLedOptions`, sanitizeRequest(options))
 		.then((response) => {
-			console.log(response.data);
-			return true;
-		})
-		.catch((err) => {
-			console.error(err);
-			return false;
-		});
-}
-
-async function getCustomTheme(setLoading) {
-	setLoading(true);
-
-	try {
-		const response = await Http.get(`${baseUrl}/api/getCustomTheme`);
-		setLoading(false);
-
-		let data = { hasCustomTheme: response.data.enabled, customTheme: {} };
-
-		// Transform ARGB int value to hex for easy use on frontend
-		Object.keys(response.data)
-			.filter((p) => p !== 'enabled')
-			.forEach((button) => {
-				data.customTheme[button] = {
-					normal: rgbIntToHex(response.data[button].u),
-					pressed: rgbIntToHex(response.data[button].d),
-				};
-			});
-
-		console.log(data);
-		return data;
-	} catch (error) {
-		setLoading(false);
-		console.error(error);
-	}
-}
-
-async function setCustomTheme(customThemeOptions) {
-	let options = { enabled: customThemeOptions.hasCustomTheme };
-
-	// Transform RGB hex values to ARGB int before sending back to API
-	Object.keys(customThemeOptions.customTheme).forEach((p) => {
-		options[p] = {
-			u: hexToInt(customThemeOptions.customTheme[p].normal.replace('#', '')),
-			d: hexToInt(customThemeOptions.customTheme[p].pressed.replace('#', '')),
-		};
-	});
-
-	return Http.post(`${baseUrl}/api/setCustomTheme`, sanitizeRequest(options))
-		.then((response) => {
-			console.log(response.data);
 			return true;
 		})
 		.catch((err) => {
@@ -392,6 +340,19 @@ async function getButtonLayoutDefs() {
 	} catch (error) {
 		console.error(error);
 	}
+}
+
+async function getAnimationOptions() {
+	try {
+		const { data } = await Http.get(`${baseUrl}/api/getAnimationProtoOptions`);
+		return data;
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+async function setAnimationOptions(options) {
+	return Http.post(`${baseUrl}/api/setAnimationProtoOptions`, options);
 }
 
 async function getPinMappings() {
@@ -430,18 +391,26 @@ async function setBootModeOptions(options) {
 	return Http.post(`${baseUrl}/api/setBootModeOptions`, options);
 }
 
+const toButtonMappings = (keyCodes) =>
+	Object.fromEntries(
+		Object.entries(baseButtonMappings).map(([button, mapping]) => [
+			button,
+			{ ...mapping, key: parseInt(keyCodes?.[button]) || 0 },
+		]),
+	);
+
+const toKeyCodes = (mappings) =>
+	Object.fromEntries(
+		Object.entries(mappings).map(([button, { key }]) => [button, key]),
+	);
+
 async function getKeyMappings(setLoading) {
 	setLoading(true);
 
 	try {
 		const response = await Http.get(`${baseUrl}/api/getKeyMappings`);
 		setLoading(false);
-
-		let mappings = { ...baseButtonMappings };
-		for (let prop of Object.keys(response.data))
-			mappings[prop].key = parseInt(response.data[prop]);
-
-		return mappings;
+		return toButtonMappings(response.data);
 	} catch (error) {
 		setLoading(false);
 		console.error(error);
@@ -449,14 +418,32 @@ async function getKeyMappings(setLoading) {
 }
 
 async function setKeyMappings(mappings) {
-	let data = {};
-	Object.keys(mappings).map((button) => (data[button] = mappings[button].key));
+	return Http.post(
+		`${baseUrl}/api/setKeyMappings`,
+		sanitizeRequest(toKeyCodes(mappings)),
+	)
+		.then(() => true)
+		.catch((err) => {
+			console.error(err);
+			return false;
+		});
+}
 
-	return Http.post(`${baseUrl}/api/setKeyMappings`, sanitizeRequest(data))
-		.then((response) => {
-			console.log(response.data);
-			return true;
-		})
+async function getProfileKeyMappings() {
+	try {
+		const { data } = await Http.get(`${baseUrl}/api/getProfileKeyMappings`);
+		return (data?.profiles ?? []).map(toButtonMappings);
+	} catch (error) {
+		console.error(error);
+		return [];
+	}
+}
+
+async function setProfileKeyMappings(profiles) {
+	return Http.post(`${baseUrl}/api/setProfileKeyMappings`, {
+		profiles: profiles.map(toKeyCodes),
+	})
+		.then(() => true)
 		.catch((err) => {
 			console.error(err);
 			return false;
@@ -470,9 +457,6 @@ async function getAddonsOptions(setLoading) {
 		const response = await Http.get(`${baseUrl}/api/getAddonsOptions`);
 		const data = response.data;
 		setLoading(false);
-
-		response.data.turboLedColor =
-			rgbIntToHex(response.data.turboLedColor) || '#ffffff';
 
 		// Merge saved keyMappings with defaults
 		const keyboardHostMap = Object.entries(data.keyboardHostMap).reduce(
@@ -498,7 +482,6 @@ async function setAddonsOptions(options) {
 
 	return Http.post(`${baseUrl}/api/setAddonsOptions`, sanitizeRequest(options))
 		.then((response) => {
-			console.log(response.data);
 			return true;
 		})
 		.catch((err) => {
@@ -528,7 +511,6 @@ async function setMacroAddonOptions(options) {
 		sanitizeRequest(options),
 	)
 		.then((response) => {
-			console.log(response.data);
 			return true;
 		})
 		.catch((err) => {
@@ -540,7 +522,6 @@ async function setMacroAddonOptions(options) {
 async function setPS4Options(options) {
 	return Http.post(`${baseUrl}/api/setPS4Options`, options)
 		.then((response) => {
-			console.log(response.data);
 			return true;
 		})
 		.catch((err) => {
@@ -569,7 +550,6 @@ async function setWiiControls(mappings) {
 
 	return Http.post(`${baseUrl}/api/setWiiControls`, sanitizeRequest(mappings))
 		.then((response) => {
-			console.log(response.data);
 			return true;
 		})
 		.catch((err) => {
@@ -616,8 +596,7 @@ async function setPeripheralOptions(mappings) {
 		sanitizeRequest(mappings),
 	)
 		.then((response) => {
-			console.log(response.data);
-			return true;
+			return !response.data.error;
 		})
 		.catch((err) => {
 			console.error(err);
@@ -646,6 +625,37 @@ async function getExpansionPins() {
 		console.error(error);
 	}
 }
+async function setLightsDataOptions(options) {
+	return Http.post(`${baseUrl}/api/setLightsDataOptions`, options);
+}
+
+async function getLightsDataOptions() {
+	try {
+		const response = await Http.get(`${baseUrl}/api/getLightsDataOptions`);
+		return response.data;
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+async function getLightsDataPresets() {
+	try {
+		const response = await Http.get(`${baseUrl}/api/getLightsDataPresets`);
+		return response.data;
+	} catch (error) {
+		console.error(error);
+	}
+}
+async function getLightsPresets(profileIndex) {
+	try {
+		const response = await Http.get(
+			`${baseUrl}/api/getLightsPresets/${profileIndex}`,
+		);
+		return response.data;
+	} catch (error) {
+		console.error(error);
+	}
+}
 
 async function setExpansionPins(mappings) {
 	console.dir(mappings);
@@ -656,6 +666,11 @@ async function setExpansionPins(mappings) {
 // POST function to get the ADC reading for one Hall Effect channel
 async function getHETriggerVoltage(settings) {
 	return Http.post(`${baseUrl}/api/getHETriggerVoltage`, settings);
+}
+
+// GET the ADC reading for every scanned Hall Effect trigger (-1 when not scanned)
+async function getHETriggerVoltages() {
+	return Http.get(`${baseUrl}/api/getHETriggerVoltages`);
 }
 
 // POST function to set our channels, select, and ADC pin
@@ -699,6 +714,15 @@ async function abortGetHeldPins() {
 	}
 }
 
+async function getBoardDefinition() {
+	try {
+		const response = await Http.get(`${baseUrl}/api/getBoardDefinition`);
+		return response.data.pico;
+	} catch (error) {
+		console.error(error);
+	}
+}
+
 async function reboot(bootMode) {
 	return Http.post(`${baseUrl}/api/reboot`, { bootMode })
 		.then((response) => response.data)
@@ -711,16 +735,38 @@ function sanitizeRequest(request) {
 	return newRequest;
 }
 
+async function setAnimationButtonTestMode(options) {
+	try {
+		await Http.post(`${baseUrl}/api/setAnimationButtonTestMode`, options);
+	} catch (error) {
+		console.error(err);
+	}
+}
+async function setAnimationButtonTestState(options) {
+	try {
+		await Http.post(`${baseUrl}/api/setAnimationButtonTestState`, options);
+	} catch (error) {
+		console.error(err);
+	}
+}
+async function clearAnimationButtonTestMode(options) {
+	try {
+		await Http.post(`${baseUrl}/api/clearAnimationButtonTestMode`, options);
+	} catch (error) {
+		console.error(err);
+	}
+}
+
 export default {
 	resetSettings,
+	getAnimationOptions,
+	setAnimationOptions,
 	getDisplayOptions,
 	setDisplayOptions,
-	getGamepadOptions,
-	setGamepadOptions,
 	getLedOptions,
 	setLedOptions,
-	getCustomTheme,
-	setCustomTheme,
+	getGamepadOptions,
+	setGamepadOptions,
 	getPinMappings,
 	setPinMappings,
 	getBootModeOptions,
@@ -729,6 +775,8 @@ export default {
 	setProfileOptions,
 	getKeyMappings,
 	setKeyMappings,
+	getProfileKeyMappings,
+	setProfileKeyMappings,
 	getAddonsOptions,
 	setAddonsOptions,
 	getMacroAddonOptions,
@@ -738,9 +786,14 @@ export default {
 	setWiiControls,
 	getPeripheralOptions,
 	setPeripheralOptions,
+	setLightsDataOptions,
+	getLightsDataOptions,
+	getLightsDataPresets,
+	getLightsPresets,
 	getExpansionPins,
 	setExpansionPins,
 	getHETriggerVoltage,
+	getHETriggerVoltages,
 	setHETriggerCalibrations,
 	getHETriggerCalibrations,
 	setHETriggerOptions,
@@ -750,8 +803,12 @@ export default {
 	getButtonLayoutDefs,
 	getSplashImage,
 	setSplashImage,
+	setAnimationButtonTestMode,
+	setAnimationButtonTestState,
+	clearAnimationButtonTestMode,
 	getUsedPins,
 	getHeldPins,
 	abortGetHeldPins,
+	getBoardDefinition,
 	reboot,
 };

@@ -25,7 +25,7 @@ struct GamepadButtonMapping
 		buttonMask(bm)
 	{}
 
-	uint32_t pinMask;
+	Mask_t pinMask;
 	const uint32_t buttonMask;
 };
 
@@ -139,8 +139,8 @@ public:
 	const GamepadOptions& getOptions() const { return options; }
 	const DpadMode getActiveDpadMode() { return activeDpadMode; }
 
-	void setInputMode(InputMode inputMode) { options.inputMode = inputMode; }
-	void setSOCDMode(SOCDMode socdMode) { options.socdMode = socdMode; }
+	void setInputMode(InputMode inputMode);
+	void setSOCDMode(SOCDMode socdMode);
 	void setDpadMode(DpadMode dpadMode) { options.dpadMode = dpadMode; }
 
 	GamepadState state;
@@ -199,26 +199,52 @@ public:
 
 	// gamepad specific proxy of debounced buttons --- 1 = active (inverse of the raw GPIO)
 	// see GP2040::debounceGpioGetAll for details
-	Mask_t debouncedGpio;
+	Mask_t debouncedGpio = 0;
 
 	uint32_t lastReinitProfileNumber = 0;
 
-	// These are special to SOCD
-	inline static const SOCDMode resolveSOCDMode(const GamepadOptions& options) {
-		return (options.socdMode == SOCD_MODE_BYPASS &&
-				(options.inputMode == INPUT_MODE_PS3 ||
-				options.inputMode == INPUT_MODE_SWITCH ||
-				options.inputMode == INPUT_MODE_SWITCH_PRO ||
-				options.inputMode == INPUT_MODE_NEOGEO ||
-				options.inputMode == INPUT_MODE_PS4)) ?
-			SOCD_MODE_NEUTRAL : options.socdMode;
+	inline static const bool socdRequiresCleaning(const GamepadOptions& options) {
+		return options.inputMode == INPUT_MODE_PS3 ||
+			options.inputMode == INPUT_MODE_SWITCH ||
+			options.inputMode == INPUT_MODE_SWITCH_PRO ||
+			options.inputMode == INPUT_MODE_SWITCH2_PRO ||
+			options.inputMode == INPUT_MODE_NEOGEO ||
+			options.inputMode == INPUT_MODE_PS4;
 	};
+
+	inline static const bool isAdvancedSOCDMode(SOCDMode mode) {
+		return mode >= SOCD_MODE_ADVANCED_1 && mode <= SOCD_MODE_ADVANCED_4;
+	};
+
+	// These are special to SOCD
+	inline static const SOCDMode resolveSOCDMode(const GamepadOptions& options, SOCDMode mode) {
+		if (mode == SOCD_MODE_BYPASS && socdRequiresCleaning(options))
+			return SOCD_MODE_NEUTRAL;
+
+		if (isAdvancedSOCDMode(mode)) {
+			const uint8_t slotIndex = mode - SOCD_MODE_ADVANCED_1;
+			if (!options.advancedSOCDEnabled || slotIndex >= options.advancedSOCDSlots_count ||
+					!options.advancedSOCDSlots[slotIndex].enabled)
+				return SOCD_MODE_NEUTRAL;
+		}
+
+		return mode;
+	};
+
+	const SOCDMode getActiveSOCDMode() { return activeSOCDMode; }
+	SOCDMode getStoredSOCDMode() const;
 
 private:
 	void processHotkeyAction(GamepadHotkey action);
+	uint8_t runConfiguredSOCDCleaner(uint8_t dpad);
+	void updateStoredSOCDMode();
 
 	GamepadOptions & options;
 	DpadMode activeDpadMode;
+	SOCDMode activeSOCDMode;
+	SOCDMode resolvedStoredSOCDMode;
+	Mask_t socdModePinMasks[SOCD_MODE_ADVANCED_4 + 1];
+	Mask_t socdModeAnyPinMask;
 	bool map48WayModeToggle;
 	const HotkeyOptions & hotkeyOptions;
 

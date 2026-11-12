@@ -1,6 +1,7 @@
 export default {
 	'header-text': 'Hall-Effect Trigger',
-	'desc-header-text': 'Hall Effect Trigger Supports 4-Channel, 8-Channel, and 16-Channel Multiplexers.',
+	'desc-header-text':
+		'Hall Effect Trigger Supports 4-Channel, 8-Channel, and 16-Channel Multiplexers.',
 	'available-pins-text': 'Available ADC pins: {{pins}}',
 	'multiplexer-channel-select': 'Channels Per Multiplexer',
 	'direct-no-mux': 'Direct (No Mux)',
@@ -11,10 +12,15 @@ export default {
 	'select-pin-1': 'Select Pin 1',
 	'select-pin-2': 'Select Pin 2',
 	'select-pin-3': 'Select Pin 3',
+	'separate-select-pins-label': 'Enable Separate Select Pins',
 	'adc-pin-0': 'ADC Pin 0',
 	'adc-pin-1': 'ADC Pin 1',
 	'adc-pin-2': 'ADC Pin 2',
 	'adc-pin-3': 'ADC Pin 3',
+	'adc-pin-4': 'ADC Pin 4',
+	'adc-pin-5': 'ADC Pin 5',
+	'adc-pin-6': 'ADC Pin 6',
+	'adc-pin-7': 'ADC Pin 7',
 	'action-assignment-sub-header': 'Hall-Effect Action Assignment',
 	'multiplexer-label': 'Multiplexer',
 	'channel-label': 'Channel',
@@ -26,9 +32,37 @@ export default {
 	'voltage-table-pressed-text': 'Pressed',
 	'voltage-table-polarity-text': 'Polarity',
 	'voltage-table-rapid-trigger-text': 'Rapid Trigger',
-	'voltage-table-release-text': 'Rapid Trigger Threshold',
-	'voltage-table-noise-text': 'Rapid Trigger Noise Filter',
+	'voltage-table-press-sensitivity-text': 'RT Downstroke',
+	'voltage-table-release-sensitivity-text': 'RT Upstroke',
+	'voltage-table-continuous-text': 'Continuous RT',
+	'voltage-table-noise-text': 'Hysteresis',
 	'voltage-table-disabled-label': '(Disabled)',
+	'voltage-table-enabled-label': 'Enabled',
+	'voltage-table-off-label': 'Disabled',
+	'voltage-table-na-label': 'N/A',
+	'voltage-table-separate-text': 'Separate RT',
+	'voltage-table-edit-label': 'Edit Table',
+	'voltage-table-unsaved-text': '{{count}} trigger(s) with unsaved changes',
+	'voltage-table-discard-button': 'Discard Unsaved Changes',
+	'voltage-table-discard-confirm':
+		'Discard all unsaved trigger changes, including calibrations not yet saved?',
+	'direct-label': 'Direct',
+	'quick-calibration-button': 'Quick Calibrate ⚡',
+	'quick-calibration-header-text': 'Quick Calibration',
+	'quick-calibration-instructions':
+		'Open this with all keys released. Press each key all the way down and let it go; it turns green once its full travel has been recorded. ' +
+		'Click Finish when you are done. Only green keys are updated, and the actuation point keeps the same share of travel. ' +
+		'Remember to click Save Trigger Values afterwards.',
+	'quick-raw-label': 'Raw',
+	'quick-min-label': 'Min',
+	'quick-max-label': 'Max',
+	'quick-calibrated-count': '{{count}} of {{total}} calibrated',
+	'quick-no-triggers': 'No enabled triggers on a multiplexer with an ADC pin.',
+	'quick-read-error': 'Could not read the Hall Effect triggers.',
+	'quick-cancel-button': 'Cancel',
+	'quick-finish-button': 'Finish',
+	'switch-travel-label': 'Switch Travel Conversion (mm)',
+	'switch-travel-placeholder': 'e.g. 4.0',
 	'overwrite-all-warning': 'Overwrite All Triggers',
 	'overwrite-confirm': 'Confirm Overwrite All Triggers',
 	'next-calibration-text': 'Next Calibration',
@@ -41,25 +75,49 @@ export default {
 	'pressed-text': 'Pressed!',
 	'idle-input-text': 'Idle Voltage',
 	'activation-input-text': 'Activation Voltage',
-	'rapid-trigger-threshold-input-text': 'Rapid Trigger Threshold',
-	'rapid-trigger-noise-input-text': 'Rapid Trigger Noise Filter',
+	'actuation-point-text': 'Actuation Point',
+	'unit-mm': 'mm',
+	'unit-raw': 'raw',
+	'rapid-trigger-description':
+		'Rapid Trigger activates and deactivates the button based on direction of travel instead of a fixed point. It only works past the actuation point unless Continuous Rapid Trigger is enabled.',
+	'rt-sensitivity-input-text': 'Rapid Trigger Sensitivity',
+	'rt-sensitivity-description':
+		'Distance the button must move up to release, or down to press again. Lower values are more sensitive.',
+	'rt-press-sensitivity-input-text': 'Downstroke Sensitivity',
+	'rt-press-sensitivity-description':
+		'Distance the button must move down to press again after a Rapid Trigger release.',
+	'rt-release-sensitivity-input-text': 'Upstroke Sensitivity',
+	'rt-release-sensitivity-description':
+		'Distance the button must move up to release.',
+	'rt-separate-sensitivity-label': 'Separate Up/Downstroke Sensitivity',
+	'rt-separate-sensitivity-description':
+		'Use different distances for releasing and re-pressing the button.',
+	'rt-continuous-label': 'Continuous Rapid Trigger',
+	'rt-continuous-description':
+		'Keep Rapid Trigger active above the actuation point until the button is fully released.',
+	'hysteresis-input-text': 'Hysteresis',
+	'hysteresis-description':
+		'Dead band around the actuation point to prevent chatter. Also the minimum Rapid Trigger sensitivity, so set it above your sensor noise.',
 	'pressed-input-text': 'Pressed Voltage',
 	'activation-reading-text': 'Activation Point Reading:',
 	'calibrate-all-button': 'Calibrate All 🧲',
 	'calibration-header-text': 'Hall-Effect Calibration',
 	'calibration-idle-text': 'Idle Voltage Reading:',
 	'calibration-pressed-text': 'Pressed Voltage Reading:',
-	'calibration-trigger-text': 'Trigger Voltage',
 	'calibration-flip-polarity': 'Flip Polarity',
 	'calibration-flip-rapid-trigger': 'Enable Rapid Trigger',
 	'calibration-back-button': 'Back',
-	'calibration-first-step': 'We need to calibrate the idle voltage and full press voltage of the hall-effect switch. ' +
-								'After calibration, we can adjust the trigger-activation point to our desired depth. ' +
-								'First, let\'s calibrate the idle voltage. Leave the hall-effect button untouched and click the "Calibrate Idle" button.',
-	'calibration-second-step': 'Next, press the button fully to reach our maximum depth. Activation position can be adjusted after calibration.',
-	'calibration-third-step': 'Finally, let\'s adjust our current activation point and set the desired trigger point. '+
-								'Once adjusted, press the button and verify it activates at the desired position.',
-	'calibration-manual-step': 'Please adjust the following attributes of the hall effect button to the desired amounts. '+
-							    'Once the desired values have been found, you can copy these values and set all triggers '+
-							    'on the device.',
+	'calibration-first-step':
+		'We need to calibrate the idle voltage and full press voltage of the hall-effect switch. ' +
+		'After calibration, we can adjust the trigger-activation point to our desired depth. ' +
+		'First, let\'s calibrate the idle voltage. Leave the hall-effect button untouched and click the "Calibrate Idle" button.',
+	'calibration-second-step':
+		'Next, press the button fully to reach our maximum depth. Activation position can be adjusted after calibration.',
+	'calibration-third-step':
+		"Finally, let's adjust our current activation point and set the desired trigger point. " +
+		'Once adjusted, press the button and verify it activates at the desired position.',
+	'calibration-manual-step':
+		'Please adjust the following attributes of the hall effect button to the desired amounts. ' +
+		'Once the desired values have been found, you can copy these values and set all triggers ' +
+		'on the device.',
 };

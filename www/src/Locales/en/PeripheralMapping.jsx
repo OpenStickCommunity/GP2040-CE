@@ -28,6 +28,8 @@ export default {
 	'pin-sck-label': 'SCK',
 	'pin-tx-label': 'TX',
 	'pin-dp-label': 'D+',
+	'pin-dm-label': 'D-',
+	'usb-pins-consecutive': 'D+ and D- must use consecutive GPIO pins.',
 	'pin-enable5v-label': 'Enable 5V',
 	'option-order-label': 'GPIO Pin Order',
 	'option-order-choice-0-label': 'D+/D-',

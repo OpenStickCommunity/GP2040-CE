@@ -84,11 +84,11 @@
 #endif
 
 #ifndef SMOOTHING_FACTOR
-#define SMOOTHING_FACTOR 5
+#define SMOOTHING_FACTOR 2
 #endif
 
 #ifndef SMOOTHING_FACTOR2
-#define SMOOTHING_FACTOR2 5
+#define SMOOTHING_FACTOR2 2
 #endif
 
 #ifndef ANALOG_ERROR
@@ -112,8 +112,12 @@ typedef struct
     Pin_t y_pin_adc;
     float x_value;
     float y_value;
-    uint16_t x_center;
-    uint16_t y_center;
+    uint32_t x_center;
+    uint32_t y_center;
+    uint32_t x_min;
+    uint32_t x_max;
+    uint32_t y_min;
+    uint32_t y_max;
     float xy_magnitude;
     float x_magnitude;
     float y_magnitude;
@@ -121,6 +125,8 @@ typedef struct
     DpadMode analog_dpad;
     float x_ema;
     float y_ema;
+    bool x_ema_initialized;
+    bool y_ema_initialized;
     bool ema_option;
     float ema_smoothing;
     float error_rate;
@@ -134,6 +140,8 @@ typedef struct
 
 class AnalogInput : public GPAddon {
 public:
+    static bool isAdcPin(Pin_t pin);
+    static uint16_t readCalibrationSample(Pin_t pin);
     virtual bool available();
     virtual void setup();       // Analog Setup
     virtual void process();     // Analog Process
@@ -142,12 +150,21 @@ public:
     virtual void reinit() {}
     virtual std::string name() { return AnalogName; }
 private:
-    float readPin(int stick_num, Pin_t pin, uint16_t center);
+    struct AxisSample {
+        uint8_t stick;
+        bool xAxis;
+        Pin_t input;
+    };
+
+    float normalizePin(uint16_t adc_value, uint32_t center, uint32_t minimum, uint32_t maximum);
     float emaCalculation(int stick_num, float ema_value, float ema_previous);
-    uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
     float magnitudeCalculation(int stick_num, adc_instance & adc_inst);
     void radialDeadzone(int stick_num, adc_instance & adc_inst);
+    void processStick(int stick_num, Gamepad *gamepad, uint32_t joystickMax);
     adc_instance adc_pairs[ADC_COUNT];
+    float inverse_deadzone_span[ADC_COUNT];
+    AxisSample samples[ADC_COUNT * 2];
+    uint8_t sampleCount = 0;
 };
 
 #endif  // _Analog_H_

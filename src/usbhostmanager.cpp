@@ -2,6 +2,7 @@
 #include "storagemanager.h"
 #include "peripheralmanager.h"
 #include "eventmanager.h"
+#include "drivermanager.h"
 
 #include "pio_usb.h"
 #include "tusb.h"
@@ -16,7 +17,8 @@ void USBHostManager::start() {
     if (PeripheralManager::getInstance().isUSBEnabled(0) && listeners.size() > 0) {
         pio_usb_configuration_t* pio_cfg = PeripheralManager::getInstance().getUSB(0)->getController();
         tuh_configure(1, TUH_CFGID_RPI_PIO_USB_CONFIGURATION, pio_cfg);
-        tuh_init(BOARD_TUH_RHPORT);
+        const tusb_rhport_init_t host_init = { .role = TUSB_ROLE_HOST, .speed = TUSB_SPEED_AUTO };
+        tusb_init(BOARD_TUH_RHPORT, &host_init);
         sleep_us(10); // ensure we are ready
         tuh_ready = true;
     } else {
@@ -66,14 +68,18 @@ void USBHostManager::hid_report_received_cb(uint8_t dev_addr, uint8_t instance, 
 void USBHostManager::hid_set_report_complete_cb(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
     if ( listeners.size() == 0 ) return;
     for( std::vector<USBListener*>::iterator it = listeners.begin(); it != listeners.end(); it++ ){
-        (*it)->set_report_complete(dev_addr, instance, report_id, report_type, len);
+        if ( len != 0 || (*it)->accepts_failed_report_completions() ) {
+            (*it)->set_report_complete(dev_addr, instance, report_id, report_type, len);
+        }
     }
 }
 
 void USBHostManager::hid_get_report_complete_cb(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
     if ( listeners.size() == 0 ) return;
     for( std::vector<USBListener*>::iterator it = listeners.begin(); it != listeners.end(); it++ ){
-        (*it)->get_report_complete(dev_addr, instance, report_id, report_type, len);
+        if ( len != 0 || (*it)->accepts_failed_report_completions() ) {
+            (*it)->get_report_complete(dev_addr, instance, report_id, report_type, len);
+        }
     }
 }
 
@@ -102,6 +108,15 @@ void USBHostManager::xinput_report_sent_cb(uint8_t dev_addr, uint8_t instance, u
     if ( listeners.size() == 0 ) return;
     for( std::vector<USBListener*>::iterator it = listeners.begin(); it != listeners.end(); it++ ){
         (*it)->report_sent(dev_addr, instance, report, len);
+    }
+}
+
+void tuh_enum_descriptor_device_cb(uint8_t dev_addr, const tusb_desc_device_t *) {
+    if ( DriverManager::getInstance().getInputMode() == INPUT_MODE_XBONE ) {
+        static uint8_t config_descriptor[255];
+        // Xbox reads the full configuration before string discovery
+        tuh_descriptor_get_configuration(dev_addr, 0, config_descriptor, sizeof(config_descriptor),
+            [](tuh_xfer_t *) {}, 0);
     }
 }
 
@@ -149,15 +164,15 @@ void tuh_hid_report_received_cb(uint8_t dev_addr, uint8_t instance, uint8_t cons
 
 // On IN/OUT/FEATURE set report callback
 void tuh_hid_set_report_complete_cb(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
-    if ( len != 0 )
-        USBHostManager::getInstance().hid_set_report_complete_cb(dev_addr, instance, report_id, report_type, len);
+    // len == 0 (failure) only reaches listeners that opt in.
+    USBHostManager::getInstance().hid_set_report_complete_cb(dev_addr, instance, report_id, report_type, len);
 }
 
 
 // GET REPORT FEATURE
 void tuh_hid_get_report_complete_cb(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
-    if ( len != 0 )
-        USBHostManager::getInstance().hid_get_report_complete_cb(dev_addr, instance, report_id, report_type, len);
+    // len == 0 (failure) only reaches listeners that opt in.
+    USBHostManager::getInstance().hid_get_report_complete_cb(dev_addr, instance, report_id, report_type, len);
 }
 
 // USB Host: X-Input

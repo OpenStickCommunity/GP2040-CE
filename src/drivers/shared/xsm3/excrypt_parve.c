@@ -44,37 +44,42 @@ void ExCryptParveCbcMac(const uint8_t* key, const uint8_t* sbox, const uint8_t* 
   memcpy(output, &block, 8);
 }
 
-void ExCryptChainAndSumMac(const uint32_t* cd, const uint32_t* ab, const uint32_t* input, uint32_t input_dwords, uint32_t* output)
+static uint32_t read_be32(const uint8_t* data)
+{
+  uint32_t value;
+  memcpy(&value, data, sizeof(value));
+  return SWAP32(value);
+}
+
+void ExCryptChainAndSumMac(const uint8_t* cd, const uint8_t* ab, const uint8_t* input, uint32_t input_dwords, uint8_t* output)
 {
   uint64_t out0 = 0;
   uint64_t out1 = 0;
 
-  uint32_t ab0 = SWAP32(ab[0]) % 0x7FFFFFFF;
-  uint32_t ab1 = SWAP32(ab[1]) % 0x7FFFFFFF;
-  uint32_t cd0 = SWAP32(cd[0]) % 0x7FFFFFFF;
-  uint32_t cd1 = SWAP32(cd[1]) % 0x7FFFFFFF;
+  uint32_t ab0 = read_be32(ab) % 0x7FFFFFFF;
+  uint32_t ab1 = read_be32(ab + sizeof(uint32_t)) % 0x7FFFFFFF;
+  uint32_t cd0 = read_be32(cd) % 0x7FFFFFFF;
+  uint32_t cd1 = read_be32(cd + sizeof(uint32_t)) % 0x7FFFFFFF;
 
   for (uint32_t i = 0; i < input_dwords / 2; i++)
   {
-    out0 += (uint64_t)SWAP32(input[0]) * 0xE79A9C1;
+    out0 += (uint64_t)read_be32(input) * 0xE79A9C1;
     out0 = (out0 % 0x7FFFFFFF) * ab0;
     out0 += ab1;
     out0 = out0 % 0x7FFFFFFF;
 
     out1 += out0;
 
-    out0 = (uint64_t)(SWAP32(input[1]) + out0) * cd0;
+    out0 = (uint64_t)(read_be32(input + sizeof(uint32_t)) + out0) * cd0;
     out0 = (out0 % 0x7FFFFFFF) + cd1;
     out0 = out0 % 0x7FFFFFFF;
 
     out1 += out0;
 
-    input += 2;
+    input += 2 * sizeof(uint32_t);
   }
-  out0 = SWAP32((out0 + ab1) % 0x7FFFFFFF);
-  out1 = SWAP32((out1 + cd1) % 0x7FFFFFFF);
-  memcpy(output, &out0,  sizeof(uint32_t));
-  memcpy(output+1, &out1,  sizeof(uint32_t));
-  // output[0] = SWAP32((out0 + ab1) % 0x7FFFFFFF);
-  // output[1] = SWAP32((out1 + cd1) % 0x7FFFFFFF);
+  uint32_t result0 = SWAP32((out0 + ab1) % 0x7FFFFFFF);
+  uint32_t result1 = SWAP32((out1 + cd1) % 0x7FFFFFFF);
+  memcpy(output, &result0, sizeof(result0));
+  memcpy(output + sizeof(result0), &result1, sizeof(result1));
 }

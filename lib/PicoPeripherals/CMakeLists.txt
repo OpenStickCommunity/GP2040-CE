@@ -1,5 +1,4 @@
 add_library(PicoPeripherals
-interval_override.cpp
 peripheral_i2c.cpp
 peripheral_spi.cpp
 peripheral_usb.cpp

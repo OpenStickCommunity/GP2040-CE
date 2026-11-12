@@ -1,7 +1,4 @@
 export default {
-	'header-text': 'Configuración de Diseño',
-	'layout-left-header-text': 'Diseño Izquierdo',
-	'layout-right-header-text': 'Diseño Derecho',
 	layouts: {
 		left: {
 			BUTTON_LAYOUT_STICK: 'Stick',
@@ -33,12 +30,12 @@ export default {
 			BUTTON_LAYOUT_GITADORA_FRET_A: 'Gitadora Trastes',
 			BUTTON_LAYOUT_GITADORA_STRUM_A: 'Gitadora Rasgueo',
 			BUTTON_LAYOUT_BOARD_DEFINED_A: 'Definido por Placa',
-			BUTTON_LAYOUT_CUSTOMA: 'Personalizado',
 			BUTTON_LAYOUT_BANDHERO_FRET_A: 'GH/RB Trastes',
 			BUTTON_LAYOUT_BANDHERO_STRUM_A: 'GH/RB Rasgueo',
 			BUTTON_LAYOUT_6GAWD_A: '6GAWD Izquierdo',
 			BUTTON_LAYOUT_6GAWD_ALLBUTTON_A: '6GAWD Todo Botones Izquierdo',
-			BUTTON_LAYOUT_6GAWD_ALLBUTTONPLUS_A: '6GAWD Todo Botones Meñique Izquierdo',
+			BUTTON_LAYOUT_6GAWD_ALLBUTTONPLUS_A:
+				'6GAWD Todo Botones Meñique Izquierdo',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT0_A: 'Definido por Placa Alternativo 0',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT1_A: 'Definido por Placa Alternativo 1',
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT2_A: 'Definido por Placa Alternativo 2',
@@ -84,7 +81,6 @@ export default {
 			BUTTON_LAYOUT_GITADORA_FRET_B: 'Gitadora Trastes',
 			BUTTON_LAYOUT_GITADORA_STRUM_B: 'Gitadora Rasgueo',
 			BUTTON_LAYOUT_BOARD_DEFINED_B: 'Definido por Placa',
-			BUTTON_LAYOUT_CUSTOMB: 'Personalizado',
 			BUTTON_LAYOUT_BANDHERO_FRET_B: 'GH/RB Trastes',
 			BUTTON_LAYOUT_BANDHERO_STRUM_B: 'GH/RB Rasgueo',
 			BUTTON_LAYOUT_6GAWD_B: '6GAWD Derecho',

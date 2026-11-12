@@ -17,6 +17,7 @@ public:
     virtual void set_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len){}
     virtual void get_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len){}
     void process();
+    void processHost();
     void setAuthData(XboxOneAuthData *);
 private:
     void queue_host_report(void* report, uint16_t len);
@@ -24,6 +25,9 @@ private:
     uint8_t xbone_dev_addr;
     uint8_t xbone_instance;
     bool mounted;
+    bool heardFromDevice;
+    bool initKicked;
+    uint32_t mountTime;
     XGIPProtocol incomingXGIP;
     XGIPProtocol outgoingXGIP;
     XboxOneAuthData * xboxOneAuthData;

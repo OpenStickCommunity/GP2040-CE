@@ -2,3 +2,14 @@
 	margin-top: 58px;
 	padding: 10px 20px;
 }
+
+.splash-panel + .splash-panel {
+	border-top: var(--bs-border-width) solid var(--bs-border-color);
+	padding-top: 1rem;
+
+	@media (min-width: 768px) {
+		border-top: none;
+		padding-top: 0;
+		border-left: var(--bs-border-width) solid var(--bs-border-color);
+	}
+}

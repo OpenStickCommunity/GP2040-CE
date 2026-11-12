@@ -1,11 +1,15 @@
+import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FormCheck, Row } from 'react-bootstrap';
 import * as yup from 'yup';
 
+import { AppContext } from '../Contexts/AppContext';
 import Section from '../Components/Section';
 import FormSelect from '../Components/FormSelect';
 import FormControl from '../Components/FormControl';
 import { AddonPropTypes } from '../Pages/AddonsConfigPage';
+
+import useBoardDefinition from '../Store/useBoardDefinitionStore';
 
 const REVERSE_ACTION = [
 	{ label: 'Disable', value: 0 },
@@ -30,22 +34,30 @@ export const reverseState = {
 	reverseActionRight: 0,
 };
 
-const Reverse = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) => {
+const Reverse = ({
+	values,
+	errors,
+	handleChange,
+	handleCheckbox,
+}: AddonPropTypes) => {
 	const { t } = useTranslation();
+	const { usedPins } = useContext(AppContext);
+	const { boardDefinition } = useBoardDefinition();
 	const translatedReverseAction = REVERSE_ACTION.map((option) => ({
 		...option,
 		label: t(`AddonsConfig:reverse-action-${option.label.toLowerCase()}-label`),
 	}));
 	return (
-		<Section title={
-			<a
-				href="https://gp2040-ce.info/add-ons/input-reverse"
-				target="_blank"
-				className="text-reset text-decoration-none"
-			>
-				{t('AddonsConfig:input-reverse-header-text')}
-			</a>
-		}
+		<Section
+			title={
+				<a
+					href="https://gp2040-ce.info/add-ons/input-reverse"
+					target="_blank"
+					className="text-reset text-decoration-none"
+				>
+					{t('AddonsConfig:input-reverse-header-text')}
+				</a>
+			}
 		>
 			<div id="ReverseInputOptions" hidden={!values.ReverseInputEnabled}>
 				<Row className="mb-3">
@@ -60,7 +72,7 @@ const Reverse = ({ values, errors, handleChange, handleCheckbox }: AddonPropType
 						isInvalid={Boolean(errors.reversePinLED)}
 						onChange={handleChange}
 						min={-1}
-						max={29}
+						max={boardDefinition.maxPin}
 					/>
 				</Row>
 				<Row className="mb-3">

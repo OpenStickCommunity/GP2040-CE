@@ -26,6 +26,7 @@ import omit from 'lodash/omit';
 
 import { AppContext } from '../Contexts/AppContext';
 import useProfilesStore, {
+	getProfilePins,
 	MaskPayload,
 	MAX_PROFILES,
 } from '../Store/useProfilesStore';
@@ -40,6 +41,13 @@ import './PinMapping.scss';
 import { MultiValue, SingleValue } from 'react-select';
 import InfoCircle from '../Icons/InfoCircle';
 import WebApi from '../Services/WebApi';
+import {
+	ADVANCED_SOCD_SLOTS,
+	getAdvancedSOCDLabel,
+	getEnabledAdvancedSOCDSlots,
+} from '../Components/AdvancedSOCD';
+import useLedsPreview from '../Hooks/useLedsPreview';
+import { useRememberedTab } from '../Hooks/useRememberedTab';
 
 type OptionType = {
 	label: string;
@@ -140,7 +148,7 @@ const ProfileLabel = memo(function ProfileLabel({
 		(event: React.ChangeEvent<HTMLInputElement>) =>
 			setProfileLabel(
 				profileIndex,
-				event.target.value.replace(/[^a-zA-Z0-9\s]/g, ''),
+				event.target.value.replace(/[^\x20-\x7e]/g, ''),
 			),
 		[],
 	);
@@ -156,24 +164,102 @@ const ProfileLabel = memo(function ProfileLabel({
 				})}
 				onChange={onLabelChange}
 				maxLength={16}
-				pattern="[a-zA-Z0-9\s]+"
+				pattern="[\x20-\x7e]+"
 			/>
 			<Form.Text muted>{t('PinMapping:profile-label-description')}</Form.Text>
 		</div>
 	);
 });
 
-const PinSelectList = memo(function PinSelectList({
+const SOCD_MODES = [
+	{ labelKey: 'SettingsPage:socd-cleaning-mode-options.up-priority', value: 0 },
+	{ labelKey: 'SettingsPage:socd-cleaning-mode-options.neutral', value: 1 },
+	{ labelKey: 'SettingsPage:socd-cleaning-mode-options.last-win', value: 2 },
+	{ labelKey: 'SettingsPage:socd-cleaning-mode-options.first-win', value: 3 },
+	{ labelKey: 'SettingsPage:socd-cleaning-mode-options.off', value: 4 },
+];
+
+const ADVANCED_SOCD_PIN_ACTIONS = [
+	BUTTON_ACTIONS.SUSTAIN_SOCD_MODE_ADVANCED_1,
+	BUTTON_ACTIONS.SUSTAIN_SOCD_MODE_ADVANCED_2,
+	BUTTON_ACTIONS.SUSTAIN_SOCD_MODE_ADVANCED_3,
+	BUTTON_ACTIONS.SUSTAIN_SOCD_MODE_ADVANCED_4,
+] as PinActionValues[];
+
+const getAdvancedSOCDPinSlot = (action: PinActionValues) =>
+	ADVANCED_SOCD_SLOTS[ADVANCED_SOCD_PIN_ACTIONS.indexOf(action)];
+
+const ProfileSOCDMode = memo(function ProfileSOCDMode({
 	profileIndex,
+	gamepadOptions,
 }: {
 	profileIndex: number;
+	gamepadOptions: Record<string, any>;
+}) {
+	const { t } = useTranslation('');
+	const setProfileSOCDMode = useProfilesStore(
+		(state) => state.setProfileSOCDMode,
+	);
+	const socdModeOverride = useProfilesStore(
+		(state) => state.profiles[profileIndex].socdModeOverride,
+	);
+	const socdMode = useProfilesStore(
+		(state) => state.profiles[profileIndex].socdMode,
+	);
+	const advancedSlots = ADVANCED_SOCD_SLOTS.filter(
+		(slot) =>
+			getEnabledAdvancedSOCDSlots(gamepadOptions).includes(slot) ||
+			(socdModeOverride && socdMode === slot.value),
+	);
+
+	return (
+		<div className="mt-3">
+			<Form.Label>{t('PinMapping:profile-socd-mode-label')}</Form.Label>
+			<Form.Select
+				value={socdModeOverride ? socdMode : -1}
+				onChange={(e) =>
+					setProfileSOCDMode(profileIndex, Number(e.target.value))
+				}
+			>
+				<option value={-1}>{t('PinMapping:profile-socd-mode-global')}</option>
+				{SOCD_MODES.map(({ labelKey, value }) => (
+					<option key={value} value={value}>
+						{t(labelKey)}
+					</option>
+				))}
+				{advancedSlots.map((slot) => (
+					<option key={slot.value} value={slot.value}>
+						{getAdvancedSOCDLabel(gamepadOptions, slot)}
+					</option>
+				))}
+			</Form.Select>
+			<Form.Text muted>
+				{t('PinMapping:profile-socd-mode-description')}
+			</Form.Text>
+		</div>
+	);
+});
+
+const PinSelectList = memo(function PinSelectList({
+	profileIndex,
+	gamepadOptions,
+}: {
+	profileIndex: number;
+	gamepadOptions: Record<string, any>;
 }) {
 	const setProfilePin = useProfilesStore((state) => state.setProfilePin);
-
+	const { activateLedsOnId, turnOffLedTestModes } = useLedsPreview();
+	const togglePinInverted = useProfilesStore(
+		(state) => state.togglePinInverted,
+	);
 	const pins = useProfilesStore(
-		useShallow((state) =>
-			omit(state.profiles[profileIndex], ['profileLabel', 'enabled']),
-		),
+		useShallow((state) => getProfilePins(state.profiles[profileIndex])),
+	);
+	const pinInversionEnabled = useProfilesStore(
+		(state) => state.profiles[profileIndex].pinInversionEnabled,
+	);
+	const invertedPins = useProfilesStore(
+		(state) => state.profiles[profileIndex].invertedPins,
 	);
 	const { t } = useTranslation('');
 	const { buttonLabels } = useContext(AppContext);
@@ -235,8 +321,23 @@ const PinSelectList = memo(function PinSelectList({
 		[],
 	);
 
+	const enabledAdvancedSlots = getEnabledAdvancedSOCDSlots(gamepadOptions);
+	const selectableOptions = groupedOptions.map((group) => ({
+		...group,
+		options: group.options.filter(
+			({ value }) =>
+				!getAdvancedSOCDPinSlot(value) ||
+				enabledAdvancedSlots.includes(getAdvancedSOCDPinSlot(value)),
+		),
+	}));
+
 	const getOptionLabel = useCallback(
 		(option: OptionType) => {
+			const advancedSlot = getAdvancedSOCDPinSlot(option.value);
+			if (advancedSlot)
+				return t('SettingsPage:advanced-socd-action-label', {
+					name: getAdvancedSOCDLabel(gamepadOptions, advancedSlot),
+				});
 			const labelKey = option.label?.split('BUTTON_PRESS_')?.pop();
 			// Need to fallback as some button actions are not part of button names
 			return (
@@ -244,23 +345,43 @@ const PinSelectList = memo(function PinSelectList({
 				t(`Proto:GpioAction.${option.label}`)
 			);
 		},
-		[buttonNames],
+		[buttonNames, gamepadOptions],
 	);
+
 	return (
-		<div className="pin-grid gap-3 mt-2">
+		<div
+			className="pin-grid gap-3 mt-2"
+			style={{ '--pin-count': Object.entries(pins).length > 32 ? 12 : 15 }}
+		>
 			{Object.entries(pins).map(([pin, pinData], index) => (
 				<div key={`select-${index}`} className="d-flex align-items-center">
-					<div className="d-flex flex-shrink-0" style={{ width: '3.5rem' }}>
+					<div
+						className="d-flex flex-shrink-0 align-items-center gap-1"
+						style={{ width: pinInversionEnabled ? '4.5rem' : '3.5rem' }}
+					>
+						{pinInversionEnabled && (
+							<FormCheck
+								className="mb-0"
+								id={`invert-${profileIndex}-${pin}`}
+								aria-label={t('PinMapping:pin-invert-label', { pin: index })}
+								title={t('PinMapping:pin-invert-label', { pin: index })}
+								checked={invertedPins?.includes(index) ?? false}
+								disabled={isDisabled(pinData.action)}
+								onChange={() => togglePinInverted(profileIndex, index)}
+							/>
+						)}
 						<label>GP{index}</label>
 					</div>
 					<CustomSelect
 						isClearable
 						isMulti={!isDisabled(pinData.action)}
-						options={groupedOptions}
+						options={selectableOptions}
 						isDisabled={isDisabled(pinData.action)}
 						getOptionLabel={getOptionLabel}
 						onChange={onChange(pin)}
 						value={getMultiValue(pinData)}
+						onFocus={() => activateLedsOnId(index)}
+						onBlur={turnOffLedTestModes}
 					/>
 				</div>
 			))}
@@ -280,6 +401,12 @@ const PinSection = memo(function PinSection({
 	const toggleProfileEnabled = useProfilesStore(
 		(state) => state.toggleProfileEnabled,
 	);
+	const setPinInversionEnabled = useProfilesStore(
+		(state) => state.setPinInversionEnabled,
+	);
+	const pinInversionEnabled = useProfilesStore(
+		(state) => state.profiles[profileIndex].pinInversionEnabled,
+	);
 	const enabled = useProfilesStore(
 		(state) => state.profiles[profileIndex].enabled,
 	);
@@ -290,6 +417,7 @@ const PinSection = memo(function PinSection({
 		});
 
 	const [activeProfile, setActiveProfile] = useState(0);
+	const [gamepadOptions, setGamepadOptions] = useState({});
 
 	const { updateUsedPins, buttonLabels, setLoading } = useContext(AppContext);
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
@@ -312,8 +440,9 @@ const PinSection = memo(function PinSection({
 
 	useEffect(() => {
 		async function getActiveProfile() {
-			const { profileNumber } = await WebApi.getGamepadOptions(setLoading);
-			setActiveProfile(profileNumber - 1);
+			const options = await WebApi.getGamepadOptions(setLoading);
+			setActiveProfile(options.profileNumber - 1);
+			setGamepadOptions(options);
 		}
 		getActiveProfile();
 	}, []);
@@ -340,9 +469,13 @@ const PinSection = memo(function PinSection({
 					<Row>
 						<Col md={7}>
 							<ProfileLabel profileIndex={profileIndex} />
+							<ProfileSOCDMode
+								profileIndex={profileIndex}
+								gamepadOptions={gamepadOptions}
+							/>
 						</Col>
-						{profileIndex > 0 && (
-							<Col className='order-first order-md-last'>
+						<Col className="order-first order-md-last">
+							{profileIndex > 0 && (
 								<FormCheck
 									disabled={profileIndex === activeProfile}
 									size={3}
@@ -369,12 +502,36 @@ const PinSection = memo(function PinSection({
 										toggleProfileEnabled(profileIndex);
 									}}
 								/>
-							</Col>
-						)}
+							)}
+							<FormCheck
+								type="switch"
+								reverse
+								id={`pin-inversion-${profileIndex}`}
+								checked={pinInversionEnabled ?? false}
+								onChange={(e) =>
+									setPinInversionEnabled(profileIndex, e.target.checked)
+								}
+								label={
+									<OverlayTrigger
+										overlay={
+											<Tooltip>{t('PinMapping:pin-inversion-tooltip')}</Tooltip>
+										}
+									>
+										<div className="d-flex gap-1">
+											<label>{t('PinMapping:pin-inversion-label')}</label>
+											<InfoCircle />
+										</div>
+									</OverlayTrigger>
+								}
+							/>
+						</Col>
 					</Row>
 					<hr />
 
-					<PinSelectList profileIndex={profileIndex} />
+					<PinSelectList
+						profileIndex={profileIndex}
+						gamepadOptions={gamepadOptions}
+					/>
 					<div className="d-flex gap-3 my-3">
 						<CaptureButton
 							labels={Object.values(buttonNames)}
@@ -412,6 +569,10 @@ const PinSection = memo(function PinSection({
 });
 
 export default function PinMapping() {
+	const [activeTab, setActiveTab] = useRememberedTab(
+		'pinMappingTabs',
+		'profile-0',
+	);
 	const fetchProfiles = useProfilesStore((state) => state.fetchProfiles);
 	const addProfile = useProfilesStore((state) => state.addProfile);
 	const profiles = useProfilesStore((state) => state.profiles);
@@ -425,12 +586,12 @@ export default function PinMapping() {
 	}, []);
 
 	return (
-		<Tab.Container defaultActiveKey="profile-0">
+		<Tab.Container activeKey={activeTab} onSelect={setActiveTab}>
 			<Row>
 				<Col md={3}>
 					{loadingProfiles && (
 						<div className="d-flex justify-content-center">
-							<span className="spinner-border" />
+							<span className="spinner-border"></span>
 						</div>
 					)}
 					<Nav variant="pills" className="flex-column">

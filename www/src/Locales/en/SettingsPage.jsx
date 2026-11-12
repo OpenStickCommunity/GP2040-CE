@@ -11,6 +11,7 @@ export default {
 		xinput: 'XInput',
 		'nintendo-switch': 'Nintendo Switch',
 		'nintendo-switch-pro': 'Nintendo Switch Pro',
+		'nintendo-switch2-pro': 'Nintendo Switch 2 Pro',
 		ps3: 'PS3',
 		generic: 'Generic HID',
 		keyboard: 'Keyboard',
@@ -25,9 +26,13 @@ export default {
 		psclassic: 'Playstation Classic',
 		xboxoriginal: 'Original Xbox',
 		xbone: 'Xbox One',
+		sinput: 'SInput',
 	},
 	'input-mode-group': {
 		primary: 'Primary Input Modes',
+		sony: 'Sony Modes',
+		nintendo: 'Nintendo Modes',
+		microsoft: 'Microsoft Modes',
 		mini: 'Mini/Classic Console Modes',
 	},
 	'boot-input-mode-label': 'Boot Input Modes',
@@ -57,6 +62,18 @@ export default {
 		'first-win': 'First Win',
 		off: 'Off',
 	},
+	'advanced-socd-description':
+		'Each slot sets its own rule per axis. Enabled slots appear in the SOCD Cleaning Mode list above, and can be assigned to a hotkey or a pin. Dual Directional inputs use Neutral while a slot is active.',
+	'advanced-socd-enabled-label': 'Advanced SOCD',
+	'advanced-socd-name-label': 'Name',
+	'advanced-socd-up-down-label': 'Up + Down',
+	'advanced-socd-left-right-label': 'Left + Right',
+	'advanced-socd-action-label': 'Custom SOCD: {{name}}',
+	'advanced-socd-axis-neutral': 'Neutral',
+	'advanced-socd-axis-last-win': 'Last Win',
+	'advanced-socd-axis-first-win': 'First Win',
+	'advanced-socd-axis-off': 'Off',
+	'advanced-socd-axis-up-priority': 'Up Priority',
 	'profile-label': 'Profile',
 	'debounce-delay-label': 'Debounce Delay in milliseconds',
 	'mini-menu-gamepad-input': 'Use Gamepad Input for Display Mini Menu',
@@ -69,12 +86,116 @@ export default {
 	'ps4-id-mode-label': 'Identification Mode',
 	'ps4-id-mode-explanation-text':
 		'<ul><li>Console mode is used when connecting primarily to a PS4 console.</li><li>Remote/Emulation mode should only be used when connecting to an emulation layer or remote playing environment that requires a DualShock 4-compatible controller.</li></ul>',
+	'generic-dpad-mode-label': 'D-Pad Reporting',
+	'generic-dpad-mode-options': {
+		'hat-and-buttons': 'Hat + Buttons',
+		'hat-only': 'Hat Only',
+		'buttons-only': 'Buttons Only',
+	},
+	'switch-pro-controller-type-label': 'Controller Type',
+	'switch-pro-controller-type-options': {
+		pro: 'Pro Controller',
+		snes: 'NSO SNES',
+		'super-famicom': 'NSO Super Famicom',
+		n64: 'NSO N64',
+		genesis: 'NSO Genesis',
+		'mega-drive': 'NSO Mega Drive',
+		nes: 'NSO NES',
+		'famicom-i': 'NSO Famicom I',
+		'famicom-ii': 'NSO Famicom II',
+		'joycon-left': 'Joy-Con (L)',
+		'joycon-right': 'Joy-Con (R)',
+		'joycon-pair': 'Joy-Con (L + R)',
+	},
+	'switch-pro-color-label': 'Controller Display Colors',
+	'switch-pro-color-explanation':
+		'Sets the colors the Switch shows for this controller.',
+	'switch-pro-color-presets': {
+		stock: 'Stock',
+		gp2040: 'GP2040-CE',
+		custom: 'Custom',
+	},
+	'switch2-pro-identity-label': 'Controller Type',
+	'switch2-pro-identity-options': {
+		pro2: 'Switch 2 Pro Controller',
+		gamecube: 'GameCube Controller',
+		'joycon2-left': 'Joy-Con 2 (L)',
+		'joycon2-right': 'Joy-Con 2 (R)',
+	},
+	'switch2-pro-gamecube-no-options':
+		'There are no additional options for GameCube Controller mode.',
+	'switch2-pro-joycon2-experimental-warning':
+		'<strong>WARNING:</strong> {{mode}} mode is experimental. In most cases you will want to choose one of the other controller types, such as Switch 2 Pro Controller. If you still want to try this mode, go to the Nintendo Switch 2 controller pairing screen and press the pairing buttons it shows so the Joy-Con 2 appears in the horizontal position. You will need to do this again after the Switch 2 wakes from sleep. If you connect it from the main screen it will appear in the vertical position and input mappings may be incorrect.',
+	'switch2-pro-joycon2-color-explanation':
+		'Sets the colors the Switch 2 shows for this Joy-Con 2.',
+	'switch2-pro-joycon2-color-presets': {
+		stock: 'Stock',
+		'purple-green': 'Purple / Green',
+		'blue-yellow': 'Blue / Yellow',
+		'legendary-left': 'Legendary Left',
+		'legendary-right': 'Legendary Right',
+		gp2040: 'GP2040-CE',
+		custom: 'Custom',
+	},
+	'switch2-pro-joycon2-color-parts': {
+		body: 'Body',
+		buttons: 'Buttons',
+		accent: 'Accent',
+		stick: 'Stick',
+	},
+	'switch2-pro-color-label': 'Controller Display Colors',
+	'switch2-pro-color-explanation':
+		'Sets the colors the Switch 2 shows for this controller.',
+	'switch2-pro-color-presets': {
+		stock: 'Stock',
+		legendary: 'Legendary',
+		gp2040: 'GP2040-CE',
+		custom: 'Custom',
+	},
+	'switch-pro-joycon-single-note':
+		"To use a single Joy-Con on its own, go into 'Change Grip/Order' and press SL + SR ({{buttons}}). You will need to do this each time you change between {{mode}} and Joy-Con (L + R) mode.",
+	'switch-pro-joycon-single-warning':
+		'<strong>WARNING:</strong> Joy-Con (L) and Joy-Con (R) modes will be very difficult to use as a normal controller and are only included for those people who are working on specific device accessories that need a single Joy-Con. For most normal use cases please use the Pro Controller or Joy-Con (L + R) controller type.',
+	'switch-pro-joycon-pair-warning':
+		"<strong>WARNING:</strong> You may need to go into the 'Change Grip/Order' section and press L + R ({{buttons}}) to get the Joy-Con (L + R) controller type to connect.",
+	'switch-pro-genesis-warning':
+		'<strong>WARNING:</strong> The Switch has no system icon for this controller, so it shows as a Pro Controller in the system menus. The NSO Genesis app shows the correct controller icon under your username.',
+	'switch-pro-joycon-color-explanation':
+		'Sets the colors the Switch shows for this Joy-Con. Only the body and buttons are shown.',
+	'switch-pro-joycon-color-presets': {
+		grey: 'Stock Grey',
+		neon: 'Stock Neon',
+		white: 'White (OLED)',
+		gp2040: 'GP2040-CE',
+		custom: 'Custom',
+	},
+	'switch-pro-color-parts': {
+		body: 'Body',
+		buttons: 'Buttons',
+		'left-grip': 'Left Grip',
+		'right-grip': 'Right Grip',
+		'left-body': 'Left Body',
+		'left-buttons': 'Left Buttons',
+		'right-body': 'Right Body',
+		'right-buttons': 'Right Buttons',
+	},
+	'switch2-pro-color-parts': {
+		'face-plate': 'Face Plate',
+		buttons: 'Buttons',
+		highlight: 'Highlight',
+		'main-body': 'Main Body',
+		'left-shoulder': 'Left Shoulder',
+		'right-shoulder': 'Right Shoulder',
+		sticks: 'Analog Sticks',
+		'left-ring': 'Left Ring',
+		'right-ring': 'Right Ring',
+	},
 	'ps4-id-mode-options': {
 		console: 'Console',
 		emulation: 'Remote/Emulation',
 	},
 	'ps5-mode-explanation-text':
-		'PS5 mode allows GP2040-CE to run as an authenticated PS5 compatible arcade stick.',
+		'PS5 mode allows GP2040-CE to run as an authenticated PS5 compatible gamepad.',
 	'ps5-mode-warning-text':
 		'<span>⏳ WARNING ⏳:</span> PS5 will timeout after 8 minutes without authentication.',
 	'ps5-usb-host-mode-text':
@@ -159,6 +280,10 @@ export default {
 		'rs-down': 'Right Stick Down',
 		'rs-left': 'Right Stick Left',
 		'rs-right': 'Right Stick Right',
+		'socd-advanced-1': 'SOCD-1',
+		'socd-advanced-2': 'SOCD-2',
+		'socd-advanced-3': 'SOCD-3',
+		'socd-advanced-4': 'SOCD-4',
 	},
 	'forced-setup-mode-label': 'Forced Setup Mode',
 	'forced-setup-mode-options': {
@@ -172,6 +297,7 @@ export default {
 		'If you reboot to Controller mode after saving, you will no longer have access to the web-config. Please type "<strong>{{warningCheckText}}</strong>" below to unlock the Save button if you fully acknowledge this and intend it. Clicking on Dismiss will revert this setting which then is to be saved.',
 	'4-way-joystick-mode-label': '4-Way Joystick Mode',
 	'keyboard-mapping-header-text': 'Keyboard Mapping',
+	'keyboard-profile-label': 'Profile',
 	'keyboard-mapping-sub-header-text':
 		'Use the form below to reconfigure your button-to-key mapping.',
 	'usb-override': {

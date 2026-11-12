@@ -6,7 +6,7 @@ export default {
 	'pin-pressed': 'Pressed GPIO Pin: {{pressedPin}}',
 	'profile-label-title': 'Profile name',
 	'profile-label-description':
-		'Max 16 characters. Letters, numbers, and spaces allowed.',
+		'Max 16 characters. Printable ASCII characters allowed.',
 	'profile-pin-mapping-title': '{{profileLabel}} - GPIO Pin Mapping',
 	'profile-label-default': 'Profile {{profileNumber}}',
 	'profile-add-button': '+ Add Profile',
@@ -18,6 +18,14 @@ export default {
 	'profile-pins-warning':
 		'Try to avoid changing the buttons and/or directions used for the switch profile hotkeys. Otherwise, it will be difficult to understand what profile is being selected!',
 	'profile-copy-base': 'Copy base profile',
+	'pin-inversion-label': 'Invert Pins',
+	'profile-socd-mode-label': 'SOCD Cleaning Mode',
+	'profile-socd-mode-global': 'Use global setting',
+	'profile-socd-mode-description':
+		'Used while this profile is active. SOCD slider pins still take priority.',
+	'pin-inversion-tooltip':
+		'Shows a checkbox next to each pin. Checked pins are pressed when the pin reads high, for active-high switches such as optical switches.',
+	'pin-invert-label': 'Invert GP{{pin}}',
 	actions: {
 		NONE: 'None',
 		RESERVED: 'Reserved',
@@ -55,6 +63,10 @@ export default {
 		SUSTAIN_SOCD_MODE_SECOND_WIN: 'Last Win SOCD Cleaning',
 		SUSTAIN_SOCD_MODE_FIRST_WIN: 'First Win SOCD Cleaning',
 		SUSTAIN_SOCD_MODE_BYPASS: 'SOCD Cleaning Off',
+		SUSTAIN_SOCD_MODE_ADVANCED_1: 'SOCD-1',
+		SUSTAIN_SOCD_MODE_ADVANCED_2: 'SOCD-2',
+		SUSTAIN_SOCD_MODE_ADVANCED_3: 'SOCD-3',
+		SUSTAIN_SOCD_MODE_ADVANCED_4: 'SOCD-4',
 		BUTTON_PRESS_TURBO: 'Turbo',
 		BUTTON_PRESS_MACRO: 'Macro Button',
 		BUTTON_PRESS_MACRO_1: 'Macro 1',

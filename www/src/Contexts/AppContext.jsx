@@ -1,7 +1,10 @@
 import { createContext, useEffect, useState } from 'react';
 import * as yup from 'yup';
 
-import WebApi, { basePeripheralMapping } from '../Services/WebApi';
+import WebApi, {
+	basePeripheralMapping,
+	baseBoardDefinitions,
+} from '../Services/WebApi';
 import { PERIPHERAL_DEVICES } from '../Data/Peripherals';
 
 export const AppContext = createContext(null);
@@ -119,16 +122,6 @@ export const AppContextProvider = ({ children, ...props }) => {
 		}));
 	};
 
-	const [savedColors, _setSavedColors] = useState(
-		localStorage.getItem('savedColors')
-			? localStorage.getItem('savedColors').split(',')
-			: [],
-	);
-	const setSavedColors = (savedColors) => {
-		localStorage.setItem('savedColors', savedColors);
-		_setSavedColors(savedColors);
-	};
-
 	const updateButtonLabels = (e) => {
 		const { key, newValue } = e;
 		if (key === 'swapTpShareLabels') {
@@ -156,39 +149,22 @@ export const AppContextProvider = ({ children, ...props }) => {
 		};
 	}, []);
 
-	const [gradientNormalColor1, _setGradientNormalColor1] = useState('#00ffff');
-	const setGradientNormalColor1 = (gradientNormalColor1) => {
-		localStorage.setItem('gradientNormalColor1', gradientNormalColor1);
-		_setGradientNormalColor1(gradientNormalColor1);
-	};
-
-	const [gradientNormalColor2, _setGradientNormalColor2] = useState('#ff00ff');
-	const setGradientNormalColor2 = (gradientNormalColor2) => {
-		localStorage.setItem('gradientNormalColor2', gradientNormalColor2);
-		_setGradientNormalColor1(gradientNormalColor2);
-	};
-
-	const [gradientPressedColor1, _setGradientPressedColor1] =
-		useState('#ff00ff');
-	const setGradientPressedColor1 = (gradientPressedColor1) => {
-		localStorage.setItem('gradientPressedColor1', gradientPressedColor1);
-		_setGradientPressedColor1(gradientPressedColor1);
-	};
-
-	const [gradientPressedColor2, _setGradientPressedColor2] =
-		useState('#00ffff');
-	const setGradientPressedColor2 = (gradientPressedColor2) => {
-		localStorage.setItem('gradientPressedColor2', gradientPressedColor2);
-		_setGradientPressedColor1(gradientPressedColor2);
-	};
-
 	const [usedPins, setUsedPins] = useState([]);
 	const [availablePeripherals, setAvailablePeripherals] = useState(
 		basePeripheralMapping,
 	);
 	const [expansionPins, setExpansionPins] = useState({});
+	const [boardDefinition, setBoardDefinition] = useState(
+		baseBoardDefinitions.pico,
+	);
 
 	const [HETriggerCalibrations, setHETriggerCalibrations] = useState({});
+
+	const updateBoardDefinition = async () => {
+		const data = await WebApi.getBoardDefinition();
+		setBoardDefinition(data);
+		return data;
+	};
 
 	const updateUsedPins = async () => {
 		const data = await WebApi.getUsedPins(setLoading);
@@ -218,6 +194,7 @@ export const AppContextProvider = ({ children, ...props }) => {
 		updateExpansionPins();
 		updateHETriggerCalibrations();
 		updatePeripherals();
+		updateBoardDefinition();
 	}, []);
 
 	useEffect(() => {
@@ -226,12 +203,19 @@ export const AppContextProvider = ({ children, ...props }) => {
 			const isValid =
 				value === undefined ||
 				value === -1 ||
-				(hasValue && value < 30 && (usedPins || []).indexOf(value) === -1);
+				(hasValue &&
+					value <= boardDefinition.maxPin &&
+					(usedPins || []).indexOf(value) === -1);
 			return isValid;
 		};
-	}, [usedPins, setUsedPins]);
+	}, [boardDefinition.maxPin, usedPins]);
 
-	useEffect(() => {}, [expansionPins, setExpansionPins, HETriggerCalibrations, setHETriggerCalibrations]);
+	useEffect(() => {}, [
+		expansionPins,
+		setExpansionPins,
+		HETriggerCalibrations,
+		setHETriggerCalibrations,
+	]);
 
 	const getAvailablePeripherals = (device) => {
 		// gymnastics to make sure the device is defined before trusting config value
@@ -299,23 +283,14 @@ export const AppContextProvider = ({ children, ...props }) => {
 			{...props}
 			value={{
 				buttonLabels,
-				gradientNormalColor1,
-				gradientNormalColor2,
-				gradientPressedColor1,
-				gradientPressedColor2,
-				savedColors,
 				usedPins,
 				availablePeripherals,
 				getAvailablePeripherals,
 				expansionPins,
 				HETriggerCalibrations,
+				boardDefinition,
 				getSelectedPeripheral,
 				setButtonLabels,
-				setGradientNormalColor1,
-				setGradientNormalColor2,
-				setGradientPressedColor1,
-				setGradientPressedColor2,
-				setSavedColors,
 				setUsedPins,
 				setExpansionPins,
 				setHETriggerCalibrations,
@@ -324,6 +299,7 @@ export const AppContextProvider = ({ children, ...props }) => {
 				updatePeripherals,
 				updateUsedPins,
 				updateExpansionPins,
+				updateBoardDefinition,
 				savedColorScheme,
 				setSavedColorScheme,
 				savedLanguage,

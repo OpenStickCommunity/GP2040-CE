@@ -62,31 +62,37 @@ export const tiltState = {
 	factorTilt2RightY: 0,
 };
 
-const Tilt = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) => {
+const Tilt = ({
+	values,
+	errors,
+	handleChange,
+	handleCheckbox,
+}: AddonPropTypes) => {
 	const { t } = useTranslation();
 	return (
-		<Section title={
-			<a
-				href="https://gp2040-ce.info/add-ons/tilt-input"
-				target="_blank"
-				className="text-reset text-decoration-none"
-			>
-				{t('AddonsConfig:tilt-header-text')}
-			</a>
-		}
+		<Section
+			title={
+				<a
+					href="https://gp2040-ce.info/add-ons/tilt-input"
+					target="_blank"
+					className="text-reset text-decoration-none"
+				>
+					{t('AddonsConfig:tilt-header-text')}
+				</a>
+			}
 		>
 			<div id="TiltOptions" hidden={!values.TiltInputEnabled}>
 				<div className="alert alert-info" role="alert">
 					<Trans
 						ns="AddonsConfig"
-						i18nKey='AddonsConfig:pin-config-moved-to-core-text'
+						i18nKey="AddonsConfig:pin-config-moved-to-core-text"
 						components={[
 							<a
 								key="0"
 								href="../pin-mapping"
 								className="alert-link"
 								target="_blank"
-							/>
+							/>,
 						]}
 					/>
 				</div>

@@ -64,7 +64,6 @@
 #define BOARD_LEDS_PIN 28 // Addressible RGB LED for buttons
 
 #define LED_BRIGHTNESS_MAXIMUM 150
-#define LED_BRIGHTNESS_STEPS 5
 #define LED_FORMAT LED_FORMAT_GRB
 #define LEDS_PER_PIXEL 1
 

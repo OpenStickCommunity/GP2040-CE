@@ -113,7 +113,6 @@ namespace ConfigLegacy
         BUTTON_LAYOUT_STICKLESS_13,
         BUTTON_LAYOUT_STICKLESS_16,
         BUTTON_LAYOUT_STICKLESS_14,
-        BUTTON_LAYOUT_STICKLESS_R16,        
     };
 
     enum ButtonLayoutRight
@@ -140,7 +139,6 @@ namespace ConfigLegacy
         BUTTON_LAYOUT_STICKLESS_13B,
         BUTTON_LAYOUT_STICKLESS_16B,
         BUTTON_LAYOUT_STICKLESS_14B,
-        BUTTON_LAYOUT_STICKLESS_R16B,
     };
 
     enum SplashMode
@@ -557,11 +555,9 @@ static bool isValidButtonLayout(ConfigLegacy::ButtonLayout buttonLayout)
         case BUTTON_LAYOUT_VLXA:
         case BUTTON_LAYOUT_FIGHTBOARD_STICK:
         case BUTTON_LAYOUT_FIGHTBOARD_MIRRORED:
-        case BUTTON_LAYOUT_CUSTOMA:
         case BUTTON_LAYOUT_OPENCORE0WASDA:
         case BUTTON_LAYOUT_STICKLESS_13:
         case BUTTON_LAYOUT_STICKLESS_16:
-        case BUTTON_LAYOUT_STICKLESS_R16:
         case BUTTON_LAYOUT_STICKLESS_14:
             return true;
     }
@@ -588,12 +584,10 @@ static bool isValidButtonLayoutRight(ConfigLegacy::ButtonLayoutRight buttonLayou
         case BUTTON_LAYOUT_VLXB:
         case BUTTON_LAYOUT_FIGHTBOARD:
         case BUTTON_LAYOUT_FIGHTBOARD_STICK_MIRRORED:
-        case BUTTON_LAYOUT_CUSTOMB:
         case BUTTON_LAYOUT_KEYBOARD8B:
         case BUTTON_LAYOUT_OPENCORE0WASDB:
         case BUTTON_LAYOUT_STICKLESS_13B:
         case BUTTON_LAYOUT_STICKLESS_16B: 
-        case BUTTON_LAYOUT_STICKLESS_R16B:
         case BUTTON_LAYOUT_STICKLESS_14B:
             return true;
     }
@@ -816,27 +810,6 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
             SET_PROPERTY(displayOptions, buttonLayoutRight, static_cast<ButtonLayoutRight>(legacyBoardOptions.buttonLayoutRight));
         }
 
-        const ConfigLegacy::ButtonLayoutParams& legacyParams = legacyBoardOptions.buttonLayoutCustomOptions.params;
-        ButtonLayoutParamsLeft& params = displayOptions.buttonLayoutCustomOptions.paramsLeft;
-        if (isValidButtonLayout(legacyParams.layout))
-        {
-            SET_PROPERTY(params, layout, static_cast<ButtonLayout>(legacyParams.layout));
-        }
-        SET_PROPERTY(params.common, startX, legacyParams.startX);
-        SET_PROPERTY(params.common, startY, legacyParams.startY);
-        SET_PROPERTY(params.common, buttonRadius, legacyParams.buttonRadius);
-        SET_PROPERTY(params.common, buttonPadding, legacyParams.buttonPadding);
-
-        const ConfigLegacy::ButtonLayoutParams& legacyParamsRight = legacyBoardOptions.buttonLayoutCustomOptions.paramsRight;
-        ButtonLayoutParamsRight& paramsRight = displayOptions.buttonLayoutCustomOptions.paramsRight;
-        if (isValidButtonLayoutRight(legacyParams.layoutRight))
-        {
-            SET_PROPERTY(paramsRight, layout, static_cast<ButtonLayoutRight>(legacyParams.layoutRight));
-        }
-        SET_PROPERTY(paramsRight.common, startX, legacyParamsRight.startX);
-        SET_PROPERTY(paramsRight.common, startY, legacyParamsRight.startY);
-        SET_PROPERTY(paramsRight.common, buttonRadius, legacyParamsRight.buttonRadius);
-        SET_PROPERTY(paramsRight.common, buttonPadding, legacyParamsRight.buttonPadding);
         if (isValidSplashMode(legacyBoardOptions.splashMode))
         {
             SET_PROPERTY(displayOptions, splashMode, static_cast<SplashMode>(legacyBoardOptions.splashMode));
@@ -899,59 +872,6 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         SET_PROPERTY(ledOptions, pledPin3, legacyLEDOptions.pledPin3);
         SET_PROPERTY(ledOptions, pledPin4, legacyLEDOptions.pledPin4);
         SET_PROPERTY(ledOptions, pledColor, legacyLEDOptions.pledColor.value(LED_FORMAT_RGB));
-    }
-
-    const ConfigLegacy::AnimationOptions& legacyAnimationOptions = *reinterpret_cast<ConfigLegacy::AnimationOptions*>(EEPROM_ADDRESS_START + ANIMATION_STORAGE_INDEX);
-    if (legacyAnimationOptions.checksum == computeChecksum(reinterpret_cast<const char*>(&legacyAnimationOptions), sizeof(ConfigLegacy::AnimationOptions), offsetof(ConfigLegacy::AnimationOptions, checksum)))
-    {
-        legacyConfigFound = true;
-
-        AnimationOptions& animationOptions = config.animationOptions;
-        config.has_animationOptions = true;
-        SET_PROPERTY(animationOptions, baseAnimationIndex, legacyAnimationOptions.baseAnimationIndex);
-        SET_PROPERTY(animationOptions, brightness, legacyAnimationOptions.brightness);
-        SET_PROPERTY(animationOptions, staticColorIndex, legacyAnimationOptions.staticColorIndex);
-        SET_PROPERTY(animationOptions, buttonColorIndex, legacyAnimationOptions.buttonColorIndex);
-        SET_PROPERTY(animationOptions, chaseCycleTime, legacyAnimationOptions.chaseCycleTime);
-        SET_PROPERTY(animationOptions, rainbowCycleTime, legacyAnimationOptions.rainbowCycleTime);
-        SET_PROPERTY(animationOptions, themeIndex, legacyAnimationOptions.themeIndex);
-        SET_PROPERTY(animationOptions, hasCustomTheme, legacyAnimationOptions.hasCustomTheme);
-        SET_PROPERTY(animationOptions, customThemeUp, legacyAnimationOptions.customThemeUp);
-        SET_PROPERTY(animationOptions, customThemeDown, legacyAnimationOptions.customThemeDown);
-        SET_PROPERTY(animationOptions, customThemeLeft, legacyAnimationOptions.customThemeLeft);
-        SET_PROPERTY(animationOptions, customThemeRight, legacyAnimationOptions.customThemeRight);
-        SET_PROPERTY(animationOptions, customThemeB1, legacyAnimationOptions.customThemeB1);
-        SET_PROPERTY(animationOptions, customThemeB2, legacyAnimationOptions.customThemeB2);
-        SET_PROPERTY(animationOptions, customThemeB3, legacyAnimationOptions.customThemeB3);
-        SET_PROPERTY(animationOptions, customThemeB4, legacyAnimationOptions.customThemeB4);
-        SET_PROPERTY(animationOptions, customThemeL1, legacyAnimationOptions.customThemeL1);
-        SET_PROPERTY(animationOptions, customThemeR1, legacyAnimationOptions.customThemeR1);
-        SET_PROPERTY(animationOptions, customThemeL2, legacyAnimationOptions.customThemeL2);
-        SET_PROPERTY(animationOptions, customThemeR2, legacyAnimationOptions.customThemeR2);
-        SET_PROPERTY(animationOptions, customThemeS1, legacyAnimationOptions.customThemeS1);
-        SET_PROPERTY(animationOptions, customThemeS2, legacyAnimationOptions.customThemeS2);
-        SET_PROPERTY(animationOptions, customThemeL3, legacyAnimationOptions.customThemeL3);
-        SET_PROPERTY(animationOptions, customThemeR3, legacyAnimationOptions.customThemeR3);
-        SET_PROPERTY(animationOptions, customThemeA1, legacyAnimationOptions.customThemeA1);
-        SET_PROPERTY(animationOptions, customThemeA2, legacyAnimationOptions.customThemeA2);
-        SET_PROPERTY(animationOptions, customThemeUpPressed, legacyAnimationOptions.customThemeUpPressed);
-        SET_PROPERTY(animationOptions, customThemeDownPressed, legacyAnimationOptions.customThemeDownPressed);
-        SET_PROPERTY(animationOptions, customThemeLeftPressed, legacyAnimationOptions.customThemeLeftPressed);
-        SET_PROPERTY(animationOptions, customThemeRightPressed, legacyAnimationOptions.customThemeRightPressed);
-        SET_PROPERTY(animationOptions, customThemeB1Pressed, legacyAnimationOptions.customThemeB1Pressed);
-        SET_PROPERTY(animationOptions, customThemeB2Pressed, legacyAnimationOptions.customThemeB2Pressed);
-        SET_PROPERTY(animationOptions, customThemeB3Pressed, legacyAnimationOptions.customThemeB3Pressed);
-        SET_PROPERTY(animationOptions, customThemeB4Pressed, legacyAnimationOptions.customThemeB4Pressed);
-        SET_PROPERTY(animationOptions, customThemeL1Pressed, legacyAnimationOptions.customThemeL1Pressed);
-        SET_PROPERTY(animationOptions, customThemeR1Pressed, legacyAnimationOptions.customThemeR1Pressed);
-        SET_PROPERTY(animationOptions, customThemeL2Pressed, legacyAnimationOptions.customThemeL2Pressed);
-        SET_PROPERTY(animationOptions, customThemeR2Pressed, legacyAnimationOptions.customThemeR2Pressed);
-        SET_PROPERTY(animationOptions, customThemeS1Pressed, legacyAnimationOptions.customThemeS1Pressed);
-        SET_PROPERTY(animationOptions, customThemeS2Pressed, legacyAnimationOptions.customThemeS2Pressed);
-        SET_PROPERTY(animationOptions, customThemeL3Pressed, legacyAnimationOptions.customThemeL3Pressed);
-        SET_PROPERTY(animationOptions, customThemeR3Pressed, legacyAnimationOptions.customThemeR3Pressed);
-        SET_PROPERTY(animationOptions, customThemeA1Pressed, legacyAnimationOptions.customThemeA1Pressed);
-        SET_PROPERTY(animationOptions, customThemeA2Pressed, legacyAnimationOptions.customThemeA2Pressed);
     }
 
     const ConfigLegacy::AddonOptions& legacyAddonOptions = *reinterpret_cast<ConfigLegacy::AddonOptions*>(EEPROM_ADDRESS_START + ADDON_STORAGE_INDEX);
@@ -1017,14 +937,14 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         SET_PROPERTY(reverseOptions, actionLeft, legacyAddonOptions.reverseActionLeft);
         SET_PROPERTY(reverseOptions, actionRight, legacyAddonOptions.reverseActionRight);
 
-        SOCDSliderOptions& socdSliderOptions = config.addonOptions.socdSliderOptions;
-        config.addonOptions.has_socdSliderOptions = true;
+        SOCDSliderOptions& socdSliderOptions = config.addonOptions.deprecatedSocdSliderOptions;
+        config.addonOptions.has_deprecatedSocdSliderOptions = true;
         SET_PROPERTY(socdSliderOptions, enabled, legacyAddonOptions.SliderSOCDInputEnabled);
         SET_PROPERTY(socdSliderOptions, deprecatedPinOne, bytePinToIntPin(legacyAddonOptions.pinSliderSOCDOne));
         SET_PROPERTY(socdSliderOptions, deprecatedPinTwo, bytePinToIntPin(legacyAddonOptions.pinSliderSOCDTwo));
         if (isValidSOCDMode(legacyAddonOptions.sliderSOCDModeDefault))
         {
-            SET_PROPERTY(socdSliderOptions, modeDefault, static_cast<SOCDMode>(legacyAddonOptions.sliderSOCDModeDefault));
+            SET_PROPERTY(socdSliderOptions, deprecatedModeDefault, static_cast<SOCDMode>(legacyAddonOptions.sliderSOCDModeDefault));
         }
         if (isValidSOCDMode(legacyAddonOptions.sliderSOCDModeOne))
         {

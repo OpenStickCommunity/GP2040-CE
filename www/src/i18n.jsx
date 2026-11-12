@@ -33,7 +33,7 @@ i18n
 			'ko-KR': koKR,
 			'es-MX': esMX,
 			'tr-TR': trTR,
-			'fr-FR': frFR,			
+			'fr-FR': frFR,
 		},
 	});
 

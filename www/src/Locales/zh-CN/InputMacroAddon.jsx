@@ -2,16 +2,13 @@ export default {
 	'input-macro-editor-tab': '编辑器',
 	'input-macro-advanced-tab': '高级设置',
 	'input-macro-board-led-enabled': '使用板载 LED 显示宏状态',
-	'input-macro-macro-enabled': '已启用',
+	'input-macro-macro-enabled': '启用',
 	'input-macro-macro-enabled-badge': '已启用',
 	'input-macro-macro-disabled-badge': '已禁用',
-	'input-macro-macro-exclusive':
-		'独占模式 (执行期间不可切换到其他宏)',
-	'input-macro-macro-interruptible':
-		'可中断模式 (用户输入将取消宏的执行)',
+	'input-macro-macro-exclusive': '独占模式 (执行期间不可切换到其他宏)',
+	'input-macro-macro-interruptible': '可中断模式 (用户输入将取消宏的执行)',
 	'input-macro-macro-show-frames': '显示帧数 (1 帧 = 16.666 毫秒)',
-	'input-macro-macro-uses-buttons':
-		'使用“宏功能键 + 手柄按键”组合触发',
+	'input-macro-macro-uses-buttons': '使用“宏功能键 + 手柄按键”组合触发',
 	'input-macro-macro-button-pin-plus': '按键分配：',
 	'input-macro-header-text': '宏功能概览',
 	'input-macro-macro-list-txt': '宏 {{macroNumber}}',

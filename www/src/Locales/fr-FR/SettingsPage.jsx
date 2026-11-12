@@ -1,10 +1,11 @@
 export default {
-	'auth-settings-label': 'Paramètres d\'authentification',
-	'no-mode-settings-text': 'Il n\'y a pas de paramètres de mode d\'entrée pour {{mode}}.',
-	'settings-header-text': 'Paramètres du mode d\'entrée',
+	'auth-settings-label': "Paramètres d'authentification",
+	'no-mode-settings-text':
+		"Il n'y a pas de paramètres de mode d'entrée pour {{mode}}.",
+	'settings-header-text': "Paramètres du mode d'entrée",
 	'gamepad-settings-header-text': 'Paramètres de la manette de jeu',
-	'input-mode-label': 'Mode d\'entrée',
-	'current-input-mode-label': 'Mode d\'entrée actuel',
+	'input-mode-label': "Mode d'entrée",
+	'current-input-mode-label': "Mode d'entrée actuel",
 	'input-mode-extra-label': 'Inverser Pavé Tactile et Partager',
 	'input-mode-options': {
 		none: 'Aucun mode sélectionné',
@@ -26,10 +27,10 @@ export default {
 		xbone: 'Xbox One',
 	},
 	'input-mode-group': {
-		primary: 'Modes d\'entrée principaux',
+		primary: "Modes d'entrée principaux",
 		mini: 'Modes de console Mini/Classique',
 	},
-	'boot-input-mode-label': 'Modes d\'entrée au démarrage',
+	'boot-input-mode-label': "Modes d'entrée au démarrage",
 	'ps4-mode-options': {
 		controller: 'Contrôleur',
 		arcadestick: 'Stick Arcade',
@@ -48,7 +49,7 @@ export default {
 	},
 	'socd-cleaning-mode-label': 'Mode de nettoyage SOCD',
 	'socd-cleaning-mode-note':
-		'Remarque : Les modes PS4, PS3, Nintendo Switch et les séries mini ne supportent pas l\’option “SOCD désactivé” et utilisent donc par défaut le mode de nettoyage SOCD Neutre.',
+		'Remarque : Les modes PS4, PS3, Nintendo Switch et les séries mini ne supportent pas l’option “SOCD désactivé” et utilisent donc par défaut le mode de nettoyage SOCD Neutre.',
 	'socd-cleaning-mode-options': {
 		'up-priority': 'Priorité Haut',
 		neutral: 'Neutre',
@@ -57,17 +58,18 @@ export default {
 		off: 'Désactivé',
 	},
 	'profile-label': 'Profil',
-	'debounce-delay-label': 'Délai d\'antirebond en millisecondes',
-	'mini-menu-gamepad-input': 'Utiliser la manette de jeu pour afficher le mini-menu',
+	'debounce-delay-label': "Délai d'antirebond en millisecondes",
+	'mini-menu-gamepad-input':
+		'Utiliser la manette de jeu pour afficher le mini-menu',
 	'ps4-mode-explanation-text':
 		'Le mode PS4 permet à GP2040-CE de fonctionner comme un contrôleur PS4 authentifié.',
 	'ps4-mode-warning-text':
 		'<span>⏳ ATTENTION ⏳:</span> La PS4 déconnectera le contrôleur après 8 minutes sans authentification.',
 	'ps4-usb-host-mode-text':
-		'<span>INFO:</span> Veuillez vous assurer que le périphérique USB est activé et qu\'un appareil USB compatible PS4 y est branché.',
-	'ps4-id-mode-label': 'Mode d\'identification',
+		"<span>INFO:</span> Veuillez vous assurer que le périphérique USB est activé et qu'un appareil USB compatible PS4 y est branché.",
+	'ps4-id-mode-label': "Mode d'identification",
 	'ps4-id-mode-explanation-text':
-		'<ul><li>Le mode console est utilisé lors de la connexion principalement à une console PS4.</li><li>Le mode Remote/Emulation doit être utilisé uniquement lors de la connexion à une couche d\'émulation ou à un environnement de jeu à distance nécessitant un contrôleur compatible DualShock 4.</li></ul>',
+		"<ul><li>Le mode console est utilisé lors de la connexion principalement à une console PS4.</li><li>Le mode Remote/Emulation doit être utilisé uniquement lors de la connexion à une couche d'émulation ou à un environnement de jeu à distance nécessitant un contrôleur compatible DualShock 4.</li></ul>",
 	'ps4-id-mode-options': {
 		console: 'Console',
 		emulation: 'Remote/Emulation',
@@ -77,16 +79,16 @@ export default {
 	'ps5-mode-warning-text':
 		'<span>⏳ ATTENTION ⏳:</span> La PS5 déconnectera le contrôleur après 8 minutes sans authentification.',
 	'ps5-usb-host-mode-text':
-		'<span>INFO:</span> Veuillez vous assurer que le périphérique USB est activé et qu\'un appareil USB compatible PS5 y est branché.',
+		"<span>INFO:</span> Veuillez vous assurer que le périphérique USB est activé et qu'un appareil USB compatible PS5 y est branché.",
 	'xbone-mode-text':
-		'<span>INFO:</span> Xbox One nécessite une connexion hôte USB et un dongle USB pour s\'authentifier correctement en mode Xbox One.',
+		"<span>INFO:</span> Xbox One nécessite une connexion hôte USB et un dongle USB pour s'authentifier correctement en mode Xbox One.",
 	'xinput-mode-text':
-		'<span>INFO:</span> Le mode XInput fonctionnera sur une console Xbox 360 du commerce sans dongle. Sélectionnez USB uniquement si vous souhaitez utiliser un dongle externe pour l\’authentification.',
+		'<span>INFO:</span> Le mode XInput fonctionnera sur une console Xbox 360 du commerce sans dongle. Sélectionnez USB uniquement si vous souhaitez utiliser un dongle externe pour l’authentification.',
 	'hotkey-settings-label': 'Paramètres des raccourcis',
 	'hotkey-settings-sub-header':
-		'Le curseur <strong>Fn</strong> fournit un bouton Fonction mappable dans la page <link_pinmap>Mappage des broches</link_pinmap>. En sélectionnant l\'option curseur <strong>Fn</strong>, le bouton Fonction doit être maintenu enfoncé tout en utilisant le raccourci sélectionné. <br /> De plus, sélectionnez <strong>Aucun</strong> dans le menu déroulant pour désassocier un bouton.',
+		"Le curseur <strong>Fn</strong> fournit un bouton Fonction mappable dans la page <link_pinmap>Mappage des broches</link_pinmap>. En sélectionnant l'option curseur <strong>Fn</strong>, le bouton Fonction doit être maintenu enfoncé tout en utilisant le raccourci sélectionné. <br /> De plus, sélectionnez <strong>Aucun</strong> dans le menu déroulant pour désassocier un bouton.",
 	'hotkey-settings-warning':
-		'Le bouton de fonction n\'est pas assigné. Le curseur Fn sera désactivé.',
+		"Le bouton de fonction n'est pas assigné. Le curseur Fn sera désactivé.",
 	'hotkey-actions': {
 		'no-action': 'Aucune action',
 		'dpad-digital': 'D-Pad Numérique',
@@ -99,8 +101,8 @@ export default {
 		'socd-last-win': 'SOCD Dernier Gagne',
 		'socd-first-win': 'SOCD Premier Gagne',
 		'socd-off': 'Nettoyage SOCD Désactivé',
-		'invert-x': 'Inverser l\'axe X',
-		'invert-y': 'Inverser l\'axe Y',
+		'invert-x': "Inverser l'axe X",
+		'invert-y': "Inverser l'axe Y",
 		'toggle-4way-joystick-mode': 'Basculer le mode Joystick 4 voies',
 		'enable-4way-joystick-mode': 'Activer le mode joystick à 4 voies',
 		'disable-4way-joystick-mode': 'Désactiver le mode joystick à 4 voies',
@@ -150,27 +152,28 @@ export default {
 	'forced-setup-mode-label': 'Mode de configuration forcé',
 	'forced-setup-mode-options': {
 		off: 'Désactivé',
-		'disable-input-mode': 'Désactiver le mode d\'entrée',
+		'disable-input-mode': "Désactiver le mode d'entrée",
 		'disable-web-config': 'Désactiver la config web',
 		'disable-both': 'Désactiver les deux',
 	},
-	'forced-setup-mode-modal-title': 'Avertissement de mode de configuration forcé',
+	'forced-setup-mode-modal-title':
+		'Avertissement de mode de configuration forcé',
 	'forced-setup-mode-modal-body':
 		'Si vous redémarrez en mode Contrôleur après avoir sauvegardé, vous n\'aurez plus accès à la configuration web. Veuillez taper "<strong>{{warningCheckText}}</strong>" ci-dessous pour déverrouiller le bouton Sauvegarder si vous comprenez et acceptez cela. Cliquer sur Ignorer rétablira ce paramètre, qu’il faudra ensuite sauvegarder.',
 	'4-way-joystick-mode-label': 'Mode Joystick 4 voies',
 	'keyboard-mapping-header-text': 'Mappage du clavier',
 	'keyboard-mapping-sub-header-text':
 		'Utilisez le formulaire ci-dessous pour reconfigurer votre mappage bouton-touche.',
-    'usb-override': {
-        'advanced-override': '⚠️ Remplacement identifiants USB avancé',
-        'invalid-warning-danger':
+	'usb-override': {
+		'advanced-override': '⚠️ Remplacement identifiants USB avancé',
+		'invalid-warning-danger':
 			'DANGER : Des paramètres d’identification de périphérique USB invalides ou l’absence de pilotes dédiés empêcheront vos modes d’entrée de fonctionner !',
-        'product-name':'Nom du produit',
-        'manufacturer':'Fabricant',
-        'version':'Version',
-        'physical-warning-danger':'⚡ Remplacer les identifiants USB ⚡ ',
-        'product-id':'ID du Produit',
-        'vendor-id':'ID du Vendeur',
-    },
+		'product-name': 'Nom du produit',
+		manufacturer: 'Fabricant',
+		version: 'Version',
+		'physical-warning-danger': '⚡ Remplacer les identifiants USB ⚡ ',
+		'product-id': 'ID du Produit',
+		'vendor-id': 'ID du Vendeur',
+	},
 	'input-mode-device-type-label': 'Type de contrôleur en mode d’entrée',
 };

@@ -13,6 +13,8 @@ import { SPI_BLOCKS } from '../Data/Peripherals';
 import WebApi from '../Services/WebApi';
 import { AddonPropTypes } from '../Pages/AddonsConfigPage';
 
+import useBoardDefinition from '../Store/useBoardDefinitionStore';
+
 const ANALOG_MAX_VALUES = [
 	{ label: '3.3v', value: 33 },
 	{ label: '5.0v', value: 50 },
@@ -48,14 +50,21 @@ export const analog1256State = {
 	analog1256EnableTriggers: 0,
 };
 
-const Analog1256 = ({ values, errors, handleChange, handleCheckbox }: AddonPropTypes) => {
+const Analog1256 = ({
+	values,
+	errors,
+	handleChange,
+	handleCheckbox,
+}: AddonPropTypes) => {
 	const {
 		getAvailablePeripherals,
 		getSelectedPeripheral,
 		setLoading,
 		usedPins,
 	} = useContext(AppContext);
-	const [csPins, setCsPins] = useState<Array<{ pin: number; hwcs: boolean }>>([]);
+	const [csPins, setCsPins] = useState<Array<{ pin: number; hwcs: boolean }>>(
+		[],
+	);
 
 	const { t } = useTranslation();
 
@@ -96,22 +105,26 @@ const Analog1256 = ({ values, errors, handleChange, handleCheckbox }: AddonPropT
 	}, [usedPins]);
 
 	return (
-		<Section title={
-			<a
-				href="https://gp2040-ce.info/add-ons/i2c-analog-ads1256-spi"
-				target="_blank"
-				className="text-reset text-decoration-none"
-			>
-				{t('AddonsConfig:analog1256-header-text')}
-			</a>
-		}
+		<Section
+			title={
+				<a
+					href="https://gp2040-ce.info/add-ons/i2c-analog-ads1256-spi"
+					target="_blank"
+					className="text-reset text-decoration-none"
+				>
+					{t('AddonsConfig:analog1256-header-text')}
+				</a>
+			}
 		>
 			<div
 				id="Analog1256InputOptions"
 				hidden={!(values.Analog1256Enabled && getAvailablePeripherals('spi'))}
 			>
 				<div className="alert alert-info" role="alert">
-					The RX, CS, SCK, and TX pins are configured in <a href="../peripheral-mapping" className="alert-link">Peripheral Mapping</a>
+					The RX, CS, SCK, and TX pins are configured in{' '}
+					<a href="../peripheral-mapping" className="alert-link">
+						Peripheral Mapping
+					</a>
 				</div>
 				<Row className="mb-3">
 					{getAvailablePeripherals('spi') ? (

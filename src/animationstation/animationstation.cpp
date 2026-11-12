@@ -5,246 +5,731 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+#include "effects/chase.h"
+#include "effects/rain.h"
+#include "effects/rainbow.h"
+#include "effects/staticcolor.h"
+#include "effects/jigglestaticcolor.h"
+#include "effects/burstcolor.h"
+#include "effects/idletimeout.h"
+#include "effects/jiggletwostaticcolor.h"
+#include "effects/randomcolor.h"
+
 #include "animationstation.h"
-#include "animationstorage.h"
 
 #include "storagemanager.h"
 
+#include "enums.pb.h"
+#include "config.pb.h"
+
 AnimationStation::AnimationStation() {
+    // Changed when neopicoled starts up
     brightnessMax = 100;
-    brightnessSteps = 5;
-    brightnessX = 0;
-    linkageModeOfBrightnessX = 0;
-    nextChange = nil_time;
-    effectCount = TOTAL_EFFECTS;
-    AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
-    if (animationOptions.hasCustomTheme) {
-        effectCount++; // increase our effect count
-    }
+    brightnessSteps = 10;
+    brightnessStepValue = 0;
+    normalisedBrightness = 0;
+    TestMode = AnimationStationTestMode::AnimationStation_TestModeDisableTestMode;
+    savedProfileIndex = 0;
+    bTestModeChangeRequested = false;
+    TestModePinOrNonButtonIndex = -1;
+    TestModeInputSource = LightInputSource::LightInputSource_GPIO;
+    TestModeLightIsNonButton = false;
+    SetBrightnessStepValue(1);
+    timeLastButtonPressed = get_absolute_time();
+
+    lastAction = HOTKEY_LEDS_NONE;
+  
+    // For save update
+    bChangeDetected = false;
+    bRestartLeds = false;
 }
 
-void AnimationStation::ConfigureBrightness(uint8_t max, uint8_t steps) {
-  brightnessMax = max;
-  brightnessSteps = steps;
+void AnimationStation::SetLights(Lights InRGBLights) {
+    RGBLights = InRGBLights;
+}
+
+void AnimationStation::SetMaxBrightness(uint8_t max) {
+    brightnessMax = max;
+    if(brightnessMax < brightnessSteps)
+      brightnessMax = brightnessSteps;
 }
 
 void AnimationStation::HandleEvent(GamepadHotkey action) {
-  if (action == HOTKEY_LEDS_NONE || !time_reached(nextChange) ) {
-    return;
-  }
-  nextChange = make_timeout_time_ms(250);
-  bool reqSave = false;
+    AnimationOptions & options = Storage::getInstance().getAnimationOptions();
 
-  if (action == HOTKEY_LEDS_BRIGHTNESS_UP) {
-    IncreaseBrightness();
-    reqSave = true;
-  }
+    // Do nothing if we haven't reached our 250ms timeout
+    if (action == lastAction) {
+      return;
+    }
 
-  if (action == HOTKEY_LEDS_BRIGHTNESS_DOWN) {
-    DecreaseBrightness();
-    reqSave = true;
-  }
+    switch(action) {
+        case HOTKEY_LEDS_NONE:
+            break;
+        case HOTKEY_LEDS_BRIGHTNESS_UP:
+            IncreaseBrightnessByStep();
+            bChangeDetected = true;
+            break;
+        case HOTKEY_LEDS_BRIGHTNESS_DOWN:
+            DecreaseBrightnessByStep();
+            bChangeDetected = true;
+            break;
+        case HOTKEY_LEDS_PROFILE_UP:
+            if ( IncreaseProfile() ) {
+              bChangeDetected = true;
+            }
+            break;
+        case HOTKEY_LEDS_PROFILE_DOWN:
+            if ( DecreaseProfile() ) {
+              bChangeDetected = true;
+            }
+            break;
+        case HOTKEY_LEDS_PARAMETER_CYCLE:
+            if ( baseAnimation == nullptr || options.baseProfileIndex == -1 )
+                return;
+            options.profiles[options.baseProfileIndex].baseCycleTime++;
+            if(options.profiles[options.baseProfileIndex].baseCycleTime >= CYCLE_STEPS)
+                options.profiles[options.baseProfileIndex].baseCycleTime = 0;
+            baseAnimation->CycleParameterChange();
+            EventManager::getInstance().triggerEvent(new GPLEDEvent(false, true, false, false, false));
+            bChangeDetected = true;
+            break;
+        case HOTKEY_LEDS_CASE_PARAMETER_CYCLE:
+            if ( caseAnimation == nullptr || options.baseProfileIndex == -1 )
+                return;
+            options.profiles[options.baseProfileIndex].baseCaseCycleTime++;
+            if( options.profiles[options.baseProfileIndex].baseCaseCycleTime >= CYCLE_STEPS )
+                options.profiles[options.baseProfileIndex].baseCaseCycleTime = 0;
+            caseAnimation->CycleParameterChange();
+            EventManager::getInstance().triggerEvent(new GPLEDEvent(false, false, true, false, false));
+            bChangeDetected = true;
+            break;
+        case HOTKEY_LEDS_PRESS_PARAMETER_CYCLE:
+            if ( buttonAnimation == nullptr || options.baseProfileIndex == -1 )
+                return;
+            options.profiles[options.baseProfileIndex].basePressedCycleTime++;
+            if( options.profiles[options.baseProfileIndex].basePressedCycleTime >= CYCLE_STEPS )
+                options.profiles[options.baseProfileIndex].basePressedCycleTime = 0;
+            buttonAnimation->CycleParameterChange();
+            EventManager::getInstance().triggerEvent(new GPLEDEvent(false, false, false, true, false));
+            bChangeDetected = true;
+            break;
+        default:
+            break;
+    };
 
-  if (action == HOTKEY_LEDS_ANIMATION_UP) {
-    ChangeAnimation(1);
-    reqSave = true;
-  }
+    lastAction = action;
+}
 
-  if (action == HOTKEY_LEDS_ANIMATION_DOWN) {
-    ChangeAnimation(-1);
-    reqSave = true;
-  }
+void AnimationStation::ChangeProfile(int changeSize) {
+    timeLastButtonPressed = get_absolute_time();
 
-  if (this->baseAnimation == nullptr || this->buttonAnimation == nullptr) {
-    return;
-  }
-  
-  if (action == HOTKEY_LEDS_PARAMETER_UP) {
-    this->baseAnimation->ParameterUp();
-    reqSave = true;
-  }
+    this->SetMode(this->AdjustIndex(changeSize));
+}
 
-  if (action == HOTKEY_LEDS_PARAMETER_DOWN) {
-    this->baseAnimation->ParameterDown();
-    reqSave = true;
-  }
+bool AnimationStation::IncreaseProfile() {
+    // a profile hotkey wakes the animations from the idle timeout
+    timeLastButtonPressed = get_absolute_time();
 
-  if (action == HOTKEY_LEDS_PRESS_PARAMETER_UP) {
-    this->buttonAnimation->ParameterUp();
-    reqSave = true;
-  }
+    // find next valid index
+    AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+    int32_t nextIndex = options.baseProfileIndex;
+    while ( 1 ) { // find the next LED profile or disable profile
+        if ( nextIndex == MAX_ANIMATION_PROFILES-1 ) { // disable profile
+            SetMode(-1);
+            EventManager::getInstance().triggerEvent(new GPLEDEvent(true, false, false, false, false));
+            return true;
+        }
+        nextIndex++;
+        if ( options.profiles[nextIndex].bEnabled ) {
+            SetMode(nextIndex);
+            EventManager::getInstance().triggerEvent(new GPLEDEvent(true, false, false, false, false));
+            return true;
+        }
+    }
+    return false;
+}
 
-  if (action == HOTKEY_LEDS_PRESS_PARAMETER_DOWN) {
-    this->buttonAnimation->ParameterDown();
-    reqSave = true;
-  }
+bool AnimationStation::DecreaseProfile() {
+    // a profile hotkey wakes the animations from the idle timeout
+    timeLastButtonPressed = get_absolute_time();
 
-  if (action == HOTKEY_LEDS_FADETIME_UP) {
-    this->baseAnimation->FadeTimeUp();
-    reqSave = true;
-  }
+    // find next valid index
+    AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+    int32_t prevIndex = options.baseProfileIndex;
+    if ( prevIndex == -1 ) { // Disabled, wraparound to the top
+      prevIndex = MAX_ANIMATION_PROFILES;
+    }
+    while ( 1 ) {
+        if ( prevIndex == 0 ) { // disable profile
+            SetMode(-1);
+            EventManager::getInstance().triggerEvent(new GPLEDEvent(true, false, false, false, false));
+            return true;
+        }
+        prevIndex--;
+        if ( options.profiles[prevIndex].bEnabled ) {
+            SetMode(prevIndex);
+            EventManager::getInstance().triggerEvent(new GPLEDEvent(true, false, false, false, false));
+            return true;
+        }
+    }
+    return false;
+}
 
-  if (action == HOTKEY_LEDS_FADETIME_DOWN) {
-    this->baseAnimation->FadeTimeDown();
-    reqSave = true;
-  }
+void AnimationStation::HandlePressedPins(const std::vector<int32_t>& pressedPins) {
+    if(pressedPins.size()) {
+        timeLastButtonPressed = get_absolute_time();
+        this->lastPressed = pressedPins;
+        if(this->buttonAnimation)
+            this->buttonAnimation->UpdatePressed(pressedPins);
+    } else {
+      this->lastPressed.clear();
+      if(this->buttonAnimation)
+        this->buttonAnimation->ClearPressed();
+    }
+}
 
-	if (reqSave) {
-		EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(false));
+void AnimationStation::HandlePressedButtons(uint32_t pressedButtons) {
+}
+
+void AnimationStation::UpdateTestMode()
+{
+    if(!bTestModeChangeRequested)
+        return;
+    bTestModeChangeRequested = false;
+
+    switch(TestMode) {
+        case AnimationStationTestMode::AnimationStation_TestModeOff:
+            SetMode(-1);
+            break;
+        case AnimationStationTestMode::AnimationStation_TestModeButtons:
+        case AnimationStationTestMode::AnimationStation_TestModeLayout:
+        case AnimationStationTestMode::AnimationStation_TestModeProfilePreview:
+            SetMode(MAX_ANIMATION_PROFILES_INCLUDING_TEST - 1);
+            break;
+        case AnimationStationTestMode::AnimationStation_TestModeDisableTestMode:
+        {
+            const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
+            const AnimationOptions& animOptions = Storage::getInstance().getAnimationOptions();
+            SetMaxBrightness(ledOptions.brightnessMaximum);
+            SetBrightnessStepValue(animOptions.brightness);
+            SetMode(savedProfileIndex);
+            break;
+        }
+        default:
+            break;
+    };
+}
+
+void AnimationStation::Animate()
+{
+    //Test mode checks
+    UpdateTestMode();
+
+    //timeout checks
+    UpdateTimeout();
+
+    //Check for options changing and need saving
+    CheckForOptionsUpdate();
+
+    //If no profiles running
+    if (baseAnimation == nullptr || buttonAnimation == nullptr) {
+        this->Clear();
+        return;
+    }
+
+    baseAnimation->Animate(this->frame);
+    if(caseAnimation != nullptr)
+        caseAnimation->Animate(this->frame);
+    buttonAnimation->Animate(this->frame);
+}
+
+void AnimationStation::Clear()
+{
+    //sets all lights to black (off)
+    memset(frame, 0, sizeof(frame));
+}
+
+void AnimationStation::UpdateTimeout()
+{
+  AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+
+  if(TestMode == AnimationStationTestMode::AnimationStation_TestModeDisableTestMode && options.autoDisableTime > 0)
+  {
+    if(bIsInIdleTimeout == false)
+    {
+      if((absolute_time_diff_us(timeLastButtonPressed, get_absolute_time()) / 1000) > options.autoDisableTime)
+      {
+        //turn off all lights (but leave pressed effects running so the first press on restart isnt lost)
+        bIsInIdleTimeout = true;
+        if(this->baseAnimation != nullptr)
+          delete this->baseAnimation;
+        if(this->caseAnimation != nullptr)
+          delete this->caseAnimation;
+        
+        this->caseAnimation = nullptr;
+        this->baseAnimation = new IdleTimeout(RGBLights, EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE);
+      }
+    }
+    else if((absolute_time_diff_us(timeLastButtonPressed, get_absolute_time()) / 1000) < options.autoDisableTime)
+    {
+      bIsInIdleTimeout = false;
+      //remove the idle animation, or the animations a profile change built during the timeout
+      if(this->baseAnimation != nullptr)
+        delete this->baseAnimation;
+      if(this->caseAnimation != nullptr)
+        delete this->caseAnimation;
+      this->baseAnimation = nullptr;
+      this->caseAnimation = nullptr;
+
+      //no profiles
+      if(options.baseProfileIndex == -1)
+        return;
+
+      bool bCaseLightsUsingButtonNonPressedAnim = options.profiles[options.baseProfileIndex].baseNonPressedEffect == options.profiles[options.baseProfileIndex].baseCaseEffect;
+
+      //set new profile nonpressed animation
+      this->baseAnimation = GetNonPressedEffectForEffectType(options.profiles[options.baseProfileIndex].baseNonPressedEffect, bCaseLightsUsingButtonNonPressedAnim ? EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE : EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_ONLY);
+      //Set case animation if required
+      if(!bCaseLightsUsingButtonNonPressedAnim)
+      {
+        this->caseAnimation = GetNonPressedEffectForEffectType(options.profiles[options.baseProfileIndex].baseCaseEffect, EButtonCaseEffectType::BUTTONCASELIGHTTYPE_CASE_ONLY);
+      }
+    }
+  }
+}
+
+void AnimationStation::AssignLedPreset(const unsigned char* data, int32_t dataSize) {
+  LEDOptions& options = Storage::getInstance().getLedOptions();
+	options.lightClusterData_count = 0;
+	options.lightClusterDataInitialised = true;
+	for (int entryIndex = 0; (entryIndex + 1) * LIGHT_DATA_ENTRY_SIZE <= dataSize; ++entryIndex)
+	{
+		int dataIndex = entryIndex * LIGHT_DATA_ENTRY_SIZE;
+		options.lightClusterData[entryIndex].lightLocationData = data[dataIndex];
+		options.lightClusterData[entryIndex].lightLocationData += ((int)data[dataIndex+1]) << 8;
+		options.lightClusterData[entryIndex].lightLocationData += ((int)data[dataIndex+2]) << 16;
+		options.lightClusterData[entryIndex].lightLocationData += ((int)data[dataIndex+3]) << 24;
+		options.lightClusterData[entryIndex].lightTypeData = ((int)data[dataIndex+4]);
+		options.lightClusterData[entryIndex].lightTypeData += ((int)data[dataIndex+5]) << 8;
+		options.lightClusterData[entryIndex].lightTypeData += ((uint32_t)LightDataInputSource(data[dataIndex+5], data[dataIndex+6])) << 16;
+
+		options.lightClusterData_count = entryIndex + 1;
+
+		if(options.lightClusterData_count >= FRAME_MAX) //100 entries total
+			return;
 	}
 }
 
-void AnimationStation::ChangeAnimation(int changeSize) {
-  this->SetMode(this->AdjustIndex(changeSize));
+void AnimationStation::SetSavedMode(int32_t mode)
+{
+  // -1 (LEDs off) is a valid user choice; the test profile is not
+  if (mode >= -1 && mode < MAX_ANIMATION_PROFILES)
+    savedProfileIndex = mode;
 }
 
-uint16_t AnimationStation::AdjustIndex(int changeSize) {
-  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
-
-  int newIndex = animationOptions.baseAnimationIndex + changeSize;
-
-  if (newIndex >= effectCount) {
-    return 0;
-  }
-
-  if (newIndex < 0) {
-    return (effectCount - 1);
-  }
-
-  return (uint16_t)newIndex;
+int8_t AnimationStation::GetMode()
+{
+  AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+  return options.baseProfileIndex;
 }
 
-void AnimationStation::HandlePressed(std::vector<Pixel> pressed) {
-  this->lastPressed = pressed;
-  this->baseAnimation->UpdatePixels(pressed);  
-  this->buttonAnimation->UpdatePixels(pressed);
+Animation* AnimationStation::GetNonPressedEffectForEffectType(AnimationNonPressedEffects EffectType, EButtonCaseEffectType InButtonCaseEffectType)
+{
+  Animation* newEffect = nullptr;
+
+  switch (EffectType)
+  {
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_SYNCED:
+    newEffect = new RainbowSynced(RGBLights, InButtonCaseEffectType);
+    break;
+
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_ROTATE:
+    newEffect = new RainbowRotate(RGBLights, InButtonCaseEffectType);
+    break;
+
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_SEQUENTIAL:
+    newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_SEQUENTIAL);
+    break;
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_LEFT_TO_RIGHT:
+    if(TestMode == AnimationStationTestMode::AnimationStation_TestModeLayout)
+      newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_TESTLAYOUT);
+    else
+      newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_LEFT_TO_RIGHT);
+    break;
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_RIGHT_TO_LEFT:
+    newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_RIGHT_TO_LEFT);
+    break;
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_TOP_TO_BOTTOM:
+    newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_TOP_TO_BOTTOM);
+    break;
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_BOTTOM_TO_TOP:
+    newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_BOTTOM_TO_TOP);
+    break;
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_SEQUENTIAL_PINGPONG:
+    newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_SEQUENTIAL_PINGPONG);
+    break;
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_HORIZONTAL_PINGPONG:
+    newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_HORIZONTAL_PINGPONG);
+    break;
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_VERTICAL_PINGPONG:
+    newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_VERTICAL_PINGPONG);
+    break;
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_CIRCLE_CLOCKWISE:
+    newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_CIRCLE_CLOCKWISE);
+    break;
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_CIRCLE_ANTICLOCKWISE:
+    newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_CIRCLE_ANTICLOCKWISE);
+    break;
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_CIRCLE_PINGPONG:
+    newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_CIRCLE_PINGPONG);
+    break;
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_INDEX:
+    newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_INDEX);
+    break;
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_INDEX_PINGPONG:
+    newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_INDEX_PINGPONG);
+    break;
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_RANDOM:
+    newEffect = new Chase(RGBLights, InButtonCaseEffectType, ChaseTypes::CHASETYPES_RANDOM);
+    break;
+
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_STATIC_COLOR:
+    newEffect = new StaticColor(RGBLights, InButtonCaseEffectType);
+    break;
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_JIGGLESTATIC:
+    newEffect = new JiggleStaticColor(RGBLights, InButtonCaseEffectType);
+    break;
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_JIGGLETWOSTATICS:
+    newEffect = new JiggleTwoStaticColor(RGBLights, InButtonCaseEffectType);
+    break;
+
+  case AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAIN:
+    newEffect = new Rain(RGBLights, InButtonCaseEffectType);
+    break;
+
+  default:
+    break;
+  }
+
+  return newEffect;
 }
 
-void AnimationStation::ClearPressed() {
-  if (this->buttonAnimation != nullptr) {
-    this->buttonAnimation->ClearPixels();
+void AnimationStation::SetMode(int8_t mode)
+{
+  AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+
+  options.baseProfileIndex = mode;
+  if (!IsTestModeActive())
+    SetSavedMode(mode);
+
+  //remove old animations
+  if (this->baseAnimation != nullptr)
+  {
+    delete this->baseAnimation;
+    this->baseAnimation = nullptr;
   }
-  if (this->baseAnimation != nullptr) {
-    this->baseAnimation->ClearPixels();
+  if (this->caseAnimation != nullptr)
+  {
+    delete this->caseAnimation;
+    this->caseAnimation = nullptr;
+  }
+  if (this->buttonAnimation != nullptr)
+  {
+    delete this->buttonAnimation;
+    this->buttonAnimation = nullptr;
   }
 
-  this->lastPressed.clear();
-}
+  //turn off all lights
+  this->Clear();
 
-void AnimationStation::Animate() {
-  if (baseAnimation == nullptr || buttonAnimation == nullptr) {
-    this->Clear();
+  //no profiles
+  if(mode == -1)
     return;
+
+  bool bCaseLightsUsingButtonNonPressedAnim = options.profiles[options.baseProfileIndex].baseNonPressedEffect == options.profiles[options.baseProfileIndex].baseCaseEffect;
+
+  //set new profile nonpressed animation
+  this->baseAnimation = GetNonPressedEffectForEffectType(options.profiles[options.baseProfileIndex].baseNonPressedEffect, bCaseLightsUsingButtonNonPressedAnim ? EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE : EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_ONLY);
+
+  //Set case animation if required
+  if(!bCaseLightsUsingButtonNonPressedAnim)
+  {
+    this->caseAnimation = GetNonPressedEffectForEffectType(options.profiles[options.baseProfileIndex].baseCaseEffect, EButtonCaseEffectType::BUTTONCASELIGHTTYPE_CASE_ONLY);
   }
 
-  // Only copy our frame to linkage frame if the animation effect updated our frame[]
-  if ( baseAnimation->Animate(this->frame) == true ) {
-    // Copy frame to linkage frame before button press
-    for(int i = 0; i < 100; i++){
-      linkageFrame[i] = this->frame[i];
+  //set new profile pressed animation
+  //for effects that can alter multiple lights, tell them if they should also effect case lights
+  EButtonCaseEffectType buttonCaseEffectType = options.profiles[options.baseProfileIndex].bUseCaseLightsInPressedAnimations ? EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_AND_CASE : EButtonCaseEffectType::BUTTONCASELIGHTTYPE_BUTTON_ONLY;
+  switch (options.profiles[options.baseProfileIndex].basePressedEffect)
+  {
+  case AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_RANDOM:
+    this->buttonAnimation = new RandomColor(RGBLights, lastPressed);
+    break;
+
+  case AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_STATIC_COLOR:
+    this->buttonAnimation = new StaticColor(RGBLights, lastPressed);
+    break;
+  case AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_JIGGLESTATIC:
+    this->buttonAnimation = new JiggleStaticColor(RGBLights, lastPressed);
+    break;
+  case AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_JIGGLETWOSTATICS:
+    this->buttonAnimation = new JiggleTwoStaticColor(RGBLights, lastPressed);
+    break;
+
+  case AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_BURST:
+    this->buttonAnimation = new BurstColor(RGBLights, lastPressed, buttonCaseEffectType);
+    break;
+
+  case AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_BURST_SMALL:
+    this->buttonAnimation = new BurstColor(RGBLights, lastPressed, buttonCaseEffectType, true);
+    break;
+
+  default:
+    break;
+  }
+}
+
+///////////////////////////////////
+// Brightness functions
+///////////////////////////////////
+
+void AnimationStation::ApplyBrightness(uint32_t *frameValue)
+{
+  for (int i = 0; i < FRAME_MAX; i++)
+    frameValue[i] = this->frame[i].value(format, normalisedBrightness);
+}
+
+void AnimationStation::SetBrightnessStepValue(uint8_t brightness)
+{
+  brightnessStepValue = brightness;
+  ApplyBrightnessStepValue();
+}
+
+void AnimationStation::ApplyBrightnessStepValue()
+{
+  brightnessStepValue = std::clamp<uint32_t>(brightnessStepValue, 0, brightnessSteps);
+  normalisedBrightness = (brightnessStepValue * getBrightnessStepSize()) / 255.0F;
+  normalisedBrightness = std::clamp<float>(normalisedBrightness, 0.0f, 1.0f);
+}
+
+void AnimationStation::DecreaseBrightnessByStep()
+{
+  AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+  options.brightness = std::clamp<int32_t>(((int32_t)options.brightness)-1, 0, brightnessSteps);
+  SetBrightnessStepValue(options.brightness);
+
+  EventManager::getInstance().triggerEvent(new GPLEDEvent(false, false, false, false, true));
+}
+
+void AnimationStation::IncreaseBrightnessByStep()
+{
+  AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+  options.brightness = std::clamp<int32_t>(options.brightness+1, 0, brightnessSteps);
+  SetBrightnessStepValue(options.brightness);
+
+  EventManager::getInstance().triggerEvent(new GPLEDEvent(false, false, false, false, true));
+}
+
+void AnimationStation::DimBrightnessTo0()
+{
+  normalisedBrightness = 0;
+}
+
+float AnimationStation::GetNormalisedBrightness()
+{
+  return normalisedBrightness;
+}
+
+uint8_t AnimationStation::GetBrightnessStepValue()
+{
+  return brightnessStepValue;
+}
+
+void AnimationStation::CopyTestProfile(const AnimationProfile* newProfile) {
+    AnimationOptions& options = Storage::getInstance().getAnimationOptions();
+    int ProfileIndex = MAX_ANIMATION_PROFILES_INCLUDING_TEST - 1;
+    memcpy(&options.profiles[ProfileIndex], newProfile, sizeof(AnimationProfile));
+}
+
+void AnimationStation::SetTestModeLayout(){
+    //Set up test profile that is Chase Random
+    AnimationOptions& options = Storage::getInstance().getAnimationOptions();
+    int testProfileIndex = MAX_ANIMATION_PROFILES_INCLUDING_TEST - 1;
+    options.profiles[testProfileIndex].baseCaseEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_LEFT_TO_RIGHT;
+    options.profiles[testProfileIndex].baseNonPressedEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_CHASE_LEFT_TO_RIGHT;
+    options.profiles[testProfileIndex].basePressedEffect = AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_STATIC_COLOR;
+    memset(options.profiles[testProfileIndex].notPressedStaticColors.bytes, 0, NUM_BANK0_GPIOS);
+    memset(options.profiles[testProfileIndex].pressedStaticColors.bytes, 0, NUM_BANK0_GPIOS);
+    memset(options.profiles[testProfileIndex].nonButtonStaticColors.bytes, 0, MAX_NON_BUTTON_LIGHT_COLOR_INDEXES);
+    memset(options.profiles[testProfileIndex].extNotPressedStaticColors.bytes, 0, sizeof(options.profiles[testProfileIndex].extNotPressedStaticColors.bytes));
+    memset(options.profiles[testProfileIndex].extPressedStaticColors.bytes, 0, sizeof(options.profiles[testProfileIndex].extPressedStaticColors.bytes));
+    options.profiles[testProfileIndex].nonPressedSpecialColor = 0xFFFFFF; //White
+    options.profiles[testProfileIndex].caseSpecialColor = 0xFFFFFF; //White
+    options.profiles[testProfileIndex].baseCycleTime = 2;
+    options.profiles[testProfileIndex].basePressedCycleTime = 2;
+    options.profiles[testProfileIndex].baseCaseCycleTime = 2;
+}
+
+void AnimationStation::SetTestModeButton(){
+    //Set up test profile that is all black
+    AnimationOptions& options = Storage::getInstance().getAnimationOptions();
+    int testProfileIndex = MAX_ANIMATION_PROFILES_INCLUDING_TEST - 1;
+    options.profiles[testProfileIndex].baseCaseEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_STATIC_COLOR;
+    options.profiles[testProfileIndex].baseNonPressedEffect = AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_STATIC_COLOR;
+    options.profiles[testProfileIndex].basePressedEffect = AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_STATIC_COLOR;
+    memset(options.profiles[testProfileIndex].notPressedStaticColors.bytes, 0, NUM_BANK0_GPIOS);
+    memset(options.profiles[testProfileIndex].pressedStaticColors.bytes, 0, NUM_BANK0_GPIOS);
+    memset(options.profiles[testProfileIndex].nonButtonStaticColors.bytes, 0, MAX_NON_BUTTON_LIGHT_COLOR_INDEXES);
+    memset(options.profiles[testProfileIndex].extNotPressedStaticColors.bytes, 0, sizeof(options.profiles[testProfileIndex].extNotPressedStaticColors.bytes));
+    memset(options.profiles[testProfileIndex].extPressedStaticColors.bytes, 0, sizeof(options.profiles[testProfileIndex].extPressedStaticColors.bytes));
+}
+
+void AnimationStation::InitSettings()
+{
+	const AnimationOptions& options = Storage::getInstance().getAnimationOptions();
+
+	customColors.clear();
+	for(unsigned int customColIndex = 0; customColIndex < MAX_CUSTOM_COLORS; ++customColIndex)
+	{
+		customColors.push_back(options.customColors[customColIndex]);
+	}
+}
+
+void AnimationStation::CheckForOptionsUpdate()
+{
+  //No saving in test/webconfig mode
+  if(TestMode != AnimationStationTestMode::AnimationStation_TestModeDisableTestMode)
+    return;
+
+  //only change settings if they've been static for a little while
+  if(bChangeDetected)
+  {
+    if(!bAnimConfigSaveNeeded)
+    {
+      bAnimConfigSaveNeeded = true;
+      timeAnimationSaveSet = get_absolute_time();
+    }
+
+    if(bAnimConfigSaveNeeded && (absolute_time_diff_us(timeAnimationSaveSet, get_absolute_time()) / 1000) > 1000) // 1 second delay on saves
+    {
+      bAnimConfigSaveNeeded = false;
+      bChangeDetected = false;
+      EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(false));
+    }
+  }
+}
+
+//Testmode functions
+void AnimationStation::SetTestMode(AnimationStationTestMode testType, const AnimationProfile* testProfile, uint8_t overrideBrightness, uint8_t overrideMaxBrightness) {
+    bTestModeChangeRequested = true;
+    TestMode = testType;
+    SetMaxBrightness(overrideMaxBrightness);
+    SetBrightnessStepValue(overrideBrightness);
+    if(TestMode == AnimationStationTestMode::AnimationStation_TestModeProfilePreview)
+      CopyTestProfile(testProfile);
+    else if(TestMode == AnimationStationTestMode::AnimationStation_TestModeLayout) {
+      SetTestModeLayout();
+    }
+    else if(TestMode == AnimationStationTestMode::AnimationStation_TestModeButtons) {
+      SetTestModeButton();
+    }
+}
+
+void AnimationStation::SetTestPinState(int PinOrNonButtonIndex, bool IsNonButtonLight, LightInputSource InputSource)
+{
+    AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+    AnimationProfile& testProfile = options.profiles[MAX_ANIMATION_PROFILES_INCLUDING_TEST - 1];
+
+    //reset old test light
+    if(TestModePinOrNonButtonIndex != -1) {
+      if(TestModeLightIsNonButton) {
+        if((uint32_t)TestModePinOrNonButtonIndex < MAX_NON_BUTTON_LIGHT_COLOR_INDEXES)
+          testProfile.nonButtonStaticColors.bytes[TestModePinOrNonButtonIndex] = 0x00; //Black/off
+      } else if(uint8_t* slot = ButtonColorSlot(testProfile, TestModeInputSource, TestModePinOrNonButtonIndex, false)) {
+        *slot = 0x00; //Black/off
+      }
+    }
+
+    //Store new test light
+    TestModePinOrNonButtonIndex = PinOrNonButtonIndex;
+    TestModeLightIsNonButton = IsNonButtonLight;
+    TestModeInputSource = IsNonButtonLight ? LightInputSource::LightInputSource_GPIO : InputSource;
+
+    if(TestModePinOrNonButtonIndex != -1) {
+        if(uint8_t* slot = ButtonColorSlot(testProfile, TestModeInputSource, PinOrNonButtonIndex, false))
+          *slot = 0x01; //White
+    }
+}
+
+void AnimationStation::ClearTestMode()
+{
+  AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+  bTestModeChangeRequested = true;
+  TestMode = AnimationStationTestMode::AnimationStation_TestModeDisableTestMode;
+  LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
+  SetMaxBrightness(ledOptions.brightnessMaximum);
+  SetBrightnessStepValue(options.brightness);
+}
+
+RGB AnimationStation::GetColorForIndex(uint32_t ColorIndex) {
+    //pre defined color?
+    if(ColorIndex < (uint32_t)colors.size())
+      return colors[ColorIndex];
+
+    //must be custom color
+    ColorIndex -= colors.size();
+    if(ColorIndex > customColors.size())
+    {
+      //error, no such color
+      return colors[0];
+    }
+    return customColors[ColorIndex];
+}
+
+uint8_t* AnimationStation::ButtonColorSlot(AnimationProfile& Profile, LightInputSource InputSource, uint32_t InputIndex, bool Pressed) {
+  switch(InputSource) {
+    case LightInputSource::LightInputSource_GPIO:
+      if(Pressed)
+        return InputIndex < sizeof(Profile.pressedStaticColors.bytes) ? &Profile.pressedStaticColors.bytes[InputIndex] : nullptr;
+      return InputIndex < sizeof(Profile.notPressedStaticColors.bytes) ? &Profile.notPressedStaticColors.bytes[InputIndex] : nullptr;
+    case LightInputSource::LightInputSource_HallEffect:
+      if(Pressed)
+        return InputIndex < sizeof(Profile.extPressedStaticColors.bytes) ? &Profile.extPressedStaticColors.bytes[InputIndex] : nullptr;
+      return InputIndex < sizeof(Profile.extNotPressedStaticColors.bytes) ? &Profile.extNotPressedStaticColors.bytes[InputIndex] : nullptr;
+    default:
+      return nullptr;
+  }
+}
+
+//Get correct color for light index
+RGB AnimationStation::StaticGetNonPressedColorForLight(Lights* AllLights, uint32_t LightIndex) {
+  AnimationStation & AnimStation = AnimationStation::getInstance();
+  AnimationOptions & options = Storage::getInstance().getAnimationOptions();
+  int colIndex = 0;
+  Light* thisLight = &(AllLights->AllLights[LightIndex]);
+  if(thisLight->Type == LightType::LightType_ActionButton || thisLight->Type == LightType::LightType_Turbo)
+  {
+    //button
+    if(thisLight->InputKey >= 0) {
+      if(const uint8_t* slot = ButtonColorSlot(options.profiles[options.baseProfileIndex], thisLight->InputSource, thisLight->InputIndex, false))
+        colIndex = *slot;
+    }
+  }
+  else
+  {
+    //If we're in test mode for case lights then turn all lights black and return white for the requested case Light
+    if(AnimStation.getTestModeLightIsNonButton() && AnimStation.getTestModePinOrNonButtonIndex() != -1)
+    {
+      colIndex = 0;
+      if(thisLight->Type == LightType::LightType_Turbo && ((int)thisLight->FirstLedIndex == AnimStation.getTestModePinOrNonButtonIndex()))
+        colIndex = 1;
+    }
+    else
+    {
+      //case light or player led
+      colIndex = options.profiles[options.baseProfileIndex].nonButtonStaticColors.bytes[thisLight->NonButtonIndex];
     }
   }
 
-  buttonAnimation->Animate(this->frame);
-}
-
-void AnimationStation::Clear() {
-  memset(frame, 0, sizeof(frame));
-}
-
-float AnimationStation::GetBrightnessX() {
-  return brightnessX;
-}
-
-float AnimationStation::GetLinkageModeOfBrightnessX() {
-  return linkageModeOfBrightnessX;
-}
-
-uint8_t AnimationStation::GetBrightness() {
-  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
-  return animationOptions.brightness;
-}
-
-void AnimationStation::SetMode(uint8_t mode) {
-  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
-  animationOptions.baseAnimationIndex = mode;
-  AnimationEffects newEffect =
-      static_cast<AnimationEffects>(animationOptions.baseAnimationIndex);
-
-  if (this->baseAnimation != nullptr) {
-    delete this->baseAnimation;
-  }
-  if (this->buttonAnimation != nullptr) {
-    delete this->buttonAnimation;
-  }
-
-  this->Clear();
-
-  switch (newEffect) {
-  case AnimationEffects::EFFECT_RAINBOW:
-    this->baseAnimation = new Rainbow(matrix);
-    this->buttonAnimation = new StaticColor(matrix, lastPressed);
-    break;
-  case AnimationEffects::EFFECT_CHASE:
-    this->baseAnimation = new Chase(matrix);
-    this->buttonAnimation = new StaticColor(matrix, lastPressed);
-    break;
-  case AnimationEffects::EFFECT_STATIC_THEME:
-    this->baseAnimation = new StaticTheme(matrix);
-    this->buttonAnimation = new StaticColor(matrix, lastPressed);
-    break;
-  case AnimationEffects::EFFECT_CUSTOM_THEME:
-    this->baseAnimation = new CustomTheme(matrix);
-    this->buttonAnimation = new CustomThemePressed(matrix, lastPressed);
-    break;
-  default:
-    this->baseAnimation = new StaticColor(matrix);
-    this->buttonAnimation = new StaticColor(matrix, lastPressed);
-    break;
-  }
-}
-
-void AnimationStation::SetMatrix(PixelMatrix matrix) {
-  this->matrix = matrix;
-}
-
-void AnimationStation::ApplyBrightness(uint32_t *frameValue) {
-  for (int i = 0; i < 100; i++)
-    frameValue[i] = this->frame[i].value(Animation::format, brightnessX);
-}
-
-void AnimationStation::SetBrightness(uint8_t brightness) {
-  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
-  animationOptions.brightness =
-      (brightness > brightnessSteps) ? brightnessSteps : brightness;
-  brightnessX =
-      (animationOptions.brightness * getBrightnessStepSize()) / 255.0F;
-  linkageModeOfBrightnessX =
-      (animationOptions.brightness * getLinkageModeOfBrightnessStepSize()) / 255.0F;
-  if (linkageModeOfBrightnessX > 1)
-      linkageModeOfBrightnessX = 1;
-  else if (linkageModeOfBrightnessX < 0)
-      linkageModeOfBrightnessX = 0;
-  if (brightnessX > 1.0f)
-    brightnessX = 1.0f;
-  else if (brightnessX < 0.0f)
-    brightnessX = 0.0f;
-}
-
-void AnimationStation::DecreaseBrightness() {
-  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
-  if (animationOptions.brightness > 0)
-    SetBrightness(animationOptions.brightness-1);
-}
-
-void AnimationStation::IncreaseBrightness() {
-  AnimationOptions & animationOptions = Storage::getInstance().getAnimationOptions();
-  if (animationOptions.brightness < getBrightnessStepSize())
-    SetBrightness(animationOptions.brightness+1);
-  else if (animationOptions.brightness > getBrightnessStepSize())
-    SetBrightness(brightnessSteps);
-}
-
-void AnimationStation::DimBrightnessTo0() {
-  brightnessX = 0;
+  return GetColorForIndex(colIndex);
 }

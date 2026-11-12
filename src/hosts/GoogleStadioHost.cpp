@@ -39,6 +39,7 @@ void GoogleStadiaHost::process(uint8_t const *report, uint16_t len) {
     _controller_host_state.lt = controller_report.SIM_GamePadBrake;
     _controller_host_state.rt = controller_report.SIM_GamePadAccelerator;
 
+    _controller_host_state.buttons = 0;
     if (controller_report.BTN_GamePadButton18 == 1) _controller_host_state.buttons |= GAMEPAD_MASK_A2;
     if (controller_report.BTN_GamePadButton17 == 1) _controller_host_state.buttons |= GAMEPAD_MASK_A3;
     if (controller_report.BTN_GamePadButton11 == 1) _controller_host_state.buttons |= GAMEPAD_MASK_S1;
@@ -55,6 +56,7 @@ void GoogleStadiaHost::process(uint8_t const *report, uint16_t len) {
     if (controller_report.BTN_GamePadButton19 == 1) _controller_host_state.buttons |= GAMEPAD_MASK_R2;
     if (controller_report.BTN_GamePadButton20 == 1) _controller_host_state.buttons |= GAMEPAD_MASK_L2;
 
+    _controller_host_state.dpad = 0;
     if (controller_report.GD_GamePadHatSwitch == 0) _controller_host_state.dpad |= GAMEPAD_MASK_UP;
     if (controller_report.GD_GamePadHatSwitch == 1) _controller_host_state.dpad |= GAMEPAD_MASK_UP | GAMEPAD_MASK_RIGHT;
     if (controller_report.GD_GamePadHatSwitch == 2) _controller_host_state.dpad |= GAMEPAD_MASK_RIGHT;

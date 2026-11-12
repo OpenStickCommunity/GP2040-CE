@@ -63,9 +63,9 @@ if (NOT PICO_SDK_PATH)
             get_filename_component(FETCHCONTENT_BASE_DIR "${PICO_SDK_FETCH_FROM_GIT_PATH}" REALPATH BASE_DIR "${CMAKE_SOURCE_DIR}")
         endif ()
         FetchContent_Declare(
-            pico_sdk	                
-            GIT_TAG ${PICO_SDK_FETCH_FROM_GIT_TAG}
-            GIT_REPOSITORY https://github.com/raspberrypi/pico-sdk
+                pico_sdk
+                GIT_REPOSITORY https://github.com/raspberrypi/pico-sdk
+                GIT_TAG ${PICO_SDK_FETCH_FROM_GIT_TAG}
         )
 
         if (NOT pico_sdk)
@@ -95,6 +95,7 @@ if (NOT PICO_SDK_PATH)
                         SUBBUILD_DIR ${FETCHCONTENT_BASE_DIR}/pico_sdk-subbuild
                 )
             endif ()
+
             set(PICO_SDK_PATH ${pico_sdk_SOURCE_DIR})
         endif ()
         set(FETCHCONTENT_BASE_DIR ${FETCHCONTENT_BASE_DIR_SAVE})

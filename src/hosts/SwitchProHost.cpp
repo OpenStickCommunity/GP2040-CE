@@ -87,9 +87,9 @@ void SwitchProHost::update()
     // Player light indicator
     if (gamepad->auxState.playerID.active) {
         Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
-        uint8_t shifted = (1u << (gamepad->auxState.playerID.value+1u)) - 1u;
-        if (gamepad->auxState.playerID.value < 1 && gamepad->auxState.playerID.value > 4) {
-            shifted = 1;
+        uint8_t shifted = 1;
+        if (gamepad->auxState.playerID.value >= 1 && gamepad->auxState.playerID.value <= 4) {
+            shifted = (1u << gamepad->auxState.playerID.value) - 1u;
         }
         if (shifted != lastSwitchLed) {
             SwitchProHostReport led_out_report{

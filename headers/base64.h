@@ -26,6 +26,7 @@
  */
 
 #include <cstdint>
+#include <cstring>
 #include <string>
 
 class Base64 {
@@ -105,17 +106,29 @@ class Base64 {
       return false;
     }
 
-    size_t out_len = dataLen / 4 * 3;
-    if (dataLen >= 1 && dataPtr[dataLen - 1] == '=') out_len--;
-    if (dataLen >= 2 && dataPtr[dataLen - 2] == '=') out_len--;
+    size_t padding = 0;
+    if (dataLen >= 1 && dataPtr[dataLen - 1] == '=') padding++;
+    if (padding && dataLen >= 2 && dataPtr[dataLen - 2] == '=') padding++;
+    if (memchr(dataPtr, '=', dataLen - padding) != nullptr)
+    {
+      out.clear();
+      return false;
+    }
+
+    size_t out_len = dataLen / 4 * 3 - padding;
 
     out.resize(out_len);
 
     for (size_t i = 0, j = 0; i < dataLen;) {
-      uint32_t a = dataPtr[i] == '=' ? 0 & i++ : kDecodingTable[static_cast<int>(dataPtr[i++])];
-      uint32_t b = dataPtr[i] == '=' ? 0 & i++ : kDecodingTable[static_cast<int>(dataPtr[i++])];
-      uint32_t c = dataPtr[i] == '=' ? 0 & i++ : kDecodingTable[static_cast<int>(dataPtr[i++])];
-      uint32_t d = dataPtr[i] == '=' ? 0 & i++ : kDecodingTable[static_cast<int>(dataPtr[i++])];
+      uint32_t a = dataPtr[i] == '=' ? 0 & i++ : kDecodingTable[static_cast<unsigned char>(dataPtr[i++])];
+      uint32_t b = dataPtr[i] == '=' ? 0 & i++ : kDecodingTable[static_cast<unsigned char>(dataPtr[i++])];
+      uint32_t c = dataPtr[i] == '=' ? 0 & i++ : kDecodingTable[static_cast<unsigned char>(dataPtr[i++])];
+      uint32_t d = dataPtr[i] == '=' ? 0 & i++ : kDecodingTable[static_cast<unsigned char>(dataPtr[i++])];
+
+      if ((a | b | c | d) > 63) {
+        out.clear();
+        return false;
+      }
 
       uint32_t triple = (a << 3 * 6) + (b << 2 * 6) + (c << 1 * 6) + (d << 0 * 6);
 
