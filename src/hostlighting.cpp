@@ -8,7 +8,6 @@
 #include <algorithm>
 #include <string.h>
 
-#include "hardware/watchdog.h"
 #include "pico/platform.h"
 #include "pico/unique_id.h"
 #include "device/dcd.h"
@@ -21,19 +20,12 @@
 #include "rebootmodes.h"
 #include "storagemanager.h"
 #include "system.h"
-#include "usbdriver.h"
 #include "version.h"
 #include "animationstation.h"
 #include "pixel.h"
 #include "NeoPico.h"
 #include "inputmodes.h"
 #include "addons/he_trigger.h"
-
-// Watchdog scratch register holding the XInput AUTO host verdict (scratch[5]
-// belongs to System::reboot's BootMode)
-#define HOST_LIGHTING_VERDICT_SCRATCH   6
-#define HOST_LIGHTING_VERDICT_PC_HOST   0x484C5043 // "HLPC"
-#define HOST_LIGHTING_XINPUT_DETECT_MS  4000
 
 namespace {
 
@@ -283,20 +275,6 @@ inline uint32_t get32(const uint8_t* p) { return get16(p) | ((uint32_t)get16(p +
 inline void setBit(uint8_t* bitmap, unsigned bit) { bitmap[bit / 8] |= (uint8_t)(1u << (bit % 8)); }
 
 } // namespace
-
-// ---------------------------------------------------------------------------
-// Interface this boot
-
-// Input mode, settings and the XInput verdict are fixed per boot
-int __not_in_flash_func(HostLighting::lightingInstance)() {
-	if (hidInstance == -2) {
-		DriverManager& drivers = DriverManager::getInstance();
-		InputMode mode = drivers.getInputMode();
-		hidInstance = (!drivers.isConfigMode() && isEnabledForMode(mode))
-			? ((mode == INPUT_MODE_XINPUT) ? 0 : HOST_LIGHTING_HID_INSTANCE) : -1;
-	}
-	return hidInstance;
-}
 
 // ---------------------------------------------------------------------------
 // Lights
@@ -1496,7 +1474,7 @@ bool HostLighting::noteState() {
 // Hands the next reply, else a pending event, to an idle IN endpoint. An
 // event is built when it is sent and only while no reply is queued.
 void HostLighting::drain() {
-	int instance = lightingInstance();
+	int instance = getHIDInstance();
 	if ((instance < 0) || !tud_hid_n_ready((uint8_t)instance))
 		return;
 	if (queueCount != 0) {
@@ -1969,7 +1947,8 @@ bool HostLighting::busResetSeen() {
 // drops the replies still queued and ends a claim, as a change of holder.
 // The subscription stays. A host with a handle that outlives the reset (a Linux
 // reset-resume) would lose it unseen, while it sees a lost claim at once.
-void __not_in_flash_func(HostLighting::upkeep)() {
+// Not inlined, so process() and setReport() share one copy in RAM.
+void __no_inline_not_in_flash_func(HostLighting::upkeep)() {
 	if (busResetSeen()) {
 		clearQueue();
 		if (claimToken != 0)
@@ -1983,7 +1962,7 @@ void HostLighting::setReport(uint8_t report_id, hid_report_type_t report_type, c
 	// OUT endpoint data and SET_REPORT control requests
 	if ((report_type != HID_REPORT_TYPE_INVALID) && (report_type != HID_REPORT_TYPE_OUTPUT))
 		return;
-	if ((lightingInstance() < 0) || (bufsize == 0))
+	if (bufsize == 0)
 		return;
 
 	// Bytes past a short report read as zero
@@ -2068,6 +2047,10 @@ uint16_t HostLighting::getReport(uint8_t report_id, hid_report_type_t report_typ
 
 const uint8_t* HostLighting::getReportDescriptor() {
 	return hostlighting_report_descriptor;
+}
+
+uint16_t HostLighting::getReportDescriptorLength() {
+	return sizeof(hostlighting_report_descriptor);
 }
 
 // ---------------------------------------------------------------------------
@@ -2204,108 +2187,38 @@ void HostLighting::render(AnimationStation& station, uint32_t* frame, int format
 }
 
 // ---------------------------------------------------------------------------
-// Modes and XInput
+// USB function
 
-bool HostLighting::isEnabledForMode(InputMode mode) {
+USBFunctionSetting HostLighting::setting(InputMode mode) {
 	const HostLightingOptions& options = Storage::getInstance().getAddonOptions().hostLightingOptions;
 	const InputModeAttributes* attributes = inputModeAttributes(mode);
 	if (!options.enabled || (attributes == nullptr))
-		return false;
+		return USBFunctionSetting::OFF;
 	if (attributes->lighting == INPUT_MODE_LIGHTING_ALWAYS)
-		return true;
-	if (attributes->lighting == INPUT_MODE_LIGHTING_SETTING)
-		return isXInputCompositeActive();
-	return false;
-}
-
-bool HostLighting::isLightingInterface(uint8_t itf) {
-	return (int)itf == lightingInstance();
-}
-
-bool HostLighting::isXInputCompositeActive() {
-	const HostLightingOptions& options = Storage::getInstance().getAddonOptions().hostLightingOptions;
-	if (!options.enabled)
-		return false;
-	if (options.xinputMode == HOST_LIGHTING_XINPUT_MODE_ON)
-		return true;
-	if (options.xinputMode == HOST_LIGHTING_XINPUT_MODE_AUTO)
-		return watchdog_hw->scratch[HOST_LIGHTING_VERDICT_SCRATCH] == HOST_LIGHTING_VERDICT_PC_HOST;
-	return false;
-}
-
-void HostLighting::processXInputAutoDetect(bool consoleAuthSeen) {
-	const HostLightingOptions& options = Storage::getInstance().getAddonOptions().hostLightingOptions;
-	if (!options.enabled || (options.xinputMode != HOST_LIGHTING_XINPUT_MODE_AUTO))
-		return;
-
-	if (isXInputCompositeActive()) {
-		// Once the composite has mounted, a bus reset that follows a suspend
-		// means a switch moved the board to another host. Back to stock, so
-		// a console never enumerates the PC-only composite. A PC-side port
-		// reset has no suspend before it and keeps the composite.
-		if (!compositeMounted) {
-			if (get_usb_mounted() && !get_usb_suspended()) {
-				compositeMounted = true;
-				resetAfterSuspend = false;
-			}
-			return;
-		}
-		if (resetAfterSuspend) {
-			watchdog_hw->scratch[HOST_LIGHTING_VERDICT_SCRATCH] = 0;
-			System::reboot(System::BootMode::GAMEPAD);
-		}
-		return;
-	}
-
-	// Stock identity, decided once per boot
-	if (stockSettled)
-		return;
-	if (consoleAuthSeen) {
-		stockSettled = true;
-		return;
-	}
-	if (!get_usb_mounted() || get_usb_suspended()) {
-		enumeratedSinceMs = 0;
-		return;
-	}
-	uint32_t now = getMillis();
-	if (enumeratedSinceMs == 0) {
-		enumeratedSinceMs = now;
-		return;
-	}
-	if ((now - enumeratedSinceMs) >= HOST_LIGHTING_XINPUT_DETECT_MS) {
-		watchdog_hw->scratch[HOST_LIGHTING_VERDICT_SCRATCH] = HOST_LIGHTING_VERDICT_PC_HOST;
-		System::reboot(System::BootMode::GAMEPAD);
+		return USBFunctionSetting::ON;
+	if (attributes->lighting != INPUT_MODE_LIGHTING_SETTING)
+		return USBFunctionSetting::OFF;
+	switch (options.xinputMode) {
+		case HOST_LIGHTING_XINPUT_MODE_ON:
+			return USBFunctionSetting::ON;
+		case HOST_LIGHTING_XINPUT_MODE_AUTO:
+			return USBFunctionSetting::AUTO;
+		default:
+			return USBFunctionSetting::OFF;
 	}
 }
 
 // ---------------------------------------------------------------------------
 // USB session (core 0, except usbEvent)
 
-void HostLighting::reportComplete(uint8_t itf) {
-	if ((int)itf == lightingInstance())
-		drain();
+void HostLighting::reportComplete() {
+	drain();
 }
 
 // From tud_event_hook_cb, in interrupt context. Sets flags only
 void HostLighting::usbEvent(uint32_t eventId) {
-	switch (eventId) {
-		case DCD_EVENT_BUS_RESET:
-			busResetPending = true;
-			if (suspendSinceResume)
-				resetAfterSuspend = true;
-			suspendSinceResume = false;
-			break;
-		case DCD_EVENT_SUSPEND:
-			suspendSinceResume = true;
-			break;
-		case DCD_EVENT_RESUME:
-		case DCD_EVENT_UNPLUGGED:
-			suspendSinceResume = false;
-			break;
-		default:
-			break;
-	}
+	if (eventId == DCD_EVENT_BUS_RESET)
+		busResetPending = true;
 }
 
 // TinyUSB reports an unmount only for SET_CONFIGURATION 0 on the RP2040,
@@ -2314,14 +2227,10 @@ void HostLighting::usbEvent(uint32_t eventId) {
 // the next plug-in. The takeover ends at the suspend, and the reset ends
 // the claim and drops the replies still queued (upkeep()).
 void HostLighting::usbUnmounted() {
-	if (lightingInstance() < 0)
-		return;
 	endSession();
 }
 
 void HostLighting::usbSuspended() {
-	if (lightingInstance() < 0)
-		return;
 	// The event, if subscribed, waits for resume
 	endTakeover();
 	restoreBrightness();
@@ -2330,23 +2239,9 @@ void HostLighting::usbSuspended() {
 void HostLighting::setup(bool expanderInputs) {
 	scannedTriggers = triggersScanned();
 	expanderKeys = expanderTotal(expanderInputs);
-
-	// A boot into another mode forgets the XInput AUTO verdict, since the
-	// board may then be moved to a console without losing power. The web
-	// configurator, reached only from a PC, keeps it.
-	DriverManager& drivers = DriverManager::getInstance();
-	if (!drivers.isConfigMode() && (drivers.getInputMode() != INPUT_MODE_XINPUT))
-		watchdog_hw->scratch[HOST_LIGHTING_VERDICT_SCRATCH] = 0;
-
-	const HostLightingOptions& options = Storage::getInstance().getAddonOptions().hostLightingOptions;
-	interfaceActive = lightingInstance() >= 0;
-	xinputAutoDetect = !drivers.isConfigMode() && (drivers.getInputMode() == INPUT_MODE_XINPUT) &&
-		options.enabled && (options.xinputMode == HOST_LIGHTING_XINPUT_MODE_AUTO);
 }
 
 void __not_in_flash_func(HostLighting::process)() {
-	if (lightingInstance() < 0)
-		return;
 	if (busResetPending || clockRunning)
 		upkeep();
 	if (subscription != 0) {

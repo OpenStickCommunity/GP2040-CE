@@ -4,6 +4,7 @@
 #include "drivers/hid/HIDDescriptors.h"
 
 #include "eventmanager.h"
+#include "usbfunctionmanager.h"
 
 void KeyboardDriver::initialize() {
 	keyboardReport = {
@@ -182,9 +183,7 @@ const uint8_t * KeyboardDriver::get_hid_descriptor_report_cb(uint8_t itf) {
 }
 
 const uint8_t * KeyboardDriver::get_descriptor_configuration_cb(uint8_t index) {
-    if (HostLighting::getInstance().isEnabledForMode(INPUT_MODE_KEYBOARD))
-        return keyboard_hostlighting_configuration_descriptor;
-    return keyboard_configuration_descriptor;
+    return USBFunctionManager::getInstance().getConfigurationDescriptor(keyboard_configuration_descriptor);
 }
 
 const uint8_t * KeyboardDriver::get_descriptor_device_qualifier_cb() {

@@ -10,11 +10,13 @@
 
 #include "tusb.h"
 #include "enums.pb.h"
+#include "gpusbfunction.h"
 
 // Host Lighting Protocol (HLP) 2.0, a vendor HID interface through which a
 // host drives the board's RGB LEDs and reads its layout and state. Exposed
 // beside the input interface in XInput, Keyboard, Generic and SInput modes
-// when HostLightingOptions enables it. See docs/host-lighting.md.
+// when HostLightingOptions enables it, as a USB function (GPUSBFunction). See
+// docs/host-lighting.md.
 
 // Default for HostLightingOptions.enabled; overridable per board config.
 // While disabled, every mode presents its stock USB descriptors.
@@ -35,11 +37,6 @@
 #ifndef HOST_LIGHTING_ALLOW_KEYBOARD_MAPPING_CHANGES
 #define HOST_LIGHTING_ALLOW_KEYBOARD_MAPPING_CHANGES 0
 #endif
-
-// HID instance of the lighting interface in HID-class modes, where the
-// gamepad interface enumerates first as instance 0. In XInput the gamepad
-// is vendor-class and lighting is the only HID instance (0).
-#define HOST_LIGHTING_HID_INSTANCE 1
 
 // Report descriptor with one 64-byte input and one 64-byte output report and
 // no report IDs. Hosts find the interface by usage page 0xFF47; the usage is
@@ -64,7 +61,7 @@ class AnimationStation;
 struct Light;
 struct Lights;
 
-class HostLighting {
+class HostLighting : public GPUSBFunction {
 public:
 	HostLighting(HostLighting const&) = delete;
 	void operator=(HostLighting const&) = delete;
@@ -74,33 +71,16 @@ public:
 		return instance;
 	}
 
-	// Set once in setup() and fixed for the boot. Callers in RAM read them
-	// inline, so a board without the interface, or without XInput AUTO,
-	// runs none of the per-pass hooks below from flash.
-	bool isInterfaceActive() const { return interfaceActive; }   // the lighting interface is presented
-	bool isXInputAutoDetect() const { return xinputAutoDetect; } // XInput with AUTO lighting
-
 	// Core 0, from GP2040::setup() after the add-ons load and before USB
-	// starts. Counts the add-on inputs and sets the flags above.
+	// starts. Counts the add-on inputs.
 	// expanderInputs is true when the PCF8575 add-on is loaded, so page 10
 	// lists its input pins.
 	void setup(bool expanderInputs);
 
-	// Modes with the lighting interface in their configuration descriptor
-	bool isEnabledForMode(InputMode mode);
-
-	// Whether HID instance itf is the lighting interface this boot
-	bool isLightingInterface(uint8_t itf);
-
-	// Whether XInput presents the lighting composite identity this boot, with
-	// the config ON, or AUTO with a PC verdict recorded by auto-detect
-	bool isXInputCompositeActive();
-
-	// XInput AUTO, from the XInput driver's process loop. Records a PC
-	// verdict and reboots into the composite when a host enumerates without
-	// console authentication; reboots back to the stock identity after a
-	// bus reset that follows a suspend of the composite.
-	void processXInputAutoDetect(bool consoleAuthSeen);
+	// ON in the modes that always carry the lighting interface. In XInput it
+	// follows the XInput lighting setting. OFF while HostLightingOptions is
+	// off.
+	USBFunctionSetting setting(InputMode mode) override;
 
 	// LED add-on (core 1). Publishes the light layout and the render rate.
 	// The layout must not change while the lighting interface exists.
@@ -111,23 +91,25 @@ public:
 	// frame.
 	void render(AnimationStation& station, uint32_t* frame, int format);
 
-	const uint8_t* getReportDescriptor();
-	uint16_t getReport(uint8_t report_id, hid_report_type_t report_type, uint8_t* buffer, uint16_t reqlen);
-	void setReport(uint8_t report_id, hid_report_type_t report_type, const uint8_t* buffer, uint16_t bufsize);
+	const uint8_t* getReportDescriptor() override;
+	uint16_t getReportDescriptorLength() override;
+	bool hasOutEndpoint() override { return true; }
+	uint16_t getReport(uint8_t report_id, hid_report_type_t report_type, uint8_t* buffer, uint16_t reqlen) override;
+	void setReport(uint8_t report_id, hid_report_type_t report_type, const uint8_t* buffer, uint16_t bufsize) override;
 
 	// USB session hooks (core 0, except usbEvent)
-	void reportComplete(uint8_t itf);
-	void usbEvent(uint32_t eventId); // Sets flags only, in interrupt context
-	void usbUnmounted();
-	void usbSuspended();
+	void reportComplete() override;
+	void usbEvent(uint32_t eventId) override; // Sets flags only, in interrupt context
+	void usbUnmounted() override;
+	void usbSuspended() override;
 
 	// Core 0 main loop, after tud_task(), for expiry, events and the reply drain
-	void process();
+	void process() override;
 
 private:
 	// Every member has a constant initialiser, so the object is built at
-	// compile time and getInstance() needs no first-use guard. Core 1 and
-	// the USB interrupt call it.
+	// compile time and getInstance() needs no first-use guard. Core 1 calls
+	// it.
 	HostLighting() = default;
 
 	// Wire values that size or start the members below (docs/host-lighting.md)
@@ -145,9 +127,6 @@ private:
 	static constexpr uint16_t LED_LIMIT = 100;
 	// MAX_ANIMATION_PROFILES, the profiles with speeds the token follows
 	static constexpr uint8_t ANIMATION_PROFILES = 4;
-
-	// Interface this boot
-	int lightingInstance();
 
 	// Lights and frames
 	uint16_t lightCount();
@@ -259,12 +238,6 @@ private:
 	bool busResetSeen();
 	void upkeep();
 
-	// Interface this boot. The HID instance is found on first use, -2 until
-	// then and -1 for none.
-	int hidInstance = -2;
-	bool interfaceActive = false;
-	bool xinputAutoDetect = false;
-
 	// The LED add-on's layout. Written on core 1 in LED setup, which finishes
 	// before core 0 calls tud_init(), and again only on an LED restart, which
 	// only the web configurator requests (config mode, no lighting interface).
@@ -372,15 +345,6 @@ private:
 
 	// USB bus events, recorded in interrupt context
 	volatile bool busResetPending = false;
-	volatile bool suspendSinceResume = false;
-	volatile bool resetAfterSuspend = false;
-
-	// XInput AUTO. Whether the composite has mounted and whether the stock
-	// identity is decided for this boot, and since when the host has kept the
-	// board enumerated
-	bool compositeMounted = false;
-	bool stockSettled = false;
-	uint32_t enumeratedSinceMs = 0;
 };
 
 #endif
