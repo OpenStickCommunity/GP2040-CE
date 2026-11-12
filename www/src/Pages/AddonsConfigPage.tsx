@@ -58,6 +58,10 @@ import HostLighting, {
 	hostLightingScheme,
 	hostLightingState,
 } from '../Addons/HostLighting';
+import LightingReport, {
+	lightingReportScheme,
+	lightingReportState,
+} from '../Addons/LightingReport';
 import Keyboard, { keyboardScheme, keyboardState } from '../Addons/Keyboard';
 import GamepadUSBHost, {
 	gamepadUSBHostScheme,
@@ -103,6 +107,7 @@ const schema = yup.object().shape({
 	...wiiScheme,
 	...focusModeScheme,
 	...hostLightingScheme,
+	...lightingReportScheme,
 	...keyboardScheme,
 	...rotaryScheme,
 	...pcf8575Scheme,
@@ -130,6 +135,7 @@ export const DEFAULT_VALUES = {
 	...tg16State,
 	...focusModeState,
 	...hostLightingState,
+	...lightingReportState,
 	...keyboardState,
 	...rotaryState,
 	...pcf8575State,
@@ -157,6 +163,7 @@ const ADDONS = [
 	TG16,
 	FocusMode,
 	HostLighting,
+	LightingReport,
 	Keyboard,
 	GamepadUSBHost,
 	Rotary,

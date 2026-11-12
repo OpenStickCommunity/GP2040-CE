@@ -2491,6 +2491,10 @@ std::string setAddonOptions()
     docToValue(hostLightingOptions.xinputMode, doc, "hostLightingXInputMode");
     docToValue(hostLightingOptions.allowKeyboardMappingChanges, doc, "hostLightingAllowKeyboardMappingChanges");
 
+    LightingReportOptions& lightingReportOptions = Storage::getInstance().getAddonOptions().lightingReportOptions;
+    docToValue(lightingReportOptions.enabled, doc, "LightingReportAddonEnabled");
+    docToValue(lightingReportOptions.xinputMode, doc, "lightingReportXInputMode");
+
     AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
     docToValue(analogADS1219Options.enabled, doc, "I2CAnalog1219InputEnabled");
 
@@ -3098,6 +3102,10 @@ std::string getAddonOptions()
     writeDoc(doc, "HostLightingAddonEnabled", hostLightingOptions.enabled);
     writeDoc(doc, "hostLightingXInputMode", hostLightingOptions.xinputMode);
     writeDoc(doc, "hostLightingAllowKeyboardMappingChanges", hostLightingOptions.allowKeyboardMappingChanges);
+
+    const LightingReportOptions& lightingReportOptions = Storage::getInstance().getAddonOptions().lightingReportOptions;
+    writeDoc(doc, "LightingReportAddonEnabled", lightingReportOptions.enabled);
+    writeDoc(doc, "lightingReportXInputMode", lightingReportOptions.xinputMode);
 
     RotaryOptions& rotaryOptions = Storage::getInstance().getAddonOptions().rotaryOptions;
     writeDoc(doc, "RotaryAddonEnabled", rotaryOptions.enabled);
