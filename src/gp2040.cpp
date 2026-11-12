@@ -4,6 +4,7 @@
 #include "gp2040.h"
 #include "helper.h"
 #include "hostlighting.h"
+#include "usbfunctionmanager.h"
 #include "system.h"
 #include "enums.pb.h"
 
@@ -163,8 +164,12 @@ void GP2040::setup() {
 	EventManager::getInstance().registerEventHandler(GP_EVENT_STORAGE_SAVE, GPEVENT_CALLBACK(this->handleStorageSave(event)), this);
 	EventManager::getInstance().registerEventHandler(GP_EVENT_RESTART, GPEVENT_CALLBACK(this->handleSystemReboot(event)), this);
 
-	// Before USB starts. The expander's pins are inputs only if its add-on
-	// loaded (chip found).
+	// The USB functions are added in interface order and the active ones
+	// chosen before USB starts. Host Lighting lists the expander's pins as
+	// inputs only if the PCF8575 add-on loaded.
+	USBFunctionManager& usbFunctions = USBFunctionManager::getInstance();
+	usbFunctions.addFunction(HostLighting::getInstance());
+	usbFunctions.setup();
 	HostLighting::getInstance().setup(addons.GetAddon(PCF8575AddonName) != nullptr);
 }
 
@@ -256,6 +261,7 @@ void __not_in_flash_func(GP2040::run)() {
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
 	GamepadState prevState;
+	USBFunctionManager& usbFunctions = USBFunctionManager::getInstance();
 
 	// Start the TinyUSB Device functionality
 	const tusb_rhport_init_t dev_init = { .role = TUSB_ROLE_DEVICE, .speed = TUSB_SPEED_AUTO };
@@ -317,10 +323,9 @@ void __not_in_flash_func(GP2040::run)() {
 		// TinyUSB Task update
 		tud_task();
 
-		// Host Lighting expiry, events and queued replies
-		HostLighting& hostLighting = HostLighting::getInstance();
-		if (hostLighting.isInterfaceActive())
-			hostLighting.process();
+		// USB function per-pass work, after tud_task()
+		if (usbFunctions.hasActiveFunctions())
+			usbFunctions.process();
 
 		// Post-Process Add-ons with USB Report Processed Sent
 		addons.PostprocessAddons(processed);

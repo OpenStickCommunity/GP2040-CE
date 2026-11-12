@@ -9,8 +9,6 @@
 #include <stdint.h>
 #include <pico/unique_id.h>
 
-#include "hostlighting.h"
-
 #define XINPUT_ENDPOINT_SIZE 20
 
 // Buttons 1 (8 bits)
@@ -98,9 +96,10 @@ static const uint8_t * xinput_get_string_descriptor(int index) {
 }
 
 // Composite variant with per-interface driver binding (XUSB through the MS OS
-// compatible ID below), so the device class is 0 and the ID differs from the
-// stock 045E:028E, which Windows would otherwise bind whole-device to its XUSB
-// driver. Selected at runtime by HostLighting::isXInputCompositeActive().
+// compatible IDs from USBFunctionManager::getXInputCompatibleIDs()), so the
+// device class is 0 and the ID differs from the stock 045E:028E, which Windows
+// would otherwise bind whole-device to its XUSB driver. Selected at runtime by
+// USBFunctionManager::isXInputCompositeActive().
 static const uint8_t xinput_composite_device_descriptor[] __attribute__((unused)) =
 {
     0x12,       // bLength
@@ -130,29 +129,6 @@ static const uint16_t xinput_ms_os_string_descriptor[] __attribute__((unused)) =
     0x0020, // bMS_VendorCode 0x20, padding
 };
 
-// MS OS 1.0 Extended Compat ID descriptor. Interface 0 binds the XUSB driver
-// through its compatible ID, and interface 1 (lighting) stays plain HID
-static const uint8_t xinput_wcid_compat_id_descriptor[] __attribute__((unused)) =
-{
-    0x40, 0x00, 0x00, 0x00, // dwLength 64
-    0x00, 0x01,             // bcdVersion 1.00
-    0x04, 0x00,             // wIndex 4 (extended compat ID)
-    0x02,                   // bCount 2
-    0, 0, 0, 0, 0, 0, 0,    // reserved
-    // Function for interface 0, compatible ID XUSB10
-    0x00,                   // bFirstInterfaceNumber
-    0x01,                   // reserved
-    'X', 'U', 'S', 'B', '1', '0', 0x00, 0x00, // compatibleID
-    0, 0, 0, 0, 0, 0, 0, 0, // subCompatibleID
-    0, 0, 0, 0, 0, 0,       // reserved
-    // Function for interface 1, no compatible ID (HID class binding)
-    0x01,                   // bFirstInterfaceNumber
-    0x01,                   // reserved
-    0, 0, 0, 0, 0, 0, 0, 0, // compatibleID
-    0, 0, 0, 0, 0, 0, 0, 0, // subCompatibleID
-    0, 0, 0, 0, 0, 0,       // reserved
-};
-
 static const uint8_t xinput_device_descriptor[] =
 {
     0x12,       // bLength
@@ -171,16 +147,17 @@ static const uint8_t xinput_device_descriptor[] =
     0x01,       // bNumConfigurations 1
 };
 
-// Composite variant with the XUSB control interface and the host lighting HID
-// interface. The console-only interfaces (audio, plug-in module, security) are
-// omitted, as they serve no purpose on PC and would enumerate driverless.
-// Selected at runtime by HostLighting::isXInputCompositeActive().
+// Composite variant with the XUSB control interface only. USBFunctionManager
+// appends the USB functions' interfaces. The console-only interfaces (audio,
+// plug-in module, security) are omitted, as they serve no purpose on PC and
+// would enumerate driverless. Selected at runtime by
+// USBFunctionManager::isXInputCompositeActive().
 static const uint8_t xinput_composite_configuration_descriptor[] __attribute__((unused)) =
 {
     0x09,        // bLength
     0x02,        // bDescriptorType (Configuration)
-    0x51, 0x00,  // wTotalLength 81
-    0x02,        // bNumInterfaces 2
+    0x31, 0x00,  // wTotalLength 49
+    0x01,        // bNumInterfaces 1
     0x01,        // bConfigurationValue
     0x00,        // iConfiguration (String Index)
     0xA0,        // bmAttributes (remote wakeup)
@@ -225,39 +202,6 @@ static const uint8_t xinput_composite_configuration_descriptor[] __attribute__((
     0x03,        // bmAttributes (Interrupt)
     0x20, 0x00,  // wMaxPacketSize 32
     0x08,        // bInterval 8 (unit depends on device speed)
-
-    // Host Lighting Interface
-    0x09,        // bLength
-    0x04,        // bDescriptorType (Interface)
-    0x01,        // bInterfaceNumber 1
-    0x00,        // bAlternateSetting
-    0x02,        // bNumEndpoints
-    0x03,        // bInterfaceClass (HID)
-    0x00,        // bInterfaceSubClass (No Boot)
-    0x00,        // bInterfaceProtocol (No Protocol)
-    0x00,        // iInterface (String Index)
-    // HID interface descriptor, HID 1.11 spec, section 6.2.1
-    0x09,        // bLength
-    0x21,        // bDescriptorType (HID)
-    0x11, 0x01,  // bcdHID 1.11
-    0x00,        // bCountryCode
-    0x01,        // bNumDescriptors
-    0x22,        // bDescriptorType (Report)
-    sizeof(hostlighting_report_descriptor), 0x00, // wDescriptorLength
-    // Lighting IN Endpoint
-    0x07,        // bLength
-    0x05,        // bDescriptorType (Endpoint)
-    0x83,        // bEndpointAddress (IN/D2H)
-    0x03,        // bmAttributes (Interrupt)
-    0x40, 0x00,  // wMaxPacketSize 64
-    0x01,        // bInterval 1
-    // Lighting OUT Endpoint
-    0x07,        // bLength
-    0x05,        // bDescriptorType (Endpoint)
-    0x03,        // bEndpointAddress (OUT/H2D)
-    0x03,        // bmAttributes (Interrupt)
-    0x40, 0x00,  // wMaxPacketSize 64
-    0x01,        // bInterval 1
 };
 
 // This needs to be:

@@ -6,7 +6,7 @@
 #include "drivers/xinput/XInputDriver.h"
 #include "drivers/shared/driverhelper.h"
 #include "drivers/shared/USBReportScheduler.h"
-#include "hostlighting.h"
+#include "usbfunctionmanager.h"
 #include "storagemanager.h"
 #include "pico/platform.h"
 
@@ -426,9 +426,9 @@ bool __not_in_flash_func(XInputDriver::process)(Gamepad * gamepad) {
 
     // In AUTO mode a host that enumerates but never authenticates is a PC;
     // after a USB switch moves the composite to another host, back to stock
-    HostLighting & hostLighting = HostLighting::getInstance();
-    if (hostLighting.isXInputAutoDetect())
-        hostLighting.processXInputAutoDetect(consoleAuthSeen);
+    USBFunctionManager & usbFunctions = USBFunctionManager::getInstance();
+    if (usbFunctions.isXInputAutoDetect())
+        usbFunctions.processXInputAutoDetect(consoleAuthSeen);
 
     return reportSent;
 }
@@ -449,13 +449,15 @@ uint16_t XInputDriver::get_report(uint8_t report_id, hid_report_type_t report_ty
 bool XInputDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request) {
     // MS OS 1.0 feature request. Hands Windows the compatible IDs that bind the
     // XUSB driver to interface 0 of the composite layout
-    if (HostLighting::getInstance().isXInputCompositeActive() &&
+    USBFunctionManager & usbFunctions = USBFunctionManager::getInstance();
+    if (usbFunctions.isXInputCompositeActive() &&
             (request->bmRequestType_bit.type == TUSB_REQ_TYPE_VENDOR) &&
             (request->bRequest == REQ_GET_OS_FEATURE_DESCRIPTOR) &&
             (request->wIndex == DESC_EXTENDED_COMPATIBLE_ID_DESCRIPTOR)) {
         if (stage == CONTROL_STAGE_SETUP) {
-            return tud_control_xfer(rhport, request,
-                (void *)xinput_wcid_compat_id_descriptor, sizeof(xinput_wcid_compat_id_descriptor));
+            const uint8_t * compatibleIDs = usbFunctions.getXInputCompatibleIDs();
+            return tud_control_xfer(rhport, request, (void *)compatibleIDs,
+                (uint16_t)(compatibleIDs[0] | (compatibleIDs[1] << 8)));
         }
         return true;
     }
@@ -548,7 +550,7 @@ const uint16_t * XInputDriver::get_descriptor_string_cb(uint8_t index, uint16_t 
     // MS OS 1.0 string descriptor. Advertises the vendor request code Windows
     // uses to fetch the compatible ID descriptor. Must precede the table
     // bound, which stalls 0xEE for the stock identity.
-    if ((index == 0xEE) && HostLighting::getInstance().isXInputCompositeActive())
+    if ((index == 0xEE) && USBFunctionManager::getInstance().isXInputCompositeActive())
         return xinput_ms_os_string_descriptor;
     if (index >= TU_ARRAY_SIZE(xinput_string_descriptors))
         return nullptr;
@@ -579,7 +581,7 @@ const uint16_t * XInputDriver::get_descriptor_string_cb(uint8_t index, uint16_t 
 
 const uint8_t * XInputDriver::get_descriptor_device_cb() {
     const uint8_t * baseDescriptor = xinput_device_descriptor;
-    if (HostLighting::getInstance().isXInputCompositeActive()) {
+    if (USBFunctionManager::getInstance().isXInputCompositeActive()) {
         baseDescriptor = xinput_composite_device_descriptor;
     }
     // Check for override settings
@@ -603,7 +605,8 @@ const uint8_t * XInputDriver::get_descriptor_configuration_cb(uint8_t index) {
     memcpy(configDescriptor, &xinput_configuration_descriptor, configDescriptorSize);
     // The interface 0 block is identical in both layouts, so the subtype patch
     // below lands at the same offset either way
-    if (HostLighting::getInstance().isXInputCompositeActive()) {
+    USBFunctionManager & usbFunctions = USBFunctionManager::getInstance();
+    if (usbFunctions.isXInputCompositeActive()) {
         memcpy(configDescriptor, &xinput_composite_configuration_descriptor, sizeof(xinput_composite_configuration_descriptor));
     }
 
@@ -624,7 +627,8 @@ const uint8_t * XInputDriver::get_descriptor_configuration_cb(uint8_t index) {
         configDescriptor[22] = XInputSubtype::XINPUT_SUBTYPE_GAMEPAD;
     }
 
-    return configDescriptor;
+    // The composite's USB functions follow interface 0. The stock layout has none.
+    return usbFunctions.getConfigurationDescriptor(configDescriptor);
 }
 
 const uint8_t * XInputDriver::get_descriptor_device_qualifier_cb() {
