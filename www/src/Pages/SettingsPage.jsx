@@ -31,6 +31,7 @@ import { hexToInt, rgbIntToHex } from '../Services/Utilities';
 
 import {
 	InputModeDeviceType,
+	KeyboardInterfaceXInputMode,
 	PS4ControllerType,
 	Switch2ProColorPreset,
 	Switch2ProJoyCon2ColorPreset,
@@ -380,6 +381,21 @@ const GENERIC_DPAD_MODES = [
 	{ labelKey: 'generic-dpad-mode-options.hat-and-buttons', value: 0 },
 	{ labelKey: 'generic-dpad-mode-options.hat-only', value: 1 },
 	{ labelKey: 'generic-dpad-mode-options.buttons-only', value: 2 },
+];
+
+const KEYBOARD_INTERFACE_XINPUT_MODES = [
+	{
+		labelKey: 'keyboard-interface-xinput-mode-options.off',
+		value: KeyboardInterfaceXInputMode.KEYBOARD_INTERFACE_XINPUT_MODE_OFF,
+	},
+	{
+		labelKey: 'keyboard-interface-xinput-mode-options.on',
+		value: KeyboardInterfaceXInputMode.KEYBOARD_INTERFACE_XINPUT_MODE_ON,
+	},
+	{
+		labelKey: 'keyboard-interface-xinput-mode-options.auto',
+		value: KeyboardInterfaceXInputMode.KEYBOARD_INTERFACE_XINPUT_MODE_AUTO,
+	},
 ];
 
 const SWITCH2_PRO_IDENTITIES = [
@@ -844,6 +860,12 @@ const schema = yup.object().shape({
 		.label('X-Input Authentication Type'),
 	debounceDelay: yup.number().required().label('Debounce Delay'),
 	miniMenuGamepadInput: yup.number().required().label('Mini Menu'),
+	keyboardInterfaceEnabled: yup.number().required().label('Keyboard Interface'),
+	keyboardInterfaceXInputMode: yup
+		.number()
+		.required()
+		.oneOf(KEYBOARD_INTERFACE_XINPUT_MODES.map((o) => o.value))
+		.label('XInput Keyboard'),
 	inputModeB1: yup
 		.number()
 		.required()
@@ -956,6 +978,14 @@ const FormContext = ({ setButtonLabels, setKeyMappings }) => {
 			values.switch2ProColorPreset = parseInt(values.switch2ProColorPreset);
 		if (!!values.genericDpadMode)
 			values.genericDpadMode = parseInt(values.genericDpadMode);
+		if (!!values.keyboardInterfaceEnabled)
+			values.keyboardInterfaceEnabled = parseInt(
+				values.keyboardInterfaceEnabled,
+			);
+		if (!!values.keyboardInterfaceXInputMode)
+			values.keyboardInterfaceXInputMode = parseInt(
+				values.keyboardInterfaceXInputMode,
+			);
 
 		setButtonLabels({
 			swapTpShareLabels:
@@ -1162,6 +1192,15 @@ export default function SettingsPage() {
 			),
 		);
 
+	const handleMaskChange = (masked, button) =>
+		setKeyMappings((mappings) =>
+			mappings.map((mapping, index) =>
+				index === keyboardProfile
+					? { ...mapping, [button]: { ...mapping[button], masked } }
+					: mapping,
+			),
+		);
+
 	const generateDeviceTypeSelection = (
 		values,
 		errors,
@@ -1259,12 +1298,9 @@ export default function SettingsPage() {
 		);
 	};
 
-	const keyboardModeSpecifics = (
-		values,
-		errors,
-		setFieldValue,
-		handleChange,
-	) => {
+	// The keyboard mapping table. The send column sets the keyboard interface's
+	// button mask.
+	const keyboardMapping = (sendColumn) => {
 		return (
 			<div>
 				<Row className="mb-3">
@@ -1309,7 +1345,85 @@ export default function SettingsPage() {
 					buttonLabels={buttonLabels}
 					handleKeyChange={handleKeyChange}
 					getKeyMappingForButton={getKeyMappingForButton}
+					handleMaskChange={sendColumn ? handleMaskChange : undefined}
 				/>
+			</div>
+		);
+	};
+
+	const keyboardModeSpecifics = () => keyboardMapping(false);
+
+	const keyboardInterfaceSpecifics = (
+		values,
+		errors,
+		setFieldValue,
+		handleChange,
+		isXInput,
+	) => {
+		return (
+			<div>
+				<Row className="mb-3">
+					<Col sm={10}>
+						<Form.Check
+							label={t('SettingsPage:keyboard-interface-label')}
+							type="switch"
+							name="keyboardInterfaceEnabled"
+							isInvalid={false}
+							checked={Boolean(values.keyboardInterfaceEnabled)}
+							onChange={(e) => {
+								setFieldValue(
+									'keyboardInterfaceEnabled',
+									e.target.checked ? 1 : 0,
+								);
+							}}
+						/>
+						<div className="small text-muted">
+							{t('SettingsPage:keyboard-interface-text')}
+						</div>
+					</Col>
+				</Row>
+				{Boolean(values.keyboardInterfaceEnabled) && (
+					<>
+						{isXInput && (
+							<>
+								<Row className="mb-3">
+									<Col sm={6}>
+										<Form.Label>
+											{t('SettingsPage:keyboard-interface-xinput-mode-label')}
+										</Form.Label>
+										<Form.Select
+											name="keyboardInterfaceXInputMode"
+											className="form-select-sm"
+											value={values.keyboardInterfaceXInputMode}
+											onChange={handleChange}
+											isInvalid={errors.keyboardInterfaceXInputMode}
+										>
+											{KEYBOARD_INTERFACE_XINPUT_MODES.map((o) => (
+												<option
+													key={`keyboard-interface-xinput-mode-option-${o.value}`}
+													value={o.value}
+												>
+													{t(`SettingsPage:${o.labelKey}`)}
+												</option>
+											))}
+										</Form.Select>
+									</Col>
+								</Row>
+								<Row className="mb-3">
+									<Col sm={10} className="small text-muted">
+										{t('SettingsPage:keyboard-interface-xinput-mode-help')}
+									</Col>
+								</Row>
+							</>
+						)}
+						{keyboardMapping(true)}
+						<Row className="mb-3">
+							<Col sm={10} className="small text-muted">
+								{t('SettingsPage:keyboard-interface-send-key-text')}
+							</Col>
+						</Row>
+					</>
+				)}
 			</div>
 		);
 	};
@@ -1703,6 +1817,13 @@ export default function SettingsPage() {
 						/>
 					</Col>
 				</Row>
+				{keyboardInterfaceSpecifics(
+					values,
+					errors,
+					setFieldValue,
+					handleChange,
+					true,
+				)}
 				{usbOverride(values, errors, setFieldValue, handleChange)}
 			</div>
 		);
@@ -1771,6 +1892,13 @@ export default function SettingsPage() {
 						</Form.Select>
 					</Col>
 				</Row>
+				{keyboardInterfaceSpecifics(
+					values,
+					errors,
+					setFieldValue,
+					handleChange,
+					false,
+				)}
 				{usbOverride(values, errors, setFieldValue, handleChange)}
 			</div>
 		);
@@ -2457,6 +2585,14 @@ export default function SettingsPage() {
 				);
 			case 'input-mode-options.xbone':
 				return xboneModeSpecifics(values, errors, setFieldValue, handleChange);
+			case 'input-mode-options.sinput':
+				return keyboardInterfaceSpecifics(
+					values,
+					errors,
+					setFieldValue,
+					handleChange,
+					false,
+				);
 			case 'input-mode-options.nintendo-switch-pro':
 				return switchProModeSpecifics(values, setFieldValue);
 			case 'input-mode-options.nintendo-switch2-pro':
@@ -2496,6 +2632,9 @@ export default function SettingsPage() {
 
 	const onSubmit = async (values) => {
 		const isKeyboardMode = values.inputMode === 3;
+		const showsKeyboardInterface =
+			INPUT_MODES.find((o) => o.value == values.inputMode)?.keyboardInterface &&
+			Boolean(values.keyboardInterfaceEnabled);
 
 		const data = {
 			...values,
@@ -2506,7 +2645,7 @@ export default function SettingsPage() {
 		if (values.forcedSetupMode > 1) {
 			setWarning({ show: true, acceptText: '' });
 		} else {
-			if (isKeyboardMode) {
+			if (isKeyboardMode || showsKeyboardInterface) {
 				const [baseMappings, ...profileMappings] = keyMappings;
 				await WebApi.setKeyMappings(baseMappings);
 				if (profileMappings.length)

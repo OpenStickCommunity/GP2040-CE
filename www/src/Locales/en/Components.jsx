@@ -18,5 +18,6 @@ export default {
 	},
 	'keyboard-mapper': {
 		'key-header': 'Key',
+		'send-key-header': 'Send Key',
 	},
 };

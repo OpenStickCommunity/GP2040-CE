@@ -543,6 +543,8 @@ app.get('/api/getGamepadOptions', (req, res) => {
 		usbVendorID: '10C4',
 		usbProductID: '82C0',
 		miniMenuGamepadInput: 1,
+		keyboardInterfaceEnabled: 0,
+		keyboardInterfaceXInputMode: 2,
 		hotkey01: {
 			auxMask: 32768,
 			buttonsMask: 66304,
@@ -644,16 +646,17 @@ app.get('/api/getPinMappings', (req, res) => {
 	return res.send(createPinMappings({ profileLabel: 'Profile 1' }));
 });
 
-app.get('/api/getKeyMappings', (req, res) =>
-	res.send(mapValues(DEFAULT_KEYBOARD_MAPPING)),
-);
+// The keyboard interface's default button mask is E1-E12
+const createKeyMappings = () => ({
+	...mapValues(DEFAULT_KEYBOARD_MAPPING),
+	keyboardButtonMask: 0xfff00000,
+});
+
+app.get('/api/getKeyMappings', (req, res) => res.send(createKeyMappings()));
 
 app.get('/api/getProfileKeyMappings', (req, res) =>
 	res.send({
-		profiles: [
-			mapValues(DEFAULT_KEYBOARD_MAPPING),
-			mapValues(DEFAULT_KEYBOARD_MAPPING),
-		],
+		profiles: [createKeyMappings(), createKeyMappings()],
 	}),
 );
 
