@@ -155,6 +155,12 @@ export enum HostLightingXInputMode {
     HOST_LIGHTING_XINPUT_MODE_AUTO = 2
 }
 
+export enum KeyboardInterfaceXInputMode {
+    KEYBOARD_INTERFACE_XINPUT_MODE_OFF = 0,
+    KEYBOARD_INTERFACE_XINPUT_MODE_ON = 1,
+    KEYBOARD_INTERFACE_XINPUT_MODE_AUTO = 2
+}
+
 export enum InputModeDeviceType {
     INPUT_MODE_DEVICE_TYPE_GAMEPAD = 0,
     INPUT_MODE_DEVICE_TYPE_WHEEL = 1,

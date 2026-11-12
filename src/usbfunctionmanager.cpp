@@ -53,6 +53,7 @@ void USBFunctionManager::setup() {
 	for (uint8_t i = 0; i < functionCount; i++)
 		functions[i]->setHIDInstance(-1);
 	activeCount = 0;
+	inputStepCount = 0;
 	xinputAutoDetect = false;
 	xinputComposite = false;
 	const InputModeAttributes* attributes = inputModeAttributes(mode);
@@ -83,6 +84,8 @@ void USBFunctionManager::setup() {
 			break;
 		functions[i]->setHIDInstance(firstInstance + activeCount);
 		active[activeCount++] = functions[i];
+		if (functions[i]->hasInputStep())
+			inputStepFunctions[inputStepCount++] = functions[i];
 	}
 }
 
@@ -257,6 +260,11 @@ void USBFunctionManager::usbUnmounted() {
 void USBFunctionManager::usbSuspended() {
 	for (uint8_t i = 0; i < activeCount; i++)
 		active[i]->usbSuspended();
+}
+
+void __not_in_flash_func(USBFunctionManager::processInputs)(Gamepad* gamepad) {
+	for (uint8_t i = 0; i < inputStepCount; i++)
+		inputStepFunctions[i]->processInputs(gamepad);
 }
 
 void __not_in_flash_func(USBFunctionManager::process)() {

@@ -25,6 +25,7 @@
 #include "pixel.h"
 #include "NeoPico.h"
 #include "inputmodes.h"
+#include "keyboardinterface.h"
 #include "addons/he_trigger.h"
 
 namespace {
@@ -159,7 +160,7 @@ constexpr uint8_t BOOT_HOLD_GROUPS[] = { 4, 11 };
 constexpr uint8_t SUMMARY_GROUPS[] = { 30, 8 };
 constexpr uint8_t PROFILE_GROUPS[] = { 18 };
 constexpr uint8_t CONTROL_GROUPS[] = { 4, 4, 6, 4 };
-constexpr uint8_t KEYBOARD_MAPPING_GROUPS[] = { 3 };
+constexpr uint8_t KEYBOARD_MAPPING_GROUPS[] = { 3, 1 };
 constexpr uint8_t LIGHT_GROUPS[] = { 4, 2, 3, 4, 2, 1 };
 constexpr uint8_t ANIMATION_GROUPS[] = { 4, 3 };
 constexpr uint8_t INPUT_MODE_NAME_SIZE = 22;
@@ -241,6 +242,9 @@ constexpr uint8_t HOLD_ACTIONS = 3;
 // Page 8 Summary flags
 constexpr uint8_t SUMMARY_WHITE_CHANNEL = 1 << 0;
 constexpr uint8_t SUMMARY_USB_HOST = 1 << 1;
+
+// Page 11 Keyboard mapping flags
+constexpr uint8_t KEYBOARD_MAPPING_SENDS_KEY = 1 << 0;
 
 // Events
 constexpr uint16_t EVENT_STATE_CHANGED = 1 << 0;
@@ -1189,15 +1193,18 @@ void HostLighting::controlRecord(uint16_t index, uint16_t groups, Writer& w) {
 uint16_t HostLighting::controlTotal() { return controlCounts().total; }
 
 // Page 11 - Keyboard mapping. The code is the low byte, as
-// KeyboardDriver::pressKey takes it
+// KeyboardDriver::pressKey takes it. The flags mark the buttons the keyboard
+// interface sends as keys, none while it is not active
 uint16_t HostLighting::keyboardMappingTotal() { return KEYBOARD_MAPPING_FIELDS; }
 
 void HostLighting::keyboardMappingRecord(uint16_t index, uint16_t groups, Writer& w) {
-	if (!(groups & (1 << 0)))
-		return;
 	const KeyboardMappingField& field = keyboardMappingFields[index];
-	w.u16((uint16_t)field.action);
-	w.u8((uint8_t)(Storage::getInstance().getActiveKeyboardMapping().*field.code));
+	if (groups & (1 << 0)) {
+		w.u16((uint16_t)field.action);
+		w.u8((uint8_t)(Storage::getInstance().getActiveKeyboardMapping().*field.code));
+	}
+	if (groups & (1 << 1))
+		w.u8(KeyboardInterface::getInstance().sendsKey(field.code) ? KEYBOARD_MAPPING_SENDS_KEY : 0);
 }
 
 // Page 12 - Lights
@@ -1338,7 +1345,10 @@ bool HostLighting::speedsChanged() {
 // configuration gives the same token.
 // Recomputed on the next use after a change of the inputs, which are the
 // lights and add-on inputs (fixed per boot), the pin map and keyboard mapping
-// (profile switch) and the keyboard mapping's codes (SET_KEYBOARD_MAPPING).
+// (profile switch), the keyboard mapping's codes (SET_KEYBOARD_MAPPING) and
+// the buttons the keyboard interface sends as keys (D-pad mode). A change of
+// those buttons alone rehashes page 11 alone, as a D-pad mode change can come
+// during play.
 uint32_t HostLighting::currentToken() {
 	if (speedsChanged())
 		tokenStale = true;
@@ -1347,11 +1357,19 @@ uint32_t HostLighting::currentToken() {
 		hashedProfile = profile;
 		tokenStale = true;
 	}
-	if (!tokenStale)
+	bool keysOnly = false;
+	const uint32_t sentButtons = KeyboardInterface::getInstance().sentButtons();
+	if (sentButtons != hashedSentButtons) {
+		hashedSentButtons = sentButtons;
+		keysOnly = !tokenStale;
+	}
+	if (!tokenStale && !keysOnly)
 		return stateToken;
 	tokenStale = false;
 	for (const PageDef& page : pages) {
 		if ((page.number < PAGE_SUMMARY) || (page.number >= PAGE_SUMMARY + CONFIGURATION_PAGES))
+			continue;
+		if (keysOnly && (page.number != PAGE_KEYBOARD_MAPPING))
 			continue;
 		const uint16_t groups = (page.number == PAGE_SUMMARY) ? 1 : (uint16_t)((1u << page.groupCount) - 1);
 		uint16_t total = (this->*page.total)();

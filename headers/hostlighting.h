@@ -319,6 +319,9 @@ private:
 	// The profile with the pin map and keyboard mapping last hashed, as the
 	// reinit applied it (GP2040::getReinitGamepad, core 0)
 	uint32_t hashedProfile = 0;
+	// The buttons the keyboard interface sent as keys when last hashed, from
+	// the mask, the codes and the D-pad mode
+	uint32_t hashedSentButtons = 0;
 	uint32_t pageHashes[CONFIGURATION_PAGES] = {};
 	bool pagesHashed = false;
 	uint8_t pageChanges[CONFIGURATION_PAGES] = {};

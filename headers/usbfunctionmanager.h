@@ -41,6 +41,7 @@ public:
 	// Fixed for the boot and read inline by the main loop, so a board with no
 	// active function and no XInput AUTO skips the per-pass hooks.
 	bool hasActiveFunctions() const { return activeCount != 0; }
+	bool hasInputSteps() const { return inputStepCount != 0; }   // an active function has an input step
 	bool isXInputAutoDetect() const { return xinputAutoDetect; } // XInput with an AUTO setting
 
 	// True if XInput uses the composite identity this boot. A function is ON,
@@ -75,8 +76,9 @@ public:
 	void usbUnmounted();
 	void usbSuspended();
 
-	// Called from GP2040::run() on core 0 after tud_task(). Runs every active
-	// function.
+	// Called from GP2040::run() on core 0. processInputs() runs before the
+	// input driver and process() after tud_task().
+	void processInputs(Gamepad* gamepad);
 	void process();
 
 private:
@@ -106,6 +108,10 @@ private:
 	GPUSBFunction* active[MAX_FUNCTIONS] = {};
 	uint8_t activeCount = 0;
 	uint8_t firstInstance = 0;
+
+	// Active functions that implement processInputs()
+	GPUSBFunction* inputStepFunctions[MAX_FUNCTIONS] = {};
+	uint8_t inputStepCount = 0;
 	bool xinputAutoDetect = false;
 	bool xinputComposite = false;
 

@@ -4,6 +4,7 @@
 #include "gp2040.h"
 #include "helper.h"
 #include "hostlighting.h"
+#include "keyboardinterface.h"
 #include "usbfunctionmanager.h"
 #include "system.h"
 #include "enums.pb.h"
@@ -165,12 +166,15 @@ void GP2040::setup() {
 	EventManager::getInstance().registerEventHandler(GP_EVENT_RESTART, GPEVENT_CALLBACK(this->handleSystemReboot(event)), this);
 
 	// The USB functions are added in interface order and the active ones
-	// chosen before USB starts. Host Lighting lists the expander's pins as
-	// inputs only if the PCF8575 add-on loaded.
+	// chosen before USB starts. Hosts bind the keyboard by device path, so it
+	// comes first. Host Lighting lists the expander's pins as inputs only if
+	// the PCF8575 add-on loaded.
 	USBFunctionManager& usbFunctions = USBFunctionManager::getInstance();
+	usbFunctions.addFunction(KeyboardInterface::getInstance());
 	usbFunctions.addFunction(HostLighting::getInstance());
 	usbFunctions.setup();
 	HostLighting::getInstance().setup(addons.GetAddon(PCF8575AddonName) != nullptr);
+	KeyboardInterface::getInstance().setup();
 }
 
 /**
@@ -317,8 +321,20 @@ void __not_in_flash_func(GP2040::run)() {
 		// Copy Processed Gamepad for Core1 (race condition otherwise)
 		memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
 
+		// USB function input steps. Buttons they take are hidden from the
+		// input driver and restored after it.
+		const bool inputSteps = usbFunctions.hasInputSteps();
+		const uint32_t buttons = gamepad->state.buttons;
+		const uint8_t dpad = gamepad->state.dpad;
+		if (inputSteps)
+			usbFunctions.processInputs(gamepad);
+
 		// Process Input Driver
 		bool processed = inputDriver->process(gamepad);
+		if (inputSteps) {
+			gamepad->state.buttons = buttons;
+			gamepad->state.dpad = dpad;
+		}
 
 		// TinyUSB Task update
 		tud_task();
