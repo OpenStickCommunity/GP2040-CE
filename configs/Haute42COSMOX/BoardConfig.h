@@ -9,7 +9,7 @@
  #include "enums.pb.h"
  #include "class/hid/hid.h"
  
- #define BOARD_CONFIG_LABEL "Haute42 COSMOX"
+ #define BOARD_CONFIG_LABEL "Haute42|COSMOX"
  
  // Main pin mapping Configuration
  //                          // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
@@ -327,7 +327,7 @@
 13, 1, 6, 0, 18, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
 14, 1, 8, 5, 19, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
 15, 1, 3, 6, 26, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO
-#define LIGHT_DATA_NAME_DEFAULT "Haute/Cosmox T16" 
+#define LIGHT_DATA_NAME_DEFAULT "Haute42|COSMOX T16" 
 
 //Defines for T12
 #define LIGHT_DATA_SIZE_1 12 //number of sets in the below data
@@ -344,7 +344,7 @@
 9, 1, 8, 3, 7, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
 10, 1, 10, 3, 8, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
 11, 1, 12, 3, 9, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO
-#define LIGHT_DATA_NAME_1 "Haute/Cosmox T12" 
+#define LIGHT_DATA_NAME_1 "Haute42|COSMOX T12" 
 
 // Keyboard Host enabled by default
 #define KEYBOARD_HOST_ENABLED 1
