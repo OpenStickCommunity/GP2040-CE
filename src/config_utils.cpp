@@ -10,6 +10,8 @@
 
 #include "BoardConfig.h"
 #include "GamepadConfig.h"
+#include "hostlighting.h"
+#include "lightingreport.h"
 #include "version.h"
 #include "advanced_socd.h"
 #include "addons/analog.h"
@@ -278,6 +280,21 @@
    #define MINI_MENU_GAMEPAD_INPUT 0
 #endif
 
+#ifndef DEFAULT_KEYBOARD_INTERFACE_ENABLED
+   #define DEFAULT_KEYBOARD_INTERFACE_ENABLED 0
+#endif
+
+#ifndef DEFAULT_KEYBOARD_INTERFACE_XINPUT_MODE
+   #define DEFAULT_KEYBOARD_INTERFACE_XINPUT_MODE KEYBOARD_INTERFACE_XINPUT_MODE_AUTO
+#endif
+
+// Buttons the keyboard interface sends as keys, E1-E12 by default
+#ifndef DEFAULT_KEYBOARD_BUTTON_MASK
+   #define DEFAULT_KEYBOARD_BUTTON_MASK (GAMEPAD_MASK_E1 | GAMEPAD_MASK_E2 | GAMEPAD_MASK_E3 | GAMEPAD_MASK_E4 | \
+       GAMEPAD_MASK_E5 | GAMEPAD_MASK_E6 | GAMEPAD_MASK_E7 | GAMEPAD_MASK_E8 | GAMEPAD_MASK_E9 | GAMEPAD_MASK_E10 | \
+       GAMEPAD_MASK_E11 | GAMEPAD_MASK_E12)
+#endif
+
 #ifndef GPIO_INVERTED_PIN_MASK
     #define GPIO_INVERTED_PIN_MASK 0
 #endif
@@ -527,6 +544,8 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.gamepadOptions, usbVendorID, DEFAULT_USB_VENDOR_ID);
     INIT_UNSET_PROPERTY(config.gamepadOptions, usbProductID, DEFAULT_USB_PRODUCT_ID);
     INIT_UNSET_PROPERTY(config.gamepadOptions, miniMenuGamepadInput, MINI_MENU_GAMEPAD_INPUT);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, keyboardInterfaceEnabled, !!DEFAULT_KEYBOARD_INTERFACE_ENABLED);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, keyboardInterfaceXInputMode, DEFAULT_KEYBOARD_INTERFACE_XINPUT_MODE);
 
     // hotkeyOptions
     HotkeyOptions& hotkeyOptions = config.hotkeyOptions;
@@ -633,11 +652,16 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     initPinInversion(config.gpioMappings);
     INIT_UNSET_PROPERTY(config.gpioMappings, socdModeOverride, false);
     INIT_UNSET_PROPERTY(config.gpioMappings, socdMode, DEFAULT_SOCD_MODE);
+    INIT_UNSET_PROPERTY(config.gpioMappings, keyboardButtonMask, DEFAULT_KEYBOARD_BUTTON_MASK);
 
     for (GpioMappings& profile : config.profileOptions.gpioMappingsSets) {
         if (!profile.has_keyboardMapping) {
             profile.keyboardMapping = config.keyboardMapping;
             profile.has_keyboardMapping = true;
+        }
+        if (!profile.has_keyboardButtonMask) {
+            profile.keyboardButtonMask = config.gpioMappings.keyboardButtonMask;
+            profile.has_keyboardButtonMask = true;
         }
         initPinInversion(profile);
         INIT_UNSET_PROPERTY(profile, socdModeOverride, false);
@@ -1493,6 +1517,18 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, buttonLockEnabled, !!FOCUS_MODE_BUTTON_LOCK_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, macroLockEnabled, !!FOCUS_MODE_MACRO_LOCK_ENABLED);
 
+
+    // addonOptions.hostLightingOptions
+    INIT_UNSET_PROPERTY(config.addonOptions.hostLightingOptions, enabled, !!HOST_LIGHTING_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.hostLightingOptions, xinputMode,
+        HOST_LIGHTING_XINPUT ? HOST_LIGHTING_XINPUT_MODE_AUTO : HOST_LIGHTING_XINPUT_MODE_OFF);
+    INIT_UNSET_PROPERTY(config.addonOptions.hostLightingOptions, allowKeyboardMappingChanges,
+        !!HOST_LIGHTING_ALLOW_KEYBOARD_MAPPING_CHANGES);
+
+    // addonOptions.lightingReportOptions
+    INIT_UNSET_PROPERTY(config.addonOptions.lightingReportOptions, enabled, !!LIGHTING_REPORT_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.lightingReportOptions, xinputMode,
+        LIGHTING_REPORT_XINPUT ? LIGHTING_REPORT_XINPUT_MODE_AUTO : LIGHTING_REPORT_XINPUT_MODE_OFF);
 
     // addonOptions.gamepadUSBHostOptions
     INIT_UNSET_PROPERTY(config.addonOptions.gamepadUSBHostOptions, enabled, GAMEPAD_USB_HOST_ENABLED)

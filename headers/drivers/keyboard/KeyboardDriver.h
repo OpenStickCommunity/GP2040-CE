@@ -31,7 +31,6 @@ private:
     void releaseAllKeys(void);
 	void pressKey(uint8_t code);
     uint8_t getModifier(uint8_t code);
-    uint8_t getMultimedia(uint8_t code);
     uint8_t last_report[CFG_TUD_ENDPOINT0_SIZE] = { };
     uint8_t last_multimedia_report = 0;
     KeyboardReport keyboardReport;

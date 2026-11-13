@@ -266,10 +266,14 @@ src/display/GPGFX_UI.cpp
 src/drivermanager.cpp
 src/eventmanager.cpp
 src/layoutmanager.cpp
+src/hostlighting.cpp
+src/keyboardinterface.cpp
+src/lightingreport.cpp
 src/peripheralmanager.cpp
 src/storagemanager.cpp
 src/system.cpp
 src/usbdriver.cpp
+src/usbfunctionmanager.cpp
 src/usbhostmanager.cpp
 src/config_legacy.cpp
 src/config_utils.cpp

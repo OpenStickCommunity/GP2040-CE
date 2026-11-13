@@ -94,6 +94,8 @@ message GamepadOptions
     optional uint32 switch2ProRightRingColor = 65;
     repeated AdvancedSOCDSlot advancedSOCDSlots = 66 [(nanopb).max_count = 4];
     optional bool advancedSOCDEnabled = 67;
+    optional bool keyboardInterfaceEnabled = 68;
+    optional KeyboardInterfaceXInputMode keyboardInterfaceXInputMode = 69;
 }
 
 message KeyboardMapping
@@ -238,6 +240,7 @@ message GpioMappings
     repeated uint32 invertedPins = 6 [(nanopb).max_count = 48];
     optional bool socdModeOverride = 7;
     optional SOCDMode socdMode = 8;
+    optional uint32 keyboardButtonMask = 9;
 }
 
 
@@ -983,6 +986,19 @@ message HETriggerOptions
     optional float switchTravel = 16; // Web UI only: switch travel in mm for display (0 = unset)
 }
 
+message HostLightingOptions
+{
+    optional bool enabled = 1;
+    optional HostLightingXInputMode xinputMode = 2;
+    optional bool allowKeyboardMappingChanges = 3;
+}
+
+message LightingReportOptions
+{
+    optional bool enabled = 1;
+    optional LightingReportXInputMode xinputMode = 2;
+}
+
 message AddonOptions
 {
     optional BootselButtonOptions bootselButtonOptions = 1;
@@ -1017,6 +1033,8 @@ message AddonOptions
     optional HETriggerOptions heTriggerOptions = 30;
     optional ProfileSliderOptions profileSliderOptions = 31;
     optional AnalogADS1115Options analogADS1115Options = 32;
+    optional HostLightingOptions hostLightingOptions = 33;
+    optional LightingReportOptions lightingReportOptions = 34;
 }
 
 message MigrationHistory

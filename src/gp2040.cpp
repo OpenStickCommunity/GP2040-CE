@@ -3,6 +3,10 @@
 // GP2040 includes
 #include "gp2040.h"
 #include "helper.h"
+#include "hostlighting.h"
+#include "keyboardinterface.h"
+#include "lightingreport.h"
+#include "usbfunctionmanager.h"
 #include "system.h"
 #include "enums.pb.h"
 
@@ -161,6 +165,18 @@ void GP2040::setup() {
 	// register system event handlers
 	EventManager::getInstance().registerEventHandler(GP_EVENT_STORAGE_SAVE, GPEVENT_CALLBACK(this->handleStorageSave(event)), this);
 	EventManager::getInstance().registerEventHandler(GP_EVENT_RESTART, GPEVENT_CALLBACK(this->handleSystemReboot(event)), this);
+
+	// The USB functions are added in interface order and the active ones
+	// chosen before USB starts. Hosts bind the keyboard and the lighting
+	// report by device path, so they come first. Host Lighting lists the
+	// expander's pins as inputs only if the PCF8575 add-on loaded.
+	USBFunctionManager& usbFunctions = USBFunctionManager::getInstance();
+	usbFunctions.addFunction(KeyboardInterface::getInstance());
+	usbFunctions.addFunction(LightingReport::getInstance());
+	usbFunctions.addFunction(HostLighting::getInstance());
+	usbFunctions.setup();
+	HostLighting::getInstance().setup(addons.GetAddon(PCF8575AddonName) != nullptr);
+	KeyboardInterface::getInstance().setup();
 }
 
 /**
@@ -251,6 +267,7 @@ void __not_in_flash_func(GP2040::run)() {
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
 	GamepadState prevState;
+	USBFunctionManager& usbFunctions = USBFunctionManager::getInstance();
 
 	// Start the TinyUSB Device functionality
 	const tusb_rhport_init_t dev_init = { .role = TUSB_ROLE_DEVICE, .speed = TUSB_SPEED_AUTO };
@@ -306,11 +323,27 @@ void __not_in_flash_func(GP2040::run)() {
 		// Copy Processed Gamepad for Core1 (race condition otherwise)
 		memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
 
+		// USB function input steps. Buttons they take are hidden from the
+		// input driver and restored after it.
+		const bool inputSteps = usbFunctions.hasInputSteps();
+		const uint32_t buttons = gamepad->state.buttons;
+		const uint8_t dpad = gamepad->state.dpad;
+		if (inputSteps)
+			usbFunctions.processInputs(gamepad);
+
 		// Process Input Driver
 		bool processed = inputDriver->process(gamepad);
+		if (inputSteps) {
+			gamepad->state.buttons = buttons;
+			gamepad->state.dpad = dpad;
+		}
 
 		// TinyUSB Task update
 		tud_task();
+
+		// USB function per-pass work, after tud_task()
+		if (usbFunctions.hasActiveFunctions())
+			usbFunctions.process();
 
 		// Post-Process Add-ons with USB Report Processed Sent
 		addons.PostprocessAddons(processed);

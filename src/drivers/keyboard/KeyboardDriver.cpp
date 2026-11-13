@@ -4,6 +4,7 @@
 #include "drivers/hid/HIDDescriptors.h"
 
 #include "eventmanager.h"
+#include "usbfunctionmanager.h"
 
 void KeyboardDriver::initialize() {
 	keyboardReport = {
@@ -42,20 +43,6 @@ uint8_t KeyboardDriver::getModifier(uint8_t code) {
 
 	return 0;
 }
-
-uint8_t KeyboardDriver::getMultimedia(uint8_t code) {
-	switch (code) {
-		case KEYBOARD_MULTIMEDIA_NEXT_TRACK : return 0x01;
-		case KEYBOARD_MULTIMEDIA_PREV_TRACK : return 0x02;
-		case KEYBOARD_MULTIMEDIA_STOP 	    : return 0x04;
-		case KEYBOARD_MULTIMEDIA_PLAY_PAUSE : return 0x08;
-		case KEYBOARD_MULTIMEDIA_MUTE 	    : return 0x10;
-		case KEYBOARD_MULTIMEDIA_VOLUME_UP  : return 0x20;
-		case KEYBOARD_MULTIMEDIA_VOLUME_DOWN: return 0x40;
-	}
-	return 0;
-}
-
 
 bool KeyboardDriver::process(Gamepad * gamepad) {
 	const KeyboardMapping& keyboardMapping = Storage::getInstance().getActiveKeyboardMapping();
@@ -130,20 +117,11 @@ bool KeyboardDriver::process(Gamepad * gamepad) {
 }
 
 void KeyboardDriver::pressKey(uint8_t code) {
-	if (code > HID_KEY_GUI_RIGHT) {
-		keyboardReport.reportId = KEYBOARD_MULTIMEDIA_REPORT_ID;
-		keyboardReport.multimedia = getMultimedia(code);
-	}  else {
-		keyboardReport.reportId = KEYBOARD_KEY_REPORT_ID;
-		keyboardReport.keycode[code / 8] |= 1 << (code % 8);
-	}
+	keyboardReport.pressKey(code);
 }
 
 void KeyboardDriver::releaseAllKeys(void) {
-	for (uint8_t i = 0; i < (sizeof(keyboardReport.keycode) / sizeof(keyboardReport.keycode[0])); i++) {
-		keyboardReport.keycode[i] = 0;
-	}
-	keyboardReport.multimedia = 0;
+	keyboardReport.releaseAllKeys();
 }
 
 // tud_hid_get_report_cb
@@ -182,7 +160,7 @@ const uint8_t * KeyboardDriver::get_hid_descriptor_report_cb(uint8_t itf) {
 }
 
 const uint8_t * KeyboardDriver::get_descriptor_configuration_cb(uint8_t index) {
-    return keyboard_configuration_descriptor;
+    return USBFunctionManager::getInstance().getConfigurationDescriptor(keyboard_configuration_descriptor);
 }
 
 const uint8_t * KeyboardDriver::get_descriptor_device_qualifier_cb() {

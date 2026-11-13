@@ -15,12 +15,43 @@
 #define KEYBOARD_MULTIMEDIA_VOLUME_DOWN 0XF4
 
 /// Standard HID Boot Protocol Keyboard Report.
-typedef struct
+struct KeyboardReport
 {
 	uint8_t reportId = KEYBOARD_KEY_REPORT_ID;
 	uint8_t keycode[32]; /**< Key codes of the currently pressed keys. */
 	uint8_t multimedia;
-} KeyboardReport;
+
+	// Used by KeyboardDriver and KeyboardInterface
+	void pressKey(uint8_t code) {
+		if (code > HID_KEY_GUI_RIGHT) {
+			reportId = KEYBOARD_MULTIMEDIA_REPORT_ID;
+			multimedia = getMultimedia(code);
+		} else {
+			reportId = KEYBOARD_KEY_REPORT_ID;
+			keycode[code / 8] |= 1 << (code % 8);
+		}
+	}
+
+	void releaseAllKeys() {
+		for (uint8_t i = 0; i < (sizeof(keycode) / sizeof(keycode[0])); i++) {
+			keycode[i] = 0;
+		}
+		multimedia = 0;
+	}
+
+	static uint8_t getMultimedia(uint8_t code) {
+		switch (code) {
+			case KEYBOARD_MULTIMEDIA_NEXT_TRACK : return 0x01;
+			case KEYBOARD_MULTIMEDIA_PREV_TRACK : return 0x02;
+			case KEYBOARD_MULTIMEDIA_STOP 	    : return 0x04;
+			case KEYBOARD_MULTIMEDIA_PLAY_PAUSE : return 0x08;
+			case KEYBOARD_MULTIMEDIA_MUTE 	    : return 0x10;
+			case KEYBOARD_MULTIMEDIA_VOLUME_UP  : return 0x20;
+			case KEYBOARD_MULTIMEDIA_VOLUME_DOWN: return 0x40;
+		}
+		return 0;
+	}
+};
 
 static const uint8_t keyboard_string_language[]    = { 0x09, 0x04 };
 static const uint8_t keyboard_string_manfacturer[] = "Open Stick Community";

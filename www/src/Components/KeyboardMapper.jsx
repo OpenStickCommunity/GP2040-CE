@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { Form } from 'react-bootstrap';
 import FormSelect from './FormSelect';
 import { KEY_CODES } from '../Data/Keyboard';
 import { BUTTONS } from '../Data/Buttons';
@@ -8,6 +9,7 @@ const KeyboardMapper = ({
 	handleKeyChange,
 	getKeyMappingForButton,
 	excludeButtons = [''],
+	handleMaskChange,
 }) => {
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
 
@@ -21,6 +23,7 @@ const KeyboardMapper = ({
 						{BUTTONS[buttonLabelType].label}
 					</th>
 					<th>{t('key-header')}</th>
+					{handleMaskChange && <th>{t('send-key-header')}</th>}
 				</tr>
 			</thead>
 			<tbody>
@@ -65,6 +68,18 @@ const KeyboardMapper = ({
 										))}
 									</FormSelect>
 								</td>
+								{handleMaskChange && (
+									<td>
+										<Form.Check
+											type="switch"
+											id={`button-send-key-${button}`}
+											checked={Boolean(keyMapping.masked)}
+											onChange={(e) =>
+												handleMaskChange(e.target.checked, button)
+											}
+										/>
+									</td>
+								)}
 							</tr>
 						);
 					})}

@@ -10,6 +10,7 @@ export type InputModeOptions = {
 	optional: string[];
 	authentication: string[];
 	deviceTypes: InputModeDeviceType[];
+	keyboardInterface?: boolean; // the keyboard interface can follow the mode's own
 };
 
 export const INPUT_MODE_OPTIONS: InputModeOptions[] = [
@@ -26,6 +27,7 @@ export const INPUT_MODE_OPTIONS: InputModeOptions[] = [
 			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_DRUM,
 		],
 		required: [],
+		keyboardInterface: true,
 	},
 	{
 		labelKey: 'input-mode-options.nintendo-switch',
@@ -164,6 +166,7 @@ export const INPUT_MODE_OPTIONS: InputModeOptions[] = [
 		optional: [],
 		authentication: [],
 		deviceTypes: [],
+		keyboardInterface: true,
 	},
 	{
 		labelKey: 'input-mode-options.nintendo-switch-pro',
@@ -191,5 +194,6 @@ export const INPUT_MODE_OPTIONS: InputModeOptions[] = [
 		optional: [],
 		authentication: [],
 		deviceTypes: [],
+		keyboardInterface: true,
 	},
 ];

@@ -9,6 +9,7 @@
 #include "eventmanager.h"
 #include "layoutmanager.h"
 #include "peripheralmanager.h"
+#include "rebootmodes.h"
 #include "system.h"
 #include "config_utils.h"
 #include "types.h"
@@ -688,8 +689,10 @@ std::string setProfileOptions()
         profileOptions.gpioMappingsSets[altsIndex].enabled = alt["enabled"];
         readInvertedPins(profileOptions.gpioMappingsSets[altsIndex], alt);
         readProfileSOCD(profileOptions.gpioMappingsSets[altsIndex], alt);
-        if (altsIndex >= previousCount)
+        if (altsIndex >= previousCount) {
             profileOptions.gpioMappingsSets[altsIndex].keyboardMapping = Storage::getInstance().getKeyboardMapping();
+            profileOptions.gpioMappingsSets[altsIndex].keyboardButtonMask = coreMappings.keyboardButtonMask;
+        }
 
         profileOptions.gpioMappingsSets_count = ++altsIndex;
         if (altsIndex > 4) break;
@@ -861,6 +864,8 @@ std::string setGamepadOptions()
     readDoc(gamepadOptions.switch2ProJoyCon2RightAccentColor, doc, "switch2ProJoyCon2RightAccentColor");
     readDoc(gamepadOptions.switch2ProJoyCon2RightStickColor, doc, "switch2ProJoyCon2RightStickColor");
     readDoc(gamepadOptions.genericDpadMode, doc, "genericDpadMode");
+    readDoc(gamepadOptions.keyboardInterfaceEnabled, doc, "keyboardInterfaceEnabled");
+    readDoc(gamepadOptions.keyboardInterfaceXInputMode, doc, "keyboardInterfaceXInputMode");
     readDoc(gamepadOptions.usbDescOverride, doc, "usbDescOverride");
     readDoc(gamepadOptions.miniMenuGamepadInput, doc, "miniMenuGamepadInput");
     // Copy USB descriptor strings
@@ -970,6 +975,8 @@ std::string getGamepadOptions()
     writeDoc(doc, "switch2ProJoyCon2RightAccentColor", gamepadOptions.switch2ProJoyCon2RightAccentColor);
     writeDoc(doc, "switch2ProJoyCon2RightStickColor", gamepadOptions.switch2ProJoyCon2RightStickColor);
     writeDoc(doc, "genericDpadMode", gamepadOptions.genericDpadMode);
+    writeDoc(doc, "keyboardInterfaceEnabled", gamepadOptions.keyboardInterfaceEnabled);
+    writeDoc(doc, "keyboardInterfaceXInputMode", gamepadOptions.keyboardInterfaceXInputMode);
     writeDoc(doc, "usbDescOverride", gamepadOptions.usbDescOverride);
     writeDoc(doc, "usbDescManufacturer", gamepadOptions.usbDescManufacturer);
     writeDoc(doc, "usbDescProduct", gamepadOptions.usbDescProduct);
@@ -1834,22 +1841,27 @@ static const std::pair<const char*, uint32_t KeyboardMapping::*> keyboardMapping
     { "E12", &KeyboardMapping::keyButtonE12 },
 };
 
-static void readKeyboardMapping(KeyboardMapping& mapping, JsonVariantConst json)
+// A mapping with no keyboardButtonMask, as in an older backup, leaves the mask as it is
+static void readKeyboardMapping(KeyboardMapping& mapping, uint32_t& buttonMask, JsonVariantConst json)
 {
     for (const auto& [key, field] : keyboardMappingFields)
         mapping.*field = json[key];
+    if (!json["keyboardButtonMask"].isNull())
+        buttonMask = json["keyboardButtonMask"];
 }
 
-static void writeKeyboardMapping(JsonObject json, const KeyboardMapping& mapping)
+static void writeKeyboardMapping(JsonObject json, const KeyboardMapping& mapping, uint32_t buttonMask)
 {
     for (const auto& [key, field] : keyboardMappingFields)
         json[key] = mapping.*field;
+    json["keyboardButtonMask"] = buttonMask;
 }
 
 std::string setKeyMappings()
 {
     DynamicJsonDocument doc = get_post_data();
-    readKeyboardMapping(Storage::getInstance().getKeyboardMapping(), doc.as<JsonVariantConst>());
+    readKeyboardMapping(Storage::getInstance().getKeyboardMapping(),
+        Storage::getInstance().getGpioMappings().keyboardButtonMask, doc.as<JsonVariantConst>());
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
 
@@ -1858,8 +1870,9 @@ std::string setKeyMappings()
 
 std::string getKeyMappings()
 {
-    DynamicJsonDocument doc(JSON_OBJECT_SIZE(std::size(keyboardMappingFields)));
-    writeKeyboardMapping(doc.to<JsonObject>(), Storage::getInstance().getKeyboardMapping());
+    DynamicJsonDocument doc(JSON_OBJECT_SIZE(std::size(keyboardMappingFields) + 1));
+    writeKeyboardMapping(doc.to<JsonObject>(), Storage::getInstance().getKeyboardMapping(),
+        Storage::getInstance().getGpioMappings().keyboardButtonMask);
 
     return serialize_json(doc);
 }
@@ -1872,7 +1885,8 @@ std::string setProfileKeyMappings()
     pb_size_t index = 0;
     for (JsonVariantConst mapping : doc["profiles"].as<JsonArrayConst>()) {
         if (index >= profileOptions.gpioMappingsSets_count) break;
-        readKeyboardMapping(profileOptions.gpioMappingsSets[index++].keyboardMapping, mapping);
+        GpioMappings& profile = profileOptions.gpioMappingsSets[index++];
+        readKeyboardMapping(profile.keyboardMapping, profile.keyboardButtonMask, mapping);
     }
 
     EventManager::getInstance().triggerEvent(new GPStorageSaveEvent(true));
@@ -1884,11 +1898,13 @@ std::string getProfileKeyMappings()
 {
     const ProfileOptions& profileOptions = Storage::getInstance().getProfileOptions();
     DynamicJsonDocument doc(JSON_OBJECT_SIZE(1) + JSON_ARRAY_SIZE(profileOptions.gpioMappingsSets_count)
-        + profileOptions.gpioMappingsSets_count * JSON_OBJECT_SIZE(std::size(keyboardMappingFields)));
+        + profileOptions.gpioMappingsSets_count * JSON_OBJECT_SIZE(std::size(keyboardMappingFields) + 1));
 
     JsonArray profiles = doc.createNestedArray("profiles");
-    for (pb_size_t i = 0; i < profileOptions.gpioMappingsSets_count; i++)
-        writeKeyboardMapping(profiles.createNestedObject(), profileOptions.gpioMappingsSets[i].keyboardMapping);
+    for (pb_size_t i = 0; i < profileOptions.gpioMappingsSets_count; i++) {
+        const GpioMappings& profile = profileOptions.gpioMappingsSets[i];
+        writeKeyboardMapping(profiles.createNestedObject(), profile.keyboardMapping, profile.keyboardButtonMask);
+    }
 
     return serialize_json(doc);
 }
@@ -2469,6 +2485,15 @@ std::string setAddonOptions()
     docToValue(analogADS1115Options.right_stick_deadzone_enabled, doc, "rightStickDeadzoneEnable");
     docToValue(analogADS1115Options.leftStickDeadzone, doc, "leftStickDeadzone");
     docToValue(analogADS1115Options.rightStickDeadzone, doc, "rightStickDeadzone");
+
+    HostLightingOptions& hostLightingOptions = Storage::getInstance().getAddonOptions().hostLightingOptions;
+    docToValue(hostLightingOptions.enabled, doc, "HostLightingAddonEnabled");
+    docToValue(hostLightingOptions.xinputMode, doc, "hostLightingXInputMode");
+    docToValue(hostLightingOptions.allowKeyboardMappingChanges, doc, "hostLightingAllowKeyboardMappingChanges");
+
+    LightingReportOptions& lightingReportOptions = Storage::getInstance().getAddonOptions().lightingReportOptions;
+    docToValue(lightingReportOptions.enabled, doc, "LightingReportAddonEnabled");
+    docToValue(lightingReportOptions.xinputMode, doc, "lightingReportXInputMode");
 
     AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
     docToValue(analogADS1219Options.enabled, doc, "I2CAnalog1219InputEnabled");
@@ -3073,6 +3098,15 @@ std::string getAddonOptions()
     writeDoc(doc, "focusModeMacroLockEnabled", focusModeOptions.macroLockEnabled);
     writeDoc(doc, "FocusModeAddonEnabled", focusModeOptions.enabled);
 
+    const HostLightingOptions& hostLightingOptions = Storage::getInstance().getAddonOptions().hostLightingOptions;
+    writeDoc(doc, "HostLightingAddonEnabled", hostLightingOptions.enabled);
+    writeDoc(doc, "hostLightingXInputMode", hostLightingOptions.xinputMode);
+    writeDoc(doc, "hostLightingAllowKeyboardMappingChanges", hostLightingOptions.allowKeyboardMappingChanges);
+
+    const LightingReportOptions& lightingReportOptions = Storage::getInstance().getAddonOptions().lightingReportOptions;
+    writeDoc(doc, "LightingReportAddonEnabled", lightingReportOptions.enabled);
+    writeDoc(doc, "lightingReportXInputMode", lightingReportOptions.xinputMode);
+
     RotaryOptions& rotaryOptions = Storage::getInstance().getAddonOptions().rotaryOptions;
     writeDoc(doc, "RotaryAddonEnabled", rotaryOptions.enabled);
     writeDoc(doc, "encoderOneEnabled", rotaryOptions.encoderOne.enabled);
@@ -3360,24 +3394,11 @@ std::string echo()
 }
 #endif
 
-// MUST MATCH NAVIGATION.JSX
-enum BOOT_MODES {
-	GAMEPAD = 0,
-	WEBCONFIG = 1,
-	BOOTSEL = 2,
-};
-
 std::string reboot() {
     DynamicJsonDocument doc = get_post_data();
     uint32_t bootMode = doc["bootMode"];
     System::BootMode systemBootMode = System::BootMode::DEFAULT;
-    if ( bootMode == BOOT_MODES::GAMEPAD ) {
-        systemBootMode = System::BootMode::GAMEPAD;
-    } else if ( bootMode == BOOT_MODES::WEBCONFIG ) {
-        systemBootMode = System::BootMode::WEBCONFIG;
-    } else if (bootMode == BOOT_MODES::BOOTSEL ) {
-        systemBootMode = System::BootMode::USB;
-    }
+    rebootModeToBootMode(bootMode, systemBootMode);
     EventManager::getInstance().triggerEvent(new GPRestartEvent((System::BootMode)systemBootMode));
     doc["success"] = true;
     return serialize_json(doc);

@@ -92,6 +92,19 @@ export default {
 		'hat-only': 'Hat Only',
 		'buttons-only': 'Buttons Only',
 	},
+	'keyboard-interface-label': 'Keyboard Interface',
+	'keyboard-interface-text':
+		"For mixed keyboard and controller input. Adds a keyboard as a secondary input alongside this mode's controller, the primary input, in XInput, Generic HID and SInput modes. Buttons with Send Key on send keyboard keys, and the others stay on the controller.",
+	'keyboard-interface-xinput-mode-label': 'XInput Keyboard',
+	'keyboard-interface-xinput-mode-options': {
+		off: 'Off (stock identity, console-safe)',
+		on: 'Always On (PC-only identity)',
+		auto: 'Auto (console detected at plug-in)',
+	},
+	'keyboard-interface-xinput-mode-help':
+		'How XInput mode presents the keyboard interface. Off keeps the stock controller identity that consoles need. Always On presents it from boot, on a PC only. Auto presents it once the board detects a PC at plug-in. Generic HID and SInput modes always present it.',
+	'keyboard-interface-send-key-text':
+		'Switch Send Key on for each button that should send its key instead of its controller input. The other buttons stay on the controller. In the analog D-pad modes the D-pad buttons move the stick and send no key.',
 	'switch-pro-controller-type-label': 'Controller Type',
 	'switch-pro-controller-type-options': {
 		pro: 'Pro Controller',

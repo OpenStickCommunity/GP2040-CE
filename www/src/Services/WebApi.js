@@ -1,6 +1,7 @@
 import { set } from 'lodash';
 import Http from './Http';
 import { hexToInt, rgbIntToHex } from './Utilities';
+import { BUTTON_MASKS_OPTIONS } from '../Data/Buttons';
 
 export const baseUrl =
 	process.env.NODE_ENV === 'production'
@@ -391,18 +392,39 @@ async function setBootModeOptions(options) {
 	return Http.post(`${baseUrl}/api/setBootModeOptions`, options);
 }
 
+// The keyboard interface's button mask uses the hotkey and macro button bits
+const keyboardMaskBit = (button) =>
+	BUTTON_MASKS_OPTIONS.find(({ label }) => label === button)?.value ?? 0;
+
 const toButtonMappings = (keyCodes) =>
 	Object.fromEntries(
 		Object.entries(baseButtonMappings).map(([button, mapping]) => [
 			button,
-			{ ...mapping, key: parseInt(keyCodes?.[button]) || 0 },
+			{
+				...mapping,
+				key: parseInt(keyCodes?.[button]) || 0,
+				masked: Boolean(keyCodes?.keyboardButtonMask & keyboardMaskBit(button)),
+			},
 		]),
 	);
 
-const toKeyCodes = (mappings) =>
-	Object.fromEntries(
+// A backup made before the mask has no masked flags and leaves the mask as it is
+const toKeyCodes = (mappings) => {
+	const keyCodes = Object.fromEntries(
 		Object.entries(mappings).map(([button, { key }]) => [button, key]),
 	);
+	const flagged = Object.entries(mappings).filter(
+		([, { masked }]) => masked !== undefined,
+	);
+	if (flagged.length)
+		keyCodes.keyboardButtonMask =
+			flagged.reduce(
+				(mask, [button, { masked }]) =>
+					masked ? mask | keyboardMaskBit(button) : mask,
+				0,
+			) >>> 0;
+	return keyCodes;
+};
 
 async function getKeyMappings(setLoading) {
 	setLoading(true);

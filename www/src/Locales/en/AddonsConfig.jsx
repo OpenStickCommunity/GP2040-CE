@@ -133,6 +133,28 @@ export default {
 	'snes-extension-data-pin-label': 'Data GPIO Pin',
 	'snes-extension-desc-header': 'SNES Extension Mapping',
 	'focus-mode-header-text': 'Focus Mode Configuration',
+	'host-lighting-header-text': 'Host Lighting Configuration',
+	'host-lighting-sub-header-text':
+		'For apps that support Host Lighting. They drive the RGB(W) LEDs over a dedicated USB interface in XInput, Keyboard, Generic HID and SInput modes, and can read the board and change its settings. On-board animations resume automatically when the app releases control or goes quiet. It does not need the Lighting Report add-on, which is intended for simpler lighting control.',
+	'host-lighting-xinput-mode-label': 'XInput Lighting',
+	'host-lighting-xinput-mode-off': 'Off (stock identity, console-safe)',
+	'host-lighting-xinput-mode-on': 'Always On (PC-only identity)',
+	'host-lighting-xinput-mode-auto': 'Auto (console detected at plug-in)',
+	'host-lighting-xinput-mode-help':
+		'How XInput mode presents Host Lighting. Off keeps the stock controller identity that consoles need. Always On presents it from boot, on a PC only. Auto presents it once the board detects a PC at plug-in. Keyboard, Generic HID and SInput modes always present it.',
+	'host-lighting-allow-keyboard-mapping-changes-label':
+		'Allow Host Lighting apps to change the keyboard mapping',
+	'host-lighting-allow-keyboard-mapping-changes-help':
+		'Changes apply only to the active input profile.',
+	'lighting-report-header-text': 'Lighting Report Configuration',
+	'lighting-report-sub-header-text':
+		'For lighting software that drives lights through standard HID output values. Adds a red, green and blue value for each light in XInput, Keyboard, Generic HID and SInput modes, named after its light and channel, such as B1 R. The board shows the values from the first report until USB suspends or resets. It does not need the Host Lighting add-on, which is intended for more advanced lighting control.',
+	'lighting-report-xinput-mode-label': 'XInput Lighting',
+	'lighting-report-xinput-mode-off': 'Off (stock identity, console-safe)',
+	'lighting-report-xinput-mode-on': 'Always On (PC-only identity)',
+	'lighting-report-xinput-mode-auto': 'Auto (console detected at plug-in)',
+	'lighting-report-xinput-mode-help':
+		'How XInput mode presents the lighting report. Off keeps the stock controller identity that consoles need. Always On presents it from boot, on a PC only. Auto presents it once the board detects a PC at plug-in. Keyboard, Generic HID and SInput modes always present it.',
 	'keyboard-host-header-text': 'Keyboard/Mouse Host Configuration',
 	'keyboard-host-sub-header-text': 'Keyboard Buttons',
 	'keyboard-host-mouse-header-text': 'Mouse Buttons',
