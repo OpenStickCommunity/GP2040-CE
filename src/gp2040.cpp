@@ -207,7 +207,7 @@ void GP2040::deinitializeStandardGpio() {
  * and to simplify this method, non-button GPIO IS NOT PRESENT in this result. Use gpio_get_all directly
  * instead, if you don't want debounced data.
  */
-void GP2040::debounceGpioGetAll() {
+void __not_in_flash_func(GP2040::debounceGpioGetAll)() {
 	Mask_t rawGpios = Storage::getInstance().getPressedGpios();
 	Mask_t pressedGpios = rawGpios & buttonGpios;
 	Gamepad* gamepad = Storage::getInstance().GetGamepad();

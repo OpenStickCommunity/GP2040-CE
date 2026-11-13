@@ -38,7 +38,7 @@ void USBHostManager::pushListener(USBListener * usbListener) { // If anything ne
 }
 
 // Host manager should call tuh_task as fast as possible
-void USBHostManager::process() {
+void __not_in_flash_func(USBHostManager::process)() {
     if ( tuh_ready ){
         tuh_task();
     }

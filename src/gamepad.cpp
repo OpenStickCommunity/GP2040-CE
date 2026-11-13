@@ -21,7 +21,7 @@ uint32_t getMillis() {
 	return to_ms_since_boot(get_absolute_time());
 }
 
-uint64_t getMicro() {
+uint64_t __not_in_flash_func(getMicro)() {
 	return to_us_since_boot(get_absolute_time());
 }
 
@@ -267,7 +267,7 @@ void Gamepad::reinit()
 	this->setup();
 }
 
-void Gamepad::process()
+void __not_in_flash_func(Gamepad::process)()
 {
 	// NOTE: Inverted X/Y-axis must run before SOCD and Dpad processing
 	if (options.invertXAxis) {
@@ -335,7 +335,7 @@ void Gamepad::process()
 	}
 }
 
-void Gamepad::read()
+void __not_in_flash_func(Gamepad::read)()
 {
 	Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
 
@@ -446,7 +446,7 @@ void Gamepad::read()
 	state.rt = 0;
 }
 
-void Gamepad::hotkey() {
+void __not_in_flash_func(Gamepad::hotkey)() {
 	if (options.lockHotkeys)
 		return;
 

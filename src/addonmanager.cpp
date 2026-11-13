@@ -29,21 +29,21 @@ void AddonManager::ReinitializeAddons() {
     }
 }
 
-void AddonManager::PreprocessAddons() {
+void __not_in_flash_func(AddonManager::PreprocessAddons)() {
     // Loop through all addons and process any that match our type
     for (std::vector<AddonBlock*>::iterator it = addons.begin(); it != addons.end(); it++) {
         (*it)->ptr->preprocess();
     }
 }
 
-void AddonManager::ProcessAddons() {
+void __not_in_flash_func(AddonManager::ProcessAddons)() {
     // Loop through all addons and process any that match our type
     for (std::vector<AddonBlock*>::iterator it = addons.begin(); it != addons.end(); it++) {
         (*it)->ptr->process();
     }
 }
 
-void AddonManager::PostprocessAddons(bool reportSent) {
+void __not_in_flash_func(AddonManager::PostprocessAddons)(bool reportSent) {
     // Loop through all addons and process any that match our type
     for (std::vector<AddonBlock*>::iterator it = addons.begin(); it != addons.end(); it++) {
         (*it)->ptr->postprocess(reportSent);
