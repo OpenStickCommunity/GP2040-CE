@@ -389,6 +389,9 @@ target_compile_definitions(${PROJECT_NAME} PUBLIC
 
 if(PICO_RP2040)
   target_compile_definitions(${PROJECT_NAME} PUBLIC PICO_FLOAT_IN_RAM=1)
+  # Check static guards from RAM. GCC on the Cortex-M0+ calls the library for every check.
+  target_sources(${PROJECT_NAME} PRIVATE src/cxaguard.cpp)
+  target_link_options(${PROJECT_NAME} PRIVATE "LINKER:--wrap=__cxa_guard_acquire")
 endif()
 
 target_include_directories(${PROJECT_NAME}  PRIVATE
