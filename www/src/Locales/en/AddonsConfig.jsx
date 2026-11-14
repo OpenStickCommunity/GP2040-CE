@@ -67,6 +67,8 @@ export default {
 	'turbo-available-pins-text': 'Available ADC pins: {{pins}}',
 	'turbo-shmup-dial-pin-label': 'Turbo Dial (ADC ONLY)',
 	'turbo-shot-count-label': 'Turbo Shot Count',
+	'turbo-hold-to-clear-label': 'Hold to Clear',
+	'turbo-hold-to-clear-time-label': 'Hold Time (seconds)',
 	'turbo-shmup-mode-label': 'SHMUP MODE',
 	'turbo-shmup-always-on-1-label': 'Turbo Always On 1',
 	'turbo-shmup-always-on-2-label': 'Turbo Always On 2',
