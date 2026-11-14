@@ -1049,4 +1049,6 @@ message Config
     optional PeripheralOptions peripheralOptions = 15;
 
 	optional BootModeOptions bootModeOptions = 16;
+
+    optional bytes switchIdentitySeed = 17 [(nanopb).max_size = 16];
 }

@@ -3315,7 +3315,11 @@ std::string abortGetHeldPins()
 
 std::string getConfig()
 {
-    return ConfigUtils::toJSON(Storage::getInstance().getConfig());
+    std::unique_ptr<Config> config(new Config);
+    *config.get() = Storage::getInstance().getConfig();
+    config->has_switchIdentitySeed = false;
+    config->switchIdentitySeed.size = 0;
+    return ConfigUtils::toJSON(*config.get());
 }
 
 DataAndStatusCode setConfig()
@@ -3325,6 +3329,9 @@ DataAndStatusCode setConfig()
     *config.get() = Config Config_init_default;
     if (ConfigUtils::fromJSON(*config.get(), http_post_payload, http_post_payload_len))
     {
+        const Config& currentConfig = Storage::getInstance().getConfig();
+        config->has_switchIdentitySeed = currentConfig.has_switchIdentitySeed;
+        config->switchIdentitySeed = currentConfig.switchIdentitySeed;
         Storage::getInstance().getConfig() = *config.get();
         config.reset();
         if (Storage::getInstance().save(true))
