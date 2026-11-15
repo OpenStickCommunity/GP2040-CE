@@ -104,6 +104,14 @@ export const turboScheme = {
 		.label('Charge Shot Button 4 Map')
 		.validateSelectionWhenValue('TurboInputEnabled', BUTTON_MASKS_OPTIONS),
 	turboLedType: yup.number().required().label('Turbo LED Type'),
+	turboHoldToClear: yup
+		.number()
+		.label('Hold to Clear')
+		.validateRangeWhenValue('TurboInputEnabled', 0, 1),
+	turboHoldToClearTime: yup
+		.number()
+		.label('Hold Time (seconds)')
+		.validateRangeWhenValue('TurboInputEnabled', 1, 10),
 };
 
 export const turboState = {
@@ -126,6 +134,8 @@ export const turboState = {
 	turboPinLED: -1,
 	turboShotCount: 5,
 	turboLedType: 0,
+	turboHoldToClear: 0,
+	turboHoldToClearTime: 5,
 };
 
 const Turbo = ({
@@ -228,6 +238,37 @@ const Turbo = ({
 					>
 						<AnalogPinOptions />
 					</FormSelect>
+				</Row>
+				<Row className="mb-3">
+					<FormCheck
+						label={t('AddonsConfig:turbo-hold-to-clear-label')}
+						type="switch"
+						id="TurboHoldToClear"
+						className="col-sm-3 ms-3"
+						isInvalid={false}
+						checked={Boolean(values.turboHoldToClear)}
+						onChange={(e) => {
+							handleCheckbox('turboHoldToClear');
+							handleChange(e);
+						}}
+					/>
+					<div id="TurboHoldToClearOptions" hidden={!values.turboHoldToClear}>
+						<Row className="mb-3">
+							<FormControl
+								type="number"
+								label={t('AddonsConfig:turbo-hold-to-clear-time-label')}
+								name="turboHoldToClearTime"
+								className="form-control-sm"
+								groupClassName="col-sm-3 mb-3"
+								value={values.turboHoldToClearTime}
+								error={errors.turboHoldToClearTime}
+								isInvalid={Boolean(errors.turboHoldToClearTime)}
+								onChange={handleChange}
+								min={1}
+								max={10}
+							/>
+						</Row>
+					</div>
 				</Row>
 				<Row className="mb-3">
 					<FormCheck
