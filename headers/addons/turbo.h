@@ -219,5 +219,7 @@ private:
     Mask_t togglePinMask[TURBO_TOGGLE_SLOT_COUNT];      // Turbo GPIO toggle pin masks
     uint16_t toggleButtonMask[TURBO_TOGGLE_SLOT_COUNT]; // Turbo GPIO toggle button masks
     uint16_t toggleState;       // Buttons forced to turbo by GPIO toggles
+    uint8_t debToggleState;     // Debounce GPIO Toggle State
+    uint32_t debToggleTime[TURBO_TOGGLE_SLOT_COUNT]; // Debounce GPIO Toggle Time
 };
 #endif  // TURBO_H_

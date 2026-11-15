@@ -14,6 +14,14 @@
 #define TURBO_DIAL_INCREMENTS (0xFFF / (TURBO_SHOT_MAX - TURBO_SHOT_MIN)) // 12-bit ADC
 #define TURBO_LOOP_OFFSET 50 // Extra time to compensate for loop runtime variance, turbo lags a bit otherwise
 
+static bool debounceAddonPin(bool pressed, bool held, uint32_t& lastChange, uint32_t now, uint32_t delay) {
+    if (pressed != held && (now - lastChange) >= delay) {
+        lastChange = now;
+        return pressed;
+    }
+    return held;
+}
+
 #ifndef TURBO_LED_STATE_OFF
 #define TURBO_LED_STATE_OFF 0
 #endif
@@ -106,9 +114,11 @@ void TurboInput::setup(){
 
     // GPIO Toggles
     toggleState = 0;
+    debToggleState = 0;
     for (uint8_t i = 0; i < TURBO_TOGGLE_SLOT_COUNT; i++) {
         togglePinMask[i] = 0;
         toggleButtonMask[i] = 0;
+        debToggleTime[i] = 0;
         if (i < options.toggleSlots_count && isValidPin(options.toggleSlots[i].pin) && options.toggleSlots[i].buttonMask) {
             gpio_init(options.toggleSlots[i].pin);
             gpio_set_dir(options.toggleSlots[i].pin, GPIO_IN);
@@ -214,11 +224,16 @@ void TurboInput::process()
     Mask_t pressedGpios = Storage::getInstance().getPressedGpios();
 
     // Get Charge Buttons
+    uint32_t debounceNow = getMillis();
+    uint32_t debounceDelay = Storage::getInstance().getGamepadOptions().debounceDelay;
     if (options.shmupModeEnabled) {
         chargeState = 0;
         for (uint8_t i = 0; i < 4; i++) {
             if (shmupBtnPinMask[i] > 0) { // if pin, get the GPIO
-                chargeState |= ((pressedGpios & shmupBtnPinMask[i]) ? shmupBtnMask[i] : 0);
+                uint32_t bit = 1u << i;
+                bool held = debounceAddonPin(pressedGpios & shmupBtnPinMask[i], debChargeState & bit, debChargeTime[i], debounceNow, debounceDelay);
+                debChargeState = held ? (debChargeState | bit) : (debChargeState & ~bit);
+                chargeState |= (held ? shmupBtnMask[i] : 0);
             }
         }
     }
@@ -226,8 +241,11 @@ void TurboInput::process()
     // Get GPIO Toggles
     uint16_t newToggleState = 0;
     for (uint8_t i = 0; i < TURBO_TOGGLE_SLOT_COUNT; i++) {
-        if (togglePinMask[i] && (pressedGpios & togglePinMask[i])) {
-            newToggleState |= toggleButtonMask[i];
+        if (togglePinMask[i]) {
+            uint8_t bit = 1u << i;
+            bool held = debounceAddonPin(pressedGpios & togglePinMask[i], debToggleState & bit, debToggleTime[i], debounceNow, debounceDelay);
+            debToggleState = held ? (debToggleState | bit) : (debToggleState & ~bit);
+            newToggleState |= (held ? toggleButtonMask[i] : 0);
         }
     }
     uint16_t toggledOff = toggleState & ~newToggleState;
