@@ -25,6 +25,7 @@
 bool TurboInput::available() {
     // Turbo Button initialized by void Gamepad::setup()
     hasTurboAssigned = false;
+    turboPinMask = 0;
     GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
     {
@@ -33,7 +34,14 @@ bool TurboInput::available() {
             turboPinMask |= Mask_t{1} << pin;
         }
     }
-    return Storage::getInstance().getAddonOptions().turboOptions.enabled && (hasTurboAssigned == true);
+    const TurboOptions& options = Storage::getInstance().getAddonOptions().turboOptions;
+    bool hasToggleAssigned = false;
+    for (uint8_t i = 0; i < options.toggleSlots_count && i < TURBO_TOGGLE_SLOT_COUNT; i++) {
+        if (isValidPin(options.toggleSlots[i].pin) && options.toggleSlots[i].buttonMask) {
+            hasToggleAssigned = true;
+        }
+    }
+    return options.enabled && (hasTurboAssigned || hasToggleAssigned);
 }
 
 void TurboInput::setup(){
@@ -72,6 +80,7 @@ void TurboInput::setup(){
         shmupBtnPin[2] = options.shmupBtn3Pin;
         shmupBtnPin[3] = options.shmupBtn4Pin;
         for (uint8_t i = 0; i < 4; i++) {
+            shmupBtnPinMask[i] = 0;
             if ( isValidPin(shmupBtnPin[i]) ) {
                 gpio_init(shmupBtnPin[i]);
                 gpio_set_dir(shmupBtnPin[i], GPIO_IN);
@@ -88,8 +97,25 @@ void TurboInput::setup(){
         turboButtonsMask = alwaysEnabled;
     } else {
         // SHMUP mode off
+        for (uint8_t i = 0; i < 4; i++) {
+            shmupBtnPinMask[i] = 0;
+        }
         alwaysEnabled = 0;
         turboButtonsMask = 0;
+    }
+
+    // GPIO Toggles
+    toggleState = 0;
+    for (uint8_t i = 0; i < TURBO_TOGGLE_SLOT_COUNT; i++) {
+        togglePinMask[i] = 0;
+        toggleButtonMask[i] = 0;
+        if (i < options.toggleSlots_count && isValidPin(options.toggleSlots[i].pin) && options.toggleSlots[i].buttonMask) {
+            gpio_init(options.toggleSlots[i].pin);
+            gpio_set_dir(options.toggleSlots[i].pin, GPIO_IN);
+            gpio_pull_up(options.toggleSlots[i].pin);
+            togglePinMask[i] = Mask_t{1} << options.toggleSlots[i].pin;
+            toggleButtonMask[i] = static_cast<uint16_t>(options.toggleSlots[i].buttonMask);
+        }
     }
 
     lastButtons = 0;
@@ -107,6 +133,7 @@ void TurboInput::setup(){
     uTurboHoldTime = now;
     bTurboFlicker = false;
     nextTimer = getMicro();
+    nextAdcRead = 0;
     encoderValue = shotCount;
     updateTurboShotCount(shotCount, false);
 }
@@ -152,14 +179,12 @@ void TurboInput::process()
             bTurboHoldUsed = true;
         } else if (options.holdToClear && !bTurboHoldUsed && (getMillis() - uTurboHoldTime) >= std::max<uint32_t>(options.holdToClearTime, 1) * 1000) {
             turboButtonsMask = alwaysEnabled;
-            gamepad->turboState.buttons = turboButtonsMask;
             bTurboHoldUsed = true;
         }
 
         if (buttonsPressed && (lastPressed != buttonsPressed)) {
             // Only toggle state for buttons changed that are pressed
             turboButtonsMask ^= (lastPressed ^ buttonsPressed) & ~lastPressed; // Toggle Turbo
-            gamepad->turboState.buttons = turboButtonsMask; //turboButtonsMask & TURBO_BUTTON_MASK; //&= TURBO_BUTTON_MASK;
             if (options.shmupModeEnabled) {
                 turboButtonsMask |= alwaysEnabled;  // SHMUP Always-on Buttons Set
             }
@@ -186,15 +211,33 @@ void TurboInput::process()
         bTurboHeld = false;
     }
 
+    Mask_t pressedGpios = Storage::getInstance().getPressedGpios();
+
     // Get Charge Buttons
     if (options.shmupModeEnabled) {
         chargeState = 0;
         for (uint8_t i = 0; i < 4; i++) {
             if (shmupBtnPinMask[i] > 0) { // if pin, get the GPIO
-                chargeState |= (!(gamepad->debouncedGpio & shmupBtnPinMask[i]) ? shmupBtnMask[i] : 0);
+                chargeState |= ((pressedGpios & shmupBtnPinMask[i]) ? shmupBtnMask[i] : 0);
             }
         }
     }
+
+    // Get GPIO Toggles
+    uint16_t newToggleState = 0;
+    for (uint8_t i = 0; i < TURBO_TOGGLE_SLOT_COUNT; i++) {
+        if (togglePinMask[i] && (pressedGpios & togglePinMask[i])) {
+            newToggleState |= toggleButtonMask[i];
+        }
+    }
+    uint16_t toggledOff = toggleState & ~newToggleState;
+    if (toggledOff) {
+        turboButtonsMask &= ~toggledOff;
+        turboButtonsMask |= alwaysEnabled;
+    }
+    toggleState = newToggleState;
+    uint16_t activeTurboMask = turboButtonsMask | toggleState;
+    gamepad->turboState.buttons = activeTurboMask;
 
     uint64_t now = getMicro();
 
@@ -220,8 +263,8 @@ void TurboInput::process()
     // ON: 1 or more turbo buttons enabled
     // BLINK: OFF on turbo shot, ON on turbo flicker
     Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
-    if (turboButtonsMask) {
-        if (gamepad->state.buttons & turboButtonsMask)
+    if (activeTurboMask) {
+        if (gamepad->state.buttons & activeTurboMask)
             processedGamepad->auxState.turbo.activity = bTurboFlicker ? TURBO_LED_STATE_ON : TURBO_LED_STATE_OFF;
         else
             processedGamepad->auxState.turbo.activity = TURBO_LED_STATE_ON;
@@ -248,11 +291,15 @@ void TurboInput::process()
 
     // Disable button during turbo flicker
     if (bTurboFlicker) {
-        if ( options.shmupModeEnabled && options.shmupMixMode == SHMUP_MIX_MODE_CHARGE_PRIORITY) {
-            gamepad->state.buttons &= ~(turboButtonsMask & ~(chargeState));  // Do not flicker charge buttons
-        } else {
-            gamepad->state.buttons &= ~(turboButtonsMask);
+        uint16_t flickerMask = activeTurboMask;
+        if (options.shmupModeEnabled) {
+            if (options.shmupMixMode == SHMUP_MIX_MODE_CHARGE_PRIORITY) {
+                flickerMask &= ~chargeState;  // Do not flicker charge buttons
+            } else {
+                flickerMask &= ~(chargeState & ~lastButtons);
+            }
         }
+        gamepad->state.buttons &= ~flickerMask;
     }
 }
 
