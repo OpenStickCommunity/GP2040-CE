@@ -199,6 +199,7 @@ src/addonmanager.cpp
 src/playerleds.cpp
 src/drivers/shared/USBReportScheduler.cpp
 src/drivers/shared/InputReportPolicy.cpp
+src/drivers/shared/switchidentity.cpp
 src/drivers/shared/xinput_host.cpp
 src/drivers/shared/xgip_protocol.cpp
 src/drivers/shared/xsm3/excrypt_des.c
