@@ -197,6 +197,8 @@ private:
     bool bTurboHoldUsed;        // Turbo hold used to toggle, adjust speed or clear
     uint32_t uTurboHoldTime;    // Turbo button hold start time
     uint8_t lastDpad;           // Last d-pad pressed (for Turbo Change)
+    uint16_t hiddenButtons;     // Buttons pressed with TURBO held, hidden until released
+    uint8_t hiddenDpad;         // D-pad pressed with TURBO held, hidden until released
     uint16_t turboButtonsMask;  // Turbo Buttons Enabled
     uint16_t alwaysEnabled;     // Turbo SHMUP Always Enabled
     uint32_t uIntervalUS;       // Turbo Interval in microseconds

@@ -138,6 +138,8 @@ void TurboInput::setup(){
     incrementValue = 0;
     lastPressed = 0;
     lastDpad = 0;
+    hiddenButtons = 0;
+    hiddenDpad = 0;
     bTurboHeld = false;
     bTurboHoldUsed = false;
     uTurboHoldTime = now;
@@ -215,11 +217,19 @@ void TurboInput::process()
         }
         lastPressed = buttonsPressed; // save last pressed
         lastDpad = dpadPressed;
+        hiddenButtons |= buttonsPressed;
+        hiddenDpad |= dpadPressed;
     } else {
         lastPressed = 0; // disable last pressed
         lastDpad = 0; // disable last dpad
         bTurboHeld = false;
     }
+
+    // Hide TURBO combo presses from the host until they are released
+    hiddenButtons &= buttonsPressed;
+    hiddenDpad &= dpadPressed;
+    gamepad->state.buttons &= ~hiddenButtons;
+    gamepad->state.dpad &= ~hiddenDpad;
 
     Mask_t pressedGpios = Storage::getInstance().getPressedGpios();
 
