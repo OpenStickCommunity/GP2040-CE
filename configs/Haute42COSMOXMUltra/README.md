@@ -1,8 +1,10 @@
-# GP2040 Configuration for the Haute42 COSMOX M Ultra device
+# GP2040 Configuration for the Haute42 COSMOX M Ultra
 
 ![Haute42 M Ultra](assets/Haute42COSMOX_M_Ultra.jpg)
 
 Configuration for the [Haute42 COSMOX GAMING](https://cosmoxgaming.com/m-ultra/) M Ultra device.
+
+The other devices on this board now have their own configs: [M Ultra Gen 2](../Haute42COSMOXMUltraGen2), [C16](../Haute42COSMOXC16), [C16-S](../Haute42COSMOXC16S) and [X-Move](../Haute42COSMOXXMove) (with its WASD and Joystick module layouts).
 
 ## Main Pin Mapping Configuration
 

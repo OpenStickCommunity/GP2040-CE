@@ -4,6 +4,8 @@
 
 Configuration for the [Haute42|COSMOX X Series Analog](assets/Haute42COSMOX_X.jpg)
 
+This config is for the X with one or both analog modules fitted. Without analog modules, use [Haute42COSMOXX](../Haute42COSMOXX).
+
 ## Main Pin Mapping Configuration
 
  // Main pin mapping Configuration
