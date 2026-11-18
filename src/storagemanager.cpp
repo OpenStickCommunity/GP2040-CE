@@ -123,7 +123,7 @@ void Storage::setInvertedPins(const GpioMappings& mappings)
 	}
 }
 
-Mask_t Storage::getPressedGpios() const
+Mask_t __not_in_flash_func(Storage::getPressedGpios)() const
 {
 	return ~gpio_get_all64() ^ invertedPins;
 }
@@ -201,7 +201,7 @@ void Storage::SetGamepad(Gamepad * newpad)
 	gamepad = newpad;
 }
 
-Gamepad * Storage::GetGamepad()
+Gamepad * __not_in_flash_func(Storage::GetGamepad)()
 {
 	return gamepad;
 }
@@ -211,7 +211,7 @@ void Storage::SetProcessedGamepad(Gamepad * newpad)
 	processedGamepad = newpad;
 }
 
-Gamepad * Storage::GetProcessedGamepad()
+Gamepad * __not_in_flash_func(Storage::GetProcessedGamepad)()
 {
 	return processedGamepad;
 }
