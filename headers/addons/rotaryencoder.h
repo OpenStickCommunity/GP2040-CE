@@ -78,6 +78,42 @@
 #define ENCODER_RADIUS 1440 // 4 phases * 360
 #define ENCODER_PRECISION 16
 
+// QuadratureEncoder counts every edge of both channels (4 per quadrature cycle).
+// The original polled decoder only counted 2 per cycle, and the existing value
+// mapping/PPR math was tuned around that, so counts are divided down to keep the
+// same feel for existing configurations.
+#ifndef ENCODER_LEGACY_COUNT_DIVISOR
+#define ENCODER_LEGACY_COUNT_DIVISOR 2
+#endif
+
+// PIO capture sample rate. Real edges from a 600 PPR encoder at 10 rev/s are
+// ~40 us apart, so 2 MHz has a large margin while ignoring sub-microsecond
+// glitches that would otherwise fill the capture buffer with bounce.
+#ifndef ENCODER_CAPTURE_SAMPLE_HZ
+#define ENCODER_CAPTURE_SAMPLE_HZ 2000000
+#endif
+
+// ENCODER_MODE_TURNTABLE: movement needed before the digital direction fires or
+// reverses, in degrees of platter rotation (converted with the encoder's PPR;
+// at least one count). 2 degrees = 13 counts on a 600 PPR encoder.
+#ifndef ENCODER_TURNTABLE_THRESHOLD_DEGREES
+#define ENCODER_TURNTABLE_THRESHOLD_DEGREES 2
+#endif
+
+// ENCODER_MODE_TURNTABLE: how long the direction stays held after the last movement.
+// The encoder's "Reset After" setting overrides this when it's non-zero.
+#ifndef ENCODER_TURNTABLE_HOLD_MS
+#define ENCODER_TURNTABLE_HOLD_MS 100
+#endif
+
+// ENCODER_MODE_TURNTABLE: range of the absolute platter position (0 .. N-1, wrapping).
+#ifndef ENCODER_TURNTABLE_POSITION_UNITS
+#define ENCODER_TURNTABLE_POSITION_UNITS 256
+#endif
+
+#include "QuadratureEncoder.h"
+#include "QuadratureTurntable.h"
+
 // RotaryEncoderName Module Name
 #define RotaryEncoderName "Rotary"
 
@@ -91,6 +127,14 @@ public:
     virtual void reinit() {}
     virtual std::string name() { return RotaryEncoderName; }
 
+    // Turntable state for an encoder in ENCODER_MODE_TURNTABLE, for input modes to
+    // report however they need (digital direction() or analog position()).
+    // nullptr if the encoder isn't enabled or isn't in turntable mode.
+    const QuadratureTurntable * getTurntable(uint8_t index) const {
+        if ((index >= MAX_ENCODERS) || !encoderMap[index].enabled || (encoderMap[index].mode != ENCODER_MODE_TURNTABLE)) return nullptr;
+        return &turntables[index];
+    }
+
     typedef struct {
         bool enabled = false;
         int8_t pinA = -1;
@@ -103,18 +147,20 @@ public:
         uint32_t resetAfter = 0;
         bool allowWrapAround = false;
         double multiplier = 0;
+        // derived once in setup() (previously recomputed in soft-float every loop)
+        int32_t increment = 0;
+        int32_t totalPositions = 0;
     } EncoderPinMap;
 
     typedef struct {
-        bool pinA = false;
-        bool pinB = false;
-        bool prevA = false;
-        bool prevB = false;
-        uint32_t updateTime = 0;
+        uint32_t lastRawCount = 0;  // last QuadratureEncoder count seen (4x, wraps)
+        int32_t lastDelta = 0;      // 4x count change in the latest process()
+        int32_t pendingCounts = 0;  // counts not yet converted to legacy steps
         uint32_t changeTime = 0;
-        uint8_t delay = 1;
     } EncoderPinState;
 private:
+    QuadratureEncoder encoders[MAX_ENCODERS];
+    QuadratureTurntable turntables[MAX_ENCODERS];
     EncoderPinState encoderState[MAX_ENCODERS];
     int32_t encoderValues[MAX_ENCODERS];
     int32_t prevValues[MAX_ENCODERS];
