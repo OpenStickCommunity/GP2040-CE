@@ -466,6 +466,12 @@ message AnalogOptions
     optional uint32 joystick_max_y2 = 35;
 }
 
+message TurboToggleSlot
+{
+    optional int32 pin = 1;
+    optional uint32 buttonMask = 2;
+}
+
 message TurboOptions
 {
     optional bool enabled = 1;
@@ -495,6 +501,7 @@ message TurboOptions
     optional uint32 turboLedColor = 22 [deprecated = true];
     optional bool holdToClear = 23;
     optional uint32 holdToClearTime = 24;
+    repeated TurboToggleSlot toggleSlots = 25 [(nanopb).max_count = 8];
 }
 
 message SliderOptions

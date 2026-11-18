@@ -982,6 +982,18 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, turboLedType, TURBO_LED_TYPE);
     INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, holdToClear, !!TURBO_HOLD_TO_CLEAR);
     INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, holdToClearTime, TURBO_HOLD_CLEAR_TIME);
+    const Pin_t turboTogglePins[TURBO_TOGGLE_SLOT_COUNT] = {
+        TURBO_TOGGLE_1_PIN, TURBO_TOGGLE_2_PIN, TURBO_TOGGLE_3_PIN, TURBO_TOGGLE_4_PIN,
+        TURBO_TOGGLE_5_PIN, TURBO_TOGGLE_6_PIN, TURBO_TOGGLE_7_PIN, TURBO_TOGGLE_8_PIN };
+    const uint32_t turboToggleButtons[TURBO_TOGGLE_SLOT_COUNT] = {
+        TURBO_TOGGLE_1_BUTTON, TURBO_TOGGLE_2_BUTTON, TURBO_TOGGLE_3_BUTTON, TURBO_TOGGLE_4_BUTTON,
+        TURBO_TOGGLE_5_BUTTON, TURBO_TOGGLE_6_BUTTON, TURBO_TOGGLE_7_BUTTON, TURBO_TOGGLE_8_BUTTON };
+    for (uint8_t toggleIndex = 0; toggleIndex < TURBO_TOGGLE_SLOT_COUNT; toggleIndex++) {
+        TurboToggleSlot& toggleSlot = config.addonOptions.turboOptions.toggleSlots[toggleIndex];
+        INIT_UNSET_PROPERTY(toggleSlot, pin, turboTogglePins[toggleIndex]);
+        INIT_UNSET_PROPERTY(toggleSlot, buttonMask, turboToggleButtons[toggleIndex]);
+    }
+    config.addonOptions.turboOptions.toggleSlots_count = TURBO_TOGGLE_SLOT_COUNT;
 
     // addonOptions.reverseOptions
     INIT_UNSET_PROPERTY(config.addonOptions.reverseOptions, enabled, !!REVERSE_ENABLED);
