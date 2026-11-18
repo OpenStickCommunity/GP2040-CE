@@ -46,19 +46,21 @@ ADS1256::ADS1256(PeripheralSPI *spi, const int DRDY_pin, const int RESET_pin, co
     if (RESET_pin > -1) {
         _RESET_pin = RESET_pin;
         gpio_init(_RESET_pin);
+        gpio_put(_RESET_pin, 1);
         gpio_set_dir(_RESET_pin, GPIO_OUT);
     }
 
     if (SYNC_pin > -1) {
         _SYNC_pin = SYNC_pin;
         gpio_init(_SYNC_pin);
+        gpio_put(_SYNC_pin, 1);
         gpio_set_dir(_SYNC_pin, GPIO_OUT);
     }
 
     _CS_pin = CS_pin;
     gpio_init(_CS_pin);
+    gpio_put(_CS_pin, 1); // start deselected before the pin starts driving
     gpio_set_dir(_CS_pin, GPIO_OUT);
-    gpio_pull_up(_CS_pin);
 
     _VREF = VREF;
 }
@@ -67,14 +69,14 @@ ADS1256::ADS1256(PeripheralSPI *spi, const int DRDY_pin, const int RESET_pin, co
 void ADS1256::init(uint8_t drate, uint8_t pga, bool useBuf) {
     // We do a manual chip reset on the ADS1256 - Datasheet Page 27/ RESET
     if (_RESET_pin > -1) {
-        gpio_pull_down(_RESET_pin);
+        gpio_put(_RESET_pin, 0);
         sleep_ms(200);
-        gpio_pull_up(_RESET_pin);
+        gpio_put(_RESET_pin, 1);
         sleep_ms(1000);
     }
 
     if (_SYNC_pin > -1) {
-        gpio_pull_up(_SYNC_pin);
+        gpio_put(_SYNC_pin, 1);
     }
 
     _SPI->beginTransaction(_SPISpeed, _SPIBitOrder, _SPIMode);
