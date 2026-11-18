@@ -117,7 +117,21 @@ class MainMenuScreen : public GPScreen {
         bool changeRequiresReboot = false;
         bool changeRequiresSave = false;
 
-        #define INPUT_MODE_ENTRIES(name, value) {name##_NAME, value},
+        #define PP_CAT(a, b)  PP_CAT_(a, b)
+        #define PP_CAT_(a, b) a##b
+        #define PP_PROBE ~, 1
+        #define PP_CHECK_N(x, n, ...) n
+        #define PP_CHECK(...) PP_CHECK_N(__VA_ARGS__, 0, )
+
+        // define any Input Mode entries to be excluded
+        #define INPUT_MODE_EXCLUDE_INPUT_MODE_CONFIG PP_PROBE
+
+        #define INPUT_MODE_IS_EXCLUDED(name) PP_CHECK(INPUT_MODE_EXCLUDE_##name)
+
+        #define INPUT_MODE_ENTRY_0(name, value) {name##_NAME, value},
+        #define INPUT_MODE_ENTRY_1(name, value)   /* excluded */
+
+        #define INPUT_MODE_ENTRIES(name, value) PP_CAT(INPUT_MODE_ENTRY_, INPUT_MODE_IS_EXCLUDED(name))(name, value)
         #define DPAD_MODE_ENTRIES(name, value)  {name##_NAME, NULL, nullptr, std::bind(&MainMenuScreen::currentDpadMode,  this), std::bind(&MainMenuScreen::selectDPadMode,  this), value},
         #define SOCD_MODE_ENTRIES(name, value)  {name##_NAME, NULL, nullptr, [this] { return currentSOCDMode(); }, [this] { selectSOCDMode(); }, value},
 
