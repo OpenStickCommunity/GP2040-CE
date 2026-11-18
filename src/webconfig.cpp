@@ -135,9 +135,9 @@ static void __attribute__((noinline)) cleanAddonGpioMappings(Pin_t& addonPin, Pi
     if (isValidPin(addonPin))
     {
         gpioMappings[addonPin].action = GpioAction::ASSIGNED_TO_ADDON;
-        profiles.gpioMappingsSets[0].pins[addonPin].action = GpioAction::ASSIGNED_TO_ADDON;
-        profiles.gpioMappingsSets[1].pins[addonPin].action = GpioAction::ASSIGNED_TO_ADDON;
-        profiles.gpioMappingsSets[2].pins[addonPin].action = GpioAction::ASSIGNED_TO_ADDON;
+        for (GpioMappings& profile : profiles.gpioMappingsSets) {
+            profile.pins[addonPin].action = GpioAction::ASSIGNED_TO_ADDON;
+        }
     } else {
         // -1 is our de facto value for "not assigned" in addons
         addonPin = -1;
@@ -148,9 +148,9 @@ static void __attribute__((noinline)) cleanAddonGpioMappings(Pin_t& addonPin, Pi
     if (isValidPin(oldAddonPin) && oldAddonPin != addonPin)
     {
         gpioMappings[oldAddonPin].action = GpioAction::NONE;
-        profiles.gpioMappingsSets[0].pins[oldAddonPin].action = GpioAction::NONE;
-        profiles.gpioMappingsSets[1].pins[oldAddonPin].action = GpioAction::NONE;
-        profiles.gpioMappingsSets[2].pins[oldAddonPin].action = GpioAction::NONE;
+        for (GpioMappings& profile : profiles.gpioMappingsSets) {
+            profile.pins[oldAddonPin].action = GpioAction::NONE;
+        }
     }
 }
 
