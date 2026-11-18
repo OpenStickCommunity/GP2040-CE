@@ -1302,8 +1302,26 @@ std::string getLightsPresets7() { return getLightsPresetsByIndex(7); }
 
 std::string getLightsDataPresets()
 {
-    //DynamicJsonDocument outDoc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-    DynamicJsonDocument outDoc((1024 * 32)); //Set a bigger value here as the preset data is quite large but it should be fine for a get call
+    // A preset is an object of name and lightData, lightData holds the Lights array,
+    // and each light is an object of seven values
+    auto presetCapacity = [](const char* name, int32_t dataSize) -> size_t
+    {
+        if (strcmp(name, "") == 0)
+            return 0;
+        return JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(1) + JSON_ARRAY_SIZE(dataSize) + dataSize * JSON_OBJECT_SIZE(7);
+    };
+    // One slot per preset in the outer array, for the default preset and presets 1 to 7
+    const size_t capacity = JSON_ARRAY_SIZE(8)
+        + presetCapacity(LIGHT_DATA_NAME_DEFAULT, LIGHT_DATA_SIZE_DEFAULT)
+        + presetCapacity(LIGHT_DATA_NAME_1, LIGHT_DATA_SIZE_1)
+        + presetCapacity(LIGHT_DATA_NAME_2, LIGHT_DATA_SIZE_2)
+        + presetCapacity(LIGHT_DATA_NAME_3, LIGHT_DATA_SIZE_3)
+        + presetCapacity(LIGHT_DATA_NAME_4, LIGHT_DATA_SIZE_4)
+        + presetCapacity(LIGHT_DATA_NAME_5, LIGHT_DATA_SIZE_5)
+        + presetCapacity(LIGHT_DATA_NAME_6, LIGHT_DATA_SIZE_6)
+        + presetCapacity(LIGHT_DATA_NAME_7, LIGHT_DATA_SIZE_7);
+    // At most the 32 KB this reply used before, so larger presets are cut short as they were
+    DynamicJsonDocument outDoc(std::min(capacity, (size_t)(1024 * 32)));
     JsonArray presetsArray = outDoc.to<JsonArray>();
 
     auto addPreset = [&](const char* name, const unsigned char* data, int32_t dataSize)
