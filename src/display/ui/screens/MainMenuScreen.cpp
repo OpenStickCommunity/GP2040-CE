@@ -540,7 +540,7 @@ static const struct InputModeEntry { const char* label; int32_t value; } inputMo
 
 // same groups as the web configurator (www/src/Data/InputBootModes.ts)
 static const struct InputModeGroup { const char* label; std::vector<InputMode> modes; } inputModeGroups[] = {
-    {"Primary",      {INPUT_MODE_XINPUT, INPUT_MODE_KEYBOARD, INPUT_MODE_GENERIC, INPUT_MODE_SINPUT}},
+    {"Generics",     {INPUT_MODE_XINPUT, INPUT_MODE_KEYBOARD, INPUT_MODE_GENERIC, INPUT_MODE_SINPUT}},
     {"Sony",         {INPUT_MODE_PS3, INPUT_MODE_PS4, INPUT_MODE_PS5, INPUT_MODE_P5GENERAL}},
     {"Nintendo",     {INPUT_MODE_SWITCH, INPUT_MODE_SWITCH_PRO, INPUT_MODE_SWITCH2_PRO}},
     {"Microsoft",    {INPUT_MODE_XBOXORIGINAL, INPUT_MODE_XBONE}},
@@ -611,7 +611,7 @@ void MainMenuScreen::buildInputModeMenus() {
         }
     }
 
-    // a mode that isn't in a group yet still shows up, at the end of Primary
+    // a mode that isn't in a group yet still shows up, at the end of Generics
     for (const InputModeEntry& entry : inputModeEntries) {
         if (findInputModeGroup(entry.value) == -1) {
             inputModeGroupMenus[0].push_back({entry.label, NULL, nullptr, [this] { return currentInputMode(); }, [this] { selectInputMode(); }, entry.value});
@@ -652,7 +652,7 @@ void MainMenuScreen::selectSwitch2ProIdentity() {
 
 int32_t MainMenuScreen::currentInputModeGroup() {
     int8_t group = findInputModeGroup(updateInputMode);
-    // modes without a group are listed under Primary
+    // modes without a group are listed under Generics
     return group == -1 ? 0 : group;
 }
 
