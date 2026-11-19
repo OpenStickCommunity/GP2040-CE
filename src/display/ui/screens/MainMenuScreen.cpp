@@ -37,7 +37,6 @@ void MainMenuScreen::init() {
     mapMenuBack = new GamepadButtonMapping(GAMEPAD_MASK_B2);
     mapMenuToggle = new GamepadButtonMapping(0);
 
-    // populate the profiles menu with profile 1 plus every enabled extra profile
     const ProfileOptions& profileOptions = Storage::getInstance().getProfileOptions();
     uint8_t profileCount = profileOptions.gpioMappingsSets_count + 1;
     for (uint8_t profileCtr = 0; profileCtr < profileCount; profileCtr++) {
@@ -110,8 +109,7 @@ void MainMenuScreen::init() {
 
     toggles.clear();
 
-    // Focus mode on/off is the override (same as the hotkey), it takes effect without a reboot.
-    // The add-on itself only loads at boot, so only offer it when the add-on is enabled.
+    // Same setting as the focus mode hotkey; the add-on itself only loads at boot
     setupToggle(focusToggle, &addonOptions.focusModeOptions.overrideEnabled, false);
     // The turbo add-on only loads at boot, so turning it on or off needs a restart
     setupToggle(turboToggle, &addonOptions.turboOptions.enabled, true);
@@ -135,7 +133,6 @@ void MainMenuScreen::init() {
         statusBarMenu.push_back(makeCheckEntry(statusBarItems[item].label, &statusBarToggles[item]));
     }
 
-    // per-macro on/off, checked live by the macro add-on on every press
     MacroOptions& macroOptions = addonOptions.macroOptions;
     macrosMenu.clear();
     for (uint8_t macro = 0; macro < macroOptions.macroList_count && macro < MENU_MACRO_LIMIT; macro++) {
@@ -145,7 +142,7 @@ void MainMenuScreen::init() {
         macrosMenu.push_back(makeCheckEntry(label, &macroToggles[macro]));
     }
 
-    // timeout is stored in milliseconds, 0 is off
+    // stored in milliseconds, 0 is off
     prevSaverTimeout = displayOptions.displaySaverTimeout;
     updateSaverTimeout = displayOptions.displaySaverTimeout;
     screensaverMenu = {{"Off", NULL, nullptr, [this] { return currentSaverTimeout(); }, [this] { selectSaverTimeout(); }, 0}};
@@ -155,7 +152,6 @@ void MainMenuScreen::init() {
         if ((uint32_t)ms == prevSaverTimeout) currentListed = true;
         screensaverMenu.push_back({std::to_string(minutes) + " min", NULL, nullptr, [this] { return currentSaverTimeout(); }, [this] { selectSaverTimeout(); }, ms});
     }
-    // keep a timeout set from web config that isn't in the list
     if (!currentListed) {
         screensaverMenu.push_back({std::to_string(prevSaverTimeout / 60000) + " min", NULL, nullptr, [this] { return currentSaverTimeout(); }, [this] { selectSaverTimeout(); }, (int32_t)prevSaverTimeout});
     }
@@ -419,7 +415,6 @@ void MainMenuScreen::showMenu(std::vector<MenuEntry>* menu, const std::string& t
 }
 
 void MainMenuScreen::chooseAndReturn() {
-    // after picking an option, go back to the main menu on the entry we came from
     if (!menuStack.empty()) {
         MenuFrame frame = menuStack.front();
         menuStack.clear();
@@ -590,12 +585,11 @@ int32_t MainMenuScreen::currentProfile() {
     return updateProfile;
 }
 
-// every input mode the menu can offer, minus the ones excluded in the header
 static const struct InputModeEntry { const char* label; int32_t value; } inputModeEntries[] = {
     InputMode_VALUELIST(INPUT_MODE_ENTRIES)
 };
 
-// same groups as the web configurator (www/src/Data/InputBootModes.ts)
+// keep in sync with www/src/Data/InputBootModes.ts
 static const struct InputModeGroup { const char* label; std::vector<InputMode> modes; } inputModeGroups[] = {
     {"Generics",     {INPUT_MODE_XINPUT, INPUT_MODE_GENERIC, INPUT_MODE_SINPUT, INPUT_MODE_KEYBOARD}},
     {"Sony",         {INPUT_MODE_PS3, INPUT_MODE_PS4, INPUT_MODE_PS5, INPUT_MODE_P5GENERAL}},
@@ -614,7 +608,6 @@ static int8_t findInputModeGroup(int32_t mode) {
     return -1;
 }
 
-// same names and order as the web configurator
 static const struct { const char* label; SwitchProControllerType value; } switchProTypes[] = {
     {"Pro Controller",    SWITCH_PRO_CONTROLLER_TYPE_PRO},
     {"NSO SNES",          SWITCH_PRO_CONTROLLER_TYPE_SNES},
@@ -657,7 +650,6 @@ void MainMenuScreen::buildInputModeMenus() {
         for (InputMode mode : inputModeGroups[group].modes) {
             for (const InputModeEntry& entry : inputModeEntries) {
                 if (entry.value == mode) {
-                    // modes with controller types open a submenu instead of selecting directly
                     std::vector<MenuEntry>* submenu = nullptr;
                     if (mode == INPUT_MODE_SWITCH_PRO) submenu = &switchProTypeMenu;
                     else if (mode == INPUT_MODE_SWITCH2_PRO) submenu = &switch2ProIdentityMenu;
@@ -668,7 +660,7 @@ void MainMenuScreen::buildInputModeMenus() {
         }
     }
 
-    // a mode that isn't in a group yet still shows up, at the end of Generics
+    // modes not in a group go at the end of Generics
     for (const InputModeEntry& entry : inputModeEntries) {
         if (findInputModeGroup(entry.value) == -1) {
             inputModeGroupMenus[0].push_back({entry.label, NULL, nullptr, [this] { return currentInputMode(); }, [this] { selectInputMode(); }, entry.value});
@@ -709,7 +701,6 @@ void MainMenuScreen::selectSwitch2ProIdentity() {
 
 int32_t MainMenuScreen::currentInputModeGroup() {
     int8_t group = findInputModeGroup(updateInputMode);
-    // modes without a group are listed under Generics
     return group == -1 ? 0 : group;
 }
 
@@ -732,7 +723,6 @@ std::vector<MenuEntry> MainMenuScreen::makeToggleMenu(PendingToggle* toggle) {
     };
 }
 
-// checklist row: "*" when on, select flips it and stays in the list
 MenuEntry MainMenuScreen::makeCheckEntry(const std::string& label, PendingToggle* toggle) {
     return {label, NULL, nullptr, [toggle] { return (int32_t)toggle->update; }, [this, toggle] { flipToggle(toggle); }, 1};
 }
@@ -788,6 +778,5 @@ int32_t MainMenuScreen::currentTurboSpeed() {
 }
 
 void MainMenuScreen::rebootTo(System::BootMode mode) {
-    // unsaved menu changes are dropped, same as rebooting from a hotkey
     EventManager::getInstance().triggerEvent(new GPRestartEvent(mode));
 }

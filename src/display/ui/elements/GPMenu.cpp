@@ -4,7 +4,6 @@
 
 extern uint32_t getMillis();
 
-// screen is 21 characters wide, menu items start at column 2
 #define MENU_SCREEN_COLUMNS 21
 #define MENU_ITEM_COLUMN 2
 #define MENU_SCROLL_HOLD_MS 1500
@@ -15,7 +14,6 @@ std::string GPMenu::scrollText(const std::string& text, uint16_t width, ScrollSt
 
     uint16_t overflow = text.size() - width;
     uint32_t now = getMillis();
-    // hold at the start and the end so both ends can be read
     uint32_t delay = (state.position == 0 || state.position == overflow) ? MENU_SCROLL_HOLD_MS : MENU_SCROLL_STEP_MS;
     if (now - state.lastStep >= delay) {
         state.position = (state.position < overflow) ? state.position + 1 : 0;
@@ -37,7 +35,6 @@ void GPMenu::draw() {
             currPageItems = 0;
         }
 
-        // start scrolling from the beginning when the selection or title changes
         if (this->scrollMenu != this->menuEntryData || this->scrollIndex != this->menuIndex) {
             this->scrollMenu = this->menuEntryData;
             this->scrollIndex = this->menuIndex;
@@ -66,7 +63,6 @@ void GPMenu::draw() {
                 if (lineValue != -1) {
                     showCurrentOption = (this->menuEntryData->at(pageLine).currentValue() == this->menuEntryData->at(pageLine).optionValue);
                 }
-                // keep the " *" marker in place and scroll or cut the label to fit
                 const std::string suffix = showCurrentOption ? " *" : "";
                 const uint16_t labelWidth = MENU_SCREEN_COLUMNS - MENU_ITEM_COLUMN - suffix.size();
                 const std::string& label = this->menuEntryData->at(pageLine).label;

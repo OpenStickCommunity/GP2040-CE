@@ -99,7 +99,7 @@ void DisplayAddon::loadDisplaySaverOptions() {
 }
 
 bool DisplayAddon::updateDisplayScreen() {
-    // the mini menu can change the screensaver settings
+    // the mini menu can change these
     if (prevDisplayMode == MAIN_MENU && currDisplayMode != MAIN_MENU) {
         loadDisplaySaverOptions();
     }

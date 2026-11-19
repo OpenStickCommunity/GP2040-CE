@@ -27,7 +27,6 @@ class GPMenu : public GPShape {
         std::vector<MenuEntry>* menuEntryData;
         std::string menuTitle;
 
-        // text too wide for the screen scrolls back and forth
         struct ScrollState {
             uint16_t position = 0;
             uint32_t lastStep = 0;

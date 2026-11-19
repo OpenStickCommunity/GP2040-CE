@@ -45,7 +45,6 @@
 
 #define MAIN_MENU_NAME "GP2040-CE Mini Menu"
 
-// An on/off setting the menu stages until Save & Exit
 struct PendingToggle {
     bool* target = nullptr;
     bool prev = false;
@@ -99,7 +98,6 @@ class MainMenuScreen : public GPScreen {
         bool isPressed = false;
         uint32_t checkDebounce = 0;
         std::vector<MenuEntry>* currentMenu = nullptr;
-        // menus above the current one, so Back returns to where you were
         struct MenuFrame {
             std::vector<MenuEntry>* menu;
             std::string title;
@@ -154,13 +152,11 @@ class MainMenuScreen : public GPScreen {
         #define DPAD_MODE_ENTRIES(name, value)  {name##_NAME, NULL, nullptr, std::bind(&MainMenuScreen::currentDpadMode,  this), std::bind(&MainMenuScreen::selectDPadMode,  this), value},
         #define SOCD_MODE_ENTRIES(name, value)  {name##_NAME, NULL, nullptr, [this] { return currentSOCDMode(); }, [this] { selectSOCDMode(); }, value},
 
-        // input modes are grouped like the web configurator; built in init()
         std::vector<MenuEntry> inputModeMenu = {};
         std::vector<MenuEntry> inputModeGroupMenus[INPUT_MODE_GROUP_COUNT];
         int32_t currentInputModeGroup();
         void buildInputModeMenus();
 
-        // Switch Pro and Switch 2 Pro pick a controller type when choosing the mode
         std::vector<MenuEntry> switchProTypeMenu = {};
         SwitchProControllerType prevSwitchProType{};
         SwitchProControllerType updateSwitchProType{};
@@ -186,14 +182,12 @@ class MainMenuScreen : public GPScreen {
         uint8_t prevProfile{};
         uint8_t updateProfile{};
 
-        // on/off settings, in the order they are applied on save
         PendingToggle focusToggle;
         PendingToggle turboToggle;
         PendingToggle fourWayToggle;
         PendingToggle ddiFourWayToggle;
         PendingToggle invertXToggle;
         PendingToggle invertYToggle;
-        // status bar items, then macros; shown as checklists that toggle in place
         static const uint8_t STATUS_BAR_ITEM_COUNT = 6;
         static const uint8_t MENU_MACRO_LIMIT = 6;
         PendingToggle statusBarToggles[STATUS_BAR_ITEM_COUNT];
@@ -232,7 +226,6 @@ class MainMenuScreen : public GPScreen {
             {"Exit",       NULL, nullptr,        std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::exitOnly, this), 0},
         }; }();
         
-        // built in init(), since some entries depend on which add-ons are enabled
         std::vector<MenuEntry> mainMenu = {};
         void addSubmenu(const char* label, std::vector<MenuEntry>* submenu);
 
