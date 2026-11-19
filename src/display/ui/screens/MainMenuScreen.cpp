@@ -1,13 +1,19 @@
 #include "MainMenuScreen.h"
 #include "hardware/watchdog.h"
 #include "system.h"
+#include "GPRestartEvent.h"
+
+// matches TURBO_SHOT_MIN/MAX in turbo.cpp
+#define MENU_TURBO_SHOT_MIN 2
+#define MENU_TURBO_SHOT_MAX 30
 
 extern uint32_t getMillis();
 
 void MainMenuScreen::init() {
     getRenderer()->clearScreen();
     currentMenu = &mainMenu;
-    previousMenu = nullptr;
+    menuStack.clear();
+    currentTitle = MAIN_MENU_NAME;
 
     exitToScreen = -1;
 
@@ -31,24 +37,22 @@ void MainMenuScreen::init() {
     mapMenuBack = new GamepadButtonMapping(GAMEPAD_MASK_B2);
     mapMenuToggle = new GamepadButtonMapping(0);
 
-    // populate the profiles menu
-    uint8_t profileCount = (sizeof(Storage::getInstance().getProfileOptions().gpioMappingsSets)/sizeof(GpioMappings))+1;
+    const ProfileOptions& profileOptions = Storage::getInstance().getProfileOptions();
+    uint8_t profileCount = profileOptions.gpioMappingsSets_count + 1;
     for (uint8_t profileCtr = 0; profileCtr < profileCount; profileCtr++) {
         std::string menuLabel = "";
         if (profileCtr == 0) {
             menuLabel = Storage::getInstance().getGpioMappings().profileLabel;
-            // If Profile #1 has no name, set it to Profile #1
-            if (menuLabel.empty()) {
-                menuLabel = "Profile #" + std::to_string(profileCtr+1);
-            }
         } else {
-            menuLabel = Storage::getInstance().getProfileOptions().gpioMappingsSets[profileCtr-1].profileLabel;
-            // Do not show other profiles if they are empty
-            if (menuLabel.empty()) {
+            if (!profileOptions.gpioMappingsSets[profileCtr-1].enabled) {
                 continue;
             }
+            menuLabel = profileOptions.gpioMappingsSets[profileCtr-1].profileLabel;
         }
-        
+        if (menuLabel.empty()) {
+            menuLabel = "Profile #" + std::to_string(profileCtr+1);
+        }
+
         MenuEntry menuEntry = {menuLabel, NULL, nullptr, std::bind(&MainMenuScreen::currentProfile, this), std::bind(&MainMenuScreen::selectProfile, this), profileCtr+1};
         profilesMenu.push_back(menuEntry);
     }
@@ -95,11 +99,111 @@ void MainMenuScreen::init() {
     prevProfile = Storage::getInstance().GetGamepad()->getOptions().profileNumber;
     updateProfile = Storage::getInstance().GetGamepad()->getOptions().profileNumber;
     
-    prevFocus = Storage::getInstance().getAddonOptions().focusModeOptions.enabled;
-    updateFocus = Storage::getInstance().getAddonOptions().focusModeOptions.enabled;
-    
-    prevTurbo = Storage::getInstance().getAddonOptions().turboOptions.enabled;
-    updateTurbo = Storage::getInstance().getAddonOptions().turboOptions.enabled;
+    GamepadOptions& options = Storage::getInstance().getGamepadOptions();
+    AddonOptions& addonOptions = Storage::getInstance().getAddonOptions();
+
+    prevSwitchProType = options.switchProControllerType;
+    updateSwitchProType = options.switchProControllerType;
+    prevSwitch2ProIdentity = options.switch2ProIdentity;
+    updateSwitch2ProIdentity = options.switch2ProIdentity;
+
+    toggles.clear();
+
+    // Same setting as the focus mode hotkey; the add-on itself only loads at boot
+    setupToggle(focusToggle, &addonOptions.focusModeOptions.overrideEnabled, false);
+    // The turbo add-on only loads at boot, so turning it on or off needs a restart
+    setupToggle(turboToggle, &addonOptions.turboOptions.enabled, true);
+    setupToggle(fourWayToggle, &options.fourWayMode, false);
+    setupToggle(ddiFourWayToggle, &addonOptions.dualDirectionalOptions.fourWayMode, false);
+    setupToggle(invertXToggle, &options.invertXAxis, false);
+    setupToggle(invertYToggle, &options.invertYAxis, false);
+
+    DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
+    const struct { const char* label; bool* target; } statusBarItems[STATUS_BAR_ITEM_COUNT] = {
+        {"Input Mode", &displayOptions.inputMode},
+        {"D-Pad Mode", &displayOptions.dpadMode},
+        {"SOCD Mode",  &displayOptions.socdMode},
+        {"Profile",    &displayOptions.profileMode},
+        {"Turbo",      &displayOptions.turboMode},
+        {"Macros",     &displayOptions.macroMode},
+    };
+    statusBarMenu.clear();
+    for (uint8_t item = 0; item < STATUS_BAR_ITEM_COUNT; item++) {
+        setupToggle(statusBarToggles[item], statusBarItems[item].target, false);
+        statusBarMenu.push_back(makeCheckEntry(statusBarItems[item].label, &statusBarToggles[item]));
+    }
+
+    MacroOptions& macroOptions = addonOptions.macroOptions;
+    macrosMenu.clear();
+    for (uint8_t macro = 0; macro < macroOptions.macroList_count && macro < MENU_MACRO_LIMIT; macro++) {
+        setupToggle(macroToggles[macro], &macroOptions.macroList[macro].enabled, false);
+        std::string label = macroOptions.macroList[macro].macroLabel;
+        if (label.empty()) label = "Macro " + std::to_string(macro + 1);
+        macrosMenu.push_back(makeCheckEntry(label, &macroToggles[macro]));
+    }
+
+    // stored in milliseconds, 0 is off
+    prevSaverTimeout = displayOptions.displaySaverTimeout;
+    updateSaverTimeout = displayOptions.displaySaverTimeout;
+    screensaverMenu = {{"Off", NULL, nullptr, [this] { return currentSaverTimeout(); }, [this] { selectSaverTimeout(); }, 0}};
+    bool currentListed = (prevSaverTimeout == 0);
+    for (int32_t minutes : {1, 2, 5, 10, 15, 30, 60}) {
+        int32_t ms = minutes * 60000;
+        if ((uint32_t)ms == prevSaverTimeout) currentListed = true;
+        screensaverMenu.push_back({std::to_string(minutes) + " min", NULL, nullptr, [this] { return currentSaverTimeout(); }, [this] { selectSaverTimeout(); }, ms});
+    }
+    if (!currentListed) {
+        screensaverMenu.push_back({std::to_string(prevSaverTimeout / 60000) + " min", NULL, nullptr, [this] { return currentSaverTimeout(); }, [this] { selectSaverTimeout(); }, (int32_t)prevSaverTimeout});
+    }
+
+    focusModeMenu = makeToggleMenu(&focusToggle);
+    turboModeMenu = makeToggleMenu(&turboToggle);
+    fourWayMenu = makeToggleMenu(&fourWayToggle);
+    ddiFourWayMenu = makeToggleMenu(&ddiFourWayToggle);
+    invertXMenu = makeToggleMenu(&invertXToggle);
+    invertYMenu = makeToggleMenu(&invertYToggle);
+
+    prevTurboSpeed = addonOptions.turboOptions.shotCount;
+    updateTurboSpeed = addonOptions.turboOptions.shotCount;
+    turboSpeedMenu.clear();
+    for (int32_t shots = MENU_TURBO_SHOT_MIN; shots <= MENU_TURBO_SHOT_MAX; shots++) {
+        turboSpeedMenu.push_back({std::to_string(shots) + " shots/sec", NULL, nullptr, [this] { return currentTurboSpeed(); }, [this] { selectTurboSpeed(); }, shots});
+    }
+
+    rebootMenu = {
+        {"Web Config", NULL, nullptr, [this] { return modeValue(); }, [this] { rebootTo(System::BootMode::WEBCONFIG); }},
+        {"BOOTSEL",    NULL, nullptr, [this] { return modeValue(); }, [this] { rebootTo(System::BootMode::USB); }},
+    };
+
+    buildInputModeMenus();
+
+    mainMenu.clear();
+    addSubmenu("Input Mode", &inputModeMenu);
+    addSubmenu("D-Pad Mode", &dpadModeMenu);
+    addSubmenu("SOCD Mode", &socdModeMenu);
+    addSubmenu("Profile", &profilesMenu);
+    addSubmenu("4-Way Mode", &fourWayMenu);
+    if (addonOptions.dualDirectionalOptions.enabled)
+        addSubmenu("DDI 4-Way Mode", &ddiFourWayMenu);
+    invertMenu = {
+        {"X Axis", NULL, &invertXMenu, [this] { return modeValue(); }, [this] { testMenu(); }},
+        {"Y Axis", NULL, &invertYMenu, [this] { return modeValue(); }, [this] { testMenu(); }},
+    };
+    addSubmenu("Invert Axis", &invertMenu);
+    if (addonOptions.focusModeOptions.enabled)
+        addSubmenu("Focus Mode", &focusModeMenu);
+    if (!macrosMenu.empty())
+        addSubmenu("Macros", &macrosMenu);
+    turboMenu = {
+        {"Enabled", NULL, &turboModeMenu, [this] { return modeValue(); }, [this] { testMenu(); }},
+    };
+    if (addonOptions.turboOptions.enabled)
+        turboMenu.push_back({"Speed", NULL, &turboSpeedMenu, [this] { return modeValue(); }, [this] { testMenu(); }});
+    addSubmenu("Turbo", &turboMenu);
+    addSubmenu("Screensaver", &screensaverMenu);
+    addSubmenu("Status Bar", &statusBarMenu);
+    addSubmenu("Reboot", &rebootMenu);
+    addSubmenu("Exit", &saveMenu);
 
     setMenuHome();
 }
@@ -147,7 +251,8 @@ void MainMenuScreen::setMenu(std::vector<MenuEntry>* menu) {
 
 void MainMenuScreen::setMenuHome() {
     currentMenu = &mainMenu;
-    previousMenu = nullptr;
+    menuStack.clear();
+    currentTitle = MAIN_MENU_NAME;
 
     exitToScreen = -1;
     prevValues = Storage::getInstance().GetGamepad()->debouncedGpio;
@@ -278,22 +383,17 @@ void MainMenuScreen::updateMenuNavigation(GpioAction action) {
                     break;
                 case GpioAction::MENU_NAVIGATION_SELECT:
                     if (currentMenu->at(menuIndex).submenu != nullptr) {
-                        previousMenu = currentMenu;
-                        currentMenu = currentMenu->at(menuIndex).submenu;
-                        gpMenu->setMenuData(currentMenu);
-                        gpMenu->setMenuTitle(previousMenu->at(menuIndex).label);
-                        gpMenu->setIndex(0);
+                        menuStack.push_back({currentMenu, currentTitle, menuIndex});
+                        showMenu(currentMenu->at(menuIndex).submenu, currentMenu->at(menuIndex).label, 0);
                     } else {
                         currentMenu->at(menuIndex).action();
                     }
                     break;
                 case GpioAction::MENU_NAVIGATION_BACK:
-                    if (previousMenu != nullptr) {
-                        currentMenu = previousMenu;
-                        previousMenu = nullptr;
-                        gpMenu->setMenuData(currentMenu);
-                        gpMenu->setMenuTitle(MAIN_MENU_NAME);
-                        gpMenu->setIndex(0);
+                    if (!menuStack.empty()) {
+                        MenuFrame frame = menuStack.back();
+                        menuStack.pop_back();
+                        showMenu(frame.menu, frame.title, frame.index);
                     } else {
                         exitToScreen = DisplayMode::BUTTONS;
                         exitToScreenBeforePrompt = DisplayMode::BUTTONS;
@@ -306,13 +406,19 @@ void MainMenuScreen::updateMenuNavigation(GpioAction action) {
     }
 }
 
+void MainMenuScreen::showMenu(std::vector<MenuEntry>* menu, const std::string& title, uint16_t index) {
+    currentMenu = menu;
+    currentTitle = title;
+    gpMenu->setMenuData(currentMenu);
+    gpMenu->setMenuTitle(currentTitle);
+    gpMenu->setIndex(index);
+}
+
 void MainMenuScreen::chooseAndReturn() {
-    if (previousMenu != nullptr) {
-        currentMenu = previousMenu;
-        previousMenu = nullptr;
-        gpMenu->setMenuData(currentMenu);
-        gpMenu->setMenuTitle(MAIN_MENU_NAME);
-        gpMenu->setIndex(0);
+    if (!menuStack.empty()) {
+        MenuFrame frame = menuStack.front();
+        menuStack.clear();
+        showMenu(frame.menu, frame.title, frame.index);
     } else {
         exitToScreen = DisplayMode::BUTTONS;
         exitToScreenBeforePrompt = DisplayMode::BUTTONS;
@@ -391,8 +497,11 @@ void MainMenuScreen::resetOptions() {
         if (prevDpadMode != updateDpadMode) updateDpadMode = prevDpadMode;
         if (prevSocdMode != updateSocdMode) updateSocdMode = prevSocdMode;
         if (prevProfile != updateProfile) updateProfile = prevProfile;
-        if (prevFocus != updateFocus) updateFocus = prevFocus;
-        if (prevTurbo != updateTurbo) updateTurbo = prevTurbo;
+        for (PendingToggle* toggle : toggles) toggle->update = toggle->prev;
+        updateTurboSpeed = prevTurboSpeed;
+        updateSaverTimeout = prevSaverTimeout;
+        updateSwitchProType = prevSwitchProType;
+        updateSwitch2ProIdentity = prevSwitch2ProIdentity;
     }
 
     changeRequiresSave = false;
@@ -422,12 +531,26 @@ void MainMenuScreen::saveOptions() {
             options.profileNumber = updateProfile;
             saveHasChanged = true;
         }
-        if ((bool)prevFocus != (bool)updateFocus) {
-            addonOptions.focusModeOptions.enabled = (bool)updateFocus;
+        for (PendingToggle* toggle : toggles) {
+            if (toggle->target != nullptr && toggle->prev != toggle->update) {
+                *toggle->target = toggle->update;
+                saveHasChanged = true;
+            }
+        }
+        if (prevSaverTimeout != updateSaverTimeout) {
+            Storage::getInstance().getDisplayOptions().displaySaverTimeout = updateSaverTimeout;
             saveHasChanged = true;
         }
-        if ((bool)prevTurbo != (bool)updateTurbo) {
-            addonOptions.turboOptions.enabled = (bool)updateTurbo;
+        if (prevSwitchProType != updateSwitchProType) {
+            options.switchProControllerType = updateSwitchProType;
+            saveHasChanged = true;
+        }
+        if (prevSwitch2ProIdentity != updateSwitch2ProIdentity) {
+            options.switch2ProIdentity = updateSwitch2ProIdentity;
+            saveHasChanged = true;
+        }
+        if (prevTurboSpeed != updateTurboSpeed) {
+            addonOptions.turboOptions.shotCount = updateTurboSpeed;
             saveHasChanged = true;
         }
 
@@ -462,34 +585,198 @@ int32_t MainMenuScreen::currentProfile() {
     return updateProfile;
 }
 
-void MainMenuScreen::selectFocusMode() {
-    if (currentMenu->at(gpMenu->getIndex()).optionValue != -1) {
-        bool valueToSave = (bool)currentMenu->at(gpMenu->getIndex()).optionValue;
-        prevFocus = Storage::getInstance().getAddonOptions().focusModeOptions.enabled;
-        updateFocus = valueToSave;
+static const struct InputModeEntry { const char* label; int32_t value; } inputModeEntries[] = {
+    InputMode_VALUELIST(INPUT_MODE_ENTRIES)
+};
 
-        chooseAndReturn();
+// keep in sync with www/src/Data/InputBootModes.ts
+static const struct InputModeGroup { const char* label; std::vector<InputMode> modes; } inputModeGroups[] = {
+    {"Generics",     {INPUT_MODE_XINPUT, INPUT_MODE_GENERIC, INPUT_MODE_SINPUT, INPUT_MODE_KEYBOARD}},
+    {"Sony",         {INPUT_MODE_PS3, INPUT_MODE_PS4, INPUT_MODE_PS5, INPUT_MODE_P5GENERAL}},
+    {"Nintendo",     {INPUT_MODE_SWITCH, INPUT_MODE_SWITCH_PRO, INPUT_MODE_SWITCH2_PRO}},
+    {"Microsoft",    {INPUT_MODE_XBOXORIGINAL, INPUT_MODE_XBONE}},
+    {"Mini/Classic", {INPUT_MODE_MDMINI, INPUT_MODE_NEOGEO, INPUT_MODE_PCEMINI, INPUT_MODE_EGRET, INPUT_MODE_ASTRO, INPUT_MODE_PSCLASSIC}},
+};
+static_assert(sizeof(inputModeGroups) / sizeof(inputModeGroups[0]) == MainMenuScreen::INPUT_MODE_GROUP_COUNT, "input mode group count mismatch");
 
-        if (prevFocus != valueToSave) changeRequiresSave = true;
+static int8_t findInputModeGroup(int32_t mode) {
+    for (uint8_t group = 0; group < MainMenuScreen::INPUT_MODE_GROUP_COUNT; group++) {
+        for (InputMode groupMode : inputModeGroups[group].modes) {
+            if (groupMode == mode) return group;
+        }
+    }
+    return -1;
+}
+
+static const struct { const char* label; SwitchProControllerType value; } switchProTypes[] = {
+    {"Pro Controller",    SWITCH_PRO_CONTROLLER_TYPE_PRO},
+    {"NSO SNES",          SWITCH_PRO_CONTROLLER_TYPE_SNES},
+    {"NSO Super Famicom", SWITCH_PRO_CONTROLLER_TYPE_SUPER_FAMICOM},
+    {"NSO N64",           SWITCH_PRO_CONTROLLER_TYPE_N64},
+    {"NSO Genesis",       SWITCH_PRO_CONTROLLER_TYPE_GENESIS},
+    {"NSO Mega Drive",    SWITCH_PRO_CONTROLLER_TYPE_MEGA_DRIVE},
+    {"NSO NES",           SWITCH_PRO_CONTROLLER_TYPE_NES},
+    {"NSO Famicom I",     SWITCH_PRO_CONTROLLER_TYPE_FAMICOM_I},
+    {"NSO Famicom II",    SWITCH_PRO_CONTROLLER_TYPE_FAMICOM_II},
+    {"Joy-Con (L)",       SWITCH_PRO_CONTROLLER_TYPE_JOYCON_LEFT},
+    {"Joy-Con (R)",       SWITCH_PRO_CONTROLLER_TYPE_JOYCON_RIGHT},
+    {"Joy-Con (L + R)",   SWITCH_PRO_CONTROLLER_TYPE_JOYCON_PAIR},
+};
+
+static const struct { const char* label; Switch2ProIdentity value; } switch2ProIdentities[] = {
+    {"Pro Controller",    SWITCH2_PRO_IDENTITY_PRO},
+    {"GameCube",          SWITCH2_PRO_IDENTITY_GAMECUBE},
+    {"Joy-Con 2 (L)",     SWITCH2_PRO_IDENTITY_JOYCON2_LEFT},
+    {"Joy-Con 2 (R)",     SWITCH2_PRO_IDENTITY_JOYCON2_RIGHT},
+};
+
+void MainMenuScreen::buildInputModeMenus() {
+    switchProTypeMenu.clear();
+    for (const auto& type : switchProTypes) {
+        switchProTypeMenu.push_back({type.label, NULL, nullptr,
+            [this] { return updateInputMode == INPUT_MODE_SWITCH_PRO ? (int32_t)updateSwitchProType : -2; },
+            [this] { selectSwitchProType(); }, type.value});
+    }
+    switch2ProIdentityMenu.clear();
+    for (const auto& identity : switch2ProIdentities) {
+        switch2ProIdentityMenu.push_back({identity.label, NULL, nullptr,
+            [this] { return updateInputMode == INPUT_MODE_SWITCH2_PRO ? (int32_t)updateSwitch2ProIdentity : -2; },
+            [this] { selectSwitch2ProIdentity(); }, identity.value});
+    }
+
+    inputModeMenu.clear();
+    for (uint8_t group = 0; group < INPUT_MODE_GROUP_COUNT; group++) {
+        inputModeGroupMenus[group].clear();
+        for (InputMode mode : inputModeGroups[group].modes) {
+            for (const InputModeEntry& entry : inputModeEntries) {
+                if (entry.value == mode) {
+                    std::vector<MenuEntry>* submenu = nullptr;
+                    if (mode == INPUT_MODE_SWITCH_PRO) submenu = &switchProTypeMenu;
+                    else if (mode == INPUT_MODE_SWITCH2_PRO) submenu = &switch2ProIdentityMenu;
+                    inputModeGroupMenus[group].push_back({entry.label, NULL, submenu, [this] { return currentInputMode(); }, [this] { selectInputMode(); }, entry.value});
+                    break;
+                }
+            }
+        }
+    }
+
+    // modes not in a group go at the end of Generics
+    for (const InputModeEntry& entry : inputModeEntries) {
+        if (findInputModeGroup(entry.value) == -1) {
+            inputModeGroupMenus[0].push_back({entry.label, NULL, nullptr, [this] { return currentInputMode(); }, [this] { selectInputMode(); }, entry.value});
+        }
+    }
+
+    for (uint8_t group = 0; group < INPUT_MODE_GROUP_COUNT; group++) {
+        if (inputModeGroupMenus[group].empty()) continue;
+        inputModeMenu.push_back({inputModeGroups[group].label, NULL, &inputModeGroupMenus[group], [this] { return currentInputModeGroup(); }, [this] { testMenu(); }, group});
     }
 }
 
-int32_t MainMenuScreen::currentFocusMode() {
-    return updateFocus;
-}
+void MainMenuScreen::selectSwitchProType() {
+    if (currentMenu->at(gpMenu->getIndex()).optionValue < 0) return;
+    updateInputMode = INPUT_MODE_SWITCH_PRO;
+    updateSwitchProType = (SwitchProControllerType)currentMenu->at(gpMenu->getIndex()).optionValue;
 
-void MainMenuScreen::selectTurboMode() {
-    if (currentMenu->at(gpMenu->getIndex()).optionValue != -1) {
-        bool valueToSave = (bool)currentMenu->at(gpMenu->getIndex()).optionValue;
-        prevTurbo = Storage::getInstance().getAddonOptions().turboOptions.enabled;
-        updateTurbo = valueToSave;
+    chooseAndReturn();
 
-        chooseAndReturn();
-
-        if (prevTurbo != valueToSave) changeRequiresSave = true;
+    if (prevInputMode != updateInputMode || prevSwitchProType != updateSwitchProType) {
+        changeRequiresReboot = true;
+        changeRequiresSave = true;
     }
 }
 
-int32_t MainMenuScreen::currentTurboMode() {
-    return updateTurbo;
+void MainMenuScreen::selectSwitch2ProIdentity() {
+    if (currentMenu->at(gpMenu->getIndex()).optionValue < 0) return;
+    updateInputMode = INPUT_MODE_SWITCH2_PRO;
+    updateSwitch2ProIdentity = (Switch2ProIdentity)currentMenu->at(gpMenu->getIndex()).optionValue;
+
+    chooseAndReturn();
+
+    if (prevInputMode != updateInputMode || prevSwitch2ProIdentity != updateSwitch2ProIdentity) {
+        changeRequiresReboot = true;
+        changeRequiresSave = true;
+    }
+}
+
+int32_t MainMenuScreen::currentInputModeGroup() {
+    int8_t group = findInputModeGroup(updateInputMode);
+    return group == -1 ? 0 : group;
+}
+
+void MainMenuScreen::addSubmenu(const char* label, std::vector<MenuEntry>* submenu) {
+    mainMenu.push_back({label, NULL, submenu, [this] { return modeValue(); }, [this] { testMenu(); }});
+}
+
+void MainMenuScreen::setupToggle(PendingToggle& toggle, bool* target, bool rebootOnChange) {
+    toggles.push_back(&toggle);
+    toggle.target = target;
+    toggle.prev = *target;
+    toggle.update = *target;
+    toggle.rebootOnChange = rebootOnChange;
+}
+
+std::vector<MenuEntry> MainMenuScreen::makeToggleMenu(PendingToggle* toggle) {
+    return std::vector<MenuEntry>{
+        {"Off", NULL, nullptr, [toggle] { return (int32_t)toggle->update; }, [this, toggle] { selectToggle(toggle); }, 0},
+        {"On",  NULL, nullptr, [toggle] { return (int32_t)toggle->update; }, [this, toggle] { selectToggle(toggle); }, 1},
+    };
+}
+
+MenuEntry MainMenuScreen::makeCheckEntry(const std::string& label, PendingToggle* toggle) {
+    return {label, NULL, nullptr, [toggle] { return (int32_t)toggle->update; }, [this, toggle] { flipToggle(toggle); }, 1};
+}
+
+void MainMenuScreen::flipToggle(PendingToggle* toggle) {
+    toggle->update = !toggle->update;
+    if (toggle->prev != toggle->update) {
+        changeRequiresSave = true;
+        if (toggle->rebootOnChange) changeRequiresReboot = true;
+    }
+}
+
+void MainMenuScreen::selectSaverTimeout() {
+    if (currentMenu->at(gpMenu->getIndex()).optionValue < 0) return;
+    updateSaverTimeout = currentMenu->at(gpMenu->getIndex()).optionValue;
+
+    chooseAndReturn();
+
+    if (prevSaverTimeout != updateSaverTimeout) changeRequiresSave = true;
+}
+
+int32_t MainMenuScreen::currentSaverTimeout() {
+    return updateSaverTimeout;
+}
+
+void MainMenuScreen::selectToggle(PendingToggle* toggle) {
+    if (currentMenu->at(gpMenu->getIndex()).optionValue != -1) {
+        bool valueToSave = (bool)currentMenu->at(gpMenu->getIndex()).optionValue;
+        toggle->update = valueToSave;
+
+        chooseAndReturn();
+
+        if (toggle->prev != valueToSave) {
+            changeRequiresSave = true;
+            if (toggle->rebootOnChange) changeRequiresReboot = true;
+        }
+    }
+}
+
+void MainMenuScreen::selectTurboSpeed() {
+    if (currentMenu->at(gpMenu->getIndex()).optionValue != -1) {
+        uint32_t valueToSave = currentMenu->at(gpMenu->getIndex()).optionValue;
+        updateTurboSpeed = valueToSave;
+
+        chooseAndReturn();
+
+        if (prevTurboSpeed != valueToSave) changeRequiresSave = true;
+    }
+}
+
+int32_t MainMenuScreen::currentTurboSpeed() {
+    return updateTurboSpeed;
+}
+
+void MainMenuScreen::rebootTo(System::BootMode mode) {
+    EventManager::getInstance().triggerEvent(new GPRestartEvent(mode));
 }

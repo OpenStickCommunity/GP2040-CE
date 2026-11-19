@@ -26,6 +26,17 @@ class GPMenu : public GPShape {
 
         std::vector<MenuEntry>* menuEntryData;
         std::string menuTitle;
+
+        struct ScrollState {
+            uint16_t position = 0;
+            uint32_t lastStep = 0;
+        };
+        ScrollState itemScroll;
+        ScrollState titleScroll;
+        uint16_t scrollIndex = 0xFFFF;
+        std::vector<MenuEntry>* scrollMenu = nullptr;
+        std::string scrollTitle;
+        std::string scrollText(const std::string& text, uint16_t width, ScrollState& state);
 };
 
 #endif

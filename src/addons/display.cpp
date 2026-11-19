@@ -64,11 +64,9 @@ void DisplayAddon::setup() {
     // Setup GPGFX
     gpDisplay->init(gpOptions);
 
-    displaySaverTimer = options.displaySaverTimeout;
-    displaySaverTimeout = displaySaverTimer;
+    loadDisplaySaverOptions();
     configMode = DriverManager::getInstance().isConfigMode();
     turnOffWhenSuspended = options.turnOffWhenSuspended;
-    displaySaverMode = options.displaySaverMode;
 
     prevValues = Storage::getInstance().GetGamepad()->debouncedGpio;
 
@@ -93,7 +91,19 @@ void DisplayAddon::setup() {
     EventManager::getInstance().registerEventHandler(GP_EVENT_SYSTEM_ERROR, GPEVENT_CALLBACK(this->handleSystemError(event)), this);
 }
 
+void DisplayAddon::loadDisplaySaverOptions() {
+    const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
+    displaySaverTimer = options.displaySaverTimeout;
+    displaySaverTimeout = displaySaverTimer;
+    displaySaverMode = options.displaySaverMode;
+}
+
 bool DisplayAddon::updateDisplayScreen() {
+    // the mini menu can change these
+    if (prevDisplayMode == MAIN_MENU && currDisplayMode != MAIN_MENU) {
+        loadDisplaySaverOptions();
+    }
+
     if ( gpScreen != nullptr ) {
         gpScreen->shutdown();
         delete gpScreen; // Virtual deconstructor

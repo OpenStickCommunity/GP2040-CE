@@ -6,6 +6,7 @@
 #include "enums.pb.h"
 #include "animationstation.h"
 #include "eventmanager.h"
+#include "system.h"
 
 #define INPUT_MODE_XINPUT_NAME "XInput"
 #define INPUT_MODE_SWITCH_NAME "Nintendo Switch"
@@ -44,8 +45,16 @@
 
 #define MAIN_MENU_NAME "GP2040-CE Mini Menu"
 
+struct PendingToggle {
+    bool* target = nullptr;
+    bool prev = false;
+    bool update = false;
+    bool rebootOnChange = false;
+};
+
 class MainMenuScreen : public GPScreen {
     public:
+        static const uint8_t INPUT_MODE_GROUP_COUNT = 5;
         MainMenuScreen() {}
         MainMenuScreen(GPGFX* renderer) { setRenderer(renderer); }
         virtual ~MainMenuScreen() {}
@@ -71,11 +80,12 @@ class MainMenuScreen : public GPScreen {
         void selectProfile();
         int32_t currentProfile();
 
-        void selectFocusMode();
-        int32_t currentFocusMode();
+        void selectToggle(PendingToggle* toggle);
 
-        void selectTurboMode();
-        int32_t currentTurboMode();
+        void selectTurboSpeed();
+        int32_t currentTurboSpeed();
+
+        void rebootTo(System::BootMode mode);
 
         void updateMenuNavigation(GpioAction action);
         void updateEventMenuNavigation(GpioAction action);
@@ -88,7 +98,14 @@ class MainMenuScreen : public GPScreen {
         bool isPressed = false;
         uint32_t checkDebounce = 0;
         std::vector<MenuEntry>* currentMenu = nullptr;
-        std::vector<MenuEntry>* previousMenu = nullptr;
+        struct MenuFrame {
+            std::vector<MenuEntry>* menu;
+            std::string title;
+            uint16_t index;
+        };
+        std::vector<MenuFrame> menuStack;
+        std::string currentTitle = MAIN_MENU_NAME;
+        void showMenu(std::vector<MenuEntry>* menu, const std::string& title, uint16_t index);
         uint16_t prevButtonState = 0;
         uint8_t prevDpadState = 0;
         Mask_t prevValues = 0;
@@ -135,16 +152,19 @@ class MainMenuScreen : public GPScreen {
         #define DPAD_MODE_ENTRIES(name, value)  {name##_NAME, NULL, nullptr, std::bind(&MainMenuScreen::currentDpadMode,  this), std::bind(&MainMenuScreen::selectDPadMode,  this), value},
         #define SOCD_MODE_ENTRIES(name, value)  {name##_NAME, NULL, nullptr, [this] { return currentSOCDMode(); }, [this] { selectSOCDMode(); }, value},
 
-        std::vector<MenuEntry> inputModeMenu = [this] {
-            static const struct InputModeEntry { const char* label; int32_t value; } entries[] = {
-                InputMode_VALUELIST(INPUT_MODE_ENTRIES)
-            };
-            std::vector<MenuEntry> menu;
-            menu.reserve(sizeof(entries) / sizeof(entries[0]));
-            for (const InputModeEntry& entry : entries)
-                menu.push_back({entry.label, NULL, nullptr, std::bind(&MainMenuScreen::currentInputMode, this), std::bind(&MainMenuScreen::selectInputMode, this), entry.value});
-            return menu;
-        }();
+        std::vector<MenuEntry> inputModeMenu = {};
+        std::vector<MenuEntry> inputModeGroupMenus[INPUT_MODE_GROUP_COUNT];
+        int32_t currentInputModeGroup();
+        void buildInputModeMenus();
+
+        std::vector<MenuEntry> switchProTypeMenu = {};
+        SwitchProControllerType prevSwitchProType{};
+        SwitchProControllerType updateSwitchProType{};
+        std::vector<MenuEntry> switch2ProIdentityMenu = {};
+        Switch2ProIdentity prevSwitch2ProIdentity{};
+        Switch2ProIdentity updateSwitch2ProIdentity{};
+        void selectSwitchProType();
+        void selectSwitch2ProIdentity();
         InputMode prevInputMode{};
         InputMode updateInputMode{};
 
@@ -162,34 +182,52 @@ class MainMenuScreen : public GPScreen {
         uint8_t prevProfile{};
         uint8_t updateProfile{};
 
-        std::vector<MenuEntry> focusModeMenu = [this] { return std::vector<MenuEntry>{
-            {"Off",        NULL, nullptr,        std::bind(&MainMenuScreen::currentFocusMode, this), std::bind(&MainMenuScreen::selectFocusMode, this), 0},
-            {"On",         NULL, nullptr,        std::bind(&MainMenuScreen::currentFocusMode, this), std::bind(&MainMenuScreen::selectFocusMode, this), 1},
-        }; }();
-        bool prevFocus = false;
-        bool updateFocus = false;
+        PendingToggle focusToggle;
+        PendingToggle turboToggle;
+        PendingToggle fourWayToggle;
+        PendingToggle ddiFourWayToggle;
+        PendingToggle invertXToggle;
+        PendingToggle invertYToggle;
+        static const uint8_t STATUS_BAR_ITEM_COUNT = 6;
+        static const uint8_t MENU_MACRO_LIMIT = 6;
+        PendingToggle statusBarToggles[STATUS_BAR_ITEM_COUNT];
+        PendingToggle macroToggles[MENU_MACRO_LIMIT];
+        std::vector<PendingToggle*> toggles;
+        void setupToggle(PendingToggle& toggle, bool* target, bool rebootOnChange);
+        std::vector<MenuEntry> makeToggleMenu(PendingToggle* toggle);
+        MenuEntry makeCheckEntry(const std::string& label, PendingToggle* toggle);
+        void flipToggle(PendingToggle* toggle);
+        std::vector<MenuEntry> statusBarMenu = {};
+        std::vector<MenuEntry> macrosMenu = {};
 
-        std::vector<MenuEntry> turboModeMenu = [this] { return std::vector<MenuEntry>{
-            {"Off",        NULL, nullptr,        std::bind(&MainMenuScreen::currentTurboMode, this), std::bind(&MainMenuScreen::selectTurboMode, this), 0},
-            {"On",         NULL, nullptr,        std::bind(&MainMenuScreen::currentTurboMode, this), std::bind(&MainMenuScreen::selectTurboMode, this), 1},
-        }; }();
-        bool prevTurbo = false;
-        bool updateTurbo = false;
+        std::vector<MenuEntry> screensaverMenu = {};
+        uint32_t prevSaverTimeout = 0;
+        uint32_t updateSaverTimeout = 0;
+        void selectSaverTimeout();
+        int32_t currentSaverTimeout();
+
+        std::vector<MenuEntry> focusModeMenu = {};
+        std::vector<MenuEntry> turboModeMenu = {};
+        std::vector<MenuEntry> fourWayMenu = {};
+        std::vector<MenuEntry> ddiFourWayMenu = {};
+        std::vector<MenuEntry> invertXMenu = {};
+        std::vector<MenuEntry> invertYMenu = {};
+
+        std::vector<MenuEntry> turboSpeedMenu = {};
+        uint32_t prevTurboSpeed = 0;
+        uint32_t updateTurboSpeed = 0;
+
+        std::vector<MenuEntry> rebootMenu = {};
+        std::vector<MenuEntry> invertMenu = {};
+        std::vector<MenuEntry> turboMenu = {};
 
         std::vector<MenuEntry> saveMenu = [this] { return std::vector<MenuEntry>{
             {"Save & Exit",NULL, nullptr,        std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::saveAndExit, this), 1},
             {"Exit",       NULL, nullptr,        std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::exitOnly, this), 0},
         }; }();
         
-        std::vector<MenuEntry> mainMenu = [this] { return std::vector<MenuEntry>{
-            {"Input Mode", NULL, &inputModeMenu, [this] { return modeValue(); }, [this] { testMenu(); }},
-            {"D-Pad Mode", NULL, &dpadModeMenu,  [this] { return modeValue(); }, [this] { testMenu(); }},
-            {"SOCD Mode",  NULL, &socdModeMenu,  [this] { return modeValue(); }, [this] { testMenu(); }},
-            {"Profile",    NULL, &profilesMenu,  [this] { return modeValue(); }, [this] { testMenu(); }},
-            /*{"Focus Mode", NULL, &focusModeMenu, [this] { return modeValue(); }, [this] { testMenu(); }},*/
-            {"Turbo",      NULL, &turboModeMenu, [this] { return modeValue(); }, [this] { testMenu(); }},
-            {"Exit",       NULL, &saveMenu,      [this] { return modeValue(); }, [this] { testMenu(); }},
-        }; }();
+        std::vector<MenuEntry> mainMenu = {};
+        void addSubmenu(const char* label, std::vector<MenuEntry>* submenu);
 
         
 };

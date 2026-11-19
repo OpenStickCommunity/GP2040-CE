@@ -259,6 +259,7 @@ public:
     void handleSystemError(GPEvent* e);
 private:
     bool updateDisplayScreen();
+    void loadDisplaySaverOptions();
     void setMenuMappings();
     const DisplayOptions& getDisplayOptions();
     bool isDisplayPowerOff();
