@@ -1,6 +1,11 @@
 #include "MainMenuScreen.h"
 #include "hardware/watchdog.h"
 #include "system.h"
+#include "GPRestartEvent.h"
+
+// matches TURBO_SHOT_MIN/MAX in turbo.cpp
+#define MENU_TURBO_SHOT_MIN 2
+#define MENU_TURBO_SHOT_MAX 30
 
 extern uint32_t getMillis();
 
@@ -31,24 +36,23 @@ void MainMenuScreen::init() {
     mapMenuBack = new GamepadButtonMapping(GAMEPAD_MASK_B2);
     mapMenuToggle = new GamepadButtonMapping(0);
 
-    // populate the profiles menu
-    uint8_t profileCount = (sizeof(Storage::getInstance().getProfileOptions().gpioMappingsSets)/sizeof(GpioMappings))+1;
+    // populate the profiles menu with profile 1 plus every enabled extra profile
+    const ProfileOptions& profileOptions = Storage::getInstance().getProfileOptions();
+    uint8_t profileCount = profileOptions.gpioMappingsSets_count + 1;
     for (uint8_t profileCtr = 0; profileCtr < profileCount; profileCtr++) {
         std::string menuLabel = "";
         if (profileCtr == 0) {
             menuLabel = Storage::getInstance().getGpioMappings().profileLabel;
-            // If Profile #1 has no name, set it to Profile #1
-            if (menuLabel.empty()) {
-                menuLabel = "Profile #" + std::to_string(profileCtr+1);
-            }
         } else {
-            menuLabel = Storage::getInstance().getProfileOptions().gpioMappingsSets[profileCtr-1].profileLabel;
-            // Do not show other profiles if they are empty
-            if (menuLabel.empty()) {
+            if (!profileOptions.gpioMappingsSets[profileCtr-1].enabled) {
                 continue;
             }
+            menuLabel = profileOptions.gpioMappingsSets[profileCtr-1].profileLabel;
         }
-        
+        if (menuLabel.empty()) {
+            menuLabel = "Profile #" + std::to_string(profileCtr+1);
+        }
+
         MenuEntry menuEntry = {menuLabel, NULL, nullptr, std::bind(&MainMenuScreen::currentProfile, this), std::bind(&MainMenuScreen::selectProfile, this), profileCtr+1};
         profilesMenu.push_back(menuEntry);
     }
@@ -95,11 +99,55 @@ void MainMenuScreen::init() {
     prevProfile = Storage::getInstance().GetGamepad()->getOptions().profileNumber;
     updateProfile = Storage::getInstance().GetGamepad()->getOptions().profileNumber;
     
-    prevFocus = Storage::getInstance().getAddonOptions().focusModeOptions.enabled;
-    updateFocus = Storage::getInstance().getAddonOptions().focusModeOptions.enabled;
-    
-    prevTurbo = Storage::getInstance().getAddonOptions().turboOptions.enabled;
-    updateTurbo = Storage::getInstance().getAddonOptions().turboOptions.enabled;
+    GamepadOptions& options = Storage::getInstance().getGamepadOptions();
+    AddonOptions& addonOptions = Storage::getInstance().getAddonOptions();
+
+    // Focus mode on/off is the override (same as the hotkey), it takes effect without a reboot.
+    // The add-on itself only loads at boot, so only offer it when the add-on is enabled.
+    setupToggle(focusToggle, &addonOptions.focusModeOptions.overrideEnabled, false);
+    // The turbo add-on only loads at boot, so turning it on or off needs a restart
+    setupToggle(turboToggle, &addonOptions.turboOptions.enabled, true);
+    setupToggle(fourWayToggle, &options.fourWayMode, false);
+    setupToggle(ddiFourWayToggle, &addonOptions.dualDirectionalOptions.fourWayMode, false);
+    setupToggle(invertXToggle, &options.invertXAxis, false);
+    setupToggle(invertYToggle, &options.invertYAxis, false);
+
+    focusModeMenu = makeToggleMenu(&focusToggle);
+    turboModeMenu = makeToggleMenu(&turboToggle);
+    fourWayMenu = makeToggleMenu(&fourWayToggle);
+    ddiFourWayMenu = makeToggleMenu(&ddiFourWayToggle);
+    invertXMenu = makeToggleMenu(&invertXToggle);
+    invertYMenu = makeToggleMenu(&invertYToggle);
+
+    prevTurboSpeed = addonOptions.turboOptions.shotCount;
+    updateTurboSpeed = addonOptions.turboOptions.shotCount;
+    turboSpeedMenu.clear();
+    for (int32_t shots = MENU_TURBO_SHOT_MIN; shots <= MENU_TURBO_SHOT_MAX; shots++) {
+        turboSpeedMenu.push_back({std::to_string(shots) + " shots/sec", NULL, nullptr, [this] { return currentTurboSpeed(); }, [this] { selectTurboSpeed(); }, shots});
+    }
+
+    rebootMenu = {
+        {"Web Config", NULL, nullptr, [this] { return modeValue(); }, [this] { rebootTo(System::BootMode::WEBCONFIG); }},
+        {"BOOTSEL",    NULL, nullptr, [this] { return modeValue(); }, [this] { rebootTo(System::BootMode::USB); }},
+    };
+
+    mainMenu.clear();
+    addSubmenu("Input Mode", &inputModeMenu);
+    addSubmenu("D-Pad Mode", &dpadModeMenu);
+    addSubmenu("SOCD Mode", &socdModeMenu);
+    addSubmenu("Profile", &profilesMenu);
+    addSubmenu("4-Way Mode", &fourWayMenu);
+    if (addonOptions.dualDirectionalOptions.enabled)
+        addSubmenu("DDI 4-Way Mode", &ddiFourWayMenu);
+    addSubmenu("Invert X Axis", &invertXMenu);
+    addSubmenu("Invert Y Axis", &invertYMenu);
+    if (addonOptions.focusModeOptions.enabled)
+        addSubmenu("Focus Mode", &focusModeMenu);
+    addSubmenu("Turbo", &turboModeMenu);
+    if (addonOptions.turboOptions.enabled)
+        addSubmenu("Turbo Speed", &turboSpeedMenu);
+    addSubmenu("Reboot", &rebootMenu);
+    addSubmenu("Exit", &saveMenu);
 
     setMenuHome();
 }
@@ -391,8 +439,8 @@ void MainMenuScreen::resetOptions() {
         if (prevDpadMode != updateDpadMode) updateDpadMode = prevDpadMode;
         if (prevSocdMode != updateSocdMode) updateSocdMode = prevSocdMode;
         if (prevProfile != updateProfile) updateProfile = prevProfile;
-        if (prevFocus != updateFocus) updateFocus = prevFocus;
-        if (prevTurbo != updateTurbo) updateTurbo = prevTurbo;
+        for (PendingToggle* toggle : toggles) toggle->update = toggle->prev;
+        updateTurboSpeed = prevTurboSpeed;
     }
 
     changeRequiresSave = false;
@@ -422,12 +470,14 @@ void MainMenuScreen::saveOptions() {
             options.profileNumber = updateProfile;
             saveHasChanged = true;
         }
-        if ((bool)prevFocus != (bool)updateFocus) {
-            addonOptions.focusModeOptions.enabled = (bool)updateFocus;
-            saveHasChanged = true;
+        for (PendingToggle* toggle : toggles) {
+            if (toggle->target != nullptr && toggle->prev != toggle->update) {
+                *toggle->target = toggle->update;
+                saveHasChanged = true;
+            }
         }
-        if ((bool)prevTurbo != (bool)updateTurbo) {
-            addonOptions.turboOptions.enabled = (bool)updateTurbo;
+        if (prevTurboSpeed != updateTurboSpeed) {
+            addonOptions.turboOptions.shotCount = updateTurboSpeed;
             saveHasChanged = true;
         }
 
@@ -462,34 +512,54 @@ int32_t MainMenuScreen::currentProfile() {
     return updateProfile;
 }
 
-void MainMenuScreen::selectFocusMode() {
+void MainMenuScreen::addSubmenu(const char* label, std::vector<MenuEntry>* submenu) {
+    mainMenu.push_back({label, NULL, submenu, [this] { return modeValue(); }, [this] { testMenu(); }});
+}
+
+void MainMenuScreen::setupToggle(PendingToggle& toggle, bool* target, bool rebootOnChange) {
+    toggle.target = target;
+    toggle.prev = *target;
+    toggle.update = *target;
+    toggle.rebootOnChange = rebootOnChange;
+}
+
+std::vector<MenuEntry> MainMenuScreen::makeToggleMenu(PendingToggle* toggle) {
+    return std::vector<MenuEntry>{
+        {"Off", NULL, nullptr, [toggle] { return (int32_t)toggle->update; }, [this, toggle] { selectToggle(toggle); }, 0},
+        {"On",  NULL, nullptr, [toggle] { return (int32_t)toggle->update; }, [this, toggle] { selectToggle(toggle); }, 1},
+    };
+}
+
+void MainMenuScreen::selectToggle(PendingToggle* toggle) {
     if (currentMenu->at(gpMenu->getIndex()).optionValue != -1) {
         bool valueToSave = (bool)currentMenu->at(gpMenu->getIndex()).optionValue;
-        prevFocus = Storage::getInstance().getAddonOptions().focusModeOptions.enabled;
-        updateFocus = valueToSave;
+        toggle->update = valueToSave;
 
         chooseAndReturn();
 
-        if (prevFocus != valueToSave) changeRequiresSave = true;
+        if (toggle->prev != valueToSave) {
+            changeRequiresSave = true;
+            if (toggle->rebootOnChange) changeRequiresReboot = true;
+        }
     }
 }
 
-int32_t MainMenuScreen::currentFocusMode() {
-    return updateFocus;
-}
-
-void MainMenuScreen::selectTurboMode() {
+void MainMenuScreen::selectTurboSpeed() {
     if (currentMenu->at(gpMenu->getIndex()).optionValue != -1) {
-        bool valueToSave = (bool)currentMenu->at(gpMenu->getIndex()).optionValue;
-        prevTurbo = Storage::getInstance().getAddonOptions().turboOptions.enabled;
-        updateTurbo = valueToSave;
+        uint32_t valueToSave = currentMenu->at(gpMenu->getIndex()).optionValue;
+        updateTurboSpeed = valueToSave;
 
         chooseAndReturn();
 
-        if (prevTurbo != valueToSave) changeRequiresSave = true;
+        if (prevTurboSpeed != valueToSave) changeRequiresSave = true;
     }
 }
 
-int32_t MainMenuScreen::currentTurboMode() {
-    return updateTurbo;
+int32_t MainMenuScreen::currentTurboSpeed() {
+    return updateTurboSpeed;
+}
+
+void MainMenuScreen::rebootTo(System::BootMode mode) {
+    // unsaved menu changes are dropped, same as rebooting from a hotkey
+    EventManager::getInstance().triggerEvent(new GPRestartEvent(mode));
 }
