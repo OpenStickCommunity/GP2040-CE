@@ -209,6 +209,8 @@ class MainMenuScreen : public GPScreen {
         uint32_t updateTurboSpeed = 0;
 
         std::vector<MenuEntry> rebootMenu = {};
+        std::vector<MenuEntry> invertMenu = {};
+        std::vector<MenuEntry> turboMenu = {};
 
         std::vector<MenuEntry> saveMenu = [this] { return std::vector<MenuEntry>{
             {"Save & Exit",NULL, nullptr,        std::bind(&MainMenuScreen::modeValue, this), std::bind(&MainMenuScreen::saveAndExit, this), 1},

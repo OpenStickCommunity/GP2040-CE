@@ -147,13 +147,19 @@ void MainMenuScreen::init() {
     addSubmenu("4-Way Mode", &fourWayMenu);
     if (addonOptions.dualDirectionalOptions.enabled)
         addSubmenu("DDI 4-Way Mode", &ddiFourWayMenu);
-    addSubmenu("Invert X Axis", &invertXMenu);
-    addSubmenu("Invert Y Axis", &invertYMenu);
+    invertMenu = {
+        {"X Axis", NULL, &invertXMenu, [this] { return modeValue(); }, [this] { testMenu(); }},
+        {"Y Axis", NULL, &invertYMenu, [this] { return modeValue(); }, [this] { testMenu(); }},
+    };
+    addSubmenu("Invert Axis", &invertMenu);
     if (addonOptions.focusModeOptions.enabled)
         addSubmenu("Focus Mode", &focusModeMenu);
-    addSubmenu("Turbo", &turboModeMenu);
+    turboMenu = {
+        {"Enabled", NULL, &turboModeMenu, [this] { return modeValue(); }, [this] { testMenu(); }},
+    };
     if (addonOptions.turboOptions.enabled)
-        addSubmenu("Turbo Speed", &turboSpeedMenu);
+        turboMenu.push_back({"Speed", NULL, &turboSpeedMenu, [this] { return modeValue(); }, [this] { testMenu(); }});
+    addSubmenu("Turbo", &turboMenu);
     addSubmenu("Reboot", &rebootMenu);
     addSubmenu("Exit", &saveMenu);
 
