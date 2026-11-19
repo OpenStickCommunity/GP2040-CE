@@ -108,6 +108,8 @@ void MainMenuScreen::init() {
     prevSwitch2ProIdentity = options.switch2ProIdentity;
     updateSwitch2ProIdentity = options.switch2ProIdentity;
 
+    toggles.clear();
+
     // Focus mode on/off is the override (same as the hotkey), it takes effect without a reboot.
     // The add-on itself only loads at boot, so only offer it when the add-on is enabled.
     setupToggle(focusToggle, &addonOptions.focusModeOptions.overrideEnabled, false);
@@ -117,6 +119,46 @@ void MainMenuScreen::init() {
     setupToggle(ddiFourWayToggle, &addonOptions.dualDirectionalOptions.fourWayMode, false);
     setupToggle(invertXToggle, &options.invertXAxis, false);
     setupToggle(invertYToggle, &options.invertYAxis, false);
+
+    DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
+    const struct { const char* label; bool* target; } statusBarItems[STATUS_BAR_ITEM_COUNT] = {
+        {"Input Mode", &displayOptions.inputMode},
+        {"D-Pad Mode", &displayOptions.dpadMode},
+        {"SOCD Mode",  &displayOptions.socdMode},
+        {"Profile",    &displayOptions.profileMode},
+        {"Turbo",      &displayOptions.turboMode},
+        {"Macros",     &displayOptions.macroMode},
+    };
+    statusBarMenu.clear();
+    for (uint8_t item = 0; item < STATUS_BAR_ITEM_COUNT; item++) {
+        setupToggle(statusBarToggles[item], statusBarItems[item].target, false);
+        statusBarMenu.push_back(makeCheckEntry(statusBarItems[item].label, &statusBarToggles[item]));
+    }
+
+    // per-macro on/off, checked live by the macro add-on on every press
+    MacroOptions& macroOptions = addonOptions.macroOptions;
+    macrosMenu.clear();
+    for (uint8_t macro = 0; macro < macroOptions.macroList_count && macro < MENU_MACRO_LIMIT; macro++) {
+        setupToggle(macroToggles[macro], &macroOptions.macroList[macro].enabled, false);
+        std::string label = macroOptions.macroList[macro].macroLabel;
+        if (label.empty()) label = "Macro " + std::to_string(macro + 1);
+        macrosMenu.push_back(makeCheckEntry(label, &macroToggles[macro]));
+    }
+
+    // timeout is stored in milliseconds, 0 is off
+    prevSaverTimeout = displayOptions.displaySaverTimeout;
+    updateSaverTimeout = displayOptions.displaySaverTimeout;
+    screensaverMenu = {{"Off", NULL, nullptr, [this] { return currentSaverTimeout(); }, [this] { selectSaverTimeout(); }, 0}};
+    bool currentListed = (prevSaverTimeout == 0);
+    for (int32_t minutes : {1, 2, 5, 10, 15, 30, 60}) {
+        int32_t ms = minutes * 60000;
+        if ((uint32_t)ms == prevSaverTimeout) currentListed = true;
+        screensaverMenu.push_back({std::to_string(minutes) + " min", NULL, nullptr, [this] { return currentSaverTimeout(); }, [this] { selectSaverTimeout(); }, ms});
+    }
+    // keep a timeout set from web config that isn't in the list
+    if (!currentListed) {
+        screensaverMenu.push_back({std::to_string(prevSaverTimeout / 60000) + " min", NULL, nullptr, [this] { return currentSaverTimeout(); }, [this] { selectSaverTimeout(); }, (int32_t)prevSaverTimeout});
+    }
 
     focusModeMenu = makeToggleMenu(&focusToggle);
     turboModeMenu = makeToggleMenu(&turboToggle);
@@ -154,12 +196,16 @@ void MainMenuScreen::init() {
     addSubmenu("Invert Axis", &invertMenu);
     if (addonOptions.focusModeOptions.enabled)
         addSubmenu("Focus Mode", &focusModeMenu);
+    if (!macrosMenu.empty())
+        addSubmenu("Macros", &macrosMenu);
     turboMenu = {
         {"Enabled", NULL, &turboModeMenu, [this] { return modeValue(); }, [this] { testMenu(); }},
     };
     if (addonOptions.turboOptions.enabled)
         turboMenu.push_back({"Speed", NULL, &turboSpeedMenu, [this] { return modeValue(); }, [this] { testMenu(); }});
     addSubmenu("Turbo", &turboMenu);
+    addSubmenu("Screensaver", &screensaverMenu);
+    addSubmenu("Status Bar", &statusBarMenu);
     addSubmenu("Reboot", &rebootMenu);
     addSubmenu("Exit", &saveMenu);
 
@@ -458,6 +504,7 @@ void MainMenuScreen::resetOptions() {
         if (prevProfile != updateProfile) updateProfile = prevProfile;
         for (PendingToggle* toggle : toggles) toggle->update = toggle->prev;
         updateTurboSpeed = prevTurboSpeed;
+        updateSaverTimeout = prevSaverTimeout;
         updateSwitchProType = prevSwitchProType;
         updateSwitch2ProIdentity = prevSwitch2ProIdentity;
     }
@@ -494,6 +541,10 @@ void MainMenuScreen::saveOptions() {
                 *toggle->target = toggle->update;
                 saveHasChanged = true;
             }
+        }
+        if (prevSaverTimeout != updateSaverTimeout) {
+            Storage::getInstance().getDisplayOptions().displaySaverTimeout = updateSaverTimeout;
+            saveHasChanged = true;
         }
         if (prevSwitchProType != updateSwitchProType) {
             options.switchProControllerType = updateSwitchProType;
@@ -667,6 +718,7 @@ void MainMenuScreen::addSubmenu(const char* label, std::vector<MenuEntry>* subme
 }
 
 void MainMenuScreen::setupToggle(PendingToggle& toggle, bool* target, bool rebootOnChange) {
+    toggles.push_back(&toggle);
     toggle.target = target;
     toggle.prev = *target;
     toggle.update = *target;
@@ -678,6 +730,32 @@ std::vector<MenuEntry> MainMenuScreen::makeToggleMenu(PendingToggle* toggle) {
         {"Off", NULL, nullptr, [toggle] { return (int32_t)toggle->update; }, [this, toggle] { selectToggle(toggle); }, 0},
         {"On",  NULL, nullptr, [toggle] { return (int32_t)toggle->update; }, [this, toggle] { selectToggle(toggle); }, 1},
     };
+}
+
+// checklist row: "*" when on, select flips it and stays in the list
+MenuEntry MainMenuScreen::makeCheckEntry(const std::string& label, PendingToggle* toggle) {
+    return {label, NULL, nullptr, [toggle] { return (int32_t)toggle->update; }, [this, toggle] { flipToggle(toggle); }, 1};
+}
+
+void MainMenuScreen::flipToggle(PendingToggle* toggle) {
+    toggle->update = !toggle->update;
+    if (toggle->prev != toggle->update) {
+        changeRequiresSave = true;
+        if (toggle->rebootOnChange) changeRequiresReboot = true;
+    }
+}
+
+void MainMenuScreen::selectSaverTimeout() {
+    if (currentMenu->at(gpMenu->getIndex()).optionValue < 0) return;
+    updateSaverTimeout = currentMenu->at(gpMenu->getIndex()).optionValue;
+
+    chooseAndReturn();
+
+    if (prevSaverTimeout != updateSaverTimeout) changeRequiresSave = true;
+}
+
+int32_t MainMenuScreen::currentSaverTimeout() {
+    return updateSaverTimeout;
 }
 
 void MainMenuScreen::selectToggle(PendingToggle* toggle) {

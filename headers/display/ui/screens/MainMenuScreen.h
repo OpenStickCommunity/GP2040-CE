@@ -193,9 +193,24 @@ class MainMenuScreen : public GPScreen {
         PendingToggle ddiFourWayToggle;
         PendingToggle invertXToggle;
         PendingToggle invertYToggle;
-        PendingToggle* toggles[6] = { &focusToggle, &turboToggle, &fourWayToggle, &ddiFourWayToggle, &invertXToggle, &invertYToggle };
+        // status bar items, then macros; shown as checklists that toggle in place
+        static const uint8_t STATUS_BAR_ITEM_COUNT = 6;
+        static const uint8_t MENU_MACRO_LIMIT = 6;
+        PendingToggle statusBarToggles[STATUS_BAR_ITEM_COUNT];
+        PendingToggle macroToggles[MENU_MACRO_LIMIT];
+        std::vector<PendingToggle*> toggles;
         void setupToggle(PendingToggle& toggle, bool* target, bool rebootOnChange);
         std::vector<MenuEntry> makeToggleMenu(PendingToggle* toggle);
+        MenuEntry makeCheckEntry(const std::string& label, PendingToggle* toggle);
+        void flipToggle(PendingToggle* toggle);
+        std::vector<MenuEntry> statusBarMenu = {};
+        std::vector<MenuEntry> macrosMenu = {};
+
+        std::vector<MenuEntry> screensaverMenu = {};
+        uint32_t prevSaverTimeout = 0;
+        uint32_t updateSaverTimeout = 0;
+        void selectSaverTimeout();
+        int32_t currentSaverTimeout();
 
         std::vector<MenuEntry> focusModeMenu = {};
         std::vector<MenuEntry> turboModeMenu = {};
