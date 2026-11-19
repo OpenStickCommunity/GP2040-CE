@@ -55,6 +55,7 @@ struct PendingToggle {
 
 class MainMenuScreen : public GPScreen {
     public:
+        static const uint8_t INPUT_MODE_GROUP_COUNT = 5;
         MainMenuScreen() {}
         MainMenuScreen(GPGFX* renderer) { setRenderer(renderer); }
         virtual ~MainMenuScreen() {}
@@ -98,7 +99,15 @@ class MainMenuScreen : public GPScreen {
         bool isPressed = false;
         uint32_t checkDebounce = 0;
         std::vector<MenuEntry>* currentMenu = nullptr;
-        std::vector<MenuEntry>* previousMenu = nullptr;
+        // menus above the current one, so Back returns to where you were
+        struct MenuFrame {
+            std::vector<MenuEntry>* menu;
+            std::string title;
+            uint16_t index;
+        };
+        std::vector<MenuFrame> menuStack;
+        std::string currentTitle = MAIN_MENU_NAME;
+        void showMenu(std::vector<MenuEntry>* menu, const std::string& title, uint16_t index);
         uint16_t prevButtonState = 0;
         uint8_t prevDpadState = 0;
         Mask_t prevValues = 0;
@@ -145,16 +154,21 @@ class MainMenuScreen : public GPScreen {
         #define DPAD_MODE_ENTRIES(name, value)  {name##_NAME, NULL, nullptr, std::bind(&MainMenuScreen::currentDpadMode,  this), std::bind(&MainMenuScreen::selectDPadMode,  this), value},
         #define SOCD_MODE_ENTRIES(name, value)  {name##_NAME, NULL, nullptr, [this] { return currentSOCDMode(); }, [this] { selectSOCDMode(); }, value},
 
-        std::vector<MenuEntry> inputModeMenu = [this] {
-            static const struct InputModeEntry { const char* label; int32_t value; } entries[] = {
-                InputMode_VALUELIST(INPUT_MODE_ENTRIES)
-            };
-            std::vector<MenuEntry> menu;
-            menu.reserve(sizeof(entries) / sizeof(entries[0]));
-            for (const InputModeEntry& entry : entries)
-                menu.push_back({entry.label, NULL, nullptr, std::bind(&MainMenuScreen::currentInputMode, this), std::bind(&MainMenuScreen::selectInputMode, this), entry.value});
-            return menu;
-        }();
+        // input modes are grouped like the web configurator; built in init()
+        std::vector<MenuEntry> inputModeMenu = {};
+        std::vector<MenuEntry> inputModeGroupMenus[INPUT_MODE_GROUP_COUNT];
+        int32_t currentInputModeGroup();
+        void buildInputModeMenus();
+
+        // Switch Pro and Switch 2 Pro pick a controller type when choosing the mode
+        std::vector<MenuEntry> switchProTypeMenu = {};
+        SwitchProControllerType prevSwitchProType{};
+        SwitchProControllerType updateSwitchProType{};
+        std::vector<MenuEntry> switch2ProIdentityMenu = {};
+        Switch2ProIdentity prevSwitch2ProIdentity{};
+        Switch2ProIdentity updateSwitch2ProIdentity{};
+        void selectSwitchProType();
+        void selectSwitch2ProIdentity();
         InputMode prevInputMode{};
         InputMode updateInputMode{};
 

@@ -12,7 +12,8 @@ extern uint32_t getMillis();
 void MainMenuScreen::init() {
     getRenderer()->clearScreen();
     currentMenu = &mainMenu;
-    previousMenu = nullptr;
+    menuStack.clear();
+    currentTitle = MAIN_MENU_NAME;
 
     exitToScreen = -1;
 
@@ -102,6 +103,11 @@ void MainMenuScreen::init() {
     GamepadOptions& options = Storage::getInstance().getGamepadOptions();
     AddonOptions& addonOptions = Storage::getInstance().getAddonOptions();
 
+    prevSwitchProType = options.switchProControllerType;
+    updateSwitchProType = options.switchProControllerType;
+    prevSwitch2ProIdentity = options.switch2ProIdentity;
+    updateSwitch2ProIdentity = options.switch2ProIdentity;
+
     // Focus mode on/off is the override (same as the hotkey), it takes effect without a reboot.
     // The add-on itself only loads at boot, so only offer it when the add-on is enabled.
     setupToggle(focusToggle, &addonOptions.focusModeOptions.overrideEnabled, false);
@@ -130,6 +136,8 @@ void MainMenuScreen::init() {
         {"Web Config", NULL, nullptr, [this] { return modeValue(); }, [this] { rebootTo(System::BootMode::WEBCONFIG); }},
         {"BOOTSEL",    NULL, nullptr, [this] { return modeValue(); }, [this] { rebootTo(System::BootMode::USB); }},
     };
+
+    buildInputModeMenus();
 
     mainMenu.clear();
     addSubmenu("Input Mode", &inputModeMenu);
@@ -195,7 +203,8 @@ void MainMenuScreen::setMenu(std::vector<MenuEntry>* menu) {
 
 void MainMenuScreen::setMenuHome() {
     currentMenu = &mainMenu;
-    previousMenu = nullptr;
+    menuStack.clear();
+    currentTitle = MAIN_MENU_NAME;
 
     exitToScreen = -1;
     prevValues = Storage::getInstance().GetGamepad()->debouncedGpio;
@@ -326,22 +335,17 @@ void MainMenuScreen::updateMenuNavigation(GpioAction action) {
                     break;
                 case GpioAction::MENU_NAVIGATION_SELECT:
                     if (currentMenu->at(menuIndex).submenu != nullptr) {
-                        previousMenu = currentMenu;
-                        currentMenu = currentMenu->at(menuIndex).submenu;
-                        gpMenu->setMenuData(currentMenu);
-                        gpMenu->setMenuTitle(previousMenu->at(menuIndex).label);
-                        gpMenu->setIndex(0);
+                        menuStack.push_back({currentMenu, currentTitle, menuIndex});
+                        showMenu(currentMenu->at(menuIndex).submenu, currentMenu->at(menuIndex).label, 0);
                     } else {
                         currentMenu->at(menuIndex).action();
                     }
                     break;
                 case GpioAction::MENU_NAVIGATION_BACK:
-                    if (previousMenu != nullptr) {
-                        currentMenu = previousMenu;
-                        previousMenu = nullptr;
-                        gpMenu->setMenuData(currentMenu);
-                        gpMenu->setMenuTitle(MAIN_MENU_NAME);
-                        gpMenu->setIndex(0);
+                    if (!menuStack.empty()) {
+                        MenuFrame frame = menuStack.back();
+                        menuStack.pop_back();
+                        showMenu(frame.menu, frame.title, frame.index);
                     } else {
                         exitToScreen = DisplayMode::BUTTONS;
                         exitToScreenBeforePrompt = DisplayMode::BUTTONS;
@@ -354,13 +358,20 @@ void MainMenuScreen::updateMenuNavigation(GpioAction action) {
     }
 }
 
+void MainMenuScreen::showMenu(std::vector<MenuEntry>* menu, const std::string& title, uint16_t index) {
+    currentMenu = menu;
+    currentTitle = title;
+    gpMenu->setMenuData(currentMenu);
+    gpMenu->setMenuTitle(currentTitle);
+    gpMenu->setIndex(index);
+}
+
 void MainMenuScreen::chooseAndReturn() {
-    if (previousMenu != nullptr) {
-        currentMenu = previousMenu;
-        previousMenu = nullptr;
-        gpMenu->setMenuData(currentMenu);
-        gpMenu->setMenuTitle(MAIN_MENU_NAME);
-        gpMenu->setIndex(0);
+    // after picking an option, go back to the main menu on the entry we came from
+    if (!menuStack.empty()) {
+        MenuFrame frame = menuStack.front();
+        menuStack.clear();
+        showMenu(frame.menu, frame.title, frame.index);
     } else {
         exitToScreen = DisplayMode::BUTTONS;
         exitToScreenBeforePrompt = DisplayMode::BUTTONS;
@@ -441,6 +452,8 @@ void MainMenuScreen::resetOptions() {
         if (prevProfile != updateProfile) updateProfile = prevProfile;
         for (PendingToggle* toggle : toggles) toggle->update = toggle->prev;
         updateTurboSpeed = prevTurboSpeed;
+        updateSwitchProType = prevSwitchProType;
+        updateSwitch2ProIdentity = prevSwitch2ProIdentity;
     }
 
     changeRequiresSave = false;
@@ -476,6 +489,14 @@ void MainMenuScreen::saveOptions() {
                 saveHasChanged = true;
             }
         }
+        if (prevSwitchProType != updateSwitchProType) {
+            options.switchProControllerType = updateSwitchProType;
+            saveHasChanged = true;
+        }
+        if (prevSwitch2ProIdentity != updateSwitch2ProIdentity) {
+            options.switch2ProIdentity = updateSwitch2ProIdentity;
+            saveHasChanged = true;
+        }
         if (prevTurboSpeed != updateTurboSpeed) {
             addonOptions.turboOptions.shotCount = updateTurboSpeed;
             saveHasChanged = true;
@@ -510,6 +531,129 @@ void MainMenuScreen::selectProfile() {
 
 int32_t MainMenuScreen::currentProfile() {
     return updateProfile;
+}
+
+// every input mode the menu can offer, minus the ones excluded in the header
+static const struct InputModeEntry { const char* label; int32_t value; } inputModeEntries[] = {
+    InputMode_VALUELIST(INPUT_MODE_ENTRIES)
+};
+
+// same groups and order as the web configurator (www/src/Data/InputBootModes.ts)
+static const struct InputModeGroup { const char* label; std::vector<InputMode> modes; } inputModeGroups[] = {
+    {"Primary",      {INPUT_MODE_XINPUT, INPUT_MODE_KEYBOARD, INPUT_MODE_GENERIC, INPUT_MODE_SINPUT}},
+    {"Sony",         {INPUT_MODE_PS3, INPUT_MODE_PS4, INPUT_MODE_PS5, INPUT_MODE_P5GENERAL}},
+    {"Nintendo",     {INPUT_MODE_SWITCH, INPUT_MODE_SWITCH_PRO, INPUT_MODE_SWITCH2_PRO}},
+    {"Microsoft",    {INPUT_MODE_XBONE, INPUT_MODE_XBOXORIGINAL}},
+    {"Mini/Classic", {INPUT_MODE_MDMINI, INPUT_MODE_NEOGEO, INPUT_MODE_PCEMINI, INPUT_MODE_EGRET, INPUT_MODE_ASTRO, INPUT_MODE_PSCLASSIC}},
+};
+static_assert(sizeof(inputModeGroups) / sizeof(inputModeGroups[0]) == MainMenuScreen::INPUT_MODE_GROUP_COUNT, "input mode group count mismatch");
+
+static int8_t findInputModeGroup(int32_t mode) {
+    for (uint8_t group = 0; group < MainMenuScreen::INPUT_MODE_GROUP_COUNT; group++) {
+        for (InputMode groupMode : inputModeGroups[group].modes) {
+            if (groupMode == mode) return group;
+        }
+    }
+    return -1;
+}
+
+// same names and order as the web configurator
+static const struct { const char* label; SwitchProControllerType value; } switchProTypes[] = {
+    {"Pro Controller",    SWITCH_PRO_CONTROLLER_TYPE_PRO},
+    {"NSO SNES",          SWITCH_PRO_CONTROLLER_TYPE_SNES},
+    {"NSO Super Famicom", SWITCH_PRO_CONTROLLER_TYPE_SUPER_FAMICOM},
+    {"NSO N64",           SWITCH_PRO_CONTROLLER_TYPE_N64},
+    {"NSO Genesis",       SWITCH_PRO_CONTROLLER_TYPE_GENESIS},
+    {"NSO Mega Drive",    SWITCH_PRO_CONTROLLER_TYPE_MEGA_DRIVE},
+    {"NSO NES",           SWITCH_PRO_CONTROLLER_TYPE_NES},
+    {"NSO Famicom I",     SWITCH_PRO_CONTROLLER_TYPE_FAMICOM_I},
+    {"NSO Famicom II",    SWITCH_PRO_CONTROLLER_TYPE_FAMICOM_II},
+    {"Joy-Con (L)",       SWITCH_PRO_CONTROLLER_TYPE_JOYCON_LEFT},
+    {"Joy-Con (R)",       SWITCH_PRO_CONTROLLER_TYPE_JOYCON_RIGHT},
+    {"Joy-Con (L + R)",   SWITCH_PRO_CONTROLLER_TYPE_JOYCON_PAIR},
+};
+
+static const struct { const char* label; Switch2ProIdentity value; } switch2ProIdentities[] = {
+    {"Pro Controller",    SWITCH2_PRO_IDENTITY_PRO},
+    {"GameCube",          SWITCH2_PRO_IDENTITY_GAMECUBE},
+    {"Joy-Con 2 (L)",     SWITCH2_PRO_IDENTITY_JOYCON2_LEFT},
+    {"Joy-Con 2 (R)",     SWITCH2_PRO_IDENTITY_JOYCON2_RIGHT},
+};
+
+void MainMenuScreen::buildInputModeMenus() {
+    switchProTypeMenu.clear();
+    for (const auto& type : switchProTypes) {
+        switchProTypeMenu.push_back({type.label, NULL, nullptr,
+            [this] { return updateInputMode == INPUT_MODE_SWITCH_PRO ? (int32_t)updateSwitchProType : -2; },
+            [this] { selectSwitchProType(); }, type.value});
+    }
+    switch2ProIdentityMenu.clear();
+    for (const auto& identity : switch2ProIdentities) {
+        switch2ProIdentityMenu.push_back({identity.label, NULL, nullptr,
+            [this] { return updateInputMode == INPUT_MODE_SWITCH2_PRO ? (int32_t)updateSwitch2ProIdentity : -2; },
+            [this] { selectSwitch2ProIdentity(); }, identity.value});
+    }
+
+    inputModeMenu.clear();
+    for (uint8_t group = 0; group < INPUT_MODE_GROUP_COUNT; group++) {
+        inputModeGroupMenus[group].clear();
+        for (InputMode mode : inputModeGroups[group].modes) {
+            for (const InputModeEntry& entry : inputModeEntries) {
+                if (entry.value == mode) {
+                    // modes with controller types open a submenu instead of selecting directly
+                    std::vector<MenuEntry>* submenu = nullptr;
+                    if (mode == INPUT_MODE_SWITCH_PRO) submenu = &switchProTypeMenu;
+                    else if (mode == INPUT_MODE_SWITCH2_PRO) submenu = &switch2ProIdentityMenu;
+                    inputModeGroupMenus[group].push_back({entry.label, NULL, submenu, [this] { return currentInputMode(); }, [this] { selectInputMode(); }, entry.value});
+                    break;
+                }
+            }
+        }
+    }
+
+    // a mode that isn't in a group yet still shows up, at the end of Primary
+    for (const InputModeEntry& entry : inputModeEntries) {
+        if (findInputModeGroup(entry.value) == -1) {
+            inputModeGroupMenus[0].push_back({entry.label, NULL, nullptr, [this] { return currentInputMode(); }, [this] { selectInputMode(); }, entry.value});
+        }
+    }
+
+    for (uint8_t group = 0; group < INPUT_MODE_GROUP_COUNT; group++) {
+        if (inputModeGroupMenus[group].empty()) continue;
+        inputModeMenu.push_back({inputModeGroups[group].label, NULL, &inputModeGroupMenus[group], [this] { return currentInputModeGroup(); }, [this] { testMenu(); }, group});
+    }
+}
+
+void MainMenuScreen::selectSwitchProType() {
+    if (currentMenu->at(gpMenu->getIndex()).optionValue < 0) return;
+    updateInputMode = INPUT_MODE_SWITCH_PRO;
+    updateSwitchProType = (SwitchProControllerType)currentMenu->at(gpMenu->getIndex()).optionValue;
+
+    chooseAndReturn();
+
+    if (prevInputMode != updateInputMode || prevSwitchProType != updateSwitchProType) {
+        changeRequiresReboot = true;
+        changeRequiresSave = true;
+    }
+}
+
+void MainMenuScreen::selectSwitch2ProIdentity() {
+    if (currentMenu->at(gpMenu->getIndex()).optionValue < 0) return;
+    updateInputMode = INPUT_MODE_SWITCH2_PRO;
+    updateSwitch2ProIdentity = (Switch2ProIdentity)currentMenu->at(gpMenu->getIndex()).optionValue;
+
+    chooseAndReturn();
+
+    if (prevInputMode != updateInputMode || prevSwitch2ProIdentity != updateSwitch2ProIdentity) {
+        changeRequiresReboot = true;
+        changeRequiresSave = true;
+    }
+}
+
+int32_t MainMenuScreen::currentInputModeGroup() {
+    int8_t group = findInputModeGroup(updateInputMode);
+    // modes without a group are listed under Primary
+    return group == -1 ? 0 : group;
 }
 
 void MainMenuScreen::addSubmenu(const char* label, std::vector<MenuEntry>* submenu) {
