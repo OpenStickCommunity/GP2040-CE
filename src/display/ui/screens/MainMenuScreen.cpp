@@ -540,7 +540,7 @@ static const struct InputModeEntry { const char* label; int32_t value; } inputMo
 
 // same groups as the web configurator (www/src/Data/InputBootModes.ts)
 static const struct InputModeGroup { const char* label; std::vector<InputMode> modes; } inputModeGroups[] = {
-    {"Generics",     {INPUT_MODE_XINPUT, INPUT_MODE_KEYBOARD, INPUT_MODE_GENERIC, INPUT_MODE_SINPUT}},
+    {"Generics",     {INPUT_MODE_XINPUT, INPUT_MODE_GENERIC, INPUT_MODE_SINPUT, INPUT_MODE_KEYBOARD}},
     {"Sony",         {INPUT_MODE_PS3, INPUT_MODE_PS4, INPUT_MODE_PS5, INPUT_MODE_P5GENERAL}},
     {"Nintendo",     {INPUT_MODE_SWITCH, INPUT_MODE_SWITCH_PRO, INPUT_MODE_SWITCH2_PRO}},
     {"Microsoft",    {INPUT_MODE_XBOXORIGINAL, INPUT_MODE_XBONE}},
