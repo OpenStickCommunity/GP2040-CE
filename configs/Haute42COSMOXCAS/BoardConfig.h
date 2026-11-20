@@ -9,7 +9,7 @@
 #include "enums.pb.h"
 #include "class/hid/hid.h"
 
-#define BOARD_CONFIG_LABEL "Haute42 COSMOX C-AS"
+#define BOARD_CONFIG_LABEL "Haute42|COSMOX C-AS"
 
 // Main pin mapping Configuration
 //                          // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
@@ -81,7 +81,6 @@
 #define BOARD_LEDS_PIN 22
 #define LED_BRIGHTNESS_MAXIMUM 200
 #define LEDS_BRIGHTNESS 200
-#define LED_BRIGHTNESS_STEPS 5
 #define LED_FORMAT LED_FORMAT_GRB
 #define LEDS_PER_PIXEL 1
 
@@ -101,13 +100,6 @@
 #define LEDS_BUTTON_L3   13
 #define LEDS_BUTTON_R3   14
 
-// Set our default ambient light
-#define CASE_RGB_TYPE CASE_RGB_TYPE_AMBIENT
-#define CASE_RGB_INDEX 15
-#define CASE_RGB_COUNT 37
-#define AMBIENT_LIGHT_EFFECT AL_CUSTOM_EFFECT_GRADIENT
-#define AMBIENT_STATIC_COLOR ANIMATION_COLOR_PURPLE
-
 #define ANALOG_INPUT_ENABLED        1
 #define ANALOG_ADC_1_VRX            26
 #define ANALOG_ADC_1_VRY            27
@@ -124,6 +116,63 @@
 #define DEFAULT_OUTER_DEADZONE2     75
 #define AUTO_CALIBRATE2_ENABLED     1
 
+//Data format = {first led index, leds on this light, xcoord, ycoord, GPIO pin/case light Index, Type, input source}
+#define LIGHT_DATA_NAME_DEFAULT "Haute42|COSMOX C-AS"
+#define LIGHT_DATA_SIZE_DEFAULT 52 //number of sets in the below data
+#define LIGHT_DATA_DEFAULT \
+0, 1, 2, 6, 5, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+1, 1, 4, 8, 3, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+2, 1, 6, 6, 4, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+3, 1, 4, 4, 2, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+4, 1, 11, 5, 10, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+5, 1, 13, 5, 11, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+6, 1, 15, 5, 12, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+7, 1, 17, 5, 13, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+8, 1, 11, 7, 6, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+9, 1, 13, 7, 7, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+10, 1, 15, 7, 8, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+11, 1, 17, 7, 9, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+12, 1, 17, 2, 20, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+13, 1, 7, 10, 18, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+14, 1, 10, 10, 19, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+15, 1, 9, 0, 0, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+16, 1, 7, 0, 1, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+17, 1, 5, 0, 2, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+18, 1, 4, 0, 3, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+19, 1, 2, 0, 4, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+20, 1, 0, 0, 5, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+21, 1, 0, 1, 6, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+22, 1, 0, 3, 7, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+23, 1, 0, 5, 8, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+24, 1, 0, 6, 9, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+25, 1, 0, 8, 10, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+26, 1, 0, 10, 11, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+27, 1, 0, 11, 12, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+28, 1, 1, 12, 13, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+29, 1, 3, 12, 14, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+30, 1, 4, 12, 15, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+31, 1, 6, 12, 16, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+32, 1, 8, 12, 17, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+33, 1, 10, 12, 18, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+34, 1, 11, 12, 19, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+35, 1, 13, 12, 20, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+36, 1, 15, 12, 21, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+37, 1, 16, 12, 22, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+38, 1, 18, 12, 23, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+39, 1, 19, 11, 24, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+40, 1, 19, 10, 25, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+41, 1, 19, 8, 26, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+42, 1, 19, 6, 27, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+43, 1, 19, 5, 28, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+44, 1, 19, 3, 29, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+45, 1, 19, 1, 30, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+46, 1, 19, 0, 31, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+47, 1, 17, 0, 32, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+48, 1, 15, 0, 33, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+49, 1, 14, 0, 34, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+50, 1, 12, 0, 35, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+51, 1, 10, 0, 36, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO
+
 #define HAS_I2C_DISPLAY 1
 #define I2C0_ENABLED 1
 #define I2C0_PIN_SDA 0
@@ -132,8 +181,12 @@
 #define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_BOARD_DEFINED_B
 #define SPLASH_MODE SPLASH_MODE_STATIC
 #define SPLASH_DURATION 3000
+#define SPLASH_TEXT_ENABLED 1 // Haute42 logo first, then this text
+#define SPLASH_TEXT_LINE_COUNT 2
+#define SPLASH_TEXT_LINE1 "Haute42|COSMOX"
+#define SPLASH_TEXT_LINE2 "C-AS"
 
-#define DEFAULT_BOARD_LAYOUT_A_NAME "Haute42 COSMOX C-AS Default"
+#define DEFAULT_BOARD_LAYOUT_A_NAME "Haute42|COSMOX C-AS Default"
 #define DEFAULT_BOARD_LAYOUT_A {\
     {GP_ELEMENT_PIN_BUTTON, {52, 50, 5, 5, 1, 1, 18, GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {87, 10, 91, 14, 1, 1, 17, GP_SHAPE_SQUARE}},\
@@ -143,7 +196,7 @@
     {GP_ELEMENT_LEVER, {36, 28, 10, 10, 1, 1, 0, GP_SHAPE_ELLIPSE}},\
 }
 
-#define DEFAULT_BOARD_LAYOUT_B_NAME "Haute42 COSMOX C-AS Default"
+#define DEFAULT_BOARD_LAYOUT_B_NAME "Haute42|COSMOX C-AS Default"
 #define DEFAULT_BOARD_LAYOUT_B {\
     {GP_ELEMENT_PIN_BUTTON, {71, 27, 4, 4, 1, 1, 10, GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {81, 25, 4, 4, 1, 1, 11, GP_SHAPE_ELLIPSE}},\
@@ -204,7 +257,7 @@
     {GP_ELEMENT_PIN_BUTTON, {72, 17, 4, 4, 1, 1, 15, GP_SHAPE_ELLIPSE}},\
 }
 // Haute42|COSMOX C-AS with only right analog module as RS
-#define DEFAULT_BOARD_LAYOUT_A_ALT2_NAME "Haute42|COSMOX C-AS with only left analog module as RS"
+#define DEFAULT_BOARD_LAYOUT_A_ALT2_NAME "Haute42|COSMOX C-AS with only right analog module as RS"
 #define DEFAULT_BOARD_LAYOUT_A_ALT2 {\
     {GP_ELEMENT_PIN_BUTTON, {52, 50, 5, 5, 1, 1, 18, GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {87, 10, 91, 14, 1, 1, 17, GP_SHAPE_SQUARE}},\
@@ -213,7 +266,7 @@
     {GP_ELEMENT_PIN_BUTTON, {108, 10, 112, 14, 1, 1, 14, GP_SHAPE_SQUARE}},\
     {GP_ELEMENT_LEVER, {36, 28, 10, 10, 1, 1, 0, GP_SHAPE_ELLIPSE}},\
 }
-#define DEFAULT_BOARD_LAYOUT_B_ALT2_NAME "Haute42|COSMOX C-AS with only left analog module as RS"
+#define DEFAULT_BOARD_LAYOUT_B_ALT2_NAME "Haute42|COSMOX C-AS with only right analog module as RS"
 #define DEFAULT_BOARD_LAYOUT_B_ALT2 {\
     {GP_ELEMENT_PIN_BUTTON, {71, 27, 4, 4, 1, 1, 10, GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {81, 25, 4, 4, 1, 1, 11, GP_SHAPE_ELLIPSE}},\
@@ -227,7 +280,7 @@
     {GP_ELEMENT_PIN_BUTTON, {72, 17, 4, 4, 1, 1, 15, GP_SHAPE_ELLIPSE}},\
 }
 // Haute42|COSMOX C-AS with only left analog module as RS
-#define DEFAULT_BOARD_LAYOUT_A_ALT3_NAME "Haute42|COSMOX C-AS with only right analog module as LS"
+#define DEFAULT_BOARD_LAYOUT_A_ALT3_NAME "Haute42|COSMOX C-AS with only left analog module as RS"
 #define DEFAULT_BOARD_LAYOUT_A_ALT3 {\
     {GP_ELEMENT_LEVER, {52, 50, 5, 5, 1, 0, GP_LEVER_MODE_RIGHT_ANALOG}},\
     {GP_ELEMENT_PIN_BUTTON, {87, 10, 91, 14, 1, 1, 17, GP_SHAPE_SQUARE}},\
@@ -236,7 +289,7 @@
     {GP_ELEMENT_PIN_BUTTON, {108, 10, 112, 14, 1, 1, 14, GP_SHAPE_SQUARE}},\
     {GP_ELEMENT_LEVER, {36, 28, 10, 10, 1, 1, 0, GP_SHAPE_ELLIPSE}},\
 }
-#define DEFAULT_BOARD_LAYOUT_B_ALT3_NAME "Haute42|COSMOX C-AS with only right analog module as LS"
+#define DEFAULT_BOARD_LAYOUT_B_ALT3_NAME "Haute42|COSMOX C-AS with only left analog module as RS"
 #define DEFAULT_BOARD_LAYOUT_B_ALT3 {\
     {GP_ELEMENT_PIN_BUTTON, {71, 27, 4, 4, 1, 1, 10, GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {81, 25, 4, 4, 1, 1, 11, GP_SHAPE_ELLIPSE}},\
@@ -250,7 +303,7 @@
     {GP_ELEMENT_PIN_BUTTON, {72, 17, 4, 4, 1, 1, 15, GP_SHAPE_ELLIPSE}},\
 }
 // Haute42|COSMOX C-AS with only right analog module as LS
-#define DEFAULT_BOARD_LAYOUT_A_ALT4_NAME "Haute42|COSMOX C-AS with only right analog module as RS"
+#define DEFAULT_BOARD_LAYOUT_A_ALT4_NAME "Haute42|COSMOX C-AS with only right analog module as LS"
 #define DEFAULT_BOARD_LAYOUT_A_ALT4 {\
     {GP_ELEMENT_PIN_BUTTON, {52, 50, 5, 5, 1, 1, 18, GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {87, 10, 91, 14, 1, 1, 17, GP_SHAPE_SQUARE}},\
@@ -259,7 +312,7 @@
     {GP_ELEMENT_PIN_BUTTON, {108, 10, 112, 14, 1, 1, 14, GP_SHAPE_SQUARE}},\
     {GP_ELEMENT_LEVER, {36, 28, 10, 10, 1, 1, 0, GP_SHAPE_ELLIPSE}},\
 }
-#define DEFAULT_BOARD_LAYOUT_B_ALT4_NAME "Haute42|COSMOX C-AS with only right analog module as RS"
+#define DEFAULT_BOARD_LAYOUT_B_ALT4_NAME "Haute42|COSMOX C-AS with only right analog module as LS"
 #define DEFAULT_BOARD_LAYOUT_B_ALT4 {\
     {GP_ELEMENT_PIN_BUTTON, {71, 27, 4, 4, 1, 1, 10, GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {81, 25, 4, 4, 1, 1, 11, GP_SHAPE_ELLIPSE}},\

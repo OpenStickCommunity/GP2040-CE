@@ -6,7 +6,7 @@
 #ifndef PICO_BOARD_CONFIG_H_
 #define PICO_BOARD_CONFIG_H_
 
-#define BOARD_CONFIG_LABEL "Haute42 COSMOX X Series Analog"
+#define BOARD_CONFIG_LABEL "Haute42|COSMOX X Series Analog"
 
 // Main pin mapping Configuration
 //                                                  // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
@@ -77,7 +77,6 @@
 
 #define BOARD_LEDS_PIN 22
 #define LED_BRIGHTNESS_MAXIMUM 100
-#define LED_BRIGHTNESS_STEPS 5
 #define LED_FORMAT LED_FORMAT_GRB
 #define LEDS_PER_PIXEL 1
 
@@ -114,12 +113,37 @@
 #define DEFAULT_OUTER_DEADZONE2     75
 #define AUTO_CALIBRATE2_ENABLED     1
 
+//Data format = {first led index, leds on this light, xcoord, ycoord, GPIO pin/case light Index, Type, input source}
+#define LIGHT_DATA_NAME_DEFAULT "Haute42|COSMOX X Series Analog"
+#define LIGHT_DATA_SIZE_DEFAULT 16 //number of sets in the below data
+#define LIGHT_DATA_DEFAULT \
+0, 1, 2, 4, 5, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+1, 1, 4, 4, 3, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+2, 1, 6, 5, 4, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+3, 1, 5, 3, 2, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+4, 1, 10, 4, 10, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+5, 1, 12, 4, 11, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+6, 1, 14, 4, 12, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+7, 1, 16, 4, 13, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+8, 1, 10, 6, 6, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+9, 1, 12, 6, 7, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+10, 1, 14, 6, 8, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+11, 1, 16, 6, 9, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+12, 1, 13, 2, 20, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+13, 1, 11, 2, 15, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+14, 1, 10, 9, 19, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+15, 1, 3, 2, 21, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO
+
 #define HAS_I2C_DISPLAY 1
 #define I2C0_ENABLED 1
 #define I2C0_PIN_SDA 0
 #define I2C0_PIN_SCL 1
 #define SPLASH_MODE SPLASH_MODE_STATIC
 #define SPLASH_DURATION 3000
+#define SPLASH_TEXT_ENABLED 1 // Haute42 logo first, then this text
+#define SPLASH_TEXT_LINE_COUNT 2
+#define SPLASH_TEXT_LINE1 "Haute42|COSMOX"
+#define SPLASH_TEXT_LINE2 "X Analog"
 
 #define BUTTON_LAYOUT BUTTON_LAYOUT_BOARD_DEFINED_A
 #define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_BOARD_DEFINED_B
@@ -137,9 +161,8 @@
      {GP_ELEMENT_PIN_BUTTON, {96, 15, 2, 2, 1, 1, 17,  GP_SHAPE_ELLIPSE}},\
      {GP_ELEMENT_LEVER,      {40, 50, 5, 5, 1, 0,      GP_LEVER_MODE_LEFT_ANALOG}},\
 }
- 
-#define DEFAULT_BOARD_LAYOUT_B_NAME "Haute42|COSMOX X Series Analog"
 
+#define DEFAULT_BOARD_LAYOUT_B_NAME "Haute42|COSMOX X Series Analog"
 #define DEFAULT_BOARD_LAYOUT_B {\
      {GP_ELEMENT_PIN_BUTTON, {69, 17, 4, 4, 1, 1, 15,  GP_SHAPE_ELLIPSE}},\
      {GP_ELEMENT_PIN_BUTTON, {64, 27, 4, 4, 1, 1, 10,  GP_SHAPE_ELLIPSE}},\
@@ -153,8 +176,7 @@
      {GP_ELEMENT_LEVER,      {64, 50, 5, 5, 1, 0,      GP_LEVER_MODE_RIGHT_ANALOG}},\
 }
 
-// Haute42|COSMOX X Series Analog + WASD
-#define DEFAULT_BOARD_LAYOUT_A_ALT0_NAME "Haute42|COSMOX X Series Standard"
+#define DEFAULT_BOARD_LAYOUT_A_ALT0_NAME "Haute42|COSMOX X Series Analog + WASD"
 #define DEFAULT_BOARD_LAYOUT_A_ALT0 {\
      {GP_ELEMENT_PIN_BUTTON, {24, 24, 31, 31, 1, 1, 5, GP_SHAPE_SQUARE, 22}},\
      {GP_ELEMENT_PIN_BUTTON, {32, 28, 39, 35, 1, 1, 3, GP_SHAPE_SQUARE, 22}},\
@@ -168,7 +190,7 @@
      {GP_ELEMENT_LEVER,      {40, 50, 5, 5, 1, 0,      GP_LEVER_MODE_LEFT_ANALOG}},\
 }
 
-#define DEFAULT_BOARD_LAYOUT_B_ALT0_NAME "Haute42|COSMOX X Series Standard"
+#define DEFAULT_BOARD_LAYOUT_B_ALT0_NAME "Haute42|COSMOX X Series Analog + WASD"
 #define DEFAULT_BOARD_LAYOUT_B_ALT0 {\
      {GP_ELEMENT_PIN_BUTTON, {69, 17, 4, 4, 1, 1, 15,  GP_SHAPE_ELLIPSE}},\
      {GP_ELEMENT_PIN_BUTTON, {64, 27, 4, 4, 1, 1, 10,  GP_SHAPE_ELLIPSE}},\
@@ -182,8 +204,7 @@
      {GP_ELEMENT_LEVER,      {64, 50, 5, 5, 1, 0,      GP_LEVER_MODE_RIGHT_ANALOG}},\
 }
 
-// Haute42|COSMOX X Series Analog + Joystick
-#define DEFAULT_BOARD_LAYOUT_A_ALT1_NAME "Haute42|COSMOX X Series Standard + WASD"
+#define DEFAULT_BOARD_LAYOUT_A_ALT1_NAME "Haute42|COSMOX X Series Analog + Joystick"
 #define DEFAULT_BOARD_LAYOUT_A_ALT1 {\
      {GP_ELEMENT_LEVER,      {36, 30, 7, 7, 1, 0,  0}},\
      {GP_ELEMENT_PIN_BUTTON, {25, 15, 2, 2, 1, 1, 14,  GP_SHAPE_ELLIPSE}},\
@@ -194,7 +215,7 @@
      {GP_ELEMENT_LEVER,      {40, 50, 5, 5, 1, 0,      GP_LEVER_MODE_LEFT_ANALOG}},\
 }
 
-#define DEFAULT_BOARD_LAYOUT_B_ALT1_NAME "Haute42|COSMOX X Series Standard + WASD"
+#define DEFAULT_BOARD_LAYOUT_B_ALT1_NAME "Haute42|COSMOX X Series Analog + Joystick"
 #define DEFAULT_BOARD_LAYOUT_B_ALT1 {\
      {GP_ELEMENT_PIN_BUTTON, {69, 17, 4, 4, 1, 1, 15,  GP_SHAPE_ELLIPSE}},\
      {GP_ELEMENT_PIN_BUTTON, {64, 27, 4, 4, 1, 1, 10,  GP_SHAPE_ELLIPSE}},\
@@ -206,172 +227,6 @@
      {GP_ELEMENT_PIN_BUTTON, {84, 35, 4, 4, 1, 1, 8,   GP_SHAPE_ELLIPSE}},\
      {GP_ELEMENT_PIN_BUTTON, {94, 36, 4, 4, 1, 1, 9,   GP_SHAPE_ELLIPSE}},\
      {GP_ELEMENT_LEVER,      {64, 50, 5, 5, 1, 0,      GP_LEVER_MODE_RIGHT_ANALOG}},\
-}
-
-// Haute42|COSMOX X Series Standard
-#define DEFAULT_BOARD_LAYOUT_A_ALT2_NAME "Haute42|COSMOX X Series Standard + Joystick"
-#define DEFAULT_BOARD_LAYOUT_A_ALT2 {\
-     {GP_ELEMENT_PIN_BUTTON, {42, 19, 4, 4, 1, 1, 2,   GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {27, 27, 4, 4, 1, 1, 5,   GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {37, 27, 4, 4, 1, 1, 3,   GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {45, 32, 4, 4, 1, 1, 4,   GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {25, 15, 2, 2, 1, 1, 14,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {32, 15, 2, 2, 1, 1, 21,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {82, 15, 2, 2, 1, 1, 20,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {89, 15, 2, 2, 1, 1, 16,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {96, 15, 2, 2, 1, 1, 17,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {42, 48, 4, 4, 1, 1, 26,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {54, 49, 5, 5, 1, 1, 27,  GP_SHAPE_ELLIPSE}},\
-}
-
-#define DEFAULT_BOARD_LAYOUT_B_ALT2_NAME "Haute42|COSMOX X Series Standard + Joystick"
-#define DEFAULT_BOARD_LAYOUT_B_ALT2 {\
-     {GP_ELEMENT_PIN_BUTTON, {69, 17, 4, 4, 1, 1, 15,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {64, 27, 4, 4, 1, 1, 10,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {74, 25, 4, 4, 1, 1, 11,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {84, 25, 4, 4, 1, 1, 12,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {94, 26, 4, 4, 1, 1, 13,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {64, 37, 4, 4, 1, 1, 6,   GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {74, 35, 4, 4, 1, 1, 7,   GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {84, 35, 4, 4, 1, 1, 8,   GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {94, 36, 4, 4, 1, 1, 9,   GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {66, 48, 4, 4, 1, 1, 19,  GP_SHAPE_ELLIPSE}},\
-}
-
-// Haute42|COSMOX X Series Standard + WASD
-#define DEFAULT_BOARD_LAYOUT_A_ALT3_NAME "Haute42|COSMOX X Series Analog + WASD"
-#define DEFAULT_BOARD_LAYOUT_A_ALT3 {\
-     {GP_ELEMENT_PIN_BUTTON, {24, 24, 31, 31, 1, 1, 5, GP_SHAPE_SQUARE, 22}},\
-     {GP_ELEMENT_PIN_BUTTON, {32, 28, 39, 35, 1, 1, 3, GP_SHAPE_SQUARE, 22}},\
-     {GP_ELEMENT_PIN_BUTTON, {36, 20, 43, 27, 1, 1, 2, GP_SHAPE_SQUARE, 22}},\
-     {GP_ELEMENT_PIN_BUTTON, {40, 32, 47, 39, 1, 1, 4, GP_SHAPE_SQUARE, 22}},\
-     {GP_ELEMENT_PIN_BUTTON, {25, 15, 2, 2, 1, 1, 14,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {32, 15, 2, 2, 1, 1, 21,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {82, 15, 2, 2, 1, 1, 20,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {89, 15, 2, 2, 1, 1, 16,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {96, 15, 2, 2, 1, 1, 17,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {42, 48, 4, 4, 1, 1, 26,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {54, 49, 5, 5, 1, 1, 27,  GP_SHAPE_ELLIPSE}},\
-}
-
-#define DEFAULT_BOARD_LAYOUT_B_ALT3_NAME "Haute42|COSMOX X Series Analog + WASD"
-#define DEFAULT_BOARD_LAYOUT_B_ALT3 {\
-     {GP_ELEMENT_PIN_BUTTON, {69, 17, 4, 4, 1, 1, 15,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {64, 27, 4, 4, 1, 1, 10,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {74, 25, 4, 4, 1, 1, 11,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {84, 25, 4, 4, 1, 1, 12,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {94, 26, 4, 4, 1, 1, 13,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {64, 37, 4, 4, 1, 1, 6,   GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {74, 35, 4, 4, 1, 1, 7,   GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {84, 35, 4, 4, 1, 1, 8,   GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {94, 36, 4, 4, 1, 1, 9,   GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {66, 48, 4, 4, 1, 1, 19,  GP_SHAPE_ELLIPSE}},\
-}
-
-// Haute42|COSMOX X Series Standard + Joystick
-#define DEFAULT_BOARD_LAYOUT_A_ALT4_NAME "Haute42|COSMOX X Series Analog + Joystick"
-#define DEFAULT_BOARD_LAYOUT_A_ALT4 {\
-     {GP_ELEMENT_LEVER,      {36, 30, 7, 7, 1, 0,  0}},\
-     {GP_ELEMENT_PIN_BUTTON, {25, 15, 2, 2, 1, 1, 14,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {32, 15, 2, 2, 1, 1, 21,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {82, 15, 2, 2, 1, 1, 20,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {89, 15, 2, 2, 1, 1, 16,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {96, 15, 2, 2, 1, 1, 17,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {42, 48, 4, 4, 1, 1, 26,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {54, 49, 5, 5, 1, 1, 27,  GP_SHAPE_ELLIPSE}},\
-}
-
-#define DEFAULT_BOARD_LAYOUT_B_ALT4_NAME "Haute42|COSMOX X Series Analog + Joystick"
-#define DEFAULT_BOARD_LAYOUT_B_ALT4 {\
-     {GP_ELEMENT_PIN_BUTTON, {69, 17, 4, 4, 1, 1, 15,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {64, 27, 4, 4, 1, 1, 10,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {74, 25, 4, 4, 1, 1, 11,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {84, 25, 4, 4, 1, 1, 12,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {94, 26, 4, 4, 1, 1, 13,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {64, 37, 4, 4, 1, 1, 6,   GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {74, 35, 4, 4, 1, 1, 7,   GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {84, 35, 4, 4, 1, 1, 8,   GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {94, 36, 4, 4, 1, 1, 9,   GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {66, 48, 4, 4, 1, 1, 19,  GP_SHAPE_ELLIPSE}},\
-}
-
-// Haute42|COSMOX X Series Standard - Bottom
-#define DEFAULT_BOARD_LAYOUT_A_ALT5_NAME "Haute42|COSMOX X Series Standard - Bottom"
-#define DEFAULT_BOARD_LAYOUT_A_ALT5 {\
-     {GP_ELEMENT_PIN_BUTTON, {42, 19, 4, 4, 1, 1, 2,   GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {27, 27, 4, 4, 1, 1, 5,   GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {37, 27, 4, 4, 1, 1, 3,   GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {45, 32, 4, 4, 1, 1, 4,   GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {25, 15, 2, 2, 1, 1, 14,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {32, 15, 2, 2, 1, 1, 21,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {82, 15, 2, 2, 1, 1, 20,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {89, 15, 2, 2, 1, 1, 16,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {96, 15, 2, 2, 1, 1, 17,  GP_SHAPE_ELLIPSE}},\
-}
- 
-#define DEFAULT_BOARD_LAYOUT_B_ALT5_NAME "Haute42|COSMOX X Series Standard - Bottom"
-
-#define DEFAULT_BOARD_LAYOUT_B_ALT5 {\
-     {GP_ELEMENT_PIN_BUTTON, {69, 17, 4, 4, 1, 1, 15,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {64, 27, 4, 4, 1, 1, 10,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {74, 25, 4, 4, 1, 1, 11,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {84, 25, 4, 4, 1, 1, 12,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {94, 26, 4, 4, 1, 1, 13,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {64, 37, 4, 4, 1, 1, 6,   GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {74, 35, 4, 4, 1, 1, 7,   GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {84, 35, 4, 4, 1, 1, 8,   GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {94, 36, 4, 4, 1, 1, 9,   GP_SHAPE_ELLIPSE}},\
-}
-
-// Haute42|COSMOX X Series Standard + WASD - Bottom
-#define DEFAULT_BOARD_LAYOUT_A_ALT6_NAME "Haute42|COSMOX X Series Standard + WASD - Bottom"
-#define DEFAULT_BOARD_LAYOUT_A_ALT6 {\
-     {GP_ELEMENT_PIN_BUTTON, {24, 24, 31, 31, 1, 1, 5, GP_SHAPE_SQUARE, 22}},\
-     {GP_ELEMENT_PIN_BUTTON, {32, 28, 39, 35, 1, 1, 3, GP_SHAPE_SQUARE, 22}},\
-     {GP_ELEMENT_PIN_BUTTON, {36, 20, 43, 27, 1, 1, 2, GP_SHAPE_SQUARE, 22}},\
-     {GP_ELEMENT_PIN_BUTTON, {40, 32, 47, 39, 1, 1, 4, GP_SHAPE_SQUARE, 22}},\
-     {GP_ELEMENT_PIN_BUTTON, {25, 15, 2, 2, 1, 1, 14,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {32, 15, 2, 2, 1, 1, 21,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {82, 15, 2, 2, 1, 1, 20,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {89, 15, 2, 2, 1, 1, 16,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {96, 15, 2, 2, 1, 1, 17,  GP_SHAPE_ELLIPSE}},\
-}
-
-#define DEFAULT_BOARD_LAYOUT_B_ALT6_NAME "Haute42|COSMOX X Series Standard + WASD - Bottom"
-#define DEFAULT_BOARD_LAYOUT_B_ALT6 {\
-     {GP_ELEMENT_PIN_BUTTON, {69, 17, 4, 4, 1, 1, 15,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {64, 27, 4, 4, 1, 1, 10,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {74, 25, 4, 4, 1, 1, 11,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {84, 25, 4, 4, 1, 1, 12,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {94, 26, 4, 4, 1, 1, 13,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {64, 37, 4, 4, 1, 1, 6,   GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {74, 35, 4, 4, 1, 1, 7,   GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {84, 35, 4, 4, 1, 1, 8,   GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {94, 36, 4, 4, 1, 1, 9,   GP_SHAPE_ELLIPSE}},\
-}
-
-// Haute42|COSMOX X Series Standard + Joystick - Bottom
-#define DEFAULT_BOARD_LAYOUT_A_ALT7_NAME "Haute42|COSMOX X Series Standard + Joystick - Bottom"
-#define DEFAULT_BOARD_LAYOUT_A_ALT7 {\
-     {GP_ELEMENT_LEVER,      {36, 30, 7, 7, 1, 0,  0}},\
-     {GP_ELEMENT_PIN_BUTTON, {25, 15, 2, 2, 1, 1, 14,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {32, 15, 2, 2, 1, 1, 21,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {82, 15, 2, 2, 1, 1, 20,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {89, 15, 2, 2, 1, 1, 16,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {96, 15, 2, 2, 1, 1, 17,  GP_SHAPE_ELLIPSE}},\
-}
-
-#define DEFAULT_BOARD_LAYOUT_B_ALT7_NAME "Haute42|COSMOX X Series Standard + Joystick - Bottom"
-#define DEFAULT_BOARD_LAYOUT_B_ALT7 {\
-     {GP_ELEMENT_PIN_BUTTON, {69, 17, 4, 4, 1, 1, 15,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {64, 27, 4, 4, 1, 1, 10,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {74, 25, 4, 4, 1, 1, 11,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {84, 25, 4, 4, 1, 1, 12,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {94, 26, 4, 4, 1, 1, 13,  GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {64, 37, 4, 4, 1, 1, 6,   GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {74, 35, 4, 4, 1, 1, 7,   GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {84, 35, 4, 4, 1, 1, 8,   GP_SHAPE_ELLIPSE}},\
-     {GP_ELEMENT_PIN_BUTTON, {94, 36, 4, 4, 1, 1, 9,   GP_SHAPE_ELLIPSE}},\
 }
 
 // Keyboard Host enabled by default
