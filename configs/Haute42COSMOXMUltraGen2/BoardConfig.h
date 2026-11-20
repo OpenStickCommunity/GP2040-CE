@@ -97,13 +97,6 @@
 #define LEDS_BUTTON_R3   14
 #define LEDS_BUTTON_A2   15
 
-// Set our default ambient light
-#define CASE_RGB_TYPE CASE_RGB_TYPE_AMBIENT
-#define CASE_RGB_INDEX 16
-#define CASE_RGB_COUNT 30
-#define AMBIENT_LIGHT_EFFECT AL_CUSTOM_EFFECT_GRADIENT
-#define AMBIENT_STATIC_COLOR ANIMATION_COLOR_PURPLE
-
 #define HAS_I2C_DISPLAY 1
 #define I2C0_ENABLED 1
 #define I2C0_PIN_SDA 0
@@ -156,6 +149,7 @@
 #define BOARD_LED_ENABLED 1
 #define BOARD_LED_TYPE ON_BOARD_LED_MODE_MODE_INDICATOR
 
+#define LIGHT_DATA_NAME_DEFAULT "Haute42|COSMOX M Ultra Gen 2"
 #define LIGHT_DATA_SIZE_DEFAULT 46 //number of sets in the below data
 #define LIGHT_DATA_DEFAULT \
 0,  1,  4,  4,  5, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
@@ -204,7 +198,6 @@
 43, 1, 14,  0, 27, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
 44, 1, 12,  0, 28, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
 45, 1, 10,  0, 29, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO
-#define LIGHT_DATA_NAME_DEFAULT "Haute42|COSMOX M Ultra Gen 2"
 
 #define DEFAULT_SPLASH \
 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \

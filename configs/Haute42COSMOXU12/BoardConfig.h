@@ -161,6 +161,7 @@
 //r3
 //m2 (extra button 2)
 
+#define LIGHT_DATA_NAME_DEFAULT "Haute42|COSMOX T12"
 #define LIGHT_DATA_SIZE_DEFAULT 12 //number of sets in the below data
 #define LIGHT_DATA_DEFAULT \
 0, 1, 0, 2, 5, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
@@ -175,7 +176,6 @@
 9, 1, 8, 3, 7, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
 10, 1, 10, 3, 8, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
 11, 1, 12, 3, 9, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO
-#define LIGHT_DATA_NAME_DEFAULT "Haute42|COSMOX T12"
 
 // Keyboard Host enabled by default
 #define KEYBOARD_HOST_ENABLED 1

@@ -11,6 +11,10 @@ Configuration for the [Haute42 COSMOX C-AS Lite](https://haute42-cosmox.com/c-as
 - Left: `Haute42|COSMOX C-AS Lite`
 - Right: `Haute42|COSMOX C-AS Lite`
 
+## RGB light profiles
+
+- `Haute42|COSMOX C-AS Lite`
+
 ## Main Pin Mapping Configuration
 
 | RP2040 Pin | Action                        | GP2040 | Xinput | Switch | PS3/4/5  | Dinput | Arcade |

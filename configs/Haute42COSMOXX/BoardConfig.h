@@ -77,7 +77,6 @@
 
 #define BOARD_LEDS_PIN 22
 #define LED_BRIGHTNESS_MAXIMUM 100
-#define LED_BRIGHTNESS_STEPS 5
 #define LED_FORMAT LED_FORMAT_GRB
 #define LEDS_PER_PIXEL 1
 
@@ -113,6 +112,27 @@
 #define DEFAULT_INNER_DEADZONE2     10
 #define DEFAULT_OUTER_DEADZONE2     75
 #define AUTO_CALIBRATE2_ENABLED     1
+
+//Data format = {first led index, leds on this light, xcoord, ycoord, GPIO pin/case light Index, Type, input source}
+#define LIGHT_DATA_NAME_DEFAULT "Haute42|COSMOX X Series"
+#define LIGHT_DATA_SIZE_DEFAULT 16 //number of sets in the below data
+#define LIGHT_DATA_DEFAULT \
+0, 1, 2, 4, 5, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+1, 1, 4, 4, 3, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+2, 1, 6, 5, 4, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+3, 1, 5, 3, 2, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+4, 1, 10, 4, 10, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+5, 1, 12, 4, 11, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+6, 1, 14, 4, 12, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+7, 1, 16, 4, 13, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+8, 1, 10, 6, 6, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+9, 1, 12, 6, 7, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+10, 1, 14, 6, 8, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+11, 1, 16, 6, 9, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+12, 1, 13, 2, 20, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+13, 1, 11, 2, 15, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+14, 1, 10, 9, 19, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+15, 1, 3, 2, 21, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO
 
 #define HAS_I2C_DISPLAY 1
 #define I2C0_ENABLED 1

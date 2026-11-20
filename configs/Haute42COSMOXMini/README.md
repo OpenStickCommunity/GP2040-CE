@@ -13,7 +13,7 @@ Configuration for the [Haute42 COSMOX Mini](https://haute42.com/haute-board-mini
 
 ## RGB light profiles
 
-- `Haute42|COSMOX T12`
+- `Haute42|COSMOX Mini`
 
 ## Main Pin Mapping Configuration
 

@@ -19,6 +19,10 @@ Alternate layouts, selectable in the web configurator:
 - `Haute42|COSMOX X Series Standard + WASD - Bottom`
 - `Haute42|COSMOX X Series Standard + Joystick - Bottom`
 
+## RGB light profiles
+
+- `Haute42|COSMOX X Series`
+
 ## Main Pin Mapping Configuration
 
 | RP2040 Pin | Action                        | GP2040 | Xinput | Switch | PS3/4/5  | Dinput | Arcade |
