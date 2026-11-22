@@ -12,6 +12,7 @@
 #include "pico/platform.h"
 #include "pico/time.h"
 
+#include "hardware/irq.h"
 #include "hardware/structs/usb.h"
 #include "hardware/structs/usb_dpram.h"
 #include "hardware/sync.h"
@@ -41,10 +42,53 @@ void USBReportScheduler::configure(uint8_t endpoint, bool stageReports) {
     stageReportsAllowed = stageReports;
 }
 
+void USBReportScheduler::resetHid(uint8_t rhport) {
+    hidd_reset(rhport);
+    getInstance().reset();
+}
+
+uint16_t USBReportScheduler::openHid(uint8_t rhport, tusb_desc_interface_t const *itf, uint16_t maxLen) {
+    uint16_t const len = hidd_open(rhport, itf, maxLen);
+    if (len == 0) return 0;
+
+    // hidd_open validates the interface, HID descriptor, and interrupt endpoints.
+    uint8_t const *desc = tu_desc_next(tu_desc_next(itf));
+    for (uint8_t i = 0; i < itf->bNumEndpoints; ++i, desc = tu_desc_next(desc)) {
+        auto const *ep = reinterpret_cast<tusb_desc_endpoint_t const *>(desc);
+        if (tu_edpt_dir(ep->bEndpointAddress) == TUSB_DIR_IN) {
+            USBReportScheduler &scheduler = getInstance();
+            scheduler.configure(ep->bEndpointAddress);
+            scheduler.start();
+            break;
+        }
+    }
+    return len;
+}
+
+bool USBReportScheduler::onHidTransfer(uint8_t rhport, uint8_t epAddr, xfer_result_t result, uint32_t bytes) {
+    USBReportScheduler &scheduler = getInstance();
+    if (epAddr == scheduler.endpoint) {
+        bool const scheduled = scheduler.hasPendingReport();
+        if (result == XFER_RESULT_SUCCESS) {
+            scheduler.onReportComplete();
+        } else {
+            scheduler.onReportFailed();
+        }
+        if (scheduled) return true;
+    }
+    return hidd_xfer_cb(rhport, epAddr, result, bytes);
+}
+
 void USBReportScheduler::start() {
     uint8_t const epNum = tu_edpt_number(endpoint);
     if ((tu_edpt_dir(endpoint) == TUSB_DIR_IN) && epNum != 0 && epNum < USB_NUM_ENDPOINTS) {
-        // Latch polls while unarmed without enabling another USB interrupt.
+        static bool handlerInstalled = false;
+        queueNakSupported = rp2040_chip_version() >= 2;
+        if (queueNakSupported && !handlerInstalled) {
+            irq_add_shared_handler(USBCTRL_IRQ, onQueueNak, PICO_SHARED_IRQ_HANDLER_LOWEST_ORDER_PRIORITY);
+            handlerInstalled = true;
+        }
+        // Latch polls even while the NAK interrupt is disabled.
         usb_hw->ep_nak_stall_status = 1u << (2 * epNum);
         usb_dpram->ep_ctrl[epNum - 1].in |= EP_CTRL_INTERRUPT_ON_NAK;
         // The class SOF callback runs in the ISR; no queued application SOF event.
@@ -63,6 +107,7 @@ void USBReportScheduler::reset() {
     sofTimingReady = false;
     inputTimingResetPending = false;
     reportPendingAtSof = false;
+    queueNakSupported = false;
     lastSofFrame = 0;
     resetPollTiming();
     restore_interrupts(irqState);
@@ -113,6 +158,46 @@ void __not_in_flash_func(USBReportScheduler::noteHostPoll)(uint32_t frame) {
     lastPollValid = true;
 }
 
+void __not_in_flash_func(USBReportScheduler::consumeNak)(uint32_t nakMask, bool observedUnarmed) {
+    if (stagedLength != 0) stagedFlushRequired = true;
+    usb_hw->ep_nak_stall_status = nakMask; // W1C: leave other endpoints alone.
+    if (!sofTimingReady || (usb_hw->ints & USB_INTS_DEV_SOF_BITS)) {
+        resetPollTiming();
+        return;
+    }
+
+    noteHostPoll(sofEpoch);
+    // A submission that crossed an unarmed SOF can see the new poll after publication.
+    bool const serviced = observedUnarmed || (pendingOwned
+        ? pendingSofEpochValid && pendingSofEpoch == sofEpoch && !reportPendingAtSof &&
+            servicedSofEpochValid && sofEpoch - servicedSofEpoch == 1
+        : !usbd_edpt_busy(0, endpoint));
+    if (serviced) {
+        servicedSofEpoch = sofEpoch;
+        servicedSofEpochValid = true;
+    }
+}
+
+void __not_in_flash_func(USBReportScheduler::onQueueNak)() {
+    USBReportScheduler &scheduler = getInstance();
+    if (!scheduler.queueNakActive || !(usb_hw->ints & USB_INTS_EP_STALL_NAK_BITS)) return;
+
+    uint8_t const epNum = tu_edpt_number(scheduler.endpoint);
+    uint32_t const nakMask = 1u << (2 * epNum);
+    uint32_t const owned = USB_BUF_CTRL_AVAIL | USB_BUF_CTRL_FULL;
+    uint32_t const endpointControl = usb_dpram->ep_ctrl[epNum - 1].in;
+    // AVAIL and FULL remain set for an IN packet awaiting a retry.
+    if (scheduler.queueNakEpoch == scheduler.sofEpoch &&
+        !(usb_hw->ints & (USB_INTS_DEV_SOF_BITS | USB_INTS_BUS_RESET_BITS)) &&
+        (endpointControl & EP_CTRL_ENABLE_BITS) && (usb_hw->ep_nak_stall_status & nakMask) &&
+        !(usb_hw->abort & nakMask) &&
+        !(usb_dpram->ep_buf_ctrl[epNum].in & (owned | (owned << 16)))) {
+        scheduler.queueNakObserved = true;
+    }
+    // The status remains latched for the normal scheduler path.
+    hw_clear_bits(&usb_hw->inte, USB_INTE_EP_STALL_NAK_BITS);
+}
+
 void __not_in_flash_func(USBReportScheduler::onSof)(uint8_t rhport, uint32_t frameCount) {
     (void)rhport;
     USBReportScheduler &scheduler = getInstance();
@@ -157,22 +242,7 @@ void __not_in_flash_func(USBReportScheduler::beginInputProcessing)() {
     }
     uint32_t const nakMask = 1u << (2 * tu_edpt_number(endpoint));
     if (usb_hw->ep_nak_stall_status & nakMask) {
-        // A poll while staged expires this packet's wait, even if cadence agrees.
-        if (stagedLength != 0) stagedFlushRequired = true;
-        usb_hw->ep_nak_stall_status = nakMask; // W1C: leave other endpoints alone.
-        // Only attribute a NAK when both observations are in the same frame.
-        if (sofTimingReady &&
-            !(usb_hw->ints & USB_INTS_DEV_SOF_BITS)) {
-            noteHostPoll(sofEpoch);
-            // An idle NAK also completes this interrupt endpoint's service
-            // opportunity; only a newly queued report may then be replaced.
-            if (!pendingOwned && !usbd_edpt_busy(0, endpoint)) {
-                servicedSofEpoch = sofEpoch;
-                servicedSofEpochValid = true;
-            }
-        } else {
-            resetPollTiming();
-        }
+        consumeNak(nakMask);
     }
     uint32_t const windowEpoch = sofEpoch;
     uint32_t const windowFrames = pollTimingReady ? pollIntervalFrames : 1;
@@ -235,7 +305,7 @@ bool __not_in_flash_func(USBReportScheduler::hasSchedulingWindow)() const {
     uint32_t const now = time_us_32();
     uint32_t const irqState = save_and_disable_interrupts();
     uint32_t const sofUs = lastSofUs;
-    bool const timingReady = sofTimingReady;
+    bool const timingReady = sofTimingReady && !(usb_hw->ints & USB_INTS_DEV_SOF_BITS);
     bool const pollReady = pollTimingReady;
     uint32_t const framesSincePoll = sofEpoch - lastPollSofEpoch;
     uint32_t const pollFrames = pollIntervalFrames;
@@ -283,9 +353,41 @@ bool __not_in_flash_func(USBReportScheduler::hasSchedulingWindow)() const {
         maxInputIntervalUs - currentProcessingUs < budgetUs - reportProcessingUs;
 }
 
+bool __not_in_flash_func(USBReportScheduler::captureQueueTiming)(
+        uint32_t &epoch, bool allowReplacement, bool watchForNak) {
+    uint32_t irqState = save_and_disable_interrupts();
+    if (allowReplacement) {
+        if (usb_hw->ints & USB_INTS_DEV_SOF_BITS) {
+            // Give a pending SOF one chance to run before the transfer starts.
+            restore_interrupts(irqState);
+            irqState = save_and_disable_interrupts();
+        }
+        uint32_t const nakMask = 1u << (2 * tu_edpt_number(endpoint));
+        if (usb_hw->ep_nak_stall_status & nakMask) {
+            consumeNak(nakMask);
+        }
+    }
+
+    epoch = sofEpoch;
+    bool const replaceable = allowReplacement && sofTimingReady &&
+        servicedSofEpochValid && servicedSofEpoch == epoch &&
+        !(usb_hw->ints & USB_INTS_DEV_SOF_BITS);
+    if (watchForNak && queueNakSupported && !replaceable && sofTimingReady && !reportPendingAtSof &&
+        !inputTimingResetPending && servicedSofEpochValid && epoch - servicedSofEpoch == 1 &&
+        !(usb_hw->ints & (USB_INTS_DEV_SOF_BITS | USB_INTS_BUS_RESET_BITS))) {
+        queueNakEpoch = epoch;
+        queueNakObserved = false;
+        queueNakActive = true;
+        hw_set_bits(&usb_hw->inte, USB_INTE_EP_STALL_NAK_BITS);
+    }
+    restore_interrupts(irqState);
+    return replaceable;
+}
+
 bool __not_in_flash_func(USBReportScheduler::sendDirectReport)(
         void const *report, uint16_t len, USBReportPriority const &priority,
         bool allowAnalogScheduling) {
+    if (len > sizeof(stagedReport) || (len != 0 && !report)) return false;
     if (stagedLength != 0) {
         if (!allowAnalogScheduling || len != stagedLength || !canCoalesce(priority)) {
             // Deliver an earlier edge before accepting its reversal or a mixed transition.
@@ -299,7 +401,7 @@ bool __not_in_flash_func(USBReportScheduler::sendDirectReport)(
     }
 
     if (stageReportsAllowed && allowAnalogScheduling && !reportRequired &&
-        len != 0 && len <= sizeof(stagedReport) && !pendingOwned &&
+        len != 0 && !pendingOwned &&
         pollTimingReady && hasSchedulingWindow() && tud_ready() &&
         endpoint != 0 && !usbd_edpt_busy(0, endpoint) && usbd_edpt_claim(0, endpoint)) {
         // Reserve the endpoint so protocol replies cannot overtake accepted input.
@@ -318,24 +420,31 @@ bool __not_in_flash_func(USBReportScheduler::sendDirectReport)(
         return false;
     }
 
-    if (tud_ready() && endpoint != 0 && !usbd_edpt_busy(0, endpoint) &&
+    if (!pendingOwned && tud_ready() && endpoint != 0 && !usbd_edpt_busy(0, endpoint) &&
         usbd_edpt_claim(0, endpoint)) {
-        uint32_t const irqState = save_and_disable_interrupts();
-        uint32_t const queueSofEpoch = sofEpoch;
-        bool const replaceable = allowAnalogScheduling &&
-            sofTimingReady && servicedSofEpochValid &&
-            servicedSofEpoch == queueSofEpoch;
-        restore_interrupts(irqState);
+        if (len != 0) memcpy(stagedReport, report, len);
+        uint32_t queueSofEpoch;
+        bool const watchForNak = allowAnalogScheduling && !reportRequired && priority == deliveredPriority;
+        bool replaceable = captureQueueTiming(queueSofEpoch, allowAnalogScheduling, watchForNak);
 
-        bool const queued = usbd_edpt_xfer(
-            0, endpoint, const_cast<uint8_t *>(static_cast<uint8_t const *>(report)), len, false);
-        if (queued) {
-            uint32_t const queuedIrqState = save_and_disable_interrupts();
-            noteQueued(priority, queueSofEpoch,
-                       replaceable && sofEpoch == queueSofEpoch);
-            restore_interrupts(queuedIrqState);
-            return true;
+        bool const queued = usbd_edpt_xfer(0, endpoint, stagedReport, len, false);
+        uint32_t const queuedIrqState = save_and_disable_interrupts();
+        if (queueNakActive) {
+            hw_clear_bits(&usb_hw->inte, USB_INTE_EP_STALL_NAK_BITS);
+            queueNakActive = false;
+            uint8_t const epNum = tu_edpt_number(endpoint);
+            uint32_t const nakMask = 1u << (2 * epNum);
+            if (queued && queueNakObserved && queueSofEpoch == sofEpoch && !inputTimingResetPending &&
+                !(usb_hw->ints & (USB_INTS_DEV_SOF_BITS | USB_INTS_BUS_RESET_BITS)) &&
+                (usb_hw->ep_nak_stall_status & nakMask) &&
+                (usb_dpram->ep_ctrl[epNum - 1].in & EP_CTRL_ENABLE_BITS)) {
+                consumeNak(nakMask, true);
+                replaceable = servicedSofEpochValid && servicedSofEpoch == queueSofEpoch;
+            }
         }
+        if (queued) noteQueued(priority, queueSofEpoch, replaceable);
+        restore_interrupts(queuedIrqState);
+        if (queued) return true;
         usbd_edpt_release(0, endpoint);
     }
 
@@ -353,6 +462,8 @@ bool __not_in_flash_func(USBReportScheduler::tryReplace)(
 
     bool const replaced = replacePendingInBuffer(report, len);
     if (replaced) {
+        // A later CLEAR_FEATURE can re-arm this packet from TinyUSB's original pointer.
+        if (len != 0) memcpy(stagedReport, report, len);
         pendingPriority = priority;
         pendingPriorityUnchanged = false;
     }
@@ -384,11 +495,8 @@ bool __not_in_flash_func(USBReportScheduler::flushStagedReport)() {
     if (!stagedClaimed) stagedClaimed = usbd_edpt_claim(0, endpoint);
     if (!stagedClaimed) return false;
 
-    uint32_t const irqState = save_and_disable_interrupts();
-    uint32_t const queueSofEpoch = sofEpoch;
-    bool const replaceable = sofTimingReady && servicedSofEpochValid &&
-        servicedSofEpoch == queueSofEpoch;
-    restore_interrupts(irqState);
+    uint32_t queueSofEpoch;
+    bool const replaceable = captureQueueTiming(queueSofEpoch, true);
 
     if (!usbd_edpt_xfer(0, endpoint, stagedReport, stagedLength, false)) {
         // TinyUSB releases a failed transfer's claim; retain the accepted bytes.
@@ -399,7 +507,7 @@ bool __not_in_flash_func(USBReportScheduler::flushStagedReport)() {
     stagedClaimed = false;
     stagedFlushRequired = false;
     uint32_t const queuedIrqState = save_and_disable_interrupts();
-    noteQueued(pendingPriority, queueSofEpoch, replaceable && sofEpoch == queueSofEpoch);
+    noteQueued(pendingPriority, queueSofEpoch, replaceable);
     restore_interrupts(queuedIrqState);
     return true;
 }
@@ -407,12 +515,20 @@ bool __not_in_flash_func(USBReportScheduler::flushStagedReport)() {
 void __not_in_flash_func(USBReportScheduler::noteQueued)(
         USBReportPriority const &priority, uint32_t queuedSofEpoch,
         bool replaceable) {
+    if (replaceable && sofEpoch - queuedSofEpoch == 1 && !inputTimingResetPending &&
+        !reportPendingAtSof && !(usb_hw->ints & USB_INTS_DEV_SOF_BITS)) {
+        uint32_t const armed = USB_BUF_CTRL_AVAIL | USB_BUF_CTRL_FULL;
+        // A completed transfer awaiting its callback no longer owns the USB buffer.
+        if ((usb_dpram->ep_buf_ctrl[tu_edpt_number(endpoint)].in & armed) == armed) {
+            queuedSofEpoch = sofEpoch;
+        }
+    }
     pendingPriority = priority;
     pendingPriorityUnchanged = priority == deliveredPriority;
     pendingOwned = true;
     reportRequired = false;
     pendingSofEpoch = queuedSofEpoch;
-    pendingSofEpochValid = replaceable;
+    pendingSofEpochValid = replaceable && sofEpoch == queuedSofEpoch;
 }
 
 void USBReportScheduler::onReportComplete() {
@@ -508,7 +624,7 @@ bool __no_inline_not_in_flash_func(USBReportScheduler::replacePendingInBuffer)(
         uint8_t * const dpramBuffer = reinterpret_cast<uint8_t *>(usb_dpram) +
             (endpointControl & 0xffffu);
         *bufferControl = 0;
-        memcpy(dpramBuffer, report, len);
+        if (len != 0) memcpy(dpramBuffer, report, len);
         *bufferControl = savedControl & ~USB_BUF_CTRL_AVAIL;
         busy_wait_at_least_cycles(12);
         *bufferControl = savedControl;

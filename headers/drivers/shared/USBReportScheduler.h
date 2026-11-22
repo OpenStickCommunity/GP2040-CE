@@ -6,6 +6,7 @@
 #pragma once
 
 #include <stdint.h>
+#include "common/tusb_types.h"
 
 struct USBReportPriority {
     uint64_t digital = 0;
@@ -28,6 +29,9 @@ public:
     void configure(uint8_t endpoint, bool stageReports = false);
     void start();
     static void onSof(uint8_t rhport, uint32_t frameCount);
+    static void resetHid(uint8_t rhport);
+    static uint16_t openHid(uint8_t rhport, tusb_desc_interface_t const *itf, uint16_t maxLen);
+    static bool onHidTransfer(uint8_t rhport, uint8_t epAddr, xfer_result_t result, uint32_t bytes);
     void reset();
     // Relearn a changed input workload without discarding queued digital edges.
     void resetInputTiming();
@@ -51,6 +55,8 @@ private:
 
     void resetPollTiming();
     void noteHostPoll(uint32_t frame);
+    void consumeNak(uint32_t nakMask, bool observedUnarmed = false);
+    static void onQueueNak();
     bool shouldDefer(USBReportPriority const &priority) const;
     bool hasSchedulingWindow() const;
     bool canCoalesce(USBReportPriority const &priority) const;
@@ -58,12 +64,13 @@ private:
     bool replacePendingInBuffer(void const *report, uint16_t len);
     bool tryReplace(void const *report, uint16_t len,
                     USBReportPriority const &priority);
+    bool captureQueueTiming(uint32_t &epoch, bool allowReplacement, bool watchForNak = false);
     void noteQueued(USBReportPriority const &priority, uint32_t sofEpoch,
                     bool replaceable);
 
     uint8_t endpoint = 0;
     // Full-speed interrupt IN packets contain at most 64 bytes.
-    uint8_t stagedReport[64];
+    uint8_t stagedReport[64] = {};
     volatile uint16_t stagedLength = 0;
     bool stageReportsAllowed = false;
     bool stagedClaimed = false;
@@ -95,6 +102,10 @@ private:
     volatile bool sofTimingReady = false;
     volatile bool inputTimingResetPending = false;
     volatile bool reportPendingAtSof = false;
+    bool queueNakSupported = false;
+    volatile bool queueNakActive = false;
+    volatile bool queueNakObserved = false;
+    uint32_t queueNakEpoch = 0;
     bool servicedSofEpochValid = false;
     bool pendingSofEpochValid = false;
 };

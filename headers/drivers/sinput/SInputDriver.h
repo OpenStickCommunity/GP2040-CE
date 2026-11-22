@@ -30,6 +30,8 @@ private:
     uint8_t queuedReport[GAMEPAD_SIZE] = { };
     bool isReportQueued = false;
     SInputReport sinputReport = {};
+    uint32_t analogSchedulingProfile = UINT32_MAX;
+    bool analogSchedulingAllowed = false;
 };
 
 #endif // _SINPUT_DRIVER_H_
