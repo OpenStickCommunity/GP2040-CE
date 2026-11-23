@@ -33,6 +33,8 @@ typedef struct {
 
 #define LAYOUTMGR LayoutManager::getInstance()
 
+#define CUSTOM_LAYOUT_ELEMENT_BYTES 12
+
 class LayoutManager {
     public:
         typedef std::vector<GPButtonLayout> LayoutList;
@@ -55,7 +57,6 @@ class LayoutManager {
         std::string getButtonLayoutName(ButtonLayout layout);
         std::string getButtonLayoutRightName(ButtonLayoutRight layout);
 
-        LayoutList adjustByCustomSettings(LayoutList layout, ButtonLayoutParamsCommon common, uint16_t originX = 0, uint16_t originY = 0);
         LayoutList adjustByOffset(LayoutList layout, int16_t originX = 0, int16_t originY = 0);
         LayoutList flipHorizontally(LayoutList layout, int16_t startX = 0, int16_t startY = 0, int16_t endX = 0, int16_t endY = 0);
 
@@ -101,8 +102,8 @@ class LayoutManager {
         LayoutList drawSticklessButtonsR16B();
         LayoutList drawStickless14A();
         LayoutList drawSticklessButtons14B();
-        LayoutList drawButtonLayoutLeft();
-        LayoutList drawButtonLayoutRight();
+        LayoutList drawCustomDefinedA();
+        LayoutList drawCustomDefinedB();
         LayoutList drawBoardDefinedA();
         LayoutList drawBoardDefinedAlt0A();
         LayoutList drawBoardDefinedAlt1A();
@@ -153,8 +154,11 @@ class LayoutManager {
 
         LayoutManager::LayoutList getLeftLayout(uint16_t index);
         LayoutManager::LayoutList getRightLayout(uint16_t index);
+        void encodeCustomDefined(uint8_t* bytes, pb_size_t& size, size_t maxSize, const LayoutList& layout);
     private:
         LayoutManager(){}
+
+        LayoutList drawCustomDefined(const uint8_t* bytes, uint16_t size);
 
         std::string getLayoutNameByID();
 };

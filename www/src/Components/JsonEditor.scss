@@ -1,0 +1,76 @@
+.json-editor {
+	height: 24rem;
+	min-height: 6rem;
+	overflow: hidden;
+	resize: vertical;
+
+	* {
+		font-size: 0.7rem;
+	}
+
+	&.form-control,
+	&.form-control.is-valid,
+	&.form-control.is-invalid {
+		padding: 0;
+		background-image: none;
+	}
+
+
+	&:focus-within {
+		border-color: var(--bs-primary-border-subtle);
+		box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+	}
+
+	&.is-invalid:focus-within {
+		border-color: var(--bs-form-invalid-border-color);
+		box-shadow: 0 0 0 0.25rem rgba(var(--bs-danger-rgb), 0.25);
+	}
+
+	&.is-valid:focus-within {
+		border-color: var(--bs-form-valid-border-color);
+		box-shadow: 0 0 0 0.25rem rgba(var(--bs-success-rgb), 0.25);
+	}
+
+	.prism-code-editor {
+		height: 100%;
+		--pce-bg: transparent;
+		--pce-cursor: var(--bs-body-color);
+		--pce-selection: rgba(var(--bs-primary-rgb), 0.25);
+		--pce-bg-highlight: var(--bs-tertiary-bg);
+		font-family: inherit;
+		line-height: 1.5;
+		color: var(--bs-body-color);
+	}
+
+	.token.property {
+		color: var(--bs-primary-text-emphasis);
+	}
+
+	.token.string {
+		color: var(--bs-success-text-emphasis);
+	}
+
+	.token.number {
+		color: var(--bs-warning-text-emphasis);
+	}
+
+	.token.boolean,
+	.token.keyword {
+		color: var(--bs-danger-text-emphasis);
+	}
+
+	.token.punctuation,
+	.token.operator {
+		color: var(--bs-secondary-color);
+	}
+
+	.token.bracket-error {
+		color: var(--bs-danger);
+	}
+
+	.active-bracket {
+		box-shadow:
+			inset 0 0 0 1px rgba(var(--bs-success-rgb), 0.6),
+			inset 0 0 0 9in rgba(var(--bs-success-rgb), 0.15);
+	}
+}

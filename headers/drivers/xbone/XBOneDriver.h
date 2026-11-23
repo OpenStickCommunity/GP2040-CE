@@ -42,6 +42,8 @@ private:
     bool xb1_guide_pressed;
     GPAuthDriver * authDriver;
     uint8_t xbone_led_mode;
+    bool analogSchedulingAllowed = false;
+    uint32_t analogSchedulingProfile = 0;
 };
 
 #endif // _XBONE_DRIVER_H_

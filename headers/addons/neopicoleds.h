@@ -42,7 +42,7 @@
 #define LIGHT_DATA_SIZE_DEFAULT 0
 #endif
 #ifndef LIGHT_DATA_DEFAULT
-#define LIGHT_DATA_DEFAULT 0,0,0,0,0,LightType::LightType_ActionButton
+#define LIGHT_DATA_DEFAULT 0,0,0,0,0,LightType::LightType_ActionButton,LightInputSource::LightInputSource_GPIO
 #endif
 #ifndef LIGHT_DATA_NAME_DEFAULT
 #define LIGHT_DATA_NAME_DEFAULT ""
@@ -51,7 +51,7 @@
 #define LIGHT_DATA_SIZE_1 0
 #endif
 #ifndef LIGHT_DATA_1
-#define LIGHT_DATA_1 0,0,0,0,0,LightType::LightType_ActionButton
+#define LIGHT_DATA_1 0,0,0,0,0,LightType::LightType_ActionButton,LightInputSource::LightInputSource_GPIO
 #endif
 #ifndef LIGHT_DATA_NAME_1
 #define LIGHT_DATA_NAME_1 ""
@@ -60,7 +60,7 @@
 #define LIGHT_DATA_SIZE_2 0
 #endif
 #ifndef LIGHT_DATA_2
-#define LIGHT_DATA_2 0,0,0,0,0,LightType::LightType_ActionButton
+#define LIGHT_DATA_2 0,0,0,0,0,LightType::LightType_ActionButton,LightInputSource::LightInputSource_GPIO
 #endif
 #ifndef LIGHT_DATA_NAME_2
 #define LIGHT_DATA_NAME_2 ""
@@ -69,7 +69,7 @@
 #define LIGHT_DATA_SIZE_3 0
 #endif
 #ifndef LIGHT_DATA_3
-#define LIGHT_DATA_3 0,0,0,0,0,LightType::LightType_ActionButton
+#define LIGHT_DATA_3 0,0,0,0,0,LightType::LightType_ActionButton,LightInputSource::LightInputSource_GPIO
 #endif
 #ifndef LIGHT_DATA_NAME_3
 #define LIGHT_DATA_NAME_3 ""
@@ -78,7 +78,7 @@
 #define LIGHT_DATA_SIZE_4 0
 #endif
 #ifndef LIGHT_DATA_4
-#define LIGHT_DATA_4 0,0,0,0,0,LightType::LightType_ActionButton
+#define LIGHT_DATA_4 0,0,0,0,0,LightType::LightType_ActionButton,LightInputSource::LightInputSource_GPIO
 #endif
 #ifndef LIGHT_DATA_NAME_4
 #define LIGHT_DATA_NAME_4 ""
@@ -87,7 +87,7 @@
 #define LIGHT_DATA_SIZE_5 0
 #endif
 #ifndef LIGHT_DATA_5
-#define LIGHT_DATA_5 0,0,0,0,0,LightType::LightType_ActionButton
+#define LIGHT_DATA_5 0,0,0,0,0,LightType::LightType_ActionButton,LightInputSource::LightInputSource_GPIO
 #endif
 #ifndef LIGHT_DATA_NAME_5
 #define LIGHT_DATA_NAME_5 ""
@@ -96,7 +96,7 @@
 #define LIGHT_DATA_SIZE_6 0
 #endif
 #ifndef LIGHT_DATA_6
-#define LIGHT_DATA_6 0,0,0,0,0,LightType::LightType_ActionButton
+#define LIGHT_DATA_6 0,0,0,0,0,LightType::LightType_ActionButton,LightInputSource::LightInputSource_GPIO
 #endif
 #ifndef LIGHT_DATA_NAME_6
 #define LIGHT_DATA_NAME_6 ""
@@ -105,7 +105,7 @@
 #define LIGHT_DATA_SIZE_7 0
 #endif
 #ifndef LIGHT_DATA_7
-#define LIGHT_DATA_7 0,0,0,0,0,LightType::LightType_ActionButton
+#define LIGHT_DATA_7 0,0,0,0,0,LightType::LightType_ActionButton,LightInputSource::LightInputSource_GPIO
 #endif
 #ifndef LIGHT_DATA_NAME_7
 #define LIGHT_DATA_NAME_7 ""
@@ -118,8 +118,6 @@
 #ifndef LEDS_BRIGHTNESS
 #define LEDS_BRIGHTNESS -1
 #endif
-
-#define LEDS_COLOR_QUAD(color) ((color<<24) + (color<<16) + (color<<8) + color)
 
 #ifndef LEDS_AUTO_DISABLE_TIME
 #define LEDS_AUTO_DISABLE_TIME 0 // in ms
@@ -549,16 +547,10 @@ public:
    	virtual void postprocess(bool sent) {}
     virtual void reinit() {}
 	virtual std::string name() { return NeoPicoLEDName; }
-
-	static void AssignLedPreset(const unsigned char* data, int32_t dataSize);
-	static void RestartLedSystem() { bRestartLeds = true; }
-
 	uint32_t frame[FRAME_MAX];
 private:
-
-	void decompressSettings();
-
 	void configureLEDs();
+	void handleSystemReboot(GPEvent* e);
 
 	GamepadHotkey ProcessAnimationHotkeys(Gamepad *gamepad);
 
@@ -587,9 +579,10 @@ private:
 
 	//Data representation of the lights
 	Lights RGBLights;
+	std::vector<int32_t> pressedInputs;
 
 	//Animation class. Handles idle animations, special move animations and pressed button effects
-	class AnimationStation AnimStation;
+	//class AnimationStation AnimStation;
 
 	const uint32_t intervalMS = 25;
 	absolute_time_t nextRunTime;
@@ -600,9 +593,6 @@ private:
 	bool turnOffWhenSuspended;
 
 	bool bHasSetupNeoPico = false;
-
-	//Webconfig/testing
-	static bool bRestartLeds;
 };
 
 #endif

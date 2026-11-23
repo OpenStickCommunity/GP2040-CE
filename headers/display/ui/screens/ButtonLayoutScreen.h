@@ -15,7 +15,7 @@
 #include "GPGFX_UI_layouts.h"
 
 #define INPUT_HISTORY_MAX_INPUTS 23
-#define INPUT_HISTORY_MAX_MODES 13
+#define INPUT_HISTORY_MAX_MODES 21
 
 // Static to ensure memory is never doubled
 static const char * displayNames[INPUT_HISTORY_MAX_MODES][INPUT_HISTORY_MAX_INPUTS] __attribute__((unused)) = {
@@ -109,6 +109,62 @@ static const char * displayNames[INPUT_HISTORY_MAX_MODES][INPUT_HISTORY_MAX_INPU
             "B", "A", "Y", "X",
             "L", "R", "ZL", "ZR",
             "-", "+", "LS", "RS", CHAR_HOME_S, CHAR_CAP_S, "C"
+    },
+    {		// Switch 2 Joy-Con 2 (L) - 13
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "B", "A", "Y", "X",
+            "SL", "SR", "L", "ZL",
+            "-", "", "LS", "", "", CHAR_CAP_S, ""
+    },
+    {		// Switch 2 Joy-Con 2 (R) - 14
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "B", "A", "Y", "X",
+            "SL", "SR", "R", "ZR",
+            "", "+", "RS", "RS", CHAR_HOME_S, "", "C"
+    },
+    {		// Switch SNES - 15
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "B", "A", "Y", "X",
+            "L", "R", "ZL", "ZR",
+            "SEL", "STA", "", "", "", "", ""
+    },
+    {		// Switch N64 - 16
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "B", "A", "CL", "CU",
+            "L", "R", "Z", "ZR",
+            "", "STA", "CD", "CR", CHAR_HOME_S, CHAR_CAP_S, ""
+    },
+    {		// Switch Genesis - 17
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "A", "B", "X", "Y",
+            "", "Z", "", "C",
+            "MODE", "STA", "", "", CHAR_HOME_S, CHAR_CAP_S, ""
+    },
+    {		// Switch Joy-Con (L) - 18
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "B", "A", "Y", "X",
+            "SL", "SR", "L", "ZL",
+            "-", "", "LS", "", "", CHAR_CAP_S, ""
+    },
+    {		// Switch Joy-Con (R) - 19
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "B", "A", "Y", "X",
+            "SL", "SR", "R", "ZR",
+            "", "+", "RS", "RS", CHAR_HOME_S, "", ""
+    },
+    {		// Switch NES / Famicom - 20
+            CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+            "B", "A", "", "",
+            "L", "R", "", "",
+            "SEL", "STA", "", "", "", "", ""
     }
 };
 
@@ -123,19 +179,19 @@ class ButtonLayoutScreen : public GPScreen {
 
         void handleProfileChange(GPEvent* e);
         void handleUSB(GPEvent* e);
+        void handleLEDChange(GPEvent* e);
+        void handleSystemReboot(GPEvent* e);
     protected:
         virtual void drawScreen();
     private:
         // new layout methods
         GPLever* addLever(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, uint16_t inputType);
-        GPButton* addButton(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, int16_t inputMask = -1);
+        GPButton* addButton(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, int32_t inputMask = -1);
         GPSprite* addSprite(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY);
         GPShape* addShape(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor);
         GPWidget* pushElement(GPButtonLayout element);
         void generateHeader();
 
-        void updateCustomHeaders();
-        void checkLEDCycleParams();
         void addCustomHeader(std::string newStr, std::string identifier);
 
         const std::map<uint16_t, uint16_t> displayModeLookup = {
@@ -156,7 +212,7 @@ class ButtonLayoutScreen : public GPScreen {
             {INPUT_MODE_ASTRO, 9},
             {INPUT_MODE_XBOXORIGINAL, 10},
             {INPUT_MODE_GENERIC, 11},
-            {INPUT_MODE_SINPUT, 12},
+            {INPUT_MODE_SINPUT, 3},
         };
 
         Gamepad* gamepad = nullptr;
@@ -182,26 +238,13 @@ class ButtonLayoutScreen : public GPScreen {
 
         std::deque<std::string> bannerString;
         std::deque<std::string> bannerIdentifier;
-
-        int8_t gamePadProfileNumber = -2;
-        int8_t prevGamepadProfileNumber = -2;
-        
-        int8_t prevLEDAnimationProfileNumber = -2;
- 
-        int8_t prevLEDBaseCycleNumber = -1;
-        int8_t prevLEDBaseCaseCycleNumber = -1;
-        int8_t prevLEDBasePressedCycleNumber = -1;
  
         uint16_t prevButtonState = 0;
         uint8_t prevLayoutLeft = 0;
         uint8_t prevLayoutRight = 0;
         
-        uint8_t profileNumber = 0;
-        uint8_t prevProfileNumber = 0;
-        
-        ButtonLayoutParamsLeft prevLeftOptions{};
-        ButtonLayoutParamsRight prevRightOptions{};
         ButtonLayoutOrientation prevOrientation{};
+        uint32_t prevCustomLayoutHash = 0;
 
         bool hasTurboAssigned = false;
 
@@ -219,6 +262,7 @@ class ButtonLayoutScreen : public GPScreen {
         uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
         void processInputHistory();
         bool compareCustomLayouts();
+        uint32_t getCustomLayoutHash();
         bool pressedUp();
         bool pressedDown();
         bool pressedLeft();

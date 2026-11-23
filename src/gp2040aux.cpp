@@ -13,6 +13,7 @@
 #include "addons/neopicoleds.h"
 #include "addons/reactiveleds.h"
 #include "addons/drv8833_rumble.h"
+#include "addons/nfcreader.h"
 
 #include <iterator>
 
@@ -45,6 +46,7 @@ void GP2040Aux::setup() {
 	addons.LoadAddon(new BuzzerSpeakerAddon());
 	addons.LoadAddon(new DRV8833RumbleAddon());
 	addons.LoadAddon(new ReactiveLEDAddon());
+	addons.LoadAddon(new NFCReaderAddon());
 
 	// Ready to sync Core0 and Core1
 	isReady = true;

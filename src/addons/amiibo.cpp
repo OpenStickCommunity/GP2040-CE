@@ -42,6 +42,14 @@ static uint8_t activeData[AMIIBO_DATA_SIZE];
 static uint8_t activeSignature[AMIIBO_SIGNATURE_SIZE];
 static bool hasSignature = false;
 
+// Core1 fills the inactive buffer before flipping readerActive, so core0 never reads a partial dump.
+static uint8_t readerData[2][AMIIBO_DATA_SIZE];
+static uint8_t readerSignature[2][AMIIBO_SIGNATURE_SIZE];
+static bool readerHasSignature[2];
+static volatile uint8_t readerActive = 0;
+static volatile bool readerPresent = false;
+static volatile uint32_t readerGeneration = 0;
+
 static const AmiiboSlot * storedSlot(uint8_t slot) {
     return reinterpret_cast<const AmiiboSlot *>(AMIIBO_SLOT_ADDRESS(slot));
 }
@@ -123,19 +131,45 @@ void AmiiboAddon::tap(uint8_t slot) {
 }
 
 uint32_t AmiiboAddon::tapGeneration() {
-    return generation;
+    return generation + readerGeneration;
 }
 
-bool AmiiboAddon::tagPresent() {
+static bool virtualTagPresent() {
     return tapUntilMs != 0 && (int32_t)(tapUntilMs - to_ms_since_boot(get_absolute_time())) > 0;
 }
 
+bool AmiiboAddon::tagPresent() {
+    return readerPresent || virtualTagPresent();
+}
+
 const uint8_t * AmiiboAddon::tagData() {
-    return tagPresent() ? activeData : nullptr;
+    if (readerPresent)
+        return readerData[readerActive];
+    return virtualTagPresent() ? activeData : nullptr;
 }
 
 const uint8_t * AmiiboAddon::tagSignature() {
-    return tagPresent() && hasSignature ? activeSignature : nullptr;
+    if (readerPresent) {
+        const uint8_t active = readerActive;
+        return readerHasSignature[active] ? readerSignature[active] : nullptr;
+    }
+    return virtualTagPresent() && hasSignature ? activeSignature : nullptr;
+}
+
+void AmiiboAddon::setReaderTag(const uint8_t * data, const uint8_t * signature) {
+    const uint8_t next = readerActive ^ 1;
+    memcpy(readerData[next], data, AMIIBO_DATA_SIZE);
+    readerHasSignature[next] = signature != nullptr;
+    if (signature != nullptr)
+        memcpy(readerSignature[next], signature, AMIIBO_SIGNATURE_SIZE);
+    __dmb();
+    readerActive = next;
+    readerPresent = true;
+    readerGeneration = readerGeneration + 1;
+}
+
+void AmiiboAddon::clearReaderTag() {
+    readerPresent = false;
 }
 
 bool AmiiboAddon::slotFilled(uint8_t slot) {

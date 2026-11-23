@@ -22,6 +22,8 @@ class GPGFX_TinySSD1306 : public GPGFX_DisplayBase {
 
         void drawText(uint8_t x, uint8_t y, std::string text, uint8_t invert = 0);
 
+        void drawTextAt(uint16_t x, uint16_t y, std::string text, uint8_t invert = 0);
+
         void drawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint32_t color, uint8_t filled);
 
         void drawArc(uint16_t x, uint16_t y, uint32_t radiusX, uint32_t radiusY, uint32_t color, uint8_t filled, double startAngle, double endAngle, uint8_t closed);
@@ -91,10 +93,14 @@ class GPGFX_TinySSD1306 : public GPGFX_DisplayBase {
 
         GPGFX_DisplayTypeOptions _options;
 
-        void sendCommand(uint8_t command);
-        void sendCommands(uint8_t* commands, uint16_t length);
+        bool sendCommand(uint8_t command);
+        bool sendCommands(uint8_t* commands, uint16_t length);
+        bool sendData(uint8_t* data, uint16_t length);
 
         uint8_t frameBuffer[MAX_SCREEN_SIZE];
+        uint8_t lastFrameBuffer[MAX_SCREEN_SIZE];
+        bool lastFrameValid = false;
+        uint32_t lastTransferUs = 0;
         uint8_t framePage = 0;
 
         uint8_t screenType;

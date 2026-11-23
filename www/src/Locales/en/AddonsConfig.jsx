@@ -67,6 +67,8 @@ export default {
 	'turbo-available-pins-text': 'Available ADC pins: {{pins}}',
 	'turbo-shmup-dial-pin-label': 'Turbo Dial (ADC ONLY)',
 	'turbo-shot-count-label': 'Turbo Shot Count',
+	'turbo-hold-to-clear-label': 'Hold to Clear',
+	'turbo-hold-to-clear-time-label': 'Hold Time (seconds)',
 	'turbo-shmup-mode-label': 'SHMUP MODE',
 	'turbo-shmup-always-on-1-label': 'Turbo Always On 1',
 	'turbo-shmup-always-on-2-label': 'Turbo Always On 2',
@@ -120,12 +122,6 @@ export default {
 	'player-number-sub-header-text':
 		'Only enable this option if you are connecting multiple gp2040-ce devices with player number enabled',
 	'player-number-label': 'Player Number',
-	'socd-cleaning-mode-selection-slider-header-text':
-		'SOCD Cleaning Mode Selection Slider',
-	'socd-cleaning-mode-selection-slider-sub-header-text':
-		'Note: PS4, PS3 and Nintendo Switch modes do not support setting SOCD Cleaning to Off and will default to Neutral SOCD Cleaning mode.',
-	'socd-cleaning-mode-selection-slider-mode-default-label':
-		'SOCD Slider Mode Default',
 	'ps4-mode-sub-header': 'DISCLAIMER!',
 	'ps4-mode-sub-header-text': 'GP2040-CE WILL NEVER SUPPLY THESE FILES!!!',
 	'ps4-mode-private-key-label': 'Private Key (PEM)',
@@ -139,6 +135,28 @@ export default {
 	'snes-extension-data-pin-label': 'Data GPIO Pin',
 	'snes-extension-desc-header': 'SNES Extension Mapping',
 	'focus-mode-header-text': 'Focus Mode Configuration',
+	'host-lighting-header-text': 'Host Lighting Configuration',
+	'host-lighting-sub-header-text':
+		'For apps that support Host Lighting. They drive the RGB(W) LEDs over a dedicated USB interface in XInput, Keyboard, Generic HID and SInput modes, and can read the board and change its settings. On-board animations resume automatically when the app releases control or goes quiet. It does not need the Lighting Report add-on, which is intended for simpler lighting control.',
+	'host-lighting-xinput-mode-label': 'XInput Lighting',
+	'host-lighting-xinput-mode-off': 'Off (stock identity, console-safe)',
+	'host-lighting-xinput-mode-on': 'Always On (PC-only identity)',
+	'host-lighting-xinput-mode-auto': 'Auto (console detected at plug-in)',
+	'host-lighting-xinput-mode-help':
+		'How XInput mode presents Host Lighting. Off keeps the stock controller identity that consoles need. Always On presents it from boot, on a PC only. Auto presents it once the board detects a PC at plug-in. Keyboard, Generic HID and SInput modes always present it.',
+	'host-lighting-allow-keyboard-mapping-changes-label':
+		'Allow Host Lighting apps to change the keyboard mapping',
+	'host-lighting-allow-keyboard-mapping-changes-help':
+		'Changes apply only to the active input profile.',
+	'lighting-report-header-text': 'Lighting Report Configuration',
+	'lighting-report-sub-header-text':
+		'For lighting software that drives lights through standard HID output values. Adds a red, green and blue value for each light in XInput, Keyboard, Generic HID and SInput modes, named after its light and channel, such as B1 R. The board shows the values from the first report until USB suspends or resets. It does not need the Host Lighting add-on, which is intended for more advanced lighting control.',
+	'lighting-report-xinput-mode-label': 'XInput Lighting',
+	'lighting-report-xinput-mode-off': 'Off (stock identity, console-safe)',
+	'lighting-report-xinput-mode-on': 'Always On (PC-only identity)',
+	'lighting-report-xinput-mode-auto': 'Auto (console detected at plug-in)',
+	'lighting-report-xinput-mode-help':
+		'How XInput mode presents the lighting report. Off keeps the stock controller identity that consoles need. Always On presents it from boot, on a PC only. Auto presents it once the board detects a PC at plug-in. Keyboard, Generic HID and SInput modes always present it.',
 	'keyboard-host-header-text': 'Keyboard/Mouse Host Configuration',
 	'keyboard-host-sub-header-text': 'Keyboard Buttons',
 	'keyboard-host-mouse-header-text': 'Mouse Buttons',
@@ -168,11 +186,6 @@ export default {
 	'dual-directional-input-combine-mode-1': 'Gamepad Override',
 	'dual-directional-input-combine-mode-2': 'DDI Override',
 	'dual-directional-input-combine-mode-3': 'None',
-	'socd-slider-mode-0': 'Up Priority',
-	'socd-slider-mode-1': 'Neutral',
-	'socd-slider-mode-2': 'Last Win',
-	'socd-slider-mode-3': 'First Win',
-	'socd-slider-mode-4': 'SOCD Cleaning Off',
 	'profile-slider-header-text': 'Profile Selection Slider',
 	'profile-slider-sub-header-text':
 		'Note: GPIO pins for the profile slider positions are configured in the Pin Mapping page.',
@@ -250,4 +263,36 @@ export default {
 		'Could not save the amiibo. Check the connection and file; slots with randomization enabled require an authenticated dump when both keys are loaded.',
 	'amiibo-invalid-size':
 		'This file is {{size}} bytes. Amiibo dumps are 540 or 572 bytes.',
+	'amiibo-nfc-reader-help':
+		'With the NFC Reader add-on enabled, an amiibo or amiibo emulator placed on the reader is used as a tapped amiibo in the Nintendo Switch 2 Pro Controller input mode.',
+	'nfc-reader-header-text': 'NFC Reader (PN532)',
+	'nfc-reader-sub-header-text':
+		'Reads NFC tags with a PN532 module wired to an I2C block. Enable the block on the Peripheral Mapping page and set the module to I2C mode. Saved tags trigger actions in any input mode. With the Amiibo add-on enabled, tags are also used as amiibo in the Nintendo Switch 2 Pro Controller input mode. Save and reboot after enabling.',
+	'nfc-reader-status-unknown': 'Reader status unavailable.',
+	'nfc-reader-status-reboot': 'Save and reboot to start the reader.',
+	'nfc-reader-status-missing':
+		'No PN532 found at I2C address 0x24. Devices answering on the bus: {{scan}}. Check wiring, the I2C mode switches and the Peripheral Mapping page.',
+	'nfc-reader-status-ready':
+		'PN532 v{{firmware}} ready. Place a tag on the reader.',
+	'nfc-reader-status-tag': 'Tag {{uid}} on the reader.',
+	'nfc-reader-status-amiibo': 'Amiibo {{uid}} on the reader (signature read).',
+	'nfc-reader-status-amiibo-nosig':
+		'Amiibo {{uid}} on the reader (no signature returned).',
+	'nfc-reader-tags-title': 'Saved tags',
+	'nfc-reader-tags-help':
+		'Each saved tag runs its action once when it is tapped on the reader. Hotkey actions and buttons are held for the hold time.',
+	'nfc-reader-tag-name': 'Name',
+	'nfc-reader-tag-uid': 'UID (hex)',
+	'nfc-reader-tag-use-current': 'Use tag on reader',
+	'nfc-reader-tag-action': 'Action',
+	'nfc-reader-tag-hold': 'Hold (ms)',
+	'nfc-reader-tag-add': 'Add tag',
+	'nfc-reader-tag-remove': 'Remove',
+	'nfc-reader-action-none': 'None',
+	'nfc-reader-action-hotkey': 'Hotkey action',
+	'nfc-reader-action-buttons': 'Buttons',
+	'nfc-reader-tags-save': 'Save tags',
+	'nfc-reader-tags-saving': 'Saving…',
+	'nfc-reader-tags-saved': 'Tags saved to the controller.',
+	'nfc-reader-tags-failed': 'Could not save the tags. Check the connection.',
 };

@@ -40,7 +40,7 @@ public:
 private:
     SNESpad * snes;
     uint32_t uIntervalMS;
-    uint32_t nextTimer;
+    uint32_t lastPoll;
 
     bool buttonA = false;
     bool buttonB = false;

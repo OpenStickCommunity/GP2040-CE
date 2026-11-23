@@ -25,7 +25,7 @@ struct RGB {
     : r(r), g(g), b(b), w(w) { }
 
   RGB(uint32_t c)
-    : r((c >> 16) & 255), g((c >> 8) & 255), b((c >> 0) & 255) { }
+    : r((c >> 16) & 255), g((c >> 8) & 255), b((c >> 0) & 255), w(0) { }
 
   uint8_t r;
   uint8_t g;
@@ -85,20 +85,20 @@ struct RGB {
   }
 };
 
-constexpr RGB ColorBlack(0, 0, 0);
-constexpr RGB ColorWhite(255, 255, 255);
-constexpr RGB ColorRed(255, 0, 0);
-constexpr RGB ColorOrange(255, 128, 0);
-constexpr RGB ColorYellow(255, 255, 0);
-constexpr RGB ColorLimeGreen(128, 255, 0);
-constexpr RGB ColorGreen(0, 255, 0);
-constexpr RGB ColorSeafoam(0, 255, 128);
-constexpr RGB ColorAqua(0, 255, 255);
-constexpr RGB ColorSkyBlue(0, 128, 255);
-constexpr RGB ColorBlue(0, 0, 255);
-constexpr RGB ColorPurple(128, 0, 255);
-constexpr RGB ColorPink(255, 0, 255);
-constexpr RGB ColorMagenta(255, 0, 128);
+inline constexpr RGB ColorBlack(0, 0, 0);
+inline constexpr RGB ColorWhite(255, 255, 255);
+inline constexpr RGB ColorRed(255, 0, 0);
+inline constexpr RGB ColorOrange(255, 128, 0);
+inline constexpr RGB ColorYellow(255, 255, 0);
+inline constexpr RGB ColorLimeGreen(128, 255, 0);
+inline constexpr RGB ColorGreen(0, 255, 0);
+inline constexpr RGB ColorSeafoam(0, 255, 128);
+inline constexpr RGB ColorAqua(0, 255, 255);
+inline constexpr RGB ColorSkyBlue(0, 128, 255);
+inline constexpr RGB ColorBlue(0, 0, 255);
+inline constexpr RGB ColorPurple(128, 0, 255);
+inline constexpr RGB ColorPink(255, 0, 255);
+inline constexpr RGB ColorMagenta(255, 0, 128);
 
 inline const std::vector<RGB> colors {
     ColorBlack,     ColorWhite,  ColorRed,     ColorOrange, ColorYellow,
@@ -136,10 +136,7 @@ public:
   virtual ~Animation(){};
 
   //Which buttons are held at the moment
-  virtual void UpdatePressed(std::vector<int32_t> InPressedPins);
-  void ClearPressed();
-
-  static LEDFormat format;
+  virtual void UpdatePressed(const std::vector<int32_t>& InPressedPins);
 
   virtual void Animate(RGB (&frame)[FRAME_MAX]) = 0;
   
@@ -150,10 +147,16 @@ public:
 
   virtual bool IsFinished() { return false; } //ready for delete? Only applicable to special move anims really
 
-  //Get color helpers
-  static RGB StaticGetNonPressedColorForLight(Lights* AllLights, uint32_t LightIndex);
+  void ClearPressed();
 
 protected:
+
+  //notifies
+  virtual void NewPressForPin(int lightIndex) {};  
+  virtual int32_t GetFadeTime();
+  virtual RGB GetNonPressedColorForLight(uint32_t LightIndex);
+  virtual RGB GetPressedColorForLight(uint32_t LightIndex);
+
 
   //gets current frame time
   void UpdateTime();
@@ -162,21 +165,11 @@ protected:
   void UpdatePresses();
   void DecrementFadeCounters();
 
-  //notifies
-  virtual void NewPressForPin(int lightIndex) {};
-
   RGB BlendColor(RGB start, RGB end, float alpha);
   RGB FadeColor(RGB start, RGB end, uint32_t TimeLeft);
 
-  virtual int32_t GetFadeTime();
-
   //Type Helpers
   bool LightTypeIsForAnimation(LightType Type);
-
-  //Get color helpers
-  virtual RGB GetNonPressedColorForLight(uint32_t LightIndex);
-  virtual RGB GetPressedColorForLight(uint32_t LightIndex);
-  static RGB GetColorForIndex(uint32_t ColorIndex);
 
   //Light data
   Lights* RGBLights;

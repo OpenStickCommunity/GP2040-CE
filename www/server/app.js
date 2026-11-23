@@ -45,6 +45,7 @@ const BoardLights = [
 					yCoord: 2,
 					GPIOPinOrNonButtonIndex: 5,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 1,
@@ -53,6 +54,7 @@ const BoardLights = [
 					yCoord: 2,
 					GPIOPinOrNonButtonIndex: 3,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 2,
@@ -61,6 +63,7 @@ const BoardLights = [
 					yCoord: 3,
 					GPIOPinOrNonButtonIndex: 4,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 3,
@@ -69,6 +72,7 @@ const BoardLights = [
 					yCoord: 7,
 					GPIOPinOrNonButtonIndex: 2,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 4,
@@ -77,6 +81,7 @@ const BoardLights = [
 					yCoord: 2,
 					GPIOPinOrNonButtonIndex: 10,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 5,
@@ -85,6 +90,7 @@ const BoardLights = [
 					yCoord: 1,
 					GPIOPinOrNonButtonIndex: 11,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 6,
@@ -93,6 +99,7 @@ const BoardLights = [
 					yCoord: 1,
 					GPIOPinOrNonButtonIndex: 12,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 7,
@@ -101,6 +108,7 @@ const BoardLights = [
 					yCoord: 1,
 					GPIOPinOrNonButtonIndex: 13,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 8,
@@ -109,6 +117,7 @@ const BoardLights = [
 					yCoord: 4,
 					GPIOPinOrNonButtonIndex: 6,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 9,
@@ -117,6 +126,7 @@ const BoardLights = [
 					yCoord: 3,
 					GPIOPinOrNonButtonIndex: 7,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 10,
@@ -125,6 +135,7 @@ const BoardLights = [
 					yCoord: 3,
 					GPIOPinOrNonButtonIndex: 8,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 11,
@@ -133,6 +144,7 @@ const BoardLights = [
 					yCoord: 3,
 					GPIOPinOrNonButtonIndex: 9,
 					lightType: 0,
+					inputSource: 0,
 				},
 			],
 		},
@@ -148,6 +160,7 @@ const BoardLights = [
 					yCoord: 2,
 					GPIOPinOrNonButtonIndex: 5,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 1,
@@ -156,6 +169,7 @@ const BoardLights = [
 					yCoord: 2,
 					GPIOPinOrNonButtonIndex: 3,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 2,
@@ -164,6 +178,7 @@ const BoardLights = [
 					yCoord: 3,
 					GPIOPinOrNonButtonIndex: 4,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 3,
@@ -172,6 +187,7 @@ const BoardLights = [
 					yCoord: 7,
 					GPIOPinOrNonButtonIndex: 2,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 4,
@@ -180,6 +196,7 @@ const BoardLights = [
 					yCoord: 2,
 					GPIOPinOrNonButtonIndex: 10,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 5,
@@ -188,6 +205,7 @@ const BoardLights = [
 					yCoord: 1,
 					GPIOPinOrNonButtonIndex: 11,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 6,
@@ -196,6 +214,7 @@ const BoardLights = [
 					yCoord: 1,
 					GPIOPinOrNonButtonIndex: 12,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 7,
@@ -204,6 +223,7 @@ const BoardLights = [
 					yCoord: 1,
 					GPIOPinOrNonButtonIndex: 13,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 8,
@@ -212,6 +232,7 @@ const BoardLights = [
 					yCoord: 4,
 					GPIOPinOrNonButtonIndex: 6,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 9,
@@ -220,6 +241,7 @@ const BoardLights = [
 					yCoord: 3,
 					GPIOPinOrNonButtonIndex: 7,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 10,
@@ -228,6 +250,7 @@ const BoardLights = [
 					yCoord: 3,
 					GPIOPinOrNonButtonIndex: 8,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 11,
@@ -236,6 +259,7 @@ const BoardLights = [
 					yCoord: 3,
 					GPIOPinOrNonButtonIndex: 9,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 12,
@@ -244,6 +268,7 @@ const BoardLights = [
 					yCoord: 0,
 					GPIOPinOrNonButtonIndex: 27,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 13,
@@ -252,6 +277,7 @@ const BoardLights = [
 					yCoord: 0,
 					GPIOPinOrNonButtonIndex: 18,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 14,
@@ -260,6 +286,7 @@ const BoardLights = [
 					yCoord: 5,
 					GPIOPinOrNonButtonIndex: 19,
 					lightType: 0,
+					inputSource: 0,
 				},
 				{
 					firstLedIndex: 15,
@@ -268,6 +295,7 @@ const BoardLights = [
 					yCoord: 6,
 					GPIOPinOrNonButtonIndex: 26,
 					lightType: 0,
+					inputSource: 0,
 				},
 			],
 		},
@@ -276,7 +304,14 @@ const BoardLights = [
 
 // Structure pin mappings to include masks and profile label
 const createPinMappings = ({ profileLabel = 'Profile', enabled = true }) => {
-	let pinMappings = { profileLabel, enabled };
+	let pinMappings = {
+		profileLabel,
+		enabled,
+		pinInversionEnabled: false,
+		invertedPins: [],
+		socdModeOverride: false,
+		socdMode: 1,
+	};
 
 	for (const [key, value] of Object.entries(picoController.usedPins)) {
 		pinMappings[key] = {
@@ -307,23 +342,13 @@ app.get('/api/getDisplayOptions', (req, res) => {
 		splashMode: 3,
 		splashChoice: 0,
 		splashDuration: 0,
-		buttonLayoutCustomOptions: {
-			params: {
-				layout: 2,
-				startX: 8,
-				startY: 28,
-				buttonRadius: 8,
-				buttonPadding: 2,
-			},
-			paramsRight: {
-				layout: 9,
-				startX: 8,
-				startY: 28,
-				buttonRadius: 8,
-				buttonPadding: 2,
-			},
-		},
-
+		splashTextEnabled: 1,
+		splashTextFirst: 0,
+		splashTextDuration: 3000,
+		splashTextLineCount: 2,
+		splashTextLine1: 'GP2040-CE|PROTO',
+		splashTextLine2: 'EXAMPLE',
+		splashTextLine3: '',
 		displaySaverTimeout: 0,
 		displaySaverMode: 0,
 		turnOffWhenSuspended: 0,
@@ -338,6 +363,8 @@ app.get('/api/getDisplayOptions', (req, res) => {
 		inputHistoryCol: 0,
 		inputHistoryRow: 7,
 		displayContrast: 255,
+		customLayoutA: '',
+		customLayoutB: '',
 	};
 	console.log('data', data);
 	return res.send(data);
@@ -391,6 +418,8 @@ app.get('/api/getAnimationProtoOptions', (req, res) => {
 						4, 6, 10, 12, 4, 6, 10, 12, 4, 6, 10, 12, 4, 6, 10, 12, 4, 6, 10,
 						12, 4, 6, 10, 12, 4, 6, 10, 12, 4, 6, 10, 12,
 					],
+					extNotPressedStaticColors: Array(32).fill(2),
+					extPressedStaticColors: Array(32).fill(4),
 				},
 				{
 					bEnabled: 1,
@@ -424,98 +453,33 @@ app.get('/api/getAnimationProtoOptions', (req, res) => {
 						2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
 						2, 2, 2, 2, 2, 2, 2, 2, 2,
 					],
+					extNotPressedStaticColors: Array(32).fill(2),
+					extPressedStaticColors: Array(32).fill(4),
 				},
 			],
 		},
 	});
 });
 
-// Track only presence in the mock; never retain or return uploaded key material.
-const amiiboKeys = { unfixed: false, locked: false };
-app.get('/api/getAmiiboKeys', (req, res) => {
-	return res.send({
-		...amiiboKeys,
-		ready: amiiboKeys.unfixed && amiiboKeys.locked,
-	});
-});
-app.post('/api/setAmiiboKey', (req, res) => {
-	const { type, data } = req.body;
-	if (
-		!['unfixed', 'locked'].includes(type) ||
-		typeof data !== 'string' ||
-		!/^[A-Za-z0-9+/]{107}=$/.test(data) ||
-		Buffer.from(data, 'base64').length !== 80
-	) {
-		return res.status(400).send({ success: false });
-	}
-	amiiboKeys[type] = true;
-	return res.send({ success: true });
-});
-app.post('/api/clearAmiiboKeys', (req, res) => {
-	amiiboKeys.unfixed = false;
-	amiiboKeys.locked = false;
-	return res.send({ success: true });
-});
-
-// Synthetic metadata only: the mock does not retain dumps or perform cryptography.
-const emptyAmiiboSlot = () => ({
-	filled: false,
-	name: '',
-	size: 0,
-	randomizeSerial: false,
-});
-const amiiboSlots = [
-	{ filled: true, name: 'Example', size: 540, randomizeSerial: true },
-	...Array.from({ length: 3 }, emptyAmiiboSlot),
-];
-const validAmiiboSlot = (slot) =>
-	Number.isInteger(slot) && slot >= 0 && slot < amiiboSlots.length;
-app.get('/api/getAmiiboSlots', (req, res) => res.send({ slots: amiiboSlots }));
-app.post('/api/setAmiiboSlot', (req, res) => {
-	const { slot, name, data } = req.body;
-	if (
-		!validAmiiboSlot(slot) ||
-		typeof name !== 'string' ||
-		typeof data !== 'string' ||
-		!/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(
-			data,
-		)
-	)
-		return res.status(400).send({ success: false });
-	const size = Buffer.from(data, 'base64').length;
-	if (![540, 572].includes(size))
-		return res.status(400).send({ success: false });
-	const randomizeSerial = amiiboSlots[slot].filled
-		? amiiboSlots[slot].randomizeSerial
-		: false;
-	amiiboSlots[slot] = {
-		filled: true,
-		name: name.substring(0, 31),
-		size,
-		randomizeSerial,
-	};
-	return res.send({ success: true });
-});
-app.post('/api/setAmiiboSlotOptions', (req, res) => {
-	const { slot, randomizeSerial } = req.body;
-	if (
-		!validAmiiboSlot(slot) ||
-		typeof randomizeSerial !== 'boolean' ||
-		!amiiboSlots[slot].filled
-	)
-		return res.status(400).send({ success: false });
-	amiiboSlots[slot].randomizeSerial = randomizeSerial;
-	return res.send({ success: true });
-});
-app.post('/api/clearAmiiboSlot', (req, res) => {
-	const { slot } = req.body;
-	if (!validAmiiboSlot(slot)) return res.status(400).send({ success: false });
-	amiiboSlots[slot] = emptyAmiiboSlot();
-	return res.send({ success: true });
-});
-
 app.get('/api/getGamepadOptions', (req, res) => {
 	return res.send({
+		advancedSOCDEnabled: 1,
+		advancedSOCD1Enabled: 1,
+		advancedSOCD1UpDown: 0,
+		advancedSOCD1LeftRight: 0,
+		advancedSOCD1Name: '',
+		advancedSOCD2Enabled: 1,
+		advancedSOCD2UpDown: 0,
+		advancedSOCD2LeftRight: 0,
+		advancedSOCD2Name: '',
+		advancedSOCD3Enabled: 1,
+		advancedSOCD3UpDown: 0,
+		advancedSOCD3LeftRight: 0,
+		advancedSOCD3Name: '',
+		advancedSOCD4Enabled: 1,
+		advancedSOCD4UpDown: 0,
+		advancedSOCD4LeftRight: 0,
+		advancedSOCD4Name: '',
 		dpadMode: 0,
 		inputMode: 4,
 		inputDeviceType: 0,
@@ -539,12 +503,38 @@ app.get('/api/getGamepadOptions', (req, res) => {
 		ps5AuthType: 0,
 		xinputAuthType: 0,
 		ps4ControllerIDMode: 0,
+		switchProControllerType: 0,
+		switchProColorPreset: 0,
+		switchProBodyColor: 0x333333,
+		switchProButtonsColor: 0xffffff,
+		switchProLeftGripColor: 0xec008c,
+		switchProRightGripColor: 0x00ff00,
+		switchProJoyConColorPreset: 0,
+		switchProJoyConLeftBodyColor: 0x0ab9e6,
+		switchProJoyConLeftButtonsColor: 0x0f0f0f,
+		switchProJoyConRightBodyColor: 0xff3c28,
+		switchProJoyConRightButtonsColor: 0x0f0f0f,
 		switch2ProIdentity: 0,
 		switch2ProColorPreset: 0,
 		switch2ProBodyColor: 0x232323,
 		switch2ProButtonsColor: 0xa0a0a0,
 		switch2ProHighlightColor: 0xe6e6e6,
 		switch2ProGripColor: 0x323232,
+		switch2ProLeftShoulderColor: 0xe6e6e6,
+		switch2ProRightShoulderColor: 0xe6e6e6,
+		switch2ProStickColor: 0x232323,
+		switch2ProLeftRingColor: 0xe6e6e6,
+		switch2ProRightRingColor: 0xe6e6e6,
+		switch2ProJoyCon2ColorPreset: 0,
+		switch2ProJoyCon2LeftBodyColor: 0x323232,
+		switch2ProJoyCon2LeftButtonsColor: 0xaaaaaa,
+		switch2ProJoyCon2LeftAccentColor: 0x9be1e6,
+		switch2ProJoyCon2LeftStickColor: 0x323232,
+		switch2ProJoyCon2RightBodyColor: 0x323232,
+		switch2ProJoyCon2RightButtonsColor: 0xaaaaaa,
+		switch2ProJoyCon2RightAccentColor: 0xff8c5f,
+		switch2ProJoyCon2RightStickColor: 0x323232,
+		genericDpadMode: 0,
 		usbDescOverride: 0,
 		usbDescProduct: 'GP2040-CE (Custom)',
 		usbDescManufacturer: 'Open Stick Community',
@@ -553,6 +543,8 @@ app.get('/api/getGamepadOptions', (req, res) => {
 		usbVendorID: '10C4',
 		usbProductID: '82C0',
 		miniMenuGamepadInput: 1,
+		keyboardInterfaceEnabled: 0,
+		keyboardInterfaceXInputMode: 2,
 		hotkey01: {
 			auxMask: 32768,
 			buttonsMask: 66304,
@@ -654,8 +646,18 @@ app.get('/api/getPinMappings', (req, res) => {
 	return res.send(createPinMappings({ profileLabel: 'Profile 1' }));
 });
 
-app.get('/api/getKeyMappings', (req, res) =>
-	res.send(mapValues(DEFAULT_KEYBOARD_MAPPING)),
+// The keyboard interface's default button mask is E1-E12
+const createKeyMappings = () => ({
+	...mapValues(DEFAULT_KEYBOARD_MAPPING),
+	keyboardButtonMask: 0xfff00000,
+});
+
+app.get('/api/getKeyMappings', (req, res) => res.send(createKeyMappings()));
+
+app.get('/api/getProfileKeyMappings', (req, res) =>
+	res.send({
+		profiles: [createKeyMappings(), createKeyMappings()],
+	}),
 );
 
 app.get('/api/getPeripheralOptions', (req, res) => {
@@ -848,6 +850,8 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		focusModeButtonLockMask: 0,
 		focusModeButtonLockEnabled: 0,
 		shmupMode: 0,
+		turboHoldToClear: 0,
+		turboHoldToClearTime: 5,
 		shmupMixMode: 0,
 		shmupAlwaysOn1: 0,
 		shmupAlwaysOn2: 0,
@@ -863,7 +867,6 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		shmupBtnMask4: 0,
 		pinShmupDial: -1,
 		turboLedType: 1,
-		sliderSOCDModeDefault: 1,
 		snesPadClockPin: -1,
 		snesPadLatchPin: -1,
 		snesPadDataPin: -1,
@@ -875,9 +878,13 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		keyboardHostMouseMovement: 0,
 		AnalogInputEnabled: 1,
 		BoardLedAddonEnabled: 1,
-		AmiiboAddonEnabled: 1,
 		FocusModeAddonEnabled: 1,
 		focusModeMacroLockEnabled: 0,
+		HostLightingAddonEnabled: 0,
+		hostLightingXInputMode: 2,
+		hostLightingAllowKeyboardMappingChanges: 0,
+		LightingReportAddonEnabled: 0,
+		lightingReportXInputMode: 2,
 		BuzzerSpeakerAddonEnabled: 1,
 		BootselButtonAddonEnabled: 1,
 		DualDirectionalInputEnabled: 1,
@@ -886,7 +893,6 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		KeyboardHostAddonEnabled: 1,
 		PlayerNumAddonEnabled: 1,
 		ReverseInputEnabled: 1,
-		SliderSOCDInputEnabled: 1,
 		TurboInputEnabled: 1,
 		WiiExtensionAddonEnabled: 1,
 		SNESpadAddonEnabled: 1,
@@ -923,10 +929,13 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		muxSelectPin3: -1,
 		heTriggerSmoothing: 0,
 		heTriggerSmoothingFactor: 5,
+		heTriggerSwitchTravel: 0,
 		RotaryAddonEnabled: 1,
 		PCF8575AddonEnabled: 1,
 		DRV8833RumbleAddonEnabled: 1,
 		ReactiveLEDAddonEnabled: 1,
+		AmiiboAddonEnabled: 1,
+		NFCReaderAddonEnabled: 1,
 		GamepadUSBHostAddonEnabled: 1,
 		tg16PadOePin: -1,
 		tg16PadSelectPin: -1,
@@ -1000,9 +1009,12 @@ app.get('/api/getHETriggerCalibrations', (req, res) => {
 			pressed: 3500,
 			active: 1500,
 			is_polarized: false,
-			release: 1500,
-			noise: 50,
+			noise: 30,
 			rapidTrigger: false,
+			rtPressSensitivity: 100,
+			rtReleaseSensitivity: 150,
+			rtSeparateSensitivity: false,
+			rtContinuous: false,
 		},
 		{
 			action: 3,
@@ -1010,9 +1022,12 @@ app.get('/api/getHETriggerCalibrations', (req, res) => {
 			pressed: 120,
 			active: 1500,
 			is_polarized: true,
-			release: 1500,
-			noise: 50,
+			noise: 30,
 			rapidTrigger: false,
+			rtPressSensitivity: 100,
+			rtReleaseSensitivity: 150,
+			rtSeparateSensitivity: false,
+			rtContinuous: false,
 		},
 		{
 			action: 4,
@@ -1020,9 +1035,12 @@ app.get('/api/getHETriggerCalibrations', (req, res) => {
 			pressed: 3500,
 			active: 1500,
 			is_polarized: false,
-			release: 2000,
-			noise: 50,
+			noise: 30,
 			rapidTrigger: true,
+			rtPressSensitivity: 100,
+			rtReleaseSensitivity: 150,
+			rtSeparateSensitivity: true,
+			rtContinuous: false,
 		},
 		{
 			action: 5,
@@ -1030,9 +1048,12 @@ app.get('/api/getHETriggerCalibrations', (req, res) => {
 			pressed: 120,
 			active: 2000,
 			is_polarized: true,
-			release: 1500,
-			noise: 50,
+			noise: 30,
 			rapidTrigger: true,
+			rtPressSensitivity: 100,
+			rtReleaseSensitivity: 150,
+			rtSeparateSensitivity: true,
+			rtContinuous: false,
 		},
 	);
 	for (var i = 4; i < 32; i++) {
@@ -1042,9 +1063,12 @@ app.get('/api/getHETriggerCalibrations', (req, res) => {
 			active: 2000,
 			pressed: 3500,
 			is_polarized: false,
-			release: 1500,
-			noise: 50,
+			noise: 30,
 			rapidTrigger: false,
+			rtPressSensitivity: 100,
+			rtReleaseSensitivity: 150,
+			rtSeparateSensitivity: false,
+			rtContinuous: false,
 		});
 	}
 	return res.send({ triggers });
@@ -1349,7 +1373,6 @@ app.get('/api/getButtonLayoutDefs', (req, res) => {
 			BUTTON_LAYOUT_VLXA: 9,
 			BUTTON_LAYOUT_FIGHTBOARD_STICK: 10,
 			BUTTON_LAYOUT_FIGHTBOARD_MIRRORED: 11,
-			BUTTON_LAYOUT_CUSTOMA: 12,
 			BUTTON_LAYOUT_OPENCORE0WASDA: 13,
 			BUTTON_LAYOUT_STICKLESS_13: 14,
 			BUTTON_LAYOUT_STICKLESS_16: 15,
@@ -1379,6 +1402,7 @@ app.get('/api/getButtonLayoutDefs', (req, res) => {
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT5_A: 39,
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT6_A: 40,
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT7_A: 41,
+			BUTTON_LAYOUT_CUSTOM_DEFINED_A: 42,
 		},
 		buttonLayoutRight: {
 			BUTTON_LAYOUT_ARCADE: 0,
@@ -1397,7 +1421,6 @@ app.get('/api/getButtonLayoutDefs', (req, res) => {
 			BUTTON_LAYOUT_VLXB: 13,
 			BUTTON_LAYOUT_FIGHTBOARD: 14,
 			BUTTON_LAYOUT_FIGHTBOARD_STICK_MIRRORED: 15,
-			BUTTON_LAYOUT_CUSTOMB: 16,
 			BUTTON_LAYOUT_KEYBOARD8B: 17,
 			BUTTON_LAYOUT_OPENCORE0WASDB: 18,
 			BUTTON_LAYOUT_STICKLESS_13B: 19,
@@ -1429,6 +1452,7 @@ app.get('/api/getButtonLayoutDefs', (req, res) => {
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT5_B: 45,
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT6_B: 46,
 			BUTTON_LAYOUT_BOARD_DEFINED_ALT7_B: 47,
+			BUTTON_LAYOUT_CUSTOM_DEFINED_B: 48,
 		},
 	});
 });
@@ -1483,6 +1507,21 @@ app.post('/api/getHETriggerVoltage', (req, res) => {
 	});
 });
 
+// Simulates each trigger being pressed in turn so Quick Calibrate can be tried without hardware.
+// Odd triggers read like a south-facing (polarized) magnet.
+app.get('/api/getHETriggerVoltages', (req, res) => {
+	const time = Date.now();
+	const voltages = Array.from({ length: 32 }, (_, i) => {
+		const phase = ((time / 1000 + i * 0.7) % 8) / 8;
+		const press = phase < 0.15 ? Math.sin((phase / 0.15) * Math.PI) : 0;
+		const noise = Math.floor(Math.random() * 20);
+		return i % 2
+			? 3500 - Math.floor(press * 3000) - noise
+			: 150 + Math.floor(press * 3200) + noise;
+	});
+	return res.send({ voltages });
+});
+
 app.get('/api/getBootModeOptions', (req, res) => {
 	return res.send({
 		enabled: false,
@@ -1508,6 +1547,120 @@ app.post('/api/*', (req, res) => {
 	return res.send(req.body);
 });
 
-app.listen(port, process.env.HOST, () => {
+// Track only presence in the mock; never retain or return uploaded key material.
+const amiiboKeys = { unfixed: false, locked: false };
+app.get('/api/getAmiiboKeys', (req, res) => {
+	return res.send({
+		...amiiboKeys,
+		ready: amiiboKeys.unfixed && amiiboKeys.locked,
+	});
+});
+app.post('/api/setAmiiboKey', (req, res) => {
+	const { type, data } = req.body;
+	if (
+		!['unfixed', 'locked'].includes(type) ||
+		typeof data !== 'string' ||
+		!/^[A-Za-z0-9+/]{107}=$/.test(data) ||
+		Buffer.from(data, 'base64').length !== 80
+	) {
+		return res.status(400).send({ success: false });
+	}
+	amiiboKeys[type] = true;
+	return res.send({ success: true });
+});
+app.post('/api/clearAmiiboKeys', (req, res) => {
+	amiiboKeys.unfixed = false;
+	amiiboKeys.locked = false;
+	return res.send({ success: true });
+});
+
+// Synthetic metadata only: the mock does not retain dumps or perform cryptography.
+const emptyAmiiboSlot = () => ({
+	filled: false,
+	name: '',
+	size: 0,
+	randomizeSerial: false,
+});
+const amiiboSlots = [
+	{ filled: true, name: 'Example', size: 540, randomizeSerial: true },
+	...Array.from({ length: 3 }, emptyAmiiboSlot),
+];
+const validAmiiboSlot = (slot) =>
+	Number.isInteger(slot) && slot >= 0 && slot < amiiboSlots.length;
+app.get('/api/getAmiiboSlots', (req, res) => res.send({ slots: amiiboSlots }));
+app.post('/api/setAmiiboSlot', (req, res) => {
+	const { slot, name, data } = req.body;
+	if (
+		!validAmiiboSlot(slot) ||
+		typeof name !== 'string' ||
+		typeof data !== 'string' ||
+		!/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(
+			data,
+		)
+	)
+		return res.status(400).send({ success: false });
+	const size = Buffer.from(data, 'base64').length;
+	if (![540, 572].includes(size))
+		return res.status(400).send({ success: false });
+	const randomizeSerial = amiiboSlots[slot].filled
+		? amiiboSlots[slot].randomizeSerial
+		: false;
+	amiiboSlots[slot] = {
+		filled: true,
+		name: name.substring(0, 31),
+		size,
+		randomizeSerial,
+	};
+	return res.send({ success: true });
+});
+app.post('/api/setAmiiboSlotOptions', (req, res) => {
+	const { slot, randomizeSerial } = req.body;
+	if (
+		!validAmiiboSlot(slot) ||
+		typeof randomizeSerial !== 'boolean' ||
+		!amiiboSlots[slot].filled
+	)
+		return res.status(400).send({ success: false });
+	amiiboSlots[slot].randomizeSerial = randomizeSerial;
+	return res.send({ success: true });
+});
+app.post('/api/clearAmiiboSlot', (req, res) => {
+	const { slot } = req.body;
+	if (!validAmiiboSlot(slot)) return res.status(400).send({ success: false });
+	amiiboSlots[slot] = emptyAmiiboSlot();
+	return res.send({ success: true });
+});
+app.get('/api/getNFCReaderStatus', (req, res) =>
+	res.send({
+		enabled: true,
+		detected: true,
+		firmware: '1.6',
+		tagPresent: true,
+		uid: '04A1B2C3D4E5F6',
+		amiibo: true,
+		hasSignature: true,
+		i2cScan: '',
+		note: '',
+	}),
+);
+let nfcReaderTags = [
+	{
+		name: 'Profile card',
+		uid: '04A1B2C3D4E5F6',
+		actionType: 1,
+		hotkey: 0,
+		buttonMask: 0,
+		holdMs: 100,
+	},
+];
+app.get('/api/getNFCReaderOptions', (req, res) =>
+	res.send({ tags: nfcReaderTags }),
+);
+app.post('/api/setNFCReaderOptions', (req, res) => {
+	nfcReaderTags = (req.body.tags ?? []).slice(0, 8);
+	return res.send({ success: true });
+});
+
+app.listen(port, () => {
 	console.log(`Dev app listening at http://localhost:${port}`);
 });

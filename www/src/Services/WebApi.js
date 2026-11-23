@@ -1,6 +1,7 @@
 import { set } from 'lodash';
 import Http from './Http';
 import { hexToInt, rgbIntToHex } from './Utilities';
+import { BUTTON_MASKS_OPTIONS } from '../Data/Buttons';
 
 export const baseUrl =
 	process.env.NODE_ENV === 'production'
@@ -131,6 +132,7 @@ export const basePeripheralMapping = {
 		usb0: {
 			enabled: 0,
 			dp: -1,
+			dm: -1,
 			enable5v: -1,
 			order: 0,
 		},
@@ -217,6 +219,7 @@ async function getDisplayOptions() {
 		const response = await Http.get(`${baseUrl}/api/getDisplayOptions`);
 
 		response.data.splashDuration = response.data.splashDuration / 1000; // milliseconds to seconds
+		response.data.splashTextDuration = response.data.splashTextDuration / 1000; // milliseconds to seconds
 		response.data.displaySaverTimeout =
 			response.data.displaySaverTimeout / 60000; // milliseconds to minutes
 
@@ -234,27 +237,20 @@ async function setDisplayOptions(options, isPreview) {
 	newOptions.buttonLayoutRight = parseInt(options.buttonLayoutRight);
 	newOptions.splashMode = parseInt(options.splashMode);
 	newOptions.splashDuration = parseInt(options.splashDuration) * 1000; // seconds to milliseconds
+	newOptions.splashTextEnabled = parseInt(options.splashTextEnabled);
+	newOptions.splashTextFirst = parseInt(options.splashTextFirst);
+	newOptions.splashTextDuration = parseInt(options.splashTextDuration) * 1000; // seconds to milliseconds
+	newOptions.splashTextLineCount = parseInt(options.splashTextLineCount);
 	newOptions.displaySaverTimeout =
 		parseInt(options.displaySaverTimeout) * 60000; // minutes to milliseconds
 	newOptions.splashChoice = parseInt(options.splashChoice);
-
-	if (newOptions.buttonLayoutCustomOptions) {
-		newOptions.buttonLayoutCustomOptions.params.layout = parseInt(
-			options.buttonLayoutCustomOptions?.params?.layout,
-		);
-		newOptions.buttonLayoutCustomOptions.paramsRight.layout = parseInt(
-			options.buttonLayoutCustomOptions?.paramsRight?.layout,
-		);
-	}
 
 	delete newOptions.splashImage;
 	const url = !isPreview
 		? `${baseUrl}/api/setDisplayOptions`
 		: `${baseUrl}/api/setPreviewDisplayOptions`;
 	return Http.post(url, newOptions)
-		.then((response) => {
-			return true;
-		})
+		.then((response) => response.data?.success !== false)
 		.catch((err) => {
 			console.error(err);
 			return false;
@@ -280,70 +276,6 @@ async function setSplashImage({ splashImage }) {
 			return response.data;
 		})
 		.catch(console.error);
-}
-
-async function getAmiiboSlots() {
-	try {
-		const response = await Http.get(`${baseUrl}/api/getAmiiboSlots`);
-		return response.data?.slots;
-	} catch (error) {
-		console.error(error);
-	}
-}
-
-async function setAmiiboSlot({ slot, name, data }) {
-	return Http.post(`${baseUrl}/api/setAmiiboSlot`, { slot, name, data })
-		.then((response) => response.data?.success)
-		.catch(console.error);
-}
-
-async function setAmiiboSlotOptions({ slot, randomizeSerial }) {
-	try {
-		const response = await Http.post(`${baseUrl}/api/setAmiiboSlotOptions`, {
-			slot,
-			randomizeSerial,
-		});
-		return response.data?.success === true;
-	} catch {
-		return false;
-	}
-}
-
-async function clearAmiiboSlot(slot) {
-	return Http.post(`${baseUrl}/api/clearAmiiboSlot`, { slot })
-		.then((response) => response.data?.success)
-		.catch(console.error);
-}
-
-// Never log upload errors: HTTP error objects may contain the key payload.
-async function getAmiiboKeys() {
-	try {
-		const response = await Http.get(`${baseUrl}/api/getAmiiboKeys`);
-		return response.data;
-	} catch {
-		return undefined;
-	}
-}
-
-async function setAmiiboKey({ type, data }) {
-	try {
-		const response = await Http.post(`${baseUrl}/api/setAmiiboKey`, {
-			type,
-			data,
-		});
-		return response.data?.success === true;
-	} catch {
-		return false;
-	}
-}
-
-async function clearAmiiboKeys() {
-	try {
-		const response = await Http.post(`${baseUrl}/api/clearAmiiboKeys`, {});
-		return response.data?.success === true;
-	} catch {
-		return false;
-	}
 }
 
 async function getGamepadOptions(setLoading) {
@@ -460,18 +392,47 @@ async function setBootModeOptions(options) {
 	return Http.post(`${baseUrl}/api/setBootModeOptions`, options);
 }
 
+// The keyboard interface's button mask uses the hotkey and macro button bits
+const keyboardMaskBit = (button) =>
+	BUTTON_MASKS_OPTIONS.find(({ label }) => label === button)?.value ?? 0;
+
+const toButtonMappings = (keyCodes) =>
+	Object.fromEntries(
+		Object.entries(baseButtonMappings).map(([button, mapping]) => [
+			button,
+			{
+				...mapping,
+				key: parseInt(keyCodes?.[button]) || 0,
+				masked: Boolean(keyCodes?.keyboardButtonMask & keyboardMaskBit(button)),
+			},
+		]),
+	);
+
+// A backup made before the mask has no masked flags and leaves the mask as it is
+const toKeyCodes = (mappings) => {
+	const keyCodes = Object.fromEntries(
+		Object.entries(mappings).map(([button, { key }]) => [button, key]),
+	);
+	const flagged = Object.entries(mappings).filter(
+		([, { masked }]) => masked !== undefined,
+	);
+	if (flagged.length)
+		keyCodes.keyboardButtonMask =
+			flagged.reduce(
+				(mask, [button, { masked }]) =>
+					masked ? mask | keyboardMaskBit(button) : mask,
+				0,
+			) >>> 0;
+	return keyCodes;
+};
+
 async function getKeyMappings(setLoading) {
 	setLoading(true);
 
 	try {
 		const response = await Http.get(`${baseUrl}/api/getKeyMappings`);
 		setLoading(false);
-
-		let mappings = { ...baseButtonMappings };
-		for (let prop of Object.keys(response.data))
-			mappings[prop].key = parseInt(response.data[prop]);
-
-		return mappings;
+		return toButtonMappings(response.data);
 	} catch (error) {
 		setLoading(false);
 		console.error(error);
@@ -479,13 +440,32 @@ async function getKeyMappings(setLoading) {
 }
 
 async function setKeyMappings(mappings) {
-	let data = {};
-	Object.keys(mappings).map((button) => (data[button] = mappings[button].key));
+	return Http.post(
+		`${baseUrl}/api/setKeyMappings`,
+		sanitizeRequest(toKeyCodes(mappings)),
+	)
+		.then(() => true)
+		.catch((err) => {
+			console.error(err);
+			return false;
+		});
+}
 
-	return Http.post(`${baseUrl}/api/setKeyMappings`, sanitizeRequest(data))
-		.then((response) => {
-			return true;
-		})
+async function getProfileKeyMappings() {
+	try {
+		const { data } = await Http.get(`${baseUrl}/api/getProfileKeyMappings`);
+		return (data?.profiles ?? []).map(toButtonMappings);
+	} catch (error) {
+		console.error(error);
+		return [];
+	}
+}
+
+async function setProfileKeyMappings(profiles) {
+	return Http.post(`${baseUrl}/api/setProfileKeyMappings`, {
+		profiles: profiles.map(toKeyCodes),
+	})
+		.then(() => true)
 		.catch((err) => {
 			console.error(err);
 			return false;
@@ -638,7 +618,7 @@ async function setPeripheralOptions(mappings) {
 		sanitizeRequest(mappings),
 	)
 		.then((response) => {
-			return true;
+			return !response.data.error;
 		})
 		.catch((err) => {
 			console.error(err);
@@ -708,6 +688,11 @@ async function setExpansionPins(mappings) {
 // POST function to get the ADC reading for one Hall Effect channel
 async function getHETriggerVoltage(settings) {
 	return Http.post(`${baseUrl}/api/getHETriggerVoltage`, settings);
+}
+
+// GET the ADC reading for every scanned Hall Effect trigger (-1 when not scanned)
+async function getHETriggerVoltages() {
+	return Http.get(`${baseUrl}/api/getHETriggerVoltages`);
 }
 
 // POST function to set our channels, select, and ADC pin
@@ -794,6 +779,100 @@ async function clearAnimationButtonTestMode(options) {
 	}
 }
 
+async function getAmiiboSlots() {
+	try {
+		const response = await Http.get(`${baseUrl}/api/getAmiiboSlots`);
+		return response.data?.slots;
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+async function setAmiiboSlot({ slot, name, data }) {
+	return Http.post(`${baseUrl}/api/setAmiiboSlot`, { slot, name, data })
+		.then((response) => response.data?.success)
+		.catch(console.error);
+}
+
+async function setAmiiboSlotOptions({ slot, randomizeSerial }) {
+	try {
+		const response = await Http.post(`${baseUrl}/api/setAmiiboSlotOptions`, {
+			slot,
+			randomizeSerial,
+		});
+		return response.data?.success === true;
+	} catch {
+		return false;
+	}
+}
+
+async function clearAmiiboSlot(slot) {
+	return Http.post(`${baseUrl}/api/clearAmiiboSlot`, { slot })
+		.then((response) => response.data?.success)
+		.catch(console.error);
+}
+
+// Never log upload errors: HTTP error objects may contain the key payload.
+async function getAmiiboKeys() {
+	try {
+		const response = await Http.get(`${baseUrl}/api/getAmiiboKeys`);
+		return response.data;
+	} catch {
+		return undefined;
+	}
+}
+
+async function setAmiiboKey({ type, data }) {
+	try {
+		const response = await Http.post(`${baseUrl}/api/setAmiiboKey`, {
+			type,
+			data,
+		});
+		return response.data?.success === true;
+	} catch {
+		return false;
+	}
+}
+
+async function clearAmiiboKeys() {
+	try {
+		const response = await Http.post(`${baseUrl}/api/clearAmiiboKeys`, {});
+		return response.data?.success === true;
+	} catch {
+		return false;
+	}
+}
+
+async function getNFCReaderStatus() {
+	try {
+		const response = await Http.get(`${baseUrl}/api/getNFCReaderStatus`);
+		return response.data;
+	} catch {
+		return undefined;
+	}
+}
+
+async function getNFCReaderOptions() {
+	try {
+		const response = await Http.get(`${baseUrl}/api/getNFCReaderOptions`);
+		return response.data;
+	} catch {
+		return undefined;
+	}
+}
+
+async function setNFCReaderOptions(options) {
+	try {
+		const response = await Http.post(
+			`${baseUrl}/api/setNFCReaderOptions`,
+			options,
+		);
+		return response.data?.success === true;
+	} catch {
+		return false;
+	}
+}
+
 export default {
 	resetSettings,
 	getAnimationOptions,
@@ -812,6 +891,8 @@ export default {
 	setProfileOptions,
 	getKeyMappings,
 	setKeyMappings,
+	getProfileKeyMappings,
+	setProfileKeyMappings,
 	getAddonsOptions,
 	setAddonsOptions,
 	getMacroAddonOptions,
@@ -828,15 +909,11 @@ export default {
 	getExpansionPins,
 	setExpansionPins,
 	getHETriggerVoltage,
+	getHETriggerVoltages,
 	setHETriggerCalibrations,
 	getHETriggerCalibrations,
 	setHETriggerOptions,
 	getReactiveLEDs,
-	setReactiveLEDs,
-	getButtonLayouts,
-	getButtonLayoutDefs,
-	getSplashImage,
-	setSplashImage,
 	getAmiiboKeys,
 	setAmiiboKey,
 	clearAmiiboKeys,
@@ -844,6 +921,14 @@ export default {
 	setAmiiboSlot,
 	setAmiiboSlotOptions,
 	clearAmiiboSlot,
+	getNFCReaderStatus,
+	getNFCReaderOptions,
+	setNFCReaderOptions,
+	setReactiveLEDs,
+	getButtonLayouts,
+	getButtonLayoutDefs,
+	getSplashImage,
+	setSplashImage,
 	setAnimationButtonTestMode,
 	setAnimationButtonTestState,
 	clearAnimationButtonTestMode,

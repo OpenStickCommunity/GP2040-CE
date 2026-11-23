@@ -90,7 +90,7 @@ public:
 private:
     WiiExtensionDevice * wii;
     uint32_t uIntervalMS;
-    uint32_t nextTimer;
+    uint32_t lastPoll;
 
     // controller ID = config
     // defaults if no defined config

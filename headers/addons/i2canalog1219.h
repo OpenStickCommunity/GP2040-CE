@@ -53,7 +53,7 @@ private:
     ADS_PINS pins;
     int channelHop;
     uint32_t uIntervalMS;       // ADS1219 Interval
-    uint32_t nextTimer;         // Turbo Timer
+    uint32_t lastPoll;         // Turbo Timer
 };
 
 

@@ -45,7 +45,7 @@ private:
     uint8_t report_buffer[PS4_ENDPOINT_SIZE];   // Report buffer
     bool awaiting_cb;   // Global call-back wait
     uint32_t awaiting_since_ms; // When awaiting_cb was last set (for timeout)
-    uint32_t poll_after_ms;     // Earliest time to re-poll signing state
+    uint32_t last_signing_poll_ms; // Start of the signing-state polling delay
     uint8_t timeout_retries;    // Consecutive completion timeouts
     uint8_t signing_errors;     // Consecutive signing errors from the bound dongle
     bool need_definition;       // PS4_DEFINITION still to be requested for the bound dongle

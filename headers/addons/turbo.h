@@ -14,6 +14,14 @@
 #define DEFAULT_SHOT_PER_SEC 10
 #endif  // DEFAULT_SHOT_PER_SEC
 
+#ifndef TURBO_HOLD_TO_CLEAR
+#define TURBO_HOLD_TO_CLEAR 0
+#endif
+
+#ifndef TURBO_HOLD_CLEAR_TIME
+#define TURBO_HOLD_CLEAR_TIME 5
+#endif
+
 // TURBO Button Mask
 #define TURBO_BUTTON_MASK (GAMEPAD_MASK_B1 | GAMEPAD_MASK_B2 | GAMEPAD_MASK_B3 | GAMEPAD_MASK_B4 | \
                             GAMEPAD_MASK_L1 | GAMEPAD_MASK_R1 | GAMEPAD_MASK_L2 | GAMEPAD_MASK_R2)
@@ -118,6 +126,9 @@ private:
     uint32_t debChargeState;    // Debounce Charge Button State
     uint32_t debChargeTime[4];  // Debounce Charge Button Time
     uint16_t lastPressed;       // Last buttons pressed (for Turbo Enable)
+    bool bTurboHeld;            // Turbo button held (for Turbo Clear)
+    bool bTurboHoldUsed;        // Turbo hold used to toggle, adjust speed or clear
+    uint32_t uTurboHoldTime;    // Turbo button hold start time
     uint8_t lastDpad;           // Last d-pad pressed (for Turbo Change)
     uint16_t turboButtonsMask;  // Turbo Buttons Enabled
     uint16_t alwaysEnabled;     // Turbo SHMUP Always Enabled
@@ -131,7 +142,7 @@ private:
     uint16_t dialValue;         // Turbo Dial Value (Raw)
     uint16_t incrementValue;    // Turbo Dial Increment Value
     uint8_t shmupBtnPin[4];     // Turbo SHMUP Non-Turbo Pins
-    uint16_t shmupBtnPinMask[4];// Cache for shmup button pin masks
+    Mask_t shmupBtnPinMask[4];// Cache for shmup button pin masks
     uint16_t shmupBtnMask[4];   // Turbo SHMUP Non-Turbo Button Masks
     uint16_t lastButtons;       // Last buttons (for Turbo Reset on Release)
     bool hasLedPin;             // Flag for LED pin presence

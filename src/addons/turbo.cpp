@@ -30,7 +30,7 @@ bool TurboInput::available() {
     {
         if ( pinMappings[pin].action == GpioAction::BUTTON_PRESS_TURBO ) {
             hasTurboAssigned = true;
-            turboPinMask |= 1 << pin;
+            turboPinMask |= Mask_t{1} << pin;
         }
     }
     return Storage::getInstance().getAddonOptions().turboOptions.enabled && (hasTurboAssigned == true);
@@ -76,7 +76,7 @@ void TurboInput::setup(){
                 gpio_init(shmupBtnPin[i]);
                 gpio_set_dir(shmupBtnPin[i], GPIO_IN);
                 gpio_pull_up(shmupBtnPin[i]);
-                shmupBtnPinMask[i] = 1 << shmupBtnPin[i];
+                shmupBtnPinMask[i] = Mask_t{1} << shmupBtnPin[i];
             }
         }
         shmupBtnMask[0] = options.shmupBtnMask1; // Charge Buttons Assignment
@@ -102,6 +102,9 @@ void TurboInput::setup(){
     incrementValue = 0;
     lastPressed = 0;
     lastDpad = 0;
+    bTurboHeld = false;
+    bTurboHoldUsed = false;
+    uTurboHoldTime = now;
     bTurboFlicker = false;
     nextTimer = getMicro();
     encoderValue = shotCount;
@@ -118,7 +121,7 @@ void TurboInput::reinit()
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
     {
         if ( pinMappings[pin].action == GpioAction::BUTTON_PRESS_TURBO ) {
-            turboPinMask |= 1 << pin;
+            turboPinMask |= Mask_t{1} << pin;
         }
     }
 }
@@ -139,6 +142,20 @@ void TurboInput::process()
 
     // Check for TURBO pin enabled
     if (gamepad->debouncedGpio & turboPinMask) {
+        if (!bTurboHeld) {
+            bTurboHeld = true;
+            bTurboHoldUsed = false;
+            uTurboHoldTime = getMillis();
+        }
+
+        if (buttonsPressed || dpadPressed) {
+            bTurboHoldUsed = true;
+        } else if (options.holdToClear && !bTurboHoldUsed && (getMillis() - uTurboHoldTime) >= std::max<uint32_t>(options.holdToClearTime, 1) * 1000) {
+            turboButtonsMask = alwaysEnabled;
+            gamepad->turboState.buttons = turboButtonsMask;
+            bTurboHoldUsed = true;
+        }
+
         if (buttonsPressed && (lastPressed != buttonsPressed)) {
             // Only toggle state for buttons changed that are pressed
             turboButtonsMask ^= (lastPressed ^ buttonsPressed) & ~lastPressed; // Toggle Turbo
@@ -166,6 +183,7 @@ void TurboInput::process()
     } else {
         lastPressed = 0; // disable last pressed
         lastDpad = 0; // disable last dpad
+        bTurboHeld = false;
     }
 
     // Get Charge Buttons

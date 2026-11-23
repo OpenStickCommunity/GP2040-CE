@@ -197,13 +197,20 @@ const Amiibo = ({ values, handleChange, handleCheckbox }: AddonPropTypes) => {
 				<div className="alert alert-success" role="alert">
 					{t('AddonsConfig:amiibo-mode-warning')}
 				</div>
+				<p className="mb-4">{t('AddonsConfig:amiibo-nfc-reader-help')}</p>
 				<fieldset
 					className="mb-4"
 					disabled={keysBusy || keysLoading || slotBusy}
 				>
-					<legend className="h6"><strong>{t('AddonsConfig:amiibo-keys-title')}</strong></legend>
+					<legend className="h6">
+						<strong>{t('AddonsConfig:amiibo-keys-title')}</strong>
+					</legend>
 					<p>{t('AddonsConfig:amiibo-keys-help')}</p>
-					<p><strong><em>{t('AddonsConfig:amiibo-keys-warning')}</em></strong></p>
+					<p>
+						<strong>
+							<em>{t('AddonsConfig:amiibo-keys-warning')}</em>
+						</strong>
+					</p>
 					{(['unfixed', 'locked'] as const).map((type) => (
 						<div className="mb-2" key={type}>
 							<label htmlFor={`amiibo-key-${type}`}>
@@ -243,7 +250,9 @@ const Amiibo = ({ values, handleChange, handleCheckbox }: AddonPropTypes) => {
 				</fieldset>
 				<div role="status" aria-live="polite" className="small mb-3">
 					{keysLoading && <div>{t('AddonsConfig:amiibo-keys-loading')}</div>}
-					{keyStatusFailed && <div>{t('AddonsConfig:amiibo-keys-status-failed')}</div>}
+					{keyStatusFailed && (
+						<div>{t('AddonsConfig:amiibo-keys-status-failed')}</div>
+					)}
 					{keys?.ready && <div>{t('AddonsConfig:amiibo-keys-ready')}</div>}
 					{keyMessage && <div>{keyMessage}</div>}
 				</div>

@@ -38,6 +38,10 @@ public:
     static bool writeKey(bool locked, const uint8_t * data, size_t length);
     static bool clearKeys();
     static uint32_t tapGeneration();
+
+    // Called from core1 by NFCReaderAddon.
+    static void setReaderTag(const uint8_t * data, const uint8_t * signature);
+    static void clearReaderTag();
 private:
     Mask_t slotPinMasks[AMIIBO_SLOT_COUNT] = { };
     Mask_t pressedPins = 0;

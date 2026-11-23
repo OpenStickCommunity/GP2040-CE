@@ -8,7 +8,7 @@
 
 #include <gphost.h>
 
-#include "drivers/p5general/P5GeneralDescriptors.h"
+#include "drivers/ps5/PS5Descriptors.h"
 
 //
 // Dualsense PS5 Controller Host
@@ -24,7 +24,7 @@ public:
     virtual void set_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {}
     virtual void get_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {}
 private:
-    P5GenerorReport prevReport;
+    PS5Report prevReport;
     uint32_t map(uint32_t x, uint32_t in_min, uint32_t in_max, uint32_t out_min, uint32_t out_max);
 };
 

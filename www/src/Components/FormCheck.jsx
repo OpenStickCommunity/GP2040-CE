@@ -2,6 +2,10 @@ import { Form } from 'react-bootstrap';
 
 import './FormCheck.scss';
 
+/**
+ * @param {{ label?: import('react').ReactNode, error?: string, groupClassName?: string }
+ *   & import('react-bootstrap').FormCheckProps} props
+ */
 const FormCheck = ({ label, error, groupClassName, ...props }) => {
 	return (
 		<Form.Group className={groupClassName}>

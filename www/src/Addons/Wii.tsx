@@ -14,6 +14,7 @@ import { I2C_BLOCKS } from '../Data/Peripherals';
 import { BUTTON_MASKS_OPTIONS, getButtonLabels } from '../Data/Buttons';
 
 import WebApi, { baseWiiControls } from '../Services/WebApi';
+import { useRememberedTab } from '../Hooks/useRememberedTab';
 
 export const wiiScheme = {
 	WiiExtensionAddonEnabled: yup
@@ -196,6 +197,10 @@ const Wii = ({
 	handleCheckbox,
 	setFieldValue,
 }) => {
+	const [activeTab, setActiveTab] = useRememberedTab(
+		'wiiControllerConfig',
+		`wii${WII_EXTENSION_CONTROLS[0].id}Config`,
+	);
 	const { t } = useTranslation();
 	const [wiiControls, setWiiControls] = useState(baseWiiControls);
 	const [selectedControls] = useState(baseWiiControls);
@@ -381,7 +386,8 @@ const Wii = ({
 				</div>
 				<Row className="mb-3">
 					<Tabs
-						defaultActiveKey={`wii${WII_EXTENSION_CONTROLS[0].id}Config`}
+						activeKey={activeTab}
+						onSelect={setActiveTab}
 						id="wiiControllerConfig"
 						className="mb-3"
 						fill

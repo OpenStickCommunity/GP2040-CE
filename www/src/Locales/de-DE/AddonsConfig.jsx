@@ -78,12 +78,6 @@ export default {
 	'player-number-sub-header-text':
 		'Aktivieren Sie diese Option nur, wenn Sie mehrere GP2040-ce Geräte mit aktivierter Spieler-Nummer verbinden',
 	'player-number-label': 'Spieler-Nummer',
-	'socd-cleaning-mode-selection-slider-header-text':
-		'SOCD Säuberungsmodus Auswahl-Schieberegler',
-	'socd-cleaning-mode-selection-slider-sub-header-text':
-		"Hinweis: PS4, PS3 und Nintendo Switch modi unterstützen nicht die SOCD-Säuberung auf 'Aus' und verwenden standardmäßig den neutralen SOCD-Säuberungsmodus",
-	'socd-cleaning-mode-selection-slider-mode-default-label':
-		'SOCD Schieberegler Modus Standard',
 	'profile-slider-header-text': 'Profilauswahl-Schieberegler',
 	'profile-slider-sub-header-text':
 		'Hinweis: GPIO-Pins für die Positionen des Profilschiebereglers werden auf der Seite Pin-Zuordnung konfiguriert.',

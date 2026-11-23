@@ -24,7 +24,6 @@ import Analog1256, {
 	analog1256State,
 } from '../Addons/Analog1256';
 import Bootsel, { bootselScheme, bootselState } from '../Addons/Bootsel';
-import Amiibo, { amiiboScheme, amiiboState } from '../Addons/Amiibo';
 import Buzzer, { buzzerScheme, buzzerState } from '../Addons/Buzzer';
 import DualDirection, {
 	dualDirectionScheme,
@@ -43,7 +42,6 @@ import OnBoardLed, {
 	onBoardLedState,
 } from '../Addons/OnBoardLed';
 import Reverse, { reverseScheme, reverseState } from '../Addons/Reverse';
-import SOCD, { socdScheme, socdState } from '../Addons/SOCD';
 import ProfileSlider, {
 	profileSliderScheme,
 	profileSliderState,
@@ -56,6 +54,14 @@ import FocusMode, {
 	focusModeScheme,
 	focusModeState,
 } from '../Addons/FocusMode';
+import HostLighting, {
+	hostLightingScheme,
+	hostLightingState,
+} from '../Addons/HostLighting';
+import LightingReport, {
+	lightingReportScheme,
+	lightingReportState,
+} from '../Addons/LightingReport';
 import Keyboard, { keyboardScheme, keyboardState } from '../Addons/Keyboard';
 import GamepadUSBHost, {
 	gamepadUSBHostScheme,
@@ -67,6 +73,11 @@ import DRV8833Rumble, {
 	drv8833RumbleScheme,
 	drv8833RumbleState,
 } from '../Addons/DRV8833';
+import Amiibo, { amiiboScheme, amiiboState } from '../Addons/Amiibo';
+import NFCReader, {
+	nfcReaderScheme,
+	nfcReaderState,
+} from '../Addons/NFCReader';
 import ReactiveLED, {
 	reactiveLEDScheme,
 	reactiveLEDState,
@@ -97,10 +108,11 @@ const schema = yup.object().shape({
 	...dualDirectionScheme,
 	...tiltScheme,
 	...buzzerScheme,
-	...socdScheme,
 	...profileSliderScheme,
 	...wiiScheme,
 	...focusModeScheme,
+	...hostLightingScheme,
+	...lightingReportScheme,
 	...keyboardScheme,
 	...rotaryScheme,
 	...pcf8575Scheme,
@@ -109,6 +121,7 @@ const schema = yup.object().shape({
 	...gamepadUSBHostScheme,
 	...HETriggerScheme,
 	...amiiboScheme,
+	...nfcReaderScheme,
 });
 
 export const DEFAULT_VALUES = {
@@ -123,12 +136,13 @@ export const DEFAULT_VALUES = {
 	...dualDirectionState,
 	...tiltState,
 	...buzzerState,
-	...socdState,
 	...profileSliderState,
 	...wiiState,
 	...snesState,
 	...tg16State,
 	...focusModeState,
+	...hostLightingState,
+	...lightingReportState,
 	...keyboardState,
 	...rotaryState,
 	...pcf8575State,
@@ -137,6 +151,7 @@ export const DEFAULT_VALUES = {
 	...gamepadUSBHostState,
 	...HETriggerState,
 	...amiiboState,
+	...nfcReaderState,
 } as const;
 
 const ADDONS = [
@@ -151,20 +166,22 @@ const ADDONS = [
 	DualDirection,
 	Tilt,
 	Buzzer,
-	SOCD,
 	ProfileSlider,
 	Wii,
 	SNES,
 	TG16,
 	FocusMode,
+	HostLighting,
+	LightingReport,
 	Keyboard,
 	GamepadUSBHost,
 	Rotary,
 	PCF8575,
 	DRV8833Rumble,
 	ReactiveLED,
-	HETrigger,
+	NFCReader,
 	Amiibo,
+	HETrigger,
 ];
 
 const FormContext = ({ setStoredData }) => {
@@ -190,7 +207,8 @@ const FormContext = ({ setStoredData }) => {
 
 const sanitizeData = (values) => {
 	for (const prop in Object.keys(values).filter(
-		(key) => !!!key.includes('keyboardHostMap'),
+		(key) =>
+			!!!key.includes('keyboardHostMap') && key !== 'heTriggerSwitchTravel',
 	)) {
 		if (!!values[prop]) values[prop] = parseInt(values[prop]);
 	}

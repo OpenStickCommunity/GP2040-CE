@@ -30,13 +30,6 @@ export default {
 		'button-layout-label': 'Düğme Düzeni (Sol)',
 		'button-layout-right-label': 'Düğme Düzeni (Sağ)',
 		'button-layout-orientation': 'Düğme Düzeni Yönlendirmesi',
-		'button-layout-custom-header': 'Özel Düğme Düzeni Parametreleri',
-		'button-layout-custom-left-label': 'Düzen Sol',
-		'button-layout-custom-right-label': 'Düzen Sağ',
-		'button-layout-custom-start-x-label': 'X başlat',
-		'button-layout-custom-start-y-label': 'Y başlat',
-		'button-layout-custom-button-radius-label': 'Düğme Yarıçapı',
-		'button-layout-custom-button-padding-label': 'Düğme Dolgusu',
 		'splash-mode-label': 'Sıçrama Modu',
 		'splash-duration-label': 'Sıçrama Süresi (saniye, Her Zaman Açık için 0)',
 		'display-saver-timeout-label':

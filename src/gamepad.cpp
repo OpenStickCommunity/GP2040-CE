@@ -4,6 +4,7 @@
  */
 
 // GP2040 Libraries
+#include "addons/amiibo.h"
 #include "gamepad.h"
 #include "enums.pb.h"
 #include "storagemanager.h"
@@ -15,7 +16,6 @@
 #include "drivermanager.h"
 #include "storagemanager.h"
 #include "system.h"
-#include "addons/amiibo.h"
 
 // MUST BE DEFINED for mpgs
 uint32_t getMillis() {
@@ -36,6 +36,10 @@ void Gamepad::setup()
 {
 	// Configure pin mapping
 	GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
+
+	memset(socdModePinMasks, 0, sizeof(socdModePinMasks));
+	updateStoredSOCDMode();
+	activeSOCDMode = resolvedStoredSOCDMode;
 
 	mapDpadUp       = new GamepadButtonMapping(GAMEPAD_MASK_UP);
 	mapDpadDown     = new GamepadButtonMapping(GAMEPAD_MASK_DOWN);
@@ -152,6 +156,15 @@ void Gamepad::setup()
 			case GpioAction::SUSTAIN_DP_MODE_DP:	mapButtonDP->pinMask |= Mask_t{1} << pin; break;
 			case GpioAction::SUSTAIN_DP_MODE_LS:	mapButtonLS->pinMask |= Mask_t{1} << pin; break;
 			case GpioAction::SUSTAIN_DP_MODE_RS:	mapButtonRS->pinMask |= Mask_t{1} << pin; break;
+			case GpioAction::SUSTAIN_SOCD_MODE_UP_PRIO:	socdModePinMasks[SOCD_MODE_UP_PRIORITY] |= Mask_t{1} << pin; break;
+			case GpioAction::SUSTAIN_SOCD_MODE_NEUTRAL:	socdModePinMasks[SOCD_MODE_NEUTRAL] |= Mask_t{1} << pin; break;
+			case GpioAction::SUSTAIN_SOCD_MODE_SECOND_WIN:	socdModePinMasks[SOCD_MODE_SECOND_INPUT_PRIORITY] |= Mask_t{1} << pin; break;
+			case GpioAction::SUSTAIN_SOCD_MODE_FIRST_WIN:	socdModePinMasks[SOCD_MODE_FIRST_INPUT_PRIORITY] |= Mask_t{1} << pin; break;
+			case GpioAction::SUSTAIN_SOCD_MODE_BYPASS:	socdModePinMasks[SOCD_MODE_BYPASS] |= Mask_t{1} << pin; break;
+			case GpioAction::SUSTAIN_SOCD_MODE_ADVANCED_1:	socdModePinMasks[SOCD_MODE_ADVANCED_1] |= Mask_t{1} << pin; break;
+			case GpioAction::SUSTAIN_SOCD_MODE_ADVANCED_2:	socdModePinMasks[SOCD_MODE_ADVANCED_2] |= Mask_t{1} << pin; break;
+			case GpioAction::SUSTAIN_SOCD_MODE_ADVANCED_3:	socdModePinMasks[SOCD_MODE_ADVANCED_3] |= Mask_t{1} << pin; break;
+			case GpioAction::SUSTAIN_SOCD_MODE_ADVANCED_4:	socdModePinMasks[SOCD_MODE_ADVANCED_4] |= Mask_t{1} << pin; break;
 			case GpioAction::CUSTOM_BUTTON_COMBO:	assignCustomMappingToMaps(pinMappings[pin], pin); break;
 			case GpioAction::DIGITAL_DIRECTION_UP:	mapDigitalUp->pinMask |= Mask_t{1} << pin; break;
 			case GpioAction::DIGITAL_DIRECTION_DOWN:	mapDigitalDown->pinMask |= Mask_t{1} << pin; break;
@@ -169,6 +182,11 @@ void Gamepad::setup()
 			case GpioAction::SUSTAIN_FOCUS_MODE: mapFocusMode->pinMask |= Mask_t{1} << pin; break;
 			default:				break;
 		}
+	}
+
+	socdModeAnyPinMask = 0;
+	for (const Mask_t mask : socdModePinMasks) {
+		socdModeAnyPinMask |= mask;
 	}
 
 	// Define our hotkey array
@@ -275,7 +293,7 @@ void Gamepad::process()
 
 	// 4-way before SOCD, might have better history without losing any coherent functionality
 	if (options.fourWayMode ^ map48WayModeToggle) {
-		state.dpad = filterToFourWayMode(state.dpad);
+		state.dpad = (state.dpad & 0xF0) | filterToFourWayMode(state.dpad);
 	}
 
 	uint8_t currentDpadSnapshot = state.dpad;
@@ -296,7 +314,7 @@ void Gamepad::process()
 	}
 
 	// clean up after yourself. nobody likes bad inputs.
-	state.dpad = runSOCDCleaner(resolveSOCDMode(options), state.dpad);
+	state.dpad = runConfiguredSOCDCleaner(state.dpad);
 
 	// since analog modes only care about the dpad mode inputs, set the dpad state to digital only dpad values
 	switch (activeDpadMode)
@@ -382,6 +400,17 @@ void Gamepad::read()
 	else if (values & mapButtonRS->pinMask)	activeDpadMode = DpadMode::DPAD_MODE_RIGHT_ANALOG;
 	else					activeDpadMode = options.dpadMode;
 
+	SOCDMode socdMode = resolvedStoredSOCDMode;
+	if (values & socdModeAnyPinMask) {
+		for (uint8_t mode = 0; mode <= SOCD_MODE_ADVANCED_4; mode++) {
+			if (values & socdModePinMasks[mode]) {
+				socdMode = resolveSOCDMode(options, (SOCDMode)mode);
+				break;
+			}
+		}
+	}
+	activeSOCDMode = socdMode;
+
 	map48WayModeToggle = (values & map48WayMode->pinMask);
 
 	if (values & mapAnalogLSXNeg->pinMask) {
@@ -430,6 +459,10 @@ void Gamepad::hotkey() {
 			hasHotkey = true;
 		}
 	}
+	if (heldHotkey != HOTKEY_NONE) {
+		processHotkeyAction(heldHotkey);
+		hasHotkey = true;
+	}
 	if (hasHotkey == false ) {
 		lastAction = HOTKEY_NONE;
 	}
@@ -456,6 +489,48 @@ void Gamepad::clearRumbleState() {
 	auxState.haptics.leftTrigger.intensity = 0;
 	auxState.haptics.rightTrigger.active = false;
 	auxState.haptics.rightTrigger.intensity = 0;
+}
+
+SOCDMode Gamepad::getStoredSOCDMode() const {
+	const GpioMappings& profile = Storage::getInstance().getActiveProfileMappings();
+	return profile.socdModeOverride ? profile.socdMode : options.socdMode;
+}
+
+void Gamepad::setSOCDMode(SOCDMode socdMode) {
+	GpioMappings& profile = Storage::getInstance().getActiveProfileMappings();
+	if (profile.socdModeOverride) {
+		profile.socdMode = socdMode;
+	} else {
+		options.socdMode = socdMode;
+	}
+	updateStoredSOCDMode();
+}
+
+void Gamepad::setInputMode(InputMode inputMode) {
+	options.inputMode = inputMode;
+	updateStoredSOCDMode();
+}
+
+void Gamepad::updateStoredSOCDMode() {
+	resolvedStoredSOCDMode = resolveSOCDMode(options, getStoredSOCDMode());
+}
+
+uint8_t Gamepad::runConfiguredSOCDCleaner(uint8_t dpad) {
+	const SOCDMode mode = activeSOCDMode;
+	if (!isAdvancedSOCDMode(mode)) {
+		return runSOCDCleaner(mode, dpad);
+	}
+
+	const uint8_t slotIndex = mode - SOCD_MODE_ADVANCED_1;
+	SOCDAxisMode upDownMode = options.advancedSOCDSlots[slotIndex].upDownMode;
+	SOCDAxisMode leftRightMode = options.advancedSOCDSlots[slotIndex].leftRightMode;
+
+	if (socdRequiresCleaning(options)) {
+		if (upDownMode == SOCD_AXIS_MODE_OFF) upDownMode = SOCD_AXIS_MODE_NEUTRAL;
+		if (leftRightMode == SOCD_AXIS_MODE_OFF) leftRightMode = SOCD_AXIS_MODE_NEUTRAL;
+	}
+
+	return runSOCDCleanerPerAxis(upDownMode, leftRightMode, dpad);
 }
 
 /**
@@ -547,47 +622,66 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 			break;
 		case HOTKEY_SOCD_UP_PRIORITY:
 			if (action != lastAction) {
-				options.socdMode = SOCD_MODE_UP_PRIORITY;
+				setSOCDMode(SOCD_MODE_UP_PRIORITY);
 				reqSave = true;
 			}
 			break;
 		case HOTKEY_SOCD_NEUTRAL:
 			if (action != lastAction) {
-				options.socdMode = SOCD_MODE_NEUTRAL;
+				setSOCDMode(SOCD_MODE_NEUTRAL);
 				reqSave = true;
 			}
 			break;
 		case HOTKEY_SOCD_LAST_INPUT:
 			if (action != lastAction) {
-				options.socdMode = SOCD_MODE_SECOND_INPUT_PRIORITY;
+				setSOCDMode(SOCD_MODE_SECOND_INPUT_PRIORITY);
 				reqSave = true;
 			}
 			break;
 		case HOTKEY_SOCD_FIRST_INPUT:
 			if (action != lastAction) {
-				options.socdMode = SOCD_MODE_FIRST_INPUT_PRIORITY;
+				setSOCDMode(SOCD_MODE_FIRST_INPUT_PRIORITY);
 				reqSave = true;
 			}
 			break;
 		case HOTKEY_SOCD_BYPASS:
 			if (action != lastAction) {
-				options.socdMode = SOCD_MODE_BYPASS;
+				setSOCDMode(SOCD_MODE_BYPASS);
+				reqSave = true;
+			}
+			break;
+		case HOTKEY_SOCD_ADVANCED_1:
+			if (action != lastAction) {
+				setSOCDMode(SOCD_MODE_ADVANCED_1);
+				reqSave = true;
+			}
+			break;
+		case HOTKEY_SOCD_ADVANCED_2:
+			if (action != lastAction) {
+				setSOCDMode(SOCD_MODE_ADVANCED_2);
+				reqSave = true;
+			}
+			break;
+		case HOTKEY_SOCD_ADVANCED_3:
+			if (action != lastAction) {
+				setSOCDMode(SOCD_MODE_ADVANCED_3);
+				reqSave = true;
+			}
+			break;
+		case HOTKEY_SOCD_ADVANCED_4:
+			if (action != lastAction) {
+				setSOCDMode(SOCD_MODE_ADVANCED_4);
 				reqSave = true;
 			}
 			break;
 		case HOTKEY_REBOOT_DEFAULT:
 			if (action != lastAction) {
-				System::reboot(System::BootMode::DEFAULT);
+				EventManager::getInstance().triggerEvent(new GPRestartEvent((System::BootMode)System::BootMode::DEFAULT));
 			}
 			break;
 		case HOTKEY_REBOOT_WEBCONFIG:
 			if (action != lastAction) {
-				System::reboot(System::BootMode::WEBCONFIG);
-			}
-			break;
-		case HOTKEY_REBOOT_USB:
-			if (action != lastAction) {
-				System::reboot(System::BootMode::USB);
+				EventManager::getInstance().triggerEvent(new GPRestartEvent((System::BootMode)System::BootMode::WEBCONFIG));
 			}
 			break;
 		case HOTKEY_AMIIBO_1:
@@ -596,6 +690,11 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 		case HOTKEY_AMIIBO_4:
 			if (action != lastAction) {
 				AmiiboAddon::tap(action - HOTKEY_AMIIBO_1);
+			}
+			break;
+		case HOTKEY_REBOOT_USB:
+			if (action != lastAction) {
+				EventManager::getInstance().triggerEvent(new GPRestartEvent((System::BootMode)System::BootMode::USB));
 			}
 			break;
 		case HOTKEY_SAVE_CONFIG:

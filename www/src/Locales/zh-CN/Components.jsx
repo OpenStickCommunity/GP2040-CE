@@ -1,6 +1,6 @@
 export default {
 	'language-selector': {
-		en: 'English US (英语)',
+		en: 'English (英语)',
 		nl: 'Nederlands (荷兰语)',
 		'pt-BR': 'Português Brasil (巴西葡萄牙语)',
 		'zh-CN': '简体中文',
@@ -12,9 +12,9 @@ export default {
 		'fr-FR': 'Français (法语)',
 	},
 	'color-scheme': {
-		dark: '黑暗',
-		light: '明亮',
-		auto: '自动',
+		dark: '深色',
+		light: '浅色',
+		auto: '跟随系统',
 	},
 	'keyboard-mapper': {
 		'key-header': '按键',

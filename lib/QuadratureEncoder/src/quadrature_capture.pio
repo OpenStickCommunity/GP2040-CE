@@ -1,0 +1,60 @@
+;
+; Quadrature change capture (QuadratureEncoder library).
+;
+; The state machine does no decoding: it samples the two encoder pins and,
+; whenever they differ from the last sample, pushes the new 2-bit state to the
+; RX FIFO. A DMA channel streams those bytes into a RAM ring buffer and the CPU
+; decodes them with a lookup table in QuadratureEncoder::getCount(). This keeps the PIO footprint
+; to 6 instructions (any offset) and one state machine per encoder, while still
+; capturing every edge independent of main-loop timing.
+;
+; Pins: IN base = lower-numbered encoder pin (bit 0), IN base + 1 = bit 1, so
+; the two pins must be adjacent GPIOs.
+;
+; Y holds the last pushed state. It is seeded with an impossible value (~0) so
+; the first sample always publishes the current state.
+;
+; push is blocking: if DMA is briefly paused (transfer-count re-arm), the
+; 8-deep RX FIFO absorbs the changes. Only if more than 8 changes arrive while
+; DMA is stopped would sampling stall and skip states; the CPU decoder sees
+; those as invalid transitions and counts them.
+;
+; Loop: 4 cycles per sample, 6 when a change is pushed. The C side sets the
+; clock divider to give the configured sample rate.
+;
+
+.pio_version 0
+
+.program quadrature_capture
+
+push_change:
+    mov y, x            ; remember the state we're publishing
+    push block          ; ISR still holds it -> RX FIFO -> DMA
+.wrap_target
+public start:
+    mov isr, null
+    in pins, 2          ; ISR = current 2-bit pin state
+    mov x, isr
+    jmp x!=y push_change
+.wrap
+
+% c-sdk {
+#include "hardware/pio.h"
+#include "hardware/gpio.h"
+
+// inBase is the lower-numbered of the two (adjacent) encoder pins.
+static inline void quadrature_capture_program_init(PIO pio, uint sm, uint offset, uint inBase, float clkdiv) {
+    pio_sm_set_consecutive_pindirs(pio, sm, inBase, 2, false);
+
+    pio_sm_config c = quadrature_capture_program_get_default_config(offset);
+    sm_config_set_in_pins(&c, inBase);
+    sm_config_set_in_shift(&c, false, false, 32);   // shift left: state lands in bits [1:0]
+    sm_config_set_fifo_join(&c, PIO_FIFO_JOIN_RX);  // 8-deep RX FIFO, TX unused
+    sm_config_set_clkdiv(&c, clkdiv);
+
+    pio_sm_init(pio, sm, offset + quadrature_capture_offset_start, &c);
+
+    // Y = ~0 so the very first sample is published as the baseline state.
+    pio_sm_exec(pio, sm, pio_encode_mov_not(pio_y, pio_null));
+}
+%}

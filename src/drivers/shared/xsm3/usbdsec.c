@@ -153,7 +153,7 @@ void UsbdSecXSMAuthenticationAcr(const uint8_t *console_id, const uint8_t *input
 	ExCryptParveEcb(key, UsbdSecSboxData, input + 0x10, iv);
 	ExCryptParveEcb(key, UsbdSecSboxData, block, cd);
 	ExCryptParveCbcMac(key, UsbdSecSboxData, iv, UsbdSecPlainTextData, 0x80, ab);
-	ExCryptChainAndSumMac((uint32_t *)cd, (uint32_t *)ab, (uint32_t *)UsbdSecPlainTextData, 0x20, (uint32_t *)output);
+	ExCryptChainAndSumMac(cd, ab, UsbdSecPlainTextData, 0x20, output);
 	uint64_t current;
 	memcpy(&current, output, sizeof(current));
 	memcpy(&xor_temp, ab, sizeof(xor_temp));

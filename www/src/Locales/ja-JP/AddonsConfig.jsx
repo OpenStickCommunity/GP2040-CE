@@ -31,8 +31,34 @@ export default {
 	'inner-deadzone-size': '内側デッドゾーン(%)',
 	'outer-deadzone-size': '外側デッドゾーン(%)',
 	'analog-auto-calibrate': '自動調整',
+	'analog-calibrate-stick-1-button': 'アナログスティック１調整',
+	'analog-calibrate-stick-2-button': 'アナログスティック２調整',
+	'analog-calibration-title': 'アナログ調整',
+	'analog-calibration-rotation-overview':
+		'調整を開始してからゆっくりアナログ入力を全域で数回往復するよう動かしてください。「中心点補正」を選択し、アナログスティックを離して調整完了を待ってください。設定を保存してデバイスを再起動することで調整結果が有効になります。',
+	'analog-calibration-rotate':
+		'ゆっくりアナログスティックを外周を数回往復するように回すか、XY軸それぞれの端から端まで動かしてください。その後、「中心点補正」を選択してください。',
+	'analog-calibration-done-rotating': '中心点補正',
+	'analog-calibration-release':
+		'スティックを離して一定時間触らず放置してください。入力値が安定した時点で中心点補正が自動で行われます。',
+	'analog-calibration-cancel': 'キャンセル',
+	'analog-calibration-connection-timeout':
+		'コントローラーが反応有りませんでした。接続を確認して再度実施してください。',
+	'analog-calibration-rest-timeout':
+		'スティックが中央に戻っていないようです。スティックから完全に手を離して再度調整を再開してください。',
+	'analog-calibration-select-pins':
+		'調整開始前に最低でもアナログADC端子を一つ選択してください。',
+	'analog-calibration-save-pins':
+		'アナログ端子設定を保存してから調整を開始してください。',
+	'analog-manual-calibration-mode-stick-1': 'アナログスティック１手動調整モード',
+	'analog-manual-calibration-mode-stick-2': 'アナログスティック２手動調整モード',
+	'analog-auto-calibration-enabled-stick-1': 'アナログスティック１自動調整モード',
+	'analog-auto-calibration-enabled-stick-2': 'アナログスティック２自動調整モード',
+	'analog-calibration-failed': '調整失敗: {{error}}',
+	'analog-calibration-save-notice': '設定を保存して調整結果を反映してください',
+	'analog-calibration-auto-mode-instruction': 'システムが起動時に自動でアナログスティック {{stick}} の中央値を読み出します。手動調整する場合は先に自動調整のチェックボックスを外してください。',
 	'analog-smoothing': 'アナログスムージング',
-	'smoothing-factor': 'スムージング強度',
+	'smoothing-factor': 'スムージング強度 (0-10)',
 	'analog-error-label': '誤差率',
 	'turbo-header-text': '連射機能',
 	'turbo-led-pin-label': '連射LED端子',
@@ -64,6 +90,7 @@ export default {
 	'reverse-action-disable-label': '無効',
 	'reverse-action-enable-label': '有効',
 	'reverse-action-neutral-label': 'ニュートラル',
+	'i2c-analog-ads1115-header-text': 'I2C A/D変換 ADS1115',
 	'i2c-analog-ads1219-header-text': 'I2C A/D変換 ADS1219',
 	'dual-directional-input-header-text': 'デュアル方向入力',
 	'dual-directional-input-dpad-mode-label': 'デュアル方向入力モード',
@@ -89,12 +116,6 @@ export default {
 	'player-number-sub-header-text':
 		'このオプションは同時にプレイヤー番号を有効化した複数のGP2040-CEデバイスを接続する場合のみ利用してください。',
 	'player-number-label': 'プレイヤー番号',
-	'socd-cleaning-mode-selection-slider-header-text':
-		'SOCD クリーナモード選択スライダー',
-	'socd-cleaning-mode-selection-slider-sub-header-text':
-		'注：PS4、PS3及び任天堂Switch モードではSOCDクリーナのモード無効化は非対応となり、SOCDニュートラル設定になります。',
-	'socd-cleaning-mode-selection-slider-mode-default-label':
-		'SOCDクリーナ標準モード',
 	'ps4-mode-sub-header': '免責事項',
 	'ps4-mode-sub-header-text':
 		'いかなる場合においてもGP2040-CEから以下のファイルは提供いたしません！！',
@@ -139,11 +160,6 @@ export default {
 	'dual-directional-input-combine-mode-1': 'ゲームパッド上書き',
 	'dual-directional-input-combine-mode-2': 'DDI 上書き',
 	'dual-directional-input-combine-mode-3': '無し',
-	'socd-slider-mode-0': '上優先',
-	'socd-slider-mode-1': 'ニュートラル',
-	'socd-slider-mode-2': '後入力優先',
-	'socd-slider-mode-3': '先入力優先',
-	'socd-slider-mode-4': 'SOCDクリーナ無効',
 	'profile-slider-header-text': 'プロフィール選択スライダー',
 	'profile-slider-sub-header-text':
 		'注：プロフィール選択スライダーのポジションGPIOピンはピンマッピングページで設定されます。',

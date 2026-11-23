@@ -21,6 +21,7 @@ public:
     virtual void processAux() {}
     virtual uint16_t get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen);
     virtual void set_report(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize);
+    virtual void set_report_n(uint8_t itf, uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize);
     virtual bool vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request);
     virtual const uint16_t * get_descriptor_string_cb(uint8_t index, uint16_t langid);
     virtual const uint8_t * get_descriptor_device_cb();
@@ -30,11 +31,20 @@ public:
     virtual uint16_t GetJoystickMidValue();
     virtual USBListener * get_usb_auth_listener() { return nullptr; }
 private:
+    SwitchControllerType controllerType = SWITCH_TYPE_PRO_CONTROLLER;
+    SwitchControllerRegion controllerRegion = SWITCH_REGION_USA;
+    bool joyConPair = false;
+    uint8_t hidInstance = 0;
+    SwitchProDriver * pairRight = nullptr;
+    tusb_desc_device_t deviceDescriptor;
+    const uint8_t* productString = switch_pro_string_product;
     uint8_t report[SWITCH_PRO_ENDPOINT_SIZE] = { };
     uint8_t last_report[SWITCH_PRO_ENDPOINT_SIZE] = { };
     SwitchProReport switchReport;
     uint8_t last_report_counter;
     uint32_t last_report_timer;
+    uint32_t analogSchedulingProfile = UINT32_MAX;
+    bool analogSchedulingAllowed = false;
     bool isReady = false;
     bool isInitialized = false;
     bool isReportQueued = false;
@@ -54,10 +64,9 @@ private:
     bool isIMUEnabled = false;
     bool isVibrationEnabled = false;
 
+    void loadControllerType();
     void sendIdentify();
     void sendSubCommand(uint8_t subCommand);
-
-    bool sendReport(uint8_t reportID, const void* reportData, uint16_t reportLength);
 
     void readSPIFlash(uint8_t* dest, uint32_t address, uint8_t size);
 
@@ -83,7 +92,7 @@ private:
 
     // config data
     SwitchFactoryConfig* factoryConfig = (SwitchFactoryConfig*)factoryConfigData;
-    const uint8_t factoryConfigData[0xEFF] = {
+    uint8_t factoryConfigData[0xEFF] = {
         // serial number
         0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
         0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
@@ -91,7 +100,7 @@ private:
         0xFF, 0xFF, 
 
         // device type
-        SwitchControllerType::SWITCH_TYPE_PRO_CONTROLLER, 
+        static_cast<uint8_t>(controllerType),
 
         // unknown
         0xA0, 

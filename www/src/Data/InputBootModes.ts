@@ -1,6 +1,6 @@
 import { InputMode, InputModeDeviceType } from '@proto/enums';
 
-export type InputModeGroup = 'primary' | 'mini';
+export type InputModeGroup = 'primary' | 'sony' | 'nintendo' | 'microsoft' | 'mini';
 
 export type InputModeOptions = {
 	labelKey: string;
@@ -10,6 +10,7 @@ export type InputModeOptions = {
 	optional: string[];
 	authentication: string[];
 	deviceTypes: InputModeDeviceType[];
+	keyboardInterface?: boolean; // the keyboard interface can follow the mode's own
 };
 
 export const INPUT_MODE_OPTIONS: InputModeOptions[] = [
@@ -26,11 +27,12 @@ export const INPUT_MODE_OPTIONS: InputModeOptions[] = [
 			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_DRUM,
 		],
 		required: [],
+		keyboardInterface: true,
 	},
 	{
 		labelKey: 'input-mode-options.nintendo-switch',
 		value: InputMode.INPUT_MODE_SWITCH,
-		group: 'primary',
+		group: 'nintendo',
 		required: [],
 		optional: [],
 		authentication: [],
@@ -39,7 +41,7 @@ export const INPUT_MODE_OPTIONS: InputModeOptions[] = [
 	{
 		labelKey: 'input-mode-options.ps3',
 		value: InputMode.INPUT_MODE_PS3,
-		group: 'primary',
+		group: 'sony',
 		deviceTypes: [
 			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_GAMEPAD,
 			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_GAMEPAD_ALT,
@@ -63,7 +65,7 @@ export const INPUT_MODE_OPTIONS: InputModeOptions[] = [
 	{
 		labelKey: 'input-mode-options.ps4',
 		value: InputMode.INPUT_MODE_PS4,
-		group: 'primary',
+		group: 'sony',
 		optional: ['usb'],
 		authentication: ['none', 'key', 'usb'],
 		deviceTypes: [
@@ -78,7 +80,7 @@ export const INPUT_MODE_OPTIONS: InputModeOptions[] = [
 	{
 		labelKey: 'input-mode-options.xbone',
 		value: InputMode.INPUT_MODE_XBONE,
-		group: 'primary',
+		group: 'microsoft',
 		required: ['usb'],
 		optional: [],
 		authentication: [],
@@ -141,7 +143,7 @@ export const INPUT_MODE_OPTIONS: InputModeOptions[] = [
 	{
 		labelKey: 'input-mode-options.xboxoriginal',
 		value: InputMode.INPUT_MODE_XBOXORIGINAL,
-		group: 'primary',
+		group: 'microsoft',
 		required: [],
 		optional: [],
 		authentication: [],
@@ -150,17 +152,10 @@ export const INPUT_MODE_OPTIONS: InputModeOptions[] = [
 	{
 		labelKey: 'input-mode-options.ps5',
 		value: InputMode.INPUT_MODE_PS5,
-		group: 'primary',
+		group: 'sony',
 		optional: ['usb'],
 		authentication: ['none', 'usb'],
-		deviceTypes: [
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_GAMEPAD,
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_ARCADE_STICK,
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_WHEEL,
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_HOTAS,
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_GUITAR,
-			InputModeDeviceType.INPUT_MODE_DEVICE_TYPE_DRUM,
-		],
+		deviceTypes: [],
 		required: [],
 	},
 	{
@@ -171,11 +166,12 @@ export const INPUT_MODE_OPTIONS: InputModeOptions[] = [
 		optional: [],
 		authentication: [],
 		deviceTypes: [],
+		keyboardInterface: true,
 	},
 	{
 		labelKey: 'input-mode-options.nintendo-switch-pro',
 		value: InputMode.INPUT_MODE_SWITCH_PRO,
-		group: 'primary',
+		group: 'nintendo',
 		required: [],
 		optional: [],
 		authentication: [],
@@ -184,7 +180,7 @@ export const INPUT_MODE_OPTIONS: InputModeOptions[] = [
 	{
 		labelKey: 'input-mode-options.nintendo-switch2-pro',
 		value: InputMode.INPUT_MODE_SWITCH2_PRO,
-		group: 'primary',
+		group: 'nintendo',
 		required: [],
 		optional: [],
 		authentication: [],
@@ -198,14 +194,6 @@ export const INPUT_MODE_OPTIONS: InputModeOptions[] = [
 		optional: [],
 		authentication: [],
 		deviceTypes: [],
-	},
-	{
-		labelKey: 'input-mode-options.p5general',
-		value: InputMode.INPUT_MODE_P5GENERAL,
-		group: 'primary',
-		required: [],
-		optional: ['usb'],
-		authentication: ['usb'],
-		deviceTypes: [],
+		keyboardInterface: true,
 	},
 ];

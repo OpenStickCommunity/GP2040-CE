@@ -31,6 +31,8 @@ bool DualshockPS4Host::match(uint8_t dev_addr, uint8_t instance, uint16_t vendor
             case 0x008A: // we need someone to confirm this, real arcade pro V hayabusa ps4 mode
             case 0x005E:
             case 0x00EE:
+            case 0x0084: // Fighting Commander (PS4)
+            case 0x0162: // Fighting Commander OCTA (PS4)
                 return true;
         }
     }
@@ -65,6 +67,14 @@ bool DualshockPS4Host::match(uint8_t dev_addr, uint8_t instance, uint16_t vendor
     if ( vendor_id == 0x044F) {
         switch(product_id) {
             case 0xB67B:
+                return true;
+        }
+    }
+
+    // Mad Catz, Inc
+    if (vendor_id == 0x0738) {
+        switch (product_id) {
+            case 0x8481: // Mad Catz FightStick TE2+ (PS4)
                 return true;
         }
     }
