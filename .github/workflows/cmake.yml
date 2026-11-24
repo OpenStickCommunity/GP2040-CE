@@ -43,6 +43,7 @@ on:
           - MavercadeRev1
           - MavercadeRev2
           - MavercadeRev3
+          - MeisterConverter
           - MiSTercadeV2
           - OpenCore0
           - OpenCore0MIXUP
