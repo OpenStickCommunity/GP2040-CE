@@ -835,6 +835,8 @@ message KeyboardHostOptions
     optional uint32 mouseRight = 7;
     optional uint32 mouseSensitivity = 8;
     optional MouseMovementMode movementMode = 9;
+    optional bool bootDelayEnabled = 10;
+    optional uint32 bootDelayMs = 11;
 }
 
 message GamepadUSBHostOptions

@@ -1519,6 +1519,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions, mouseMiddle, 0);
     INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions, mouseRight, 0);
     INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions, mouseSensitivity, KEYBOARD_HOST_MOUSE_SENSITIVITY);
+    INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions, bootDelayMs, 1000);
 
     // addonOptions.focusModeOptions
     INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, enabled, !!FOCUS_MODE_ENABLED);

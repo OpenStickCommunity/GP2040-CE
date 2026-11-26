@@ -34,6 +34,7 @@ public:// USB Listener Features
     virtual void set_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {}
     virtual void get_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {}
     void process();
+    bool keyboardMounted() const { return _keyboard_host_mounted; }
 private:
     uint8_t getKeycodeFromModifier(uint8_t modifier);
     void preprocess_report();

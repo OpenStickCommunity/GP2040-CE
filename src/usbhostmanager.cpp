@@ -9,10 +9,16 @@
 
 #include "host/usbh.h"
 #include "host/usbh_pvt.h"
+#include "host/hcd.h"
 
 #include "drivers/shared/xinput_host.h"
 
 void USBHostManager::start() {
+    if (tuh_ready) {
+        hcd_event_device_remove(BOARD_TUH_RHPORT, false);
+        hcd_event_device_attach(BOARD_TUH_RHPORT, false);
+        return;
+    }
     // This will happen after Gamepad has initialized
     if (PeripheralManager::getInstance().isUSBEnabled(0) && listeners.size() > 0) {
         pio_usb_configuration_t* pio_cfg = PeripheralManager::getInstance().getUSB(0)->getController();
