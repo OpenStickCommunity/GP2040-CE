@@ -50,7 +50,7 @@ public:
   uint16_t AdjustIndex(int changeSize);
 
   //What buttons (physical gpio pins) are pressed this frame
-  void HandlePressedPins(std::vector<int32_t> pressedPins);
+  void HandlePressedPins(const std::vector<int32_t>& pressedPins);
 
   //What buttons (logical ones) are pressed this frame
   void HandlePressedButtons(uint32_t pressedButtons);
@@ -67,22 +67,47 @@ public:
   void SetMaxBrightness(uint8_t max);
   float GetNormalisedBrightness();
   uint8_t GetBrightnessStepValue();
+  uint8_t GetMaxBrightness() { return brightnessMax; }
   void SetBrightnessStepValue(uint8_t brightness);
   void ApplyBrightnessStepValue();
   void DecreaseBrightnessByStep();
   void IncreaseBrightnessByStep();
   void DimBrightnessTo0();
+
+  // The running animations re-read their profile's speeds
+  void CycleParameterChange() {
+    if (baseAnimation != nullptr)
+      baseAnimation->CycleParameterChange();
+    if (caseAnimation != nullptr)
+      caseAnimation->CycleParameterChange();
+    if (buttonAnimation != nullptr)
+      buttonAnimation->CycleParameterChange();
+  }
+
+  // A change to the animation options made outside HandleEvent() is saved
+  // as a hotkey's is
+  void OptionsChanged() { bChangeDetected = true; }
+
+  // An animation picked outside HandleEvent() wakes the animations from the
+  // idle timeout, as a button press does. Call before SetMode(), which
+  // then builds them awake.
+  void WakeFromIdle() {
+    timeLastButtonPressed = get_absolute_time();
+    bIsInIdleTimeout = false;
+  }
+
   void CheckForOptionsUpdate();
  
   //Testing/webconfig
   void SetTestMode(AnimationStationTestMode TestType, const AnimationProfile* TestProfile, uint8_t overrideBrightness, uint8_t overrideMaxBrightness);
-  void SetTestPinState(int PinOrNonButtonIndex, bool IsNonButtonLight);
+  void SetTestPinState(int PinOrNonButtonIndex, bool IsNonButtonLight, LightInputSource InputSource = LightInputSource::LightInputSource_GPIO);
   void ClearTestMode();
   void CopyTestProfile(const AnimationProfile* Profile);
   void SetTestModeLayout();
   void SetTestModeButton();
 
   uint8_t getBrightnessSteps() { return brightnessSteps; }
+  bool IsInIdleTimeout() { return bIsInIdleTimeout; }
   uint8_t getTestMode() { return TestMode; }
   bool getTestModeLightIsNonButton() { return TestModeLightIsNonButton; }
   int getTestModePinOrNonButtonIndex() { return TestModePinOrNonButtonIndex; }
@@ -105,6 +130,9 @@ public:
 
   RGB GetColorForIndex(uint32_t ColorIndex);
   RGB StaticGetNonPressedColorForLight(Lights* AllLights, uint32_t LightIndex);
+
+  //nullptr if out of range. Bounded by capacity, not .size, because the test profile is never sized.
+  static uint8_t* ButtonColorSlot(AnimationProfile& Profile, LightInputSource InputSource, uint32_t InputIndex, bool Pressed);
 
 private:
 	AnimationStation();
@@ -150,6 +178,7 @@ private:
   bool bTestModeChangeRequested;
   int TestModePinOrNonButtonIndex;
   bool TestModeLightIsNonButton;
+  LightInputSource TestModeInputSource;
 
 	//Webconfig/testing
 	bool bRestartLeds;

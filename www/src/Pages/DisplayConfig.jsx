@@ -10,7 +10,16 @@ import { AppContext } from '../Contexts/AppContext';
 import FormControl from '../Components/FormControl';
 import FormSelect from '../Components/FormSelect';
 import Section from '../Components/Section';
+import JsonEditor from '../Components/JsonEditor';
 import WebApi from '../Services/WebApi';
+import { getButtonLabels } from '../Data/Buttons';
+import { useRememberedTab } from '../Hooks/useRememberedTab';
+import { ButtonLayout, ButtonLayoutRight } from '@proto/enums';
+import {
+	parseLayoutCode,
+	layoutCodeToBase64,
+	base64ToLayoutCode,
+} from '../Services/CustomLayout';
 
 const ON_OFF_OPTIONS = [
 	{ label: 'form.display-state.disabled', value: 0 },
@@ -21,6 +30,55 @@ const SPLASH_MODES = [
 	{ label: 'form.splash-modes.enabled', value: 0 }, // STATICSPLASH
 	{ label: 'form.splash-modes.disabled', value: 3 }, // NOSPLASH
 ];
+
+const SPLASH_MODE_CHOICES = [
+	{
+		label: 'form.splash-modes.image-only',
+		splashMode: 0,
+		splashTextEnabled: 0,
+		splashTextFirst: 0,
+	},
+	{
+		label: 'form.splash-modes.text-only',
+		splashMode: 3,
+		splashTextEnabled: 1,
+		splashTextFirst: 0,
+	},
+	{
+		label: 'form.splash-modes.image-then-text',
+		splashMode: 0,
+		splashTextEnabled: 1,
+		splashTextFirst: 0,
+	},
+	{
+		label: 'form.splash-modes.text-then-image',
+		splashMode: 0,
+		splashTextEnabled: 1,
+		splashTextFirst: 1,
+	},
+	{
+		label: 'form.splash-modes.disabled',
+		splashMode: 3,
+		splashTextEnabled: 0,
+		splashTextFirst: 0,
+	},
+];
+
+const findSplashModeChoice = ({
+	splashMode,
+	splashTextEnabled,
+	splashTextFirst,
+}) => {
+	const mode = parseInt(splashMode);
+	const text = splashTextEnabled ? 1 : 0;
+	const first = mode !== 3 && text && splashTextFirst ? 1 : 0;
+	return SPLASH_MODE_CHOICES.findIndex(
+		(o) =>
+			o.splashMode === mode &&
+			o.splashTextEnabled === text &&
+			o.splashTextFirst === first,
+	);
+};
 
 const DISPLAY_FLIP_MODES = [
 	{ label: 'form.flip-display.none', value: 0 },
@@ -36,6 +94,13 @@ const DISPLAY_SAVER_MODES = [
 	{ label: 'form.saver-modes.pipes', value: 3 },
 	{ label: 'form.saver-modes.toast', value: 4 },
 ];
+
+const SPLASH_TEXT_LINE_COUNTS = [1, 2, 3];
+const SPLASH_TEXT_MAX_LENGTH = 21;
+const SPLASH_FIELD_WIDTHS = {
+	short: { maxWidth: '8rem' },
+	text: { maxWidth: '14rem' },
+};
 
 const LAYOUT_ORIENTATION = [
 	{ label: 'form.layout-modes.standard', value: 0 },
@@ -53,22 +118,13 @@ const defaultValues = {
 	splashDuration: 0,
 	splashMode: 3,
 	splashImage: Array(16 * 64).fill(0), // 128 columns represented by bytes so 16 and 64 rows
-	buttonLayoutCustomOptions: {
-		params: {
-			layout: 0,
-			startX: 8,
-			startY: 28,
-			buttonRadius: 8,
-			buttonPadding: 2,
-		},
-		paramsRight: {
-			layout: 3,
-			startX: 8,
-			startY: 28,
-			buttonRadius: 8,
-			buttonPadding: 2,
-		},
-	},
+	splashTextEnabled: 0,
+	splashTextFirst: 0,
+	splashTextDuration: 3,
+	splashTextLineCount: 2,
+	splashTextLine1: '',
+	splashTextLine2: '',
+	splashTextLine3: '',
 	displaySaverTimeout: 0,
 	displaySaverMode: 0,
 	inputMode: true,
@@ -83,9 +139,12 @@ const defaultValues = {
 	inputHistoryRow: 7,
 	turnOffWhenSuspended: 0,
 	displayContrast: 255,
+	customLayoutA: '',
+	customLayoutB: '',
 };
 
 let buttonLayoutDefinitions = { buttonLayout: {}, buttonLayoutRight: {} };
+let customLayoutMaxPin;
 
 const buttonLayoutSchemaBase = yup.number().required();
 
@@ -93,6 +152,26 @@ let buttonLayoutSchema = buttonLayoutSchemaBase.label('Button Layout Left');
 let buttonLayoutRightSchema = buttonLayoutSchemaBase.label(
 	'Button Layout Right',
 );
+
+const customLayoutSchema = (layoutField, layout) =>
+	yup.string().when(layoutField, {
+		is: (value) => Number(value) === layout,
+		then: (schema) =>
+			schema.test('layout-code', (code, context) => {
+				const { error } = parseLayoutCode(code, customLayoutMaxPin);
+				return error === null || context.createError({ message: error });
+			}),
+	});
+
+const toDisplayOptionsRequest = (values) => {
+	const request = { ...values };
+	['customLayoutA', 'customLayoutB'].forEach((field) => {
+		const base64 = layoutCodeToBase64(values[field], customLayoutMaxPin);
+		if (base64 === null) delete request[field];
+		else request[field] = base64;
+	});
+	return request;
+};
 
 const schema = yup.object().shape({
 	enabled: yup
@@ -117,43 +196,29 @@ const schema = yup.object().shape({
 		.required()
 		.oneOf(SPLASH_MODES.map((o) => o.value))
 		.label('Splash Screen'),
-	buttonLayoutCustomOptions: yup.object().shape({
-		params: yup.object().shape({
-			layout: buttonLayoutSchema,
-			startX: yup.number().required().min(0).max(128).label('Start X'),
-			startY: yup.number().required().min(0).max(64).label('Start Y'),
-			buttonRadius: yup
-				.number()
-				.required()
-				.min(0)
-				.max(20)
-				.label('Button Radius'),
-			buttonPadding: yup
-				.number()
-				.required()
-				.min(0)
-				.max(20)
-				.label('Button Padding'),
-		}),
-		paramsRight: yup.object().shape({
-			layout: buttonLayoutRightSchema,
-			startX: yup.number().required().min(0).max(128).label('Start X'),
-			startY: yup.number().required().min(0).max(64).label('Start Y'),
-			buttonRadius: yup
-				.number()
-				.required()
-				.min(0)
-				.max(20)
-				.label('Button Radius'),
-			buttonPadding: yup
-				.number()
-				.required()
-				.min(0)
-				.max(20)
-				.label('Button Padding'),
-		}),
-	}),
 	splashDuration: yup.number().required().min(0).label('Splash Duration'),
+	splashTextEnabled: yup.number().label('Splash Text Enabled?'),
+	splashTextFirst: yup.number().label('Splash Text First?'),
+	splashTextDuration: yup
+		.number()
+		.required()
+		.min(0)
+		.label('Splash Text Duration'),
+	splashTextLineCount: yup
+		.number()
+		.required()
+		.oneOf(SPLASH_TEXT_LINE_COUNTS)
+		.label('Splash Text Lines'),
+	...Object.fromEntries(
+		SPLASH_TEXT_LINE_COUNTS.map((line) => [
+			`splashTextLine${line}`,
+			yup
+				.string()
+				.max(SPLASH_TEXT_MAX_LENGTH)
+				.matches(/^[ -~]*$/, 'Only standard keyboard characters are supported')
+				.label(`Splash Text Line ${line}`),
+		]),
+	),
 	displaySaverTimeout: yup
 		.number()
 		.required()
@@ -170,6 +235,14 @@ const schema = yup.object().shape({
 	inputHistoryLength: yup.number().label('Input History Length'),
 	inputHistoryCol: yup.number().label('Input History Column Position'),
 	inputHistoryRow: yup.number().label('Input History Row Position'),
+	customLayoutA: customLayoutSchema(
+		'buttonLayout',
+		ButtonLayout.BUTTON_LAYOUT_CUSTOM_DEFINED_A,
+	),
+	customLayoutB: customLayoutSchema(
+		'buttonLayoutRight',
+		ButtonLayoutRight.BUTTON_LAYOUT_CUSTOM_DEFINED_B,
+	),
 });
 
 const FormContext = () => {
@@ -177,7 +250,7 @@ const FormContext = () => {
 
 	useEffect(() => {
 		async function setDisplayOptions() {
-			await WebApi.setDisplayOptions(values, true);
+			await WebApi.setDisplayOptions(toDisplayOptionsRequest(values), true);
 		}
 
 		setDisplayOptions();
@@ -186,16 +259,92 @@ const FormContext = () => {
 	return null;
 };
 
-const isButtonLayoutCustom = (values) =>
-	values.buttonLayout === 12 || values.buttonLayoutRight === 16;
+const isCustomLayoutUsed = (values) =>
+	Number(values.buttonLayout) === ButtonLayout.BUTTON_LAYOUT_CUSTOM_DEFINED_A ||
+	Number(values.buttonLayoutRight) ===
+		ButtonLayoutRight.BUTTON_LAYOUT_CUSTOM_DEFINED_B;
+
+const CustomLayoutCodeEditor = ({
+	label,
+	name,
+	value,
+	error,
+	setFieldValue,
+}) => {
+	const { t } = useTranslation('');
+	const editorRef = useRef(null);
+	const { elements } = parseLayoutCode(value, customLayoutMaxPin);
+	const elementCount = elements?.length ?? 0;
+	const isJson = (() => {
+		try {
+			JSON.parse(value);
+			return true;
+		} catch {
+			return false;
+		}
+	})();
+
+	return (
+		<Form.Group>
+			<div className="d-flex justify-content-between align-items-end">
+				<Form.Label>{label}</Form.Label>
+				<Button
+					variant="link"
+					size="sm"
+					className="p-0 mb-2"
+					disabled={!isJson}
+					onClick={() => editorRef.current?.format()}
+				>
+					{t('DisplayConfig:form.custom-layout-format-button')}
+				</Button>
+			</div>
+			<JsonEditor
+				ref={editorRef}
+				name={name}
+				value={value}
+				onChange={(newValue) => setFieldValue(name, newValue)}
+				isInvalid={Boolean(error)}
+				isValid={!error && elementCount > 0}
+			/>
+			{error ? (
+				<Form.Control.Feedback type="invalid" className="d-block">
+					{error}
+				</Form.Control.Feedback>
+			) : (
+				<Form.Text muted>
+					{elementCount > 0
+						? t('DisplayConfig:form.custom-layout-element-count', {
+								count: elementCount,
+							})
+						: t('DisplayConfig:form.custom-layout-empty')}
+				</Form.Text>
+			)}
+		</Form.Group>
+	);
+};
 
 export default function DisplayConfigPage() {
 	const [loadingValues, setLoadingValues] = useState(true);
 	const [values, setValues] = useState(defaultValues);
 
-	const { updateUsedPins, getAvailablePeripherals, updatePeripherals } =
-		useContext(AppContext);
+	const {
+		buttonLabels,
+		updateUsedPins,
+		getAvailablePeripherals,
+		updatePeripherals,
+		boardDefinition,
+	} = useContext(AppContext);
+	customLayoutMaxPin = boardDefinition.maxPin;
+	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
+	const currentButtonLabels = getButtonLabels(
+		buttonLabelType,
+		swapTpShareLabels,
+	);
 	const [saveMessage, setSaveMessage] = useState('');
+	const [activeTab, setActiveTab] = useRememberedTab(
+		'displayConfigTabs',
+		'defaultHardwareOptions',
+	);
 
 	const { t } = useTranslation('');
 
@@ -203,14 +352,17 @@ export default function DisplayConfigPage() {
 		async function fetchData() {
 			const data = await WebApi.getDisplayOptions();
 			const splashImageResponse = await WebApi.getSplashImage();
-			data.splashImage = splashImageResponse.splashImage;
 			buttonLayoutDefinitions = await WebApi.getButtonLayoutDefs();
+
+			data.splashImage = splashImageResponse.splashImage;
 			buttonLayoutSchema = buttonLayoutSchema.oneOf(
 				Object.values(buttonLayoutDefinitions.buttonLayout),
 			);
 			buttonLayoutRightSchema = buttonLayoutRightSchema.oneOf(
 				Object.values(buttonLayoutDefinitions.buttonLayoutRight),
 			);
+			data.customLayoutA = base64ToLayoutCode(data.customLayoutA);
+			data.customLayoutB = base64ToLayoutCode(data.customLayoutB);
 			setValues(data);
 			setLoadingValues(false);
 		}
@@ -219,9 +371,10 @@ export default function DisplayConfigPage() {
 	}, []);
 
 	const onSuccess = async (values) => {
-		const success = await WebApi.setDisplayOptions(values, false).then(() =>
-			WebApi.setSplashImage(values),
-		);
+		const success = await WebApi.setDisplayOptions(
+			toDisplayOptionsRequest(values),
+			false,
+		).then((saved) => saved && WebApi.setSplashImage(values));
 
 		if (success) await updateUsedPins();
 
@@ -269,7 +422,8 @@ export default function DisplayConfigPage() {
 							</ul>
 							<Form noValidate onSubmit={handleSubmit}>
 								<Tabs
-									defaultActiveKey="defaultHardwareOptions"
+									activeKey={activeTab}
+									onSelect={setActiveTab}
 									id="displayConfigTabs"
 									className="mb-3 pb-0"
 									fill
@@ -400,9 +554,11 @@ export default function DisplayConfigPage() {
 															key={`buttonLayout-option-${i}`}
 															value={buttonLayoutDefinitions.buttonLayout[o]}
 														>
-															{t(`LayoutConfig:layouts.left.${o}`, {
-																defaultValue: o,
-															})}
+															{o in ButtonLayout
+																? t(`LayoutConfig:layouts.left.${o}`, {
+																		defaultValue: o,
+																	})
+																: o}
 														</option>
 													),
 												)}
@@ -426,235 +582,82 @@ export default function DisplayConfigPage() {
 														key={`buttonLayoutRight-option-${i}`}
 														value={buttonLayoutDefinitions.buttonLayoutRight[o]}
 													>
-														{t(`LayoutConfig:layouts.right.${o}`, {
-															defaultValue: o,
-														})}
+														{o in ButtonLayoutRight
+															? t(`LayoutConfig:layouts.right.${o}`, {
+																	defaultValue: o,
+																})
+															: o}
 													</option>
 												))}
 											</FormSelect>
-											<FormSelect
-												label={t(
-													'DisplayConfig:form.button-layout-orientation',
-												)}
-												name="buttonLayoutOrientation"
-												className="form-select-sm"
-												groupClassName="col-sm-3 mb-3"
-												value={values.buttonLayoutOrientation}
-												error={errors.buttonLayoutOrientation}
-												isInvalid={errors.buttonLayoutOrientation}
-												onChange={handleChange}
-											>
-												{LAYOUT_ORIENTATION.map((o, i) => (
-													<option
-														key={`buttonLayoutOrientation-option-${i}`}
-														value={o.value}
-													>
-														{t(`DisplayConfig:${o.label}`)}
-													</option>
-												))}
-											</FormSelect>
+											{!isCustomLayoutUsed(values) && (
+												<FormSelect
+													label={t(
+														'DisplayConfig:form.button-layout-orientation',
+													)}
+													name="buttonLayoutOrientation"
+													className="form-select-sm"
+													groupClassName="col-sm-3 mb-3"
+													value={values.buttonLayoutOrientation}
+													error={errors.buttonLayoutOrientation}
+													isInvalid={errors.buttonLayoutOrientation}
+													onChange={handleChange}
+												>
+													{LAYOUT_ORIENTATION.map((o, i) => (
+														<option
+															key={`buttonLayoutOrientation-option-${i}`}
+															value={o.value}
+														>
+															{t(`DisplayConfig:${o.label}`)}
+														</option>
+													))}
+												</FormSelect>
+											)}
 										</Row>
-										{isButtonLayoutCustom(values) && (
-											<Row className="mb-3">
-												<FormLabel>
-													{t('DisplayConfig:form.button-layout-custom-header')}
-												</FormLabel>
-												<Col sm="6">
-													<Form.Group as={Row} name="buttonLayoutCustomOptions">
-														<Form.Label column>
-															{t(
-																'DisplayConfig:form.button-layout-custom-left-label',
-															)}
-														</Form.Label>
-														<FormSelect
-															name="buttonLayoutCustomOptions.params.layout"
-															className="form-select-sm"
-															groupClassName="col-sm-10 mb-1"
-															value={
-																values.buttonLayoutCustomOptions.params.layout
-															}
-															onChange={handleChange}
-														>
-															{Object.keys(
-																buttonLayoutDefinitions.buttonLayout,
-															).map((o, i) => (
-																<option
-																	key={`buttonLayout-option-${i}`}
-																	value={
-																		buttonLayoutDefinitions.buttonLayout[o]
-																	}
-																>
-																	{t(`LayoutConfig:layouts.left.${o}`, {
-																		defaultValue: o,
-																	})}
-																</option>
-															))}
-														</FormSelect>
-													</Form.Group>
-													<Form.Group as={Row}>
-														<Form.Label column>
-															{t(
-																'DisplayConfig:form.button-layout-custom-start-x-label',
-															)}
-														</Form.Label>
-														<Col sm="10">
-															<Field
-																column
-																className="mb-1"
-																name="buttonLayoutCustomOptions.params.startX"
-																type="number"
-																as={Form.Control}
+										{isCustomLayoutUsed(values) && (
+											<>
+												<h1>
+													{t('DisplayConfig:section.custom-layout-header')}
+												</h1>
+												<Row className="mb-4">
+													<p>
+														{t('DisplayConfig:form.custom-layout-description')}
+													</p>
+													<p>
+														{t('DisplayConfig:form.custom-layout-preview-tip', {
+															button: currentButtonLabels.B1,
+														})}
+													</p>
+													{Number(values.buttonLayout) ===
+														ButtonLayout.BUTTON_LAYOUT_CUSTOM_DEFINED_A && (
+														<Col sm="6">
+															<CustomLayoutCodeEditor
+																label={t(
+																	'DisplayConfig:form.custom-layout-left-label',
+																)}
+																name="customLayoutA"
+																value={values.customLayoutA}
+																error={errors.customLayoutA}
+																setFieldValue={setFieldValue}
 															/>
 														</Col>
-													</Form.Group>
-													<Form.Group as={Row}>
-														<Form.Label column>
-															{t(
-																'DisplayConfig:form.button-layout-custom-start-y-label',
-															)}
-														</Form.Label>
-														<Col sm="10">
-															<Field
-																column
-																className="mb-1"
-																name="buttonLayoutCustomOptions.params.startY"
-																type="number"
-																as={Form.Control}
+													)}
+													{Number(values.buttonLayoutRight) ===
+														ButtonLayoutRight.BUTTON_LAYOUT_CUSTOM_DEFINED_B && (
+														<Col sm="6">
+															<CustomLayoutCodeEditor
+																label={t(
+																	'DisplayConfig:form.custom-layout-right-label',
+																)}
+																name="customLayoutB"
+																value={values.customLayoutB}
+																error={errors.customLayoutB}
+																setFieldValue={setFieldValue}
 															/>
 														</Col>
-													</Form.Group>
-													<Form.Group as={Row}>
-														<Form.Label column>
-															{t(
-																'DisplayConfig:form.button-layout-custom-button-radius-label',
-															)}
-														</Form.Label>
-														<Col sm="10">
-															<Field
-																column
-																className="mb-1"
-																name="buttonLayoutCustomOptions.params.buttonRadius"
-																type="number"
-																as={Form.Control}
-															/>
-														</Col>
-													</Form.Group>
-													<Form.Group as={Row}>
-														<Form.Label column>
-															{t(
-																'DisplayConfig:form.button-layout-custom-button-padding-label',
-															)}
-														</Form.Label>
-														<Col sm="10">
-															<Field
-																column
-																className="mb-1"
-																name="buttonLayoutCustomOptions.params.buttonPadding"
-																type="number"
-																as={Form.Control}
-															/>
-														</Col>
-													</Form.Group>
-												</Col>
-												<Col sm="6">
-													<Form.Group as={Row}>
-														<Form.Label column>
-															{t(
-																'DisplayConfig:form.button-layout-custom-right-label',
-															)}
-														</Form.Label>
-														<FormSelect
-															name="buttonLayoutCustomOptions.paramsRight.layout"
-															className="form-select-sm"
-															groupClassName="col-sm-10 mb-1"
-															value={
-																values.buttonLayoutCustomOptions.paramsRight
-																	.layout
-															}
-															onChange={handleChange}
-														>
-															{Object.keys(
-																buttonLayoutDefinitions.buttonLayoutRight,
-															).map((o, i) => (
-																<option
-																	key={`buttonLayoutRight-option-${i}`}
-																	value={
-																		buttonLayoutDefinitions.buttonLayoutRight[o]
-																	}
-																>
-																	{t(`LayoutConfig:layouts.right.${o}`, {
-																		defaultValue: o,
-																	})}
-																</option>
-															))}
-														</FormSelect>
-													</Form.Group>
-													<Form.Group as={Row}>
-														<Form.Label column>
-															{t(
-																'DisplayConfig:form.button-layout-custom-start-x-label',
-															)}
-														</Form.Label>
-														<Col sm="10">
-															<Field
-																column
-																className="mb-1"
-																name="buttonLayoutCustomOptions.paramsRight.startX"
-																type="number"
-																as={Form.Control}
-															/>
-														</Col>
-													</Form.Group>
-													<Form.Group as={Row}>
-														<Form.Label column>
-															{t(
-																'DisplayConfig:form.button-layout-custom-start-y-label',
-															)}
-														</Form.Label>
-														<Col sm="10">
-															<Field
-																column
-																className="mb-1"
-																name="buttonLayoutCustomOptions.paramsRight.startY"
-																type="number"
-																as={Form.Control}
-															/>
-														</Col>
-													</Form.Group>
-													<Form.Group as={Row}>
-														<Form.Label column>
-															{t(
-																'DisplayConfig:form.button-layout-custom-button-radius-label',
-															)}
-														</Form.Label>
-														<Col sm="10">
-															<Field
-																column
-																className="mb-1"
-																name="buttonLayoutCustomOptions.paramsRight.buttonRadius"
-																type="number"
-																as={Form.Control}
-															/>
-														</Col>
-													</Form.Group>
-													<Form.Group as={Row}>
-														<Form.Label column>
-															{t(
-																'DisplayConfig:form.button-layout-custom-button-padding-label',
-															)}
-														</Form.Label>
-														<Col sm="10">
-															<Field
-																column
-																className="mb-1"
-																name="buttonLayoutCustomOptions.paramsRight.buttonPadding"
-																type="number"
-																as={Form.Control}
-															/>
-														</Col>
-													</Form.Group>
-												</Col>
-											</Row>
+													)}
+												</Row>
+											</>
 										)}
 										<h1>{t('DisplayConfig:section.status-layout-header')}</h1>
 										<Row className="mb-4">
@@ -764,7 +767,6 @@ export default function DisplayConfigPage() {
 										<h1>{t('DisplayConfig:section.history-layout-header')}</h1>
 										<Row className="mb-4">
 											<div className="col-sm-2 mb-3">
-												<label></label>
 												<Form.Check
 													label={t('DisplayConfig:form.input-history-label')}
 													type="switch"
@@ -826,39 +828,194 @@ export default function DisplayConfigPage() {
 										eventKey="displayModeOptions"
 										title={t('DisplayConfig:section.mode-header')}
 									>
-										<Row className="mb-4">
+										<Row className="mb-3">
 											<FormSelect
 												label={t('DisplayConfig:form.splash-mode-label')}
 												name="splashMode"
 												className="form-select-sm"
 												groupClassName="col-sm-3 mb-3"
-												value={values.splashMode}
+												value={findSplashModeChoice(values)}
 												error={errors.splashMode}
 												isInvalid={errors.splashMode}
-												onChange={handleChange}
+												onChange={(e) => {
+													const choice =
+														SPLASH_MODE_CHOICES[parseInt(e.target.value)];
+													setFieldValue('splashMode', choice.splashMode);
+													setFieldValue(
+														'splashTextEnabled',
+														choice.splashTextEnabled,
+													);
+													setFieldValue(
+														'splashTextFirst',
+														choice.splashTextFirst,
+													);
+												}}
 											>
-												{SPLASH_MODES.map((o, i) => (
-													<option
-														key={`splashMode-option-${i}`}
-														value={o.value}
-													>
+												{SPLASH_MODE_CHOICES.map((o, i) => (
+													<option key={`splashMode-option-${i}`} value={i}>
 														{t(`DisplayConfig:${o.label}`)}
 													</option>
 												))}
 											</FormSelect>
-											<FormControl
-												type="number"
-												label={t('DisplayConfig:form.splash-duration-label')}
-												name="splashDuration"
-												className="form-select-sm"
-												groupClassName="col-sm-3 mb-3"
-												value={values.splashDuration}
-												error={errors.splashDuration}
-												isInvalid={errors.splashDuration}
-												onChange={handleChange}
-												min={0}
-											/>
 										</Row>
+										{(parseInt(values.splashMode) !== 3 ||
+											Boolean(values.splashTextEnabled)) && (
+											<>
+												<hr className="my-4" />
+												<Row>
+													{(values.splashTextFirst
+														? ['text', 'image']
+														: ['image', 'text']
+													)
+														.filter((panel) =>
+															panel === 'image'
+																? parseInt(values.splashMode) !== 3
+																: Boolean(values.splashTextEnabled),
+														)
+														.map((panel) =>
+															panel === 'image' ? (
+																<Col
+																	md={6}
+																	className="mb-3 splash-panel"
+																	key="splash-image-panel"
+																>
+																	<h1>
+																		{t(
+																			'DisplayConfig:section.splash-image-header',
+																		)}
+																	</h1>
+																	<FormControl
+																		type="number"
+																		label={t(
+																			'DisplayConfig:form.splash-duration-label',
+																		)}
+																		name="splashDuration"
+																		style={SPLASH_FIELD_WIDTHS.short}
+																		className="form-control-sm"
+																		groupClassName="mb-3"
+																		value={values.splashDuration}
+																		error={errors.splashDuration}
+																		isInvalid={errors.splashDuration}
+																		onChange={handleChange}
+																		min={0}
+																	/>
+																	<Field name="splashImage">
+																		{({
+																			field, // { name, value, onChange, onBlur }
+																			form, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
+																		}) => (
+																			<Canvas
+																				onChange={(base64) =>
+																					onChangeCanvas(base64, form, field)
+																				}
+																				value={field.value}
+																			/>
+																		)}
+																	</Field>
+																</Col>
+															) : (
+																<Col
+																	md={6}
+																	className="mb-3 splash-panel"
+																	key="splash-text-panel"
+																>
+																	<h1>
+																		{t(
+																			'DisplayConfig:section.splash-text-header',
+																		)}
+																	</h1>
+																	<FormControl
+																		type="number"
+																		label={t(
+																			'DisplayConfig:form.splash-text-duration-label',
+																		)}
+																		name="splashTextDuration"
+																		style={SPLASH_FIELD_WIDTHS.short}
+																		className="form-control-sm"
+																		groupClassName="mb-3"
+																		value={values.splashTextDuration}
+																		error={errors.splashTextDuration}
+																		isInvalid={errors.splashTextDuration}
+																		onChange={handleChange}
+																		min={0}
+																	/>
+																	<FormSelect
+																		label={t(
+																			'DisplayConfig:form.splash-text-lines-label',
+																		)}
+																		name="splashTextLineCount"
+																		style={SPLASH_FIELD_WIDTHS.short}
+																		className="form-select-sm"
+																		groupClassName="mb-3"
+																		value={values.splashTextLineCount}
+																		error={errors.splashTextLineCount}
+																		isInvalid={errors.splashTextLineCount}
+																		onChange={(e) =>
+																			setFieldValue(
+																				'splashTextLineCount',
+																				parseInt(e.target.value),
+																			)
+																		}
+																	>
+																		{SPLASH_TEXT_LINE_COUNTS.map((count) => (
+																			<option
+																				key={`splashTextLineCount-option-${count}`}
+																				value={count}
+																			>
+																				{count}
+																			</option>
+																		))}
+																	</FormSelect>
+																	{SPLASH_TEXT_LINE_COUNTS.filter(
+																		(line) =>
+																			line <= values.splashTextLineCount,
+																	).map((line) => (
+																		<FormControl
+																			key={`splashTextLine${line}`}
+																			type="text"
+																			label={t(
+																				'DisplayConfig:form.splash-text-line-label',
+																				{ line },
+																			)}
+																			name={`splashTextLine${line}`}
+																			style={SPLASH_FIELD_WIDTHS.text}
+																			className="form-control-sm"
+																			groupClassName="mb-3"
+																			value={values[`splashTextLine${line}`]}
+																			error={errors[`splashTextLine${line}`]}
+																			isInvalid={
+																				errors[`splashTextLine${line}`]
+																			}
+																			onChange={handleChange}
+																			maxLength={SPLASH_TEXT_MAX_LENGTH}
+																		/>
+																	))}
+																	<Form.Text muted as="div">
+																		<div>
+																			{t(
+																				'DisplayConfig:form.splash-text-help',
+																				{
+																					max: SPLASH_TEXT_MAX_LENGTH,
+																				},
+																			)}
+																		</div>
+																		<div>
+																			{t(
+																				'DisplayConfig:form.splash-text-preview-help',
+																				{
+																					button: currentButtonLabels['B2'],
+																				},
+																			)}
+																		</div>
+																	</Form.Text>
+																</Col>
+															),
+														)}
+												</Row>
+											</>
+										)}
+										<hr className="my-4" />
+										<h1>{t('DisplayConfig:section.display-saver-header')}</h1>
 										<Row className="mb-3">
 											<FormSelect
 												label={t('DisplayConfig:form.screen-saver-mode-label')}
@@ -879,37 +1036,25 @@ export default function DisplayConfigPage() {
 													</option>
 												))}
 											</FormSelect>
-											<FormControl
-												type="number"
-												label={t(
-													'DisplayConfig:form.display-saver-timeout-label',
-												)}
-												name="displaySaverTimeout"
-												className="form-select-sm"
-												groupClassName="col-sm-3 mb-3"
-												value={values.displaySaverTimeout}
-												error={errors.displaySaverTimeout}
-												isInvalid={errors.displaySaverTimeout}
-												onChange={handleChange}
-												min={0}
-											/>
-										</Row>
-										<Row>
-											<Field name="splashImage">
-												{({
-													field, // { name, value, onChange, onBlur }
-													form, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
-												}) => (
-													<div className="mt-3">
-														<Canvas
-															onChange={(base64) =>
-																onChangeCanvas(base64, form, field)
-															}
-															value={field.value}
-														/>
-													</div>
-												)}
-											</Field>
+											<Form.Group className="col-auto mb-3">
+												<Form.Label>
+													{t(
+														'DisplayConfig:form.display-saver-timeout-short-label',
+													)}
+												</Form.Label>
+												<Form.Control
+													type="number"
+													name="displaySaverTimeout"
+													className="form-control-sm"
+													value={values.displaySaverTimeout}
+													isInvalid={errors.displaySaverTimeout}
+													onChange={handleChange}
+													min={0}
+												/>
+												<Form.Control.Feedback type="invalid">
+													{errors.displaySaverTimeout}
+												</Form.Control.Feedback>
+											</Form.Group>
 										</Row>
 									</Tab>
 								</Tabs>

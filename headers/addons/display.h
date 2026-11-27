@@ -86,6 +86,34 @@
 #define SPLASH_DURATION 7500 // Duration in milliseconds
 #endif
 
+#ifndef SPLASH_TEXT_ENABLED
+#define SPLASH_TEXT_ENABLED 0
+#endif
+
+#ifndef SPLASH_TEXT_DURATION
+#define SPLASH_TEXT_DURATION 3000 // Duration in milliseconds
+#endif
+
+#ifndef SPLASH_TEXT_FIRST
+#define SPLASH_TEXT_FIRST 0 // 1 = show the text before the splash image
+#endif
+
+#ifndef SPLASH_TEXT_LINE_COUNT
+#define SPLASH_TEXT_LINE_COUNT 2 // 1 to 3
+#endif
+
+#ifndef SPLASH_TEXT_LINE1
+#define SPLASH_TEXT_LINE1 "" // Max 21 characters per line
+#endif
+
+#ifndef SPLASH_TEXT_LINE2
+#define SPLASH_TEXT_LINE2 ""
+#endif
+
+#ifndef SPLASH_TEXT_LINE3
+#define SPLASH_TEXT_LINE3 ""
+#endif
+
 #ifndef DISPLAY_TURN_OFF_WHEN_SUSPENDED
 #define DISPLAY_TURN_OFF_WHEN_SUSPENDED 0
 #endif

@@ -555,7 +555,6 @@ static bool isValidButtonLayout(ConfigLegacy::ButtonLayout buttonLayout)
         case BUTTON_LAYOUT_VLXA:
         case BUTTON_LAYOUT_FIGHTBOARD_STICK:
         case BUTTON_LAYOUT_FIGHTBOARD_MIRRORED:
-        case BUTTON_LAYOUT_CUSTOMA:
         case BUTTON_LAYOUT_OPENCORE0WASDA:
         case BUTTON_LAYOUT_STICKLESS_13:
         case BUTTON_LAYOUT_STICKLESS_16:
@@ -585,7 +584,6 @@ static bool isValidButtonLayoutRight(ConfigLegacy::ButtonLayoutRight buttonLayou
         case BUTTON_LAYOUT_VLXB:
         case BUTTON_LAYOUT_FIGHTBOARD:
         case BUTTON_LAYOUT_FIGHTBOARD_STICK_MIRRORED:
-        case BUTTON_LAYOUT_CUSTOMB:
         case BUTTON_LAYOUT_KEYBOARD8B:
         case BUTTON_LAYOUT_OPENCORE0WASDB:
         case BUTTON_LAYOUT_STICKLESS_13B:
@@ -812,27 +810,6 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
             SET_PROPERTY(displayOptions, buttonLayoutRight, static_cast<ButtonLayoutRight>(legacyBoardOptions.buttonLayoutRight));
         }
 
-        const ConfigLegacy::ButtonLayoutParams& legacyParams = legacyBoardOptions.buttonLayoutCustomOptions.params;
-        ButtonLayoutParamsLeft& params = displayOptions.buttonLayoutCustomOptions.paramsLeft;
-        if (isValidButtonLayout(legacyParams.layout))
-        {
-            SET_PROPERTY(params, layout, static_cast<ButtonLayout>(legacyParams.layout));
-        }
-        SET_PROPERTY(params.common, startX, legacyParams.startX);
-        SET_PROPERTY(params.common, startY, legacyParams.startY);
-        SET_PROPERTY(params.common, buttonRadius, legacyParams.buttonRadius);
-        SET_PROPERTY(params.common, buttonPadding, legacyParams.buttonPadding);
-
-        const ConfigLegacy::ButtonLayoutParams& legacyParamsRight = legacyBoardOptions.buttonLayoutCustomOptions.paramsRight;
-        ButtonLayoutParamsRight& paramsRight = displayOptions.buttonLayoutCustomOptions.paramsRight;
-        if (isValidButtonLayoutRight(legacyParamsRight.layoutRight))
-        {
-            SET_PROPERTY(paramsRight, layout, static_cast<ButtonLayoutRight>(legacyParamsRight.layoutRight));
-        }
-        SET_PROPERTY(paramsRight.common, startX, legacyParamsRight.startX);
-        SET_PROPERTY(paramsRight.common, startY, legacyParamsRight.startY);
-        SET_PROPERTY(paramsRight.common, buttonRadius, legacyParamsRight.buttonRadius);
-        SET_PROPERTY(paramsRight.common, buttonPadding, legacyParamsRight.buttonPadding);
         if (isValidSplashMode(legacyBoardOptions.splashMode))
         {
             SET_PROPERTY(displayOptions, splashMode, static_cast<SplashMode>(legacyBoardOptions.splashMode));
@@ -960,14 +937,14 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         SET_PROPERTY(reverseOptions, actionLeft, legacyAddonOptions.reverseActionLeft);
         SET_PROPERTY(reverseOptions, actionRight, legacyAddonOptions.reverseActionRight);
 
-        SOCDSliderOptions& socdSliderOptions = config.addonOptions.socdSliderOptions;
-        config.addonOptions.has_socdSliderOptions = true;
+        SOCDSliderOptions& socdSliderOptions = config.addonOptions.deprecatedSocdSliderOptions;
+        config.addonOptions.has_deprecatedSocdSliderOptions = true;
         SET_PROPERTY(socdSliderOptions, enabled, legacyAddonOptions.SliderSOCDInputEnabled);
         SET_PROPERTY(socdSliderOptions, deprecatedPinOne, bytePinToIntPin(legacyAddonOptions.pinSliderSOCDOne));
         SET_PROPERTY(socdSliderOptions, deprecatedPinTwo, bytePinToIntPin(legacyAddonOptions.pinSliderSOCDTwo));
         if (isValidSOCDMode(legacyAddonOptions.sliderSOCDModeDefault))
         {
-            SET_PROPERTY(socdSliderOptions, modeDefault, static_cast<SOCDMode>(legacyAddonOptions.sliderSOCDModeDefault));
+            SET_PROPERTY(socdSliderOptions, deprecatedModeDefault, static_cast<SOCDMode>(legacyAddonOptions.sliderSOCDModeDefault));
         }
         if (isValidSOCDMode(legacyAddonOptions.sliderSOCDModeOne))
         {

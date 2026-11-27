@@ -38,12 +38,15 @@ public:
 	PinMappings& getDeprecatedPinMappings() { return config.deprecatedPinMappings; }
 	GpioMappings& getGpioMappings() { return config.gpioMappings; }
 	KeyboardMapping& getKeyboardMapping() { return config.keyboardMapping; }
+	KeyboardMapping& getActiveKeyboardMapping() { return *activeKeyboardMapping; }
+	GpioMappings& getActiveProfileMappings() { return *activeProfileMappings; }
 	DisplayOptions& getDisplayOptions() { return config.displayOptions; }
 	LEDOptions& getLedOptions() { return config.ledOptions; }
 	AddonOptions& getAddonOptions() { return config.addonOptions; }
 	AnimationOptions& getAnimationOptions() { return config.animationOptions; }
 	ProfileOptions& getProfileOptions() { return config.profileOptions; }
 	GpioMappingInfo* getProfilePinMappings() { return functionalPinMappings; }
+	Mask_t getPressedGpios() const;
 	PeripheralOptions& getPeripheralOptions() { return config.peripheralOptions; }
 	BootModeOptions& getBootModeOptions() { return config.bootModeOptions; }
 
@@ -76,6 +79,10 @@ private:
 	uint8_t featureData[32]; // USB X-Input Feature Data
 	Config config;
 	GpioMappingInfo functionalPinMappings[NUM_BANK0_GPIOS];
+	KeyboardMapping* activeKeyboardMapping = &config.keyboardMapping;
+	GpioMappings* activeProfileMappings = &config.gpioMappings;
+	Mask_t invertedPins = 0;
+	void setInvertedPins(const GpioMappings& mappings);
 	uint32_t systemFlashSize;
 };
 

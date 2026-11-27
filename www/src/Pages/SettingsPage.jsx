@@ -15,18 +15,31 @@ import BluetoothSettings from '../Components/BluetoothSettings';
 import KeyboardMapper from '../Components/KeyboardMapper';
 import Switch2ProController from '../Icons/Switch2ProController';
 import JoyCon2Controller from '../Icons/JoyCon2Controller';
+import SwitchProController from '../Icons/SwitchProController';
+import JoyConController from '../Icons/JoyConController';
+import JoyConPairController from '../Icons/JoyConPairController';
 import Section from '../Components/Section';
 import WebApi, { baseButtonMappings } from '../Services/WebApi';
+import AdvancedSOCD, {
+	ADVANCED_SOCD_SLOTS,
+	advancedSOCDScheme,
+	getAdvancedSOCDLabel,
+	getEnabledAdvancedSOCDSlots,
+} from '../Components/AdvancedSOCD';
 import { BUTTON_MASKS_OPTIONS, getButtonLabels } from '../Data/Buttons';
 
 import { hexToInt, rgbIntToHex } from '../Services/Utilities';
 
 import {
 	InputModeDeviceType,
+	KeyboardInterfaceXInputMode,
 	PS4ControllerType,
 	Switch2ProColorPreset,
 	Switch2ProJoyCon2ColorPreset,
 	Switch2ProIdentity,
+	SwitchProColorPreset,
+	SwitchProJoyConColorPreset,
+	SwitchProControllerType,
 } from '@proto/enums';
 
 import './SettingsPage.scss';
@@ -35,6 +48,7 @@ import {
 	useBootModeStore,
 	useBootModeStoreActions,
 } from '../Store/useBootModesStore';
+import { useRememberedTab } from '../Hooks/useRememberedTab';
 
 const SHA256 = (ascii) => {
 	function rightRotate(value, amount) {
@@ -145,44 +159,37 @@ const INPUT_BOOT_MODES = [
 	{
 		labelKey: 'input-mode-options.xbone',
 		value: 5,
-		group: 'primary',
+		group: 'microsoft',
 		required: ['usb'],
 	},
-	{ labelKey: 'input-mode-options.xboxoriginal', value: 12, group: 'primary' },
-	{ labelKey: 'input-mode-options.ps3', value: 2, group: 'primary' },
+	{ labelKey: 'input-mode-options.xboxoriginal', value: 12, group: 'microsoft' },
+	{ labelKey: 'input-mode-options.ps3', value: 2, group: 'sony' },
 	{
 		labelKey: 'input-mode-options.ps4',
 		value: 4,
-		group: 'primary',
+		group: 'sony',
 		optional: ['usb'],
 	},
 	{
 		labelKey: 'input-mode-options.ps5',
 		value: 13,
-		group: 'primary',
+		group: 'sony',
 		optional: ['usb'],
-	},
-	{
-		labelKey: 'input-mode-options.p5general',
-		value: 16,
-		group: 'primary',
-		optional: ['usb'],
-		authentication: ['usb'],
 	},
 	{
 		labelKey: 'input-mode-options.nintendo-switch',
 		value: 1,
-		group: 'primary',
+		group: 'nintendo',
 	},
 	{
 		labelKey: 'input-mode-options.nintendo-switch-pro',
 		value: 15,
-		group: 'primary',
+		group: 'nintendo',
 	},
 	{
 		labelKey: 'input-mode-options.nintendo-switch2-pro',
 		value: 19,
-		group: 'primary',
+		group: 'nintendo',
 	},
 	{ labelKey: 'input-mode-options.keyboard', value: 3, group: 'primary' },
 	{ labelKey: 'input-mode-options.generic', value: 14, group: 'primary' },
@@ -198,8 +205,11 @@ const INPUT_BOOT_MODES = [
 
 const INPUT_MODE_GROUPS = [
 	{ labelKey: 'input-mode-group.primary', value: 0, group: 'primary' },
-	{ labelKey: 'input-mode-group.mini', value: 1, group: 'mini' },
-	{ labelKey: 'input-mode-group.wireless', value: 2, group: 'wireless' },
+	{ labelKey: 'input-mode-group.sony', value: 1, group: 'sony' },
+	{ labelKey: 'input-mode-group.nintendo', value: 2, group: 'nintendo' },
+	{ labelKey: 'input-mode-group.microsoft', value: 3, group: 'microsoft' },
+	{ labelKey: 'input-mode-group.mini', value: 4, group: 'mini' },
+	{ labelKey: 'input-mode-group.wireless', value: 5, group: 'wireless' },
 ];
 
 const DPAD_MODES = [
@@ -207,6 +217,10 @@ const DPAD_MODES = [
 	{ labelKey: 'd-pad-mode-options.left-analog', value: 1 },
 	{ labelKey: 'd-pad-mode-options.right-analog', value: 2 },
 ];
+
+const HOTKEY_SOCD_ADVANCED_1 = 88;
+const getAdvancedSOCDHotkeySlot = (action) =>
+	ADVANCED_SOCD_SLOTS[Number(action) - HOTKEY_SOCD_ADVANCED_1];
 
 const SOCD_MODES = [
 	{ labelKey: 'socd-cleaning-mode-options.up-priority', value: 0 },
@@ -221,9 +235,331 @@ const PS4_MODES = [
 	{ labelKey: 'ps4-mode-options.arcadestick', value: 7 },
 ];
 
+const SWITCH_PRO_CONTROLLER_TYPES = [
+	{
+		labelKey: 'pro',
+		value: SwitchProControllerType.SWITCH_PRO_CONTROLLER_TYPE_PRO,
+	},
+	{
+		labelKey: 'snes',
+		value: SwitchProControllerType.SWITCH_PRO_CONTROLLER_TYPE_SNES,
+	},
+	{
+		labelKey: 'super-famicom',
+		value: SwitchProControllerType.SWITCH_PRO_CONTROLLER_TYPE_SUPER_FAMICOM,
+	},
+	{
+		labelKey: 'n64',
+		value: SwitchProControllerType.SWITCH_PRO_CONTROLLER_TYPE_N64,
+	},
+	{
+		labelKey: 'genesis',
+		value: SwitchProControllerType.SWITCH_PRO_CONTROLLER_TYPE_GENESIS,
+	},
+	{
+		labelKey: 'mega-drive',
+		value: SwitchProControllerType.SWITCH_PRO_CONTROLLER_TYPE_MEGA_DRIVE,
+	},
+	{
+		labelKey: 'nes',
+		value: SwitchProControllerType.SWITCH_PRO_CONTROLLER_TYPE_NES,
+	},
+	{
+		labelKey: 'famicom-i',
+		value: SwitchProControllerType.SWITCH_PRO_CONTROLLER_TYPE_FAMICOM_I,
+	},
+	{
+		labelKey: 'famicom-ii',
+		value: SwitchProControllerType.SWITCH_PRO_CONTROLLER_TYPE_FAMICOM_II,
+	},
+	{
+		labelKey: 'joycon-left',
+		value: SwitchProControllerType.SWITCH_PRO_CONTROLLER_TYPE_JOYCON_LEFT,
+	},
+	{
+		labelKey: 'joycon-right',
+		value: SwitchProControllerType.SWITCH_PRO_CONTROLLER_TYPE_JOYCON_RIGHT,
+	},
+	{
+		labelKey: 'joycon-pair',
+		value: SwitchProControllerType.SWITCH_PRO_CONTROLLER_TYPE_JOYCON_PAIR,
+	},
+];
+
+const SWITCH_PRO_COLOR_PARTS = [
+	{ labelKey: 'body', field: 'switchProBodyColor', svgPart: 'body' },
+	{ labelKey: 'buttons', field: 'switchProButtonsColor', svgPart: 'buttons' },
+	{
+		labelKey: 'left-grip',
+		field: 'switchProLeftGripColor',
+		svgPart: 'leftGrip',
+	},
+	{
+		labelKey: 'right-grip',
+		field: 'switchProRightGripColor',
+		svgPart: 'rightGrip',
+	},
+];
+
+const SWITCH_PRO_COLOR_PRESETS = [
+	{
+		labelKey: 'stock',
+		value: SwitchProColorPreset.SWITCH_PRO_COLOR_STOCK,
+		colors: {
+			switchProBodyColor: 0x323232,
+			switchProButtonsColor: 0xffffff,
+			switchProLeftGripColor: 0x323232,
+			switchProRightGripColor: 0x323232,
+		},
+	},
+	{
+		labelKey: 'splat',
+		value: SwitchProColorPreset.SWITCH_PRO_COLOR_SPLAT,
+		colors: {
+			switchProBodyColor: 0x313232,
+			switchProButtonsColor: 0xffffff,
+			switchProLeftGripColor: 0x1edc00,
+			switchProRightGripColor: 0xff3278,
+		},
+	},
+	{
+		labelKey: 'xblade',
+		value: SwitchProColorPreset.SWITCH_PRO_COLOR_XBLADE,
+		colors: {
+			switchProBodyColor: 0x323132,
+			switchProButtonsColor: 0xffffff,
+			switchProLeftGripColor: 0xdd3b64,
+			switchProRightGripColor: 0xdd3b64,
+		},
+	},
+	{
+		labelKey: 'legendary-tears',
+		value: SwitchProColorPreset.SWITCH_PRO_COLOR_LEGENDARY_TEARS,
+		colors: {
+			switchProBodyColor: 0x2d2d2d,
+			switchProButtonsColor: 0xe6e6e6,
+			switchProLeftGripColor: 0x464646,
+			switchProRightGripColor: 0xffffff,
+		},
+	},
+	{
+		labelKey: 'gp2040',
+		value: SwitchProColorPreset.SWITCH_PRO_COLOR_GP2040,
+		colors: {
+			switchProBodyColor: 0x333333,
+			switchProButtonsColor: 0xffffff,
+			switchProLeftGripColor: 0xec008c,
+			switchProRightGripColor: 0x00ff00,
+		},
+	},
+	{ labelKey: 'custom', value: SwitchProColorPreset.SWITCH_PRO_COLOR_CUSTOM },
+];
+
+const JOYCON_COLOR_FIELDS = {
+	left: {
+		body: 'switchProJoyConLeftBodyColor',
+		buttons: 'switchProJoyConLeftButtonsColor',
+	},
+	right: {
+		body: 'switchProJoyConRightBodyColor',
+		buttons: 'switchProJoyConRightButtonsColor',
+	},
+};
+
+const JOYCON_COLOR_PRESETS = [
+	{
+		labelKey: 'grey',
+		value: SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_GREY,
+		colors: {
+			left: { body: 0x828282, buttons: 0x0f0f0f },
+			right: { body: 0x828282, buttons: 0x0f0f0f },
+		},
+	},
+	{
+		labelKey: 'neon',
+		value: SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_NEON,
+		colors: {
+			left: { body: 0x0ab9e6, buttons: 0x001e1e },
+			right: { body: 0xff3c28, buttons: 0x1e0a0a },
+		},
+	},
+	{
+		labelKey: 'white',
+		value: SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_WHITE,
+		colors: {
+			left: { body: 0xe6e6e6, buttons: 0x323232 },
+			right: { body: 0xe6e6e6, buttons: 0x323232 },
+		},
+	},
+	{
+		labelKey: 'black',
+		value: SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_BLACK,
+		colors: {
+			left: { body: 0x313131, buttons: 0x0f0f0f },
+			right: { body: 0x313131, buttons: 0x0f0f0f },
+		},
+	},
+	{
+		labelKey: 'blue',
+		value: SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_BLUE,
+		colors: {
+			left: { body: 0x4655f5, buttons: 0x00000a },
+			right: { body: 0x4655f5, buttons: 0x00000a },
+		},
+	},
+	{
+		labelKey: 'neon-yellow',
+		value: SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_NEON_YELLOW,
+		colors: {
+			left: { body: 0xe6ff00, buttons: 0x142800 },
+			right: { body: 0xe6ff00, buttons: 0x142800 },
+		},
+	},
+	{
+		labelKey: 'neon-green-pink',
+		value: SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_NEON_GREEN_PINK,
+		colors: {
+			left: { body: 0x1edc00, buttons: 0x002800 },
+			right: { body: 0xff3278, buttons: 0x28001e },
+		},
+	},
+	{
+		labelKey: 'neon-purple-orange',
+		value:
+			SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_NEON_PURPLE_ORANGE,
+		colors: {
+			left: { body: 0xb400e6, buttons: 0x140014 },
+			right: { body: 0xfaa005, buttons: 0x0f0a00 },
+		},
+	},
+	{
+		labelKey: 'pastel-pink-yellow',
+		value:
+			SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_PASTEL_PINK_YELLOW,
+		colors: {
+			left: { body: 0xffafaf, buttons: 0x372d2d },
+			right: { body: 0xf5ff82, buttons: 0x32332d },
+		},
+	},
+	{
+		labelKey: 'pastel-purple-green',
+		value:
+			SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_PASTEL_PURPLE_GREEN,
+		colors: {
+			left: { body: 0xf0cbeb, buttons: 0x373037 },
+			right: { body: 0xbcffc8, buttons: 0x2d322d },
+		},
+	},
+	{
+		labelKey: 'animal-x',
+		value: SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_ANIMAL_X,
+		colors: {
+			left: { body: 0x82ff96, buttons: 0x0a1e0a },
+			right: { body: 0x96f5f5, buttons: 0x0a1e28 },
+		},
+	},
+	{
+		labelKey: 'monster',
+		value: SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_MONSTER,
+		colors: {
+			left: { body: 0x818282, buttons: 0x0e0f0f },
+			right: { body: 0x818282, buttons: 0x0e0f0f },
+		},
+	},
+	{
+		labelKey: 'plumber-red',
+		value: SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_PLUMBER_RED,
+		colors: {
+			left: { body: 0xe10f00, buttons: 0x280a0a },
+			right: { body: 0xe10f00, buttons: 0x280a0a },
+		},
+	},
+	{
+		labelKey: 'plumber-red-blue',
+		value: SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_PLUMBER_RED_BLUE,
+		colors: {
+			left: { body: 0xf04614, buttons: 0x1e1914 },
+			right: { body: 0xf04614, buttons: 0x1e1914 },
+		},
+	},
+	{
+		labelKey: 'fort',
+		value: SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_FORT,
+		colors: {
+			left: { body: 0x0084ff, buttons: 0x000f1e },
+			right: { body: 0xffcc00, buttons: 0x1a1100 },
+		},
+	},
+	{
+		labelKey: 'legendary-sword',
+		value: SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_LEGENDARY_SWORD,
+		colors: {
+			left: { body: 0x2d50f0, buttons: 0x1e0f46 },
+			right: { body: 0x500fc8, buttons: 0x00051e },
+		},
+	},
+	{
+		labelKey: 'legendary-tears',
+		value: SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_LEGENDARY_TEARS,
+		colors: {
+			left: { body: 0xd2be69, buttons: 0x32322d },
+			right: { body: 0xd2be69, buttons: 0x32322d },
+		},
+	},
+	{
+		labelKey: 'splat',
+		value: SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_SPLAT,
+		colors: {
+			left: { body: 0x6455f5, buttons: 0x28282d },
+			right: { body: 0xc3fa05, buttons: 0x1e1e28 },
+		},
+	},
+	{
+		labelKey: 'pocket',
+		value: SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_POCKET,
+		colors: {
+			left: { body: 0xf07341, buttons: 0x322d1e },
+			right: { body: 0x9650aa, buttons: 0x32322d },
+		},
+	},
+	{
+		labelKey: 'gp2040',
+		value: SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_GP2040,
+		colors: {
+			left: { body: 0xec008c, buttons: 0x0f0f0f },
+			right: { body: 0x00ff00, buttons: 0x0f0f0f },
+		},
+	},
+	{
+		labelKey: 'custom',
+		value: SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_CUSTOM,
+	},
+];
+
 const PS4_ID_MODES = [
 	{ labelKey: 'ps4-id-mode-options.console', value: 0 },
 	{ labelKey: 'ps4-id-mode-options.emulation', value: 1 },
+];
+
+const GENERIC_DPAD_MODES = [
+	{ labelKey: 'generic-dpad-mode-options.hat-and-buttons', value: 0 },
+	{ labelKey: 'generic-dpad-mode-options.hat-only', value: 1 },
+	{ labelKey: 'generic-dpad-mode-options.buttons-only', value: 2 },
+];
+
+const KEYBOARD_INTERFACE_XINPUT_MODES = [
+	{
+		labelKey: 'keyboard-interface-xinput-mode-options.off',
+		value: KeyboardInterfaceXInputMode.KEYBOARD_INTERFACE_XINPUT_MODE_OFF,
+	},
+	{
+		labelKey: 'keyboard-interface-xinput-mode-options.on',
+		value: KeyboardInterfaceXInputMode.KEYBOARD_INTERFACE_XINPUT_MODE_ON,
+	},
+	{
+		labelKey: 'keyboard-interface-xinput-mode-options.auto',
+		value: KeyboardInterfaceXInputMode.KEYBOARD_INTERFACE_XINPUT_MODE_AUTO,
+	},
 ];
 
 const SWITCH2_PRO_IDENTITIES = [
@@ -250,6 +586,27 @@ const SWITCH2_PRO_COLOR_PARTS = [
 		field: 'switch2ProHighlightColor',
 		svgPart: 'highlight',
 	},
+	{ labelKey: 'sticks', field: 'switch2ProStickColor', svgPart: 'sticks' },
+	{
+		labelKey: 'left-shoulder',
+		field: 'switch2ProLeftShoulderColor',
+		svgPart: 'leftShoulder',
+	},
+	{
+		labelKey: 'right-shoulder',
+		field: 'switch2ProRightShoulderColor',
+		svgPart: 'rightShoulder',
+	},
+	{
+		labelKey: 'left-ring',
+		field: 'switch2ProLeftRingColor',
+		svgPart: 'leftRing',
+	},
+	{
+		labelKey: 'right-ring',
+		field: 'switch2ProRightRingColor',
+		svgPart: 'rightRing',
+	},
 	{ labelKey: 'main-body', field: 'switch2ProGripColor', svgPart: 'grip' },
 ];
 
@@ -262,6 +619,26 @@ const SWITCH2_PRO_COLOR_PRESETS = [
 			switch2ProButtonsColor: 0xa0a0a0,
 			switch2ProHighlightColor: 0xe6e6e6,
 			switch2ProGripColor: 0x323232,
+			switch2ProLeftShoulderColor: 0xe6e6e6,
+			switch2ProRightShoulderColor: 0xe6e6e6,
+			switch2ProStickColor: 0x232323,
+			switch2ProLeftRingColor: 0xe6e6e6,
+			switch2ProRightRingColor: 0xe6e6e6,
+		},
+	},
+	{
+		labelKey: 'legendary',
+		value: Switch2ProColorPreset.SWITCH2_PRO_COLOR_LEGENDARY,
+		colors: {
+			switch2ProBodyColor: 0x2b3631,
+			switch2ProButtonsColor: 0xa0a0a0,
+			switch2ProHighlightColor: 0xf2eb5e,
+			switch2ProGripColor: 0x34a049,
+			switch2ProLeftShoulderColor: 0xf2eb5e,
+			switch2ProRightShoulderColor: 0xf2eb5e,
+			switch2ProStickColor: 0x2b3631,
+			switch2ProLeftRingColor: 0x34a049,
+			switch2ProRightRingColor: 0xf2eb5e,
 		},
 	},
 	{
@@ -272,6 +649,11 @@ const SWITCH2_PRO_COLOR_PRESETS = [
 			switch2ProButtonsColor: 0xffffff,
 			switch2ProHighlightColor: 0x00ff00,
 			switch2ProGripColor: 0xec008c,
+			switch2ProLeftShoulderColor: 0x00ff00,
+			switch2ProRightShoulderColor: 0x00ff00,
+			switch2ProStickColor: 0x1b1b1d,
+			switch2ProLeftRingColor: 0x00ff00,
+			switch2ProRightRingColor: 0x00ff00,
 		},
 	},
 	{
@@ -327,6 +709,24 @@ const JOYCON2_COLOR_PRESETS = [
 		labelKey: 'blue-yellow',
 		value: Switch2ProJoyCon2ColorPreset.SWITCH2_PRO_JOYCON2_COLOR_BLUE_YELLOW,
 		colors: joyCon2Colors(0x2b4cff, 0xfff066),
+	},
+	{
+		labelKeys: { left: 'legendary-left', right: 'legendary-right' },
+		value: Switch2ProJoyCon2ColorPreset.SWITCH2_PRO_JOYCON2_COLOR_LEGENDARY,
+		colors: {
+			left: {
+				body: 0x34a049,
+				buttons: 0x264623,
+				accent: 0xfcff7d,
+				stick: 0x364933,
+			},
+			right: {
+				body: 0x92dd9e,
+				buttons: 0x264623,
+				accent: 0xfcff7d,
+				stick: 0x364933,
+			},
+		},
 	},
 	{
 		labelKey: 'gp2040',
@@ -415,6 +815,10 @@ const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.rs-down', value: 83 },
 	{ labelKey: 'hotkey-actions.rs-left', value: 84 },
 	{ labelKey: 'hotkey-actions.rs-right', value: 85 },
+	{ labelKey: 'hotkey-actions.socd-advanced-1', value: 88 },
+	{ labelKey: 'hotkey-actions.socd-advanced-2', value: 89 },
+	{ labelKey: 'hotkey-actions.socd-advanced-3', value: 90 },
+	{ labelKey: 'hotkey-actions.socd-advanced-4', value: 91 },
 ];
 
 const FORCED_SETUP_MODES = [
@@ -502,8 +906,12 @@ const schema = yup.object().shape({
 	socdMode: yup
 		.number()
 		.required()
-		.oneOf(SOCD_MODES.map((o) => o.value))
+		.oneOf([
+			...SOCD_MODES.map((o) => o.value),
+			...ADVANCED_SOCD_SLOTS.map((o) => o.value),
+		])
 		.label('SOCD Cleaning Mode'),
+	...advancedSOCDScheme,
 	switchTpShareForDs4: yup
 		.number()
 		.required()
@@ -513,6 +921,30 @@ const schema = yup.object().shape({
 		.required()
 		.oneOf(PS4_ID_MODES.map((o) => o.value))
 		.label('PS4 Controller Identification Mode'),
+	switchProControllerType: yup
+		.number()
+		.oneOf(SWITCH_PRO_CONTROLLER_TYPES.map((o) => o.value))
+		.label('Switch Pro Controller Type'),
+	switchProColorPreset: yup
+		.number()
+		.oneOf(SWITCH_PRO_COLOR_PRESETS.map((o) => o.value))
+		.label('Switch Pro Controller Colors'),
+	switchProBodyColor: yup.number().label('Switch Pro Body Color'),
+	switchProButtonsColor: yup.number().label('Switch Pro Buttons Color'),
+	switchProLeftGripColor: yup.number().label('Switch Pro Left Grip Color'),
+	switchProRightGripColor: yup.number().label('Switch Pro Right Grip Color'),
+	switchProJoyConColorPreset: yup
+		.number()
+		.oneOf(JOYCON_COLOR_PRESETS.map((o) => o.value))
+		.label('Joy-Con Colors'),
+	switchProJoyConLeftBodyColor: yup.number().label('Joy-Con (L) Body Color'),
+	switchProJoyConLeftButtonsColor: yup
+		.number()
+		.label('Joy-Con (L) Buttons Color'),
+	switchProJoyConRightBodyColor: yup.number().label('Joy-Con (R) Body Color'),
+	switchProJoyConRightButtonsColor: yup
+		.number()
+		.label('Joy-Con (R) Buttons Color'),
 	switch2ProJoyCon2ColorPreset: yup
 		.number()
 		.oneOf(JOYCON2_COLOR_PRESETS.map((o) => o.value))
@@ -553,6 +985,20 @@ const schema = yup.object().shape({
 	switch2ProButtonsColor: yup.number().label('Switch 2 Pro Buttons Color'),
 	switch2ProHighlightColor: yup.number().label('Switch 2 Pro Highlight Color'),
 	switch2ProGripColor: yup.number().label('Switch 2 Pro Grip Color'),
+	switch2ProLeftShoulderColor: yup
+		.number()
+		.label('Switch 2 Pro Left Shoulder Color'),
+	switch2ProRightShoulderColor: yup
+		.number()
+		.label('Switch 2 Pro Right Shoulder Color'),
+	switch2ProStickColor: yup.number().label('Switch 2 Pro Stick Color'),
+	switch2ProLeftRingColor: yup.number().label('Switch 2 Pro Left Ring Color'),
+	switch2ProRightRingColor: yup.number().label('Switch 2 Pro Right Ring Color'),
+	genericDpadMode: yup
+		.number()
+		.required()
+		.oneOf(GENERIC_DPAD_MODES.map((o) => o.value))
+		.label('Generic HID D-Pad Mode'),
 	forcedSetupMode: yup
 		.number()
 		.required()
@@ -578,6 +1024,12 @@ const schema = yup.object().shape({
 		.label('X-Input Authentication Type'),
 	debounceDelay: yup.number().required().label('Debounce Delay'),
 	miniMenuGamepadInput: yup.number().required().label('Mini Menu'),
+	keyboardInterfaceEnabled: yup.number().required().label('Keyboard Interface'),
+	keyboardInterfaceXInputMode: yup
+		.number()
+		.required()
+		.oneOf(KEYBOARD_INTERFACE_XINPUT_MODES.map((o) => o.value))
+		.label('XInput Keyboard'),
 	inputModeB1: yup
 		.number()
 		.required()
@@ -637,7 +1089,10 @@ const FormContext = ({ setButtonLabels, setKeyMappings }) => {
 				swapTpShareLabels:
 					options.switchTpShareForDs4 === 1 && options.inputMode === 4,
 			});
-			setKeyMappings(await WebApi.getKeyMappings(setLoading));
+			setKeyMappings([
+				await WebApi.getKeyMappings(setLoading),
+				...(await WebApi.getProfileKeyMappings()),
+			]);
 		}
 		fetchData();
 	}, [setKeyMappings, setValues]);
@@ -646,6 +1101,13 @@ const FormContext = ({ setButtonLabels, setKeyMappings }) => {
 		if (!!values.dpadMode) values.dpadMode = parseInt(values.dpadMode);
 		if (!!values.inputMode) values.inputMode = parseInt(values.inputMode);
 		if (!!values.socdMode) values.socdMode = parseInt(values.socdMode);
+		if (values.advancedSOCDEnabled !== undefined)
+			values.advancedSOCDEnabled = parseInt(values.advancedSOCDEnabled);
+		ADVANCED_SOCD_SLOTS.forEach(({ enabledKey, upDownKey, leftRightKey }) => {
+			[enabledKey, upDownKey, leftRightKey].forEach((key) => {
+				if (values[key] !== undefined) values[key] = parseInt(values[key]);
+			});
+		});
 		if (!!values.switchTpShareForDs4)
 			values.switchTpShareForDs4 = parseInt(values.switchTpShareForDs4);
 		if (!!values.forcedSetupMode)
@@ -662,6 +1124,14 @@ const FormContext = ({ setButtonLabels, setKeyMappings }) => {
 			values.ps4ControllerIDMode = parseInt(values.ps4ControllerIDMode);
 		if (!!values.inputDeviceType)
 			values.inputDeviceType = parseInt(values.inputDeviceType);
+		if (!!values.switchProControllerType)
+			values.switchProControllerType = parseInt(values.switchProControllerType);
+		if (!!values.switchProColorPreset)
+			values.switchProColorPreset = parseInt(values.switchProColorPreset);
+		if (!!values.switchProJoyConColorPreset)
+			values.switchProJoyConColorPreset = parseInt(
+				values.switchProJoyConColorPreset,
+			);
 		if (!!values.switch2ProIdentity)
 			values.switch2ProIdentity = parseInt(values.switch2ProIdentity);
 		if (!!values.switch2ProJoyCon2ColorPreset)
@@ -670,6 +1140,16 @@ const FormContext = ({ setButtonLabels, setKeyMappings }) => {
 			);
 		if (!!values.switch2ProColorPreset)
 			values.switch2ProColorPreset = parseInt(values.switch2ProColorPreset);
+		if (!!values.genericDpadMode)
+			values.genericDpadMode = parseInt(values.genericDpadMode);
+		if (!!values.keyboardInterfaceEnabled)
+			values.keyboardInterfaceEnabled = parseInt(
+				values.keyboardInterfaceEnabled,
+			);
+		if (!!values.keyboardInterfaceXInputMode)
+			values.keyboardInterfaceXInputMode = parseInt(
+				values.keyboardInterfaceXInputMode,
+			);
 
 		setButtonLabels({
 			swapTpShareLabels:
@@ -692,6 +1172,10 @@ const FormContext = ({ setButtonLabels, setKeyMappings }) => {
 };
 
 export default function SettingsPage() {
+	const [activeTab, setActiveTab] = useRememberedTab(
+		'settingsTabs',
+		'inputmode',
+	);
 	const {
 		buttonLabels,
 		setButtonLabels,
@@ -716,7 +1200,8 @@ export default function SettingsPage() {
 	const [activeColorPart, setActiveColorPart] = useState(null);
 	const [warning, setWarning] = useState({ show: false, acceptText: '' });
 	const [validated, setValidated] = useState(false);
-	const [keyMappings, setKeyMappings] = useState(baseButtonMappings);
+	const [keyMappings, setKeyMappings] = useState([baseButtonMappings]);
+	const [keyboardProfile, setKeyboardProfile] = useState(0);
 
 	const [message, setMessage] = useState(null);
 	const [PS4Key, setPS4Key] = useState();
@@ -863,11 +1348,23 @@ export default function SettingsPage() {
 		},
 	];
 
-	const handleKeyChange = (value, button) => {
-		const newMappings = { ...keyMappings };
-		newMappings[button].key = value;
-		setKeyMappings(newMappings);
-	};
+	const handleKeyChange = (value, button) =>
+		setKeyMappings((mappings) =>
+			mappings.map((mapping, index) =>
+				index === keyboardProfile
+					? { ...mapping, [button]: { ...mapping[button], key: value } }
+					: mapping,
+			),
+		);
+
+	const handleMaskChange = (masked, button) =>
+		setKeyMappings((mappings) =>
+			mappings.map((mapping, index) =>
+				index === keyboardProfile
+					? { ...mapping, [button]: { ...mapping[button], masked } }
+					: mapping,
+			),
+		);
 
 	const generateDeviceTypeSelection = (
 		values,
@@ -966,12 +1463,9 @@ export default function SettingsPage() {
 		);
 	};
 
-	const keyboardModeSpecifics = (
-		values,
-		errors,
-		setFieldValue,
-		handleChange,
-	) => {
+	// The keyboard mapping table. The send column sets the keyboard interface's
+	// button mask.
+	const keyboardMapping = (sendColumn) => {
 		return (
 			<div>
 				<Row className="mb-3">
@@ -986,11 +1480,115 @@ export default function SettingsPage() {
 						<div>{t('SettingsPage:keyboard-mapping-sub-header-text')}</div>
 					</Col>
 				</Row>
+				{keyMappings.length > 1 && (
+					<Row className="mb-3">
+						<Col sm={4}>
+							<Form.Label>
+								{t('SettingsPage:keyboard-profile-label')}
+							</Form.Label>
+							<Form.Select
+								className="form-select-sm"
+								value={keyboardProfile}
+								onChange={(e) => setKeyboardProfile(Number(e.target.value))}
+							>
+								{keyMappings.map((_, index) => (
+									<option key={`keyboard-profile-${index}`} value={index}>
+										{profiles[index]?.profileLabel ||
+											t('PinMapping:profile-label-default', {
+												profileNumber: index + 1,
+											})}
+										{index > 0 &&
+											profiles[index]?.enabled === false &&
+											t('PinMapping:profile-disabled')}
+									</option>
+								))}
+							</Form.Select>
+						</Col>
+					</Row>
+				)}
 				<KeyboardMapper
 					buttonLabels={buttonLabels}
 					handleKeyChange={handleKeyChange}
 					getKeyMappingForButton={getKeyMappingForButton}
+					handleMaskChange={sendColumn ? handleMaskChange : undefined}
 				/>
+			</div>
+		);
+	};
+
+	const keyboardModeSpecifics = () => keyboardMapping(false);
+
+	const keyboardInterfaceSpecifics = (
+		values,
+		errors,
+		setFieldValue,
+		handleChange,
+		isXInput,
+	) => {
+		return (
+			<div>
+				<Row className="mb-3">
+					<Col sm={10}>
+						<Form.Check
+							label={t('SettingsPage:keyboard-interface-label')}
+							type="switch"
+							name="keyboardInterfaceEnabled"
+							isInvalid={false}
+							checked={Boolean(values.keyboardInterfaceEnabled)}
+							onChange={(e) => {
+								setFieldValue(
+									'keyboardInterfaceEnabled',
+									e.target.checked ? 1 : 0,
+								);
+							}}
+						/>
+						<div className="small text-muted">
+							{t('SettingsPage:keyboard-interface-text')}
+						</div>
+					</Col>
+				</Row>
+				{Boolean(values.keyboardInterfaceEnabled) && (
+					<>
+						{isXInput && (
+							<>
+								<Row className="mb-3">
+									<Col sm={6}>
+										<Form.Label>
+											{t('SettingsPage:keyboard-interface-xinput-mode-label')}
+										</Form.Label>
+										<Form.Select
+											name="keyboardInterfaceXInputMode"
+											className="form-select-sm"
+											value={values.keyboardInterfaceXInputMode}
+											onChange={handleChange}
+											isInvalid={errors.keyboardInterfaceXInputMode}
+										>
+											{KEYBOARD_INTERFACE_XINPUT_MODES.map((o) => (
+												<option
+													key={`keyboard-interface-xinput-mode-option-${o.value}`}
+													value={o.value}
+												>
+													{t(`SettingsPage:${o.labelKey}`)}
+												</option>
+											))}
+										</Form.Select>
+									</Col>
+								</Row>
+								<Row className="mb-3">
+									<Col sm={10} className="small text-muted">
+										{t('SettingsPage:keyboard-interface-xinput-mode-help')}
+									</Col>
+								</Row>
+							</>
+						)}
+						{keyboardMapping(true)}
+						<Row className="mb-3">
+							<Col sm={10} className="small text-muted">
+								{t('SettingsPage:keyboard-interface-send-key-text')}
+							</Col>
+						</Row>
+					</>
+				)}
 			</div>
 		);
 	};
@@ -1182,35 +1780,6 @@ export default function SettingsPage() {
 								setFieldValue('switchTpShareForDs4', e.target.checked ? 1 : 0);
 							}}
 						/>
-					</Col>
-				</Row>
-				<Row className="mb-3">
-					<Col sm={3}>
-						<Form.Label>
-							{t('SettingsPage:ps4-id-mode-label')}
-							<ContextualHelpOverlay
-								title={t('SettingsPage:ps4-id-mode-label')}
-								body={
-									<Trans
-										ns="SettingsPage"
-										i18nKey="ps4-id-mode-explanation-text"
-										components={{ ul: <ul />, li: <li /> }}
-									/>
-								}
-							/>
-						</Form.Label>
-						<Form.Select
-							name="ps4ControllerIDMode"
-							className="form-select-sm"
-							value={values.ps4ControllerIDMode}
-							onChange={handleChange}
-						>
-							{PS4_ID_MODES.map((o) => (
-								<option key={`ps4-id-option-${o.value}`} value={o.value}>
-									{`${t('SettingsPage:' + o.labelKey)}`}
-								</option>
-							))}
-						</Form.Select>
 					</Col>
 				</Row>
 				{generateAuthSelection(
@@ -1413,6 +1982,13 @@ export default function SettingsPage() {
 						/>
 					</Col>
 				</Row>
+				{keyboardInterfaceSpecifics(
+					values,
+					errors,
+					setFieldValue,
+					handleChange,
+					true,
+				)}
 				{usbOverride(values, errors, setFieldValue, handleChange)}
 			</div>
 		);
@@ -1464,7 +2040,362 @@ export default function SettingsPage() {
 	) => {
 		return (
 			<div className="row mb-3">
+				<Row className="mb-3">
+					<Col sm={3}>
+						<Form.Label>{t('SettingsPage:generic-dpad-mode-label')}</Form.Label>
+						<Form.Select
+							name="genericDpadMode"
+							className="form-select-sm"
+							value={values.genericDpadMode}
+							onChange={handleChange}
+						>
+							{GENERIC_DPAD_MODES.map((o) => (
+								<option key={`generic-dpad-option-${o.value}`} value={o.value}>
+									{`${t('SettingsPage:' + o.labelKey)}`}
+								</option>
+							))}
+						</Form.Select>
+					</Col>
+				</Row>
+				{keyboardInterfaceSpecifics(
+					values,
+					errors,
+					setFieldValue,
+					handleChange,
+					false,
+				)}
 				{usbOverride(values, errors, setFieldValue, handleChange)}
+			</div>
+		);
+	};
+
+	const colorChip = (field, label, value, onChange) => (
+		<label
+			htmlFor={field}
+			className={`switch-pro-color-chip${
+				activeColorPart === field ? ' is-active' : ''
+			}`}
+			onMouseEnter={() => setActiveColorPart(field)}
+			onMouseLeave={() => setActiveColorPart(null)}
+		>
+			<input
+				type="color"
+				id={field}
+				name={field}
+				value={value}
+				onFocus={() => setActiveColorPart(field)}
+				onBlur={() => setActiveColorPart(null)}
+				onChange={(e) => onChange(e.target.value)}
+			/>
+			<span className="switch-pro-color-chip-text">
+				<span className="fw-semibold">{label}</span>
+				<span className="small font-monospace text-body-secondary">
+					{value.toUpperCase()}
+				</span>
+			</span>
+		</label>
+	);
+
+	const switchProModeSpecifics = (values, setFieldValue) => {
+		const isPro =
+			(values.switchProControllerType ??
+				SwitchProControllerType.SWITCH_PRO_CONTROLLER_TYPE_PRO) ===
+			SwitchProControllerType.SWITCH_PRO_CONTROLLER_TYPE_PRO;
+		const preset = SWITCH_PRO_COLOR_PRESETS.find(
+			(o) => o.value === values.switchProColorPreset,
+		);
+		const isCustom =
+			values.switchProColorPreset ===
+			SwitchProColorPreset.SWITCH_PRO_COLOR_CUSTOM;
+		const colorFor = (field) =>
+			rgbIntToHex((isCustom ? values[field] : preset?.colors?.[field]) ?? 0);
+		const setColor = (field, hex) => {
+			if (!isCustom) {
+				SWITCH_PRO_COLOR_PARTS.forEach((part) =>
+					setFieldValue(part.field, hexToInt(colorFor(part.field))),
+				);
+				setFieldValue(
+					'switchProColorPreset',
+					SwitchProColorPreset.SWITCH_PRO_COLOR_CUSTOM,
+				);
+			}
+			setFieldValue(field, hexToInt(hex));
+		};
+		const active = SWITCH_PRO_COLOR_PARTS.find(
+			({ field }) => field === activeColorPart,
+		);
+		const joyConSide = {
+			[SwitchProControllerType.SWITCH_PRO_CONTROLLER_TYPE_JOYCON_LEFT]: 'left',
+			[SwitchProControllerType.SWITCH_PRO_CONTROLLER_TYPE_JOYCON_RIGHT]:
+				'right',
+		}[values.switchProControllerType];
+		const isJoyConPair =
+			values.switchProControllerType ===
+			SwitchProControllerType.SWITCH_PRO_CONTROLLER_TYPE_JOYCON_PAIR;
+		const isGenesis = [
+			SwitchProControllerType.SWITCH_PRO_CONTROLLER_TYPE_GENESIS,
+			SwitchProControllerType.SWITCH_PRO_CONTROLLER_TYPE_MEGA_DRIVE,
+		].includes(values.switchProControllerType);
+		const activeJoyCon = ['left', 'right']
+			.flatMap((side) => ['body', 'buttons'].map((part) => ({ side, part })))
+			.find(
+				({ side, part }) => JOYCON_COLOR_FIELDS[side][part] === activeColorPart,
+			);
+		const joyConPreset = JOYCON_COLOR_PRESETS.find(
+			(o) => o.value === values.switchProJoyConColorPreset,
+		);
+		const isJoyConCustom =
+			values.switchProJoyConColorPreset ===
+			SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_CUSTOM;
+		const joyConColorFor = (side, part) =>
+			rgbIntToHex(
+				(isJoyConCustom
+					? values[JOYCON_COLOR_FIELDS[side][part]]
+					: joyConPreset?.colors?.[side]?.[part]) ?? 0,
+			);
+		const setJoyConColor = (side, part, hex) => {
+			if (!isJoyConCustom) {
+				['left', 'right'].forEach((s) =>
+					['body', 'buttons'].forEach((p) =>
+						setFieldValue(
+							JOYCON_COLOR_FIELDS[s][p],
+							hexToInt(joyConColorFor(s, p)),
+						),
+					),
+				);
+				setFieldValue(
+					'switchProJoyConColorPreset',
+					SwitchProJoyConColorPreset.SWITCH_PRO_JOYCON_COLOR_CUSTOM,
+				);
+			}
+			setFieldValue(JOYCON_COLOR_FIELDS[side][part], hexToInt(hex));
+		};
+
+		return (
+			<div className="row mb-3">
+				<Row className="mb-3">
+					<Col sm={3}>
+						<Form.Label>
+							{t('SettingsPage:switch-pro-controller-type-label')}
+						</Form.Label>
+						<Form.Select
+							name="switchProControllerType"
+							className="form-select-sm"
+							value={values.switchProControllerType}
+							onChange={(e) =>
+								setFieldValue(
+									'switchProControllerType',
+									parseInt(e.target.value),
+								)
+							}
+						>
+							{SWITCH_PRO_CONTROLLER_TYPES.map((o) => (
+								<option
+									key={`switch-pro-controller-type-${o.value}`}
+									value={o.value}
+								>
+									{t(
+										`SettingsPage:switch-pro-controller-type-options.${o.labelKey}`,
+									)}
+								</option>
+							))}
+						</Form.Select>
+					</Col>
+					{isGenesis && (
+						<Col xs={12}>
+							<div className="alert alert-warning mt-2 mb-0">
+								<Trans
+									ns="SettingsPage"
+									i18nKey="switch-pro-genesis-warning"
+									components={{ strong: <strong /> }}
+								/>
+							</div>
+						</Col>
+					)}
+					{joyConSide && (
+						<Col xs={12}>
+							<p className="small text-body-secondary mt-2 mb-0">
+								{t('SettingsPage:switch-pro-joycon-single-note', {
+									buttons: `${currentButtonLabels.L1} + ${currentButtonLabels.R1}`,
+									mode: t(
+										`SettingsPage:switch-pro-controller-type-options.joycon-${joyConSide}`,
+									),
+								})}
+							</p>
+							<div className="alert alert-warning mt-2 mb-0">
+								<Trans
+									ns="SettingsPage"
+									i18nKey="switch-pro-joycon-single-warning"
+									components={{ strong: <strong /> }}
+								/>
+							</div>
+						</Col>
+					)}
+					{isJoyConPair && (
+						<Col xs={12}>
+							<div className="alert alert-warning mt-2 mb-0">
+								<Trans
+									ns="SettingsPage"
+									i18nKey="switch-pro-joycon-pair-warning"
+									values={{
+										buttons: `${currentButtonLabels.L1} + ${currentButtonLabels.R1}`,
+									}}
+									components={{ strong: <strong /> }}
+								/>
+							</div>
+						</Col>
+					)}
+				</Row>
+				{isPro && (
+					<>
+						<Row className="mb-3">
+							<Col xs={12}>
+								<Form.Label>
+									{t('SettingsPage:switch-pro-color-label')}
+								</Form.Label>
+								<p className="small text-body-secondary mb-2">
+									{t('SettingsPage:switch-pro-color-explanation')}
+								</p>
+							</Col>
+							<Col sm={3}>
+								<Form.Select
+									name="switchProColorPreset"
+									className="form-select-sm"
+									value={values.switchProColorPreset}
+									onChange={(e) =>
+										setFieldValue(
+											'switchProColorPreset',
+											parseInt(e.target.value),
+										)
+									}
+								>
+									{SWITCH_PRO_COLOR_PRESETS.map((o) => (
+										<option key={`switch-pro-color-${o.value}`} value={o.value}>
+											{t(`SettingsPage:switch-pro-color-presets.${o.labelKey}`)}
+										</option>
+									))}
+								</Form.Select>
+							</Col>
+						</Row>
+						<div className="switch-pro-colors mb-3">
+							<div className="mb-3">
+								<SwitchProController
+									active={active?.svgPart ?? null}
+									body={colorFor('switchProBodyColor')}
+									buttons={colorFor('switchProButtonsColor')}
+									leftGrip={colorFor('switchProLeftGripColor')}
+									rightGrip={colorFor('switchProRightGripColor')}
+								/>
+							</div>
+							<Row className="g-2">
+								{SWITCH_PRO_COLOR_PARTS.map(({ labelKey, field }) => (
+									<Col xs={6} key={`switch-pro-color-${field}`}>
+										{colorChip(
+											field,
+											t(`SettingsPage:switch-pro-color-parts.${labelKey}`),
+											colorFor(field),
+											(hex) => setColor(field, hex),
+										)}
+									</Col>
+								))}
+							</Row>
+						</div>
+					</>
+				)}
+				{(joyConSide || isJoyConPair) && (
+					<>
+						<Row className="mb-3">
+							<Col xs={12}>
+								<Form.Label>
+									{t('SettingsPage:switch-pro-color-label')}
+								</Form.Label>
+								<p className="small text-body-secondary mb-2">
+									{t('SettingsPage:switch-pro-joycon-color-explanation')}
+								</p>
+							</Col>
+							<Col sm={3}>
+								<Form.Select
+									name="switchProJoyConColorPreset"
+									className="form-select-sm"
+									value={values.switchProJoyConColorPreset}
+									onChange={(e) =>
+										setFieldValue(
+											'switchProJoyConColorPreset',
+											parseInt(e.target.value),
+										)
+									}
+								>
+									{JOYCON_COLOR_PRESETS.map((o) => (
+										<option key={`joycon-color-${o.value}`} value={o.value}>
+											{t(
+												`SettingsPage:switch-pro-joycon-color-presets.${o.labelKey}`,
+											)}
+										</option>
+									))}
+								</Form.Select>
+							</Col>
+						</Row>
+						<div className="switch-pro-colors mb-3">
+							<div
+								className={`mb-3 ${
+									isJoyConPair
+										? 'switch-pro-joycon-pair-drawing'
+										: 'switch-pro-joycon-drawing'
+								}`}
+							>
+								{isJoyConPair ? (
+									<JoyConPairController
+										active={
+											activeJoyCon
+												? `${activeJoyCon.side}${activeJoyCon.part === 'body' ? 'Body' : 'Buttons'}`
+												: null
+										}
+										leftBody={joyConColorFor('left', 'body')}
+										leftButtons={joyConColorFor('left', 'buttons')}
+										rightBody={joyConColorFor('right', 'body')}
+										rightButtons={joyConColorFor('right', 'buttons')}
+									/>
+								) : (
+									<JoyConController
+										side={joyConSide}
+										active={
+											activeJoyCon?.side === joyConSide
+												? activeJoyCon.part
+												: null
+										}
+										body={joyConColorFor(joyConSide, 'body')}
+										buttons={joyConColorFor(joyConSide, 'buttons')}
+									/>
+								)}
+							</div>
+							<Row className="g-2">
+								{['body', 'buttons']
+									.flatMap((part) =>
+										(isJoyConPair ? ['left', 'right'] : [joyConSide]).map(
+											(side) => ({ side, part }),
+										),
+									)
+									.map(({ side, part }) => {
+										const field = JOYCON_COLOR_FIELDS[side][part];
+										return (
+											<Col xs={6} key={`joycon-color-${field}`}>
+												{colorChip(
+													field,
+													t(
+														`SettingsPage:switch-pro-color-parts.${
+															isJoyConPair ? `${side}-${part}` : part
+														}`,
+													),
+													joyConColorFor(side, part),
+													(hex) => setJoyConColor(side, part, hex),
+												)}
+											</Col>
+										);
+									})}
+							</Row>
+						</div>
+					</>
+				)}
 			</div>
 		);
 	};
@@ -1559,8 +2490,34 @@ export default function SettingsPage() {
 						</Form.Select>
 					</Col>
 				</Row>
+				{values.switch2ProIdentity ===
+					Switch2ProIdentity.SWITCH2_PRO_IDENTITY_GAMECUBE && (
+					<Row className="mb-3">
+						<Col xs={12}>
+							<p className="small text-body-secondary mb-0">
+								{t('SettingsPage:switch2-pro-gamecube-no-options')}
+							</p>
+						</Col>
+					</Row>
+				)}
 				{joyCon2Side && (
 					<>
+						<Row className="mb-3">
+							<Col xs={12}>
+								<div className="alert alert-warning mb-0">
+									<Trans
+										ns="SettingsPage"
+										i18nKey="switch2-pro-joycon2-experimental-warning"
+										values={{
+											mode: t(
+												`SettingsPage:switch2-pro-identity-options.joycon2-${joyCon2Side}`,
+											),
+										}}
+										components={{ strong: <strong /> }}
+									/>
+								</div>
+							</Col>
+						</Row>
 						<Row className="mb-3">
 							<Col xs={12}>
 								<Form.Label>
@@ -1585,7 +2542,7 @@ export default function SettingsPage() {
 									{JOYCON2_COLOR_PRESETS.map((o) => (
 										<option key={`joycon2-color-${o.value}`} value={o.value}>
 											{t(
-												`SettingsPage:switch2-pro-joycon2-color-presets.${o.labelKey}`,
+												`SettingsPage:switch2-pro-joycon2-color-presets.${o.labelKeys?.[joyCon2Side] ?? o.labelKey}`,
 											)}
 										</option>
 									))}
@@ -1690,6 +2647,11 @@ export default function SettingsPage() {
 									buttons={colorFor('switch2ProButtonsColor')}
 									highlight={colorFor('switch2ProHighlightColor')}
 									grip={colorFor('switch2ProGripColor')}
+									leftShoulder={colorFor('switch2ProLeftShoulderColor')}
+									rightShoulder={colorFor('switch2ProRightShoulderColor')}
+									sticks={colorFor('switch2ProStickColor')}
+									leftRing={colorFor('switch2ProLeftRingColor')}
+									rightRing={colorFor('switch2ProRightRingColor')}
 								/>
 							</div>
 							<Row className="g-2">
@@ -1790,6 +2752,16 @@ export default function SettingsPage() {
 				return xboneModeSpecifics(values, errors, setFieldValue, handleChange);
 			case 'input-mode-options.ble':
 				return null;
+			case 'input-mode-options.sinput':
+				return keyboardInterfaceSpecifics(
+					values,
+					errors,
+					setFieldValue,
+					handleChange,
+					false,
+				);
+			case 'input-mode-options.nintendo-switch-pro':
+				return switchProModeSpecifics(values, setFieldValue);
 			case 'input-mode-options.nintendo-switch2-pro':
 				return switch2ProModeSpecifics(values, setFieldValue);
 			default:
@@ -1831,6 +2803,9 @@ export default function SettingsPage() {
 			return;
 		}
 		const isKeyboardMode = values.inputMode === 3;
+		const showsKeyboardInterface =
+			INPUT_MODES.find((o) => o.value == values.inputMode)?.keyboardInterface &&
+			Boolean(values.keyboardInterfaceEnabled);
 
 		const data = {
 			...values,
@@ -1841,8 +2816,11 @@ export default function SettingsPage() {
 		if (values.forcedSetupMode > 1) {
 			setWarning({ show: true, acceptText: '' });
 		} else {
-			if (isKeyboardMode) {
-				await WebApi.setKeyMappings(keyMappings);
+			if (isKeyboardMode || showsKeyboardInterface) {
+				const [baseMappings, ...profileMappings] = keyMappings;
+				await WebApi.setKeyMappings(baseMappings);
+				if (profileMappings.length)
+					await WebApi.setProfileKeyMappings(profileMappings);
 			}
 			await saveSettings(data);
 		}
@@ -1893,7 +2871,8 @@ export default function SettingsPage() {
 		swapTpShareLabels,
 	);
 
-	const getKeyMappingForButton = (button) => keyMappings[button];
+	const getKeyMappingForButton = (button) =>
+		keyMappings[keyboardProfile][button];
 
 	const { t } = useTranslation('');
 
@@ -1917,7 +2896,7 @@ export default function SettingsPage() {
 				console.log('errors', errors) || (
 					<div>
 						<Form noValidate onSubmit={handleSubmit}>
-							<Tab.Container defaultActiveKey="inputmode">
+							<Tab.Container activeKey={activeTab} onSelect={setActiveTab}>
 								<Row>
 									<Col md={3}>
 										<Nav variant="pills" className="flex-column">
@@ -2079,13 +3058,52 @@ export default function SettingsPage() {
 																		{o.label}
 																	</option>
 																))}
+																{ADVANCED_SOCD_SLOTS.filter(
+																	(slot) =>
+																		getEnabledAdvancedSOCDSlots(
+																			values,
+																		).includes(slot) ||
+																		Number(values.socdMode) === slot.value,
+																).map((slot) => (
+																	<option
+																		key={`button-socdMode-advanced-${slot.index}`}
+																		value={slot.value}
+																	>
+																		{getAdvancedSOCDLabel(values, slot)}
+																	</option>
+																))}
 															</Form.Select>
 															<Form.Control.Feedback type="invalid">
 																{errors.socdMode}
 															</Form.Control.Feedback>
 														</Col>
+														<Col sm={3}>
+															<Form.Check
+																label={t(
+																	'SettingsPage:advanced-socd-enabled-label',
+																)}
+																type="switch"
+																id="advancedSOCDEnabled"
+																isInvalid={false}
+																checked={Boolean(values.advancedSOCDEnabled)}
+																onChange={(e) => {
+																	setFieldValue(
+																		'advancedSOCDEnabled',
+																		e.target.checked ? 1 : 0,
+																	);
+																}}
+															/>
+														</Col>
 													</Form.Group>
 													<p>{t('SettingsPage:socd-cleaning-mode-note')}</p>
+													{Boolean(values.advancedSOCDEnabled) && (
+														<AdvancedSOCD
+															values={values}
+															errors={errors}
+															handleChange={handleChange}
+															setFieldValue={setFieldValue}
+														/>
+													)}
 													<Form.Group className="row mb-3">
 														<Form.Label>
 															{t('SettingsPage:forced-setup-mode-label')}
@@ -2416,14 +3434,41 @@ export default function SettingsPage() {
 																			onChange={handleChange}
 																			isInvalid={errors[o] && errors[o]?.action}
 																		>
-																			{translatedHotkeyActions.map((o, i) => (
-																				<option
-																					key={`hotkey-action-${i}`}
-																					value={o.value}
-																				>
-																					{o.label}
-																				</option>
-																			))}
+																			{translatedHotkeyActions
+																				.filter(
+																					(action) =>
+																						!getAdvancedSOCDHotkeySlot(
+																							action.value,
+																						) ||
+																						Number(values[o]?.action) ===
+																							action.value ||
+																						getEnabledAdvancedSOCDSlots(
+																							values,
+																						).includes(
+																							getAdvancedSOCDHotkeySlot(
+																								action.value,
+																							),
+																						),
+																				)
+																				.map((action, i) => (
+																					<option
+																						key={`hotkey-action-${i}`}
+																						value={action.value}
+																					>
+																						{getAdvancedSOCDHotkeySlot(
+																							action.value,
+																						)
+																							? t('SettingsPage:advanced-socd-action-label', {
+																									name: getAdvancedSOCDLabel(
+																										values,
+																										getAdvancedSOCDHotkeySlot(
+																											action.value,
+																										),
+																									),
+																								})
+																							: action.label}
+																					</option>
+																				))}
 																		</Form.Select>
 																		<Form.Control.Feedback type="invalid">
 																			{errors[o] && errors[o]?.action}

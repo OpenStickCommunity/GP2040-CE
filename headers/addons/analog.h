@@ -150,11 +150,21 @@ public:
     virtual void reinit() {}
     virtual std::string name() { return AnalogName; }
 private:
-    float readPin(Pin_t pin, uint32_t center, uint32_t minimum, uint32_t maximum);
+    struct AxisSample {
+        uint8_t stick;
+        bool xAxis;
+        Pin_t input;
+    };
+
+    float normalizePin(uint16_t adc_value, uint32_t center, uint32_t minimum, uint32_t maximum);
     float emaCalculation(int stick_num, float ema_value, float ema_previous);
     float magnitudeCalculation(int stick_num, adc_instance & adc_inst);
     void radialDeadzone(int stick_num, adc_instance & adc_inst);
+    void processStick(int stick_num, Gamepad *gamepad, uint32_t joystickMax);
     adc_instance adc_pairs[ADC_COUNT];
+    float inverse_deadzone_span[ADC_COUNT];
+    AxisSample samples[ADC_COUNT * 2];
+    uint8_t sampleCount = 0;
 };
 
 #endif  // _Analog_H_

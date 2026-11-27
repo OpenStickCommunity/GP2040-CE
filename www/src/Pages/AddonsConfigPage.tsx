@@ -42,7 +42,6 @@ import OnBoardLed, {
 	onBoardLedState,
 } from '../Addons/OnBoardLed';
 import Reverse, { reverseScheme, reverseState } from '../Addons/Reverse';
-import SOCD, { socdScheme, socdState } from '../Addons/SOCD';
 import ProfileSlider, {
 	profileSliderScheme,
 	profileSliderState,
@@ -55,6 +54,14 @@ import FocusMode, {
 	focusModeScheme,
 	focusModeState,
 } from '../Addons/FocusMode';
+import HostLighting, {
+	hostLightingScheme,
+	hostLightingState,
+} from '../Addons/HostLighting';
+import LightingReport, {
+	lightingReportScheme,
+	lightingReportState,
+} from '../Addons/LightingReport';
 import Keyboard, { keyboardScheme, keyboardState } from '../Addons/Keyboard';
 import GamepadUSBHost, {
 	gamepadUSBHostScheme,
@@ -96,10 +103,11 @@ const schema = yup.object().shape({
 	...dualDirectionScheme,
 	...tiltScheme,
 	...buzzerScheme,
-	...socdScheme,
 	...profileSliderScheme,
 	...wiiScheme,
 	...focusModeScheme,
+	...hostLightingScheme,
+	...lightingReportScheme,
 	...keyboardScheme,
 	...rotaryScheme,
 	...pcf8575Scheme,
@@ -121,12 +129,13 @@ export const DEFAULT_VALUES = {
 	...dualDirectionState,
 	...tiltState,
 	...buzzerState,
-	...socdState,
 	...profileSliderState,
 	...wiiState,
 	...snesState,
 	...tg16State,
 	...focusModeState,
+	...hostLightingState,
+	...lightingReportState,
 	...keyboardState,
 	...rotaryState,
 	...pcf8575State,
@@ -148,12 +157,13 @@ const ADDONS = [
 	DualDirection,
 	Tilt,
 	Buzzer,
-	SOCD,
 	ProfileSlider,
 	Wii,
 	SNES,
 	TG16,
 	FocusMode,
+	HostLighting,
+	LightingReport,
 	Keyboard,
 	GamepadUSBHost,
 	Rotary,
@@ -186,7 +196,8 @@ const FormContext = ({ setStoredData }) => {
 
 const sanitizeData = (values) => {
 	for (const prop in Object.keys(values).filter(
-		(key) => !!!key.includes('keyboardHostMap'),
+		(key) =>
+			!!!key.includes('keyboardHostMap') && key !== 'heTriggerSwitchTravel',
 	)) {
 		if (!!values[prop]) values[prop] = parseInt(values[prop]);
 	}

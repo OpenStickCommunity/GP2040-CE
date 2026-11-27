@@ -1,13 +1,12 @@
 export default {
-	'sub-header-text':
-		'여기에서 어떤 핀에 어떤 동작을 할당할지 설정할 수 있습니다. 버튼이 어느 핀에 연결되었는지 확인이 어려운 경우 핀 확인 기능을 사용해 보세요.',
+	'sub-header-text': 'GPIO 핀 확인으로 GPIO 핀을 확인해 주세요.',
 	'alert-text':
 		'연결되지 않았거나 사용할 수 없는 핀에 버튼을 매핑하면 장치가 작동불능에 빠질 수 있습니다. 잘못된 설정을 지우려면 <2>설정 초기화</2> 페이지로 이동해주세요.',
-	'pin-viewer': '핀 확인',
-	'pin-pressed': '눌린 핀: {{pressedPin}}',
+	'pin-viewer': 'GPIO 핀 확인',
+	'pin-pressed': '눌린 GPIO 핀: {{pressedPin}}',
 	'profile-label-title': '프로필 이름',
 	'profile-label-description':
-		'최대 16자. 인쇄 가능한 ASCII 문자를 사용할 수 있습니다.',
+		'최대 16자. 영문 ASCII 문자만 허용됩니다.',
 	'profile-pin-mapping-title': '{{profileLabel}} - GPIO 핀 매핑',
 	'profile-label-default': '프로필 {{profileNumber}}',
 	'profile-add-button': '+ 프로필 추가',
@@ -15,10 +14,14 @@ export default {
 	'profile-enabled-tooltip':
 		'사용하지 않는 프로필은 프로필 변경 핫키로 선택시 사용할 수 없게됩니다.',
 	'profile-enabled-active-tooltip':
-		'활성 프로필을 비활성화할 수 없습니다. 설정 > 게임패드 설정에서 변경하십시오',
+		'사용중인 프로필은 비활성화할 수 없습니다. 설정 > 게임패드 설정에서 변경하십시오',
 	'profile-pins-warning':
 		'프로필 변경 단축키에 사용되는 버튼 및/또는 방향키를 변경하지 마십시오. 프로필 선택을 확인하기 어려워 질 수 있습니다!',
 	'profile-copy-base': '기본 프로필 복사',
+	'pin-inversion-label': '핀 반전',
+	'pin-inversion-tooltip':
+		'각 핀 옆에 체크박스를 표시합니다. 광학식 스위치와 같은 액티브 하이 스위치에서 체크된 핀은 입력값이 High일 때 눌린 것으로 인식합니다.',
+	'pin-invert-label': '반전 GP{{pin}}',
 	actions: {
 		NONE: '없음',
 		RESERVED: '예약됨',

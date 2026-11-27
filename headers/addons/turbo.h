@@ -14,6 +14,14 @@
 #define DEFAULT_SHOT_PER_SEC 10
 #endif  // DEFAULT_SHOT_PER_SEC
 
+#ifndef TURBO_HOLD_TO_CLEAR
+#define TURBO_HOLD_TO_CLEAR 0
+#endif
+
+#ifndef TURBO_HOLD_CLEAR_TIME
+#define TURBO_HOLD_CLEAR_TIME 5
+#endif
+
 // TURBO Button Mask
 #define TURBO_BUTTON_MASK (GAMEPAD_MASK_B1 | GAMEPAD_MASK_B2 | GAMEPAD_MASK_B3 | GAMEPAD_MASK_B4 | \
                             GAMEPAD_MASK_L1 | GAMEPAD_MASK_R1 | GAMEPAD_MASK_L2 | GAMEPAD_MASK_R2)
@@ -118,6 +126,9 @@ private:
     uint32_t debChargeState;    // Debounce Charge Button State
     uint32_t debChargeTime[4];  // Debounce Charge Button Time
     uint16_t lastPressed;       // Last buttons pressed (for Turbo Enable)
+    bool bTurboHeld;            // Turbo button held (for Turbo Clear)
+    bool bTurboHoldUsed;        // Turbo hold used to toggle, adjust speed or clear
+    uint32_t uTurboHoldTime;    // Turbo button hold start time
     uint8_t lastDpad;           // Last d-pad pressed (for Turbo Change)
     uint16_t turboButtonsMask;  // Turbo Buttons Enabled
     uint16_t alwaysEnabled;     // Turbo SHMUP Always Enabled

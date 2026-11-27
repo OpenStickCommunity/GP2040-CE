@@ -1,0 +1,18 @@
+// Bootstrap's subtle primary tint adapts to light and dark mode
+.he-voltage-table tr.he-row-unsaved > * {
+	--bs-table-bg-state: var(--bs-primary-bg-subtle);
+	color: var(--bs-body-color);
+}
+
+.he-voltage-table tr.he-row-unsaved > :first-child {
+	box-shadow:
+		inset 4px 0 0 var(--bs-primary),
+		inset 0 0 0 9999px var(--bs-primary-bg-subtle);
+}
+
+.he-voltage-table th .he-unit {
+	display: block;
+	font-weight: normal;
+	font-size: 0.8em;
+	color: var(--bs-secondary-color);
+}

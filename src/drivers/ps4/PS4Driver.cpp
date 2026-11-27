@@ -1,5 +1,7 @@
 #include "drivers/ps4/PS4Driver.h"
 #include "drivers/shared/driverhelper.h"
+#include "drivers/shared/InputReportPolicy.h"
+#include "drivers/shared/USBReportScheduler.h"
 #include "storagemanager.h"
 #include "CRC32.h"
 #include "mbedtls/error.h"
@@ -70,6 +72,36 @@ static constexpr uint8_t output_0xa3[] = {
 static constexpr uint8_t output_0xf3[] = {
     0x0, 0x38, 0x38, 0, 0, 0, 0
 };
+
+static_assert(sizeof(PS4Report) == PS4_ENDPOINT_SIZE);
+
+static void ps4_reset(uint8_t rhport) {
+    hidd_reset(rhport);
+    USBReportScheduler::getInstance().reset();
+}
+
+static uint16_t ps4_open(uint8_t rhport, tusb_desc_interface_t const *itf, uint16_t max_len) {
+    uint16_t const len = hidd_open(rhport, itf, max_len);
+    if (len != 0) {
+        USBReportScheduler &scheduler = USBReportScheduler::getInstance();
+        scheduler.configure(GAMEPAD_ENDPOINT | TUSB_DIR_IN_MASK);
+        scheduler.start();
+    }
+    return len;
+}
+
+static bool ps4_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result, uint32_t xferred_bytes) {
+    // The scheduler owns IN reports; HID retains OUT and control transfers.
+    if (ep_addr == (GAMEPAD_ENDPOINT | TUSB_DIR_IN_MASK)) {
+        if (result == XFER_RESULT_SUCCESS) {
+            USBReportScheduler::getInstance().onReportComplete();
+        } else {
+            USBReportScheduler::getInstance().onReportFailed();
+        }
+        return true;
+    }
+    return hidd_xfer_cb(rhport, ep_addr, result, xferred_bytes);
+}
 
 void PS4Driver::initialize() {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
@@ -388,11 +420,11 @@ void PS4Driver::initialize() {
         .name = "PS4",
     #endif
         .init = hidd_init,
-        .reset = hidd_reset,
-        .open = hidd_open,
+        .reset = ps4_reset,
+        .open = ps4_open,
         .control_xfer_cb = hidd_control_xfer_cb,
-        .xfer_cb = hidd_xfer_cb,
-        .sof = NULL
+        .xfer_cb = ps4_xfer_cb,
+        .sof = USBReportScheduler::onSof
     };
 
     last_report_counter = 0; // PS4 Reports
@@ -400,6 +432,8 @@ void PS4Driver::initialize() {
     last_report_timer = to_ms_since_boot(get_absolute_time());
     cur_nonce_id = 1; // PS4 Auth
     cur_nonce_chunk = 0;
+    analogSchedulingProfile = gamepad->lastReinitProfileNumber;
+    analogSchedulingAllowed = deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GAMEPAD && !hasDigitalAxisMappings();
 }
 
 void PS4Driver::initializeAux() {
@@ -433,6 +467,13 @@ bool PS4Driver::getDongleAuthRequired() {
 
 bool PS4Driver::process(Gamepad * gamepad) {
     const GamepadOptions & options = gamepad->getOptions();
+    USBReportScheduler &scheduler = USBReportScheduler::getInstance();
+    if (analogSchedulingProfile != gamepad->lastReinitProfileNumber) {
+        analogSchedulingProfile = gamepad->lastReinitProfileNumber;
+        analogSchedulingAllowed = deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GAMEPAD && !hasDigitalAxisMappings();
+        scheduler.resetInputTiming();
+    }
+    scheduler.beginInputProcessing();
     Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
     switch (gamepad->state.dpad & GAMEPAD_MASK_DPAD)
     {
@@ -691,18 +732,32 @@ bool PS4Driver::process(Gamepad * gamepad) {
     bool reportSent = false;
 
     uint32_t now = to_ms_since_boot(get_absolute_time());
-    void * report = &ps4Report;
+    uint8_t const *report = reinterpret_cast<uint8_t const *>(&ps4Report);
     uint16_t report_size = sizeof(ps4Report);
 
-    if (memcmp(last_report, report, report_size) != 0)
+    if (scheduler.needsReport() || memcmp(last_report, report, report_size) != 0)
     {
-        // HID ready + report sent, copy previous report
-        if (tud_hid_ready() && tud_hid_report(0, report, report_size) == true ) {
+        USBReportPriority priority = {};
+        // Hat positions are mutually exclusive states, not a button bitmask.
+        priority.digital = ps4Report.dpad <= PS4_HAT_UPLEFT ? uint32_t{1} << ps4Report.dpad : 0;
+        priority.digital |= (static_cast<uint64_t>(report[5] >> 4) << 8) |
+            (static_cast<uint64_t>(report[6]) << 12) |
+            (static_cast<uint64_t>(report[7] & 0x03) << 20);
+        priority.triggers = ps4Report.leftTrigger | (static_cast<uint32_t>(ps4Report.rightTrigger) << 8);
+        if (deviceType == InputModeDeviceType::INPUT_MODE_DEVICE_TYPE_GAMEPAD) {
+            priority.digital |= (static_cast<uint64_t>(!touchpadData.p1.unpressed) << 22) |
+                (static_cast<uint64_t>(!touchpadData.p2.unpressed) << 23);
+        }
+        // Keep touch gestures in order, including button-emulated touch positions.
+        bool const allowAnalogScheduling = options.inputMode == INPUT_MODE_PS4 && analogSchedulingAllowed &&
+            gamepad->getActiveDpadMode() == DPAD_MODE_DIGITAL &&
+            touchpadData.p1.unpressed && touchpadData.p2.unpressed;
+        if (scheduler.sendDirectReport(report, report_size, priority, allowAnalogScheduling)) {
             memcpy(last_report, report, report_size);
             reportSent = true;
+            // keep track of our last successful report, for keepalive purposes
+            last_report_timer = now;
         }
-        // keep track of our last successful report, for keepalive purposes
-        last_report_timer = now;
     } else {
         // some games apparently can miss reports, or they rely on official behavior of getting frequent
         // updates. we normally only send a report when the value changes; if we increment the counters
@@ -765,6 +820,7 @@ bool PS4Driver::process(Gamepad * gamepad) {
         }
     }
 
+    scheduler.endInputProcessing();
     return reportSent;
 }
 

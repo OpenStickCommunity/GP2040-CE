@@ -5,9 +5,9 @@
 #include "BLEHIDManager.h"
 #endif
 #include "drivers/ps4/PS4Driver.h"
+#include "drivers/ps5/PS5ModeDriver.h"
 #include "drivers/xbone/XBOneDriver.h"
 #include "drivers/xinput/XInputDriver.h"
-#include "drivers/p5general/P5GeneralDriver.h"
 
 void ButtonLayoutScreen::init() {
     DisplayOptions & displayOptions = Storage::getInstance().getDisplayOptions();
@@ -19,11 +19,11 @@ void ButtonLayoutScreen::init() {
     gamepad = Storage::getInstance().GetGamepad();
     inputMode = DriverManager::getInstance().getInputMode();
 
-    EventManager::getInstance().registerEventHandler(GP_EVENT_PROFILE_CHANGE, GPEVENT_CALLBACK(this->handleProfileChange(event)));
-    EventManager::getInstance().registerEventHandler(GP_EVENT_USBHOST_MOUNT, GPEVENT_CALLBACK(this->handleUSB(event)));
-    EventManager::getInstance().registerEventHandler(GP_EVENT_USBHOST_UNMOUNT, GPEVENT_CALLBACK(this->handleUSB(event)));
-    EventManager::getInstance().registerEventHandler(GP_EVENT_LED_CHANGE, GPEVENT_CALLBACK(this->handleLEDChange(event)));
-    EventManager::getInstance().registerEventHandler(GP_EVENT_SYSTEM_REBOOT, GPEVENT_CALLBACK(this->handleSystemReboot(event)));
+    EventManager::getInstance().registerEventHandler(GP_EVENT_PROFILE_CHANGE, GPEVENT_CALLBACK(this->handleProfileChange(event)), this);
+    EventManager::getInstance().registerEventHandler(GP_EVENT_USBHOST_MOUNT, GPEVENT_CALLBACK(this->handleUSB(event)), this);
+    EventManager::getInstance().registerEventHandler(GP_EVENT_USBHOST_UNMOUNT, GPEVENT_CALLBACK(this->handleUSB(event)), this);
+    EventManager::getInstance().registerEventHandler(GP_EVENT_LED_CHANGE, GPEVENT_CALLBACK(this->handleLEDChange(event)), this);
+    EventManager::getInstance().registerEventHandler(GP_EVENT_SYSTEM_REBOOT, GPEVENT_CALLBACK(this->handleSystemReboot(event)), this);
 
     footer = "";
     historyString = "";
@@ -44,9 +44,8 @@ void ButtonLayoutScreen::init() {
 
     prevLayoutLeft = Storage::getInstance().getDisplayOptions().buttonLayout;
     prevLayoutRight = Storage::getInstance().getDisplayOptions().buttonLayoutRight;
-    prevLeftOptions = Storage::getInstance().getDisplayOptions().buttonLayoutCustomOptions.paramsLeft;
-    prevRightOptions = Storage::getInstance().getDisplayOptions().buttonLayoutCustomOptions.paramsRight;
     prevOrientation = Storage::getInstance().getDisplayOptions().buttonLayoutOrientation;
+    prevCustomLayoutHash = getCustomLayoutHash();
 
     // Any extra profile enabled? Display banner
     ProfileOptions & profileOptions = Storage::getInstance().getProfileOptions();
@@ -96,6 +95,7 @@ void ButtonLayoutScreen::init() {
 }
 
 void ButtonLayoutScreen::shutdown() {
+    EventManager::getInstance().unregisterEventHandlers(this);
     clearElements();
 }
 
@@ -195,7 +195,22 @@ void ButtonLayoutScreen::generateHeader() {
             case INPUT_MODE_ASTRO: statusBar += "ASTRO"; break;
             case INPUT_MODE_PSCLASSIC: statusBar += "PSC"; break;
             case INPUT_MODE_XBOXORIGINAL: statusBar += "OGXBOX"; break;
-            case INPUT_MODE_SWITCH_PRO: statusBar += "SWPRO"; break;
+            case INPUT_MODE_SWITCH_PRO:
+                switch (Storage::getInstance().getGamepadOptions().switchProControllerType) {
+                    case SWITCH_PRO_CONTROLLER_TYPE_SNES: statusBar += "SWSNES"; break;
+                    case SWITCH_PRO_CONTROLLER_TYPE_SUPER_FAMICOM: statusBar += "SWSFC"; break;
+                    case SWITCH_PRO_CONTROLLER_TYPE_N64: statusBar += "SWN64"; break;
+                    case SWITCH_PRO_CONTROLLER_TYPE_GENESIS: statusBar += "SWGEN"; break;
+                    case SWITCH_PRO_CONTROLLER_TYPE_MEGA_DRIVE: statusBar += "SWMD"; break;
+                    case SWITCH_PRO_CONTROLLER_TYPE_NES: statusBar += "SWNES"; break;
+                    case SWITCH_PRO_CONTROLLER_TYPE_FAMICOM_I: statusBar += "SWFC1"; break;
+                    case SWITCH_PRO_CONTROLLER_TYPE_FAMICOM_II: statusBar += "SWFC2"; break;
+                    case SWITCH_PRO_CONTROLLER_TYPE_JOYCON_LEFT: statusBar += "SWJCL"; break;
+                    case SWITCH_PRO_CONTROLLER_TYPE_JOYCON_RIGHT: statusBar += "SWJCR"; break;
+                    case SWITCH_PRO_CONTROLLER_TYPE_JOYCON_PAIR: statusBar += "SWJCP"; break;
+                    default: statusBar += "SWPRO"; break;
+                }
+                break;
             case INPUT_MODE_SWITCH2_PRO:
                 switch (Storage::getInstance().getGamepadOptions().switch2ProIdentity) {
                     case SWITCH2_PRO_IDENTITY_JOYCON2_LEFT: statusBar += "SW2JCL"; break;
@@ -212,18 +227,8 @@ void ButtonLayoutScreen::generateHeader() {
                     statusBar += "   ";
                 break;
             case INPUT_MODE_PS5:
-                statusBar += "PS5";
-                if(((PS4Driver*)DriverManager::getInstance().getDriver())->getAuthSent() == true )
-                    statusBar += ":AS";
-                else
-                    statusBar += "   ";
-                break;
             case INPUT_MODE_P5GENERAL:
-                statusBar += "P5G";
-                if(((P5GeneralDriver*)DriverManager::getInstance().getDriver())->getAuthSent() == true )
-                    statusBar += ":AS";
-                else
-                    statusBar += "   ";
+                statusBar += ((PS5ModeDriver*)DriverManager::getInstance().getDriver())->statusLabel();
                 break;
             case INPUT_MODE_XBONE:
                 statusBar += "XBON";
@@ -284,13 +289,22 @@ void ButtonLayoutScreen::generateHeader() {
     }
 
     if (showSocdMode) {
-        switch (Gamepad::resolveSOCDMode(options))
+        switch (gamepad->getActiveSOCDMode())
         {
             case SOCD_MODE_NEUTRAL:               statusBar += " SOCD-N"; break;
             case SOCD_MODE_UP_PRIORITY:           statusBar += " SOCD-U"; break;
             case SOCD_MODE_SECOND_INPUT_PRIORITY: statusBar += " SOCD-L"; break;
             case SOCD_MODE_FIRST_INPUT_PRIORITY:  statusBar += " SOCD-F"; break;
             case SOCD_MODE_BYPASS:                statusBar += " SOCD-X"; break;
+            case SOCD_MODE_ADVANCED_1:
+            case SOCD_MODE_ADVANCED_2:
+            case SOCD_MODE_ADVANCED_3:
+            case SOCD_MODE_ADVANCED_4: {
+                const uint8_t slotIndex = gamepad->getActiveSOCDMode() - SOCD_MODE_ADVANCED_1;
+                const char* slotName = options.advancedSOCDSlots[slotIndex].name;
+                statusBar += slotName[0] != '\0' ? " " + std::string(slotName) : " SOCD-" + std::to_string(slotIndex + 1);
+                break;
+            }
         }
     }
 
@@ -333,7 +347,7 @@ GPLever* ButtonLayoutScreen::addLever(uint16_t startX, uint16_t startY, uint16_t
     return (GPLever*)addElement(lever);
 }
 
-GPButton* ButtonLayoutScreen::addButton(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, int16_t inputMask) {
+GPButton* ButtonLayoutScreen::addButton(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, int32_t inputMask) {
     GPButton* button = new GPButton();
     button->setRenderer(getRenderer());
     button->setPosition(startX, startY);
@@ -429,7 +443,21 @@ void ButtonLayoutScreen::processInputHistory() {
 	};
 
 	uint8_t mode = ((displayModeLookup.count(inputMode) > 0) ? displayModeLookup.at(inputMode) : 0);
-	if (inputMode == INPUT_MODE_SWITCH2_PRO) {
+	if (inputMode == INPUT_MODE_SWITCH_PRO) {
+		switch (Storage::getInstance().getGamepadOptions().switchProControllerType) {
+			case SWITCH_PRO_CONTROLLER_TYPE_SNES:
+			case SWITCH_PRO_CONTROLLER_TYPE_SUPER_FAMICOM: mode = 15; break;
+			case SWITCH_PRO_CONTROLLER_TYPE_N64: mode = 16; break;
+			case SWITCH_PRO_CONTROLLER_TYPE_GENESIS:
+			case SWITCH_PRO_CONTROLLER_TYPE_MEGA_DRIVE: mode = 17; break;
+			case SWITCH_PRO_CONTROLLER_TYPE_JOYCON_LEFT: mode = 18; break;
+			case SWITCH_PRO_CONTROLLER_TYPE_JOYCON_RIGHT: mode = 19; break;
+			case SWITCH_PRO_CONTROLLER_TYPE_NES:
+			case SWITCH_PRO_CONTROLLER_TYPE_FAMICOM_I:
+			case SWITCH_PRO_CONTROLLER_TYPE_FAMICOM_II: mode = 20; break;
+			default: mode = 1; break;
+		}
+	} else if (inputMode == INPUT_MODE_SWITCH2_PRO) {
 		switch (Storage::getInstance().getGamepadOptions().switch2ProIdentity) {
 			case SWITCH2_PRO_IDENTITY_JOYCON2_LEFT: mode = 13; break;
 			case SWITCH2_PRO_IDENTITY_JOYCON2_RIGHT: mode = 14; break;
@@ -486,13 +514,22 @@ void ButtonLayoutScreen::processInputHistory() {
 
 bool ButtonLayoutScreen::compareCustomLayouts()
 {
-    ButtonLayoutParamsLeft leftOptions = Storage::getInstance().getDisplayOptions().buttonLayoutCustomOptions.paramsLeft;
-    ButtonLayoutParamsRight rightOptions = Storage::getInstance().getDisplayOptions().buttonLayoutCustomOptions.paramsRight;
+    return prevCustomLayoutHash != getCustomLayoutHash();
+}
 
-    bool leftChanged = ((leftOptions.layout != prevLeftOptions.layout) || (leftOptions.common.startX != prevLeftOptions.common.startX) || (leftOptions.common.startY != prevLeftOptions.common.startY) || (leftOptions.common.buttonPadding != prevLeftOptions.common.buttonPadding) || (leftOptions.common.buttonRadius != prevLeftOptions.common.buttonRadius));
-    bool rightChanged = ((rightOptions.layout != prevRightOptions.layout) || (rightOptions.common.startX != prevRightOptions.common.startX) || (rightOptions.common.startY != prevRightOptions.common.startY) || (rightOptions.common.buttonPadding != prevRightOptions.common.buttonPadding) || (rightOptions.common.buttonRadius != prevRightOptions.common.buttonRadius));
-    
-    return (leftChanged || rightChanged);
+uint32_t ButtonLayoutScreen::getCustomLayoutHash()
+{
+    const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
+    uint32_t hash = 2166136261u;
+    auto addBytes = [&hash](const uint8_t* bytes, size_t size) {
+        for (size_t i = 0; i < size; i++) {
+            hash = (hash ^ bytes[i]) * 16777619u;
+        }
+    };
+    addBytes(options.customLayoutA.bytes, options.customLayoutA.size);
+    hash = (hash ^ options.customLayoutA.size) * 16777619u;
+    addBytes(options.customLayoutB.bytes, options.customLayoutB.size);
+    return hash;
 }
 
 bool ButtonLayoutScreen::pressedUp()

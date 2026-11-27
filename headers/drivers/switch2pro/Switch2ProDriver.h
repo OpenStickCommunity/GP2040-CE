@@ -30,7 +30,7 @@ public:
     virtual USBListener * get_usb_auth_listener() { return nullptr; }
 private:
     uint8_t inputReport[SWITCH2_PRO_INPUT_REPORT_LEN] = { };
-    uint8_t lastSentState[9] = { };
+    uint8_t lastSentState[12] = { };
     uint32_t lastSentMs = 0;
     uint8_t reportCounter = 0;
 };

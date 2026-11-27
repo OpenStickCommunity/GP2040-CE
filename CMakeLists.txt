@@ -197,6 +197,9 @@ src/gamepad.cpp
 src/gamepad/GamepadState.cpp
 src/addonmanager.cpp
 src/playerleds.cpp
+src/drivers/shared/USBReportScheduler.cpp
+src/drivers/shared/InputReportPolicy.cpp
+src/drivers/shared/switchidentity.cpp
 src/drivers/shared/xinput_host.cpp
 src/drivers/shared/xgip_protocol.cpp
 src/drivers/shared/xsm3/excrypt_des.c
@@ -216,9 +219,11 @@ src/drivers/ps3/PS3Driver.cpp
 src/drivers/ps4/PS4Auth.cpp
 src/drivers/ps4/PS4AuthUSBListener.cpp
 src/drivers/ps4/PS4Driver.cpp
-src/drivers/p5general/P5GeneralAuth.cpp
-src/drivers/p5general/P5GeneralAuthUSBListener.cpp
-src/drivers/p5general/P5GeneralDriver.cpp
+src/drivers/ps5/PS5AuthDetector.cpp
+src/drivers/ps5/PS5Driver.cpp
+src/drivers/ps5/PS5ModeDriver.cpp
+src/drivers/ps5/auth/MayflashS5Dongle.cpp
+src/drivers/ps5/auth/P5GeneralDongle.cpp
 src/drivers/psclassic/PSClassicDriver.cpp
 src/drivers/sinput/SInputDriver.cpp
 src/drivers/switch/SwitchDriver.cpp
@@ -236,6 +241,7 @@ src/drivers/xboxog/XboxOriginalDriver.cpp
 src/drivers/xinput/XInputAuth.cpp
 src/drivers/xinput/XInputAuthUSBListener.cpp
 src/drivers/xinput/XInputDriver.cpp
+src/drivers/xinput/XInputReportPolicy.cpp
 src/interfaces/i2c/i2cdevicebase.cpp
 src/interfaces/i2c/pcf8575/pcf8575.cpp
 src/interfaces/i2c/ssd1306/tiny_ssd1306.cpp
@@ -261,10 +267,14 @@ src/display/GPGFX_UI.cpp
 src/drivermanager.cpp
 src/eventmanager.cpp
 src/layoutmanager.cpp
+src/hostlighting.cpp
+src/keyboardinterface.cpp
+src/lightingreport.cpp
 src/peripheralmanager.cpp
 src/storagemanager.cpp
 src/system.cpp
 src/usbdriver.cpp
+src/usbfunctionmanager.cpp
 src/usbhostmanager.cpp
 src/config_legacy.cpp
 src/config_utils.cpp
@@ -289,7 +299,6 @@ src/addons/rotaryencoder.cpp
 src/addons/reverse.cpp
 src/addons/drv8833_rumble.cpp
 src/addons/turbo.cpp
-src/addons/slider_socd.cpp
 src/addons/slider_profile.cpp
 src/addons/wiiext.cpp
 src/addons/input_macro.cpp
@@ -337,6 +346,7 @@ ADS1115
 ADS1219
 ADS1256
 NeoPico
+QuadratureEncoder
 ArduinoJson
 rndis
 hardware_adc
@@ -382,6 +392,10 @@ target_compile_definitions(${PROJECT_NAME} PUBLIC
   BOARD_CONFIG_FILE_NAME="$<TARGET_FILE_BASE_NAME:${PROJECT_NAME}>"
   GP2040_BOARDCONFIG="${GP2040_BOARDCONFIG}"
 )
+
+if(PICO_RP2040)
+  target_compile_definitions(${PROJECT_NAME} PUBLIC PICO_FLOAT_IN_RAM=1)
+endif()
 
 target_include_directories(${PROJECT_NAME}  PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}

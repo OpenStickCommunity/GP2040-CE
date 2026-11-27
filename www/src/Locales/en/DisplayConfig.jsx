@@ -10,8 +10,12 @@ export default {
 		'layout-header': 'Layout Options',
 		'mode-header': 'Mode Options',
 		'button-layout-header': 'Button Layout',
+		'custom-layout-header': 'Custom Layouts (Advanced)',
 		'status-layout-header': 'Status Bar Layout',
 		'history-layout-header': 'Input History Layout',
+		'splash-image-header': 'Splash Image',
+		'splash-text-header': 'Splash Text',
+		'display-saver-header': 'Display Saver',
 	},
 	table: {
 		header:
@@ -30,16 +34,28 @@ export default {
 		'button-layout-label': 'Button Layout (Left)',
 		'button-layout-right-label': 'Button Layout (Right)',
 		'button-layout-orientation': 'Button Layout Orientation',
-		'button-layout-custom-header': 'Custom Button Layout Params',
-		'button-layout-custom-left-label': 'Layout Left',
-		'button-layout-custom-right-label': 'Layout Right',
-		'button-layout-custom-start-x-label': 'Start X',
-		'button-layout-custom-start-y-label': 'Start Y',
-		'button-layout-custom-button-radius-label': 'Button Radius',
-		'button-layout-custom-button-padding-label': 'Button Padding',
+		'custom-layout-description':
+			'Enter your custom layout as a JSON array of elements. Check the documentation for the correct format and examples.',
+		'custom-layout-preview-tip':
+			'Toggle live preview by pressing {{button}} on your controller.',
+		'custom-layout-left-label': 'Custom Layout Code (Left)',
+		'custom-layout-right-label': 'Custom Layout Code (Right)',
+		'custom-layout-element-count': '{{count}} element(s) parsed',
+		'custom-layout-empty': 'No custom layout set',
+		'custom-layout-format-button': 'Format',
 		'splash-mode-label': 'Splash Mode',
 		'splash-duration-label': 'Splash Duration (seconds, 0 for Always On)',
+		'splash-text-lines-label': 'Splash Text Lines',
+		'splash-text-duration-label':
+			'Splash Text Duration (seconds, 0 for Always On)',
+		'splash-text-line-label': 'Line {{line}}',
+		'splash-text-help':
+			'Up to {{max}} characters per line, each centred on the screen.',
+		'splash-text-preview-help':
+			'While in web config mode, press {{button}} to preview.',
 		'display-saver-timeout-label': 'Display Saver Timeout (minutes, 0 for Off)',
+		'display-saver-timeout-short-label':
+			'Display Saver Timeout (min, 0 for off)',
 		'screen-saver-mode-label': 'Display Saver Mode',
 		'inverted-label': 'Inverted',
 		'power-management-header': 'Power Management',
@@ -58,6 +74,10 @@ export default {
 		},
 		'splash-modes': {
 			enabled: 'Enabled (Custom Splash Screen)',
+			'image-only': 'Enabled (Splash Image Only)',
+			'text-only': 'Enabled (Splash Text Only)',
+			'image-then-text': 'Enabled (Splash Image -> Text)',
+			'text-then-image': 'Enabled (Splash Text -> Image)',
 			'close-in': 'Logo Close In',
 			'close-in-custom': 'Logo Close In Custom',
 			disabled: 'Disabled',

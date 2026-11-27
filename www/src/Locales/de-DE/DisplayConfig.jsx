@@ -25,13 +25,6 @@ export default {
 		'invert-display-label': 'Display invertieren',
 		'button-layout-label': 'Tasten Layout (Links)',
 		'button-layout-right-label': 'Tasten Layout (Rechts)',
-		'button-layout-custom-header': 'Benutzerdefinierte Tastenlayout-Parameter',
-		'button-layout-custom-left-label': 'Layout Links',
-		'button-layout-custom-right-label': 'Layout Rechts',
-		'button-layout-custom-start-x-label': 'Start X',
-		'button-layout-custom-start-y-label': 'Start Y',
-		'button-layout-custom-button-radius-label': 'Tasten Radius',
-		'button-layout-custom-button-padding-label': 'Tastenabstand',
 		'splash-mode-label': 'Splash Modus',
 		'splash-duration-label':
 			'Splash Dauer (Sekunden, 0 für immer eingeschaltet)',

@@ -95,6 +95,40 @@ static const uint8_t * xinput_get_string_descriptor(int index) {
     return xinput_string_descriptors[index];
 }
 
+// Composite variant with per-interface driver binding (XUSB through the MS OS
+// compatible IDs from USBFunctionManager::getXInputCompatibleIDs()), so the
+// device class is 0 and the ID differs from the stock 045E:028E, which Windows
+// would otherwise bind whole-device to its XUSB driver. Selected at runtime by
+// USBFunctionManager::isXInputCompositeActive().
+static const uint8_t xinput_composite_device_descriptor[] __attribute__((unused)) =
+{
+    0x12,       // bLength
+    0x01,       // bDescriptorType (Device)
+    0x00, 0x02, // bcdUSB 2.00
+    0x00,          // bDeviceClass (per-interface)
+    0x00,          // bDeviceSubClass
+    0x00,          // bDeviceProtocol
+    0x40,          // bMaxPacketSize0 64
+    // Vendor chosen from the Linux xpad driver's 360-vendor wildcard list so the
+    // composite still binds xpad there; PID deliberately not a known product so
+    // Windows has no device-level match and splits the composite (WCID binds XUSB)
+    0xC6, 0x24, // idVendor 0x24C6
+    0xAD, 0x5B, // idProduct 0x5BAD
+    0x14, 0x01, // bcdDevice 2.14
+    0x01,       // iManufacturer (String Index)
+    0x02,       // iProduct (String Index)
+    0x03,       // iSerialNumber (String Index)
+    0x01,       // bNumConfigurations 1
+};
+
+// MS OS 1.0 string descriptor (string index 0xEE), "MSFT100" and the vendor request code
+static const uint16_t xinput_ms_os_string_descriptor[] __attribute__((unused)) =
+{
+    0x0312, // bLength 18, bDescriptorType string
+    'M', 'S', 'F', 'T', '1', '0', '0',
+    0x0020, // bMS_VendorCode 0x20, padding
+};
+
 static const uint8_t xinput_device_descriptor[] =
 {
     0x12,       // bLength
@@ -111,6 +145,63 @@ static const uint8_t xinput_device_descriptor[] =
     0x02,       // iProduct (String Index)
     0x03,       // iSerialNumber (String Index)
     0x01,       // bNumConfigurations 1
+};
+
+// Composite variant with the XUSB control interface only. USBFunctionManager
+// appends the USB functions' interfaces. The console-only interfaces (audio,
+// plug-in module, security) are omitted, as they serve no purpose on PC and
+// would enumerate driverless. Selected at runtime by
+// USBFunctionManager::isXInputCompositeActive().
+static const uint8_t xinput_composite_configuration_descriptor[] __attribute__((unused)) =
+{
+    0x09,        // bLength
+    0x02,        // bDescriptorType (Configuration)
+    0x31, 0x00,  // wTotalLength 49
+    0x01,        // bNumInterfaces 1
+    0x01,        // bConfigurationValue
+    0x00,        // iConfiguration (String Index)
+    0xA0,        // bmAttributes (remote wakeup)
+    0xFA,        // bMaxPower 500mA
+
+    // Control Interface (0x5D 0xFF)
+    0x09,        // bLength
+    0x04,        // bDescriptorType (Interface)
+    0x00,        // bInterfaceNumber 0
+    0x00,        // bAlternateSetting
+    0x02,        // bNumEndpoints 2
+    0xFF,        // bInterfaceClass
+    0x5D,        // bInterfaceSubClass
+    0x01,        // bInterfaceProtocol
+    0x00,        // iInterface (String Index)
+
+    // Gamepad Descriptor
+    0x11,        // bLength
+    0x21,        // bDescriptorType (HID)
+    0x00, 0x01,  // bcdHID 1.10
+    0x01,        // SUB_TYPE
+    0x25,        // reserved2
+    0x81,        // DEVICE_EPADDR_IN
+    0x14,        // bMaxDataSizeIn
+    0x00, 0x00, 0x00, 0x00, 0x13, // reserved3
+    0x02,        // DEVICE_EPADDR_OUT
+    0x08,        // bMaxDataSizeOut
+    0x00, 0x00,  // reserved4
+
+    // Report IN Endpoint 1.1
+    0x07,        // bLength
+    0x05,        // bDescriptorType (Endpoint)
+    0x81,        // bEndpointAddress (IN/D2H)
+    0x03,        // bmAttributes (Interrupt)
+    0x20, 0x00,  // wMaxPacketSize 32
+    0x01,        // bInterval 1 (unit depends on device speed)
+
+    // Report OUT Endpoint 1.2
+    0x07,        // bLength
+    0x05,        // bDescriptorType (Endpoint)
+    0x02,        // bEndpointAddress (OUT/H2D)
+    0x03,        // bmAttributes (Interrupt)
+    0x20, 0x00,  // wMaxPacketSize 32
+    0x08,        // bInterval 8 (unit depends on device speed)
 };
 
 // This needs to be:

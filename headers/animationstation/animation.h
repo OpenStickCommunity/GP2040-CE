@@ -136,7 +136,7 @@ public:
   virtual ~Animation(){};
 
   //Which buttons are held at the moment
-  virtual void UpdatePressed(std::vector<int32_t> InPressedPins);
+  virtual void UpdatePressed(const std::vector<int32_t>& InPressedPins);
 
   virtual void Animate(RGB (&frame)[FRAME_MAX]) = 0;
   

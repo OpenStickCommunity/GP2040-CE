@@ -26,15 +26,15 @@ void DualsensePS5Host::initialize(uint8_t dev_addr, uint8_t instance, uint16_t v
     _controller_host_state.rx = GAMEPAD_JOYSTICK_MID;
     _controller_host_state.ry = GAMEPAD_JOYSTICK_MID;
 
-    memset(&prevReport, 0, sizeof(P5GenerorReport));
+    memset(&prevReport, 0, sizeof(PS5Report));
 }
 
 void DualsensePS5Host::process(uint8_t const* report, uint16_t len) {
-    P5GenerorReport controller_report;
+    PS5Report controller_report;
     if (report[0] == 1) {
         memcpy(&controller_report, report, sizeof(controller_report));
 
-        if ( prevReport.reportCounter != controller_report.reportCounter ) {
+        if ( prevReport.seq_number != controller_report.seq_number ) {
             _controller_host_state.lx = map(controller_report.left_stick_x, 0,255,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
             _controller_host_state.ly = map(controller_report.left_stick_y, 0,255,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
             _controller_host_state.rx = map(controller_report.right_stick_x,0,255,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
@@ -59,18 +59,18 @@ void DualsensePS5Host::process(uint8_t const* report, uint16_t len) {
             if (controller_report.button_l2) _controller_host_state.buttons |= GAMEPAD_MASK_L2;
 
             _controller_host_state.dpad = 0;
-            if (controller_report.dpad == P5GENERAL_HAT_UP) _controller_host_state.dpad |= GAMEPAD_MASK_UP;
-            if (controller_report.dpad == P5GENERAL_HAT_UPRIGHT) _controller_host_state.dpad |= GAMEPAD_MASK_UP | GAMEPAD_MASK_RIGHT;
-            if (controller_report.dpad == P5GENERAL_HAT_RIGHT) _controller_host_state.dpad |= GAMEPAD_MASK_RIGHT;
-            if (controller_report.dpad == P5GENERAL_HAT_DOWNRIGHT) _controller_host_state.dpad |= GAMEPAD_MASK_RIGHT | GAMEPAD_MASK_DOWN;
-            if (controller_report.dpad == P5GENERAL_HAT_DOWN) _controller_host_state.dpad |= GAMEPAD_MASK_DOWN;
-            if (controller_report.dpad == P5GENERAL_HAT_DOWNLEFT) _controller_host_state.dpad |= GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT;
-            if (controller_report.dpad == P5GENERAL_HAT_LEFT) _controller_host_state.dpad |= GAMEPAD_MASK_LEFT;
-            if (controller_report.dpad == P5GENERAL_HAT_UPLEFT) _controller_host_state.dpad |= GAMEPAD_MASK_LEFT | GAMEPAD_MASK_UP;
+            if (controller_report.dpad == PS5_HAT_UP) _controller_host_state.dpad |= GAMEPAD_MASK_UP;
+            if (controller_report.dpad == PS5_HAT_UPRIGHT) _controller_host_state.dpad |= GAMEPAD_MASK_UP | GAMEPAD_MASK_RIGHT;
+            if (controller_report.dpad == PS5_HAT_RIGHT) _controller_host_state.dpad |= GAMEPAD_MASK_RIGHT;
+            if (controller_report.dpad == PS5_HAT_DOWNRIGHT) _controller_host_state.dpad |= GAMEPAD_MASK_RIGHT | GAMEPAD_MASK_DOWN;
+            if (controller_report.dpad == PS5_HAT_DOWN) _controller_host_state.dpad |= GAMEPAD_MASK_DOWN;
+            if (controller_report.dpad == PS5_HAT_DOWNLEFT) _controller_host_state.dpad |= GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT;
+            if (controller_report.dpad == PS5_HAT_LEFT) _controller_host_state.dpad |= GAMEPAD_MASK_LEFT;
+            if (controller_report.dpad == PS5_HAT_UPLEFT) _controller_host_state.dpad |= GAMEPAD_MASK_LEFT | GAMEPAD_MASK_UP;
         }
     }
 
-    memcpy(&prevReport, &controller_report, sizeof(P5GenerorReport));
+    memcpy(&prevReport, &controller_report, sizeof(PS5Report));
 }
 
 void DualsensePS5Host::gamepad(Gamepad * gamepad) {

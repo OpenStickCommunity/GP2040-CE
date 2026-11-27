@@ -6,34 +6,17 @@
 #include "enums.pb.h"
 #include "animationstation.h"
 #include "eventmanager.h"
-
-#define INPUT_MODE_XINPUT_NAME "XInput"
-#define INPUT_MODE_SWITCH_NAME "Nintendo Switch"
-#define INPUT_MODE_PS3_NAME "PS3"
-#define INPUT_MODE_KEYBOARD_NAME "Keyboard"
-#define INPUT_MODE_PS4_NAME "PS4"
-#define INPUT_MODE_XBONE_NAME "Xbox One"
-#define INPUT_MODE_MDMINI_NAME "Sega Genesis Mini"
-#define INPUT_MODE_NEOGEO_NAME "NEOGEO mini"
-#define INPUT_MODE_PCEMINI_NAME "PC Engine Mini"
-#define INPUT_MODE_EGRET_NAME "EGRET II mini"
-#define INPUT_MODE_ASTRO_NAME "ASTROCITY Mini"
-#define INPUT_MODE_PSCLASSIC_NAME "Playstation Classic"
-#define INPUT_MODE_XBOXORIGINAL_NAME "Original Xbox"
-#define INPUT_MODE_PS5_NAME "PS5"
-#define INPUT_MODE_GENERIC_NAME "Generic HID"
-#define INPUT_MODE_P5GENERAL_NAME "P5 General"
-#define INPUT_MODE_BLE_NAME "BLE HID"
-#define INPUT_MODE_SWITCH_PRO_NAME "Nintendo Switch Pro"
-#define INPUT_MODE_SINPUT_NAME "SInput"
-#define INPUT_MODE_SWITCH2_PRO_NAME "Nintendo Switch 2 Pro"
-#define INPUT_MODE_CONFIG_NAME "Web Config"
+#include "inputmodes.h"
 
 #define SOCD_MODE_UP_PRIORITY_NAME "Up Priority"
 #define SOCD_MODE_NEUTRAL_NAME "Neutral"
 #define SOCD_MODE_SECOND_INPUT_PRIORITY_NAME "Last Win"
 #define SOCD_MODE_FIRST_INPUT_PRIORITY_NAME "First Win"
 #define SOCD_MODE_BYPASS_NAME "Off"
+#define SOCD_MODE_ADVANCED_1_NAME "SOCD-1"
+#define SOCD_MODE_ADVANCED_2_NAME "SOCD-2"
+#define SOCD_MODE_ADVANCED_3_NAME "SOCD-3"
+#define SOCD_MODE_ADVANCED_4_NAME "SOCD-4"
 
 #define DPAD_MODE_DIGITAL_NAME "D-Pad"
 #define DPAD_MODE_LEFT_ANALOG_NAME "Left Analog"
@@ -114,7 +97,24 @@ class MainMenuScreen : public GPScreen {
         bool changeRequiresReboot = false;
         bool changeRequiresSave = false;
 
-        #define INPUT_MODE_ENTRIES(name, value) {name##_NAME, value},
+        #define PP_CAT(a, b)  PP_CAT_(a, b)
+        #define PP_CAT_(a, b) a##b
+        #define PP_PROBE ~, 1
+        #define PP_CHECK_N(x, n, ...) n
+        #define PP_CHECK(...) PP_CHECK_N(__VA_ARGS__, 0, )
+
+        // define any Input Mode entries to be excluded
+        #define INPUT_MODE_EXCLUDE_INPUT_MODE_CONFIG PP_PROBE
+#ifndef ENABLE_BLUETOOTH
+        #define INPUT_MODE_EXCLUDE_INPUT_MODE_BLE PP_PROBE
+#endif
+
+        #define INPUT_MODE_IS_EXCLUDED(name) PP_CHECK(INPUT_MODE_EXCLUDE_##name)
+
+        #define INPUT_MODE_ENTRY_0(name, value) {inputModeName(name), value},
+        #define INPUT_MODE_ENTRY_1(name, value)   /* excluded */
+
+        #define INPUT_MODE_ENTRIES(name, value) PP_CAT(INPUT_MODE_ENTRY_, INPUT_MODE_IS_EXCLUDED(name))(name, value)
         #define DPAD_MODE_ENTRIES(name, value)  {name##_NAME, NULL, nullptr, std::bind(&MainMenuScreen::currentDpadMode,  this), std::bind(&MainMenuScreen::selectDPadMode,  this), value},
         #define SOCD_MODE_ENTRIES(name, value)  {name##_NAME, NULL, nullptr, [this] { return currentSOCDMode(); }, [this] { selectSOCDMode(); }, value},
 
@@ -137,9 +137,7 @@ class MainMenuScreen : public GPScreen {
         DpadMode prevDpadMode{};
         DpadMode updateDpadMode{};
 
-        std::vector<MenuEntry> socdModeMenu = [this] { return std::vector<MenuEntry>{
-            SOCDMode_VALUELIST(SOCD_MODE_ENTRIES)
-        }; }();
+        std::vector<MenuEntry> socdModeMenu = {};
         SOCDMode prevSocdMode{};
         SOCDMode updateSocdMode{};
 

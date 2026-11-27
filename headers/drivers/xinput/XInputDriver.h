@@ -32,12 +32,19 @@ public:
     virtual USBListener * get_usb_auth_listener();
     bool getAuthSent();
 private:
+    void updateAnalogScheduling(uint32_t appliedProfileNumber);
+
     uint8_t last_report[CFG_TUD_ENDPOINT0_SIZE] = { };
     XInputReport xinputReport;
     XInputAuth * xAuthDriver;
     uint8_t featureBuffer[XINPUT_OUT_SIZE];
     uint8_t tud_buffer[64];
     bool xAuthSent;
+    // Console hosts run XSM3 authentication almost immediately; its absence after
+    // enumeration is the AUTO-mode signal that the host is a PC
+    bool consoleAuthSeen = false;
+    bool analogSchedulingAllowed = false;
+    uint32_t analogSchedulingProfile = 0;
 
     InputModeDeviceType deviceType;
     uint8_t configDescriptor[sizeof(xinput_configuration_descriptor)];
