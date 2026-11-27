@@ -25,7 +25,7 @@ struct KeyboardReport
 	void pressKey(uint8_t code) {
 		if (code > HID_KEY_GUI_RIGHT) {
 			reportId = KEYBOARD_MULTIMEDIA_REPORT_ID;
-			multimedia = getMultimedia(code);
+			multimedia |= getMultimedia(code);
 		} else {
 			reportId = KEYBOARD_KEY_REPORT_ID;
 			keycode[code / 8] |= 1 << (code % 8);
