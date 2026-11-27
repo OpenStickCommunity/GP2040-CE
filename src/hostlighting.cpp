@@ -711,11 +711,11 @@ constexpr int16_t keyboardAction(const char* field) {
 
 struct KeyboardMappingField {
 	int16_t action;
-	uint32_t KeyboardMapping::* code;
+	uint8_t KeyboardMapping::* code;
 };
 
 #define HOST_LIGHTING_KEYBOARD_FIELD(parent, atype, htype, ltype, name, tag, other) \
-	{ keyboardAction(#name), &KeyboardMapping::name },
+{ keyboardAction(#name), &KeyboardMapping::name },
 constexpr KeyboardMappingField keyboardMappingFields[] = { KeyboardMapping_FIELDLIST(HOST_LIGHTING_KEYBOARD_FIELD, unused) };
 #undef HOST_LIGHTING_KEYBOARD_FIELD
 constexpr uint8_t KEYBOARD_MAPPING_FIELDS = sizeof(keyboardMappingFields) / sizeof(keyboardMappingFields[0]);
@@ -1973,9 +1973,9 @@ uint8_t HostLighting::cmdSetKeyboardMapping(const uint8_t* req, uint8_t* reply) 
 	KeyboardMapping& mapping = Storage::getInstance().getActiveKeyboardMapping();
 	bool changed = false;
 	for (uint8_t i = 0; i < count; i++) {
-		uint32_t& code = mapping.*keyboardMappingFields[first + i].code;
+		uint8_t& code = mapping.*keyboardMappingFields[first + i].code;
 		const uint8_t value = req[SET_KEYBOARD_MAPPING_CODES + i];
-		if ((uint8_t)code != value) {
+		if (code != value) {
 			code = value;
 			changed = true;
 		}
