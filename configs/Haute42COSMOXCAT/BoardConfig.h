@@ -9,7 +9,7 @@
 #include "enums.pb.h"
 #include "class/hid/hid.h"
 
-#define BOARD_CONFIG_LABEL "Haute42 COSMOX C-AT"
+#define BOARD_CONFIG_LABEL "Haute42|COSMOX C-AT"
 
 // Main pin mapping Configuration
 //                          // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
@@ -81,7 +81,6 @@
 #define BOARD_LEDS_PIN 28
 #define LED_BRIGHTNESS_MAXIMUM 200
 #define LEDS_BRIGHTNESS 200
-#define LED_BRIGHTNESS_STEPS 5
 #define LED_FORMAT LED_FORMAT_GRB
 #define LEDS_PER_PIXEL 1
 
@@ -106,7 +105,6 @@
 
 // LED Profile 0
 #define LEDS_PROFILE0_ENABLED 1
-#define LEDS_PROFILE0_DEFAULT_CYCLE_TIME 4
 #define LEDS_PROFILE0_BASE_ANIMATION_INDEX AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_SYNCED
 #define LEDS_PROFILE0_PRESSED_ANIMATION_INDEX AnimationPressedEffects::AnimationPressedEffects_PRESSEDEFFECT_STATIC_COLOR
 #define LEDS_PROFILE0_CASE_ANIMATION_INDEX AnimationNonPressedEffects::AnimationNonPressedEffects_EFFECT_RAINBOW_SYNCED
@@ -114,13 +112,6 @@
 #define LEDS_PROFILE0_STATIC_COLOR_PRESSED ColorIndexWhite
 #define LEDS_PROFILE0_STATIC_COLOR_CASE ColorIndexGreen
 #define LEDS_PROFILE0_USE_CASE_IN_PRESSED true
-
-// Set our default ambient light
-#define CASE_RGB_TYPE CASE_RGB_TYPE_AMBIENT
-#define CASE_RGB_INDEX 18
-#define CASE_RGB_COUNT 32
-#define AMBIENT_LIGHT_EFFECT AL_CUSTOM_EFFECT_GRADIENT
-#define AMBIENT_STATIC_COLOR ANIMATION_COLOR_PURPLE
 
 #define HAS_I2C_DISPLAY 1
 #define I2C0_ENABLED 1
@@ -130,8 +121,12 @@
 #define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_BOARD_DEFINED_B
 #define SPLASH_MODE SPLASH_MODE_STATIC
 #define SPLASH_DURATION 3000
+#define SPLASH_TEXT_ENABLED 1 // Haute42 logo first, then this text
+#define SPLASH_TEXT_LINE_COUNT 2
+#define SPLASH_TEXT_LINE1 "Haute42|COSMOX"
+#define SPLASH_TEXT_LINE2 "C-AT"
 
-#define DEFAULT_BOARD_LAYOUT_A_NAME "Haute42 COSMOX C-AT Default"
+#define DEFAULT_BOARD_LAYOUT_A_NAME "Haute42|COSMOX C-AT Default"
 #define DEFAULT_BOARD_LAYOUT_A {\
     {GP_ELEMENT_PIN_BUTTON, {43, 17, 4, 4, 1, 1, 29, GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {31, 27, 4, 4, 1, 1, 5, GP_SHAPE_ELLIPSE}},\
@@ -147,7 +142,7 @@
     {GP_ELEMENT_PIN_BUTTON, {108, 10, 112, 14, 1, 1, 14, GP_SHAPE_SQUARE}},\
 }
 
-#define DEFAULT_BOARD_LAYOUT_B_NAME "Haute42 COSMOX C-AT Default"
+#define DEFAULT_BOARD_LAYOUT_B_NAME "Haute42|COSMOX C-AT Default"
 #define DEFAULT_BOARD_LAYOUT_B {\
     {GP_ELEMENT_PIN_BUTTON, {71, 27, 4, 4, 1, 1, 10, GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {81, 25, 4, 4, 1, 1, 11, GP_SHAPE_ELLIPSE}},\
@@ -163,7 +158,7 @@
 }
 
 #define LEDS_AUTO_DISABLE_TIME 0
-#define LIGHT_DATA_NAME_DEFAULT "Haute42|Cosmox CAT" 
+#define LIGHT_DATA_NAME_DEFAULT "Haute42|COSMOX C-AT"
 #define LIGHT_DATA_SIZE_DEFAULT 50 //number of sets in the below data
 #define LIGHT_DATA_DEFAULT \
 0,  1, 5,  4,  5,  LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \

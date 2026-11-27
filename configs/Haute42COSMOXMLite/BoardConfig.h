@@ -9,7 +9,7 @@
 #include "enums.pb.h"
 #include "class/hid/hid.h"
 
-#define BOARD_CONFIG_LABEL "Haute42 COSMOX M Ultra"
+#define BOARD_CONFIG_LABEL "Haute42|COSMOX M Lite"
 
 // Main pin mapping Configuration
 //                          // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
@@ -97,12 +97,46 @@
 #define LEDS_BUTTON_R3   14
 #define LEDS_BUTTON_A2   15
 
-// Set our default ambient light
-#define CASE_RGB_TYPE CASE_RGB_TYPE_AMBIENT
-#define CASE_RGB_INDEX 16
-#define CASE_RGB_COUNT 20
-#define AMBIENT_LIGHT_EFFECT AL_CUSTOM_EFFECT_GRADIENT
-#define AMBIENT_STATIC_COLOR ANIMATION_COLOR_PURPLE
+//Data format = {first led index, leds on this light, xcoord, ycoord, GPIO pin/case light Index, Type, input source}
+#define LIGHT_DATA_NAME_DEFAULT "Haute42|COSMOX M Lite"
+#define LIGHT_DATA_SIZE_DEFAULT 36 //number of sets in the below data
+#define LIGHT_DATA_DEFAULT \
+0, 1, 3, 5, 5, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+1, 1, 5, 5, 3, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+2, 1, 7, 6, 4, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+3, 1, 8, 9, 2, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+4, 1, 9, 5, 10, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+5, 1, 11, 4, 11, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+6, 1, 13, 4, 12, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+7, 1, 15, 4, 13, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+8, 1, 9, 7, 6, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+9, 1, 11, 6, 7, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+10, 1, 13, 6, 8, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+11, 1, 15, 6, 9, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+12, 1, 6, 3, 27, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+13, 1, 9, 3, 18, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+14, 1, 10, 9, 19, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+15, 1, 6, 9, 26, LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
+16, 1, 8, 0, 0, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+17, 1, 5, 0, 1, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+18, 1, 2, 0, 2, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+19, 1, 0, 2, 3, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+20, 1, 0, 5, 4, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+21, 1, 0, 8, 5, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+22, 1, 0, 11, 6, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+23, 1, 2, 12, 7, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+24, 1, 5, 12, 8, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+25, 1, 8, 12, 9, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+26, 1, 11, 12, 10, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+27, 1, 14, 12, 11, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+28, 1, 17, 12, 12, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+29, 1, 18, 11, 13, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+30, 1, 18, 8, 14, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+31, 1, 18, 5, 15, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+32, 1, 18, 2, 16, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+33, 1, 17, 0, 17, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+34, 1, 14, 0, 18, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO, \
+35, 1, 11, 0, 19, LightType::LightType_Case, LightInputSource::LightInputSource_GPIO
 
 #define HAS_I2C_DISPLAY 1
 #define I2C0_ENABLED 1
@@ -112,14 +146,18 @@
 #define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_BOARD_DEFINED_B
 #define SPLASH_MODE SPLASH_MODE_STATIC
 #define SPLASH_DURATION 3000
+#define SPLASH_TEXT_ENABLED 1 // Haute42 logo first, then this text
+#define SPLASH_TEXT_LINE_COUNT 2
+#define SPLASH_TEXT_LINE1 "Haute42|COSMOX"
+#define SPLASH_TEXT_LINE2 "M Lite"
 
-#define DEFAULT_BOARD_LAYOUT_A_NAME "Haute42 COSMOX M Ultra Default"
+#define DEFAULT_BOARD_LAYOUT_A_NAME "Haute42|COSMOX M Lite Default"
 #define DEFAULT_BOARD_LAYOUT_A {\
     {GP_ELEMENT_PIN_BUTTON, {47,  19, 4, 4, 1, 1, 27,   GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {32,  27, 4, 4, 1, 1, 5,    GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {42,  27, 4, 4, 1, 1, 3,    GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {50,  32, 4, 4, 1, 1, 4,    GP_SHAPE_ELLIPSE}},\
-    {GP_ELEMENT_PIN_BUTTON, {64,  17, 4, 4, 1, 1, 18,   GP_SHAPE_ELLIPSE}},\
+    {GP_ELEMENT_PIN_BUTTON, {62,  17, 4, 4, 1, 1, 18,   GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {54,  49, 5, 5, 1, 1, 2,    GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {42,  46, 4, 4, 1, 1, 26,   GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {77,  15, 2, 2, 1, 1, 14,   GP_SHAPE_ELLIPSE}},\
@@ -129,7 +167,7 @@
     {GP_ELEMENT_PIN_BUTTON, {105, 15, 2, 2, 1, 1, 17,   GP_SHAPE_ELLIPSE}}\
 }
 
-#define DEFAULT_BOARD_LAYOUT_B_NAME "Haute42 COSMOX M Ultra Default"
+#define DEFAULT_BOARD_LAYOUT_B_NAME "Haute42|COSMOX M Lite Default"
 #define DEFAULT_BOARD_LAYOUT_B {\
     {GP_ELEMENT_PIN_BUTTON, {59, 27, 4, 4, 1, 1, 10,    GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {69, 25, 4, 4, 1, 1, 11,    GP_SHAPE_ELLIPSE}},\

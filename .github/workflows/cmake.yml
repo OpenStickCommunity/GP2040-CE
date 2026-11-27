@@ -33,16 +33,53 @@ on:
           - GranolaBeacon
           - AdafruitKB2040
           - KeyboardConverter
-          - Haute42COSMOX
+          - Haute42COSMOXB16
+          - Haute42COSMOXC16
+          - Haute42COSMOXC16S
           - Haute42COSMOXCAS
+          - Haute42COSMOXCASLite
           - Haute42COSMOXCAT
+          - Haute42COSMOXE16
+          - Haute42COSMOXG12
+          - Haute42COSMOXG13
+          - Haute42COSMOXG16
+          - Haute42COSMOXM12Plus
+          - Haute42COSMOXM13
+          - Haute42COSMOXM16
+          - Haute42COSMOXM16Plus
           - Haute42COSMOXMLite
+          - Haute42COSMOXMini
           - Haute42COSMOXMUltra
+          - Haute42COSMOXMUltraGen2
+          - Haute42COSMOXP12
+          - Haute42COSMOXR16
+          - Haute42COSMOXS13
+          - Haute42COSMOXS16
+          - Haute42COSMOXT12
+          - Haute42COSMOXT13
+          - Haute42COSMOXT16
+          - Haute42COSMOXU12
+          - Haute42COSMOXU16
+          - Haute42COSMOXX
           - Haute42COSMOXXAnalog
+          - Haute42COSMOXXMove
           - Liatris
+          - MavercadeKeebBrawler01
+          - MavercadeKeebBrawler02MX
+          - MavercadeKeebBrawler02MXRev3
+          - MavercadeKeebBrawler03MX
+          - MavercadeKeebBrawler03MXRev3
+          - MavercadeKeebBrawler04MX
+          - MavercadeKeebBrawler04MXRev3
+          - MavercadeKeebBrawler05
+          - MavercadeKeebFighter02
+          - MavercadeKeebFighter03
+          - MavercadeKeebFighter04
+          - MavercadeKeebFighterPlusS3
+          - MavercadeKeebFighterPlusS3Rev3
+          - MavercadeKeebFighterPlusS4
+          - MavercadeKeebFighterPlusS4Rev3
           - MavercadeRev1
-          - MavercadeRev2
-          - MavercadeRev3
           - MiSTercadeV2
           - OpenCore0
           - OpenCore0MIXUP
