@@ -45,7 +45,7 @@ function ColorSelector({
 	onChange: (selected: ColorOption | null) => void;
 }) {
 	return (
-		<CustomSelect
+		<CustomSelect<ColorOption, false>
 			options={options}
 			styles={colorStyles}
 			isMulti={false}

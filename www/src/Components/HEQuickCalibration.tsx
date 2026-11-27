@@ -56,7 +56,7 @@ const HEQuickCalibration = ({
 	const [readings, setReadings] = useState<Record<number, Reading>>({});
 	const [error, setError] = useState('');
 	const readingsRef = useRef<Record<number, Reading>>({});
-	const timerId = useRef<ReturnType<typeof setInterval>>();
+	const timerId = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
 	const inFlight = useRef(false);
 
 	const targets = triggers

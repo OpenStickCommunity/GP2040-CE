@@ -28,7 +28,8 @@ const CaptureButton = ({
 	const currentLabel = labels[labelIndex] || '';
 	const hasNext = Boolean(labels[labelIndex + 1]);
 
-	const timeout = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+	const timeout = (ms: number) =>
+		new Promise<void>((resolve) => setTimeout(resolve, ms));
 
 	const closeAndReset = () => {
 		stopRef.current = false;

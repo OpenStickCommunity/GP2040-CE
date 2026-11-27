@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, type MouseEvent } from 'react';
 import {
 	Alert,
 	Button,
@@ -51,14 +51,15 @@ const SELECTABLE_BUTTON_ACTIONS = [
 	65, 66, 72, 73, 74, 75, 76, 77, 78,
 ];
 
-const getOption = (e, actionId) => {
+const getOption = (actionId: number) => {
 	return {
 		label: invert(BUTTON_ACTIONS)[actionId],
 		value: actionId,
 	};
 };
 
-const isSelectable = (value) => SELECTABLE_BUTTON_ACTIONS.includes(value);
+const isSelectable = (value: number) =>
+	SELECTABLE_BUTTON_ACTIONS.includes(value);
 
 export const HETriggerScheme = {
 	HETriggerEnabled: yup
@@ -143,8 +144,6 @@ type TriggerActionsFormTypes = {
 	values: typeof DEFAULT_VALUES;
 	errors: FormikErrors<typeof DEFAULT_VALUES>;
 	muxChannels: number;
-	handleChange: (e: Event) => void;
-	handleCheckbox: (e: Event) => void;
 };
 
 const TriggerActionsForm = ({
@@ -152,8 +151,6 @@ const TriggerActionsForm = ({
 	values,
 	errors,
 	muxChannels,
-	handleChange,
-	handleCheckbox,
 }: TriggerActionsFormTypes) => {
 	const setHETrigger = useHETriggerStore((state) => state.setHETrigger);
 	const saveHETriggers = useHETriggerStore((state) => state.saveHETriggers);
@@ -184,7 +181,7 @@ const TriggerActionsForm = ({
 			(e, i) => e.action !== -10 && isTriggerScanned(i, muxChannels, values),
 		).length > 0;
 
-	const handleSave = async (e) => {
+	const handleSave = async (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 		e.stopPropagation();
 		try {
@@ -266,7 +263,7 @@ const TriggerActionsForm = ({
 												isClearable
 												isSearchable
 												options={options}
-												value={getOption(triggers[key], triggers[key].action)}
+												value={getOption(triggers[key].action)}
 												getOptionLabel={getActionLabel}
 												onChange={(change) =>
 													setHETrigger({
@@ -305,7 +302,7 @@ const TriggerActionsForm = ({
 					values={values}
 					muxChannels={muxChannels}
 					getTriggerLabel={(index) =>
-						getActionLabel(getOption(triggers[index], triggers[index].action))
+						getActionLabel(getOption(triggers[index].action))
 					}
 				/>
 				<HECalibration
@@ -600,8 +597,6 @@ const HETrigger = ({
 						values={values}
 						errors={errors}
 						triggers={triggers}
-						handleChange={handleChange}
-						handleCheckbox={handleCheckbox}
 						muxChannels={values.muxChannels}
 					/>
 				</Row>
