@@ -27,7 +27,7 @@ static_assert((GAMEPAD_MASK_DPAD << DIRECTION_SHIFT) == DIRECTION_BUTTONS, "dire
 // KeyboardMapping field for each mask bit, in bit order
 struct MaskKey {
 	uint32_t mask;
-	uint32_t KeyboardMapping::* code;
+	uint8_t KeyboardMapping::* code;
 };
 
 #define BUTTON_KEY(button) { GAMEPAD_MASK_##button, &KeyboardMapping::keyButton##button }
@@ -185,7 +185,7 @@ uint32_t KeyboardInterface::sentButtons() const {
 	return buttonsSentIn(buttonMask, Storage::getInstance().GetGamepad()->getActiveDpadMode());
 }
 
-bool KeyboardInterface::sendsKey(uint32_t KeyboardMapping::* code) const {
+bool KeyboardInterface::sendsKey(uint8_t KeyboardMapping::* code) const {
 	const uint32_t sent = sentButtons();
 	for (const MaskKey& key : maskKeys) {
 		if (key.code == code)

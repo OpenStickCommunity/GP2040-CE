@@ -52,7 +52,7 @@ public:
 
 	// Whether the button of this KeyboardMapping field sends its key in place
 	// of its controller input. False while the interface is not active.
-	bool sendsKey(uint32_t KeyboardMapping::* code) const;
+	bool sendsKey(uint8_t KeyboardMapping::* code) const;
 
 	// The masked buttons that send their key in the active D-pad mode
 	uint32_t sentButtons() const;
