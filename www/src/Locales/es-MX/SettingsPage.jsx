@@ -29,6 +29,70 @@ export default {
 		mini: 'Modos para Consolas Mini/Clásicas',
 	},
 	'boot-input-mode-label': 'Modos de Entrada al Inicio',
+	'ble-status': {
+		title: 'Configuración de Bluetooth',
+		intro:
+			'Empareja el control sin salir de Web Config. Mantén conectado el cable USB durante la configuración.',
+		state: {
+			loading: 'Cargando',
+			unsupported: 'No compatible',
+			'init-failed': 'Radio no disponible',
+			initializing: 'Iniciando Bluetooth',
+			ready: 'Listo',
+			pairing: 'Visible',
+			connecting: 'Conectando',
+			connected: 'Conectado',
+			unavailable: 'Estado no disponible',
+		},
+		'status-error':
+			'No se pudo contactar el control. Revisa la conexión USB. El estado se actualizará automáticamente.',
+		retry: 'Reintentar',
+		unsupported:
+			'Este firmware no es compatible con Bluetooth. Usa una tarjeta inalámbrica compatible y su firmware correspondiente.',
+		'init-failed':
+			'No se pudo iniciar la radio Bluetooth. El control volverá a intentarlo. Si continúa, revisa que el firmware corresponda a tu tarjeta.',
+		initializing:
+			'Iniciando la radio Bluetooth. Esto puede tardar unos segundos.',
+		'device-name': 'Nombre del dispositivo Bluetooth',
+		'pairing-help':
+			'Abre la configuración de Bluetooth en tu computadora o teléfono y selecciona {{name}}. El control permanecerá visible hasta que se conecte o canceles.',
+		'connected-help':
+			'El dispositivo está conectado. Puedes terminar de configurar el control antes de cambiar al modo de juego por Bluetooth.',
+		'connecting-help':
+			'Completa la conexión en la configuración de Bluetooth de tu computadora o teléfono.',
+		'step-start': 'Selecciona Iniciar emparejamiento abajo.',
+		'step-host':
+			'Agrega un dispositivo Bluetooth en tu computadora o teléfono y selecciona {{name}}.',
+		'step-play':
+			'Después de conectarlo, guarda Bluetooth como modo de entrada y reinicia el control para jugar.',
+		start: 'Iniciar emparejamiento',
+		cancel: 'Cancelar emparejamiento',
+		'webconfig-note':
+			'Las entradas del control se pausan en Web Config. Los cambios de emparejamiento son inmediatos; guardar el modo de entrada requiere reiniciar.',
+		'saved-title': 'Dispositivos guardados',
+		'saved-count_zero': 'Aún no hay dispositivos guardados.',
+		'saved-count_one': '{{count}} dispositivo guardado para reconectarse.',
+		'saved-count_other': '{{count}} dispositivos guardados para reconectarse.',
+		forget: 'Olvidar dispositivos guardados',
+		'disconnect-help':
+			'Para emparejar otro dispositivo u olvidar los guardados, primero desconecta el control desde la configuración Bluetooth de tu computadora o teléfono.',
+		'forget-title': '¿Olvidar todos los dispositivos guardados?',
+		'forget-help':
+			'Esto elimina todos los emparejamientos Bluetooth del control. También olvida el control en la configuración Bluetooth de tu computadora o teléfono antes de emparejarlo de nuevo.',
+		'keep-devices': 'Conservar dispositivos',
+		forgotten:
+			'Se olvidaron los dispositivos guardados. Ya puedes iniciar un nuevo emparejamiento.',
+		canceled: 'Emparejamiento cancelado. El control ya no está visible.',
+		errors: {
+			'not-ready':
+				'Bluetooth aún se está iniciando. Espera un momento e inténtalo de nuevo.',
+			connected:
+				'Hay un dispositivo conectado. Desconéctalo desde su configuración Bluetooth antes de volver a intentarlo.',
+			unsupported: 'Este firmware no es compatible con Bluetooth.',
+			'control-failed':
+				'No se pudo confirmar la acción de Bluetooth. Revisa la conexión y el estado actual antes de intentarlo de nuevo.',
+		},
+	},
 	'ps4-mode-options': {
 		controller: 'Control',
 		arcadestick: 'Arcade Stick',

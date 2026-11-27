@@ -298,7 +298,7 @@ async function getGamepadOptions(setLoading) {
 async function setGamepadOptions(options) {
 	return Http.post(`${baseUrl}/api/setGamepadOptions`, sanitizeRequest(options))
 		.then((response) => {
-			return true;
+			return response.data?.success !== false;
 		})
 		.catch((err) => {
 			console.error(err);
@@ -393,7 +393,14 @@ async function getBootModeOptions() {
 }
 
 async function setBootModeOptions(options) {
-	return Http.post(`${baseUrl}/api/setBootModeOptions`, options);
+	const response = await Http.post(
+		`${baseUrl}/api/setBootModeOptions`,
+		options,
+	);
+	if (response.data?.success === false) {
+		throw new Error(response.data.error || 'Failed to save boot mode options');
+	}
+	return response;
 }
 
 // The keyboard interface's button mask uses the hotkey and macro button bits

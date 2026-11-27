@@ -2,7 +2,6 @@ const STATUS_FLAGS = [
 	'supported',
 	'enabled',
 	'initializationFailed',
-	'bondSaveFailed',
 	'connected',
 	'notifying',
 	'pairingMode',

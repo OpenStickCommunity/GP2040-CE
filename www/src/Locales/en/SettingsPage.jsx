@@ -47,7 +47,7 @@ export default {
 			unsupported: 'Not supported',
 			'init-failed': 'Radio unavailable',
 			initializing: 'Starting Bluetooth',
-			ready: 'Ready to pair',
+			ready: 'Ready',
 			pairing: 'Discoverable',
 			connecting: 'Connecting',
 			connected: 'Connected',
@@ -66,8 +66,6 @@ export default {
 			'Open Bluetooth settings on your computer or phone and select {{name}}. The controller stays discoverable until connected or canceled.',
 		'connected-help':
 			'Your device is connected. You can finish configuring the controller before switching to Bluetooth play.',
-		'save-failed':
-			'The controller could not save its Bluetooth pairings. It will retry automatically. Keep it powered on until this warning clears.',
 		'connecting-help':
 			"Complete the connection in your computer or phone's Bluetooth settings.",
 		'step-start': 'Select Start pairing below.',

@@ -7,7 +7,6 @@ type BluetoothStatus = {
 	supported: boolean;
 	enabled: boolean;
 	initializationFailed: boolean;
-	bondSaveFailed: boolean;
 	connected: boolean;
 	notifying: boolean;
 	pairingMode: boolean;
@@ -40,8 +39,10 @@ export default function BluetoothSettings({ onSupportChange }: Props) {
 			const response: BluetoothStatus | null = await WebApi.getBLEHIDStatus();
 			if (!mounted.current || version !== requestVersion.current) return;
 			setStatusError(!response);
-			onSupportChange(response?.supported === true);
-			if (response) setStatus(response);
+			if (response) {
+				onSupportChange(response.supported);
+				setStatus(response);
+			}
 		} finally {
 			refreshing.current = false;
 		}
@@ -78,7 +79,6 @@ export default function BluetoothSettings({ onSupportChange }: Props) {
 				onSupportChange(response.supported);
 			} else {
 				setStatusError(true);
-				onSupportChange(false);
 			}
 			if (response?.success !== true) {
 				const error = response?.error;
@@ -200,9 +200,6 @@ export default function BluetoothSettings({ onSupportChange }: Props) {
 						)}
 						{phase === 'connected' && (
 							<Alert variant="success">{t('ble-status.connected-help')}</Alert>
-						)}
-						{status.bondSaveFailed && (
-							<Alert variant="danger">{t('ble-status.save-failed')}</Alert>
 						)}
 						{phase === 'connecting' && (
 							<Alert variant="info">{t('ble-status.connecting-help')}</Alert>

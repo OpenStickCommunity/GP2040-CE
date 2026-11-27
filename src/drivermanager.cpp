@@ -22,7 +22,7 @@
 
 #include "usbhostmanager.h"
 
-void DriverManager::setup(InputMode mode) {
+bool DriverManager::setup(InputMode mode) {
     switch (mode) {
         case INPUT_MODE_CONFIG:
             driver = new NetDriver();
@@ -89,13 +89,14 @@ void DriverManager::setup(InputMode mode) {
             // OLED status bar rely on this), then return without instantiating
             // a USB driver.
             inputMode = mode;
-            return;
+            return true;
 #endif
         default:
-            return;
+            return false;
     }
 
     // Initialize our chosen driver
     driver->initialize();
     inputMode = mode;
+    return true;
 }

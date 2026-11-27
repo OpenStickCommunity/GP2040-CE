@@ -14,14 +14,14 @@ void OutputManager::dispatch(Gamepad* gamepad) {
     const GamepadOptions& opts = Storage::getInstance().getGamepadOptions();
     if (opts.inputMode != INPUT_MODE_BLE) return;
 
-    // Map GamepadState to the 7-byte BLE HID report body (no Report ID byte —
+    // Map GamepadState to the 9-byte BLE HID report body (no Report ID byte —
     // that is carried by the GATT Report Reference descriptor).
     //   byte 0   : Buttons 1..8   (B1, B2, B3, B4, L1, R1, L2, R2)
     //   byte 1   : Buttons 9..16  (S1, S2, L3, R3, Up, Down, Left, Right)
     //   byte 2   : Buttons 17..18 (A1, A2) + 6 padding bits
-    //   byte 3-6 : X, Y, Z, Rz sticks — sent centered (no analog input yet)
+    //   byte 3-8 : X, Y, Z, Rz sticks and Rx/Ry analog triggers
     // Order follows the W3C Standard Gamepad layout; the D-pad is sent as discrete buttons.
-    uint8_t report[7] = {};
+    uint8_t report[9] = {};
     const GamepadState& state = gamepad->state;
 
     // Byte 0: Buttons 1..8
@@ -51,11 +51,17 @@ void OutputManager::dispatch(Gamepad* gamepad) {
         (gamepad->pressedA1() ? (1u << 0) : 0) |  // Button 17
         (gamepad->pressedA2() ? (1u << 1) : 0);   // Button 18
 
-    // Bytes 3..6: sticks centered
-    report[3] = 0x80;
-    report[4] = 0x80;
-    report[5] = 0x80;
-    report[6] = 0x80;
+    const auto toHidAxis = [](uint16_t value) {
+        return static_cast<uint8_t>(
+            (static_cast<uint32_t>(value) * 255u + 32767u) / 65535u);
+    };
+
+    report[3] = toHidAxis(state.lx);
+    report[4] = toHidAxis(state.ly);
+    report[5] = toHidAxis(state.rx);
+    report[6] = toHidAxis(state.ry);
+    report[7] = state.lt;
+    report[8] = state.rt;
 
     BLEHIDManager::getInstance().sendReport(report, sizeof(report));
 #else

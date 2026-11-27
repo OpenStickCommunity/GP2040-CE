@@ -29,18 +29,15 @@
 #define BLE_VENDOR_SOURCE_ID  0x02
 #endif
 
-// Same VID/PID GP2040-CE uses for its USB HID (DirectInput) mode
-// (see headers/drivers/hid/HIDDescriptors.h), so BLE presents the same
-// gamepad identity known to SDL / Steam mapping databases.
-// Deliberately NOT 0x045E (Microsoft) / 0x054C (Sony) / 0x057E (Nintendo) —
-// spoofing those over BLE causes Windows to bind console class drivers that
-// cannot talk to a BLE endpoint.
+// Keep the Bluetooth product ID distinct from USB because the report layouts
+// differ. Deliberately avoid console vendor IDs that can select incompatible
+// host drivers.
 #ifndef BLE_VENDOR_ID
 #define BLE_VENDOR_ID         0x10C4
 #endif
 
 #ifndef BLE_PRODUCT_ID
-#define BLE_PRODUCT_ID        0x82C0
+#define BLE_PRODUCT_ID        0x82C1
 #endif
 
 // Product Version is a 16-bit field, conventionally BCD JJ.M.N as 0xJJMN.

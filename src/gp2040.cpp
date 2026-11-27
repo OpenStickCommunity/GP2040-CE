@@ -158,7 +158,11 @@ void GP2040::setup() {
 	InputMode inputMode = bootAction.inputMode;
 
 	// Setup USB Driver
-	DriverManager::getInstance().setup(inputMode);
+	DriverManager& driverManager = DriverManager::getInstance();
+	if (!driverManager.setup(inputMode)) {
+		inputMode = INPUT_MODE_XINPUT;
+		driverManager.setup(inputMode);
+	}
 
 	if (inputMode != INPUT_MODE_CONFIG) {
 		bool inputModeChanged = inputMode != gamepadOptions.inputMode;
@@ -300,8 +304,8 @@ void __not_in_flash_func(GP2040::run)() {
 	}
 
 #ifdef ENABLE_BLUETOOTH
-	if (wirelessOnly || configMode) {
-		BLEHIDManager::getInstance().init(configMode);
+	if (wirelessOnly) {
+		BLEHIDManager::getInstance().init(false);
 	}
 #endif
 

@@ -114,7 +114,10 @@ export default function BackupPage() {
 			const values = options[key];
 			if (values) {
 				try {
-					await func.set(values);
+					const success = await func.set(values);
+					if (success === false) {
+						throw new Error('Failed to save these options.');
+					}
 				} catch (error) {
 					setNoticeMessage(`Failed to set ${key} options: ${error.message}`);
 				}

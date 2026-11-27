@@ -440,6 +440,40 @@ std::string serialize_json(DynamicJsonDocument &doc)
     return data;
 }
 
+static bool containsUnsupportedBluetoothMode(const DynamicJsonDocument& doc)
+{
+#ifndef ENABLE_BLUETOOTH
+    static constexpr const char* modeFields[] = {
+        "inputMode", "inputModeB1", "inputModeB2", "inputModeB3", "inputModeB4",
+        "inputModeL1", "inputModeL2", "inputModeR1", "inputModeR2"
+    };
+    for (const char* field : modeFields) {
+        if (doc[field].is<int>() && doc[field].as<int>() == INPUT_MODE_BLE) {
+            return true;
+        }
+    }
+
+    JsonArrayConst mappings = doc["inputModeMappings"].as<JsonArrayConst>();
+    for (JsonObjectConst mapping : mappings) {
+        if (mapping["inputMode"].is<int>() &&
+            mapping["inputMode"].as<int>() == INPUT_MODE_BLE) {
+            return true;
+        }
+    }
+#else
+    (void)doc;
+#endif
+    return false;
+}
+
+static std::string unsupportedInputModeResponse(DynamicJsonDocument& doc)
+{
+    doc.clear();
+    doc["success"] = false;
+    doc["error"] = "unsupported";
+    return serialize_json(doc);
+}
+
 std::string getUsedPins()
 {
     const size_t capacity = JSON_OBJECT_SIZE(100);
@@ -791,6 +825,9 @@ std::string getProfileOptions()
 std::string setGamepadOptions()
 {
     DynamicJsonDocument doc = get_post_data();
+    if (containsUnsupportedBluetoothMode(doc)) {
+        return unsupportedInputModeResponse(doc);
+    }
 
     GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
 
@@ -1801,9 +1838,12 @@ std::string getBootModeOptions() {
 }
 
 std::string setBootModeOptions() {
-	BootModeOptions& bootModeOptions = Storage::getInstance().getBootModeOptions();
-
 	DynamicJsonDocument doc = get_post_data();
+    if (containsUnsupportedBluetoothMode(doc)) {
+        return unsupportedInputModeResponse(doc);
+    }
+
+	BootModeOptions& bootModeOptions = Storage::getInstance().getBootModeOptions();
     JsonObject options = doc.as<JsonObject>();
 
 	bootModeOptions.enabled = options["enabled"].as<bool>();
@@ -3311,7 +3351,6 @@ static void writeBLEHIDStatus(DynamicJsonDocument& doc)
     writeDoc(doc, "supported", true);
     writeDoc(doc, "enabled", status.ready);
     writeDoc(doc, "initializationFailed", status.initFailed);
-    writeDoc(doc, "bondSaveFailed", status.bondSaveFailed);
     writeDoc(doc, "connected", status.connected);
     writeDoc(doc, "notifying", status.notifying);
     writeDoc(doc, "pairingMode", status.pairing);
@@ -3322,7 +3361,6 @@ static void writeBLEHIDStatus(DynamicJsonDocument& doc)
     writeDoc(doc, "supported", false);
     writeDoc(doc, "enabled", false);
     writeDoc(doc, "initializationFailed", false);
-    writeDoc(doc, "bondSaveFailed", false);
     writeDoc(doc, "connected", false);
     writeDoc(doc, "notifying", false);
     writeDoc(doc, "pairingMode", false);
@@ -3334,6 +3372,9 @@ static void writeBLEHIDStatus(DynamicJsonDocument& doc)
 
 std::string getBLEHIDStatus()
 {
+#ifdef ENABLE_BLUETOOTH
+    BLEHIDManager::getInstance().init(true);
+#endif
     DynamicJsonDocument doc(JSON_OBJECT_SIZE(16) + 64);
     writeBLEHIDStatus(doc);
     return serialize_json(doc);

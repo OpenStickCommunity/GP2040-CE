@@ -1,5 +1,6 @@
 import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap';
-import { ReactNode, useContext, useEffect } from 'react';
+import { ReactNode, useContext, useEffect, useState } from 'react';
+import { InputMode } from '@proto/enums';
 import Section from '../Components/Section';
 import { useShallow } from 'zustand/react/shallow';
 import { NavLink } from 'react-router-dom';
@@ -20,6 +21,7 @@ import useProfilesStore, {
 } from '../Store/useProfilesStore';
 import { BUTTON_ACTIONS } from '../Data/Pins';
 import ContextualHelpOverlay from '../Components/ContextualHelpOverlay';
+import WebApi from '../Services/WebApi';
 
 type PinOption = {
 	label: string;
@@ -61,7 +63,13 @@ const GROUPED_OPTIONS = [
 	},
 ];
 
-function BootModeSelect({ mappingKey }: { mappingKey: string }) {
+function BootModeSelect({
+	mappingKey,
+	bleSupported,
+}: {
+	mappingKey: string;
+	bleSupported: boolean;
+}) {
 	const inputMode = useBootModeStore(
 		(state) => state.bootModes[mappingKey].inputMode,
 	);
@@ -73,8 +81,18 @@ function BootModeSelect({ mappingKey }: { mappingKey: string }) {
 	const { getAvailablePeripherals } = useContext(AppContext);
 	const { t } = useTranslation('');
 
-	const value = INPUT_MODE_OPTIONS.find(({ value }) => value === inputMode);
+	const value = INPUT_MODE_OPTIONS.find(
+		({ value }) =>
+			value === inputMode &&
+			(value !== InputMode.INPUT_MODE_BLE || bleSupported),
+	);
 	const usbAvailable: boolean = getAvailablePeripherals('usb');
+	const options = GROUPED_OPTIONS.map(({ label, options }) => ({
+		label,
+		options: options.filter(
+			(option) => option.value !== InputMode.INPUT_MODE_BLE || bleSupported,
+		),
+	}));
 
 	const isOptionDisabled = (option: InputModeOptions) => {
 		return option.required.includes('usb') && !usbAvailable;
@@ -99,7 +117,7 @@ function BootModeSelect({ mappingKey }: { mappingKey: string }) {
 		<CustomSelect
 			isClearable={false}
 			isMulti={false}
-			options={GROUPED_OPTIONS}
+			options={options}
 			isOptionDisabled={isOptionDisabled}
 			isDisabled={false}
 			getOptionLabel={getOptionLabel}
@@ -274,12 +292,20 @@ function FormRow({
 	);
 }
 
-function BootModeRow({ mappingKey }: { mappingKey: string }) {
+function BootModeRow({
+	mappingKey,
+	bleSupported,
+}: {
+	mappingKey: string;
+	bleSupported: boolean;
+}) {
 	const { removeBootMode, clearErrors, setDirty } = useBootModeStoreActions();
 
 	return (
 		<FormRow
-			col0={<BootModeSelect mappingKey={mappingKey} />}
+			col0={
+				<BootModeSelect mappingKey={mappingKey} bleSupported={bleSupported} />
+			}
 			col1={<PinSelect mappingKey={mappingKey} />}
 			col2={<ProfileSelect mappingKey={mappingKey} />}
 			col3={
@@ -315,6 +341,7 @@ function FixedBootModeRow({
 }
 
 export default function BootModeMappingPage() {
+	const [bleSupported, setBLESupported] = useState(false);
 	const enabled = useBootModeStore((state) => state.enabled);
 	const loadingBootModes = useBootModeStore((state) => state.loadingBootModes);
 	const bootModes = useBootModeStore((state) => state.bootModes);
@@ -339,9 +366,16 @@ export default function BootModeMappingPage() {
 	const { t } = useTranslation('');
 
 	useEffect(() => {
+		let active = true;
 		fetchBootModeOptions();
 		fetchProfiles();
 		getBoardDefinition();
+		WebApi.getBLEHIDStatus().then((status) => {
+			if (active) setBLESupported(status?.supported === true);
+		});
+		return () => {
+			active = false;
+		};
 	}, []);
 
 	// The delete-able input mode keys (i.e. not web-config or usb mode)
@@ -413,7 +447,11 @@ export default function BootModeMappingPage() {
 								mappingKey="usbMode"
 							/>
 							{inputModeKeys.map((k, _) => (
-								<BootModeRow mappingKey={k} key={k} />
+								<BootModeRow
+									mappingKey={k}
+									bleSupported={bleSupported}
+									key={k}
+								/>
 							))}
 
 							{inputModeKeys.length < MAX_INPUT_MODES && (

@@ -21,6 +21,9 @@
 #include "ps5/PS5ModeDriver.h"
 
 #include "config_utils.h"
+#ifdef ENABLE_BLUETOOTH
+#include "BLEHIDManager.h"
+#endif
 
 void Storage::init() {
 	systemFlashSize = System::getPhysicalFlash(); // System Flash Size must be called once
@@ -58,6 +61,9 @@ bool Storage::save(const bool force) {
 
 void Storage::ResetSettings()
 {
+#ifdef ENABLE_BLUETOOTH
+	BLEHIDManager::getInstance().clearStorageForFactoryReset();
+#endif
 	EEPROM.reset();
 	watchdog_reboot(0, SRAM_END, 2000);
 }

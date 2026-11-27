@@ -3,6 +3,9 @@
 // in the same translation unit causes a compile error.
 
 #include "BLEHIDManager.h"
+#include "FlashPROM.h"
+#include <pico/btstack_flash_bank.h>
+#include "ble/le_device_db.h"
 
 // Battery-sense macros (BATTERY_ADC_GPIO / BATTERY_ADC_CHANNEL /
 // BATTERY_VOLTAGE_DIVIDER / BATTERY_MIN_VOLTAGE / BATTERY_MAX_VOLTAGE) live in
@@ -27,7 +30,6 @@
 #include "pico/stdlib.h"
 #include "pico/time.h"
 #include "pico/cyw43_arch.h"
-#include "pico/btstack_run_loop_async_context.h"
 #include "pico/unique_id.h"
 #include "pico/async_context.h"
 #include "hardware/adc.h"
@@ -38,10 +40,23 @@
 // Generated GATT database header (from src/ble_hid.gatt via pico_btstack_make_gatt_header)
 #include "ble_hid.h"
 
+extern char __flash_binary_end;
+
+static constexpr uint32_t CONFIG_STORAGE_OFFSET = EEPROM_ADDRESS_START - XIP_BASE;
+static constexpr uint32_t CONFIG_STORAGE_END = CONFIG_STORAGE_OFFSET + EEPROM_SIZE_BYTES;
+static constexpr uint32_t BTSTACK_STORAGE_OFFSET = PICO_FLASH_BANK_STORAGE_OFFSET;
+static constexpr uint32_t BTSTACK_STORAGE_END = BTSTACK_STORAGE_OFFSET + PICO_FLASH_BANK_TOTAL_SIZE;
+
+static_assert(BTSTACK_STORAGE_END <= CONFIG_STORAGE_OFFSET ||
+              CONFIG_STORAGE_END <= BTSTACK_STORAGE_OFFSET,
+              "BTstack flash storage overlaps GP2040-CE config storage");
+static_assert(CONFIG_STORAGE_END <= PICO_FLASH_SIZE_BYTES,
+              "GP2040-CE config storage exceeds flash size");
+
 // HID Report Descriptor: Report ID 1 + 18 generic HID buttons + 6 padding bits
-//   + 4 x 8-bit stick axes (X, Y, Z, Rz) = 7-byte report body.
+//   + 4 stick axes and 2 trigger axes = 9-byte report body.
 //   Button order follows the W3C Standard Gamepad layout, with the D-pad as
-//   discrete buttons 13..16 (no hat switch). Axes are currently sent neutral.
+//   discrete buttons 13..16 (no hat switch). All four stick axes and both triggers are sent.
 // The Report ID is carried by the GATT Report Reference descriptor, not the notification.
 static const uint8_t hid_report_descriptor[] = {
     0x05, 0x01,              // USAGE_PAGE (Generic Desktop)
@@ -68,16 +83,18 @@ static const uint8_t hid_report_descriptor[] = {
     0x95, 0x06,              //   REPORT_COUNT (6)
     0x81, 0x03,              //   INPUT (Cnst,Var,Abs)
 
-    // ── Analog sticks: LX, LY, RX, RY (centered = 0x80) ─────────────────────
+    // ── Sticks and triggers: LX, LY, RX, RY, LT, RT ─────────────────────────
     0x05, 0x01,              //   USAGE_PAGE (Generic Desktop)
     0x09, 0x30,              //   USAGE (X)
     0x09, 0x31,              //   USAGE (Y)
     0x09, 0x32,              //   USAGE (Z)
     0x09, 0x35,              //   USAGE (Rz)
+    0x09, 0x33,              //   USAGE (Rx)
+    0x09, 0x34,              //   USAGE (Ry)
     0x15, 0x00,              //   LOGICAL_MINIMUM (0)
     0x26, 0xFF, 0x00,        //   LOGICAL_MAXIMUM (255)
     0x75, 0x08,              //   REPORT_SIZE (8)
-    0x95, 0x04,              //   REPORT_COUNT (4)
+    0x95, 0x06,              //   REPORT_COUNT (6)
     0x81, 0x02,              //   INPUT (Data,Var,Abs)
 
     0xC0,                    // END_COLLECTION
@@ -86,7 +103,7 @@ static const uint8_t hid_report_descriptor[] = {
 static_assert(sizeof(hid_report_descriptor) > 0, "HID descriptor must not be empty");
 
 // BLE advertising data: Flags + Appearance (Gamepad, 964 = 0x03C4) + HID Service UUID
-static const uint8_t adv_data[] = {
+static uint8_t adv_data[] = {
     2, BLUETOOTH_DATA_TYPE_FLAGS, 0x06,                  // LE General Discoverable, BR/EDR Not Supported
     3, BLUETOOTH_DATA_TYPE_APPEARANCE, 0xC4, 0x03,       // Gamepad (964 = 0x03C4, little-endian)
     7, BLUETOOTH_DATA_TYPE_COMPLETE_LIST_OF_16_BIT_SERVICE_CLASS_UUIDS,
@@ -98,6 +115,43 @@ static const uint8_t adv_data[] = {
 // Scan response: complete local name
 static uint8_t scan_resp_data[2 + sizeof(BLEHIDManager::DEVICE_NAME) - 1];
 
+static void refreshBondRecency(int index) {
+    int addressType = BD_ADDR_TYPE_UNKNOWN;
+    bd_addr_t address = {};
+    sm_key_t irk = {};
+    uint16_t ediv = 0;
+    uint8_t rand[8] = {};
+    sm_key_t ltk = {};
+    int keySize = 0;
+    int authenticated = 0;
+    int authorized = 0;
+    int secureConnection = 0;
+
+    le_device_db_info(index, &addressType, address, irk);
+    if (addressType == BD_ADDR_TYPE_UNKNOWN) return;
+    le_device_db_encryption_get(index, &ediv, rand, ltk, &keySize,
+                                &authenticated, &authorized, &secureConnection);
+
+#ifdef ENABLE_LE_SIGNED_WRITE
+    sm_key_t localCsrk = {};
+    sm_key_t remoteCsrk = {};
+    le_device_db_local_csrk_get(index, localCsrk);
+    le_device_db_remote_csrk_get(index, remoteCsrk);
+    const uint32_t localCounter = le_device_db_local_counter_get(index);
+    const uint32_t remoteCounter = le_device_db_remote_counter_get(index);
+#endif
+
+    if (le_device_db_add(addressType, address, irk) != index) return;
+    le_device_db_encryption_set(index, ediv, rand, ltk, keySize,
+                                authenticated, authorized, secureConnection);
+#ifdef ENABLE_LE_SIGNED_WRITE
+    le_device_db_local_csrk_set(index, localCsrk);
+    le_device_db_remote_csrk_set(index, remoteCsrk);
+    le_device_db_local_counter_set(index, localCounter);
+    le_device_db_remote_counter_set(index, remoteCounter);
+#endif
+}
+
 class BTstackLock {
 public:
     BTstackLock() { async_context_acquire_lock_blocking(cyw43_arch_async_context()); }
@@ -106,8 +160,6 @@ public:
     BTstackLock& operator=(const BTstackLock&) = delete;
 };
 
-// Static TLV context removed — bonding database is now backed by protobuf config.
-
 // BTstack event handler registrations
 static btstack_packet_callback_registration_t hci_event_callback_registration;
 static btstack_packet_callback_registration_t sm_event_callback_registration;
@@ -115,20 +167,6 @@ static btstack_packet_callback_registration_t sm_event_callback_registration;
 // BLE timing constants
 static constexpr uint32_t INIT_RETRY_DELAY_MS = 5000;
 static constexpr uint32_t BATTERY_UPDATE_INTERVAL_MS = 30000;
-static constexpr uint32_t IDLE_TIMEOUT_MS = 30000;
-static constexpr uint32_t REPORT_IDLE_THROTTLE_MS = 50;
-static constexpr uint32_t STATUS_DUMP_INTERVAL_MS = 5000;
-static constexpr uint32_t SEND_LOG_INTERVAL_MS = 2000;
-
-// LED blink type codes for diagnostic and status signaling
-static constexpr uint8_t PENDING_BLINK_REPORT_SENT = 1;
-static constexpr uint8_t PENDING_BLINK_NOTIFICATIONS_DISABLED = 3;
-static constexpr uint8_t PENDING_BLINK_NOTIFICATIONS_ENABLED = 5;
-
-// Disconnect reason diagnostic blink parameters
-static constexpr uint8_t DISCONNECT_REASON_BLINK_CAP = 15;
-static constexpr uint32_t DISCONNECT_REASON_INITIAL_PAUSE_MS = 1000;
-static constexpr uint32_t DISCONNECT_REASON_BLINK_MS = 300;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Public API
@@ -138,7 +176,7 @@ void BLEHIDManager::init(bool configMode) {
     if (_initRequested) return;
     _initRequested = true;
     _configMode = configMode;
-    _pairingMode = !configMode;
+    _pairingMode = false;
     _bootTimeMs = to_ms_since_boot(get_absolute_time());
 }
 
@@ -161,152 +199,44 @@ void BLEHIDManager::process() {
         return;
     }
 
-    cyw43_arch_poll();
     BTstackLock lock;
     if (!_ready) return;
-    _saveBonds();
 
     // Periodic battery level reporting — throttled to once per 30 seconds.
-    // Uses direct ADC read on GPIO29 (ADC3) via 3:1 voltage divider.
+    // Uses the board-defined ADC channel and voltage divider.
     // Only fires when connected and notifications are enabled.
     {
-        uint32_t now = to_ms_since_boot(get_absolute_time());
+        uint32_t nowMs = to_ms_since_boot(get_absolute_time());
         if (_connected && _notificationsEnabled &&
-                (now - _lastBatteryUpdateMs >= BATTERY_UPDATE_INTERVAL_MS || _lastBatteryLevel == 255)) {
+                (nowMs - _lastBatteryUpdateMs >= BATTERY_UPDATE_INTERVAL_MS || _lastBatteryLevel == 255)) {
             uint8_t level = _readBatteryPercent();
             if (level != _lastBatteryLevel) {
                 battery_service_server_set_battery_value(level);
                 _lastBatteryLevel = level;
             }
-            _lastBatteryUpdateMs = now;
-        }
-    }
-
-    // Power state management — transition ACTIVE → IDLE after 30s of no input change.
-    if (_powerState == BLEPowerState::ACTIVE) {
-        if ((now - _lastInputChangeMs) >= IDLE_TIMEOUT_MS) {
-            _powerState = BLEPowerState::IDLE;
-            // Optional connection parameter request for longer interval in idle:
-            // gap_request_connection_parameter_update(_conHandle, 80, 80, 0, 200);
+            _lastBatteryUpdateMs = nowMs;
         }
     }
 
     // Deferred advertising restart — set by disconnect handler, executed here in main loop
     if (_needsAdvRestart && !_connected) {
-        gap_advertisements_enable(_pairingMode ? 1 : 0);
-        _advStarted = _pairingMode;
+        adv_data[2] = _pairingMode ? 0x06 : 0x04;
+        gap_advertisements_set_data(sizeof(adv_data), adv_data);
+        const bool advertise = _pairingMode || _hasBondedPeers;
+        gap_advertisements_enable(advertise ? 1 : 0);
+        _advStarted = advertise;
         _needsAdvRestart = false;
-    }
-
-    // Non-blocking LED status signals keep USB Web Config responsive.
-    // _pendingBlinkType is set by the IRQ handler; we execute the blink here without sleep_ms().
-    {
-        static uint8_t         blinkRemaining = 0;
-        static bool            blinkLedOn     = false;
-        static uint32_t        blinkOnMs      = 200;
-        static uint32_t        blinkOffMs     = 200;
-        static absolute_time_t blinkNext      = {0};
-
-        if (_pendingBlinkType != 0) {
-            uint8_t blinkType = _pendingBlinkType;
-            _pendingBlinkType = 0;
-            if (blinkType == PENDING_BLINK_NOTIFICATIONS_ENABLED) {
-                blinkOnMs = 200; blinkOffMs = 200; blinkRemaining = 10;
-            } else if (blinkType == PENDING_BLINK_NOTIFICATIONS_DISABLED) {
-                blinkOnMs = 300; blinkOffMs = 300; blinkRemaining = 6;
-            } else if (blinkType == PENDING_BLINK_REPORT_SENT) {
-                blinkOnMs = 50;  blinkOffMs = 50;  blinkRemaining = 2;
-            }
-            blinkLedOn = true;
-            cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 1);
-            blinkNext  = make_timeout_time_ms(blinkOnMs);
-        }
-
-        if (blinkRemaining > 0 &&
-                absolute_time_diff_us(blinkNext, get_absolute_time()) >= 0) {
-            blinkRemaining--;
-            blinkLedOn = !blinkLedOn;
-            if (blinkRemaining == 0) {
-                // Sequence complete — always end with LED off
-                blinkLedOn = false;
-            }
-            cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, blinkLedOn ? 1 : 0);
-            if (blinkRemaining > 0) {
-                blinkNext = make_timeout_time_ms(blinkLedOn ? blinkOnMs : blinkOffMs);
-            }
-        }
-    }
-
-    // Blink out the HCI disconnect reason code (N slow blinks = reason code value, capped at 15)
-    // Common codes: 8=timeout, 0x13=remote terminated, 0x16=local terminated, 0x3B=bad params
-    if (_lastDisconnectReason != 0 && _advStarted && !_connected) {
-        static uint8_t diagBlinkCount = 0;
-        static absolute_time_t diagBlinkNext = {0};
-        static bool diagBlinkInit = false;
-        if (!diagBlinkInit) {
-            diagBlinkCount = (_lastDisconnectReason > DISCONNECT_REASON_BLINK_CAP) ?
-                    DISCONNECT_REASON_BLINK_CAP : _lastDisconnectReason;
-            diagBlinkNext = make_timeout_time_ms(DISCONNECT_REASON_INITIAL_PAUSE_MS);
-            diagBlinkInit = true;
-        }
-        if (diagBlinkCount > 0 && absolute_time_diff_us(diagBlinkNext, get_absolute_time()) >= 0) {
-            static bool diagLedOn = false;
-            diagLedOn = !diagLedOn;
-            cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, diagLedOn ? 1 : 0);
-            diagBlinkNext = make_timeout_time_ms(DISCONNECT_REASON_BLINK_MS);
-            if (!diagLedOn) diagBlinkCount--;
-            if (diagBlinkCount == 0) {
-                _lastDisconnectReason = 0;
-                diagBlinkInit = false;
-            }
-        }
     }
 
     if (_reportPending && _connected && _notificationsEnabled) {
         hids_device_request_can_send_now_event(_conHandle);
-    }
-
-    // Periodic UART status dump (every 5 s)
-    {
-        static uint32_t lastDumpMs = 0;
-        if (now - lastDumpMs >= STATUS_DUMP_INTERVAL_MS) {
-            lastDumpMs = now;
-            printf("[BLE] status: connected=%d notif=%d power=%d bonds=%d handle=0x%04X\n",
-                   (int)_connected, (int)_notificationsEnabled,
-                   (int)_powerState, (int)_hasBondedPeers, (unsigned)_conHandle);
-        }
     }
 }
 
 bool BLEHIDManager::sendReport(const uint8_t* report, uint16_t len) {
     if (!_initialized) return false;
     BTstackLock lock;
-    if (!_connected || !_notificationsEnabled) {
-        // Periodic "blocked" log — avoids flooding at frame rate
-        static uint32_t lastBlockLogMs = 0;
-        uint32_t now3 = to_ms_since_boot(get_absolute_time());
-        if (now3 - lastBlockLogMs >= SEND_LOG_INTERVAL_MS) {
-            lastBlockLogMs = now3;
-            printf("[BLE] sendReport blocked: connected=%d notif=%d\n",
-                   (int)_connected, (int)_notificationsEnabled);
-        }
-        return false;
-    }
-    // Periodic "flowing" log
-    {
-        static uint32_t lastSendMs = 0;
-        uint32_t now4 = to_ms_since_boot(get_absolute_time());
-        if (now4 - lastSendMs >= SEND_LOG_INTERVAL_MS) {
-            lastSendMs = now4;
-            printf("[BLE] sendReport queued len=%u\n", (unsigned)len);
-        }
-    }
-
-    // In IDLE state, throttle report submission to ~50ms to reduce power consumption.
-    if (_powerState == BLEPowerState::IDLE) {
-        uint32_t now = to_ms_since_boot(get_absolute_time());
-        if ((now - _lastReportMs) < REPORT_IDLE_THROTTLE_MS) return false;
-    }
+    if (!_connected || !_notificationsEnabled) return false;
 
     if (len > REPORT_SIZE_BYTES) len = REPORT_SIZE_BYTES;
 
@@ -336,18 +266,58 @@ bool BLEHIDManager::sendReport(const uint8_t* report, uint16_t len) {
     memcpy(_reportQueue[writeIndex], report, len);
     _reportQueueLen[writeIndex] = len;
     _reportPending    = (_reportQueueCount > 0);
-    _lastReportMs     = to_ms_since_boot(get_absolute_time());
     return true;
 }
 
 BLEHIDStatus BLEHIDManager::getStatus() {
     if (!_initialized) {
-        return {false, _initFailed, _bondSaveFailed, false, false, false,
+        return {false, _initFailed, false, false, false,
                 static_cast<uint8_t>(le_device_db_count())};
     }
     BTstackLock lock;
-    return {_ready, _initFailed, _bondSaveFailed, _connected, _notificationsEnabled, _pairingMode,
+    return {_ready, _initFailed, _connected, _notificationsEnabled, _pairingMode,
             static_cast<uint8_t>(le_device_db_count())};
+}
+
+bool BLEHIDManager::clearBonds() {
+    if (!_initialized) return false;
+    async_context_acquire_lock_blocking(cyw43_arch_async_context());
+    if (!_ready || _connected || _pairingMode) {
+        async_context_release_lock(cyw43_arch_async_context());
+        return false;
+    }
+
+    for (int index = 0; index < le_device_db_max_count(); ++index) {
+        int addressType = BD_ADDR_TYPE_UNKNOWN;
+        bd_addr_t address = {};
+        le_device_db_info(index, &addressType, address, nullptr);
+        if (addressType != BD_ADDR_TYPE_UNKNOWN) {
+            gap_delete_bonding(static_cast<bd_addr_type_t>(addressType), address);
+        }
+    }
+    _hasBondedPeers = le_device_db_count() > 0;
+    if (!_hasBondedPeers) {
+        gap_advertisements_enable(0);
+        _advStarted = false;
+    }
+    async_context_release_lock(cyw43_arch_async_context());
+    return true;
+}
+
+void BLEHIDManager::clearStorageForFactoryReset() {
+    const hal_flash_bank_t* flashBank = pico_flash_bank_instance();
+    if (_initialized) {
+        async_context_acquire_lock_blocking(cyw43_arch_async_context());
+        hci_power_control(HCI_POWER_OFF);
+        _ready = false;
+        _pairingMode = false;
+        flashBank->erase(nullptr, 0);
+        flashBank->erase(nullptr, 1);
+        async_context_release_lock(cyw43_arch_async_context());
+    } else {
+        flashBank->erase(nullptr, 0);
+        flashBank->erase(nullptr, 1);
+    }
 }
 
 bool BLEHIDManager::setPairingMode(bool enabled) {
@@ -356,8 +326,11 @@ bool BLEHIDManager::setPairingMode(bool enabled) {
     if (!_ready || _connected) return false;
     _pairingMode = enabled;
     _needsAdvRestart = false;
-    gap_advertisements_enable(enabled ? 1 : 0);
-    _advStarted = enabled;
+    adv_data[2] = enabled ? 0x06 : 0x04;
+    gap_advertisements_set_data(sizeof(adv_data), adv_data);
+    const bool advertise = enabled || _hasBondedPeers;
+    gap_advertisements_enable(advertise ? 1 : 0);
+    _advStarted = advertise;
     return true;
 }
 
@@ -370,18 +343,16 @@ void BLEHIDManager::_resetReportQueue() {
     _reportQueueHead  = 0;
     _reportQueueTail  = 0;
     _reportQueueCount = 0;
+    memset(_lastSentReport, 0, sizeof(_lastSentReport));
 }
 
-void BLEHIDManager::_handleDisconnect(uint8_t reason) {
-    printf("[BLE] Disconnected reason=0x%02X\n", (unsigned)reason);
-    _lastDisconnectReason = reason;
+void BLEHIDManager::_handleDisconnect(uint16_t connectionHandle) {
+    if (!_connected || _conHandle != connectionHandle) return;
     _resetReportQueue();
     _connected            = false;
     _notificationsEnabled = false;
     _conHandle            = HCI_CON_HANDLE_INVALID;
     _advStarted           = false;
-    _powerState           = BLEPowerState::ADVERTISING;
-    _lastInputChangeMs    = 0;
     // Defer advertising restart to process() to avoid race with LL cleanup
     _needsAdvRestart = true;
 }
@@ -410,6 +381,13 @@ uint8_t BLEHIDManager::_readBatteryPercent() {
 }
 
 void BLEHIDManager::_doInit() {
+    const uintptr_t firmwareEndOffset =
+        reinterpret_cast<uintptr_t>(&__flash_binary_end) - XIP_BASE;
+    if (firmwareEndOffset > BTSTACK_STORAGE_OFFSET ||
+        firmwareEndOffset > CONFIG_STORAGE_OFFSET) {
+        panic("Firmware image overlaps reserved flash storage");
+    }
+
     // Initialize CYW43 wireless chip
     int err = cyw43_arch_init();
     if (err != 0) {
@@ -420,9 +398,6 @@ void BLEHIDManager::_doInit() {
     }
 
     BTstackLock lock;
-
-    // Initialize BTstack run loop integrated with the CYW43 async context
-    btstack_run_loop_init(btstack_run_loop_async_context_get_instance(cyw43_arch_async_context()));
 
     // Check for previously bonded peers — used to skip re-pairing on reconnect
     _hasBondedPeers = (le_device_db_count() > 0);
@@ -440,10 +415,8 @@ void BLEHIDManager::_doInit() {
     // HID over GATT device — boot mode 0 (no boot keyboard/mouse)
     hids_device_init(0, hid_report_descriptor, sizeof(hid_report_descriptor));
 
-    // Battery ADC init — GPIO29/ADC3 is the onboard voltage divider on boards that define it.
-    // Safe to call after cyw43_arch_init(); the CYW43 SPI and ADC reads coexist on GPIO29.
+    // The system initializes the ADC during setup; initialize only this channel.
 #ifdef BATTERY_ADC_GPIO
-    adc_init();
     adc_gpio_init(BATTERY_ADC_GPIO);
 #endif
 
@@ -495,7 +468,7 @@ void BLEHIDManager::_doInit() {
     // Without this, the handler never fires and reports can never be sent.
     hids_device_register_packet_handler(&_hciPacketHandler);
 
-    // Set up advertising parameters and data (adv_type = 0 = ADV_IND, undirected connectable)
+    // Set up connectable advertising; pairing mode controls discoverability.
     gap_advertisements_set_params(0x0030, 0x0060, 0, 0, NULL, 0x07, 0x00);
     gap_advertisements_set_data(sizeof(adv_data), (uint8_t*)adv_data);
     scan_resp_data[0] = sizeof(scan_resp_data) - 1;
@@ -503,8 +476,7 @@ void BLEHIDManager::_doInit() {
     memcpy(scan_resp_data + 2, DEVICE_NAME, sizeof(scan_resp_data) - 2);
     gap_scan_response_set_data(sizeof(scan_resp_data), scan_resp_data);
 
-    // Power on the Bluetooth controller — advertising starts ONLY after
-    // BTSTACK_EVENT_STATE / HCI_STATE_WORKING fires (see _hciPacketHandler)
+    // Power on the Bluetooth controller — advertising starts after it is ready.
     hci_power_control(HCI_POWER_ON);
 
     _initialized = true;
@@ -529,8 +501,9 @@ void BLEHIDManager::_hciPacketHandler(uint8_t packetType, uint16_t channel,
         case BTSTACK_EVENT_STATE:
             if (btstack_event_state_get_state(packet) == HCI_STATE_WORKING) {
                 mgr._ready = true;
-                // Advertising starts ONLY here — not before hci_power_control returns
-                if (mgr._pairingMode && !mgr._advStarted) {
+                adv_data[2] = mgr._pairingMode ? 0x06 : 0x04;
+                gap_advertisements_set_data(sizeof(adv_data), adv_data);
+                if (mgr._pairingMode || mgr._hasBondedPeers) {
                     gap_advertisements_enable(1);
                     mgr._advStarted = true;
                 }
@@ -538,8 +511,9 @@ void BLEHIDManager::_hciPacketHandler(uint8_t packetType, uint16_t channel,
             break;
 
         case HCI_EVENT_DISCONNECTION_COMPLETE: {
-            uint8_t reason = hci_event_disconnection_complete_get_reason(packet);
-            mgr._handleDisconnect(reason);
+            uint16_t connectionHandle =
+                hci_event_disconnection_complete_get_connection_handle(packet);
+            mgr._handleDisconnect(connectionHandle);
             break;
         }
 
@@ -550,16 +524,14 @@ void BLEHIDManager::_hciPacketHandler(uint8_t packetType, uint16_t channel,
                     mgr._needsAdvRestart = true;
                     break;
                 }
-                if (mgr._configMode && !mgr._pairingMode) {
+                if (mgr._configMode && !mgr._pairingMode && !mgr._hasBondedPeers) {
                     gap_disconnect(hci_subevent_le_connection_complete_get_connection_handle(packet));
                     break;
                 }
-                mgr._lastDisconnectReason = 0; // clear on new connection
                 mgr._conHandle  = hci_subevent_le_connection_complete_get_connection_handle(packet);
                 mgr._connected  = true;
                 mgr._advStarted = false;
-                if (mgr._configMode) mgr._pairingMode = false;
-                printf("[BLE] Connected handle=0x%04X\n", (unsigned)mgr._conHandle);
+                gap_request_connection_parameter_update(mgr._conHandle, 6, 12, 0, 200);
             }
             break;
 
@@ -569,15 +541,6 @@ void BLEHIDManager::_hciPacketHandler(uint8_t packetType, uint16_t channel,
                     {
                         uint8_t enable = hids_subevent_input_report_enable_get_enable(packet);
                         mgr._notificationsEnabled = (enable != 0);
-                        printf("[BLE] INPUT_REPORT_ENABLE enable=%u\n", (unsigned)enable);
-                        // Set flag to blink LED in process() — don't block IRQ handler with sleep_ms
-                        mgr._pendingBlinkType = (enable != 0) ?
-                            PENDING_BLINK_NOTIFICATIONS_ENABLED :
-                            PENDING_BLINK_NOTIFICATIONS_DISABLED;
-                        if (enable != 0) {
-                            mgr._powerState        = BLEPowerState::ACTIVE;
-                            mgr._lastInputChangeMs = to_ms_since_boot(get_absolute_time());
-                        }
                     }
                     break;
                 case HIDS_SUBEVENT_CAN_SEND_NOW:
@@ -588,41 +551,13 @@ void BLEHIDManager::_hciPacketHandler(uint8_t packetType, uint16_t channel,
                         hids_device_send_input_report(mgr._conHandle,
                                                       mgr._reportQueue[readIndex],
                                                       reportLen);
-                        // Detect input change for IDLE → ACTIVE transition.
-                        // Periodic log: first send + every 2 s
-                        {
-                            static uint32_t lastSendLogMs = 0;
-                            static bool firstSend = true;
-                            uint32_t t = to_ms_since_boot(get_absolute_time());
-                            if (firstSend || t - lastSendLogMs >= 2000) {
-                                firstSend    = false;
-                                lastSendLogMs = t;
-                                printf("[BLE] CAN_SEND_NOW: sent %u bytes"
-                                       " btns=[0x%02X 0x%02X 0x%02X]"
-                                       " axes=[%u %u %u %u]\n",
-                                        (unsigned)reportLen,
-                                       mgr._reportQueue[readIndex][0], mgr._reportQueue[readIndex][1],
-                                       mgr._reportQueue[readIndex][2],
-                                       mgr._reportQueue[readIndex][3], mgr._reportQueue[readIndex][4],
-                                       mgr._reportQueue[readIndex][5], mgr._reportQueue[readIndex][6]);
-                            }
-                        }
-                        // _lastSentReport is only accessed here (IRQ context) so no volatile needed.
                         if (memcmp(mgr._lastSentReport, mgr._reportQueue[readIndex], reportLen) != 0) {
                             memset(mgr._lastSentReport, 0, BLEHIDManager::REPORT_SIZE_BYTES);
                             memcpy(mgr._lastSentReport, mgr._reportQueue[readIndex], reportLen);
-                            mgr._lastInputChangeMs = to_ms_since_boot(get_absolute_time());
-                            if (mgr._powerState == BLEPowerState::IDLE) {
-                                mgr._powerState = BLEPowerState::ACTIVE;
-                                // Optional: request shorter connection interval for gaming latency:
-                                // gap_request_connection_parameter_update(mgr._conHandle, 6, 6, 0, 200);
-                            }
                         }
                         mgr._reportQueueHead = (mgr._reportQueueHead + 1) % BLEHIDManager::REPORT_QUEUE_DEPTH;
                         mgr._reportQueueCount--;
                         mgr._reportPending = (mgr._reportQueueCount > 0);
-                        // Don't blink per-report — reports fire at HID frame rate,
-                        // continuously restarting the blink sequence keeps the LED solid.
                     }
                     break;
                 default:
@@ -650,7 +585,7 @@ void BLEHIDManager::_smPacketHandler(uint8_t packetType, uint16_t channel,
 
     switch (hci_event_packet_get_type(packet)) {
         case SM_EVENT_JUST_WORKS_REQUEST:
-            if (mgr._configMode && !mgr._connected && !mgr._pairingMode) {
+            if (!mgr._pairingMode) {
                 sm_bonding_decline(sm_event_just_works_request_get_handle(packet));
             } else {
                 sm_just_works_confirm(sm_event_just_works_request_get_handle(packet));
@@ -662,19 +597,24 @@ void BLEHIDManager::_smPacketHandler(uint8_t packetType, uint16_t channel,
             // has not completed yet. Arming notifications before the link is encrypted
             // causes an ATT security mode error, which disconnects the peer and creates
             // a reconnect loop. _notificationsEnabled is set in HCI_EVENT_ENCRYPTION_CHANGE.
+            refreshBondRecency(sm_event_identity_resolving_succeeded_get_index(packet));
             mgr._hasBondedPeers = true;
             break;
         case SM_EVENT_IDENTITY_RESOLVING_FAILED: {
             // New peers and non-resolvable addresses must not erase other saved devices.
             mgr._hasBondedPeers = (le_device_db_count() > 0);
+            if (!mgr._pairingMode) {
+                gap_disconnect(sm_event_identity_resolving_failed_get_handle(packet));
+            }
             break;
         }
         case SM_EVENT_PAIRING_COMPLETE: {
             uint8_t status = sm_event_pairing_complete_get_status(packet);
             if (status == ERROR_CODE_SUCCESS) {
                 mgr._hasBondedPeers = true;
-                // Re-verify bond was stored — 2 fast blinks = pairing+bond confirmed
-                mgr._pendingBlinkType = PENDING_BLINK_REPORT_SENT;
+                mgr._pairingMode = false;
+                adv_data[2] = 0x04;
+                gap_advertisements_set_data(sizeof(adv_data), adv_data);
             }
             // On failure: do nothing. Bond was not stored. Advertising will restart
             // on disconnect and the host can try again.

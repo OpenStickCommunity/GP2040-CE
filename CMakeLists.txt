@@ -411,15 +411,6 @@ if(PICO_CYW43_SUPPORTED)
     target_sources(${PROJECT_NAME} PRIVATE
         src/BLEHIDManager.cpp
         src/OutputManager.cpp
-        src/le_device_db_proto.cpp
-    )
-
-    # Exclude BTstack's TLV-backed le_device_db — our protobuf implementation
-    # provides all the same symbols.  le_device_db_memory.c is already disabled
-    # by NVM_NUM_DEVICE_DB_ENTRIES being defined; only tlv needs explicit exclusion.
-    set_source_files_properties(
-        "${PICO_SDK_PATH}/lib/btstack/src/ble/le_device_db_tlv.c"
-        PROPERTIES HEADER_FILE_ONLY TRUE
     )
 
     target_link_libraries(${PROJECT_NAME}
@@ -430,6 +421,8 @@ if(PICO_CYW43_SUPPORTED)
 
     target_compile_definitions(${PROJECT_NAME} PUBLIC
         ENABLE_BLUETOOTH=1
+        # Reserve the 8 KiB immediately below FlashPROM's fixed config region.
+        PICO_FLASH_BANK_STORAGE_OFFSET=0x1F6000
     )
 
     pico_btstack_make_gatt_header(${PROJECT_NAME} PRIVATE

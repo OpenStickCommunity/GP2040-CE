@@ -331,6 +331,47 @@ app.get('/api/resetSettings', (req, res) => {
 	return res.send({ success: true });
 });
 
+const bluetoothStatus = {
+	supported: 1,
+	enabled: 1,
+	initializationFailed: 0,
+	connected: 0,
+	notifying: 0,
+	pairingMode: 0,
+	hasBondedPeers: 0,
+	bondCount: 0,
+	deviceName: 'GP2040-CE Gamepad',
+};
+
+app.get('/api/getBLEHIDStatus', (req, res) => {
+	return res.send(bluetoothStatus);
+});
+
+app.post('/api/setBLEHIDControls', (req, res) => {
+	const options = req.body;
+	let error;
+	if (
+		!options ||
+		typeof options !== 'object' ||
+		Array.isArray(options) ||
+		Object.keys(options).length !== 1
+	) {
+		error = 'invalid-request';
+	} else if (typeof options.pairingMode === 'boolean') {
+		bluetoothStatus.pairingMode = Number(options.pairingMode);
+	} else if (options.clearBonds === true) {
+		bluetoothStatus.bondCount = 0;
+		bluetoothStatus.hasBondedPeers = 0;
+	} else {
+		error = 'invalid-request';
+	}
+	return res.send({
+		...bluetoothStatus,
+		success: Number(!error),
+		...(error ? { error } : {}),
+	});
+});
+
 app.get('/api/getDisplayOptions', (req, res) => {
 	const data = {
 		enabled: 1,

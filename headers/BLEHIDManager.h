@@ -8,22 +8,9 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-// Power management states for BLE HID operation.
-// Transitions:
-//   ADVERTISING → ACTIVE  : HIDS_SUBEVENT_INPUT_REPORT_ENABLE (notifications enabled)
-//   ACTIVE      → IDLE    : no input change for 30 seconds
-//   IDLE        → ACTIVE  : any input change detected in CAN_SEND_NOW
-//   ACTIVE/IDLE → ADVERTISING : HCI_EVENT_DISCONNECTION_COMPLETE
-enum class BLEPowerState : uint8_t {
-    ADVERTISING = 0,
-    ACTIVE      = 1,
-    IDLE        = 2,
-};
-
 struct BLEHIDStatus {
     bool ready;
     bool initFailed;
-    bool bondSaveFailed;
     bool connected;
     bool notifying;
     bool pairing;
@@ -45,23 +32,23 @@ public:
     void init(bool configMode = false);
 
     // Called every main loop iteration.
-    // Handles 3s deferred hardware init and drives cyw43_arch_poll.
+    // Handles deferred radio initialization and BTstack maintenance.
     void process();
 
-    // Queue a 3-byte digital HID input report for transmission via BLE ATT notification.
+    // Queue a HID input report for transmission via BLE ATT notification.
     // Returns false if not connected or notifications not enabled.
     bool sendReport(const uint8_t* report, uint16_t len);
 
     // Enable or disable BLE pairing (advertising with general discoverability).
     bool setPairingMode(bool enabled);
     bool clearBonds();
+    void clearStorageForFactoryReset();
     BLEHIDStatus getStatus();
 
     bool isConnected() const    { return _connected; }
     bool isEnabled() const      { return _ready; }
     bool isNotifying() const    { return _notificationsEnabled; }
     bool hasBondedPeers() const { return _hasBondedPeers; }
-    BLEPowerState getPowerState() const { return _powerState; }
     uint8_t getBatteryLevel() const { return _lastBatteryLevel; }
 
 private:
@@ -69,16 +56,15 @@ private:
     //   byte 0   : Buttons 1..8   (B1, B2, B3, B4, L1, R1, L2, R2)
     //   byte 1   : Buttons 9..16  (S1, S2, L3, R3, Up, Down, Left, Right)
     //   byte 2   : Buttons 17..18 + 6 pad bits (A1, A2, 0, 0, 0, 0, 0, 0)
-    //   byte 3-6 : X, Y, Z, Rz sticks (0..255, center 0x80)
-    static constexpr uint8_t REPORT_SIZE_BYTES = 7;
+    //   byte 3-8 : X, Y, Z, Rz sticks and Rx/Ry triggers (0..255)
+    static constexpr uint8_t REPORT_SIZE_BYTES = 9;
     static constexpr uint8_t REPORT_QUEUE_DEPTH = 4;
 
     BLEHIDManager() = default;
 
     void _doInit();
-    void _saveBonds();
     void _resetReportQueue();
-    void _handleDisconnect(uint8_t reason);
+    void _handleDisconnect(uint16_t connectionHandle);
     static uint8_t _readBatteryPercent();
 
     static void _hciPacketHandler(uint8_t packetType, uint16_t channel,
@@ -93,7 +79,6 @@ private:
     volatile bool _advStarted      = false;
     volatile bool _pairingMode     = false;
     bool     _initFailed           = false;
-    bool     _bondSaveFailed       = false;
     uint32_t _bootTimeMs           = 0;
     uint32_t _initDelayMs          = 3000;
     uint32_t _retryTimeMs          = 0;
@@ -107,13 +92,8 @@ private:
     volatile bool     _hasBondedPeers       = false;
     volatile bool     _needsAdvRestart      = false;
     volatile uint16_t _conHandle            = 0xFFFF;
-    volatile uint8_t  _pendingBlinkType     = 0;  // 1 = report sent, 3 = disabled, 5 = enabled
-    volatile uint8_t  _lastDisconnectReason = 0;  // HCI disconnect reason code; cleared on new connection
     volatile uint32_t _lastBatteryUpdateMs  = 0;
     volatile uint8_t  _lastBatteryLevel     = 255;  // 255 = uninitialized → forces first update
-    volatile BLEPowerState _powerState      = BLEPowerState::ADVERTISING;
-    volatile uint32_t _lastInputChangeMs    = 0;    // updated when report payload changes
-    volatile uint32_t _lastReportMs         = 0;    // updated each time a report is queued
     volatile uint8_t  _reportQueueHead      = 0;
     volatile uint8_t  _reportQueueTail      = 0;
     volatile uint8_t  _reportQueueCount     = 0;

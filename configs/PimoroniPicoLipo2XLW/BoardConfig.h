@@ -36,8 +36,8 @@
 //   GPIO_PIN_23  WL_REG_ON   — CYW43 power enable
 //   GPIO_PIN_24  WL_DATA     — CYW43 half-duplex SPI data; also VBUS sense (see below)
 //   GPIO_PIN_25  WL_CS       — CYW43 chip select
-//   GPIO_PIN_29  WL_CLK/ADC3 — CYW43 SPI clock; battery voltage divider output (ADC channel 3)
-// All four pins are configured automatically by the Pico SDK when PICO_BOARD=pico2_w.
+//   GPIO_PIN_29  WL_CLK      — CYW43 SPI clock
+// These pins are configured automatically by the Pico SDK board definition.
 // User code must not reconfigure them.
 
 // Battery voltage monitoring (LiPo, GP43 / ADC channel 3 on RP2350B).
