@@ -104,6 +104,73 @@
 #define PIN_SHMUP_DIAL -1
 #endif
 
+// TURBO GPIO TOGGLES
+#define TURBO_TOGGLE_SLOT_COUNT 8
+
+#ifndef TURBO_TOGGLE_1_PIN
+#define TURBO_TOGGLE_1_PIN -1
+#endif
+
+#ifndef TURBO_TOGGLE_1_BUTTON
+#define TURBO_TOGGLE_1_BUTTON 0
+#endif
+
+#ifndef TURBO_TOGGLE_2_PIN
+#define TURBO_TOGGLE_2_PIN -1
+#endif
+
+#ifndef TURBO_TOGGLE_2_BUTTON
+#define TURBO_TOGGLE_2_BUTTON 0
+#endif
+
+#ifndef TURBO_TOGGLE_3_PIN
+#define TURBO_TOGGLE_3_PIN -1
+#endif
+
+#ifndef TURBO_TOGGLE_3_BUTTON
+#define TURBO_TOGGLE_3_BUTTON 0
+#endif
+
+#ifndef TURBO_TOGGLE_4_PIN
+#define TURBO_TOGGLE_4_PIN -1
+#endif
+
+#ifndef TURBO_TOGGLE_4_BUTTON
+#define TURBO_TOGGLE_4_BUTTON 0
+#endif
+
+#ifndef TURBO_TOGGLE_5_PIN
+#define TURBO_TOGGLE_5_PIN -1
+#endif
+
+#ifndef TURBO_TOGGLE_5_BUTTON
+#define TURBO_TOGGLE_5_BUTTON 0
+#endif
+
+#ifndef TURBO_TOGGLE_6_PIN
+#define TURBO_TOGGLE_6_PIN -1
+#endif
+
+#ifndef TURBO_TOGGLE_6_BUTTON
+#define TURBO_TOGGLE_6_BUTTON 0
+#endif
+
+#ifndef TURBO_TOGGLE_7_PIN
+#define TURBO_TOGGLE_7_PIN -1
+#endif
+
+#ifndef TURBO_TOGGLE_7_BUTTON
+#define TURBO_TOGGLE_7_BUTTON 0
+#endif
+
+#ifndef TURBO_TOGGLE_8_PIN
+#define TURBO_TOGGLE_8_PIN -1
+#endif
+
+#ifndef TURBO_TOGGLE_8_BUTTON
+#define TURBO_TOGGLE_8_BUTTON 0
+#endif
+
 // Turbo Module Name
 #define TurboName "Turbo"
 
@@ -130,6 +197,8 @@ private:
     bool bTurboHoldUsed;        // Turbo hold used to toggle, adjust speed or clear
     uint32_t uTurboHoldTime;    // Turbo button hold start time
     uint8_t lastDpad;           // Last d-pad pressed (for Turbo Change)
+    uint16_t hiddenButtons;     // Buttons pressed with TURBO held, hidden until released
+    uint8_t hiddenDpad;         // D-pad pressed with TURBO held, hidden until released
     uint16_t turboButtonsMask;  // Turbo Buttons Enabled
     uint16_t alwaysEnabled;     // Turbo SHMUP Always Enabled
     uint32_t uIntervalUS;       // Turbo Interval in microseconds
@@ -149,5 +218,10 @@ private:
     uint8_t encoderValue;       // Rotary encoder value
     bool hasTurboAssigned;      // Turbo enabled on a pin.
     uint8_t lastShotCount;      // Last shot count for comparison
+    Mask_t togglePinMask[TURBO_TOGGLE_SLOT_COUNT];      // Turbo GPIO toggle pin masks
+    uint16_t toggleButtonMask[TURBO_TOGGLE_SLOT_COUNT]; // Turbo GPIO toggle button masks
+    uint16_t toggleState;       // Buttons forced to turbo by GPIO toggles
+    uint8_t debToggleState;     // Debounce GPIO Toggle State
+    uint32_t debToggleTime[TURBO_TOGGLE_SLOT_COUNT]; // Debounce GPIO Toggle Time
 };
 #endif  // TURBO_H_

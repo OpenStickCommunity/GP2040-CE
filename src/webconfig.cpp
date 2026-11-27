@@ -41,6 +41,7 @@
 #include "advanced_socd.h"
 #include "addons/input_macro.h"
 #include "addons/he_trigger.h"
+#include "addons/turbo.h"
 
 #define PATH_CGI_ACTION "/cgi/action"
 
@@ -124,6 +125,20 @@ static const struct {
     { "advancedSOCD2Enabled", "advancedSOCD2UpDown", "advancedSOCD2LeftRight", "advancedSOCD2Name" },
     { "advancedSOCD3Enabled", "advancedSOCD3UpDown", "advancedSOCD3LeftRight", "advancedSOCD3Name" },
     { "advancedSOCD4Enabled", "advancedSOCD4UpDown", "advancedSOCD4LeftRight", "advancedSOCD4Name" },
+};
+
+static const struct {
+    const char* pin;
+    const char* buttonMask;
+} TURBO_TOGGLE_KEYS[TURBO_TOGGLE_SLOT_COUNT] = {
+    { "turboToggle1Pin", "turboToggle1ButtonMask" },
+    { "turboToggle2Pin", "turboToggle2ButtonMask" },
+    { "turboToggle3Pin", "turboToggle3ButtonMask" },
+    { "turboToggle4Pin", "turboToggle4ButtonMask" },
+    { "turboToggle5Pin", "turboToggle5ButtonMask" },
+    { "turboToggle6Pin", "turboToggle6ButtonMask" },
+    { "turboToggle7Pin", "turboToggle7ButtonMask" },
+    { "turboToggle8Pin", "turboToggle8ButtonMask" },
 };
 
 // Don't inline this function, we do not want to consume stack space in the calling function
@@ -2563,6 +2578,12 @@ std::string setAddonOptions()
     docToValue(turboOptions.turboLedType, doc, "turboLedType");
     docToValue(turboOptions.holdToClear, doc, "turboHoldToClear");
     docToValue(turboOptions.holdToClearTime, doc, "turboHoldToClearTime");
+    for (int index = 0; index < TURBO_TOGGLE_SLOT_COUNT; index++) {
+        TurboToggleSlot& toggleSlot = turboOptions.toggleSlots[index];
+        docToPin(toggleSlot.pin, doc, TURBO_TOGGLE_KEYS[index].pin);
+        docToValue(toggleSlot.buttonMask, doc, TURBO_TOGGLE_KEYS[index].buttonMask);
+    }
+    turboOptions.toggleSlots_count = TURBO_TOGGLE_SLOT_COUNT;
     docToValue(turboOptions.enabled, doc, "TurboInputEnabled");
 
     WiiOptions& wiiOptions = Storage::getInstance().getAddonOptions().wiiOptions;
@@ -3064,6 +3085,10 @@ std::string getAddonOptions()
     writeDoc(doc, "turboLedType", turboOptions.turboLedType);
     writeDoc(doc, "turboHoldToClear", turboOptions.holdToClear);
     writeDoc(doc, "turboHoldToClearTime", turboOptions.holdToClearTime);
+    for (int index = 0; index < TURBO_TOGGLE_SLOT_COUNT; index++) {
+        writeDoc(doc, TURBO_TOGGLE_KEYS[index].pin, cleanPin(turboOptions.toggleSlots[index].pin));
+        writeDoc(doc, TURBO_TOGGLE_KEYS[index].buttonMask, turboOptions.toggleSlots[index].buttonMask);
+    }
     writeDoc(doc, "TurboInputEnabled", turboOptions.enabled);
 
     const WiiOptions& wiiOptions = Storage::getInstance().getAddonOptions().wiiOptions;
