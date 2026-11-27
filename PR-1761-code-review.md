@@ -8,7 +8,7 @@
 | Size | 43 files, +2423 / −40, 6 commits |
 | Reviewed | 2026-11-26, against Pico SDK 2.3.1 (the version the project requires) |
 
-This file is untracked and is not part of the PR.
+This review log is included on the PR branch.
 
 ## Verdict
 

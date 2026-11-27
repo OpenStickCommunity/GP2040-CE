@@ -44,6 +44,7 @@
 #include "advanced_socd.h"
 #include "addons/input_macro.h"
 #include "addons/he_trigger.h"
+#include "addons/turbo.h"
 
 #define PATH_CGI_ACTION "/cgi/action"
 
@@ -127,6 +128,20 @@ static const struct {
     { "advancedSOCD2Enabled", "advancedSOCD2UpDown", "advancedSOCD2LeftRight", "advancedSOCD2Name" },
     { "advancedSOCD3Enabled", "advancedSOCD3UpDown", "advancedSOCD3LeftRight", "advancedSOCD3Name" },
     { "advancedSOCD4Enabled", "advancedSOCD4UpDown", "advancedSOCD4LeftRight", "advancedSOCD4Name" },
+};
+
+static const struct {
+    const char* pin;
+    const char* buttonMask;
+} TURBO_TOGGLE_KEYS[TURBO_TOGGLE_SLOT_COUNT] = {
+    { "turboToggle1Pin", "turboToggle1ButtonMask" },
+    { "turboToggle2Pin", "turboToggle2ButtonMask" },
+    { "turboToggle3Pin", "turboToggle3ButtonMask" },
+    { "turboToggle4Pin", "turboToggle4ButtonMask" },
+    { "turboToggle5Pin", "turboToggle5ButtonMask" },
+    { "turboToggle6Pin", "turboToggle6ButtonMask" },
+    { "turboToggle7Pin", "turboToggle7ButtonMask" },
+    { "turboToggle8Pin", "turboToggle8ButtonMask" },
 };
 
 // Don't inline this function, we do not want to consume stack space in the calling function
@@ -656,10 +671,10 @@ std::string setSplashImage()
 static void readInvertedPins(GpioMappings& mappings, JsonVariantConst json)
 {
     mappings.pinInversionEnabled = json["pinInversionEnabled"];
-    mappings.invertedPins_count = 0;
+    ConfigUtils::clearInvertedPins(mappings);
     for (int pin : json["invertedPins"].as<JsonArrayConst>()) {
-        if (pin >= 0 && pin < (int)NUM_BANK0_GPIOS && mappings.invertedPins_count < std::size(mappings.invertedPins))
-            mappings.invertedPins[mappings.invertedPins_count++] = pin;
+        if (pin >= 0 && pin < (int)NUM_BANK0_GPIOS)
+            ConfigUtils::setPinInverted(mappings, pin, true);
     }
 }
 
@@ -667,8 +682,10 @@ static void writeInvertedPins(JsonVariant json, const GpioMappings& mappings)
 {
     json["pinInversionEnabled"] = mappings.pinInversionEnabled;
     JsonArray pins = json.createNestedArray("invertedPins");
-    for (pb_size_t i = 0; i < mappings.invertedPins_count; i++)
-        pins.add(mappings.invertedPins[i]);
+    for (uint32_t pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
+        if (ConfigUtils::isPinInverted(mappings, pin))
+            pins.add(pin);
+    }
 }
 
 static void readProfileSOCD(GpioMappings& mappings, JsonVariantConst json)
@@ -710,7 +727,7 @@ std::string setProfileOptions()
                     (GpioAction)alt[pinName]["action"] != GpioAction::ASSIGNED_TO_ADDON) {
                 profileOptions.gpioMappingsSets[altsIndex].pins[pin].action = (GpioAction)alt[pinName]["action"];
                 profileOptions.gpioMappingsSets[altsIndex].pins[pin].customButtonMask = (uint32_t)alt[pinName]["customButtonMask"];
-                profileOptions.gpioMappingsSets[altsIndex].pins[pin].customDpadMask = (uint32_t)alt[pinName]["customDpadMask"];
+                profileOptions.gpioMappingsSets[altsIndex].pins[pin].customDpadMask = (uint8_t)alt[pinName]["customDpadMask"];
             } else if ((coreMappings.pins[pin].action == GpioAction::RESERVED &&
                         (GpioAction)alt[pinName]["action"] == GpioAction::RESERVED) ||
                     (coreMappings.pins[pin].action == GpioAction::ASSIGNED_TO_ADDON &&
@@ -1726,7 +1743,7 @@ std::string setPinMappings()
                 (GpioAction)doc[pinName]["action"] != GpioAction::ASSIGNED_TO_ADDON) {
             gpioMappings.pins[pin].action = (GpioAction)doc[pinName]["action"];
             gpioMappings.pins[pin].customButtonMask = (uint32_t)doc[pinName]["customButtonMask"];
-            gpioMappings.pins[pin].customDpadMask = (uint32_t)doc[pinName]["customDpadMask"];
+            gpioMappings.pins[pin].customDpadMask = (uint8_t)doc[pinName]["customDpadMask"];
         }
     }
     size_t profileLabelSize = sizeof(gpioMappings.profileLabel);
@@ -1867,7 +1884,7 @@ std::string setBootModeOptions() {
 	return serialize_json(doc);
 }
 
-static const std::pair<const char*, uint32_t KeyboardMapping::*> keyboardMappingFields[] = {
+static const std::pair<const char*, uint8_t KeyboardMapping::*> keyboardMappingFields[] = {
     { "Up", &KeyboardMapping::keyDpadUp },
     { "Down", &KeyboardMapping::keyDpadDown },
     { "Left", &KeyboardMapping::keyDpadLeft },
@@ -2606,6 +2623,12 @@ std::string setAddonOptions()
     docToValue(turboOptions.turboLedType, doc, "turboLedType");
     docToValue(turboOptions.holdToClear, doc, "turboHoldToClear");
     docToValue(turboOptions.holdToClearTime, doc, "turboHoldToClearTime");
+    for (int index = 0; index < TURBO_TOGGLE_SLOT_COUNT; index++) {
+        TurboToggleSlot& toggleSlot = turboOptions.toggleSlots[index];
+        docToPin(toggleSlot.pin, doc, TURBO_TOGGLE_KEYS[index].pin);
+        docToValue(toggleSlot.buttonMask, doc, TURBO_TOGGLE_KEYS[index].buttonMask);
+    }
+    turboOptions.toggleSlots_count = TURBO_TOGGLE_SLOT_COUNT;
     docToValue(turboOptions.enabled, doc, "TurboInputEnabled");
 
     WiiOptions& wiiOptions = Storage::getInstance().getAddonOptions().wiiOptions;
@@ -3107,6 +3130,10 @@ std::string getAddonOptions()
     writeDoc(doc, "turboLedType", turboOptions.turboLedType);
     writeDoc(doc, "turboHoldToClear", turboOptions.holdToClear);
     writeDoc(doc, "turboHoldToClearTime", turboOptions.holdToClearTime);
+    for (int index = 0; index < TURBO_TOGGLE_SLOT_COUNT; index++) {
+        writeDoc(doc, TURBO_TOGGLE_KEYS[index].pin, cleanPin(turboOptions.toggleSlots[index].pin));
+        writeDoc(doc, TURBO_TOGGLE_KEYS[index].buttonMask, turboOptions.toggleSlots[index].buttonMask);
+    }
     writeDoc(doc, "TurboInputEnabled", turboOptions.enabled);
 
     const WiiOptions& wiiOptions = Storage::getInstance().getAddonOptions().wiiOptions;

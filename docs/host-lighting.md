@@ -7,9 +7,9 @@ board's lights. The on-board animations return when the host stops.
 
 ## Overview
 
-- The add-on is disabled by default. While it, the lighting report and the
-  keyboard interface are off, every input mode presents byte-identical USB
-  descriptors to stock firmware.
+- The Host Lighting add-on is disabled by default. While Host Lighting and its
+  optional USB functions are disabled, every input mode presents USB
+  descriptors byte-identical to stock firmware.
 - XInput, Keyboard, Generic HID and SInput modes carry it. Console modes never
   do. In XInput mode a console sees a stock controller unless Host Lighting's
   or the lighting report's XInput Lighting, or the keyboard interface's XInput
@@ -731,6 +731,12 @@ and a saved `SET_BRIGHTNESS` write the board's settings flash.
   choice and not as an effect. To dim the animations for a session, it sends an
   unsaved `SET_BRIGHTNESS`, which writes nothing. To dim or animate its own
   pixels, it scales them.
+
+Commands 0x70 to 0x7F are privileged management commands. They reboot the
+board or change how it runs, so each is magic-guarded. `SET_INPUT_MODE` needs
+`MODE` in `[4..7]`, and `REBOOT` needs `BOOT`. Without it the request is an
+invalid argument and changes nothing. The guard stops a stray or corrupted
+report from rebooting the board. It is not a security check.
 
 `SET_INPUT_MODE` takes a value of the running firmware's `InputMode` enum
 (`proto/enums.proto`). A mode page 2 does not list, or lists without flag bit

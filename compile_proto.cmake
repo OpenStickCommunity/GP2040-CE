@@ -22,8 +22,14 @@ function (compile_proto)
 	set(PROTO_OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR}/proto)
 	set(PROTO_OUTPUT_DIR ${PROTO_OUTPUT_DIR} PARENT_SCOPE)
 
+	if(PICO_PLATFORM STREQUAL "rp2040")
+		set(PROTO_OPTIONS_FILE ${CMAKE_SOURCE_DIR}/proto/config.rp2040.options)
+	else()
+		set(PROTO_OPTIONS_FILE ${CMAKE_SOURCE_DIR}/proto/config.rp2350.options)
+	endif()
+
 	add_custom_command(
-		DEPENDS ${VENV_FILE} ${NANOPB_GENERATOR} ${CMAKE_SOURCE_DIR}/proto/enums.proto ${CMAKE_SOURCE_DIR}/proto/config.proto ${CMAKE_SOURCE_DIR}/lib/nanopb/generator/proto/nanopb.proto
+		DEPENDS ${VENV_FILE} ${NANOPB_GENERATOR} ${CMAKE_SOURCE_DIR}/proto/enums.proto ${CMAKE_SOURCE_DIR}/proto/config.proto ${PROTO_OPTIONS_FILE} ${CMAKE_SOURCE_DIR}/lib/nanopb/generator/proto/nanopb.proto
 		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 		COMMAND ${CMAKE_COMMAND} -E make_directory ${PROTO_OUTPUT_DIR}
 		COMMAND ${VENV_BIN_DIR}/python ${NANOPB_GENERATOR}
@@ -37,6 +43,7 @@ function (compile_proto)
 			-D ${PROTO_OUTPUT_DIR}
 			-I ${CMAKE_SOURCE_DIR}/proto
 			-I ${CMAKE_SOURCE_DIR}/lib/nanopb/generator/proto
+			-f ${PROTO_OPTIONS_FILE}
 			${CMAKE_SOURCE_DIR}/proto/config.proto
 		OUTPUT ${PROTO_OUTPUT_DIR}/config.pb.c ${PROTO_OUTPUT_DIR}/config.pb.h ${PROTO_OUTPUT_DIR}/enums.pb.c ${PROTO_OUTPUT_DIR}/enums.pb.h
 		COMMENT "Compiling enums.proto and config.proto"
