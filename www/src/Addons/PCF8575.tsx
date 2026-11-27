@@ -1,4 +1,10 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import {
+	useCallback,
+	useContext,
+	useEffect,
+	useState,
+	type MouseEvent,
+} from 'react';
 
 import { AppContext } from '../Contexts/AppContext';
 import useExpansionPinStore from '../Store/useExpansionPinStore';
@@ -28,7 +34,8 @@ const SELECTABLE_BUTTON_ACTIONS = [
 	-10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
 ];
 
-const isSelectable = (value) => SELECTABLE_BUTTON_ACTIONS.includes(value);
+const isSelectable = (value: number) =>
+	SELECTABLE_BUTTON_ACTIONS.includes(value);
 
 export const pcf8575Scheme = {
 	PCF8575AddonEnabled: yup
@@ -41,7 +48,7 @@ export const pcf8575State = {
 	PCF8575AddonEnabled: 0,
 };
 
-const getOption = (foo, actionId) => {
+const getOption = (actionId: PinActionValues) => {
 	return {
 		label: invert(BUTTON_ACTIONS)[actionId],
 		value: actionId,
@@ -107,7 +114,7 @@ const ExpansionPinsForm = ({
 	const buttonNames = omit(CURRENT_BUTTONS, ['label', 'value']);
 	const { t } = useTranslation('');
 
-	const handleSave = async (e) => {
+	const handleSave = async (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 		e.stopPropagation();
 		try {
@@ -154,7 +161,7 @@ const ExpansionPinsForm = ({
 							isClearable
 							isSearchable
 							options={options}
-							value={getOption(pinData, pinData.option)}
+							value={getOption(pinData.option)}
 							isDisabled={!isSelectable(pinData.option)}
 							getOptionLabel={(option) => {
 								const labelKey = option.label.split('BUTTON_PRESS_').pop();

@@ -1,6 +1,6 @@
 import { InputMode, InputModeDeviceType } from '@proto/enums';
 
-export type InputModeGroup = 'primary' | 'sony' | 'nintendo' | 'microsoft' | 'mini';
+export type InputModeGroup = 'primary' | 'sony' | 'nintendo' | 'microsoft' | 'mini' | 'wireless';
 
 export type InputModeOptions = {
 	labelKey: string;
@@ -195,5 +195,14 @@ export const INPUT_MODE_OPTIONS: InputModeOptions[] = [
 		authentication: [],
 		deviceTypes: [],
 		keyboardInterface: true,
+	},
+	{
+		labelKey: 'input-mode-options.ble',
+		value: InputMode.INPUT_MODE_BLE,
+		group: 'wireless',
+		required: [],
+		optional: [],
+		authentication: [],
+		deviceTypes: [],
 	},
 ];

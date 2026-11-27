@@ -22,7 +22,7 @@
 
 #include "usbhostmanager.h"
 
-void DriverManager::setup(InputMode mode) {
+bool DriverManager::setup(InputMode mode) {
     switch (mode) {
         case INPUT_MODE_CONFIG:
             driver = new NetDriver();
@@ -82,11 +82,21 @@ void DriverManager::setup(InputMode mode) {
         case INPUT_MODE_SINPUT:
             driver = new SInputDriver();
             break;
+#ifdef ENABLE_BLUETOOTH
+        case INPUT_MODE_BLE:
+            // BLE HID is a wireless-only mode with no TinyUSB driver. Record
+            // the mode so getInputMode() reports BLE (consumers such as the
+            // OLED status bar rely on this), then return without instantiating
+            // a USB driver.
+            inputMode = mode;
+            return true;
+#endif
         default:
-            return;
+            return false;
     }
 
     // Initialize our chosen driver
     driver->initialize();
     inputMode = mode;
+    return true;
 }

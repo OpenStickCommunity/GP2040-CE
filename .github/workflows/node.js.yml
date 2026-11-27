@@ -25,6 +25,10 @@ jobs:
       working-directory: ${{github.workspace}}/www
       run: npm ci
 
+    - name: Test WWW
+      working-directory: ${{github.workspace}}/www
+      run: npm test
+
     - name: Build WWW
       working-directory: ${{github.workspace}}/www
       run: CI=false npm run build --if-present

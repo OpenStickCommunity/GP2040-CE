@@ -45,7 +45,7 @@ type HECalibrationProps = {
 	values: any;
 };
 
-const getOption = (e, actionId) => {
+const getOption = (actionId: number) => {
 	return {
 		label: invert(BUTTON_ACTIONS)[actionId],
 		value: actionId,
@@ -64,7 +64,7 @@ const HECalibration = ({
 	const { t } = useTranslation('');
 	const setHETrigger = useHETriggerStore((state) => state.setHETrigger);
 	const setAllHETriggers = useHETriggerStore((state) => state.setAllHETriggers);
-	const timerId = useRef<number>();
+	const timerId = useRef<number | undefined>(undefined);
 	const [title, setTitle] = useState('');
 	const target = useRef(-1);
 	const [nextTarget, setNextTarget] = useState(-1);
@@ -194,10 +194,7 @@ const HECalibration = ({
 	const updateTitle = () => {
 		if (target.current !== -1) {
 			// set title
-			const option = getOption(
-				triggers[target.current],
-				triggers[target.current].action,
-			);
+			const option = getOption(triggers[target.current].action);
 			const actionTitle = t(`PinMapping:actions.${option.label}`);
 			if (muxChannels > 1) {
 				const muxNum = Math.floor(target.current / muxChannels);

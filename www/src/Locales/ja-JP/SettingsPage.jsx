@@ -24,6 +24,71 @@ export default {
 		mini: 'Mini/Classic コンソールモード',
 	},
 	'boot-input-mode-label': '起動時入力モード',
+	'ble-status': {
+		title: 'Bluetooth の設定',
+		intro:
+			'Web Config を閉じずにコントローラーをペアリングできます。設定中は USB ケーブルを接続したままにしてください。',
+		state: {
+			loading: '読み込み中',
+			unsupported: '未対応',
+			'init-failed': '無線機能を利用できません',
+			initializing: 'Bluetooth を起動中',
+			ready: '準備完了',
+			pairing: '検出可能',
+			connecting: '接続中',
+			connected: '接続済み',
+			unavailable: '状態を取得できません',
+		},
+		'status-error':
+			'コントローラーに接続できません。USB 接続を確認してください。状態は自動的に更新されます。',
+		retry: '再試行',
+		unsupported:
+			'このファームウェアは Bluetooth に対応していません。対応する無線ボードと専用ファームウェアを使用してください。',
+		'init-failed':
+			'Bluetooth 無線機能を起動できませんでした。コントローラーは自動的に再試行します。解決しない場合はボードに合ったファームウェアか確認してください。',
+		initializing:
+			'Bluetooth 無線機能を起動しています。数秒かかる場合があります。',
+		'device-name': 'Bluetooth デバイス名',
+		'pairing-help':
+			'パソコンまたはスマートフォンの Bluetooth 設定を開き、{{name}} を選択してください。接続またはキャンセルするまで検出可能です。',
+		'connected-help':
+			'デバイスが接続されています。Bluetooth でプレイする前に Web Config の設定を完了できます。',
+		'connecting-help':
+			'パソコンまたはスマートフォンの Bluetooth 設定で接続を完了してください。',
+		'step-start': '下の「ペアリング開始」を選択します。',
+		'step-host':
+			'パソコンまたはスマートフォンで Bluetooth デバイスを追加し、{{name}} を選択します。',
+		'step-play':
+			'接続後、入力モードに Bluetooth を設定して保存し、コントローラーを再起動します。',
+		start: 'ペアリング開始',
+		cancel: 'ペアリングをキャンセル',
+		'webconfig-note':
+			'Web Config 中はゲームパッド入力が一時停止します。ペアリングの変更はすぐに反映されますが、入力モードの保存には再起動が必要です。',
+		'saved-title': '保存済みデバイス',
+		'saved-count_zero': '保存済みデバイスはありません。',
+		'saved-count_one': '{{count}} 台のデバイスが再接続用に保存されています。',
+		'saved-count_other': '{{count}} 台のデバイスが再接続用に保存されています。',
+		forget: '保存済みデバイスを削除',
+		'disconnect-help':
+			'別のデバイスをペアリングするか保存済みデバイスを削除するには、パソコンまたはスマートフォンの Bluetooth 設定からコントローラーを切断してください。',
+		'forget-title': '保存済みデバイスをすべて削除しますか？',
+		'forget-help':
+			'コントローラーからすべての Bluetooth ペアリングを削除します。再ペアリングする前に、パソコンまたはスマートフォンの Bluetooth 設定からもコントローラーを削除してください。',
+		'keep-devices': 'デバイスを保持',
+		forgotten:
+			'保存済みデバイスを削除しました。新しいペアリングを開始できます。',
+		canceled:
+			'ペアリングをキャンセルしました。コントローラーは検出されません。',
+		errors: {
+			'not-ready':
+				'Bluetooth はまだ起動中です。少し待ってから再試行してください。',
+			connected:
+				'デバイスが接続されています。Bluetooth 設定から切断してから再試行してください。',
+			unsupported: 'このファームウェアは Bluetooth に対応していません。',
+			'control-failed':
+				'Bluetooth 操作を確認できませんでした。接続と現在の状態を確認してから再試行してください。',
+		},
+	},
 	'ps4-mode-options': {
 		controller: 'コントローラ',
 		arcadestick: 'アケコン',
@@ -149,11 +214,11 @@ export default {
 		custom: 'カスタム',
 	},
 	'switch-pro-joycon-single-note':
-		"Joy-Con単体での利用の場合は、「持ちかた/順番を変える」に行きSL+SR ({{buttons}}) を押下してください。この操作は {{mode}} とJoy-Con (L + R)モードを切替える毎に実施が必要です",
+		'Joy-Con単体での利用の場合は、「持ちかた/順番を変える」に行きSL+SR ({{buttons}}) を押下してください。この操作は {{mode}} とJoy-Con (L + R)モードを切替える毎に実施が必要です',
 	'switch-pro-joycon-single-warning':
 		'<strong>注意:</strong> Joy-Con (L) and Joy-Con (R) モードは通常利用は非推奨となっており、特定のアクセサリ開発等で単体のJoy-Conモードが必要な人向けです。特段の理由がない場合は Pro コントローラや Joy-Con （L + R)モードをご利用ください。',
 	'switch-pro-joycon-pair-warning':
-		"<strong>注意:</strong> Joy-Con (L + R) を接続するためには「持ちかた/順番を変える」セクションで L + R ({{buttons}}) を押下する必要がある場合があります。",
+		'<strong>注意:</strong> Joy-Con (L + R) を接続するためには「持ちかた/順番を変える」セクションで L + R ({{buttons}}) を押下する必要がある場合があります。',
 	'switch-pro-genesis-warning':
 		'<strong>注意:</strong> このコントローラ種別はSwitchにシステムアイコンがありません。よってシステムメニュー上はProコントローラとして表示されます。NSO Genesisアプリでは正しくコントローラアイコンが表示表示されます。',
 	'switch-pro-joycon-color-explanation':

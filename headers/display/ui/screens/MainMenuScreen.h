@@ -105,6 +105,9 @@ class MainMenuScreen : public GPScreen {
 
         // define any Input Mode entries to be excluded
         #define INPUT_MODE_EXCLUDE_INPUT_MODE_CONFIG PP_PROBE
+#ifndef ENABLE_BLUETOOTH
+        #define INPUT_MODE_EXCLUDE_INPUT_MODE_BLE PP_PROBE
+#endif
 
         #define INPUT_MODE_IS_EXCLUDED(name) PP_CHECK(INPUT_MODE_EXCLUDE_##name)
 
