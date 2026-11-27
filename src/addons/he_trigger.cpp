@@ -79,13 +79,12 @@ void HETriggerAddon::setup() {
         }
     }
 
-    lastADCSelected = -1;
-
     for(int i = 0; i < 32; i++) {
         heRapidTriggerReset(triggerState[i]);
     }
 
     if ( options.emaSmoothing == 1 ) {
+        Pin_t lastADCSelected = -1;
         // Read all ADC values once
         for(int i = 0; i < 32; i++) {
             // Ignore triggers with no actions
@@ -128,13 +127,14 @@ void HETriggerAddon::preprocess() {
 
 // Web config skips core0 add-ons, so only track sensor state for LEDs and the display
 void HETriggerAddon::configModeProcess() {
-    lastADCSelected = -1; // calibration reads may have switched the ADC input
     scan(false);
 }
 
 void HETriggerAddon::scan(bool applyActions) {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     HETriggerOptions & options = Storage::getInstance().getAddonOptions().heTriggerOptions;
+    // Other ADC users can change the selected input between scans.
+    Pin_t lastADCSelected = ADC_BASE_PIN + adc_get_selected_input();
     gamepad->state.heTriggers = 0;
     for (uint8_t he = 0; he < 32; he++) {
         // Ignore triggers with no actions

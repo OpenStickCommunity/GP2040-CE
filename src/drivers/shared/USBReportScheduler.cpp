@@ -31,6 +31,17 @@ static inline uint32_t boundedElapsedUs(uint32_t elapsedUs) {
     return elapsedUs == UINT32_MAX ? elapsedUs : elapsedUs + TIME_US_32_RESOLUTION_US;
 }
 
+// Consumed by the next class SOF callback on this core, and discarded at reset.
+static volatile uint32_t preSofClearNak;
+
+static __force_inline bool unarmedEndpoint(uint8_t ep, uint32_t mask) {
+    uint32_t const occupied = USB_BUF_CTRL_AVAIL | USB_BUF_CTRL_FULL | USB_BUF_CTRL_STALL;
+    uint32_t const ctrl = usb_dpram->ep_ctrl[ep - 1].in;
+    uint32_t const enabled = EP_CTRL_ENABLE_BITS | EP_CTRL_INTERRUPT_ON_NAK;
+    return (ctrl & (enabled | EP_CTRL_INTERRUPT_ON_STALL)) == enabled && !(usb_hw->abort & mask) &&
+        !(usb_dpram->ep_buf_ctrl[ep].in & (occupied | (occupied << 16)));
+}
+
 USBReportScheduler &__not_in_flash_func(USBReportScheduler::getInstance)() {
     static USBReportScheduler instance;
     return instance;
@@ -85,7 +96,7 @@ void USBReportScheduler::start() {
         static bool handlerInstalled = false;
         queueNakSupported = rp2040_chip_version() >= 2;
         if (queueNakSupported && !handlerInstalled) {
-            irq_add_shared_handler(USBCTRL_IRQ, onQueueNak, PICO_SHARED_IRQ_HANDLER_LOWEST_ORDER_PRIORITY);
+            irq_add_shared_handler(USBCTRL_IRQ, onQueueNak, PICO_SHARED_IRQ_HANDLER_HIGHEST_ORDER_PRIORITY);
             handlerInstalled = true;
         }
         // Latch polls even while the NAK interrupt is disabled.
@@ -102,6 +113,7 @@ void USBReportScheduler::reset() {
     stagedClaimed = false;
     stagedFlushRequired = false;
     uint32_t const irqState = save_and_disable_interrupts();
+    preSofClearNak = 0;
     lastSofUs = 0;
     sofEpoch = 0;
     sofTimingReady = false;
@@ -180,7 +192,20 @@ void __not_in_flash_func(USBReportScheduler::consumeNak)(uint32_t nakMask, bool 
 
 void __not_in_flash_func(USBReportScheduler::onQueueNak)() {
     USBReportScheduler &scheduler = getInstance();
-    if (!scheduler.queueNakActive || !(usb_hw->ints & USB_INTS_EP_STALL_NAK_BITS)) return;
+    uint32_t const flags = usb_hw->ints;
+    if (flags & USB_INTS_DEV_SOF_BITS) {
+        uint32_t const nakAtIrq = usb_hw->ep_nak_stall_status;
+        preSofClearNak = 0;
+        // A shared handler can execute on either side of TinyUSB's SOF_RD read.
+        // Only the hardware's still-pending SOF establishes the lower time bound.
+        if (!(flags & USB_INTS_BUS_RESET_BITS) && scheduler.queueNakSupported &&
+            !scheduler.pendingOwned && !scheduler.stagedLength) {
+            uint8_t const ep = tu_edpt_number(scheduler.endpoint);
+            uint32_t const mask = 1u << (2 * ep);
+            if (!(nakAtIrq & mask) && unarmedEndpoint(ep, mask)) preSofClearNak = mask;
+        }
+    }
+    if (!scheduler.queueNakActive || !(flags & USB_INTS_EP_STALL_NAK_BITS)) return;
 
     uint8_t const epNum = tu_edpt_number(scheduler.endpoint);
     uint32_t const nakMask = 1u << (2 * epNum);
@@ -200,17 +225,27 @@ void __not_in_flash_func(USBReportScheduler::onQueueNak)() {
 
 void __not_in_flash_func(USBReportScheduler::onSof)(uint8_t rhport, uint32_t frameCount) {
     (void)rhport;
+    uint32_t const nakAtEntry = usb_hw->ep_nak_stall_status;
+    uint32_t const earlyClear = preSofClearNak;
+    preSofClearNak = 0;
     USBReportScheduler &scheduler = getInstance();
     uint32_t const now = time_us_32();
     uint8_t const epNum = tu_edpt_number(scheduler.endpoint);
     if ((tu_edpt_dir(scheduler.endpoint) == TUSB_DIR_IN) && epNum != 0 && epNum < USB_NUM_ENDPOINTS) {
         uint32_t const nakMask = 1u << (2 * epNum);
-        // Keep missed-poll evidence for staged input without attributing its frame.
         if (scheduler.stagedLength != 0 && (usb_hw->ep_nak_stall_status & nakMask)) {
             scheduler.stagedFlushRequired = true;
         }
-        // Discard earlier NAKs before opening this frame's observation window.
-        usb_hw->ep_nak_stall_status = nakMask;
+        // A NAK latched after entry belongs to this frame's observation window.
+        if (nakAtEntry & nakMask) {
+            bool const fresh = earlyClear == nakMask && scheduler.sofTimingReady &&
+                ((frameCount - scheduler.lastSofFrame) & USB_SOF_RD_BITS) == 1 &&
+                now - scheduler.lastSofUs < 2 * USB_FULL_SPEED_FRAME_US &&
+                !scheduler.pendingOwned && !scheduler.stagedLength &&
+                !(usb_hw->ints & (USB_INTS_DEV_SOF_BITS | USB_INTS_BUS_RESET_BITS)) &&
+                unarmedEndpoint(epNum, nakMask);
+            if (!fresh) usb_hw->ep_nak_stall_status = nakMask;
+        }
     }
     // Also catch pauses hidden by the USB frame counter's 11-bit wrap.
     if (scheduler.sofTimingReady &&
@@ -426,6 +461,22 @@ bool __not_in_flash_func(USBReportScheduler::sendDirectReport)(
         uint32_t queueSofEpoch;
         bool const watchForNak = allowAnalogScheduling && !reportRequired && priority == deliveredPriority;
         bool replaceable = captureQueueTiming(queueSofEpoch, allowAnalogScheduling, watchForNak);
+        if (watchForNak && !replaceable && queueSofEpoch != sofEpoch) {
+            // A SOF can interrupt captureQueueTiming immediately before it returns.
+            // The transfer is still unpublished. Bracket this frame's poll once.
+            uint32_t const irqState = save_and_disable_interrupts();
+            uint8_t const ep = tu_edpt_number(endpoint);
+            uint32_t const mask = 1u << (2 * ep);
+            if (sofEpoch - queueSofEpoch == 1 && sofTimingReady && !inputTimingResetPending &&
+                !reportPendingAtSof && !queueNakActive && queueNakSupported &&
+                servicedSofEpochValid && servicedSofEpoch == queueSofEpoch &&
+                !pendingOwned && !reportRequired && tud_ready() &&
+                !(usb_hw->ints & (USB_INTS_DEV_SOF_BITS | USB_INTS_BUS_RESET_BITS)) &&
+                unarmedEndpoint(ep, mask)) {
+                replaceable = captureQueueTiming(queueSofEpoch, true, true);
+            }
+            restore_interrupts(irqState);
+        }
 
         bool const queued = usbd_edpt_xfer(0, endpoint, stagedReport, len, false);
         uint32_t const queuedIrqState = save_and_disable_interrupts();

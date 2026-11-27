@@ -249,6 +249,7 @@ private:
 	const HotkeyOptions & hotkeyOptions;
 
 	HotkeyEntry hotkeys[16];
+	uint32_t commonHotkeyButtons;
 	GamepadHotkey lastAction = HOTKEY_NONE;
 
 	absolute_time_t disableFocusModeTimeout = nil_time;

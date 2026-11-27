@@ -205,6 +205,12 @@ void Gamepad::setup()
 	hotkeys[13] = hotkeyOptions.hotkey14;
 	hotkeys[14] = hotkeyOptions.hotkey15;
 	hotkeys[15] = hotkeyOptions.hotkey16;
+
+	commonHotkeyButtons = UINT32_MAX;
+	for (const HotkeyEntry &hotkey : hotkeys) {
+		if (hotkey.action != HOTKEY_NONE)
+			commonHotkeyButtons &= hotkey.buttonsMask;
+	}
 }
 
 /**
@@ -337,7 +343,10 @@ void __not_in_flash_func(Gamepad::process)()
 
 void __not_in_flash_func(Gamepad::read)()
 {
-	Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
+	Mask_t values = debouncedGpio;
+	// Only Bank 0 pins participate in debouncing.
+	if constexpr (NUM_BANK0_GPIOS <= 32)
+		values = static_cast<uint32_t>(values);
 
 	// Get the midpoint value for the current mode
 	uint16_t joystickMid = GAMEPAD_JOYSTICK_MID;
@@ -345,11 +354,10 @@ void __not_in_flash_func(Gamepad::read)()
 		joystickMid = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
 	}
 
-	state.aux = 0
-		| (values & mapButtonFn->pinMask)   ? mapButtonFn->buttonMask : 0;
+	state.aux = (values != 0 && (values & mapButtonFn->pinMask)) ? mapButtonFn->buttonMask : 0;
 
-	state.dpad = 0
-		| ((values & mapDpadUp->pinMask)       ? mapDpadUp->buttonMask              : 0)
+	state.dpad = values == 0 ? 0 :
+		  ((values & mapDpadUp->pinMask)       ? mapDpadUp->buttonMask              : 0)
 		| ((values & mapDpadDown->pinMask)     ? mapDpadDown->buttonMask            : 0)
 		| ((values & mapDpadLeft->pinMask)     ? mapDpadLeft->buttonMask            : 0)
 		| ((values & mapDpadRight->pinMask)    ? mapDpadRight->buttonMask           : 0)
@@ -359,8 +367,8 @@ void __not_in_flash_func(Gamepad::read)()
 		| ((values & mapDigitalRight->pinMask) ? (mapDigitalRight->buttonMask << 4) : 0)
 	;
 
-	state.buttons = 0
-		| ((values & mapButtonB1->pinMask)  ? mapButtonB1->buttonMask  : 0)
+	state.buttons = values == 0 ? 0 :
+		  ((values & mapButtonB1->pinMask)  ? mapButtonB1->buttonMask  : 0)
 		| ((values & mapButtonB2->pinMask)  ? mapButtonB2->buttonMask  : 0)
 		| ((values & mapButtonB3->pinMask)  ? mapButtonB3->buttonMask  : 0)
 		| ((values & mapButtonB4->pinMask)  ? mapButtonB4->buttonMask  : 0)
@@ -449,6 +457,11 @@ void __not_in_flash_func(Gamepad::read)()
 void __not_in_flash_func(Gamepad::hotkey)() {
 	if (options.lockHotkeys)
 		return;
+
+	if (!pressedButton(commonHotkeyButtons)) {
+		lastAction = HOTKEY_NONE;
+		return;
+	}
 
 	// Look for a hot-key
 	bool hasHotkey = false;
