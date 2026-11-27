@@ -116,9 +116,8 @@ void Storage::setInvertedPins(const GpioMappings& mappings)
 	invertedPins = 0;
 	if (!mappings.pinInversionEnabled)
 		return;
-	for (pb_size_t i = 0; i < mappings.invertedPins_count; i++) {
-		const uint32_t pin = mappings.invertedPins[i];
-		if (pin < NUM_BANK0_GPIOS && functionalPinMappings[pin].action > 0)
+	for (uint32_t pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
+		if (ConfigUtils::isPinInverted(mappings, pin) && functionalPinMappings[pin].action > 0)
 			invertedPins |= Mask_t{1} << pin;
 	}
 }

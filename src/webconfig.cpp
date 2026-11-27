@@ -634,10 +634,10 @@ std::string setSplashImage()
 static void readInvertedPins(GpioMappings& mappings, JsonVariantConst json)
 {
     mappings.pinInversionEnabled = json["pinInversionEnabled"];
-    mappings.invertedPins_count = 0;
+    ConfigUtils::clearInvertedPins(mappings);
     for (int pin : json["invertedPins"].as<JsonArrayConst>()) {
-        if (pin >= 0 && pin < (int)NUM_BANK0_GPIOS && mappings.invertedPins_count < std::size(mappings.invertedPins))
-            mappings.invertedPins[mappings.invertedPins_count++] = pin;
+        if (pin >= 0 && pin < (int)NUM_BANK0_GPIOS)
+            ConfigUtils::setPinInverted(mappings, pin, true);
     }
 }
 
@@ -645,8 +645,10 @@ static void writeInvertedPins(JsonVariant json, const GpioMappings& mappings)
 {
     json["pinInversionEnabled"] = mappings.pinInversionEnabled;
     JsonArray pins = json.createNestedArray("invertedPins");
-    for (pb_size_t i = 0; i < mappings.invertedPins_count; i++)
-        pins.add(mappings.invertedPins[i]);
+    for (uint32_t pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
+        if (ConfigUtils::isPinInverted(mappings, pin))
+            pins.add(pin);
+    }
 }
 
 static void readProfileSOCD(GpioMappings& mappings, JsonVariantConst json)
@@ -688,7 +690,7 @@ std::string setProfileOptions()
                     (GpioAction)alt[pinName]["action"] != GpioAction::ASSIGNED_TO_ADDON) {
                 profileOptions.gpioMappingsSets[altsIndex].pins[pin].action = (GpioAction)alt[pinName]["action"];
                 profileOptions.gpioMappingsSets[altsIndex].pins[pin].customButtonMask = (uint32_t)alt[pinName]["customButtonMask"];
-                profileOptions.gpioMappingsSets[altsIndex].pins[pin].customDpadMask = (uint32_t)alt[pinName]["customDpadMask"];
+                profileOptions.gpioMappingsSets[altsIndex].pins[pin].customDpadMask = (uint8_t)alt[pinName]["customDpadMask"];
             } else if ((coreMappings.pins[pin].action == GpioAction::RESERVED &&
                         (GpioAction)alt[pinName]["action"] == GpioAction::RESERVED) ||
                     (coreMappings.pins[pin].action == GpioAction::ASSIGNED_TO_ADDON &&
@@ -1701,7 +1703,7 @@ std::string setPinMappings()
                 (GpioAction)doc[pinName]["action"] != GpioAction::ASSIGNED_TO_ADDON) {
             gpioMappings.pins[pin].action = (GpioAction)doc[pinName]["action"];
             gpioMappings.pins[pin].customButtonMask = (uint32_t)doc[pinName]["customButtonMask"];
-            gpioMappings.pins[pin].customDpadMask = (uint32_t)doc[pinName]["customDpadMask"];
+            gpioMappings.pins[pin].customDpadMask = (uint8_t)doc[pinName]["customDpadMask"];
         }
     }
     size_t profileLabelSize = sizeof(gpioMappings.profileLabel);
@@ -1839,7 +1841,7 @@ std::string setBootModeOptions() {
 	return serialize_json(doc);
 }
 
-static const std::pair<const char*, uint32_t KeyboardMapping::*> keyboardMappingFields[] = {
+static const std::pair<const char*, uint8_t KeyboardMapping::*> keyboardMappingFields[] = {
     { "Up", &KeyboardMapping::keyDpadUp },
     { "Down", &KeyboardMapping::keyDpadDown },
     { "Left", &KeyboardMapping::keyDpadLeft },

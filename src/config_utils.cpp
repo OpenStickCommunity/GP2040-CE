@@ -651,10 +651,10 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
         const uint64_t invertedPinMask = GPIO_INVERTED_PIN_MASK;
         mappings.pinInversionEnabled = invertedPinMask != 0;
         mappings.has_pinInversionEnabled = true;
-        mappings.invertedPins_count = 0;
+        ConfigUtils::clearInvertedPins(mappings);
         for (uint32_t pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
             if (invertedPinMask & (uint64_t{1} << pin))
-                mappings.invertedPins[mappings.invertedPins_count++] = pin;
+                ConfigUtils::setPinInverted(mappings, pin, true);
         }
     };
     initPinInversion(config.gpioMappings);
@@ -2371,6 +2371,8 @@ static const uint32_t FOOTER_MAGIC = 0xd2f1e365;
     #error "Maximum size of Config cannot be determined statically, make sure that you do not use any dynamically sized arrays or strings"
 #endif
 
+static_assert(std::size(GpioMappings{}.pins) >= NUM_BANK0_GPIOS, "GpioMappings.pins max_count is smaller than NUM_BANK0_GPIOS for this platform");
+
 static bool loadConfigInner(Config& config)
 {
     config = Config Config_init_zero;
@@ -2609,7 +2611,7 @@ static void __attribute__((noinline)) appendAsString(std::string& str, uint32_t 
 #define TO_JSON_DOUBLE(fieldname, submessageType) appendAsString(str, static_cast<double>(s.fieldname));
 #define TO_JSON_FLOAT(fieldname, submessageType) appendAsString(str, static_cast<float>(s.fieldname));
 #define TO_JSON_INT32(fieldname, submessageType) appendAsString(str, s.fieldname);
-#define TO_JSON_UINT32(fieldname, submessageType) appendAsString(str, s.fieldname);
+#define TO_JSON_UINT32(fieldname, submessageType) appendAsString(str, static_cast<uint32_t>(s.fieldname));
 #define TO_JSON_BOOL(fieldname, submessageType) str.append((s.fieldname) ? "true" : "false");
 #define TO_JSON_STRING(fieldname, submessageType) str.push_back('"'); str.append(s.fieldname); str.push_back('"');
 #define TO_JSON_BYTES(fieldname, submessageType) str.push_back('"'); str.append(Base64::Encode(reinterpret_cast<const char*>(s.fieldname.bytes), s.fieldname.size)); str.push_back('"');
@@ -2823,14 +2825,15 @@ static bool fromJsonInt32(JsonObjectConst jsonObject, const char* fieldname, int
 
 #define FROM_JSON_INT32(fieldname, submessageType) if (!fromJsonInt32(jsonObject, #fieldname, configStruct.fieldname, configStruct.PREPROCESSOR_JOIN(has_, fieldname))) { return false; }
 
-static bool fromJsonUint32(JsonObjectConst jsonObject, const char* fieldname, uint32_t& value, bool& flag)
+template <typename T>
+static bool fromJsonUint32(JsonObjectConst jsonObject, const char* fieldname, T& value, bool& flag)
 {
     if (jsonObject.containsKey(fieldname))
     {
         JsonVariantConst jsonVariant = jsonObject[fieldname];
-        if (jsonVariant.is<unsigned int>())
+        if (jsonVariant.is<T>())
         {
-            value = jsonVariant.as<unsigned int>();
+            value = jsonVariant.as<T>();
             flag = true;
             return true;
         }
@@ -2883,7 +2886,7 @@ static bool fromJsonBool(JsonObjectConst jsonObject, const char* fieldname, bool
         } \
     }
 
-static bool fromJsonBytes(JsonObjectConst jsonObject, const char* fieldname, uint8_t* bytes, uint16_t& size, size_t maxSize)
+static bool fromJsonBytes(JsonObjectConst jsonObject, const char* fieldname, uint8_t* bytes, uint16_t& size, size_t maxSize, bool& flag)
 {
     if (jsonObject.containsKey(fieldname))
     {
@@ -2916,12 +2919,13 @@ static bool fromJsonBytes(JsonObjectConst jsonObject, const char* fieldname, uin
         }
         memcpy(bytes, decoded.data(), decoded.length());
         size = decoded.length();
+        flag = true;
     }
 
     return true;
 }
 
-#define FROM_JSON_BYTES(fieldname, submessageType) if (!fromJsonBytes(jsonObject, #fieldname, configStruct.fieldname.bytes, configStruct.fieldname.size, sizeof(configStruct.fieldname.bytes))) return false;
+#define FROM_JSON_BYTES(fieldname, submessageType) if (!fromJsonBytes(jsonObject, #fieldname, configStruct.fieldname.bytes, configStruct.fieldname.size, sizeof(configStruct.fieldname.bytes), configStruct.PREPROCESSOR_JOIN(has_, fieldname))) return false;
 
 #define FROM_JSON_MESSAGE(fieldname, submessageType) \
     if (jsonObject.containsKey(#fieldname)) \
@@ -3094,4 +3098,39 @@ bool ConfigUtils::fromJSON(Config& config, const char* data, size_t dataLen)
     migrateMacroPinsToGpio(config);
 
     return true;
+}
+
+bool ConfigUtils::isPinInverted(const GpioMappings& mappings, uint32_t pin)
+{
+    const uint32_t byteIndex = pin / 8;
+    if (!mappings.has_invertedPins || byteIndex >= mappings.invertedPins.size)
+        return false;
+    return (mappings.invertedPins.bytes[byteIndex] >> (pin % 8)) & 1;
+}
+
+void ConfigUtils::setPinInverted(GpioMappings& mappings, uint32_t pin, bool inverted)
+{
+    const uint32_t byteIndex = pin / 8;
+    if (byteIndex >= sizeof(mappings.invertedPins.bytes))
+        return;
+    if (!mappings.has_invertedPins)
+        ConfigUtils::clearInvertedPins(mappings);
+
+    while (mappings.invertedPins.size <= byteIndex)
+        mappings.invertedPins.bytes[mappings.invertedPins.size++] = 0;
+
+    if (inverted)
+        mappings.invertedPins.bytes[byteIndex] |= (1u << (pin % 8));
+    else
+        mappings.invertedPins.bytes[byteIndex] &= ~(1u << (pin % 8));
+
+    while (mappings.invertedPins.size > 0 && mappings.invertedPins.bytes[mappings.invertedPins.size - 1] == 0)
+        mappings.invertedPins.size--;
+}
+
+void ConfigUtils::clearInvertedPins(GpioMappings& mappings)
+{
+    memset(mappings.invertedPins.bytes, 0, sizeof(mappings.invertedPins.bytes));
+    mappings.invertedPins.size = 0;
+    mappings.has_invertedPins = true;
 }
