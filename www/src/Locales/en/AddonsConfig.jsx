@@ -168,6 +168,10 @@ export default {
 	'keyboard-host-mouse-movement-none': 'None',
 	'keyboard-host-mouse-movement-left-analog': 'Left Analog',
 	'keyboard-host-mouse-movement-right-analog': 'Right Analog',
+	'keyboard-host-boot-delay-label': 'Use keyboard for boot input modes',
+	'keyboard-host-boot-delay-help':
+		'Waits for the keyboard at power-on so held keys can pick the input mode or open web config. Boots as soon as the keyboard is ready, up to the max wait. Keyboards behind a hub may need more time.',
+	'keyboard-host-boot-delay-ms-label': 'Max Wait (ms)',
 	'pin-config-moved-to-core-text':
 		'Note: GPIO pins for this add-on are configured in <0>GPIO Pin Mapping</0>',
 	'input-history-length-label': 'History length (characters)',

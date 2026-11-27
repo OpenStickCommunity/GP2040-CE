@@ -6,6 +6,7 @@ import * as yup from 'yup';
 
 import Section from '../Components/Section';
 
+import FormControl from '../Components/FormControl';
 import FormSelect from '../Components/FormSelect';
 import KeyboardMapper from '../Components/KeyboardMapper';
 import { baseButtonMappings } from '../Services/WebApi';
@@ -42,6 +43,11 @@ export const keyboardScheme = {
 		),
 	keyboardHostMouseSensitivity: yup.number().required().min(1).max(100),
 	keyboardHostMouseMovement: yup.string().required().oneOf(['0', '1', '2']),
+	keyboardHostBootDelayEnabled: yup.number().label('Boot Input Delay Enabled'),
+	keyboardHostBootDelayMs: yup
+		.number()
+		.label('Boot Input Max Wait')
+		.validateRangeWhenValue('keyboardHostBootDelayEnabled', 500, 3000),
 };
 
 export const keyboardState = {
@@ -52,6 +58,8 @@ export const keyboardState = {
 	KeyboardHostAddonEnabled: 0,
 	keyboardHostMouseSensitivity: 0,
 	keyboardHostMouseMovement: 0,
+	keyboardHostBootDelayEnabled: 0,
+	keyboardHostBootDelayMs: 1000,
 };
 
 const excludedButtons = [
@@ -242,6 +250,39 @@ const Keyboard = ({
 							/>
 						</div>
 					</div>
+				</Row>
+				<Row className="mb-3">
+					<div className="col-sm-12 mb-2">
+						<FormCheck
+							label={t('AddonsConfig:keyboard-host-boot-delay-label')}
+							type="switch"
+							id="keyboardHostBootDelayEnabled"
+							isInvalid={false}
+							checked={Boolean(values.keyboardHostBootDelayEnabled)}
+							onChange={(e) => {
+								handleCheckbox('keyboardHostBootDelayEnabled');
+								handleChange(e);
+							}}
+						/>
+						<Form.Text muted>
+							{t('AddonsConfig:keyboard-host-boot-delay-help')}
+						</Form.Text>
+					</div>
+					<FormControl
+						hidden={!values.keyboardHostBootDelayEnabled}
+						type="number"
+						label={t('AddonsConfig:keyboard-host-boot-delay-ms-label')}
+						name="keyboardHostBootDelayMs"
+						className="form-control-sm"
+						groupClassName="col-sm-3 mb-3"
+						value={values.keyboardHostBootDelayMs}
+						error={errors.keyboardHostBootDelayMs}
+						isInvalid={Boolean(errors.keyboardHostBootDelayMs)}
+						onChange={handleChange}
+						min={500}
+						max={3000}
+						step={50}
+					/>
 				</Row>
 			</div>
 			{getAvailablePeripherals('usb') ? (

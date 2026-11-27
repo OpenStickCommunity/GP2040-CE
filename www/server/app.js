@@ -876,6 +876,8 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		keyboardHostMouseRight: 0,
 		keyboardHostMouseSensitivity: 50,
 		keyboardHostMouseMovement: 0,
+		keyboardHostBootDelayEnabled: 0,
+		keyboardHostBootDelayMs: 1000,
 		AnalogInputEnabled: 1,
 		BoardLedAddonEnabled: 1,
 		FocusModeAddonEnabled: 1,

@@ -131,6 +131,11 @@ void GP2040::setup() {
 	addons.LoadAddon(new TurboInput()); // Turbo overrides button states and should be close to the end
 	addons.LoadAddon(new InputMacro());
 
+	KeyboardHostAddon* keyboardHost = (KeyboardHostAddon*)addons.GetAddon(KeyboardHostName);
+	if (keyboardHost) {
+		keyboardHost->waitForBootInput();
+	}
+
 	// Use the old method of selecting input mode via mapped button, i.e. AFTER initializing GPIO
 	// pins with the currently active profile. Calling this even if the GPIO-mapped selection is
 	// used to make sure the same gamepad and add-on initialization steps still happen;
@@ -158,7 +163,7 @@ void GP2040::setup() {
 		if (inputModeChanged) gamepad->setInputMode(inputMode);
 
 		// save to match user expectations on choosing mode at boot, and this is
-		// before USB host will be used so we can force it to ignore the check
+		// before USB host auth starts so we can force it to ignore the check
 		if (inputModeChanged || profileChanged) Storage::getInstance().save(true);
 	}
 
