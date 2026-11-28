@@ -9,6 +9,7 @@
 #include "drivers/shared/InputReportPolicy.h"
 #include "drivers/shared/USBReportScheduler.h"
 #include "storagemanager.h"
+#include "usbfunctionmanager.h"
 
 static bool hid_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const * request)
 {
@@ -203,7 +204,7 @@ const uint8_t * HIDDriver::get_hid_descriptor_report_cb(uint8_t itf) {
 }
 
 const uint8_t * HIDDriver::get_descriptor_configuration_cb(uint8_t index) {
-	return hid_configuration_descriptor;
+	return USBFunctionManager::getInstance().getConfigurationDescriptor(hid_configuration_descriptor);
 }
 
 const uint8_t * HIDDriver::get_descriptor_device_qualifier_cb() {

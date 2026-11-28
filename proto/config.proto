@@ -94,10 +94,14 @@ message GamepadOptions
     optional uint32 switch2ProRightRingColor = 65;
     repeated AdvancedSOCDSlot advancedSOCDSlots = 66 [(nanopb).max_count = 4];
     optional bool advancedSOCDEnabled = 67;
+    optional bool keyboardInterfaceEnabled = 68;
+    optional KeyboardInterfaceXInputMode keyboardInterfaceXInputMode = 69;
 }
 
 message KeyboardMapping
 {
+    option (nanopb_msgopt).int_size = IS_8;
+
     optional uint32 keyDpadUp = 1;
     optional uint32 keyDpadDown = 2;
     optional uint32 keyDpadLeft = 3;
@@ -224,20 +228,21 @@ message GpioMappingInfo
 {
     optional GpioAction action = 1;
     optional GpioDirection direction = 2;
-    optional uint32 customDpadMask = 3;
+    optional uint32 customDpadMask = 3 [(nanopb).int_size = IS_8];
     optional uint32 customButtonMask = 4;
 }
 
 message GpioMappings
 {
-    repeated GpioMappingInfo pins = 1 [(nanopb).max_count = 48];
+    repeated GpioMappingInfo pins = 1;
     optional string profileLabel = 2 [(nanopb).max_length = 16];
     optional bool enabled = 3 [default = false];
     optional KeyboardMapping keyboardMapping = 4;
     optional bool pinInversionEnabled = 5;
-    repeated uint32 invertedPins = 6 [(nanopb).max_count = 48];
+    optional bytes invertedPins = 6 [(nanopb).max_size = 8];
     optional bool socdModeOverride = 7;
     optional SOCDMode socdMode = 8;
+    optional uint32 keyboardButtonMask = 9;
 }
 
 
@@ -466,6 +471,12 @@ message AnalogOptions
     optional uint32 joystick_max_y2 = 35;
 }
 
+message TurboToggleSlot
+{
+    optional int32 pin = 1;
+    optional uint32 buttonMask = 2;
+}
+
 message TurboOptions
 {
     optional bool enabled = 1;
@@ -495,6 +506,7 @@ message TurboOptions
     optional uint32 turboLedColor = 22 [deprecated = true];
     optional bool holdToClear = 23;
     optional uint32 holdToClearTime = 24;
+    repeated TurboToggleSlot toggleSlots = 25 [(nanopb).max_count = 8];
 }
 
 message SliderOptions
@@ -985,6 +997,19 @@ message HETriggerOptions
     optional float switchTravel = 16; // Web UI only: switch travel in mm for display (0 = unset)
 }
 
+message HostLightingOptions
+{
+    optional bool enabled = 1;
+    optional HostLightingXInputMode xinputMode = 2;
+    optional bool allowKeyboardMappingChanges = 3;
+}
+
+message LightingReportOptions
+{
+    optional bool enabled = 1;
+    optional LightingReportXInputMode xinputMode = 2;
+}
+
 message AddonOptions
 {
     optional BootselButtonOptions bootselButtonOptions = 1;
@@ -1019,6 +1044,8 @@ message AddonOptions
     optional HETriggerOptions heTriggerOptions = 30;
     optional ProfileSliderOptions profileSliderOptions = 31;
     optional AnalogADS1115Options analogADS1115Options = 32;
+    optional HostLightingOptions hostLightingOptions = 33;
+    optional LightingReportOptions lightingReportOptions = 34;
 }
 
 message MigrationHistory

@@ -9,6 +9,7 @@
 #include "drivers/shared/InputReportPolicy.h"
 #include "drivers/shared/USBReportScheduler.h"
 #include "storagemanager.h"
+#include "usbfunctionmanager.h"
 
 #include <algorithm>
 
@@ -389,7 +390,7 @@ const uint8_t * SInputDriver::get_hid_descriptor_report_cb(uint8_t itf) {
 }
 
 const uint8_t * SInputDriver::get_descriptor_configuration_cb(uint8_t index) {
-	return sinput_configuration_descriptor;
+	return USBFunctionManager::getInstance().getConfigurationDescriptor(sinput_configuration_descriptor);
 }
 
 const uint8_t * SInputDriver::get_descriptor_device_qualifier_cb() {

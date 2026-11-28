@@ -543,6 +543,8 @@ app.get('/api/getGamepadOptions', (req, res) => {
 		usbVendorID: '10C4',
 		usbProductID: '82C0',
 		miniMenuGamepadInput: 1,
+		keyboardInterfaceEnabled: 0,
+		keyboardInterfaceXInputMode: 2,
 		hotkey01: {
 			auxMask: 32768,
 			buttonsMask: 66304,
@@ -644,16 +646,17 @@ app.get('/api/getPinMappings', (req, res) => {
 	return res.send(createPinMappings({ profileLabel: 'Profile 1' }));
 });
 
-app.get('/api/getKeyMappings', (req, res) =>
-	res.send(mapValues(DEFAULT_KEYBOARD_MAPPING)),
-);
+// The keyboard interface's default button mask is E1-E12
+const createKeyMappings = () => ({
+	...mapValues(DEFAULT_KEYBOARD_MAPPING),
+	keyboardButtonMask: 0xfff00000,
+});
+
+app.get('/api/getKeyMappings', (req, res) => res.send(createKeyMappings()));
 
 app.get('/api/getProfileKeyMappings', (req, res) =>
 	res.send({
-		profiles: [
-			mapValues(DEFAULT_KEYBOARD_MAPPING),
-			mapValues(DEFAULT_KEYBOARD_MAPPING),
-		],
+		profiles: [createKeyMappings(), createKeyMappings()],
 	}),
 );
 
@@ -849,6 +852,22 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		shmupMode: 0,
 		turboHoldToClear: 0,
 		turboHoldToClearTime: 5,
+		turboToggle1Pin: -1,
+		turboToggle1ButtonMask: 0,
+		turboToggle2Pin: -1,
+		turboToggle2ButtonMask: 0,
+		turboToggle3Pin: -1,
+		turboToggle3ButtonMask: 0,
+		turboToggle4Pin: -1,
+		turboToggle4ButtonMask: 0,
+		turboToggle5Pin: -1,
+		turboToggle5ButtonMask: 0,
+		turboToggle6Pin: -1,
+		turboToggle6ButtonMask: 0,
+		turboToggle7Pin: -1,
+		turboToggle7ButtonMask: 0,
+		turboToggle8Pin: -1,
+		turboToggle8ButtonMask: 0,
 		shmupMixMode: 0,
 		shmupAlwaysOn1: 0,
 		shmupAlwaysOn2: 0,
@@ -877,6 +896,11 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		BoardLedAddonEnabled: 1,
 		FocusModeAddonEnabled: 1,
 		focusModeMacroLockEnabled: 0,
+		HostLightingAddonEnabled: 0,
+		hostLightingXInputMode: 2,
+		hostLightingAllowKeyboardMappingChanges: 0,
+		LightingReportAddonEnabled: 0,
+		lightingReportXInputMode: 2,
 		BuzzerSpeakerAddonEnabled: 1,
 		BootselButtonAddonEnabled: 1,
 		DualDirectionalInputEnabled: 1,
