@@ -9,7 +9,7 @@
 #include "enums.pb.h"
 #include "class/hid/hid.h"
 
-#define BOARD_CONFIG_LABEL "Haute42 COSMOX C-AT"
+#define BOARD_CONFIG_LABEL "Haute42|COSMOX C-AT"
 
 // Main pin mapping Configuration
 //                          // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
@@ -131,7 +131,7 @@
 #define SPLASH_MODE SPLASH_MODE_STATIC
 #define SPLASH_DURATION 3000
 
-#define DEFAULT_BOARD_LAYOUT_A_NAME "Haute42 COSMOX C-AT Default"
+#define DEFAULT_BOARD_LAYOUT_A_NAME "Haute42|COSMOX C-AT Default"
 #define DEFAULT_BOARD_LAYOUT_A {\
     {GP_ELEMENT_PIN_BUTTON, {43, 17, 4, 4, 1, 1, 29, GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {31, 27, 4, 4, 1, 1, 5, GP_SHAPE_ELLIPSE}},\
@@ -147,7 +147,7 @@
     {GP_ELEMENT_PIN_BUTTON, {108, 10, 112, 14, 1, 1, 14, GP_SHAPE_SQUARE}},\
 }
 
-#define DEFAULT_BOARD_LAYOUT_B_NAME "Haute42 COSMOX C-AT Default"
+#define DEFAULT_BOARD_LAYOUT_B_NAME "Haute42|COSMOX C-AT Default"
 #define DEFAULT_BOARD_LAYOUT_B {\
     {GP_ELEMENT_PIN_BUTTON, {71, 27, 4, 4, 1, 1, 10, GP_SHAPE_ELLIPSE}},\
     {GP_ELEMENT_PIN_BUTTON, {81, 25, 4, 4, 1, 1, 11, GP_SHAPE_ELLIPSE}},\
@@ -163,7 +163,7 @@
 }
 
 #define LEDS_AUTO_DISABLE_TIME 0
-#define LIGHT_DATA_NAME_DEFAULT "Haute42|Cosmox CAT" 
+#define LIGHT_DATA_NAME_DEFAULT "Haute42|COSMOX C-AT" 
 #define LIGHT_DATA_SIZE_DEFAULT 50 //number of sets in the below data
 #define LIGHT_DATA_DEFAULT \
 0,  1, 5,  4,  5,  LightType::LightType_ActionButton, LightInputSource::LightInputSource_GPIO, \
