@@ -6,6 +6,8 @@
 #include "drivers/hid/HIDDriver.h"
 #include "drivers/hid/HIDDescriptors.h"
 #include "drivers/shared/driverhelper.h"
+#include "drivers/shared/InputReportPolicy.h"
+#include "drivers/shared/USBReportScheduler.h"
 #include "storagemanager.h"
 #include "usbfunctionmanager.h"
 
@@ -27,16 +29,24 @@ void HIDDriver::initialize() {
 		.name = "HID",
 	#endif
 		.init = hidd_init,
-		.reset = hidd_reset,
-		.open = hidd_open,
+		.reset = USBReportScheduler::resetHid,
+		.open = USBReportScheduler::openHid,
 		.control_xfer_cb = hid_control_xfer_cb,
-		.xfer_cb = hidd_xfer_cb,
-		.sof = NULL
+		.xfer_cb = USBReportScheduler::onHidTransfer,
+		.sof = USBReportScheduler::onSof
 	};
 }
 
 // Generate HID report from gamepad and send to TUSB Device
 bool HIDDriver::process(Gamepad * gamepad) {
+	USBReportScheduler &scheduler = USBReportScheduler::getInstance();
+	if (analogSchedulingProfile != gamepad->lastReinitProfileNumber) {
+		analogSchedulingProfile = gamepad->lastReinitProfileNumber;
+		analogSchedulingAllowed = !hasDigitalAxisMappings();
+		scheduler.resetInputTiming();
+	}
+	scheduler.beginInputProcessing();
+
 	switch (gamepad->state.dpad & GAMEPAD_MASK_DPAD)
 	{
 		case GAMEPAD_MASK_UP:                        hidReport.direction = HID_HAT_UP;        break;
@@ -114,18 +124,22 @@ bool HIDDriver::process(Gamepad * gamepad) {
 	if (tud_suspended())
 		tud_remote_wakeup();
 
-	void * report = &hidReport;
-	uint16_t report_size = sizeof(hidReport);
-	if (memcmp(last_report, report, report_size) != 0)
-	{
-		// HID ready + report sent, copy previous report
-		if (tud_hid_ready() && tud_hid_report(0, report, report_size) == true ) {
-			memcpy(last_report, report, report_size);
-			return true;
+	bool reportSent = false;
+	if (scheduler.needsReport() || memcmp(last_report, &hidReport, sizeof(hidReport)) != 0) {
+		USBReportPriority priority{hidReport.buttons};
+		if (dpadMode != GENERIC_DPAD_BUTTONS_ONLY) {
+			// Keep each hat position, including neutral, distinct for report replacement.
+			uint32_t const hatPriority = uint32_t{1} << hidReport.direction;
+			priority.digital |= uint64_t{hatPriority} << 32;
+		}
+		bool const allowAnalogScheduling = analogSchedulingAllowed && gamepad->getActiveDpadMode() == DPAD_MODE_DIGITAL;
+		if (scheduler.sendDirectReport(&hidReport, sizeof(hidReport), priority, allowAnalogScheduling)) {
+			memcpy(last_report, &hidReport, sizeof(hidReport));
+			reportSent = true;
 		}
 	}
-	
-	return false;
+	scheduler.endInputProcessing();
+	return reportSent;
 }
 
 // tud_hid_get_report_cb

@@ -28,6 +28,8 @@ public:
 private:
     uint8_t last_report[CFG_TUD_ENDPOINT0_SIZE] = { };
     SwitchReport switchReport;
+    uint32_t analogSchedulingProfile = UINT32_MAX;
+    bool analogSchedulingAllowed = false;
 };
 
 #endif // _SWITCH_DRIVER_H_

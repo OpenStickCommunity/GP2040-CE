@@ -749,7 +749,9 @@ bool PS4Driver::process(Gamepad * gamepad) {
                 (static_cast<uint64_t>(!touchpadData.p2.unpressed) << 23);
         }
         // Keep touch gestures in order, including button-emulated touch positions.
-        bool const allowAnalogScheduling = options.inputMode == INPUT_MODE_PS4 && analogSchedulingAllowed &&
+        bool const allowAnalogScheduling =
+            (options.inputMode == INPUT_MODE_PS4 || options.inputMode == INPUT_MODE_PS5) &&
+            analogSchedulingAllowed &&
             gamepad->getActiveDpadMode() == DPAD_MODE_DIGITAL &&
             touchpadData.p1.unpressed && touchpadData.p2.unpressed;
         if (scheduler.sendDirectReport(report, report_size, priority, allowAnalogScheduling)) {

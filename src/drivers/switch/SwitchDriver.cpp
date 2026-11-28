@@ -1,5 +1,7 @@
 #include "drivers/switch/SwitchDriver.h"
 #include "drivers/shared/driverhelper.h"
+#include "drivers/shared/InputReportPolicy.h"
+#include "drivers/shared/USBReportScheduler.h"
 
 void SwitchDriver::initialize() {
 	switchReport = {
@@ -17,15 +19,23 @@ void SwitchDriver::initialize() {
 		.name = "SWITCH",
 	#endif
 		.init = hidd_init,
-		.reset = hidd_reset,
-		.open = hidd_open,
+		.reset = USBReportScheduler::resetHid,
+		.open = USBReportScheduler::openHid,
 		.control_xfer_cb = hidd_control_xfer_cb,
-		.xfer_cb = hidd_xfer_cb,
-		.sof = NULL
+		.xfer_cb = USBReportScheduler::onHidTransfer,
+		.sof = USBReportScheduler::onSof
 	};
 }
 
 bool SwitchDriver::process(Gamepad * gamepad) {
+	auto &scheduler = USBReportScheduler::getInstance();
+	if (analogSchedulingProfile != gamepad->lastReinitProfileNumber) {
+		analogSchedulingProfile = gamepad->lastReinitProfileNumber;
+		analogSchedulingAllowed = !hasDigitalAxisMappings();
+		scheduler.resetInputTiming();
+	}
+	scheduler.beginInputProcessing();
+
 	switch (gamepad->state.dpad & GAMEPAD_MASK_DPAD)
 	{
 		case GAMEPAD_MASK_UP:                        switchReport.hat = SWITCH_HAT_UP;        break;
@@ -73,16 +83,17 @@ bool SwitchDriver::process(Gamepad * gamepad) {
 	if (tud_suspended())
 		tud_remote_wakeup();
 
-	void * report = &switchReport;
-	uint16_t report_size = sizeof(switchReport);
-	if (memcmp(last_report, report, report_size) != 0) {
-		// HID ready + report sent, copy previous report
-		if (tud_hid_ready() && tud_hid_report(0, report, report_size) == true ) {
-			memcpy(last_report, report, report_size);
-			return true;
-		}
+	bool sent = false;
+	if (scheduler.needsReport() || memcmp(last_report, &switchReport, sizeof(switchReport)) != 0) {
+		USBReportPriority priority{switchReport.buttons};
+		// Neutral is a distinct hat position and must reach the host between directions.
+		priority.digital |= uint32_t{1} << (16 + switchReport.hat);
+		bool const allowAnalogScheduling = analogSchedulingAllowed && gamepad->getActiveDpadMode() == DPAD_MODE_DIGITAL;
+		sent = scheduler.sendDirectReport(&switchReport, sizeof(switchReport), priority, allowAnalogScheduling);
+		if (sent) memcpy(last_report, &switchReport, sizeof(switchReport));
 	}
-	return false;
+	scheduler.endInputProcessing();
+	return sent;
 }
 
 // tud_hid_get_report_cb

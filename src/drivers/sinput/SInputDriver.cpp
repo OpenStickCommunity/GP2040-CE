@@ -6,6 +6,8 @@
 #include "drivers/sinput/SInputDriver.h"
 #include "drivers/sinput/SInputDescriptors.h"
 #include "drivers/shared/driverhelper.h"
+#include "drivers/shared/InputReportPolicy.h"
+#include "drivers/shared/USBReportScheduler.h"
 #include "storagemanager.h"
 #include "usbfunctionmanager.h"
 
@@ -130,16 +132,24 @@ void SInputDriver::initialize() {
 		.name = "SInput",
 	#endif
 		.init = hidd_init,
-		.reset = hidd_reset,
-		.open = hidd_open,
+		.reset = USBReportScheduler::resetHid,
+		.open = USBReportScheduler::openHid,
 		.control_xfer_cb = hid_control_xfer_cb,
-		.xfer_cb = hidd_xfer_cb,
-		.sof = NULL
+		.xfer_cb = USBReportScheduler::onHidTransfer,
+		.sof = USBReportScheduler::onSof
 	};
 }
 
 // Generate HID report from gamepad and send to TUSB Device
 bool SInputDriver::process(Gamepad * gamepad) {
+	USBReportScheduler &scheduler = USBReportScheduler::getInstance();
+	if (analogSchedulingProfile != gamepad->lastReinitProfileNumber) {
+		analogSchedulingProfile = gamepad->lastReinitProfileNumber;
+		analogSchedulingAllowed = !hasDigitalAxisMappings();
+		scheduler.resetInputTiming();
+	}
+	scheduler.beginInputProcessing();
+
 	sinputReport.report_id = SINPUT_INPUT_REPORT_ID;
 	sinputReport.imu_timestamp_us = static_cast<uint32_t>(getMicro());
 	sinputReport.left_x = static_cast<int16_t>(gamepad->state.lx - 0x8000);
@@ -245,27 +255,24 @@ bool SInputDriver::process(Gamepad * gamepad) {
 	if (tud_suspended())
 		tud_remote_wakeup();
 
+	bool reportSent = false;
 	if (isReportQueued) {
 		if (tud_hid_ready() && tud_hid_report(0, queuedReport, sizeof(queuedReport)) == true) {
 			isReportQueued = false;
-			return true;
+			reportSent = true;
 		}
-
-		return false;
-	}
-
-	void * report = &sinputReport;
-	uint16_t report_size = sizeof(sinputReport);
-	if (memcmp(last_report, report, report_size) != 0)
-	{
-		// HID ready + report sent, copy previous report
-		if (tud_hid_ready() && tud_hid_report(0, report, report_size) == true ) {
-			memcpy(last_report, report, report_size);
-			return true;
+	} else if (scheduler.needsReport() || memcmp(last_report, &sinputReport, sizeof(sinputReport)) != 0) {
+		USBReportPriority const priority{sinputReport.buttons,
+			static_cast<uint16_t>(sinputReport.trigger_l) |
+				(uint32_t{static_cast<uint16_t>(sinputReport.trigger_r)} << 16)};
+		bool const allowAnalogScheduling = analogSchedulingAllowed && gamepad->getActiveDpadMode() == DPAD_MODE_DIGITAL;
+		if (scheduler.sendDirectReport(&sinputReport, sizeof(sinputReport), priority, allowAnalogScheduling)) {
+			memcpy(last_report, &sinputReport, sizeof(sinputReport));
+			reportSent = true;
 		}
 	}
-	
-	return false;
+	scheduler.endInputProcessing();
+	return reportSent;
 }
 
 // tud_hid_get_report_cb

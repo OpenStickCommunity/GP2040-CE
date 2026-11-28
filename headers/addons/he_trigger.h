@@ -936,7 +936,6 @@ private:
     int selectPins;
     Pin_t muxPinArray[HETRIGGER_MUX_COUNT];
     Pin_t selectPinArray[HETRIGGER_MUX_COUNT][4]; // Select pins indexed by [mux][selectBit]
-    Pin_t lastADCSelected;
 
     uint16_t emaSmoothingReads[32];
     HERapidTriggerState triggerState[32];

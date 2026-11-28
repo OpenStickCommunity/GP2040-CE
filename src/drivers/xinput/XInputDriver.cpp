@@ -274,8 +274,7 @@ bool __not_in_flash_func(XInputDriver::process)(Gamepad * gamepad) {
     USBReportScheduler &scheduler = USBReportScheduler::getInstance();
     scheduler.beginInputProcessing();
 
-    Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
-    Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
+    const Mask_t values = gamepad->debouncedGpio;
 
     xinputReport.buttons1 = 0
         | (gamepad->pressedUp()    ? XBOX_MASK_UP    : 0)
@@ -385,6 +384,7 @@ bool __not_in_flash_func(XInputDriver::process)(Gamepad * gamepad) {
 
     //---------------
     if (memcmp(xinput_out_buffer, featureBuffer, XINPUT_OUT_SIZE) != 0) { // check if new write to xinput_out_buffer from xinput_xfer_callback
+        Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
         memcpy(featureBuffer, xinput_out_buffer, XINPUT_OUT_SIZE);
         switch (featureBuffer[0]) {
             case 0x00:

@@ -223,7 +223,7 @@ void GP2040::deinitializeStandardGpio() {
  * and to simplify this method, non-button GPIO IS NOT PRESENT in this result. Use gpio_get_all directly
  * instead, if you don't want debounced data.
  */
-void GP2040::debounceGpioGetAll() {
+void __not_in_flash_func(GP2040::debounceGpioGetAll)() {
 	Mask_t rawGpios = Storage::getInstance().getPressedGpios();
 	Mask_t pressedGpios = rawGpios & buttonGpios;
 	Gamepad* gamepad = Storage::getInstance().GetGamepad();
@@ -571,7 +571,7 @@ void GP2040::RebootHotkeys::process(Gamepad* gamepad, bool configMode) {
 	}
 }
 
-void GP2040::checkRawState(const GamepadState& prevState, const GamepadState& currState) {
+void __not_in_flash_func(GP2040::checkRawState)(const GamepadState& prevState, const GamepadState& currState) {
     // buttons pressed
     if ((
         ((currState.aux & ~prevState.aux) != 0) ||
@@ -591,7 +591,7 @@ void GP2040::checkRawState(const GamepadState& prevState, const GamepadState& cu
     }
 }
 
-void GP2040::checkProcessedState(const GamepadState& prevState, const GamepadState& currState) {
+void __not_in_flash_func(GP2040::checkProcessedState)(const GamepadState& prevState, const GamepadState& currState) {
     // buttons pressed
     if ((
         ((currState.aux & ~prevState.aux) != 0) ||
